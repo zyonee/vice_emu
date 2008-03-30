@@ -1,0 +1,397 @@
+Fri Apr  3 13:39:29 1998  Ettore Perazzoli  <ettore@comm2000.it>
+
+	* Version 0.14.1.8.
+
+	* arch/msdos/ui.c (UiDisplayDriveTrack, UiDisplayDriveLed): New
+ 	(dummy) functions.
+	(UiToggleDriveStatus): Likewise.
+	* arch/msdos/ui.h: Prototypes here.
+
+	* resources.c (resources_set_defaults) [HAVE_TRUE1541 && CBM64]:
+	Set `app_resources.true1541ParallelCable' to 0.
+
+Thu Apr  2 16:01:18 1998  Ettore Perazzoli  <ettore@comm2000.it>
+
+	* Version 0.14.1.7.
+
+	* resources.c [CBM64]: Removed `TapeName' resource.
+
+	* true1541.c (true1541_enable): Do not initialize the true1541.
+
+	* resources.c [CBM64 && HAVE_TRUE1541]: New options `-parallel',
+ 	`+parallel'.
+
+	* via-tmpl.c (update_myviata, update_myviatb): Delay `A_MYVIAT1'
+	and `A_MYVIAT2' alarms by one cycle.  At least, this makes sure
+	the emulator does not hang when the latch is set to zero.
+
+Wed Apr  1 12:22:13 1998  Ettore Perazzoli  <ettore@comm2000.it>
+
+	* Version 0.14.1.6.
+
+	* arch/msdos/ui.c [CBM64 && HAVE_TRUE1541]
+ 	(toggle_true1541_parallel_cable_callback): New function.
+	(UiInitFinish): new item for toggling the parallel cable
+ 	emulation.
+
+	* true1541.c (serial_bus_drive_read, serial_bus_drive_write)
+	[!FAST_BUS]:  Inverted polarities.
+
+Tue Mar 31 13:06:25 1998  Ettore Perazzoli  <ettore@comm2000.it>
+
+	* Version 0.14.1.5.
+
+	* resources.c [!CBM64]: Removed `True1541ParallelCable' resource.
+
+	* resources.c [!__MSDOS__] (wait_user): Removed.
+
+	* true1541.c (initialize_true1541): Position the R/W head on track
+	18.
+
+	* vic20/vic20mem.c, vic20/vic20mem.h: Removed variables
+ 	`kernal_rom' and `basic_rom'.  New variable `rom' which includes
+ 	both Kernal and Basic.  New macros `kernal_rom' and `basic_rom' to
+ 	access the two parts.
+
+	* arch/unix/ui_xaw.c (UiToggleDriveStatus, UiDisplayDriveLed):
+	Removed when true1541 emulation is not available.
+ 	(UiDisplayDriveTrack): Likewise.
+
+	* raster.c (refresh_all): Fixed behavior with windows bigger than
+	the screen image.
+
+	* arch/unix/ui_xaw.c: Do not #include <X11/IntrinsicP.h> anymore.
+
+	* arch/unix/ui_xaw.c: Removed member `widget' and added members
+	`shell' and `canvas' to `AppShells'.
+	(UiDisplayPaused, UiPopup, UiCloseAction): Updated accordingly.
+	(UiResizeCanvasWindow): Resize the canvas widget in the UiWindow.
+
+	* raster.c (refresh_all) [RASTER_DEBUG_PUTIMAGE_CALLS]: Updated
+ 	debugging message.
+	(resize): Calculate `window_last_line' correctly when the window
+	is higher than the screen.
+
+	* serial.c (serial_select_file): Call `true1541_detach_floppy()'
+	only if attaching to drive 8.
+
+	* c64/autostart.c (autostart_advance): Do not turn true1541 off if
+ 	the `noTraps' resource is set.  In case `AUTOSTART_HASDISK', do
+ 	not load the program before 1 virtual second.
+
+	* arch/unix/ui_xaw.c (UiDisplayDriveLed, UiDisplayDriveTrack): If
+	the widget is not realized, realize it automagically.
+
+	* arch/unix/vsync.c (update_drive_led): Renamed to
+ 	`update_drive_status'.
+	(update_drive_status): Display the current track too.  If true
+ 	1541 is disabled, remove the drive status widget.
+
+	* true1541.c: Removed variable `cur_ht', replaced with an extern
+ 	one `true1541_current_half_track'.
+
+Mon Mar 30 22:47:30 1998  Michael Schwendt  <sidplay@geocities.com>
+
+	* sid.c: Changed filter parameters to depend on the sample
+ 	frequency.
+
+Mon Mar 30 22:27:28 1998  Teemu Rantanen  <tvr@cs.hut.fi>
+
+	* sid.c (update_sid): Removed volume check optimization.
+
+	* sid.c (reset_sid): Changed to use `store_sid()' instead of
+ 	clearing register -values directly.
+
+	* sid.c (flush_sound): When click happens, send buffer advancing
+ 	from zero level to next sample.
+
+	* include/sid.h: New protos: `suspend_sound()' and
+ 	`resume_sound()'.
+
+	* sid.c (sid_device_t): New fields suspend and resume.
+
+	* sid.c (suspend_sound, resume_sound): New functions.
+
+	* sid.c (uss_suspend): Implemented suspend -feature for	the USS
+	-device.
+
+	* arch/unix/vsync.c (suspend_speed_eval): Call `suspend_sound()'.
+
+	* sid.c (flush_sound): `Call resume_sound()'.
+
+Mon Mar 30 11:01:41 1998  Ettore Perazzoli  <ettore@comm2000.it>
+
+	* Version 0.14.1.4.
+
+	* maincpu.c [AUTOSTART]: #include "autostart.h".
+
+	* true1541.c: #include "ui.h".
+	(true1541_disable, true1541_enable): Call `UiToggleDriveStatus' to
+ 	update the status line.
+	(true1541_update_zone_bits): Removed debugging message.
+	(true1541_move_head): Display the current position of the head
+ 	with `UiDisplayDriveTrack()'
+	(parallel_cable_drive_write, parallel_cable_drive_read) [!CBM64]:
+ 	Dummy functions to make the 1541 happy.
+
+	* ui_xaw.h: New prototypes for `UiDisplayDriveTrack',
+ 	`UiToggleDriveStatus', `UiDisplayDriveLed'.
+
+	* arch/unix/ui_xaw.c: Added member `speed_label' to `AppShells'.
+	[HAVE_TRUE1541] Added members `drive_track_label' and `drive_led'
+ 	to `AppShells'.  New variables `drive_led_on_pixel',
+ 	`drive_led_off_pixel'.  Added new fallback resources to
+ 	`fallback_resources'.
+	(UiOpenCanvasWindow): Create the speed `speedStatus' label.
+	[HAVE_TRUE1541] Create the `driveTrack' and `driveLed' widgets.
+	(UiDoAllocColors) [HAVE_TRUE1541]: Allocate colors for the
+ 	`driveLed'.
+	(UiDisplaySpeed): Use `speedStatus' instead of the title bar.
+	(UiToggleDriveStatus, UiDisplayDriveTrack, UiDisplayDriveLed): New
+ 	functions.
+	(UiResizeCanvasWindow): (Temporarily?) do nothing.
+
+	* resources.c [HAVE_TRUE1541]: Fixed name of the
+ 	`True1541ParallelCable' resource.
+
+	* cia-tmpl.c (read_mycia): `A_CIA2TA' -> `A_MYCIATA', `A_CIA2TB'
+	-> `A_MYCIATB'.
+
+Sun Mar 29 21:08:49 1998  Ettore Perazzoli  <ettore@comm2000.it>
+
+	* Version 0.14.1.3.
+
+	* Makefile.in: Updated `DOCS' according to André's documentation
+	changes.
+
+Sat Mar 28 17:35:49 1998  Andreas Boose  <boose@unixserv.rz.fh-hannover.de>
+
+	* arch/unix/ui_xaw.c (UiToggleParallelCable): New function to
+ 	toggle parallel cable emulation.
+
+	* include/menu.h: Added new entry to toggle parallel cable
+ 	emulation.
+
+	* resources.c: New resource `true1541ParallelCable'.
+
+	* cia-tmpl.c (read_mycia): New macro `READ_CIAICR'.
+	(mycia_set_flag): New function to set the flag bit.
+
+	* cia2.def (READ_CIAICR): Call `true1541_cpu_execute()' whenever
+ 	the ICR is read to update the flag bit.
+	(STORE_CIAPB, READ_CIAPB): Changed to new parallel cable handling.
+
+	* viad1.def: (STORE_PRA, READ_PRA): Changed likewise.
+
+	* true1541.c: New variables `parallel_cable_cpu_value' and
+ 	`parallel_cable_drive_value'.
+ 	(parallel_cable_cpu_read, parallel_cable_cpu_write): New function
+ 	for parallel cable handling.
+	(parallel_cable_drive_read, parallel_cable_drive_write): More new
+ 	functions.
+
+	* cia.h: Updated prototypes.
+	* true1541.h: Likewise.
+
+Sun Mar 29 15:05:56 1998  Ettore Perazzoli  <ettore@comm2000.it>
+
+	* raster.c (resize): Use the same resizing policy for MS-DOS and
+ 	Unix.
+
+	* c64/vicii.c (store_vic): When writing to $D017, removed special
+ 	hack for cycle 54.
+
+	* c64/vicii.c (store_vic): If CSEL changes from 0 to 1 at cycle
+	17, set `blank_this_line' to 1.
+
+	* raster.c (emulate_line): If `blank_this_line' is nonzero, draw
+ 	this line as a blank one.  Set `blank_this_line' to zero before
+	returning.
+
+	* include/raster.h: New variable `blank_this_line'.
+
+	* c64/vicii.c: New variables `idle_data', `idle_data_location'.
+  	Removed old variables `vbank_39ff', `vbank_3fff', `idle_data_ptr'.
+	(int_rasterdraw): Update `idle_data_location' and `idle_data'
+ 	according to the current values of $D011 and `idle_state'.
+	(store_d011): When changing `draw_idle_state', set
+ 	`idle_data_location' accordingly.
+	(store_vbank_39xx, store_vbank_3fxx): New method, use
+ 	`idle_data_location' and `idle_data'.
+	(get_idle): Use `idle_data'.
+	(_draw_idle, draw_idle_foreground, draw_idle_foreground_2x):
+ 	Likewise.
+	(set_video_mode): When setting a new video mode, add changes for
+ 	`idle_data' according to bit 6 in $D011 if needed.
+	(set_memory_ptrs): If necessary, update `idle_data' when changing
+	video bank.
+
+Sat Mar 28 11:53:51 1998  Ettore Perazzoli  <ettore@comm2000.it>
+
+	* c64/vicii.c (store_vic): Cycle for 38/40 column mode switch in
+ 	the right border decremented by 1.
+
+	* c64/vicii.c (store_d011): The color memory buffer fetches the 4
+ 	lowmost bits from `ram[reg_pc]'.
+
+	* 6510core.c: `ASL', `DCP', `DCP_IND_Y', `ISB', `RLA',
+ 	`RLA_IND_Y', `ROL', ROR `SHA_ABS_Y', `SHA_IND_Y', `SHX_ABS_Y',
+ 	`SHY_ABS_X', `SHS_ABS_Y', `SLO', `SLO_IND_Y', `SRE', `SRE_IND_Y',
+ 	`STA', `STA_ZERO', `STA_IND_Y', `STX', `STX_ZERO', `STY',
+ 	`STY_ZERO' increment PC before doing the write access.
+
+	* maincpu.c: Avoid #undefining or #defining `EXTERN_PC' if already
+ 	#defined.
+
+	* include/maincpu.h [CBM64]: #define `EXTERN_PC' and declare
+ 	`reg_pc'.
+
+	* arch/unix/ui_xaw.c (UiChangeWorkingDir): The default value in
+ 	the text widget is now the path of the current working directory.
+
+	* 6510core.c (STORE_ABS_X, STORE_ABS_Y): Fixed increments of
+ 	`CLK'.
+
+Fri Mar 27 17:35:02 1998  Ettore Perazzoli  <ettore@comm2000.it>
+
+	* arch/unix/xdebug.c (RegisterBar): XtNeditType of `registers'
+ 	changed into `XawtextRead' so that they cannot be changed
+	(changing them had no effect anyway, so it could just confuse
+ 	users).
+
+Wed Mar 25 21:40:01 1998  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* Makefile.in: Added `$(JOY_OBJS)' to `PET_DEPS'.
+
+Wed Mar 25 00:25:03 1998  Ettore Perazzoli  <ettore@comm2000.it>
+
+	* Version 0.14.1.2.
+
+	* c64/vicii.c (int_rasterfetch): Set `sprite_fetch_clk' using
+ 	`LINE_START_CLK' and `SPRITE_FETCH_CYCLE' instead of
+ 	`vic_ii_fetch_clk'.
+
+Tue Mar 24 21:18:18 1998  Ettore Perazzoli  <ettore@comm2000.it>
+
+	* arch/msdos/kbd.c (handle_joy_emu): `K_KP5' moves the joystick
+ 	down.
+
+	* arch/unix/kbd.c (handle_joy_emu): `XK_KP_5' moves the joystick
+ 	down.
+
+Mon Mar 23 21:30:49 1998  Andreas Boose  <boose@unixserv.rz.fh-hannover.de>
+
+	* true1541.c (GCR_data_writeback): Convert all sectors from GCR to
+ 	the D64 image even if there are invalid sectors.
+	(serial_bus_drive_write): Added #ifdef to make the compiler quiet.
+
+Mon Mar 23 11:29:01 1998  Ettore Perazzoli  <ettore@comm2000.it>
+
+	* Version 0.14.1.1.
+
+	* c64/vicii.c (store_vic): Changing a bit in to $D017 from 1 to 0
+ 	at cycle 54 causes the sprite memory pointer to be incremented by
+ 	3.  (I am not sure that this is really right, though!)
+
+	* c64/vicii.c: #include "sprcrunch.h".
+	(store_vic): When a bit in $D017 changes from 1 to 0 and the
+ 	`exp_flag' of the sprite was zero, set its `memptr_inc' according
+ 	to `sprite_crunch_table'.
+
+	* include/sprcrunch.h: New file.  New variable
+ 	`sprite_crunch_table'.
+
+Sun Mar 22 17:46:12 1998  Ettore Perazzoli  <ettore@comm2000.it>
+
+	* c64/vicii.c (RASTER_CHAR): Incremented by 2.  All the occurences
+ 	updated so that the behavior remains the same.
+
+	* c64/c64mem.c (initialize_memory): Install `store_vbank_3fxx()'
+	and `store_vbank_39xx()' as the hooks for $39xx and $3Fxx
+	addresses in the video bank.
+
+	* c64/vicii.c: New variables `vbank_39ff', `vbank_3fff',
+ 	`idle_data_ptr'.
+	(_draw_idle, get_idle): Use `idle_data_ptr'.
+	(draw_idle_foreground_2x, draw_idle_foreground): Likewise.
+	(store_vbank): Made inline.
+	(store_vbank_3fxx, store_vbank_39xx): New functions.
+	(set_memory_ptrs): Update `vbank_39ff' and `vbank_3fff' when the
+ 	video bank is changed.  Dispatch the `int_rasterdraw()' alarm if
+ 	pending.
+	(set_video_mode): Update `idle_data_ptr'.
+
+	* c64/vicii.c (int_rasterfetch): New, cleaner algorithm.  It also
+ 	couple of bugs in the old one.
+
+Sun Mar 22 17:19:01 1998  Andreas Boose  <boose@unixserv.rz.fh-hannover.de>
+
+	* true1541.c (GCR_find_sector_header): If the header is not the
+ 	one we look for try again instead of aborting the search.
+	(convert_sector_to_GCR): Added gap between sectors.
+
+	* true1541.c: New constants `speed_map', `raw_track_size'.
+	(set_half_track): Calculate the value of `GCR_track_size' using
+ 	them.
+
+Sat Mar 21 20:56:00 1998  Andreas Boose  <boose@unixserv.rz.fh-hannover.de>
+
+	* true1541.c: Updated TODO list.
+	(true1541_sync_found): Do not change `bits_moved' as the current
+	code cannot cope with non byte aligned writes.
+	(GCR_find_sector_header): Handle killer tracks more gracefully.
+
+Fri Mar 20 17:03:00 1998  Andreas Boose  <boose@unixserv.rz.fh-hannover.de>
+
+	* true1541.c (read_image_GCR): Enlarged tracks to 7693 bytes.
+  	This is not 100% correct, but sufficient for the moment.  Raw
+ 	track filled with 0xff to avoid `20, READ ERROR'.
+	(convert_GCR_to_sector, true1541_set_half_track): Changed to
+ 	handle non-fixed sector layout.
+	(GCR_find_sector_header, GCR_find_sector_data): New functions to
+ 	find a sector in a track.
+	(true1541_move_head): Write back current track before moving the
+ 	head!
+	(GCR_data_writeback): Call the new functions to find a sector.
+  	Print error messages whenever non-standard GCR data cannot be
+ 	written back to the disk image.
+
+Tue Mar 17 12:44:55 MET 1998  Andre Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* arch/unix/kbd.c: Changed some joystick-related `#ifdef PET's to
+ 	include PET joystick emulation.
+	(kbd_event_handler) [PET]: Call `handle_joy_emu()' only when the
+ 	`numpadJoystick' resource is set.
+
+	* arch/unix/menu.h: Change some joystick-related `#ifdef PET's to
+        include PET joystick emulation.
+	(JoystickSubmenu) [PET]: Add "Enable Numpad Joystick" entry.
+	(PetUserportSubmenu): Add "Joystick Settings" menu entry.
+
+	* arch/unix/ui_xaw.c: Change some joystick-related `#ifdef PET's
+ 	to include PET joystick emulation, esp. the prototypes.
+	(UiToggleNumpadJoystick): New function: toggles the
+ 	`numpadJoystick' resource.
+
+	* arch/unix/vsync.c, main.c: Changed some joystick-related `#ifdef
+ 	PET's to include PET joystick emulation.
+
+	* include/resources.h: New resource `numpadJoystick'.
+
+	* pet/viap.def (read_viap): Reading VIA PA now reads the joystick
+ 	values from the userport.
+
+	* resources.c: Changed some joystick-related `#ifdef PET's to
+ 	include PET joystick emulation.  New `NumpadJoystick' resource and
+ 	`+/-npjoystick' option for the PET.
+
+Sat Jan 24 21:32:00 1998  Daniel Sladic  <sladic@eecg.toronto.edu>
+
+	* true1541.c: Changed track formats so that each track has about
+ 	the same # of bits as a real track.  Changed header gap to 9 (from
+ 	8) bytes.  Added support for non-fixed sector placement inside
+ 	tracks (find_GCR_sector).
+
+
+
+See `ChangeLog.1' for earlier changes.
