@@ -1,0 +1,217 @@
+<HTML>
+<HEAD>
+<!-- This HTML file has been created by texi2html 1.52
+     from ../vice.texi on 27 September 1998 -->
+
+<TITLE>VICE Manual - 10  c1541</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff" TEXT="#00000">
+Go to the <A HREF="vice_1.html">first</A>, <A HREF="vice_9.html">previous</A>, <A HREF="vice_11.html">next</A>, <A HREF="vice_15.html">last</A> section, <A HREF="vice_toc.html">table of contents</A>.
+<P><HR><P>
+
+
+<H1><A NAME="SEC138" HREF="vice_toc.html#TOC138">10  c1541</A></H1>
+
+<P>
+VICE is provided with a complete stand-alone disk image maintenance
+utility, called <CODE>c1541</CODE>.  You can either invoke it from the command
+line or from within one of the VICE emulators, using the "Run c1541"
+command which will open a new <CODE>xterm</CODE> window with a running
+<CODE>c1541</CODE> in it.
+
+</P>
+<P>
+The syntax is:
+
+</P>
+
+<PRE>
+c1541 OPTIONS IMAGE
+</PRE>
+
+<P>
+If some <CODE>OPTIONS</CODE> but no <CODE>IMAGE</CODE> are specified, <CODE>c1541</CODE>
+runs in batch mode; otherwise, it attaches the <CODE>IMAGE</CODE> if present
+and enters interactive mode, where you can type commands that are
+executed when you press Enter (abbreviations are allowed).  As with the
+monitor, file name completion and command line editing with history are
+provided via GNU <CODE>readline</CODE>.  Use the command <SAMP>`quit'</SAMP> to exit.
+
+</P>
+<P>
+Notice that <CODE>c1541</CODE> always creates <CODE>X64</CODE> files, but can read
+and write <CODE>D64</CODE> and <CODE>T64</CODE> files automatically, without the
+need for any special options.
+
+</P>
+
+
+
+<H2><A NAME="SEC139" HREF="vice_toc.html#TOC139">10.1  c1541 commands and options</A></H2>
+
+<P>
+Each command-line option has an interactive-mode counterpart, that is
+shown after it.  <SAMP>`-'</SAMP> as a file name stands for standard input or
+standard output, depending on the context.
+
+</P>
+<DL COMPACT>
+
+<P><DT><CODE>-attach  IMAGE</CODE>
+<DD>
+<A NAME="IDX206"></A>
+ 
+<A NAME="IDX207"></A>
+<P><DT><CODE>attach  IMAGE</CODE>
+<DD>
+Attach the disk image <CODE>IMAGE</CODE> for use.  All the following commands
+will refer to this image.
+
+<A NAME="IDX208"></A>
+<P><DT><CODE>-detach</CODE>
+<DD>
+<A NAME="IDX209"></A>
+<P><DT><CODE>detach</CODE>
+<DD>
+Detach the currently attached disk image.
+
+<A NAME="IDX210"></A>
+<P><DT><CODE>-format  IMAGE 'NAME,ID'</CODE>
+<DD>
+<A NAME="IDX211"></A>
+<P><DT><CODE>format  IMAGE 'NAME,ID'</CODE>
+<DD>
+Format the D64 disk image <CODE>IMAGE</CODE>, giving the specified label.  If
+<CODE>IMAGE</CODE> does not exist, create it.
+
+<A NAME="IDX212"></A>
+<P><DT><CODE>-gcr  IMAGENAME ['NAME,ID']</CODE>
+<DD>
+<A NAME="IDX213"></A>
+<P><DT><CODE>gcrformat  IMAGE 'NAME,ID'</CODE>
+<DD>
+Create a GCR disk image; if <CODE>NAME,ID</CODE> is specified, format it.
+
+<A NAME="IDX214"></A>
+<P><DT><CODE>-delete  IMAGE FILES...</CODE>
+<DD>
+<A NAME="IDX215"></A>
+<P><DT><CODE>delete  FILES...</CODE>
+<DD>
+Delete  FILES  from <CODE>IMAGE</CODE>.
+
+<A NAME="IDX216"></A>
+<P><DT><CODE>-list  IMAGE</CODE>
+<DD>
+<A NAME="IDX217"></A>
+<P><DT><CODE>list</CODE>
+<DD>
+List files in <CODE>IMAGE</CODE>.
+
+<A NAME="IDX218"></A>
+<P><DT><CODE>-validate  IMAGE</CODE>
+<DD>
+<A NAME="IDX219"></A>
+<P><DT><CODE>validate</CODE>
+<DD>
+Validate the disk.
+
+<A NAME="IDX220"></A>
+<P><DT><CODE>-copy  IMAGE OLDNAME1 [OLDNAME2...] NEWNAME</CODE>
+<DD>
+<A NAME="IDX221"></A>
+<P><DT><CODE>copy  OLDNAME1 [OLDNAME2...] NEWNAME</CODE>
+<DD>
+Concatenate <CODE>OLDNAME1</CODE>, <CODE>OLDNAME2</CODE>.. into
+<CODE>NEWNAME</CODE> on <CODE>IMAGE</CODE> (can be used to copy files).
+
+<A NAME="IDX222"></A>
+<P><DT><CODE>-create  IMAGE DUMP ['DESCR']</CODE>
+<DD>
+<A NAME="IDX223"></A>
+<P><DT><CODE>create  IMAGE DUMP ['DESCR']</CODE>
+<DD>
+Build <CODE>IMAGE</CODE> from raw dump file <CODE>DUMP</CODE> (i.e., convert
+from <CODE>D64</CODE> to <CODE>X64</CODE> file).
+
+<A NAME="IDX224"></A>
+<P><DT><CODE>-tape  IMAGE TAPEIMAGE [FILES...]</CODE>
+<DD>
+<A NAME="IDX225"></A>
+<P><DT><CODE>tape  IMAGE TAPEIMAGE [FILES...]</CODE>
+<DD>
+Transfer <CODE>FILES</CODE> from <CODE>TAPEIMAGE</CODE> to <CODE>IMAGE</CODE>
+(default is copy all files).
+
+<A NAME="IDX226"></A>
+<P><DT><CODE>-read  IMAGE 1541NAME [FSNAME]</CODE>
+<DD>
+<A NAME="IDX227"></A>
+<P><DT><CODE>read  1541NAME [FSNAME]</CODE>
+<DD>
+Extract <CODE>1541NAME</CODE> from the disk image into <CODE>FSNAME</CODE>
+(1541NAME by default) from <CODE>IMAGE</CODE>.
+
+<A NAME="IDX228"></A>
+<P><DT><CODE>-extract  IMAGE</CODE>
+<DD>
+<A NAME="IDX229"></A>
+<P><DT><CODE>extract</CODE>
+<DD>
+Extract all files from <CODE>IMAGE</CODE>.
+
+<A NAME="IDX230"></A>
+<P><DT><CODE>-write  IMAGE FSNAME [1541NAME]</CODE>
+<DD>
+<A NAME="IDX231"></A>
+<P><DT><CODE>write  FSNAME [1541NAME]</CODE>
+<DD>
+Write <CODE>FSNAME</CODE> to <CODE>IMAGE</CODE> as <CODE>1541NAME</CODE>
+(<CODE>FSNAME</CODE> by default). (works with <CODE>P00</CODE> files as well)
+
+<A NAME="IDX232"></A>
+<P><DT><CODE>-block  [DRIVE:] [TRACK] [SECTOR] [DISP]</CODE>
+<DD>
+<A NAME="IDX233"></A>
+<P><DT><CODE>block  [DRIVE:] [TRACK] [SECTOR] [DISP]</CODE>
+<DD>
+Show disk blocks in hex format.
+
+<A NAME="IDX234"></A>
+<P><DT><CODE>-info  IMAGE ['DESCRIPTION']</CODE>
+<DD>
+<A NAME="IDX235"></A>
+<P><DT><CODE>info  ['DESCRIPTION']</CODE>
+<DD>
+Show version information about <CODE>IMAGE</CODE>.
+
+<A NAME="IDX236"></A>
+<P><DT><CODE>-unlynx IMAGE LYNXFILE</CODE>
+<DD>
+<A NAME="IDX237"></A>
+<P><DT><CODE>unlynx LYNXFILE</CODE>
+<DD>
+Unlynx <TT>`LYNXFILE'</TT> into the image.
+
+<A NAME="IDX238"></A>
+<P><DT><CODE>-zcreate  IMAGE DUMP ['DESCR']</CODE>
+<DD>
+<A NAME="IDX239"></A>
+<P><DT><CODE>zcreate IMAGE DUMP ['DESCR']</CODE>
+<DD>
+Build <CODE>IMAGE</CODE> from a Zipcoded image made up of files called
+<TT>`1!DUMP'</TT>, <TT>`2!DUMP'</TT>, <TT>`3!DUMP'</TT>, <TT>`4!DUMP'</TT>.
+
+</DL>
+
+<P>
+When more than one command is specified in batch mode, all of
+them are executed in the same order they have on the command
+line.
+
+</P>
+
+<P><HR><P>
+Go to the <A HREF="vice_1.html">first</A>, <A HREF="vice_9.html">previous</A>, <A HREF="vice_11.html">next</A>, <A HREF="vice_15.html">last</A> section, <A HREF="vice_toc.html">table of contents</A>.
+</BODY>
+</HTML>
