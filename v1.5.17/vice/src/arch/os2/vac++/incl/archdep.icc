@@ -1,0 +1,17 @@
+source type(h)
+    "config.h"
+source type(c)
+    "ui.c",
+    "kbd.c",
+    "video.c",
+    "mouse.c",
+    "console.c",
+    "vsidui.c",
+    "archdep.c",
+    "joystick.c",
+    "dialogs.c",
+    "main_exit.c",
+    "uicmdline.c",
+    "sounddrv.c",
+    "vsyncarch.c",
+    "snippets\\dirport.c"
