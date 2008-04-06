@@ -1,0 +1,131 @@
+
+  VICE  1.2 							December 1999
+
+
+		 _______________
+		|      ||      ||
+		|      ||      ||____________________________
+		|      ||      ||    ||         ||          ||
+		|      ||      ||    ||    |    ||    ______||
+		|      ||      ||    ||    |----||          ||
+		|      ||      ||    ||    |    ||    ------||
+		|              ||____||_________||__________||
+		 \            // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		  \          //
+		   \________//   Versatile Commodore 8-bit Emulator
+
+
+
+ ----------------------------------------------------------------------------
+
+
+ This is version 1.2 of VICE, the multi-platform C64, C128, VIC20, PET
+ and CBM-II emulator.  This version can be compiled for MSDOS, Win32,
+ RiscOS, OS/2 and for most Unix system provided with the X Window
+ System version 11, R5 or later.
+
+ The following programs are included:
+
+   - x64, a C64 emulator;
+
+   - x128, a C128 emulator;
+
+   - xvic, a VIC20 emulator;
+
+   - xpet, a PET emulator;
+
+   - xcbm2, a CBM-II emulator;
+
+   - c1541, a stand-alone disk image maintenance utility;
+
+   - petcat, a CBM BASIC de-tokenizer.
+
+ Moreover, the following documents are provided:
+
+   - README, this file;
+
+   - COPYING, the GNU General Public License under which VICE is
+     distributed -- *please read it before using the program*;
+
+   - INSTALL, installation instructions;
+
+   - NEWS, list of user-visible changes between this and older
+     versions of VICE;
+
+   - BUGS, a list of the most important known bugs of this release
+     (please read it before reporting bugs);
+
+   - TODO, a list of what we would like to do next (this is no
+     promise!);
+
+   - FEEDBACK, something you should read before sending mail to
+     any of the authors;
+
+   - doc/vice.texi, the complete documentation;
+
+   - doc/64doc.txt, documentation about the C64 internals;
+
+   - doc/PETdoc.txt, documentation about the PET internals;
+
+   - doc/cbm_basic_tokens.txt, a list of the CBM BASIC tokens, as
+     supported by the petcat utility;
+
+   - doc/serial.txt, description of the IEC serial bus used on the C64,
+     VIC20 and C128;
+
+   - doc/mnemonics.txt, alphabetical list of all the G65SC802 and
+     G65SC816 opcodes;
+
+   - doc/drive_info.txt, information about the CBM disk drives;
+
+   - doc/Evaluation, VICE evaluation query form: please fill this in
+     and send it to tell us what you think about this project.
+
+   - doc/Readme.dos, MS-DOS specific documentation;
+
+ For the latest news, have a look at the VICE home page:
+
+     http://www.cs.cmu.edu/~dsladic/vice/vice.html
+
+ New versions are made available quite often, so please stay tuned.
+
+
+ Have fun!
+
+
+ Copyright notice
+ ----------------
+
+ VICE, the Versatile Commodore Emulator
+
+    Copyright © 1996-1999 Ettore Perazzoli
+    Copyright © 1996-1999 André Fachat
+    Copyright © 1993-1994, 1997-1999 Teemu Rantanen
+    Copyright © 1997-1999 Daniel Sladic
+    Copyright © 1998-1999 Andreas Boose
+    Copyright © 1998-1999 Tibor Biczo
+    Copyright © 1993-1996 Jouko Valta
+    Copyright © 1993-1994 Jarkko Sonninen
+
+ reSID, a reverse engineered software emulation of the MOS6581 chip
+
+    Copyright © 1998-1999 Dag Lem
+
+  This program is free software; you can redistribute it and/or
+  modify it under the terms of the GNU General Public License as
+  published by the Free Software Foundation; either version 2 of the
+  License, or (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+  02111-1307  USA
+
+ The ROM files in the `C128', `C64', `CBM-II', `DRIVES', `PET' and
+ `VIC20' directories are Copyright C by Commodore Business Machines.
+
