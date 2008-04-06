@@ -1,0 +1,14 @@
+option reSid = opt(level, "0")
+{
+   source type(cpp) "resid.cc"
+}
+
+source type(c) 
+   "fastsid.c",
+   "sid-cmdline-options.c",
+   "sid-resources.c",
+   "sid-snapshot.c",
+   "sid.c"
+
+source type(lib) 
+   "resid.lib"
