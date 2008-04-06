@@ -1,0 +1,7 @@
+* Determine how and when the SID filter op-amps clip. Spice may perhaps be
+  used to simulate the filter circuit.
+
+* Write documentation. Possibly a paper describing how SID was reverse
+  engineered.
+
+* Implement a SID tune player. Put on ice because of the SIDPLAY support.
