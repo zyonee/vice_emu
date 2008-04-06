@@ -1,0 +1,392 @@
+/* src/config.h.in.  Generated from configure.in by autoheader.  */
+
+/* Enable support for BSD style joysticks. */
+#undef BSD_JOYSTICK
+
+/* NLS datadirname. */
+#undef DATADIRNAME
+
+/* Is DWORD defined as long or int in the Windows header files? */
+#undef DWORD_IS_LONG
+
+/* Define if NLS support is enabled. */
+#undef ENABLE_NLS
+
+/* Enable support for the TextField widget. */
+#undef ENABLE_TEXTFIELD
+
+/* Enable emulation for digital joysticks. */
+#undef HAS_DIGITAL_JOYSTICK
+
+/* Enable joystick emulation. */
+#undef HAS_JOYSTICK
+
+/* Support 64bit integer for Win32 performance counter */
+#undef HAS_LONGLONG_INTEGER
+
+/* Is only one canvas supported? */
+#undef HAS_SINGLE_CANVAS
+
+/* Do we have UnlockResource()? */
+#undef HAS_UNLOCKRESOURCE
+
+/* Define to 1 if you have the <allegro.h> header file. */
+#undef HAVE_ALLEGRO_H
+
+/* Define to 1 if you have the `atexit' function. */
+#undef HAVE_ATEXIT
+
+/* Support for Catweasel MKIII. */
+#undef HAVE_CATWEASELMKIII
+
+/* Define to 1 if you have the <commctrl.h> header file. */
+#undef HAVE_COMMCTRL_H
+
+/* Define to 1 if you have the <cwsid.h> header file. */
+#undef HAVE_CWSID_H
+
+/* Define to 1 if you have the `dcgettext' function. */
+#undef HAVE_DCGETTEXT
+
+/* Define to 1 if you have the declaration of `sys_siglist', and to 0 if you
+   don't. */
+#undef HAVE_DECL_SYS_SIGLIST
+
+/* Define to 1 if you have the <direct.h> header file. */
+#undef HAVE_DIRECT_H
+
+/* Define to 1 if you have the <dirent.h> header file, and it defines `DIR'.
+   */
+#undef HAVE_DIRENT_H
+
+/* Define to 1 if you have the <dir.h> header file. */
+#undef HAVE_DIR_H
+
+/* Define to 1 if you have the <dmedia/audio.h> header file. */
+#undef HAVE_DMEDIA_AUDIO_H
+
+/* Define to 1 if you have the <errno.h> header file. */
+#undef HAVE_ERRNO_H
+
+/* Define to 1 if you have the <esd.h> header file. */
+#undef HAVE_ESD_H
+
+/* Define to 1 if you have the <fcntl.h> header file. */
+#undef HAVE_FCNTL_H
+
+/* Enable FFMPEG library support */
+#undef HAVE_FFMPEG
+
+/* Define to 1 if you have the `fork' function. */
+#undef HAVE_FORK
+
+/* Define if gettext if available. */
+#undef HAVE_GETTEXT
+
+/* Define to 1 if you have the `gettimeofday' function. */
+#undef HAVE_GETTIMEOFDAY
+
+/* Is the GUID lib of DX SDK present? */
+#undef HAVE_GUIDLIB
+
+/* Support for HardSID. */
+#undef HAVE_HARDSID
+
+/* Define to 1 if you have the <inttypes.h> header file. */
+#undef HAVE_INTTYPES_H
+
+/* Define to 1 if you have the <io.h> header file. */
+#undef HAVE_IO_H
+
+/* Define to 1 if you have the `artsc' library (-lartsc). */
+#undef HAVE_LIBARTSC
+
+/* Define to 1 if you have the `audio' library (-laudio). */
+#undef HAVE_LIBAUDIO
+
+/* Define to 1 if you have the `avcodec' library (-lavcodec). */
+#undef HAVE_LIBAVCODEC
+
+/* Define to 1 if you have the `avformat' library (-lavformat). */
+#undef HAVE_LIBAVFORMAT
+
+/* Define to 1 if you have the `esd' library (-lesd). */
+#undef HAVE_LIBESD
+
+/* use libintl for NLS. */
+#undef HAVE_LIBINTL_H
+
+/* Define to 1 if you have the `m' library (-lm). */
+#undef HAVE_LIBM
+
+/* Define to 1 if you have the `mp3lame' library (-lmp3lame). */
+#undef HAVE_LIBMP3LAME
+
+/* Define to 1 if you have the `resid' library (-lresid). */
+#undef HAVE_LIBRESID
+
+/* Define to 1 if you have the `SDL' library (-lSDL). */
+#undef HAVE_LIBSDL
+
+/* Define to 1 if you have the `UMSobj' library (-lUMSobj). */
+#undef HAVE_LIBUMSOBJ
+
+/* Is libXpm available? */
+#undef HAVE_LIBXPM
+
+/* Define to 1 if you have the <limits.h> header file. */
+#undef HAVE_LIMITS_H
+
+/* Define to 1 if you have the <linux/soundcard.h> header file. */
+#undef HAVE_LINUX_SOUNDCARD_H
+
+/* Define to 1 if you have the <machine/soundcard.h> header file. */
+#undef HAVE_MACHINE_SOUNDCARD_H
+
+/* Define to 1 if you have the `memmove' function. */
+#undef HAVE_MEMMOVE
+
+/* Define to 1 if you have the <memory.h> header file. */
+#undef HAVE_MEMORY_H
+
+/* Define to 1 if you have the <midasdll.h> header file. */
+#undef HAVE_MIDASDLL_H
+
+/* Enable 1351 mouse support */
+#undef HAVE_MOUSE
+
+/* Define to 1 if you have the <ndir.h> header file, and it defines `DIR'. */
+#undef HAVE_NDIR_H
+
+/* Support for OpenCBM (former CBM4Linux). */
+#undef HAVE_OPENCBM
+
+/* Can we use the PNG library? */
+#undef HAVE_PNG
+
+/* Support for block device disk image access. */
+#undef HAVE_RAWDRIVE
+
+/* Are we using the readline library replacement? */
+#undef HAVE_READLINE
+
+/* Define to 1 if you have the <regex.h> header file. */
+#undef HAVE_REGEX_H
+
+/* This version provides ReSID support. */
+#undef HAVE_RESID
+
+/* Does the `readline' library support `rl_readline_name'? */
+#undef HAVE_RLNAME
+
+/* Enable RS232 emulation. */
+#undef HAVE_RS232
+
+/* Define to 1 if you have the <SDL/SDL_audio.h> header file. */
+#undef HAVE_SDL_SDL_AUDIO_H
+
+/* Define to 1 if you have the <shlobj.h> header file. */
+#undef HAVE_SHLOBJ_H
+
+/* Define to 1 if you have the <signal.h> header file. */
+#undef HAVE_SIGNAL_H
+
+/* Define to 1 if you have the <stdint.h> header file. */
+#undef HAVE_STDINT_H
+
+/* Define to 1 if you have the <stdlib.h> header file. */
+#undef HAVE_STDLIB_H
+
+/* Define to 1 if you have the `strcasecmp' function. */
+#undef HAVE_STRCASECMP
+
+/* Define to 1 if you have the `strerror' function. */
+#undef HAVE_STRERROR
+
+/* Define to 1 if you have the <strings.h> header file. */
+#undef HAVE_STRINGS_H
+
+/* Define to 1 if you have the <string.h> header file. */
+#undef HAVE_STRING_H
+
+/* Define to 1 if you have the `strncasecmp' function. */
+#undef HAVE_STRNCASECMP
+
+/* Define to 1 if you have the <sys/audioio.h> header file. */
+#undef HAVE_SYS_AUDIOIO_H
+
+/* Define to 1 if you have the <sys/audio.h> header file. */
+#undef HAVE_SYS_AUDIO_H
+
+/* Define to 1 if you have the <sys/dirent.h> header file. */
+#undef HAVE_SYS_DIRENT_H
+
+/* Define to 1 if you have the <sys/dir.h> header file, and it defines `DIR'.
+   */
+#undef HAVE_SYS_DIR_H
+
+/* Define to 1 if you have the <sys/ioctl.h> header file. */
+#undef HAVE_SYS_IOCTL_H
+
+/* Define to 1 if you have the <sys/ndir.h> header file, and it defines `DIR'.
+   */
+#undef HAVE_SYS_NDIR_H
+
+/* Define to 1 if you have the <sys/param.h> header file. */
+#undef HAVE_SYS_PARAM_H
+
+/* Define to 1 if you have the <sys/stat.h> header file. */
+#undef HAVE_SYS_STAT_H
+
+/* Define to 1 if you have the <sys/time.h> header file. */
+#undef HAVE_SYS_TIME_H
+
+/* Define to 1 if you have the <sys/types.h> header file. */
+#undef HAVE_SYS_TYPES_H
+
+/* Support for The final Ethernet. */
+#undef HAVE_TFE
+
+/* Define to 1 if you have the <UMS/UMSAudioDevice.h> header file. */
+#undef HAVE_UMS_UMSAUDIODEVICE_H
+
+/* Define to 1 if you have the <unistd.h> header file. */
+#undef HAVE_UNISTD_H
+
+/* Define to 1 if you have the `usleep' function. */
+#undef HAVE_USLEEP
+
+/* Define to 1 if you have the `vfork' function. */
+#undef HAVE_VFORK
+
+/* Define to 1 if you have the <vfork.h> header file. */
+#undef HAVE_VFORK_H
+
+/* Define to 1 if you have the <winioctl.h> header file. */
+#undef HAVE_WINIOCTL_H
+
+/* Define to 1 if `fork' works. */
+#undef HAVE_WORKING_FORK
+
+/* Define to 1 if `vfork' works. */
+#undef HAVE_WORKING_VFORK
+
+/* Define to 1 if you have the <X11/Sunkeysym.h> header file. */
+#undef HAVE_X11_SUNKEYSYM_H
+
+/* Define to 1 if you have the <X11/xpm.h> header file. */
+#undef HAVE_X11_XPM_H
+
+/* Enable XVideo support. */
+#undef HAVE_XVIDEO
+
+/* Can we use the ZLIB compression library? */
+#undef HAVE_ZLIB
+
+/* Enable support for Linux style joysticks. */
+#undef LINUX_JOYSTICK
+
+/* NLS local directory. */
+#undef NLS_LOCALEDIR
+
+/* Name of package */
+#undef PACKAGE
+
+/* Define to the address where bug reports for this package should be sent. */
+#undef PACKAGE_BUGREPORT
+
+/* Define to the full name of this package. */
+#undef PACKAGE_NAME
+
+/* Define to the full name and version of this package. */
+#undef PACKAGE_STRING
+
+/* Define to the one symbol short name of this package. */
+#undef PACKAGE_TARNAME
+
+/* Define to the version of this package. */
+#undef PACKAGE_VERSION
+
+/* Where do we want to install the executable? */
+#undef PREFIX
+
+/* Define as the return type of signal handlers (`int' or `void'). */
+#undef RETSIGTYPE
+
+/* The size of a `unsigned int', as computed by sizeof. */
+#undef SIZEOF_UNSIGNED_INT
+
+/* The size of a `unsigned long', as computed by sizeof. */
+#undef SIZEOF_UNSIGNED_LONG
+
+/* The size of a `unsigned short', as computed by sizeof. */
+#undef SIZEOF_UNSIGNED_SHORT
+
+/* Define to 1 if you have the ANSI C header files. */
+#undef STDC_HEADERS
+
+/* Define to 1 if you can safely include both <sys/time.h> and <time.h>. */
+#undef TIME_WITH_SYS_TIME
+
+/* Define to 1 if your <sys/time.h> declares `struct tm'. */
+#undef TM_IN_SYS_TIME
+
+/* Define if this version is unstable. */
+#undef UNSTABLE
+
+/* Enable aRts support. */
+#undef USE_ARTS
+
+/* Enable new color management code. */
+#undef USE_COLOR_MANAGEMENT
+
+/* Use GNOME UI. */
+#undef USE_GNOMEUI
+
+/* Use MIDAS Sound System instead of the Allegro library. */
+#undef USE_MIDAS_SOUND
+
+/* Enable MITSHM extensions. */
+#undef USE_MITSHM
+
+/* Enable XF86 DGA1 extensions. */
+#undef USE_XF86_DGA1_EXTENSIONS
+
+/* Enable XF86 DGA2 extensions. */
+#undef USE_XF86_DGA2_EXTENSIONS
+
+/* Enable XF86 extensions. */
+#undef USE_XF86_EXTENSIONS
+
+/* Enable XF86 VidMode extensions. */
+#undef USE_XF86_VIDMODE_EXT
+
+/* Version number of package */
+#undef VERSION
+
+/* Define to 1 if your processor stores words with the most significant byte
+   first (like Motorola and SPARC, unlike Intel and VAX). */
+#undef WORDS_BIGENDIAN
+
+/* Define to 1 if the X Window System is missing or not being used. */
+#undef X_DISPLAY_MISSING
+
+/* Define to 1 if `lex' declares `yytext' as a `char *' by default, not a
+   `char[]'. */
+#undef YYTEXT_POINTER
+
+/* Define as `__inline' if that's what the C compiler calls it, or to nothing
+   if it is not supported. */
+#undef inline
+
+/* Define to `long' if <sys/types.h> does not define. */
+#undef off_t
+
+/* Define to `int' if <sys/types.h> does not define. */
+#undef pid_t
+
+/* Define to `unsigned' if <sys/types.h> does not define. */
+#undef size_t
+
+/* Define as `fork' if `vfork' does not work. */
+#undef vfork
