@@ -1,0 +1,15 @@
+source type (c)
+    "pet-cmdline-options.c",
+    "pet-resources.c",
+    "pet-snapshot.c",
+    "pet.c",
+    "petmem.c",
+    "petacia1.c",
+    "petdatasette.c",
+    "petdrive.c",
+    "petiec.c",
+    "petpia1.c",
+    "petpia2.c",
+    "petrom.c",
+    "petsound.c",
+    "petvia.c"
