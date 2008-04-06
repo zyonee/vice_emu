@@ -1,0 +1,403 @@
+# Makefile.in generated automatically by automake 1.4 from Makefile.am
+
+# Copyright (C) 1994, 1995-8, 1999 Free Software Foundation, Inc.
+# This Makefile.in is free software; the Free Software Foundation
+# gives unlimited permission to copy and/or distribute it,
+# with or without modifications, as long as this notice is preserved.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY, to the extent permitted by law; without
+# even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.
+
+
+SHELL = @SHELL@
+
+srcdir = @srcdir@
+top_srcdir = @top_srcdir@
+VPATH = @srcdir@
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+
+bindir = @bindir@
+sbindir = @sbindir@
+libexecdir = @libexecdir@
+datadir = @datadir@
+sysconfdir = @sysconfdir@
+sharedstatedir = @sharedstatedir@
+localstatedir = @localstatedir@
+libdir = @libdir@
+infodir = @infodir@
+mandir = @mandir@
+includedir = @includedir@
+oldincludedir = /usr/include
+
+DESTDIR =
+
+pkgdatadir = $(datadir)/@PACKAGE@
+pkglibdir = $(libdir)/@PACKAGE@
+pkgincludedir = $(includedir)/@PACKAGE@
+
+top_builddir = ../../..
+
+ACLOCAL = @ACLOCAL@
+AUTOCONF = @AUTOCONF@
+AUTOMAKE = @AUTOMAKE@
+AUTOHEADER = @AUTOHEADER@
+
+INSTALL = @INSTALL@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@ $(AM_INSTALL_PROGRAM_FLAGS)
+INSTALL_DATA = @INSTALL_DATA@
+INSTALL_SCRIPT = @INSTALL_SCRIPT@
+transform = @program_transform_name@
+
+NORMAL_INSTALL = :
+PRE_INSTALL = :
+POST_INSTALL = :
+NORMAL_UNINSTALL = :
+PRE_UNINSTALL = :
+POST_UNINSTALL = :
+host_alias = @host_alias@
+host_triplet = @host@
+AR = @AR@
+ARCH_DIR = @ARCH_DIR@
+ARCH_INCLUDES = @ARCH_INCLUDES@
+ARCH_LIBS = @ARCH_LIBS@
+BINDIR = @BINDIR@
+CATALOGS = @CATALOGS@
+CATOBJEXT = @CATOBJEXT@
+CC = @CC@
+CPP = @CPP@
+CXX = @CXX@
+CXXCPP = @CXXCPP@
+DATADIRNAME = @DATADIRNAME@
+EXEEXT = @EXEEXT@
+FULLSCREEN_DRIVERS = @FULLSCREEN_DRIVERS@
+GENCAT = @GENCAT@
+GFXOUTPUT_DRIVERS = @GFXOUTPUT_DRIVERS@
+GMOFILES = @GMOFILES@
+GMSGFMT = @GMSGFMT@
+HAVE_READLINE = @HAVE_READLINE@
+INSTOBJEXT = @INSTOBJEXT@
+INTLDEPS = @INTLDEPS@
+INTLLIBS = @INTLLIBS@
+INTLOBJS = @INTLOBJS@
+JOY_OBJS = @JOY_OBJS@
+LDFLAGS = @LDFLAGS@
+LEX = @LEX@
+LIBS = @LIBS@
+LINKCC = @LINKCC@
+LN_S = @LN_S@
+MAKEINFO = @MAKEINFO@
+MKINSTALLDIRS = @MKINSTALLDIRS@
+NLS_LOCALEDIR = @NLS_LOCALEDIR@
+PACKAGE = @PACKAGE@
+PERL = @PERL@
+POFILES = @POFILES@
+POSUB = @POSUB@
+RANLIB = @RANLIB@
+READLINE = @READLINE@
+RESID_DEP = @RESID_DEP@
+RESID_DIR = @RESID_DIR@
+RESID_INCLUDES = @RESID_INCLUDES@
+RESID_LIBS = @RESID_LIBS@
+SOUND_AIX_OBJ = @SOUND_AIX_OBJ@
+SOUND_DRIVERS = @SOUND_DRIVERS@
+SOUND_HPUX_OBJ = @SOUND_HPUX_OBJ@
+SOUND_LIBS = @SOUND_LIBS@
+SOUND_MIDAS_OBJ = @SOUND_MIDAS_OBJ@
+SOUND_SDL_OBJ = @SOUND_SDL_OBJ@
+SOUND_SGI_OBJ = @SOUND_SGI_OBJ@
+SOUND_USS_OBJ = @SOUND_USS_OBJ@
+USE_INCLUDED_LIBINTL = @USE_INCLUDED_LIBINTL@
+USE_NLS = @USE_NLS@
+VERSION = @VERSION@
+WINDRES = @WINDRES@
+X128_WINRES = @X128_WINRES@
+X64_WINRES = @X64_WINRES@
+XCBM2_WINRES = @XCBM2_WINRES@
+XPET_WINRES = @XPET_WINRES@
+XPLUS4_WINRES = @XPLUS4_WINRES@
+XVIC_WINRES = @XVIC_WINRES@
+YACC = @YACC@
+artsc_config = @artsc_config@
+cxx = @cxx@
+sdl_config = @sdl_config@
+x128_LDFLAGS = @x128_LDFLAGS@
+x64_LDFLAGS = @x64_LDFLAGS@
+xcbm2_LDFLAGS = @xcbm2_LDFLAGS@
+xpet_LDFLAGS = @xpet_LDFLAGS@
+xplus4_LDFLAGS = @xplus4_LDFLAGS@
+xvic_LDFLAGS = @xvic_LDFLAGS@
+
+INCLUDES =  	@ARCH_INCLUDES@ 	-I$(top_builddir)/src 	-I$(top_srcdir)/src 	-I$(top_srcdir)/src/c64 	-I$(top_srcdir)/src/vicii
+
+
+noinst_LIBRARIES = libc64cart.a
+
+libc64cart_a_SOURCES =  	actionreplay.c 	actionreplay.h 	atomicpower.c 	atomicpower.h 	c64cart.c 	c64cartmem.c 	c64cartmem.h 	crt.c 	crt.h 	epyxfastload.c 	epyxfastload.h 	expert.c 	expert.h 	final.c 	final.h 	generic.c 	generic.h 	ide64.c 	ide64.h 	kcs.c 	kcs.h 	retroreplay.c 	retroreplay.h 	supergames.c 	supergames.h 	supersnapshot.c 	supersnapshot.h 	zaxxon.c 	zaxxon.h
+
+mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+CONFIG_HEADER = ../../../src/config.h
+CONFIG_CLEAN_FILES = 
+LIBRARIES =  $(noinst_LIBRARIES)
+
+
+DEFS = @DEFS@ -I. -I$(srcdir) -I../../../src
+CPPFLAGS = @CPPFLAGS@
+X_CFLAGS = @X_CFLAGS@
+X_LIBS = @X_LIBS@
+X_EXTRA_LIBS = @X_EXTRA_LIBS@
+X_PRE_LIBS = @X_PRE_LIBS@
+libc64cart_a_LIBADD = 
+libc64cart_a_OBJECTS =  actionreplay.o atomicpower.o c64cart.o \
+c64cartmem.o crt.o epyxfastload.o expert.o final.o generic.o ide64.o \
+kcs.o retroreplay.o supergames.o supersnapshot.o zaxxon.o
+CFLAGS = @CFLAGS@
+COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+CCLD = $(CC)
+LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(LDFLAGS) -o $@
+DIST_COMMON =  Makefile.am Makefile.in
+
+
+DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
+
+TAR = tar
+GZIP_ENV = --best
+SOURCES = $(libc64cart_a_SOURCES)
+OBJECTS = $(libc64cart_a_OBJECTS)
+
+all: all-redirect
+.SUFFIXES:
+.SUFFIXES: .S .c .o .s
+$(srcdir)/Makefile.in: Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
+	cd $(top_srcdir) && $(AUTOMAKE) --gnu --include-deps src/c64/cart/Makefile
+
+Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
+	cd $(top_builddir) \
+	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+
+
+mostlyclean-noinstLIBRARIES:
+
+clean-noinstLIBRARIES:
+	-test -z "$(noinst_LIBRARIES)" || rm -f $(noinst_LIBRARIES)
+
+distclean-noinstLIBRARIES:
+
+maintainer-clean-noinstLIBRARIES:
+
+.c.o:
+	$(COMPILE) -c $<
+
+.s.o:
+	$(COMPILE) -c $<
+
+.S.o:
+	$(COMPILE) -c $<
+
+mostlyclean-compile:
+	-rm -f *.o core *.core
+
+clean-compile:
+
+distclean-compile:
+	-rm -f *.tab.c
+
+maintainer-clean-compile:
+
+libc64cart.a: $(libc64cart_a_OBJECTS) $(libc64cart_a_DEPENDENCIES)
+	-rm -f libc64cart.a
+	$(AR) cru libc64cart.a $(libc64cart_a_OBJECTS) $(libc64cart_a_LIBADD)
+	$(RANLIB) libc64cart.a
+
+tags: TAGS
+
+ID: $(HEADERS) $(SOURCES) $(LISP)
+	list='$(SOURCES) $(HEADERS)'; \
+	unique=`for i in $$list; do echo $$i; done | \
+	  awk '    { files[$$0] = 1; } \
+	       END { for (i in files) print i; }'`; \
+	here=`pwd` && cd $(srcdir) \
+	  && mkid -f$$here/ID $$unique $(LISP)
+
+TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) $(LISP)
+	tags=; \
+	here=`pwd`; \
+	list='$(SOURCES) $(HEADERS)'; \
+	unique=`for i in $$list; do echo $$i; done | \
+	  awk '    { files[$$0] = 1; } \
+	       END { for (i in files) print i; }'`; \
+	test -z "$(ETAGS_ARGS)$$unique$(LISP)$$tags" \
+	  || (cd $(srcdir) && etags $(ETAGS_ARGS) $$tags  $$unique $(LISP) -o $$here/TAGS)
+
+mostlyclean-tags:
+
+clean-tags:
+
+distclean-tags:
+	-rm -f TAGS ID
+
+maintainer-clean-tags:
+
+distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
+
+subdir = src/c64/cart
+
+distdir: $(DISTFILES)
+	@for file in $(DISTFILES); do \
+	  d=$(srcdir); \
+	  if test -d $$d/$$file; then \
+	    cp -pr $$/$$file $(distdir)/$$file; \
+	  else \
+	    test -f $(distdir)/$$file \
+	    || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
+	    || cp -p $$d/$$file $(distdir)/$$file || :; \
+	  fi; \
+	done
+actionreplay.o: actionreplay.c ../../../src/vice.h ../../../src/config.h \
+	actionreplay.h ../../../src/arch/unix/types.h \
+	../../../src/c64/c64cart.h c64cartmem.h ../../../src/utils.h \
+	../../../src/vicii/vicii-phi1.h
+atomicpower.o: atomicpower.c ../../../src/vice.h ../../../src/config.h \
+	atomicpower.h ../../../src/arch/unix/types.h \
+	../../../src/c64/c64cart.h c64cartmem.h ../../../src/utils.h \
+	../../../src/vicii/vicii-phi1.h
+c64cart.o: c64cart.c ../../../src/vice.h ../../../src/config.h \
+	actionreplay.h ../../../src/arch/unix/types.h atomicpower.h \
+	../../../src/alarm.h ../../../src/arch/unix/archdep.h \
+	../../../src/archapi.h ../../../src/cartridge.h \
+	../../../src/cmdline.h crt.h expert.h generic.h \
+	../../../src/interrupt.h ../../../src/maincpu.h \
+	../../../src/mem.h ../../../src/resources.h retroreplay.h \
+	ide64.h supersnapshot.h ../../../src/utils.h
+c64cartmem.o: c64cartmem.c ../../../src/vice.h ../../../src/config.h \
+	actionreplay.h ../../../src/arch/unix/types.h atomicpower.h \
+	../../../src/c64/c64cart.h ../../../src/c64/c64mem.h \
+	../../../src/mem.h ../../../src/c64/c64tpi.h c64cartmem.h \
+	../../../src/cartridge.h crt.h epyxfastload.h expert.h final.h \
+	generic.h ../../../src/interrupt.h kcs.h ../../../src/log.h \
+	../../../src/machine.h ../../../src/maincpu.h retroreplay.h \
+	ide64.h supergames.h supersnapshot.h \
+	../../../src/vicii/vicii-phi1.h zaxxon.h
+crt.o: crt.c ../../../src/vice.h ../../../src/config.h actionreplay.h \
+	../../../src/arch/unix/types.h atomicpower.h \
+	../../../src/arch/unix/archdep.h ../../../src/archapi.h \
+	../../../src/c64/c64cart.h c64cartmem.h \
+	../../../src/cartridge.h crt.h epyxfastload.h expert.h final.h \
+	generic.h kcs.h ../../../src/resources.h supergames.h zaxxon.h
+epyxfastload.o: epyxfastload.c ../../../src/vice.h ../../../src/config.h \
+	../../../src/c64/c64cart.h ../../../src/arch/unix/types.h \
+	c64cartmem.h epyxfastload.h ../../../src/utils.h
+expert.o: expert.c ../../../src/vice.h ../../../src/config.h \
+	../../../src/c64/c64cart.h ../../../src/arch/unix/types.h \
+	c64cartmem.h ../../../src/cartridge.h expert.h \
+	../../../src/interrupt.h ../../../src/resources.h \
+	../../../src/c64/reu.h ../../../src/utils.h \
+	../../../src/vicii/vicii-phi1.h
+final.o: final.c ../../../src/vice.h ../../../src/config.h \
+	../../../src/c64/c64cart.h ../../../src/arch/unix/types.h \
+	c64cartmem.h ../../../src/c64/c64mem.h ../../../src/mem.h \
+	final.h ../../../src/interrupt.h ../../../src/utils.h
+generic.o: generic.c ../../../src/vice.h ../../../src/config.h \
+	../../../src/c64/c64cart.h ../../../src/arch/unix/types.h \
+	c64cartmem.h ../../../src/cartridge.h crt.h generic.h \
+	../../../src/utils.h
+ide64.o: ide64.c ../../../src/vice.h ../../../src/config.h \
+	../../../src/arch/unix/archdep.h ../../../src/archapi.h \
+	../../../src/c64/c64cart.h ../../../src/arch/unix/types.h \
+	c64cartmem.h ide64.h ../../../src/utils.h \
+	../../../src/vicii/vicii-phi1.h ../../../src/log.h
+kcs.o: kcs.c ../../../src/vice.h ../../../src/config.h \
+	../../../src/c64/c64cart.h ../../../src/arch/unix/types.h \
+	c64cartmem.h kcs.h ../../../src/utils.h
+retroreplay.o: retroreplay.c ../../../src/vice.h ../../../src/config.h \
+	../../../src/c64/c64cart.h ../../../src/arch/unix/types.h \
+	c64cartmem.h retroreplay.h ../../../src/c64/reu.h \
+	../../../src/utils.h
+supergames.o: supergames.c ../../../src/vice.h ../../../src/config.h \
+	../../../src/c64/c64cart.h ../../../src/arch/unix/types.h \
+	c64cartmem.h ../../../src/c64/c64mem.h ../../../src/mem.h \
+	../../../src/utils.h
+supersnapshot.o: supersnapshot.c ../../../src/vice.h \
+	../../../src/config.h ../../../src/c64/c64cart.h \
+	../../../src/arch/unix/types.h c64cartmem.h \
+	../../../src/c64/reu.h supersnapshot.h ../../../src/utils.h \
+	../../../src/vicii/vicii-phi1.h
+zaxxon.o: zaxxon.c ../../../src/vice.h ../../../src/config.h \
+	../../../src/c64/c64cart.h ../../../src/arch/unix/types.h \
+	c64cartmem.h ../../../src/utils.h zaxxon.h
+
+info-am:
+info: info-am
+dvi-am:
+dvi: dvi-am
+check-am: all-am
+check: check-am
+installcheck-am:
+installcheck: installcheck-am
+install-exec-am:
+install-exec: install-exec-am
+
+install-data-am:
+install-data: install-data-am
+
+install-am: all-am
+	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
+install: install-am
+uninstall-am:
+uninstall: uninstall-am
+all-am: Makefile $(LIBRARIES)
+all-redirect: all-am
+install-strip:
+	$(MAKE) $(AM_MAKEFLAGS) AM_INSTALL_PROGRAM_FLAGS=-s install
+installdirs:
+
+
+mostlyclean-generic:
+
+clean-generic:
+
+distclean-generic:
+	-rm -f Makefile $(CONFIG_CLEAN_FILES)
+	-rm -f config.cache config.log stamp-h stamp-h[0-9]*
+
+maintainer-clean-generic:
+mostlyclean-am:  mostlyclean-noinstLIBRARIES mostlyclean-compile \
+		mostlyclean-tags mostlyclean-generic
+
+mostlyclean: mostlyclean-am
+
+clean-am:  clean-noinstLIBRARIES clean-compile clean-tags clean-generic \
+		mostlyclean-am
+
+clean: clean-am
+
+distclean-am:  distclean-noinstLIBRARIES distclean-compile \
+		distclean-tags distclean-generic clean-am
+
+distclean: distclean-am
+
+maintainer-clean-am:  maintainer-clean-noinstLIBRARIES \
+		maintainer-clean-compile maintainer-clean-tags \
+		maintainer-clean-generic distclean-am
+	@echo "This command is intended for maintainers to use;"
+	@echo "it deletes files that may require special tools to rebuild."
+
+maintainer-clean: maintainer-clean-am
+
+.PHONY: mostlyclean-noinstLIBRARIES distclean-noinstLIBRARIES \
+clean-noinstLIBRARIES maintainer-clean-noinstLIBRARIES \
+mostlyclean-compile distclean-compile clean-compile \
+maintainer-clean-compile tags mostlyclean-tags distclean-tags \
+clean-tags maintainer-clean-tags distdir info-am info dvi-am dvi check \
+check-am installcheck-am installcheck install-exec-am install-exec \
+install-data-am install-data install-am install uninstall-am uninstall \
+all-redirect all-am all installdirs mostlyclean-generic \
+distclean-generic clean-generic maintainer-clean-generic clean \
+mostlyclean distclean maintainer-clean
+
+
+# Tell versions [3.59,3.63) of GNU make to not export all variables.
+# Otherwise a system limit (for SysV at least) may be exceeded.
+.NOEXPORT:
