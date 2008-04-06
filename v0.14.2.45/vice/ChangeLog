@@ -1,0 +1,123 @@
+Sun Jun 28 18:23:10 1998  Ettore Perazzoli  <ettore@comm2000.it>
+
+	* Version 0.14.2.45.
+
+Thu Jun 25 11:24:49 1998  Ettore Perazzoli  <ettore@comm2000.it>
+
+	* Version 0.14.2.44.
+
+Tue Jun 23 17:17:38 1998  Teemu Rantanen  <tvr@cs.hut.fi>
+
+	* configure.in: Changed reSID configuration to search for
+	installed files. Fixed libmos6581.h -typo too.
+
+Tue Jun 23 00:05:38 1998  Ettore Perazzoli  <ettore@comm2000.it>
+
+	* Version 0.14.2.43.
+
+Mon Jun 22 22:15:39 1998  Ettore Perazzoli  <ettore@comm2000.it>
+
+	* configure.in: New option `--with-resid=PATH' which compiles VICE
+ 	with support of the reSID module, which must be available at
+ 	`PATH'.  New SUBSTed variables `RESID_LIBS' and `RESID_INCLUDES'.
+  	New automake conditional `HAVE_RESID'.
+
+	* acconfig.h: New #define `HAVE_RESID'.
+
+	* configure.in: `\$' -> `$' typo fixed.
+
+Sun Jun 21 18:23:00 1998  Ettore Perazzoli  <ettore@comm2000.it>
+
+	* Version 0.14.2.42.
+
+Wed Jun 17 22:07:11 1998  Ettore Perazzoli  <ettore@comm2000.it>
+
+	* Version 0.14.2.41.
+
+Wed Jun 17 00:29:23 1998  Ettore Perazzoli  <ettore@comm2000.it>
+
+	* Version 0.14.2.40.
+
+	* data/C128/position.vkm: New file.
+
+	* data/C64/position.vkm: New file: positional mapping for US
+ 	keyboards.
+
+	* data/C64/default.vkm: Removed double definition of `asciitilde'
+ 	and `asciicircum'.  `grave' mapped to up arrow.  Sorted up a bit.
+
+Tue Jun 16 18:49:10 1998  Ettore Perazzoli  <ettore@comm2000.it>
+
+	* configure.in: Put X libraries in `X_LIBS' instead of `LIBS'.  Do
+ 	not put the readline library into `ARCH_LIBS': put it into
+	`READLINE' instead.
+
+	* Version 0.14.2.39.
+
+Sun Jun 14 22:04:48 1998  Ettore Perazzoli  <ettore@comm2000.it>
+
+	* Version 0.14.2.38.
+
+Sun Jun 14 18:54:52 1998  Ettore Perazzoli  <ettore@comm2000.it>
+
+	* Version 0.14.2.37.
+
+	* configure.in: AC_DEFINE `HAVE_RS232' when compiling on Unix.
+
+	* acconfig.h: New symbol `HAVE_RS232'.
+
+Fri Jun 12 18:51:16 1998  Ettore Perazzoli  <ettore@comm2000.it>
+
+	* Version 0.14.2.36.
+
+Wed Jun 10 21:53:02 1998  Ettore Perazzoli  <ettore@comm2000.it>
+
+	* Version 0.14.2.35.
+
+Wed Jun 10 21:33:53 1998  Martin Pottendorfer  <Martin.Pottendorfer@aut.alcatel.at>
+
+	* configure.in: Check for `-lsocket', `-lSM' and `-lICE' if not
+ 	compiling for MS-DOS.
+
+Mon Jun  8 22:20:56 1998  Ettore Perazzoli  <ettore@comm2000.it>
+
+	* data/C128/vice.vkm: Renamed to `default.vkm'.
+
+	* data/VIC20/vice.vkm: Renamed to `default.vkm'.
+
+	* data/C64/vice.vkm: Renamed to `default.vkm'.
+
+	* data/C64/vice.vkm, data/VIC20/vice.vkm, data/C128/vice.vkm:
+ 	Fixed `backslash' to emulate non-shifted pound sign.
+
+Sun Jun  7 17:35:02 1998  Ettore Perazzoli  <ettore@comm2000.it>
+
+	* Version 0.14.2.34.
+
+Mon Jun  1 01:19:44 1998  Ettore Perazzoli  <ettore@comm2000.it>
+
+	* configure.in: Added `AC_FUNC_ALLOCA' test.
+
+Wed May 27 19:24:17 1998  Ettore Perazzoli  <ettore@comm2000.it>
+
+	* data/VIC20/Makefile.am: Install under
+ 	`$(prefix)/lib/vice/VIC20', not `$(prefix)/lib/VIC20'.
+
+	* data/PET/Makefile.am: Install under `$(prefix)/lib/vice/PET',
+	not `$(prefix)/lib/PET'.
+
+	* data/C128/Makefile.am: Install under `$(prefix)/lib/vice/C128',
+ 	not `$(prefix)/lib/C128'.
+
+	* data/C64/Makefile.am: Install under `$(prefix)/lib/vice/C64',
+	not `$(prefix)/lib/C64'.
+
+Sat May 23 14:06:56 1998  Ettore Perazzoli  <ettore@comm2000.it>
+
+	* configure.in: New cpp symbol `HAVE_READLINE', set if we use
+	`readline' or its lightweight replacement.
+
+	* configure.in: Handle `msdosdjgpp' as a host os string.  Put the
+ 	sound drivers to link in `@SOUND_DRIVERS@' instead of using
+ 	automake conditionals.
+
