@@ -1,0 +1,91 @@
+/*
+ * vdrive-command.h - Virtual disk-drive implementation. Command interpreter.
+ *
+ * Written by
+ *  Andreas Boose <viceteam@t-online.de>
+ *
+ * This file is part of VICE, the Versatile Commodore Emulator.
+ * See README for copyright notice.
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307  USA.
+ *
+ */
+
+#ifndef _VDRIVE_COMMAND_H
+#define _VDRIVE_COMMAND_H
+
+#include "types.h"
+
+/* Input Processor Error Codes.  */
+#define IPE_OK                          0
+#define IPE_DELETED                     1
+#define IPE_SEL_PARTN                   2       /* 1581 */
+#define IPE_UNIMPL                      3
+#define IPE_MEMORY_READ                 4
+
+#define IPE_WRITE_ERROR                 25
+#define IPE_WRITE_PROTECT_ON            26
+#define IPE_SYNTAX                      30
+#define IPE_INVAL                       31
+#define IPE_LONG_LINE                   32
+#define IPE_BAD_NAME                    33
+#define IPE_NO_NAME                     34
+
+#define IPE_NO_RECORD                   50
+
+#define IPE_NOT_WRITE                   60
+#define IPE_NOT_OPEN                    61
+#define IPE_NOT_FOUND                   62
+#define IPE_FILE_EXISTS                 63
+#define IPE_BAD_TYPE                    64
+#define IPE_NO_BLOCK                    65
+#define IPE_ILLEGAL_TRACK_OR_SECTOR     66
+
+#define IPE_NO_CHANNEL                  70
+#define IPE_DISK_FULL                   72
+#define IPE_DOS_VERSION                 73
+#define IPE_NOT_READY                   74
+#define IPE_BAD_PARTN                   77      /* 1581 */
+
+#define IPE_NOT_EMPTY                   80      /* dir to remove not empty */
+#define IPE_PERMISSION                  81      /* permission denied */
+
+typedef struct cmd_parse_s {
+    const char *cmd;
+    unsigned int cmdlength;
+    char *parsecmd;
+    unsigned int parselength;
+    unsigned int readmode;
+    unsigned int filetype;
+    unsigned int recordlength;
+} cmd_parse_t;
+
+struct vdrive_s;
+
+extern void vdrive_command_init(void);
+extern int vdrive_command_execute(struct vdrive_s *vdrive, const BYTE *buf,
+                                  unsigned int length);
+extern int vdrive_command_format(struct vdrive_s *vdrive,
+                                 const char *disk_name);
+extern int vdrive_command_validate(struct vdrive_s *vdrive);
+extern void vdrive_command_set_error(struct vdrive_s *vdrive, int code,
+                                     unsigned int track, unsigned int sector);
+extern int vdrive_command_memory_read(struct vdrive_s *vdrive, ADDRESS addr,
+                                      unsigned int length);
+extern int vdrive_command_parse(cmd_parse_t *cmd_parse);
+
+#endif
+
