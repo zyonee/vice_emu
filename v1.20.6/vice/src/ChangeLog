@@ -1,0 +1,368 @@
+2006-09-23  Andreas Boose  <viceteam@t-online.de>
+
+	* Version 1.20.6.
+
+	* sid/resid.cc, printerdrv/output-graphics.c, c64/c64rom.c,
+	c64/cart/c64cartmem.c, c64/psid.c, c64/c64memsnapshot.c,
+	c64/cart/expert.c, c64/c64io.c, c128/c128-resources.c,
+	c128/c128rom.c, c128/c128memsnapshot.c, c128/c128mmu.c,
+	vic20/vic.c, vic20/vic20-snapshot.c, vic20/vic20iec.c,
+	vic20/vic20mem.c, vic20/vic20rom.c, vic20/vic20memsnapshot.c,
+	vic20/vic20-cmdline-options.c, pet/petmemsnapshot.c,
+	pet/petmem.c, pet/petrom.c, plus4/plus4mem.c,
+	plus4/plus4rom.c, plus4/ted-timing.c, plus4/plus4cart.c,
+	plus4/plus4memhannes256k.c, plus4/plus4-resources.c,
+	plus4/plus4memcsory256k.c, cbm2/cbm2memsnapshot.c,
+	cbm2/cbm2rom.c, cbm2/cbm2mem.c, vicii/vicii-timing.c,
+	drive/iec/iecrom.c, drive/ieee/ieeerom.c,
+	drive/tcbm/tcbmrom.c, drive/iec128dcr/iec128dcrrom.c,
+	drive/drive.c, drive/drive-snapshot.c, sounddrv/soundacorn.c,
+	video/video-resources.c, gfxoutputdrv/ffmpegdrv.c,
+	monitor/mon_ui.c, fsdevice/fsdevice.c, sid/sid-snapshot.c,
+	sid/sid.c, sid/fastsid.c, arch/riscos/ui.c, arch/riscos/kbd.c,
+	arch/riscos/vsidui.c, arch/riscos/c128ui.c,
+	arch/riscos/video.c, arch/riscos/cbm2ui.c,
+	arch/riscos/petui.c, arch/riscos/vsync.c, arch/beos/ui.cc,
+	arch/beos/ui_device.cc, arch/beos/ui_file.cc,
+	arch/beos/ui_joystick.cc, arch/beos/ui_drive.cc: Changed to
+	new resource API.
+
+	* sid/fastsid.c [sound_s]: Changed `emulatefilter' to integer
+	as this variable is passed to resource code!
+
+	* petcat.c (p_tokenize): Fixed a warning.
+
+	* util.c (util_be_buf_to_dword, util_int_to_be_buf4,
+	util_int_to_le_buf4, util_le_buf4_to_int,
+	util_be_buf4_to_int): New functions.
+
+	* network.c (network_server_connect_trap,
+	network_client_connect_trap, network_connect_client): Exchange
+	length of the event and snapshot file in a portable way.
+
+	* fsdevice/fsdevice-flush.c: Do not directly use `PATH_MAX'.
+
+	* arch/win32/msvc/config.h: Removed `PATH_MAX' define.
+
+	* monitor/monitor.c (playback_commands): Make it readable.
+
+	* romset.c (romset_file_load): `fp' is a pointer.
+
+	* keyboard.c (keyboard_parse_keymap): It is not necessary to
+	free the return path on error.
+
+	* arch/os2/kbd/parse.c (load_keymap_file): Changed likewise.
+
+	* arch/amigaos/uilib.c [MAX_PATH]: Removed obsolete define.
+
+	* vicii/vicii.c (vicii_handle_pending_alarms):
+	`vicii_raster_draw_alarm_handler()' takes `CLOCK'.
+
+	* plus4/ted.c (ted_handle_pending_alarms): Changed likewise.
+
+	* alarm.h (alarm_context_dispatch): Use `CLOCK' instead of
+	`long'.
+
+	* c64/georam.c (georam_read_snapshot_module): Use `int'
+	instead of `long'.
+
+	* c64/reu.c (reu_read_snapshot_module): Changed likewise.
+
+	* maincpu.c (maincpu_generic_dma): Only define this function
+	if `DMA_FUNC' is not defined.
+
+2006-09-23  pottendo  <pottendo@utanet.at>
+
+	* arch/unix/x11/gnome/*: get rid of deprecated libgnome et
+	al. dependencies. Credits to Fabrizio Gennari.
+
+2006-09-17  Andreas Boose  <viceteam@t-online.de>
+
+	* Version 1.20.5.
+
+	* Makefile.am: Added forgotten `ChangeLog.5' file.
+
+	* mos6510.h, 6510core.c, c128/z80.c: Changed status bit set
+	macros to avoid warnings.
+
+	* arch/beos/types.h, arch/unix/types.h, arch/msdos/types.h,
+	arch/riscos/config.h, arch/amigaos/types.h: Removed test for
+	`SIZEOF_UNSIGNED_INT = 2' as VICE won't work on those archs
+	anyway.
+
+	* tap.h [tap_t]: Variables `cycle_counter' and
+	`cycle_counter_total' must be int otherwise snapshot breaks on
+	64bit archs.
+
+	* vicii/vicii-sprites.c (draw_sprite_partial): Do not inline
+	this big function.
+
+	* cartconv.c (load_input_file): Fixed a warning.
+
+	* c64/reu.c, c64/georam.c, c64/ramcart.c, pet/petreu.c: Do not
+	use `DWORD' for expansion size.
+
+	* network.c [network_control]: Changed to `int'.
+
+	* c64/plus60k.c, c64/plus60k.h [plus60k_base]: Changed to
+	`int'.
+
+	* c64/c64_256k.c, c64/c64_256k.h [c64_256k_start]: Changed to
+	`int'.
+
+	* arch/msdos/c128ui.c, arch/msdos/c64ui.c, arch/msdos/kbd.c,
+	arch/msdos/cbm2ui.c, arch/msdos/menudefs.c,
+	arch/msdos/petui.c, arch/msdos/plus4ui.c,
+	arch/msdos/statusbar.c, arch/msdos/tuimenu.c,
+	arch/msdos/uic64_256k.c, arch/msdos/uidrive.c,
+	arch/msdos/uigeoram.c, arch/msdos/uijoystick.c,
+	arch/msdos/uinetplay.c, arch/msdos/uiperipherial.c,
+	arch/msdos/uipetreu.c, arch/msdos/uiplus256k.c,
+	arch/msdos/uiplus60k.c, arch/msdos/uiprinter.c,
+	arch/msdos/uiramcart.c, arch/msdos/uireu.c,
+	arch/msdos/uisid.c, arch/msdos/uisound.c, arch/msdos/uitfe.c,
+	arch/msdos/vic20ui.c, arch/msdos/video.c,
+	arch/beos/ui_netplay.cc, arch/beos/ui_device.cc,
+	arch/beos/vicewindow.cc, arch/beos/ui_cbm2.cc,
+	arch/beos/ui.cc, arch/beos/ui_datasette.cc,
+	arch/beos/ui_file.cc, arch/beos/ui_joystick.cc,
+	arch/beos/ui_pet.cc, arch/beos/ui_sid.cc,
+	arch/beos/ui_sound.cc, arch/beos/ui_vic20.cc,
+	arch/beos/ui_vicii.cc, arch/beos/ui_video.cc: Changed to new
+	resource API.
+
+2006-09-16  Andreas Dehmel  <zarquon@t-online.de>
+
+	* arch/riscos/kbd.c, arch/riscos/vsync.c: fixed minor
+	oversights of resource-restructuring.
+
+2006-09-16  Andreas Boose  <viceteam@t-online.de>
+
+	* Version 1.20.4.
+
+	* autostart.c, datasette.c, debug.c, keyboard.c, main.c,
+	romset.c, arch/unix/gp2x/c128ui.c, arch/unix/gp2x/c64ui.c,
+	arch/unix/gp2x/cbm2ui.c, arch/unix/gp2x/input_gp2x.c,
+	arch/unix/gp2x/petui.c, arch/unix/gp2x/plus4ui.c,
+	arch/unix/gp2x/prefs_gp2x.c, arch/unix/gp2x/vic20ui.c,
+	arch/unix/gui/c128ui.c, arch/unix/gui/cbm2ui.c,
+	arch/unix/gui/petui.c, arch/unix/gui/uicommands.c,
+	arch/unix/gui/uidatasette.c, arch/unix/gui/uidrive.c,
+	arch/unix/gui/uifliplist.c, arch/unix/gui/uiide64.c,
+	arch/unix/gui/uijoystick2.c, arch/unix/gui/uikeyboard.c,
+	arch/unix/gui/uilib.c, arch/unix/gui/uinetplay.c:,
+	arch/unix/gui/uipalemu.c, arch/unix/gui/uiprinter.c,
+	arch/unix/gui/uiromset.c, arch/unix/gui/uirs232.c,
+	arch/unix/gui/uisettings.c, arch/unix/gui/uited.c,
+	arch/unix/gui/uivic.c, arch/unix/gui/uivicii.c,
+	arch/unix/gui/vic20ui.c, arch/unix/x11/gnome/uimenu.c,
+	arch/unix/x11/gnome/uinetplay.c,
+	arch/unix/x11/gnome/uipalcontrol.c,
+	arch/unix/x11/gnome/uiscreenshot.c,
+	arch/unix/x11/gnome/x11ui.c, arch/unix/x11/xaw/uimenu.c,
+	arch/unix/x11/xaw/x11ui.c, arch/win32/fullscrn.c,
+	arch/win32/uiacia.c, arch/win32/uic128.c,
+	arch/win32/uic64_256k.c, arch/win32/uicbm2set.c,
+	arch/win32/ui.c, arch/win32/uidatasette.c,
+	arch/win32/uidrivec128.c, arch/win32/uidrivec64vic20.c,
+	arch/win32/uidriveplus4.c, arch/win32/uigeoram.c,
+	arch/win32/uiide64.c, arch/win32/uijoystick.c,
+	arch/win32/uikeyboard.c, arch/win32/uilib.c,
+	arch/win32/uimediafile.c, arch/win32/uimon.c,
+	arch/win32/uiram.c, arch/win32/uireu.c, arch/win32/uirom.c,
+	arch/win32/uisid.c, arch/win32/uitfe.c, arch/win32/uirs232.c,
+	arch/win32/uirs232user.c, arch/win32/uiperipheral.c,
+	arch/win32/uivicset.c, arch/win32/uispeed.c,
+	arch/win32/uisound.c, arch/win32/uinetwork.c,
+	arch/win32/uipetreu.c, arch/win32/uipetset.c,
+	arch/win32/uiplus256k.c, arch/win32/uiplus4cart.c,
+	arch/win32/uiplus4mem.c, arch/win32/uiplus60k.c,
+	arch/win32/uiramcart.c, arch/win32/uivicii.c,
+	arch/win32/uivideo.c, resources.h, resources.c
+	(resources_get_int, resources_get_string, resources_set_int,
+	resources_set_string): New functions, changed API.
+
+	* resources.c, resources.h, arch/os2/dialogs/dlg-drive.c,
+	arch/win32/ui.c, arch/win32/uidriveplus4.c, romset.c,
+	arch/win32/uidrivec128.c, arch/win32/uirom.c,
+	arch/win32/uidrivepetcbm2.c, arch/win32/uiperipheral.c,
+	arch/win32/uidrivec64vic20.c, printerdrv/output-graphics.c
+	(resources_get_int_sprintf, resources_get_string_sprintf):
+	New functions, changed API.
+
+	* resources.c, resources.h, arch/os2/dialogs/dlg-drive.c,
+	arch/unix/gui/uiattach.c, arch/win32/ui.c, event.c,
+	arch/win32/uidriveplus4.c, arch/win32/uidrivec128.c,
+	arch/win32/uirom.c, arch/win32/uidrivepetcbm2.c,
+	arch/win32/uiperipheral.c, arch/win32/uidrivec64vic20.c
+	(resources_set_int_sprintf, resources_set_string_sprintf):
+	New functions, changed API.
+
+	* resources.h, resources.c, arch/os2/dialogs/dialogs.c,
+	arch/os2/dialogs/dlg-drive.c, arch/msdos/tuimenu.c,
+	arch/win32/uisid.c, arch/riscos/ui.c (resources_toggle):
+	Changed return parameter to `int *'.
+
+	* debug.c (debug_create_new_file, debug_open_new_file): Use
+	`lib_msprintf()'.
+
+	* machine.h, c64/c64.c, c128/c128.c, vic20/vic20.c, pet/pet.c,
+	plus4/plus4.c, cbm2/cbm2.c (machine_num_keyboard_mappings):
+	Changed return value to `int'.
+
+	* translate.c: Fixed typo.
+
+	* arch/win32/uimon.c (decode, getString3): Made parameter
+	const.
+
+	* arch/win32/uirom.c (browse_archive_romset_dialog): Commented
+	out unused dialog.
+
+2006-09-10  Andreas Boose  <viceteam@t-online.de>
+
+	* Version 1.20.3.
+
+	* resources.c, resources.h (resources_register): Removed.
+
+	* aciacore.c, attach.c, datasette.c, debug.c, event.c,
+	fliplist.c, log.c, mouse.c, network.c, ram.c, romset.c,
+	sound.c, sysfile.c, translate.c, traps.c, vsync.c,
+	c64/cart/c64cart.c, c64/cart/ide64.c, c64/plus60k.c,
+	c64/reu.c, c64/tfe.c, c64/ramcart.c, c64/plus256k.c,
+	c64/georam.c, c64/psid.c, c64/c64-resources.c, c64/c64_256k.c,
+	c128/functionrom.c, c128/c128-resources.c, c128/z80mem.c,
+	c128/c128mmu.c, vic20/vic20cartridge.c,
+	vic20/vic20-resources.c, pet/pet.c, pet/pet-resources.c,
+	pet/petpia1.c, pet/petreu.c, plus4/plus4memhannes256k.c,
+	plus4/plus4-resources.c, plus4/plus4memcsory256k.c,
+	cbm2/cbm2-resources.c, arch/os2/kbd/kmap-pet.c,
+	arch/os2/kbd/kmap.c, arch/os2/ui.c, arch/os2/mousedrv.c,
+	arch/os2/kbd.c, arch/os2/joy.c, arch/os2/rs232.c,
+	arch/os2/unused/video_gpi.c, arch/os2/unused/vsync.c,
+	arch/os2/video.c, arch/beos/kbd.c, arch/beos/ui.cc,
+	arch/beos/joy.cc, arch/beos/video.cc,
+	arch/unix/x11/ui-resources.c, arch/unix/x11/video.c,
+	arch/unix/joy.c, arch/unix/rs232.c, arch/unix/macosx/joy.c,
+	arch/msdos/joy.c, arch/msdos/video.c, arch/msdos/vsync.c,
+	arch/win32/joy.c, arch/win32/ui-resources.c,
+	arch/win32/video.c, arch/riscos/ui.c, arch/riscos/kbd.c,
+	arch/riscos/joy.c, arch/riscos/rs232.c, arch/riscos/video.c,
+	arch/riscos/vsync.c, arch/amigaos/joyai.c,
+	arch/amigaos/joyll.c, arch/amigaos/joy.c,
+	arch/amigaos/uiapi.c, drive/iec/iec-resources.c,
+	drive/ieee/ieee-resources.c, drive/tcbm/tcbm-resources.c,
+	drive/iec128dcr/iec128dcr-resources.c,
+	drive/drive-resources.c, sid/sid-resources.c,
+	vdc/vdc-resources.c, diskimage/rawimage.c,
+	vicii/vicii-resources.c, video/video-resources.c,
+	video/video-resources-pal.c, rs232drv/rsuser.c,
+	rs232drv/rs232drv.c, raster/raster-resources.c,
+	serial/serial-iec-device.c, fsdevice/fsdevice-resources.c,
+	printerdrv/interface-serial.c,
+	printerdrv/interface-userport.c, printerdrv/driver-select.c,
+	printerdrv/output-text.c, printerdrv/output-select.c,
+	printerdrv/output-graphics.c, gfxoutputdrv/ffmpegdrv.c,
+	arch/unix/x11/dga2.c, sid/sid-resources.h, keyboard.c,
+	keyboard.h: Changed resource set functions to new register
+	API.
+
+	* machine.c, machine.h, keyboard.c, c64/c64-resources.c,
+	c128/c128-resources.c, vic20/vic20-resources.c,
+	pet/pet-resources.c, plus4/plus4-resources.c,
+	cbm2/cbm2-resources.c: `machine_keymap_index' is int.
+
+2006-09-09  pottendo  <pottendo@utanet.at>
+
+	* fsdevice/fsdevice-resources.c: (resource_string) added
+	`NULL'. 
+
+2006-09-09  Andreas Boose  <viceteam@t-online.de>
+
+	* Version 1.20.2.
+
+	* resources.c, resources.h: New resource structs for integer
+	and string resources. (resources_register_int,
+	resources_register_string): New functions.
+
+	* aciacore.c, attach.c, datasette.c, debug.c, event.c,
+	fliplist.c, log.c, mouse.c, network.c, ram.c, romset.c,
+	sound.c, sysfile.c, translate.c, traps.c, vsync.c,
+	c64/cart/c64cart.c, c64/cart/ide64.c, c64/plus60k.c,
+	c64/reu.c, c64/tfe.c, c64/ramcart.c, c64/plus256k.c,
+	c64/georam.c, c64/psid.c, c64/c64-resources.c, c64/c64_256k.c,
+	c128/functionrom.c, c128/c128-resources.c, c128/z80mem.c,
+	c128/c128mmu.c, vic20/vic20cartridge.c,
+	vic20/vic20-resources.c, pet/pet.c, pet/pet-resources.c,
+	pet/petpia1.c, pet/petreu.c, plus4/plus4memhannes256k.c,
+	plus4/plus4-resources.c, plus4/plus4memcsory256k.c,
+	cbm2/cbm2-resources.c, arch/os2/kbd/kmap-pet.c,
+	arch/os2/kbd/kmap.c, arch/os2/ui.c, arch/os2/mousedrv.c,
+	arch/os2/kbd.c, arch/os2/joy.c, arch/os2/rs232.c,
+	arch/os2/unused/video_gpi.c, arch/os2/unused/vsync.c,
+	arch/os2/video.c, arch/beos/kbd.c, arch/beos/ui.cc,
+	arch/beos/joy.cc, arch/beos/video.cc,
+	arch/unix/x11/ui-resources.c, arch/unix/x11/video.c,
+	arch/unix/joy.c, arch/unix/rs232.c, arch/unix/macosx/joy.c,
+	arch/msdos/joy.c, arch/msdos/video.c, arch/msdos/vsync.c,
+	arch/win32/joy.c, arch/win32/ui-resources.c,
+	arch/win32/video.c, arch/riscos/ui.c, arch/riscos/kbd.c,
+	arch/riscos/joy.c, arch/riscos/rs232.c, arch/riscos/video.c,
+	arch/riscos/vsync.c, arch/amigaos/joyai.c,
+	arch/amigaos/joyll.c, arch/amigaos/joy.c,
+	arch/amigaos/uiapi.c, drive/iec/iec-resources.c,
+	drive/ieee/ieee-resources.c, drive/tcbm/tcbm-resources.c,
+	drive/iec128dcr/iec128dcr-resources.c,
+	drive/drive-resources.c, sid/sid-resources.c,
+	vdc/vdc-resources.c, diskimage/rawimage.c,
+	vicii/vicii-resources.c, video/video-resources.c,
+	video/video-resources-pal.c, rs232drv/rsuser.c,
+	rs232drv/rs232drv.c, raster/raster-resources.c,
+	serial/serial-iec-device.c, fsdevice/fsdevice-resources.c,
+	printerdrv/interface-serial.c,
+	printerdrv/interface-userport.c, printerdrv/driver-select.c,
+	printerdrv/output-text.c, printerdrv/output-select.c,
+	printerdrv/output-graphics.c, gfxoutputdrv/ffmpegdrv.c:
+	Changed resource definitons to new register API.
+
+2006-09-09  pottendo  <pottendo@utanet.at>
+
+	* arch/unix/x11/gnome/x11ui.c (archdep_ui_init): replaced
+	deprecated gnome_program_init(...).
+	Credits to Fabrizio Gennari.
+
+2006-09-09  Marco van den Heuvel  <blackystardust68@yahoo.com>
+
+	* arch/os2/video.c: Fixed a resource bug.
+
+2006-09-04  Spiro Trikaliotis  <Spiro.Trikaliotis@gmx.de>
+
+	* petcat.c: Applied fixes by Groepaz: * Use separate buffers
+	for input and output in the tokenizer; before, the output
+	could overwrite the input, which was bad (TODO: overflow
+	checks should be integrated) * output an error and abort if an
+	unknown control code has been found. Before, it was inserted
+	as plain-text. * added more control codes.
+
+2006-09-03  Andreas Boose  <viceteam@t-online.de>
+
+	* Version 1.20.1
+
+2006-09-03  Marco van den Heuvel  <blackystardust68@yahoo.com>
+
+	* arch/beos/ui.cc: Updated the ui_display_drive_led function.
+
+	* network.c: Updated for BeOS to define HAVE_HTONS and
+	HAVE_HTONL.
+
+2006-09-02  pottendo  <pottendo@utanet.at>
+
+	* arch/unix/x11/gnome/about.c (ui_about): Added Csaba.
+
+	* info.c: Added Csaba.
+
+2006-08-27  Christian Vogelgsang  <chris@vogelgsang.org>
+
+	* arch/unix/macosx/make-bindist.sh:
+	Added correct PATH environment to launcher script.
+	It is required to launch c1541 that is now embedded in each
+	bundle. Disk Image is gzipped to shrink it even more.
