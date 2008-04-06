@@ -1,0 +1,68 @@
+2003-09-27  Andreas Boose  <viceteam@t-online.de>
+
+	* Version 1.13.1
+
+	* ChangeLog*: Renamed last changelog and reversed order of old
+	changelogs.
+
+	* Makefile.am: Added changelog.
+
+	* video/video-viewport.c, video.h (video_viewport_title_set,
+	video_viewport_title_free): New function.
+
+	* video/video-canvas.c (video_canvas_shutdown): Free canvas
+	title.
+
+	* raster/raster.c (raster_set_title): Call
+	`video_viewport_title_set'.
+
+	* c64/cart/c64cart.c (cartridge_resources_shutdown): Free
+	`cartfile'.
+
+	* diskimage/rawimage.c, diskimage/rawimage.h
+	(rawimage_resources_shutdown): New function.
+
+	* diskimage/diskimage.c, diskimage.h
+	(disk_image_resources_shutdown): New function.
+
+	* machine.c (machine_shutdown): Call
+	`disk_image_resources_shutdown()'.
+
+	* arch/unix/x11/video.c, arch/win32/video.c,
+	arch/msdos/video.c, arch/riscos/video.c, arch/os2/video.c,
+	arch/beos/video.cc (video_arch_resources_shutdown): New
+	function. (video_arch_init_resources): Renamed.
+
+	* video/video-resources.c, video.h (video_resources_shutdown):
+	New function.
+
+	* c64/c64.c, c128/c128.c, vic20/vic20.c, pet/pet.c,
+	plus4/plus4.c, cbm2/cbm2.c (machine_resources_shutdown):
+	Shutdown video resources.
+
+	* core/viacore.c, via.h (viacore_shutdown): New function.
+
+	* core/ciacore.c, cia.h (viacore_shutdown): New function.
+
+	* core/riotcore.c, riot.h (riotcore_shutdown): New function.
+
+	* drive/iec/iec.c, drive/iec.h (iec_drive_shutdown): New
+	function.
+
+	* drive/iecieee/iecieee.c, drive/iecieee.h
+	(iecieee_drive_shutdown): New function.
+
+	* drive/ieee/ieee.c, drive/ieee.h (ieee_drive_shutdown): New
+	function.
+
+	* drive/tcbm/tcbm.c, drive/tcbm.h (tcbm_drive_shutdown): New
+	function.
+
+	* c64/c64drive.c, vic20/vic20drive.c, pet/petdrive.c,
+	plus4/plus4drive.c, cbm2/cbm2drive.c, machine-drive.h
+	(machine_drive_shutdown): New function.
+
+	* drive/drivecpu.c (drive_cpu_shutdown): Call
+	`machine_drive_shutdown()'.
+
+	* resources.c (resources_shutdown): Free machine id.
