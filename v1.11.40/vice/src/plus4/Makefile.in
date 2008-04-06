@@ -1,0 +1,490 @@
+# Makefile.in generated automatically by automake 1.4 from Makefile.am
+
+# Copyright (C) 1994, 1995-8, 1999 Free Software Foundation, Inc.
+# This Makefile.in is free software; the Free Software Foundation
+# gives unlimited permission to copy and/or distribute it,
+# with or without modifications, as long as this notice is preserved.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY, to the extent permitted by law; without
+# even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.
+
+
+SHELL = @SHELL@
+
+srcdir = @srcdir@
+top_srcdir = @top_srcdir@
+VPATH = @srcdir@
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+
+bindir = @bindir@
+sbindir = @sbindir@
+libexecdir = @libexecdir@
+datadir = @datadir@
+sysconfdir = @sysconfdir@
+sharedstatedir = @sharedstatedir@
+localstatedir = @localstatedir@
+libdir = @libdir@
+infodir = @infodir@
+mandir = @mandir@
+includedir = @includedir@
+oldincludedir = /usr/include
+
+DESTDIR =
+
+pkgdatadir = $(datadir)/@PACKAGE@
+pkglibdir = $(libdir)/@PACKAGE@
+pkgincludedir = $(includedir)/@PACKAGE@
+
+top_builddir = ../..
+
+ACLOCAL = @ACLOCAL@
+AUTOCONF = @AUTOCONF@
+AUTOMAKE = @AUTOMAKE@
+AUTOHEADER = @AUTOHEADER@
+
+INSTALL = @INSTALL@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@ $(AM_INSTALL_PROGRAM_FLAGS)
+INSTALL_DATA = @INSTALL_DATA@
+INSTALL_SCRIPT = @INSTALL_SCRIPT@
+transform = @program_transform_name@
+
+NORMAL_INSTALL = :
+PRE_INSTALL = :
+POST_INSTALL = :
+NORMAL_UNINSTALL = :
+PRE_UNINSTALL = :
+POST_UNINSTALL = :
+host_alias = @host_alias@
+host_triplet = @host@
+AR = @AR@
+ARCH_DIR = @ARCH_DIR@
+ARCH_INCLUDES = @ARCH_INCLUDES@
+ARCH_LIBS = @ARCH_LIBS@
+BINDIR = @BINDIR@
+CATALOGS = @CATALOGS@
+CATOBJEXT = @CATOBJEXT@
+CC = @CC@
+CPP = @CPP@
+CXX = @CXX@
+CXXCPP = @CXXCPP@
+DATADIRNAME = @DATADIRNAME@
+EXEEXT = @EXEEXT@
+FULLSCREEN_DRIVERS = @FULLSCREEN_DRIVERS@
+GENCAT = @GENCAT@
+GFXOUTPUT_DRIVERS = @GFXOUTPUT_DRIVERS@
+GMOFILES = @GMOFILES@
+GMSGFMT = @GMSGFMT@
+HAVE_READLINE = @HAVE_READLINE@
+INSTOBJEXT = @INSTOBJEXT@
+INTLDEPS = @INTLDEPS@
+INTLLIBS = @INTLLIBS@
+INTLOBJS = @INTLOBJS@
+JOY_OBJS = @JOY_OBJS@
+LDFLAGS = @LDFLAGS@
+LEX = @LEX@
+LIBS = @LIBS@
+LINKCC = @LINKCC@
+LN_S = @LN_S@
+MAKEINFO = @MAKEINFO@
+MKINSTALLDIRS = @MKINSTALLDIRS@
+NLS_LOCALEDIR = @NLS_LOCALEDIR@
+PACKAGE = @PACKAGE@
+PERL = @PERL@
+POFILES = @POFILES@
+POSUB = @POSUB@
+RANLIB = @RANLIB@
+READLINE = @READLINE@
+RESID_DEP = @RESID_DEP@
+RESID_DIR = @RESID_DIR@
+RESID_INCLUDES = @RESID_INCLUDES@
+RESID_LIBS = @RESID_LIBS@
+SOUND_AIX_OBJ = @SOUND_AIX_OBJ@
+SOUND_DRIVERS = @SOUND_DRIVERS@
+SOUND_HPUX_OBJ = @SOUND_HPUX_OBJ@
+SOUND_LIBS = @SOUND_LIBS@
+SOUND_MIDAS_OBJ = @SOUND_MIDAS_OBJ@
+SOUND_SDL_OBJ = @SOUND_SDL_OBJ@
+SOUND_SGI_OBJ = @SOUND_SGI_OBJ@
+SOUND_USS_OBJ = @SOUND_USS_OBJ@
+USE_INCLUDED_LIBINTL = @USE_INCLUDED_LIBINTL@
+USE_NLS = @USE_NLS@
+VERSION = @VERSION@
+WINDRES = @WINDRES@
+X128_WINRES = @X128_WINRES@
+X64_WINRES = @X64_WINRES@
+XCBM2_WINRES = @XCBM2_WINRES@
+XPET_WINRES = @XPET_WINRES@
+XPLUS4_WINRES = @XPLUS4_WINRES@
+XVIC_WINRES = @XVIC_WINRES@
+YACC = @YACC@
+artsc_config = @artsc_config@
+cxx = @cxx@
+sdl_config = @sdl_config@
+x128_LDFLAGS = @x128_LDFLAGS@
+x64_LDFLAGS = @x64_LDFLAGS@
+xcbm2_LDFLAGS = @xcbm2_LDFLAGS@
+xpet_LDFLAGS = @xpet_LDFLAGS@
+xplus4_LDFLAGS = @xplus4_LDFLAGS@
+xvic_LDFLAGS = @xvic_LDFLAGS@
+
+INCLUDES =  	@ARCH_INCLUDES@ 	-I$(top_builddir)/src 	-I$(top_srcdir)/src 	-I$(top_srcdir)/src/drive 	-I$(top_srcdir)/src/tape 	-I$(top_srcdir)/src/raster
+
+
+noinst_LIBRARIES = libplus4.a
+
+libplus4_a_SOURCES =  	plus4-cmdline-options.c 	plus4-cmdline-options.h 	plus4-resources.c 	plus4-resources.h 	plus4-snapshot.c 	plus4-snapshot.h 	plus4.c 	plus4.h         plus4acia.c         plus4acia.h 	plus4cpu.c 	plus4datasette.c 	plus4drive.c 	plus4iec.c 	plus4iec.h 	plus4mem.c 	plus4mem.h 	plus4memlimit.c 	plus4memlimit.h 	plus4pio1.c 	plus4pio1.h 	plus4pio2.c 	plus4pio2.h 	plus4rom.c 	plus4rom.h 	plus4tcbm.c 	plus4tcbm.h 	ted-badline.c 	ted-badline.h 	ted-cmdline-options.c 	ted-cmdline-options.h 	ted-color.c 	ted-color.h 	ted-draw.c 	ted-draw.h 	ted-fetch.c 	ted-fetch.h 	ted-irq.c 	ted-irq.h 	ted-mem.c 	ted-mem.h 	ted-resources.c 	ted-resources.h 	ted-snapshot.c 	ted-snapshot.h 	ted-sound.c 	ted-sound.h 	ted-timer.c 	ted-timer.h 	ted.c 	ted.h 	tedtypes.h
+
+mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+CONFIG_HEADER = ../../src/config.h
+CONFIG_CLEAN_FILES = 
+LIBRARIES =  $(noinst_LIBRARIES)
+
+
+DEFS = @DEFS@ -I. -I$(srcdir) -I../../src
+CPPFLAGS = @CPPFLAGS@
+X_CFLAGS = @X_CFLAGS@
+X_LIBS = @X_LIBS@
+X_EXTRA_LIBS = @X_EXTRA_LIBS@
+X_PRE_LIBS = @X_PRE_LIBS@
+libplus4_a_LIBADD = 
+libplus4_a_OBJECTS =  plus4-cmdline-options.o plus4-resources.o \
+plus4-snapshot.o plus4.o plus4acia.o plus4cpu.o plus4datasette.o \
+plus4drive.o plus4iec.o plus4mem.o plus4memlimit.o plus4pio1.o \
+plus4pio2.o plus4rom.o plus4tcbm.o ted-badline.o ted-cmdline-options.o \
+ted-color.o ted-draw.o ted-fetch.o ted-irq.o ted-mem.o ted-resources.o \
+ted-snapshot.o ted-sound.o ted-timer.o ted.o
+CFLAGS = @CFLAGS@
+COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+CCLD = $(CC)
+LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(LDFLAGS) -o $@
+DIST_COMMON =  Makefile.am Makefile.in
+
+
+DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
+
+TAR = tar
+GZIP_ENV = --best
+SOURCES = $(libplus4_a_SOURCES)
+OBJECTS = $(libplus4_a_OBJECTS)
+
+all: all-redirect
+.SUFFIXES:
+.SUFFIXES: .S .c .o .s
+$(srcdir)/Makefile.in: Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
+	cd $(top_srcdir) && $(AUTOMAKE) --gnu --include-deps src/plus4/Makefile
+
+Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
+	cd $(top_builddir) \
+	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+
+
+mostlyclean-noinstLIBRARIES:
+
+clean-noinstLIBRARIES:
+	-test -z "$(noinst_LIBRARIES)" || rm -f $(noinst_LIBRARIES)
+
+distclean-noinstLIBRARIES:
+
+maintainer-clean-noinstLIBRARIES:
+
+.c.o:
+	$(COMPILE) -c $<
+
+.s.o:
+	$(COMPILE) -c $<
+
+.S.o:
+	$(COMPILE) -c $<
+
+mostlyclean-compile:
+	-rm -f *.o core *.core
+
+clean-compile:
+
+distclean-compile:
+	-rm -f *.tab.c
+
+maintainer-clean-compile:
+
+libplus4.a: $(libplus4_a_OBJECTS) $(libplus4_a_DEPENDENCIES)
+	-rm -f libplus4.a
+	$(AR) cru libplus4.a $(libplus4_a_OBJECTS) $(libplus4_a_LIBADD)
+	$(RANLIB) libplus4.a
+
+tags: TAGS
+
+ID: $(HEADERS) $(SOURCES) $(LISP)
+	list='$(SOURCES) $(HEADERS)'; \
+	unique=`for i in $$list; do echo $$i; done | \
+	  awk '    { files[$$0] = 1; } \
+	       END { for (i in files) print i; }'`; \
+	here=`pwd` && cd $(srcdir) \
+	  && mkid -f$$here/ID $$unique $(LISP)
+
+TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) $(LISP)
+	tags=; \
+	here=`pwd`; \
+	list='$(SOURCES) $(HEADERS)'; \
+	unique=`for i in $$list; do echo $$i; done | \
+	  awk '    { files[$$0] = 1; } \
+	       END { for (i in files) print i; }'`; \
+	test -z "$(ETAGS_ARGS)$$unique$(LISP)$$tags" \
+	  || (cd $(srcdir) && etags $(ETAGS_ARGS) $$tags  $$unique $(LISP) -o $$here/TAGS)
+
+mostlyclean-tags:
+
+clean-tags:
+
+distclean-tags:
+	-rm -f TAGS ID
+
+maintainer-clean-tags:
+
+distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
+
+subdir = src/plus4
+
+distdir: $(DISTFILES)
+	@for file in $(DISTFILES); do \
+	  d=$(srcdir); \
+	  if test -d $$d/$$file; then \
+	    cp -pr $$/$$file $(distdir)/$$file; \
+	  else \
+	    test -f $(distdir)/$$file \
+	    || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
+	    || cp -p $$d/$$file $(distdir)/$$file || :; \
+	  fi; \
+	done
+plus4-cmdline-options.o: plus4-cmdline-options.c ../../src/vice.h \
+	../../src/config.h ../../src/cmdline.h ../../src/machine.h
+plus4-resources.o: plus4-resources.c ../../src/vice.h ../../src/config.h \
+	../../src/drive/drive.h ../../src/arch/unix/types.h \
+	../../src/arch/unix/kbd.h ../../src/keyboard.h ../../src/lib.h \
+	../../src/machine.h ../../src/mem.h plus4mem.h plus4rom.h \
+	../../src/resources.h ../../src/utils.h ../../src/interrupt.h \
+	../../src/vsync.h
+plus4-snapshot.o: plus4-snapshot.c ../../src/vice.h ../../src/config.h \
+	../../src/snapshot.h ../../src/arch/unix/types.h
+plus4.o: plus4.c ../../src/vice.h ../../src/config.h ../../src/attach.h \
+	../../src/arch/unix/types.h ../../src/autostart.h \
+	../../src/clkguard.h ../../src/datasette.h ../../src/debug.h \
+	../../src/drive/drive-cmdline-options.h \
+	../../src/drive/drive-resources.h \
+	../../src/drive/drive-snapshot.h ../../src/drive/drive.h \
+	../../src/drive/drivecpu.h ../../src/event.h \
+	../../src/iecdrive.h ../../src/interrupt.h ../../src/ioutil.h \
+	../../src/kbdbuf.h ../../src/keyboard.h ../../src/log.h \
+	../../src/machine-drive.h ../../src/machine.h \
+	../../src/maincpu.h ../../src/monitor.h plus4-cmdline-options.h \
+	plus4-resources.h plus4-snapshot.h plus4.h plus4acia.h \
+	plus4iec.h plus4mem.h ../../src/arch/unix/plus4ui.h \
+	../../src/printer.h ../../src/rs232drv.h ../../src/screenshot.h \
+	../../src/serial.h ../../src/snapshot.h ../../src/sound.h \
+	../../src/tape.h ../../src/tape/tape-snapshot.h \
+	ted-cmdline-options.h ted-resources.h ted.h ../../src/traps.h \
+	../../src/mem.h ../../src/video.h ../../src/viewport.h \
+	../../src/vsync.h
+plus4acia.o: plus4acia.c ../../src/maincpu.h ../../src/arch/unix/types.h \
+	../../src/vice.h ../../src/config.h ../../src/aciacore.c \
+	../../src/acia.h ../../src/alarm.h ../../src/clkguard.h \
+	../../src/cmdline.h ../../src/interrupt.h ../../src/log.h \
+	../../src/machine.h ../../src/resources.h ../../src/rs232drv.h \
+	../../src/snapshot.h
+plus4cpu.o: plus4cpu.c ../../src/vice.h ../../src/config.h \
+	../../src/mem.h ../../src/arch/unix/types.h ../maincpu.c \
+	../vice.h ../6510core.h ../alarm.h ../clkguard.h ../debug.h \
+	../interrupt.h ../machine.h ../maincpu.h ../mem.h ../monitor.h \
+	../mos6510.h ../snapshot.h ../traps.h ../6510core.c
+plus4datasette.o: plus4datasette.c ../../src/vice.h ../../src/config.h \
+	plus4mem.h ../../src/arch/unix/types.h
+plus4drive.o: plus4drive.c ../../src/vice.h ../../src/config.h \
+	../../src/drive/iec.h ../../src/arch/unix/types.h \
+	../../src/drive/iecieee.h ../../src/machine-drive.h \
+	../../src/drive/tcbm.h
+plus4iec.o: plus4iec.c ../../src/vice.h ../../src/config.h \
+	../../src/drive/ciad.h ../../src/arch/unix/types.h \
+	../../src/drive/drive.h ../../src/drive/drivecpu.h \
+	../../src/maincpu.h ../../src/iecdrive.h plus4iec.h \
+	../../src/via.h ../../src/drive/viad.h
+plus4mem.o: plus4mem.c ../../src/vice.h ../../src/config.h \
+	../../src/datasette.h ../../src/arch/unix/types.h \
+	../../src/drive/drive.h ../../src/drive/drivecpu.h \
+	../../src/iecdrive.h ../../src/maincpu.h ../../src/mem.h \
+	../../src/monitor.h plus4acia.h plus4iec.h plus4mem.h \
+	plus4memlimit.h plus4pio1.h plus4pio2.h plus4tcbm.h \
+	../../src/ram.h ../../src/resources.h ted-mem.h \
+	../../src/utils.h
+plus4memlimit.o: plus4memlimit.c ../../src/vice.h ../../src/config.h \
+	../../src/mem.h ../../src/arch/unix/types.h
+plus4pio1.o: plus4pio1.c ../../src/vice.h ../../src/config.h plus4pio1.h \
+	../../src/arch/unix/types.h
+plus4pio2.o: plus4pio2.c ../../src/vice.h ../../src/config.h plus4pio2.h \
+	../../src/arch/unix/types.h
+plus4rom.o: plus4rom.c ../../src/vice.h ../../src/config.h \
+	../../src/log.h ../../src/mem.h ../../src/arch/unix/types.h \
+	plus4mem.h plus4rom.h ../../src/resources.h ../../src/sysfile.h
+plus4tcbm.o: plus4tcbm.c ../../src/vice.h ../../src/config.h \
+	../../src/drive/drive.h ../../src/arch/unix/types.h \
+	../../src/drive/drivecpu.h ../../src/maincpu.h plus4tcbm.h \
+	../../src/drive/tcbm.h
+ted-badline.o: ted-badline.c ../../src/vice.h ../../src/config.h \
+	../../src/dma.h ../../src/arch/unix/types.h ../../src/maincpu.h \
+	../../src/mem.h ted-badline.h ted-fetch.h tedtypes.h \
+	../../src/raster/raster.h ../../src/raster/raster-changes.h \
+	../../src/viewport.h
+ted-cmdline-options.o: ted-cmdline-options.c ../../src/vice.h \
+	../../src/config.h ../../src/cmdline.h \
+	../../src/raster/raster-cmdline-options.h ted-cmdline-options.h \
+	tedtypes.h ../../src/raster/raster.h \
+	../../src/raster/raster-changes.h ../../src/arch/unix/types.h \
+	../../src/viewport.h
+ted-color.o: ted-color.c ../../src/vice.h ../../src/config.h tedtypes.h \
+	../../src/raster/raster.h ../../src/raster/raster-changes.h \
+	../../src/arch/unix/types.h ../../src/viewport.h ted-color.h \
+	ted-resources.h ../../src/video.h
+ted-draw.o: ted-draw.c ../../src/vice.h ../../src/config.h \
+	../../src/raster/raster-cache-fill.h \
+	../../src/arch/unix/types.h \
+	../../src/raster/raster-cache-nibbles.h \
+	../../src/raster/raster-cache-text-ext.h \
+	../../src/raster/raster-cache-text-std.h \
+	../../src/raster/raster-cache.h \
+	../../src/raster/raster-sprite-cache.h \
+	../../src/raster/raster-modes.h ted-draw.h ted.h tedtypes.h \
+	../../src/raster/raster.h ../../src/raster/raster-changes.h \
+	../../src/viewport.h
+ted-fetch.o: ted-fetch.c ../../src/vice.h ../../src/config.h \
+	../../src/alarm.h ../../src/arch/unix/types.h ../../src/dma.h \
+	../../src/maincpu.h ted-fetch.h tedtypes.h \
+	../../src/raster/raster.h ../../src/raster/raster-changes.h \
+	../../src/viewport.h
+ted-irq.o: ted-irq.c ../../src/vice.h ../../src/config.h \
+	../../src/alarm.h ../../src/arch/unix/types.h \
+	../../src/interrupt.h ../../src/maincpu.h ted-irq.h tedtypes.h \
+	../../src/raster/raster.h ../../src/raster/raster-changes.h \
+	../../src/viewport.h
+ted-mem.o: ted-mem.c ../../src/vice.h ../../src/config.h \
+	../../src/alarm.h ../../src/arch/unix/types.h \
+	../../src/keyboard.h ../../src/log.h ../../src/maincpu.h \
+	../../src/mem.h plus4mem.h plus4pio2.h ted-badline.h \
+	ted-fetch.h ted-irq.h ted-mem.h ted-resources.h ted-sound.h \
+	ted-timer.h ted.h tedtypes.h ../../src/raster/raster.h \
+	../../src/raster/raster-changes.h ../../src/viewport.h
+ted-resources.o: ted-resources.c ../../src/vice.h ../../src/config.h \
+	../../src/arch/unix/archdep.h ../../src/archapi.h \
+	../../src/fullscreen.h ../../src/lib.h \
+	../../src/raster/raster-resources.h ../../src/resources.h \
+	ted-resources.h tedtypes.h ../../src/raster/raster.h \
+	../../src/raster/raster-changes.h ../../src/arch/unix/types.h \
+	../../src/viewport.h ../../src/video.h
+ted-snapshot.o: ted-snapshot.c ../../src/vice.h ../../src/config.h \
+	../../src/alarm.h ../../src/arch/unix/types.h \
+	../../src/interrupt.h ../../src/log.h ../../src/mem.h \
+	../../src/snapshot.h ../../src/raster/raster-sprite-status.h \
+	../../src/raster/raster-sprite.h ted-irq.h ted-snapshot.h ted.h \
+	tedtypes.h ../../src/raster/raster.h \
+	../../src/raster/raster-changes.h ../../src/viewport.h
+ted-sound.o: ted-sound.c ../../src/vice.h ../../src/config.h \
+	../../src/lib.h ../../src/maincpu.h ../../src/arch/unix/types.h \
+	../../src/sound.h ted-sound.h
+ted-timer.o: ted-timer.c ../../src/vice.h ../../src/config.h \
+	../../src/alarm.h ../../src/arch/unix/types.h \
+	../../src/maincpu.h ted-timer.h tedtypes.h \
+	../../src/raster/raster.h ../../src/raster/raster-changes.h \
+	../../src/viewport.h
+ted.o: ted.c ../../src/vice.h ../../src/config.h ../../src/alarm.h \
+	../../src/arch/unix/types.h ../../src/arch/unix/archdep.h \
+	../../src/archapi.h ../../src/clkguard.h ../../src/dma.h \
+	../../src/lib.h ../../src/log.h ../../src/machine.h \
+	../../src/maincpu.h ../../src/mem.h plus4.h plus4mem.h \
+	../../src/raster/raster-line.h ../../src/raster/raster-modes.h \
+	../../src/raster/raster-cache.h \
+	../../src/raster/raster-sprite-cache.h ../../src/resources.h \
+	../../src/screenshot.h ted-cmdline-options.h ted-color.h \
+	ted-draw.h ted-fetch.h ted-irq.h ted-mem.h ted-resources.h \
+	ted-snapshot.h ted-sound.h ted-timer.h ted.h tedtypes.h \
+	../../src/raster/raster.h ../../src/raster/raster-changes.h \
+	../../src/viewport.h ../../src/utils.h ../../src/vsync.h \
+	../../src/arch/unix/videoarch.h \
+	../../src/arch/unix/x11/xaw/videoarch.h \
+	../../src/arch/unix/ui.h ../../src/uiapi.h \
+	../../src/arch/unix/x11/xaw/uiarch.h \
+	../../src/arch/unix/x11/xaw/../videoarch.h ../../src/video.h \
+	../../src/arch/unix/x11/xaw/../xaw/uiarch.h
+
+info-am:
+info: info-am
+dvi-am:
+dvi: dvi-am
+check-am: all-am
+check: check-am
+installcheck-am:
+installcheck: installcheck-am
+install-exec-am:
+install-exec: install-exec-am
+
+install-data-am:
+install-data: install-data-am
+
+install-am: all-am
+	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
+install: install-am
+uninstall-am:
+uninstall: uninstall-am
+all-am: Makefile $(LIBRARIES)
+all-redirect: all-am
+install-strip:
+	$(MAKE) $(AM_MAKEFLAGS) AM_INSTALL_PROGRAM_FLAGS=-s install
+installdirs:
+
+
+mostlyclean-generic:
+
+clean-generic:
+
+distclean-generic:
+	-rm -f Makefile $(CONFIG_CLEAN_FILES)
+	-rm -f config.cache config.log stamp-h stamp-h[0-9]*
+
+maintainer-clean-generic:
+mostlyclean-am:  mostlyclean-noinstLIBRARIES mostlyclean-compile \
+		mostlyclean-tags mostlyclean-generic
+
+mostlyclean: mostlyclean-am
+
+clean-am:  clean-noinstLIBRARIES clean-compile clean-tags clean-generic \
+		mostlyclean-am
+
+clean: clean-am
+
+distclean-am:  distclean-noinstLIBRARIES distclean-compile \
+		distclean-tags distclean-generic clean-am
+
+distclean: distclean-am
+
+maintainer-clean-am:  maintainer-clean-noinstLIBRARIES \
+		maintainer-clean-compile maintainer-clean-tags \
+		maintainer-clean-generic distclean-am
+	@echo "This command is intended for maintainers to use;"
+	@echo "it deletes files that may require special tools to rebuild."
+
+maintainer-clean: maintainer-clean-am
+
+.PHONY: mostlyclean-noinstLIBRARIES distclean-noinstLIBRARIES \
+clean-noinstLIBRARIES maintainer-clean-noinstLIBRARIES \
+mostlyclean-compile distclean-compile clean-compile \
+maintainer-clean-compile tags mostlyclean-tags distclean-tags \
+clean-tags maintainer-clean-tags distdir info-am info dvi-am dvi check \
+check-am installcheck-am installcheck install-exec-am install-exec \
+install-data-am install-data install-am install uninstall-am uninstall \
+all-redirect all-am all installdirs mostlyclean-generic \
+distclean-generic clean-generic maintainer-clean-generic clean \
+mostlyclean distclean maintainer-clean
+
+
+# Tell versions [3.59,3.63) of GNU make to not export all variables.
+# Otherwise a system limit (for SysV at least) may be exceeded.
+.NOEXPORT:
