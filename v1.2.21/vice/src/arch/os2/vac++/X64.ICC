@@ -1,0 +1,59 @@
+option ProjectOptions = gen(arch, "pentium"),
+    gen(debug, "no"),
+    link(debug, "no"),
+    link(linkwithmultithreadlib, "yes"), link(pmtype, "pm"),
+    opt(autoinline, "yes"), opt(inline, "yes"), opt(level, "2"), opt(tune, "pentium"),
+    define("HAVE_CONFIG_H", ),
+    define("__X64__", ),
+    incl(searchpath, "..\\..\\.."),
+    incl(searchpath, "..\\..\\..\\c64"),
+    incl(searchpath, "..\\..\\..\\sid"),
+    incl(searchpath, "..\\..\\..\\resid"),
+    incl(searchpath, "..\\..\\..\\drive"),
+    incl(searchpath, "..\\..\\..\\vdrive"),
+    incl(searchpath, "..\\..\\..\\raster"),
+    incl(searchpath, "..\\..\\..\\monitor"),
+    incl(searchpath, "..\\..\\..\\sounddrv"),
+    incl(searchpath, "..\\..\\..\\vicii"),
+    incl(searchpath, ".."), incl(searchpathfirst, "yes"),
+    file(genobject, "Yes"), file(genpch, "no"), file(usepch, "no"),
+    info(cnd, "no"), info(ppc, "no"), info(ppt, "no"),
+    res_rc_options("-i .. -x1")
+
+{
+    target type(exe) "..\\..\\..\\..\\data\\x64.exe"
+    {
+        source type (rc)  "dialogs.rc"
+        source type (lib) "mmpm2.lib"
+        source type(c)
+            "maincpu.c"
+        source type(c)
+            "c64ui.c",
+            "kbd\\kbd-c64.c"
+        include "incl/archdep.icc"
+        include "incl/mainsrc.icc"
+        include "incl/c64.icc"
+        include "incl/dialogs.icc"
+        include "incl/monitor.icc"
+        include "incl/drive.icc"
+        include "incl/raster.icc"
+        include "incl/vdrive.icc"
+        include "incl/sounddrv.icc"
+        include "incl/vicii.icc"
+
+        option macros('global', 'yes')
+        {
+           source type('cpp') 'stdio.h'
+           source type('cpp') 'math.h'
+           source type('cpp') 'limits.h'
+           source type('cpp') 'types.h'
+        }
+
+        source type (cpp) "resid.cc"
+        source type (c)   "sid.c"
+
+        source type (lib) "resid.lib"
+    }
+}
+
+
