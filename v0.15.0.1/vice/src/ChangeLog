@@ -1,0 +1,161 @@
+1998-09-02  Ettore Perazzoli  <ettore@comm2000.it>
+
+	* Version 0.15.0.1.
+
+1998-09-02  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* 6510core.c (LOCAL_SET_OVERFLOW): Call `_drive_set_byte_ready'
+ 	instead of `true1541_set_byte_ready'.
+	(TRACE): Replaced `true1541_clk' with `drive0_clk'.
+	(PHP): Call `_drive_byte_ready' instead of `true1541_byte_ready'.
+	(BVC): Changed likewise.
+	(BVS): Changed likewise.
+
+	* Makefile.am: Changed library from `true1541_lib' to `drive_lib'.
+	* arch/msdos/Makefile.am: Likewise.
+	* arch/unix/xaw/Makefile.am: Likewise.
+	* c128/Makefile.am: Likewise.
+	* c64/Makefile.am: Likewise.
+	* vic20/Makefile.am: Likewise.
+
+	* arch/msdos/menudefs.c: Replaced #include "drive.h" with #include
+	"vdrive.h" and #include "true1541.h" with #include "drive.h".
+	* c128/c128.c: Changed likewise.
+
+	* arch/msdos/vsync.c: Replaced #include "true1541.h" with #include
+	"drive.h".
+	* arch/unix/xaw/uisettings.c: Changed likewise.
+	* c128/c128mem.c: Changed likewise.
+	* c64/c64.c:  Changed likewise.
+	* c64cia2.def: Changed likewise.
+	* c64/c64iec.c: Changed likewise.
+	* c64/c64mem.c: Changed likewise.
+	* vic20/vic20.c: Changed likewise.
+	* vic20/vic20iec.c: Changed likewise.
+	* vic20/vic20via1.def: Changed likewise.
+	* vic20/vic20via2.def: Changed likewise.
+
+	* arch/unix/xaw/uicommands.c: Replaced #include "drive.h" with
+	#include "vdrive.h".
+	* attach.c: Changed likewise.
+	* attach.h: Changed likewise.
+	* autostart.c: Changed likewise.
+	* c1541.c: Changed likewise.
+	* c1541.h: Changed likewise.
+	* fs_cbm.h: Changed likewise.
+	* fsdevice.c: Changed likewise.
+	* maincpu.c: Changed likewise.
+	* mon.c: Changed likewise.
+	* pet/pet.c: Changed likewise.
+	* prdevice.c: Changed likewise.
+	* serial.c: Changed likewise.
+	* tape.c: Changed likewise.
+	* tapeunit.c: Changed likewise.
+
+	* arch/unix/xaw/c128ui.c (c128_ui_init): Changed menu entry from
+	`ui_true1541_settings_menu' to `ui_drive_settings_menu'.
+	* arch/unix/xaw/c64ui.c: Changed likewise.
+	* arch/unix/xaw/vic20ui.c: Changed likewise.
+
+	* arch/unix/xaw/uisettings.c: Changed all references of `true1541'
+	to `drive'.
+	* arch/unix/xaw/uisettings.h: Changed likewise.
+	* c128/c128.c: Changed likewise.
+	* c64/c64.c:Changed likewise.
+	* c64/c64iec.c:Changed likewise.
+	* vic20/vic20.c:Changed likewise.
+	* vic20/vic20iec.c:Changed likewise.
+
+	* c128/c128.c: Removed #include "1541cpu.h"
+	* vic20/vic20.c: Likewise.
+
+	* c64/c64.c (machine_init): Set hooks for drive #9.  Changed
+	`true1541_monitor_interface' to `drive0_monitor_interface'.
+	(vsync_hook): Call `drive_prevent_clk_overflow()' to prevent both
+	drives from overflowing.
+
+	* c64/c64cia2.def (READ_CIAPA): Remove call to
+	`true1541_cpu_execute()'. Call `drive0_cpu_execute()' and
+	`drive0_cpu_execute()' instead.  (READ_CIAICR): Changed likewise.
+
+	* c64/c64iec.c (update_ports): Update IEC status for drive #9 too.
+	(iec_cpu_write): Changed likewise.  (iec_cpu_read, iec_cpu_write,
+	parallel_cable_cpu_read, parallel_cable_cpu_write): Removed call
+	to `true1541_cpu_execute()'.  Call `drive0_cpu_execute()' and
+	`drive0_cpu_execute()' instead.  (iec_cpu_write): Do not update
+	`iec_info.drive[01].data if drive is disabled.
+
+	* iecdrive.h: Added new members `drive2_bus', `drive2_port' and
+	`drive2_data' to struct `iec_info_t'
+
+	* interrupt.h: Replaced `true1541_clk' with `drive_clk[2]'.
+	Replaced `true1541_int_status' with `drive0_int_status' and
+	`drive1_int_status'.  Changed all defines from `true1541' to
+	`drive0'. Added defines for `drive1'.
+
+	* Renamed directory `true1541' to `drive'.
+
+	* drive/Makefile.am: Changed all references of `true1541' to
+	`drive'.  Updated `libdrive_a_SOURCES'.  Removed rules for
+	`viad1.c' and `viad2.c'.  Added new rules for `via1drive0.c',
+	`via2drive0.c', `via1drive1.c', `via2drive1.c', `drivecpu0.c' and
+	`drivecpu1.c'.
+
+	* drive/1541cpu.c: Renamed to `drivecpu-tmpl.c'. Changed all
+	functions and variables including `true1541' to `mydrive'.
+	Removed `true1541_clk'. Define `_drive_set_byte_ready' and
+	`_drive_byte_ready'.
+
+	* drive/1541cpu.h: Changed all references to `true1541' to
+	`drive'.
+
+	* drive/drivecpu0.def, drive/drivecpu1.def: New files for `drive0'
+	and `drive1' specific defines.
+
+	* drive/true1541.c: Renamed to `drive.c'.  Moved `led_status',
+	`current_half_track', `*true1541_floppy', `byte_ready', `diskID1',
+	`diskID2', `GCR_dirty_track', `GCR_write_value', `GCR_speed_zone',
+	`GCR_track_size', `GCR_track_start_ptr', `GCR_current_track_size',
+	`GCR_data', `GCR_head_offset', `read_write_mode', `GCR_read',
+	`byte_ready_active', `byte_ready_active', `attach_clk',
+	`detach_clk', `bits_moved', `accum', `finish_byte', `last_mode',
+	`rotation_last_clk', `have_new_disk', `*rotation_table_ptr',
+	`rotation_table', `old_led_status', `old_half_track' to struct
+	`drive_t'.
+	Changed all function and variable names including `true1541' to
+	`drive0' and `drive1'.  New array `drive_t drive[2]'.
+	Replaced `true1541_ram' with `drive0_ram' and `drive1_ram'.
+	(drive_set_half_track): Made static.
+	(drive_init): Initialize `drive_clk[0]' and `drive_clk[1]' and
+	`drive[]' structure.  Set IEC lines of disabled drives to `1'.
+	(drive_attach_floppy): Use `floppy->unit' to find out to which
+	drive the disk should be attached to.
+	(drive_detach_floppy): Changed likewise.
+	(drive1_trap_handler): New function to handle traps of drive1.
+	(drive_disable): Enable traps when no drive is enabled.  Set IEC
+	lines of disabled drives to `1'.
+	(drive_update_ui_status): Changed to handle drive #8. Currently
+	the UI LED is used for both drives.
+
+	* drive/true1541.h: Renamed to drive.h.  Changed function names
+	including `true1541' to `drive'.  Added new defines for the VIAs
+	of drive1. Define `NUM_BYTES_SECTOR_GCR', `NUM_MAX_BYTES_TRACK',
+	`ROTATION_TABLE_SIZE' and `ACCUM_MAX' here.
+	Added parameter `local_dnr' indicating the current drive to
+	`drive_move_head', `drive_byte_ready', `drive_set_byte_ready',
+	`drive_rotate_disk', `drive_read_disk_byte', `drive_write_gcr',
+	`drive_update_zone_bits', `drive_prevent_clk_overflow',
+	`drive_read_viad2_prb', `drive_update_viad2_pcr' and
+	`drive_motor_control'.
+
+	* drive/viad.h: Added new prototypes for VIAs of drive1.
+
+	* drive/via1d0.def, drive/via2d1.def, drive/via1d1.def,
+	drive/via2d1.def: New files for VIA1 and VIA2 specifiy defines of
+	drive0 and drive1.
+
+	* vic20/vic20iec.c: (iec_pa_write): Use `via1d0_set_atn' instead
+	of `set_atn'.
+
+
+See `ChangeLog.1' for earlier changes.
