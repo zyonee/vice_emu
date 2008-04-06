@@ -1,0 +1,466 @@
+This is Info file vice.info, produced by Makeinfo version 1.68 from the
+input file vice.texi.
+
+START-INFO-DIR-ENTRY
+* VICE: (vice).        VICE, the Versatile Commodore Emulator.
+END-INFO-DIR-ENTRY
+
+   VICE Manual
+
+   Permission is granted to make and distribute verbatim copies of this
+manual provided the copyright notice and this permission notice are
+preserved on all copies.
+
+   Permission is granted to copy and distribute modified versions of
+this manual under the conditions for verbatim copying, provided that
+the entire resulting derived work is distributed under the terms of a
+permission notice identical to this one.
+
+
+File: vice.info,  Node: Sending feedback,  Next: Contributing,  Prev: Home page,  Up: Contacts
+
+How to send feedback
+====================
+
+   If you want to report bugs, make suggestions or contribute to the
+project, please email one of the following people:
+
+   * Teemu Rantanen (<tvr@cs.hut.fi>) for the SID stuff;
+
+   * Andreas Boose (<boose@linux.rz.fh-hannover.de>) for the 1541 disk
+     drive;
+
+   * Andr'e Fachat (<fachat@physik.tu-chemnitz.de>) for the PETs and
+     CBM-II;
+
+   * Ettore Perazzoli (<ettore@comm2000.it>), the current maintainer,
+     for everything else.
+
+   It's always nice to receive feedback and/or bugreports about VICE,
+but please read these few notes before sending mail to anybody in the
+team.
+
+   * Please put the word `VICE' *in all capitals* in your subject line
+     (e.g., `VICE fails to run game XXX').  This helps mail splitting
+     and reduces chances that your message is unintentionally deleted,
+     forgotten or lost.
+
+   * Please don't send any HTML mail (we really hate that!).  If you use
+     M$ Outlook or Netscape Communicator, make sure you turn off the
+     "rich text" (HTML) feature.
+
+   * Please don't send *any* binaries without asking first.
+
+   * Please read the following documents carefully before reporting a
+     bug or a problem you cannot solve:
+
+        * the VICE documentation (you are reading it!);
+
+        * the VICE FAQ (it is available on the Internet, and reachable
+          from the VICE home page:
+          http://www.tu-chemnitz.de/~fachat/vice/vice.html);
+
+        * the `comp.emulators.cbm' and `comp.sys.cbm' FAQs (*note FAQs
+          you should read::.).
+
+   * When you report a bug, please try to be as accurate as possible and
+     describe how it can be reproduced to the very detail.  You should
+     also tell us what machine you are running on, what operating
+     system you are using as well as the version of it.
+
+   * Please don't ask us how to transfer original C64 disk or tapes to
+     your PC; this has been asked a gazillion times through email.  To
+     transfer disks, you can use the Star Commander
+     (http://ludens.elte.hu/~sta/sc.html).  And no, you cannot read C64
+     disks with your old 5"1/4 PC drive.
+
+   * Please don't ask us where to find games for the emulator on the
+     Internet.
+
+   * Please don't ask us when the next version will be out, because we
+     really don't know.
+
+   * Please write in English, or in the language of the person you are
+     writing to (Ettore is Italian, Andr'e and Andreas are German,
+     Teemu is Finnish, Daniel is from Canada).
+
+   In any case, we would be *really* glad to receive your comments
+about VICE.
+
+   Thanks!
+
+
+File: vice.info,  Node: Contributing,  Next: Newsgroups,  Prev: Sending feedback,  Up: Contacts
+
+How to contribute
+=================
+
+   If you want to make a major contribution, please *ask* first.  It
+has already happened a couple of times that somebody started working at
+something that had already been done but not released to the public yet,
+and we really do *not* want anybody to waste time.
+
+   If you are going to make a patch, please make sure the patch is
+relative to the very latest version, and provide us with the following:
+
+   * a diff file containing all the changes you have made (`diff -c' or
+     `diff -u' (better) is fine; please don't use plain `diff');
+
+   * GNU-style `ChangeLog' entries with a description of the changes you
+     have made (look at the `ChangeLog's provided with the original VICE
+     sources for an example).
+
+   This is very important, and makes adding patches much smoother and
+safer.
+
+   People willing to port VICE to other platforms are always welcome.  A
+Windows and a MacOS port are in the works, so if you are interested in
+those platforms, please let us know.  There is plenty of work to do and
+any sort of help can be very useful.
+
+
+File: vice.info,  Node: Newsgroups,  Next: FAQs you should read,  Prev: Contributing,  Up: Contacts
+
+Interesting newsgroups
+======================
+
+   There are some Usenet newsgroups you might be interested in:
+
+   * `comp.emulators.cbm', discussing about emulators of Commodore 8-bit
+     machines (definitely not Amiga emulators).
+
+   * `comp.sys.cbm', discussing various topics regarding real Commodore
+     8-bit machines.  This newsgroup is mainly for people who actually
+     use original Commodore equipment (so please don't talk about
+     emulation here).
+
+   * `comp.emulators.misc', discussing emulators in general.
+
+
+File: vice.info,  Node: FAQs you should read,  Prev: Newsgroups,  Up: Contacts
+
+FAQs you should read
+====================
+
+   We recommend reading the `comp.emulators.cbm' and `comp.sys.cbm'
+FAQs, which are posted regularly on the corresponding newsgroups and
+are also available via FTP from ftp://rtfm.mit.edu.
+
+
+File: vice.info,  Node: Concept Index,  Next: Resource Index,  Prev: Contacts,  Up: Top
+
+Concept Index
+*************
+
+* Menu:
+
+* +superpet:                             PET commandline options.
+* -1:                                    Command-line initialization.
+* -10:                                   Command-line initialization.
+* -11:                                   Command-line initialization.
+* -8:                                    Command-line initialization.
+* -9:                                    Command-line initialization.
+* -?:                                    Command-line initialization.
+* -acia1dev:                             RS232 options.
+* -attach:                               c1541 commands and options.
+* -autostart <1>:                        Command-line autostart.
+* -autostart:                            Command-line initialization.
+* -basic <1>:                            CBM-II commandline options.
+* -basic <2>:                            VIC20 system ROM options.
+* -basic:                                C64/128 system ROM options.
+* -block:                                c1541 commands and options.
+* -buksymkeymap -bukposkeymap:           Keyboard options.
+* -cart2:                                CBM-II commandline options.
+* -cart4:                                CBM-II commandline options.
+* -cart6:                                CBM-II commandline options.
+* -chargen <1>:                          CBM-II commandline options.
+* -chargen <2>:                          PET commandline options.
+* -chargen <3>:                          VIC20 system ROM options.
+* -chargen:                              C64/128 system ROM options.
+* -checksb, +checksb:                    VIC-II options.
+* -checkss, +checkss:                    VIC-II options.
+* -copy:                                 c1541 commands and options.
+* -core, +core:                          Misc options.
+* -create:                               c1541 commands and options.
+* -default:                              Command-line initialization.
+* -delete:                               c1541 commands and options.
+* -detach:                               c1541 commands and options.
+* -directory:                            Misc options.
+* -displaydepth:                         Video options.
+* -dos1541:                              Drive options.
+* -dos1571:                              Drive options.
+* -dos1581:                              Drive options.
+* -dos2031:                              Drive options.
+* -drive8idle, -drive9idle:              Drive options.
+* -drive8type, -drive9type:              Drive options.
+* -drivesync:                            Drive options.
+* -dscan, +dscan:                        Video options.
+* -dsize, +dsize:                        Video options.
+* -editor:                               PET commandline options.
+* -emuid, +emuid <1>:                    VIC20 memconf options.
+* -emuid, +emuid:                        C64 I/O extension options.
+* -extract:                              c1541 commands and options.
+* -format:                               c1541 commands and options.
+* -fs10:                                 File system device options.
+* -fs11:                                 File system device options.
+* -fs8:                                  File system device options.
+* -fs9:                                  File system device options.
+* -gcr:                                  c1541 commands and options.
+* -grsymkeymap -grposkeymap:             Keyboard options.
+* -help:                                 Command-line initialization.
+* -htmlbrowser:                          Misc options.
+* -ieee488, +ieee488:                    C64 I/O extension options.
+* -info:                                 c1541 commands and options.
+* -install, +install:                    Video options.
+* -kernal <1>:                           CBM-II commandline options.
+* -kernal <2>:                           PET commandline options.
+* -kernal <3>:                           VIC20 system ROM options.
+* -kernal:                               C64/128 system ROM options.
+* -kernalrev:                            C64/128 system ROM options.
+* -keymap:                               Keyboard options.
+* -list:                                 c1541 commands and options.
+* -memory:                               VIC20 memconf options.
+* -mitshm, +mitshm <1>:                  Video options.
+* -mitshm, +mitshm:                      Shared memory problems.
+* -mitshmauto:                           Video options.
+* -model:                                PET commandline options.
+* -modelline:                            CBM-II commandline options.
+* -ntscdrive:                            Drive options.
+* -paldrive:                             Drive options.
+* -parallel8, +parallel8:                Drive options.
+* -parallel9, +parallel9:                Drive options.
+* -petramA:                              PET commandline options.
+* -petramB:                              PET commandline options.
+* -poskeymap:                            Keyboard options.
+* -pr4dev:                               Printer options.
+* -prdev1:                               Printer options.
+* -prdev2:                               Printer options.
+* -prdev3:                               Printer options.
+* -printer4, +printer4:                  Printer options.
+* -pruser, +pruser:                      Printer options.
+* -pruserdev:                            Printer options.
+* -ram08:                                CBM-II commandline options.
+* -ram1:                                 CBM-II commandline options.
+* -ram2:                                 CBM-II commandline options.
+* -ram4:                                 CBM-II commandline options.
+* -ram6:                                 CBM-II commandline options.
+* -ramC:                                 CBM-II commandline options.
+* -read:                                 c1541 commands and options.
+* -refresh:                              Performance options.
+* -resid, +resid:                        SID options.
+* -reu, +reu:                            C64 I/O extension options.
+* -rom9:                                 PET commandline options.
+* -romA:                                 PET commandline options.
+* -romB:                                 PET commandline options.
+* -rsdev1:                               RS232 options.
+* -rsdev1baud:                           RS232 options.
+* -rsdev2:                               RS232 options.
+* -rsdev2baud:                           RS232 options.
+* -rsdev3:                               RS232 options.
+* -rsdev3baud:                           RS232 options.
+* -rsdev4:                               RS232 options.
+* -rsdev4baud:                           RS232 options.
+* -rsuser:                               RS232 options.
+* -rsuserdev:                            RS232 options.
+* -saveres, +saveres:                    Misc options.
+* -sidfilters, +sidfilters:              SID options.
+* -sidmodel:                             SID options.
+* -sound, +sound:                        Sound options.
+* -soundarg:                             Sound options.
+* -soundbufsize:                         Sound options.
+* -sounddev:                             Sound options.
+* -soundrate:                            Sound options.
+* -soundsync:                            Sound options.
+* -speed:                                Performance options.
+* -superpet:                             PET commandline options.
+* -symkeymap:                            Keyboard options.
+* -tape:                                 c1541 commands and options.
+* -traps, +traps:                        No traps options.
+* -truedrive, +truedrive:                Drive options.
+* -unlynx:                               c1541 commands and options.
+* -validate:                             c1541 commands and options.
+* -vcache, +vcache:                      Video options.
+* -warp, +warp:                          Performance options.
+* -write:                                c1541 commands and options.
+* -xsync, +xsync:                        Video options.
+* -zcreate:                              c1541 commands and options.
+* attach:                                c1541 commands and options.
+* Audio buffer size:                     Sound settings.
+* BasicName <1>:                         VIC20 system ROM resources.
+* BasicName:                             C64/128 system ROM resources.
+* block:                                 c1541 commands and options.
+* C64/128 emulator identification:       C64 I/O extension settings.
+* Cart2Name:                             CBM-II model.
+* Cart4Name:                             CBM-II model.
+* Cart6Name:                             CBM-II model.
+* ChargenName <1>:                       PET model.
+* ChargenName <2>:                       VIC20 system ROM resources.
+* ChargenName:                           C64/128 system ROM resources.
+* Converting X64 files into D64:         File formats.
+* copy:                                  c1541 commands and options.
+* create:                                c1541 commands and options.
+* Crtc:                                  PET model.
+* delete:                                c1541 commands and options.
+* detach:                                c1541 commands and options.
+* Double-scan mode.:                     Video settings.
+* Double-size mode:                      Video settings.
+* EditorName:                            PET model.
+* extract:                               c1541 commands and options.
+* format:                                c1541 commands and options.
+* gcrformat:                             c1541 commands and options.
+* HP-UX and Solaris audio problems:      Sound problems.
+* IEEE488 interface emulation:           C64 I/O extension settings.
+* info:                                  c1541 commands and options.
+* IOSize:                                PET model.
+* KernalName <1>:                        PET model.
+* KernalName <2>:                        VIC20 system ROM resources.
+* KernalName:                            C64/128 system ROM resources.
+* KernalRev:                             C64/128 system ROM resources.
+* Limiting emulation speed:              Performance settings.
+* list:                                  c1541 commands and options.
+* Loosing control on low-end systems:    Video settings.
+* MITSHM:                                Shared memory problems.
+* ModelLine:                             CBM-II model.
+* OSS/Linux problems:                    Sound problems.
+* Oversampling:                          Sound settings.
+* Ram08:                                 CBM-II model.
+* Ram1:                                  CBM-II model.
+* Ram2:                                  CBM-II model.
+* Ram4:                                  CBM-II model.
+* Ram6:                                  CBM-II model.
+* Ram9:                                  PET model.
+* RamA:                                  PET model.
+* RamC:                                  CBM-II model.
+* RamSize <1>:                           CBM-II model.
+* RamSize:                               PET model.
+* read:                                  c1541 commands and options.
+* Refresh rate:                          Performance settings.
+* REU:                                   C64 I/O extension settings.
+* RomModule9Name:                        PET model.
+* RomModuleAName:                        PET model.
+* RomModuleBName:                        PET model.
+* Sample rate:                           Sound settings.
+* SID filters:                           SID settings.
+* SID models:                            SID settings.
+* Sound buffer size:                     Sound settings.
+* Sound speed adjustment:                Sound settings.
+* Sound suspend time:                    Sound settings.
+* Sound syncronization:                  Sound settings.
+* Sprite collision detection:            VIC-II settings.
+* SuperPET:                              PET model.
+* tape:                                  c1541 commands and options.
+* Toggling reSID emulation:              SID settings.
+* Turning sound playback on/off:         Sound settings.
+* unlynx:                                c1541 commands and options.
+* Using XSync():                         Video settings.
+* validate:                              c1541 commands and options.
+* VIC-II color sets:                     VIC-II settings.
+* Video cache:                           Video settings.
+* VideoSize:                             PET model.
+* Warp speed mode:                       Performance settings.
+* write:                                 c1541 commands and options.
+* zcreate:                               c1541 commands and options.
+
+
+File: vice.info,  Node: Resource Index,  Prev: Concept Index,  Up: Top
+
+Index of Resources
+******************
+
+* Menu:
+
+* Acia1Dev:                              RS232 resources.
+* Acia1Irq:                              RS232 resources.
+* AciaDE:                                RS232 resources.
+* CheckSbColl:                           VIC-II resources.
+* CheckSsColl:                           VIC-II resources.
+* Directory:                             Misc resources.
+* DisplayDepth:                          Video resources.
+* DoCoreDump:                            Misc resources.
+* DosName1541:                           Drive resources.
+* DosName1571:                           Drive resources.
+* DosName1581:                           Drive resources.
+* DosName2031:                           Drive resources.
+* DoubleScan:                            Video resources.
+* DoubleSize:                            Video resources.
+* Drive8ExtendImagePolicy:               Drive resources.
+* Drive8IdleMethod:                      Drive resources.
+* Drive8ParallelCable:                   Drive resources.
+* Drive8Type:                            Drive resources.
+* Drive9ExtendImagePolicy:               Drive resources.
+* Drive9IdleMethod:                      Drive resources.
+* Drive9ParallelCable:                   Drive resources.
+* Drive9Type:                            Drive resources.
+* DriveSyncFactor:                       Drive resources.
+* DriveTrueEmulation:                    Drive resources.
+* EmuID <1>:                             VIC20 memconf resources.
+* EmuID:                                 C64 I/O extension resources.
+* FSDevice10ConvertP00:                  File system device resources.
+* FSDevice10Dir:                         File system device resources.
+* FSDevice10HideCBMFiles:                File system device resources.
+* FSDevice10SaveP00:                     File system device resources.
+* FSDevice11ConvertP00:                  File system device resources.
+* FSDevice11Dir:                         File system device resources.
+* FSDevice11HideCBMFiles:                File system device resources.
+* FSDevice11SaveP00:                     File system device resources.
+* FSDevice8ConvertP00:                   File system device resources.
+* FSDevice8Dir:                          File system device resources.
+* FSDevice8HideCBMFiles:                 File system device resources.
+* FSDevice8SaveP00:                      File system device resources.
+* FSDevice9ConvertP00:                   File system device resources.
+* FSDevice9Dir:                          File system device resources.
+* FSDevice9HideCBMFiles:                 File system device resources.
+* FSDevice9SaveP00:                      File system device resources.
+* HTMLBrowserCommand:                    Misc resources.
+* IEEE488:                               C64 I/O extension resources.
+* KeymapBusinessUKSymFile KeymapBusinessUKPosFile: Keyboard resources.
+* KeymapGraphicsSymFile KeymapGraphicsPosFile: Keyboard resources.
+* KeymapIndex:                           Keyboard resources.
+* KeymapPosFile:                         Keyboard resources.
+* KeymapSymFile:                         Keyboard resources.
+* MITSHM:                                Video resources.
+* NoTraps:                               No traps resources.
+* PaletteFile:                           VIC-II resources.
+* PrDevice1:                             Printer resources.
+* PrDevice2:                             Printer resources.
+* PrDevice3:                             Printer resources.
+* Printer4:                              Printer resources.
+* Printer4Dev:                           Printer resources.
+* PrivateColormap:                       Video resources.
+* PrUser:                                Printer resources.
+* PrUserDev:                             Printer resources.
+* RAMBlock0:                             VIC20 memconf resources.
+* RAMBlock1:                             VIC20 memconf resources.
+* RAMBlock2:                             VIC20 memconf resources.
+* RAMBlock3:                             VIC20 memconf resources.
+* RAMBlock5:                             VIC20 memconf resources.
+* RefreshRate:                           Performance resources.
+* REU:                                   C64 I/O extension resources.
+* RsDevice1:                             RS232 resources.
+* RsDevice1Baud:                         RS232 resources.
+* RsDevice2:                             RS232 resources.
+* RsDevice2Baud:                         RS232 resources.
+* RsDevice3:                             RS232 resources.
+* RsDevice3Baud:                         RS232 resources.
+* RsDevice4:                             RS232 resources.
+* RsDevice4Baud:                         RS232 resources.
+* RsUser:                                RS232 resources.
+* RsUserDev:                             RS232 resources.
+* SaveResourcesOnExit:                   Misc resources.
+* SidFilters:                            SID resources.
+* SidModel:                              SID resources.
+* SidUseResid:                           SID resources.
+* Sound:                                 Sound resources.
+* SoundBufferSize:                       Sound resources.
+* SoundDeviceArg:                        Sound resources.
+* SoundDeviceName:                       Sound resources.
+* SoundOversample:                       Sound resources.
+* SoundSampleRate:                       Sound resources.
+* SoundSpeedAdjustment:                  Sound resources.
+* SoundSuspendTime:                      Sound resources.
+* Speed:                                 Performance resources.
+* UseXSync:                              Video resources.
+* VideoCache:                            Video resources.
+* WarpMode:                              Performance resources.
+
+
