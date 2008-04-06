@@ -1,0 +1,426 @@
+# Makefile.in generated automatically by automake 1.4 from Makefile.am
+
+# Copyright (C) 1994, 1995-8, 1999 Free Software Foundation, Inc.
+# This Makefile.in is free software; the Free Software Foundation
+# gives unlimited permission to copy and/or distribute it,
+# with or without modifications, as long as this notice is preserved.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY, to the extent permitted by law; without
+# even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.
+
+
+SHELL = @SHELL@
+
+srcdir = @srcdir@
+top_srcdir = @top_srcdir@
+VPATH = @srcdir@
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+
+bindir = @bindir@
+sbindir = @sbindir@
+libexecdir = @libexecdir@
+datadir = @datadir@
+sysconfdir = @sysconfdir@
+sharedstatedir = @sharedstatedir@
+localstatedir = @localstatedir@
+libdir = @libdir@
+infodir = @infodir@
+mandir = @mandir@
+includedir = @includedir@
+oldincludedir = /usr/include
+
+DESTDIR =
+
+pkgdatadir = $(datadir)/@PACKAGE@
+pkglibdir = $(libdir)/@PACKAGE@
+pkgincludedir = $(includedir)/@PACKAGE@
+
+top_builddir = ../..
+
+ACLOCAL = @ACLOCAL@
+AUTOCONF = @AUTOCONF@
+AUTOMAKE = @AUTOMAKE@
+AUTOHEADER = @AUTOHEADER@
+
+INSTALL = @INSTALL@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@ $(AM_INSTALL_PROGRAM_FLAGS)
+INSTALL_DATA = @INSTALL_DATA@
+INSTALL_SCRIPT = @INSTALL_SCRIPT@
+transform = @program_transform_name@
+
+NORMAL_INSTALL = :
+PRE_INSTALL = :
+POST_INSTALL = :
+NORMAL_UNINSTALL = :
+PRE_UNINSTALL = :
+POST_UNINSTALL = :
+host_alias = @host_alias@
+host_triplet = @host@
+AR = @AR@
+ARCH_DIR = @ARCH_DIR@
+ARCH_INCLUDES = @ARCH_INCLUDES@
+ARCH_LIBS = @ARCH_LIBS@
+BINDIR = @BINDIR@
+CATALOGS = @CATALOGS@
+CATOBJEXT = @CATOBJEXT@
+CC = @CC@
+CPP = @CPP@
+CXX = @CXX@
+CXXCPP = @CXXCPP@
+DATADIRNAME = @DATADIRNAME@
+FULLSCREEN_DRIVERS = @FULLSCREEN_DRIVERS@
+GENCAT = @GENCAT@
+GMOFILES = @GMOFILES@
+GMSGFMT = @GMSGFMT@
+HAVE_READLINE = @HAVE_READLINE@
+INSTOBJEXT = @INSTOBJEXT@
+INTLDEPS = @INTLDEPS@
+INTLLIBS = @INTLLIBS@
+INTLOBJS = @INTLOBJS@
+JOY_OBJS = @JOY_OBJS@
+LDFLAGS = @LDFLAGS@
+LEX = @LEX@
+LIBOBJS = @LIBOBJS@
+LIBS = @LIBS@
+LINKCC = @LINKCC@
+LN_S = @LN_S@
+MAKEINFO = @MAKEINFO@
+MKINSTALLDIRS = @MKINSTALLDIRS@
+NLS_LOCALEDIR = @NLS_LOCALEDIR@
+PACKAGE = @PACKAGE@
+PERL = @PERL@
+POFILES = @POFILES@
+POSUB = @POSUB@
+RANLIB = @RANLIB@
+READLINE = @READLINE@
+RESID_DEP = @RESID_DEP@
+RESID_DIR = @RESID_DIR@
+RESID_INCLUDES = @RESID_INCLUDES@
+RESID_LIBS = @RESID_LIBS@
+SCREENSHOT_DRIVERS = @SCREENSHOT_DRIVERS@
+SOUND_AIX_OBJ = @SOUND_AIX_OBJ@
+SOUND_DRIVERS = @SOUND_DRIVERS@
+SOUND_HPUX_OBJ = @SOUND_HPUX_OBJ@
+SOUND_LIBS = @SOUND_LIBS@
+SOUND_MIDAS_OBJ = @SOUND_MIDAS_OBJ@
+SOUND_SDL_OBJ = @SOUND_SDL_OBJ@
+SOUND_SGI_OBJ = @SOUND_SGI_OBJ@
+SOUND_USS_OBJ = @SOUND_USS_OBJ@
+USE_INCLUDED_LIBINTL = @USE_INCLUDED_LIBINTL@
+USE_NLS = @USE_NLS@
+VERSION = @VERSION@
+WINDRES = @WINDRES@
+X128_WINRES = @X128_WINRES@
+X64_WINRES = @X64_WINRES@
+XCBM2_WINRES = @XCBM2_WINRES@
+XPET_WINRES = @XPET_WINRES@
+XVIC_WINRES = @XVIC_WINRES@
+YACC = @YACC@
+artsc_config = @artsc_config@
+cxx = @cxx@
+sdl_config = @sdl_config@
+x128_LDFLAGS = @x128_LDFLAGS@
+x64_LDFLAGS = @x64_LDFLAGS@
+xcbm2_LDFLAGS = @xcbm2_LDFLAGS@
+xpet_LDFLAGS = @xpet_LDFLAGS@
+xvic_LDFLAGS = @xvic_LDFLAGS@
+
+INCLUDES =  	@ARCH_INCLUDES@ 	-I$(top_builddir)/src 	-I$(top_srcdir)/src 	-I$(top_srcdir)/src/vdrive 	-I$(top_srcdir)/src/monitor
+
+
+noinst_LIBRARIES = libdrive.a
+
+libdrive_a_SOURCES =  	ciad.h 	cia1571d.c 	cia1581d.c 	drive-cmdline-options.c 	drive-cmdline-options.h 	drive-resources.c 	drive-resources.h 	drive-snapshot.c 	drive-snapshot.h 	drive.c 	drive.h 	drivecpu.c 	drivecpu.h 	drivemem.c 	drivemem.h 	drivetypes.h 	fdc.h 	fdc.c 	riot1d.c 	riot2d.c 	riotd.h 	via1d.c 	via2d.c 	viad.h 	wd1770.c 	wd1770.h
+
+mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+CONFIG_HEADER = ../../src/config.h
+CONFIG_CLEAN_FILES = 
+LIBRARIES =  $(noinst_LIBRARIES)
+
+
+DEFS = @DEFS@ -I. -I$(srcdir) -I../../src
+CPPFLAGS = @CPPFLAGS@
+X_CFLAGS = @X_CFLAGS@
+X_LIBS = @X_LIBS@
+X_EXTRA_LIBS = @X_EXTRA_LIBS@
+X_PRE_LIBS = @X_PRE_LIBS@
+libdrive_a_LIBADD = 
+libdrive_a_OBJECTS =  cia1571d.o cia1581d.o drive-cmdline-options.o \
+drive-resources.o drive-snapshot.o drive.o drivecpu.o drivemem.o fdc.o \
+riot1d.o riot2d.o via1d.o via2d.o wd1770.o
+CFLAGS = @CFLAGS@
+COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+CCLD = $(CC)
+LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(LDFLAGS) -o $@
+DIST_COMMON =  Makefile.am Makefile.in
+
+
+DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
+
+TAR = tar
+GZIP_ENV = --best
+SOURCES = $(libdrive_a_SOURCES)
+OBJECTS = $(libdrive_a_OBJECTS)
+
+all: all-redirect
+.SUFFIXES:
+.SUFFIXES: .S .c .o .s
+$(srcdir)/Makefile.in: Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
+	cd $(top_srcdir) && $(AUTOMAKE) --gnu --include-deps src/drive/Makefile
+
+Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
+	cd $(top_builddir) \
+	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+
+
+mostlyclean-noinstLIBRARIES:
+
+clean-noinstLIBRARIES:
+	-test -z "$(noinst_LIBRARIES)" || rm -f $(noinst_LIBRARIES)
+
+distclean-noinstLIBRARIES:
+
+maintainer-clean-noinstLIBRARIES:
+
+.c.o:
+	$(COMPILE) -c $<
+
+.s.o:
+	$(COMPILE) -c $<
+
+.S.o:
+	$(COMPILE) -c $<
+
+mostlyclean-compile:
+	-rm -f *.o core *.core
+
+clean-compile:
+
+distclean-compile:
+	-rm -f *.tab.c
+
+maintainer-clean-compile:
+
+libdrive.a: $(libdrive_a_OBJECTS) $(libdrive_a_DEPENDENCIES)
+	-rm -f libdrive.a
+	$(AR) cru libdrive.a $(libdrive_a_OBJECTS) $(libdrive_a_LIBADD)
+	$(RANLIB) libdrive.a
+
+tags: TAGS
+
+ID: $(HEADERS) $(SOURCES) $(LISP)
+	list='$(SOURCES) $(HEADERS)'; \
+	unique=`for i in $$list; do echo $$i; done | \
+	  awk '    { files[$$0] = 1; } \
+	       END { for (i in files) print i; }'`; \
+	here=`pwd` && cd $(srcdir) \
+	  && mkid -f$$here/ID $$unique $(LISP)
+
+TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) $(LISP)
+	tags=; \
+	here=`pwd`; \
+	list='$(SOURCES) $(HEADERS)'; \
+	unique=`for i in $$list; do echo $$i; done | \
+	  awk '    { files[$$0] = 1; } \
+	       END { for (i in files) print i; }'`; \
+	test -z "$(ETAGS_ARGS)$$unique$(LISP)$$tags" \
+	  || (cd $(srcdir) && etags $(ETAGS_ARGS) $$tags  $$unique $(LISP) -o $$here/TAGS)
+
+mostlyclean-tags:
+
+clean-tags:
+
+distclean-tags:
+	-rm -f TAGS ID
+
+maintainer-clean-tags:
+
+distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
+
+subdir = src/drive
+
+distdir: $(DISTFILES)
+	@for file in $(DISTFILES); do \
+	  d=$(srcdir); \
+	  if test -d $$d/$$file; then \
+	    cp -pr $$/$$file $(distdir)/$$file; \
+	  else \
+	    test -f $(distdir)/$$file \
+	    || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
+	    || cp -p $$d/$$file $(distdir)/$$file || :; \
+	  fi; \
+	done
+cia1571d.o: cia1571d.c ../../src/vice.h ../../src/config.h \
+	../../src/ciacore.h ../../src/alarm.h \
+	../../src/arch/unix/types.h ../../src/cia.h ../../src/log.h \
+	ciad.h drive.h drivecpu.h drivetypes.h ../../src/ciatimer.h \
+	../../src/snapshot.h ../../src/clkguard.h ../../src/interrupt.h \
+	../../src/6510core.h ../../src/mos6510.h ../../src/iecdrive.h \
+	../../src/ciacore.c
+cia1581d.o: cia1581d.c ../../src/vice.h ../../src/config.h \
+	../../src/ciacore.h ../../src/alarm.h \
+	../../src/arch/unix/types.h ../../src/cia.h ../../src/log.h \
+	ciad.h drive.h drivecpu.h drivetypes.h ../../src/ciatimer.h \
+	../../src/snapshot.h ../../src/clkguard.h ../../src/interrupt.h \
+	../../src/6510core.h ../../src/mos6510.h ../../src/iecdrive.h \
+	../../src/ciacore.c
+drive-cmdline-options.o: drive-cmdline-options.c ../../src/vice.h \
+	../../src/config.h ../../src/cmdline.h ../../src/resources.h \
+	drive.h ../../src/log.h ../../src/arch/unix/types.h
+drive-resources.o: drive-resources.c ../../src/vice.h ../../src/config.h \
+	drive-resources.h drive.h ../../src/log.h \
+	../../src/arch/unix/types.h drivecpu.h drivemem.h \
+	../../src/iecdrive.h ../../src/machine.h ../../src/resources.h \
+	../../src/utils.h ../../src/vdrive/vdrive-bam.h
+drive-snapshot.o: drive-snapshot.c ../../src/vice.h ../../src/config.h \
+	../../src/arch/unix/archdep.h ../../src/archapi.h \
+	../../src/attach.h ciad.h ../../src/arch/unix/types.h \
+	../../src/diskimage.h drive.h ../../src/log.h drivecpu.h \
+	drivemem.h fdc.h ../../src/gcr.h ../../src/iecdrive.h \
+	../../src/resources.h riotd.h ../../src/snapshot.h \
+	../../src/utils.h ../../src/vdrive/vdrive-bam.h \
+	../../src/vdrive/vdrive-snapshot.h ../../src/vdrive/vdrive.h \
+	viad.h wd1770.h ../../src/zfile.h
+drive.o: drive.c ../../src/vice.h ../../src/config.h ../../src/attach.h \
+	ciad.h ../../src/arch/unix/types.h ../../src/clkguard.h \
+	../../src/diskimage.h drive.h ../../src/log.h drivecpu.h \
+	drivetypes.h ../../src/alarm.h ../../src/ciatimer.h \
+	../../src/snapshot.h ../../src/interrupt.h ../../src/6510core.h \
+	../../src/mos6510.h fdc.h ../../src/gcr.h ../../src/iecdrive.h \
+	../../src/machine.h ../../src/parallel.h ../../src/resources.h \
+	riotd.h ../../src/serial.h ../../src/sysfile.h \
+	../../src/arch/unix/ui.h ../../src/uiapi.h \
+	../../src/arch/unix/x11/xaw/uiarch.h ../../src/utils.h \
+	../../src/vdrive/vdrive-bam.h ../../src/vdrive/vdrive.h viad.h \
+	wd1770.h
+drivecpu.o: drivecpu.c ../../src/vice.h ../../src/config.h \
+	../../src/6510core.h ../../src/arch/unix/types.h \
+	../../src/alarm.h ciad.h drive.h ../../src/log.h drivecpu.h \
+	drivemem.h drivetypes.h ../../src/ciatimer.h \
+	../../src/snapshot.h ../../src/clkguard.h ../../src/interrupt.h \
+	../../src/mos6510.h fdc.h ../../src/machine.h ../../src/mem.h \
+	../../src/monitor/mon.h ../../src/monitor/mon_breakpoint.h \
+	../../src/monitor/mon_disassemble.h riotd.h ../../src/utils.h \
+	viad.h wd1770.h ../../src/6510core.c
+drivemem.o: drivemem.c ../../src/vice.h ../../src/config.h ciad.h \
+	../../src/arch/unix/types.h drive.h ../../src/log.h \
+	drivetypes.h ../../src/alarm.h ../../src/ciatimer.h \
+	../../src/snapshot.h ../../src/clkguard.h ../../src/interrupt.h \
+	../../src/6510core.h ../../src/mos6510.h fdc.h \
+	../../src/monitor/mon.h riotd.h ../../src/utils.h viad.h \
+	wd1770.h
+fdc.o: fdc.c ../../src/vice.h ../../src/config.h ../../src/alarm.h \
+	../../src/arch/unix/types.h ../../src/diskimage.h drive.h \
+	../../src/log.h drivecpu.h drivetypes.h ../../src/ciatimer.h \
+	../../src/snapshot.h ../../src/clkguard.h ../../src/interrupt.h \
+	../../src/6510core.h ../../src/mos6510.h fdc.h \
+	../../src/vdrive/vdrive-bam.h ../../src/vdrive/vdrive.h
+riot1d.o: riot1d.c ../../src/riotcore.h ../../src/vice.h \
+	../../src/config.h ../../src/alarm.h \
+	../../src/arch/unix/types.h ../../src/log.h ../../src/riot.h \
+	../../src/interrupt.h ../../src/6510core.h drive.h drivecpu.h \
+	drivetypes.h ../../src/ciatimer.h ../../src/snapshot.h \
+	../../src/clkguard.h ../../src/mos6510.h ../../src/iecdrive.h \
+	../../src/parallel.h riotd.h ../../src/riotcore.c
+riot2d.o: riot2d.c ../../src/riotcore.h ../../src/vice.h \
+	../../src/config.h ../../src/alarm.h \
+	../../src/arch/unix/types.h ../../src/log.h ../../src/riot.h \
+	../../src/interrupt.h ../../src/6510core.h drive.h drivecpu.h \
+	drivetypes.h ../../src/ciatimer.h ../../src/snapshot.h \
+	../../src/clkguard.h ../../src/mos6510.h ../../src/iecdrive.h \
+	../../src/parallel.h riotd.h ../../src/riotcore.c
+via1d.o: via1d.c ../../src/vice.h ../../src/config.h ../../src/via.h \
+	drive.h ../../src/log.h ../../src/arch/unix/types.h drivecpu.h \
+	drivetypes.h ../../src/alarm.h ../../src/ciatimer.h \
+	../../src/snapshot.h ../../src/clkguard.h ../../src/interrupt.h \
+	../../src/6510core.h ../../src/mos6510.h ../../src/iecdrive.h \
+	../../src/parallel.h viad.h ../../src/viacore.c
+via2d.o: via2d.c ../../src/vice.h ../../src/config.h ../../src/via.h \
+	drive.h ../../src/log.h ../../src/arch/unix/types.h \
+	drivetypes.h ../../src/alarm.h ../../src/ciatimer.h \
+	../../src/snapshot.h ../../src/clkguard.h ../../src/interrupt.h \
+	../../src/6510core.h ../../src/mos6510.h viad.h \
+	../../src/viacore.c
+wd1770.o: wd1770.c ../../src/vice.h ../../src/config.h \
+	../../src/clkguard.h ../../src/arch/unix/types.h \
+	../../src/diskimage.h drive.h ../../src/log.h drivecpu.h \
+	drivetypes.h ../../src/alarm.h ../../src/ciatimer.h \
+	../../src/snapshot.h ../../src/interrupt.h ../../src/6510core.h \
+	../../src/mos6510.h ../../src/vdrive/vdrive.h wd1770.h
+
+info-am:
+info: info-am
+dvi-am:
+dvi: dvi-am
+check-am: all-am
+check: check-am
+installcheck-am:
+installcheck: installcheck-am
+install-exec-am:
+install-exec: install-exec-am
+
+install-data-am:
+install-data: install-data-am
+
+install-am: all-am
+	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
+install: install-am
+uninstall-am:
+uninstall: uninstall-am
+all-am: Makefile $(LIBRARIES)
+all-redirect: all-am
+install-strip:
+	$(MAKE) $(AM_MAKEFLAGS) AM_INSTALL_PROGRAM_FLAGS=-s install
+installdirs:
+
+
+mostlyclean-generic:
+
+clean-generic:
+
+distclean-generic:
+	-rm -f Makefile $(CONFIG_CLEAN_FILES)
+	-rm -f config.cache config.log stamp-h stamp-h[0-9]*
+
+maintainer-clean-generic:
+mostlyclean-am:  mostlyclean-noinstLIBRARIES mostlyclean-compile \
+		mostlyclean-tags mostlyclean-generic
+
+mostlyclean: mostlyclean-am
+
+clean-am:  clean-noinstLIBRARIES clean-compile clean-tags clean-generic \
+		mostlyclean-am
+
+clean: clean-am
+
+distclean-am:  distclean-noinstLIBRARIES distclean-compile \
+		distclean-tags distclean-generic clean-am
+
+distclean: distclean-am
+
+maintainer-clean-am:  maintainer-clean-noinstLIBRARIES \
+		maintainer-clean-compile maintainer-clean-tags \
+		maintainer-clean-generic distclean-am
+	@echo "This command is intended for maintainers to use;"
+	@echo "it deletes files that may require special tools to rebuild."
+
+maintainer-clean: maintainer-clean-am
+
+.PHONY: mostlyclean-noinstLIBRARIES distclean-noinstLIBRARIES \
+clean-noinstLIBRARIES maintainer-clean-noinstLIBRARIES \
+mostlyclean-compile distclean-compile clean-compile \
+maintainer-clean-compile tags mostlyclean-tags distclean-tags \
+clean-tags maintainer-clean-tags distdir info-am info dvi-am dvi check \
+check-am installcheck-am installcheck install-exec-am install-exec \
+install-data-am install-data install-am install uninstall-am uninstall \
+all-redirect all-am all installdirs mostlyclean-generic \
+distclean-generic clean-generic maintainer-clean-generic clean \
+mostlyclean distclean maintainer-clean
+
+
+# Tell versions [3.59,3.63) of GNU make to not export all variables.
+# Otherwise a system limit (for SysV at least) may be exceeded.
+.NOEXPORT:
