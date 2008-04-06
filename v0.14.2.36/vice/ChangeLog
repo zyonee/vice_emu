@@ -1,0 +1,51 @@
+Wed Jun 10 21:53:02 1998  Ettore Perazzoli  <ettore@comm2000.it>
+
+	* Version 0.14.2.35.
+
+Wed Jun 10 21:33:53 1998  Martin Pottendorfer  <Martin.Pottendorfer@aut.alcatel.at>
+
+	* configure.in: Check for `-lsocket', `-lSM' and `-lICE' if not
+ 	compiling for MS-DOS.
+
+Mon Jun  8 22:20:56 1998  Ettore Perazzoli  <ettore@comm2000.it>
+
+	* data/C128/vice.vkm: Renamed to `default.vkm'.
+
+	* data/VIC20/vice.vkm: Renamed to `default.vkm'.
+
+	* data/C64/vice.vkm: Renamed to `default.vkm'.
+
+	* data/C64/vice.vkm, data/VIC20/vice.vkm, data/C128/vice.vkm:
+ 	Fixed `backslash' to emulate non-shifted pound sign.
+
+Sun Jun  7 17:35:02 1998  Ettore Perazzoli  <ettore@comm2000.it>
+
+	* Version 0.14.2.34.
+
+Mon Jun  1 01:19:44 1998  Ettore Perazzoli  <ettore@comm2000.it>
+
+	* configure.in: Added `AC_FUNC_ALLOCA' test.
+
+Wed May 27 19:24:17 1998  Ettore Perazzoli  <ettore@comm2000.it>
+
+	* data/VIC20/Makefile.am: Install under
+ 	`$(prefix)/lib/vice/VIC20', not `$(prefix)/lib/VIC20'.
+
+	* data/PET/Makefile.am: Install under `$(prefix)/lib/vice/PET',
+	not `$(prefix)/lib/PET'.
+
+	* data/C128/Makefile.am: Install under `$(prefix)/lib/vice/C128',
+ 	not `$(prefix)/lib/C128'.
+
+	* data/C64/Makefile.am: Install under `$(prefix)/lib/vice/C64',
+	not `$(prefix)/lib/C64'.
+
+Sat May 23 14:06:56 1998  Ettore Perazzoli  <ettore@comm2000.it>
+
+	* configure.in: New cpp symbol `HAVE_READLINE', set if we use
+	`readline' or its lightweight replacement.
+
+	* configure.in: Handle `msdosdjgpp' as a host os string.  Put the
+ 	sound drivers to link in `@SOUND_DRIVERS@' instead of using
+ 	automake conditionals.
+
