@@ -1,0 +1,874 @@
+# Makefile.in generated automatically by automake 1.4 from Makefile.am
+
+# Copyright (C) 1994, 1995-8, 1999 Free Software Foundation, Inc.
+# This Makefile.in is free software; the Free Software Foundation
+# gives unlimited permission to copy and/or distribute it,
+# with or without modifications, as long as this notice is preserved.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY, to the extent permitted by law; without
+# even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.
+
+# We have to override the automake default, because we need to use
+# $(CXX) instead of $(CC) when compiling with reSID.
+
+
+SHELL = @SHELL@
+
+srcdir = @srcdir@
+top_srcdir = @top_srcdir@
+VPATH = @srcdir@
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+
+bindir = @bindir@
+sbindir = @sbindir@
+libexecdir = @libexecdir@
+datadir = @datadir@
+sysconfdir = @sysconfdir@
+sharedstatedir = @sharedstatedir@
+localstatedir = @localstatedir@
+libdir = @libdir@
+infodir = @infodir@
+mandir = @mandir@
+includedir = @includedir@
+oldincludedir = /usr/include
+
+DESTDIR =
+
+pkgdatadir = $(datadir)/@PACKAGE@
+pkglibdir = $(libdir)/@PACKAGE@
+pkgincludedir = $(includedir)/@PACKAGE@
+
+top_builddir = ..
+
+ACLOCAL = @ACLOCAL@
+AUTOCONF = @AUTOCONF@
+AUTOMAKE = @AUTOMAKE@
+AUTOHEADER = @AUTOHEADER@
+
+INSTALL = @INSTALL@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@ $(AM_INSTALL_PROGRAM_FLAGS)
+INSTALL_DATA = @INSTALL_DATA@
+INSTALL_SCRIPT = @INSTALL_SCRIPT@
+transform = @program_transform_name@
+
+NORMAL_INSTALL = :
+PRE_INSTALL = :
+POST_INSTALL = :
+NORMAL_UNINSTALL = :
+PRE_UNINSTALL = :
+POST_UNINSTALL = :
+host_alias = @host_alias@
+host_triplet = @host@
+AR = @AR@
+ARCH_DIR = @ARCH_DIR@
+ARCH_INCLUDES = @ARCH_INCLUDES@
+BINDIR = @BINDIR@
+CATALOGS = @CATALOGS@
+CATOBJEXT = @CATOBJEXT@
+CC = @CC@
+CPP = @CPP@
+CXX = @CXX@
+CXXCPP = @CXXCPP@
+DATADIRNAME = @DATADIRNAME@
+FULLSCREEN_DRIVERS = @FULLSCREEN_DRIVERS@
+GENCAT = @GENCAT@
+GMOFILES = @GMOFILES@
+GMSGFMT = @GMSGFMT@
+HAVE_READLINE = @HAVE_READLINE@
+INSTOBJEXT = @INSTOBJEXT@
+INTLDEPS = @INTLDEPS@
+INTLLIBS = @INTLLIBS@
+INTLOBJS = @INTLOBJS@
+JOY_OBJS = @JOY_OBJS@
+LDFLAGS = @LDFLAGS@
+LEX = @LEX@
+LIBOBJS = @LIBOBJS@
+LIBS = @LIBS@
+LINKCC = @LINKCC@
+LN_S = @LN_S@
+MAKEINFO = @MAKEINFO@
+MKINSTALLDIRS = @MKINSTALLDIRS@
+NLS_LOCALEDIR = @NLS_LOCALEDIR@
+PACKAGE = @PACKAGE@
+PERL = @PERL@
+POFILES = @POFILES@
+POSUB = @POSUB@
+RANLIB = @RANLIB@
+READLINE = @READLINE@
+RESID_DEP = @RESID_DEP@
+RESID_DIR = @RESID_DIR@
+RESID_INCLUDES = @RESID_INCLUDES@
+RESID_LIBS = @RESID_LIBS@
+SCREENSHOT_DRIVERS = @SCREENSHOT_DRIVERS@
+SOUND_AIX_OBJ = @SOUND_AIX_OBJ@
+SOUND_DRIVERS = @SOUND_DRIVERS@
+SOUND_HPUX_OBJ = @SOUND_HPUX_OBJ@
+SOUND_LIBS = @SOUND_LIBS@
+SOUND_MIDAS_OBJ = @SOUND_MIDAS_OBJ@
+SOUND_SDL_OBJ = @SOUND_SDL_OBJ@
+SOUND_SGI_OBJ = @SOUND_SGI_OBJ@
+SOUND_USS_OBJ = @SOUND_USS_OBJ@
+USE_INCLUDED_LIBINTL = @USE_INCLUDED_LIBINTL@
+USE_NLS = @USE_NLS@
+VERSION = @VERSION@
+WINDRES = @WINDRES@
+X128_WINRES = @X128_WINRES@
+X64_WINRES = @X64_WINRES@
+XCBM2_WINRES = @XCBM2_WINRES@
+XPET_WINRES = @XPET_WINRES@
+XVIC_WINRES = @XVIC_WINRES@
+YACC = @YACC@
+artsc_config = @artsc_config@
+cxx = @cxx@
+sdl_config = @sdl_config@
+
+LINK = @LINKCC@ $(CFLAGS) $(INCLUDES) $(CPPFLAGS) -o $@
+@HAVE_RS232_TRUE@rs232_ldadd = rsuser.o
+@HAVE_RS232_FALSE@rs232_ldadd = 
+
+ARCH_LIBS = @ARCH_LIBS@
+
+SUBDIRS =  	@RESID_DIR@ 	sounddrv 	drive 	vdrive 	raster 	vicii         vdc 	crtc 	screendrv 	sid 	monitor 	c64 	c128 	vic20 	pet 	cbm2 	arch
+
+
+INCLUDES =  	@ARCH_INCLUDES@ 	-I$(top_builddir)/src 	-I$(top_srcdir)/src 	-I$(top_srcdir)/src/drive 	-I$(top_srcdir)/src/vdrive 	-I$(top_srcdir)/src/monitor 
+
+
+noinst_HEADERS =  	6510core.h 	acia.h 	alarm.h 	archapi.h 	attach.h 	autostart.h 	cartridge.h 	charsets.h 	cia.h 	ciacore.h 	clkguard.h 	ciatimer.h 	cmdline.h 	color.h 	config.h.in 	console.h 	datasette.h 	diskimage.h 	emuid.h 	fixpoint.h 	findpath.h 	fsdevice.h 	fliplist.h 	fullscreen.h 	gcr.h 	iecdrive.h 	imagecontents.h 	info.h 	interrupt.h 	kbdbuf.h 	keyboard.h 	log.h 	machine.h 	maincpu.h 	mem.h 	mos6510.h 	p00.h 	palette.h 	parallel.h 	piacore.h 	prdevice.h 	print.h 	pruser.h 	resources.h 	riot.h 	riotcore.h 	romset.h 	rs232.h 	screenshot.h 	serial.h 	snapshot.h 	sound.h 	sysfile.h 	t64.h 	tap.h 	tape.h 	tpi.h 	tpicore.h 	traps.h 	uiapi.h 	uicolor.h 	uimon.h 	usleep.h 	utils.h 	version.h.in 	version.h 	via.h 	viacore.h 	vice.h 	video.h 	vsidui.h 	vsync.h 	vsyncapi.h 	z80regs.h 	zfile.h 	zipcode.h
+
+
+base_sources =  	alarm.c 	attach.c 	autostart.c 	charsets.c 	ciatimer.c 	clkguard.c 	cmdline.c 	color.c 	datasette.c 	diskimage.c 	emuid.c 	findpath.c 	fsdevice.c 	fliplist.c 	gcr.c 	info.c 	interrupt.c 	imagecontents.c 	kbdbuf.c 	keyboard.c 	log.c 	machine.c 	main.c 	p00.c 	palette.c 	parallel.c 	resources.c 	prdevice.c 	print.c 	pruser.c 	romset.c 	screenshot.c 	serial.c 	snapshot.c 	sound.c 	sysfile.c 	t64.c 	tap.c 	tape.c 	traps.c 	utils.c 	vsync.c 	zfile.c 	zipcode.c
+
+
+cpucore_sources =  	6510core.c
+
+
+maincpu_sources =  	maincpu.c
+
+
+rs232_sources =  	rsuser.c 	rsuser.h
+
+
+EXTRA_DIST =  	6510core.c 	ChangeLog 	ChangeLog.1 	ChangeLog.2 	ChangeLog.3 	aciacore.c 	ciacore.c 	fixpoint.c 	piacore.c 	riotcore.c 	tpicore.c 	viacore.c 	$(rs232_sources)
+
+
+c128_lib = $(top_builddir)/src/c128/libc128.a
+c64_lib = $(top_builddir)/src/c64/libc64.a
+c64c128_lib = $(top_builddir)/src/c64/libc64c128.a
+drive_lib = $(top_builddir)/src/drive/libdrive.a
+monitor_lib = $(top_builddir)/src/monitor/libmonitor.a
+pet_lib = $(top_builddir)/src/pet/libpet.a
+raster_lib = $(top_builddir)/src/raster/libraster.a
+sid_lib = $(top_builddir)/src/sid/libsid.a
+sounddrv_lib = $(top_builddir)/src/sounddrv/libsounddrv.a
+screendrv_lib = $(top_builddir)/src/screendrv/libscreendrv.a
+vdrive_lib = $(top_builddir)/src/vdrive/libvdrive.a
+vic20_lib = $(top_builddir)/src/vic20/libvic20.a
+vicii_lib = $(top_builddir)/src/vicii/libvicii.a
+vdc_lib = $(top_builddir)/src/vdc/libvdc.a
+crtc_lib = $(top_builddir)/src/crtc/libcrtc.a
+xcbm2_lib = $(top_builddir)/src/cbm2/libcbm2.a
+
+common_libs = $(rs232_ldadd) @ARCH_LIBS@ @LIBOBJS@ @READLINE@ @RESID_LIBS@ @SOUND_LIBS@
+
+bin_PROGRAMS = x64 x128 xvic xpet xcbm2 c1541 petcat
+
+EXTRA_PROGRAMS = 
+
+# x64
+x64_libs =  	@X64_WINRES@ 	$(c64_lib) 	$(drive_lib) 	$(vdrive_lib) 	$(sid_lib) 	$(sounddrv_lib)         $(screendrv_lib) 	$(vicii_lib) 	$(raster_lib) 	$(monitor_lib) 	$(common_libs)
+
+
+x64_SOURCES = $(base_sources) $(maincpu_sources)
+x64_LDADD = $(x64_libs) @X_LIBS@
+x64_DEPENDENCIES = $(x64_libs)
+x64_LDFLAGS = @x64_LDFLAGS@
+
+# x128
+x128_libs =  	@X128_WINRES@ 	$(c128_lib) 	$(c64c128_lib) 	$(drive_lib) 	$(vdrive_lib) 	$(sid_lib) 	$(sounddrv_lib)         $(screendrv_lib) 	$(vicii_lib) 	$(vdc_lib) 	$(raster_lib) 	$(monitor_lib) 	$(common_libs)
+
+
+x128_SOURCES = $(base_sources)
+x128_LDADD = $(x128_libs) @X_LIBS@
+x128_DEPENDENCIES = $(x128_libs)
+x128_LDFLAGS = @x128_LDFLAGS@
+
+# xvic
+xvic_libs =  	@XVIC_WINRES@ 	$(vic20_lib) 	$(drive_lib) 	$(vdrive_lib) 	$(sounddrv_lib)         $(screendrv_lib) 	$(raster_lib) 	$(monitor_lib) 	$(common_libs)
+
+
+xvic_SOURCES = $(base_sources) $(maincpu_sources)
+xvic_LDADD = $(xvic_libs) @X_LIBS@
+xvic_DEPENDENCIES = $(xvic_libs)
+xvic_LDFLAGS = @xvic_LDFLAGS@
+
+# xpet
+xpet_libs =  	@XPET_WINRES@ 	$(pet_lib) 	$(drive_lib) 	$(vdrive_lib) 	$(sounddrv_lib)         $(screendrv_lib) 	$(crtc_lib) 	$(raster_lib) 	$(monitor_lib) 	$(common_libs)
+
+
+xpet_SOURCES = $(base_sources) $(maincpu_sources)
+xpet_LDADD = $(xpet_libs) @X_LIBS@
+xpet_DEPENDENCIES = $(xpet_libs) 
+xpet_LDFLAGS = @xpet_LDFLAGS@
+
+# xcbm2
+xcbm2_libs =  	@XCBM2_WINRES@ 	$(xcbm2_lib) 	$(drive_lib) 	$(vdrive_lib) 	$(sounddrv_lib)         $(screendrv_lib) 	$(sid_lib) 	$(crtc_lib) 	$(vicii_lib) 	$(raster_lib) 	$(monitor_lib) 	$(common_libs)
+
+
+xcbm2_SOURCES = $(base_sources)
+xcbm2_LDADD = $(xcbm2_libs) @X_LIBS@
+xcbm2_DEPENDENCIES = $(xcbm2_libs) 
+xcbm2_LDFLAGS = @xcbm2_LDFLAGS@
+
+# c1541
+c1541_SOURCES =  	c1541.c 	charsets.c 	cmdline.c 	diskimage.c 	findpath.c 	gcr.c 	info.c 	log.c 	p00.c 	resources.c 	t64.c 	utils.c 	zfile.c 	zipcode.c
+
+
+# FIXME: I don't like linking `archdep.o' this way, but we cannot use
+# the generic `ARCH_LIBS', because we would have to link against X11
+# libs too then.
+c1541_LDADD =  	@ARCH_DIR@/archdep.o 	@ARCH_DIR@/uicmdline.o 	$(vdrive_lib) 	@READLINE@
+
+
+# petcat
+petcat_SOURCES =  	charsets.c 	cmdline.c 	findpath.c 	log.c 	p00.c 	petcat.c 	resources.c 	utils.c 	zfile.c 	zipcode.c
+
+
+petcat_LDADD =  	@ARCH_DIR@/archdep.o 	@ARCH_DIR@/uicmdline.o
+
+mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+CONFIG_HEADER = config.h
+CONFIG_CLEAN_FILES =  version.h
+PROGRAMS =  $(bin_PROGRAMS)
+
+
+DEFS = @DEFS@ -I. -I$(srcdir) -I.
+CPPFLAGS = @CPPFLAGS@
+X_CFLAGS = @X_CFLAGS@
+X_LIBS = @X_LIBS@
+X_EXTRA_LIBS = @X_EXTRA_LIBS@
+X_PRE_LIBS = @X_PRE_LIBS@
+x64_OBJECTS =  alarm.o attach.o autostart.o charsets.o ciatimer.o \
+clkguard.o cmdline.o color.o datasette.o diskimage.o emuid.o findpath.o \
+fsdevice.o fliplist.o gcr.o info.o interrupt.o imagecontents.o kbdbuf.o \
+keyboard.o log.o machine.o main.o p00.o palette.o parallel.o \
+resources.o prdevice.o print.o pruser.o romset.o screenshot.o serial.o \
+snapshot.o sound.o sysfile.o t64.o tap.o tape.o traps.o utils.o vsync.o \
+zfile.o zipcode.o maincpu.o
+x128_OBJECTS =  alarm.o attach.o autostart.o charsets.o ciatimer.o \
+clkguard.o cmdline.o color.o datasette.o diskimage.o emuid.o findpath.o \
+fsdevice.o fliplist.o gcr.o info.o interrupt.o imagecontents.o kbdbuf.o \
+keyboard.o log.o machine.o main.o p00.o palette.o parallel.o \
+resources.o prdevice.o print.o pruser.o romset.o screenshot.o serial.o \
+snapshot.o sound.o sysfile.o t64.o tap.o tape.o traps.o utils.o vsync.o \
+zfile.o zipcode.o
+xvic_OBJECTS =  alarm.o attach.o autostart.o charsets.o ciatimer.o \
+clkguard.o cmdline.o color.o datasette.o diskimage.o emuid.o findpath.o \
+fsdevice.o fliplist.o gcr.o info.o interrupt.o imagecontents.o kbdbuf.o \
+keyboard.o log.o machine.o main.o p00.o palette.o parallel.o \
+resources.o prdevice.o print.o pruser.o romset.o screenshot.o serial.o \
+snapshot.o sound.o sysfile.o t64.o tap.o tape.o traps.o utils.o vsync.o \
+zfile.o zipcode.o maincpu.o
+xpet_OBJECTS =  alarm.o attach.o autostart.o charsets.o ciatimer.o \
+clkguard.o cmdline.o color.o datasette.o diskimage.o emuid.o findpath.o \
+fsdevice.o fliplist.o gcr.o info.o interrupt.o imagecontents.o kbdbuf.o \
+keyboard.o log.o machine.o main.o p00.o palette.o parallel.o \
+resources.o prdevice.o print.o pruser.o romset.o screenshot.o serial.o \
+snapshot.o sound.o sysfile.o t64.o tap.o tape.o traps.o utils.o vsync.o \
+zfile.o zipcode.o maincpu.o
+xcbm2_OBJECTS =  alarm.o attach.o autostart.o charsets.o ciatimer.o \
+clkguard.o cmdline.o color.o datasette.o diskimage.o emuid.o findpath.o \
+fsdevice.o fliplist.o gcr.o info.o interrupt.o imagecontents.o kbdbuf.o \
+keyboard.o log.o machine.o main.o p00.o palette.o parallel.o \
+resources.o prdevice.o print.o pruser.o romset.o screenshot.o serial.o \
+snapshot.o sound.o sysfile.o t64.o tap.o tape.o traps.o utils.o vsync.o \
+zfile.o zipcode.o
+c1541_OBJECTS =  c1541.o charsets.o cmdline.o diskimage.o findpath.o \
+gcr.o info.o log.o p00.o resources.o t64.o utils.o zfile.o zipcode.o
+c1541_DEPENDENCIES =  @ARCH_DIR@/archdep.o @ARCH_DIR@/uicmdline.o \
+$(top_builddir)/src/vdrive/libvdrive.a
+c1541_LDFLAGS = 
+petcat_OBJECTS =  charsets.o cmdline.o findpath.o log.o p00.o petcat.o \
+resources.o utils.o zfile.o zipcode.o
+petcat_DEPENDENCIES =  @ARCH_DIR@/archdep.o @ARCH_DIR@/uicmdline.o
+petcat_LDFLAGS = 
+CFLAGS = @CFLAGS@
+COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+CCLD = $(CC)
+HEADERS =  $(noinst_HEADERS)
+
+DIST_COMMON =  ./stamp-h.in ChangeLog Makefile.am Makefile.in \
+config.h.in memcmp.c usleep.c version.h.in
+
+
+DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
+
+TAR = tar
+GZIP_ENV = --best
+SOURCES = $(x64_SOURCES) $(x128_SOURCES) $(xvic_SOURCES) $(xpet_SOURCES) $(xcbm2_SOURCES) $(c1541_SOURCES) $(petcat_SOURCES)
+OBJECTS = $(x64_OBJECTS) $(x128_OBJECTS) $(xvic_OBJECTS) $(xpet_OBJECTS) $(xcbm2_OBJECTS) $(c1541_OBJECTS) $(petcat_OBJECTS)
+
+all: all-redirect
+.SUFFIXES:
+.SUFFIXES: .S .c .o .s
+$(srcdir)/Makefile.in: Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
+	cd $(top_srcdir) && $(AUTOMAKE) --gnu --include-deps src/Makefile
+
+Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
+	cd $(top_builddir) \
+	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+
+
+config.h: stamp-h
+	@if test ! -f $@; then \
+		rm -f stamp-h; \
+		$(MAKE) stamp-h; \
+	else :; fi
+stamp-h: $(srcdir)/config.h.in $(top_builddir)/config.status
+	cd $(top_builddir) \
+	  && CONFIG_FILES= CONFIG_HEADERS=src/config.h \
+	     $(SHELL) ./config.status
+	@echo timestamp > stamp-h 2> /dev/null
+$(srcdir)/config.h.in: $(srcdir)/stamp-h.in
+	@if test ! -f $@; then \
+		rm -f $(srcdir)/stamp-h.in; \
+		$(MAKE) $(srcdir)/stamp-h.in; \
+	else :; fi
+$(srcdir)/stamp-h.in: $(top_srcdir)/configure.in $(ACLOCAL_M4) 
+	cd $(top_srcdir) && $(AUTOHEADER)
+	@echo timestamp > $(srcdir)/stamp-h.in 2> /dev/null
+
+mostlyclean-hdr:
+
+clean-hdr:
+
+distclean-hdr:
+	-rm -f config.h
+
+maintainer-clean-hdr:
+version.h: $(top_builddir)/config.status version.h.in
+	cd $(top_builddir) && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+
+mostlyclean-binPROGRAMS:
+
+clean-binPROGRAMS:
+	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
+
+distclean-binPROGRAMS:
+
+maintainer-clean-binPROGRAMS:
+
+install-binPROGRAMS: $(bin_PROGRAMS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(bindir)
+	@list='$(bin_PROGRAMS)'; for p in $$list; do \
+	  if test -f $$p; then \
+	    echo "  $(INSTALL_PROGRAM) $$p $(DESTDIR)$(bindir)/`echo $$p|sed 's/$(EXEEXT)$$//'|sed '$(transform)'|sed 's/$$/$(EXEEXT)/'`"; \
+	     $(INSTALL_PROGRAM) $$p $(DESTDIR)$(bindir)/`echo $$p|sed 's/$(EXEEXT)$$//'|sed '$(transform)'|sed 's/$$/$(EXEEXT)/'`; \
+	  else :; fi; \
+	done
+
+uninstall-binPROGRAMS:
+	@$(NORMAL_UNINSTALL)
+	list='$(bin_PROGRAMS)'; for p in $$list; do \
+	  rm -f $(DESTDIR)$(bindir)/`echo $$p|sed 's/$(EXEEXT)$$//'|sed '$(transform)'|sed 's/$$/$(EXEEXT)/'`; \
+	done
+
+.c.o:
+	$(COMPILE) -c $<
+
+.s.o:
+	$(COMPILE) -c $<
+
+.S.o:
+	$(COMPILE) -c $<
+
+mostlyclean-compile:
+	-rm -f *.o core *.core
+
+clean-compile:
+
+distclean-compile:
+	-rm -f *.tab.c
+
+maintainer-clean-compile:
+
+x64: $(x64_OBJECTS) $(x64_DEPENDENCIES)
+	@rm -f x64
+	$(LINK) $(x64_LDFLAGS) $(x64_OBJECTS) $(x64_LDADD) $(LIBS)
+
+x128: $(x128_OBJECTS) $(x128_DEPENDENCIES)
+	@rm -f x128
+	$(LINK) $(x128_LDFLAGS) $(x128_OBJECTS) $(x128_LDADD) $(LIBS)
+
+xvic: $(xvic_OBJECTS) $(xvic_DEPENDENCIES)
+	@rm -f xvic
+	$(LINK) $(xvic_LDFLAGS) $(xvic_OBJECTS) $(xvic_LDADD) $(LIBS)
+
+xpet: $(xpet_OBJECTS) $(xpet_DEPENDENCIES)
+	@rm -f xpet
+	$(LINK) $(xpet_LDFLAGS) $(xpet_OBJECTS) $(xpet_LDADD) $(LIBS)
+
+xcbm2: $(xcbm2_OBJECTS) $(xcbm2_DEPENDENCIES)
+	@rm -f xcbm2
+	$(LINK) $(xcbm2_LDFLAGS) $(xcbm2_OBJECTS) $(xcbm2_LDADD) $(LIBS)
+
+c1541: $(c1541_OBJECTS) $(c1541_DEPENDENCIES)
+	@rm -f c1541
+	$(LINK) $(c1541_LDFLAGS) $(c1541_OBJECTS) $(c1541_LDADD) $(LIBS)
+
+petcat: $(petcat_OBJECTS) $(petcat_DEPENDENCIES)
+	@rm -f petcat
+	$(LINK) $(petcat_LDFLAGS) $(petcat_OBJECTS) $(petcat_LDADD) $(LIBS)
+
+# This directory's subdirectories are mostly independent; you can cd
+# into them and run `make' without going through this Makefile.
+# To change the values of `make' variables: instead of editing Makefiles,
+# (1) if the variable is set in `config.status', edit `config.status'
+#     (which will cause the Makefiles to be regenerated when you run `make');
+# (2) otherwise, pass the desired values on the `make' command line.
+
+@SET_MAKE@
+
+all-recursive install-data-recursive install-exec-recursive \
+installdirs-recursive install-recursive uninstall-recursive  \
+check-recursive installcheck-recursive info-recursive dvi-recursive:
+	@set fnord $(MAKEFLAGS); amf=$$2; \
+	dot_seen=no; \
+	target=`echo $@ | sed s/-recursive//`; \
+	list='$(SUBDIRS)'; for subdir in $$list; do \
+	  echo "Making $$target in $$subdir"; \
+	  if test "$$subdir" = "."; then \
+	    dot_seen=yes; \
+	    local_target="$$target-am"; \
+	  else \
+	    local_target="$$target"; \
+	  fi; \
+	  (cd $$subdir && $(MAKE) $(AM_MAKEFLAGS) $$local_target) \
+	   || case "$$amf" in *=*) exit 1;; *k*) fail=yes;; *) exit 1;; esac; \
+	done; \
+	if test "$$dot_seen" = "no"; then \
+	  $(MAKE) $(AM_MAKEFLAGS) "$$target-am" || exit 1; \
+	fi; test -z "$$fail"
+
+mostlyclean-recursive clean-recursive distclean-recursive \
+maintainer-clean-recursive:
+	@set fnord $(MAKEFLAGS); amf=$$2; \
+	dot_seen=no; \
+	rev=''; list='$(SUBDIRS)'; for subdir in $$list; do \
+	  rev="$$subdir $$rev"; \
+	  test "$$subdir" = "." && dot_seen=yes; \
+	done; \
+	test "$$dot_seen" = "no" && rev=". $$rev"; \
+	target=`echo $@ | sed s/-recursive//`; \
+	for subdir in $$rev; do \
+	  echo "Making $$target in $$subdir"; \
+	  if test "$$subdir" = "."; then \
+	    local_target="$$target-am"; \
+	  else \
+	    local_target="$$target"; \
+	  fi; \
+	  (cd $$subdir && $(MAKE) $(AM_MAKEFLAGS) $$local_target) \
+	   || case "$$amf" in *=*) exit 1;; *k*) fail=yes;; *) exit 1;; esac; \
+	done && test -z "$$fail"
+tags-recursive:
+	list='$(SUBDIRS)'; for subdir in $$list; do \
+	  test "$$subdir" = . || (cd $$subdir && $(MAKE) $(AM_MAKEFLAGS) tags); \
+	done
+
+tags: TAGS
+
+ID: $(HEADERS) $(SOURCES) $(LISP)
+	list='$(SOURCES) $(HEADERS)'; \
+	unique=`for i in $$list; do echo $$i; done | \
+	  awk '    { files[$$0] = 1; } \
+	       END { for (i in files) print i; }'`; \
+	here=`pwd` && cd $(srcdir) \
+	  && mkid -f$$here/ID $$unique $(LISP)
+
+TAGS: tags-recursive $(HEADERS) $(SOURCES) config.h.in $(TAGS_DEPENDENCIES) $(LISP)
+	tags=; \
+	here=`pwd`; \
+	list='$(SUBDIRS)'; for subdir in $$list; do \
+   if test "$$subdir" = .; then :; else \
+	    test -f $$subdir/TAGS && tags="$$tags -i $$here/$$subdir/TAGS"; \
+   fi; \
+	done; \
+	list='$(SOURCES) $(HEADERS)'; \
+	unique=`for i in $$list; do echo $$i; done | \
+	  awk '    { files[$$0] = 1; } \
+	       END { for (i in files) print i; }'`; \
+	test -z "$(ETAGS_ARGS)config.h.in$$unique$(LISP)$$tags" \
+	  || (cd $(srcdir) && etags $(ETAGS_ARGS) $$tags config.h.in $$unique $(LISP) -o $$here/TAGS)
+
+mostlyclean-tags:
+
+clean-tags:
+
+distclean-tags:
+	-rm -f TAGS ID
+
+maintainer-clean-tags:
+
+distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
+
+subdir = src
+
+distdir: $(DISTFILES)
+	@for file in $(DISTFILES); do \
+	  d=$(srcdir); \
+	  if test -d $$d/$$file; then \
+	    cp -pr $$/$$file $(distdir)/$$file; \
+	  else \
+	    test -f $(distdir)/$$file \
+	    || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
+	    || cp -p $$d/$$file $(distdir)/$$file || :; \
+	  fi; \
+	done
+	for subdir in $(SUBDIRS); do \
+	  if test "$$subdir" = .; then :; else \
+	    test -d $(distdir)/$$subdir \
+	    || mkdir $(distdir)/$$subdir \
+	    || exit 1; \
+	    chmod 777 $(distdir)/$$subdir; \
+	    (cd $$subdir && $(MAKE) $(AM_MAKEFLAGS) top_distdir=../$(top_distdir) distdir=../$(distdir)/$$subdir distdir) \
+	      || exit 1; \
+	  fi; \
+	done
+alarm.o: alarm.c vice.h config.h alarm.h arch/unix/types.h log.h utils.h
+attach.o: attach.c vice.h config.h attach.h cmdline.h resources.h \
+	diskimage.h arch/unix/types.h drive/drive.h log.h drive/fdc.h \
+	fsdevice.h fliplist.h serial.h snapshot.h arch/unix/ui.h \
+	uiapi.h arch/unix/x11/xaw/uiarch.h utils.h vdrive/vdrive.h \
+	vdrive/vdrive-iec.h drive/wd1770.h
+autostart.o: autostart.c vice.h config.h arch/unix/archdep.h archapi.h \
+	autostart.h arch/unix/types.h attach.h charsets.h datasette.h \
+	drive/drive.h log.h fsdevice.h imagecontents.h interrupt.h \
+	6510core.h kbdbuf.h machine.h mem.h p00.h resources.h serial.h \
+	snapshot.h tape.h arch/unix/ui.h uiapi.h \
+	arch/unix/x11/xaw/uiarch.h utils.h vdrive/vdrive.h \
+	vdrive/vdrive-bam.h zfile.h
+c1541.o: c1541.c vice.h config.h arch/unix/archdep.h archapi.h \
+	charsets.h diskimage.h arch/unix/types.h gcr.h info.h log.h \
+	p00.h serial.h snapshot.h t64.h utils.h vdrive/vdrive-bam.h \
+	vdrive/vdrive-command.h vdrive/vdrive-dir.h vdrive/vdrive-iec.h \
+	vdrive/vdrive.h zipcode.h
+charsets.o: charsets.c vice.h config.h charsets.h log.h \
+	arch/unix/types.h
+ciatimer.o: ciatimer.c vice.h config.h alarm.h arch/unix/types.h \
+	ciatimer.h snapshot.h interrupt.h 6510core.h
+clkguard.o: clkguard.c vice.h config.h clkguard.h arch/unix/types.h \
+	utils.h
+cmdline.o: cmdline.c vice.h config.h arch/unix/archdep.h archapi.h \
+	cmdline.h resources.h arch/unix/types.h arch/unix/uicmdline.h \
+	utils.h
+color.o: color.c vice.h config.h log.h palette.h arch/unix/types.h \
+	uicolor.h utils.h
+datasette.o: datasette.c vice.h config.h alarm.h arch/unix/types.h \
+	clkguard.h cmdline.h resources.h datasette.h log.h machine.h \
+	maincpu.h 6510core.h tap.h arch/unix/ui.h uiapi.h \
+	arch/unix/x11/xaw/uiarch.h
+diskimage.o: diskimage.c vice.h config.h arch/unix/archdep.h archapi.h \
+	diskimage.h arch/unix/types.h gcr.h log.h tap.h utils.h \
+	vdrive/vdrive.h zfile.h
+emuid.o: emuid.c arch/unix/types.h vice.h config.h
+findpath.o: findpath.c vice.h config.h arch/unix/archdep.h archapi.h \
+	findpath.h utils.h arch/unix/types.h
+fliplist.o: fliplist.c vice.h config.h arch/unix/archdep.h archapi.h \
+	attach.h fliplist.h log.h utils.h arch/unix/types.h
+fsdevice.o: fsdevice.c vice.h config.h arch/unix/archdep.h archapi.h \
+	attach.h charsets.h cmdline.h resources.h fsdevice.h log.h \
+	p00.h arch/unix/types.h serial.h utils.h \
+	vdrive/vdrive-command.h vdrive/vdrive.h
+gcr.o: gcr.c vice.h config.h gcr.h arch/unix/types.h utils.h
+imagecontents.o: imagecontents.c vice.h config.h arch/unix/archdep.h \
+	archapi.h charsets.h diskimage.h arch/unix/types.h \
+	imagecontents.h serial.h t64.h utils.h vdrive/vdrive-bam.h \
+	vdrive/vdrive-dir.h vdrive/vdrive.h zfile.h
+info.o: info.c
+interrupt.o: interrupt.c vice.h config.h interrupt.h 6510core.h \
+	arch/unix/types.h log.h snapshot.h
+kbdbuf.o: kbdbuf.c vice.h config.h cmdline.h resources.h maincpu.h \
+	6510core.h arch/unix/types.h mem.h kbdbuf.h utils.h
+keyboard.o: keyboard.c vice.h config.h alarm.h arch/unix/types.h \
+	keyboard.h maincpu.h 6510core.h
+log.o: log.c vice.h config.h arch/unix/archdep.h archapi.h cmdline.h \
+	resources.h log.h utils.h arch/unix/types.h
+machine.o: machine.c machine.h mem.h arch/unix/types.h vice.h config.h \
+	arch/unix/ui.h uiapi.h arch/unix/x11/xaw/uiarch.h utils.h \
+	vsync.h
+main.o: main.c vice.h config.h arch/unix/archdep.h archapi.h attach.h \
+	autostart.h arch/unix/types.h cartridge.h charsets.h cmdline.h \
+	resources.h console.h diskimage.h drive/drive.h log.h \
+	drive/drivecpu.h fsdevice.h fullscreen.h arch/unix/videoarch.h \
+	arch/unix/x11/xaw/videoarch.h arch/unix/ui.h uiapi.h \
+	arch/unix/x11/xaw/uiarch.h arch/unix/x11/xaw/../videoarch.h \
+	interrupt.h 6510core.h arch/unix/joystick.h arch/unix/kbd.h \
+	kbdbuf.h keyboard.h machine.h maincpu.h arch/unix/main_exit.h \
+	palette.h sysfile.h screenshot.h tape.h utils.h vdrive/vdrive.h \
+	version.h video.h arch/unix/mouse.h
+maincpu.o: maincpu.c vice.h config.h 6510core.h arch/unix/types.h \
+	alarm.h clkguard.h interrupt.h log.h machine.h maincpu.h mem.h \
+	monitor/mon.h monitor/mon_breakpoint.h \
+	monitor/mon_disassemble.h mos6510.h snapshot.h traps.h \
+	6510core.c
+p00.o: p00.c vice.h config.h p00.h arch/unix/types.h vdrive/vdrive.h
+palette.o: palette.c vice.h config.h arch/unix/archdep.h archapi.h log.h \
+	palette.h arch/unix/types.h sysfile.h utils.h
+parallel.o: parallel.c vice.h config.h cmdline.h resources.h \
+	drive/drive.h log.h arch/unix/types.h drive/drivecpu.h \
+	maincpu.h 6510core.h parallel.h serial.h
+petcat.o: petcat.c vice.h config.h charsets.h p00.h arch/unix/types.h
+prdevice.o: prdevice.c vice.h config.h charsets.h cmdline.h resources.h \
+	log.h prdevice.h print.h arch/unix/types.h serial.h utils.h \
+	vdrive/vdrive.h
+print.o: print.c vice.h config.h arch/unix/archdep.h archapi.h cmdline.h \
+	resources.h print.h arch/unix/types.h utils.h
+pruser.o: pruser.c vice.h config.h cmdline.h resources.h print.h \
+	arch/unix/types.h pruser.h
+resources.o: resources.c vice.h config.h arch/unix/archdep.h archapi.h \
+	log.h resources.h utils.h arch/unix/types.h
+romset.o: romset.c vice.h config.h arch/unix/archdep.h archapi.h log.h \
+	mem.h arch/unix/types.h resources.h romset.h sysfile.h utils.h
+rsuser.o: rsuser.c vice.h config.h alarm.h arch/unix/types.h clkguard.h \
+	cmdline.h resources.h interrupt.h 6510core.h log.h maincpu.h \
+	rs232.h rsuser.h
+screenshot.o: screenshot.c vice.h config.h log.h machine.h palette.h \
+	arch/unix/types.h screenshot.h utils.h video.h \
+	arch/unix/videoarch.h arch/unix/x11/xaw/videoarch.h \
+	arch/unix/ui.h uiapi.h arch/unix/x11/xaw/uiarch.h \
+	arch/unix/x11/xaw/../videoarch.h
+serial.o: serial.c vice.h config.h attach.h drive/drive.h log.h \
+	arch/unix/types.h maincpu.h 6510core.h mem.h mos6510.h \
+	parallel.h prdevice.h serial.h traps.h utils.h vdrive/vdrive.h
+snapshot.o: snapshot.c vice.h config.h arch/unix/archdep.h archapi.h \
+	log.h snapshot.h arch/unix/types.h utils.h vsync.h zfile.h
+sound.o: sound.c vice.h config.h clkguard.h arch/unix/types.h cmdline.h \
+	resources.h fixpoint.h log.h machine.h maincpu.h 6510core.h \
+	sound.h arch/unix/ui.h uiapi.h arch/unix/x11/xaw/uiarch.h \
+	utils.h vsync.h
+sysfile.o: sysfile.c vice.h config.h arch/unix/archdep.h archapi.h \
+	cmdline.h resources.h findpath.h log.h sysfile.h \
+	arch/unix/types.h utils.h
+t64.o: t64.c vice.h config.h arch/unix/archdep.h archapi.h log.h t64.h \
+	arch/unix/types.h utils.h zfile.h
+tap.o: tap.c vice.h config.h arch/unix/archdep.h archapi.h datasette.h \
+	tap.h arch/unix/types.h utils.h zfile.h
+tape.o: tape.c vice.h config.h datasette.h log.h maincpu.h 6510core.h \
+	arch/unix/types.h mem.h mos6510.h serial.h t64.h tap.h tape.h \
+	traps.h uiapi.h utils.h zfile.h
+traps.o: traps.c vice.h config.h cmdline.h resources.h interrupt.h \
+	6510core.h arch/unix/types.h log.h maincpu.h mem.h mos6510.h \
+	parallel.h traps.h utils.h
+utils.o: utils.c vice.h config.h arch/unix/archdep.h archapi.h log.h \
+	utils.h arch/unix/types.h
+vsync.o: vsync.c vice.h config.h clkguard.h arch/unix/types.h cmdline.h \
+	resources.h log.h maincpu.h 6510core.h sound.h vsync.h \
+	vsyncapi.h
+zfile.o: zfile.c vice.h config.h arch/unix/archdep.h archapi.h log.h \
+	utils.h arch/unix/types.h zfile.h zipcode.h
+zipcode.o: zipcode.c vice.h config.h arch/unix/types.h zipcode.h
+
+info-am:
+info: info-recursive
+dvi-am:
+dvi: dvi-recursive
+check-am: all-am
+check: check-recursive
+installcheck-am:
+installcheck: installcheck-recursive
+all-recursive-am: config.h
+	$(MAKE) $(AM_MAKEFLAGS) all-recursive
+
+install-exec-am: install-binPROGRAMS
+install-exec: install-exec-recursive
+
+install-data-am:
+install-data: install-data-recursive
+
+install-am: all-am
+	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
+install: install-recursive
+uninstall-am: uninstall-binPROGRAMS
+uninstall: uninstall-recursive
+all-am: Makefile $(PROGRAMS) $(HEADERS) config.h
+all-redirect: all-recursive-am
+install-strip:
+	$(MAKE) $(AM_MAKEFLAGS) AM_INSTALL_PROGRAM_FLAGS=-s install
+installdirs: installdirs-recursive
+installdirs-am:
+	$(mkinstalldirs)  $(DESTDIR)$(bindir)
+
+
+mostlyclean-generic:
+
+clean-generic:
+
+distclean-generic:
+	-rm -f Makefile $(CONFIG_CLEAN_FILES)
+	-rm -f config.cache config.log stamp-h stamp-h[0-9]*
+
+maintainer-clean-generic:
+mostlyclean-am:  mostlyclean-hdr mostlyclean-binPROGRAMS \
+		mostlyclean-compile mostlyclean-tags \
+		mostlyclean-generic
+
+mostlyclean: mostlyclean-recursive
+
+clean-am:  clean-hdr clean-binPROGRAMS clean-compile clean-tags \
+		clean-generic mostlyclean-am
+
+clean: clean-recursive
+
+distclean-am:  distclean-hdr distclean-binPROGRAMS distclean-compile \
+		distclean-tags distclean-generic clean-am
+
+distclean: distclean-recursive
+
+maintainer-clean-am:  maintainer-clean-hdr maintainer-clean-binPROGRAMS \
+		maintainer-clean-compile maintainer-clean-tags \
+		maintainer-clean-generic distclean-am
+	@echo "This command is intended for maintainers to use;"
+	@echo "it deletes files that may require special tools to rebuild."
+
+maintainer-clean: maintainer-clean-recursive
+
+.PHONY: mostlyclean-hdr distclean-hdr clean-hdr maintainer-clean-hdr \
+mostlyclean-binPROGRAMS distclean-binPROGRAMS clean-binPROGRAMS \
+maintainer-clean-binPROGRAMS uninstall-binPROGRAMS install-binPROGRAMS \
+mostlyclean-compile distclean-compile clean-compile \
+maintainer-clean-compile install-data-recursive \
+uninstall-data-recursive install-exec-recursive \
+uninstall-exec-recursive installdirs-recursive uninstalldirs-recursive \
+all-recursive check-recursive installcheck-recursive info-recursive \
+dvi-recursive mostlyclean-recursive distclean-recursive clean-recursive \
+maintainer-clean-recursive tags tags-recursive mostlyclean-tags \
+distclean-tags clean-tags maintainer-clean-tags distdir info-am info \
+dvi-am dvi check check-am installcheck-am installcheck all-recursive-am \
+install-exec-am install-exec install-data-am install-data install-am \
+install uninstall-am uninstall all-redirect all-am all installdirs-am \
+installdirs mostlyclean-generic distclean-generic clean-generic \
+maintainer-clean-generic clean mostlyclean distclean maintainer-clean
+
+
+.PHONY: x64-all
+x64-all: \
+	@RESID_DEP@ \
+	libc64 \
+	libdrive \
+	libvdrive \
+	libraster \
+	libsid \
+	libsounddrv \
+        libscreendrv \
+	libvicii \
+	libarch \
+	libmonitor \
+	x64
+
+.PHONY: x128-all
+x128-all: \
+	libc128 \
+	libc64c128 \
+	libsounddrv \
+        libscreendrv \
+	libdrive \
+	libvdrive \
+	libarch \
+	libsid \
+	libvicii \
+	libvdc \
+	libraster \
+	libmonitor \
+	@RESID_DEP@ \
+	x128
+
+.PHONY: xvic-all
+xvic-all: \
+	libdrive \
+	libvdrive \
+	libraster \
+	libsounddrv \
+        libscreendrv \
+	libvic20 \
+	libarch \
+	libmonitor \
+	xvic
+
+.PHONY: xpet-all
+xpet-all: \
+	libdrive \
+	libvdrive \
+	libraster \
+	libcrtc \
+	libsounddrv \
+        libscreendrv \
+	libpet \
+	libarch \
+	libmonitor \
+	xpet 
+
+.PHONY: xcbm2-all
+xcbm2-all: \
+	libcbm2 \
+	libsounddrv \
+        libscreendrv \
+	libarch \
+	libsid \
+	@RESID_DEP@ \
+	libdrive \
+	libvdrive \
+	libraster \
+	libcrtc \
+	libvicii \
+	libmonitor \
+	xcbm2
+
+# Special targets to build libraries in subdirectories.
+
+.PHONY: libc64 libc128 libvic20 libpet libcbm2 libdrive libvdrive libsounddrv \
+	libarch libvicii libvdc libsid libcrtc @RESID_DEP@
+
+libarch:
+	(cd arch && $(MAKE))
+libc128:
+	(cd c128 && $(MAKE))
+libc64:
+	(cd c64 && $(MAKE) libc64.a)
+libc64c128:
+	(cd c64 && $(MAKE) libc64c128.a)
+libcbm2:
+	(cd cbm2 && $(MAKE))
+libdrive:
+	(cd drive && $(MAKE))
+libpet:
+	(cd pet && $(MAKE))
+libraster:
+	(cd raster && $(MAKE))
+libresid:
+	(cd resid && $(MAKE))
+libsid:
+	(cd sid && $(MAKE))
+libsounddrv:
+	(cd sounddrv && $(MAKE))
+libscreendrv:
+	(cd screendrv && $(MAKE))
+libvdrive:
+	(cd vdrive && $(MAKE))
+libvic20:
+	(cd vic20 && $(MAKE))
+libvicii:
+	(cd vicii && $(MAKE))
+libvdc:
+	(cd vdc && $(MAKE))
+libcrtc:
+	(cd crtc && $(MAKE))
+libmonitor:
+	(cd monitor && $(MAKE))
+
+# Tell versions [3.59,3.63) of GNU make to not export all variables.
+# Otherwise a system limit (for SysV at least) may be exceeded.
+.NOEXPORT:
