@@ -1,0 +1,27 @@
+# -*-text-*-
+#
+# Vice/Gnome
+#
+# maintained by Martin.Pottendorfer@alcatel.at
+#
+# This is a list for me to gather already identified problems. It's not 
+# systematic and probably not complete! 
+# If you find something missing, let me know...
+#
+
+Missing features
+- Drag'n'Drop support
+- Session Management
+
+Known Bugs (help is appreciated !):
+- x128 gives a GTK warning because topmenu is reused. However this seems not
+  to be a problem.
+- Gnome commandline is ignored.
+- Get font from X Resource database for textwindows/CBM font preview windows.
+
+Things, which will change (don't ask when!):
+- Tape status widget (.TAP vs .t64) handling is lousy.
+- Monitor GUI
+- VIC20 Cartridge attach heuristic for image pairs
+- More standard Gnome'ish toplevel menus.
+
