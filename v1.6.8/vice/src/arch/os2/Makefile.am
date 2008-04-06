@@ -1,0 +1,88 @@
+# Makefile.am for the OS2 version of `libarch.a'.
+
+SUBDIRS = snippets vac++ kbd dialogs ui 
+
+INCLUDES = \
+	@ARCH_INCLUDES@ \
+	-I$(top_builddir)/src \
+	-I$(top_srcdir)/src \
+	-I$(top_srcdir)/src/drive \
+	-I$(top_srcdir)/src/monitor
+
+noinst_LIBRARIES = libarch.a
+
+libarch_a_SOURCES = \
+	archdep.c \
+	archdep.h \
+	config.h \
+	console.c \
+	joystick.c \
+	joystick.h \
+	kbd.c \
+	kbd.h \
+	main_exit.c \
+	main_exit.h \
+        makedist.cmd \
+        mouse.c \
+        mouse.h \
+	rs232.c \
+	signals.h \
+	sounddrv.c \
+	sounddrv.h \
+	types.h \
+	ui.c \
+	ui.h \
+	ui_status.h \
+	uicmdline.c \
+	uicmdline.h \
+	uimon.c \
+	video.c \
+	videoarch.h \
+	vsidui.c \
+	vsyncarch.c
+
+EXTRA_DIST = \
+	vice.def \
+	install.cmd \
+	makedist.cmd \
+	makeclean.cmd \
+	unused/pm/winaddon.c \
+	unused/pm/winaddon.h \
+	unused/pm/scrollbars.c \
+	unused/pm/scrollbars.h \
+	unused/contentsdlg.c \
+	unused/contentsdlg.h \
+	unused/video_gpi.h \
+	unused/video_gpi.c \
+	unused/pm_cmdline.c \
+	unused/pm_cmdline.h \
+	unused/vsync.c \
+	unused/vsync.h \
+	unused/ui_status.c \
+        unused/dlg-contents.c \
+	icons/folder.pal \
+	icons/folder1.ico \
+	icons/folder2.ico \
+	icons/x64.ico \
+	icons/xpet.ico \
+        icons/xvic.ico \
+	icons/x128.ico \
+	icons/xcbm2.ico \
+	icons/c1541.ico \
+	icons/check.ico \
+	icons/info.ico \
+ 	icons/note.ico \
+        icons/skull.ico \
+	texi2ipf/readme \
+	texi2ipf/texi2ipf.exe \
+	texi2ipf/texi2ipf.INF \
+	doc/Vice_for_OS2.txt \
+	fonts/bdf2fnt.cc \
+	fonts/bdf2fnt.icc \
+	fonts/chargen2fnt.cc \
+	fonts/chargen2fnt.icc \
+	fonts/vice-cbm.cmd \
+	fonts/vice2.asm \
+	fonts/vice2.def \
+	fonts/vice2.rc
+
