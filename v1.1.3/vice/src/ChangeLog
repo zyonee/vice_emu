@@ -1,0 +1,3524 @@
+1999-09-07  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.1.3.
+
+	* c128/z80.c, c128/z80.h (z80_reset): New function.
+	Added lots of opcodes.
+
+	* c128mem.c (machine_reset): Reset Z80 emulation.
+
+	* arch/win32/uiattach.c (dialog_proc): Added D80 and D82 disk
+	images.
+
+1999-09-05  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.1.2.
+
+	* c128/z80.c (z80_mainloop, z80mem_read_base,
+	z80mem_read_limit, opcode_ed): Z80 core implementation.
+
+	* c128/z80mem.h: Memory pointers have to be extern.
+
+	* c128/z80mem.c (z80mem_initialize): Bank MMU to 0xff page.
+	Added IN/OUT memory space.
+	(mem_load): Removed Z80 startup hack.
+
+	* c128/c128mmu.c (mmu_read, mmu_store): Added some debugging
+	output.
+	(mmu_switch_cpu): Switch off Z80 if 8502 gets control.
+	(mmu_init): Activate Z80 on startup.
+
+	* 6510core.c (DO_INTERRUPT): Activate DMA on reset if defined.
+	* maincpu.c, c128/c128cpu.c, drive/drivecpucore.c: Changed
+	likewise.
+
+	* vdc/vdc-draw.c (draw_std_text): Removed debugging cruft.
+
+1999-09-05  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.1.1.
+
+	* imagecontents.c (image_contents_read_disk): Always copy all
+	16 bytes of the filename.
+	(image_contents_to_string): Convert the raw 16 char filename
+	to printable string here.
+
+	* vdrive/vdrive.c (vdrive_parse_name): Do not use string
+	functions on CBM filenames as they can contain `\0'.
+
+	* drive/drive.c (drive_init): Check for drive ROM.
+
+	* c128mmu.c (mmu_switch_cpu): New function.
+	(mmu_init): Initialize current CPU.  Use own logging system.
+	(mmu_set_ram_bank): New function.
+
+	* c128/c128cpu.c: Define `DMA_FUNC'.
+
+	* 6510core.c (DO_INTERRUPT): Switch to other bus master DMA
+	hosts like z80 CPU if `IK_DMA' is set.
+
+	* interrupt.h (set_dma, ack_dma): New functions.
+
+	* maincpu.c: If `DMA_FUNC' is not defined some generic DMA is
+	used.  (maincpu_generic_dma): New function.
+	* drive/drivecpucore.c: Changed likewise.
+
+	* c128/z80.c, c128/z80.h, c128/z80mem.c, c128/z80mem.h: New
+	files.
+
+	* c128/Makefile.am: Added new files.
+
+	* c128/c128mem.c (mem_set_ram_bank): Removed.
+
+	* c128/c128mem.h: `ram_bank' is extern now.
+
+	* romset.c, maincpu.h, cbm2/crtc.c, cbm2/c610cpu.c,
+	arch/unix/xaw/widgets/FileSel.c,
+	arch/unix/xaw/widgets/DirMgr.c,
+	arch/unix/xaw/widgets/RegExp.c, arch/unix/readline/editline.h:
+	Include "vice.h".
+
+1999-08-31  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.1.
+
+	* vicii/vicii.c (vic_ii_raster_draw_alarm_handler) [__MSDOS__]:
+	Pass canvas and color value to `canvas_set_border_color'.
+	Only set border color if this canvas is displayed.
+
+	* vdc/vdc.c (vdc_raster_draw_alarm_handler) [__MSDOS__]: Call
+	`canvas_set_border_color'.  Only set border color if this
+	canvas is displayed.
+	(init_raster): Initialize border color.
+
+1999-08-31  Tibor Biczo  <crown@mail.matav.hu>
+
+	* arch/win32/res.h (IDC_SELECT_DRIVE_TYPE_1001)
+	  (IDC_SELECT_DRIVE_TYPE_8050) (IDC_SELECT_DRIVE_TYPE_8250):
+	  New commands for extra drive types.
+
+	* arch/win32/res.rc (IDD_DRIVE_SETTINGS_DIALOG): Added radio
+	  buttons for extra drive types.
+
+	* arch/win32/uidrive.c (init_dialog) (dialog_proc): Added code
+	  to handle extra drive types.
+
+	* arch/win32/video.c (frame_buffer_alloc) (frame_buffer_free)
+	  (frame_buffer_clear) (canvas_refresh): Changed frame_buffer
+	  organization into linear buffer.
+
+	* arch/win32/video.h (_frame_buffer): Frame buffer is now
+	  one linear memory buffer.
+	  (FRAME_BUFFER_LINE_START): Updated macro.
+
+1999-08-30  Ettore Perazzoli  <ettore@comm2000.it>
+
+	* vicii/vicii.c (vic_ii_raster_draw_alarm_handler) [__MSDOS__]:
+	Set the border color if the viewport is smaller than the screen
+	graphics area.
+
+1999-08-29  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.65.
+
+	* info.c: Added Dirk Farin.
+
+	* maincpu.c: Do not define `TRACE'.
+
+	* c128/c128iec.c (iec_fast_cpu_write, iec_fast_drive_write):
+	Do not use fast IEC for now.
+
+1999-08-29  Ettore Perazzoli  <ettore@comm2000.it>
+
+	* ciacore.c (mycia_read_snapshot_module): Reset first.
+
+	* vicii/vicii.c (vic_ii_prepare_for_snapshot): Unset the raster
+	IRQ alarm as well.
+	(vic_ii_set_raster_irq): Always recalculate the raster IRQ alarm
+	if currently not set.
+
+1999-08-26  Tibor Biczo  <crown@mail.matav.hu>
+
+	* arch/win32/c128ui.c (c128_ui_menu_toggles) (SidType)
+	  (c128_ui_res_values): New structs for c128 specific resource
+	  dependant menu entries.
+	  (c128_ui_init): Register above structs for UI.
+
+	* arch/win32/c610ui.c (cbm2_ui_menu_toggles) (SidType)
+	  (cbm2_ui_res_values): New structs for cbm2 specific resource
+	  dependant menu entries.
+	  (c610_ui_init): Register above structs for UI.
+
+	* arch/win32/c64ui.c (c64_ui_menu_toggles) (SidType)
+	  (c64_ui_res_values): New structs for c64 specific resource
+	  dependant menu entries.
+	  (c64_ui_init): Register above structs for UI.
+
+	* arch/win32/petui.c (pet_ui_menu_toggles): New struct for pet
+	  specific resource dependant menu entries.
+	  (pet_ui_init): Register above struct for UI.
+
+	* arch/win32/ui.c (toggle_list): Changed type of struct. Removed
+	  machine specific entries.
+	  (res_possible_values): Removed typedef.
+	  (RefreshRateValues) (SpeedValues) (SyncFactor): Changed type of
+	  struct.
+	  (SidType): Removed array. Moved into machine specific modules.
+	  (value_list): Changed type of struct. Removed machine specific
+	  entries.
+	  (led_red) (led_green) (led_black): New variables.
+	  (ui_init): Create Brushes for drive leds.
+	  (machine_specific_toggles) (machine_specific_values): New variables.
+	  (ui_register_menu_toggles): New function. Registers machine
+	  specific resource menu toggle entries.
+	  (ui_register_res_values): New function. Registers machine specific
+	  menu entries with multiple state.
+	  (update_menus): Handle machine specific entries.
+	  (handle_wm_command): Handle machine specific toggle menus.
+	  (window_proc): Use led_* variables when drawing drive leds.
+
+	* arch/win32/ui.h (ui_menu_toggle) (ui_res_possible_values)
+	  (ui_res_value_list): New typedefs.
+	  (ui_register_menu_toggles) (ui_register_res_values): New prototypes.
+
+	* arch/win32/vic20ui.c (vic20_ui_menu_toggles): New struct for vic20
+	  specific resource dependant menu entries.
+	  (vic20_ui_init): Register above for UI.
+
+1999-08-25  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.64.
+
+	* zfile.c (try_uncompress_zipcode): Only check the first two
+	bytes of a disk image if there is a valid file name.
+
+1999-08-24  Tibor Biczo  <crown@mail.matav.hu>
+
+	* arch/win32/c128kbd.c: Bind Run/Stop to ESC key.
+
+	* arch/win32/c610kbd.c: Bind Run/Stop to ESC key.
+
+	* arch/win32/c64kbd.c: Bind Run/Stop to ESC key.
+
+	* arch/win32/petkbd.c: Bind Run/Stop to ESC key for 3032/4032 models.
+	  Bind ESC to ESC key for 8032 models.
+
+	* arch/win32/vic20kbd.c: Bind Run/Stop to ESC key.
+
+1999-08-25  Ettore Perazzoli  <ettore@comm2000.it>
+
+	* raster/raster.c (update_for_minor_changes_with_sprites): Draw
+	sprites after drawing the area between the border and the start of
+	active graphics.  Moreover, avoid fixing the border if it is
+	redrawn from scratch because of sprites anyway.
+
+1999-08-23  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.63.
+
+	* arch/win32/uisnapshot.c (ui_snapshot_save_dialog_proc): Add
+	".vsf" to the snapshot name if not present.
+
+1999-08-23  Tibor Biczo  <crown@mail.matav.hu>
+
+	* arch/win32/archdep.c (archdep_make_backup_filename): Fixed, it
+	  wasn't working right due to a 8.3 file naming convention.
+
+	* arch/win32/res.h: Added identifiers for Swap joystick, and Emulator
+	  identificator menu entries.
+
+	* arch/win32/resc128.rc, arch/win32/resc64.rc, arch/win32/rescbm2.rc,
+	  arch/win32/respet.rc, arch/win32/resvic.rc: Added Swap joystick,
+	  and Emulator identificator menu entries.
+
+	* arch/win32/ui.c: Added EmuID to the list of togglable resource
+	  entries. Added accelerator key for Swap joystick menu entry.
+	  (handle_wm_command): Handle Swap joystick menu entry.
+
+	* arch/win32/uijoystick.c (ui_joystick_swap_joystick): New function.
+	  Swaps joysticks.
+
+	* arch/win32/uijoystick.h (ui_joystick_swap_joystick): New prototype.
+
+	* arch/win32/video.c (canvas_update): Fixed a bug which caused
+	  bad memory accesses. The pointer used was not always valid.
+	  (canvas_refresh): Don't cache framebuffer addresses, always use
+	  the one from the raster struct.
+	
+	* arch/win32/video.h (canvas_t): Removed framebuffer pointer.
+
+	* fsdevice.c (flush_fs): Call unlink before rename calls on WIN32.
+
+	* resources.c (resources_save): Same as above.
+
+	* utils.c (make_backup_file): Same as above.
+	  (get_line): Delete all newline characters from end of lines, both
+	  0x0d and 0x0a chars.
+
+	* zfile.c (compress): Call unlink before rename calls on WIN32.
+
+1999-08-22  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+        * Version 1.0.62.
+
+	* c64/c64.c, c128/c128.c, vic20/vic20.c (machine_init):
+	Initialize IEC bus.
+
+	* iecdrive.h, c64/c64iec.c, c128/c128iec.c, vic20/vic20iec.c
+	(iec_init): New function.
+
+	* vic20/vic20iec.c (iec_calculate_data_modifier,
+	iec_calculate_data_modifier2): New functions.
+
+	* diskimage.c: Exclude `sys/types.h' for RISC/OS.
+
+1999-08-17  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.61.
+
+1999-08-16  Tibor Biczo  <crown@mail.matav.hu>
+
+	* arch/win32/Makefile.am: Added raster to include directories.
+
+	* arch/win32/arch.dsp: Added raster to include directories.
+
+	* arch/win32/msvc/config.h (MSVC_RC): Added definitions.
+
+	* arch/win32/resh.h: Added IDM_TOGGLE_CRTCDOUBLESIZE,
+	  IDM_TOGGLE_CRTCDOUBLESCAN, IDM_TOGGLE_CRTCVIDEOCACHE definitions.
+
+	* arch/win32/res.rc: Fixed about box, when using MSVC's Resource
+	  Compiler.
+
+	* arch/win32/rescbm2.rc, arch/win32/respet.rc: Updated Video Cahce,
+	  Double Size, Double Scan menu entries.
+
+	* arch/win32/ui.c (toggle_list): Added CRTC values for VideoCache,
+	  DoubleSize, DoubleScan.
+	  (window_proc): Handle WM_SYSKEYDOWN, WM_SYSKEYUP to intercept
+	  F10 keypresses.
+	  Call canvas_update instead of exposure_handler in WM_PAINT.
+
+	* arch/win32/uilib.c (hook_proc): Override Open button to Attach
+	  button when building the dialog box with content viewer enabled.
+
+	* arch/win32/video.c: Include "raster.h".
+	  Removed main_fbuff and main_canvas variables.
+	  Added video_number_of_canvases and video_canvases variables.
+	  Added raster_cache and number_of_rasters variables.
+	  (video_register_raster): New function to import raster data.
+	  (find_raster_for_canvas): New function, finds raster data for
+	  canvas.
+	  (canvas_find_canvas_for_hwnd): New function, finds canvas for
+	  window handle.
+	  (clear): New function, clears area to black.
+	  (canvas_update): New function, updates screen from framebuffer.
+	  (canvas_refresh): Stores framebuffer for canvas.
+
+	* arch/win32/video.h (canvas_t): Added framebuffer pointer to struct.
+	  (canvas_update): Added prototype.
+
+	* crtc/crtc.c (crtc_resize): Call raster_set_pixel_size before
+	  calling raster_resize_viewport.
+
+	* raster/raster.c (raster_init) (raster_new): Call
+	  video_register_raster when compiling for Windows. This is a
+	  WORKAROUND.
+
+	* vdc/vdc.c (vdc_resize): Call raster_set_pixel_size before
+	  calling raster_resize_viewport.
+
+	* vic20/vic.c (vic_resize): Call raster_set_pixel_size before
+	  calling raster_resize_viewport.
+
+	* vicii/vicii.c (vic_ii_resize): Call raster_set_pixel_size before
+	  calling raster_resize_viewport.
+
+1999-08-16  Ettore Perazzoli  <ettore@comm2000.it>
+
+	* raster/raster.c (update_for_minor_changes_with_sprites): Ooops.
+	Always draw sprites over the graphics when graphics has changed,
+	even if sprites have not.
+
+1999-08-15  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.60.
+
+	* c64/c64mem.c (initialize_memory): Initialize CPU port with
+	`0'.
+
+	* vic20/vic.c (exposure_handler): Renamed to
+	`vic_exposure_handler'.
+
+	* vic20/vic.h: Removed `exposure_handler'.
+
+	* vic20/vic-resources.c (set_double_scan_enabled): Notify the
+	raster code.
+
+1999-08-15  Ettore Perazzoli  <ettore@comm2000.it>
+ 
+	* raster/raster.c (handle_blank_line): Draw one more pixel on the
+	right for double-scan lines in the upper/lower borders.
+ 
+1999-08-11  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+  
+  	* Version 1.0.59.
+
+1999-08-11  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.59.
+
+	* drive/drive.c: Name of 1541-II firmware is `d1541II'.
+
+	* sounddrv/Makefile.am, drive/Makefile.am, vdrive/Makefile.am,
+	raster/Makefile.am, vicii/Makefile.am, vdc/Makefile.am,
+	crtc/Makefile.am, sid/Makefile.am, c64/Makefile.am,
+	c128/Makefile.am, vic20/Makefile.am, pet/Makefile.am,
+	cbm2/Makefile.am, arch/unix/xaw/widgets/Makefile.am,
+	arch/unix/readline/Makefile.am, arch/win32/Makefile.am,
+	arch/msdos/Makefile.am, arch/riscos/Makefile.am,
+	arch/os2/pm/Makefile.am: Define `SUBDIRS'.
+
+1999-08-10  Tibor Biczo  <crown@mail.matav.hu>
+
+	* arch/win32/res.rc (IDD_OPEN_TEMPLATE): Added workaround for Windres
+	bug.
+
+1999-08-08  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.58.
+
+	* arch/win32/ui.c (handle_wm_command) [IDM_AUTOSTART]: Do not use
+	"*" for program name as this does not work for tapes.
+
+	* arch/win32/res.rc: Fixed version string.
+
+	* arch/win32/kbd.c (kbd_handle_keydown): Added 40/80 column key
+	support.
+
+	* vic20/vic20.c, vic20/vic20mem.c: Added missing includes.
+
+	* vic20/vic20ieeevia1.c, vic20/vic20ieeevia2.c (store_pcr): Return
+	byte.
+
+	* crtc/crtc-draw.c (DRAW): Align offset as suggested by Dirk Farin.
+
+	* crtc/crtc-resources.c, crtc/crtc-resources.h: Fullscreen double
+	size resources.
+	* vic20/vic-resources.c, vic20/vic-resources.h: Likewise.
+
+1999-08-07  Tibor Biczo  <crown@mail.matav.hu>
+
+	* arch/win32/ui.c (ui_update_menus): Removed HWND parameter,
+	  function is empty now.
+	  (update_menus): New function. Updates menu entries.
+	  (handle_wm_command): Removed calls for ui_update_menus.
+	  (window_proc): Call update_menus instead of ui_update_menus, when
+	  user access the menu.
+
+	* arch/win32/uilib.c (hook_proc): Cast SendMessage paramater.
+
+1999-08-07  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.57.
+
+	* vdrive/vdrive-bam.c (vdrive_bam_alloc_next_free_sector):
+	Rewritten as the old implementation had too many bugs.
+	(vdrive_bam_alloc_down, vdrive_bam_alloc_up): New functions.
+
+1999-08-07  Tibor Biczo  <crown@mail.matav.hu>
+
+	* arch/win32/Makefile.am (EXTRA_DIST): Added vdc.dsp and vdrive.dsp.
+
+	* arch/win32/c128.dsp: Added '..\..\vdc' to include dirs.
+	  Removed vdc.c. Added c128mmu.c .
+
+	* arch/win32/c1541.dsp: Added '..\..\vdrive' to include dirs.
+	  Added diskimage.c. Removed vdrive-iec.c, vdrive.c.
+
+	* arch/win32/c64c128.dsp: Added reu.c.
+
+	* arch/win32/c64ui.c (c64_ui_specific): Updated ui_select_file calls.
+
+	* arch/win32/drive.dsp: Added '..\..\vdrive' to include dirs.
+
+	* arch/win32/pet.dsp: Removed crtc.c.
+
+	* arch/win32/petcat.dsp: Added '..\..\vdrive' to include dirs.
+
+	* arch/win32/res.h: Added IDD_OPEN_TEMPLATE, IDC_PREVIEW resource
+	  values.
+
+	* arch/win32/res.rc: Added DS_3DLOOK, DS_CONTROL, WS_CHILD, WS_VISIBLE,
+	  WS_CLIPSIBLINGS, WS_BORDER, WS_HSCROLL, LBS_NOSEL defines.
+	  Added IDD_OPEN_TEMPLATE dialog box.
+
+	* arch/win32/ui.c: Include "imagecontents.h". New variables:
+	  hwnd_titles, window_handles, exposure_handler, number_of_windows.
+	  (ui_init): Do not create the window here.
+	  (ui_open_canvas_window): Create the window here.
+	  (ui_update_menus): Added window handle to parameters. Update menu
+	  of the passed window.
+	  (ui_error) (ui_message) (ui_extend_image_dialog): Use first created
+	  window as parent window for dialog boxes.
+	  (ui_display_speed): Update all window titles with speed values.
+	  (save_snapshot_trap) (load_snapshot_trap): Use first created
+	  window as parent.
+	  (ui_get_main_hwnd): Return first created window handle.
+	  (ui_dispatch_next_event): Use transalator table of the window, to
+	  which the message was sent.
+	  (handle_wm_command): Pass window handle as parameter. Use it in
+	  every call, which needs a window handle. Update ui_select_file
+	  calls with the appropriate content viewer procedure.
+	  (window_proc): Find the index of the window whose message is being
+	  processed. Use its registered exposure_handler.
+
+	* arch/win32/uiattach.c: Include 'imagecontents.h'.
+	  (dialog_proc): Updated ui_select_file calls with appropriate
+	  content viewer procedure.
+
+	* arch/win32/uilib.c: Include 'imagecontents.h' and 'res.h'.
+	  (read_content_func): New variable.
+	  (read_disk_image_contents) (read_tape_image_contents)
+	  (read_disk_or_tape_image_contents) (create_content_list)
+	  (hook_proc): New functions.
+	  (ui_select_file): Add content viewer dialog, if content viewer
+	  procedure is not NULL.
+
+	* arch/win32/uilib.h (ui_select_file): Updated prototype.
+	  (read_disk_image_contents) (read_tape_image_contents)
+	  (read_disk_or_image_contents): Added new prototypes.
+
+	* arch/win32/uisnapshot.c (ui_snapshot_load_dialog): Updated
+	  ui_select_file call.
+
+	* arch/win32/uivicii.c (dialog_palette_proc): Updated ui_select_file
+	  call.
+	
+	* arch/win32/vdc.dsp: New file. MSVC project file for vdc library.
+
+	* arch/win32/vdrive.dsp: New file. MSVC project file for vdrive
+	  library.
+
+	* arch/win32/vic20.dsp: Added vic20ieeevia1.c and vic20ieeevia2.c.
+
+	* arch/win32/vic20ui.c (vic20_ui_specific): Updated ui_select_file
+	  calls.
+
+	* arch/win32/vice.dsw: Added vdc and vdrive library to project
+	  workspace. Updated project dependencies.
+
+	* arch/win32/video.c: Moved directdraw object creation to video_init.
+	  (canvas_refresh) Set clipping regions for the actual window being
+	  drawn.
+
+	* arch/win32/x128.dsp, arch/win32/x64.dsp, arch/win32/scbm2.dsp,
+	  arch/win32/xpet.dsp, arch/win32/xvic.dsp: Added '..\..\vdrive' to
+	  include dirs. Added diskimage.c. Removed vdrive-iec.c vdrive.c.
+
+	* diskimage.c: Include <sys/types.h>.
+
+	* vicii/vicii-resources.c (set_fullscreen_double_size_enabled)
+	  (set_fullscreen_double_scan_enabled): Compile only when
+	  USE_VIDMODE_EXTENSION is defined.
+
+1999-08-06  Dirk Farin  <farin@ti.uni-mannheim.de>
+
+	* arch/unix/video.c, arch/unix/video.h: New MIT-SHM code.
+
+1999-08-04  Andreas Dehmel  <dehmel@forwiss.tu-muenchen.de>
+
+	* arch/riscos/ui.c: new configuration window for C128 settings.
+
+1999-08-02  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.56.
+
+	* drive/drive.c, drive/drive.h (drive_check_type): New function.
+
+	* arch/unix/xaw/uisettings.c (radio_Drive8Type, radio_Drive9Type):
+	Check drive type.
+
+	* vicii/vicii-resources.c: Added fullscreen resources.
+
+	* vdc/vdc.h: Fixed last text line.
+
+1999-07-30  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* NEWS: add Cycle-exact CRTC emulation
+
+	* c128/c128mem.c, c64/c64mem.c, cbm2/c610mem.c, pet/petmem.c,
+	vic20/vic20mem.c:
+	to disable traps, set "VirtualDevices" to 0, not 1
+
+	* crtc/crtc-snapshot.c (crtc_read_v0_snapshot_module): new function
+	to read VICE 1.0 and earlier CRTC snapshots
+	(crtc_read_snapshot_module): call crtc_read_v0_snapshot_module()
+	when found
+
+	* crtc/crtc.c (crtc_reset): set alarm relative to clk value
+
+1999-07-30  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.55.
+
+	* arch/unix/xaw/c64ui.c (attach_cartridge): Update UI.
+
+	* c64/cartridge.c (cartridge_attach_image): Caller has to update
+	the UI.
+
+	* c64/reu.c (store_reu): Disable some REU hack.
+
+1999-07-30  Dirk Farin  <farin@ti.uni-mannheim.de>
+
+	* arch/unix/xaw/ui.c: Changed `led*' variables to `driveled*'.
+
+1999-07-29  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* arch/unix/xaw/vic20ui.c (toggle_IEEE488, vic20_io_submenu, 
+	vic20_io_settings_menu): new (unused) stuff for the VIC-1112 interface
+
+	* drive/via1drive0.c, drive/via1drive1.c: removed some parallel_debug
+	comment prints
+
+	* interrupt.h (I_IEEEVIA1FL, I_IEEEVIA2FL): new entries for 
+	IEEE488 VIAs
+
+	* parallel.c (parallel_set_eoi, parallel_clr_eoi): add some
+	debug prints
+
+	* vic20/Makefile.am: add vic20ieeevia.h, vic20ieeevia1.c and
+	vic20ieeevia2.c
+
+	* vic20/vic20.c (machine_init): init IEEE VIAs
+	(machine_reset): reset IEEE VIAs
+	(machine_write_snapshot, machine_read_snapshot): handle IEEE VIAs
+
+	* vic20/vic20iec.c (iec_available_busses): allow IEEE drives
+	when IEEE488 resource is set
+
+	* vic20/vic20ieeevia.h, vic20/vic20ieeevia1.c, vic20/vic20ieeevia2.c:
+	new files for VIC-1112 interface
+
+	* vic20/vic20mem.c (set_ieee488_enabled, ieee488_enabled, resources,
+	cmdline_options): new stuff for the IEEE488 interface
+	(read_emuid, store_emuid): do not check address anymore
+	(read_io2, store_io2, read_io3, store_io3): new functions for the
+	expansionport IO2 and IO3 lines. They call IEEE VIAs and emuid stuff
+	(initialize_memory): setup mem for IO2/IO3 areas
+
+1999-07-29  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.54.
+
+	* c64/reu.c (reset_reu): Do not load image if no image name is
+	given.
+
+	* utils.c (load_file): Check for NULL pointer.
+
+1999-07-28  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* Makefile.am (x128-all): add libraster
+
+	* arch/unix/xaw/c610ui.c (c610_ui_init): use crtc settings
+
+	* c128/c128cia1.c, drive/cia1571drive0.c, drive/cia1571drive1.c,
+	drive/cia1581drive0.c, drive/cia1581drive1.c
+	(store_sdr): write "cia_shifter" instead of cia[CIA_SDR]
+
+	* cbm2/c610.c (machine_init): set correct hardware options
+
+	* ciacore.c: fix shift register handling, at least a bit...
+
+	* ciacore.h (cia_shifter, cia_sdr_valid): new variables for 
+	the shift register
+
+1999-07-28  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.53.
+
+	* vdc/vdc.h: Fixed VDC screen geometry.
+
+	* vdc/vdc.c (vdc_raster_draw_alarm_handler): Adjusted memory
+	pointers on line 0.
+
+	* raster/raster.h (ycounter): Made int.
+
+	* autostart.c, c64/c64mem.c, c128/c128mem.c, vic20/vic20mem.c,
+	pet/petmem.c, cbm2/c610mem.c, arch/msdos/menudefs.c: Renamed
+	`NoTraps' to `VirtualDevices'.
+
+	* vdrive/vdrive.c (get_block_parameters): Allow '#' as parameter
+	separator.  Renamed to `vdrive_get_block_parameters'.
+	(vdrive_parse_name): Do not exit on ',' if `FAM_READ' or
+	`FAM_WRITE' is already set.
+
+1999-07-27  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* c128/c128mem.c (mem_set_exrom): new function
+
+	* c64/c64iec.c (iec_available_busses): use carttype to 
+	determine possible disk drives
+
+	* c64/c64mem.c (mem_set_exrom): new function to set state
+	of EXROM line
+
+	* c64/c64tpi.c (store_pc): call mem_set_exrom()
+
+	* c64/cartridge.c (carttype): make exported
+	(attach_ieee488, cmdline_options): new function, added
+	cmdline option to attach IEEE488 image
+
+	* ciatimer.h (ciat_update): fix hangup
+
+	* crtc/crtc.c (clk_overflow_callback): new function
+	(crtc_init): add clock guard callback
+	(crtc_reset): reset clock values
+	(crtc_raster_draw_alarm_handler): handle CRTC frame length
+	and call machine_set_cycles_per_frame()
+
+	* crtc.h (crtc_t): add frame_start, cycles_per_frame
+
+1999-07-25  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.52.
+
+	* vdc/vdc-mem.c (store_vdc): Added debugging messages.
+	(vdc_perform_fillcopy): Check VDC RAM limit.
+	(read_vdc): Implemented auto increment.
+
+	* vdc/vdc-draw.c (get_std_bitmap): Added register 26 support.
+
+	* raster/raster-cache.h (raster_cache_data_fill_const): New
+	function.
+
+	* arch/unix/xaw/c128ui.c: New VDC settings.
+
+	* vdc/vdc.h: Removed `VDC_ADDRESS_MASK'.
+
+	* vdc/vdc-resources.c, vdc/vdc-resources.h: New resource to set
+	the VDC memory size.
+
+	* vdc/vdc-cmdline-options.c: New command line options to set the
+	VDC memory size.
+
+	* c64/c64cartmem.c (cartridge_read_io2, cartridge_store_io2,
+	cartridge_attach, cartridge_detach, cartridge_init_config): Moved
+	IEEE488 cart access here.
+
+	* arch/unix/xaw/c64ui.c: Moved IEEE488 interface to cart section.
+
+	* arch/win32/res.h, arch/win32/resc64.rc, arch/win32/c64ui.c,
+	arch/msdos/c64ui.c: Added IEEE488 controls.
+
+	* arch/win32/res.h, arch/win32/resc64.rc, arch/win32/resc128.rc,
+	arch/win32/ui.c: Added REU UI controls.
+
+1999-07-24  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.51.
+
+	* c64/reu.c (read_reu): Added missing `break'!
+
+	* c64/Makefile.am: Added REU support to C128 library.
+
+	* arch/unix/xaw/c128ui.c, arch/msdos/c128ui.c: Added REU UI
+	controls.
+
+	* c128/c128mem.c (set_reu_enabled, store_io2, read_io2): Added REU
+	support.
+	* c128/c128.c (machine_init): Likewise.
+
+	* interrupt.h, interrupt.c (trigger_reset, ack_reset,
+	trigger_trap, do_trap, monitor_trap_on, monitor_trap_off): Moved
+	out of the header file.
+
+	* mon.c (mon_watch_push_store_addr): Fixed typo.
+
+	* 6510core.c: Removed some cruft.
+
+	* c1541.c (format_cmd): Fixed number of arguments.
+
+1999-07-21  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.50.
+
+	* mon.c (mon_watch_push_load_addr, mon_watch_push_store_addr):
+	Limit number of watchpoint hits to 10.
+
+1999-07-21  Andreas Dehmel  <dehmel@forwiss.tu-muenchen.de>
+
+	* arch/riscos/ui.c: added support for 40/80 key and 8050/8250
+	drive types.
+
+	* arch/riscos/video.c: some changes to the handling of frame
+	buffers and active windows.
+
+1999-07-19  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* doc/vice.texi: Remove IeeeFS docs, rename "NoTraps" to 
+	"VirtualDevices"
+
+	* arch/unix/xaw/uisettings.c (VirtualDevices, NoTraps, IeeeFS):
+	remove IeeeFS, and rename NoTraps to VirtualDevices
+
+	* c128/c128.c, c64/c64.c, cbm2/c610.c, pet/pet.c
+	(machine_init_resources, machine_init_cmdline_options): do not call
+	parallel_init_*()
+
+	* parallel.c (set_paremu_enabled, resources, parallel_init_resources,
+	cmdline_options, parallel_init_cmdline_options): removed
+	(parallel_bus_enable): new function
+
+	* traps.c (no_traps_enabled, traps_enabled): named former to latter.
+	fix all occurances
+	(resources, cmdline_options): rename "NoTraps" to "VirtualDevices"
+
+1999-07-18  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* doc/vice.texi: add RIOT 6532 module description
+
+	* riotcore.c (ti_N, ti_write_clk, ti_divider, ti_irqen):
+	new values to save the timer state
+	(update_irq): new function to update the IRQ line.
+	(update_timer): new function to update timer to current clk.
+	(myriot_reset, store_myriot, read_myriot): handle timer
+	read/writes
+	(myriot_read_snapshot_module, myriot_write_snapshot_module):
+	load/save timer snapshot.
+
+1999-07-18  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.49.
+
+	* vic20/vic.h: Removed comma at end of enumeration.
+
+	* vicii/vicii.h: Enumeration has to be called
+	`_vic_ii_video_mode'.
+	* vdc/vdc.h: Changed likewise.
+
+	* vicii/vicii-mem.c: Added some missing casts.
+
+	* vdc/vdc-draw.c: Removed single CR at end of lines.
+
+	* crtc/crtc-snapshot.c (crtc_read_snapshot_module): Removed unused
+	variables.
+
+	* crtc/crtc.h (crtc_enable_hw_screen_blank): Added prototype.
+
+	* pet/petmem.c (set_eoiblank_enabled): Return 0.
+
+	* arch/unix/xaw/ui.c: Removed stray `;'.
+
+	* arch/unix/xaw/uicommands.c (ui_update_flip_menus): Initialize
+	variables.  Added missing casts.
+
+	* autostart.c, main.c, c1541.c: Added missing casts.
+
+1999-07-18  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* doc/vice.texi: add info about dual disk drives.
+	Add IeeeFS docs
+
+	* arch/unix/xaw/uisettings.c (IeeeFS, peripheral_settings_submenu):
+	new entry to enable/disable use of IEEE488 filesystem engine
+
+	* c128/c128.c, c64/c64.c, cbm2/c610.c, pet/pet.c
+	(machine_init_resources, machine_init_cmdline_options):
+	add calls to parallel_init_*()
+
+	* c64/c64iec.c (iec_available_busses): return IEEE488 only if
+	IEEE488 interface is enabled
+
+	* drive/fdc.c (fdc_t): add last_wps variable.
+	(int_fdc): check write protect switch and "send" to IPC
+
+	* parallel.c (set_paremu_enabled, resources, parallel_init_resources,
+	cmdline_options, parallel_init_cmdline_options): new stuff
+	to make "parallel_emu" a resource.
+
+	* parallel.h (parallel_init_resources, parallel_init_cmdline_options):
+	new prototypes
+
+1999-07-18  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.48.
+
+	* diskimage.c (disk_image_check_for_x64): New function.
+	(disk_image_read_sector, disk_image_write_sector,
+	disk_image_check_sector, disk_image_sector_per_track,
+	disk_image_create): Added X64 support.
+
+	* vdrive/vdrive.c (vdrive_attach_image, vdrive_detach_image):
+	Added X64 support.
+
+	* drive/drive.c (drive_read_image_d64_d71, drive_attach_image,
+	drive_check_image_format, drive_detach_image,
+	drive_GCR_data_writeback): Added X64 support.
+
+	* c1541.c (format_cmd): Added X64 support.
+
+1999-07-18  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* arch/msdos/ui.c, arch/os2/archdep.c, arch/win32/ui.c 
+	arch/unix/xaw/ui.c (ui_display_drive_track): add "drive_base"
+	parameter, either 0 or 8 depending on whether dual drives are
+	displayed (0) or different units (8)
+
+	* uiapi.h (ui_display_drive_track): added drive_base to prototype
+
+	* drive/drive.c (set_drive0_type): if dual disk type selected,
+	disable second unit
+	(set_drive1_type): if first drive is dual drive, do not enable
+	(drive_enable, drive_disable): enable drive status of second
+	unit as second drive when first unit is dual drive
+	(drive_update_ui_status):if first unit is dual drive, update
+	second drive too.
+	(drive_num_leds): if first unit is dual drive, return 2 LEDs
+	for the second drive
+
+	* drive/drive.h (DRIVE_IS_IEEE, DRIVE_IS_OLDTYPE, DRIVE_IS_DUAL):
+	new defines
+
+	* drive/fdc.c (fdc_do_job): if dual disk drive setup drive 
+	appropriately
+
+	* drive/riot2drive0.c (drive0_riot_set_atn): use DRIVE_IS_OLDTYPE()
+	macro
+	(undump_prb, store_prb): if unit is dual drive, update drive 1
+	LED status too
+
+	* drive/riot2drive1.c (drive1_riot_set_atn): use DRIVE_IS_OLDTYPE()
+        macro
+
+1999-07-18  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* doc/vice.texi (Video Options): Move PaletteFile here, add
+	Crtc-specific resources and cmdline options
+
+	* arch/unix/xaw/petui.c (pet_ui_init=: use ui_crtc_video_settings_menu
+	instead of ui_video_settings_menu
+
+	* arch/unix/xaw/uisettings.c (ui_crtc_video_settings_menu,
+	crtc_video_settings_submenu): new entries for Crtc-specific 
+	options
+
+	* arch/unix/xaw/uisettings.h (ui_crtc_video_settings_menu): new 
+	prototype
+
+	* crtc/crtc-cmdline-options.c (cmdline_options): prefix cmdline
+	options with "crtc"
+
+	* crtc/crtc-resources.c (resources): prefix resources with "Crtc".
+
+1999-07-17  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.47.
+
+	* raster/raster.h: Added new flag `update_canvas' to
+	`raster_viewport_t'.
+
+	* raster/raster.c (update_canvas, update_canvas_all): Refresh
+	canvas if `update_canvas' is set.
+	(raster_set_canvas_refresh): New function.
+
+	* vicii/vicii.c, vdc/vdc.c, vic20/vic.c (init_raster): Init
+	canvas refresh flag.
+	* crtc/crtc.c (crtc_init): Likewise.
+
+	* c128/c128mmu.c (set_column4080_key): Set active canvas on
+	architectures providing only one active canvas.
+	(mmu_init): New function.
+
+	* vdc/vdc.c (vdc_set_set_canvas_refresh): New function.
+
+	* vicii/vicii.c (vic_ii_set_set_canvas_refresh): New function.
+
+1999-07-16  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* arch/unix/xaw/uisettings.c (set_drive0_type_submenu): add 8050 and
+	8250 entries
+
+	* /drive/drive.c: anywhere where DRIVE_TYPE_1001 appears, add 
+	DRIVE_TYPE_8050 and DRIVE_TYPE_8250 accordingly
+
+	* drive/drive.h (DRIVE_TYPE_8050, DRIVE_TYPE_8250): new defines
+
+	* drive/drivecpucore.c (reset): directly give the drive type to 
+	fdc_reset()
+	anywhere where DRIVE_TYPE_1001 appears, add
+        DRIVE_TYPE_8050 and DRIVE_TYPE_8250 accordingly
+
+	* drive/fdc.c (fdc_t): add drive_type element
+	(fdc_reset): record drive type
+	(int_fdc): if 8050 disk drive then use only one side
+	(drive/riot2drive0.c, drive/riot2drive1.c): anywhere where 
+	DRIVE_TYPE_1001 appears, add DRIVE_TYPE_8050 and DRIVE_TYPE_8250 
+	accordingly
+
+1999-07-16  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* /doc/vice.texi: add descriptions for some missing PET resources
+	and cmdline options
+	Add quick snapshot descrition
+	Add description of new CRTC snapshot module
+
+	* crtc/crtc-mem.c (store_crtc): remove print
+
+	* crtc/crtc-snapshot.c (crtc_read_snapshot_module,
+	crtc_write_snapshot_module): fix some bugs
+
+	* crtc/crtc.c (crtc_reset_screen_ptr): handle change to/from
+	reverse mode
+	(crtc_raster_draw_alarm_handler): better handling of screen blank
+	(crtc_enable_hw_screen_blank): new function. Sets the hw_blank 
+	availability flag
+	(crtc_screen_enable): set the external blank flag, that is only
+	honoured if hw_blank is set
+	(crtc_update_window): made non-static
+
+	* crtc/crtc.h (crtc_t): add hw_blank and blank variables.
+	(crtc_update_window): new prototype
+
+	* emuid.c (emulator_id): update version to 1.1 (names must be changed
+	though)
+
+	* pet/petmem.c (petres,pet_table,pet_set_conf_info): add eoiblank 
+	value and handling of it
+	(set_eoiblank_enabled, resources, cmdline_options): EoiBlank
+	resource, cmdline option and setting function added
+	(mem_write_ram_snapshot_module, mem_read_ram_snapshot_module):
+	updated to V1.2 (add EoiBlank)
+
+	* pet/pets.h (PetInfo, PetRes): add eoiblank
+
+	* piacore.c (read_mypia): fix typo
+
+1999-07-15  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* arch/unix/xaw/uicommands.c (load_snapshot_trap): if data is not
+	NULL, interpret it as filename and load directly.
+	(load_quicksnap): new function that directly gives a default filename
+	to the trap
+	(save_snapshot_trap, save_quicksnap): likewise
+	(ui_snapshot_commands_submenu): add entries for loading/saving 
+	quick snapshot
+
+	* crtc/crtc-snapshot.c (crtc_write_snapshot_module, 
+	crtc_read_snapshot_module): ongoing work to adapt snapshots
+	to new raster/crtc code
+
+	* crtc/crtc-snapshot.h: removed
+
+	* crtc/Makefile.am: removed crtc-snapshot.h
+
+	* crtc/crtc.c: remove many bogus prints
+	(crtc_raster_draw_alarm_handler): fix a timing bug (frame was
+	one rasterline long), also make vsync appear at right place again.
+	change handling of crtc.framelines: now stays constant
+
+1999-07-12  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.46.
+
+	* c128/c128mmu.c, c128/c128mmu.h: New files.
+
+	* c128/c128mem.c (mem_update_config, mem_set_ram_bank,
+	mem_set_ram_config): New functions.
+
+1999-07-12  Andreas Dehmel  <dehmel@forwiss.tu-muenchen.de>
+
+	* arch/riscos/*: added support for keymap definition files, made
+	keyboard handling more generic.
+
+	* arch/riscos/ui.c: display text in info.c
+
+	* arch/riscos/uimsgwin.*: new window for displaying long text.
+
+	* arch/riscos/vsidui.*: dummies for vsid.
+
+	* arch/riscos/Makefile.am: for a change I remembered to register
+	the new files ;-).
+
+1999-07-12  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.45.
+
+	* arch/unix/kbd.c, arch/unix/kbd.h: (kbd_parse_entry): Added
+	support for 40/80 column key.
+	(kbd_register_column4080_key): New function.
+	* arch/msdos/kbd.c, arch/msdos/kbd.h, arch/win32/kbd.c,
+	arch/win32/kbd.h, arch/riscos/kbd.c, arch/riscos/kbd.h,
+	arch/os2/kbd.c, arch/os2/kbd.h: Changed likewise.
+
+	* c128/c128mem.c (mmu_toggle_column4080_key): New function.
+	(read_mmu): Set the correct value for the 40/80 column key.
+
+1999-07-11  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.44.
+
+	* cartridge.h, c64/cartridge.c, c64/cartmem.c: New cartridge type
+	"Atomic Power".
+
+	* arch/unix/xaw/c64ui.c, arch/msdos/c64ui.c, arch/win32/c64ui.c,
+	arch/win32/res.h, arch/win32/resc64.rc: Added Atomic Power
+	cartridge.
+
+	* drive/via2drive0.c, drive/via2drive1.c (store_pcr): Do not
+	modify return value.
+
+	* c64/c64.c (machine_init, machine_shutdown): Do not reference
+	VSID related functions when no VSID support is available.
+	Only include `vsidui.h' when the architecture provides this file.
+
+	* attach.c (file_system_get_disk_name): Return `NULL' if no name
+	is available.
+
+	* arch/msdos/c64ui.c (custom_palette_callback): New function.
+	* arch/msdos/c128ui.c (custom_palette_callback): New function.
+	* arch/msdos/petui.c (custom_palette_callback): New function.
+	* arch/msdos/c610ui.c (custom_palette_callback): New function.
+
+1999-07-08  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* cbm2/c610.c (machine_init): use crtc_set_retrace_*
+
+	* cbm2/c610tpi1.c (tpi_set_ca): use crtc_set_chargen_offset
+
+	* crtc/crtc-draw.c (DRAW): handle hardware cursor
+	mask screen address with vaddr_mask (screen wraparound)
+	(draw_standard_line): draw two parts, the one left of the 
+	current crtc rasterline (left of the first char in the line)
+	and the current rasterline (from the first char in the line on)
+	(draw_reverse_line): likewise
+
+	* crtc/crtc-mem.c (store_crtc): call alarm only when CRTC
+	is initialized
+	handle hardware cursor registers
+	(read_crtc): return correct values
+
+	* crtc/crtc.c (CRTC_SCREEN_WIDTH, CRTC_SCREEN_HEIGHT): removed
+	(crtc_update_window): renamed from crtc_update_screen.
+	Set the raster geometry here, as well as x/ystart/stop
+	(crtc_set_retrace_callback): split into crtc_set_retrace_callback
+	and crtc_set_retrace_type
+	(crtc_init): move viewport and window init to crtc_update_window
+	(crtc_reset): reset some more registers
+	(crtc_raster_draw_alarm_handler): tons of fixes: compute
+	x/y offset to center the screen in the window, incl. jitter
+	when the phase of the horizontal sync changes
+	Rasterline counting are now different from raster code and
+	crtc code. CRTC counts its internal counters
+	Call IRQ routines according to vsync or venable, depending on 
+	PET model (i.e. retrace type)
+	(crtc_offscreen): return vertical retrace according to 
+	retrace type
+	(crtc_screen_enable): set blank 
+
+	* crtc/crtc.h (crtc_t): hw_cols replaces hw_double_cols
+	sync_diff counts the cycles between the last two sync pulses
+	prev_screen_rel is needed to draw the part left of the first
+	character in the line
+	hjitter computes the jitter when the hsync phase changes
+	screen_xoffset, screen_yoffset offset of upper left
+	corner of CRTC screen in raster frame
+	current_line, framelines, vsync new variables
+	crsrmode, crsrcnt, crsrstate new variables for hardware cursor
+	handling
+	(CRTC_SCREEN_BORDERWIDTH, CRTC_SCREEN_BORDERHEIGHT): 
+	the border where CRTC never paints
+	(CRTC_EXTRA_COLS, CRTC_EXTRA_RASTERLINES): border around
+	the machine defaults (40/80x25) where we can paint border 
+	effects
+
+	* pet/Makefile.am (libpet_a_SOURCES): remove crtc.c
+
+	* pet/crtc.c: removed
+
+	* pet/pet.c (machine_init): use crtc_set_retrace_type, 
+	crtc_set_retrace_callback.
+	Call pet_crtc_set_screen instead of via mem_load
+	(pet_crtc_set_screen): new function, copied from 
+	petmem.c: set_screen.
+
+	* pet/pet.h (pet_crtc_set_screen): add prototype
+
+	* pet/petmem.c (set_screen): removed
+	(mem_load): do not call set_screen, but initialize_memory only
+	(mem_read_ram_snapshot_module): call initialize_memory
+	and pet_crtc_set_screen
+
+	* pet/petvia.c (VIA_SET_CA2): use crtc_set_chargen_offset
+	(undump_pcr): rely on VIA_SET_C*
+	(store_pcr): do not return a value
+
+	* raster/raster.c (raster_handle_end_of_frame): new exported
+	function to export handle_end_of_frame()
+
+	* raster/raster.h (raster_handle_end_of_frame): new prototype
+
+	* viacore.c (store_myvia): do not set pcr value to return value
+	from store_pcr()
+
+1999-07-10  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.43.
+
+	* arch/Makefile.am: Added OS2 directory.
+
+	* arch/os2/Makefile.am, arch/os2/pm/Makefile.am: New files.
+
+1999-07-08  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* cbm2/c610.c (machine_init): use crtc_set_retrace_*
+
+	* cbm2/c610tpi1.c (tpi_set_ca): use crtc_set_chargen_offset
+
+	* crtc/crtc-draw.c (DRAW): handle hardware cursor
+	mask screen address with vaddr_mask (screen wraparound)
+	(draw_standard_line): draw two parts, the one left of the 
+	current crtc rasterline (left of the first char in the line)
+	and the current rasterline (from the first char in the line on)
+	(draw_reverse_line): likewise
+
+	* crtc/crtc-mem.c (store_crtc): call alarm only when CRTC
+	is initialized
+	handle hardware cursor registers
+	(read_crtc): return correct values
+
+	* crtc/crtc.c (CRTC_SCREEN_WIDTH, CRTC_SCREEN_HEIGHT): removed
+	(crtc_update_window): renamed from crtc_update_screen.
+	Set the raster geometry here, as well as x/ystart/stop
+	(crtc_set_retrace_callback): split into crtc_set_retrace_callback
+	and crtc_set_retrace_type
+	(crtc_init): move viewport and window init to crtc_update_window
+	(crtc_reset): reset some more registers
+	(crtc_raster_draw_alarm_handler): tons of fixes: compute
+	x/y offset to center the screen in the window, incl. jitter
+	when the phase of the horizontal sync changes
+	Rasterline counting are now different from raster code and
+	crtc code. CRTC counts its internal counters
+	Call IRQ routines according to vsync or venable, depending on 
+	PET model (i.e. retrace type)
+	(crtc_offscreen): return vertical retrace according to 
+	retrace type
+	(crtc_screen_enable): set blank 
+
+	* crtc/crtc.h (crtc_t): hw_cols replaces hw_double_cols
+	sync_diff counts the cycles between the last two sync pulses
+	prev_screen_rel is needed to draw the part left of the first
+	vcharacter in the line
+	hjitter computes the jitter when the hsync phase changes
+	screen_xoffset, screen_yoffset offset of upper left
+	corner of CRTC screen in raster frame
+	current_line, framelines, vsync new variables
+	crsrmode, crsrcnt, crsrstate new variables for hardware cursor
+	handling
+	(CRTC_SCREEN_BORDERWIDTH, CRTC_SCREEN_BORDERHEIGHT): 
+	the border where CRTC never paints
+	(CRTC_EXTRA_COLS, CRTC_EXTRA_RASTERLINES): border around
+	the machine defaults (40/80x25) where we can paint border 
+	effects
+
+	* pet/Makefile.am (libpet_a_SOURCES): remove crtc.c
+
+	* pet/crtc.c: removed
+
+	* pet/pet.c (machine_init): use crtc_set_retrace_type, 
+	crtc_set_retrace_callback.
+	Call pet_crtc_set_screen instead of via mem_load
+	(pet_crtc_set_screen): new function, copied from 
+	petmem.c: set_screen.
+
+	* pet/pet.h (pet_crtc_set_screen): add prototype
+
+	* pet/petmem.c (set_screen): removed
+	(mem_load): do not call set_screen, but initialize_memory only
+	(mem_read_ram_snapshot_module): call initialize_memory
+	and pet_crtc_set_screen
+
+	* pet/petvia.c (VIA_SET_CA2): use crtc_set_chargen_offset
+	(undump_pcr): rely on VIA_SET_C*
+	(store_pcr): do not return a value
+
+	* raster/raster.c (raster_handle_end_of_frame): new exported
+	function to export handle_end_of_frame()
+
+	* raster/raster.h (raster_handle_end_of_frame): new prototype
+
+	* viacore.c (store_myvia): do not set pcr value to return value
+	from store_pcr()
+
+1999-07-07  Thomas Bretz  <tbretz@physik.tu-muenchen.de>
+
+	* arch/os2/*: New directory.
+
+1999-07-02  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.42.
+
+	* attach.c (file_system_detach_disk): Do not attach disks without
+	vdrive emulation enabled.
+
+	* arch/unix/xaw/ui.c (ui_display_drive_current_image): Discard
+	drive 2 and 3.
+
+	* c1541.c (format_cmd): Added support for G64 images.
+	(gcrformat_cmd, set_label, set_disk_size): Removed.
+	(zcreate_cmd, block_cmd): Rewritten.
+
+	* diskimage.c (disk_image_create): Also create G64 images.
+
+	* vdrive/vdrive.c (vdrive_command_format): Only format disk if
+	some disk image is attached.
+	(vdrive_attach_image): Virtual drive emulation has to calculate
+	with the logical number of sectors.
+
+	* vdrive/vdrive.h: `NumBlocks' removed.
+
+	* c64/Makefile.am: Removed `libc64vsid.a'.
+
+1999-07-02  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.41.
+
+	* c1541.c (check_drive, info_cmd): Changed to new disk image
+	access.
+	(create_image): Removed.
+	(open_image): Use `disk_image_create'.
+
+	* diskimage.c (disk_image_create): New function.
+
+	* arch/unix/joystick.c (old_joystick): Use correct joystick
+	number.
+
+	* vicii/vicii-draw.c (init_drawing_tables): Removed unused
+	variables.
+
+1999-07-02  Dag Lem  <resid@nimrod.no>
+
+	* arch/unix/xaw/Makefile.am: Added vsidui.h.
+
+	* arch/unix/xaw/ui.c: Replaced pthread with fork().
+	* arch/unix/xaw/ui.h: Likewise.
+	* arch/unix/xaw/vsidui.c: Likewise.
+
+	* arch/unix/xaw/vsidui.h: New file.
+
+	* c64/c64.c: Includes vsidui.h
+
+	* raster/raster.c: More checks for console and psid mode.
+
+	* sound.c (closesound): No GUI if console or psid mode is active.
+
+1999-07-01  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* crtc/crtc-draw.c (DRAW): use xoffset for smooth-scrolling
+
+	* crtc/crtc.c (crtc_reset_screen_ptr): set correct values
+	for display_xstop, display_ystop
+	(crtc_raster_draw_alarm_handler) the charline counter is 7 bit only,
+	mask the bits. Also set rl_start.
+
+1999-06-30  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.40.
+
+	* arch/unix/xaw/ui.c: Define `_MIT_POSIX_THREADS'.
+
+	* diskimage.c (disk_image_read_track): New function.
+	(disk_image_read_sector): Use new track read function.
+
+	* gcr.c, gcr.h (gcr_read_sector): Rewritten to be more universal.
+
+	* imagecontents.c (open_disk_image): Do not alocate GCR buffer.
+
+1999-06-28  Andreas Dehmel  <dehmel@forwiss.tu-muenchen.de>
+
+	* arch/riscos/*: fixed remaining problems with multiple canvases.
+
+	* raster/raster.c: workaround for the case where colour number 0
+	is not black.
+
+1999-06-28  Dag Lem  <resid@nimrod.no>
+
+	* arch/unix/xaw/Makefile.am: Added vsidui.c.
+
+	* arch/unix/xaw/ui.c (ui_exit_thread, ui_thread_start,
+	ui_create_thread, ui_join_thread, ui_init_finish,
+	ui_dispatch_events): Separate thread for PSID UI.
+
+	* arch/unix/xaw/ui.h: Flag for PSID UI thread operation.
+
+	* arch/unix/xaw/uimenu.c (menu_popup_callback): Keep sound running
+	in psid mode.
+
+	* arch/unix/xaw/vsidui.c: New file.
+
+	* c64/c64.c: psid and console mode corrections.
+
+	* c64/psid.c: New command line switch -psid to start up in psid
+	mode without a selected PSID file.
+
+	* main.c: Allow startup in psid mode without a selected PSID file.
+
+	* raster/raster.c (update_canvas, update_canvas_all): Skip canvas
+	updates in psid and console mode.
+
+	* sound.c (sound_flush): Only do clkfactor magic for adjusting
+	sound.
+	
+1999-06-26  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.39.
+
+	* vicii/vicii.c (vic_ii_update_memory_ptrs): Allow the use of the
+	upper charset in Ultimax mode.
+
+	* c64/c64cia2.c (do_reset_cia): Initialize video bank.
+
+	* arch/msdos/uisnapshot.c (write_snapshot_callback): Check for
+	NULL pointer.
+
+1999-06-24  Andreas Dehmel  <dehmel@forwiss.tu-muenchen.de>
+
+	* arch/riscos/*: general cleanup (char[] -> const char[] etc.)
+
+	* arch/riscos/archdep.c: properly initialize monitor console.
+
+	* arch/riscos/kbd.c, arch/riscos/video.*, arch/riscos/vsync.c,
+	arch/riscos/ui.*: added support for multiple canvases.
+
+	* arch/riscos/ui.c: added support for coredumps.
+
+	* raster/raster.c: catch case of undefined palette on a mode
+	change (current VDC implementation requires this)
+
+1999-06-20  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.38.
+
+	* c1541.c: Adapted to new attach routines.
+	(floppy_read_directory): Moved here.
+
+	* drive/drive.c (drive_enable): Reattach disk image.
+
+	* drive/drive-dir.c (vdrive_dir_create_directory): Removed
+	parameter `secondary'.
+
+	* vdrive/vdrive.c, vdrive/vdrive.h, vdrive/vdrive-iec.c,
+	(fsdevice.c,  vdrive_close_all_channels, vdrive_parse_name):
+	Renamed.
+
+	* vdrive/vdrive-iec.c, vdrive/vdrive-dir.c, vdrive/vdrive.c:
+	Use the new logging system.
+
+	* vdrive/vdrive.c, drive/drive.c, drive/drivecpu.h, attach.c,
+	drive/drivecpu0.c, drive/drivecpu1.c, drive/wd1770.c, tape.c:
+	Removed silly includes.
+
+	* utils.c, resources.c, zfile.c, archapi.h, arch/unix/archdep.c,
+	arch/msdos/archdep.c, arch/win32/archdep.c, arch/riscos/archdep.c
+	(make_backup_filename): Moved to architecture specific files.
+
+	* arch/msdos/menudefs.c (quit_callback): Call
+	`file_system_detach_disk'.
+
+1999-06-13  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.37.
+
+	* drive/drive.c (drive_read_image_gcr): Use disk image access
+	function instead.
+	(drive_detach_image): Clear the read only bit if no disk is
+	inserted.
+
+	* c1541.c: Adapted to new attach routines.
+
+	* attach.c (file_system_attach_disk): Only change type of drive if
+	the disk image could be attached successfully.
+	(detach_disk_image): Only detach disk if there is a disk to
+	detach.
+
+	* vdrive/vdrive.h, vdrive/vdrive-iec.c, vdrive/vdrive.c: Changed
+	`ReadOnly' to `read_only'.
+
+1999-06-13  Markus Brenner  <brenner@biochem.mpg.de>
+
+	* vdc/*: Moved VDC implementation here.
+
+1999-06-13  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* cbm2/c610mem.c (crtc_ptr): removed
+	(store_io, read_io): do not use saved crtc register index
+	* pet/petmem.c: likewise
+
+	* crtc/crtc-draw.c (DRAW): fix ycounter
+	(draw_standard_line, draw_reverse_line): use disp_char instead of 
+	memptr_inc
+
+	* crtc/crtc-mem.c (store_crtc): adapt to new crtc code
+	* crtc/crtc.c: fixes
+	(crtc_raster_draw_alarm_handler): adapt to new crtc code
+
+	* crtc/crtc.h (crtc_t): new entries
+
+1999-06-12  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.36.
+
+	* imagecontents.c (open_disk_image, close_disk_image): Added
+	support for GCR images.
+
+	* vdrive.h: Removed cruft.
+
+	* diskimage.c, diskimage.h (disk_image_write_track,
+	disk_image_read_gcr_image): New functions.
+
+	* gcr.c, gcr.h (gcr_find_sector_header, gcr_find_sector_data,
+	gcr_read_sector, gcr_write_sector, gcr_create_image,
+	gcr_destroy_image): New function.
+
+	* drive/drive.c (drive_read_block, drive_write_block): Removed.
+
+1999-06-12  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.35.
+
+	* prdevice.c (prdevice_attach): Do not pass info pointer.
+
+	* attach.c (attach_disk_image): Detach old disk image.
+
+	* diskimage.c (disk_image_read_sector, disk_image_write_sector):
+	Better error logging.
+
+	* vdrive/vdrive.c, vdrive/vdrive.h, vdrive/vdrive-bam.c,
+	vdrive/vdrive-dir.c, vdrive/vdrive-bam.c: Removed `D64_Header',
+	`GCR_Header' and `ActiveName'.  Renamed `ImageFormat' to
+	`image_format'.  Separated disk image type from the type of drive
+	emulated.
+
+1999-06-11  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.34.
+
+	* vdrive/vdrive.c (set_disk_geometry): Log usage unknown disk
+	types.
+	(vdrive_setup_device): Initialize disk geometry and file system
+	where it belongs and not here.
+
+	* attach.c (file_system_set_serial_hooks): New function.
+	(file_system_get_vdrive): New function.
+
+	* fsdevice.c (attach_fsdevice): Renamed.
+	(read_fs, write_fs, open_fs, close_fs, flush_fs): Made static.
+
+	* vdrive/vdrive-iec.c (vdrive_iec_attach): New function.
+	(vdrive_open): Check if disk image is present.
+
+	* maincpu.c (reset): Do not reset serial devices.
+
+	* c64/c64.c, c128/c128.c, vic20/vic20.c, pet/pet.c, cbm2/c610.c
+	(machine_reset): Reset serial devices.
+
+	* serial.c, serial.h: Removed `info' from struct `serial_t'.
+
+	* attach.c, mon.c, vdrive/vdrive-bam.c: Do not use `serial_t'.
+
+1999-06-10  Ettore Perazzoli  <ettore@comm2000.it>
+
+	* raster/raster.c (handle_end_of_frame): Removed `#if 0'ed parts.
+	(raster_emulate_line): Likewise.
+	(raster_set_geometry): Initialize the cache.
+	(update_for_minor_changes_with_sprites): Fill space between border
+	and start of graphics *before* drawing sprites.  Draw sprites only
+	if necessary.  Draw borders again if sprites have been drawn.
+
+	* main.c: #include <ctype.h>
+	(replace_hexcodes): Make it work.  Really.
+	(hexstring_to_byte): New Helper function for `replace_hexcodes()'.
+	(main): Use the string with hexcodes replaced, not the original
+	one.
+
+1999-06-09  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.33.
+
+	* tap.c, tap.h (tap_open): Try to open read only as well.
+
+	* datasette.c (datasette_control): Do not write if opened read
+	only.
+
+	* arch/win32/ui.c (handle_wm_command): Allow to autostart TAP
+	images.
+
+	* serial.c, serial.h (serial_remove_file, serial_select_file):
+	Removed.
+
+	* prdevice.c (detach_prdevice, attach_prdevice): Removed.
+
+	* vdrive/vdrive.h, vdrive/vdrive.c (get_diskformat): Removed.
+
+	* attach.c: Do not use DT_* defines anymore.
+	(detach_disk_image): Actually detach disk image.
+
+	* imagecontents.c (image_contents_read_disk, open_disk_image,
+	close_disk_image): Rewritten for new attach code.
+
+	* diskimage.c (disk_image_close): Free disk image name.
+
+	* c1541.c (main): Switched from `initialize_1541' to
+	`vdrive_setup_device'.
+
+1999-06-06  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.32.
+
+	* drive/fdc.c, drive/fdc.h: Adapted to new attach mechanism.
+
+	* attach.c (attach_disk_image, detach_disk_image): Attach disk for
+	the FDC emulation here.
+	(file_system_get_disk_name): New function.
+
+	* drive/drive.c, drive/drive.h (drive_attach_image,
+	drive_detach_image): Struct `DRIVE' is not needed anymore.
+
+	* vdrive/vdrive-bam.h, vdrive/vdrive-bam.c
+	(vdrive_bam_get_disk_id, vdrive_bam_set_disk_id): Do not use
+	struct `DRIVE'.
+
+	* vdrive/vdrive.c, vdrive/vdrive.h, vdrive/vdrive-bam.h,
+	vdrive/vdrive-bam.c, vdrive/vdrive-dir.h, vdrive/vdrive-dir.c,
+	vdrive/vdrive-iec.c, attach.c, fsdevice.c, imagecontents.c, mon.c,
+	c1541.c: Use `vdrive_t' instead of `DRIVE'.
+
+	* serial.c (serial_get_file_name): Removed.
+
+	* arch/win32/uiattach.c (init_dialog): Use
+	`file_system_get_disk_name' instead of `serial_get_file_name'.
+	* arch/msdos/menudefs.c: Changed likewise.
+
+	* vdrive/vdrive.c, vdrive/vdrive.h (vdrive_setup_device): New
+	function replacing `initialize_1541'.
+	(floppy_read_block, floppy_write_block): Removed.
+
+	* vdrive/vdrive-bam.c, vdrive/vdrive-dir.c, vdrive/vdrive-iec.c,
+	vdrive/vdrive.c, attach.c, imagecontents.c, mon.c: Do not use
+	`ActiveFd', `floppy_read_block' and `floppy_write_block' anymore.
+
+1999-06-06  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.31.
+
+	* diskimage.c (disk_image_close): New function.
+	Use separate logging.  (disk_image_check_sector): Moved here.
+	(disk_image_sector_per_track): New function replacing those ugly
+	global sector tables.
+	(disk_image_read_sector, disk_image_write_sector): New functions.
+
+	* c64/c64.c, c128/c128.c, vic20/vic20.c, pet/pet.c, cbm2/c610.c
+	(machine_shutdown): Detach all disk images.
+	(machine_init): No need to initialize special attach hooks.
+
+	* drive/drive.c (drive_attach_floppy, drive_detach_floppy): Use
+	new attach mechanism.
+
+	* attach.c (file_system_set_hooks): Removed.
+	(attach_disk_image, detach_disk_image): New functions.
+	(file_system_attach_disk, file_system_detach_disk): Use new attach
+	or detach functions.
+	(file_system_init, set_file_system_device8,
+	set_file_system_device9, set_file_system_device10,
+	set_file_system_device11, file_system_attach_disk): Do not
+	initialize attach/detach function pointer.
+
+	* vdrive/vdrive.h: Removed attach/detach function pointer from
+	struct `DRIVE'.
+
+	* vdrive/vdrive.c (initialize_1541): Removed attach/detach
+	function pointer handling.
+
+	* drive/wd1770.c, drive/wd1770.h (wd1770_attach_image,
+	wd1770_detach_disk): Separated from the 1541/71 drive emulation.
+	Do not use struct `DRIVE' anymore.
+
+	* drive/drive.c, vdrive/vdrive-bam.c, vdrive/vdrive-dir.c: Use
+	`disk_image_sector_per_track' to retrive number of sectors.
+
+	* vdrive/vdrive-bam.h, vdrive/vdrive-bam.c
+	(vdrive_bam_reread_bam): Temporary hack.
+
+1999-06-05  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.30.
+
+	* diskimage.h, diskimage.c: New files.
+
+	* vdrive/vdrive.h: Moved around some definfitions.
+
+	* vdrive/vdrive-dir.c (vdrive_dir_create_directory): Moved here.
+
+	* vdrive/vdrive.c (vdrive_attach_image, vdrive_detach_image):
+	New functions.
+	(attach_floppy_image, check_header, import_GCR_image,
+	get_std64_header, get_std71_header, get_std81_header,
+	get_std80_header, get_std82_header): Obsolete.
+
+	* serial.h: Added pointer to image data struct to `serial_t'.
+
+	* serial.c (serial_select_file): Do not use this function for
+	attaching disk images.
+
+	* attach.c (file_system_init): Initialize disk image struct.
+
+1999-06-05  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.29.
+
+	* Makefile.am: Added `libvdrive.a'.
+
+	* c64/Makefile.am, c128/Makefile.am, vic20/Makefile.am,
+	pet/Makefile.am, cbm2/Makefile.am: Added vdrive directory.
+
+	* vdrive.c, vdrive.h, vdrive-iec.c, vdrive-iec.h: Moved into
+	separate directory.  Removed old cruft.
+
+	* drive/drive.c, drive/drive.h: Do not mix drive and vdrive
+	related varibales anymore.
+
+	* drive/fdc.c, drive/fdc.h (fdc_attach_disk, fdc_detach_disk):
+	New functions.  Use own vdrive struct instead of using the one of
+	the drive emulation.
+	* drive/wd1770.c, drive/wd1770.h: Changed likewise.
+
+	* attach.c: Fixed type of attach/detach functions.
+
+	* arch/unix/xaw/uicommands.c, arch/msdos/menudefs.c, maincpu.c,
+	pet/pet.c: Do not #include "vdrive.h".
+
+	* fs_cbm.h: Removed.
+
+	* vic20/vic20.c, pet/pet.c, cbm2/c610.c, vdrive/vdrive-iec.c,
+	attach.c, fsdevice.c, mon.c: #include "serial.h".
+
+	* vdrive/vdrive-dir.c, vdrive/vdrive-dir.h, vdrive/vdrive-bam.c,
+	vdrive/vdrive-bam.h: New files.
+
+	* imagecontents.c, c1541.c: #include "vdrive-dir.h".
+
+	* c1541.c, drive/fdc.c, drive/drive.c, imagecontents.c:
+	vdrive/vdrive-iec.c, vdrive/vdrive-dir.c: #include "vdrive-bam.h"
+
+1999-05-30  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.28.
+
+	* sysfile.c (set_system_path): Use `archdep_path_is_relative' to
+	determine type of path.
+
+	* resources.c (make_backup_file_name): Use the function from
+	`utils.c'.
+
+	* arch/unix/archdep.h, arch/msdos/archdep.h, arch/win32/archdep.h,
+	arch/riscos/archdep.h: Defined `fopen' text modes here.
+
+	* main.c (MAIN_PROGRAM): Removed some cruft.
+
+	* arch/win32/archdep.c, arch/msdos/archdep.c: Removed
+	#include "findpath.h".
+
+	* zfile.c, zfile.h (zopen, zclose): Removed.
+
+	* mon_parse.y, autostart.c, arch/unix/video.c, arch/unix/xaw/ui.c,
+	arch/msdos/tuifs.c, arch/msdos/video.c, warn.c, arch/win32/kbd.c,
+	arch/win32/winmain.c: Use `xmalloc'.
+
+1999-06-01  Andreas Dehmel <dehmel@forwiss.tu-muenchen.de>
+
+	* arch/riscos/config.h, arch/riscos/Makefile.am: forgot to add
+	config.h to Makefile.am the last time.
+
+	* raster/raster.c: define RECALC_FRAME_BUFFER on RISC OS for now.
+
+1999-06-01  Tibor Biczo  <crown@mail.matav.hu>
+
+	* arch/win32/Makefile.am: Added crtc.dsp and raster.dsp.
+
+	* arch/win32/crtc.dsp, arch/win32/raster.dsp: Files were not
+	  included in last patch.
+
+	* sounddrv/sounddx.c (dx_init): Fixed 16/8 bit soundcard detection.
+
+1999-05-30  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.27.
+
+	* datasette.c (datasette_read_bit): Adjusted zero delay value.
+	(datasette_set_motor): Set motor on delay to 10000 clock ticks.
+
+	* drive/drive.c (drive_set_clock_frequency): New function.
+
+	* findpath.c, fsdevice.c, mon.c, utils.c, vdrive.c, zfile.c,
+	c1541.c, drive/drive.c: Include `unistd.h' if present.
+
+	* c64/c64.c, c128/c128.c, vic20/vic20.c, pet/pet.c, cbm2/c610.c,
+	snapshot.c: Use `remove_file' instead of `unlink'.
+	Removed #include <unistd.h>.
+
+	* utils.c, utils.h (remove_file): New function.
+
+	* findpath.h, tape.c, vdrive-iec.c, zipcode.c: Removed #include
+	<unistd.h>.
+
+	* arch/unix/archdep.h, arch/msdos/archdep.h, arch/win32/archdep.h,
+	arch/riscos/archdep.h: Moved path separator here.
+
+	* sysfile.c: #include <unistd.h>.
+
+	* fsdevice.c, zfile.c: Use `remove_file' instead of `unlink'.
+
+	* main.c Removed #include "findpath.h".
+
+	* resource.c, utils.c, arch/win32/archdep.c: Include `dir.h' if
+	present.
+
+	* arch/unix/readline/editline.h, os9.h,
+	arch/unix/readline/Makefile.am, arch/unix/readline/sysos9.c:
+	Removed obsolete OS9 support.
+
+	* arch/msdos/kbd.c, arch/msdos/menudefs.c: Added drive parameter
+	for `flip_add_image' and `flip_attach_head'.
+
+1999-05-28  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.26.
+
+	* raster/raster.c: Do not define `RECALC_FRAME_BUFFER' for now.
+
+1999-05-25  Andreas Dehmel <dehmel@forwiss.tu-muenchen.de>
+
+	* arch/riscos/*: now compiles again; added optional status bar
+	in full screen mode.
+
+	* arch/riscos/ui.c: added 1001 drive, fixed pause bug.
+
+	* arch/riscos/config.h: moved configuration file to arch-module.
+
+	* drive/drive.c: changed ui_display_drive_track to
+	ui_display_drive_track_int on RISC OS (a double is totally useless
+	here anyway)
+
+	* raster/raster.[ch]: added support for mode changes which require
+	rebuilding all internal colour tables. A callback function was
+	added to raster_t which has to be initialized by the raster client
+	(vicii, crtc, ...). A list of active rasters is kept internally.
+	raster_mode_change() rebuilds everything for the new mode.
+
+	* crtc/crtc-draw.c, vicii-draw.c, vic-draw.c: register table refresh
+	function (init_drawing_tables()) to the raster module.
+
+	* vic20/vic.c: needs to include vsync.h
+
+	* vic20/vic-mem.c: needs to include vic20sound.h
+
+1999-05-25  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.25.
+
+	* Makefile.am: Removed `@LEXLIB@' from `common_libs'.
+
+	* arch/win32/ui.c (handle_wm_command): Fixed `flip_*' calls.
+
+1999-05-25  Tibor Biczo  <crown@mail.matav.hu>
+
+	* arch/win32/c128.dsp, arch/win32/c64.dsp, arch/win32/c64c128.dsp:
+	  Added raster dir to include search path.
+
+	* arch/win32/c1541.dsp, arch/win32/petcat.dsp: Removed unnecessary
+	  library files.
+
+	* arch/win32/cbm2.dsp, arch/win32/pet.dsp: Added crtc and raster dirs
+	  to include search path.
+
+	* arch/win32/crtc.dsp: New MSVC project file for crtc library.
+
+	* arch/win32/msvc/config.h: Define __i386__ to allow unaligned
+	  memory access.
+
+	* arch/win32/raster.dsp: New MSVC project file for raster library.
+
+	* arch/win32/ui.c (window_proc): Handle WM_ERASEBKGND message.
+	  Switched back to old WM_PAINT handling method.
+
+	* arch/win32/vic20.dsp: Added raster dir to include search path.
+	  Added vic-cmdline-options.c, vic-draw.c, vic-mem.c, vic-resources.c,
+	  vic-snapshot.c.
+
+	* arch/win32/vice.dsw: Added crtc and raster project. Updated
+	  subproject dependencies.
+
+	* arch/win32/vicii.dsp: Added raster dir to include search path.
+	  Added vicii-cmdline-options.c, vicii-draw.c, vicii-mem.c,
+	  vicii-resources.c, vicii-snapshot.c, vicii-sprites.c.
+
+	* arch/win32/video.c (canvas_refresh): Switched back to old version.
+
+	* arch/win32/x128.dsp, arch/win32/x64.dsp, arch/win32/xcbm2.dsp,
+	  arch/win32/xpet.dsp, arch/win32/xvic.dsp: Removed memutils.c.
+
+	* vicii/vicii-mem.c (vic_ii_local_store_vbank): New function.
+	  It is the same as the old store_vbank.
+	  (store_vbank, store_vbank_39xx, store_vbank_3fxx) Call
+	  vic_ii_local_store_vbank instead of store_vbank.
+
+1999-05-24  Martin Pottendorfer  <Martin.Pottendorfer@alcate.at>
+
+	* arch/unix/xaw/uicommands.c: Reworked `fliplist' callbacks and
+	helper functions completely.
+	(UI_CALLBACK): Commented `button' variable, to keep compiler
+	quiet.
+
+	* arch/unix/xaw/ui.h: Added `NUM_DRIVES'. Added a few prototypes
+	for drive-fliplist menus.
+
+	* arch/unix/xaw/ui.c: Added static vars: drive8_menu, drive9_menu,
+	drive8_menu_translations, drive9_menu_translations.
+	Moved `NUM_DRIVES' to ui.h.
+	Made `last_attached_images[]' external visible.
+	`last_attached_images[]' now contains the full image paths.
+	(ui_set_drive8_menu): New function. Adds fliplist popup window for
+	drive 8.
+	(ui_set_drive9_menu): New function. Adds fliplist popup window for
+	drive 9.
+	(ui_display_drive_current_image): Update flipmenu for
+	`drive_number'.
+	(ui_display_drive_current_image2): Just display the basename from
+	`last_attached_images[]'. 
+	
+	* fliplist.h:
+	Added a few new interface funtions, Changed interface to expect a unit
+	in order to distinguish fliplists for different drives.
+
+	* fliplist.c (ALL): Reworked completely, introduced fliplists for
+	multiple drives. Added iterator functions.
+
+1999-05-25  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.24.
+
+	* drive/drive.c, c64/c64mem.c, c128/c128mem.c, vic20/vic20mem.c,
+	pet/petmem.c, cbm2/c610mem.c: Removed include "memutils.h".
+	Renamed `mem_load_sys_file' to `sysfile_load'.
+
+	* arch/unix/kbd.c: Removed include "memutils.h".
+
+	* sysfile.c (mem_load_sys_file): Moved here.  Use `file_length()'
+	to determine length of file.
+
+	* utils.c, utils.h (file_length): Use the `ftell' approach for all
+	architectures.  Removed #include <sys/stat.h>.
+
+	* memutils.h, memutils.c: Removed.
+
+	* drive/drive.c, utils.c, utils.h, attach.c, imagecontents.c,
+	vdrive.c, c1541.c, zipcode.h, zipcode.c, zfile.c, vdrive-iec.c:
+	Changed to ISO C stream functions.
+
+	* arch/unix/types.h, arch/win32/types.h, arch/msdos/types.h,
+	arch/riscos/types.h: Removed file descriptor hack.
+
+1999-05-24  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.23.
+
+	* arch/msdos/menudefs.c (rom_submenu): The name for the default
+	rom set is "default.vrs" and not `NULL'.
+	(ui_create_main_menu): Move working directory entry to special
+	settings.
+
+	* romset.c (romset_load): Check for `NULL'.
+
+	* arch/msdos/c64ui.c (rom_menu_items): Added `DosName1001.
+	(c64_ui_init): Added c64 specific ROM set entries.
+
+	* arch/msdos/c128ui.c (rom_menu_items): Added c128 specific ROM
+	set entries.
+	* arch/msdos/vic20ui.c (rom_menu_items): Changed likewise.
+	* arch/msdos/petui.c (rom_menu_items): Changed likewise.
+	* arch/msdos/c610.c (rom_menu_items): Changed likewise.
+
+	* arch/msdos/vic20ui.c, arch/msdos/petui.c, arch/msdos/c610.c:
+	#include <stdlib.h>.
+
+	* arch/unix/xaw/c128ui.c (c128_romset_submenu): Added missing
+	drive entries.
+
+	* arch/msdos/ui.h, arch/msdos/ui.c, arch/win32/ui.h,
+	arch/win32/ui.c, arch/unix/xaw/ui.h, arch/unix/xaw/ui.c,
+	arch/riscos/ui.h, arch/riscos/ui.c
+	(ui_display_drive_current_image): Filename has to be `const'.
+	Moved common UI pototypes to `uiapi.h'.
+
+	* uiapi.h: New file.
+
+	* arch/msdos/grabkey.c (my_kbd_interrupt_handler_end): Commented
+	out.
+
+	* zfile.c (try_uncompress_with_tzx): New function.
+
+1999-05-24  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.22.
+
+	* fsdevice (fs_find_pc64_name): Added missing `closedir'.
+	(fsdevice_compare_wildcards): Check the whole P00 name.
+
+	* zfile.c: Updated known extensions.  Added `pkunzip' to the list
+	of valid archives (experimental for now).
+
+1999-05-24  Dag Lem  <resid@nimrod.no>
+
+	* c64/c64.c (machine_init): Don't check return value from
+	vic_ii_init in console and psid mode
+
+	* main.c (main): Skip UI calls in console mode
+
+	* raster/raster.c: Skip frame buffer access in console and psid
+	mode
+
+1999-05-24  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* cbm2/c610.c (cbm2_crtc_signal): new callback function for
+	CRTC vertical retrace signal change
+	(machine_init): call crtc_set_retrace_callback()
+
+	* pet/pet.c (pet_crtc_signal): new callback for retrace signal
+	(machine_init): call crtc_set_retrace_callback()
+
+	* crtc/crtc-draw.c (DRAW): use start and end screen columns
+	Use offset 2 for characters in PIXEL4 coordinates
+
+	* crtc/crtc.c (crtc_set_retrace_callback): new function
+	(crtc_raster_draw_alarm_handler): handle ycounter and 
+	update screen_rel. Also call retrace callback function when
+	appropriate
+	(crtc_offscreen): check rasterline and give more appropriate 
+	values
+
+	* crtc/crtc.h (machine_crtc_retrace_signal_t): new type
+	(crtc_set_retrace_callback): new prototype
+	(crtc_t): added retrace_callback, retrace_type components
+
+1999-05-23  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* arch/unix/xaw/petui.c (CrtcPaletteFile): renamed from PaletteFile
+	(ui_menu_entry_t palette_submenu): use CrtcPaletteFile
+
+	* cbm2/c610mem.c (mem_load_chargen): call crtc_set_chargen_addr
+	(mem_load): use new crtc interface
+	* pet/petmem.c: likewise
+
+	* crtc/crtc-draw.c (dwg_table_0,  dwg_table_1, dwg_table2x_0,
+	dwg_table2x_1, dwg_table2x_2, dwg_table2x_3): new tables
+	(init_drawing_tables): init the dwg_tables.
+	(draw_standard_background): copied from vicii-draw.c
+	(draw_standard_background_2x): copied from vicii-draw.c
+	(DRAW): new function, made from old DRAW define 
+	(draw_standard_line, draw_reverse_line): new functions
+	(setup_single_size_modes): setup non-caching mode
+
+	* crtc/crtc-resources.c (resources): rename "PaletteFile"
+	to "CrtcPaletteFile". Set video cache off by default
+
+	* crtc/crtc.c (CRTC_SCREEN_ADDR, CRTC_SCREEN_WIDTH,
+	CRTC_SCREEN_HEIGHT, CRTC_SCREEN_TEXTCOLS, CRTC_SCREEN_TEXTLINES,
+	CRTC_SCREEN_XPIX, CRTC_SCREEN_YPIX, CRTC_FIRST_DISPLAYED_LINE,
+	CRTC_LAST_DISPLAYED_LINE, CRTC_CYCLES_PER_LINE): new defines
+	(crtc_reset_screen_ptr, crtc_update_chargen_rel, 
+	crtc_update_memptr_inc, crtc_update_screen, crtc_set_screen_addr,
+	crtc_set_chargen_offset, crtc_set_chargen_addr,
+	crtc_set_screen_options, crtc_set_hw_options): new functions
+	(crtc_init): do some sanity checks
+	(crtc_reset): call crtc_reset_screen_ptr()
+	(crtc_set_screen_mode): removed
+	(crtc_raster_draw_alarm_handler): call crtc_reset_screen_ptr()
+	on vsync
+	(crtc_set_char); removed
+
+	* crtc/crtc.h (crtc_t): new elements
+	(CRTC_SCREEN_BORDERWIDTH, CRTC_SCREEN_BORDERHEIGHT):
+	new defines
+	(crtc_set_screen_addr, crtc_set_chargen_offset,
+	crtc_set_chargen_addr,  crtc_set_screen_options, 
+	crtc_set_hw_options): new prototypes
+	(crtc_set_screen_mode): removed prototype
+
+1999-05-22  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.21.
+
+	* fsdevice.c (fsdevice_create_file_p00): Removed double extension.
+	Use proper modes for `fopen()'.
+
+	* arch/unix/archdep.h, arch/msdos/archdep.h, arch/win32/archdep.h,
+	arch/riscos/archdep.h: New mode `MODE_APPEND_READ_WRITE'.
+
+	* arch/unix/archdep.c, arch/msdos/archdep.c, arch/win32/archdep.c,
+	arch/riscos/archdep.c, archapi.h (archdep_open_monitor_console,
+	archdep_close_monitor_console): New functions.
+
+	* mon.c (mon): Use architecture specific functions to open and
+	close the monitor console.
+
+	* c1541.c, petcat.c (enable_text, disable_text): Stubs.
+
+	* autostart.c (autostart_prg): Use `archdep_path_is_relative'.
+
+	* utils.c, utils.h (path_is_relative): Removed.
+
+1999-05-22  Dag Lem  <resid@nimrod.no>
+
+	* c64/psid.c: Removed PSIDTune resource
+	* c64/c64.c: Likewise
+
+	* vicii/vicii.c (vicii_load_palette): Don't load palette in PSID mode
+	
+	* machine.h: External declaration of console_mode flag.
+
+	* main.c: Added console_mode flag and -console option (unfinished)
+	(main): Removed PSIDTune resource
+
+1999-05-18  Dag Lem  <resid@nimrod.no>
+
+	* c64/c64.c (machine_init): Initialize monitor in psid mode.
+
+	* sid/sid.c (store_sid): Report usage of PSID registers.
+
+	* sid/resid.cc (resid_sound_machine_open): Warnings changed to
+	normal messages.
+	* sound.c (closesound, initsid): Likewise.
+
+1999-05-22  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.20.
+
+	* drive/drive.c (set_drive_true_emulation): Always enable IEC bus
+	if true drive emulation is enabled.
+
+	* raster/raster.h: Always define `RASTER_PIXEL'.  Also define
+	`RASTER_PIXEL2' and `RASTER_PIXEL4' on MSDOS until all video chip
+	emulations are fixed.
+
+	* raster/raster.c (handle_blank_line): Use
+	`raster->viewport.canvas' instead of `canvas'.
+
+	* vicii/vicii-draw.c (setup_double_size_modes): Do not compile
+	this function if double size mode is not required.
+	(vic_ii_draw_init): Do not setup double size mode if not
+	required.
+	(setup_double_size_modes): Changed likewise.
+
+	* vicii/vicii-sprites.c (vic_ii_sprites_set_double_size): Do not
+	use double size modes if `VIC_II_NEED_2X' is not defined.
+
+	* vic20/vic-resources.c: #include "resources.h".
+
+	* arch/msdos/archdep.c: #include <sys/stat.h>.
+	(archdep_expand_path): Do not use `zlog'.
+
+	* serial.c (serial_init): Call `prdevice_late_init' only if
+	printer support is enabled.
+
+	* vdrive.c (floppy_read_block): Removed debugging cruft.
+
+1999-05-21  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.19.
+
+	* vdrive.c (set_disk_geometry): Added missing break.
+
+1999-05-21  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* Makefile.am: remove $(rs232_printer_ldadd) from xpet and xcbm2
+	library list - they are already in $(common_libs)
+
+	* cbm2/Makefile.am: add raster and crtc dirs to include list
+	* pet/Makefile.am: add raster and crtc dirs to include list
+
+	* cbm2/crtc.c: outcomment all functionality
+	* pet/crtc.c: outcomment all functionality
+
+	* cbm2/c610.c (machine_reset): rename reset_crtc() to crtc_reset()
+	* pet/pet.c (machine_reset): rename reset_crtc() to crtc_reset()
+
+	* crtc/crtc-cmdline-options.c (crtc_init_cmdline_options): renamed
+	from crtc_cmdline_options_init()
+
+	* crtc/crtc-resources.c (crtc_init_resources): renamed from 
+	crtc_resources_init()
+
+	* crtc/crtc-snapshot.c (crtc_write_snapshot_module): renamed from
+	crtc_snapshot_write_module
+	(crtc_read_snapshot_module): likewise
+
+	* crtc/crtc.c: remove some strange "^L" in file
+	(crtc_init_resources, crtc_init_cmdline_options): removed
+	(void video_setfullscreen, crtc_offscreen, crtc_screen_enable,
+	crtc_set_char). new dummy functions
+
+	* crtc/crtc.h: remove some strange "^L" in file
+	(crtc_write_snapshot_module, crtc_read_snapshot_module,
+	crtc_set_char, crtc_offscreen, crtc_screen_enable): new prototypes
+	include crtc-mem.h for the store_crtc and read_crtc prototypes
+
+1999-05-20  Ettore Perazzoli  <ettore@comm2000.it>
+
+	* crtc/crtc.c: Rewritten: provides a working skeleton for a new
+	CRTC emulation taking advantage of the new raster module.
+	* crtc/crtc.h: Likewise.
+	* crtc/crtc-cmdline-options.c: Likewise.
+	* crtc/crtc-cmdline-options.h: Likewise.
+	* crtc/crtc-draw.c: Likewise.
+	* crtc/crtc-draw.h: Likewise.
+	* crtc/crtc-mem.c: Likewise.
+	* crtc/crtc-mem.h: Likewise.
+	* crtc/crtc-resources.c: Likewise.
+	* crtc/crtc-resources.h: Likewise.
+
+	* raster/raster.c (raster_reset): Do not initialize colors.
+	(raster_init): Initialize them here instead.
+
+1999-05-19  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.18.
+
+	* arch/unix/xaw/ui.c (vidmode_available): Fixed typo.
+
+	* (_draw_idle): Use `vic_ii.raster.frame_buffer_ptr' instead of
+	`frame_buffer_ptr'.
+
+	* * archapi.h: (archdep_home_path): Move prototype to
+	`arch/unix/archdep.h' as this is no *common* system-specific
+	function.
+
+	* arch/unix/xaw/widgets/FileSel.c: #include "archdep.h".
+
+1999-05-19  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* arch/unix/archdep.c (archdep_home_path): check return values
+	of getpwuid(). Make function non-static.
+
+	* arch/unix/xaw/widgets/FileSel.c: include archapi.h
+	(GotoDeepestLegalDirectory, UpdateTextLines): call 
+	archdep_home_path() instead of getenv().
+
+	* archapi.h: protect with #ifdef _ARCHAPI_H, include <stdarg.h>
+	(archdep_home_path): new prototype
+
+1999-05-19  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* drive/drive.h (A_*): remove bogus alarm definitions
+	(I_*): remove bogus interrupt definitions
+
+	* configure.in: add src/crtc/Makefile to list of Makefiles
+
+	* Makefile.am: add crtc to subdirectories, remove crtc.h, crtccore.c
+	add crtc_lib and clean up xpet and xcbm2 build rules
+
+	* crtc/Makefile.am: new file
+
+	* crtc/crtc-cmdline-options.c, crtc/crtc-cmdline-options.h,
+	crtc/crtc-draw.c, crtc/crtc-draw.h, crtc/crtc-mem.c, crtc/crtc-mem.h,
+	crtc/crtc-resources.c, crtc/crtc-resources.h, 
+	crtc/crtc-snapshot.c, crtc/crtc-snapshot.h,
+	crtc/crtc.c, crtc/crtc.h: new files, crudely broken out of 
+	the old crtccore.c
+
+	* crtc.h, crtccore.c: removed
+
+1999-05-18  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* arch/msdos/archdep.c (archdep_expand_path): new function to 
+	return a malloc´d string containing the full absolute path of 
+	the given file name (taken from zfile.c)
+	* arch/riscos/archdep.c: likewise
+	* arch/unix/archdep.c: likewise
+	* arch/win32/archdep.c: likewise
+
+	* archapi.h (archdep_expand_path): mew prototype
+
+	* drive/drive.c (drive_sync_found): moved from behind 
+	drive_rotate_disk() to before drive_rotate_disk(), allow the 
+	compiler to inline it.
+	(drive_read_image_snapshot_module): call zfile_close_action() to
+	mark the image file read from a snapshot for request/deletion
+
+	* zfile.c (struct zfile): add action-on-close and request string
+	(zfile_list_add): call archdep_expand_path() to get full path.
+	Allow a tmp_name of NULL (for uncompressed files)
+	(zopen, zfopen): keep also track of uncompressed files by also calling
+	zfile_list_add() for them.
+	(handle_close_action): check the action-on-close the file is set to.
+	If ZFILE_REQUEST, it should at some point in time open a requester
+	to ask whether to save the file or remove it.
+	If ZFILE_DEL, simply remove the original file as well. 
+	The default, ZFILE_KEEP, does not do anything to the original file.
+	(handle_close): handle the cases where tmp_name is NULL, and free
+	the request_string
+	(zclose_all): likewise
+	(zfile_close_action): set the action to do when the file is being
+	closed. Save the request_string that might be given to a requester
+	as description of the file.
+
+	* zfile.h (zfile_action_t): new enum to number the file actions
+	to do on zfile close
+	(zfile_close_action): new prototype
+
+1999-05-19  Martin Pottendorfer  <Martin.Pottendorfer@alcatel.at>
+
+	* arch/unix/xaw/ui.c 
+	(ui_enable_drive_status): Added support to map drives to widgets
+	in `norma' disk emulation mode.
+	(ui_display_drive_current_image): Moved widget filling to seperate
+	function.
+	(ui_display_drive_current_image2): New Function. Fills the widgets
+	according to drive-widget mapping.
+	(last_attached_images): image name cache of last attached images.
+
+1999-05-18  Martin Pottendorfer  <Martin.Pottendorfer@alcatel.at>
+
+	* arch/unix/xaw/ui.c: (drive_widgets): Added widget for displaying
+	the currently attached image.
+	(ui_open_canvas_window): 
+	Changed hardcoded array values of `2' to `NUM_DRIVES' in variable
+	definitions. 
+	Added creation of new `current_image_widgets'.
+	(ui_enable_drive_status): 
+	Changed drive-to-widget-mapping to fill the widgets starting from
+	widget 0 (top-to-bottom), and adopted the `Realize' and
+	`UnRealize' order accordingly.
+	(ui_display_drive_current_image): New function, which fills the
+	widget for a drive with the image name currently attached.
+
+	* arch/riscos/ui.h: added prototype for
+	`ui_display_drive_current_image()'
+	arch/win32/ui.h: ditto.
+	arch/msdos/ui.h: ditto.
+	* arch/riscos/ui.c: added dummy for ui_display_drive_current_image()'
+	arch/win32/ui.c: ditto.
+	arch/msdos/ui.c: ditto.
+
+1999-05-17  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.17.
+
+	* Makefile.am: Added `raster' to `SUBDIRS'.
+	Added `libarch' to targets `x64-all' and `x128-all'.
+
+1999-05-17  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* drive/drive.c: include <errno.h>
+	(drive_write_gcrimage_snapshot_module, 
+	drive_read_gcrimage_snapshot_module): new prototypes
+	(drive_write_snapshot_module, drive_read_snapshot_module): call
+	drive_{read|write}_gcrimage_snapshot_module()
+	(drive_write_image_snapshot_module, drive_read_image_snapshot_module):
+	new functions to read/write normal disk snapshot modules.
+	(drive_write_gcrimage_snapshot_module,
+	drive_read_gcrimage_snapshot_module): renamed from 
+	drive_write_image_snapshot_module, drive_read_image_snapshot_module.
+
+1999-05-17  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.16.
+
+	* raster.c, raster.h: Moved definition of `MIN' and `MAX' to
+	`raster.h.
+
+1999-05-17  Tibor Biczo  <crown@mail.matav.hu>
+
+	* arch/win32/Makefile.am: Replaced hardcoded windres binary with
+	  $(WINDRES).
+
+	* arch/win32/archdep.h: Include <stdio.h>, <stdarg.h>.
+
+	* arch/win32/c64.dsp: Added psid.c.
+
+1999-05-17  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* prdevice.c (prdevice_late_init): new function to attach the printer
+	_after_ serial_init(), because serial_init() removes an attached
+	printer (that comes from the resource "Printer4=1")
+
+	* prdevice.h (prdevice_late_init): new prototype
+
+	* serial.c (serial_init): call prdevice_late_init() after initializing.
+	Clear the serialdevices[].inuse flag.
+
+1999-05-17  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* arch/unix/xaw/ui.c (app_shells): add two widgets for half-width
+	LEDs.
+	(ui_open_canvas_window): create additional widgets for half-width 
+	LEDs.
+	(ui_enable_drive_status): call drive_num_leds() to determine whether
+	drive has one or two LEDs. enable the appropriate widgets
+	(ui_display_drive_led): also set the status of the half-width LED
+	widgets
+
+	* drive/drive.c (set_drive0_type): if type has changed, set
+	default track (when SFD1001 has left the track at 38, the 1541
+	cannot read anything)
+	* drive/drive.c (set_drive0_type): likewise
+
+	* drive/fdc.c (int_fdc): set drive at reset.
+ 
+1999-05-17  Ettore Perazzoli  <ettore@comm2000.it>
+
+	* vic20/vic20mem.c (store_wrap): Made static.
+	(read_ram): Made static.
+	(store_ram): Made static.
+	(read_cartrom): Made static.
+	(read_watch): Made static.
+	(store_watch): Made static.
+
+	* vic20/vic20.c (machine_reset): Call `vic_reset()' instead of
+	`reset_vic()'.
+
+1999-05-16  Ettore Perazzoli  <ettore@comm2000.it>
+
+	Massive VIC-II reorganization and cleanup.
+	* vicii/vicii.c: Split into the	following parts:
+	* vic20/vic-cmdline-options.c: New file.
+	* vic20/vic-cmdline-options.h: New file.
+	* vic20/vic-draw.c: New file.
+	* vic20/vic-draw.h: New file.
+	* vic20/vic-mem.c: New file.
+	* vic20/vic-mem.h: New file.
+	* vic20/vic-resources.c: New file.
+	* vic20/vic-resources.h: New file.
+	* vic20/vic-snapshot.c: New file.
+	* vic20/vic-snapshot.h: New file.
+
+	* arch/unix/rs232.c (rs232_putc): Declare `n' (return value from
+	`write()') as `ssize_t' instead of `size_t'.
+
+	* arch/unix/xaw/ui.c (DEFINE_BUTTON_CALLBACK): Make the defined
+	callback static.
+	(mouse_timeout): Made static.
+	(mouse_handler): Made static.
+	(vidmode_available): Made static.
+	(focus_window_again): Made static.
+	(set_fullscreen): Local variable `dotclock' made static.
+	(ui_restore_mouse): Made static.
+	(initBlankCursor): Made static.
+	(mouse_handler1351): Made static.
+	(prepare_wm_command_data): Added a couple of signed -> unsigned
+	casts to make compiler happier.
+
+	* mon.c (mon_move_memory): Type of local variable `len' changed
+	from `unsigned int' to `int'.
+	(mon_compare_memory): Likewise.
+	(mon_fill_memory): Likewise.
+	(mon_hunt_memory): Likewise.
+	(mon_remove_name_from_symbol_table): Type of `addr' changed from
+	`unsigned int' to `int'.
+
+	* drive/via1drive0.c (store_acr): Use `static void' instead of
+	`void static'.
+	(store_sr): Likewise.
+	(store_t21): Likewise.
+	* drive/via2drive0.c (store_acr): Likewise.
+	(store_sr): Likewise.
+	(store_t2l): Likewise.
+	* drive/via1drive1.c (store_acr): Likewise.
+	(store_sr): Likewise.
+	(store_t2l): Likewise.
+	* drive/via2drive1.c (store_acr): Likewise.
+	(store_sr): Likewise.
+	(store_t2l): Likewise.
+
+	* c64/c64.c (machine_reset): Call `vic_ii_reset()' instead of
+	`reset_vic_ii()'.
+	* c64/c128.c (machine_reset): Likewise.
+
+	* vicii/sprites.h: Removed.
+	* vicii/sprcrunch.h: Removed.
+	* vicii/sprcycles.h: Removed.
+
+	Massive VIC-II reorganization and cleanup.
+	* vicii/vicii.c: Split into the	following parts:
+	* vicii/vicii-cmdline-options.c: New file.
+	* vicii/vicii-cmdline-options.h: New file.
+	* vicii/vicii-draw.c: New file.
+	* vicii/vicii-draw.h: New file.
+	* vicii/vicii-mem.c: New file.
+	* vicii/vicii-mem.h: New file.
+	* vicii/vicii-resources.c: New file.
+	* vicii/vicii-resources.h: New	file.
+	* vicii/vicii-snapshot.c: New file.
+	* vicii/vicii-snapshot.h: New file.
+	* vicii/vicii-sprites.c: New file.
+	* vicii/vicii-sprites.h: New file.
+
+	* Makefile.am: Cleaned up `x64', `x128' and `xvic' targets a bit.
+
+	* Makefile.am: Add `raster' to the include file directory list in
+	`INCLUDES'.
+	* c64/Makefile.am: Likewise.
+	* c128/Makefile.am: Likewise.
+	* vic20/Makefile.am: Likewise.
+
+	* arch/unix/video.c (frame_buffer_free): No longer mark the block
+	as deleted.
+	(frame_buffer_alloc): Do it here instead.  Fixed debugging
+	messages.  Destroy image on error.  XSync after XShmAttaching.
+	Use `xmalloc()' instead of `malloc()'.
+	(frame_buffer_free): Memset the struct with zero.
+
+	* arch/unix/xaw/ui.c (exposure_callback): Call the exposure
+	handler only if not NULL.
+
+	* vicii/vicii.c, vicii/vicii.h, vicii/raster.h: Massive
+	reorganization to take advantage of the new `libraster'.
+
+	* Makefile.am: Link all the emulators with `raster/libraster.a'
+
+	* vicii/Makefile.am: Added `$(top_srcdir)/src/raster' to
+	`INCLUDES'.
+
+	* raster.c, raster.h: Removed.
+
+	* Makefile.am: Added `raster' to `SUBDIRS'.
+
+	* raster/raster-cache.c: New file.
+	* raster/raster-cache.h: New file.
+	* raster/raster-changes.c: New file.
+	* raster/raster-changes.h: New file.
+	* raster/raster-modes.c: New file.
+	* raster/raster-modes.h: New file.
+	* raster/raster-sprite-cache.c: New file.
+	* raster/raster-sprite-cache.h: New file.
+	* raster/raster-sprite-status.c: New file.
+	* raster/raster-sprite-status.h: New file.
+	* raster/raster-sprite.c: New file.
+	* raster/raster-sprite.h: New file.
+	* raster/raster.c: New file.
+	* raster/raster.h: New file.
+
+1999-05-16  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.15.
+
+	* datasette.c (datasette_read_bit): Reschedule a flux change when
+	more than more flux change happens during DMA.
+	Removed some (now) unnecessary calls to the alarm code.
+	New variable `datasette_alarm_pending'.
+
+	* vic20/vic20iec.c (iec_drive0_write, iec_drive1_write,
+	iec_pa_write, iec_pcr_write): Implemented 1581 style IEC bus.
+
+	* vic20/vic20iec.c, c128/c128iec.c, vic20/vic20iec.c:
+	#include "maincpu.h".
+
+	* vic20/vic20via1.c, vic20/vic20via2.c (res_via): Commented out
+	calling IEC bus functions as this happens this executed the drive
+	during reset.
+
+	* vic20/vic20.c (machine_reset): Reset autostart code.
+	* pet/pet.c (machine_reset): Likewise.
+	* cbm2/c610.c (machine_reset): Likewise.
+
+	* c128/c128iec.c (iec_info_t): Made static.
+
+	* c128/c128.c (machine_reset): Do not initialize memory.
+
+1999-05-16  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.14.
+
+	* datasette.c, datasette.h, tape.c: Renamed `mem_set_tape_sense'
+	into `datasette_set_tape_sense'.
+
+	* c64/datasette.c (datasette_set_tape_sense): New function.
+
+	* c64/c64mem.h: Moved `mem_set_tape_sense' here.
+
+	* vic20/vic20datasette.c (datasette_set_tape_sense): New function.
+	(datasette_trigger_flux_change): Send signal to VIA1.
+
+	* vic20/vic20via2.c, vic20/vic20via.h (mem_set_tape_sense):
+	Renamed to `via2_set_tape_sense'.  #include "datasette.h".
+	(store_pcr): Added datasette motor signal.
+
+	* vic20/vic20via1.c (store_prb): Added datasette write signal.
+	#include "datasette.h".
+
+	* pet/petdatasette.c (datasette_set_tape_sense): New function.
+	* cbm2/c610datasette.c (datasette_set_tape_sense): New function.
+
+	* arch/unix/xaw/vic20ui.c: Added datasette controls.
+	* arch/unix/xaw/petui.c: Likewise.
+	* arch/unix/xaw/c610.c: Likewise.
+
+	* vic20/vic20.c (machine_init): Initialize datasette.
+	* pet/pet.c (machine_init): Likewise.
+	* cbm2/c610.c (machine_init): Likewise.
+
+	* pet/petpia1.c, pet/petpia.h (pia_set_cb2): Added datasette motor
+	signal.  #include "datasette.h".  Renamed `mem_set_tape_sense' to
+	`pia1_set_tape_sense'.
+
+	* pet/petpia.h: #include "types.h" and #include "snapshot.h".
+
+	* pet/petvia.c (store_prb): Added datasette write signal.
+
+	* cbm2/c610tpi1.c, cbm2/c610tpi.h (read_pb): Added datasette sense
+	signal.  (store_pb): Added datasette motor and write signal.
+	(tpi1_set_tape_sense): New function.
+
+	* arch/win32/resvic.rc, arch/win32/respet.rc: Commented in
+	datasette controls.
+
+	* arch/msdos/vic20ui.c (vic20_ui_init): Activated datasette
+	controls.
+	* arch/msdos/petui.c (pet_ui_init): Likewise.
+
+	* info.c: Updated.
+	* main.c (MAIN_PROGRAM): Updated init message.
+	
+1999-05-15  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.13.
+
+	* datasette.c (datasette_control): Added save support.
+	(datasette_toggle_write_bit, clk_overflow_callback): New
+	functions.
+	(datasette_init): Initialize clock overflow.
+
+	* c64/c64mem.c (pla_config_changed): Added implementation of
+	processor port bit #3.
+
+	* arch/msdos/menudefs.c (ui_create_main_menu): Commented in
+	datasette save dialog.
+	* arch/win32/resc64.rc: Likewise.
+
+	* arch/unix/archdep.h, arch/msdos/archdep.h, arch/win32/archdep.h,
+	arch/riscos/archdep.h: Added `MODE_READ_WRITE'.
+
+	* tap.c: #include "archdep.h".
+	(tap_open): Use `MODE_READ_WRITE'.  Set correct file offset and do
+	not attach TAPs with bogus size.
+
+	* tap.h (tap_t): New member `offset'.
+
+	* mon_lex.l (free_buffer): Fixed prototype.
+
+1999-05-15  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* c64/c64tpi.c (undump_pa): use parallel_cpu_restore_atn()
+	because we don´t send ATN IRQs to the chips on restore.
+	* cbm2/c610tpi1.c (undump_pa): likewise
+	* pet/petvia.c (undump_prb): likewise
+
+	* drive/drive.c (drive_attach_floppy): do not use GCR image with
+	8x50 disk types
+	(drive_read_snapshot_module, drive_write_snapshot_module):
+	add calls to fdc_*_snapshot_module() on SFD1001 disk type
+
+	* drive/fdc.c (fdc_t, fdc): new struct/type to hold all 
+	FDC information. Fix all occurances
+	(buffer, fdc_alarm, fdc_state, iprom): removed
+	(fdc_write_snapshot_module, fdc_read_snapshot_module): new functions
+
+	* drive/riot2drive0.c, drive/riot2drive1.c (riot_reset): remove
+	call to parallel_drv*_set_atn()
+
+	* parallel.c (ResetBus): remove call to parallel_emu_set_atn()
+	(parallel_restore_set_atn, parallel_restore_clr_atn): new functions,
+	thy do not send IRQ signals to the chip emulations on restore.
+	The chips should save the IRQ state themselves.
+
+	* parallel.h (parallel_restore_set_atn, parallel_restore_clr_atn):
+	new prototypes
+	(PARALLEL_RESTORE_LINE): new define. Remove parallel_set_atn
+	for all but the CPU. Add a parallel_restore_atn for the CPU.
+
+	* riotcore.c (myriot_write_snapshot_module, 
+	myriot_read_snapshot_module): implement basic funcitonality
+
+	* riotcore.h (riotio): change type from int to BYTE.
+
+1999-05-15  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.12.
+
+	* c64/reu.c, c64/reu.h (reu_init): New function.
+
+	* main.c (machine_init): Initialize REU.
+
+1999-05-15  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* xaw/uisettings.c (radio_Drive8Type, radio_Drive9Type): add drive
+	parameter to drive_match_bus()
+
+	* drive/cia1581drive0.c (do_reset_cia, undump_ciapa, store_ciapa):
+	set led_status to 0 or 1, not anything else
+	* drive/cia1581drive1.c: likewise
+
+	* drive/drive.c (set_drive0_type, set_drive1_type): add drive
+	parameter to drive_match_bus()
+	(drive_match_bus): add drive parameter
+	(drive_num_leds): return the number of LEDs for the drive
+
+	* drive/drive.h (drive_match_bus): update prototype
+	(drive_num_leds): add prototype
+
+	* drive/fdc.c (fdc_do_job): update current_half_track for display
+
+	* drive/riot2drive0.c (void undump_prb, void store_prb): shift 
+	LED bits to bits 0 and 1.
+	(riot_reset): reset LED status
+	* drive/riot2drive1.c: likewise
+
+	* drive/via2drive0.c (store_prb, undump_prb, res_via): use bit 0
+	for LED status
+	* drive/via2drive1.c: likewise
+
+1999-05-15  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* drive/drive.c (set_drive_true_emulation): reread the BAM 
+	when we disable true drive emulation.
+
+	* drive/fdc.c: encapsulate debug output into #ifdef FDC_DEBUG
+	(fdc_do_job): get disk ID and check where appropriate.
+	Check write protection where applicable
+	Check for format code on $E0 job code and format disk.
+
+	* vdrive.c (vdrive_get_max_sectors): return the right value
+	for track 77.
+	(vdrive_bam_get_disk_id, vdrive_bam_set_disk_id): new functions
+
+	* vdrive.h (vdrive_bam_get_disk_id, vdrive_bam_set_disk_id): new 
+	prototypes
+
+1999-05-14  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* ciacore.c (mycia_init): give the TOD alarm a unique name.
+
+1999-05-14  Tibor Biczo  <crown@mail.matav.hu>
+
+	* arch/win32/res.h: Added IDM_CART_VIC20_16KB_4000 resource definition.
+
+	* arch/win32/resvic.rc: Updated cartridge attach menu entries.
+
+1999-05-13  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* drive/drivecpucore.c (mydrive_cpu_early_init): give ROM
+	address to fdc code (is later needed to check whether we
+	have to execute format or custom code on $E0 job code)
+
+	* drive/fdc.c (iprom): IP processor ROM pointer
+	(fdc_do_job): use header pointer as parameter, because 
+	header also contains ID, not only t/s
+	If no disk in drive, return no Sync instead of drive not ready
+	On sector seek update track/sector.
+	On code $F0 read block header only.
+	(fdc_int): call fdc_do_job with header pointer instead of 
+	track/sector
+	(fdc_init): save pointer to main processor ROM
+	
+1999-05-13  Dag Lem  <resid@nimrod.no>
+
+	* Makefile.am: Removed target vsid.
+
+	* c64/Makefile.am: Added PSID related files.
+	
+	* c64/c64.c: Check psid_mode flag for PSID handling.
+	* c64/psid.h: New file, PSID handling.
+	* c64/psid.c: Likewise.
+	* c64/psiddrv.a65: Likewise.
+	
+	* c128/c128.c (machine_autodetect_psid): Flag target as uncapable
+	of reading PSID files.
+	* c128/c610.c (machine_autodetect_psid): Likewise.
+	* c128/pet.c (machine_autodetect_psid): Likewise.
+	* c128/vic20.c (machine_autodetect_psid): Likewise.
+
+	* machine.h: External declaration of psid_mode flag.
+
+	* main.c: Autodetect PSID file and set psid_mode flag.
+	
+1999-05-12  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.11.
+
+	* arch/unix/xaw/uicommands.c: #include "uiedisk.h".
+
+	* arch/unix/xaw/ui.c (focus_window_again, initBlankCursor): Fixed
+	prototype.
+	* parallel.c (In2_atnhi): Likewise.
+	* mon_lex.l (yywrap): Likewise.
+
+	* arch/unix/archdep.h (archdep_home_path): Removed.
+
+	* arch/unix/archdep.c (archdep_home_path): Made static.
+
+1999-05-12  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* drive/fdc.c (fdc_int): return "no sync" instead of "drive not
+	ready" for the missing second drive
+
+	* parallel.c (parallel_set_atn, parallel_clr_atn, parallel_set_dav,
+	parallel_clr_dav, parallel_set_nrfd, parallel_clr_nrfd,
+	parallel_set_ndac, parallel_clr_ndac): print debug info also when
+	the emulator is disabled.
+
+1999-05-12  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* vdrive.c (vdrive_command_format): fix some typos to make 8250 
+	disk format work.
+
+1999-05-10  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* doc/vice.texi (VIC20 Cartridges): add $4000 carts and 
+	explanation of 16k carts
+	(VIC20 resources & cmdline options): add cartridge resources
+	and cmdline options.
+	(VIC20ROM snapshot module): update format
+
+	* arch/msdos/vic20ui.c (cartridge_type_to_address): add $4000 
+	cartridge types
+	(attach_cartridge_menu_items): add $4000 carts, change $2000 and 
+	$6000 to 16k types
+
+	* arch/unix/xaw/vic20ui.c (attach_cartridge_image_submenu): 
+	add $4000 carts, change $2000 and $6000 to 16k types
+
+	* arch/win32/vic20ui.c (vic20_ui_specific): add $4000 types
+	return 16k types instead of 8k types
+
+	* cartridge.h (CARTRIDGE_VIC20_16K_[246]000, 
+	CARTRIDGE_VIC20_[48]K_4000): new defines
+
+	* vic20/cartridge.c (cartridge_file_4, cartfile4, set_cartridge_file_4):
+	new functions
+	(set_cartridge_file_6, set_cartridge_file_2): use 16k types instead
+	of 8k
+	(resources): Cartridge4000 new resource
+	(attach_cart6, attach_cart2): use 16k types
+	(attach_cart4): new function
+	(cmdline_options): "-cart4" new option
+	(cartridge_attach_image): read start address and try to detect
+	sane value. If not detected, assume no load address available.
+	handle 16k type and $4000 images.
+	(cartridge_detach_image): detach $4000 images
+	(cartridge_set_default): set $4000 images
+	(cartridge_get_file_name): return $4000 image file name
+
+	* /vic20/vic20mem.c (VIC_ROM_BLK2A, VIC_ROM_BLK2B): fixed defines
+	(vic20_mem_enable_rom_block): allow $4000 image too
+	(initialize_memory): allow ROM in the $4000 range too
+	(mem_attach_cartridge): handle $4000 and 16k type images
+	(mem_detach_cartridge): handle $4000 and 16k type images
+	(mem_write_rom_snapshot_module, mem_write_ram_snapshot_module):
+	handle $4000 and $5000 ROMs too. Format is completely compatible,
+	but minor version is increased for diagnostics
+
+1999-05-10  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* arch/unix/archdep.c: include errno.h
+
+	* drive/fdc.c: include drive.h and vdrive.h
+	(fdc_do_job): new function to handle FDC jobs
+	(int_fdc): call fdc_do_job
+
+	* drive/fdc.h (FDC_ERR_*): define error codes for FDC
+
+	* riotcore.c (myriot_signal, store_myriot, read_myriot): remove
+	some debugging output
+
+1999-05-10  Tibor Biczo  <crown@mail.matav.hu>
+
+	* arch/win32/drive.dsp: Added riot1drive1.c and riot2drive1.c.
+
+	* arch/win32/kbd.c: Include "machine.h".
+	  (kbd_handle_keyup, kbd_handle_keydown): Call machine_set_restore_key
+	  when PGUP is pressed.
+
+	* arch/win32/x128.dsp, arch/win32/x64.dsp, arch/win32/xcbm2.dsp,
+	  arch/win32/xpet.dsp, arch/win32/xvic.dsp: Added keyboard.c.
+
+	* zfile.c: Include <stdio.h>.
+
+1999-05-08  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.10.
+
+	* kbdbuf.c, kbdbuf.h (kbd_buf_init_cmdline_options,
+	kdb_buf_feed_cmdline): New functions.
+	(kbd_buf_init): Feed keyboard buffer on startup if specified.
+
+	* keyboard.c, keyboard.h: New files.
+
+	* arch/unix/kbd.c, arch/msdos/kbd.c, arch/win32/kbd.c,
+	(set_keyarr): Moved to `keyboard.c' and changed to
+	`keyboard_set_keyarr'. Removed keyboard array declaration.
+
+	* arch/riscos/kbd.c, arch/riscos/kbd.c: Removed keyboard array
+	declaration.
+
+	* c64/c64cia1.c, c128/c128cia1.c, vic20/vic20via1.c,
+	pet/petpia1.c, cbm2/c610tpi2.c, arch/win32/c64ui.c,
+	arch/win32/ui.c: #include "keyboard.h".
+
+	* arch/win32/c64ui.c, arch/win32/kbd.c, arch/win32/kbd.h,
+	arch/win32/ui.c: Call `keyboard_clear_keymatrix'.
+	* arch/unix/kbd.c (kbd_event_handler): Likewise.
+
+	* main.c (MAIN_PROGRAM): Initialize common keyboard routine.
+
+	* pet/petpia1.c (pia_set_cb2): Fixed prototype.
+
+1999-05-08  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.9.
+
+	* c64/c64.c (machine_init_cmdline_options): Initialize cartridge
+	command line options.
+
+	* c64/cartridge.c (cartridge_init_cmdline_options, attach_crt,
+	attach_8, attach_16, attach_action, attach_ss): New functions.
+
+	* utils.c: Moved `spawn' to `archdep.c'.
+
+	* arch/unix/archdep.c, arch/unix/archdep.h, arch/msdos/archdep.c,
+	arch/msdos/archdep.h, arch/win32/archdep.c, arch/win32/archdep.h,
+	arch/riscos/archdep.c, arch/riscos/archdep.h: New function
+	`archdep_spawn'.
+
+	* zfile.c: Use `archdep_spawn' instead of `spawn'.
+
+	* raster.c (handle_visible_line_without_cache): Fixed prototype.
+
+	* sound.h: Moved sound defaults here.
+
+1999-05-06  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.8.
+
+	* autostart.c (autostart_prg): Append a directory separator to
+	the directory name.
+
+	* arch/msdos/archdep.c (archdep_path_is_relative): `\foo', `/foo'
+	and `c:foo' are absolute.
+	* arch/win32/archdep.c (archdep_path_is_relative): Likewise.
+
+1999-05-04  Tibor Biczo <crown@mail.matav.hu>
+
+	* arch/msdos/archdep.c (archdep_path_is_relative): Return value
+	  was bad, should have been negated.
+
+	* arch/win32/archdep.c (archdep_path_is_relative): Same as above.
+	  Include <ctype.h>.
+
+	* arch/win32/drive.dsp: Removed fdc0.c, fdc1.c. Added fdc.c.
+
+	* arch/win32/resc128.rc: Put resource groups into right order
+	  in VicII palette select dialog.
+
+	* arch/win32/resc64.rc: Same as above.
+
+	* arch/win32/uiattach.c: Include <shlobj.h>.
+	  (dialog_proc): Implemented folder browser when selecting folder
+	  for fs based drive emulation.
+
+	* arch/win32/uivicii.c (res_checksscoll, res_checksbcoll): New
+	  variables to store setting changes.
+	  (init_dialog): Removed function.
+	  (init_palette_dialog): New function. Inits palette page.
+	  (init_sprite_dialog): New function. Inits sprite settings page.
+	  (dialog_proc): Removed function.
+	  (update_palettename): New function. Stores new palettename.
+	  (dialog_palette_proc): New function. Dialog procedure for
+	  palette page. Sets resource only, if exited with OK button,
+	  and if the specified palette could be loaded.
+	  (dialog_sprite_proc): New function. Dialog procedure for
+	  sprite settings page. Sets resources only, if exited with OK
+	  button.
+	  (ui_vicii_settings_dialog): Changed property sheet init to use
+	  new functions.
+
+	* arch/win32/vice.dsw: Removed dependency on arch lib for pet lib.
+
+	* arch/win32/vsync.c (set_warp_mode): Call sound_set_warp_mode.
+
+	* findpath.c (findpath): Include "archdep.h". Use FSDEV_DIR_SEP_CHR,
+	  and archdep_path_is_relative, when checking is path is relative or
+	  absolute. Don't insert '/' on the beginning of the path when
+	  compiling for DOS, WIN32 os OS2.
+
+1999-05-04  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* parallel.c (parallel_bus): invert meaning of bus lines
+	If IEEE bus is disabled, set to 0xff, not 0
+	(In1_davlo) invert data read from IEE bus to give to 
+	parallelattention or parallelbyte
+	(par_emu_bus, par_cpu_bus, par_drv0_bus, par_drv1_bus): 
+	invert meaning of data bus lines.
+	(parallel_emu_set_bus, parallel_cpu_set_bus, parallel_drv0_set_bus,
+	parallel_drv1_set_bus): do not OR bus values, but AND them
+	(according to their inverted line meanings)
+
+	* c64/c64tpi.c, cbm2/c610cia1.c, cbm2/c610tpi1.c, pet/petpia2.c:
+	do not invert data given to IEEE bus. Do change reading!
+
+	* drive/via1drive0.c, drive/via1drive1.c:
+	If IEEE bus is disabled, set to 0xff, not 0
+	invert data read from IEEE bus. Do change writing!
+
+	* drive/riot1drive0.c (undump_prb, store_prb):
+	do not invert data give to IEEE bus.
+	(riot1d0_set_pardata): renamed from riot1_set_pardata
+	do not invert data read from IEEE bus
+
+	* drive/riot2drive0.c (my_set_irq, set_handshake): remove prints
+	(drive0_riot_set_atn): call riot1d0_set_pardata instead of 
+	riot1_set_pardata
+	(store_prb): remove print
+	(riot_reset): fix IEEE lines from cpu to drv0 calls!
+
+	* drive/riot1drive1.c, drive/riot2drive1.c: new files
+
+	* drive/Makefile.am: add riot1drive1.c, riot2drive1.c
+
+	* drive/drive.c (drive1_riot_set_atn): remove dummy function
+
+	* drive/drive.h (I_RIOTD1FL): define IRQ value
+
+	* drive/fdc.c (int_fdc): handle second fdc when printing new state
+	on state change only
+
+	* drive/riotd.h (riot1_set_pardata): remove prototype
+	(riot1d0_set_pardata, riot1d1_set_pardata): new prototypes
+	remove dummy defines for drive 1 RIOTs
+
+1999-05-03  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.7.
+
+	* datasette.c, datasette.h (datasette_reset): New function.
+
+	* maincpu.c (reset): Reset datasette.
+
+1999-05-03  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* drive/fdc.c (int_fdc): handle job codes (return "no SYNC")
+	and head step.
+
+	* drive/riot1drive0.c (store_pb): disable bus when ATN is active.
+
+1999-05-03  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* drive/drive.h: remove bogus I_* and alarm definitions
+
+	* drive/drivecpucore.c (mydrive_read_watch, mydrive_store_watch):
+	fix address table access
+	(PAGE_ONE): define as pageone variable
+
+	* drive/riot1drive0.c (my_set_irq,  my_restore_irq): new (empty
+	definitions
+	(store_prb): invert byte sent, but only if ATN is set...
+	(riot1_set_pardata): re-set IEEE data bus, to be called when
+	ATN changes
+	(read_pra): invert IEEE data bus on read
+
+	* drive/riot2drive0.c (my_set_irq, my_restore_irq): 
+	new definitions
+	(set_handshake): fix handshake logic equations
+	(drive0_riot_set_atn): call riot1_set_pardata on ATN change
+	(read_pra): fix input bits
+	(read_prb): invert disk unit number bits
+
+	* drive/riotd.h (riot1_set_pardata): new prototype
+
+	* parallel.c (parallel_emu): new variable. Defaults to 1, if set
+	to 0, emulator does not respond to IEEE
+	(parallel_set_atn, parallel_clr_atn, parallel_set_dav,
+	parallel_clr_dav, parallel_set_nrfd, parallel_clr_nrfd,
+	parallel_set_ndac, parallel_clr_ndac): check parallel_emu
+
+	* riotcore.c (irqfl, edgectrl): new variables for PA7 irq handling
+	(myriot_signal): implement PA7 irq handling
+	(myriot_reset): clear irqfl, edgectrl.
+	(store_myriot): fix ioport handling; add PA7 interrupt edge control
+	(read_myriot): add PA7 interrupt edge control
+
+	* riotcore.h: include riot.h
+
+1999-05-03  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* drive/Makefile.am: remove fdc0.c, fdc1.c, fdccore.c, add fdc.c
+
+	* drive/drivecpucore.c (reset): call fdc_reset instead of myfdc_reset
+	(mydrive_cpu_early_init): call fdc_init instead of myfdc_init
+
+	* drive/fdc.c: new file, copied from fdccore.c
+
+	* drive/fdc.h (fdc0_init, fdc0_reset, fdc1_init, fdc1_reset).
+	remove prototypes
+	(fdc_init, fdc_reset): new prototypes
+
+	* drive/fdc0.c, drive/fdc1.c, drive/fdccore.c. drive/fdccore.h; removed
+
+1999-05-03  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.6.
+
+1999-05-02  Dag Lem  <resid@nimrod.no>
+
+	* Makefile.am: New target vsid.
+
+	* c64/Makefile.am: New target libc64vsid.a.
+
+	* vsidlib/Makefile.am: New target libvsid.a.
+	* vsidlib/dummy.c: Dummy stub functions for unwanted functionality.
+	* vsidlib/main.c: vsid startup.
+	* vsidlib/vsid.c: vsid "machine", a bare-bones C64.
+
+1999-05-02  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.5.
+
+	* arch/msdos/archdep.c (archdep_path_is_relative): Check for NULL
+	pointer.
+	* arch/win32/archdep.c: Changed likewise.
+
+	* arch/msdos/types.h, arch/riscos/types.h, arch/unix/types.h,
+	arch/win32/types.h: New files.
+
+	* types.h: Removed.
+
+	* c1541.c: Use `HAVE_READLINE' instead of obsolete `EDIT' define.
+
+	* vice.h: Removed `EDIT' define.
+
+	* vicii/vicii.c, vic20/vic.c, crtccore.c: Fixed prototype.
+
+	* autostart.c (autostart_autodetect): More verbose logging.
+	(autostart_advance): Press play on datasette if a tape image is
+	attached.
+
+	* drive/drivecpu0.c, drive/drivecpu1.c, 6510core.c: Use
+	`DRIVE_CPU' instead of obsolete `__1541__'.
+
+	* pet/petmem.c: Removed some cruft.
+
+	* memcmp.c, info.h: Added proper copyright notice.
+
+1999-05-01  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.4.
+
+	* arch/msdos/c64ui.c (c64_ui_init): Commented out usused menu. 
+
+	* arch/msdos/archdep.c (archdep_default_sysfile_pathlist): Add the
+	boot path to the default path.
+
+	* system.c (set_system_path): Also consider the drive letter on
+	MSDOS.
+
+	* arch/unix/xaw/uiedisk.c: #include "utils.h".
+
+	* arch/unix/xaw/video.h, arch/unix/xaw/video.c: Moved
+	`canvas_refresh' to `video.c'.
+
+	* arch/unix/xaw/widgets/TextField.c: Added some prototypes.
+
+1999-05-01  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* cia.h (byte2bcd, bcd2byte): fix macros
+
+	* ciacore.c (int_ciatod): fix handling of am/pm bit
+
+	* drive/drive.h (drive0_via_set_atn, drive1_via_set_atn,
+	drive0_riot_set_atn, drive1_riot_set_atn): add prototypes
+
+1999-04-29  Tibor Biczo  <crown@mail.matav.hu>
+
+	* arch/win32/c128.dsp: Enabled optimizations for c128mem.c.
+
+	* arch/win32/drive.dsp: Added fdc0.c, fdc1.c, riot1drive0.c,
+	  riot2drive0.c into drive project.
+
+	* arch/win32/vice.dsw: Corrected relativ paths of subprojects.
+
+	* c128/c128mem.c (initalize_memory): Turned off optimizations for
+	  this function when compiling with MSVC. Version 5.0SP3 died
+	  with internal compiler error on it.
+
+	* drive/drivecpucore.c (mydrive_mem_init): Same here as above.
+
+1999-04-28  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.3.
+
+	* c128/c128mem.c (initialize_memory): Fixed IO banking.
+
+	* drive/drive.c: Changed default name of 1541-II ROM.
+
+	* drive/drivecpucore.c (reset): Changed name of the reset
+	function.
+	* drive/viad.h, via1drive0.c, via1drive1.c, via2drive0.c,
+	via2drive1.c, vic20/vic20via.h, vic20/vic20via1.c,
+	vic20/vic20via2.c, pet/petvia.c, pet/petvia.h, c64/c64cia1.c,
+	c64/c64cia2.c, c64/c64cia.h, ciacore.c, drive/ciad.h,
+	drive/cia1571drive0.c, drive/cia1571drive1.c,
+	drive/cia1581drive0.c, drive/cia1581drive1.c, c128/c128cia1.c,
+	cbm2/c610cia.h, cbm2/c610cia1.c, drive/wd1770.h, drive/wd1770.c,
+	drive/riotd.h, drive/riot1drive0.c, drive/riot2drive0.c,
+	riotcore.c, drive/drivecpu0.c, drive/drivecpu1.c, c64/c64.c,
+	c128/c128.c, vic20/vic20.c, pet/pet.c, cbm2/c610.c: Likewise.
+
+1999-04-28  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* doc/vice.texi: add some explanation to the drive emulation
+	cmdline options -parallel8/9 fixed
+	added -drive8extend and -drive9extend options
+	added -dos1001 option
+	added -joydev1, -joydev2 options
+
+	* arch/unix/joystick.c (cmdline_options): change "0-5" to "0-6"
+	for the available joystick devices.
+
+	* drive/drive.c (cmdline_options): add -drive8extend and -drive9extend
+	options
+
+1999-04-27  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* drive/Makefile.am: add fdc.h, fdc0.c, fdc1.c, fdccore.h, and
+	fdccore.c
+
+	* drive/drivecpu0.c: include fdc.h
+	(myfdc_reset, myfdc_init): new defines
+	* drive/drivecpu1.c: likewise
+
+	* drive/drivecpucore.c (mydrive_read_1001buffer_ram,
+	mydrive_store_1001buffer_ram): fix address computation
+	(reset): call myfdc_reset
+	(mydrive_cpu_early_init): call myfdc_init
+
+	* drive/fdc.h, drive/fdc0.c, drive/fdc1.c, drive/fdccore.c,
+	drive/fdccore.h: new files to handle FDC emulation
+	for the two drives.
+
+1999-04-27  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* arch/unix/xaw/Makefile.am: add uiedisk.h, uiedisk.c
+
+	* arch/unix/xaw/uicommands.c (attach_empty_disk): new callback
+	(attach_empty_disk_image_submenu). new submenu to attach
+	an empty disk
+	(ui_disk_commands_menu): call attach_empty_disk_image_submenu
+
+	* arch/unix/xaw/uiedisk.c: new file, derived from uisnapshot.c
+
+	* arch/unix/xaw/uiedisk.h: new file, derived from uisnapshot.h
+
+	* arch/unix/xaw/uisnapshot.c (browse_callback, cancel_callback,
+	save_callback): make static
+
+1999-04-26  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* c64/c64mem.c (mem_romset_resources): fix list (add 1541ii, 1001)
+	* c128/c128mem.c: likewise
+	* vic20/vic20mem.c: likewise
+	* pet/petmem.c: likewise
+	* cbm2/c610mem.c: likewise
+
+1999-04-26  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* data/DRIVES/Makefile.am: add dos1001
+
+	* arch/unix/xaw/uisettings.c (set_drive0_type_submenu,
+	set_drive1_type_submenu): add SFD1001 entry
+
+	* drive/Makefile.am: add riotd.h
+
+	* drive/drive.c: include riotd.h
+	(drive_load_1001, dos_rom_name_1001, set_dos_rom_name_1001,
+	drive_rom1001, rom1001_loaded): new function/variable
+	(set_drive0_type, set_drive1_type, drive_init,  
+	drive_set_active_led_color, drive_set_disk_drive_type,
+	drive_load_rom_images, drive_setup_rom_image, drive_check_image_format,
+	drive_match_bus, drive_write_snapshot_module,
+	drive_read_snapshot_module): handle new SFD1001 case
+	(resources, commandline_options): new "DosName1001" and "-dos1001"
+	entries
+
+	* drive/drive.h (DRIVE_ROM1001_SIZE, DRIVE_TYPE_1001): new defs.
+
+	* drive/drivecpu0.c: include riotd.h
+	(reset_myriot1, reset_myriot2, read_myriot1, read_myriot2,
+	store_myriot1, store_myriot2, myriot1_init, myriot2_init): new defs
+	* drive/drivecpu1.c: likewise
+
+	* drive/drivecpucore.c (read_func, store_func, read_func_watch,
+	store_func_watch, read_func_nowatch, store_func_nowatch):
+	increase size from 65 to 257, using each entry for 256 byte instead
+	of 1024
+	(LOAD, STORE): adjust to new table format
+	(mydrive_read_1001_io, mydrive_store_1001_io, 
+	mydrive_read_1001zero_ram, mydrive_store_1001zero_ram, 
+	mydrive_read_1001buffer_ram, mydrive_store_1001buffer_ram): 
+	new functions to handle 1001/8050/8250 memory access
+	(JUMP): do not use bank_base optimization for SFD1001 :-(
+	(pageone): made variable to be able to set it to drive_ram 
+	or (drive_ram + 0x100)
+	(mydrive_read, mydrive_store, drive_bank_read, drive_bank_peek,
+	drive_bank_store): adjust to new table format
+	(reset): reset RIOTs as well
+	(mydrive_mem_init): adjust to new memory table format, also handle
+	new SFD1001 case
+	(mydrive_toggle_watchpoints): adjust to new mem table size
+	(mydrive_cpu_early_init): init RIOTs as well
+	(drive_jam): handle new 1001 case
+	(mydrive_cpu_write_snapshot_module): adjust RAM size to save for 1001
+	(mydrive_cpu_read_snapshot_module): reset RIOTs as well
+	adjust RAM size to read for SFD1001
+
+	* drive/riotd.h: new file with RIOT1/2 definitions for drive 0/1
+
+1999-04-25  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* Makefile.am: add riot.h, riotcore.h and riotcore.c
+
+	* drive/Makefile.am: add riot1drive0.c, riot2drive0.c
+
+	* drive/drive.c (drive1_riot_set_atn): dummy 
+	(drive0_parallel_set_atn, drive1_parallel_set_atn): replace
+	functions in the VIA code. Call VIA _and_ RIOT functions to 
+	set ATN flags
+
+	* drive/riot1drive0.c, drive/riot2drive0.c: new files
+
+	* drive/riotd.h (riot1d0_signal, riot2d0_signal, riot1d1_signal, 
+	riot2d1_signal): new prototypes
+	remove empty redefines for the two drive 0 RIOTs
+
+	* drive/via1drive0.c (drive0_via_set_atn): renamed from 
+	drive0_parallel_set_atn
+	* drive/via1drive1.c: likewise
+
+	* riot.h, riotcore.c, riotcore.h: new files to emulate the 
+	RIOT 6532 and the 6530.
+
+1999-04-25  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.2.
+
+	* fsdevice.c (read_fs) [Directory]: Corrected off by one error in
+	directory listing.
+
+	* c1541.c (block_cmd, extract_cmd): Removed special 1541 handling.
+
+	* c64/c64mem.c (read_io1, store_io1, read_io2, store_io2): Removed
+	cartirdge specific routines.
+	(mem_attach_cartridge, mem_detach_cartridge,
+	mem_freeze_cartridge, cartridge_config_changed, read_roml,
+	read_romh, store_roml): Removed.
+	(pla_config_changed): Made non-static.
+
+	* c64/c64cartmem.c: New file.
+
+	* c64/c64cart.h: New prototypes for `c64cartmem.c'.
+
+	* c64/Makefile.am: Added `c64cartmem.c' to `libc64_a_SOURCES'.
+
+	* mem.h: Removed cartridge specific functions.
+
+	* cartridge.h (cartridge_attach, cartridge_detach,
+	cartridge_freeze): Prototypes moved here.
+
+	* vic20/cartridge.c: #include "vic20mem.h".
+
+	* vic20/vic20mem.h: Added prototypes for `mem_attach_cartridge'
+	and `mem_detach_cartridge'.
+
+	* interrupt.h: Defined interrupt types here.
+
+	* vmachine.h: Removed.
+
+	* autostart.c, kbdbuf.c, maincpu.c, interrupt.h, raster.h,
+	c64/c64.c, c64/c64cia1.c, c64/c64cia2.c, c64/c64mem.c,
+	c64/cartridge.c, viacore.h, aciacore.c, crtccore.c, raster.c,
+	rsuser.c, c128/c128.c, c128/c128cia1.c, c128/c128mem.c,
+	vic20/cartridge.c, vic20/vic.c, vic20/vic20.c, vic20/vic20mem.c,
+	pet/pet.c, pet/petmem.c, pet/petpia1.c, cbm2/c610.c,
+	cbm2/c610cia1.c, cbm2/c610mem.c, vicii/vicii.c, arch/unix/kbd.c,
+	arch/msdos/kbd.c, arch/msdos/vsync.c, arch/riscos/kbd.c: Do not
+	include `vmachine.h'.
+
+1999-04-25  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.1.
+
+	* Makefile.am, arch/unix/Makefile.am, arch/unix/xaw/Makefile.am,
+	arch/win32/Makefile.am, arch/msdos/Makefile.am,
+	arch/riscos/Makefile.am: Removed `PREFIX' from `INCLUDES'.
+
+	* arch/unix/archdep.h: #include "vice.h".
+
+	* arch/unix/xaw/ui.c, arch/unix/xaw/ui.h
+	(ui_is_fullscreen_available): Fixed prototype.
+
+	* imagecontents.c (open_image): Also include d80 and d82 disk
+	images.
+	* arch/msdos/menudefs.c (attach_disk_callback): Likewise.
+	* arch/win32/ui.c (handle_wm_command): Likewise.
+
+1999-04-25  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* Makefile.am: add piacore.c, piacore.h, remove pia-tmpl.c
+
+	* pet/Makefile.am: remove petpia*.def and builf rules for it.
+
+	* pet/petpia1.c, pet/petpia2.c: basically a copy of the old .def
+	files, with names/defs changed to fit the new piacore file.
+	includes piacore.c at the end
+
+	* pet/petpia1.def, pet/petpia2.def: removed
+
+	* pia-tmpl.c: removed
+
+	* piacore.c, piacore.h: new files made out of pia-tmpl.c
+
+1999-04-25  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* Makefile.am: add tpicore.c, tpicore.h, remove tpi-tmpl.c
+
+	* c64/Makefile.am: remove c64tpi*.def and builf rules for it.
+	* cbm2/Makefile.am: remove c610tpi*.def and builf rules for it.
+
+	* c64/c64tpi.c, cbm2/c610tpi1.c, cbm2/c610tpi2.c: basically a copy 
+	of the old .def files, with names/defs changed to fit the new 
+	tpicore file. includes tpicore.c at the end
+
+	* c64/c64tpi.def, cbm2/c610tpi1.def, cbm2/c610tpi2.def: removed
+
+	* tpi-tmpl.c: removed
+
+	* tpicore.c, tpicore.h: new files made out of tpi-tmpl.c
+
+1999-04-25  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* Makefile.am: remove bogus tpi-tmpl.c, add tpicore.c and tpicore.h
+
+	* aciacore.c (acia_last_read): new variable to save value last
+	read, needed for RMW cycles.
+	(store_myacia): add handling of rmw_flag
+	(read_myacia): save value in acia_last_read.
+
+	* c64/c64acia1.c, cbm2/c610acia1.c, pet/petacia.c (mycpu_rmw_flag):
+	new define 
+
+	* ciacore.c (read_mycia): move PRE_READ_CIA from before RMW flag
+	handling to behind so that it always gets called in the right
+	order clk-wise.
+
+	* drive/via1drive0.c, drive/via1drive1.c, drive/via2drive0.c,
+	drive/via2drive1.c, pet/petvia.c, vic20/vic20via1.c,
+	vic20/vic20via2.c (myrmwf): removed.
+	(mycpu_rmw_flag): new define
+
+	* viacore.c (via_read_clk, via_read_offset): new variables to 
+	handle opcode fetches in the I/O area
+	(via_last_read): new variable for RMW handling
+	(reset_myvia): use proper name for log name.
+	set via_read_clk to 0
+	(store_myvia): add handling of RMW flag
+	(read_myvia): add handling of opcode fetch in I/O area.
+	Save value read in via_last_read variable.
+	(clk_overflow_callback): handle via_read_clk
+
+1999-04-25  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* c128/c128.c, c64/c64.c (machine_init): add call to tpi_init()
+
+	* c64/c64tpi.c, cbm2/c610tpi1.c, cbm2/c610tpi2.c (mytpi_init):
+	new define
+
+	* c64/c64tpi.h (tpi_init): new prototype
+	* cbm2/c610tpi.h: likewise
+
+	* cbm2/c610.c (machine_init): call tpi1_init, tpi2_init
+
+	* /pet/pet.c (machine_init): call pia1_init, pia2_init
+
+	* pet/petpia.h (pia1_init, pia2_init): new prototypes
+
+	* pet/petpia1.c, pet/petpia2.c (mypia_init): new define
+
+	* ciacore.c (mycia_init, reset_mycia): move log init from reset 
+	to init.
+	* viacore.c: likewise
+
+	* piacore.c (mypia_init): new function, move log here from reset
+
+	* tpicore.c (mytpi_init): new function, move log here from reset
+
+1999-04-25  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* c64/c64tpi.c: include maincpu.h
+	(mycpu_rmw_flag, myclk): new defines
+	* cbm2/c610tpi1.c: likewise
+	* cbm2/c610tpi2.c: likewise
+	* pet/petpia1.c: likewise
+	* pet/petpia2.c: likewise
+
+	* piacore.c (pia_last_read): new variable to handle RMW cycles
+	(store_mypia): handle RMW cycles
+	(read_mypia): save value read in pia_last_read
+
+	* tpicore.c (tpi_last_read): new variable to handle RMW cycles
+	(store_mytpi): handle RMW cycles
+	(read_mytpi): save value read in tpi_last_read
+
+1999-04-25  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* c1541.c (Legal_formats): fix number of blocks for 8050.
+	(command_list): add description of 8050/8250 disks
+	(open_image): recognize D80/D82 images
+	(format_cmd): recognize D80/D82 image type for formats
+
+	* fs_cbm.h (BAM_BIT_MAP_8050, BAM_BIT_MAP_8250, BAM_VERSION_8050,
+	BAM_VERSION_8250, ...) add/fix various defines for the 8050/8250
+	format types.
+	(hdrinfo): add flags for d80/d82 format
+
+	* vdrive.c (floppy_free_block_count): handle 8050/8250 BAMs
+	(vdrive_command_validate): fix (maximum) BAM size
+	(vdrive_command_format): use some common routines only if not
+	8x50 disk. Build complete new BAM chain for 8x50 disks.
+	(vdrive_dir_find_next_slot): handle 8x50 disks when looking
+	for a new (empty) directory block.
+	(vdrive_calculate_disk_half, vdrive_get_max_sectors,
+	vdrive_bam_sector_free): handle 8x50 disks
+	(vdrive_bam_calculate_track): handle 8x50 BAM when calculating 
+	the track field position in the BAM
+	(vdrive_bam_clear_all): also clear 8x50 BAM
+	(vdrive_bam_read_bam, vdrive_bam_write_bam): read/write 8x50 BAM 
+	as well.
+	(attach_floppy_image): recognize D80/D82 images
+	(get_std80_header, get_std82_header): new fucntions. Do sanity
+	check on to be attached image
+	(check_header): clear d80/d82 flags in header; check file length
+	for d80/d82 images
+	(set_disk_geometry): set appropriate values for 8x50 images
+	
+	* vdrive.h (struct _DRIVE): adjust maximum BAM size
+	(D80_FILE_SIZE, D82_FILE_SIZE, IS_D80_LEN, IS_D82_LEN):
+	add d80/d82 file sizes and check macros
+	(DISK_IMAGE_TYPE_D80, DISK_IMAGE_TYPE_D82): new defines
+
