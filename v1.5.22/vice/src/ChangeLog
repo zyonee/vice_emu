@@ -1,0 +1,1384 @@
+2000-12-05  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.5.22.
+
+2000-12-02  Thomas Bretz  <tbretz@physik.tu-muenchen.de>
+
+	* arch/os2/dialogs/dialogs.[rc,h]: added resources for manubar
+
+	* arch/os2/dialogs/dlg-sound.c: added scale for volume
+ 
+	* arch/os2/dialogs/menubar.c: added
+ 
+	* arch/os2/doc/Vice_for_OS2.txt: deleted windowpos
+ 
+	* arch/os2/kbd/proc.c: added some comments
+ 
+	* arch/os2/uimon.c: small changes
+ 
+	* arch/os2/vac++/incl/dialogs.icc: added menubar.c
+ 
+	* arch/os2/vac++/incl/monitor.icc: removed asm., added asm*.c
+ 
+	* arch/os2/video.c: added wmPaint (refresh window when
+	emulation is paused), added menubar resource, removed autopos
+	resource
+   
+	* arch/os2/videoarch.h: added stretch to canvas_t
+ 
+	* arch/os2/vsidui.c: small changes
+
+	* arch/os2/vsyncarch.c: small changes
+ 
+	* monitor/mon_lex.c: make compile without warnings
+	again
+   
+	* monitor/mon_parse.c: make compile without warnings again
+ 
+	* sounddrv/sounddart.c: small changes
+ 
+2000-12-02  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.5.21.
+
+	* sound.h: Fixed typo in definition of `SOUNDCLK_MULT'.
+
+2000-12-02  Thomas Bretz  <tbretz@physik.tu-muenchen.de>
+
+	* arch/os2/dialogs/dialogs.h: small changes, some small
+	additions
+ 
+	* arch/os2/dialogs/dialogs.rc: some layout changes
+ 
+	* arch/os2/dialogs/dlg-datasette.c: enhanced for datasette
+	resources
+ 
+	* arch/os2/dialogs/dlg-emulator.c: changed output fields
+ 
+	* arch/os2/dialogs/dlg-hardware.c: Added X128-vdc resource
+ 
+	* arch/os2/dialogs/dlg-joystick.c: uses enabled joysticks now
+ 
+	* arch/os2/dialogs/dlg-vsid.c: added Option-Button
+ 
+	* arch/os2/doc/Vice_for_OS2.txt: updated
+ 
+	* arch/os2/install.cmd: added reSid player
+ 
+	* arch/os2/joystick.c: Output messages changed
+ 
+	* arch/os2/kbd/proc.c: added VK_F11
+
+	* arch/os2/mouse.c: Added some comments, some small changes
+ 
+	* arch/os2/uicmdline.c: added include archdep.h
+ 
+	* arch/os2/uimon.c: small changes
+ 
+	* arch/os2/vac++/incl/archdep.icc: added uimon.c removed
+	vsidui.c
+ 
+	* arch/os2/vac++/incl/c64.icc: removed psid.c
+ 
+	* arch/os2/vac++/incl/dialogs.icc: removed dlg-vsid.c
+ 
+	* arch/os2/vac++/incl/mainsrc.icc: added prdevice.c, print.c,
+	pruser.c
+ 
+	* arch/os2/vac++/incl/vsid.icc: added
+ 
+	* arch/os2/vac++/Makefile.am: added vsid.icc
+ 
+	* arch/os2/vac++/X64.ICC: added vsid.icc
+ 
+	* arch/os2/video.c: added some debug statements, improved
+	handling of WmVrn
+ 
+	* arch/os2/vsidui.c: improved output
+ 
+	* arch/os2/vsyncarch.c: added pms, comments
+ 
+	* c64/c64.c diff/src/c64/c64.c: display time only when
+	changing (vsid)
+
+	* main.c: help is -help not -h
+ 
+	* print.c: adapted for OS/2
+ 
+	* vsync.c: skip too-slow test for OS/2
+
+2000-12-01  pottendo  <pottendo@utanet.at>
+
+	* arch/unix/vsidui.c (vsid_create_menus): Added calls to create
+	toplevel menus.
+
+2000-12-01  Spiro Trikaliotis  <Spiro.Trikaliotis@gmx.de>
+
+	* arch/win32/console.c, ../uimon.c: Fixed some errors
+
+2000-11-27  Andreas Dehmel  <dehmel@forwiss.tu-muenchen.de>
+
+	* arch/riscos/*: moved video standard selector from drive to
+	system configuration window, added speed to VSID window.
+
+	* sound.c, sound.h, sid/sid.c, sid/resid.cc: alternative
+	fixpoint code for sound timings (if FIXPOINT_ARITHMETIC
+	defined, otherwise use double as before).
+
+2000-11-26  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.5.20.
+
+	* monitor/mon.h: Added prototype for `mon_cpu_type()'.
+
+	* mon.c, asm.h, asm6502.c, asmz80.c: Added support for
+	multiple byte opcodes.
+
+2000-11-25  Dag Lem  <resid@nimrod.no>
+
+	* arch/unix/vsidui.c: Added menu "Video Standard".
+
+	* c64/psid.c: Added video standard cmdline options.
+
+	* c64/psiddrv.a65: Refined memory bank switching.
+
+	* resid/: Removed libtool usage.
+
+2000-11-23  Dag Lem  <resid@nimrod.no>
+
+	* resid/: reSID 0.10; quite a bit faster.
+
+2000-11-19  Andreas Matthies  <andreas.matthies@gmx.net>
+
+	* c64/c64mem.c(initialize_memory): pport initialized with
+	default values $2f, $37
+
+2000-11-17  Andreas Matthies  <andreas.matthies@gmx.net>
+
+	* arch/msdos/tuifs.c(tui_file_selector) must not free
+	the return_path; this is done by the calling functions
+
+	* arch/msdos/uisnapshot.c(load_snapshot_callback) frees
+	'name' which is received by tui_file_selector
+
+	* vic20/vic-mem.c(vic_store) geometry uses exact values
+	of $9000
+
+	* vic20/vic20.h: changed constants VIC_SCREEN_WIDTH,
+	VIC_SCREEN_MAX_TEXT_LINES and VIC_LAST_DISPLAYED_LINE so that
+	the emulation can handle shifted or larger screens used in
+	many games like Arcadia or Bongo
+
+2000-11-17  Alexander Bluhm  <bluhm@milab91.mathematik.uni-leipzig.de>
+
+	* ciacore.c (mycia_store, int_ciatod): Fixed some TOD bugs.
+
+	* sounddrv/soundsun.c: Defines for OpenBSD.
+
+2000-11-17  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.5.19.
+
+	* monitor/asmz80.c: New file.
+
+	* monitor/asm.c: Renamed to `asm6502.c'.
+
+	* monitor/mon_parse.y, monitor/mon_lex.l, monitor/mon.c,
+	monitor/asm.h: Added support for Z80 opcodes.
+
+	* uimon.h, arch/unix/uimon.c, arch/msdos/uimon.c,
+	arch/win32/uimon.c, arch/riscos/uimon.c, arch/os2/uimon.c,
+	arch/beos/uimon.c (arch_mon_in): Removed `const'.
+
+2000-11-11  Spiro Trikaliotis  <Spiro.Trikaliotis@gmx.de>
+
+	* arch/win32/uimon.c,console.c: added new functionality,
+	corrected errors (but it's FAR from finished!)
+
+2000-11-08  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.5.18.
+
+	* arch/win32/uimon.c (CreateAToolbar): Only use
+	`UnlockResource' if `HAS_UNLOCKRESOURCE' is defined.
+
+	* c1541.c (internal_read_geos_file): Commented out unused
+	variable.
+
+2000-11-08  Dag Lem  <resid@nimrod.no>
+
+        * c64/psid.c: Improve PSID compatibility - correct speed
+          handling, provide $02a6 PAL/NTSC flag and $ea31 IRQ exit.
+
+        * c64/psiddrv.a65: Improve PSID compatibility - correct speed
+          handling, VICII/CIA1 interrupt, bank selection
+
+2000-11-02  Dag Lem  <resid@nimrod.no>
+
+	* arch/unix/vsync.c (set_timer_speed): Avoid divide by zero.
+	* vsync.c: Corrected credits.
+
+2000-11-01  Andreas Matthies  <andreas.matthies@gmx.net>
+
+	* arch/beos/joystick.cc(.h): some changes to avoid opening
+	the same hardware joystick port twice
+
+	* arch/beos/ui_file.cc(.h): new functions
+	(read_disk_image_contents),(read_tape_image_contents),
+	(read_disk_or_tape_image_contents),(create_content_list);
+	new classes VicePreview,ViceFilePanel that implement the
+	image contents and autostart features
+
+	* arch/beos/vicewindow.cc(.h): ViceWindow uses members
+	of the new ViceFilePanel class
+
+	* arch/msdos/vsync.c(vsync_set_machine_parameter): calls
+	register_timer_callback which should fix the NTSC timing
+	problem
+
+	* arch/win32/uisnapshot.c: new include vsync.h;
+	(ui_save_snapshot) calls suspend_speed_eval
+
+	* vsync.c(display_speed): logging of time-keeping-problems
+	removed again
+
+2000-10-29  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.5.17.
+
+2000-10-23  Markus Brenner  <markus@brenner.de>
+
+	* cartridge.h: added CARTRIDGE_DINAMIC type (17)
+
+	* c64/c64cartmem.c: added support for CARTRIDGE_DINAMIC
+
+	* c64/c64cartridge.c: added support for CARTRIDGE_DINAMIC
+
+2000-10-17  Andreas Dehmel  <dehmel@forwiss.tu-muenchen.de>
+
+	*  c64/psid.c: don't dereference psid before checking whether
+	it's legal (Segfaults on Solaris).
+
+2000-10-15  Andreas Dehmel  <dehmel@forwiss.tu-muenchen.de>
+
+	* c64/c64.c, c64/psid.{c,h}: count number of vsyncs a tune was
+	played for playtime information.
+
+	* arch/riscos/ui.{c,h}: pass international messages to vsidui.
+
+	* arch/riscos/vsidui.c: added vsid_ui_display_time(); pause
+	and stop working correctly now.
+
+	* arch/*/vsidui.c: added vsid_ui_display_time() dummy stubs.
+
+2000-10-14  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.5.16.
+
+	* arch/unix/x11/xaw/widgets/Directory.c: #include "vice.h".
+
+2000-10-14  Dirk Schnorpfeil  <D.Schnorpfeil@web.de>
+
+	* c1541.c: Added commands to read/write GEOS formatted disks.
+
+2000-10-12  Andreas Dehmel  <dehmel@forwiss.tu-muenchen.de>
+
+	* arch/unix/x11/gnome/dummies.c,
+	arch/unix/x11/gnome/gnomevideo.c: __FUNCTION__ is not defined
+	in SUNWspro compilers.
+
+	* arch/unix/x11/gnome/about.c: SUNWspro doesn't allow function
+	calls in initializers ( _(...) ).
+
+2000-10-10  Andreas Matthies  <andreas.matthies@gmx.net>
+
+	* vsync.c: new include log.h; frame_start now global;
+	(display_speed) checks if emulation loses time (like Dag did
+	it in the unix version): delay doesn't exceed 1 second now and
+	warning is written to the log
+
+2000-10-08  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.5.15.
+
+	* Makefile.am, arch/win32/msvc/config.h, arch/os2/config.h,
+	arch/riscos/config.h, serial.c, c64/c64.c, c64/c64cia2.c,
+	c128/c128.c, vic20/vic20.c, vic20/vic20via2.c, pet/pet.c,
+	pet/petvia.c, cbm2/c610.c, cbm2/c610cia1.c: Removed special
+	printer defines.
+
+2000-10-07  Spiro Trikaliotis  <Spiro.Trikaliotis@gmx.de>
+
+	* arch/win32/uimon.c: added new functionality, corrected
+	errors (but it's FAR from finished!)
+
+2000-10-05  Andreas Matthies  <andreas.matthies@gmx.net>
+
+	* arch/beos/c128ui.cc,c610ui.cc,c64ui.cc,petui.cc,vic20ui.cc:
+	minor changes, new parameter in ..._ui_specific,
+	implementation for VIC20 and C64 cartridges
+
+	* arch/beos/constants.h: new menu IDs for cartridges
+
+	* arch/beos/ui.cc: minor changes
+
+	* arch/beos/ui.h: new type ui_cartridge_t;
+
+	* arch/beos/ui_device.cc: uses resource 'PrinterDevice1'
+	instead of 'PrinterFile'
+
+	* arch/beos/ui_file.cc: (ui_select_file) and
+	(ui_select_file_action) support cartridge files;
+
+	* arch/beos/vicemenu.cc: new menu items for cartridges; some
+	changes in the order of items
+
+	* arch/os2/vsyncarch.c: (vsyncarch_display_speed) gets third
+	parameter 'warp_enabled'; not used yet
+
+	* arch/win32/Makefile.am,arch.dsp: vsync.c replaced by
+	vsyncarch.c
+
+	* arch/win32/ui.c: added some 'suspend_speed_eval()'
+
+	* arch/win32/uilib.c: 'suspend_speed_eval' after filename is
+	selected
+
+	* arch/win32/vsyncarch.c: new file to support common vsync code
+
+	* arch/win32/x128.dsp,x64.dsp,xcbm2.dsp,xpet.dsp,xvic.dsp:
+	added common vsync.c to project
+
+	* maincpu.c: (cpu_resets) calls 'suspend_speed_eval()'
+
+	* snapshot.c: (snapshot_open) calls 'suspend_speed_eval()'
+
+	* vsync.c: now compiled under WIN32
+	frame_ticks changed to 'signed long' do make
+	(delay+frame_ticks < 0) become possible in (do_vsync)
+	(vsyncarch_display_speed) is called with third param
+	'warp_mode_enabled'; new prototype in vsyncarch.h
+
+2000-10-05  Andreas Dehmel  <dehmel@forwiss.tu-muenchen.de>
+
+	* arch/riscos/archdep.h, arch/riscos/kbd.c: added required
+	include.
+
+	* arch/riscos/ui.c: resync sound and frame rate after pause,
+	small changes to fliplist handling.
+
+2000-10-04  Andreas Dehmel  <dehmel@forwiss.tu-muenchen.de>
+
+	* monitor/mon.c: no C++ comments in common C source, please.
+
+2000-10-04  Spiro Trikaliotis  <Spiro.Trikaliotis@gmx.de>
+
+	* monitor/mon.c: doesn't use the console directly, but only
+	via arch_mon_...()
+
+	* arch/win32/uimon.c: added new functionality, corrected
+	errors (but it's FAR from finished!)
+
+	* arch/.../uimon.c: Added arch_mon_in(), arch_mon_out()
+
+2000-10-01  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+        * Version 1.5.14.
+
+	* diskimage.c (disk_image_check_for_d64): Also read error info
+	from a 40 track disk image.
+	(disk_image_sector_per_track): Added error output.
+
+	* vdrive/vdrive-iec.c (write_sequential_buffer): Fixed return
+	value.
+
+	* vdrive/vdrive-bam.c (vdrive_bam_alloc_first_free_sector):
+	Fixed completely bogus allocation.
+
+	* vdrive/vdrive.c (vdrive_calculate_disk_half): Fixed number
+	tracks calculation for 1541 and 1571 disk images.
+
+	* print.c: New file based on arch/riscos/print.c.
+
+	* serial.c (serialsendbyte, serialreceivebyte, serialcommand,
+	serialattention): Only fetch vdrive for disk devices.
+
+	* arch/unix/uisettings.c (printer_settings_menu): Updated
+	resource names.
+
+	* arch/riscos/ui.c: Likewise.
+
+	* arch/unix/Makefile.am, arch/msdos/Makefile.am,
+	arch/win32/Makefile.am, arch/riscos/Makefile.am,
+	arch/beos/Makefile.am: Drop `print.c'.
+
+	* arch/unix/archdep.h, arch/win32/archdep.h,
+	arch/riscos/archdep.h, arch/msdos/archdep.h,
+	arch/beos/archdep.h, arch/os2/archdep.h: Defined default
+	printer devices.
+
+	* sound.h: Added prototype for `sound_init_esd_device()'.
+
+	* sounddrv/soundesd.c: #include <stdio.h>.
+
+	* autostart.c (autostart_tape): Do not load "*" if no name is
+	given!
+
+2000-09-30  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.5.13.
+
+	* vdrive/vdrive-command.c (vdrive_command_execute): Fixed
+	format command call.
+
+	* info.c: Updated.
+
+	* uimon.h: Do not #include "console.h".
+
+	* arch/unix/uimon.c, arch/msdos/uimon.c, arch/win32/uimon.c,
+	arch/riscos/uimon.c, arch/os2/uimon.c, arch/beos/uimon.c:
+	Include "console.h" and <stdio.h> because those files need
+	prototypes or defines from this header files.
+
+	* arch/win32/console.c: #include "console.h".
+	(arch_console_open_mdi): Fixed prototpye to match the
+	function declaration in `uimon.h'.
+
+	* arch/win32/res.rc: Commented out toolbar definition that
+	windres cannot parse.
+
+2000-09-30  Ricardo Ferreira  <storm@atdot.org>
+
+	* sounddev/soundarts.c: Added. Implements aRts sound support.
+
+	* sound.c: Added arts sound device initialization.
+
+2000-09-27  Andreas Dehmel  <dehmel@forwiss.tu-muenchen.de>
+
+	* sounddrv/soundacorn.c: adapt fragsize and fragnr if fragsize
+	exceeds the possible DMA buffer size (fixes problems at >
+	22050Hz).
+
+2000-09-27  Spiro Trikaliotis  <Spiro.Trikaliotis@gmx.de>
+
+	* arch/.../uimon.c: Added handling of console for mon for 
+	all ports
+
+	* arch/win32/uimon.c: Stub for adding a UI for the monitor
+	with win32.
+	To compile with it, define UIMON_EXPERIMENTAL on top of file
+
+	* arch/win32/console.c: Now can be opened as an MDI child
+
+2000-09-26  Andreas Dehmel  <dehmel@forwiss.tu-muenchen.de>
+
+	* arch/riscos/uiconfig.c: changed cartridges and maximum sound
+	buffer size
+
+	* arch/riscos/ui.c: improved vsid mode and PAL/NTSC syncing.
+	Restructured overly large if-then-else-if... blocks.
+
+2000-09-25  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.5.12.
+
+	* sounddrv/Makefile.am: Include `soundarts.c'.
+
+2000-09-22  Andreas Matthies  <andreas.matthies@gmx.net>
+
+	* beos/constants.h: new IDs for "save/confirm on exit" mimic
+
+	* beos/joystick.cc: (joystick_update) uses common functions
+	instead of directly setting the value
+
+	* beos/main_exit.c: (main_exit) is empty now; instead of this
+	the new function main_exit_early is used for cleanup in the
+	destructor of the ViceApp class; this should finally fix the
+	problem with crashes at shutdown
+
+	* beos/mouse.cc: new file (instead of mouse.c) that implements
+	the 1351 emulation
+
+	* beos/mouse.h: minor changes
+
+	* beos/ui.cc: the mimic for resource saving at exit and
+	confirmation for exit is now implemented as in the windows port;
+	removed dialogs that reported loading/saving/resetting settings
+
+	* beos/vicemenu.cc: minor changes
+
+	* beos/vicewindow.cc: window class extended for mouse button
+	handling
+
+2000-09-18  Markus Brenner  <markus@brenner.de>
+
+	* cartridge.h: removed OCEAN_HUGE cartridge type
+
+	* c64/c64cartmem.c: OCEAN carts may access ROM at $a000
+
+	* c64/c64cartridge.c: unified OCEAN/OCEAN_HUGE CRT types
+
+2000-09-18  Andreas Dehmel  <dehmel@forwiss.tu-muenchen.de>
+
+	arch/riscos/Makefile.am, arch/riscos/vsiddummy.c: new file
+	vsiddummy, contains stubs for non-C64 targets.
+
+	arch/riscos/ui.{c,h}, arch/riscos/archdep.c,
+	arch/riscos/uidummy.c, arch/riscos/vsidui.c: added vsid GUI.
+
+2000-09-03  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.5.11.
+
+	* arch/unix/vsidui.c: #include "drive.h".
+
+2000-09-01  Andreas Matthies  <andreas.matthies@gmx.net>
+
+	* beos/Makefile.am: new files ui_vicii.cc,ui_vicii.h
+
+	* beos/main.cc: removed obsolete KillThread function
+
+	* beos/ui.cc: (ui_dispatch_events) handles VIC-II menu item
+
+	* beos/ui_vicii.cc/h: new files implement the settings dialog
+
+	* beos/vicemenu.cc: new items for VDC settings, minor
+	corrections
+
+	* beos/videoarch.h: now canvas tripple buffering
+
+	* beos/vsidui.c,msdos/vsidui.c,win32/vsidui.c: new includes
+	to fit with the new vsid-api-dummies
+
+	* msdos/video.c,os2/video.c,unix/x11/video.c: new dummies
+	(canvas_destroy)
+
+	* beos/main_exit.c,msdos/main_exit.c,os2/video.c,riscos/ui.c,
+	unix/main_exit.c,win32/main_exit.c: removed/disabled call of
+	(video_free)
+
+	* c128/c128.c,c64/c64.c,cbm2/c610.c,pet/pet.c,vic20/vic20.c:
+	(machine_shutdown) calls the <video_chip>_free() for the
+	machine's video-chip(s)
+
+	* crtc/crtc.c,vdc/vdc.c,vic20/vic.c,vicii/vicii.c:
+	new (VDC: modified) functions (<chip>_free) that for now
+	only free the raster by calling (raster_free)
+
+	* raster/raster.c: new function (raster_free) that frees
+	framebuffer, canvas and some other allocated objects
+
+	* win32/joystick.c (joystick_update) uses the joystick latch
+	functions instead of directly writing to the joystick_value
+
+2000-08-29  Thomas Bretz  <tbretz@physik.tu-muenchen.de>
+
+	* arch/beos/vsidui.c: new vsid_ui_functions added,
+	vsid_set_tune removed
+ 
+	* arch/msdos/vsidui.c: new vsid_ui_functions added,
+	vsid_set_tune removed
+ 
+	* arch/os2/dialogs/dialogs.h: vsid dialog enhanced
+ 
+	* arch/os2/dialogs/dlg-vsid.c: enhanced
+ 
+	* arch/os2/vac++/ctools/biosdump.icc: added
+
+	* arch/os2/vac++/ctools/cformat.icc: added
+ 
+	* arch/os2/vac++/ctools/ctools.icc: added
+ 
+	* arch/os2/vac++/ctools/d64dump.icc: added
+ 
+	* arch/os2/vsidui.c: new vsid_ui functions added,
+	vsid_set_tune removed
+ 
+	* arch/riscos/vsidui.c: new vsid_ui functions added,
+	vsid_set_tune removed
+ 
+	* arch/unix/vsidui.c: new ui functions added, vsid_set_tune
+	removed
+ 
+	* arch/win32/vsidui.c: new ui functions added, vsid_set_tune
+	removed
+
+	* c64/psid.c: introduced new ui callback functions,
+	psid_set_tune and vsid_set_tune merged
+                  
+	* vsidui.h: new ui functions added, vsid_set_tune removed
+
+2000-08-27  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.5.10.
+
+	* arch/unix/x11/xaw/uicartridge.c,
+	arch/unix/x11/xaw/uiedisk.c, arch/unix/x11/xaw/uiscreenshot.c,
+	arch/unix/x11/xaw/uisnapshot.c: Added write protect stub.
+
+	* keyboard.h: Fixed `joystick_bits_t' enumeration.
+
+	* vicii/viciitypes.h: Adjusted NTSC sprite fetch cycle.
+
+2000-08-23  Andreas Matthies  <andreas.matthies@gmx.net>
+
+	* arch/beos/Makefile.am: new file ui_device.cc,ui_device.h
+	which implement the device settings dialog
+
+	* arch/beos/joystick.cc: rewritten; now dual joysticks
+	(Y-plug) should work; uses new resource extra parameter
+
+	* arch/beos/print.c: fixes line end characters
+
+	* arch/beos/statusbar.cc/h: support for a joystick ui that
+	displays the state of the joystick ports
+
+	* arch/beos/ui.cc: new interface between joystick module
+	and statusbar ui
+
+	* arch/beos/ui_device.cc/h: new files that implement the
+	device settings ui
+
+	* arch/beos/ui_drive.cc,ui_joystick.cc: use the
+	resource-sprintf functions; new joystick option that enables
+	the statusbar ui
+
+	* arch/beos/vicemenu.cc: updated menus to current state of
+	implementation; removed wrong option for C128-NTSCOLD
+
+	* c128/c128.c,src/c128/c128.h: removed definitions and
+	use of C128 NTSCOLD mode
+
+2000-08-23  Thomas Bretz  <tbretz@physik.tu-muenchen.de>
+
+	* arch/os2/archdep.c: minor changes in spawn
+
+	* arch/os2/dialogs/dialogs.c: changed toggle function
+ 
+	* arch/os2/dialogs/dialogs.[c,h,rc]: added new resources and 
+	hardware dialog
+   
+	* arch/os2/dialogs/dlg-drive.c: changed resource handling
+	functions, added memory extension handling, path handling
+     
+	* arch/os2/dialogs/dlg-emulator.c: added snapshot feature
+ 
+	* arch/os2/dialogs/dlg-hardware.c: added
+ 
+	* arch/os2/dialogs/dlg-snapshot.c: added
+ 
+	* arch/os2/dialogs/Makefile.am: added dlg-snapshot, dlg-hardware
+ 
+	* arch/os2/doc/Vice_for_OS2.txt: changed
+ 
+	* arch/os2/joystick.c: fixed a bug in set_cbm_joystick
+ 
+	* arch/os2/kbd/proc.c: added snapshot feature, hardware dialog
+ 
+	* arch/os2/ui.c: added empty ui_display_tape_current_image
+ 
+	* arch/os2/vac++/incl/dialogs.icc: dlg-snapshot, 
+	dlg-screenshot, dlg-hardware added
+
+	* arch/os2/video.c: exchanged wmvrn with DiveSetup in canvas_refresh
+
+	* arch/os2/vsidui.c: added setting of "dart2"
+ 
+	* autostart.c: fixed a small bug in disk/tape autostart functions
+
+	* sound.[hc]: enabled dart2 support
+ 
+2000-08-23  pottendo  <pottendo@utanet.at>
+
+	* arch/unix/x11/xaw/ui.c (ui_select_file): Updated to new
+	ui_select_file interface.
+
+	* arch/unix/x11/gnome/ui.c (ui_select_file): Added support for
+	write protect attach.
+	(build_file_selector): Added checkbox widget for write protect
+	attach.
+
+	* arch/unix/vsidui.c
+	(psid_load): Updated to new ui_select_file interface.
+
+	* arch/unix/vic20ui.c
+	(attach_cartridge): Updated to new ui_select_file interface.
+
+	* arch/unix/uisettings.c:
+	(select_user_keymap): Updated to new ui_select_file interface.
+	(ui_load_palette): ditto.
+	(ui_load_romset): ditto.
+	(ui_load_rom_file): ditto.
+	(set_rs232_device_file): ditto.
+	(set_printer_dump_file): ditto.
+
+	* arch/unix/uicommands.c:
+	(attach_disk): Added support for write protect attach.
+	(attach_tape): Updated to new ui_select_file interface.
+	(smart_attach): ditto.
+	(load_snapshot_trap): ditto.
+	(ui_update_flip_menus): Added menu entry for write protection.
+	New menu toggle definitions: AttachDevice{8,9}ReadOnly.
+
+	* arch/unix/ui.h: Changed prototype for ui_select_file.
+
+	* arch/unix/c64ui.c: Updated to new ui_select_file interface.
+
+2000-08-20  pottendo  <pottendo@utanet.at>
+
+	* arch/unix/x11/xaw/ui.c (ui_set_topmenu): Adjusted topmenu to new
+	prototype. 
+
+	* arch/unix/x11/x11menu.c (make_menu_label): Take care about the
+	`NO_TRANS' tag coming from ui.h.
+
+	* arch/unix/x11/gnome/uimenu.c: 
+	(all): Removed dead code for GNOME_MENUS. Removed storing the
+	allocated widgets in static array `submenus[]'. There's no static
+	limit for submenus now.	
+
+	* arch/unix/x11/gnome/ui.c (ui_set_topmenu): Rewritten. Allows to
+	redefine the toplevel menu now by just calling the function
+	again. It takes care of releasing the associated resources from
+	the old menu, if one has been there.
+
+	* arch/unix/uicommands.{c,h}, arch/unix/uisettings.{c,h}: Added a
+	few menu declarations for toplevel menus.
+
+	* arch/unix/uicommands.c (ui_update_flip_menus): Added provision
+	to save filename menu entries from translation by prefixing the
+	string with a special tag defined by NO_TRANS coming from ui.h.
+
+	* arch/unix/ui.h: Changed prototype to `ui_set_topmenu()' to
+	accept toplevel menu description.
+
+	* arch/unix/c128ui.c: Introduced new toplevel menu.
+	* arch/unix/c64ui.c: ditto.
+	* arch/unix/petui.c: ditto.
+	* arch/unix/c610ui.c: ditto.
+	* arch/unix/vic20ui.c: ditto.
+
+2000-08-20  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.5.9.
+
+	* crtc/crtc.c (crtc_raster_draw_alarm_handler): Use overflow
+	aware variables instead of `rclk'.
+
+2000-08-20  Markus Brenner  <markus@brenner.de>
+
+	* cartridge.h: added CARTRIDGE_WARPSPEED type
+
+	* c64/c64cartridge.c: added warpspeed cartridge support
+
+	* c64/c64cartmem.c: added warpspeed cartridge support
+
+2000-08-18  Spiro Trikaliotis  <Spiro.Trikaliotis@gmx.de>
+
+	* arch/win32/ui.c: changed ui_messagebox so that it should
+	work now with multi-screen emulators (X128).
+
+2000-08-16  Andreas Dehmel  <dehmel@forwiss.tu-muenchen.de>
+
+	* arch/riscos/uiconfig.{c,h}: added UI elements for attaching
+	disks readonly.
+
+2000-08-15  Thomas Bretz  <tbretz@physik.tu-muenchen.de>
+
+	* arch/os2/dialogs/dialogs.[rc,h,c]: added keyset dialog, vsid
+	dialog enhanced, moved 'sync factor' to emulator menu
+  
+	* arch/os2/dialogs/dlg-drive.c: removed drive-sync-factor
+
+	* arch/os2/dialogs/dlg-emulator.c: added drive-sync-factor
+
+	* arch/os2/dialogs/dlg-joystick.c: added keyset support
+
+	* arch/os2/dialogs/dlg-vsid.c: added some small features
+
+	* arch/os2/joystick.[hc]: changed resources to use new
+	resource feature
+
+	* arch/os2/kbd/parse.[ch]: changed to new vkm-file layout
+
+	* arch/os2/kbd/proc.c: changed keyboard mapping (symbolic =
+	double row)
+
+	* arch/os2/kbd.[hc]: changed keyboard resources to new mapping
+
+	* arch/os2/video.[hc]: added initialize flag, fixed palette
+	bug
+
+	* arch/os2/vsidui.c: added base features
+
+	* autostart.c: made the flew of the program more visible in
+	autostart_[tape,disk]
+
+2000-08-13  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.5.8.
+
+	* c64/reu.c (reu_read_snapshot_module): Fixed snapshot bug.
+
+	* autostart.c (autostart_advance): Fixed compiler warnings.
+
+	* utils.c, fsdevice.c, resources.c: Remove destination file
+	before renaming files.
+
+	* findpath.c (findpath): Do not use `PATH_VAR'.
+
+	* arch/msdos/uiattach.c (create_disk_image_name_callback):
+	Changed likewise.
+
+	* arch/msdos/uisnapshot.c (file_name_callback): Likewise.
+
+	* vice.h: Removed `PATH_VAR' definition.
+
+	* utils.c, utils.h (xadd_extension): New function.
+
+	* arch/unix/x11/xaw/uisnapshot.c, arch/unix/x11/xaw/uiedisk.c,
+	arch/win32/uisnapshot.c, arch/win32/uiconsole.c: Use
+	`xadd_extension' to add extensions.
+
+	* arch/win32/ui.c, arch/win32/ui.h (ui_ensure_extension):
+	Removed port specific filename extension code.
+
+	* screenshot/bmp.c, screenshot/png.c: Removed `.' from
+	filename extension.
+
+	* arch/win32/uiattach.c: Use `resources_get_sprintf'.
+
+	* arch/win32/uiconsole.c: Use `MAXPATHLEN' instead of random
+	numbers.
+
+	* arch/win32/joystick.c, arch/win32/uidrive.c: Use new
+	resource extra parameter.
+
+	* arch/win32/uilib.c, arch/win32/uilib.h (ui_set_res_num):
+	Removed.
+
+2000-08-13  Spiro Trikaliotis  <Spiro.Trikaliotis@gmx.de>
+
+	* fsdevice.c: Changed "case 8...11" statement to list of cases,
+	since MSVC does not recognize this form (and AFAIK it is not
+	standard C).
+
+	* arch/win32/console.c: Now handles full-screen mode
+
+	* arch/win32/ui.c, src/arch/win32/resXXX.rc: added menu toggle
+	to allow quiting VICE w/o confirmation.
+
+	* arch/win32/ui.c, src/arch/win32/uilib.c: added
+	ui_messagebox() as replacement for MessageBox(). It handles
+	the fullscreen mode. Changed all usages of MessageBox to this
+	new function, except when handling WM_CLOSE, which handles it
+	a bit differently.
+
+	* arch/win32/ui.c: JAM dialog box now appears and allows to
+	choose whether to start the debugger or not.
+
+2000-08-12  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.5.7.
+
+	* keyboard.h: Commented out `joystick_bits_t'.
+
+	* attach.c, fsdevice.c, drive/drive-resources.c,
+	arch/unix/print.c, arch/unix/rs232.c: Use extra resource
+	parameter to eliminate many functions doing almost the same.
+
+	* ChangeLog, ChangeLog.1, ChangeLog.2, ChangeLog.3: Splitted
+	out new file.
+
+2000-08-11  Andreas Matthies  <andreas.matthies@gmx.net>
+
+	* arch/beos/Makefile.am: new files ui_datasette.cc/h,
+	ui_sound.cc/h; some files changes from .c to .cc
+
+	* arch/beos/archdep.c: implemented (archdep_spawn),
+	(archdep_quote_parameter),(archdep_filename_parameter);
+	compressed files are supported now
+
+	* arch/beos/c128ui.c,c610ui.c,petui.c,vic20ui.c: changed
+	to .cc and implemented some machine specific menu items
+
+	* arch/beos/constants.h: more menu IDs
+
+	* arch/beos/joystick.cc/h: rewritten; now all available
+	hardware joysticks are scaned and supported
+
+	* arch/beos/kbd.c: corrected kbd_code_to_string table
+
+	* arch/beos/ui.cc: includes ui_datasette.h,ui_sound.h;
+	(ui_dispatch_events) handles more events
+	(ui_display_image) can handle tape images now
+	(ui_display_tape_current_image): new function
+	(ui_statusbar_update) also updates the tape image name
+
+	* arch/beos/ui_datasette.cc/h: implement the datasette
+	settings dialog
+
+	* arch/beos/ui_sound.cc/h: implement the sound settings
+	dialog
+
+	* arch/beos/ui_drive.cc: fixed includes
+
+	* arch/beos/ui_joystick.cc/h: now the Keyset can be defined
+	and the detected hardware sticks are supported
+
+	* arch/beos/vicemenu.cc: displays more menu items
+
+	* arch/beos/vicewindow.cc: some changes to handle the new
+	video engine
+
+	* arch/beos/video.cc,videoarch.h: changed the video engine
+	a little; now the frame_buffer is directly represented by
+	a BBitmap which makes it ~20% faster
+
+	* arch/msdos/statusbar.c: fixed (statusbar_prepare) to avoid
+	crashes when statusbar is activated from the menu
+
+	* uiapi.h: new function (ui_display_tape_current_image)
+
+	* msdos/ui.c,os2/ui.c,riscos/ui.c,unix/ui.h,unix/uicommands.c,
+	unix/x11/gnome/ui.c,unix/x11/xaw/ui.c,win32/ui.c,msdos/ui.c
+	small changes to handles the new uiapi-function (dummies
+	respectively small changes in unix that already used this
+	function)
+
+	* arch/win32/rescbm2.rc: removed sid-settings from CBM2-menu
+
+	* c128/c128.c: (machine_change_timing) handles NTSCOLD
+
+	* tape.c: new include uiapi.h
+	(tape_attach_image),(tape_detach_image) use the new
+	ui_display_tape_current_image
+
+2000-08-08  Andreas Dehmel  <dehmel@forwiss.tu-muenchen.de>
+
+	* arch/riscos/uiimage.c: support new autostart approach.
+
+	* arch/riscos/uimsgwin.c: small type renaming.
+
+	* autostart.c: avoid one superfluous attach/detach cycle in
+	autostart_tape() and autostart_disk().
+
+2000-08-08  Thomas Bretz  <tbretz@physik.tu-muenchen.de>
+
+	* arch/os2/archdep.c: some small changes to the logging
+ 
+	* arch/os2/console.c: use of [1024] is now a part of the past
+ 
+	* arch/os2/dialogs/dialogs.h: CB_READONLY, vsid_dialog added
+
+	* arch/os2/dialogs/dialogs.rc: LED8,9 layout changed,
+	Readonly added, vsid dlg added
+ 
+	* arch/os2/dialogs/dlg-cmdopt.c: small changes
+ 
+	* arch/os2/dialogs/dlg-contents.c: autostart_autodetect uses
+	the number now
+ 
+	* arch/os2/dialogs/dlg-drive.c: readonly, check_drive_type
+	support added
+ 
+	* arch/os2/dialogs/dlg-monitor.c: WM_INSERT: free(mp1) added
+ 
+	* arch/os2/dialogs/dlg-vsid.c: added
+ 
+	* arch/os2/dialogs/Makefile.am: dlg-vsid.c added
+ 
+	* arch/os2/joystick.c: restructured.
+ 
+	* arch/os2/joystick.h: moved some definitions to joystick.c
+ 
+	* arch/os2/kbd/proc.c: small changes
+ 
+	* arch/os2/kbd.c: removed a small compiler error from last
+	patch
+ 
+	* arch/os2/main_exit.c: small changes
+ 
+	* arch/os2/mouse.c: adde joystick_clear, XVIC and
+	_mouse_enabled handling
+ 
+	* arch/os2/uicmdline.c: uses xmsprintf now
+ 
+	* arch/os2/vac++/incl/dialogs.icc: dlg-vsid.c added
+ 
+	* arch/os2/vac++/*.icc: lpng106-path --> lpng
+ 
+	* arch/os2/vac++/lpng.icc: added
+ 
+	* arch/os2/vac++/lzlib.icc: added
+ 
+	* arch/os2/vac++/Makefile.am: lzlib.icc, lpng.icc added
+ 
+	* arch/os2/video.c: moved video_close --> main_exit, some
+	changes to logging, added some comments, move creation of
+	Keyboard semaphopre to video_open, added hDiveInst handling to
+	wmVrn[Dis,En]abled, canvas_refresh, vsid_mode handling to
+	canvas_create,
+   
+	* arch/os2/videoarch.h: small changes
+ 
+	* arch/os2/vsidui.c: base functionality added
+ 
+	* arch/os2/vsyncarch.c: small changes to shutdown
+
+	* autostart.c: small changes to logging
+ 
+	* c64/c64.c: more logical structure concerning vsid_mode
+
+	* keyboard.[hc]: joystick_clear added.
+ 
+	* keyboard.h: enum for joystick directions added
+ 
+	* main.c: some changes concerning resources for os2 (no
+	console mode), more logical structure concerning vsid_mode
+   
+	* monitor/mon_parse.c: prevent a compiler warning
+ 
+2000-08-06  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.5.6.
+
+	* arch/win32/fullscreen.c, arch/win32/video.c: Define
+	`IID_IDirectDraw2' if there is not GUIDLIB.
+
+	* drive/drive.c (drive_check_type): Mask out dual drives for
+	second drive and other invalid combinations.
+
+	* attach.c, attach.h: Added support for opening disks read
+	only.
+
+	* main.c (init_cmdline_options): Initialize attach specific
+	command line options.
+
+	* vdrive/vdrive.c, vdrive/vdrive.h
+	(vdrive_internal_open_disk_image): Set `read_only' before
+	`disk_image_open' is called.
+
+	* c1541.c (open_disk_image): Changed likewise.
+
+	* diskimage.c (disk_image_open): Get the open mode from the
+	`read_only' flag of the image struct.
+
+	* imagecontents.c (image_contents_read_disk): Open disk read
+	only.
+
+	* resources.c, resources.h: Added support for a parameter to
+	the resource set function.
+
+	* attach.c, datasette.c, fsdevice.c, log.c, main.c, sound.c,
+	sysfile.c, traps.c, vsync.c, vdc/vdc-resources.c, aciacore.c,
+	prdevice.c, pruser.c, rsuser.c, drive/drive-resources.c,
+	vicii/vicii-resources.c, crtc/crtc-resources.c, sid/sid.c,
+	c64/c64cartridge.c, c64/c64mem.c, c64/psid.c, c128/c128mem.c,
+	c128/c128mmu.c, c128/z80mem.c, vic20/vic-resources.c,
+	vic20/vic20cartridge.c, vic20/vic20mem.c, pet/pet.c,
+	pet/petmem.c, pet/petpia1.c, cbm2/c610mem.c,
+	arch/unix/joystick.c, arch/unix/kmap.c, arch/unix/mouse.c,
+	arch/unix/petkmap.c, arch/unix/print.c, arch/unix/rs232.c,
+	arch/unix/vsync.c, arch/unix/x11/kbd.c, arch/unix/x11/video.c,
+	arch/unix/x11/ui-resources.c, arch/win32/joystick.c,
+	arch/win32/kbd.c, arch/win32/mouse.c, arch/win32/print.c,
+	arch/win32/ui.c, arch/msdos/joystick.c, arch/msdos/kbd.c,
+	arch/msdos/mouse.c, arch/msdos/print.c, arch/msdos/ui.c,
+	arch/msdos/video.c, arch/msdos/vsync.c, arch/riscos/kbd.c,
+	arch/riscos/joystick.c, arch/riscos/print.c,
+	arch/riscos/rs232.c, arch/riscos/ui.c, arch/riscos/video.c,
+	arch/riscos/vsync.c, arch/os2/unused/video_gpi.c,
+	arch/os2/unused/vsync.c, arch/os2/joystick.c, arch/os2/kbd.c,
+	arch/os2/mouse.c, arch/os2/rs232.c, arch/os2/video.c,
+	arch/os2/ui.c,, arch/os2/kbd/kmap-pet.c, arch/os2/kbd/kmap.c,
+	arch/beos/kbd.c, arch/beos/mouse.c, arch/beos/print.c,
+	arch/beos/vsync.c: Added parameter to resource tables.
+
+2000-08-06  pottendo  <pottendo@utanet.at>
+
+	* info.c: Updated contribution.
+
+2000-08-04  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.5.5.
+
+	* autostart.c: Fixed warnings.
+
+2000-08-04  Tibor Biczo  <crown@matavnet.hu>
+
+	* arch/win32/fullscreen.c, arch/win32/video.c: Added
+	GCC compatibility code.
+
+2000-08-03  Thomas Bretz  <tbretz@physik.tu-muenchen.de>
+
+	* arch/os2/dialogs/dlg-contents.c: changed
+	autostart_autodetect from name to number
+   
+	* autostart.c: made reboot_for_autostart threadsafe for OS/2,
+	fixed problems with open files when determin program_names
+	from number
+
+2000-08-03  Tibor Biczo  <crown@matavnet.hu>
+
+	* arch/win32/Makfile.am: Added fullscreen.c and fullscreen.h to
+	filelist.
+
+	* arch/win32/arch.dsp: Added fullscreen.c to project.
+
+	* arch/win32/c128.dsp: Added daa.c to project.
+
+	* arch/win32/fullscreen.c: New file. Contains functions for
+	fullscreen mode on Win32.
+
+	* arch/win32/fullscreen.h: New file.
+
+	* arch/win32/res.h: Added fullscreen related resource values.
+
+	* arch/win32/res.rc: Added fullscreen settings dialog.
+
+	* arch/win32/resc128.rc, arch/win32/resc64.rc,
+	arch/win32/rescbm2.rc, arch/win32/respet.rc,
+	arch/win32/resvic.rc: Added fullscreen menu entries.
+
+	* arch/win32/ui.c: Include fullscreen.h.
+	Added 'SaveOnResourcesExit' and 'FullScreenEnabled' to
+	toggle_list.
+	(ui_resources): New struct, contains resources from the UI.
+	(set_fullscreen_device) (set_fullscreen_bitdpeth)
+	(set_fullscreen_width) (set_fullscreen_height)
+	(set_fullscreen_refreshrate) (set_fullscreen_enabled)
+	(set_save_resources_on_exit): New functions.
+	(resources): Added fullscreen resources.
+	(cmdline_options): Added commandlines.
+	(ui_init_cmdline_options): Register commandline options.
+	(UI_COMMON_HOTKEYS): Added Alt-D and Alt-Enter hotkeys.
+	(ui_init): Updated hotkey numbers, removed unused local
+	variable, don't create status window here.
+	(ui_init_finish): Call ui_fullscreen_init.
+	(ui_open_canvas_window): Added fullscreen stuff.
+	(ui_resize_canvas_window): Don't do anything in fullscreen.
+	(ui_error) (ui_error_string): Log error message into logfile
+	as well.
+	(save_sanpshot_trap) (load_snapshot_trap): Suspend fullscreen
+	if neccessary.
+	(ui_get_main_hwnd): Always have a window handle even when the
+	canvas windows hasn't been created yet.
+	(handle_wm_command): Suspend fullscreen if neccessary.
+	Added fullscreen settings call, and toggle fullscreen handling.
+	(window_proc): Handle WM_ACTIVATEAPP message, it's not yet done
+	correctly. Suspend fullscreen when neccessary. Save resources
+	on exit, if it's enabled. Removed not used code, it was just
+	confusing.
+
+	* arch/win32/ui.h: Changed definition of ui_open_canvas_window.
+
+	* arch/win32/vdc.dsp: Added vicii directory into include folder
+	list.
+
+	* arch/win32/video.c: Plenty of changes...
+	Include fullscreen.h.
+	(video_init) Doesn't do anything anymore.
+	Removed lots of unused code.
+	(video_frame_buffer_translate): New function, it translates the
+	content of the framebuffer on fullscreen changes, so colors stay
+	correct even when changing to different bitdepths...
+	(set_physical_colors): Uses the primary surface to get the
+	colors now. Fills up pixel_translate table in the canvas.
+	(canvas_create): Complete rewrite, everything happens here now,
+	from creating the DirectDraw object till setting its palette.
+	(canvas_set_palette): Implemented function, as it was not done
+	before.
+	(canvas_update): Only blit safe areas onto screen, cut off extra
+	frame buffer area which are used for sprites...
+	(real_refresh): Removed color changes, as it was broken, will
+	be reimplemented shortly. Changing the palette from the UI works
+	as canvas_set_palette has been implemented. If you change your
+	desktop color scheme when on an 8 bit desktop or you switch
+	to an application which redefines the palette, colors will go
+	bad...
+
+	* arch/win32/videoarch.h: Added pixel_translate, dd_object,
+	dd_object2, client_width, client_height added to canvas_t struct.
+	Added missing prototypes.
+
+	* raster/raster.c (raster_rebuild_tables): Rebuilds the pixel
+	and refresh tables. This is needed when the palette of the
+	hardware changes.
+
+	* raster/raster.h (raster_rebuild_tables): Added prototype.
+
+2000-08-01  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.5.4.
+
+	* arch/win32/res.h: Fixed drive type defines.
+
+	* arch/win32/uidrive.c (init_dialog): Fixed drive number.
+
+	* arch/win32/uisnapshot.c (hook_save_snapshot): Fixed warning.
+
+	* resources.c, resources.h (resources_set_sprintf,
+	resources_get_sprintf): New functions.
+
+	* arch/unix/uisettings.c, arch/win32/uidrive.c: Use new
+	resource functions.
+
+	* fsdevice.c: Unified function for all drives.
+
+	* arch/unix/x11/xaw/ui.c (ui_open_canvas_window): Fixed typos.
+
+2000-07-31  Thomas Bretz  <tbretz@physik.tu-muenchen.de>
+
+	* arch/os2/archdep.c: fixed an allocation problem in
+	archdep_create_mutex_sem, added trigger_shutdown to brek64,
+	archdep_startup_log_error uses xmvsprint now
+   
+	* arch/os2/console.c: console_out uses xmvsprintf now.
+ 
+	* arch/os2/dialogs/dialogs.rc: small layout changes
+ 
+	* arch/os2/dialogs/dlg-contents.c: uses xmsprintf now.
+ 
+	* arch/os2/dialogs/dlg-drive.c: uses xmsprintf now.
+ 
+	* arch/os2/doc/Vice_for_OS2.txt: added new cmdline parameters,
+	and ToDo
+ 
+	* arch/os2/icons/xvic.ICO: added
+ 
+	* arch/os2/install.cmd: added the remark
+ 
+	* arch/os2/joystick.c: can dtermin number of joysticks now
+ 
+	* arch/os2/joystick.h: added new joystick definitions
+ 
+	* arch/os2/kbd/kbd-c610.c, kbd-pet.c, kbd-vic20.c: deleted old
+	kbd mapping
+ 
+	* arch/os2/kbd/proc.c: deleted an output statement
+ 
+	* arch/os2/makedist.cmd: some amall changes, os2*.vkm added,
+	default.vkm deleted
+ 
+	* arch/os2/ui.c: uses xmvsprintf now.
+ 
+	* arch/os2/vac++/incl/c128.icc: daa.c added
+ 
+	* arch/os2/vac++/incl/kbd.icc: removed kbd-c64.c
+
+	* arch/os2/vac++/lpng.icc: added 
+
+	* arch/os2/vac++/lzlib.icc: added 
+ 
+	* arch/os2/vac++/RESID.ICC: changed version number
+ 
+	* arch/os2/vac++/*.ICC: changed searchpath for zlib and
+	lnpng106
+ 
+	* arch/os2/vac++/X64.ICC: added kbd-c64.c
+ 
+	* arch/os2/Vice2/VIC20/os2.vkm: added 
+ 
+	* arch/os2/vsyncarch.c: uses xmsprintf now
+ 
+	* utils.c: removed this strange construct for
+	xmvsprintf_do_div. VAC++ cannot compile it
+
+2000-07-30  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.5.3.
+
+	* c128/z80.c: Fixed opcodes and added some missing ones.
+
+	* arch/unix/x11/xaw/ui.c, arch/unix/x11/gnome/ui.c,
+	arch/unix/ui.h (ui_select_file): Changed API.
+
+	* arch/msdos/tuiimagebrowser.c (tui_image_browser): Also
+	return number of selected file.
+        * arch/msdos/tuifs.c (tui_file_selector): Changed likewise.
+
+	* arch/msdos/c128ui.c, arch/msdos/c610ui.c,
+	arch/msdos/c64ui.c, arch/msdos/menudefs.c, arch/msdos/petui.c,
+	arch/msdos/uiattach.c, arch/msdos/uisnapshot.c,
+	arch/msdos/vic20ui.c: Changed to new file selector API.
+
+	* arch/msdos/menudefs.c, arch/msdos/tui_backend.c,
+	arch/msdos/tui.c, arch/msdos/ui.c, c1541.c: Use `xmsprintf',
+	`xmvsprintf' or `stralloc' instead of using random length
+	arrays.
+
+	* vdrive/vdrive-command.c, vdrive/vdrive-command.h
+	(vdrive_command_execute): Command is `const'.
+
+	* arch/unix/uisettings.c, arch/unix/x11/xaw/uimenu.c,
+	vic20/vic20mem.c, sound.c, arch/unix/x11/gnome/uimenu.c:
+	Do not use `alloca()'.
+
+	* arch/unix/x11/x11menu.c, arch/unix/x11/x11menu.h: New files.
+
+	* arch/unix/x11/xaw/uimenu.c, arch/unix/x11/gnome/uimenu.c:
+	arch/unix/x11/xaw/uimenu.h, arch/unix/x11/gnome/uimenu.h:
+	Moved common stuff a level higher.
+
+	* Makefile.am: Removed `@ALLOCA@'.
+
+	* vice.h: Removed `alloca' compatibility cruft.
+
+	* arch/unix/uicommands.c, arch/unix/uisettings.c: Do not use
+	`PATH_VAR' and `GET_PATH_MAX'.
+
+2000-07-28  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.5.2.
+
+	* raster/raster-cache.c (raster_cache_init): Clear cache for
+	sprites 1..7 too.
+
+	* utils.c, utils.h (stralloc): Bail out on NULL pointer.
+	(xmsprintf): New function.
+
+	* vdrive/vdrive-iec.c: Added debugging info.
+
+	* c128/daa.c, c128/daa.h: New files.
+
+	* c128/z80.c: Fixed opcodes and added some missing ones.
+
+	* autostart.c, arch/unix/uicommands.c, arch/unix/uisettings.c,
+	cmdline.c, arch/unix/vsidui.c, arch/unix/x11/xaw/uimenu.c,
+	arch/unix/x11/xaw/ui.c: Use `xmsprintf', `xmvsprintf' or
+	`stralloc' instead of using random length arrays.
+
+2000-07-27  Andreas Dehmel  <dehmel@forwiss.tu-muenchen.de>
+
+	* arch/riscos/ui.c, arch/riscos/uimsgwin.{c,h}: added support
+	for WIMP Null events of message windows.
+
+2000-07-26  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.5.1.
+
+	* c128/z80.c: Fixed opcodes.
+
+	* c128/z80mem.c (z80mem_initialize): Removed color RAM from
+	$1000-$13FF IO space.
+
+2000-07-26  Thomas Bretz  <tbretz@physik.tu-muenchen.de>
+
+	* arch/os2/archdep.c: set lower priority for main thread
+
+	* arch/os2/kbd/parse.c: added support for CLEAR and KSYM/KSCODE
+
+	* arch/os2/kbd/proc.c: added base support for symbolic mapping
+
+	* arch/os2/vac++/lpng.icc: added
+
+	* arch/os2/vac++/lzlib.icc: added
+
+	* arch/os2/video.c: added video/vdc_free, higher priority for
+	canvas mainloop
+
+	* arch/os2/vsyncarch.c: removed video_free
+
+	* vdc/vdc.[ch]: added vdc_free
+
