@@ -1,0 +1,14 @@
+source type(c)
+    "asm6502.c",
+    "mon.c",
+    "mon_assemble6502.c",
+    "mon_breakpoint.c",
+    "mon_command.c",
+    "mon_disassemble.c",
+    "mon_drive.c",
+    "mon_file.c",
+    "mon_lex.c",
+    "mon_parse.c",
+    "mon_register6502.c",
+    "mon_ui.c",
+    "mon_util.c"
