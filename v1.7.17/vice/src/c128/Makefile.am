@@ -1,0 +1,40 @@
+INCLUDES = \
+	@ARCH_INCLUDES@ \
+	-I$(top_builddir)/src \
+	-I$(top_srcdir)/src \
+	-I$(top_srcdir)/src/drive \
+	-I$(top_srcdir)/src/c64 \
+	-I$(top_srcdir)/src/sid \
+	-I$(top_srcdir)/src/vicii \
+	-I$(top_srcdir)/src/vdc \
+	-I$(top_srcdir)/src/monitor
+
+noinst_LIBRARIES = libc128.a
+
+libc128_a_SOURCES = \
+	c128-cmdline-options.c \
+	c128-cmdline-options.h \
+	c128-resources.c \
+	c128-resources.h \
+	c128.c \
+	c128.h \
+	c128cia1.c \
+	c128cpu.c \
+	c128iec.c \
+	c128io.c \
+	c128io.h \
+	c128mem.c \
+	c128mem.h \
+	c128memlimit.c \
+	c128memlimit.h \
+	c128mmu.c \
+	c128mmu.h \
+	daa.c \
+	daa.h \
+	functionrom.c \
+	functionrom.h \
+	z80.c \
+	z80.h \
+	z80mem.c \
+	z80mem.h
+
