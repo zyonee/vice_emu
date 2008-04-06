@@ -1,0 +1,1597 @@
+This is Info file vice.info, produced by Makeinfo version 1.67 from the
+input file vice.texi.
+
+START-INFO-DIR-ENTRY
+* VICE: (vice).        VICE, the Versatile Commodore Emulator.
+END-INFO-DIR-ENTRY
+
+   VICE Manual
+
+   Permission is granted to make and distribute verbatim copies of this
+manual provided the copyright notice and this permission notice are
+preserved on all copies.
+
+   Permission is granted to copy and distribute modified versions of
+this manual under the conditions for verbatim copying, provided that
+the entire resulting derived work is distributed under the terms of a
+permission notice identical to this one.
+
+
+File: vice.info,  Node: Machine-specific features,  Next: Snapshots,  Prev: Settings and resources,  Up: Top
+
+Machine-specific features
+*************************
+
+* Menu:
+
+* C64/128-specific::            Commands and settings specific to the
+                                C64/128 emulators
+* VIC20-specific::              Commands and settings specific to the
+                                VIC20 emulator
+* PET-specific::                Commands and settings specific to the
+                                PET emulator
+* CBM-II-specific::		Commands and settings specific to the
+				CBM-II emulator
+
+
+File: vice.info,  Node: C64/128-specific,  Next: VIC20-specific,  Prev: Machine-specific features,  Up: Machine-specific features
+
+C64/128-specific commands and settings
+======================================
+
+   This section lists the settings and commands that are C64/128
+specific and thus are not present in the other emulators.
+
+* Menu:
+
+* C64 cartridges::              Using cartridge images with the C64 emulator.
+* VIC-II settings::             Settings that control the video chip.
+* SID settings::                Settings that control the audio chip.
+* C64 I/O extension settings::  Settings that enable special extensions.
+* RS232 settings::              Settings that control the RS232 emulation.
+* C64/128 system ROM settings::  Settings to control the system ROMs.
+
+
+File: vice.info,  Node: C64 cartridges,  Next: VIC-II settings,  Prev: C64/128-specific,  Up: C64/128-specific
+
+Using cartridge images
+----------------------
+
+   "Cartridge images" are like disk images, but mirror the contents of
+cartridge ROM images instead of disk images.  They are currently not
+supported on the C128 emulator.
+
+   X64 allows you to attach the following kinds of cartridges:
+
+   * `.crt' images, as used by the CCS64 emulator by Per H^akan Sundell;
+
+   * generic raw dumps of 8K and 16K images;
+
+   * Action Replay images.
+
+   Each of these kinds has a specific command in the "Attach a cartridge
+image" submenu.  When you have successfully attached a cartridge image,
+you should then reset the machine to make sure the cartridge initializes
+itself.  Of course, it is also possible to detach a currently attached
+cartridge image ("Detach cartridge image").
+
+   If you are using an Action Replay cartridge, you can emulate the
+cartridge's freeze button with the "Freeze" command.
+
+
+File: vice.info,  Node: VIC-II settings,  Next: SID settings,  Prev: C64 cartridges,  Up: C64/128-specific
+
+VIC-II settings
+---------------
+
+   These settings control the emulation of the VIC-II (MOS6569) video
+chip used in both the C64 and the C128.
+
+   * "Sprite-sprite collisions" and "Sprite-background collisions", if
+     enabled, cause the hardware detection of sprite-to-sprite and
+     sprite-to-background collisions of the VIC-II to be emulated.  This
+     feature is used by many games, and disabling either of the two
+     detection systems can sometimes make you invincible (although
+     there is also a chance that also enemies become invincible then).
+
+   * "Color set" can be used to dynamically change the palette file
+     being used by choosing one of the available predefined color sets:
+
+        * `default.vpl' ("default"), the default VICE palette;
+
+        * `ccs64.vpl' ("CCS64"), palette taken from the CCS64 emulator
+          by Per H^akan Sundell (http://www.fatal-design.com/ccs64/).
+
+        * `frodo.vpl' ("Frodo"), palette taken from the Frodo emulator
+          by Christian Bauer
+          (http://www.uni-mainz.de/~bauec002/FRMain.html).
+
+        * `godot.vpl' ("GoDot"), palette as suggested by the authors of
+          the C64 graphics package GoDot
+          (http://users.aol.com/howtogodot/welcome.htm).
+
+* Menu:
+
+* VIC-II resources::
+* VIC-II options::
+
+
+File: vice.info,  Node: VIC-II resources,  Next: VIC-II options,  Prev: VIC-II settings,  Up: VIC-II settings
+
+VIC-II resources
+................
+
+`CheckSsColl'
+     Boolean specifying whether the sprite-sprite hardware collision
+     detection must be emulated.
+
+`CheckSbColl'
+     Boolean specifying whether the sprite-background hardware collision
+     detection must be emulated.
+
+`PaletteFile'
+     String specifying the name of the palette file being used.  The
+     `.vpl' extension is optional.
+
+
+File: vice.info,  Node: VIC-II options,  Prev: VIC-II resources,  Up: VIC-II settings
+
+VIC-II command-line options
+...........................
+
+`-checkss'
+`+checkss'
+     Enable (`CheckSsColl=1') and disable (`CheckSsColl=0') emulation
+     of hardware sprite-sprite collision detection, respectively.
+
+`-checksb'
+`+checksb'
+     Enable (`CheckSbColl=1') and disable (`CheckSbColl=0') emulation
+     of hardware sprite-background collision detection, respectively.
+
+`-palette NAME'
+     Specify `NAME' as the palette file (`PaletteFile').
+
+
+File: vice.info,  Node: SID settings,  Next: C64 I/O extension settings,  Prev: VIC-II settings,  Up: C64/128-specific
+
+SID settings
+------------
+
+   These settings control the emulation of the SID (MOS6581 or MOS8580)
+audio chip.
+
+   * "Emulate filters" causes the built-in programmable filters of the
+     SID chip to be emulated.  A lot of C64 music requires them to be
+     emulated properly, but their emulation requires some additional
+     processor power.
+
+   * "ChipModel" specifies the model of the SID chip being emulated:
+     there are two slightly different generations of SID chips: MOS6581
+     ones and MOS8580 ones.
+
+* Menu:
+
+* SID resources::
+* SID options::
+
+
+File: vice.info,  Node: SID resources,  Next: SID options,  Prev: SID settings,  Up: SID settings
+
+SID resources
+.............
+
+`SidFilters'
+     Boolean specifying whether the built-in SID filters must be
+     emulated.
+
+`SidModel'
+     Integer specifying what model of the SID must be emulated (`0':
+     MOS6581, `1': MOS8580).
+
+
+File: vice.info,  Node: SID options,  Prev: SID resources,  Up: SID settings
+
+SID command-line options
+........................
+
+`-sidmodel MODEL'
+     Specifies `MODEL' as the emulated model of the SID chip
+     (`SidModel').
+
+`-sidfilters'
+`+sidfilters'
+     Enable (`SidFilters=1') or disable (`SidFilters=0') emulation of
+     the built-in SID filters.
+
+
+File: vice.info,  Node: C64 I/O extension settings,  Next: RS232 settings,  Prev: SID settings,  Up: C64/128-specific
+
+C64 I/O extension settings
+--------------------------
+
+   There are three I/O extensions available: they are located at the
+address range $DF00 ... $DFFF and each of them is controlled by a
+boolean resource.  Please use these extensions only when needed, as they
+might cause compatibility problems.
+
+   * The "emulator identification" extension allows programs to
+     identify the kind of emulator they are running on, according to the
+     emulation detection proposal by Wolfgang Lorenz.  This basically
+     means that, when some locations in the $DFxx I/O space are read,
+     the emulator returns some values which identify the emulator
+     itself, its version and a copyright message.  If this extension is
+     disabled, programs will have virtually no way to realize they are
+     running on an emulator.
+
+   * The "IEEE488 interface emulation" extension emulates a standard
+     Commodore IEEE488 interface connected to the IEC bus; one possible
+     use for this is Andr'e Fachat's OS/A65 multitasking operating
+     system.
+
+   * The "512K RAM Expansion Unit" extension emulates a standard 512K
+     Commodore RAM Expansion Unit; this can be used with GEOS and other
+     programs that are designed to take advantage of it.  This currently
+     works only in the C64 emulator.
+
+* Menu:
+
+* C64 I/O extension resources::
+* C64 I/O extension options::
+
+
+File: vice.info,  Node: C64 I/O extension resources,  Next: C64 I/O extension options,  Prev: C64 I/O extension settings,  Up: C64 I/O extension settings
+
+C64 I/O extension resources
+...........................
+
+`IEEE488'
+     Boolean specifying whether the IEEE488 interface should be
+     emulated or not.
+
+`REU'
+     Boolean specifying whether the 512K RAM Expansion Unit should be
+     emulated or not.
+
+`EmuID'
+     Boolean specifying whether the emulation identification extension
+     should be emulated or not.
+
+
+File: vice.info,  Node: C64 I/O extension options,  Prev: C64 I/O extension resources,  Up: C64 I/O extension settings
+
+C64 I/O extension command-line options
+......................................
+
+`-ieee488'
+`+ieee488'
+     Enable (`IEEE488=1') or disable (`IEEE488=0') emulation of the
+     IEEE488 interface.
+
+`-reu'
+`+reu'
+     Enable (`REU=1') or disable (`REU=0') emulation of the 512K RAM
+     Expansion Unit.
+
+`-emuid'
+`+emuid'
+     Enable (`EmuID=1') or disable (`EmuID=0') the emulation
+     identification extension.
+
+
+File: vice.info,  Node: RS232 settings,  Next: C64/128 system ROM settings,  Prev: C64 I/O extension settings,  Up: C64/128-specific
+
+RS232 settings
+--------------
+
+   X64 and X128 can support RS232 in the following ways:
+
+   * by emulating Daniel Dallmann's 9600 baud userport-based RS232
+     interface;
+
+   * by emulating a 6551-based RS232 interface located at $DE00.
+
+   Each of these emulated devices can be either:
+
+   * connected a real UNIX serial device;
+
+   * dumped to a file;
+
+   * piped through a process.
+
+   It is possible to define up to two UNIX serial devices, and then
+decide which interface should be connected to which device.  Devices are
+defined through the following settings:
+
+   * "Serial 1 device..." and "Serial 2 device..." are used to specify
+     the the pathnames of the serial devices, with the file selector;
+
+   * "Serial 1 baudrate" and "Serial 2 baudrate" specify the baudrate.
+
+* Menu:
+
+* RS232 resources::
+* RS232 options::
+
+
+File: vice.info,  Node: RS232 resources,  Next: RS232 options,  Prev: RS232 settings,  Up: RS232 settings
+
+RS232 resources
+...............
+
+`RsDevice1'
+`RsDevice2'
+     Strings specifying the pathnames of the two available serial
+     devices.
+
+`RsDevice1Baud'
+`RsDevice2Baud'
+     Integers specifying the baudrates.
+
+`RsDevice3'
+     String defining the name of the file used when dumping RS232
+     output.
+
+`RsDevice4'
+     String defining the name of the process to pipe the RS232 data
+     through.
+
+`RsUser'
+     Boolean specifying whether the userport-based RS232 should be
+     emulated.
+
+`Acia1'
+     Boolean specifying whether the ACIA-based RS232 should be emulated.
+
+`RsUserDev'
+`Acia1Dev'
+     Integers specifying how the userport-based interface and the
+     ACIA-based one are emulated.  The possible values are:
+        * `0': connect to serial device number 1;
+
+        * `1': connect to serial device number 2;
+
+        * `2': dump to file;
+
+        * `3': exec an external process.
+
+
+File: vice.info,  Node: RS232 options,  Prev: RS232 resources,  Up: RS232 settings
+
+RS232 command-line options
+..........................
+
+`-acia1'
+`+acia1'
+     Enable/disable emulation of the ACIA-based RS232 interface
+     (`Acia1=1', `Acia1=0').
+
+`-acia1dev DEVICE'
+     Specify `DEVICE' as the device for the ACIA-based RS232 emulation
+     (`Acia1Dev').
+
+`-rsuser'
+`+rsuser'
+     Enable/disable emulation of the userport-based RS232 interface
+     (`RsUser=1', `RsUser=0').
+
+`-rsuserdev DEVICE'
+     Specify `DEVICE' as the device for the ACIA-based RS232 emulation
+     (`RsUserDev').
+
+
+File: vice.info,  Node: C64/128 system ROM settings,  Prev: RS232 settings,  Up: C64/128-specific
+
+C64/128 system ROM settings
+---------------------------
+
+   These settings can be used to control what system ROMs are loaded in
+the C64/128 emulators at startup.  They cannot be changed from the
+menus.
+
+* Menu:
+
+* C64/128 system ROM resources::
+* C64/128 system ROM options::
+
+
+File: vice.info,  Node: C64/128 system ROM resources,  Next: C64/128 system ROM options,  Prev: C64/128 system ROM settings,  Up: C64/128 system ROM settings
+
+C64/128 system ROM resources
+............................
+
+`KernalName'
+     String specifying the name of the Kernal ROM (default `kernal').
+
+`BasicName'
+     String specifying the name of the Basic ROM (default `basic').  In
+     the C128 emulator, the ROM image must actually include the editor
+     ROM too.
+
+`ChargenName'
+     String specifying the name of the character generator ROM (default
+     `chargen').
+
+`KernalRev'
+     String specifying the Kernal revision.  This resource can be used
+     to control what revision of the C64 kernal is being used; it
+     cannot be changed at runtime.  VICE is able to automatically
+     convert one ROM revision into another, by manually patching the
+     loaded image.  This way, it is possible to use any of the ROM
+     revisions without changing the ROM set.  Valid values are:
+
+    `0'
+          Kernal revision 0
+
+    `3'
+          Kernal revision 3
+
+    `sx'
+    `67'
+          Commodore SX-64 ROM
+
+    `100'
+    `4064'
+          Commodore 4064 (also known as "PET64" or "Educator 64") ROM
+
+
+File: vice.info,  Node: C64/128 system ROM options,  Prev: C64/128 system ROM resources,  Up: C64/128 system ROM settings
+
+C64/128 system ROM command-line options
+.......................................
+
+`-kernal NAME'
+     Specify `NAME' as the Kernal ROM file (`KernalName').
+
+`-basic NAME'
+     Specify `NAME' as the Basic ROM file (`BasicName').
+
+`-chargen NAME'
+     Specify `NAME' as the character generator ROM file (`ChargenName').
+
+`-kernalrev REVISION'
+     Specify Kernal revision (`KernalRev').
+
+
+File: vice.info,  Node: VIC20-specific,  Next: PET-specific,  Prev: C64/128-specific,  Up: Machine-specific features
+
+VIC20-specific commands and settings
+====================================
+
+   This section lists the settings and commands that are VIC20-specific
+and thus are not present in the other emulators.
+
+* Menu:
+
+* VIC20 cartridges::
+* VIC20 memory expansions::
+* VIC20 system ROM settings::
+
+
+File: vice.info,  Node: VIC20 cartridges,  Next: VIC20 memory expansions,  Prev: VIC20-specific,  Up: VIC20-specific
+
+Using cartridge images
+----------------------
+
+   As with the C64 (*note C64 cartridges::.), it is possible to attach
+several types of cartridge images:
+
+   * 4 or 8 Kbyte cartridges located at $2000;
+
+   * 4 or 8 Kbyte cartridges located at $6000;
+
+   * 4 or 8 Kbyte cartridges located at $A000;
+
+   * 4 Kbyte cartridges located at $B000.
+
+   This can all be done via the "Attach cartridge image..." command in
+the left-button menu.  It is also possible to let XVIC "guess" the type
+of cartridge using "Smart-attach cartridge image...".
+
+   Notice that several cartridges are actually made up of two pieces
+(and two files), that need to be loaded separately at different
+addresses.  In that case, you have to know the addresses (which are
+usually specified in the file name) and use the "attach" command twice.
+
+
+File: vice.info,  Node: VIC20 memory expansions,  Next: VIC20 system ROM settings,  Prev: VIC20 cartridges,  Up: VIC20-specific
+
+Changing memory configuration
+-----------------------------
+
+   It is possible to change the VIC20 memory configuration in two ways:
+by enabling and/or disabling certain individual memory blocks, or by
+choosing one among a few typical memory configurations.  The former can
+be done by modifying resource values directly or from the right-button
+menu; the latter can only be done from the menu.
+
+   There are 5 RAM expansion blocks in the VIC20, numbered 0, 1, 2, 3
+and 5:
+
+   * block 0 (3 Kbytes at $0400-$0FFF);
+
+   * block 1 (8 Kbytes at $2000-$3FFF);
+
+   * block 2 (8 Kbytes at $4000-$5FFF);
+
+   * block 3 (8 Kbytes at $6000-$7FFF);
+
+   * block 5 (8 Kbytes at $A000-$BFFF).
+
+   These blocks are called "expansion blocks" because they are not
+present a stock ("unexpanded") machine.  Each of them is associated to
+a boolean `RamBlockX' resource (where `X' is the block number) that
+specifies whether the block is enabled or not.
+
+   There are also some common memory configurations you can pick from
+the right-button menu:
+
+   * no RAM expansion blocks at all;
+
+   * all RAM expansion blocks enabled;
+
+   * 3K expansion (only block 0 is enabled);
+
+   * 8K expansion (only block 1 is enabled);
+
+   * 16K expansion (only blocks 1 and 2 are enabled);
+
+   * 24K expansion (only blocks 1, 2 and 3 are enabled).
+
+   As with the X64 (*note C64 I/O extension settings::.), it is also
+possible to enable a special emulator identification mechanism that uses
+certain memory locations to let a running program query information
+about the emulator itself; this is enabled by the "Emulator
+identification" option.
+
+* Menu:
+
+* VIC20 memconf resources::
+* VIC20 memconf options::
+
+
+File: vice.info,  Node: VIC20 memconf resources,  Next: VIC20 memconf options,  Prev: VIC20 memory expansions,  Up: VIC20 memory expansions
+
+VIC20 memory configuration resources
+....................................
+
+`RAMBlock0'
+`RAMBlock1'
+`RAMBlock2'
+`RAMBlock3'
+`RAMBlock5'
+     Booleans specifying whether RAM blocks 0, 1, 2, 3 and 5 must be
+     enabled.
+
+`EmuID'
+     Boolean specifying whether the emulation identification extension
+     must be enabled.
+
+
+File: vice.info,  Node: VIC20 memconf options,  Prev: VIC20 memconf resources,  Up: VIC20 memory expansions
+
+VIC20 memory configuration command-line options
+...............................................
+
+`-memory CONFIG'
+     Specify memory configuration.  It must be a comma-separated list of
+     options, each of which can be one the following:
+
+        * `none' (no extension);
+
+        * `all' (all blocks);
+
+        * `3k' (3k space in block 0);
+
+        * `8k' (first 8k extension block);
+
+        * `16k' (first and second 8k extension blocks);
+
+        * `24k' (first, second and 3rd extension blocks);
+
+        * `0', `1', `2', `3', `5' (memory in respective blocks);
+
+        * `04', `20', `40', `60', `A0' (memory at respective address.
+
+     For example,
+
+          xvic -memory none
+
+     gives an unexpanded VIC20.  While
+
+          xvic -memory 60,a0
+
+     or
+
+          xvic -memory 3,5
+
+     enables memory in blocks 3 and 5, which is the usual configuration
+     for 16k ROM modules.
+
+`-emuid'
+`+emuid'
+     Enable (`EmuID=1') or disable (`EmuID=0') the emulation
+     identification extension.
+
+
+File: vice.info,  Node: VIC20 system ROM settings,  Prev: VIC20 memory expansions,  Up: VIC20-specific
+
+VIC20 system ROM settings
+-------------------------
+
+   These settings can be used to control what system ROMs are loaded in
+the VIC20 emulator at startup.  They cannot be changed from the menus.
+
+* Menu:
+
+* VIC20 system ROM resources::
+* VIC20 system ROM options::
+
+
+File: vice.info,  Node: VIC20 system ROM resources,  Next: VIC20 system ROM options,  Prev: VIC20 system ROM settings,  Up: VIC20 system ROM settings
+
+VIC20 system ROM resources
+..........................
+
+`KernalName'
+     String specifying the name of the Kernal ROM (default `kernal').
+
+`BasicName'
+     String specifying the name of the Basic ROM (default `basic').
+
+`ChargenName'
+     String specifying the name of the character generator ROM (default
+     `chargen').
+
+
+File: vice.info,  Node: VIC20 system ROM options,  Prev: VIC20 system ROM resources,  Up: VIC20 system ROM settings
+
+VIC20 system ROM command-line options
+.....................................
+
+`-kernal NAME'
+     Specify `NAME' as the Kernal ROM file (`KernalName').
+
+`-basic NAME'
+     Specify `NAME' as the Basic ROM file (`BasicName').
+
+`-chargen NAME'
+     Specify `NAME' as the character generator ROM file (`ChargenName').
+
+
+File: vice.info,  Node: PET-specific,  Next: CBM-II-specific,  Prev: VIC20-specific,  Up: Machine-specific features
+
+PET-specific commands and settings
+==================================
+
+   This section lists the settings and commands that are PET-specific
+and thus are not present in the other emulators.
+
+* Menu:
+
+* PET model::
+* PET diagnostic pin::
+* PET colors::
+
+
+File: vice.info,  Node: PET model,  Next: PET diagnostic pin,  Prev: PET-specific,  Up: PET-specific
+
+Changing PET model settings
+---------------------------
+
+   With `xpet', it is possible to change at runtime the characteristics
+of the emulated PET so that it matches (or not) the ones of a certain
+PET model, and it is also possible to select from a common set of PET
+models so that all the features are selected accordingly.
+
+   The former is done by changing the following resources (via resource
+file, command line options or right-menu items):
+
+`RamSize'
+     Size of memory in kByte. 96k denotes a 8096, 128k a 8296.
+
+`IOSize'
+     Size of I/O area in Byte. Either 2048 or 256 for 8296.
+
+`Crtc'
+     Enables CRTC 6545 emulation (all models from 40xx and above)
+
+`VideoSize'
+     The number of columns on the screen (40 or 80). A 0 auto-detects
+     this from the ROM.
+
+`Ram9'
+     The 8296 can map RAM into the address range $9***
+
+`RamA'
+     The 8296 can map RAM into the address range $A***
+
+`SuperPET'
+     This resource enables the SuperPET (MicroMainFrame 9000) I/O and
+     disables the 8x96 mappings.
+
+`ChargenName'
+     Specify `NAME' as the character generator ROM file
+
+`KernalName'
+     Specify `NAME' as the kernal ROM file. This file contains the
+     complete BASIC, EDITOR and KERNAL ROMs and is either 16k (BASIC 1
+     and 2) or 20k (BASIC 4) in size.
+
+`EditorName'
+     Specify `NAME' as the editor ROM file. This file contains an
+     overlay for the editor ROM at $E000-$E7FF if necessary.
+
+`RomModule9Name'
+     Specify `NAME' as the $9*** Expansion ROM file. This file contains
+     an expansion ROM image of 4k.
+
+`RomModuleAName'
+     Specify `NAME' as the $A*** Expansion ROM file. This file contains
+     an expansion ROM image of 4k.
+
+`RomModuleBName'
+     Specify `NAME' as the $B*** Expansion ROM file. This file contains
+     an expansion ROM image of 4k.  This file overlays the lowest 4k of
+     a BASIC 4 ROM.
+
+   Choosing a common PET model is done from the right-button menu
+instead, by choosing an item from the "Model defaults" submenu.
+Available models are:
+
+   * PET 2001-8N
+
+   * PET 3008
+
+   * PET 3016
+
+   * PET 3032
+
+   * PET 3032B
+
+   * PET 4016
+
+   * PET 4032
+
+   * PET 4032B
+
+   * PET 8032
+
+   * PET 8096
+
+   * PET 8296
+
+   * SuperPET
+
+   Notice that this will *reset the emulated machine*.
+
+   It is also possible to select the PET model at startup, with the
+`-model' command-line option: for example, `xpet -model 3032' will
+emulate a PET 3032 while `xpet -model 8296' will emulate a PET 8296.
+
+
+File: vice.info,  Node: PET diagnostic pin,  Next: PET colors,  Prev: PET model,  Up: PET-specific
+
+The PET diagnostic pin
+----------------------
+
+   It is possible to enable or disable emulation of the PET diagnostic
+pin via the `DiagPin' resource, or the "PET userport diagnostic pin"
+item in the right-button menu.
+
+
+File: vice.info,  Node: PET colors,  Prev: PET diagnostic pin,  Up: PET-specific
+
+Changing screen colors
+----------------------
+
+   It is also possible to choose what color set is used for the
+emulation window.  This is done by specifying a palette file name
+(*note Palette files::.) in the `PaletteName' resource.  The menu
+provides the following values:
+
+   * `default.vpl' ("default (green)"), the good old green-on-black
+     feeling;
+
+   * `amber.vpl' ("amber"), an amber phosphor lookalike;
+
+   * `white.vpl' ("white"), simple white-on-black palette.
+
+
+File: vice.info,  Node: CBM-II-specific,  Prev: PET-specific,  Up: Machine-specific features
+
+CBM-II-specific commands and settings
+=====================================
+
+   This section lists the settings and commands that are
+CBM-II-specific and thus are not present in the other emulators.
+
+* Menu:
+
+* CBM-II model::
+* CBM-II colors::
+
+
+File: vice.info,  Node: CBM-II model,  Next: CBM-II colors,  Prev: CBM-II-specific,  Up: CBM-II-specific
+
+Changing CBM-II model
+---------------------
+
+   With `x610', it is possible to change at runtime the characteristics
+of the emulated CBM so that it matches (or not) the ones of a certain
+CBM model, and it is also possible to select from a common set of CBM
+models so that all the features are selected accordingly.
+
+   The former is done by changing the following resources (via resource
+file, command line options or right-menu items):
+
+`RamSize'
+     Size of memory in kByte. Possible values are 128, 256, 512 and 1024
+
+`Ram1, Ram2, Ram4, Ram6'
+     Expanded CBM-II models could map RAM to the expansion ROM areas at
+     $1***, $2000-$3FFF, $4000-$5FFF, $6000-$7FFF respectively.
+
+`Cart2Name, Cart4Name, Cart6Name'
+     Specify `NAME' as the $2000-$3FFF, $4000-$5FFF or $6000-$6FFF
+     Expansion ROM file. This file contains an 8k ROM dump.
+
+   Choosing a common CBM-II model is done from the right-button menu
+instead, by choosing an item from the "Model defaults" submenu.
+Available models are:
+
+   * C610 (128k RAM)
+
+   * C620 (256k RAM)
+
+   * C620+ (1024k RAM, expanded)
+
+   Notice that this will *reset the emulated machine*.
+
+   It is also possible to select the CBM model at startup, with the
+`-model' command-line option: for example, `x610 -model C610' will
+emulate a CBM 610 while `x610 -model C620' will emulate a CBM 620.
+
+
+File: vice.info,  Node: CBM-II colors,  Prev: CBM-II model,  Up: CBM-II-specific
+
+Changing screen colors
+----------------------
+
+   It is also possible to choose what color set is used for the
+emulation window.  This is done by specifying a palette file name
+(*note Palette files::.) in the `PaletteName' resource.  The menu
+provides the following values:
+
+   * `default.vpl' ("default (green)"), the good old green-on-black
+     feeling;
+
+   * `amber.vpl' ("amber"), an amber phosphor lookalike;
+
+   * `white.vpl' ("white"), simple white-on-black palette.
+
+
+File: vice.info,  Node: Snapshots,  Next: Monitor,  Prev: Machine-specific features,  Up: Top
+
+Snapshots
+*********
+
+   Every VICE emulator has a built-in snapshot feature, that saves the
+complete Emulator state (see below) into one file. This file can then
+be used to restore the emulator state by loading it.
+
+* Menu:
+
+* Snapshot usage::
+* Snapshot format::
+
+
+File: vice.info,  Node: Snapshot usage,  Next: Snapshot format,  Prev: Snapshots,  Up: Snapshots
+
+Snapshot usage
+==============
+
+   A snapshot is one file. It contains the complete emulator state.  A
+snapshot file can be generated by selecting the `save snapshot' menu
+entry at any time.
+
+   A snapshot file can be used to restore the emulator state by
+selecting the `load snapshot' menu entry at any time.
+
+   Warning: The complete state is saved, but not restored are:
+   * The ROMs. This can pose problems when restoring the state of a PET
+     3032 into a PET 4032 for example. Also attached cartridges are not
+     saved. I.e. you have to attach them before restoring a snapshot of
+     run of such a cartridge.
+
+   * The memory configuration. The VIC20, PET and CBM-II emulators do
+     have some memory expansion info. This is saved but not (yet??)
+     restored.
+
+
+File: vice.info,  Node: Snapshot format,  Prev: Snapshot usage,  Up: Snapshots
+
+Snapshot format
+===============
+
+   A snapshot file consists of several modules.  Each module has a name.
+A module saves the state of an entity like a CIA, the CPU, or the
+memory.
+
+* Menu:
+
+* Emulator modules::
+* Module formats::
+
+
+File: vice.info,  Node: Emulator modules,  Next: Module formats,  Prev: Snapshot format,  Up: Snapshot format
+
+Emulator modules
+----------------
+
+   This section lists the modules that are contained in each of the
+emulators snapshot files.
+
+* Menu:
+
+* x64 modules::
+* x128 modules::
+* xvic modules::
+* xpet modules::
+* x610 modules::
+
+
+File: vice.info,  Node: x64 modules,  Next: x128 modules,  Prev: Emulator modules,  Up: Emulator modules
+
+x64 modules
+...........
+
+
+File: vice.info,  Node: x128 modules,  Next: xvic modules,  Prev: x64 modules,  Up: Emulator modules
+
+x128 modules
+............
+
+
+File: vice.info,  Node: xvic modules,  Next: xpet modules,  Prev: x128 modules,  Up: Emulator modules
+
+xvic modules
+............
+
+
+File: vice.info,  Node: xpet modules,  Next: x610 modules,  Prev: xvic modules,  Up: Emulator modules
+
+xpet modules
+............
+
+
+File: vice.info,  Node: x610 modules,  Prev: xpet modules,  Up: Emulator modules
+
+x610 modules
+............
+
+
+File: vice.info,  Node: Module formats,  Prev: Emulator modules,  Up: Snapshot format
+
+Module formats
+--------------
+
+   This section shows the basic module framework and the contents of
+the different types of modules.
+
+* Menu:
+
+* Module framework::
+* CPU module::
+* CIA module::
+* VIA module::
+* TPI module::
+* SID module::
+* ACIA module::
+* C64 memory module::
+* C128 memory module::
+* VIC20 memory module::
+* PET memory module::
+* C610 memory module::
+
+
+File: vice.info,  Node: Module framework,  Next: CPU module,  Prev: Module formats,  Up: Module formats
+
+Module framework
+................
+
+
+File: vice.info,  Node: CPU module,  Next: CIA module,  Prev: Module framework,  Up: Module formats
+
+CPU module
+..........
+
+
+File: vice.info,  Node: CIA module,  Next: VIA module,  Prev: CPU module,  Up: Module formats
+
+CIA module
+..........
+
+   The CIA 6526 is an I/O port chip with 2 8-bit I/O ports, a shift
+register, two timers, a Time of Day clock and interrupts.
+
+Type    Name    Description                                                
+UBYTE   ORA     Output register A                                          
+UBYTE   ORB     Output register B                                          
+UBYTE   DDRA    Data direction register A                                  
+UBYTE   DDRB    Data direction register B                                  
+UWORD   TAC     Timer A counter value                                      
+UWORD   TBC     Timer B counter value                                      
+UBYTE   TOD_TEN Time of Day - current tenth of second                      
+UBYTE   TOD_SEC Time of Day - current seconds                              
+UBYTE   TOD_MIN Time of Day - current minutes                              
+UBYTE   TOD_HR  Time of Day - current hours                                
+UBYTE   SDR     contents of shift register                                 
+UBYTE   IER     mask of enabled interrupt masks                            
+UBYTE   CRA     Control register A                                         
+UBYTE   CRB     Control register B                                         
+UWORD   TAL     Timer A latch value                                        
+UWORD   TBL     Timer B latch value                                        
+UBYTE   IFR     mask of currently active interrupts                        
+UBYTE   PBSTATE Bit 6/7 reflect the PB6/7 toggle bit state. Bit 2/3        
+                reflect the corresponding port bit state.                  
+UBYTE   SRHBITS number of half-bits to still shift in/out SDR              
+UBYTE   ALARM_TENTime of Day - alarm tenth of second                        
+UBYTE   ALARM_SECTime of Day - alarm seconds                                
+UBYTE   ALARM_MINTime of Day - alarm minutes                                
+UBYTE   ALARM_HRTime of Day - alarm hours                                  
+UBYTE   READICR current clock minus the clock when ICR was read last plus  
+                128.                                                       
+UBYTE   TODLATCHEDBit 0: 1= latched for reading, Bit 1: 2=stopped for        
+                writing                                                    
+UBYTE   TODL_TENTime of Day - latched tenth of second                      
+UBYTE   TODL_SECTime of Day - latched seconds                              
+UBYTE   TODL_MINTime of Day - latched minutes                              
+UBYTE   TODL_HR Time of Day - latched hours                                
+DWORD   TOD_TICKSclk ticks till next tenth of second                        
+
+
+File: vice.info,  Node: VIA module,  Next: TPI module,  Prev: CIA module,  Up: Module formats
+
+VIA module
+..........
+
+   The VIA 6522 is the predecessor of the CIA and also an I/O port chip
+with 2 8-bit I/O ports, a shift register, two timers and interrupts.
+
+Type    Name    Description                                                
+UBYTE   ORA     Output register A                                          
+UBYTE   DDRA    Data direction register A                                  
+UBYTE   ORB     Output register B                                          
+UBYTE   DDRB    Data direction register B                                  
+UWORD   T1L     Timer 1 Latch value                                        
+UWORD   T1C     Timer 1 counter value                                      
+UBYTE   T2L     Timer 2 latch (8 bit as only lower byte is used)           
+UWORD   T2C     Timer 2 counter value                                      
+UBYTE   SR      Shift register value                                       
+UBYTE   ACR     Auxiliary control register                                 
+UBYTE   PCR     Peripheral control register                                
+UBYTE   IFR     active interrupts                                          
+UBYTE   IER     interrupt mask                                             
+UBYTE   PB7     bit 7 = pb7 state                                          
+UBYTE   SRHBITS number of half-bits to shift out on SR                     
+
+
+File: vice.info,  Node: TPI module,  Next: SID module,  Prev: VIA module,  Up: Module formats
+
+TPI module
+..........
+
+
+File: vice.info,  Node: SID module,  Next: ACIA module,  Prev: TPI module,  Up: Module formats
+
+SID module
+..........
+
+
+File: vice.info,  Node: ACIA module,  Next: C64 memory module,  Prev: SID module,  Up: Module formats
+
+ACIA module
+...........
+
+
+File: vice.info,  Node: C64 memory module,  Next: C128 memory module,  Prev: ACIA module,  Up: Module formats
+
+C64 memory module
+.................
+
+
+File: vice.info,  Node: C128 memory module,  Next: VIC20 memory module,  Prev: C64 memory module,  Up: Module formats
+
+C128 memory module
+..................
+
+
+File: vice.info,  Node: VIC20 memory module,  Next: PET memory module,  Prev: C128 memory module,  Up: Module formats
+
+VIC20 memory module
+...................
+
+
+File: vice.info,  Node: PET memory module,  Next: C610 memory module,  Prev: VIC20 memory module,  Up: Module formats
+
+PET memory module
+.................
+
+
+File: vice.info,  Node: C610 memory module,  Prev: PET memory module,  Up: Module formats
+
+C610 memory module
+..................
+
+
+File: vice.info,  Node: Monitor,  Next: c1541,  Prev: Snapshots,  Up: Top
+
+Monitor
+*******
+
+   Every VICE emulator has a complete built-in monitor, which can be
+used to examine, disassemble and assemble machine language programs, as
+well as debug them through breakpoints.  It can be activated by using
+the "Activate monitor" command (left button menu).  Notice that you have
+to run the emulator from a terminal emulation program (such as `rxvt'
+or `xterm') in order to use the monitor.
+
+   Warning: this version of the monitor is still under construction,
+and some of the features are not fully working yet.
+
+* Menu:
+
+* Terminology::
+* Machine state commands::
+* Memory commands::
+* Assembly commands::
+* Checkpoint commands::
+* General commands::
+* Disk commands::
+* Command file commands::
+* Label commands::
+* Miscellaneous commands::
+
+
+File: vice.info,  Node: Terminology,  Next: Machine state commands,  Prev: Monitor,  Up: Monitor
+
+Terminology
+===========
+
+`address_space'
+     This refers to the range of memory locations and a set of
+     registers.  This can be the addresses available to the computer's
+     processor, the disk drive's processor or a specific memory
+     configuration of one of the mentioned processors.
+
+`register'
+     One of the following: program counter (PC), stack pointer (SP),
+     accumulator (A), X register (X), or Y register (Y).
+
+`address'
+     A specific memory location in the range $0000 to $FFFF.
+
+`address_range'
+     Two addresses.  If the second address is less than the first, the
+     range is assumed to wraparound from $FFFF to $0000.  Both
+     addresses must be in the same address space.
+
+`address_opt_range'
+     An address or an address range.
+
+`prompt'
+     The prompt has the format [x:y].  If x is -, memory reads from the
+     monitor do not have side effects.  Otherwise, x is S.  The second
+     part of the prompt, y, shows the default address space.
+
+`checkpoint'
+     The monitor has the ability to setup triggers that perform an
+     action when a specified situation occurs.  There are three types
+     of checkpoints; breakpoints, tracepoints and watchpoints.
+
+`breakpoint'
+     A breakpoint is triggered based on the program counter.  When it is
+     triggered, the monitor is entered.
+
+`tracepoint'
+     Like breakpoints, a tracepoint is triggered based on the program
+     counter.  Instead of entering the monitor, the program counter is
+     printed and execution continues.
+
+`watchpoint'
+     Watchpoints are triggered by a read and/or write to an address.
+     When a watchpoint is triggered, the monitor is entered.
+
+`<...>'
+     A data type.
+
+`*'
+     Zero or more occurrences.
+
+`[...]'
+     An optional argument.
+
+
+File: vice.info,  Node: Machine state commands,  Next: Memory commands,  Prev: Terminology,  Up: Monitor
+
+Machine state commands
+======================
+
+`goto <address>'
+     Change the PC to address and continue execution.
+
+`io'
+     Nothing yet.  Will display VIC/VIA/CIA/SID registers.
+
+`next [<count>]'
+     Advance to the next instruction.  Subroutines are treated as a
+     single instruction.
+
+`registers [<reg_name> = <number> [, <reg_name> = <number>]*]'
+     Assign respective registers.  With no parameters, display register
+     values.
+
+`return'
+     Continues execution  and returns to the monitor just
+     before(after?) the next RTS or RTI is executed.
+
+`step [<count>]'
+     Single step through instructions.  An optional count allows
+     stepping more than a single instruction at a time.
+
+
+File: vice.info,  Node: Memory commands,  Next: Assembly commands,  Prev: Machine state commands,  Up: Monitor
+
+Memory commands
+===============
+
+`compare <address_range> <address>'
+     Compare memory from the source specified by the address range to
+     the destination specified by the address.  The regions may
+     overlap.  Any values that miscompare are displayed using the
+     default displaytype.
+
+`fill <address_range> <data_list>'
+     Fill memory in the specified address range with the data in
+     <data_list>.  If the size of the address range is greater than the
+     size of the data_list, the data_list is repeated.
+
+`hunt <address_range> <data_list>'
+     Hunt memory in the specified address range for the data in
+     <data_list>.  If the data is found, the starting address of the
+     match is displayed.  The entire range is searched for all possible
+     matches.
+
+`i <address_opt_range>'
+     Display memory contents as PETSCII text.
+
+`m [<data_type>] [<address_opt_range>]'
+     Display the contents of memory.  If no datatype is given, the
+     default is used.  If only one address is specified, the length of
+     data displayed is based on the datatype.  If no addresses are
+     given, the 'dot' address is used.
+
+`mc [<data_type>] [<address_opt_range>]'
+     Display the contents of memory as character data.  If only one
+     address is specified, only one character is displayed.  If no
+     addresses are given, the "dot" address is used.
+
+`ms [<data_type>] [<address_opt_range>]'
+     Display the contents of memory as sprite data.  If only one
+     address is specified, only one sprite is displayed.  If no
+     addresses are given, the "dot" address is used.
+
+`move <address_range> <address>'
+     Move memory from the source specified by the address range to the
+     destination specified by the address.  The regions may overlap.
+
+`> [<address>] <data_list>'
+     Write the specified data at `address'.
+
+
+File: vice.info,  Node: Assembly commands,  Next: Checkpoint commands,  Prev: Memory commands,  Up: Monitor
+
+Assembly commands
+=================
+
+`a <address> [ <instruction> [: <instruction>]* ]'
+     Assemble instructions to the specified address.  If only one
+     instruction is specified, enter assembly mode (enter an empty line
+     to exit assembly mode).
+
+`d [<address> [<address>]]'
+     Disassemble instructions.  If two addresses are specified, they
+     are used as a start and end address.  If only one is specified, it
+     is treated as the start address and a default number of
+     instructions are disassembled.  If no addresses are specified, a
+     default number of instructions are disassembled from the dot
+     address.
+
+
+File: vice.info,  Node: Checkpoint commands,  Next: General commands,  Prev: Assembly commands,  Up: Monitor
+
+Checkpoint commands
+===================
+
+`break [<address> [if <cond_expr>] ]'
+     This command allows setting a breakpoint or listing the current
+     breakpoints.  If no address is given, the currently valid
+     checkpoints are printed.  If an address is given, a breakpoint is
+     set for that address and the breakpoint number is printed.  A
+     conditional expression can also be specified for the breakpoint.
+     For more information on conditions, see the CONDITION command.
+
+`enable <checknum>'
+`disable <checknum>'
+     Each checkpoint can be enabled or disabled.  This command allows
+     changing between these states.
+
+`command <checknum> "<command>"'
+     When checkpoint `checknum' is hit, the specified command is
+     executed by the monitor.  Note that the `x' command is not yet
+     supported as a command argument.
+
+`condition <checknum> if <cond_expr>'
+     Each time the specified checkpoint is examined, the condition is
+     evaluated.  If it evalutes to true, the checkpoint is activated.
+     Otherwise, it is ignores.  If registers are specified in the
+     expression, the values used are those at the time the checkpoint
+     is examined, not when the condition is set.
+
+`delete <checknum>'
+     Delete the specified checkpoint.
+
+`ignore <checknum> [<count>]'
+     Ignore a checkpoint a given number of crossings.  If no count is
+     given, the default value is 1.
+
+`trace [address [address]]'
+     This command is similar to the `break' command except that it
+     operates on tracepoints.  A tracepoint differs from a breakpoint
+     by not stopping execution but simply printing the PC, giving the
+     user an execution trace.  The second optional address can be used
+     to specify the end of an range of addresses to be traced.
+
+`watch [address [address]]'
+     This command is similar to the previous two commands except that it
+     operates on watchpoints.  A watchpoint differs from the others by
+     stopping on a read and/or write to an address or range of
+     addresses.  If no addresses are given, a list of all the
+     watchpoints is printed.
+
+
+File: vice.info,  Node: General commands,  Next: Disk commands,  Prev: Checkpoint commands,  Up: Monitor
+
+General commands
+================
+
+`cd <directory>'
+     Change the working directory.
+
+`device [c:|d:]'
+     Set the default memory device to either the computer (`c:') or the
+     disk (`d:').
+
+`radix [H|D|O|B]'
+     Set the default radix to hex, decimal, octal, or binary.  With no
+     argument, the current radix is printed.
+
+`sidefx [on|off|toggle]'
+     Control how monitor generated reads affect memory locations that
+     have read side-effects.  If the argument is 'on' then reads may
+     cause side-effects.  If the argument is 'off' then reads don't
+     cause side-effects.  If the argument is 'toggle' then the current
+     mode is switched.  No argument displays the current state.
+
+`system <system command>'
+     Nothing yet.
+
+
+File: vice.info,  Node: Disk commands,  Next: Command file commands,  Prev: General commands,  Up: Monitor
+
+Disk commands
+=============
+
+`br <track> <sector> [<address>]'
+     Read the block at the specified track and sector.  If an address is
+     specified, the data is loaded into memory.  If no address is
+     given, the data is displayed using the default datatype.
+
+`bw <track> <sector> <address>'
+     Write a block of data at `address' to the specified track and
+     sector of disk in drive 8.
+
+`@<disk command>'
+     Perform a disk command on the currently attached disk image on
+     drive 8.  The specified disk command is sent to the drive's
+     channel #15.
+
+`load "<filename>" <address>'
+     Load the specified file into memory at the specified address.
+
+`save "<filename>" <address1> <address2>'
+     Save the memory from address1 to address2 to the specified file.
+
+
+File: vice.info,  Node: Command file commands,  Next: Label commands,  Prev: Disk commands,  Up: Monitor
+
+Command file commands
+=====================
+
+`playback "<filename>"'
+     Monitor commands from the specified file are read and executed.
+     This command stops at the end of file or when a STOP command is
+     read.
+
+`record "<filename>"'
+     After this command, all commands entered are written to the
+     specified file until the STOP command is entered.
+
+`stop'
+     Stop recording commands.  See `record'.
+
+
+File: vice.info,  Node: Label commands,  Next: Miscellaneous commands,  Prev: Command file commands,  Up: Monitor
+
+Label commands
+==============
+
+`add_label <address> <label>'
+     Map a given address to a label.  This label can be used when
+     entering assembly code and is shown during disassembly.
+
+`delete_label [<memspace>] <label>'
+     Remove the specified label from the label tables.  If no memory
+     space is checked, all tables are checked.
+
+`load_labels [<memspace>] "<filename>"'
+     Load a file containing a mapping of labels to addresses.  If no
+     memory space is specified, the default readspace is used.
+
+`save_labels [<memspace>] "<filename>"'
+     Save labels to a file.  If no memory space is specified, all of the
+     labels are saved.
+
+`show_labels [<memspace>]'
+     Display current label mappings.  If no memory space is specified,
+     show all labels.
+
+
+File: vice.info,  Node: Miscellaneous commands,  Prev: Label commands,  Up: Monitor
+
+Miscellaneous commands
+======================
+
+`exit'
+     Leave the monitor and return to execution.
+
+`print <expression>'
+     Evaluate the specified expression and output the result.
+
+`quit'
+     Exit the emulator immediately.
+
+`~ <number>'
+     Display the specified number in decimal, hex, octal and binary.
+
+
+File: vice.info,  Node: c1541,  Next: Acknowledgments,  Prev: Monitor,  Up: Top
+
+c1541
+*****
+
+   VICE is provided with a complete stand-alone disk image maintenance
+utility, called `c1541'.  You can either invoke it from the command
+line or from within one of the VICE emulators, using the "Run c1541"
+command which will open a new `xterm' window with a running `c1541' in
+it.
+
+   The syntax is:
+
+     c1541 OPTIONS IMAGE
+
+   If some `OPTIONS' but no `IMAGE' are specified, `c1541' runs in
+batch mode; otherwise, it attaches the `IMAGE' if present and enters
+interactive mode, where you can type commands that are executed when
+you press Enter (abbreviations are allowed).  As with the monitor, file
+name completion and command line editing with history are provided via
+GNU `readline'.  Use the command `quit' to exit.
+
+   Notice that `c1541' always creates `X64' files, but can read and
+write `D64' and `T64' files automatically, without the need for any
+special options.
+
+* Menu:
+
+* c1541 commands and options::
+
+
+File: vice.info,  Node: c1541 commands and options,  Prev: c1541,  Up: c1541
+
+c1541 commands and options
+==========================
+
+   Each command-line option has an interactive-mode counterpart, that is
+shown after it.  `-' as a file name stands for standard input or
+standard output, depending on the context.
+
+`-attach  IMAGE'
+`attach  IMAGE'
+     Attach the disk image `IMAGE' for use.  All the following commands
+     will refer to this image.
+
+`-detach'
+`detach'
+     Detach the currently attached disk image.
+
+`-format  IMAGE 'NAME,ID''
+`format  IMAGE 'NAME,ID''
+     Format the D64 disk image `IMAGE', giving the specified label.  If
+     `IMAGE' does not exist, create it.
+
+`-gcr  IMAGENAME ['NAME,ID']'
+`gcrformat  IMAGE 'NAME,ID''
+     Create a GCR disk image; if `NAME,ID' is specified, format it.
+
+`-delete  IMAGE FILES...'
+`delete  FILES...'
+     Delete  FILES  from `IMAGE'.
+
+`-list  IMAGE'
+`list'
+     List files in `IMAGE'.
+
+`-validate  IMAGE'
+`validate'
+     Validate the disk.
+
+`-copy  IMAGE OLDNAME1 [OLDNAME2...] NEWNAME'
+`copy  OLDNAME1 [OLDNAME2...] NEWNAME'
+     Concatenate `OLDNAME1', `OLDNAME2'.. into `NEWNAME' on `IMAGE'
+     (can be used to copy files).
+
+`-create  IMAGE DUMP ['DESCR']'
+`create  IMAGE DUMP ['DESCR']'
+     Build `IMAGE' from raw dump file `DUMP' (i.e. convert from `D64'
+     to `X64' file).
+
+`-tape  IMAGE TAPEIMAGE [FILES...]'
+`tape  IMAGE TAPEIMAGE [FILES...]'
+     Transfer `FILES' from `TAPEIMAGE' to `IMAGE' (default is copy all
+     files).
+
+`-read  IMAGE 1541NAME [FSNAME]'
+`read  1541NAME [FSNAME]'
+     Extract `1541NAME' from the disk image into `FSNAME' (1541NAME by
+     default) from `IMAGE'.
+
+`-extract  IMAGE'
+`extract'
+     Extract all files from `IMAGE'.
+
+`-write  IMAGE FSNAME [1541NAME]'
+`write  FSNAME [1541NAME]'
+     Write `FSNAME' to `IMAGE' as `1541NAME' (`FSNAME' by default).
+     (works with `P00' files as well)
+
+`-block  [DRIVE:] [TRACK] [SECTOR] [DISP]'
+`block  [DRIVE:] [TRACK] [SECTOR] [DISP]'
+     Show disk blocks in hex format.
+
+`-info  IMAGE ['DESCRIPTION']'
+`info  ['DESCRIPTION']'
+     Show version information about `IMAGE'.
+
+`-unlynx IMAGE LYNXFILE'
+`unlynx LYNXFILE'
+     Unlynx `LYNXFILE' into the image.
+
+`-zcreate  IMAGE DUMP ['DESCR']'
+`zcreate IMAGE DUMP ['DESCR']'
+     Build `IMAGE' from a Zipcoded image made up of files called
+     `1!DUMP', `2!DUMP', `3!DUMP', `4!DUMP'.
+
+   When more than one command is specified in batch mode, all of them
+are executed in the same order they have on the command line.
+
