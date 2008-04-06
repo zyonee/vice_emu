@@ -1,0 +1,9 @@
+source type (rc)  
+    "dialogs.rc",
+    "menubar.rc",
+    "dlg-datasette.rc",
+    "dlg-drive.rc",
+    "dlg-emulator.rc",
+    "dlg-fileio.rc",
+    "dlg-joystick.rc",
+    "dlg-monitor.rc"
