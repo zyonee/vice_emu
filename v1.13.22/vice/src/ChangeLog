@@ -1,0 +1,1311 @@
+2003-11-13  Andreas Boose  <viceteam@t-online.de>
+
+	* Version 1.13.22.
+
+	* c64/c64iec.c, c128/c128iec.c: Unified. Moved parallel cable
+	and fast IEC code to separate files.
+
+	* c64/c64parallel.c, c64/c64parallel.h, c64/c64fastiec.c,
+	c64/c64fastiec.h, c128/c128fastiec.c, c128/c128fastiec.h,
+	plus4/plus4parallel.c, plus4/plus4parallel.h: New files.
+
+	* c64/Makefile.am, c128/Makefile.am, plus4/Makefile.am,
+	arch/win32/c64.dsp, arch/win32/c64c128.dsp,
+	arch/win32/c128.dsp, arch/win32/plus4.dsp: Updated.
+
+	* c64/c64.c, c128/c128.c (machine_init): Initialize fast IEC.
+
+	* c64/c64cia2.c, plus4/plus4pio1.c: Fixed includes.
+
+	* drive/drive.c, drive/drive.h (drive_get_drive): Removed.
+
+	* drive/drive-check.c: New file.
+
+	* drive/Makefile.am, arch/win32/drive.dsp: Added new file.
+
+	* drive/drive.c: Moved drive check functions to separate file.
+
+2003-11-13  Andreas Matthies  <andreas.matthies@gmx.net>
+
+	* win32/archdep.c, c64/cart/ide64.c, gfxoutputdrv/bmpdrv.c,
+	printerdrv/drv-nl10.c, vic20/vic-mem.c: Fixed warnings by
+	adding casts and includes.
+
+	* win32/res.h, resc64.rc, resc128.rc, resplus4.rc, respet.rc,
+	rescbm2.rc, resvic.rc, ui.c: Added UI support for recorsing
+	milestones.
+
+	* event.c, event.h: Removed EVENT_RESETCONTINUE, this can be
+	handled with EVENT_RESET.
+	New functiones event_record_set_milestone_trap,
+	event_record_set_milestone, event_record_reset_milestone_trap,
+	event_record_reset_milestone, set_event_milestone_snapshot.
+	New resource EventMilestoneSnapshot.
+
+2003-11-12  Andreas Matthies  <andreas.matthies@gmx.net>
+
+	* core/ciacore.c (ciacore_snapshot_write_module): Stores the
+	irq_enabled in the snapshot now. This was introduced in
+	1.12.31 and disabled in 1.12.32.
+
+	* attach.c, attach.h: Added file_system_event_playback() and
+	event support in file_system_attach_disk and in
+	file_system_detach_disk.
+
+	* tape.h, tape/tape.c: Added tape_image_event_playback() and
+	event support in tape_image_attach and tape_image_detach.
+
+	* machine.c, machine.h: Added machine_reset_event_playback()
+	and event support in machine_trigger_reset.
+
+	* event.h, event.c: New event types EVENT_ATTACHDISK,
+	EVENT_ATTACHTAPE, EVENT_RESET, EVENT_RESETCONTINUE.
+
+2003-11-12  Andreas Dehmel  <zarquon@t-online.de>
+
+	* arch/riscos/c128ui.c, arch/riscos/cbm2ui.c,
+	arch/riscos/petui.c, arch/riscos/ui.c, arch/riscos/vic20ui.c:
+	moved machine-specific from ui.c to machine UI sources.
+
+	* arch/riscos/ui.c: trap missing config windows.
+
+	* arch/riscos/ui.h, arch/riscos/uisharedef.h: extended
+	interfaces.
+
+2003-11-11  Andreas Boose  <viceteam@t-online.de>
+
+	* Version 1.13.21.
+
+	* drive/tcbm/glue1551.c, drive/ieee/fdc.c, drive/iec/wd1770.c,
+	parallel/parallel-trap.c, drive/drive.c, drive/drive.h,
+	drive/iec/jobcode1581.c, drive/rotation.c, drive/tcbm.h: Use
+	`DRIVE_NUM'.
+
+	* c64/c64cia2.c, c64/c64iec.c, c64/c64iec.h, c128/c128iec.c
+	(parallel_cable_cpu_execute): New function.
+
+	* arch/unix/uidrivec64vic20.c, arch/unix/uidrive.h,
+	arch/unix/uidriveiec.c, arch/unix/uidriveiec.h,
+	arch/unix/uidrive.c, arch/unix/uidrivec128.c,
+	arch/unix/uidrivepetcbm2.c, arch/unix/uidriveplus4.c: Added
+	menu entries.
+
+	* utils.c, utils.h: Renamed.
+
+	* *.c: Renamed util include.
+
+	* Makefile.am, arch/win32/base.dsp, arch/win32/c1541.dsp,
+	arch/win32/petcat.dsp: Updated.
+
+2003-11-11  Andreas Boose  <viceteam@t-online.de>
+
+	* Version 1.13.20.
+
+	* monitor.h, monitor/monitor.c, monitor/mon_register6502.c,
+	monitor/mon_registerz80.c, c64/c64.c, c128/c128.c,
+	vic20/vic20.c, pet/pet.c, plus4/plus4.c, cbm2/cbm2.c,
+	drive/drivecpu.c, monitor/mon_ui.c, monitor/mon_parse.y:
+	Increased number of drives monitor can handle.
+
+	* drive/drive-resources.c (drive_resources_type,
+	drive1_resources_type): Handle more drives.
+
+	* drive/drive.c (drive_check_type): Changed likewise.
+
+	* alarm.c, alarm.h: Added support for call data.
+
+	* c64/cart/c64cart.c, vdc/vdc.c, cbm2/cbm2.c, riot.h, via.h,
+	cia.h, crtc/crtc.c, crtc/crtctypes.h, drive/ieee/fdc.c,
+	drive/tcbm/glue1551.c, plus4/ted-timer.c, plus4/ted.c,
+	plus4/tedtypes.h, plus4/ted-mem.c, plus4/ted-irq.c,
+	plus4/ted-fetch.c, plus4/ted-fetch.h, vic20/vic.c,
+	vic20/vic.h, vic20/vic-mem.c, vicii/vicii-fetch.c,
+	vicii/vicii-fetch.h, vicii/vicii.c, vicii/vicii-mem.c,
+	vicii/viciitypes.h, vicii/vicii-irq.c, vicii/vicii-irq.h,
+	rs232drv/rsuser.c, rsuser.h, aciacore.c, event.c, datasette.c,
+	joystick.c, keyboard.c: Added call data to callback.
+
+	* drive/iec/via1d1541.c, drive/iecieee/via2d.c,
+	drive/ieee/via1d2031.c, vic20/vic20via1.c, vic20/vic20via2.c,
+	vic20/vic20ieeevia1.c, vic20/vic20ieeevia2.c, pet/petvia.c,
+	drive/iec/cia1571d.c, drive/iec/cia1581d.c, c64/c64cia1.c,
+	c64/c64cia2.c, c128/c128cia1.c, cbm2/cbm2cia1.c,
+	drive/ieee/riot1d.c, drive/ieee/riot2d.c, core/ciacore.c,
+	core/viacore.c, core/riotcore.c: Context pointer is now
+	delivered via alarm data.
+
+2003-11-10  Andreas Dehmel  <zarquon@t-online.de>
+
+	* arch/riscos/Makefile.am: dropped last dummy file
+
+	* arch/riscos/archdep.{c,h}: machine name for resources and
+	drive led stubs
+
+	* arch/riscos/ui.c: improved startup phase
+
+	* vdrive-iec.c: replaced ui_set_drive_leds with
+	archdep_set_drive_leds
+
+2003-11-10  pottendo  <pottendo@utanet.at>
+
+	* arch/unix/x11/gnome/uiscreenshot.c (all): made the ffmpeg
+	things dependent on `HAVE_FFMPEG'.
+
+2003-11-10  Andreas Matthies  <andreas.matthies@gmx.net>
+
+	* arch/win32/printerdrv.dsp: Added missing file.
+
+	* sound.c: Set sdev_open in sound_open.
+
+2003-11-10  Andreas Boose  <viceteam@t-online.de>
+
+	* Version 1.13.19.
+
+	* printerdrv/drv-nl10.c: Fixed comments, added header.
+	[drv_nl10_charset_mapping_intl, drv_nl10_charset_nlq_italic]:
+	Made const.
+
+	* printerdrv/drv-nl10.h: Added header, removed unused include.
+
+	* arch/unix/uiprinter.c: Added new printer.
+
+2003-11-10  David Hansel  <hansel@reactive-systems.com>
+
+	* printerdrv/drv-nl10.c, printerdrv/drv-nl10.h: New files.
+
+	* printerdrv/Makefile.am: Added new files.
+
+	* gfxoutputdrv/bmpdrv.c: Added support for 1 bit data.
+
+	* printerdrv/printer.c: Added hooks for NL10 printer driver.
+
+	* printerdrv/output-graphics.c (output_graphics_putc): Fixed
+	typo.
+
+2003-11-10  Andreas Dehmel  <zarquon@t-online.de>
+
+	* arch/riscos/*: restructured to allow code for all emulators
+	in a single arch lib. Builds, but yet untested.
+
+2003-11-10  Andreas Boose  <viceteam@t-online.de>
+
+	* Version 1.13.18.
+
+	* drive/drive.c, drive/drive.h, drive/tcbm/glue1551.c,
+	drive/iecieee/via2d.c, c64/c64iec.c, c128/c128iec.c,
+	drive/iec/wd1770.c, drive/iec/iec-resources.c,
+	drive/driveimage.c, drive/drive-snapshot.c: Do not use
+	`drive[]' as global variable.
+
+	* drive/drivecpu.c, drive/drivecpu.h, c64/c64.c, c128/c128.c,
+	vic20/vic20.c, pet/pet.c, plus4/plus4.c, cbm2/cbm2.c,
+	c64/c64cia2.c, drive/iec/via1d1541.c, drive/iec/cia1571d.c,
+	drive/iec/cia1581d.c, drive/iec/jobcode1581.c,
+	drive/ieee/fdc.c, drive/ieee/via1d2031.c, drive/ieee/ieee.c,
+	drive/ieee/riot1d.c, drive/ieee/riot2d.c, drive/drivemem.c,
+	drive/tcbm/glue1551.c, drive/iecieee/via2d.c,
+	vic20/vic20iec.c, autostart.c, init.c: Dynamically allocate
+	drive context struct.
+
+	* monitor.h, monitor/monitor.c, mem.h, drive/drivecpu.c, 
+	c64/c64mem.c, c128/c128mem.c, vic20/vic20mem.c, pet/petmem.c,
+	plus4/plus4mem.c, cbm2/cbm2mem.c, drive/drivemem.c,
+	monitor/mon_breakpoint.c, monitor/mon_register6502.c,
+	drive/drivemem.h, c64/c64.c, c128/c128.c, vic20/vic20.c,
+	pet/pet.c, plus4/plus4.c, cbm2/cbm2.c: Mae monitor interface
+	more flexible.
+
+	* drive/ieee/ieee.c, drive/ieee.h, parallel/parallel.c:
+	Changed ATN signal functions.
+
+	* drive/drivecpu.c, drive/drivecpu.h, interrupt.h,
+	arch/unix/uicommands.c, arch/msdos/menudefs.c,
+	arch/win32/ui.c: Changed drive reset functions.
+
+	* debug.c, debug.h: Increased number drives to debug.
+
+	* arch/unix/console.c (console_in): Allocate line using lib
+	functions.
+
+	* arch/unix/readline/editline.h: Do not use lib functions.
+
+	* arch/msdos/mousedrv.c (my_mouse_callback): Fixed typo.
+
+2003-11-09  Andreas Boose  <viceteam@t-online.de>
+
+	* Version 1.13.17.
+
+	* drive/drivetypes.h, drive/iec/cia1571d.c, drive/iec/iec.c,
+	drive/iec/cia1581d.c, drive/iec/memiec.c, drive/ieee/fdc.c,
+	drive/iec/via1d1541.c, drive/iecieee/iecieee.c,
+	drive/iecieee/via2d.c, drive/ieee/ieee.c, drive/ieee/riot2d.c,
+	drive/ieee/via1d2031.c, drive/tcbm/glue1551.c, drive/drive.c,
+	drive/tcbm/tpid.c, drive/drivecpu.c, drive/drivemem.c,
+	drive/iec/glue1571.c, drive/iec/glue1571.h, drive/drive.h,
+	drive/iec/iec-resources.c, drive/drive-resources.c,
+	drive/iec/iec-cmdline-options.c, c64/c64drive.c,
+	drive/drive-cmdline-options.c, vic20/vic20drive.c,
+	pet/petdrive.c, plus4/plus4drive.c, cbm2/cbm2drive.c,
+	drive/driveimage.c, drive/drive-snapshot.c, drive/driverom.c,
+	drive/iec/iecrom.c, drive/iec/jobcode1581.c, drive/driverom.h,
+	drive/iec/wd1770.c, drive/ieee/ieeerom.c, drive/driveimage.h,
+	drive/ieee/ieeerom.h, drive/tcbm/tcbmrom.c, drive/drivesync.c,
+	drive/tcbm/tcbmrom.h, drive/drive-overflow.c,
+	drive/drivesync.h, drive/rotation.c, parallel/parallel-trap.c,
+	parallel/parallel.c, c64/c64cia2.c, c64/c64iec.c,
+	c128/c128iec.c, vic20/vic20iec.c, plus4/plus4iec.c,
+	plus4/plus4pio1.c, plus4/plus4tcbm.c: Do not use `drive[]' as
+	global variable.
+
+2003-11-08  Andreas Boose  <viceteam@t-online.de>
+
+	* Version 1.13.16.
+
+	* gfxoutput.h: Fixed prototypes.
+
+	* arch/win32/mousedrv.c (mousedrv_resources_init,
+	mousedrv_cmdline_options_init): Return zero.
+
+	* arch/unix/x11/renderxv.c (find_yuv_port): Fixed warning.
+
+2003-11-07  pottendo  <pottendo@utanet.at>
+
+	* arch/unix/x11/gnome/x11ui.c: (ui_style_red): new global.
+	(x11ui_open_canvas_window): Set video_ctrl_checkbox label to
+	red font.
+
+	* arch/unix/x11/gnome/uiscreenshot.c (build_screenshot_dialog):
+	Added widgets for FFMPEG resources.
+	(ffmpg_widget): new_function.
+	(ui_screenshot_dialog): set resources for ffmpeg in case the
+	driver is selected.
+
+2003-11-07  Andreas Dehmel  <zarquon@t-online.de>
+
+	* arch/riscos/mousedrv.{c,h}: new files (ATM dummies only)
+
+	* arch/riscos/Makefile.am: restructured for use on RISC OS
+
+2003-11-06  pottendo  <pottendo@utanet.at>
+
+	* arch/unix/x11/gnome/x11ui.c: New global
+	`video_ctrl_checkbox'.
+
+	* arch/unix/x11/gnome/uiscreenshot.c (ui_screenshot_dialog):
+	Show video control button in case of recording.
+
+	* arch/unix/x11/gnome/x11ui.c (ui_create_status_bar): Added
+	record control button.
+
+2003-11-05  Andreas Matthies  <andreas.matthies@gmx.net>
+
+	* gfxoutputdrv/ffmpegdrv.h: Added prototypes.
+
+	* gfxoutput.h, gfxoutput.c: New functions
+	gfxoutput_resources_init, gfxoutput_cmdline_options_init
+	calling the ffmpegdrv registration functions.
+
+	* init.c (init_resources): Call gfxoutput_resources_init.
+	(init_cmdline_options): Call gfxoutput_cmdline_options_init.
+
+2003-11-04  Andreas Boose  <viceteam@t-online.de>
+
+	* Version 1.13.15.
+
+	* arch/unix/ffmpeglib.c: New file.
+
+	* arch/unix/Makefile.am: Added new file.
+
+	* gfxoutputdrv/ffmpegdrv.c: Removed include.
+
+	* mouse.c, mouse.h, arch/unix/mousedrv.c,
+	arch/win32/mousedrv.c, arch/msdos/mousedrv.c,
+	arch/os2/mousedrv.c: Moved mouse port code to common file.
+
+2003-11-04  Andreas Matthies  <andreas.matthies@gmx.net>
+
+	* sounddrv/soundffmpegaudio.c (ffmpegaudio_close): Stop
+	screenshot recording; this will close the movie file if
+	sound settings change or the emulator is closed.
+
+2003-11-03  Andreas Matthies  <andreas.matthies@gmx.net>
+
+	* gfxoutputdrv/ffmpegdrv.c: Include cmdline.h.
+	Added resources FFMPEFAudioBitrate and FFMPEFVideoBitrate
+	and corresponding cmdline options.
+	Added error handling to get a controlled shutdown of the
+	driver if a stream or the file cannot ne opened.
+	Test if MP3 codec is available bedore switching to it.
+
+2003-11-03  Andreas Dehmel  <zarquon@t-online.de>
+
+	* arch/riscos/uiconfig.c: adapted to new VIDEO_RESOURCE_PAL_*
+	defines
+
+2003-11-02  Andreas Boose  <viceteam@t-online.de>
+
+	* Version 1.13.14.
+
+	* drive/drive.c, drive/drive.h: Removed cruft.
+
+	* drive/iec/glue1571.c, drive/iec/glue1571.h,
+	drive/drive-overflow.c: New files.
+
+	* drive/iec/Makefile.am, drive/Makefile.am,
+	arch/win32/iec.dsp, arch/win32/drive.dsp: Added new files.
+
+	* arch/unix/x11/xaw/x11ui.c: Fixed warning.
+	
+	* drive/iec/via1d1541.c: Call new 1571 glue functions.
+
+	* drive/iec/iec.c, drive/iec.h (iec_drive_port_default): New
+	function.
+
+	* machine-drive.h, c64/c64drive.c, vic20/vic20drive.c,
+	pet/petdrive.c, plus4/plus4drive.c, cbm2/cbm2drive.c
+	(machine_drive_port_default): New function.
+
+	* drive/drive.c, drive/drive.h, drive/drive-snapshot.c,
+	drive/drive-resources.c (drive_enable, drive_disable): Pass
+	drive context pointer.
+
+	* drive/drive.c, drive/drive.h, c64/c64.c, c128/c128.c,
+	vic20/vic20.c, pet/pet.c, plus4/plus4.c, cbm2/cbm2.c
+	(machine_vsync_hook): Pass drive context pointer.
+
+	* drive/drive.c, drive/drive.h, drive/drive-resources.c
+	(drive_set_disk_drive_type): Pass drive context pointer.
+
+	* drive/drive.c, drive/drive.h, autostart.c
+	(drive_set_disk_memory, drive_set_last_read): Pass drive
+	context pointer.
+
+	* drive/drivesync.c, drive/drivesync.h, drive/drive.c,
+	drive/iec/via1d1541.c (drive_sync_factor,
+	drive_sync_set_1571): Pass drive context pointer.
+
+	* drive/iec/wd1770.c (wd1770d_init, wd1770d0_init,
+	wd1770d1_init, clk_overflow_callback): Simplified.
+
+	* drive/ieee/fdc.c (clk_overflow_callback0,
+	clk_overflow_callback1, clk_overflow_callback, fdc_init):
+	Changed likewise.
+
+	* arch/unix/mouse.c, arch/unix/mouse.h, arch/win32/mouse.c,
+	arch/win32/mouse.h, arch/msdos/mouse.c, arch/msdos/mouse.h,
+	arch/beos/mouse.cc, arch/beos/mouse.h, arch/os2/mouse.c,
+	arch/os2/mouse.h: Renamed and moved common code to `mouse.c'.
+
+	* arch/unix/Makefile.am, arch/win32/Makefile.am,
+	arch/win32/arch.dsp, arch/msdos/Makefile.am,
+	arch/beos/Makefile.am, arch/os2/Makefile.am, Makefile.am,
+	arch/win32/base.dsp: Updated.
+
+	* arch/unix/x11/xaw/x11ui.c, arch/unix/x11/gnome/x11ui.c,
+	arch/win32/ui.c, arch/os2/video.c, arch/win32/vsyncarch.c,
+	arch/unix/x11/dga1.c, arch/unix/x11/dga2.c: Fixed includes.
+
+	* vdc/vdc.c: Added include for MSDOS.
+
+	* arch/msdos/menudefs.c: Fixed includes.
+
+2003-11-02  pottendo  <pottendo@utanet.at>
+
+	* arch/unix/uipalemu.c (PAL_control_cb): Simple UI to enter
+	scanline shade and PAL blurredness for Xaw. GnomeUI doesn't
+	use this as it supports a more convenient PAL control widget.
+
+	* arch/unix/x11/gnome/x11ui.c (ui_update_pal_checkbox): Resize
+	window properly.
+
+	* arch/unix/uipalemu.c: Adapted to new PAL resources.
+
+	* arch/unix/x11/gnome/uipalcontrol.c (build_pal_ctrl_widget):
+	Respect scale value for setting values of gtk_adjustment.
+	`struct pal_res_s': added field `scale'.
+	(upd_sb): scale value.
+
+2003-11-01  Andreas Boose  <viceteam@t-online.de>
+
+	* Version 1.13.13.
+
+	* gfxoutputdrv/gfxoutput.c: Only include ffmpeg header if
+	`HAVE_FFMPEG' is defined.
+
+	* drive/drivetypes.h, drive/drivecpu.h, drive/drivecpu.c,
+	c64/c64-snapshot.c, c64/c64cia2.c, c64/c64iec.c, c64/c64tpi.c,
+	pet/petpia1.c, pet/petpia2.c, pet/petvia.c, c128/c128iec.c,
+	c128/c128cia1.c, cbm2/cbm2tpi1.c, cbm2/cbm2cia1.c,
+	drive/drive.c, plus4/plus4-snapshot.c, plus4/plus4iec.c,
+	plus4/plus4tcbm.c, vic20/vic20ieeevia1.c,
+	vic20/vic20ieeevia2.c, vic20/vic20iec.c, parallel/parallel.c:
+	Removed drive CPU execute macro.
+
+2003-11-01  Andreas Matthies  <andreas.matthies@gmx.net>
+
+	* arch/win32/mouse.c: New resource Mouseport and commandline
+	switch -mouseport to select the port of the emulated mouse.
+
+2003-10-31  Andreas Matthies  <andreas.matthies@gmx.net>
+
+	* arch/win32/msvc/config.h: Defines HAVE_FFMPEG.
+
+	* arch/win32/Makefile.am, arch.dsp, ffmpeglib.c: Added new
+	file. ffmpeglib_open initialises the function pointers used
+	in ffmpegdrv by loading the corresponding dlls.
+
+	* arch/win32/res.h, res<machine>*.rc, ui.c, uisnapshot.c:
+	Replaced movie, screenshot and soundshot UI by a general
+	media UI. FIXME: The dialog needs further work.
+
+	* gfxoutputdrv/mpegdrv.*: Renamed to ffmpegdrv.*.
+	MP3 audio codec is forced now. Resolution of the video is a
+	multiple of 16 now. Funktion pointers p_<ffmpeg-function) are
+	used now, must be set in arch/*/ffmpeglib.c
+
+	* gfxoutputdrv/ffmpeg/*.h: New header files from the ffmpeg
+	library.
+
+	* gfxoutputdrv/ffmpeglib.h: New file declaring the ffmpeg
+	functions and pointers.
+
+	* gfxoutputdrv/gfxoutput.c: First initialises the ffmpeg lib,
+	then the driver depending on HAVE_FFMPEG.
+
+	* gfxoutputdrv/Makefile.am: Added new files.
+
+	* sound.c: Uses HAVE_FFMPEG.
+
+	* sound.h: Fixed prototype of renamed sound driver.
+
+	* sounddrv/soundmovie.c: Renamed to soundffmpegaudio.c.
+
+2003-10-29  Tibor Biczo  <crown@axelero.hu>
+
+	* arch/win32/video.c (video_canvas_destroy): Fixed call order
+	of releasing canvas resources.
+
+	* c128/c128cia1.c, c64/c64cia1.c, c64/c64cia2.c,
+	cbm2/cbm2cia1.c, pet/petvia.c, vic20/vic20ieeevia1.c,
+	vic20/vic20ieeevia2.c, vic20/vic20via1.c, vic20/vic20via2.c:
+	Init prv member of context struct to NULL in setup functions.
+
+2003-10-28  Andreas Boose  <viceteam@t-online.de>
+
+	* Version 1.13.12.
+
+	* drive/drivetypes.h, drive/iec/cia1581d.c: Removed obsolete
+	IEC struct.
+
+	* drive/drivetypes.h, drive/drivecpu.c: Removed static char
+	arrays.
+
+	* drive/drivetypes.h, drive/iec/memiec.c, drive/ieee/fdc.c,
+	drive/ieee/memieee.c, drive/tcbm/glue1551.c, drive/drive.c,
+	drive/tcbm/mem1551.c, drive/drivecpu.c, drive/drivemem.c,
+	drive/drivesync.c: Dynamically allocate drive CPU struct.
+
+	* drive/drivetypes.h, drive/iec/cia1581d.c, drive/iec/iec.c,
+	drive/iec/via1d1541.c, drive/ieee/ieee.c, drive/ieee/riot1d.c,
+	drive/ieee/riot2d.c, drive/ieee/via1d2031.c: Dynamically
+	allocate CPU function struct.
+
+	* drive/iec/iec-cmdline-options.c: Added support for 1570 and
+	1571CR drives.
+
+	* drive/iec/iecrom.c (iecrom_load_1571cr): Fixed typo.
+
+	* video/video-render.c (render_yuv_image): Replaced obsolete
+	video resource defines.
+
+2003-10-27  John Selck  <selck_j@informatik.haw-hamburg.de>
+
+	* video/video-resources.h: Removed all true PAL emulation
+	defines and replaced them by one common PAL emu define.
+	Added pal_blur member to video_resources_t.
+
+	* video/video-resources.c: Added default value for pal_blur.
+
+	* video/video-resources-pal.c: Made VIDEO_RESOURCE_PAL_MODE_TRUE
+	default setting for PAL emulation mode.
+	Added new resource variable PALBlur, default value 0.5 (500).
+
+	* video/video-color.c: video_calc_ycbcrtable() now calculates
+	weighted luminance tables for variable blurring.
+
+	* video/render1x1pal.c: Removed render_16_1x1_palyc() and
+	render_32_1x1_palyc().
+	render_16_1x1_pal() and render_32_1x1_pal() are now able to
+	render different degrees of blurriness.
+
+	* video/render2x2pal.c: Removed render_16_2x2_palyc() and
+	render_32_2x2_palyc().
+	render_16_2x2_pal() and render_32_2x2_pal() are now able to
+	render different degrees of blurriness.
+
+	* video/render1x1pal.h: Remove obsolete prototypes.
+
+	* video/render2x2pal.h: Remove obsolete prototypes.
+
+	* video/renderyuv.c: Disabled VIDEO_RESOURCE_PAL_MODE_BLUR
+	dependant code.
+
+	* video/video-render-pal.c: Changed PAL emu calls.
+
+	* arch/win32/uivideo.c: Removed old PAL emulation modes and
+	replaced them by a single general mode.
+	Added code for IDC_VIDEO_ADVANCED_BLUR.
+	
+	* arch/win32/res.rc: Added PAL Blur EDITTEXT to video dialog.
+	
+	* arch/win32/res.h: Added IDC_VIDEO_ADVANCED_BLUR define.
+
+2003-10-26  Andreas Dehmel  <zarquon@t-online.de>
+
+	* arch/riscos/*: cleanup: fixed email-address, removed
+	superfluous includes, better encapsulation
+
+2003-10-26  Andreas Boose  <viceteam@t-online.de>
+
+	* Version 1.13.12.
+
+	* drive/drivetypes.h, drive/iec/cia1581d.c: Removed obsolete
+	IEC struct.
+
+	* drive/drivetypes.h, drive/drivecpu.c: Removed static char
+	arrays.
+
+	* drive/drivetypes.h, drive/iec/memiec.c, drive/ieee/fdc.c,
+	drive/ieee/memieee.c, drive/tcbm/glue1551.c, drive/drive.c,
+	drive/tcbm/mem1551.c, drive/drivecpu.c, drive/drivemem.c,
+	drive/drivesync.c: Dynamically allocate drive CPU struct.
+
+	* drive/drivetypes.h, drive/iec/cia1581d.c, drive/iec/iec.c,
+	drive/iec/via1d1541.c, drive/ieee/ieee.c, drive/ieee/riot1d.c,
+	drive/ieee/riot2d.c, drive/ieee/via1d2031.c: Dynamically
+	allocate CPU function struct.
+
+	* drive/iec/iec-cmdline-options.c: Added support for 1570 and
+	1571CR drives.
+
+	* drive/iec/iecrom.c (iecrom_load_1571cr): Fixed typo.
+
+2003-10-26  Andreas Boose  <viceteam@t-online.de>
+
+	* Version 1.13.11.
+
+	* petcat.c, c1541.c: Initialize archdep.
+
+	* arch/win32/archdep.c (archdep_init): Set binary mode for
+	stdin and stdout.
+
+	* arch/unix/uivicii.c, arch/unix/uivic.c, arch/unix/uivdc.c,
+	arch/unix/uicrtc.c, arch/unix/uited.c, arch/unix/uivicii.h,
+	arch/unix/uivic.h, arch/unix/uivdc.h, arch/unix/uicrtc.h,
+	arch/unix/uited.h, arch/unix/c64ui.c, arch/unix/c128ui.c,
+	arch/unix/vic20ui.c, arch/unix/petui.c, arch/unix/cbm2ui.c,
+	arch/unix/plus4ui.c, arch/unix/fullscreenarch.h,
+	arch/unix/x11/fullscreen.c, arch/unix/x11/vidmode.c,
+	arch/unix/x11/vidmode.h, arch/unix/x11/dga1.c,
+	arch/unix/x11/dga1.h, arch/unix/x11/dga2.c,
+	arch/unix/x11/dga2.h, arch/unix/c64ui.h, arch/unix/c128ui.h,
+	arch/unix/vic20ui.h, arch/unix/petui.h, arch/unix/plus4ui.h,
+	arch/unix/cbm2ui.h, c64/c64.c, c128/c128.c, vic20/vic20.c,
+	pet/pet.c, plus4/plus4.c, cbm2/cbm2.c: Added fullscreen
+	shutdown.
+
+	* arch/*/c64ui.h, arch/*/c128ui.h, arch/*/vic20ui.h,
+	arch/*/petui.h, arch/*/plus4ui.h, arch/*/cbm2ui.h: Removed.
+
+	* arch/unix/Makefile.am, arch/win32/Makefile.am,
+	arch/msdos/Makefile.am, arch/riscos/Makefile.am,
+	arch/os2/ui/Makefile.am, arch/os2/Makefile.am,
+	arch/beos/Makefile.am, Makefile.am: Updated makefiles.
+
+	* arch/win32/c64ui.c, arch/msdos/c64ui.c, arch/riscos/c64ui.c,
+	arch/beos/c64ui.cc, arch/win32/c128ui.c, arch/msdos/c128ui.c,
+	arch/riscos/c128ui.c, arch/beos/c128ui.cc,
+	arch/win32/vic20ui.c, arch/msdos/vic20ui.c,
+	arch/riscos/vic20ui.c, arch/beos/vic20ui.cc,
+	arch/win32/petui.c, arch/msdos/petui.c, arch/riscos/petui.c,
+	arch/beos/petui.cc, arch/win32/plus4ui.c,
+	arch/msdos/plus4ui.c, arch/riscos/plus4ui.c,
+	arch/beos/plus4ui.cc, arch/win32/cbm2ui.c,
+	arch/msdos/cbm2ui.c, arch/riscos/cbm2ui.c, arch/os2/ui.c,
+	arch/beos/cbm2ui.cc (*ui_shutdown): New functions.
+
+	* arch/unix/ui.c (ui_common_shutdown): Call
+	`fullscreen_shutdown()'.
+
+	* arch/unix/unixmain.c (main_exit): Removed call to
+	`fullscreen_shutdown()'.
+
+	* drive/drivetypes.h, drive/iec/cia1571d.c,
+	drive/iec/cia1581d.c, drive/iec/memiec.c, drive/ieee/fdc.c,
+	drive/iec/via1d1541.c, drive/iec/wd1770.c, drive/tcbm/tpid.c,
+	drive/iecieee/via2d.c, drive/ieee/memieee.c, drive/drive.c,
+	drive/ieee/riot1d.c, drive/ieee/riot2d.c, drive/drivecpu.c,
+	drive/ieee/via1d2031.c, drive/tcbm/glue1551.c,
+	drive/tcbm/mem1551.c, drive/drivemem.c: Dynamically allocate
+	drive struct.
+
+2003-10-26  Andreas Matthies  <andreas.matthies@gmx.net>
+
+	* raster/raster-canvas.c (refresh_canvas): Don't refresh
+	video if update area starts behind canvas.
+
+2003-10-25  Andreas Matthies  <andreas.matthies@gmx.net>
+
+	* gfxoutputdrv/gfxoutput.c, mpegdrv.c,
+	sounddrv/soundmovie.c: Fixed ffmpeg includes.
+
+2003-10-25  Andreas Boose  <viceteam@t-online.de>
+
+	* Version 1.13.10.
+
+	* drive/drivetypes.h, drive/iec/iec.c, drive/iec/cia1571d.c,
+	drive/iec/cia1581d.c, c64/c64iec.c, c128/c128iec.c,
+	vic20/vic20iec.c, plus4/plus4iec.c, c64/c64.h, c64/c64cia1.c,
+	c64/c64cia2.c, c64/c64-snapshot.c, c64/c64datasette.c, tpi.h,
+	c128/c128.h, c128/c128cia1.c, c128/c128-snapshot.c,
+	cbm2/cbm2.h, cbm2/cbm2-snapshot.c cbm2/cbm2.c, core/ciacore.c,
+	cbm2/cbm2datasette.c: Dynamically allocate CIA struct.
+
+	* drive/drivetypes.h, drive/iec/iec.c, drive/iec/via1d1541.c,
+	drive/iecieee/iecieee.c, drive/iecieee/via2d.c,
+	drive/ieee/ieee.c, drive/ieee/via1d2031.c, c64/c64iec.c,
+	c128/c128iec.c, vic20/vic20iec.c, plus4/plus4iec.c,
+	vic20/vic20.h, vic20/vic20.c, vic20/vic20via1.c,
+	vic20/vic20via2.c, vic20/vic20ieeevia1.c, pet/petvia.c,
+	vic20/vic20ieeevia2.c, vic20/vic20-snapshot.c, pet/pet.c,
+	vic20/vic20datasette.c, vic20/vic20rsuser.c, pet/pet.h,
+	pet/pet-snapshot.c, core/viacore.c: Dynamically allocate VIA
+	struct.
+
+	* drive/drivetypes.h, drive/ieee/ieee.c, drive/ieee/riot1d.c,
+	drive/ieee/riot2d.c, core/riotcore.c: Dynamically allocate
+	RIOT struct.
+
+	* drive/drivetypes.h, drive/tcbm/tpid.c, drive/tcbm/tcbm.c,
+	c64/c64.h, c64/c64tpi.c, c64/c64.c, c128/c128.h,
+	c128/c128memsnapshot.c, cbm2/cbm2.h, cbm2/cbm2tpi1.c,
+	cbm2/cbm2tpi2.c, cbm2/cbm2-snapshot.c, cbm2/cbm2.c,
+	cbm2/cbm2acia1.c, cbm2/cbm2cia1.c, core/tpicore.c: Dynamically
+	allocate TPI struct.
+
+	* drive/iec/ciad.h: Moved here.
+
+	* drive/iec/via1d1541.h, drive/ieee/via1d2031.h: New files.
+
+	* drive/viad.h: Removed VIA1 specific code.
+
+	* drive/iec/Makefile.am, drive/ieee/Makefile.am,
+	drive/Makefile.am: Updated.
+
+	* drive/iec/iec.c, drive/iec/memiec.c, drive/ieee/ieee.c,
+	drive/ieee/memieee.c: Fixed includes.
+
+	* drive/drivetypes.h, drive/tcbm/tpid.c, drive/ieee/riot2d.c,
+	drive/iec/cia1571d.c, drive/iec/cia1581d.c,
+	drive/iec/via1d1541.c, drive/ieee/via1d2031.c,
+	drive/iecieee/via2d.c
+
+	* raster/raster-cmdline-options.c, resources.c: Fixed
+	warnings.
+
+	* gfxoutputdrv/mpegdrv.c: #include "vice.h".
+
+2003-10-25  Andreas Matthies  <andreas.matthies@gmx.net>
+
+	* arch/win32/uisnapshot.c: Use screenshot API to record movie
+	file.
+
+	* c128/c128.c, c64/c64.c, cbm2/cbm2.c, pet/pet.c,
+	plus4/plus4.c, vic20/vic20.c (machine_vsync_hook): Call
+	screenshot_record().
+
+	* gfxoutput.h: Added record to gfxoutputdrv_t.
+
+	* gfxoutputdrv/bmpdrv.c, gfxoutputdrv/pngdrv.c: These drivers
+	don't have a record function.
+
+	* gfxoutputdrv/Makefile.am, gfxoutputdrv/mpegdrv.{c|h}: New
+	files (added). They implement the screenshot driver to record
+	movie files using the FFMPEG library 0.4.8.
+
+	* gfxoutputdrv/gfxoutput.c (gfxoutput_init): Initializes the
+	mpeg driver if HAVE_AVCODEC_H is defined.
+
+	* screenshot.c: New variables recording_driver and
+	recording_canvas.
+	(screenshot_save_core): Depending on the drv parameter it
+	saves a screenshot image or records a movie frame.
+	(screenshot_save): Sets recording_driver and recording_canvas
+	if the driver has a recording function.
+	(screenshot_record, screenshot_stop_recording,
+	screenshot_is_recording): New functions.
+
+	* screenshot.h: Added prototypes.
+
+	* sound.c (sound_open): Warnings if recording sound device
+	doesn't exist or is a realtime device.
+
+	* sound.h: Added prototype.
+
+	* sounddrv/soundmovie.c: Moved every FFMPEG related code to
+	the mpeg driver. Now this sound device only registers a
+	sample buffer from the mpeg driver and writes to this buffer.
+
+2003-10-23  Andreas Dehmel  <zarquon@t-online.de>
+
+	* arch/riscos/video.c: also NULL draw buffer pointer when
+	freeing the frame buffer to fix crashes.
+
+	* raster/raster.c: check draw buffer pointer against NULL
+	before freeing it.
+
+2003-10-21  Andreas Boose  <viceteam@t-online.de>
+
+	* Version 1.13.9.
+
+	* archapi.h, arch/unix/archdep.c, arch/win32/archdep.c,
+	arch/msdos/archdep.c, arch/riscos/archdep.c,
+	arch/os2/archdep.c, arch/beos/archdep.c (archdep_shutdown):
+	New function.  (archdep_startup): Renamed.
+
+	* machine.c (machine_shutdown): Call `archdep_shutdown()'.
+
+	* main.c (main_program): Call `archdep_init()'.
+
+	* c128/c128.c (machine_resources_shutdown): Call
+	`functionrom_resources_shutdown()'.
+
+	* c128/functionrom.c, c128/functionrom.h
+	(functionrom_resources_shutdown): New function.
+
+	* vic20/vic20.c (machine_resources_shutdown): Call
+	`cartridge_resources_shutdown()'.
+
+	* vic20/vic20cartridge.c (cartridge_resources_shutdown): New
+	function.
+
+	* core/tpicore.c (tpicore_shutdown): Free private structure.
+
+	* tape/tape.c (tape_init): Can be called several times.
+
+	* pet/pet-resources.c (pet_resources_shutdown): Free ROM image
+	names.
+
+	* c64/cart/expert.c, c64/cart/kcs.c, c64/cart/supergames.c,
+	c64/cart/final.c, c64/cart/zaxxon.c, c64/cart/epyxfastload.c,
+	c64/patchrom.c, c64/c64mem.c, pet/petmem.c, c128/z80mem.c,
+	c128/c128mem.c, diskimage/diskimage.c, arch/unix/plus4ui.c,
+	arch/unix/x11/gnome/uisnapshot.c, arch/unix/uivicii.c,
+	arch/unix/x11/gnome/gnomevideo.c, arch/unix/c64ui.c,
+	arch/unix/vsidui.c, arch/unix/c128ui.c, arch/win32/uivicii.c,
+	arch/unix/uiperipheral.c, arch/win32/tfearch.c,
+	arch/win32/uiplus4mem.c, arch/win32/uicbm2set.c,
+	arch/win32/uivicset.c, arch/win32/uisound.c,
+	arch/win32/uipetset.c, arch/riscos/uimsgwin.c, cbm2/cbm2mem.c,
+	tape/tape-snapshot.c, plus4/plus4mem.c, vic20/vic20mem.c,
+	sounddrv/sounddump.c, sounddrv/soundfs.c, sounddrv/soundsb.c,
+	sounddrv/soundmovie.c, sounddrv/soundwav.c, main.c,
+	monitor/mon_util.c, serial/serial-iec.c, machine.c,
+	printerdrv/interface-serial.c, arch/unix/x11/xaw/uimenu.c,
+	arch/unix/x11/gnome/uimenu.c, arch/win32/c64ui.c, c64/c64.c,
+	c64/cart/c64cartmem.c, c64/c64tpi.c, c64/psid.c, pet/pet.c,
+	c128/c128.c, c128/c128mmu.c, arch/msdos/menudefs.c,
+	arch/msdos/vsync.c, cbm2/cbm2-resources.c, cbm2/cbm2.c,
+	cbm2/cbm2cia1.c, core/ciatimer.c, drive/iec/wd1770.c,
+	drive/ieee/fdc.c, plus4/ted-mem.c, plus4/plus4.c, traps.c,
+	plus4/plus4-resources.c, vic20/vic20.c, vic20/vic20mem.c:
+	Removed unused includes.
+
+	* interrupt.h: Removed DMA trigger macro.
+
+	* fliplist.c, fliplist.h (flip_shutdown): New function.
+	(flip_load_list): Fixed pointer size bug.
+
+	* machine.c (machine_shutdown): Call `flip_shutdown()'.
+
+	* arch/unix/uicommands.c (attach_disk, attach_tape,
+	smart_attach, load_snapshot_trap, load_save_fliplist): Allow
+	to free last directory variable.
+
+	* arch/unix/x11/xaw/x11ui.c, arch/unix/x11/gnome/x11ui.c
+	(ui_shutdown): Call `ui_common_shutdown()'.
+
+	* arch/unix/ui.c, arch/unix/ui.h (ui_common_shutdown): New
+	function.
+
+	* arch/unix/uicommands.c, arch/unix/uicommands.h
+	(uicommands_shutdown): New function.
+
+2003-10-20  Andreas Dehmel  <zarquon@t-online.de>
+
+	* arch/riscos/video.c, arch/riscos/ui.c: some cleanups to
+	track PAL Emu crashes.
+
+2003-10-20  Dag Lem  <resid@nimrod.no>
+
+	* resid/: Updated to final reSID 0.15.
+
+2003-10-19  Andreas Boose  <viceteam@t-online.de>
+
+	* Version 1.13.8.
+
+	* resources.c (resources_free): New function.
+	[resource_ram_s]: Resource name is not const anymore.
+
+	* video/video-resources.c (video_resources_chip_init): Free
+	resource names.
+
+	* raster/raster-resources.c (raster_resources_chip_init):
+	Likewise.
+
+	* arch/unix/uicmdline.c, arch/win32/uicmdline.c,
+	arch/msdos/uicmdline.c, arch/riscos/uicmdline.c,
+	arch/beos/uicmdline.c, arch/os2/uicmdline.c
+	(ui_cmdline_show_help): Changed parameter.
+
+	* uicmdline.h: New file.
+
+	* arch/unix/uicmdline.h, arch/win32/uicmdline.h,
+	arch/msdos/uicmdline.h, arch/riscos/uicmdline.h,
+	arch/beos/uicmdline.h, arch/os2/uicmdline.h: Removed.
+
+	* Makefile.am, arch/unix/Makefile.am, arch/win32/Makefile.am,
+	arch/msdos/Makefile.am, arch/riscos/Makefile.am,
+	arch/beos/Makefile.am, arch/os2/Makefile.am: Updated.
+
+	* arch/win32/uicmdline.c (ui_cmdline_show_options): Fixed
+	prototype.
+
+	* arch/win32/ui.c (handle_wm_command): Fixed prototype of
+	`ui_cmdline_show_options()'.
+
+	* arch/beos/ui.cc: Likewise.
+
+	* arch/beos/ui.h: Removed obsolete prototype.
+
+	* cmdline.c (cmdline_free): New function.
+
+	* video/video-cmdline-options.c
+	(video_cmdline_options_chip_init): Free cmdline names.
+
+	* raster/raster-cmdline-options.c
+	(raster_cmdline_options_chip_init): Likewise.
+
+	* sound.c (sound_resources_shutdown): Free record device
+	resource strings.
+
+	* arch/unix/x11/videoarch.h, arch/win32/videoarch.h,
+	arch/msdos/videoarch.h, arch/riscos/videoarch.h,
+	arch/os2/videoarch.h, arch/beos/videoarch.h: Added video chip
+	resource pointer.
+
+	* video/video-resources.c, video.h
+	(video_resources_chip_shutdown): New function.
+
+	* raster/raster-resources.c, raster/raster-resources.h
+	(raster_resources_chip_shutdown): New function.
+
+	* raster/raster.c (raster_shutdown): Free raster resources.
+
+	* video/video-canvas.c (video_canvas_shutdown): Free canvas.
+
+	* raster/raster.h: Added pointer to raster resources.
+
+2003-10-19  Dag Lem  <resid@nimrod.no>
+
+	* arch/unix/uicommands.c, uicommands.h: New menu
+	ui_sound_record_commands_menu.
+	(sound_record): New callback for sound recording to file.
+
+	* arch/unix/c128ui.c, c64ui.c, cbm2ui.c, petui.c, plus4ui.c,
+	vic20ui.c: Added menu item for sound recording.
+
+2003-10-18  Dag Lem  <resid@nimrod.no>
+
+	* c64/c64.c (machine_specific_powerup): Removed call to
+	machine_play_psid(). This caused a crash when called via
+	psid_init_driver() on switching the MachineVideoStandard
+	resource.
+
+2003-10-18  Andreas Boose  <viceteam@t-online.de>
+
+	* Version 1.13.7.
+
+	* cbm2/cbm2tpi2.c: #include "lib.h".
+
+	* arch/unix/uited.c: Removed unused code.
+
+2003-10-17  Andreas Matthies  <andreas.matthies@gmx.net>
+
+	* arch/win32/res.h, resc64.rs, ui.c, uisnapshot.c,
+	uisnapshot.h: Implement a provisional UI for movie recording.
+
+	* sound.c (sound_open): Avoid recording and playback device
+	being identical.
+	(sound_init): Initialize the movie driver if HAVE_AVFORMAT_H.
+
+	* sounddrv/soundmovie.c, Makefile.am: New file (included).
+
+2003-10-16  Dag Lem  <resid@nimrod.no>
+
+	* resid/: Corrected emulation of the ADSR delay bug.
+
+2003-10-12  Andreas Dehmel  <zarquon@t-online.de>
+
+	* arch/riscos/kbd.c: fixed format string for joystick key
+	descriptor
+
+	* arch/riscos/ui.c: fixed display of sampling rate
+
+	* arch/riscos/video.c: adapted to new video interface
+
+2003-10-12  Andreas Matthies  <andreas.matthies@gmx.net>
+
+	* core/ciacore.c: Fixed wrong parameter in call to
+	lib_msprintf.
+
+	* arch/win32/uisnapshot.c: Uses new resource
+	SoundRecordDeviceName and SoundRecordDeviceArg for sound
+	recording.
+
+	* sound.c: Added new resources SoundRecordDeviceName and
+	SoundRecordDeviceArg with corresponding variables and
+	functions.
+	Renamed snddata member pdev to playdev and added recdev.
+	(sound_open): Also open the recording device if the resource
+	SoundRecordDeviceName is set.
+	(sound_close): Also close the recording device.
+	(sound_flush): Write to record device if its active. Warp
+	mode disables sound flushing only if no recording device is
+	active. With this we must avoid that clkfactor is
+	recalculated for sample based not exact sound engines.
+
+2003-10-11  Andreas Boose  <viceteam@t-online.de>
+
+	* Version 1.13.6.
+
+	* via.h, core/viacore.c, drive/iec/via1d1541.c,
+	drive/iecieee/via2d.c, drive/ieee/via1d2031.c,
+	vic20/vic20via1.c, vic20/vic20via2.c, vic20/vic20ieeevia1.c,
+	vic20/vic20ieeevia2.c, pet/petvia.c: No more static arrays.
+
+	* cia.h, core/ciacore.c, drive/iec/cia1571d.c,
+	drive/iec/cia1581d.c, c64/c64cia1.c, c64/c64cia2.c,
+	ic128/c128cia1.c, cbm2/cbm2cia1.c: Changed likewise.
+
+	* riot.h, core/riotcore.c, drive/ieee/riot1d.c,
+	drive/ieee/riot2d.c: Changed likewise.
+
+	* tpi.h, core/tpicore.c, drive/tcbm/tpid.c, c64/c64tpi.c,
+	cbm2/cbm2tpi1.c, cbm2/cbm2tpi2.c: Changed likewise.
+
+	* drive/tcbm/tcbm.c, c64/c64.c, c128/c128.c, vic20/vic20.c,
+	pet/pet.c, cbm2/cbm2.c: Shutdown chip cores.
+
+2003-10-08  Tibor Biczo  <crown@axelero.hu>
+
+	* arch/win32/Makefile.am (libarch_a_SOURCES): Removed
+	uidrivec64c128vic20.c, uidrivec64c128vic20.h, added
+	uidrivec64vic20.c, uidrivec64vic20.h,
+	uidrivec128.c, uidrivec128.h.
+
+	* arch/win32/arch.dsp: Removed uidrivec64c128vic20.c, added
+	uidrivec64vic20.c, uidrivec128.c
+
+	* arch/win32/c128ui.c: Include "uidrivec128.h".
+	(c128_ui_specific): Updated video_settings and drive_settings
+	calls.
+
+	* arch/win32/c64ui.c: Include "uidrivec64vic20.h".
+	(c64_ui_specific): Updated video_settings and drive_settings
+	calls.
+
+	* arch/win32/cbm2ui.c (cbm2_ui_specific): Updated
+	video_settings call.
+
+	* arch/win32/petui.c (pet_ui_specific): Updated video_settings
+	call.
+
+	* arch/win32/plus4ui.c (plus4_ui_specific): Updated
+	video_settings call.
+
+	* arch/win32/res.h: Added ID's for new drives and ID for video
+	palette settings dialog.
+
+	* arch/win32/res.rc (IDD_DRIVE_SETTINGS_DIALOG): Added 1570
+	drive to dialog.
+	(IDD_VIDEO_PALETTE_DIALOG): Added new dialog for palette
+	settings.
+
+	* arch/win32/resc128.rc (IDD_DRIVE_SETTINGS_DIALOG_C128):
+	Added new dialog for drive settings.
+
+	* arch/win32/resplus4.rc (IDD_DRIVE_SETTINGS_DIALOG_PLUS4):
+	Added 1570 drive to dialog.
+
+	* arch/win32/ui.c (window_proc): Update window position
+	resource on WM_MOVE only if window is not minimized or not
+	maximized.
+	Shift drag and drop attaches file to unit 8.
+
+	* arch/win32/uidrivec128.c, arch/win32/uidrivec128.h,
+	arch/win32/uidrivec64vic20.c, arch/win32/uidrivec64vic20.h:
+	New files.
+
+	* arch/win32/uidrivec64c128vic20.c,
+	arch/win32/uidrivec64c128vic20.h:
+	Removed files.
+
+	* arch/win32/uidriveplus4.c: Handle 1570 drive as well.
+
+	* arch/win32/uivideo.c: Added support for multiple video chip
+	settings.
+	Fixed external palette list, the list is chip dependent now.
+
+	* arch/win32/uivideo.h (ui_video_settings_dialog): Updated
+	prototype.
+	Added definitions for video chip types.
+
+	* arch/win32/vic20ui.c: Include "uidrivec64vic20.h".
+	(vic20_ui_specific): Updated video_settings and drive_settings
+	calls.
+
+	* vic20/vice_resources.c (vic_resources_init): Allow internal
+	palette for PAL emulation.
+
+2003-10-06  Andreas Boose  <viceteam@t-online.de>
+
+	* Version 1.13.5.
+
+	* video/video-color.c, video.h, plus4/ted-color.c,
+	plus4/ted-color.h, plus4/ted.c, vic20/vic-color.c,
+	vic20/vic-color.h, vic20/vic.c, vicii/vicii-color.c,
+	vicii/vicii-color.h, vicii/vicii.c, video/video-resources.c,
+	vicii/vicii-resources.c (video_color_update_palette): Pass
+	canvas.
+
+	* video.h, video/video-resources.c, video/video-resources.h,
+	video/video-render-pal.c: Added palette video resource.
+
+	* crtc/crtc-resources.c, crtc/crtc-resources.h, crtc/crtc.c,
+	vdc/vdc-resources.c, vdc/vdc-resources.h, vdc/vdc.c: Removed
+	private palette code.
+
+	* video.h, vicii/vicii-resources.c, vic20/vic-resources.c,
+	plus4/ted-resources.c, crtc/crtc-resources.c,
+	vdc/vdc-resources.c: Set internal palette.
+
+	* drive/drive.h, drive/iec/wd1770.c, drive/iec/iec.c,
+	drive/iec/via1d1541.c, drive/iec/iecrom.c, drive/iec/memiec.c,
+	drive/driveimage.c, drive/drive.c, drive/drive-snapshot.c,
+	drive/drive-resources.c, drive/drivesync.c, drive/drivecpu.c,
+	drive/iecieee/iecieee.c, drive/drivemem.c, drive/iec/iecrom.h,
+	c128/c128iec.c: Added support for 1570 and 1571CR drives.
+
+	* arch/unix/uidrivec64c128vic20.c,
+	arch/unix/uidrivec64c128vic20.h: Renamed.
+
+	* arch/unix/uidrivec128.c, arch/unix/uidrivec128.h: New files.
+
+	* arch/unix/Makefile.am: Updated.
+
+	* arch/unix/vic20ui.c, arch/unix/c64ui.c, arch/unix/c128ui.c:
+	Splitted c128 drive UI.
+
+2003-10-05  Andreas Boose  <viceteam@t-online.de>
+
+	* Version 1.13.4.
+
+	* video/video-cmdline-options.c, vic20/vic-cmdline-options.c.
+	vicii/vicii-cmdline-options.c, plus4/ted-cmdline-options.c,
+	crtc/crtc-cmdline-options.c, vdc/vdc-cmdline-options.c:
+	Unified palette command line options.
+
+	* video/video-resources.c, video.h, vicii/vicii-resources.c,
+	vic20/vic-resources.c, plus4/ted-resources.c,
+	crtc/crtc-resources.c, vdc/vdc-resources.c: Unified palette
+	resources.
+
+	* arch/unix/uivicii.c, arch/unix/uicrtc.c, arch/unix/uivdc.c,
+	arch/unix/uivic.c, arch/msdos/plus4ui.c, arch/msdos/c64ui.c,
+	arch/msdos/cbm2ui.c, arch/msdos/c128ui.c, arch/msdos/petui.c:
+	Changed palette resources.
+
+	* 6510core.c: Fixed drive 1 debugging.
+
+	* drive/iec/cia1581d.c (read_ciapa): Added disk change bit.
+	(store_ciapa): Added side bit.
+
+	* drive/driverom.c (drive_rom_initialize_traps): Added 1581
+	CRC trap, removed jobcode trap.
+
+	* drive/iec/wd1770.c, drive/iec/wd1770.h: Massive rewrite.
+
+	* drive/iec/jobcode1581.c: Small changes.
+
+	* core/riotcore.c: #include "lib.h".
+
+	* c64/cart/ide64.c (ide64_bin_attach): Fixed warning.
+
+	* arch/win32/video.c: Fixed nested comment.
+
+2003-10-03  Andreas Boose  <viceteam@t-online.de>
+
+	* Version 1.13.3.
+
+	* gfxoutputdrv/gfxoutput.c: Fixed define.
+
+	* raster/raster.c (raster_shutdown): Free palette before the
+	canvas is freed.
+
+	* via.h, core/viacore.c, drive/iec/via1d1541.c
+	drive/ieee/via1d2031.c: Fixed snapshot module mess.
+
+	* core/ciatimer.c, core/ciatimer.h: Moved some functions to
+	the source file.
+
+2003-09-30  Dirk Jagdmann  <doj@cubic.org>
+
+	* arch/unix/catweaselmkiii.c: fixed reading from SID
+
+2003-09-28  Andreas Boose  <viceteam@t-online.de>
+
+	* Version 1.13.2.
+
+	* raster/raster.c, raster/raster.h: Removed palette support.
+
+	* video.h, arch/unix/x11/video.c, arch/win32/video.c,
+	arch/msdos/video.c, arch/riscos/video.c, arch/os2/video.c,
+	arch/beos/video.cc (video_canvas_create): Removed palette
+	parameter. (video_canvas_set_palette): Palette is not const.
+
+	* arch/unix/x11/videoarch.h, arch/win32/videoarch.h,
+	arch/msdos/videoarch.h, arch/riscos/videoarch.h,
+	arch/os2/videoarch.h, arch/beos/videoarch.h: Changed palette
+	member, new member `created'.
+
+	* video/video-canvas.c (video_canvas_palette_set,
+	video_canvas_create_set): New functions.
+
+	* video/video-canvas.h: New file.
+
+	* video/Makefile.am: Added new file.
+
+	* video/video-color.c (video_color_update_palette): Call
+	`video_canvas_palette_set()' and removed raster hack.
+	(video_color_palette_free): New function.
+
+	* video.h, video/video-color.c, vicii/vicii.c, vic20/vic.c,
+	plus4/ted.c (video_color_set_canvas): New function.
+
+	* vdc/vdc.c (vdc_load_palette): Call
+	`video_canvas_palette_set()'.
+
+	* crtc/crtc.c (crtc_load_palette): Changed likewise.
+
+	* machine.c: #include "diskimage.h".
+
+	* core/ciatimer.c (ciat_init_table): Only initialize once.
+
+	* core/ciacore.c (ciacore_init): Initialize CIA table.
+	#include "lib.h".
+
+	* c64/c64.c, c128/c128.c, cbm2/cbm2.c, vic20/vic20.c,
+	drive/drivetypes.h: Do not initialize CIA table.
+
+	* cia.h, core/ciacore.c: TA and TB are pointer now.
+
+	* drive/drive.c, cbm2/cbm2.c: #include "alarm.h".
+
+	* ciatimer.h: Moved to core directory.
+
+	* core/Makefile.am, Makefile.am: Updated.
+
+	* plus4/ted.c (ted_delay_clk): Do not inline.
+
+	* arch/unix/x11/renderxv.c, interrupt.h, core/viacore.c,
+	drive/drivecpu.c: Fixed warnings.
+
+2003-03-27  Tibor Biczo  <crown@axelero.hu>
+
+	* arch/win32/joy.c (joystick_di_open): Return success/failure.
+	(set_joystick_device_1, set_joystick_device_2) Update resource
+	if DX5 init was succesfull. Call joy_arch_init if it has not
+	been initialised yet.
+	(joy_arch_init): Only initialise if it was not yet
+	initialised.
+
+2003-09-27  Andreas Boose  <viceteam@t-online.de>
+
+	* Version 1.13.1.
+
+	* ChangeLog*: Renamed last changelog and reversed order of old
+	changelogs.
+
+	* Makefile.am: Added changelog.
+
+	* video/video-viewport.c, video.h (video_viewport_title_set,
+	video_viewport_title_free): New function.
+
+	* video/video-canvas.c (video_canvas_shutdown): Free canvas
+	title.
+
+	* raster/raster.c (raster_set_title): Call
+	`video_viewport_title_set'.
+
+	* c64/cart/c64cart.c (cartridge_resources_shutdown): Free
+	`cartfile'.
+
+	* diskimage/rawimage.c, diskimage/rawimage.h
+	(rawimage_resources_shutdown): New function.
+
+	* diskimage/diskimage.c, diskimage.h
+	(disk_image_resources_shutdown): New function.
+
+	* machine.c (machine_shutdown): Call
+	`disk_image_resources_shutdown()'.
+
+	* arch/unix/x11/video.c, arch/win32/video.c,
+	arch/msdos/video.c, arch/riscos/video.c, arch/os2/video.c,
+	arch/beos/video.cc (video_arch_resources_shutdown): New
+	function. (video_arch_init_resources): Renamed.
+
+	* video/video-resources.c, video.h (video_resources_shutdown):
+	New function.
+
+	* c64/c64.c, c128/c128.c, vic20/vic20.c, pet/pet.c,
+	plus4/plus4.c, cbm2/cbm2.c (machine_resources_shutdown):
+	Shutdown video resources.
+
+	* core/viacore.c, via.h (viacore_shutdown): New function.
+
+	* core/ciacore.c, cia.h (viacore_shutdown): New function.
+
+	* core/riotcore.c, riot.h (riotcore_shutdown): New function.
+
+	* drive/iec/iec.c, drive/iec.h (iec_drive_shutdown): New
+	function.
+
+	* drive/iecieee/iecieee.c, drive/iecieee.h
+	(iecieee_drive_shutdown): New function.
+
+	* drive/ieee/ieee.c, drive/ieee.h (ieee_drive_shutdown): New
+	function.
+
+	* drive/tcbm/tcbm.c, drive/tcbm.h (tcbm_drive_shutdown): New
+	function.
+
+	* c64/c64drive.c, vic20/vic20drive.c, pet/petdrive.c,
+	plus4/plus4drive.c, cbm2/cbm2drive.c, machine-drive.h
+	(machine_drive_shutdown): New function.
+
+	* drive/drivecpu.c (drive_cpu_shutdown): Call
+	`machine_drive_shutdown()'.
+
+	* resources.c (resources_shutdown): Free machine id.
+
