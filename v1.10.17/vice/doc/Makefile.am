@@ -1,0 +1,16 @@
+docdir = $(prefix)/lib/vice/doc
+
+doc_DATA = \
+	NLS-Howto.txt \
+	Readme.beos \
+	Readme.dos \
+	Win32-Howto.txt \
+	mon.txt
+
+info_TEXINFOS = \
+	vice.texi
+
+EXTRA_DIST = $(doc_DATA)
+
+SUBDIRS = html
+
