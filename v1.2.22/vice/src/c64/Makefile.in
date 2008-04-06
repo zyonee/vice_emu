@@ -1,0 +1,443 @@
+# Makefile.in generated automatically by automake 1.4 from Makefile.am
+
+# Copyright (C) 1994, 1995-8, 1999 Free Software Foundation, Inc.
+# This Makefile.in is free software; the Free Software Foundation
+# gives unlimited permission to copy and/or distribute it,
+# with or without modifications, as long as this notice is preserved.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY, to the extent permitted by law; without
+# even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.
+
+
+SHELL = @SHELL@
+
+srcdir = @srcdir@
+top_srcdir = @top_srcdir@
+VPATH = @srcdir@
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+
+bindir = @bindir@
+sbindir = @sbindir@
+libexecdir = @libexecdir@
+datadir = @datadir@
+sysconfdir = @sysconfdir@
+sharedstatedir = @sharedstatedir@
+localstatedir = @localstatedir@
+libdir = @libdir@
+infodir = @infodir@
+mandir = @mandir@
+includedir = @includedir@
+oldincludedir = /usr/include
+
+DESTDIR =
+
+pkgdatadir = $(datadir)/@PACKAGE@
+pkglibdir = $(libdir)/@PACKAGE@
+pkgincludedir = $(includedir)/@PACKAGE@
+
+top_builddir = ../..
+
+ACLOCAL = @ACLOCAL@
+AUTOCONF = @AUTOCONF@
+AUTOMAKE = @AUTOMAKE@
+AUTOHEADER = @AUTOHEADER@
+
+INSTALL = @INSTALL@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@ $(AM_INSTALL_PROGRAM_FLAGS)
+INSTALL_DATA = @INSTALL_DATA@
+INSTALL_SCRIPT = @INSTALL_SCRIPT@
+transform = @program_transform_name@
+
+NORMAL_INSTALL = :
+PRE_INSTALL = :
+POST_INSTALL = :
+NORMAL_UNINSTALL = :
+PRE_UNINSTALL = :
+POST_UNINSTALL = :
+host_alias = @host_alias@
+host_triplet = @host@
+AR = @AR@
+ARCH_DIR = @ARCH_DIR@
+ARCH_INCLUDES = @ARCH_INCLUDES@
+ARCH_LIBS = @ARCH_LIBS@
+BINDIR = @BINDIR@
+CC = @CC@
+CPP = @CPP@
+CXX = @CXX@
+CXXCPP = @CXXCPP@
+HAVE_READLINE = @HAVE_READLINE@
+JOY_OBJS = @JOY_OBJS@
+LDFLAGS = @LDFLAGS@
+LEX = @LEX@
+LIBOBJS = @LIBOBJS@
+LIBS = @LIBS@
+LINKCC = @LINKCC@
+LN_S = @LN_S@
+MAKEINFO = @MAKEINFO@
+PACKAGE = @PACKAGE@
+PERL = @PERL@
+RANLIB = @RANLIB@
+READLINE = @READLINE@
+RESID_DEP = @RESID_DEP@
+RESID_DIR = @RESID_DIR@
+RESID_INCLUDES = @RESID_INCLUDES@
+RESID_LIBS = @RESID_LIBS@
+SOUND_AIX_OBJ = @SOUND_AIX_OBJ@
+SOUND_DRIVERS = @SOUND_DRIVERS@
+SOUND_HPUX_OBJ = @SOUND_HPUX_OBJ@
+SOUND_LIBS = @SOUND_LIBS@
+SOUND_MIDAS_OBJ = @SOUND_MIDAS_OBJ@
+SOUND_SDL_OBJ = @SOUND_SDL_OBJ@
+SOUND_SGI_OBJ = @SOUND_SGI_OBJ@
+SOUND_USS_OBJ = @SOUND_USS_OBJ@
+VERSION = @VERSION@
+WINDRES = @WINDRES@
+X128_WINRES = @X128_WINRES@
+X64_WINRES = @X64_WINRES@
+XCBM2_WINRES = @XCBM2_WINRES@
+XPET_WINRES = @XPET_WINRES@
+XVIC_WINRES = @XVIC_WINRES@
+YACC = @YACC@
+cxx = @cxx@
+x128_LDFLAGS = @x128_LDFLAGS@
+x64_LDFLAGS = @x64_LDFLAGS@
+xcbm2_LDFLAGS = @xcbm2_LDFLAGS@
+xpet_LDFLAGS = @xpet_LDFLAGS@
+xvic_LDFLAGS = @xvic_LDFLAGS@
+@HAVE_RS232_TRUE@acia_libadd = c64acia1.o c64rsuser.o
+@HAVE_RS232_FALSE@acia_libadd = 
+
+INCLUDES =  	@ARCH_INCLUDES@ 	-I$(top_builddir)/src 	-I$(top_srcdir)/src 	-I$(top_srcdir)/src/drive 	-I$(top_srcdir)/src/sid 	-I$(top_srcdir)/src/vicii 	-I$(top_srcdir)/src/monitor
+
+
+noinst_LIBRARIES = libc64.a libc64c128.a
+
+libc64_a_SOURCES =  	c64.c 	c64.h 	c64cart.h 	c64cartmem.c 	c64cia.h 	c64cia1.c 	c64cia2.c 	c64datasette.c 	c64iec.c 	c64iec.h 	c64mem.c 	c64mem.h 	cartridge.c 	patchrom.c 	patchrom.h 	reu.c 	reu.h 	c64tpi.c 	c64tpi.h 	psid.c 	psid.h 	psiddrv.a65 	psiddrv.h
+
+
+libc64c128_a_SOURCES =  	c64cia.h 	c64cia2.c 	c64datasette.c 	patchrom.c 	patchrom.h 	c64tpi.c 	c64tpi.h 	reu.c 	reu.h
+
+
+EXTRA_libc64_a_SOURCES =  	c64acia.h 	c64acia1.c 	c64rsuser.c 	c64rsuser.h
+
+
+EXTRA_libc64c128_a_SOURCES =  	c64acia.h 	c64acia1.c 	c64rsuser.c 	c64rsuser.h
+
+
+BUILT_SOURCES = psiddrv.h
+
+EXTRA_DIST = 
+
+libc64_a_LIBADD = $(acia_libadd)
+libc64c128_a_LIBADD = $(acia_libadd)
+
+SUFFIXES = .a65
+mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+CONFIG_HEADER = ../../src/config.h
+CONFIG_CLEAN_FILES = 
+LIBRARIES =  $(noinst_LIBRARIES)
+
+
+DEFS = @DEFS@ -I. -I$(srcdir) -I../../src
+CPPFLAGS = @CPPFLAGS@
+X_CFLAGS = @X_CFLAGS@
+X_LIBS = @X_LIBS@
+X_EXTRA_LIBS = @X_EXTRA_LIBS@
+X_PRE_LIBS = @X_PRE_LIBS@
+@HAVE_RS232_FALSE@libc64_a_DEPENDENCIES = 
+@HAVE_RS232_TRUE@libc64_a_DEPENDENCIES =  c64acia1.o c64rsuser.o
+libc64_a_OBJECTS =  c64.o c64cartmem.o c64cia1.o c64cia2.o \
+c64datasette.o c64iec.o c64mem.o cartridge.o patchrom.o reu.o c64tpi.o \
+psid.o
+@HAVE_RS232_FALSE@libc64c128_a_DEPENDENCIES = 
+@HAVE_RS232_TRUE@libc64c128_a_DEPENDENCIES =  c64acia1.o c64rsuser.o
+libc64c128_a_OBJECTS =  c64cia2.o c64datasette.o patchrom.o c64tpi.o \
+reu.o
+CFLAGS = @CFLAGS@
+COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+CCLD = $(CC)
+LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(LDFLAGS) -o $@
+DIST_COMMON =  Makefile.am Makefile.in
+
+
+DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
+
+TAR = tar
+GZIP_ENV = --best
+SOURCES = $(libc64_a_SOURCES) $(EXTRA_libc64_a_SOURCES) $(libc64c128_a_SOURCES) $(EXTRA_libc64c128_a_SOURCES)
+OBJECTS = $(libc64_a_OBJECTS) $(libc64c128_a_OBJECTS)
+
+all: all-redirect
+.SUFFIXES:
+.SUFFIXES: .S .a65 .c .o .s
+$(srcdir)/Makefile.in: Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
+	cd $(top_srcdir) && $(AUTOMAKE) --gnu --include-deps src/c64/Makefile
+
+Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
+	cd $(top_builddir) \
+	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+
+
+mostlyclean-noinstLIBRARIES:
+
+clean-noinstLIBRARIES:
+	-test -z "$(noinst_LIBRARIES)" || rm -f $(noinst_LIBRARIES)
+
+distclean-noinstLIBRARIES:
+
+maintainer-clean-noinstLIBRARIES:
+
+.c.o:
+	$(COMPILE) -c $<
+
+.s.o:
+	$(COMPILE) -c $<
+
+.S.o:
+	$(COMPILE) -c $<
+
+mostlyclean-compile:
+	-rm -f *.o core *.core
+
+clean-compile:
+
+distclean-compile:
+	-rm -f *.tab.c
+
+maintainer-clean-compile:
+
+libc64.a: $(libc64_a_OBJECTS) $(libc64_a_DEPENDENCIES)
+	-rm -f libc64.a
+	$(AR) cru libc64.a $(libc64_a_OBJECTS) $(libc64_a_LIBADD)
+	$(RANLIB) libc64.a
+
+libc64c128.a: $(libc64c128_a_OBJECTS) $(libc64c128_a_DEPENDENCIES)
+	-rm -f libc64c128.a
+	$(AR) cru libc64c128.a $(libc64c128_a_OBJECTS) $(libc64c128_a_LIBADD)
+	$(RANLIB) libc64c128.a
+
+tags: TAGS
+
+ID: $(HEADERS) $(SOURCES) $(LISP)
+	list='$(SOURCES) $(HEADERS)'; \
+	unique=`for i in $$list; do echo $$i; done | \
+	  awk '    { files[$$0] = 1; } \
+	       END { for (i in files) print i; }'`; \
+	here=`pwd` && cd $(srcdir) \
+	  && mkid -f$$here/ID $$unique $(LISP)
+
+TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) $(LISP)
+	tags=; \
+	here=`pwd`; \
+	list='$(SOURCES) $(HEADERS)'; \
+	unique=`for i in $$list; do echo $$i; done | \
+	  awk '    { files[$$0] = 1; } \
+	       END { for (i in files) print i; }'`; \
+	test -z "$(ETAGS_ARGS)$$unique$(LISP)$$tags" \
+	  || (cd $(srcdir) && etags $(ETAGS_ARGS) $$tags  $$unique $(LISP) -o $$here/TAGS)
+
+mostlyclean-tags:
+
+clean-tags:
+
+distclean-tags:
+	-rm -f TAGS ID
+
+maintainer-clean-tags:
+
+distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
+
+subdir = src/c64
+
+distdir: $(DISTFILES)
+	@for file in $(DISTFILES); do \
+	  d=$(srcdir); \
+	  if test -d $$d/$$file; then \
+	    cp -pr $$/$$file $(distdir)/$$file; \
+	  else \
+	    test -f $(distdir)/$$file \
+	    || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
+	    || cp -p $$d/$$file $(distdir)/$$file || :; \
+	  fi; \
+	done
+c64.o: c64.c ../../src/vice.h ../../src/config.h ../../src/attach.h \
+	../../src/autostart.h ../../src/arch/unix/types.h c64.h \
+	c64cart.h c64cia.h c64mem.h ../../src/mem.h c64tpi.h \
+	../../src/arch/unix/c64ui.h ../../src/cartridge.h \
+	../../src/ciatimer.h ../../src/alarm.h ../../src/snapshot.h \
+	../../src/clkguard.h ../../src/console.h ../../src/datasette.h \
+	../../src/drive/drive-cmdline-options.h \
+	../../src/drive/drive-resources.h \
+	../../src/drive/drive-snapshot.h ../../src/drive/drive.h \
+	../../src/log.h ../../src/drive/drivecpu.h ../../src/iecdrive.h \
+	../../src/interrupt.h ../../src/6510core.h ../../src/kbdbuf.h \
+	../../src/keyboard.h ../../src/machine.h ../../src/maincpu.h \
+	../../src/monitor/mon.h patchrom.h psid.h ../../src/resources.h \
+	reu.h ../../src/serial.h ../../src/sid/sid.h ../../src/sound.h \
+	../../src/tape.h ../../src/traps.h ../../src/utils.h \
+	../../src/vicii/vicii.h ../../src/video.h \
+	../../src/arch/unix/videoarch.h \
+	../../src/arch/unix/x11/xaw/videoarch.h \
+	../../src/arch/unix/ui.h ../../src/uiapi.h \
+	../../src/arch/unix/x11/xaw/uiarch.h \
+	../../src/arch/unix/x11/xaw/../videoarch.h ../../src/vsidui.h \
+	../../src/vsync.h c64acia.h c64rsuser.h ../../src/rs232.h \
+	../../src/rsuser.h ../../src/print.h ../../src/prdevice.h \
+	../../src/pruser.h ../../src/arch/unix/mouse.h
+c64acia1.o: c64acia1.c ../../src/maincpu.h ../../src/6510core.h \
+	../../src/arch/unix/types.h ../../src/vice.h ../../src/config.h \
+	../../src/aciacore.c ../../src/acia.h ../../src/alarm.h \
+	../../src/clkguard.h ../../src/cmdline.h ../../src/resources.h \
+	../../src/interrupt.h ../../src/log.h ../../src/machine.h \
+	../../src/rs232.h ../../src/snapshot.h
+c64cartmem.o: c64cartmem.c ../../src/vice.h ../../src/config.h c64cart.h \
+	../../src/arch/unix/types.h c64mem.h ../../src/mem.h c64tpi.h \
+	../../src/cartridge.h ../../src/interrupt.h \
+	../../src/6510core.h ../../src/log.h ../../src/vicii/vicii.h
+c64cia1.o: c64cia1.c ../../src/ciacore.h ../../src/vice.h \
+	../../src/config.h ../../src/alarm.h \
+	../../src/arch/unix/types.h ../../src/cia.h ../../src/log.h \
+	../../src/maincpu.h ../../src/6510core.h ../../src/interrupt.h \
+	c64cia.h ../../src/arch/unix/kbd.h ../../src/keyboard.h \
+	../../src/vicii/vicii.h ../../src/rsuser.h ../../src/ciacore.c \
+	../../src/clkguard.h ../../src/ciatimer.h ../../src/snapshot.h
+c64cia2.o: c64cia2.c ../../src/ciacore.h ../../src/vice.h \
+	../../src/config.h ../../src/alarm.h \
+	../../src/arch/unix/types.h ../../src/cia.h ../../src/log.h \
+	../../src/maincpu.h ../../src/6510core.h ../../src/interrupt.h \
+	c64mem.h ../../src/mem.h c64iec.h c64cia.h \
+	../../src/drive/drive.h ../../src/drive/drivecpu.h \
+	../../src/iecdrive.h ../../src/vicii/vicii.h ../../src/pruser.h \
+	../../src/rsuser.h ../../src/ciacore.c ../../src/clkguard.h \
+	../../src/ciatimer.h ../../src/snapshot.h
+c64datasette.o: c64datasette.c ../../src/vice.h ../../src/config.h \
+	c64cia.h ../../src/arch/unix/types.h c64mem.h ../../src/mem.h
+c64iec.o: c64iec.c ../../src/vice.h ../../src/config.h c64cia.h \
+	../../src/arch/unix/types.h c64iec.h ../../src/cartridge.h \
+	../../src/drive/ciad.h ../../src/drive/drive.h ../../src/log.h \
+	../../src/drive/drivecpu.h ../../src/maincpu.h \
+	../../src/6510core.h ../../src/iecdrive.h ../../src/resources.h \
+	../../src/via.h ../../src/drive/viad.h
+c64mem.o: c64mem.c ../../src/vice.h ../../src/config.h \
+	../../src/arch/unix/archdep.h ../../src/archapi.h c64cart.h \
+	../../src/arch/unix/types.h c64cia.h c64mem.h ../../src/mem.h \
+	../../src/cartridge.h ../../src/cmdline.h ../../src/resources.h \
+	../../src/datasette.h ../../src/emuid.h ../../src/interrupt.h \
+	../../src/6510core.h ../../src/log.h ../../src/maincpu.h \
+	../../src/monitor/mon.h ../../src/parallel.h patchrom.h reu.h \
+	../../src/sid/sid.h ../../src/snapshot.h ../../src/sysfile.h \
+	../../src/arch/unix/ui.h ../../src/uiapi.h \
+	../../src/arch/unix/x11/xaw/uiarch.h ../../src/utils.h \
+	../../src/vicii/vicii-mem.h ../../src/vicii/vicii.h c64acia.h
+c64rsuser.o: c64rsuser.c ../../src/vice.h ../../src/config.h c64.h \
+	c64cia.h ../../src/arch/unix/types.h ../../src/machine.h \
+	../../src/rsuser.h
+c64tpi.o: c64tpi.c c64mem.h ../../src/mem.h ../../src/arch/unix/types.h \
+	../../src/vice.h ../../src/config.h ../../src/drive/drive.h \
+	../../src/log.h ../../src/drive/drivecpu.h ../../src/parallel.h \
+	../../src/maincpu.h ../../src/6510core.h ../../src/tpi.h \
+	../../src/tpicore.h ../../src/tpicore.c ../../src/snapshot.h
+cartridge.o: cartridge.c ../../src/vice.h ../../src/config.h \
+	../../src/alarm.h ../../src/arch/unix/types.h \
+	../../src/arch/unix/archdep.h ../../src/archapi.h \
+	../../src/cartridge.h ../../src/cmdline.h ../../src/resources.h \
+	../../src/interrupt.h ../../src/6510core.h ../../src/maincpu.h \
+	../../src/mem.h ../../src/utils.h
+patchrom.o: patchrom.c ../../src/vice.h ../../src/config.h \
+	../../src/log.h ../../src/mem.h ../../src/arch/unix/types.h \
+	patchrom.h ../../src/utils.h
+psid.o: psid.c ../../src/vice.h ../../src/config.h \
+	../../src/arch/unix/archdep.h ../../src/archapi.h c64mem.h \
+	../../src/mem.h ../../src/arch/unix/types.h ../../src/cmdline.h \
+	../../src/resources.h ../../src/drive/drive.h ../../src/log.h \
+	../../src/interrupt.h ../../src/6510core.h ../../src/machine.h \
+	psid.h ../../src/arch/unix/ui.h ../../src/uiapi.h \
+	../../src/arch/unix/x11/xaw/uiarch.h ../../src/utils.h \
+	../../src/vsidui.h ../../src/vsync.h ../../src/zfile.h \
+	psiddrv.h
+reu.o: reu.c ../../src/vice.h ../../src/config.h ../../src/interrupt.h \
+	../../src/6510core.h ../../src/arch/unix/types.h \
+	../../src/log.h ../../src/maincpu.h ../../src/mem.h reu.h \
+	../../src/snapshot.h ../../src/utils.h
+
+info-am:
+info: info-am
+dvi-am:
+dvi: dvi-am
+check-am: all-am
+check: check-am
+installcheck-am:
+installcheck: installcheck-am
+install-exec-am:
+install-exec: install-exec-am
+
+install-data-am:
+install-data: install-data-am
+
+install-am: all-am
+	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
+install: install-am
+uninstall-am:
+uninstall: uninstall-am
+all-am: Makefile $(LIBRARIES)
+all-redirect: all-am
+install-strip:
+	$(MAKE) $(AM_MAKEFLAGS) AM_INSTALL_PROGRAM_FLAGS=-s install
+installdirs:
+
+
+mostlyclean-generic:
+
+clean-generic:
+
+distclean-generic:
+	-rm -f Makefile $(CONFIG_CLEAN_FILES)
+	-rm -f config.cache config.log stamp-h stamp-h[0-9]*
+
+maintainer-clean-generic:
+	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
+mostlyclean-am:  mostlyclean-noinstLIBRARIES mostlyclean-compile \
+		mostlyclean-tags mostlyclean-generic
+
+mostlyclean: mostlyclean-am
+
+clean-am:  clean-noinstLIBRARIES clean-compile clean-tags clean-generic \
+		mostlyclean-am
+
+clean: clean-am
+
+distclean-am:  distclean-noinstLIBRARIES distclean-compile \
+		distclean-tags distclean-generic clean-am
+
+distclean: distclean-am
+
+maintainer-clean-am:  maintainer-clean-noinstLIBRARIES \
+		maintainer-clean-compile maintainer-clean-tags \
+		maintainer-clean-generic distclean-am
+	@echo "This command is intended for maintainers to use;"
+	@echo "it deletes files that may require special tools to rebuild."
+
+maintainer-clean: maintainer-clean-am
+
+.PHONY: mostlyclean-noinstLIBRARIES distclean-noinstLIBRARIES \
+clean-noinstLIBRARIES maintainer-clean-noinstLIBRARIES \
+mostlyclean-compile distclean-compile clean-compile \
+maintainer-clean-compile tags mostlyclean-tags distclean-tags \
+clean-tags maintainer-clean-tags distdir info-am info dvi-am dvi check \
+check-am installcheck-am installcheck install-exec-am install-exec \
+install-data-am install-data install-am install uninstall-am uninstall \
+all-redirect all-am all installdirs mostlyclean-generic \
+distclean-generic clean-generic maintainer-clean-generic clean \
+mostlyclean distclean maintainer-clean
+
+
+%.h : %.a65
+	xa $< -o $(srcdir)/$*.o65
+	od -v -An -w8 -tx1 $(srcdir)/$*.o65 | sed 's/\w\w/0x&,/g' > $(srcdir)/$@
+
+# Tell versions [3.59,3.63) of GNU make to not export all variables.
+# Otherwise a system limit (for SysV at least) may be exceeded.
+.NOEXPORT:
