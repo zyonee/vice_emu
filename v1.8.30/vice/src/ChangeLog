@@ -1,0 +1,1380 @@
+2002-03-29  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.8.30.
+
+	* vicii/vicii-mem.c (store_d019, read_d019): Fixed.
+	(store_d011, store_d012): Fixed irq state check.
+	(check_irq_line_state): New function.
+
+	* petcat.c, 6510core.c, log.c: Cosmetics.
+
+2002-03-28  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.8.29.
+
+	* drive/drive-resources.c: True drive emulation is default.
+
+	* autostart.c (autostart_reset): Call `disk_eof_callback'.
+
+	* printerdrv/driver-select.c, printerdrv/drv-ascii.c: Added
+	some debugging outout.
+
+2002-03-28  Andreas Matthies  <andreas.matthies@gmx.net>
+
+	* fliplist.c (flip_load_list): Don't call fopen if filename
+	is NULL.
+
+	* arch/win32/ui.c: Call suspend_speed_eval _before_ displaying
+	the "Do you want to reset?" box.
+
+2002-03-25  Andreas Dehmel  <dehmel@forwiss.tu-muenchen.de>
+
+	* arch/riscos/ui.c, arch/riscos/uiconfig.{c,h},
+	arch/riscos/uihelp.c: removed icon for DelayLoopEmulation,
+	resource modified implicitly now
+
+	* arch/riscos/uidummy.c: removed machine_name stubs (now in
+	c1541.c and petcat.c)
+
+	* arch/riscos/video.c: handle raw RGB colours, automatically
+	enable DelayLoopEmulation when PAL emulation is activated.
+	Fixed canvas_force_redraw()
+
+2002-03-24  Dag Lem  <resid@nimrod.no>
+
+	* arch/unix/x11/xaw/uicolor.c (uicolor_alloc_system_colors):
+	Pass NULL canvas to color_alloc_colors.
+	(uicolor_convert_color_table): Don't call
+	video_convert_color_table if canvas == NULL.
+
+2002-03-23  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.8.28.
+
+	* vicii/vicii-mem.c (store_d019): Added fix as suggested by
+	AndreasM.
+
+2002-03-23  pottendo  <pottendo@utanet.at>
+
+	* petcat.c: Added dummy `machine_name'.
+	* c1541.c: Likewise.
+
+	* arch/unix/uicommands.c (load_save_fliplist): New
+	function. Implementation for fliplist load/save ui.
+	(flip_submenu): Added load-save menu entries.
+
+	* arch/beos/archdep.c (archdep_default_fliplist_file_name): New
+	dummy function. Please fill in appropriate default fliplist file name.
+	* arch/win32/archdep.c (archdep_default_fliplist_file_name): Likewise.
+	* arch/os2/archdep.c (archdep_default_fliplist_file_name): Likewise.
+	* arch/msdos/archdep.c (archdep_default_fliplist_file_name): Likewise.
+	* arch/riscos/archdep.c (archdep_default_fliplist_file_name): Likewise.
+	* arch/unix/uisettings.c (save_resources callback): Save flip lists.
+
+	* main.c (MAIN_PROGRAM): Load default fliplist on startup.
+
+	* fliplist.c (flip_save_list): Added unit support to fliplist
+	file. 
+	(flip_load_list): Likewise. 
+
+2002-03-22  Andreas Matthies  <andreas.matthies@gmx.net>
+
+	* arch/msdos/c128ui.c, c610ui.c, c64ui.c, petui.c, plus4ui.c,
+	vic20ui.c: Changed behaviour of the color related menus to
+	TUI_MENU_BEH_RESUME. This will prevent color mixups.
+	Renamed "fast PAL" to "PAL" and added meuitem for external
+	colors.
+
+	* arch/msdos/video.c (canvas_change_palette): Added raw rgb
+	support for video_render.
+
+2002-03-20  Dag Lem  <resid@nimrod.no>
+
+	* arch/unix/x11/dga2.c (fullscreen_set_palette): Made
+	palette_t parameter const.
+
+	* arch/unix/x11/gnome/uicolor.c (uicolor_alloc_system_colors):
+	Pass NULL canvas to color_alloc_colors.
+	(uicolor_convert_color_table): Don't call
+	video_convert_color_table if canvas == NULL.
+
+	* arch/unix/x11/renderxv.c (render_yuv_image): Initialize
+	variables which gcc (incorrectly) warns about.
+
+	* arch/unix/x11/video.c (video_convert_color_table): Use bits
+	per pixel instead of color depth for rendering.
+	(convert_8to8n): Likewise.
+	(video_convert_func): Likewise.
+
+	* arch/unix/x11/videoarch.h (fullscreen_set_palette): Made
+	palette_t parameter const.
+	(fullscreen_resize): Added missing prototype.
+
+	* monitor/mon.c (mon_record_commands): Corrected printf
+	format.
+
+2002-03-18  Andreas Dehmel  <dehmel@forwiss.tu-muenchen.de>
+
+	* arch/riscos/ui.c: moved canvas window resizing to video.c,
+	minor cleanup
+
+	* arch/riscos/videoarch.h, arch/riscos/video.c: moved canvas
+	resizing to video.c, finished PAL emulation (double size OK).
+
+2002-03-18  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.8.27.
+
+2002-03-14  pottendo  <pottendo@utanet.at>
+
+	* arch/unix/x11/video.c (video_canvas_create): Just initialize
+	colors for real PAL emulation when depth is > 8.
+
+2002-03-12  Dag Lem  <resid@nimrod.no>
+
+	* arch/unix/x11/video.c: Made -mitshm and +mitshm work
+	according to manual.
+	(video_convert_color_table): Special handling for 15 bit
+	color.
+	(convert_8to8n): Replaces convert_8to8, convert_8to16, and
+	convert_8to32. Also passes 15 and 24 bit color to new render
+	engine.
+	(convert_8to8, convert_8to16, convert_8to32): Removed.
+	(video_convert_func): Pass 15 and 24 bit color to new render
+	engine.
+
+2002-03-11  Andreas Dehmel  <dehmel@forwiss.tu-muenchen.de>
+
+	* arch/riscos/ui.c: moved palette file to video config window
+
+	* arch/riscos/uiconfig.{c,h}: moved palette file to video
+	config window, corrected widget type of PAL delay loop
+	emulation
+
+	* arch/riscos/uihelp.{c,h}: improved encapsulation
+
+	* arch/riscos/video.c: fixed PAL sprite translation table bug
+	(writes to uninitialized memory), additional safeguards,
+	support 8bpp PAL emu modes, corrected screen to canvas
+	coordinate transformation (scaling)
+
+2002-03-10  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.8.26.
+
+	* vicii/vicii-mem.c (check_bad_line_state_change_for_d011):
+	Do not reset bad line state after a bad line has happened,
+	this is only possible before matrix fetch.
+
+2002-03-10  Dag Lem  <resid@nimrod.no>
+
+	* arch/unix/x11/gnome/ui.c (ui_open_canvas_window): Refresh
+	canvas when application window is moved - required for XVideo.
+
+	* arch/unix/x11/xaw/ui.c (ui_open_canvas_window): Likewise.
+
+2002-03-08  Dag Lem  <resid@nimrod.no>
+
+	* arch/unix/x11/gnome/gnomevideo.c (frame_buffer_alloc): Don't
+	double size of target image.
+
+	* arch/unix/x11/xaw/x11video.c (frame_buffer_alloc): Likewise.
+
+	* arch/unix/x11/video.c (convert_*): Use correct target image
+	positions.
+	(video_canvas_refresh): Removed XVideo clipping. Pass correct
+	image positions to _convert_func and _refresh_func.
+
+	* arch/unix/x11/xaw/ui.c: Removed old exposure cruft.
+
+2002-03-07  Andreas Dehmel  <dehmel@forwiss.tu-muenchen.de>
+
+	* arch/riscos/uihelp.{c,h}: new files for interactive help
+
+	* arch/riscos/uisharedef.h: new file for shared ui-specific
+	defs
+
+	* arch/riscos/uiconfig.{c,h}: added resources for video layer,
+	mangled config icon window names into config icon names
+
+	* arch/riscos/ui.{c,h}: adapted to changed config icon names,
+	exported interactive help to uihelp.{c,h}, shared defs to
+	uisharedef.h, grey-out icon lists and icon bar icon names
+	to machine-specific ui stubs and window->canvas coordinate
+	translation to video.c
+
+	* arch/riscos/video.c, arch/riscos/videoarch.h: do window to
+	canvas coordinate translation here now
+
+	* arch/riscos/c128ui.c, arch/riscos/c610ui.c,
+	arch/riscos/c64ui.c, arch/riscos/petui.c,
+	arch/riscos/plus4ui.c, arch/riscos/vic20ui.c:
+	handle grey-out icon lists and icon bar icon names
+
+	* arch/riscos/Makefile.am: added uihelp.{c,h} and uisharedef.h
+
+2002-03-06  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.8.25.
+
+	* raster/raster-line.c (check_for_major_changes_and_update,
+	handle_visible_line_without_cache): Use xsmooth color for
+	overscan color if borders are open in non-idle modes.
+
+2002-03-06  Andreas Matthies  <andreas.matthies@gmx.net>
+
+	* vic20/vic20.c (vic_store): Cast to signed int in
+	calculation of vic.row_offset
+
+2002-03-03  Andreas Dehmel  <dehmel@forwiss.tu-muenchen.de>
+
+	* arch/riscos/ui.c: updated help text, determine framebuffer
+	coords for redraw.
+
+	* arch/riscos/uiconfig.{c,h}: added resources for stereo SID
+	address emu.
+
+	* arch/riscos/video.c, arch/riscos/videoarch.h: added 1x PAL
+	emulation rendering.
+
+2002-03-02  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.8.24.
+
+	* drive/drive.c (drive_sync_found): Do not report sync if disk
+	is changing.
+
+2002-03-01  Andreas Matthies  <andreas.matthies@gmx.net>
+
+	* arch/beos/constants.h: New id for DirectWindow toggle.
+
+	* arch/beos/ui.cc, ui.h: New function ui_set_window_mode.
+	New menu toggle for DirectWindow.
+
+	* arch/beos/vicemenu.cc: Renamed 'Fast PAL' to 'PAL'. Added
+	menuitem for DirectWIndow toggle.
+
+	* arch/beos/vicewindow.cc: Reenabled the bitmap stuff. It is
+	used if DirectWindow is disabled. Fixed menubar_offset and
+	position of the view and the statusbar.
+
+	* arch/beos/video.cc: Reenabled the bitmap stuff (for disabled
+	DirectWindow). New resource 'DirectWindow' and commandline
+	options +- directwindow.
+
+	* arch/beos/videoarch.h: Include video.h.
+
+	* raster/raster.c (raster_update_canvas_all): Fixed xs in the
+	call of video_canvas_refresh.
+
+2002-02-27  Dag Lem  <resid@nimrod.no>
+
+	* arch/unix/x11/renderxv.c: Added credits, fixed typos.
+
+	* arch/unix/x11/video.c: XVIDEO and FOURCC resources only
+	available when HAVE_XVIDEO is defined.
+
+	* resources.c: Added missing breaks in switch statements.
+
+2002-02-27  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.8.23.
+
+	* vicii/viciitypes.h: New define `VIC_II_IS_TEXT_MODE'.
+
+	* vicii/vicii-draw.c (_draw_idle): Improved background color
+	and idle data handling.
+
+	* debug.c, debug.h (debug_init_cmdline_options): New function.
+
+	* init.c (init_cmdline_options): Initialize debug command line
+	options.
+
+2002-02-26  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.8.22.
+
+	* maincpu.h: Removed some cruft.
+
+2002-02-25  Andreas Dehmel  <dehmel@forwiss.tu-muenchen.de>
+
+	* resources.{c,h}: each resource now allows an arbitrary
+	number of callback functions. Global resource callbacks are
+	called with resource name if only this resource changed.
+
+	* arch/riscos/videoarch.h, arch/riscos/video.c: added support
+	for 1x2 plotters (x128); implemented core redraw code as
+	function pointers.
+
+2002-02-25  Andreas Matthies  <andreas.matthies@gmx.net>
+
+	* arch/win32/base.dsp: Added new source files.
+
+	* raster/raster-cache.c (raster_cache_init): Clear gfx_msk.
+
+	* vicii/vicii-sprites.c: Removed all the raster double size
+	related stuff.
+	(draw_hires_sprite): collmsk needs to be shifted if size is
+	changed by repeated pixels.
+	(draw_mc_sprite): Fixed calculation of repeat_offset.
+	The hack for the repeated pixels may cause a sprite collision
+	with its own. If so delete it.
+
+2002-02-24  Dag Lem  <resid@nimrod.no>
+
+	* arch/unix/x11/gnome/gnomevideo.c
+	(video_arch_frame_buffer_alloc): Corrected FOURCC sprintf
+	format typo.
+
+	* arch/unix/x11/xaw/x11video.c
+	(video_arch_frame_buffer_alloc): Likewise. Made fullscreen
+	compile by replacing fullscreen_set_framebuffer with
+	fullscreen_set_canvas.
+
+	* arch/unix/x11/xaw/ui.c (ui_open_canvas_window): Set video
+	canvas as client data for exposure handler.
+	(exposure_callback): Call raster_force_repaint.
+
+2002-02-24  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.8.21.
+
+	* drive/drive.h: Relaxed disk changing times.
+
+	* debug.c, debug.h, init.c, init.h, initcmdline.c,
+	initcmdline.h: New files.
+
+	* Makefile.am: Added new files.
+
+	* main.c: Moved machine and resource initialization and inital
+	command line parsing to other files.
+
+	* maincpu.c, maincpu.h, 6510core.c, drive/drivecpu.c, main.c,
+	arch/unix/uisettings.c, arch/unix/uisettings.h,
+	arch/unix/c64ui.c, arch/unix/c128ui.c, arch/unix/vic20ui.c,
+	arch/unix/petui.c, arch/unix/plus4ui.c, arch/unix/c610ui.c:
+	Added support for enabling CPU trace from within the GUI.
+
+	* vicii/vicii-mem.c (store_d01d): Added fix as suggested by
+	AndreasM.
+
+2002-02-23  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.8.20.
+
+	* vicii/viciitypes.h: New member `hires_background_color'.
+
+	* vicii/vicii.c (vic_ii_fetch_matrix): Set hires background
+	color source.  (vic_ii_update_video_mode): Handle hires
+	background color source.
+
+	* vicii/vicii-draw.c (draw_std_background): Use `xsmooth' to
+	draw the background.
+
+	* raster/raster-line.c: Check xsmooth.
+
+2002-02-23  pottendo  <pottendo@utanet.at>
+
+	* arch/unix/x11/gnome/ui.c (ui_open_canvas_window): Pass canvas to
+	exposure callback. 
+	(exposure_callback): Force repaint.
+
+2002-02-22  Spiro Trikaliotis  <Spiro.Trikaliotis@gmx.de>
+
+	* arch/win32/uimon.c: closing the monitor with the close
+	button does not result in strange behaviour anymore
+
+	* arch/win32/raster.dsp: added raster-line.c
+
+	* raster/raster-line.c: now #includes video.h so that it
+	compiles
+
+2002-02-20  Andreas Dehmel  <dehmel@forwiss.tu-muenchen.de>
+
+	* resources.{c,h}: added hash index over resource names for
+	improved speed; added resources_register_callback() function
+	for registering a callback function if a specific resource (or
+	any resource) is modified.
+
+	* arch/riscos/ui.c: added help text for stereo SID and BPlot
+	icons. register video layer resource callbacks.
+
+	* arch/riscos/videoarch.h, arch/riscos/video.c: register
+	resource callbacks for resources changing canvas properties.
+
+	* sounddrv/soundacorn.c: added DRender include due to lib change.
+
+2002-02-20  Andreas Matthies  <andreas.matthies@gmx.net>
+
+	* arch/win32/raster.dsp: Added raster-line.c
+
+	* arch/win32/videoarch.h: Include video.h
+
+	* vic20/vic-mem.c (vic_store): Don't set blank_this_line if
+	number of columns is 0.
+
+2002-02-18  Andreas Dehmel  <dehmel@forwiss.tu-muenchen.de>
+
+	* arch/riscos/video.c, arch/riscos/videoarch.h: completed
+	migration to new interface.
+
+	* arch/riscos/ui.c: updated Plus4 and Stereo SID icons, grey
+	out icons belonging to unknown resources.
+
+	* arch/riscos/uiconfig.{c,h}: added icons for Stereo SID and
+	optional BPlot module.
+
+2002-02-17  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.8.19.
+
+	* vicii/vicii-draw.c (draw_std_background): The background
+	color in the xsmooth region is set by xsmooth color.
+
+	* raster/raster-line.c, raster/raster-line.h, raster/raster.h,
+	crtc/crtc.c (raster_handle_end_of_frame): Renamed.
+
+2002-02-17  Dag Lem  <resid@nimrod.no>
+
+	* arch/unix/x11/renderxv.c: Added scanline shading. Completed
+	implementation of double size rendering.
+	(find_yuv_port): Allow request for specific video format.
+
+	* arch/unix/x11/renderxv.h: Added scanline shading.
+
+	* arch/unix/x11/video.c: Added FOURCC resource and -fourcc
+	parameter.
+	(video_canvas_refresh): Added scanline shading for XVideo.
+
+	* c64/psiddrv.a65: Changed BRK interrupt vector to IRQ exit.
+
+	* raster/raster.c (raster_init): Removed special handling of
+	HAVE_XVIDEO.
+
+	* video/render1x1.c, video/render2x2.c, video/render2x2pal.c:
+	Removed ^M.
+
+2002-02-17  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.8.18.
+
+	* vicii/vicii-draw.c, vicii/vicii-mem.c, vicii/vicii.c,
+	raster/raster.c, raster/raster.h, raster/raster-cache.h,
+	vdc/vdc.c, crtc/crtc.c, vic20/vic.c, plus4/ted.c,
+	plus4/ted-mem.c: Added new member `xsmooth_color' to raster
+	API.
+	Replaced some hacks and kludges by using `xsmooth_color'.
+
+	* raster/raster-line.c, raster/raster-line.h: New files.
+
+	* raster/Makefile.am: Added new files.
+
+2002-02-16  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.8.17.
+
+2002-02-15  Andreas Matthies  <andreas.matthies@gmx.net>
+
+	* arch/win32/uisound.c: Removed setting of stereo sid
+	resource.
+
+2002-02-14  Andreas Matthies  <andreas.matthies@gmx.net>
+
+	* arch/beos/vicewindow.cc, vicewindow.h: Added includes for
+	DirectWindow. Disabled every code related to the old bitmap
+	drawing code (may be reenabled as a fallback if DirectWindow
+	isn't supported). ViceWindow now derives from DirectWindow.
+	New method ViceWindow::DirectConnected. New varaible for
+	menubar_offset.
+
+	* arch/beos/video.cc: Disabled bitmap related code.
+	(video_canvas_refresh) uses the clip_rect list of the
+	DirectWindow to get the partitions for rendering.
+
+	* raster/raster.c: Renamed update_canvas_all to
+	raster_update_canvas_all and made it public.
+	(raster_get_raster_from_canvas): New function.
+
+	* raster/raster.h: Added prototypes for new functions.
+
+	* video/Makefile.am: Added src/raster to paths for includes.
+
+	* video/video-render.c: Include raster.h
+	(video_refresh_all): New function.
+
+2002-02-14  Thomas Bretz  <tbretz@physik.tu-muenchen.de>
+
+	* arch/os2/dialogs/dlg-drive.c:
+	- added 1551
+     
+	* arch/os2/dialogs/dlg-fileio.c:
+	- disabled autostart button in save-as dialog
+	- fixed the storage of the last successfull path
+     
+	* arch/os2/vac++/incl/drive.icc:
+	- added glue1551.c, tia1551.c
+     
+	* arch/os2/vac++/incl/plus4.icc:
+	- added tcbm.c
+     
+	* zipcode.c:
+	- simplified code structure in a loop
+     
+2002-02-13  Dag Lem  <resid@nimrod.no>
+
+	* arch/unix/x11/gnome/gnomevideo.c (GDK_PUTIMAGE): Draw
+	directly into window instead of to pixmap.
+	(video_arch_frame_buffer_alloc): Call new find_yuv_port
+	interface.
+	(ui_finish_canvas): Removed use of backing store pixmap.
+
+	* arch/unix/x11/renderxv.c: Generalized API, started work on
+	2x renderers.
+
+	* arch/unix/x11/renderxv.h: Generalized API.
+
+	* arch/unix/x11/video.c (video_canvas_refresh): Prepare for 2x
+	Xv renderers.
+
+	* arch/unix/x11/videoarch.h: Modified video_canvas_t for new Xv
+	API.
+
+	* arch/unix/x11/xaw/x11video.c
+	(video_arch_frame_buffer_alloc): Call new find_yuv_port
+	interface.
+
+2002-02-13  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.8.16.
+
+	* vicii/vicii-draw.c (_draw_idle): Overscan color is black if
+	hires mode is enabled (fix as suggested by AndreasM).
+	(draw_idle_std_background): New function.
+	(setup_single_size_modes): Set `draw_idle_std_background()' as
+	idle state background draw function.
+
+2002-02-12  Spiro Trikaliotis  <Spiro.Trikaliotis@gmx.de>
+
+	* c64/reu.c: added the "Half-autoload-bug" (reported by
+	Wolfgang Moser) so that the FIXMEs could be removed; disabled
+	REU_DEBUG again, added symbolic names for the REU registers
+	for better readability.
+
+2002-02-11  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.8.15.
+
+	* c64/c64mem.c (ram_hi_store): Only propagate stores to the
+	vbank if vbank 3 is active.
+
+	* vicii/vicii-mem.c (check_bad_line_state_change_for_d011): If
+	a forced DMA switches to display state override the blank flag
+	in case the store that causes the DMA sets the blank bit
+	again.
+
+	* vicii/vicii.c (vic_ii_raster_draw_alarm_handler): Clear the
+	blank override flag at line zero.
+
+	* raster/raster.c (raster_emulate_line): Switch off blanking
+	at `display_ystart' if the blank override flag is set too.
+	(raster_reset): Initialize `blank_off' bit.
+
+	* raster/raster.h: Added new member `blank_off' to
+	`struct raster_t'
+
+	* plus4/tcbm.c, plus4/tcbm.h: TCBM implementation.
+
+	* iecdrive.h, c64/c64iec.c, c128/c128iec.c, vic20/vic20iec.c,
+	pet/petiec.c, cbm2/c610iec.c: Added some stubs.
+
+	* drive/tia1551.c, drive/tia1551.h: Interface to TCBM bus.
+
+	* arch/unix/readline/editline.c,
+	arch/unix/readline/editline2.c: Removed `^L'.
+
+2002-02-10  Tibor Biczo  <crown@axelero.hu> 
+
+	* plus4/plus4mem.c (mem_proc_port_read): Mask in IEC inputs
+	correctly. 
+      
+2002-02-10  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.8.14.
+
+	* vicii/vicii-mem.c (check_bad_line_state_change_for_d011,
+	store_d011): Fixed the calculation of `was_bad_line'.
+
+	* c64/c64mem.c (ram_hi_store): Handle vbank access.
+
+	* zipcode.c (zipcode_read_sector): Use `unsigned char' for
+	parameters read from disk as we need to count up to 255.
+
+	* zfile.c (try_uncompress_zipcode): Handle directories.
+
+2002-02-09  pottendo  <pottendo@utanet.at>
+
+	* arch/unix/x11/dga2.c (fullscreen_set_mode): Setup up `fs_depth'.
+	(fullscreen_refresh_func): Use `fs_depth'.
+	(fullscreen_vidmode_available): Gather modes with 16bit or better
+	depth. This makes full PAL emulation work under DGA2.
+
+	* arch/unix/x11/videoarch.h: Adjusted prototypes for new alloc
+	callback interface.
+
+	* arch/unix/x11/dga2.c (fs_draw_buffer_alloc): Adjusted to new
+	alloc callback interface.
+	(fs_draw_buffer_free): Likewise.
+	(fs_draw_buffer_free): Likewise.
+
+2002-02-09  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.8.13.
+
+	* video/render2x2pal.c: `line_yuv_0' and `line_yuv_1' are
+	externals.
+
+2002-02-09  Thomas Bretz  <tbretz@physik.tu-muenchen.de>
+
+	* arch/os2/video.c:
+	make use of ne machine_canvas_async_refresh
+
+	* machine.h, c128/c128.c, c64/c64.c, cbm2/c610.c,
+	plus4/plus4.c, vic20/vic20.c
+	- implementation of machine_canvas_async_refresh
+	- changed calls to *_screenshot to void
+
+	* crtc/crtc.[h,c], pet/pet.[h,c], plus4/ted.[c,h],
+	vdc/vdc.[h,c], vic20/vic.[h,c], vicii/vicii.[h,c]:
+	- new implementation of *_async_refresh
+
+	* raster/raster.[h,c]:
+	- new implementation of raster_async_refresh
+
+	* screenshot.h:
+	- removed bufh from screenshot_t
+
+	* video.h:
+	- new implementation of struct canvas_refresh_s
+
+2002-02-09  Andreas Matthies  <andreas.matthies@gmx.net>
+
+	* plus4/plus4pio1.c: Added variable for tape sense.
+	(pio1_store) takes care of the actual tape sense.
+	(pio1_set_tape_sense) stores sense in the new variable.
+
+2002-02-08  Dag Lem  <resid@nimrod.no>
+
+	* arch/unix/x11/video.c (video_canvas_refresh): Catch all
+	raster offscreen errors.
+
+2002-02-07  Andreas Dehmel  <dehmel@forwiss.tu-muenchen.de>
+
+	* video.h: changed signature of video_draw_buffer_callback
+	functions
+
+	* raster/raster.h: added frame buffer pitch
+
+	* raster/raster.c: adapted to changed
+	video_draw_buffer_callback signature
+
+	* arch/riscos/ui.c: exported plot code to video.c
+
+	* arch/riscos/videoarch.h, arch/riscos/video.c: migrated to
+	new video_draw_buffer_callback signature, next step in move to
+	new video render interface.
+
+2002-02-07  Tibor Biczo  <crown@axelero.hu>
+
+	* plus4/plus4pio1.c (pio1_store): Bit 2 is only input, don't
+	store written value.
+
+	* plus4/ted-timer.c (ted_t1, ted_t2, ted_t3): Update current
+	value on overflow.
+
+2002-02-07  Dag Lem  <resid@nimrod.no>
+
+	* arch/unix/x11/renderxv.c: Added YUV 4:1:1 rendering for Y/C
+	and Composite emulation.
+
+	* arch/unix/x11/video.c (video_canvas_refresh): Catch more
+	raster offscreen errors.
+
+2002-02-07  Andreas Matthies  <andreas.matthies@gmx.net>
+
+	* arch/beos/videoarch.h: Removed video_draw_buffer_callback.
+
+	* arch/win32/drive.dsp, plus4.dsp: Added new files.
+
+	* vdc/vdc.c (vdc_update_geometry): vdc.last_displayed_line
+	bounded with screen_height. This fixes NTSC crash in x128.
+
+2002-02-07  Thomas Bretz  <tbretz@physik.tu-muenchen.de>
+
+	* arch/os2/dialogs/menubar.[h,c,rc], src/arch/os2/kbd/proc.c:
+	- included accelerator keys Alt-2 and Alt-v
+
+	* arch/os2/vac++/incl/plus4.icc:
+	- corrected
+
+	* arch/os2/video.c:
+	- corrected some wrong output
+
+	* raster/raster.c:
+	- simplified some algorithm
+
+	* vdc/vdc.c:
+	- changed in a way that it (setup, init, changes, etc) 
+	behaves like the other chips
+
+2002-02-06  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.8.12.
+
+	* fullscreen.h: #include "types.h".
+
+	* drive/driverom.c, drive/driverom.h, drive/tia1551.c,
+	drive/tia1551.h, drive/glue1551.c, drive/glue1551.h,
+	plus4/tcbm.c, plus4/tcbm.h: New files.
+
+	* drive/Makefile.am, plus4/Makefile.am: Added new files.
+
+	* drive/drive.c, drive/drive-resources.c, drive/drivemem.c,
+	drive/drive-snapshot.c: Changed to new image rom reorg.
+
+	* drive/drivemem.c (drive_mem_init, drive_ioreg_list_get):
+	Added 1551 support.
+	(drive_read_zero): New function.
+
+	* drive/drivecpu.c (drive_cpu_snapshot_write_module,
+	drive_cpu_snapshot_read_module, drive_jam, cpu_reset,
+	drive_cpu_early_init): Likewise.
+	(drive_read_zero, drive_read_1551zero, drive_store_zero,
+	drive_store_1551zero): New functions.
+
+	* drive/drive.c, drive/drive.h (drive_set_active_led_color,
+	drive_read_image_d64_d71, ve_set_clock_frequency,
+	drive_check_image_format, drive_set_half_track,
+	drive_check_type): Likewise.
+	(drive_sync_found, drive_write_protect_sense): Made external.
+
+2002-02-06  John Selck  <graham@cruise.de>
+
+	* video/render1x1pal.c: Removed extern gammatable[].
+	Removed code from all 1x1 pal renderers which was
+	supposed to be for 2x2 pal only.
+
+	* video/render2x2pal.c: Removed extern gammatable[].
+
+	* video/video-color.c: Removed obsolete extern definitions.
+
+	* raster/raster.c: Changed all RASTER_PIXEL() calls into
+	direct usage of the color.
+
+	* crtc/crtc-draw.c: Changed all RASTER_PIXEL() calls into
+	direct usage of the color.
+
+	* vdc/vdc-draw.c: Changed all RASTER_PIXEL() calls into
+	direct usage of the color.
+
+	* vic20/vic-draw.c: Changed all RASTER_PIXEL() calls into
+	direct usage of the color. There are still RASTER_PIXEL()
+	calls used in vic.h.
+
+2002-02-06  Dag Lem  <resid@nimrod.no>
+
+	* arch/unix/x11/gnome/gnomevideo.c
+	(video_arch_frame_buffer_alloc): Display YUV FOURCC.
+
+	* arch/unix/x11/renderxv.c: Added YUV 4:2:2 rendering for Y/C
+	and Composite emulation.
+
+	* arch/unix/x11/renderxv.h: Added pal_mode parameter to
+	interface.
+
+	* arch/unix/x11/video.c (video_canvas_refresh): Pass pal_mode
+	to Xv interface.
+
+	* arch/unix/x11/videoarch.h: Added xv_render to
+	video_canvas_s.
+
+	* arch/unix/x11/xaw/x11video.c
+	(video_arch_frame_buffer_alloc): Display YUV FOURCC.
+
+2002-02-04  Andreas Dehmel  <dehmel@forwiss.tu-muenchen.de>
+
+	* arch/riscos/videoarch.h, arch/riscos/video.c,
+	arch/riscos/ui.c: started migration to new video interface.
+
+	* raster/raster.c: recalculation of frame buffer no longer
+	needed.
+
+2002-02-04  pottendo  <pottendo@utanet.at>
+
+	* raster/raster.c (raster_draw_buffer_free): Return in case a
+	callback has been called.
+	(raster_draw_buffer_clear): Likewise.
+	(realize_frame_buffer): Call `video_register_raster()' to setup
+	hooks for DGA2.
+
+	* fullscreen.h: Fixed for DGA2.
+
+	* arch/unix/x11/video.c (video_canvas_create): Use allocation
+	callback hooks to allocate draw_buffer in case of DGA2
+	availability. 
+	Fixed for DGA2.
+	(video_canvas_refresh): Fixed for DGA2.
+
+	* arch/unix/x11/gnome/gnomevideo.c
+	(video_arch_frame_buffer_alloc): Fixed for DGA2.
+
+	* arch/unix/uivicii.c: Moved PAL Emulation menu definition in
+	separate files.
+
+	* arch/unix/uisettings.c: Added `types.h'.
+
+	* arch/unix/uipalemu.c: New file. Setup PAL emulation menu
+	entries. 
+	* arch/unix/uipalemu.h: Define PAL Emulation menu.
+
+	* arch/unix/plus4ui.c: Added PAL Emulation submenu.
+	* arch/unix/vic20ui.c: Likewise.
+
+	* arch/unix/Makefile.am (libarch_a_SOURCES): Added
+	`uipalemu.[ch]'. 
+
+2002-02-02  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.8.11.
+
+2002-02-01  Andreas Matthies  <andreas.matthies@gmx.net>
+
+	* sounddrv/soundwmm.c (wmm_suspend): Write n fragments instead
+	of whole buffer at once.
+
+2002-02-01  John Selck  <graham@cruise.de>
+
+	* vicii/vicii-draw.c: Changed all RASTER_PIXEL() calls into
+	direct usage of the color.
+	Optimized _draw_mc_text(), _draw_mc_bitmap(),
+	draw_ext_text_foreground() a bit.
+
+	* vicii/vicii-sprites.c: Changed all RASTER_PIXEL() calls
+	into direct usage of the color.
+	Changed macros to not need raster pointer anymore.
+
+	* plus4/ted-draw.c: Changed all RASTER_PIXEL() calls into
+	direct usage of the color.
+	Optimized _draw_mc_text(), _draw_mc_bitmap(),
+	draw_ext_text_foreground() a bit.
+
+2002-02-01  Andreas Matthies  <andreas.matthies@gmx.net>
+
+	* arch/beos/videoarch.h: Added video_draw_buffer_callback to
+	video_canvas_s.
+
+	* arch/beos/video.cc (video_canvas_set_palette): Calls
+	video_render_setrawrgb for real PAL emulation.
+
+2002-02-01  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.8.10.
+
+	* vdc/vdc.c (vdc_raster_draw_alarm_handler, vdc_set_geometry):
+	Use video API to scale for double heigth mode.
+
+	* vdc/vdc-draw.c: Removed odd/even line support.
+
+	* video/video-render.c: Removed unused variables.
+
+2002-02-01  Thomas Bretz  <tbretz@physik.tu-muenchen.de>
+
+	* arch/os2/config.h:
+	- fixed a bug in defining HAVE_MOUSE
+    
+	* arch/os2/video.c:
+	- added an automatic depth detection
+	- added some more color formats
+	- added some debug output in case of a failing of
+	DiveSetupBlitter or DiveBlit
+	- added some more security checks in canvas_refresh
+    
+	* raster/raster.c:
+	- simplified many parts of the code exspecially
+	raster_emulate_line, and raster_resize_viewport (I'm sorry,
+	this part cannot be tested by me, please check whether
+	everything works fine)
+	- removed the 1x1 draw_buffer allocation. For what is a
+	workaround necessary if you could do it more straight forward?
+      
+2002-01-31  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.8.9.
+
+	* raster/raster.c (raster_free): Check if canvas is allocated.
+	(raster_init): Initialize draw buffer pointer.
+
+2002-01-31  Tibor Biczo  <crown@axelero.hu>
+
+	* arch/win32/plus4ui.c: Added PAL emulation switch to UI.
+
+	* arch/win32/resplus4.rc: Added PAL emulation switch to UI.
+
+	* arch/win32/video.c (video_canvas_create): Fixed typo.
+
+	* datasette.c (datasette_read_gap): Implemented version 1 and
+	version 2 TAP reading for Plus4.
+	(datasette_set_tape_image, datasette_internal_reset): Reset
+	fullwave flag.
+	(datasette_start_motor): Don't change fullwave flag.
+
+	* plus4/plus4.h: Updated cycles in line to 114, and cycles per
+	sec values both for PAL and NTSC.
+
+	* plus4/plus4mem.c (mem_proc_port_read): Fixed CST READ
+	sygnal.
+
+	* plus4/ted-timer.c: Updated timers to work correctly on
+	double clock, and implemented read accesses.
+
+	* plus4/tedtypes.h: Fixed NTSC screen height.
+
+2002-01-31  Andreas Dehmel  <dehmel@forwiss.tu-muenchen.de>
+
+	* raster/raster.c: Sun compiler doesn't allow returning void
+
+2002-01-31  Dag Lem  <resid@nimrod.no>
+
+	* arch/unix/x11/gnome/ui.c
+	(ui_open_canvas_window): Change canvas background color to
+	black.
+
+	* arch/unix/x11/renderxv.c (render_4_2_2, render_4_1_1):
+	Average U and V values in source pixel block.
+
+	* arch/unix/x11/video.c: Added +xvideo command line parameter.
+
+2002-01-30  pottendo  <pottendo@utanet.at>
+
+	* uicolor.h (uicolor_init_video_colors): New prototype.
+
+	* arch/unix/x11/video.c (video_canvas_create): Request
+	initialization of colors.
+
+	* arch/unix/x11/gnome/uicolor.c (uicolor_init_video_colors): New
+	function, initialize the video layer with pixel values.
+	* arch/unix/x11/xaw/uicolor.c (uicolor_init_video_colors):
+	Likewise.
+
+	* arch/unix/uivicii.c: Reworked PAL related menus and callbacks. 
+
+2002-01-30  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.8.8.
+
+	* vicii/vicii-mem.c (store_d019): Removed some leftovers.
+
+	* vicii/vicii-draw.c (_draw_mc_text): Replaced remaining
+	`PIXEL' type.
+
+	* arch/unix/x11/videoarch.h, arch/win32/videoarch.h,
+	arch/msdos/videoarch.h, arch/riscos/videoarch.h,
+	arch/os2/videoarch.h, arch/beos/videoarch.h: Added draw buffer
+	alloc/free/clear callback to the canvas struct.
+
+	* arch/unix/x11/video.c, arch/win32/video.c,
+	arch/msdos/video.c, arch/riscos/video.c, arch/os2/video.c,
+	arch/beos/video.cc (video_canvas_creat): Initialize draw
+	buffer callback.
+
+	* raster/raster.c (raster_draw_buffer_alloc,
+	raster_draw_buffer_free, raster_draw_buffer_clear): Added
+	callbacks for arch specific draw buffer allocation.
+	(raster_force_repaint): Do not clear draw buffer.
+	(realize_frame_buffer): Do not realize frame buffer (should be
+	called draw buffer now) if there is no canvas.
+
+	* video.h: Added structure for draw buffer callbacks.
+
+2002-01-30  Thomas Bretz  <tbretz@physik.tu-muenchen.de>
+
+	* doc/vice.texi:
+	- changed a bug in my email address
+     
+	* arch/os2/dialogs/menubar.[h,c,rc]:
+	- implemented the new PAL Emulation modes
+     
+	* arch/os2/vac++/incl/video.icc:
+	- added the new renderers
+     
+	* arch/os2/video.c:
+	- implement usage of the new renderers (only R565 supported
+	yet)
+	- replaced most of the 'in code' #ifdefs by if statements
+   
+	* arch/os2/videoarch.h:
+	- added bDepth to canvas_t
+     
+	* raster/raster.c:
+	- made sure that video_canvas_refresh is never called with 
+	heights which exceeds the viewport area
+	- replaced a free/malloc combination by a realloc
+	- small simplifications to the code
+     
+	* utils.c:
+	- replaced to additions in stralloc by one
+
+2002-01-29  Dag Lem  <resid@nimrod.no>
+
+	* arch/unix/x11/gnome/gnomevideo.c
+	(video_arch_frame_buffer_alloc): Call new find_yuv_port
+	interface.
+
+	* arch/unix/x11/renderxv.c: Added support for UYVY, YUY2,
+	YVYU, and IYUV.
+
+	* arch/unix/x11/renderxv.c: New find_yuv_port interface
+	exporting the render function for the selected YUV format.
+
+	* arch/unix/x11/video.c (video_canvas_refresh): Pick up
+	another offscreen bug from the raster layer.
+
+	* arch/unix/x11/videoarch.h: Added xv_render to
+	video_canvas_s.
+
+	* arch/unix/x11/gnome/gnomevideo.c
+	(video_arch_frame_buffer_alloc): Call new find_yuv_port
+	interface.
+
+2002-01-29  Tibor Biczo  <crown@axelero.hu>
+
+	* arch/win32/main_exit.c (main_exit): Removed putchar call.
+
+	* sounddrv/sounddx.c, sounddrv/soundwmm.c (sound_suspend):
+	Fixed a bug where the stack was overwritten if stereo sound
+	was enabled.
+
+2002-01-29  John Selck  <graham@cruise.de>
+
+	* arch/win32/videoarch.h: Removed PIXEL *pixel_translate
+	from video_canvas_t definition and changed PIXEL *pixels
+	into BYTE *pixels.
+
+	* arch/win32/video.c: set_physical_colors() no longer updates
+	pixels and pixel_translate in video_canvas_t.
+	video_canvas_create() no longer allocates pixel_translate[].
+
+	* arch/win32/video.dsp: Added render1x1pal.c and
+	render2x2pal.c to project.
+
+2002-01-29  Dag Lem  <resid@nimrod.no>
+
+	* arch/unix/x11/gnome/gnomevideo.c: Added X Video handling.
+
+	* arch/unix/x11/gnome/ui.c (ui_create_status_bar): Glue fixed
+	size status bar to bottom.
+	(ui_open_canvas_window): Glue resizeable canvas to top.
+
+	* arch/unix/x11/video.c (video_canvas_resize): Don't attempt
+	to resize canvas for Xv.
+	(video_canvas_refresh): GDK X typecasts for Window and GC
+	passed to Xv.
+
+2002-01-28  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.8.7.
+
+	* vicii/vicii-mem.c (store_d019): Also remove pending raster
+	alarms that would be schedulded before the end of the store.
+
+	* plus4/ted-mem.c (ted09_store): Changed likewise.
+
+	* video/Makefile.am: Added new files.
+	
+2002-01-27  John Selck  <graham@cruise.de>
+
+	* arch/win32/resc64.rc: Renamed "Fast PAL" menu entry into
+	"PAL Emulation".
+
+	* arch/win32/resvic.rc: Renamed "Fast PAL" menu entry into
+	"PAL Emulation".
+ 
+	* video/video-color.c: Added global tables gamma_*[],
+	gamma_*_fac[] and color_*[].
+	Added video_render_setrawrgb() function.
+	Added video_render_initraw() function.
+	Added video_gamma() function.
+	video_convert_ycbcr_to_rgb() now uses video_gamma()
+	instead of it's own calculation routines.
+	video_calc_gammatable() now fills the gamma_*[] and
+	gamma_*_fac[] tables with the gamma corrected color
+	channels.
+ 
+	* video.h: Added prototypes for video_render_setrawrgb()
+	and video_render_initraw().
+ 
+	* arch/win32/video.c: set_physical_colors() now hands the
+	RGB color channels to the video_render_setrawrgb() function.
+ 
+	* video/render1x1pal.h: Added file.
+
+	* video/render1x1pal.c: Added file.
+
+	* video/render2x2pal.h: Added file.
+
+	* video/render2x2pal.c: Added file.
+
+	* video/video-render.c: Changed video_render_main() to call
+	pal renderers.
+ 
+	* video/video-resources.h: Removed pal_emulation variable and
+	added pal_scanlineshade and pal_mode to video_resources_t
+	definition.
+	Added defines for different pal rendermodes.
+
+	* video/video-resources.c: Removed initialisation routines for
+	pal_emulation and added init routines for pal_scanlineshade
+	and pal_mode.
+	Added resource variables "PALScanLineShade" and "PALMode".
+ 
+	* raster/raster.c: update_canvas() now enlarges the update area
+	a bit more when pal emulation is activated.
+
+2002-01-27  pottendo  <pottendo@utanet.at>
+
+	* arch/unix/x11/gnome/ui.c (ui_open_canvas_window): Added Ettore's
+	suggested fix for the BadMatch problem on Solaris. 
+
+	* arch/unix/x11/video.c (video_register_raster): Replaced
+	`USE_XF86_EXTENSIONS' with `USE_XF86_DGA2_EXTENSIONS'.
+	(video_canvas_refresh): Likewise.
+
+	* arch/unix/x11/gnome/ui.c: Fixed include for `vsiduiunix.h'.
+
+	* arch/unix/x11/gnome/uicolor.c (uicolor_alloc_color): Replace
+	PIXEL by BYTE.
+
+	* arch/unix/vsidui.c (vsid_ui_init): attach handlers to window;
+	this fixes the nonworking hotkeys for Xaw.
+
+2002-01-27  Thomas Bretz  <tbretz@physik.tu-muenchen.de>
+
+	* arch/os2/install.cmd:
+	- removed 'Evaluation'
+   
+	* arch/os2/makedist.cmd:
+	- changed to new paths
+	- added "del vice2.zip"
+   
+	* arch/os2/vac++/RESID.ICC:
+	- changed to version 0.13
+   
+	* arch/os2/video.c:
+	- removed wmvrndisabled from set_stretch_factor
+	- removed video_frame_buffer_*
+	- changed functions from using frame_buffer to draw_buffer
+   
+	* raster/raster.c, src/screenshot.h, src/video.h:
+	- added draw_buffer_height to calls of video_canvas_refresh
+	for OS/2 (needed to make 100% sure, that we don't read behind
+	the buffer, will be removed again as soon as the whole new
+	video/pal, etc stuff is working completely)
+
+2002-01-27  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.8.6.
+
+	* vicii/vicii.c (vic_ii_update_video_mode): Propagate changes
+	of multicolor mode one cycle faster.
+
+	* arch/unix/x11/video.c, arch/unix/x11/videoarch.h,
+	arch/unix/x11/ui-resources.c, arch/unix/x11/uihotkey.c,
+	arch/unix/x11/ui-cmdline-options.c: Fixed some includes.
+
+	* arch/unix/x11/xaw/ui.c, arch/unix/x11/gnome/ui.c
+	(ui_init_finish): Read selected display depth from resource.
+
+	* arch/unix/x11/video.c, arch/unix/x11/xaw/x11video.c,
+	arch/unix/x11/gnome/gnomevideo.c, arch/unix/x11/videoarch.h:
+	Removed unused depth parameter from `video_convert_func()'.
+
+	* arch/win32/msvc/config.h, arch/riscos/config.h,
+	arch/os2/config.h, raster/raster.c: Removed remaining
+	`VIDEO_DISPLAY_DEPTH' defines.
+
+	* arch/unix/x11/xaw/uicolor.c, arch/unix/x11/gnome/uicolor.c,
+	arch/unix/x11/video.c, arch/unix/x11/videoarch.h: Use depth
+	specified in the canvas.
+
+2002-01-27  Dag Lem  <resid@nimrod.no>
+
+	* arch/unix/x11/Makefile.am: Added renderXv.c, renderXv.h.
+
+	* arch/unix/x11/renderXv.c, arch/unix/x11/renderXv.h: New
+	files, X Video rendering.
+
+	* arch/unix/x11/video.c: Added X Video handling.
+
+	* arch/unix/x11/videoarch.h: Likewise.
+
+	* arch/unix/x11/xaw/x11video.c: Likewise.
+
+	* raster/raster.c (raster_init): Call video_register_raster
+	for X Video.
+
+	* video/video-color.c (video_calc_ycbcrtable): Build YUV table
+	for X Video rendering.
+
+2002-01-26  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.8.5.
+
+	* arch/unix/x11/video.c, arch/unix/x11/xaw/x11video.c,
+	arch/unix/x11/gnome/gnomevideo.c, video.h, raster/raster.c,
+	arch/unix/x11/videoarch.h, arch/win32/video.c,
+	arch/msdos/video.c, arch/riscos/video.c, arch/os2/video.c,
+	arch/beos/video.cc, raster/raster.h, screenshot.h,
+	arch/win32/videoarch.h, arch/msdos/videoarch.h,
+	arch/beos/videoarch.h, arch/msdos/statusbar.h: Removed
+	redundant video frame buffer API.
+
+	arch/unix/x11/xaw/uicolor.c, arch/unix/x11/gnome/uicolor.c,
+	uicolor.h, color.c, arch/unix/x11/videoarch.h,
+	arch/unix/x11/video.c, arch/unix/x11/xaw/x11video.c,
+	arch/unix/types.h, arch/win32/types.h, arch/msdos/types.h,
+	arch/riscos/types.h, arch/os2/types.h, arch/beos/types.h:
+	Removed obsolete `PIXEL' support.
+
+2002-01-25  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.8.4.
+
+	* raster/raster.c, raster/raster.h, raster-sprite-status.h,
+	video.h, arch/unix/x11/video.c, arch/win32/video.c,
+	arch/msdos/video.c, arch/riscos/video.c, arch/os2/video.c,
+	arch/beos/video.cc, vicii/vicii-draw.c, vicii/vicii-sprites.c,
+	crtc/crtc-draw.c, vic20/vic-draw.c, vic20/vic.h,
+	plus4/ted-draw.c, screenshot.h, arch/unix/x11/xaw/ui.c,
+	arch/unix/x11/gnome/ui.c, arch/unix/x11/xaw/uicolor.c,
+	arch/unix/ui.h, uicolor.h, screenshot.c, color.c, color.h:
+	Removed support for variable pixel size as the draw buffer
+	uses 8bpp all the time now.
+
+2002-01-24  Dag Lem  <resid@nimrod.no>
+
+	* arch/unix/plus4ui.c: Removed #if VIDEO_DISPLAY_DEPTH == 0
+
+	* arch/unix/uivicii.c: Likewise
+
+	* arch/unix/x11/gnome/uicolor.c: Likewise
+
+	* arch/unix/x11/xaw/uicolor.c: Likewise
+
+	* arch/unix/x11/video.c: Make VIDEO_DISPLAY_DEPTH != 0 almost
+	work.
+
+	* arch/unix/x11/videoarch.c: Removed VIDEO_FRAME_BUFFER_xxx
+	macros.
+
+2002-01-24  Andreas Matthies  <andreas.matthies@gmx.net>
+
+	* arch/beos/videoarch.h,video.cc, msdos/videoarch.h,video.c:
+	Removed obsolete video_frame_buffer stuff. Adapted call off
+	video_render_main.
+
+	* arch/win32/plus4.dsp: Updated files for plus4 library.
+
+	* arch/win32/vice.dsw: xplus4 doesn't depent on sid and resid.
+
+2002-01-22  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.8.3.
+
+	* arch/win32/video.c (video_canvas_refresh, real_refresh): Use
+	draw buffer.
+	(video_frame_buffer_alloc, video_frame_buffer_free,
+	video_frame_buffer_clear): Removed temp frame buffer code.
+	(video_frame_buffer_translate): Removed.
+
+	* arch/win32/fullscreen.c (SwitchToFullscreenMode,
+	SwitchToWindowedMode): Removed call to
+	`video_frame_buffer_translate()'.
+
+	* arch/win32/videoarch.h: Removed `VIDEO_FRAME_BUFFER_*'
+	macros.
+
+	* plus4/plus4mem.c (fdxx_read, fdxx_store): Only call ACIA if
+	the arch supports RS232.
+
+2002-01-22  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.8.2.
+
+	* raster/raster.c, vicii/vicii-draw.c, vdc/vdc-draw.c,
+	crtc/crtc-draw.c, vic20/vic-draw.c, plus4/ted-draw.c,
+	arch/unix/x11/videoarch.h, arch/riscos/videoarch.h, video.h,
+	arch/unix/x11/video.c, arch/win32/video.c, arch/msdos/video.c,
+	arch/riscos/video.c, arch/os2/unused/video_gpi.h,
+	arch/os2/unused/video_gpi.c, arch/os2/video.c: Allocate draw
+	buffer in the raster layer instead of allocating it the
+	architecture dependent code.
+
+	arch/unix/x11/video.c (video_canvas_refresh, convert_8to8,
+	convert_8to16, convert_8to32, convert_8to1_dither,
+	convert_8toall): Changed to new API.
+
+	* screenshot.h: Added new members to `screenshot_t'.
+
+	* screenshot.c (screenshot_line_data): Use draw buffer.
+
+	* raster/raster.c, raster/raster.h, arch/win32/video.c,
+	vicii/vicii.c, vdc/vdc.c, crtc/crtc.c, vic20/vic.c,
+	plus4/ted.c: `raster_set_geometry()' takes separate extra
+	border offsets for the left and right side now.
+
+2002-01-21  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+        * Version 1.8.1.
+
+	* vicii/vicii-draw.c (get_mc_text, get_ext_text): Fixed color
+	register usage.
+
+	* video/video-render.c, raster/raster.c, vicii/vicii-draw.c,
+	vicii/vicii-sprites.c, crtc/crtc-draw.c, vic20/vic-draw.c,
+	vic20/vic-mem.c, vic20/vic.c, vic20/vic.h, plus4/ted-draw.c,
+	arch/win32/video.c, arch/unix/x11/gnome/gnomevideo.c,
+	arch/unix/x11/xaw/x11video.c, vice.h: Removed chip specific
+	double size modes.
+
+	* plus4/plus4mem.c, plus4/plus4mem.c (mem_load_3plus1lo,
+	mem_load_3plus1hi): New functions.
+	(mem_load): Load 3plus1 ROM images.
+	(fdxx_read, fdxx_store): Fixed function names, added ACIA
+	register support.
+
+	* plus4/plus4pio2.c, plus4/plus4pio2.h: New files.
+	Renamed from plustia1.c and plustia1.h, fixed function names.
+
+	* plus4/plus4acia.c, plus4/plus4acia.h: New files.
+
+	* plus4/ted-mem.c (ted08_store): Fixed function names.
+
+	* plus4/plus4-resources.c: New resources for 3plus1 ROMs.
+
+	* plus4/plus4-cmdline-options.c: New command line options for
+	3plus1 ROMs.
+
+	* plus4/plus4.c: Added ACIA resource, command line options,
+	initialization and reset functions.
+
+	* plus4/Makefile.am: Added new files.
+
+	* drive/drive-resources.c: New resources for 1551 ROM.
+
+	* drive/drive-cmdline-options.c_ New command line options for
+	1551 ROM.
+
+	* drive/drive.c (drive_load_1551): New function.
+	(drive_set_disk_drive_type): Load 1551 ROM.
+
+	* drive/drive.h: Added new 1551 constants and prototypes.
+
