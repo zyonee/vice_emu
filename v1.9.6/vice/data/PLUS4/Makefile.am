@@ -1,0 +1,15 @@
+plus4dir = $(prefix)/lib/vice/PLUS4
+
+plus4_DATA = \
+	3plus1hi \
+	3plus1lo \
+	basic \
+	kernal \
+	vice.vpl \
+        os2.vkm \
+	default.vkm \
+	default.vpl \
+	default.vrs \
+	position.vkm
+
+EXTRA_DIST = $(plus4_DATA)
