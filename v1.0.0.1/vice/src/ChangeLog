@@ -1,0 +1,162 @@
+1999-04-25  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* Version 1.0.0.1
+
+	* Makefile.am, arch/unix/Makefile.am, arch/unix/xaw/Makefile.am,
+	arch/win32/Makefile.am, arch/msdos/Makefile.am,
+	arch/riscos/Makefile.am: Removed `PREFIX' from `INCLUDES'.
+
+	* arch/unix/archdep.h: #include "vice.h".
+
+	* arch/unix/xaw/ui.c, arch/unix/xaw/ui.h
+	(ui_is_fullscreen_available): Fixed prototype.
+
+	* imagecontents.c (open_image): Also include d80 and d82 disk
+	images.
+	* arch/msdos/menudefs.c (attach_disk_callback): Likewise.
+	* arch/win32/ui.c (handle_wm_command): Likewise.
+
+1998-04-25  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* Makefile.am: add piacore.c, piacore.h, remove pia-tmpl.c
+
+	* pet/Makefile.am: remove petpia*.def and builf rules for it.
+
+	* pet/petpia1.c, pet/petpia2.c: basically a copy of the old .def
+	files, with names/defs changed to fit the new piacore file.
+	includes piacore.c at the end
+
+	* pet/petpia1.def, pet/petpia2.def: removed
+
+	* pia-tmpl.c: removed
+
+	* piacore.c, piacore.h: new files made out of pia-tmpl.c
+
+1998-04-25  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* Makefile.am: add tpicore.c, tpicore.h, remove tpi-tmpl.c
+
+	* c64/Makefile.am: remove c64tpi*.def and builf rules for it.
+	* cbm2/Makefile.am: remove c610tpi*.def and builf rules for it.
+
+	* c64/c64tpi.c, cbm2/c610tpi1.c, cbm2/c610tpi2.c: basically a copy 
+	of the old .def files, with names/defs changed to fit the new 
+	tpicore file. includes tpicore.c at the end
+
+	* c64/c64tpi.def, cbm2/c610tpi1.def, cbm2/c610tpi2.def: removed
+
+	* tpi-tmpl.c: removed
+
+	* tpicore.c, tpicore.h: new files made out of tpi-tmpl.c
+
+1998-04-25  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* Makefile.am: remove bogus tpi-tmpl.c, add tpicore.c and tpicore.h
+
+	* aciacore.c (acia_last_read): new variable to save value last
+	read, needed for RMW cycles.
+	(store_myacia): add handling of rmw_flag
+	(read_myacia): save value in acia_last_read.
+
+	* c64/c64acia1.c, cbm2/c610acia1.c, pet/petacia.c (mycpu_rmw_flag):
+	new define 
+
+	* ciacore.c (read_mycia): move PRE_READ_CIA from before RMW flag
+	handling to behind so that it always gets called in the right
+	order clk-wise.
+
+	* drive/via1drive0.c, drive/via1drive1.c, drive/via2drive0.c,
+	drive/via2drive1.c, pet/petvia.c, vic20/vic20via1.c,
+	vic20/vic20via2.c (myrmwf): removed.
+	(mycpu_rmw_flag): new define
+
+	* viacore.c (via_read_clk, via_read_offset): new variables to 
+	handle opcode fetches in the I/O area
+	(via_last_read): new variable for RMW handling
+	(reset_myvia): use proper name for log name.
+	set via_read_clk to 0
+	(store_myvia): add handling of RMW flag
+	(read_myvia): add handling of opcode fetch in I/O area.
+	Save value read in via_last_read variable.
+	(clk_overflow_callback): handle via_read_clk
+
+1998-04-25  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* c128/c128.c, c64/c64.c (machine_init): add call to tpi_init()
+
+	* c64/c64tpi.c, cbm2/c610tpi1.c, cbm2/c610tpi2.c (mytpi_init):
+	new define
+
+	* c64/c64tpi.h (tpi_init): new prototype
+	* cbm2/c610tpi.h: likewise
+
+	* cbm2/c610.c (machine_init): call tpi1_init, tpi2_init
+
+	* /pet/pet.c (machine_init): call pia1_init, pia2_init
+
+	* pet/petpia.h (pia1_init, pia2_init): new prototypes
+
+	* pet/petpia1.c, pet/petpia2.c (mypia_init): new define
+
+	* ciacore.c (mycia_init, reset_mycia): move log init from reset 
+	to init.
+	* viacore.c: likewise
+
+	* piacore.c (mypia_init): new function, move log here from reset
+
+	* tpicore.c (mytpi_init): new function, move log here from reset
+
+1998-04-25  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* c64/c64tpi.c: include maincpu.h
+	(mycpu_rmw_flag, myclk): new defines
+	* cbm2/c610tpi1.c: likewise
+	* cbm2/c610tpi2.c: likewise
+	* pet/petpia1.c: likewise
+	* pet/petpia2.c: likewise
+
+	* piacore.c (pia_last_read): new variable to handle RMW cycles
+	(store_mypia): handle RMW cycles
+	(read_mypia): save value read in pia_last_read
+
+	* tpicore.c (tpi_last_read): new variable to handle RMW cycles
+	(store_mytpi): handle RMW cycles
+	(read_mytpi): save value read in tpi_last_read
+
+1998-04-25  André Fachat  <a.fachat@physik.tu-chemnitz.de>
+
+	* c1541.c (Legal_formats): fix number of blocks for 8050.
+	(command_list): add description of 8050/8250 disks
+	(open_image): recognize D80/D82 images
+	(format_cmd): recognize D80/D82 image type for formats
+
+	* fs_cbm.h (BAM_BIT_MAP_8050, BAM_BIT_MAP_8250, BAM_VERSION_8050,
+	BAM_VERSION_8250, ...) add/fix various defines for the 8050/8250
+	format types.
+	(hdrinfo): add flags for d80/d82 format
+
+	* vdrive.c (floppy_free_block_count): handle 8050/8250 BAMs
+	(vdrive_command_validate): fix (maximum) BAM size
+	(vdrive_command_format): use some common routines only if not
+	8x50 disk. Build complete new BAM chain for 8x50 disks.
+	(vdrive_dir_find_next_slot): handle 8x50 disks when looking
+	for a new (empty) directory block.
+	(vdrive_calculate_disk_half, vdrive_get_max_sectors,
+	vdrive_bam_sector_free): handle 8x50 disks
+	(vdrive_bam_calculate_track): handle 8x50 BAM when calculating 
+	the track field position in the BAM
+	(vdrive_bam_clear_all): also clear 8x50 BAM
+	(vdrive_bam_read_bam, vdrive_bam_write_bam): read/write 8x50 BAM 
+	as well.
+	(attach_floppy_image): recognize D80/D82 images
+	(get_std80_header, get_std82_header): new fucntions. Do sanity
+	check on to be attached image
+	(check_header): clear d80/d82 flags in header; check file length
+	for d80/d82 images
+	(set_disk_geometry): set appropriate values for 8x50 images
+	
+	* vdrive.h (struct _DRIVE): adjust maximum BAM size
+	(D80_FILE_SIZE, D82_FILE_SIZE, IS_D80_LEN, IS_D82_LEN):
+	add d80/d82 file sizes and check macros
+	(DISK_IMAGE_TYPE_D80, DISK_IMAGE_TYPE_D82): new defines
+
