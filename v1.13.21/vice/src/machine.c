@@ -1,0 +1,220 @@
+/*
+ * machine.c  - Interface to machine-specific implementations.
+ *
+ * Written by
+ *  Andreas Boose <viceteam@t-online.de>
+ *
+ * This file is part of VICE, the Versatile Commodore Emulator.
+ * See README for copyright notice.
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307  USA.
+ *
+ */
+
+#include "vice.h"
+
+#include <stdarg.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+#include "alarm.h"
+#include "archdep.h"
+#include "attach.h"
+#include "autostart.h"
+#include "clkguard.h"
+#include "cmdline.h"
+#include "console.h"
+#include "diskimage.h"
+#include "drive.h"
+#include "event.h"
+#include "fliplist.h"
+#include "fsdevice.h"
+#include "gfxoutput.h"
+#include "interrupt.h"
+#include "kbdbuf.h"
+#include "keyboard.h"
+#include "lib.h"
+#include "log.h"
+#include "machine.h"
+#include "maincpu.h"
+#include "mem.h"
+#include "monitor.h"
+#include "printer.h"
+#include "resources.h"
+#include "serial.h"
+#include "sound.h"
+#include "sysfile.h"
+#include "tape.h"
+#include "traps.h"
+#include "types.h"
+#include "ui.h"
+#include "video.h"
+#include "vsync.h"
+
+#ifdef HAS_JOYSTICK
+#include "joy.h"
+#endif
+
+
+unsigned int machine_keymap_index;
+
+
+unsigned int machine_jam(const char *format, ...)
+{
+    char *str;
+    va_list ap;
+    ui_jam_action_t ret;
+
+    va_start(ap, format);
+
+    str = lib_mvsprintf(format, ap);
+    ret = ui_jam_dialog(str);
+    lib_free(str);
+
+    switch (ret) {
+      case UI_JAM_RESET:
+        return JAM_RESET;
+      case UI_JAM_HARD_RESET:
+        return JAM_HARD_RESET;
+      case UI_JAM_MONITOR:
+        return JAM_MONITOR;
+    }
+
+    return JAM_NONE;
+}
+
+void machine_trigger_reset(const unsigned int mode)
+{
+    switch (mode) {
+      case MACHINE_RESET_MODE_HARD:
+        mem_powerup();
+        machine_specific_powerup();
+        /* Fall through.  */
+      case MACHINE_RESET_MODE_SOFT:
+        maincpu_trigger_reset();
+        break;
+    }
+}
+
+void machine_reset(void)
+{
+    log_message(LOG_DEFAULT, "Main CPU: RESET.");
+
+    /* Do machine-specific initialization.  */
+    machine_specific_reset();
+
+    autostart_reset();
+
+    mem_initialize_memory();
+
+    event_playback_reset_ack();
+
+    vsync_suspend_speed_eval();
+}
+
+static void machine_maincpu_clk_overflow_callback(CLOCK sub, void *data)
+{
+    alarm_context_time_warp(maincpu_alarm_context, sub, -1);
+    interrupt_cpu_status_time_warp(maincpu_int_status, sub, -1);
+}
+
+void machine_maincpu_init(void)
+{
+    maincpu_init();
+    maincpu_monitor_interface = (monitor_interface_t *)lib_malloc(
+                                sizeof(monitor_interface_t));
+}
+
+void machine_early_init(void)
+{
+    maincpu_alarm_context = alarm_context_new("MainCPU");
+
+    maincpu_clk_guard = clk_guard_new(&maincpu_clk, CLOCK_MAX
+                                      - CLKGUARD_SUB_MIN);
+
+    clk_guard_add_callback(maincpu_clk_guard,
+                           machine_maincpu_clk_overflow_callback, NULL);
+}
+
+static void machine_maincpu_shutdown(void)
+{
+    if (maincpu_alarm_context != NULL)
+        alarm_context_destroy(maincpu_alarm_context);
+    if (maincpu_clk_guard != NULL)
+        clk_guard_destroy(maincpu_clk_guard);
+
+    lib_free(maincpu_monitor_interface);
+    maincpu_shutdown();
+}
+
+void machine_shutdown(void)
+{
+    machine_specific_shutdown();
+
+#ifdef HAS_JOYSTICK
+    joystick_close();
+#endif
+
+    sound_close();
+
+    printer_shutdown();
+    gfxoutput_shutdown();
+
+    flip_shutdown();
+    file_system_shutdown();
+
+    tape_shutdown();
+
+    traps_shutdown();
+
+    serial_shutdown();
+
+    kbd_buf_shutdown();
+    keyboard_shutdown();
+
+    monitor_shutdown();
+
+    console_close_all();
+
+    cmdline_shutdown();
+
+    resources_shutdown();
+
+    drive_shutdown();
+
+    machine_maincpu_shutdown();
+
+    video_shutdown();
+
+    ui_shutdown();
+
+    sysfile_shutdown();
+
+    log_close_all();
+
+    event_resources_shutdown();
+    fsdevice_resources_shutdown();
+    disk_image_resources_shutdown();
+    machine_resources_shutdown();
+    sysfile_resources_shutdown();
+    ui_resources_shutdown();
+    log_resources_shutdown();
+
+    archdep_shutdown();
+
+    lib_debug_check();
+}
+
