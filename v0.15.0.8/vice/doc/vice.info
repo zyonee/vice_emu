@@ -1,0 +1,145 @@
+This is Info file vice.info, produced by Makeinfo version 1.67 from the
+input file vice.texi.
+
+START-INFO-DIR-ENTRY
+* VICE: (vice).        VICE, the Versatile Commodore Emulator.
+END-INFO-DIR-ENTRY
+
+   VICE Manual
+
+   Permission is granted to make and distribute verbatim copies of this
+manual provided the copyright notice and this permission notice are
+preserved on all copies.
+
+   Permission is granted to copy and distribute modified versions of
+this manual under the conditions for verbatim copying, provided that
+the entire resulting derived work is distributed under the terms of a
+permission notice identical to this one.
+
+
+Indirect:
+vice.info-1: 631
+vice.info-2: 49946
+vice.info-3: 99227
+vice.info-4: 148073
+
+Tag Table:
+(Indirect)
+Node: Top631
+Node: License6860
+Node: Preface26030
+Node: C64 emulator features27515
+Node: C128 emulator features28161
+Node: VIC20 emulator features28597
+Node: PET emulator features29133
+Node: Keyboard emulation31831
+Node: Joystick emulation33909
+Node: Disk drive emulation34626
+Node: File formats37289
+Node: Common problems38089
+Node: Sound problems38357
+Node: Shared memory problems39253
+Node: Usage40489
+Node: Command-line initialization41253
+Node: Command-line autostart42262
+Node: System files43251
+Node: ROM files45085
+Node: Keymap files47213
+Node: Palette files49946
+Node: Basics51181
+Node: Emulation window51785
+Node: Menus53061
+Node: Help54636
+Node: File Selector55291
+Node: Disk and tape images56545
+Node: Previewing contents58748
+Node: Autostart59483
+Node: Compressed files60534
+Node: Zipcode and Lynx61335
+Node: Reset62678
+Node: Settings and resources63419
+Node: Resource files65609
+Node: Resources and command-line67139
+Node: Performance settings68383
+Node: Performance resources70011
+Node: Performance options70540
+Node: Video settings71129
+Node: Video resources72674
+Node: Video options73949
+Node: Keyboard settings74809
+Node: Keyboard resources75519
+Node: Keyboard options76069
+Node: Sound settings76559
+Node: Sound resources78439
+Node: Sound options81050
+Node: 1541 settings81753
+Node: 1541 resources85866
+Node: 1541 options86843
+Node: Peripheral settings87744
+Node: File system device settings88421
+Node: File system device resources89503
+Node: File system device options90490
+Node: Printer settings90927
+Node: Printer resources92233
+Node: Printer options92872
+Node: No kernal traps93537
+Node: No traps resources94069
+Node: No traps options94338
+Node: Misc settings94606
+Node: Misc resources94879
+Node: Misc options96423
+Node: Machine-specific features96918
+Node: C64/128-specific97443
+Node: C64 cartridges98225
+Node: VIC-II settings99227
+Node: VIC-II resources100627
+Node: VIC-II options101132
+Node: SID settings101674
+Node: SID resources102355
+Node: SID options102689
+Node: C64 I/O extension settings103049
+Node: C64 I/O extension resources104533
+Node: C64 I/O extension options105055
+Node: RS232 settings105587
+Node: RS232 resources106554
+Node: RS232 options107558
+Node: C64/128 system ROM settings108153
+Node: C64/128 system ROM resources108532
+Node: C64/128 system ROM options109741
+Node: VIC20-specific110251
+Node: VIC20 cartridges110657
+Node: VIC20 memory expansions111590
+Node: VIC20 memconf resources113389
+Node: VIC20 memconf options113853
+Node: VIC20 system ROM settings114972
+Node: VIC20 system ROM resources115345
+Node: VIC20 system ROM options115822
+Node: PET-specific116255
+Node: PET model116603
+Node: PET diagnostic pin117759
+Node: PET colors118080
+Node: Monitor118640
+Node: Terminology119498
+Node: Machine state commands121353
+Node: Memory commands122165
+Node: Assembly commands124115
+Node: Checkpoint commands124863
+Node: General commands127073
+Node: Disk commands127925
+Node: Command file commands128813
+Node: Label commands129336
+Node: Miscellaneous commands130226
+Node: c1541130627
+Node: c1541 commands and options131645
+Node: Acknowledgments134153
+Node: Copyright141123
+Node: Contacts142221
+Node: Home page142727
+Node: Sending feedback143277
+Node: Contributing145938
+Node: Newsgroups147127
+Node: FAQs you should read147758
+Node: Concept Index148073
+Node: Resource Index156977
+
+End Tag Table
