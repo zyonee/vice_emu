@@ -1,0 +1,47 @@
+2002-01-21  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+        * Version 1.8.1.
+
+	* vicii/vicii-draw.c (get_mc_text, get_ext_text): Fixed color
+	register usage.
+
+	* video/video-render.c, raster/raster.c, vicii/vicii-draw.c,
+	vicii/vicii-sprites.c, crtc/crtc-draw.c, vic20/vic-draw.c,
+	vic20/vic-mem.c, vic20/vic.c, vic20/vic.h, plus4/ted-draw.c,
+	arch/win32/video.c, arch/unix/x11/gnome/gnomevideo.c,
+	arch/unix/x11/xaw/x11video.c, vice.h: Removed chip specific
+	double size modes.
+
+	* plus4/plus4mem.c, plus4/plus4mem.c (mem_load_3plus1lo,
+	mem_load_3plus1hi): New functions.
+	(mem_load): Load 3plus1 ROM images.
+	(fdxx_read, fdxx_store): Fixed function names, added ACIA
+	register support.
+
+	* plus4/plus4pio2.c, plus4/plus4pio2.h: New files.
+	Renamed from plustia1.c and plustia1.h, fixed function names.
+
+	* plus4/plus4acia.c, plus4/plus4acia.h: New files.
+
+	* plus4/ted-mem.c (ted08_store): Fixed function names.
+
+	* plus4/plus4-resources.c: New resources for 3plus1 ROMs.
+
+	* plus4/plus4-cmdline-options.c: New command line options for
+	3plus1 ROMs.
+
+	* plus4/plus4.c: Added ACIA resource, command line options,
+	initialization and reset functions.
+
+	* plus4/Makefile.am: Added new files.
+
+	* drive/drive-resources.c: New resources for 1551 ROM.
+
+	* drive/drive-cmdline-options.c_ New command line options for
+	1551 ROM.
+
+	* drive/drive.c (drive_load_1551): New function.
+	(drive_set_disk_drive_type): Load 1551 ROM.
+
+	* drive/drive.h: Added new 1551 constants and prototypes.
+
