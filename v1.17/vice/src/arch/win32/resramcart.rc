@@ -1,0 +1,126 @@
+// RAMCART specific resources.
+//
+
+#include "config.h"
+#include "res.h"
+#include "rescommon.h"
+
+#pragma code_page(28591)
+
+// original and default ENGLISH version of dialog
+
+IDD_RAMCART_SETTINGS_DIALOG DIALOG DISCARDABLE  0, 0, 180, 110
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+FONT 8, "MS Sans Serif"
+BEGIN
+    AUTOCHECKBOX    "", IDC_RAMCART_ENABLE,
+                    7, 7, 75, 10, BS_AUTOCHECKBOX | WS_TABSTOP
+    AUTOCHECKBOX    "", IDC_RAMCART_RO,
+                    87, 7, 50, 10, BS_AUTOCHECKBOX | WS_TABSTOP
+    LTEXT           "",
+                    IDC_RAMCART_SIZE_LABEL, 9, 24, 53, 8
+    COMBOBOX        IDC_RAMCART_SIZE, 66, 22, 50, 80, CBS_DROPDOWNLIST |
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "",
+                    IDC_RAMCART_FILE_LABEL, 9, 44, 50, 8
+    PUSHBUTTON      "", IDC_RAMCART_BROWSE, 66, 42, 50, 14, 0
+    EDITTEXT        IDC_RAMCART_FILE, 9, 58, 160, 12, WS_TABSTOP
+
+    DEFPUSHBUTTON   "", IDOK, 30, 90, 50, 14, WS_TABSTOP
+    PUSHBUTTON      "", IDCANCEL, 90, 90, 50, 14, WS_TABSTOP
+END
+
+// -----------------------------------------------------------------------------
+
+// original and default ENGLISH text
+
+STRINGTABLE
+LANGUAGE LANG_ENGLISH, SUBLANG_NEUTRAL
+BEGIN
+    IDS_RAMCART_CAPTION         "RAMCART Settings"
+    IDS_RAMCART_ENABLE          "&Enable RAMCART"
+    IDS_RAMCART_READONLY        "&Read Only"
+    IDS_RAMCART_SIZE            "RAMCART size"
+    IDS_RAMCART_FILE            "RAMCART file"
+    IDS_RAMCART_SELECT_FILE     "Select file for RAMCART"
+END
+
+// GERMAN text
+
+STRINGTABLE
+LANGUAGE LANG_GERMAN, SUBLANG_NEUTRAL
+BEGIN
+    IDS_RAMCART_CAPTION         "RAMCART Einstellungen"
+    IDS_RAMCART_ENABLE          "RAMCART aktivi&eren"
+    IDS_RAMCART_READONLY        "Sch&reibgschutz"
+    IDS_RAMCART_SIZE            "RAMCART Größe"
+    IDS_RAMCART_FILE            "RAMCART Datei"
+    IDS_RAMCART_SELECT_FILE     "Datei für RAMCART selektieren"
+END
+
+// FRENCH text
+
+STRINGTABLE
+LANGUAGE LANG_FRENCH, SUBLANG_NEUTRAL
+BEGIN
+    IDS_RAMCART_CAPTION         "Paramètres RAMCART"
+    IDS_RAMCART_ENABLE          "&Activer RAMCART"
+    IDS_RAMCART_READONLY        "&lecture seuel"
+    IDS_RAMCART_SIZE            "Taille du RAMCART"
+    IDS_RAMCART_FILE            "RAMCART image"
+    IDS_RAMCART_SELECT_FILE     "Select file for RAMCART"
+END
+
+// ITALIAN text
+
+STRINGTABLE
+LANGUAGE LANG_ITALIAN, SUBLANG_NEUTRAL
+BEGIN
+    IDS_RAMCART_CAPTION         "Impostazioni del RAMCART"
+    IDS_RAMCART_ENABLE          "&Attiva RAMCART"
+    IDS_RAMCART_READONLY        "&sola lettura"
+    IDS_RAMCART_SIZE            "Dimensione"
+    IDS_RAMCART_FILE            "RAMCART file"
+    IDS_RAMCART_SELECT_FILE     "Select file for RAMCART"
+END
+
+// DUTCH text
+
+STRINGTABLE
+LANGUAGE LANG_DUTCH, SUBLANG_NEUTRAL
+BEGIN
+    IDS_RAMCART_CAPTION         "RAMCART Instellingen"
+    IDS_RAMCART_ENABLE          "&Aktiveer RAMCART"
+    IDS_RAMCART_READONLY        "Alleen &Lezen"
+    IDS_RAMCART_SIZE            "RAMCART grootte"
+    IDS_RAMCART_FILE            "RAMCART bestand"
+    IDS_RAMCART_SELECT_FILE     "Selecteer bestand voor RAMCART"
+END
+
+// POLISH text
+
+#pragma code_page(28592)
+STRINGTABLE
+LANGUAGE LANG_POLISH, SUBLANG_NEUTRAL
+BEGIN
+    IDS_RAMCART_CAPTION         "Ustawienia RAMCART"
+    IDS_RAMCART_ENABLE          "&W³±cz RAMCART"
+    IDS_RAMCART_READONLY        "&Dostêp tylko"
+    IDS_RAMCART_SIZE            "Rozmiar RAMCART"
+    IDS_RAMCART_FILE            "RAMCART pliku"
+    IDS_RAMCART_SELECT_FILE     "Select file for RAMCART"
+END
+#pragma code_page(28591)
+
+// SWEDISH text
+
+STRINGTABLE
+LANGUAGE LANG_SWEDISH, SUBLANG_NEUTRAL
+BEGIN
+    IDS_RAMCART_CAPTION         "RAMCART-inställningar"
+    IDS_RAMCART_ENABLE          "&Aktivera RAMCART"
+    IDS_RAMCART_READONLY        "&Endast läsåtkomst"
+    IDS_RAMCART_SIZE            "Storlek på RAMCART"
+    IDS_RAMCART_FILE            "RAMCART-fil"
+    IDS_RAMCART_SELECT_FILE     "Välj fil för RAMCART"
+END

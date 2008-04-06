@@ -1,0 +1,118 @@
+// VICII specific resources.
+//
+
+#include "config.h"
+#include "res.h"
+#include "rescommon.h"
+
+#pragma code_page(28591)
+
+// original and default ENGLISH version of dialog
+
+IDD_VICII_DIALOG DIALOG DISCARDABLE 0, 0, 145, 90
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "", IDC_VICII_SPRITEGROUP, 10, 5, 125, 40
+    AUTOCHECKBOX    "", IDC_TOGGLE_VICII_SSC,
+                    15, 15, 115, 10, BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP
+    AUTOCHECKBOX    "", IDC_TOGGLE_VICII_SBC,
+                    15, 30, 115, 10, BS_AUTOCHECKBOX | WS_TABSTOP
+    AUTOCHECKBOX    "", IDC_TOGGLE_VICII_NEWLUM,
+                    15, 50, 115, 10, BS_AUTOCHECKBOX | WS_TABSTOP
+
+    DEFPUSHBUTTON   "", IDOK, 15, 70, 50, 14, WS_TABSTOP
+    PUSHBUTTON      "", IDCANCEL, 70, 70, 50, 14, WS_TABSTOP
+END
+
+// original and default ENGLISH text
+
+STRINGTABLE
+LANGUAGE LANG_ENGLISH, SUBLANG_NEUTRAL
+BEGIN
+    IDS_VICII_CAPTION           "VIC-II Settings"
+    IDS_VICII_SPRITEGROUP       "Sprite Collisions"
+    IDS_VICII_SPRITECOLL        "Sprite-&sprite collisions"
+    IDS_VICII_BACKCOLL          "Sprite-background &collisions"
+    IDS_VICII_LUMINANCE         "New Luminances"
+END
+
+
+// GERMAN text
+
+STRINGTABLE
+LANGUAGE LANG_GERMAN, SUBLANG_NEUTRAL
+BEGIN
+    IDS_VICII_CAPTION           "VIC-II Einstellungen"
+    IDS_VICII_SPRITEGROUP       "Sprite Kollisionen"
+    IDS_VICII_SPRITECOLL        "Sprite-&sprite Kollisionen"
+    IDS_VICII_BACKCOLL          "Sprite-Hintergrund &Kollisionen"
+    IDS_VICII_LUMINANCE         "Neue Helligkeitsemulation"
+END
+
+
+// FRENCH text
+
+STRINGTABLE
+LANGUAGE LANG_FRENCH, SUBLANG_NEUTRAL
+BEGIN
+    IDS_VICII_CAPTION           "Paramètres VIC-II"
+    IDS_VICII_SPRITEGROUP       "Collisions sprite"
+    IDS_VICII_SPRITECOLL        "Collisions sprite-&sprite"
+    IDS_VICII_BACKCOLL          "&Collisions sprite-arrière-plan"
+    IDS_VICII_LUMINANCE         "Nouvelles luminescences"
+END
+
+
+// ITALIAN text
+
+STRINGTABLE
+LANGUAGE LANG_ITALIAN, SUBLANG_NEUTRAL
+BEGIN
+    IDS_VICII_CAPTION           "Impostazioni del VIC-II"
+    IDS_VICII_SPRITEGROUP       "Collisioni sprite"
+    IDS_VICII_SPRITECOLL        "Collisioni sprite-&sprite"
+    IDS_VICII_BACKCOLL          "&Collisioni sprite-sfondo"
+    IDS_VICII_LUMINANCE         "Nuove luminanze"
+END
+
+
+// DUTCH text
+
+STRINGTABLE
+LANGUAGE LANG_DUTCH, SUBLANG_NEUTRAL
+BEGIN
+    IDS_VICII_CAPTION           "VIC-II Instellingen"
+    IDS_VICII_SPRITEGROUP       "Sprite Botsingen"
+    IDS_VICII_SPRITECOLL        "Sprite-&sprite botsingen"
+    IDS_VICII_BACKCOLL          "Sprite-achtergrond &botsingen"
+    IDS_VICII_LUMINANCE         "Nieuwe kleuren"
+END
+
+
+// POLISH text
+
+#pragma code_page(28592)
+STRINGTABLE
+LANGUAGE LANG_POLISH, SUBLANG_NEUTRAL
+BEGIN
+    IDS_VICII_CAPTION           "Ustawienia VIC-II"
+    IDS_VICII_SPRITEGROUP       "Kolizje duszków"
+    IDS_VICII_SPRITECOLL        "Kolizje du&szków"
+    IDS_VICII_BACKCOLL          "&Kolizje duszków z t³em"
+    IDS_VICII_LUMINANCE         "Nowa jaskrawo¶æ"
+END
+#pragma code_page(28591)
+
+
+// SWEDISH text
+
+STRINGTABLE
+LANGUAGE LANG_SWEDISH, SUBLANG_NEUTRAL
+BEGIN
+    IDS_VICII_CAPTION           "VIC-II-inställningar"
+    IDS_VICII_SPRITEGROUP       "Spritekollisioner"
+    IDS_VICII_SPRITECOLL        "Sprite-&sprite-kollisioner"
+    IDS_VICII_BACKCOLL          "Sprite-&bakgrundkollisioner"
+    IDS_VICII_LUMINANCE         "Nya ljusstyrkor"
+END
