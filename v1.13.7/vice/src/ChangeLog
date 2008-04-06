@@ -1,0 +1,377 @@
+2003-10-18  Andreas Boose  <viceteam@t-online.de>
+
+	* Version 1.13.7.
+
+	* cbm2/cbm2tpi2.c: #include "lib.h".
+
+	* arch/unix/uited.c: Removed unused code.
+
+2003-10-17  Andreas Matthies  <andreas.matthies@gmx.net>
+
+	* arch/win32/res.h, resc64.rs, ui.c, uisnapshot.c,
+	uisnapshot.h: Implement a provisional UI for movie recording.
+
+	* sound.c (sound_open): Avoid recording and playback device
+	being identical.
+	(sound_init): Initialize the movie driver if HAVE_AVFORMAT_H.
+
+	* sounddrv/soundmovie.c, Makefile.am: New file (included).
+
+2003-10-16  Dag Lem  <resid@nimrod.no>
+
+	* resid/: Corrected emulation of the ADSR delay bug.
+
+2003-10-12  Andreas Dehmel  <zarquon@t-online.de>
+
+	* arch/riscos/kbd.c: fixed format string for joystick key
+	descriptor
+
+	* arch/riscos/ui.c: fixed display of sampling rate
+
+	* arch/riscos/video.c: adapted to new video interface
+
+2003-10-12  Andreas Matthies  <andreas.matthies@gmx.net>
+
+	* core/ciacore.c: Fixed wrong parameter in call to
+	lib_msprintf.
+
+	* arch/win32/uisnapshot.c: Uses new resource
+	SoundRecordDeviceName and SoundRecordDeviceArg for sound
+	recording.
+
+	* sound.c: Added new resources SoundRecordDeviceName and
+	SoundRecordDeviceArg with corresponding variables and
+	functions.
+	Renamed snddata member pdev to playdev and added recdev.
+	(sound_open): Also open the recording device if the resource
+	SoundRecordDeviceName is set.
+	(sound_close): Also close the recording device.
+	(sound_flush): Write to record device if its active. Warp
+	mode disables sound flushing only if no recording device is
+	active. With this we must avoid that clkfactor is
+	recalculated for sample based not exact sound engines.
+
+2003-10-11  Andreas Boose  <viceteam@t-online.de>
+
+	* Version 1.13.6.
+
+	* via.h, core/viacore.c, drive/iec/via1d1541.c,
+	drive/iecieee/via2d.c, drive/ieee/via1d2031.c,
+	vic20/vic20via1.c, vic20/vic20via2.c, vic20/vic20ieeevia1.c,
+	vic20/vic20ieeevia2.c, pet/petvia.c: No more static arrays.
+
+	* cia.h, core/ciacore.c, drive/iec/cia1571d.c,
+	drive/iec/cia1581d.c, c64/c64cia1.c, c64/c64cia2.c,
+	ic128/c128cia1.c, cbm2/cbm2cia1.c: Changed likewise.
+
+	* riot.h, core/riotcore.c, drive/ieee/riot1d.c,
+	drive/ieee/riot2d.c: Changed likewise.
+
+	* tpi.h, core/tpicore.c, drive/tcbm/tpid.c, c64/c64tpi.c,
+	cbm2/cbm2tpi1.c, cbm2/cbm2tpi2.c: Changed likewise.
+
+	* drive/tcbm/tcbm.c, c64/c64.c, c128/c128.c, vic20/vic20.c,
+	pet/pet.c, cbm2/cbm2.c: Shutdown chip cores.
+
+2003-10-08  Tibor Biczo  <crown@axelero.hu>
+
+	* arch/win32/Makefile.am (libarch_a_SOURCES): Removed
+	uidrivec64c128vic20.c, uidrivec64c128vic20.h, added
+	uidrivec64vic20.c, uidrivec64vic20.h,
+	uidrivec128.c, uidrivec128.h.
+
+	* arch/win32/arch.dsp: Removed uidrivec64c128vic20.c, added
+	uidrivec64vic20.c, uidrivec128.c
+
+	* arch/win32/c128ui.c: Include "uidrivec128.h".
+	(c128_ui_specific): Updated video_settings and drive_settings
+	calls.
+
+	* arch/win32/c64ui.c: Include "uidrivec64vic20.h".
+	(c64_ui_specific): Updated video_settings and drive_settings
+	calls.
+
+	* arch/win32/cbm2ui.c (cbm2_ui_specific): Updated
+	video_settings call.
+
+	* arch/win32/petui.c (pet_ui_specific): Updated video_settings
+	call.
+
+	* arch/win32/plus4ui.c (plus4_ui_specific): Updated
+	video_settings call.
+
+	* arch/win32/res.h: Added ID's for new drives and ID for video
+	palette settings dialog.
+
+	* arch/win32/res.rc (IDD_DRIVE_SETTINGS_DIALOG): Added 1570
+	drive to dialog.
+	(IDD_VIDEO_PALETTE_DIALOG): Added new dialog for palette
+	settings.
+
+	* arch/win32/resc128.rc (IDD_DRIVE_SETTINGS_DIALOG_C128):
+	Added new dialog for drive settings.
+
+	* arch/win32/resplus4.rc (IDD_DRIVE_SETTINGS_DIALOG_PLUS4):
+	Added 1570 drive to dialog.
+
+	* arch/win32/ui.c (window_proc): Update window position
+	resource on WM_MOVE only if window is not minimized or not
+	maximized.
+	Shift drag and drop attaches file to unit 8.
+
+	* arch/win32/uidrivec128.c, arch/win32/uidrivec128.h,
+	arch/win32/uidrivec64vic20.c, arch/win32/uidrivec64vic20.h:
+	New files.
+
+	* arch/win32/uidrivec64c128vic20.c,
+	arch/win32/uidrivec64c128vic20.h:
+	Removed files.
+
+	* arch/win32/uidriveplus4.c: Handle 1570 drive as well.
+
+	* arch/win32/uivideo.c: Added support for multiple video chip
+	settings.
+	Fixed external palette list, the list is chip dependent now.
+
+	* arch/win32/uivideo.h (ui_video_settings_dialog): Updated
+	prototype.
+	Added definitions for video chip types.
+
+	* arch/win32/vic20ui.c: Include "uidrivec64vic20.h".
+	(vic20_ui_specific): Updated video_settings and drive_settings
+	calls.
+
+	* vic20/vice_resources.c (vic_resources_init): Allow internal
+	palette for PAL emulation.
+
+2003-10-06  Andreas Boose  <viceteam@t-online.de>
+
+	* Version 1.13.5.
+
+	* video/video-color.c, video.h, plus4/ted-color.c,
+	plus4/ted-color.h, plus4/ted.c, vic20/vic-color.c,
+	vic20/vic-color.h, vic20/vic.c, vicii/vicii-color.c,
+	vicii/vicii-color.h, vicii/vicii.c, video/video-resources.c,
+	vicii/vicii-resources.c (video_color_update_palette): Pass
+	canvas.
+
+	* video.h, video/video-resources.c, video/video-resources.h,
+	video/video-render-pal.c: Added palette video resource.
+
+	* crtc/crtc-resources.c, crtc/crtc-resources.h, crtc/crtc.c,
+	vdc/vdc-resources.c, vdc/vdc-resources.h, vdc/vdc.c: Removed
+	private palette code.
+
+	* video.h, vicii/vicii-resources.c, vic20/vic-resources.c,
+	plus4/ted-resources.c, crtc/crtc-resources.c,
+	vdc/vdc-resources.c: Set internal palette.
+
+	* drive/drive.h, drive/iec/wd1770.c, drive/iec/iec.c,
+	drive/iec/via1d1541.c, drive/iec/iecrom.c, drive/iec/memiec.c,
+	drive/driveimage.c, drive/drive.c, drive/drive-snapshot.c,
+	drive/drive-resources.c, drive/drivesync.c, drive/drivecpu.c,
+	drive/iecieee/iecieee.c, drive/drivemem.c, drive/iec/iecrom.h,
+	c128/c128iec.c: Added support for 1570 and 1571CR drives.
+
+	* arch/unix/uidrivec64c128vic20.c,
+	arch/unix/uidrivec64c128vic20.h: Renamed.
+
+	* arch/unix/uidrivec128.c, arch/unix/uidrivec128.h: New files.
+
+	* arch/unix/Makefile.am: Updated.
+
+	* arch/unix/vic20ui.c, arch/unix/c64ui.c, arch/unix/c128ui.c:
+	Splitted c128 drive UI.
+
+2003-10-05  Andreas Boose  <viceteam@t-online.de>
+
+	* Version 1.13.4.
+
+	* video/video-cmdline-options.c, vic20/vic-cmdline-options.c.
+	vicii/vicii-cmdline-options.c, plus4/ted-cmdline-options.c,
+	crtc/crtc-cmdline-options.c, vdc/vdc-cmdline-options.c:
+	Unified palette command line options.
+
+	* video/video-resources.c, video.h, vicii/vicii-resources.c,
+	vic20/vic-resources.c, plus4/ted-resources.c,
+	crtc/crtc-resources.c, vdc/vdc-resources.c: Unified palette
+	resources.
+
+	* arch/unix/uivicii.c, arch/unix/uicrtc.c, arch/unix/uivdc.c,
+	arch/unix/uivic.c, arch/msdos/plus4ui.c, arch/msdos/c64ui.c,
+	arch/msdos/cbm2ui.c, arch/msdos/c128ui.c, arch/msdos/petui.c:
+	Changed palette resources.
+
+	* 6510core.c: Fixed drive 1 debugging.
+
+	* drive/iec/cia1581d.c (read_ciapa): Added disk change bit.
+	(store_ciapa): Added side bit.
+
+	* drive/driverom.c (drive_rom_initialize_traps): Added 1581
+	CRC trap, removed jobcode trap.
+
+	* drive/iec/wd1770.c, drive/iec/wd1770.h: Massive rewrite.
+
+	* drive/iec/jobcode1581.c: Small changes.
+
+	* core/riotcore.c: #include "lib.h".
+
+	* c64/cart/ide64.c (ide64_bin_attach): Fixed warning.
+
+	* arch/win32/video.c: Fixed nested comment.
+
+2003-10-03  Andreas Boose  <viceteam@t-online.de>
+
+	* Version 1.13.3.
+
+	* gfxoutputdrv/gfxoutput.c: Fixed define.
+
+	* raster/raster.c (raster_shutdown): Free palette before the
+	canvas is freed.
+
+	* via.h, core/viacore.c, drive/iec/via1d1541.c
+	drive/ieee/via1d2031.c: Fixed snapshot module mess.
+
+	* core/ciatimer.c, core/ciatimer.h: Moved some functions to
+	the source file.
+
+2003-09-30  Dirk Jagdmann  <doj@cubic.org>
+
+	* arch/unix/catweaselmkiii.c: fixed reading from SID
+
+2003-09-28  Andreas Boose  <viceteam@t-online.de>
+
+	* Version 1.13.2.
+
+	* raster/raster.c, raster/raster.h: Removed palette support.
+
+	* video.h, arch/unix/x11/video.c, arch/win32/video.c,
+	arch/msdos/video.c, arch/riscos/video.c, arch/os2/video.c,
+	arch/beos/video.cc (video_canvas_create): Removed palette
+	parameter. (video_canvas_set_palette): Palette is not const.
+
+	* arch/unix/x11/videoarch.h, arch/win32/videoarch.h,
+	arch/msdos/videoarch.h, arch/riscos/videoarch.h,
+	arch/os2/videoarch.h, arch/beos/videoarch.h: Changed palette
+	member, new member `created'.
+
+	* video/video-canvas.c (video_canvas_palette_set,
+	video_canvas_create_set): New functions.
+
+	* video/video-canvas.h: New file.
+
+	* video/Makefile.am: Added new file.
+
+	* video/video-color.c (video_color_update_palette): Call
+	`video_canvas_palette_set()' and removed raster hack.
+	(video_color_palette_free): New function.
+
+	* video.h, video/video-color.c, vicii/vicii.c, vic20/vic.c,
+	plus4/ted.c (video_color_set_canvas): New function.
+
+	* vdc/vdc.c (vdc_load_palette): Call
+	`video_canvas_palette_set()'.
+
+	* crtc/crtc.c (crtc_load_palette): Changed likewise.
+
+	* machine.c: #include "diskimage.h".
+
+	* core/ciatimer.c (ciat_init_table): Only initialize once.
+
+	* core/ciacore.c (ciacore_init): Initialize CIA table.
+	#include "lib.h".
+
+	* c64/c64.c, c128/c128.c, cbm2/cbm2.c, vic20/vic20.c,
+	drive/drivetypes.h: Do not initialize CIA table.
+
+	* cia.h, core/ciacore.c: TA and TB are pointer now.
+
+	* drive/drive.c, cbm2/cbm2.c: #include "alarm.h".
+
+	* ciatimer.h: Moved to core directory.
+
+	* core/Makefile.am, Makefile.am: Updated.
+
+	* plus4/ted.c (ted_delay_clk): Do not inline.
+
+	* arch/unix/x11/renderxv.c, interrupt.h, core/viacore.c,
+	drive/drivecpu.c: Fixed warnings.
+
+2003-03-27  Tibor Biczo  <crown@axelero.hu>
+
+	* arch/win32/joy.c (joystick_di_open): Return success/failure.
+	(set_joystick_device_1, set_joystick_device_2) Update resource
+	if DX5 init was succesfull. Call joy_arch_init if it has not
+	been initialised yet.
+	(joy_arch_init): Only initialise if it was not yet
+	initialised.
+
+2003-09-27  Andreas Boose  <viceteam@t-online.de>
+
+	* Version 1.13.1.
+
+	* ChangeLog*: Renamed last changelog and reversed order of old
+	changelogs.
+
+	* Makefile.am: Added changelog.
+
+	* video/video-viewport.c, video.h (video_viewport_title_set,
+	video_viewport_title_free): New function.
+
+	* video/video-canvas.c (video_canvas_shutdown): Free canvas
+	title.
+
+	* raster/raster.c (raster_set_title): Call
+	`video_viewport_title_set'.
+
+	* c64/cart/c64cart.c (cartridge_resources_shutdown): Free
+	`cartfile'.
+
+	* diskimage/rawimage.c, diskimage/rawimage.h
+	(rawimage_resources_shutdown): New function.
+
+	* diskimage/diskimage.c, diskimage.h
+	(disk_image_resources_shutdown): New function.
+
+	* machine.c (machine_shutdown): Call
+	`disk_image_resources_shutdown()'.
+
+	* arch/unix/x11/video.c, arch/win32/video.c,
+	arch/msdos/video.c, arch/riscos/video.c, arch/os2/video.c,
+	arch/beos/video.cc (video_arch_resources_shutdown): New
+	function. (video_arch_init_resources): Renamed.
+
+	* video/video-resources.c, video.h (video_resources_shutdown):
+	New function.
+
+	* c64/c64.c, c128/c128.c, vic20/vic20.c, pet/pet.c,
+	plus4/plus4.c, cbm2/cbm2.c (machine_resources_shutdown):
+	Shutdown video resources.
+
+	* core/viacore.c, via.h (viacore_shutdown): New function.
+
+	* core/ciacore.c, cia.h (viacore_shutdown): New function.
+
+	* core/riotcore.c, riot.h (riotcore_shutdown): New function.
+
+	* drive/iec/iec.c, drive/iec.h (iec_drive_shutdown): New
+	function.
+
+	* drive/iecieee/iecieee.c, drive/iecieee.h
+	(iecieee_drive_shutdown): New function.
+
+	* drive/ieee/ieee.c, drive/ieee.h (ieee_drive_shutdown): New
+	function.
+
+	* drive/tcbm/tcbm.c, drive/tcbm.h (tcbm_drive_shutdown): New
+	function.
+
+	* c64/c64drive.c, vic20/vic20drive.c, pet/petdrive.c,
+	plus4/plus4drive.c, cbm2/cbm2drive.c, machine-drive.h
+	(machine_drive_shutdown): New function.
+
+	* drive/drivecpu.c (drive_cpu_shutdown): Call
+	`machine_drive_shutdown()'.
+
+	* resources.c (resources_shutdown): Free machine id.
+
