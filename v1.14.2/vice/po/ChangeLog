@@ -1,0 +1,290 @@
+2004-01-21  pottendo  <pottendo@utanet.at>
+
+	* de.po: Updated.
+
+	* it.po: Updated by Andrea.
+
+	* sv.po: Updated by Peter.
+
+2004-01-11  pottendo  <pottendo@utanet.at>
+
+	* de.po: Updated.
+
+	* POTFILES.in: Added src/screenshot.c src/autostart.c src/sound.c
+	src/event.c
+
+2003-11-30  pottendo  <pottendo@utanet.at>
+
+	* de.po: Updated.
+
+2003-11-27  pottendo  <pottendo@utanet.at>
+
+	* de.po: Updated.
+
+2003-11-07  pottendo  <pottendo@utanet.at>
+
+	* de.po: Updated.
+
+2003-11-06  pottendo  <pottendo@utanet.at>
+
+	* Makefile.in.in (datadir,localedir,gnulocaledir,gettextsrcdir): 
+	Added $(DESTDIR)
+
+	* de.po: Updated.
+
+2003-11-02  pottendo  <pottendo@utanet.at>
+
+	* de.po: Updated.
+
+2003-11-02  Andreas Boose  <viceteam@t-online.de>
+
+	* POTFILES.in: Renamed `mouse.c'.
+
+2003-10-09  pottendo  <pottendo@utanet.at>
+
+	* de.po: Updated.
+
+	* it.po: update by Andrea.
+
+2003-09-20  pottendo  <pottendo@utanet.at>
+
+	* sv.po, pl.po: Updated by Peter, Flooder.
+
+2003-09-07  pottendo  <pottendo@utanet.at>
+
+	* de.po: Updated.
+
+	* it.po,de.po,fr.po,sv.po,pl.po: Changed version to 1.13
+	
+2003-06-21  pottendo  <pottendo@utanet.at>
+
+	* de.po: Updated.
+
+2003-06-02  pottendo  <pottendo@utanet.at>
+
+	* it.po: Updated by Andrea.
+
+2003-05-30  pottendo  <pottendo@utanet.at>
+
+	* pl.po: Updated by Flooder.
+
+2003-05-26  pottendo  <pottendo@utanet.at>
+
+	* sv.po: Updated by Peter.
+
+2003-04-24  pottendo  <pottendo@utanet.at>
+
+	* de.po: Updated.
+
+2003-01-25  pottendo  <pottendo@utanet.at>
+
+	* it.po: Updated by Andrea.
+
+	* de.po: Updated.
+
+	* sv.po: Updated by Peter.
+
+2003-01-19  pottendo  <pottendo@utanet.at>
+
+	* pl.po: Updated by Flooder.
+
+2003-01-16  pottendo  <pottendo@utanet.at>
+
+	* POTFILES.in: Updated file list.
+
+	* sv.po,it.po,pl.po.fr.po: Prepared for 1.11.
+	* de.po: Updated.
+
+2003-01-01  Andreas Boose  <viceteam@t-online.de>
+
+	* POTFILES.in: Added new drive UI files.
+
+2002-10-13  Andreas Boose  <viceteam@t-online.de>
+
+	* POTFILES.in: Changed `main_exit.c' into `unixmain.c'.
+
+2002-08-31  pottendo  <pottendo@utanet.at>
+
+	* it.po: Updated by Andrea.
+
+	* pl.po: Updated by Flooder.
+
+2002-08-23  pottendo  <pottendo@utanet.at>
+
+	* pl.po: Updated by Flooder.
+
+	* sv.po: Updated by Peter.
+
+	* de.po: Updated.
+
+2002-08-15  pottendo  <pottendo@utanet.at>
+
+	* it.po: Updated by Andrea.
+
+	* de.po: Updated.
+
+	* POTFILES.in: Updated.
+
+2002-05-20  Andreas Boose  <viceteam@t-online.de>
+
+	* POTFILES.in: Removed `kmap.c', `petkmap.c' and `x11kbd.c'.
+
+2002-05-05  pottendo  <pottendo@utanet.at>
+
+	* sv.po: Pushed version to 1.10.
+	* it.po: Pushed version to 1.10.
+	* pl.po: Pushed version to 1.10.
+	* fr.po: Pushed version to 1.10.
+	* de.po: Updated, Pushed version to 1.10.
+
+2002-04-14  pottendo  <pottendo@utanet.at>
+
+	* it.po,pl.po: Updated.
+
+2002-04-05  pottendo  <pottendo@utanet.at>
+
+	* de.po: Updated.
+	* pl.po: Updated by Mariusz.
+	* it.po: Updated by Andrea.
+
+2002-04-01  pottendo  <pottendo@utanet.at>
+
+	* pl.po: Updated by Mariusz
+	* it.po: Updated by Andrea.
+
+2002-03-23  pottendo  <pottendo@utanet.at>
+
+	* de.po: Updated.
+
+2002-02-11  pottendo  <pottendo@utanet.at>
+
+	* de.po: Updated.
+
+	* pl.po: New File. Credits to Flooder.
+
+2002-02-09  pottendo  <pottendo@utanet.at>
+
+	* de.po: Updated.
+
+2002-02-04  pottendo  <pottendo@utanet.at>
+
+	* POTFILES.in: Added `uipalemu.c'.
+
+2002-01-19  pottendo  <pottendo@utanet.at>
+
+	* it.po: Updated (by Andrea).
+
+2002-01-02  pottendo  <pottendo@utanet.at>
+
+	* it.po: Updated (by Andrea).
+
+	* de.po: Updated.
+
+	* POTFILES.in: Added dga2.c
+
+2001-12-09  pottendo  <pottendo@utanet.at>
+
+	* it.po: Updated.
+
+	* de.po: Updated.
+
+2001-12-06  pottendo  <pottendo@utanet.at>
+
+	* POTFILES.in: Added uipalcontrol.c to gnome file list.  
+
+2001-12-02  pottendo  <pottendo@utanet.at>
+
+	* POTFILES.in: Updated file list for Arch Unix. 
+
+	* de.po: Updated translation.
+
+2001-07-21  pottendo  <pottendo@utanet.at>
+
+	* sv.po: Merged Peter's update
+
+	* fr.po: Merged Eric's update
+
+2001-07-15  pottendo  <pottendo@utanet.at>
+
+	* de.po: Updated German translation.
+
+2001-06-24  pottendo  <pottendo@utanet.at>
+
+	* sv.po: Merged update from Peter Karlsson.
+
+2001-06-20  pottendo  <pottendo@utanet.at>
+
+	* de.po: Update German translation.
+
+	* POTFILES.in: Updated for all *.c files in arch/unix/*. 
+
+2001-06-04  pottendo  <pottendo@utanet.at>
+
+	* POTFILES.in: Removed src/arch/unix/x11/gnome/uihotkey.c,
+	src/arch/unix/x11/xaw/uihotkey.c 
+
+2000-12-07  pottendo  <pottendo@utanet.at>
+
+	* Introduced Peter Karlssons sv.po update.
+
+2000-12-01  pottendo  <pottendo@utanet.at>
+
+	* POTFILES.in: Added `src/print.c'.
+	* de.po: Updated.
+
+2000-10-08  Andreas Boose  <boose@linux.rz.fh-hannover.de>
+
+	* POTFILES.in: Removed `arch/unix/print.c'.
+
+2000-08-16  pottendo  <pottendo@utanet.at>
+
+	* sv.po: Introduced Peter Karlssons upgrade to the swedish
+	translation.
+
+2000-08-06  pottendo  <pottendo@utanet.at>
+
+	* Added `sv.po'. Contributed by Peter Karlsson.
+
+2000-07-16  pottendo  <pottendo@utanet.at>
+
+	* de.po: New translations.
+
+	* POTFILES.in: Added instrumented files.
+
+2000-07-14  pottendo  <pottendo@utanet.at>
+
+	* de.po: Fixed all fuzzy entries, translated rest.
+
+	* Makefile.in (CATALOGS): Fixed passing of value for LINGUAS.
+
+2000-07-13  pottendo  <pottendo@utanet.at>
+
+	* po2tbl.sed: New file.
+
+	* de.po: Added large amount of translations. Still work in
+	progress, as about 240 entries are fuzzy or untranslated.
+
+	* POTFILES.in: Adde:
+	uicommands.c \
+	c128ui.c \
+	c610ui.c \
+	c64ui.c \
+	uisettings.c \
+	uicmdline.c \
+	petui.c \
+	joystick.c \
+	kmap.c \
+	mouse.c \
+	petkmap.c \
+	print.c \
+	rs232.c \
+	x11/gnome/ui.c 
+
+	* Makefile.in.in 
+	(all): prefixed po2tbl.sed with $(srcdir).
+	(DISTFILES): added po2tbl.sed.
+
+2000-04-26  Martin Pottendorfer  <Martin.Pottendorfer@alcatel.at>
+
+	* Started ChangeLog.
+
