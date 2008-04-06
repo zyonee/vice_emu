@@ -1,0 +1,402 @@
+<HTML>
+<HEAD>
+<!-- This HTML file has been created by texi2html 1.51
+     from ../vice.texi on 25 September 2000 -->
+
+<TITLE>VICE Manual - 12  Acknowledgments</TITLE>
+</HEAD>
+<BODY>
+Go to the <A HREF="vice_1.html">first</A>, <A HREF="vice_11.html">previous</A>, <A HREF="vice_13.html">next</A>, <A HREF="vice_16.html">last</A> section, <A HREF="vice_toc.html">table of contents</A>.
+<P><HR><P>
+
+
+<H1><A NAME="SEC157" HREF="vice_toc.html#TOC157">12  Acknowledgments</A></H1>
+
+<P>
+VICE derives from X64, the first Commodore 64 emulator for the X Window
+System.  Here is an informal list of the people who were mostly involved
+in the development of X64 and VICE:
+
+</P>
+<P>
+The VICE core team:
+
+</P>
+
+<UL>
+
+<LI>
+
+<B>Ettore Perazzoli</B> (@email{ettore@comm2000.it}) made the 6510, VIC-II,
+VIC-I and CRTC emulations, part of the hardware-level 1541
+emulation, speed optimizations, bug fixes, the event-driven
+cycle-exact engine, the Xt/Xaw/Xfwf-based GUI for X11, a
+general code reorganization, the new resource handling, most of
+the documentation.  He also wrote the MS-DOS port and the
+initial MS-Windows port (well, somebody had to do it).
+
+<LI>
+
+<B>Daniel Sladic</B> (@email{sladic@eecg.toronto.edu}) started the work on
+hardware-level 1541 emulation and wrote the new monitor
+introduced with VICE 0.15.
+
+<LI>
+
+<B>Andreas Boose</B> (@email{boose@linux.rz.fh-hannover.de}) gave lots of
+information and bug reports about the VIC-II, the 6510 and the
+CIAs; moreover, he wrote several test-routines that were used
+to improve the emulation.  He also added cartridge support and
+has been the main head behind the drive and datasette emulation
+since version 0.15.  Also added several UI elements to the MSDOS
+and MS-Windows ports and the C128 Z80 implementation.
+
+<LI>
+
+<B>Dag Lem</B> (@email{resid@nimrod.no}) implemented the reSID SID emulation
+engine.
+
+<LI>
+
+<B>Tibor Biczo</B> (@email{crown@mail.matav.hu}) improved the MS-Windows port.
+
+<LI>
+
+<B>Andreas Dehmel</B> (@email{dehmel@forwiss.tu-muenchen.de}) wrote the Acorn
+RISC OS port.
+
+<LI>
+
+<B>Thomas Bretz</B> (@email{tbretz@ph.tum.de}) responsible for the OS/2 port.
+
+<LI>
+
+<B>Andreas Matthies</B> (@email{andreas.matthies@arcormail.de}) improved the
+datasette support and some ui stuff in the Win32 and MSDOS port. Wrote the
+BeOS port.
+
+<LI>
+
+<B>Martin Pottendorfer</B> (@email{Martin.Pottendorfer@aut.alcatel.at})
+Implemented Gnome Port based on Oliver Schaertels GTK+ port
+Added support code for internationalization based on gettext
+Translated the Unix Port to German
+Implemented the fliplists + ui (unix).
+
+<LI>
+
+<B>Markus Brenner</B> (@email{markus@brenner.de}) added VDC emulation to x128.
+
+</UL>
+
+<P>
+Former team members:
+
+</P>
+
+<UL>
+
+<LI>
+
+<B>Andre Fachat</B> (@email{fachat@physik.tu-chemnitz.de}) wrote the PET
+and CBM-II emulators, the CIA and VIA emulation, the IEEE488
+interface, implemented the IEC serial bus in `xvic' and made
+tons of bug fixes.
+
+<LI>
+
+<B>Teemu Rantanen</B> (@email{tvr@cs.hut.fi}) implemented the SID emulation
+and the trap-based disk drive and serial bus implementation;
+added support for multiple display depths under X11.  Also wrote
+`c1541'
+
+<LI>
+
+<B>Jouko Valta</B> (@email{jopi@stekt.oulu.fi}) wrote <CODE>petcat</CODE> and
+<CODE>c1541</CODE>, <CODE>T64</CODE> handling, user service and
+maintenance (most of the work in x64 0.3.x was made by him); retired
+from the project in July 96, after VICE 0.10.0.
+
+<LI>
+
+<B>Jarkko Sonninen</B> (@email{sonninen@lut.fi}) was the founder of the
+project, wrote the old version of the 6502 emulation and the XDebugger,
+and retired from the project after x64 0.2.1.
+
+</UL>
+
+<P>
+External contributors:
+
+</P>
+
+<UL>
+
+<LI>
+
+<B>Michael Schwendt</B> (@email{sidplay@geocities.com}) helped with the
+SID (audio) chip emulation, bringing important suggestions and bug
+reports, as well as the wave tables and filter emulation from his
+SIDplay emulator.
+
+<LI>
+
+<B>Christian Bauer</B> (@email{bauec002@goofy.zdv.uni-mainz.de}) wrote
+the very interesting "VIC article" from which we got invaluable
+information about the VIC-II chip: without this, the VIC-II
+implementation would have not been possible.
+
+<LI>
+
+<B>Wolfgang Lorenz</B> wrote an excellent 6510 test suite that helped us
+to debug the CPU emulation.
+
+<LI>
+
+<B>Giuliano Procida</B> (@email{gpp10@cam.ac.uk}) is the maintainer
+of the VICE <CODE>deb</CODE> package for the Debian distribution, and also
+helped proofreading the documentation.
+
+<LI>
+
+<B>Marko M@"akel@"a</B> (@email{msmakela@nic.funet.fi}) wrote lots of CPU
+documentation.
+
+<LI>
+
+<B>Martin Pottendorfer</B> (@email{Martin.Pottendorfer@aut.alcatel.at})
+implemented the "Contents" button in the file selector and provided us with
+several suggestions and constant testing of constantly broken snapshots.
+
+<LI>
+
+<B>Chris Sharp</B> (@email{sharpc@hurlsey.ibm.com}) wrote the AIX sound
+driver.
+
+<LI>
+
+<B>Krister Walfridsson</B> (@email{cato@df.lth.se}) implemented joystick
+and sound support for NetBSD.
+
+<LI>
+
+<B>Mattias Engdeg@^ard</B> (@email{f91-men@nada.kth.se}) got non-default
+depths to work.
+
+<LI>
+
+<B>Peter Andrew Felvegi aka Petschy</B> (@email{petschy@derceto.sch.bme.hu})
+fixed a couple of bugs in the fast serial emulation.
+
+<LI>
+
+<B>Olaf Seibert</B> (@email{rhialto@polder.ubc.kun.nl}) contributed some PET,
+and disk drive patches.
+
+<LI>
+
+<B>Daniel Fandrich</B> (@email{dan@fch.wimsey.bc.ca}) contributed some disk
+drive patches.
+
+<LI>
+
+<B>Heiko Selber</B> (@email{selber@fhi-berlin.mpg.de}) contributed some VIC20
+I/O patches.
+
+<LI>
+
+<B>Steven Tieu</B> (@email{stieu@physics.ubc.ca}) added initial support for
+16/24 bpp X11 displays.
+
+<LI>
+
+<B>Alexander Lehmann</B> (@email{alex@mathematik.th-darmstadt.de}) added
+complete support for all the VIC20 memory configurations for the old
+VICE 0.12.
+
+<LI>
+
+<B>Lionel Ulmer</B> implemented joystick support for Linux and a first try of a
+SID emulation for SGI machines.
+
+<LI>
+
+<B>Bernhard Kuhn</B> (@email{kuhn@eikon.e-technik.tu-muenchen.de})
+made some joystick improvements for Linux.
+
+<LI>
+
+<B>Gerhard Wesp</B> (@email{gwesp@cosy.sbg.ac.at}) contributed the
+<CODE>extract</CODE> command in <CODE>c1541</CODE>.
+
+<LI>
+
+<B>Ricardo Ferreira</B> (@email{storm@esoterica.pt}) contributed the
+<CODE>unlynx</CODE> and <CODE>system</CODE> commands in <CODE>c1541</CODE>.
+
+<LI>
+
+<B>Tomi Ollila</B> (@email{Tomi.Ollila@tfi.net}) donated <CODE>findpath.c</CODE>.
+
+<LI>
+
+<B>Richard Hable</B> (@email{hab@fim.uni-linz.ac.at}) contributed the initial
+version of the REU Emulation.
+
+<LI>
+
+<B>Vesa-Matti Puro</B> (@email{vmp@lut.fi}) wrote the very first 6502 CPU
+emulator in x64 0.1.0.  That was the beginning of the story...
+
+<LI>
+
+<B>Dan Miner</B> (@email{dminer@nyx10.cs.du.edu}) contributed some patches
+to the fast disk drive emulation.
+
+<LI>
+
+<B>Frank Prindle</B> (@email{Frank.Prindle@lambada.oit.unc.edu})
+contributed some patches.
+
+<LI>
+
+<B>Peter Weighill</B> (@email{stuce@csv.warwick.ac.uk}) gave many ideas and
+contributed the ROM patcher.
+
+<LI>
+
+<B>Dominique Strigl</B> (@email{strigl@sxb.bsf.alcatel.fr}), <B>Craig Jackson</B>
+(@email{Craig.Jackson@lambada.oit.unc.edu}) and <B>Lasse Jyrkinen</B>
+((@email{Lasse.Jyrkinen@uz.kuleuven.ac.be}) contributed miscellaneous
+patches in the old X64 times.
+
+<LI>
+
+<B>Per Olofsson</B> (@email{MagerValp@Goth.Org}) digitalized the C64 colors
+used in the default palette.
+
+<LI>
+
+<B>Paul David Doherty</B> (@email{h0142kdd@rz.hu-berlin.de}) wrote
+<CODE>zip2disk</CODE>, on which the Zipcode support in <CODE>c1541</CODE> is based.
+
+<LI>
+
+<B>Robert H. Forsman Jr.</B>, <B>Brian Totty</B> (@email{totty@cs.uiuc.edu})
+and <B>Robert W. McMullen</B> (@email{rwmcm@orion.ae.utexas.edu}) provided the
+widget set for implementing the <CODE>Xaw</CODE> GUI.
+
+<LI>
+
+<B>Shawn Hargreaves</B> (@email{shawn@talula.demon.co.uk}) wrote
+Allegro, the graphics and audio library used in the MS-DOS version.
+
+<LI>
+
+<B>Peter Schepers</B> (@email{schepers@ist.uwaterloo.ca}) contributed a
+document describing the G64 image format.
+
+<LI>
+
+<B>Oliver Schaertel</B> (@email{orschaer@forwiss.uni-erlangen.de}) wrote
+the X11 full screen, parts of custom ROM set support and 1351 mouse
+emulation for unix.
+
+<LI>
+
+<B>Luca Montecchiani</B> (@email{m.luca@usa.net}) contributed a new Unix
+joystick driver.
+
+<LI>
+
+<B>Dirk Farin</B> (@email{farin@ti.uni-mannheim.de}) rewrote the MITSHM
+code.
+
+<LI>
+
+<B>Manfred Spraul</B> (@email{manfreds@colorfullife.com}) wrote the
+MS-Windows text lister.
+
+<LI>
+
+<B>Spiro Trikaliotis</B> (@email{Spiro.Trikaliotis@gmx.de}) wrote the
+Win32 console implementation for the built-in monitor and provided
+some further patches.
+
+</UL>
+
+<P>
+(We hope we have not forgotten anybody; if you think we have, please
+tell us.)
+
+</P>
+<P>
+Thanks also to everyone else for sending suggestions, ideas,
+bug reports, questions and requests.  In particular, a warm thank
+goes to the following people:
+
+</P>
+
+<UL>
+
+<LI>
+
+<B>Lutz Sammer</B>
+<LI>
+
+<B>Ralph Mason</B> (@email{RALPHM@msmail02.liffe.com})
+<LI>
+
+<B>George Caswell</B> (@email{timbuktu@the-eye.res.wpi.edu})
+<LI>
+
+<B>Per Olofsson</B> (@email{MagerValp@goth.org})
+<LI>
+
+<B>Jasper Phillips</B> (@email{philljas@newt.cs.orst.edu})
+<LI>
+
+<B>Luca Forcucci</B> (@email{frk@geocities.com})
+<LI>
+
+<B>Asger Alstrup</B> (@email{alstrup@diku.dk})
+<LI>
+
+<B>Bernhard Schwall</B> (@email{uzs484@uni-bonn.de})
+<LI>
+
+<B>Salvatore Valente</B> (@email{svalente@mit.edu})
+<LI>
+
+<B>Arthur Hagen</B> (@email{art@broomstick.com})
+<LI>
+
+<B>Douglas Carmichael</B> (@email{dcarmich@mcs.com})
+<LI>
+
+<B>Ferenc Veres</B> (@email{lion@c64.rulez.org})
+<LI>
+
+<B>Andrea Musuruane</B> (@email{musuruan@biella.alpcom.it})
+<LI>
+
+<B>Frank Reichel</B> (@email{Frank.Reichel@forchheim.baynet.de})
+<LI>
+
+<B>Ullrich von Bassewitz</B>
+<LI>
+
+<B>Holger Busse</B>
+</UL>
+
+<P>
+Last but not least, a very special thank to Andreas Arens, Lutz Sammer,
+Edgar Tornig, Christian Bauer, Wolfgang Lorenz, Miha Peternel and Per
+H@^akan Sundell for writing cool emulators to compete with.  <TT>:-)</TT>
+
+</P>
+
+<P><HR><P>
+Go to the <A HREF="vice_1.html">first</A>, <A HREF="vice_11.html">previous</A>, <A HREF="vice_13.html">next</A>, <A HREF="vice_16.html">last</A> section, <A HREF="vice_toc.html">table of contents</A>.
+</BODY>
+</HTML>
