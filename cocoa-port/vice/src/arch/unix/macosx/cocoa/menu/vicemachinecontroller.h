@@ -66,6 +66,8 @@
 -(void)keyPressed:(unsigned int)code;
 // key release
 -(void)keyReleased:(unsigned int)code;
+// dump keymap
+-(BOOL)dumpKeymap:(NSString *)path;
 
 // ----- Mouse -----
 // mouse moved
@@ -85,11 +87,18 @@
 // create disk image
 -(BOOL)createDiskImage:(int)type path:(NSString *)path name:(NSString *)name;
 
+// query disk name
+-(NSString *)getDiskName:(int)unit;
+
 // ----- Tape Commands -----
 // attach tape image
 -(BOOL)attachTapeImage:(NSString *)path;
 // detach tape image
 -(void)detachTapeImage;
+
+// ----- Printer -----
+// send form feed (unit #4=0,#5=1,Userport=2)
+-(void)printerFormFeed:(int)unit;
 
 @end
 

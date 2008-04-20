@@ -34,6 +34,7 @@
 #include "keyboard.h"
 #include "diskimage.h"
 #include "mousedrv.h"
+#include "printer.h"
 
 #import "vicemachinecontroller.h"
 #import "vicemachine.h"
@@ -144,6 +145,11 @@
     keyboard_key_released(code);
 }
 
+-(BOOL)dumpKeymap:(NSString *)path
+{
+    return (keyboard_keymap_dump([path fileSystemRepresentation]) == 0);
+}
+
 // ----- Mouse -----
 
 -(void)mouseMoveToX:(int)x andY:(int)y
@@ -191,6 +197,15 @@
                                                     ids[type]) == 0;
 }
 
+-(NSString *)getDiskName:(int)unit
+{
+    const char *diskName = file_system_get_disk_name(unit);
+    if(diskName==NULL)
+        return nil;
+    else
+        return [NSString stringWithCString:diskName];
+}
+
 // ----- Tape -----
 
 -(BOOL)attachTapeImage:(NSString *)path
@@ -201,6 +216,13 @@
 -(void)detachTapeImage
 {
     tape_image_detach(1);
+}
+
+// ----- Printer -----
+
+-(void)printerFormFeed:(int)unit
+{
+    printer_formfeed(unit);
 }
 
 @end

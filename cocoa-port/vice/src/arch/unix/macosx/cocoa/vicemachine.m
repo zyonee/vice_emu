@@ -139,7 +139,7 @@ VICEMachine *theVICEMachine = nil;
     
     // run machine thread runloop once: 5ms
     [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode
-                                beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.005]];
+                                beforeDate:[NSDate dateWithTimeIntervalSinceNow:0]];
 
     // the stop machine call triggered the die flag
     if(shallIDie) {

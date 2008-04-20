@@ -26,20 +26,30 @@
 
 #import <Cocoa/Cocoa.h>
 #import "drivesettingswindowcontroller.h"
+#import "iecdrivesettingswindowcontroller.h"
+#import "printersettingswindowcontroller.h"
+#import "keyboardsettingswindowcontroller.h"
 #import "joysticksettingswindowcontroller.h"
+#import "soundsettingswindowcontroller.h"
 #import "viceinformationwindowcontroller.h"
 
 @interface VICEAppController : NSObject
 {
     // Dialog Controllers
     DriveSettingsWindowController *driveSettingsController;
+    IECDriveSettingsWindowController *iecDriveSettingsController;
+    PrinterSettingsWindowController *printerSettingsController;
+    KeyboardSettingsWindowController *keyboardSettingsController;
     JoystickSettingsWindowController *joystickSettingsController;
+    SoundSettingsWindowController *soundSettingsController;
     VICEInformationWindowController *infoController;
     
     // Options Outlets
     IBOutlet NSMenu *refreshRateMenu;
     IBOutlet NSMenu *maximumSpeedMenu;
     IBOutlet NSMenuItem *warpModeMenuItem;
+    
+    IBOutlet NSMenu *machineVideoStandardMenu;
     
     IBOutlet NSMenuItem *soundPlaybackMenuItem;
     IBOutlet NSMenuItem *trueDriveEmulationMenuItem;
@@ -80,6 +90,8 @@
 - (IBAction)pickCustomMaximumSpeed:(id)sender;
 - (IBAction)toggleWarpMode:(id)sender;
 
+- (IBAction)toggleMachineVideoStandard:(id)sender;
+
 - (IBAction)toggleSoundPlayback:(id)sender;
 - (IBAction)toggleTrueDriveEmulation:(id)sender;
 - (IBAction)toggleVirtualDevices:(id)sender;
@@ -89,7 +101,11 @@
 
 // Settings
 - (IBAction)showDriveSettings:(id)sender;
+- (IBAction)showIECDriveSettings:(id)sender;
+- (IBAction)showPrinterSettings:(id)sender;
+- (IBAction)showKeyboardSettings:(id)sender;
 - (IBAction)showJoystickSettings:(id)sender;
+- (IBAction)showSoundSettings:(id)sender;
 
 // Resources
 - (IBAction)saveResources:(id)sender;
@@ -103,11 +119,16 @@
 
 // Tools
 - (NSString *)pickOpenFileWithTitle:(NSString *)title types:(NSArray *)types;
+- (NSString *)pickSaveFileWithTitle:(NSString *)title types:(NSArray *)types;
+
+- (void)attachDiskImageForUnit:(int)unit;
 
 - (void)updateResources:(id)sender;
 - (void)updateSettingsResources;
 - (void)updateOptionsResources;
 - (void)updateMachineResources;
+
+- (BOOL)updateSubMenuCheckState:(NSMenu *)menu withTag:(int)tagValue;
 
 - (BOOL)setIntResource:(NSString *)name toValue:(int)value;
 - (int)getIntResource:(NSString *)name;

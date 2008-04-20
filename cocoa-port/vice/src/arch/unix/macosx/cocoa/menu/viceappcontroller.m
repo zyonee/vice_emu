@@ -46,6 +46,7 @@
 {
     // release dialog controllers
     [driveSettingsController release];
+    [iecDriveSettingsController release];
     [joystickSettingsController release];
     [infoController release];
     
@@ -93,11 +94,16 @@
 
 - (IBAction)attachDiskImage:(id)sender
 {
+    int unit = [sender tag];
+    [self attachDiskImageForUnit:unit];
+}
+
+- (void)attachDiskImageForUnit:(int)unit
+{    
     NSArray *types = [NSArray arrayWithObjects:
       @"d64", @"d67", @"d71", @"d80", @"d81", @"d82", @"g64", @"x64", nil];
     NSString *path = [self pickOpenFileWithTitle:@"Attach Disk Image" types:types];
     if(path!=nil) {
-        int unit = [sender tag];
         if(![[VICEApplication theMachineController] attachDiskImage:unit 
                                                                path:path]) {
             [VICEApplication runErrorMessage:@"Error attaching image!"];
@@ -248,6 +254,12 @@
     [self updateOptionsResources];
 }
 
+- (IBAction)toggleMachineVideoStandard:(id)sender
+{
+    [self setIntResource:@"MachineVideoStandard" toValue:[sender tag]];
+    [self updateOptionsResources];
+}
+
 - (IBAction)toggleSoundPlayback:(id)sender
 {
     [self setIntResource:@"Sound" toValue:![sender state]];
@@ -292,12 +304,44 @@
     [driveSettingsController showWindow:self];
 }
 
+- (IBAction)showIECDriveSettings:(id)sender
+{
+    if(!iecDriveSettingsController) {
+        iecDriveSettingsController = [[IECDriveSettingsWindowController alloc] init];
+    }
+    [iecDriveSettingsController showWindow:self];
+}
+
+- (IBAction)showPrinterSettings:(id)sender
+{
+    if(!printerSettingsController) {
+        printerSettingsController = [[PrinterSettingsWindowController alloc] init];
+    }
+    [printerSettingsController showWindow:self];
+}
+
+- (IBAction)showKeyboardSettings:(id)sender
+{
+    if(!keyboardSettingsController) {
+        keyboardSettingsController = [[KeyboardSettingsWindowController alloc] init];
+    }
+    [keyboardSettingsController showWindow:self];
+}
+
 - (IBAction)showJoystickSettings:(id)sender
 {
     if(!joystickSettingsController) {
         joystickSettingsController = [[JoystickSettingsWindowController alloc] init];
     }
     [joystickSettingsController showWindow:self];
+}
+
+- (IBAction)showSoundSettings:(id)sender
+{
+    if(!soundSettingsController) {
+        soundSettingsController = [[SoundSettingsWindowController alloc] init];
+    }
+    [soundSettingsController showWindow:self];
 }
 
 // ----- Resources -----
@@ -364,32 +408,40 @@
 {
 }
 
+- (BOOL)updateSubMenuCheckState:(NSMenu *)menu withTag:(int)tagValue
+{
+    int numItems = [menu numberOfItems];
+    int i;
+    BOOL foundTag = NO;
+    for(i=0;i<numItems;i++) {
+        NSMenuItem *item = [menu itemAtIndex:i];
+        BOOL check = ([item tag] == tagValue);
+        [item setState:check ? NSOnState : NSOffState];
+        if(check)
+            foundTag = YES;
+    }
+    return foundTag;
+}
+
+
 - (void)updateOptionsResources
 {   
     // RefreshRate
-    int i;
-    int refreshRate = [self getIntResource:@"RefreshRate"];
-    for(i=0;i<11;i++) {
-        id<NSMenuItem> item = [refreshRateMenu itemAtIndex:i];
-        BOOL check = ([item tag] == refreshRate);
-        [item setState:check ? NSOnState : NSOffState]; 
-    }
+    [self updateSubMenuCheckState:refreshRateMenu 
+                          withTag:[self getIntResource:@"RefreshRate"]];
     
     // Speed
-    BOOL foundSpeed = NO;
-    int speed = [self getIntResource:@"Speed"];
-    for(i=0;i<6;i++) {
-        id<NSMenuItem> item = [maximumSpeedMenu itemAtIndex:i];
-        BOOL check = ([item tag] == speed);
-        if(check)
-            foundSpeed = YES;
-        [item setState:check ? NSOnState : NSOffState];
-    }
-    // custom speed entry
+    BOOL foundSpeed = [self updateSubMenuCheckState:maximumSpeedMenu
+                                withTag:[self getIntResource:@"Speed"]];
     [[maximumSpeedMenu itemAtIndex:7] setState:foundSpeed ? NSOffState : NSOnState];
     
     // WarpMode
     [warpModeMenuItem setState:[self getIntResource:@"WarpMode"]];
+    
+    // Machine Video Standard
+    [self updateSubMenuCheckState:machineVideoStandardMenu 
+        withTag:[self getIntResource:@"MachineVideoStandard"]];
+    
     // Sound
     [soundPlaybackMenuItem setState:[self getIntResource:@"Sound"]];
     // TrueDriveEmulation
@@ -420,6 +472,19 @@
     [panel setTitle:title];    
     
     int result = [panel runModalForDirectory:nil file:nil types:types];
+    if(result==NSOKButton) {
+        return [panel filename];
+    }    
+    return nil;
+}
+
+- (NSString *)pickSaveFileWithTitle:(NSString *)title types:(NSArray *)types
+{
+    NSSavePanel *panel = [NSSavePanel savePanel];
+    [panel setTitle:title];    
+    [panel setAllowedFileTypes:types];
+    
+    int result = [panel runModalForDirectory:nil file:nil];
     if(result==NSOKButton) {
         return [panel filename];
     }    

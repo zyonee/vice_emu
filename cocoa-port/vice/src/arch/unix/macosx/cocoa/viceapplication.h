@@ -29,6 +29,8 @@
 #import "vicemachineprotocol.h"
 #import "consolewindow.h"
 
+@class VICEAppController;
+
 @interface VICEApplication : NSApplication <VICEApplicationProtocol>
 {
     NSMutableArray *argsArray;
@@ -42,6 +44,8 @@
     
     ConsoleWindow *monitorWindow;
     NSWindow *oldKeyWindow;
+    
+    IBOutlet VICEAppController *appController;
 }
 
 // start application with command line arguments
@@ -75,6 +79,11 @@
 + (void)runErrorMessage:(NSString *)message;
 // show warning message
 + (void)runWarningMessage:(NSString *)message;
+
+// get the app controller
+- (VICEAppController *)appController;
+// get the app controller
++ (VICEAppController *)theAppController;
 
 @end
 

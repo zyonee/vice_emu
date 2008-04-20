@@ -19,12 +19,20 @@ noinst_LIBRARIES = libarchmacosxcocoadialog.a
 
 noinst_HEADERS = \
 	drivesettingswindowcontroller.h \
+	iecdrivesettingswindowcontroller.h \
+	printersettingswindowcontroller.h \
 	joysticksettingswindowcontroller.h \
+	keyboardsettingswindowcontroller.h \
+	soundsettingswindowcontroller.h \
 	viceresourcewindowcontroller.h \
 	viceinformationwindowcontroller.h
    
 libarchmacosxcocoadialog_a_SOURCES = \
 	drivesettingswindowcontroller.m \
+	iecdrivesettingswindowcontroller.m \
+	printersettingswindowcontroller.m \
 	joysticksettingswindowcontroller.m \
+	keyboardsettingswindowcontroller.m \
+	soundsettingswindowcontroller.m \
 	viceresourcewindowcontroller.m \
 	viceinformationwindowcontroller.m

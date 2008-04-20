@@ -119,6 +119,19 @@ extern FILE *default_log_file;
     return [app machineController];
 }
 
+// appController
+
+- (VICEAppController *)appController
+{
+    return appController;
+}
+
++ (VICEAppController *)theAppController
+{
+    VICEApplication *app = (VICEApplication *)[self sharedApplication];
+    return [app appController];
+}
+
 // ----- Termination -----
 
 // ask the user if the application should be terminated
@@ -136,8 +149,8 @@ extern FILE *default_log_file;
     if([confirmOnExit intValue]) {
         int result = NSRunAlertPanel(@"Quit Application",
                                      @"Do you really want to exit?",
-                                     @"No",@"Yes",nil);
-        if(result!=NSAlertAlternateReturn)
+                                     @"Yes",@"No",nil);
+        if(result==NSAlertAlternateReturn)
             return NSTerminateCancel;
     }
 
@@ -213,6 +226,13 @@ extern FILE *default_log_file;
     canvas->buffer = [glView getCanvasBuffer];
     canvas->pitch  = [glView getCanvasPitch];
     canvas->depth  = [glView getCanvasDepth];
+    
+    // make top-level window
+    [window makeKeyAndOrderFront:nil];
+
+    // activate app if not already done
+    if(![self isActive])
+        [self activateIgnoringOtherApps:YES];
 }
 
 -(void)destroyCanvas:(NSData *)canvasPtr

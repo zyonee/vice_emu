@@ -40,12 +40,13 @@
 {
     NSOpenGLPixelFormatAttribute attrs[] =
     {
-        NSOpenGLPFAFullScreen,
+//        NSOpenGLPFAFullScreen,
+        NSOpenGLPFAWindow,
         NSOpenGLPFAAccelerated,
         NSOpenGLPFADoubleBuffer,
-        NSOpenGLPFANoRecovery,
-        NSOpenGLPFAColorSize, 8,
-        nil
+        NSOpenGLPFAColorSize, (NSOpenGLPixelFormatAttribute)8,
+//        NSOpenGLPFADepthSize, (NSOpenGLPixelFormatAttribute)16,
+        (NSOpenGLPixelFormatAttribute)nil
     };
     
     // init with given format
@@ -96,6 +97,10 @@
 // prepare open gl
 - (void)prepareOpenGL
 {
+    // sync to VBlank
+    GLint swapInt = 1;
+    [[self openGLContext] setValues:&swapInt forParameter:NSOpenGLCPSwapInterval];
+    
     glBindTexture(GL_TEXTURE_RECTANGLE_EXT, 1);
     glTexParameteri(GL_TEXTURE_RECTANGLE_EXT, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_RECTANGLE_EXT, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -133,7 +138,8 @@
         glTexCoord2i(size.width, size.height); glVertex2i(1, -1);
     }
     glEnd();
-    glFlush();
+    
+    [[self openGLContext] flushBuffer];
 }
 
 - (void)setupTexture:(NSSize)size
