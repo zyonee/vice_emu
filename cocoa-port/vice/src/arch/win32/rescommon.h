@@ -30,6 +30,7 @@
 #define TBS_BOTH                0x0008
 #define TBS_NOTICKS             0x0010
 #define ES_READONLY             0x0800L
+#define ES_AUTOHSCROLL          0x0080L
 
 #define RT_MANIFEST		24
 
