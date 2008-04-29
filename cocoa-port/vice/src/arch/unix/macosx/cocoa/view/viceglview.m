@@ -115,11 +115,26 @@
 
     NSRect rect = [self bounds];
     NSSize size = rect.size;
-    glViewport(0, 0, size.width, size.height);
+    NSPoint origin;
+    
+    float ratio = size.width / size.height;
+    viewSize    = size;
+    viewOrigin  = NSMakePoint(0.0,0.0);
+    if(ratio < (textureRatio-0.01)) {
+        // place along y
+        viewSize.height = viewSize.width / textureRatio;
+        viewOrigin.y = (size.height - viewSize.height) / 2.0; 
+    } else if(ratio > (textureRatio+0.01)) {
+        // place along x
+        viewSize.width = viewSize.height * textureRatio;
+        viewOrigin.x = (size.width - viewSize.width) / 2.0;
+    }
+    
+    glViewport(viewOrigin.x, viewOrigin.y, viewSize.width, viewSize.height);
     
     // adjust mouse scales
-    mouseXScale = textureSize.width  / size.width;
-    mouseYScale = textureSize.height / size.height;
+    mouseXScale = textureSize.width  / viewSize.width;
+    mouseYScale = textureSize.height / viewSize.height;
 }
 
 // redraw view
@@ -128,6 +143,8 @@
     [[self openGLContext] makeCurrentContext];
 
     NSSize size = textureSize;
+
+    glClear(GL_COLOR_BUFFER_BIT);
 
     glEnable(GL_TEXTURE_RECTANGLE_EXT);
     glBegin(GL_QUADS);
@@ -145,6 +162,7 @@
 - (void)setupTexture:(NSSize)size
 {
     textureSize = size;
+    textureRatio = size.width / size.height;
     unsigned int dataSize = size.width * size.height * 4;
 
     if(textureData==NULL)
@@ -366,10 +384,10 @@
 
 - (void)mouseMoved:(NSEvent *)theEvent
 {
-    [self mouseMove:[theEvent locationInWindow]];
+    NSPoint location = [self convertPoint:[theEvent locationInWindow] fromView:nil];
+    [self mouseMove:location];
     
     // check if mouse is in view
-    NSPoint location = [self convertPoint:[theEvent locationInWindow] fromView:nil];
     BOOL inView = NSPointInRect(location,[self bounds]);
     if(inView) {
         [self ensureMouseShown];        
@@ -380,16 +398,18 @@
 
 - (void)mouseDragged:(NSEvent *)theEvent
 {
-    [self mouseMove:[theEvent locationInWindow]];
+    NSPoint location = [self convertPoint:[theEvent locationInWindow] fromView:nil];
+    [self mouseMove:location];
 }
 
 - (void)mouseMove:(NSPoint)pos
 {
     if(trackMouse) {
-        int px = (int)(pos.x * mouseXScale);
-        int py = (int)(pos.y * mouseYScale);
         int w = (int)textureSize.width;
         int h = (int)textureSize.height;
+        int px = (int)((pos.x-viewOrigin.x) * mouseXScale);
+        int py = (int)((pos.y-viewOrigin.y) * mouseYScale);
+        py = h - 1 - py;
         if((px>=0)&&(px<w)&&(py>=0)&&(py<h)) {
             [[VICEApplication theMachineController] mouseMoveToX:px andY:py];
         }

@@ -32,10 +32,15 @@
 @interface VICEGLView : NSOpenGLView
 {
     NSSize  textureSize;
+    float   textureRatio;
     BYTE   *textureData;
+    NSSize  viewSize;
+    NSPoint viewOrigin;
+    
     unsigned int lastKeyModifierFlags;
     #define NUM_MODIFIERS 32
     unsigned int modifierKeyCode[NUM_MODIFIERS];
+    
     BOOL trackMouse;
     float mouseXScale;
     float mouseYScale;
