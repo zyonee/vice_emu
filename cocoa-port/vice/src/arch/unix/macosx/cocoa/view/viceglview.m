@@ -72,7 +72,7 @@
                                              selector:@selector(toggleMouse:)
                                                  name:VICEToggleMouseNotification
                                                object:nil];
-
+    mouseHideTimer = nil;
     return self;
 }
 
@@ -280,23 +280,102 @@
 
 // ----- Mouse -----
 
+- (void)startHideTimer
+{
+    if(mouseHideTimer==nil) {
+        // setup timer for mouse hide
+        mouseHideInterval = MOUSE_HIDE_DELAY;
+        mouseHideTimer = [NSTimer scheduledTimerWithTimeInterval: 0.5
+                                                          target: self 
+                                                        selector: @selector(hideTimer:)
+                                                        userInfo: nil 
+                                                         repeats: YES];
+        [mouseHideTimer fire];
+        [mouseHideTimer retain];
+    }
+}
+
+- (void)stopHideTimer:(BOOL)shown
+{
+    if(mouseHideTimer!=nil) {
+        // remove timer
+        [mouseHideTimer invalidate];
+        [mouseHideTimer release];
+        mouseHideTimer = nil;
+    }
+    
+    if(shown) {
+        if(mouseHideInterval != MOUSE_IS_SHOWN) {
+            [NSCursor setHiddenUntilMouseMoves:NO];
+            mouseHideInterval = MOUSE_IS_SHOWN;
+        }
+    } else {
+        if(mouseHideInterval != MOUSE_IS_HIDDEN) {
+            [NSCursor setHiddenUntilMouseMoves:YES];
+            mouseHideInterval = MOUSE_IS_HIDDEN;
+        }
+    }
+}
+
+- (void)hideTimer:(NSTimer *)timer
+{
+    if(mouseHideInterval>0) {
+        mouseHideInterval--;
+    } else if(mouseHideInterval==0) {
+        [self stopHideTimer:FALSE];
+    }
+}
+
+- (void)ensureMouseShown
+{
+    // in mouse tracking the mouse is always visible
+    if(trackMouse)
+        return;
+    
+    // reshow mouse if it was hidden
+    if(mouseHideInterval == MOUSE_IS_HIDDEN) {
+        [NSCursor setHiddenUntilMouseMoves:NO];
+    }
+    mouseHideInterval = MOUSE_HIDE_DELAY;
+    [self startHideTimer];
+}
+
 - (BOOL)becomeFirstResponder
 {
-    if(trackMouse)
-        [[self window] setAcceptsMouseMovedEvents:YES];
+    [[self window] setAcceptsMouseMovedEvents:YES];
+    
+    // start mouse hide timer
+    if(!trackMouse) {
+        [self startHideTimer];
+    }
+
     return [super becomeFirstResponder];
 }
 
 - (BOOL)resignFirstResponder
 {
-    if(trackMouse)
-        [[self window] setAcceptsMouseMovedEvents:NO];    
+    [[self window] setAcceptsMouseMovedEvents:NO];
+    
+    // show mouse again
+    if(!trackMouse) {
+        [self stopHideTimer:TRUE];
+    }
+
     return [super resignFirstResponder];
 }
 
 - (void)mouseMoved:(NSEvent *)theEvent
 {
     [self mouseMove:[theEvent locationInWindow]];
+    
+    // check if mouse is in view
+    NSPoint location = [self convertPoint:[theEvent locationInWindow] fromView:nil];
+    BOOL inView = NSPointInRect(location,[self bounds]);
+    if(inView) {
+        [self ensureMouseShown];        
+    } else {
+        [self stopHideTimer:TRUE];
+    }
 }
 
 - (void)mouseDragged:(NSEvent *)theEvent
@@ -319,18 +398,22 @@
 
 - (void)mouseDown:(NSEvent *)theEvent
 {
-    if(trackMouse) {
-        if([theEvent type]==NSLeftMouseDown) {
+    if([theEvent type]==NSLeftMouseDown) {
+        if(trackMouse) {
             [[VICEApplication theMachineController] mousePressed];
+        } else {
+            [self stopHideTimer:TRUE];
         }
     }
 }
 
 - (void)mouseUp:(NSEvent *)theEvent
 {
-    if(trackMouse) {
-        if([theEvent type]==NSLeftMouseUp) {
+    if([theEvent type]==NSLeftMouseUp) {
+        if(trackMouse) {
             [[VICEApplication theMachineController] mouseReleased];
+        } else {
+            [self startHideTimer];
         }
     }
 }
@@ -340,8 +423,11 @@
     NSDictionary *dict = [notification userInfo];
     trackMouse = [[dict objectForKey:@"mouse"] boolValue];
 
-    if(trackMouse)
-        [[self window] setAcceptsMouseMovedEvents:YES];
+    if(trackMouse) {
+        [self stopHideTimer:TRUE];
+    } else {
+        [self startHideTimer];
+    }
 }
 
 @end

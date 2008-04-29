@@ -41,6 +41,12 @@
     float mouseYScale;
     int oldX;
     int oldY;
+    
+    #define MOUSE_HIDE_DELAY 4
+    #define MOUSE_IS_HIDDEN  -1
+    #define MOUSE_IS_SHOWN   -2
+    NSTimer *mouseHideTimer;
+    int mouseHideInterval;
 }
 
 - (id)initWithFrame:(NSRect)rect;
@@ -70,6 +76,11 @@
 - (void)mouseUp:(NSEvent *)theEvent;
 - (void)mouseMove:(NSPoint)pos;
 - (void)toggleMouse:(NSNotification *)notification;
+
+- (void)startHideTimer;
+- (void)stopHideTimer:(BOOL)shown;
+- (void)hideTimer:(NSTimer *)timer;
+- (void)ensureMouseShown;
 
 @end
 
