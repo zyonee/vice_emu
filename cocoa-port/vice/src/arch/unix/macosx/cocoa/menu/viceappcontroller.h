@@ -84,6 +84,12 @@
 - (IBAction)attachTapeImage:(id)sender;
 - (IBAction)detachTapeImage:(id)sender;
 
+// Snapshot
+- (IBAction)loadSnapshot:(id)sender;
+- (IBAction)saveSnapshot:(id)sender;
+- (IBAction)loadQuickSnapshot:(id)sender;
+- (IBAction)saveQuickSnapshot:(id)sender;
+
 // Options
 - (IBAction)pickRefreshRate:(id)sender;
 - (IBAction)pickMaximumSpeed:(id)sender;

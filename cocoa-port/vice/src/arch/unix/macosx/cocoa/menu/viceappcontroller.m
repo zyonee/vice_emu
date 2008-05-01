@@ -225,6 +225,64 @@
     [[VICEApplication theMachineController] detachTapeImage];
 }
 
+// ----- Snapshot -----
+
+- (IBAction)loadSnapshot:(id)sender
+{
+    NSArray *types = [NSArray arrayWithObject:@"vsf"];
+    NSString *path = [self pickOpenFileWithTitle:@"Load Snapshot" types:types];
+    if(path!=nil) {
+        [[VICEApplication theMachineController] loadSnapshot:path];
+    }
+}
+
+- (IBAction)saveSnapshot:(id)sender
+{
+    NSArray *types = [NSArray arrayWithObject:@"vsf"];
+
+    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+    NSSavePanel * panel = [NSSavePanel savePanel];
+    NSView * accessories = [[NSView alloc] initWithFrame:NSMakeRect(0, 0, 125, 62)];
+    [accessories autorelease];
+
+    NSButton * saveRomsCheck = [[NSButton alloc] initWithFrame:NSMakeRect(16, 32, 91, 18)];
+    [saveRomsCheck autorelease];
+    [saveRomsCheck setButtonType:NSSwitchButton];
+    [saveRomsCheck setTitle:@"Save ROMS"];
+
+    NSButton * saveDisksCheck = [[NSButton alloc] initWithFrame:NSMakeRect(16, 12, 91, 18)];
+    [saveDisksCheck autorelease];
+    [saveDisksCheck setButtonType:NSSwitchButton];
+    [saveDisksCheck setTitle:@"Save Disks"];
+
+    [accessories addSubview:saveRomsCheck];
+    [accessories addSubview:saveDisksCheck];
+
+    [panel setAccessoryView:accessories];
+    [panel setTitle:@"Save Snapshot"];
+    [panel setAllowedFileTypes:types];
+
+    if ([panel runModalForDirectory:nil file:nil] == NSOKButton) {
+        BOOL saveRoms  = ([saveRomsCheck state] == NSOnState);
+        BOOL saveDisks = ([saveDisksCheck state] == NSOnState);
+        NSString * path = [panel filename];
+        if(path!=nil) {
+            [[VICEApplication theMachineController] saveSnapshot:path withROMS:FALSE andDisks:FALSE];
+        }
+    }
+    [pool release];
+}
+
+- (IBAction)loadQuickSnapshot:(id)sender
+{
+    [[VICEApplication theMachineController] loadQuickSnapshot];
+}
+
+- (IBAction)saveQuickSnapshot:(id)sender
+{
+    [[VICEApplication theMachineController] saveQuickSnapshot];
+}
+
 // ----- Options -----
 
 - (IBAction)pickRefreshRate:(id)sender

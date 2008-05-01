@@ -35,18 +35,43 @@
 #include "diskimage.h"
 #include "mousedrv.h"
 #include "printer.h"
+#include "archdep.h"
+#include "log.h"
 
 #import "vicemachinecontroller.h"
 #import "vicemachine.h"
 
 @implementation VICEMachineController
 
+-(id)init
+{
+    return self;
+}
+
+-(NSString *)checkAndGetPrefDir
+{
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSString *prefPath = [NSString stringWithCString:archdep_pref_path encoding:NSUTF8StringEncoding];
+    if(![fileManager fileExistsAtPath:prefPath]) {
+        if(![fileManager createDirectoryAtPath:prefPath attributes:nil]) {
+            [[theVICEMachine app] runErrorMessage:@"Error creating Preferences Dir"];
+            return nil;
+        }
+    }
+    BOOL isDir;
+    if([fileManager fileExistsAtPath:prefPath isDirectory:&isDir] && isDir) {
+        return prefPath;
+    }
+    [[theVICEMachine app] runErrorMessage:@"Invalid Preferences Dir"];
+    return nil;
+}
+
 // ----- Resources -----
 
 -(NSNumber *)getIntResource:(NSString *)name
 {
     int value;
-    if(resources_get_int([name cString],&value)==0) {
+    if(resources_get_int([name cStringUsingEncoding:NSUTF8StringEncoding],&value)==0) {
         return [NSNumber numberWithInt:value];
     }
     return nil;
@@ -55,20 +80,22 @@
 -(NSString *)getStringResource:(NSString *)name
 {
     const char *value;
-    if(resources_get_string([name cString],&value)==0) {
-        return [NSString stringWithCString:value];
+    if(resources_get_string([name cStringUsingEncoding:NSUTF8StringEncoding],&value)==0) {
+        return [NSString stringWithCString:value encoding:NSUTF8StringEncoding];
     }
     return nil;
 }
 
 -(BOOL)setIntResource:(NSString *)name value:(NSNumber *)value
 {
-    return resources_set_int([name cString],[value intValue]) == 0;
+    return resources_set_int([name cStringUsingEncoding:NSUTF8StringEncoding],
+                             [value intValue]) == 0;
 }
 
 -(BOOL)setStringResource:(NSString *)name value:(NSString *)value
 {
-    return resources_set_string([name cString],[value cString]) == 0;
+    return resources_set_string([name cStringUsingEncoding:NSUTF8StringEncoding],
+                                [value cStringUsingEncoding:NSUTF8StringEncoding]) == 0;
 }
 
 -(BOOL)loadResources:(NSString *)path
@@ -131,6 +158,114 @@
         monitor_startup_trap();
 }
 
+// ----- Snapshot -----
+
+static char *snapshotName;
+static int snapshotSaveRoms;
+static int snapshotSaveDisks;
+
+static void loadSnapshotTrap(WORD unusedWord, void *unusedData)
+{
+    if (machine_read_snapshot(snapshotName, 0) < 0) {
+        [[theVICEMachine app] runErrorMessage:@"Error loading Snapshot!"];
+    } else {
+        log_message(LOG_DEFAULT,"loaded snapshot '%s'",snapshotName);
+    }
+    free(snapshotName);
+}
+
+static void saveSnapshotTrap(WORD unusedWord, void *unusedData)
+{
+    if(machine_write_snapshot(snapshotName, snapshotSaveRoms, snapshotSaveDisks, 0) < 0) {
+        [[theVICEMachine app] runErrorMessage:@"Error saving Snapshot!"];        
+    } else {
+        log_message(LOG_DEFAULT,"saved snapshot '%s'",snapshotName);
+    }
+    free(snapshotName);
+}
+
+-(void)loadSnapshot:(NSString *)path
+{
+    snapshotName = strdup([path fileSystemRepresentation]);
+    if([theVICEMachine isPaused])
+        loadSnapshotTrap(0,NULL);
+    else
+        interrupt_maincpu_trigger_trap(loadSnapshotTrap, NULL);
+}
+
+-(void)saveSnapshot:(NSString *)path withROMS:(BOOL)saveRoms andDisks:(BOOL)saveDisks
+{
+    snapshotName = strdup([path fileSystemRepresentation]);
+    snapshotSaveRoms = saveRoms;
+    snapshotSaveDisks = saveDisks;
+    if([theVICEMachine isPaused])
+        saveSnapshotTrap(0,NULL);
+    else
+        interrupt_maincpu_trigger_trap(saveSnapshotTrap, NULL);
+}
+
+- (NSString *)getQuickSnapshotFileName:(BOOL)load
+{
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSString *prefPath = [self checkAndGetPrefDir];
+    if(prefPath==nil)
+        return nil;
+
+    // find file with highest index
+    int i;
+    int highestIndex = -1;
+    NSString *path = nil;
+    NSString *lastPath = nil;
+    for(i=0;i<10;i++) {
+        lastPath = path;
+        path = [NSString stringWithFormat:@"%@/quicksnap%d.vsf",prefPath,i];
+        if(![fileManager fileExistsAtPath:path]) {
+            break;
+        }
+        highestIndex = i;
+    }
+    
+    if(load) {
+        if(lastPath==nil)
+            [[theVICEMachine app] runErrorMessage:@"No Quick Snapshot File found!"];
+        
+        if(highestIndex==9)
+            return path;
+        else
+            return lastPath;
+    }
+    else {
+        // move all files one up to make space for new save
+        if(highestIndex==9) {
+            NSString *newPath = [NSString stringWithFormat:@"%@/quicksnap0.vsf",prefPath];
+            [fileManager removeFileAtPath:newPath handler:nil];
+            for(i=1;i<10;i++) {
+                NSString *oldPath = [NSString stringWithFormat:@"%@/quicksnap%d.vsf",prefPath,i];
+                [fileManager movePath:oldPath toPath:newPath handler:nil];
+                newPath = oldPath;
+            }
+        }
+
+        return path;
+    }
+}
+
+-(void)saveQuickSnapshot
+{
+    NSString *path = [self getQuickSnapshotFileName:FALSE];
+    if(path!=nil) {
+        [self saveSnapshot:path withROMS:FALSE andDisks:FALSE];
+    }
+}
+
+-(void)loadQuickSnapshot
+{
+    NSString *path = [self getQuickSnapshotFileName:TRUE];
+    if(path!=nil) {
+        [self loadSnapshot:path];
+    }
+}
+ 
 // ----- Keyboard -----
 
 -(void)keyPressed:(unsigned int)code
@@ -193,7 +328,7 @@
         DISK_IMAGE_TYPE_G64, DISK_IMAGE_TYPE_X64
     };
     return vdrive_internal_create_format_disk_image([path fileSystemRepresentation],
-                                                    [name cString],
+                                                    [name cStringUsingEncoding:NSUTF8StringEncoding],
                                                     ids[type]) == 0;
 }
 
@@ -203,7 +338,7 @@
     if(diskName==NULL)
         return nil;
     else
-        return [NSString stringWithCString:diskName];
+        return [NSString stringWithCString:diskName encoding:NSUTF8StringEncoding];
 }
 
 // ----- Tape -----

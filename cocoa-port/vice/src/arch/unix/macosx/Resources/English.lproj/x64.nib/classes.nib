@@ -50,7 +50,11 @@
 				<string>id</string>
 				<key>fliplistSave</key>
 				<string>id</string>
+				<key>loadQuickSnapshot</key>
+				<string>id</string>
 				<key>loadResources</key>
+				<string>id</string>
+				<key>loadSnapshot</key>
 				<string>id</string>
 				<key>pickCustomMaximumSpeed</key>
 				<string>id</string>
@@ -64,7 +68,11 @@
 				<string>id</string>
 				<key>resetResources</key>
 				<string>id</string>
+				<key>saveQuickSnapshot</key>
+				<string>id</string>
 				<key>saveResources</key>
+				<string>id</string>
+				<key>saveSnapshot</key>
 				<string>id</string>
 				<key>showDriveSettings</key>
 				<string>id</string>

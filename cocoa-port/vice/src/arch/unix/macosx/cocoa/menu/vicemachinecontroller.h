@@ -61,6 +61,18 @@
 // activate monitor
 -(void)activateMonitor;
 
+// ----- Snapshot -----
+// read a snapshot from a file
+-(void)loadSnapshot:(NSString *)path;
+// write a snapshot to a file
+-(void)saveSnapshot:(NSString *)path withROMS:(BOOL)saveRoms andDisks:(BOOL)saveDisks;
+// scan for quick snapshot files
+- (NSString *)getQuickSnapshotFileName:(BOOL)load;
+// read a quick snapshot from a file
+-(void)loadQuickSnapshot;
+// save a quick snapshot to a file
+-(void)saveQuickSnapshot;
+
 // ----- Keyboard -----
 // key pressed
 -(void)keyPressed:(unsigned int)code;
