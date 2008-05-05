@@ -106,7 +106,7 @@ static enum {
     }
     if (ioctl(ajoyfd, JSIOCGVERSION, &ver)) {
         close (ajoyfd);
-        log_message(joystick_log, _("%s unknown type"), dev);
+        log_message(joystick_log, _("%s unknown type"), devname);
         log_message(joystick_log,
                             _("Built in driver version: %d.%d.%d"),
                             JS_VERSION >> 16, (JS_VERSION >> 8) & 0xff,
@@ -121,7 +121,7 @@ static enum {
     ioctl(ajoyfd, JSIOCGAXES, &axes);
     ioctl(ajoyfd, JSIOCGBUTTONS, &buttons);
     ioctl(ajoyfd, JSIOCGNAME (sizeof (name)), name);
-            log_message(joystick_log, "%s is %s", dev, name);
+            log_message(joystick_log, "%s is %s", devname, name);
             log_message(joystick_log, _("Built in driver version: %d.%d.%d"),
                         JS_VERSION >> 16, (JS_VERSION >> 8) & 0xff,
                         JS_VERSION & 0xff);
