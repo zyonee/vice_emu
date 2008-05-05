@@ -67,10 +67,6 @@
 #include "vsync.h"
 #include "zfile.h"
 
-#ifdef HAS_JOYSTICK
-#include "joy.h"
-#endif
-
 static int ignore_jam;
 int machine_keymap_index;
 

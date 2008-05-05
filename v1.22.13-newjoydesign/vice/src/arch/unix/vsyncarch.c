@@ -31,10 +31,6 @@
 #include "ui.h"
 #include "vsyncapi.h"
 
-#ifdef HAS_JOYSTICK
-#include "joy.h"
-#endif
-
 #include <sys/time.h>
 #include <unistd.h>
 
@@ -91,7 +87,7 @@ void vsyncarch_presync(void)
 #endif
     kbdbuf_flush();
 #ifdef HAS_JOYSTICK
-    joystick();
+    joystick_update();
 #endif
 }
 

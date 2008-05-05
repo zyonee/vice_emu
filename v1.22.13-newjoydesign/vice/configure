@@ -657,6 +657,7 @@ VICE_VERSION
 INSTALL_PROGRAM
 INSTALL_SCRIPT
 INSTALL_DATA
+am__isrc
 CYGPATH_W
 PACKAGE
 VERSION
@@ -804,6 +805,7 @@ GTKGL_CFLAGS
 GTKGL_LIBS
 VICE_SYNC
 FULLSCREEN_DRIVERS
+JOYSTICK_DRIVERS
 HAVE_REALDEVICE_TRUE
 HAVE_REALDEVICE_FALSE
 x64_LDFLAGS
@@ -1979,7 +1981,8 @@ else
 fi
 
 
-am__api_version="1.9"
+am__api_version='1.10'
+
 ac_aux_dir=
 for ac_dir in "$srcdir" "$srcdir/.." "$srcdir/../.."; do
   if test -f "$ac_dir/install-sh"; then
@@ -2162,38 +2165,53 @@ else
 echo "$as_me: WARNING: \`missing' script is too old or missing" >&2;}
 fi
 
-if mkdir -p --version . >/dev/null 2>&1 && test ! -d ./--version; then
-  # We used to keeping the `.' as first argument, in order to
-  # allow $(mkdir_p) to be used without argument.  As in
-  #   $(mkdir_p) $(somedir)
-  # where $(somedir) is conditionally defined.  However this is wrong
-  # for two reasons:
-  #  1. if the package is installed by a user who cannot write `.'
-  #     make install will fail,
-  #  2. the above comment should most certainly read
-  #     $(mkdir_p) $(DESTDIR)$(somedir)
-  #     so it does not work when $(somedir) is undefined and
-  #     $(DESTDIR) is not.
-  #  To support the latter case, we have to write
-  #     test -z "$(somedir)" || $(mkdir_p) $(DESTDIR)$(somedir),
-  #  so the `.' trick is pointless.
-  mkdir_p='mkdir -p --'
+{ echo "$as_me:$LINENO: checking for a thread-safe mkdir -p" >&5
+echo $ECHO_N "checking for a thread-safe mkdir -p... $ECHO_C" >&6; }
+if test -z "$MKDIR_P"; then
+  if test "${ac_cv_path_mkdir+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
 else
-  # On NextStep and OpenStep, the `mkdir' command does not
-  # recognize any option.  It will interpret all options as
-  # directories to create, and then abort because `.' already
-  # exists.
-  for d in ./-p ./--version;
-  do
-    test -d $d && rmdir $d
-  done
-  # $(mkinstalldirs) is defined by Automake if mkinstalldirs exists.
-  if test -f "$ac_aux_dir/mkinstalldirs"; then
-    mkdir_p='$(mkinstalldirs)'
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH$PATH_SEPARATOR/opt/sfw/bin
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_prog in mkdir gmkdir; do
+	 for ac_exec_ext in '' $ac_executable_extensions; do
+	   { test -f "$as_dir/$ac_prog$ac_exec_ext" && $as_test_x "$as_dir/$ac_prog$ac_exec_ext"; } || continue
+	   case `"$as_dir/$ac_prog$ac_exec_ext" --version 2>&1` in #(
+	     'mkdir (GNU coreutils) '* | \
+	     'mkdir (coreutils) '* | \
+	     'mkdir (fileutils) '4.1*)
+	       ac_cv_path_mkdir=$as_dir/$ac_prog$ac_exec_ext
+	       break 3;;
+	   esac
+	 done
+       done
+done
+IFS=$as_save_IFS
+
+fi
+
+  if test "${ac_cv_path_mkdir+set}" = set; then
+    MKDIR_P="$ac_cv_path_mkdir -p"
   else
-    mkdir_p='$(install_sh) -d'
+    # As a last resort, use the slow shell script.  Don't cache a
+    # value for MKDIR_P within a source directory, because that will
+    # break other packages using the cache if that directory is
+    # removed, or if the value is a relative name.
+    test -d ./--version && rmdir ./--version
+    MKDIR_P="$ac_install_sh -d"
   fi
 fi
+{ echo "$as_me:$LINENO: result: $MKDIR_P" >&5
+echo "${ECHO_T}$MKDIR_P" >&6; }
+
+mkdir_p="$MKDIR_P"
+case $mkdir_p in
+  [\\/$]* | ?:[\\/]*) ;;
+  */*) mkdir_p="\$(top_builddir)/$mkdir_p" ;;
+esac
 
 for ac_prog in gawk mawk nawk awk
 do
@@ -2276,12 +2294,16 @@ else
 fi
 rmdir .tst 2>/dev/null
 
-# test to see if srcdir already configured
-if test "`cd $srcdir && pwd`" != "`pwd`" &&
-   test -f $srcdir/config.status; then
-  { { echo "$as_me:$LINENO: error: source directory already configured; run \"make distclean\" there first" >&5
+if test "`cd $srcdir && pwd`" != "`pwd`"; then
+  # Use -I$(srcdir) only when $(srcdir) != ., so that make's output
+  # is not polluted with repeated "-I."
+  am__isrc=' -I$(srcdir)'
+  # test to see if srcdir already configured
+  if test -f $srcdir/config.status; then
+    { { echo "$as_me:$LINENO: error: source directory already configured; run \"make distclean\" there first" >&5
 echo "$as_me: error: source directory already configured; run \"make distclean\" there first" >&2;}
    { (exit 1); exit 1; }; }
+  fi
 fi
 
 # test whether we have cygpath
@@ -2324,7 +2346,7 @@ AUTOHEADER=${AUTOHEADER-"${am_missing_run}autoheader"}
 
 MAKEINFO=${MAKEINFO-"${am_missing_run}makeinfo"}
 
-install_sh=${install_sh-"$am_aux_dir/install-sh"}
+install_sh=${install_sh-"\$(SHELL) $am_aux_dir/install-sh"}
 
 # Installed binaries are usually stripped using `strip' when the user
 # run `make install-strip'.  However `strip' might not be the right
@@ -2428,7 +2450,7 @@ else
 fi
 
 fi
-INSTALL_STRIP_PROGRAM="\${SHELL} \$(install_sh) -c -s"
+INSTALL_STRIP_PROGRAM="\$(install_sh) -c -s"
 
 # We need awk for the "check" target.  The system "awk" is bad on
 # some platforms.
@@ -2698,9 +2720,7 @@ _ACEOF
 
 fi
 
-
-
-if test x"$enable_gnomeui" = "xyes"; then
+ if test x"$enable_gnomeui" = "xyes"; then
   GNOMEUI_TRUE=
   GNOMEUI_FALSE='#'
 else
@@ -2717,9 +2737,7 @@ _ACEOF
 
 fi
 
-
-
-if test x"$with_cocoa" = "xyes"; then
+ if test x"$with_cocoa" = "xyes"; then
   MACOSX_COCOA_TRUE=
   MACOSX_COCOA_FALSE='#'
 else
@@ -3711,16 +3729,13 @@ if test "x$enable_dependency_tracking" != xno; then
   am_depcomp="$ac_aux_dir/depcomp"
   AMDEPBACKSLASH='\'
 fi
-
-
-if test "x$enable_dependency_tracking" != xno; then
+ if test "x$enable_dependency_tracking" != xno; then
   AMDEP_TRUE=
   AMDEP_FALSE='#'
 else
   AMDEP_TRUE='#'
   AMDEP_FALSE=
 fi
-
 
 
 
@@ -3791,6 +3806,7 @@ else
        depfile=sub/conftest.Po tmpdepfile=sub/conftest.TPo \
        $SHELL ./depcomp $depcc -c -o sub/conftest.${OBJEXT-o} sub/conftest.c \
          >/dev/null 2>conftest.err &&
+       grep sub/conftst1.h sub/conftest.Po > /dev/null 2>&1 &&
        grep sub/conftst6.h sub/conftest.Po > /dev/null 2>&1 &&
        grep sub/conftest.${OBJEXT-o} sub/conftest.Po > /dev/null 2>&1 &&
        ${MAKE-make} -s -f confmf > /dev/null 2>&1; then
@@ -3820,9 +3836,7 @@ fi
 echo "${ECHO_T}$am_cv_CC_dependencies_compiler_type" >&6; }
 CCDEPMODE=depmode=$am_cv_CC_dependencies_compiler_type
 
-
-
-if
+ if
   test "x$enable_dependency_tracking" != xno \
   && test "$am_cv_CC_dependencies_compiler_type" = gcc3; then
   am__fastdepCC_TRUE=
@@ -3907,6 +3921,7 @@ else
        depfile=sub/conftest.Po tmpdepfile=sub/conftest.TPo \
        $SHELL ./depcomp $depcc -c -o sub/conftest.${OBJEXT-o} sub/conftest.c \
          >/dev/null 2>conftest.err &&
+       grep sub/conftst1.h sub/conftest.Po > /dev/null 2>&1 &&
        grep sub/conftst6.h sub/conftest.Po > /dev/null 2>&1 &&
        grep sub/conftest.${OBJEXT-o} sub/conftest.Po > /dev/null 2>&1 &&
        ${MAKE-make} -s -f confmf > /dev/null 2>&1; then
@@ -3936,9 +3951,7 @@ fi
 echo "${ECHO_T}$am_cv_OBJC_dependencies_compiler_type" >&6; }
 OBJCDEPMODE=depmode=$am_cv_OBJC_dependencies_compiler_type
 
-
-
-if
+ if
   test "x$enable_dependency_tracking" != xno \
   && test "$am_cv_OBJC_dependencies_compiler_type" = gcc3; then
   am__fastdepOBJC_TRUE=
@@ -4001,9 +4014,7 @@ _ACEOF
       echo "using Allegro sound driver"
   fi
 
-
-
-if false; then
+   if false; then
   HAVE_RS232_TRUE=
   HAVE_RS232_FALSE='#'
 else
@@ -4011,9 +4022,7 @@ else
   HAVE_RS232_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   HAVE_RAWDRIVE_TRUE=
   HAVE_RAWDRIVE_FALSE='#'
 else
@@ -4047,9 +4056,7 @@ _ACEOF
   fi
 
 elif test x"$host_os" = "xamigaos" -o x"$host_os" = "xamigaos4" -o x"$host_os" = "xamithlon" -o x"$host_os" = "xaros" -o x"$host_os" = "xmorphos" -o x"$host_os" = "xwarpos" -o x"$host_os" = "xpowerup"; then
-
-
-if true; then
+   if true; then
   HAVE_RS232_TRUE=
   HAVE_RS232_FALSE='#'
 else
@@ -4057,9 +4064,7 @@ else
   HAVE_RS232_FALSE=
 fi
 
-
-
-if true; then
+   if true; then
   HAVE_RAWDRIVE_TRUE=
   HAVE_RAWDRIVE_FALSE='#'
 else
@@ -4254,9 +4259,7 @@ cat >>confdefs.h <<\_ACEOF
 #define HAVE_RS232
 _ACEOF
 
-
-
-if true; then
+   if true; then
   HAVE_RS232_TRUE=
   HAVE_RS232_FALSE='#'
 else
@@ -4264,9 +4267,7 @@ else
   HAVE_RS232_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   HAVE_RAWDRIVE_TRUE=
   HAVE_RAWDRIVE_FALSE='#'
 else
@@ -4407,6 +4408,784 @@ fi
 
 rm -f core conftest.err conftest.$ac_objext conftest_ipa8_conftest.oo \
       conftest$ac_exeext conftest.$ac_ext
+  JOYSTICK_DRIVERS="$JOYSTICK_DRIVERS joy_winmm.o"
+
+cat >>confdefs.h <<\_ACEOF
+#define USE_WINMM_JOY
+_ACEOF
+
+  ac_ext=c
+ac_cpp='$CPP $CPPFLAGS'
+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_c_compiler_gnu
+{ echo "$as_me:$LINENO: checking how to run the C preprocessor" >&5
+echo $ECHO_N "checking how to run the C preprocessor... $ECHO_C" >&6; }
+# On Suns, sometimes $CPP names a directory.
+if test -n "$CPP" && test -d "$CPP"; then
+  CPP=
+fi
+if test -z "$CPP"; then
+  if test "${ac_cv_prog_CPP+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+      # Double quotes because CPP needs to be expanded
+    for CPP in "$CC -E" "$CC -E -traditional-cpp" "/lib/cpp"
+    do
+      ac_preproc_ok=false
+for ac_c_preproc_warn_flag in '' yes
+do
+  # Use a header file that comes with gcc, so configuring glibc
+  # with a fresh cross-compiler works.
+  # Prefer <limits.h> to <assert.h> if __STDC__ is defined, since
+  # <limits.h> exists even on freestanding compilers.
+  # On the NeXT, cc -E runs the code through the compiler's parser,
+  # not just through cpp. "Syntax error" is here to catch this case.
+  cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+#ifdef __STDC__
+# include <limits.h>
+#else
+# include <assert.h>
+#endif
+		     Syntax error
+_ACEOF
+if { (ac_try="$ac_cpp conftest.$ac_ext"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_cpp conftest.$ac_ext") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } >/dev/null && {
+	 test -z "$ac_c_preproc_warn_flag$ac_c_werror_flag" ||
+	 test ! -s conftest.err
+       }; then
+  :
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+  # Broken: fails on valid input.
+continue
+fi
+
+rm -f conftest.err conftest.$ac_ext
+
+  # OK, works on sane cases.  Now check whether nonexistent headers
+  # can be detected and how.
+  cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+#include <ac_nonexistent.h>
+_ACEOF
+if { (ac_try="$ac_cpp conftest.$ac_ext"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_cpp conftest.$ac_ext") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } >/dev/null && {
+	 test -z "$ac_c_preproc_warn_flag$ac_c_werror_flag" ||
+	 test ! -s conftest.err
+       }; then
+  # Broken: success on invalid input.
+continue
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+  # Passes both tests.
+ac_preproc_ok=:
+break
+fi
+
+rm -f conftest.err conftest.$ac_ext
+
+done
+# Because of `break', _AC_PREPROC_IFELSE's cleaning code was skipped.
+rm -f conftest.err conftest.$ac_ext
+if $ac_preproc_ok; then
+  break
+fi
+
+    done
+    ac_cv_prog_CPP=$CPP
+
+fi
+  CPP=$ac_cv_prog_CPP
+else
+  ac_cv_prog_CPP=$CPP
+fi
+{ echo "$as_me:$LINENO: result: $CPP" >&5
+echo "${ECHO_T}$CPP" >&6; }
+ac_preproc_ok=false
+for ac_c_preproc_warn_flag in '' yes
+do
+  # Use a header file that comes with gcc, so configuring glibc
+  # with a fresh cross-compiler works.
+  # Prefer <limits.h> to <assert.h> if __STDC__ is defined, since
+  # <limits.h> exists even on freestanding compilers.
+  # On the NeXT, cc -E runs the code through the compiler's parser,
+  # not just through cpp. "Syntax error" is here to catch this case.
+  cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+#ifdef __STDC__
+# include <limits.h>
+#else
+# include <assert.h>
+#endif
+		     Syntax error
+_ACEOF
+if { (ac_try="$ac_cpp conftest.$ac_ext"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_cpp conftest.$ac_ext") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } >/dev/null && {
+	 test -z "$ac_c_preproc_warn_flag$ac_c_werror_flag" ||
+	 test ! -s conftest.err
+       }; then
+  :
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+  # Broken: fails on valid input.
+continue
+fi
+
+rm -f conftest.err conftest.$ac_ext
+
+  # OK, works on sane cases.  Now check whether nonexistent headers
+  # can be detected and how.
+  cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+#include <ac_nonexistent.h>
+_ACEOF
+if { (ac_try="$ac_cpp conftest.$ac_ext"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_cpp conftest.$ac_ext") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } >/dev/null && {
+	 test -z "$ac_c_preproc_warn_flag$ac_c_werror_flag" ||
+	 test ! -s conftest.err
+       }; then
+  # Broken: success on invalid input.
+continue
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+  # Passes both tests.
+ac_preproc_ok=:
+break
+fi
+
+rm -f conftest.err conftest.$ac_ext
+
+done
+# Because of `break', _AC_PREPROC_IFELSE's cleaning code was skipped.
+rm -f conftest.err conftest.$ac_ext
+if $ac_preproc_ok; then
+  :
+else
+  { { echo "$as_me:$LINENO: error: C preprocessor \"$CPP\" fails sanity check
+See \`config.log' for more details." >&5
+echo "$as_me: error: C preprocessor \"$CPP\" fails sanity check
+See \`config.log' for more details." >&2;}
+   { (exit 1); exit 1; }; }
+fi
+
+ac_ext=c
+ac_cpp='$CPP $CPPFLAGS'
+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_c_compiler_gnu
+
+
+{ echo "$as_me:$LINENO: checking for grep that handles long lines and -e" >&5
+echo $ECHO_N "checking for grep that handles long lines and -e... $ECHO_C" >&6; }
+if test "${ac_cv_path_GREP+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  # Extract the first word of "grep ggrep" to use in msg output
+if test -z "$GREP"; then
+set dummy grep ggrep; ac_prog_name=$2
+if test "${ac_cv_path_GREP+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  ac_path_GREP_found=false
+# Loop through the user's path and test for each of PROGNAME-LIST
+as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH$PATH_SEPARATOR/usr/xpg4/bin
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_prog in grep ggrep; do
+  for ac_exec_ext in '' $ac_executable_extensions; do
+    ac_path_GREP="$as_dir/$ac_prog$ac_exec_ext"
+    { test -f "$ac_path_GREP" && $as_test_x "$ac_path_GREP"; } || continue
+    # Check for GNU ac_path_GREP and select it if it is found.
+  # Check for GNU $ac_path_GREP
+case `"$ac_path_GREP" --version 2>&1` in
+*GNU*)
+  ac_cv_path_GREP="$ac_path_GREP" ac_path_GREP_found=:;;
+*)
+  ac_count=0
+  echo $ECHO_N "0123456789$ECHO_C" >"conftest.in"
+  while :
+  do
+    cat "conftest.in" "conftest.in" >"conftest.tmp"
+    mv "conftest.tmp" "conftest.in"
+    cp "conftest.in" "conftest.nl"
+    echo 'GREP' >> "conftest.nl"
+    "$ac_path_GREP" -e 'GREP$' -e '-(cannot match)-' < "conftest.nl" >"conftest.out" 2>/dev/null || break
+    diff "conftest.out" "conftest.nl" >/dev/null 2>&1 || break
+    ac_count=`expr $ac_count + 1`
+    if test $ac_count -gt ${ac_path_GREP_max-0}; then
+      # Best one so far, save it but keep looking for a better one
+      ac_cv_path_GREP="$ac_path_GREP"
+      ac_path_GREP_max=$ac_count
+    fi
+    # 10*(2^10) chars as input seems more than enough
+    test $ac_count -gt 10 && break
+  done
+  rm -f conftest.in conftest.tmp conftest.nl conftest.out;;
+esac
+
+
+    $ac_path_GREP_found && break 3
+  done
+done
+
+done
+IFS=$as_save_IFS
+
+
+fi
+
+GREP="$ac_cv_path_GREP"
+if test -z "$GREP"; then
+  { { echo "$as_me:$LINENO: error: no acceptable $ac_prog_name could be found in $PATH$PATH_SEPARATOR/usr/xpg4/bin" >&5
+echo "$as_me: error: no acceptable $ac_prog_name could be found in $PATH$PATH_SEPARATOR/usr/xpg4/bin" >&2;}
+   { (exit 1); exit 1; }; }
+fi
+
+else
+  ac_cv_path_GREP=$GREP
+fi
+
+
+fi
+{ echo "$as_me:$LINENO: result: $ac_cv_path_GREP" >&5
+echo "${ECHO_T}$ac_cv_path_GREP" >&6; }
+ GREP="$ac_cv_path_GREP"
+
+
+{ echo "$as_me:$LINENO: checking for egrep" >&5
+echo $ECHO_N "checking for egrep... $ECHO_C" >&6; }
+if test "${ac_cv_path_EGREP+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  if echo a | $GREP -E '(a|b)' >/dev/null 2>&1
+   then ac_cv_path_EGREP="$GREP -E"
+   else
+     # Extract the first word of "egrep" to use in msg output
+if test -z "$EGREP"; then
+set dummy egrep; ac_prog_name=$2
+if test "${ac_cv_path_EGREP+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  ac_path_EGREP_found=false
+# Loop through the user's path and test for each of PROGNAME-LIST
+as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH$PATH_SEPARATOR/usr/xpg4/bin
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_prog in egrep; do
+  for ac_exec_ext in '' $ac_executable_extensions; do
+    ac_path_EGREP="$as_dir/$ac_prog$ac_exec_ext"
+    { test -f "$ac_path_EGREP" && $as_test_x "$ac_path_EGREP"; } || continue
+    # Check for GNU ac_path_EGREP and select it if it is found.
+  # Check for GNU $ac_path_EGREP
+case `"$ac_path_EGREP" --version 2>&1` in
+*GNU*)
+  ac_cv_path_EGREP="$ac_path_EGREP" ac_path_EGREP_found=:;;
+*)
+  ac_count=0
+  echo $ECHO_N "0123456789$ECHO_C" >"conftest.in"
+  while :
+  do
+    cat "conftest.in" "conftest.in" >"conftest.tmp"
+    mv "conftest.tmp" "conftest.in"
+    cp "conftest.in" "conftest.nl"
+    echo 'EGREP' >> "conftest.nl"
+    "$ac_path_EGREP" 'EGREP$' < "conftest.nl" >"conftest.out" 2>/dev/null || break
+    diff "conftest.out" "conftest.nl" >/dev/null 2>&1 || break
+    ac_count=`expr $ac_count + 1`
+    if test $ac_count -gt ${ac_path_EGREP_max-0}; then
+      # Best one so far, save it but keep looking for a better one
+      ac_cv_path_EGREP="$ac_path_EGREP"
+      ac_path_EGREP_max=$ac_count
+    fi
+    # 10*(2^10) chars as input seems more than enough
+    test $ac_count -gt 10 && break
+  done
+  rm -f conftest.in conftest.tmp conftest.nl conftest.out;;
+esac
+
+
+    $ac_path_EGREP_found && break 3
+  done
+done
+
+done
+IFS=$as_save_IFS
+
+
+fi
+
+EGREP="$ac_cv_path_EGREP"
+if test -z "$EGREP"; then
+  { { echo "$as_me:$LINENO: error: no acceptable $ac_prog_name could be found in $PATH$PATH_SEPARATOR/usr/xpg4/bin" >&5
+echo "$as_me: error: no acceptable $ac_prog_name could be found in $PATH$PATH_SEPARATOR/usr/xpg4/bin" >&2;}
+   { (exit 1); exit 1; }; }
+fi
+
+else
+  ac_cv_path_EGREP=$EGREP
+fi
+
+
+   fi
+fi
+{ echo "$as_me:$LINENO: result: $ac_cv_path_EGREP" >&5
+echo "${ECHO_T}$ac_cv_path_EGREP" >&6; }
+ EGREP="$ac_cv_path_EGREP"
+
+
+{ echo "$as_me:$LINENO: checking for ANSI C header files" >&5
+echo $ECHO_N "checking for ANSI C header files... $ECHO_C" >&6; }
+if test "${ac_cv_header_stdc+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+#include <stdlib.h>
+#include <stdarg.h>
+#include <string.h>
+#include <float.h>
+
+int
+main ()
+{
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (ac_try="$ac_compile"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_compile") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && {
+	 test -z "$ac_c_werror_flag" ||
+	 test ! -s conftest.err
+       } && test -s conftest.$ac_objext; then
+  ac_cv_header_stdc=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+	ac_cv_header_stdc=no
+fi
+
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+
+if test $ac_cv_header_stdc = yes; then
+  # SunOS 4.x string.h does not declare mem*, contrary to ANSI.
+  cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+#include <string.h>
+
+_ACEOF
+if (eval "$ac_cpp conftest.$ac_ext") 2>&5 |
+  $EGREP "memchr" >/dev/null 2>&1; then
+  :
+else
+  ac_cv_header_stdc=no
+fi
+rm -f conftest*
+
+fi
+
+if test $ac_cv_header_stdc = yes; then
+  # ISC 2.0.2 stdlib.h does not declare free, contrary to ANSI.
+  cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+#include <stdlib.h>
+
+_ACEOF
+if (eval "$ac_cpp conftest.$ac_ext") 2>&5 |
+  $EGREP "free" >/dev/null 2>&1; then
+  :
+else
+  ac_cv_header_stdc=no
+fi
+rm -f conftest*
+
+fi
+
+if test $ac_cv_header_stdc = yes; then
+  # /bin/cc in Irix-4.0.5 gets non-ANSI ctype macros unless using -ansi.
+  if test "$cross_compiling" = yes; then
+  :
+else
+  cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+#include <ctype.h>
+#include <stdlib.h>
+#if ((' ' & 0x0FF) == 0x020)
+# define ISLOWER(c) ('a' <= (c) && (c) <= 'z')
+# define TOUPPER(c) (ISLOWER(c) ? 'A' + ((c) - 'a') : (c))
+#else
+# define ISLOWER(c) \
+		   (('a' <= (c) && (c) <= 'i') \
+		     || ('j' <= (c) && (c) <= 'r') \
+		     || ('s' <= (c) && (c) <= 'z'))
+# define TOUPPER(c) (ISLOWER(c) ? ((c) | 0x40) : (c))
+#endif
+
+#define XOR(e, f) (((e) && !(f)) || (!(e) && (f)))
+int
+main ()
+{
+  int i;
+  for (i = 0; i < 256; i++)
+    if (XOR (islower (i), ISLOWER (i))
+	|| toupper (i) != TOUPPER (i))
+      return 2;
+  return 0;
+}
+_ACEOF
+rm -f conftest$ac_exeext
+if { (ac_try="$ac_link"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_link") 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && { ac_try='./conftest$ac_exeext'
+  { (case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_try") 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  :
+else
+  echo "$as_me: program exited with status $ac_status" >&5
+echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+( exit $ac_status )
+ac_cv_header_stdc=no
+fi
+rm -f core *.core core.conftest.* gmon.out bb.out conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
+fi
+
+
+fi
+fi
+{ echo "$as_me:$LINENO: result: $ac_cv_header_stdc" >&5
+echo "${ECHO_T}$ac_cv_header_stdc" >&6; }
+if test $ac_cv_header_stdc = yes; then
+
+cat >>confdefs.h <<\_ACEOF
+#define STDC_HEADERS 1
+_ACEOF
+
+fi
+
+# On IRIX 5.3, sys/types and inttypes.h are conflicting.
+
+
+
+
+
+
+
+
+
+for ac_header in sys/types.h sys/stat.h stdlib.h string.h memory.h strings.h \
+		  inttypes.h stdint.h unistd.h
+do
+as_ac_Header=`echo "ac_cv_header_$ac_header" | $as_tr_sh`
+{ echo "$as_me:$LINENO: checking for $ac_header" >&5
+echo $ECHO_N "checking for $ac_header... $ECHO_C" >&6; }
+if { as_var=$as_ac_Header; eval "test \"\${$as_var+set}\" = set"; }; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+$ac_includes_default
+
+#include <$ac_header>
+_ACEOF
+rm -f conftest.$ac_objext
+if { (ac_try="$ac_compile"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_compile") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && {
+	 test -z "$ac_c_werror_flag" ||
+	 test ! -s conftest.err
+       } && test -s conftest.$ac_objext; then
+  eval "$as_ac_Header=yes"
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+	eval "$as_ac_Header=no"
+fi
+
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+fi
+ac_res=`eval echo '${'$as_ac_Header'}'`
+	       { echo "$as_me:$LINENO: result: $ac_res" >&5
+echo "${ECHO_T}$ac_res" >&6; }
+if test `eval echo '${'$as_ac_Header'}'` = yes; then
+  cat >>confdefs.h <<_ACEOF
+#define `echo "HAVE_$ac_header" | $as_tr_cpp` 1
+_ACEOF
+
+fi
+
+done
+
+
+if test "${ac_cv_header_dinput_h+set}" = set; then
+  { echo "$as_me:$LINENO: checking for dinput.h" >&5
+echo $ECHO_N "checking for dinput.h... $ECHO_C" >&6; }
+if test "${ac_cv_header_dinput_h+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+fi
+{ echo "$as_me:$LINENO: result: $ac_cv_header_dinput_h" >&5
+echo "${ECHO_T}$ac_cv_header_dinput_h" >&6; }
+else
+  # Is the header compilable?
+{ echo "$as_me:$LINENO: checking dinput.h usability" >&5
+echo $ECHO_N "checking dinput.h usability... $ECHO_C" >&6; }
+cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+$ac_includes_default
+#include <dinput.h>
+_ACEOF
+rm -f conftest.$ac_objext
+if { (ac_try="$ac_compile"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_compile") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && {
+	 test -z "$ac_c_werror_flag" ||
+	 test ! -s conftest.err
+       } && test -s conftest.$ac_objext; then
+  ac_header_compiler=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+	ac_header_compiler=no
+fi
+
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+{ echo "$as_me:$LINENO: result: $ac_header_compiler" >&5
+echo "${ECHO_T}$ac_header_compiler" >&6; }
+
+# Is the header present?
+{ echo "$as_me:$LINENO: checking dinput.h presence" >&5
+echo $ECHO_N "checking dinput.h presence... $ECHO_C" >&6; }
+cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+#include <dinput.h>
+_ACEOF
+if { (ac_try="$ac_cpp conftest.$ac_ext"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_cpp conftest.$ac_ext") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } >/dev/null && {
+	 test -z "$ac_c_preproc_warn_flag$ac_c_werror_flag" ||
+	 test ! -s conftest.err
+       }; then
+  ac_header_preproc=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+  ac_header_preproc=no
+fi
+
+rm -f conftest.err conftest.$ac_ext
+{ echo "$as_me:$LINENO: result: $ac_header_preproc" >&5
+echo "${ECHO_T}$ac_header_preproc" >&6; }
+
+# So?  What about this header?
+case $ac_header_compiler:$ac_header_preproc:$ac_c_preproc_warn_flag in
+  yes:no: )
+    { echo "$as_me:$LINENO: WARNING: dinput.h: accepted by the compiler, rejected by the preprocessor!" >&5
+echo "$as_me: WARNING: dinput.h: accepted by the compiler, rejected by the preprocessor!" >&2;}
+    { echo "$as_me:$LINENO: WARNING: dinput.h: proceeding with the compiler's result" >&5
+echo "$as_me: WARNING: dinput.h: proceeding with the compiler's result" >&2;}
+    ac_header_preproc=yes
+    ;;
+  no:yes:* )
+    { echo "$as_me:$LINENO: WARNING: dinput.h: present but cannot be compiled" >&5
+echo "$as_me: WARNING: dinput.h: present but cannot be compiled" >&2;}
+    { echo "$as_me:$LINENO: WARNING: dinput.h:     check for missing prerequisite headers?" >&5
+echo "$as_me: WARNING: dinput.h:     check for missing prerequisite headers?" >&2;}
+    { echo "$as_me:$LINENO: WARNING: dinput.h: see the Autoconf documentation" >&5
+echo "$as_me: WARNING: dinput.h: see the Autoconf documentation" >&2;}
+    { echo "$as_me:$LINENO: WARNING: dinput.h:     section \"Present But Cannot Be Compiled\"" >&5
+echo "$as_me: WARNING: dinput.h:     section \"Present But Cannot Be Compiled\"" >&2;}
+    { echo "$as_me:$LINENO: WARNING: dinput.h: proceeding with the preprocessor's result" >&5
+echo "$as_me: WARNING: dinput.h: proceeding with the preprocessor's result" >&2;}
+    { echo "$as_me:$LINENO: WARNING: dinput.h: in the future, the compiler will take precedence" >&5
+echo "$as_me: WARNING: dinput.h: in the future, the compiler will take precedence" >&2;}
+
+    ;;
+esac
+{ echo "$as_me:$LINENO: checking for dinput.h" >&5
+echo $ECHO_N "checking for dinput.h... $ECHO_C" >&6; }
+if test "${ac_cv_header_dinput_h+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  ac_cv_header_dinput_h=$ac_header_preproc
+fi
+{ echo "$as_me:$LINENO: result: $ac_cv_header_dinput_h" >&5
+echo "${ECHO_T}$ac_cv_header_dinput_h" >&6; }
+
+fi
+if test $ac_cv_header_dinput_h = yes; then
+   JOYSTICK_DRIVERS="$JOYSTICK_DRIVERS joy_directinput.o"
+
+cat >>confdefs.h <<\_ACEOF
+#define USE_DIRECTINPUT
+_ACEOF
+
+
+fi
+
+
 
 elif test x"$host_os" = "xbeos"; then
 
@@ -4425,9 +5204,7 @@ cat >>confdefs.h <<\_ACEOF
 #define HAVE_MOUSE
 _ACEOF
 
-
-
-if false; then
+   if false; then
   HAVE_RS232_TRUE=
   HAVE_RS232_FALSE='#'
 else
@@ -4435,9 +5212,7 @@ else
   HAVE_RS232_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   HAVE_RAWDRIVE_TRUE=
   HAVE_RAWDRIVE_FALSE='#'
 else
@@ -4459,9 +5234,7 @@ cat >>confdefs.h <<\_ACEOF
 #define HAS_JOYSTICK
 _ACEOF
 
-
-
-if false; then
+   if false; then
   HAVE_RS232_TRUE=
   HAVE_RS232_FALSE='#'
 else
@@ -4469,9 +5242,7 @@ else
   HAVE_RS232_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   HAVE_RAWDRIVE_TRUE=
   HAVE_RAWDRIVE_FALSE='#'
 else
@@ -4505,9 +5276,7 @@ cat >>confdefs.h <<\_ACEOF
 #define GP2X
 _ACEOF
 
-
-
-if false; then
+   if false; then
   HAVE_RS232_TRUE=
   HAVE_RS232_FALSE='#'
 else
@@ -4515,9 +5284,7 @@ else
   HAVE_RS232_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   HAVE_RAWDRIVE_TRUE=
   HAVE_RAWDRIVE_FALSE='#'
 else
@@ -4557,9 +5324,7 @@ darwin*)
     fi
   fi
 
-
-
-if true; then
+   if true; then
   HAVE_RS232_TRUE=
   HAVE_RS232_FALSE='#'
 else
@@ -4567,9 +5332,7 @@ else
   HAVE_RS232_FALSE=
 fi
 
-
-
-if true; then
+   if true; then
   HAVE_RAWDRIVE_TRUE=
   HAVE_RAWDRIVE_FALSE='#'
 else
@@ -5398,6 +6161,7 @@ else
        depfile=sub/conftest.Po tmpdepfile=sub/conftest.TPo \
        $SHELL ./depcomp $depcc -c -o sub/conftest.${OBJEXT-o} sub/conftest.c \
          >/dev/null 2>conftest.err &&
+       grep sub/conftst1.h sub/conftest.Po > /dev/null 2>&1 &&
        grep sub/conftst6.h sub/conftest.Po > /dev/null 2>&1 &&
        grep sub/conftest.${OBJEXT-o} sub/conftest.Po > /dev/null 2>&1 &&
        ${MAKE-make} -s -f confmf > /dev/null 2>&1; then
@@ -5427,9 +6191,7 @@ fi
 echo "${ECHO_T}$am_cv_CC_dependencies_compiler_type" >&6; }
 CCDEPMODE=depmode=$am_cv_CC_dependencies_compiler_type
 
-
-
-if
+ if
   test "x$enable_dependency_tracking" != xno \
   && test "$am_cv_CC_dependencies_compiler_type" = gcc3; then
   am__fastdepCC_TRUE=
@@ -5446,9 +6208,7 @@ fi
 
   fi
 
-
-
-if true; then
+   if true; then
   HAVE_RS232_TRUE=
   HAVE_RS232_FALSE='#'
 else
@@ -5456,9 +6216,7 @@ else
   HAVE_RS232_FALSE=
 fi
 
-
-
-if true; then
+   if true; then
   HAVE_RAWDRIVE_TRUE=
   HAVE_RAWDRIVE_FALSE='#'
 else
@@ -5483,643 +6241,7 @@ cat >>confdefs.h <<\_ACEOF
 _ACEOF
 
 
-  ac_ext=c
-ac_cpp='$CPP $CPPFLAGS'
-ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_c_compiler_gnu
-{ echo "$as_me:$LINENO: checking how to run the C preprocessor" >&5
-echo $ECHO_N "checking how to run the C preprocessor... $ECHO_C" >&6; }
-# On Suns, sometimes $CPP names a directory.
-if test -n "$CPP" && test -d "$CPP"; then
-  CPP=
-fi
-if test -z "$CPP"; then
-  if test "${ac_cv_prog_CPP+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-      # Double quotes because CPP needs to be expanded
-    for CPP in "$CC -E" "$CC -E -traditional-cpp" "/lib/cpp"
-    do
-      ac_preproc_ok=false
-for ac_c_preproc_warn_flag in '' yes
-do
-  # Use a header file that comes with gcc, so configuring glibc
-  # with a fresh cross-compiler works.
-  # Prefer <limits.h> to <assert.h> if __STDC__ is defined, since
-  # <limits.h> exists even on freestanding compilers.
-  # On the NeXT, cc -E runs the code through the compiler's parser,
-  # not just through cpp. "Syntax error" is here to catch this case.
-  cat >conftest.$ac_ext <<_ACEOF
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-#ifdef __STDC__
-# include <limits.h>
-#else
-# include <assert.h>
-#endif
-		     Syntax error
-_ACEOF
-if { (ac_try="$ac_cpp conftest.$ac_ext"
-case "(($ac_try" in
-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-  *) ac_try_echo=$ac_try;;
-esac
-eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
-  (eval "$ac_cpp conftest.$ac_ext") 2>conftest.er1
-  ac_status=$?
-  grep -v '^ *+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } >/dev/null && {
-	 test -z "$ac_c_preproc_warn_flag$ac_c_werror_flag" ||
-	 test ! -s conftest.err
-       }; then
-  :
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-  # Broken: fails on valid input.
-continue
-fi
-
-rm -f conftest.err conftest.$ac_ext
-
-  # OK, works on sane cases.  Now check whether nonexistent headers
-  # can be detected and how.
-  cat >conftest.$ac_ext <<_ACEOF
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-#include <ac_nonexistent.h>
-_ACEOF
-if { (ac_try="$ac_cpp conftest.$ac_ext"
-case "(($ac_try" in
-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-  *) ac_try_echo=$ac_try;;
-esac
-eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
-  (eval "$ac_cpp conftest.$ac_ext") 2>conftest.er1
-  ac_status=$?
-  grep -v '^ *+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } >/dev/null && {
-	 test -z "$ac_c_preproc_warn_flag$ac_c_werror_flag" ||
-	 test ! -s conftest.err
-       }; then
-  # Broken: success on invalid input.
-continue
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-  # Passes both tests.
-ac_preproc_ok=:
-break
-fi
-
-rm -f conftest.err conftest.$ac_ext
-
-done
-# Because of `break', _AC_PREPROC_IFELSE's cleaning code was skipped.
-rm -f conftest.err conftest.$ac_ext
-if $ac_preproc_ok; then
-  break
-fi
-
-    done
-    ac_cv_prog_CPP=$CPP
-
-fi
-  CPP=$ac_cv_prog_CPP
-else
-  ac_cv_prog_CPP=$CPP
-fi
-{ echo "$as_me:$LINENO: result: $CPP" >&5
-echo "${ECHO_T}$CPP" >&6; }
-ac_preproc_ok=false
-for ac_c_preproc_warn_flag in '' yes
-do
-  # Use a header file that comes with gcc, so configuring glibc
-  # with a fresh cross-compiler works.
-  # Prefer <limits.h> to <assert.h> if __STDC__ is defined, since
-  # <limits.h> exists even on freestanding compilers.
-  # On the NeXT, cc -E runs the code through the compiler's parser,
-  # not just through cpp. "Syntax error" is here to catch this case.
-  cat >conftest.$ac_ext <<_ACEOF
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-#ifdef __STDC__
-# include <limits.h>
-#else
-# include <assert.h>
-#endif
-		     Syntax error
-_ACEOF
-if { (ac_try="$ac_cpp conftest.$ac_ext"
-case "(($ac_try" in
-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-  *) ac_try_echo=$ac_try;;
-esac
-eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
-  (eval "$ac_cpp conftest.$ac_ext") 2>conftest.er1
-  ac_status=$?
-  grep -v '^ *+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } >/dev/null && {
-	 test -z "$ac_c_preproc_warn_flag$ac_c_werror_flag" ||
-	 test ! -s conftest.err
-       }; then
-  :
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-  # Broken: fails on valid input.
-continue
-fi
-
-rm -f conftest.err conftest.$ac_ext
-
-  # OK, works on sane cases.  Now check whether nonexistent headers
-  # can be detected and how.
-  cat >conftest.$ac_ext <<_ACEOF
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-#include <ac_nonexistent.h>
-_ACEOF
-if { (ac_try="$ac_cpp conftest.$ac_ext"
-case "(($ac_try" in
-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-  *) ac_try_echo=$ac_try;;
-esac
-eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
-  (eval "$ac_cpp conftest.$ac_ext") 2>conftest.er1
-  ac_status=$?
-  grep -v '^ *+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } >/dev/null && {
-	 test -z "$ac_c_preproc_warn_flag$ac_c_werror_flag" ||
-	 test ! -s conftest.err
-       }; then
-  # Broken: success on invalid input.
-continue
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-  # Passes both tests.
-ac_preproc_ok=:
-break
-fi
-
-rm -f conftest.err conftest.$ac_ext
-
-done
-# Because of `break', _AC_PREPROC_IFELSE's cleaning code was skipped.
-rm -f conftest.err conftest.$ac_ext
-if $ac_preproc_ok; then
-  :
-else
-  { { echo "$as_me:$LINENO: error: C preprocessor \"$CPP\" fails sanity check
-See \`config.log' for more details." >&5
-echo "$as_me: error: C preprocessor \"$CPP\" fails sanity check
-See \`config.log' for more details." >&2;}
-   { (exit 1); exit 1; }; }
-fi
-
-ac_ext=c
-ac_cpp='$CPP $CPPFLAGS'
-ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_c_compiler_gnu
-
-
-{ echo "$as_me:$LINENO: checking for grep that handles long lines and -e" >&5
-echo $ECHO_N "checking for grep that handles long lines and -e... $ECHO_C" >&6; }
-if test "${ac_cv_path_GREP+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  # Extract the first word of "grep ggrep" to use in msg output
-if test -z "$GREP"; then
-set dummy grep ggrep; ac_prog_name=$2
-if test "${ac_cv_path_GREP+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  ac_path_GREP_found=false
-# Loop through the user's path and test for each of PROGNAME-LIST
-as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH$PATH_SEPARATOR/usr/xpg4/bin
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-  for ac_prog in grep ggrep; do
-  for ac_exec_ext in '' $ac_executable_extensions; do
-    ac_path_GREP="$as_dir/$ac_prog$ac_exec_ext"
-    { test -f "$ac_path_GREP" && $as_test_x "$ac_path_GREP"; } || continue
-    # Check for GNU ac_path_GREP and select it if it is found.
-  # Check for GNU $ac_path_GREP
-case `"$ac_path_GREP" --version 2>&1` in
-*GNU*)
-  ac_cv_path_GREP="$ac_path_GREP" ac_path_GREP_found=:;;
-*)
-  ac_count=0
-  echo $ECHO_N "0123456789$ECHO_C" >"conftest.in"
-  while :
-  do
-    cat "conftest.in" "conftest.in" >"conftest.tmp"
-    mv "conftest.tmp" "conftest.in"
-    cp "conftest.in" "conftest.nl"
-    echo 'GREP' >> "conftest.nl"
-    "$ac_path_GREP" -e 'GREP$' -e '-(cannot match)-' < "conftest.nl" >"conftest.out" 2>/dev/null || break
-    diff "conftest.out" "conftest.nl" >/dev/null 2>&1 || break
-    ac_count=`expr $ac_count + 1`
-    if test $ac_count -gt ${ac_path_GREP_max-0}; then
-      # Best one so far, save it but keep looking for a better one
-      ac_cv_path_GREP="$ac_path_GREP"
-      ac_path_GREP_max=$ac_count
-    fi
-    # 10*(2^10) chars as input seems more than enough
-    test $ac_count -gt 10 && break
-  done
-  rm -f conftest.in conftest.tmp conftest.nl conftest.out;;
-esac
-
-
-    $ac_path_GREP_found && break 3
-  done
-done
-
-done
-IFS=$as_save_IFS
-
-
-fi
-
-GREP="$ac_cv_path_GREP"
-if test -z "$GREP"; then
-  { { echo "$as_me:$LINENO: error: no acceptable $ac_prog_name could be found in $PATH$PATH_SEPARATOR/usr/xpg4/bin" >&5
-echo "$as_me: error: no acceptable $ac_prog_name could be found in $PATH$PATH_SEPARATOR/usr/xpg4/bin" >&2;}
-   { (exit 1); exit 1; }; }
-fi
-
-else
-  ac_cv_path_GREP=$GREP
-fi
-
-
-fi
-{ echo "$as_me:$LINENO: result: $ac_cv_path_GREP" >&5
-echo "${ECHO_T}$ac_cv_path_GREP" >&6; }
- GREP="$ac_cv_path_GREP"
-
-
-{ echo "$as_me:$LINENO: checking for egrep" >&5
-echo $ECHO_N "checking for egrep... $ECHO_C" >&6; }
-if test "${ac_cv_path_EGREP+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  if echo a | $GREP -E '(a|b)' >/dev/null 2>&1
-   then ac_cv_path_EGREP="$GREP -E"
-   else
-     # Extract the first word of "egrep" to use in msg output
-if test -z "$EGREP"; then
-set dummy egrep; ac_prog_name=$2
-if test "${ac_cv_path_EGREP+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  ac_path_EGREP_found=false
-# Loop through the user's path and test for each of PROGNAME-LIST
-as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH$PATH_SEPARATOR/usr/xpg4/bin
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-  for ac_prog in egrep; do
-  for ac_exec_ext in '' $ac_executable_extensions; do
-    ac_path_EGREP="$as_dir/$ac_prog$ac_exec_ext"
-    { test -f "$ac_path_EGREP" && $as_test_x "$ac_path_EGREP"; } || continue
-    # Check for GNU ac_path_EGREP and select it if it is found.
-  # Check for GNU $ac_path_EGREP
-case `"$ac_path_EGREP" --version 2>&1` in
-*GNU*)
-  ac_cv_path_EGREP="$ac_path_EGREP" ac_path_EGREP_found=:;;
-*)
-  ac_count=0
-  echo $ECHO_N "0123456789$ECHO_C" >"conftest.in"
-  while :
-  do
-    cat "conftest.in" "conftest.in" >"conftest.tmp"
-    mv "conftest.tmp" "conftest.in"
-    cp "conftest.in" "conftest.nl"
-    echo 'EGREP' >> "conftest.nl"
-    "$ac_path_EGREP" 'EGREP$' < "conftest.nl" >"conftest.out" 2>/dev/null || break
-    diff "conftest.out" "conftest.nl" >/dev/null 2>&1 || break
-    ac_count=`expr $ac_count + 1`
-    if test $ac_count -gt ${ac_path_EGREP_max-0}; then
-      # Best one so far, save it but keep looking for a better one
-      ac_cv_path_EGREP="$ac_path_EGREP"
-      ac_path_EGREP_max=$ac_count
-    fi
-    # 10*(2^10) chars as input seems more than enough
-    test $ac_count -gt 10 && break
-  done
-  rm -f conftest.in conftest.tmp conftest.nl conftest.out;;
-esac
-
-
-    $ac_path_EGREP_found && break 3
-  done
-done
-
-done
-IFS=$as_save_IFS
-
-
-fi
-
-EGREP="$ac_cv_path_EGREP"
-if test -z "$EGREP"; then
-  { { echo "$as_me:$LINENO: error: no acceptable $ac_prog_name could be found in $PATH$PATH_SEPARATOR/usr/xpg4/bin" >&5
-echo "$as_me: error: no acceptable $ac_prog_name could be found in $PATH$PATH_SEPARATOR/usr/xpg4/bin" >&2;}
-   { (exit 1); exit 1; }; }
-fi
-
-else
-  ac_cv_path_EGREP=$EGREP
-fi
-
-
-   fi
-fi
-{ echo "$as_me:$LINENO: result: $ac_cv_path_EGREP" >&5
-echo "${ECHO_T}$ac_cv_path_EGREP" >&6; }
- EGREP="$ac_cv_path_EGREP"
-
-
-{ echo "$as_me:$LINENO: checking for ANSI C header files" >&5
-echo $ECHO_N "checking for ANSI C header files... $ECHO_C" >&6; }
-if test "${ac_cv_header_stdc+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  cat >conftest.$ac_ext <<_ACEOF
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-#include <stdlib.h>
-#include <stdarg.h>
-#include <string.h>
-#include <float.h>
-
-int
-main ()
-{
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (ac_try="$ac_compile"
-case "(($ac_try" in
-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-  *) ac_try_echo=$ac_try;;
-esac
-eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
-  (eval "$ac_compile") 2>conftest.er1
-  ac_status=$?
-  grep -v '^ *+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } && {
-	 test -z "$ac_c_werror_flag" ||
-	 test ! -s conftest.err
-       } && test -s conftest.$ac_objext; then
-  ac_cv_header_stdc=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-	ac_cv_header_stdc=no
-fi
-
-rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
-
-if test $ac_cv_header_stdc = yes; then
-  # SunOS 4.x string.h does not declare mem*, contrary to ANSI.
-  cat >conftest.$ac_ext <<_ACEOF
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-#include <string.h>
-
-_ACEOF
-if (eval "$ac_cpp conftest.$ac_ext") 2>&5 |
-  $EGREP "memchr" >/dev/null 2>&1; then
-  :
-else
-  ac_cv_header_stdc=no
-fi
-rm -f conftest*
-
-fi
-
-if test $ac_cv_header_stdc = yes; then
-  # ISC 2.0.2 stdlib.h does not declare free, contrary to ANSI.
-  cat >conftest.$ac_ext <<_ACEOF
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-#include <stdlib.h>
-
-_ACEOF
-if (eval "$ac_cpp conftest.$ac_ext") 2>&5 |
-  $EGREP "free" >/dev/null 2>&1; then
-  :
-else
-  ac_cv_header_stdc=no
-fi
-rm -f conftest*
-
-fi
-
-if test $ac_cv_header_stdc = yes; then
-  # /bin/cc in Irix-4.0.5 gets non-ANSI ctype macros unless using -ansi.
-  if test "$cross_compiling" = yes; then
-  :
-else
-  cat >conftest.$ac_ext <<_ACEOF
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-#include <ctype.h>
-#include <stdlib.h>
-#if ((' ' & 0x0FF) == 0x020)
-# define ISLOWER(c) ('a' <= (c) && (c) <= 'z')
-# define TOUPPER(c) (ISLOWER(c) ? 'A' + ((c) - 'a') : (c))
-#else
-# define ISLOWER(c) \
-		   (('a' <= (c) && (c) <= 'i') \
-		     || ('j' <= (c) && (c) <= 'r') \
-		     || ('s' <= (c) && (c) <= 'z'))
-# define TOUPPER(c) (ISLOWER(c) ? ((c) | 0x40) : (c))
-#endif
-
-#define XOR(e, f) (((e) && !(f)) || (!(e) && (f)))
-int
-main ()
-{
-  int i;
-  for (i = 0; i < 256; i++)
-    if (XOR (islower (i), ISLOWER (i))
-	|| toupper (i) != TOUPPER (i))
-      return 2;
-  return 0;
-}
-_ACEOF
-rm -f conftest$ac_exeext
-if { (ac_try="$ac_link"
-case "(($ac_try" in
-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-  *) ac_try_echo=$ac_try;;
-esac
-eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
-  (eval "$ac_link") 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } && { ac_try='./conftest$ac_exeext'
-  { (case "(($ac_try" in
-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-  *) ac_try_echo=$ac_try;;
-esac
-eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
-  (eval "$ac_try") 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  :
-else
-  echo "$as_me: program exited with status $ac_status" >&5
-echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-( exit $ac_status )
-ac_cv_header_stdc=no
-fi
-rm -f core *.core core.conftest.* gmon.out bb.out conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
-fi
-
-
-fi
-fi
-{ echo "$as_me:$LINENO: result: $ac_cv_header_stdc" >&5
-echo "${ECHO_T}$ac_cv_header_stdc" >&6; }
-if test $ac_cv_header_stdc = yes; then
-
-cat >>confdefs.h <<\_ACEOF
-#define STDC_HEADERS 1
-_ACEOF
-
-fi
-
-# On IRIX 5.3, sys/types and inttypes.h are conflicting.
-
-
-
-
-
-
-
-
-
-for ac_header in sys/types.h sys/stat.h stdlib.h string.h memory.h strings.h \
-		  inttypes.h stdint.h unistd.h
-do
-as_ac_Header=`echo "ac_cv_header_$ac_header" | $as_tr_sh`
-{ echo "$as_me:$LINENO: checking for $ac_header" >&5
-echo $ECHO_N "checking for $ac_header... $ECHO_C" >&6; }
-if { as_var=$as_ac_Header; eval "test \"\${$as_var+set}\" = set"; }; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  cat >conftest.$ac_ext <<_ACEOF
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-$ac_includes_default
-
-#include <$ac_header>
-_ACEOF
-rm -f conftest.$ac_objext
-if { (ac_try="$ac_compile"
-case "(($ac_try" in
-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-  *) ac_try_echo=$ac_try;;
-esac
-eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
-  (eval "$ac_compile") 2>conftest.er1
-  ac_status=$?
-  grep -v '^ *+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } && {
-	 test -z "$ac_c_werror_flag" ||
-	 test ! -s conftest.err
-       } && test -s conftest.$ac_objext; then
-  eval "$as_ac_Header=yes"
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-	eval "$as_ac_Header=no"
-fi
-
-rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
-fi
-ac_res=`eval echo '${'$as_ac_Header'}'`
-	       { echo "$as_me:$LINENO: result: $ac_res" >&5
-echo "${ECHO_T}$ac_res" >&6; }
-if test `eval echo '${'$as_ac_Header'}'` = yes; then
-  cat >>confdefs.h <<_ACEOF
-#define `echo "HAVE_$ac_header" | $as_tr_cpp` 1
-_ACEOF
-
-fi
-
-done
-
-
-if test "${ac_cv_header_linux_hardsid_h+set}" = set; then
+  if test "${ac_cv_header_linux_hardsid_h+set}" = set; then
   { echo "$as_me:$LINENO: checking for linux/hardsid.h" >&5
 echo $ECHO_N "checking for linux/hardsid.h... $ECHO_C" >&6; }
 if test "${ac_cv_header_linux_hardsid_h+set}" = set; then
@@ -6258,9 +6380,7 @@ fi
 esac
 fi
 
-
-
-if test x"$with_midas" = "xyes"; then
+ if test x"$with_midas" = "xyes"; then
   USE_MIDAS_SOUND_TRUE=
   USE_MIDAS_SOUND_FALSE='#'
 else
@@ -8320,6 +8440,7 @@ else
        depfile=sub/conftest.Po tmpdepfile=sub/conftest.TPo \
        $SHELL ./depcomp $depcc -c -o sub/conftest.${OBJEXT-o} sub/conftest.c \
          >/dev/null 2>conftest.err &&
+       grep sub/conftst1.h sub/conftest.Po > /dev/null 2>&1 &&
        grep sub/conftst6.h sub/conftest.Po > /dev/null 2>&1 &&
        grep sub/conftest.${OBJEXT-o} sub/conftest.Po > /dev/null 2>&1 &&
        ${MAKE-make} -s -f confmf > /dev/null 2>&1; then
@@ -8349,9 +8470,7 @@ fi
 echo "${ECHO_T}$am_cv_CXX_dependencies_compiler_type" >&6; }
 CXXDEPMODE=depmode=$am_cv_CXX_dependencies_compiler_type
 
-
-
-if
+ if
   test "x$enable_dependency_tracking" != xno \
   && test "$am_cv_CXX_dependencies_compiler_type" = gcc3; then
   am__fastdepCXX_TRUE=
@@ -8897,9 +9016,7 @@ fi
 
 
 
-
-
-if test x"$with_resid" != "xno"; then
+ if test x"$with_resid" != "xno"; then
   HAVE_RESID_TRUE=
   HAVE_RESID_FALSE='#'
 else
@@ -9562,9 +9679,7 @@ else
 fi
 
 if test x"$cross_compiling" = "xyes"; then
-
-
-if true; then
+   if true; then
   CROSS_TRUE=
   CROSS_FALSE='#'
 else
@@ -9574,9 +9689,7 @@ fi
 
   CROSS=true
 else
-
-
-if false; then
+   if false; then
   CROSS_TRUE=
   CROSS_FALSE='#'
 else
@@ -11528,7 +11641,64 @@ _ACEOF
 fi
 
 
+
+cat >>confdefs.h <<\_ACEOF
+#define USE_UNIX_OLD_JOY
+_ACEOF
+
+                     JOYSTICK_DRIVERS="$JOYSTICK_DRIVERS joy_unix_old.o"
   if test x"$ac_cv_header_linux_joystick_h" = "xyes" ; then
+    { echo "$as_me:$LINENO: checking whether linux/joystick.h supports 1.1 API" >&5
+echo $ECHO_N "checking whether linux/joystick.h supports 1.1 API... $ECHO_C" >&6; }
+    cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+ #include <linux/joystick.h>
+int
+main ()
+{
+ int i = JSIOCGVERSION;
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (ac_try="$ac_compile"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_compile") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && {
+	 test -z "$ac_c_werror_flag" ||
+	 test ! -s conftest.err
+       } && test -s conftest.$ac_objext; then
+
+cat >>confdefs.h <<\_ACEOF
+#define USE_UNIX_JOY
+_ACEOF
+
+                     JOYSTICK_DRIVERS="$JOYSTICK_DRIVERS joy_unix.o"
+                     { echo "$as_me:$LINENO: result: yes" >&5
+echo "${ECHO_T}yes" >&6; }
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+	{ echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6; }
+fi
+
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
     { echo "$as_me:$LINENO: checking whether linux/joystick.h supports digital joysticks" >&5
 echo $ECHO_N "checking whether linux/joystick.h supports digital joysticks... $ECHO_C" >&6; }
     cat >conftest.$ac_ext <<_ACEOF
@@ -11568,6 +11738,7 @@ cat >>confdefs.h <<\_ACEOF
 #define HAS_DIGITAL_JOYSTICK
 _ACEOF
 
+                     JOYSTICK_DRIVERS="$JOYSTICK_DRIVERS joy_unix_old_digi.o"
                      { echo "$as_me:$LINENO: result: yes" >&5
 echo "${ECHO_T}yes" >&6; }
 else
@@ -21439,9 +21610,7 @@ fi
 else
   READLINE=""
 fi
-
-
-if test x"$READLINE" != "x"; then
+ if test x"$READLINE" != "x"; then
   NEED_READLINE_TRUE=
   NEED_READLINE_FALSE='#'
 else
@@ -26131,6 +26300,8 @@ _ACEOF
 
 fi
 
+
+
 if test x"$enable_realdevice" != "xno"; then
   if test x"$host_os" = "xcygwin32" -o x"$host_os" = "xcygwin" -o x"$host_os" = "xmingw32"; then
 
@@ -26138,9 +26309,7 @@ cat >>confdefs.h <<\_ACEOF
 #define HAVE_OPENCBM
 _ACEOF
 
-
-
-if true; then
+     if true; then
   HAVE_REALDEVICE_TRUE=
   HAVE_REALDEVICE_FALSE='#'
 else
@@ -26352,9 +26521,7 @@ _ACEOF
 
 fi
 
-
-
-if test x"$ac_cv_lib_opencbm_cbm_get_eoi" = "xyes"; then
+       if test x"$ac_cv_lib_opencbm_cbm_get_eoi" = "xyes"; then
   HAVE_REALDEVICE_TRUE=
   HAVE_REALDEVICE_FALSE='#'
 else
@@ -26363,9 +26530,7 @@ else
 fi
 
     else
-
-
-if false; then
+       if false; then
   HAVE_REALDEVICE_TRUE=
   HAVE_REALDEVICE_FALSE='#'
 else
@@ -26376,9 +26541,7 @@ fi
     fi
   fi
 else
-
-
-if false; then
+   if false; then
   HAVE_REALDEVICE_TRUE=
   HAVE_REALDEVICE_FALSE='#'
 else
@@ -26454,9 +26617,7 @@ _ACEOF
   fi
 
 
-
-
-if true; then
+   if true; then
   UNIX_COMPILE_TRUE=
   UNIX_COMPILE_FALSE='#'
 else
@@ -26464,9 +26625,7 @@ else
   UNIX_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   WIN32_COMPILE_TRUE=
   WIN32_COMPILE_FALSE='#'
 else
@@ -26474,9 +26633,7 @@ else
   WIN32_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   MSDOS_COMPILE_TRUE=
   MSDOS_COMPILE_FALSE='#'
 else
@@ -26484,9 +26641,7 @@ else
   MSDOS_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   RISCOS_COMPILE_TRUE=
   RISCOS_COMPILE_FALSE='#'
 else
@@ -26494,9 +26649,7 @@ else
   RISCOS_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   OS2_COMPILE_TRUE=
   OS2_COMPILE_FALSE='#'
 else
@@ -26504,9 +26657,7 @@ else
   OS2_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   BEOS_COMPILE_TRUE=
   BEOS_COMPILE_FALSE='#'
 else
@@ -26514,9 +26665,7 @@ else
   BEOS_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   AMIGA_COMPILE_TRUE=
   AMIGA_COMPILE_FALSE='#'
 else
@@ -26524,9 +26673,7 @@ else
   AMIGA_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   HAVE_TRANSLATION_TRUE=
   HAVE_TRANSLATION_FALSE='#'
 else
@@ -26545,9 +26692,7 @@ fi
   case "$host_os" in
     skyos*)
       skyoscompile=yes
-
-
-if true; then
+       if true; then
   UNIX_SKYOS_COMPILE_TRUE=
   UNIX_SKYOS_COMPILE_FALSE='#'
 else
@@ -26558,9 +26703,7 @@ fi
       ;;
     qnx*)
       qnx4compile=yes
-
-
-if true; then
+       if true; then
   UNIX_QNX4_COMPILE_TRUE=
   UNIX_QNX4_COMPILE_FALSE='#'
 else
@@ -26571,9 +26714,7 @@ fi
       ;;
     nto*)
       qnx6compile=yes
-
-
-if true; then
+       if true; then
   UNIX_QNX6_COMPILE_TRUE=
   UNIX_QNX6_COMPILE_FALSE='#'
 else
@@ -26584,9 +26725,7 @@ fi
       ;;
     solaris*)
       solariscompile=yes
-
-
-if true; then
+       if true; then
   UNIX_SOLARIS_COMPILE_TRUE=
   UNIX_SOLARIS_COMPILE_FALSE='#'
 else
@@ -26597,9 +26736,7 @@ fi
       ;;
     sco3.2v5*)
       openserver5compile=yes
-
-
-if true; then
+       if true; then
   UNIX_OPENSERVER5_COMPILE_TRUE=
   UNIX_OPENSERVER5_COMPILE_FALSE='#'
 else
@@ -26615,9 +26752,7 @@ _ACEOF
       ;;
     sco3.2v6*)
       openserver6compile=yes
-
-
-if true; then
+       if true; then
   UNIX_OPENSERVER6_COMPILE_TRUE=
   UNIX_OPENSERVER6_COMPILE_FALSE='#'
 else
@@ -26633,9 +26768,7 @@ _ACEOF
       ;;
     sco3.2v7*)
       unixwarecompile=yes
-
-
-if true; then
+       if true; then
   UNIX_UNIXWARE_COMPILE_TRUE=
   UNIX_UNIXWARE_COMPILE_FALSE='#'
 else
@@ -26651,9 +26784,7 @@ _ACEOF
       ;;
     hpux*)
       hpuxcompile=yes
-
-
-if true; then
+       if true; then
   UNIX_HPUX_COMPILE_TRUE=
   UNIX_HPUX_COMPILE_FALSE='#'
 else
@@ -26667,9 +26798,7 @@ fi
   esac
 
   if test x"$skyoscompile" = "xno"; then
-
-
-if false; then
+     if false; then
   UNIX_SKYOS_COMPILE_TRUE=
   UNIX_SKYOS_COMPILE_FALSE='#'
 else
@@ -26680,9 +26809,7 @@ fi
   fi
 
   if test x"$qnx4compile" = "xno"; then
-
-
-if false; then
+     if false; then
   UNIX_QNX4_COMPILE_TRUE=
   UNIX_QNX4_COMPILE_FALSE='#'
 else
@@ -26693,9 +26820,7 @@ fi
   fi
 
   if test x"$qnx6compile" = "xno"; then
-
-
-if false; then
+     if false; then
   UNIX_QNX6_COMPILE_TRUE=
   UNIX_QNX6_COMPILE_FALSE='#'
 else
@@ -26706,9 +26831,7 @@ fi
   fi
 
   if test x"$solariscompile" = "xno"; then
-
-
-if false; then
+     if false; then
   UNIX_SOLARIS_COMPILE_TRUE=
   UNIX_SOLARIS_COMPILE_FALSE='#'
 else
@@ -26719,9 +26842,7 @@ fi
   fi
 
   if test x"$openserver5compile" = "xno"; then
-
-
-if false; then
+     if false; then
   UNIX_OPENSERVER5_COMPILE_TRUE=
   UNIX_OPENSERVER5_COMPILE_FALSE='#'
 else
@@ -26732,9 +26853,7 @@ fi
   fi
 
   if test x"$openserver6compile" = "xno"; then
-
-
-if false; then
+     if false; then
   UNIX_OPENSERVER6_COMPILE_TRUE=
   UNIX_OPENSERVER6_COMPILE_FALSE='#'
 else
@@ -26745,9 +26864,7 @@ fi
   fi
 
   if test x"$unixwarecompile" = "xno"; then
-
-
-if false; then
+     if false; then
   UNIX_UNIXWARE_COMPILE_TRUE=
   UNIX_UNIXWARE_COMPILE_FALSE='#'
 else
@@ -26758,9 +26875,7 @@ fi
   fi
 
   if test x"$hpuxcompile" = "xno"; then
-
-
-if false; then
+     if false; then
   UNIX_HPUX_COMPILE_TRUE=
   UNIX_HPUX_COMPILE_FALSE='#'
 else
@@ -26771,9 +26886,7 @@ fi
   fi
 
   if test x"$is_unix_gp2x" = "xyes" ; then
-
-
-if true; then
+     if true; then
   UNIX_GP2X_COMPILE_TRUE=
   UNIX_GP2X_COMPILE_FALSE='#'
 else
@@ -26781,9 +26894,7 @@ else
   UNIX_GP2X_COMPILE_FALSE=
 fi
 
-
-
-if true; then
+     if true; then
   MAKE_BINDIST_TRUE=
   MAKE_BINDIST_FALSE='#'
 else
@@ -26792,9 +26903,7 @@ else
 fi
 
   else
-
-
-if false; then
+     if false; then
   UNIX_GP2X_COMPILE_TRUE=
   UNIX_GP2X_COMPILE_FALSE='#'
 else
@@ -26805,9 +26914,7 @@ fi
   fi
 
   if test x"$is_unix_macosx" = "xyes" ; then
-
-
-if true; then
+     if true; then
   UNIX_MACOSX_COMPILE_TRUE=
   UNIX_MACOSX_COMPILE_FALSE='#'
 else
@@ -26816,9 +26923,7 @@ else
 fi
 
     if test x"$enable_bundle" != "xno" ; then
-
-
-if true; then
+       if true; then
   MAKE_BINDIST_TRUE=
   MAKE_BINDIST_FALSE='#'
 else
@@ -26827,9 +26932,7 @@ else
 fi
 
     else
-
-
-if false; then
+       if false; then
   MAKE_BINDIST_TRUE=
   MAKE_BINDIST_FALSE='#'
 else
@@ -26839,9 +26942,7 @@ fi
 
     fi
   else
-
-
-if false; then
+     if false; then
   UNIX_MACOSX_COMPILE_TRUE=
   UNIX_MACOSX_COMPILE_FALSE='#'
 else
@@ -26852,9 +26953,7 @@ fi
   fi
 
   if test x"$is_unix_gp2x" != "xyes" -a x"$is_unix_macosx" != "xyes"; then
-
-
-if false; then
+     if false; then
   MAKE_BINDIST_TRUE=
   MAKE_BINDIST_FALSE='#'
 else
@@ -26869,9 +26968,7 @@ elif test x"$is_win32" = "xyes"; then
   ARCH_SRC_DIR="\$(top_srcdir)/src/arch/win32"
   ARCH_LIBS="$ARCH_DIR/libarch.a"
   ARCH_INCLUDES="-I\$(top_srcdir)/src/arch/win32"
-
-
-if false; then
+   if false; then
   UNIX_COMPILE_TRUE=
   UNIX_COMPILE_FALSE='#'
 else
@@ -26879,9 +26976,7 @@ else
   UNIX_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_GP2X_COMPILE_TRUE=
   UNIX_GP2X_COMPILE_FALSE='#'
 else
@@ -26889,9 +26984,7 @@ else
   UNIX_GP2X_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_SKYOS_COMPILE_TRUE=
   UNIX_SKYOS_COMPILE_FALSE='#'
 else
@@ -26899,9 +26992,7 @@ else
   UNIX_SKYOS_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_QNX4_COMPILE_TRUE=
   UNIX_QNX4_COMPILE_FALSE='#'
 else
@@ -26909,9 +27000,7 @@ else
   UNIX_QNX4_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_QNX6_COMPILE_TRUE=
   UNIX_QNX6_COMPILE_FALSE='#'
 else
@@ -26919,9 +27008,7 @@ else
   UNIX_QNX6_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_SOLARIS_COMPILE_TRUE=
   UNIX_SOLARIS_COMPILE_FALSE='#'
 else
@@ -26929,9 +27016,7 @@ else
   UNIX_SOLARIS_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_OPENSERVER5_COMPILE_TRUE=
   UNIX_OPENSERVER5_COMPILE_FALSE='#'
 else
@@ -26939,9 +27024,7 @@ else
   UNIX_OPENSERVER5_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_OPENSERVER6_COMPILE_TRUE=
   UNIX_OPENSERVER6_COMPILE_FALSE='#'
 else
@@ -26949,9 +27032,7 @@ else
   UNIX_OPENSERVER6_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_UNIXWARE_COMPILE_TRUE=
   UNIX_UNIXWARE_COMPILE_FALSE='#'
 else
@@ -26959,9 +27040,7 @@ else
   UNIX_UNIXWARE_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_HPUX_COMPILE_TRUE=
   UNIX_HPUX_COMPILE_FALSE='#'
 else
@@ -26969,9 +27048,7 @@ else
   UNIX_HPUX_COMPILE_FALSE=
 fi
 
-
-
-if true; then
+   if true; then
   WIN32_COMPILE_TRUE=
   WIN32_COMPILE_FALSE='#'
 else
@@ -26979,9 +27056,7 @@ else
   WIN32_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   MSDOS_COMPILE_TRUE=
   MSDOS_COMPILE_FALSE='#'
 else
@@ -26989,9 +27064,7 @@ else
   MSDOS_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   RISCOS_COMPILE_TRUE=
   RISCOS_COMPILE_FALSE='#'
 else
@@ -26999,9 +27072,7 @@ else
   RISCOS_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   OS2_COMPILE_TRUE=
   OS2_COMPILE_FALSE='#'
 else
@@ -27009,9 +27080,7 @@ else
   OS2_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   BEOS_COMPILE_TRUE=
   BEOS_COMPILE_FALSE='#'
 else
@@ -27019,9 +27088,7 @@ else
   BEOS_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   AMIGA_COMPILE_TRUE=
   AMIGA_COMPILE_FALSE='#'
 else
@@ -27029,9 +27096,7 @@ else
   AMIGA_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_MACOSX_COMPILE_TRUE=
   UNIX_MACOSX_COMPILE_FALSE='#'
 else
@@ -27039,9 +27104,7 @@ else
   UNIX_MACOSX_COMPILE_FALSE=
 fi
 
-
-
-if true; then
+   if true; then
   HAVE_TRANSLATION_TRUE=
   HAVE_TRANSLATION_FALSE='#'
 else
@@ -27049,9 +27112,7 @@ else
   HAVE_TRANSLATION_FALSE=
 fi
 
-
-
-if true; then
+   if true; then
   MAKE_BINDIST_TRUE=
   MAKE_BINDIST_FALSE='#'
 else
@@ -27064,9 +27125,7 @@ elif test x"$is_amiga" = "xyes"; then
   ARCH_SRC_DIR="\$(top_srcdir)/src/arch/amigaos"
   ARCH_LIBS="$ARCH_DIR/libarch.a"
   ARCH_INCLUDES="-I\$(top_srcdir)/src/arch/amigaos"
-
-
-if false; then
+   if false; then
   UNIX_COMPILE_TRUE=
   UNIX_COMPILE_FALSE='#'
 else
@@ -27074,9 +27133,7 @@ else
   UNIX_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_GP2X_COMPILE_TRUE=
   UNIX_GP2X_COMPILE_FALSE='#'
 else
@@ -27084,9 +27141,7 @@ else
   UNIX_GP2X_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_SKYOS_COMPILE_TRUE=
   UNIX_SKYOS_COMPILE_FALSE='#'
 else
@@ -27094,9 +27149,7 @@ else
   UNIX_SKYOS_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_QNX4_COMPILE_TRUE=
   UNIX_QNX4_COMPILE_FALSE='#'
 else
@@ -27104,9 +27157,7 @@ else
   UNIX_QNX4_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_QNX6_COMPILE_TRUE=
   UNIX_QNX6_COMPILE_FALSE='#'
 else
@@ -27114,9 +27165,7 @@ else
   UNIX_QNX6_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_SOLARIS_COMPILE_TRUE=
   UNIX_SOLARIS_COMPILE_FALSE='#'
 else
@@ -27124,9 +27173,7 @@ else
   UNIX_SOLARIS_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_OPENSERVER5_COMPILE_TRUE=
   UNIX_OPENSERVER5_COMPILE_FALSE='#'
 else
@@ -27134,9 +27181,7 @@ else
   UNIX_OPENSERVER5_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_OPENSERVER6_COMPILE_TRUE=
   UNIX_OPENSERVER6_COMPILE_FALSE='#'
 else
@@ -27144,9 +27189,7 @@ else
   UNIX_OPENSERVER6_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_UNIXWARE_COMPILE_TRUE=
   UNIX_UNIXWARE_COMPILE_FALSE='#'
 else
@@ -27154,9 +27197,7 @@ else
   UNIX_UNIXWARE_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_HPUX_COMPILE_TRUE=
   UNIX_HPUX_COMPILE_FALSE='#'
 else
@@ -27164,9 +27205,7 @@ else
   UNIX_HPUX_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   WIN32_COMPILE_TRUE=
   WIN32_COMPILE_FALSE='#'
 else
@@ -27174,9 +27213,7 @@ else
   WIN32_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   MSDOS_COMPILE_TRUE=
   MSDOS_COMPILE_FALSE='#'
 else
@@ -27184,9 +27221,7 @@ else
   MSDOS_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   RISCOS_COMPILE_TRUE=
   RISCOS_COMPILE_FALSE='#'
 else
@@ -27194,9 +27229,7 @@ else
   RISCOS_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   OS2_COMPILE_TRUE=
   OS2_COMPILE_FALSE='#'
 else
@@ -27204,9 +27237,7 @@ else
   OS2_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   BEOS_COMPILE_TRUE=
   BEOS_COMPILE_FALSE='#'
 else
@@ -27214,9 +27245,7 @@ else
   BEOS_COMPILE_FALSE=
 fi
 
-
-
-if true; then
+   if true; then
   AMIGA_COMPILE_TRUE=
   AMIGA_COMPILE_FALSE='#'
 else
@@ -27224,9 +27253,7 @@ else
   AMIGA_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_MACOSX_COMPILE_TRUE=
   UNIX_MACOSX_COMPILE_FALSE='#'
 else
@@ -27234,9 +27261,7 @@ else
   UNIX_MACOSX_COMPILE_FALSE=
 fi
 
-
-
-if true; then
+   if true; then
   HAVE_TRANSLATION_TRUE=
   HAVE_TRANSLATION_FALSE='#'
 else
@@ -27244,9 +27269,7 @@ else
   HAVE_TRANSLATION_FALSE=
 fi
 
-
-
-if true; then
+   if true; then
   MAKE_BINDIST_TRUE=
   MAKE_BINDIST_FALSE='#'
 else
@@ -27263,9 +27286,7 @@ elif test x"$is_dos" = "xyes"; then
   else
   ARCH_LIBS="$ARCH_DIR/libarch.a"
   fi
-
-
-if false; then
+   if false; then
   UNIX_COMPILE_TRUE=
   UNIX_COMPILE_FALSE='#'
 else
@@ -27273,9 +27294,7 @@ else
   UNIX_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_GP2X_COMPILE_TRUE=
   UNIX_GP2X_COMPILE_FALSE='#'
 else
@@ -27283,9 +27302,7 @@ else
   UNIX_GP2X_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_SKYOS_COMPILE_TRUE=
   UNIX_SKYOS_COMPILE_FALSE='#'
 else
@@ -27293,9 +27310,7 @@ else
   UNIX_SKYOS_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_QNX4_COMPILE_TRUE=
   UNIX_QNX4_COMPILE_FALSE='#'
 else
@@ -27303,9 +27318,7 @@ else
   UNIX_QNX4_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_QNX6_COMPILE_TRUE=
   UNIX_QNX6_COMPILE_FALSE='#'
 else
@@ -27313,9 +27326,7 @@ else
   UNIX_QNX6_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_SOLARIS_COMPILE_TRUE=
   UNIX_SOLARIS_COMPILE_FALSE='#'
 else
@@ -27323,9 +27334,7 @@ else
   UNIX_SOLARIS_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_OPENSERVER5_COMPILE_TRUE=
   UNIX_OPENSERVER5_COMPILE_FALSE='#'
 else
@@ -27333,9 +27342,7 @@ else
   UNIX_OPENSERVER5_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_OPENSERVER6_COMPILE_TRUE=
   UNIX_OPENSERVER6_COMPILE_FALSE='#'
 else
@@ -27343,9 +27350,7 @@ else
   UNIX_OPENSERVER6_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_UNIXWARE_COMPILE_TRUE=
   UNIX_UNIXWARE_COMPILE_FALSE='#'
 else
@@ -27353,9 +27358,7 @@ else
   UNIX_UNIXWARE_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_HPUX_COMPILE_TRUE=
   UNIX_HPUX_COMPILE_FALSE='#'
 else
@@ -27363,9 +27366,7 @@ else
   UNIX_HPUX_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   WIN32_COMPILE_TRUE=
   WIN32_COMPILE_FALSE='#'
 else
@@ -27373,9 +27374,7 @@ else
   WIN32_COMPILE_FALSE=
 fi
 
-
-
-if true; then
+   if true; then
   MSDOS_COMPILE_TRUE=
   MSDOS_COMPILE_FALSE='#'
 else
@@ -27383,9 +27382,7 @@ else
   MSDOS_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   RISCOS_COMPILE_TRUE=
   RISCOS_COMPILE_FALSE='#'
 else
@@ -27393,9 +27390,7 @@ else
   RISCOS_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   OS2_COMPILE_TRUE=
   OS2_COMPILE_FALSE='#'
 else
@@ -27403,9 +27398,7 @@ else
   OS2_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   BEOS_COMPILE_TRUE=
   BEOS_COMPILE_FALSE='#'
 else
@@ -27413,9 +27406,7 @@ else
   BEOS_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   AMIGA_COMPILE_TRUE=
   AMIGA_COMPILE_FALSE='#'
 else
@@ -27423,9 +27414,7 @@ else
   AMIGA_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_MACOSX_COMPILE_TRUE=
   UNIX_MACOSX_COMPILE_FALSE='#'
 else
@@ -27433,9 +27422,7 @@ else
   UNIX_MACOSX_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   HAVE_TRANSLATION_TRUE=
   HAVE_TRANSLATION_FALSE='#'
 else
@@ -27443,9 +27430,7 @@ else
   HAVE_TRANSLATION_FALSE=
 fi
 
-
-
-if true; then
+   if true; then
   MAKE_BINDIST_TRUE=
   MAKE_BINDIST_FALSE='#'
 else
@@ -27458,9 +27443,7 @@ elif test x"$is_os2" = "xyes"; then
   ARCH_DIR="\$(top_builddir)/src/arch/os2"
   ARCH_SRC_DIR="\$(top_srcdir)/src/arch/os2"
   ARCH_LIBS="$ARCH_DIR/libarch.a"
-
-
-if false; then
+   if false; then
   UNIX_COMPILE_TRUE=
   UNIX_COMPILE_FALSE='#'
 else
@@ -27468,9 +27451,7 @@ else
   UNIX_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_GP2X_COMPILE_TRUE=
   UNIX_GP2X_COMPILE_FALSE='#'
 else
@@ -27478,9 +27459,7 @@ else
   UNIX_GP2X_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_SKYOS_COMPILE_TRUE=
   UNIX_SKYOS_COMPILE_FALSE='#'
 else
@@ -27488,9 +27467,7 @@ else
   UNIX_SKYOS_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_QNX4_COMPILE_TRUE=
   UNIX_QNX4_COMPILE_FALSE='#'
 else
@@ -27498,9 +27475,7 @@ else
   UNIX_QNX4_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_QNX6_COMPILE_TRUE=
   UNIX_QNX6_COMPILE_FALSE='#'
 else
@@ -27508,9 +27483,7 @@ else
   UNIX_QNX6_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_SOLARIS_COMPILE_TRUE=
   UNIX_SOLARIS_COMPILE_FALSE='#'
 else
@@ -27518,9 +27491,7 @@ else
   UNIX_SOLARIS_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_OPENSERVER5_COMPILE_TRUE=
   UNIX_OPENSERVER5_COMPILE_FALSE='#'
 else
@@ -27528,9 +27499,7 @@ else
   UNIX_OPENSERVER5_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_OPENSERVER6_COMPILE_TRUE=
   UNIX_OPENSERVER6_COMPILE_FALSE='#'
 else
@@ -27538,9 +27507,7 @@ else
   UNIX_OPENSERVER6_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_UNIXWARE_COMPILE_TRUE=
   UNIX_UNIXWARE_COMPILE_FALSE='#'
 else
@@ -27548,9 +27515,7 @@ else
   UNIX_UNIXWARE_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_HPUX_COMPILE_TRUE=
   UNIX_HPUX_COMPILE_FALSE='#'
 else
@@ -27558,9 +27523,7 @@ else
   UNIX_HPUX_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   WIN32_COMPILE_TRUE=
   WIN32_COMPILE_FALSE='#'
 else
@@ -27568,9 +27531,7 @@ else
   WIN32_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   MSDOS_COMPILE_TRUE=
   MSDOS_COMPILE_FALSE='#'
 else
@@ -27578,9 +27539,7 @@ else
   MSDOS_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   RISCOS_COMPILE_TRUE=
   RISCOS_COMPILE_FALSE='#'
 else
@@ -27588,9 +27547,7 @@ else
   RISCOS_COMPILE_FALSE=
 fi
 
-
-
-if true; then
+   if true; then
   OS2_COMPILE_TRUE=
   OS2_COMPILE_FALSE='#'
 else
@@ -27598,9 +27555,7 @@ else
   OS2_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   BEOS_COMPILE_TRUE=
   BEOS_COMPILE_FALSE='#'
 else
@@ -27608,9 +27563,7 @@ else
   BEOS_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   AMIGA_COMPILE_TRUE=
   AMIGA_COMPILE_FALSE='#'
 else
@@ -27618,9 +27571,7 @@ else
   AMIGA_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_MACOSX_COMPILE_TRUE=
   UNIX_MACOSX_COMPILE_FALSE='#'
 else
@@ -27628,9 +27579,7 @@ else
   UNIX_MACOSX_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   HAVE_TRANSLATION_TRUE=
   HAVE_TRANSLATION_FALSE='#'
 else
@@ -27638,9 +27587,7 @@ else
   HAVE_TRANSLATION_FALSE=
 fi
 
-
-
-if true; then
+   if true; then
   MAKE_BINDIST_TRUE=
   MAKE_BINDIST_FALSE='#'
 else
@@ -27653,9 +27600,7 @@ elif test x"$is_beos" = "xyes"; then
   ARCH_DIR="\$(top_builddir)/src/arch/beos"
   ARCH_SRC_DIR="\$(top_srcdir)/src/arch/beos"
   ARCH_LIBS="$ARCH_DIR/libarch.a"
-
-
-if false; then
+   if false; then
   UNIX_COMPILE_TRUE=
   UNIX_COMPILE_FALSE='#'
 else
@@ -27663,9 +27608,7 @@ else
   UNIX_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_GP2X_COMPILE_TRUE=
   UNIX_GP2X_COMPILE_FALSE='#'
 else
@@ -27673,9 +27616,7 @@ else
   UNIX_GP2X_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_SKYOS_COMPILE_TRUE=
   UNIX_SKYOS_COMPILE_FALSE='#'
 else
@@ -27683,9 +27624,7 @@ else
   UNIX_SKYOS_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_QNX4_COMPILE_TRUE=
   UNIX_QNX4_COMPILE_FALSE='#'
 else
@@ -27693,9 +27632,7 @@ else
   UNIX_QNX4_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_QNX6_COMPILE_TRUE=
   UNIX_QNX6_COMPILE_FALSE='#'
 else
@@ -27703,9 +27640,7 @@ else
   UNIX_QNX6_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_SOLARIS_COMPILE_TRUE=
   UNIX_SOLARIS_COMPILE_FALSE='#'
 else
@@ -27713,9 +27648,7 @@ else
   UNIX_SOLARIS_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_OPENSERVER5_COMPILE_TRUE=
   UNIX_OPENSERVER5_COMPILE_FALSE='#'
 else
@@ -27723,9 +27656,7 @@ else
   UNIX_OPENSERVER5_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_OPENSERVER6_COMPILE_TRUE=
   UNIX_OPENSERVER6_COMPILE_FALSE='#'
 else
@@ -27733,9 +27664,7 @@ else
   UNIX_OPENSERVER6_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_UNIXWARE_COMPILE_TRUE=
   UNIX_UNIXWARE_COMPILE_FALSE='#'
 else
@@ -27743,9 +27672,7 @@ else
   UNIX_UNIXWARE_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_HPUX_COMPILE_TRUE=
   UNIX_HPUX_COMPILE_FALSE='#'
 else
@@ -27753,9 +27680,7 @@ else
   UNIX_HPUX_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   WIN32_COMPILE_TRUE=
   WIN32_COMPILE_FALSE='#'
 else
@@ -27763,9 +27688,7 @@ else
   WIN32_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   MSDOS_COMPILE_TRUE=
   MSDOS_COMPILE_FALSE='#'
 else
@@ -27773,9 +27696,7 @@ else
   MSDOS_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   RISCOS_COMPILE_TRUE=
   RISCOS_COMPILE_FALSE='#'
 else
@@ -27783,9 +27704,7 @@ else
   RISCOS_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   OS2_COMPILE_TRUE=
   OS2_COMPILE_FALSE='#'
 else
@@ -27793,9 +27712,7 @@ else
   OS2_COMPILE_FALSE=
 fi
 
-
-
-if true; then
+   if true; then
   BEOS_COMPILE_TRUE=
   BEOS_COMPILE_FALSE='#'
 else
@@ -27803,9 +27720,7 @@ else
   BEOS_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   AMIGA_COMPILE_TRUE=
   AMIGA_COMPILE_FALSE='#'
 else
@@ -27813,9 +27728,7 @@ else
   AMIGA_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_MACOSX_COMPILE_TRUE=
   UNIX_MACOSX_COMPILE_FALSE='#'
 else
@@ -27823,9 +27736,7 @@ else
   UNIX_MACOSX_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   HAVE_TRANSLATION_TRUE=
   HAVE_TRANSLATION_FALSE='#'
 else
@@ -27833,9 +27744,7 @@ else
   HAVE_TRANSLATION_FALSE=
 fi
 
-
-
-if true; then
+   if true; then
   MAKE_BINDIST_TRUE=
   MAKE_BINDIST_FALSE='#'
 else
@@ -27848,9 +27757,7 @@ elif test x"$is_riscos" = "xyes"; then
   ARCH_DIR="\$(top_builddir)/src/arch/riscos"
   ARCH_SRC_DIR="\$(top_srcdir)/src/arch/riscos"
   ARCH_LIBS="$ARCH_DIR/libarch.a"
-
-
-if false; then
+   if false; then
   UNIX_COMPILE_TRUE=
   UNIX_COMPILE_FALSE='#'
 else
@@ -27858,9 +27765,7 @@ else
   UNIX_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_GP2X_COMPILE_TRUE=
   UNIX_GP2X_COMPILE_FALSE='#'
 else
@@ -27868,9 +27773,7 @@ else
   UNIX_GP2X_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_SKYOS_COMPILE_TRUE=
   UNIX_SKYOS_COMPILE_FALSE='#'
 else
@@ -27878,9 +27781,7 @@ else
   UNIX_SKYOS_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_QNX4_COMPILE_TRUE=
   UNIX_QNX4_COMPILE_FALSE='#'
 else
@@ -27888,9 +27789,7 @@ else
   UNIX_QNX4_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_QNX6_COMPILE_TRUE=
   UNIX_QNX6_COMPILE_FALSE='#'
 else
@@ -27898,9 +27797,7 @@ else
   UNIX_QNX6_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_SOLARIS_COMPILE_TRUE=
   UNIX_SOLARIS_COMPILE_FALSE='#'
 else
@@ -27908,9 +27805,7 @@ else
   UNIX_SOLARIS_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_OPENSERVER5_COMPILE_TRUE=
   UNIX_OPENSERVER5_COMPILE_FALSE='#'
 else
@@ -27918,9 +27813,7 @@ else
   UNIX_OPENSERVER5_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_OPENSERVER6_COMPILE_TRUE=
   UNIX_OPENSERVER6_COMPILE_FALSE='#'
 else
@@ -27928,9 +27821,7 @@ else
   UNIX_OPENSERVER6_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_UNIXWARE_COMPILE_TRUE=
   UNIX_UNIXWARE_COMPILE_FALSE='#'
 else
@@ -27938,9 +27829,7 @@ else
   UNIX_UNIXWARE_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_HPUX_COMPILE_TRUE=
   UNIX_HPUX_COMPILE_FALSE='#'
 else
@@ -27948,9 +27837,7 @@ else
   UNIX_HPUX_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   WIN32_COMPILE_TRUE=
   WIN32_COMPILE_FALSE='#'
 else
@@ -27958,9 +27845,7 @@ else
   WIN32_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   MSDOS_COMPILE_TRUE=
   MSDOS_COMPILE_FALSE='#'
 else
@@ -27968,9 +27853,7 @@ else
   MSDOS_COMPILE_FALSE=
 fi
 
-
-
-if true; then
+   if true; then
   RISCOS_COMPILE_TRUE=
   RISCOS_COMPILE_FALSE='#'
 else
@@ -27978,9 +27861,7 @@ else
   RISCOS_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   OS2_COMPILE_TRUE=
   OS2_COMPILE_FALSE='#'
 else
@@ -27988,9 +27869,7 @@ else
   OS2_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   BEOS_COMPILE_TRUE=
   BEOS_COMPILE_FALSE='#'
 else
@@ -27998,9 +27877,7 @@ else
   BEOS_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   AMIGA_COMPILE_TRUE=
   AMIGA_COMPILE_FALSE='#'
 else
@@ -28008,9 +27885,7 @@ else
   AMIGA_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   UNIX_MACOSX_COMPILE_TRUE=
   UNIX_MACOSX_COMPILE_FALSE='#'
 else
@@ -28018,9 +27893,7 @@ else
   UNIX_MACOSX_COMPILE_FALSE=
 fi
 
-
-
-if false; then
+   if false; then
   HAVE_TRANSLATION_TRUE=
   HAVE_TRANSLATION_FALSE='#'
 else
@@ -28028,9 +27901,7 @@ else
   HAVE_TRANSLATION_FALSE=
 fi
 
-
-
-if true; then
+   if true; then
   MAKE_BINDIST_TRUE=
   MAKE_BINDIST_FALSE='#'
 else
@@ -28087,9 +27958,7 @@ _ACEOF
 case "$host_os" in
   netbsd*)
     VICEDIR="$PREFIX/share/vice";
-
-
-if true; then
+     if true; then
   ALTERNATE_DOCDIR_TRUE=
   ALTERNATE_DOCDIR_FALSE='#'
 else
@@ -28100,9 +27969,7 @@ fi
     ;;
   freebsd*)
     VICEDIR="$PREFIX/lib/vice";
-
-
-if true; then
+     if true; then
   ALTERNATE_DOCDIR_TRUE=
   ALTERNATE_DOCDIR_FALSE='#'
 else
@@ -28113,9 +27980,7 @@ fi
     ;;
   *)
     VICEDIR="$PREFIX/lib/vice";
-
-
-if false; then
+     if false; then
   ALTERNATE_DOCDIR_TRUE=
   ALTERNATE_DOCDIR_FALSE='#'
 else
@@ -28209,7 +28074,7 @@ if false ; then
 
 fi
 
-ac_config_files="$ac_config_files Makefile build/Makefile data/Makefile data/C128/Makefile data/C64/Makefile data/CBM-II/Makefile data/DRIVES/Makefile data/PET/Makefile data/PLUS4/Makefile data/PRINTER/Makefile data/VIC20/Makefile data/fonts/Makefile doc/Makefile doc/html/Makefile man/Makefile src/Makefile src/arch/Makefile src/arch/amigaos/Makefile src/arch/beos/Makefile src/arch/msdos/Makefile src/arch/os2/Makefile src/arch/os2/dialogs/Makefile src/arch/os2/kbd/Makefile src/arch/os2/snippets/Makefile src/arch/os2/vac++/Makefile src/arch/riscos/Makefile src/arch/unix/Makefile src/arch/unix/gp2x/Makefile src/arch/unix/gui/Makefile src/arch/unix/readline/Makefile src/arch/unix/x11/Makefile src/arch/unix/x11/gnome/Makefile src/arch/unix/x11/xaw/Makefile src/arch/unix/x11/xaw/widgets/Makefile src/arch/unix/macosx/Makefile src/arch/unix/macosx/cocoa/Makefile src/arch/unix/macosx/cocoa/view/Makefile src/arch/unix/macosx/cocoa/menu/Makefile src/arch/unix/macosx/cocoa/dialog/Makefile src/arch/unix/macosx/Resources/Makefile src/arch/unix/macosx/Resources/English.lproj/Makefile src/arch/win32/Makefile src/arch/win32/utils/Makefile src/c128/Makefile src/c64/Makefile src/c64/cart/Makefile src/cbm2/Makefile src/core/Makefile src/crtc/Makefile src/diskimage/Makefile src/drive/Makefile src/drive/iec/Makefile src/drive/iec/c64exp/Makefile src/drive/iec/plus4exp/Makefile src/drive/iec128dcr/Makefile src/drive/iecieee/Makefile src/drive/ieee/Makefile src/drive/tcbm/Makefile src/fileio/Makefile src/fsdevice/Makefile src/gfxoutputdrv/Makefile src/iecbus/Makefile src/imagecontents/Makefile src/lib/Makefile src/lib/lpng/Makefile src/lib/zlib/Makefile src/monitor/Makefile src/parallel/Makefile src/pet/Makefile src/plus4/Makefile src/printerdrv/Makefile src/raster/Makefile src/rs232drv/Makefile src/serial/Makefile src/sid/Makefile src/sounddrv/Makefile src/tape/Makefile src/vdc/Makefile src/vdrive/Makefile src/vic20/Makefile src/vicii/Makefile src/video/Makefile src/version.h po/Makefile.in"
+ac_config_files="$ac_config_files Makefile build/Makefile data/Makefile data/C128/Makefile data/C64/Makefile data/CBM-II/Makefile data/DRIVES/Makefile data/PET/Makefile data/PLUS4/Makefile data/PRINTER/Makefile data/VIC20/Makefile data/fonts/Makefile doc/Makefile doc/html/Makefile man/Makefile src/Makefile src/arch/Makefile src/arch/amigaos/Makefile src/arch/beos/Makefile src/arch/msdos/Makefile src/arch/os2/Makefile src/arch/os2/dialogs/Makefile src/arch/os2/kbd/Makefile src/arch/os2/snippets/Makefile src/arch/os2/vac++/Makefile src/arch/riscos/Makefile src/arch/unix/Makefile src/arch/unix/gp2x/Makefile src/arch/unix/gui/Makefile src/arch/unix/readline/Makefile src/arch/unix/x11/Makefile src/arch/unix/x11/gnome/Makefile src/arch/unix/x11/xaw/Makefile src/arch/unix/x11/xaw/widgets/Makefile src/arch/unix/macosx/Makefile src/arch/unix/macosx/cocoa/Makefile src/arch/unix/macosx/cocoa/view/Makefile src/arch/unix/macosx/cocoa/menu/Makefile src/arch/unix/macosx/cocoa/dialog/Makefile src/arch/unix/macosx/Resources/Makefile src/arch/unix/macosx/Resources/English.lproj/Makefile src/arch/win32/Makefile src/arch/win32/utils/Makefile src/c128/Makefile src/c64/Makefile src/c64/cart/Makefile src/cbm2/Makefile src/core/Makefile src/crtc/Makefile src/diskimage/Makefile src/drive/Makefile src/drive/iec/Makefile src/drive/iec/c64exp/Makefile src/drive/iec/plus4exp/Makefile src/drive/iec128dcr/Makefile src/drive/iecieee/Makefile src/drive/ieee/Makefile src/drive/tcbm/Makefile src/fileio/Makefile src/fsdevice/Makefile src/gfxoutputdrv/Makefile src/joystickdrv/Makefile src/iecbus/Makefile src/imagecontents/Makefile src/lib/Makefile src/lib/lpng/Makefile src/lib/zlib/Makefile src/monitor/Makefile src/parallel/Makefile src/pet/Makefile src/plus4/Makefile src/printerdrv/Makefile src/raster/Makefile src/rs232drv/Makefile src/serial/Makefile src/sid/Makefile src/sounddrv/Makefile src/tape/Makefile src/vdc/Makefile src/vdrive/Makefile src/vic20/Makefile src/vicii/Makefile src/video/Makefile src/version.h po/Makefile.in"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -29938,6 +29803,7 @@ gives unlimited permission to copy, distribute and modify it."
 ac_pwd='$ac_pwd'
 srcdir='$srcdir'
 INSTALL='$INSTALL'
+MKDIR_P='$MKDIR_P'
 _ACEOF
 
 cat >>$CONFIG_STATUS <<\_ACEOF
@@ -30105,6 +29971,7 @@ do
     "src/fileio/Makefile") CONFIG_FILES="$CONFIG_FILES src/fileio/Makefile" ;;
     "src/fsdevice/Makefile") CONFIG_FILES="$CONFIG_FILES src/fsdevice/Makefile" ;;
     "src/gfxoutputdrv/Makefile") CONFIG_FILES="$CONFIG_FILES src/gfxoutputdrv/Makefile" ;;
+    "src/joystickdrv/Makefile") CONFIG_FILES="$CONFIG_FILES src/joystickdrv/Makefile" ;;
     "src/iecbus/Makefile") CONFIG_FILES="$CONFIG_FILES src/iecbus/Makefile" ;;
     "src/imagecontents/Makefile") CONFIG_FILES="$CONFIG_FILES src/imagecontents/Makefile" ;;
     "src/lib/Makefile") CONFIG_FILES="$CONFIG_FILES src/lib/Makefile" ;;
@@ -30234,6 +30101,7 @@ VICE_VERSION!$VICE_VERSION$ac_delim
 INSTALL_PROGRAM!$INSTALL_PROGRAM$ac_delim
 INSTALL_SCRIPT!$INSTALL_SCRIPT$ac_delim
 INSTALL_DATA!$INSTALL_DATA$ac_delim
+am__isrc!$am__isrc$ac_delim
 CYGPATH_W!$CYGPATH_W$ac_delim
 PACKAGE!$PACKAGE$ac_delim
 VERSION!$VERSION$ac_delim
@@ -30286,7 +30154,6 @@ OBJCFLAGS!$OBJCFLAGS$ac_delim
 OBJCDEPMODE!$OBJCDEPMODE$ac_delim
 am__fastdepOBJC_TRUE!$am__fastdepOBJC_TRUE$ac_delim
 am__fastdepOBJC_FALSE!$am__fastdepOBJC_FALSE$ac_delim
-HAVE_RS232_TRUE!$HAVE_RS232_TRUE$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -30328,6 +30195,7 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
+HAVE_RS232_TRUE!$HAVE_RS232_TRUE$ac_delim
 HAVE_RS232_FALSE!$HAVE_RS232_FALSE$ac_delim
 HAVE_RAWDRIVE_TRUE!$HAVE_RAWDRIVE_TRUE$ac_delim
 HAVE_RAWDRIVE_FALSE!$HAVE_RAWDRIVE_FALSE$ac_delim
@@ -30422,9 +30290,8 @@ GTKGL_CFLAGS!$GTKGL_CFLAGS$ac_delim
 GTKGL_LIBS!$GTKGL_LIBS$ac_delim
 VICE_SYNC!$VICE_SYNC$ac_delim
 FULLSCREEN_DRIVERS!$FULLSCREEN_DRIVERS$ac_delim
+JOYSTICK_DRIVERS!$JOYSTICK_DRIVERS$ac_delim
 HAVE_REALDEVICE_TRUE!$HAVE_REALDEVICE_TRUE$ac_delim
-HAVE_REALDEVICE_FALSE!$HAVE_REALDEVICE_FALSE$ac_delim
-x64_LDFLAGS!$x64_LDFLAGS$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -30466,6 +30333,8 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
+HAVE_REALDEVICE_FALSE!$HAVE_REALDEVICE_FALSE$ac_delim
+x64_LDFLAGS!$x64_LDFLAGS$ac_delim
 x128_LDFLAGS!$x128_LDFLAGS$ac_delim
 xvic_LDFLAGS!$xvic_LDFLAGS$ac_delim
 xpet_LDFLAGS!$xpet_LDFLAGS$ac_delim
@@ -30536,7 +30405,7 @@ BINDIR!$BINDIR$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 68; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 70; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5
@@ -30763,6 +30632,11 @@ ac_abs_srcdir=$ac_abs_top_srcdir$ac_dir_suffix
   [\\/$]* | ?:[\\/]* ) ac_INSTALL=$INSTALL ;;
   *) ac_INSTALL=$ac_top_build_prefix$INSTALL ;;
   esac
+  ac_MKDIR_P=$MKDIR_P
+  case $MKDIR_P in
+  [\\/$]* | ?:[\\/]* ) ;;
+  */*) ac_MKDIR_P=$ac_top_build_prefix$MKDIR_P ;;
+  esac
 _ACEOF
 
 cat >>$CONFIG_STATUS <<\_ACEOF
@@ -30816,6 +30690,7 @@ s&@builddir@&$ac_builddir&;t t
 s&@abs_builddir@&$ac_abs_builddir&;t t
 s&@abs_top_builddir@&$ac_abs_top_builddir&;t t
 s&@INSTALL@&$ac_INSTALL&;t t
+s&@MKDIR_P@&$ac_MKDIR_P&;t t
 $ac_datarootdir_hack
 " $ac_file_inputs | sed -f "$tmp/subs-1.sed" | sed -f "$tmp/subs-2.sed" | sed -f "$tmp/subs-3.sed" >$tmp/out
 
@@ -30980,8 +30855,9 @@ echo "$as_me: executing $ac_file commands" >&6;}
   # some people rename them; so instead we look at the file content.
   # Grep'ing the first line is not enough: some people post-process
   # each Makefile.in and add a new line on top of each file to say so.
-  # So let's grep whole file.
-  if grep '^#.*generated by automake' $mf > /dev/null 2>&1; then
+  # Grep'ing the whole file is not good either: AIX grep has a line
+  # limit of 2048, but all sed's we know have understand at least 4000.
+  if sed 10q "$mf" | grep '^#.*generated by automake' > /dev/null 2>&1; then
     dirpart=`$as_dirname -- "$mf" ||
 $as_expr X"$mf" : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
 	 X"$mf" : 'X\(//\)[^/]' \| \

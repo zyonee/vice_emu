@@ -37,7 +37,8 @@ SUBDIRS = \
 	pet \
 	plus4 \
 	cbm2 \
-	arch
+	arch \
+	joystickdrv
 
 DIST_SUBDIRS = \
 	sounddrv \
@@ -69,6 +70,7 @@ DIST_SUBDIRS = \
 	plus4 \
 	cbm2 \
 	arch \
+	joystickdrv \
 	resid \
 	lib
 
@@ -299,6 +301,7 @@ fileio_lib = $(top_builddir)/src/fileio/libfileio.a
 gfxoutputdrv_lib = $(top_builddir)/src/gfxoutputdrv/libgfxoutputdrv.a
 iecbus_lib = $(top_builddir)/src/iecbus/libiecbus.a
 imagecontents_lib = $(top_builddir)/src/imagecontents/libimagecontents.a
+joystickdrv_lib = $(top_builddir)/src/joystickdrv/libjoystickdrv.a
 monitor_lib = $(top_builddir)/src/monitor/libmonitor.a
 parallel_lib = $(top_builddir)/src/parallel/libparallel.a
 pet_lib = $(top_builddir)/src/pet/libpet.a
@@ -322,7 +325,7 @@ common_libs = @ARCH_LIBS@ @LIBOBJS@ @READLINE@ @RESID_LIBS@ @VICE_LIBPNG@ @VICE_
 # external libraries required for all emulators
 emu_extlibs = @X_LIBS@ @UI_LIBS@ @INTLLIBS@ @SOUND_LIBS@ @FFMPEG_LIBS@ @JOY_LIBS@ @READLINE_LIBS@ @GFXOUTPUT_LIBS@ @ZLIB_LIBS@
 
-driver_libs = $(sounddrv_lib) $(gfxoutputdrv_lib) $(printerdrv_lib) $(rs232drv_lib) $(monitor_lib) $(diskimage_lib) $(fsdevice_lib) $(tape_lib) $(imagecontents_lib) $(fileio_lib) $(serial_lib) $(core_lib)
+driver_libs = $(sounddrv_lib) $(gfxoutputdrv_lib) $(joystickdrv_lib) $(printerdrv_lib) $(rs232drv_lib) $(monitor_lib) $(diskimage_lib) $(fsdevice_lib) $(tape_lib) $(imagecontents_lib) $(fileio_lib) $(serial_lib) $(core_lib)
 
 if HAVE_RAWDRIVE
 blockdev_lib = @ARCH_DIR@/blockdev.o

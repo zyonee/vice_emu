@@ -29,7 +29,7 @@
 
 #include <stdio.h>
 
-#include "joy.h"
+#include "joystick.h"
 #include "resources.h"
 #include "uimenu.h"
 #include "vsync.h"
@@ -75,6 +75,9 @@ static UI_CALLBACK(swap_joystick_ports)
     ui_update_menus();
 }
 
+static ui_menu_entry_t *devices_submenu1 = NULL;
+static ui_menu_entry_t *devices_submenu2 = NULL;
+
 static ui_menu_entry_t set_joystick_device_1_submenu[] = {
     { N_("*None"),
       (ui_callback_t)set_joystick_device_1,
@@ -88,42 +91,8 @@ static ui_menu_entry_t set_joystick_device_1_submenu[] = {
     { N_("*Keyset 2"),
       (ui_callback_t)set_joystick_device_1,
       (ui_callback_data_t)JOYDEV_KEYSET2, NULL },
-#ifdef HAS_JOYSTICK
-    { N_("*Analog Joystick 0"),
-      (ui_callback_t)set_joystick_device_1,
-      (ui_callback_data_t)JOYDEV_ANALOG_0, NULL },
-    { N_("*Analog Joystick 1"),
-      (ui_callback_t)set_joystick_device_1,
-      (ui_callback_data_t)JOYDEV_ANALOG_1, NULL },
-    { N_("*Analog Joystick 2"),
-      (ui_callback_t)set_joystick_device_1,
-      (ui_callback_data_t)JOYDEV_ANALOG_2, NULL },
-    { N_("*Analog Joystick 3"),
-      (ui_callback_t)set_joystick_device_1,
-      (ui_callback_data_t)JOYDEV_ANALOG_3, NULL },
-    { N_("*Analog Joystick 4"),
-      (ui_callback_t)set_joystick_device_1,
-      (ui_callback_data_t)JOYDEV_ANALOG_4, NULL },
-    { N_("*Analog Joystick 5"),
-      (ui_callback_t)set_joystick_device_1,
-      (ui_callback_data_t)JOYDEV_ANALOG_5, NULL },
-#ifdef HAS_DIGITAL_JOYSTICK
-    { N_("*Digital Joystick 0"),
-      (ui_callback_t)set_joystick_device_1,
-      (ui_callback_data_t)JOYDEV_DIGITAL_0, NULL },
-    { N_("*Digital Joystick 1"),
-      (ui_callback_t)set_joystick_device_1,
-      (ui_callback_data_t)JOYDEV_DIGITAL_1, NULL },
-#endif
-#ifdef HAS_USB_JOYSTICK
-    { N_("*USB Joystick 0"),
-      (ui_callback_t)set_joystick_device_1,
-      (ui_callback_data_t)JOYDEV_USB_0, NULL },
-    { N_("*USB Joystick 1"),
-      (ui_callback_t)set_joystick_device_1,
-      (ui_callback_data_t)JOYDEV_USB_1, NULL },
-#endif
-#endif
+    { "", NULL }, /* Will be changed by uijoystick_menu_create */
+                  /* Important: must be index 4 */
     { NULL }
 };
 
@@ -140,42 +109,8 @@ static ui_menu_entry_t set_joystick_device_2_submenu[] = {
     { N_("*Keyset 2"),
       (ui_callback_t)set_joystick_device_2,
       (ui_callback_data_t)JOYDEV_KEYSET2, NULL },
-#ifdef HAS_JOYSTICK
-    { N_("*Analog Joystick 0"),
-      (ui_callback_t)set_joystick_device_2,
-      (ui_callback_data_t)JOYDEV_ANALOG_0, NULL },
-    { N_("*Analog Joystick 1"),
-      (ui_callback_t)set_joystick_device_2,
-      (ui_callback_data_t)JOYDEV_ANALOG_1, NULL },
-    { N_("*Analog Joystick 2"),
-      (ui_callback_t)set_joystick_device_2,
-      (ui_callback_data_t)JOYDEV_ANALOG_2, NULL },
-    { N_("*Analog Joystick 3"),
-      (ui_callback_t)set_joystick_device_2,
-      (ui_callback_data_t)JOYDEV_ANALOG_3, NULL },
-    { N_("*Analog Joystick 4"),
-      (ui_callback_t)set_joystick_device_2,
-      (ui_callback_data_t)JOYDEV_ANALOG_4, NULL },
-    { N_("*Analog Joystick 5"),
-      (ui_callback_t)set_joystick_device_2,
-      (ui_callback_data_t)JOYDEV_ANALOG_5, NULL },
-#ifdef HAS_DIGITAL_JOYSTICK
-    { N_("*Digital Joystick 0"),
-      (ui_callback_t)set_joystick_device_2,
-      (ui_callback_data_t)JOYDEV_DIGITAL_0, NULL },
-    { N_("*Digital Joystick 1"),
-      (ui_callback_t)set_joystick_device_2,
-      (ui_callback_data_t)JOYDEV_DIGITAL_1, NULL },
-#endif
-#ifdef HAS_USB_JOYSTICK
-    { N_("*USB Joystick 0"),
-      (ui_callback_t)set_joystick_device_2,
-      (ui_callback_data_t)JOYDEV_USB_0, NULL },
-    { N_("*USB Joystick 1"),
-      (ui_callback_t)set_joystick_device_2,
-      (ui_callback_data_t)JOYDEV_USB_1, NULL },
-#endif
-#endif /* HAS_JOYSTICK */
+    { "", NULL }, /* Will be changed by uijoystick_menu_create */
+                  /* Important: must be index 4 */
     { NULL }
 };
 
@@ -207,4 +142,62 @@ ui_menu_entry_t joystick_settings_menu[] = {
       NULL, NULL, joystick_settings_submenu },
     { NULL }
 };
+
+void uijoystick_menu_create(void)
+{
+    unsigned int i, num;
+
+    num = joystick_device_num();
+
+    if (num == 0)
+        return;
+
+    devices_submenu1 = (ui_menu_entry_t *)lib_calloc((size_t)(num + 1),
+                      sizeof(ui_menu_entry_t));
+    devices_submenu2 = (ui_menu_entry_t *)lib_calloc((size_t)(num + 1),
+                      sizeof(ui_menu_entry_t));
+
+    for (i = 0; i < num ; i++) {
+        devices_submenu1[i].string =
+            (ui_callback_data_t)lib_msprintf("*%s", joystick_device_name(i));
+        devices_submenu1[i].callback = (ui_callback_t)set_joystick_device_1;
+        devices_submenu1[i].callback_data
+            = (ui_callback_data_t)(i + JOYDEV_HW_BASE);
+        devices_submenu2[i].string =
+            (ui_callback_data_t)lib_msprintf("*%s", joystick_device_name(i));
+        devices_submenu2[i].callback = (ui_callback_t)set_joystick_device_2;
+        devices_submenu2[i].callback_data
+            = (ui_callback_data_t)(i + JOYDEV_HW_BASE);
+    }
+
+    set_joystick_device_1_submenu[4].sub_menu = devices_submenu1;
+    set_joystick_device_2_submenu[4].sub_menu = devices_submenu2;
+}
+
+void uijoystick_menu_shutdown(void)
+{
+    unsigned int i;
+
+    set_joystick_device_1_submenu[4].sub_menu = NULL;
+    set_joystick_device_2_submenu[4].sub_menu = NULL;
+
+    i = 0;
+
+    if (devices_submenu1 != NULL) {
+        while (devices_submenu1[i].string != NULL) {
+            lib_free(devices_submenu1[i++].string);
+        }
+    }
+
+    i = 0;
+
+    if (devices_submenu2 != NULL) {
+        while (devices_submenu2[i].string != NULL) {
+            lib_free(devices_submenu2[i++].string);
+        }
+    }
+
+   lib_free(devices_submenu1);
+   lib_free(devices_submenu2);
+}
 

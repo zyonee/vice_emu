@@ -14,6 +14,8 @@
 
 @SET_MAKE@
 
+# Makefile.am for `libjoystickdrv.a'.
+
 VPATH = @srcdir@
 pkgdatadir = $(datadir)/@PACKAGE@
 pkglibdir = $(libdir)/@PACKAGE@
@@ -32,7 +34,7 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-subdir = src/fileio
+subdir = src/joystickdrv
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
@@ -44,11 +46,9 @@ CONFIG_HEADER = $(top_builddir)/src/config.h
 CONFIG_CLEAN_FILES =
 LIBRARIES = $(noinst_LIBRARIES)
 ARFLAGS = cru
-libfileio_a_AR = $(AR) $(ARFLAGS)
-libfileio_a_LIBADD =
-am_libfileio_a_OBJECTS = cbmfile.$(OBJEXT) fileio.$(OBJEXT) \
-	p00.$(OBJEXT)
-libfileio_a_OBJECTS = $(am_libfileio_a_OBJECTS)
+libjoystickdrv_a_AR = $(AR) $(ARFLAGS)
+am_libjoystickdrv_a_OBJECTS =
+libjoystickdrv_a_OBJECTS = $(am_libjoystickdrv_a_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(top_builddir)/src@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -56,8 +56,10 @@ COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
 LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
-SOURCES = $(libfileio_a_SOURCES)
-DIST_SOURCES = $(libfileio_a_SOURCES)
+SOURCES = $(libjoystickdrv_a_SOURCES) \
+	$(EXTRA_libjoystickdrv_a_SOURCES)
+DIST_SOURCES = $(libjoystickdrv_a_SOURCES) \
+	$(EXTRA_libjoystickdrv_a_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -269,17 +271,29 @@ xplus4_LDFLAGS = @xplus4_LDFLAGS@
 xvic_LDFLAGS = @xvic_LDFLAGS@
 INCLUDES = \
 	@ARCH_INCLUDES@ \
-	-I$(top_builddir)/src \
+        -I$(top_builddir)/src \
 	-I$(top_srcdir)/src
 
-noinst_LIBRARIES = libfileio.a
-libfileio_a_SOURCES = \
-	cbmfile.c \
-	cbmfile.h \
-	fileio.c \
-	p00.c \
-	p00.h
+noinst_LIBRARIES = libjoystickdrv.a
 
+# These sources are linked only under certain circumstances.
+EXTRA_libjoystickdrv_a_SOURCES = \
+	joy_directinput.c \
+	joy_winmm.c \
+	joy_unix.c \
+	joy_unix_old.c \
+	joy_unix_digi_old.c
+
+
+# These sources are always built.
+libjoystickdrv_a_SOURCES = 
+libjoystickdrv_a_DEPENDENCIES = \
+	@JOYSTICK_DRIVERS@
+
+libjoystickdrv_a_LIBADD = \
+	@JOYSTICK_DRIVERS@
+
+EXTRA_DIST = 
 all: all-am
 
 .SUFFIXES:
@@ -293,9 +307,9 @@ $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu  src/fileio/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu  src/joystickdrv/Makefile'; \
 	cd $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu  src/fileio/Makefile
+	  $(AUTOMAKE) --gnu  src/joystickdrv/Makefile
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
@@ -316,10 +330,10 @@ $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 
 clean-noinstLIBRARIES:
 	-test -z "$(noinst_LIBRARIES)" || rm -f $(noinst_LIBRARIES)
-libfileio.a: $(libfileio_a_OBJECTS) $(libfileio_a_DEPENDENCIES) 
-	-rm -f libfileio.a
-	$(libfileio_a_AR) libfileio.a $(libfileio_a_OBJECTS) $(libfileio_a_LIBADD)
-	$(RANLIB) libfileio.a
+libjoystickdrv.a: $(libjoystickdrv_a_OBJECTS) $(libjoystickdrv_a_DEPENDENCIES) 
+	-rm -f libjoystickdrv.a
+	$(libjoystickdrv_a_AR) libjoystickdrv.a $(libjoystickdrv_a_OBJECTS) $(libjoystickdrv_a_LIBADD)
+	$(RANLIB) libjoystickdrv.a
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -327,9 +341,11 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cbmfile.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fileio.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/p00.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/joy_directinput.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/joy_unix.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/joy_unix_digi_old.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/joy_unix_old.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/joy_winmm.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<

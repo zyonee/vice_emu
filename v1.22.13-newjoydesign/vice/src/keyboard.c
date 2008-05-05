@@ -40,7 +40,6 @@
 #include "archdep.h"
 #include "event.h"
 #include "joystick.h"
-#include "joy.h"
 #include "kbd.h"
 #include "keyboard.h"
 #include "lib.h"
@@ -350,19 +349,9 @@ void keyboard_key_pressed(signed long key)
         return;
     }
 
-    if (joystick_port_map[0] == JOYDEV_NUMPAD
-     || joystick_port_map[0] == JOYDEV_KEYSET1
-     || joystick_port_map[0] == JOYDEV_KEYSET2) {
-        if (joystick_check_set(key, joystick_port_map[0] - JOYDEV_NUMPAD, 1))
-            return;
-    }
-    if (joystick_port_map[1] == JOYDEV_NUMPAD
-     || joystick_port_map[1] == JOYDEV_KEYSET1
-     || joystick_port_map[1] == JOYDEV_KEYSET2) {
-        if (joystick_check_set(key, joystick_port_map[1] - JOYDEV_NUMPAD, 2))
-            return;
-    }
-
+    if (joystick_kbd_update_set(key))
+        return;
+    
     if (keyconvmap == NULL)
         return;
 
@@ -458,19 +447,9 @@ void keyboard_key_released(signed long key)
         return;
     }
 
-    if (joystick_port_map[0] == JOYDEV_NUMPAD
-     || joystick_port_map[0] == JOYDEV_KEYSET1
-     || joystick_port_map[0] == JOYDEV_KEYSET2) {
-        if (joystick_check_clr(key, joystick_port_map[0] - JOYDEV_NUMPAD, 1))
-            return;
-    }
-    if (joystick_port_map[1] == JOYDEV_NUMPAD
-     || joystick_port_map[1] == JOYDEV_KEYSET1
-     || joystick_port_map[1] == JOYDEV_KEYSET2) {
-        if (joystick_check_clr(key, joystick_port_map[1] - JOYDEV_NUMPAD, 2))
-            return;
-    }
-
+    if (joystick_kbd_update_clr(key))
+        return;
+    
     if (keyconvmap == NULL)
         return;
 

@@ -449,6 +449,8 @@ int machine_specific_init(void)
 #endif
 
         c64keyboard_init();
+        joystick_init();
+
     }
 
     c64_monitor_init();

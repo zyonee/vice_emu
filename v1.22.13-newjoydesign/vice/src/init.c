@@ -40,7 +40,6 @@
 #include "fsdevice.h"
 #include "gfxoutput.h"
 #include "initcmdline.h"
-#include "joy.h"
 #include "joystick.h"
 #include "kbdbuf.h"
 #include "keyboard.h"
@@ -258,7 +257,6 @@ int init_main(void)
     keyboard_init();
 
     if (!vsid_mode) {
-        joystick_init();
         disk_image_init();
         vdrive_init();
     }

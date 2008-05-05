@@ -49,9 +49,6 @@ libarch_a_SOURCES = \
 	fullscreenarch.h \
 	hardsid.c \
 	icon.h \
-	joy.c \
-	joy.h \
-	joy_usb.c \
 	kbd.h \
 	mousedrv.c \
 	mousedrv.h \

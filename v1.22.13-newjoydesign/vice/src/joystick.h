@@ -34,8 +34,8 @@ struct snapshot_s;
 extern int joystick_init(void);
 extern int joystick_init_resources(void);
 
-extern int joystick_check_set(signed long key, int keysetnum, unsigned int joyport);
-extern int joystick_check_clr(signed long key, int keysetnum, unsigned int joyport);
+extern int joystick_kbd_update_set(signed long key);
+extern int joystick_kbd_update_clr(signed long key);
 extern void joystick_joypad_clear(void);
 
 extern void joystick_set_value_absolute(unsigned int joyport, BYTE value);
@@ -50,6 +50,29 @@ extern void joystick_register_delay(unsigned int delay);
 
 extern int joystick_snapshot_write_module(struct snapshot_s *s);
 extern int joystick_snapshot_read_module(struct snapshot_s *s);
+
+typedef struct joy_device_s {
+    void (*poll)   (int port, void* dev);
+    int  (*open)   (void* dev);
+    void (*close)  (void* dev);
+    void (*destroy)(void* dev);
+} joy_device_t;
+
+typedef struct joy_data_s {
+    char* name;
+    void* priv;
+    joy_device_t* device;
+} joy_data_t;
+
+#define MAX_HW_JOY_DRIVERS 16
+
+#define JOYDEV_NONE         0
+#define JOYDEV_NUMPAD       1
+#define JOYDEV_KEYSET1      2
+#define JOYDEV_KEYSET2      3
+#define JOYDEV_HW_BASE      4
+
+extern void joystick_register_device(joy_data_t* device);
 
 #endif
 

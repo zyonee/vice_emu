@@ -38,7 +38,6 @@
 #include "alarm.h"
 #include "event.h"
 #include "keyboard.h"
-#include "joy.h"
 #include "joystick.h"
 #include "kbd.h"
 #include "maincpu.h"
@@ -48,6 +47,7 @@
 #include "types.h"
 #include "log.h"
 #include "resources.h"
+#include "cmdline.h"
 
 #define JOYSTICK_RAND() (rand() & 0x3fff)
 
@@ -70,6 +70,8 @@ static CLOCK joystick_delay;
 
 static int joykeys[3][9];
 
+static int joystick_port_map[2];
+
 static void joystick_latch_matrix(CLOCK offset)
 {
     BYTE idx;
@@ -81,6 +83,7 @@ static void joystick_latch_matrix(CLOCK offset)
         else
             memcpy(joystick_value, network_joystick_value, sizeof(joystick_value));
     } else {
+        idx = latch_joystick_value[0];
         memcpy(joystick_value, latch_joystick_value, sizeof(joystick_value));
     }
     ui_display_joyport(joystick_value);
@@ -233,6 +236,41 @@ static int joyreleaseval(int column, int *status)
     return ~val;
 }
 
+static joy_data_t* joy_devices[MAX_HW_JOY_DRIVERS];
+
+int set_joystick_device(int val, void *param)
+{
+    joy_data_t* dev;
+    int port = (int)param;
+    
+    if (joystick_port_map[port] >= JOYDEV_HW_BASE)
+    {
+        dev = joy_devices[joystick_port_map[port] - JOYDEV_HW_BASE];
+        if (dev->device->close) {
+            dev->device->close(dev->priv);
+        }
+    }
+    
+
+    if (val < JOYDEV_HW_BASE) {
+        joystick_port_map[port] = val;
+        return 0;
+    }
+
+    joystick_port_map[port] = JOYDEV_NONE;
+    
+    dev = joy_devices[val - JOYDEV_HW_BASE];
+    
+    if (dev == NULL)
+        return 0;
+
+    if (!dev->device->open || dev->device->open(dev->priv)) {
+        joystick_port_map[port] = val;
+    }
+
+    return 0;
+}
+
 #define DEFINE_SET_KEYSET(num)                       \
     static int set_keyset##num(int val, void *param) \
     {                                                \
@@ -281,10 +319,14 @@ static const resource_int_t resources_int[] = {
       &joykeys[2][KEYSET_W], set_keyset2, (void *)KEYSET_W },
     { "KeySet2Fire", 0, RES_EVENT_NO, NULL,
       &joykeys[2][KEYSET_FIRE], set_keyset2, (void *)KEYSET_FIRE },
+    { "JoyDevice1", JOYDEV_NONE, RES_EVENT_NO, NULL,
+      &joystick_port_map[0], set_joystick_device, (void *)0 },
+    { "JoyDevice2", JOYDEV_NONE, RES_EVENT_NO, NULL,
+      &joystick_port_map[1], set_joystick_device, (void *)1 },
     { NULL }
 };
 
-int joystick_check_set(signed long key, int keysetnum, unsigned int joyport)
+static int joystick_check_set(signed long key, int keysetnum, unsigned int joyport)
 {
     int column;
 
@@ -333,9 +375,31 @@ int joystick_init_resources(void)
 {
     resources_register_int(resources_int);
 
-    return joystick_arch_init_resources();
+    return 1;
 }
 #endif
+
+int joystick_arch_init_resources(void)
+{
+    return resources_register_int(resources_int);
+}
+
+/* ------------------------------------------------------------------------- */
+
+static const cmdline_option_t cmdline_options[] = {
+    { "-joydev1", SET_RESOURCE, 1, NULL, NULL,
+      "JoyDevice1", NULL,
+      "", N_("Set device for joystick port 1") },
+    { "-joydev2", SET_RESOURCE, 1, NULL, NULL,
+      "JoyDevice2", NULL,
+      "", N_("Set device for joystick port 2")},
+    { NULL }
+};
+
+int joystick_init_cmdline_options(void)
+{
+    return cmdline_register_options(cmdline_options);
+}
 
 int joystick_init(void)
 {
@@ -346,7 +410,30 @@ int joystick_init(void)
     kbd_initialize_numpad_joykeys(joykeys[0]);
 #endif
 
-    return joy_arch_init();
+#ifdef USE_UNIX_JOY
+    if (!joy_unix_init()) {
+#endif
+#ifdef USE_UNIX_OLD_JOY
+        old_joystick_init();
+#endif
+#ifdef HAS_DIGITAL_JOYSTICK
+        old_digital_joystick_init();
+#endif
+#ifdef USE_UNIX_JOY
+    }
+#endif
+
+#ifdef USE_DIRECTINPUT
+    if (!joy_di_init()) {
+#endif
+#ifdef USE_WINMM_JOY
+        joy_winmm_init();
+#endif
+#ifdef USE_DIRECTINPUT
+    }
+#endif
+
+    return 1;
 }
 
 /*--------------------------------------------------------------------------*/
@@ -392,3 +479,90 @@ int joystick_snapshot_read_module(snapshot_t *s)
     snapshot_module_close(m);
     return 0;
 }
+
+static void joystick_close_one(joy_data_t* joydata) {
+    if (joydata->device->close)
+        joydata->device->close(joydata->priv);
+    if (joydata->device->destroy)
+        joydata->device->destroy(joydata->priv);
+    lib_free(joydata->name);
+    lib_free(joydata->priv);
+    lib_free(joydata);
+}
+
+void joystick_register_device(joy_data_t* joydata) {
+    int i;
+
+    for (i = 0; joy_devices[i] && i < MAX_HW_JOY_DRIVERS; i++);
+
+    if (i < MAX_HW_JOY_DRIVERS) {
+        joy_devices[i] = joydata;
+    } else {
+        joystick_close_one(joydata);
+    }
+}
+
+unsigned int joystick_device_num(void)
+{
+    unsigned int i;
+
+    for (i = 0; joy_devices[i] && i < MAX_HW_JOY_DRIVERS; i++);
+
+    return i;
+}
+
+const char* joystick_device_name(unsigned int i) {
+    return joy_devices[i]->name;
+}
+
+void joystick_close(void) {
+    int i;
+
+    for (i = 0; i < MAX_HW_JOY_DRIVERS; i++) {
+        if (joy_devices[i]) {
+            joystick_close_one(joy_devices[i]);
+        }
+    }
+}
+
+void joystick_update(void) {
+    if (joystick_port_map[0] >= JOYDEV_HW_BASE)
+        joy_devices[joystick_port_map[0] - JOYDEV_HW_BASE]->device->poll(1, joy_devices[joystick_port_map[0] - JOYDEV_HW_BASE]->priv);
+    if (joystick_port_map[1] >= JOYDEV_HW_BASE)
+        joy_devices[joystick_port_map[1] - JOYDEV_HW_BASE]->device->poll(2, joy_devices[joystick_port_map[1] - JOYDEV_HW_BASE]->priv);
+}
+
+int joystick_kbd_update_set(signed long key) {
+    if (joystick_port_map[0] == JOYDEV_NUMPAD
+     || joystick_port_map[0] == JOYDEV_KEYSET1
+     || joystick_port_map[0] == JOYDEV_KEYSET2) {
+        if (joystick_check_set(key, joystick_port_map[0] - JOYDEV_NUMPAD, 1))
+            return 1;
+    }
+    if (joystick_port_map[1] == JOYDEV_NUMPAD
+     || joystick_port_map[1] == JOYDEV_KEYSET1
+     || joystick_port_map[1] == JOYDEV_KEYSET2) {
+        if (joystick_check_set(key, joystick_port_map[1] - JOYDEV_NUMPAD, 2))
+            return 1;
+    }
+
+    return 0;
+}
+
+int joystick_kbd_update_clr(signed long key) {
+    if (joystick_port_map[0] == JOYDEV_NUMPAD
+     || joystick_port_map[0] == JOYDEV_KEYSET1
+     || joystick_port_map[0] == JOYDEV_KEYSET2) {
+        if (joystick_check_clr(key, joystick_port_map[0] - JOYDEV_NUMPAD, 1))
+            return 1;
+    }
+    if (joystick_port_map[1] == JOYDEV_NUMPAD
+     || joystick_port_map[1] == JOYDEV_KEYSET1
+     || joystick_port_map[1] == JOYDEV_KEYSET2) {
+        if (joystick_check_clr(key, joystick_port_map[1] - JOYDEV_NUMPAD, 2))
+            return 1;
+    }
+
+    return 0;
+}
+

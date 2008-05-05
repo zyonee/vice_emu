@@ -616,6 +616,9 @@
 /* Enable CoreAudio support. */
 #undef USE_COREAUDIO
 
+/* Use DirectInput joystick driver */
+#undef USE_DIRECTINPUT
+
 /* Enable sgi sound support. */
 #undef USE_DMEDIA
 
@@ -639,6 +642,15 @@
 
 /* Enable sdl sound support. */
 #undef USE_SDL_AUDIO
+
+/* Enable emulation for digital joysticks. */
+#undef USE_UNIX_JOY
+
+/* Enable emulation for digital joysticks using old style API. */
+#undef USE_UNIX_OLD_JOY
+
+/* Use Windows Multimedia joystick driver */
+#undef USE_WINMM_JOY
 
 /* Enable XF86 extensions. */
 #undef USE_XF86_EXTENSIONS

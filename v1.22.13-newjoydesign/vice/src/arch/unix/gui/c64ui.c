@@ -526,12 +526,14 @@ static void c64ui_dynamic_menu_create(void)
 {
     uisound_menu_create();
     uivicii_menu_create();
+    uijoystick_menu_create();
 }
 
 static void c64ui_dynamic_menu_shutdown(void)
 {
     uivicii_menu_shutdown();
     uisound_menu_shutdown();
+    uijoystick_menu_shutdown();
 }
 
 int c64ui_init(void)

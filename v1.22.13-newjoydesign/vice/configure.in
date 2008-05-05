@@ -269,6 +269,12 @@ elif test x"$host_os" = "xcygwin32" -o x"$host_os" = "xcygwin" -o x"$host_os" = 
   AC_TRY_LINK([#include <windows.h>],
               [HGLOBAL hGlobal; UnlockResource(hGlobal); return 0],
               AC_DEFINE(HAS_UNLOCKRESOURCE,,[Do we have UnlockResource()?]),)
+  JOYSTICK_DRIVERS="$JOYSTICK_DRIVERS joy_winmm.o"
+  AC_DEFINE(USE_WINMM_JOY,,[Use Windows Multimedia joystick driver])
+  AC_CHECK_HEADER(dinput.h,
+      [ JOYSTICK_DRIVERS="$JOYSTICK_DRIVERS joy_directinput.o" ]
+      AC_DEFINE(USE_DIRECTINPUT,,[Use DirectInput joystick driver])
+      ,)
 
 elif test x"$host_os" = "xbeos"; then
 
@@ -777,12 +783,23 @@ if test x"$is_unix_x11" = "xyes" ; then
                   [ AC_DEFINE(HAS_JOYSTICK,,[Enable joystick emulation.])
                     AC_DEFINE(LINUX_JOYSTICK,,
                               [Enable support for Linux style joysticks.])],)
+                    AC_DEFINE(USE_UNIX_OLD_JOY,,
+                               [Enable emulation for digital joysticks using old style API.])
+                     JOYSTICK_DRIVERS="$JOYSTICK_DRIVERS joy_unix_old.o"
   if test x"$ac_cv_header_linux_joystick_h" = "xyes" ; then
+    AC_MSG_CHECKING(whether linux/joystick.h supports 1.1 API)
+    AC_TRY_COMPILE([ #include <linux/joystick.h> ],
+                   [ int i = JSIOCGVERSION; ],
+                   [ AC_DEFINE(USE_UNIX_JOY,,
+                               [Enable emulation for digital joysticks.])
+                     JOYSTICK_DRIVERS="$JOYSTICK_DRIVERS joy_unix.o"
+                     AC_MSG_RESULT(yes) ], AC_MSG_RESULT(no))
     AC_MSG_CHECKING(whether linux/joystick.h supports digital joysticks)
     AC_TRY_COMPILE([ #include <linux/joystick.h> ],
                    [ struct DJS_DATA_TYPE djs; ],
                    [ AC_DEFINE(HAS_DIGITAL_JOYSTICK,,
                                [Enable emulation for digital joysticks.])
+                     JOYSTICK_DRIVERS="$JOYSTICK_DRIVERS joy_unix_old_digi.o"
                      AC_MSG_RESULT(yes) ], AC_MSG_RESULT(no))
   fi
 
@@ -1756,6 +1773,8 @@ unsigned long test; ],
   AC_DEFINE(HAS_TRANSLATION,,[Enable internationalization support])
 fi
 
+AC_SUBST(JOYSTICK_DRIVERS)
+
 dnl CBM4Linux/OpenCBM
 if test x"$enable_realdevice" != "xno"; then
   if test x"$host_os" = "xcygwin32" -o x"$host_os" = "xcygwin" -o x"$host_os" = "xmingw32"; then
@@ -2307,6 +2326,7 @@ AC_OUTPUT([Makefile
            src/fileio/Makefile
            src/fsdevice/Makefile
            src/gfxoutputdrv/Makefile
+           src/joystickdrv/Makefile
            src/iecbus/Makefile
            src/imagecontents/Makefile
            src/lib/Makefile

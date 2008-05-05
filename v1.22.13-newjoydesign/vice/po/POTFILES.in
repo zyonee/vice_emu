@@ -76,7 +76,6 @@ src/video/video-cmdline-options.c
 src/arch/unix/blockdev.c
 src/arch/unix/console.c
 src/arch/unix/coproc.c
-src/arch/unix/joy.c
 src/arch/unix/mousedrv.c
 src/arch/unix/rs232.c
 src/arch/unix/signals.c
