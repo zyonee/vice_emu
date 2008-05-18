@@ -73,6 +73,14 @@
 // save a quick snapshot to a file
 -(void)saveQuickSnapshot;
 
+// ----- Screenshot -----
+// save s screen shot
+-(BOOL)saveScreenshot:(NSString *)path withDriver:(NSString *)driver;
+// is recording a screenshot
+-(BOOL)isRecordingScreenshot;
+// stop recording screenshot
+-(BOOL)stopRecordingScreenshot;
+
 // ----- Keyboard -----
 // key pressed
 -(void)keyPressed:(unsigned int)code;

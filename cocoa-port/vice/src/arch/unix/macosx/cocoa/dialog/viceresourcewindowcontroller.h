@@ -45,4 +45,9 @@
 -(BOOL)setStringResource:(NSString *)name toValue:(NSString *)string;
 -(BOOL)setStringResource:(NSString *)name withNumber:(int)number toValue:(NSString *)string;
 
+// File Tools
+- (NSString *)pickOpenFileWithTitle:(NSString *)title types:(NSArray *)types;
+- (NSString *)pickSaveFileWithTitle:(NSString *)title types:(NSArray *)types;
+- (NSString *)pickDirectoryWithTitle:(NSString *)title;
+
 @end

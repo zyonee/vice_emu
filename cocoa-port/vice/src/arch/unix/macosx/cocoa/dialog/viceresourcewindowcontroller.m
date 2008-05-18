@@ -101,4 +101,21 @@
     return [self setStringResource:formatString toValue:string];
 }
 
+// ----- File Tools -----
+
+- (NSString *)pickOpenFileWithTitle:(NSString *)title types:(NSArray *)types
+{
+    return [[VICEApplication theAppController] pickOpenFileWithTitle:title types:types];
+}
+
+- (NSString *)pickSaveFileWithTitle:(NSString *)title types:(NSArray *)types
+{
+    return [[VICEApplication theAppController] pickSaveFileWithTitle:title types:types];
+}
+
+- (NSString *)pickDirectoryWithTitle:(NSString *)title
+{
+    return [[VICEApplication theAppController] pickDirectoryWithTitle:title];
+}
+
 @end

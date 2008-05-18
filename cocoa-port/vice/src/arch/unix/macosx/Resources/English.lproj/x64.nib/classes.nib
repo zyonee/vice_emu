@@ -86,6 +86,8 @@
 				<string>id</string>
 				<key>showPrinterSettings</key>
 				<string>id</string>
+				<key>showResourceEditor</key>
+				<string>id</string>
 				<key>showSoundSettings</key>
 				<string>id</string>
 				<key>smartAttachImage</key>

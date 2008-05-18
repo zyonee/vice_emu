@@ -25,7 +25,9 @@ noinst_HEADERS = \
 	keyboardsettingswindowcontroller.h \
 	soundsettingswindowcontroller.h \
 	viceresourcewindowcontroller.h \
-	viceinformationwindowcontroller.h
+	viceinformationwindowcontroller.h \
+	resourceeditorcontroller.h \
+	resourcetreeitem.h
    
 libarchmacosxcocoadialog_a_SOURCES = \
 	drivesettingswindowcontroller.m \
@@ -35,4 +37,6 @@ libarchmacosxcocoadialog_a_SOURCES = \
 	keyboardsettingswindowcontroller.m \
 	soundsettingswindowcontroller.m \
 	viceresourcewindowcontroller.m \
-	viceinformationwindowcontroller.m
+	viceinformationwindowcontroller.m \
+	resourceeditorcontroller.m \
+	resourcetreeitem.m

@@ -32,6 +32,7 @@
 #import "joysticksettingswindowcontroller.h"
 #import "soundsettingswindowcontroller.h"
 #import "viceinformationwindowcontroller.h"
+#import "resourceeditorcontroller.h"
 
 @interface VICEAppController : NSObject
 {
@@ -43,6 +44,7 @@
     JoystickSettingsWindowController *joystickSettingsController;
     SoundSettingsWindowController *soundSettingsController;
     VICEInformationWindowController *infoController;
+    ResourceEditorController *resourceEditorController;
     
     // Options Outlets
     IBOutlet NSMenu *refreshRateMenu;
@@ -114,6 +116,7 @@
 - (IBAction)showSoundSettings:(id)sender;
 
 // Resources
+- (IBAction)showResourceEditor:(id)sender;
 - (IBAction)saveResources:(id)sender;
 - (IBAction)loadResources:(id)sender;
 - (IBAction)resetResources:(id)sender;
@@ -126,6 +129,7 @@
 // Tools
 - (NSString *)pickOpenFileWithTitle:(NSString *)title types:(NSArray *)types;
 - (NSString *)pickSaveFileWithTitle:(NSString *)title types:(NSArray *)types;
+- (NSString *)pickDirectoryWithTitle:(NSString *)title;
 
 - (void)attachDiskImageForUnit:(int)unit;
 

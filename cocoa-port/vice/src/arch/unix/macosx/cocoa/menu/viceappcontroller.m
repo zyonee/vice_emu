@@ -47,8 +47,12 @@
     // release dialog controllers
     [driveSettingsController release];
     [iecDriveSettingsController release];
+    [printerSettingsController release];
+    [keyboardSettingsController release];
     [joystickSettingsController release];
+    [soundSettingsController release];
     [infoController release];
+    [resourceEditorController release];
     
     [super dealloc];
 }
@@ -404,6 +408,14 @@
 
 // ----- Resources -----
 
+- (IBAction)showResourceEditor:(id)sender
+{
+    if(!resourceEditorController) {
+        resourceEditorController = [[ResourceEditorController alloc] init];
+    }
+    [resourceEditorController showWindow:self];
+}
+
 - (IBAction)saveResources:(id)sender
 {
     if(![[VICEApplication theMachineController] saveResources:nil]) {
@@ -546,6 +558,11 @@
     if(result==NSOKButton) {
         return [panel filename];
     }    
+    return nil;
+}
+
+- (NSString *)pickDirectoryWithTitle:(NSString *)title
+{
     return nil;
 }
 

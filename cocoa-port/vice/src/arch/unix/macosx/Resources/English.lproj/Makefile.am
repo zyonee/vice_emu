@@ -19,4 +19,7 @@ EXTRA_DIST = \
 	KeyboardSettings.nib/keyedobjects.nib
 	JoystickSettings.nib/classes.nib \
 	JoystickSettings.nib/info.nib \
-	JoystickSettings.nib/keyedobjects.nib
+	JoystickSettings.nib/keyedobjects.nib \
+	ResourceEditor.nib/classes.nib \
+	ResourceEditor.nib/info.nib \
+	ResourceEditor.nib/keyedobjects.nib
