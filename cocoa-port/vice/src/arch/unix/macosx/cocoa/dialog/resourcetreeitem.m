@@ -78,7 +78,9 @@
 -(BOOL)addFromDictionary:(NSDictionary *)dict
 {
     NSMutableArray *a = [[NSMutableArray alloc] init];
-    for(id key in dict) {
+    NSEnumerator *enumerator = [dict keyEnumerator];
+    id key;
+    while((key = [enumerator nextObject])) {
         ResourceTreeItem *item = [[ResourceTreeItem alloc] initWithTitle:key];
         [a addObject:item];
         
@@ -405,8 +407,10 @@
         [cacheValue release];
         cacheValue = nil;
     } else {
-        for(id item in children) {
-            [(ResourceTreeItem *)item invalidateCache];
+        int num = [children count];
+        int i;
+        for(i=0;i<num;i++) {
+            [(ResourceTreeItem *)[children objectAtIndex:i] invalidateCache];
         }
     }
 }
