@@ -9,7 +9,7 @@ AC_INIT(src/maincpu.c)
 
 VICE_VERSION_MAJOR=1
 VICE_VERSION_MINOR=22
-VICE_VERSION_BUILD=12
+VICE_VERSION_BUILD=15
 
 AC_SUBST(VICE_VERSION_MAJOR)
 AC_SUBST(VICE_VERSION_MINOR)
@@ -1214,6 +1214,13 @@ if test "$ac_cv_lib_mp3lame_lame_encode_buffer" = "no"; then
                [SOUND_DRIVERS="$SOUND_DRIVERS soundmp3.o";
                SOUND_LIBS="$SOUND_LIBS -lmp3lame -lmpgdecoder";
                AC_DEFINE(USE_LAMEMP3,,[Enable lamemp3 support.])],,$SOUND_LIBS -lmpgdecoder)
+fi
+
+AC_PATH_PROGS(FCCACHE, fc-cache, false)
+if test x"$FCCACHE" = "xfalse"; then
+  AM_CONDITIONAL(HAVE_FC_CACHE, false)
+else
+  AM_CONDITIONAL(HAVE_FC_CACHE, true)
 fi
 
 if test x"$is_amigaos4" = "xyes"; then
