@@ -102,7 +102,9 @@ AC_PROG_CC
 
 dnl --- setup Objective-C ---
 OBJC="${CC}"
-OBJCFLAGS="${CFLAGS}"
+if [ "x${OBJCFLAGS}" = x ]; then
+  OBJCFLAGS="${CFLAGS}"
+fi
 OBJCDEPMODE="depmode=${CC}"
 AC_SUBST(OBJC)
 AC_SUBST(OBJCFLAGS)

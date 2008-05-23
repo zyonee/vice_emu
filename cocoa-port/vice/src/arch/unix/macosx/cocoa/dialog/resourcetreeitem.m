@@ -305,7 +305,6 @@
 -(void)setValueExtra:(id)ctl
 {
     ResourceEditorController *controller = (ResourceEditorController *)ctl;
-    BOOL needReload = FALSE;
     switch(hint) {
     case ResourceTreeItemHintFileOpen:
         {

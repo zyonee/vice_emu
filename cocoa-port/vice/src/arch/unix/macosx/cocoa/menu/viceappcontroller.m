@@ -271,7 +271,7 @@
         BOOL saveDisks = ([saveDisksCheck state] == NSOnState);
         NSString * path = [panel filename];
         if(path!=nil) {
-            [[VICEApplication theMachineController] saveSnapshot:path withROMS:FALSE andDisks:FALSE];
+            [[VICEApplication theMachineController] saveSnapshot:path withROMS:saveRoms andDisks:saveDisks];
         }
     }
     [pool release];
@@ -285,6 +285,22 @@
 - (IBAction)saveQuickSnapshot:(id)sender
 {
     [[VICEApplication theMachineController] saveQuickSnapshot];
+}
+
+- (IBAction)showRecordSnapshot:(id)sender
+{
+}
+
+- (IBAction)showRecordMedia:(id)sender
+{
+    if(!recordMediaController) {
+        recordMediaController = [[RecordMediaWindowController alloc] init];
+    }
+    [recordMediaController showWindow:self];
+}
+
+- (IBAction)showNetplay:(id)sender
+{
 }
 
 // ----- Options -----
@@ -570,6 +586,7 @@
 {
     [[VICEApplication theMachineController] 
         setIntResource:name value:[NSNumber numberWithInt:value]];
+    return TRUE;
 }
 
 - (int)getIntResource:(NSString *)name

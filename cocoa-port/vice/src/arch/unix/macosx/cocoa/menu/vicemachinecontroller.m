@@ -37,6 +37,14 @@
 #include "printer.h"
 #include "archdep.h"
 #include "log.h"
+#include "screenshot.h"
+#include "gfxoutput.h"
+#include "videoarch.h"
+#include "interrupt.h"
+#include "tape.h"
+#include "mouse.h"
+#include "vdrive-internal.h"
+#include "gfxoutputdrv/ffmpegdrv.h"
 
 #import "vicemachinecontroller.h"
 #import "vicemachine.h"
@@ -265,7 +273,101 @@ static void saveSnapshotTrap(WORD unusedWord, void *unusedData)
         [self loadSnapshot:path];
     }
 }
- 
+
+// ----- Media -----
+
+-(BOOL)startRecordingMedia:(NSString *)driver fromCanvas:(int)canvasId
+                                                  toFile:(NSString *)path
+{
+    // fetch real canvas for id
+    video_canvas_t *canvas = [theVICEMachine getCanvasForId:canvasId];
+    if(canvas==NULL)
+        return false;
+    
+    int result = screenshot_save([driver cStringUsingEncoding:NSUTF8StringEncoding],
+                                 [path cStringUsingEncoding:NSUTF8StringEncoding],
+                                 canvas);
+    return result == 0;
+}
+
+-(BOOL)isRecordingMedia
+{
+    return screenshot_is_recording();
+}
+
+-(void)stopRecordingMedia
+{
+    screenshot_stop_recording();
+}
+
+-(NSArray *)enumMediaDrivers
+{
+    int i;
+    gfxoutputdrv_t *driver;
+    
+    NSMutableArray *a = [[NSMutableArray alloc] init];
+    driver = gfxoutput_drivers_iter_init();
+    for (i = 0; i < gfxoutput_num_drivers(); i++) {
+        NSString *name = [NSString stringWithCString:driver->name encoding:NSUTF8StringEncoding];
+        [a addObject:name];
+        driver = gfxoutput_drivers_iter_next();
+    }
+    return [a autorelease];
+}
+
+-(BOOL)mediaDriverHasOptions:(NSString *)driver
+{
+    if([driver compare:@"FFMPEG"]==NSOrderedSame)
+        return TRUE;
+    else
+        return FALSE;
+}
+
+-(NSArray *)enumMediaFormats:(NSString *)driver
+{
+    // currently only FFMPEG here
+    int i;
+    NSMutableArray *a = [[NSMutableArray alloc] init];
+    for (i=0;ffmpegdrv_formatlist[i].name!=NULL;i++) {
+        NSString *fname = [NSString stringWithCString:ffmpegdrv_formatlist[i].name encoding:NSUTF8StringEncoding];
+        
+        // fetch video codecs
+        int j;
+        ffmpegdrv_codec_t *video_codecs = ffmpegdrv_formatlist[i].video_codecs;
+        NSMutableDictionary *video = [[NSMutableDictionary alloc] init];
+        if(video_codecs!=NULL) {
+            for(j=0;video_codecs->name!=NULL;j++) {
+                NSString *vname = [NSString stringWithCString:video_codecs->name encoding:NSUTF8StringEncoding];
+                [video setObject:vname forKey:[NSNumber numberWithInt:video_codecs->id]];
+                video_codecs++;
+            }
+        }
+        
+        // fetch audio codecs
+        ffmpegdrv_codec_t *audio_codecs = ffmpegdrv_formatlist[i].audio_codecs;
+        NSMutableDictionary *audio = [[NSMutableDictionary alloc] init];
+        if(audio_codecs!=NULL) {
+            for(j=0;audio_codecs->name!=NULL;j++) {
+                NSString *aname = [NSString stringWithCString:audio_codecs->name encoding:NSUTF8StringEncoding];
+                [audio setObject:aname forKey:[NSNumber numberWithInt:audio_codecs->id]];
+                audio_codecs++;                
+            }
+        }
+
+        [a addObject:[NSArray arrayWithObjects:fname,video,audio,nil]];
+    }
+    return [a autorelease];
+}
+
+-(NSString *)defaultExtensionForMediaDriver:(NSString *)driver andFormat:(NSString *)format
+{
+    if(format==nil) {
+        return [driver lowercaseString];
+    } else {
+        return format;
+    }
+}
+
 // ----- Keyboard -----
 
 -(void)keyPressed:(unsigned int)code

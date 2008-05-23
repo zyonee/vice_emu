@@ -185,11 +185,11 @@
     int driveNum = [driveChooser selectedSegment] + driveOffset;
     id cell = [sender selectedCell];
     int driveId = [cell tag];
-    int driveType = [self mapToDriveType:driveId];
+    int driveTypeVar = [self mapToDriveType:driveId];
         
     [self setIntResource:@"Drive%dType" 
               withNumber:driveNum
-                 toValue:driveType];
+                 toValue:driveTypeVar];
     [self updateResources:nil];
 }
 

@@ -220,6 +220,7 @@ extern FILE *default_log_file;
 
     // embedded gl view
     VICEGLView *glView = [window getVICEGLView];
+    [glView setCanvasId:canvas->canvasId];
 
     // fill canvas structure
     canvas->window = window;
@@ -261,6 +262,28 @@ extern FILE *default_log_file;
 {
     video_canvas_t *canvas = *(video_canvas_t **)[canvasPtr bytes];
     [[canvas->window getVICEGLView] updateTexture];
+}
+
+- (void)setCurrentCanvasId:(int)c
+{
+    currentCanvasId = c;
+}
+
+- (int)currentCanvasId
+{
+    return currentCanvasId;
+}
+
++ (void)setCurrentCanvasId:(int)canvasId
+{
+    VICEApplication *app = (VICEApplication *)[self sharedApplication];
+    [app setCurrentCanvasId:canvasId];
+}
+
++ (int)currentCanvasId
+{
+    VICEApplication *app = (VICEApplication *)[self sharedApplication];
+    return [app currentCanvasId];
 }
 
 // ----- Monitor -----
@@ -397,7 +420,7 @@ extern FILE *default_log_file;
     
     if(result==NSAlertFirstButtonReturn)
         return 0;
-    else if(result=NSAlertSecondButtonReturn)
+    else if(result==NSAlertSecondButtonReturn)
         return 1;
     else
         return 2;

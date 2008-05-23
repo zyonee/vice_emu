@@ -52,6 +52,8 @@
     #define MOUSE_IS_SHOWN   -2
     NSTimer *mouseHideTimer;
     int mouseHideInterval;
+    
+    int canvasId;
 }
 
 - (id)initWithFrame:(NSRect)rect;
@@ -86,6 +88,9 @@
 - (void)stopHideTimer:(BOOL)shown;
 - (void)hideTimer:(NSTimer *)timer;
 - (void)ensureMouseShown;
+
+- (void)setCanvasId:(int)canvasId;
+- (int)canvasId;
 
 @end
 

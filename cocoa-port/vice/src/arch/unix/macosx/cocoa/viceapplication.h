@@ -41,6 +41,7 @@
     
     ConsoleWindow *consoleWindow;
     int canvasCount;
+    int currentCanvasId;
     
     ConsoleWindow *monitorWindow;
     NSWindow *oldKeyWindow;
@@ -84,6 +85,11 @@
 - (VICEAppController *)appController;
 // get the app controller
 + (VICEAppController *)theAppController;
+
+// report current canvas id from VICEGLView
++ (void)setCurrentCanvasId:(int)canvasId;
+// get current canvas id
++ (int)currentCanvasId;
 
 @end
 

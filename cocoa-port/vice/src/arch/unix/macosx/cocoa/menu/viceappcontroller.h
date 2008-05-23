@@ -33,6 +33,7 @@
 #import "soundsettingswindowcontroller.h"
 #import "viceinformationwindowcontroller.h"
 #import "resourceeditorcontroller.h"
+#import "recordmediawindowcontroller.h"
 
 @interface VICEAppController : NSObject
 {
@@ -45,6 +46,7 @@
     SoundSettingsWindowController *soundSettingsController;
     VICEInformationWindowController *infoController;
     ResourceEditorController *resourceEditorController;
+    RecordMediaWindowController *recordMediaController;
     
     // Options Outlets
     IBOutlet NSMenu *refreshRateMenu;
@@ -91,6 +93,11 @@
 - (IBAction)saveSnapshot:(id)sender;
 - (IBAction)loadQuickSnapshot:(id)sender;
 - (IBAction)saveQuickSnapshot:(id)sender;
+
+- (IBAction)showRecordSnapshot:(id)sender;
+- (IBAction)showRecordMedia:(id)sender;
+
+- (IBAction)showNetplay:(id)sender; 
 
 // Options
 - (IBAction)pickRefreshRate:(id)sender;

@@ -84,7 +84,13 @@
 				<string>id</string>
 				<key>showKeyboardSettings</key>
 				<string>id</string>
+				<key>showNetplay</key>
+				<string>id</string>
 				<key>showPrinterSettings</key>
+				<string>id</string>
+				<key>showRecordMedia</key>
+				<string>id</string>
+				<key>showRecordSnapshot</key>
 				<string>id</string>
 				<key>showResourceEditor</key>
 				<string>id</string>

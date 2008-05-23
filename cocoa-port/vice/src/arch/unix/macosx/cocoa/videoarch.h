@@ -55,6 +55,7 @@ struct video_canvas_s
     BYTE *buffer;
     int pitch;
     VICEWindow *window;
+    int canvasId;
 
     struct video_draw_buffer_callback_s *video_draw_buffer_callback;
 };

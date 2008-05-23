@@ -73,13 +73,23 @@
 // save a quick snapshot to a file
 -(void)saveQuickSnapshot;
 
-// ----- Screenshot -----
-// save s screen shot
--(BOOL)saveScreenshot:(NSString *)path withDriver:(NSString *)driver;
+// ----- Media -----
+// start recording media/save screen shot
+-(BOOL)startRecordingMedia:(NSString *)driver 
+                fromCanvas:(int)canvasId
+                    toFile:(NSString *)path;
 // is recording a screenshot
--(BOOL)isRecordingScreenshot;
+-(BOOL)isRecordingMedia;
 // stop recording screenshot
--(BOOL)stopRecordingScreenshot;
+-(void)stopRecordingMedia;
+// enumerate media
+-(NSArray *)enumMediaDrivers;
+// has driver container
+-(BOOL)mediaDriverHasOptions:(NSString *)driver;
+// enumerate media formats
+-(NSArray *)enumMediaFormats:(NSString *)driver;
+// extension for media 
+-(NSString *)defaultExtensionForMediaDriver:(NSString *)driver andFormat:(NSString *)format;
 
 // ----- Keyboard -----
 // key pressed

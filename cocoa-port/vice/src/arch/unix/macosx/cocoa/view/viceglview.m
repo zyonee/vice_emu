@@ -115,7 +115,6 @@
 
     NSRect rect = [self bounds];
     NSSize size = rect.size;
-    NSPoint origin;
     
     float ratio = size.width / size.height;
     viewSize    = size;
@@ -362,6 +361,9 @@
 {
     [[self window] setAcceptsMouseMovedEvents:YES];
     
+    // report current canvas id to app controller
+    [VICEApplication setCurrentCanvasId:canvasId];
+    
     // start mouse hide timer
     if(!trackMouse) {
         [self startHideTimer];
@@ -448,6 +450,18 @@
     } else {
         [self startHideTimer];
     }
+}
+
+// manager canvas id
+
+- (void)setCanvasId:(int)c
+{
+    canvasId = c;
+}
+
+- (int)canvasId
+{
+    return canvasId;
 }
 
 @end

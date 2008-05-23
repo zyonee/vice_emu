@@ -61,7 +61,7 @@
 
 // ----- Actions -----
 
-const NSString *tags[3] = { @"KeymapSymFile",@"KeymapSymDeFile",@"KeymapPosFile" };
+NSString *tags[3] = { @"KeymapSymFile",@"KeymapSymDeFile",@"KeymapPosFile" };
 
 -(IBAction)selectKeymap:(id)sender
 {
@@ -72,7 +72,6 @@ const NSString *tags[3] = { @"KeymapSymFile",@"KeymapSymDeFile",@"KeymapPosFile"
 -(IBAction)changedKeymapFile:(id)sender
 {
     int index = [sender tag];
-    NSString *resource;
     [self setStringResource:tags[index] toValue:[sender stringValue]];
 }
 
