@@ -119,6 +119,7 @@ fi
 
 if test x"$host_os" = "xminix"; then
   AC_DEFINE(MINIX_SUPPORT,,[do we need minix support])
+  CFLAGS="$CFLAGS -D_MINIX -D_POSIX_SOURCE"
 fi
 
 if test x"$host_os" = "xcygwin32" -o x"$host_os" = "xcygwin"; then
