@@ -67,6 +67,10 @@ static const mon_cmds_t mon_cmd_array[] = {
      "<type>",
      "Specify the type of CPU currently used (6502/z80)." },
 
+   { "cpuhistory",       "chis",
+     "[<count>]",
+     "Show <count> last executed commands." },
+
    { "dump",            "",
      "\"<filename>\"",
      "Write a snapshot of the machine into the file specified.\n"
@@ -220,6 +224,22 @@ static const mon_cmds_t mon_cmd_array[] = {
      "Display the contents of memory as character data.  If only one address\n"
      "is specified, only one character is displayed.  If no addresses are\n"
      "given, the ``dot'' address is used." },
+
+   { "memmapsave",       "mmsave",
+     "\"<filename>\" <format>",
+     "Save the memmap as a picture. Format is:\n"
+     "0 = BMP, 1 = PCX, 2 = PNG, 3 = GIF, 4 = IFF." },
+
+   { "memmapshow",       "mmsh",
+     "[<mask>] [<address_opt_range>]",
+     "Show the memmap. The mask can be specified to show only those\n"
+     "locations with accesses of certain type(s). The mask is a number\n"
+     "with the bits \"ioRWXrwx\", where RWX are for ROM and rwx for RAM.\n"
+     "Optionally, an address range can be specified." },
+
+   { "memmapzap",        "mmzap",
+     NULL,
+     "Clear the memmap." },
 
    { "memsprite",       "ms",
      "[<data_type>] [<address_opt_range>]",
