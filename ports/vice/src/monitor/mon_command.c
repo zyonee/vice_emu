@@ -31,6 +31,10 @@
 #include <stdio.h>
 #include <string.h>
 
+#ifdef HAVE_STRINGS_H
+#include <strings.h>
+#endif
+
 #include "mon_command.h"
 #include "montypes.h"
 #include "mon_parse.h" /* FIXME ! */

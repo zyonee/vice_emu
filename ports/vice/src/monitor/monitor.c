@@ -37,6 +37,10 @@
 #include <direct.h>
 #endif
 
+#ifdef HAVE_STRINGS_H
+#include <strings.h>
+#endif
+
 #include "archdep.h"
 #include "charset.h"
 #include "cmdline.h"
