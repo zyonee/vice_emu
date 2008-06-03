@@ -1,3 +1,34 @@
+2008-06-03  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
+
+	* Version 1.22.17.
+
+	* configure.in: Test for libnet 1.1 and set VICE_USE_LIBNET_1_1
+	if it exists. This adds support for libnet 1.1 for TFE/RR-net
+	emulation.
+
+2008-06-03  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
+
+	* configure.in: Changed bash'ism (if [...]) to more general code
+	(if test ...).
+
+2008-05-25  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
+
+	* Version 1.22.16.
+
+2008-05-25  Christian Vogelgsang  <chris@vogelgsang.org>
+
+	* configure.in: honor OBJCFLAGS if available. added Carbon lib
+	for Cocoa linking.
+
+	* build/Makefile.am, build/macosx/build-vice-release.sh: added
+	build-vice-release script
+
+	* Makefile.am: make bindist on Macs need the bash
+
+	* data/C64/Makefile.am, data/C64/osx_sym_de.vkm,
+	data/C64/osx_pos.vkm, data/C64/osx_sym_us.vkm: fixed Cocoa key
+	maps
+
 2008-05-19  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
 
 	* autogen.sh: Removed "bash-ism" from script (compare with "=="

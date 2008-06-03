@@ -9,7 +9,7 @@ AC_INIT(src/maincpu.c)
 
 VICE_VERSION_MAJOR=1
 VICE_VERSION_MINOR=22
-VICE_VERSION_BUILD=15
+VICE_VERSION_BUILD=17
 
 AC_SUBST(VICE_VERSION_MAJOR)
 AC_SUBST(VICE_VERSION_MINOR)
@@ -64,8 +64,8 @@ AC_ARG_WITH(alsa, [  --without-alsa          do not use the ALSA sound system])
 AC_ARG_WITH(oss, [  --without-oss           do not use the OSS sound system])
 AC_ARG_ENABLE(sdl, [  --with-sdl              use sdl sound system])
 AC_ARG_WITH(resid, [  --without-resid         do not use the reSID engine])
-AC_ARG_WITH(png, [  --without-png         do not use the PNG screenshot system])
-AC_ARG_WITH(zlib, [  --without-zlib         do not use the ZLIB support])
+AC_ARG_WITH(png, [  --without-png           do not use the PNG screenshot system])
+AC_ARG_WITH(zlib, [  --without-zlib          do not use the ZLIB support])
 AC_ARG_ENABLE(fullscreen, [  --enable-fullscreen     enable XFree86 fullscreen detection], [ echo checking for XFree86 fullscreen requested...], [enable_fullscreen="no"; echo no explicit checking for XFree86 fullscreen requested, disabling fullscreen...])
 AC_ARG_ENABLE(gnomeui,[  --enable-gnomeui        enables gnome ui support])
 AC_ARG_ENABLE(nls,[  --disable-nls           disables national language support])
@@ -76,7 +76,12 @@ AC_ARG_ENABLE(ipv6,[  --disable-ipv6          disables the checking for ipv6 com
 AC_ARG_ENABLE(parsid,[  --enable-parsid         enables ParSID support])
 AC_ARG_WITH(picasso96, [  --with-picasso96        use Amiga P96 grafix system instead of cgx])
 AC_ARG_ENABLE(bundle, [  --disable-bundle        do not use application bundles on Macs])
-AC_ARG_WITH(cocoa, [ --with-cocoa             enables native Cocoa UI on Macs])
+AC_ARG_WITH(cocoa, [  --with-cocoa            enables native Cocoa UI on Macs])
+AC_ARG_ENABLE(memmap, [  --enable-memmap         enable the mem map feature])
+
+if test x"$enable_memmap" = "xyes"; then
+  AC_DEFINE(FEATURE_CPUMEMHISTORY,,[Use the memmap feature.])
+fi
 
 if test x"$enable_gnomeui" = "xyes" ; then
   AC_DEFINE(USE_GNOMEUI,,[Use GNOME UI.])
@@ -102,7 +107,7 @@ AC_PROG_CC
 
 dnl --- setup Objective-C ---
 OBJC="${CC}"
-if [ "x${OBJCFLAGS}" = x ]; then
+if test -z "x${OBJCFLAGS}"; then
   OBJCFLAGS="${CFLAGS}"
 fi
 OBJCDEPMODE="depmode=${CC}"
@@ -119,6 +124,7 @@ fi
 
 if test x"$host_os" = "xminix"; then
   AC_DEFINE(MINIX_SUPPORT,,[do we need minix support])
+  CFLAGS="$CFLAGS -D_MINIX -D_POSIX_SOURCE"
 fi
 
 if test x"$host_os" = "xcygwin32" -o x"$host_os" = "xcygwin"; then
@@ -1110,6 +1116,15 @@ if test x"$is_dos" = "xyes" ; then
   fi
 else
   if test x"$enable_ethernet" = "xyes"; then
+  dnl /usr/lib/libpcap.a
+  dnl /usr/lib/libnet.a
+    AC_CHECK_LIB(pcap, pcap_open_live,[
+      AC_CHECK_LIB(net, libnet_init,[
+        AC_DEFINE(HAVE_TFE,,[Support for The Final Ethernet])
+        AC_DEFINE(VICE_USE_LIBNET_1_1,,[Support for The Final Ethernet])
+        TFE_LIBS="-lpcap `libnet-config --libs`"
+        CFLAGS="$CFLAGS `libnet-config --defines`"
+    ],,$LIBS)],,$LIBS)
   dnl /usr/lib/libpcap.a
   dnl /usr/lib/libnet.a
     AC_CHECK_LIB(pcap, pcap_open_live,[
