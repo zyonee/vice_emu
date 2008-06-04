@@ -42,6 +42,9 @@ extern ssize_t send(int socket, const void *buffer, size_t length, int flags);
 #include <stdlib.h>
 #include <string.h>
 
+#ifdef HAVE_STRINGS_H
+#include <strings.h>
+#endif
 
 #ifdef AMIGA_SUPPORT
 #ifndef AMIGA_OS4
@@ -106,13 +109,6 @@ typedef struct timeval TIMEVAL;
 #define recv(socket, buffer, length, flags) \
         recvfrom(socket, buffer, length, flags, NULL, NULL)
 extern ssize_t send(int socket, const void *buffer, size_t length, int flags);
-#endif
-
-#ifdef OPENSERVER6_COMPILE
-struct timeval {
-  long tv_sec;
-  long tv_usec;
-};
 #endif
 
 typedef unsigned int SOCKET;

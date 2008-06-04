@@ -134,7 +134,7 @@ struct video_render_config_s {
     int doublescan;                /* Doublescan enabled?  */
     int hwscale;                   /* Hardware scaling enabled? */
     int scale2x;                   /* Scale2x enabled?  */
-    unsigned int external_palette; /* Use an external palette?  */
+    int external_palette;          /* Use an external palette?  */
     char *external_palette_name;   /* Name of the external palette.  */
     int double_buffer;             /* Double buffering enabled? */
     struct video_cbm_palette_s *cbm_palette; /* Internal palette.  */

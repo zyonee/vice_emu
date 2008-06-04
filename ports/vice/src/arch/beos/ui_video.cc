@@ -115,7 +115,6 @@ VideoWindow::VideoWindow()
 		B_NOT_ZOOMABLE | B_NOT_RESIZABLE) 
 {
 	BMessage *msg;
-	BSlider *slider;
 	BCheckBox *checkbox;
 	BRect r;
 	BBox *box;
@@ -248,7 +247,6 @@ VideoWindow::~VideoWindow()
 
 void VideoWindow::MessageReceived(BMessage *msg) {
 	int32 index, val;	
-	resource_value_t dummy;
 	BMessage *msr;
 	BListItem *item;
 	
