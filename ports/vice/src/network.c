@@ -33,8 +33,11 @@
 #include <limits.h>
 #define PF_INET AF_INET
 
+#ifndef MINIX_HAS_RECV_SEND
 extern ssize_t recv(int socket, void *buffer, size_t length, int flags);
 extern ssize_t send(int socket, const void *buffer, size_t length, int flags);
+#endif
+
 #endif
 
 #include <assert.h>
