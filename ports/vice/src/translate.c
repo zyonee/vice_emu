@@ -4247,7 +4247,7 @@ translate_t string_table[] = {
 /* fr */ {IDCLS_EXECUTE_MONITOR_FROM_FILE_FR, ""}, /* fuzzy */
 /* hu */ {IDCLS_EXECUTE_MONITOR_FROM_FILE_HU, ""}, /* fuzzy */
 /* it */ {IDCLS_EXECUTE_MONITOR_FROM_FILE_IT, ""}, /* fuzzy */
-/* nl */ {IDCLS_EXECUTE_MONITOR_FROM_FILE_NL, ""}, /* fuzzy */
+/* nl */ {IDCLS_EXECUTE_MONITOR_FROM_FILE_NL, "Uitvoeren van commandos uit bestand"},
 /* pl */ {IDCLS_EXECUTE_MONITOR_FROM_FILE_PL, ""}, /* fuzzy */
 /* sv */ {IDCLS_EXECUTE_MONITOR_FROM_FILE_SV, ""}, /* fuzzy */
 

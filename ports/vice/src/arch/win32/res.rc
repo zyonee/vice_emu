@@ -6264,7 +6264,7 @@ BEGIN
   IDS_CANNOT_LOAD_SETTINGS_NL        "Kan de instellingen niet laden."
   IDS_DEFAULT_SETTINGS_RESTORED_NL   "Standaardinstellingen hersteld."
   IDS_CANNOT_ATTACH_FILE_NL          "Kan het opgegeven bestand niet koppelen"
-  IDS_START_MONITOR_NL               "%s\012\012Monitor starten?"
+  IDS_START_MONITOR_NL               "%s\012\012Monitor starten? (Nee = reset, Annuleren = doorgaan"
   IDS_VICE_CPU_JAM_NL                "VICE CPU HANGT"
   IDS_EXTEND_TO_40_TRACKS_NL         "Bestand uitbreiden naar 40-sporen formaat?"
   IDS_DETACHED_DEVICE_S_NL           "Apparaat %s ontkoppelt"
