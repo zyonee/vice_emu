@@ -434,8 +434,13 @@ void menu_action(HWND hwnd, USHORT idm) //, MPARAM mp2)
         resources_set_int("PALEmulation", 1);
         return;
 #endif
-    case IDM_PALON:
+    case IDM_PALOLD:
         resources_set_int("PALMode",      VIDEO_RESOURCE_PAL_MODE_TRUE);
+        resources_set_int("PALEmulation", 1);
+        return;
+        /*
+    case IDM_PALNEW:
+        resources_set_int("PALMode",      VIDEO_RESOURCE_PAL_MODE_NEW);
         resources_set_int("PALEmulation", 1);
         return;
         /*

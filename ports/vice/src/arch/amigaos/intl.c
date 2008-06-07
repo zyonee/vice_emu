@@ -4184,6 +4184,15 @@ intl_translate_t intl_string_table[] = {
 /* pl */ {IDS_PAL_EMULATION_PL, ""},  /* fuzzy */
 /* sv */ {IDS_PAL_EMULATION_SV, "PAL-emulering"},
 
+/* en */ {IDS_NEW_PAL_EMULATION,    "New PAL Eulation"},
+/* de */ {IDS_NEW_PAL_EMULATION_DE, ""},  /* fuzzy */
+/* fr */ {IDS_NEW_PAL_EMULATION_FR, ""},  /* fuzzy */
+/* hu */ {IDS_NEW_PAL_EMULATION_HU, ""},  /* fuzzy */
+/* it */ {IDS_NEW_PAL_EMULATION_IT, ""},  /* fuzzy */
+/* nl */ {IDS_NEW_PAL_EMULATION_NL, ""},  /* fuzzy */
+/* pl */ {IDS_NEW_PAL_EMULATION_PL, ""},  /* fuzzy */
+/* sv */ {IDS_NEW_PAL_EMULATION_SV, ""},  /* fuzzy */
+
 /* en */ {IDS_EXTERNAL_PALETTE_SELECT,    "Select External Palette file"},
 /* de */ {IDS_EXTERNAL_PALETTE_SELECT_DE, "Benutze externe Palette (Datei)"},
 /* fr */ {IDS_EXTERNAL_PALETTE_SELECT_FR, ""},  /* fuzzy */
@@ -4219,6 +4228,33 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDS_PAL_BLUR_0_1_NL, "PAL-Wazigheid (0..1)"},
 /* pl */ {IDS_PAL_BLUR_0_1_PL, ""},  /* fuzzy */
 /* sv */ {IDS_PAL_BLUR_0_1_SV, "PAL-suddighet (0..1)"},
+
+/* en */ {IDS_NEW_PAL_TINT_0_2,    "Tint (0..2)"},
+/* de */ {IDS_NEW_PAL_TINT_0_2_DE, ""},  /* fuzzy */
+/* fr */ {IDS_NEW_PAL_TINT_0_2_FR, ""},  /* fuzzy */
+/* hu */ {IDS_NEW_PAL_TINT_0_2_HU, ""},  /* fuzzy */
+/* it */ {IDS_NEW_PAL_TINT_0_2_IT, ""},  /* fuzzy */
+/* nl */ {IDS_NEW_PAL_TINT_0_2_NL, ""},  /* fuzzy */
+/* pl */ {IDS_NEW_PAL_TINT_0_2_PL, ""},  /* fuzzy */
+/* sv */ {IDS_NEW_PAL_TINT_0_2_SV, ""},  /* fuzzy */
+
+/* en */ {IDS_NEW_PAL_PHASE_0_2,    "Odd Lines Phase (0..2)"},
+/* de */ {IDS_NEW_PAL_PHASE_0_2_DE, ""},  /* fuzzy */
+/* fr */ {IDS_NEW_PAL_PHASE_0_2_FR, ""},  /* fuzzy */
+/* hu */ {IDS_NEW_PAL_PHASE_0_2_HU, ""},  /* fuzzy */
+/* it */ {IDS_NEW_PAL_PHASE_0_2_IT, ""},  /* fuzzy */
+/* nl */ {IDS_NEW_PAL_PHASE_0_2_NL, ""},  /* fuzzy */
+/* pl */ {IDS_NEW_PAL_PHASE_0_2_PL, ""},  /* fuzzy */
+/* sv */ {IDS_NEW_PAL_PHASE_0_2_SV, ""},  /* fuzzy */
+
+/* en */ {IDS_NEW_PAL_OFFSET_0_2,    "Odd Lines Offset (0..2)"},
+/* de */ {IDS_NEW_PAL_OFFSET_0_2_DE, ""},  /* fuzzy */
+/* fr */ {IDS_NEW_PAL_OFFSET_0_2_FR, ""},  /* fuzzy */
+/* hu */ {IDS_NEW_PAL_OFFSET_0_2_HU, ""},  /* fuzzy */
+/* it */ {IDS_NEW_PAL_OFFSET_0_2_IT, ""},  /* fuzzy */
+/* nl */ {IDS_NEW_PAL_OFFSET_0_2_NL, ""},  /* fuzzy */
+/* pl */ {IDS_NEW_PAL_OFFSET_0_2_PL, ""},  /* fuzzy */
+/* sv */ {IDS_NEW_PAL_OFFSET_0_2_SV, ""},  /* fuzzy */
 
 /* en */ {IDS_PAL_MODE,    "PAL Mode"},
 /* de */ {IDS_PAL_MODE_DE, "PAL Modus"},

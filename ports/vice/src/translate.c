@@ -2733,6 +2733,36 @@ translate_t string_table[] = {
 /* pl */ {IDCLS_SET_GAMMA_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SET_GAMMA_SV, "Ställ in gamma på internt beräknad palett [900]"},
 
+/* vicii/vicii-cmdline-options.c */
+/* en */ {IDCLS_SET_TINT,    "Set tint of internal calculated palette [1000]"},
+/* de */ {IDCLS_SET_TINT_DE, ""},  /* fuzzy */
+/* fr */ {IDCLS_SET_TINT_FR, ""},  /* fuzzy */
+/* hu */ {IDCLS_SET_TINT_HU, ""},  /* fuzzy */
+/* it */ {IDCLS_SET_TINT_IT, ""},  /* fuzzy */
+/* nl */ {IDCLS_SET_TINT_NL, "Zet de tint van het intern berekend kleuren palette [1000]"},
+/* pl */ {IDCLS_SET_TINT_PL, ""},  /* fuzzy */
+/* sv */ {IDCLS_SET_TINT_SV, ""},  /* fuzzy */
+
+/* vicii/vicii-cmdline-options.c */
+/* en */ {IDCLS_SET_ODDLINES_PHASE,    "Set phase for color carrier in odd lines [1250]"},
+/* de */ {IDCLS_SET_ODDLINES_PHASE_DE, ""},  /* fuzzy */
+/* fr */ {IDCLS_SET_ODDLINES_PHASE_FR, ""},  /* fuzzy */
+/* hu */ {IDCLS_SET_ODDLINES_PHASE_HU, ""},  /* fuzzy */
+/* it */ {IDCLS_SET_ODDLINES_PHASE_IT, ""},  /* fuzzy */
+/* nl */ {IDCLS_SET_ODDLINES_PHASE_NL, "Zet de fase van de kleuren drager in oneven lijnen [1250]"},
+/* pl */ {IDCLS_SET_ODDLINES_PHASE_PL, ""},  /* fuzzy */
+/* sv */ {IDCLS_SET_ODDLINES_PHASE_SV, ""},  /* fuzzy */
+
+/* vicii/vicii-cmdline-options.c */
+/* en */ {IDCLS_SET_ODDLINES_OFFSET,    "Set phase offset for color carrier in odd lines [750]"},
+/* de */ {IDCLS_SET_ODDLINES_OFFSET_DE, ""},  /* fuzzy */
+/* fr */ {IDCLS_SET_ODDLINES_OFFSET_FR, ""},  /* fuzzy */
+/* hu */ {IDCLS_SET_ODDLINES_OFFSET_HU, ""},  /* fuzzy */
+/* it */ {IDCLS_SET_ODDLINES_OFFSET_IT, ""},  /* fuzzy */
+/* nl */ {IDCLS_SET_ODDLINES_OFFSET_NL, "Zet de fase offset van de kleuren drager in oneven lijnen [750]"},
+/* pl */ {IDCLS_SET_ODDLINES_OFFSET_PL, ""},  /* fuzzy */
+/* sv */ {IDCLS_SET_ODDLINES_OFFSET_SV, ""},  /* fuzzy */
+
 /* printerdrv/driver-select.c */
 /* en */ {IDCLS_SPECIFY_PRT_DRIVER_4_NAME,    "Specify name of printer driver for device #4"},
 /* de */ {IDCLS_SPECIFY_PRT_DRIVER_4_NAME_DE, "Name für Druckertreiber Gerät #4 definieren"},

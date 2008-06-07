@@ -47,4 +47,22 @@ extern void render_32_2x2_pal(video_render_color_tables_t *colortab,
                               const unsigned int pitchs,
                               const unsigned int pitcht,
                               const unsigned int doublescan);
+
+extern void render_32_2x2_pal_new(video_render_color_tables_t *colortab,
+                                  const BYTE *src, BYTE *trg,
+                                  unsigned int width, const unsigned int height,
+                                  const unsigned int xs, const unsigned int ys,
+                                  const unsigned int xt, const unsigned int yt,
+                                  const unsigned int pitchs,
+                                  const unsigned int pitcht,
+                                  const unsigned int doublescan);
+
+extern void render_32_2x2_pal_scanlines(video_render_color_tables_t *colortab,
+                              const BYTE *src, BYTE *trg,
+                              unsigned int width, const unsigned int height,
+                              const unsigned int xs, const unsigned int ys,
+                              const unsigned int xt, const unsigned int yt,
+                              const unsigned int pitchs,
+                              const unsigned int pitcht,
+                              const unsigned int doublescan);
 #endif
