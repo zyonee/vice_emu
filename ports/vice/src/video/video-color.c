@@ -428,7 +428,7 @@ static palette_t *video_calc_palette(const video_ycbcr_palette_t *p)
     bri = ((float)(video_resources.color_brightness-1000)) * (128.0f / 1000.0f);
     con = ((float)(video_resources.color_contrast       )) / 1000.0f;
     gam = ((float)(video_resources.color_gamma          )) / 1000.0f;
-    tin = (((float)(video_resources.color_tint           )) / (2000.0f / 50.0f))-25.0;
+    tin = (((float)(video_resources.color_tint           )) / (2000.0f / 50.0f))-25.0f;
     
     if ((!video_resources.delayloop_emulation) || (p->num_entries > 16)) {
         /* create RGB palette with the base colors of the video chip */

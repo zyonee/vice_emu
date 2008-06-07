@@ -320,7 +320,7 @@ void render_16_2x2_pal(video_render_color_tables_t *color_tab, const BYTE *src, 
 */
 #define SIMPLE_SCANLINES
 void render_32_2x2_pal_scanlines(video_render_color_tables_t *color_tab, const BYTE *src, BYTE *trg,
-                       unsigned int width, unsigned int height,
+                       unsigned int width, const unsigned int height,
                        const unsigned int xs, const unsigned int ys,
                        const unsigned int xt, const unsigned int yt,
                        const unsigned int pitchs, const unsigned int pitcht,
@@ -1256,8 +1256,8 @@ void render_32_2x2_pal_new(video_render_color_tables_t *color_tab, const BYTE *s
 	    /* current line odd (-u) , previous line even (u) */
 	    u = (linepre[1] - line[1]) >> 3;
 	    v = (linepre[2] - line[2]) >> 3;
-	    u*=off;
-	    v*=off;
+	    u = (int)((float)u * off);
+	    v = (int)((float)v * off);
 	    
             line += 3;
             linepre += 3;
@@ -1271,8 +1271,8 @@ void render_32_2x2_pal_new(video_render_color_tables_t *color_tab, const BYTE *s
 			    /* current line odd (-u) , previous line even (u) */
 			    u = (linepre[1] - line[1]) >> 3;
 			    v = (linepre[2] - line[2]) >> 3;
-			u*=off;
-			v*=off;
+			u = (int)((float)u * off);
+			v = (int)((float)v * off);
 		    
                     line += 3;
                     linepre += 3;
@@ -1296,8 +1296,8 @@ void render_32_2x2_pal_new(video_render_color_tables_t *color_tab, const BYTE *s
 		        /* current line odd (-u) , previous line even (u) */
 		        u = (linepre[1] - line[1]) >> 3;
 		        v = (linepre[2] - line[2]) >> 3;
-			u*=off;
-			v*=off;
+			u = (int)((float)u * off);
+			v = (int)((float)v * off);
 			    
                     line += 3;
                     linepre += 3;
@@ -1341,7 +1341,7 @@ void render_32_2x2_pal_new(video_render_color_tables_t *color_tab, const BYTE *s
 */
 #define SIMPLE_SCANLINES_24
 void render_24_2x2_pal_scanlines(video_render_color_tables_t *color_tab, const BYTE *src, BYTE *trg,
-                       unsigned int width, unsigned int height,
+                       unsigned int width, const unsigned int height,
                        const unsigned int xs, const unsigned int ys,
                        const unsigned int xt, const unsigned int yt,
                        const unsigned int pitchs, const unsigned int pitcht,
@@ -1354,11 +1354,11 @@ void render_24_2x2_pal_scanlines(video_render_color_tables_t *color_tab, const B
 
     BYTE *tmptrgw;
     BYTE *tmptrg,*tmpsrc;
-    DWORD red, grn, blu;
 #ifdef SIMPLE_SCANLINES_24
     float shade=((float)(video_resources.pal_scanlineshade)) / 1000.0f;
 #else
     BYTE *tmpsrc2,*tmpsrc3;
+    DWORD red, grn, blu;
     DWORD  red2, grn2, blu2;
     float shade=((float)(video_resources.pal_scanlineshade)) / 2000.0f;
 #endif
@@ -1425,9 +1425,9 @@ void render_24_2x2_pal_scanlines(video_render_color_tables_t *color_tab, const B
 			}
 			else
 			{
-				    color_r = (colortab[0]>>0)&0xff;
-				    color_g = (colortab[0]>>8)&0xff;
-				    color_b = (colortab[0]>>16)&0xff;
+				    color_r = (BYTE)(colortab[0]>>0)&0xff;
+				    color_g = (BYTE)(colortab[0]>>8)&0xff;
+				    color_b = (BYTE)(colortab[0]>>16)&0xff;
 
 				if (wfirst) {
 			    
@@ -1653,9 +1653,9 @@ void render_24_2x2_pal_scanlines(video_render_color_tables_t *color_tab, const B
 		if(y&1)
 		{
             tmptrgw = (BYTE *)trg;
-            color_r = (colortab[0]>>0)&0xff;
-            color_g = (colortab[0]>>8)&0xff;
-            color_b = (colortab[0]>>16)&0xff;
+            color_r = (BYTE)(colortab[0]>>0)&0xff;
+            color_g = (BYTE)(colortab[0]>>8)&0xff;
+            color_b = (BYTE)(colortab[0]>>16)&0xff;
 	    
             if (wfirst) {
                 *tmptrgw++ = color_r;
@@ -1925,9 +1925,9 @@ void render_24_2x2_pal_new(video_render_color_tables_t *color_tab, const BYTE *s
                     tmpcol   = gamma_red[(red+red2) >> 1]
                               | gamma_grn[(grn+grn2) >> 1]
                               | gamma_blu[(blu+blu2) >> 1];
-		    *tmptrg++ = (tmpcol>>0) & 0xff;
-		    *tmptrg++ = (tmpcol>>8) & 0xff;
-		    *tmptrg++ = (tmpcol>>16) & 0xff;
+		    *tmptrg++ = (BYTE)(tmpcol>>0) & 0xff;
+		    *tmptrg++ = (BYTE)(tmpcol>>8) & 0xff;
+		    *tmptrg++ = (BYTE)(tmpcol>>16) & 0xff;
 
                     red = red2;
                     blu = blu2;
@@ -1947,16 +1947,16 @@ void render_24_2x2_pal_new(video_render_color_tables_t *color_tab, const BYTE *s
                     grn2 = (((l << 8) - 50 * u - 130 * v) >> 16) + 256;
 
                     tmpcol = gamma_red[red] | gamma_grn[grn] | gamma_blu[blu];
-		    *tmptrg++ = (tmpcol>>0) & 0xff;
-		    *tmptrg++ = (tmpcol>>8) & 0xff;
-		    *tmptrg++ = (tmpcol>>16) & 0xff;
+		    *tmptrg++ = (BYTE)(tmpcol>>0) & 0xff;
+		    *tmptrg++ = (BYTE)(tmpcol>>8) & 0xff;
+		    *tmptrg++ = (BYTE)(tmpcol>>16) & 0xff;
 		    
                     tmpcol   = gamma_red[(red+red2) >> 1]
                               | gamma_grn[(grn+grn2) >> 1]
                               | gamma_blu[(blu+blu2) >> 1];
-		    *tmptrg++ = (tmpcol>>0) & 0xff;
-		    *tmptrg++ = (tmpcol>>8) & 0xff;
-		    *tmptrg++ = (tmpcol>>16) & 0xff;
+		    *tmptrg++ = (BYTE)(tmpcol>>0) & 0xff;
+		    *tmptrg++ = (BYTE)(tmpcol>>8) & 0xff;
+		    *tmptrg++ = (BYTE)(tmpcol>>16) & 0xff;
 
                     red = red2;
                     blu = blu2;
@@ -1964,9 +1964,9 @@ void render_24_2x2_pal_new(video_render_color_tables_t *color_tab, const BYTE *s
                 }
                 if (wlast) {
                     tmpcol = gamma_red[red] | gamma_grn[grn] | gamma_blu[blu];
-		    *tmptrg++ = (tmpcol>>0) & 0xff;
-		    *tmptrg++ = (tmpcol>>8) & 0xff;
-		    *tmptrg++ = (tmpcol>>16) & 0xff;
+		    *tmptrg++ = (BYTE)(tmpcol>>0) & 0xff;
+		    *tmptrg++ = (BYTE)(tmpcol>>8) & 0xff;
+		    *tmptrg++ = (BYTE)(tmpcol>>16) & 0xff;
                 }
 		
 	} else { /* odd sourceline */
@@ -2010,8 +2010,8 @@ void render_24_2x2_pal_new(video_render_color_tables_t *color_tab, const BYTE *s
 	    /* current line odd (-u) , previous line even (u) */
 	    u = (linepre[1] - line[1]) >> 3;
 	    v = (linepre[2] - line[2]) >> 3;
-	    u*=off;
-	    v*=off;
+	    u = (int)((float)u * off);
+	    v = (int)((float)v * off);
 	    
             line += 3;
             linepre += 3;
@@ -2025,8 +2025,8 @@ void render_24_2x2_pal_new(video_render_color_tables_t *color_tab, const BYTE *s
 			    /* current line odd (-u) , previous line even (u) */
 			    u = (linepre[1] - line[1]) >> 3;
 			    v = (linepre[2] - line[2]) >> 3;
-			u*=off;
-			v*=off;
+			u = (int)((float)u * off);
+			v = (int)((float)v * off);
 		    
                     line += 3;
                     linepre += 3;
@@ -2039,9 +2039,9 @@ void render_24_2x2_pal_new(video_render_color_tables_t *color_tab, const BYTE *s
                     tmpcol   = gamma_red[(red+red2) >> 1]
                               | gamma_grn[(grn+grn2) >> 1]
                               | gamma_blu[(blu+blu2) >> 1];
-		    *tmptrg++ = (tmpcol>>0) & 0xff;
-		    *tmptrg++ = (tmpcol>>8) & 0xff;
-		    *tmptrg++ = (tmpcol>>16) & 0xff;
+		    *tmptrg++ = (BYTE)(tmpcol>>0) & 0xff;
+		    *tmptrg++ = (BYTE)(tmpcol>>8) & 0xff;
+		    *tmptrg++ = (BYTE)(tmpcol>>16) & 0xff;
 
                     red = red2;
                     blu = blu2;
@@ -2053,8 +2053,8 @@ void render_24_2x2_pal_new(video_render_color_tables_t *color_tab, const BYTE *s
 		        /* current line odd (-u) , previous line even (u) */
 		        u = (linepre[1] - line[1]) >> 3;
 		        v = (linepre[2] - line[2]) >> 3;
-			u*=off;
-			v*=off;
+			u = (int)((float)u * off);
+			v = (int)((float)v * off);
 			    
                     line += 3;
                     linepre += 3;
@@ -2064,16 +2064,16 @@ void render_24_2x2_pal_new(video_render_color_tables_t *color_tab, const BYTE *s
                     grn2 = (((l << 8) - 50 * u - 130 * v) >> 16) + 256;
 
                     tmpcol = gamma_red[red] | gamma_grn[grn] | gamma_blu[blu];
-		    *tmptrg++ = (tmpcol>>0) & 0xff;
-		    *tmptrg++ = (tmpcol>>8) & 0xff;
-		    *tmptrg++ = (tmpcol>>16) & 0xff;
+		    *tmptrg++ = (BYTE)(tmpcol>>0) & 0xff;
+		    *tmptrg++ = (BYTE)(tmpcol>>8) & 0xff;
+		    *tmptrg++ = (BYTE)(tmpcol>>16) & 0xff;
 		    
                     tmpcol   = gamma_red[(red+red2) >> 1]
                               | gamma_grn[(grn+grn2) >> 1]
                               | gamma_blu[(blu+blu2) >> 1];
-		    *tmptrg++ = (tmpcol>>0) & 0xff;
-		    *tmptrg++ = (tmpcol>>8) & 0xff;
-		    *tmptrg++ = (tmpcol>>16) & 0xff;
+		    *tmptrg++ = (BYTE)(tmpcol>>0) & 0xff;
+		    *tmptrg++ = (BYTE)(tmpcol>>8) & 0xff;
+		    *tmptrg++ = (BYTE)(tmpcol>>16) & 0xff;
 
                     red = red2;
                     blu = blu2;
@@ -2082,9 +2082,9 @@ void render_24_2x2_pal_new(video_render_color_tables_t *color_tab, const BYTE *s
                 if (wlast) {
 		    
                     tmpcol = gamma_red[red] | gamma_grn[grn] | gamma_blu[blu];
-		    *tmptrg++ = (tmpcol>>0) & 0xff;
-		    *tmptrg++ = (tmpcol>>8) & 0xff;
-		    *tmptrg++ = (tmpcol>>16) & 0xff;
+		    *tmptrg++ = (BYTE)(tmpcol>>0) & 0xff;
+		    *tmptrg++ = (BYTE)(tmpcol>>8) & 0xff;
+		    *tmptrg++ = (BYTE)(tmpcol>>16) & 0xff;
 		    
             }
             }

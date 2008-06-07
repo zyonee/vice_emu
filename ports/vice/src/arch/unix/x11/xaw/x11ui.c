@@ -120,7 +120,7 @@ static void ui_display_drive_current_image2(void);
 
 void ui_restore_mouse(void)
 {
-#ifdef HAVE_FULLSCREEN
+#if 0
     if (fullscreen_is_enabled)
         return;
 #endif
@@ -243,7 +243,7 @@ static char *filesel_dir = NULL;
 void ui_check_mouse_cursor()
 {
     int i;
-#ifdef HAVE_FULLSCREEN
+#if 0
     int window_doublesize;
     if (fullscreen_is_enabled)
         return;
@@ -253,7 +253,7 @@ void ui_check_mouse_cursor()
             XtOverrideTranslations(app_shells[i].canvas, left_menu_disabled_translations);
             XtOverrideTranslations(app_shells[i].canvas, right_menu_disabled_translations);
         }
-#ifdef HAVE_FULLSCREEN
+#if 0
         if (fullscreen_is_enabled) {
             if (resources_get_int("FullscreenDoubleSize",
                 &window_doublesize) < 0)

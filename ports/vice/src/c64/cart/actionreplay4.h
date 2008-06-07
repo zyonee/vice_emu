@@ -1,8 +1,8 @@
 /*
- * c64rom.h
+ * actionreplay4.h - Cartridge handling, Action Replay 4 cart.
+ * and it's clones. post AR3 (16K) and pre AR4.1 hardware.
  *
- * Written by
- *  Andreas Boose <viceteam@t-online.de>
+ * (w)2008 Groepaz/Hitmen
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -24,17 +24,25 @@
  *
  */
 
-#ifndef _C64ROM_H
-#define _C64ROM_H
+#ifndef _ACTIONREPLAY4_H
+#define _ACTIONREPLAY4_H
 
-extern int c64rom_load_kernal(const char *rom_name, BYTE *new_kernal);
-extern int c64rom_load_basic(const char *rom_name);
-extern int c64rom_load_chargen(const char *rom_name);
+#include <stdio.h>
 
-extern int c64rom_get_kernal_checksum(void);
-extern int c64rom_get_basic_checksum(void);
+#include "types.h"
 
-extern int c64rom_cartkernal_active;
+extern BYTE REGPARM1 actionreplay4_io1_read(WORD addr);
+extern void REGPARM2 actionreplay4_io1_store(WORD addr, BYTE value);
+extern BYTE REGPARM1 actionreplay4_io2_read(WORD addr);
+extern BYTE REGPARM1 actionreplay4_roml_read(WORD addr);
+
+extern void actionreplay4_freeze(void);
+
+extern void actionreplay4_config_init(void);
+extern void actionreplay4_reset(void);
+extern void actionreplay4_config_setup(BYTE *rawcart);
+extern int actionreplay4_bin_attach(const char *filename, BYTE *rawcart);
+extern int actionreplay4_crt_attach(FILE *fd, BYTE *rawcart);
+extern void actionreplay4_detach(void);
 
 #endif
-

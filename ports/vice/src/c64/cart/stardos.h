@@ -1,8 +1,7 @@
 /*
- * c64rom.h
+ * stardos.h - Cartridge handling, StarDOS cart.
  *
- * Written by
- *  Andreas Boose <viceteam@t-online.de>
+ * (w)2008 Groepaz/Hitmen
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -24,17 +23,25 @@
  *
  */
 
-#ifndef _C64ROM_H
-#define _C64ROM_H
+#ifndef _STARDOS_H
+#define _STARDOS_H
 
-extern int c64rom_load_kernal(const char *rom_name, BYTE *new_kernal);
-extern int c64rom_load_basic(const char *rom_name);
-extern int c64rom_load_chargen(const char *rom_name);
+#include <stdio.h>
 
-extern int c64rom_get_kernal_checksum(void);
-extern int c64rom_get_basic_checksum(void);
+#include "types.h"
 
-extern int c64rom_cartkernal_active;
+extern int stardos_kernal_enabled;
+
+extern BYTE REGPARM1 stardos_io1_read(WORD addr);
+extern BYTE REGPARM1 stardos_io2_read(WORD addr);
+extern BYTE REGPARM1 stardos_kernal_read(WORD addr);
+extern BYTE REGPARM1 stardos_roml_read(WORD addr);
+
+extern void stardos_config_init(void);
+extern void stardos_reset(void);
+extern void stardos_config_setup(BYTE *rawcart);
+extern int stardos_bin_attach(const char *filename, BYTE *rawcart);
+extern int stardos_crt_attach(FILE *fd, BYTE *rawcart);
+extern void stardos_detach(void);
 
 #endif
-

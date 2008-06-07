@@ -1581,7 +1581,8 @@ void menu_select(HWND hwnd, USHORT item)
 #ifndef HAVE_TED
         WinCheckMenuItem(hwnd, IDM_PALFAST, val1 && val2==VIDEO_RESOURCE_PAL_MODE_FAST);
 #endif
-        WinCheckMenuItem(hwnd, IDM_PALON,   val1 && val2==VIDEO_RESOURCE_PAL_MODE_TRUE);
+        WinCheckMenuItem(hwnd, IDM_PALOLD,  val1 && val2==VIDEO_RESOURCE_PAL_MODE_TRUE);
+        WinCheckMenuItem(hwnd, IDM_PALNEW,  val1 && val2==VIDEO_RESOURCE_PAL_MODE_NEW);
     }
     return;
 #endif
