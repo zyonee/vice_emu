@@ -662,7 +662,7 @@ const char info_contrib_text[] =
 "  Gunnar Ruthenberg <Krill.Plush@gmail.com> provided some VIC-II\n"
 "  enhancements and improved the win32 port.\n"
 "\n"
-"  Hannu Nuotio <hannu.nuotio@pp.inet.fi> Added experimental NEOS\n"
+"  Hannu Nuotio <<hannu.nuotio@tut.fi> Added experimental NEOS\n"
 "  and Amiga mouse support. Fixed mouse support for single size in\n"
 "  unix. Fixed mouse grab and menu popup for xaw. Added new monitor\n"
 "  commands and features. Added the memmap feature.\n"
@@ -688,7 +688,7 @@ const char info_contrib_text[] =
 "  Thomas Giesel <skoe@directbox.com> Added new monitor commands and\n"
 "  features.\n"
 "\n"
-" Marcus Sutton <loggedoubt@gmail.com> Made some console, dialog and\n
+" Marcus Sutton <loggedoubt@gmail.com> Made some console, dialog and\n"
 " joystick fixes for the BeOS port.\n"
 "\n"
 "(We hope we have not forgotten anybody; if you think we have,\n"
