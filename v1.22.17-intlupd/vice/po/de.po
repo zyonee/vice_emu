@@ -4,11 +4,11 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: VICE 1.22\n"
+"Project-Id-Version: VICE 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-06-03 19:42+0200\n"
-"PO-Revision-Date: 2008-01-02 16:46+0100\n"
-"Last-Translator: Martin Pottendorfer (pottendo@utanet.at)\n"
+"PO-Revision-Date: 2008-06-11 23:08+0200\n"
+"Last-Translator: pottendo (pottendo@gmx.net)\n"
 "Language-Team: de <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=ISO-8859-1\n"
@@ -5009,7 +5009,6 @@ msgid "*Enable Ethernet"
 msgstr "*Ethernet aktivieren"
 
 #: src/arch/unix/gui/uitfe.c:50
-#, fuzzy
 msgid "*RR-NET compatibility mode"
 msgstr "*RR-NET kompatibler Modus"
 
@@ -5267,9 +5266,8 @@ msgstr ""
 "Czirkos Zoltan, Karai Csaba - Ungarisch\n"
 
 #: src/arch/unix/x11/gnome/about.c:104
-#, fuzzy
 msgid "(c) 1998 - 2008 The Vice Team"
-msgstr "(c) 1998 - 2007 Das Vice Team"
+msgstr "(c) 1998 - 2008 Das Vice Team"
 
 #: src/arch/unix/x11/gnome/about.c:115 src/arch/win32/res.rc.po.c:5022
 #: src/arch/amigaos/intl.c.po.c:1662
@@ -6062,9 +6060,8 @@ msgid "Successfully initialized without shared memory."
 msgstr "Video erfolgreich ohne Shared Memory initialisiert."
 
 #: src/arch/unix/x11/xaw/x11video.c:698
-#, fuzzy
 msgid "HW scaling not available"
-msgstr "Welche Kommandozeilen Parameter sind verfügber?"
+msgstr "HW Skalierung nicht verfügbar"
 
 #: src/arch/win32/res.rc.po.c:81 src/arch/win32/resc128.rc.po.c:16
 #: src/arch/win32/resc64.rc.po.c:16 src/arch/win32/rescbm2.rc.po.c:15
@@ -6231,44 +6228,36 @@ msgid "Version 0.0"
 msgstr "Version 0.0"
 
 #: src/arch/win32/res.rc.po.c:560
-#, fuzzy
 msgid "Copyright (c) 1998-2008 Andreas Boose"
-msgstr "Copyright (c) 1998-2007 Andreas Boose"
+msgstr "Copyright (c) 1998-2008 Andreas Boose"
 
 #: src/arch/win32/res.rc.po.c:561
-#, fuzzy
 msgid "Copyright (c) 1998-2008 Dag Lem"
-msgstr "Copyright (c) 1998-2007 Dag Lem"
+msgstr "Copyright (c) 1998-2008 Dag Lem"
 
 #: src/arch/win32/res.rc.po.c:562
-#, fuzzy
 msgid "Copyright (c) 1998-2008 Tibor Biczo"
-msgstr "Copyright (c) 1998-2007 Tibor Biczo"
+msgstr "Copyright (c) 1998-2008 Tibor Biczo"
 
 #: src/arch/win32/res.rc.po.c:563
-#, fuzzy
 msgid "Copyright (c) 1999-2008 Andreas Matthies"
-msgstr "Copyright (c) 1999-2007 Andreas Matthies"
+msgstr "Copyright (c) 1999-2008 Andreas Matthies"
 
 #: src/arch/win32/res.rc.po.c:564
-#, fuzzy
 msgid "Copyright (c) 1999-2008 Martin Pottendorfer"
-msgstr "Copyright (c) 1999-2007 Martin Pottendorfer"
+msgstr "Copyright (c) 1999-2008 Martin Pottendorfer"
 
 #: src/arch/win32/res.rc.po.c:565
-#, fuzzy
 msgid "Copyright (c) 2000-2008 Spiro Trikaliotis"
-msgstr "Copyright (c) 2000-2007 Spiro Trikaliotis"
+msgstr "Copyright (c) 2000-2008 Spiro Trikaliotis"
 
 #: src/arch/win32/res.rc.po.c:566
-#, fuzzy
 msgid "Copyright (c) 2005-2008 Marco van den Heuvel"
-msgstr "Copyright (c) 2005-2007 Marco van den Heuvel"
+msgstr "Copyright (c) 2005-2008 Marco van den Heuvel"
 
 #: src/arch/win32/res.rc.po.c:567
-#, fuzzy
 msgid "Copyright (c) 2006-2008 Christian Vogelgsang"
-msgstr "Copyright (c) 2006-2007 Christian Vogelgsang"
+msgstr "Copyright (c) 2006-2008 Christian Vogelgsang"
 
 #: src/arch/win32/res.rc.po.c:568
 msgid "Copyright (c) 1999-2007 Andreas Dehmel"
@@ -6965,7 +6954,7 @@ msgstr "Kommandozeilen Paramteter"
 
 #: src/arch/win32/res.rc.po.c:4959 src/arch/amigaos/intl.c.po.c:1899
 msgid "Which command line options are available?"
-msgstr "Welche Kommandozeilen Parameter sind verfügber?"
+msgstr "Welche Kommandozeilen Parameter sind verfügbar?"
 
 #: src/arch/win32/res.rc.po.c:4960
 msgid "No driver selected or selected driver not supported"
@@ -7303,7 +7292,7 @@ msgstr "VICE Keymap Dateien (*.vkm)"
 
 #: src/arch/win32/res.rc.po.c:5052
 msgid "Commodore emulator files (*.prg;*.p00)"
-msgstr ""
+msgstr "Commodore Emulator Dateien (*.prg;*.p00)"
 
 #: src/arch/win32/res.rc.po.c:5053 src/arch/amigaos/intl.c.po.c:3656
 msgid "Flexible"
@@ -7516,9 +7505,8 @@ msgstr "Disk Image &entfernen"
 #: src/arch/win32/resc128.rc.po.c:34 src/arch/win32/resc64.rc.po.c:34
 #: src/arch/win32/rescbm2.rc.po.c:33 src/arch/win32/respet.rc.po.c:33
 #: src/arch/win32/resplus4.rc.po.c:33 src/arch/win32/resvic20.rc.po.c:33
-#, fuzzy
 msgid "&All"
-msgstr "Alle"
+msgstr "&Alle"
 
 #: src/arch/win32/resc128.rc.po.c:36 src/arch/win32/resc64.rc.po.c:36
 #: src/arch/win32/rescbm2.rc.po.c:35 src/arch/win32/respet.rc.po.c:35
@@ -7529,30 +7517,26 @@ msgstr "&Flipliste"
 #: src/arch/win32/resc128.rc.po.c:38 src/arch/win32/resc64.rc.po.c:38
 #: src/arch/win32/rescbm2.rc.po.c:37 src/arch/win32/respet.rc.po.c:37
 #: src/arch/win32/resplus4.rc.po.c:37 src/arch/win32/resvic20.rc.po.c:37
-#, fuzzy
 msgid "&Add current image"
-msgstr "Aktuelles Image hinzufügen"
+msgstr "&Aktuelles Image hinzufügen"
 
 #: src/arch/win32/resc128.rc.po.c:39 src/arch/win32/resc64.rc.po.c:39
 #: src/arch/win32/rescbm2.rc.po.c:38 src/arch/win32/respet.rc.po.c:38
 #: src/arch/win32/resplus4.rc.po.c:38 src/arch/win32/resvic20.rc.po.c:38
-#, fuzzy
 msgid "&Remove current image"
-msgstr "Aktuelles Image entfernen"
+msgstr "Aktuelles Image entfe&rnen"
 
 #: src/arch/win32/resc128.rc.po.c:40 src/arch/win32/resc64.rc.po.c:40
 #: src/arch/win32/rescbm2.rc.po.c:39 src/arch/win32/respet.rc.po.c:39
 #: src/arch/win32/resplus4.rc.po.c:39 src/arch/win32/resvic20.rc.po.c:39
-#, fuzzy
 msgid "Attach &next image"
-msgstr "Nächstes Image"
+msgstr "&Nächstes Image"
 
 #: src/arch/win32/resc128.rc.po.c:41 src/arch/win32/resc64.rc.po.c:41
 #: src/arch/win32/rescbm2.rc.po.c:40 src/arch/win32/respet.rc.po.c:40
 #: src/arch/win32/resplus4.rc.po.c:40 src/arch/win32/resvic20.rc.po.c:40
-#, fuzzy
 msgid "Attach &previous image"
-msgstr "Voriges Image"
+msgstr "&Voriges Image"
 
 #: src/arch/win32/resc128.rc.po.c:43 src/arch/win32/resc64.rc.po.c:43
 #: src/arch/win32/rescbm2.rc.po.c:42 src/arch/win32/respet.rc.po.c:42
@@ -7569,9 +7553,8 @@ msgstr "Fliplist Datei &Speichern"
 #: src/arch/win32/resc128.rc.po.c:47 src/arch/win32/resc64.rc.po.c:47
 #: src/arch/win32/rescbm2.rc.po.c:46 src/arch/win32/respet.rc.po.c:46
 #: src/arch/win32/resplus4.rc.po.c:46 src/arch/win32/resvic20.rc.po.c:46
-#, fuzzy
 msgid "Attach &tape image..."
-msgstr "Band Image einlegen..."
+msgstr "&Band Image einlegen..."
 
 #: src/arch/win32/resc128.rc.po.c:48 src/arch/win32/resc64.rc.po.c:48
 #: src/arch/win32/rescbm2.rc.po.c:47 src/arch/win32/respet.rc.po.c:47
@@ -7709,23 +7692,20 @@ msgid "Detach cartridge &image"
 msgstr "Erweiterungsmodul &Image entfernen"
 
 #: src/arch/win32/resc128.rc.po.c:88 src/arch/win32/resc64.rc.po.c:89
-#, fuzzy
 msgid "Cartridge free&ze"
-msgstr "Erweiterungsmodul Freeze"
+msgstr "Erweiterungsmodul Free&ze"
 
 #: src/arch/win32/resc128.rc.po.c:90 src/arch/win32/resc64.rc.po.c:91
 #: src/arch/win32/rescbm2.rc.po.c:61 src/arch/win32/respet.rc.po.c:59
 #: src/arch/win32/resplus4.rc.po.c:71 src/arch/win32/resvic20.rc.po.c:69
-#, fuzzy
 msgid "&Pause"
-msgstr "Pause"
+msgstr "&Pause"
 
 #: src/arch/win32/resc128.rc.po.c:91 src/arch/win32/resc64.rc.po.c:92
 #: src/arch/win32/rescbm2.rc.po.c:63 src/arch/win32/respet.rc.po.c:61
 #: src/arch/win32/resplus4.rc.po.c:73 src/arch/win32/resvic20.rc.po.c:71
-#, fuzzy
 msgid "&Monitor"
-msgstr "Monitor"
+msgstr "&Monitor"
 
 #: src/arch/win32/resc128.rc.po.c:92 src/arch/win32/resc64.rc.po.c:93
 #: src/arch/win32/rescbm2.rc.po.c:64 src/arch/win32/respet.rc.po.c:62
@@ -7736,16 +7716,14 @@ msgstr "&Reset"
 #: src/arch/win32/resc128.rc.po.c:94 src/arch/win32/resc64.rc.po.c:95
 #: src/arch/win32/rescbm2.rc.po.c:66 src/arch/win32/respet.rc.po.c:64
 #: src/arch/win32/resplus4.rc.po.c:76 src/arch/win32/resvic20.rc.po.c:74
-#, fuzzy
 msgid "&Hard"
-msgstr "Hart"
+msgstr "&Hart"
 
 #: src/arch/win32/resc128.rc.po.c:95 src/arch/win32/resc64.rc.po.c:96
 #: src/arch/win32/rescbm2.rc.po.c:67 src/arch/win32/respet.rc.po.c:65
 #: src/arch/win32/resplus4.rc.po.c:77 src/arch/win32/resvic20.rc.po.c:75
-#, fuzzy
 msgid "&Soft"
-msgstr "Weich"
+msgstr "&Weich"
 
 #: src/arch/win32/resc128.rc.po.c:97 src/arch/win32/resc64.rc.po.c:98
 #: src/arch/win32/rescbm2.rc.po.c:69 src/arch/win32/respet.rc.po.c:67
@@ -7805,30 +7783,26 @@ msgstr "&History Automatische Wiedergabe"
 #: src/arch/win32/resc128.rc.po.c:112 src/arch/win32/resc64.rc.po.c:113
 #: src/arch/win32/rescbm2.rc.po.c:84 src/arch/win32/respet.rc.po.c:82
 #: src/arch/win32/resplus4.rc.po.c:94 src/arch/win32/resvic20.rc.po.c:92
-#, fuzzy
 msgid "&Main CPU Trace"
-msgstr "&Main CPU Trace\tAlt+F10"
+msgstr "&Haupt CPU Trace"
 
 #: src/arch/win32/resc128.rc.po.c:113 src/arch/win32/resc64.rc.po.c:114
 #: src/arch/win32/rescbm2.rc.po.c:85 src/arch/win32/respet.rc.po.c:83
 #: src/arch/win32/resplus4.rc.po.c:95 src/arch/win32/resvic20.rc.po.c:93
-#, fuzzy
 msgid "Drive&0 CPU Trace"
-msgstr "Laufwerk&0 CPU Trace\tAlt+F11"
+msgstr "Laufwerk&0 CPU Trace"
 
 #: src/arch/win32/resc128.rc.po.c:114 src/arch/win32/resc64.rc.po.c:115
 #: src/arch/win32/rescbm2.rc.po.c:86 src/arch/win32/respet.rc.po.c:84
 #: src/arch/win32/resplus4.rc.po.c:96 src/arch/win32/resvic20.rc.po.c:94
-#, fuzzy
 msgid "Drive&1 CPU Trace"
-msgstr "Laufwerk&1 CPU Trace\tAlt+F12"
+msgstr "Laufwerk&1 CPU Trace"
 
 #: src/arch/win32/resc128.rc.po.c:118 src/arch/win32/resc64.rc.po.c:119
 #: src/arch/win32/rescbm2.rc.po.c:90 src/arch/win32/respet.rc.po.c:88
 #: src/arch/win32/resplus4.rc.po.c:100 src/arch/win32/resvic20.rc.po.c:98
-#, fuzzy
 msgid "E&xit"
-msgstr "Exit"
+msgstr "E&xit"
 
 #: src/arch/win32/resc128.rc.po.c:120 src/arch/win32/resc64.rc.po.c:121
 #: src/arch/win32/rescbm2.rc.po.c:92 src/arch/win32/respet.rc.po.c:90
@@ -7851,16 +7825,14 @@ msgstr "Sna&pshot Datei speichern..."
 #: src/arch/win32/resc128.rc.po.c:124 src/arch/win32/resc64.rc.po.c:125
 #: src/arch/win32/rescbm2.rc.po.c:96 src/arch/win32/respet.rc.po.c:94
 #: src/arch/win32/resplus4.rc.po.c:106 src/arch/win32/resvic20.rc.po.c:104
-#, fuzzy
 msgid "&Load quicksnapshot image"
-msgstr "Snapshot Image laden"
+msgstr "Quick-Snapshot Image &laden"
 
 #: src/arch/win32/resc128.rc.po.c:125 src/arch/win32/resc64.rc.po.c:126
 #: src/arch/win32/rescbm2.rc.po.c:97 src/arch/win32/respet.rc.po.c:95
 #: src/arch/win32/resplus4.rc.po.c:107 src/arch/win32/resvic20.rc.po.c:105
-#, fuzzy
 msgid "&Save quicksnapshot image"
-msgstr "Quick-Snapshot Datei speichern"
+msgstr "Quick-Snapshot Datei &speichern"
 
 #: src/arch/win32/resc128.rc.po.c:127 src/arch/win32/resc64.rc.po.c:128
 #: src/arch/win32/rescbm2.rc.po.c:99 src/arch/win32/respet.rc.po.c:97
@@ -8064,9 +8036,8 @@ msgstr "Kein &Limit"
 #: src/arch/win32/resc128.rc.po.c:176 src/arch/win32/resc64.rc.po.c:179
 #: src/arch/win32/rescbm2.rc.po.c:148 src/arch/win32/respet.rc.po.c:146
 #: src/arch/win32/resplus4.rc.po.c:158 src/arch/win32/resvic20.rc.po.c:156
-#, fuzzy
 msgid "&Warp mode"
-msgstr "Warp modus"
+msgstr "&Warp modus"
 
 #: src/arch/win32/resc128.rc.po.c:178 src/arch/win32/resc64.rc.po.c:182
 #: src/arch/win32/rescbm2.rc.po.c:151 src/arch/win32/respet.rc.po.c:150
@@ -8111,9 +8082,8 @@ msgstr "64KB Bildschirm Speicher"
 #: src/arch/win32/resc128.rc.po.c:192 src/arch/win32/resc64.rc.po.c:190
 #: src/arch/win32/rescbm2.rc.po.c:160 src/arch/win32/respet.rc.po.c:156
 #: src/arch/win32/resplus4.rc.po.c:175 src/arch/win32/resvic20.rc.po.c:173
-#, fuzzy
 msgid "Swap &Joystick"
-msgstr "Joystick ports austauschen"
+msgstr "&Joystick ports austauschen"
 
 #: src/arch/win32/resc128.rc.po.c:194 src/arch/win32/resc64.rc.po.c:192
 #: src/arch/win32/rescbm2.rc.po.c:162 src/arch/win32/respet.rc.po.c:158
@@ -8159,9 +8129,8 @@ msgid "IEEE&488 Interface emulation"
 msgstr "IEEE&488 Schnittstellen-Emulation"
 
 #: src/arch/win32/resc128.rc.po.c:207 src/arch/win32/resc64.rc.po.c:205
-#, fuzzy
 msgid "&Grab mouse events"
-msgstr "Maus Ereignisse abfangen"
+msgstr "Maus Ereignisse abfan&gen"
 
 #: src/arch/win32/resc128.rc.po.c:209 src/arch/win32/resc64.rc.po.c:207
 #: src/arch/win32/rescbm2.rc.po.c:174 src/arch/win32/respet.rc.po.c:170
@@ -9882,11 +9851,11 @@ msgstr "SID Engine wählen (0: FastSID, 1: Catweasel, 2: HardSID, 3: ParSID)"
 
 #: src/translate.c.po.c:4184
 msgid "Execute monitor commands from file"
-msgstr ""
+msgstr "Monitor Kommandos von Datei ausführen"
 
 #: src/translate.c.po.c:4194
 msgid "Set an initial breakpoint for the monitor"
-msgstr ""
+msgstr "Setze initialen Breakpoint für Monitor"
 
 #: src/translate.c.po.c:4655
 msgid "<iso language code>"
