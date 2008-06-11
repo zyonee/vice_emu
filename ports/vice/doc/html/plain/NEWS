@@ -30,7 +30,8 @@ list of all the changes in the code.
 
 - Added a working RTC to the emulation of the IDE64 cartridge.
 
-- New more precise PAL emulation.
+- New more precise PAL emulation, works only with double size
+  and double scan.
 
 - Added support for the Action Replay 4 and StarDos cartridges.
 
@@ -39,10 +40,19 @@ list of all the changes in the code.
 
 - Added unconnected c-bus floating byte support.
 
+- New more precise PAL emulation, works only with double size
+  and double scan.
+
 ** PET changes
 --------------
 
 - Added support for toggling CB2 sound output line.
+
+** PLUS4 changes
+----------------
+
+- New more precise PAL emulation, works only with double size
+  and double scan.
 
 ** Drive changes
 ----------------
