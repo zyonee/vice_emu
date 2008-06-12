@@ -803,7 +803,7 @@ static int intl_table[][countof(language_table)] = {
 /* it */  IDD_MOUSE_SETTINGS_DIALOG_IT,    /* fuzzy, size */
 /* nl */  IDD_MOUSE_SETTINGS_DIALOG_NL,
 /* pl */  IDD_MOUSE_SETTINGS_DIALOG_PL,    /* fuzzy, size */
-/* sv */  IDD_MOUSE_SETTINGS_DIALOG_SV},   /* fuzzy, size */
+/* sv */  IDD_MOUSE_SETTINGS_DIALOG_SV},   /* size */
 
 /* ------------------------------ MENU RESOURCES ------------------------------ */ 
 
@@ -2439,13 +2439,13 @@ static int intl_translate_text_table[][countof(language_table)] = {
 
 /* res.rc */
 /* en */ {IDS_PRGP00_FILES_FILTER,
-/* de */  IDS_PRGP00_FILES_FILTER_DE,    /* fuzzy */
+/* de */  IDS_PRGP00_FILES_FILTER_DE,
 /* fr */  IDS_PRGP00_FILES_FILTER_FR,    /* fuzzy */
 /* hu */  IDS_PRGP00_FILES_FILTER_HU,    /* fuzzy */
 /* it */  IDS_PRGP00_FILES_FILTER_IT,    /* fuzzy */
 /* nl */  IDS_PRGP00_FILES_FILTER_NL,
 /* pl */  IDS_PRGP00_FILES_FILTER_PL,    /* fuzzy */
-/* sv */  IDS_PRGP00_FILES_FILTER_SV},   /* fuzzy */
+/* sv */  IDS_PRGP00_FILES_FILTER_SV},
 
 /* respet.rc */
 /* en */ {IDS_INPUT_OUTPUT,

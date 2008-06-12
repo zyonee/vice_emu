@@ -4293,23 +4293,23 @@ translate_t string_table[] = {
 
 /* monitor.c */
 /* en */ {IDCLS_EXECUTE_MONITOR_FROM_FILE,    "Execute monitor commands from file"},
-/* de */ {IDCLS_EXECUTE_MONITOR_FROM_FILE_DE, "Kommandos aus Datei im Monitor ausführen"},
+/* de */ {IDCLS_EXECUTE_MONITOR_FROM_FILE_DE, "Monitor Kommandos von Datei ausführen"},
 /* fr */ {IDCLS_EXECUTE_MONITOR_FROM_FILE_FR, ""}, /* fuzzy */
 /* hu */ {IDCLS_EXECUTE_MONITOR_FROM_FILE_HU, ""}, /* fuzzy */
 /* it */ {IDCLS_EXECUTE_MONITOR_FROM_FILE_IT, ""}, /* fuzzy */
 /* nl */ {IDCLS_EXECUTE_MONITOR_FROM_FILE_NL, "Uitvoeren van commandos uit bestand"},
 /* pl */ {IDCLS_EXECUTE_MONITOR_FROM_FILE_PL, ""}, /* fuzzy */
-/* sv */ {IDCLS_EXECUTE_MONITOR_FROM_FILE_SV, ""}, /* fuzzy */
+/* sv */ {IDCLS_EXECUTE_MONITOR_FROM_FILE_SV, "Exekvera monitorkommandon från fil"},
 
 /* monitor.c */
 /* en */ {IDCLS_SET_INITIAL_BREAKPOINT,    "Set an initial breakpoint for the monitor"},
-/* de */ {IDCLS_SET_INITIAL_BREAKPOINT_DE, ""},  /* fuzzy */
+/* de */ {IDCLS_SET_INITIAL_BREAKPOINT_DE, "Setze initialen Breakpoint für Monitor"},
 /* fr */ {IDCLS_SET_INITIAL_BREAKPOINT_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_SET_INITIAL_BREAKPOINT_HU, ""},  /* fuzzy */
 /* it */ {IDCLS_SET_INITIAL_BREAKPOINT_IT, ""},  /* fuzzy */
 /* nl */ {IDCLS_SET_INITIAL_BREAKPOINT_NL, "Zet een beginnende breekpunt voor de monitor"},
 /* pl */ {IDCLS_SET_INITIAL_BREAKPOINT_PL, ""},  /* fuzzy */
-/* sv */ {IDCLS_SET_INITIAL_BREAKPOINT_SV, ""},  /* fuzzy */
+/* sv */ {IDCLS_SET_INITIAL_BREAKPOINT_SV, "Sätt en ursprunglig brytpunkt för monitorn"},
 
 /* fliplist.c */
 /* en */ {IDCLS_SPECIFY_FLIP_LIST_NAME,    "Specify name of the flip list file image"},
@@ -4500,7 +4500,7 @@ translate_t string_table[] = {
 /* it */ {IDCLS_ENABLE_MOUSE_GRAB_IT, ""},  /* fuzzy */
 /* nl */ {IDCLS_ENABLE_MOUSE_GRAB_NL, "Gebruiken van de muis inschakelen"},
 /* pl */ {IDCLS_ENABLE_MOUSE_GRAB_PL, ""},  /* fuzzy */
-/* sv */ {IDCLS_ENABLE_MOUSE_GRAB_SV, ""},  /* fuzzy */
+/* sv */ {IDCLS_ENABLE_MOUSE_GRAB_SV, "Aktivera fångande av mus"},
 
 /* mouse.c */
 /* en */ {IDCLS_DISABLE_MOUSE_GRAB,    "Disable mouse grab"},
@@ -4510,7 +4510,7 @@ translate_t string_table[] = {
 /* it */ {IDCLS_DISABLE_MOUSE_GRAB_IT, ""},  /* fuzzy */
 /* nl */ {IDCLS_DISABLE_MOUSE_GRAB_NL, "Gebruiken van de muis uitschakelen"},
 /* pl */ {IDCLS_DISABLE_MOUSE_GRAB_PL, ""},  /* fuzzy */
-/* sv */ {IDCLS_DISABLE_MOUSE_GRAB_SV, ""},  /* fuzzy */
+/* sv */ {IDCLS_DISABLE_MOUSE_GRAB_SV, "Inaktivera fångande av mus"},
 
 /* mouse.c */
 /* en */ {IDCLS_SELECT_MOUSE_JOY_PORT,    "Select the joystick port the mouse is attached to"},
@@ -4530,7 +4530,7 @@ translate_t string_table[] = {
 /* it */ {IDCLS_SELECT_MOUSE_TYPE_IT, ""},  /* fuzzy */
 /* nl */ {IDCLS_SELECT_MOUSE_TYPE_NL, "Selecteer de muis soort (0 = 1351, 1 = NEOS, 2 = Amiga)"},
 /* pl */ {IDCLS_SELECT_MOUSE_TYPE_PL, ""},  /* fuzzy */
-/* sv */ {IDCLS_SELECT_MOUSE_TYPE_SV, ""},  /* fuzzy */
+/* sv */ {IDCLS_SELECT_MOUSE_TYPE_SV, "Välj mustyp (0 = 1351, 1 = NEOS, 2 = Amiga)"},
 
 /* ram.c */
 /* en */ {IDCLS_SET_FIRST_RAM_ADDRESS_VALUE,    "Set the value for the very first RAM address after powerup"},
