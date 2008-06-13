@@ -1,9 +1,11 @@
+#define DIRECTINPUT_VERSION     0x0500
 #include <dinput.h>
 
 #include "joystick.h"
 #include "maincpu.h"
 #include "ui.h"
 #include "winmain.h"
+#include "lib.h"
 
 LPDIRECTINPUT di;
 

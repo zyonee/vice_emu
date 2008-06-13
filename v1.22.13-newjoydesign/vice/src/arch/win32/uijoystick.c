@@ -272,11 +272,9 @@ static BOOL CALLBACK keyset_dialog(HWND hwnd, UINT msg, WPARAM wparam,
 
 static void joystick_ui_get_device_list(HWND joy_hwnd)
 {
-    int i;
-    for (i = 0; i < MAX_HW_JOY_DRIVERS; i++) {
-        if (joy_devices[i]) {
-            SendMessage(joy_hwnd, CB_ADDSTRING, 0, (LPARAM)joy_devices[i]->name);
-        }
+    unsigned int i;
+    for (i = 0; i < joystick_device_num(); i++) {
+        SendMessage(joy_hwnd, CB_ADDSTRING, 0, (LPARAM)joystick_device_name(i));
     }
 }
 

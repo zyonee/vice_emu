@@ -48,6 +48,7 @@
 #include "log.h"
 #include "resources.h"
 #include "cmdline.h"
+#include "lib.h"
 
 #define JOYSTICK_RAND() (rand() & 0x3fff)
 
@@ -422,14 +423,14 @@ int joystick_init(void)
     }
 #endif
 
-#ifdef USE_DIRECTINPUT
+#ifdef WIN32
+#if 1
     if (!joy_di_init()) {
 #endif
-#ifdef USE_WINMM_JOY
         joy_winmm_init();
-#endif
-#ifdef USE_DIRECTINPUT
+#if 1
     }
+#endif
 #endif
 
     return 1;

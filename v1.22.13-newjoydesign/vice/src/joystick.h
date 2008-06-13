@@ -73,6 +73,12 @@ typedef struct joy_data_s {
 #define JOYDEV_HW_BASE      4
 
 extern void joystick_register_device(joy_data_t* device);
+extern unsigned int joystick_device_num(void);
+extern const char* joystick_device_name(unsigned int i);
+extern void joystick_close(void);
+extern void joystick_update(void);
+extern int joystick_kbd_update_set(signed long key);
+extern int joystick_kbd_update_clr(signed long key);
 
 #endif
 

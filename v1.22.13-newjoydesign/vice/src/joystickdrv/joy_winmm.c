@@ -1,10 +1,11 @@
 #include <windows.h>
 
 #include "joystick.h"
+#include "lib.h"
 
 typedef struct joy_winmm_priv_s {
-    UINT uJoyID;
-    JOYCAPS     joy_caps;
+    UINT    uJoyID;
+    JOYCAPS joy_caps;
 } joy_winmm_priv_t;
 
 static void joystick_winmm_poll(int idx, void* dev)
@@ -50,17 +51,16 @@ int joy_winmm_init(void)
     UINT wNumDevs = joyGetNumDevs();
     UINT i;
 
-    for (i = 0; i < wNumDevs && i < 16; i++)
+    for (i = JOYSTICKID1; i < wNumDevs; i++)
     {
-        joy_data_t* dev;
         joy_winmm_priv_t* priv = lib_malloc(sizeof(joy_winmm_priv_t));
-        MMRESULT result = joyGetDevCaps(JOYSTICKID1, &priv->joy_caps, sizeof(JOYCAPS));
+        MMRESULT result = joyGetDevCaps(i, &priv->joy_caps, sizeof(priv->joy_caps));
         if (result != JOYERR_NOERROR) {
             lib_free(priv);
         }
         else {
+            joy_data_t* dev = lib_malloc(sizeof(joy_data_t));
             priv->uJoyID = i;
-            dev = lib_malloc(sizeof(joy_data_t));
             dev->name = lib_msprintf("Hardware joystick in port %u (Windows Multimedia)", i);
             dev->priv = priv;
             dev->device = &winmm_joystick_device;
