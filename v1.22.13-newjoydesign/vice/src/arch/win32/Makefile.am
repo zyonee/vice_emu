@@ -46,8 +46,6 @@ libarch_a_SOURCES = \
 	hardsid.c \
 	intl.c \
 	intl.h \
-	joy.c \
-	joy.h \
 	kbd.c \
 	kbd.h \
 	mousedrv.c \

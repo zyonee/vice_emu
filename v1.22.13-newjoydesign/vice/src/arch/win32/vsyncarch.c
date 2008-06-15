@@ -37,7 +37,7 @@
 #include "videoarch.h"
 
 #ifdef HAS_JOYSTICK
-#include "joy.h"
+#include "joystick.h"
 #endif
 
 #include "vsyncapi.h"

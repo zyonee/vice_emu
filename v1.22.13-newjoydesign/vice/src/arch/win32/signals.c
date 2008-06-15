@@ -43,14 +43,32 @@
 #include "ui.h"
 
 
+static const char * translated_text = "An unexpected error occurred. Received signal %d (%s).";
+
+static void get_translated_text(void)
+{
+    const char * new_translated_text;
+
+    new_translated_text = translate_text(IDS_RECEIVED_SIGNAL_D_S);
+
+    if (new_translated_text != 0 && *new_translated_text != 0) {
+        translated_text = new_translated_text;
+    }
+}
+
 static RETSIGTYPE break64(int sig)
 {
+    const char * signalname = "";
+
+    get_translated_text();
+
+    /* provide a default text in case we could not translated the text. */
+
 #ifdef SYS_SIGLIST_DECLARED
-    ui_error(translate_text(IDS_RECEIVED_SIGNAL_D_S),
-                sig, sys_siglist[sig]);
-#else
-    ui_error(translate_text(IDS_RECEIVED_SIGNAL_D_S), sig);
+    signalname = sys_siglist[sig]
 #endif
+
+    ui_error(translated_text, sig, signalname);
 
     exit(-1);
 }
@@ -61,6 +79,9 @@ void signals_init(int do_core_dumps)
     signal(SIGTERM, break64);
 
     if (!do_core_dumps) {
+
+        get_translated_text();
+
         signal(SIGSEGV, break64);
         signal(SIGILL, break64);
         signal(SIGFPE, break64);

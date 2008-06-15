@@ -778,6 +778,9 @@ FFMPEG_INCLUDES
 FFMPEG_LIBS
 DOS_TFE_PCAP_LIB
 TFE_LIBS
+FCCACHE
+HAVE_FC_CACHE_TRUE
+HAVE_FC_CACHE_FALSE
 WINDRES
 WRC
 SOUND_DRIVERS
@@ -1962,7 +1965,7 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 VICE_VERSION_MAJOR=1
 VICE_VERSION_MINOR=22
-VICE_VERSION_BUILD=13
+VICE_VERSION_BUILD=15
 
 
 
@@ -5179,9 +5182,10 @@ if test $ac_cv_header_dinput_h = yes; then
    JOYSTICK_DRIVERS="$JOYSTICK_DRIVERS joy_directinput.o"
 
 cat >>confdefs.h <<\_ACEOF
-#define USE_DIRECTINPUT
+#define HAVE_DINPUT
 _ACEOF
 
+       LIBS="-ldinput $LIBS"
 
 fi
 
@@ -18375,6 +18379,72 @@ fi
 
 fi
 
+for ac_prog in fc-cache
+do
+  # Extract the first word of "$ac_prog", so it can be a program name with args.
+set dummy $ac_prog; ac_word=$2
+{ echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6; }
+if test "${ac_cv_path_FCCACHE+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  case $FCCACHE in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_FCCACHE="$FCCACHE" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_FCCACHE="$as_dir/$ac_word$ac_exec_ext"
+    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+IFS=$as_save_IFS
+
+  ;;
+esac
+fi
+FCCACHE=$ac_cv_path_FCCACHE
+if test -n "$FCCACHE"; then
+  { echo "$as_me:$LINENO: result: $FCCACHE" >&5
+echo "${ECHO_T}$FCCACHE" >&6; }
+else
+  { echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6; }
+fi
+
+
+  test -n "$FCCACHE" && break
+done
+test -n "$FCCACHE" || FCCACHE="false"
+
+if test x"$FCCACHE" = "xfalse"; then
+   if false; then
+  HAVE_FC_CACHE_TRUE=
+  HAVE_FC_CACHE_FALSE='#'
+else
+  HAVE_FC_CACHE_TRUE='#'
+  HAVE_FC_CACHE_FALSE=
+fi
+
+else
+   if true; then
+  HAVE_FC_CACHE_TRUE=
+  HAVE_FC_CACHE_FALSE='#'
+else
+  HAVE_FC_CACHE_TRUE='#'
+  HAVE_FC_CACHE_FALSE=
+fi
+
+fi
+
 if test x"$is_amigaos4" = "xyes"; then
   { echo "$as_me:$LINENO: checking whether devices/timer.h defines TimeVal" >&5
 echo $ECHO_N "checking whether devices/timer.h defines TimeVal... $ECHO_C" >&6; }
@@ -26145,7 +26215,7 @@ elif test x"$is_unix_gp2x" = "xyes"; then
 elif test x"$is_win32" = "xyes"; then
 
 
-  LIBS="$LIBS -lkernel32 -luser32 -lgdi32 -lwinmm -lcomdlg32 -lcomctl32 -lddraw -ldsound -ldinput -lth32 -lwsock32 -lversion"
+  LIBS="$LIBS -lkernel32 -luser32 -lgdi32 -lwinmm -lcomdlg32 -lcomctl32 -lddraw -ldsound -lth32 -lwsock32 -lversion"
 
   { echo "$as_me:$LINENO: checking for GUID_SysMouse in -ldxguid" >&5
 echo $ECHO_N "checking for GUID_SysMouse in -ldxguid... $ECHO_C" >&6; }
@@ -28361,6 +28431,20 @@ echo "$as_me: error: conditional \"CROSS\" was never defined.
 Usually this means the macro was only invoked conditionally." >&2;}
    { (exit 1); exit 1; }; }
 fi
+if test -z "${HAVE_FC_CACHE_TRUE}" && test -z "${HAVE_FC_CACHE_FALSE}"; then
+  { { echo "$as_me:$LINENO: error: conditional \"HAVE_FC_CACHE\" was never defined.
+Usually this means the macro was only invoked conditionally." >&5
+echo "$as_me: error: conditional \"HAVE_FC_CACHE\" was never defined.
+Usually this means the macro was only invoked conditionally." >&2;}
+   { (exit 1); exit 1; }; }
+fi
+if test -z "${HAVE_FC_CACHE_TRUE}" && test -z "${HAVE_FC_CACHE_FALSE}"; then
+  { { echo "$as_me:$LINENO: error: conditional \"HAVE_FC_CACHE\" was never defined.
+Usually this means the macro was only invoked conditionally." >&5
+echo "$as_me: error: conditional \"HAVE_FC_CACHE\" was never defined.
+Usually this means the macro was only invoked conditionally." >&2;}
+   { (exit 1); exit 1; }; }
+fi
 if test -z "${NEED_READLINE_TRUE}" && test -z "${NEED_READLINE_FALSE}"; then
   { { echo "$as_me:$LINENO: error: conditional \"NEED_READLINE\" was never defined.
 Usually this means the macro was only invoked conditionally." >&5
@@ -30263,6 +30347,9 @@ FFMPEG_INCLUDES!$FFMPEG_INCLUDES$ac_delim
 FFMPEG_LIBS!$FFMPEG_LIBS$ac_delim
 DOS_TFE_PCAP_LIB!$DOS_TFE_PCAP_LIB$ac_delim
 TFE_LIBS!$TFE_LIBS$ac_delim
+FCCACHE!$FCCACHE$ac_delim
+HAVE_FC_CACHE_TRUE!$HAVE_FC_CACHE_TRUE$ac_delim
+HAVE_FC_CACHE_FALSE!$HAVE_FC_CACHE_FALSE$ac_delim
 WINDRES!$WINDRES$ac_delim
 WRC!$WRC$ac_delim
 SOUND_DRIVERS!$SOUND_DRIVERS$ac_delim
@@ -30289,9 +30376,6 @@ GTK_LIBS!$GTK_LIBS$ac_delim
 GTKGL_CFLAGS!$GTKGL_CFLAGS$ac_delim
 GTKGL_LIBS!$GTKGL_LIBS$ac_delim
 VICE_SYNC!$VICE_SYNC$ac_delim
-FULLSCREEN_DRIVERS!$FULLSCREEN_DRIVERS$ac_delim
-JOYSTICK_DRIVERS!$JOYSTICK_DRIVERS$ac_delim
-HAVE_REALDEVICE_TRUE!$HAVE_REALDEVICE_TRUE$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -30333,6 +30417,9 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
+FULLSCREEN_DRIVERS!$FULLSCREEN_DRIVERS$ac_delim
+JOYSTICK_DRIVERS!$JOYSTICK_DRIVERS$ac_delim
+HAVE_REALDEVICE_TRUE!$HAVE_REALDEVICE_TRUE$ac_delim
 HAVE_REALDEVICE_FALSE!$HAVE_REALDEVICE_FALSE$ac_delim
 x64_LDFLAGS!$x64_LDFLAGS$ac_delim
 x128_LDFLAGS!$x128_LDFLAGS$ac_delim
@@ -30405,7 +30492,7 @@ BINDIR!$BINDIR$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 70; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 73; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5
@@ -30806,21 +30893,22 @@ echo "$as_me: $ac_file is unchanged" >&6;}
   fi
   rm -f "$tmp/out12"
 # Compute $ac_file's index in $config_headers.
+_am_arg=$ac_file
 _am_stamp_count=1
 for _am_header in $config_headers :; do
   case $_am_header in
-    $ac_file | $ac_file:* )
+    $_am_arg | $_am_arg:* )
       break ;;
     * )
       _am_stamp_count=`expr $_am_stamp_count + 1` ;;
   esac
 done
-echo "timestamp for $ac_file" >`$as_dirname -- $ac_file ||
-$as_expr X$ac_file : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
-	 X$ac_file : 'X\(//\)[^/]' \| \
-	 X$ac_file : 'X\(//\)$' \| \
-	 X$ac_file : 'X\(/\)' \| . 2>/dev/null ||
-echo X$ac_file |
+echo "timestamp for $_am_arg" >`$as_dirname -- "$_am_arg" ||
+$as_expr X"$_am_arg" : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
+	 X"$_am_arg" : 'X\(//\)[^/]' \| \
+	 X"$_am_arg" : 'X\(//\)$' \| \
+	 X"$_am_arg" : 'X\(/\)' \| . 2>/dev/null ||
+echo X"$_am_arg" |
     sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{
 	    s//\1/
 	    q
@@ -30857,7 +30945,7 @@ echo "$as_me: executing $ac_file commands" >&6;}
   # each Makefile.in and add a new line on top of each file to say so.
   # Grep'ing the whole file is not good either: AIX grep has a line
   # limit of 2048, but all sed's we know have understand at least 4000.
-  if sed 10q "$mf" | grep '^#.*generated by automake' > /dev/null 2>&1; then
+  if sed -n 's,^#.*generated by automake.*,X,p' "$mf" | grep X >/dev/null 2>&1; then
     dirpart=`$as_dirname -- "$mf" ||
 $as_expr X"$mf" : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
 	 X"$mf" : 'X\(//\)[^/]' \| \

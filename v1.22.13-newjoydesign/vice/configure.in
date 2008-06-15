@@ -9,7 +9,7 @@ AC_INIT(src/maincpu.c)
 
 VICE_VERSION_MAJOR=1
 VICE_VERSION_MINOR=22
-VICE_VERSION_BUILD=13
+VICE_VERSION_BUILD=15
 
 AC_SUBST(VICE_VERSION_MAJOR)
 AC_SUBST(VICE_VERSION_MINOR)
@@ -273,7 +273,8 @@ elif test x"$host_os" = "xcygwin32" -o x"$host_os" = "xcygwin" -o x"$host_os" = 
   AC_DEFINE(USE_WINMM_JOY,,[Use Windows Multimedia joystick driver])
   AC_CHECK_HEADER(dinput.h,
       [ JOYSTICK_DRIVERS="$JOYSTICK_DRIVERS joy_directinput.o" ]
-      AC_DEFINE(USE_DIRECTINPUT,,[Use DirectInput joystick driver])
+      [ AC_DEFINE(HAVE_DINPUT,,[Use DirectInput joystick driver]) ]
+      [ LIBS="-ldinput $LIBS" ]
       ,)
 
 elif test x"$host_os" = "xbeos"; then
@@ -1233,6 +1234,13 @@ if test "$ac_cv_lib_mp3lame_lame_encode_buffer" = "no"; then
                AC_DEFINE(USE_LAMEMP3,,[Enable lamemp3 support.])],,$SOUND_LIBS -lmpgdecoder)
 fi
 
+AC_PATH_PROGS(FCCACHE, fc-cache, false)
+if test x"$FCCACHE" = "xfalse"; then
+  AM_CONDITIONAL(HAVE_FC_CACHE, false)
+else
+  AM_CONDITIONAL(HAVE_FC_CACHE, true)
+fi
+
 if test x"$is_amigaos4" = "xyes"; then
   AC_MSG_CHECKING(whether devices/timer.h defines TimeVal)
   AC_TRY_COMPILE([ #include <devices/timer.h> ],
@@ -1733,7 +1741,7 @@ elif test x"$is_win32" = "xyes"; then
 
   dnl On Windows, we already know what we want.
 
-  LIBS="$LIBS -lkernel32 -luser32 -lgdi32 -lwinmm -lcomdlg32 -lcomctl32 -lddraw -ldsound -ldinput -lth32 -lwsock32 -lversion"
+  LIBS="$LIBS -lkernel32 -luser32 -lgdi32 -lwinmm -lcomdlg32 -lcomctl32 -lddraw -ldsound -lth32 -lwsock32 -lversion"
 
   AC_CHECK_LIB(dxguid, GUID_SysMouse,[LIBS="$LIBS -ldxguid";
                AC_DEFINE(HAVE_GUIDLIB,,

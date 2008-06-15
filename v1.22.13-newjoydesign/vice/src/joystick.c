@@ -424,13 +424,12 @@ int joystick_init(void)
 #endif
 
 #ifdef WIN32
-#if 1
-    if (!joy_di_init()) {
+#if 0 /*HAVE_DINPUT*/
+    if (!joy_di_init())
 #endif
+    {
         joy_winmm_init();
-#if 1
     }
-#endif
 #endif
 
     return 1;

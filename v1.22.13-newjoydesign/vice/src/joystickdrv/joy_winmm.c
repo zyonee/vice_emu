@@ -12,8 +12,11 @@ static void joystick_winmm_poll(int idx, void* dev)
 {
     JOYINFOEX joy_info;
     joy_winmm_priv_t* priv = (joy_winmm_priv_t*)dev;
-    BYTE value;
-
+    BYTE value = 0;
+    
+    joy_info.dwFlags = JOY_RETURNBUTTONS | JOY_RETURNCENTERED
+                     | JOY_RETURNX | JOY_RETURNY;
+    joy_info.dwSize = sizeof(JOYINFOEX);
     MMRESULT result = joyGetPosEx(priv->uJoyID, &joy_info);
     if (result == JOYERR_NOERROR) {
         if (joy_info.dwXpos <= priv->joy_caps.wXmin
@@ -34,7 +37,7 @@ static void joystick_winmm_poll(int idx, void* dev)
         }
         if (joy_info.dwButtons)
             value |= 16;
-        joystick_set_value_absolute(idx + 1, value);
+        joystick_set_value_absolute(idx, value);
     }
 }
 

@@ -121,6 +121,9 @@
 /* Define to 1 if you have the <devices/ahi.h> header file. */
 #undef HAVE_DEVICES_AHI_H
 
+/* Use DirectInput joystick driver */
+#undef HAVE_DINPUT
+
 /* Define to 1 if you have the <direct.h> header file. */
 #undef HAVE_DIRECT_H
 
@@ -615,9 +618,6 @@
 
 /* Enable CoreAudio support. */
 #undef USE_COREAUDIO
-
-/* Use DirectInput joystick driver */
-#undef USE_DIRECTINPUT
 
 /* Enable sgi sound support. */
 #undef USE_DMEDIA
