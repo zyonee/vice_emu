@@ -1,3 +1,17 @@
+2008-06-15  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
+
+	* Version 1.22.18
+
+2008-06-08  Marco van den Heuvel  <blackystardust68@yahoo.com>
+
+	* configure.in: Added a check for the minix version for the
+	prototypes of recv and send in network.c.
+
+	* doc/html/solaris.html, doc/html/amigaos.html,
+	doc/html/sco.html, doc/html/hpux.html, doc/html/beos.html,
+	doc/html/qnx.html, doc/html/Makefile.am, doc/html/index.html:
+	Updated for the upcoming 2.0 release.
+
 2008-06-03  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
 
 	* Version 1.22.17.
