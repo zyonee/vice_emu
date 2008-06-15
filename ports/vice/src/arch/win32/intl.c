@@ -37,7 +37,7 @@
 #include "cmdline.h"
 #include "intl.h"
 #include "lib.h"
-#include "res.h" /* 10456 */
+#include "res.h"
 #include "resources.h"
 #include "translate.h"
 #include "util.h"

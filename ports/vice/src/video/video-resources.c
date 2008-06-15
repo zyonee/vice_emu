@@ -39,6 +39,10 @@
 #include "util.h"
 #include "log.h"
 
+#ifdef WIN32
+#include "ui.h"
+#endif
+
 video_resources_t video_resources =
 {
     1000, /* color_saturation */
