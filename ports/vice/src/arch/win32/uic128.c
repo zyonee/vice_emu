@@ -197,14 +197,14 @@ static BOOL CALLBACK functionrom_dialog_proc(HWND hwnd, UINT msg, WPARAM wparam,
             break;
           case IDC_C128_FUNCTIONROM_INTERNAL_BROWSE:
             uilib_select_browse(hwnd,
-                                intl_translate_text_new(IDS_SELECT_INT_FUNCTION_ROM),
+                                translate_text(IDS_SELECT_INT_FUNCTION_ROM),
                                 UILIB_FILTER_ALL,
                                 UILIB_SELECTOR_TYPE_FILE_LOAD,
                                 IDC_C128_FUNCTIONROM_INTERNAL_NAME);
             break;
           case IDC_C128_FUNCTIONROM_EXTERNAL_BROWSE:
             uilib_select_browse(hwnd,
-                                intl_translate_text_new(IDS_SELECT_EXT_FUNCTION_ROM),
+                                translate_text(IDS_SELECT_EXT_FUNCTION_ROM),
                                 UILIB_FILTER_ALL,
                                 UILIB_SELECTOR_TYPE_FILE_LOAD,
                                 IDC_C128_FUNCTIONROM_EXTERNAL_NAME);
@@ -264,15 +264,15 @@ void ui_c128_dialog(HWND hwnd)
     psp[1].pfnCallback = NULL;
 
     psp[0].pfnDlgProc = machine_dialog_proc;
-    psp[0].pszTitle = intl_translate_text_new(IDS_MACHINE_TYPE);
+    psp[0].pszTitle = translate_text(IDS_MACHINE_TYPE);
     psp[1].pfnDlgProc = functionrom_dialog_proc;
-    psp[1].pszTitle = intl_translate_text_new(IDS_FUNCTION_ROM);
+    psp[1].pszTitle = translate_text(IDS_FUNCTION_ROM);
 
     psh.dwSize = sizeof(PROPSHEETHEADER);
     psh.dwFlags = PSH_PROPSHEETPAGE | PSH_NOAPPLYNOW;
     psh.hwndParent = hwnd;
     psh.hInstance = winmain_instance;
-    psh.pszCaption = intl_translate_text_new(IDS_C128_SETTINGS);
+    psh.pszCaption = translate_text(IDS_C128_SETTINGS);
     psh.nPages = 2;
 #ifdef _ANONYMOUS_UNION
     psh.pszIcon = NULL;

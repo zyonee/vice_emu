@@ -62,19 +62,19 @@ static void init_network_dialog(HWND hwnd)
 
     switch(network_get_mode()) {
       case NETWORK_IDLE:
-        SetDlgItemText(hwnd, IDC_NETWORK_MODE, intl_translate_text_new(IDS_IDLE));
+        SetDlgItemText(hwnd, IDC_NETWORK_MODE, translate_text(IDS_IDLE));
         break;
       case NETWORK_SERVER:
         SetDlgItemText(hwnd, IDC_NETWORK_MODE, 
-                       intl_translate_text_new(IDS_SERVER_LISTENING));
+                       translate_text(IDS_SERVER_LISTENING));
         break;
       case NETWORK_SERVER_CONNECTED:
         SetDlgItemText(hwnd, IDC_NETWORK_MODE, 
-                       intl_translate_text_new(IDS_CONNECTED_SERVER));
+                       translate_text(IDS_CONNECTED_SERVER));
         break;
       case NETWORK_CLIENT:
         SetDlgItemText(hwnd, IDC_NETWORK_MODE, 
-                       intl_translate_text_new(IDS_CONNECTED_CLIENT));
+                       translate_text(IDS_CONNECTED_CLIENT));
         break;
     }
 
@@ -148,7 +148,7 @@ static int set_resources(HWND hwnd)
     GetDlgItemText(hwnd, IDC_NETWORK_PORT, st, MAX_PATH);
     port = atoi(st);
     if (port < 1 || port > 0xFFFF) {
-        ui_error(intl_translate_text_new(IDS_INVALID_PORT_NUMBER));
+        ui_error(translate_text(IDS_INVALID_PORT_NUMBER));
         return -1;
     }
 
@@ -175,13 +175,13 @@ static BOOL CALLBACK dialog_proc(HWND hwnd, UINT msg, WPARAM wparam,
           case IDC_NETWORK_SERVER:
             if (set_resources(hwnd) == 0)
                 if (network_start_server() < 0)
-                    ui_error(intl_translate_text_new(IDS_ERROR_STARTING_SERVER));
+                    ui_error(translate_text(IDS_ERROR_STARTING_SERVER));
             EndDialog(hwnd,0);
             return TRUE;
           case IDC_NETWORK_CLIENT:
             if (set_resources(hwnd) == 0)
                 if (network_connect_client() < 0)
-                    ui_error(intl_translate_text_new(IDS_ERROR_CONNECTING_CLIENT));
+                    ui_error(translate_text(IDS_ERROR_CONNECTING_CLIENT));
             EndDialog(hwnd,0);
             return TRUE;
           case IDC_NETWORK_DISCONNECT:

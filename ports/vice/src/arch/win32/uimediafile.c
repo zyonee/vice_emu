@@ -299,13 +299,13 @@ void ui_mediafile_save_dialog(HWND hwnd)
         ui_display_statustext("", 0);
         return;
     }
-    s=intl_translate_text_new(IDS_MEDIA_FILES_FILTER);
+    s=translate_text(IDS_MEDIA_FILES_FILTER);
     filter_len=strlen(s);
     mask_len=strlen(mask);
     filter = util_concat(s, "0", mask, "0", NULL);
     filter[filter_len]='\0';
     filter[filter_len+mask_len+1]='\0';
-    s = ui_save_mediafile(intl_translate_text_new(IDS_SAVE_MEDIA_IMAGE),
+    s = ui_save_mediafile(translate_text(IDS_SAVE_MEDIA_IMAGE),
         filter,
         hwnd,
         translate_res(IDD_MEDIAFILE_DIALOG));
@@ -315,14 +315,14 @@ void ui_mediafile_save_dialog(HWND hwnd)
     if (s != NULL) {
         selected_driver = gfxoutput_get_driver(screendrivername);
         if (!selected_driver) {
-            ui_error(intl_translate_text_new(IDS_NO_DRIVER_SELECT_SUPPORT));
+            ui_error(translate_text(IDS_NO_DRIVER_SELECT_SUPPORT));
             return;
         }
         util_add_extension(&s, selected_driver->default_extension);
 
         if (screenshot_save(selected_driver->name, s,
             video_canvas_for_hwnd(hwnd)) < 0)
-            ui_error(intl_translate_text_new(IDS_CANT_WRITE_SCREENSHOT_S), s);
+            ui_error(translate_text(IDS_CANT_WRITE_SCREENSHOT_S), s);
         lib_free(s);
     }
 }

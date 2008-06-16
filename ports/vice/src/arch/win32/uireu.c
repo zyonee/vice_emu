@@ -107,7 +107,7 @@ static void init_reu_dialog(HWND hwnd)
         res_value_loop++) {
         TCHAR st[10];
         _itot(ui_reu_size[res_value_loop], st, 10);
-        _tcscat(st, intl_translate_text_new(IDS_SPACE_KB));
+        _tcscat(st, translate_text(IDS_SPACE_KB));
         SendMessage(temp_hwnd, CB_ADDSTRING, 0, (LPARAM)st);
     }
     resources_get_int("REUsize", &res_value);
@@ -145,7 +145,7 @@ static void end_reu_dialog(HWND hwnd)
 
 static void browse_reu_file(HWND hwnd)
 {
-    uilib_select_browse(hwnd, intl_translate_text_new(IDS_REU_SELECT_FILE),
+    uilib_select_browse(hwnd, translate_text(IDS_REU_SELECT_FILE),
                         UILIB_FILTER_ALL, UILIB_SELECTOR_TYPE_FILE_SAVE,
                         IDC_REU_FILE);
 }

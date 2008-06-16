@@ -203,7 +203,7 @@ static UINT APIENTRY uilib_select_tape_hook_proc(HWND hwnd, UINT uimsg,
     preview = GetDlgItem(hwnd, IDC_PREVIEW);
     switch (uimsg) {
       case WM_INITDIALOG:
-        SetWindowText(GetDlgItem(GetParent(hwnd), IDOK), intl_translate_text_new(IDS_ATTACH));
+        SetWindowText(GetDlgItem(GetParent(hwnd), IDOK), translate_text(IDS_ATTACH));
 
         if (font_loaded)
             hfont = CreateFont(-12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -242,7 +242,7 @@ static UINT APIENTRY uilib_select_tape_hook_proc(HWND hwnd, UINT uimsg,
           case IDC_BLANK_IMAGE:
             if (SendMessage(GetParent(hwnd),
                 CDM_GETSPEC, 256, (LPARAM)filename) <= 1) {
-                ui_error(intl_translate_text_new(IDS_PLEASE_ENTER_A_FILENAME));
+                ui_error(translate_text(IDS_PLEASE_ENTER_A_FILENAME));
                 return -1;
             }
             if (strchr(filename,'.') == NULL) {
@@ -264,14 +264,14 @@ static UINT APIENTRY uilib_select_tape_hook_proc(HWND hwnd, UINT uimsg,
                 }
                 if (util_file_exists(filename)) {
                     int ret;
-                    ret = ui_messagebox(intl_translate_text_new(IDS_OVERWRITE_EXISTING_IMAGE),
-                                        intl_translate_text_new(IDS_VICE_QUESTION),
+                    ret = ui_messagebox(translate_text(IDS_OVERWRITE_EXISTING_IMAGE),
+                                        translate_text(IDS_VICE_QUESTION),
                                         MB_YESNO | MB_ICONQUESTION);
                     if (ret != IDYES)
                         return -1;
                 }
                 if (cbmimage_create_image(filename, DISK_IMAGE_TYPE_TAP)) {
-                    ui_error(intl_translate_text_new(IDS_CANNOT_CREATE_IMAGE));
+                    ui_error(translate_text(IDS_CANNOT_CREATE_IMAGE));
                     return -1;
                 }
             }
@@ -337,7 +337,7 @@ static UINT APIENTRY uilib_select_hook_proc(HWND hwnd, UINT uimsg,
     preview = GetDlgItem(hwnd, IDC_PREVIEW);
     switch (uimsg) {
       case WM_INITDIALOG:
-        SetWindowText(GetDlgItem(GetParent(hwnd), IDOK), intl_translate_text_new(IDS_ATTACH));
+        SetWindowText(GetDlgItem(GetParent(hwnd), IDOK), translate_text(IDS_ATTACH));
         image_type_list = GetDlgItem(hwnd, IDC_BLANK_IMAGE_TYPE);
         for (counter = 0; image_type_name[counter]; counter++) {
             SendMessage(image_type_list, CB_ADDSTRING, 0,
@@ -401,7 +401,7 @@ static UINT APIENTRY uilib_select_hook_proc(HWND hwnd, UINT uimsg,
           case IDC_BLANK_IMAGE:
             if (SendMessage(GetParent(hwnd),
                 CDM_GETSPEC, 256, (LPARAM)st_filename) <= 1) {
-                ui_error(intl_translate_text_new(IDS_PLEASE_ENTER_A_FILENAME));
+                ui_error(translate_text(IDS_PLEASE_ENTER_A_FILENAME));
                 return -1;
             }
             if (_tcschr(st_filename, '.') == NULL) {
@@ -436,8 +436,8 @@ static UINT APIENTRY uilib_select_hook_proc(HWND hwnd, UINT uimsg,
                 system_wcstombs(filename, st_filename, 256);
                 if (util_file_exists(st_filename)) {
                     int ret;
-                    ret = ui_messagebox(intl_translate_text_new(IDS_OVERWRITE_EXISTING_IMAGE),
-                                        intl_translate_text_new(IDS_VICE_QUESTION),
+                    ret = ui_messagebox(translate_text(IDS_OVERWRITE_EXISTING_IMAGE),
+                                        translate_text(IDS_VICE_QUESTION),
                                         MB_YESNO | MB_ICONQUESTION);
                     if (ret != IDYES)
                         return -1;
@@ -447,7 +447,7 @@ static UINT APIENTRY uilib_select_hook_proc(HWND hwnd, UINT uimsg,
                 format_name = lib_msprintf("%s,%s", disk_name, disk_id);
                 if (vdrive_internal_create_format_disk_image(st_filename,
                     format_name, image_type[counter]) < 0) {
-                    ui_error(intl_translate_text_new(IDS_CANNOT_CREATE_IMAGE));
+                    ui_error(translate_text(IDS_CANNOT_CREATE_IMAGE));
                     lib_free(format_name);
                     return -1;
                 }
@@ -578,11 +578,11 @@ static TCHAR *set_filter(DWORD filterlist, DWORD *filterindex)
     /* create the strings for the file filters */
     for (i = 0, b = 1; uilib_filefilter[i].name != 0; i++, b <<= 1) {
         if (filterlist & b) {
-            name_len = (_tcslen(intl_translate_text_new(uilib_filefilter[i].name)) + 1) * sizeof(TCHAR);
+            name_len = (_tcslen(translate_text(uilib_filefilter[i].name)) + 1) * sizeof(TCHAR);
             pattern_len = (_tcslen(uilib_filefilter[i].pattern) + 1) * sizeof(TCHAR);
             filter = lib_realloc(filter, current_len + name_len + pattern_len);
             memmove(filter + name_len + pattern_len, filter, current_len);
-            memcpy(filter, intl_translate_text_new(uilib_filefilter[i].name), name_len);
+            memcpy(filter, translate_text(uilib_filefilter[i].name), name_len);
             memcpy(filter + name_len, uilib_filefilter[i].pattern, pattern_len);
             current_len += name_len + pattern_len;
         }
@@ -890,8 +890,8 @@ void uilib_show_options(HWND param)
     char *options;
 
     options = cmdline_options_string();
-    ui_show_text(param, intl_translate_text_new(IDS_COMMAND_LINE_OPTIONS),
-                 intl_translate_text_new(IDS_COMMAND_OPTIONS_AVAIL), options);
+    ui_show_text(param, translate_text(IDS_COMMAND_LINE_OPTIONS),
+                 translate_text(IDS_COMMAND_OPTIONS_AVAIL), options);
     lib_free(options);
 }
 
@@ -1087,10 +1087,10 @@ HWND element;
 
     while (param->idc || param->ids) {
         if (param->element_type == -1) {
-            SetWindowText(hwnd, intl_translate_text_new(param->ids));
+            SetWindowText(hwnd, translate_text(param->ids));
         } else if (param->element_type == 0) {
             element = GetDlgItem(hwnd, param->idc);
-            SetWindowText(element, intl_translate_text_new(param->ids));
+            SetWindowText(element, translate_text(param->ids));
         }
         param++;
     }

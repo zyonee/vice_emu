@@ -52,8 +52,8 @@ void ui_cmdline_show_help(unsigned int num_options,
     for (i = 0; i < num_options; i++) {
         fputs(options[i].name, stdout);
         if (options[i].need_arg && options[i].param_name != 0)
-            printf(" %s", intl_translate_text_new(options[i].param_name));
-        printf("\n\t%s\n", intl_translate_text_new(options[i].description));
+            printf(" %s", translate_text(options[i].param_name));
+        printf("\n\t%s\n", translate_text(options[i].description));
     }
     putchar('\n');
 }

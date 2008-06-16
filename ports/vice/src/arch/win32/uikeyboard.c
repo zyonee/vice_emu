@@ -136,7 +136,7 @@ static void end_mapping_dialog(HWND hwnd)
 
 static void browse_mapping(HWND hwnd, unsigned int index)
 {
-    uilib_select_browse(hwnd, intl_translate_text_new(IDS_SELECT_KEYMAP_FILE),
+    uilib_select_browse(hwnd, translate_text(IDS_SELECT_KEYMAP_FILE),
                         UILIB_FILTER_KEYMAP, UILIB_SELECTOR_TYPE_FILE_SAVE,
                         mapping_entry[index].idc_filename);
 }
@@ -145,7 +145,7 @@ static void dump_mapping(HWND hwnd)
 {
     TCHAR *st_name;
 
-    if ((st_name = uilib_select_file(hwnd, intl_translate_text_new(IDS_SAVE_KEYMAP_FILE),
+    if ((st_name = uilib_select_file(hwnd, translate_text(IDS_SAVE_KEYMAP_FILE),
         UILIB_FILTER_KEYMAP, UILIB_SELECTOR_TYPE_FILE_SAVE,
         UILIB_SELECTOR_STYLE_DEFAULT)) != NULL) {
         char *name;
@@ -155,7 +155,7 @@ static void dump_mapping(HWND hwnd)
         util_add_extension(&name, "vkm");
 
         if (keyboard_keymap_dump(name) != 0)
-            ui_error(intl_translate_text_new(IDS_CANNOT_WRITE_KEYMAP_FILE));
+            ui_error(translate_text(IDS_CANNOT_WRITE_KEYMAP_FILE));
         system_wcstombs_free(name);
         lib_free(st_name);
     }
@@ -222,13 +222,13 @@ void uikeyboard_settings_dialog(HWND hwnd,
     psp[0].pfnCallback = NULL;
 
     psp[0].pfnDlgProc = mapping_dialog_proc;
-    psp[0].pszTitle = intl_translate_text_new(IDS_MAPPING);
+    psp[0].pszTitle = translate_text(IDS_MAPPING);
 
     psh.dwSize = sizeof(PROPSHEETHEADER);
     psh.dwFlags = PSH_PROPSHEETPAGE | PSH_NOAPPLYNOW;
     psh.hwndParent = hwnd;
     psh.hInstance = winmain_instance;
-    psh.pszCaption = intl_translate_text_new(IDS_KEYBOARD_SETTINGS);
+    psh.pszCaption = translate_text(IDS_KEYBOARD_SETTINGS);
     psh.nPages = 1;
 #ifdef _ANONYMOUS_UNION
     psh.pszIcon = NULL;

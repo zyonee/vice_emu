@@ -244,15 +244,15 @@ void uidrivepetcbm2_settings_dialog(HWND hwnd)
     }
 
     psp[0].pfnDlgProc = callback_8;
-    psp[0].pszTitle = intl_translate_text_new(IDS_DRIVE_8);
+    psp[0].pszTitle = translate_text(IDS_DRIVE_8);
     psp[1].pfnDlgProc = callback_9;
-    psp[1].pszTitle = intl_translate_text_new(IDS_DRIVE_9);
+    psp[1].pszTitle = translate_text(IDS_DRIVE_9);
 
     psh.dwSize = sizeof(PROPSHEETHEADER);
     psh.dwFlags = PSH_PROPSHEETPAGE | PSH_NOAPPLYNOW;
     psh.hwndParent = hwnd;
     psh.hInstance = winmain_instance;
-    psh.pszCaption = intl_translate_text_new(IDS_DRIVE_SETTINGS);
+    psh.pszCaption = translate_text(IDS_DRIVE_SETTINGS);
     psh.nPages = 2;
 #ifdef _ANONYMOUS_UNION
     psh.pszIcon = NULL;

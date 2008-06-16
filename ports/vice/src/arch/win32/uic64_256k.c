@@ -143,7 +143,7 @@ static void end_c64_256k_dialog(HWND hwnd)
 
 static void browse_c64_256k_file(HWND hwnd)
 {
-    uilib_select_browse(hwnd, intl_translate_text_new(IDS_C64_256K_SELECT_FILE),
+    uilib_select_browse(hwnd, translate_text(IDS_C64_256K_SELECT_FILE),
                         UILIB_FILTER_ALL, UILIB_SELECTOR_TYPE_FILE_SAVE,
                         IDC_C64_256K_FILE);
 }

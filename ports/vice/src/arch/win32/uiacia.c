@@ -104,21 +104,21 @@ static void init_acia_dialog(HWND hwnd)
     int xpos;
     int xsize, ysize;
 
-    SetWindowText(hwnd, intl_translate_text_new(IDS_ACIA_CAPTION));
+    SetWindowText(hwnd, translate_text(IDS_ACIA_CAPTION));
     temp_hwnd = GetDlgItem(hwnd, IDC_ACIA_ENABLE);
-    SetWindowText(temp_hwnd, intl_translate_text_new(IDS_ACIA_ENABLE));
+    SetWindowText(temp_hwnd, translate_text(IDS_ACIA_ENABLE));
     temp_hwnd = GetDlgItem(hwnd, IDC_ACIA_DEVICE_LABEL);
-    SetWindowText(temp_hwnd, intl_translate_text_new(IDS_ACIA_DEVICE));
+    SetWindowText(temp_hwnd, translate_text(IDS_ACIA_DEVICE));
     temp_hwnd = GetDlgItem(hwnd, IDC_ACIA_LOCATION_LABEL);
-    SetWindowText(temp_hwnd, intl_translate_text_new(IDS_ACIA_LOCATION));
+    SetWindowText(temp_hwnd, translate_text(IDS_ACIA_LOCATION));
     temp_hwnd = GetDlgItem(hwnd, IDC_ACIA_INTERRUPT_LABEL);
-    SetWindowText(temp_hwnd, intl_translate_text_new(IDS_ACIA_INTERRUPT));
+    SetWindowText(temp_hwnd, translate_text(IDS_ACIA_INTERRUPT));
     temp_hwnd = GetDlgItem(hwnd, IDC_ACIA_MODE_LABEL);
-    SetWindowText(temp_hwnd, intl_translate_text_new(IDS_ACIA_MODE));
+    SetWindowText(temp_hwnd, translate_text(IDS_ACIA_MODE));
     temp_hwnd = GetDlgItem(hwnd, IDOK);
-    SetWindowText(temp_hwnd, intl_translate_text_new(IDS_OK));
+    SetWindowText(temp_hwnd, translate_text(IDS_OK));
     temp_hwnd = GetDlgItem(hwnd, IDCANCEL);
-    SetWindowText(temp_hwnd, intl_translate_text_new(IDS_CANCEL));
+    SetWindowText(temp_hwnd, translate_text(IDS_CANCEL));
 
     GetClientRect(hwnd, &rect);
 
@@ -211,7 +211,7 @@ static void init_acia_dialog(HWND hwnd)
     temp_hwnd = GetDlgItem(hwnd, IDC_ACIA_DEVICE);
     for (i = 0; i < MAXRS232; i++) {
         TCHAR st[20];
-        _stprintf(st, intl_translate_text_new(IDS_RS232_DEVICE_I), i + 1);
+        _stprintf(st, translate_text(IDS_RS232_DEVICE_I), i + 1);
         SendMessage(temp_hwnd, CB_ADDSTRING, 0, (LPARAM)st);
     }
     SendMessage(temp_hwnd, CB_SETCURSEL, (WPARAM)res_value, 0);
@@ -224,7 +224,7 @@ static void init_acia_dialog(HWND hwnd)
         for (res_value_loop = 0; interrupt_names[res_value_loop];
             res_value_loop++) {
             SendMessage(temp_hwnd, CB_ADDSTRING, 0,
-                        (LPARAM)(TCHAR *)intl_translate_text_new(interrupt_names[res_value_loop]));
+                        (LPARAM)(TCHAR *)translate_text(interrupt_names[res_value_loop]));
         }
         SendMessage(temp_hwnd, CB_SETCURSEL, (WPARAM)res_value, 0);
     }
@@ -237,7 +237,7 @@ static void init_acia_dialog(HWND hwnd)
         for (res_value_loop = 0; mode_names[res_value_loop];
             res_value_loop++) {
             SendMessage(temp_hwnd, CB_ADDSTRING, 0,
-                        (LPARAM)(TCHAR *)intl_translate_text_new(mode_names[res_value_loop]));
+                        (LPARAM)(TCHAR *)translate_text(mode_names[res_value_loop]));
         }
         SendMessage(temp_hwnd, CB_SETCURSEL, (WPARAM)res_value, 0);
     }

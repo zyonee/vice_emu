@@ -37,6 +37,7 @@
 #include "cmdline.h"
 #include "intl.h"
 #include "lib.h"
+#include "log.h"
 #include "resources.h"
 #include "translate.h"
 #include "util.h"
@@ -50,7 +51,6 @@ typedef struct translate_s {
 
 char *current_language = NULL;
 int current_language_index = 0;
-
 
 /* The language table is usually duplicated in
    the arch intl.c, make sure they match
@@ -5012,29 +5012,47 @@ static void translate_text_init(void)
   }
 }
 
+char translate_id_error_text[30];
+
 char *translate_text(int en_resource)
 {
   unsigned int i;
+  char *retval = NULL;
 
-  if (en_resource==0)
-    return NULL;
-
-  if (en_resource<0x10000)
-    return intl_translate_text(en_resource);
-
-  for (i = 0; i < countof(translate_text_table); i++)
+  if (en_resource == 0)
   {
-    if (translate_text_table[i][0]==en_resource)
+    log_error(LOG_DEFAULT, "TRANSLATE ERROR: ID 0 was requested.");
+    return "ID 0 translate error";
+  }
+
+  if (en_resource < 0x10000)
+  {
+    retval = intl_translate_text(en_resource);
+  }
+  else
+  {
+    for (i = 0; i < countof(translate_text_table); i++)
     {
-      if (translate_text_table[i][current_language_index]!=0 &&
-          text_table[i][current_language_index]!=NULL &&
-          strlen(text_table[i][current_language_index])!=0)
-        return text_table[i][current_language_index];
-      else
-        return text_table[i][0];
+      if (translate_text_table[i][0] == en_resource)
+      {
+        if (translate_text_table[i][current_language_index]!=0 &&
+            text_table[i][current_language_index]!=NULL &&
+            strlen(text_table[i][current_language_index])!=0)
+          retval = text_table[i][current_language_index];
+        else
+          retval = text_table[i][0];
+      }
     }
   }
-  return "";
+
+  if (retval == NULL)
+  {
+    log_error(LOG_DEFAULT, "TRANSLATE ERROR: ID %d was requested, and would be returning NULL.",en_resource);
+    sprintf(translate_id_error_text,"ID %d translate error\0",en_resource);
+    retval = translate_id_error_text;
+  }
+
+  return retval;
 }
 
 int translate_res(int en_resource)
@@ -5116,4 +5134,3 @@ void translate_arch_language_init(void)
   set_current_language(lang, "");
 }
 #endif
-

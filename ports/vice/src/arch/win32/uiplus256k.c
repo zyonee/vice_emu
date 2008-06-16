@@ -117,7 +117,7 @@ static void end_plus256k_dialog(HWND hwnd)
 
 static void browse_plus256k_file(HWND hwnd)
 {
-    uilib_select_browse(hwnd, intl_translate_text_new(IDS_PLUS256K_SELECT_FILE),
+    uilib_select_browse(hwnd, translate_text(IDS_PLUS256K_SELECT_FILE),
                         UILIB_FILTER_ALL, UILIB_SELECTOR_TYPE_FILE_SAVE,
                         IDC_PLUS256K_FILE);
 }

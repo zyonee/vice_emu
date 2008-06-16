@@ -196,7 +196,7 @@ static BOOL store_dialog_results(HWND hwnd, unsigned int num)
         GetDlgItemText(hwnd, IDC_DISKIMAGE, st, MAX_PATH);
         system_wcstombs(s, st, MAX_PATH);
         if (file_system_attach_disk(num, s) < 0 ) {
-            ui_error(intl_translate_text_new(IDS_CANNOT_ATTACH_FILE));
+            ui_error(translate_text(IDS_CANNOT_ATTACH_FILE));
             return 0;
         }
     } else {
@@ -240,7 +240,7 @@ static void browse_diskimage(HWND hwnd)
 {
     TCHAR *st_name;
 
-    st_name = uilib_select_file(hwnd, intl_translate_text_new(IDS_ATTACH_DISK_IMAGE),
+    st_name = uilib_select_file(hwnd, translate_text(IDS_ATTACH_DISK_IMAGE),
                                 UILIB_FILTER_ALL | UILIB_FILTER_DISK
                                 | UILIB_FILTER_ZIP,
                                 UILIB_SELECTOR_TYPE_FILE_LOAD,
@@ -256,7 +256,7 @@ static void autostart_diskimage(HWND hwnd)
 {
     TCHAR *st_name;
 
-    st_name = uilib_select_file(hwnd, intl_translate_text_new(IDS_AUTOSTART_DISK_IMAGE),
+    st_name = uilib_select_file(hwnd, translate_text(IDS_AUTOSTART_DISK_IMAGE),
                                 UILIB_FILTER_ALL | UILIB_FILTER_DISK
                                 | UILIB_FILTER_ZIP,
                                 UILIB_SELECTOR_TYPE_FILE_LOAD,
@@ -268,7 +268,7 @@ static void autostart_diskimage(HWND hwnd)
         SetDlgItemText(hwnd, IDC_DISKIMAGE, st_name);
         name = system_wcstombs_alloc(st_name);
         if (autostart_autodetect(name, "*", 0, AUTOSTART_MODE_RUN) < 0)
-            ui_error(intl_translate_text_new(IDS_CANNOT_AUTOSTART_FILE));
+            ui_error(translate_text(IDS_CANNOT_AUTOSTART_FILE));
         system_wcstombs_free(name);
         lib_free(st_name);
     }
@@ -283,7 +283,7 @@ static void browse_dir(HWND hwnd)
     bi.hwndOwner = hwnd;
     bi.pidlRoot = NULL;
     bi.pszDisplayName = st;
-    bi.lpszTitle = intl_translate_text_new(IDS_SELECT_FS_DIRECTORY);
+    bi.lpszTitle = translate_text(IDS_SELECT_FS_DIRECTORY);
     bi.ulFlags = 0;
     bi.lpfn = NULL;
     bi.lParam = 0;
@@ -468,7 +468,7 @@ static void init_printer_dialog(unsigned int num, HWND hwnd)
     for (res_value_loop = 0; ui_printer[res_value_loop];
         res_value_loop++) {
         SendMessage(printer_hwnd, CB_ADDSTRING, 0,
-                    (LPARAM)intl_translate_text_new(ui_printer[res_value_loop]));
+                    (LPARAM)translate_text(ui_printer[res_value_loop]));
     }
     SendMessage(printer_hwnd, CB_SETCURSEL, (WPARAM)res_value, 0);
 
@@ -719,29 +719,29 @@ static void uiperipheral_dialog(HWND hwnd)
 
     if (have_printer_userport) {
         psp[0].pfnDlgProc = callback_0;
-        psp[0].pszTitle = intl_translate_text_new(IDS_PRINTER_USERPORT);
+        psp[0].pszTitle = translate_text(IDS_PRINTER_USERPORT);
         i = 1;
     } else
         i = 0;
 
     psp[i + 0].pfnDlgProc = callback_4;
-    psp[i + 0].pszTitle = intl_translate_text_new(IDS_PRINTER_4);
+    psp[i + 0].pszTitle = translate_text(IDS_PRINTER_4);
     psp[i + 1].pfnDlgProc = callback_5;
-    psp[i + 1].pszTitle = intl_translate_text_new(IDS_PRINTER_5);
+    psp[i + 1].pszTitle = translate_text(IDS_PRINTER_5);
     psp[i + 2].pfnDlgProc = callback_8;
-    psp[i + 2].pszTitle = intl_translate_text_new(IDS_DRIVE_8);
+    psp[i + 2].pszTitle = translate_text(IDS_DRIVE_8);
     psp[i + 3].pfnDlgProc = callback_9;
-    psp[i + 3].pszTitle = intl_translate_text_new(IDS_DRIVE_9);
+    psp[i + 3].pszTitle = translate_text(IDS_DRIVE_9);
     psp[i + 4].pfnDlgProc = callback_10;
-    psp[i + 4].pszTitle = intl_translate_text_new(IDS_DRIVE_10);
+    psp[i + 4].pszTitle = translate_text(IDS_DRIVE_10);
     psp[i + 5].pfnDlgProc = callback_11;
-    psp[i + 5].pszTitle = intl_translate_text_new(IDS_DRIVE_11);
+    psp[i + 5].pszTitle = translate_text(IDS_DRIVE_11);
 
     psh.dwSize = sizeof(PROPSHEETHEADER);
     psh.dwFlags = PSH_PROPSHEETPAGE | PSH_NOAPPLYNOW;
     psh.hwndParent = hwnd;
     psh.hInstance = winmain_instance;
-    psh.pszCaption = intl_translate_text_new(IDS_PERIPHERAL_SETTINGS);
+    psh.pszCaption = translate_text(IDS_PERIPHERAL_SETTINGS);
     psh.nPages = no_of_drives + no_of_printers;
 #ifdef _ANONYMOUS_UNION
     psh.pszIcon = NULL;

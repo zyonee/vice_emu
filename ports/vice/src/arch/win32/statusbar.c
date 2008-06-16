@@ -417,7 +417,7 @@ void statusbar_handle_WMDRAWITEM(WPARAM wparam, LPARAM lparam)
                 led.left = part_left + 2;
                 led.right = part_left + 34;
 
-                DrawText(hDC, intl_translate_text_new(IDS_TAPE), -1, &led, 0);
+                DrawText(hDC, translate_text(IDS_TAPE), -1, &led, 0);
 
                 /* the tape-motor */
                 led.top = part_top + 1;
@@ -478,7 +478,7 @@ void statusbar_handle_WMDRAWITEM(WPARAM wparam, LPARAM lparam)
             led.top = part_top + 22;
             led.bottom = part_top + 38;
 
-            DrawText(hDC, intl_translate_text_new(IDS_JOYSTICK), -1, &led, 0);
+            DrawText(hDC, translate_text(IDS_JOYSTICK), -1, &led, 0);
 
             for (joynum = 1; joynum <= 2; joynum ++) {
 
@@ -527,19 +527,19 @@ void statusbar_handle_WMDRAWITEM(WPARAM wparam, LPARAM lparam)
             /* it's the event history part */
             switch (event_mode) {
                 case EVENT_RECORDING:
-                    _stprintf(text, intl_translate_text_new(IDS_RECORDING),
+                    _stprintf(text, translate_text(IDS_RECORDING),
                         event_time_current / 60,
                         event_time_current % 60);
                     break;
                 case EVENT_PLAYBACK:
-                    _stprintf(text, intl_translate_text_new(IDS_PLAYBACK),
+                    _stprintf(text, translate_text(IDS_PLAYBACK),
                         event_time_current / 60,
                         event_time_current % 60,
                         event_time_total / 60,
                         event_time_total % 60);
                     break;
                 default:
-                    _stprintf(text, intl_translate_text_new(IDS_UNKNOWN));
+                    _stprintf(text, translate_text(IDS_UNKNOWN));
             }
             led = ((DRAWITEMSTRUCT*)lparam)->rcItem;
             led.left += 2;

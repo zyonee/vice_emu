@@ -137,14 +137,14 @@ FILE *ui_console_save_dialog(HWND hwnd)
     char *s;
     char *filter;
     char mask[]="*.dbg";
-    s=intl_translate_text_new(IDS_LOG_FILES_TYPE);
+    s=translate_text(IDS_LOG_FILES_TYPE);
     filter_len=strlen(s);
     mask_len=strlen(mask);
     filter = util_concat(s, "0", mask, "0", NULL);
     filter[filter_len]='\0';
     filter[filter_len+mask_len+1]='\0';
 
-    s = ui_save_as_console(intl_translate_text_new(IDS_LOG_CONSOLE_OUTPUT_IMAGE),
+    s = ui_save_as_console(translate_text(IDS_LOG_CONSOLE_OUTPUT_IMAGE),
         filter,hwnd);
     lib_free(filter);
 
@@ -154,7 +154,7 @@ FILE *ui_console_save_dialog(HWND hwnd)
         pfile = fopen(s, append_log ? "at+" : "wt");
 
         if (!pfile)
-            ui_error(intl_translate_text_new(IDS_CANNOT_WRITE_LOGFILE_S), s);
+            ui_error(translate_text(IDS_CANNOT_WRITE_LOGFILE_S), s);
 
         lib_free(s);
     }

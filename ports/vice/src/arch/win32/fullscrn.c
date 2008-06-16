@@ -82,7 +82,7 @@ static LPDIRECTDRAW2 DirectDrawObject2;
 #define CHECK_DDRESULT(ddresult) \
 {                                \
     if (ddresult != DD_OK) {     \
-        ui_error(intl_translate_text_new(IDS_DIRECTDRAW_ERROR), ddresult, \
+        ui_error(translate_text(IDS_DIRECTDRAW_ERROR), ddresult, \
         dd_error(ddresult));     \
     }                            \
 }
