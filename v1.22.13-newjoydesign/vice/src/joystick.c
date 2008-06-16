@@ -424,7 +424,7 @@ int joystick_init(void)
 #endif
 
 #ifdef WIN32
-#if 0 /*HAVE_DINPUT*/
+#if HAVE_DINPUT
     if (!joy_di_init())
 #endif
     {
@@ -490,9 +490,7 @@ static void joystick_close_one(joy_data_t* joydata) {
 }
 
 void joystick_register_device(joy_data_t* joydata) {
-    int i;
-
-    for (i = 0; joy_devices[i] && i < MAX_HW_JOY_DRIVERS; i++);
+    unsigned int i = joystick_device_num();
 
     if (i < MAX_HW_JOY_DRIVERS) {
         joy_devices[i] = joydata;

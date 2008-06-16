@@ -13,11 +13,12 @@ static void joystick_winmm_poll(int idx, void* dev)
     JOYINFOEX joy_info;
     joy_winmm_priv_t* priv = (joy_winmm_priv_t*)dev;
     BYTE value = 0;
+    MMRESULT result;
     
     joy_info.dwFlags = JOY_RETURNBUTTONS | JOY_RETURNCENTERED
                      | JOY_RETURNX | JOY_RETURNY;
     joy_info.dwSize = sizeof(JOYINFOEX);
-    MMRESULT result = joyGetPosEx(priv->uJoyID, &joy_info);
+    result = joyGetPosEx(priv->uJoyID, &joy_info);
     if (result == JOYERR_NOERROR) {
         if (joy_info.dwXpos <= priv->joy_caps.wXmin
             + (priv->joy_caps.wXmax - priv->joy_caps.wXmin) / 4) {
@@ -53,11 +54,12 @@ int joy_winmm_init(void)
 {
     UINT wNumDevs = joyGetNumDevs();
     UINT i;
+    MMRESULT result;
 
     for (i = JOYSTICKID1; i < wNumDevs; i++)
     {
         joy_winmm_priv_t* priv = lib_malloc(sizeof(joy_winmm_priv_t));
-        MMRESULT result = joyGetDevCaps(i, &priv->joy_caps, sizeof(priv->joy_caps));
+        result = joyGetDevCaps(i, &priv->joy_caps, sizeof(priv->joy_caps));
         if (result != JOYERR_NOERROR) {
             lib_free(priv);
         }
