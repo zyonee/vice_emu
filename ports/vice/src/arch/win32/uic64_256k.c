@@ -31,6 +31,7 @@
 #include <windows.h>
 #include <tchar.h>
 
+#include "intl.h"
 #include "res.h"
 #include "resources.h"
 #include "system.h"
@@ -38,7 +39,6 @@
 #include "uic64_256k.h"
 #include "uilib.h"
 #include "winmain.h"
-#include "intl.h"
 
 #define NUM_OF_C64_256K_BASE 4
 static const int ui_c64_256k_base[NUM_OF_C64_256K_BASE] = {

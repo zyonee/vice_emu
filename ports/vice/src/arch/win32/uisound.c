@@ -27,6 +27,7 @@
 #include <string.h>
 #include <windows.h>
 
+#include "intl.h"
 #include "res.h"
 #include "resources.h"
 #include "sound.h"
@@ -36,7 +37,6 @@
 #include "uilib.h"
 #include "util.h"
 #include "winmain.h"
-#include "intl.h"
 
 
 static int ui_sound_freq[] = {
@@ -140,9 +140,9 @@ static void init_sound_dialog(HWND hwnd)
     SendMessage(snd_hwnd, CB_SETCURSEL, (WPARAM)res_value, 0);
 
     snd_hwnd=GetDlgItem(hwnd, IDC_SOUND_SYNCH);
-    SendMessage(snd_hwnd, CB_ADDSTRING, 0, (LPARAM)translate_text(IDS_FLEXIBLE));
-    SendMessage(snd_hwnd, CB_ADDSTRING, 0, (LPARAM)translate_text(IDS_ADJUSTING));
-    SendMessage(snd_hwnd, CB_ADDSTRING, 0, (LPARAM)translate_text(IDS_EXACT));
+    SendMessage(snd_hwnd, CB_ADDSTRING, 0, (LPARAM)intl_translate_text_new(IDS_FLEXIBLE));
+    SendMessage(snd_hwnd, CB_ADDSTRING, 0, (LPARAM)intl_translate_text_new(IDS_ADJUSTING));
+    SendMessage(snd_hwnd, CB_ADDSTRING, 0, (LPARAM)intl_translate_text_new(IDS_EXACT));
     resources_get_int("SoundSpeedAdjustment", &res_value);
     switch (res_value) {
       case SOUND_ADJUST_FLEXIBLE:
@@ -183,13 +183,13 @@ static void end_sound_dialog(HWND hwnd)
 static void select_dx(void)
 {
     resources_set_string("SoundDeviceName", "dx");
-    ui_display_statustext(translate_text(IDS_SOUND_DRIVER_DIRECTX), 1);
+    ui_display_statustext(intl_translate_text_new(IDS_SOUND_DRIVER_DIRECTX), 1);
 }
 
 static void select_wmm(void)
 {
     resources_set_string("SoundDeviceName", "wmm");
-    ui_display_statustext(translate_text(IDS_SOUND_DRIVER_WMM), 1);
+    ui_display_statustext(intl_translate_text_new(IDS_SOUND_DRIVER_WMM), 1);
 }
 
 static BOOL CALLBACK dialog_proc(HWND hwnd, UINT msg, WPARAM wparam,
@@ -292,7 +292,7 @@ static void end_sound_record_dialog(HWND hwnd)
   resources_set_string("SoundRecordDeviceArg", s);
   resources_set_string("SoundRecordDeviceName", sound_format[i]);
   resources_set_int("Sound", 1);
-  ui_display_statustext(translate_text(IDS_SOUND_RECORDING_STARTED), 1);
+  ui_display_statustext(intl_translate_text_new(IDS_SOUND_RECORDING_STARTED), 1);
 }
 
 static void browse_sound_record_file(HWND hwnd)

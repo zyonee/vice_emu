@@ -35,6 +35,7 @@
 #define DUMMYUNIONNAME  u1
 #endif
 
+#include "intl.h"
 #include "lib.h"
 #include "machine.h"
 #include "res.h"
@@ -98,7 +99,7 @@ static BOOL browse_command(HWND hwnd, unsigned int command)
         if ((unsigned int)command == settings[n].idc_browse) {
             TCHAR st_realname[100];
 
-            _stprintf(st_realname, translate_text(IDS_LOAD_S_ROM_IMAGE),
+            _stprintf(st_realname, intl_translate_text_new(IDS_LOAD_S_ROM_IMAGE),
                       settings[n].realname);
 
             uilib_select_browse(hwnd, st_realname,
@@ -275,7 +276,7 @@ static void end_romset_dialog(HWND hwnd)
 /*
 static void browse_archive_romset_dialog(HWND hwnd)
 {
-    uilib_select_browse(hwnd, translate_text(IDS_SELECT_ROMSET_ARCHIVE),
+    uilib_select_browse(hwnd, intl_translate_text_new(IDS_SELECT_ROMSET_ARCHIVE),
                         UILIB_FILTER_ALL, UILIB_SELECTOR_TYPE_FILE_LOAD,
                         IDC_ROMSET_ARCHIVE_NAME);
 }
@@ -289,7 +290,7 @@ static void load_archive_romset_dialog(HWND hwnd)
     GetDlgItemText(hwnd, IDC_ROMSET_ARCHIVE_NAME, st, MAX_PATH);
     system_wcstombs(s, st, MAX_PATH);
     if (romset_archive_load(s, 0) < 0)
-        ui_error(translate_text(IDS_CANNOT_LOAD_ROMSET_ARCH));
+        ui_error(intl_translate_text_new(IDS_CANNOT_LOAD_ROMSET_ARCH));
 
     update_romset_archive(hwnd);
 }
@@ -302,7 +303,7 @@ static void save_archive_romset_dialog(HWND hwnd)
     GetDlgItemText(hwnd, IDC_ROMSET_ARCHIVE_NAME, st, MAX_PATH);
     system_wcstombs(s, st, MAX_PATH);
     if (romset_archive_save(s) < 0)
-        ui_error(translate_text(IDS_CANNOT_SAVE_ROMSET_ARCH));
+        ui_error(intl_translate_text_new(IDS_CANNOT_SAVE_ROMSET_ARCH));
 }
 
 static TCHAR *active_archive_name(HWND hwnd)
@@ -372,7 +373,7 @@ static void load_file_romset_dialog(HWND hwnd)
     system_wcstombs(s, st, MAX_PATH);
 
     if (machine_romset_file_load(s) < 0)
-        ui_error(translate_text(IDS_CANNOT_LOAD_ROMSET_FILE));
+        ui_error(intl_translate_text_new(IDS_CANNOT_LOAD_ROMSET_FILE));
 
     update_romset_list(hwnd);
 }
@@ -385,7 +386,7 @@ static void save_file_romset_dialog(HWND hwnd)
     GetDlgItemText(hwnd, IDC_ROMSET_FILE_NAME, st, MAX_PATH);
     system_wcstombs(s, st, MAX_PATH);
     if (machine_romset_file_save(s) < 0)
-        ui_error(translate_text(IDS_CANNOT_SAVE_ROMSET_FILE));
+        ui_error(intl_translate_text_new(IDS_CANNOT_SAVE_ROMSET_FILE));
 }
 
 static void init_resources_dialog(HWND hwnd, unsigned int type)
@@ -514,7 +515,7 @@ static BOOL CALLBACK dialog_proc_romset(HWND hwnd, UINT msg, WPARAM wparam,
             update_romset_dialog(hwnd, LOWORD(wparam));
             break;
           case IDC_ROMSET_ARCHIVE_BROWSE:
-            uilib_select_browse(hwnd, translate_text(IDS_SELECT_ROMSET_ARCHIVE),
+            uilib_select_browse(hwnd, intl_translate_text_new(IDS_SELECT_ROMSET_ARCHIVE),
                                 UILIB_FILTER_ROMSET_ARCHIVE,
                                 UILIB_SELECTOR_TYPE_FILE_SAVE,
                                 IDC_ROMSET_ARCHIVE_NAME);
@@ -535,7 +536,7 @@ static BOOL CALLBACK dialog_proc_romset(HWND hwnd, UINT msg, WPARAM wparam,
             delete_archive_romset_dialog(hwnd);
             break;
           case IDC_ROMSET_FILE_BROWSE:
-            uilib_select_browse(hwnd, translate_text(IDS_SELECT_ROMSET_FILE),
+            uilib_select_browse(hwnd, intl_translate_text_new(IDS_SELECT_ROMSET_FILE),
                                 UILIB_FILTER_ROMSET_FILE,
                                 UILIB_SELECTOR_TYPE_FILE_SAVE,
                                 IDC_ROMSET_FILE_NAME);
@@ -616,17 +617,17 @@ void uirom_settings_dialog(HWND hwnd, unsigned int idd_dialog_main,
     psp[2].pfnCallback = NULL;
 
     psp[0].pfnDlgProc = dialog_proc_romset;
-    psp[0].pszTitle = translate_text(IDS_ROMSET);
+    psp[0].pszTitle = intl_translate_text_new(IDS_ROMSET);
     psp[1].pfnDlgProc = dialog_proc_main;
-    psp[1].pszTitle = translate_text(IDS_COMPUTER);
+    psp[1].pszTitle = intl_translate_text_new(IDS_COMPUTER);
     psp[2].pfnDlgProc = dialog_proc_drive;
-    psp[2].pszTitle = translate_text(IDS_DRIVE);
+    psp[2].pszTitle = intl_translate_text_new(IDS_DRIVE);
 
     psh.dwSize = sizeof(PROPSHEETHEADER);
     psh.dwFlags = PSH_PROPSHEETPAGE | PSH_NOAPPLYNOW;
     psh.hwndParent = hwnd;
     psh.hInstance = winmain_instance;
-    psh.pszCaption = translate_text(IDS_ROM_SETTINGS);
+    psh.pszCaption = intl_translate_text_new(IDS_ROM_SETTINGS);
     psh.nPages = 3;
 #ifdef _ANONYMOUS_UNION
     psh.pszIcon = NULL;

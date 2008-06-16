@@ -47,6 +47,7 @@
 #include "fullscrn.h"
 #include "imagecontents.h"
 #include "interrupt.h"
+#include "intl.h"
 #include "kbd.h"
 #include "lib.h"
 #include "log.h"
@@ -602,7 +603,7 @@ void ui_error(const char *format, ...)
 
     log_debug(tmp);
     st = system_mbstowcs_alloc(tmp);
-    ui_messagebox(st, translate_text(IDS_VICE_ERROR), MB_OK | MB_ICONSTOP);
+    ui_messagebox(st, intl_translate_text_new(IDS_VICE_ERROR), MB_OK | MB_ICONSTOP);
     system_mbstowcs_free(st);
     vsync_suspend_speed_eval();
     lib_free(tmp);
@@ -615,7 +616,7 @@ void ui_error_string(const char *text)
 
     log_debug(text);
     st = system_mbstowcs_alloc(text);
-    ui_messagebox(st, translate_text(IDS_VICE_ERROR), MB_OK | MB_ICONSTOP);
+    ui_messagebox(st, intl_translate_text_new(IDS_VICE_ERROR), MB_OK | MB_ICONSTOP);
     system_mbstowcs_free(st);
 }
 
@@ -631,7 +632,7 @@ void ui_message(const char *format, ...)
     va_end(args);
 
     st = system_mbstowcs_alloc(tmp);
-    ui_messagebox(st, translate_text(IDS_VICE_INFORMATION), MB_OK | MB_ICONASTERISK);
+    ui_messagebox(st, intl_translate_text_new(IDS_VICE_INFORMATION), MB_OK | MB_ICONASTERISK);
     system_mbstowcs_free(st);
     vsync_suspend_speed_eval();
     lib_free(tmp);
@@ -647,9 +648,9 @@ ui_jam_action_t ui_jam_dialog(const char *format,...)
     va_list ap;
     va_start(ap, format);
     txt = lib_mvsprintf(format, ap);
-    txt2 = lib_msprintf(translate_text(IDS_START_MONITOR), txt);
+    txt2 = lib_msprintf(intl_translate_text_new(IDS_START_MONITOR), txt);
     st = system_mbstowcs_alloc(txt2);
-    ret = ui_messagebox(st, translate_text(IDS_VICE_CPU_JAM), MB_YESNOCANCEL);
+    ret = ui_messagebox(st, intl_translate_text_new(IDS_VICE_CPU_JAM), MB_YESNOCANCEL);
     system_mbstowcs_free(st);
     lib_free(txt2);
     lib_free(txt);
@@ -671,8 +672,8 @@ int ui_extend_image_dialog(void)
 {
     int ret;
 
-    ret = ui_messagebox(translate_text(IDS_EXTEND_TO_40_TRACKS),
-                        translate_text(IDS_VICE_QUESTION), MB_YESNO | MB_ICONQUESTION);
+    ret = ui_messagebox(intl_translate_text_new(IDS_EXTEND_TO_40_TRACKS),
+                        intl_translate_text_new(IDS_VICE_QUESTION), MB_YESNO | MB_ICONQUESTION);
     return ret == IDYES;
 }
 
@@ -783,11 +784,11 @@ void ui_display_drive_current_image(unsigned int drivenum, const char *image)
     char device_str[4];
 
     if (image == NULL || image[0] == 0) {
-        text = lib_msprintf(translate_text(IDS_DETACHED_DEVICE_S), 
+        text = lib_msprintf(intl_translate_text_new(IDS_DETACHED_DEVICE_S), 
                            itoa(drivenum + 8, device_str, 10));
     } else {
         util_fname_split(image, &directory_name, &image_name);
-        text = lib_msprintf(translate_text(IDS_ATTACHED_S_TO_DEVICE_S), image_name,
+        text = lib_msprintf(intl_translate_text_new(IDS_ATTACHED_S_TO_DEVICE_S), image_name,
             itoa(drivenum+8, device_str, 10));
         lib_free(image_name);
         lib_free(directory_name);
@@ -826,10 +827,10 @@ void ui_display_tape_current_image(const char *image)
     char *directory_name, *image_name, *text;
 
     if (image == NULL || image[0] == 0) {
-        text = lib_stralloc(translate_text(IDS_DETACHED_TAPE));
+        text = lib_stralloc(intl_translate_text_new(IDS_DETACHED_TAPE));
     } else {
         util_fname_split(image, &directory_name, &image_name);
-        text = lib_msprintf(translate_text(IDS_ATTACHED_TAPE_S), image_name);
+        text = lib_msprintf(intl_translate_text_new(IDS_ATTACHED_TAPE_S), image_name);
         lib_free(image_name);
         lib_free(directory_name);
     }
@@ -855,9 +856,9 @@ void ui_display_playback(int playback_status, char *version)
     if (playback_status) {
         statusbar_event_status(EVENT_PLAYBACK);
         if (version == NULL || version[0] == 0)
-            sprintf(st, translate_text(IDS_HISTORY_RECORDED_UNKNOWN));
+            sprintf(st, intl_translate_text_new(IDS_HISTORY_RECORDED_UNKNOWN));
         else 
-            sprintf(st, translate_text(IDS_HISTORY_RECORDED_VICE_S), version);
+            sprintf(st, intl_translate_text_new(IDS_HISTORY_RECORDED_VICE_S), version);
         ui_display_statustext(st, 1);
     } else {
         statusbar_event_status(EVENT_OFF);
@@ -894,9 +895,9 @@ void ui_display_paused(int flag)
     for (index = 0; index < number_of_windows; index++) {
         title = system_wcstombs_alloc(hwnd_titles[index]);
         if (flag) {
-            buf = lib_msprintf("%s (%s: %s%i)", title, translate_text(IDS_PAUSED), translate_text(IDS_FRAME_NUMBER), vsync_frame_counter);
+            buf = lib_msprintf("%s (%s: %s%i)", title, intl_translate_text_new(IDS_PAUSED), intl_translate_text_new(IDS_FRAME_NUMBER), vsync_frame_counter);
         } else {
-            buf = lib_msprintf("%s (%s)", title, translate_text(IDS_RESUMED));
+            buf = lib_msprintf("%s (%s)", title, intl_translate_text_new(IDS_RESUMED));
         }
         system_wcstombs_free(title);
         st_buf = system_mbstowcs_alloc(buf);
@@ -1159,21 +1160,21 @@ static void handle_wm_command(WPARAM wparam, LPARAM lparam, HWND hwnd)
         break;
       case IDM_SETTINGS_SAVE:
         if (resources_save(NULL) < 0)
-            ui_error(translate_text(IDS_CANNOT_SAVE_SETTINGS));
+            ui_error(intl_translate_text_new(IDS_CANNOT_SAVE_SETTINGS));
         else
-            ui_message(translate_text(IDS_SETTINGS_SAVED_SUCCESS));
+            ui_message(intl_translate_text_new(IDS_SETTINGS_SAVED_SUCCESS));
         uifliplist_save_settings();
         break;
       case IDM_SETTINGS_LOAD:
         if (resources_load(NULL) < 0) {
-            ui_error(translate_text(IDS_CANNOT_LOAD_SETTINGS));
+            ui_error(intl_translate_text_new(IDS_CANNOT_LOAD_SETTINGS));
         } else {
-            ui_message(translate_text(IDS_SETTINGS_LOADED_SUCCESS));
+            ui_message(intl_translate_text_new(IDS_SETTINGS_LOADED_SUCCESS));
         }
         break;
       case IDM_SETTINGS_DEFAULT:
         resources_set_defaults();
-        ui_message(translate_text(IDS_DEFAULT_SETTINGS_RESTORED));
+        ui_message(intl_translate_text_new(IDS_DEFAULT_SETTINGS_RESTORED));
         break;
       case IDM_EVENT_DIRECTORY:
       case IDM_EVENT_TOGGLE_RECORD:
@@ -1203,7 +1204,7 @@ static void handle_wm_command(WPARAM wparam, LPARAM lparam, HWND hwnd)
         break;
       case IDM_SOUND_RECORD_STOP:
         resources_set_string("SoundRecordDeviceName", "");
-        ui_display_statustext(translate_text(IDS_SOUND_RECORDING_STOPPED), 1);
+        ui_display_statustext(intl_translate_text_new(IDS_SOUND_RECORDING_STOPPED), 1);
         break;
       default:
         handle_default_command(wparam, lparam, hwnd);
@@ -1276,7 +1277,7 @@ static void ui_wm_close(HWND window)
     if (confirm_on_exit) {
 //      log_debug("Asking exit confirmation");
         if (MessageBox(window,
-            translate_text(IDS_REALLY_EXIT),
+            intl_translate_text_new(IDS_REALLY_EXIT),
             TEXT("VICE"), MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2
             | MB_TASKMODAL) == IDYES) {
             quit = 1;
@@ -1289,7 +1290,7 @@ static void ui_wm_close(HWND window)
         SuspendFullscreenMode(window);
         if (save_on_exit) {
             if (resources_save(NULL)<0) {
-                ui_error(translate_text(IDS_CANNOT_SAVE_SETTINGS));
+                ui_error(intl_translate_text_new(IDS_CANNOT_SAVE_SETTINGS));
             }
         }
         DestroyWindow(window);
@@ -1307,11 +1308,11 @@ static void ui_wm_dropfiles(HWND window, WPARAM wparam)
     DragQueryFile(hDrop, 0, (char *)&szFile, 256);
     if (GetAsyncKeyState(VK_SHIFT) & 0x8000) {
         if (file_system_attach_disk(8, szFile) < 0)
-            ui_error(translate_text(IDS_CANNOT_ATTACH_FILE));
+            ui_error(intl_translate_text_new(IDS_CANNOT_ATTACH_FILE));
     } else {
         if (autostart_autodetect(szFile, NULL, 0,
             AUTOSTART_MODE_RUN) < 0)
-            ui_error(translate_text(IDS_CANNOT_AUTOSTART_FILE));
+            ui_error(intl_translate_text_new(IDS_CANNOT_AUTOSTART_FILE));
     }
     DragFinish(hDrop);
 }

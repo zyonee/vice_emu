@@ -32,6 +32,7 @@
 #include <windows.h>
 
 #include "cartridge.h"
+#include "intl.h"
 #include "keyboard.h"
 #include "lib.h"
 #include "res.h"
@@ -155,7 +156,7 @@ static void uic64cart_attach(WPARAM wparam, HWND hwnd,
 {
     if (wparam == IDM_CART_ENABLE_EXPERT) {
         if (cartridge_attach_image(CARTRIDGE_EXPERT, NULL) < 0)
-            ui_error(translate_text(IDS_INVALID_CARTRIDGE));
+            ui_error(intl_translate_text_new(IDS_INVALID_CARTRIDGE));
         return;
     }
 

@@ -31,6 +31,7 @@
 #include <windows.h>
 #include <tchar.h>
 
+#include "intl.h"
 #include "res.h"
 #include "resources.h"
 #include "system.h"
@@ -38,7 +39,6 @@
 #include "uilib.h"
 #include "uiplus60k.h"
 #include "winmain.h"
-#include "intl.h"
 
 #define NUM_OF_PLUS60K_BASE 2
 static const int ui_plus60k_base[NUM_OF_PLUS60K_BASE] = {

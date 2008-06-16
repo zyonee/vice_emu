@@ -35,6 +35,7 @@
 #endif
 
 #include "cbm2mem.h"
+#include "intl.h"
 #include "res.h"
 #include "resources.h"
 #include "system.h"
@@ -201,9 +202,9 @@ void ui_cbm2_settings_dialog(HWND hwnd)
     }
 
     psp[0].pfnDlgProc = dialog_proc;
-    psp[0].pszTitle = translate_text(IDS_MODEL);
+    psp[0].pszTitle = intl_translate_text_new(IDS_MODEL);
     psp[1].pfnDlgProc = dialog_proc;
-    psp[1].pszTitle = translate_text(IDS_MEMORY);
+    psp[1].pszTitle = intl_translate_text_new(IDS_MEMORY);
 
 #ifdef _ANONYMOUS_UNION
     psp[0].pszTemplate = MAKEINTRESOURCE(translate_res(IDD_CBMII_SETTINGS_MODEL_DIALOG));
@@ -217,7 +218,7 @@ void ui_cbm2_settings_dialog(HWND hwnd)
     psh.dwFlags = PSH_PROPSHEETPAGE | PSH_NOAPPLYNOW;
     psh.hwndParent = hwnd;
     psh.hInstance = winmain_instance;
-    psh.pszCaption = translate_text(IDS_CBM2_SETTINGS);
+    psh.pszCaption = intl_translate_text_new(IDS_CBM2_SETTINGS);
     psh.nPages = 2;
 #ifdef _ANONYMOUS_UNION
     psh.pszIcon = NULL;

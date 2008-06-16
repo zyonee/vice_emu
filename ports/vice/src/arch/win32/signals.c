@@ -35,6 +35,7 @@
 #include <unistd.h>
 #endif
 
+#include "intl.h"
 #include "log.h"
 #include "monitor.h"
 #include "res.h"
@@ -49,7 +50,7 @@ static void get_translated_text(void)
 {
     const char * new_translated_text;
 
-    new_translated_text = translate_text(IDS_RECEIVED_SIGNAL_D_S);
+    new_translated_text = intl_translate_text_new(IDS_RECEIVED_SIGNAL_D_S);
 
     if (new_translated_text != 0 && *new_translated_text != 0) {
         translated_text = new_translated_text;

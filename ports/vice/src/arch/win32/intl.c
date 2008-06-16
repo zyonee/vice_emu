@@ -881,6 +881,7 @@ static int intl_table[][countof(language_table)] = {
 
 /* --------------------------------------------------------------------- */
 
+#if 0
 static int intl_translate_text_table[][countof(language_table)] = {
 
 /* res.rc */
@@ -2852,6 +2853,7 @@ static int intl_translate_text_table[][countof(language_table)] = {
 /* sv */  IDS_SOUND_RECORDING_STOPPED_SV},
 
 };
+#endif
 
 /* --------------------------------------------------------------------- */
 
@@ -2968,7 +2970,9 @@ char *intl_convert_cp(char *text, int cp)
 
 /* --------------------------------------------------------------------- */
 
+#if 0
 static char *intl_text_table[countof(intl_translate_text_table)][countof(language_table)];
+#endif
 
 static char *intl_text_table2[LAST_IDS + 16][countof(language_table)];
 static BYTE text_cache[(((LAST_IDS / 16) + 1) / 8) + 1];
@@ -3009,6 +3013,8 @@ char temp_buffer[4098 * sizeof(TCHAR)];
   archdep_workaround_nop("a");
     ZeroMemory(intl_text_table2, sizeof(intl_text_table2));
     ZeroMemory(text_cache, sizeof(text_cache));
+
+#if 0
   for (i = 0; i < countof(language_table); i++)
   {
     archdep_workaround_nop("a");
@@ -3027,6 +3033,7 @@ char temp_buffer[4098 * sizeof(TCHAR)];
       }
     }
   }
+#endif
 
   /* prepare the codepage 28591 (ISO 8859-1) to current codepage conversion */
   WideCharToMultiByte(CP_ACP, 0, wcp28591, 256, cp28591, 256, NULL, NULL);  
@@ -3035,6 +3042,7 @@ char temp_buffer[4098 * sizeof(TCHAR)];
   WideCharToMultiByte(CP_ACP, 0, wcp28592, 256, cp28592, 256, NULL, NULL);  
 }
 
+#if 0
 static void intl_text_free(void)
 {
   unsigned int i,j;
@@ -3073,6 +3081,12 @@ char *intl_translate_text(int en_resource)
         return intl_text_table[i][0];
     }
   }
+  return "";
+}
+#endif
+
+char *intl_translate_text(int en_resource)
+{
   return "";
 }
 
@@ -3170,7 +3184,9 @@ int intl_translate_res(int en_resource)
 
 void intl_shutdown(void)
 {
+#if 0
   intl_text_free();
+#endif
 }
 
 /* --------------------------------------------------------------------- */
@@ -3178,7 +3194,11 @@ void intl_shutdown(void)
 
 static void intl_update_pre_translated_text(void)
 {
+#if 0
   intl_speed_at_text=intl_translate_text(IDS_S_AT_D_SPEED);
+#else
+  intl_speed_at_text=intl_translate_text_new(IDS_S_AT_D_SPEED);
+#endif
 }
 
 char *intl_arch_language_init(void)

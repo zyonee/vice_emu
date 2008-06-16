@@ -31,6 +31,7 @@
 #include <tchar.h>
 #include <windows.h>
 
+#include "intl.h"
 #include "lib.h"
 #include "res.h"
 #include "resources.h"
@@ -39,7 +40,6 @@
 #include "uiide64.h"
 #include "uilib.h"
 #include "winmain.h"
-#include "intl.h"
 
 
 static void enable_ide64_controls(HWND hwnd)

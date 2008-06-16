@@ -31,6 +31,7 @@
 #include <windows.h>
 
 #include "gfxoutputdrv/ffmpeglib.h"
+#include "intl.h"
 #include "log.h"
 #include "res.h"
 #include "translate.h"
@@ -173,7 +174,7 @@ static int ffmpeglib_load_library(ffmpeglib_t *lib)
     avcodec_version = (avcodec_version_t)GetProcAddress(avcodec_dll, "avcodec_version");
 
     if (avcodec_version() != LIBAVCODEC_VERSION_INT) {
-        ui_error(translate_text(IDS_FFMPEG_DLL_MISMATCH));
+        ui_error(intl_translate_text_new(IDS_FFMPEG_DLL_MISMATCH));
         return -1;
     }
     return 0;

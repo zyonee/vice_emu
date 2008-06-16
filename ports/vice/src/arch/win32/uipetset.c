@@ -33,6 +33,7 @@
 #define DUMMYUNIONNAME  u1
 #endif
 
+#include "intl.h"
 #include "pets.h"
 #include "res.h"
 #include "resources.h"
@@ -247,9 +248,9 @@ void ui_pet_settings_dialog(HWND hwnd)
     }
 
     psp[0].pfnDlgProc = dialog_proc;
-    psp[0].pszTitle = translate_text(IDS_MODEL);
+    psp[0].pszTitle = intl_translate_text_new(IDS_MODEL);
     psp[1].pfnDlgProc = dialog_proc;
-    psp[1].pszTitle = translate_text(IDS_INPUT_OUTPUT);
+    psp[1].pszTitle = intl_translate_text_new(IDS_INPUT_OUTPUT);
     psp[2].pfnDlgProc = dialog_proc;
     psp[2].pszTitle = TEXT("Super PET");
     psp[3].pfnDlgProc = dialog_proc;
@@ -275,7 +276,7 @@ void ui_pet_settings_dialog(HWND hwnd)
     psh.dwFlags = PSH_PROPSHEETPAGE | PSH_NOAPPLYNOW;
     psh.hwndParent = hwnd;
     psh.hInstance = winmain_instance;
-    psh.pszCaption = translate_text(IDS_PET_SETTINGS);
+    psh.pszCaption = intl_translate_text_new(IDS_PET_SETTINGS);
     psh.nPages = 4;
 #ifdef _ANONYMOUS_UNION
     psh.pszIcon = NULL;

@@ -37,6 +37,7 @@
 #include "drive.h"
 #include "fullscrn.h"
 #include "interrupt.h"
+#include "intl.h"
 #include "lib.h"
 #include "machine.h"
 #include "res.h"
@@ -142,14 +143,14 @@ static void ui_snapshot_save_dialog(HWND hwnd)
     char *s;
     char *filter;
     char mask[]="*.vsf";
-    s=translate_text(IDS_SNAPSHOT_FILES_FILTER);
+    s=intl_translate_text_new(IDS_SNAPSHOT_FILES_FILTER);
     filter_len=strlen(s);
     mask_len=strlen(mask);
     filter = util_concat(s, "0", mask, "0", NULL);
     filter[filter_len]='\0';
     filter[filter_len+mask_len+1]='\0';
 
-    s = ui_save_snapshot(translate_text(IDS_SAVE_SNAPSHOT_IMAGE),
+    s = ui_save_snapshot(intl_translate_text_new(IDS_SAVE_SNAPSHOT_IMAGE),
                          filter,
                          hwnd, translate_res(IDD_SNAPSHOT_SAVE_DIALOG));
     lib_free(filter);
@@ -157,7 +158,7 @@ static void ui_snapshot_save_dialog(HWND hwnd)
         util_add_extension(&s, "vsf");
 
         if (machine_write_snapshot(s, save_roms, save_disks, 0) < 0)
-            ui_error(translate_text(IDS_CANNOT_WRITE_SNAPSHOT_S), s);
+            ui_error(intl_translate_text_new(IDS_CANNOT_WRITE_SNAPSHOT_S), s);
         lib_free(s);
     }
 }
@@ -167,7 +168,7 @@ static void ui_snapshot_load_dialog(HWND hwnd)
 {
     TCHAR *st_name;
 
-    if ((st_name = uilib_select_file(hwnd, translate_text(IDS_LOAD_SNAPSHOT_IMAGE),
+    if ((st_name = uilib_select_file(hwnd, intl_translate_text_new(IDS_LOAD_SNAPSHOT_IMAGE),
         UILIB_FILTER_ALL | UILIB_FILTER_SNAPSHOT,
         UILIB_SELECTOR_TYPE_FILE_LOAD,
         UILIB_SELECTOR_STYLE_SNAPSHOT)) != NULL) {
@@ -175,7 +176,7 @@ static void ui_snapshot_load_dialog(HWND hwnd)
 
         name = system_wcstombs_alloc(st_name);
         if (machine_read_snapshot(name, 0) < 0)
-            ui_error(translate_text(IDS_CANNOT_READ_SNAPSHOT_IMG));
+            ui_error(intl_translate_text_new(IDS_CANNOT_READ_SNAPSHOT_IMG));
         system_wcstombs_free(name);
         lib_free(st_name);
     }

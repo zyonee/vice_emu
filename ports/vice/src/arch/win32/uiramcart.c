@@ -31,6 +31,7 @@
 #include <windows.h>
 #include <tchar.h>
 
+#include "intl.h"
 #include "res.h"
 #include "resources.h"
 #include "system.h"
@@ -38,7 +39,6 @@
 #include "uilib.h"
 #include "uiramcart.h"
 #include "winmain.h"
-#include "intl.h"
 
 
 #define NUM_OF_RAMCART_SIZE 2
@@ -126,7 +126,7 @@ static void init_ramcart_dialog(HWND hwnd)
         res_value_loop++) {
         TCHAR st[10];
         _itot(ui_ramcart_size[res_value_loop], st, 10);
-        _tcscat(st, translate_text(IDS_SPACE_KB));
+        _tcscat(st, intl_translate_text_new(IDS_SPACE_KB));
         SendMessage(temp_hwnd, CB_ADDSTRING, 0, (LPARAM)st);
     }
     resources_get_int("RAMCARTsize", &res_value);

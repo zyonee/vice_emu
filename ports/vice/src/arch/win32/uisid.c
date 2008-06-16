@@ -37,6 +37,7 @@
 #endif
 
 #include "hardsid.h"
+#include "intl.h"
 #include "machine.h"
 #include "res.h"
 #include "resources.h"
@@ -47,8 +48,6 @@
 #include "uisid.h"
 #include "winmain.h"
 #include "uilib.h"
-#include "intl.h"
-
 
 static const TCHAR *ui_sid_engine[] = 
 {

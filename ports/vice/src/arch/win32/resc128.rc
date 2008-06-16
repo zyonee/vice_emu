@@ -4498,6 +4498,7 @@ END
 // original and default ENGLISH text
 
 STRINGTABLE
+LANGUAGE LANG_ENGLISH, SUBLANG_NEUTRAL
 BEGIN
   IDS_SELECT_INT_FUNCTION_ROM   "Select internal function ROM image"
   IDS_SELECT_EXT_FUNCTION_ROM   "Select external function ROM image"
@@ -4510,24 +4511,26 @@ END
 // GERMAN text
 
 STRINGTABLE
+LANGUAGE LANG_GERMAN, SUBLANG_NEUTRAL
 BEGIN
-  IDS_SELECT_INT_FUNCTION_ROM_DE   "Internes Funktions ROM Image Datei selektieren"
-  IDS_SELECT_EXT_FUNCTION_ROM_DE   "Externes Funktions ROM Image Datei selektieren"
-  IDS_MACHINE_TYPE_DE              "Maschinen Typ"
-  IDS_FUNCTION_ROM_DE              "Function ROM"
-  IDS_C128_SETTINGS_DE             "C128 Einstellungen"
+  IDS_SELECT_INT_FUNCTION_ROM   "Internes Funktions ROM Image Datei selektieren"
+  IDS_SELECT_EXT_FUNCTION_ROM   "Externes Funktions ROM Image Datei selektieren"
+  IDS_MACHINE_TYPE              "Maschinen Typ"
+  IDS_FUNCTION_ROM              "Function ROM"
+  IDS_C128_SETTINGS             "C128 Einstellungen"
 END
 
 
 // FRENCH text
 
 STRINGTABLE
+LANGUAGE LANG_FRENCH, SUBLANG_NEUTRAL
 BEGIN
-  IDS_SELECT_INT_FUNCTION_ROM_FR   "Sélectionner l'image ROM Fonction interne"
-  IDS_SELECT_EXT_FUNCTION_ROM_FR   "Sélectionner l'image ROM Fonction externe"
-  IDS_MACHINE_TYPE_FR              "Type de machine"
-  IDS_FUNCTION_ROM_FR              "ROM Fonction"
-  IDS_C128_SETTINGS_FR             "Paramètres C128"
+  IDS_SELECT_INT_FUNCTION_ROM   "Sélectionner l'image ROM Fonction interne"
+  IDS_SELECT_EXT_FUNCTION_ROM   "Sélectionner l'image ROM Fonction externe"
+  IDS_MACHINE_TYPE              "Type de machine"
+  IDS_FUNCTION_ROM              "ROM Fonction"
+  IDS_C128_SETTINGS             "Paramètres C128"
 END
 
 
@@ -4535,12 +4538,13 @@ END
 
 #pragma code_page(28592)
 STRINGTABLE
+LANGUAGE LANG_HUNGARIAN, SUBLANG_NEUTRAL
 BEGIN
-  IDS_SELECT_INT_FUNCTION_ROM_HU   "Adja meg a belsõ Function ROM képmás nevét"
-  IDS_SELECT_EXT_FUNCTION_ROM_HU   "Adja meg a külsõ Function ROM képmás nevét"
-  IDS_MACHINE_TYPE_HU              "Gép típus"
-  IDS_FUNCTION_ROM_HU              "Function ROM"
-  IDS_C128_SETTINGS_HU             "C128 beállításai"
+  IDS_SELECT_INT_FUNCTION_ROM   "Adja meg a belsõ Function ROM képmás nevét"
+  IDS_SELECT_EXT_FUNCTION_ROM   "Adja meg a külsõ Function ROM képmás nevét"
+  IDS_MACHINE_TYPE              "Gép típus"
+  IDS_FUNCTION_ROM              "Function ROM"
+  IDS_C128_SETTINGS             "C128 beállításai"
 END
 #pragma code_page(28591)
 
@@ -4548,24 +4552,26 @@ END
 // ITALIAN text
 
 STRINGTABLE
+LANGUAGE LANG_ITALIAN, SUBLANG_NEUTRAL
 BEGIN
-  IDS_SELECT_INT_FUNCTION_ROM_IT   "Seleziona l'immagine della Function ROM interna"
-  IDS_SELECT_EXT_FUNCTION_ROM_IT   "Seleziona l'immagine della Function ROM esterna"
-  IDS_MACHINE_TYPE_IT              "Tipo di macchina"
-  IDS_FUNCTION_ROM_IT              "Function ROM"
-  IDS_C128_SETTINGS_IT             "Impostazioni C128"
+  IDS_SELECT_INT_FUNCTION_ROM   "Seleziona l'immagine della Function ROM interna"
+  IDS_SELECT_EXT_FUNCTION_ROM   "Seleziona l'immagine della Function ROM esterna"
+  IDS_MACHINE_TYPE              "Tipo di macchina"
+  IDS_FUNCTION_ROM              "Function ROM"
+  IDS_C128_SETTINGS             "Impostazioni C128"
 END
 
 
 // DUTCH text
 
 STRINGTABLE
+LANGUAGE LANG_DUTCH, SUBLANG_NEUTRAL
 BEGIN
-  IDS_SELECT_INT_FUNCTION_ROM_NL   "Selecteer intern functie-ROM-bestand"
-  IDS_SELECT_EXT_FUNCTION_ROM_NL   "Selecteer extern functie-ROM-bestand"
-  IDS_MACHINE_TYPE_NL              "Machinesoort"
-  IDS_FUNCTION_ROM_NL              "Functie-ROM"
-  IDS_C128_SETTINGS_NL             "C128-instellingen"
+  IDS_SELECT_INT_FUNCTION_ROM   "Selecteer intern functie-ROM-bestand"
+  IDS_SELECT_EXT_FUNCTION_ROM   "Selecteer extern functie-ROM-bestand"
+  IDS_MACHINE_TYPE              "Machinesoort"
+  IDS_FUNCTION_ROM              "Functie-ROM"
+  IDS_C128_SETTINGS             "C128-instellingen"
 END
 
 
@@ -4573,12 +4579,13 @@ END
 
 #pragma code_page(28592)
 STRINGTABLE
+LANGUAGE LANG_POLISH, SUBLANG_NEUTRAL
 BEGIN
-  IDS_SELECT_INT_FUNCTION_ROM_PL   "Select internal function ROM image"
-  IDS_SELECT_EXT_FUNCTION_ROM_PL   "Select external function ROM image"
-  IDS_MACHINE_TYPE_PL              "Machine type"
-  IDS_FUNCTION_ROM_PL              "Function ROM"
-  IDS_C128_SETTINGS_PL             "C128 settings"
+  IDS_SELECT_INT_FUNCTION_ROM   "Select internal function ROM image"
+  IDS_SELECT_EXT_FUNCTION_ROM   "Select external function ROM image"
+  IDS_MACHINE_TYPE              "Machine type"
+  IDS_FUNCTION_ROM              "Function ROM"
+  IDS_C128_SETTINGS             "C128 settings"
 END
 #pragma code_page(28591)
 
@@ -4586,10 +4593,11 @@ END
 // SWEDISH text
 
 STRINGTABLE
+LANGUAGE LANG_SWEDISH, SUBLANG_NEUTRAL
 BEGIN
-  IDS_SELECT_INT_FUNCTION_ROM_SV   "Välj avbildning för internt funktions-ROM"
-  IDS_SELECT_EXT_FUNCTION_ROM_SV   "Välj avbildning för externt funktions-ROM"
-  IDS_MACHINE_TYPE_SV              "Maskintyp"
-  IDS_FUNCTION_ROM_SV              "Funktions-ROM"
-  IDS_C128_SETTINGS_SV             "C128-inställningar"
+  IDS_SELECT_INT_FUNCTION_ROM   "Välj avbildning för internt funktions-ROM"
+  IDS_SELECT_EXT_FUNCTION_ROM   "Välj avbildning för externt funktions-ROM"
+  IDS_MACHINE_TYPE              "Maskintyp"
+  IDS_FUNCTION_ROM              "Funktions-ROM"
+  IDS_C128_SETTINGS             "C128-inställningar"
 END

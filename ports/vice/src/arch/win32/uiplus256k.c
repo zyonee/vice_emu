@@ -31,6 +31,7 @@
 #include <windows.h>
 #include <tchar.h>
 
+#include "intl.h"
 #include "res.h"
 #include "resources.h"
 #include "system.h"
@@ -38,7 +39,6 @@
 #include "uilib.h"
 #include "uiplus256k.h"
 #include "winmain.h"
-#include "intl.h"
 
 static void enable_plus256k_controls(HWND hwnd)
 {

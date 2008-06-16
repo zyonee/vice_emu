@@ -30,12 +30,12 @@
 #include <windows.h>
 #include <tchar.h>
 
+#include "intl.h"
 #include "res.h"
 #include "resources.h"
 #include "translate.h"
 #include "uiacia.h"
 #include "winmain.h"
-#include "intl.h"
 #include "uilib.h"
 
 
@@ -211,7 +211,7 @@ static void init_acia_dialog(HWND hwnd)
     temp_hwnd = GetDlgItem(hwnd, IDC_ACIA_DEVICE);
     for (i = 0; i < MAXRS232; i++) {
         TCHAR st[20];
-        _stprintf(st, translate_text(IDS_RS232_DEVICE_I), i + 1);
+        _stprintf(st, intl_translate_text_new(IDS_RS232_DEVICE_I), i + 1);
         SendMessage(temp_hwnd, CB_ADDSTRING, 0, (LPARAM)st);
     }
     SendMessage(temp_hwnd, CB_SETCURSEL, (WPARAM)res_value, 0);
