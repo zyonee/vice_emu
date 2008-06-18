@@ -2,7 +2,7 @@
 
 SUBDIRS = $(POSUB) src build data man doc
 
-EXTRA_DIST = AUTHORS FEEDBACK COPYING INSTALL NEWS vice.spec
+EXTRA_DIST = AUTHORS FEEDBACK COPYING INSTALL NEWS vice.spec vice-mint.spec
 
 .PHONY: x64 x128 xvic xpet xplus4 xcbm2
 x64:
