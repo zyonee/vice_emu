@@ -3,6 +3,7 @@
  *
  * Written by
  *  Andreas Boose <viceteam@t-online.de>
+ *  Spiro Trikaliotis <spiro.trikaliotis@gmx.de>
  * 
  * Based on old code by
  *  Jouko Valta <jopi@stekt.oulu.fi>
@@ -31,6 +32,7 @@
 
 #include "vice.h"
 
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -69,27 +71,78 @@
 /*
  Offsets of the different REU registers
 */
-#define REU_REG_R_STATUS         0x00
-#define REU_REG_W_COMMAND        0x01
-#define REU_REG_RW_BASEADDR_LOW  0x02
-#define REU_REG_RW_BASEADDR_HIGH 0x03
-#define REU_REG_RW_RAMADDR_LOW   0x04
-#define REU_REG_RW_RAMADDR_HIGH  0x05
-#define REU_REG_RW_BANK          0x06
-#define REU_REG_RW_BLOCKLEN_LOW  0x07
-#define REU_REG_RW_BLOCKLEN_HIGH 0x08
-#define REU_REG_RW_INTERRUPT     0x09
-#define REU_REG_RW_ADDRCONTROL   0x0A
+enum {
+    REU_REG_R_STATUS         = 0x00,
+    REU_REG_RW_COMMAND       = 0x01,
+    REU_REG_RW_BASEADDR_LOW  = 0x02,
+    REU_REG_RW_BASEADDR_HIGH = 0x03,
+    REU_REG_RW_RAMADDR_LOW   = 0x04,
+    REU_REG_RW_RAMADDR_HIGH  = 0x05,
+    REU_REG_RW_BANK          = 0x06,
+    REU_REG_RW_BLOCKLEN_LOW  = 0x07,
+    REU_REG_RW_BLOCKLEN_HIGH = 0x08,
+    REU_REG_RW_INTERRUPT     = 0x09,
+    REU_REG_RW_ADDR_CONTROL  = 0x0A,
+    REU_REG_LAST_REG         = 0x1F
+};
+
+enum {
+    REU_REG_R_STATUS_CHIPVERSION_MASK  = 0x0F,
+    REU_REG_R_STATUS_64K_CHIPS         = 0x10,
+    REU_REG_R_STATUS_VERIFY_ERROR      = 0x20,
+    REU_REG_R_STATUS_END_OF_BLOCK      = 0x40,
+    REU_REG_R_STATUS_INTERRUPT_PENDING = 0x80
+};
+
+enum {
+    REU_REG_RW_COMMAND_TRANSFER_TYPE_MASK    = 0x03,
+    REU_REG_RW_COMMAND_TRANSFER_TYPE_TO_REU     = 0x00,
+    REU_REG_RW_COMMAND_TRANSFER_TYPE_FROM_REU   = 0x01,
+    REU_REG_RW_COMMAND_TRANSFER_TYPE_SWAP       = 0x02,
+    REU_REG_RW_COMMAND_TRANSFER_TYPE_VERIFY     = 0x03,
+    REU_REG_RW_COMMAND_RESERVED_MASK         = 0x4C,
+    REU_REG_RW_COMMAND_FF00_TRIGGER_DISABLED = 0x10,
+    REU_REG_RW_COMMAND_AUTOLOAD              = 0x20,
+    REU_REG_RW_COMMAND_EXECUTE               = 0x80
+};
+
+enum {
+    REU_REG_RW_INTERRUPT_UNUSED_MASK          = 0x1F,
+    REU_REG_RW_INTERRUPT_VERIFY_ENABLED       = 0x20,
+    REU_REG_RW_INTERRUPT_END_OF_BLOCK_ENABLED = 0x40,
+    REU_REG_RW_INTERRUPT_INTERRUPTS_ENABLED   = 0x80
+};
+
+enum {
+    REU_REG_RW_ADDR_CONTROL_UNUSED_MASK       = 0x3f,
+    REU_REG_RW_ADDR_CONTROL_FIX_REC           = 0x40,
+    REU_REG_RW_ADDR_CONTROL_FIX_C64           = 0x80
+};
 
 /* REU registers */
-static BYTE reu[16];
 
-/* shadow registers for implementing the "Half-Autoload-Bug"
-   Thanks to Wolfgang Moser for pointing this out
-*/
-static BYTE reu_baseaddr_low_shadow;
-static BYTE reu_ramaddr_low_shadow;
-static BYTE reu_blocklen_low_shadow;
+typedef
+struct rec_s {
+    BYTE status;
+    BYTE command;
+
+    WORD base_computer;
+    WORD base_reu;
+    BYTE bank_reu;
+    WORD transfer_length;
+
+    BYTE int_mask_reg;
+    BYTE address_control_reg;
+
+    /* shadow registers for implementing the "Half-Autoload-Bug" */
+    WORD base_computer_shadow;
+    WORD base_reu_shadow;
+    BYTE bank_reu_shadow;
+    WORD transfer_length_shadow;
+} rec_t;
+
+static rec_t rec;
+
 
 /* REU image.  */
 static BYTE *reu_ram = NULL;
@@ -267,25 +320,23 @@ void reu_init(void)
 
 void reu_reset(void)
 {
-    int i;
+    memset(&rec, 0, sizeof rec);
 
-    for (i = 0; i < 16; i++)
-        reu[i] = 0;
+    if (reu_size >= (256 << 10)) {
+        rec.status |= REU_REG_R_STATUS_64K_CHIPS;
+    }
 
-    /* clear the shadow registers */
-    reu_baseaddr_low_shadow =
-    reu_ramaddr_low_shadow =
-    reu_blocklen_low_shadow = 0;
+    rec.command = REU_REG_RW_COMMAND_FF00_TRIGGER_DISABLED;
 
-    if (reu_size >= (256 << 10))
-        reu[REU_REG_R_STATUS] = 0x10;
-    else
-        reu[REU_REG_R_STATUS] = 0x00;
+    rec.transfer_length =
+    rec.transfer_length_shadow = 0xffff;
 
-    reu[REU_REG_W_COMMAND] = 0x10;
+    rec.bank_reu =
+    rec.bank_reu_shadow = 0xf8;
 
-    reu[REU_REG_RW_BLOCKLEN_LOW]  = 0xFF;
-    reu[REU_REG_RW_BLOCKLEN_HIGH] = 0xFF;
+    rec.int_mask_reg = REU_REG_RW_INTERRUPT_UNUSED_MASK;
+
+    rec.address_control_reg = REU_REG_RW_ADDR_CONTROL_UNUSED_MASK;
 }
 
 static int reu_activate(void)
@@ -353,45 +404,68 @@ void reu_shutdown(void)
 
 BYTE REGPARM1 reu_read(WORD addr)
 {
-    BYTE retval;
+    BYTE retval = 0xff;
 
-    switch (addr) {
+    if (addr < 0x0b) { /*! \TODO remove magic number! */
+        io_source = IO_SOURCE_REU;
+    }
+
+    switch (addr & REU_REG_LAST_REG) {
       case REU_REG_R_STATUS:
-        io_source=IO_SOURCE_REU;
-        retval = reu[REU_REG_R_STATUS];
+        retval = rec.status;
 
         /* Bits 7-5 are cleared when register is read, and pending IRQs are
            removed. */
-        reu[REU_REG_R_STATUS] &= ~0xe0;
+        rec.status &= 
+            ~(REU_REG_R_STATUS_VERIFY_ERROR 
+              | REU_REG_R_STATUS_END_OF_BLOCK 
+              | REU_REG_R_STATUS_INTERRUPT_PENDING
+             );
+
         maincpu_set_irq(reu_int_num, 0);
         break;
 
+      case REU_REG_RW_COMMAND:
+        retval = rec.command;
+        break;
+
+      case REU_REG_RW_BASEADDR_LOW:
+        retval = rec.base_computer & 0xff;
+        break;
+
+      case REU_REG_RW_BASEADDR_HIGH:
+        retval = (rec.base_computer >> 8) & 0xff;
+        break;
+
+      case REU_REG_RW_RAMADDR_LOW:
+        retval = rec.base_reu & 0xff;
+        break;
+
+      case REU_REG_RW_RAMADDR_HIGH:
+        retval = (rec.bank_reu >> 8) & 0xff;
+        break;
+
       case REU_REG_RW_BANK:
-        io_source=IO_SOURCE_REU;
-        retval = reu[REU_REG_RW_BANK] | 0xf8;
+        retval = rec.bank_reu | 0xf8;
+        break;
+
+      case REU_REG_RW_BLOCKLEN_LOW:
+        retval = rec.transfer_length & 0xff;
+        break;
+
+      case REU_REG_RW_BLOCKLEN_HIGH:
+        retval = (rec.transfer_length >> 8) & 0xff;
         break;
 
       case REU_REG_RW_INTERRUPT:
-        io_source=IO_SOURCE_REU;
-        retval = reu[REU_REG_RW_INTERRUPT] | 0x1f;
+        assert((rec.int_mask_reg & REU_REG_RW_INTERRUPT_UNUSED_MASK) == REU_REG_RW_INTERRUPT_UNUSED_MASK);
+        retval = rec.int_mask_reg;
         break;
 
-      case REU_REG_RW_ADDRCONTROL:
-        io_source=IO_SOURCE_REU;
-        retval = reu[REU_REG_RW_ADDRCONTROL] | 0x3f;
+      case REU_REG_RW_ADDR_CONTROL:
+        assert((rec.address_control_reg & REU_REG_RW_ADDR_CONTROL_UNUSED_MASK) == REU_REG_RW_ADDR_CONTROL_UNUSED_MASK);
+        retval = rec.address_control_reg;
         break;
-
-      case 0xb:
-      case 0xc:
-      case 0xd:
-      case 0xe:
-      case 0xf:
-        retval = 0xff;
-        break;
-
-      default:
-        io_source=IO_SOURCE_REU;
-        retval = reu[addr];
     }
 
 #ifdef REU_DEBUG
@@ -403,50 +477,60 @@ BYTE REGPARM1 reu_read(WORD addr)
 
 void REGPARM2 reu_store(WORD addr, BYTE byte)
 {
-    switch (addr)
+    switch (addr & REU_REG_LAST_REG)
     {
     case REU_REG_R_STATUS:
         /* REC status register is Read Only */
         break;
 
+    case REU_REG_RW_COMMAND:
+        rec.command = byte;
+        break;
+
     case REU_REG_RW_BASEADDR_LOW:
-        /* update shadow register, too */
-        reu_baseaddr_low_shadow =
-        reu[addr] = byte;
+        rec.base_computer = 
+        rec.bank_reu_shadow = (rec.base_computer_shadow & 0xff00) | byte;
         break;
 
     case REU_REG_RW_BASEADDR_HIGH:
-        /* also set low register from shadow register */
-        reu[REU_REG_RW_BASEADDR_LOW] = reu_baseaddr_low_shadow;
-        reu[addr] = byte;
+        rec.base_computer = 
+        rec.bank_reu_shadow = (rec.base_computer_shadow & 0xff) | (byte << 8);
         break;
 
     case REU_REG_RW_RAMADDR_LOW:
-        /* update shadow register, too */
-        reu_ramaddr_low_shadow =
-        reu[addr] = byte;
+        rec.base_reu =
+        rec.base_reu_shadow = (rec.base_computer_shadow & 0xff00) | byte;
         break;
 
     case REU_REG_RW_RAMADDR_HIGH:
-        /* also set low register from shadow register */
-        reu[REU_REG_RW_RAMADDR_LOW] = reu_ramaddr_low_shadow;
-        reu[addr] = byte;
+        rec.base_reu =
+        rec.base_reu_shadow = (rec.base_computer_shadow & 0xff) | (byte << 8);
+        break;
+
+    case REU_REG_RW_BANK:
+        //! \TODO
         break;
 
     case REU_REG_RW_BLOCKLEN_LOW:
-        /* update shadow register, too */
-        reu_blocklen_low_shadow =
-        reu[addr] = byte;
+        rec.transfer_length =
+        rec.transfer_length_shadow = (rec.transfer_length_shadow & 0xff00) | byte;
         break;
 
     case REU_REG_RW_BLOCKLEN_HIGH:
-        /* also set low register from shadow register */
-        reu[REU_REG_RW_BLOCKLEN_LOW] = reu_blocklen_low_shadow;
-        reu[addr] = byte;
+        rec.transfer_length =
+        rec.transfer_length_shadow = (rec.transfer_length_shadow & 0xff) | (byte << 8);
+        break;
+
+    case REU_REG_RW_INTERRUPT:
+        rec.int_mask_reg = byte | REU_REG_RW_INTERRUPT_UNUSED_MASK;
+        break;
+
+    case REU_REG_RW_ADDR_CONTROL:
+        rec.address_control_reg = byte | REU_REG_RW_ADDR_CONTROL_UNUSED_MASK;
         break;
 
     default:
-        reu[addr] = byte;
+        break;
     }
 
 #ifdef REU_DEBUG
@@ -455,8 +539,10 @@ void REGPARM2 reu_store(WORD addr, BYTE byte)
 
     /* write REC command register
      * DMA only if execution bit (7) set  - RH */
-    if ((addr == REU_REG_W_COMMAND) && (byte & 0x80))
-        reu_dma(byte & 0x10);
+    /*! \BUG What if FF00 option is enabled? */
+    if ((addr == REU_REG_RW_COMMAND) && (rec.command &  REU_REG_RW_COMMAND_EXECUTE)) {
+        reu_dma(rec.command & REU_REG_RW_COMMAND_FF00_TRIGGER_DISABLED);
+    }
 }
 
 /* ------------------------------------------------------------------------- */
@@ -464,7 +550,7 @@ void REGPARM2 reu_store(WORD addr, BYTE byte)
 static void reu_dma_update_regs(WORD host_addr, unsigned int reu_addr,
                                 int len)
 {
-    if (!(reu[REU_REG_W_COMMAND] & 0x20)) {
+    if (!(rec.command & REU_REG_RW_COMMAND_AUTOLOAD)) {
         /* not autoload
          * incr. of addr. disabled, as already pointing to correct addr.
          * address changes only if not fixed, correct reu base registers  -RH
@@ -472,18 +558,16 @@ static void reu_dma_update_regs(WORD host_addr, unsigned int reu_addr,
 #ifdef REU_DEBUG
         log_message(reu_log, "No autoload.");
 #endif
-        if (!(reu[REU_REG_RW_ADDRCONTROL] & 0x80)) {
-            reu[REU_REG_RW_BASEADDR_LOW] = host_addr & 0xff;
-            reu[REU_REG_RW_BASEADDR_HIGH] = (host_addr >> 8) & 0xff;
-        }
-        if (!(reu[REU_REG_RW_ADDRCONTROL] & 0x40)) {
-            reu[REU_REG_RW_RAMADDR_LOW] = reu_addr & 0xff;
-            reu[REU_REG_RW_RAMADDR_HIGH] = (reu_addr >> 8) & 0xff;
-            reu[REU_REG_RW_BANK] = (reu_addr >> 16);
+        if ( (rec.address_control_reg & REU_REG_RW_ADDR_CONTROL_FIX_C64) == 0) {
+            rec.base_computer = host_addr;
         }
 
-        reu[REU_REG_RW_BLOCKLEN_LOW] = len & 0xff;
-        reu[REU_REG_RW_BLOCKLEN_HIGH] = (len >> 8) & 0xff;
+        if ( (rec.address_control_reg & REU_REG_RW_ADDR_CONTROL_FIX_REC) == 0) {
+            rec.base_reu = reu_addr & 0xffff;
+            rec.bank_reu = (reu_addr >> 8) & 0xff;
+        }
+
+        rec.transfer_length = len;
     }
 }
 
@@ -513,7 +597,7 @@ static void reu_dma_host_to_reu(WORD host_addr, unsigned int reu_addr,
         host_addr = (host_addr + host_step) & 0xffff;
     }
     len = 0x1;
-    reu[REU_REG_R_STATUS] |= 0x40;
+    rec.status |= REU_REG_R_STATUS_END_OF_BLOCK;
     reu_dma_update_regs(host_addr, reu_addr, len);
 }
 
@@ -539,7 +623,7 @@ static void reu_dma_reu_to_host(WORD host_addr, unsigned int reu_addr,
         host_addr = (host_addr + host_step) & 0xffff;
     }
     len = 1;
-    reu[REU_REG_R_STATUS] |= 0x40;
+    rec.status |= REU_REG_R_STATUS_END_OF_BLOCK;
     reu_dma_update_regs(host_addr, reu_addr, len);
 }
 
@@ -565,7 +649,7 @@ static void reu_dma_swap(WORD host_addr, unsigned int reu_addr,
         host_addr = (host_addr + host_step) & 0xffff;
     }
     len = 1;
-    reu[REU_REG_R_STATUS] |= 0x40;
+    rec.status |= REU_REG_R_STATUS_END_OF_BLOCK;
     reu_dma_update_regs(host_addr, reu_addr, len);
 }
 
@@ -579,7 +663,7 @@ static void reu_dma_compare(WORD host_addr, unsigned int reu_addr,
                 host_step ? "" : " (fixed)", len, len);
 #endif
 
-    reu[REU_REG_R_STATUS] &= ~0x60;
+    rec.status &= ~ (REU_REG_R_STATUS_VERIFY_ERROR | REU_REG_R_STATUS_END_OF_BLOCK);
 
     while (len--) {
         maincpu_clk++;
@@ -588,12 +672,10 @@ static void reu_dma_compare(WORD host_addr, unsigned int reu_addr,
             host_addr = (host_addr + host_step) & 0xffff;
             reu_addr += reu_step;
 
-            reu[REU_REG_R_STATUS] |=  0x20; /* FAULT */
+            rec.status |= REU_REG_R_STATUS_VERIFY_ERROR;
 
-            /* Bit 7: interrupt enable
-               Bit 5: interrupt on verify error */
-            if (reu[REU_REG_RW_INTERRUPT] & 0xa0) {
-                reu[REU_REG_R_STATUS] |= 0x80;
+            if (rec.int_mask_reg & (REU_REG_RW_INTERRUPT_END_OF_BLOCK_ENABLED | REU_REG_RW_INTERRUPT_INTERRUPTS_ENABLED)) {
+                rec.status |= REU_REG_R_STATUS_INTERRUPT_PENDING;
                 maincpu_set_irq(reu_int_num, 1);
             }
             break;
@@ -604,7 +686,7 @@ static void reu_dma_compare(WORD host_addr, unsigned int reu_addr,
 
     if (len < 0) {
         /* all bytes are equal, mark End Of Block */
-        reu[REU_REG_R_STATUS] |= 0x40;
+        rec.status |= REU_REG_R_STATUS_END_OF_BLOCK;
         len = 1;
     }
 
@@ -646,43 +728,38 @@ void reu_dma(int immed)
     reu6_mask = (reu_size >> 16) - 1;
 
     /* wrong address of bank register & calculations corrected  - RH */
-    host_addr = (WORD)reu[REU_REG_RW_BASEADDR_LOW] 
-                | ((WORD)reu[REU_REG_RW_BASEADDR_HIGH] << 8);
-    reu_addr = ((unsigned int)reu[REU_REG_RW_RAMADDR_LOW]
-               | ((unsigned int)reu[REU_REG_RW_RAMADDR_HIGH] << 8)
-               | (((unsigned int)reu[REU_REG_RW_BANK] & reu6_mask) << 16));
-
-    len = (int)(reu[REU_REG_RW_BLOCKLEN_LOW])
-          | ((int)(reu[REU_REG_RW_BLOCKLEN_HIGH]) << 8);
-
-    if (len == 0)
-        len = 0x10000;
+    host_addr = rec.base_computer;
+    reu_addr = rec.base_reu | (rec.bank_reu << 16);
+    len = rec.transfer_length ? rec.transfer_length : 0x10000;
 
     /* Fixed addresses implemented -- [EP] 04-16-97. */
-    host_step = (reu[REU_REG_RW_ADDRCONTROL] & 0x80) ? 0 : 1;
-    reu_step = (reu[REU_REG_RW_ADDRCONTROL] & 0x40) ? 0 : 1;
+    host_step = rec.address_control_reg & REU_REG_RW_ADDR_CONTROL_FIX_C64 ? 0 : 1;
+    reu_step  = rec.address_control_reg & REU_REG_RW_ADDR_CONTROL_FIX_REC ? 0 : 1;
 
-    switch (reu[REU_REG_W_COMMAND] & 0x03) {
-      case 0:
+    switch (rec.command & REU_REG_RW_COMMAND_TRANSFER_TYPE_MASK) {
+      case REU_REG_RW_COMMAND_TRANSFER_TYPE_TO_REU:
         reu_dma_host_to_reu(host_addr, reu_addr, host_step, reu_step, len);
         break;
-      case 1:
+      case REU_REG_RW_COMMAND_TRANSFER_TYPE_FROM_REU:
         reu_dma_reu_to_host(host_addr, reu_addr, host_step, reu_step, len);
         break;
-      case 2:
+      case REU_REG_RW_COMMAND_TRANSFER_TYPE_SWAP:
         reu_dma_swap(host_addr, reu_addr, host_step, reu_step, len);
         break;
-      case 3:
+      case REU_REG_RW_COMMAND_TRANSFER_TYPE_VERIFY:
         reu_dma_compare(host_addr, reu_addr, host_step, reu_step, len);
         break;
     }
 
-    reu[REU_REG_W_COMMAND] &= 0x7f;
+    rec.command &= ~ REU_REG_RW_COMMAND_EXECUTE;
 
     /* Bit 7: interrupt enable.  */
     /* Bit 6: interrupt on end of block */
-    if ((reu[REU_REG_RW_INTERRUPT] & 0xc0) == 0xc0) {
-        reu[REU_REG_R_STATUS] |= 0x80;
+    if ((rec.int_mask_reg 
+            & (REU_REG_RW_INTERRUPT_END_OF_BLOCK_ENABLED | REU_REG_RW_INTERRUPT_INTERRUPTS_ENABLED)) 
+           == (REU_REG_RW_INTERRUPT_END_OF_BLOCK_ENABLED | REU_REG_RW_INTERRUPT_INTERRUPTS_ENABLED))
+    {
+        rec.status |= REU_REG_R_STATUS_INTERRUPT_PENDING;
         maincpu_set_irq(reu_int_num, 1);
     }
 }
@@ -696,6 +773,9 @@ static char snap_module_name[] = "REU1764";
 int reu_write_snapshot_module(snapshot_t *s)
 {
     snapshot_module_t *m;
+    BYTE reu[16];
+
+    memset(reu, 0xff, sizeof reu);
 
     m = snapshot_module_create(s, snap_module_name, SNAP_MAJOR, SNAP_MINOR);
     if (m == NULL)
@@ -717,6 +797,9 @@ int reu_read_snapshot_module(snapshot_t *s)
     BYTE major_version, minor_version;
     snapshot_module_t *m;
     DWORD size;
+    BYTE reu[16];
+
+    memset(reu, 0xff, sizeof reu);
 
     m = snapshot_module_open(s, snap_module_name,
                              &major_version, &minor_version);
@@ -750,6 +833,8 @@ int reu_read_snapshot_module(snapshot_t *s)
         interrupt_restore_irq(maincpu_int_status, reu_int_num, 1);
     else
         interrupt_restore_irq(maincpu_int_status, reu_int_num, 0);
+
+    /*! \TODO restore the reu registers */
 
     snapshot_module_close(m);
     return 0;
