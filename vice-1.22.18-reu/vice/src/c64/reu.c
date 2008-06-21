@@ -401,30 +401,15 @@ void reu_shutdown(void)
 }
 
 /* ------------------------------------------------------------------------- */
+/* helper functions */
 
-BYTE REGPARM1 reu_read(WORD addr)
+static BYTE reu_read_without_sideeffects(WORD addr)
 {
     BYTE retval = 0xff;
-
-    addr &= REU_REG_LAST_REG;
-
-    if (addr < 0x0b) { /*! \TODO remove magic number! */
-        io_source = IO_SOURCE_REU;
-    }
 
     switch (addr) {
       case REU_REG_R_STATUS:
         retval = rec.status;
-
-        /* Bits 7-5 are cleared when register is read, and pending IRQs are
-           removed. */
-        rec.status &= 
-            ~(REU_REG_R_STATUS_VERIFY_ERROR 
-              | REU_REG_R_STATUS_END_OF_BLOCK 
-              | REU_REG_R_STATUS_INTERRUPT_PENDING
-             );
-
-        maincpu_set_irq(reu_int_num, 0);
         break;
 
       case REU_REG_RW_COMMAND:
@@ -470,17 +455,11 @@ BYTE REGPARM1 reu_read(WORD addr)
         break;
     }
 
-#ifdef REU_DEBUG
-    log_message(reu_log, "read [$%02X] => $%02X.", addr, retval);
-#endif
     return retval;
 }
 
-
-void REGPARM2 reu_store(WORD addr, BYTE byte)
+static void reu_store_without_sideeffects(WORD addr, BYTE byte)
 {
-    addr &= REU_REG_LAST_REG;
-
     switch (addr)
     {
     case REU_REG_R_STATUS:
@@ -537,6 +516,50 @@ void REGPARM2 reu_store(WORD addr, BYTE byte)
     default:
         break;
     }
+}
+
+/* ------------------------------------------------------------------------- */
+
+BYTE REGPARM1 reu_read(WORD addr)
+{
+    BYTE retval;
+
+    addr &= REU_REG_LAST_REG;
+
+    if (addr < 0x0b) { /*! \TODO remove magic number! */
+        io_source = IO_SOURCE_REU;
+    }
+
+    retval = reu_read_without_sideeffects(addr);
+
+    switch (addr) {
+      case REU_REG_R_STATUS:
+        /* Bits 7-5 are cleared when register is read, and pending IRQs are
+           removed. */
+        rec.status &= 
+            ~(REU_REG_R_STATUS_VERIFY_ERROR 
+              | REU_REG_R_STATUS_END_OF_BLOCK 
+              | REU_REG_R_STATUS_INTERRUPT_PENDING
+             );
+
+        maincpu_set_irq(reu_int_num, 0);
+        break;
+      default:
+        break;
+    }
+
+#ifdef REU_DEBUG
+    log_message(reu_log, "read [$%02X] => $%02X.", addr, retval);
+#endif
+    return retval;
+}
+
+
+void REGPARM2 reu_store(WORD addr, BYTE byte)
+{
+    addr &= REU_REG_LAST_REG;
+
+    reu_store_without_sideeffects(addr, byte);
 
 #ifdef REU_DEBUG
     log_message(reu_log, "store [$%02X] <= $%02X.", addr, (int)byte);
@@ -775,12 +798,20 @@ static char snap_module_name[] = "REU1764";
 #define SNAP_MAJOR 0
 #define SNAP_MINOR 0
 
+typedef BYTE reu_as_stored_in_snapshot_t[16];
+
 int reu_write_snapshot_module(snapshot_t *s)
 {
     snapshot_module_t *m;
-    BYTE reu[16];
+
+    reu_as_stored_in_snapshot_t reu;
+    WORD reu_address;
 
     memset(reu, 0xff, sizeof reu);
+
+    for (reu_address = 0; reu_address < sizeof(reu); reu_address++) {
+        reu[reu_address] = reu_read_without_sideeffects(reu_address);
+    }
 
     m = snapshot_module_create(s, snap_module_name, SNAP_MAJOR, SNAP_MINOR);
     if (m == NULL)
@@ -802,7 +833,9 @@ int reu_read_snapshot_module(snapshot_t *s)
     BYTE major_version, minor_version;
     snapshot_module_t *m;
     DWORD size;
-    BYTE reu[16];
+
+    reu_as_stored_in_snapshot_t reu;
+    WORD reu_address;
 
     memset(reu, 0xff, sizeof reu);
 
@@ -839,7 +872,10 @@ int reu_read_snapshot_module(snapshot_t *s)
     else
         interrupt_restore_irq(maincpu_int_status, reu_int_num, 0);
 
-    /*! \TODO restore the reu registers */
+    for (reu_address = 0; reu_address < sizeof(reu); reu_address++) {
+         reu_store_without_sideeffects(reu_address, reu[reu_address]);
+    }
+
 
     snapshot_module_close(m);
     return 0;
@@ -848,4 +884,3 @@ fail:
     snapshot_module_close(m);
     return -1;
 }
-
