@@ -406,11 +406,13 @@ BYTE REGPARM1 reu_read(WORD addr)
 {
     BYTE retval = 0xff;
 
+    addr &= REU_REG_LAST_REG;
+
     if (addr < 0x0b) { /*! \TODO remove magic number! */
         io_source = IO_SOURCE_REU;
     }
 
-    switch (addr & REU_REG_LAST_REG) {
+    switch (addr) {
       case REU_REG_R_STATUS:
         retval = rec.status;
 
@@ -477,7 +479,9 @@ BYTE REGPARM1 reu_read(WORD addr)
 
 void REGPARM2 reu_store(WORD addr, BYTE byte)
 {
-    switch (addr & REU_REG_LAST_REG)
+    addr &= REU_REG_LAST_REG;
+
+    switch (addr)
     {
     case REU_REG_R_STATUS:
         /* REC status register is Read Only */
@@ -489,26 +493,27 @@ void REGPARM2 reu_store(WORD addr, BYTE byte)
 
     case REU_REG_RW_BASEADDR_LOW:
         rec.base_computer = 
-        rec.bank_reu_shadow = (rec.base_computer_shadow & 0xff00) | byte;
+        rec.base_computer_shadow = (rec.base_computer_shadow & 0xff00) | byte;
         break;
 
     case REU_REG_RW_BASEADDR_HIGH:
         rec.base_computer = 
-        rec.bank_reu_shadow = (rec.base_computer_shadow & 0xff) | (byte << 8);
+        rec.base_computer_shadow = (rec.base_computer_shadow & 0xff) | (byte << 8);
         break;
 
     case REU_REG_RW_RAMADDR_LOW:
         rec.base_reu =
-        rec.base_reu_shadow = (rec.base_computer_shadow & 0xff00) | byte;
+        rec.base_reu_shadow = (rec.base_reu_shadow & 0xff00) | byte;
         break;
 
     case REU_REG_RW_RAMADDR_HIGH:
         rec.base_reu =
-        rec.base_reu_shadow = (rec.base_computer_shadow & 0xff) | (byte << 8);
+        rec.base_reu_shadow = (rec.base_reu_shadow & 0xff) | (byte << 8);
         break;
 
     case REU_REG_RW_BANK:
-        //! \TODO
+        //! \TODO handle different expansions
+        rec.bank_reu = byte;
         break;
 
     case REU_REG_RW_BLOCKLEN_LOW:
