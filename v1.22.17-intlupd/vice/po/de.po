@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: VICE 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-03 19:42+0200\n"
-"PO-Revision-Date: 2008-06-11 23:08+0200\n"
+"POT-Creation-Date: 2008-06-22 10:07+0200\n"
+"PO-Revision-Date: 2008-06-22 10:07+0200\n"
 "Last-Translator: pottendo (pottendo@gmx.net)\n"
 "Language-Team: de <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -547,8 +547,8 @@ msgstr "Name für französische Kernal ROM Datei definieren"
 msgid "Specify name of Italian Kernal ROM image"
 msgstr "Name für italienische Kernal ROM Datei definieren"
 
-#: src/c128/c128-cmdline-options.c:118 src/translate.c.po.c:714
-msgid "Specify name of Norwegain Kernal ROM image"
+#: src/c128/c128-cmdline-options.c:118
+msgid "Specify name of Norwegian Kernal ROM image"
 msgstr "Name für norwegische Kernal ROM Datei definieren"
 
 #: src/c128/c128-cmdline-options.c:120 src/translate.c.po.c:724
@@ -2085,8 +2085,8 @@ msgid "Kernel driver version  : 0.8 ??"
 msgstr "Kernel Treiber Version  : 0.8 ??"
 
 #: src/arch/unix/joy.c:402
-msgid "Please update your Joystick driver !"
-msgstr "Bitte Joystick Treiber aktualisieren !"
+msgid "Please update your Joystick driver!"
+msgstr "Bitte Joystick Treiber aktualisieren!"
 
 #: src/arch/unix/joy.c:403
 msgid "Fall back to old api routine"
@@ -9808,6 +9808,10 @@ msgstr "Sprite-Hintergrund &Kollisionen"
 #: src/arch/win32/resvicii.rc.po.c:42
 msgid "New &Luminances"
 msgstr "Neue He&lligkeitsemulation"
+
+#: src/translate.c.po.c:714
+msgid "Specify name of Norwegain Kernal ROM image"
+msgstr "Name für norwegische Kernal ROM Datei definieren"
 
 #: src/translate.c.po.c:2626
 msgid "<0-2000>"
