@@ -32,7 +32,8 @@ fi
 
 echo Generating QNX 6 port binary distribution.
 rm -f -r VICE-$VICEVERSION
-$MAKECOMMAND prefix=VICE-$VERSION/opt VICEDIR=VICE-$VERSION/opt/lib/vice install
+curdir=`pwd`
+$MAKECOMMAND prefix=$curdir/VICE-$VERSION/opt $curdir/VICEDIR=VICE-$VERSION/opt/lib/vice install
 $STRIP VICE-$VICEVERSION/opt/bin/x64
 $STRIP VICE-$VICEVERSION/opt/bin/x128
 $STRIP VICE-$VICEVERSION/opt/bin/xvic

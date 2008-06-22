@@ -53,7 +53,8 @@ fi
 
 echo Generating $PLATFORM port binary distribution.
 rm -f -r VICE-$VICEVERSION
-$MAKECOMMAND prefix=VICE-$VICEVERSION/usr/local VICEDIR=VICE-$VICEVERSION/usr/local/lib/vice install
+curdir=`pwd`
+$MAKECOMMAND prefix=$curdir/VICE-$VICEVERSION/usr/local VICEDIR=$curdir/VICE-$VICEVERSION/usr/local/lib/vice install
 $STRIP VICE-$VICEVERSION/usr/local/bin/x64
 $STRIP VICE-$VICEVERSION/usr/local/bin/x128
 $STRIP VICE-$VICEVERSION/usr/local/bin/xvic
