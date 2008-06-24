@@ -839,12 +839,12 @@ BEGIN
             MENUITEM "#1&0-es lemezegység", IDM_DETACH_10
             MENUITEM "#&11-es lemezegység", IDM_DETACH_11
             MENUITEM SEPARATOR
-            MENUITEM "Ö&sszes", IDM_DETACH_ALL
+            MENUITEM "&Mindegyik", IDM_DETACH_ALL
         END
         POPUP "Lemezl&ista"
         BEGIN
-            MENUITEM "Az aktuális képmás ho&zzáadása",     IDM_FLIP_ADD
-            MENUITEM "Az aktuális képmás el&távolítása",  IDM_FLIP_REMOVE
+            MENUITEM "Az aktuális képmás hozzáadása",     IDM_FLIP_ADD
+            MENUITEM "Az aktuális képmás eltávolítása",  IDM_FLIP_REMOVE
             MENUITEM "&Következõ képmás csatolása",     IDM_FLIP_NEXT
             MENUITEM "&Elõzõ képmás csatolása", IDM_FLIP_PREVIOUS
             MENUITEM SEPARATOR
@@ -852,7 +852,7 @@ BEGIN
             MENUITEM "Lemezlista menté&se", IDM_FLIP_SAVE
         END
         MENUITEM SEPARATOR
-        MENUITEM "Szalag képmás csatolása...", IDM_ATTACH_TAPE
+        MENUITEM "&Szalag képmás csatolása...", IDM_ATTACH_TAPE
         MENUITEM "Sz&alag képmás leválasztása",           IDM_DETACH_TAPE
         POPUP "Magnó &vezérlés"
         BEGIN
@@ -896,7 +896,7 @@ BEGIN
             MENUITEM "Újraindítás cartridge &cserénél", IDM_TOGGLE_CART_RESET
         END
         MENUITEM "Cartridge képmás &leválasztása",  IDM_CART_DETACH
-        MENUITEM "Fagyasztás Cartridge-el", IDM_CART_FREEZE
+        MENUITEM "&Fagyasztás Cartridge-dzsel", IDM_CART_FREEZE
         MENUITEM SEPARATOR
         MENUITEM "&Szünet", IDM_PAUSE, CHECKED
         MENUITEM "&Monitor", IDM_MONITOR
@@ -932,8 +932,8 @@ BEGIN
     BEGIN
         MENUITEM "Pillanatkép &betöltése...",          IDM_SNAPSHOT_LOAD
         MENUITEM "Pillanatkép &mentése...",          IDM_SNAPSHOT_SAVE
-        MENUITEM "Gyors pillanatkép b&etöltése", IDM_LOADQUICK
-        MENUITEM "Gyors pillanatkép me&ntése", IDM_SAVEQUICK
+        MENUITEM "Gyors pillanatkép &betöltése", IDM_LOADQUICK
+        MENUITEM "Gyors pillanatkép fájl &mentése", IDM_SAVEQUICK
         MENUITEM SEPARATOR
         MENUITEM "Esemény &felvétel indítása/leállítása",       IDM_EVENT_TOGGLE_RECORD
         MENUITEM "Esemény &visszajátszás indítása/leállítása",        IDM_EVENT_TOGGLE_PLAYBACK
@@ -993,7 +993,7 @@ BEGIN
         MENUITEM "&Dupla méret", IDM_TOGGLE_DOUBLESIZE, CHECKED
         MENUITEM "Du&pla pásztázás", IDM_TOGGLE_DOUBLESCAN, CHECKED
         MENUITEM "PAL emuláció", IDM_TOGGLE_FASTPAL, CHECKED
-        MENUITEM "2x méretez",       IDM_TOGGLE_SCALE2X, CHECKED
+        MENUITEM "Élsimítás",       IDM_TOGGLE_SCALE2X, CHECKED
         POPUP "VDC beállításai"
         BEGIN
             MENUITEM "&Dupla méret", IDM_TOGGLE_VDC_DOUBLESIZE
@@ -1002,7 +1002,7 @@ BEGIN
             MENUITEM "64KB képernyõ &memória", IDM_TOGGLE_VDC64KB
         END
         MENUITEM SEPARATOR
-        MENUITEM "Botkormányok felcserélése", IDM_SWAP_JOYSTICK
+        MENUITEM "Botkormányok &felcserélése", IDM_SWAP_JOYSTICK
         MENUITEM SEPARATOR
         MENUITEM "&Hangok engedélyezése", IDM_TOGGLE_SOUND, CHECKED
         MENUITEM SEPARATOR
@@ -1017,7 +1017,7 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "Emulátor &azonosító", IDM_TOGGLE_EMUID
         MENUITEM "IEEE&488 interfész emuláció",    IDM_IEEE488
-        MENUITEM "&Grab mouse events",    IDM_MOUSE
+        MENUITEM "Egér &események elkapása",    IDM_MOUSE
     END
     POPUP "B&eállítások"
     BEGIN
@@ -1028,7 +1028,7 @@ BEGIN
         MENUITEM "VIC-II beállításai...",     IDM_VICII_SETTINGS
         MENUITEM "B&otkormány beállításai...",  IDM_JOY_SETTINGS
         MENUITEM "&Billentyûzet beállításai...",  IDM_KEYBOARD_SETTINGS
-        MENUITEM "Mo&use settings...",     IDM_MOUSE_SETTINGS
+        MENUITEM "Egér &beállításai...",     IDM_MOUSE_SETTINGS
         MENUITEM "Hang beállítások...",     IDM_SOUND_SETTINGS
         MENUITEM "S&ID beállításai...",       IDM_SID_SETTINGS
         MENUITEM "&ROM-ok beállításai...",       IDM_ROM_SETTINGS

@@ -684,12 +684,12 @@ BEGIN
             MENUITEM "#1&0-es lemezegység", IDM_DETACH_10
             MENUITEM "#&11-es lemezegység", IDM_DETACH_11
             MENUITEM SEPARATOR
-            MENUITEM "Ö&sszes",      IDM_DETACH_ALL
+            MENUITEM "&Mindegyik",      IDM_DETACH_ALL
         END
         POPUP "Lemezl&ista"
         BEGIN
-            MENUITEM "Az aktuális képmás ho&zzáadása",     IDM_FLIP_ADD
-            MENUITEM "Az aktuális képmás el&távolítása",  IDM_FLIP_REMOVE
+            MENUITEM "Az aktuális képmás hozzáadása",     IDM_FLIP_ADD
+            MENUITEM "Az aktuális képmás eltávolítása",  IDM_FLIP_REMOVE
             MENUITEM "&Következõ képmás csatolása",     IDM_FLIP_NEXT
             MENUITEM "&Elõzõ képmás csatolása", IDM_FLIP_PREVIOUS
             MENUITEM SEPARATOR
@@ -697,7 +697,7 @@ BEGIN
             MENUITEM "Lemezlista menté&se", IDM_FLIP_SAVE
         END
         MENUITEM SEPARATOR
-        MENUITEM "Szalag képmás csatolása...", IDM_ATTACH_TAPE
+        MENUITEM "&Szalag képmás csatolása...", IDM_ATTACH_TAPE
         MENUITEM "Sz&alag képmás leválasztása",           IDM_DETACH_TAPE
 #if 1
         POPUP "Magnó &vezérlés"
@@ -747,8 +747,8 @@ BEGIN
     BEGIN
         MENUITEM "Pillanatkép &betöltése...",          IDM_SNAPSHOT_LOAD
         MENUITEM "Pillanatkép &mentése...",          IDM_SNAPSHOT_SAVE
-        MENUITEM "Gyors pillanatkép b&etöltése", IDM_LOADQUICK
-        MENUITEM "Gyors pillanatkép me&ntése", IDM_SAVEQUICK
+        MENUITEM "Gyors pillanatkép &betöltése", IDM_LOADQUICK
+        MENUITEM "Gyors pillanatkép fájl &mentése", IDM_SAVEQUICK
         MENUITEM SEPARATOR
         MENUITEM "Esemény &felvétel indítása/leállítása",       IDM_EVENT_TOGGLE_RECORD
         MENUITEM "Esemény &visszajátszás indítása/leállítása",        IDM_EVENT_TOGGLE_PLAYBACK
@@ -811,7 +811,7 @@ BEGIN
         MENUITEM "Du&pla pásztázás", IDM_TOGGLE_CRTCDOUBLESCAN
             , CHECKED
         MENUITEM SEPARATOR
-        MENUITEM "Botkormányok felcserélése", IDM_SWAP_JOYSTICK
+        MENUITEM "Botkormányok &felcserélése", IDM_SWAP_JOYSTICK
         MENUITEM SEPARATOR
         MENUITEM "&Hangok engedélyezése", IDM_TOGGLE_SOUND, CHECKED
         MENUITEM SEPARATOR

@@ -1,4 +1,4 @@
-#!/bin/sh
+\#!/bin/sh
 # make-bindist.sh for the OPENSERVER, UNIXWARE & SOLARIS ports
 #
 # written by Marco van den Heuvel <blackystardust68@yahoo.com>
@@ -19,6 +19,46 @@ TOPSRCDIR=$9
 shift
 MAKECOMMAND=$9
 
+setnormalmake()
+{
+  makefound="none"
+  OLD_IFS=$IFS
+  IFS=":"
+
+  for i in /usr/ccs/bin:$PATH
+  do
+    if [ -e $i/make ]; then
+      GNUMAKE=`$i/make --version`
+      case "$GNUMAKE" in
+        GNU*)
+          ;;
+        *)
+          if test x"$makefound" = "xnone"; then
+            makefound="$i/make"
+          fi
+          ;;
+      esac
+    fi
+  done
+  if test x"$makefound" = "xnone"; then
+    echo no suitable make found for bindist
+    exit 1
+  else
+    MAKECOMMAND=$makefound
+  fi
+  IFS=$OLD_IFS
+}
+
+checkmake()
+{
+  GNUMAKE=`$MAKECOMMAND --version`
+  case "$GNUMAKE" in
+  GNU*)
+     setnormalmake
+     ;;
+  esac
+}
+
 if test x"$PREFIX" != "x/usr/local"; then
   echo Error: installation path is not /usr/local
   exit 1
@@ -26,14 +66,17 @@ fi
 
 if test x"$SYSTEM" = "xsco7"; then
   PLATFORM="UNIXWARE 7.x"
+  checkmake
 fi
 
 if test x"$SYSTEM" = "xsco6"; then
   PLATFORM="OPENSERVER 6.x"
+  checkmake
 fi
 
 if test x"$SYSTEM" = "xsco5"; then
   PLATFORM="OPENSERVER 5.x"
+  checkmake
 fi
 
 if test x"$SYSTEM" = "xsol"; then
