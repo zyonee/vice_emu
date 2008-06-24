@@ -4288,7 +4288,7 @@ intl_translate_t intl_string_table[] = {
 /* fr */ {IDS_NEW_PAL_TINT_0_2_FR, ""},  /* fuzzy */
 /* hu */ {IDS_NEW_PAL_TINT_0_2_HU, ""},  /* fuzzy */
 /* it */ {IDS_NEW_PAL_TINT_0_2_IT, ""},  /* fuzzy */
-/* nl */ {IDS_NEW_PAL_TINT_0_2_NL, ""},  /* fuzzy */
+/* nl */ {IDS_NEW_PAL_TINT_0_2_NL, "Tint (0..2)"},
 /* pl */ {IDS_NEW_PAL_TINT_0_2_PL, ""},  /* fuzzy */
 /* sv */ {IDS_NEW_PAL_TINT_0_2_SV, ""},  /* fuzzy */
 
@@ -4297,7 +4297,7 @@ intl_translate_t intl_string_table[] = {
 /* fr */ {IDS_NEW_PAL_PHASE_0_2_FR, ""},  /* fuzzy */
 /* hu */ {IDS_NEW_PAL_PHASE_0_2_HU, ""},  /* fuzzy */
 /* it */ {IDS_NEW_PAL_PHASE_0_2_IT, ""},  /* fuzzy */
-/* nl */ {IDS_NEW_PAL_PHASE_0_2_NL, ""},  /* fuzzy */
+/* nl */ {IDS_NEW_PAL_PHASE_0_2_NL, "Oneven lijnen fase (0..2)"},
 /* pl */ {IDS_NEW_PAL_PHASE_0_2_PL, ""},  /* fuzzy */
 /* sv */ {IDS_NEW_PAL_PHASE_0_2_SV, ""},  /* fuzzy */
 
@@ -4306,7 +4306,7 @@ intl_translate_t intl_string_table[] = {
 /* fr */ {IDS_NEW_PAL_OFFSET_0_2_FR, ""},  /* fuzzy */
 /* hu */ {IDS_NEW_PAL_OFFSET_0_2_HU, ""},  /* fuzzy */
 /* it */ {IDS_NEW_PAL_OFFSET_0_2_IT, ""},  /* fuzzy */
-/* nl */ {IDS_NEW_PAL_OFFSET_0_2_NL, ""},  /* fuzzy */
+/* nl */ {IDS_NEW_PAL_OFFSET_0_2_NL, "Oneven lijnen compensatie (0..2)"},
 /* pl */ {IDS_NEW_PAL_OFFSET_0_2_PL, ""},  /* fuzzy */
 /* sv */ {IDS_NEW_PAL_OFFSET_0_2_SV, ""},  /* fuzzy */
 
