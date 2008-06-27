@@ -157,6 +157,10 @@ if test x"$ZIPKIND" = "xzip"; then
     if test x"$arch_version" = "x5.10"; then
       arch_version=sol10
     fi
+
+    if test x"$arch_version" = "x5.11"; then
+      arch_version=sol11
+    fi
   else
     arch_cpu=x86
 
