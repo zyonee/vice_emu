@@ -26,7 +26,7 @@ list of all the changes in the code.
 
 - Improved $01 behaviour with regards to unused bit fall-off.
 
-- Mew experimental NEOS and Amiga mouse support.
+- New experimental NEOS and Amiga mouse support.
 
 - Added a working RTC to the emulation of the IDE64 cartridge.
 
