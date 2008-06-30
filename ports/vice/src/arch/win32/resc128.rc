@@ -400,6 +400,11 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "E&xit", IDM_EXIT
     END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "&Copy", IDM_EDIT_COPY
+        MENUITEM "&Paste", IDM_EDIT_PASTE
+    END
     POPUP "Sna&pshot"
     BEGIN
         MENUITEM "Snapshot &Image Laden...", IDM_SNAPSHOT_LOAD
@@ -665,6 +670,11 @@ BEGIN
 #endif
         MENUITEM SEPARATOR
         MENUITEM "&Quitter", IDM_EXIT
+    END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "&Copy", IDM_EDIT_COPY
+        MENUITEM "&Paste", IDM_EDIT_PASTE
     END
     POPUP "&Sauvegarde"
     BEGIN
@@ -933,6 +943,11 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "&Kilépés", IDM_EXIT
     END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "&Copy", IDM_EDIT_COPY
+        MENUITEM "&Paste", IDM_EDIT_PASTE
+    END
     POPUP "&Pillanatkép"
     BEGIN
         MENUITEM "Pillanatkép &betöltése...",          IDM_SNAPSHOT_LOAD
@@ -1200,6 +1215,11 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "E&sci", IDM_EXIT
     END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "&Copy", IDM_EDIT_COPY
+        MENUITEM "&Paste", IDM_EDIT_PASTE
+    END
     POPUP "Sna&pshot"
     BEGIN
         MENUITEM "Carica &immagine dello snapshot...", IDM_SNAPSHOT_LOAD
@@ -1465,6 +1485,11 @@ BEGIN
 #endif
         MENUITEM SEPARATOR
         MENUITEM "Af&sluiten", IDM_EXIT
+    END
+    POPUP "&Bewerken"
+    BEGIN
+        MENUITEM "&Kopie", IDM_EDIT_COPY
+        MENUITEM "&Plakken", IDM_EDIT_PASTE
     END
     POPUP "Momento&pname"
     BEGIN
@@ -1733,6 +1758,11 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "W&yjd¼", IDM_EXIT
     END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "&Copy", IDM_EDIT_COPY
+        MENUITEM "&Paste", IDM_EDIT_PASTE
+    END
     POPUP "z&rzutu"
     BEGIN
         MENUITEM "Za³adu&j zrzut...", IDM_SNAPSHOT_LOAD
@@ -1999,6 +2029,11 @@ BEGIN
 #endif
         MENUITEM SEPARATOR
         MENUITEM "&Avsluta", IDM_EXIT
+    END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "&Copy", IDM_EDIT_COPY
+        MENUITEM "&Paste", IDM_EDIT_PASTE
     END
     POPUP "&Ögonblicksbild"
     BEGIN
