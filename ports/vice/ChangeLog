@@ -1,3 +1,24 @@
+2008-07-04  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
+
+	* Version 1.22.23
+
+2008-07-04  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
+
+	* Makefile.am: Make sure the file Doxyfile is included in the
+	distribution.
+
+	* doc/html/Makefile.am: Make sure the files hpux.html and
+	sco.html are included in the distribution.
+
+2008-07-01  Marco van den Heuvel  <blackystardust68@yahoo.com>
+
+	* doc/GP2X-Howto.txt, doc/Makefile.am: Added a GP2X compile
+	howto text file.
+
+2008-07-02  Andreas Matthies  <andreas.matthies@gmx.net>
+
+	* doc/html/plain/BUGS, NEWS: Updated.
+
 2008-07-01  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
 
 	* Version 1.22.22
