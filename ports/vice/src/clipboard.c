@@ -44,13 +44,14 @@ char *clipboard_read_screen_output(char *line_ending)
         BYTE allrows, allcols;
         unsigned int row, col;
         unsigned int size;
+        unsigned int line_ending_length = strlen(line_ending);
+        unsigned int i;
         int bank;
-        int i;
         char * p;
 
         mem_get_screen_parameter(&base, &allrows, &allcols, &bank);
 
-        size = allrows * (allcols + strlen(line_ending)) + 1;
+        size = allrows * (allcols + line_ending_length) + 1;
 
         outputbuffer = lib_malloc(size);
         if (outputbuffer == NULL) {
@@ -82,7 +83,7 @@ char *clipboard_read_screen_output(char *line_ending)
 
             /* add a line-ending */
 
-            for (i = 0; i < strlen(line_ending); i++)
+            for (i = 0; i < line_ending_length; i++)
               *p++ = line_ending[i];
         }
 
