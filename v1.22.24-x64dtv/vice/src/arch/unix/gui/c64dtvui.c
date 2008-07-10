@@ -57,11 +57,12 @@
 
 UI_MENU_DEFINE_RADIO(MachineVideoStandard)
 
-ui_menu_entry_t set_video_standard_submenu[] = {
+static ui_menu_entry_t set_video_standard_c64dtv_submenu[] = {
     { N_("*PAL-G"), (ui_callback_t)radio_MachineVideoStandard,
       (ui_callback_data_t)MACHINE_SYNC_PAL, NULL },
     { N_("*NTSC-M"), (ui_callback_t)radio_MachineVideoStandard,
       (ui_callback_data_t)MACHINE_SYNC_NTSC, NULL },
+    { NULL },
     { NULL }
 };
 
@@ -335,6 +336,10 @@ static void c64ui_dynamic_menu_shutdown(void)
 
 int c64dtvui_init(void)
 {
+    memcpy(set_video_standard_submenu, 
+           set_video_standard_c64dtv_submenu,
+           sizeof(set_video_standard_c64dtv_submenu));
+
     ui_set_application_icon(c64dtv_icon_data);
     c64ui_dynamic_menu_create();
 

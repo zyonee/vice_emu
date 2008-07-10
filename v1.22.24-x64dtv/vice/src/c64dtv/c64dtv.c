@@ -211,7 +211,6 @@ int machine_resources_init(void)
         || machine_video_resources_init() < 0
         || c64dtv_resources_init() < 0
         || c64dtvmem_resources_init() < 0
-        || screenshot_resources_init() < 0
         || vicii_resources_init() < 0
         || sound_resources_init() < 0
         || sid_resources_init() < 0
@@ -255,7 +254,6 @@ int machine_cmdline_options_init(void)
         || video_init_cmdline_options() < 0
         || c64dtv_cmdline_options_init() < 0
         || monitor_cmdline_options_init() < 0
-        || screenshot_cmdline_options_init() < 0
         || c64dtvmem_cmdline_options_init() < 0
         || vicii_cmdline_options_init() < 0
         || sound_cmdline_options_init() < 0
