@@ -14,7 +14,7 @@ noinst_HEADERS = \
 
 libmonitor_a_SOURCES = \
 	asm6502.c \
-	asmdtv6502.c \
+	asm6502dtv.c \
 	asmz80.c \
 	asm.h \
 	mon_assemble6502.c \

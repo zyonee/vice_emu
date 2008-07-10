@@ -1,8 +1,8 @@
 /*
- * uidrive.h
+ * uips2mouse.c
  *
  * Written by
- *  Andreas Boose <viceteam@t-online.de>
+ *  Marco van den Heuvel <blackystardust68@yahoo.com>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -24,25 +24,24 @@
  *
  */
 
-#ifndef _UIDRIVE_H
-#define _UIDRIVE_H
+#include "vice.h"
+
+#ifdef HAVE_MOUSE
+
+#include <stdio.h>
 
 #include "uimenu.h"
+#include "uips2mouse.h"
 
-extern struct ui_menu_entry_s ui_drive_options_submenu[];
-extern struct ui_menu_entry_s ui_flash_options_submenu[];
 
-extern UI_CALLBACK(uidrive_extend_policy_control);
+UI_MENU_DEFINE_TOGGLE(Mouse)
+UI_MENU_DEFINE_TOGGLE(ps2mouse)
 
-extern struct ui_menu_entry_s set_drive0_extend_image_policy_submenu[];
-extern struct ui_menu_entry_s set_drive1_extend_image_policy_submenu[];
-extern struct ui_menu_entry_s set_drive2_extend_image_policy_submenu[];
-extern struct ui_menu_entry_s set_drive3_extend_image_policy_submenu[];
-
-extern UI_CALLBACK(radio_Drive8Type);
-extern UI_CALLBACK(radio_Drive9Type);
-extern UI_CALLBACK(radio_Drive10Type);
-extern UI_CALLBACK(radio_Drive11Type);
+ui_menu_entry_t ps2_mouse_submenu[] = {
+    { N_("*Enable PS/2 mouse"),
+      (ui_callback_t)toggle_ps2mouse, NULL, NULL },
+    { N_("*Grab mouse events"),
+      (ui_callback_t)toggle_Mouse, NULL, NULL, KEYSYM_m, UI_HOTMOD_META },
+};
 
 #endif
-

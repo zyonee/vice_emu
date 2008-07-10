@@ -1,8 +1,8 @@
 /*
- * uidrive.h
+ * uic64dtv.h
  *
  * Written by
- *  Andreas Boose <viceteam@t-online.de>
+ *  Marco van den Heuvel <blackystardust68@yahoo.com>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -24,25 +24,9 @@
  *
  */
 
-#ifndef _UIDRIVE_H
-#define _UIDRIVE_H
+#ifndef _UI_C64DTV_H
+#define _UI_C64DTV_H
 
-#include "uimenu.h"
-
-extern struct ui_menu_entry_s ui_drive_options_submenu[];
-extern struct ui_menu_entry_s ui_flash_options_submenu[];
-
-extern UI_CALLBACK(uidrive_extend_policy_control);
-
-extern struct ui_menu_entry_s set_drive0_extend_image_policy_submenu[];
-extern struct ui_menu_entry_s set_drive1_extend_image_policy_submenu[];
-extern struct ui_menu_entry_s set_drive2_extend_image_policy_submenu[];
-extern struct ui_menu_entry_s set_drive3_extend_image_policy_submenu[];
-
-extern UI_CALLBACK(radio_Drive8Type);
-extern UI_CALLBACK(radio_Drive9Type);
-extern UI_CALLBACK(radio_Drive10Type);
-extern UI_CALLBACK(radio_Drive11Type);
+extern struct ui_menu_entry_s c64dtv_submenu[];
 
 #endif
-

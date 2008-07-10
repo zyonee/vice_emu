@@ -1,5 +1,5 @@
 /*
- * uidrive.h
+ * uidrivec64.h
  *
  * Written by
  *  Andreas Boose <viceteam@t-online.de>
@@ -24,25 +24,12 @@
  *
  */
 
-#ifndef _UIDRIVE_H
-#define _UIDRIVE_H
+#ifndef _UIDRIVEC64_H
+#define _UIDRIVEC64_H
 
 #include "uimenu.h"
 
-extern struct ui_menu_entry_s ui_drive_options_submenu[];
-extern struct ui_menu_entry_s ui_flash_options_submenu[];
-
-extern UI_CALLBACK(uidrive_extend_policy_control);
-
-extern struct ui_menu_entry_s set_drive0_extend_image_policy_submenu[];
-extern struct ui_menu_entry_s set_drive1_extend_image_policy_submenu[];
-extern struct ui_menu_entry_s set_drive2_extend_image_policy_submenu[];
-extern struct ui_menu_entry_s set_drive3_extend_image_policy_submenu[];
-
-extern UI_CALLBACK(radio_Drive8Type);
-extern UI_CALLBACK(radio_Drive9Type);
-extern UI_CALLBACK(radio_Drive10Type);
-extern UI_CALLBACK(radio_Drive11Type);
+extern struct ui_menu_entry_s ui_drivec64dtv_settings_menu[];
 
 #endif
 
