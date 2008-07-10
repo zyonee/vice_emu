@@ -1,3 +1,37 @@
+2008-07-10  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
+
+	* Version 1.22.25
+
+2008-07-10  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
+
+	* c64/reu.c: The status register bits are not reset if a new
+	transfer starts without reading the status register; however,
+	the interrupt only occurs if they are set again to new values.
+
+2008-07-09  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
+
+	* c64/reu.c: set_reu_size(): Do not reset
+	first_unused_register_address; remove a warning about
+	uninitialised object in reu_read().
+
+2008-07-08  Marco van den Heuvel  <blackystardust68@yahoo.com>
+
+	* translate.c: Updated the dutch translations.
+
+2008-07-08  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
+
+	* translate.c: 2 new texts for -autostartrunwithcolon.
+
+	* arch/win32/resc128.rc, arch/win32/c128ui.c: cosmetic change:
+	Norwegain -> Norwegian.
+
+2008-06-22  pottendo  <pottendo@aon.at>
+
+	* c128/c128-cmdline-options.c (cmdline_options): cosmetic change:
+	Norwegain -> Norwegian.
+
+	* arch/unix/joy.c (new_joystick_init): cosmetic change.
+
 2008-07-07  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
 
 	* Version 1.22.24

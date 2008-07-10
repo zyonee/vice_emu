@@ -659,21 +659,21 @@ translate_t string_table[] = {
 
 /* autostart.c */
 /* en */ {IDCLS_ENABLE_AUTOSTARTWITHCOLON,    "On autostart, use the 'RUN' command with a colon, i.e., 'RUN:'"},
-/* de */ {IDCLS_ENABLE_AUTOSTARTWITHCOLON_DE, ""},  /* fuzzy */
+/* de */ {IDCLS_ENABLE_AUTOSTARTWITHCOLON_DE, "Bei Autostart soll 'RUN' mit Doppelpunkt ausgeführt werden ('RUN:')"},
 /* fr */ {IDCLS_ENABLE_AUTOSTARTWITHCOLON_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_ENABLE_AUTOSTARTWITHCOLON_HU, ""},  /* fuzzy */
 /* it */ {IDCLS_ENABLE_AUTOSTARTWITHCOLON_IT, ""},  /* fuzzy */
-/* nl */ {IDCLS_ENABLE_AUTOSTARTWITHCOLON_NL, ""},  /* fuzzy */
+/* nl */ {IDCLS_ENABLE_AUTOSTARTWITHCOLON_NL, "Bij het autostarten, gebruik het 'RUN' commando met een dubbele punt, dus 'RUN:'"},
 /* pl */ {IDCLS_ENABLE_AUTOSTARTWITHCOLON_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_ENABLE_AUTOSTARTWITHCOLON_SV, ""},  /* fuzzy */
 
 /* autostart.c */
 /* en */ {IDCLS_DISABLE_AUTOSTARTWITHCOLON,    "On autostart, do not use the 'RUN' command with a colon; i.e., 'RUN'"},
-/* de */ {IDCLS_DISABLE_AUTOSTARTWITHCOLON_DE, ""},  /* fuzzy */
+/* de */ {IDCLS_DISABLE_AUTOSTARTWITHCOLON_DE, "Bei Autostart soll 'RUN' ohne Doppelpunkt ausgeführt werden ('RUN')"},
 /* fr */ {IDCLS_DISABLE_AUTOSTARTWITHCOLON_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_DISABLE_AUTOSTARTWITHCOLON_HU, ""},  /* fuzzy */
 /* it */ {IDCLS_DISABLE_AUTOSTARTWITHCOLON_IT, ""},  /* fuzzy */
-/* nl */ {IDCLS_DISABLE_AUTOSTARTWITHCOLON_NL, ""},  /* fuzzy */
+/* nl */ {IDCLS_DISABLE_AUTOSTARTWITHCOLON_NL, "Bij het autostarten, gebruik het 'RUN' commando niet met een dubbele punt, dus 'RUN'"},
 /* pl */ {IDCLS_DISABLE_AUTOSTARTWITHCOLON_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_DISABLE_AUTOSTARTWITHCOLON_SV, ""},  /* fuzzy */
 
