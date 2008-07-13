@@ -13,7 +13,8 @@ EXTRA_libjoystickdrv_a_SOURCES = \
 	joy_winmm.c \
 	joy_unix.c \
 	joy_unix_old.c \
-	joy_unix_digi_old.c
+	joy_unix_digi_old.c \
+	joy_allegro.c
 
 # These sources are always built.
 libjoystickdrv_a_SOURCES = 

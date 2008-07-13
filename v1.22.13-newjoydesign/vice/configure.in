@@ -162,6 +162,8 @@ if test x"$host_vendor" = "xgo32" -o x"$host_vendor" = "xmsdos" -o x"$host_os" =
   AC_DEFINE(HAVE_MOUSE,,[Enable 1351 mouse support])
   AC_DEFINE(HAS_SINGLE_CANVAS,,[Is only one canvas supported?])
 
+  JOYSTICK_DRIVERS="$JOYSTICK_DRIVERS joy_allegro.o"
+
   if test x"$enable_parsid" = "xyes"; then
     AC_DEFINE(HAVE_PARSID,,[Support for ParSID.])
   fi

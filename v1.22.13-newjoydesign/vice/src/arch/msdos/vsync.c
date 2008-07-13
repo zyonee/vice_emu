@@ -42,7 +42,7 @@
 #include "clkguard.h"
 #include "cmdline.h"
 #include "drive.h"
-#include "joy.h"
+#include "joystick.h"
 #include "kbd.h"
 #include "kbdbuf.h"
 #include "machine.h"

@@ -35,8 +35,6 @@ libarch_a_SOURCES = \
 	console.c \
 	grabkey.c \
 	grabkey.h \
-	joy.c \
-	joy.h \
 	kbd.c \
 	kbd.h \
 	menudefs.c \

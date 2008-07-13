@@ -411,18 +411,20 @@ int joystick_init(void)
 #endif
 
 #ifdef USE_UNIX_JOY
-    if (!joy_unix_init()) {
+    if (!joy_unix_init())
 #endif
+    {
 #ifdef USE_UNIX_OLD_JOY
         old_joystick_init();
 #endif
 #ifdef HAS_DIGITAL_JOYSTICK
         old_digital_joystick_init();
 #endif
-#ifdef USE_UNIX_JOY
     }
-#endif
 
+    {
+    }
+    
 #ifdef WIN32
 #if HAVE_DINPUT
     if (!joy_di_init())
@@ -430,6 +432,10 @@ int joystick_init(void)
     {
         joy_winmm_init();
     }
+#endif
+    
+#ifdef MSDOS
+    joystick_allegro_init();
 #endif
 
     return 1;
@@ -518,6 +524,7 @@ void joystick_close(void) {
     for (i = 0; i < MAX_HW_JOY_DRIVERS; i++) {
         if (joy_devices[i]) {
             joystick_close_one(joy_devices[i]);
+            joy_devices[i]=NULL;
         }
     }
 }

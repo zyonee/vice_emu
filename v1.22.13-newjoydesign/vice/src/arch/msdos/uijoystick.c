@@ -31,7 +31,7 @@
 
 #include <allegro.h>
 
-#include "joy.h"
+#include "joystick.h"
 #include "lib.h"
 #include "grabkey.h"
 #include "resources.h"
@@ -58,10 +58,8 @@ static TUI_MENU_CALLBACK(get_joystick_device_callback)
         return "Keyset A";
       case JOYDEV_KEYSET2:
         return "Keyset B";
-      case JOYDEV_HW1:
-        return "Joystick #1";
-      case JOYDEV_HW2:
-        return "Joystick #2";
+      default:
+        return joystick_device_name(value - JOYDEV_HW_BASE);
     }
 
     return "Unknown";
@@ -277,45 +275,6 @@ static tui_menu_item_def_t joy_device_1_submenu[] = {
     { "Keyset _B",
       "Use keyset B",
       set_joy_device_callback, (void *)(0x100 | JOYDEV_KEYSET2), 0,
-      TUI_MENU_BEH_CLOSE, NULL, NULL },
-    { "--" },
-    { "PC Joystick #_1",
-      "Use real PC joystick #1",
-      set_joy_device_callback, (void *)(0x100 | JOYDEV_HW1), 0,
-      TUI_MENU_BEH_CLOSE, NULL, NULL },
-    { "PC Joystick #_2",
-      "Use real PC joystick #2",
-      set_joy_device_callback, (void *)(0x100 | JOYDEV_HW2), 0,
-      TUI_MENU_BEH_CLOSE, NULL, NULL },
-    { NULL }
-};
-
-static tui_menu_item_def_t joy_device_2_submenu[] = {
-    { "N_one",
-      "No joystick device attached",
-      set_joy_device_callback, (void *)(0x200 | JOYDEV_NONE), 0,
-      TUI_MENU_BEH_CLOSE, NULL, NULL },
-    { "--" },
-    { "_Numpad + Right Ctrl",
-      "Use numeric keypad for movement and right Ctrl for fire",
-      set_joy_device_callback, (void *)(0x200 | JOYDEV_NUMPAD), 0,
-      TUI_MENU_BEH_CLOSE, NULL, NULL },
-    { "Keyset _A",
-      "Use keyset A",
-      set_joy_device_callback, (void *)(0x200 | JOYDEV_KEYSET1), 0,
-      TUI_MENU_BEH_CLOSE, NULL, NULL },
-    { "Keyset _B",
-      "Use keyset B",
-      set_joy_device_callback, (void *)(0x200 | JOYDEV_KEYSET2), 0,
-      TUI_MENU_BEH_CLOSE, NULL, NULL },
-    { "--" },
-    { "Joystick #_1",
-      "Use real joystick #1",
-      set_joy_device_callback, (void *)(0x200 | JOYDEV_HW1), 0,
-      TUI_MENU_BEH_CLOSE, NULL, NULL },
-    { "Joystick #_2",
-      "Use real joystick #2",
-      set_joy_device_callback, (void *)(0x200 | JOYDEV_HW2), 0,
       TUI_MENU_BEH_CLOSE, NULL, NULL },
     { NULL }
 };
@@ -634,6 +593,10 @@ static tui_menu_item_def_t single_joystick_submenu[] = {
       "Specify device for joystick emulation",
       get_joystick_device_callback, (void *)1, 19,
       TUI_MENU_BEH_CONTINUE, joy_device_1_submenu, "Joystick" },
+    { NULL }
+};
+
+static tui_menu_item_def_t common_joystick_submenu[] = {
     { "--" },
     { "Configure Keyset _A...",
       "Configure keyboard set A for joystick emulation",
@@ -651,54 +614,66 @@ static tui_menu_item_def_t single_joystick_submenu[] = {
     { NULL }
 };
 
-static tui_menu_item_def_t double_joystick_submenu[] = {
-    { "_Swap",
-      "Swap joystick ports",
-      swap_joysticks_callback, NULL, 0,
-      TUI_MENU_BEH_CONTINUE, NULL, NULL },
-    { "--" },
-    { "Port #_1:",
-      "Specify device for emulation of joystick in port #1",
-      get_joystick_device_callback, (void *)1, 19,
-      TUI_MENU_BEH_CONTINUE, joy_device_1_submenu, "Joystick #1" },
-    { "Port #_2:",
-      "Specify device for emulation of joystick in port #2",
-      get_joystick_device_callback, (void *)2, 19,
-      TUI_MENU_BEH_CONTINUE, joy_device_2_submenu, "Joystick #2" },
-    { "--" },
-    { "Configure Keyset _A...",
-      "Configure keyboard set A for joystick emulation",
-      NULL, NULL, 0,
-      TUI_MENU_BEH_CONTINUE, keyset_1_submenu, "Keyset A" },
-    { "Configure Keyset _B...",
-      "Configure keyboard set B for joystick emulation",
-      NULL, NULL, 0,
-      TUI_MENU_BEH_CONTINUE, keyset_2_submenu, "Keyset B" },
-    { "--" },
-    { "Set joystick _hardware type",
-      "Set type of PC joystick(s)",
-      get_hw_joystick_type_callback, NULL, 30,
-      TUI_MENU_BEH_CONTINUE, joy_list_submenu, "List of joystick types" },
-    { NULL }
-};
+static void joystickui_add_devices(tui_menu_t menu)
+{
+    int numdevs = joystick_device_num(), i;
+
+    tui_menu_add(menu, joy_device_1_submenu);
+
+    if (!numdevs)
+        return;
+    
+    tui_menu_add_separator(menu);
+
+    for (i=0; i<numdevs;i++)
+    {
+        tui_menu_add_item(menu,
+            joystick_device_name(i),
+            joystick_device_name(i),
+            set_joy_device_callback,
+            (void *)(0x100 | JOYDEV_HW_BASE + i),
+            0,
+            TUI_MENU_BEH_CONTINUE);
+    }
+}
 
 void uijoystick_init(struct tui_menu *parent_submenu,
                      unsigned int number_joysticks)
 {
-    tui_menu_t ui_joystick_settings_submenu;
 
     if (number_joysticks > 0) {
-        ui_joystick_settings_submenu = tui_menu_create("Joystick Settings", 1);
+        tui_menu_t ui_joystick_settings_submenu = tui_menu_create("Joystick Settings", 1);
         tui_menu_add_submenu(parent_submenu, "_Joystick Settings...",
                              "Joystick settings",
                              ui_joystick_settings_submenu, NULL, 0,
                              TUI_MENU_BEH_CONTINUE);
         if (number_joysticks == 2)
+        {
+            tui_menu_t ui_pick_joystick_1_submenu = tui_menu_create("Joystick #1", 1);
+            tui_menu_t ui_pick_joystick_2_submenu = tui_menu_create("Joystick #2", 1);
+            tui_menu_add_submenu(ui_joystick_settings_submenu, "Port #_1:",
+                        "Specify device for emulation of joystick in port #1", 
+                        ui_pick_joystick_1_submenu,
+                        get_joystick_device_callback, (void *)1, 19);
+            tui_menu_add_submenu(ui_joystick_settings_submenu, "Port #_2:",
+                        "Specify device for emulation of joystick in port #2", 
+                        ui_pick_joystick_2_submenu,
+                        get_joystick_device_callback, (void *)2, 19);
             tui_menu_add(ui_joystick_settings_submenu,
-                         double_joystick_submenu);
+                         common_joystick_submenu);
+            joystickui_add_devices(ui_pick_joystick_1_submenu);
+            joystickui_add_devices(ui_pick_joystick_2_submenu);
+        }
         else                    /* Just one joystick.  */
+        {
+            tui_menu_t ui_pick_joystick_submenu = tui_menu_create("Joystick", 1);
+            tui_menu_add_submenu(ui_joystick_settings_submenu, "Joystick _Device:",
+                        "Specify device for joystick emulation", 
+                        ui_pick_joystick_submenu,
+                        get_joystick_device_callback, (void *)1, 19);
             tui_menu_add(ui_joystick_settings_submenu,
-                         single_joystick_submenu);
+                         common_joystick_submenu);
+            joystickui_add_devices(ui_pick_joystick_submenu);
+        }
     }
 }
-
