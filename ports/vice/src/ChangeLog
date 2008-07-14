@@ -1,3 +1,49 @@
+2008-07-13  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
+
+	* Version 1.22.26
+
+2008-07-12  Andreas Matthies  <andreas.matthies@gmx.net>
+
+	* vicii/vicii-fetch.c, vicii/vicii_fetch.h: vicii_fetch_matrix
+	now gets the cycle and uses it to change xsmooth_color in time.
+	This fixes bug in Crest/Krestage multiplexer crunchtable.
+	
+	* vicii/vicii-draw.c (draw_mc_bitmap_foreground): Change from
+	VICII_ILLEGAL_TEXT_MODE is handled now. This fixes bug in
+	Crest/Digital Magic.
+	
+	* vicii/vicii-mem.c (d015_store): Force a DMA check even on
+	last_dma_line. This fixes bug in Oregon/Maulhalten.
+	
+	* vicii/vicii-sprites.c (vicii_sprites_set_x_position): Another
+	fix to make Cosmos Design/Living Chips happy. This is not the
+	end of the story...
+
+2008-07-12  Marco van den Heuvel  <blackystardust68@yahoo.com>
+
+	* arch/amigaos/README.AMIGA: Updated.
+
+	* arch/unix/gp2x/make-bindist.sh,
+	arch/unix/sco_sol/make-bindist.sh: Fixed a typo.
+
+2008-07-13  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
+
+	* c64/reu.c: Fixed the end of transfer length when doing a
+	compare.
+
+2008-07-12  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
+
+	* arch/unix/x11/gnome/x11ui.c: removed weird unicode character
+	from a commentary in ui_open_canvas_window().
+
+	* c64/reu.c: Fixed a bug with transfer and swap file operations
+	introduced on 2008-07-10; Added assert()s for input parameters
+	in reu_dma_update_reads(), reu_dma_host_to_dma(),
+	reu_dma_reu_to_host(), reu_dma_compare(); Fixed an error in
+	reu_dma_compare() where it "forgot" to generate an IRQ if a
+	verify error occurred; length is now written correctly in
+	reu_dma_update_regs() (value 0x10000 was not corrected to 0!).
+
 2008-07-10  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
 
 	* Version 1.22.25
