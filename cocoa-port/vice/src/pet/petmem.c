@@ -822,25 +822,26 @@ static BYTE peek_bank_io(WORD addr)
       case 0x00:
         return addr >> 8;
       default:                  /* 0x30, 0x50, 0x60, 0x70, 0x90-0xf0 */
-        if (addr & 0x10)
-            v1 = pia1_peek(addr);
-        else
-            v1 = 0xff;
-        if (addr & 0x20)
-            v2 = pia2_peek(addr);
-        else
-            v2 = 0xff;
-        if (addr & 0x40)
-            v3 = via_peek(addr);
-        else
-            v3 = 0xff;
-        v4 = 0xff;
-        if ((addr & 0x80) && petres.crtc) {
-            v4 = crtc_read(addr);
-        }
-        return v1 & v2 & v3 & v4;
+        break;
     }
-    return 0xff;
+
+    if (addr & 0x10)
+        v1 = pia1_peek(addr);
+    else
+        v1 = 0xff;
+    if (addr & 0x20)
+        v2 = pia2_peek(addr);
+    else
+        v2 = 0xff;
+    if (addr & 0x40)
+        v3 = via_peek(addr);
+    else
+        v3 = 0xff;
+    v4 = 0xff;
+    if ((addr & 0x80) && petres.crtc) {
+        v4 = crtc_read(addr);
+    }
+    return v1 & v2 & v3 & v4;
 }
 
 /* Exported banked memory access functions for the monitor.  */
@@ -945,12 +946,16 @@ mem_ioreg_list_t *mem_ioreg_list_get(void *context)
     return mem_ioreg_list;
 }
 
-void mem_get_screen_parameter(WORD *base, BYTE *rows, BYTE *columns)
+void mem_get_screen_parameter(WORD *base, BYTE *rows, BYTE *columns, int *bank)
 {
-    /* FIXME */
-    *base = 0;
+    int cols;
+
+    resources_get_int("VideoSize", &cols);
+
+    *base = 0x8000;
     *rows = 25;
-    *columns = 80;
+    *columns = (BYTE)cols;
+    *bank = 0;
 }
 
 /*-----------------------------------------------------------------------*/

@@ -37,6 +37,7 @@
 #include "archdep.h"
 #include "autostart.h"
 #include "attach.h"
+#include "cmdline.h"
 #include "datasette.h"
 #include "drive.h"
 #include "fileio.h"
@@ -91,7 +92,7 @@ static log_t autostart_log = LOG_ERR;
 
 /* Flag: was true drive emulation turned on when we started booting the disk
    image?  */
-static int orig_drive_true_emulation_state = 0;
+static int orig_drive_true_emulation_state = -1;
 
 /* PETSCII name of the program to load. NULL if default */
 static BYTE *autostart_program_name = NULL;
@@ -110,6 +111,89 @@ static unsigned int autostart_run_mode;
 
 /* Flag: maincpu_clk isn't resetted yet */
 static int autostart_wait_for_reset;
+/* ------------------------------------------------------------------------- */
+
+static int AutostartRunWithColon = 0;
+
+static const char * const AutostartRunCommandsAvailable[] = { "RUN\r", "RUN:\r" };
+
+static const char * AutostartRunCommand = NULL;
+
+/*! \internal \brief set the reu to the enabled or disabled state
+
+ \param val
+   if 0, disable the REU; else, enable it.
+
+ \param param
+   unused
+
+ \return
+   0 on success. else -1.
+*/
+static int set_autostart_run_with_colon(int val, void *param)
+{
+    AutostartRunWithColon = val ? 1 : 0;
+
+    AutostartRunCommand = AutostartRunCommandsAvailable[AutostartRunWithColon];
+
+    return 0;
+}
+
+
+/*! \brief integer resources used by the REU module */
+static const resource_int_t resources_int[] = {
+    { "AutostartRunWithColon", 0, RES_EVENT_NO, (resource_value_t)0,
+      &AutostartRunWithColon, set_autostart_run_with_colon, NULL },
+    { NULL }
+};
+
+/*! \brief initialize the resources
+ \return
+   0 on success, else -1.
+
+ \remark
+   Registers the integer resources
+*/
+int autostart_resources_init(void)
+{
+    return resources_register_int(resources_int);
+}
+
+/* ------------------------------------------------------------------------- */
+
+#ifdef HAS_TRANSLATION
+static const cmdline_option_t cmdline_options[] =
+{
+    { "-autostartwithcolon", SET_RESOURCE, 0, NULL, NULL, "AutostartRunWithColon", (resource_value_t)1,
+      0, IDCLS_ENABLE_AUTOSTARTWITHCOLON },
+    { "+autostartwithcolon", SET_RESOURCE, 0, NULL, NULL, "AutostartRunWithColon", (resource_value_t)0,
+      0, IDCLS_DISABLE_AUTOSTARTWITHCOLON },
+    { NULL }
+};
+#else
+static const cmdline_option_t cmdline_options[] =
+{
+    { "-autostartwithcolon", SET_RESOURCE, 0, NULL, NULL, "AutostartRunWithColon", (resource_value_t)1,
+      NULL, N_("On autostart, use the 'RUN' command with a colon, i.e., 'RUN:'") },
+    { "+autostartwithcolon", SET_RESOURCE, 0, NULL, NULL, "AutostartRunWithColon", (resource_value_t)0,
+      NULL, N_("On autostart, do not use the 'RUN' command with a colon; i.e., 'RUN'") },
+    { NULL }
+};
+#endif
+
+/*! \brief initialize the command-line options
+
+ \return
+   0 on success, else -1.
+
+ \remark
+   Registers the command-line options
+*/
+int autostart_cmdline_options_init(void)
+{
+    return cmdline_register_options(cmdline_options);
+}
+
 /* ------------------------------------------------------------------------- */
 
 /* Deallocate program name if we have one */
@@ -273,7 +357,7 @@ static void disk_eof_callback(void)
 static void disk_attention_callback(void)
 {
     if (autostart_run_mode == AUTOSTART_MODE_RUN)
-        kbdbuf_feed("RUN:\r");
+        kbdbuf_feed(AutostartRunCommand);
 
     machine_bus_attention_callback_set(NULL);
 
@@ -292,11 +376,11 @@ static void advance_hastape(void)
       case YES:
         log_message(autostart_log, "Loading file.");
         if (autostart_program_name) {
-            tmp = util_concat("LOAD\"", autostart_program_name, "\"\r", NULL);
+            tmp = util_concat("LOAD\"", autostart_program_name, "\":\r", NULL);
             kbdbuf_feed(tmp);
             lib_free(tmp);
         } else {
-            kbdbuf_feed("LOAD\r");
+            kbdbuf_feed("LOAD:\r");
         }
         if (tape_tap_attched()) {
             autostartmode = AUTOSTART_PRESSPLAYONTAPE;
@@ -333,7 +417,7 @@ static void advance_loadingtape(void)
     switch (check("READY.", AUTOSTART_WAIT_BLINK)) {
       case YES:
         log_message(autostart_log, "Starting program.");
-        kbdbuf_feed("RUN\r");
+        kbdbuf_feed(AutostartRunCommand);
         autostartmode = AUTOSTART_DONE;
         break;
       case NO:
@@ -374,15 +458,15 @@ static void advance_hasdisk(void)
             traps = 1;
         }
         if (autostart_program_name)
-            tmp = lib_msprintf("LOAD\"%s\",8,1\r", autostart_program_name);
+            tmp = lib_msprintf("LOAD\"%s\",8,1:\r", autostart_program_name);
         else
-            tmp = lib_stralloc("LOAD\"*\",8,1\r");
+            tmp = lib_stralloc("LOAD\"*\",8,1:\r");
         kbdbuf_feed(tmp);
         lib_free(tmp);
 
         if (!traps) {
             if (autostart_run_mode == AUTOSTART_MODE_RUN)
-                kbdbuf_feed("RUN\r");
+                kbdbuf_feed(AutostartRunCommand);
             autostartmode = AUTOSTART_DONE;
         } else {
             autostartmode = AUTOSTART_LOADINGDISK;
@@ -422,6 +506,11 @@ void autostart_advance(void)
     if (!autostart_enabled)
         return;
 
+    if( orig_drive_true_emulation_state == -1)
+    {
+        orig_drive_true_emulation_state = get_true_drive_emulation_state();
+    }
+ 
     if (maincpu_clk < min_cycles)
     {
         autostart_wait_for_reset = 0;
@@ -542,6 +631,7 @@ int autostart_tape(const char *file_name, const char *program_name,
                 tape_seek_start(tape_image_dev1);
             }
         }
+        resources_set_int("VirtualDevices", 1); /* Kludge: iAN CooG - for t64 images we need devtraps ON */
         reboot_for_autostart(name, AUTOSTART_HASTAPE, runmode);
         lib_free(name);
 
@@ -654,6 +744,7 @@ int autostart_prg(const char *file_name, unsigned int runmode)
     /* Setup FS-based drive emulation.  */
     fsdevice_set_directory(directory ? directory : ".", 8);
     set_true_drive_emulation_mode(0);
+    orig_drive_true_emulation_state =0;
     resources_set_int("VirtualDevices", 1);
     resources_set_int("FSDevice8ConvertP00", 1);
     file_system_detach_disk(8);

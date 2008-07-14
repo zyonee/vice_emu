@@ -370,7 +370,7 @@ inline static void d015_store(const BYTE value)
              && cycle > VICII_FETCH_CYCLE
              && cycle <= vicii.sprite_fetch_cycle)
             || vicii.raster.current_line < vicii.first_dma_line
-            || vicii.raster.current_line > vicii.last_dma_line) {
+            || vicii.raster.current_line >= vicii.last_dma_line) {
             CLOCK new_fetch_clk;
 
             new_fetch_clk = (VICII_LINE_START_CLK(maincpu_clk)
@@ -1350,11 +1350,9 @@ inline static BYTE d019_peek(void)
             return vicii.irq_status | 0xf1;
         else
             return vicii.irq_status | 0x71;
-    } else {
-        return vicii.irq_status | 0x70;
     }
 
-    return vicii.irq_status;
+    return vicii.irq_status | 0x70;
 }
 
 BYTE REGPARM1 vicii_peek(WORD addr)

@@ -272,6 +272,7 @@ EXTRA_DIST = \
 	watcom/ieee.tgt \
 	watcom/imagecontents.tgt \
 	watcom/maincpu.tgt \
+	watcom/make-watcom-bindist.bat \
 	watcom/monitor.tgt \
 	watcom/parallel.tgt \
 	watcom/pet.tgt \
@@ -306,6 +307,7 @@ EXTRA_DIST = \
 	watcom/xplus4main.c \
 	watcom/xvic.tgt \
 	watcom/xvicmain.c \
+	_vice.dsp \
 	arch.dsp \
 	base.dsp \
 	c128.dsp \
@@ -357,7 +359,6 @@ EXTRA_DIST = \
 	vdc.dsp \
 	vdrive.dsp \
 	vic20.dsp \
-	vice.dsp \
 	vicii.dsp \
 	video.dsp \
 	x128.dsp \
@@ -371,6 +372,7 @@ EXTRA_DIST = \
 	vice.manifest \
 	montb.bmp \
 	make-bindist.sh \
+	make-msvc-bindist.bat \
 	c64.ico 
 
 BUILT_SOURCES = res.h

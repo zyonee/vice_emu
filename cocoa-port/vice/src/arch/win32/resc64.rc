@@ -72,6 +72,8 @@ BEGIN
             MENUITEM "Generic &16KB image...",      IDM_CART_ATTACH_16KB
             MENUITEM "&Action Replay image...",     IDM_CART_ATTACH_AR
             MENUITEM "Action Replay &III image...", IDM_CART_ATTACH_AR3
+            MENUITEM "Action Replay &4 image...",   IDM_CART_ATTACH_AR4
+            MENUITEM "Star&DOS image...",           IDM_CART_ATTACH_STARDOS
             MENUITEM "Atomic &Power image...",      IDM_CART_ATTACH_AT
             MENUITEM "&Epyx fastload image...",     IDM_CART_ATTACH_EPYX
             MENUITEM "&IEEE488 interface image...", IDM_CART_ATTACH_IEEE488
@@ -124,6 +126,11 @@ BEGIN
 #endif
         MENUITEM SEPARATOR
         MENUITEM "E&xit", IDM_EXIT
+    END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "&Copy", IDM_EDIT_COPY
+        MENUITEM "&Paste", IDM_EDIT_PASTE
     END
     POPUP "Sna&pshot"
     BEGIN
@@ -307,14 +314,14 @@ BEGIN
         BEGIN
             MENUITEM "&Aktuelles Image hinzufügen", IDM_FLIP_ADD
             MENUITEM "Aktuelles Image entfe&rnen",  IDM_FLIP_REMOVE
-            MENUITEM "Nächstes Image",             IDM_FLIP_NEXT
-            MENUITEM "Voriges Image",              IDM_FLIP_PREVIOUS
+            MENUITEM "&Nächstes Image",             IDM_FLIP_NEXT
+            MENUITEM "&Voriges Image",              IDM_FLIP_PREVIOUS
             MENUITEM SEPARATOR
             MENUITEM "Fliplist Datei &Laden",     IDM_FLIP_LOAD
             MENUITEM "Fliplist Datei &Speichern", IDM_FLIP_SAVE
         END
         MENUITEM SEPARATOR
-        MENUITEM "Band Image einlegen...", IDM_ATTACH_TAPE
+        MENUITEM "&Band Image einlegen...", IDM_ATTACH_TAPE
         MENUITEM "Band Image entfernen",          IDM_DETACH_TAPE
         POPUP "Bandlaufwerk Kontro&lle"
         BEGIN
@@ -335,6 +342,8 @@ BEGIN
             MENUITEM "Generische 16Kb Image...", IDM_CART_ATTACH_16KB
             MENUITEM "&Action Replay Image...",     IDM_CART_ATTACH_AR
             MENUITEM "Action Replay &III Image...", IDM_CART_ATTACH_AR3
+            MENUITEM "Action Replay &4 Image...", IDM_CART_ATTACH_AR4
+            MENUITEM "Star&DOS Image...", IDM_CART_ATTACH_STARDOS
             MENUITEM "Atomic Power &Image...",      IDM_CART_ATTACH_AT
             MENUITEM "&Epyx Fastload Image...",     IDM_CART_ATTACH_EPYX
             MENUITEM "&IEEE 488 Schnittstellenmodul...",           IDM_CART_ATTACH_IEEE488
@@ -356,14 +365,14 @@ BEGIN
             MENUITEM "Reset bei Wechsel von Erweiterungsmodulen",       IDM_TOGGLE_CART_RESET
         END
         MENUITEM "Erweiterungsmodul &Image entfernen",  IDM_CART_DETACH
-        MENUITEM "Erweiterungsmodul Freeze", IDM_CART_FREEZE
+        MENUITEM "Erweiterungsmodul Free&ze", IDM_CART_FREEZE
         MENUITEM SEPARATOR
         MENUITEM "&Pause", IDM_PAUSE, CHECKED
         MENUITEM "&Monitor", IDM_MONITOR
         POPUP "&Reset"
         BEGIN
             MENUITEM "&Hart", IDM_RESET_HARD
-            MENUITEM "&Soft",      IDM_RESET_SOFT
+            MENUITEM "&Weich",      IDM_RESET_SOFT
             MENUITEM SEPARATOR
             MENUITEM "Laufwerk #&8",  IDM_RESET_DRIVE8
             MENUITEM "Laufwerk #&9",  IDM_RESET_DRIVE9
@@ -380,7 +389,7 @@ BEGIN
                 MENUITEM "&History", IDM_DEBUG_MODE_HISTORY
                 MENUITEM "&History Automatische Wiedergabe", IDM_DEBUG_MODE_AUTOPLAY
             END
-            MENUITEM "&Main CPU Trace", IDM_TOGGLE_MAINCPU_TRACE, CHECKED
+            MENUITEM "&Haupt CPU Trace", IDM_TOGGLE_MAINCPU_TRACE, CHECKED
             MENUITEM "Laufwerk&0 CPU Trace", IDM_TOGGLE_DRIVE0CPU_TRACE, CHECKED
             MENUITEM "Laufwerk&1 CPU Trace", IDM_TOGGLE_DRIVE1CPU_TRACE, CHECKED
         END
@@ -388,12 +397,17 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "E&xit", IDM_EXIT
     END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "&Copy", IDM_EDIT_COPY
+        MENUITEM "&Paste", IDM_EDIT_PASTE
+    END
     POPUP "Sna&pshot"
     BEGIN
         MENUITEM "Snapshot &Image Laden...", IDM_SNAPSHOT_LOAD
         MENUITEM "Sna&pshot Image Speichern...", IDM_SNAPSHOT_SAVE
-        MENUITEM "Schnell&laden von Snapshot Image", IDM_LOADQUICK
-        MENUITEM "&Schnellspeichern von Snapshot", IDM_SAVEQUICK
+        MENUITEM "Quick-Snapshot Image &laden", IDM_LOADQUICK
+        MENUITEM "Quick-Snapshot Datei &speichern", IDM_SAVEQUICK
         MENUITEM SEPARATOR
         MENUITEM "Sta&rt/Stop Aufnahme History",       IDM_EVENT_TOGGLE_RECORD
         MENUITEM "St&art/Stop Wiedergabe History",        IDM_EVENT_TOGGLE_PLAYBACK
@@ -457,7 +471,7 @@ BEGIN
         MENUITEM "PAL Emulation", IDM_TOGGLE_FASTPAL, CHECKED
         MENUITEM "Scale2x", IDM_TOGGLE_SCALE2X, CHECKED
         MENUITEM SEPARATOR
-        MENUITEM "Joystick ports austauschen", IDM_SWAP_JOYSTICK
+        MENUITEM "&Joystick ports austauschen", IDM_SWAP_JOYSTICK
         MENUITEM SEPARATOR
         MENUITEM "&Sound Einschalten", IDM_TOGGLE_SOUND, CHECKED
         MENUITEM SEPARATOR
@@ -472,7 +486,7 @@ BEGIN
         END
         MENUITEM SEPARATOR
         MENUITEM "Emulator &Identifikation", IDM_TOGGLE_EMUID
-        MENUITEM "&Maus Ereignisse abfangen",    IDM_MOUSE
+        MENUITEM "Maus Ereignisse abfan&gen",    IDM_MOUSE
     END
     POPUP "&Einstellungen"
     BEGIN
@@ -596,6 +610,8 @@ BEGIN
             MENUITEM "Insérer une image générique de 16Ko...",     IDM_CART_ATTACH_16KB
             MENUITEM "Insérer une cartouche Action Replay...",     IDM_CART_ATTACH_AR
             MENUITEM "Insérer une cartouche Action Replay III...", IDM_CART_ATTACH_AR3
+            MENUITEM "Insrer une cartouche Action Replay 4...",    IDM_CART_ATTACH_AR4
+            MENUITEM "Insrer une cartouche StarDOS...",            IDM_CART_ATTACH_STARDOS
             MENUITEM "Insérer une cartouche Atomic Power...",      IDM_CART_ATTACH_AT
             MENUITEM "Insérer une cartouche Epyx FastLoad...",     IDM_CART_ATTACH_EPYX
             MENUITEM "Insérer une cartouche interface IEEE488...", IDM_CART_ATTACH_IEEE488
@@ -648,6 +664,11 @@ BEGIN
 #endif
         MENUITEM SEPARATOR
         MENUITEM "&Quitter", IDM_EXIT
+    END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "&Copy", IDM_EDIT_COPY
+        MENUITEM "&Paste", IDM_EDIT_PASTE
     END
     POPUP "&Sauvegarde"
     BEGIN
@@ -824,12 +845,12 @@ BEGIN
             MENUITEM "#1&0-es lemezegység", IDM_DETACH_10
             MENUITEM "#&11-es lemezegység", IDM_DETACH_11
             MENUITEM SEPARATOR
-            MENUITEM "Ö&sszes", IDM_DETACH_ALL
+            MENUITEM "&Mindegyik", IDM_DETACH_ALL
         END
         POPUP "Lemezl&ista"
         BEGIN
-            MENUITEM "Az aktuális képmás ho&zzáadása",     IDM_FLIP_ADD
-            MENUITEM "Az aktuális képmás el&távolítása",  IDM_FLIP_REMOVE
+            MENUITEM "Az aktuális képmás hozzáadása",     IDM_FLIP_ADD
+            MENUITEM "Az aktuális képmás eltávolítása",  IDM_FLIP_REMOVE
             MENUITEM "&Következõ képmás csatolása",     IDM_FLIP_NEXT
             MENUITEM "&Elõzõ képmás csatolása", IDM_FLIP_PREVIOUS
             MENUITEM SEPARATOR
@@ -837,7 +858,7 @@ BEGIN
             MENUITEM "Lemezlista menté&se", IDM_FLIP_SAVE
         END
         MENUITEM SEPARATOR
-        MENUITEM "Szalag képmás csatolása...", IDM_ATTACH_TAPE
+        MENUITEM "&Szalag képmás csatolása...", IDM_ATTACH_TAPE
         MENUITEM "Sz&alag képmás leválasztása",           IDM_DETACH_TAPE
         POPUP "Magnó &vezérlés"
         BEGIN
@@ -858,6 +879,8 @@ BEGIN
             MENUITEM "Általános &16KB képmás...",      IDM_CART_ATTACH_16KB
             MENUITEM "&Action Replay képmás...",     IDM_CART_ATTACH_AR
             MENUITEM "Action Replay &III képmás...", IDM_CART_ATTACH_AR3
+            MENUITEM "Action Replay &4 kpms...", IDM_CART_ATTACH_AR4
+            MENUITEM "Star&DOS kpms...", IDM_CART_ATTACH_STARDOS
             MENUITEM "Atomic &Power képmás...",      IDM_CART_ATTACH_AT
             MENUITEM "&Epyx gyorstöltõ képmás...",     IDM_CART_ATTACH_EPYX
             MENUITEM "&IEEE488 interfész képmás...", IDM_CART_ATTACH_IEEE488
@@ -879,7 +902,7 @@ BEGIN
             MENUITEM "Újraindítás cartridge &cserénél", IDM_TOGGLE_CART_RESET
         END
         MENUITEM "Cartridge képmás &leválasztása",  IDM_CART_DETACH
-        MENUITEM "Fagyasztás Cartridge-el", IDM_CART_FREEZE
+        MENUITEM "&Fagyasztás Cartridge-dzsel", IDM_CART_FREEZE
         MENUITEM SEPARATOR
         MENUITEM "&Szünet", IDM_PAUSE, CHECKED
         MENUITEM "&Monitor", IDM_MONITOR
@@ -911,12 +934,17 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "&Kilépés", IDM_EXIT
     END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "&Copy", IDM_EDIT_COPY
+        MENUITEM "&Paste", IDM_EDIT_PASTE
+    END
     POPUP "&Pillanatkép"
     BEGIN
         MENUITEM "Pillanatkép &betöltése...",          IDM_SNAPSHOT_LOAD
         MENUITEM "Pillanatkép &mentése...",          IDM_SNAPSHOT_SAVE
-        MENUITEM "Gyors pillanatkép b&etöltése", IDM_LOADQUICK
-        MENUITEM "Gyors pillanatkép me&ntése", IDM_SAVEQUICK
+        MENUITEM "Gyors pillanatkép &betöltése", IDM_LOADQUICK
+        MENUITEM "Gyors pillanatkép fájl &mentése", IDM_SAVEQUICK
         MENUITEM SEPARATOR
         MENUITEM "Esemény &felvétel indítása/leállítása",       IDM_EVENT_TOGGLE_RECORD
         MENUITEM "Esemény &visszajátszás indítása/leállítása",        IDM_EVENT_TOGGLE_PLAYBACK
@@ -978,9 +1006,9 @@ BEGIN
         MENUITEM "&Dupla méret", IDM_TOGGLE_DOUBLESIZE, CHECKED
         MENUITEM "Du&pla pásztázás", IDM_TOGGLE_DOUBLESCAN, CHECKED
         MENUITEM "PAL emuláció", IDM_TOGGLE_FASTPAL, CHECKED
-        MENUITEM "2x méretez", IDM_TOGGLE_SCALE2X, CHECKED
+        MENUITEM "Élsimítás", IDM_TOGGLE_SCALE2X, CHECKED
         MENUITEM SEPARATOR
-        MENUITEM "Botkormányok felcserélése", IDM_SWAP_JOYSTICK
+        MENUITEM "Botkormányok &felcserélése", IDM_SWAP_JOYSTICK
         MENUITEM SEPARATOR
         MENUITEM "&Hangok engedélyezése", IDM_TOGGLE_SOUND, CHECKED
         MENUITEM SEPARATOR
@@ -995,7 +1023,7 @@ BEGIN
         END
         MENUITEM SEPARATOR
         MENUITEM "Emulátor &azonosító", IDM_TOGGLE_EMUID
-        MENUITEM "&Grab mouse events",    IDM_MOUSE
+        MENUITEM "Egér &események elkapása",    IDM_MOUSE
     END
     POPUP "B&eállítások"
     BEGIN
@@ -1006,7 +1034,7 @@ BEGIN
         MENUITEM "VIC-II beállításai...",     IDM_VICII_SETTINGS
         MENUITEM "B&otkormány beállításai...",  IDM_JOY_SETTINGS
         MENUITEM "&Billentyûzet beállításai...",  IDM_KEYBOARD_SETTINGS
-        MENUITEM "Mo&use settings...",     IDM_MOUSE_SETTINGS
+        MENUITEM "Egér &beállításai...",     IDM_MOUSE_SETTINGS
         MENUITEM "Hang beállítások...",     IDM_SOUND_SETTINGS
         MENUITEM "S&ID beállításai...",       IDM_SID_SETTINGS
         MENUITEM "&ROM-ok beállításai...",       IDM_ROM_SETTINGS
@@ -1120,6 +1148,8 @@ BEGIN
             MENUITEM "Immagine generica di &16KB...",      IDM_CART_ATTACH_16KB
             MENUITEM "Immagine &Action Replay...",     IDM_CART_ATTACH_AR
             MENUITEM "Immagine Action Replay &III...", IDM_CART_ATTACH_AR3
+            MENUITEM "Immagine Action Replay &4...", IDM_CART_ATTACH_AR4
+            MENUITEM "Immagine Star&DOS...", IDM_CART_ATTACH_STARDOS
             MENUITEM "Immagine Atomic &Power...",      IDM_CART_ATTACH_AT
             MENUITEM "Immagine &Epyx fastload...",     IDM_CART_ATTACH_EPYX
             MENUITEM "Immagine dell'interfaccia &IEEE488...", IDM_CART_ATTACH_IEEE488
@@ -1172,6 +1202,11 @@ BEGIN
 #endif
         MENUITEM SEPARATOR
         MENUITEM "E&sci", IDM_EXIT
+    END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "&Copy", IDM_EDIT_COPY
+        MENUITEM "&Paste", IDM_EDIT_PASTE
     END
     POPUP "Sna&pshot"
     BEGIN
@@ -1381,6 +1416,8 @@ BEGIN
             MENUITEM "Algemeen &16KB-bestand...",     IDM_CART_ATTACH_16KB
             MENUITEM "&Action Replay-bestand...",     IDM_CART_ATTACH_AR
             MENUITEM "Action Replay III-bestand...",  IDM_CART_ATTACH_AR3
+            MENUITEM "Action Replay 4-bestand...",  IDM_CART_ATTACH_AR4
+            MENUITEM "StarDOS-bestand...",  IDM_CART_ATTACH_STARDOS
             MENUITEM "Atomic &Power-bestand...",      IDM_CART_ATTACH_AT
             MENUITEM "&Epyx fastloadbestand...",     IDM_CART_ATTACH_EPYX
             MENUITEM "&IEEE488-interfacebestand...", IDM_CART_ATTACH_IEEE488
@@ -1433,6 +1470,11 @@ BEGIN
 #endif
         MENUITEM SEPARATOR
         MENUITEM "Af&sluiten", IDM_EXIT
+    END
+    POPUP "&Bewerken"
+    BEGIN
+        MENUITEM "&Kopie", IDM_EDIT_COPY
+        MENUITEM "&Plakken", IDM_EDIT_PASTE
     END
     POPUP "Momento&pname"
     BEGIN
@@ -1643,6 +1685,8 @@ BEGIN
             MENUITEM "Standardowy obraz &16KB...",   IDM_CART_ATTACH_16KB
             MENUITEM "Obraz &Action Replay...",      IDM_CART_ATTACH_AR
             MENUITEM "Obraz Action Replay III...",   IDM_CART_ATTACH_AR3
+            MENUITEM "Obraz Action Replay 4...",   IDM_CART_ATTACH_AR4
+            MENUITEM "Obraz StarDOS...",   IDM_CART_ATTACH_STARDOS
             MENUITEM "Obraz Atomic &Power...",       IDM_CART_ATTACH_AT
             MENUITEM "Obraz &Epyx fastload...",      IDM_CART_ATTACH_EPYX
             MENUITEM "Obraz interfejsu &IEEE488...", IDM_CART_ATTACH_IEEE488
@@ -1695,6 +1739,11 @@ BEGIN
 #endif
         MENUITEM SEPARATOR
         MENUITEM "W&yjd¼", IDM_EXIT
+    END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "&Copy", IDM_EDIT_COPY
+        MENUITEM "&Paste", IDM_EDIT_PASTE
     END
     POPUP "z&rzutu"
     BEGIN
@@ -1905,6 +1954,8 @@ BEGIN
             MENUITEM "Vanlig &16KB-fil...",        IDM_CART_ATTACH_16KB
             MENUITEM "&Action Replay-fil...",      IDM_CART_ATTACH_AR
             MENUITEM "Action Replay &III-avbildning...",  IDM_CART_ATTACH_AR3
+            MENUITEM "Action Replay &4-avbildning...",  IDM_CART_ATTACH_AR4
+            MENUITEM "StarDOS-avbildning...",  IDM_CART_ATTACH_STARDOS
             MENUITEM "Atomic &Power-fil...",       IDM_CART_ATTACH_AT
             MENUITEM "&Epyx fastload-fil...",      IDM_CART_ATTACH_EPYX
             MENUITEM "&IEEE488-gränssnittsfil...", IDM_CART_ATTACH_IEEE488
@@ -1926,7 +1977,7 @@ BEGIN
             MENUITEM "Nollställ &vid modulbyte", IDM_TOGGLE_CART_RESET
         END
         MENUITEM "Koppla &från insticksmodulfil",  IDM_CART_DETACH
-        MENUITEM "Frys", IDM_CART_FREEZE
+        MENUITEM "Insticksmodulens &frysfunktion", IDM_CART_FREEZE
         MENUITEM SEPARATOR
         MENUITEM "&Paus", IDM_PAUSE, CHECKED
         MENUITEM "&Monitor", IDM_MONITOR
@@ -1957,6 +2008,11 @@ BEGIN
 #endif
         MENUITEM SEPARATOR
         MENUITEM "&Avsluta", IDM_EXIT
+    END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "&Copy", IDM_EDIT_COPY
+        MENUITEM "&Paste", IDM_EDIT_PASTE
     END
     POPUP "&Ögonblicksbild"
     BEGIN
@@ -2027,7 +2083,7 @@ BEGIN
         MENUITEM "PAL-emulering", IDM_TOGGLE_FASTPAL, CHECKED
         MENUITEM "Scale2x", IDM_TOGGLE_SCALE2X, CHECKED
         MENUITEM SEPARATOR
-        MENUITEM "Vä&xla spelportarna", IDM_SWAP_JOYSTICK
+        MENUITEM "Växla &spelportarna", IDM_SWAP_JOYSTICK
         MENUITEM SEPARATOR
         MENUITEM "Aktivera &ljudåtergivning", IDM_TOGGLE_SOUND, CHECKED
         MENUITEM SEPARATOR
@@ -2042,7 +2098,7 @@ BEGIN
         END
         MENUITEM SEPARATOR
         MENUITEM "Emulator&identifiering", IDM_TOGGLE_EMUID
-        MENUITEM "&Grab mouse events",    IDM_MOUSE
+        MENUITEM "&Fånga mushändelser",    IDM_MOUSE
     END
     POPUP "&Inställningar"
     BEGIN
@@ -2053,7 +2109,7 @@ BEGIN
         MENUITEM "VIC-II-inställningar...",     IDM_VICII_SETTINGS
         MENUITEM "Inställningar för &styrspak...",  IDM_JOY_SETTINGS
         MENUITEM "&Tangentbordsinställningar...",  IDM_KEYBOARD_SETTINGS
-        MENUITEM "Mo&use settings...",     IDM_MOUSE_SETTINGS
+        MENUITEM "M&usinställningar...",     IDM_MOUSE_SETTINGS
         MENUITEM "L&judinställningar...",     IDM_SOUND_SETTINGS
         MENUITEM "S&ID-inställningar...",       IDM_SID_SETTINGS
         MENUITEM "&ROM-inställningar...",       IDM_ROM_SETTINGS
