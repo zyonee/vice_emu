@@ -238,7 +238,7 @@ static int joyreleaseval(int column, int *status)
 
 static joy_data_t* joy_devices[MAX_HW_JOY_DRIVERS];
 
-int set_joystick_device(int val, void *param)
+static int set_joystick_device(int val, void *param)
 {
     joy_data_t* dev;
     int port = (int)param;
@@ -375,14 +375,13 @@ int joystick_init_resources(void)
 {
     resources_register_int(resources_int);
 
+#ifdef MSDOS
+    joystick_allegro_init_resources();
+#endif
+    
     return 1;
 }
 #endif
-
-int joystick_arch_init_resources(void)
-{
-    return resources_register_int(resources_int);
-}
 
 /* ------------------------------------------------------------------------- */
 
@@ -421,9 +420,6 @@ int joystick_init(void)
         old_digital_joystick_init();
 #endif
     }
-
-    {
-    }
     
 #ifdef WIN32
 #if HAVE_DINPUT
@@ -434,8 +430,8 @@ int joystick_init(void)
     }
 #endif
     
-#ifdef MSDOS
-    joystick_allegro_init();
+#if 0 /*not defined MSDOS and defined ALLEGRO_JOY_DRIVER */
+    joystick_allegro_init(JOY_TYPE_AUTODETECT);
 #endif
 
     return 1;
@@ -527,6 +523,10 @@ void joystick_close(void) {
             joy_devices[i]=NULL;
         }
     }
+    if (joystick_port_map[0] >= JOYDEV_HW_BASE)
+        joystick_port_map[0] = JOYDEV_NONE;
+    if (joystick_port_map[1] >= JOYDEV_HW_BASE)
+        joystick_port_map[1] = JOYDEV_NONE;
 }
 
 void joystick_update(void) {

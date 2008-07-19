@@ -79,7 +79,7 @@ static joy_device_t allegro_joystick_device =
 
 /* ------------------------------------------------------------------------- */
 
-static int init_allegro_driver(int type)
+int joystick_allegro_init(int type)
 {
     int i;
     
@@ -107,7 +107,7 @@ static int joystick_hw_type;
 
 static int set_joystick_hw_type(int type, void* param)
 {
-    if (init_allegro_driver(type)){
+    if (joystick_allegro_init(type)){
         joystick_hw_type = 0;
         return 1;
     }
@@ -116,17 +116,14 @@ static int set_joystick_hw_type(int type, void* param)
 }
 #endif
 
-int joystick_allegro_init(void)
-{
 #ifdef MSDOS
-    static const resource_int_t resources_int[] = {
+int joystick_allegro_init_resources(void)
+{
+    const resource_int_t resources_int[] = {
         { "HwJoyType", 0, RES_EVENT_NO, NULL,
          &joystick_hw_type, set_joystick_hw_type, NULL },
         { NULL }
     };
     return resources_register_int(resources_int);
-#else
-    init_allegro_driver(JOY_TYPE_AUTODETECT);
-#endif
-    return 0;
 }
+#endif
