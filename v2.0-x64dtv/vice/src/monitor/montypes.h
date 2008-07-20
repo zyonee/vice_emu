@@ -293,7 +293,6 @@ extern void mon_save_symbols(MEMSPACE mem, const char *filename);
 
 extern void mon_record_commands(char *filename);
 extern void mon_end_recording(void);
-extern void mon_change_device(MEMSPACE mem);
+extern void monitor_change_device(MEMSPACE mem);
 
 #endif
-

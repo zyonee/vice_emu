@@ -154,7 +154,7 @@ void mon_file_load(const char *filename, int device, MON_ADDR start_addr,
     BYTE b1 = 0, b2 = 0;
     int ch = 0;
     MEMSPACE mem;
-    int origbank;
+    int origbank = 0;
     #define curbank (mon_interfaces[mem]->current_bank)
 
     if (mon_file_open(filename, 0, device) < 0) {
