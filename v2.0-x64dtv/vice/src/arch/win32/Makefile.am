@@ -318,6 +318,9 @@ EXTRA_DIST = \
 	c128.dsp \
 	c1541.dsp \
 	c64.dsp \
+	c64c64dtv.dsp \
+	c64dtv.dsp \
+	c64dtvstubs.dsp \
 	c64c128.dsp \
 	c64cart.dsp \
 	c64exp.dsp \
@@ -365,9 +368,11 @@ EXTRA_DIST = \
 	vdrive.dsp \
 	vic20.dsp \
 	vicii.dsp \
+	viciidtv.dsp \
 	video.dsp \
 	x128.dsp \
 	x64.dsp \
+	x64dtv.dsp \
 	xcbm2.dsp \
 	xpet.dsp \
 	xplus4.dsp \

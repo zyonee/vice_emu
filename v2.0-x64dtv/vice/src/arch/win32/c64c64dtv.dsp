@@ -1,24 +1,24 @@
-# Microsoft Developer Studio Project File - Name="vicii" - Package Owner=<4>
+# Microsoft Developer Studio Project File - Name="c64c64dtv" - Package Owner=<4>
 # Microsoft Developer Studio Generated Build File, Format Version 6.00
 # ** DO NOT EDIT **
 
 # TARGTYPE "Win32 (x86) Static Library" 0x0104
 
-CFG=vicii - Win32 Debug
+CFG=c64c64dtv - Win32 Debug
 !MESSAGE This is not a valid makefile. To build this project using NMAKE,
 !MESSAGE use the Export Makefile command and run
 !MESSAGE 
-!MESSAGE NMAKE /f "vicii.mak".
+!MESSAGE NMAKE /f "c64c64dtv.mak".
 !MESSAGE 
 !MESSAGE You can specify a configuration when running NMAKE
 !MESSAGE by defining the macro CFG on the command line. For example:
 !MESSAGE 
-!MESSAGE NMAKE /f "vicii.mak" CFG="vicii - Win32 Debug"
+!MESSAGE NMAKE /f "c64c64dtv.mak" CFG="c64c64dtv - Win32 Debug"
 !MESSAGE 
 !MESSAGE Possible choices for configuration are:
 !MESSAGE 
-!MESSAGE "vicii - Win32 Release" (based on "Win32 (x86) Static Library")
-!MESSAGE "vicii - Win32 Debug" (based on "Win32 (x86) Static Library")
+!MESSAGE "c64c64dtv - Win32 Release" (based on "Win32 (x86) Static Library")
+!MESSAGE "c64c64dtv - Win32 Debug" (based on "Win32 (x86) Static Library")
 !MESSAGE 
 
 # Begin Project
@@ -28,7 +28,7 @@ CFG=vicii - Win32 Debug
 CPP=cl.exe
 RSC=rc.exe
 
-!IF  "$(CFG)" == "vicii - Win32 Release"
+!IF  "$(CFG)" == "c64c64dtv - Win32 Release"
 
 # PROP BASE Use_MFC 0
 # PROP BASE Use_Debug_Libraries 0
@@ -37,11 +37,11 @@ RSC=rc.exe
 # PROP BASE Target_Dir ""
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 0
-# PROP Output_Dir "libs\vicii\Release"
-# PROP Intermediate_Dir "libs\vicii\Release"
+# PROP Output_Dir "libs\c64c64dtv\Release"
+# PROP Intermediate_Dir "libs\c64c64dtv\Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\c64" /I "..\..\c64dtv" /I "..\..\raster" /I "..\..\video" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\drive" /I "..\..\tape" /I "..\..\sid" /I "..\..\vicii" /I "..\..\raster" /I "..\..\monitor" /I "..\..\rs232drv" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -51,7 +51,7 @@ LIB32=link.exe -lib
 # ADD BASE LIB32 /nologo
 # ADD LIB32 /nologo
 
-!ELSEIF  "$(CFG)" == "vicii - Win32 Debug"
+!ELSEIF  "$(CFG)" == "c64c64dtv - Win32 Debug"
 
 # PROP BASE Use_MFC 0
 # PROP BASE Use_Debug_Libraries 1
@@ -60,11 +60,11 @@ LIB32=link.exe -lib
 # PROP BASE Target_Dir ""
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 1
-# PROP Output_Dir "libs\vicii\Debug"
-# PROP Intermediate_Dir "libs\vicii\Debug"
+# PROP Output_Dir "libs\c64c64dtv\Debug"
+# PROP Intermediate_Dir "libs\c64c64dtv\Debug"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /Z7 /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\c64" /I "..\..\c64dtv" /I "..\..\raster" /I "..\..\video" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\drive" /I "..\..\tape" /I "..\..\sid" /I "..\..\vicii" /I "..\..\raster" /I "..\..\monitor" /I "..\..\rs232drv" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -78,67 +78,51 @@ LIB32=link.exe -lib
 
 # Begin Target
 
-# Name "vicii - Win32 Release"
-# Name "vicii - Win32 Debug"
+# Name "c64c64dtv - Win32 Release"
+# Name "c64c64dtv - Win32 Debug"
 # Begin Source File
 
-SOURCE="..\..\vicii\vicii-badline.c"
+SOURCE=..\..\c64\c64bus.c
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\vicii\vicii-clock-stretch.c"
+SOURCE=..\..\c64\c64drive.c
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\vicii\vicii-cmdline-options.c"
+SOURCE=..\..\c64\c64fastiec.c
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\vicii\vicii-color.c"
+SOURCE=..\..\c64\c64keyboard.c
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\vicii\vicii-draw.c"
+SOURCE=..\..\c64\c64parallel.c
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\vicii\vicii-fetch.c"
+SOURCE=..\..\c64\c64printer.c
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\vicii\vicii-irq.c"
+SOURCE=..\..\c64\c64rom.c
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\vicii\vicii-mem.c"
+SOURCE=..\..\c64\c64romset.c
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\vicii\vicii-phi1.c"
+SOURCE=..\..\c64\c64rsuser.c
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\vicii\vicii-resources.c"
+SOURCE=..\..\c64\c64video.c
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\vicii\vicii-snapshot.c"
-# End Source File
-# Begin Source File
-
-SOURCE="..\..\vicii\vicii-sprites.c"
-# End Source File
-# Begin Source File
-
-SOURCE="..\..\vicii\vicii-stubs.c"
-# End Source File
-# Begin Source File
-
-SOURCE="..\..\vicii\vicii-timing.c"
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\vicii\vicii.c
+SOURCE=..\..\c64\patchrom.c
 # End Source File
 # End Target
 # End Project
