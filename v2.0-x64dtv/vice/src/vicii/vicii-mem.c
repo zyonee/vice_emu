@@ -1698,7 +1698,7 @@ BYTE REGPARM1 vicii_read(WORD addr)
       case 0x20:                  /* $D020: Border color */
         VICII_DEBUG_REGISTER(("Border Color register: $%02X",
                              vicii.regs[addr]));
-        return vicii.viciidtv?vicii.regs[addr] | 0xf0:vicii.regs[addr];
+        return vicii.viciidtv?vicii.regs[addr]:(vicii.regs[addr] | 0xf0);
 
       case 0x21:                  /* $D021: Background #0 color */
       case 0x22:                  /* $D022: Background #1 color */
@@ -1706,7 +1706,7 @@ BYTE REGPARM1 vicii_read(WORD addr)
       case 0x24:                  /* $D024: Background #3 color */
         VICII_DEBUG_REGISTER(("Background Color #%d register: $%02X",
                              addr - 0x21, vicii.regs[addr]));
-        return vicii.viciidtv?vicii.regs[addr] | 0xf0:vicii.regs[addr];
+        return vicii.viciidtv?vicii.regs[addr]:(vicii.regs[addr] | 0xf0);
 
       case 0x25:                  /* $D025: Sprite multicolor register #0 */
       case 0x26:                  /* $D026: Sprite multicolor register #1 */
