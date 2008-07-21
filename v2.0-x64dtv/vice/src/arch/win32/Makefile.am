@@ -17,6 +17,7 @@ INCLUDES = \
 	-I$(top_srcdir)/src/vdrive \
 	-I$(top_srcdir)/src/monitor \
 	-I$(top_srcdir)/src/c64 \
+	-I$(top_srcdir)/src/c64dtv \
 	-I$(top_srcdir)/src/c128 \
 	-I$(top_srcdir)/src/vic20 \
 	-I$(top_srcdir)/src/pet \
@@ -34,6 +35,7 @@ libarch_a_SOURCES = \
 	blockdev.c \
 	c128ui.c \
 	c64ui.c \
+	c64dtvui.c \
 	catweaselmkiii.c \
 	cbm2ui.c \
 	console.c \
@@ -61,6 +63,7 @@ libarch_a_SOURCES = \
 	resacia.rc \
 	resc128.rc \
 	resc64.rc \
+	resc64dtv.rc \
 	resc64_256k.rc \
 	rescbm2.rc \
 	rescommon.h \
@@ -107,6 +110,8 @@ libarch_a_SOURCES = \
 	uic64_256k.h \
 	uic64cart.c \
 	uic64cart.h \
+	uic64dtv.c \
+	uic64dtv.h \
 	uicart.c \
 	uicart.h \
 	uicbm2set.c \
@@ -208,7 +213,7 @@ libarch_a_SOURCES = \
 	winmain.h
 
 libarch_a_DEPENDENCIES = \
-	resc128.o resc64.o rescbm2.o respet.o resplus4.o resvic20.o
+	resc128.o resc64.o resc64dtv.o rescbm2.o respet.o resplus4.o resvic20.o
 
 EXTRA_DIST = \
 	evc/config.h \
@@ -424,6 +429,17 @@ resc64.o : $(srcdir)/resc64.rc $(srcdir)/res.rc res.h $(srcdir)/resacia.rc \
 	--include-dir $(top_srcdir)/src
 	$(WINDRES) -i resc64.res -o $@
 	rm -f resc64.res resc64cat.rc
+
+resc64dtv.o : $(srcdir)/resc64dtv.rc $(srcdir)/res.rc res.h $(srcdir)/ressid.rc \
+	$(srcdir)/resvicii.rc $(srcdir)/resdrivec64.rc
+	cat >resc64dtvcat.rc $(srcdir)/resc64dtv.rc $(srcdir)/res.rc \
+	$(srcdir)/resdrivec64.rc $(srcdir)/ressid.rc $(srcdir)/resvicii.rc
+	$(WRC) -i resc64dtvcat.rc -o resc64dtv.res \
+	--include-dir $(top_builddir)/src \
+	--include-dir $(top_srcdir)/src/arch/win32  \
+	--include-dir $(top_srcdir)/src
+	$(WINDRES) -i resc64dtv.res -o $@
+	rm -f resc64dtv.res resc64catdtv.rc
 
 rescbm2.o : $(srcdir)/rescbm2.rc $(srcdir)/res.rc res.h $(srcdir)/resacia.rc \
 	$(srcdir)/ressid.rc $(srcdir)/resdrivepetcbm2.rc $(srcdir)/resvicii.rc
