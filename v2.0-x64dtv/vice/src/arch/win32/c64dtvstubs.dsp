@@ -37,8 +37,8 @@ RSC=rc.exe
 # PROP BASE Target_Dir ""
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 0
-# PROP Output_Dir "libs\c64dtv\Release"
-# PROP Intermediate_Dir "libs\c64dtv\Release"
+# PROP Output_Dir "libs\c64dtvstubs\Release"
+# PROP Intermediate_Dir "libs\c64dtvstubs\Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD CPP /nologo /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\drive" /I "..\..\tape" /I "..\..\sid" /I "..\..\vicii" /I "..\..\c64" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
@@ -60,8 +60,8 @@ LIB32=link.exe -lib
 # PROP BASE Target_Dir ""
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 1
-# PROP Output_Dir "libs\c64dtv\Debug"
-# PROP Intermediate_Dir "libs\c64dtv\Debug"
+# PROP Output_Dir "libs\c64dtvstubs\Debug"
+# PROP Intermediate_Dir "libs\c64dtvstubs\Debug"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /Z7 /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD CPP /nologo /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\drive" /I "..\..\tape" /I "..\..\sid" /I "..\..\vicii" /I "..\..\c64" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
