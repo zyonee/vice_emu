@@ -34,6 +34,7 @@
 
 #include "c64ui.h"
 #include "res.h"
+#include "resources.h"
 #include "translate.h"
 #include "ui.h"
 #include "uic64dtv.h"

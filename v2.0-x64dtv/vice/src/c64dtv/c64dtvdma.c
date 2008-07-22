@@ -140,7 +140,7 @@ static void do_dma_read(int swap)
 	break;
     case 0x80: /* RAM+registers */
         if ( (offs >= 0xd000) && (offs < 0xe000) )
-	    data = _mem_read_tab_ptr[offs >> 8](offs);
+	    data = _mem_read_tab_ptr[offs >> 8]((WORD)offs);
 	else
 	    data = mem_ram[offs]; 
         break;
@@ -186,7 +186,7 @@ static void do_dma_write(int swap)
 	break;
     case 0x80: /* RAM+registers */
         if ( (offs>=0xd000) && (offs<0xe000) )
-	    _mem_write_tab_ptr[offs >> 8](offs, data);
+	    _mem_write_tab_ptr[offs >> 8]((WORD)offs, data);
 	else 
 	    mem_ram[offs] = data;
 	break;

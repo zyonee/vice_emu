@@ -485,7 +485,7 @@ void REGPARM2 c64dtv_dmablit_store(WORD addr, BYTE value)
 
   addr &= 0x3f;
   
-  if (addr & 0x20) c64dtv_blitter_store(addr & 0x1f, value);
+  if (addr & 0x20) c64dtv_blitter_store((WORD)(addr & 0x1f), value);
   else c64dtv_dma_store(addr, value);
 }
 

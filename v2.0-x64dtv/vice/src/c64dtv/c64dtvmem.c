@@ -621,7 +621,7 @@ void REGPARM2 mem_store(WORD addr, BYTE value)
 #endif
         /* disable dummy write if skip cycle */
         if(dtv_registers[9] & 1) maincpu_rmw_flag = 0;
-        _mem_write_tab_ptr[paddr >> 8](paddr, value);
+        _mem_write_tab_ptr[paddr >> 8]((WORD)paddr, value);
     } else {
 #ifdef FEATURE_CPUMEMHISTORY
         monitor_memmap_store(paddr, MEMMAP_RAM_W);
@@ -659,7 +659,7 @@ BYTE REGPARM1 mem_read(WORD addr)
         }
         memmap_state &= ~(MEMMAP_STATE_OPCODE);
 #endif
-        return _mem_read_tab_ptr[paddr >> 8](paddr);
+        return _mem_read_tab_ptr[paddr >> 8]((WORD)paddr);
     } else {
 #ifdef FEATURE_CPUMEMHISTORY
         monitor_memmap_store(paddr, (memmap_state&MEMMAP_STATE_OPCODE)?MEMMAP_RAM_X:(memmap_state&MEMMAP_STATE_INSTR)?0:MEMMAP_RAM_R);

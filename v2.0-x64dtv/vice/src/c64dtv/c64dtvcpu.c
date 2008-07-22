@@ -248,18 +248,18 @@ static const BYTE burst_status_tab[] = {
 /* let the DTV segment mapper (register 12-15) do its work */
 
 #define STORE(addr, value) \
-    mem_store(addr, value)
+    mem_store((WORD)(addr), (BYTE)(value))
 
 #define LOAD(addr) \
-    mem_read(addr)
+    mem_read((WORD)(addr))
 
 /* Route zero page operations through register 10 (zeropage mapper) */
 
 #define STORE_ZERO(addr, value) \
-    mem_store((((WORD) dtv_registers[10]) << 8) + ((addr) & 0xff), value)
+    mem_store((WORD)((((WORD) dtv_registers[10]) << 8) + ((addr) & 0xff)), (BYTE)(value))
 
 #define LOAD_ZERO(addr) \
-    mem_read((((WORD) dtv_registers[10]) << 8) + ((addr) & 0xff))
+    mem_read((WORD)(((WORD) dtv_registers[10]) << 8) + ((WORD)((addr) & 0xff)))
 
 /* Route stack operations through register 11 (stack mapper) */
 

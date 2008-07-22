@@ -1016,11 +1016,11 @@ inline static void d03c_store(const BYTE value)
         vicii.raster.geometry->gfx_position.x = vicii.screen_leftborderwidth;
     }
 
-    d020_store(vicii.regs[0x20]);
-    d021_store(vicii.regs[0x21]);
-    ext_background_store(0x22,vicii.regs[0x22]);
-    ext_background_store(0x23,vicii.regs[0x23]);
-    ext_background_store(0x24,vicii.regs[0x24]);
+    d020_store((BYTE)vicii.regs[0x20]);
+    d021_store((BYTE)vicii.regs[0x21]);
+    ext_background_store(0x22,(BYTE)vicii.regs[0x22]);
+    ext_background_store(0x23,(BYTE)vicii.regs[0x23]);
+    ext_background_store(0x24,(BYTE)vicii.regs[0x24]);
 
     vicii_update_video_mode(cycle);
     vicii_update_memory_ptrs(cycle);
@@ -1180,21 +1180,21 @@ void REGPARM2 vicii_palette_store(WORD addr, BYTE value)
     if (!vicii.extended_enable) return; 
     if (vicii.dtvpalette[addr&0xf]==value) return;
     vicii.dtvpalette[addr&0xf]=value;
-    d020_store(vicii.regs[0x20]);
-    d021_store(vicii.regs[0x21]);
-    ext_background_store(0x22,vicii.regs[0x22]);
-    ext_background_store(0x23,vicii.regs[0x23]);
-    ext_background_store(0x24,vicii.regs[0x24]);
-    d025_store(vicii.regs[0x25]);
-    d026_store(vicii.regs[0x26]);
-    sprite_color_store(0x27,vicii.regs[0x27]);
-    sprite_color_store(0x28,vicii.regs[0x28]);
-    sprite_color_store(0x29,vicii.regs[0x29]);
-    sprite_color_store(0x2a,vicii.regs[0x2a]);
-    sprite_color_store(0x2b,vicii.regs[0x2b]);
-    sprite_color_store(0x2c,vicii.regs[0x2c]);
-    sprite_color_store(0x2d,vicii.regs[0x2d]);
-    sprite_color_store(0x2e,vicii.regs[0x2e]);
+    d020_store((BYTE)vicii.regs[0x20]);
+    d021_store((BYTE)vicii.regs[0x21]);
+    ext_background_store(0x22,(BYTE)vicii.regs[0x22]);
+    ext_background_store(0x23,(BYTE)vicii.regs[0x23]);
+    ext_background_store(0x24,(BYTE)vicii.regs[0x24]);
+    d025_store((BYTE)vicii.regs[0x25]);
+    d026_store((BYTE)vicii.regs[0x26]);
+    sprite_color_store(0x27,(BYTE)vicii.regs[0x27]);
+    sprite_color_store(0x28,(BYTE)vicii.regs[0x28]);
+    sprite_color_store(0x29,(BYTE)vicii.regs[0x29]);
+    sprite_color_store(0x2a,(BYTE)vicii.regs[0x2a]);
+    sprite_color_store(0x2b,(BYTE)vicii.regs[0x2b]);
+    sprite_color_store(0x2c,(BYTE)vicii.regs[0x2c]);
+    sprite_color_store(0x2d,(BYTE)vicii.regs[0x2d]);
+    sprite_color_store(0x2e,(BYTE)vicii.regs[0x2e]);
     if (vicii.raster.cache_enabled) vicii.raster.dont_cache = 1;
 }
 

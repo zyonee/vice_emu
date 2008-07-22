@@ -583,20 +583,20 @@
       INC_PC(pc_inc);                                                         \
   } while (0)
 
-#define ANC(value, pc_inc)           \
-  do {                               \
-      reg_a_write = reg_a_read & (value); \
-      LOCAL_SET_NZ(reg_a_read);      \
-      LOCAL_SET_CARRY(LOCAL_SIGN()); \
-      INC_PC(pc_inc);                \
+#define ANC(value, pc_inc)                        \
+  do {                                            \
+      reg_a_write = (BYTE)(reg_a_read & (value)); \
+      LOCAL_SET_NZ(reg_a_read);                   \
+      LOCAL_SET_CARRY(LOCAL_SIGN());              \
+      INC_PC(pc_inc);                             \
   } while (0)
 
-#define AND(value, clk_inc, pc_inc)  \
-  do {                               \
-      reg_a_write = reg_a_read & (value); \
-      LOCAL_SET_NZ(reg_a_read);      \
-      CLK_ADD(CLK, (clk_inc));       \
-      INC_PC(pc_inc);                \
+#define AND(value, clk_inc, pc_inc)               \
+  do {                                            \
+      reg_a_write = (BYTE)(reg_a_read & (value)); \
+      LOCAL_SET_NZ(reg_a_read);                   \
+      CLK_ADD(CLK, (clk_inc));                    \
+      INC_PC(pc_inc);                             \
   } while (0)
 
 #define ANE(value, pc_inc)                                 \
@@ -857,12 +857,12 @@
       INC_PC(1);            \
   } while (0)
 
-#define EOR(value, clk_inc, pc_inc)  \
-  do {                               \
-      reg_a_write = reg_a_read ^ (value); \
-      LOCAL_SET_NZ(reg_a_read);      \
-      CLK_ADD(CLK, (clk_inc));       \
-      INC_PC(pc_inc);                \
+#define EOR(value, clk_inc, pc_inc)               \
+  do {                                            \
+      reg_a_write = (BYTE)(reg_a_read ^ (value)); \
+      LOCAL_SET_NZ(reg_a_read);                   \
+      CLK_ADD(CLK, (clk_inc));                    \
+      INC_PC(pc_inc);                             \
   } while (0)
 
 #define INC(addr, clk_inc, pc_inc, load_func, store_func)  \
@@ -1026,12 +1026,12 @@
       INC_PC(pc_inc);                                      \
   } while (0)
 
-#define ORA(value, clk_inc, pc_inc)  \
-  do {                               \
-      reg_a_write = reg_a_read | (value); \
-      LOCAL_SET_NZ(reg_a_write);     \
-      CLK_ADD(CLK, (clk_inc));       \
-      INC_PC(pc_inc);                \
+#define ORA(value, clk_inc, pc_inc)               \
+  do {                                            \
+      reg_a_write = (BYTE)(reg_a_read | (value)); \
+      LOCAL_SET_NZ(reg_a_write);                  \
+      CLK_ADD(CLK, (clk_inc));                    \
+      INC_PC(pc_inc);                             \
   } while (0)
 
 #define NOOP(clk_inc, pc_inc)  \
