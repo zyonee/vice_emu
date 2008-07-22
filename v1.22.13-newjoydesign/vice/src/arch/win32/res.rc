@@ -1129,29 +1129,9 @@ BEGIN
     GROUPBOX        "Joystick in port #&1",IDC_STATIC,7,5,102,113
     COMBOBOX        IDC_JOY_DEV1,12,16,93,68,CBS_DROPDOWNLIST |
                     WS_GROUP | WS_TABSTOP
-    LTEXT           "Select fire button",IDC_STATIC,12,34,70,8
-    COMBOBOX        IDC_JOY_FIRE1_BUTTON,12,47,93,60,
-		    CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP | WS_VSCROLL
-    LTEXT           "Auto fire button settings",IDC_STATIC,12,61,93,8
-    LTEXT           "Autofire &speed (1..32)",IDC_STATIC,12,74,70,8
-    EDITTEXT        IDC_JOY_FIRE1_SPEED, 87,72,18,12,WS_TABSTOP | 0x2000L
-    COMBOBOX        IDC_JOY_FIRE1_AXIS, 12,87,93,60,
-                    CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP | WS_VSCROLL
-    COMBOBOX        IDC_JOY_AUTOFIRE1_BUTTON, 12,102,93,60,
-                    CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP | WS_VSCROLL
     GROUPBOX        "Joystick in port #&2",IDC_STATIC,117,5,102,113
     COMBOBOX        IDC_JOY_DEV2,122,16,93,68,CBS_DROPDOWNLIST |
                     WS_GROUP | WS_TABSTOP
-    LTEXT           "Select fire button",IDC_STATIC,122,34,70,8
-    COMBOBOX        IDC_JOY_FIRE2_BUTTON,122,47,93,60,
-		    CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP | WS_VSCROLL
-    LTEXT           "Auto fire button settings",IDC_STATIC,122,61,93,8
-    LTEXT           "Autofire &speed (1..32)",IDC_STATIC,122,74,70,8
-    EDITTEXT        IDC_JOY_FIRE2_SPEED, 197,72,18,12,WS_TABSTOP | 0x2000L
-    COMBOBOX        IDC_JOY_FIRE2_AXIS, 122,87,93,60,
-                    CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP | WS_VSCROLL
-    COMBOBOX        IDC_JOY_AUTOFIRE2_BUTTON, 122,102,93,60,
-                    CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP | WS_VSCROLL
     PUSHBUTTON      "Config Keyset &A", IDC_JOY_CONFIG_A,
                     8,120,60,14, WS_TABSTOP
     PUSHBUTTON      "Config Keyset &B", IDC_JOY_CONFIG_B,
@@ -1173,29 +1153,9 @@ BEGIN
     GROUPBOX        "Joystick in Port #&1",IDC_STATIC,7,5,102,113
     COMBOBOX        IDC_JOY_DEV1,12,16,93,68,CBS_DROPDOWNLIST |
                     WS_GROUP | WS_TABSTOP
-    LTEXT           "Feuerknopf selektieren",IDC_STATIC,12,34,70,8
-    COMBOBOX        IDC_JOY_FIRE1_BUTTON,12,47,93,60,
-		    CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP | WS_VSCROLL
-    LTEXT           "Automatische Feuerknopf Einstellungen",IDC_STATIC,12,61,93,8
-    LTEXT           "Autofeuer Ge&schwindigkeit (1..32)",IDC_STATIC,12,74,70,8
-    EDITTEXT        IDC_JOY_FIRE1_SPEED, 87,72,18,12,WS_TABSTOP | 0x2000L
-    COMBOBOX        IDC_JOY_FIRE1_AXIS, 12,87,93,60,
-                    CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP | WS_VSCROLL
-    COMBOBOX        IDC_JOY_AUTOFIRE1_BUTTON, 12,102,93,60,
-                    CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP | WS_VSCROLL
     GROUPBOX        "Joystick in Port #&2",IDC_STATIC,117,5,102,113
     COMBOBOX        IDC_JOY_DEV2,122,16,93,68,CBS_DROPDOWNLIST |
                     WS_GROUP | WS_TABSTOP
-    LTEXT           "Feuerknopf selektieren",IDC_STATIC,122,34,70,8
-    COMBOBOX        IDC_JOY_FIRE2_BUTTON,122,47,93,60,
-		    CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP | WS_VSCROLL
-    LTEXT           "Automatische Feuerknopf Einstellungen",IDC_STATIC,122,61,93,8
-    LTEXT           "Autofeuer Ge&schwindigkeit (1..32)",IDC_STATIC,122,74,70,8
-    EDITTEXT        IDC_JOY_FIRE2_SPEED, 197,72,18,12,WS_TABSTOP | 0x2000L
-    COMBOBOX        IDC_JOY_FIRE2_AXIS, 122,87,93,60,
-                    CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP | WS_VSCROLL
-    COMBOBOX        IDC_JOY_AUTOFIRE2_BUTTON, 122,102,93,60,
-                    CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP | WS_VSCROLL
     PUSHBUTTON      "Tastaturbelegung &A konfigurieren", IDC_JOY_CONFIG_A,
                     8,120,60,14, WS_TABSTOP
     PUSHBUTTON      "Tastaturbelegung &B konfigurieren", IDC_JOY_CONFIG_B,
@@ -1217,29 +1177,9 @@ BEGIN
     GROUPBOX        "Joystick dans le port #1",IDC_STATIC,7,5,102,113
     COMBOBOX        IDC_JOY_DEV1,12,16,93,68,CBS_DROPDOWNLIST |
                     WS_GROUP | WS_TABSTOP
-    LTEXT           "Sélectionner le bouton de feu",IDC_STATIC,12,34,70,8
-    COMBOBOX        IDC_JOY_FIRE1_BUTTON,12,47,93,60,
-		    CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP | WS_VSCROLL
-    LTEXT           "Auto fire button settings",IDC_STATIC,12,61,93,8
-    LTEXT           "Vitesse tir automatique (1..32)",IDC_STATIC,12,74,70,8
-    EDITTEXT        IDC_JOY_FIRE1_SPEED, 87,72,18,12,WS_TABSTOP | 0x2000L
-    COMBOBOX        IDC_JOY_FIRE1_AXIS, 12,87,93,60,
-                    CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP | WS_VSCROLL
-    COMBOBOX        IDC_JOY_AUTOFIRE1_BUTTON, 12,102,93,60,
-                    CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP | WS_VSCROLL
     GROUPBOX        "Joystick dans le port #2",IDC_STATIC,117,5,102,113
     COMBOBOX        IDC_JOY_DEV2,122,16,93,68,CBS_DROPDOWNLIST |
                     WS_GROUP | WS_TABSTOP
-    LTEXT           "Sélectionner le bouton de feu",IDC_STATIC,122,34,70,8
-    COMBOBOX        IDC_JOY_FIRE2_BUTTON,122,47,93,60,
-		    CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP | WS_VSCROLL
-    LTEXT           "Auto fire button settings",IDC_STATIC,122,61,93,8
-    LTEXT           "Vitesse tir automatique (1..32)",IDC_STATIC,122,74,70,8
-    EDITTEXT        IDC_JOY_FIRE2_SPEED, 197,72,18,12,WS_TABSTOP | 0x2000L
-    COMBOBOX        IDC_JOY_FIRE2_AXIS, 122,87,93,60,
-                    CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP | WS_VSCROLL
-    COMBOBOX        IDC_JOY_AUTOFIRE2_BUTTON, 122,102,93,60,
-                    CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP | WS_VSCROLL
     PUSHBUTTON      "Configurer &A", IDC_JOY_CONFIG_A,
                     8,120,60,14, WS_TABSTOP
     PUSHBUTTON      "Configurer &B", IDC_JOY_CONFIG_B,
@@ -1262,29 +1202,9 @@ BEGIN
     GROUPBOX        "Botkormány az &1-es porton",IDC_STATIC,7,5,102,113
     COMBOBOX        IDC_JOY_DEV1,12,16,93,68,CBS_DROPDOWNLIST |
                     WS_GROUP | WS_TABSTOP
-    LTEXT           "Válasszon tûz gombot",IDC_STATIC,12,34,70,8
-    COMBOBOX        IDC_JOY_FIRE1_BUTTON,12,47,93,60,
-		    CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP | WS_VSCROLL
-    LTEXT           "Automatikus tûz beállításai",IDC_STATIC,12,61,93,8
-    LTEXT           "Automatikus tûz sebessége (1..32)",IDC_STATIC,12,74,70,8
-    EDITTEXT        IDC_JOY_FIRE1_SPEED, 87,72,18,12,WS_TABSTOP | 0x2000L
-    COMBOBOX        IDC_JOY_FIRE1_AXIS, 12,87,93,60,
-                    CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP | WS_VSCROLL
-    COMBOBOX        IDC_JOY_AUTOFIRE1_BUTTON, 12,102,93,60,
-                    CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP | WS_VSCROLL
     GROUPBOX        "Botkormány a &2-es porton",IDC_STATIC,117,5,102,113
     COMBOBOX        IDC_JOY_DEV2,122,16,93,68,CBS_DROPDOWNLIST |
                     WS_GROUP | WS_TABSTOP
-    LTEXT           "Válasszon tûz gombot",IDC_STATIC,122,34,70,8
-    COMBOBOX        IDC_JOY_FIRE2_BUTTON,122,47,93,60,
-		    CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP | WS_VSCROLL
-    LTEXT           "Automatikus tûz beállításai",IDC_STATIC,122,61,93,8
-    LTEXT           "Automatikus tûz sebessége (1..32)",IDC_STATIC,122,74,70,8
-    EDITTEXT        IDC_JOY_FIRE2_SPEED, 197,72,18,12,WS_TABSTOP | 0x2000L
-    COMBOBOX        IDC_JOY_FIRE2_AXIS, 122,87,93,60,
-                    CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP | WS_VSCROLL
-    COMBOBOX        IDC_JOY_AUTOFIRE2_BUTTON, 122,102,93,60,
-                    CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP | WS_VSCROLL
     PUSHBUTTON      "'&A' gombkészlet beállítása", IDC_JOY_CONFIG_A,
                     8,120,60,14, WS_TABSTOP
     PUSHBUTTON      "'&B' gombkészlet beállítása", IDC_JOY_CONFIG_B,
@@ -1307,29 +1227,9 @@ BEGIN
     GROUPBOX        "Joystick nella porta #&1",IDC_STATIC,7,5,102,113
     COMBOBOX        IDC_JOY_DEV1,12,16,93,68,CBS_DROPDOWNLIST |
                     WS_GROUP | WS_TABSTOP
-    LTEXT           "Seleziona pulsante di fuoco",IDC_STATIC,12,34,70,8
-    COMBOBOX        IDC_JOY_FIRE1_BUTTON,12,47,93,60,
-		    CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP | WS_VSCROLL
-    LTEXT           "Impostazioni fuoco automatico",IDC_STATIC,12,61,93,8
-    LTEXT           "&Velocità autofire (1..32)",IDC_STATIC,12,74,70,8
-    EDITTEXT        IDC_JOY_FIRE1_SPEED, 87,72,18,12,WS_TABSTOP | 0x2000L
-    COMBOBOX        IDC_JOY_FIRE1_AXIS, 12,87,93,60,
-                    CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP | WS_VSCROLL
-    COMBOBOX        IDC_JOY_AUTOFIRE1_BUTTON, 12,102,93,60,
-                    CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP | WS_VSCROLL
     GROUPBOX        "Joystick nella porta #&2",IDC_STATIC,117,5,102,113
     COMBOBOX        IDC_JOY_DEV2,122,16,93,68,CBS_DROPDOWNLIST |
                     WS_GROUP | WS_TABSTOP
-    LTEXT           "Seleziona pulsante di fuoco",IDC_STATIC,122,34,70,8
-    COMBOBOX        IDC_JOY_FIRE2_BUTTON,122,47,93,60,
-		    CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP | WS_VSCROLL
-    LTEXT           "Impostazioni fuoco automatico",IDC_STATIC,122,61,93,8
-    LTEXT           "&Velocità autofire (1..32)",IDC_STATIC,122,74,70,8
-    EDITTEXT        IDC_JOY_FIRE2_SPEED, 197,72,18,12,WS_TABSTOP | 0x2000L
-    COMBOBOX        IDC_JOY_FIRE2_AXIS, 122,87,93,60,
-                    CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP | WS_VSCROLL
-    COMBOBOX        IDC_JOY_AUTOFIRE2_BUTTON, 122,102,93,60,
-                    CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP | WS_VSCROLL
     PUSHBUTTON      "Configura il keyset &A", IDC_JOY_CONFIG_A,
                     8,120,60,14, WS_TABSTOP
     PUSHBUTTON      "Configura il keyset &B", IDC_JOY_CONFIG_B,
@@ -1351,29 +1251,9 @@ BEGIN
     GROUPBOX        "Joystick in poort #&1",IDC_STATIC,7,5,102,113
     COMBOBOX        IDC_JOY_DEV1,12,16,93,68,CBS_DROPDOWNLIST |
                     WS_GROUP | WS_TABSTOP
-    LTEXT           "Selecteer vuur knop",IDC_STATIC,12,34,70,8
-    COMBOBOX        IDC_JOY_FIRE1_BUTTON,12,47,93,60,
-		    CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP | WS_VSCROLL
-    LTEXT           "Autofire knop instellingen",IDC_STATIC,12,61,93,8
-    LTEXT           "Autofire &snelheid (1..32)",IDC_STATIC,12,74,70,8
-    EDITTEXT        IDC_JOY_FIRE1_SPEED, 87,72,18,12,WS_TABSTOP | 0x2000L
-    COMBOBOX        IDC_JOY_FIRE1_AXIS, 12,87,93,60,
-                    CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP | WS_VSCROLL
-    COMBOBOX        IDC_JOY_AUTOFIRE1_BUTTON, 12,102,93,60,
-                    CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP | WS_VSCROLL
     GROUPBOX        "Joystick in poort #&2",IDC_STATIC,117,5,102,113
     COMBOBOX        IDC_JOY_DEV2,122,16,93,68,CBS_DROPDOWNLIST |
                     WS_GROUP | WS_TABSTOP
-    LTEXT           "Selecteer vuur knop",IDC_STATIC,122,34,70,8
-    COMBOBOX        IDC_JOY_FIRE2_BUTTON,122,47,93,60,
-		    CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP | WS_VSCROLL
-    LTEXT           "Autofire knop instellingen",IDC_STATIC,122,61,93,8
-    LTEXT           "Autofire &snelheid (1..32)",IDC_STATIC,122,74,70,8
-    EDITTEXT        IDC_JOY_FIRE2_SPEED, 197,72,18,12,WS_TABSTOP | 0x2000L
-    COMBOBOX        IDC_JOY_FIRE2_AXIS, 122,87,93,60,
-                    CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP | WS_VSCROLL
-    COMBOBOX        IDC_JOY_AUTOFIRE2_BUTTON, 122,102,93,60,
-                    CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP | WS_VSCROLL
     PUSHBUTTON      "Configureer Keyset &A", IDC_JOY_CONFIG_A,
                     1,120,74,14, WS_TABSTOP
     PUSHBUTTON      "Configureer Keyset &B", IDC_JOY_CONFIG_B,
@@ -1396,29 +1276,9 @@ BEGIN
     GROUPBOX        "Joystick w porcie #&1",IDC_STATIC,7,5,102,113
     COMBOBOX        IDC_JOY_DEV1,12,16,93,68,CBS_DROPDOWNLIST |
                     WS_GROUP | WS_TABSTOP
-    LTEXT           "Select fire button",IDC_STATIC,12,34,70,8
-    COMBOBOX        IDC_JOY_FIRE1_BUTTON,12,47,93,60,
-		    CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP | WS_VSCROLL
-    LTEXT           "Auto fire button settings",IDC_STATIC,12,61,93,8
-    LTEXT           "Autofire &speed (1..32)",IDC_STATIC,12,74,70,8
-    EDITTEXT        IDC_JOY_FIRE1_SPEED, 87,72,18,12,WS_TABSTOP | 0x2000L
-    COMBOBOX        IDC_JOY_FIRE1_AXIS, 12,87,93,60,
-                    CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP | WS_VSCROLL
-    COMBOBOX        IDC_JOY_AUTOFIRE1_BUTTON, 12,102,93,60,
-                    CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP | WS_VSCROLL
     GROUPBOX        "Joystick w porcie #&2",IDC_STATIC,117,5,102,113
     COMBOBOX        IDC_JOY_DEV2,122,16,93,68,CBS_DROPDOWNLIST |
                     WS_GROUP | WS_TABSTOP
-    LTEXT           "Select fire button",IDC_STATIC,122,34,70,8
-    COMBOBOX        IDC_JOY_FIRE2_BUTTON,122,47,93,60,
-		    CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP | WS_VSCROLL
-    LTEXT           "Auto fire button settings",IDC_STATIC,122,61,93,8
-    LTEXT           "Autofire &speed (1..32)",IDC_STATIC,122,74,70,8
-    EDITTEXT        IDC_JOY_FIRE2_SPEED, 197,72,18,12,WS_TABSTOP | 0x2000L
-    COMBOBOX        IDC_JOY_FIRE2_AXIS, 122,87,93,60,
-                    CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP | WS_VSCROLL
-    COMBOBOX        IDC_JOY_AUTOFIRE2_BUTTON, 122,102,93,60,
-                    CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP | WS_VSCROLL
     PUSHBUTTON      "Config Keyset &A", IDC_JOY_CONFIG_A,
                     8,120,60,14, WS_TABSTOP
     PUSHBUTTON      "Config Keyset &B", IDC_JOY_CONFIG_B,
@@ -1441,29 +1301,9 @@ BEGIN
     GROUPBOX        "Styrspak i spelport &1",IDC_STATIC,7,5,102,113
     COMBOBOX        IDC_JOY_DEV1,12,16,93,68,CBS_DROPDOWNLIST |
                     WS_GROUP | WS_TABSTOP
-    LTEXT           "Välj avtryckarknapp",IDC_STATIC,12,34,70,8
-    COMBOBOX        IDC_JOY_FIRE1_BUTTON,12,47,93,60,
-		    CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP | WS_VSCROLL
-    LTEXT           "Inställningar för autofire",IDC_STATIC,12,61,93,8
-    LTEXT           "&Hastighet för autofire (1..32)",IDC_STATIC,12,74,70,8
-    EDITTEXT        IDC_JOY_FIRE1_SPEED, 87,72,18,12,WS_TABSTOP | 0x2000L
-    COMBOBOX        IDC_JOY_FIRE1_AXIS, 12,87,93,60,
-                    CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP | WS_VSCROLL
-    COMBOBOX        IDC_JOY_AUTOFIRE1_BUTTON, 12,102,93,60,
-                    CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP | WS_VSCROLL
     GROUPBOX        "Styrspak i spelport &2",IDC_STATIC,117,5,102,113
     COMBOBOX        IDC_JOY_DEV2,122,16,93,68,CBS_DROPDOWNLIST |
                     WS_GROUP | WS_TABSTOP
-    LTEXT           "Välj avtryckarknapp",IDC_STATIC,122,34,70,8
-    COMBOBOX        IDC_JOY_FIRE2_BUTTON,122,47,93,60,
-		    CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP | WS_VSCROLL
-    LTEXT           "Inställningar för autofire",IDC_STATIC,122,61,93,8
-    LTEXT           "&Hastighet för autofire (1..32)",IDC_STATIC,122,74,70,8
-    EDITTEXT        IDC_JOY_FIRE2_SPEED, 197,72,18,12,WS_TABSTOP | 0x2000L
-    COMBOBOX        IDC_JOY_FIRE2_AXIS, 122,87,93,60,
-                    CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP | WS_VSCROLL
-    COMBOBOX        IDC_JOY_AUTOFIRE2_BUTTON, 122,102,93,60,
-                    CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP | WS_VSCROLL
     PUSHBUTTON      "Tangentuppsättning &A", IDC_JOY_CONFIG_A,
                     8,120,60,14, WS_TABSTOP
     PUSHBUTTON      "Tangentuppsättning &B", IDC_JOY_CONFIG_B,
