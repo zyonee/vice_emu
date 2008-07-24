@@ -1,5 +1,5 @@
 /*
- * c128-c64meminit.c - Watcom c64meminit.c for c128c64lib wrapper.
+ * x64dtvmain.c - Watcom x64dtv main.c wrapper.
  *
  * Written by
  *  Marco van den Heuvel <blackystardust68@yahoo.com>
@@ -24,4 +24,4 @@
  *
  */
 
-#include "c64meminit.c"
+#include "main.c"

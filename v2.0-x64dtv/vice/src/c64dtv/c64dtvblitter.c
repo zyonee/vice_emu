@@ -73,7 +73,7 @@ static BYTE srcb_data[4];
 static int srcb_data_offs;
 static BYTE sourceA, sourceB;
 static int blitter_count;
-static enum { BLITTER_IDLE, BLITTER_READ_A, BLITTER_READ_B, BLITTER_WRITE } blitter_state; 
+static enum { BLITTER_IDLE, BLITTER_READ_A, BLITTER_READ_B, BLITTER_WRITE } blitter_state;
 static int sourceA_line_off;
 static int sourceB_line_off;
 static int dest_line_off;
@@ -647,7 +647,7 @@ int c64dtvblitter_snapshot_read_module(snapshot_t *s)
         || SMR_B(m, &sourceA) < 0
         || SMR_B(m, &sourceB) < 0
         || SMR_DW_INT(m, &blitter_count) < 0
-        || SMR_DW_INT(m, &blitter_state) < 0
+        || SMR_DW_INT(m, (int *)&blitter_state) < 0
         || SMR_DW_INT(m, &sourceA_line_off) < 0
         || SMR_DW_INT(m, &sourceB_line_off) < 0
         || SMR_DW_INT(m, &dest_line_off) < 0

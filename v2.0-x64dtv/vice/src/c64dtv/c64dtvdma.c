@@ -531,7 +531,7 @@ int c64dtvdma_snapshot_read_module(snapshot_t *s)
         || SMR_B(m, &dma_data) < 0
         || SMR_B(m, &dma_data_swap) < 0
         || SMR_DW_INT(m, &dma_count) < 0
-        || SMR_DW_INT(m, &dma_state) < 0
+        || SMR_DW_INT(m, (int *)&dma_state) < 0
         || SMR_DW_INT(m, &source_line_off) < 0
         || SMR_DW_INT(m, &dest_line_off) < 0
         || SMR_B(m, &source_memtype) < 0
