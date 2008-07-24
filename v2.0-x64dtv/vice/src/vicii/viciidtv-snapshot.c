@@ -331,15 +331,15 @@ int vicii_snapshot_read_module(snapshot_t *s)
         || SMR_DW_INT(m, &vicii.countb) < 0
         || SMR_DW_INT(m, &vicii.countb_mod) < 0
         || SMR_DW_INT(m, &vicii.countb_step) < 0
-        || SMR_DW(m, &vicii.extended_enable) < 0
-        || SMR_DW(m, &vicii.extended_lockout) < 0
-        || SMR_DW(m, &vicii.badline_disable) < 0
-        || SMR_DW(m, &vicii.colorfetch_disable) < 0
-        || SMR_DW(m, &vicii.overscan) < 0
-        || SMR_DW(m, &vicii.high_color) < 0
-        || SMR_DW(m, &vicii.border_off) < 0
-        || SMR_DW(m, &vicii.raster_irq_offset) < 0
-        || SMR_DW(m, &vicii.raster_irq_prevent) < 0
+        || SMR_DW_INT(m, (int *)&vicii.extended_enable) < 0
+        || SMR_DW_INT(m, (int *)&vicii.extended_lockout) < 0
+        || SMR_DW_INT(m, (int *)&vicii.badline_disable) < 0
+        || SMR_DW_INT(m, (int *)&vicii.colorfetch_disable) < 0
+        || SMR_DW_INT(m, (int *)&vicii.overscan) < 0
+        || SMR_DW_INT(m, (int *)&vicii.high_color) < 0
+        || SMR_DW_INT(m, (int *)&vicii.border_off) < 0
+        || SMR_DW_INT(m, &vicii.raster_irq_offset) < 0
+        || SMR_DW_INT(m, &vicii.raster_irq_prevent) < 0
         || SMR_BA(m, vicii.dtvpalette, 256) < 0
         /* SbCollMask */
         || SMR_B(m, &vicii.sprite_background_collisions) < 0
