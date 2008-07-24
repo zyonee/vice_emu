@@ -517,7 +517,7 @@ int vicii_snapshot_read_module(snapshot_t *s)
 
     vicii_update_video_mode(VICII_RASTER_CYCLE(maincpu_clk));
 
-    vicii_store(0x3c, vicii.regs[0x3c]);
+    vicii_store(0x3c, (BYTE)vicii.regs[0x3c]);
 
     vicii.draw_clk = maincpu_clk + (vicii.draw_cycle
                      - VICII_RASTER_CYCLE(maincpu_clk));

@@ -30,6 +30,8 @@
 
 #include "vice.h"
 
+#define C64DTV
+
 #include <stdio.h>
 #include <string.h>
 
@@ -41,7 +43,6 @@
 #include "log.h"
 #include "maincpu.h"
 #include "mem.h"
-#include "mos6510.h"
 #include "mos6510dtv.h"
 #include "traps.h"
 #include "types.h"
@@ -129,7 +130,7 @@ static void read_name_from_mem(void)
     name_len = mem_read(0xB7);
     fname = mem_read(0xBB) | (mem_read(0xBC) << 8);
     for (i=0; i<name_len; i++) {
-        name[i] = mem_read(fname + i);
+        name[i] = mem_read((WORD)(fname + i));
     }
     name[i]=0x00;
 }
@@ -193,9 +194,9 @@ int flash_trap_seek_next(void)
 	direntry[0x1A] = 0x02;
 
 	/* load_address */
-	direntry[0x1B] = load_addr & 0xff;
-	direntry[0x1C] = (load_addr >> 8) & 0xff;
-	direntry[0x1D] = (load_addr >> 16) & 0xff;
+	direntry[0x1B] = (BYTE)(load_addr & 0xff);
+	direntry[0x1C] = (BYTE)((load_addr >> 8) & 0xff);
+	direntry[0x1D] = (BYTE)((load_addr >> 16) & 0xff);
 
 	/* sys_address (non-standard) */
 	direntry[0x1E] = 0x00;
@@ -218,7 +219,7 @@ int flash_trap_seek_next(void)
 
     /* write out directory entry to the buffer at $0100-$011F */
     for (i=0; i < sizeof(direntry); i++)
-        mem_store(0x0100 + i, direntry[i]);
+        mem_store((WORD)(0x0100 + i), direntry[i]);
 
     return 1;
 }
@@ -248,14 +249,14 @@ int flash_trap_load_body(void)
     }
 
     /* set exit values for success and return */
-    laddr = addr & 0xff;
-    maddr = (addr >> 8) & 0xff;
-    haddr = (addr >> 16) & 0xff;
+    laddr = (BYTE)(addr & 0xff);
+    maddr = (BYTE)((addr >> 8) & 0xff);
+    haddr = (BYTE)((addr >> 16) & 0xff);
     mem_store((WORD)0xFB, laddr);
     mem_store((WORD)0xFC, maddr);
     mem_store((WORD)0xFD, haddr);
-    MOS6510_REGS_SET_X(&maincpu_regs, laddr);
-    MOS6510_REGS_SET_Y(&maincpu_regs, maddr);
+    MOS6510DTV_REGS_SET_X(&maincpu_regs, laddr);
+    MOS6510DTV_REGS_SET_Y(&maincpu_regs, maddr);
     mem_store((WORD)0xAE, laddr);
     mem_store((WORD)0xAF, maddr);
 

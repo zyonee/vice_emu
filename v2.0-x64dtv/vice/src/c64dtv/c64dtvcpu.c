@@ -133,10 +133,10 @@ DWORD mem_burst_read(WORD addr)
                    (((DWORD) mrtf(paddr + 2)) << 8) +
                    (((DWORD) mrtf(paddr + 3)) << 0);
 #else
-            return (((DWORD) mrtf(paddr + 3)) << 24) +
-                   (((DWORD) mrtf(paddr + 2)) << 16) +
-                   (((DWORD) mrtf(paddr + 1)) << 8) +
-                   (((DWORD) mrtf(paddr + 0)) << 0);
+            return (((DWORD) mrtf((WORD)(paddr + 3))) << 24) +
+                   (((DWORD) mrtf((WORD)(paddr + 2))) << 16) +
+                   (((DWORD) mrtf((WORD)(paddr + 1))) << 8) +
+                   (((DWORD) mrtf((WORD)(paddr + 0))) << 0);
 #endif
         }
     }
@@ -256,10 +256,10 @@ static const BYTE burst_status_tab[] = {
 /* Route zero page operations through register 10 (zeropage mapper) */
 
 #define STORE_ZERO(addr, value) \
-    mem_store((WORD)((((WORD) dtv_registers[10]) << 8) + ((addr) & 0xff)), (BYTE)(value))
+    mem_store((WORD)((((WORD) dtv_registers[10]) << 8) + ((WORD)(addr) & 0xff)), (BYTE)(value))
 
 #define LOAD_ZERO(addr) \
-    mem_read((WORD)(((WORD) dtv_registers[10]) << 8) + ((WORD)((addr) & 0xff)))
+    mem_read((WORD)((((WORD) dtv_registers[10]) << 8) + ((WORD)((addr) & 0xff))))
 
 /* Route stack operations through register 11 (stack mapper) */
 
