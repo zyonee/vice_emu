@@ -749,7 +749,7 @@ inline static void d020_store(BYTE value)
     vicii.regs[0x20] = value;
 
     raster_changes_border_add_int(&vicii.raster,
-        vicii.viciidtv?VICII_RASTER_X(VICII_RASTER_CYCLE(maincpu_clk))-2:VICII_RASTER_X(VICII_RASTER_CYCLE(maincpu_clk)),
+        vicii.viciidtv?VICIIDTV_RASTER_X_ADJ(VICII_RASTER_CYCLE(maincpu_clk)):VICII_RASTER_X(VICII_RASTER_CYCLE(maincpu_clk)),
         (int *)&vicii.raster.border_color,
         vicii.viciidtv?vicii.dtvpalette[value]:value);
 }
@@ -768,7 +768,7 @@ inline static void d021_store(BYTE value)
     if (!vicii.viciidtv && (vicii.regs[0x21] == value))
         return;
 
-    x_pos = vicii.viciidtv?VICII_RASTER_X(VICII_RASTER_CYCLE(maincpu_clk))-2:VICII_RASTER_X(VICII_RASTER_CYCLE(maincpu_clk));
+    x_pos = vicii.viciidtv?VICIIDTV_RASTER_X_ADJ(VICII_RASTER_CYCLE(maincpu_clk)):VICII_RASTER_X(VICII_RASTER_CYCLE(maincpu_clk));
 
     if (!vicii.force_black_overscan_background_color) {
         raster_changes_background_add_int(&vicii.raster, x_pos,
@@ -997,7 +997,7 @@ inline static void d03c_store(const BYTE value)
 
     /* make some of those constants below into defines */
     raster_changes_border_add_int(&vicii.raster,
-        VICII_RASTER_X(VICII_RASTER_CYCLE(maincpu_clk))-2,
+        VICIIDTV_RASTER_X_ADJ(cycle),
         (int *)&vicii.raster.border_disable,
         vicii.border_off);
 

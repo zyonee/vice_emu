@@ -123,6 +123,10 @@ typedef enum vicii_video_mode_s vicii_video_mode_t;
    SCREEN_WIDTH if outside the visible range.  */
 #define VICII_RASTER_X(cycle)      (((int)(cycle) - 17) * 8 + vicii.screen_leftborderwidth)
 
+/* Adjusted RASTER_X position to account for -2 pixel difference on some
+   C64DTV stores */
+#define VICIIDTV_RASTER_X_ADJ(cycle)     (VICII_RASTER_X(cycle) - 2)
+
 /* Current vertical position of the raster.  Unlike `rasterline', which is
    only accurate if a pending drawing event has been served, this is
    guarranteed to be always correct.  It is a bit slow, though.  */
