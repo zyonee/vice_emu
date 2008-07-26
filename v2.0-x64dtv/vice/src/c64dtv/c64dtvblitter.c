@@ -616,6 +616,7 @@ int c64dtvblitter_snapshot_read_module(snapshot_t *s)
 {
     BYTE major_version, minor_version;
     snapshot_module_t *m;
+    int temp_blitter_state;
 
     /* Blitter module.  */
     m = snapshot_module_open(s, snap_blitter_module_name,
@@ -647,12 +648,14 @@ int c64dtvblitter_snapshot_read_module(snapshot_t *s)
         || SMR_B(m, &sourceA) < 0
         || SMR_B(m, &sourceB) < 0
         || SMR_DW_INT(m, &blitter_count) < 0
-        || SMR_DW_INT(m, (int *)&blitter_state) < 0
+        || SMR_DW_INT(m, &temp_blitter_state) < 0
         || SMR_DW_INT(m, &sourceA_line_off) < 0
         || SMR_DW_INT(m, &sourceB_line_off) < 0
         || SMR_DW_INT(m, &dest_line_off) < 0
         || SMR_B(m, &lastA) < 0)
         goto fail;
+
+    blitter_state = temp_blitter_state;
 
     if (snapshot_module_close(m) < 0)
         goto fail;

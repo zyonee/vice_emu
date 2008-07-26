@@ -506,6 +506,7 @@ int c64dtvdma_snapshot_read_module(snapshot_t *s)
 {
     BYTE major_version, minor_version;
     snapshot_module_t *m;
+    int temp_dma_state;
 
     /* DMA module.  */
     m = snapshot_module_open(s, snap_dma_module_name,
@@ -531,12 +532,14 @@ int c64dtvdma_snapshot_read_module(snapshot_t *s)
         || SMR_B(m, &dma_data) < 0
         || SMR_B(m, &dma_data_swap) < 0
         || SMR_DW_INT(m, &dma_count) < 0
-        || SMR_DW_INT(m, (int *)&dma_state) < 0
+        || SMR_DW_INT(m, &temp_dma_state) < 0
         || SMR_DW_INT(m, &source_line_off) < 0
         || SMR_DW_INT(m, &dest_line_off) < 0
         || SMR_B(m, &source_memtype) < 0
         || SMR_B(m, &dest_memtype) < 0)
         goto fail;
+
+    dma_state = temp_dma_state;
 
     if (snapshot_module_close(m) < 0)
         goto fail;
