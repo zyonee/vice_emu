@@ -422,7 +422,7 @@ int joystick_init(void)
     }
     
 #ifdef WIN32
-#if HAVE_DINPUT
+#ifdef HAVE_DINPUT
     if (!joy_di_init())
 #endif
     {
