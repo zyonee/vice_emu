@@ -1287,7 +1287,7 @@ WFileName
 7
 x64.tgt
 0
-0
+4
 262
 VComponent
 263
@@ -1421,7 +1421,7 @@ VComponent
 287
 WRect
 750
-733
+720
 5700
 4280
 1
@@ -1431,7 +1431,7 @@ WFileName
 15
 viciicommon.tgt
 0
-0
+10
 289
 VComponent
 290
@@ -1472,7 +1472,7 @@ WRect
 320
 5700
 4280
-0
+1
 0
 297
 WFileName
@@ -1480,4 +1480,4 @@ WFileName
 x64dtv.tgt
 0
 15
-103
+259
