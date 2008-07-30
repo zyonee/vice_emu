@@ -30,7 +30,9 @@
 
 #include "vice.h"
 
+#ifndef C64DTV
 #define C64DTV
+#endif
 
 #include <stdio.h>
 #include <string.h>

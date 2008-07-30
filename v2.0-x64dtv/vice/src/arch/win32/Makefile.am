@@ -228,35 +228,14 @@ EXTRA_DIST = \
 	msvc/wpcap/net/bpf.h \
 	watcom/arch.tgt \
 	watcom/base.tgt \
-	watcom/c128-c64-snapshot.c \
-	watcom/c128-c64acia1.c \
-	watcom/c128-c64bus.c \
-	watcom/c128-c64cia2.c \
-	watcom/c128-c64datasette.c \
-	watcom/c128-c64export.c \
-	watcom/c128-c64iec.c \
-	watcom/c128-c64io.c \
-	watcom/c128-c64keyboard.c \
-	watcom/c128-c64meminit.c \
-	watcom/c128-c64memrom.c \
-	watcom/c128-c64parallel.c \
-	watcom/c128-c64pla.c \
-	watcom/c128-c64printer.c \
-	watcom/c128-c64rsuser.c \
-	watcom/c128-c64sound.c \
-	watcom/c128-c64tpi.c \
-	watcom/c128-digimax.c \
-	watcom/c128-georam.c \
-	watcom/c128-mmc64.c \
-	watcom/c128-patchrom.c \
-	watcom/c128-ramcart.c \
-	watcom/c128-reu.c \
-	watcom/c128-tfe.c \
 	watcom/c128.tgt \
 	watcom/c1541.tgt \
 	watcom/c64.tgt \
-	watcom/c64c128.tgt \
 	watcom/c64cart.tgt \
+	watcom/c64commonc128.tgt \
+	watcom/c64commonc128c64dtv.tgt \
+	watcom/c64commonc64dtv.tgt \
+	watcom/c64dtv.tgt \
 	watcom/c64exp.tgt \
 	watcom/cartconv.tgt \
 	watcom/cbm2.tgt \
@@ -299,11 +278,15 @@ EXTRA_DIST = \
 	watcom/vic20.tgt \
 	watcom/vice.wpj \
 	watcom/vicii.tgt \
+	watcom/viciicommon.tgt \
+	watcom/viciidtv.tgt \
 	watcom/video.tgt \
 	watcom/x128.tgt \
 	watcom/x128main.c \
 	watcom/x64.tgt \
 	watcom/x64main.c \
+	watcom/x64dtv.tgt \
+	watcom/x64dtvmain.c \
 	watcom/xcbm2.tgt \
 	watcom/xcbm2main.c \
 	watcom/xpet.tgt \

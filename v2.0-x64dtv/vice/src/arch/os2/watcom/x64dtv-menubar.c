@@ -1,5 +1,5 @@
 /*
- * c128-c64export.c - Watcom c64export.c for c128c64lib wrapper.
+ * x64dtv-menubar.c - Watcom menubar.c for x64dtv-specific.lib wrapper.
  *
  * Written by
  *  Marco van den Heuvel <blackystardust68@yahoo.com>
@@ -24,4 +24,4 @@
  *
  */
 
-#include "c64export.c"
+#include "menubar.c"

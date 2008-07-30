@@ -1,5 +1,5 @@
 /*
- * c128-c64printer.c - Watcom c64printer.c for c128c64lib wrapper.
+ * x64dtv-dragndrop.c - Watcom dragndrop.c for x64dtv-specific.lib wrapper.
  *
  * Written by
  *  Marco van den Heuvel <blackystardust68@yahoo.com>
@@ -24,4 +24,4 @@
  *
  */
 
-#include "c64printer.c"
+#include "dragndrop.c"

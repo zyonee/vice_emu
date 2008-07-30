@@ -1,5 +1,5 @@
 /*
- * c128-c64rsuser.c - Watcom c64rsuser.c for c128c64lib wrapper.
+ * x64dtv-vsyncarch.c - Watcom vsyncharch.c for x64dtv-specific.lib wrapper.
  *
  * Written by
  *  Marco van den Heuvel <blackystardust68@yahoo.com>
@@ -24,4 +24,4 @@
  *
  */
 
-#include "c64rsuser.c"
+#include "vsyncarch.c"

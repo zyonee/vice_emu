@@ -1,5 +1,5 @@
 /*
- * c128-c64sound.c - Watcom c64sound.c for c128c64lib wrapper.
+ * x64dtv-main.c - Watcom main.c for x64dtv wrapper.
  *
  * Written by
  *  Marco van den Heuvel <blackystardust68@yahoo.com>
@@ -24,4 +24,4 @@
  *
  */
 
-#include "c64sound.c"
+#include "main.c"
