@@ -39,10 +39,10 @@ option ProjectOptions = link(linkwithmultithreadlib, "yes"),
     incl(searchpath, "..\\..\\..\\..\\vicii"),
     incl(searchpath, "..\\..\\..\\..\\video"),
     incl(searchpathfirst, "yes"),
-    define("__X64__", ),
-    res_rc_options("-i ..\\..\\dialogs -d __X64__ -x1")
+    define("__X64DTV__", ),
+    res_rc_options("-i ..\\..\\dialogs -d __X64DTV__ -dC64DTV -x1")
 {
-    target type(exe) "..\\..\\..\\..\\..\\data\\x64.exe"
+    target type(exe) "..\\..\\..\\..\\..\\data\\x64dtv.exe"
     {
         source type (lib)
             "mmpm2.lib", // "zlib.lib", "png.lib"
@@ -50,17 +50,15 @@ option ProjectOptions = link(linkwithmultithreadlib, "yes"),
             "..\\..\\..\\..\\..\\data\\ipspy.lib"*/
 
         source type(c)
-            "maincpu.c",
-            "mouse.c",
+            "ps2mouse.c",
             "mousedrv.c",
-            "kbd-c64.c",
-            "c64memlimit.c",
+            "kbd-c64dtv.c",
             "c64romset.c",
             "dialogs\\dlg-color.c"
 
         include "../incl/archdep.icc"
-        include "../incl/c64.icc"
-        include "../incl/c64cart.icc"
+        include "../incl/c64commonc64dtv.icc"
+        include "../incl/c64dtv.icc"
         include "../incl/core.icc"
         include "../incl/dialogs.icc"
         include "../incl/diskimage.icc"
@@ -87,8 +85,7 @@ option ProjectOptions = link(linkwithmultithreadlib, "yes"),
         include "../incl/rs232drv.icc"
         include "../incl/sounddrv.icc"
         include "../incl/vdrive.icc"
-        include "../incl/vicii.icc"
+        include "../incl/viciidtv.icc"
         include "../incl/video.icc"
-        include "../incl/vsid.icc"
     }
 }
