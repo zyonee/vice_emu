@@ -351,7 +351,11 @@ else
 realdevice_lib =
 endif
 
+if SUPPORT_X64DTV
 bin_PROGRAMS = x64 x128 x64dtv xvic xpet xplus4 xcbm2 c1541 petcat cartconv
+else
+bin_PROGRAMS = x64 x128 xvic xpet xplus4 xcbm2 c1541 petcat cartconv
+endif
 
 EXTRA_PROGRAMS =
 

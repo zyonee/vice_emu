@@ -1830,6 +1830,16 @@ AC_SUBST(XPLUS4_WINRES)
 AC_SUBST(XCBM2_WINRES)
 
 
+if test x"$is_unix_gp2x" = "xyes" ; then
+  AM_CONDITIONAL(SUPPORT_X64DTV, false)
+else
+  if test x"$is_riscos" = "xyes"; then
+    AM_CONDITIONAL(SUPPORT_X64DTV, false)
+  else
+    AM_CONDITIONAL(SUPPORT_X64DTV, true)
+  fi
+fi
+
 dnl Setup the system-specific object files.
 if test x"$is_unix" = "xyes"; then
   ARCH_DIR="\$(top_builddir)/src/arch/unix"

@@ -18,8 +18,10 @@ x64:
 x128:
 	(cd src; $(MAKE) x128-all)
 
+if SUPPORT_X64DTV
 x64dtv:
 	(cd src; $(MAKE) x64dtv-all)
+endif
 
 xvic:
 	(cd src; $(MAKE) xvic-all)
