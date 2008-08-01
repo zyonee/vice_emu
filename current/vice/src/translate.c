@@ -657,6 +657,26 @@ translate_t string_table[] = {
 
 /* ------------------------ COMMAND LINE OPTION STRINGS -------------------- */
 
+/* autostart.c */
+/* en */ {IDCLS_ENABLE_AUTOSTARTWITHCOLON,    "On autostart, use the 'RUN' command with a colon, i.e., 'RUN:'"},
+/* de */ {IDCLS_ENABLE_AUTOSTARTWITHCOLON_DE, "Bei Autostart soll 'RUN' mit Doppelpunkt ausgeführt werden ('RUN:')"},
+/* fr */ {IDCLS_ENABLE_AUTOSTARTWITHCOLON_FR, ""},  /* fuzzy */
+/* hu */ {IDCLS_ENABLE_AUTOSTARTWITHCOLON_HU, ""},  /* fuzzy */
+/* it */ {IDCLS_ENABLE_AUTOSTARTWITHCOLON_IT, ""},  /* fuzzy */
+/* nl */ {IDCLS_ENABLE_AUTOSTARTWITHCOLON_NL, "Bij het autostarten, gebruik het 'RUN' commando met een dubbele punt, dus 'RUN:'"},
+/* pl */ {IDCLS_ENABLE_AUTOSTARTWITHCOLON_PL, ""},  /* fuzzy */
+/* sv */ {IDCLS_ENABLE_AUTOSTARTWITHCOLON_SV, ""},  /* fuzzy */
+
+/* autostart.c */
+/* en */ {IDCLS_DISABLE_AUTOSTARTWITHCOLON,    "On autostart, do not use the 'RUN' command with a colon; i.e., 'RUN'"},
+/* de */ {IDCLS_DISABLE_AUTOSTARTWITHCOLON_DE, "Bei Autostart soll 'RUN' ohne Doppelpunkt ausgeführt werden ('RUN')"},
+/* fr */ {IDCLS_DISABLE_AUTOSTARTWITHCOLON_FR, ""},  /* fuzzy */
+/* hu */ {IDCLS_DISABLE_AUTOSTARTWITHCOLON_HU, ""},  /* fuzzy */
+/* it */ {IDCLS_DISABLE_AUTOSTARTWITHCOLON_IT, ""},  /* fuzzy */
+/* nl */ {IDCLS_DISABLE_AUTOSTARTWITHCOLON_NL, "Bij het autostarten, gebruik het 'RUN' commando niet met een dubbele punt, dus 'RUN'"},
+/* pl */ {IDCLS_DISABLE_AUTOSTARTWITHCOLON_PL, ""},  /* fuzzy */
+/* sv */ {IDCLS_DISABLE_AUTOSTARTWITHCOLON_SV, ""},  /* fuzzy */
+
 /* c128/c128-cmdline-options.c, c64/c64-cmdline-options.c,
    c64/psid.c, plus4/plus4-cmdline-options.c,
    vic20/vic20-cmdline-options.c */
@@ -1528,7 +1548,7 @@ translate_t string_table[] = {
 
 /* c64/cart/c64cart.c */
 /* en */ {IDCLS_ATTACH_RAW_STARDOS_CART,    "Attach raw 16KB StarDOS cartridge image"},
-/* de */ {IDCLS_ATTACH_RAW_STARDOS_CART_DE, "16KB StarDOS (raw) einlegen"},
+/* de */ {IDCLS_ATTACH_RAW_STARDOS_CART_DE, "16KB StarDOS Erweiterungsmodul Image einlegen"},
 /* fr */ {IDCLS_ATTACH_RAW_STARDOS_CART_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_ATTACH_RAW_STARDOS_CART_HU, "16KB-os StarDOS cartridge kpms csatolsa"},
 /* it */ {IDCLS_ATTACH_RAW_STARDOS_CART_IT, "Seleziona l'immagine di una cartuccia StarDOS di 16KB"},
@@ -1538,7 +1558,7 @@ translate_t string_table[] = {
 
 /* c64/cart/c64cart.c */
 /* en */ {IDCLS_ATTACH_RAW_ACTION_REPLAY4_CART,    "Attach raw 32KB Action Replay IV cartridge image"},
-/* de */ {IDCLS_ATTACH_RAW_ACTION_REPLAY4_CART_DE, "32KB Action Replay Image IV (raw) einlegen"},
+/* de */ {IDCLS_ATTACH_RAW_ACTION_REPLAY4_CART_DE, "32K Action Replay Image IV einlegen"},
 /* fr */ {IDCLS_ATTACH_RAW_ACTION_REPLAY4_CART_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_ATTACH_RAW_ACTION_REPLAY4_CART_HU, "32KB-os Action Replay IV cartridge kpms csatolsa"},
 /* it */ {IDCLS_ATTACH_RAW_ACTION_REPLAY4_CART_IT, "Seleziona l'immagine di una cartuccia Action Replay IV di 32KB"},
@@ -2755,7 +2775,7 @@ translate_t string_table[] = {
 
 /* vicii/vicii-cmdline-options.c */
 /* en */ {IDCLS_SET_TINT,    "Set tint of internal calculated palette [1000]"},
-/* de */ {IDCLS_SET_TINT_DE, ""},  /* fuzzy */
+/* de */ {IDCLS_SET_TINT_DE, "Farbton für intern berechneten Palette setzen [1000]"},
 /* fr */ {IDCLS_SET_TINT_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_SET_TINT_HU, ""},  /* fuzzy */
 /* it */ {IDCLS_SET_TINT_IT, ""},  /* fuzzy */
@@ -2765,7 +2785,7 @@ translate_t string_table[] = {
 
 /* vicii/vicii-cmdline-options.c */
 /* en */ {IDCLS_SET_ODDLINES_PHASE,    "Set phase for color carrier in odd lines [1250]"},
-/* de */ {IDCLS_SET_ODDLINES_PHASE_DE, ""},  /* fuzzy */
+/* de */ {IDCLS_SET_ODDLINES_PHASE_DE, "Phase für Farbträger in ungeraden Zeilen setzen [1250]"},
 /* fr */ {IDCLS_SET_ODDLINES_PHASE_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_SET_ODDLINES_PHASE_HU, ""},  /* fuzzy */
 /* it */ {IDCLS_SET_ODDLINES_PHASE_IT, ""},  /* fuzzy */
@@ -2775,7 +2795,7 @@ translate_t string_table[] = {
 
 /* vicii/vicii-cmdline-options.c */
 /* en */ {IDCLS_SET_ODDLINES_OFFSET,    "Set phase offset for color carrier in odd lines [750]"},
-/* de */ {IDCLS_SET_ODDLINES_OFFSET_DE, ""},  /* fuzzy */
+/* de */ {IDCLS_SET_ODDLINES_OFFSET_DE, "Phasenoffset für Farbträger in ungeraden Zeilen setzen [750]"},
 /* fr */ {IDCLS_SET_ODDLINES_OFFSET_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_SET_ODDLINES_OFFSET_HU, ""},  /* fuzzy */
 /* it */ {IDCLS_SET_ODDLINES_OFFSET_IT, ""},  /* fuzzy */

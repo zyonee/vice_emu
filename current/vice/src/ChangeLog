@@ -1,3 +1,278 @@
+2008-07-18  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
+
+	* Version 2.0
+
+2008-07-18  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
+
+	* c64/tfe.c: provide a default value for ppaddress in
+	tfe_store()
+
+2008-07-18  Christian Vogelgsang  <chris@vogelgsang.org>
+
+	* arch/unix/macosx/cocoa/video.m: fixed canvas registration
+
+	* arch/unix/macosx/cocoa/menu/vicemachinecontroller.m: fixed
+	compile without ffmpeg
+
+2008-07-18  Marco van den Heuvel  <blackystardust68@yahoo.com>
+
+	* translate.c, arch/amigaos/intl.c, arch/win32/rescbm2.rc,
+	arch/win32/resplus4.rc, arch/win32/resvic20.rc,
+	arch/win32/resc128.rc, arch/win32/resc64.rc, arch/win32/res.rc,
+	arch/win32/respet.rc: Updated the German text items.
+
+2008-07-18  pottendo  <pottendo@aon.at>
+
+	* arch/unix/x11/gnome/uipalcontrol.c (all): #ifdefed UI elements
+	for old PAL emulation as it is replaced by the new PAL Emulation.
+
+	* arch/unix/gui/uipalemu.c: Removed UI for `Old PAL Emu' in case
+	of `USE_GNOMEUI.
+
+2008-07-16  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
+
+	* Version 1.22.27
+
+2008-07-16  Marco van den Heuvel  <blackystardust68@yahoo.com>
+
+	* arch/beos/ui.cc, arch/beos/ui_file.cc,
+	arch/beos/vicemenu.cc: Added fixes as provided by
+	Marcus Sutton <loggedoubt@gmail.com>
+
+2008-07-15  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
+
+	* arch/win32/kbd.c: In kbd_handle_keydown() and
+	kbd_handle_keyup(), filter out keystrokes if the happen because
+	of key autorepeat of Windows.
+
+2008-07-15  Hannu Nuotio  <hannu.nuotio@tut.fi>
+
+	* arch/unix/x11/gnome/uipalcontrol.c: Removed "Emulation" from
+	radio button texts. Fixes single size window stretching.
+
+2008-07-15  Hannu Nuotio  <hannu.nuotio@tut.fi>
+
+	* c64/c64keyboard.c: Changed Restore to ignore key release and
+	automatically clear the NMI. Fixes "nmitest" (bug 2016657).
+
+2008-07-15  Marco van den Heuvel  <blackystardust68@yahoo.com>
+
+	* arch/unix/skyos/make-bindist.sh: Reverted back to what worked
+	before.
+
+2008-07-13  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
+
+	* Version 1.22.26
+
+2008-07-12  Andreas Matthies  <andreas.matthies@gmx.net>
+
+	* vicii/vicii-fetch.c, vicii/vicii_fetch.h: vicii_fetch_matrix
+	now gets the cycle and uses it to change xsmooth_color in time.
+	This fixes bug in Crest/Krestage multiplexer crunchtable.
+	
+	* vicii/vicii-draw.c (draw_mc_bitmap_foreground): Change from
+	VICII_ILLEGAL_TEXT_MODE is handled now. This fixes bug in
+	Crest/Digital Magic.
+	
+	* vicii/vicii-mem.c (d015_store): Force a DMA check even on
+	last_dma_line. This fixes bug in Oregon/Maulhalten.
+	
+	* vicii/vicii-sprites.c (vicii_sprites_set_x_position): Another
+	fix to make Cosmos Design/Living Chips happy. This is not the
+	end of the story...
+
+2008-07-12  Marco van den Heuvel  <blackystardust68@yahoo.com>
+
+	* arch/amigaos/README.AMIGA: Updated.
+
+	* arch/unix/gp2x/make-bindist.sh,
+	arch/unix/sco_sol/make-bindist.sh: Fixed a typo.
+
+2008-07-13  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
+
+	* c64/reu.c: Fixed the end of transfer length when doing a
+	compare.
+
+2008-07-12  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
+
+	* arch/unix/x11/gnome/x11ui.c: removed weird unicode character
+	from a commentary in ui_open_canvas_window().
+
+	* c64/reu.c: Fixed a bug with transfer and swap file operations
+	introduced on 2008-07-10; Added assert()s for input parameters
+	in reu_dma_update_reads(), reu_dma_host_to_dma(),
+	reu_dma_reu_to_host(), reu_dma_compare(); Fixed an error in
+	reu_dma_compare() where it "forgot" to generate an IRQ if a
+	verify error occurred; length is now written correctly in
+	reu_dma_update_regs() (value 0x10000 was not corrected to 0!).
+
+2008-07-10  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
+
+	* Version 1.22.25
+
+2008-07-10  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
+
+	* c64/reu.c: The status register bits are not reset if a new
+	transfer starts without reading the status register; however,
+	the interrupt only occurs if they are set again to new values.
+
+2008-07-09  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
+
+	* c64/reu.c: set_reu_size(): Do not reset
+	first_unused_register_address; remove a warning about
+	uninitialised object in reu_read().
+
+2008-07-08  Marco van den Heuvel  <blackystardust68@yahoo.com>
+
+	* translate.c: Updated the dutch translations.
+
+2008-07-08  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
+
+	* translate.c: 2 new texts for -autostartrunwithcolon.
+
+	* arch/win32/resc128.rc, arch/win32/c128ui.c: cosmetic change:
+	Norwegain -> Norwegian.
+
+2008-06-22  pottendo  <pottendo@aon.at>
+
+	* c128/c128-cmdline-options.c (cmdline_options): cosmetic change:
+	Norwegain -> Norwegian.
+
+	* arch/unix/joy.c (new_joystick_init): cosmetic change.
+
+2008-07-07  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
+
+	* Version 1.22.24
+
+2008-07-07  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
+
+	* c64/reu.c: fixed "end-of-block" for REU compare operation
+	according to Wolfgang Moser's REU reference.
+
+	* init.c, autostart.c, autostart.h, translate.txt, translate.c:
+	Added new command-line options -autostartrunwithcolon and
+	+autostartrunwithcolon along with corresponding vicerc option
+	AutostartRunWithColon=x.
+
+2008-07-07  Marco van den Heuvel  <blackystardust68@yahoo.com>
+
+	* arch/beos/Makefile.am, arch/beos/constants.h, arch/beos/ui.cc,
+	arch/beos/vicemenu.cc: Added copy/paste support.
+
+	* arch/beos/console.c: Fixed a typo.
+
+	* arch/beos/ui_sid.cc: Added a missing variable.
+
+	* arch/os2/ui.c: Fixed a typo.
+
+	* arch/os2/vac++/incl/mainsrc.icc, arch/os2/watcom/mainsrc.tgt,
+	arch/os2/watcom/vice.wpj, arch/win32/watcom/base.tgt,
+	arch/win32/watcom/vice.wpj: Added clipboard.c to the project
+	files.
+
+	* clipboard.h: Changed the _CLIPBOARD_H define to
+	_VICE_CLIPBOARD_H so that it won't interfere with the beos
+	clipboard define.
+
+	* sound.h: Fixed up to return SWORD and use int calculations
+	without casts.
+
+2008-07-04  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
+
+	* Version 1.22.23
+
+2008-07-04  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
+
+	* arch/win32/Makefile.am: Removed vice.dsp
+
+	* arch/win32/vice.dsw: Removed vice.dsp
+
+	* c64/ramcart.c: Include vicii-phi1.h for vicii_read_phi1().
+
+	* clipboard.c: Define for variable i as unsigned to prevent a
+	warning.
+
+	* arch/win32/base.dsp: Add clipboard.c so vice compiles again.
+
+	* sound.h: changed SWORD sound_audio_mix(SWORD ch1, SWORD ch2);
+	to SWORD sound_audio_mix(int ch1, int ch2).
+
+	* gfxoutputdrv/bmpdrv.c: bmpdrv_write_memmap() now is a void
+	function.
+
+	* screenshot.c: memmap_screenshot_save() had an unused variable
+	i, removed that.
+
+	* lib.c, lib.h: lib_free() now takes a const pointer.
+
+	* arch/unix/archdep.c: viceuserdir is now a const pointer.
+
+	* arch/unix/tfearch.c: Removed unused TfePcapCloseAdapter()
+	function.
+
+2008-07-04  Marco van den Heuvel  <blackystardust68@yahoo.com>
+
+	* Makefile.am, arch/win32/ui.c, clipboard.c, clipboard.h: Moved
+	the common clipboard code that Spiro made to the new common
+	files called 'clipboard.c' and 'clipboard.h'.
+
+	* arch/amigaos/c128uires.h, arch/amigaos/c64uires.h,
+	arch/amigaos/cbm2uires.h, arch/amigaos/intl.c,
+	arch/amigaos/intl.txt, arch/amigaos/petuires.h,
+	arch/amigaos/plus4uires.h, arch/amigaos/private.h,
+	arch/amigaos/ui.c, arch/amigaos/uires.h,
+	arch/amigaos/vic20uires.h: Added text-only copy and paste
+	support to the amiga ports.
+
+	* arch/amigaos/joyai.c: Corrected some typos.
+
+	* arch/amigaos/video.c: Fixed a wrongly placed #endif.
+
+2008-07-04  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
+
+	* arch/unix/macosx/Makefile.am: Make sure the file
+	VICE.xcodeproj/project.pbxproj is included in the source
+	distribution.
+
+	* arch/unix/macosx/Resources/English.lproj/Makefile.am: Make
+	sure some MacOS files are included in the source distribution.
+
+2008-07-01  Marco van den Heuvel  <blackystardust68@yahoo.com>
+
+	* arch/win32/ui.c, c128/c128mem.c, c64/c64mem.c, cbm2/cbm2mem.c,
+	mem.h, monitor/monitor.c, pet/petmem.c, plus4/plus4mem.c,
+	vic20/vic20mem.c: Fixed the returned values of the
+	mem_get_screen_parameter() of some of the emulators, and added a
+	bank parameter to the mem_get_screen_parameter() function, this
+	was needed to get it to work for xcbm2.
+
+	* sound.h: Added a static inline 2-channel digital audio mixing
+	routine.
+
+	* c64/digimax.c, pet/petsound.c, plus4/ted-sound.c,
+	vic20/vic20sound.c: Fixed to use proper digital audio mixing.
+
+2008-07-02  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
+
+	* arch/win32/Makefile.am: Renamed _all.dsp to _vice.dsp
+
+	* arch/win32/_all.dsp, arch/win32/_vice.dsp: renamed _all.dsp to
+	_vice.dsp.
+
+2008-07-02  Andreas Matthies  <andreas.matthies@gmx.net>
+
+	* arch/win32/ui.c: Moved creation of accelerators to
+	ui_init_finish.
+
+	* arch/win32/uikeyboard.c: Log a warning if the shortcut file
+	cannot be opened.
+
+2008-07-02  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
+
+	* arch/win32/Makefile.am: Added new file _all.dsp.
+
+	* c64/reu.c: The banking register has a shadow register, too.
+
 2008-07-01  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
 
 	* Version 1.22.22

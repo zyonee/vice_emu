@@ -85,6 +85,23 @@ typedef struct sound_device_s
     int need_attenuation;
 } sound_device_t;
 
+static inline SWORD sound_audio_mix(int ch1, int ch2)
+{
+  if (ch1 == 0)
+    return (SWORD)ch2;
+
+  if (ch2 == 0)
+    return (SWORD)ch1;
+
+  if ((ch1 > 0 && ch2 < 0) || (ch1 < 0 && ch2 >0))
+    return (SWORD)ch1+ch2;
+
+  if (ch1 > 0)
+    return (SWORD)((ch1 + ch2) - (ch1 * ch2 / 32768));
+
+  return (SWORD)-((-(ch1) + -(ch2)) - (-(ch1) * -(ch2) / 32768));
+}
+
 /* Sound adjustment types.  */
 #define SOUND_ADJUST_FLEXIBLE   0
 #define SOUND_ADJUST_ADJUSTING  1

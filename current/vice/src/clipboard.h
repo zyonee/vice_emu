@@ -1,8 +1,9 @@
 /*
- * version.h
+ * clipboard.c - Common clipboard related functions.
  *
  * Written by
- *  Andreas Boose <viceteam@t-online.de>
+ *  Spiro Trikaliotis <Spiro.Trikaliotis@gmx.de>
+ *  Marco van den Heuvel <blackystardust68@yahoo.com>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -24,19 +25,11 @@
  *
  */
 
-#ifndef __VERSION_H__
-#define __VERSION_H__
+#ifndef _VICE_CLIPBOARD_H
+#define _VICE_CLIPBOARD_H
 
-#ifndef VERSION
-#define VERSION "2.0"
-#endif
+#include "vice.h"
 
-#ifndef VERSION_RC_NUMBER
-#define VERSION_RC_NUMBER 2,0,0,0
-#endif
-
-#ifndef PACKAGE
-#define PACKAGE "vice"
-#endif
+extern char *clipboard_read_screen_output(char *line_ending);
 
 #endif

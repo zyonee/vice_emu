@@ -75,7 +75,7 @@ enum {
 
 #ifdef REU_DEBUG
     /*! \brief dynamically define the debugging level */
-    static enum debug_level_e DEBUG_LEVEL = 0;
+    static enum debug_level_e DEBUG_LEVEL = DEBUG_LEVEL_NONE;
 
     /*! \brief output debugging information
       \param _level
@@ -187,6 +187,7 @@ struct rec_s {
 
     WORD base_computer_shadow;   /*!< shadow register of base_computer */
     WORD base_reu_shadow;        /*!< shadow register of base_reu */
+    BYTE bank_reu_shadow;        /*!< shadow register of bank_reu */
     WORD transfer_length_shadow; /*!< shadow register of transfer_length */
 };
 
@@ -199,8 +200,9 @@ struct rec_options_s {
     unsigned int special_wrap_around_1700;      /*!< address where the special 1700 wrap around occurs; if no 1700, the same avalue as wrap_around */
     unsigned int not_backedup_addresses;        /*!< beginning from this address up to wrap_around, there is no DRAM at all */
     unsigned int wrap_around_mask_when_storing; /*!< mask for the wrap around of REU address when putting result back in base_reu and bank_reu */
-    unsigned int reg_bank_unused;               /*!< the unused bits (stuck at 1) of REU_REG_RW_BANK; for original REU, it is REU_REG_RW_BANK_UNUSED */
+    BYTE         reg_bank_unused;               /*!< the unused bits (stuck at 1) of REU_REG_RW_BANK; for original REU, it is REU_REG_RW_BANK_UNUSED */
     BYTE         status_preset;                 /*!< preset value for the status (can be 0 or REU_REG_R_STATUS_256K_CHIPS) */
+    unsigned int first_unused_register_address; /*!< the highest address the used REU register occupy */
 };
 
 /*! \brief a complete REC options description */
@@ -267,6 +269,33 @@ static int set_reu_enabled(int val, void *param)
         reu_enabled = 1;
         return 0;
     }
+}
+
+/*! \internal \brief set the first unused REU register address
+
+ \param val
+   the end of the used REU register area; should be equal
+   to or bigger than REU_REG_RW_UNUSED.
+
+ \param param
+   unused
+
+ \return
+   0 on success, else -1.
+*/
+static int set_reu_first_unused(int val, void *param)
+{
+    int retval = -1;
+
+    if (val >= REU_REG_RW_UNUSED) {
+        rec_options.first_unused_register_address = val;
+        retval = 0;
+    }
+    else {
+        log_message(reu_log, "Invalid first unused REU address %02x.", val);
+    };
+
+    return retval;
 }
 
 /*! \internal \brief set the size of the reu
@@ -397,6 +426,8 @@ static const resource_int_t resources_int[] = {
       &reu_enabled, set_reu_enabled, NULL },
     { "REUsize", 512, RES_EVENT_NO, NULL,
       &reu_size_kb, set_reu_size, NULL },
+    { "REUfirstUnusedRegister", REU_REG_RW_UNUSED, RES_EVENT_NO, NULL,
+      (int *) &rec_options.first_unused_register_address, set_reu_first_unused, NULL },
     { NULL }
 };
 
@@ -486,7 +517,8 @@ void reu_reset(void)
     rec.transfer_length =
     rec.transfer_length_shadow = 0xffff;
 
-    rec.bank_reu = rec_options.reg_bank_unused;
+    rec.bank_reu = 
+    rec.bank_reu_shadow = rec_options.reg_bank_unused;
 
     rec.int_mask_reg = REU_REG_RW_INTERRUPT_UNUSED_MASK;
 
@@ -575,7 +607,7 @@ static BYTE reu_read_without_sideeffects(WORD addr)
 {
     BYTE retval = 0xff;
 
-    assert(addr <= REU_REG_LAST_REG);
+    addr &= REU_REG_LAST_REG;
 
     switch (addr) {
       case REU_REG_R_STATUS:
@@ -644,7 +676,7 @@ static BYTE reu_read_without_sideeffects(WORD addr)
 */
 static void reu_store_without_sideeffects(WORD addr, BYTE byte)
 {
-    assert(addr <= REU_REG_LAST_REG);
+    addr &= REU_REG_LAST_REG;
 
     switch (addr)
     {
@@ -677,7 +709,8 @@ static void reu_store_without_sideeffects(WORD addr, BYTE byte)
         break;
 
     case REU_REG_RW_BANK:
-        rec.bank_reu = byte & ~ rec_options.reg_bank_unused;
+        rec.bank_reu = 
+        rec.bank_reu_shadow = byte & ~ rec_options.reg_bank_unused;
         break;
 
     case REU_REG_RW_BLOCKLEN_LOW:
@@ -717,33 +750,34 @@ static void reu_store_without_sideeffects(WORD addr, BYTE byte)
 */
 BYTE REGPARM1 reu_read(WORD addr)
 {
-    BYTE retval;
+    BYTE retval = 0xff;
 
-    addr &= REU_REG_LAST_REG;
+    addr &= 0xff;
 
-    if (addr < REU_REG_RW_UNUSED) {
+    if (addr < rec_options.first_unused_register_address) {
         io_source = IO_SOURCE_REU;
+
+        retval = reu_read_without_sideeffects(addr);
+
+        switch (addr) {
+          case REU_REG_R_STATUS:
+            /* Bits 7-5 are cleared when register is read, and pending IRQs are
+               removed. */
+            rec.status &= 
+                ~(REU_REG_R_STATUS_VERIFY_ERROR 
+                  | REU_REG_R_STATUS_END_OF_BLOCK 
+                  | REU_REG_R_STATUS_INTERRUPT_PENDING
+                 );
+
+            maincpu_set_irq(reu_int_num, 0);
+            break;
+          default:
+            break;
+        }
+
+        DEBUG_LOG( DEBUG_LEVEL_REGISTER, (reu_log, "read [$%02X] => $%02X.", addr, retval) );
     }
 
-    retval = reu_read_without_sideeffects(addr);
-
-    switch (addr) {
-      case REU_REG_R_STATUS:
-        /* Bits 7-5 are cleared when register is read, and pending IRQs are
-           removed. */
-        rec.status &= 
-            ~(REU_REG_R_STATUS_VERIFY_ERROR 
-              | REU_REG_R_STATUS_END_OF_BLOCK 
-              | REU_REG_R_STATUS_INTERRUPT_PENDING
-             );
-
-        maincpu_set_irq(reu_int_num, 0);
-        break;
-      default:
-        break;
-    }
-
-    DEBUG_LOG( DEBUG_LEVEL_REGISTER, (reu_log, "read [$%02X] => $%02X.", addr, retval) );
     return retval;
 }
 
@@ -759,16 +793,18 @@ BYTE REGPARM1 reu_read(WORD addr)
 */
 void REGPARM2 reu_store(WORD addr, BYTE byte)
 {
-    addr &= REU_REG_LAST_REG;
+    addr &= 0xff;
 
-    reu_store_without_sideeffects(addr, byte);
+    if (addr < rec_options.first_unused_register_address) {
+        reu_store_without_sideeffects(addr, byte);
 
-    DEBUG_LOG( DEBUG_LEVEL_REGISTER, (reu_log, "store [$%02X] <= $%02X.", addr, (int)byte) );
+        DEBUG_LOG( DEBUG_LEVEL_REGISTER, (reu_log, "store [$%02X] <= $%02X.", addr, (int)byte) );
 
-    /* write REC command register
-     * DMA only if execution bit (7) set  - RH */
-    if ((addr == REU_REG_RW_COMMAND) && (rec.command & REU_REG_RW_COMMAND_EXECUTE)) {
-        reu_dma(rec.command & REU_REG_RW_COMMAND_FF00_TRIGGER_DISABLED);
+        /* write REC command register
+         * DMA only if execution bit (7) set  - RH */
+        if ((addr == REU_REG_RW_COMMAND) && (rec.command & REU_REG_RW_COMMAND_EXECUTE)) {
+            reu_dma(rec.command & REU_REG_RW_COMMAND_FF00_TRIGGER_DISABLED);
+        }
     }
 }
 
@@ -881,14 +917,22 @@ BYTE read_from_reu(unsigned int reu_addr)
   \param len
     The transfer length the operation stopped at
 
+  \param new_status_or_mask
+    A mask which is used to set bits in the status
+
   \remark
     if autoload is enabled, the shadow registers are written back 
     to the REU registers.
 */
 static void reu_dma_update_regs(WORD host_addr, unsigned int reu_addr,
-                                int len)
+                                int len, BYTE new_status_or_mask)
 {
+    assert( len >= 1 );
+    assert( new_status_or_mask != 0 );
+
     reu_addr &= rec_options.wrap_around_mask_when_storing;
+
+    rec.status |= new_status_or_mask;
 
     if (!(rec.command & REU_REG_RW_COMMAND_AUTOLOAD)) {
         /* not autoload
@@ -905,14 +949,35 @@ static void reu_dma_update_regs(WORD host_addr, unsigned int reu_addr,
             rec.bank_reu = (reu_addr >> 16) & 0xff;
         }
 
-        rec.transfer_length = len;
+        rec.transfer_length = len & 0xFFFF;
     }
     else {
         rec.base_computer   = rec.base_computer_shadow;
         rec.base_reu        = rec.base_reu_shadow;
+        rec.bank_reu        = rec.bank_reu_shadow;
         rec.transfer_length = rec.transfer_length_shadow;
 
         DEBUG_LOG( DEBUG_LEVEL_REGISTER, (reu_log, "Autoload.") );
+    }
+
+    if ((rec.int_mask_reg 
+            & (REU_REG_RW_INTERRUPT_END_OF_BLOCK_ENABLED | REU_REG_RW_INTERRUPT_INTERRUPTS_ENABLED)) 
+           == (REU_REG_RW_INTERRUPT_END_OF_BLOCK_ENABLED | REU_REG_RW_INTERRUPT_INTERRUPTS_ENABLED))
+    {
+        DEBUG_LOG( DEBUG_LEVEL_REGISTER, (reu_log, "Interrupt pending") );
+        rec.status |= REU_REG_R_STATUS_INTERRUPT_PENDING;
+        maincpu_set_irq(reu_int_num, 1);
+    }
+
+    if ( new_status_or_mask | REU_REG_R_STATUS_VERIFY_ERROR ) {
+        if ((rec.int_mask_reg 
+               & (REU_REG_RW_INTERRUPT_VERIFY_ENABLED | REU_REG_RW_INTERRUPT_INTERRUPTS_ENABLED))
+              == (REU_REG_RW_INTERRUPT_VERIFY_ENABLED | REU_REG_RW_INTERRUPT_INTERRUPTS_ENABLED))
+        {
+            DEBUG_LOG( DEBUG_LEVEL_REGISTER, (reu_log, "Verify Interrupt pending") );
+            rec.status |= REU_REG_R_STATUS_INTERRUPT_PENDING;
+            maincpu_set_irq(reu_int_num, 1);
+        }
     }
 }
 
@@ -937,14 +1002,16 @@ static void reu_dma_host_to_reu(WORD host_addr, unsigned int reu_addr,
                                 int host_step, int reu_step, int len)
 {
     BYTE value;
-    assert(((host_step == 0) || (host_step == 1)));
-    assert(((reu_step == 0) || (reu_step == 1)));
     DEBUG_LOG( DEBUG_LEVEL_TRANSFER_HIGH_LEVEL, (reu_log,
                 "copy ext $%05X %s<= main $%04X%s, $%04X (%d) bytes.",
                 reu_addr, reu_step ? "" : "(fixed) ", host_addr,
                 host_step ? "" : " (fixed)", len, len) );
 
-    for (; len--; reu_addr = increment_reu_with_wrap_around(reu_addr, reu_step)) {
+    assert(((host_step == 0) || (host_step == 1)));
+    assert(((reu_step == 0) || (reu_step == 1)));
+    assert(len >= 1);
+
+    while (len) {
         maincpu_clk++;
         machine_handle_pending_alarms(0);
         value = mem_read(host_addr);
@@ -954,11 +1021,11 @@ static void reu_dma_host_to_reu(WORD host_addr, unsigned int reu_addr,
 
         store_to_reu(reu_addr, value);
         host_addr = (host_addr + host_step) & 0xffff;
+        reu_addr = increment_reu_with_wrap_around(reu_addr, reu_step);
+        len--;
     }
-    len = 0x1;
-    rec.status |= REU_REG_R_STATUS_END_OF_BLOCK;
     DEBUG_LOG( DEBUG_LEVEL_REGISTER, (reu_log, "END OF BLOCK") );
-    reu_dma_update_regs(host_addr, reu_addr, len);
+    reu_dma_update_regs(host_addr, reu_addr, ++len, REU_REG_R_STATUS_END_OF_BLOCK);
 }
 
 /*! \brief DMA operation writing from the REU to the host
@@ -987,7 +1054,11 @@ static void reu_dma_reu_to_host(WORD host_addr, unsigned int reu_addr,
                 reu_addr, reu_step ? "" : "(fixed) ", host_addr,
                 host_step ? "" : " (fixed)", len, len) );
 
-    for (; len--; reu_addr = increment_reu_with_wrap_around(reu_addr, reu_step)) {
+    assert(((host_step == 0) || (host_step == 1)));
+    assert(((reu_step == 0) || (reu_step == 1)));
+    assert(len >= 1);
+
+    while (len) {
         DEBUG_LOG( DEBUG_LEVEL_TRANSFER_LOW_LEVEL, (reu_log,
                     "Transferring byte: %x from ext $%05X to main $%04X.",
                     reu_ram[reu_addr % reu_size], reu_addr, host_addr) );
@@ -996,11 +1067,11 @@ static void reu_dma_reu_to_host(WORD host_addr, unsigned int reu_addr,
         mem_store(host_addr, value);
         machine_handle_pending_alarms(0);
         host_addr = (host_addr + host_step) & 0xffff;
+        reu_addr = increment_reu_with_wrap_around(reu_addr, reu_step);
+        len--;
     }
-    len = 1;
-    rec.status |= REU_REG_R_STATUS_END_OF_BLOCK;
     DEBUG_LOG( DEBUG_LEVEL_REGISTER, (reu_log, "END OF BLOCK") );
-    reu_dma_update_regs(host_addr, reu_addr, len);
+    reu_dma_update_regs(host_addr, reu_addr, ++len, REU_REG_R_STATUS_END_OF_BLOCK);
 }
 
 /*! \brief DMA operation swaping data between host and REU
@@ -1030,7 +1101,11 @@ static void reu_dma_swap(WORD host_addr, unsigned int reu_addr,
                 reu_addr, reu_step ? "" : "(fixed) ", host_addr,
                 host_step ? "" : " (fixed)", len, len) );
 
-    for (; len--; reu_addr = increment_reu_with_wrap_around(reu_addr, reu_step) ) {
+    assert(((host_step == 0) || (host_step == 1)));
+    assert(((reu_step == 0) || (reu_step == 1)));
+    assert(len >= 1);
+
+    while (len) {
         value_from_reu = read_from_reu(reu_addr);
         maincpu_clk++;
         machine_handle_pending_alarms(0);
@@ -1043,11 +1118,11 @@ static void reu_dma_swap(WORD host_addr, unsigned int reu_addr,
         maincpu_clk++;
         machine_handle_pending_alarms(0);
         host_addr = (host_addr + host_step) & 0xffff;
+        reu_addr = increment_reu_with_wrap_around(reu_addr, reu_step);
+        len--;
     }
-    len = 1;
-    rec.status |= REU_REG_R_STATUS_END_OF_BLOCK;
     DEBUG_LOG( DEBUG_LEVEL_REGISTER, (reu_log, "END OF BLOCK") );
-    reu_dma_update_regs(host_addr, reu_addr, len);
+    reu_dma_update_regs(host_addr, reu_addr, ++len, REU_REG_R_STATUS_END_OF_BLOCK);
 }
 
 /*! \brief DMA operation comparing data between host and REU
@@ -1073,14 +1148,23 @@ static void reu_dma_compare(WORD host_addr, unsigned int reu_addr,
     BYTE value_from_reu;
     BYTE value_from_c64;
 
+    BYTE new_status_or_mask = 0;
+
     DEBUG_LOG( DEBUG_LEVEL_TRANSFER_HIGH_LEVEL, (reu_log,
                 "compare ext $%05X %s<=> main $%04X%s, $%04X (%d) bytes.",
                 reu_addr, reu_step ? "" : "(fixed) ", host_addr,
                 host_step ? "" : " (fixed)", len, len) );
 
-    rec.status &= ~ (REU_REG_R_STATUS_VERIFY_ERROR | REU_REG_R_STATUS_END_OF_BLOCK);
+    assert(((host_step == 0) || (host_step == 1)));
+    assert(((reu_step == 0) || (reu_step == 1)));
+    assert(len >= 1);
 
-    while (len--) {
+    /* the real 17xx does not clear these bits on compare;
+     * thus, we do not clear them, either! */
+
+    /* rec.status &= ~ (REU_REG_R_STATUS_VERIFY_ERROR | REU_REG_R_STATUS_END_OF_BLOCK); */
+
+    while (len) {
         maincpu_clk++;
         machine_handle_pending_alarms(0);
         value_from_reu = read_from_reu(reu_addr);
@@ -1090,28 +1174,36 @@ static void reu_dma_compare(WORD host_addr, unsigned int reu_addr,
                     value_from_c64, host_addr, value_from_reu, reu_addr) );
         reu_addr = increment_reu_with_wrap_around(reu_addr, reu_step);
         host_addr = (host_addr + host_step) & 0xffff;
+        len--;
         if (value_from_reu != value_from_c64) {
 
             DEBUG_LOG( DEBUG_LEVEL_REGISTER, (reu_log, "VERIFY ERROR") );
-            rec.status |= REU_REG_R_STATUS_VERIFY_ERROR;
+            new_status_or_mask |= REU_REG_R_STATUS_VERIFY_ERROR;
 
-            if (rec.int_mask_reg & (REU_REG_RW_INTERRUPT_VERIFY_ENABLED | REU_REG_RW_INTERRUPT_INTERRUPTS_ENABLED)) {
-                DEBUG_LOG( DEBUG_LEVEL_REGISTER, (reu_log, "Verify Interrupt pending") );
-                rec.status |= REU_REG_R_STATUS_INTERRUPT_PENDING;
-                maincpu_set_irq(reu_int_num, 1);
+            /* weird behaviour of the 17xx: If the last or next-to-last byte
+             * failed, the "end of block transfer" bit is set, too (cf. below),
+             * and the reported length is 1
+             */
+            if (len <= 1) {
+                len = 1;
             }
             break;
         }
     }
 
-    if (len < 0) {
-        /* all bytes are equal, mark End Of Block */
-        rec.status |= REU_REG_R_STATUS_END_OF_BLOCK;
-        len = 1;
-        DEBUG_LOG( DEBUG_LEVEL_REGISTER, (reu_log, "END OF BLOCK") );
+    /* the length was decremented once too much, correct this */
+    if (len == 0) {
+        ++len;
     }
 
-    reu_dma_update_regs(host_addr, reu_addr, len);
+    assert( len >= 1 );
+
+    if (len == 1) {
+        /* all bytes are equal, mark End Of Block */
+        new_status_or_mask |= REU_REG_R_STATUS_END_OF_BLOCK;
+    }
+
+    reu_dma_update_regs(host_addr, reu_addr, len, new_status_or_mask);
 }
 
 /* ------------------------------------------------------------------------- */
@@ -1184,15 +1276,6 @@ void reu_dma(int immediate)
 
     rec.command = (rec.command & ~ REU_REG_RW_COMMAND_EXECUTE) 
                   | REU_REG_RW_COMMAND_FF00_TRIGGER_DISABLED;
-
-    if ((rec.int_mask_reg 
-            & (REU_REG_RW_INTERRUPT_END_OF_BLOCK_ENABLED | REU_REG_RW_INTERRUPT_INTERRUPTS_ENABLED)) 
-           == (REU_REG_RW_INTERRUPT_END_OF_BLOCK_ENABLED | REU_REG_RW_INTERRUPT_INTERRUPTS_ENABLED))
-    {
-        DEBUG_LOG( DEBUG_LEVEL_REGISTER, (reu_log, "Interrupt pending") );
-        rec.status |= REU_REG_R_STATUS_INTERRUPT_PENDING;
-        maincpu_set_irq(reu_int_num, 1);
-    }
 }
 
 /* ------------------------------------------------------------------------- */

@@ -2,7 +2,14 @@
 
 SUBDIRS = $(POSUB) src build data man doc
 
-EXTRA_DIST = AUTHORS FEEDBACK COPYING INSTALL NEWS vice.spec vice-mint.spec
+EXTRA_DIST = AUTHORS \
+	FEEDBACK \
+	COPYING \
+	Doxyfile \
+	INSTALL \
+	NEWS \
+	vice.spec \
+	vice-mint.spec
 
 .PHONY: x64 x128 xvic xpet xplus4 xcbm2
 x64:
@@ -68,10 +75,10 @@ endif
 
 if UNIX_SKYOS_COMPILE
 bindist:
-	$(SHELL) @ARCH_SRC_DIR@/skyos/make-bindist.sh $(STRIP) $(VICE_VERSION) $(prefix) nozip $(top_srcdir) $(MAKE)
+	$(SHELL) @ARCH_SRC_DIR@/skyos/make-bindist.sh $(STRIP) $(VICE_VERSION) $(prefix) nozip $(top_srcdir)
 
 bindistzip:
-	$(SHELL) @ARCH_SRC_DIR@/skyos/make-bindist.sh $(STRIP) $(VICE_VERSION) $(prefix) zip $(top_srcdir) $(MAKE)
+	$(SHELL) @ARCH_SRC_DIR@/skyos/make-bindist.sh $(STRIP) $(VICE_VERSION) $(prefix) zip $(top_srcdir)
 endif
 
 if UNIX_QNX6_COMPILE
