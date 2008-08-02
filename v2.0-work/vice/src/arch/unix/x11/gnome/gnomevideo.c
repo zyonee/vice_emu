@@ -210,10 +210,6 @@ void video_canvas_refresh(video_canvas_t *canvas,
                         canvas->gdk_image_size.width*3,
                         24);
 
-
-#ifdef HAVE_OPENGL_SYNC
-    openGL_sync_with_raster();
-#endif
     /* Schedule redraw of the rendered area. */
     {
         GdkRectangle rect = {xi, yi, w, h};
