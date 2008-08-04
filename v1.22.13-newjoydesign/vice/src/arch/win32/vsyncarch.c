@@ -198,9 +198,6 @@ void vsyncarch_sleep(signed long delay)
 
 void vsyncarch_presync(void)
 {
-    /* Update mouse */
-    mouse_update_mouse();
-
     /* Flush keypresses emulated through the keyboard buffer.  */
     kbdbuf_flush();
     joystick_update();
