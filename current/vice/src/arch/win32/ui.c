@@ -1109,7 +1109,7 @@ static void handle_default_command(WPARAM wparam, LPARAM lparam, HWND hwnd)
     int i, j, command_found = 0;
 
     for (i = 0; toggle_list[i].name != NULL && !command_found; i++) {
-        if (toggle_list[i].item_id == (wparam & 0xffff)) {
+        if (toggle_list[i].item_id == wparam) {
             resources_toggle(toggle_list[i].name, NULL);
             command_found = 1;
         }
@@ -1118,7 +1118,7 @@ static void handle_default_command(WPARAM wparam, LPARAM lparam, HWND hwnd)
     if (machine_specific_toggles) {
         for (i = 0; machine_specific_toggles[i].name != NULL
             && !command_found; i++) {
-            if (machine_specific_toggles[i].item_id == (wparam & 0xffff)) {
+            if (machine_specific_toggles[i].item_id == wparam) {
                 resources_toggle(machine_specific_toggles[i].name, NULL);
                 command_found = 1;
             }
@@ -1162,11 +1162,12 @@ static void handle_wm_initmenupopup(HMENU menu)
 
 static void handle_wm_command(WPARAM wparam, LPARAM lparam, HWND hwnd)
 {
+    wparam &= 0xffff;
     /* Handle machine specific commands first.  */
     if (ui_machine_specific)
         ui_machine_specific(wparam, hwnd);
 
-    switch (wparam & 0xffff) {
+    switch (wparam) {
       case IDM_DEVICEMANAGER:
       case IDM_FORMFEED_PRINTERIEC4:
       case IDM_FORMFEED_PRINTERIEC5:
