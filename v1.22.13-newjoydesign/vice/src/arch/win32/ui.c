@@ -1485,8 +1485,20 @@ static long CALLBACK window_proc(HWND window, UINT msg,
         statusbar_notify(window, window_index, wparam, lparam);
         break;
       case WM_MOUSEMOVE:
-        _mouse_x =  lparam        & 0xFF;
-        _mouse_y = (lparam >> 16) & 0xFF;
+        _mouse_x =  (lparam        & 0xFFFF)*4;
+        _mouse_y = ((lparam >> 16) & 0xFFFF)*4;
+        break;
+      case WM_LBUTTONDOWN:
+        if (_mouse_enabled) mouse_button_left(1);
+        break;
+      case WM_RBUTTONDOWN:
+        if (_mouse_enabled) mouse_button_right(1);
+        break;
+      case WM_LBUTTONUP:
+        if (_mouse_enabled) mouse_button_left(0);
+        break;
+      case WM_RBUTTONUP:
+        if (_mouse_enabled) mouse_button_right(0);
         break;
     }
 
