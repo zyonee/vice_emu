@@ -89,7 +89,7 @@
 
 
 extern char *intl_speed_at_text;
-extern int _mouse_x, _mouse_y;
+extern int _mouse_x, _mouse_y, _mouse_enabled;
 
 #define countof(array) (sizeof(array) / sizeof((array)[0]))
 
