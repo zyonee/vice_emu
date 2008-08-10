@@ -8,6 +8,24 @@ EXTRA_DIST = \
 	DriveSettings.nib/classes.nib \
 	DriveSettings.nib/info.nib \
 	DriveSettings.nib/keyedobjects.nib \
+	IECDriveSettings.nib/classes.nib \
+	IECDriveSettings.nib/info.nib \
+	IECDriveSettings.nib/keyedobjects.nib \
+	PrinterSettings.nib/classes.nib \
+	PrinterSettings.nib/info.nib \
+	PrinterSettings.nib/keyedobjects.nib \
+	KeyboardSettings.nib/classes.nib \
+	KeyboardSettings.nib/info.nib \
+	KeyboardSettings.nib/keyedobjects.nib \
 	JoystickSettings.nib/classes.nib \
 	JoystickSettings.nib/info.nib \
-	JoystickSettings.nib/keyedobjects.nib
+	JoystickSettings.nib/keyedobjects.nib \
+	RecordMedia.nib/classes.nib \
+	RecordMedia.nib/info.nib \
+	ResourceEditor.nib/classes.nib \
+	ResourceEditor.nib/info.nib \
+	ResourceEditor.nib/keyedobjects.nib \
+	ResourceTree.plist \
+	SoundSettings.nib/classes.nib \
+	SoundSettings.nib/info.nib \
+	SoundSettings.nib/keyedobjects.nib

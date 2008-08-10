@@ -35,6 +35,7 @@
 #include <mmsystem.h>
 #include <prsht.h>
 
+#include "intl.h"
 #include "lib.h"
 #include "log.h"
 #include "palette.h"
@@ -586,7 +587,7 @@ BOOL CALLBACK dialog_fullscreen_proc(HWND hwnd, UINT msg, WPARAM wparam,
 
     switch (msg) {
       case WM_NOTIFY:
-        if (((NMHDR FAR *)lparam)->code == PSN_APPLY) {
+        if (((NMHDR FAR *)lparam)->code == (UINT)PSN_APPLY) {
             fullscreen_dialog_end();
             SetWindowLong(hwnd, DWL_MSGRESULT, FALSE);
             return TRUE;

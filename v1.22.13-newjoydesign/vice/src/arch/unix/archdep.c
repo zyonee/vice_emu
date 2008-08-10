@@ -44,6 +44,10 @@
 #include <vfork.h>
 #endif
 
+#ifdef HAVE_STRINGS_H
+#include <strings.h>
+#endif
+
 #include "archdep.h"
 #include "findpath.h"
 #include "ioutil.h"
@@ -61,7 +65,7 @@ static char *argv0 = NULL;
 static char *boot_path = NULL;
 
 /* alternate storage of preferences */
-char *archdep_pref_path = NULL; /* NULL -> use home_path + ".vice" */
+const char *archdep_pref_path = NULL; /* NULL -> use home_path + ".vice" */
 
 int archdep_init(int *argc, char **argv)
 {
@@ -256,7 +260,7 @@ char *archdep_default_save_resource_file_name(void)
 { 
     char *fname;
     const char *home;
-    char *viceuserdir;
+    const char *viceuserdir;
 
     if(archdep_pref_path==NULL) {
       home = archdep_home_path();

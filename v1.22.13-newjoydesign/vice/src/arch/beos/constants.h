@@ -74,6 +74,9 @@ const uint32 MENU_CART_ATTACH_CRT				= 'M040';
 const uint32 MENU_CART_ATTACH_8KB				= 'M041';
 const uint32 MENU_CART_ATTACH_16KB				= 'M042';
 const uint32 MENU_CART_ATTACH_AR				= 'M043';
+const uint32 MENU_CART_ATTACH_AR3				= 'M158';
+const uint32 MENU_CART_ATTACH_AR4				= 'M159';
+const uint32 MENU_CART_ATTACH_STARDOS			= 'M160';
 const uint32 MENU_CART_ATTACH_AT				= 'M044';
 const uint32 MENU_CART_ATTACH_EPYX				= 'M045';
 const uint32 MENU_CART_ATTACH_IEEE488			= 'M046';
@@ -107,6 +110,9 @@ const uint32 MENU_CART_VIC20_4KB_B000			= 'M064';
 
 const uint32 ATTACH_C64_CART					= 'MA01';
 const uint32 ATTACH_VIC20_CART					= 'MA02';
+
+const uint32 MENU_COPY						= 'M161';
+const uint32 MENU_PASTE						= 'M162';
 
 const uint32 MENU_TOGGLE_SOUND					= 'M100';
 const uint32 MENU_TOGGLE_WARP_MODE				= 'M101';

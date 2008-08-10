@@ -997,7 +997,7 @@ int ui_open_canvas_window(video_canvas_t *c, const char *title,
     gtk_box_pack_start(GTK_BOX(new_pane),new_canvas,TRUE,TRUE,0);
     gtk_widget_show(new_canvas);
 
-    /* XVideo must be refreshed when the application window is moved. */
+    /* XVideo must be refreshed when the application window is moved. */
     g_signal_connect(G_OBJECT(new_window), "configure-event",
 		     G_CALLBACK(configure_callback_app),
 		     (void*) c);
@@ -1822,6 +1822,7 @@ ui_jam_action_t ui_jam_dialog(const char *format, ...)
 					     _("Reset"), 0, 
 					     _("Hard Reset"), 1,
 					     _("Monitor"), 2,
+					     _("Continue"), 3,
 					     NULL);
     g_signal_connect(G_OBJECT(jam_dialog),
 		     "destroy",
@@ -1844,6 +1845,8 @@ ui_jam_action_t ui_jam_dialog(const char *format, ...)
     ui_dispatch_events();
 
     switch (res) {
+    case 3:
+      return UI_JAM_NONE;
     case 2:
 	ui_restore_mouse();
 #ifdef HAVE_FULLSCREEN

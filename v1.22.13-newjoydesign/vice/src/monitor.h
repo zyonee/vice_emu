@@ -177,5 +177,35 @@ extern void mon_ioreg_add_list(struct mem_ioreg_list_s **list, const char *name,
 extern void asm6502_init(struct monitor_cpu_type_s *monitor_cpu_type);
 extern void asmz80_init(struct monitor_cpu_type_s *monitor_cpu_type);
 
+struct monitor_cartridge_commands_s {
+    int (*cartridge_attach_image)(int type, const char *filename);
+    void (*cartridge_detach_image)(void);
+    void (*cartridge_trigger_freeze)(void);
+    void (*cartridge_trigger_freeze_nmi_only)(void);
+};
+typedef struct monitor_cartridge_commands_s monitor_cartridge_commands_t;
+
+extern monitor_cartridge_commands_t mon_cart_cmd;
+
+/* CPU history/memmap prototypes */
+extern void monitor_cpuhistory_store(WORD addr, BYTE op, BYTE p1, BYTE p2);
+extern void monitor_memmap_store(unsigned int addr, BYTE type);
+
+/* memmap defines */
+#define MEMMAP_I_O_R 0x80
+#define MEMMAP_I_O_W 0x40
+#define MEMMAP_ROM_R 0x20
+#define MEMMAP_ROM_W 0x10
+#define MEMMAP_ROM_X 0x08
+#define MEMMAP_RAM_R 0x04
+#define MEMMAP_RAM_W 0x02
+#define MEMMAP_RAM_X 0x01
+
+/* HACK to enable fetch/load separation */
+extern BYTE memmap_state;
+#define MEMMAP_STATE_IGNORE 0x04
+#define MEMMAP_STATE_INSTR  0x02
+#define MEMMAP_STATE_OPCODE 0x01
+
 #endif
 

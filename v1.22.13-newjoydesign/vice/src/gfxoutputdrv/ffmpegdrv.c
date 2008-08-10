@@ -802,7 +802,12 @@ static gfxoutputdrv_t ffmpeg_drv[] = {
         ffmpegdrv_close,
         ffmpegdrv_write,
         ffmpegdrv_save,
+#ifdef FEATURE_CPUMEMHISTORY
+        ffmpegdrv_record,
+        NULL
+#else
         ffmpegdrv_record
+#endif
     },
 /*
 {
@@ -836,7 +841,11 @@ static gfxoutputdrv_t ffmpeg_drv[] = {
         ffmpegdrv_record
     },
 */
-    { NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }
+    { NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+#ifdef FEATURE_CPUMEMHISTORY
+      NULL,
+#endif
+      NULL }
 };
 
 void gfxoutput_init_ffmpeg(void)

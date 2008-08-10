@@ -45,8 +45,10 @@
 #endif
 
 #include "archdep.h"
+#include "intl.h"
 #include "keyboard.h"
 #include "lib.h"
+#include "log.h"
 #include "res.h"
 #include "resources.h"
 #include "sysfile.h"
@@ -264,8 +266,10 @@ HACCEL uikeyboard_create_accelerator_table(void)
 
     fshortcuts = sysfile_open("win_shortcuts.vsc", &complete_path, MODE_READ_TEXT);
     lib_free(complete_path);
-    if (fshortcuts == NULL)
+    if (fshortcuts == NULL) {
+        log_error(LOG_DEFAULT, "Warning. Cannot open keyboard shortcut file win_shortcuts.vsc.");
         return NULL;
+    }
 
     /* read the shortcut table */
     do {
@@ -335,25 +339,22 @@ HACCEL uikeyboard_create_accelerator_table(void)
 }
 
 
+/* using MIIM_STRING doesn't work for win9x/winnt4, so trying an older way */
 void uikeyboard_menu_shortcuts(HMENU menu)
 {
     int i;
-    MENUITEMINFO mii;
+    int stringsize;
     LPTSTR  buf, newbuf;
 
     for (i = 0; idmlist[i].cmd > 0; i++) {
         if (menuitemmodifier[idmlist[i].cmd] != NULL) {
-            mii.fMask = MIIM_STRING;
-            mii.dwTypeData = NULL;
-            mii.cbSize = sizeof(MENUITEMINFO);
-            if (GetMenuItemInfo(menu, idmlist[i].cmd, FALSE, &mii)) {
-                mii.cch++;
-                buf = lib_malloc(mii.cch);
-                mii.dwTypeData = buf;
-                if (GetMenuItemInfo(menu, idmlist[i].cmd, FALSE, &mii)) {
+            stringsize = GetMenuString(menu, idmlist[i].cmd, NULL, 0, MF_BYCOMMAND);
+            if (stringsize != 0) {
+                stringsize++;
+                buf = lib_malloc(stringsize);
+                if (GetMenuString(menu, idmlist[i].cmd, buf, stringsize, MF_BYCOMMAND)) {
                     newbuf = util_concat(buf, menuitemmodifier[idmlist[i].cmd], NULL);
-                    mii.dwTypeData = newbuf;
-                    SetMenuItemInfo(menu, idmlist[i].cmd, FALSE, &mii);
+                    ModifyMenu(menu, idmlist[i].cmd, MF_BYCOMMAND | MF_STRING, idmlist[i].cmd, newbuf);
                     lib_free(newbuf);
                 }
                 lib_free(buf);
@@ -361,6 +362,7 @@ void uikeyboard_menu_shortcuts(HMENU menu)
         }
     }
 }
+
 
 void uikeyboard_shutdown(void)
 {

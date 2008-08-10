@@ -41,6 +41,10 @@
 #include <stdio.h>
 #include <string.h>
 
+#ifdef HAVE_STDLIB_H
+#include <stdlib.h>
+#endif
+
 #if defined(__QNX__) || defined(MINIX_SUPPORT)
 Status XShmAttach(Display *display, XShmSegmentInfo *shminfo)
 {

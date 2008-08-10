@@ -85,6 +85,9 @@ video_canvas_t *video_canvas_create(struct video_canvas_s *canvas,
     // init rendering
     video_canvas_set_palette(canvas,canvas->palette);
 
+    // register canvas in machine controller (to allow access via id)
+    canvas->canvasId = [theVICEMachine registerCanvas:canvas];
+
     // re-post all required notifications for new window
     [[theVICEMachine machineNotifier] notifyNewWindow];
 

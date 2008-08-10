@@ -31,6 +31,10 @@
 #include <stdio.h>
 #include <string.h>
 
+#ifdef HAVE_STRINGS_H
+#include <strings.h>
+#endif
+
 #include "mon_command.h"
 #include "montypes.h"
 #include "mon_parse.h" /* FIXME ! */
@@ -57,9 +61,19 @@ static const mon_cmds_t mon_cmd_array[] = {
      "If bankname is given set the current bank in the memspace to the given\n"
      "bank." },
 
+   { "backtrace",       "bt",
+     NULL,
+     "Print JSR call chain (most recent call first). Stack offset\n"
+     "relative to SP+1 is printed in parentheses. This is a best guess\n"
+     "only." },
+
    { "cpu",             "",
      "<type>",
      "Specify the type of CPU currently used (6502/z80)." },
+
+   { "cpuhistory",       "chis",
+     "[<count>]",
+     "Show <count> last executed commands." },
 
    { "dump",            "",
      "\"<filename>\"",
@@ -90,6 +104,10 @@ static const mon_cmds_t mon_cmd_array[] = {
      "[<reg_name> = <number> [, <reg_name> = <number>]*]",
      "Assign respective registers.  With no parameters, display register\n"
      "values." },
+
+   { "reset",           "",
+     "[<type>]",
+     "Reset the machine or drive. Type: 0 = soft, 1 = hard, 8-11 = drive." },
 
    { "return",          "ret",
      NULL,
@@ -211,6 +229,22 @@ static const mon_cmds_t mon_cmd_array[] = {
      "is specified, only one character is displayed.  If no addresses are\n"
      "given, the ``dot'' address is used." },
 
+   { "memmapsave",       "mmsave",
+     "\"<filename>\" <format>",
+     "Save the memmap as a picture. Format is:\n"
+     "0 = BMP, 1 = PCX, 2 = PNG, 3 = GIF, 4 = IFF." },
+
+   { "memmapshow",       "mmsh",
+     "[<mask>] [<address_opt_range>]",
+     "Show the memmap. The mask can be specified to show only those\n"
+     "locations with accesses of certain type(s). The mask is a number\n"
+     "with the bits \"ioRWXrwx\", where RWX are for ROM and rwx for RAM.\n"
+     "Optionally, an address range can be specified." },
+
+   { "memmapzap",        "mmzap",
+     NULL,
+     "Clear the memmap." },
+
    { "memsprite",       "ms",
      "[<data_type>] [<address_opt_range>]",
      "Display the contents of memory as sprite data.  If only one address is\n"
@@ -325,6 +359,10 @@ static const mon_cmds_t mon_cmd_array[] = {
      "Perform a disk command on the currently attached disk image on drive 8.\n"
      "The specified disk command is sent to the drive's channel #15." },
 
+   { "attach",          "",
+     "<filename> <device>",
+     "Attach file to device. (device 32 = cart)" },
+
    { "bload",           "bl",
      "\"<filename>\" <device> <address>",
      "Load the specified file into memory at the specified address.\n"
@@ -350,6 +388,14 @@ static const mon_cmds_t mon_cmd_array[] = {
      "<directory>",
      "Change the working directory." },
 
+   { "detach",          "",
+     "<device>",
+     "Detach file from device. (device 32 = cart)" },
+
+   { "dir",              "ls",
+     "[<directory>]",
+     "Display the directory contents." },
+
    { "load",            "l",
      "\"<filename>\" <device> [<address>]",
      "Load the specified file into memory at the specified address. Set BASIC\n"
@@ -357,6 +403,10 @@ static const mon_cmds_t mon_cmd_array[] = {
      "Use (otherwise ignored) two-byte load address from file if no address\n"
      "specified.\n"
      "If device is 0, the file is read from the file system." },
+
+   { "pwd",           "",
+     NULL,
+     "Show current working directory." },
 
    { "save",            "s",
      "\"<filename>\" <device> <address1> <address2>",
@@ -369,6 +419,10 @@ static const mon_cmds_t mon_cmd_array[] = {
    { "~",               "",
      "<number>",
      "Display the specified number in decimal, hex, octal and binary." },
+
+   { "cartfreeze",      "",
+     NULL,
+     "Use cartridge freeze." },
 
    { "help",            "?",
      "[<command>]",
@@ -393,9 +447,28 @@ static const mon_cmds_t mon_cmd_array[] = {
      "After this command, all commands entered are written to the specified\n"
      "file until the STOP command is entered." },
 
+   { "resourceget",     "resget",
+     "\"<resource>\"",
+     "Displays the value on the resource." },
+
+   { "resourceset",     "resset",
+     "\"<resource>\" \"<value>\"",
+     "Sets the value of the resource." },
+
    { "stop",            "",
      NULL,
      "Stop recording commands.  See `record'." },
+
+   { "screenshot",       "scrsh",
+     "\"<filename>\" [<format>]",
+     "Take a screenshot. Format is:\n"
+     "default = BMP, 1 = PCX, 2 = PNG, 3 = GIF, 4 = IFF." },
+
+   { "tapectrl",       "",
+     "<command>",
+     "Control the datasette. Valid commands:\n"
+     "0 = stop, 1 = start, 2 = forward, 3 = rewind, 4 = record,\n"
+     "5 = reset, 6 = reset counter." },
 
 /*
    { "]",               "",

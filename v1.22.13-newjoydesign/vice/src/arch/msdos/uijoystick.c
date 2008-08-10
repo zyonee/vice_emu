@@ -30,6 +30,7 @@
 #include <stdio.h>
 
 #include <allegro.h>
+#include <string.h>
 
 #include "joystick.h"
 #include "lib.h"

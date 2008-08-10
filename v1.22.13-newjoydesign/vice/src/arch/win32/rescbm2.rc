@@ -96,6 +96,11 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "E&xit", IDM_EXIT
     END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "&Copy", IDM_EDIT_COPY
+        MENUITEM "&Paste", IDM_EDIT_PASTE
+    END
     POPUP "Sna&pshot"
     BEGIN
         MENUITEM "Load snapshot &image...",          IDM_SNAPSHOT_LOAD
@@ -261,14 +266,14 @@ BEGIN
         BEGIN
             MENUITEM "&Aktuelles Image hinzufügen", IDM_FLIP_ADD
             MENUITEM "Aktuelles Image entfe&rnen",  IDM_FLIP_REMOVE
-            MENUITEM "Nächstes Image",             IDM_FLIP_NEXT
-            MENUITEM "Voriges Image",              IDM_FLIP_PREVIOUS
+            MENUITEM "&Nächstes Image",             IDM_FLIP_NEXT
+            MENUITEM "&Voriges Image",              IDM_FLIP_PREVIOUS
             MENUITEM SEPARATOR
             MENUITEM "Fliplist Datei &Laden",     IDM_FLIP_LOAD
             MENUITEM "Fliplist Datei &Speichern", IDM_FLIP_SAVE
         END
         MENUITEM SEPARATOR
-        MENUITEM "Band Image einlegen...", IDM_ATTACH_TAPE
+        MENUITEM "&Band Image einlegen...", IDM_ATTACH_TAPE
         MENUITEM "Band Image entfernen",          IDM_DETACH_TAPE
         POPUP "Bandlaufwerk Kontro&lle"
         BEGIN
@@ -287,7 +292,7 @@ BEGIN
         POPUP "&Reset"
         BEGIN
             MENUITEM "&Hart", IDM_RESET_HARD
-            MENUITEM "&Soft",      IDM_RESET_SOFT
+            MENUITEM "&Weich",      IDM_RESET_SOFT
             MENUITEM SEPARATOR
             MENUITEM "Laufwerk #&8",  IDM_RESET_DRIVE8
             MENUITEM "Laufwerk #&9",  IDM_RESET_DRIVE9
@@ -304,7 +309,7 @@ BEGIN
                 MENUITEM "&History", IDM_DEBUG_MODE_HISTORY
                 MENUITEM "&History Automatische Wiedergabe", IDM_DEBUG_MODE_AUTOPLAY
             END
-            MENUITEM "&Main CPU Trace", IDM_TOGGLE_MAINCPU_TRACE, CHECKED
+            MENUITEM "&Haupt CPU Trace", IDM_TOGGLE_MAINCPU_TRACE, CHECKED
             MENUITEM "Laufwerk&0 CPU Trace", IDM_TOGGLE_DRIVE0CPU_TRACE, CHECKED
             MENUITEM "Laufwerk&1 CPU Trace", IDM_TOGGLE_DRIVE1CPU_TRACE, CHECKED
         END
@@ -312,12 +317,17 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "E&xit", IDM_EXIT
     END
+    POPUP "B&earbeiten"
+    BEGIN
+        MENUITEM "&Kopieren", IDM_EDIT_COPY
+        MENUITEM "&Einfúgen", IDM_EDIT_PASTE
+    END
     POPUP "Sna&pshot"
     BEGIN
         MENUITEM "Snapshot &Image Laden...",          IDM_SNAPSHOT_LOAD
         MENUITEM "Sna&pshot Image Speichern...",          IDM_SNAPSHOT_SAVE
-        MENUITEM "Schnell&laden von Snapshot Image", IDM_LOADQUICK
-        MENUITEM "&Schnellspeichern von Snapshot", IDM_SAVEQUICK
+        MENUITEM "Quick-Snapshot Image &laden", IDM_LOADQUICK
+        MENUITEM "Quick-Snapshot Datei &speichern", IDM_SAVEQUICK
         MENUITEM SEPARATOR
         MENUITEM "Sta&rt/Stop Aufnahme History",       IDM_EVENT_TOGGLE_RECORD
         MENUITEM "St&art/Stop Wiedergabe History",        IDM_EVENT_TOGGLE_PLAYBACK
@@ -380,7 +390,7 @@ BEGIN
         MENUITEM "Do&ppelt Scan", IDM_TOGGLE_CRTCDOUBLESCAN
             , CHECKED
         MENUITEM SEPARATOR
-        MENUITEM "Joystick ports austauschen", IDM_SWAP_JOYSTICK
+        MENUITEM "&Joystick ports austauschen", IDM_SWAP_JOYSTICK
         MENUITEM SEPARATOR
         MENUITEM "&Sound Einschalten", IDM_TOGGLE_SOUND, CHECKED
         MENUITEM SEPARATOR
@@ -525,6 +535,11 @@ BEGIN
 #endif
         MENUITEM SEPARATOR
         MENUITEM "&Quitter", IDM_EXIT
+    END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "&Copy", IDM_EDIT_COPY
+        MENUITEM "&Paste", IDM_EDIT_PASTE
     END
     POPUP "&Sauvegarde"
     BEGIN
@@ -684,12 +699,12 @@ BEGIN
             MENUITEM "#1&0-es lemezegység", IDM_DETACH_10
             MENUITEM "#&11-es lemezegység", IDM_DETACH_11
             MENUITEM SEPARATOR
-            MENUITEM "Ö&sszes",      IDM_DETACH_ALL
+            MENUITEM "&Mindegyik",      IDM_DETACH_ALL
         END
         POPUP "Lemezl&ista"
         BEGIN
-            MENUITEM "Az aktuális képmás ho&zzáadása",     IDM_FLIP_ADD
-            MENUITEM "Az aktuális képmás el&távolítása",  IDM_FLIP_REMOVE
+            MENUITEM "Az aktuális képmás hozzáadása",     IDM_FLIP_ADD
+            MENUITEM "Az aktuális képmás eltávolítása",  IDM_FLIP_REMOVE
             MENUITEM "&Következõ képmás csatolása",     IDM_FLIP_NEXT
             MENUITEM "&Elõzõ képmás csatolása", IDM_FLIP_PREVIOUS
             MENUITEM SEPARATOR
@@ -697,7 +712,7 @@ BEGIN
             MENUITEM "Lemezlista menté&se", IDM_FLIP_SAVE
         END
         MENUITEM SEPARATOR
-        MENUITEM "Szalag képmás csatolása...", IDM_ATTACH_TAPE
+        MENUITEM "&Szalag képmás csatolása...", IDM_ATTACH_TAPE
         MENUITEM "Sz&alag képmás leválasztása",           IDM_DETACH_TAPE
 #if 1
         POPUP "Magnó &vezérlés"
@@ -743,12 +758,17 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "&Kilépés", IDM_EXIT
     END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "&Copy", IDM_EDIT_COPY
+        MENUITEM "&Paste", IDM_EDIT_PASTE
+    END
     POPUP "&Pillanatkép"
     BEGIN
         MENUITEM "Pillanatkép &betöltése...",          IDM_SNAPSHOT_LOAD
         MENUITEM "Pillanatkép &mentése...",          IDM_SNAPSHOT_SAVE
-        MENUITEM "Gyors pillanatkép b&etöltése", IDM_LOADQUICK
-        MENUITEM "Gyors pillanatkép me&ntése", IDM_SAVEQUICK
+        MENUITEM "Gyors pillanatkép &betöltése", IDM_LOADQUICK
+        MENUITEM "Gyors pillanatkép fájl &mentése", IDM_SAVEQUICK
         MENUITEM SEPARATOR
         MENUITEM "Esemény &felvétel indítása/leállítása",       IDM_EVENT_TOGGLE_RECORD
         MENUITEM "Esemény &visszajátszás indítása/leállítása",        IDM_EVENT_TOGGLE_PLAYBACK
@@ -811,7 +831,7 @@ BEGIN
         MENUITEM "Du&pla pásztázás", IDM_TOGGLE_CRTCDOUBLESCAN
             , CHECKED
         MENUITEM SEPARATOR
-        MENUITEM "Botkormányok felcserélése", IDM_SWAP_JOYSTICK
+        MENUITEM "Botkormányok &felcserélése", IDM_SWAP_JOYSTICK
         MENUITEM SEPARATOR
         MENUITEM "&Hangok engedélyezése", IDM_TOGGLE_SOUND, CHECKED
         MENUITEM SEPARATOR
@@ -957,6 +977,11 @@ BEGIN
 #endif
         MENUITEM SEPARATOR
         MENUITEM "E&sci", IDM_EXIT
+    END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "&Copy", IDM_EDIT_COPY
+        MENUITEM "&Paste", IDM_EDIT_PASTE
     END
     POPUP "Sna&pshot"
     BEGIN
@@ -1173,6 +1198,11 @@ BEGIN
 #endif
         MENUITEM SEPARATOR
         MENUITEM "Af&sluiten", IDM_EXIT
+    END
+    POPUP "&Bewerken"
+    BEGIN
+        MENUITEM "&Kopie", IDM_EDIT_COPY
+        MENUITEM "&Plakken", IDM_EDIT_PASTE
     END
     POPUP "Momento&pname"
     BEGIN
@@ -1391,6 +1421,11 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "W&yjd¼", IDM_EXIT
     END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "&Copy", IDM_EDIT_COPY
+        MENUITEM "&Paste", IDM_EDIT_PASTE
+    END
     POPUP "z&rzutu"
     BEGIN
         MENUITEM "Za³adu&j zrzut...",          IDM_SNAPSHOT_LOAD
@@ -1606,6 +1641,11 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "&Avsluta", IDM_EXIT
     END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "&Copy", IDM_EDIT_COPY
+        MENUITEM "&Paste", IDM_EDIT_PASTE
+    END
     POPUP "&Ögonblicksbild"
     BEGIN
         MENUITEM "&Läs in ögonblicksbild...",          IDM_SNAPSHOT_LOAD
@@ -1674,7 +1714,7 @@ BEGIN
         MENUITEM "Du&bbelskanning", IDM_TOGGLE_CRTCDOUBLESCAN
             , CHECKED
         MENUITEM SEPARATOR
-        MENUITEM "Vä&xla spelportarna", IDM_SWAP_JOYSTICK
+        MENUITEM "Växla &spelportarna", IDM_SWAP_JOYSTICK
         MENUITEM SEPARATOR
         MENUITEM "Aktivera &ljudåtergivning", IDM_TOGGLE_SOUND, CHECKED
         MENUITEM SEPARATOR
@@ -3604,6 +3644,7 @@ END
 // original and default ENGLISH text
 
 STRINGTABLE
+LANGUAGE LANG_ENGLISH, SUBLANG_NEUTRAL
 BEGIN
   IDS_MEMORY          "Memory"
   IDS_CBM2_SETTINGS   "CBM2 settings"
@@ -3613,18 +3654,20 @@ END
 // GERMAN text
 
 STRINGTABLE
+LANGUAGE LANG_GERMAN, SUBLANG_NEUTRAL
 BEGIN
-  IDS_MEMORY_DE          "Speicher"
-  IDS_CBM2_SETTINGS_DE   "CBM2 Einstellungen"
+  IDS_MEMORY          "Speicher"
+  IDS_CBM2_SETTINGS   "CBM2 Einstellungen"
 END
 
 
 // FRENCH text
 
 STRINGTABLE
+LANGUAGE LANG_FRENCH, SUBLANG_NEUTRAL
 BEGIN
-  IDS_MEMORY_FR          "Mémoire"
-  IDS_CBM2_SETTINGS_FR   "Paramètres CBM2"
+  IDS_MEMORY          "Mémoire"
+  IDS_CBM2_SETTINGS   "Paramètres CBM2"
 END
 
 
@@ -3632,9 +3675,10 @@ END
 
 #pragma code_page(28592)
 STRINGTABLE
+LANGUAGE LANG_HUNGARIAN, SUBLANG_NEUTRAL
 BEGIN
-  IDS_MEMORY_HU          "Memória"
-  IDS_CBM2_SETTINGS_HU   "CBM2 beállításai"
+  IDS_MEMORY          "Memória"
+  IDS_CBM2_SETTINGS   "CBM2 beállításai"
 END
 #pragma code_page(28591)
 
@@ -3642,18 +3686,20 @@ END
 // ITALIAN text
 
 STRINGTABLE
+LANGUAGE LANG_ITALIAN, SUBLANG_NEUTRAL
 BEGIN
-  IDS_MEMORY_IT          "Memoria"
-  IDS_CBM2_SETTINGS_IT   "Impostazioni CBM2"
+  IDS_MEMORY          "Memoria"
+  IDS_CBM2_SETTINGS   "Impostazioni CBM2"
 END
 
 
 // DUTCH text
 
 STRINGTABLE
+LANGUAGE LANG_DUTCH, SUBLANG_NEUTRAL
 BEGIN
-  IDS_MEMORY_NL          "Geheugen"
-  IDS_CBM2_SETTINGS_NL   "CBM2 instellingen"
+  IDS_MEMORY          "Geheugen"
+  IDS_CBM2_SETTINGS   "CBM2 instellingen"
 END
 
 
@@ -3661,9 +3707,10 @@ END
 
 #pragma code_page(28592)
 STRINGTABLE
+LANGUAGE LANG_POLISH, SUBLANG_NEUTRAL
 BEGIN
-  IDS_MEMORY_PL          "Memory"
-  IDS_CBM2_SETTINGS_PL   "CBM2 settings"
+  IDS_MEMORY          "Memory"
+  IDS_CBM2_SETTINGS   "CBM2 settings"
 END
 #pragma code_page(28591)
 
@@ -3671,7 +3718,8 @@ END
 // SWEDISH text
 
 STRINGTABLE
+LANGUAGE LANG_SWEDISH, SUBLANG_NEUTRAL
 BEGIN
-  IDS_MEMORY_SV          "Minne"
-  IDS_CBM2_SETTINGS_SV   "CBM2-inställningar"
+  IDS_MEMORY          "Minne"
+  IDS_CBM2_SETTINGS   "CBM2-inställningar"
 END

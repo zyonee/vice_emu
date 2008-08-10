@@ -1,24 +1,24 @@
-# Microsoft Developer Studio Project File - Name="vice" - Package Owner=<4>
+# Microsoft Developer Studio Project File - Name="_vice" - Package Owner=<4>
 # Microsoft Developer Studio Generated Build File, Format Version 6.00
 # ** DO NOT EDIT **
 
 # TARGTYPE "Win32 (x86) Application" 0x0101
 
-CFG=vice - Win32 Debug
+CFG=_vice - Win32 Debug
 !MESSAGE This is not a valid makefile. To build this project using NMAKE,
 !MESSAGE use the Export Makefile command and run
 !MESSAGE
-!MESSAGE NMAKE /f "vice.mak".
+!MESSAGE NMAKE /f "_vice.mak".
 !MESSAGE
 !MESSAGE You can specify a configuration when running NMAKE
 !MESSAGE by defining the macro CFG on the command line. For example:
 !MESSAGE
-!MESSAGE NMAKE /f "vice.mak" CFG="vice - Win32 Debug"
+!MESSAGE NMAKE /f "_vice.mak" CFG="_vice - Win32 Debug"
 !MESSAGE
 !MESSAGE Possible choices for configuration are:
 !MESSAGE
-!MESSAGE "vice - Win32 Release" (based on "Win32 (x86) Application")
-!MESSAGE "vice - Win32 Debug" (based on "Win32 (x86) Application")
+!MESSAGE "_vice - Win32 Release" (based on "Win32 (x86) Application")
+!MESSAGE "_vice - Win32 Debug" (based on "Win32 (x86) Application")
 !MESSAGE
 
 # Begin Project
@@ -29,7 +29,7 @@ CPP=cl.exe
 MTL=midl.exe
 RSC=rc.exe
 
-!IF  "$(CFG)" == "vice - Win32 Release"
+!IF  "$(CFG)" == "_vice - Win32 Release"
 
 # PROP BASE Use_MFC 0
 # PROP BASE Use_Debug_Libraries 0
@@ -54,7 +54,7 @@ LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /machine:I386
 # ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /machine:I386
 
-!ELSEIF  "$(CFG)" == "vice - Win32 Debug"
+!ELSEIF  "$(CFG)" == "_vice - Win32 Debug"
 
 # PROP BASE Use_MFC 0
 # PROP BASE Use_Debug_Libraries 1
@@ -83,7 +83,7 @@ LINK32=link.exe
 
 # Begin Target
 
-# Name "vice - Win32 Release"
-# Name "vice - Win32 Debug"
+# Name "_vice - Win32 Release"
+# Name "_vice - Win32 Debug"
 # End Target
 # End Project

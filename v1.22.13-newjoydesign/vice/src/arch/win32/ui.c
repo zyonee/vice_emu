@@ -28,6 +28,7 @@
 
 #include "vice.h"
 
+#include <assert.h>
 #include <stdio.h>
 #include <string.h>
 #include <windows.h>
@@ -40,6 +41,8 @@
 #include "attach.h"
 #include "autostart.h"
 #include "archdep.h"
+#include "charset.h"
+#include "clipboard.h"
 #include "debug.h"
 #include "drive.h"
 #include "drivecpu.h"
@@ -47,7 +50,9 @@
 #include "fullscrn.h"
 #include "imagecontents.h"
 #include "interrupt.h"
+#include "intl.h"
 #include "kbd.h"
+#include "kbdbuf.h"
 #include "lib.h"
 #include "log.h"
 #include "machine.h"
@@ -219,7 +224,6 @@ static const struct {
 
 /* ------------------------------------------------------------------------ */
 static HWND main_hwnd;
-static HWND slider_hwnd;
 
 static int emu_menu;
 
@@ -254,8 +258,6 @@ int ui_init(int *argc, char **argv)
         log_debug("UI: Using C64 type UI menues.");
         emu_menu = IDR_MENUC64;
     }
-
-    ui_accelerator = uikeyboard_create_accelerator_table();
 
     /* Register the window class.  */
     window_class.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
@@ -322,6 +324,7 @@ void ui_shutdown(void)
 /* Initialize the UI after setting all the resource values.  */
 int ui_init_finish(void)
 {
+    ui_accelerator = uikeyboard_create_accelerator_table();
     ui_fullscreen_init();
     atexit(ui_exit);
     return 0;
@@ -487,7 +490,7 @@ void ui_register_res_values(const ui_res_value_list_t *valuelist)
 static void update_menus(HWND hwnd)
 {
     HMENU menu = GetMenu(hwnd);
-    int i, j;
+    unsigned int i, j;
     int value;
     int result;
     const char *lang;
@@ -981,6 +984,124 @@ static void reset_dialog_proc(WPARAM wparam)
 
 /* ------------------------------------------------------------------------ */
 
+static void ui_copy_clipboard(HWND window)
+{
+    BOOL clipboard_is_open = FALSE;
+    char * text;
+    HGLOBAL globaltext = NULL;
+
+    do {
+        char * p;
+
+        if ( ! OpenClipboard(window) ) {
+            break;
+        }
+        clipboard_is_open = TRUE;
+
+        if ( ! EmptyClipboard() ) {
+            break;
+        }
+
+        text = clipboard_read_screen_output("\r\n");
+        if (text == NULL) {
+            break;
+        }
+
+        globaltext = GlobalAlloc(GMEM_DDESHARE, strlen(text) + 1);
+        if (globaltext == NULL) {
+            break;
+        }
+
+        p = GlobalLock(globaltext);
+        strcpy(p, text);
+
+        SetClipboardData(CF_TEXT, globaltext);
+
+    } while (0);
+
+    if (globaltext) {
+        GlobalUnlock(globaltext);
+    }
+
+    if (text) {
+        lib_free(text);
+    }
+
+    if (clipboard_is_open) {
+        CloseClipboard();
+    }
+}
+
+static void ui_paste_clipboard_text(HWND window)
+{
+    HANDLE hdata;
+    BOOL clipboard_is_open = FALSE;
+    char * text = NULL;
+    char * text_in_petscii = NULL;
+    
+    do {
+        DWORD size;
+
+        if ( ! OpenClipboard(window) ) {
+            break;
+        }
+
+        clipboard_is_open = TRUE;
+
+        hdata = GetClipboardData(CF_TEXT);
+
+        if ( ! hdata ) {
+            break;
+        }
+
+        text = GlobalLock(hdata);
+
+        if (text == NULL) {
+            break;
+        }
+
+        size = GlobalSize(hdata);
+
+        if (size < 1) {
+            break;
+        }
+
+        /*
+         * Allocate memmory for the string to convert in petscii.
+         * Note: As we are not sure if the original text is null-terminated,
+         *       do *not* use lib_stralloc()!
+         */
+        text_in_petscii = lib_malloc(size + 1);
+
+        if (text_in_petscii == NULL) {
+            break;
+        }
+
+        memcpy(text_in_petscii, text, size);
+        text_in_petscii[size] = 0;
+
+        charset_petconvstring(text_in_petscii, 0);
+
+        kbdbuf_feed(text_in_petscii);
+
+    } while (0);
+
+    if (text_in_petscii) {
+        lib_free(text_in_petscii);
+    }
+
+    if (text) {
+        GlobalUnlock(text);
+    }
+
+    if (clipboard_is_open) {
+        CloseClipboard();
+    }
+}
+
+
+/* ------------------------------------------------------------------------ */
+
 /* FIXME: tmp hack.  */
 int syscolorchanged, displaychanged, querynewpalette, palettechanged;
 
@@ -1031,6 +1152,15 @@ static void handle_default_command(WPARAM wparam, LPARAM lparam, HWND hwnd)
     }
 }
 
+static void handle_wm_initmenupopup(HMENU menu)
+{
+    /* enable PASTE iff the clipboard contains "our" format: */
+
+    EnableMenuItem(menu, IDM_EDIT_PASTE, 
+        MF_BYCOMMAND 
+        | ( IsClipboardFormatAvailable(CF_TEXT) ? MF_ENABLED : MF_GRAYED));
+}
+
 static void handle_wm_command(WPARAM wparam, LPARAM lparam, HWND hwnd)
 {
     /* Handle machine specific commands first.  */
@@ -1045,6 +1175,12 @@ static void handle_wm_command(WPARAM wparam, LPARAM lparam, HWND hwnd)
         break;
       case IDM_EXIT:
         PostMessage(hwnd, WM_CLOSE, wparam, lparam);
+        break;
+      case IDM_EDIT_COPY:
+        ui_copy_clipboard(hwnd);
+        break;
+      case IDM_EDIT_PASTE:
+        ui_paste_clipboard_text(hwnd);
         break;
       case IDM_ABOUT:
       case IDM_HELP:
@@ -1394,6 +1530,9 @@ static long CALLBACK window_proc(HWND window, UINT msg,
           This message seems to be a good candidate for the remote desktop. */
         ui_redraw_all_windows();
         return 0;
+      case WM_INITMENUPOPUP:
+        handle_wm_initmenupopup((HMENU)wparam);
+        break;
       case WM_COMMAND:
         handle_wm_command(wparam, lparam, window);
         return 0;
@@ -1492,7 +1631,10 @@ static long CALLBACK window_proc(HWND window, UINT msg,
         if (_mouse_enabled) mouse_button_left(1);
         break;
       case WM_RBUTTONDOWN:
-        if (_mouse_enabled) mouse_button_right(1);
+        if (_mouse_enabled)
+            mouse_button_right(1);
+        else
+            ui_paste_clipboard_text(window);
         break;
       case WM_LBUTTONUP:
         if (_mouse_enabled) mouse_button_left(0);

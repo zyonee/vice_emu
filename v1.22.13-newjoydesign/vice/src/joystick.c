@@ -69,7 +69,9 @@ static alarm_t *joystick_alarm = NULL;
 
 static CLOCK joystick_delay;
 
+#ifdef COMMON_KBD
 static int joykeys[3][9];
+#endif
 
 static int joystick_port_map[2];
 

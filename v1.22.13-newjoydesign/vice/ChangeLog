@@ -1,3 +1,204 @@
+2008-07-18  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
+
+	* Version 2.0
+
+2008-07-18  Christian Vogelgsang  <chris@vogelgsang.org>
+
+	* build/macosx/build-vice-release.sh: use provided autogen.sh
+
+	* doc/ReadmeMacOSX.txt: updated mac docs
+
+	* doc/html/macosx.html: Prepared for release of 2.0
+
+2008-07-17  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
+
+	* doc/vice.texi, doc/html/plain/NEWS, doc/html/index.html,
+	doc/Win32-Cygwin-HOWTO.txt: Prepared for upcoming 2.0 release.
+
+2008-07-16  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
+
+	* Version 1.22.27
+
+2008-07-15  Marco van den Heuvel  <blackystardust68@yahoo.com>
+
+	* Makefile.am: Reverted the skyos make bindist(zip) part back to
+	what is used to be.
+
+2008-07-14  Marco van den Heuvel  <blackystardust68@yahoo.com>
+
+	* README: Updated for the 2.0 release.
+
+2008-07-13  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
+
+	* Version 1.22.26
+
+2008-07-12  Marco van den Heuvel  <blackystardust68@yahoo.com>
+
+	* build/riscos/build-cross.sh: Added a missing 'cd ..'.
+
+	* configure.in: Corrected a typo.
+
+	* doc/Readme.beos: Updated.
+
+	* vice-mint.spec, vice.spec: Release version updated to 2.0.
+
+2008-07-10  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
+
+	* Version 1.22.25
+
+2008-07-07  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
+
+	* Version 1.22.24
+
+2008-07-07  Marco van den Heuvel  <blackystardust68@yahoo.com>
+
+	* doc/html/plain/NEWS: Updated.
+
+2008-07-04  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
+
+	* Version 1.22.23
+
+2008-07-04  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
+
+	* Makefile.am: Make sure the file Doxyfile is included in the
+	distribution.
+
+	* doc/html/Makefile.am: Make sure the files hpux.html and
+	sco.html are included in the distribution.
+
+2008-07-01  Marco van den Heuvel  <blackystardust68@yahoo.com>
+
+	* doc/GP2X-Howto.txt, doc/Makefile.am: Added a GP2X compile
+	howto text file.
+
+2008-07-02  Andreas Matthies  <andreas.matthies@gmx.net>
+
+	* doc/html/plain/BUGS, NEWS: Updated.
+
+2008-07-01  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
+
+	* Version 1.22.22
+
+2008-06-30  Marco van den Heuvel  <blackystardust68@yahoo.com>
+
+	* doc/html/plain/NEWS: Added mint and sol11 ports and corrected
+	a typo.
+
+	* doc/html/solaris.html: Added sol11 port.
+
+2008-06-29  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
+
+	* Version 1.22.21
+
+2008-06-28  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
+
+	* data/CBM-II/win_shortcuts.vsc, data/VIC20/win_shortcuts.vsc,
+	data/PLUS4/win_shortcuts.vsc, data/PET/win_shortcuts.vsc,
+	data/C64/win_shortcuts.vsc, data/C128/win_shortcuts.vsc: Set
+	default shortcuts Ctrl+C and Ctrl+V for Edit/Copy and Edit/Paste
+
+	* doc/html/plain/NEWS: Updated
+
+2008-06-23  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
+
+	* Version 1.22.20
+
+2008-06-23  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
+
+	* vice-mint.spec: Added (was forgotten in the previous version)
+
+2008-06-22  Marco van den Heuvel  <blackystardust68@yahoo.com>
+
+	* Makefile.am: Improved some of the make-bindist.sh scripts.
+
+2008-06-19  Marco van den Heuvel  <blackystardust68@yahoo.com>
+
+	* vice-mint.spec, Makefile.am: Added Atari Mint specific rpm
+
+2008-06-19  Marco van den Heuvel  <blackystardust68@yahoo.com>
+
+	* vice-mint.spec, Makefile.am: Added Atari Mint specific rpm
+	spec file.
+
+	* AUTHORS, README: Added Fabrizio to the VICE core members.
+
+	* config.guess, config.sub: Added preliminary support for
+	avr32-linux.
+
+	* doc/vice.texi: Added Fabrizio to the VICE core members, got
+	rid of a duplicate Christian Vogelgsang entry and added/updated
+	external contributors entries.
+
+	* doc/html/plain/NEWS, doc/html/index.html: Updated for the
+	VICE 2.0 release.
+
+2008-06-22  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
+
+	* Version 1.22.19
+
+2008-06-17  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
+
+	* Doxyfile: new file to allow to auto-generate doxygen
+	documentation.
+
+2008-06-15  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
+
+	* Version 1.22.18
+
+2008-06-08  Marco van den Heuvel  <blackystardust68@yahoo.com>
+
+	* configure.in: Added a check for the minix version for the
+	prototypes of recv and send in network.c.
+
+	* doc/html/solaris.html, doc/html/amigaos.html,
+	doc/html/sco.html, doc/html/hpux.html, doc/html/beos.html,
+	doc/html/qnx.html, doc/html/Makefile.am, doc/html/index.html:
+	Updated for the upcoming 2.0 release.
+
+2008-06-03  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
+
+	* Version 1.22.17.
+
+	* configure.in: Test for libnet 1.1 and set VICE_USE_LIBNET_1_1
+	if it exists. This adds support for libnet 1.1 for TFE/RR-net
+	emulation.
+
+2008-06-03  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
+
+	* configure.in: Changed bash'ism (if [...]) to more general code
+	(if test ...).
+
+2008-06-01  Marco van den Heuvel  <blackystardust68@yahoo.com>
+
+	* configure.in: Added extra defines needed for minix, alligned
+	the printout of configure and added the --enable-memmap
+	configure option for the memmap feature from VICEplus as
+	provided by Hannu Nuotio <hannu.nuotio@tut.fi>.
+
+	* build/qnx4/build.sh: Fixed the qnx 4.x build script.
+
+2008-05-25  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
+
+	* Version 1.22.16.
+
+2008-05-25  Christian Vogelgsang  <chris@vogelgsang.org>
+
+	* configure.in: honor OBJCFLAGS if available. added Carbon lib
+	for Cocoa linking.
+
+	* build/Makefile.am, build/macosx/build-vice-release.sh: added
+	build-vice-release script
+
+	* Makefile.am: make bindist on Macs need the bash
+
+	* data/C64/Makefile.am, data/C64/osx_sym_de.vkm,
+	data/C64/osx_pos.vkm, data/C64/osx_sym_us.vkm: fixed Cocoa key
+	maps
+
+2008-05-24  Marco van den Heuvel  <blackystardust68@yahoo.com>
+
+	* Makefile.am: Added a '@' in front of the 'make install' echo.
+
 2008-05-19  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
 
 	* autogen.sh: Removed "bash-ism" from script (compare with "=="
@@ -37,6 +238,15 @@
 2008-05-07  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
 
 	* Version 1.22.14.
+
+2008-05-01  Marco van den Heuvel  <blackystardust68@yahoo.com>
+
+	* configure.in, data/fonts/vice-cbm.bdf,
+	data/fonts/Makefile.am: Added a check for the 'fc-cache'
+	command, and use the .bdf font if not present.
+
+	* doc/html/Makefile.am, doc/Makefile.am: Fixed the
+	ALTERNATE_DOCDIR problems with automake.
 
 2008-04-27  Spiro Trikaliotis  <spiro.trikaliotis@gmx.de>
 

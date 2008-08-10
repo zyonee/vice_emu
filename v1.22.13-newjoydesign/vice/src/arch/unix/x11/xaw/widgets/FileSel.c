@@ -86,8 +86,14 @@ typedef	char *			XtPointer;
 #define abs(a)			((a) < 0 ? -(a) : (a))
 #endif
 
+#ifndef max
 #define max(a,b)		((a) > (b) ? (a) : (b))
+#endif
+
+#ifndef min
 #define min(a,b)		((a) < (b) ? (a) : (b))
+#endif
+
 #define XtStrlen(s)		((s) ? strlen(s) : 0)
 
 #define	StrCopy(s)		((char*)strcpy((char *)XtMalloc((strlen(s)+1)*\
@@ -1234,7 +1240,9 @@ XtPointer call_data;
 	Widget cur_dir_text;
 	Arg args[10];
 	String path;
+#if defined VICE && (defined HAVE_REGEXP_H || defined HAVE_REGEX_H)
 	char *fpath, *fpattern;
+#endif
 
 	/* what is this actually needed for? */
 	XtSetArg(args[0],XtNstring,(XtArgVal)(&path));

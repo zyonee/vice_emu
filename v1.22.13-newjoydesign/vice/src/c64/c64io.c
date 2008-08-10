@@ -106,6 +106,8 @@ static io_source_t io_source_table[] = {
     {IO_SOURCE_MIKRO_ASSEMBLER, "MIKRO ASSEMBLER", IO_DETACH_CART, NULL},
     {IO_SOURCE_MMC64, "MMC64", IO_DETACH_RESOURCE, "MMC64"},
     {IO_SOURCE_DIGIMAX, "DIGIMAX", IO_DETACH_RESOURCE, "DIGIMAX"},
+    {IO_SOURCE_ACTION_REPLAY4, "ACTION REPLAY 4", IO_DETACH_CART, NULL},
+    {IO_SOURCE_STARDOS, "STARDOS", IO_DETACH_CART, NULL},
     {-1,NULL,0,NULL}
 };
 
@@ -138,7 +140,7 @@ static int get_io_source_index(int id)
 }
 
 #define MAX_IO1_RETURNS 8
-#define MAX_IO2_RETURNS 11
+#define MAX_IO2_RETURNS 10
 
 #if MAX_IO1_RETURNS>MAX_IO2_RETURNS
 static int io_source_return[MAX_IO1_RETURNS];
@@ -403,17 +405,12 @@ BYTE REGPARM1 c64io2_read(WORD addr)
         io_source_counter++;
     }
     if (reu_enabled) {
-        return_value = reu_read((WORD)(addr & 0x0f));
-        io_source_check(io_source_counter);
-        io_source_counter++;
-    }
-    if (georam_enabled && addr >= 0xdf80) {
-        return georam_reg_read((WORD)(addr & 1));
+        return_value = reu_read(addr);
         io_source_check(io_source_counter);
         io_source_counter++;
     }
     if (mmc64_enabled && addr >= 0xdf10 && addr <= 0xdf13) {
-        return mmc64_io2_read((WORD)(addr));
+        return_value = mmc64_io2_read((WORD)(addr));
         io_source_check(io_source_counter);
         io_source_counter++;
     }
@@ -471,7 +468,7 @@ void REGPARM2 c64io2_store(WORD addr, BYTE value)
         digimax_sound_store((WORD)(addr & 0x03), value);
     }
     if (reu_enabled) {
-        reu_store((WORD)(addr & 0x0f), value);
+        reu_store(addr, value);
     }
     if (georam_enabled && addr >= 0xdf80) {
         georam_reg_store((WORD)(addr & 1), value);

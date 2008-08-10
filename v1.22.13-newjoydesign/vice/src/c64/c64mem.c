@@ -218,7 +218,12 @@ void mem_pla_config_changed(void)
 BYTE REGPARM1 zero_read(WORD addr)
 {
     addr &= 0xff;
-
+#ifdef FEATURE_CPUMEMHISTORY
+    if(!(memmap_state & MEMMAP_STATE_IGNORE)) {
+        monitor_memmap_store(addr, (memmap_state&MEMMAP_STATE_OPCODE)?MEMMAP_RAM_X:(memmap_state&MEMMAP_STATE_INSTR)?0:MEMMAP_RAM_R);
+        memmap_state &= ~(MEMMAP_STATE_OPCODE);
+    }
+#endif
     switch ((BYTE)addr) {
       case 0:
         return pport.dir_read;
@@ -242,7 +247,9 @@ BYTE REGPARM1 zero_read(WORD addr)
 void REGPARM2 zero_store(WORD addr, BYTE value)
 {
     addr &= 0xff;
-
+#ifdef FEATURE_CPUMEMHISTORY
+    monitor_memmap_store(addr, MEMMAP_RAM_W);
+#endif
     switch ((BYTE)addr) {
       case 0:
         if (vbank == 0) {
@@ -1053,12 +1060,13 @@ mem_ioreg_list_t *mem_ioreg_list_get(void *context)
     return mem_ioreg_list;
 }
 
-void mem_get_screen_parameter(WORD *base, BYTE *rows, BYTE *columns)
+void mem_get_screen_parameter(WORD *base, BYTE *rows, BYTE *columns, int *bank)
 {
     *base = ((vicii_peek(0xd018) & 0xf0) << 6)
             | ((~cia2_peek(0xdd00) & 0x03) << 14);
     *rows = 25;
     *columns = 40;
+    *bank = 0;
 }
 
 /* ------------------------------------------------------------------------- */
