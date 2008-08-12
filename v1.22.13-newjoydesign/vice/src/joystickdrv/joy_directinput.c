@@ -288,6 +288,8 @@ static BOOL CALLBACK EnumCallBack(LPCDIDEVICEINSTANCE lpddi, LPVOID pvref)
     memcpy(&new_joystick->guid, &lpddi->guidInstance, sizeof(GUID));
     new_joystick->axes = NULL;
     new_joystick->buttons = NULL;
+    new_joystick->joystick_di_devices = NULL;
+    new_joystick->joystick_di_devices2 = NULL;
     
     dev->name = lib_stralloc(lpddi->tszInstanceName);
     dev->priv = new_joystick;
