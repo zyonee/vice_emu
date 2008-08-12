@@ -964,7 +964,7 @@ int ui_open_canvas_window(video_canvas_t *c, const char *title,
 	   unreferenced.  */
 	/* gtk_rc_style_unref(rc_style); */
 #ifdef HAVE_HWSCALE
-        GdkGLConfig *gl_config = gdk_gl_config_new_by_mode (GDK_GL_MODE_RGB | GDK_GL_MODE_DOUBLE);
+        GdkGLConfig *gl_config = gdk_gl_config_new_by_mode (GDK_GL_MODE_RGBA | GDK_GL_MODE_DOUBLE);
 
         if (gl_config == NULL) {
             log_warning (ui_log, "HW scaling will not be available");
@@ -2741,9 +2741,9 @@ gboolean exposure_callback_canvas(GtkWidget *w, GdkEventExpose *e,
 
             glTexParameteri (GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
             glTexParameteri (GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-            glTexImage2D  (GL_TEXTURE_RECTANGLE_ARB, 0, GL_RGB, 
+            glTexImage2D  (GL_TEXTURE_RECTANGLE_ARB, 0, GL_RGBA, 
                 canvas->gdk_image_size.width, canvas->gdk_image_size.height,
-                0, GL_RGB, GL_UNSIGNED_BYTE, canvas->gdk_image);
+                0, GL_RGBA, GL_UNSIGNED_BYTE, canvas->gdk_image);
 
             glBegin (GL_QUADS);
 
@@ -2770,9 +2770,14 @@ gboolean exposure_callback_canvas(GtkWidget *w, GdkEventExpose *e,
 #endif
 #if !defined(MACOSX_SUPPORT) || !defined(HAVE_HWSCALE)
         {
-            gdk_draw_rgb_image(w->window, app_gc,
-                e->area.x, e->area.y, e->area.width, e->area.height, GDK_RGB_DITHER_NONE,
-                canvas->gdk_image+canvas->gdk_image_size.width*3*e->area.y+3*e->area.x, canvas->gdk_image_size.width*3);
+            gdk_draw_rgb_32_image(w->window, app_gc,
+				  e->area.x, e->area.y, 
+				  e->area.width, e->area.height, 
+				  GDK_RGB_DITHER_NONE,
+				  canvas->gdk_image+canvas->
+				  gdk_image_size.width*4*e->
+				  area.y+4*e->area.x, 
+				  canvas->gdk_image_size.width*4);
         }
 #endif
     }
