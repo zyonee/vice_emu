@@ -2,9 +2,10 @@
 
 SUBDIRS = $(POSUB) src build data man doc
 
-if PO_SUBDIR_USED
+# COMMON_EXTRA_DIST is what used to be the EXTRA_DIST, when adding dist
+# files, please add them to the COMMON_EXTRA_DIST list.
 
-EXTRA_DIST = AUTHORS \
+COMMON_EXTRA_DIST = AUTHORS \
 	FEEDBACK \
 	COPYING \
 	Doxyfile \
@@ -13,17 +14,13 @@ EXTRA_DIST = AUTHORS \
 	vice.spec \
 	vice-mint.spec
 
-else
 
-EXTRA_DIST = AUTHORS \
-	FEEDBACK \
-	COPYING \
-	Doxyfile \
-	INSTALL \
-	NEWS \
-	vice.spec \
-	vice-mint.spec \
-	po/ChangeLog \
+# PO_EXTRA_DIST is a list of files in the po directory that need to be
+# included in the source archive, this list was added to fix the fact that
+# 'make dist' only produced a proper/workable source archive when done on a
+# *nix platform with nls.
+
+PO_EXTRA_DIST = po/ChangeLog \
 	po/Makefile.in.in \
 	po/POTFILES.in \
 	po/de.po \
@@ -35,6 +32,14 @@ EXTRA_DIST = AUTHORS \
 	po/pl.po \
 	po/po2tbl.sed \
 	po/sv.po
+
+if PO_SUBDIR_USED
+
+EXTRA_DIST = $(COMMON_EXTRA_DIST)
+
+else
+
+EXTRA_DIST = $(COMMON_EXTRA_DIST) $(PO_EXTRA_DIST)
 
 endif
 
