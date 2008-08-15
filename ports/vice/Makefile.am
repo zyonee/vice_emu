@@ -1,5 +1,7 @@
 # Process this file with automake to produce Makefile.in
 
+if PO_SUBDIR_USED
+
 SUBDIRS = $(POSUB) src build data man doc
 
 EXTRA_DIST = AUTHORS \
@@ -10,6 +12,32 @@ EXTRA_DIST = AUTHORS \
 	NEWS \
 	vice.spec \
 	vice-mint.spec
+
+else
+
+EXTRA_DIST = AUTHORS \
+	FEEDBACK \
+	COPYING \
+	Doxyfile \
+	INSTALL \
+	NEWS \
+	vice.spec \
+	vice-mint.spec \
+	po/ChangeLog \
+	po/Makefile.in.in \
+	po/POTFILES.in \
+	po/de.po \
+	po/fr.po \
+	po/hu.po \
+	po/intl2po.c \
+	po/it.po \
+	po/nl.po \
+	po/pl.po \
+	po/po2tbl.sed \
+	po/sv.po
+
+endif
+
 
 .PHONY: x64 x128 x64dtv xvic xpet xplus4 xcbm2
 x64:
