@@ -1,8 +1,8 @@
 # Process this file with automake to produce Makefile.in
 
-if PO_SUBDIR_USED
-
 SUBDIRS = $(POSUB) src build data man doc
+
+if PO_SUBDIR_USED
 
 EXTRA_DIST = AUTHORS \
 	FEEDBACK \
