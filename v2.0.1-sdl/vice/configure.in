@@ -368,7 +368,12 @@ darwin*)
   AM_CONDITIONAL(HAVE_RS232, true)
   AM_CONDITIONAL(HAVE_RAWDRIVE, true)
 
-  AC_DEFINE(HAVE_RS232,,[Enable RS232 emulation.])
+  dnl for the time being disabled for SDL UI
+
+  if test x"$enable_sdlui" != "xyes"; then
+    AC_DEFINE(HAVE_RS232,,[Enable RS232 emulation.])
+  fi
+
   AC_DEFINE(HAVE_RAWDRIVE,,[Support for block device disk image access.])
   AC_DEFINE(HAVE_MOUSE,,[Enable 1351 mouse support])
 
