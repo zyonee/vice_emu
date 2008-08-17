@@ -626,6 +626,10 @@ else
 	with_arts=no
 fi
 
+dnl Set output drivers to none
+SOUND_DRIVERS=""
+GFXOUTPUT_DRIVERS=""
+
 dnl Check and setup SDL compilation.
 if test x"$with_sdlsound" = "xyes" -o x"$enable_sdlui" = "xyes"; then
 
@@ -1095,10 +1099,6 @@ fi
 LIBS="$old_LIBS"
 AC_SUBST(NETPLAY_LIBS)
 
-
-dnl Configure output drivers
-SOUND_DRIVERS=""
-GFXOUTPUT_DRIVERS=""
 
 dnl ----- FFMPEG -----
 FFMPEG_INCLUDES=
