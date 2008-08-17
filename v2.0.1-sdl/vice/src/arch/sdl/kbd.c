@@ -28,9 +28,26 @@
 #include "vice.h"
 
 #include "kbd.h"
+#include "keyboard.h"
 #include "log.h"
 #include "machine.h"
 #include "types.h"
+
+#include <SDL/SDL.h>
+
+/* ------------------------------------------------------------------------ */
+
+void sdlkbd_press(SDLKey key, SDLMod mod)
+{
+/*fprintf(stderr,"%s: %i (%s),%i\n",__func__,key,SDL_GetKeyName(key),mod);*/
+    keyboard_key_pressed((unsigned long)key);
+}
+
+void sdlkbd_release(SDLKey key, SDLMod mod)
+{
+/*fprintf(stderr,"%s: %i (%s),%i\n",__func__,key,SDL_GetKeyName(key),mod);*/
+    keyboard_key_released((unsigned long)key);
+}
 
 /* ------------------------------------------------------------------------ */
 
@@ -57,14 +74,14 @@ const char *kbd_arch_keynum_to_keyname(signed long keynum)
 
 void kbd_initialize_numpad_joykeys(int* joykeys)
 {
-    joykeys[0] = 0;
-    joykeys[1] = 0;
-    joykeys[2] = 0;
-    joykeys[3] = 0;
-    joykeys[4] = 0;
-    joykeys[5] = 0;
-    joykeys[6] = 0;
-    joykeys[7] = 0;
-    joykeys[8] = 0;
+    joykeys[0] = SDLK_KP0;
+    joykeys[1] = SDLK_KP1;
+    joykeys[2] = SDLK_KP2;
+    joykeys[3] = SDLK_KP3;
+    joykeys[4] = SDLK_KP4;
+    joykeys[5] = SDLK_KP6;
+    joykeys[6] = SDLK_KP7;
+    joykeys[7] = SDLK_KP8;
+    joykeys[8] = SDLK_KP9;
 }
 

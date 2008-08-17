@@ -36,11 +36,8 @@
 
 #include "vice.h"
 
-#include <fcntl.h>
+#include <SDL/SDL.h>
 #include <stdio.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
 
 #include "cmdline.h"
 #include "joy.h"
@@ -104,7 +101,39 @@ fprintf(stderr,"%s\n",__func__);
  **********************************************************/
 int joy_arch_init(void)
 {
-fprintf(stderr,"%s\n",__func__);
+    int num, i;
+    SDL_Joystick *joy;
+
+    if (SDL_InitSubSystem(SDL_INIT_JOYSTICK)) {
+fprintf(stderr,"%s: joystick subsystem init failed\n",__func__);
+        return -1;
+    }
+
+    num = SDL_NumJoysticks();
+
+    if(num == 0) {
+        fprintf(stderr,"No joysticks found.\n");
+        return 0;
+    }
+
+    fprintf(stderr,"%i joysticks found:\n",num);
+
+    for(i=0; i<num; ++i) {
+        joy = SDL_JoystickOpen(i);
+        if(joy) {
+            fprintf(stderr,"Joystick %i: %s, (%i axes, %i buttons)\n",
+                    i,
+                    SDL_JoystickName(i),
+                    SDL_JoystickNumAxes(joy),
+                    SDL_JoystickNumButtons(joy)
+                    );
+
+        } else {
+            fprintf(stderr,"Couldn't open joystick %i\n",i);
+        }
+    }
+
+    SDL_JoystickEventState(SDL_ENABLE);
     return 0;
 }
 

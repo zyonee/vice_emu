@@ -27,33 +27,35 @@
 #ifndef _KBD_H
 #define _KBD_H
 
+#include <SDL/SDL.h>
+
 extern void kbd_arch_init(void);
 
 extern signed long kbd_arch_keyname_to_keynum(char *keyname);
 extern const char *kbd_arch_keynum_to_keyname(signed long keynum);
 extern void kbd_initialize_numpad_joykeys(int *joykeys);
 
-#define KBD_C64_SYM_US  "x11_sym.vkm"
-#define KBD_C64_SYM_DE  "x11_sym.vkm"
-#define KBD_C64_POS     "x11_pos.vkm"
-#define KBD_C128_SYM    "x11_sym.vkm"
-#define KBD_C128_POS    "x11_pos.vkm"
-#define KBD_VIC20_SYM   "x11_sym.vkm"
-#define KBD_VIC20_POS   "x11_pos.vkm"
-#define KBD_PET_SYM_UK  "x11_buks.vkm"
-#define KBD_PET_POS_UK  "x11_bukp.vkm"
-#define KBD_PET_SYM_DE  "x11_bdes.vkm"
-#define KBD_PET_POS_DE  "x11_bdep.vkm"
-#define KBD_PET_SYM_GR  "x11_bgrs.vkm"
-#define KBD_PET_POS_GR  "x11_bgrp.vkm"
-#define KBD_PLUS4_SYM   "x11_sym.vkm"
-#define KBD_PLUS4_POS   "x11_pos.vkm"
-#define KBD_CBM2_SYM_UK "x11_buks.vkm"
-#define KBD_CBM2_POS_UK "x11_bukp.vkm"
-#define KBD_CBM2_SYM_DE "x11_bdes.vkm"
-#define KBD_CBM2_POS_DE "x11_bdep.vkm"
-#define KBD_CBM2_SYM_GR "x11_bgrs.vkm"
-#define KBD_CBM2_POS_GR "x11_bgrp.vkm"
+#define KBD_C64_SYM_US  "sdl_sym.vkm"
+#define KBD_C64_SYM_DE  "sdl_sym.vkm"
+#define KBD_C64_POS     "sdl_pos.vkm"
+#define KBD_C128_SYM    "sdl_sym.vkm"
+#define KBD_C128_POS    "sdl_pos.vkm"
+#define KBD_VIC20_SYM   "sdl_sym.vkm"
+#define KBD_VIC20_POS   "sdl_pos.vkm"
+#define KBD_PET_SYM_UK  "sdl_buks.vkm"
+#define KBD_PET_POS_UK  "sdl_bukp.vkm"
+#define KBD_PET_SYM_DE  "sdl_bdes.vkm"
+#define KBD_PET_POS_DE  "sdl_bdep.vkm"
+#define KBD_PET_SYM_GR  "sdl_bgrs.vkm"
+#define KBD_PET_POS_GR  "sdl_bgrp.vkm"
+#define KBD_PLUS4_SYM   "sdl_sym.vkm"
+#define KBD_PLUS4_POS   "sdl_pos.vkm"
+#define KBD_CBM2_SYM_UK "sdl_buks.vkm"
+#define KBD_CBM2_POS_UK "sdl_bukp.vkm"
+#define KBD_CBM2_SYM_DE "sdl_bdes.vkm"
+#define KBD_CBM2_POS_DE "sdl_bdep.vkm"
+#define KBD_CBM2_SYM_GR "sdl_bgrs.vkm"
+#define KBD_CBM2_POS_GR "sdl_bgrp.vkm"
 
 #define KBD_INDEX_C64_DEFAULT   KBD_INDEX_C64_SYM
 #define KBD_INDEX_C128_DEFAULT  KBD_INDEX_C128_SYM
@@ -62,8 +64,8 @@ extern void kbd_initialize_numpad_joykeys(int *joykeys);
 #define KBD_INDEX_PLUS4_DEFAULT KBD_INDEX_PLUS4_SYM
 #define KBD_INDEX_CBM2_DEFAULT  KBD_INDEX_CBM2_BUKS
 
-extern void sdlkbd_press(signed long key);
-extern void sdlkbd_release(signed long key);
+extern void sdlkbd_press(SDLKey key, SDLMod mod);
+extern void sdlkbd_release(SDLKey key, SDLMod mod);
 extern void kbd_enter_leave(void);
 extern void kbd_focus_change(void);
 

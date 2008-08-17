@@ -2,6 +2,9 @@
  * ui.c - Common UI routines.
  *
  * Written by
+ *  Hannu Nuotio <hannu.nuotio@tut.fi>
+ *
+ * Based on code by
  *  Andreas Boose <viceteam@t-online.de>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
@@ -35,6 +38,8 @@
 #include "video.h"
 #include "videoarch.h"
 
+#include <SDL/SDL.h>
+
 #include <stdio.h>
 
 /* ----------------------------------------------------------------- */
@@ -43,7 +48,44 @@
 void ui_display_speed(float percent, float framerate, int warp_flag){}
 void ui_display_paused(int flag){}
 void ui_dispatch_next_event(void){}
-void ui_dispatch_events(void){}
+
+/* SDL event handling */
+void ui_dispatch_events(void)
+{
+    SDL_Event e;
+
+    while(SDL_PollEvent(&e)) {
+        switch(e.type) {
+            case SDL_QUIT:
+                exit(0);
+                break;
+            case SDL_KEYDOWN:
+                sdlkbd_press(e.key.keysym.sym, e.key.keysym.mod);
+                break;
+            case SDL_KEYUP:
+                sdlkbd_release(e.key.keysym.sym, e.key.keysym.mod);
+                break;
+            case SDL_JOYAXISMOTION:
+                break;
+            case SDL_JOYBUTTONDOWN:
+                break;
+            case SDL_JOYBUTTONUP:
+                break;
+            case SDL_ACTIVEEVENT:
+                if(e.active.state & SDL_APPACTIVE) {
+                    if(e.active.gain) {
+/*fprintf(stderr,"%s: activeevent %i,%i\n",__func__,e.active.state,e.active.gain);*/
+                    } else {
+                    }
+                }
+                break;
+            default:
+/*fprintf(stderr,"%s: %i\n",__func__,e.type);*/
+                break;
+        }
+    }
+}
+
 extern void ui_check_mouse_cursor(void){}
 
 void archdep_ui_init(int argc, char *argv[])
@@ -58,6 +100,7 @@ fprintf(stderr,"%s\n",__func__);
 int ui_resources_init(void)
 {
 fprintf(stderr,"%s\n",__func__);
+    return 0;
 }
 
 void ui_resources_shutdown(void)
@@ -68,21 +111,25 @@ fprintf(stderr,"%s\n",__func__);
 int ui_cmdline_options_init(void)
 {
 fprintf(stderr,"%s\n",__func__);
+    return 0;
 }
 
 int ui_init(int *argc, char **argv)
 {
 fprintf(stderr,"%s\n",__func__);
+    return 0;
 }
 
 int ui_init_finish(void)
 {
 fprintf(stderr,"%s\n",__func__);
+    return 0;
 }
 
 int ui_init_finalize(void)
 {
 fprintf(stderr,"%s\n",__func__);
+    return 0;
 }
 
 void ui_shutdown(void)
@@ -141,6 +188,7 @@ int uicolor_alloc_color(unsigned int red, unsigned int green,
                         BYTE *pixel_return)
 {
 fprintf(stderr,"%s\n",__func__);
+    return 0;
 }
 
 void uicolor_free_color(unsigned int red, unsigned int green,

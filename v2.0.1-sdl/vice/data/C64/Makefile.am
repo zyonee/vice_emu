@@ -25,6 +25,7 @@ c64_DATA = \
 	osx_sym_us.vkm \
 	pc64.vpl \
 	ROdflt.vkm \
+	sdl_sym.vkm \
 	vice.vpl \
 	win_shortcuts.vsc \
 	win_sym_de.vkm \

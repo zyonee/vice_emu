@@ -1,7 +1,10 @@
 /*
- * vsyncarch.c - End-of-frame handling for Unix
+ * vsyncarch.c - End-of-frame handling for SDL
  *
  * Written by
+ *  Hannu Nuotio <hannu.nuotio@tut.fi>
+ *
+ * Based on code by
  *  Dag Lem <resid@nimrod.no>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
@@ -31,37 +34,32 @@
 #include "ui.h"
 #include "vsyncapi.h"
 
-#ifdef HAS_JOYSTICK
-#include "joy.h"
-#endif
-
-#include <sys/time.h>
-#include <unistd.h>
+#include <SDL/SDL.h>
 
 /* hook to ui event dispatcher */
 static void_hook_t ui_dispatch_hook;
 
 /* ------------------------------------------------------------------------- */
 
+/* SDL_Delay & GetTicks have 1ms resolution, while VICE needs 1us */
+#define VICE_SDL_TICKS_SCALE 1000
+
 /* Number of timer units per second. */
 signed long vsyncarch_frequency(void)
 {
-    /* Microseconds resolution. */
-    return 1000000;
+    /* Milliseconds resolution. */
+    return 1000*VICE_SDL_TICKS_SCALE;
 }
 
 /* Get time in timer units. */
 unsigned long vsyncarch_gettime(void)
 {
-    struct timeval now;
-
-    gettimeofday(&now, NULL);
-
-    return 1000000UL * now.tv_sec + now.tv_usec;
+    return SDL_GetTicks()*VICE_SDL_TICKS_SCALE;
 }
 
 void vsyncarch_init(void)
 {
+fprintf(stderr,"%s\n",__func__);
     (void)vsync_set_event_dispatcher(ui_dispatch_events);
 }
 
@@ -74,13 +72,14 @@ void vsyncarch_display_speed(double speed, double frame_rate, int warp_enabled)
 /* Sleep a number of timer units. */
 void vsyncarch_sleep(signed long delay)
 {
-    usleep(delay);
+/*fprintf(stderr,"%s: %i\n",__func__,delay);*/
+    SDL_Delay(delay/VICE_SDL_TICKS_SCALE);
 }
 
 void vsyncarch_presync(void)
 {
+    (*ui_dispatch_hook)();
     kbdbuf_flush();
-    joystick();
 }
 
 void_hook_t vsync_set_event_dispatcher(void_hook_t hook)
@@ -93,3 +92,4 @@ void_hook_t vsync_set_event_dispatcher(void_hook_t hook)
 void vsyncarch_postsync(void)
 {
 }
+

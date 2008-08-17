@@ -30,7 +30,6 @@ libarch_a_SOURCES = \
 	mousedrv.h \
 	sdlmain.c \
 	signals.c \
-	rs232.c \
 	types.h \
 	ui.c \
 	ui.h \

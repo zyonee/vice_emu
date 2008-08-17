@@ -72,7 +72,7 @@ int archdep_init(int *argc, char **argv)
 {
 fprintf(stderr,"%s\n",__func__);
 
-    if(SDL_Init(SDL_INIT_VIDEO) < 0) {
+    if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0) {
         fprintf(stderr, "SDL error: %s\n", SDL_GetError());
         return 1;
     }
