@@ -1,3 +1,9 @@
+if SDL_COMPILE
+
+SUBDIRS = sdl
+
+endif
+
 if UNIX_COMPILE
 
 SUBDIRS = unix
