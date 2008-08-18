@@ -109,5 +109,13 @@ extern int ui_emulation_is_paused(void);
 extern void ui_set_alwaysontop(int alwaysontop);
 extern void ui_message(const char *format,...);
 
+extern int *c64ui_menu_translation_table;
+extern int *c64dtvui_menu_translation_table;
+extern int *c128ui_menu_translation_table;
+extern int *vic20ui_menu_translation_table;
+extern int *petui_menu_translation_table;
+extern int *plus4ui_menu_translation_table;
+extern int *cbm2ui_menu_translation_table;
+
 #endif
 

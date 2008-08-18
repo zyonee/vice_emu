@@ -228,6 +228,8 @@ static int emu_menu;
 
 static int pause_pending;
 
+static int *menu_translation_table;
+
 /* Initialize the UI before setting all the resource values.  */
 int ui_init(int *argc, char **argv)
 {
@@ -236,29 +238,37 @@ int ui_init(int *argc, char **argv)
     switch (machine_class) {
       case VICE_MACHINE_C64:
         emu_menu = IDR_MENUC64;
+        menu_tranlation_table = c64ui_menu_translation_table;
         break;
       case VICE_MACHINE_C64DTV:
         emu_menu = IDR_MENUC64DTV;
+        menu_translation_table = c64dtvui_menu_translation_table;
         break;
       case VICE_MACHINE_C128:
         emu_menu = IDR_MENUC128;
+        menu_translation_table = c128ui_menu_translation_table;
         break;
       case VICE_MACHINE_VIC20:
         emu_menu = IDR_MENUVIC;
+        menu_translation_table = vic20ui_menu_translation_table;
         break;
       case VICE_MACHINE_PET:
         emu_menu = IDR_MENUPET;
+        menu_translation_table = petui_menu_translation_table;
         break;
       case VICE_MACHINE_PLUS4:
         emu_menu = IDR_MENUPLUS4;
+        menu_translation_table = plus4ui_menu_translation_table;
         break;
       case VICE_MACHINE_CBM2:
         emu_menu = IDR_MENUCBM2;
+        menu_translation_table = cbm2ui_menu_translation_table;
         break;
       default:
         log_debug("UI: No menu entries for this machine defined!");
         log_debug("UI: Using C64 type UI menues.");
         emu_menu = IDR_MENUC64;
+        menu_tranlation_table = c64ui_menu_translation_table;
     }
 
     /* Register the window class.  */
@@ -323,6 +333,8 @@ void ui_shutdown(void)
    uikeyboard_shutdown();
 }
 
+static void 
+
 /* Initialize the UI after setting all the resource values.  */
 int ui_init_finish(void)
 {
@@ -351,6 +363,17 @@ void ui_exit(void)
 
     ui_fullscreen_shutdown();
     uilib_shutdown();
+}
+
+static void ui_translate_menu_items(menu, trans_table)
+{
+    int i = 0;
+
+    while (trans_table[i] != 0)
+    {
+        ModifyMenu(menu, trans_table[i], MF_BYCOMMAND | MF_STRING, trans_table[i], translate_text(trans_table[i+1]));
+        i+=2;
+    }
 }
 
 /*  Create a Window for the emulation.  */
@@ -393,8 +416,9 @@ HWND ui_open_canvas_window(const char *title, unsigned int width,
 
     ui_resize_canvas_window(hwnd, width, height);
 
-    menu=LoadMenu(winmain_instance, MAKEINTRESOURCE(translate_res(emu_menu)));
+    menu=LoadMenu(winmain_instance, MAKEINTRESOURCE(emu_menu));
     SetMenu(hwnd,menu);
+    ui_translate_menu_items(menu, menu_translation_table);
     uikeyboard_menu_shortcuts(menu);
     ShowWindow(hwnd, winmain_cmd_show);
     return hwnd;
@@ -406,7 +430,9 @@ void ui_update_menu()
 HMENU menu;
 int   i;
 
-    menu = LoadMenu(winmain_instance, MAKEINTRESOURCE(translate_res(emu_menu)));
+    menu = LoadMenu(winmain_instance, MAKEINTRESOURCE(emu_menu));
+    ui_translate_menu_items(menu, menu_translation_table);
+    uikeyboard_menu_shortcuts(menu);
     for (i = 0; i < number_of_windows; i++) {
         SetMenu(window_handles[i], menu);
     }
