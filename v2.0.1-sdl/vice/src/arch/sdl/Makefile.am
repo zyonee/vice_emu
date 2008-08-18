@@ -34,6 +34,7 @@ libarch_a_SOURCES = \
 	ui.c \
 	ui.h \
 	uic64.c \
+	uic64dtv.c \
 	uicmdline.c \
 	uimenu.h \
 	uimon.c \

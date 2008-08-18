@@ -47,6 +47,8 @@
 #include "resources.h"
 #include "types.h"
 
+static log_t sdljoy_log = LOG_ERR;
+
 /* (Used by `kbd.c').  */
 int joystick_port_map[2];
 
@@ -104,32 +106,32 @@ int joy_arch_init(void)
     int num, i;
     SDL_Joystick *joy;
 
+    sdljoy_log = log_open("SDLJoystick");
+
     if (SDL_InitSubSystem(SDL_INIT_JOYSTICK)) {
-fprintf(stderr,"%s: joystick subsystem init failed\n",__func__);
+        log_error(sdljoy_log,"Subsystem init failed!");
         return -1;
     }
 
     num = SDL_NumJoysticks();
 
     if(num == 0) {
-        fprintf(stderr,"No joysticks found.\n");
+        log_message(sdljoy_log,"No joysticks found");
         return 0;
     }
 
-    fprintf(stderr,"%i joysticks found:\n",num);
+    log_message(sdljoy_log,"%i joysticks found",num);
 
     for(i=0; i<num; ++i) {
         joy = SDL_JoystickOpen(i);
         if(joy) {
-            fprintf(stderr,"Joystick %i: %s, (%i axes, %i buttons)\n",
-                    i,
-                    SDL_JoystickName(i),
-                    SDL_JoystickNumAxes(joy),
-                    SDL_JoystickNumButtons(joy)
-                    );
-
+            log_message(sdljoy_log,"%s, (%i axes, %i buttons)",
+                        SDL_JoystickName(i),
+                        SDL_JoystickNumAxes(joy),
+                        SDL_JoystickNumButtons(joy)
+                        );
         } else {
-            fprintf(stderr,"Couldn't open joystick %i\n",i);
+            log_warning(sdljoy_log,"Couldn't open joystick %i",i);
         }
     }
 

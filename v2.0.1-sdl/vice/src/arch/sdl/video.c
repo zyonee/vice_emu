@@ -1,8 +1,8 @@
 /*
- * video.c
+ * video.c - SDL video
  *
  * Written by
- *  Mike Dawson <mike@gp2x.org>
+ *  Hannu Nuotio <hannu.nuotio@tut.fi>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -27,25 +27,27 @@
 #include "vice.h"
 
 #include <stdio.h>
+#include <SDL/SDL.h>
 
-#include "uicolor.h"
+#include "log.h"
+#include "palette.h"
 #include "videoarch.h"
+
+static log_t sdlvideo_log = LOG_ERR;
 
 int video_init(void)
 {
-fprintf(stderr,"%s\n",__func__);
+    sdlvideo_log = log_open("SDLVideo");
 	return 0;
 }
 
 int video_init_cmdline_options(void)
 {
-fprintf(stderr,"%s\n",__func__);
 	return 0;
 }
 
 void video_shutdown(void)
 {
-fprintf(stderr,"%s\n",__func__);
 }
 
 video_canvas_t *video_canvas_create(video_canvas_t *canvas, 
@@ -64,20 +66,20 @@ video_canvas_t *video_canvas_create(video_canvas_t *canvas,
     if (canvas->videoconfig->doublesizey)
         new_height *= 2;
 
-fprintf(stderr,"%s: %ix%i,%i (%08x)\n",__func__,new_width,new_height,mapped,canvas);
+/*fprintf(stderr,"%s: %ix%i,%i (%08x)\n",__func__,new_width,new_height,mapped,(unsigned int)canvas);*/
  
-    new_screen = SDL_SetVideoMode(new_width, new_height, 32, SDL_SWSURFACE);
+    new_screen = SDL_SetVideoMode(new_width, new_height, 0, SDL_SWSURFACE);
     if(!new_screen) {
-fprintf(stderr,"%s: SDL_SetvideoMode failed!\n",__func__);
+        log_error(sdlvideo_log, "SDL_SetVideoMode failed!");
         return NULL;
     }
-
-fprintf(stderr,"%s: depth %i\n",__func__, new_screen->format->BitsPerPixel);
 
     canvas->depth = new_screen->format->BitsPerPixel;
     canvas->width = new_width;
     canvas->height = new_height;
     canvas->screen = new_screen;
+
+    log_message(sdlvideo_log, "%ix%i %ibpp", new_width, new_height, canvas->depth);
 
     video_canvas_set_palette(canvas, canvas->palette);
 
@@ -86,12 +88,12 @@ fprintf(stderr,"%s: depth %i\n",__func__, new_screen->format->BitsPerPixel);
 
 void video_canvas_destroy(struct video_canvas_s *canvas)
 {
-fprintf(stderr,"%s: (%08x)\n",__func__,canvas);
+fprintf(stderr,"%s: (%08x)\n",__func__,(unsigned int)canvas);
 }
 
 void video_arch_canvas_init(struct video_canvas_s *canvas)
 {
-fprintf(stderr,"%s: (%08x)\n",__func__,canvas);
+fprintf(stderr,"%s: (%08x)\n",__func__,(unsigned int)canvas);
 	canvas->video_draw_buffer_callback=NULL;
 }
 
@@ -100,8 +102,6 @@ void video_canvas_refresh(struct video_canvas_s *canvas,
                           unsigned int xi, unsigned int yi,
                           unsigned int w, unsigned int h)
 {
-/*fprintf(stderr,"%s: %i,%i-%i,%i %i %i (%08x)\n",__func__,xs,ys,xi,yi,w,h,canvas);*/
-
     if (canvas->videoconfig->doublesizex) {
         xi *= 2;
         w *= 2;
@@ -113,7 +113,6 @@ void video_canvas_refresh(struct video_canvas_s *canvas,
     }
 
     if (SDL_MUSTLOCK(canvas->screen)) {
-fprintf(stderr,"%s: (%08x)\n",__func__,canvas);
         if (SDL_LockSurface(canvas->screen) < 0) {
             return;
         }
@@ -125,7 +124,6 @@ fprintf(stderr,"%s: (%08x)\n",__func__,canvas);
                         canvas->screen->format->BitsPerPixel);
 
     if (SDL_MUSTLOCK(canvas->screen)) {
-fprintf(stderr,"%s: (%08x)\n",__func__,canvas);
         SDL_UnlockSurface(canvas->screen);
     }
     SDL_UpdateRect(canvas->screen, xi, yi, w, h);
@@ -134,10 +132,38 @@ fprintf(stderr,"%s: (%08x)\n",__func__,canvas);
 int video_canvas_set_palette(struct video_canvas_s *canvas,
                              struct palette_s *palette)
 {
-fprintf(stderr,"%s: (%08x)\n",__func__,canvas);
+    unsigned int i, col;
+    SDL_PixelFormat *fmt;
+    SDL_Color colors[256];
+
+/*fprintf(stderr,"%s: (%08x)\n",__func__,(unsigned int)canvas);*/
+
     canvas->palette = palette;
 
-    return uicolor_set_palette(canvas, palette);
+    fmt = canvas->screen->format;
+
+    for (i = 0; i < palette->num_entries; i++) {
+        if (canvas->depth == 8) {
+            colors[i].r = palette->entries[i].red;
+            colors[i].b = palette->entries[i].blue;
+            colors[i].g = palette->entries[i].green;
+            col = i;
+        } else {
+            col = SDL_MapRGB(fmt, palette->entries[i].red, palette->entries[i].green, palette->entries[i].blue);
+        }
+        video_render_setphysicalcolor(canvas->videoconfig, i, col, canvas->depth);
+    }
+
+    if (canvas->depth == 8) {
+        SDL_SetColors(canvas->screen, colors, 0, palette->num_entries);
+    } else {
+        for (i = 0; i < 256; i++) {
+            video_render_setrawrgb(i, SDL_MapRGB(fmt, i, 0, 0), SDL_MapRGB(fmt, 0, i, 0), SDL_MapRGB(fmt, 0, 0, i));
+        }
+        video_render_initraw();
+    }
+
+    return 0;
 }
 
 int video_arch_resources_init(void)
@@ -149,7 +175,7 @@ fprintf(stderr,"%s\n",__func__);
 void video_canvas_resize(struct video_canvas_s *canvas,
                                 unsigned int width, unsigned int height)
 {
-fprintf(stderr,"%s: %i,%i (%08x)\n",__func__,width,height,canvas);
+fprintf(stderr,"%s: %i,%i (%08x)\n",__func__,width,height,(unsigned int)canvas);
 }
 
 void video_arch_resources_shutdown(void)

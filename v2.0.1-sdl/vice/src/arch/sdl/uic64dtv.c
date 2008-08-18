@@ -1,7 +1,9 @@
 /*
- * sdlmain.c - SDL startup.
+ * uic64dtv.c - Implementation of the C64DTV-specific part of the UI.
  *
  * Written by
+ *  Ettore Perazzoli <ettore@comm2000.it>
+ *  André Fachat <fachat@physik.tu-chemnitz.de>
  *  Andreas Boose <viceteam@t-online.de>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
@@ -28,22 +30,13 @@
 
 #include <stdio.h>
 
-#include "log.h"
-#include "machine.h"
-#include "main.h"
-
-
-int main(int argc, char **argv)
+int c64dtvui_init(void)
 {
-    return main_program(argc, argv);
+fprintf(stderr,"%s\n",__func__);
+    return 0;
 }
 
-void main_exit(void)
+void c64dtvui_shutdown(void)
 {
-    log_message(LOG_DEFAULT, "\nExiting...");
-
-    machine_shutdown();
-
-    putchar('\n');
+fprintf(stderr,"%s\n",__func__);
 }
-

@@ -30,17 +30,15 @@
 #include "vice.h"
 #include "types.h"
 
+#include <SDL/SDL.h>
+#include <stdio.h>
+
 #include "color.h"
-#include "palette.h"
+#include "kbd.h"
 #include "ui.h"
 #include "uiapi.h"
 #include "uicolor.h"
-#include "video.h"
-#include "videoarch.h"
 
-#include <SDL/SDL.h>
-
-#include <stdio.h>
 
 /* ----------------------------------------------------------------- */
 /* ui.h */
@@ -86,12 +84,14 @@ void ui_dispatch_events(void)
     }
 }
 
-extern void ui_check_mouse_cursor(void){}
+void ui_check_mouse_cursor(void){}
 
 void archdep_ui_init(int argc, char *argv[])
 {
 fprintf(stderr,"%s\n",__func__);
 }
+
+void ui_message(const char* format, ...){}
 
 /* ----------------------------------------------------------------- */
 /* uiapi.h */
@@ -154,7 +154,10 @@ void ui_display_drive_led(int drive_number, unsigned int pwm1,
                           unsigned int led_pwm2){}
 void ui_display_drive_current_image(unsigned int drive_number,
                                     const char *image){}
-int ui_extend_image_dialog(void){}
+int ui_extend_image_dialog(void)
+{
+    return 0;
+}
 
 /* Tape related UI */
 void ui_set_tape_status(int tape_status){}
@@ -164,7 +167,10 @@ void ui_display_tape_counter(int counter){}
 void ui_display_tape_current_image(const char *image){}
 
 /* Show a CPU JAM dialog.  */
-ui_jam_action_t ui_jam_dialog(const char *format, ...){}
+ui_jam_action_t ui_jam_dialog(const char *format, ...)
+{
+    return 0;
+}
 
 /* Update all menu entries.  */
 void ui_update_menus(void){}
@@ -206,28 +212,7 @@ fprintf(stderr,"%s\n",__func__);
 int uicolor_set_palette(struct video_canvas_s *c,
                         const struct palette_s *palette)
 {
-    unsigned int i, col;
-    SDL_PixelFormat *fmt;
-
-    fmt = c->screen->format;
-
 fprintf(stderr,"%s\n",__func__);
-
-    for (i = 0; i < c->palette->num_entries; i++) {
-        if (c->depth == 8) {
-            col = 0;
-        } else {
-            col = SDL_MapRGB(fmt, c->palette->entries[i].red, c->palette->entries[i].green, c->palette->entries[i].blue);
-        }
-        video_render_setphysicalcolor(c->videoconfig, i, col, c->depth);
-    }
-
-    if (c->depth > 8) {
-        for (i = 0; i < 256; i++) {
-            video_render_setrawrgb(i, SDL_MapRGB(fmt, i, 0, 0), SDL_MapRGB(fmt, 0, i, 0), SDL_MapRGB(fmt, 0, 0, i));
-        }
-    video_render_initraw();
-    }
-
     return 0;
 }
+
