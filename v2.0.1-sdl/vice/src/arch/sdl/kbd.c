@@ -2,6 +2,9 @@
  * kbd.c - MS-DOS keyboard driver.
  *
  * Written by
+ *  Hannu Nuotio <hannu.nuotio@tut.fi>
+ *
+ * Based on code by
  *  Ettore Perazzoli <ettore@comm2000.it>
  *  Andreas Boose <viceteam@t-online.de>
  *
@@ -26,20 +29,45 @@
  */
 
 #include "vice.h"
-
-#include "kbd.h"
-#include "keyboard.h"
-#include "log.h"
-#include "machine.h"
 #include "types.h"
 
 #include <SDL/SDL.h>
+
+#include "kbd.h"
+#include "fullscreenarch.h"
+#include "keyboard.h"
+#include "log.h"
+#include "machine.h"
+#include "monitor.h"
+#include "resources.h"
+#include "ui.h"
 
 /* ------------------------------------------------------------------------ */
 
 void sdlkbd_press(SDLKey key, SDLMod mod)
 {
 /*fprintf(stderr,"%s: %i (%s),%i\n",__func__,key,SDL_GetKeyName(key),mod);*/
+    if(mod & KMOD_LALT) {
+        switch(key) {
+            case SDLK_q:
+                exit(0);
+                break;
+            case SDLK_d:
+                resources_set_int("viciifullscreen",!fullscreen_is_enabled);
+                break;
+            case SDLK_h:
+                if (!ui_emulation_is_paused()) {
+                    monitor_startup_trap();
+                } else {
+                    monitor_startup();
+                }
+                return;
+                break;
+            default:
+                break;
+        }
+    }
+
     keyboard_key_pressed((unsigned long)key);
 }
 

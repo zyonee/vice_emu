@@ -1,7 +1,10 @@
 /*
- * joy.c - Linux/BSD joystick support.
+ * joy.c - SDL joystick support.
  *
  * Written by
+ *  Hannu Nuotio <hannu.nuotio@tut.fi>
+ *
+ * Based on code by
  *  Bernhard Kuhn <kuhn@eikon.e-technik.tu-muenchen.de>
  *  Ulmer Lionel <ulmer@poly.polytechnique.fr>
  *

@@ -49,11 +49,11 @@ ARFLAGS = cru
 libarch_a_AR = $(AR) $(ARFLAGS)
 libarch_a_LIBADD =
 am_libarch_a_OBJECTS = archdep.$(OBJEXT) blockdev.$(OBJEXT) \
-	console.$(OBJEXT) joy.$(OBJEXT) kbd.$(OBJEXT) \
-	mousedrv.$(OBJEXT) sdlmain.$(OBJEXT) signals.$(OBJEXT) \
-	ui.$(OBJEXT) uic64.$(OBJEXT) uic64dtv.$(OBJEXT) \
-	uicmdline.$(OBJEXT) uimon.$(OBJEXT) video.$(OBJEXT) \
-	vsidui.$(OBJEXT) vsyncarch.$(OBJEXT)
+	console.$(OBJEXT) fullscreen.$(OBJEXT) joy.$(OBJEXT) \
+	kbd.$(OBJEXT) mousedrv.$(OBJEXT) sdlmain.$(OBJEXT) \
+	signals.$(OBJEXT) ui.$(OBJEXT) uic64.$(OBJEXT) \
+	uic64dtv.$(OBJEXT) uicmdline.$(OBJEXT) uimon.$(OBJEXT) \
+	video.$(OBJEXT) vsidui.$(OBJEXT) vsyncarch.$(OBJEXT)
 libarch_a_OBJECTS = $(am_libarch_a_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(top_builddir)/src@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/depcomp
@@ -294,6 +294,7 @@ libarch_a_SOURCES = \
 	archdep.h \
 	blockdev.c \
 	console.c \
+	fullscreen.c \
 	fullscreenarch.h \
 	joy.c \
 	joy.h \
@@ -366,6 +367,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/archdep.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/blockdev.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/console.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fullscreen.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/joy.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/kbd.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mousedrv.Po@am__quote@

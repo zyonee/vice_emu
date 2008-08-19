@@ -29,11 +29,76 @@
 #include <stdio.h>
 #include <SDL/SDL.h>
 
+#include "cmdline.h"
+#include "fullscreen.h"
+#include "fullscreenarch.h"
+#include "lib.h"
 #include "log.h"
 #include "palette.h"
+#include "resources.h"
 #include "videoarch.h"
 
 static log_t sdlvideo_log = LOG_ERR;
+
+static int sdl_bitdepth;
+
+/* ------------------------------------------------------------------------- */
+
+/* Video-related resources.  */
+
+static int set_sdl_bitdepth(int d, void *param)
+{
+    if ((d == 0) || (d == 8) || (d == 15) || (d == 16) || (d == 32)) {
+        if (sdl_bitdepth == d) {
+            return 0;
+        }
+        sdl_bitdepth = d;
+        /* update */
+        return 0;
+    }
+    return -1;
+}
+
+static const resource_string_t resources_string[] = {
+    { NULL }
+};
+
+static const resource_int_t resources_int[] = {
+    { "SDLBitdepth", 0, RES_EVENT_NO, NULL,
+      &sdl_bitdepth, set_sdl_bitdepth, NULL },
+    { NULL }
+};
+
+int video_arch_resources_init(void)
+{
+fprintf(stderr,"%s\n",__func__);
+    if (resources_register_string(resources_string) < 0)
+        return -1;
+
+    return resources_register_int(resources_int);
+}
+
+void video_arch_resources_shutdown(void)
+{
+fprintf(stderr,"%s\n",__func__);
+}
+
+/* ------------------------------------------------------------------------- */
+
+/* Video-related command-line options.  */
+static const cmdline_option_t cmdline_options[] = {
+    { "-sdlbitdepth", SET_RESOURCE, 1, NULL, NULL, "SDLBitdepth", NULL,
+      "<bpp>", "Set bitdepth (0 = current, 8, 15, 16, 24, 32)" },
+    { NULL }
+};
+
+int video_init_cmdline_options(void)
+{
+fprintf(stderr,"%s\n",__func__);
+    return cmdline_register_options(cmdline_options);
+}
+
+/* ------------------------------------------------------------------------- */
 
 int video_init(void)
 {
@@ -41,60 +106,58 @@ int video_init(void)
 	return 0;
 }
 
-int video_init_cmdline_options(void)
-{
-	return 0;
-}
-
 void video_shutdown(void)
 {
+fprintf(stderr,"%s\n",__func__);
 }
+
+/* ------------------------------------------------------------------------- */
 
 video_canvas_t *video_canvas_create(video_canvas_t *canvas, 
 		unsigned int *width, unsigned int *height, int mapped)
 {
     SDL_Surface *new_screen;
     unsigned int new_width, new_height;
+    int flags;
 
+    flags = SDL_SWSURFACE;
 
     new_width = *width;
     new_height = *height;
+
+    if(fullscreen_is_enabled) {
+        flags = SDL_FULLSCREEN | SDL_HWSURFACE;
+        if (canvas->fullscreenconfig->double_size) {
+            new_width *= 2;
+            new_height *= 2;
+        }
+    } else {
+        if (canvas->videoconfig->doublesizex)
+            new_width *= 2;
  
-    if (canvas->videoconfig->doublesizex)
-        new_width *= 2;
- 
-    if (canvas->videoconfig->doublesizey)
-        new_height *= 2;
+        if (canvas->videoconfig->doublesizey)
+            new_height *= 2;
+    }
 
 /*fprintf(stderr,"%s: %ix%i,%i (%08x)\n",__func__,new_width,new_height,mapped,(unsigned int)canvas);*/
  
-    new_screen = SDL_SetVideoMode(new_width, new_height, 0, SDL_SWSURFACE);
+    new_screen = SDL_SetVideoMode(new_width, new_height, sdl_bitdepth, flags);
     if(!new_screen) {
         log_error(sdlvideo_log, "SDL_SetVideoMode failed!");
         return NULL;
     }
+    sdl_bitdepth = new_screen->format->BitsPerPixel;
 
-    canvas->depth = new_screen->format->BitsPerPixel;
+    canvas->depth = sdl_bitdepth;
     canvas->width = new_width;
     canvas->height = new_height;
     canvas->screen = new_screen;
 
-    log_message(sdlvideo_log, "%ix%i %ibpp", new_width, new_height, canvas->depth);
+    log_message(sdlvideo_log, "%ix%i %ibpp %s", new_width, new_height, sdl_bitdepth, fullscreen_is_enabled?"(fullscreen)":"");
 
     video_canvas_set_palette(canvas, canvas->palette);
 
     return canvas;
-}
-
-void video_canvas_destroy(struct video_canvas_s *canvas)
-{
-fprintf(stderr,"%s: (%08x)\n",__func__,(unsigned int)canvas);
-}
-
-void video_arch_canvas_init(struct video_canvas_s *canvas)
-{
-fprintf(stderr,"%s: (%08x)\n",__func__,(unsigned int)canvas);
-	canvas->video_draw_buffer_callback=NULL;
 }
 
 void video_canvas_refresh(struct video_canvas_s *canvas,
@@ -166,29 +229,29 @@ int video_canvas_set_palette(struct video_canvas_s *canvas,
     return 0;
 }
 
-int video_arch_resources_init(void)
-{
-fprintf(stderr,"%s\n",__func__);
-    return 0;
-}
-
 void video_canvas_resize(struct video_canvas_s *canvas,
-                                unsigned int width, unsigned int height)
+                         unsigned int width, unsigned int height)
 {
-fprintf(stderr,"%s: %i,%i (%08x)\n",__func__,width,height,(unsigned int)canvas);
+/*fprintf(stderr,"%s: %i,%i (%08x)\n",__func__,width,height,(unsigned int)canvas);*/
+    video_canvas_create(canvas, &width, &height, 0);
 }
 
-void video_arch_resources_shutdown(void)
+void video_arch_canvas_init(struct video_canvas_s *canvas)
 {
-fprintf(stderr,"%s\n",__func__);
+fprintf(stderr,"%s: (%08x)\n",__func__,(unsigned int)canvas);
+	canvas->video_draw_buffer_callback=NULL;
+
+    canvas->fullscreenconfig
+        = (fullscreenconfig_t *)lib_calloc(1, sizeof(fullscreenconfig_t));
+    fullscreen_init_alloc_hooks(canvas);
+}
+
+void video_canvas_destroy(struct video_canvas_s *canvas)
+{
+fprintf(stderr,"%s: (%08x)\n",__func__,(unsigned int)canvas);
 }
 
 void video_add_handlers(void)
-{
-fprintf(stderr,"%s\n",__func__);
-}
-
-void fullscreen_capability(void)
 {
 fprintf(stderr,"%s\n",__func__);
 }

@@ -2,6 +2,9 @@
  * blockdev.c
  *
  * Written by
+ *  Hannu Nuotio <hannu.nuotio@tut.fi>
+ *
+ * Based on code by
  *  Andreas Boose <viceteam@t-online.de>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
@@ -26,10 +29,7 @@
 
 #include "vice.h"
 
-#include <fcntl.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <unistd.h>
+#include <SDL/SDL.h>
 
 #include "blockdev.h"
 #include "log.h"
@@ -38,24 +38,21 @@
 
 /*static log_t blockdev_log = LOG_DEFAULT;*/
 
-static int device;
+static SDL_RWops* device = NULL;
 
 
 int blockdev_open(const char *name, unsigned int *read_only)
 {
+fprintf(stderr,"%s\n",__func__);
     if (*read_only == 0) {
-        device = open(name, O_RDWR);
+        device = SDL_RWFromFile(name, "rw");
 
-        if (device == -1) {
-            device = open(name, O_RDONLY);
-            if (device == -1)
-                return -1;
-            *read_only = 1;
-        }
+        if (device == NULL)
+            return -1;
     } else {
-        device = open(name, O_RDONLY);
+        device = SDL_RWFromFile(name, "r");
 
-        if (device == -1)
+        if (device == NULL)
             return -1;
     }
 
@@ -64,20 +61,26 @@ int blockdev_open(const char *name, unsigned int *read_only)
 
 int blockdev_close(void)
 {
-    return close(device);
+fprintf(stderr,"%s\n",__func__);
+    if(device && SDL_RWclose(device)) {
+        return -1;
+    }
+
+    device = NULL;
+    return 0;
 }
 
 /*-----------------------------------------------------------------------*/
 
 int blockdev_read_sector(BYTE *buf, unsigned int track, unsigned int sector)
 {
-    off_t offset;
-
+    int offset;
+fprintf(stderr,"%s\n",__func__);
     offset = ((track - 1) * 40 + sector) * 256;
 
-    lseek(device, offset, SEEK_SET);
+    SDL_RWseek(device, offset, SEEK_SET);
 
-    if (read(device, (void *)buf, 256) != 256)
+    if (SDL_RWread(device, (void *)buf, 256, 1) != 1)
         return -1;
 
     return 0;
@@ -85,13 +88,14 @@ int blockdev_read_sector(BYTE *buf, unsigned int track, unsigned int sector)
 
 int blockdev_write_sector(BYTE *buf, unsigned int track, unsigned int sector)
 {
-    off_t offset;
+    int offset;
+fprintf(stderr,"%s\n",__func__);
 
     offset = ((track - 1) * 40 + sector) * 256;
 
-    lseek(device, offset, SEEK_SET);
+    SDL_RWseek(device, offset, SEEK_SET);
 
-    if (write(device, (void *)buf, 256) != 256)
+    if (SDL_RWwrite(device, (void *)buf, 256, 1) != 1)
         return -1;
 
     return 0;

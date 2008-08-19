@@ -21,6 +21,7 @@ libarch_a_SOURCES = \
 	archdep.h \
 	blockdev.c \
 	console.c \
+	fullscreen.c \
 	fullscreenarch.h \
 	joy.c \
 	joy.h \
