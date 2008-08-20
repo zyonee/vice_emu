@@ -672,6 +672,8 @@ if test x"$with_sdlsound" = "xyes" -o x"$enable_sdlui" = "xyes"; then
 
         if test x"$ac_cv_lib_SDL_SDL_SetVideoMode" != "xyes"; then
             enable_sdlui=no
+        else
+            AC_DEFINE(HAVE_FULLSCREEN,,[Enable Fullscreen support.])
         fi
     fi
 fi
