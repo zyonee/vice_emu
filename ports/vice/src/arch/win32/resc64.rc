@@ -258,7 +258,6 @@ BEGIN
         MENUITEM "Save settings on e&xit", IDM_TOGGLE_SAVE_SETTINGS_ON_EXIT
         MENUITEM "&Confirm on exit",       IDM_TOGGLE_CONFIRM_ON_EXIT
     END
-#if 0
     POPUP "&Language"
     BEGIN
         MENUITEM "&English", IDM_LANG_EN
@@ -270,7 +269,6 @@ BEGIN
         MENUITEM "&Polish", IDM_LANG_PL
         MENUITEM "&Swedish", IDM_LANG_SV
     END
-#endif
     POPUP "&Help"
     BEGIN
 //        MENUITEM "H&elp",               IDM_HELP

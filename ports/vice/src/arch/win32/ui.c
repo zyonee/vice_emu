@@ -228,7 +228,15 @@ static int emu_menu;
 
 static int pause_pending;
 
-static int *menu_translation_table;
+static ui_menu_translation_table_t *menu_translation_table;
+static ui_popup_translation_table_t *popup_translation_table;
+
+int ui_register_translation_tables(ui_menu_translation_table_t *menu_table, ui_popup_translation_table_t *popup_table)
+{
+    menu_translation_table = menu_table;
+    popup_translation_table = popup_table;
+    ui_update_menu();
+}
 
 /* Initialize the UI before setting all the resource values.  */
 int ui_init(int *argc, char **argv)
@@ -238,37 +246,29 @@ int ui_init(int *argc, char **argv)
     switch (machine_class) {
       case VICE_MACHINE_C64:
         emu_menu = IDR_MENUC64;
-        menu_tranlation_table = c64ui_menu_translation_table;
         break;
       case VICE_MACHINE_C64DTV:
         emu_menu = IDR_MENUC64DTV;
-        menu_translation_table = c64dtvui_menu_translation_table;
         break;
       case VICE_MACHINE_C128:
         emu_menu = IDR_MENUC128;
-        menu_translation_table = c128ui_menu_translation_table;
         break;
       case VICE_MACHINE_VIC20:
         emu_menu = IDR_MENUVIC;
-        menu_translation_table = vic20ui_menu_translation_table;
         break;
       case VICE_MACHINE_PET:
         emu_menu = IDR_MENUPET;
-        menu_translation_table = petui_menu_translation_table;
         break;
       case VICE_MACHINE_PLUS4:
         emu_menu = IDR_MENUPLUS4;
-        menu_translation_table = plus4ui_menu_translation_table;
         break;
       case VICE_MACHINE_CBM2:
         emu_menu = IDR_MENUCBM2;
-        menu_translation_table = cbm2ui_menu_translation_table;
         break;
       default:
         log_debug("UI: No menu entries for this machine defined!");
         log_debug("UI: Using C64 type UI menues.");
         emu_menu = IDR_MENUC64;
-        menu_tranlation_table = c64ui_menu_translation_table;
     }
 
     /* Register the window class.  */
@@ -333,8 +333,6 @@ void ui_shutdown(void)
    uikeyboard_shutdown();
 }
 
-static void 
-
 /* Initialize the UI after setting all the resource values.  */
 int ui_init_finish(void)
 {
@@ -365,14 +363,71 @@ void ui_exit(void)
     uilib_shutdown();
 }
 
-static void ui_translate_menu_items(menu, trans_table)
+static void ui_translate_menu_popups(HMENU menu, ui_popup_translation_table_t *trans_table)
+{
+    int pos1 = -1;
+    int pos2 = -1;
+    int pos3 = -1;
+
+    HMENU menu1 = NULL;
+    HMENU menu2 = NULL;
+    HMENU menu3 = NULL;
+
+    int i = 0;
+
+    if (trans_table == NULL)
+        return;
+
+    while (trans_table[i].level != 0)
+    {
+        switch (trans_table[i].level)
+        {
+            case 1:
+                menu1 = NULL;
+                while (menu1 == NULL)
+                {
+                    pos1++;
+                    menu1 = GetSubMenu(menu, pos1);
+                }
+                ModifyMenu(menu, (UINT)pos1, MF_BYPOSITION | MF_STRING | MF_POPUP, menu1, translate_text(trans_table[i].ids));
+                pos2 = -1;
+                pos3 = -1;
+                break;
+            case 2:
+                menu2 = NULL;
+                while (menu2 == NULL)
+                {
+                    pos2++;
+                    menu2 = GetSubMenu(menu1, pos2);
+                }
+                ModifyMenu(menu1, (UINT)pos2, MF_BYPOSITION | MF_STRING | MF_POPUP, menu2, translate_text(trans_table[i].ids));
+                pos3 = -1;
+                break;
+            case 3:
+                menu3 = NULL;
+                while (menu3 == NULL)
+                {
+                    pos3++;
+                    menu3 = GetSubMenu(menu2, pos3);
+                }
+                ModifyMenu(menu2, (UINT)pos3, MF_BYPOSITION | MF_STRING | MF_POPUP, menu3, translate_text(trans_table[i].ids));
+                break;
+        }
+        i++;
+    }
+}
+
+static void ui_translate_menu_items(HMENU menu, ui_menu_translation_table_t *trans_table)
 {
     int i = 0;
 
-    while (trans_table[i] != 0)
+    if (trans_table == NULL)
+        return;
+
+    while (trans_table[i].idm != 0)
     {
-        ModifyMenu(menu, trans_table[i], MF_BYCOMMAND | MF_STRING, trans_table[i], translate_text(trans_table[i+1]));
-        i+=2;
+        ModifyMenu(menu, trans_table[i].idm, MF_BYCOMMAND | MF_STRING, trans_table[i].idm, translate_text(trans_table[i].ids));
+        i++;
     }
 }
 
@@ -419,6 +474,7 @@ HWND ui_open_canvas_window(const char *title, unsigned int width,
     menu=LoadMenu(winmain_instance, MAKEINTRESOURCE(emu_menu));
     SetMenu(hwnd,menu);
     ui_translate_menu_items(menu, menu_translation_table);
+    ui_translate_menu_popups(menu, popup_translation_table);
     uikeyboard_menu_shortcuts(menu);
     ShowWindow(hwnd, winmain_cmd_show);
     return hwnd;
@@ -431,8 +487,12 @@ HMENU menu;
 int   i;
 
     menu = LoadMenu(winmain_instance, MAKEINTRESOURCE(emu_menu));
-    ui_translate_menu_items(menu, menu_translation_table);
-    uikeyboard_menu_shortcuts(menu);
+    if (menu_translation_table != NULL)
+    {
+        ui_translate_menu_items(menu, menu_translation_table);
+        ui_translate_menu_popups(menu, popup_translation_table);
+        uikeyboard_menu_shortcuts(menu);
+    }
     for (i = 0; i < number_of_windows; i++) {
         SetMenu(window_handles[i], menu);
     }

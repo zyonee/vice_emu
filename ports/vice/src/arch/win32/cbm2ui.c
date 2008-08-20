@@ -124,6 +124,34 @@ static uikeyboard_config_t uikeyboard_config =
     { IDD_CBM2KBD_MAPPING_SETTINGS_DIALOG, CBM2UI_KBD_NUM_MAP, mapping_entry,
       IDC_CBM2KBD_MAPPING_DUMP };
 
+ui_menu_translation_table_t cbm2ui_menu_translation_table[] = {
+    { 0, 0 }
+};
+
+ui_popup_translation_table_t cbm2ui_popup_translation_table[] = {
+    { 1, IDS_U_FILE },
+    { 2, IDS_ATTACH_U_DISK_IMAGE },
+    { 2, IDS_D_U_ETACH_DISK_IMAGE },
+    { 2, IDS_U_FLIP_LIST },
+    { 2, IDS_DATASETTE_CONTRO_U_L },
+    { 2, IDS_U_RESET },
+#ifdef DEBUG
+    { 2, IDS_U_DEBUG },
+    { 3, IDS_M_U_ODE },
+#endif
+    { 1, IDS_U_EDIT },
+    { 1, IDS_SNA_U_PSHOT },
+    { 2, IDS_RECORDING_START_MODE },
+    { 1, IDS_U_OPTIONS },
+    { 2, IDS_U_REFRESH_RATE },
+    { 2, IDS_U_MAXIMUM_SPEED },
+    { 2, IDS_DRIVE_S_U_YNC_FACTOR },
+    { 1, IDS_S_U_ETTINGS },
+    { 2, IDS_U_CARTRIDGE_IO_SETTINGS },
+    { 1, IDS_U_LANGUAGE },
+    { 1, IDS_U_HELP },
+    { 0, 0 }
+};
 
 static void cbm2_ui_specific(WPARAM wparam, HWND hwnd)
 {
@@ -159,6 +187,7 @@ int cbm2ui_init(void)
     ui_register_machine_specific(cbm2_ui_specific);
     ui_register_menu_toggles(cbm2_ui_menu_toggles);
     ui_register_res_values(cbm2_ui_res_values);
+    ui_register_translation_tables(cbm2ui_menu_translation_table, cbm2ui_popup_translation_table);
     return 0;
 }
 

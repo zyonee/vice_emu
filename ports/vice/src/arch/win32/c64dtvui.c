@@ -108,6 +108,33 @@ static uikeyboard_config_t uikeyboard_config =
     { IDD_C64KBD_MAPPING_SETTINGS_DIALOG, C64DTVUI_KBD_NUM_MAP, mapping_entry,
       IDC_C64KBD_MAPPING_DUMP };
 
+ui_menu_translation_table_t c64dtvui_menu_translation_table[] = {
+    { 0, 0 }
+};
+
+ui_popup_translation_table_t c64dtvui_popup_translation_table[] = {
+    { 1, IDS_U_FILE },
+    { 2, IDS_ATTACH_U_DISK_IMAGE },
+    { 2, IDS_D_U_ETACH_DISK_IMAGE },
+    { 2, IDS_DTV_FLASH_U_ROM_IMAGE },
+    { 2, IDS_U_FLIP_LIST },
+    { 2, IDS_U_RESET },
+#ifdef DEBUG
+    { 2, IDS_U_DEBUG },
+    { 3, IDS_M_U_ODE },
+#endif
+    { 1, IDS_U_EDIT },
+    { 1, IDS_SNA_U_PSHOT },
+    { 2, IDS_RECORDING_START_MODE },
+    { 1, IDS_U_OPTIONS },
+    { 2, IDS_U_REFRESH_RATE },
+    { 2, IDS_U_MAXIMUM_SPEED },
+    { 2, IDS_VIDE_U_O_STANDARD },
+    { 1, IDS_S_U_ETTINGS },
+    { 1, IDS_U_LANGUAGE },
+    { 1, IDS_U_HELP },
+    { 0, 0 }
+};
 
 static void c64dtv_ui_specific(WPARAM wparam, HWND hwnd)
 {
@@ -154,6 +181,7 @@ int c64dtvui_init(void)
 {
     ui_register_machine_specific(c64dtv_ui_specific);
     ui_register_menu_toggles(c64dtv_ui_menu_toggles);
+    ui_register_translation_tables(c64dtvui_menu_translation_table, c64dtvui_popup_translation_table);
 
     return 0;
 }

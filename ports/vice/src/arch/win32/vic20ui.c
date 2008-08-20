@@ -156,6 +156,36 @@ static const uicart_params_t vic20_ui_cartridges[] = {
     }
 };
 
+ui_menu_translation_table_t vic20ui_menu_translation_table[] = {
+    { 0, 0 }
+};
+
+ui_popup_translation_table_t vic20ui_popup_translation_table[] = {
+    { 1, IDS_U_FILE },
+    { 2, IDS_ATTACH_U_DISK_IMAGE },
+    { 2, IDS_D_U_ETACH_DISK_IMAGE },
+    { 2, IDS_U_FLIP_LIST },
+    { 2, IDS_DATASETTE_CONTRO_U_L },
+    { 2, IDS_ATTACH_U_CARTRIDGE_IMAGE_D_ },
+    { 2, IDS_U_RESET },
+#ifdef DEBUG
+    { 2, IDS_U_DEBUG },
+    { 3, IDS_M_U_ODE },
+#endif
+    { 1, IDS_U_EDIT },
+    { 1, IDS_SNA_U_PSHOT },
+    { 2, IDS_RECORDING_START_MODE },
+    { 1, IDS_U_OPTIONS },
+    { 2, IDS_U_REFRESH_RATE },
+    { 2, IDS_U_MAXIMUM_SPEED },
+    { 2, IDS_VIDE_U_O_STANDARD },
+    { 1, IDS_S_U_ETTINGS },
+    { 2, IDS_U_CARTRIDGE_IO_SETTINGS },
+    { 1, IDS_U_LANGUAGE },
+    { 1, IDS_U_HELP },
+    { 0, 0 }
+};
+
 /* Probably one should simply remove the size numbers from the IDM_* stuff */
 static void vic20_ui_specific(WPARAM wparam, HWND hwnd)
 {
@@ -203,6 +233,7 @@ int vic20ui_init(void)
 {
     ui_register_machine_specific(vic20_ui_specific);
     ui_register_menu_toggles(vic20_ui_menu_toggles);
+    ui_register_translation_tables(vic20ui_menu_translation_table, vic20ui_popup_translation_table);
 
     return 0;
 }

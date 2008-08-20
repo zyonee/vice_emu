@@ -177,6 +177,38 @@ static uikeyboard_config_t uikeyboard_config =
       IDC_C128KBD_MAPPING_DUMP };
 
 
+ui_menu_translation_table_t c128ui_menu_translation_table[] = {
+    { 0, 0 }
+};
+
+ui_popup_translation_table_t c128ui_popup_translation_table[] = {
+    { 1, IDS_U_FILE },
+    { 2, IDS_ATTACH_U_DISK_IMAGE },
+    { 2, IDS_D_U_ETACH_DISK_IMAGE },
+    { 2, IDS_U_FLIP_LIST },
+    { 2, IDS_DATASETTE_CONTRO_U_L },
+    { 2, IDS_ATTACH_U_CARTRIDGE_IMAGE_D_ },
+    { 3, IDS_EXPERT_CARTRIDGE },
+    { 2, IDS_U_RESET },
+#ifdef DEBUG
+    { 2, IDS_U_DEBUG },
+    { 3, IDS_M_U_ODE },
+#endif
+    { 1, IDS_U_EDIT },
+    { 1, IDS_SNA_U_PSHOT },
+    { 2, IDS_RECORDING_START_MODE },
+    { 1, IDS_U_OPTIONS },
+    { 2, IDS_U_REFRESH_RATE },
+    { 2, IDS_U_MAXIMUM_SPEED },
+    { 2, IDS_VDC_SETTIN_U_GS },
+    { 2, IDS_VIDE_U_O_STANDARD },
+    { 1, IDS_S_U_ETTINGS },
+    { 2, IDS_U_CARTRIDGE_IO_SETTINGS },
+    { 1, IDS_U_LANGUAGE },
+    { 1, IDS_U_HELP },
+    { 0, 0 }
+};
+
 static void c128_ui_specific(WPARAM wparam, HWND hwnd)
 {
     uic64cart_proc(wparam, hwnd);
@@ -246,6 +278,7 @@ int c128ui_init(void)
 
     ui_register_machine_specific(c128_ui_specific);
     ui_register_menu_toggles(c128_ui_menu_toggles);
+    ui_register_translation_tables(c128ui_menu_translation_table, c128ui_popup_translation_table);
 
     return 0;
 }
