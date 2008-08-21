@@ -261,7 +261,6 @@ BEGIN
         MENUITEM "Save settings on e&xit", IDM_TOGGLE_SAVE_SETTINGS_ON_EXIT
         MENUITEM "&Confirm on exit",       IDM_TOGGLE_CONFIRM_ON_EXIT
     END
-#if 0
     POPUP "&Language"
     BEGIN
         MENUITEM "&English", IDM_LANG_EN
@@ -273,7 +272,6 @@ BEGIN
         MENUITEM "&Polish", IDM_LANG_PL
         MENUITEM "&Swedish", IDM_LANG_SV
     END
-#endif
     POPUP "&Help"
     BEGIN
 //        MENUITEM "H&elp",               IDM_HELP
@@ -4553,7 +4551,7 @@ BEGIN
   IDS_MACHINE_TYPE              "Machine type"
   IDS_FUNCTION_ROM              "Function ROM"
   IDS_C128_SETTINGS             "C128 settings"
-  IDS_VDC_SETTIN_U_GS           "VDC settin&gs"
+  IDS_MP_VDC_SETTINGS           "VDC settin&gs"
 END
 
 
@@ -4567,7 +4565,7 @@ BEGIN
   IDS_MACHINE_TYPE              "Maschinen Typ"
   IDS_FUNCTION_ROM              "Function ROM"
   IDS_C128_SETTINGS             "C128 Einstellungen"
-  IDS_VDC_SETTIN_U_GS           "VDC Einstellun&gen"
+  IDS_MP_VDC_SETTINGS           "VDC Einstellun&gen"
 END
 
 
@@ -4581,7 +4579,7 @@ BEGIN
   IDS_MACHINE_TYPE              "Type de machine"
   IDS_FUNCTION_ROM              "ROM Fonction"
   IDS_C128_SETTINGS             "Paramètres C128"
-  IDS_VDC_SETTIN_U_GS           "Para&mètres VDC"
+  IDS_MP_VDC_SETTINGS           "Para&mètres VDC"
 END
 
 
@@ -4596,7 +4594,7 @@ BEGIN
   IDS_MACHINE_TYPE              "Gép típus"
   IDS_FUNCTION_ROM              "Function ROM"
   IDS_C128_SETTINGS             "C128 beállításai"
-  IDS_VDC_SETTIN_U_GS           "VDC beállításai"
+  IDS_MP_VDC_SETTINGS           "VDC beállításai"
 END
 #pragma code_page(28591)
 
@@ -4611,7 +4609,7 @@ BEGIN
   IDS_MACHINE_TYPE              "Tipo di macchina"
   IDS_FUNCTION_ROM              "Function ROM"
   IDS_C128_SETTINGS             "Impostazioni C128"
-  IDS_VDC_SETTIN_U_GS           "Impostazio&ni del VDC"
+  IDS_MP_VDC_SETTINGS           "Impostazio&ni del VDC"
 END
 
 
@@ -4625,7 +4623,7 @@ BEGIN
   IDS_MACHINE_TYPE              "Machinesoort"
   IDS_FUNCTION_ROM              "Functie-ROM"
   IDS_C128_SETTINGS             "C128-instellingen"
-  IDS_VDC_SETTIN_U_GS           "VDC-instellin&gen"
+  IDS_MP_VDC_SETTINGS           "VDC-instellin&gen"
 END
 
 
@@ -4640,7 +4638,7 @@ BEGIN
   IDS_MACHINE_TYPE              "Machine type"
   IDS_FUNCTION_ROM              "Function ROM"
   IDS_C128_SETTINGS             "C128 settings"
-  IDS_VDC_SETTIN_U_GS           "Us&tawienia VDC"
+  IDS_MP_VDC_SETTINGS           "Us&tawienia VDC"
 END
 #pragma code_page(28591)
 
@@ -4655,5 +4653,5 @@ BEGIN
   IDS_MACHINE_TYPE              "Maskintyp"
   IDS_FUNCTION_ROM              "Funktions-ROM"
   IDS_C128_SETTINGS             "C128-inställningar"
-  IDS_VDC_SETTIN_U_GS           "&VDC-inställningar"
+  IDS_MP_VDC_SETTINGS           "&VDC-inställningar"
 END

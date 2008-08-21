@@ -200,7 +200,6 @@ BEGIN
         MENUITEM "Save settings on e&xit", IDM_TOGGLE_SAVE_SETTINGS_ON_EXIT
         MENUITEM "&Confirm on exit",       IDM_TOGGLE_CONFIRM_ON_EXIT
     END
-#if 0
     POPUP "&Language"
     BEGIN
         MENUITEM "&English", IDM_LANG_EN
@@ -212,7 +211,6 @@ BEGIN
         MENUITEM "&Polish", IDM_LANG_PL
         MENUITEM "&Swedish", IDM_LANG_SV
     END
-#endif
     POPUP "&Help"
     BEGIN
 //        MENUITEM "H&elp",               IDM_HELP
@@ -3241,7 +3239,7 @@ END
 STRINGTABLE
 LANGUAGE LANG_ENGLISH, SUBLANG_NEUTRAL
 BEGIN
-    IDS_DTV_FLASH_U_ROM_IMAGE   "DTV flash &rom image"
+    IDS_MP_DTV_FLASH_ROM_IMAGE   "DTV flash &rom image"
 END
 
 // GERMAN text
@@ -3249,7 +3247,7 @@ END
 STRINGTABLE
 LANGUAGE LANG_GERMAN, SUBLANG_NEUTRAL
 BEGIN
-    IDS_DTV_FLASH_U_ROM_IMAGE   "DTV flash &rom image"
+    IDS_MP_DTV_FLASH_ROM_IMAGE   "DTV flash &rom image"
 END
 
 // FRENCH text
@@ -3257,7 +3255,7 @@ END
 STRINGTABLE
 LANGUAGE LANG_FRENCH, SUBLANG_NEUTRAL
 BEGIN
-    IDS_DTV_FLASH_U_ROM_IMAGE   "DTV flash &rom image"
+    IDS_MP_DTV_FLASH_ROM_IMAGE   "DTV flash &rom image"
 END
 
 
@@ -3267,7 +3265,7 @@ END
 STRINGTABLE
 LANGUAGE LANG_HUNGARIAN, SUBLANG_NEUTRAL
 BEGIN
-    IDS_DTV_FLASH_U_ROM_IMAGE   "DTV flash &rom image"
+    IDS_MP_DTV_FLASH_ROM_IMAGE   "DTV flash &rom image"
 END
 #pragma code_page(28591)
 
@@ -3277,7 +3275,7 @@ END
 STRINGTABLE
 LANGUAGE LANG_ITALIAN, SUBLANG_NEUTRAL
 BEGIN
-    IDS_DTV_FLASH_U_ROM_IMAGE   "DTV flash &rom image"
+    IDS_MP_DTV_FLASH_ROM_IMAGE   "DTV flash &rom image"
 END
 
 // DUTCH text
@@ -3285,7 +3283,7 @@ END
 STRINGTABLE
 LANGUAGE LANG_DUTCH, SUBLANG_NEUTRAL
 BEGIN
-    IDS_DTV_FLASH_U_ROM_IMAGE   "DTV flash &rom bestand"
+    IDS_MP_DTV_FLASH_ROM_IMAGE   "DTV flash &rom bestand"
 END
 
 // POLISH text
@@ -3294,7 +3292,7 @@ END
 STRINGTABLE
 LANGUAGE LANG_POLISH, SUBLANG_NEUTRAL
 BEGIN
-    IDS_DTV_FLASH_U_ROM_IMAGE   "DTV flash &rom image"
+    IDS_MP_DTV_FLASH_ROM_IMAGE   "DTV flash &rom image"
 END
 #pragma code_page(28591)
 
@@ -3303,5 +3301,5 @@ END
 STRINGTABLE
 LANGUAGE LANG_SWEDISH, SUBLANG_NEUTRAL
 BEGIN
-    IDS_DTV_FLASH_U_ROM_IMAGE   "DTV flash &rom image"
+    IDS_MP_DTV_FLASH_ROM_IMAGE   "DTV flash &rom image"
 END

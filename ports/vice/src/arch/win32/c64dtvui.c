@@ -113,26 +113,26 @@ ui_menu_translation_table_t c64dtvui_menu_translation_table[] = {
 };
 
 ui_popup_translation_table_t c64dtvui_popup_translation_table[] = {
-    { 1, IDS_U_FILE },
-    { 2, IDS_ATTACH_U_DISK_IMAGE },
-    { 2, IDS_D_U_ETACH_DISK_IMAGE },
-    { 2, IDS_DTV_FLASH_U_ROM_IMAGE },
-    { 2, IDS_U_FLIP_LIST },
-    { 2, IDS_U_RESET },
+    { 1, IDS_MP_FILE },
+    { 2, IDS_MP_ATTACH_DISK_IMAGE },
+    { 2, IDS_MP_DETACH_DISK_IMAGE },
+    { 2, IDS_MP_DTV_FLASH_ROM_IMAGE },
+    { 2, IDS_MP_FLIP_LIST },
+    { 2, IDS_MP_RESET },
 #ifdef DEBUG
-    { 2, IDS_U_DEBUG },
-    { 3, IDS_M_U_ODE },
+    { 2, IDS_MP_DEBUG },
+    { 3, IDS_MP_MODE },
 #endif
-    { 1, IDS_U_EDIT },
-    { 1, IDS_SNA_U_PSHOT },
-    { 2, IDS_RECORDING_START_MODE },
-    { 1, IDS_U_OPTIONS },
-    { 2, IDS_U_REFRESH_RATE },
-    { 2, IDS_U_MAXIMUM_SPEED },
-    { 2, IDS_VIDE_U_O_STANDARD },
-    { 1, IDS_S_U_ETTINGS },
-    { 1, IDS_U_LANGUAGE },
-    { 1, IDS_U_HELP },
+    { 1, IDS_MP_EDIT },
+    { 1, IDS_MP_SNAPSHOT },
+    { 2, IDS_MP_RECORDING_START_MODE },
+    { 1, IDS_MP_OPTIONS },
+    { 2, IDS_MP_REFRESH_RATE },
+    { 2, IDS_MP_MAXIMUM_SPEED },
+    { 2, IDS_MP_VIDEO_STANDARD },
+    { 1, IDS_MP_SETTINGS },
+    { 1, IDS_MP_LANGUAGE },
+    { 1, IDS_MP_HELP },
     { 0, 0 }
 };
 
