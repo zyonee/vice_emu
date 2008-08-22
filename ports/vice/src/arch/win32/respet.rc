@@ -21,23 +21,23 @@ IDR_MENUPET MENU DISCARDABLE
 BEGIN
     POPUP "&File"
     BEGIN
-        MENUITEM "&Autostart disk/tape image...", IDM_AUTOSTART
+        MENUITEM "", IDM_AUTOSTART
         MENUITEM SEPARATOR
         POPUP "Attach &disk image"
         BEGIN
-            MENUITEM "Drive &8",  IDM_ATTACH_8
-            MENUITEM "Drive &9",  IDM_ATTACH_9
-            MENUITEM "Drive 1&0", IDM_ATTACH_10
-            MENUITEM "Drive &11", IDM_ATTACH_11
+            MENUITEM "",  IDM_ATTACH_8
+            MENUITEM "",  IDM_ATTACH_9
+            MENUITEM "", IDM_ATTACH_10
+            MENUITEM "", IDM_ATTACH_11
         END
         POPUP "D&etach disk image"
         BEGIN
-            MENUITEM "Drive &8",  IDM_DETACH_8
-            MENUITEM "Drive &9",  IDM_DETACH_9
-            MENUITEM "Drive 1&0", IDM_DETACH_10
-            MENUITEM "Drive &11", IDM_DETACH_11
+            MENUITEM "",  IDM_DETACH_8
+            MENUITEM "",  IDM_DETACH_9
+            MENUITEM "", IDM_DETACH_10
+            MENUITEM "", IDM_DETACH_11
             MENUITEM SEPARATOR
-            MENUITEM "&All", IDM_DETACH_ALL
+            MENUITEM "", IDM_DETACH_ALL
         END
         POPUP "&Flip list"
         BEGIN
@@ -50,8 +50,8 @@ BEGIN
             MENUITEM "&Save flip list", IDM_FLIP_SAVE
         END
         MENUITEM SEPARATOR
-        MENUITEM "Attach &tape image...", IDM_ATTACH_TAPE
-        MENUITEM "Detac&h tape image",           IDM_DETACH_TAPE
+        MENUITEM "", IDM_ATTACH_TAPE
+        MENUITEM "",           IDM_DETACH_TAPE
         POPUP "Datassette contro&l"
         BEGIN
             MENUITEM "S&top",          IDM_DATASETTE_CONTROL_STOP
@@ -63,18 +63,17 @@ BEGIN
             MENUITEM "Reset C&ounter", IDM_DATASETTE_RESET_COUNTER
         END
         MENUITEM SEPARATOR
-        MENUITEM "&Pause", IDM_PAUSE
-        , CHECKED
+        MENUITEM "", IDM_PAUSE, CHECKED
         MENUITEM "&Monitor",   IDM_MONITOR
         POPUP "&Reset"
         BEGIN
-            MENUITEM "&Hard", IDM_RESET_HARD
-            MENUITEM "&Soft",      IDM_RESET_SOFT
+            MENUITEM "", IDM_RESET_HARD
+            MENUITEM "",      IDM_RESET_SOFT
             MENUITEM SEPARATOR
-            MENUITEM "Drive #&8",         IDM_RESET_DRIVE8
-            MENUITEM "Drive #&9",         IDM_RESET_DRIVE9
-            MENUITEM "Drive #1&0",        IDM_RESET_DRIVE10
-            MENUITEM "Drive #&11",        IDM_RESET_DRIVE11
+            MENUITEM "",         IDM_RESET_DRIVE8
+            MENUITEM "",         IDM_RESET_DRIVE9
+            MENUITEM "",        IDM_RESET_DRIVE10
+            MENUITEM "",        IDM_RESET_DRIVE11
         END
 #ifdef DEBUG
 		POPUP "&Debug"
@@ -92,12 +91,12 @@ BEGIN
         END
 #endif
        MENUITEM SEPARATOR
-        MENUITEM "E&xit", IDM_EXIT
+       MENUITEM "", IDM_EXIT
     END
     POPUP "&Edit"
     BEGIN
-        MENUITEM "&Copy", IDM_EDIT_COPY
-        MENUITEM "&Paste", IDM_EDIT_PASTE
+        MENUITEM "", IDM_EDIT_COPY
+        MENUITEM "", IDM_EDIT_PASTE
     END
     POPUP "Sna&pshot"
     BEGIN
@@ -221,7 +220,7 @@ BEGIN
     BEGIN
 //        MENUITEM "H&elp",               IDM_HELP
 //        MENUITEM SEPARATOR
-        MENUITEM "&About...",             IDM_ABOUT
+        MENUITEM "",             IDM_ABOUT
         MENUITEM SEPARATOR
         MENUITEM "Command line &options", IDM_CMDLINE
         MENUITEM SEPARATOR
@@ -238,24 +237,6 @@ IDR_MENUPET_DE MENU DISCARDABLE
 BEGIN
     POPUP "&Datei"
     BEGIN
-        MENUITEM "&Autostart Disk/Band Image...", IDM_AUTOSTART
-        MENUITEM SEPARATOR
-        POPUP "&Disk Image einlegen"
-        BEGIN
-            MENUITEM "Laufwerk &8",  IDM_ATTACH_8
-            MENUITEM "Laufwerk &9",  IDM_ATTACH_9
-            MENUITEM "Laufwerk 1&0", IDM_ATTACH_10
-            MENUITEM "Laufwerk &11", IDM_ATTACH_11
-        END
-        POPUP "Disk Image &entfernen"
-        BEGIN
-            MENUITEM "Laufwerk &8",  IDM_DETACH_8
-            MENUITEM "Laufwerk &9",  IDM_DETACH_9
-            MENUITEM "Laufwerk 1&0", IDM_DETACH_10
-            MENUITEM "Laufwerk &11", IDM_DETACH_11
-            MENUITEM SEPARATOR
-            MENUITEM "&Alle", IDM_DETACH_ALL
-        END
         POPUP "&Flipliste"
         BEGIN
             MENUITEM "&Aktuelles Image hinzufügen", IDM_FLIP_ADD
@@ -266,9 +247,6 @@ BEGIN
             MENUITEM "Fliplist Datei &Laden",     IDM_FLIP_LOAD
             MENUITEM "Fliplist Datei &Speichern", IDM_FLIP_SAVE
         END
-        MENUITEM SEPARATOR
-        MENUITEM "&Band Image einlegen...", IDM_ATTACH_TAPE
-        MENUITEM "Band Image entfernen",          IDM_DETACH_TAPE
         POPUP "Bandlaufwerk Kontro&lle"
         BEGIN
             MENUITEM "S&top",              IDM_DATASETTE_CONTROL_STOP
@@ -279,20 +257,7 @@ BEGIN
             MENUITEM "R&eset",             IDM_DATASETTE_CONTROL_RESET
             MENUITEM "Z&ähler zurücksetzen", IDM_DATASETTE_RESET_COUNTER
         END
-        MENUITEM SEPARATOR
-        MENUITEM "&Pause", IDM_PAUSE
-        , CHECKED
         MENUITEM "&Monitor",   IDM_MONITOR
-        POPUP "&Reset"
-        BEGIN
-            MENUITEM "&Hart", IDM_RESET_HARD
-            MENUITEM "&Weich",      IDM_RESET_SOFT
-            MENUITEM SEPARATOR
-            MENUITEM "Laufwerk #&8",  IDM_RESET_DRIVE8
-            MENUITEM "Laufwerk #&9",  IDM_RESET_DRIVE9
-            MENUITEM "Laufwerk #1&0", IDM_RESET_DRIVE10
-            MENUITEM "Laufwerk #&11", IDM_RESET_DRIVE11
-        END
 #ifdef DEBUG
 		POPUP "&Debug"
         BEGIN
@@ -308,13 +273,6 @@ BEGIN
             MENUITEM "Laufwerk&1 CPU Trace", IDM_TOGGLE_DRIVE1CPU_TRACE, CHECKED
         END
 #endif
-       MENUITEM SEPARATOR
-        MENUITEM "E&xit", IDM_EXIT
-    END
-    POPUP "B&earbeiten"
-    BEGIN
-        MENUITEM "&Kopieren", IDM_EDIT_COPY
-        MENUITEM "&Einfúgen", IDM_EDIT_PASTE
     END
     POPUP "Sna&pshot"
     BEGIN
@@ -436,10 +394,6 @@ BEGIN
     END
     POPUP "&Hilfe"
     BEGIN
-//        MENUITEM "H&elp",               IDM_HELP
-//        MENUITEM SEPARATOR
-        MENUITEM "&Über VICE...",             IDM_ABOUT
-        MENUITEM SEPARATOR
         MENUITEM "Kommandozeilen &Optionen", IDM_CMDLINE
         MENUITEM SEPARATOR
         MENUITEM "VICE Hackers",         IDM_CONTRIBUTORS
@@ -455,24 +409,6 @@ IDR_MENUPET_FR MENU DISCARDABLE
 BEGIN
     POPUP "&Fichier"
     BEGIN
-        MENUITEM "Démarrage &automatique d'une image datassette...", IDM_AUTOSTART
-        MENUITEM SEPARATOR
-        POPUP "Insérer une image de &disque"
-        BEGIN
-            MENUITEM "Lecteur #&8",  IDM_ATTACH_8
-            MENUITEM "Lecteur #&9",  IDM_ATTACH_9
-            MENUITEM "Lecteur #1&0", IDM_ATTACH_10
-            MENUITEM "Lecteur #&11", IDM_ATTACH_11
-        END
-        POPUP "&Retirer une image de disque"
-        BEGIN
-            MENUITEM "Lecteur #&8",  IDM_DETACH_8
-            MENUITEM "Lecteur #&9",  IDM_DETACH_9
-            MENUITEM "Lecteur #1&0", IDM_DETACH_10
-            MENUITEM "Lecteur #&11", IDM_DETACH_11
-            MENUITEM SEPARATOR
-            MENUITEM "&Tout", IDM_DETACH_ALL
-        END
         POPUP "&Groupement de disques"
         BEGIN
             MENUITEM "&Ajouter l'image de disque courante",     IDM_FLIP_ADD
@@ -483,9 +419,6 @@ BEGIN
             MENUITEM "&Charger un groupement de disques", IDM_FLIP_LOAD
             MENUITEM "&Enregistrer le groupement de disques", IDM_FLIP_SAVE
         END
-        MENUITEM SEPARATOR
-        MENUITEM "Insérer une image &datassette...", IDM_ATTACH_TAPE
-        MENUITEM "Reti&rer une image datassette",           IDM_DETACH_TAPE
         POPUP "Contrô&le datassette"
         BEGIN
             MENUITEM "&Arrêt",          IDM_DATASETTE_CONTROL_STOP
@@ -496,20 +429,7 @@ BEGIN
             MENUITEM "Réinitialis&er",         IDM_DATASETTE_CONTROL_RESET
             MENUITEM "Réinialiser le c&ompteur", IDM_DATASETTE_RESET_COUNTER
         END
-        MENUITEM SEPARATOR
-        MENUITEM "&Pause", IDM_PAUSE
-        , CHECKED
         MENUITEM "&Tracer",   IDM_MONITOR
-        POPUP "&Réinitialiser"
-        BEGIN
-            MENUITEM "&Physiquement", IDM_RESET_HARD
-            MENUITEM "&Logiciellement",      IDM_RESET_SOFT
-            MENUITEM SEPARATOR
-            MENUITEM "Lecteur #&8",         IDM_RESET_DRIVE8
-            MENUITEM "Lecteur #&9",         IDM_RESET_DRIVE9
-            MENUITEM "Lecteur #1&0",        IDM_RESET_DRIVE10
-            MENUITEM "Lecteur #&11",        IDM_RESET_DRIVE11
-        END
 #ifdef DEBUG
 		POPUP "&Debug"
         BEGIN
@@ -525,13 +445,6 @@ BEGIN
             MENUITEM "Tracer CPU Drive&0", IDM_TOGGLE_DRIVE1CPU_TRACE, CHECKED
         END
 #endif
-       MENUITEM SEPARATOR
-        MENUITEM "&Quitter", IDM_EXIT
-    END
-    POPUP "&Edit"
-    BEGIN
-        MENUITEM "&Copy", IDM_EDIT_COPY
-        MENUITEM "&Paste", IDM_EDIT_PASTE
     END
     POPUP "&Sauvegarde"
     BEGIN
@@ -653,10 +566,6 @@ BEGIN
     END
     POPUP "&Aide"
     BEGIN
-//        MENUITEM "H&elp",               IDM_HELP
-//        MENUITEM SEPARATOR
-        MENUITEM "À &Propos...",             IDM_ABOUT
-        MENUITEM SEPARATOR
         MENUITEM "&Options de ligne de commande", IDM_CMDLINE
         MENUITEM SEPARATOR
         MENUITEM "&Contributeurs",         IDM_CONTRIBUTORS
@@ -673,24 +582,6 @@ IDR_MENUPET_HU MENU DISCARDABLE
 BEGIN
     POPUP "&Fájl"
     BEGIN
-        MENUITEM "Lemez/szalag képmás &automatikus indítása...", IDM_AUTOSTART
-        MENUITEM SEPARATOR
-        POPUP "Lemezképmás csatolása"
-        BEGIN
-            MENUITEM "#&8-as lemezegység",  IDM_ATTACH_8
-            MENUITEM "#&9-as lemezegység",  IDM_ATTACH_9
-            MENUITEM "#1&0-es lemezegység", IDM_ATTACH_10
-            MENUITEM "#1&0-es lemezegység", IDM_ATTACH_11
-        END
-        POPUP "Lemezképmás &leválasztása"
-        BEGIN
-            MENUITEM "&8-as lemezegység",  IDM_DETACH_8
-            MENUITEM "&9-es lemezegység",  IDM_DETACH_9
-            MENUITEM "#1&0-es lemezegység", IDM_DETACH_10
-            MENUITEM "#&11-es lemezegység", IDM_DETACH_11
-            MENUITEM SEPARATOR
-            MENUITEM "&Mindegyik", IDM_DETACH_ALL
-        END
         POPUP "Lemezl&ista"
         BEGIN
             MENUITEM "Az aktuális képmás hozzáadása",     IDM_FLIP_ADD
@@ -701,9 +592,6 @@ BEGIN
             MENUITEM "&Lemezlista betöltése", IDM_FLIP_LOAD
             MENUITEM "Lemezlista menté&se", IDM_FLIP_SAVE
         END
-        MENUITEM SEPARATOR
-        MENUITEM "&Szalag képmás csatolása...", IDM_ATTACH_TAPE
-        MENUITEM "Sz&alag képmás leválasztása",           IDM_DETACH_TAPE
         POPUP "Magnó &vezérlés"
         BEGIN
             MENUITEM "&Leállítás",          IDM_DATASETTE_CONTROL_STOP
@@ -714,20 +602,7 @@ BEGIN
             MENUITEM "A&laphelyzet",         IDM_DATASETTE_CONTROL_RESET
             MENUITEM "Számláló &nullázása", IDM_DATASETTE_RESET_COUNTER
         END
-        MENUITEM SEPARATOR
-        MENUITEM "&Szünet", IDM_PAUSE
-        , CHECKED
         MENUITEM "&Monitor",   IDM_MONITOR
-        POPUP "Új&raindítás"
-        BEGIN
-            MENUITEM "&Hideg", IDM_RESET_HARD
-            MENUITEM "&Meleg",      IDM_RESET_SOFT
-            MENUITEM SEPARATOR
-            MENUITEM "#&8-as lemezegység",         IDM_RESET_DRIVE8
-            MENUITEM "#&9-es lemezegység",         IDM_RESET_DRIVE9
-            MENUITEM "#1&0-es lemezegység",        IDM_RESET_DRIVE10
-            MENUITEM "#&11-es lemezegység",        IDM_RESET_DRIVE11
-        END
 #ifdef DEBUG
 		POPUP "&Nyomkövetés"
         BEGIN
@@ -743,13 +618,6 @@ BEGIN
             MENUITEM "&1. lemezegység CPU követése", IDM_TOGGLE_DRIVE1CPU_TRACE, CHECKED
         END
 #endif
-       MENUITEM SEPARATOR
-        MENUITEM "&Kilépés", IDM_EXIT
-    END
-    POPUP "&Edit"
-    BEGIN
-        MENUITEM "&Copy", IDM_EDIT_COPY
-        MENUITEM "&Paste", IDM_EDIT_PASTE
     END
     POPUP "&Pillanatkép"
     BEGIN
@@ -871,10 +739,6 @@ BEGIN
     END
     POPUP "&Súgó"
     BEGIN
-//        MENUITEM "H&elp",               IDM_HELP
-//        MENUITEM SEPARATOR
-        MENUITEM "&Névjegy...",             IDM_ABOUT
-        MENUITEM SEPARATOR
         MENUITEM "Parancssori &opciók", IDM_CMDLINE
         MENUITEM SEPARATOR
         MENUITEM "&Közremûködõk",         IDM_CONTRIBUTORS
@@ -891,24 +755,6 @@ IDR_MENUPET_IT MENU DISCARDABLE
 BEGIN
     POPUP "&File"
     BEGIN
-        MENUITEM "&Avvia automaticamente l'immagine di un disco/cassetta...", IDM_AUTOSTART
-        MENUITEM SEPARATOR
-        POPUP "Seleziona l'immagine di un &disco"
-        BEGIN
-            MENUITEM "Drive &8",  IDM_ATTACH_8
-            MENUITEM "Drive &9",  IDM_ATTACH_9
-            MENUITEM "Drive 1&0", IDM_ATTACH_10
-            MENUITEM "Drive &11", IDM_ATTACH_11
-        END
-        POPUP "&Rimuovi l'immagine di un disco"
-        BEGIN
-            MENUITEM "Drive &8",  IDM_DETACH_8
-            MENUITEM "Drive &9",  IDM_DETACH_9
-            MENUITEM "Drive 1&0", IDM_DETACH_10
-            MENUITEM "Drive &11", IDM_DETACH_11
-            MENUITEM SEPARATOR
-            MENUITEM "&Tutti", IDM_DETACH_ALL
-        END
         POPUP "&Flip list"
         BEGIN
             MENUITEM "&Aggiungi l'immagine attuale",     IDM_FLIP_ADD
@@ -919,9 +765,6 @@ BEGIN
             MENUITEM "&Carica fliplist", IDM_FLIP_LOAD
             MENUITEM "&Salva fliplist", IDM_FLIP_SAVE
         END
-        MENUITEM SEPARATOR
-        MENUITEM "Seleziona l'immagine di una &cassetta...", IDM_ATTACH_TAPE
-        MENUITEM "Rimuo&vi l'immagine della cassetta",           IDM_DETACH_TAPE
         POPUP "Contro&llo del registratore"
         BEGIN
             MENUITEM "S&top",          IDM_DATASETTE_CONTROL_STOP
@@ -932,20 +775,7 @@ BEGIN
             MENUITEM "R&eset",         IDM_DATASETTE_CONTROL_RESET
             MENUITEM "Reset c&ontantore", IDM_DATASETTE_RESET_COUNTER
         END
-        MENUITEM SEPARATOR
-        MENUITEM "&Pausa", IDM_PAUSE
-        , CHECKED
         MENUITEM "&Monitor",   IDM_MONITOR
-        POPUP "&Reset"
-        BEGIN
-            MENUITEM "&Hard", IDM_RESET_HARD
-            MENUITEM "&Soft",      IDM_RESET_SOFT
-            MENUITEM SEPARATOR
-            MENUITEM "Drive #&8",         IDM_RESET_DRIVE8
-            MENUITEM "Drive #&9",         IDM_RESET_DRIVE9
-            MENUITEM "Drive #1&0",        IDM_RESET_DRIVE10
-            MENUITEM "Drive #&11",        IDM_RESET_DRIVE11
-        END
 #ifdef DEBUG
 		POPUP "&Debug"
         BEGIN
@@ -961,13 +791,6 @@ BEGIN
             MENUITEM "Traccia della CPU del drive&1", IDM_TOGGLE_DRIVE1CPU_TRACE, CHECKED
         END
 #endif
-       MENUITEM SEPARATOR
-        MENUITEM "E&sci", IDM_EXIT
-    END
-    POPUP "&Edit"
-    BEGIN
-        MENUITEM "&Copy", IDM_EDIT_COPY
-        MENUITEM "&Paste", IDM_EDIT_PASTE
     END
     POPUP "Sna&pshot"
     BEGIN
@@ -1089,10 +912,6 @@ BEGIN
     END
     POPUP "&Aiuto"
     BEGIN
-//        MENUITEM "H&elp",               IDM_HELP
-//        MENUITEM SEPARATOR
-        MENUITEM "&Informazioni su VICE...",             IDM_ABOUT
-        MENUITEM SEPARATOR
         MENUITEM "&Opzioni della riga di comando", IDM_CMDLINE
         MENUITEM SEPARATOR
         MENUITEM "&Collaboratori",         IDM_CONTRIBUTORS
@@ -1108,24 +927,6 @@ IDR_MENUPET_NL MENU DISCARDABLE
 BEGIN
     POPUP "&Bestand"
     BEGIN
-        MENUITEM "&Autostart disk-/tapebestand...", IDM_AUTOSTART
-        MENUITEM SEPARATOR
-        POPUP "Koppel &schijfbestand aan"
-        BEGIN
-            MENUITEM "Drive &8",  IDM_ATTACH_8
-            MENUITEM "Drive &9",  IDM_ATTACH_9
-            MENUITEM "Drive 1&0", IDM_ATTACH_10
-            MENUITEM "Drive &11", IDM_ATTACH_11
-        END
-        POPUP "Ontkopp&el schijfbestand"
-        BEGIN
-            MENUITEM "Drive &8",  IDM_DETACH_8
-            MENUITEM "Drive &9",  IDM_DETACH_9
-            MENUITEM "Drive 1&0", IDM_DETACH_10
-            MENUITEM "Drive &11", IDM_DETACH_11
-            MENUITEM SEPARATOR
-            MENUITEM "&Alles", IDM_DETACH_ALL
-        END
         POPUP "&Flip lijst"
         BEGIN
             MENUITEM "Voeg huidig best&and toe",     IDM_FLIP_ADD
@@ -1136,9 +937,6 @@ BEGIN
             MENUITEM "&Laad fliplijst", IDM_FLIP_LOAD
             MENUITEM "Op&slaan fliplijst", IDM_FLIP_SAVE
         END
-        MENUITEM SEPARATOR
-        MENUITEM "Koppel &tapebestand...", IDM_ATTACH_TAPE
-        MENUITEM "Ontkoppe&l tapebestand",           IDM_DETACH_TAPE
         POPUP "Datassette bedie&ning"
         BEGIN
             MENUITEM "S&top",          IDM_DATASETTE_CONTROL_STOP
@@ -1149,20 +947,7 @@ BEGIN
             MENUITEM "R&eset",         IDM_DATASETTE_CONTROL_RESET
             MENUITEM "Reset T&eller", IDM_DATASETTE_RESET_COUNTER
         END
-        MENUITEM SEPARATOR
-        MENUITEM "&Pauze", IDM_PAUSE
-        , CHECKED
         MENUITEM "&Monitor",   IDM_MONITOR
-        POPUP "&Reset"
-        BEGIN
-            MENUITEM "&Hard", IDM_RESET_HARD
-            MENUITEM "&Zacht",      IDM_RESET_SOFT
-            MENUITEM SEPARATOR
-            MENUITEM "Drive #&8",         IDM_RESET_DRIVE8
-            MENUITEM "Drive #&9",         IDM_RESET_DRIVE9
-            MENUITEM "Drive #1&0",        IDM_RESET_DRIVE10
-            MENUITEM "Drive #&11",        IDM_RESET_DRIVE11
-        END
 #ifdef DEBUG
 		POPUP "&Debug"
         BEGIN
@@ -1178,13 +963,6 @@ BEGIN
             MENUITEM "Drive&1 CPU Trace", IDM_TOGGLE_DRIVE1CPU_TRACE, CHECKED
         END
 #endif
-       MENUITEM SEPARATOR
-        MENUITEM "Af&sluiten", IDM_EXIT
-    END
-    POPUP "&Bewerken"
-    BEGIN
-        MENUITEM "&Kopie", IDM_EDIT_COPY
-        MENUITEM "&Plakken", IDM_EDIT_PASTE
     END
     POPUP "Momento&pname"
     BEGIN
@@ -1306,10 +1084,6 @@ BEGIN
     END
     POPUP "&Help"
     BEGIN
-//        MENUITEM "H&elp",               IDM_HELP
-//        MENUITEM SEPARATOR
-        MENUITEM "&Over VICE...",             IDM_ABOUT
-        MENUITEM SEPARATOR
         MENUITEM "Commando invoer &opties", IDM_CMDLINE
         MENUITEM SEPARATOR
         MENUITEM "&Medewerkers aan het VICE project",         IDM_CONTRIBUTORS
@@ -1326,24 +1100,6 @@ IDR_MENUPET_PL MENU DISCARDABLE
 BEGIN
     POPUP "&Plik"
     BEGIN
-        MENUITEM "&Autostart disk/tape image...", IDM_AUTOSTART
-        MENUITEM SEPARATOR
-        POPUP "W³ó¿ obraz &dyskietki"
-        BEGIN
-            MENUITEM "Napêdu &8",  IDM_ATTACH_8
-            MENUITEM "Napêdu &9",  IDM_ATTACH_9
-            MENUITEM "Napêdu 1&0", IDM_ATTACH_10
-            MENUITEM "Napêdu &11", IDM_ATTACH_11
-        END
-        POPUP "D&etach disk image"
-        BEGIN
-            MENUITEM "Napêdu &8",  IDM_DETACH_8
-            MENUITEM "Napêdu &9",  IDM_DETACH_9
-            MENUITEM "Napêdu 1&0", IDM_DETACH_10
-            MENUITEM "Napêdu &11", IDM_DETACH_11
-            MENUITEM SEPARATOR
-            MENUITEM "&Wszystko", IDM_DETACH_ALL
-        END
         POPUP "&Zmieñ listê"
         BEGIN
             MENUITEM "Dodaj &aktualny obraz",     IDM_FLIP_ADD
@@ -1354,9 +1110,6 @@ BEGIN
             MENUITEM "Za³aduj plik &listy", IDM_FLIP_LOAD
             MENUITEM "Zapi&sz plik listy", IDM_FLIP_SAVE
         END
-        MENUITEM SEPARATOR
-        MENUITEM "W³ó¿ &obraz kasety...", IDM_ATTACH_TAPE
-        MENUITEM "Wyjmij obraz &kasety",           IDM_DETACH_TAPE
         POPUP "Zarz±dzanie ma&gnetofonem"
         BEGIN
             MENUITEM "Za&trzymaj",          IDM_DATASETTE_CONTROL_STOP
@@ -1367,20 +1120,7 @@ BEGIN
             MENUITEM "R&eset",         IDM_DATASETTE_CONTROL_RESET
             MENUITEM "Reset C&ounter", IDM_DATASETTE_RESET_COUNTER
         END
-        MENUITEM SEPARATOR
-        MENUITEM "&Pauza", IDM_PAUSE
-        , CHECKED
         MENUITEM "&Monitor",   IDM_MONITOR
-        POPUP "&Reset"
-        BEGIN
-            MENUITEM "T&wardy", IDM_RESET_HARD
-            MENUITEM "&Miêkki",      IDM_RESET_SOFT
-            MENUITEM SEPARATOR
-            MENUITEM "Napêdu #&8",         IDM_RESET_DRIVE8
-            MENUITEM "Napêdu #&9",         IDM_RESET_DRIVE9
-            MENUITEM "Napêdu #1&0",        IDM_RESET_DRIVE10
-            MENUITEM "Napêdu #&11",        IDM_RESET_DRIVE11
-        END
 #ifdef DEBUG
 		POPUP "&Debug"
         BEGIN
@@ -1396,13 +1136,6 @@ BEGIN
             MENUITEM "Drive&1 CPU Trace", IDM_TOGGLE_DRIVE1CPU_TRACE, CHECKED
         END
 #endif
-       MENUITEM SEPARATOR
-        MENUITEM "W&yjd¼", IDM_EXIT
-    END
-    POPUP "&Edit"
-    BEGIN
-        MENUITEM "&Copy", IDM_EDIT_COPY
-        MENUITEM "&Paste", IDM_EDIT_PASTE
     END
     POPUP "z&rzutu"
     BEGIN
@@ -1524,10 +1257,6 @@ BEGIN
     END
     POPUP "&Pomoc"
     BEGIN
-//        MENUITEM "H&elp",               IDM_HELP
-//        MENUITEM SEPARATOR
-        MENUITEM "&O VICE...",             IDM_ABOUT
-        MENUITEM SEPARATOR
         MENUITEM "Command line &options", IDM_CMDLINE
         MENUITEM SEPARATOR
         MENUITEM "&Wspó³pracownicy projektu VICE",         IDM_CONTRIBUTORS
@@ -1544,24 +1273,6 @@ IDR_MENUPET_SV MENU DISCARDABLE
 BEGIN
     POPUP "&Arkiv"
     BEGIN
-        MENUITEM "&Autostarta disk-/bandavbildningsfil...", IDM_AUTOSTART
-        MENUITEM SEPARATOR
-        POPUP "Anslut &diskettavbildningsfil"
-        BEGIN
-            MENUITEM "Enhet &8",  IDM_ATTACH_8
-            MENUITEM "Enhet &9",  IDM_ATTACH_9
-            MENUITEM "Enhet 1&0", IDM_ATTACH_10
-            MENUITEM "Enhet &11", IDM_ATTACH_11
-        END
-        POPUP "Koppla &från diskettavbildningsfil"
-        BEGIN
-            MENUITEM "Enhet &8",  IDM_DETACH_8
-            MENUITEM "Enhet &9",  IDM_DETACH_9
-            MENUITEM "Enhet 1&0", IDM_DETACH_10
-            MENUITEM "Enhet &11", IDM_DETACH_11
-            MENUITEM SEPARATOR
-            MENUITEM "&Alla", IDM_DETACH_ALL
-        END
         POPUP "&Vallista"
         BEGIN
             MENUITEM "&Lägg till aktuell avbildning",     IDM_FLIP_ADD
@@ -1572,9 +1283,6 @@ BEGIN
             MENUITEM "&Läs in vallistefil", IDM_FLIP_LOAD
             MENUITEM "&Spara vallistefil", IDM_FLIP_SAVE
         END
-        MENUITEM SEPARATOR
-        MENUITEM "Anslut en &bandavbildningsfil...", IDM_ATTACH_TAPE
-        MENUITEM "Koppla f&rån bandavbildningsfil",           IDM_DETACH_TAPE
         POPUP "Datasette&styrning"
         BEGIN
             MENUITEM "S&toppa",          IDM_DATASETTE_CONTROL_STOP
@@ -1585,20 +1293,7 @@ BEGIN
             MENUITEM "&Nollställ",         IDM_DATASETTE_CONTROL_RESET
             MENUITEM "Nollställ r&äknare", IDM_DATASETTE_RESET_COUNTER
         END
-        MENUITEM SEPARATOR
-        MENUITEM "&Paus", IDM_PAUSE
-        , CHECKED
         MENUITEM "&Monitor",   IDM_MONITOR
-        POPUP "&Nollställ"
-        BEGIN
-            MENUITEM "&Hård", IDM_RESET_HARD
-            MENUITEM "&Mjuk",      IDM_RESET_SOFT
-            MENUITEM SEPARATOR
-            MENUITEM "Enhet &8",         IDM_RESET_DRIVE8
-            MENUITEM "Enhet &9",         IDM_RESET_DRIVE9
-            MENUITEM "Enhet 1&0",        IDM_RESET_DRIVE10
-            MENUITEM "Enhet &11",        IDM_RESET_DRIVE11
-        END
 #ifdef DEBUG
 		POPUP "&Felsök"
         BEGIN
@@ -1614,13 +1309,6 @@ BEGIN
             MENUITEM "Spåra CPU för enhet &1", IDM_TOGGLE_DRIVE1CPU_TRACE, CHECKED
         END
 #endif
-       MENUITEM SEPARATOR
-        MENUITEM "&Avsluta", IDM_EXIT
-    END
-    POPUP "&Edit"
-    BEGIN
-        MENUITEM "&Copy", IDM_EDIT_COPY
-        MENUITEM "&Paste", IDM_EDIT_PASTE
     END
     POPUP "&Ögonblicksbild"
     BEGIN
@@ -1742,10 +1430,6 @@ BEGIN
     END
     POPUP "&Hjälp"
     BEGIN
-//        MENUITEM "H&elp",               IDM_HELP
-//        MENUITEM SEPARATOR
-        MENUITEM "&Om VICE...",             IDM_ABOUT
-        MENUITEM SEPARATOR
         MENUITEM "Kommandorads&flaggor", IDM_CMDLINE
         MENUITEM SEPARATOR
         MENUITEM "&Bidragslämnare",         IDM_CONTRIBUTORS

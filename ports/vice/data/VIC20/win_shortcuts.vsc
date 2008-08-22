@@ -1,6 +1,8 @@
 #
 # VICE definition file for Keyboard Shortcuts in Win32
 #
+# This version is for xvic.
+#
 # Syntax:
 # First column: Combination of ALT|CTRL|SHIFT to or just KEY
 # Second column: (virtual) Keycode for the shortcut
@@ -50,11 +52,10 @@ CTRL            0x2D        IDM_EDIT_COPY                     C
 #
 # Other command identifier that can be used in shortcuts
 #
-# IDM_FILE_EXIT                           IDM_ABOUT
-# IDM_AUTOSTART                           IDM_RESET_DRIVE8
-# IDM_RESET_DRIVE9                        IDM_RESET_DRIVE10
-# IDM_RESET_DRIVE11                       IDM_DETACH_TAPE
-# IDM_DATASETTE_CONTROL                   IDM_DETACH_8
+# IDM_ABOUT                               IDM_AUTOSTART
+# IDM_RESET_DRIVE8                        IDM_RESET_DRIVE9
+# IDM_RESET_DRIVE10                       IDM_RESET_DRIVE11
+# IDM_DETACH_TAPE                         IDM_DETACH_8
 # IDM_DETACH_9                            IDM_DETACH_10
 # IDM_DETACH_11                           IDM_TOGGLE_SOUND
 # IDM_TOGGLE_DOUBLESIZE                   IDM_TOGGLE_DOUBLESCAN
