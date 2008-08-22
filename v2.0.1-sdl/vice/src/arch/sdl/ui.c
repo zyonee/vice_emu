@@ -34,6 +34,7 @@
 #include <stdio.h>
 
 #include "color.h"
+#include "joy.h"
 #include "kbd.h"
 #include "interrupt.h"
 #include "ui.h"
@@ -65,10 +66,13 @@ void ui_dispatch_events(void)
                 sdlkbd_release(e.key.keysym.sym, e.key.keysym.mod);
                 break;
             case SDL_JOYAXISMOTION:
+                sdljoy_axis_event(e.jaxis.which, e.jaxis.axis, e.jaxis.value);
                 break;
             case SDL_JOYBUTTONDOWN:
+                sdljoy_button_event(e.jbutton.which, e.jbutton.button, 1);
                 break;
             case SDL_JOYBUTTONUP:
+                sdljoy_button_event(e.jbutton.which, e.jbutton.button, 0);
                 break;
             case SDL_ACTIVEEVENT:
                 if(e.active.state & SDL_APPACTIVE) {

@@ -2,14 +2,11 @@
  * joy.h - Joystick support for Linux.
  *
  * Written by
+ *  Hannu Nuotio <hannu.nuotio@tut.fi>
+ *
+ * Based on code by
  *  Bernhard Kuhn <kuhn@eikon.e-technik.tu-muenchen.de>
  *  Ulmer Lionel <ulmer@poly.polytechnique.fr>
- *
- * Patches by
- *  Daniel Sladic <sladic@eecg.toronto.edu>
- *
- * 1.1.xxx Linux API by
- *  Luca Montecchiani <m.luca@usa.net> (http://i.am/m.luca)
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -34,40 +31,23 @@
 #ifndef _JOY_H
 #define _JOY_H
 
+#include <SDL/SDL.h>
+
 extern int joy_arch_init(void);
 extern void joystick_close(void);
-extern void joystick(void);
-extern void old_joystick_init(void);
-extern void old_joystick_close(void);
-extern void old_joystick(void);
-extern void new_joystick_init(void);
-extern void new_joystick_close(void);
-extern void new_joystick(void);
 extern int joystick_arch_init_resources(void);
 extern int joystick_init_cmdline_options(void);
+extern void joy_arch_init_default_mapping(int joynum);
+extern void sdljoy_axis_event(Uint8 joynum, Uint8 axis, Sint16 value);
+extern void sdljoy_button_event(Uint8 joynum, Uint8 button, Uint8 value);
 
 extern int joystick_port_map[2];
-
-#ifdef HAS_USB_JOYSTICK
-extern int usb_joystick_init(void);
-extern void usb_joystick_close(void);
-extern void usb_joystick(void);
-#endif
 
 #define JOYDEV_NONE         0
 #define JOYDEV_NUMPAD       1
 #define JOYDEV_KEYSET1      2
 #define JOYDEV_KEYSET2      3
-#define JOYDEV_ANALOG_0     4
-#define JOYDEV_ANALOG_1     5
-#define JOYDEV_ANALOG_2     6
-#define JOYDEV_ANALOG_3     7
-#define JOYDEV_ANALOG_4     8
-#define JOYDEV_ANALOG_5     9
-#define JOYDEV_DIGITAL_0    10
-#define JOYDEV_DIGITAL_1    11
-#define JOYDEV_USB_0        12
-#define JOYDEV_USB_1        13
+#define JOYDEV_JOYSTICK     4
 
 #endif
 
