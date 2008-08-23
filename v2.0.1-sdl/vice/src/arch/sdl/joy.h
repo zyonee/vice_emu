@@ -38,6 +38,8 @@ extern void joystick_close(void);
 extern int joystick_arch_init_resources(void);
 extern int joystick_init_cmdline_options(void);
 extern void joy_arch_init_default_mapping(int joynum);
+extern int joy_arch_mapping_load(const char *filename);
+extern int joy_arch_mapping_dump(const char *filename);
 extern void sdljoy_axis_event(Uint8 joynum, Uint8 axis, Sint16 value);
 extern void sdljoy_button_event(Uint8 joynum, Uint8 button, Uint8 value);
 
