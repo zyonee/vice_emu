@@ -66,22 +66,22 @@ BEGIN
         MENUITEM SEPARATOR
         POPUP "Attach &cartridge image..."
         BEGIN
-            MENUITEM "&CRT image...",               IDM_CART_ATTACH_CRT
+            MENUITEM "",               IDM_CART_ATTACH_CRT
             MENUITEM SEPARATOR
-            MENUITEM "Generic &8KB image...",       IDM_CART_ATTACH_8KB
-            MENUITEM "Generic &16KB image...",      IDM_CART_ATTACH_16KB
-            MENUITEM "&Action Replay image...",     IDM_CART_ATTACH_AR
-            MENUITEM "&Action Replay 3 image...",   IDM_CART_ATTACH_AR3
-            MENUITEM "&Action Replay 4 image...",   IDM_CART_ATTACH_AR4
-            MENUITEM "&StarDOS image...",           IDM_CART_ATTACH_STARDOS
-            MENUITEM "Atomic &Power image...",      IDM_CART_ATTACH_AT
-            MENUITEM "&Epyx fastload image...",     IDM_CART_ATTACH_EPYX
-            MENUITEM "&IEEE488 interface image...", IDM_CART_ATTACH_IEEE488
-            MENUITEM "&Retro Replay image...",      IDM_CART_ATTACH_RR
-            MENUITEM "IDE&64 interface image...",   IDM_CART_ATTACH_IDE64
-            MENUITEM "Super Snapshot &4 image...",  IDM_CART_ATTACH_SS4
-            MENUITEM "Super Snapshot &5 image...",  IDM_CART_ATTACH_SS5
-            MENUITEM "Structured &Basic image...",  IDM_CART_ATTACH_STB
+            MENUITEM "",       IDM_CART_ATTACH_8KB
+            MENUITEM "",      IDM_CART_ATTACH_16KB
+            MENUITEM "",     IDM_CART_ATTACH_AR
+            MENUITEM "",   IDM_CART_ATTACH_AR3
+            MENUITEM "",   IDM_CART_ATTACH_AR4
+            MENUITEM "",           IDM_CART_ATTACH_STARDOS
+            MENUITEM "",      IDM_CART_ATTACH_AT
+            MENUITEM "",     IDM_CART_ATTACH_EPYX
+            MENUITEM "", IDM_CART_ATTACH_IEEE488
+            MENUITEM "",      IDM_CART_ATTACH_RR
+            MENUITEM "",   IDM_CART_ATTACH_IDE64
+            MENUITEM "",  IDM_CART_ATTACH_SS4
+            MENUITEM "",  IDM_CART_ATTACH_SS5
+            MENUITEM "",  IDM_CART_ATTACH_STB
             POPUP "Expert Cartridge"
             BEGIN
                 MENUITEM "Enable", IDM_CART_ENABLE_EXPERT
@@ -193,24 +193,24 @@ BEGIN
 //        MENUITEM "Fullscreen", IDM_TOGGLE_FULLSCREEN
         MENUITEM SEPARATOR
         MENUITEM "Always on Top", IDM_TOGGLE_ALWAYSONTOP
-        MENUITEM "Video &cache", IDM_TOGGLE_VIDEOCACHE, CHECKED
-        MENUITEM "&Double size", IDM_TOGGLE_DOUBLESIZE, CHECKED
-        MENUITEM "Dou&ble scan", IDM_TOGGLE_DOUBLESCAN, CHECKED
+        MENUITEM "", IDM_TOGGLE_VIDEOCACHE, CHECKED
+        MENUITEM "", IDM_TOGGLE_DOUBLESIZE, CHECKED
+        MENUITEM "", IDM_TOGGLE_DOUBLESCAN, CHECKED
         MENUITEM "PAL Emulation", IDM_TOGGLE_FASTPAL, CHECKED
         MENUITEM "Scale2x",       IDM_TOGGLE_SCALE2X, CHECKED
         POPUP "VDC settin&gs"
         BEGIN
-            MENUITEM "&Double size", IDM_TOGGLE_VDC_DOUBLESIZE
-            MENUITEM "Dou&ble scan", IDM_TOGGLE_VDC_DOUBLESCAN
+            MENUITEM "", IDM_TOGGLE_VDC_DOUBLESIZE
+            MENUITEM "", IDM_TOGGLE_VDC_DOUBLESCAN
             MENUITEM SEPARATOR
             MENUITEM "64KB video &memory", IDM_TOGGLE_VDC64KB
         END
         MENUITEM SEPARATOR
         MENUITEM "Swap &Joystick", IDM_SWAP_JOYSTICK
         MENUITEM SEPARATOR
-        MENUITEM "&Sound playback", IDM_TOGGLE_SOUND, CHECKED
+        MENUITEM "", IDM_TOGGLE_SOUND, CHECKED
         MENUITEM SEPARATOR
-        MENUITEM "&True drive emulation", IDM_TOGGLE_DRIVE_TRUE_EMULATION, CHECKED
+        MENUITEM "", IDM_TOGGLE_DRIVE_TRUE_EMULATION, CHECKED
         MENUITEM "&Virtual device traps", IDM_TOGGLE_VIRTUAL_DEVICES
         MENUITEM SEPARATOR
         POPUP "Vide&o standard"
@@ -227,7 +227,7 @@ BEGIN
     BEGIN
         MENUITEM "&Video settings...",     IDM_VIDEO_SETTINGS
         MENUITEM "&Peripheral settings...",IDM_DEVICEMANAGER
-        MENUITEM "&Drive settings...",     IDM_DRIVE_SETTINGS
+        MENUITEM "",     IDM_DRIVE_SETTINGS
         MENUITEM "D&atasette settings...", IDM_DATASETTE_SETTINGS
         MENUITEM "VIC-II settings...",     IDM_VICII_SETTINGS
         MENUITEM "&Joystick settings...",  IDM_JOY_SETTINGS
@@ -304,21 +304,6 @@ BEGIN
             MENUITEM "Re&cord",          IDM_DATASETTE_CONTROL_RECORD
             MENUITEM "R&eset",             IDM_DATASETTE_CONTROL_RESET
             MENUITEM "Z&ähler zurücksetzen", IDM_DATASETTE_RESET_COUNTER
-            MENUITEM "&CRT Image Datei...",               IDM_CART_ATTACH_CRT
-            MENUITEM "Generische 8Kb Image...",  IDM_CART_ATTACH_8KB
-            MENUITEM "Generische 16Kb Image...", IDM_CART_ATTACH_16KB
-            MENUITEM "&Action Replay Image...",     IDM_CART_ATTACH_AR
-            MENUITEM "&Action Replay 3 Image...",     IDM_CART_ATTACH_AR3
-            MENUITEM "&Action Replay 4 Image...",     IDM_CART_ATTACH_AR4
-            MENUITEM "&StarDOS Image...",       IDM_CART_ATTACH_STARDOS
-            MENUITEM "Atomic Power &Image...",      IDM_CART_ATTACH_AT
-            MENUITEM "&Epyx Fastload Image...",     IDM_CART_ATTACH_EPYX
-            MENUITEM "&IEEE 488 Schnittstellenmodul...",           IDM_CART_ATTACH_IEEE488
-            MENUITEM "&Retro Replay Image...",      IDM_CART_ATTACH_RR
-            MENUITEM "IDE&64 Schnittstellenmodul...",             IDM_CART_ATTACH_IDE64
-            MENUITEM "Super Snapshot &4 Image...",  IDM_CART_ATTACH_SS4
-            MENUITEM "Super Snapshot &5 Image...",  IDM_CART_ATTACH_SS5
-            MENUITEM "Structured &Basic Image...",  IDM_CART_ATTACH_STB
                 MENUITEM "Aktivieren", IDM_CART_ENABLE_EXPERT
                 MENUITEM "Aus", IDM_CART_MODE_OFF
                 MENUITEM "Prg", IDM_CART_MODE_PRG
@@ -373,18 +358,10 @@ BEGIN
             MENUITEM "&Benutzerdefiniert", IDM_MAXIMUM_SPEED_CUSTOM
         MENUITEM "&Warp modus", IDM_TOGGLE_WARP_MODE, CHECKED
         MENUITEM "Immer im Vordergrund", IDM_TOGGLE_ALWAYSONTOP
-        MENUITEM "Video &cache", IDM_TOGGLE_VIDEOCACHE, CHECKED
-        MENUITEM "&Doppelte Größe", IDM_TOGGLE_DOUBLESIZE, CHECKED
-        MENUITEM "Do&ppelt Scan", IDM_TOGGLE_DOUBLESCAN, CHECKED
         MENUITEM "PAL Emulation", IDM_TOGGLE_FASTPAL, CHECKED
         MENUITEM "Scale2x", IDM_TOGGLE_SCALE2X, CHECKED
-            MENUITEM "&Doppelte Größe", IDM_TOGGLE_VDC_DOUBLESIZE
-            MENUITEM "Do&ppelt Scan", IDM_TOGGLE_VDC_DOUBLESCAN
-            MENUITEM SEPARATOR
             MENUITEM "64KB Bildschirm Speicher", IDM_TOGGLE_VDC64KB
         MENUITEM "&Joystick ports austauschen", IDM_SWAP_JOYSTICK
-        MENUITEM "&Sound Einschalten", IDM_TOGGLE_SOUND, CHECKED
-        MENUITEM "&Präzise Floppy Emulation", IDM_TOGGLE_DRIVE_TRUE_EMULATION, CHECKED
         MENUITEM "&Virtuelle Geräte Traps", IDM_TOGGLE_VIRTUAL_DEVICES
             MENUITEM "&PAL-G",  IDM_SYNC_FACTOR_PAL
             MENUITEM "&NTSC-M", IDM_SYNC_FACTOR_NTSC
@@ -393,7 +370,6 @@ BEGIN
         MENUITEM "Maus Ereignisse abfan&gen",    IDM_MOUSE
         MENUITEM "&Video Einstellungen...",     IDM_VIDEO_SETTINGS
         MENUITEM "&Peripherie Einstellungen...",IDM_DEVICEMANAGER
-        MENUITEM "&Floppy Einstellungen...",     IDM_DRIVE_SETTINGS
         MENUITEM "B&andlaufwerk Einstellungen", IDM_DATASETTE_SETTINGS
         MENUITEM "VIC-II Einstellungen...",     IDM_VICII_SETTINGS
         MENUITEM "&Joystick Einstellungen...",  IDM_JOY_SETTINGS
@@ -454,21 +430,6 @@ BEGIN
             MENUITEM "Enre&gistrer",        IDM_DATASETTE_CONTROL_RECORD
             MENUITEM "Réinitialis&er",         IDM_DATASETTE_CONTROL_RESET
             MENUITEM "Réinialiser le c&ompteur", IDM_DATASETTE_RESET_COUNTER
-            MENUITEM "Nom du fichier image CRT...",                IDM_CART_ATTACH_CRT
-            MENUITEM "Insérer une image générique de 8Ko...",      IDM_CART_ATTACH_8KB
-            MENUITEM "Insérer une image générique de 16Ko...",     IDM_CART_ATTACH_16KB
-            MENUITEM "Insérer une cartouche Action Replay...",     IDM_CART_ATTACH_AR
-            MENUITEM "Insrer une cartouche Action Replay 3...",    IDM_CART_ATTACH_AR3
-            MENUITEM "Insrer une cartouche Action Replay 4...",    IDM_CART_ATTACH_AR4
-            MENUITEM "Insrer une cartouche StarDOS...",            IDM_CART_ATTACH_STARDOS
-            MENUITEM "Insérer une cartouche Atomic Power...",      IDM_CART_ATTACH_AT
-            MENUITEM "Insérer une cartouche Epyx FastLoad...",     IDM_CART_ATTACH_EPYX
-            MENUITEM "Insérer une cartouche interface IEEE488...", IDM_CART_ATTACH_IEEE488
-            MENUITEM "Insérer une cartouche Retro Replay...",      IDM_CART_ATTACH_RR
-            MENUITEM "Insérer une cartouche interface IDE64...",   IDM_CART_ATTACH_IDE64
-            MENUITEM "Insérer une cartouche Super Snapshot 4...",  IDM_CART_ATTACH_SS4
-            MENUITEM "Insérer une cartouche Super Snapshot 5...",  IDM_CART_ATTACH_SS5
-            MENUITEM "Insérer une cartouche Structured &Basic...", IDM_CART_ATTACH_STB
                 MENUITEM "Activer", IDM_CART_ENABLE_EXPERT
                 MENUITEM "Off",    IDM_CART_MODE_OFF
                 MENUITEM "Prg",    IDM_CART_MODE_PRG
@@ -523,17 +484,10 @@ BEGIN
             MENUITEM "&Personnalisé", IDM_MAXIMUM_SPEED_CUSTOM
         MENUITEM "&Mode turbo", IDM_TOGGLE_WARP_MODE, CHECKED
         MENUITEM "Toujours au dessus", IDM_TOGGLE_ALWAYSONTOP
-        MENUITEM "&Cache vidéo", IDM_TOGGLE_VIDEOCACHE, CHECKED
-        MENUITEM "&Taille double", IDM_TOGGLE_DOUBLESIZE, CHECKED
-        MENUITEM "Dou&ble scan", IDM_TOGGLE_DOUBLESCAN, CHECKED
         MENUITEM "PAL Emulation", IDM_TOGGLE_FASTPAL, CHECKED
         MENUITEM "Scale2x", IDM_TOGGLE_SCALE2X, CHECKED
-            MENUITEM "&Taille double", IDM_TOGGLE_VDC_DOUBLESIZE
-            MENUITEM "Dou&ble scan", IDM_TOGGLE_VDC_DOUBLESCAN
             MENUITEM "Mémoire d'affichage de 64Ko", IDM_TOGGLE_VDC64KB
         MENUITEM "Interchanger les joysticks", IDM_SWAP_JOYSTICK
-        MENUITEM "Lecture &audio", IDM_TOGGLE_SOUND, CHECKED
-        MENUITEM "Activer l'émulation &réelle des lecteurs", IDM_TOGGLE_DRIVE_TRUE_EMULATION, CHECKED
         MENUITEM "Activer les périphériques &virtuels", IDM_TOGGLE_VIRTUAL_DEVICES
         MENUITEM SEPARATOR
             MENUITEM "&PAL-G",  IDM_SYNC_FACTOR_PAL
@@ -543,7 +497,6 @@ BEGIN
         MENUITEM "&Grab mouse events",    IDM_MOUSE
         MENUITEM "Paramètres vidéo...",     IDM_VIDEO_SETTINGS
         MENUITEM "Paramètres des périphériques...",IDM_DEVICEMANAGER
-        MENUITEM "Paramètres des lecteurs...",     IDM_DRIVE_SETTINGS
         MENUITEM "Paramètres du datassette...", IDM_DATASETTE_SETTINGS
         MENUITEM "Paramètres VIC-II...",     IDM_VICII_SETTINGS
         MENUITEM "Paramètres des joysticks...",  IDM_JOY_SETTINGS
@@ -604,21 +557,6 @@ BEGIN
             MENUITEM "Felvétel",        IDM_DATASETTE_CONTROL_RECORD
             MENUITEM "A&laphelyzet",         IDM_DATASETTE_CONTROL_RESET
             MENUITEM "Számláló &nullázása", IDM_DATASETTE_RESET_COUNTER
-            MENUITEM "&CRT képmás...",               IDM_CART_ATTACH_CRT
-            MENUITEM "Általános &8KB képmás...",       IDM_CART_ATTACH_8KB
-            MENUITEM "Általános &16KB képmás...",      IDM_CART_ATTACH_16KB
-            MENUITEM "&Action Replay képmás...",     IDM_CART_ATTACH_AR
-            MENUITEM "&Action Replay kpms 3...",     IDM_CART_ATTACH_AR3
-            MENUITEM "&Action Replay kpms 4...",     IDM_CART_ATTACH_AR4
-            MENUITEM "&StarDOS kpms...",     IDM_CART_ATTACH_STARDOS
-            MENUITEM "Atomic &Power képmás...",      IDM_CART_ATTACH_AT
-            MENUITEM "&Epyx gyorstöltõ képmás...",     IDM_CART_ATTACH_EPYX
-            MENUITEM "&IEEE488 interfész képmás...", IDM_CART_ATTACH_IEEE488
-            MENUITEM "&Retro Replay képmás...",      IDM_CART_ATTACH_RR
-            MENUITEM "IDE&64 interfész képmás...",   IDM_CART_ATTACH_IDE64
-            MENUITEM "Super Snapshot &4 képmás...",  IDM_CART_ATTACH_SS4
-            MENUITEM "Super Snapshot &5 képmás...",  IDM_CART_ATTACH_SS5
-            MENUITEM "Structured &Basic képmás...",  IDM_CART_ATTACH_STB
                 MENUITEM "Engedélyezés", IDM_CART_ENABLE_EXPERT
                 MENUITEM "Ki",    IDM_CART_MODE_OFF
                 MENUITEM "Prg",    IDM_CART_MODE_PRG
@@ -673,17 +611,10 @@ BEGIN
             MENUITEM "&Egyéni",   IDM_MAXIMUM_SPEED_CUSTOM
         MENUITEM "&Hipergyors mód", IDM_TOGGLE_WARP_MODE, CHECKED
         MENUITEM "Mindig felül", IDM_TOGGLE_ALWAYSONTOP
-        MENUITEM "Videó gyorsítótár", IDM_TOGGLE_VIDEOCACHE, CHECKED
-        MENUITEM "&Dupla méret", IDM_TOGGLE_DOUBLESIZE, CHECKED
-        MENUITEM "Du&pla pásztázás", IDM_TOGGLE_DOUBLESCAN, CHECKED
         MENUITEM "PAL emuláció", IDM_TOGGLE_FASTPAL, CHECKED
         MENUITEM "Élsimítás",       IDM_TOGGLE_SCALE2X, CHECKED
-            MENUITEM "&Dupla méret", IDM_TOGGLE_VDC_DOUBLESIZE
-            MENUITEM "Du&pla pásztázás", IDM_TOGGLE_VDC_DOUBLESCAN
             MENUITEM "64KB képernyõ &memória", IDM_TOGGLE_VDC64KB
         MENUITEM "Botkormányok &felcserélése", IDM_SWAP_JOYSTICK
-        MENUITEM "&Hangok engedélyezése", IDM_TOGGLE_SOUND, CHECKED
-        MENUITEM "&Igazi lemezegység emuláció", IDM_TOGGLE_DRIVE_TRUE_EMULATION, CHECKED
         MENUITEM "*Virtuális eszközök ciklus kihagyása", IDM_TOGGLE_VIRTUAL_DEVICES
             MENUITEM "&PAL-G",  IDM_SYNC_FACTOR_PAL
             MENUITEM "&NTSC-M", IDM_SYNC_FACTOR_NTSC
@@ -692,7 +623,6 @@ BEGIN
         MENUITEM "Egér &események elkapása",    IDM_MOUSE
         MENUITEM "&Videó beállításai...",     IDM_VIDEO_SETTINGS
         MENUITEM "&Perifériák beállításai...",IDM_DEVICEMANAGER
-        MENUITEM "&Lemezegység beállításai...",     IDM_DRIVE_SETTINGS
         MENUITEM "M&agnó beállításai...", IDM_DATASETTE_SETTINGS
         MENUITEM "VIC-II beállításai...",     IDM_VICII_SETTINGS
         MENUITEM "B&otkormány beállításai...",  IDM_JOY_SETTINGS
@@ -765,22 +695,6 @@ BEGIN
         MENUITEM SEPARATOR
         POPUP "Seleziona l'immagine di una &cartuccia..."
         BEGIN
-            MENUITEM "Immagine &CRT...",               IDM_CART_ATTACH_CRT
-            MENUITEM SEPARATOR
-            MENUITEM "Immagine generica di &8KB...",       IDM_CART_ATTACH_8KB
-            MENUITEM "Immagine generica di &16KB...",      IDM_CART_ATTACH_16KB
-            MENUITEM "Immagine &Action Replay...",     IDM_CART_ATTACH_AR
-            MENUITEM "Immagine &Action Replay 3...",     IDM_CART_ATTACH_AR3
-            MENUITEM "Immagine &Action Replay 4...",     IDM_CART_ATTACH_AR4
-            MENUITEM "Immagine &StarDOS...",     IDM_CART_ATTACH_STARDOS
-            MENUITEM "Immagine Atomic &Power...",      IDM_CART_ATTACH_AT
-            MENUITEM "Immagine &Epyx fastload...",     IDM_CART_ATTACH_EPYX
-            MENUITEM "Immagine dell'interfaccia &IEEE488...", IDM_CART_ATTACH_IEEE488
-            MENUITEM "Immagine &Retro Replay...",      IDM_CART_ATTACH_RR
-            MENUITEM "Immagine dell'interfaccia IDE&64...",   IDM_CART_ATTACH_IDE64
-            MENUITEM "Immagine Super Snapshot &4...",  IDM_CART_ATTACH_SS4
-            MENUITEM "Immagine Super Snapshot &5...",  IDM_CART_ATTACH_SS5
-            MENUITEM "Immagine Structured &Basic...", IDM_CART_ATTACH_STB
             POPUP "Expert Cartridge"
             BEGIN
                 MENUITEM "Attivo", IDM_CART_ENABLE_EXPERT
@@ -874,24 +788,14 @@ BEGIN
 //        MENUITEM "Fullscreen", IDM_TOGGLE_FULLSCREEN
         MENUITEM SEPARATOR
         MENUITEM "Sempre in primo piano", IDM_TOGGLE_ALWAYSONTOP
-        MENUITEM "&Cache video", IDM_TOGGLE_VIDEOCACHE, CHECKED
-        MENUITEM "&Dimensione doppia", IDM_TOGGLE_DOUBLESIZE, CHECKED
-        MENUITEM "Scansione do&ppia", IDM_TOGGLE_DOUBLESCAN, CHECKED
         MENUITEM "Emulazione PAL", IDM_TOGGLE_FASTPAL, CHECKED
         MENUITEM "Scale2x",       IDM_TOGGLE_SCALE2X, CHECKED
         POPUP "Impostazio&ni del VDC"
         BEGIN
-            MENUITEM "&Dimensione doppia", IDM_TOGGLE_VDC_DOUBLESIZE
-            MENUITEM "Scansione do&ppia", IDM_TOGGLE_VDC_DOUBLESCAN
-            MENUITEM SEPARATOR
             MENUITEM "64KB di &memoria video", IDM_TOGGLE_VDC64KB
         END
         MENUITEM SEPARATOR
         MENUITEM "Scambia &joystick", IDM_SWAP_JOYSTICK
-        MENUITEM SEPARATOR
-        MENUITEM "Riproduzione del &suono", IDM_TOGGLE_SOUND, CHECKED
-        MENUITEM SEPARATOR
-        MENUITEM "Attiva l'emulazione &hardware dei drive", IDM_TOGGLE_DRIVE_TRUE_EMULATION, CHECKED
         MENUITEM "Attiva le periferiche &virtuali", IDM_TOGGLE_VIRTUAL_DEVICES
         MENUITEM SEPARATOR
         POPUP "Standard vide&o"
@@ -908,7 +812,6 @@ BEGIN
     BEGIN
         MENUITEM "Impostazioni &video...",     IDM_VIDEO_SETTINGS
         MENUITEM "Impostazioni &periferiche...",IDM_DEVICEMANAGER
-        MENUITEM "Impostazioni &drive...",     IDM_DRIVE_SETTINGS
         MENUITEM "Impostazioni r&egistratore...", IDM_DATASETTE_SETTINGS
         MENUITEM "Impostazioni VIC-II...",     IDM_VICII_SETTINGS
         MENUITEM "Impostazioni &joystick...",  IDM_JOY_SETTINGS
@@ -995,22 +898,6 @@ BEGIN
         MENUITEM SEPARATOR
         POPUP "Koppel &cartridgebestand..."
         BEGIN
-            MENUITEM "&CRT-bestand...",               IDM_CART_ATTACH_CRT
-            MENUITEM SEPARATOR
-            MENUITEM "Algemeen &8KB-bestand...",      IDM_CART_ATTACH_8KB
-            MENUITEM "Algemeen &16KB-bestand...",     IDM_CART_ATTACH_16KB
-            MENUITEM "&Action Replay-bestand...",     IDM_CART_ATTACH_AR
-            MENUITEM "&Action Replay 3 bestand...",     IDM_CART_ATTACH_AR3
-            MENUITEM "&Action Replay 4 bestand...",     IDM_CART_ATTACH_AR4
-            MENUITEM "&StarDOS-bestand...",     IDM_CART_ATTACH_STARDOS
-            MENUITEM "Atomic &Power-bestand...",      IDM_CART_ATTACH_AT
-            MENUITEM "&Epyx fastloadbestand...",     IDM_CART_ATTACH_EPYX
-            MENUITEM "&IEEE488-interfacebestand...", IDM_CART_ATTACH_IEEE488
-            MENUITEM "&Retro Replay-bestand...",      IDM_CART_ATTACH_RR
-            MENUITEM "IDE&64-interfacebestand...",   IDM_CART_ATTACH_IDE64
-            MENUITEM "Super Snapshot &4-bestand...",  IDM_CART_ATTACH_SS4
-            MENUITEM "Super Snapshot &5-bestand...",  IDM_CART_ATTACH_SS5
-            MENUITEM "Structured &Basic-bestand...",  IDM_CART_ATTACH_STB
             POPUP "Expert Cartridge"
             BEGIN
                 MENUITEM "Activeer", IDM_CART_ENABLE_EXPERT
@@ -1104,24 +991,14 @@ BEGIN
 //        MENUITEM "Fullscreen", IDM_TOGGLE_FULLSCREEN
         MENUITEM SEPARATOR
         MENUITEM "Altijd Boven", IDM_TOGGLE_ALWAYSONTOP
-        MENUITEM "Video &cache", IDM_TOGGLE_VIDEOCACHE, CHECKED
-        MENUITEM "&Dubbele grootte", IDM_TOGGLE_DOUBLESIZE, CHECKED
-        MENUITEM "Du&bbele scan", IDM_TOGGLE_DOUBLESCAN, CHECKED
         MENUITEM "PAL-emulatie", IDM_TOGGLE_FASTPAL, CHECKED
         MENUITEM "Schaal2x",       IDM_TOGGLE_SCALE2X, CHECKED
         POPUP "VDC-instellin&gen"
         BEGIN
-            MENUITEM "&Dubbele grootte", IDM_TOGGLE_VDC_DOUBLESIZE
-            MENUITEM "Du&bbele scan", IDM_TOGGLE_VDC_DOUBLESCAN
-            MENUITEM SEPARATOR
             MENUITEM "64KB video&geheugen", IDM_TOGGLE_VDC64KB
         END
         MENUITEM SEPARATOR
         MENUITEM "Verwissel &Joysticks", IDM_SWAP_JOYSTICK
-        MENUITEM SEPARATOR
-        MENUITEM "Geluid&suitvoer", IDM_TOGGLE_SOUND, CHECKED
-        MENUITEM SEPARATOR
-        MENUITEM "&Hardwarematige driveemulatie", IDM_TOGGLE_DRIVE_TRUE_EMULATION, CHECKED
         MENUITEM "&Virtuele apparaattraps", IDM_TOGGLE_VIRTUAL_DEVICES
         MENUITEM SEPARATOR
         POPUP "Vide&ostandaard"
@@ -1138,7 +1015,6 @@ BEGIN
     BEGIN
         MENUITEM "&Videoinstellingen...",     IDM_VIDEO_SETTINGS
         MENUITEM "Randa&pparateninstellingen...",IDM_DEVICEMANAGER
-        MENUITEM "&Drive-instellingen...",     IDM_DRIVE_SETTINGS
         MENUITEM "D&atasette-instellingen...", IDM_DATASETTE_SETTINGS
         MENUITEM "VIC-II-instellingen...",     IDM_VICII_SETTINGS
         MENUITEM "&Joystick-instellingen...",  IDM_JOY_SETTINGS
@@ -1226,22 +1102,6 @@ BEGIN
         MENUITEM SEPARATOR
         POPUP "W³ó¿ obraz &kartrid¿a..."
         BEGIN
-            MENUITEM "Obrazu &kartrid¿a...",         IDM_CART_ATTACH_CRT
-            MENUITEM SEPARATOR
-            MENUITEM "Standardowy obraz &8KB...",    IDM_CART_ATTACH_8KB
-            MENUITEM "Standardowy obraz &16KB...",   IDM_CART_ATTACH_16KB
-            MENUITEM "Obraz &Action Replay...",      IDM_CART_ATTACH_AR
-            MENUITEM "Obraz &Action Replay 3...",      IDM_CART_ATTACH_AR3
-            MENUITEM "Obraz &Action Replay 4...",      IDM_CART_ATTACH_AR4
-            MENUITEM "Obraz &StarDOS...",      IDM_CART_ATTACH_STARDOS
-            MENUITEM "Obraz Atomic &Power...",       IDM_CART_ATTACH_AT
-            MENUITEM "Obraz &Epyx fastload...",      IDM_CART_ATTACH_EPYX
-            MENUITEM "Obraz interfejsu &IEEE488...", IDM_CART_ATTACH_IEEE488
-            MENUITEM "Obraz &Retro Replay...",       IDM_CART_ATTACH_RR
-            MENUITEM "Obraz interfejsu IDE&64...",   IDM_CART_ATTACH_IDE64
-            MENUITEM "Obraz Super Snapshot &4...",   IDM_CART_ATTACH_SS4
-            MENUITEM "Obraz Super Snapshot &5...",   IDM_CART_ATTACH_SS5
-            MENUITEM "Obraz Structured &Basic...",   IDM_CART_ATTACH_STB
             POPUP "Expert Cartridge"
             BEGIN
                 MENUITEM "W³±cz", IDM_CART_ENABLE_EXPERT
@@ -1335,24 +1195,14 @@ BEGIN
 //        MENUITEM "Fullscreen", IDM_TOGGLE_FULLSCREEN
         MENUITEM SEPARATOR
         MENUITEM "Always on Top", IDM_TOGGLE_ALWAYSONTOP
-        MENUITEM "&Cache video", IDM_TOGGLE_VIDEOCACHE, CHECKED
-        MENUITEM "Po&dwójny rozmiar", IDM_TOGGLE_DOUBLESIZE, CHECKED
-        MENUITEM "Podwój&ne scanlines", IDM_TOGGLE_DOUBLESCAN, CHECKED
         MENUITEM "Emulacjê PAL", IDM_TOGGLE_FASTPAL, CHECKED
         MENUITEM "Skala:x2",       IDM_TOGGLE_SCALE2X, CHECKED
         POPUP "Us&tawienia VDC"
         BEGIN
-            MENUITEM "Po&dwójny rozmiar", IDM_TOGGLE_VDC_DOUBLESIZE
-            MENUITEM "Podwój&ne scanlines", IDM_TOGGLE_VDC_DOUBLESCAN
-            MENUITEM SEPARATOR
             MENUITEM "Wy¶wietl pa&miêæ 64KB", IDM_TOGGLE_VDC64KB
         END
         MENUITEM SEPARATOR
         MENUITEM "Zamieñ por&ty (1/2)", IDM_SWAP_JOYSTICK
-        MENUITEM SEPARATOR
-        MENUITEM "d¼wiê&k", IDM_TOGGLE_SOUND, CHECKED
-        MENUITEM SEPARATOR
-        MENUITEM "rzeczywist± emulac&jê napêdu", IDM_TOGGLE_DRIVE_TRUE_EMULATION, CHECKED
         MENUITEM "&Virtual device traps", IDM_TOGGLE_VIRTUAL_DEVICES
         MENUITEM SEPARATOR
         POPUP "Standard vide&o"
@@ -1369,7 +1219,6 @@ BEGIN
     BEGIN
         MENUITEM "Ustawienia &video...",     IDM_VIDEO_SETTINGS
         MENUITEM "Ustawienia &zewnêtrzne...",IDM_DEVICEMANAGER
-        MENUITEM "Ustawienia napê&du...",     IDM_DRIVE_SETTINGS
         MENUITEM "Ustawienia d&atasette...", IDM_DATASETTE_SETTINGS
         MENUITEM "Ustawienia VIC-II...",     IDM_VICII_SETTINGS
         MENUITEM "Ustawienia &joystcka...",  IDM_JOY_SETTINGS
@@ -1457,22 +1306,6 @@ BEGIN
         MENUITEM SEPARATOR
         POPUP "Anslut &insticksmodulavbild..."
         BEGIN
-            MENUITEM "&CRT-fil...",                IDM_CART_ATTACH_CRT
-            MENUITEM SEPARATOR
-            MENUITEM "Vanlig &8KB-fil...",         IDM_CART_ATTACH_8KB
-            MENUITEM "Vanlig &16KB-fil...",        IDM_CART_ATTACH_16KB
-            MENUITEM "&Action Replay-fil...",      IDM_CART_ATTACH_AR
-            MENUITEM "&Action Replay 3-fil...",      IDM_CART_ATTACH_AR3
-            MENUITEM "&Action Replay 4-fil...",      IDM_CART_ATTACH_AR4
-            MENUITEM "&StarDOS-fil...",      IDM_CART_ATTACH_STARDOS
-            MENUITEM "Atomic &Power-fil...",       IDM_CART_ATTACH_AT
-            MENUITEM "&Epyx fastload-fil...",      IDM_CART_ATTACH_EPYX
-            MENUITEM "&IEEE488-gränssnittsfil...", IDM_CART_ATTACH_IEEE488
-            MENUITEM "&Retro Replay-fil...",       IDM_CART_ATTACH_RR
-            MENUITEM "IDE&64-gränssnittsfil...",   IDM_CART_ATTACH_IDE64
-            MENUITEM "Super Snapshot &4-fil...",   IDM_CART_ATTACH_SS4
-            MENUITEM "Super Snapshot &5-fil...",   IDM_CART_ATTACH_SS5
-            MENUITEM "Anslut &Basicavbildning...",   IDM_CART_ATTACH_STB
             POPUP "Expert Cartridge"
             BEGIN
                 MENUITEM "Aktivera", IDM_CART_ENABLE_EXPERT
@@ -1562,27 +1395,14 @@ BEGIN
             MENUITEM "&Egen", IDM_MAXIMUM_SPEED_CUSTOM
         END
         MENUITEM "&Warpläge", IDM_TOGGLE_WARP_MODE, CHECKED
-//        MENUITEM SEPARATOR
-//        MENUITEM "Fullscreen", IDM_TOGGLE_FULLSCREEN
-        MENUITEM SEPARATOR
-        MENUITEM "Grafik&cache", IDM_TOGGLE_VIDEOCACHE, CHECKED
-        MENUITEM "&Dubbel storlek", IDM_TOGGLE_DOUBLESIZE, CHECKED
-        MENUITEM "Du&bbelskanning", IDM_TOGGLE_DOUBLESCAN, CHECKED
         MENUITEM "PAL-emulering", IDM_TOGGLE_FASTPAL, CHECKED
         MENUITEM "Scale2x",       IDM_TOGGLE_SCALE2X, CHECKED
         POPUP "&VDC-inställningar"
         BEGIN
-            MENUITEM "&Dubbel storlek", IDM_TOGGLE_VDC_DOUBLESIZE
-            MENUITEM "Du&bbelskanning", IDM_TOGGLE_VDC_DOUBLESCAN
-            MENUITEM SEPARATOR
             MENUITEM "64KB grafik&minne", IDM_TOGGLE_VDC64KB
         END
         MENUITEM SEPARATOR
         MENUITEM "Växla &spelportarna", IDM_SWAP_JOYSTICK
-        MENUITEM SEPARATOR
-        MENUITEM "Aktivera &ljudåtergivning", IDM_TOGGLE_SOUND, CHECKED
-        MENUITEM SEPARATOR
-        MENUITEM "&Äkta diskettenhetsemulering", IDM_TOGGLE_DRIVE_TRUE_EMULATION, CHECKED
         MENUITEM "&Virtuella enhetstrap:ar", IDM_TOGGLE_VIRTUAL_DEVICES
         MENUITEM SEPARATOR
         POPUP "&TV-standard"
@@ -1599,7 +1419,6 @@ BEGIN
     BEGIN
         MENUITEM "&Grafikinställningar...",     IDM_VIDEO_SETTINGS
         MENUITEM "Inställningar för &kringutrustning...",IDM_DEVICEMANAGER
-        MENUITEM "&Diskettenhetsinställningar...",     IDM_DRIVE_SETTINGS
         MENUITEM "D&atasetteinställningar...", IDM_DATASETTE_SETTINGS
         MENUITEM "VIC-II-inställningar...",     IDM_VICII_SETTINGS
         MENUITEM "Inställningar för &styrspak...",  IDM_JOY_SETTINGS

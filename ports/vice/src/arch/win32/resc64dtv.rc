@@ -42,9 +42,9 @@ BEGIN
         END
         POPUP "DTV flash &rom image"
         BEGIN
-            MENUITEM "Attach &flash rom image", IDM_ATTACH_DTV_FLASH
-            MENUITEM "&Detach flash rom image", IDM_DETACH_DTV_FLASH
-            MENUITEM "&Create new flash rom image", IDM_CREATE_DTV_FLASH
+            MENUITEM "", IDM_ATTACH_DTV_FLASH
+            MENUITEM "", IDM_DETACH_DTV_FLASH
+            MENUITEM "", IDM_CREATE_DTV_FLASH
         END
         POPUP "&Flip list"
         BEGIN
@@ -155,18 +155,18 @@ BEGIN
         MENUITEM "Fullscreen", IDM_TOGGLE_FULLSCREEN
         MENUITEM "Always on Top", IDM_TOGGLE_ALWAYSONTOP
         MENUITEM SEPARATOR
-        MENUITEM "Video &cache", IDM_TOGGLE_VIDEOCACHE, CHECKED
-        MENUITEM "&Double size", IDM_TOGGLE_DOUBLESIZE, CHECKED
-        MENUITEM "Dou&ble scan", IDM_TOGGLE_DOUBLESCAN, CHECKED
+        MENUITEM "", IDM_TOGGLE_VIDEOCACHE, CHECKED
+        MENUITEM "", IDM_TOGGLE_DOUBLESIZE, CHECKED
+        MENUITEM "", IDM_TOGGLE_DOUBLESCAN, CHECKED
         MENUITEM "PAL Emulation", IDM_TOGGLE_FASTPAL, CHECKED
         MENUITEM "Scale2x", IDM_TOGGLE_SCALE2X, CHECKED
         MENUITEM SEPARATOR
         MENUITEM "Swap &Joystick", IDM_SWAP_JOYSTICK
         MENUITEM SEPARATOR
-        MENUITEM "&Sound playback", IDM_TOGGLE_SOUND, CHECKED
+        MENUITEM "", IDM_TOGGLE_SOUND, CHECKED
         MENUITEM SEPARATOR
-        MENUITEM "&True drive emulation", IDM_TOGGLE_DRIVE_TRUE_EMULATION, CHECKED
-        MENUITEM "&True flash filesystem", IDM_TOGGLE_FLASH_TRUE_FILESYSTEM, CHECKED
+        MENUITEM "", IDM_TOGGLE_DRIVE_TRUE_EMULATION, CHECKED
+        MENUITEM "", IDM_TOGGLE_FLASH_TRUE_FILESYSTEM, CHECKED
         MENUITEM "&Virtual device traps", IDM_TOGGLE_VIRTUAL_DEVICES
         MENUITEM SEPARATOR
         POPUP "Vide&o standard"
@@ -183,7 +183,7 @@ BEGIN
     BEGIN
         MENUITEM "&Video settings...",     IDM_VIDEO_SETTINGS
         MENUITEM "&Peripheral settings...",IDM_DEVICEMANAGER
-        MENUITEM "&Drive settings...",     IDM_DRIVE_SETTINGS
+        MENUITEM "",     IDM_DRIVE_SETTINGS
         MENUITEM "VIC-II settings...",     IDM_VICII_SETTINGS
         MENUITEM "&Joystick settings...",  IDM_JOY_SETTINGS
         MENUITEM "&Keyboard settings...",  IDM_KEYBOARD_SETTINGS
@@ -321,19 +321,10 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "Vollbild", IDM_TOGGLE_FULLSCREEN
         MENUITEM "Immer im Vordergrund", IDM_TOGGLE_ALWAYSONTOP
-        MENUITEM SEPARATOR
-        MENUITEM "Video &cache", IDM_TOGGLE_VIDEOCACHE, CHECKED
-        MENUITEM "&Doppelte Größe", IDM_TOGGLE_DOUBLESIZE, CHECKED
-        MENUITEM "Do&ppelt Scan", IDM_TOGGLE_DOUBLESCAN, CHECKED
         MENUITEM "PAL Emulation", IDM_TOGGLE_FASTPAL, CHECKED
         MENUITEM "Scale2x", IDM_TOGGLE_SCALE2X, CHECKED
         MENUITEM SEPARATOR
         MENUITEM "&Joystick ports austauschen", IDM_SWAP_JOYSTICK
-        MENUITEM SEPARATOR
-        MENUITEM "&Sound Einschalten", IDM_TOGGLE_SOUND, CHECKED
-        MENUITEM SEPARATOR
-        MENUITEM "&Präzise Floppy Emulation", IDM_TOGGLE_DRIVE_TRUE_EMULATION, CHECKED
-        MENUITEM "&True flash filesystem", IDM_TOGGLE_FLASH_TRUE_FILESYSTEM, CHECKED
         MENUITEM "&Virtuelle Geräte Traps", IDM_TOGGLE_VIRTUAL_DEVICES
         MENUITEM SEPARATOR
         POPUP "Vide&o standard"
@@ -350,7 +341,6 @@ BEGIN
     BEGIN
         MENUITEM "&Video Einstellungen...",     IDM_VIDEO_SETTINGS
         MENUITEM "&Peripherie Einstellungen...",IDM_DEVICEMANAGER
-        MENUITEM "&Floppy Einstellungen...",     IDM_DRIVE_SETTINGS
         MENUITEM "VIC-II Einstellungen...",     IDM_VICII_SETTINGS
         MENUITEM "&Joystick Einstellungen...",  IDM_JOY_SETTINGS
         MENUITEM "&Tastatur Einstellungen...",  IDM_KEYBOARD_SETTINGS
@@ -484,19 +474,10 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "Périphérique plein écran", IDM_TOGGLE_FULLSCREEN
         MENUITEM "Toujours au dessus", IDM_TOGGLE_ALWAYSONTOP
-        MENUITEM SEPARATOR
-        MENUITEM "&Cache vidéo", IDM_TOGGLE_VIDEOCACHE, CHECKED
-        MENUITEM "&Taille double", IDM_TOGGLE_DOUBLESIZE, CHECKED
-        MENUITEM "Dou&ble scan", IDM_TOGGLE_DOUBLESCAN, CHECKED
         MENUITEM "Émulation PAL", IDM_TOGGLE_FASTPAL, CHECKED
         MENUITEM "Scale2x", IDM_TOGGLE_SCALE2X, CHECKED
         MENUITEM SEPARATOR
         MENUITEM "Interchanger les joysticks", IDM_SWAP_JOYSTICK
-        MENUITEM SEPARATOR
-        MENUITEM "Lecture &audio", IDM_TOGGLE_SOUND, CHECKED
-        MENUITEM SEPARATOR
-        MENUITEM "Activer l'émulation &réelle des lecteurs", IDM_TOGGLE_DRIVE_TRUE_EMULATION, CHECKED
-        MENUITEM "&True flash filesystem", IDM_TOGGLE_FLASH_TRUE_FILESYSTEM, CHECKED
         MENUITEM "Activer les périphériques &virtuels", IDM_TOGGLE_VIRTUAL_DEVICES
         MENUITEM SEPARATOR
         POPUP "Standar&d vidéo"
@@ -513,7 +494,6 @@ BEGIN
     BEGIN
         MENUITEM "Paramètres vidéo...",     IDM_VIDEO_SETTINGS
         MENUITEM "Paramètres des périphériques...",IDM_DEVICEMANAGER
-        MENUITEM "Paramètres des lecteurs...",     IDM_DRIVE_SETTINGS
         MENUITEM "Paramètres VIC-II...",     IDM_VICII_SETTINGS
         MENUITEM "Paramètres des joysticks...",  IDM_JOY_SETTINGS
         MENUITEM "Paramètres du clavier...",  IDM_KEYBOARD_SETTINGS
@@ -648,19 +628,10 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "Teljes képernyõ", IDM_TOGGLE_FULLSCREEN
         MENUITEM "Mindig felül", IDM_TOGGLE_ALWAYSONTOP
-        MENUITEM SEPARATOR
-        MENUITEM "Videó gyorsítótár", IDM_TOGGLE_VIDEOCACHE, CHECKED
-        MENUITEM "&Dupla méret", IDM_TOGGLE_DOUBLESIZE, CHECKED
-        MENUITEM "Du&pla pásztázás", IDM_TOGGLE_DOUBLESCAN, CHECKED
         MENUITEM "PAL emuláció", IDM_TOGGLE_FASTPAL, CHECKED
         MENUITEM "Élsimítás", IDM_TOGGLE_SCALE2X, CHECKED
         MENUITEM SEPARATOR
         MENUITEM "Botkormányok &felcserélése", IDM_SWAP_JOYSTICK
-        MENUITEM SEPARATOR
-        MENUITEM "&Hangok engedélyezése", IDM_TOGGLE_SOUND, CHECKED
-        MENUITEM SEPARATOR
-        MENUITEM "&Igazi lemezegység emuláció", IDM_TOGGLE_DRIVE_TRUE_EMULATION, CHECKED
-        MENUITEM "&True flash filesystem", IDM_TOGGLE_FLASH_TRUE_FILESYSTEM, CHECKED
         MENUITEM "*Virtuális eszközök ciklus kihagyása", IDM_TOGGLE_VIRTUAL_DEVICES
         MENUITEM SEPARATOR
         POPUP "Videó &szabvány"
@@ -677,7 +648,6 @@ BEGIN
     BEGIN
         MENUITEM "&Videó beállításai...",     IDM_VIDEO_SETTINGS
         MENUITEM "&Perifériák beállításai...",IDM_DEVICEMANAGER
-        MENUITEM "&Lemezegység beállításai...",     IDM_DRIVE_SETTINGS
         MENUITEM "VIC-II beállításai...",     IDM_VICII_SETTINGS
         MENUITEM "B&otkormány beállításai...",  IDM_JOY_SETTINGS
         MENUITEM "&Billentyûzet beállításai...",  IDM_KEYBOARD_SETTINGS
@@ -812,19 +782,10 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "A tutto schermo", IDM_TOGGLE_FULLSCREEN
         MENUITEM "Sempre in primo piano", IDM_TOGGLE_ALWAYSONTOP
-        MENUITEM SEPARATOR
-        MENUITEM "&Cache video", IDM_TOGGLE_VIDEOCACHE, CHECKED
-        MENUITEM "&Dimensione doppia", IDM_TOGGLE_DOUBLESIZE, CHECKED
-        MENUITEM "Scansione do&ppia", IDM_TOGGLE_DOUBLESCAN, CHECKED
         MENUITEM "Emulazione PAL", IDM_TOGGLE_FASTPAL, CHECKED
         MENUITEM "Scale2x", IDM_TOGGLE_SCALE2X, CHECKED
         MENUITEM SEPARATOR
         MENUITEM "Scambia &joystick", IDM_SWAP_JOYSTICK
-        MENUITEM SEPARATOR
-        MENUITEM "Riproduzione del &suono", IDM_TOGGLE_SOUND, CHECKED
-        MENUITEM SEPARATOR
-        MENUITEM "Attiva l'emulazione &hardware dei drive", IDM_TOGGLE_DRIVE_TRUE_EMULATION, CHECKED
-        MENUITEM "&True flash filesystem", IDM_TOGGLE_FLASH_TRUE_FILESYSTEM, CHECKED
         MENUITEM "Attiva le periferiche &virtuali", IDM_TOGGLE_VIRTUAL_DEVICES
         MENUITEM SEPARATOR
         POPUP "Standard vide&o"
@@ -841,7 +802,6 @@ BEGIN
     BEGIN
         MENUITEM "Impostazioni &video...",     IDM_VIDEO_SETTINGS
         MENUITEM "Impostazioni &periferiche...",IDM_DEVICEMANAGER
-        MENUITEM "Impostazioni &drive...",     IDM_DRIVE_SETTINGS
         MENUITEM "Impostazioni VIC-II...",     IDM_VICII_SETTINGS
         MENUITEM "Impostazioni &joystick...",  IDM_JOY_SETTINGS
         MENUITEM "Impostazioni &tastiera...",  IDM_KEYBOARD_SETTINGS
@@ -975,19 +935,10 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "Volscherm", IDM_TOGGLE_FULLSCREEN
         MENUITEM "Altijd Boven", IDM_TOGGLE_ALWAYSONTOP
-        MENUITEM SEPARATOR
-        MENUITEM "Video &cache", IDM_TOGGLE_VIDEOCACHE, CHECKED
-        MENUITEM "&Dubbele grootte", IDM_TOGGLE_DOUBLESIZE, CHECKED
-        MENUITEM "Du&bbele scan", IDM_TOGGLE_DOUBLESCAN, CHECKED
         MENUITEM "PAL-emulatie", IDM_TOGGLE_FASTPAL, CHECKED
         MENUITEM "Schaal2x", IDM_TOGGLE_SCALE2X, CHECKED
         MENUITEM SEPARATOR
         MENUITEM "Verwissel &Joysticks", IDM_SWAP_JOYSTICK
-        MENUITEM SEPARATOR
-        MENUITEM "Geluid&suitvoer", IDM_TOGGLE_SOUND, CHECKED
-        MENUITEM SEPARATOR
-        MENUITEM "&Hardwarematige driveemulatie", IDM_TOGGLE_DRIVE_TRUE_EMULATION, CHECKED
-        MENUITEM "&True flash filesystem", IDM_TOGGLE_FLASH_TRUE_FILESYSTEM, CHECKED
         MENUITEM "&Virtuele apparaattraps", IDM_TOGGLE_VIRTUAL_DEVICES
         MENUITEM SEPARATOR
         POPUP "Vide&ostandaard"
@@ -1004,7 +955,6 @@ BEGIN
     BEGIN
         MENUITEM "&Videoinstellingen...",     IDM_VIDEO_SETTINGS
         MENUITEM "Randa&pparateninstellingen...",IDM_DEVICEMANAGER
-        MENUITEM "&Drive-instellingen...",     IDM_DRIVE_SETTINGS
         MENUITEM "VIC-II-instellingen...",     IDM_VICII_SETTINGS
         MENUITEM "&Joystick-instellingen...",  IDM_JOY_SETTINGS
         MENUITEM "&Toetsenbord-instellingen...",  IDM_KEYBOARD_SETTINGS
@@ -1139,19 +1089,10 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "Pe³ny ekran", IDM_TOGGLE_FULLSCREEN
         MENUITEM "Always on Top", IDM_TOGGLE_ALWAYSONTOP
-        MENUITEM SEPARATOR
-        MENUITEM "&Cache video", IDM_TOGGLE_VIDEOCACHE, CHECKED
-        MENUITEM "Po&dwójny rozmiar", IDM_TOGGLE_DOUBLESIZE, CHECKED
-        MENUITEM "Podwój&ne scanlines", IDM_TOGGLE_DOUBLESCAN, CHECKED
         MENUITEM "Emulacjê PAL", IDM_TOGGLE_FASTPAL, CHECKED
         MENUITEM "Skala:x2", IDM_TOGGLE_SCALE2X, CHECKED
         MENUITEM SEPARATOR
         MENUITEM "Zamieñ por&ty (1/2)", IDM_SWAP_JOYSTICK
-        MENUITEM SEPARATOR
-        MENUITEM "d¼wiê&k", IDM_TOGGLE_SOUND, CHECKED
-        MENUITEM SEPARATOR
-        MENUITEM "rzeczywist± emulac&jê napêdu", IDM_TOGGLE_DRIVE_TRUE_EMULATION, CHECKED
-        MENUITEM "&True flash filesystem", IDM_TOGGLE_FLASH_TRUE_FILESYSTEM, CHECKED
         MENUITEM "&Virtual device traps", IDM_TOGGLE_VIRTUAL_DEVICES
         MENUITEM SEPARATOR
         POPUP "Standard vide&o"
@@ -1168,7 +1109,6 @@ BEGIN
     BEGIN
         MENUITEM "Ustawienia &video...",     IDM_VIDEO_SETTINGS
         MENUITEM "Ustawienia &zewnêtrzne...",IDM_DEVICEMANAGER
-        MENUITEM "Ustawienia napê&du...",     IDM_DRIVE_SETTINGS
         MENUITEM "Ustawienia VIC-II...",     IDM_VICII_SETTINGS
         MENUITEM "Ustawienia &joystcka...",  IDM_JOY_SETTINGS
         MENUITEM "Ustawienia &klawiatury...",  IDM_KEYBOARD_SETTINGS
@@ -1303,19 +1243,10 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "Fullskärm", IDM_TOGGLE_FULLSCREEN
         MENUITEM "Alltid överst", IDM_TOGGLE_ALWAYSONTOP
-        MENUITEM SEPARATOR
-        MENUITEM "Grafik&cache", IDM_TOGGLE_VIDEOCACHE, CHECKED
-        MENUITEM "&Dubbel storlek", IDM_TOGGLE_DOUBLESIZE, CHECKED
-        MENUITEM "Du&bbelskanning", IDM_TOGGLE_DOUBLESCAN, CHECKED
         MENUITEM "PAL-emulering", IDM_TOGGLE_FASTPAL, CHECKED
         MENUITEM "Scale2x", IDM_TOGGLE_SCALE2X, CHECKED
         MENUITEM SEPARATOR
         MENUITEM "Växla &spelportarna", IDM_SWAP_JOYSTICK
-        MENUITEM SEPARATOR
-        MENUITEM "Aktivera &ljudåtergivning", IDM_TOGGLE_SOUND, CHECKED
-        MENUITEM SEPARATOR
-        MENUITEM "&Äkta diskettenhetsemulering", IDM_TOGGLE_DRIVE_TRUE_EMULATION, CHECKED
-        MENUITEM "&Äkta flash-filsystem", IDM_TOGGLE_FLASH_TRUE_FILESYSTEM, CHECKED
         MENUITEM "&Virtuella enhetstrap:ar", IDM_TOGGLE_VIRTUAL_DEVICES
         MENUITEM SEPARATOR
         POPUP "&TV-standard"
@@ -1332,7 +1263,6 @@ BEGIN
     BEGIN
         MENUITEM "&Grafikinställningar...",     IDM_VIDEO_SETTINGS
         MENUITEM "Inställningar för &kringutrustning...",IDM_DEVICEMANAGER
-        MENUITEM "&Diskettenhetsinställningar...",     IDM_DRIVE_SETTINGS
         MENUITEM "VIC-II-inställningar...",     IDM_VICII_SETTINGS
         MENUITEM "Inställningar för &styrspak...",  IDM_JOY_SETTINGS
         MENUITEM "&Tangentbordsinställningar...",  IDM_KEYBOARD_SETTINGS
@@ -2952,8 +2882,12 @@ END
 STRINGTABLE
 LANGUAGE LANG_ENGLISH, SUBLANG_NEUTRAL
 BEGIN
-    IDS_MP_DTV_FLASH_ROM_IMAGE   "DTV flash &rom image"
-    IDS_MI_AUTOSTART_DISK        "&Autostart disk image..."
+    IDS_MP_DTV_FLASH_ROM_IMAGE     "DTV flash &rom image"
+    IDS_MI_AUTOSTART_DISK          "&Autostart disk image..."
+    IDS_MI_ATTACH_DTV_FLASH        "Attach &flash rom image"
+    IDS_MI_DETACH_DTV_FLASH        "&Detach flash rom image"
+    IDS_MI_CREATE_DTV_FLASH        "&Create new flash rom image"
+    IDS_MI_FLASH_TRUE_FILESYSTEM   "&True flash filesystem"
 END
 
 // GERMAN text
@@ -2961,8 +2895,12 @@ END
 STRINGTABLE
 LANGUAGE LANG_GERMAN, SUBLANG_NEUTRAL
 BEGIN
-    IDS_MP_DTV_FLASH_ROM_IMAGE   "DTV flash &rom image"
-    IDS_MI_AUTOSTART_DISK        "&Autostart Disk Image..."
+    IDS_MP_DTV_FLASH_ROM_IMAGE     "DTV flash &rom image"
+    IDS_MI_AUTOSTART_DISK          "&Autostart Disk Image..."
+    IDS_MI_ATTACH_DTV_FLASH        "Attach &flash rom image"
+    IDS_MI_DETACH_DTV_FLASH        "&Detach flash rom image"
+    IDS_MI_CREATE_DTV_FLASH        "&Create new flash rom image"
+    IDS_MI_FLASH_TRUE_FILESYSTEM   "&True flash filesystem"
 END
 
 // FRENCH text
@@ -2970,8 +2908,12 @@ END
 STRINGTABLE
 LANGUAGE LANG_FRENCH, SUBLANG_NEUTRAL
 BEGIN
-    IDS_MP_DTV_FLASH_ROM_IMAGE   "DTV flash &rom image"
-    IDS_MI_AUTOSTART_DISK        "Démarrage &automatique d'une image lecteur..."
+    IDS_MP_DTV_FLASH_ROM_IMAGE     "DTV flash &rom image"
+    IDS_MI_AUTOSTART_DISK          "Démarrage &automatique d'une image lecteur..."
+    IDS_MI_ATTACH_DTV_FLASH        "Attach &flash rom image"
+    IDS_MI_DETACH_DTV_FLASH        "&Detach flash rom image"
+    IDS_MI_CREATE_DTV_FLASH        "&Create new flash rom image"
+    IDS_MI_FLASH_TRUE_FILESYSTEM   "&True flash filesystem"
 END
 
 
@@ -2981,8 +2923,12 @@ END
 STRINGTABLE
 LANGUAGE LANG_HUNGARIAN, SUBLANG_NEUTRAL
 BEGIN
-    IDS_MP_DTV_FLASH_ROM_IMAGE   "DTV flash &rom image"
-    IDS_MI_AUTOSTART_DISK        "Lemez/szalag képmás &automatikus indítása..."
+    IDS_MP_DTV_FLASH_ROM_IMAGE     "DTV flash &rom image"
+    IDS_MI_AUTOSTART_DISK          "Lemez/szalag képmás &automatikus indítása..."
+    IDS_MI_ATTACH_DTV_FLASH        "Attach &flash rom image"
+    IDS_MI_DETACH_DTV_FLASH        "&Detach flash rom image"
+    IDS_MI_CREATE_DTV_FLASH        "&Create new flash rom image"
+    IDS_MI_FLASH_TRUE_FILESYSTEM   "&True flash filesystem"
 END
 #pragma code_page(28591)
 
@@ -2992,8 +2938,12 @@ END
 STRINGTABLE
 LANGUAGE LANG_ITALIAN, SUBLANG_NEUTRAL
 BEGIN
-    IDS_MP_DTV_FLASH_ROM_IMAGE   "DTV flash &rom image"
-    IDS_MI_AUTOSTART_DISK        "&Avvia automaticamente l'immagine di un disco..."
+    IDS_MP_DTV_FLASH_ROM_IMAGE     "DTV flash &rom image"
+    IDS_MI_AUTOSTART_DISK          "&Avvia automaticamente l'immagine di un disco..."
+    IDS_MI_ATTACH_DTV_FLASH        "Attach &flash rom image"
+    IDS_MI_DETACH_DTV_FLASH        "&Detach flash rom image"
+    IDS_MI_CREATE_DTV_FLASH        "&Create new flash rom image"
+    IDS_MI_FLASH_TRUE_FILESYSTEM   "&True flash filesystem"
 END
 
 // DUTCH text
@@ -3001,8 +2951,12 @@ END
 STRINGTABLE
 LANGUAGE LANG_DUTCH, SUBLANG_NEUTRAL
 BEGIN
-    IDS_MP_DTV_FLASH_ROM_IMAGE   "DTV flash &rom bestand"
-    IDS_MI_AUTOSTART_DISK        "&Autostart diskbestand..."
+    IDS_MP_DTV_FLASH_ROM_IMAGE     "DTV flash &rom bestand"
+    IDS_MI_AUTOSTART_DISK          "&Autostart diskbestand..."
+    IDS_MI_ATTACH_DTV_FLASH        "Koppel &flash rom bestand"
+    IDS_MI_DETACH_DTV_FLASH        "&Ontkoppel flash rom bestand"
+    IDS_MI_CREATE_DTV_FLASH        "&Maak nieuw flash rom bestand"
+    IDS_MI_FLASH_TRUE_FILESYSTEM   "&Hardwarematig flash bestandssysteem"
 END
 
 // POLISH text
@@ -3011,8 +2965,12 @@ END
 STRINGTABLE
 LANGUAGE LANG_POLISH, SUBLANG_NEUTRAL
 BEGIN
-    IDS_MP_DTV_FLASH_ROM_IMAGE   "DTV flash &rom image"
-    IDS_MI_AUTOSTART_DISK        "&Autostart disk image..."
+    IDS_MP_DTV_FLASH_ROM_IMAGE     "DTV flash &rom image"
+    IDS_MI_AUTOSTART_DISK          "&Autostart disk image..."
+    IDS_MI_ATTACH_DTV_FLASH        "Attach &flash rom image"
+    IDS_MI_DETACH_DTV_FLASH        "&Detach flash rom image"
+    IDS_MI_CREATE_DTV_FLASH        "&Create new flash rom image"
+    IDS_MI_FLASH_TRUE_FILESYSTEM   "&True flash filesystem"
 END
 #pragma code_page(28591)
 
@@ -3021,6 +2979,10 @@ END
 STRINGTABLE
 LANGUAGE LANG_SWEDISH, SUBLANG_NEUTRAL
 BEGIN
-    IDS_MP_DTV_FLASH_ROM_IMAGE   "DTV flash &rom image"
-    IDS_MI_AUTOSTART_DISK        "&Autostarta diskavbildningsfil..."
+    IDS_MP_DTV_FLASH_ROM_IMAGE     "DTV flash &rom image"
+    IDS_MI_AUTOSTART_DISK          "&Autostarta diskavbildningsfil..."
+    IDS_MI_ATTACH_DTV_FLASH        "Attach &flash rom image"
+    IDS_MI_DETACH_DTV_FLASH        "&Detach flash rom image"
+    IDS_MI_CREATE_DTV_FLASH        "&Create new flash rom image"
+    IDS_MI_FLASH_TRUE_FILESYSTEM   "&Äkta flash-filsystem"
 END
