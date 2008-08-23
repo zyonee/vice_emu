@@ -433,7 +433,7 @@ static gboolean fliplist_popup_cb(GtkWidget *w, GdkEvent *event, gpointer data)
 	    {
 		if (last_drive_menus[d])
 		    gtk_widget_destroy(last_drive_menus[d]);
-		if (last_menus)
+		if (last_menus[d])
 		    lib_free(last_menus[d]);
 		last_menus[d] = NULL;
 		return 0;
@@ -534,7 +534,7 @@ int ui_init_finish(void)
     fixed_font_desc = pango_font_description_from_string(fixedfontname);
     if (!fixed_font_desc)
     {
-	log_warning(ui_log, _("Cannot load CBM font %s."), fixedfontname);
+	log_warning(ui_log, "Cannot load CBM font %s.", fixedfontname);
 	have_cbm_font = FALSE;
     }
     
@@ -914,7 +914,7 @@ int ui_open_canvas_window(video_canvas_t *c, const char *title,
     int i;
     
     if (++num_app_shells > MAX_APP_SHELLS) {
-	log_error(ui_log, _("Maximum number of toplevel windows reached."));
+	log_error(ui_log, "Maximum number of toplevel windows reached.");
 	return -1;
     }
 
@@ -964,7 +964,7 @@ int ui_open_canvas_window(video_canvas_t *c, const char *title,
 	   unreferenced.  */
 	/* gtk_rc_style_unref(rc_style); */
 #ifdef HAVE_HWSCALE
-        GdkGLConfig *gl_config = gdk_gl_config_new_by_mode (GDK_GL_MODE_RGB | GDK_GL_MODE_DOUBLE);
+        GdkGLConfig *gl_config = gdk_gl_config_new_by_mode (GDK_GL_MODE_RGBA | GDK_GL_MODE_DOUBLE);
 
         if (gl_config == NULL) {
             log_warning (ui_log, "HW scaling will not be available");
@@ -2742,7 +2742,7 @@ gboolean exposure_callback_canvas(GtkWidget *w, GdkEventExpose *e,
 #ifdef GL_TEXTURE_RECTANGLE_ARB
 #define GL_TEX_RECT GL_TEXTURE_RECTANGLE_ARB
 #else
-#error GL_TEXTURE_RECTANGLE not supported in your OpenGL headers
+#error GL_TEXTURE_RECTANGLE not supported in you OpenGL headers
 #endif
 #endif
 
@@ -2751,9 +2751,9 @@ gboolean exposure_callback_canvas(GtkWidget *w, GdkEventExpose *e,
 
             glTexParameteri (GL_TEX_RECT, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
             glTexParameteri (GL_TEX_RECT, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-            glTexImage2D  (GL_TEX_RECT, 0, GL_RGB, 
+            glTexImage2D  (GL_TEX_RECT, 0, GL_RGBA, 
                 canvas->gdk_image_size.width, canvas->gdk_image_size.height,
-                0, GL_RGB, GL_UNSIGNED_BYTE, canvas->gdk_image);
+                0, GL_RGBA, GL_UNSIGNED_BYTE, canvas->gdk_image);
 
             glBegin (GL_QUADS);
 
@@ -2780,9 +2780,14 @@ gboolean exposure_callback_canvas(GtkWidget *w, GdkEventExpose *e,
 #endif
 #if !defined(MACOSX_SUPPORT) || !defined(HAVE_HWSCALE)
         {
-            gdk_draw_rgb_image(w->window, app_gc,
-                e->area.x, e->area.y, e->area.width, e->area.height, GDK_RGB_DITHER_NONE,
-                canvas->gdk_image+canvas->gdk_image_size.width*3*e->area.y+3*e->area.x, canvas->gdk_image_size.width*3);
+	    gdk_draw_rgb_32_image(w->window, app_gc,
+				  e->area.x, e->area.y, 
+				  e->area.width, e->area.height, 
+				  GDK_RGB_DITHER_NONE,
+				  canvas->gdk_image+canvas->
+				  gdk_image_size.width*4*e->
+				  area.y+4*e->area.x, 
+				  canvas->gdk_image_size.width*4);
         }
 #endif
     }

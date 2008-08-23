@@ -2,7 +2,10 @@
 
 SUBDIRS = $(POSUB) src build data man doc
 
-EXTRA_DIST = AUTHORS \
+# COMMON_EXTRA_DIST is what used to be the EXTRA_DIST, when adding dist
+# files, please add them to the COMMON_EXTRA_DIST list.
+
+COMMON_EXTRA_DIST = AUTHORS \
 	FEEDBACK \
 	COPYING \
 	Doxyfile \
@@ -11,12 +14,47 @@ EXTRA_DIST = AUTHORS \
 	vice.spec \
 	vice-mint.spec
 
-.PHONY: x64 x128 xvic xpet xplus4 xcbm2
+
+# PO_EXTRA_DIST is a list of files in the po directory that need to be
+# included in the source archive, this list was added to fix the fact that
+# 'make dist' only produced a proper/workable source archive when done on a
+# *nix platform with nls.
+
+PO_EXTRA_DIST = po/ChangeLog \
+	po/Makefile.in.in \
+	po/POTFILES.in \
+	po/de.po \
+	po/fr.po \
+	po/hu.po \
+	po/intl2po.c \
+	po/it.po \
+	po/nl.po \
+	po/pl.po \
+	po/po2tbl.sed \
+	po/sv.po
+
+if PO_SUBDIR_USED
+
+EXTRA_DIST = $(COMMON_EXTRA_DIST)
+
+else
+
+EXTRA_DIST = $(COMMON_EXTRA_DIST) $(PO_EXTRA_DIST)
+
+endif
+
+
+.PHONY: x64 x128 x64dtv xvic xpet xplus4 xcbm2
 x64:
 	(cd src; $(MAKE) x64-all)
 
 x128:
 	(cd src; $(MAKE) x128-all)
+
+if SUPPORT_X64DTV
+x64dtv:
+	(cd src; $(MAKE) x64dtv-all)
+endif
 
 xvic:
 	(cd src; $(MAKE) xvic-all)
@@ -32,6 +70,12 @@ xcbm2:
 
 
 install: installvice
+
+# If we have no ChangeLog (which should be generated from SVN), generate a
+# dummy one.
+
+ChangeLog:
+	touch ChangeLog
 
 if AMIGA_COMPILE
 bindist:

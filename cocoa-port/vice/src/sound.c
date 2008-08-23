@@ -668,7 +668,7 @@ int sound_open(void)
             }
             if (channels_cap != snddata.channels) {
                 log_warning(sound_log,
-                            _("sound device lacks stereo capability"));
+                            "sound device lacks stereo capability");
                 snddata.channels = 1;
             }
         }
@@ -861,7 +861,7 @@ static int sound_run_sound(void)
                                                  snddata.channels,
                                                  &delta_t);
             if (volume < 100) {
-                for (i = 0; i < nr; i ++)
+                for (i = 0; i < (nr * snddata.channels); i ++)
                     bufferptr[i] = (volume!=0) ? 
                                    (bufferptr[i]/(100 / volume)) : 0;
             }
@@ -895,7 +895,7 @@ static int sound_run_sound(void)
                                             snddata.channels,
                                             &delta_t);
             if (volume < 100) {
-                for (i = 0; i < nr; i ++)
+                for (i = 0; i < (nr * snddata.channels); i ++)
                     bufferptr[i] = (volume != 0) ?
                                    (bufferptr[i] / (100 / volume)) : 0;
             }
@@ -1093,7 +1093,7 @@ double sound_flush(int relative_speed)
 
             /* Fresh start for vsync. */
 #ifndef DEBUG
-            log_warning(sound_log, _("Buffer drained"));
+            log_warning(sound_log, "Buffer drained");
 #endif
             vsync_sync_reset();
             return 0;
