@@ -711,7 +711,7 @@ else
     AC_DEFINE(HAVE_RESID_FP,,[This version provides ReSID_FP support.])
     AC_CONFIG_SUBDIRS(src/resid-fp)
     RESID_FP_DIR=resid-fp
-    RESID_FP_LIBS="\$(top_builddir)/src/resid/libresidfp.a"
+    RESID_FP_LIBS="\$(top_builddir)/src/resid-fp/libresidfp.a"
     RESID_FP_INCLUDES="-I\$(top_builddir)/src/resid-fp"
     RESID_FP_DEP=libresidfp
   else
