@@ -98,6 +98,9 @@ static int set_sid_engine(int set_engine, void *param)
 #ifdef HAVE_RESID
         && engine != SID_ENGINE_RESID
 #endif
+#ifdef HAVE_RESID_FP
+        && engine != SID_ENGINE_RESID_FP
+#endif
 #ifdef HAVE_CATWEASELMKIII
         && engine != SID_ENGINE_CATWEASELMKIII
 #endif
@@ -170,7 +173,7 @@ static int set_sid_model(int val, void *param)
     return 0;
 }
 
-#ifdef HAVE_RESID
+#if defined(HAVE_RESID) || defined(HAVE_RESID_FP)
 static int set_sid_resid_sampling(int val, void *param)
 {
     sid_resid_sampling = val;
@@ -276,7 +279,7 @@ static const resource_int_t sidengine_resources_int[] = {
     { NULL }
 };
 
-#ifdef HAVE_RESID
+#if defined(HAVE_RESID) || defined(HAVE_RESID_FP)
 static const resource_int_t resid_resources_int[] = {
     { "SidResidSampling", 0, RES_EVENT_NO, NULL,
       &sid_resid_sampling, set_sid_resid_sampling, NULL },
@@ -321,7 +324,7 @@ int sid_resources_init(void)
     if (resources_register_int(sidengine_resources_int)<0)
         return -1;
 
-#ifdef HAVE_RESID
+#if defined(HAVE_RESID) || defined(HAVE_RESID_FP)
     if (resources_register_int(resid_resources_int)<0)
         return -1;
 #endif

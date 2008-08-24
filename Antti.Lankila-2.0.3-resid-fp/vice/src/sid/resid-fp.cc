@@ -300,7 +300,7 @@ static void residfp_state_write(sound_t *psid, sid_snapshot_state_t *sid_state)
     psid->sid.write_state((const SID::State)state);
 }
 
-sid_engine_t resid_hooks =
+sid_engine_t residfp_hooks =
 {
     residfp_open,
     residfp_init,

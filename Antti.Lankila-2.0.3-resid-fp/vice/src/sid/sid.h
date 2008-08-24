@@ -40,6 +40,7 @@ struct sid_snapshot_state_s;
 #define SID_ENGINE_PARSID_PORT1   4
 #define SID_ENGINE_PARSID_PORT2   5
 #define SID_ENGINE_PARSID_PORT3   6
+#define SID_ENGINE_RESID_FP       7
 
 #define SID_MODEL_6581   0
 #define SID_MODEL_8580   1
