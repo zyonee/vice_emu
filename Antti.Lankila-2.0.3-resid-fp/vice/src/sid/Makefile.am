@@ -15,7 +15,7 @@ SUFFIXES = .def
 INCLUDES = \
 	@ARCH_INCLUDES@ \
 	@RESID_INCLUDES@ \
-	@RESIDFP_INCLUDES@ \
+	@RESID_FP_INCLUDES@ \
 	-I$(top_builddir)/src \
 	-I$(top_srcdir)/src
 
