@@ -5,7 +5,7 @@ resid_libadd =
 endif
 
 if HAVE_RESID_FP
-residfp_libadd = residfp.o
+residfp_libadd = resid-fp.o
 else
 residfp_libadd =
 endif
@@ -38,8 +38,8 @@ libsid_a_SOURCES = \
 EXTRA_libsid_a_SOURCES = \
 	resid.cc \
 	resid.h
-	residfp.cc \
-	residfp.h
+	resid-fp.cc \
+	resid-fp.h
 
 EXTRA_DIST =
 
