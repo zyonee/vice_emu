@@ -1,5 +1,5 @@
 /*
- * resid.cc - reSID interface code.
+ * resid-fp.cc - reSID-fp interface code.
  *
  * Written by
  *  Teemu Rantanen <tvr@cs.hut.fi>
@@ -48,15 +48,15 @@ extern "C" {
 #include "resid.h"
 #include "resources.h"
 #include "sid-snapshot.h"
-#include "sound.h"
 #include "types.h"
 
 struct sound_s
 {
     /* resid sid implementation */
-    SID	sid;
+    SIDFP sid;
 };
 
+typedef struct sound_s sound_t;
 
 static sound_t *residfp_open(BYTE *sidstate)
 {
@@ -199,11 +199,11 @@ static int residfp_init(sound_t *psid, int speed, int cycles_per_sec)
     if (!psid->sid.set_sampling_parameters(cycles_per_sec, method,
 					   speed, passband, gain)) {
         log_warning(LOG_DEFAULT,
-                    "reSID: Out of spec, increase sampling rate or decrease maximum speed");
+                    "reSID-fp: Out of spec, increase sampling rate or decrease maximum speed");
 	return 0;
     }
 
-    log_message(LOG_DEFAULT, "reSID: %s, filter %s, sampling rate %dHz - %s",
+    log_message(LOG_DEFAULT, "reSID-fp: %s, filter %s, sampling rate %dHz - %s",
 		model_text,
 		filters_enabled ? "on" : "off",
 		speed, method_text);
@@ -248,7 +248,7 @@ static char *residfp_dump_state(sound_t *psid)
 
 static void residfp_state_read(sound_t *psid, sid_snapshot_state_t *sid_state)
 {
-    SID::State state;
+    SIDFP::State state;
     unsigned int i;
 
     state = psid->sid.read_state();
@@ -274,7 +274,7 @@ static void residfp_state_read(sound_t *psid, sid_snapshot_state_t *sid_state)
 
 static void residfp_state_write(sound_t *psid, sid_snapshot_state_t *sid_state)
 {
-    SID::State state;
+    SIDFP::State state;
     unsigned int i;
 
     for (i = 0; i < 0x20; i++) {
@@ -293,11 +293,11 @@ static void residfp_state_write(sound_t *psid, sid_snapshot_state_t *sid_state)
 	if (sid_state->exponential_counter_period[i])
             state.exponential_counter_period[i] = (reg16)sid_state->exponential_counter_period[i];
         state.envelope_counter[i] = (reg8)sid_state->envelope_counter[i];
-        state.envelope_state[i] = (EnvelopeGenerator::State)sid_state->envelope_state[i];
+        state.envelope_state[i] = (EnvelopeGeneratorFP::State)sid_state->envelope_state[i];
         state.hold_zero[i] = (sid_state->hold_zero[i] != 0);
     }
 
-    psid->sid.write_state((const SID::State)state);
+    psid->sid.write_state((const SIDFP::State)state);
 }
 
 sid_engine_t residfp_hooks =

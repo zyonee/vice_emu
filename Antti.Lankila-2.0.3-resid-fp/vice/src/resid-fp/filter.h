@@ -118,10 +118,10 @@
 //          Vw
 //
 // ----------------------------------------------------------------------------
-class Filter
+class FilterFP
 {
 public:
-  Filter();
+  FilterFP();
 
   void enable_filter(bool enable);
   void set_chip_model(chip_model model);
@@ -191,7 +191,7 @@ private:
   /* Resonance/Distortion/Type3/Type4 helpers. */
   float type4_w0_cache, _1_div_Q, type3_fc_kink_exp, type3_fc_kink_distortion_offset, distortion_CT;
 
-friend class SID;
+friend class SIDFP;
 };
 
 // ----------------------------------------------------------------------------
@@ -236,7 +236,7 @@ static float fastexp(float val) {
 }
 
 RESID_INLINE
-float Filter::type3_w0(const float source)
+float FilterFP::type3_w0(const float source)
 {
     /* The distortion appears to be the result of MOSFET entering saturation
      * mode. The conductance of a FET is proportional to:
@@ -282,7 +282,7 @@ float Filter::type3_w0(const float source)
 }
 
 RESID_INLINE
-float Filter::type4_w0()
+float FilterFP::type4_w0()
 {
     const float freq = type4_k * fc + type4_b;
     return 2.f * (float) M_PI * freq / clock_frequency;
@@ -292,7 +292,7 @@ float Filter::type4_w0()
 // SID clocking - 1 cycle.
 // ----------------------------------------------------------------------------
 RESID_INLINE
-float Filter::clock(float voice1,
+float FilterFP::clock(float voice1,
 		   float voice2,
 		   float voice3,
 		   float ext_in)

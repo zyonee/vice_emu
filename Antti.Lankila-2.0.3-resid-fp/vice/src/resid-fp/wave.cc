@@ -16,9 +16,6 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //  ---------------------------------------------------------------------------
-// C64 DTV modifications written by
-//   Daniel Kahlin <daniel@kahlin.net>
-// Copyright (C) 2007  Daniel Kahlin <daniel@kahlin.net>
 
 #define __WAVE_CC__
 #include "wave.h"
@@ -26,7 +23,7 @@
 // ----------------------------------------------------------------------------
 // Constructor.
 // ----------------------------------------------------------------------------
-WaveformGenerator::WaveformGenerator()
+WaveformGeneratorFP::WaveformGeneratorFP()
 {
   sync_source = this;
 
@@ -39,7 +36,7 @@ WaveformGenerator::WaveformGenerator()
 // ----------------------------------------------------------------------------
 // Set sync source.
 // ----------------------------------------------------------------------------
-void WaveformGenerator::set_sync_source(WaveformGenerator* source)
+void WaveformGeneratorFP::set_sync_source(WaveformGeneratorFP* source)
 {
   sync_source = source;
   source->sync_dest = this;
@@ -49,13 +46,9 @@ void WaveformGenerator::set_sync_source(WaveformGenerator* source)
 // ----------------------------------------------------------------------------
 // Set chip model.
 // ----------------------------------------------------------------------------
-void WaveformGenerator::set_chip_model(chip_model model)
+void WaveformGeneratorFP::set_chip_model(chip_model model)
 {
-#ifdef SUPPORT_C64DTV
-  if (model == MOS6581 || model == DTVSID) {
-#else
   if (model == MOS6581) {
-#endif
     ST_lockup = true;
     wave__ST = wave6581__ST;
     wave_P_T = wave6581_P_T;
@@ -75,12 +68,12 @@ void WaveformGenerator::set_chip_model(chip_model model)
 // ----------------------------------------------------------------------------
 // Register functions.
 // ----------------------------------------------------------------------------
-void WaveformGenerator::writeFREQ_LO(reg8 freq_lo)
+void WaveformGeneratorFP::writeFREQ_LO(reg8 freq_lo)
 {
   freq = (freq & 0xff00) | (freq_lo & 0x00ff);
 }
 
-void WaveformGenerator::writeFREQ_HI(reg8 freq_hi)
+void WaveformGeneratorFP::writeFREQ_HI(reg8 freq_hi)
 {
   freq = ((freq_hi << 8) & 0xff00) | (freq & 0x00ff);
 }
@@ -88,19 +81,19 @@ void WaveformGenerator::writeFREQ_HI(reg8 freq_hi)
 /* The original form was (acc >> 12) >= pw, where truth value is not affected
  * by the contents of the low 12 bits. Therefore the lowest bits must be zero
  * in the new formulation acc >= (pw << 12). */
-void WaveformGenerator::writePW_LO(reg8 pw_lo)
+void WaveformGeneratorFP::writePW_LO(reg8 pw_lo)
 {
   pw = (pw & 0xf00) | (pw_lo & 0x0ff);
   pw_acc_scale = pw << 12;
 }
 
-void WaveformGenerator::writePW_HI(reg8 pw_hi)
+void WaveformGeneratorFP::writePW_HI(reg8 pw_hi)
 {
   pw = ((pw_hi << 8) & 0xf00) | (pw & 0x0ff);
   pw_acc_scale = pw << 12;
 }
 
-void WaveformGenerator::writeCONTROL_REG(reg8 control)
+void WaveformGeneratorFP::writeCONTROL_REG(reg8 control)
 {
   waveform = (control >> 4) & 0x0f;
   ring_mod = control & 0x04;
@@ -138,22 +131,15 @@ void WaveformGenerator::writeCONTROL_REG(reg8 control)
   noise_output_cached = outputN___();
 }
 
-reg8 WaveformGenerator::readOSC()
+reg8 WaveformGeneratorFP::readOSC()
 {
   return output() >> 4;
 }
 
-#ifdef SUPPORT_C64DTV
-void WaveformGenerator::writeACC_HI(reg8 value)
-{
-  accumulator = (value << 16) | (accumulator & 0xffff);
-}
-#endif
-
 // ----------------------------------------------------------------------------
 // SID reset.
 // ----------------------------------------------------------------------------
-void WaveformGenerator::reset()
+void WaveformGeneratorFP::reset()
 {
   accumulator = 0;
   previous = 0;

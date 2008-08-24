@@ -222,7 +222,7 @@ sound_t *sid_sound_machine_open(int chipno)
 
 #ifdef HAVE_RESID_FP
     if (sidengine == SID_ENGINE_RESID_FP)
-        sid_engine = resid_hooks;
+        sid_engine = residfp_hooks;
 #endif
 
 #if defined(HAVE_RESID) && defined(HAVE_RESID_FP)

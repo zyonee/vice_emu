@@ -16,9 +16,6 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //  ---------------------------------------------------------------------------
-// C64 DTV modifications written by
-//   Daniel Kahlin <daniel@kahlin.net>
-// Copyright (C) 2007  Daniel Kahlin <daniel@kahlin.net>
 
 #ifndef __SID_H__
 #define __SID_H__
@@ -29,16 +26,16 @@
 #include "extfilt.h"
 #include "pot.h"
 
-class SID
+class SIDFP
 {
 public:
-  SID();
-  ~SID();
+  SIDFP();
+  ~SIDFP();
 
   static float kinked_dac(const int x, const float nonlinearity, const int bits);
 
   void set_chip_model(chip_model model);
-  Filter& get_filter() { return filter; }
+  FilterFP& get_filter() { return filter; }
   void enable_filter(bool enable);
   void enable_external_filter(bool enable);
   bool set_sampling_parameters(double clock_freq, sampling_method method,
@@ -74,7 +71,7 @@ public:
     reg16 exponential_counter[3];
     reg16 exponential_counter_period[3];
     reg8 envelope_counter[3];
-    EnvelopeGenerator::State envelope_state[3];
+    EnvelopeGeneratorFP::State envelope_state[3];
     bool hold_zero[3];
   };
     
@@ -97,20 +94,16 @@ protected:
 				       int n, int interleave);
   RESID_INLINE void age_bus_value(cycle_count);
 
-  Voice voice[3];
-  Filter filter;
-  ExternalFilter extfilt;
-  Potentiometer potx;
-  Potentiometer poty;
+  VoiceFP voice[3];
+  FilterFP filter;
+  ExternalFilterFP extfilt;
+  PotentiometerFP potx;
+  PotentiometerFP poty;
 
   reg8 bus_value;
   cycle_count bus_value_ttl;
 
   double clock_frequency;
-
-#ifdef SUPPORT_C64DTV
-  bool is_dtv;
-#endif
 
   // External audio input.
   float ext_in;

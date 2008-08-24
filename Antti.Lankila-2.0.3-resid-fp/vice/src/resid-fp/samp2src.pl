@@ -52,7 +52,7 @@ print F <<\EOF;
 
 EOF
 
-print F "#include \"wave.h\"\n\nreg8 WaveformGenerator::$name\[\] =\n{\n";
+print F "#include \"wave.h\"\n\nreg8 WaveformGeneratorFP::$name\[\] =\n{\n";
 
 for (my $i = 0; $i < length($data); $i += 8) {
   print F sprintf("/* 0x%03x: */ ", $i), map(sprintf(" 0x%02x,", $_), unpack("C*", substr($data, $i, 8))), "\n";

@@ -16,9 +16,6 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //  ---------------------------------------------------------------------------
-// C64 DTV modifications written by
-//   Daniel Kahlin <daniel@kahlin.net>
-// Copyright (C) 2007  Daniel Kahlin <daniel@kahlin.net>
 
 #ifndef __ENVELOPE_H__
 #define __ENVELOPE_H__
@@ -34,10 +31,10 @@
 // The period of this counter is set to 1, 2, 4, 8, 16, 30 at the envelope
 // counter values 255, 93, 54, 26, 14, 6, respectively.
 // ----------------------------------------------------------------------------
-class EnvelopeGenerator
+class EnvelopeGeneratorFP
 {
 public:
-  EnvelopeGenerator();
+  EnvelopeGeneratorFP();
 
   enum State { ATTACK, DECAY_SUSTAIN, RELEASE };
 
@@ -48,9 +45,6 @@ public:
   void writeATTACK_DECAY(reg8);
   void writeSUSTAIN_RELEASE(reg8);
   reg8 readENV();
-#ifdef SUPPORT_C64DTV
-  void writeENV(reg8);
-#endif
 
   // 8-bit envelope output.
   RESID_INLINE reg8 output();
@@ -81,7 +75,7 @@ protected:
   // The 16 selectable sustain levels.
   static reg8 sustain_level[];
 
-friend class SID;
+friend class SIDFP;
 };
 
 
@@ -97,7 +91,7 @@ friend class SID;
 // SID clocking - 1 cycle.
 // ----------------------------------------------------------------------------
 RESID_INLINE
-void EnvelopeGenerator::clock()
+void EnvelopeGeneratorFP::clock()
 {
   if (++ rate_counter != rate_period)
     return;
@@ -180,7 +174,7 @@ void EnvelopeGenerator::clock()
 // Read the envelope generator output.
 // ----------------------------------------------------------------------------
 RESID_INLINE
-reg8 EnvelopeGenerator::output()
+reg8 EnvelopeGeneratorFP::output()
 {
   return envelope_counter;
 }

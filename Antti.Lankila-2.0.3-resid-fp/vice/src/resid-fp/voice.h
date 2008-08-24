@@ -24,13 +24,13 @@
 #include "wave.h"
 #include "envelope.h"
 
-class Voice
+class VoiceFP
 {
 public:
-  Voice();
+  VoiceFP();
 
   void set_chip_model(chip_model model);
-  void set_sync_source(Voice*);
+  void set_sync_source(VoiceFP*);
   void reset();
 
   void writeCONTROL_REG(reg8);
@@ -43,25 +43,16 @@ public:
 protected:
   void calculate_dac_tables();
 
-  WaveformGenerator wave;
-  EnvelopeGenerator envelope;
+  WaveformGeneratorFP wave;
+  EnvelopeGeneratorFP envelope;
 
   // Multiplying D/A DC offset.
   float voice_DC, wave_zero, nonlinearity;
 
   float env_dac[256];
   float voice_dac[4096];
-friend class SID;
+friend class SIDFP;
 };
-
-
-// ----------------------------------------------------------------------------
-// Inline functions.
-// The following function is defined inline because it is called every
-// time a sample is calculated.
-// ----------------------------------------------------------------------------
-
-#if RESID_INLINING || defined(__VOICE_CC__)
 
 // ----------------------------------------------------------------------------
 // Amplitude modulated waveform output.
@@ -69,7 +60,7 @@ friend class SID;
 // ----------------------------------------------------------------------------
 
 RESID_INLINE
-float Voice::output()
+float VoiceFP::output()
 {
     unsigned int w = wave.output();
     unsigned int e = envelope.output();
@@ -78,7 +69,5 @@ float Voice::output()
 
     return _w * _e + voice_DC;
 }
-
-#endif // RESID_INLINING || defined(__VOICE_CC__)
 
 #endif // not __VOICE_H__

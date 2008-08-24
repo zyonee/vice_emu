@@ -37,10 +37,10 @@
 // of kHz. This calls for a sampling frequency of several MHz, which is far
 // too high for practical use.
 // ----------------------------------------------------------------------------
-class ExternalFilter
+class ExternalFilterFP
 {
 public:
-  ExternalFilter();
+  ExternalFilterFP();
 
   void enable_filter(bool enable);
   void set_sampling_parameter(float pass_freq);
@@ -74,23 +74,14 @@ private:
   float w0lp;
   float w0hp;
 
-friend class SID;
+friend class SIDFP;
 };
-
-
-// ----------------------------------------------------------------------------
-// Inline functions.
-// The following functions are defined inline because they are called every
-// time a sample is calculated.
-// ----------------------------------------------------------------------------
-
-#if RESID_INLINING || defined(__EXTFILT_CC__)
 
 // ----------------------------------------------------------------------------
 // SID clocking - 1 cycle.
 // ----------------------------------------------------------------------------
 RESID_INLINE
-void ExternalFilter::clock(float Vi)
+void ExternalFilterFP::clock(float Vi)
 {
   // This is handy for testing.
   if (! enabled) {
@@ -111,11 +102,9 @@ void ExternalFilter::clock(float Vi)
 // Audio output (19.5 bits).
 // ----------------------------------------------------------------------------
 RESID_INLINE
-float ExternalFilter::output()
+float ExternalFilterFP::output()
 {
   return Vo;
 }
-
-#endif // RESID_INLINING || defined(__EXTFILT_CC__)
 
 #endif // not __EXTFILT_H__

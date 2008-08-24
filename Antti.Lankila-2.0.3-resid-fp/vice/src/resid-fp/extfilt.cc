@@ -23,7 +23,7 @@
 // ----------------------------------------------------------------------------
 // Constructor.
 // ----------------------------------------------------------------------------
-ExternalFilter::ExternalFilter()
+ExternalFilterFP::ExternalFilterFP()
 {
   reset();
   enable_filter(true);
@@ -36,7 +36,7 @@ ExternalFilter::ExternalFilter()
 // ----------------------------------------------------------------------------
 // Enable filter.
 // ----------------------------------------------------------------------------
-void ExternalFilter::enable_filter(bool enable)
+void ExternalFilterFP::enable_filter(bool enable)
 {
   enabled = enable;
 }
@@ -44,19 +44,19 @@ void ExternalFilter::enable_filter(bool enable)
 // ----------------------------------------------------------------------------
 // Setup of the external filter sampling parameters.
 // ----------------------------------------------------------------------------
-void ExternalFilter::set_clock_frequency(float clock)
+void ExternalFilterFP::set_clock_frequency(float clock)
 {
   clock_frequency = clock;
   _set_sampling_parameter();
 }
 
-void ExternalFilter::set_sampling_parameter(float freq)
+void ExternalFilterFP::set_sampling_parameter(float freq)
 {
   pass_frequency = freq;
   _set_sampling_parameter();
 }
 
-void ExternalFilter::_set_sampling_parameter()
+void ExternalFilterFP::_set_sampling_parameter()
 {
   // Low-pass:  R = 10kOhm, C = 1000pF; w0l = 1/RC = 1/(1e4*1e-9) = 100000
   // High-pass: R =  1kOhm, C =   10uF; w0h = 1/RC = 1/(1e3*1e-5) =    100
@@ -67,7 +67,7 @@ void ExternalFilter::_set_sampling_parameter()
 // ----------------------------------------------------------------------------
 // Set chip model.
 // ----------------------------------------------------------------------------
-void ExternalFilter::set_chip_model(chip_model model)
+void ExternalFilterFP::set_chip_model(chip_model model)
 {
   if (model == MOS6581) {
     // Approximate the DC output level to be removed if the external
@@ -85,7 +85,7 @@ void ExternalFilter::set_chip_model(chip_model model)
 // ----------------------------------------------------------------------------
 // SID reset.
 // ----------------------------------------------------------------------------
-void ExternalFilter::reset()
+void ExternalFilterFP::reset()
 {
   // State of filter.
   Vlp = 0;

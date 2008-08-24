@@ -24,14 +24,14 @@
 // ----------------------------------------------------------------------------
 // Constructor.
 // ----------------------------------------------------------------------------
-Voice::Voice()
+VoiceFP::VoiceFP()
 {
   nonlinearity = 1.f;
   set_chip_model(MOS6581);
 }
 
 /* Keep this at 1.f for 8580, there are no 6581-only codepaths in this file! */
-void Voice::set_nonlinearity(float nl)
+void VoiceFP::set_nonlinearity(float nl)
 {
     nonlinearity = nl;
     calculate_dac_tables();
@@ -40,15 +40,11 @@ void Voice::set_nonlinearity(float nl)
 // ----------------------------------------------------------------------------
 // Set chip model.
 // ----------------------------------------------------------------------------
-void Voice::set_chip_model(chip_model model)
+void VoiceFP::set_chip_model(chip_model model)
 {
   wave.set_chip_model(model);
 
-#ifdef SUPPORT_C64DTV
-  if (model == MOS6581 || model == DTVSID) {
-#else
   if (model == MOS6581) {
-#endif
     /* there is some level from each voice even if the env is down and osc
      * is stopped. You can hear this by routing a voice into filter (filter
      * should be kept disabled for this) as the master level changes. This
@@ -70,18 +66,18 @@ void Voice::set_chip_model(chip_model model)
   }
 }
 
-void Voice::calculate_dac_tables()
+void VoiceFP::calculate_dac_tables()
 {
     for (int i = 0; i < 256; i ++)
-        env_dac[i] = SID::kinked_dac(i, nonlinearity, 8);
+        env_dac[i] = SIDFP::kinked_dac(i, nonlinearity, 8);
     for (int i = 0; i < 4096; i ++)
-        voice_dac[i] = SID::kinked_dac(i, nonlinearity, 12) - wave_zero;
+        voice_dac[i] = SIDFP::kinked_dac(i, nonlinearity, 12) - wave_zero;
 }
 
 // ----------------------------------------------------------------------------
 // Set sync source.
 // ----------------------------------------------------------------------------
-void Voice::set_sync_source(Voice* source)
+void VoiceFP::set_sync_source(VoiceFP* source)
 {
   wave.set_sync_source(&source->wave);
 }
@@ -89,7 +85,7 @@ void Voice::set_sync_source(Voice* source)
 // ----------------------------------------------------------------------------
 // Register functions.
 // ----------------------------------------------------------------------------
-void Voice::writeCONTROL_REG(reg8 control)
+void VoiceFP::writeCONTROL_REG(reg8 control)
 {
   wave.writeCONTROL_REG(control);
   envelope.writeCONTROL_REG(control);
@@ -98,7 +94,7 @@ void Voice::writeCONTROL_REG(reg8 control)
 // ----------------------------------------------------------------------------
 // SID reset.
 // ----------------------------------------------------------------------------
-void Voice::reset()
+void VoiceFP::reset()
 {
   wave.reset();
   envelope.reset();

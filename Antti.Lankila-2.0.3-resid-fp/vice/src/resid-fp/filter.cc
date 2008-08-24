@@ -25,7 +25,7 @@
 // ----------------------------------------------------------------------------
 // Constructor.
 // ----------------------------------------------------------------------------
-Filter::Filter()
+FilterFP::FilterFP()
 {
   model = (chip_model) 0; // neither 6581/8580; init time only
   enable_filter(true);
@@ -45,7 +45,7 @@ Filter::Filter()
 // ----------------------------------------------------------------------------
 // Enable filter.
 // ----------------------------------------------------------------------------
-void Filter::enable_filter(bool enable)
+void FilterFP::enable_filter(bool enable)
 {
   enabled = enable;
 }
@@ -54,7 +54,7 @@ void Filter::enable_filter(bool enable)
 // ----------------------------------------------------------------------------
 // Set chip model.
 // ----------------------------------------------------------------------------
-void Filter::set_chip_model(chip_model model)
+void FilterFP::set_chip_model(chip_model model)
 {
     this->model = model;
     set_Q();
@@ -62,12 +62,12 @@ void Filter::set_chip_model(chip_model model)
 }
 
 /* dist_CT eliminates 1/x at hot spot */
-void Filter::set_clock_frequency(float clock) {
+void FilterFP::set_clock_frequency(float clock) {
     clock_frequency = clock;
     calculate_helpers();
 }
 
-void Filter::set_distortion_properties(float r, float p, float cft)
+void FilterFP::set_distortion_properties(float r, float p, float cft)
 {
     distortion_rate = r;
     distortion_point = p;
@@ -76,13 +76,13 @@ void Filter::set_distortion_properties(float r, float p, float cft)
     calculate_helpers();
 }
 
-void Filter::set_type4_properties(float k, float b)
+void FilterFP::set_type4_properties(float k, float b)
 {
     type4_k = k;
     type4_b = b;
 }
 
-void Filter::set_type3_properties(float br, float o, float s, float mfr)
+void FilterFP::set_type3_properties(float br, float o, float s, float mfr)
 {
     type3_baseresistance = br;
     type3_offset = o;
@@ -90,7 +90,7 @@ void Filter::set_type3_properties(float br, float o, float s, float mfr)
     type3_minimumfetresistance = mfr;
 }
 
-void Filter::calculate_helpers()
+void FilterFP::calculate_helpers()
 {
     if (clock_frequency != 0.f)
         distortion_CT = 1.f / (sidcaps_6581 * clock_frequency);
@@ -100,7 +100,7 @@ void Filter::calculate_helpers()
 // ----------------------------------------------------------------------------
 // SID reset.
 // ----------------------------------------------------------------------------
-void Filter::reset()
+void FilterFP::reset()
 {
   fc = res = filt = voice3off = hp_bp_lp = volf = vol = Vhp = Vbp = Vlp = 0;
   set_w0();
@@ -110,19 +110,19 @@ void Filter::reset()
 // ----------------------------------------------------------------------------
 // Register functions.
 // ----------------------------------------------------------------------------
-void Filter::writeFC_LO(reg8 fc_lo)
+void FilterFP::writeFC_LO(reg8 fc_lo)
 {
   fc = (fc & 0x7f8) | (fc_lo & 0x007);
   set_w0();
 }
 
-void Filter::writeFC_HI(reg8 fc_hi)
+void FilterFP::writeFC_HI(reg8 fc_hi)
 {
   fc = ((fc_hi << 3) & 0x7f8) | (fc & 0x007);
   set_w0();
 }
 
-void Filter::writeRES_FILT(reg8 res_filt)
+void FilterFP::writeRES_FILT(reg8 res_filt)
 {
   res = (res_filt >> 4) & 0x0f;
   set_Q();
@@ -130,7 +130,7 @@ void Filter::writeRES_FILT(reg8 res_filt)
   filt = res_filt & 0x0f;
 }
 
-void Filter::writeMODE_VOL(reg8 mode_vol)
+void FilterFP::writeMODE_VOL(reg8 mode_vol)
 {
   voice3off = mode_vol & 0x80;
 
@@ -141,11 +141,11 @@ void Filter::writeMODE_VOL(reg8 mode_vol)
 }
 
 // Set filter cutoff frequency.
-void Filter::set_w0()
+void FilterFP::set_w0()
 {
   if (model == MOS6581) {
     /* div once by extra kinkiness because I fitted the type3 eq with that variant. */
-    float type3_fc_kink = SID::kinked_dac(fc, kinkiness, 11) / kinkiness;
+    float type3_fc_kink = SIDFP::kinked_dac(fc, kinkiness, 11) / kinkiness;
     type3_fc_kink_exp = type3_offset * expf(type3_fc_kink * type3_steepness);
     if (distortion_rate != 0.f)
 	type3_fc_kink_distortion_offset = (distortion_point - type3_fc_kink) * (0.707107f * 0.5f) / distortion_rate;
@@ -158,7 +158,7 @@ void Filter::set_w0()
 }
 
 // Set filter resonance.
-void Filter::set_Q()
+void FilterFP::set_Q()
 {
   float Q = res / 15.f;
   if (model == MOS6581) {

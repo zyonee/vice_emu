@@ -16,9 +16,6 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //  ---------------------------------------------------------------------------
-// C64 DTV modifications written by
-//   Daniel Kahlin <daniel@kahlin.net>
-// Copyright (C) 2007  Daniel Kahlin <daniel@kahlin.net>
 
 #include "sid.h"
 #include <math.h>
@@ -27,7 +24,7 @@
 #include <xmmintrin.h>
 #endif
 
-float SID::kinked_dac(const int x, const float nonlinearity, const int max)
+float SIDFP::kinked_dac(const int x, const float nonlinearity, const int max)
 {
     float value = 0.f;
     
@@ -47,7 +44,7 @@ float SID::kinked_dac(const int x, const float nonlinearity, const int max)
 // ----------------------------------------------------------------------------
 // Constructor.
 // ----------------------------------------------------------------------------
-SID::SID()
+SIDFP::SIDFP()
 {
   // Initialize pointers.
   sample = 0;
@@ -69,7 +66,7 @@ SID::SID()
 // ----------------------------------------------------------------------------
 // Destructor.
 // ----------------------------------------------------------------------------
-SID::~SID()
+SIDFP::~SIDFP()
 {
   delete[] sample;
   delete[] fir;
@@ -79,7 +76,7 @@ SID::~SID()
 // ----------------------------------------------------------------------------
 // Set chip model.
 // ----------------------------------------------------------------------------
-void SID::set_chip_model(chip_model model)
+void SIDFP::set_chip_model(chip_model model)
 {
   for (int i = 0; i < 3; i++) {
     voice[i].set_chip_model(model);
@@ -87,14 +84,10 @@ void SID::set_chip_model(chip_model model)
 
   filter.set_chip_model(model);
   extfilt.set_chip_model(model);
-
-#ifdef SUPPORT_C64DTV
-  is_dtv = (model == DTVSID) ? true : false;
-#endif
 }
 
 /* nonlinear DAC support, set 1 for 8580 / no effect, about 0.96 otherwise */
-void SID::set_voice_nonlinearity(float nl)
+void SIDFP::set_voice_nonlinearity(float nl)
 {
   for (int i = 0; i < 3; i++) {
     voice[i].set_nonlinearity(nl);
@@ -104,7 +97,7 @@ void SID::set_voice_nonlinearity(float nl)
 // ----------------------------------------------------------------------------
 // SID reset.
 // ----------------------------------------------------------------------------
-void SID::reset()
+void SIDFP::reset()
 {
   for (int i = 0; i < 3; i++) {
     voice[i].reset();
@@ -123,14 +116,14 @@ void SID::reset()
 // Note that to mix in an external audio signal, the signal should be
 // resampled to 1MHz first to avoid sampling noise.
 // ----------------------------------------------------------------------------
-void SID::input(int sample)
+void SIDFP::input(int sample)
 {
   // Voice outputs are 20 bits. Scale up to match three voices in order
   // to facilitate simulation of the MOS8580 "digi boost" hardware hack.
   ext_in = (sample << 4)*3 - 0x20000;
 }
 
-float SID::output()
+float SIDFP::output()
 {
   const float range = 1 << 15;
   return extfilt.output() / (4095.f * 255.f * 3.f / range);
@@ -153,20 +146,12 @@ float SID::output()
 // value instead). With this in mind we return the last value written to
 // any SID register for $2000 cycles without modeling the bit fading.
 // ----------------------------------------------------------------------------
-reg8 SID::read(reg8 offset)
+reg8 SIDFP::read(reg8 offset)
 {
   switch (offset) {
   case 0x19:
-#ifdef SUPPORT_C64DTV
-    if (is_dtv)
-      return 0x00;
-#endif
     return potx.readPOT();
   case 0x1a:
-#ifdef SUPPORT_C64DTV
-    if (is_dtv)
-      return 0x00;
-#endif
     return poty.readPOT();
   case 0x1b:
     return voice[2].wave.readOSC();
@@ -181,7 +166,7 @@ reg8 SID::read(reg8 offset)
 // ----------------------------------------------------------------------------
 // Write registers.
 // ----------------------------------------------------------------------------
-void SID::write(reg8 offset, reg8 value)
+void SIDFP::write(reg8 offset, reg8 value)
 {
   bus_value = value;
   bus_value_ttl = 0x4000;
@@ -262,16 +247,6 @@ void SID::write(reg8 offset, reg8 value)
   case 0x18:
     filter.writeMODE_VOL(value);
     break;
-#ifdef SUPPORT_C64DTV
-  case 0x1e:
-    if (is_dtv)
-      voice[0].wave.writeACC_HI(value);
-    break;
-  case 0x1f:
-    if (is_dtv)
-      voice[1].envelope.writeENV(value);
-    break;
-#endif
   default:
     break;
   }
@@ -281,7 +256,7 @@ void SID::write(reg8 offset, reg8 value)
 // ----------------------------------------------------------------------------
 // Constructor.
 // ----------------------------------------------------------------------------
-SID::State::State()
+SIDFP::State::State()
 {
   int i;
 
@@ -300,7 +275,7 @@ SID::State::State()
     exponential_counter[i] = 0;
     exponential_counter_period[i] = 1;
     envelope_counter[i] = 0;
-    envelope_state[i] = EnvelopeGenerator::RELEASE;
+    envelope_state[i] = EnvelopeGeneratorFP::RELEASE;
     hold_zero[i] = true;
   }
 }
@@ -309,14 +284,14 @@ SID::State::State()
 // ----------------------------------------------------------------------------
 // Read state.
 // ----------------------------------------------------------------------------
-SID::State SID::read_state()
+SIDFP::State SIDFP::read_state()
 {
   State state;
   int i, j;
 
   for (i = 0, j = 0; i < 3; i++, j += 7) {
-    WaveformGenerator& wave = voice[i].wave;
-    EnvelopeGenerator& envelope = voice[i].envelope;
+    WaveformGeneratorFP& wave = voice[i].wave;
+    EnvelopeGeneratorFP& envelope = voice[i].envelope;
     state.sid_register[j + 0] = wave.freq & 0xff;
     state.sid_register[j + 1] = wave.freq >> 8;
     state.sid_register[j + 2] = wave.pw & 0xff;
@@ -369,7 +344,7 @@ SID::State SID::read_state()
 // ----------------------------------------------------------------------------
 // Write state.
 // ----------------------------------------------------------------------------
-void SID::write_state(const State& state)
+void SIDFP::write_state(const State& state)
 {
   int i;
 
@@ -397,7 +372,7 @@ void SID::write_state(const State& state)
 // ----------------------------------------------------------------------------
 // Enable filter.
 // ----------------------------------------------------------------------------
-void SID::enable_filter(bool enable)
+void SIDFP::enable_filter(bool enable)
 {
   filter.enable_filter(enable);
 }
@@ -406,7 +381,7 @@ void SID::enable_filter(bool enable)
 // ----------------------------------------------------------------------------
 // Enable external filter.
 // ----------------------------------------------------------------------------
-void SID::enable_external_filter(bool enable)
+void SIDFP::enable_external_filter(bool enable)
 {
   extfilt.enable_filter(enable);
 }
@@ -416,7 +391,7 @@ void SID::enable_external_filter(bool enable)
 // I0() computes the 0th order modified Bessel function of the first kind.
 // This function is originally from resample-1.5/filterkit.c by J. O. Smith.
 // ----------------------------------------------------------------------------
-double SID::I0(double x)
+double SIDFP::I0(double x)
 {
   // Max error acceptable in I0.
   const double I0e = 1e-6;
@@ -459,7 +434,7 @@ double SID::I0(double x)
 // to slightly below 20kHz. This constraint ensures that the FIR table is
 // not overfilled.
 // ----------------------------------------------------------------------------
-bool SID::set_sampling_parameters(double clock_freq, sampling_method method,
+bool SIDFP::set_sampling_parameters(double clock_freq, sampling_method method,
 				  double sample_freq, double pass_freq,
 				  double filter_scale)
 {
@@ -598,13 +573,13 @@ bool SID::set_sampling_parameters(double clock_freq, sampling_method method,
 // that any adjustment of the sampling frequency will change the
 // characteristics of the resampling filter, since the filter is not rebuilt.
 // ----------------------------------------------------------------------------
-void SID::adjust_sampling_frequency(double sample_freq)
+void SIDFP::adjust_sampling_frequency(double sample_freq)
 {
   cycles_per_sample =
     cycle_count(clock_frequency/sample_freq*(1 << FIXP_SHIFT) + 0.5);
 }
 
-void SID::age_bus_value(cycle_count n) {
+void SIDFP::age_bus_value(cycle_count n) {
   if (bus_value_ttl != 0) {
     bus_value_ttl -= n;
     if (bus_value_ttl <= 0) {
@@ -617,7 +592,7 @@ void SID::age_bus_value(cycle_count n) {
 // ----------------------------------------------------------------------------
 // SID clocking - 1 cycle.
 // ----------------------------------------------------------------------------
-void SID::clock()
+void SIDFP::clock()
 {
   int i;
 
@@ -654,7 +629,7 @@ void SID::clock()
 // }
 // 
 // ----------------------------------------------------------------------------
-int SID::clock(cycle_count& delta_t, short* buf, int n, int interleave)
+int SIDFP::clock(cycle_count& delta_t, short* buf, int n, int interleave)
 {
   /* XXX I assume n is generally large enough for delta_t here... */
   age_bus_value(delta_t);
@@ -686,7 +661,7 @@ int SID::clock(cycle_count& delta_t, short* buf, int n, int interleave)
 // SID clocking with audio sampling - delta clocking picking nearest sample.
 // ----------------------------------------------------------------------------
 RESID_INLINE
-int SID::clock_fast(cycle_count& delta_t, short* buf, int n,
+int SIDFP::clock_fast(cycle_count& delta_t, short* buf, int n,
 		    int interleave)
 {
   age_bus_value(delta_t);
@@ -713,7 +688,7 @@ int SID::clock_fast(cycle_count& delta_t, short* buf, int n,
 // sampling noise.
 // ----------------------------------------------------------------------------
 RESID_INLINE
-int SID::clock_interpolate(cycle_count& delta_t, short* buf, int n,
+int SIDFP::clock_interpolate(cycle_count& delta_t, short* buf, int n,
 			   int interleave)
 {
   int s = 0;
@@ -855,7 +830,7 @@ static float convolve(const float *a, const float *b, int n)
 // implementation dependent in the C++ standard.
 // ----------------------------------------------------------------------------
 RESID_INLINE
-int SID::clock_resample_interpolate(cycle_count& delta_t, short* buf, int n,
+int SIDFP::clock_resample_interpolate(cycle_count& delta_t, short* buf, int n,
 				    int interleave)
 {
   int s = 0;
@@ -925,7 +900,7 @@ int SID::clock_resample_interpolate(cycle_count& delta_t, short* buf, int n,
 // SID clocking with audio sampling - cycle based with audio resampling.
 // ----------------------------------------------------------------------------
 RESID_INLINE
-int SID::clock_resample_fast(cycle_count& delta_t, short* buf, int n,
+int SIDFP::clock_resample_fast(cycle_count& delta_t, short* buf, int n,
 			     int interleave)
 {
   int s = 0;
