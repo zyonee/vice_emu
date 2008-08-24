@@ -1,8 +1,8 @@
 /*
- * version.h
+ * c64dtvcontroller.m - C64 DTV app controller
  *
  * Written by
- *  Andreas Boose <viceteam@t-online.de>
+ *  Christian Vogelgsang <chris@vogelgsang.org>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -24,19 +24,10 @@
  *
  */
 
-#ifndef __VERSION_H__
-#define __VERSION_H__
+#import "c64dtvcontroller.h"
+#import "viceapplication.h"
+#import "c64dtvmachinecontroller.h"
 
-#ifndef VERSION
-#define VERSION "2.0.3"
-#endif
+@implementation C64DTVController
 
-#ifndef VERSION_RC_NUMBER
-#define VERSION_RC_NUMBER 2,0,3,0
-#endif
-
-#ifndef PACKAGE
-#define PACKAGE "vice"
-#endif
-
-#endif
+@end

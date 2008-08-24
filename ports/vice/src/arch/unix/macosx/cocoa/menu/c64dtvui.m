@@ -1,8 +1,8 @@
 /*
- * version.h
+ * c64dtvui.m - C64 DTV ui interface
  *
  * Written by
- *  Andreas Boose <viceteam@t-online.de>
+ *  Christian Vogelgsang <chris@vogelgsang.org>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -24,19 +24,18 @@
  *
  */
 
-#ifndef __VERSION_H__
-#define __VERSION_H__
+#import "c64dtvcontroller.h"
+#import "c64dtvmachinecontroller.h"
+#import "vicemachine.h"
 
-#ifndef VERSION
-#define VERSION "2.0.3"
-#endif
+int c64dtvui_init(void)
+{
+    // ensure that the C64Controller gets compiled in
+    [C64DTVController class];
+    [theVICEMachine setMachineController:[[C64DTVMachineController alloc] init]];
+    return 0;
+}
 
-#ifndef VERSION_RC_NUMBER
-#define VERSION_RC_NUMBER 2,0,3,0
-#endif
-
-#ifndef PACKAGE
-#define PACKAGE "vice"
-#endif
-
-#endif
+void c64dtvui_shutdown(void)
+{
+}

@@ -433,7 +433,7 @@ static void ui_translate_menu_items(HMENU menu, ui_menu_translation_table_t *tra
 
 /*  Create a Window for the emulation.  */
 HWND ui_open_canvas_window(const char *title, unsigned int width,
-                           unsigned int height, int fullscreen)
+                           unsigned int height)
 {
     HWND hwnd;
     int xpos, ypos;
@@ -465,9 +465,7 @@ HWND ui_open_canvas_window(const char *title, unsigned int width,
     window_canvas_ysize[number_of_windows] = height;
     number_of_windows++;
 
-    if (!fullscreen) {
-        statusbar_create(hwnd);
-    }
+    statusbar_create(hwnd);
 
     ui_resize_canvas_window(hwnd, width, height);
 
