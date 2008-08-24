@@ -31,7 +31,7 @@
 
 /* resid itself is always compiled with C64DTV support */
 #define SUPPORT_C64DTV
-#include "resid/sid.h"
+#include "resid-fp/sid.h"
 
 extern "C" {
 
@@ -58,7 +58,7 @@ struct sound_s
 };
 
 
-static sound_t *resid_open(BYTE *sidstate)
+static sound_t *residfp_open(BYTE *sidstate)
 {
     sound_t *psid;
     int	i;
@@ -72,7 +72,7 @@ static sound_t *resid_open(BYTE *sidstate)
     return psid;
 }
 
-static int resid_init(sound_t *psid, int speed, int cycles_per_sec)
+static int residfp_init(sound_t *psid, int speed, int cycles_per_sec)
 {
     sampling_method method;
     char model_text[100];
@@ -211,42 +211,42 @@ static int resid_init(sound_t *psid, int speed, int cycles_per_sec)
     return 1;
 }
 
-static void resid_close(sound_t *psid)
+static void residfp_close(sound_t *psid)
 {
     delete psid;
 }
 
-static BYTE resid_read(sound_t *psid, WORD addr)
+static BYTE residfp_read(sound_t *psid, WORD addr)
 {
     return psid->sid.read(addr);
 }
 
-static void resid_store(sound_t *psid, WORD addr, BYTE byte)
+static void residfp_store(sound_t *psid, WORD addr, BYTE byte)
 {
     psid->sid.write(addr, byte);
 }
 
-static void resid_reset(sound_t *psid, CLOCK cpu_clk)
+static void residfp_reset(sound_t *psid, CLOCK cpu_clk)
 {
     psid->sid.reset();
 }
 
-static int resid_calculate_samples(sound_t *psid, SWORD *pbuf, int nr,
+static int residfp_calculate_samples(sound_t *psid, SWORD *pbuf, int nr,
                                    int interleave, int *delta_t)
 {
     return psid->sid.clock(*delta_t, pbuf, nr, interleave);
 }
 
-static void resid_prevent_clk_overflow(sound_t *psid, CLOCK sub)
+static void residfp_prevent_clk_overflow(sound_t *psid, CLOCK sub)
 {
 }
 
-static char *resid_dump_state(sound_t *psid)
+static char *residfp_dump_state(sound_t *psid)
 {
     return lib_stralloc("");
 }
 
-static void resid_state_read(sound_t *psid, sid_snapshot_state_t *sid_state)
+static void residfp_state_read(sound_t *psid, sid_snapshot_state_t *sid_state)
 {
     SID::State state;
     unsigned int i;
@@ -272,7 +272,7 @@ static void resid_state_read(sound_t *psid, sid_snapshot_state_t *sid_state)
     }
 }
 
-static void resid_state_write(sound_t *psid, sid_snapshot_state_t *sid_state)
+static void residfp_state_write(sound_t *psid, sid_snapshot_state_t *sid_state)
 {
     SID::State state;
     unsigned int i;
@@ -302,17 +302,17 @@ static void resid_state_write(sound_t *psid, sid_snapshot_state_t *sid_state)
 
 sid_engine_t resid_hooks =
 {
-    resid_open,
-    resid_init,
-    resid_close,
-    resid_read,
-    resid_store,
-    resid_reset,
-    resid_calculate_samples,
-    resid_prevent_clk_overflow,
-    resid_dump_state,
-    resid_state_read,
-    resid_state_write
+    residfp_open,
+    residfp_init,
+    residfp_close,
+    residfp_read,
+    residfp_store,
+    residfp_reset,
+    residfp_calculate_samples,
+    residfp_prevent_clk_overflow,
+    residfp_dump_state,
+    residfp_state_read,
+    residfp_state_write
 };
 
 } // extern "C"
