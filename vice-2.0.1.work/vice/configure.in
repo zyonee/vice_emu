@@ -1750,7 +1750,7 @@ elif test x"$is_win32" = "xyes"; then
 
   dnl On Windows, we already know what we want.
 
-  LIBS="$LIBS -lkernel32 -luser32 -lgdi32 -lwinmm -lcomdlg32 -lcomctl32 -lddraw -ldsound -ldinput -lth32 -lwsock32 -lversion"
+  LIBS="$LIBS -lkernel32 -luser32 -lgdi32 -lwinmm -lcomdlg32 -lcomctl32 -lddraw -ldsound -lth32 -lwsock32 -lversion"
 
   AC_CHECK_LIB(dxguid, GUID_SysMouse,[LIBS="$LIBS -ldxguid";
                AC_DEFINE(HAVE_GUIDLIB,,

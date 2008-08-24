@@ -26,6 +26,8 @@
 
 #include "vice.h"
 
+#define DIRECTINPUT_VERSION     0x0500
+
 #include <windows.h>
 #include <dinput.h>
 #include <stdio.h>
