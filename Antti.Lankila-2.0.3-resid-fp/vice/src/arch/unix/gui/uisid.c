@@ -98,7 +98,7 @@ ui_menu_entry_t sid_model_submenu[] = {
       (ui_callback_t)radio_SidModel, (ui_callback_data_t)SID_MODEL_6581R3_4485, NULL },
     { N_("*6581R4 1986S (very dark)"),
       (ui_callback_t)radio_SidModel, (ui_callback_data_t)SID_MODEL_6581R4_1986S, NULL },
-    { N_("*8580 3691"),
+    { N_("*8580 3691 (light)"),
       (ui_callback_t)radio_SidModel, (ui_callback_data_t)SID_MODEL_8580R5_3691, NULL },
     { N_("*8580 3691 + digi boost"),
       (ui_callback_t)radio_SidModel, (ui_callback_data_t)SID_MODEL_8580R5_3691D, NULL },

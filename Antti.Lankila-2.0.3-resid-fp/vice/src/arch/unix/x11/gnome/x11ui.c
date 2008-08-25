@@ -997,23 +997,24 @@ int ui_open_canvas_window(video_canvas_t *c, const char *title,
     gtk_box_pack_start(GTK_BOX(new_pane),new_canvas,TRUE,TRUE,0);
     gtk_widget_show(new_canvas);
 
-    /* XVideo must be refreshed when the application window is moved. */
-    g_signal_connect(G_OBJECT(new_window), "configure-event",
-		     G_CALLBACK(configure_callback_app),
-		     (void*) c);
-    g_signal_connect(G_OBJECT(new_canvas), "configure-event",
-		     G_CALLBACK(configure_callback_canvas),
-		     (void*) c);
-    g_signal_connect(G_OBJECT(new_canvas),"expose-event",
-		     G_CALLBACK(exposure_callback_canvas),
-		     (void*) c);
-    g_signal_connect(G_OBJECT(new_canvas),"enter-notify-event",
-		     G_CALLBACK(enter_window_callback),
-		     NULL);
-    g_signal_connect(G_OBJECT(new_canvas),"map-event",
-		     G_CALLBACK(map_callback),
-		     NULL);
-
+    if(!vsid_mode) {
+        /* XVideo must be refreshed when the application window is moved. */
+        g_signal_connect(G_OBJECT(new_window), "configure-event",
+    		     G_CALLBACK(configure_callback_app),
+    		     (void*) c);
+        g_signal_connect(G_OBJECT(new_canvas), "configure-event",
+    		     G_CALLBACK(configure_callback_canvas),
+    		     (void*) c);
+        g_signal_connect(G_OBJECT(new_canvas),"expose-event",
+    		     G_CALLBACK(exposure_callback_canvas),
+    		     (void*) c);
+        g_signal_connect(G_OBJECT(new_canvas),"enter-notify-event",
+    		     G_CALLBACK(enter_window_callback),
+    		     NULL);
+        g_signal_connect(G_OBJECT(new_canvas),"map-event",
+    		     G_CALLBACK(map_callback),
+    		     NULL);
+    }
     
     if (c->videoconfig->hwscale && !vsid_mode) {
         gint window_width, window_height;
