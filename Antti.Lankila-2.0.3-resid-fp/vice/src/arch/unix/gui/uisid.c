@@ -73,37 +73,40 @@ UI_MENU_DEFINE_RADIO(SidModel)
 
 ui_menu_entry_t sid_model_submenu[] = {
     { N_("*6581 (old)"),
-      (ui_callback_t)radio_SidModel, (ui_callback_data_t)0, NULL },
-#ifdef HAVE_RESID_FP
-    { N_("*6581R3 4885 (very light)"),
-      (ui_callback_t)radio_SidModel, (ui_callback_data_t)8, NULL },
-    { N_("*6581R3 0486S (light)"),
-      (ui_callback_t)radio_SidModel, (ui_callback_data_t)9, NULL },
-    { N_("*6581R3 3984 (light avg)"),
-      (ui_callback_t)radio_SidModel, (ui_callback_data_t)10, NULL },
-    { N_("*6581R4AR 3789 (avg)"),
-      (ui_callback_t)radio_SidModel, (ui_callback_data_t)11, NULL },
-    { N_("*6581R3 4485 (dark)"),
-      (ui_callback_t)radio_SidModel, (ui_callback_data_t)12, NULL },
-    { N_("*6581R4 1986S (very dark)"),
-      (ui_callback_t)radio_SidModel, (ui_callback_data_t)13, NULL },
-#endif
+      (ui_callback_t)radio_SidModel, (ui_callback_data_t)SID_MODEL_6581, NULL },
     { N_("*8580 (new)"),
-      (ui_callback_t)radio_SidModel, (ui_callback_data_t)1, NULL },
-#ifdef HAVE_RESID_FP
-    { N_("*8580 1489 (dark)"),
-      (ui_callback_t)radio_SidModel, (ui_callback_data_t)5, NULL },
-#endif
+      (ui_callback_t)radio_SidModel, (ui_callback_data_t)SID_MODEL_8580, NULL },
     { N_("*8580 + digi boost"),
-      (ui_callback_t)radio_SidModel, (ui_callback_data_t)2, NULL },
-#ifdef HAVE_RESID_FP
-    { N_("*8580 1489 + digi boost"),
-      (ui_callback_t)radio_SidModel, (ui_callback_data_t)6, NULL },
-#endif
+      (ui_callback_t)radio_SidModel, (ui_callback_data_t)SID_MODEL_8580D, NULL },
+/*
     { N_("*6581R4 (not yet implemented)"),
-      (ui_callback_t)radio_SidModel, (ui_callback_data_t)3, NULL },
+      (ui_callback_t)radio_SidModel, (ui_callback_data_t)SID_MODEL_6581R4, NULL },
+*/
     { N_("*DTVSID"),
-      (ui_callback_t)radio_SidModel, (ui_callback_data_t)4, NULL },
+      (ui_callback_t)radio_SidModel, (ui_callback_data_t)SID_MODEL_DTVSID, NULL },
+#ifdef HAVE_RESID_FP
+    { "--" },
+    { N_("*6581R3 4885 (very light)"),
+      (ui_callback_t)radio_SidModel, (ui_callback_data_t)SID_MODEL_6581R3_4885, NULL },
+    { N_("*6581R3 0486S (light)"),
+      (ui_callback_t)radio_SidModel, (ui_callback_data_t)SID_MODEL_6581R3_0486S, NULL },
+    { N_("*6581R3 3984 (light avg)"),
+      (ui_callback_t)radio_SidModel, (ui_callback_data_t)SID_MODEL_6581R3_3984, NULL },
+    { N_("*6581R4AR 3789 (avg)"),
+      (ui_callback_t)radio_SidModel, (ui_callback_data_t)SID_MODEL_6581R4AR_3789, NULL },
+    { N_("*6581R3 4485 (dark)"),
+      (ui_callback_t)radio_SidModel, (ui_callback_data_t)SID_MODEL_6581R3_4485, NULL },
+    { N_("*6581R4 1986S (very dark)"),
+      (ui_callback_t)radio_SidModel, (ui_callback_data_t)SID_MODEL_6581R4_1986S, NULL },
+    { N_("*8580 3691"),
+      (ui_callback_t)radio_SidModel, (ui_callback_data_t)SID_MODEL_8580R5_3691, NULL },
+    { N_("*8580 3691 + digi boost"),
+      (ui_callback_t)radio_SidModel, (ui_callback_data_t)SID_MODEL_8580R5_3691D, NULL },
+    { N_("*8580 1489 (dark)"),
+      (ui_callback_t)radio_SidModel, (ui_callback_data_t)SID_MODEL_8580R5_1489, NULL },
+    { N_("*8580 1489 + digi boost"),
+      (ui_callback_t)radio_SidModel, (ui_callback_data_t)SID_MODEL_8580R5_1489D, NULL },
+#endif
     { NULL }
 };
 

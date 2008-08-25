@@ -111,52 +111,52 @@ static int residfp_init(sound_t *psid, int speed, int cycles_per_sec)
 
     switch (model) {
 
-    case 1:
+    case SID_MODEL_8580R5_3691:
       psid->sid.set_chip_model(MOS8580FP);
       psid->sid.get_filter().set_type4_properties(6.55, 20.0);
       strcpy(model_text, "8580R5 3691");
       break;
-    case 2:
+    case SID_MODEL_8580R5_3691D:
       psid->sid.set_chip_model(MOS8580FP);
       psid->sid.get_filter().set_type4_properties(6.55, 20.0);
       psid->sid.input(-32768);
       strcpy(model_text, "8580R5 3691 + digi boost");
       break;
 
-    case 5:
+    case SID_MODEL_8580R5_1489:
       psid->sid.set_chip_model(MOS8580FP);
       psid->sid.get_filter().set_type4_properties(5.7, 20.0);
       strcpy(model_text, "8580R5 1489");
       break;
-    case 6:
+    case SID_MODEL_8580R5_1489D:
       psid->sid.set_chip_model(MOS8580FP);
       psid->sid.get_filter().set_type4_properties(5.7, 20.0);
       psid->sid.input(-32768);
       strcpy(model_text, "8580R5 1489 + digi boost");
       break;
 
-    case 8:
+    case SID_MODEL_6581R3_4885:
       psid->sid.get_filter().set_type3_properties(8.5e5, 2.2e6, 1.0075, 1.8e4);
       strcpy(model_text, "6581R3 4885");
       break;
-    case 9:
+    case SID_MODEL_6581R3_0486S:
       psid->sid.get_filter().set_type3_properties(1.1e6, 1.5e7, 1.006, 1e4);
       strcpy(model_text, "6581R3 0486S");
       break;
-    case 10:
+    case SID_MODEL_6581R3_3984:
       psid->sid.get_filter().set_type3_properties(1.8e6f, 3.5e7f, 1.0051f, 1.45e4f);
       strcpy(model_text, "6581R3 3984");
       break;
     default:
-    case 11:
+    case SID_MODEL_6581R4AR_3789:
       psid->sid.get_filter().set_type3_properties(1.40e6f, 1.47e8f, 1.0059f, 1.55e4f);
       strcpy(model_text, "6581R4AR 3789");
       break;
-    case 12:
+    case SID_MODEL_6581R3_4485:
       psid->sid.get_filter().set_type3_properties(1.3e6, 5.2e8, 1.0053, 1.1e4);
       strcpy(model_text, "6581R3 4485");
       break;
-    case 13:
+    case SID_MODEL_6581R4_1986S:
       psid->sid.get_filter().set_type3_properties(1.33e6, 2.2e9, 1.0056, 7e3);
       strcpy(model_text, "6581R4 1986S");
       break;
