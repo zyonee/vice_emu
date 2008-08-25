@@ -6,8 +6,6 @@
  *  Dag Lem <resid@nimrod.no>
  *  Andreas Boose <viceteam@t-online.de>
  *  Antti S. Lankila <alankila@bel.fi>
- * C64 DTV modifications written by
- *  Daniel Kahlin <daniel@kahlin.net>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -106,51 +104,37 @@ static int residfp_init(sound_t *psid, int speed, int cycles_per_sec)
       psid->sid.set_voice_nonlinearity(1.0);
       psid->sid.get_filter().set_distortion_properties(0., 0., 0.);
     } else {
-      psid->sid.set_chip_model(MOS6581);
+      psid->sid.set_chip_model(MOS6581FP);
       psid->sid.set_voice_nonlinearity(0.966);
       psid->sid.get_filter().set_distortion_properties(2.0e-3, 1350., 1e-4);
     }
 
     switch (model) {
-    default:
-    case 0:
-      psid->sid.set_chip_model(MOS6581);
-      /* This is similar to ReSID chip, albeit it diverges at ~8 kHz for FC
-       * values > 1536, and I don't think the measurements on the curve are
-       * correct as there seems to be no such ceiling on any of the other chips
-       * I have examined. --alankila */
-      psid->sid.get_filter().set_type3_properties(1.6e6, 6e7, 1.007, 1.9e4);
-      strcpy(model_text, "6581 (resid)");
-      break;
+
     case 1:
-      psid->sid.set_chip_model(MOS8580);
+      psid->sid.set_chip_model(MOS8580FP);
       psid->sid.get_filter().set_type4_properties(6.55, 20.0);
       strcpy(model_text, "8580R5 3691");
       break;
     case 2:
-      psid->sid.set_chip_model(MOS8580);
+      psid->sid.set_chip_model(MOS8580FP);
       psid->sid.get_filter().set_type4_properties(6.55, 20.0);
       psid->sid.input(-32768);
       strcpy(model_text, "8580R5 3691 + digi boost");
       break;
-#ifdef C64DTV
-    case 4:
-      psid->sid.set_chip_model(DTVSID);
-      filters_enabled = 0;
-      strcpy(model_text, "DTVSID");
-      break;
-#endif
+
     case 5:
-      psid->sid.set_chip_model(MOS8580);
+      psid->sid.set_chip_model(MOS8580FP);
       psid->sid.get_filter().set_type4_properties(5.7, 20.0);
       strcpy(model_text, "8580R5 1489");
       break;
     case 6:
-      psid->sid.set_chip_model(MOS8580);
+      psid->sid.set_chip_model(MOS8580FP);
       psid->sid.get_filter().set_type4_properties(5.7, 20.0);
       psid->sid.input(-32768);
       strcpy(model_text, "8580R5 1489 + digi boost");
       break;
+
     case 8:
       psid->sid.get_filter().set_type3_properties(8.5e5, 2.2e6, 1.0075, 1.8e4);
       strcpy(model_text, "6581R3 4885");
@@ -163,6 +147,7 @@ static int residfp_init(sound_t *psid, int speed, int cycles_per_sec)
       psid->sid.get_filter().set_type3_properties(1.8e6f, 3.5e7f, 1.0051f, 1.45e4f);
       strcpy(model_text, "6581R3 3984");
       break;
+    default:
     case 11:
       psid->sid.get_filter().set_type3_properties(1.40e6f, 1.47e8f, 1.0059f, 1.55e4f);
       strcpy(model_text, "6581R4AR 3789");

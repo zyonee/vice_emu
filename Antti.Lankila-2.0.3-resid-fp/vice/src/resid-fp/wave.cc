@@ -27,7 +27,7 @@ WaveformGeneratorFP::WaveformGeneratorFP()
 {
   sync_source = this;
 
-  set_chip_model(MOS6581);
+  set_chip_model(MOS6581FP);
 
   reset();
 }
@@ -48,7 +48,7 @@ void WaveformGeneratorFP::set_sync_source(WaveformGeneratorFP* source)
 // ----------------------------------------------------------------------------
 void WaveformGeneratorFP::set_chip_model(chip_model model)
 {
-  if (model == MOS6581) {
+  if (model == MOS6581FP) {
     ST_lockup = true;
     wave__ST = wave6581__ST;
     wave_P_T = wave6581_P_T;

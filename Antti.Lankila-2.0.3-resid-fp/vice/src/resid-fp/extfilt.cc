@@ -27,7 +27,7 @@ ExternalFilterFP::ExternalFilterFP()
 {
   reset();
   enable_filter(true);
-  set_chip_model(MOS6581);
+  set_chip_model(MOS6581FP);
   set_clock_frequency(1e6f);
   set_sampling_parameter(15915.6f);
 }
@@ -69,7 +69,7 @@ void ExternalFilterFP::_set_sampling_parameter()
 // ----------------------------------------------------------------------------
 void ExternalFilterFP::set_chip_model(chip_model model)
 {
-  if (model == MOS6581) {
+  if (model == MOS6581FP) {
     // Approximate the DC output level to be removed if the external
     // filter is turned off. (0x800 - wave_zero + voice DC) * maxenv * voices
     //  - extin offset...

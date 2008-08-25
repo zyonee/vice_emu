@@ -46,13 +46,10 @@ typedef unsigned int reg16;
 typedef unsigned int reg24;
 
 typedef int cycle_count;
-typedef int sound_sample;
-typedef sound_sample fc_point[2];
 
-enum chip_model { MOS6581=1, MOS8580 };
+enum chip_model { MOS6581FP=1, MOS8580FP };
 
-enum sampling_method { SAMPLE_FAST, SAMPLE_INTERPOLATE,
-		       SAMPLE_RESAMPLE_INTERPOLATE, SAMPLE_RESAMPLE_FAST };
+enum sampling_method { SAMPLE_INTERPOLATE, SAMPLE_RESAMPLE_INTERPOLATE, SAMPLE_RESAMPLE_FAST };
 
 extern "C"
 {
@@ -64,7 +61,6 @@ const char* resid_version_string = VERSION;
 }
 
 // Inlining on/off.
-#define RESID_INLINING @RESID_INLINING@
 #define RESID_INLINE @RESID_INLINE@
 
 #endif // not __SIDDEFS_H__

@@ -38,7 +38,7 @@ FilterFP::FilterFP()
   /* sound similar to trurl8580r5_3691 */
   set_type4_properties(6.55f, 20.f);
   reset();
-  set_chip_model(MOS6581);
+  set_chip_model(MOS6581FP);
 }
 
 
@@ -143,7 +143,7 @@ void FilterFP::writeMODE_VOL(reg8 mode_vol)
 // Set filter cutoff frequency.
 void FilterFP::set_w0()
 {
-  if (model == MOS6581) {
+  if (model == MOS6581FP) {
     /* div once by extra kinkiness because I fitted the type3 eq with that variant. */
     float type3_fc_kink = SIDFP::kinked_dac(fc, kinkiness, 11) / kinkiness;
     type3_fc_kink_exp = type3_offset * expf(type3_fc_kink * type3_steepness);
@@ -152,7 +152,7 @@ void FilterFP::set_w0()
     else
 	type3_fc_kink_distortion_offset = 9e9; /* never triggers */
   }
-  if (model == MOS8580) {
+  if (model == MOS8580FP) {
     type4_w0_cache = type4_w0();
   }
 }
@@ -161,9 +161,10 @@ void FilterFP::set_w0()
 void FilterFP::set_Q()
 {
   float Q = res / 15.f;
-  if (model == MOS6581) {
+  if (model == MOS6581FP) {
     _1_div_Q = 1.f / (0.8f + 1.1f * Q);
-  } else {
+  }
+  if (model == MOS8580FP) {
     _1_div_Q = 1.f / (0.707 + Q);
   }
 }

@@ -658,27 +658,6 @@ int SIDFP::clock(cycle_count& delta_t, short* buf, int n, int interleave)
 }
 
 // ----------------------------------------------------------------------------
-// SID clocking with audio sampling - delta clocking picking nearest sample.
-// ----------------------------------------------------------------------------
-RESID_INLINE
-int SIDFP::clock_fast(cycle_count& delta_t, short* buf, int n,
-		    int interleave)
-{
-  age_bus_value(delta_t);
-
-#ifdef __SSE__
-  int old = _mm_getcsr();
-  _mm_setcsr(old | 0x8040);
-#endif
-  int res = clock_interpolate(delta_t, buf, n, interleave);
-#ifdef __SSE__
-  _mm_setcsr(old);
-#endif
-  return res;
-}
-
-
-// ----------------------------------------------------------------------------
 // SID clocking with audio sampling - cycle based with linear sample
 // interpolation.
 //

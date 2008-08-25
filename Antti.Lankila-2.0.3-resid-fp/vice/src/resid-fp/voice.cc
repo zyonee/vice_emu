@@ -27,7 +27,7 @@
 VoiceFP::VoiceFP()
 {
   nonlinearity = 1.f;
-  set_chip_model(MOS6581);
+  set_chip_model(MOS6581FP);
 }
 
 /* Keep this at 1.f for 8580, there are no 6581-only codepaths in this file! */
@@ -44,7 +44,7 @@ void VoiceFP::set_chip_model(chip_model model)
 {
   wave.set_chip_model(model);
 
-  if (model == MOS6581) {
+  if (model == MOS6581FP) {
     /* there is some level from each voice even if the env is down and osc
      * is stopped. You can hear this by routing a voice into filter (filter
      * should be kept disabled for this) as the master level changes. This

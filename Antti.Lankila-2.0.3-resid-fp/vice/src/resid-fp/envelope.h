@@ -80,14 +80,6 @@ friend class SIDFP;
 
 
 // ----------------------------------------------------------------------------
-// Inline functions.
-// The following functions are defined inline because they are called every
-// time a sample is calculated.
-// ----------------------------------------------------------------------------
-
-#if RESID_INLINING || defined(__ENVELOPE_CC__)
-
-// ----------------------------------------------------------------------------
 // SID clocking - 1 cycle.
 // ----------------------------------------------------------------------------
 RESID_INLINE
@@ -178,7 +170,5 @@ reg8 EnvelopeGeneratorFP::output()
 {
   return envelope_counter;
 }
-
-#endif // RESID_INLINING || defined(__ENVELOPE_CC__)
 
 #endif // not __ENVELOPE_H__

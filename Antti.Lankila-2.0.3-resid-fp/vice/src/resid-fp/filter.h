@@ -205,8 +205,6 @@ friend class SIDFP;
 const float kinkiness = 0.966f;
 const float sidcaps_6581 = 470e-12;
 
-#if RESID_INLINING || defined(__FILTER_CC__)
-
 RESID_INLINE
 static float fastexp(float val) {
     typedef union {
@@ -298,23 +296,22 @@ float FilterFP::clock(float voice1,
 		   float ext_in)
 {
     /* Avoid denormal numbers by using small offsets from 0 */
-    float Vi = 0.f, Vnf = 0.f;
+    float Vi = 0.f, Vf = 0;
 
     // Route voices into or around filter.
-    ((filt & 1) ? Vi : Vnf) += voice1;
-    ((filt & 2) ? Vi : Vnf) += voice2;
+    ((filt & 1) ? Vi : Vf) += voice1;
+    ((filt & 2) ? Vi : Vf) += voice2;
     // NB! Voice 3 is not silenced by voice3off if it is routed through
     // the filter.
     if (filt & 4)
 	Vi += voice3;
     else if (! voice3off)
-	Vnf += voice3;
-    ((filt & 8) ? Vi : Vnf) += ext_in;
+	Vf += voice3;
+    ((filt & 8) ? Vi : Vf) += ext_in;
   
     if (! enabled)
-        return Vnf - Vi;
+        return Vf - Vi;
 
-    float Vf = Vnf;
     if (hp_bp_lp & 1)
 	Vf += Vlp;
     if (hp_bp_lp & 2)
@@ -322,7 +319,7 @@ float FilterFP::clock(float voice1,
     if (hp_bp_lp & 4)
 	Vf += Vhp;
     
-    if (model == MOS6581) {
+    if (model == MOS6581FP) {
 	/* Model output strip mixing */
 	if (hp_bp_lp & 1)
 	    Vlp += (Vf - Vlp) * (distortion_cf_threshold);
@@ -357,7 +354,5 @@ float FilterFP::clock(float voice1,
     
     return Vf * volf;
 }
-
-#endif // RESID_INLINING || defined(__FILTER_CC__)
 
 #endif // not __FILTER_H__
