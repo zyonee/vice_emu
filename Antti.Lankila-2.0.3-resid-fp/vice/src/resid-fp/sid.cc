@@ -39,10 +39,10 @@ static cpu_x86_regs_t get_cpu_regs(unsigned int index)
   cpu_x86_regs_t retval;
 
   asm("movl %4, %%eax; cpuid; movl %%eax, %0; movl %%ebx, %1; movl %%ecx, %2; movl %%edx, %3;"
-      : "m=" (retval.eax),
-        "m=" (retval.ebx),
-        "m=" (retval.ecx),
-        "m=" (retval.edx)
+      : "=m" (retval.eax),
+        "=m" (retval.ebx),
+        "=m" (retval.ecx),
+        "=m" (retval.edx)
       : "r"  (index)
       : "eax", "ebx", "ecx", "edx");
 
@@ -54,6 +54,9 @@ int detect_sse_result = 0;
 
 static int detect_sse(void)
 {
+#ifdef __x86_64__
+  return 1;
+#else
   unsigned long temp1, temp2;
   cpu_x86_regs_t cpu_id_return;
   unsigned int cpu_type, cpu_level;
@@ -67,8 +70,8 @@ static int detect_sse(void)
 
     /* see if we are dealing with a cpu that has the cpuid instruction */
     asm("pushfl; popl %%eax; movl %%eax, %0; xorl $0x200000, %%eax; pushl %%eax; popfl; pushfl; popl %%eax; movl %%eax, %1; pushl %0; popfl "
-        : "r=" (temp1),
-        "r=" (temp2)
+        : "=r" (temp1),
+        "=r" (temp2)
         :
         : "eax");
     
@@ -106,10 +109,11 @@ static int detect_sse(void)
     {
       detect_sse_result = 1;
     }
-    detect_sse_done;
+    detect_sse_done = 1;
 
     return detect_sse_result;
   }
+#endif
 }
 #endif
 
@@ -560,9 +564,7 @@ bool SIDFP::set_sampling_parameters(double clock_freq, sampling_method method,
 
   filter.set_clock_frequency(clock_freq);
   extfilt.set_clock_frequency(clock_freq);
-
-  cycles_per_sample =
-    cycle_count(clock_freq/sample_freq*(1 << FIXP_SHIFT) + 0.5);
+  adjust_sampling_frequency(sample_freq);
 
   sample_offset = 0;
   sample_prev = 0;
@@ -577,14 +579,12 @@ bool SIDFP::set_sampling_parameters(double clock_freq, sampling_method method,
     return true;
   }
 
-  const double pi = 3.1415926535897932385;
-
   // 16 bits -> -96dB stopband attenuation.
   const double A = -20*log10(1.0/(1 << 16));
   // A fraction of the bandwidth is allocated to the transition band,
-  double dw = (1 - 2*pass_freq/sample_freq)*pi;
+  double dw = (1 - 2*pass_freq/sample_freq)*M_PI;
   // The cutoff frequency is midway through the transition band.
-  double wc = (2*pass_freq/sample_freq + 1)*pi/2;
+  double wc = (2*pass_freq/sample_freq + 1)*M_PI/2;
 
   // For calculation of beta and N see the reference for the kaiserord
   // function in the MATLAB Signal Processing Toolbox:
@@ -593,7 +593,7 @@ bool SIDFP::set_sampling_parameters(double clock_freq, sampling_method method,
   const double I0beta = I0(beta);
 
   // The filter order will maximally be 124 with the current constraints.
-  // N >= (96.33 - 7.95)/(2.285*0.1*pi) -> N >= 123
+  // N >= (96.33 - 7.95)/(2.285*0.1*M_PI) -> N >= 123
   // The filter order is equal to the number of zero crossings, i.e.
   // it should be an even number (sinc is symmetric about x = 0).
   int N = int((A - 7.95)/(2.285*dw) + 0.5);
@@ -632,7 +632,7 @@ bool SIDFP::set_sampling_parameters(double clock_freq, sampling_method method,
 	fabs(temp) <= 1 ? I0(beta*sqrt(1 - temp*temp))/I0beta : 0;
       double sincwt =
 	fabs(wt) >= 1e-6 ? sin(wt)/wt : 1;
-      fir[fir_offset + j] = filter_scale*f_samples_per_cycle*wc/pi*sincwt*Kaiser;
+      fir[fir_offset + j] = filter_scale*f_samples_per_cycle*wc/M_PI*sincwt*Kaiser;
     }
   }
 
@@ -664,8 +664,7 @@ bool SIDFP::set_sampling_parameters(double clock_freq, sampling_method method,
 // ----------------------------------------------------------------------------
 void SIDFP::adjust_sampling_frequency(double sample_freq)
 {
-  cycles_per_sample =
-    cycle_count(clock_frequency/sample_freq*(1 << FIXP_SHIFT) + 0.5);
+  cycles_per_sample = clock_frequency/sample_freq;
 }
 
 void SIDFP::age_bus_value(cycle_count n) {
@@ -724,7 +723,7 @@ int SIDFP::clock(cycle_count& delta_t, short* buf, int n, int interleave)
   age_bus_value(delta_t);
   /* disable denormal numbers */
 #ifdef __SSE__
-  int old;
+  int old = 0;
   if (detect_sse() == 1)
   {
     old = _mm_getcsr();
@@ -770,8 +769,8 @@ int SIDFP::clock_interpolate(cycle_count& delta_t, short* buf, int n,
   int i;
 
   for (;;) {
-    cycle_count next_sample_offset = sample_offset + cycles_per_sample;
-    cycle_count delta_t_sample = next_sample_offset >> FIXP_SHIFT;
+    float next_sample_offset = sample_offset + cycles_per_sample;
+    int delta_t_sample = (int) next_sample_offset;
     if (delta_t_sample > delta_t) {
       break;
     }
@@ -787,10 +786,10 @@ int SIDFP::clock_interpolate(cycle_count& delta_t, short* buf, int n,
     }
 
     delta_t -= delta_t_sample;
-    sample_offset = next_sample_offset & FIXP_MASK;
+    sample_offset = next_sample_offset - delta_t_sample;
 
     float sample_now = output();
-    int v = (int)(sample_prev + (sample_offset*(sample_now - sample_prev) / (1 << FIXP_SHIFT)));
+    int v = (int)(sample_prev + (sample_offset * (sample_now - sample_prev)));
     // Saturated arithmetics to guard against 16 bit sample overflow.
     const int half = 1 << 15;
     if (v >= half) {
@@ -811,7 +810,7 @@ int SIDFP::clock_interpolate(cycle_count& delta_t, short* buf, int n,
     sample_prev = output();
     clock();
   }
-  sample_offset -= delta_t << FIXP_SHIFT;
+  sample_offset -= delta_t;
   delta_t = 0;
   return s;
 }
@@ -825,9 +824,10 @@ static float convolve(const float *a, const float *b, int n)
         __m128 out4 = { 0, 0, 0, 0 };
 
         /* examine if we can use aligned loads on both pointers */
-        /* XXX why doesn't stdint.h provide me with ptrdiff_t & intptr_t? */
         int diff = (int) (a - b) & 0xf;
-        int a_align = (int) (long) a & 0xf;
+        /* long cast is no-op for x86-32, but x86-64 gcc needs 64 bit intermediate
+         * to convince compiler we mean this. */
+        unsigned int a_align = (unsigned int) (unsigned long) a & 0xf;
 
         /* advance if necessary. We can't let n fall < 0, so no while (n --). */
         while (n > 0 && a_align != 0 && a_align != 16) {
@@ -914,41 +914,45 @@ int SIDFP::clock_resample_interpolate(cycle_count& delta_t, short* buf, int n,
   int s = 0;
 
   for (;;) {
-    cycle_count next_sample_offset = sample_offset + cycles_per_sample;
-    cycle_count delta_t_sample = next_sample_offset >> FIXP_SHIFT;
-    if (delta_t_sample > delta_t) {
+    float next_sample_offset = sample_offset + cycles_per_sample;
+    /* full clocks left to next sample */
+    int delta_t_sample = (int) next_sample_offset;
+    if (delta_t_sample > delta_t || s >= n)
       break;
-    }
-    if (s >= n) {
-      return s;
-    }
+
+    /* clock forward delta_t_sample samples */
     for (int i = 0; i < delta_t_sample; i++) {
       clock();
       sample[sample_index] = sample[sample_index + RINGSIZE] = output();
-      ++sample_index;
+      ++ sample_index;
       sample_index &= RINGSIZE - 1;
     }
     delta_t -= delta_t_sample;
-    sample_offset = next_sample_offset & FIXP_MASK;
 
-    int fir_offset = sample_offset*fir_RES >> FIXP_SHIFT;
-    float fir_offset_rmd = (sample_offset*fir_RES & FIXP_MASK) / (float) (1 << FIXP_SHIFT);
-    float* sample_start = sample + sample_index - fir_N + RINGSIZE;
+    /* Phase of the sample in terms of clock, [0 .. 1[. */
+    sample_offset = next_sample_offset - (float) delta_t_sample;
+
+    /* find the first of the nearest fir tables close to the phase */
+    float fir_offset_rmd = sample_offset * fir_RES;
+    int fir_offset = (int) fir_offset_rmd;
+    /* [0 .. 1[ */
+    fir_offset_rmd -= (float) fir_offset;
+
+    /* find fir_N most recent samples, plus one extra in case the FIR wraps. */
+    float* sample_start = sample + sample_index - fir_N + RINGSIZE - 1;
 
     float v1 = convolve(sample_start, fir + fir_offset * fir_N, fir_N);
-
     // Use next FIR table, wrap around to first FIR table using
     // previous sample.
-    if (++fir_offset == fir_RES) {
+    if (++ fir_offset == fir_RES) {
       fir_offset = 0;
-      --sample_start;
+      ++ sample_start;
     }
     float v2 = convolve(sample_start, fir + fir_offset * fir_N, fir_N);
 
-    // Linear interpolation.
-    // fir_offset_rmd is equal for all samples, it can thus be factorized out:
-    // sum(v1 + rmd*(v2 - v1)) = sum(v1) + rmd*(sum(v2) - sum(v1))
-    int v = (int)(v1 + fir_offset_rmd*(v2 - v1));
+    // Linear interpolation between the sinc tables yields good approximation
+    // for the exact value.
+    int v = (int) (v1 + fir_offset_rmd * (v2 - v1));
 
     // Saturated arithmetics to guard against 16 bit sample overflow.
     const int half = 1 << 15;
@@ -959,16 +963,17 @@ int SIDFP::clock_resample_interpolate(cycle_count& delta_t, short* buf, int n,
       v = -half;
     }
 
-    buf[s++*interleave] = v;
+    buf[s ++ * interleave] = v;
   }
 
+  /* clock forward delta_t samples */
   for (int i = 0; i < delta_t; i++) {
     clock();
     sample[sample_index] = sample[sample_index + RINGSIZE] = output();
-    ++sample_index;
+    ++ sample_index;
     sample_index &= RINGSIZE - 1;
   }
-  sample_offset -= delta_t << FIXP_SHIFT;
+  sample_offset -= (float) delta_t;
   delta_t = 0;
   return s;
 }
@@ -984,24 +989,22 @@ int SIDFP::clock_resample_fast(cycle_count& delta_t, short* buf, int n,
   int s = 0;
 
   for (;;) {
-    cycle_count next_sample_offset = sample_offset + cycles_per_sample;
-    cycle_count delta_t_sample = next_sample_offset >> FIXP_SHIFT;
-    if (delta_t_sample > delta_t) {
+    float next_sample_offset = sample_offset + cycles_per_sample;
+    int delta_t_sample = (int) next_sample_offset;
+    if (delta_t_sample > delta_t || s >= n)
       break;
-    }
-    if (s >= n) {
-      return s;
-    }
+
     for (int i = 0; i < delta_t_sample; i++) {
       clock();
       sample[sample_index] = sample[sample_index + RINGSIZE] = output();
-      ++sample_index;
+      ++ sample_index;
       sample_index &= RINGSIZE - 1;
     }
     delta_t -= delta_t_sample;
-    sample_offset = next_sample_offset & FIXP_MASK;
 
-    int fir_offset = sample_offset*fir_RES >> FIXP_SHIFT;
+    sample_offset = next_sample_offset - (float) delta_t_sample;
+
+    int fir_offset = (int) (sample_offset * fir_RES);
     float* sample_start = sample + sample_index - fir_N + RINGSIZE;
 
     int v = (int)convolve(sample_start, fir + fir_offset * fir_N, fir_N);
@@ -1015,16 +1018,16 @@ int SIDFP::clock_resample_fast(cycle_count& delta_t, short* buf, int n,
       v = -half;
     }
 
-    buf[s++*interleave] = v;
+    buf[s ++ * interleave] = v;
   }
 
   for (int i = 0; i < delta_t; i++) {
     clock();
     sample[sample_index] = sample[sample_index + RINGSIZE] = output();
-    ++sample_index;
+    ++ sample_index;
     sample_index &= RINGSIZE - 1;
   }
-  sample_offset -= delta_t << FIXP_SHIFT;
+  sample_offset -= (float) delta_t;
   delta_t = 0;
   return s;
 }

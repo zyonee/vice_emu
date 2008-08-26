@@ -117,17 +117,12 @@ protected:
   enum { FIR_N = 125 };
   enum { FIR_RES_INTERPOLATE = 285 };
   enum { FIR_RES_FAST = 51473 };
-  enum { FIR_SHIFT = 15 };
   enum { RINGSIZE = 16384 };
-
-  // Fixpoint constants (16.16 bits).
-  enum { FIXP_SHIFT = 16 };
-  enum { FIXP_MASK = 0xffff };
 
   // Sampling variables.
   sampling_method sampling;
-  cycle_count cycles_per_sample;
-  cycle_count sample_offset;
+  float cycles_per_sample;
+  float sample_offset;
   int sample_index;
   int fir_N;
   int fir_RES;
