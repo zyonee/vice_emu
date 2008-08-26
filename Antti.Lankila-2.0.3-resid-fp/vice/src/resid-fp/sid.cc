@@ -18,10 +18,99 @@
 //  ---------------------------------------------------------------------------
 
 #include "sid.h"
+
 #include <math.h>
 
 #ifdef __SSE__
 #include <xmmintrin.h>
+#endif
+
+#ifdef __SSE__
+struct cpu_x86_regs_s {
+  unsigned int eax;
+  unsigned int ebx;
+  unsigned int ecx;
+  unsigned int edx;
+};
+typedef struct cpu_x86_regs_s cpu_x86_regs_t;
+
+static cpu_x86_regs_t get_cpu_regs(unsigned int index)
+{
+  cpu_x86_regs_t retval;
+
+  asm("movl %4, %%eax; cpuid; movl %%eax, %0; movl %%ebx, %1; movl %%ecx, %2; movl %%edx, %3;"
+      : "m=" (retval.eax),
+        "m=" (retval.ebx),
+        "m=" (retval.ecx),
+        "m=" (retval.edx)
+      : "r"  (index)
+      : "eax", "ebx", "ecx", "edx");
+
+    return retval;
+}
+
+int detect_sse_done = 0;
+int detect_sse_result = 0;
+
+static int detect_sse(void)
+{
+  unsigned long temp1, temp2;
+  cpu_x86_regs_t cpu_id_return;
+  unsigned int cpu_type, cpu_level;
+
+  if (detect_sse_done == 1)
+  {
+    return detect_sse_result;
+  }
+  else
+  {
+
+    /* see if we are dealing with a cpu that has the cpuid instruction */
+    asm("pushfl; popl %%eax; movl %%eax, %0; xorl $0x200000, %%eax; pushl %%eax; popfl; pushfl; popl %%eax; movl %%eax, %1; pushl %0; popfl "
+        : "r=" (temp1),
+        "r=" (temp2)
+        :
+        : "eax");
+    
+    temp1 &= 0x200000;
+    temp2 &= 0x200000;
+    if (temp1 == temp2)
+    {
+      /* no cpuid support, so return 0 */
+      detect_sse_done = 1;
+      return 0;
+    }
+
+    /* get max levels and type of cpu */
+    cpu_id_return = get_cpu_regs(0);
+
+    cpu_level = cpu_id_return.eax;
+    if (cpu_level == 0)
+    {
+      /* no more levels, so no sse, return 0 */
+      detect_sse_done = 1;
+      return 0;
+    }
+
+    cpu_type = cpu_id_return.ebx;
+    if (cpu_type != 0x756e6547)
+    {
+      /* cpu type is not intel, so return 0 */
+      detect_sse_done = 1;
+      return 0;
+    }
+
+    cpu_id_return = get_cpu_regs(1);
+
+    if (cpu_id_return.edx & (1<<25))
+    {
+      detect_sse_result = 1;
+    }
+    detect_sse_done;
+
+    return detect_sse_result;
+  }
+}
 #endif
 
 float SIDFP::kinked_dac(const int x, const float nonlinearity, const int max)
@@ -635,8 +724,12 @@ int SIDFP::clock(cycle_count& delta_t, short* buf, int n, int interleave)
   age_bus_value(delta_t);
   /* disable denormal numbers */
 #ifdef __SSE__
-  int old = _mm_getcsr();
-  _mm_setcsr(old | _MM_FLUSH_ZERO_ON); /* denormals-are-zero appropriate for SSE2 boxes, I'll play this safe */
+  int old;
+  if (detect_sse() == 1)
+  {
+    old = _mm_getcsr();
+    _mm_setcsr(old | _MM_FLUSH_ZERO_ON); /* denormals-are-zero appropriate for SSE2 boxes, I'll play this safe */
+  }
 #endif
   int res;
   switch (sampling) {
@@ -652,7 +745,10 @@ int SIDFP::clock(cycle_count& delta_t, short* buf, int n, int interleave)
     break;
   }
 #ifdef __SSE__
-  _mm_setcsr(old);
+  if (detect_sse() == 1)
+  {
+    _mm_setcsr(old);
+  }
 #endif
   return res;
 }
@@ -724,47 +820,50 @@ static float convolve(const float *a, const float *b, int n)
 {
     float out = 0.f;
 #ifdef __SSE__
-    __m128 out4 = { 0, 0, 0, 0 };
+    if (detect_sse() == 1)
+    {
+        __m128 out4 = { 0, 0, 0, 0 };
 
-    /* examine if we can use aligned loads on both pointers */
-    /* XXX why doesn't stdint.h provide me with ptrdiff_t & intptr_t? */
-    int diff = (int) (a - b) & 0xf;
-    int a_align = (int) (long) a & 0xf;
+        /* examine if we can use aligned loads on both pointers */
+        /* XXX why doesn't stdint.h provide me with ptrdiff_t & intptr_t? */
+        int diff = (int) (a - b) & 0xf;
+        int a_align = (int) (long) a & 0xf;
 
-    /* advance if necessary. We can't let n fall < 0, so no while (n --). */
-    while (n > 0 && a_align != 0 && a_align != 16) {
-        out += (*(a ++)) * (*(b ++));
-        n --;
-        a_align += 4;
-    }
-
-    int n4 = n / 4;
-    if (diff == 0) {
-        for (int i = 0; i < n4; i ++) {
-            out4 = _mm_add_ps(out4, _mm_mul_ps(_mm_load_ps(a), _mm_load_ps(b)));
-            a += 4;
-            b += 4;
+        /* advance if necessary. We can't let n fall < 0, so no while (n --). */
+        while (n > 0 && a_align != 0 && a_align != 16) {
+            out += (*(a ++)) * (*(b ++));
+            n --;
+            a_align += 4;
         }
-    } else {
+
+        int n4 = n / 4;
+        if (diff == 0) {
+            for (int i = 0; i < n4; i ++) {
+                out4 = _mm_add_ps(out4, _mm_mul_ps(_mm_load_ps(a), _mm_load_ps(b)));
+                a += 4;
+                b += 4;
+            }
+        } else {
         /* XXX loadu is 4x slower than load, at least. We could at 4x memory
          * use prepare versions of b aligned for any a alignment. We could
          * also issue aligned loads and shuffle the halves at each iteration.
          * Initial results indicate only very small improvements. */
-        for (int i = 0; i < n4; i ++) {
-            out4 = _mm_add_ps(out4, _mm_mul_ps(_mm_load_ps(a), _mm_loadu_ps(b)));
-            a += 4;
-            b += 4;
+            for (int i = 0; i < n4; i ++) {
+                out4 = _mm_add_ps(out4, _mm_mul_ps(_mm_load_ps(a), _mm_loadu_ps(b)));
+                a += 4;
+                b += 4;
+            }
         }
+
+        out4 = _mm_add_ps(_mm_movehl_ps(out4, out4), out4);
+        out4 = _mm_add_ss(_mm_shuffle_ps(out4, out4, 1), out4);
+        float out_tmp;
+        _mm_store_ss(&out_tmp, out4);
+        out += out_tmp;
+
+        n &= 3;
+        /* fallthrough for last values */
     }
-
-    out4 = _mm_add_ps(_mm_movehl_ps(out4, out4), out4);
-    out4 = _mm_add_ss(_mm_shuffle_ps(out4, out4, 1), out4);
-    float out_tmp;
-    _mm_store_ss(&out_tmp, out4);
-    out += out_tmp;
-
-    n &= 3;
-    /* fallthrough for last values */
 #endif
     while (n --)
         out += (*(a ++)) * (*(b ++));

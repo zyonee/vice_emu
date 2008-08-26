@@ -4,7 +4,6 @@ AR = @AR@
 
 noinst_LIBRARIES = libresidfp.a
 
-libresidfp_a_CXXFLAGS = -DSUPPORT_C64DTV
 libresidfp_a_SOURCES = sid.cc voice.cc wave.cc envelope.cc filter.cc extfilt.cc pot.cc version.cc $(noinst_DATA:.dat=.cc)
 
 BUILT_SOURCES = $(noinst_DATA:.dat=.cc)
