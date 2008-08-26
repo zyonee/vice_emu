@@ -694,7 +694,7 @@ int SIDFP::clock_interpolate(cycle_count& delta_t, short* buf, int n,
     sample_offset = next_sample_offset & FIXP_MASK;
 
     float sample_now = output();
-    int v = sample_prev + (sample_offset*(sample_now - sample_prev) / (1 << FIXP_SHIFT));
+    int v = (int)(sample_prev + (sample_offset*(sample_now - sample_prev) / (1 << FIXP_SHIFT)));
     // Saturated arithmetics to guard against 16 bit sample overflow.
     const int half = 1 << 15;
     if (v >= half) {
@@ -849,7 +849,7 @@ int SIDFP::clock_resample_interpolate(cycle_count& delta_t, short* buf, int n,
     // Linear interpolation.
     // fir_offset_rmd is equal for all samples, it can thus be factorized out:
     // sum(v1 + rmd*(v2 - v1)) = sum(v1) + rmd*(sum(v2) - sum(v1))
-    int v = v1 + fir_offset_rmd*(v2 - v1);
+    int v = (int)(v1 + fir_offset_rmd*(v2 - v1));
 
     // Saturated arithmetics to guard against 16 bit sample overflow.
     const int half = 1 << 15;
@@ -905,7 +905,7 @@ int SIDFP::clock_resample_fast(cycle_count& delta_t, short* buf, int n,
     int fir_offset = sample_offset*fir_RES >> FIXP_SHIFT;
     float* sample_start = sample + sample_index - fir_N + RINGSIZE;
 
-    int v = convolve(sample_start, fir + fir_offset * fir_N, fir_N);
+    int v = (int)convolve(sample_start, fir + fir_offset * fir_N, fir_N);
 
     // Saturated arithmetics to guard against 16 bit sample overflow.
     const int half = 1 << 15;

@@ -102,7 +102,10 @@ void FilterFP::calculate_helpers()
 // ----------------------------------------------------------------------------
 void FilterFP::reset()
 {
-  fc = res = filt = voice3off = hp_bp_lp = volf = vol = Vhp = Vbp = Vlp = 0;
+  fc = 0;
+  res = filt = voice3off = hp_bp_lp = 0; 
+  vol = 0;
+  volf = Vhp = Vbp = Vlp = 0;
   set_w0();
   set_Q();
 }

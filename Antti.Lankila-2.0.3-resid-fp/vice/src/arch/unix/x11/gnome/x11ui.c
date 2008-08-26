@@ -1016,7 +1016,7 @@ int ui_open_canvas_window(video_canvas_t *c, const char *title,
     		     NULL);
     }
     
-    if (c->videoconfig->hwscale && !vsid_mode) {
+    if (!vsid_mode && c->videoconfig->hwscale) {
         gint window_width, window_height;
         resources_get_int("WindowWidth", &window_width);
         resources_get_int("WindowHeight", &window_height);

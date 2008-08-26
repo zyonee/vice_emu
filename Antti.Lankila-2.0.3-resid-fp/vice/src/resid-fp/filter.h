@@ -229,7 +229,7 @@ static float fastexp(float val) {
     /* Parenthesis are important: C standard disallows folding subtraction.
      * Unfortunately GCC appears to generate a write to memory rather than
      * handle this conversion entirely in registers. */
-    tmp.i = a * val + (b - c);
+    tmp.i = (int)(a * val + (b - c));
     return tmp.f;
 }
 
