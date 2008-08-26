@@ -23,16 +23,32 @@ AC_SUBST(RESID_INLINE)
 dnl Checks for programs.
 AC_PROG_CXX
 
+dnl Set CXXFLAGS for g++. Use -msse if supported.
+if test "$GXX" = yes; then
+  if test "$ac_test_CXXFLAGS" != set; then
+    CXXFLAGS="-g -Wall -O2 -msse"
+    AC_MSG_CHECKING([whether the C++ compiler ($CXX $CXXFLAGS $LDFLAGS) works])
+    AC_TRY_COMPILE([],
+                   [int test;],
+                   [ AC_MSG_RESULT(yes)
+                     MSSE="-msse"
+                     ],
+                   [ AC_MSG_RESULT(no)
+                     MSSE=""
+                     ])
+  fi
+fi
+
 dnl Set CXXFLAGS for g++. Use -fno-exceptions if supported.
 if test "$GXX" = yes; then
   if test "$ac_test_CXXFLAGS" != set; then
-    CXXFLAGS="-g -Wall -O2 -msse -fno-exceptions"
+    CXXFLAGS="-g -Wall -O2 $MSSE -fno-exceptions"
     AC_MSG_CHECKING([whether the C++ compiler ($CXX $CXXFLAGS $LDFLAGS) works])
     AC_TRY_COMPILE([],
                    [int test;],
                    [ AC_MSG_RESULT(yes) ],
                    [ AC_MSG_RESULT(no)
-                     CXXFLAGS="-g -Wall -O2 -msse"
+                     CXXFLAGS="-g -Wall -O2 $MSSE"
                      ])
   fi
 fi
