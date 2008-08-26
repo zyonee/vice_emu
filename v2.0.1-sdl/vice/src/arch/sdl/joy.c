@@ -120,7 +120,7 @@ struct sdljoystick_s {
 };
 typedef struct sdljoystick_s sdljoystick_t;
 
-static sdljoystick_t *sdljoystick;
+static sdljoystick_t *sdljoystick = NULL;
 
 /* ------------------------------------------------------------------------- */
 
@@ -271,6 +271,7 @@ fprintf(stderr,"%s\n",__func__);
 /*    joy_arch_mapping_dump(joymap_file);*/
 
     lib_free(joymap_file);
+    joymap_file = NULL;
 
     if(sdljoystick == NULL)
         return;
@@ -281,10 +282,12 @@ fprintf(stderr,"%s\n",__func__);
 
         for(j=AXIS; j<NUM_INPUT_TYPES; ++j) {
             lib_free(sdljoystick[i].input[j]);
+            sdljoystick[i].input[j] = NULL;
         }
     }
 
     lib_free(sdljoystick);
+    sdljoystick = NULL;
 }
 
 /* ------------------------------------------------------------------------- */

@@ -34,11 +34,16 @@ libarch_a_SOURCES = \
 	types.h \
 	ui.c \
 	ui.h \
+	uic128.c \
 	uic64.c \
 	uic64dtv.c \
+	uicbm2.c \
 	uicmdline.c \
+	uipet.c \
+	uiplus4.c \
 	uimenu.h \
 	uimon.c \
+	uivic20.c \
 	video.c \
 	videoarch.h \
 	vsidui.c \

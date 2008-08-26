@@ -42,6 +42,12 @@ static log_t sdlvideo_log = LOG_ERR;
 
 static int sdl_bitdepth;
 
+#define MAX_CANVAS_NUM 2           
+static int sdl_num_screens = 0;
+static int sdl_active_canvas_num = 0;
+static video_canvas_t *sdl_active_canvas = NULL;
+static video_canvas_t *sdl_canvaslist[MAX_CANVAS_NUM];
+
 /* ------------------------------------------------------------------------- */
 
 /* Video-related resources.  */
@@ -109,6 +115,7 @@ int video_init(void)
 void video_shutdown(void)
 {
 fprintf(stderr,"%s\n",__func__);
+    sdl_active_canvas = NULL;
 }
 
 /* ------------------------------------------------------------------------- */
@@ -140,8 +147,16 @@ video_canvas_t *video_canvas_create(video_canvas_t *canvas,
     }
 
 /*fprintf(stderr,"%s: %ix%i,%i (%08x)\n",__func__,new_width,new_height,mapped,(unsigned int)canvas);*/
- 
-    new_screen = SDL_SetVideoMode(new_width, new_height, sdl_bitdepth, flags);
+
+    if(canvas == sdl_active_canvas) {
+        new_screen = SDL_SetVideoMode(new_width, new_height, sdl_bitdepth, flags);
+    } else {
+        if(canvas->screen) {
+            SDL_FreeSurface(canvas->screen);
+        }
+        new_screen = SDL_CreateRGBSurface(SDL_SWSURFACE, new_width, new_height, sdl_bitdepth, 0, 0, 0, 0);
+    }
+
     if(!new_screen) {
         log_error(sdlvideo_log, "SDL_SetVideoMode failed!");
         return NULL;
@@ -232,23 +247,45 @@ int video_canvas_set_palette(struct video_canvas_s *canvas,
 void video_canvas_resize(struct video_canvas_s *canvas,
                          unsigned int width, unsigned int height)
 {
-/*fprintf(stderr,"%s: %i,%i (%08x)\n",__func__,width,height,(unsigned int)canvas);*/
+fprintf(stderr,"%s: %i,%i (%08x)\n",__func__,width,height,(unsigned int)canvas);
     video_canvas_create(canvas, &width, &height, 0);
 }
 
 void video_arch_canvas_init(struct video_canvas_s *canvas)
 {
 fprintf(stderr,"%s: (%08x)\n",__func__,(unsigned int)canvas);
+
+    if(sdl_num_screens == MAX_CANVAS_NUM) {
+        log_error(sdlvideo_log,"Too many canvases!");
+        exit(-1);
+    }
+
 	canvas->video_draw_buffer_callback=NULL;
 
     canvas->fullscreenconfig
         = (fullscreenconfig_t *)lib_calloc(1, sizeof(fullscreenconfig_t));
     fullscreen_init_alloc_hooks(canvas);
+
+    if(sdl_active_canvas_num == sdl_num_screens) {
+        sdl_active_canvas = canvas;
+    }
+
+    sdl_canvaslist[sdl_num_screens++] = canvas;
+
+    canvas->screen = NULL;
 }
 
 void video_canvas_destroy(struct video_canvas_s *canvas)
 {
+    int i;
 fprintf(stderr,"%s: (%08x)\n",__func__,(unsigned int)canvas);
+
+    for(i=0; i<sdl_num_screens; ++i) {
+        if((sdl_canvaslist[i] == canvas) && (i != sdl_active_canvas_num)) {
+            SDL_FreeSurface(sdl_canvaslist[i]->screen);
+            sdl_canvaslist[i]->screen = NULL;
+        }
+    }
 }
 
 void video_add_handlers(void)
