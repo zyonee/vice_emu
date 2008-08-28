@@ -116,18 +116,18 @@ BEGIN
             MENUITEM "", IDM_EVENT_START_MODE_RESET
             MENUITEM "", IDM_EVENT_START_MODE_PLAYBACK
         END
-        MENUITEM "Select History files/directory",    IDM_EVENT_DIRECTORY
+        MENUITEM "", IDM_EVENT_DIRECTORY
         MENUITEM SEPARATOR
-        MENUITEM "Save/stop media file...", IDM_MEDIAFILE
+        MENUITEM "", IDM_MEDIAFILE
         MENUITEM SEPARATOR
-        MENUITEM "Record Sound...", IDM_SOUND_RECORD_START
-        MENUITEM "Stop Sound Recording", IDM_SOUND_RECORD_STOP
+        MENUITEM "", IDM_SOUND_RECORD_START
+        MENUITEM "", IDM_SOUND_RECORD_STOP
     END
     POPUP "&Options"
     BEGIN
         POPUP "&Refresh rate"
         BEGIN
-            MENUITEM "&Auto", IDM_REFRESH_RATE_AUTO
+            MENUITEM "",      IDM_REFRESH_RATE_AUTO
             MENUITEM "1/&1",  IDM_REFRESH_RATE_1
             MENUITEM "1/&2",  IDM_REFRESH_RATE_2
             MENUITEM "1/&3",  IDM_REFRESH_RATE_3
@@ -138,27 +138,22 @@ BEGIN
             MENUITEM "1/&8",  IDM_REFRESH_RATE_8
             MENUITEM "1/&9",  IDM_REFRESH_RATE_9
             MENUITEM "1/1&0", IDM_REFRESH_RATE_10
-#if 0
-            MENUITEM SEPARATOR
-            MENUITEM "&Custom", IDM_REFRESH_RATE_CUSTOM
-#endif
         END
         POPUP "&Maximum Speed"
         BEGIN
-            MENUITEM "&200%",     IDM_MAXIMUM_SPEED_200
-            MENUITEM "&100%",     IDM_MAXIMUM_SPEED_100
-            MENUITEM "&50%",      IDM_MAXIMUM_SPEED_50
-            MENUITEM "&20%",      IDM_MAXIMUM_SPEED_20
-            MENUITEM "1&0%",      IDM_MAXIMUM_SPEED_10
-            MENUITEM "No &limit", IDM_MAXIMUM_SPEED_NO_LIMIT
+            MENUITEM "&200%", IDM_MAXIMUM_SPEED_200
+            MENUITEM "&100%", IDM_MAXIMUM_SPEED_100
+            MENUITEM "&50%",  IDM_MAXIMUM_SPEED_50
+            MENUITEM "&20%",  IDM_MAXIMUM_SPEED_20
+            MENUITEM "1&0%",  IDM_MAXIMUM_SPEED_10
+            MENUITEM "",      IDM_MAXIMUM_SPEED_NO_LIMIT
             MENUITEM SEPARATOR
-            MENUITEM "&Custom", IDM_MAXIMUM_SPEED_CUSTOM
+            MENUITEM "",      IDM_MAXIMUM_SPEED_CUSTOM
         END
-        MENUITEM "&Warp mode", IDM_TOGGLE_WARP_MODE
-            , CHECKED
+        MENUITEM "", IDM_TOGGLE_WARP_MODE, CHECKED
         MENUITEM SEPARATOR
         MENUITEM "Fullscreen", IDM_TOGGLE_FULLSCREEN
-        MENUITEM "Always on Top", IDM_TOGGLE_ALWAYSONTOP
+        MENUITEM "", IDM_TOGGLE_ALWAYSONTOP
         MENUITEM SEPARATOR
         MENUITEM "", IDM_TOGGLE_CRTCVIDEOCACHE, CHECKED
         MENUITEM "", IDM_TOGGLE_CRTCDOUBLESIZE, CHECKED
@@ -235,32 +230,9 @@ END
 
 IDR_MENUPET_DE MENU DISCARDABLE
 BEGIN
-    POPUP "Sna&pshot"
-    BEGIN
-        MENUITEM "Verzeichnis für Event Aufnahme",    IDM_EVENT_DIRECTORY
-        MENUITEM SEPARATOR
-        MENUITEM "Speichern/stop media Datei...", IDM_MEDIAFILE
-        MENUITEM SEPARATOR
-        MENUITEM "Aufnahme...", IDM_SOUND_RECORD_START
-        MENUITEM "Aufnahme Stop", IDM_SOUND_RECORD_STOP
-    END
     POPUP "&Optionen"
     BEGIN
-        POPUP "Wiederhol&rate"
-        BEGIN
-            MENUITEM "&Automatisch", IDM_REFRESH_RATE_AUTO
-        END
-        POPUP "&Maximale Geschwindigkeit"
-        BEGIN
-            MENUITEM "Kein &Limit", IDM_MAXIMUM_SPEED_NO_LIMIT
-            MENUITEM SEPARATOR
-            MENUITEM "&Benutzerdefiniert", IDM_MAXIMUM_SPEED_CUSTOM
-        END
-        MENUITEM "&Warp modus", IDM_TOGGLE_WARP_MODE
-            , CHECKED
-        MENUITEM SEPARATOR
         MENUITEM "Vollbild", IDM_TOGGLE_FULLSCREEN
-        MENUITEM "Immer im Vordergrund", IDM_TOGGLE_ALWAYSONTOP
 	MENUITEM "&Joystick ports austauschen", IDM_SWAP_JOYSTICK
         MENUITEM "&Virtuelle Geräte Traps", IDM_TOGGLE_VIRTUAL_DEVICES
         POPUP "Laufwerkt S&ync Faktor"
@@ -323,32 +295,9 @@ END
 
 IDR_MENUPET_FR MENU DISCARDABLE
 BEGIN
-    POPUP "&Sauvegarde"
-    BEGIN
-        MENUITEM "Sélectionnez le répertoire des captures",    IDM_EVENT_DIRECTORY
-        MENUITEM SEPARATOR
-        MENUITEM "Enregistrer/Arrêter fichier média...", IDM_MEDIAFILE
-        MENUITEM SEPARATOR
-        MENUITEM "Record Sound...", IDM_SOUND_RECORD_START
-        MENUITEM "Stop Sound Recording", IDM_SOUND_RECORD_STOP
-    END
     POPUP "&Options"
     BEGIN
-        POPUP "Taux de &rafraîchissement"
-        BEGIN
-            MENUITEM "&Automatique", IDM_REFRESH_RATE_AUTO
-        END
-        POPUP "Vitesse &Maximale"
-        BEGIN
-            MENUITEM "Aucune &limite", IDM_MAXIMUM_SPEED_NO_LIMIT
-            MENUITEM SEPARATOR
-            MENUITEM "&Personnalisé", IDM_MAXIMUM_SPEED_CUSTOM
-        END
-        MENUITEM "&Mode turbo", IDM_TOGGLE_WARP_MODE
-            , CHECKED
-        MENUITEM SEPARATOR
         MENUITEM "Périphérique plein écran", IDM_TOGGLE_FULLSCREEN
-        MENUITEM "Toujours au dessus", IDM_TOGGLE_ALWAYSONTOP
 	MENUITEM "Interchanger les joysticks", IDM_SWAP_JOYSTICK
         MENUITEM "Activer les périphériques &virtuels", IDM_TOGGLE_VIRTUAL_DEVICES
         POPUP "Facteur de s&ynchro du lecteur"
@@ -412,32 +361,9 @@ END
 #pragma code_page(28592)
 IDR_MENUPET_HU MENU DISCARDABLE
 BEGIN
-    POPUP "&Pillanatkép"
-    BEGIN
-        MENUITEM "Válassza ki a felvételeket/könyvtárat",    IDM_EVENT_DIRECTORY
-        MENUITEM SEPARATOR
-        MENUITEM "Videó készítése/megállítása...", IDM_MEDIAFILE
-        MENUITEM SEPARATOR
-        MENUITEM "Hang felvétele...", IDM_SOUND_RECORD_START
-        MENUITEM "Hangfelvétel leállítása", IDM_SOUND_RECORD_STOP
-    END
     POPUP "&Opciók"
     BEGIN
-        POPUP "Frissítési &ráta"
-        BEGIN
-            MENUITEM "&Automatikus", IDM_REFRESH_RATE_AUTO
-        END
-        POPUP "&Maximális sebesség"
-        BEGIN
-            MENUITEM "Nincs &határ", IDM_MAXIMUM_SPEED_NO_LIMIT
-            MENUITEM SEPARATOR
-            MENUITEM "&Egyéni", IDM_MAXIMUM_SPEED_CUSTOM
-        END
-        MENUITEM "&Hipergyors mód", IDM_TOGGLE_WARP_MODE
-            , CHECKED
-        MENUITEM SEPARATOR
         MENUITEM "Teljes képernyõ", IDM_TOGGLE_FULLSCREEN
-        MENUITEM "Mindig felül", IDM_TOGGLE_ALWAYSONTOP
 	MENUITEM "Botkormányok &felcserélése", IDM_SWAP_JOYSTICK
         MENUITEM "*Virtuális eszközök ciklus kihagyása", IDM_TOGGLE_VIRTUAL_DEVICES
         POPUP "Lemezegység sz&inkron faktor"
@@ -501,32 +427,9 @@ END
 
 IDR_MENUPET_IT MENU DISCARDABLE
 BEGIN
-    POPUP "Sna&pshot"
-    BEGIN
-        MENUITEM "Seleziona i file/directory della cronologia",    IDM_EVENT_DIRECTORY
-        MENUITEM SEPARATOR
-        MENUITEM "Salva/arresta file multimediale...", IDM_MEDIAFILE
-        MENUITEM SEPARATOR
-        MENUITEM "Registra audio...", IDM_SOUND_RECORD_START
-        MENUITEM "Interrompi la registrazione audio", IDM_SOUND_RECORD_STOP
-    END
     POPUP "&Opzioni"
     BEGIN
-        POPUP "Frequenza di &aggiornamento"
-        BEGIN
-            MENUITEM "&Auto", IDM_REFRESH_RATE_AUTO
-        END
-        POPUP "Velocità &massima"
-        BEGIN
-            MENUITEM "Nessun &limite", IDM_MAXIMUM_SPEED_NO_LIMIT
-            MENUITEM SEPARATOR
-            MENUITEM "&Personalizzata", IDM_MAXIMUM_SPEED_CUSTOM
-        END
-        MENUITEM "Modalità &turbo", IDM_TOGGLE_WARP_MODE
-            , CHECKED
-        MENUITEM SEPARATOR
         MENUITEM "A tutto schermo", IDM_TOGGLE_FULLSCREEN
-        MENUITEM "Sempre in primo piano", IDM_TOGGLE_ALWAYSONTOP
 	MENUITEM "Scambia &joystick", IDM_SWAP_JOYSTICK
         MENUITEM "Attiva le periferiche &virtuali", IDM_TOGGLE_VIRTUAL_DEVICES
         POPUP "Fattore di s&incronizzazione del drive"
@@ -589,32 +492,9 @@ END
 
 IDR_MENUPET_NL MENU DISCARDABLE
 BEGIN
-    POPUP "Momento&pname"
-    BEGIN
-        MENUITEM "Selecteer geschiedenisdirectory",    IDM_EVENT_DIRECTORY
-        MENUITEM SEPARATOR
-        MENUITEM "Opslaan/stop mediabestand...", IDM_MEDIAFILE
-        MENUITEM SEPARATOR
-        MENUITEM "Geluidsopname...", IDM_SOUND_RECORD_START
-        MENUITEM "Stop geluidsopname", IDM_SOUND_RECORD_STOP
-    END
     POPUP "&Opties"
     BEGIN
-        POPUP "Ve&rversingssnelheid"
-        BEGIN
-            MENUITEM "&Auto", IDM_REFRESH_RATE_AUTO
-        END
-        POPUP "&Maximale Snelheid"
-        BEGIN
-            MENUITEM "Geen &limiet", IDM_MAXIMUM_SPEED_NO_LIMIT
-            MENUITEM SEPARATOR
-            MENUITEM "&Aangepast", IDM_MAXIMUM_SPEED_CUSTOM
-        END
-        MENUITEM "&Warpmodus", IDM_TOGGLE_WARP_MODE
-            , CHECKED
-        MENUITEM SEPARATOR
         MENUITEM "Volscherm", IDM_TOGGLE_FULLSCREEN
-        MENUITEM "Altijd Boven", IDM_TOGGLE_ALWAYSONTOP
 	MENUITEM "Verwissel &Joysticks", IDM_SWAP_JOYSTICK
         MENUITEM "&Virtuele apparaattraps", IDM_TOGGLE_VIRTUAL_DEVICES
         POPUP "Drive s&ynchronisatie faktor"
@@ -678,32 +558,9 @@ END
 #pragma code_page(28592)
 IDR_MENUPET_PL MENU DISCARDABLE
 BEGIN
-    POPUP "z&rzutu"
-    BEGIN
-        MENUITEM "Katalog systemu plików",    IDM_EVENT_DIRECTORY
-        MENUITEM SEPARATOR
-        MENUITEM "Save/stop media file...", IDM_MEDIAFILE
-        MENUITEM SEPARATOR
-        MENUITEM "Record Sound...", IDM_SOUND_RECORD_START
-        MENUITEM "Stop Sound Recording", IDM_SOUND_RECORD_STOP
-    END
     POPUP "&Opcje"
     BEGIN
-        POPUP "Czêstot&liwo¶æ od¶wie¿ania"
-        BEGIN
-            MENUITEM "&Auto", IDM_REFRESH_RATE_AUTO
-        END
-        POPUP "&Maksymalna prêdko¶æ"
-        BEGIN
-            MENUITEM "Bez &limitu", IDM_MAXIMUM_SPEED_NO_LIMIT
-            MENUITEM SEPARATOR
-            MENUITEM "&W³asne", IDM_MAXIMUM_SPEED_CUSTOM
-        END
-        MENUITEM "tr&yb przy¶pieszony (Turbo)", IDM_TOGGLE_WARP_MODE
-            , CHECKED
-        MENUITEM SEPARATOR
         MENUITEM "Pe³ny ekran", IDM_TOGGLE_FULLSCREEN
-        MENUITEM "Always on Top", IDM_TOGGLE_ALWAYSONTOP
 	MENUITEM "Zamieñ por&ty (1/2)", IDM_SWAP_JOYSTICK
         MENUITEM "&Virtual device traps", IDM_TOGGLE_VIRTUAL_DEVICES
         POPUP "Drive s&ync factor"
@@ -767,32 +624,9 @@ END
 
 IDR_MENUPET_SV MENU DISCARDABLE
 BEGIN
-    POPUP "&Ögonblicksbild"
-    BEGIN
-        MENUITEM "Välj historikfiler/-katalog",    IDM_EVENT_DIRECTORY
-        MENUITEM SEPARATOR
-        MENUITEM "Starta/stoppa mediafil...", IDM_MEDIAFILE
-        MENUITEM SEPARATOR
-        MENUITEM "Record Sound...", IDM_SOUND_RECORD_START
-        MENUITEM "Stop Sound Recording", IDM_SOUND_RECORD_STOP
-    END
     POPUP "&Alternativ"
     BEGIN
-        POPUP "&Uppdateringshastighet"
-        BEGIN
-            MENUITEM "&Auto", IDM_REFRESH_RATE_AUTO
-        END
-        POPUP "&Maximal hastighet"
-        BEGIN
-            MENUITEM "Ingen &gräns", IDM_MAXIMUM_SPEED_NO_LIMIT
-            MENUITEM SEPARATOR
-            MENUITEM "&Egen", IDM_MAXIMUM_SPEED_CUSTOM
-        END
-        MENUITEM "&Warpläge", IDM_TOGGLE_WARP_MODE
-            , CHECKED
-        MENUITEM SEPARATOR
         MENUITEM "Fullskärm", IDM_TOGGLE_FULLSCREEN
-        MENUITEM "Alltid överst", IDM_TOGGLE_ALWAYSONTOP
 	MENUITEM "Växla &spelportarna", IDM_SWAP_JOYSTICK
         MENUITEM "&Virtuella enhetstrap:ar", IDM_TOGGLE_VIRTUAL_DEVICES
         POPUP "S&ynkfaktor för diskettstation"

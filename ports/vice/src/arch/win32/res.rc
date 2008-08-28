@@ -5700,6 +5700,17 @@ BEGIN
   IDS_MI_EVENT_START_MODE_LOAD    "&Load existing snapshot"
   IDS_MI_EVENT_START_MODE_RESET   "Start with &reset"
   IDS_MI_EVENT_START_MODE_PLAYBCK "Overwrite &Playback"
+  IDS_MI_EVENT_DIRECTORY          "Select History files/directory"
+  IDS_MI_MEDIAFILE                "Save/stop media file..."
+  IDS_MI_SOUND_RECORD_START       "Record Sound..."
+  IDS_MI_SOUND_RECORD_STOP        "Stop Sound Recording"
+  IDS_MI_REFRESH_RATE_AUTO        "&Auto"
+  IDS_MI_MAXIMUM_SPEED_NO_LIMIT   "No &limit"
+  IDS_MI_MAXIMUM_SPEED_CUSTOM     "&Custom"
+  IDS_MI_TOGGLE_WARP_MODE         "&Warp mode"
+  IDS_MI_TOGGLE_ALWAYSONTOP       "Always on Top"
+  IDS_MI_TOGGLE_FASTPAL           "PAL Emulation"
+  IDS_MI_TOGGLE_SCALE2X           "Scale2x"
 END
 
 
@@ -6001,6 +6012,17 @@ BEGIN
   IDS_MI_EVENT_START_MODE_LOAD    "&Lade existierenden Snapshot"
   IDS_MI_EVENT_START_MODE_RESET   "Mit &Reset starten"
   IDS_MI_EVENT_START_MODE_PLAYBCK "Laufende Aufnahme überschreiben"
+  IDS_MI_EVENT_DIRECTORY          "Verzeichnis für Event Aufnahme"
+  IDS_MI_MEDIAFILE                "Speichern/stop media Datei..."
+  IDS_MI_SOUND_RECORD_START       "Aufnahme..."
+  IDS_MI_SOUND_RECORD_STOP        "Aufnahme Stop"
+  IDS_MI_REFRESH_RATE_AUTO        "&Automatisch"
+  IDS_MI_MAXIMUM_SPEED_NO_LIMIT   "Kein &Limit"
+  IDS_MI_MAXIMUM_SPEED_CUSTOM     "&Benutzerdefiniert"
+  IDS_MI_TOGGLE_WARP_MODE         "&Warp modus"
+  IDS_MI_TOGGLE_ALWAYSONTOP       "Immer im Vordergrund"
+  IDS_MI_TOGGLE_FASTPAL           "PAL Emulation"
+  IDS_MI_TOGGLE_SCALE2X           "Scale2x"
 END
 
 
@@ -6302,6 +6324,17 @@ BEGIN
   IDS_MI_EVENT_START_MODE_LOAD    "&Charger un instantané"
   IDS_MI_EVENT_START_MODE_RESET   "&Réinitialiser au démarrage"
   IDS_MI_EVENT_START_MODE_PLAYBCK "É&craser la lecture actuelle"
+  IDS_MI_EVENT_DIRECTORY          "Sélectionnez le répertoire des captures"
+  IDS_MI_MEDIAFILE                "Enregistrer/Arrêter fichier média..."
+  IDS_MI_SOUND_RECORD_START       "Record Sound..."
+  IDS_MI_SOUND_RECORD_STOP        "Stop Sound Recording"
+  IDS_MI_REFRESH_RATE_AUTO        "&Automatique"
+  IDS_MI_MAXIMUM_SPEED_NO_LIMIT   "Aucune &limite"
+  IDS_MI_MAXIMUM_SPEED_CUSTOM     "&Personnalisé"
+  IDS_MI_TOGGLE_WARP_MODE         "&Mode turbo"
+  IDS_MI_TOGGLE_ALWAYSONTOP       "Toujours au dessus"
+  IDS_MI_TOGGLE_FASTPAL           "PAL Emulation"
+  IDS_MI_TOGGLE_SCALE2X           "Scale2x"
 END
 
 
@@ -6604,6 +6637,17 @@ BEGIN
   IDS_MI_EVENT_START_MODE_LOAD    "Létezõ pillanatkép &betöltése"
   IDS_MI_EVENT_START_MODE_RESET   "Indulás &RESET-tel együtt"
   IDS_MI_EVENT_START_MODE_PLAYBCK "A visszajátszás &felülírása"
+  IDS_MI_EVENT_DIRECTORY          "Válassza ki a felvételeket/könyvtárat"
+  IDS_MI_MEDIAFILE                "Videó készítése/megállítása..."
+  IDS_MI_SOUND_RECORD_START       "Hang felvétele..."
+  IDS_MI_SOUND_RECORD_STOP        "Hangfelvétel leállítása"
+  IDS_MI_REFRESH_RATE_AUTO        "&Automatikus"
+  IDS_MI_MAXIMUM_SPEED_NO_LIMIT   "Nincs &határ"
+  IDS_MI_MAXIMUM_SPEED_CUSTOM     "&Egyéni"
+  IDS_MI_TOGGLE_WARP_MODE         "&Hipergyors mód"
+  IDS_MI_TOGGLE_ALWAYSONTOP       "Mindig felül"
+  IDS_MI_TOGGLE_FASTPAL           "PAL emuláció"
+  IDS_MI_TOGGLE_SCALE2X           "Élsimítás"
 END
 #pragma code_page(28591)
 
@@ -6906,6 +6950,17 @@ BEGIN
   IDS_MI_EVENT_START_MODE_LOAD    "&Carica snapshot esistente"
   IDS_MI_EVENT_START_MODE_RESET   "Avvia con &reset"
   IDS_MI_EVENT_START_MODE_PLAYBCK "Sovrascrivi la &riproduzione"
+  IDS_MI_EVENT_DIRECTORY          "Seleziona i file/directory della cronologia"
+  IDS_MI_MEDIAFILE                "Salva/arresta file multimediale..."
+  IDS_MI_SOUND_RECORD_START       "Registra audio..."
+  IDS_MI_SOUND_RECORD_STOP        "Interrompi la registrazione audio"
+  IDS_MI_REFRESH_RATE_AUTO        "&Auto"
+  IDS_MI_MAXIMUM_SPEED_NO_LIMIT   "Nessun &limite"
+  IDS_MI_MAXIMUM_SPEED_CUSTOM     "&Personalizzata"
+  IDS_MI_TOGGLE_WARP_MODE         "Modalità &turbo"
+  IDS_MI_TOGGLE_ALWAYSONTOP       "Sempre in primo piano"
+  IDS_MI_TOGGLE_FASTPAL           "Emulazione PAL"
+  IDS_MI_TOGGLE_SCALE2X           "Scale2x"
 END
 
 
@@ -7207,6 +7262,17 @@ BEGIN
   IDS_MI_EVENT_START_MODE_LOAD    "&Laad bestaande momentopname"
   IDS_MI_EVENT_START_MODE_RESET   "Start bij &reset"
   IDS_MI_EVENT_START_MODE_PLAYBCK "Overschrijf weer&gave"
+  IDS_MI_EVENT_DIRECTORY          "Selecteer geschiedenisdirectory"
+  IDS_MI_MEDIAFILE                "Opslaan/stop mediabestand..."
+  IDS_MI_SOUND_RECORD_START       "Geluidsopname..."
+  IDS_MI_SOUND_RECORD_STOP        "Stop geluidsopname"
+  IDS_MI_REFRESH_RATE_AUTO        "&Automatisch"
+  IDS_MI_MAXIMUM_SPEED_NO_LIMIT   "Geen &limiet"
+  IDS_MI_MAXIMUM_SPEED_CUSTOM     "&Aangepast"
+  IDS_MI_TOGGLE_WARP_MODE         "&Warpmodus"
+  IDS_MI_TOGGLE_ALWAYSONTOP       "Altijd in de voorgrond"
+  IDS_MI_TOGGLE_FASTPAL           "PAL-emulatie"
+  IDS_MI_TOGGLE_SCALE2X           "Schaal2x"
 END
 
 
@@ -7509,6 +7575,17 @@ BEGIN
   IDS_MI_EVENT_START_MODE_LOAD    "Za³aduj &zrzut"
   IDS_MI_EVENT_START_MODE_RESET   "Rozpocznij z &restartem"
   IDS_MI_EVENT_START_MODE_PLAYBCK "Overwrite &Playback"
+  IDS_MI_EVENT_DIRECTORY          "Katalog systemu plików"
+  IDS_MI_MEDIAFILE                "Save/stop media file..."
+  IDS_MI_SOUND_RECORD_START       "Record Sound..."
+  IDS_MI_SOUND_RECORD_STOP        "Stop Sound Recording"
+  IDS_MI_REFRESH_RATE_AUTO        "&Auto"
+  IDS_MI_MAXIMUM_SPEED_NO_LIMIT   "Bez &limitu"
+  IDS_MI_MAXIMUM_SPEED_CUSTOM     "&W³asne"
+  IDS_MI_TOGGLE_WARP_MODE         "tr&yb przy¶pieszony (Turbo)"
+  IDS_MI_TOGGLE_ALWAYSONTOP       "Always on Top"
+  IDS_MI_TOGGLE_FASTPAL           "Emulacjê PAL"
+  IDS_MI_TOGGLE_SCALE2X           "Skala:x2"
 END
 #pragma code_page(28591)
 
@@ -7811,6 +7888,17 @@ BEGIN
   IDS_MI_EVENT_START_MODE_LOAD    "&Läs in existerande ögonblicksbild"
   IDS_MI_EVENT_START_MODE_RESET   "Starta med &nollställning"
   IDS_MI_EVENT_START_MODE_PLAYBCK "Skriv &över aktiv uppspelning"
+  IDS_MI_EVENT_DIRECTORY          "Välj historikfiler/-katalog"
+  IDS_MI_MEDIAFILE                "Starta/stoppa mediafil..."
+  IDS_MI_SOUND_RECORD_START       "Record Sound..."
+  IDS_MI_SOUND_RECORD_STOP        "Stop Sound Recording"
+  IDS_MI_REFRESH_RATE_AUTO        "&Auto"
+  IDS_MI_MAXIMUM_SPEED_NO_LIMIT   "Ingen &gräns"
+  IDS_MI_MAXIMUM_SPEED_CUSTOM     "&Egen"
+  IDS_MI_TOGGLE_WARP_MODE         "&Warpläge"
+  IDS_MI_TOGGLE_ALWAYSONTOP       "Alltid överst"
+  IDS_MI_TOGGLE_FASTPAL           "PAL-emulering"
+  IDS_MI_TOGGLE_SCALE2X           "Scale2x"
 END
 
 // -----------------------------------------------------------------------------
