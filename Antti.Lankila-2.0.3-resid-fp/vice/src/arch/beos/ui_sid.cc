@@ -59,17 +59,21 @@ static char *sidmodel[] = {
 	"6581 (old)",
 	"8580 (new)",
 	"8580 (new+digiboost)",
-	"DTVSID",
-	"6581R3 4885",
-	"6581R3 0486S",
-	"6581R3 3984",
-	"6581R4AR 3789",
-	"6581R3 4485",
-	"6581R4 1986S",
-	"8580R5 3691",
-	"8580R5 3691 + digiboost",
+#ifdef HAVE_RESID
+	"DTVSID (reSID)",
+#endif
+#ifdef HAVE_RESID_FP
+	"6581R3 4885 (reSID-fp)",
+	"6581R3 0486S (reSID-fp)",
+	"6581R3 3984 (reSID-fp)",
+	"6581R4AR 3789 (reSID-fp)",
+	"6581R3 4485 (reSID-fp)",
+	"6581R4 1986S (reSID-fp)",
+	"8580R5 3691 (reSID-fp)",
+	"8580R5 3691 + digiboost (reSID-fp)",
 	"8580R5 1489",
-	"8580R5 1489 + digiboost",
+	"8580R5 1489 + digiboost (reSID-fp)",
+#endif
 	NULL
 };
 
@@ -77,7 +81,10 @@ static int sidmodel_values[] = {
 	SID_MODEL_6581,
 	SID_MODEL_8580,
 	SID_MODEL_8580D,
+#ifdef HAVE_RESID
 	SID_MODEL_DTVSID,
+#endif
+#ifdef HAVE_RESID_FP
 	SID_MODEL_6581R3_4885,
 	SID_MODEL_6581R3_0486S,
 	SID_MODEL_6581R3_3984,
@@ -88,6 +95,7 @@ static int sidmodel_values[] = {
 	SID_MODEL_8580R5_3691D,
 	SID_MODEL_8580R5_1489,
 	SID_MODEL_8580R5_1489D,
+#endif
 	-1
 };
 

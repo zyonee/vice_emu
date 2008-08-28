@@ -114,7 +114,10 @@ static char *ui_sid_model[] =
   "6581",
   "8580",
   "8580 + digiboost",
+#ifdef HAVE_RESID
   "DTVSID (ReSID)",
+#endif
+#ifdef HAVE_RESID_FP
   "6581R3 4885 (ReSID-fp)",
   "6581R3 0486S (ReSID-fp)",
   "6581R3 3984 (ReSID-fp)",
@@ -125,6 +128,7 @@ static char *ui_sid_model[] =
   "8580R5 3691 + digiboost (ReSID-fp)",
   "8580R5 1489 (ReSID-fp)",
   "8580R5 1489 + digiboost (ReSID-fp)",
+#endif
   0
 };
 
@@ -133,7 +137,10 @@ static const int ui_sid_model_values[] =
   SID_MODEL_6581,
   SID_MODEL_8580,
   SID_MODEL_8580D,
+#ifdef HAVE_RESID
   SID_MODEL_DTVSID,
+#endif
+#ifdef HAVE_RESID_FP
   SID_MODEL_6581R3_4885,
   SID_MODEL_6581R3_0486S,
   SID_MODEL_6581R3_3984,
@@ -144,6 +151,7 @@ static const int ui_sid_model_values[] =
   SID_MODEL_8580R5_3691D,
   SID_MODEL_8580R5_1489,
   SID_MODEL_8580R5_1489D,
+#endif
   -1
 };
 
@@ -236,7 +244,7 @@ static APTR build_gui(void)
       End,
       CHECK(ui_to_from[4].object, translate_text(IDS_SID_FILTERS))
     End,
-#ifdef HAVE_RESID || HAVE_RESID_FP
+#if defined(HAVE_RESID) || defined(HAVE_RESID_FP)
     Child, GroupObject,
       CYCLE(ui_to_from[5].object, translate_text(IDS_SAMPLE_METHOD), ui_sid_samplemethod)
       Child, ui_to_from[6].object = StringObject,
