@@ -294,14 +294,31 @@ fprintf(stderr,"%s\n",__func__);
 
 void joy_arch_init_default_mapping(int joynum)
 {
-    int i, joyport, pin;
+    int i, joyport, pin, state = 0;
+
+    SDL_JoystickUpdate();
 
     for(i=0; i<sdljoystick[joynum].input_max[AXIS]*input_mult[AXIS]; ++i) {
         joyport = ((1+joynum+((i&4)>>2))&1);
         pin = 8>>(i&3);
-        sdljoystick[joynum].input[AXIS][i].action = JOYSTICK;
-        sdljoystick[joynum].input[AXIS][i].value.joy[0] = joyport;
-        sdljoystick[joynum].input[AXIS][i].value.joy[1] = pin;
+
+        /* Poll each joystick axis once */
+        if((i % input_mult[AXIS]) == 0) {
+            state = SDL_JoystickGetAxis(sdljoystick[joynum].joyptr, i/input_mult[AXIS]);
+        }
+
+        /* Check that the default joystick value is within the threshold.
+           Some devices have axes that are +/-32767 when idle; mapping
+           those to NONE (by default) avoids some problems. */
+        if((state > joystick_threshold)||(state < -joystick_threshold)) {
+            log_warning(sdljoy_log, "Axis %i exceeds threshold, mapping to NONE", i/input_mult[AXIS]);
+            sdljoystick[joynum].input[AXIS][i++].action = NONE;
+            sdljoystick[joynum].input[AXIS][i].action = NONE;
+        } else {
+            sdljoystick[joynum].input[AXIS][i].action = JOYSTICK;
+            sdljoystick[joynum].input[AXIS][i].value.joy[0] = joyport;
+            sdljoystick[joynum].input[AXIS][i].value.joy[1] = pin;
+        }
     }
 
     for(i=0; i<sdljoystick[joynum].input_max[BUTTON]*input_mult[BUTTON]; ++i) {
