@@ -49,14 +49,12 @@ void WaveformGeneratorFP::set_sync_source(WaveformGeneratorFP* source)
 void WaveformGeneratorFP::set_chip_model(chip_model model)
 {
   if (model == MOS6581FP) {
-    ST_lockup = true;
     wave__ST = wave6581__ST;
     wave_P_T = wave6581_P_T;
     wave_PS_ = wave6581_PS_;
     wave_PST = wave6581_PST;
   }
   else {
-    ST_lockup = false;
     wave__ST = wave8580__ST;
     wave_P_T = wave8580_P_T;
     wave_PS_ = wave8580_PS_;
@@ -148,9 +146,6 @@ void WaveformGeneratorFP::reset()
   pw = 0;
   pw_acc_scale = 0xfff;
 
-  test = 0;
-  ring_mod = 0;
-  sync = 0;
-
+  writeCONTROL_REG(0);
   msb_rising = false;
 }

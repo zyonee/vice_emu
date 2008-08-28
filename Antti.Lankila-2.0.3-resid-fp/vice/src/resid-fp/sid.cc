@@ -528,8 +528,7 @@ double SIDFP::I0(double x)
 // not overfilled.
 // ----------------------------------------------------------------------------
 bool SIDFP::set_sampling_parameters(double clock_freq, sampling_method method,
-				  double sample_freq, double pass_freq,
-				  double filter_scale)
+				  double sample_freq, double pass_freq)
 {
   // Check resampling constraints.
   if (method == SAMPLE_RESAMPLE_INTERPOLATE || method == SAMPLE_RESAMPLE_FAST)
@@ -549,12 +548,6 @@ bool SIDFP::set_sampling_parameters(double clock_freq, sampling_method method,
     }
     // Check whether the FIR table would overfill.
     else if (pass_freq > 0.9*sample_freq/2) {
-      return false;
-    }
-
-    // The filter scaling is only included to avoid clipping, so keep
-    // it sane.
-    if (filter_scale < 0.9 || filter_scale > 1.0) {
       return false;
     }
   }
@@ -632,7 +625,7 @@ bool SIDFP::set_sampling_parameters(double clock_freq, sampling_method method,
 	fabs(temp) <= 1 ? I0(beta*sqrt(1 - temp*temp))/I0beta : 0;
       double sincwt =
 	fabs(wt) >= 1e-6 ? sin(wt)/wt : 1;
-      fir[fir_offset + j] = filter_scale*f_samples_per_cycle*wc/M_PI*sincwt*Kaiser;
+      fir[fir_offset + j] = f_samples_per_cycle*wc/M_PI*sincwt*Kaiser;
     }
   }
 

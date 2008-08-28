@@ -39,8 +39,7 @@ public:
   void enable_filter(bool enable);
   void enable_external_filter(bool enable);
   bool set_sampling_parameters(double clock_freq, sampling_method method,
-			       double sample_freq, double pass_freq = -1,
-			       double filter_scale = 0.97);
+			       double sample_freq, double pass_freq = -1);
   void adjust_sampling_frequency(double sample_freq);
   void set_voice_nonlinearity(float nonlinearity);
 

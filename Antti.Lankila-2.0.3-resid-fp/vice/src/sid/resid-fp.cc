@@ -75,8 +75,8 @@ static int residfp_init(sound_t *psid, int speed, int cycles_per_sec)
     sampling_method method;
     char model_text[100];
     char method_text[100];
-    double passband, gain;
-    int filters_enabled, model, sampling, passband_percentage, gain_percentage;
+    double passband;
+    int filters_enabled, model, sampling, passband_percentage;
 
     if (resources_get_int("SidFilters", &filters_enabled) < 0)
         return 0;
@@ -90,11 +90,7 @@ static int residfp_init(sound_t *psid, int speed, int cycles_per_sec)
     if (resources_get_int("SidResidPassband", &passband_percentage) < 0)
         return 0;
 
-    if (resources_get_int("SidResidGain", &gain_percentage) < 0)
-        return 0;
-
     passband = speed * passband_percentage / 200.0;
-    gain = gain_percentage / 100.0;
  
     /* Some mostly-common settings for all modes abstracted here. */
     psid->sid.input(0);
@@ -182,7 +178,7 @@ static int residfp_init(sound_t *psid, int speed, int cycles_per_sec)
     }
 
     if (!psid->sid.set_sampling_parameters(cycles_per_sec, method,
-					   speed, passband, gain)) {
+					   speed, passband)) {
         log_warning(LOG_DEFAULT,
                     "reSID-fp: Out of spec, increase sampling rate or decrease maximum speed");
 	return 0;

@@ -62,9 +62,6 @@ protected:
   // Tell whether the accumulator MSB was set high on this cycle.
   bool msb_rising;
 
-  // enable ST lockup code for 6581?
-  bool ST_lockup;
-
   reg24 accumulator;
   reg24 shift_register;
   reg12 previous, noise_output_cached;
@@ -141,9 +138,7 @@ void WaveformGeneratorFP::clock()
 
   // Calculate new accumulator value;
   accumulator += freq;
-  // optimization: fall into the bit bucket, but this causes cost for
-  // saw & pulse where we need to do & 0xffffff in some form then.
-  // accumulator &= 0xffffff;
+  accumulator &= 0xffffff;
 
   // Check whether the MSB became set high. This is used for synchronization.
   msb_rising = !(accumulator_prev & 0x800000) && (accumulator & 0x800000);
@@ -167,16 +162,6 @@ void WaveformGeneratorFP::clock()
     shift_register &= 0x7fffff^(1<<22)^(1<<20)^(1<<16)^(1<<13)^(1<<11)^(1<<7)^(1<<4)^(1<<2);
     noise_output_cached = 0;
   }
-
-  /* The combined waveform with ring mod seems to destroy the highest 2
-   * bits of the oscillator. Why this happens is not clear, but it probably
-   * involves coupling of the highest bits via the waveform selector and
-   * the XOR mechanism that produces triangle waveform. This only affects
-   * 6581. It's probable that the sync source must be in 0 state as well. */
-  if (ST_lockup
-    && (waveform & 1) && (waveform & 2) && ring_mod
-    && (sync_source->accumulator & 0x800000) == 0)
-    accumulator &= 0x3fffff;
 }
 
 // ----------------------------------------------------------------------------
@@ -225,7 +210,7 @@ reg12 WaveformGeneratorFP::output___T()
 RESID_INLINE
 reg12 WaveformGeneratorFP::output__S_()
 {
-  return (accumulator >> 12) & 0xfff;
+  return accumulator >> 12;
 }
 
 // Pulse:
@@ -241,7 +226,7 @@ reg12 WaveformGeneratorFP::output__S_()
 RESID_INLINE
 reg12 WaveformGeneratorFP::output_P__()
 {
-  return (test || (accumulator & 0xffffff) >= pw_acc_scale) ? 0xfff : 0x000;
+  return (test || accumulator >= pw_acc_scale) ? 0xfff : 0x000;
 }
 
 // Noise:
