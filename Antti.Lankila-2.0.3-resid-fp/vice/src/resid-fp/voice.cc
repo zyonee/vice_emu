@@ -68,9 +68,10 @@ void VoiceFP::set_chip_model(chip_model model)
 
 void VoiceFP::calculate_dac_tables()
 {
-    for (int i = 0; i < 256; i ++)
+    int i;
+    for (i = 0; i < 256; i ++)
         env_dac[i] = SIDFP::kinked_dac(i, nonlinearity, 8);
-    for (int i = 0; i < 4096; i ++)
+    for (i = 0; i < 4096; i ++)
         voice_dac[i] = SIDFP::kinked_dac(i, nonlinearity, 12) - wave_zero;
 }
 

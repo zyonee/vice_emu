@@ -23,6 +23,14 @@
 #ifndef __SIDDEFS_H__
 #define __SIDDEFS_H__
 
+#ifndef M_PI
+#define M_PI    3.14159265358979323846
+#endif
+
+#ifndef M_LN2
+#define M_LN2   0.69314718055994530942
+#endif
+
 // Define bool, true, and false for C++ compilers that lack these keywords.
 #define RESID_HAVE_BOOL @RESID_HAVE_BOOL@
 
@@ -49,7 +57,7 @@ typedef int cycle_count;
 
 enum chip_model { MOS6581FP=1, MOS8580FP };
 
-enum sampling_method { SAMPLE_INTERPOLATE, SAMPLE_RESAMPLE_INTERPOLATE, SAMPLE_RESAMPLE_FAST };
+enum sampling_method { SAMPLE_INTERPOLATE=1, SAMPLE_RESAMPLE_INTERPOLATE, SAMPLE_RESAMPLE_FAST };
 
 extern "C"
 {
