@@ -46,11 +46,25 @@ if test "$GXX" = yes; then
     AC_MSG_CHECKING([whether the C++ compiler ($CXX $CXXFLAGS $LDFLAGS) works])
     AC_TRY_COMPILE([],
                    [int test;],
-                   [ AC_MSG_RESULT(yes) ],
+                   [ AC_MSG_RESULT(yes)
+                     NO_EXCEPTIONS="-fno-exceptions" ],
                    [ AC_MSG_RESULT(no)
-                     CXXFLAGS="-g -Wall -O2 $MSSE"
+                     NO_EXCEPTIONS=""
                      ])
   fi
+fi
+
+CXXFLAGS="-g -Wall -O2 $MSSE $NO_EXCEPTIONS"
+if test x"$MSSE" = "x-msse"; then
+  AC_MSG_CHECKING([if the xmmintrin.h include can be used])
+  AC_TRY_COMPILE([#include <xmmintrin.h>],
+                 [int test;],
+                 [ AC_MSG_RESULT(yes)
+                   ],
+                 [ AC_MSG_RESULT(no)
+                   MSSE=""
+                   ])
+  CXXFLAGS="-g -Wall -O2 $MSSE $NO_EXCEPTIONS"
 fi
 
 AC_CHECK_PROG(AR, ar, ar, ar)
