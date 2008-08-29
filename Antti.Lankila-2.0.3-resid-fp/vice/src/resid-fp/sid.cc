@@ -29,7 +29,7 @@ static int detect_sse(void)
 {
   return 1;
 }
-#else
+#else /* __SSE__ && !__x64_64__ */
 struct cpu_x86_regs_s {
   unsigned int eax;
   unsigned int ebx;
@@ -90,8 +90,13 @@ static int detect_sse(void)
   return have_sse;
 }
 
-#endif /* __x64_64 __ */
-#endif /* __SSE__ */
+#endif /* __SSE__ && !__x64_64__ */
+#else /* !__SSE__ && !__x64_64__ */
+static int detect_sse(void)
+{
+  return 0;
+}
+#endif
 
 float SIDFP::kinked_dac(const int x, const float nonlinearity, const int max)
 {
