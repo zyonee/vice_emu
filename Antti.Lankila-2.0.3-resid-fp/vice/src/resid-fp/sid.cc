@@ -23,13 +23,13 @@
 
 #ifdef __SSE__
 #include <xmmintrin.h>
+#endif
 
-#ifdef __x86_64__
-static int detect_sse(void)
-{
-  return 1;
-}
-#else /* __SSE__ && !__x64_64__ */
+enum host_cpu_feature {
+    HOST_CPU_MMX=1, HOST_CPU_SSE=2, HOST_CPU_SSE2=4, HOST_CPU_SSE3=8
+};
+
+#if defined(__x86_64__) || defined(__i386__)
 struct cpu_x86_regs_s {
   unsigned int eax;
   unsigned int ebx;
@@ -38,7 +38,7 @@ struct cpu_x86_regs_s {
 };
 typedef struct cpu_x86_regs_s cpu_x86_regs_t;
 
-static cpu_x86_regs_t get_cpu_regs(unsigned int index)
+static cpu_x86_regs_t get_cpuid_regs(unsigned int index)
 {
   cpu_x86_regs_t retval;
 
@@ -53,18 +53,36 @@ static cpu_x86_regs_t get_cpu_regs(unsigned int index)
   return retval;
 }
 
-static int detect_sse(void)
+static int host_cpu_features_by_cpuid(void)
 {
-  static int have_sse = 0;
-  static int have_sse_detected = 0;
+  cpu_x86_regs_t regs = get_cpuid_regs(1);
+
+  int features = 0;
+  if (regs.edx & (1 << 23))
+    features |= HOST_CPU_MMX;
+  if (regs.edx & (1 << 25))
+    features |= HOST_CPU_SSE;
+  if (regs.edx & (1 << 26))
+    features |= HOST_CPU_SSE2;
+  if (regs.ecx & (1 << 0))
+    features |= HOST_CPU_SSE3;
+
+  return features;
+}
+
+static int host_cpu_features(void)
+{
+  static int features = 0;
+  static int features_detected = 0;
+#ifdef __i386__
   unsigned long temp1, temp2;
+#endif
 
-  enum { SSE_FLAG = 25 };
+  if (features_detected)
+    return features;
+  features_detected = 1;
 
-  if (have_sse_detected)
-    return have_sse;
-  have_sse_detected = 1;
-
+#ifdef __i386__
   /* see if we are dealing with a cpu that has the cpuid instruction */
   asm("pushfl; popl %%eax; movl %%eax, %0; xorl $0x200000, %%eax; pushl %%eax; popfl; pushfl; popl %%eax; movl %%eax, %1; pushl %0; popfl "
       : "=r" (temp1),
@@ -78,21 +96,20 @@ static int detect_sse(void)
     /* no cpuid support, so we can't test for SSE availability -> false */
     return 0;
   }
+#endif
 
   /* find the highest supported cpuid function, returned in %eax */
-  if (get_cpu_regs(0).eax < 1) {
-    /* no cpuid 1 function, we can't test for SSE availability -> false. */
+  if (get_cpuid_regs(0).eax < 1) {
+    /* no cpuid 1 function, we can't test for features -> no features */
     return 0;
   }
 
-  /* test for SSE flag on the cpu features register %edx */
-  have_sse = (get_cpu_regs(1).edx & (1 << SSE_FLAG)) ? 1 : 0;
-  return have_sse;
+  features = host_cpu_features_by_cpuid();
+  return features;
 }
 
-#endif /* __SSE__ && !__x64_64__ */
-#else /* !__SSE__ && !__x64_64__ */
-static int detect_sse(void)
+#else /* !__x86_64__ && !__i386__ */
+static int host_cpu_features(void)
 {
   return 0;
 }
@@ -120,7 +137,9 @@ float SIDFP::kinked_dac(const int x, const float nonlinearity, const int max)
 // ----------------------------------------------------------------------------
 SIDFP::SIDFP()
 {
-  can_use_sse = (detect_sse() == 1);
+  /* if -msse is on, we crash instantly if the CPU doesn't
+   * actually support SSE, though. We should maybe just die. */
+  can_use_sse = (host_cpu_features() & HOST_CPU_SSE) != 0;
 
   // Initialize pointers.
   sample = 0;
@@ -687,15 +706,6 @@ int SIDFP::clock(cycle_count& delta_t, short* buf, int n, int interleave)
 {
   /* XXX I assume n is generally large enough for delta_t here... */
   age_bus_value(delta_t);
-  /* disable denormal numbers */
-#ifdef __SSE__
-  int old = 0;
-  if (can_use_sse) {
-    old = _mm_getcsr();
-    /* Denormals Are Zero (DAZ) appropriate for SSE2. We shouldn't need that. */
-    _mm_setcsr(old | _MM_FLUSH_ZERO_ON);
-  }
-#endif
   int res;
   switch (sampling) {
   default:
@@ -707,15 +717,8 @@ int SIDFP::clock(cycle_count& delta_t, short* buf, int n, int interleave)
     break;
   }
 
-#ifdef __SSE__
-  if (can_use_sse)
-    _mm_setcsr(old);
-  else
-#endif
-  {
-    filter.nuke_denormals();
-    extfilt.nuke_denormals();
-  }
+  filter.nuke_denormals();
+  extfilt.nuke_denormals();
 
   return res;
 }

@@ -26,12 +26,12 @@ AC_PROG_CXX
 dnl Set CXXFLAGS for g++. Use -msse if supported.
 if test "$GXX" = yes; then
   if test "$ac_test_CXXFLAGS" != set; then
-    CXXFLAGS="-g -Wall -O2 -msse"
+    CXXFLAGS="-g -Wall -O2 -msse -mfpmath=387"
     AC_MSG_CHECKING([whether the C++ compiler ($CXX $CXXFLAGS $LDFLAGS) works])
     AC_TRY_COMPILE([],
                    [int test;],
                    [ AC_MSG_RESULT(yes)
-                     MSSE="-msse"
+                     MSSE="-msse -mfpmath=387"
                      ],
                    [ AC_MSG_RESULT(no)
                      MSSE=""
