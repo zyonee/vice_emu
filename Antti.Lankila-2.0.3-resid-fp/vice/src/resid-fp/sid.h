@@ -89,6 +89,7 @@ protected:
   RESID_INLINE int clock_resample_interpolate(cycle_count& delta_t, short* buf,
 					      int n, int interleave);
   RESID_INLINE void age_bus_value(cycle_count);
+  float convolve(const float *a, const float *b, int n);
 
   VoiceFP voice[3];
   FilterFP filter;
@@ -122,6 +123,8 @@ protected:
 
   // FIR_RES filter tables (FIR_N*FIR_RES).
   float* fir;
+
+  bool can_use_sse;
 };
 
 #endif // not __SID_H__

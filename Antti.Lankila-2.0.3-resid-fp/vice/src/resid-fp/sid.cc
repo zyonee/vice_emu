@@ -23,9 +23,13 @@
 
 #ifdef __SSE__
 #include <xmmintrin.h>
-#endif
 
-#ifdef __SSE__
+#ifdef __x86_64__
+static int detect_sse(void)
+{
+  return 1;
+}
+#else
 struct cpu_x86_regs_s {
   unsigned int eax;
   unsigned int ebx;
@@ -46,76 +50,48 @@ static cpu_x86_regs_t get_cpu_regs(unsigned int index)
       : "r"  (index)
       : "eax", "ebx", "ecx", "edx");
 
-    return retval;
+  return retval;
 }
-
-int detect_sse_done = 0;
-int detect_sse_result = 0;
 
 static int detect_sse(void)
 {
-#ifdef __x86_64__
-  return 1;
-#else
+  static int have_sse = 0;
+  static int have_sse_detected = 0;
   unsigned long temp1, temp2;
-  cpu_x86_regs_t cpu_id_return;
-  unsigned int cpu_type, cpu_level;
 
-  if (detect_sse_done == 1)
-  {
-    return detect_sse_result;
+  enum { SSE_FLAG = 25 };
+
+  if (have_sse_detected)
+    return have_sse;
+  have_sse_detected = 1;
+
+  /* see if we are dealing with a cpu that has the cpuid instruction */
+  asm("pushfl; popl %%eax; movl %%eax, %0; xorl $0x200000, %%eax; pushl %%eax; popfl; pushfl; popl %%eax; movl %%eax, %1; pushl %0; popfl "
+      : "=r" (temp1),
+      "=r" (temp2)
+      :
+      : "eax");
+
+  temp1 &= 0x200000;
+  temp2 &= 0x200000;
+  if (temp1 == temp2) {
+    /* no cpuid support, so we can't test for SSE availability -> false */
+    return 0;
   }
-  else
-  {
 
-    /* see if we are dealing with a cpu that has the cpuid instruction */
-    asm("pushfl; popl %%eax; movl %%eax, %0; xorl $0x200000, %%eax; pushl %%eax; popfl; pushfl; popl %%eax; movl %%eax, %1; pushl %0; popfl "
-        : "=r" (temp1),
-        "=r" (temp2)
-        :
-        : "eax");
-    
-    temp1 &= 0x200000;
-    temp2 &= 0x200000;
-    if (temp1 == temp2)
-    {
-      /* no cpuid support, so return 0 */
-      detect_sse_done = 1;
-      return 0;
-    }
-
-    /* get max levels and type of cpu */
-    cpu_id_return = get_cpu_regs(0);
-
-    cpu_level = cpu_id_return.eax;
-    if (cpu_level == 0)
-    {
-      /* no more levels, so no sse, return 0 */
-      detect_sse_done = 1;
-      return 0;
-    }
-
-    cpu_type = cpu_id_return.ebx;
-    if (cpu_type != 0x756e6547)
-    {
-      /* cpu type is not intel, so return 0 */
-      detect_sse_done = 1;
-      return 0;
-    }
-
-    cpu_id_return = get_cpu_regs(1);
-
-    if (cpu_id_return.edx & (1<<25))
-    {
-      detect_sse_result = 1;
-    }
-    detect_sse_done = 1;
-
-    return detect_sse_result;
+  /* find the highest supported cpuid function, returned in %eax */
+  if (get_cpu_regs(0).eax < 1) {
+    /* no cpuid 1 function, we can't test for SSE availability -> false. */
+    return 0;
   }
-#endif
+
+  /* test for SSE flag on the cpu features register %edx */
+  have_sse = (get_cpu_regs(1).edx & (1 << SSE_FLAG)) ? 1 : 0;
+  return have_sse;
 }
-#endif
+
+#endif /* __x64_64 __ */
+#endif /* __SSE__ */
 
 float SIDFP::kinked_dac(const int x, const float nonlinearity, const int max)
 {
@@ -139,6 +115,8 @@ float SIDFP::kinked_dac(const int x, const float nonlinearity, const int max)
 // ----------------------------------------------------------------------------
 SIDFP::SIDFP()
 {
+  can_use_sse = (detect_sse() == 1);
+
   // Initialize pointers.
   sample = 0;
   fir = 0;
@@ -707,10 +685,10 @@ int SIDFP::clock(cycle_count& delta_t, short* buf, int n, int interleave)
   /* disable denormal numbers */
 #ifdef __SSE__
   int old = 0;
-  if (detect_sse() == 1)
-  {
+  if (can_use_sse) {
     old = _mm_getcsr();
-    _mm_setcsr(old | _MM_FLUSH_ZERO_ON); /* denormals-are-zero appropriate for SSE2 boxes, I'll play this safe */
+    /* Denormals Are Zero (DAZ) appropriate for SSE2. We shouldn't need that. */
+    _mm_setcsr(old | _MM_FLUSH_ZERO_ON);
   }
 #endif
   int res;
@@ -723,12 +701,17 @@ int SIDFP::clock(cycle_count& delta_t, short* buf, int n, int interleave)
     res = clock_resample_interpolate(delta_t, buf, n, interleave);
     break;
   }
+
 #ifdef __SSE__
-  if (detect_sse() == 1)
-  {
+  if (can_use_sse)
     _mm_setcsr(old);
-  }
+  else
 #endif
+  {
+    filter.nuke_denormals();
+    extfilt.nuke_denormals();
+  }
+
   return res;
 }
 
@@ -795,12 +778,11 @@ int SIDFP::clock_interpolate(cycle_count& delta_t, short* buf, int n,
   return s;
 }
 
-static float convolve(const float *a, const float *b, int n)
+float SIDFP::convolve(const float *a, const float *b, int n)
 {
     float out = 0.f;
 #ifdef __SSE__
-    if (detect_sse() == 1)
-    {
+    if (can_use_sse) {
         __m128 out4 = { 0, 0, 0, 0 };
 
         /* examine if we can use aligned loads on both pointers */

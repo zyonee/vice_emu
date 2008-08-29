@@ -147,6 +147,7 @@ private:
   float type3_w0(float source);
   float type4_w0();
   void calculate_helpers();
+  void nuke_denormals();
 
   // Filter enabled.
   bool enabled;
@@ -353,6 +354,19 @@ float FilterFP::clock(float voice1,
     }
     
     return Vf * volf;
+}
+
+RESID_INLINE
+void FilterFP::nuke_denormals()
+{
+    /* We could also switch the FPU status register to do this,
+     * but this doesn't work on Athlon XP, it seems. Since the SID output
+     * is calculated in short bursts, we get quite frequent calls to this
+     * method, hopefully we never actually see any denormals at all. */
+    if (Vbp > -1e-12f && Vbp < 1e-12f)
+	Vbp = 0;
+    if (Vlp > -1e-12f && Vlp < 1e-12f)
+	Vlp = 0;
 }
 
 #endif // not __FILTER_H__
