@@ -57,7 +57,7 @@ typedef int cycle_count;
 
 enum chip_model { MOS6581FP=1, MOS8580FP };
 
-enum sampling_method { SAMPLE_INTERPOLATE=1, SAMPLE_RESAMPLE_INTERPOLATE, SAMPLE_RESAMPLE_FAST };
+enum sampling_method { SAMPLE_INTERPOLATE=1, SAMPLE_RESAMPLE_INTERPOLATE };
 
 extern "C"
 {

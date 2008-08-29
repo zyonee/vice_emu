@@ -551,7 +551,9 @@ bool SIDFP::set_sampling_parameters(double clock_freq, sampling_method method,
   }
   
   const int bits = 16;
-  
+
+  if (pass_freq > 20000)
+    pass_freq = 20000;  
   if (2*pass_freq/sample_freq > 0.9)
     pass_freq = 0.9*sample_freq/2;
 
@@ -570,8 +572,7 @@ bool SIDFP::set_sampling_parameters(double clock_freq, sampling_method method,
   /* This code utilizes the fact that aliasing back to 20 kHz from
    * sample_freq/2 is inaudible. This allows us to define a passband
    * wider than normally. We might also consider aliasing back to pass_freq,
-   * but I suspect the default 90 % passband pushes it > 20 000. This
-   * gives us lower order filter, in other words. */
+   * but as this can be less than 20 kHz, it might become audible... */
   double aliasing_allowance = sample_freq / 2 - 20000;
   if (aliasing_allowance < 0)
     aliasing_allowance = 0;
@@ -615,7 +616,7 @@ bool SIDFP::set_sampling_parameters(double clock_freq, sampling_method method,
 	fabs(temp) <= 1 ? I0(beta*sqrt(1 - temp*temp))/I0beta : 0;
       double sincwt =
 	fabs(wt) >= 1e-6 ? sin(wt)/wt : 1;
-      fir[fir_offset + j] = f_samples_per_cycle*wc/M_PI*sincwt*Kaiser;
+      fir[fir_offset + j] = (float) (f_samples_per_cycle*wc/M_PI*sincwt*Kaiser);
     }
   }
 

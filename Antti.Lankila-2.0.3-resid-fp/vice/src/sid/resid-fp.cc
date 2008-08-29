@@ -168,12 +168,9 @@ static int residfp_init(sound_t *psid, int speed, int cycles_per_sec)
 	strcpy(method_text, "interpolating");
 	break;
       case 2:
-        method = SAMPLE_RESAMPLE_INTERPOLATE;
-	sprintf(method_text, "resampling, pass to %dHz", (int)passband);
-	break;
       case 3:
-        method = SAMPLE_RESAMPLE_FAST;
-	sprintf(method_text, "resampling, pass to %dHz", (int)passband);
+        method = SAMPLE_RESAMPLE_INTERPOLATE;
+	sprintf(method_text, "resampling, pass to %d Hz", (int)(passband > 20000 ? 20000 : passband));
 	break;
     }
 
