@@ -197,15 +197,15 @@ BEGIN
             MENUITEM "", IDM_TOGGLE_VDC_DOUBLESIZE
             MENUITEM "", IDM_TOGGLE_VDC_DOUBLESCAN
             MENUITEM SEPARATOR
-            MENUITEM "64KB video &memory", IDM_TOGGLE_VDC64KB
+            MENUITEM "", IDM_TOGGLE_VDC64KB
         END
         MENUITEM SEPARATOR
-        MENUITEM "Swap &Joystick", IDM_SWAP_JOYSTICK
+        MENUITEM "", IDM_SWAP_JOYSTICK
         MENUITEM SEPARATOR
         MENUITEM "", IDM_TOGGLE_SOUND, CHECKED
         MENUITEM SEPARATOR
         MENUITEM "", IDM_TOGGLE_DRIVE_TRUE_EMULATION, CHECKED
-        MENUITEM "&Virtual device traps", IDM_TOGGLE_VIRTUAL_DEVICES
+        MENUITEM "", IDM_TOGGLE_VIRTUAL_DEVICES
         MENUITEM SEPARATOR
         POPUP "Vide&o standard"
         BEGIN
@@ -213,47 +213,47 @@ BEGIN
             MENUITEM "&NTSC-M", IDM_SYNC_FACTOR_NTSC
         END
         MENUITEM SEPARATOR
-        MENUITEM "Emulator &Identification", IDM_TOGGLE_EMUID
-        MENUITEM "IEEE&488 Interface emulation",    IDM_IEEE488
-        MENUITEM "&Grab mouse events",    IDM_MOUSE
+        MENUITEM "", IDM_TOGGLE_EMUID
+        MENUITEM "", IDM_IEEE488
+        MENUITEM "", IDM_MOUSE
     END
     POPUP "S&ettings"
     BEGIN
-        MENUITEM "&Video settings...",     IDM_VIDEO_SETTINGS
-        MENUITEM "&Peripheral settings...",IDM_DEVICEMANAGER
-        MENUITEM "",     IDM_DRIVE_SETTINGS
-        MENUITEM "D&atasette settings...", IDM_DATASETTE_SETTINGS
-        MENUITEM "VIC-II settings...",     IDM_VICII_SETTINGS
-        MENUITEM "&Joystick settings...",  IDM_JOY_SETTINGS
-        MENUITEM "&Keyboard settings...",  IDM_KEYBOARD_SETTINGS
-        MENUITEM "Mo&use settings...",     IDM_MOUSE_SETTINGS
-        MENUITEM "S&ound settings...",     IDM_SOUND_SETTINGS
-        MENUITEM "S&ID settings...",       IDM_SID_SETTINGS
-        MENUITEM "&ROM settings...",       IDM_ROM_SETTINGS
-        MENUITEM "RA&M settings...",       IDM_RAM_SETTINGS
-        MENUITEM "C&128 settings...",      IDM_C128_SETTINGS
-        MENUITEM "RS&232 settings...",     IDM_RS232_SETTINGS
+        MENUITEM "", IDM_VIDEO_SETTINGS
+        MENUITEM "", IDM_DEVICEMANAGER
+        MENUITEM "", IDM_DRIVE_SETTINGS
+        MENUITEM "", IDM_DATASETTE_SETTINGS
+        MENUITEM "", IDM_VICII_SETTINGS
+        MENUITEM "", IDM_JOY_SETTINGS
+        MENUITEM "", IDM_KEYBOARD_SETTINGS
+        MENUITEM "", IDM_MOUSE_SETTINGS
+        MENUITEM "", IDM_SOUND_SETTINGS
+        MENUITEM "", IDM_SID_SETTINGS
+        MENUITEM "", IDM_ROM_SETTINGS
+        MENUITEM "", IDM_RAM_SETTINGS
+        MENUITEM "", IDM_C128_SETTINGS
+        MENUITEM "", IDM_RS232_SETTINGS
         POPUP "&Cartridge Settings"
         BEGIN
-            MENUITEM "&REU settings...",      IDM_REU_SETTINGS
-            MENUITEM "&GEORAM settings...",      IDM_GEORAM_SETTINGS
-            MENUITEM "&RAMCART settings...",      IDM_RAMCART_SETTINGS
-            MENUITEM "&MMC64 settings...",    IDM_MMC64_SETTINGS
-            MENUITEM "&DIGIMAX settings...",  IDM_DIGIMAX_SETTINGS
-            MENUITEM "&IDE64 settings...",    IDM_IDE64_SETTINGS
+            MENUITEM "", IDM_REU_SETTINGS
+            MENUITEM "", IDM_GEORAM_SETTINGS
+            MENUITEM "", IDM_RAMCART_SETTINGS
+            MENUITEM "", IDM_MMC64_SETTINGS
+            MENUITEM "", IDM_DIGIMAX_SETTINGS
+            MENUITEM "", IDM_IDE64_SETTINGS
 #ifdef HAVE_TFE
-            MENUITEM "&Ethernet settings...", IDM_TFE_SETTINGS
+            MENUITEM "", IDM_TFE_SETTINGS
 #endif
-            MENUITEM "&ACIA settings...",     IDM_ACIA_SETTINGS
-            MENUITEM "RS&232 userport settings...", IDM_RS232USER_SETTINGS
+            MENUITEM "", IDM_ACIA_SETTINGS
+            MENUITEM "", IDM_RS232USER_SETTINGS
         END
         MENUITEM SEPARATOR
-        MENUITEM "&Save current settings", IDM_SETTINGS_SAVE
-        MENUITEM "&Load saved settings",   IDM_SETTINGS_LOAD
-        MENUITEM "Set de&fault settings",  IDM_SETTINGS_DEFAULT
+        MENUITEM "", IDM_SETTINGS_SAVE
+        MENUITEM "", IDM_SETTINGS_LOAD
+        MENUITEM "", IDM_SETTINGS_DEFAULT
         MENUITEM SEPARATOR
-        MENUITEM "Save settings on e&xit", IDM_TOGGLE_SAVE_SETTINGS_ON_EXIT
-        MENUITEM "&Confirm on exit",       IDM_TOGGLE_CONFIRM_ON_EXIT
+        MENUITEM "", IDM_TOGGLE_SAVE_SETTINGS_ON_EXIT
+        MENUITEM "", IDM_TOGGLE_CONFIRM_ON_EXIT
     END
     POPUP "&Language"
     BEGIN
@@ -285,43 +285,6 @@ END
 
 IDR_MENUC128_DE MENU DISCARDABLE
 BEGIN
-            MENUITEM "64KB Bildschirm Speicher", IDM_TOGGLE_VDC64KB
-        MENUITEM "&Joystick ports austauschen", IDM_SWAP_JOYSTICK
-        MENUITEM "&Virtuelle Geräte Traps", IDM_TOGGLE_VIRTUAL_DEVICES
-            MENUITEM "&PAL-G",  IDM_SYNC_FACTOR_PAL
-            MENUITEM "&NTSC-M", IDM_SYNC_FACTOR_NTSC
-        MENUITEM "Emulator &Identifikation", IDM_TOGGLE_EMUID
-        MENUITEM "IEEE&488 Schnittstellen-Emulation",    IDM_IEEE488
-        MENUITEM "Maus Ereignisse abfan&gen",    IDM_MOUSE
-        MENUITEM "&Video Einstellungen...",     IDM_VIDEO_SETTINGS
-        MENUITEM "&Peripherie Einstellungen...",IDM_DEVICEMANAGER
-        MENUITEM "B&andlaufwerk Einstellungen", IDM_DATASETTE_SETTINGS
-        MENUITEM "VIC-II Einstellungen...",     IDM_VICII_SETTINGS
-        MENUITEM "&Joystick Einstellungen...",  IDM_JOY_SETTINGS
-        MENUITEM "&Tastatur Einstellungen...",  IDM_KEYBOARD_SETTINGS
-        MENUITEM "Ma&us Einstellungen...",     IDM_MOUSE_SETTINGS
-        MENUITEM "S&ound Einstellungen...",     IDM_SOUND_SETTINGS
-        MENUITEM "S&ID Einstellungen...",       IDM_SID_SETTINGS
-        MENUITEM "&ROM Einstellungen...",       IDM_ROM_SETTINGS
-        MENUITEM "RA&M Einstellungen...",       IDM_RAM_SETTINGS
-        MENUITEM "C&128 Einstellungen...",      IDM_C128_SETTINGS
-        MENUITEM "RS&232 Einstellungen...",     IDM_RS232_SETTINGS
-            MENUITEM "&REU Einstellungen...",      IDM_REU_SETTINGS
-            MENUITEM "&GEORAM Einstellungen...",      IDM_GEORAM_SETTINGS
-            MENUITEM "&RAMCART Einstellungen...",      IDM_RAMCART_SETTINGS
-            MENUITEM "&MMC64 Einstellungen...",    IDM_MMC64_SETTINGS
-            MENUITEM "&Digimax Einstellungen...",  IDM_DIGIMAX_SETTINGS
-            MENUITEM "&IDE64 Einstellungen...",    IDM_IDE64_SETTINGS
-#ifdef HAVE_TFE
-            MENUITEM "&Ethernet Einstellungen...", IDM_TFE_SETTINGS
-#endif
-            MENUITEM "&ACIA Einstellungen...",     IDM_ACIA_SETTINGS
-            MENUITEM "RS&232 Userport Einstellungen...", IDM_RS232USER_SETTINGS
-        MENUITEM "Einstellungen &speichern", IDM_SETTINGS_SAVE
-        MENUITEM "Einstellungen &Laden",   IDM_SETTINGS_LOAD
-        MENUITEM "&Wiederherstellen Standard Einstellungen",  IDM_SETTINGS_DEFAULT
-        MENUITEM "Einstellungen beim Beenden speichern", IDM_TOGGLE_SAVE_SETTINGS_ON_EXIT
-        MENUITEM "&Bestätigung beim Beenden",       IDM_TOGGLE_CONFIRM_ON_EXIT
         MENUITEM "&Englisch", IDM_LANG_EN
         MENUITEM "&Deutsch", IDM_LANG_DE
         MENUITEM "&Französisch", IDM_LANG_FR
@@ -342,44 +305,6 @@ END
 
 IDR_MENUC128_FR MENU DISCARDABLE
 BEGIN
-            MENUITEM "Mémoire d'affichage de 64Ko", IDM_TOGGLE_VDC64KB
-        MENUITEM "Interchanger les joysticks", IDM_SWAP_JOYSTICK
-        MENUITEM "Activer les périphériques &virtuels", IDM_TOGGLE_VIRTUAL_DEVICES
-        MENUITEM SEPARATOR
-            MENUITEM "&PAL-G",  IDM_SYNC_FACTOR_PAL
-            MENUITEM "&NTSC-M", IDM_SYNC_FACTOR_NTSC
-        MENUITEM "&Identification de l'émulateur", IDM_TOGGLE_EMUID
-        MENUITEM "Interface d'émulation &IEEE488",    IDM_IEEE488
-        MENUITEM "&Grab mouse events",    IDM_MOUSE
-        MENUITEM "Paramètres vidéo...",     IDM_VIDEO_SETTINGS
-        MENUITEM "Paramètres des périphériques...",IDM_DEVICEMANAGER
-        MENUITEM "Paramètres du datassette...", IDM_DATASETTE_SETTINGS
-        MENUITEM "Paramètres VIC-II...",     IDM_VICII_SETTINGS
-        MENUITEM "Paramètres des joysticks...",  IDM_JOY_SETTINGS
-        MENUITEM "Paramètres du clavier...",  IDM_KEYBOARD_SETTINGS
-        MENUITEM "Mo&use settings...",     IDM_MOUSE_SETTINGS
-        MENUITEM "Paramètres son...",     IDM_SOUND_SETTINGS
-        MENUITEM "Paramètres SID...",       IDM_SID_SETTINGS
-        MENUITEM "Paramètres ROM...",       IDM_ROM_SETTINGS
-        MENUITEM "Paramètres de la RAM...",       IDM_RAM_SETTINGS
-        MENUITEM "Paramètres C&128...",      IDM_C128_SETTINGS
-        MENUITEM "Paramètres RS&232...",     IDM_RS232_SETTINGS
-            MENUITEM "Paramètres RE&U...",      IDM_REU_SETTINGS
-            MENUITEM "Paramètres &GEORAM...",      IDM_GEORAM_SETTINGS
-            MENUITEM "Paramètres &RAMCART...",      IDM_RAMCART_SETTINGS
-            MENUITEM "&MMC64 settings...",    IDM_MMC64_SETTINGS
-            MENUITEM "&DIGIMAX settings...",  IDM_DIGIMAX_SETTINGS
-            MENUITEM "Paramètres &IDE64...",    IDM_IDE64_SETTINGS
-#ifdef HAVE_TFE
-            MENUITEM "Émulation &Ethernet...", IDM_TFE_SETTINGS
-#endif
-            MENUITEM "Paramètres &ACIA...",     IDM_ACIA_SETTINGS
-            MENUITEM "Paramètres RS&232 userport...", IDM_RS232USER_SETTINGS
-        MENUITEM "&Enregistrer les paramètres courants", IDM_SETTINGS_SAVE
-        MENUITEM "&Charger les paramètres",   IDM_SETTINGS_LOAD
-        MENUITEM "Rétablir les paramètres par dé&faut",  IDM_SETTINGS_DEFAULT
-        MENUITEM "Enregistrer les pa&ramètres à la sortie", IDM_TOGGLE_SAVE_SETTINGS_ON_EXIT
-        MENUITEM "&Confirmation à la sortie",       IDM_TOGGLE_CONFIRM_ON_EXIT
         MENUITEM "&Anglais", IDM_LANG_EN
         MENUITEM "&Allemand", IDM_LANG_DE
         MENUITEM "&Français", IDM_LANG_FR
@@ -400,43 +325,6 @@ END
 #pragma code_page(28592)
 IDR_MENUC128_HU MENU DISCARDABLE
 BEGIN
-            MENUITEM "64KB képernyõ &memória", IDM_TOGGLE_VDC64KB
-        MENUITEM "Botkormányok &felcserélése", IDM_SWAP_JOYSTICK
-        MENUITEM "*Virtuális eszközök ciklus kihagyása", IDM_TOGGLE_VIRTUAL_DEVICES
-            MENUITEM "&PAL-G",  IDM_SYNC_FACTOR_PAL
-            MENUITEM "&NTSC-M", IDM_SYNC_FACTOR_NTSC
-        MENUITEM "Emulátor &azonosító", IDM_TOGGLE_EMUID
-        MENUITEM "IEEE&488 interfész emuláció",    IDM_IEEE488
-        MENUITEM "Egér &események elkapása",    IDM_MOUSE
-        MENUITEM "&Videó beállításai...",     IDM_VIDEO_SETTINGS
-        MENUITEM "&Perifériák beállításai...",IDM_DEVICEMANAGER
-        MENUITEM "M&agnó beállításai...", IDM_DATASETTE_SETTINGS
-        MENUITEM "VIC-II beállításai...",     IDM_VICII_SETTINGS
-        MENUITEM "B&otkormány beállításai...",  IDM_JOY_SETTINGS
-        MENUITEM "&Billentyûzet beállításai...",  IDM_KEYBOARD_SETTINGS
-        MENUITEM "Egér &beállításai...",     IDM_MOUSE_SETTINGS
-        MENUITEM "Hang beállítások...",     IDM_SOUND_SETTINGS
-        MENUITEM "S&ID beállításai...",       IDM_SID_SETTINGS
-        MENUITEM "&ROM-ok beállításai...",       IDM_ROM_SETTINGS
-        MENUITEM "RA&M beállításai...",       IDM_RAM_SETTINGS
-        MENUITEM "C&128 beállításai...",      IDM_C128_SETTINGS
-        MENUITEM "RS&232 beállításai...",     IDM_RS232_SETTINGS
-            MENUITEM "&REU beállításai...",      IDM_REU_SETTINGS
-            MENUITEM "&GEORAM beállításai...",      IDM_GEORAM_SETTINGS
-            MENUITEM "&RAMCART beállításai...",      IDM_RAMCART_SETTINGS
-            MENUITEM "&MMC64 beállításai...",    IDM_MMC64_SETTINGS
-            MENUITEM "&DIGIMAX beállításai...",  IDM_DIGIMAX_SETTINGS
-            MENUITEM "&IDE64 beállításai...",    IDM_IDE64_SETTINGS
-#ifdef HAVE_TFE
-            MENUITEM "&Ethernet beállításai...", IDM_TFE_SETTINGS
-#endif
-            MENUITEM "&ACIA beállításai...",     IDM_ACIA_SETTINGS
-            MENUITEM "RS&232 userport beállításai...", IDM_RS232USER_SETTINGS
-        MENUITEM "Jelenlegi beállítások &mentése", IDM_SETTINGS_SAVE
-        MENUITEM "Mentett beállítások &betöltése",   IDM_SETTINGS_LOAD
-        MENUITEM "Alapértelmezések &beállítása",  IDM_SETTINGS_DEFAULT
-        MENUITEM "Beállítások mentése k&ilépéskor", IDM_TOGGLE_SAVE_SETTINGS_ON_EXIT
-        MENUITEM "&Megerõsítés kilépéskor",       IDM_TOGGLE_CONFIRM_ON_EXIT
         MENUITEM "&Angol", IDM_LANG_EN
         MENUITEM "&Német", IDM_LANG_DE
         MENUITEM "&Francia", IDM_LANG_FR
@@ -457,63 +345,6 @@ END
 
 IDR_MENUC128_IT MENU DISCARDABLE
 BEGIN
-    POPUP "&Opzioni"
-    BEGIN
-        POPUP "Impostazio&ni del VDC"
-        BEGIN
-            MENUITEM "64KB di &memoria video", IDM_TOGGLE_VDC64KB
-        END
-        MENUITEM SEPARATOR
-        MENUITEM "Scambia &joystick", IDM_SWAP_JOYSTICK
-        MENUITEM "Attiva le periferiche &virtuali", IDM_TOGGLE_VIRTUAL_DEVICES
-        MENUITEM SEPARATOR
-        POPUP "Standard vide&o"
-        BEGIN
-            MENUITEM "&PAL-G",  IDM_SYNC_FACTOR_PAL
-            MENUITEM "&NTSC-M", IDM_SYNC_FACTOR_NTSC
-        END
-        MENUITEM SEPARATOR
-        MENUITEM "&Identificazione dell'emulatore", IDM_TOGGLE_EMUID
-        MENUITEM "Emulazione dell'interfaccia IEEE&488",    IDM_IEEE488
-        MENUITEM "&Grab mouse events",    IDM_MOUSE
-    END
-    POPUP "I&mpostazioni"
-    BEGIN
-        MENUITEM "Impostazioni &video...",     IDM_VIDEO_SETTINGS
-        MENUITEM "Impostazioni &periferiche...",IDM_DEVICEMANAGER
-        MENUITEM "Impostazioni r&egistratore...", IDM_DATASETTE_SETTINGS
-        MENUITEM "Impostazioni VIC-II...",     IDM_VICII_SETTINGS
-        MENUITEM "Impostazioni &joystick...",  IDM_JOY_SETTINGS
-        MENUITEM "Impostazioni &tastiera...",  IDM_KEYBOARD_SETTINGS
-        MENUITEM "Mo&use settings...",     IDM_MOUSE_SETTINGS
-        MENUITEM "Impostazioni a&udio...",     IDM_SOUND_SETTINGS
-        MENUITEM "Impostazioni S&ID...",       IDM_SID_SETTINGS
-        MENUITEM "Impostazioni &ROM...",       IDM_ROM_SETTINGS
-        MENUITEM "Impostazioni RA&M...",       IDM_RAM_SETTINGS
-        MENUITEM "Impostazioni C&128...",      IDM_C128_SETTINGS
-        MENUITEM "Impostazioni RS&232...",     IDM_RS232_SETTINGS
-        POPUP "Impostazioni &cartuccia/IO"
-        BEGIN
-            MENUITEM "Impostazioni &REU...",      IDM_REU_SETTINGS
-            MENUITEM "Impostazioni &GEORAM...",      IDM_GEORAM_SETTINGS
-            MENUITEM "Impostazioni &RAMCART...",      IDM_RAMCART_SETTINGS
-            MENUITEM "Impostazioni &MMC64...",    IDM_MMC64_SETTINGS
-            MENUITEM "Impostazioni &DIGIMAX...",  IDM_DIGIMAX_SETTINGS
-            MENUITEM "Impostazioni &IDE64...",    IDM_IDE64_SETTINGS
-#ifdef HAVE_TFE
-            MENUITEM "Impostazioni &Ethernet...", IDM_TFE_SETTINGS
-#endif
-            MENUITEM "Impostazioni &ACIA...",     IDM_ACIA_SETTINGS
-            MENUITEM "Impostazioni RS&232 su userport...", IDM_RS232USER_SETTINGS
-        END
-        MENUITEM SEPARATOR
-        MENUITEM "&Salva le impostazioni attuali", IDM_SETTINGS_SAVE
-        MENUITEM "&Carica le impostazioni salvate",   IDM_SETTINGS_LOAD
-        MENUITEM "&Ripristina le impostazioni originarie",  IDM_SETTINGS_DEFAULT
-        MENUITEM SEPARATOR
-        MENUITEM "Salva le impostazioni in u&scita", IDM_TOGGLE_SAVE_SETTINGS_ON_EXIT
-        MENUITEM "&Conferma all'uscita",       IDM_TOGGLE_CONFIRM_ON_EXIT
-    END
     POPUP "&Lingua"
     BEGIN
         MENUITEM "&Inglese", IDM_LANG_EN
@@ -542,63 +373,6 @@ END
 
 IDR_MENUC128_NL MENU DISCARDABLE
 BEGIN
-    POPUP "&Opties"
-    BEGIN
-        POPUP "VDC-instellin&gen"
-        BEGIN
-            MENUITEM "64KB video&geheugen", IDM_TOGGLE_VDC64KB
-        END
-        MENUITEM SEPARATOR
-        MENUITEM "Verwissel &Joysticks", IDM_SWAP_JOYSTICK
-        MENUITEM "&Virtuele apparaattraps", IDM_TOGGLE_VIRTUAL_DEVICES
-        MENUITEM SEPARATOR
-        POPUP "Vide&ostandaard"
-        BEGIN
-            MENUITEM "&PAL-G",  IDM_SYNC_FACTOR_PAL
-            MENUITEM "&NTSC-M", IDM_SYNC_FACTOR_NTSC
-        END
-        MENUITEM SEPARATOR
-        MENUITEM "Emulator &Identificatie", IDM_TOGGLE_EMUID
-        MENUITEM "IEEE&488 Interface emulatie",    IDM_IEEE488
-        MENUITEM "&Pak mouse gebeurtenissen",    IDM_MOUSE
-    END
-    POPUP "Inst&ellingen"
-    BEGIN
-        MENUITEM "&Videoinstellingen...",     IDM_VIDEO_SETTINGS
-        MENUITEM "Randa&pparateninstellingen...",IDM_DEVICEMANAGER
-        MENUITEM "D&atasette-instellingen...", IDM_DATASETTE_SETTINGS
-        MENUITEM "VIC-II-instellingen...",     IDM_VICII_SETTINGS
-        MENUITEM "&Joystick-instellingen...",  IDM_JOY_SETTINGS
-        MENUITEM "&Toetsenbordinstellingen...",  IDM_KEYBOARD_SETTINGS
-        MENUITEM "M&uis instellingen...",     IDM_MOUSE_SETTINGS
-        MENUITEM "G&eluidsinstellingen...",     IDM_SOUND_SETTINGS
-        MENUITEM "S&ID-instellingen...",       IDM_SID_SETTINGS
-        MENUITEM "&ROM-instellingen...",       IDM_ROM_SETTINGS
-        MENUITEM "RA&M-instellingen...",       IDM_RAM_SETTINGS
-        MENUITEM "C&128-instellingen...",      IDM_C128_SETTINGS
-        MENUITEM "RS&232-instellingen...",     IDM_RS232_SETTINGS
-        POPUP "&Cartridge/IO-instellingen"
-        BEGIN
-            MENUITEM "&REU-instellingen...",      IDM_REU_SETTINGS
-            MENUITEM "&GEORAM-instellingen...",      IDM_GEORAM_SETTINGS
-            MENUITEM "&RAMCART-instellingen...",      IDM_RAMCART_SETTINGS
-            MENUITEM "&MMC64-instellingen...",    IDM_MMC64_SETTINGS
-            MENUITEM "&DIGIMAX-instellingen...",  IDM_DIGIMAX_SETTINGS
-            MENUITEM "&IDE64-instellingen...",    IDM_IDE64_SETTINGS
-#ifdef HAVE_TFE
-            MENUITEM "&Ethernetinstellingen...", IDM_TFE_SETTINGS
-#endif
-            MENUITEM "&ACIA-instellingen...",     IDM_ACIA_SETTINGS
-            MENUITEM "RS&232-userportinstellingen...", IDM_RS232USER_SETTINGS
-        END
-        MENUITEM SEPARATOR
-        MENUITEM "Huidige instellingen op&slaan", IDM_SETTINGS_SAVE
-        MENUITEM "Opges&lagen instelling laden",   IDM_SETTINGS_LOAD
-        MENUITEM "Herstel standaar&dinstellingen",  IDM_SETTINGS_DEFAULT
-        MENUITEM SEPARATOR
-        MENUITEM "Sla instellingen op bij afslui&ten", IDM_TOGGLE_SAVE_SETTINGS_ON_EXIT
-        MENUITEM "Bevestigen bij afsl&uiten",       IDM_TOGGLE_CONFIRM_ON_EXIT
-    END
     POPUP "&Taal"
     BEGIN
         MENUITEM "&Engels", IDM_LANG_EN
@@ -628,63 +402,6 @@ END
 #pragma code_page(28592)
 IDR_MENUC128_PL MENU DISCARDABLE
 BEGIN
-    POPUP "&Opcje"
-    BEGIN
-        POPUP "Us&tawienia VDC"
-        BEGIN
-            MENUITEM "Wy¶wietl pa&miêæ 64KB", IDM_TOGGLE_VDC64KB
-        END
-        MENUITEM SEPARATOR
-        MENUITEM "Zamieñ por&ty (1/2)", IDM_SWAP_JOYSTICK
-        MENUITEM "&Virtual device traps", IDM_TOGGLE_VIRTUAL_DEVICES
-        MENUITEM SEPARATOR
-        POPUP "Standard vide&o"
-        BEGIN
-            MENUITEM "&PAL-G",  IDM_SYNC_FACTOR_PAL
-            MENUITEM "&NTSC-M", IDM_SYNC_FACTOR_NTSC
-        END
-        MENUITEM SEPARATOR
-        MENUITEM "&Idyntifikacja emulatora", IDM_TOGGLE_EMUID
-        MENUITEM "Emulacja interfejsu IEEE&488",    IDM_IEEE488
-        MENUITEM "&Grab mouse events",    IDM_MOUSE
-    END
-    POPUP "Ustawi&enia"
-    BEGIN
-        MENUITEM "Ustawienia &video...",     IDM_VIDEO_SETTINGS
-        MENUITEM "Ustawienia &zewnêtrzne...",IDM_DEVICEMANAGER
-        MENUITEM "Ustawienia d&atasette...", IDM_DATASETTE_SETTINGS
-        MENUITEM "Ustawienia VIC-II...",     IDM_VICII_SETTINGS
-        MENUITEM "Ustawienia &joystcka...",  IDM_JOY_SETTINGS
-        MENUITEM "Ustawienia &klawiatury...",  IDM_KEYBOARD_SETTINGS
-        MENUITEM "Mo&use settings...",     IDM_MOUSE_SETTINGS
-        MENUITEM "Usta&wienia d¼wiêku...",     IDM_SOUND_SETTINGS
-        MENUITEM "Ustawienia uk³adu S&ID...",       IDM_SID_SETTINGS
-        MENUITEM "Ustawienia &ROM...",       IDM_ROM_SETTINGS
-        MENUITEM "Ustawienia RA&M...",       IDM_RAM_SETTINGS
-        MENUITEM "Ustawienia C&128...",      IDM_C128_SETTINGS
-        MENUITEM "Ustawienia RS&232...",     IDM_RS232_SETTINGS
-        POPUP "Ustawienia kart&rid¿a"
-        BEGIN
-            MENUITEM "Ustawienia &REU...",      IDM_REU_SETTINGS
-            MENUITEM "Ustawienia &GEORAM...",      IDM_GEORAM_SETTINGS
-            MENUITEM "Ustawienia &RAMCART...",      IDM_RAMCART_SETTINGS
-            MENUITEM "&MMC64 settings...",    IDM_MMC64_SETTINGS
-            MENUITEM "&DIGIMAX settings...",  IDM_DIGIMAX_SETTINGS
-            MENUITEM "Ustawienia &IDE64...",    IDM_IDE64_SETTINGS
-#ifdef HAVE_TFE
-            MENUITEM "Ustawienia &Ethernet...", IDM_TFE_SETTINGS
-#endif
-            MENUITEM "Ustawienia &ACIA...",     IDM_ACIA_SETTINGS
-            MENUITEM "Ustawienia RS&232 userport...", IDM_RS232USER_SETTINGS
-        END
-        MENUITEM SEPARATOR
-        MENUITEM "Zapi&sz ustawienia", IDM_SETTINGS_SAVE
-        MENUITEM "Za³ad&uj ustawienia",   IDM_SETTINGS_LOAD
-        MENUITEM "Przywróæ dom&y¶lne ustawienia",  IDM_SETTINGS_DEFAULT
-        MENUITEM SEPARATOR
-    MENUITEM "&Zapisz ustawienia przy wyj¶ciu", IDM_TOGGLE_SAVE_SETTINGS_ON_EXIT
-    MENUITEM "&Confirm on exit",       IDM_TOGGLE_CONFIRM_ON_EXIT
-    END
     POPUP "&Language"
     BEGIN
         MENUITEM "&English", IDM_LANG_EN
@@ -714,63 +431,6 @@ END
 
 IDR_MENUC128_SV MENU DISCARDABLE
 BEGIN
-    POPUP "&Alternativ"
-    BEGIN
-        POPUP "&VDC-inställningar"
-        BEGIN
-            MENUITEM "64KB grafik&minne", IDM_TOGGLE_VDC64KB
-        END
-        MENUITEM SEPARATOR
-        MENUITEM "Växla &spelportarna", IDM_SWAP_JOYSTICK
-        MENUITEM "&Virtuella enhetstrap:ar", IDM_TOGGLE_VIRTUAL_DEVICES
-        MENUITEM SEPARATOR
-        POPUP "&TV-standard"
-        BEGIN
-            MENUITEM "&PAL-G",  IDM_SYNC_FACTOR_PAL
-            MENUITEM "&NTSC-M", IDM_SYNC_FACTOR_NTSC
-        END
-        MENUITEM SEPARATOR
-        MENUITEM "Emulator&identifiering", IDM_TOGGLE_EMUID
-        MENUITEM "Emulering av IEEE&488-gränssnitt",    IDM_IEEE488
-        MENUITEM "&Fånga mushändelser",    IDM_MOUSE
-    END
-    POPUP "&Inställningar"
-    BEGIN
-        MENUITEM "&Grafikinställningar...",     IDM_VIDEO_SETTINGS
-        MENUITEM "Inställningar för &kringutrustning...",IDM_DEVICEMANAGER
-        MENUITEM "D&atasetteinställningar...", IDM_DATASETTE_SETTINGS
-        MENUITEM "VIC-II-inställningar...",     IDM_VICII_SETTINGS
-        MENUITEM "Inställningar för &styrspak...",  IDM_JOY_SETTINGS
-        MENUITEM "&Tangentbordsinställningar...",  IDM_KEYBOARD_SETTINGS
-        MENUITEM "M&usinställningar...",     IDM_MOUSE_SETTINGS
-        MENUITEM "L&judinställningar...",     IDM_SOUND_SETTINGS
-        MENUITEM "S&ID-inställningar...",       IDM_SID_SETTINGS
-        MENUITEM "&ROM-inställningar...",       IDM_ROM_SETTINGS
-        MENUITEM "RA&M-inställningar...",       IDM_RAM_SETTINGS
-        MENUITEM "C&128-inställningar...",      IDM_C128_SETTINGS
-        MENUITEM "RS&232-inställningar...",     IDM_RS232_SETTINGS
-        POPUP "Inställningar för &insticksmoduler..."
-        BEGIN
-            MENUITEM "&REU-inställningar...",      IDM_REU_SETTINGS
-            MENUITEM "&GEORAM-inställningar...",      IDM_GEORAM_SETTINGS
-            MENUITEM "&RAMCART-inställningar...",      IDM_RAMCART_SETTINGS
-            MENUITEM "&MMC64-inställningar...",    IDM_MMC64_SETTINGS
-            MENUITEM "&DIGIMAX settings...",  IDM_DIGIMAX_SETTINGS
-            MENUITEM "&IDE64-inställningar...",    IDM_IDE64_SETTINGS
-#ifdef HAVE_TFE
-            MENUITEM "&Ethernetinställningar...", IDM_TFE_SETTINGS
-#endif
-            MENUITEM "&ACIA-inställningar...",     IDM_ACIA_SETTINGS
-            MENUITEM "RS&232-användarportinställningar...", IDM_RS232USER_SETTINGS
-        END
-        MENUITEM SEPARATOR
-        MENUITEM "&Spara nuvarande inställningar", IDM_SETTINGS_SAVE
-        MENUITEM "&Läs sparade inställningar",   IDM_SETTINGS_LOAD
-        MENUITEM "&Återställ förvalda inställningar",  IDM_SETTINGS_DEFAULT
-        MENUITEM SEPARATOR
-        MENUITEM "Spara inställningar vid &avslut", IDM_TOGGLE_SAVE_SETTINGS_ON_EXIT
-        MENUITEM "&Bekräfta avslutning",       IDM_TOGGLE_CONFIRM_ON_EXIT
-    END
     POPUP "&Språk"
     BEGIN
         MENUITEM "&Engelska", IDM_LANG_EN
@@ -3160,6 +2820,9 @@ BEGIN
   IDS_FUNCTION_ROM              "Function ROM"
   IDS_C128_SETTINGS             "C128 settings"
   IDS_MP_VDC_SETTINGS           "VDC settin&gs"
+  IDS_MI_TOGGLE_VDC64KB         "64KB video &memory"
+  IDS_MI_IEEE488                "IEEE&488 Interface emulation"
+  IDS_MI_C128_SETTINGS          "C&128 settings..."
 END
 
 
@@ -3174,6 +2837,9 @@ BEGIN
   IDS_FUNCTION_ROM              "Function ROM"
   IDS_C128_SETTINGS             "C128 Einstellungen"
   IDS_MP_VDC_SETTINGS           "VDC Einstellun&gen"
+  IDS_MI_TOGGLE_VDC64KB         "64KB Bildschirm Speicher"
+  IDS_MI_IEEE488                "IEEE&488 Schnittstellen-Emulation"
+  IDS_MI_C128_SETTINGS          "C&128 Einstellungen..."
 END
 
 
@@ -3188,6 +2854,9 @@ BEGIN
   IDS_FUNCTION_ROM              "ROM Fonction"
   IDS_C128_SETTINGS             "Paramètres C128"
   IDS_MP_VDC_SETTINGS           "Para&mètres VDC"
+  IDS_MI_TOGGLE_VDC64KB         "Mémoire d'affichage de 64Ko"
+  IDS_MI_IEEE488                "Interface d'émulation &IEEE488"
+  IDS_MI_C128_SETTINGS          "Paramètres C&128..."
 END
 
 
@@ -3203,6 +2872,9 @@ BEGIN
   IDS_FUNCTION_ROM              "Function ROM"
   IDS_C128_SETTINGS             "C128 beállításai"
   IDS_MP_VDC_SETTINGS           "VDC beállításai"
+  IDS_MI_TOGGLE_VDC64KB         "64KB képernyõ &memória"
+  IDS_MI_IEEE488                "IEEE&488 interfész emuláció"
+  IDS_MI_C128_SETTINGS          "C&128 beállításai..."
 END
 #pragma code_page(28591)
 
@@ -3218,6 +2890,9 @@ BEGIN
   IDS_FUNCTION_ROM              "Function ROM"
   IDS_C128_SETTINGS             "Impostazioni C128"
   IDS_MP_VDC_SETTINGS           "Impostazio&ni del VDC"
+  IDS_MI_TOGGLE_VDC64KB         "64KB di &memoria video"
+  IDS_MI_IEEE488                "Emulazione dell'interfaccia IEEE&488"
+  IDS_MI_C128_SETTINGS          "Impostazioni C&128..."
 END
 
 
@@ -3232,6 +2907,9 @@ BEGIN
   IDS_FUNCTION_ROM              "Functie-ROM"
   IDS_C128_SETTINGS             "C128-instellingen"
   IDS_MP_VDC_SETTINGS           "VDC-instellin&gen"
+  IDS_MI_TOGGLE_VDC64KB         "64KB video&geheugen"
+  IDS_MI_IEEE488                "IEEE&488 Interface emulatie"
+  IDS_MI_C128_SETTINGS          "C&128-instellingen..."
 END
 
 
@@ -3247,6 +2925,9 @@ BEGIN
   IDS_FUNCTION_ROM              "Function ROM"
   IDS_C128_SETTINGS             "C128 settings"
   IDS_MP_VDC_SETTINGS           "Us&tawienia VDC"
+  IDS_MI_TOGGLE_VDC64KB         "Wy¶wietl pa&miêæ 64KB"
+  IDS_MI_IEEE488                "Emulacja interfejsu IEEE&488"
+  IDS_MI_C128_SETTINGS          "Ustawienia C&128..."
 END
 #pragma code_page(28591)
 
@@ -3262,4 +2943,7 @@ BEGIN
   IDS_FUNCTION_ROM              "Funktions-ROM"
   IDS_C128_SETTINGS             "C128-inställningar"
   IDS_MP_VDC_SETTINGS           "&VDC-inställningar"
+  IDS_MI_TOGGLE_VDC64KB         "64KB grafik&minne"
+  IDS_MI_IEEE488                "Emulering av IEEE&488-gränssnitt"
+  IDS_MI_C128_SETTINGS          "C&128-inställningar..."
 END
