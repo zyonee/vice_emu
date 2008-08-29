@@ -4,7 +4,7 @@ AR = @AR@
 
 noinst_LIBRARIES = libresidfp.a
 
-libresidfp_a_SOURCES = sid.cc voice.cc wave.cc envelope.cc filter.cc extfilt.cc pot.cc version.cc $(noinst_DATA:.dat=.cc)
+libresidfp_a_SOURCES = sid.cc voice.cc wave.cc envelope.cc filter.cc extfilt.cc pot.cc version.cc convolve.cc $(noinst_DATA:.dat=.cc)
 
 BUILT_SOURCES = $(noinst_DATA:.dat=.cc)
 
@@ -20,3 +20,10 @@ SUFFIXES = .dat
 
 .dat.cc:
 	$(PERL) $(srcdir)/samp2src.pl $* $< $(srcdir)/$@
+
+if USE_SSE
+convolve-sse.o: convolve-sse.cc
+	$(CXXCOMPILE) -msse -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
+
+libresidfp_a_LIBADD = convolve-sse.o
+endif

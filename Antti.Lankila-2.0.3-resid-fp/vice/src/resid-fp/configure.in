@@ -26,12 +26,12 @@ AC_PROG_CXX
 dnl Set CXXFLAGS for g++. Use -msse if supported.
 if test "$GXX" = yes; then
   if test "$ac_test_CXXFLAGS" != set; then
-    CXXFLAGS="-g -Wall -O2 -msse -mfpmath=387"
+    CXXFLAGS="-g -Wall -O2 -msse"
     AC_MSG_CHECKING([whether the C++ compiler ($CXX $CXXFLAGS $LDFLAGS) works])
     AC_TRY_COMPILE([],
                    [int test;],
                    [ AC_MSG_RESULT(yes)
-                     MSSE="-msse -mfpmath=387"
+                     MSSE="-msse"
                      ],
                    [ AC_MSG_RESULT(no)
                      MSSE=""
@@ -64,7 +64,7 @@ if test x"$MSSE" = "x-msse"; then
                  [ AC_MSG_RESULT(no)
                    MSSE=""
                    ])
-  CXXFLAGS="-g -Wall -O2 $MSSE $NO_EXCEPTIONS"
+  CXXFLAGS="-g -Wall -O2 $NO_EXCEPTIONS"
 fi
 
 AC_CHECK_PROG(AR, ar, ar, ar)
@@ -102,7 +102,16 @@ else
   RESID_HAVE_BOOL=1
 fi
 
+if test x"$MSSE" = "x-msse"; then
+  RESID_USE_SSE=1
+  AM_CONDITIONAL(USE_SSE, true)
+else
+  RESID_USE_SSE=0
+  AM_CONDITIONAL(USE_SSE, false)
+fi
+
 AC_SUBST(RESID_HAVE_BOOL)
+AC_SUBST(RESID_USE_SSE)
 
 dnl Checks for library functions.
 

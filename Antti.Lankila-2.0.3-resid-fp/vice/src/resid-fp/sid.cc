@@ -21,9 +21,8 @@
 
 #include <math.h>
 
-#ifdef __SSE__
-#include <xmmintrin.h>
-#endif
+extern float convolve(const float *a, const float *b, int n);
+extern float convolve_sse(const float *a, const float *b, int n);
 
 enum host_cpu_feature {
     HOST_CPU_MMX=1, HOST_CPU_SSE=2, HOST_CPU_SSE2=4, HOST_CPU_SSE3=8
@@ -786,61 +785,6 @@ int SIDFP::clock_interpolate(cycle_count& delta_t, short* buf, int n,
   return s;
 }
 
-float SIDFP::convolve(const float *a, const float *b, int n)
-{
-    float out = 0.f;
-#ifdef __SSE__
-    if (can_use_sse) {
-        __m128 out4 = { 0, 0, 0, 0 };
-
-        /* examine if we can use aligned loads on both pointers */
-        int diff = (int) (a - b) & 0xf;
-        /* long cast is no-op for x86-32, but x86-64 gcc needs 64 bit intermediate
-         * to convince compiler we mean this. */
-        unsigned int a_align = (unsigned int) (unsigned long) a & 0xf;
-
-        /* advance if necessary. We can't let n fall < 0, so no while (n --). */
-        while (n > 0 && a_align != 0 && a_align != 16) {
-            out += (*(a ++)) * (*(b ++));
-            n --;
-            a_align += 4;
-        }
-
-        int n4 = n / 4;
-        if (diff == 0) {
-            for (int i = 0; i < n4; i ++) {
-                out4 = _mm_add_ps(out4, _mm_mul_ps(_mm_load_ps(a), _mm_load_ps(b)));
-                a += 4;
-                b += 4;
-            }
-        } else {
-        /* XXX loadu is 4x slower than load, at least. We could at 4x memory
-         * use prepare versions of b aligned for any a alignment. We could
-         * also issue aligned loads and shuffle the halves at each iteration.
-         * Initial results indicate only very small improvements. */
-            for (int i = 0; i < n4; i ++) {
-                out4 = _mm_add_ps(out4, _mm_mul_ps(_mm_load_ps(a), _mm_loadu_ps(b)));
-                a += 4;
-                b += 4;
-            }
-        }
-
-        out4 = _mm_add_ps(_mm_movehl_ps(out4, out4), out4);
-        out4 = _mm_add_ss(_mm_shuffle_ps(out4, out4, 1), out4);
-        float out_tmp;
-        _mm_store_ss(&out_tmp, out4);
-        out += out_tmp;
-
-        n &= 3;
-        /* fallthrough for last values */
-    }
-#endif
-    while (n --)
-        out += (*(a ++)) * (*(b ++));
-
-    return out;
-}
-
 // ----------------------------------------------------------------------------
 // SID clocking with audio sampling - cycle based with audio resampling.
 //
@@ -911,14 +855,23 @@ int SIDFP::clock_resample_interpolate(cycle_count& delta_t, short* buf, int n,
     /* find fir_N most recent samples, plus one extra in case the FIR wraps. */
     float* sample_start = sample + sample_index - fir_N + RINGSIZE - 1;
 
-    float v1 = convolve(sample_start, fir + fir_offset * fir_N, fir_N);
+    float v1 =
+#if (RESID_USE_SSE==1)
+      can_use_sse ? convolve_sse(sample_start, fir + fir_offset*fir_N, fir_N) :
+#endif
+	convolve(sample_start, fir + fir_offset*fir_N, fir_N);
+
     // Use next FIR table, wrap around to first FIR table using
     // previous sample.
     if (++ fir_offset == fir_RES) {
       fir_offset = 0;
       ++ sample_start;
     }
-    float v2 = convolve(sample_start, fir + fir_offset * fir_N, fir_N);
+    float v2 =
+#if (RESID_USE_SSE==1)
+      can_use_sse ? convolve_sse(sample_start, fir + fir_offset*fir_N, fir_N) :
+#endif
+	convolve(sample_start, fir + fir_offset*fir_N, fir_N);
 
     // Linear interpolation between the sinc tables yields good approximation
     // for the exact value.

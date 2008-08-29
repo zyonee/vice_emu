@@ -89,7 +89,6 @@ protected:
   RESID_INLINE int clock_resample_interpolate(cycle_count& delta_t, short* buf,
 					      int n, int interleave);
   RESID_INLINE void age_bus_value(cycle_count);
-  float convolve(const float *a, const float *b, int n);
 
   VoiceFP voice[3];
   FilterFP filter;
