@@ -25,25 +25,25 @@ BEGIN
         MENUITEM SEPARATOR
         POPUP "Attach &disk image"
         BEGIN
-            MENUITEM "",  IDM_ATTACH_8
-            MENUITEM "",  IDM_ATTACH_9
+            MENUITEM "", IDM_ATTACH_8
+            MENUITEM "", IDM_ATTACH_9
             MENUITEM "", IDM_ATTACH_10
             MENUITEM "", IDM_ATTACH_11
         END
         POPUP "D&etach disk image"
         BEGIN
-            MENUITEM "",  IDM_DETACH_8
-            MENUITEM "",  IDM_DETACH_9
+            MENUITEM "", IDM_DETACH_8
+            MENUITEM "", IDM_DETACH_9
             MENUITEM "", IDM_DETACH_10
             MENUITEM "", IDM_DETACH_11
             MENUITEM SEPARATOR
-            MENUITEM "",      IDM_DETACH_ALL
+            MENUITEM "", IDM_DETACH_ALL
         END
         POPUP "&Flip list"
         BEGIN
-            MENUITEM "",     IDM_FLIP_ADD
-            MENUITEM "",  IDM_FLIP_REMOVE
-            MENUITEM "",     IDM_FLIP_NEXT
+            MENUITEM "", IDM_FLIP_ADD
+            MENUITEM "", IDM_FLIP_REMOVE
+            MENUITEM "", IDM_FLIP_NEXT
             MENUITEM "", IDM_FLIP_PREVIOUS
             MENUITEM SEPARATOR
             MENUITEM "", IDM_FLIP_LOAD
@@ -51,15 +51,15 @@ BEGIN
         END
         MENUITEM SEPARATOR
         MENUITEM "", IDM_ATTACH_TAPE
-        MENUITEM "",           IDM_DETACH_TAPE
+        MENUITEM "", IDM_DETACH_TAPE
         POPUP "Datassette contro&l"
         BEGIN
-            MENUITEM "",          IDM_DATASETTE_CONTROL_STOP
-            MENUITEM "",         IDM_DATASETTE_CONTROL_START
-            MENUITEM "",       IDM_DATASETTE_CONTROL_FORWARD
-            MENUITEM "",        IDM_DATASETTE_CONTROL_REWIND
-            MENUITEM "",        IDM_DATASETTE_CONTROL_RECORD
-            MENUITEM "",         IDM_DATASETTE_CONTROL_RESET
+            MENUITEM "", IDM_DATASETTE_CONTROL_STOP
+            MENUITEM "", IDM_DATASETTE_CONTROL_START
+            MENUITEM "", IDM_DATASETTE_CONTROL_FORWARD
+            MENUITEM "", IDM_DATASETTE_CONTROL_REWIND
+            MENUITEM "", IDM_DATASETTE_CONTROL_RECORD
+            MENUITEM "", IDM_DATASETTE_CONTROL_RESET
             MENUITEM "", IDM_DATASETTE_RESET_COUNTER
         END
         MENUITEM SEPARATOR
@@ -68,12 +68,12 @@ BEGIN
         POPUP "&Reset"
         BEGIN
             MENUITEM "", IDM_RESET_HARD
-            MENUITEM "",      IDM_RESET_SOFT
+            MENUITEM "", IDM_RESET_SOFT
             MENUITEM SEPARATOR
-            MENUITEM "",         IDM_RESET_DRIVE8
-            MENUITEM "",         IDM_RESET_DRIVE9
-            MENUITEM "",        IDM_RESET_DRIVE10
-            MENUITEM "",        IDM_RESET_DRIVE11
+            MENUITEM "", IDM_RESET_DRIVE8
+            MENUITEM "", IDM_RESET_DRIVE9
+            MENUITEM "", IDM_RESET_DRIVE10
+            MENUITEM "", IDM_RESET_DRIVE11
         END
 #ifdef DEBUG
         POPUP "&Debug"
@@ -152,7 +152,7 @@ BEGIN
         END
         MENUITEM "", IDM_TOGGLE_WARP_MODE, CHECKED
         MENUITEM SEPARATOR
-        MENUITEM "Fullscreen", IDM_TOGGLE_FULLSCREEN
+        MENUITEM "", IDM_TOGGLE_FULLSCREEN
         MENUITEM "", IDM_TOGGLE_ALWAYSONTOP
         MENUITEM SEPARATOR
         MENUITEM "", IDM_TOGGLE_CRTCVIDEOCACHE, CHECKED
@@ -176,7 +176,7 @@ BEGIN
     POPUP "S&ettings"
     BEGIN
         MENUITEM "", IDM_VIDEO_SETTINGS
-        MENUITEM "&CBM2 settings...",      IDM_CBM2_SETTINGS
+        MENUITEM "", IDM_CBM2_SETTINGS
         MENUITEM "", IDM_DEVICEMANAGER
         MENUITEM "", IDM_DRIVE_SETTINGS
         MENUITEM "", IDM_DATASETTE_SETTINGS
@@ -189,7 +189,7 @@ BEGIN
         MENUITEM "", IDM_RS232_SETTINGS
         POPUP "&Cartridge/IO Settings"
         BEGIN
-            MENUITEM "&", IDM_ACIA_SETTINGS
+            MENUITEM "", IDM_ACIA_SETTINGS
         END
         MENUITEM SEPARATOR
         MENUITEM "", IDM_SETTINGS_SAVE
@@ -201,268 +201,24 @@ BEGIN
     END
     POPUP "&Language"
     BEGIN
-        MENUITEM "&English", IDM_LANG_EN
-        MENUITEM "&German", IDM_LANG_DE
-        MENUITEM "&French", IDM_LANG_FR
-        MENUITEM "&Hungarian", IDM_LANG_HU
-        MENUITEM "&Italian", IDM_LANG_IT
-        MENUITEM "&Dutch", IDM_LANG_NL
-        MENUITEM "&Polish", IDM_LANG_PL
-        MENUITEM "&Swedish", IDM_LANG_SV
+        MENUITEM "", IDM_LANG_EN
+        MENUITEM "", IDM_LANG_DE
+        MENUITEM "", IDM_LANG_FR
+        MENUITEM "", IDM_LANG_HU
+        MENUITEM "", IDM_LANG_IT
+        MENUITEM "", IDM_LANG_NL
+        MENUITEM "", IDM_LANG_PL
+        MENUITEM "", IDM_LANG_SV
     END
     POPUP "&Help"
     BEGIN
-//        MENUITEM "H&elp", IDM_HELP
-//        MENUITEM SEPARATOR
         MENUITEM "", IDM_ABOUT
         MENUITEM SEPARATOR
-        MENUITEM "Command line &options", IDM_CMDLINE
+        MENUITEM "", IDM_CMDLINE
         MENUITEM SEPARATOR
-        MENUITEM "&Contributors", IDM_CONTRIBUTORS
-        MENUITEM "&License",      IDM_LICENSE
-        MENUITEM "No &warranty",  IDM_WARRANTY
-    END
-END
-
-
-// GERMAN version of menu
-
-IDR_MENUCBM2_DE MENU DISCARDABLE
-BEGIN
-    POPUP "&Optionen"
-    BEGIN
-        MENUITEM "Vollbild", IDM_TOGGLE_FULLSCREEN
-    END
-    POPUP "&Einstellungen"
-    BEGIN
-        MENUITEM "&CBM2 Einstellungen...",      IDM_CBM2_SETTINGS
-    END
-    POPUP "Sprache"
-    BEGIN
-        MENUITEM "&Englisch", IDM_LANG_EN
-        MENUITEM "&Deutsch", IDM_LANG_DE
-        MENUITEM "&Französisch", IDM_LANG_FR
-        MENUITEM "&Ungarisch", IDM_LANG_HU
-        MENUITEM "&Italienisch", IDM_LANG_IT
-        MENUITEM "&Holländisch", IDM_LANG_NL
-        MENUITEM "&Polnisch", IDM_LANG_PL
-        MENUITEM "&Schwedisch", IDM_LANG_SV
-    END
-    POPUP "&Hilfe"
-    BEGIN
-        MENUITEM "Kommandozeilen &Optionen", IDM_CMDLINE
-        MENUITEM SEPARATOR
-        MENUITEM "VICE Hackers", IDM_CONTRIBUTORS
-        MENUITEM "&Lizenz",      IDM_LICENSE
-        MENUITEM "Keine &Garantie!",  IDM_WARRANTY
-    END
-END
-
-
-// FRENCH version of menu
-
-IDR_MENUCBM2_FR MENU DISCARDABLE
-BEGIN
-    POPUP "&Options"
-    BEGIN
-        MENUITEM "Périphérique plein écran", IDM_TOGGLE_FULLSCREEN
-    END
-    POPUP "&Paramètres"
-    BEGIN
-        MENUITEM "Paramètres &CBM2...",      IDM_CBM2_SETTINGS
-    END
-    POPUP "&Langage"
-    BEGIN
-        MENUITEM "&Anglais", IDM_LANG_EN
-        MENUITEM "&Allemand", IDM_LANG_DE
-        MENUITEM "&Français", IDM_LANG_FR
-        MENUITEM "&Hungarian", IDM_LANG_HU
-        MENUITEM "&Italien", IDM_LANG_IT
-        MENUITEM "&Hollandais", IDM_LANG_NL
-        MENUITEM "&Polonais", IDM_LANG_PL
-        MENUITEM "&Suédois", IDM_LANG_SV
-    END
-    POPUP "&Aide"
-    BEGIN
-        MENUITEM "&Options de ligne de commande", IDM_CMDLINE
-        MENUITEM SEPARATOR
-        MENUITEM "&Contributeurs", IDM_CONTRIBUTORS
-        MENUITEM "&License",      IDM_LICENSE
-        MENUITEM "Aucune &garantie!",  IDM_WARRANTY
-    END
-END
-
-
-// HUNGARIAN version of menu
-
-#pragma code_page(28592)
-IDR_MENUCBM2_HU MENU DISCARDABLE
-BEGIN
-    POPUP "&Opciók"
-    BEGIN
-        MENUITEM "Teljes képernyõ", IDM_TOGGLE_FULLSCREEN
-    END
-    POPUP "B&eállítások"
-    BEGIN
-        MENUITEM "&CBM2 beállításai...",      IDM_CBM2_SETTINGS
-    END
-    POPUP "&Nyelv"
-    BEGIN
-        MENUITEM "&Angol", IDM_LANG_EN
-        MENUITEM "&Német", IDM_LANG_DE
-        MENUITEM "&Francia", IDM_LANG_FR
-        MENUITEM "&Magyar", IDM_LANG_HU
-        MENUITEM "&Olasz", IDM_LANG_IT
-        MENUITEM "&Holland", IDM_LANG_NL
-        MENUITEM "&Lengyel", IDM_LANG_PL
-        MENUITEM "&Svéd", IDM_LANG_SV
-    END
-    POPUP "&Súgó"
-    BEGIN
-        MENUITEM "Parancssori &opciók", IDM_CMDLINE
-        MENUITEM SEPARATOR
-        MENUITEM "&Közremûködõk", IDM_CONTRIBUTORS
-        MENUITEM "&Licensz",      IDM_LICENSE
-        MENUITEM "Nincs &garancia",  IDM_WARRANTY
-    END
-END
-#pragma code_page(28591)
-
-
-// ITALIAN version of menu
-
-IDR_MENUCBM2_IT MENU DISCARDABLE
-BEGIN
-    POPUP "&Opzioni"
-    BEGIN
-        MENUITEM "A tutto schermo", IDM_TOGGLE_FULLSCREEN
-    END
-    POPUP "I&mpostazioni"
-    BEGIN
-        MENUITEM "Impostazioni &CBM2...",      IDM_CBM2_SETTINGS
-    END
-    POPUP "&Lingua"
-    BEGIN
-        MENUITEM "&Inglese", IDM_LANG_EN
-        MENUITEM "&Tedesco", IDM_LANG_DE
-        MENUITEM "&Francese", IDM_LANG_FR
-        MENUITEM "&Ungherese", IDM_LANG_HU
-        MENUITEM "&Italiano", IDM_LANG_IT
-        MENUITEM "&Olandese", IDM_LANG_NL
-        MENUITEM "&Polacco", IDM_LANG_PL
-        MENUITEM "&Svedese", IDM_LANG_SV
-    END
-    POPUP "&Aiuto"
-    BEGIN
-        MENUITEM "&Opzioni della riga di comando", IDM_CMDLINE
-        MENUITEM SEPARATOR
-        MENUITEM "&Collaboratori", IDM_CONTRIBUTORS
-        MENUITEM "&Licenza",      IDM_LICENSE
-        MENUITEM "Nessuna &garanzia",  IDM_WARRANTY
-    END
-END
-
-
-// DUTCH version of menu
-
-IDR_MENUCBM2_NL MENU DISCARDABLE
-BEGIN
-    POPUP "&Opties"
-    BEGIN
-        MENUITEM "Volscherm", IDM_TOGGLE_FULLSCREEN
-    END
-    POPUP "Inst&ellingen"
-    BEGIN
-        MENUITEM "&CBM2 instellingen...",      IDM_CBM2_SETTINGS
-    END
-    POPUP "&Taal"
-    BEGIN
-        MENUITEM "&Engels", IDM_LANG_EN
-        MENUITEM "&Duits", IDM_LANG_DE
-        MENUITEM "&Frans", IDM_LANG_FR
-        MENUITEM "&Hongaars", IDM_LANG_HU
-        MENUITEM "&Italiaans", IDM_LANG_IT
-        MENUITEM "&Nederlands", IDM_LANG_NL
-        MENUITEM "&Pools", IDM_LANG_PL
-        MENUITEM "&Zweeds", IDM_LANG_SV
-    END
-    POPUP "&Help"
-    BEGIN
-        MENUITEM "Commando invoer &opties", IDM_CMDLINE
-        MENUITEM SEPARATOR
-        MENUITEM "&Medewerkers aan het VICE project", IDM_CONTRIBUTORS
-        MENUITEM "&Licensie",      IDM_LICENSE
-        MENUITEM "Geen &garantie",  IDM_WARRANTY
-    END
-END
-
-
-// POLISH version of menu
-
-#pragma code_page(28592)
-IDR_MENUCBM2_PL MENU DISCARDABLE
-BEGIN
-    POPUP "&Opcje"
-    BEGIN
-        MENUITEM "Pe³ny ekran", IDM_TOGGLE_FULLSCREEN
-    END
-    POPUP "Ustawi&enia"
-    BEGIN
-        MENUITEM "Ustawienia &CBM2...",      IDM_CBM2_SETTINGS
-    END
-    POPUP "&Language"
-    BEGIN
-        MENUITEM "&English", IDM_LANG_EN
-        MENUITEM "&German", IDM_LANG_DE
-        MENUITEM "&French", IDM_LANG_FR
-        MENUITEM "&Hungarian", IDM_LANG_HU
-        MENUITEM "&Italian", IDM_LANG_IT
-        MENUITEM "&Dutch", IDM_LANG_NL
-        MENUITEM "&Polish", IDM_LANG_PL
-        MENUITEM "&Swedish", IDM_LANG_SV
-    END
-    POPUP "&Pomoc"
-    BEGIN
-        MENUITEM "Command line &options", IDM_CMDLINE
-        MENUITEM SEPARATOR
-        MENUITEM "&Wspó³pracownicy projektu VICE", IDM_CONTRIBUTORS
-        MENUITEM "&Licencja",      IDM_LICENSE
-        MENUITEM "Bez g&warancji",  IDM_WARRANTY
-    END
-END
-#pragma code_page(28591)
-
-
-// SWEDISH version of menu
-
-IDR_MENUCBM2_SV MENU DISCARDABLE
-BEGIN
-    POPUP "&Alternativ"
-    BEGIN
-        MENUITEM "Fullskärm", IDM_TOGGLE_FULLSCREEN
-    END
-    POPUP "&Inställningar"
-    BEGIN
-        MENUITEM "&CBM2-inställningar...",      IDM_CBM2_SETTINGS
-    END
-    POPUP "&Språk"
-    BEGIN
-        MENUITEM "&Engelska", IDM_LANG_EN
-        MENUITEM "&Tyska", IDM_LANG_DE
-        MENUITEM "&Franska", IDM_LANG_FR
-        MENUITEM "&Ungerska", IDM_LANG_HU
-        MENUITEM "&Italienska", IDM_LANG_IT
-        MENUITEM "&Nederländska", IDM_LANG_NL
-        MENUITEM "&Polska", IDM_LANG_PL
-        MENUITEM "&Svenska", IDM_LANG_SV
-    END
-    POPUP "&Hjälp"
-    BEGIN
-        MENUITEM "Kommandorads&flaggor", IDM_CMDLINE
-        MENUITEM SEPARATOR
-        MENUITEM "&Bidragslämnare", IDM_CONTRIBUTORS
-        MENUITEM "&Licens",      IDM_LICENSE
-        MENUITEM "Ingen &garanti",  IDM_WARRANTY
+        MENUITEM "", IDM_CONTRIBUTORS
+        MENUITEM "", IDM_LICENSE
+        MENUITEM "", IDM_WARRANTY
     END
 END
 
@@ -2332,8 +2088,9 @@ END
 STRINGTABLE
 LANGUAGE LANG_ENGLISH, SUBLANG_NEUTRAL
 BEGIN
-  IDS_MEMORY          "Memory"
-  IDS_CBM2_SETTINGS   "CBM2 settings"
+  IDS_MEMORY             "Memory"
+  IDS_CBM2_SETTINGS      "CBM2 settings"
+  IDS_MI_CBM2_SETTINGS   "&CBM2 settings..."
 END
 
 
@@ -2342,8 +2099,9 @@ END
 STRINGTABLE
 LANGUAGE LANG_GERMAN, SUBLANG_NEUTRAL
 BEGIN
-  IDS_MEMORY          "Speicher"
-  IDS_CBM2_SETTINGS   "CBM2 Einstellungen"
+  IDS_MEMORY             "Speicher"
+  IDS_CBM2_SETTINGS      "CBM2 Einstellungen"
+  IDS_MI_CBM2_SETTINGS   "&CBM2 Einstellungen..."
 END
 
 
@@ -2352,8 +2110,9 @@ END
 STRINGTABLE
 LANGUAGE LANG_FRENCH, SUBLANG_NEUTRAL
 BEGIN
-  IDS_MEMORY          "Mémoire"
-  IDS_CBM2_SETTINGS   "Paramètres CBM2"
+  IDS_MEMORY             "Mémoire"
+  IDS_CBM2_SETTINGS      "Paramètres CBM2"
+  IDS_MI_CBM2_SETTINGS   "Paramètres &CBM2..."
 END
 
 
@@ -2363,8 +2122,9 @@ END
 STRINGTABLE
 LANGUAGE LANG_HUNGARIAN, SUBLANG_NEUTRAL
 BEGIN
-  IDS_MEMORY          "Memória"
-  IDS_CBM2_SETTINGS   "CBM2 beállításai"
+  IDS_MEMORY             "Memória"
+  IDS_CBM2_SETTINGS      "CBM2 beállításai"
+  IDS_MI_CBM2_SETTINGS   "&CBM2 beállításai..."
 END
 #pragma code_page(28591)
 
@@ -2374,8 +2134,9 @@ END
 STRINGTABLE
 LANGUAGE LANG_ITALIAN, SUBLANG_NEUTRAL
 BEGIN
-  IDS_MEMORY          "Memoria"
-  IDS_CBM2_SETTINGS   "Impostazioni CBM2"
+  IDS_MEMORY             "Memoria"
+  IDS_CBM2_SETTINGS      "Impostazioni CBM2"
+  IDS_MI_CBM2_SETTINGS   "Impostazioni &CBM2..."
 END
 
 
@@ -2384,8 +2145,9 @@ END
 STRINGTABLE
 LANGUAGE LANG_DUTCH, SUBLANG_NEUTRAL
 BEGIN
-  IDS_MEMORY          "Geheugen"
-  IDS_CBM2_SETTINGS   "CBM2 instellingen"
+  IDS_MEMORY             "Geheugen"
+  IDS_CBM2_SETTINGS      "CBM2 instellingen"
+  IDS_MI_CBM2_SETTINGS   "&CBM2 instellingen..."
 END
 
 
@@ -2395,8 +2157,9 @@ END
 STRINGTABLE
 LANGUAGE LANG_POLISH, SUBLANG_NEUTRAL
 BEGIN
-  IDS_MEMORY          "Memory"
-  IDS_CBM2_SETTINGS   "CBM2 settings"
+  IDS_MEMORY             "Memory"
+  IDS_CBM2_SETTINGS      "CBM2 settings"
+  IDS_MI_CBM2_SETTINGS   "Ustawienia &CBM2..."
 END
 #pragma code_page(28591)
 
@@ -2406,6 +2169,7 @@ END
 STRINGTABLE
 LANGUAGE LANG_SWEDISH, SUBLANG_NEUTRAL
 BEGIN
-  IDS_MEMORY          "Minne"
-  IDS_CBM2_SETTINGS   "CBM2-inställningar"
+  IDS_MEMORY             "Minne"
+  IDS_CBM2_SETTINGS      "CBM2-inställningar"
+  IDS_MI_CBM2_SETTINGS   "&CBM2-inställningar..."
 END

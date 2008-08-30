@@ -26,15 +26,15 @@ BEGIN
         MENUITEM SEPARATOR
         POPUP "Attach &disk image"
         BEGIN
-            MENUITEM "",  IDM_ATTACH_8
-            MENUITEM "",  IDM_ATTACH_9
+            MENUITEM "", IDM_ATTACH_8
+            MENUITEM "", IDM_ATTACH_9
             MENUITEM "", IDM_ATTACH_10
             MENUITEM "", IDM_ATTACH_11
         END
         POPUP "D&etach disk image"
         BEGIN
-            MENUITEM "",  IDM_DETACH_8
-            MENUITEM "",  IDM_DETACH_9
+            MENUITEM "", IDM_DETACH_8
+            MENUITEM "", IDM_DETACH_9
             MENUITEM "", IDM_DETACH_10
             MENUITEM "", IDM_DETACH_11
             MENUITEM SEPARATOR
@@ -42,9 +42,9 @@ BEGIN
         END
         POPUP "&Flip list"
         BEGIN
-            MENUITEM "",     IDM_FLIP_ADD
-            MENUITEM "",  IDM_FLIP_REMOVE
-            MENUITEM "",     IDM_FLIP_NEXT
+            MENUITEM "", IDM_FLIP_ADD
+            MENUITEM "", IDM_FLIP_REMOVE
+            MENUITEM "", IDM_FLIP_NEXT
             MENUITEM "", IDM_FLIP_PREVIOUS
             MENUITEM SEPARATOR
             MENUITEM "", IDM_FLIP_LOAD
@@ -52,43 +52,43 @@ BEGIN
         END
         MENUITEM SEPARATOR
         MENUITEM "", IDM_ATTACH_TAPE
-        MENUITEM "",           IDM_DETACH_TAPE
+        MENUITEM "", IDM_DETACH_TAPE
         POPUP "Datassette contro&l"
         BEGIN
-            MENUITEM "",          IDM_DATASETTE_CONTROL_STOP
-            MENUITEM "",         IDM_DATASETTE_CONTROL_START
-            MENUITEM "",       IDM_DATASETTE_CONTROL_FORWARD
-            MENUITEM "",        IDM_DATASETTE_CONTROL_REWIND
-            MENUITEM "",        IDM_DATASETTE_CONTROL_RECORD
-            MENUITEM "",         IDM_DATASETTE_CONTROL_RESET
+            MENUITEM "", IDM_DATASETTE_CONTROL_STOP
+            MENUITEM "", IDM_DATASETTE_CONTROL_START
+            MENUITEM "", IDM_DATASETTE_CONTROL_FORWARD
+            MENUITEM "", IDM_DATASETTE_CONTROL_REWIND
+            MENUITEM "", IDM_DATASETTE_CONTROL_RECORD
+            MENUITEM "", IDM_DATASETTE_CONTROL_RESET
             MENUITEM "", IDM_DATASETTE_RESET_COUNTER
         END
         MENUITEM SEPARATOR
         POPUP "Attach &cartridge image..."
         BEGIN
-            MENUITEM "",               IDM_CART_ATTACH_CRT
+            MENUITEM "", IDM_CART_ATTACH_CRT
             MENUITEM SEPARATOR
-            MENUITEM "",       IDM_CART_ATTACH_8KB
-            MENUITEM "",      IDM_CART_ATTACH_16KB
-            MENUITEM "",     IDM_CART_ATTACH_AR
+            MENUITEM "", IDM_CART_ATTACH_8KB
+            MENUITEM "", IDM_CART_ATTACH_16KB
+            MENUITEM "", IDM_CART_ATTACH_AR
             MENUITEM "", IDM_CART_ATTACH_AR3
-            MENUITEM "",   IDM_CART_ATTACH_AR4
-            MENUITEM "",           IDM_CART_ATTACH_STARDOS
-            MENUITEM "",      IDM_CART_ATTACH_AT
-            MENUITEM "",     IDM_CART_ATTACH_EPYX
+            MENUITEM "", IDM_CART_ATTACH_AR4
+            MENUITEM "", IDM_CART_ATTACH_STARDOS
+            MENUITEM "", IDM_CART_ATTACH_AT
+            MENUITEM "", IDM_CART_ATTACH_EPYX
             MENUITEM "", IDM_CART_ATTACH_IEEE488
-            MENUITEM "",      IDM_CART_ATTACH_RR
-            MENUITEM "",   IDM_CART_ATTACH_IDE64
-            MENUITEM "",  IDM_CART_ATTACH_SS4
-            MENUITEM "",  IDM_CART_ATTACH_SS5
-            MENUITEM "",  IDM_CART_ATTACH_STB
+            MENUITEM "", IDM_CART_ATTACH_RR
+            MENUITEM "", IDM_CART_ATTACH_IDE64
+            MENUITEM "", IDM_CART_ATTACH_SS4
+            MENUITEM "", IDM_CART_ATTACH_SS5
+            MENUITEM "", IDM_CART_ATTACH_STB
             POPUP "Expert Cartridge"
             BEGIN
-                MENUITEM "", IDM_CART_ENABLE_EXPERT
+                MENUITEM "",    IDM_CART_ENABLE_EXPERT
                 MENUITEM SEPARATOR
                 MENUITEM "",    IDM_CART_MODE_OFF
-                MENUITEM "Prg",    IDM_CART_MODE_PRG
-                MENUITEM "",     IDM_CART_MODE_ON
+                MENUITEM "Prg", IDM_CART_MODE_PRG
+                MENUITEM "",    IDM_CART_MODE_ON
             END
             MENUITEM SEPARATOR
             MENUITEM "", IDM_CART_SET_DEFAULT
@@ -102,12 +102,12 @@ BEGIN
         POPUP "&Reset"
         BEGIN
             MENUITEM "", IDM_RESET_HARD
-            MENUITEM "",      IDM_RESET_SOFT
+            MENUITEM "", IDM_RESET_SOFT
             MENUITEM SEPARATOR
-            MENUITEM "",         IDM_RESET_DRIVE8
-            MENUITEM "",         IDM_RESET_DRIVE9
-            MENUITEM "",        IDM_RESET_DRIVE10
-            MENUITEM "",        IDM_RESET_DRIVE11
+            MENUITEM "", IDM_RESET_DRIVE8
+            MENUITEM "", IDM_RESET_DRIVE9
+            MENUITEM "", IDM_RESET_DRIVE10
+            MENUITEM "", IDM_RESET_DRIVE11
         END
 #ifdef DEBUG
         POPUP "&Debug"
@@ -157,7 +157,7 @@ BEGIN
         MENUITEM "", IDM_SOUND_RECORD_START
         MENUITEM "", IDM_SOUND_RECORD_STOP
         MENUITEM SEPARATOR
-        MENUITEM "Netplay (experimental)...", IDM_NETWORK_SETTINGS
+        MENUITEM "", IDM_NETWORK_SETTINGS
     END
     POPUP "&Options"
     BEGIN
@@ -188,7 +188,7 @@ BEGIN
         END
         MENUITEM "", IDM_TOGGLE_WARP_MODE, CHECKED
         MENUITEM SEPARATOR
-        MENUITEM "Fullscreen", IDM_TOGGLE_FULLSCREEN
+        MENUITEM "", IDM_TOGGLE_FULLSCREEN
         MENUITEM "", IDM_TOGGLE_ALWAYSONTOP
         MENUITEM SEPARATOR
         MENUITEM "", IDM_TOGGLE_VIDEOCACHE, CHECKED
@@ -233,9 +233,9 @@ BEGIN
             MENUITEM "", IDM_REU_SETTINGS
             MENUITEM "", IDM_GEORAM_SETTINGS
             MENUITEM "", IDM_RAMCART_SETTINGS
-            MENUITEM "PLUS&60K settings...",      IDM_PLUS60K_SETTINGS
-            MENUITEM "PLUS2&56K settings...",      IDM_PLUS256K_SETTINGS
-            MENUITEM "&256K settings...",      IDM_C64_256K_SETTINGS
+            MENUITEM "", IDM_PLUS60K_SETTINGS
+            MENUITEM "", IDM_PLUS256K_SETTINGS
+            MENUITEM "", IDM_C64_256K_SETTINGS
             MENUITEM "", IDM_MMC64_SETTINGS
             MENUITEM "", IDM_DIGIMAX_SETTINGS
             MENUITEM "", IDM_IDE64_SETTINGS
@@ -255,333 +255,24 @@ BEGIN
     END
     POPUP "&Language"
     BEGIN
-        MENUITEM "&English", IDM_LANG_EN
-        MENUITEM "&German", IDM_LANG_DE
-        MENUITEM "&French", IDM_LANG_FR
-        MENUITEM "&Hungarian", IDM_LANG_HU
-        MENUITEM "&Italian", IDM_LANG_IT
-        MENUITEM "&Dutch", IDM_LANG_NL
-        MENUITEM "&Polish", IDM_LANG_PL
-        MENUITEM "&Swedish", IDM_LANG_SV
+        MENUITEM "", IDM_LANG_EN
+        MENUITEM "", IDM_LANG_DE
+        MENUITEM "", IDM_LANG_FR
+        MENUITEM "", IDM_LANG_HU
+        MENUITEM "", IDM_LANG_IT
+        MENUITEM "", IDM_LANG_NL
+        MENUITEM "", IDM_LANG_PL
+        MENUITEM "", IDM_LANG_SV
     END
     POPUP "&Help"
     BEGIN
-//        MENUITEM "H&elp",               IDM_HELP
-//        MENUITEM SEPARATOR
-        MENUITEM "",             IDM_ABOUT
+        MENUITEM "", IDM_ABOUT
         MENUITEM SEPARATOR
-        MENUITEM "Command line &options", IDM_CMDLINE
+        MENUITEM "", IDM_CMDLINE
         MENUITEM SEPARATOR
-        MENUITEM "&Contributors",         IDM_CONTRIBUTORS
-        MENUITEM "&License",              IDM_LICENSE
-        MENUITEM "No &warranty",          IDM_WARRANTY
-    END
-END
-
-
-// GERMAN version of menu
-
-IDR_MENUC64_DE MENU DISCARDABLE
-BEGIN
-    POPUP "Sna&pshot"
-    BEGIN
-        MENUITEM "Netplay (experimentell)...", IDM_NETWORK_SETTINGS
-    END
-    POPUP "&Optionen"
-    BEGIN
-        MENUITEM "Vollbild", IDM_TOGGLE_FULLSCREEN
-    END
-    POPUP "&Einstellungen"
-    BEGIN
-        POPUP "&Erweiterungsmodul Einstellungen"
-        BEGIN
-            MENUITEM "PLUS&60K Einstellungen...",      IDM_PLUS60K_SETTINGS
-            MENUITEM "PLUS2&56K Einstellungen...",      IDM_PLUS256K_SETTINGS
-            MENUITEM "&256K Einstellungen...",      IDM_C64_256K_SETTINGS
-        END
-    END
-    POPUP "Sprache"
-    BEGIN
-        MENUITEM "&Englisch", IDM_LANG_EN
-        MENUITEM "&Deutsch", IDM_LANG_DE
-        MENUITEM "&Französisch", IDM_LANG_FR
-        MENUITEM "&Ungarisch", IDM_LANG_HU
-        MENUITEM "&Italienisch", IDM_LANG_IT
-        MENUITEM "&Holländisch", IDM_LANG_NL
-        MENUITEM "&Polnisch", IDM_LANG_PL
-        MENUITEM "&Schwedisch", IDM_LANG_SV
-    END
-    POPUP "&Hilfe"
-    BEGIN
-//        MENUITEM "H&elp",               IDM_HELP
-//        MENUITEM SEPARATOR
-        MENUITEM "Kommandozeilen &Optionen", IDM_CMDLINE
-        MENUITEM SEPARATOR
-        MENUITEM "VICE Hackers",         IDM_CONTRIBUTORS
-        MENUITEM "&Lizenz",              IDM_LICENSE
-        MENUITEM "Keine &Garantie!",          IDM_WARRANTY
-    END
-END
-
-
-// FRENCH version of menu
-
-IDR_MENUC64_FR MENU DISCARDABLE
-BEGIN
-    POPUP "&Sauvegarde"
-    BEGIN
-        MENUITEM "Jeu en réseau (expérimental)...", IDM_NETWORK_SETTINGS
-    END
-    POPUP "&Options"
-    BEGIN
-        MENUITEM "Périphérique plein écran", IDM_TOGGLE_FULLSCREEN
-    END
-    POPUP "&Paramètres"
-    BEGIN
-        POPUP "Paramètres E/S &cartouche"
-        BEGIN
-            MENUITEM "Paramètres PLUS&60K...",      IDM_PLUS60K_SETTINGS
-            MENUITEM "Paramètres PLUS2&56K...",      IDM_PLUS256K_SETTINGS
-            MENUITEM "Paramètres &256K...",      IDM_C64_256K_SETTINGS
-        END
-    END
-    POPUP "&Langage"
-    BEGIN
-        MENUITEM "&Anglais", IDM_LANG_EN
-        MENUITEM "&Allemand", IDM_LANG_DE
-        MENUITEM "&Français", IDM_LANG_FR
-        MENUITEM "&Hungarian", IDM_LANG_HU
-        MENUITEM "&Italien", IDM_LANG_IT
-        MENUITEM "&Hollandais", IDM_LANG_NL
-        MENUITEM "&Polonais", IDM_LANG_PL
-        MENUITEM "&Suédois", IDM_LANG_SV
-    END
-    POPUP "&Aide"
-    BEGIN
-        MENUITEM "&Options de ligne de commande", IDM_CMDLINE
-        MENUITEM SEPARATOR
-        MENUITEM "&Contributeurs",         IDM_CONTRIBUTORS
-        MENUITEM "&License",              IDM_LICENSE
-        MENUITEM "Aucune &garantie!",          IDM_WARRANTY
-    END
-END
-
-
-// HUNGARIAN version of menu
-
-#pragma code_page(28592)
-IDR_MENUC64_HU MENU DISCARDABLE
-BEGIN
-    POPUP "&Pillanatkép"
-    BEGIN
-        MENUITEM "Hálózati játék (kísérleti)...", IDM_NETWORK_SETTINGS
-    END
-    POPUP "&Opciók"
-    BEGIN
-        MENUITEM "Teljes képernyõ", IDM_TOGGLE_FULLSCREEN
-    END
-    POPUP "B&eállítások"
-    BEGIN
-        POPUP "&Cartridge/IO beállításai"
-        BEGIN
-            MENUITEM "PLUS&60K beállításai...",      IDM_PLUS60K_SETTINGS
-            MENUITEM "PLUS2&56K beállításai...",      IDM_PLUS256K_SETTINGS
-            MENUITEM "&256K beállításai...",      IDM_C64_256K_SETTINGS
-        END
-    END
-    POPUP "&Nyelv"
-    BEGIN
-        MENUITEM "&Angol", IDM_LANG_EN
-        MENUITEM "&Német", IDM_LANG_DE
-        MENUITEM "&Francia", IDM_LANG_FR
-        MENUITEM "&Magyar", IDM_LANG_HU
-        MENUITEM "&Olasz", IDM_LANG_IT
-        MENUITEM "&Holland", IDM_LANG_NL
-        MENUITEM "&Lengyel", IDM_LANG_PL
-        MENUITEM "&Svéd", IDM_LANG_SV
-    END
-    POPUP "&Súgó"
-    BEGIN
-        MENUITEM "Parancssori &opciók", IDM_CMDLINE
-        MENUITEM SEPARATOR
-        MENUITEM "&Közremûködõk",         IDM_CONTRIBUTORS
-        MENUITEM "&Licensz",              IDM_LICENSE
-        MENUITEM "Nincs &garancia",          IDM_WARRANTY
-    END
-END
-#pragma code_page(28591)
-
-
-// ITALIAN version of menu
-
-IDR_MENUC64_IT MENU DISCARDABLE
-BEGIN
-    POPUP "Sna&pshot"
-    BEGIN
-        MENUITEM "Netplay (sperimentale)...", IDM_NETWORK_SETTINGS
-    END
-    POPUP "&Opzioni"
-    BEGIN
-        MENUITEM "A tutto schermo", IDM_TOGGLE_FULLSCREEN
-    END
-    POPUP "I&mpostazioni"
-    BEGIN
-        POPUP "Impostazioni &cartuccia/IO"
-        BEGIN
-            MENUITEM "Impostazioni PLUS&60K...",      IDM_PLUS60K_SETTINGS
-            MENUITEM "Impostazioni PLUS2&56K...",      IDM_PLUS256K_SETTINGS
-            MENUITEM "Impostazioni &256K...",      IDM_C64_256K_SETTINGS
-        END
-    END
-    POPUP "&Lingua"
-    BEGIN
-        MENUITEM "&Inglese", IDM_LANG_EN
-        MENUITEM "&Tedesco", IDM_LANG_DE
-        MENUITEM "&Francese", IDM_LANG_FR
-        MENUITEM "&Ungherese", IDM_LANG_HU
-        MENUITEM "&Italiano", IDM_LANG_IT
-        MENUITEM "&Olandese", IDM_LANG_NL
-        MENUITEM "&Polacco", IDM_LANG_PL
-        MENUITEM "&Svedese", IDM_LANG_SV
-    END
-    POPUP "&Aiuto"
-    BEGIN
-        MENUITEM "&Opzioni della riga di comando", IDM_CMDLINE
-        MENUITEM SEPARATOR
-        MENUITEM "&Collaboratori",         IDM_CONTRIBUTORS
-        MENUITEM "&Licenza",              IDM_LICENSE
-        MENUITEM "Nessuna &garanzia",          IDM_WARRANTY
-    END
-END
-
-
-// DUTCH version of menu
-
-IDR_MENUC64_NL MENU DISCARDABLE
-BEGIN
-    POPUP "Momento&pname"
-    BEGIN
-        MENUITEM "Netplay (experimenteel)...", IDM_NETWORK_SETTINGS
-    END
-    POPUP "&Opties"
-    BEGIN
-        MENUITEM "Volscherm", IDM_TOGGLE_FULLSCREEN
-    END
-    POPUP "Inst&ellingen"
-    BEGIN
-        POPUP "&Cartridge/IO-instellingen"
-        BEGIN
-            MENUITEM "PLUS&60K-instellingen...",      IDM_PLUS60K_SETTINGS
-            MENUITEM "PLUS2&56K-instellingen...",      IDM_PLUS256K_SETTINGS
-            MENUITEM "&256K-instellingen...",      IDM_C64_256K_SETTINGS
-        END
-    END
-    POPUP "&Taal"
-    BEGIN
-        MENUITEM "&Engels", IDM_LANG_EN
-        MENUITEM "&Duits", IDM_LANG_DE
-        MENUITEM "&Frans", IDM_LANG_FR
-        MENUITEM "&Hongaars", IDM_LANG_HU
-        MENUITEM "&Italiaans", IDM_LANG_IT
-        MENUITEM "&Nederlands", IDM_LANG_NL
-        MENUITEM "&Pools", IDM_LANG_PL
-        MENUITEM "&Zweeds", IDM_LANG_SV
-    END
-    POPUP "&Help"
-    BEGIN
-        MENUITEM "Commando invoer &opties", IDM_CMDLINE
-        MENUITEM SEPARATOR
-        MENUITEM "&Medewerkers aan het VICE project",         IDM_CONTRIBUTORS
-        MENUITEM "&Licensie",              IDM_LICENSE
-        MENUITEM "Geen &garantie",          IDM_WARRANTY
-    END
-END
-
-
-// POLISH version of menu
-
-#pragma code_page(28592)
-IDR_MENUC64_PL MENU DISCARDABLE
-BEGIN
-    POPUP "z&rzutu"
-    BEGIN
-        MENUITEM "Netplay (experimental)...", IDM_NETWORK_SETTINGS
-    END
-    POPUP "&Opcje"
-    BEGIN
-        MENUITEM "Pe³ny ekran", IDM_TOGGLE_FULLSCREEN
-    END
-    POPUP "Ustawi&enia"
-    BEGIN
-        POPUP "Ustawienia kart&rid¿a"
-        BEGIN
-            MENUITEM "Ustawienia PLUS&60K...",      IDM_PLUS60K_SETTINGS
-            MENUITEM "Ustawienia PLUS2&56K...",      IDM_PLUS256K_SETTINGS
-            MENUITEM "Ustawienia &256K...",      IDM_C64_256K_SETTINGS
-        END
-    END
-    POPUP "&Language"
-    BEGIN
-        MENUITEM "&English", IDM_LANG_EN
-        MENUITEM "&German", IDM_LANG_DE
-        MENUITEM "&French", IDM_LANG_FR
-        MENUITEM "&Hungarian", IDM_LANG_HU
-        MENUITEM "&Italian", IDM_LANG_IT
-        MENUITEM "&Dutch", IDM_LANG_NL
-        MENUITEM "&Polish", IDM_LANG_PL
-        MENUITEM "&Swedish", IDM_LANG_SV
-    END
-    POPUP "&Pomoc"
-    BEGIN
-        MENUITEM "Command line &options", IDM_CMDLINE
-        MENUITEM SEPARATOR
-        MENUITEM "&Wspó³pracownicy projektu VICE",         IDM_CONTRIBUTORS
-        MENUITEM "&Licencja",              IDM_LICENSE
-        MENUITEM "Bez g&warancji",          IDM_WARRANTY
-    END
-END
-#pragma code_page(28591)
-
-
-// SWEDISH version of menu
-
-IDR_MENUC64_SV MENU DISCARDABLE
-BEGIN
-    POPUP "&Ögonblicksbild"
-    BEGIN
-        MENUITEM "Nätverksspel (experimentellt)...", IDM_NETWORK_SETTINGS
-    END
-    POPUP "&Alternativ"
-    BEGIN
-        MENUITEM "Fullskärm", IDM_TOGGLE_FULLSCREEN
-    END
-    POPUP "&Inställningar"
-    BEGIN
-        POPUP "&Modul/IO-inställningar"
-        BEGIN
-            MENUITEM "PLUS&60K-inställningar...",      IDM_PLUS60K_SETTINGS
-            MENUITEM "PLUS2&56K-inställningar...",      IDM_PLUS256K_SETTINGS
-            MENUITEM "&256K-inställningar...",      IDM_C64_256K_SETTINGS
-        END
-    END
-    POPUP "&Språk"
-    BEGIN
-        MENUITEM "&Engelska", IDM_LANG_EN
-        MENUITEM "&Tyska", IDM_LANG_DE
-        MENUITEM "&Franska", IDM_LANG_FR
-        MENUITEM "&Ungerska", IDM_LANG_HU
-        MENUITEM "&Italienska", IDM_LANG_IT
-        MENUITEM "&Nederländska", IDM_LANG_NL
-        MENUITEM "&Polska", IDM_LANG_PL
-        MENUITEM "&Svenska", IDM_LANG_SV
-    END
-    POPUP "&Hjälp"
-    BEGIN
-        MENUITEM "Kommandorads&flaggor", IDM_CMDLINE
-        MENUITEM SEPARATOR
-        MENUITEM "&Bidragslämnare",         IDM_CONTRIBUTORS
-        MENUITEM "&Licens",              IDM_LICENSE
-        MENUITEM "Ingen &garanti",          IDM_WARRANTY
+        MENUITEM "", IDM_CONTRIBUTORS
+        MENUITEM "", IDM_LICENSE
+        MENUITEM "", IDM_WARRANTY
     END
 END
 
@@ -1921,3 +1612,105 @@ BEGIN
     PUSHBUTTON  "Spara tangentbord", IDC_C64KBD_MAPPING_DUMP, 10,74,60,14, 0
     PUSHBUTTON  "Dump shortcuts", IDC_KBD_SHORTCUT_DUMP, 80,74,60,14, 0
 END
+
+// -----------------------------------------------------------------------------
+
+// original and default ENGLISH text
+
+STRINGTABLE
+LANGUAGE LANG_ENGLISH, SUBLANG_NEUTRAL
+BEGIN
+  IDS_MI_NETWORK_SETTINGS    "Netplay (experimental)..."
+  IDS_MI_PLUS60K_SETTINGS    "PLUS&60K settings..."
+  IDS_MI_PLUS256K_SETTINGS   "PLUS2&56K settings..."
+  IDS_MI_C64_256K_SETTINGS   "&256K settings..."
+END
+
+
+// GERMAN text
+
+STRINGTABLE
+LANGUAGE LANG_GERMAN, SUBLANG_NEUTRAL
+BEGIN
+  IDS_MI_NETWORK_SETTINGS    "Netplay (experimentell)..."
+  IDS_MI_PLUS60K_SETTINGS    "PLUS&60K Einstellungen..."
+  IDS_MI_PLUS256K_SETTINGS   "PLUS2&56K Einstellungen..."
+  IDS_MI_C64_256K_SETTINGS   "&256K Einstellungen..."
+END
+
+
+// FRENCH text
+
+STRINGTABLE
+LANGUAGE LANG_FRENCH, SUBLANG_NEUTRAL
+BEGIN
+  IDS_MI_NETWORK_SETTINGS    "Jeu en réseau (expérimental)..."
+  IDS_MI_PLUS60K_SETTINGS    "Paramètres PLUS&60K..."
+  IDS_MI_PLUS256K_SETTINGS   "Paramètres PLUS2&56K..."
+  IDS_MI_C64_256K_SETTINGS   "Paramètres &256K..."
+END
+
+
+// HUNGARIAN text
+
+#pragma code_page(28592)
+STRINGTABLE
+LANGUAGE LANG_HUNGARIAN, SUBLANG_NEUTRAL
+BEGIN
+  IDS_MI_NETWORK_SETTINGS    "Hálózati játék (kísérleti)..."
+  IDS_MI_PLUS60K_SETTINGS    "PLUS&60K beállításai..."
+  IDS_MI_PLUS256K_SETTINGS   "PLUS2&56K beállításai..."
+  IDS_MI_C64_256K_SETTINGS   "&256K beállításai..."
+END
+#pragma code_page(28591)
+
+
+// ITALIAN text
+
+STRINGTABLE
+LANGUAGE LANG_ITALIAN, SUBLANG_NEUTRAL
+BEGIN
+  IDS_MI_NETWORK_SETTINGS    "Netplay (sperimentale)..."
+  IDS_MI_PLUS60K_SETTINGS    "Impostazioni PLUS&60K..."
+  IDS_MI_PLUS256K_SETTINGS   "Impostazioni PLUS2&56K..."
+  IDS_MI_C64_256K_SETTINGS   "Impostazioni &256K..."
+END
+
+
+// DUTCH text
+
+STRINGTABLE
+LANGUAGE LANG_DUTCH, SUBLANG_NEUTRAL
+BEGIN
+  IDS_MI_NETWORK_SETTINGS    "Netplay (experimenteel)..."
+  IDS_MI_PLUS60K_SETTINGS    "PLUS&60K-instellingen..."
+  IDS_MI_PLUS256K_SETTINGS   "PLUS2&56K-instellingen..."
+  IDS_MI_C64_256K_SETTINGS   "&256K-instellingen..."
+END
+
+
+// POLISH text
+
+#pragma code_page(28592)
+STRINGTABLE
+LANGUAGE LANG_POLISH, SUBLANG_NEUTRAL
+BEGIN
+  IDS_MI_NETWORK_SETTINGS    "Netplay (experimental)..."
+  IDS_MI_PLUS60K_SETTINGS    "Ustawienia PLUS&60K..."
+  IDS_MI_PLUS256K_SETTINGS   "Ustawienia PLUS2&56K..."
+  IDS_MI_C64_256K_SETTINGS   "Ustawienia &256K..."
+END
+#pragma code_page(28591)
+
+
+// SWEDISH text
+
+STRINGTABLE
+LANGUAGE LANG_SWEDISH, SUBLANG_NEUTRAL
+BEGIN
+  IDS_MI_NETWORK_SETTINGS    "Nätverksspel (experimentellt)..."
+  IDS_MI_PLUS60K_SETTINGS    "PLUS&60K-inställningar..."
+  IDS_MI_PLUS256K_SETTINGS   "PLUS2&56K-inställningar..."
+  IDS_MI_C64_256K_SETTINGS   "&256K-inställningar..."
+END
+

@@ -257,200 +257,24 @@ BEGIN
     END
     POPUP "&Language"
     BEGIN
-        MENUITEM "&English", IDM_LANG_EN
-        MENUITEM "&German", IDM_LANG_DE
-        MENUITEM "&French", IDM_LANG_FR
-        MENUITEM "&Hungarian", IDM_LANG_HU
-        MENUITEM "&Italian", IDM_LANG_IT
-        MENUITEM "&Dutch", IDM_LANG_NL
-        MENUITEM "&Polish", IDM_LANG_PL
-        MENUITEM "&Swedish", IDM_LANG_SV
+        MENUITEM "", IDM_LANG_EN
+        MENUITEM "", IDM_LANG_DE
+        MENUITEM "", IDM_LANG_FR
+        MENUITEM "", IDM_LANG_HU
+        MENUITEM "", IDM_LANG_IT
+        MENUITEM "", IDM_LANG_NL
+        MENUITEM "", IDM_LANG_PL
+        MENUITEM "", IDM_LANG_SV
     END
     POPUP "&Help"
     BEGIN
-//        MENUITEM "H&elp",               IDM_HELP
-//        MENUITEM SEPARATOR
-        MENUITEM "",             IDM_ABOUT
+        MENUITEM "", IDM_ABOUT
         MENUITEM SEPARATOR
-        MENUITEM "Command line &options", IDM_CMDLINE
+        MENUITEM "", IDM_CMDLINE
         MENUITEM SEPARATOR
-        MENUITEM "&Contributors",         IDM_CONTRIBUTORS
-        MENUITEM "&License",              IDM_LICENSE
-        MENUITEM "No &warranty",          IDM_WARRANTY
-    END
-END
-
-
-// GERMAN version of menu
-
-IDR_MENUC128_DE MENU DISCARDABLE
-BEGIN
-        MENUITEM "&Englisch", IDM_LANG_EN
-        MENUITEM "&Deutsch", IDM_LANG_DE
-        MENUITEM "&Französisch", IDM_LANG_FR
-        MENUITEM "&Ungarisch", IDM_LANG_HU
-        MENUITEM "&Italienisch", IDM_LANG_IT
-        MENUITEM "&Holländisch", IDM_LANG_NL
-        MENUITEM "&Polnisch", IDM_LANG_PL
-        MENUITEM "&Schwedisch", IDM_LANG_SV
-        MENUITEM "Kommandozeilen &Optionen", IDM_CMDLINE
-        MENUITEM SEPARATOR
-        MENUITEM "VICE Hackers",         IDM_CONTRIBUTORS
-        MENUITEM "&Lizenz",              IDM_LICENSE
-        MENUITEM "Keine &Garantie!",          IDM_WARRANTY
-END
-
-
-// FRENCH version of menu
-
-IDR_MENUC128_FR MENU DISCARDABLE
-BEGIN
-        MENUITEM "&Anglais", IDM_LANG_EN
-        MENUITEM "&Allemand", IDM_LANG_DE
-        MENUITEM "&Français", IDM_LANG_FR
-        MENUITEM "&Hungarian", IDM_LANG_HU
-        MENUITEM "&Italien", IDM_LANG_IT
-        MENUITEM "&Hollandais", IDM_LANG_NL
-        MENUITEM "&Polonais", IDM_LANG_PL
-        MENUITEM "&Suédois", IDM_LANG_SV
-        MENUITEM "&Options de ligne de commande", IDM_CMDLINE
-        MENUITEM "&Contributeurs",         IDM_CONTRIBUTORS
-        MENUITEM "&License",              IDM_LICENSE
-        MENUITEM "Aucune &garantie!",          IDM_WARRANTY
-END
-
-
-// HUNGARIAN version of menu
-
-#pragma code_page(28592)
-IDR_MENUC128_HU MENU DISCARDABLE
-BEGIN
-        MENUITEM "&Angol", IDM_LANG_EN
-        MENUITEM "&Német", IDM_LANG_DE
-        MENUITEM "&Francia", IDM_LANG_FR
-        MENUITEM "&Magyar", IDM_LANG_HU
-        MENUITEM "&Olasz", IDM_LANG_IT
-        MENUITEM "&Holland", IDM_LANG_NL
-        MENUITEM "&Lengyel", IDM_LANG_PL
-        MENUITEM "&Svéd", IDM_LANG_SV
-        MENUITEM "Parancssori &opciók", IDM_CMDLINE
-        MENUITEM "&Közremûködõk",         IDM_CONTRIBUTORS
-        MENUITEM "&Licensz",              IDM_LICENSE
-        MENUITEM "Nincs &garancia",          IDM_WARRANTY
-END
-#pragma code_page(28591)
-
-
-// ITALIAN version of menu
-
-IDR_MENUC128_IT MENU DISCARDABLE
-BEGIN
-    POPUP "&Lingua"
-    BEGIN
-        MENUITEM "&Inglese", IDM_LANG_EN
-        MENUITEM "&Tedesco", IDM_LANG_DE
-        MENUITEM "&Francese", IDM_LANG_FR
-        MENUITEM "&Ungherese", IDM_LANG_HU
-        MENUITEM "&Italiano", IDM_LANG_IT
-        MENUITEM "&Olandese", IDM_LANG_NL
-        MENUITEM "&Polacco", IDM_LANG_PL
-        MENUITEM "&Svedese", IDM_LANG_SV
-    END
-    POPUP "&Aiuto"
-    BEGIN
-//        MENUITEM "H&elp",               IDM_HELP
-//        MENUITEM SEPARATOR
-        MENUITEM "&Opzioni della riga di comando", IDM_CMDLINE
-        MENUITEM SEPARATOR
-        MENUITEM "&Collaboratori",         IDM_CONTRIBUTORS
-        MENUITEM "&Licenza",              IDM_LICENSE
-        MENUITEM "Nessuna &garanzia",          IDM_WARRANTY
-    END
-END
-
-
-// DUTCH version of menu
-
-IDR_MENUC128_NL MENU DISCARDABLE
-BEGIN
-    POPUP "&Taal"
-    BEGIN
-        MENUITEM "&Engels", IDM_LANG_EN
-        MENUITEM "&Duits", IDM_LANG_DE
-        MENUITEM "&Frans", IDM_LANG_FR
-        MENUITEM "&Hongaars", IDM_LANG_HU
-        MENUITEM "&Italiaans", IDM_LANG_IT
-        MENUITEM "&Nederlands", IDM_LANG_NL
-        MENUITEM "&Pools", IDM_LANG_PL
-        MENUITEM "&Zweeds", IDM_LANG_SV
-    END
-    POPUP "&Help"
-    BEGIN
-//        MENUITEM "H&elp",               IDM_HELP
-//        MENUITEM SEPARATOR
-        MENUITEM "Commando invoer &opties", IDM_CMDLINE
-        MENUITEM SEPARATOR
-        MENUITEM "&Medewerkers aan het VICE project",         IDM_CONTRIBUTORS
-        MENUITEM "&Licensie",              IDM_LICENSE
-        MENUITEM "Geen &garantie",          IDM_WARRANTY
-    END
-END
-
-
-// POLISH version of menu
-
-#pragma code_page(28592)
-IDR_MENUC128_PL MENU DISCARDABLE
-BEGIN
-    POPUP "&Language"
-    BEGIN
-        MENUITEM "&English", IDM_LANG_EN
-        MENUITEM "&German", IDM_LANG_DE
-        MENUITEM "&French", IDM_LANG_FR
-        MENUITEM "&Hungarian", IDM_LANG_HU
-        MENUITEM "&Italian", IDM_LANG_IT
-        MENUITEM "&Dutch", IDM_LANG_NL
-        MENUITEM "&Polish", IDM_LANG_PL
-        MENUITEM "&Swedish", IDM_LANG_SV
-    END
-    POPUP "&Pomoc"
-    BEGIN
-//        MENUITEM "H&elp",               IDM_HELP
-//        MENUITEM SEPARATOR
-        MENUITEM "Command line &options", IDM_CMDLINE
-        MENUITEM SEPARATOR
-        MENUITEM "&Wspó³pracownicy projektu VICE",         IDM_CONTRIBUTORS
-        MENUITEM "&Licencja",              IDM_LICENSE
-        MENUITEM "Bez g&warancji",          IDM_WARRANTY
-    END
-END
-#pragma code_page(28591)
-
-
-// SWEDISH version of menu
-
-IDR_MENUC128_SV MENU DISCARDABLE
-BEGIN
-    POPUP "&Språk"
-    BEGIN
-        MENUITEM "&Engelska", IDM_LANG_EN
-        MENUITEM "&Tyska", IDM_LANG_DE
-        MENUITEM "&Franska", IDM_LANG_FR
-        MENUITEM "&Ungerska", IDM_LANG_HU
-        MENUITEM "&Italienska", IDM_LANG_IT
-        MENUITEM "&Nederländska", IDM_LANG_NL
-        MENUITEM "&Polska", IDM_LANG_PL
-        MENUITEM "&Svenska", IDM_LANG_SV
-    END
-    POPUP "&Hjälp"
-    BEGIN
-//        MENUITEM "H&elp",               IDM_HELP
-//        MENUITEM SEPARATOR
-        MENUITEM "Kommandorads&flaggor", IDM_CMDLINE
-        MENUITEM SEPARATOR
-        MENUITEM "&Bidragslämnare",         IDM_CONTRIBUTORS
-        MENUITEM "&Licens",              IDM_LICENSE
-        MENUITEM "Ingen &garanti",          IDM_WARRANTY
+        MENUITEM "", IDM_CONTRIBUTORS
+        MENUITEM "", IDM_LICENSE
+        MENUITEM "", IDM_WARRANTY
     END
 END
 
