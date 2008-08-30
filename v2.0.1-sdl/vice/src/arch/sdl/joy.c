@@ -46,6 +46,7 @@
 #include "resources.h"
 #include "sysfile.h"
 #include "util.h"
+#include "uimenu.h"
 
 #define DEFAULT_JOYSTICK_THRESHOLD 10000
 #define DEFAULT_JOYMAPFILE "sdl_joymap.vjm"
@@ -589,9 +590,32 @@ fprintf(stderr,"%s, %s\n",__func__, filename);
 
 /* ------------------------------------------------------------------------- */
 
-void sdljoy_perform_event(sdljoystick_mapping_t *event, int value)
+ui_menu_action_t sdljoy_perform_event(sdljoystick_mapping_t *event, int value)
 {
     BYTE t;
+    ui_menu_action_t retval = MENU_ACTION_NONE;
+
+    if(sdl_menu_state) {
+        if((value)&&(event->action == JOYSTICK)) {
+            switch(event->value.joy[1]) {
+                case 0x01:
+                    retval = MENU_ACTION_UP;
+                    break;
+                case 0x02:
+                    retval = MENU_ACTION_DOWN;
+                    break;
+                case 0x04:
+                    retval = MENU_ACTION_CANCEL;
+                    break;
+                case 0x10:
+                    retval = MENU_ACTION_SELECT;
+                    break;
+                default:
+                    break;
+            }
+        }
+        return retval;
+    }
 
     switch(event->action) {
         case JOYSTICK:
@@ -614,12 +638,15 @@ void sdljoy_perform_event(sdljoystick_mapping_t *event, int value)
         default:
             break;
     }
+
+    return retval;
 }
 
-void sdljoy_axis_event(Uint8 joynum, Uint8 axis, Sint16 value)
+ui_menu_action_t sdljoy_axis_event(Uint8 joynum, Uint8 axis, Sint16 value)
 {
     BYTE cur, prev;
     int index;
+    ui_menu_action_t retval = MENU_ACTION_NONE;
 
     if(value < -joystick_threshold) {
         cur = 2;
@@ -639,12 +666,12 @@ void sdljoy_axis_event(Uint8 joynum, Uint8 axis, Sint16 value)
         if(prev == 2) {
             sdljoy_perform_event(&(sdljoystick[joynum].input[AXIS][index+1]), 0);
         }
-        sdljoy_perform_event(&(sdljoystick[joynum].input[AXIS][index]), 1);
+        retval = sdljoy_perform_event(&(sdljoystick[joynum].input[AXIS][index]), 1);
     } else if(cur == 2) {
         if(prev == 1) {
             sdljoy_perform_event(&(sdljoystick[joynum].input[AXIS][index]), 0);
         }
-        sdljoy_perform_event(&(sdljoystick[joynum].input[AXIS][index+1]), 1);
+        retval = sdljoy_perform_event(&(sdljoystick[joynum].input[AXIS][index+1]), 1);
     } else {
         if(prev == 1) {
             sdljoy_perform_event(&(sdljoystick[joynum].input[AXIS][index]), 0);
@@ -654,10 +681,11 @@ void sdljoy_axis_event(Uint8 joynum, Uint8 axis, Sint16 value)
     }
 
     sdljoystick[joynum].input[AXIS][index].value.joy[2] = cur;
+    return retval;
 }
 
-void sdljoy_button_event(Uint8 joynum, Uint8 button, Uint8 value)
+ui_menu_action_t sdljoy_button_event(Uint8 joynum, Uint8 button, Uint8 value)
 {
-    sdljoy_perform_event(&(sdljoystick[joynum].input[BUTTON][button]), value);
+    return sdljoy_perform_event(&(sdljoystick[joynum].input[BUTTON][button]), value);
 }
 

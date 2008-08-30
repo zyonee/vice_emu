@@ -31,6 +31,7 @@
 
 #include "types.h"
 #include "uiapi.h"
+#include "uimenu.h"
 
 
 /* If this is #defined, `Alt' is handled the same as `Meta'.  On
@@ -63,7 +64,7 @@ struct palette_s;
 void ui_display_speed(float percent, float framerate, int warp_flag);
 void ui_display_paused(int flag);
 void ui_dispatch_next_event(void);
-void ui_dispatch_events(void);
+ui_menu_action_t ui_dispatch_events(void);
 extern void ui_exit(void);
 extern void ui_message(const char *format,...);
 extern void ui_show_text(const char *title, const char *text, int width,

@@ -28,6 +28,7 @@
 #define _KBD_H
 
 #include <SDL/SDL.h>
+#include "uimenu.h"
 
 extern void kbd_arch_init(void);
 
@@ -64,7 +65,7 @@ extern void kbd_initialize_numpad_joykeys(int *joykeys);
 #define KBD_INDEX_PLUS4_DEFAULT KBD_INDEX_PLUS4_SYM
 #define KBD_INDEX_CBM2_DEFAULT  KBD_INDEX_CBM2_BUKS
 
-extern void sdlkbd_press(SDLKey key, SDLMod mod);
+extern ui_menu_action_t sdlkbd_press(SDLKey key, SDLMod mod);
 extern void sdlkbd_release(SDLKey key, SDLMod mod);
 extern void kbd_enter_leave(void);
 extern void kbd_focus_change(void);

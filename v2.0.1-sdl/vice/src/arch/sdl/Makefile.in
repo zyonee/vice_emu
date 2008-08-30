@@ -54,8 +54,8 @@ am_libarch_a_OBJECTS = archdep.$(OBJEXT) blockdev.$(OBJEXT) \
 	signals.$(OBJEXT) ui.$(OBJEXT) uic128.$(OBJEXT) \
 	uic64.$(OBJEXT) uic64dtv.$(OBJEXT) uicbm2.$(OBJEXT) \
 	uicmdline.$(OBJEXT) uipet.$(OBJEXT) uiplus4.$(OBJEXT) \
-	uimon.$(OBJEXT) uivic20.$(OBJEXT) video.$(OBJEXT) \
-	vsidui.$(OBJEXT) vsyncarch.$(OBJEXT)
+	uimenu.$(OBJEXT) uimon.$(OBJEXT) uivic20.$(OBJEXT) \
+	video.$(OBJEXT) vsidui.$(OBJEXT) vsyncarch.$(OBJEXT)
 libarch_a_OBJECTS = $(am_libarch_a_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(top_builddir)/src@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/depcomp
@@ -316,6 +316,7 @@ libarch_a_SOURCES = \
 	uicmdline.c \
 	uipet.c \
 	uiplus4.c \
+	uimenu.c \
 	uimenu.h \
 	uimon.c \
 	uivic20.c \
@@ -386,6 +387,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/uic64dtv.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/uicbm2.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/uicmdline.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/uimenu.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/uimon.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/uipet.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/uiplus4.Po@am__quote@

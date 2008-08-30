@@ -41,12 +41,37 @@
 #include "monitor.h"
 #include "resources.h"
 #include "ui.h"
+#include "uimenu.h"
 
 /* ------------------------------------------------------------------------ */
 
-void sdlkbd_press(SDLKey key, SDLMod mod)
+ui_menu_action_t sdlkbd_press(SDLKey key, SDLMod mod)
 {
+    ui_menu_action_t retval = MENU_ACTION_NONE;
 /*fprintf(stderr,"%s: %i (%s),%i\n",__func__,key,SDL_GetKeyName(key),mod);*/
+    if(sdl_menu_state) {
+        switch(key) {
+            case SDLK_w:
+                retval = MENU_ACTION_UP;
+                break;
+            case SDLK_s:
+                retval = MENU_ACTION_DOWN;
+                break;
+            case SDLK_a:
+                retval = MENU_ACTION_CANCEL;
+                break;
+            case SDLK_d:
+                retval = MENU_ACTION_SELECT;
+                break;
+            case SDLK_q:
+                retval = MENU_ACTION_EXIT;
+                break;
+            default:
+                break;
+        }
+        return retval;
+    }
+
     if(mod & KMOD_LALT) {
         switch(key) {
             case SDLK_q:
@@ -63,12 +88,16 @@ void sdlkbd_press(SDLKey key, SDLMod mod)
                 }
                 return;
                 break;
+            case SDLK_z:
+                sdl_ui_activate();
+                break;
             default:
                 break;
         }
     }
 
     keyboard_key_pressed((unsigned long)key);
+    return retval;
 }
 
 void sdlkbd_release(SDLKey key, SDLMod mod)

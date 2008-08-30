@@ -40,17 +40,23 @@
 #include "ui.h"
 #include "uiapi.h"
 #include "uicolor.h"
+#include "uimenu.h"
+#include "vsync.h"
 
 
 /* ----------------------------------------------------------------- */
 /* ui.h */
 
-void ui_display_speed(float percent, float framerate, int warp_flag){}
+void ui_display_speed(float percent, float framerate, int warp_flag)
+{
+/*fprintf(stderr,"%f%%/%f fps %s\n",percent,framerate,warp_flag?"(warp)":"");*/
+}
+
 void ui_display_paused(int flag){}
 void ui_dispatch_next_event(void){}
 
 /* SDL event handling */
-void ui_dispatch_events(void)
+ui_menu_action_t ui_dispatch_events(void)
 {
     SDL_Event e;
 
@@ -60,16 +66,16 @@ void ui_dispatch_events(void)
                 exit(0);
                 break;
             case SDL_KEYDOWN:
-                sdlkbd_press(e.key.keysym.sym, e.key.keysym.mod);
+                return sdlkbd_press(e.key.keysym.sym, e.key.keysym.mod);
                 break;
             case SDL_KEYUP:
                 sdlkbd_release(e.key.keysym.sym, e.key.keysym.mod);
                 break;
             case SDL_JOYAXISMOTION:
-                sdljoy_axis_event(e.jaxis.which, e.jaxis.axis, e.jaxis.value);
+                return sdljoy_axis_event(e.jaxis.which, e.jaxis.axis, e.jaxis.value);
                 break;
             case SDL_JOYBUTTONDOWN:
-                sdljoy_button_event(e.jbutton.which, e.jbutton.button, 1);
+                return sdljoy_button_event(e.jbutton.which, e.jbutton.button, 1);
                 break;
             case SDL_JOYBUTTONUP:
                 sdljoy_button_event(e.jbutton.which, e.jbutton.button, 0);
@@ -87,6 +93,7 @@ void ui_dispatch_events(void)
                 break;
         }
     }
+    return MENU_ACTION_NONE;
 }
 
 void ui_check_mouse_cursor(void){}
@@ -104,7 +111,7 @@ static void pause_trap(WORD addr, void *data)
 {
     ui_display_paused(1);
     is_paused = 1;
-/*    vsync_suspend_speed_eval();*/
+    vsync_suspend_speed_eval();
     while (is_paused)
         ui_dispatch_next_event();
 }

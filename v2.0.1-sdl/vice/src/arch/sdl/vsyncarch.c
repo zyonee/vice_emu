@@ -36,9 +36,6 @@
 
 #include <SDL/SDL.h>
 
-/* hook to ui event dispatcher */
-static void_hook_t ui_dispatch_hook;
-
 /* ------------------------------------------------------------------------- */
 
 /* SDL_Delay & GetTicks have 1ms resolution, while VICE needs 1us */
@@ -60,7 +57,6 @@ unsigned long vsyncarch_gettime(void)
 void vsyncarch_init(void)
 {
 fprintf(stderr,"%s\n",__func__);
-    (void)vsync_set_event_dispatcher(ui_dispatch_events);
 }
 
 /* Display speed (percentage) and frame rate (frames per second). */
@@ -78,15 +74,8 @@ void vsyncarch_sleep(signed long delay)
 
 void vsyncarch_presync(void)
 {
-    (*ui_dispatch_hook)();
+    ui_dispatch_events();
     kbdbuf_flush();
-}
-
-void_hook_t vsync_set_event_dispatcher(void_hook_t hook)
-{
-    void_hook_t t = ui_dispatch_hook;
-    ui_dispatch_hook = hook;
-    return t;
 }
 
 void vsyncarch_postsync(void)

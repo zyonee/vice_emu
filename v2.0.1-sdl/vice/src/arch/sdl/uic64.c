@@ -28,11 +28,73 @@
 
 #include "vice.h"
 
+#include "uimenu.h"
+
 #include <stdio.h>
+
+UI_MENU_DEFINE_RADIO(SidModel)
+
+static ui_menu_entry_t sid_model_menu[] = {
+    { "6581 (old)",
+      MENU_ENTRY_RESOURCE_RADIO,
+      radio_SidModel_callback,
+      (ui_callback_data_t)0,
+      NULL },
+    { "8580 (new)",
+      MENU_ENTRY_RESOURCE_RADIO,
+      radio_SidModel_callback,
+      (ui_callback_data_t)1,
+      NULL },
+    { "8580 + digiboost",
+      MENU_ENTRY_RESOURCE_RADIO,
+      radio_SidModel_callback,
+      (ui_callback_data_t)2,
+      NULL },
+    { "DTVSID",
+      MENU_ENTRY_RESOURCE_RADIO,
+      radio_SidModel_callback,
+      (ui_callback_data_t)4,
+      NULL },
+    { NULL }
+};
+
+UI_MENU_DEFINE_TOGGLE(VICIIDoubleSize)
+
+static UI_MENU_CALLBACK(quit_callback)
+{
+    exit(0);
+    return 0;
+}
+
+static ui_menu_entry_t x64_main_menu[] = {
+    { "Attach disk",
+      MENU_ENTRY_DIALOG,
+      NULL, /* disk_attach_dialog */
+      NULL,
+      NULL },
+    { "Doublesize",
+      MENU_ENTRY_RESOURCE_TOGGLE,
+      toggle_VICIIDoubleSize_callback,
+      NULL,
+      NULL },
+    { "-", MENU_ENTRY_SEPARATOR, NULL, NULL, NULL },
+    { "SID model",
+      MENU_ENTRY_SUBMENU,
+      NULL,
+      NULL,
+      sid_model_menu },
+    { "Quit",
+      MENU_ENTRY_OTHER,
+      quit_callback,
+      NULL,
+      NULL },
+    { NULL }
+};
 
 int c64ui_init(void)
 {
 fprintf(stderr,"%s\n",__func__);
+    sdl_ui_set_main_menu(x64_main_menu);
     return 0;
 }
 
@@ -40,3 +102,4 @@ void c64ui_shutdown(void)
 {
 fprintf(stderr,"%s\n",__func__);
 }
+

@@ -41,6 +41,7 @@ libarch_a_SOURCES = \
 	uicmdline.c \
 	uipet.c \
 	uiplus4.c \
+	uimenu.c \
 	uimenu.h \
 	uimon.c \
 	uivic20.c \
