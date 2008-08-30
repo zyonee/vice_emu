@@ -82,6 +82,39 @@ LIB32=link.exe -lib
 # Name "residfp - Win32 Debug"
 # Begin Source File
 
+SOURCE=..\..\resid-fp\convolve.cc
+
+!IF  "$(CFG)" == "residfp - Win32 Release"
+
+# Begin Custom Build
+InputPath=..\..\resid-fp\concolve.cc
+InputName=version
+
+"..\\..\\resid-fp\\$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	copy ..\\..\\resid-fp\\$(InputName).cc ..\\..\\resid-fp\\$(InputName).cpp /Y
+
+# End Custom Build
+
+!ELSEIF  "$(CFG)" == "residfp - Win32 Debug"
+
+# Begin Custom Build
+InputPath=..\..\resid-fp\convolve.cc
+InputName=version
+
+"..\\..\\resid-fp\\$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	copy ..\\..\\resid-fp\\$(InputName).cc ..\\..\\resid-fp\\$(InputName).cpp /Y
+
+# End Custom Build
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\resid-fp\convolve.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\resid-fp\envelope.cc
 
 !IF  "$(CFG)" == "residfp - Win32 Release"
