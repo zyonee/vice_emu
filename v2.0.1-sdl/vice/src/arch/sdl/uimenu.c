@@ -86,14 +86,13 @@ static void sdl_ui_display_cursor(int pos)
 
 static ui_menu_action_t sdl_ui_menu_poll_input(void)
 {
-    ui_menu_action_t retval;
+    ui_menu_action_t retval = MENU_ACTION_NONE;
     do {
         SDL_Delay(20);
         retval = ui_dispatch_events();
     } while (retval == MENU_ACTION_NONE);
     return retval;
 }
-
 
 static void sdl_ui_menu_redraw(ui_menu_entry_t *menu, const char* title, int num_items)
 {
@@ -113,7 +112,6 @@ static void sdl_ui_menu_redraw(ui_menu_entry_t *menu, const char* title, int num
 static int sdl_ui_menu_display(ui_menu_entry_t *menu, const char* title)
 {
     int num_items = 0, cur = 0, cur_offset = 0, in_menu = 1;
-
 
     while(menu[num_items].string != NULL) {
         ++num_items;
@@ -209,7 +207,7 @@ const char *sdl_ui_menu_toggle_helper(int activated, const char *resource_name)
         r = resources_get_int(resource_name, &value);
 
     if (r < 0)
-        return "Unknown";
+        return "???";
     else
         return value ? "On " : "Off";
 }

@@ -63,12 +63,14 @@ extern void sdl_ui_activate(void);
 extern int sdl_ui_menu_item_activate(ui_menu_entry_t *item);
 
 typedef enum {
-    MENU_ACTION_NONE,
+    MENU_ACTION_NONE = 0,
     MENU_ACTION_UP,
     MENU_ACTION_DOWN,
     MENU_ACTION_SELECT,
     MENU_ACTION_CANCEL,
-    MENU_ACTION_EXIT
+    MENU_ACTION_EXIT,
+    MENU_ACTION_MAP,
+    MENU_ACTION_NUM
 } ui_menu_action_t;
 
 #define UI_MENU_CALLBACK(name)                            \

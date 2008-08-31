@@ -660,7 +660,7 @@ ui_menu_action_t sdljoy_axis_event(Uint8 joynum, Uint8 axis, Sint16 value)
     prev = sdljoystick[joynum].input[AXIS][index].value.joy[2];
 
     if(cur == prev)
-        return;
+        return retval;
 
     if(cur == 1) {
         if(prev == 2) {

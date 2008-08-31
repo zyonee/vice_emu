@@ -43,32 +43,28 @@
 #include "ui.h"
 #include "uimenu.h"
 
+int sdl_ui_menukeys[MENU_ACTION_NUM];
+
 /* ------------------------------------------------------------------------ */
 
 ui_menu_action_t sdlkbd_press(SDLKey key, SDLMod mod)
 {
-    ui_menu_action_t retval = MENU_ACTION_NONE;
+    ui_menu_action_t i, retval = MENU_ACTION_NONE;
 /*fprintf(stderr,"%s: %i (%s),%i\n",__func__,key,SDL_GetKeyName(key),mod);*/
     if(sdl_menu_state) {
-        switch(key) {
-            case SDLK_w:
-                retval = MENU_ACTION_UP;
-                break;
-            case SDLK_s:
-                retval = MENU_ACTION_DOWN;
-                break;
-            case SDLK_a:
-                retval = MENU_ACTION_CANCEL;
-                break;
-            case SDLK_d:
-                retval = MENU_ACTION_SELECT;
-                break;
-            case SDLK_q:
-                retval = MENU_ACTION_EXIT;
-                break;
-            default:
-                break;
+        if(key != SDLK_UNKNOWN) {
+            for(i = MENU_ACTION_UP; i < MENU_ACTION_NUM; ++i) {
+                if(sdl_ui_menukeys[i] == (int)key) {
+                    retval = i;
+                    break;
+                }
+            }
         }
+        return retval;
+    }
+
+    if((int)(key) == sdl_ui_menukeys[0]) {
+        sdl_ui_activate();
         return retval;
     }
 
@@ -79,6 +75,7 @@ ui_menu_action_t sdlkbd_press(SDLKey key, SDLMod mod)
                 break;
             case SDLK_d:
                 resources_set_int("viciifullscreen",!fullscreen_is_enabled);
+                return retval;
                 break;
             case SDLK_h:
                 if (!ui_emulation_is_paused()) {
@@ -86,10 +83,7 @@ ui_menu_action_t sdlkbd_press(SDLKey key, SDLMod mod)
                 } else {
                     monitor_startup();
                 }
-                return;
-                break;
-            case SDLK_z:
-                sdl_ui_activate();
+                return retval;
                 break;
             default:
                 break;

@@ -37,6 +37,7 @@
 #include "joy.h"
 #include "kbd.h"
 #include "interrupt.h"
+#include "resources.h"
 #include "ui.h"
 #include "uiapi.h"
 #include "uicolor.h"
@@ -59,6 +60,7 @@ void ui_dispatch_next_event(void){}
 ui_menu_action_t ui_dispatch_events(void)
 {
     SDL_Event e;
+    ui_menu_action_t retval = MENU_ACTION_NONE;
 
     while(SDL_PollEvent(&e)) {
         switch(e.type) {
@@ -66,16 +68,16 @@ ui_menu_action_t ui_dispatch_events(void)
                 exit(0);
                 break;
             case SDL_KEYDOWN:
-                return sdlkbd_press(e.key.keysym.sym, e.key.keysym.mod);
+                retval = sdlkbd_press(e.key.keysym.sym, e.key.keysym.mod);
                 break;
             case SDL_KEYUP:
                 sdlkbd_release(e.key.keysym.sym, e.key.keysym.mod);
                 break;
             case SDL_JOYAXISMOTION:
-                return sdljoy_axis_event(e.jaxis.which, e.jaxis.axis, e.jaxis.value);
+                retval = sdljoy_axis_event(e.jaxis.which, e.jaxis.axis, e.jaxis.value);
                 break;
             case SDL_JOYBUTTONDOWN:
-                return sdljoy_button_event(e.jbutton.which, e.jbutton.button, 1);
+                retval = sdljoy_button_event(e.jbutton.which, e.jbutton.button, 1);
                 break;
             case SDL_JOYBUTTONUP:
                 sdljoy_button_event(e.jbutton.which, e.jbutton.button, 0);
@@ -92,8 +94,11 @@ ui_menu_action_t ui_dispatch_events(void)
 /*fprintf(stderr,"%s: %i\n",__func__,e.type);*/
                 break;
         }
+        /* When using the menu, pass every meaningful event to the caller */
+        if ((sdl_menu_state) && (retval != MENU_ACTION_NONE))
+            break;
     }
-    return MENU_ACTION_NONE;
+    return retval;
 }
 
 void ui_check_mouse_cursor(void){}
@@ -134,11 +139,35 @@ int ui_emulation_is_paused(void)
 /* ----------------------------------------------------------------- */
 /* uiapi.h */
 
+static int set_ui_menukey(int val, void *param)
+{
+    sdl_ui_menukeys[(ui_menu_action_t)param] = val;
+    return 0;
+}
+
+static const resource_int_t resources_int[] = {
+    { "MenuKey", SDLK_F9, RES_EVENT_NO, NULL,
+      &sdl_ui_menukeys[0], set_ui_menukey, (void *)MENU_ACTION_NONE },
+    { "MenuKeyUp", SDLK_UP, RES_EVENT_NO, NULL,
+      &sdl_ui_menukeys[1], set_ui_menukey, (void *)MENU_ACTION_UP },
+    { "MenuKeyDown", SDLK_DOWN, RES_EVENT_NO, NULL,
+      &sdl_ui_menukeys[2], set_ui_menukey, (void *)MENU_ACTION_DOWN },
+    { "MenuKeySelect", SDLK_RETURN, RES_EVENT_NO, NULL,
+      &sdl_ui_menukeys[3], set_ui_menukey, (void *)MENU_ACTION_SELECT },
+    { "MenuKeyCancel", SDLK_BACKSPACE, RES_EVENT_NO, NULL,
+      &sdl_ui_menukeys[4], set_ui_menukey, (void *)MENU_ACTION_CANCEL },
+    { "MenuKeyExit", SDLK_ESCAPE, RES_EVENT_NO, NULL,
+      &sdl_ui_menukeys[5], set_ui_menukey, (void *)MENU_ACTION_EXIT },
+    { "MenuKeyMap", SDLK_m, RES_EVENT_NO, NULL,
+      &sdl_ui_menukeys[6], set_ui_menukey, (void *)MENU_ACTION_MAP },
+    { NULL },
+};
+
 /* Initialization  */
 int ui_resources_init(void)
 {
 fprintf(stderr,"%s\n",__func__);
-    return 0;
+    return resources_register_int(resources_int);
 }
 
 void ui_resources_shutdown(void)

@@ -70,5 +70,7 @@ extern void sdlkbd_release(SDLKey key, SDLMod mod);
 extern void kbd_enter_leave(void);
 extern void kbd_focus_change(void);
 
+extern int sdl_ui_menukeys[];
+
 #endif
 
