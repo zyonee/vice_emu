@@ -126,345 +126,6 @@ BEGIN
     END
 END
 
-
-// GERMAN version of menu
-
-IDR_MENUMONITOR_DE MENU DISCARDABLE
-BEGIN
-    POPUP "&Datei"
-    BEGIN
-        MENUITEM "Ö&ffnen", IDM_MON_OPEN
-        MENUITEM "&Sspeichern", IDM_MON_SAVE
-        MENUITEM "&Drucken", IDM_MON_PRINT
-        MENUITEM SEPARATOR
-        MENUITEM "&Beenden\tAlt+F4", IDM_EXIT
-    END
-    POPUP "&Debug"
-    BEGIN
-        MENUITEM "&Stop Debug", IDM_MON_STOP_DEBUG
-        MENUITEM "Stop &Ausführung", IDM_MON_STOP_EXEC
-        MENUITEM SEPARATOR
-        MENUITEM "Step &in", IDM_MON_STEP_INTO
-        MENUITEM "Step &über", IDM_MON_STEP_OVER
-        MENUITEM "Step bis &return", IDM_MON_SKIP_RETURN
-        MENUITEM "Gehe zu &cursor", IDM_MON_GOTO_CURSOR
-        MENUITEM SEPARATOR
-        MENUITEM "A&uswerten", IDM_MON_EVAL
-    END
-    POPUP "An&sehen"
-    BEGIN
-        MENUITEM "Aktuelle I&nstruktion", IDM_MON_CURRENT
-        MENUITEM SEPARATOR
-        MENUITEM "Auswertungs&fenster", IDM_MON_WND_EVAL
-        MENUITEM "&Registerfenster", IDM_MON_WND_REG
-        MENUITEM "S&peicherfenster", IDM_MON_WND_MEM
-        MENUITEM "Disassemblerfenster", IDM_MON_WND_DIS
-        MENUITEM "&Konsolenfenster", IDM_MON_WND_CONSOLE
-        MENUITEM SEPARATOR
-        MENUITEM "&Computer", IDM_MON_COMPUTER
-        MENUITEM "Laufwerk &8", IDM_MON_DRIVE8
-        MENUITEM "Laufwerk &9", IDM_MON_DRIVE9
-    END
-    POPUP "&Fenster"
-    BEGIN
-        MENUITEM "&Kaskadiert", IDM_MON_CASCADE
-        MENUITEM "&Vertical anordnen", IDM_MON_TILE_VERT
-        MENUITEM "&Horizontal anordnen", IDM_MON_TILE_HORIZ
-        MENUITEM "Icons &Anordnen", IDM_MON_ARRANGE_ICONS
-    END
-END
-
-
-// FRENCH version of menu
-
-IDR_MENUMONITOR_FR MENU DISCARDABLE
-BEGIN
-    POPUP "&Fichier"
-    BEGIN
-        MENUITEM "&Ouvrir", IDM_MON_OPEN
-        MENUITEM "&Enregistrer", IDM_MON_SAVE
-        MENUITEM "&Imprimer", IDM_MON_PRINT
-        MENUITEM SEPARATOR
-        MENUITEM "&Quitter\tAlt+F4", IDM_EXIT
-    END
-    POPUP "&Débug"
-    BEGIN
-        MENUITEM "&Arrêter débug", IDM_MON_STOP_DEBUG
-        MENUITEM "Arrêter l'e&xécution", IDM_MON_STOP_EXEC
-        MENUITEM SEPARATOR
-        MENUITEM "Tracer à l'&intérieur", IDM_MON_STEP_INTO
-        MENUITEM "Tracer par de&ssus", IDM_MON_STEP_OVER
-        MENUITEM "Sauter jusqu'à &return", IDM_MON_SKIP_RETURN
-        MENUITEM "Aller au &curseur", IDM_MON_GOTO_CURSOR
-        MENUITEM SEPARATOR
-        MENUITEM "Éval&uer", IDM_MON_EVAL
-    END
-    POPUP "&Affichage"
-    BEGIN
-        MENUITEM "Instruction courante", IDM_MON_CURRENT
-        MENUITEM SEPARATOR
-        MENUITEM "Fenêtre d'É&valuation", IDM_MON_WND_EVAL
-        MENUITEM "Fenêtre des &Registres", IDM_MON_WND_REG
-        MENUITEM "Fenêtre &mémoire", IDM_MON_WND_MEM
-        MENUITEM "Fenêtre &Désassemblage", IDM_MON_WND_DIS
-        MENUITEM "Fenêtre &Console", IDM_MON_WND_CONSOLE
-        MENUITEM SEPARATOR
-        MENUITEM "&Ordinateur", IDM_MON_COMPUTER
-        MENUITEM "Lecteur #&8", IDM_MON_DRIVE8
-        MENUITEM "Lecteur #&9", IDM_MON_DRIVE9
-    END
-    POPUP "&Fenêtre"
-    BEGIN
-        MENUITEM "&Cascade", IDM_MON_CASCADE
-        MENUITEM "Fractionner &verticallement", IDM_MON_TILE_VERT
-        MENUITEM "Fractionner &horizontalement", IDM_MON_TILE_HORIZ
-        MENUITEM "&Arranger les îcones", IDM_MON_ARRANGE_ICONS
-    END
-END
-
-
-// HUNGARIAN version of menu
-
-#pragma code_page(28592)
-IDR_MENUMONITOR_HU MENU DISCARDABLE
-BEGIN
-    POPUP "&Fájl"
-    BEGIN
-        MENUITEM "&Megnyitás", IDM_MON_OPEN
-        MENUITEM "M&entés", IDM_MON_SAVE
-        MENUITEM "&Nyomtatás", IDM_MON_PRINT
-        MENUITEM SEPARATOR
-        MENUITEM "&Kilépés\tAlt+F4", IDM_EXIT
-    END
-    POPUP "&Nyomkövetés"
-    BEGIN
-        MENUITEM "Nyomkövetés l&eállítása", IDM_MON_STOP_DEBUG
-        MENUITEM "Végrehajtás &leállítása", IDM_MON_STOP_EXEC
-        MENUITEM SEPARATOR
-        MENUITEM "B&elép", IDM_MON_STEP_INTO
-        MENUITEM "Á&tlép", IDM_MON_STEP_OVER
-        MENUITEM "Léptetés &visszatérésig", IDM_MON_SKIP_RETURN
-        MENUITEM "Ugrás a &kurzorhoz", IDM_MON_GOTO_CURSOR
-        MENUITEM SEPARATOR
-        MENUITEM "&Kiértékel", IDM_MON_EVAL
-    END
-    POPUP "&Nézet"
-    BEGIN
-        MENUITEM "&Jelenlegi utasítás", IDM_MON_CURRENT
-        MENUITEM SEPARATOR
-        MENUITEM "&Kiértékelés ablak", IDM_MON_WND_EVAL
-        MENUITEM "&Regiszter ablak", IDM_MON_WND_REG
-        MENUITEM "&Memória ablak", IDM_MON_WND_MEM
-        MENUITEM "&Visszafejtés ablak", IDM_MON_WND_DIS
-        MENUITEM "&Konzol ablak", IDM_MON_WND_CONSOLE
-        MENUITEM SEPARATOR
-        MENUITEM "&Számítógép", IDM_MON_COMPUTER
-        MENUITEM "&8-as lemezegység", IDM_MON_DRIVE8
-        MENUITEM "&9-es lemezegység", IDM_MON_DRIVE9
-    END
-    POPUP "&Ablak"
-    BEGIN
-        MENUITEM "&Kaszkád", IDM_MON_CASCADE
-        MENUITEM "Elrendezés &vízszintesen", IDM_MON_TILE_VERT
-        MENUITEM "Elrendezés &függõlegesen", IDM_MON_TILE_HORIZ
-        MENUITEM "&Ikonok elrendezése", IDM_MON_ARRANGE_ICONS
-    END
-END
-#pragma code_page(28591)
-
-
-// ITALIAN version of menu
-
-IDR_MENUMONITOR_IT MENU DISCARDABLE
-BEGIN
-    POPUP "&File"
-    BEGIN
-        MENUITEM "&Apri", IDM_MON_OPEN
-        MENUITEM "&Salva", IDM_MON_SAVE
-        MENUITEM "&Stampa", IDM_MON_PRINT
-        MENUITEM SEPARATOR
-        MENUITEM "E&sci\tAlt+F4", IDM_EXIT
-    END
-    POPUP "&Debug"
-    BEGIN
-        MENUITEM "&Interrompi Debug", IDM_MON_STOP_DEBUG
-        MENUITEM "Interrompi E&secuzione", IDM_MON_STOP_EXEC
-        MENUITEM SEPARATOR
-        MENUITEM "Esegui &istruzione", IDM_MON_STEP_INTO
-        MENUITEM "Esegui &routine", IDM_MON_STEP_OVER
-        MENUITEM "Esegui fino al &ritorno", IDM_MON_SKIP_RETURN
-        MENUITEM "Vai al &cursore", IDM_MON_GOTO_CURSOR
-        MENUITEM SEPARATOR
-        MENUITEM "&Valutazione", IDM_MON_EVAL
-    END
-    POPUP "&Vista"
-    BEGIN
-        MENUITEM "Istruzione &corrente", IDM_MON_CURRENT
-        MENUITEM SEPARATOR
-        MENUITEM "&Finestra di valutazione", IDM_MON_WND_EVAL
-        MENUITEM "Finestra dei &registri", IDM_MON_WND_REG
-        MENUITEM "Finestra di &memoria", IDM_MON_WND_MEM
-        MENUITEM "Finestra di &disassemblaggio", IDM_MON_WND_DIS
-        MENUITEM "Finestra della &console", IDM_MON_WND_CONSOLE
-        MENUITEM SEPARATOR
-        MENUITEM "&Computer", IDM_MON_COMPUTER
-        MENUITEM "Drive &8", IDM_MON_DRIVE8
-        MENUITEM "Drive &9", IDM_MON_DRIVE9
-    END
-    POPUP "&Finestra"
-    BEGIN
-        MENUITEM "A &cascata", IDM_MON_CASCADE
-        MENUITEM "Affianca &verticalmente", IDM_MON_TILE_VERT
-        MENUITEM "Affianca &orizzontalmente", IDM_MON_TILE_HORIZ
-        MENUITEM "&Disponi icone", IDM_MON_ARRANGE_ICONS
-    END
-END
-
-
-// DUTCH version of menu
-
-IDR_MENUMONITOR_NL MENU DISCARDABLE
-BEGIN
-    POPUP "&Bestand"
-    BEGIN
-        MENUITEM "&Open", IDM_MON_OPEN
-        MENUITEM "Op&slaan", IDM_MON_SAVE
-        MENUITEM "&Print", IDM_MON_PRINT
-        MENUITEM SEPARATOR
-        MENUITEM "A&fsluiten\tAlt+F4", IDM_EXIT
-    END
-    POPUP "&Debug"
-    BEGIN
-        MENUITEM "&Stop Debug", IDM_MON_STOP_DEBUG
-        MENUITEM "Stop &Uitvoering", IDM_MON_STOP_EXEC
-        MENUITEM SEPARATOR
-        MENUITEM "Stap i&n", IDM_MON_STEP_INTO
-        MENUITEM "Stap o&ver", IDM_MON_STEP_OVER
-        MENUITEM "Stap tot &terugkeer", IDM_MON_SKIP_RETURN
-        MENUITEM "Ga naar &cursor", IDM_MON_GOTO_CURSOR
-        MENUITEM SEPARATOR
-        MENUITEM "&Evalueren", IDM_MON_EVAL
-    END
-    POPUP "&Beeld"
-    BEGIN
-        MENUITEM "&Huidige instructie", IDM_MON_CURRENT
-        MENUITEM SEPARATOR
-        MENUITEM "Ev&aluatie venster", IDM_MON_WND_EVAL
-        MENUITEM "&Register venster", IDM_MON_WND_REG
-        MENUITEM "&Geheugen venster", IDM_MON_WND_MEM
-        MENUITEM "&Disassemblyvenster", IDM_MON_WND_DIS
-        MENUITEM "&Console venster", IDM_MON_WND_CONSOLE
-        MENUITEM SEPARATOR
-        MENUITEM "&Computer", IDM_MON_COMPUTER
-        MENUITEM "Drive &8", IDM_MON_DRIVE8
-        MENUITEM "Drive &9", IDM_MON_DRIVE9
-    END
-    POPUP "&Venster"
-    BEGIN
-        MENUITEM "&Alle vensters", IDM_MON_CASCADE
-        MENUITEM "&Naast elkaar", IDM_MON_TILE_VERT
-        MENUITEM "Onder &elkaar", IDM_MON_TILE_HORIZ
-        MENUITEM "&Rangschik iconen", IDM_MON_ARRANGE_ICONS
-    END
-END
-
-
-// POLISH version of menu
-
-#pragma code_page(28592)
-IDR_MENUMONITOR_PL MENU DISCARDABLE
-BEGIN
-    POPUP "&Plik"
-    BEGIN
-        MENUITEM "&Open", IDM_MON_OPEN
-        MENUITEM "&Zapisz", IDM_MON_SAVE
-        MENUITEM "&Print", IDM_MON_PRINT
-        MENUITEM SEPARATOR
-        MENUITEM "W&yjd¼ z\tAlt+F4", IDM_EXIT
-    END
-    POPUP "&Debug"
-    BEGIN
-        MENUITEM "&Stop Debug", IDM_MON_STOP_DEBUG
-        MENUITEM "Stop E&xecution", IDM_MON_STOP_EXEC
-        MENUITEM SEPARATOR
-        MENUITEM "Step &into", IDM_MON_STEP_INTO
-        MENUITEM "Step &over", IDM_MON_STEP_OVER
-        MENUITEM "Step until &return", IDM_MON_SKIP_RETURN
-        MENUITEM "Go to &cursor", IDM_MON_GOTO_CURSOR
-        MENUITEM SEPARATOR
-        MENUITEM "&Evaluate", IDM_MON_EVAL
-    END
-    POPUP "&View"
-    BEGIN
-        MENUITEM "&Current instruction", IDM_MON_CURRENT
-        MENUITEM SEPARATOR
-        MENUITEM "Evaluation &window", IDM_MON_WND_EVAL
-        MENUITEM "&Register window", IDM_MON_WND_REG
-        MENUITEM "&Memory window", IDM_MON_WND_MEM
-        MENUITEM "&Disassembly window", IDM_MON_WND_DIS
-        MENUITEM "&Console window", IDM_MON_WND_CONSOLE
-        MENUITEM SEPARATOR
-        MENUITEM "&Znak", IDM_MON_COMPUTER
-        MENUITEM "Edytor &8", IDM_MON_DRIVE8
-        MENUITEM "Edytor &9", IDM_MON_DRIVE9
-    END
-    POPUP "&Okna"
-    BEGIN
-        MENUITEM "&Cascade", IDM_MON_CASCADE
-        MENUITEM "Tile &vertically", IDM_MON_TILE_VERT
-        MENUITEM "Tile &horizontally", IDM_MON_TILE_HORIZ
-        MENUITEM "&Arrange icons", IDM_MON_ARRANGE_ICONS
-    END
-END
-#pragma code_page(28591)
-
-// SWEDISH version of menu
-
-IDR_MENUMONITOR_SV MENU DISCARDABLE
-BEGIN
-    POPUP "&Arkiv"
-    BEGIN
-        MENUITEM "&Öppna", IDM_MON_OPEN
-        MENUITEM "&Spara", IDM_MON_SAVE
-        MENUITEM "Skriv &ut", IDM_MON_PRINT
-        MENUITEM SEPARATOR
-        MENUITEM "&Avsluta\tAlt+F4", IDM_EXIT
-    END
-    POPUP "&Felsök"
-    BEGIN
-        MENUITEM "&Avsluta felsökning", IDM_MON_STOP_DEBUG
-        MENUITEM "Avsluta E&xekvering", IDM_MON_STOP_EXEC
-        MENUITEM SEPARATOR
-        MENUITEM "Stega &in", IDM_MON_STEP_INTO
-        MENUITEM "Stega &över", IDM_MON_STEP_OVER
-        MENUITEM "Stega till &retur", IDM_MON_SKIP_RETURN
-        MENUITEM "Gå till &markör", IDM_MON_GOTO_CURSOR
-        MENUITEM SEPARATOR
-        MENUITEM "&Utvärdera", IDM_MON_EVAL
-    END
-    POPUP "&Visa"
-    BEGIN
-        MENUITEM "&Aktuell instruktion", IDM_MON_CURRENT
-        MENUITEM SEPARATOR
-        MENUITEM "Utvärderings&fönster", IDM_MON_WND_EVAL
-        MENUITEM "&Registerfönster", IDM_MON_WND_REG
-        MENUITEM "&Minnesfönster", IDM_MON_WND_MEM
-        MENUITEM "&Disassembleringsfönster", IDM_MON_WND_DIS
-        MENUITEM "&Konsolfönster", IDM_MON_WND_CONSOLE
-        MENUITEM SEPARATOR
-        MENUITEM "&Dator", IDM_MON_COMPUTER
-        MENUITEM "Enhet &8", IDM_MON_DRIVE8
-        MENUITEM "Enhet &9", IDM_MON_DRIVE9
-    END
-    POPUP "&Fönster"
-    BEGIN
-        MENUITEM "&Överlappande", IDM_MON_CASCADE
-        MENUITEM "&Sida vid sida", IDM_MON_TILE_VERT
-        MENUITEM "&Över och under", IDM_MON_TILE_HORIZ
-        MENUITEM "&Arrangera ikoner", IDM_MON_ARRANGE_ICONS
-    END
-END
-
 /////////////////////////////////////////////////////////////////////////////
 //
 // Bitmap
@@ -5606,8 +5267,8 @@ BEGIN
   IDS_MP_ATTACH_CARTRIDGE_IMAGE   "Attach &cartridge image..."
   IDS_MP_EXPERT_CARTRIDGE         "Expert Cartridge"
   IDS_MP_RESET                    "&Reset"
-#ifdef DEBUG
   IDS_MP_DEBUG                    "&Debug"
+#ifdef DEBUG
   IDS_MP_MODE                     "M&ode"
 #endif
   IDS_MP_EDIT                     "&Edit"
@@ -5622,6 +5283,8 @@ BEGIN
   IDS_MP_CARTRIDGE_IO_SETTINGS    "&Cartridge/IO settings"
   IDS_MP_LANGUAGE                 "&Language"
   IDS_MP_HELP                     "&Help"
+  IDS_MP_VIEW                     "&View"
+  IDS_MP_WINDOW                   "&Window"
   IDS_MI_EXIT                     "E&xit"
   IDS_MI_ABOUT                    "&About..."
   IDS_MI_PAUSE                    "&Pause"
@@ -5757,6 +5420,30 @@ BEGIN
   IDS_MI_WARRANTY                 "No &warranty"
   IDS_MI_TOGGLE_FULLSCREEN        "Fullscreen"
   IDS_MI_SIDCART_SETTINGS         "&SID cart settings..."
+  IDS_MI_MON_OPEN                 "&Open"
+  IDS_MI_MON_SAVE                 "&Save"
+  IDS_MI_MON_PRINT                "&Print"
+  IDS_MI_MON_EXIT                 "E&xit\tAlt+F4"
+  IDS_MI_MON_STOP_DEBUG           "&Stop Debug"
+  IDS_MI_MON_STOP_EXEC            "Stop E&xecution"
+  IDS_MI_MON_STEP_INTO            "Step &into"
+  IDS_MI_MON_STEP_OVER            "Step &over"
+  IDS_MI_MON_SKIP_RETURN          "Step until &return"
+  IDS_MI_MON_GOTO_CURSOR          "Go to &cursor"
+  IDS_MI_MON_EVAL                 "&Evaluate"
+  IDS_MI_MON_CURRENT              "&Current instruction"
+  IDS_MI_MON_WND_EVAL             "Evaluation &window"
+  IDS_MI_MON_WND_REG              "&Register window"
+  IDS_MI_MON_WND_MEM              "&Memory window"
+  IDS_MI_MON_WND_DIS              "&Disassembly window"
+  IDS_MI_MON_WND_CONSOLE          "&Console window"
+  IDS_MI_MON_COMPUTER             "&Computer"
+  IDS_MI_MON_DRIVE8               "Drive &8"
+  IDS_MI_MON_DRIVE9               "Drive &9"
+  IDS_MI_MON_CASCADE              "&Cascade"
+  IDS_MI_MON_TILE_VERT            "Tile &vertically"
+  IDS_MI_MON_TILE_HORIZ           "Tile &horizontally"
+  IDS_MI_MON_ARRANGE_ICONS        "&Arrange icons"
 END
 
 
@@ -5964,8 +5651,8 @@ BEGIN
   IDS_MP_ATTACH_CARTRIDGE_IMAGE   "Erweiterungsmodule einlegen..."
   IDS_MP_EXPERT_CARTRIDGE         "Expert Cartridge"
   IDS_MP_RESET                    "&Reset"
-#ifdef DEBUG
   IDS_MP_DEBUG                    "&Debug"
+#ifdef DEBUG
   IDS_MP_MODE                     "M&odus"
 #endif
   IDS_MP_EDIT                     "B&earbeiten"
@@ -5980,6 +5667,8 @@ BEGIN
   IDS_MP_CARTRIDGE_IO_SETTINGS    "&Erweiterungsmodul Einstellungen"
   IDS_MP_LANGUAGE                 "Sprache"
   IDS_MP_HELP                     "&Hilfe"
+  IDS_MP_VIEW                     "An&sehen"
+  IDS_MP_WINDOW                   "&Fenster"
   IDS_MI_EXIT                     "E&xit"
   IDS_MI_ABOUT                    "&Über VICE..."
   IDS_MI_PAUSE                    "&Pause"
@@ -6115,6 +5804,30 @@ BEGIN
   IDS_MI_WARRANTY                 "Keine &Garantie!"
   IDS_MI_TOGGLE_FULLSCREEN        "Vollbild"
   IDS_MI_SIDCART_SETTINGS         "&SID Modul Einstellungen..."
+  IDS_MI_MON_OPEN                 "Ö&ffnen"
+  IDS_MI_MON_SAVE                 "&Sspeichern"
+  IDS_MI_MON_PRINT                "&Drucken"
+  IDS_MI_MON_EXIT                 "&Beenden\tAlt+F4"
+  IDS_MI_MON_STOP_DEBUG           "&Stop Debug"
+  IDS_MI_MON_STOP_EXEC            "Stop &Ausführung"
+  IDS_MI_MON_STEP_INTO            "Step &in"
+  IDS_MI_MON_STEP_OVER            "Step &über"
+  IDS_MI_MON_SKIP_RETURN          "Step bis &return"
+  IDS_MI_MON_GOTO_CURSOR          "Gehe zu &cursor"
+  IDS_MI_MON_EVAL                 "A&uswerten"
+  IDS_MI_MON_CURRENT              "Aktuelle I&nstruktion"
+  IDS_MI_MON_WND_EVAL             "Auswertungs&fenster"
+  IDS_MI_MON_WND_REG              "&Registerfenster"
+  IDS_MI_MON_WND_MEM              "S&peicherfenster"
+  IDS_MI_MON_WND_DIS              "Disassemblerfenster"
+  IDS_MI_MON_WND_CONSOLE          "&Konsolenfenster"
+  IDS_MI_MON_COMPUTER             "&Computer"
+  IDS_MI_MON_DRIVE8               "Laufwerk &8"
+  IDS_MI_MON_DRIVE9               "Laufwerk &9"
+  IDS_MI_MON_CASCADE              "&Kaskadiert"
+  IDS_MI_MON_TILE_VERT            "&Vertical anordnen"
+  IDS_MI_MON_TILE_HORIZ           "&Horizontal anordnen"
+  IDS_MI_MON_ARRANGE_ICONS        "Icons &Anordnen"
 END
 
 
@@ -6322,8 +6035,8 @@ BEGIN
   IDS_MP_ATTACH_CARTRIDGE_IMAGE   "Insérer une &cartouche..."
   IDS_MP_EXPERT_CARTRIDGE         "Activer les paramètres des cartouches experts"
   IDS_MP_RESET                    "&Réinitialiser"
-#ifdef DEBUG
   IDS_MP_DEBUG                    "&Debug"
+#ifdef DEBUG
   IDS_MP_MODE                     "M&ode"
 #endif
   IDS_MP_EDIT                     "&Edit"
@@ -6338,6 +6051,8 @@ BEGIN
   IDS_MP_CARTRIDGE_IO_SETTINGS    "Paramètres E/S &cartouche"
   IDS_MP_LANGUAGE                 "&Langage"
   IDS_MP_HELP                     "&Aide"
+  IDS_MP_VIEW                     "&Affichage"
+  IDS_MP_WINDOW                   "&Fenêtre"
   IDS_MI_EXIT                     "&Quitter"
   IDS_MI_ABOUT                    "À &Propos..."
   IDS_MI_PAUSE                    "&Pause"
@@ -6473,6 +6188,30 @@ BEGIN
   IDS_MI_WARRANTY                 "Aucune &garantie!"
   IDS_MI_TOGGLE_FULLSCREEN        "Périphérique plein écran"
   IDS_MI_SIDCART_SETTINGS         "Paramètres cart &SID..."
+  IDS_MI_MON_OPEN                 "&Ouvrir"
+  IDS_MI_MON_SAVE                 "&Enregistrer"
+  IDS_MI_MON_PRINT                "&Imprimer"
+  IDS_MI_MON_EXIT                 "&Quitter\tAlt+F4"
+  IDS_MI_MON_STOP_DEBUG           "&Arrêter débug"
+  IDS_MI_MON_STOP_EXEC            "Arrêter l'e&xécution"
+  IDS_MI_MON_STEP_INTO            "Tracer à l'&intérieur"
+  IDS_MI_MON_STEP_OVER            "Tracer par de&ssus"
+  IDS_MI_MON_SKIP_RETURN          "Sauter jusqu'à &return"
+  IDS_MI_MON_GOTO_CURSOR          "Aller au &curseur"
+  IDS_MI_MON_EVAL                 "Éval&uer"
+  IDS_MI_MON_CURRENT              "Instruction courante"
+  IDS_MI_MON_WND_EVAL             "Fenêtre d'É&valuation"
+  IDS_MI_MON_WND_REG              "Fenêtre des &Registres"
+  IDS_MI_MON_WND_MEM              "Fenêtre &mémoire"
+  IDS_MI_MON_WND_DIS              "Fenêtre &Désassemblage"
+  IDS_MI_MON_WND_CONSOLE          "Fenêtre &Console"
+  IDS_MI_MON_COMPUTER             "&Ordinateur"
+  IDS_MI_MON_DRIVE8               "Lecteur #&8"
+  IDS_MI_MON_DRIVE9               "Lecteur #&9"
+  IDS_MI_MON_CASCADE              "&Cascade"
+  IDS_MI_MON_TILE_VERT            "Fractionner &verticallement"
+  IDS_MI_MON_TILE_HORIZ           "Fractionner &horizontalement"
+  IDS_MI_MON_ARRANGE_ICONS        "&Arranger les îcones"
 END
 
 
@@ -6681,8 +6420,8 @@ BEGIN
   IDS_MP_ATTACH_CARTRIDGE_IMAGE   "Cartridge képmás csatolása..."
   IDS_MP_EXPERT_CARTRIDGE         "Expert cartridge"
   IDS_MP_RESET                    "Új&raindítás"
-#ifdef DEBUG
   IDS_MP_DEBUG                    "&Nyomkövetés"
+#ifdef DEBUG
   IDS_MP_MODE                     "Mó&d"
 #endif
   IDS_MP_EDIT                     "&Edit"
@@ -6697,6 +6436,8 @@ BEGIN
   IDS_MP_CARTRIDGE_IO_SETTINGS    "&Cartridge/IO beállításai"
   IDS_MP_LANGUAGE                 "&Nyelv"
   IDS_MP_HELP                     "&Súgó"
+  IDS_MP_VIEW                     "&Nézet"
+  IDS_MP_WINDOW                   "&Ablak"
   IDS_MI_EXIT                     "&Kilépés"
   IDS_MI_ABOUT                    "&Névjegy..."
   IDS_MI_PAUSE                    "&Szünet"
@@ -6832,6 +6573,30 @@ BEGIN
   IDS_MI_WARRANTY                 "Nincs &garancia"
   IDS_MI_TOGGLE_FULLSCREEN        "Teljes képernyõ"
   IDS_MI_SIDCART_SETTINGS         "&SID kártya beállításai..."
+  IDS_MI_MON_OPEN                 "&Megnyitás"
+  IDS_MI_MON_SAVE                 "M&entés"
+  IDS_MI_MON_PRINT                "&Nyomtatás"
+  IDS_MI_MON_EXIT                 "&Kilépés\tAlt+F4"
+  IDS_MI_MON_STOP_DEBUG           "Nyomkövetés l&eállítása"
+  IDS_MI_MON_STOP_EXEC            "Végrehajtás &leállítása"
+  IDS_MI_MON_STEP_INTO            "B&elép"
+  IDS_MI_MON_STEP_OVER            "Á&tlép"
+  IDS_MI_MON_SKIP_RETURN          "Léptetés &visszatérésig"
+  IDS_MI_MON_GOTO_CURSOR          "Ugrás a &kurzorhoz"
+  IDS_MI_MON_EVAL                 "&Kiértékel"
+  IDS_MI_MON_CURRENT              "&Jelenlegi utasítás"
+  IDS_MI_MON_WND_EVAL             "&Kiértékelés ablak"
+  IDS_MI_MON_WND_REG              "&Regiszter ablak"
+  IDS_MI_MON_WND_MEM              "&Memória ablak"
+  IDS_MI_MON_WND_DIS              "&Visszafejtés ablak"
+  IDS_MI_MON_WND_CONSOLE          "&Konzol ablak"
+  IDS_MI_MON_COMPUTER             "&Számítógép"
+  IDS_MI_MON_DRIVE8               "&8-as lemezegység"
+  IDS_MI_MON_DRIVE9               "&9-es lemezegység"
+  IDS_MI_MON_CASCADE              "&Kaszkád"
+  IDS_MI_MON_TILE_VERT            "Elrendezés &vízszintesen"
+  IDS_MI_MON_TILE_HORIZ           "Elrendezés &függõlegesen"
+  IDS_MI_MON_ARRANGE_ICONS        "&Ikonok elrendezése"
 END
 #pragma code_page(28591)
 
@@ -7040,8 +6805,8 @@ BEGIN
   IDS_MP_ATTACH_CARTRIDGE_IMAGE   "Seleziona l'immagine di una &cartuccia..."
   IDS_MP_EXPERT_CARTRIDGE         "Expert Cartridge"
   IDS_MP_RESET                    "&Reset"
-#ifdef DEBUG
   IDS_MP_DEBUG                    "&Debug"
+#ifdef DEBUG
   IDS_MP_MODE                     "M&odalità"
 #endif
   IDS_MP_EDIT                     "&Edit"
@@ -7056,6 +6821,8 @@ BEGIN
   IDS_MP_CARTRIDGE_IO_SETTINGS    "Impostazioni &cartuccia/IO"
   IDS_MP_LANGUAGE                 "&Lingua"
   IDS_MP_HELP                     "&Aiuto"
+  IDS_MP_VIEW                     "&Vista"
+  IDS_MP_WINDOW                   "&Finestra"
   IDS_MI_EXIT                     "E&sci"
   IDS_MI_ABOUT                    "&Informazioni su VICE..."
   IDS_MI_PAUSE                    "&Pausa"
@@ -7191,6 +6958,30 @@ BEGIN
   IDS_MI_WARRANTY                 "Nessuna &garanzia"
   IDS_MI_TOGGLE_FULLSCREEN        "A tutto schermo"
   IDS_MI_SIDCART_SETTINGS         "Impostazioni cartuccia &SID..."
+  IDS_MI_MON_OPEN                 "&Apri"
+  IDS_MI_MON_SAVE                 "&Salva"
+  IDS_MI_MON_PRINT                "&Stampa"
+  IDS_MI_MON_EXIT                 "E&sci\tAlt+F4"
+  IDS_MI_MON_STOP_DEBUG           "&Interrompi Debug"
+  IDS_MI_MON_STOP_EXEC            "Interrompi E&secuzione"
+  IDS_MI_MON_STEP_INTO            "Esegui &istruzione"
+  IDS_MI_MON_STEP_OVER            "Esegui &routine"
+  IDS_MI_MON_SKIP_RETURN          "Esegui fino al &ritorno"
+  IDS_MI_MON_GOTO_CURSOR          "Vai al &cursore"
+  IDS_MI_MON_EVAL                 "&Valutazione"
+  IDS_MI_MON_CURRENT              "Istruzione &corrente"
+  IDS_MI_MON_WND_EVAL             "&Finestra di valutazione"
+  IDS_MI_MON_WND_REG              "Finestra dei &registri"
+  IDS_MI_MON_WND_MEM              "Finestra di &memoria"
+  IDS_MI_MON_WND_DIS              "Finestra di &disassemblaggio"
+  IDS_MI_MON_WND_CONSOLE          "Finestra della &console"
+  IDS_MI_MON_COMPUTER             "&Computer"
+  IDS_MI_MON_DRIVE8               "Drive &8"
+  IDS_MI_MON_DRIVE9               "Drive &9"
+  IDS_MI_MON_CASCADE              "A &cascata"
+  IDS_MI_MON_TILE_VERT            "Affianca &verticalmente"
+  IDS_MI_MON_TILE_HORIZ           "Affianca &orizzontalmente"
+  IDS_MI_MON_ARRANGE_ICONS        "&Disponi icone"
 END
 
 
@@ -7398,8 +7189,8 @@ BEGIN
   IDS_MP_ATTACH_CARTRIDGE_IMAGE   "Koppel &cartridgebestand..."
   IDS_MP_EXPERT_CARTRIDGE         "Expert Cartridge"
   IDS_MP_RESET                    "&Reset"
-#ifdef DEBUG
   IDS_MP_DEBUG                    "&Debug"
+#ifdef DEBUG
   IDS_MP_MODE                     "M&odus"
 #endif
   IDS_MP_EDIT                     "&Bewerken"
@@ -7414,6 +7205,8 @@ BEGIN
   IDS_MP_CARTRIDGE_IO_SETTINGS    "&Cartridge/IO-instellingen"
   IDS_MP_LANGUAGE                 "&Taal"
   IDS_MP_HELP                     "&Help"
+  IDS_MP_VIEW                     "&Beeld"
+  IDS_MP_WINDOW                   "&Venster"
   IDS_MI_EXIT                     "Af&sluiten"
   IDS_MI_ABOUT                    "&Over VICE..."
   IDS_MI_PAUSE                    "&Pauze"
@@ -7549,6 +7342,30 @@ BEGIN
   IDS_MI_WARRANTY                 "Geen &garantie"
   IDS_MI_TOGGLE_FULLSCREEN        "Volscherm"
   IDS_MI_SIDCART_SETTINGS         "&SID cart-instellingen..."
+  IDS_MI_MON_OPEN                 "&Open"
+  IDS_MI_MON_SAVE                 "Op&slaan"
+  IDS_MI_MON_PRINT                "&Print"
+  IDS_MI_MON_EXIT                 "A&fsluiten\tAlt+F4"
+  IDS_MI_MON_STOP_DEBUG           "&Stop Debug"
+  IDS_MI_MON_STOP_EXEC            "Stop &Uitvoering"
+  IDS_MI_MON_STEP_INTO            "Stap i&n"
+  IDS_MI_MON_STEP_OVER            "Stap o&ver"
+  IDS_MI_MON_SKIP_RETURN          "Stap tot &terugkeer"
+  IDS_MI_MON_GOTO_CURSOR          "Ga naar &cursor"
+  IDS_MI_MON_EVAL                 "&Evalueren"
+  IDS_MI_MON_CURRENT              "&Huidige instructie"
+  IDS_MI_MON_WND_EVAL             "Ev&aluatie venster"
+  IDS_MI_MON_WND_REG              "&Register venster"
+  IDS_MI_MON_WND_MEM              "&Geheugen venster"
+  IDS_MI_MON_WND_DIS              "&Disassemblyvenster"
+  IDS_MI_MON_WND_CONSOLE          "&Console venster"
+  IDS_MI_MON_COMPUTER             "&Computer"
+  IDS_MI_MON_DRIVE8               "Drive &8"
+  IDS_MI_MON_DRIVE9               "Drive &9"
+  IDS_MI_MON_CASCADE              "&Alle vensters"
+  IDS_MI_MON_TILE_VERT            "&Naast elkaar"
+  IDS_MI_MON_TILE_HORIZ           "Onder &elkaar"
+  IDS_MI_MON_ARRANGE_ICONS        "&Rangschik iconen"
 END
 
 
@@ -7757,8 +7574,8 @@ BEGIN
   IDS_MP_ATTACH_CARTRIDGE_IMAGE   "W³ó¿ obraz &kartrid¿a..."
   IDS_MP_EXPERT_CARTRIDGE         "Expert Cartridge"
   IDS_MP_RESET                    "&Reset"
-#ifdef DEBUG
   IDS_MP_DEBUG                    "&Debug"
+#ifdef DEBUG
   IDS_MP_MODE                     "M&ode"
 #endif
   IDS_MP_EDIT                     "&Edit"
@@ -7773,6 +7590,8 @@ BEGIN
   IDS_MP_CARTRIDGE_IO_SETTINGS    "Ustawienia kart&rid¿a"
   IDS_MP_LANGUAGE                 "&Language"
   IDS_MP_HELP                     "&Pomoc"
+  IDS_MP_VIEW                     "&View"
+  IDS_MP_WINDOW                   "&Okna"
   IDS_MI_EXIT                     "W&yjd¼"
   IDS_MI_ABOUT                    "&O VICE..."
   IDS_MI_PAUSE                    "&Pauza"
@@ -7908,6 +7727,30 @@ BEGIN
   IDS_MI_WARRANTY                 "Bez g&warancji"
   IDS_MI_TOGGLE_FULLSCREEN        "Pe³ny ekran"
   IDS_MI_SIDCART_SETTINGS         "&SID cart settings..."
+  IDS_MI_MON_OPEN                 "&Open"
+  IDS_MI_MON_SAVE                 "&Zapisz"
+  IDS_MI_MON_PRINT                "&Print"
+  IDS_MI_MON_EXIT                 "W&yjd¼ z\tAlt+F4"
+  IDS_MI_MON_STOP_DEBUG           "&Stop Debug"
+  IDS_MI_MON_STOP_EXEC            "Stop E&xecution"
+  IDS_MI_MON_STEP_INTO            "Step &into"
+  IDS_MI_MON_STEP_OVER            "Step &over"
+  IDS_MI_MON_SKIP_RETURN          "Step until &return"
+  IDS_MI_MON_GOTO_CURSOR          "Go to &cursor"
+  IDS_MI_MON_EVAL                 "&Evaluate"
+  IDS_MI_MON_CURRENT              "&Current instruction"
+  IDS_MI_MON_WND_EVAL             "Evaluation &window"
+  IDS_MI_MON_WND_REG              "&Register window"
+  IDS_MI_MON_WND_MEM              "&Memory window"
+  IDS_MI_MON_WND_DIS              "&Disassembly window"
+  IDS_MI_MON_WND_CONSOLE          "&Console window"
+  IDS_MI_MON_COMPUTER             "&Znak"
+  IDS_MI_MON_DRIVE8               "Edytor &8"
+  IDS_MI_MON_DRIVE9               "Edytor &9"
+  IDS_MI_MON_CASCADE              "&Cascade"
+  IDS_MI_MON_TILE_VERT            "Tile &vertically"
+  IDS_MI_MON_TILE_HORIZ           "Tile &horizontally"
+  IDS_MI_MON_ARRANGE_ICONS        "&Arrange icons"
 END
 #pragma code_page(28591)
 
@@ -8116,8 +7959,8 @@ BEGIN
   IDS_MP_ATTACH_CARTRIDGE_IMAGE   "Anslut &insticksmodulavbild..."
   IDS_MP_EXPERT_CARTRIDGE         "Expert Cartridge"
   IDS_MP_RESET                    "&Nollställ"
-#ifdef DEBUG
   IDS_MP_DEBUG                    "&Felsök"
+#ifdef DEBUG
   IDS_MP_MODE                     "&Läge"
 #endif
   IDS_MP_EDIT                     "&Edit"
@@ -8132,6 +7975,8 @@ BEGIN
   IDS_MP_CARTRIDGE_IO_SETTINGS    "&Modul/IO-inställningar"
   IDS_MP_LANGUAGE                 "&Språk"
   IDS_MP_HELP                     "&Hjälp"
+  IDS_MP_VIEW                     "&Visa"
+  IDS_MP_WINDOW                   "&Fönster"
   IDS_MI_EXIT                     "&Avsluta"
   IDS_MI_ABOUT                    "&Om VICE..."
   IDS_MI_PAUSE                    "&Paus"
@@ -8267,6 +8112,30 @@ BEGIN
   IDS_MI_WARRANTY                 "Ingen &garanti"
   IDS_MI_TOGGLE_FULLSCREEN        "Fullskärm"
   IDS_MI_SIDCART_SETTINGS         "&SID-insticksmodulinställningar..."
+  IDS_MI_MON_OPEN                 "&Öppna"
+  IDS_MI_MON_SAVE                 "&Spara"
+  IDS_MI_MON_PRINT                "Skriv &ut"
+  IDS_MI_MON_EXIT                 "&Avsluta\tAlt+F4"
+  IDS_MI_MON_STOP_DEBUG           "&Avsluta felsökning"
+  IDS_MI_MON_STOP_EXEC            "Avsluta E&xekvering"
+  IDS_MI_MON_STEP_INTO            "Stega &in"
+  IDS_MI_MON_STEP_OVER            "Stega &över"
+  IDS_MI_MON_SKIP_RETURN          "Stega till &retur"
+  IDS_MI_MON_GOTO_CURSOR          "Gå till &markör"
+  IDS_MI_MON_EVAL                 "&Utvärdera"
+  IDS_MI_MON_CURRENT              "&Aktuell instruktion"
+  IDS_MI_MON_WND_EVAL             "Utvärderings&fönster"
+  IDS_MI_MON_WND_REG              "&Registerfönster"
+  IDS_MI_MON_WND_MEM              "&Minnesfönster"
+  IDS_MI_MON_WND_DIS              "&Disassembleringsfönster"
+  IDS_MI_MON_WND_CONSOLE          "&Konsolfönster"
+  IDS_MI_MON_COMPUTER             "&Dator"
+  IDS_MI_MON_DRIVE8               "Enhet &8"
+  IDS_MI_MON_DRIVE9               "Enhet &9"
+  IDS_MI_MON_CASCADE              "&Överlappande"
+  IDS_MI_MON_TILE_VERT            "&Sida vid sida"
+  IDS_MI_MON_TILE_HORIZ           "&Över och under"
+  IDS_MI_MON_ARRANGE_ICONS        "&Arrangera ikoner"
 END
 
 // -----------------------------------------------------------------------------

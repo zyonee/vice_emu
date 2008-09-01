@@ -221,6 +221,43 @@ static const struct {
     { NULL, 0}
 };
 
+ui_menu_translation_table_t monitor_trans_popup_table[] = {
+    { 1, 0 },
+    { 1, IDS_MP_FILE },
+    { 1, IDS_MP_DEBUG },
+    { 1, IDS_MP_VIEW },
+    { 1, IDS_MP_WINDOW },
+    { 0, 0 }
+};
+
+ui_popup_translation_table_t monitor_trans_item_table[] = {
+    { IDM_MON_OPEN, IDS_MI_MON_OPEN },
+    { IDM_MON_SAVE, IDS_MI_MON_SAVE },
+    { IDM_MON_PRINT, IDS_MI_MON_PRINT },
+    { IDM_EXIT, IDS_MI_MON_EXIT },
+    { IDM_MON_STOP_DEBUG, IDS_MI_MON_STOP_DEBUG },
+    { IDM_MON_STOP_EXEC, IDS_MI_MON_STOP_EXEC },
+    { IDM_MON_STEP_INTO, IDS_MI_MON_STEP_INTO },
+    { IDM_MON_STEP_OVER, IDS_MI_MON_STEP_OVER },
+    { IDM_MON_SKIP_RETURN, IDS_MI_MON_SKIP_RETURN },
+    { IDM_MON_GOTO_CURSOR, IDS_MI_MON_GOTO_CURSOR },
+    { IDM_MON_EVAL, IDS_MI_MON_EVAL },
+    { IDM_MON_CURRENT, IDS_MI_MON_CURRENT },
+    { IDM_MON_WND_EVAL, IDS_MI_MON_WND_EVAL },
+    { IDM_MON_WND_REG, IDS_MI_MON_WND_REG },
+    { IDM_MON_WND_MEM, IDS_MI_MON_WND_MEM },
+    { IDM_MON_WND_DIS, IDS_MI_MON_WND_DIS },
+    { IDM_MON_WND_CONSOLE, IDS_MI_MON_WND_CONSOLE },
+    { IDM_MON_COMPUTER, IDS_MI_MON_COMPUTER },
+    { IDM_MON_DRIVE8, IDS_MI_MON_DRIVE8 },
+    { IDM_MON_DRIVE9, IDS_MI_MON_DRIVE9 },
+    { IDM_MON_CASCADE, IDS_MI_MON_CASCADE },
+    { IDM_MON_TILE_VERT, IDS_MI_MON_TILE_VERT },
+    { IDM_MON_TILE_HORIZ, IDS_MI_MON_TILE_HORIZ },
+    { IDM_MON_ARRANGE_ICONS, IDS_MI_MON_ARRANGE_ICONS },
+    { 0, 0 }
+};
+
 /* ------------------------------------------------------------------------ */
 static HWND main_hwnd;
 
@@ -389,7 +426,8 @@ static void ui_translate_menu_popups(HMENU menu, ui_popup_translation_table_t *t
                     pos1++;
                     menu1 = GetSubMenu(menu, pos1);
                 }
-                ModifyMenu(menu, (UINT)pos1, MF_BYPOSITION | MF_STRING | MF_POPUP, menu1, translate_text(trans_table[i].ids));
+                if (trans_table[i].ids != 0)
+                    ModifyMenu(menu, (UINT)pos1, MF_BYPOSITION | MF_STRING | MF_POPUP, (UINT)menu1, translate_text(trans_table[i].ids));
                 pos2 = -1;
                 pos3 = -1;
                 break;
@@ -400,7 +438,7 @@ static void ui_translate_menu_popups(HMENU menu, ui_popup_translation_table_t *t
                     pos2++;
                     menu2 = GetSubMenu(menu1, pos2);
                 }
-                ModifyMenu(menu1, (UINT)pos2, MF_BYPOSITION | MF_STRING | MF_POPUP, menu2, translate_text(trans_table[i].ids));
+                ModifyMenu(menu1, (UINT)pos2, MF_BYPOSITION | MF_STRING | MF_POPUP, (UINT)menu2, translate_text(trans_table[i].ids));
                 pos3 = -1;
                 break;
             case 3:
@@ -410,7 +448,7 @@ static void ui_translate_menu_popups(HMENU menu, ui_popup_translation_table_t *t
                     pos3++;
                     menu3 = GetSubMenu(menu2, pos3);
                 }
-                ModifyMenu(menu2, (UINT)pos3, MF_BYPOSITION | MF_STRING | MF_POPUP, menu3, translate_text(trans_table[i].ids));
+                ModifyMenu(menu2, (UINT)pos3, MF_BYPOSITION | MF_STRING | MF_POPUP, (UINT)menu3, translate_text(trans_table[i].ids));
                 break;
         }
         i++;
@@ -429,6 +467,12 @@ static void ui_translate_menu_items(HMENU menu, ui_menu_translation_table_t *tra
         ModifyMenu(menu, trans_table[i].idm, MF_BYCOMMAND | MF_STRING, trans_table[i].idm, translate_text(trans_table[i].ids));
         i++;
     }
+}
+
+void ui_translate_monitor_menu(HMENU menu)
+{
+  ui_translate_menu_popups(menu, (ui_popup_translation_table_t *)monitor_trans_popup_table);
+  ui_translate_menu_items(menu, (ui_menu_translation_table_t *)monitor_trans_item_table);
 }
 
 /*  Create a Window for the emulation.  */
