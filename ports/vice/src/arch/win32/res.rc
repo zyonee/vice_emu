@@ -85,44 +85,44 @@ IDR_MENUMONITOR MENU DISCARDABLE
 BEGIN
     POPUP "&File"
     BEGIN
-        MENUITEM "&Open", IDM_MON_OPEN
-        MENUITEM "&Save", IDM_MON_SAVE
-        MENUITEM "&Print", IDM_MON_PRINT
+        MENUITEM "", IDM_MON_OPEN
+        MENUITEM "", IDM_MON_SAVE
+        MENUITEM "", IDM_MON_PRINT
         MENUITEM SEPARATOR
-        MENUITEM "E&xit\tAlt+F4", IDM_EXIT
+        MENUITEM "", IDM_EXIT
     END
     POPUP "&Debug"
     BEGIN
-        MENUITEM "&Stop Debug", IDM_MON_STOP_DEBUG
-        MENUITEM "Stop E&xecution", IDM_MON_STOP_EXEC
+        MENUITEM "", IDM_MON_STOP_DEBUG
+        MENUITEM "", IDM_MON_STOP_EXEC
         MENUITEM SEPARATOR
-        MENUITEM "Step &into", IDM_MON_STEP_INTO
-        MENUITEM "Step &over", IDM_MON_STEP_OVER
-        MENUITEM "Step until &return", IDM_MON_SKIP_RETURN
-        MENUITEM "Go to &cursor", IDM_MON_GOTO_CURSOR
+        MENUITEM "", IDM_MON_STEP_INTO
+        MENUITEM "", IDM_MON_STEP_OVER
+        MENUITEM "", IDM_MON_SKIP_RETURN
+        MENUITEM "", IDM_MON_GOTO_CURSOR
         MENUITEM SEPARATOR
-        MENUITEM "&Evaluate", IDM_MON_EVAL
+        MENUITEM "", IDM_MON_EVAL
     END
     POPUP "&View"
     BEGIN
-        MENUITEM "&Current instruction", IDM_MON_CURRENT
+        MENUITEM "", IDM_MON_CURRENT
         MENUITEM SEPARATOR
-        MENUITEM "Evaluation &window", IDM_MON_WND_EVAL
-        MENUITEM "&Register window", IDM_MON_WND_REG
-        MENUITEM "&Memory window", IDM_MON_WND_MEM
-        MENUITEM "&Disassembly window", IDM_MON_WND_DIS
-        MENUITEM "&Console window", IDM_MON_WND_CONSOLE
+        MENUITEM "", IDM_MON_WND_EVAL
+        MENUITEM "", IDM_MON_WND_REG
+        MENUITEM "", IDM_MON_WND_MEM
+        MENUITEM "", IDM_MON_WND_DIS
+        MENUITEM "", IDM_MON_WND_CONSOLE
         MENUITEM SEPARATOR
-        MENUITEM "&Computer", IDM_MON_COMPUTER
-        MENUITEM "Drive &8", IDM_MON_DRIVE8
-        MENUITEM "Drive &9", IDM_MON_DRIVE9
+        MENUITEM "", IDM_MON_COMPUTER
+        MENUITEM "", IDM_MON_DRIVE8
+        MENUITEM "", IDM_MON_DRIVE9
     END
     POPUP "&Window"
     BEGIN
-        MENUITEM "&Cascade", IDM_MON_CASCADE
-        MENUITEM "Tile &vertically", IDM_MON_TILE_VERT
-        MENUITEM "Tile &horizontally", IDM_MON_TILE_HORIZ
-        MENUITEM "&Arrange icons", IDM_MON_ARRANGE_ICONS
+        MENUITEM "", IDM_MON_CASCADE
+        MENUITEM "", IDM_MON_TILE_VERT
+        MENUITEM "", IDM_MON_TILE_HORIZ
+        MENUITEM "", IDM_MON_ARRANGE_ICONS
     END
 END
 
