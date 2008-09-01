@@ -30,58 +30,124 @@
 #include "vice.h"
 #include "types.h"
 
+#include "charset.h"
 #include "interrupt.h"
 #include "resources.h"
 #include "ui.h"
 #include "uimenu.h"
+#include "video.h"
+#include "videoarch.h"
 #include "vsync.h"
 
 #include <SDL/SDL.h>
 #include <stdio.h>
+#include <stdlib.h>
+
+#define COLOR_BACK 0
+#define COLOR_FRONT 1
+#define MENU_FIRST_Y 2
 
 int sdl_menu_state = 0;
 
 static ui_menu_entry_t *main_menu = NULL;
-static int max_onscreen_items = 10;
+
+struct menufont_s {
+    BYTE *font;
+    int w;
+    int h;
+};
+typedef struct menufont_s menufont_t;
+
+static menufont_t menufont = { NULL, 0, 0 };
 
 /* ------------------------------------------------------------------ */
 
-static void sdl_ui_clear(void)
+
+static void sdl_ui_putchar(char c, int pos_x, int pos_y)
 {
-    fprintf(stderr,"\n\n");
+    int x, y;
+    BYTE fontchar;
+    BYTE *font_pos;
+    BYTE *draw_pos;
+
+    font_pos = &(menufont.font[c * menufont.h]);
+    draw_pos = &(sdl_active_canvas->draw_buffer->draw_buffer[pos_x * menufont.w + pos_y * menufont.w * sdl_active_canvas->draw_buffer->draw_buffer_pitch]);
+
+    draw_pos += sdl_active_canvas->geometry->gfx_position.x;
+    draw_pos += sdl_active_canvas->geometry->gfx_position.y * sdl_active_canvas->draw_buffer->draw_buffer_pitch;
+    draw_pos += sdl_active_canvas->geometry->extra_offscreen_border_left;
+
+    for(y=0; y < menufont.h; ++y) {
+        fontchar = *font_pos;
+        for(x=0; x < menufont.w; ++x) {
+            draw_pos[x] = (fontchar & (0x80 >> x))?COLOR_FRONT:COLOR_BACK;
+        }
+        ++font_pos;
+        draw_pos += sdl_active_canvas->draw_buffer->draw_buffer_pitch;
+    }
 }
 
+static void sdl_ui_print(const char *text, int pos_x, int pos_y)
+{
+    int i = 0;
+    BYTE c;
+
+    while((c = text[i]) != 0) {
+        sdl_ui_putchar(charset_petcii_to_screencode(charset_p_topetcii(c), 0), pos_x+i, pos_y);
+        ++i;
+    }
+}
+
+static void sdl_ui_clear(void)
+{
+    unsigned int x, y;
+    char c = charset_petcii_to_screencode(charset_p_topetcii(' '), 0);
+
+    for(y=0; y < sdl_active_canvas->geometry->text_size.height; ++y) {
+        for(x=0; x < sdl_active_canvas->geometry->text_size.width; ++x) {
+            sdl_ui_putchar(c, x, y);
+        }
+    }
+}
 
 static void sdl_ui_display_title(const char *title)
 {
-    fprintf(stderr,"%s\n",title);
+    sdl_ui_print(title, 0, 0);
 }
 
 
 static void sdl_ui_display_item(ui_menu_entry_t *item, int y_pos)
 {
-
     if(((item->string == NULL) || (item->type == MENU_ENTRY_SEPARATOR))) {
-        fprintf(stderr,"null or separator %i\n", y_pos);
         return;
     }
 
-    fprintf(stderr,"%i: %s", y_pos, item->string);
+    sdl_ui_print(item->string, 1, y_pos+2);
 
     switch(item->type) {
         case MENU_ENTRY_RESOURCE_TOGGLE:
         case MENU_ENTRY_RESOURCE_RADIO:
-            fprintf(stderr,"\t%s", item->callback(0, item->callback_data));
+            sdl_ui_print(item->callback(0, item->callback_data), 1+20, y_pos+MENU_FIRST_Y);
             break;
         default:
             break;
     }
-    fprintf(stderr,"\n");
 }
 
-static void sdl_ui_display_cursor(int pos)
+static void sdl_ui_display_cursor(int pos, int old_pos)
 {
-    fprintf(stderr,"cursor: %i\n",pos);
+    char c_erase = charset_petcii_to_screencode(charset_p_topetcii(' '), 0);
+    char c_cursor = charset_petcii_to_screencode(charset_p_topetcii('>'), 0);
+
+    if(pos == old_pos) {
+        return;
+    }
+
+    if(old_pos >= 0) {
+        sdl_ui_putchar(c_erase, 0, old_pos+MENU_FIRST_Y);
+    }
+
+    sdl_ui_putchar(c_cursor, 0, pos+MENU_FIRST_Y);
 }
 
 static ui_menu_action_t sdl_ui_menu_poll_input(void)
@@ -94,9 +160,10 @@ static ui_menu_action_t sdl_ui_menu_poll_input(void)
     return retval;
 }
 
-static void sdl_ui_menu_redraw(ui_menu_entry_t *menu, const char* title, int num_items)
+static void sdl_ui_menu_redraw(ui_menu_entry_t *menu, const char *title, int num_items)
 {
     int i;
+    int max_onscreen_items = sdl_active_canvas->geometry->text_size.height - MENU_FIRST_Y;
 
     sdl_ui_clear();
     sdl_ui_display_title(title);
@@ -109,9 +176,9 @@ static void sdl_ui_menu_redraw(ui_menu_entry_t *menu, const char* title, int num
     }
 }
 
-static int sdl_ui_menu_display(ui_menu_entry_t *menu, const char* title)
+static int sdl_ui_menu_display(ui_menu_entry_t *menu, const char *title)
 {
-    int num_items = 0, cur = 0, cur_offset = 0, in_menu = 1;
+    int num_items = 0, cur = 0, cur_old = -1, cur_offset = 0, in_menu = 1;
 
     while(menu[num_items].string != NULL) {
         ++num_items;
@@ -120,16 +187,19 @@ static int sdl_ui_menu_display(ui_menu_entry_t *menu, const char* title)
     sdl_ui_menu_redraw(menu, title, num_items);
 
     while(in_menu) {
-        sdl_ui_display_cursor(cur - cur_offset);
+        sdl_ui_display_cursor(cur - cur_offset, cur_old - cur_offset);
+        video_canvas_refresh_all(sdl_active_canvas);
 
         switch(sdl_ui_menu_poll_input()) {
             case MENU_ACTION_UP:
                 if(cur > 0) {
+                    cur_old = cur;
                     --cur;
                 }
                 break;
             case MENU_ACTION_DOWN:
                 if(cur < (num_items-1)) {
+                    cur_old = cur;
                     ++cur;
                 }
                 break;
@@ -159,6 +229,9 @@ static void sdl_ui_trap(WORD addr, void *data)
     sdl_menu_state = 1;
     sdl_ui_menu_display(main_menu, "VICE main menu");
     sdl_menu_state = 0;
+
+    /* TODO this doesn't redraw the screen if video cache is on */
+    video_canvas_refresh_all(sdl_active_canvas);
 }
 
 /* ------------------------------------------------------------------ */
@@ -188,6 +261,13 @@ int sdl_ui_menu_item_activate(ui_menu_entry_t *item)
 void sdl_ui_set_main_menu(ui_menu_entry_t *menu)
 {
     main_menu = menu;
+}
+
+void sdl_ui_set_menu_font(BYTE *font, int w, int h)
+{
+    menufont.font = font;
+    menufont.w = w;
+    menufont.h = h;
 }
 
 void sdl_ui_activate(void)
@@ -220,8 +300,8 @@ const char *sdl_ui_menu_radio_helper(int activated, ui_callback_data_t param, co
         resource_value_t v;
         resources_get_value(resource_name, (void *)&v);
         if (v == (resource_value_t)param)
-            return "M";
+            return "*";
     }
-    return NULL;
+    return " ";
 }
 

@@ -45,8 +45,8 @@ static int sdl_bitdepth;
 #define MAX_CANVAS_NUM 2           
 static int sdl_num_screens = 0;
 static int sdl_active_canvas_num = 0;
-static video_canvas_t *sdl_active_canvas = NULL;
 static video_canvas_t *sdl_canvaslist[MAX_CANVAS_NUM];
+video_canvas_t *sdl_active_canvas = NULL;
 
 /* ------------------------------------------------------------------------- */
 

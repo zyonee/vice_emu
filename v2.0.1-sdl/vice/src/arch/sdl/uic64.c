@@ -28,6 +28,7 @@
 
 #include "vice.h"
 
+#include "c64mem.h"
 #include "uimenu.h"
 
 #include <stdio.h>
@@ -95,6 +96,7 @@ int c64ui_init(void)
 {
 fprintf(stderr,"%s\n",__func__);
     sdl_ui_set_main_menu(x64_main_menu);
+    sdl_ui_set_menu_font(mem_chargen_rom + 0x800, 8, 8);
     return 0;
 }
 
