@@ -46,7 +46,8 @@ enum cpu_int {
     IK_RESET   = 1 << 2,
     IK_TRAP    = 1 << 3,
     IK_MONITOR = 1 << 4,
-    IK_DMA     = 1 << 5
+    IK_DMA     = 1 << 5,
+    IK_IRQPEND = 1 << 6
 };
 
 struct interrupt_cpu_status_s {
@@ -133,7 +134,7 @@ inline static void interrupt_set_irq(interrupt_cpu_status_t *cs,
         if (!(cs->pending_int[int_num] & IK_IRQ)) {
             cs->nirq++;
             cs->global_pending_int = (cs->global_pending_int
-                                     | (unsigned int)IK_IRQ);
+                                     | (unsigned int)(IK_IRQ | IK_IRQPEND));
             cs->pending_int[int_num] = (cs->pending_int[int_num]
                                        | (unsigned int)IK_IRQ);
 
