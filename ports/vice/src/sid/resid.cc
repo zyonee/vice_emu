@@ -47,7 +47,6 @@ extern "C" {
 #include "resid.h"
 #include "resources.h"
 #include "sid-snapshot.h"
-#include "sound.h"
 #include "types.h"
 
 struct sound_s
@@ -56,6 +55,7 @@ struct sound_s
     SID	sid;
 };
 
+typedef struct sound_s sound_t;
 
 static sound_t *resid_open(BYTE *sidstate)
 {
