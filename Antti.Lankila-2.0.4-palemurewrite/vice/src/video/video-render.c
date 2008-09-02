@@ -53,7 +53,7 @@ static void(*render_2x2_func)(video_render_config_t *, const BYTE *, BYTE *,
 
 static void(*render_pal_func)(video_render_config_t *, BYTE *, BYTE *,
                               int, int, int, int,
-                              int, int, int, int, int);
+                              int, int, int, int, int, int);
 
 
 /* this function is the interface to the outer world */
@@ -97,7 +97,7 @@ void video_render_setphysicalcolor(video_render_config_t *config, int index,
 
 void video_render_main(video_render_config_t *config, BYTE *src, BYTE *trg,
                        int width, int height, int xs, int ys, int xt, int yt,
-                       int pitchs, int pitcht, int depth)
+                       int pitchs, int pitcht, int depth, int viewport_height)
 {
     const video_render_color_tables_t *colortab;
     int rendermode;
@@ -120,7 +120,7 @@ void video_render_main(video_render_config_t *config, BYTE *src, BYTE *trg,
       case VIDEO_RENDER_PAL_1X1:
       case VIDEO_RENDER_PAL_2X2:
         (*render_pal_func)(config, src, trg, width, height, xs, ys, xt, yt,
-                           pitchs, pitcht, depth);
+                           pitchs, pitcht, depth, viewport_height);
         return;
 
       case VIDEO_RENDER_RGB_1X1:
@@ -180,7 +180,7 @@ void video_render_2x2func_set(void(*func)(video_render_config_t *,
 
 void video_render_palfunc_set(void(*func)(video_render_config_t *,
                               BYTE *, BYTE *, int, int, int, int,
-                              int, int, int, int, int))
+                              int, int, int, int, int, int))
 {
     render_pal_func = func;
 }

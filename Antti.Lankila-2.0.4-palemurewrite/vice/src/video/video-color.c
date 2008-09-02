@@ -342,7 +342,6 @@ static void video_calc_ycbcrtable(const video_ycbcr_palette_t *p,
         color_tab->yuv_table[i] = ((BYTE)(primary->y * 255 / 256 + 0.5) << 16)
             | ((BYTE)(0.493111 * primary->cb * 255 / 256 + 128.5) << 8)
             | (BYTE)(0.877283 * primary->cr * 255 / 256 + 128.5);
-	
     }
 }
 
@@ -356,14 +355,12 @@ static void video_calc_ycbcrtable_oddlines(const video_ycbcr_palette_t *p,
     sat = ((float)(video_resources.color_saturation)) * (256.0f / 1000.0f);
     tin = (((float)(video_resources.color_tint)) * (50.0f / 2000.0f))-25.0f;
     
-    lf = 64*video_resources.pal_blur/1000;
-    hf = 256 - (lf << 1);
     for (i = 0;i < p->num_entries; i++) {
         SDWORD val;
 	
 	/* create primary table */
         primary = &p->entries[i];
-        val = (SDWORD)(primary->y * (256.0f*1.00f));
+        val = (SDWORD)(primary->y * 256.0f);
         color_tab->cbtable_odd[i] = (SDWORD)((primary->cb)* sat);
 	/* tint, substract from cr in odd lines */
 	val = (SDWORD)(tin);

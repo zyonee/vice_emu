@@ -44,7 +44,7 @@
 static void video_render_pal_main(video_render_config_t *config,
                                   BYTE *src, BYTE *trg,
                                   int width, int height, int xs, int ys, int xt,
-                                  int yt, int pitchs, int pitcht, int depth)
+                                  int yt, int pitchs, int pitcht, int depth, int viewport_height)
 {
     video_render_color_tables_t *colortab;
     int doublescan, delayloop, rendermode, palmode, scale2x;
@@ -152,7 +152,7 @@ static void video_render_pal_main(video_render_config_t *config,
                   case VIDEO_RESOURCE_PAL_MODE_NEW:
                     render_16_2x2_pal(colortab, src, trg, width, height,
                                       xs, ys, xt, yt, pitchs, pitcht,
-                                      doublescan);
+                                      viewport_height);
                     return;
                 }
                 return;
@@ -160,17 +160,14 @@ static void video_render_pal_main(video_render_config_t *config,
                 switch (palmode) {
                   default:
                   case VIDEO_RESOURCE_PAL_MODE_FAST:
-                  case VIDEO_RESOURCE_PAL_MODE_TRUE:
 			render_24_2x2_08(colortab, src, trg, width, height,
 					 xs, ys, xt, yt, pitchs, pitcht, doublescan);
                     return;
+                  case VIDEO_RESOURCE_PAL_MODE_TRUE:
                   case VIDEO_RESOURCE_PAL_MODE_NEW:
-                    render_24_2x2_pal_new(colortab, src, trg, width, height,
+                    render_24_2x2_pal(colortab, src, trg, width, height,
                                       xs, ys, xt, yt, pitchs, pitcht,
-                                      doublescan);
-                    render_24_2x2_pal_scanlines(colortab, src, trg, width, height,
-                                      xs, ys, xt, yt, pitchs, pitcht,
-                                      doublescan); 
+                                      viewport_height);
                     return;
                 }
                 return;
@@ -183,17 +180,10 @@ static void video_render_pal_main(video_render_config_t *config,
                                      doublescan);
                     return;
                   case VIDEO_RESOURCE_PAL_MODE_TRUE:
+                  case VIDEO_RESOURCE_PAL_MODE_NEW:
                     render_32_2x2_pal(colortab, src, trg, width, height,
                                       xs, ys, xt, yt, pitchs, pitcht,
-                                      doublescan);
-                    return;
-                  case VIDEO_RESOURCE_PAL_MODE_NEW:
-                    render_32_2x2_pal_new(colortab, src, trg, width, height,
-                                      xs, ys, xt, yt, pitchs, pitcht,
-                                      doublescan);
-                    render_32_2x2_pal_scanlines(colortab, src, trg, width, height,
-                                      xs, ys, xt, yt, pitchs, pitcht,
-                                      doublescan); 
+                                      viewport_height);
                     return;
                 }
                 return;

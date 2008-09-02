@@ -61,11 +61,14 @@ inline static void refresh_canvas(raster_t *raster)
     h = update_area->ye - update_area->ys + 1;
 
     if (video_render_get_fake_pal_state()) {
-        /* if pal emu is activated, more pixels have to be updated */
+        /* if pal emu is activated, more pixels have to be updated: around,
+         * above and below, because of blurring and scanline effects. */
         x -= 4;
         xx -= 4;
         w += 8;
-        h ++;
+        y --;
+        yy --;
+        h += 2;
     }
 
     if (xx < 0) {
