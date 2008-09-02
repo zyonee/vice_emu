@@ -33,6 +33,8 @@
 int vic20ui_init(void)
 {
 fprintf(stderr,"%s\n",__func__);
+
+    sdl_register_vcachename("VICVideoCache");
     return 0;
 }
 

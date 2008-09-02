@@ -60,6 +60,8 @@ typedef struct menufont_s menufont_t;
 
 static menufont_t menufont = { NULL, 0, 0 };
 
+static char *vcache_name = NULL;
+
 /* ------------------------------------------------------------------ */
 
 
@@ -225,13 +227,22 @@ static int sdl_ui_menu_display(ui_menu_entry_t *menu, const char *title)
 
 static void sdl_ui_trap(WORD addr, void *data)
 {
+    int vcache_state;
+
     vsync_suspend_speed_eval();
     sdl_menu_state = 1;
     sdl_ui_menu_display(main_menu, "VICE main menu");
     sdl_menu_state = 0;
 
-    /* TODO this doesn't redraw the screen if video cache is on */
+    resources_get_int(vcache_name, &vcache_state);
+
+    if (vcache_state != 0)
+        resources_set_int(vcache_name, 0);
+
     video_canvas_refresh_all(sdl_active_canvas);
+
+    if (vcache_state != 0)
+        resources_set_int(vcache_name, vcache_state);
 }
 
 /* ------------------------------------------------------------------ */
@@ -305,3 +316,7 @@ const char *sdl_ui_menu_radio_helper(int activated, ui_callback_data_t param, co
     return " ";
 }
 
+void sdl_register_vcachename(char *vcache)
+{
+    vcache_name = vcache;
+}

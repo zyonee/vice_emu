@@ -33,6 +33,8 @@
 int petui_init(void)
 {
 fprintf(stderr,"%s\n",__func__);
+
+    sdl_register_vcachename("CrtcVideoCache");
     return 0;
 }
 

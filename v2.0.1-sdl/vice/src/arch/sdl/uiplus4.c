@@ -33,6 +33,8 @@
 int plus4ui_init(void)
 {
 fprintf(stderr,"%s\n",__func__);
+
+    sdl_register_vcachename("TEDVideoCache");
     return 0;
 }
 

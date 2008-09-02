@@ -93,5 +93,7 @@ typedef enum {
 extern const char *sdl_ui_menu_toggle_helper(int activated, const char *resource_name);
 extern const char *sdl_ui_menu_radio_helper(int activated, ui_callback_data_t param, const char *resource_name);
 
+extern void sdl_register_vcachename(char *vcache_name);
+
 #endif
 
