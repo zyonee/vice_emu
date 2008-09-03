@@ -71,12 +71,8 @@ static void video_render_pal_main(video_render_config_t *config,
         break;
 
       case VIDEO_RENDER_PAL_1X1:
-        if (delayloop) {
+        if (delayloop && depth != 8) {
             switch (depth) {
-              case 8:
-                render_08_1x1_08(colortab, src, trg, width, height,
-                                 xs, ys, xt, yt, pitchs, pitcht);
-                return;
               case 16:
                 render_16_1x1_pal(colortab, src, trg, width, height,
                                     xs, ys, xt, yt, pitchs, pitcht);
@@ -112,19 +108,15 @@ static void video_render_pal_main(video_render_config_t *config,
         }
         return;
       case VIDEO_RENDER_PAL_2X2:
-        if (delayloop) {
+        if (delayloop && depth != 8) {
             switch (depth) {
-              case 8:
-                render_08_2x2_08(colortab, src, trg, width, height,
-                                 xs, ys, xt, yt, pitchs, pitcht, doublescan);
-                return;
               case 16:
                 render_16_2x2_pal(colortab, src, trg, width, height,
                                   xs, ys, xt, yt, pitchs, pitcht,
                                   viewport_height);
                 return;
               case 24:
-                render_24_2x2_08(colortab, src, trg, width, height,
+                render_24_2x2_pal(colortab, src, trg, width, height,
                                  xs, ys, xt, yt, pitchs, pitcht, doublescan);
                 return;
               case 32:
