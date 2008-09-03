@@ -48,6 +48,8 @@
 
 static log_t gnomevideo_log = LOG_ERR;
 
+extern void uicolor_init_video_colors(int is_big_endian);
+
 int video_arch_resources_init(void)
 {
 #ifdef HAVE_OPENGL_SYNC
@@ -118,7 +120,7 @@ void video_canvas_destroy(video_canvas_t *canvas)
     }
 #endif
 
-    lib_free(canvas->gdk_image);
+    g_object_unref(canvas->gdk_image);
 
     video_canvas_shutdown(canvas);
 }
@@ -144,14 +146,18 @@ void video_canvas_resize(video_canvas_t *canvas, unsigned int width,
     if (canvas->videoconfig->doublesizey)
         height *= 2;
 
-    lib_free(canvas->gdk_image);
-    canvas->gdk_image = lib_malloc(4*width*height);
+    g_object_unref(canvas->gdk_image);
+    canvas->gdk_image = gdk_image_new(GDK_IMAGE_FASTEST, gtk_widget_get_visual(canvas->emuwindow), width, height);
+
+    if (canvas->gdk_image->byte_order == GDK_LSB_FIRST) {
+        uicolor_init_video_colors(0);
+    }
+    if (canvas->gdk_image->byte_order == GDK_MSB_FIRST) {
+        uicolor_init_video_colors(1);
+    }
 
     ui_resize_canvas_window(canvas->emuwindow, width, height, 
 			    canvas->videoconfig->hwscale);
-    canvas->gdk_image_size.width = width;
-    canvas->gdk_image_size.height = height;
-
     video_canvas_redraw_size(canvas, width, height);
 }
 
@@ -198,17 +204,17 @@ void video_canvas_refresh(video_canvas_t *canvas,
     }
 #endif
 
-    if (xi + w > canvas->gdk_image_size.width || yi + h > canvas->gdk_image_size.height) {
+    if (xi + w > canvas->gdk_image->width || yi + h > canvas->gdk_image->height) {
         log_debug("Attempt to draw outside canvas!\n"
                   "XI%i YI%i W%i H%i CW%i CH%i\n",
-                  xi, yi, w, h, canvas->gdk_image_size.width, canvas->gdk_image_size.height);
+                  xi, yi, w, h, canvas->gdk_image->width, canvas->gdk_image->height);
         exit(-1);
     }
 
-    video_canvas_render(canvas, canvas->gdk_image,
+    video_canvas_render(canvas, canvas->gdk_image->mem,
                         w, h, xs, ys, xi, yi,
-                        canvas->gdk_image_size.width*4,
-                        32);
+                        canvas->gdk_image->bpl,
+                        canvas->gdk_image->bits_per_pixel);
 
     /* Schedule redraw of the rendered area. */
     {

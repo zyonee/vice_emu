@@ -50,7 +50,7 @@ drive_led_off_pixel, motor_running_pixel, tape_control_pixel;
 extern GdkColor drive_led_on_red_pixels[16];
 extern GdkColor drive_led_on_green_pixels[16];
 
-static void uicolor_init_video_colors();
+void uicolor_init_video_colors();
 
 /*-----------------------------------------------------------------------*/
 
@@ -97,8 +97,6 @@ int uicolor_set_palette(struct video_canvas_s *c, const palette_t *palette)
 {
     unsigned int i;
 
-    uicolor_init_video_colors();
-
     for (i = 0; i < palette->num_entries; i++) {
         palette_entry_t color = palette->entries[i];
         DWORD color_pixel = 
@@ -111,14 +109,27 @@ int uicolor_set_palette(struct video_canvas_s *c, const palette_t *palette)
     return 0;
 }
 
-static void uicolor_init_video_colors()
+void uicolor_init_video_colors(int is_big_endian)
 {
     short i;
     
     for (i = 0; i < 256; i++) {
-	    video_render_setrawrgb(i, 
-		    (DWORD)i, (DWORD)i << 8, (DWORD)i << 16
-	    );
+/* only reverse the colour order if we are on a big-endian box and requested
+ * little-endian color order, or if we are on little-endian box and requested
+ * big-endian color order. */
+#ifdef WORDS_BIGENDIAN
+        if (!is_big_endian) {
+#else
+        if (is_big_endian) {
+#endif
+            video_render_setrawrgb(i, 
+                (DWORD)i << 0, (DWORD)i << 8, (DWORD)i << 16
+            );
+        } else {
+            video_render_setrawrgb(i, 
+                (DWORD)i << 16, (DWORD)i << 8, (DWORD)i << 0
+            );
+        }
     }
     
     video_render_initraw();

@@ -47,8 +47,7 @@ struct video_canvas_s {
     unsigned int initialized;
     unsigned int created;
     GtkWidget* emuwindow;
-    guchar *gdk_image;
-    rectangle_t gdk_image_size;
+    GdkImage* gdk_image;
     struct video_render_config_s *videoconfig;
     struct draw_buffer_s *draw_buffer;
     struct viewport_s *viewport;

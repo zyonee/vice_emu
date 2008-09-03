@@ -47,9 +47,9 @@ DWORD gamma_red_fac[256 * 3];
 DWORD gamma_grn_fac[256 * 3];
 DWORD gamma_blu_fac[256 * 3];
 
-DWORD color_red[256];
-DWORD color_grn[256];
-DWORD color_blu[256];
+static DWORD color_red[256];
+static DWORD color_grn[256];
+static DWORD color_blu[256];
 
 void video_render_setrawrgb(unsigned int index, DWORD r, DWORD g, DWORD b)
 {
@@ -349,7 +349,7 @@ static void video_calc_ycbcrtable_oddlines(const video_ycbcr_palette_t *p,
                                   video_render_color_tables_t *color_tab)
 {
     video_ycbcr_color_t *primary;
-    unsigned int i, lf, hf;
+    unsigned int i;
     float sat,tin;
 
     sat = ((float)(video_resources.color_saturation)) * (256.0f / 1000.0f);

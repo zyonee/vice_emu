@@ -641,6 +641,7 @@ void ui_create_status_bar(GtkWidget *pane)
 		       FALSE, FALSE, 0);
 
     /* FIXME: temporary solution, gnome/gtk people need to fix this */
+    /* XXX permanently on for now
     if (machine_class != VICE_MACHINE_PET)
     {
         if ((resources_get_int("PALEmulation", &i) != -1) && (i > 0))
@@ -650,6 +651,8 @@ void ui_create_status_bar(GtkWidget *pane)
     }
     else
         gtk_widget_hide(pal_ctrl_checkbox);
+    */
+    gtk_widget_show(pal_ctrl_checkbox);
 
     /* Video Control checkbox */
     video_ctrl_checkbox = gtk_frame_new(NULL);
@@ -2773,21 +2776,21 @@ gboolean exposure_callback_canvas(GtkWidget *w, GdkEventExpose *e,
             glTexParameteri (GL_TEX_RECT, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
             glTexParameteri (GL_TEX_RECT, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
             glTexImage2D  (GL_TEX_RECT, 0, GL_RGBA, 
-                canvas->gdk_image_size.width, canvas->gdk_image_size.height,
-                0, GL_RGBA, GL_UNSIGNED_BYTE, canvas->gdk_image);
+                canvas->gdk_image->width, canvas->gdk_image->height,
+                0, GL_RGBA, GL_UNSIGNED_BYTE, canvas->gdk_image->mem);
 
             glBegin (GL_QUADS);
 
             glTexCoord2f(0.0f, 0.0f);              /* Lower Right Of Texture */
             glVertex2f(-1.0f, 1.0f);
 
-            glTexCoord2f(0.0f, canvas->gdk_image_size.height);              /* Upper Right Of Texture */
+            glTexCoord2f(0.0f, canvas->gdk_image->height);              /* Upper Right Of Texture */
             glVertex2f(-1.0f, -1.0f);
 
-            glTexCoord2f(canvas->gdk_image_size.width, canvas->gdk_image_size.height);              /* Upper Left Of Texture */
+            glTexCoord2f(canvas->gdk_image->width, canvas->gdk_image->height);              /* Upper Left Of Texture */
             glVertex2f(1.0f, -1.0f);
 
-            glTexCoord2f(canvas->gdk_image_size.width, 0.0f);              /* Lower Left Of Texture */
+            glTexCoord2f(canvas->gdk_image->width, 0.0f);              /* Lower Left Of Texture */
             glVertex2f(1.0f, 1.0f);
 
             glEnd ();
@@ -2801,14 +2804,10 @@ gboolean exposure_callback_canvas(GtkWidget *w, GdkEventExpose *e,
 #endif
 #if !defined(MACOSX_SUPPORT) || !defined(HAVE_HWSCALE)
         {
-	    gdk_draw_rgb_32_image(w->window, app_gc,
-				  e->area.x, e->area.y, 
-				  e->area.width, e->area.height, 
-				  GDK_RGB_DITHER_NONE,
-				  canvas->gdk_image+canvas->
-				  gdk_image_size.width*4*e->
-				  area.y+4*e->area.x, 
-				  canvas->gdk_image_size.width*4);
+	    gdk_draw_image(w->window, app_gc,
+                           canvas->gdk_image, e->area.x, e->area.y, 
+                           e->area.x, e->area.y,
+                           e->area.width, e->area.height);
         }
 #endif
     }

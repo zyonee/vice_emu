@@ -49,7 +49,8 @@ extern DWORD gamma_blu_fac[256 * 3];
 /* 1-line high artifacts appear on screen if compiler reorders these
  * writes. We could fix that by having a scratch buffer, though. */
 
-static inline void store_line_and_scanline_2(
+static inline
+void store_line_and_scanline_2(
     BYTE *line, BYTE *scanline, WORD *prevline,
     const DWORD red, const DWORD grn, const DWORD blu)
 {
@@ -66,24 +67,34 @@ static inline void store_line_and_scanline_2(
     prevline[2] = (WORD) blu;
 }
 
-static inline void store_line_and_scanline_3(
+static inline
+void store_line_and_scanline_3(
     BYTE *line, BYTE *scanline, WORD *prevline,
     const DWORD red, const DWORD grn, const DWORD blu)
 {
-    scanline[0] = (BYTE) gamma_red_fac[(red + (DWORD) prevline[0]) >> 1];
-    scanline[1] = (BYTE) gamma_red_fac[(grn + (DWORD) prevline[1]) >> 1];
-    scanline[2] = (BYTE) gamma_red_fac[(blu + (DWORD) prevline[2]) >> 1];
+    /* gamma_* are generated according to endianness of the graphics system.
+     * This makes the function valid for both RGB and BGR byte orders. */
+    DWORD tmp1 = gamma_red_fac[(red + (DWORD) prevline[0]) >> 1]
+               | gamma_grn_fac[(grn + (DWORD) prevline[1]) >> 1]
+               | gamma_blu_fac[(blu + (DWORD) prevline[2]) >> 1];
+    
+    scanline[0] = (BYTE) (tmp1 >> 16);
+    scanline[1] = (BYTE) (tmp1 >> 8);
+    scanline[2] = (BYTE) (tmp1 >> 0);
+    
+    DWORD tmp2 = gamma_red[red] | gamma_grn[grn] | gamma_blu[blu];
 
-    line[0] = (BYTE) gamma_red[red];
-    line[1] = (BYTE) gamma_red[grn];
-    line[2] = (BYTE) gamma_red[blu];
+    line[0] = (BYTE) (tmp2 >> 16);
+    line[1] = (BYTE) (tmp2 >> 8);
+    line[2] = (BYTE) (tmp2 >> 0);
 
     prevline[0] = (WORD) red;
     prevline[1] = (WORD) grn;
     prevline[2] = (WORD) blu;
 }
 
-static inline void store_line_and_scanline_4(
+static inline
+void store_line_and_scanline_4(
     BYTE *line, BYTE *scanline, WORD *prevline,
     const DWORD red, const DWORD grn, const DWORD blu)
 {
@@ -101,7 +112,8 @@ static inline void store_line_and_scanline_4(
 }
 
 
-static inline void get_rgb_from_video(
+static inline
+void get_rgb_from_video(
     const BYTE *src, SDWORD *line,
     const int off_flip,
     const SDWORD* ytablel, const SDWORD* ytableh,
@@ -129,7 +141,9 @@ static inline void get_rgb_from_video(
     *grn = (l - ((50 * u + 130 * v) >> 8)) >> 16;
 }
 
-static inline void render_generic_2x2_pal(video_render_color_tables_t *color_tab, const BYTE *src, BYTE *trg,
+static inline
+void render_generic_2x2_pal(video_render_color_tables_t *color_tab,
+                       const BYTE *src, BYTE *trg,
                        unsigned int width, const unsigned int height,
                        const unsigned int xs, const unsigned int ys,
                        const unsigned int xt, const unsigned int yt,
@@ -278,7 +292,8 @@ static inline void render_generic_2x2_pal(video_render_color_tables_t *color_tab
     }
 }
 
-void render_16_2x2_pal(video_render_color_tables_t *color_tab, const BYTE *src, BYTE *trg,
+void render_16_2x2_pal(video_render_color_tables_t *color_tab,
+                       const BYTE *src, BYTE *trg,
                        unsigned int width, const unsigned int height,
                        const unsigned int xs, const unsigned int ys,
                        const unsigned int xt, const unsigned int yt,
@@ -290,7 +305,8 @@ void render_16_2x2_pal(video_render_color_tables_t *color_tab, const BYTE *src, 
                            2, store_line_and_scanline_2);
 }
 
-void render_24_2x2_pal(video_render_color_tables_t *color_tab, const BYTE *src, BYTE *trg,
+void render_24_2x2_pal(video_render_color_tables_t *color_tab,
+                       const BYTE *src, BYTE *trg,
                        unsigned int width, const unsigned int height,
                        const unsigned int xs, const unsigned int ys,
                        const unsigned int xt, const unsigned int yt,
@@ -302,7 +318,8 @@ void render_24_2x2_pal(video_render_color_tables_t *color_tab, const BYTE *src, 
                            3, store_line_and_scanline_3);
 }
 
-void render_32_2x2_pal(video_render_color_tables_t *color_tab, const BYTE *src, BYTE *trg,
+void render_32_2x2_pal(video_render_color_tables_t *color_tab,
+                       const BYTE *src, BYTE *trg,
                        unsigned int width, const unsigned int height,
                        const unsigned int xs, const unsigned int ys,
                        const unsigned int xt, const unsigned int yt,
