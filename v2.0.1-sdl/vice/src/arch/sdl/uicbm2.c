@@ -31,6 +31,7 @@
 #include <stdlib.h>
 
 #include "cbm2mem.h"
+#include "resources.h"
 #include "ui.h"
 #include "uimenu.h"
 
@@ -93,13 +94,39 @@ static ui_menu_entry_t xcbm2_main_menu[] = {
     { NULL }
 };
 
+BYTE cbm2_font[14*256];
+
 int cbm2ui_init(void)
 {
+    int i, j, model;
+
 fprintf(stderr,"%s\n",__func__);
 
     sdl_register_vcachename("CrtcVideoCache");
+
+    resources_get_int("ModelLine", &model);
+    if (model == 0)
+    {
+        for (i=0; i<256; i++)
+        {
+            for (j=0; j<14; j++)
+            {
+                cbm2_font[(i*14)+j]=mem_chargen_rom[(i*16)+j+1];
+            }
+        }
+    }
+    else
+    {
+        for (i=0; i<256; i++)
+        {
+            for (j=0; j<8; j++)
+            {
+                cbm2_font[(i*8)+j]=mem_chargen_rom[(i*16)+j];
+            }
+        }
+    }
     sdl_ui_set_main_menu(xcbm2_main_menu);
-    sdl_ui_set_menu_font(mem_chargen_rom, NULL, 0, 8, 8);
+    sdl_ui_set_menu_font(cbm2_font, NULL, 0, 8, (model == 0) ? 14 : 8);
     return 0;
 }
 
