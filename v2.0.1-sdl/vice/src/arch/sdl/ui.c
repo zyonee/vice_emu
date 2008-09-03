@@ -193,25 +193,25 @@ fprintf(stderr,"%s\n",__func__);
 
     switch (machine_class) {
       case VICE_MACHINE_C64:
-        ui_machine_name = "Vice C64 Emulator";
+        ui_machine_name = "VICE C64 Emulator";
         break;
       case VICE_MACHINE_C64DTV:
-        ui_machine_name = "Vice C64DTV Emulator";
+        ui_machine_name = "VICE C64DTV Emulator";
         break;
       case VICE_MACHINE_C128:
-        ui_machine_name = "Vice C128 Emulator";
+        ui_machine_name = "VICE C128 Emulator";
         break;
       case VICE_MACHINE_CBM2:
-        ui_machine_name = "Vice CBM2 Emulator";
+        ui_machine_name = "VICE CBM2 Emulator";
         break;
       case VICE_MACHINE_PET:
-        ui_machine_name = "Vice PET Emulator";
+        ui_machine_name = "VICE PET Emulator";
         break;
       case VICE_MACHINE_PLUS4:
-        ui_machine_name = "Vice PLUS4 Emulator";
+        ui_machine_name = "VICE PLUS4 Emulator";
         break;
       case VICE_MACHINE_VIC20:
-        ui_machine_name = "Vice VIC20 Emulator";
+        ui_machine_name = "VICE VIC20 Emulator";
         break;
     }
 
