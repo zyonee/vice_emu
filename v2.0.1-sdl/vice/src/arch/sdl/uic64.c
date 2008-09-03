@@ -2,9 +2,8 @@
  * uic64.c - Implementation of the C64-specific part of the UI.
  *
  * Written by
- *  Ettore Perazzoli <ettore@comm2000.it>
- *  André Fachat <fachat@physik.tu-chemnitz.de>
- *  Andreas Boose <viceteam@t-online.de>
+ *  Hannu Nuotio <hannu.nuotio@tut.fi>
+ *  Marco van den Heuvel <blackystardust68@yahoo.com>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -68,8 +67,8 @@ static UI_MENU_CALLBACK(quit_callback)
 }
 
 static ui_menu_entry_t x64_main_menu[] = {
-    { "Attach disk",
-      MENU_ENTRY_DIALOG,
+    { "Attach disk (->)",
+      MENU_ENTRY_SUBMENU,
       NULL, /* disk_attach_dialog */
       NULL,
       NULL },
@@ -95,6 +94,7 @@ static ui_menu_entry_t x64_main_menu[] = {
 int c64ui_init(void)
 {
 fprintf(stderr,"%s\n",__func__);
+
     sdl_register_vcachename("VICIIVideoCache");
     sdl_ui_set_main_menu(x64_main_menu);
     sdl_ui_set_menu_font(mem_chargen_rom + 0x800, 8, 8);
@@ -105,4 +105,3 @@ void c64ui_shutdown(void)
 {
 fprintf(stderr,"%s\n",__func__);
 }
-

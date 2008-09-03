@@ -37,6 +37,7 @@
 #include "joy.h"
 #include "kbd.h"
 #include "interrupt.h"
+#include "machine.h"
 #include "resources.h"
 #include "ui.h"
 #include "uiapi.h"
@@ -48,9 +49,14 @@
 /* ----------------------------------------------------------------- */
 /* ui.h */
 
+static char *ui_machine_name=NULL;
+
 void ui_display_speed(float percent, float framerate, int warp_flag)
 {
-/*fprintf(stderr,"%f%%/%f fps %s\n",percent,framerate,warp_flag?"(warp)":"");*/
+    char caption[100];
+
+    sprintf(caption, "%s - %d%%/%d fps %s", ui_machine_name, (int)(percent + .5), (int)(framerate + .5), warp_flag ? "(warp)" : "");
+    SDL_WM_SetCaption(caption, 0 );
 }
 
 void ui_display_paused(int flag){}
@@ -184,6 +190,31 @@ fprintf(stderr,"%s\n",__func__);
 int ui_init(int *argc, char **argv)
 {
 fprintf(stderr,"%s\n",__func__);
+
+    switch (machine_class) {
+      case VICE_MACHINE_C64:
+        ui_machine_name = "Vice C64 Emulator";
+        break;
+      case VICE_MACHINE_C64DTV:
+        ui_machine_name = "Vice C64DTV Emulator";
+        break;
+      case VICE_MACHINE_C128:
+        ui_machine_name = "Vice C128 Emulator";
+        break;
+      case VICE_MACHINE_CBM2:
+        ui_machine_name = "Vice CBM2 Emulator";
+        break;
+      case VICE_MACHINE_PET:
+        ui_machine_name = "Vice PET Emulator";
+        break;
+      case VICE_MACHINE_PLUS4:
+        ui_machine_name = "Vice PLUS4 Emulator";
+        break;
+      case VICE_MACHINE_VIC20:
+        ui_machine_name = "Vice VIC20 Emulator";
+        break;
+    }
+
     return 0;
 }
 

@@ -2,9 +2,8 @@
  * uiplus4.c - Implementation of the Plus4-specific part of the UI.
  *
  * Written by
- *  Ettore Perazzoli <ettore@comm2000.it>
- *  André Fachat <fachat@physik.tu-chemnitz.de>
- *  Andreas Boose <viceteam@t-online.de>
+ *  Hannu Nuotio <hannu.nuotio@tut.fi>
+ *  Marco van den Heuvel <blackystardust68@yahoo.com>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -29,6 +28,8 @@
 #include "vice.h"
 
 #include <stdio.h>
+
+#include "ui.h"
 
 int plus4ui_init(void)
 {
