@@ -65,8 +65,14 @@ static menufont_t menufont = { NULL, sdl_default_translation, 0, 0 };
 
 static char *vcache_name = NULL;
 
-/* ------------------------------------------------------------------ */
+static int menu_draw_pitch;
+static int menu_draw_offset;
+static int menu_draw_max_text_x;
+static int menu_draw_max_text_y;
+static BYTE menu_draw_color_front = COLOR_FRONT;
+static BYTE menu_draw_color_back = COLOR_BACK;
 
+/* ------------------------------------------------------------------ */
 
 static void sdl_ui_putchar(char c, int pos_x, int pos_y)
 {
@@ -75,24 +81,22 @@ static void sdl_ui_putchar(char c, int pos_x, int pos_y)
     BYTE *font_pos;
     BYTE *draw_pos;
 
-    font_pos = &(menufont.font[menufont.translate[c]]);
-    draw_pos = &(sdl_active_canvas->draw_buffer->draw_buffer[pos_x * menufont.w + pos_y * menufont.w * sdl_active_canvas->draw_buffer->draw_buffer_pitch]);
+    font_pos = &(menufont.font[menufont.translate[(int)c]]);
+    draw_pos = &(sdl_active_canvas->draw_buffer->draw_buffer[pos_x * menufont.w + pos_y * menufont.h * menu_draw_pitch]);
 
-    draw_pos += sdl_active_canvas->geometry->gfx_position.x;
-    draw_pos += sdl_active_canvas->geometry->gfx_position.y * sdl_active_canvas->draw_buffer->draw_buffer_pitch;
-    draw_pos += sdl_active_canvas->geometry->extra_offscreen_border_left;
+    draw_pos += menu_draw_offset;
 
     for(y=0; y < menufont.h; ++y) {
         fontchar = *font_pos;
         for(x=0; x < menufont.w; ++x) {
-            draw_pos[x] = (fontchar & (0x80 >> x))?COLOR_FRONT:COLOR_BACK;
+            draw_pos[x] = (fontchar & (0x80 >> x))?menu_draw_color_front:menu_draw_color_back;
         }
         ++font_pos;
         draw_pos += sdl_active_canvas->draw_buffer->draw_buffer_pitch;
     }
 }
 
-static void sdl_ui_print(const char *text, int pos_x, int pos_y)
+static int sdl_ui_print(const char *text, int pos_x, int pos_y)
 {
     int i = 0;
     BYTE c;
@@ -101,15 +105,17 @@ static void sdl_ui_print(const char *text, int pos_x, int pos_y)
         sdl_ui_putchar(c, pos_x+i, pos_y);
         ++i;
     }
+
+    return i;
 }
 
 static void sdl_ui_clear(void)
 {
     unsigned int x, y;
-    char c = charset_petcii_to_screencode(charset_p_topetcii(' '), 0);
+    const char c = ' ';
 
-    for(y=0; y < sdl_active_canvas->geometry->text_size.height; ++y) {
-        for(x=0; x < sdl_active_canvas->geometry->text_size.width; ++x) {
+    for(y=0; y < menu_draw_max_text_y; ++y) {
+        for(x=0; x < menu_draw_max_text_x; ++x) {
             sdl_ui_putchar(c, x, y);
         }
     }
@@ -123,16 +129,18 @@ static void sdl_ui_display_title(const char *title)
 
 static void sdl_ui_display_item(ui_menu_entry_t *item, int y_pos)
 {
+    int i;
+
     if(((item->string == NULL) || (item->type == MENU_ENTRY_SEPARATOR))) {
         return;
     }
 
-    sdl_ui_print(item->string, 1, y_pos+2);
+    i = sdl_ui_print(item->string, 1, y_pos+2);
 
     switch(item->type) {
         case MENU_ENTRY_RESOURCE_TOGGLE:
         case MENU_ENTRY_RESOURCE_RADIO:
-            sdl_ui_print(item->callback(0, item->callback_data), 1+20, y_pos+MENU_FIRST_Y);
+            sdl_ui_print(item->callback(0, item->callback_data), 1+i+1, y_pos+MENU_FIRST_Y);
             break;
         default:
             break;
@@ -168,13 +176,19 @@ static ui_menu_action_t sdl_ui_menu_poll_input(void)
 static void sdl_ui_menu_redraw(ui_menu_entry_t *menu, const char *title, int num_items)
 {
     int i;
-    int max_onscreen_items = sdl_active_canvas->geometry->text_size.height - MENU_FIRST_Y;
+
+    menu_draw_max_text_x = sdl_active_canvas->geometry->text_size.width;
+    menu_draw_max_text_y = sdl_active_canvas->geometry->text_size.height;
+    menu_draw_pitch = sdl_active_canvas->draw_buffer->draw_buffer_pitch;
+    menu_draw_offset = sdl_active_canvas->geometry->gfx_position.x
+                     + sdl_active_canvas->geometry->gfx_position.y * menu_draw_pitch
+                     + sdl_active_canvas->geometry->extra_offscreen_border_left;
 
     sdl_ui_clear();
     sdl_ui_display_title(title);
 
     for(i=0; i<num_items; ++i) {
-        if(num_items == max_onscreen_items) {
+        if(num_items == (menu_draw_max_text_y - MENU_FIRST_Y)) {
             break;
         }
         sdl_ui_display_item(&(menu[i]), i);
@@ -277,7 +291,7 @@ void sdl_ui_set_main_menu(ui_menu_entry_t *menu)
     main_menu = menu;
 }
 
-void sdl_ui_set_menu_font(BYTE *font, WORD *translate, int w, int h)
+void sdl_ui_set_menu_font(BYTE *font, WORD *translate, int offset, int w, int h)
 {
     int i;
 
@@ -289,8 +303,19 @@ void sdl_ui_set_menu_font(BYTE *font, WORD *translate, int w, int h)
         menufont.translate = translate;
     } else {
         for(i=0; i<256; ++i) {
-            menufont.translate[i] = 0x800 + 8*charset_petcii_to_screencode(charset_p_topetcii((char)i), 0);
+            menufont.translate[i] = offset + h*charset_petcii_to_screencode(charset_p_topetcii((char)i), 0);
         }
+    }
+}
+
+void sdl_ui_set_menu_colors(int front, int back)
+{
+    if(front >= 0) {
+        menu_draw_color_front = (BYTE)(front & 0xff);
+    }
+
+    if(back >= 0) {
+        menu_draw_color_back = (BYTE)(back & 0xff);
     }
 }
 
@@ -311,9 +336,9 @@ const char *sdl_ui_menu_toggle_helper(int activated, const char *resource_name)
         r = resources_get_int(resource_name, &value);
 
     if (r < 0)
-        return "???";
+        return "?";
     else
-        return value ? "On " : "Off";
+        return value ? "*" : " ";
 }
 
 const char *sdl_ui_menu_radio_helper(int activated, ui_callback_data_t param, const char *resource_name)
@@ -333,3 +358,4 @@ void sdl_register_vcachename(char *vcache)
 {
     vcache_name = vcache;
 }
+

@@ -28,6 +28,7 @@
 #include "vice.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "ui.h"
 #include "uimenu.h"
@@ -60,7 +61,7 @@ fprintf(stderr,"%s\n",__func__);
 
     sdl_register_vcachename("VICVideoCache");
     sdl_ui_set_main_menu(xvic_main_menu);
-    sdl_ui_set_menu_font(vic20memrom_chargen_rom, NULL, 8, 8);
+    sdl_ui_set_menu_font(vic20memrom_chargen_rom, NULL, 0, 8, 8);
     return 0;
 }
 

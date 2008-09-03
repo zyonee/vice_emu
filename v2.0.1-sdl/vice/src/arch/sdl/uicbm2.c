@@ -99,7 +99,7 @@ fprintf(stderr,"%s\n",__func__);
 
     sdl_register_vcachename("CrtcVideoCache");
     sdl_ui_set_main_menu(xcbm2_main_menu);
-    sdl_ui_set_menu_font(mem_chargen_rom, NULL, 8, 8);
+    sdl_ui_set_menu_font(mem_chargen_rom, NULL, 0, 8, 8);
     return 0;
 }
 
