@@ -27,10 +27,11 @@
 
 #include "vice.h"
 
-#include "c64mem.h"
-#include "uimenu.h"
-
 #include <stdio.h>
+
+#include "c64mem.h"
+#include "ui.h"
+#include "uimenu.h"
 
 UI_MENU_DEFINE_RADIO(SidModel)
 
@@ -67,7 +68,7 @@ static UI_MENU_CALLBACK(quit_callback)
 }
 
 static ui_menu_entry_t x64_main_menu[] = {
-    { "Attach disk (->)",
+    { "Attach disk",
       MENU_ENTRY_SUBMENU,
       NULL, /* disk_attach_dialog */
       NULL,
