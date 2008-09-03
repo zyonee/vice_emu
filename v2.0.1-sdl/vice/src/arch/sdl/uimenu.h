@@ -60,7 +60,7 @@ typedef struct ui_menu_entry_s {
 } ui_menu_entry_t;
 
 extern void sdl_ui_set_main_menu(ui_menu_entry_t *menu);
-extern void sdl_ui_set_menu_font(BYTE *font, int w, int h);
+extern void sdl_ui_set_menu_font(BYTE *font, WORD *translate, int w, int h);
 extern void sdl_ui_activate(void);
 extern int sdl_ui_menu_item_activate(ui_menu_entry_t *item);
 

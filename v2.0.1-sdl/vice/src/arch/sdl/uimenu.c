@@ -51,14 +51,17 @@ int sdl_menu_state = 0;
 
 static ui_menu_entry_t *main_menu = NULL;
 
+static WORD sdl_default_translation[256];
+
 struct menufont_s {
     BYTE *font;
+    WORD *translate;
     int w;
     int h;
 };
 typedef struct menufont_s menufont_t;
 
-static menufont_t menufont = { NULL, 0, 0 };
+static menufont_t menufont = { NULL, sdl_default_translation, 0, 0 };
 
 static char *vcache_name = NULL;
 
@@ -72,7 +75,7 @@ static void sdl_ui_putchar(char c, int pos_x, int pos_y)
     BYTE *font_pos;
     BYTE *draw_pos;
 
-    font_pos = &(menufont.font[c * menufont.h]);
+    font_pos = &(menufont.font[menufont.translate[c]]);
     draw_pos = &(sdl_active_canvas->draw_buffer->draw_buffer[pos_x * menufont.w + pos_y * menufont.w * sdl_active_canvas->draw_buffer->draw_buffer_pitch]);
 
     draw_pos += sdl_active_canvas->geometry->gfx_position.x;
@@ -95,7 +98,7 @@ static void sdl_ui_print(const char *text, int pos_x, int pos_y)
     BYTE c;
 
     while((c = text[i]) != 0) {
-        sdl_ui_putchar(charset_petcii_to_screencode(charset_p_topetcii(c), 0), pos_x+i, pos_y);
+        sdl_ui_putchar(c, pos_x+i, pos_y);
         ++i;
     }
 }
@@ -138,8 +141,8 @@ static void sdl_ui_display_item(ui_menu_entry_t *item, int y_pos)
 
 static void sdl_ui_display_cursor(int pos, int old_pos)
 {
-    char c_erase = charset_petcii_to_screencode(charset_p_topetcii(' '), 0);
-    char c_cursor = charset_petcii_to_screencode(charset_p_topetcii('>'), 0);
+    const char c_erase = ' ';
+    const char c_cursor = '>';
 
     if(pos == old_pos) {
         return;
@@ -274,11 +277,21 @@ void sdl_ui_set_main_menu(ui_menu_entry_t *menu)
     main_menu = menu;
 }
 
-void sdl_ui_set_menu_font(BYTE *font, int w, int h)
+void sdl_ui_set_menu_font(BYTE *font, WORD *translate, int w, int h)
 {
+    int i;
+
     menufont.font = font;
     menufont.w = w;
     menufont.h = h;
+
+    if(translate) {
+        menufont.translate = translate;
+    } else {
+        for(i=0; i<256; ++i) {
+            menufont.translate[i] = 0x800 + 8*charset_petcii_to_screencode(charset_p_topetcii((char)i), 0);
+        }
+    }
 }
 
 void sdl_ui_activate(void)

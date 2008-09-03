@@ -30,12 +30,37 @@
 #include <stdio.h>
 
 #include "ui.h"
+#include "uimenu.h"
+#include "vic20memrom.h"
+
+static UI_MENU_CALLBACK(quit_callback)
+{
+    exit(0);
+    return 0;
+}
+
+static ui_menu_entry_t xvic_main_menu[] = {
+    { "Attach disk",
+      MENU_ENTRY_SUBMENU,
+      NULL, /* disk_attach_dialog */
+      NULL,
+      NULL },
+    { "-", MENU_ENTRY_SEPARATOR, NULL, NULL, NULL },
+    { "Quit",
+      MENU_ENTRY_OTHER,
+      quit_callback,
+      NULL,
+      NULL },
+    { NULL }
+};
 
 int vic20ui_init(void)
 {
 fprintf(stderr,"%s\n",__func__);
 
     sdl_register_vcachename("VICVideoCache");
+    sdl_ui_set_main_menu(xvic_main_menu);
+    sdl_ui_set_menu_font(vic20memrom_chargen_rom, NULL, 8, 8);
     return 0;
 }
 
