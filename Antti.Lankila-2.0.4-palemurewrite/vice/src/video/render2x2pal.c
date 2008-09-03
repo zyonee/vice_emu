@@ -180,40 +180,34 @@ void render_generic_2x2_pal(video_render_color_tables_t *color_tab,
     width >>= 1;
 
     line = color_tab->line_yuv_0;
-    if (ys > 0) {
-        /* get previous line into buffer. */
-        tmpsrc = src - pitchs;
-    
-        /* is the previous line odd or even? (inverted condition!) */
-        if (ys & 1) {
-            cbtable = color_tab->cbtable;
-            crtable = color_tab->crtable;
-        } else {
-            cbtable = color_tab->cbtable_odd;
-            crtable = color_tab->crtable_odd;
-        }
-    
-        /* Initialize line */
-        for (x = 0; x < width + wfirst + wlast; x++) {
-            register DWORD cl0, cl1, cl2, cl3;
+    /* get previous line into buffer. */
+    tmpsrc = ys > 0 ? src - pitchs : src;
+    /* trick to get the first line to average with itself */
+    off_flip = ys > 0 ? 1 : -1;
 
-            cl0 = tmpsrc[0];
-            cl1 = tmpsrc[1];
-            cl2 = tmpsrc[2];
-            cl3 = tmpsrc[3];
-            line[0] = cbtable[cl0] + cbtable[cl1] + cbtable[cl2] + cbtable[cl3];
-            line[1] = crtable[cl0] + crtable[cl1] + crtable[cl2] + crtable[cl3];
-            tmpsrc++;
-            line += 2;
-        }
+    /* is the previous line odd or even? (inverted condition!) */
+    if (ys & 1) {
+        cbtable = color_tab->cbtable;
+        crtable = color_tab->crtable;
     } else {
-        /* no previous line? I'll assume 0, that way we'll at least see
-         * something in u/v subtract... */
-        for (x = 0; x < width + wfirst + wlast; x++) {
-            line[0] = 0;
-            line[1] = 0;
-            line += 2;
-        }
+        cbtable = color_tab->cbtable_odd;
+        crtable = color_tab->crtable_odd;
+    }
+    
+    /* Initialize line */
+    for (x = 0; x < width + wfirst + wlast; x++) {
+        register DWORD cl0, cl1, cl2, cl3;
+
+        cl0 = tmpsrc[0];
+        cl1 = tmpsrc[1];
+        cl2 = tmpsrc[2];
+        cl3 = tmpsrc[3];
+        line[0] = cbtable[cl0] + cbtable[cl1] + cbtable[cl2] + cbtable[cl3];
+        line[1] = crtable[cl0] + crtable[cl1] + crtable[cl2] + crtable[cl3];
+        line[0] *= off_flip;
+        line[1] *= off_flip;
+        tmpsrc++;
+        line += 2;
     }
     /* That's all initialization we need for full lines. Unfortunately, for
      * scanlines we also need to calculate the RGB color of the previous

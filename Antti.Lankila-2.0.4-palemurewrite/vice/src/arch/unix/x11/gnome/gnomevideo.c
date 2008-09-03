@@ -48,8 +48,6 @@
 
 static log_t gnomevideo_log = LOG_ERR;
 
-extern void uicolor_init_video_colors(int is_big_endian);
-
 int video_arch_resources_init(void)
 {
 #ifdef HAVE_OPENGL_SYNC
@@ -125,12 +123,11 @@ void video_canvas_destroy(video_canvas_t *canvas)
     video_canvas_shutdown(canvas);
 }
 
-
-int video_canvas_set_palette(video_canvas_t *c, struct palette_s *palette)
+/* set it, update if we know the endianness required by the image */
+int video_canvas_set_palette(video_canvas_t *canvas, struct palette_s *palette)
 {
-    c->palette = palette;
-
-    return uicolor_set_palette(c, palette);
+    canvas->palette = palette;
+    return 0;
 }
 
 /* Change the size of the canvas. */
@@ -148,13 +145,9 @@ void video_canvas_resize(video_canvas_t *canvas, unsigned int width,
 
     g_object_unref(canvas->gdk_image);
     canvas->gdk_image = gdk_image_new(GDK_IMAGE_FASTEST, gtk_widget_get_visual(canvas->emuwindow), width, height);
-
-    if (canvas->gdk_image->byte_order == GDK_LSB_FIRST) {
-        uicolor_init_video_colors(0);
-    }
-    if (canvas->gdk_image->byte_order == GDK_MSB_FIRST) {
-        uicolor_init_video_colors(1);
-    }
+    /* these colors are used by the non-PAL parts. */
+    if (uicolor_set_palette(canvas, canvas->palette) < 0)
+        exit(1);
 
     ui_resize_canvas_window(canvas->emuwindow, width, height, 
 			    canvas->videoconfig->hwscale);

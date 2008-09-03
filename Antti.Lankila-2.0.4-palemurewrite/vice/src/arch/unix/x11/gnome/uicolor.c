@@ -90,47 +90,45 @@ int uicolor_alloc_colors(video_canvas_t *c)
 	drive_led_on_green_pixels[i].blue = 0;
     }
     
-    return uicolor_set_palette(c, c->palette);
+    return 0;
 }
 
 int uicolor_set_palette(struct video_canvas_s *c, const palette_t *palette)
 {
     unsigned int i;
 
+    int rs = 16;
+    int gs = 8;
+    int bs = 0;
+
+#ifdef WORDS_BIGENDIAN
+    if (c->gdk_image->byte_order == GDK_LSB_FIRST)
+#else
+    if (c->gdk_image->byte_order == GDK_MSB_FIRST)
+#endif
+    {
+        rs = 0;
+        gs = 8;
+        bs = 16;
+    }
+
     for (i = 0; i < palette->num_entries; i++) {
         palette_entry_t color = palette->entries[i];
         DWORD color_pixel = 
-            (DWORD)color.red |
-            (DWORD)color.green << 8 |
-            (DWORD)color.blue << 16;
+            (DWORD)color.red   << rs |
+            (DWORD)color.green << gs |
+            (DWORD)color.blue  << bs;
 	    video_render_setphysicalcolor(((video_canvas_t*)c)->videoconfig, i,
             color_pixel, 32);
     }
-    return 0;
-}
-
-void uicolor_init_video_colors(int is_big_endian)
-{
-    short i;
     
     for (i = 0; i < 256; i++) {
-/* only reverse the colour order if we are on a big-endian box and requested
- * little-endian color order, or if we are on little-endian box and requested
- * big-endian color order. */
-#ifdef WORDS_BIGENDIAN
-        if (!is_big_endian) {
-#else
-        if (is_big_endian) {
-#endif
-            video_render_setrawrgb(i, 
-                (DWORD)i << 0, (DWORD)i << 8, (DWORD)i << 16
-            );
-        } else {
-            video_render_setrawrgb(i, 
-                (DWORD)i << 16, (DWORD)i << 8, (DWORD)i << 0
-            );
-        }
+        video_render_setrawrgb(i, 
+            (DWORD)i << rs, (DWORD)i << gs, (DWORD)i << bs
+        );
     }
     
     video_render_initraw();
+
+    return 0;
 }

@@ -84,24 +84,16 @@ render_generic_1x1_pal(video_render_color_tables_t *color_tab, const BYTE *src, 
     trg = trg + pitcht * yt + xt * pixelstride;
     
     line = color_tab->line_yuv_0;
-    if (ys > 0) { 
-        tmpsrc = src - pitchs;
-        for (x = 0; x < width; x++) {
-            cl0 = tmpsrc[0];
-            cl1 = tmpsrc[1];
-            cl2 = tmpsrc[2];
-            cl3 = tmpsrc[3];
-            tmpsrc += 1;
-            line[0] = cbtable[cl0] + cbtable[cl1] + cbtable[cl2] + cbtable[cl3];
-            line[1] = crtable[cl0] + crtable[cl1] + crtable[cl2] + crtable[cl3];
-            line += 2;
-        }
-    } else {
-        for (x = 0; x < width; x++) {
-            line[0] = 0;
-            line[1] = 0;
-            line += 2;
-        }
+    tmpsrc = ys > 0 ? src - pitchs : src;
+    for (x = 0; x < width; x++) {
+        cl0 = tmpsrc[0];
+        cl1 = tmpsrc[1];
+        cl2 = tmpsrc[2];
+        cl3 = tmpsrc[3];
+        tmpsrc += 1;
+        line[0] = cbtable[cl0] + cbtable[cl1] + cbtable[cl2] + cbtable[cl3];
+        line[1] = crtable[cl0] + crtable[cl1] + crtable[cl2] + crtable[cl3];
+        line += 2;
     }
 
     for (y = 0; y < height; y++) {
