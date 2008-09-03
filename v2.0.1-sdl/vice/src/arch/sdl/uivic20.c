@@ -55,13 +55,26 @@ static ui_menu_entry_t xvic_main_menu[] = {
     { NULL }
 };
 
+BYTE vic20_font[8*256];
+
 int vic20ui_init(void)
 {
+    int i, j;
 fprintf(stderr,"%s\n",__func__);
 
     sdl_register_vcachename("VICVideoCache");
     sdl_ui_set_main_menu(xvic_main_menu);
-    sdl_ui_set_menu_font(vic20memrom_chargen_rom, NULL, 0, 8, 8);
+
+    for (i=0; i<128; i++)
+    {
+        for (j=0; j<8; j++)
+        {
+            vic20_font[(i*8)+j]=vic20memrom_chargen_rom[(i*8)+(128*8)+j+0x800];
+            vic20_font[(i*8)+(128*8)+j]=vic20memrom_chargen_rom[(i*8)+j+0x800];
+        }
+    }
+
+    sdl_ui_set_menu_font(vic20_font, NULL, 0, 8, 8);
     return 0;
 }
 
