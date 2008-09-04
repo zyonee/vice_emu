@@ -61,7 +61,7 @@ typedef struct ui_menu_entry_s {
 
 extern void sdl_register_vcachename(char *vcache_name);
 extern void sdl_ui_set_main_menu(ui_menu_entry_t *menu);
-extern void sdl_ui_set_menu_font(BYTE *font, WORD *translate, int offset, int w, int h);
+extern void sdl_ui_set_menu_font(BYTE *font, int w, int h);
 extern void sdl_ui_set_menu_colors(int front, int back);
 
 extern void sdl_ui_activate(void);

@@ -291,7 +291,7 @@ void sdl_ui_set_main_menu(ui_menu_entry_t *menu)
     main_menu = menu;
 }
 
-void sdl_ui_set_menu_font(BYTE *font, WORD *translate, int offset, int w, int h)
+void sdl_ui_set_menu_font(BYTE *font, int w, int h)
 {
     int i;
 
@@ -299,12 +299,8 @@ void sdl_ui_set_menu_font(BYTE *font, WORD *translate, int offset, int w, int h)
     menufont.w = w;
     menufont.h = h;
 
-    if(translate) {
-        menufont.translate = translate;
-    } else {
-        for(i=0; i<256; ++i) {
-            menufont.translate[i] = offset + h*charset_petcii_to_screencode(charset_p_topetcii((char)i), 0);
-        }
+    for(i=0; i<256; ++i) {
+        menufont.translate[i] = h*charset_petcii_to_screencode(charset_p_topetcii((char)i), 0);
     }
 }
 
