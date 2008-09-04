@@ -30,6 +30,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "debug.h"
 #include "petmem.h"
 #include "resources.h"
 #include "ui.h"
@@ -144,7 +145,7 @@ static ui_menu_entry_t xpet_main_menu[] = {
       NULL,
       NULL,
       tape_menu },
-    { "Emulation hardware settings menu",
+    { "Machine settings menu",
       MENU_ENTRY_SUBMENU,
       NULL,
       NULL,

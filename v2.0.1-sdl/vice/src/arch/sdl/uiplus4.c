@@ -30,6 +30,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "debug.h"
 #include "plus4memrom.h"
 #include "resources.h"
 #include "ui.h"
@@ -155,7 +156,7 @@ static ui_menu_entry_t xplus4_main_menu[] = {
       NULL,
       NULL,
       plus4_cart_menu },
-    { "Emulation hardware settings menu",
+    { "Machine settings menu",
       MENU_ENTRY_SUBMENU,
       NULL,
       NULL,

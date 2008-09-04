@@ -30,6 +30,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "debug.h"
 #include "c64mem.h"
 #include "ui.h"
 #include "uimenu.h"
@@ -154,7 +155,7 @@ static ui_menu_entry_t x64_main_menu[] = {
       NULL,
       NULL,
       c64_c128_cart_menu },
-    { "Emulation hardware settings menu",
+    { "Machine settings menu",
       MENU_ENTRY_SUBMENU,
       NULL,
       NULL,

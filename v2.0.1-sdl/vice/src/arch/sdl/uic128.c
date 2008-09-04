@@ -211,7 +211,7 @@ static ui_menu_entry_t x128_main_menu[] = {
       NULL,
       NULL,
       c64_c128_cart_menu },
-    { "Emulation hardware settings menu",
+    { "Machine settings menu",
       MENU_ENTRY_SUBMENU,
       NULL,
       NULL,
