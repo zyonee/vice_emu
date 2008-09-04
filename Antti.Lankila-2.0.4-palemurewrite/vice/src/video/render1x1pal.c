@@ -44,12 +44,16 @@ store_pixel_2(BYTE *trg, WORD red, WORD grn, WORD blu)
 static inline void
 store_pixel_3(BYTE *trg, WORD red, WORD grn, WORD blu)
 {
-    /* This formulation is endianness correct, as the gamma_* are
-     * calculated according to target surface byte order (BGR/RGB) */
     DWORD tmp = gamma_red[red] | gamma_grn[grn] | gamma_blu[blu];
+#ifdef WORDS_BIGENDIAN
     trg[0] = (BYTE) (tmp >> 16);
     trg[1] = (BYTE) (tmp >> 8);
     trg[2] = (BYTE) (tmp >> 0);
+#else
+    trg[0] = (BYTE) (tmp >> 0);
+    trg[1] = (BYTE) (tmp >> 8);
+    trg[2] = (BYTE) (tmp >> 16);
+#endif
 }
 
 static inline void

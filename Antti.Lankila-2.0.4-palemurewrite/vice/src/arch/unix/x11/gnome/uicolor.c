@@ -116,43 +116,52 @@ unsigned int endian_swap(unsigned int color, unsigned int bpp, unsigned int swap
 
 int uicolor_set_palette(struct video_canvas_s *c, const palette_t *palette)
 {
-    unsigned int i, rs, gs, bs, redbits, grnbits, blubits, swap = 0;
+    unsigned int i, rs, gs, bs, redbits, grnbits, blubits;
+    unsigned int swap = c->needs_endianswap;
 
-#ifdef WORDS_BIGENDIAN
-    if (c->gdk_image->byte_order == GDK_LSB_FIRST)
-#else
-    if (c->gdk_image->byte_order == GDK_MSB_FIRST)
-#endif
-    {
-        swap = 1;
-    }
-
-    /* I don't support indexed palettes. */
-    if (c->gdk_image->depth == 16) {
-        redbits = 5;
-        grnbits = 6;
-        blubits = 5;
-    } else if (c->gdk_image->depth == 15) {
-        /* When I tested this on ATI Radeon Mobility 7500 the desktop had
-         * false colours, so not even GNOME really supports this. Also,
-         * the color order was not rgb, but more like brg... */
-        redbits = 5;
-        grnbits = 5;
-        blubits = 5;
-    } else if (c->gdk_image->bits_per_pixel == 24
-               || c->gdk_image->bits_per_pixel == 32) {
+    /* hwscaled colours are special case, we must do GL_RGB then. */
+    if (c->videoconfig->hwscale) {
+        swap = 0;
         redbits = 8;
         grnbits = 8;
         blubits = 8;
+#ifdef WORDS_BIGENDIAN
+        rs = 16;
+        gs = 8;
+        bs = 0;
+#else
+        rs = 0;
+        gs = 8;
+        bs = 16;
+#endif
     } else {
-        /* whoops. What is this mode? */
-        log_error(LOG_ERR, "Sorry. I don't know how to handle your video mode colours with %d depth and %d bits per pixel. At least 8-bit pseudocolor modes are not supported by GNOMEUI. 15, 16, 24 and 32, however, should work.", c->gdk_image->depth, c->gdk_image->bits_per_pixel);
-        exit(1);
-    }
+        /* I don't support indexed palettes. */
+        if (c->gdk_image->depth == 16) {
+            redbits = 5;
+            grnbits = 6;
+            blubits = 5;
+        } else if (c->gdk_image->depth == 15) {
+            /* When I tested this on ATI Radeon Mobility 7500 the desktop had
+             * false colours, so not even GNOME really supports this. Also,
+             * the color order was not rgb, but more like brg... */
+            redbits = 5;
+            grnbits = 5;
+            blubits = 5;
+        } else if (c->gdk_image->bits_per_pixel == 24
+                   || c->gdk_image->bits_per_pixel == 32) {
+            redbits = 8;
+            grnbits = 8;
+            blubits = 8;
+        } else {
+            /* whoops. What is this mode? */
+            log_error(LOG_ERR, "Sorry. I don't know how to handle your video mode colours with %d depth and %d bits per pixel. At least 8-bit pseudocolor modes are not supported by GNOMEUI. 15, 16, 24 and 32, however, should work.", c->gdk_image->depth, c->gdk_image->bits_per_pixel);
+            exit(1);
+        }
 
-    rs = grnbits + blubits;
-    gs = blubits;
-    bs = 0;
+        rs = grnbits + blubits;
+        gs = blubits;
+        bs = 0;
+    }
 
     for (i = 0; i < palette->num_entries; i++) {
         palette_entry_t color = palette->entries[i];
@@ -169,9 +178,12 @@ int uicolor_set_palette(struct video_canvas_s *c, const palette_t *palette)
     
     for (i = 0; i < 256; i++) {
         video_render_setrawrgb(i, 
-            endian_swap(i >> (8-redbits) << rs, c->gdk_image->bits_per_pixel, swap),
-            endian_swap(i >> (8-grnbits) << gs, c->gdk_image->bits_per_pixel, swap),
-            endian_swap(i >> (8-blubits) << bs, c->gdk_image->bits_per_pixel, swap)
+            endian_swap(i >> (8-redbits) << rs,
+                        c->gdk_image->bits_per_pixel, swap),
+            endian_swap(i >> (8-grnbits) << gs,
+                        c->gdk_image->bits_per_pixel, swap),
+            endian_swap(i >> (8-blubits) << bs,
+                        c->gdk_image->bits_per_pixel, swap)
         );
     }
     

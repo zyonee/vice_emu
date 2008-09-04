@@ -95,6 +95,7 @@ video_canvas_t *video_canvas_create(video_canvas_t *canvas, unsigned int *width,
     int res;
 
     canvas->gdk_image = NULL;
+    canvas->hwscale_image = NULL;
 
     res = ui_open_canvas_window(canvas, canvas->viewport->title,
 				*width, *height, 1);
@@ -117,7 +118,7 @@ void video_canvas_destroy(video_canvas_t *canvas)
         lib_free(canvas->fullscreenconfig);
     }
 #endif
-
+    lib_free(canvas->hwscale_image);
     g_object_unref(canvas->gdk_image);
 
     video_canvas_shutdown(canvas);
@@ -127,7 +128,20 @@ void video_canvas_destroy(video_canvas_t *canvas)
 int video_canvas_set_palette(video_canvas_t *canvas, struct palette_s *palette)
 {
     canvas->palette = palette;
-    return 0;
+   
+    canvas->needs_endianswap = 0;
+    if (canvas->gdk_image) {
+#ifdef WORDS_BIGENDIAN
+        if (canvas->gdk_image->byte_order == GDK_LSB_FIRST)
+#else
+        if (canvas->gdk_image->byte_order == GDK_MSB_FIRST)
+#endif
+        {
+            canvas->needs_endianswap = 1;
+        }
+    }
+
+    return uicolor_set_palette(canvas, canvas->palette);
 }
 
 /* Change the size of the canvas. */
@@ -144,9 +158,10 @@ void video_canvas_resize(video_canvas_t *canvas, unsigned int width,
         height *= 2;
 
     g_object_unref(canvas->gdk_image);
+    lib_free(canvas->hwscale_image);
     canvas->gdk_image = gdk_image_new(GDK_IMAGE_FASTEST, gtk_widget_get_visual(canvas->emuwindow), width, height);
-    /* these colors are used by the non-PAL parts. */
-    if (uicolor_set_palette(canvas, canvas->palette) < 0)
+    canvas->hwscale_image = lib_malloc(canvas->gdk_image->width * canvas->gdk_image->height * 3);
+    if (video_canvas_set_palette(canvas, canvas->palette) < 0)
         exit(1);
 
     ui_resize_canvas_window(canvas->emuwindow, width, height, 
@@ -204,13 +219,17 @@ void video_canvas_refresh(video_canvas_t *canvas,
         exit(-1);
     }
 
-    video_canvas_render(canvas, canvas->gdk_image->mem,
-                        w, h, xs, ys, xi, yi,
-                        canvas->gdk_image->bpl,
-                        canvas->gdk_image->bits_per_pixel);
+    if (canvas->videoconfig->hwscale) {
+        video_canvas_render(canvas, canvas->hwscale_image,
+                            w, h, xs, ys, xi, yi, canvas->gdk_image->width * 3,
+                            24);
+        gtk_widget_queue_draw(canvas->emuwindow);
+    } else {
+        video_canvas_render(canvas, canvas->gdk_image->mem,
+                            w, h, xs, ys, xi, yi, canvas->gdk_image->bpl,
+                            canvas->gdk_image->bits_per_pixel);
 
-    /* Schedule redraw of the rendered area. */
-    {
+        /* Schedule redraw of the rendered area. */
         GdkRectangle rect = {xi, yi, w, h};
         gdk_window_invalidate_rect (canvas->emuwindow->window, &rect, FALSE);
     }

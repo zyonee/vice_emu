@@ -967,7 +967,7 @@ int ui_open_canvas_window(video_canvas_t *c, const char *title,
 	   unreferenced.  */
 	/* gtk_rc_style_unref(rc_style); */
 #ifdef HAVE_HWSCALE
-        GdkGLConfig *gl_config = gdk_gl_config_new_by_mode (GDK_GL_MODE_RGBA | GDK_GL_MODE_DOUBLE);
+        GdkGLConfig *gl_config = gdk_gl_config_new_by_mode(GDK_GL_MODE_RGBA | GDK_GL_MODE_DOUBLE);
 
         if (gl_config == NULL) {
             log_warning (ui_log, "HW scaling will not be available");
@@ -2758,7 +2758,7 @@ gboolean exposure_callback_canvas(GtkWidget *w, GdkEventExpose *e,
 
             (void) gdk_gl_drawable_gl_begin (gl_drawable, gl_context);
 
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            glClear(GL_COLOR_BUFFER_BIT);
 
 #ifdef GL_TEXTURE_RECTANGLE_NV
 #define GL_TEX_RECT GL_TEXTURE_RECTANGLE_NV
@@ -2771,13 +2771,18 @@ gboolean exposure_callback_canvas(GtkWidget *w, GdkEventExpose *e,
 #endif
 
             glEnable (GL_TEX_RECT);
+            glDisable (GL_DEPTH_TEST);
             glBindTexture (GL_TEX_RECT, canvas->screen_texture);
 
+            /* XXX The colours may be wrong here... We should make a RGB
+             *     or big-endian palette for the GL rendering. What a
+             *     hopeless mess. If only OpenGL supported GL_BGR, I could
+             *     choose it when appropriate. */
             glTexParameteri (GL_TEX_RECT, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
             glTexParameteri (GL_TEX_RECT, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-            glTexImage2D  (GL_TEX_RECT, 0, GL_RGBA, 
+            glTexImage2D  (GL_TEX_RECT, 0, GL_RGBA,
                 canvas->gdk_image->width, canvas->gdk_image->height,
-                0, GL_RGBA, GL_UNSIGNED_BYTE, canvas->gdk_image->mem);
+                0, GL_RGB, GL_UNSIGNED_BYTE, canvas->hwscale_image);
 
             glBegin (GL_QUADS);
 

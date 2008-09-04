@@ -48,6 +48,8 @@ struct video_canvas_s {
     unsigned int created;
     GtkWidget* emuwindow;
     GdkImage* gdk_image;
+    unsigned char *hwscale_image;
+    int needs_endianswap;
     struct video_render_config_s *videoconfig;
     struct draw_buffer_s *draw_buffer;
     struct viewport_s *viewport;
