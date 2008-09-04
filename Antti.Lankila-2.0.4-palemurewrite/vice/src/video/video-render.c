@@ -77,6 +77,7 @@ void video_render_initconfig(video_render_config_t *config)
 void video_render_setphysicalcolor(video_render_config_t *config, int index,
                                    DWORD color, int depth)
 {
+    /* duplicated colours are used by the double size 8/16 bpp renderers. */
     switch (depth) {
       case 8:
         color &= 0x000000FF;
@@ -85,11 +86,6 @@ void video_render_setphysicalcolor(video_render_config_t *config, int index,
       case 16:
         color &= 0x0000FFFF;
         color = color | (color << 16);
-        break;
-      case 24:
-        color &= 0x00FFFFFF;
-        break;
-      case 32:
         break;
     }
     config->color_tables.physical_colors[index] = color;

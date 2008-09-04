@@ -93,13 +93,30 @@ int uicolor_alloc_colors(video_canvas_t *c)
     return 0;
 }
 
+unsigned int endian_swap(unsigned int color, unsigned int bpp, unsigned int swap) {
+    if (! swap)
+        return color;
+
+    if (bpp == 8)
+        return color;
+
+    if (bpp == 16)
+        return ((color >> 8) & 0x00ff)
+             | ((color << 8) & 0xff00);
+
+    if (bpp == 32)
+        return ((color >> 24) & 0x000000ff)
+             | ((color >>  8) & 0x0000ff00)
+             | ((color <<  8) & 0x00ff0000)
+             | ((color << 24) & 0xff000000);
+    
+    /* err? */
+    return color;
+}
+
 int uicolor_set_palette(struct video_canvas_s *c, const palette_t *palette)
 {
-    unsigned int i;
-
-    int rs = 16;
-    int gs = 8;
-    int bs = 0;
+    unsigned int i, rs, gs, bs, redbits, grnbits, blubits, swap = 0;
 
 #ifdef WORDS_BIGENDIAN
     if (c->gdk_image->byte_order == GDK_LSB_FIRST)
@@ -107,24 +124,54 @@ int uicolor_set_palette(struct video_canvas_s *c, const palette_t *palette)
     if (c->gdk_image->byte_order == GDK_MSB_FIRST)
 #endif
     {
-        rs = 0;
-        gs = 8;
-        bs = 16;
+        swap = 1;
     }
+
+    /* I don't support indexed palettes. */
+    if (c->gdk_image->depth == 16) {
+        redbits = 5;
+        grnbits = 6;
+        blubits = 5;
+    } else if (c->gdk_image->depth == 15) {
+        /* When I tested this on ATI Radeon Mobility 7500 the desktop had
+         * false colours, so not even GNOME really supports this. Also,
+         * the color order was not rgb, but more like brg... */
+        redbits = 5;
+        grnbits = 5;
+        blubits = 5;
+    } else if (c->gdk_image->bits_per_pixel == 24
+               || c->gdk_image->bits_per_pixel == 32) {
+        redbits = 8;
+        grnbits = 8;
+        blubits = 8;
+    } else {
+        /* whoops. What is this mode? */
+        log_error(LOG_ERR, "Sorry. I don't know how to handle your video mode colours with %d depth and %d bits per pixel. At least 8-bit pseudocolor modes are not supported by GNOMEUI. 15, 16, 24 and 32, however, should work.", c->gdk_image->depth, c->gdk_image->bits_per_pixel);
+        exit(1);
+    }
+
+    rs = grnbits + blubits;
+    gs = blubits;
+    bs = 0;
 
     for (i = 0; i < palette->num_entries; i++) {
         palette_entry_t color = palette->entries[i];
-        DWORD color_pixel = 
-            (DWORD)color.red   << rs |
-            (DWORD)color.green << gs |
-            (DWORD)color.blue  << bs;
-	    video_render_setphysicalcolor(((video_canvas_t*)c)->videoconfig, i,
-            color_pixel, 32);
+        DWORD color_pixel = endian_swap(
+            color.red   >> (8-redbits) << rs |
+            color.green >> (8-grnbits) << gs |
+            color.blue  >> (8-blubits) << bs,
+            c->gdk_image->bits_per_pixel,
+            swap
+        );
+        video_render_setphysicalcolor(c->videoconfig, i, color_pixel,
+                                      c->gdk_image->bits_per_pixel);
     }
     
     for (i = 0; i < 256; i++) {
         video_render_setrawrgb(i, 
-            (DWORD)i << rs, (DWORD)i << gs, (DWORD)i << bs
+            endian_swap(i >> (8-redbits) << rs, c->gdk_image->bits_per_pixel, swap),
+            endian_swap(i >> (8-grnbits) << gs, c->gdk_image->bits_per_pixel, swap),
+            endian_swap(i >> (8-blubits) << bs, c->gdk_image->bits_per_pixel, swap)
         );
     }
     

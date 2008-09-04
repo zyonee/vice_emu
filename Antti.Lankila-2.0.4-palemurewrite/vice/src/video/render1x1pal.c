@@ -35,14 +35,14 @@ extern DWORD gamma_grn[256 * 3];
 extern DWORD gamma_blu[256 * 3];
 
 static inline void
-store_pixel_2(BYTE *trg, DWORD red, DWORD grn, DWORD blu)
+store_pixel_2(BYTE *trg, WORD red, WORD grn, WORD blu)
 {
     WORD *tmp = (WORD *) trg;
     *tmp = (WORD) (gamma_red[red] | gamma_grn[grn] | gamma_blu[blu]);
 }
 
 static inline void
-store_pixel_3(BYTE *trg, DWORD red, DWORD grn, DWORD blu)
+store_pixel_3(BYTE *trg, WORD red, WORD grn, WORD blu)
 {
     /* This formulation is endianness correct, as the gamma_* are
      * calculated according to target surface byte order (BGR/RGB) */
@@ -53,7 +53,7 @@ store_pixel_3(BYTE *trg, DWORD red, DWORD grn, DWORD blu)
 }
 
 static inline void
-store_pixel_4(BYTE *trg, DWORD red, DWORD grn, DWORD blu)
+store_pixel_4(BYTE *trg, WORD red, WORD grn, WORD blu)
 {
     DWORD *tmp = (DWORD *) trg;
     *tmp = gamma_red[red] | gamma_grn[grn] | gamma_blu[blu];
@@ -68,7 +68,7 @@ render_generic_1x1_pal(video_render_color_tables_t *color_tab, const BYTE *src, 
                        const unsigned int pitchs, const unsigned int pitcht,
                        const unsigned int pixelstride,
                        void (*store_func)(BYTE *trg,
-                                          DWORD red, DWORD grn, DWORD blu))
+                                          WORD red, WORD grn, WORD blu))
 {
     const SDWORD *cbtable = color_tab->cbtable;
     const SDWORD *crtable = color_tab->crtable;
@@ -78,7 +78,8 @@ render_generic_1x1_pal(video_render_color_tables_t *color_tab, const BYTE *src, 
     BYTE *tmptrg;
     unsigned int x, y;
     SDWORD *line, l, u, v, unew, vnew;
-    DWORD red, grn, blu, cl0, cl1, cl2, cl3;
+    WORD red, grn, blu;
+    BYTE cl0, cl1, cl2, cl3;
 
     src = src + pitchs * ys + xs - 2;
     trg = trg + pitcht * yt + xt * pixelstride;
@@ -108,7 +109,7 @@ render_generic_1x1_pal(video_render_color_tables_t *color_tab, const BYTE *src, 
             cl2 = tmpsrc[2];
             cl3 = tmpsrc[3];
             tmpsrc += 1;
-            l = ytablel[cl1] + ytableh[cl2] + ytablel[cl3] + 65536 * 256;
+            l = ytablel[cl1] + ytableh[cl2] + ytablel[cl3];
             unew = cbtable[cl0] + cbtable[cl1] + cbtable[cl2] + cbtable[cl3];
             vnew = crtable[cl0] + crtable[cl1] + crtable[cl2] + crtable[cl3];
 

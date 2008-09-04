@@ -331,8 +331,9 @@ static void video_calc_ycbcrtable(const video_ycbcr_palette_t *p,
         primary = &p->entries[i];
         val = (SDWORD)(primary->y * 256.0f);
         color_tab->ytable[i] = val;
-        color_tab->ytablel[i] = val*lf;
-        color_tab->ytableh[i] = val*hf;
+        /* factor in 65536 offset to not do it in hot path */
+        color_tab->ytablel[i] = (val + 65536) * lf;
+        color_tab->ytableh[i] = (val + 65536) * hf;
         color_tab->cbtable[i] = (SDWORD)((primary->cb)* sat);
 	/* tint, add to cr in odd lines */
 	val = (SDWORD)(tin);

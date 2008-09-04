@@ -52,31 +52,31 @@ extern DWORD gamma_blu_fac[256 * 3];
 static inline
 void store_line_and_scanline_2(
     BYTE *line, BYTE *scanline, WORD *prevline,
-    const DWORD red, const DWORD grn, const DWORD blu)
+    const WORD red, const WORD grn, const WORD blu)
 {
     WORD *tmp1 = (WORD *) scanline;
-    *tmp1 = gamma_red_fac[(red + (DWORD) prevline[0]) >> 1]
-          | gamma_grn_fac[(grn + (DWORD) prevline[1]) >> 1]
-          | gamma_blu_fac[(blu + (DWORD) prevline[2]) >> 1];
+    *tmp1 = gamma_red_fac[(red + prevline[0]) >> 1]
+          | gamma_grn_fac[(grn + prevline[1]) >> 1]
+          | gamma_blu_fac[(blu + prevline[2]) >> 1];
     
     WORD *tmp2 = (WORD *) line;
     *tmp2 = gamma_red[red] | gamma_grn[grn] | gamma_blu[blu];
 
-    prevline[0] = (WORD) red;
-    prevline[1] = (WORD) grn;
-    prevline[2] = (WORD) blu;
+    prevline[0] = red;
+    prevline[1] = grn;
+    prevline[2] = blu;
 }
 
 static inline
 void store_line_and_scanline_3(
     BYTE *line, BYTE *scanline, WORD *prevline,
-    const DWORD red, const DWORD grn, const DWORD blu)
+    const WORD red, const WORD grn, const WORD blu)
 {
     /* gamma_* are generated according to endianness of the graphics system.
      * This makes the function valid for both RGB and BGR byte orders. */
-    DWORD tmp1 = gamma_red_fac[(red + (DWORD) prevline[0]) >> 1]
-               | gamma_grn_fac[(grn + (DWORD) prevline[1]) >> 1]
-               | gamma_blu_fac[(blu + (DWORD) prevline[2]) >> 1];
+    DWORD tmp1 = gamma_red_fac[(red + prevline[0]) >> 1]
+               | gamma_grn_fac[(grn + prevline[1]) >> 1]
+               | gamma_blu_fac[(blu + prevline[2]) >> 1];
     
     scanline[0] = (BYTE) (tmp1 >> 16);
     scanline[1] = (BYTE) (tmp1 >> 8);
@@ -88,27 +88,27 @@ void store_line_and_scanline_3(
     line[1] = (BYTE) (tmp2 >> 8);
     line[2] = (BYTE) (tmp2 >> 0);
 
-    prevline[0] = (WORD) red;
-    prevline[1] = (WORD) grn;
-    prevline[2] = (WORD) blu;
+    prevline[0] = red;
+    prevline[1] = grn;
+    prevline[2] = blu;
 }
 
 static inline
 void store_line_and_scanline_4(
     BYTE *line, BYTE *scanline, WORD *prevline,
-    const DWORD red, const DWORD grn, const DWORD blu)
+    const WORD red, const WORD grn, const WORD blu)
 {
     DWORD *tmp1 = (DWORD *) scanline;
-    *tmp1 = gamma_red_fac[(red + (DWORD) prevline[0]) >> 1]
-          | gamma_grn_fac[(grn + (DWORD) prevline[1]) >> 1]
-          | gamma_blu_fac[(blu + (DWORD) prevline[2]) >> 1];
+    *tmp1 = gamma_red_fac[(red + prevline[0]) >> 1]
+          | gamma_grn_fac[(grn + prevline[1]) >> 1]
+          | gamma_blu_fac[(blu + prevline[2]) >> 1];
     
     DWORD *tmp2 = (DWORD *) line;
     *tmp2 = gamma_red[red] | gamma_grn[grn] | gamma_blu[blu];
 
-    prevline[0] = (WORD) red;
-    prevline[1] = (WORD) grn;
-    prevline[2] = (WORD) blu;
+    prevline[0] = red;
+    prevline[1] = grn;
+    prevline[2] = blu;
 }
 
 
@@ -118,7 +118,7 @@ void get_rgb_from_video(
     const int off_flip,
     const SDWORD* ytablel, const SDWORD* ytableh,
     const SDWORD* cbtable, const SDWORD* crtable,
-    DWORD *red, DWORD *grn, DWORD *blu)
+    WORD *red, WORD *grn, WORD *blu)
 {
     BYTE cl0, cl1, cl2, cl3;
     SDWORD unew, vnew;
@@ -128,7 +128,7 @@ void get_rgb_from_video(
     cl2 = src[2];
     cl3 = src[3];
 
-    l = (ytablel[cl1] + ytableh[cl2] + ytablel[cl3]) + 65536 * 256;
+    l = ytablel[cl1] + ytableh[cl2] + ytablel[cl3];
     unew = cbtable[cl0] + cbtable[cl1] + cbtable[cl2] + cbtable[cl3];
     vnew = crtable[cl0] + crtable[cl1] + crtable[cl2] + crtable[cl3];
     u = (unew - line[0]) * off_flip;
@@ -136,9 +136,9 @@ void get_rgb_from_video(
     line[0] = unew;
     line[1] = vnew;
 
-    *red = (l + v) >> 16;
-    *blu = (l + u) >> 16;
-    *grn = (l - ((50 * u + 130 * v) >> 8)) >> 16;
+    *red = (WORD) ((l + v) >> 16);
+    *blu = (WORD) ((l + u) >> 16);
+    *grn = (WORD) ((l - ((50 * u + 130 * v) >> 8)) >> 16);
 }
 
 static inline
@@ -151,7 +151,7 @@ void render_generic_2x2_pal(video_render_color_tables_t *color_tab,
 		       unsigned int viewport_height, unsigned int pixelstride,
                        void (*store_func)(
                             BYTE *line, BYTE *scanline, WORD *prevline,
-                            const DWORD red, const DWORD grn, const DWORD blu))
+                            const WORD red, const WORD grn, const WORD blu))
 {
     static WORD prevrgbline[1024*3] = { }; /* what's the max? */
     WORD *prevrgblineptr;
@@ -165,7 +165,8 @@ void render_generic_2x2_pal(video_render_color_tables_t *color_tab,
     SDWORD *line;
     DWORD x, y, wfirst, wlast, yys;
     SDWORD off, off_flip;
-    DWORD red, grn, blu, red2, grn2, blu2;
+    WORD red, grn, blu, red2, grn2, blu2;
+    BYTE cl0, cl1, cl2, cl3;
 
     viewport_height *= 2;
 
@@ -196,8 +197,6 @@ void render_generic_2x2_pal(video_render_color_tables_t *color_tab,
     
     /* Initialize line */
     for (x = 0; x < width + wfirst + wlast; x++) {
-        register DWORD cl0, cl1, cl2, cl3;
-
         cl0 = tmpsrc[0];
         cl1 = tmpsrc[1];
         cl2 = tmpsrc[2];
@@ -324,4 +323,3 @@ void render_32_2x2_pal(video_render_color_tables_t *color_tab,
                            xt, yt, pitchs, pitcht, viewport_height,
                            4, store_line_and_scanline_4);
 }
-
