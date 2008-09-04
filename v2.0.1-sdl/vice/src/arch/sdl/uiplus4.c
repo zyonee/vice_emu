@@ -136,7 +136,7 @@ static UI_MENU_CALLBACK(quit_callback)
 }
 
 static ui_menu_entry_t xplus4_main_menu[] = {
-    { "Autostart disk, tape or program",
+    { "Autostart image",
       MENU_ENTRY_OTHER,
       autostart_callback,
       NULL,
@@ -221,7 +221,7 @@ static ui_menu_entry_t xplus4_main_menu[] = {
     { NULL }
 };
 
-BYTE plus4_font[8*256];
+static BYTE plus4_font[8*256];
 
 int plus4ui_init(void)
 {

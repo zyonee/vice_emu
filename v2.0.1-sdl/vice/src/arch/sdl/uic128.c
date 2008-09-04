@@ -191,7 +191,7 @@ static UI_MENU_CALLBACK(quit_callback)
 }
 
 static ui_menu_entry_t x128_main_menu[] = {
-    { "Autostart disk, tape or program",
+    { "Autostart image",
       MENU_ENTRY_OTHER,
       autostart_callback,
       NULL,

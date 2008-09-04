@@ -135,7 +135,7 @@ static UI_MENU_CALLBACK(quit_callback)
 }
 
 static ui_menu_entry_t xvic_main_menu[] = {
-    { "Autostart disk, tape or program",
+    { "Autostart image",
       MENU_ENTRY_OTHER,
       autostart_callback,
       NULL,
@@ -220,7 +220,7 @@ static ui_menu_entry_t xvic_main_menu[] = {
     { NULL }
 };
 
-BYTE vic20_font[8*256];
+static BYTE vic20_font[8*256];
 
 int vic20ui_init(void)
 {

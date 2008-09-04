@@ -130,7 +130,7 @@ static UI_MENU_CALLBACK(quit_callback)
 }
 
 static ui_menu_entry_t xcbm2_main_menu[] = {
-    { "Autostart disk, tape or program",
+    { "Autostart image",
       MENU_ENTRY_OTHER,
       autostart_callback,
       NULL,
@@ -210,7 +210,7 @@ static ui_menu_entry_t xcbm2_main_menu[] = {
     { NULL }
 };
 
-BYTE cbm2_font[14*256];
+static BYTE cbm2_font[14*256];
 
 int cbm2ui_init(void)
 {
