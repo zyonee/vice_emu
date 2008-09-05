@@ -102,6 +102,12 @@ typedef enum {
         return sdl_ui_menu_string_helper(activated, param, #resource); \
     }
 
+#define UI_MENU_DEFINE_INT(resource)                                \
+    static UI_MENU_CALLBACK(string_##resource##_callback)           \
+    {                                                               \
+        return sdl_ui_menu_int_helper(activated, param, #resource); \
+    }
+
 extern const char *sdl_ui_menu_toggle_helper(int activated, const char *resource_name);
 extern const char *sdl_ui_menu_radio_helper(int activated, ui_callback_data_t param, const char *resource_name);
 extern const char *sdl_ui_menu_string_helper(int activated, ui_callback_data_t param, const char *resource_name);

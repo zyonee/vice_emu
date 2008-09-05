@@ -221,9 +221,16 @@ static void sdl_ui_display_item(ui_menu_entry_t *item, int y_pos)
     i = sdl_ui_print(item->string, 1, y_pos+MENU_FIRST_Y);
 
     switch(item->type) {
+        case MENU_ENTRY_RESOURCE_STRING:
+        case MENU_ENTRY_RESOURCE_INT:
+            i += 3;
+            /* fall through */
         case MENU_ENTRY_RESOURCE_TOGGLE:
         case MENU_ENTRY_RESOURCE_RADIO:
             sdl_ui_print(item->callback(0, item->callback_data), 1+i+1, y_pos+MENU_FIRST_Y);
+            break;
+        case MENU_ENTRY_SUBMENU:
+            sdl_ui_print("->", 1+i, y_pos+MENU_FIRST_Y);
             break;
         default:
             break;
@@ -556,6 +563,11 @@ void sdl_ui_set_menu_colors(int front, int back)
     }
 }
 
+void sdl_ui_set_double_x(void)
+{
+    menu_draw_max_text_x_double = 2;
+}
+
 /* ------------------------------------------------------------------ */
 /* Menu helpers */
 
@@ -592,12 +604,13 @@ const char *sdl_ui_menu_radio_helper(int activated, ui_callback_data_t param, co
 const char *sdl_ui_menu_string_helper(int activated, ui_callback_data_t param, const char *resource_name)
 {
     char *value = NULL;
-    const char *previous = NULL;
+    static const char *previous = NULL;
+
+    if(resources_get_string(resource_name, &previous)) {
+        return "?";
+    }
 
     if (activated) {
-        if(resources_get_string(resource_name, &previous)) {
-            return NULL;
-        }
         sdl_ui_clear();
         sdl_ui_display_title((const char*)param);
         value = sdl_ui_readline(previous, 0, MENU_FIRST_Y);
@@ -605,11 +618,36 @@ const char *sdl_ui_menu_string_helper(int activated, ui_callback_data_t param, c
             resources_set_value_string(resource_name, value);
             lib_free(value);
         }
+    } else {
+        return previous;
     }
     return NULL;
 }
 
-void sdl_ui_set_double_x(void)
+const char *sdl_ui_menu_int_helper(int activated, ui_callback_data_t param, const char *resource_name)
 {
-    menu_draw_max_text_x_double = 2;
+    static char buf[20];
+    char *value = NULL;
+    int previous, new_value;
+
+    if(resources_get_int(resource_name, &previous)) {
+        return "?";
+    }
+
+    sprintf(buf, "%i", previous);
+
+    if (activated) {
+        sdl_ui_clear();
+        sdl_ui_display_title((const char*)param);
+        value = sdl_ui_readline(buf, 0, MENU_FIRST_Y);
+        if(value) {
+            new_value = strtol(value, NULL, 0);
+            resources_set_int(resource_name, new_value);
+            lib_free(value);
+        }
+    } else {
+        return buf;       
+    }
+    return NULL;
 }
+

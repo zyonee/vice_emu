@@ -124,16 +124,7 @@ static UI_MENU_CALLBACK(quit_callback)
     return 0;
 }
 
-UI_MENU_DEFINE_STRING(ChargenName)
-
 static ui_menu_entry_t x64_main_menu[] = {
-/* temporary item for string resource testing
-    { "ChargenName",
-      MENU_ENTRY_RESOURCE_STRING,
-      string_ChargenName_callback,
-      (ui_callback_data_t)"Set chargen ROM name",
-      NULL },
-*/
     { "Autostart image",
       MENU_ENTRY_OTHER,
       autostart_callback,
