@@ -161,9 +161,7 @@ void render_generic_2x2_pal(video_render_color_tables_t *color_tab,
                             BYTE *line, BYTE *scanline, WORD *prevline,
                             const WORD red, const WORD grn, const WORD blu))
 {
-    static WORD prevrgbline[1024*3] = { }; /* what's the max? */
     WORD *prevrgblineptr;
-
     const SDWORD *cbtable = color_tab->cbtable;
     const SDWORD *crtable = color_tab->crtable;
     const SDWORD *ytablel = color_tab->ytablel;
@@ -209,10 +207,8 @@ void render_generic_2x2_pal(video_render_color_tables_t *color_tab,
         cl1 = tmpsrc[1];
         cl2 = tmpsrc[2];
         cl3 = tmpsrc[3];
-        line[0] = cbtable[cl0] + cbtable[cl1] + cbtable[cl2] + cbtable[cl3];
-        line[1] = crtable[cl0] + crtable[cl1] + crtable[cl2] + crtable[cl3];
-        line[0] *= off_flip;
-        line[1] *= off_flip;
+        line[0] = (cbtable[cl0] + cbtable[cl1] + cbtable[cl2] + cbtable[cl3]) * off_flip;
+        line[1] = (crtable[cl0] + crtable[cl1] + crtable[cl2] + crtable[cl3]) * off_flip;
         tmpsrc++;
         line += 2;
     }
@@ -221,25 +217,28 @@ void render_generic_2x2_pal(video_render_color_tables_t *color_tab,
      * full line, and that requires initialization from 2 full lines above our
      * rendering target. We just won't render the scanline above the target row,
      * so you need to call us with 1 line before the desired rectangle, and
-     * for one full line _after_ it! */
+     * for one full line after it! */
 
-    /* Calculate UV scaler. The constant 12 relates to the relative
-     * magnitudes of y, u, v etc. somehow, and shifting by 7... */
-    off = (int) (((float) video_resources.pal_oddlines_offset * (1.5f / 2000.0f) - (1.5f / 2.0f - 1.0f)) * (1 << 5));
+    /* Calculate odd line shading */
+    off = (int) (((float) video_resources.pal_oddlines_offset * (1.5f / 2000.0f) - (1.5f / 2.0f - 1.0f)) * (1 << 5) * -1);
 
-    /* for the first round, we set it to the same line. We should have it
-     * overwritten, unless the compiler reorders stuff around... */
-    tmptrgscanline = trg;
     for (y = yys; y < yys + height; y += 2) {
-	/* write pixel data to tmptrg, scanline is figured out later. */
+	/* write pixel data to tmptrg */
         tmptrg = trg;
+        /* write scanline data to previous line if possible,
+         * otherwise we dump it to the scratch region... We must never
+         * render the scanline for the first row, because prevlinergb is not
+         * yet initialized and scanline data would be bogus! */
+	tmptrgscanline = y != yys && yys > 0 && yys <= viewport_height
+            ? trg - pitcht
+            : &color_tab->rgbscratchbuffer[0];
 	/* current source image for YUV xform */
         tmpsrc = src;
 	/* prev line's YUV-xformed data */
         line = color_tab->line_yuv_0;
 
 	if (y & 2) { /* odd sourceline */
-            off_flip = -off;
+            off_flip = off;
             cbtable = color_tab->cbtable_odd;
             crtable = color_tab->crtable_odd;
         } else {    
@@ -253,7 +252,7 @@ void render_generic_2x2_pal(video_render_color_tables_t *color_tab,
         line += 2;
 
         /* actual line */
-	prevrgblineptr = &prevrgbline[0];
+	prevrgblineptr = &color_tab->prevrgbline[0];
         if (wfirst) {
             get_rgb_from_video(tmpsrc, line, off_flip, ytablel, ytableh, cbtable, crtable, &red2, &grn2, &blu2);
             tmpsrc += 1;
@@ -288,7 +287,6 @@ void render_generic_2x2_pal(video_render_color_tables_t *color_tab,
             store_func(tmptrg, tmptrgscanline, prevrgblineptr, red, grn, blu);
         
         src += pitchs;
-	tmptrgscanline = yys <= viewport_height - 1 ? trg + pitcht : trg;
         trg += pitcht * 2;
     }
 }

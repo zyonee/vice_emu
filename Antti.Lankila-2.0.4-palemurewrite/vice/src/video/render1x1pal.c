@@ -26,9 +26,9 @@
 
 #include "vice.h"
 
-#include "render1x1.h"
 #include "render1x1pal.h"
 #include "types.h"
+#include "video-resources.h"
 
 extern DWORD gamma_red[256 * 3];
 extern DWORD gamma_grn[256 * 3];
@@ -84,28 +84,53 @@ render_generic_1x1_pal(video_render_color_tables_t *color_tab, const BYTE *src, 
     SDWORD *line, l, u, v, unew, vnew;
     WORD red, grn, blu;
     BYTE cl0, cl1, cl2, cl3;
+    int off, off_flip;
 
     src = src + pitchs * ys + xs - 2;
     trg = trg + pitcht * yt + xt * pixelstride;
     
     line = color_tab->line_yuv_0;
     tmpsrc = ys > 0 ? src - pitchs : src;
+    off_flip = ys > 0 ? 1 : -1;
+
+    /* is the previous line odd or even? (inverted condition!) */
+    if (ys & 1) {
+        cbtable = color_tab->cbtable;
+        crtable = color_tab->crtable;
+    } else {
+        cbtable = color_tab->cbtable_odd;
+        crtable = color_tab->crtable_odd;
+    }
+
     for (x = 0; x < width; x++) {
         cl0 = tmpsrc[0];
         cl1 = tmpsrc[1];
         cl2 = tmpsrc[2];
         cl3 = tmpsrc[3];
         tmpsrc += 1;
-        line[0] = cbtable[cl0] + cbtable[cl1] + cbtable[cl2] + cbtable[cl3];
-        line[1] = crtable[cl0] + crtable[cl1] + crtable[cl2] + crtable[cl3];
+        line[0] = (cbtable[cl0] + cbtable[cl1] + cbtable[cl2] + cbtable[cl3]) * off_flip;
+        line[1] = (crtable[cl0] + crtable[cl1] + crtable[cl2] + crtable[cl3]) * off_flip;
         line += 2;
     }
+
+    /* Calculate odd line shading */
+    off = (int) (((float) video_resources.pal_oddlines_offset * (1.5f / 2000.0f) - (1.5f / 2.0f - 1.0f)) * (1 << 5) * -1);
 
     for (y = 0; y < height; y++) {
         tmpsrc = src;
         tmptrg = trg;
 
         line = color_tab->line_yuv_0;
+
+        if (y & 1) { /* odd sourceline */
+            off_flip = off;
+            cbtable = color_tab->cbtable_odd;
+            crtable = color_tab->crtable_odd;
+        } else {
+            off_flip = 1 << 5;
+            cbtable = color_tab->cbtable;
+            crtable = color_tab->crtable;
+        }
 
         for (x = 0; x < width; x++) {
             cl0 = tmpsrc[0];
@@ -117,8 +142,8 @@ render_generic_1x1_pal(video_render_color_tables_t *color_tab, const BYTE *src, 
             unew = cbtable[cl0] + cbtable[cl1] + cbtable[cl2] + cbtable[cl3];
             vnew = crtable[cl0] + crtable[cl1] + crtable[cl2] + crtable[cl3];
 
-            u = (line[0] + unew) << 5;
-            v = (line[1] + vnew) << 5;
+            u = (unew - line[0]) * off_flip;
+            v = (vnew - line[1]) * off_flip;
             line[0] = unew;
             line[1] = vnew;
             line += 2;
