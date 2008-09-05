@@ -32,6 +32,8 @@
 
 #include "debug.h"
 #include "c64mem.h"
+#include "menu_reset.h"
+#include "menu_speed.h"
 #include "ui.h"
 #include "uimenu.h"
 
@@ -85,18 +87,6 @@ static ui_menu_entry_t sound_menu[] = {
 
 /* temporary empty snapshot menu, this one will be moved out to uimenu_snapshot.c */
 static ui_menu_entry_t snapshot_menu[] = {
-    { "-", MENU_ENTRY_SEPARATOR, NULL, NULL, NULL },
-    { NULL }
-};
-
-/* temporary empty speed menu, this one will be moved out to uimenu_speed.c */
-static ui_menu_entry_t speed_menu[] = {
-    { "-", MENU_ENTRY_SEPARATOR, NULL, NULL, NULL },
-    { NULL }
-};
-
-/* temporary empty reset menu, this one will be moved out to uimenu_reset.c */
-static ui_menu_entry_t reset_menu[] = {
     { "-", MENU_ENTRY_SEPARATOR, NULL, NULL, NULL },
     { NULL }
 };

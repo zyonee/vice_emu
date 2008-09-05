@@ -31,6 +31,9 @@
 #include <stdlib.h>
 
 #include "debug.h"
+#include "lib.h"
+#include "menu_reset.h"
+#include "menu_speed.h"
 #include "petmem.h"
 #include "resources.h"
 #include "ui.h"
@@ -80,18 +83,6 @@ static ui_menu_entry_t sound_menu[] = {
 
 /* temporary empty snapshot menu, this one will be moved out to uimenu_snapshot.c */
 static ui_menu_entry_t snapshot_menu[] = {
-    { "-", MENU_ENTRY_SEPARATOR, NULL, NULL, NULL },
-    { NULL }
-};
-
-/* temporary empty speed menu, this one will be moved out to uimenu_speed.c */
-static ui_menu_entry_t speed_menu[] = {
-    { "-", MENU_ENTRY_SEPARATOR, NULL, NULL, NULL },
-    { NULL }
-};
-
-/* temporary empty reset menu, this one will be moved out to uimenu_reset.c */
-static ui_menu_entry_t reset_menu[] = {
     { "-", MENU_ENTRY_SEPARATOR, NULL, NULL, NULL },
     { NULL }
 };
@@ -210,7 +201,7 @@ static ui_menu_entry_t xpet_main_menu[] = {
     { NULL }
 };
 
-static BYTE pet_font[8*256];
+static BYTE *pet_font;
 
 int petui_init(void)
 {
@@ -220,6 +211,7 @@ fprintf(stderr,"%s\n",__func__);
 
     sdl_ui_set_main_menu(xpet_main_menu);
 
+    pet_font=lib_malloc(8*256);
     for (i=0; i<128; i++)
     {
         for (j=0; j<8; j++)
@@ -236,4 +228,6 @@ fprintf(stderr,"%s\n",__func__);
 void petui_shutdown(void)
 {
 fprintf(stderr,"%s\n",__func__);
+
+    lib_free(pet_font);
 }

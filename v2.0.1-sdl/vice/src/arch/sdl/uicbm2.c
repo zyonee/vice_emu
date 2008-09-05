@@ -32,6 +32,9 @@
 
 #include "debug.h"
 #include "cbm2mem.h"
+#include "lib.h"
+#include "menu_reset.h"
+#include "menu_speed.h"
 #include "resources.h"
 #include "ui.h"
 #include "uimenu.h"
@@ -80,18 +83,6 @@ static ui_menu_entry_t sound_menu[] = {
 
 /* temporary empty snapshot menu, this one will be moved out to uimenu_snapshot.c */
 static ui_menu_entry_t snapshot_menu[] = {
-    { "-", MENU_ENTRY_SEPARATOR, NULL, NULL, NULL },
-    { NULL }
-};
-
-/* temporary empty speed menu, this one will be moved out to uimenu_speed.c */
-static ui_menu_entry_t speed_menu[] = {
-    { "-", MENU_ENTRY_SEPARATOR, NULL, NULL, NULL },
-    { NULL }
-};
-
-/* temporary empty reset menu, this one will be moved out to uimenu_reset.c */
-static ui_menu_entry_t reset_menu[] = {
     { "-", MENU_ENTRY_SEPARATOR, NULL, NULL, NULL },
     { NULL }
 };
@@ -210,7 +201,7 @@ static ui_menu_entry_t xcbm2_main_menu[] = {
     { NULL }
 };
 
-static BYTE cbm2_font[14*256];
+static BYTE *cbm2_font;
 
 int cbm2ui_init(void)
 {
@@ -223,6 +214,7 @@ fprintf(stderr,"%s\n",__func__);
     resources_get_int("ModelLine", &model);
     if (model == 0)
     {
+        cbm2_font=lib_malloc(14*256);
         for (i=0; i<256; i++)
         {
             for (j=0; j<14; j++)
@@ -233,6 +225,7 @@ fprintf(stderr,"%s\n",__func__);
     }
     else
     {
+        cbm2_font=lib_malloc(8*256);
         for (i=0; i<256; i++)
         {
             for (j=0; j<8; j++)
@@ -249,4 +242,6 @@ fprintf(stderr,"%s\n",__func__);
 void cbm2ui_shutdown(void)
 {
 fprintf(stderr,"%s\n",__func__);
+
+    lib_free(cbm2_font);
 }

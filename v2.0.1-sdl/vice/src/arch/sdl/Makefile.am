@@ -28,6 +28,10 @@ libarch_a_SOURCES = \
 	joy.h \
 	kbd.c \
 	kbd.h \
+	menu_reset.c \
+	menu_reset.h \
+	menu_speed.c \
+	menu_speed.h \
 	mousedrv.c \
 	mousedrv.h \
 	sdlmain.c \
