@@ -59,7 +59,7 @@ typedef struct ui_menu_entry_s {
     struct ui_menu_entry_s *sub_menu;
 } ui_menu_entry_t;
 
-extern void sdl_register_vcachename(char *vcache_name);
+extern void sdl_ui_set_vcachename(const char *vcache_name);
 extern void sdl_ui_set_main_menu(ui_menu_entry_t *menu);
 extern void sdl_ui_set_menu_font(BYTE *font, int w, int h);
 extern void sdl_ui_set_menu_colors(int front, int back);
@@ -67,6 +67,7 @@ extern void sdl_ui_set_menu_borders(int x, int y);
 
 extern void sdl_ui_activate(void);
 extern int sdl_ui_menu_item_activate(ui_menu_entry_t *item);
+extern char* sdl_ui_readline(const char* previous, int pos_x, int pos_y);
 
 typedef enum {
     MENU_ACTION_NONE = 0,
@@ -94,8 +95,15 @@ typedef enum {
         return sdl_ui_menu_radio_helper(activated, param, #resource); \
     }
 
+#define UI_MENU_DEFINE_STRING(resource)                                \
+    static UI_MENU_CALLBACK(string_##resource##_callback)              \
+    {                                                                  \
+        return sdl_ui_menu_string_helper(activated, param, #resource); \
+    }
+
 extern const char *sdl_ui_menu_toggle_helper(int activated, const char *resource_name);
 extern const char *sdl_ui_menu_radio_helper(int activated, ui_callback_data_t param, const char *resource_name);
+extern const char *sdl_ui_menu_string_helper(int activated, ui_callback_data_t param, const char *resource_name);
 
 #endif
 

@@ -1,5 +1,5 @@
 /*
- * kbd.c - MS-DOS keyboard driver.
+ * kbd.c - SDL keyboard driver.
  *
  * Written by
  *  Hannu Nuotio <hannu.nuotio@tut.fi>

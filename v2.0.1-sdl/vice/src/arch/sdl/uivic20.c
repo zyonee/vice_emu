@@ -218,7 +218,7 @@ int vic20ui_init(void)
     int i, j;
 fprintf(stderr,"%s\n",__func__);
 
-    sdl_register_vcachename("VICVideoCache");
+    sdl_ui_set_vcachename("VICVideoCache");
     sdl_ui_set_main_menu(xvic_main_menu);
 
     vic20_font=lib_malloc(8*256);

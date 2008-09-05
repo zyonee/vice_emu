@@ -220,7 +220,7 @@ int plus4ui_init(void)
 
 fprintf(stderr,"%s\n",__func__);
 
-    sdl_register_vcachename("TEDVideoCache");
+    sdl_ui_set_vcachename("TEDVideoCache");
     sdl_ui_set_main_menu(xplus4_main_menu);
 
     plus4_font=lib_malloc(8*256);

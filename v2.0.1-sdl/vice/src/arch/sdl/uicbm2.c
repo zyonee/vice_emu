@@ -209,7 +209,7 @@ int cbm2ui_init(void)
 
 fprintf(stderr,"%s\n",__func__);
 
-    sdl_register_vcachename("CrtcVideoCache");
+    sdl_ui_set_vcachename("CrtcVideoCache");
 
     resources_get_int("ModelLine", &model);
     if (model == 0)

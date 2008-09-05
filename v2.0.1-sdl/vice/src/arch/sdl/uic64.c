@@ -124,7 +124,16 @@ static UI_MENU_CALLBACK(quit_callback)
     return 0;
 }
 
+UI_MENU_DEFINE_STRING(ChargenName)
+
 static ui_menu_entry_t x64_main_menu[] = {
+/* temporary item for string resource testing
+    { "ChargenName",
+      MENU_ENTRY_RESOURCE_STRING,
+      string_ChargenName_callback,
+      (ui_callback_data_t)"Set chargen ROM name",
+      NULL },
+*/
     { "Autostart image",
       MENU_ENTRY_OTHER,
       autostart_callback,
@@ -214,7 +223,7 @@ int c64ui_init(void)
 {
 fprintf(stderr,"%s\n",__func__);
 
-    sdl_register_vcachename("VICIIVideoCache");
+    sdl_ui_set_vcachename("VICIIVideoCache");
     sdl_ui_set_main_menu(x64_main_menu);
     sdl_ui_set_menu_font(mem_chargen_rom + 0x800, 8, 8);
     return 0;
