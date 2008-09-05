@@ -73,6 +73,10 @@ static int menu_draw_max_text_x = 0;
 static int menu_draw_max_text_y = 0;
 static int menu_draw_extra_x = 0;
 static int menu_draw_extra_y = 0;
+
+/* 1 = no double, 2 = double */
+static int menu_draw_max_text_x_double = 1;
+
 static BYTE menu_draw_color_front = COLOR_FRONT;
 static BYTE menu_draw_color_back = COLOR_BACK;
 
@@ -254,7 +258,7 @@ static ui_menu_action_t sdl_ui_menu_poll_input(void)
 
 static void sdl_ui_init_draw_params(void)
 {
-    menu_draw_max_text_x = sdl_active_canvas->geometry->text_size.width;
+    menu_draw_max_text_x = sdl_active_canvas->geometry->text_size.width * (menu_draw_max_text_x_double);
     menu_draw_max_text_y = sdl_active_canvas->geometry->text_size.height;
     menu_draw_pitch = sdl_active_canvas->draw_buffer->draw_buffer_pitch;
     menu_draw_offset = sdl_active_canvas->geometry->gfx_position.x + menu_draw_extra_x
@@ -605,3 +609,7 @@ const char *sdl_ui_menu_string_helper(int activated, ui_callback_data_t param, c
     return NULL;
 }
 
+void sdl_ui_set_double_x(void)
+{
+    menu_draw_max_text_x_double = 2;
+}

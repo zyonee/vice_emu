@@ -32,8 +32,10 @@
 
 #include "debug.h"
 #include "lib.h"
+#include "machine.h"
 #include "menu_reset.h"
 #include "menu_speed.h"
+#include "resources.h"
 #include "ui.h"
 #include "uimenu.h"
 #include "vic20memrom.h"
@@ -215,11 +217,13 @@ static BYTE *vic20_font;
 
 int vic20ui_init(void)
 {
-    int i, j;
+    int i, j, videostandard;
 fprintf(stderr,"%s\n",__func__);
 
     sdl_ui_set_vcachename("VICVideoCache");
     sdl_ui_set_main_menu(xvic_main_menu);
+
+    resources_get_int("MachineVideoStandard", &videostandard);
 
     vic20_font=lib_malloc(8*256);
     for (i=0; i<128; i++)
@@ -232,6 +236,8 @@ fprintf(stderr,"%s\n",__func__);
     }
 
     sdl_ui_set_menu_font(vic20_font, 8, 8);
+    sdl_ui_set_menu_borders(0, (videostandard == MACHINE_SYNC_PAL) ? 28: 8);
+    sdl_ui_set_double_x();
     return 0;
 }
 
