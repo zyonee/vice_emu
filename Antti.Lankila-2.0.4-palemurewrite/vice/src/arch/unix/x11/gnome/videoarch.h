@@ -48,7 +48,6 @@ struct video_canvas_s {
     unsigned int created;
     GtkWidget* emuwindow;
     GdkImage* gdk_image;
-    unsigned char *hwscale_image;
     int needs_endianswap;
     struct video_render_config_s *videoconfig;
     struct draw_buffer_s *draw_buffer;
@@ -63,7 +62,8 @@ struct video_canvas_s {
     video_refresh_func_t video_fullscreen_refresh_func;
 #endif
 #ifdef HAVE_HWSCALE
-    GLint screen_texture;
+    unsigned char *hwscale_image;
+    GLuint screen_texture;
 #endif
 };
 typedef struct video_canvas_s video_canvas_t;

@@ -95,7 +95,9 @@ video_canvas_t *video_canvas_create(video_canvas_t *canvas, unsigned int *width,
     int res;
 
     canvas->gdk_image = NULL;
+#ifdef HAVE_HWSCALE
     canvas->hwscale_image = NULL;
+#endif
 
     res = ui_open_canvas_window(canvas, canvas->viewport->title,
 				*width, *height, 1);
@@ -118,8 +120,11 @@ void video_canvas_destroy(video_canvas_t *canvas)
         lib_free(canvas->fullscreenconfig);
     }
 #endif
+    if (canvas->gdk_image != NULL)
+        g_object_unref(canvas->gdk_image);
+#ifdef HAVE_HWSCALE
     lib_free(canvas->hwscale_image);
-    g_object_unref(canvas->gdk_image);
+#endif
 
     video_canvas_shutdown(canvas);
 }
@@ -157,10 +162,13 @@ void video_canvas_resize(video_canvas_t *canvas, unsigned int width,
     if (canvas->videoconfig->doublesizey)
         height *= 2;
 
-    g_object_unref(canvas->gdk_image);
-    lib_free(canvas->hwscale_image);
+    if (canvas->gdk_image != NULL)
+        g_object_unref(canvas->gdk_image);
     canvas->gdk_image = gdk_image_new(GDK_IMAGE_FASTEST, gtk_widget_get_visual(canvas->emuwindow), width, height);
+#ifdef HAVE_HWSCALE
+    lib_free(canvas->hwscale_image);
     canvas->hwscale_image = lib_malloc(canvas->gdk_image->width * canvas->gdk_image->height * 3);
+#endif
     if (video_canvas_set_palette(canvas, canvas->palette) < 0)
         exit(1);
 

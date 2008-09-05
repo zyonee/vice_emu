@@ -2748,73 +2748,56 @@ gboolean exposure_callback_canvas(GtkWidget *w, GdkEventExpose *e,
 {
     video_canvas_t *canvas = (video_canvas_t *)client_data;
     
-    if (canvas) {
+    if (canvas == NULL)
+        return 0;
 #ifdef HAVE_HWSCALE
-#ifndef MACOSX_SUPPORT
-        if (canvas->videoconfig->hwscale) {
+    if (canvas->videoconfig->hwscale) {
+        GdkGLContext *gl_context = gtk_widget_get_gl_context (w);
+        GdkGLDrawable *gl_drawable = gtk_widget_get_gl_drawable (w);
+        (void) gdk_gl_drawable_gl_begin (gl_drawable, gl_context);
+
+/* XXX make use of glXBindTexImageEXT aka texture from pixmap extension */
+
+        glClear(GL_COLOR_BUFFER_BIT);
+        glDisable (GL_DEPTH_TEST);
+        glEnable (GL_TEXTURE_RECTANGLE_ARB);
+        glBindTexture (GL_TEXTURE_RECTANGLE_ARB, canvas->screen_texture);
+        glTexParameteri (GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri (GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexImage2D  (GL_TEXTURE_RECTANGLE_ARB, 0, GL_RGBA,
+            canvas->gdk_image->width, canvas->gdk_image->height,
+            0, GL_RGB, GL_UNSIGNED_BYTE, canvas->hwscale_image);
+
+        glBegin (GL_QUADS);
+
+        /* Lower Right Of Texture */
+        glTexCoord2f(0.0f, 0.0f);
+        glVertex2f(-1.0f, 1.0f);
+
+        /* Upper Right Of Texture */
+        glTexCoord2f(0.0f, canvas->gdk_image->height);
+        glVertex2f(-1.0f, -1.0f);
+
+        /* Upper Left Of Texture */
+        glTexCoord2f(canvas->gdk_image->width, canvas->gdk_image->height);
+        glVertex2f(1.0f, -1.0f);
+
+        /* Lower Left Of Texture */
+        glTexCoord2f(canvas->gdk_image->width, 0.0f);
+        glVertex2f(1.0f, 1.0f);
+
+        glEnd ();
+
+        gdk_gl_drawable_swap_buffers (gl_drawable);
+        gdk_gl_drawable_gl_end (gl_drawable);
+    }
+    else
 #endif
-            GdkGLContext *gl_context = gtk_widget_get_gl_context (w);
-            GdkGLDrawable *gl_drawable = gtk_widget_get_gl_drawable (w);
-
-            (void) gdk_gl_drawable_gl_begin (gl_drawable, gl_context);
-
-            glClear(GL_COLOR_BUFFER_BIT);
-
-#ifdef GL_TEXTURE_RECTANGLE_NV
-#define GL_TEX_RECT GL_TEXTURE_RECTANGLE_NV
-#else
-#ifdef GL_TEXTURE_RECTANGLE_ARB
-#define GL_TEX_RECT GL_TEXTURE_RECTANGLE_ARB
-#else
-#error GL_TEXTURE_RECTANGLE not supported in you OpenGL headers
-#endif
-#endif
-
-            glEnable (GL_TEX_RECT);
-            glDisable (GL_DEPTH_TEST);
-            glBindTexture (GL_TEX_RECT, canvas->screen_texture);
-
-            /* XXX The colours may be wrong here... We should make a RGB
-             *     or big-endian palette for the GL rendering. What a
-             *     hopeless mess. If only OpenGL supported GL_BGR, I could
-             *     choose it when appropriate. */
-            glTexParameteri (GL_TEX_RECT, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-            glTexParameteri (GL_TEX_RECT, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-            glTexImage2D  (GL_TEX_RECT, 0, GL_RGBA,
-                canvas->gdk_image->width, canvas->gdk_image->height,
-                0, GL_RGB, GL_UNSIGNED_BYTE, canvas->hwscale_image);
-
-            glBegin (GL_QUADS);
-
-            glTexCoord2f(0.0f, 0.0f);              /* Lower Right Of Texture */
-            glVertex2f(-1.0f, 1.0f);
-
-            glTexCoord2f(0.0f, canvas->gdk_image->height);              /* Upper Right Of Texture */
-            glVertex2f(-1.0f, -1.0f);
-
-            glTexCoord2f(canvas->gdk_image->width, canvas->gdk_image->height);              /* Upper Left Of Texture */
-            glVertex2f(1.0f, -1.0f);
-
-            glTexCoord2f(canvas->gdk_image->width, 0.0f);              /* Lower Left Of Texture */
-            glVertex2f(1.0f, 1.0f);
-
-            glEnd ();
-
-            gdk_gl_drawable_swap_buffers (gl_drawable);
-            gdk_gl_drawable_gl_end (gl_drawable);
-#ifndef MACOSX_SUPPORT
-        }
-        else
-#endif
-#endif
-#if !defined(MACOSX_SUPPORT) || !defined(HAVE_HWSCALE)
-        {
-	    gdk_draw_image(w->window, app_gc,
-                           canvas->gdk_image, e->area.x, e->area.y, 
-                           e->area.x, e->area.y,
-                           e->area.width, e->area.height);
-        }
-#endif
+    {
+        gdk_draw_image(w->window, app_gc,
+                       canvas->gdk_image, e->area.x, e->area.y, 
+                       e->area.x, e->area.y,
+                       e->area.width, e->area.height);
     }
     
     return 0;
