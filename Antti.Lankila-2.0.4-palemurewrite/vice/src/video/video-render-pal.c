@@ -117,7 +117,8 @@ static void video_render_pal_main(video_render_config_t *config,
                 return;
               case 24:
                 render_24_2x2_pal(colortab, src, trg, width, height,
-                                 xs, ys, xt, yt, pitchs, pitcht, doublescan);
+                                 xs, ys, xt, yt, pitchs, pitcht,
+                                 viewport_height);
                 return;
               case 32:
                 render_32_2x2_pal(colortab, src, trg, width, height,

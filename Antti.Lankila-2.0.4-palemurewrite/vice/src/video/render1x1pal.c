@@ -116,7 +116,7 @@ render_generic_1x1_pal(video_render_color_tables_t *color_tab, const BYTE *src, 
     /* Calculate odd line shading */
     off = (int) (((float) video_resources.pal_oddlines_offset * (1.5f / 2000.0f) - (1.5f / 2.0f - 1.0f)) * (1 << 5) * -1);
 
-    for (y = 0; y < height; y++) {
+    for (y = ys; y < height + ys; y++) {
         tmpsrc = src;
         tmptrg = trg;
 
@@ -148,9 +148,9 @@ render_generic_1x1_pal(video_render_color_tables_t *color_tab, const BYTE *src, 
             line[1] = vnew;
             line += 2;
 
-            red = (l + v) >> 16;
-            blu = (l + u) >> 16;
-            grn = (l - ((50 * u - 130 * v) >> 8)) >> 16;
+            red = (WORD) ((l + v) >> 16);
+            blu = (WORD) ((l + u) >> 16);
+            grn = (WORD) ((l - ((50 * u + 130 * v) >> 8)) >> 16);
 
             store_func(tmptrg, red, grn, blu);
             tmptrg += pixelstride;
