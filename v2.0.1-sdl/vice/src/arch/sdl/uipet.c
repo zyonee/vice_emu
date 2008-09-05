@@ -205,11 +205,13 @@ static BYTE *pet_font;
 
 int petui_init(void)
 {
-    int i, j;
+    int i, j, cols;
 
 fprintf(stderr,"%s\n",__func__);
 
     sdl_ui_set_main_menu(xpet_main_menu);
+
+    resources_get_int("VideoSize", &cols);
 
     pet_font=lib_malloc(8*256);
     for (i=0; i<128; i++)
@@ -221,6 +223,7 @@ fprintf(stderr,"%s\n",__func__);
         }
     }
     sdl_ui_set_menu_font(pet_font, 8, 8);
+    sdl_ui_set_menu_borders(32, (cols == 40) ? 40 : 28);
     sdl_register_vcachename("CrtcVideoCache");
     return 0;
 }

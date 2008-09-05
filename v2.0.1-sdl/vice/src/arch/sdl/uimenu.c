@@ -69,6 +69,8 @@ static int menu_draw_pitch;
 static int menu_draw_offset;
 static int menu_draw_max_text_x;
 static int menu_draw_max_text_y;
+static int menu_draw_extra_x = 0;
+static int menu_draw_extra_y = 0;
 static BYTE menu_draw_color_front = COLOR_FRONT;
 static BYTE menu_draw_color_back = COLOR_BACK;
 
@@ -180,8 +182,9 @@ static void sdl_ui_menu_redraw(ui_menu_entry_t *menu, const char *title, int num
     menu_draw_max_text_x = sdl_active_canvas->geometry->text_size.width;
     menu_draw_max_text_y = sdl_active_canvas->geometry->text_size.height;
     menu_draw_pitch = sdl_active_canvas->draw_buffer->draw_buffer_pitch;
-    menu_draw_offset = sdl_active_canvas->geometry->gfx_position.x
-                     + sdl_active_canvas->geometry->gfx_position.y * menu_draw_pitch
+
+    menu_draw_offset = sdl_active_canvas->geometry->gfx_position.x + menu_draw_extra_x
+                     + (sdl_active_canvas->geometry->gfx_position.y + menu_draw_extra_y) * menu_draw_pitch
                      + sdl_active_canvas->geometry->extra_offscreen_border_left;
 
     sdl_ui_clear();
@@ -355,3 +358,8 @@ void sdl_register_vcachename(char *vcache)
     vcache_name = vcache;
 }
 
+void sdl_ui_set_menu_borders(int x, int y)
+{
+    menu_draw_extra_x = x;
+    menu_draw_extra_y = y;
+}

@@ -235,6 +235,7 @@ fprintf(stderr,"%s\n",__func__);
 
     sdl_ui_set_menu_font(plus4_font, 8, 8);
     sdl_ui_set_menu_colors(120, 0);
+    sdl_ui_set_menu_borders(0, 55);
     return 0;
 }
 
