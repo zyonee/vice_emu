@@ -152,6 +152,10 @@ static int sdl_ui_print(const char *text, int pos_x, int pos_y)
     int i = 0;
     BYTE c;
 
+    if(text == NULL) {
+        return 0;
+    }
+
     if((pos_x >= menu_draw_max_text_x)||(pos_y >= menu_draw_max_text_y)) {
         return -1;
     }
@@ -168,6 +172,10 @@ static int sdl_ui_print_wrap(const char *text, int pos_x, int pos_y)
 {
     int i = 0;
     BYTE c;
+
+    if(text == NULL) {
+        return 0;
+    }
 
     while(pos_x >= menu_draw_max_text_x) {
         pos_x -= menu_draw_max_text_x;
@@ -227,6 +235,8 @@ static void sdl_ui_display_item(ui_menu_entry_t *item, int y_pos)
             /* fall through */
         case MENU_ENTRY_RESOURCE_TOGGLE:
         case MENU_ENTRY_RESOURCE_RADIO:
+        case MENU_ENTRY_DIALOG:
+        case MENU_ENTRY_OTHER:
             sdl_ui_print(item->callback(0, item->callback_data), 1+i+1, y_pos+MENU_FIRST_Y);
             break;
         case MENU_ENTRY_SUBMENU:
@@ -497,7 +507,7 @@ char* sdl_ui_readline(const char* previous, int pos_x, int pos_y)
                 break;
         }
 
-        if(!got_key && ((c_uni & 0xff80) == 0) && ((c_uni & 0x7f) != 0)) {
+        if(!got_key && (size < max) && ((c_uni & 0xff80) == 0) && ((c_uni & 0x7f) != 0)) {
             c = c_uni & 0x7f;
             memmove(new_string+i+1 , new_string+i, size - i);
             new_string[i] = c;
@@ -513,7 +523,7 @@ char* sdl_ui_readline(const char* previous, int pos_x, int pos_y)
 
     SDL_EnableUNICODE(0);
 
-    if(!string_changed) {
+    if(!string_changed && previous) {
         lib_free(new_string);
         new_string = NULL;
     }

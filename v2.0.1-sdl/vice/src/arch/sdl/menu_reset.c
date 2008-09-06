@@ -33,44 +33,56 @@
 
 static UI_MENU_CALLBACK(maincpu_hard_reset_callback)
 {
-    vsync_suspend_speed_eval();
-    machine_trigger_reset(MACHINE_RESET_MODE_HARD);
-    return 0;
+    if(activated) {
+        vsync_suspend_speed_eval();
+        machine_trigger_reset(MACHINE_RESET_MODE_HARD);
+    }
+    return NULL;
 }
 
 static UI_MENU_CALLBACK(maincpu_soft_reset_callback)
 {
-    vsync_suspend_speed_eval();
-    machine_trigger_reset(MACHINE_RESET_MODE_SOFT);
-    return 0;
+    if(activated) {
+        vsync_suspend_speed_eval();
+        machine_trigger_reset(MACHINE_RESET_MODE_SOFT);
+    }
+    return NULL;
 }
 
 static UI_MENU_CALLBACK(drive8cpu_reset_callback)
 {
-    vsync_suspend_speed_eval();
-    drivecpu_trigger_reset(0);
-    return 0;
+    if(activated) {
+        vsync_suspend_speed_eval();
+        drivecpu_trigger_reset(0);
+    }
+    return NULL;
 }
 
 static UI_MENU_CALLBACK(drive9cpu_reset_callback)
 {
-    vsync_suspend_speed_eval();
-    drivecpu_trigger_reset(1);
-    return 0;
+    if(activated) {
+        vsync_suspend_speed_eval();
+        drivecpu_trigger_reset(1);
+    }
+    return NULL;
 }
 
 static UI_MENU_CALLBACK(drive10cpu_reset_callback)
 {
-    vsync_suspend_speed_eval();
-    drivecpu_trigger_reset(2);
-    return 0;
+    if(activated) {
+        vsync_suspend_speed_eval();
+        drivecpu_trigger_reset(2);
+    }
+    return NULL;
 }
 
 static UI_MENU_CALLBACK(drive11cpu_reset_callback)
 {
-    vsync_suspend_speed_eval();
-    drivecpu_trigger_reset(3);
-    return 0;
+    if(activated) {
+        vsync_suspend_speed_eval();
+        drivecpu_trigger_reset(3);
+    }
+    return NULL;
 }
 
 ui_menu_entry_t reset_menu[] = {
@@ -107,3 +119,4 @@ ui_menu_entry_t reset_menu[] = {
       NULL },
     { NULL }
 };
+

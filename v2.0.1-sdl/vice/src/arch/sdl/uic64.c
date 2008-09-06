@@ -40,7 +40,7 @@
 /* temporary place holder for the autostart callback till we get file selectors. */
 static UI_MENU_CALLBACK(autostart_callback)
 {
-    return 0;
+    return NULL;
 }
 
 /* temporary empty drive menu, this one will be moved out to uimenu_drive.c */
@@ -94,13 +94,13 @@ static ui_menu_entry_t snapshot_menu[] = {
 /* temporary place holder for the pause callback till we can get it working. */
 static UI_MENU_CALLBACK(pause_callback)
 {
-    return 0;
+    return NULL;
 }
 
 /* temporary place holder for the monitor callback till we can get it working. */
 static UI_MENU_CALLBACK(monitor_callback)
 {
-    return 0;
+    return NULL;
 }
 
 #ifdef DEBUG
@@ -120,8 +120,10 @@ static ui_menu_entry_t help_menu[] = {
 /* this callback will be moved out to uimenu_common.c */
 static UI_MENU_CALLBACK(quit_callback)
 {
-    exit(0);
-    return 0;
+    if(activated) {
+        exit(0);
+    }
+    return NULL;
 }
 
 static ui_menu_entry_t x64_main_menu[] = {

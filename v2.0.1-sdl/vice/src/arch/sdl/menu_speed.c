@@ -97,9 +97,9 @@ static ui_menu_entry_t refresh_rate_menu[] = {
       (ui_callback_data_t)10,
       NULL },
     { "Custom",
-      MENU_ENTRY_RESOURCE_RADIO,
+      MENU_ENTRY_DIALOG,
       custom_RefreshRate_callback,
-      (ui_callback_data_t)-1,
+      NULL,
       NULL },
     { NULL }
 };
@@ -138,9 +138,9 @@ static ui_menu_entry_t maximum_speed_menu[] = {
       (ui_callback_data_t)0,
       NULL },
     { "Custom",
-      MENU_ENTRY_RESOURCE_RADIO,
+      MENU_ENTRY_DIALOG,
       custom_Speed_callback,
-      (ui_callback_data_t)-1,
+      NULL,
       NULL },
     { NULL }
 };
@@ -181,17 +181,16 @@ static const char *custom_RefreshRate_callback(int activated, ui_callback_data_t
         if (value)
         {
             new_value = strtol(value, NULL, 0);
-            if (new_value > 10)
+            if (new_value != previous)
             {
                 resources_set_int("RefreshRate", new_value);
             }
             lib_free(value);
-            refresh_rate_menu[11].callback_data = (ui_callback_data_t)new_value;
         }
     }
     else
     {
-        if (previous == (int)param)
+        if(previous > 10)
         {
             return "*";
         }
@@ -218,18 +217,17 @@ static const char *custom_Speed_callback(int activated, ui_callback_data_t param
         if (value)
         {
             new_value = strtol(value, NULL, 0);
-            if (new_value != 0 &&new_value != 10 && new_value != 25 &&
-                new_value != 50 && new_value != 100 && new_value != 200)
+            if (new_value != previous)
             {
                 resources_set_int("Speed", new_value);
             }
             lib_free(value);
-            maximum_speed_menu[6].callback_data = (ui_callback_data_t)new_value;
         }
     }
     else
     {
-        if (previous == (int)param)
+        if (previous != 0 && previous != 10 && previous != 25 &&
+            previous != 50 && previous != 100 && previous != 200)
         {
             return "*";
         }
@@ -240,3 +238,4 @@ static const char *custom_Speed_callback(int activated, ui_callback_data_t param
     }
     return NULL;
 }
+
