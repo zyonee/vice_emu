@@ -99,49 +99,49 @@ static UI_MENU_CALLBACK(autostart_callback)
     return NULL;
 }
 
-/* temporary empty drive menu, this one will be moved out to uimenu_drive.c */
+/* temporary empty drive menu, this one will be moved out to menu_drive.c */
 static ui_menu_entry_t drive_menu[] = {
     { "-", MENU_ENTRY_SEPARATOR, NULL, NULL, NULL },
     { NULL }
 };
 
-/* temporary empty tape menu, this one will be moved out to uimenu_tape.c */
+/* temporary empty tape menu, this one will be moved out to menu_tape.c */
 static ui_menu_entry_t tape_menu[] = {
     { "-", MENU_ENTRY_SEPARATOR, NULL, NULL, NULL },
     { NULL }
 };
 
-/* temporary empty c128/c64 cart menu, this one will be moved out to uimenu_c64_c128_cart.c */
+/* temporary empty c128/c64 cart menu, this one will be moved out to menu_c64_c128_cart.c */
 static ui_menu_entry_t c64_c128_cart_menu[] = {
     { "-", MENU_ENTRY_SEPARATOR, NULL, NULL, NULL },
     { NULL }
 };
 
-/* temporary empty c128 hardware menu, this one will be moved out to uimenu_c128hw.c */
+/* temporary empty c128 hardware menu, this one will be moved out to menu_c128hw.c */
 static ui_menu_entry_t c128_hardware_menu[] = {
     { "-", MENU_ENTRY_SEPARATOR, NULL, NULL, NULL },
     { NULL }
 };
 
-/* temporary empty c128 rom menu, this one will be moved out to uimenu_c128rom.c */
+/* temporary empty c128 rom menu, this one will be moved out to menu_c128rom.c */
 static ui_menu_entry_t c128_rom_menu[] = {
     { "-", MENU_ENTRY_SEPARATOR, NULL, NULL, NULL },
     { NULL }
 };
 
-/* temporary empty c128 video menu, this one will be moved out to uimenu_c128video.c */
+/* temporary empty c128 video menu, this one will be moved out to menu_c128video.c */
 static ui_menu_entry_t c128_video_menu[] = {
     { "-", MENU_ENTRY_SEPARATOR, NULL, NULL, NULL },
     { NULL }
 };
 
-/* temporary empty sound menu, this one will be moved out to uimenu_sound.c */
+/* temporary empty sound menu, this one will be moved out to menu_sound.c */
 static ui_menu_entry_t sound_menu[] = {
     { "-", MENU_ENTRY_SEPARATOR, NULL, NULL, NULL },
     { NULL }
 };
 
-/* temporary empty snapshot menu, this one will be moved out to uimenu_snapshot.c */
+/* temporary empty snapshot menu, this one will be moved out to menu_snapshot.c */
 static ui_menu_entry_t snapshot_menu[] = {
     { "-", MENU_ENTRY_SEPARATOR, NULL, NULL, NULL },
     { NULL }
@@ -160,20 +160,20 @@ static UI_MENU_CALLBACK(monitor_callback)
 }
 
 #ifdef DEBUG
-/* temporary empty debug menu, this one will be moved out to uimenu_debug.c */
+/* temporary empty debug menu, this one will be moved out to menu_debug.c */
 static ui_menu_entry_t debug_menu[] = {
     { "-", MENU_ENTRY_SEPARATOR, NULL, NULL, NULL },
     { NULL }
 };
 #endif
 
-/* temporary empty help menu, this one will be moved out to uimenu_help.c */
+/* temporary empty help menu, this one will be moved out to menu_help.c */
 static ui_menu_entry_t help_menu[] = {
     { "-", MENU_ENTRY_SEPARATOR, NULL, NULL, NULL },
     { NULL }
 };
 
-/* this callback will be moved out to uimenu_common.c */
+/* this callback will be moved out to menu_common.c */
 static UI_MENU_CALLBACK(quit_callback)
 {
     if(activated) {
@@ -188,52 +188,52 @@ static ui_menu_entry_t x128_main_menu[] = {
       autostart_callback,
       NULL,
       NULL },
-    { "Drive menu",
+    { "Drive",
       MENU_ENTRY_SUBMENU,
       NULL,
       NULL,
       drive_menu },
-    { "Tape menu",
+    { "Tape",
       MENU_ENTRY_SUBMENU,
       NULL,
       NULL,
       tape_menu },
-    { "Cartridge menu",
+    { "Cartridge",
       MENU_ENTRY_SUBMENU,
       NULL,
       NULL,
       c64_c128_cart_menu },
-    { "Machine settings menu",
+    { "Machine settings",
       MENU_ENTRY_SUBMENU,
       NULL,
       NULL,
       c128_hardware_menu },
-    { "ROM settings menu",
+    { "ROM settings",
       MENU_ENTRY_SUBMENU,
       NULL,
       NULL,
       c128_rom_menu },
-    { "Video settings menu",
+    { "Video settings",
       MENU_ENTRY_SUBMENU,
       NULL,
       NULL,
       c128_video_menu },
-    { "Sound settings menu",
+    { "Sound settings",
       MENU_ENTRY_SUBMENU,
       NULL,
       NULL,
       sound_menu },
-    { "Snapshot menu",
+    { "Snapshot",
       MENU_ENTRY_SUBMENU,
       NULL,
       NULL,
       snapshot_menu },
-    { "Speed settings menu",
+    { "Speed settings",
       MENU_ENTRY_SUBMENU,
       NULL,
       NULL,
       speed_menu },
-    { "Reset menu",
+    { "Reset",
       MENU_ENTRY_SUBMENU,
       NULL,
       NULL,
@@ -249,13 +249,13 @@ static ui_menu_entry_t x128_main_menu[] = {
       NULL,
       NULL },
 #ifdef DEBUG
-    { "Debug menu",
+    { "Debug",
       MENU_ENTRY_SUBMENU,
       NULL,
       NULL,
       debug_menu },
 #endif
-    { "Help menu",
+    { "Help",
       MENU_ENTRY_SUBMENU,
       NULL,
       NULL,
