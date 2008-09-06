@@ -26,24 +26,17 @@
 
 #include "vice.h"
 
+#include <stdio.h>
+#include <stdlib.h>
+
+#include "lib.h"
+#include "menu_speed.h"
+#include "resources.h"
 #include "uimenu.h"
 
-/* TODO:
-   the custom refresh rate and custom maximum speed can't be done
-   till the sdl ui has a number or string input dialog.
- */
-
-#if 0
-static UI_MENU_CALLBACK(refresh_rate_custom_callback)
-{
-    return 0;
-}
-
-static UI_MENU_CALLBACK(maximum_speed_custom_callback)
-{
-    return 0;
-}
-#endif
+/* prototypes of the custom input functions */
+static const char *custom_RefreshRate_callback(int activated, ui_callback_data_t param);
+static const char *custom_Speed_callback(int activated, ui_callback_data_t param);
 
 UI_MENU_DEFINE_RADIO(RefreshRate)
 
@@ -103,9 +96,11 @@ static ui_menu_entry_t refresh_rate_menu[] = {
       radio_RefreshRate_callback,
       (ui_callback_data_t)10,
       NULL },
-/* TODO:
-   custom refresh rate
- */
+    { "Custom",
+      MENU_ENTRY_RESOURCE_RADIO,
+      custom_RefreshRate_callback,
+      (ui_callback_data_t)-1,
+      NULL },
     { NULL }
 };
 
@@ -142,9 +137,11 @@ static ui_menu_entry_t maximum_speed_menu[] = {
       radio_Speed_callback,
       (ui_callback_data_t)0,
       NULL },
-/* TODO:
-   custom maximum speed
- */
+    { "Custom",
+      MENU_ENTRY_RESOURCE_RADIO,
+      custom_Speed_callback,
+      (ui_callback_data_t)-1,
+      NULL },
     { NULL }
 };
 
@@ -168,3 +165,78 @@ ui_menu_entry_t speed_menu[] = {
       NULL },
     { NULL }
 };
+
+static const char *custom_RefreshRate_callback(int activated, ui_callback_data_t param)
+{
+    static char buf[20];
+    char *value = NULL;
+    int previous, new_value;
+
+    resources_get_int("RefreshRate", &previous);
+
+    if (activated)
+    {
+        sprintf(buf, "%i", previous);
+        value = sdl_ui_readline(buf, 0, 2, 1, "Enter custom refresh rate");
+        if (value)
+        {
+            new_value = strtol(value, NULL, 0);
+            if (new_value > 10)
+            {
+                resources_set_int("RefreshRate", new_value);
+            }
+            lib_free(value);
+            refresh_rate_menu[11].callback_data = (ui_callback_data_t)new_value;
+        }
+    }
+    else
+    {
+        if (previous == (int)param)
+        {
+            return "*";
+        }
+        else
+        {
+            return " ";
+        }
+    }
+    return NULL;
+}
+
+static const char *custom_Speed_callback(int activated, ui_callback_data_t param)
+{
+    static char buf[20];
+    char *value = NULL;
+    int previous, new_value;
+
+    resources_get_int("Speed", &previous);
+
+    if (activated)
+    {
+        sprintf(buf, "%i", previous);
+        value = sdl_ui_readline(buf, 0, 2, 1, "Enter custom maximum speed");
+        if (value)
+        {
+            new_value = strtol(value, NULL, 0);
+            if (new_value != 0 &&new_value != 10 && new_value != 25 &&
+                new_value != 50 && new_value != 100 && new_value != 200)
+            {
+                resources_set_int("Speed", new_value);
+            }
+            lib_free(value);
+            maximum_speed_menu[6].callback_data = (ui_callback_data_t)new_value;
+        }
+    }
+    else
+    {
+        if (previous == (int)param)
+        {
+            return "*";
+        }
+        else
+        {
+            return " ";
+        }
+    }
+    return NULL;
+}

@@ -392,7 +392,7 @@ int sdl_ui_menu_item_activate(ui_menu_entry_t *item)
     return 0;
 }
 
-char* sdl_ui_readline(const char* previous, int pos_x, int pos_y)
+char* sdl_ui_readline(const char* previous, int pos_x, int pos_y, int clear, const char *title)
 {
 #define SDL_UI_STRING_LEN_MAX 1024
     int i = 0, prev = -1, done = 0, got_key = 0, string_changed = 0, screen_dirty = 1;
@@ -403,6 +403,14 @@ char* sdl_ui_readline(const char* previous, int pos_x, int pos_y)
     SDLMod mod;
     Uint16 c_uni;
     char c;
+
+    if(clear) {
+        sdl_ui_clear();
+    }
+
+    if (title != NULL) {
+        sdl_ui_display_title(title);
+    }
 
     if(previous) {
         new_string = lib_stralloc(previous);
@@ -611,9 +619,7 @@ const char *sdl_ui_menu_string_helper(int activated, ui_callback_data_t param, c
     }
 
     if (activated) {
-        sdl_ui_clear();
-        sdl_ui_display_title((const char*)param);
-        value = sdl_ui_readline(previous, 0, MENU_FIRST_Y);
+        value = sdl_ui_readline(previous, 0, MENU_FIRST_Y, 1, (const char *)param);
         if(value) {
             resources_set_value_string(resource_name, value);
             lib_free(value);
@@ -637,9 +643,7 @@ const char *sdl_ui_menu_int_helper(int activated, ui_callback_data_t param, cons
     sprintf(buf, "%i", previous);
 
     if (activated) {
-        sdl_ui_clear();
-        sdl_ui_display_title((const char*)param);
-        value = sdl_ui_readline(buf, 0, MENU_FIRST_Y);
+        value = sdl_ui_readline(buf, 0, MENU_FIRST_Y, 1, (const char *)param);
         if(value) {
             new_value = strtol(value, NULL, 0);
             resources_set_int(resource_name, new_value);
@@ -650,4 +654,3 @@ const char *sdl_ui_menu_int_helper(int activated, ui_callback_data_t param, cons
     }
     return NULL;
 }
-
