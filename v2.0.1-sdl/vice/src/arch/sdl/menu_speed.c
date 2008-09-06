@@ -177,7 +177,7 @@ static const char *custom_RefreshRate_callback(int activated, ui_callback_data_t
     if (activated)
     {
         sprintf(buf, "%i", previous);
-        value = sdl_ui_readline(buf, 0, 2, 1, "Enter custom refresh rate");
+        value = sdl_ui_text_input_dialog("Enter custom refresh rate", buf);
         if (value)
         {
             new_value = strtol(value, NULL, 0);
@@ -214,7 +214,7 @@ static const char *custom_Speed_callback(int activated, ui_callback_data_t param
     if (activated)
     {
         sprintf(buf, "%i", previous);
-        value = sdl_ui_readline(buf, 0, 2, 1, "Enter custom maximum speed");
+        value = sdl_ui_text_input_dialog("Enter custom maximum speed", buf);
         if (value)
         {
             new_value = strtol(value, NULL, 0);
