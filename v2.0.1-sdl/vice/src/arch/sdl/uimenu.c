@@ -212,9 +212,9 @@ static void sdl_ui_clear(void)
     }
 }
 
-static void sdl_ui_display_title(const char *title)
+static int sdl_ui_display_title(const char *title)
 {
-    sdl_ui_print(title, 0, 0);
+    return sdl_ui_print_wrap(title, 0, 0);
 }
 
 
@@ -532,9 +532,11 @@ char* sdl_ui_readline(const char* previous, int pos_x, int pos_y)
 
 char* sdl_ui_text_input_dialog(const char* title, const char* previous)
 {
+    int i;
+
     sdl_ui_clear();
-    sdl_ui_display_title(title);
-    return sdl_ui_readline(previous, 0, MENU_FIRST_Y);
+    i = sdl_ui_display_title(title) / menu_draw_max_text_x;
+    return sdl_ui_readline(previous, 0, i+MENU_FIRST_Y);
 }
 
 /* ------------------------------------------------------------------ */

@@ -88,6 +88,9 @@ ui_menu_action_t ui_dispatch_events(void)
             case SDL_JOYBUTTONUP:
                 sdljoy_button_event(e.jbutton.which, e.jbutton.button, 0);
                 break;
+            case SDL_JOYHATMOTION:
+                retval = sdljoy_hat_event(e.jhat.which, e.jhat.hat, e.jhat.value);
+                break;
             case SDL_ACTIVEEVENT:
                 if(e.active.state & SDL_APPACTIVE) {
                     if(e.active.gain) {
