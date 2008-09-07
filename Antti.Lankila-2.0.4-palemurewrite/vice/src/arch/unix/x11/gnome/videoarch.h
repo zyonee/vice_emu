@@ -46,8 +46,8 @@ typedef void (*video_refresh_func_t)(struct video_canvas_s *,
 struct video_canvas_s {
     unsigned int initialized;
     unsigned int created;
-    GtkWidget* emuwindow;
-    GdkImage* gdk_image;
+    GtkWidget *emuwindow, *pane;
+    GdkImage *gdk_image;
     int needs_endianswap;
     struct video_render_config_s *videoconfig;
     struct draw_buffer_s *draw_buffer;

@@ -140,7 +140,7 @@ static GtkStyle *ui_style_red;
 static GtkStyle *ui_style_green;
 static GdkCursor *blankCursor;
 static GtkWidget *image_preview_list, *auto_start_button, *last_file_selection;
-static GtkWidget *pal_ctrl_widget, *pal_ctrl_checkbox, *pal_tb;
+static GtkWidget *pal_ctrl_widget;
 static char *(*current_image_contents_func)(const char *, unsigned int unit);
 static char *fixedfontname="CBM 10";
 static PangoFontDescription *fixed_font_desc;
@@ -199,7 +199,6 @@ typedef struct
 typedef struct {
     gchar *title;
     GtkWidget *shell;
-    GtkWidget *canvas;
     GtkWidget *topmenu;
     GtkLabel *speed_label;
     GtkLabel *statustext;
@@ -260,15 +259,6 @@ void ui_check_mouse_cursor()
 
     if(_mouse_enabled) 
     {
-#ifdef HAVE_FULLSCREEN
-        if(fullscreen_is_enabled) {
-	    int window_doublesize;
-
-            if (resources_get_int("FullscreenDoubleSize",
-				  &window_doublesize) < 0)
-                return;
-        }
-#endif
 	if (ui_cached_video_canvas->videoconfig->doublesizex)
 	    mouse_accelx = 2;   
 	else
@@ -279,18 +269,18 @@ void ui_check_mouse_cursor()
       else
           mouse_accely = 4;
 
-	/*	XDefineCursor(display,XtWindow(canvas), blankCursor);*/
 	cursor_is_blank = 1;
 	gdk_keyboard_grab(_ui_top_level->window,
 			  1,
 			  GDK_CURRENT_TIME);
+        /* XXX check this -- latter _ui_top_level->window used to be
+         * canvas->emuwindow->window... */
 	gdk_pointer_grab(_ui_top_level->window,
 			 1,
 			 GDK_POINTER_MOTION_MASK |
-			 GDK_BUTTON_PRESS_MASK |			 
+			 GDK_BUTTON_PRESS_MASK | 
 			 GDK_BUTTON_RELEASE_MASK,
-/*			 _ui_top_level->window,*/
-			 app_shells[0].canvas->window,
+			 _ui_top_level->window,
 			 blankCursor,
 			 GDK_CURRENT_TIME);
     }
@@ -385,28 +375,35 @@ gboolean delete_event(GtkWidget *w, GdkEvent *e, gpointer data)
 
 void mouse_handler(GtkWidget *w, GdkEvent *event, gpointer data)
 {
-    if(event->type == GDK_BUTTON_PRESS) {
-        GdkEventButton *bevent = (GdkEventButton*) event;
-	if(_mouse_enabled) {
-	    mouse_button(bevent->button-1,TRUE);
-	} else {
-	    if(bevent->button == 1) {
-	        ui_menu_update_all_GTK();
-		gtk_menu_popup(GTK_MENU(left_menu),NULL,NULL,NULL,NULL,
-			       bevent->button, bevent->time);
-	    } else if(bevent->button == 3) {
-  	        ui_menu_update_all_GTK();
-		gtk_menu_popup(GTK_MENU(right_menu),NULL,NULL,NULL,NULL,
-			       bevent->button, bevent->time);
-	    }
-	}
-    } else if (event->type == GDK_BUTTON_RELEASE && _mouse_enabled) {
-        GdkEventButton *bevent = (GdkEventButton*) event;
-	mouse_button(bevent->button-1,FALSE);
-    } else if (event->type == GDK_MOTION_NOTIFY && _mouse_enabled) {
-        GdkEventMotion *mevent = (GdkEventMotion*) event;
-        mouse_move((int)mevent->x, (int)mevent->y);
-	/* printf("%d/%d\n", (int)mevent->x, (int)mevent->y); */
+    if (! _mouse_enabled) {
+#if 0
+    /* alankila: why do we need lmb/rmb menus when this same stuff is
+     * just at the top of the stupid emu window? */
+    if (event->type == GDK_BUTTON_PRESS) {
+        GdkEventButton *bevent = (GdkEventButton *) event;
+        if (bevent->button == 1) {
+            ui_menu_update_all_GTK();
+            gtk_menu_popup(GTK_MENU(left_menu),NULL,NULL,NULL,NULL,
+                           bevent->button, bevent->time);
+        } else {
+            ui_menu_update_all_GTK();
+            gtk_menu_popup(GTK_MENU(right_menu),NULL,NULL,NULL,NULL,
+                           bevent->button, bevent->time);
+        }
+    }
+#endif
+        return;
+    }
+
+    if (event->type == GDK_BUTTON_PRESS) {
+        GdkEventButton *bevent = (GdkEventButton *) event;
+        mouse_button(bevent->button-1,TRUE);
+    } else if (event->type == GDK_BUTTON_RELEASE) {
+        GdkEventButton *bevent = (GdkEventButton *) event;
+        mouse_button(bevent->button-1,FALSE);
+    } else if (event->type == GDK_MOTION_NOTIFY) {
+        GdkEventMotion *mevent = (GdkEventMotion *) event;
+        mouse_move((int) mevent->x, (int) mevent->y);
     }
 }
 
@@ -587,7 +584,8 @@ static void statusbar_setstatustext(const char *t)
 void ui_create_status_bar(GtkWidget *pane)
 {
     /* Create the status bar on the bottom.  */
-    GtkWidget *speed_label, *drive_box, *frame, *event_box, *pcb, *vcb, *tmp;
+    GtkWidget *speed_label, *drive_box, *frame, *event_box, *pcb, *vcb, *tmp,
+              *pal_ctrl_checkbox;
     int i;
     app_shell_type *as;
 
@@ -630,7 +628,7 @@ void ui_create_status_bar(GtkWidget *pane)
     /* PAL Control checkbox */
     pal_ctrl_checkbox = gtk_frame_new(NULL);
     gtk_frame_set_shadow_type (GTK_FRAME(pal_ctrl_checkbox), GTK_SHADOW_IN);
-    pcb = pal_tb = gtk_check_button_new_with_label(_("PAL Controls"));
+    pcb = gtk_check_button_new_with_label(_("PAL Controls"));
     GTK_WIDGET_UNSET_FLAGS (pcb, GTK_CAN_FOCUS);
     g_signal_connect(G_OBJECT(pcb), "toggled", 
 		     G_CALLBACK(ui_update_pal_checkbox),
@@ -639,19 +637,6 @@ void ui_create_status_bar(GtkWidget *pane)
     gtk_widget_show(pcb);
     gtk_box_pack_start(GTK_BOX(status_bar), pal_ctrl_checkbox, 
 		       FALSE, FALSE, 0);
-
-    /* FIXME: temporary solution, gnome/gtk people need to fix this */
-    /* XXX permanently on for now
-    if (machine_class != VICE_MACHINE_PET)
-    {
-        if ((resources_get_int("PALEmulation", &i) != -1) && (i > 0))
-            gtk_widget_show(pal_ctrl_checkbox);
-        else
-            gtk_widget_hide(pal_ctrl_checkbox);
-    }
-    else
-        gtk_widget_hide(pal_ctrl_checkbox);
-    */
     gtk_widget_show(pal_ctrl_checkbox);
 
     /* Video Control checkbox */
@@ -908,11 +893,85 @@ int x11ui_get_screen()
 
 gboolean kbd_event_handler(GtkWidget *w, GdkEvent *report,gpointer gp);
 
+static void build_screen_canvas_widget(video_canvas_t *c)
+{
+    GdkColor color;
+    GtkWidget *new_canvas = gtk_drawing_area_new();
+    gdk_color_parse("black", &color);
+    gtk_widget_modify_bg(new_canvas, GTK_STATE_NORMAL, &color);
+
+#ifdef HAVE_HWSCALE
+    if (c->videoconfig->hwscale) {
+        GdkGLConfig *gl_config = gdk_gl_config_new_by_mode(GDK_GL_MODE_RGBA | GDK_GL_MODE_DOUBLE);
+
+        if (gl_config == NULL) {
+            log_warning(ui_log, "HW scaling will not be available");
+            c->videoconfig->hwscale = 0;
+            resources_set_int("HwScalePossible", 0);
+        }
+        else {
+            if (! gtk_widget_set_gl_capability(GTK_WIDGET(new_canvas), 
+                                               gl_config,
+                                               NULL,
+                                               TRUE,
+                                               GDK_GL_RGBA_TYPE))
+                g_critical("Failed to add gl capability");
+        }
+    }
+#endif
+
+    gtk_widget_set_events(new_canvas,
+                          GDK_LEAVE_NOTIFY_MASK |
+                          GDK_ENTER_NOTIFY_MASK |			  
+                          GDK_BUTTON_PRESS_MASK |
+                          GDK_BUTTON_RELEASE_MASK |
+                          GDK_KEY_PRESS_MASK |
+                          GDK_KEY_RELEASE_MASK |
+                          GDK_FOCUS_CHANGE_MASK |
+                          GDK_POINTER_MOTION_MASK |
+                          GDK_STRUCTURE_MASK |
+                          GDK_EXPOSURE_MASK);
+
+    /* XVideo must be refreshed when the application window is moved. */
+    g_signal_connect(G_OBJECT(new_canvas), "configure-event",
+                     G_CALLBACK(configure_callback_canvas),
+                     (void*) c);
+    g_signal_connect(G_OBJECT(new_canvas),"expose-event",
+                     G_CALLBACK(exposure_callback_canvas),
+                     (void*) c);
+    g_signal_connect(G_OBJECT(new_canvas),"enter-notify-event",
+                     G_CALLBACK(enter_window_callback),
+                     NULL);
+    g_signal_connect(G_OBJECT(new_canvas),"map-event",
+                     G_CALLBACK(map_callback),
+                     NULL);
+    g_signal_connect(G_OBJECT(new_canvas),"button-press-event",
+                     G_CALLBACK(mouse_handler),
+                     NULL);
+    g_signal_connect(G_OBJECT(new_canvas),"button-release-event",
+                     G_CALLBACK(mouse_handler),
+                     NULL);
+    g_signal_connect(G_OBJECT(new_canvas),"motion-notify-event",
+                     G_CALLBACK(mouse_handler),
+                     NULL);
+    g_signal_connect(G_OBJECT(new_canvas),"key-press-event",
+                     G_CALLBACK(kbd_event_handler),NULL);
+    g_signal_connect(G_OBJECT(new_canvas),"key-release-event",
+                     G_CALLBACK(kbd_event_handler),NULL);
+    
+    gtk_box_pack_start(GTK_BOX(c->pane), new_canvas, TRUE, TRUE, 0);
+    gtk_widget_show(new_canvas);
+    GTK_WIDGET_SET_FLAGS(new_canvas, GTK_CAN_FOCUS);
+    gtk_widget_grab_focus(new_canvas);
+
+    c->emuwindow = new_canvas;
+}
+
 /* Create a shell with a canvas widget in it.  */
 int ui_open_canvas_window(video_canvas_t *c, const char *title,
 			  int w, int h, int no_autorepeat)
 {
-    GtkWidget *new_window, *new_pane, *new_canvas, *topmenu;
+    GtkWidget *new_window, *topmenu;
     GtkAccelGroup* accel;
     int i;
     
@@ -936,145 +995,44 @@ int ui_open_canvas_window(video_canvas_t *c, const char *title,
     if (!_ui_top_level)
 	_ui_top_level = new_window;
 
-    new_pane = gtk_vbox_new(FALSE, 0);
-    gtk_container_add(GTK_CONTAINER(new_window), new_pane);
-    gtk_widget_show(new_pane);
+    c->pane = gtk_vbox_new(FALSE, 0);
+    gtk_container_add(GTK_CONTAINER(new_window), c->pane);
+    gtk_widget_show(c->pane);
     
     topmenu = gtk_menu_bar_new();
     gtk_widget_show(topmenu);
     g_signal_connect(G_OBJECT(topmenu),"button-press-event",
 		     G_CALLBACK(update_menu_cb),NULL);
-    gtk_box_pack_start(GTK_BOX(new_pane),topmenu, FALSE, TRUE,0);
+    gtk_box_pack_start(GTK_BOX(c->pane),topmenu, FALSE, TRUE,0);
 
     gtk_widget_show(new_window);
-    if (vsid_mode)
-	new_canvas = build_vsid_ctrl_widget();
-    else
-    {
-	GtkRcStyle *rc_style;
-	GdkColor color;
+    if (vsid_mode) {
+	GtkWidget *new_canvas = build_vsid_ctrl_widget();
+        gtk_box_pack_start(GTK_BOX(c->pane), new_canvas, TRUE, TRUE, 0);
+        gtk_widget_show(new_canvas);
+    } else
+        build_screen_canvas_widget(c);
 
-	new_canvas = gtk_drawing_area_new();
-
-	/* Go through the motions to change the background to black.
-	   GTK+ 2.0 simplifies this with gtk_widget_modify_bg. */
-	gdk_color_parse("black", &color);
-	rc_style = gtk_rc_style_new();
-	rc_style->bg[GTK_STATE_NORMAL] = color;
-	rc_style->color_flags[GTK_STATE_NORMAL] = GTK_RC_BG;
-	gtk_widget_modify_style(new_canvas, rc_style);
-        /* FIXME: Old gtk libraries do stupid things if this is
-	   unreferenced.  */
-	/* gtk_rc_style_unref(rc_style); */
-#ifdef HAVE_HWSCALE
-        GdkGLConfig *gl_config = gdk_gl_config_new_by_mode(GDK_GL_MODE_RGBA | GDK_GL_MODE_DOUBLE);
-
-        if (gl_config == NULL) {
-            log_warning (ui_log, "HW scaling will not be available");
-            c->videoconfig->hwscale = 0;
-            resources_set_int("HwScalePossible", 0);
-        }
-        else {
-            if (! gtk_widget_set_gl_capability (GTK_WIDGET (new_canvas), 
-                                        gl_config,
-                                        NULL,
-                                        TRUE,
-                                        GDK_GL_RGBA_TYPE))
-                g_critical ("Failed to add gl capability");
-        }
-#endif
+    ui_create_status_bar(c->pane);
+    if (! vsid_mode) {
+        pal_ctrl_widget = build_pal_ctrl_widget(c);
+        gtk_box_pack_end(GTK_BOX(c->pane), pal_ctrl_widget, FALSE, FALSE, 0);
+        gtk_widget_hide(pal_ctrl_widget);
     }
-    
-    gtk_widget_set_events(new_canvas,
-			  GDK_LEAVE_NOTIFY_MASK |
-			  GDK_ENTER_NOTIFY_MASK |			  
-			  GDK_BUTTON_PRESS_MASK |
-			  GDK_BUTTON_RELEASE_MASK |
-			  GDK_KEY_PRESS_MASK |
-			  GDK_KEY_RELEASE_MASK |
-			  GDK_FOCUS_CHANGE_MASK |
-			  GDK_POINTER_MOTION_MASK |
-			  GDK_STRUCTURE_MASK |
-			  GDK_EXPOSURE_MASK);
-
-    gtk_box_pack_start(GTK_BOX(new_pane),new_canvas,TRUE,TRUE,0);
-    gtk_widget_show(new_canvas);
-
-    if(!vsid_mode) {
-        /* XVideo must be refreshed when the application window is moved. */
-        g_signal_connect(G_OBJECT(new_window), "configure-event",
-    		     G_CALLBACK(configure_callback_app),
-    		     (void*) c);
-        g_signal_connect(G_OBJECT(new_canvas), "configure-event",
-    		     G_CALLBACK(configure_callback_canvas),
-    		     (void*) c);
-        g_signal_connect(G_OBJECT(new_canvas),"expose-event",
-    		     G_CALLBACK(exposure_callback_canvas),
-    		     (void*) c);
-        g_signal_connect(G_OBJECT(new_canvas),"enter-notify-event",
-    		     G_CALLBACK(enter_window_callback),
-    		     NULL);
-        g_signal_connect(G_OBJECT(new_canvas),"map-event",
-    		     G_CALLBACK(map_callback),
-    		     NULL);
-    }
-
-    if (!vsid_mode) 
-    {
-	/* XVideo must be refreshed when the application window is moved. */
-	g_signal_connect(G_OBJECT(new_window), "configure-event",
-			 G_CALLBACK(configure_callback_app),
-			 (void*) c);
-	g_signal_connect(G_OBJECT(new_canvas), "configure-event",
-			 G_CALLBACK(configure_callback_canvas),
-			 (void*) c);
-	g_signal_connect(G_OBJECT(new_canvas),"expose-event",
-			 G_CALLBACK(exposure_callback_canvas),
-			 (void*) c);
-	g_signal_connect(G_OBJECT(new_canvas),"enter-notify-event",
-			 G_CALLBACK(enter_window_callback),
-			 NULL);
-	g_signal_connect(G_OBJECT(new_canvas),"map-event",
-			 G_CALLBACK(map_callback),
-			 NULL);
-    }
-    
-    if (!vsid_mode && c->videoconfig->hwscale) {
-        gint window_width, window_height;
-        resources_get_int("WindowWidth", &window_width);
-        resources_get_int("WindowHeight", &window_height);
-        gtk_window_resize(GTK_WINDOW(new_window), window_width, 
-			  window_height);
-    }
-    gtk_widget_show(new_canvas);
-
-    ui_create_status_bar(new_pane);
-    pal_ctrl_widget = build_pal_ctrl_widget(c);
-    gtk_box_pack_end(GTK_BOX(new_pane), pal_ctrl_widget, FALSE, FALSE, 0);
-    gtk_widget_hide(pal_ctrl_widget);
-    
-    GTK_WIDGET_SET_FLAGS(new_canvas,GTK_CAN_FOCUS);
-    gtk_widget_grab_focus (new_canvas);
+ 
     if (no_autorepeat) {
         g_signal_connect(G_OBJECT(new_window),"enter-notify-event",
 			 G_CALLBACK(ui_autorepeat_off),NULL);
         g_signal_connect(G_OBJECT(new_window),"leave-notify-event",
 			 G_CALLBACK(ui_autorepeat_on),NULL);
     }
-    g_signal_connect(G_OBJECT(new_canvas),"key-press-event",
-		     G_CALLBACK(kbd_event_handler),NULL);
-    g_signal_connect(G_OBJECT(new_canvas),"key-release-event",
-		     G_CALLBACK(kbd_event_handler),NULL);
+    g_signal_connect(G_OBJECT(new_window), "configure-event",
+                     G_CALLBACK(configure_callback_app),
+                     (void*) c);
     g_signal_connect(G_OBJECT(new_window),"enter-notify-event",
 		     G_CALLBACK(kbd_event_handler),NULL);
     g_signal_connect(G_OBJECT(new_window),"leave-notify-event",
 		     G_CALLBACK(kbd_event_handler),NULL);
-    g_signal_connect(G_OBJECT(new_canvas),"button-press-event",
-		     G_CALLBACK(mouse_handler),NULL);
-    g_signal_connect(G_OBJECT(new_canvas),"button-release-event",
-		     G_CALLBACK(mouse_handler),NULL);
-    g_signal_connect(G_OBJECT(new_window),"motion-notify-event",
-		     G_CALLBACK(mouse_handler),NULL);
     g_signal_connect(G_OBJECT(new_window),"delete_event",
 		     G_CALLBACK(delete_event),NULL);
     g_signal_connect(G_OBJECT(new_window),"destroy_event",
@@ -1084,7 +1042,6 @@ int ui_open_canvas_window(video_canvas_t *c, const char *title,
     gtk_window_add_accel_group (GTK_WINDOW (new_window), accel);
 
     app_shells[num_app_shells - 1].shell = new_window;
-    app_shells[num_app_shells - 1].canvas = new_canvas;
     app_shells[num_app_shells - 1].title = lib_stralloc(title);
     app_shells[num_app_shells - 1].topmenu = topmenu;
     app_shells[num_app_shells - 1].accel = accel;
@@ -1093,7 +1050,17 @@ int ui_open_canvas_window(video_canvas_t *c, const char *title,
 
     if (vsid_mode)
 	return 0;
-    
+
+#ifdef HAVE_HWSCALE    
+    if (c->videoconfig->hwscale) {
+        gint window_width, window_height;
+        resources_get_int("WindowWidth", &window_width);
+        resources_get_int("WindowHeight", &window_height);
+        gtk_window_resize(GTK_WINDOW(new_window), window_width, 
+                          window_height);
+    }
+#endif
+
     if (!app_gc)
 	app_gc = gdk_gc_new(new_window->window);
 
@@ -1125,7 +1092,6 @@ int ui_open_canvas_window(video_canvas_t *c, const char *title,
 
     initBlankCursor();
 
-    c->emuwindow = new_canvas;
     ui_cached_video_canvas = c;
     
     return 0;
@@ -1670,16 +1636,19 @@ ui_fullscreen_statusbar(struct video_canvas_s *canvas, int enable)
 
 /* Resize one window. */
 void 
-ui_resize_canvas_window(ui_window_t w, int width, int height, int hwscale)
+ui_resize_canvas_window(video_canvas_t *canvas, int width, int height)
 {
-    gtk_window_set_resizable(GTK_WINDOW(gtk_widget_get_toplevel(w)), (gboolean)hwscale);
+    /* remove old canvas */
+    gtk_container_remove(GTK_CONTAINER(canvas->pane), canvas->emuwindow);
+    build_screen_canvas_widget(canvas);
 
-    if (hwscale)
-    {
+    gtk_window_set_resizable(GTK_WINDOW(gtk_widget_get_toplevel(canvas->emuwindow)), (gboolean) canvas->videoconfig->hwscale);
+
+    if (canvas->videoconfig->hwscale) {
        width = 0;
        height = 0;
     }
-    gtk_widget_set_size_request(w, width, height);
+    gtk_widget_set_size_request(canvas->emuwindow, width, height);
 }
 
 void x11ui_move_canvas_window(ui_window_t w, int x, int y)
@@ -1726,24 +1695,6 @@ void ui_autorepeat_on(void)
 /* Disable autorepeat. */
 void ui_autorepeat_off(void)
 {
-}
-
-void ui_update_pal_ctrls(int v)
-{
-    if (!pal_ctrl_checkbox)
-	return;
-
-    if (v)
-    {
-	if (pal_tb)
-	{
-	    gtk_widget_show(pal_ctrl_checkbox);
-	    ui_update_pal_checkbox(GTK_WIDGET(pal_tb), NULL);
-	}
-	return;
-    }
-    gtk_widget_hide(pal_ctrl_checkbox);
-    gtk_widget_hide(pal_ctrl_widget);
 }
 
 /* ------------------------------------------------------------------------- */
@@ -2410,50 +2361,6 @@ void ui_popup(GtkWidget *w, const char *title, gboolean wait_popdown)
     ui_dispatch_events();
     gtk_window_set_title(GTK_WINDOW(w),title);
 
-#if 0				/* this code centers popups arount the main 
-				   emulation window,
-				   We decided to let the WM take care of
-				   placing popups */
-    gtk_widget_set_parent_window(w,_ui_top_level->window);
-    {
-	/* Center the popup. */
-      
-	gint my_width, my_height, shell_width, shell_height;
-	gint my_x, my_y;
-	gint tlx, tly;
-	gint root_width, root_height;
-
-	gtk_widget_show(w);
-
-	gdk_window_get_size(w->window,&my_width, &my_height);
-
-
-        /* Now make sure the whole widget is visible.  */
-	root_width = gdk_screen_width();
-	root_height = gdk_screen_height();
-
-	gdk_window_get_size(_ui_top_level->window,
-			    &shell_width,&shell_height);
-	gdk_window_get_root_origin(_ui_top_level->window,&tlx, &tly);
-
-	/* XtTranslateCoords(XtParent(s), tlx, tly, &tlx, &tly);*/
-	my_x = tlx + (shell_width - my_width) / 2;
-	my_y = tly + (shell_height - my_height) / 2;
-	
-	/* FIXME: Is it really OK to cast to `signed short'?  */
-	if ((signed short)my_x < 0)
-	    my_x = 0;
-	else if ((signed short)my_x + my_width > root_width)
-	    my_x = root_width - my_width;
-
-	if ((signed short)my_y < 0)
-	    my_y = 0;
-	else if ((signed short)my_y + my_height > root_height)
-	    my_y = root_height - my_height;
-	gdk_window_move(w->window,my_x,my_y);
-    }
-    gdk_flush();
-#endif
     gtk_window_set_transient_for(GTK_WINDOW(w),GTK_WINDOW(_ui_top_level));
     gtk_widget_show(w);
     gdk_window_set_decorations (w->window, GDK_DECOR_ALL | GDK_DECOR_MENU);
@@ -2760,11 +2667,24 @@ gboolean exposure_callback_canvas(GtkWidget *w, GdkEventExpose *e,
 
         glClear(GL_COLOR_BUFFER_BIT);
         glDisable (GL_DEPTH_TEST);
-        glEnable (GL_TEXTURE_RECTANGLE_ARB);
-        glBindTexture (GL_TEXTURE_RECTANGLE_ARB, canvas->screen_texture);
-        glTexParameteri (GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri (GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexImage2D  (GL_TEXTURE_RECTANGLE_ARB, 0, GL_RGBA,
+
+/* GL_TEXTURE_RECTANGLE is standardised as _EXT in OpenGL 1.4. Here's some
+ * aliases in the meantime. */
+#ifndef GL_TEXTURE_RECTANGLE_EXT
+    #if defined(GL_TEXTURE_RECTANGLE_NV)
+        #define GL_TEXTURE_RECTANGLE_EXT GL_TEXTURE_RECTANGLE_NV
+    #elif defined(GL_TEXTURE_RECTANGLE_ARB)
+        #define GL_TEXTURE_RECTANGLE_EXT GL_TEXTURE_RECTANGLE_ARB
+    #else
+        #error "Your headers do not supply GL_TEXTURE_RECTANGLE. Disable HWSCALE and try again."
+    #endif
+#endif
+
+        glEnable (GL_TEXTURE_RECTANGLE_EXT);
+        glBindTexture (GL_TEXTURE_RECTANGLE_EXT, canvas->screen_texture);
+        glTexParameteri (GL_TEXTURE_RECTANGLE_EXT, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri (GL_TEXTURE_RECTANGLE_EXT, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexImage2D  (GL_TEXTURE_RECTANGLE_EXT, 0, GL_RGBA,
             canvas->gdk_image->width, canvas->gdk_image->height,
             0, GL_RGB, GL_UNSIGNED_BYTE, canvas->hwscale_image);
 

@@ -169,11 +169,12 @@ void video_canvas_resize(video_canvas_t *canvas, unsigned int width,
     lib_free(canvas->hwscale_image);
     canvas->hwscale_image = lib_malloc(canvas->gdk_image->width * canvas->gdk_image->height * 3);
 #endif
-    if (video_canvas_set_palette(canvas, canvas->palette) < 0)
-        exit(1);
+    if (video_canvas_set_palette(canvas, canvas->palette) < 0) {
+        log_debug("Setting palette for this mode failed. (Try 16/24/32 bpp.)");
+        exit(-1);
+    }
 
-    ui_resize_canvas_window(canvas->emuwindow, width, height, 
-			    canvas->videoconfig->hwscale);
+    ui_resize_canvas_window(canvas, width, height);
     video_canvas_redraw_size(canvas, width, height);
 }
 
