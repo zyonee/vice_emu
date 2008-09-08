@@ -39,8 +39,6 @@ libarch_a_SOURCES = \
 	catweaselmkiii.c \
 	cbm2ui.c \
 	console.c \
-	dirent.c \
-	dirent.h \
 	ffmpeglib.c \
 	fullscrn.c \
 	fullscrn.h \
@@ -220,6 +218,7 @@ EXTRA_DIST = \
 	evc/system.c \
 	evc/system.h \
 	msvc/config.h \
+	msvc/dirent.h \
 	msvc/system.h \
 	msvc/wpcap/bittypes.h \
 	msvc/wpcap/ip6_misc.h \
@@ -311,6 +310,7 @@ EXTRA_DIST = \
 	cbm2.dsp \
 	core.dsp \
 	crtc.dsp \
+	dirent.c \
 	diskimage.dsp \
 	drive.dsp \
 	fileio.dsp \
