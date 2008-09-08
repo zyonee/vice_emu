@@ -32,182 +32,140 @@
 
 #include "debug.h"
 #include "c64mem.h"
+#include "menu_common.h"
 #include "menu_reset.h"
 #include "menu_speed.h"
 #include "ui.h"
 #include "uimenu.h"
 
-/* temporary place holder for the autostart callback till we get file selectors. */
-static UI_MENU_CALLBACK(autostart_callback)
-{
-    return NULL;
-}
-
 /* temporary empty drive menu, this one will be moved out to menu_drive.c */
 static ui_menu_entry_t drive_menu[] = {
-    { "-", MENU_ENTRY_SEPARATOR, NULL, NULL, NULL },
+    SDL_MENU_ITEM_SEPARATOR,
     { NULL }
 };
 
 /* temporary empty tape menu, this one will be moved out to menu_tape.c */
 static ui_menu_entry_t tape_menu[] = {
-    { "-", MENU_ENTRY_SEPARATOR, NULL, NULL, NULL },
+    SDL_MENU_ITEM_SEPARATOR,
     { NULL }
 };
 
 /* temporary empty c128/c64 cart menu, this one will be moved out to menu_c64_c128_cart.c */
 static ui_menu_entry_t c64_c128_cart_menu[] = {
-    { "-", MENU_ENTRY_SEPARATOR, NULL, NULL, NULL },
+    SDL_MENU_ITEM_SEPARATOR,
     { NULL }
 };
 
 /* temporary empty c64 hardware menu, this one will be moved out to menu_c64hw.c */
 static ui_menu_entry_t c64_hardware_menu[] = {
-    { "-", MENU_ENTRY_SEPARATOR, NULL, NULL, NULL },
+    SDL_MENU_ITEM_SEPARATOR,
     { NULL }
 };
 
 /* temporary empty c64 rom menu, this one will be moved out to menu_c64rom.c */
 static ui_menu_entry_t c64_rom_menu[] = {
-    { "-", MENU_ENTRY_SEPARATOR, NULL, NULL, NULL },
+    SDL_MENU_ITEM_SEPARATOR,
     { NULL }
 };
 
 /* temporary empty c64 video menu, this one will be moved out to menu_c64video.c */
 static ui_menu_entry_t c64_video_menu[] = {
-    { "-", MENU_ENTRY_SEPARATOR, NULL, NULL, NULL },
+    SDL_MENU_ITEM_SEPARATOR,
     { NULL }
 };
 
 /* temporary empty sound menu, this one will be moved out to menu_sound.c */
 static ui_menu_entry_t sound_menu[] = {
-    { "-", MENU_ENTRY_SEPARATOR, NULL, NULL, NULL },
+    SDL_MENU_ITEM_SEPARATOR,
     { NULL }
 };
 
 /* temporary empty snapshot menu, this one will be moved out to menu_snapshot.c */
 static ui_menu_entry_t snapshot_menu[] = {
-    { "-", MENU_ENTRY_SEPARATOR, NULL, NULL, NULL },
+    SDL_MENU_ITEM_SEPARATOR,
     { NULL }
 };
-
-/* temporary place holder for the pause callback till we can get it working. */
-static UI_MENU_CALLBACK(pause_callback)
-{
-    return NULL;
-}
-
-/* temporary place holder for the monitor callback till we can get it working. */
-static UI_MENU_CALLBACK(monitor_callback)
-{
-    return NULL;
-}
 
 #ifdef DEBUG
 /* temporary empty debug menu, this one will be moved out to menu_debug.c */
 static ui_menu_entry_t debug_menu[] = {
-    { "-", MENU_ENTRY_SEPARATOR, NULL, NULL, NULL },
+    SDL_MENU_ITEM_SEPARATOR,
     { NULL }
 };
 #endif
 
 /* temporary empty help menu, this one will be moved out to menu_help.c */
 static ui_menu_entry_t help_menu[] = {
-    { "-", MENU_ENTRY_SEPARATOR, NULL, NULL, NULL },
+    SDL_MENU_ITEM_SEPARATOR,
     { NULL }
 };
 
-/* this callback will be moved out to menu_common.c */
-static UI_MENU_CALLBACK(quit_callback)
-{
-    if(activated) {
-        exit(0);
-    }
-    return NULL;
-}
-
-static ui_menu_entry_t x64_main_menu[] = {
+static const ui_menu_entry_t x64_main_menu[] = {
     { "Autostart image",
       MENU_ENTRY_OTHER,
       autostart_callback,
-      NULL,
       NULL },
     { "Drive",
       MENU_ENTRY_SUBMENU,
       NULL,
-      NULL,
-      drive_menu },
+      (ui_callback_data_t)drive_menu },
     { "Tape",
       MENU_ENTRY_SUBMENU,
       NULL,
-      NULL,
-      tape_menu },
+      (ui_callback_data_t)tape_menu },
     { "Cartridge",
       MENU_ENTRY_SUBMENU,
       NULL,
-      NULL,
-      c64_c128_cart_menu },
+      (ui_callback_data_t)c64_c128_cart_menu },
     { "Machine settings",
       MENU_ENTRY_SUBMENU,
       NULL,
-      NULL,
-      c64_hardware_menu },
+      (ui_callback_data_t)c64_hardware_menu },
     { "ROM settings",
       MENU_ENTRY_SUBMENU,
       NULL,
-      NULL,
-      c64_rom_menu },
+      (ui_callback_data_t)c64_rom_menu },
     { "Video settings",
       MENU_ENTRY_SUBMENU,
       NULL,
-      NULL,
-      c64_video_menu },
+      (ui_callback_data_t)c64_video_menu },
     { "Sound settings",
       MENU_ENTRY_SUBMENU,
       NULL,
-      NULL,
-      sound_menu },
+      (ui_callback_data_t)sound_menu },
     { "Snapshot",
       MENU_ENTRY_SUBMENU,
       NULL,
-      NULL,
-      snapshot_menu },
+      (ui_callback_data_t)snapshot_menu },
     { "Speed settings",
       MENU_ENTRY_SUBMENU,
       NULL,
-      NULL,
-      speed_menu },
+      (ui_callback_data_t)speed_menu },
     { "Reset",
       MENU_ENTRY_SUBMENU,
       NULL,
-      NULL,
-      reset_menu },
+      (ui_callback_data_t)reset_menu },
     { "Pause",
       MENU_ENTRY_OTHER,
       pause_callback,
-      NULL,
       NULL },
     { "Monitor",
       MENU_ENTRY_OTHER,
       monitor_callback,
-      NULL,
       NULL },
 #ifdef DEBUG
     { "Debug",
       MENU_ENTRY_SUBMENU,
       NULL,
-      NULL,
-      debug_menu },
+      (ui_callback_data_t)debug_menu },
 #endif
     { "Help",
       MENU_ENTRY_SUBMENU,
       NULL,
-      NULL,
-      help_menu },
+      (ui_callback_data_t)help_menu },
     { "Quit emulator",
       MENU_ENTRY_OTHER,
       quit_callback,
-      NULL,
       NULL },
     { NULL }
 };
@@ -226,3 +184,4 @@ void c64ui_shutdown(void)
 {
 fprintf(stderr,"%s\n",__func__);
 }
+

@@ -56,11 +56,10 @@ typedef struct ui_menu_entry_s {
     ui_menu_entry_type_t type;
     ui_callback_t callback;
     ui_callback_data_t callback_data;
-    struct ui_menu_entry_s *sub_menu;
 } ui_menu_entry_t;
 
 extern void sdl_ui_set_vcachename(const char *vcache_name);
-extern void sdl_ui_set_main_menu(ui_menu_entry_t *menu);
+extern void sdl_ui_set_main_menu(const ui_menu_entry_t *menu);
 extern void sdl_ui_set_menu_font(BYTE *font, int w, int h);
 extern void sdl_ui_set_menu_colors(int front, int back);
 extern void sdl_ui_set_menu_borders(int x, int y);
@@ -81,37 +80,6 @@ typedef enum {
     MENU_ACTION_MAP,
     MENU_ACTION_NUM
 } ui_menu_action_t;
-
-#define UI_MENU_CALLBACK(name)                            \
-    const char *name(int activated, ui_callback_data_t param)
-
-#define UI_MENU_DEFINE_TOGGLE(resource)                              \
-    static UI_MENU_CALLBACK(toggle_##resource##_callback)            \
-    {                                                                \
-        return sdl_ui_menu_toggle_helper(activated, #resource);      \
-    }
-
-#define UI_MENU_DEFINE_RADIO(resource)                                \
-    static UI_MENU_CALLBACK(radio_##resource##_callback)              \
-    {                                                                 \
-        return sdl_ui_menu_radio_helper(activated, param, #resource); \
-    }
-
-#define UI_MENU_DEFINE_STRING(resource)                                \
-    static UI_MENU_CALLBACK(string_##resource##_callback)              \
-    {                                                                  \
-        return sdl_ui_menu_string_helper(activated, param, #resource); \
-    }
-
-#define UI_MENU_DEFINE_INT(resource)                                \
-    static UI_MENU_CALLBACK(string_##resource##_callback)           \
-    {                                                               \
-        return sdl_ui_menu_int_helper(activated, param, #resource); \
-    }
-
-extern const char *sdl_ui_menu_toggle_helper(int activated, const char *resource_name);
-extern const char *sdl_ui_menu_radio_helper(int activated, ui_callback_data_t param, const char *resource_name);
-extern const char *sdl_ui_menu_string_helper(int activated, ui_callback_data_t param, const char *resource_name);
 
 #endif
 

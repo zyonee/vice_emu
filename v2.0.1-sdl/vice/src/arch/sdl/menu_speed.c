@@ -30,143 +30,122 @@
 #include <stdlib.h>
 
 #include "lib.h"
+#include "menu_common.h"
 #include "menu_speed.h"
 #include "resources.h"
 #include "uimenu.h"
 
 /* prototypes of the custom input functions */
-static const char *custom_RefreshRate_callback(int activated, ui_callback_data_t param);
-static const char *custom_Speed_callback(int activated, ui_callback_data_t param);
+static UI_MENU_CALLBACK(custom_RefreshRate_callback);
+static UI_MENU_CALLBACK(custom_Speed_callback);
 
 UI_MENU_DEFINE_RADIO(RefreshRate)
 
-static ui_menu_entry_t refresh_rate_menu[] = {
+static const ui_menu_entry_t refresh_rate_menu[] = {
     { "Auto",
       MENU_ENTRY_RESOURCE_RADIO,
       radio_RefreshRate_callback,
-      (ui_callback_data_t)0,
-      NULL },
+      (ui_callback_data_t)0 },
     { "1/1",
       MENU_ENTRY_RESOURCE_RADIO,
       radio_RefreshRate_callback,
-      (ui_callback_data_t)1,
-      NULL },
+      (ui_callback_data_t)1 },
     { "1/2",
       MENU_ENTRY_RESOURCE_RADIO,
       radio_RefreshRate_callback,
-      (ui_callback_data_t)2,
-      NULL },
+      (ui_callback_data_t)2 },
     { "1/3",
       MENU_ENTRY_RESOURCE_RADIO,
       radio_RefreshRate_callback,
-      (ui_callback_data_t)3,
-      NULL },
+      (ui_callback_data_t)3 },
     { "1/4",
       MENU_ENTRY_RESOURCE_RADIO,
       radio_RefreshRate_callback,
-      (ui_callback_data_t)4,
-      NULL },
+      (ui_callback_data_t)4 },
     { "1/5",
       MENU_ENTRY_RESOURCE_RADIO,
       radio_RefreshRate_callback,
-      (ui_callback_data_t)5,
-      NULL },
+      (ui_callback_data_t)5 },
     { "1/6",
       MENU_ENTRY_RESOURCE_RADIO,
       radio_RefreshRate_callback,
-      (ui_callback_data_t)6,
-      NULL },
+      (ui_callback_data_t)6 },
     { "1/7",
       MENU_ENTRY_RESOURCE_RADIO,
       radio_RefreshRate_callback,
-      (ui_callback_data_t)7,
-      NULL },
+      (ui_callback_data_t)7 },
     { "1/8",
       MENU_ENTRY_RESOURCE_RADIO,
       radio_RefreshRate_callback,
-      (ui_callback_data_t)8,
-      NULL },
+      (ui_callback_data_t)8 },
     { "1/9",
       MENU_ENTRY_RESOURCE_RADIO,
       radio_RefreshRate_callback,
-      (ui_callback_data_t)9,
-      NULL },
+      (ui_callback_data_t)9 },
     { "1/10",
       MENU_ENTRY_RESOURCE_RADIO,
       radio_RefreshRate_callback,
-      (ui_callback_data_t)10,
-      NULL },
+      (ui_callback_data_t)10 },
     { "Custom",
       MENU_ENTRY_DIALOG,
       custom_RefreshRate_callback,
-      NULL,
       NULL },
     { NULL }
 };
 
 UI_MENU_DEFINE_RADIO(Speed)
 
-static ui_menu_entry_t maximum_speed_menu[] = {
+static const ui_menu_entry_t maximum_speed_menu[] = {
     { "10%",
       MENU_ENTRY_RESOURCE_RADIO,
       radio_Speed_callback,
-      (ui_callback_data_t)10,
-      NULL },
+      (ui_callback_data_t)10 },
     { "25%",
       MENU_ENTRY_RESOURCE_RADIO,
       radio_Speed_callback,
-      (ui_callback_data_t)25,
-      NULL },
+      (ui_callback_data_t)25 },
     { "50%",
       MENU_ENTRY_RESOURCE_RADIO,
       radio_Speed_callback,
-      (ui_callback_data_t)50,
-      NULL },
+      (ui_callback_data_t)50 },
     { "100%",
       MENU_ENTRY_RESOURCE_RADIO,
       radio_Speed_callback,
-      (ui_callback_data_t)100,
-      NULL },
+      (ui_callback_data_t)100 },
     { "200%",
       MENU_ENTRY_RESOURCE_RADIO,
       radio_Speed_callback,
-      (ui_callback_data_t)200,
-      NULL },
+      (ui_callback_data_t)200 },
     { "No limit",
       MENU_ENTRY_RESOURCE_RADIO,
       radio_Speed_callback,
-      (ui_callback_data_t)0,
-      NULL },
+      (ui_callback_data_t)0 },
     { "Custom",
       MENU_ENTRY_DIALOG,
       custom_Speed_callback,
-      NULL,
       NULL },
     { NULL }
 };
 
 UI_MENU_DEFINE_TOGGLE(WarpMode)
 
-ui_menu_entry_t speed_menu[] = {
+const ui_menu_entry_t speed_menu[] = {
     { "Refresh rate",
       MENU_ENTRY_SUBMENU,
       NULL,
-      NULL,
-      refresh_rate_menu },
+      (ui_callback_data_t)refresh_rate_menu },
     { "Maximum speed",
       MENU_ENTRY_SUBMENU,
       NULL,
-      NULL,
-      maximum_speed_menu },
+      (ui_callback_data_t)maximum_speed_menu },
     { "Warp mode",
       MENU_ENTRY_RESOURCE_TOGGLE,
       toggle_WarpMode_callback,
-      NULL,
       NULL },
     { NULL }
 };
 
-static const char *custom_RefreshRate_callback(int activated, ui_callback_data_t param)
+static UI_MENU_CALLBACK(custom_RefreshRate_callback)
 {
     static char buf[20];
     char *value = NULL;
@@ -192,17 +171,13 @@ static const char *custom_RefreshRate_callback(int activated, ui_callback_data_t
     {
         if(previous > 10)
         {
-            return "*";
-        }
-        else
-        {
-            return " ";
+            return sdl_menu_text_tick;
         }
     }
     return NULL;
 }
 
-static const char *custom_Speed_callback(int activated, ui_callback_data_t param)
+static UI_MENU_CALLBACK(custom_Speed_callback)
 {
     static char buf[20];
     char *value = NULL;
@@ -229,11 +204,7 @@ static const char *custom_Speed_callback(int activated, ui_callback_data_t param
         if (previous != 0 && previous != 10 && previous != 25 &&
             previous != 50 && previous != 100 && previous != 200)
         {
-            return "*";
-        }
-        else
-        {
-            return " ";
+            return sdl_menu_text_tick;
         }
     }
     return NULL;

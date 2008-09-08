@@ -28,6 +28,7 @@
 
 #include "drivecpu.h"
 #include "machine.h"
+#include "menu_common.h"
 #include "uimenu.h"
 #include "vsync.h"
 
@@ -85,37 +86,31 @@ static UI_MENU_CALLBACK(drive11cpu_reset_callback)
     return NULL;
 }
 
-ui_menu_entry_t reset_menu[] = {
+const ui_menu_entry_t reset_menu[] = {
     { "Soft",
       MENU_ENTRY_OTHER,
       maincpu_soft_reset_callback,
-      NULL,
       NULL },
     { "Hard",
       MENU_ENTRY_OTHER,
       maincpu_hard_reset_callback,
-      NULL,
       NULL },
-    { "-", MENU_ENTRY_SEPARATOR, NULL, NULL, NULL },
+    SDL_MENU_ITEM_SEPARATOR,
     { "Drive 8",
       MENU_ENTRY_OTHER,
       drive8cpu_reset_callback,
-      NULL,
       NULL },
     { "Drive 9",
       MENU_ENTRY_OTHER,
       drive9cpu_reset_callback,
-      NULL,
       NULL },
     { "Drive 10",
       MENU_ENTRY_OTHER,
       drive10cpu_reset_callback,
-      NULL,
       NULL },
     { "Drive 11",
       MENU_ENTRY_OTHER,
       drive11cpu_reset_callback,
-      NULL,
       NULL },
     { NULL }
 };

@@ -28,6 +28,8 @@ libarch_a_SOURCES = \
 	joy.h \
 	kbd.c \
 	kbd.h \
+	menu_common.c \
+	menu_common.h \
 	menu_reset.c \
 	menu_reset.h \
 	menu_speed.c \

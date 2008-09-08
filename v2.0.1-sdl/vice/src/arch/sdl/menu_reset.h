@@ -31,6 +31,6 @@
 
 #include "uimenu.h"
 
-extern ui_menu_entry_t reset_menu[];
+extern const ui_menu_entry_t reset_menu[];
 
 #endif

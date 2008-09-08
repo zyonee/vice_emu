@@ -393,7 +393,7 @@ int sdl_ui_menu_item_activate(ui_menu_entry_t *item)
             return 1;
             break;
         case MENU_ENTRY_SUBMENU:
-            sdl_ui_menu_display(item->sub_menu, item->string);
+            sdl_ui_menu_display((ui_menu_entry_t *)item->callback_data, item->string);
             return 1;
             break;
         default:
@@ -553,7 +553,7 @@ void sdl_ui_set_menu_borders(int x, int y)
     menu_draw_extra_y = y;
 }
 
-void sdl_ui_set_main_menu(ui_menu_entry_t *menu)
+void sdl_ui_set_main_menu(const ui_menu_entry_t *menu)
 {
     main_menu = menu;
 }
@@ -585,84 +585,5 @@ void sdl_ui_set_menu_colors(int front, int back)
 void sdl_ui_set_double_x(void)
 {
     menu_draw_max_text_x_double = 2;
-}
-
-/* ------------------------------------------------------------------ */
-/* Menu helpers */
-
-const char *sdl_ui_menu_toggle_helper(int activated, const char *resource_name)
-{
-    int value, r;
-
-    if(activated) {
-        r = resources_toggle(resource_name, &value);
-        if (r < 0)
-            r = resources_get_int(resource_name, &value);
-    } else
-        r = resources_get_int(resource_name, &value);
-
-    if (r < 0)
-        return "?";
-    else
-        return value ? "*" : " ";
-}
-
-const char *sdl_ui_menu_radio_helper(int activated, ui_callback_data_t param, const char *resource_name)
-{
-    if(activated) {
-        resources_set_value(resource_name, (resource_value_t)param);
-    } else {
-        resource_value_t v;
-        resources_get_value(resource_name, (void *)&v);
-        if (v == (resource_value_t)param)
-            return "*";
-    }
-    return " ";
-}
-
-const char *sdl_ui_menu_string_helper(int activated, ui_callback_data_t param, const char *resource_name)
-{
-    char *value = NULL;
-    static const char *previous = NULL;
-
-    if(resources_get_string(resource_name, &previous)) {
-        return "?";
-    }
-
-    if (activated) {
-        value = sdl_ui_text_input_dialog((const char*)param, previous);
-        if(value) {
-            resources_set_value_string(resource_name, value);
-            lib_free(value);
-        }
-    } else {
-        return previous;
-    }
-    return NULL;
-}
-
-const char *sdl_ui_menu_int_helper(int activated, ui_callback_data_t param, const char *resource_name)
-{
-    static char buf[20];
-    char *value = NULL;
-    int previous, new_value;
-
-    if(resources_get_int(resource_name, &previous)) {
-        return "?";
-    }
-
-    sprintf(buf, "%i", previous);
-
-    if (activated) {
-        value = sdl_ui_text_input_dialog((const char*)param, buf);
-        if(value) {
-            new_value = strtol(value, NULL, 0);
-            resources_set_int(resource_name, new_value);
-            lib_free(value);
-        }
-    } else {
-        return buf;       
-    }
-    return NULL;
 }
 

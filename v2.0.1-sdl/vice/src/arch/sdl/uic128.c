@@ -32,6 +32,7 @@
 
 #include "debug.h"
 #include "c128mem.h"
+#include "menu_common.h"
 #include "menu_reset.h"
 #include "menu_speed.h"
 #include "ui.h"
@@ -45,23 +46,19 @@ static ui_menu_entry_t sid_model_menu[] = {
     { "6581 (old)",
       MENU_ENTRY_RESOURCE_RADIO,
       radio_SidModel_callback,
-      (ui_callback_data_t)0,
-      NULL },
+      (ui_callback_data_t)0 },
     { "8580 (new)",
       MENU_ENTRY_RESOURCE_RADIO,
       radio_SidModel_callback,
-      (ui_callback_data_t)1,
-      NULL },
+      (ui_callback_data_t)1 },
     { "8580 + digiboost",
       MENU_ENTRY_RESOURCE_RADIO,
       radio_SidModel_callback,
-      (ui_callback_data_t)2,
-      NULL },
+      (ui_callback_data_t)2 },
     { "DTVSID",
       MENU_ENTRY_RESOURCE_RADIO,
       radio_SidModel_callback,
-      (ui_callback_data_t)4,
-      NULL },
+      (ui_callback_data_t)4 },
     { NULL }
 };
 
@@ -71,199 +68,152 @@ static ui_menu_entry_t x128_main_menu[] = {
     { "Attach disk",
       MENU_ENTRY_SUBMENU,
       NULL, /* disk_attach_dialog */
-      NULL,
       NULL },
     { "Doublesize",
       MENU_ENTRY_RESOURCE_TOGGLE,
       toggle_VICIIDoubleSize_callback,
-      NULL,
       NULL },
-    { "-", MENU_ENTRY_SEPARATOR, NULL, NULL, NULL },
+    SDL_MENU_ITEM_SEPARATOR,
     { "SID model",
       MENU_ENTRY_SUBMENU,
       NULL,
-      NULL,
-      sid_model_menu },
+      (ui_callback_data_t)sid_model_menu },
     { "Quit",
       MENU_ENTRY_OTHER,
       quit_callback,
-      NULL,
       NULL },
     { NULL }
 };
 #endif
 
-/* temporary place holder for the autostart callback till we get file selectors. */
-static UI_MENU_CALLBACK(autostart_callback)
-{
-    return NULL;
-}
-
 /* temporary empty drive menu, this one will be moved out to menu_drive.c */
 static ui_menu_entry_t drive_menu[] = {
-    { "-", MENU_ENTRY_SEPARATOR, NULL, NULL, NULL },
+    SDL_MENU_ITEM_SEPARATOR,
     { NULL }
 };
 
 /* temporary empty tape menu, this one will be moved out to menu_tape.c */
 static ui_menu_entry_t tape_menu[] = {
-    { "-", MENU_ENTRY_SEPARATOR, NULL, NULL, NULL },
+    SDL_MENU_ITEM_SEPARATOR,
     { NULL }
 };
 
 /* temporary empty c128/c64 cart menu, this one will be moved out to menu_c64_c128_cart.c */
 static ui_menu_entry_t c64_c128_cart_menu[] = {
-    { "-", MENU_ENTRY_SEPARATOR, NULL, NULL, NULL },
+    SDL_MENU_ITEM_SEPARATOR,
     { NULL }
 };
 
 /* temporary empty c128 hardware menu, this one will be moved out to menu_c128hw.c */
 static ui_menu_entry_t c128_hardware_menu[] = {
-    { "-", MENU_ENTRY_SEPARATOR, NULL, NULL, NULL },
+    SDL_MENU_ITEM_SEPARATOR,
     { NULL }
 };
 
 /* temporary empty c128 rom menu, this one will be moved out to menu_c128rom.c */
 static ui_menu_entry_t c128_rom_menu[] = {
-    { "-", MENU_ENTRY_SEPARATOR, NULL, NULL, NULL },
+    SDL_MENU_ITEM_SEPARATOR,
     { NULL }
 };
 
 /* temporary empty c128 video menu, this one will be moved out to menu_c128video.c */
 static ui_menu_entry_t c128_video_menu[] = {
-    { "-", MENU_ENTRY_SEPARATOR, NULL, NULL, NULL },
+    SDL_MENU_ITEM_SEPARATOR,
     { NULL }
 };
 
 /* temporary empty sound menu, this one will be moved out to menu_sound.c */
 static ui_menu_entry_t sound_menu[] = {
-    { "-", MENU_ENTRY_SEPARATOR, NULL, NULL, NULL },
+    SDL_MENU_ITEM_SEPARATOR,
     { NULL }
 };
 
 /* temporary empty snapshot menu, this one will be moved out to menu_snapshot.c */
 static ui_menu_entry_t snapshot_menu[] = {
-    { "-", MENU_ENTRY_SEPARATOR, NULL, NULL, NULL },
+    SDL_MENU_ITEM_SEPARATOR,
     { NULL }
 };
-
-/* temporary place holder for the pause callback till we can get it working. */
-static UI_MENU_CALLBACK(pause_callback)
-{
-    return NULL;
-}
-
-/* temporary place holder for the monitor callback till we can get it working. */
-static UI_MENU_CALLBACK(monitor_callback)
-{
-    return NULL;
-}
 
 #ifdef DEBUG
 /* temporary empty debug menu, this one will be moved out to menu_debug.c */
 static ui_menu_entry_t debug_menu[] = {
-    { "-", MENU_ENTRY_SEPARATOR, NULL, NULL, NULL },
+    SDL_MENU_ITEM_SEPARATOR,
     { NULL }
 };
 #endif
 
 /* temporary empty help menu, this one will be moved out to menu_help.c */
 static ui_menu_entry_t help_menu[] = {
-    { "-", MENU_ENTRY_SEPARATOR, NULL, NULL, NULL },
+    SDL_MENU_ITEM_SEPARATOR,
     { NULL }
 };
 
-/* this callback will be moved out to menu_common.c */
-static UI_MENU_CALLBACK(quit_callback)
-{
-    if(activated) {
-        exit(0);
-    }
-    return NULL;
-}
-
-static ui_menu_entry_t x128_main_menu[] = {
+static const ui_menu_entry_t x128_main_menu[] = {
     { "Autostart image",
       MENU_ENTRY_OTHER,
       autostart_callback,
-      NULL,
       NULL },
     { "Drive",
       MENU_ENTRY_SUBMENU,
       NULL,
-      NULL,
-      drive_menu },
+      (ui_callback_data_t)drive_menu },
     { "Tape",
       MENU_ENTRY_SUBMENU,
       NULL,
-      NULL,
-      tape_menu },
+      (ui_callback_data_t)tape_menu },
     { "Cartridge",
       MENU_ENTRY_SUBMENU,
       NULL,
-      NULL,
-      c64_c128_cart_menu },
+      (ui_callback_data_t)c64_c128_cart_menu },
     { "Machine settings",
       MENU_ENTRY_SUBMENU,
       NULL,
-      NULL,
-      c128_hardware_menu },
+      (ui_callback_data_t)c128_hardware_menu },
     { "ROM settings",
       MENU_ENTRY_SUBMENU,
       NULL,
-      NULL,
-      c128_rom_menu },
+      (ui_callback_data_t)c128_rom_menu },
     { "Video settings",
       MENU_ENTRY_SUBMENU,
       NULL,
-      NULL,
-      c128_video_menu },
+      (ui_callback_data_t)c128_video_menu },
     { "Sound settings",
       MENU_ENTRY_SUBMENU,
       NULL,
-      NULL,
-      sound_menu },
+      (ui_callback_data_t)sound_menu },
     { "Snapshot",
       MENU_ENTRY_SUBMENU,
       NULL,
-      NULL,
-      snapshot_menu },
+      (ui_callback_data_t)snapshot_menu },
     { "Speed settings",
       MENU_ENTRY_SUBMENU,
       NULL,
-      NULL,
-      speed_menu },
+      (ui_callback_data_t)speed_menu },
     { "Reset",
       MENU_ENTRY_SUBMENU,
       NULL,
-      NULL,
-      reset_menu },
+      (ui_callback_data_t)reset_menu },
     { "Pause",
       MENU_ENTRY_OTHER,
       pause_callback,
-      NULL,
       NULL },
     { "Monitor",
       MENU_ENTRY_OTHER,
       monitor_callback,
-      NULL,
       NULL },
 #ifdef DEBUG
     { "Debug",
       MENU_ENTRY_SUBMENU,
       NULL,
-      NULL,
-      debug_menu },
+      (ui_callback_data_t)debug_menu },
 #endif
     { "Help",
       MENU_ENTRY_SUBMENU,
       NULL,
-      NULL,
-      help_menu },
+      (ui_callback_data_t)help_menu },
     { "Quit emulator",
       MENU_ENTRY_OTHER,
       quit_callback,
-      NULL,
       NULL },
     { NULL }
 };
@@ -282,3 +232,4 @@ void c128ui_shutdown(void)
 {
 fprintf(stderr,"%s\n",__func__);
 }
+

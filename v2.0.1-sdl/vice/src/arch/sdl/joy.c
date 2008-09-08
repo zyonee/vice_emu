@@ -344,7 +344,7 @@ void joy_arch_init_default_mapping(int joynum)
 
     for(i=0; i<sdljoystick[joynum].input_max[HAT]*input_mult[HAT]; ++i) {
         joyport = ((1+joynum+((i&4)>>2))&1);
-        pin = 8>>(i&3);
+        pin = 1<<(i&3);
 
         sdljoystick[joynum].input[HAT][i].action = JOYSTICK;
         sdljoystick[joynum].input[HAT][i].value.joy[0] = joyport;
