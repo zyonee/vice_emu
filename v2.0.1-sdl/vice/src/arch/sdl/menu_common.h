@@ -38,7 +38,7 @@
 extern const char *sdl_menu_text_tick;
 extern const char *sdl_menu_text_unknown;
 
-#define SDL_MENU_ITEM_SEPARATOR { "", MENU_ENTRY_SEPARATOR, NULL, NULL }
+#define SDL_MENU_ITEM_SEPARATOR { "", MENU_ENTRY_TEXT, NULL, NULL }
 
 #define UI_MENU_CALLBACK(name)                            \
     const char *name(int activated, ui_callback_data_t param)

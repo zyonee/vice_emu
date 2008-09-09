@@ -48,6 +48,7 @@
 #define COLOR_BACK 0
 #define COLOR_FRONT 1
 #define MENU_FIRST_Y 2
+#define MENU_FIRST_X 1
 
 int sdl_menu_state = 0;
 
@@ -229,19 +230,18 @@ static void sdl_ui_reverse_colors(void)
 static void sdl_ui_display_item(ui_menu_entry_t *item, int y_pos)
 {
     int i;
-    BYTE color;
 
     if(item->string == NULL) {
         return;
     }
 
-    if (item->type == MENU_ENTRY_TITLE) {
+    if((item->type == MENU_ENTRY_TEXT)&&((int)item->data == 1)) {
         sdl_ui_reverse_colors();
     }
 
-    i = sdl_ui_print(item->string, 1, y_pos+MENU_FIRST_Y);
+    i = sdl_ui_print(item->string, MENU_FIRST_X, y_pos+MENU_FIRST_Y);
 
-    if (item->type == MENU_ENTRY_TITLE) {
+    if((item->type == MENU_ENTRY_TEXT)&&((int)item->data == 1)) {
         sdl_ui_reverse_colors();
     }
 
@@ -254,10 +254,10 @@ static void sdl_ui_display_item(ui_menu_entry_t *item, int y_pos)
         case MENU_ENTRY_RESOURCE_RADIO:
         case MENU_ENTRY_DIALOG:
         case MENU_ENTRY_OTHER:
-            sdl_ui_print(item->callback(0, item->callback_data), 1+i+1, y_pos+MENU_FIRST_Y);
+            sdl_ui_print(item->callback(0, item->data), MENU_FIRST_X+i+1, y_pos+MENU_FIRST_Y);
             break;
         case MENU_ENTRY_SUBMENU:
-            sdl_ui_print("->", 1+i, y_pos+MENU_FIRST_Y);
+            sdl_ui_print("->", MENU_FIRST_X+i, y_pos+MENU_FIRST_Y);
             break;
         default:
             break;
@@ -406,11 +406,11 @@ int sdl_ui_menu_item_activate(ui_menu_entry_t *item)
         case MENU_ENTRY_RESOURCE_RADIO:
         case MENU_ENTRY_RESOURCE_INT:
         case MENU_ENTRY_RESOURCE_STRING:
-            item->callback(1, item->callback_data);
+            item->callback(1, item->data);
             return 1;
             break;
         case MENU_ENTRY_SUBMENU:
-            sdl_ui_menu_display((ui_menu_entry_t *)item->callback_data, item->string);
+            sdl_ui_menu_display((ui_menu_entry_t *)item->data, item->string);
             return 1;
             break;
         default:

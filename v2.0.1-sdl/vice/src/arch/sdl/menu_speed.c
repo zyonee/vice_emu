@@ -39,13 +39,17 @@
 static UI_MENU_CALLBACK(custom_RefreshRate_callback);
 static UI_MENU_CALLBACK(custom_Speed_callback);
 
+UI_MENU_DEFINE_TOGGLE(WarpMode)
 UI_MENU_DEFINE_RADIO(RefreshRate)
 UI_MENU_DEFINE_RADIO(Speed)
 
-UI_MENU_DEFINE_TOGGLE(WarpMode)
-
 const ui_menu_entry_t speed_menu[] = {
-    { "Refresh rate", MENU_ENTRY_TITLE, NULL, NULL },
+    { "Warp mode",
+      MENU_ENTRY_RESOURCE_TOGGLE,
+      toggle_WarpMode_callback,
+      NULL },
+    SDL_MENU_ITEM_SEPARATOR,
+    { "Refresh rate", MENU_ENTRY_TEXT, NULL, (ui_callback_data_t)1 },
     { "Automatic",
       MENU_ENTRY_RESOURCE_RADIO,
       radio_RefreshRate_callback,
@@ -74,8 +78,8 @@ const ui_menu_entry_t speed_menu[] = {
       MENU_ENTRY_DIALOG,
       custom_RefreshRate_callback,
       NULL },
-    { "", MENU_ENTRY_SEPARATOR, NULL, NULL },
-    { "Maximum speed", MENU_ENTRY_TITLE, NULL, NULL },
+    SDL_MENU_ITEM_SEPARATOR,
+    { "Maximum speed", MENU_ENTRY_TEXT, NULL, (ui_callback_data_t)1 },
     { "10%",
       MENU_ENTRY_RESOURCE_RADIO,
       radio_Speed_callback,
@@ -103,11 +107,6 @@ const ui_menu_entry_t speed_menu[] = {
     { "Custom maximum speed",
       MENU_ENTRY_DIALOG,
       custom_Speed_callback,
-      NULL },
-    { "", MENU_ENTRY_SEPARATOR, NULL, NULL },
-    { "Warp mode",
-      MENU_ENTRY_RESOURCE_TOGGLE,
-      toggle_WarpMode_callback,
       NULL },
     { NULL }
 };

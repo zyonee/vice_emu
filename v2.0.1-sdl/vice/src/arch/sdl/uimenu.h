@@ -37,18 +37,31 @@
 extern int sdl_menu_state;
 
 typedef void* ui_callback_data_t;
-typedef const char *(*ui_callback_t)(int activated, ui_callback_data_t callback_param);
+typedef const char *(*ui_callback_t)(int activated, ui_callback_data_t param);
 
 typedef enum {
-    MENU_ENTRY_NONE,
-    MENU_ENTRY_SEPARATOR,
-    MENU_ENTRY_TITLE,
+    /* Text item (no operation): if data == 1 text colors are inverted */
+    MENU_ENTRY_TEXT,
+
+    /* Resource toggle: no UI needed, callback is used */
     MENU_ENTRY_RESOURCE_TOGGLE,
+
+    /* Resource radio: no UI needed, callback is used, data is the resource value */
     MENU_ENTRY_RESOURCE_RADIO,
+
+    /* Resource int: needs UI, callback is used */
     MENU_ENTRY_RESOURCE_INT,
+
+    /* Resource string: needs UI, callback is used */
     MENU_ENTRY_RESOURCE_STRING,
+
+    /* Submenu: needs UI, data points to the submenu */
     MENU_ENTRY_SUBMENU,
+
+    /* Custom dialog: needs UI */
     MENU_ENTRY_DIALOG,
+
+    /* Other: no UI needed */
     MENU_ENTRY_OTHER
 } ui_menu_entry_type_t;
 
@@ -56,7 +69,7 @@ typedef struct ui_menu_entry_s {
     char *string;
     ui_menu_entry_type_t type;
     ui_callback_t callback;
-    ui_callback_data_t callback_data;
+    ui_callback_data_t data;
 } ui_menu_entry_t;
 
 extern void sdl_ui_set_vcachename(const char *vcache_name);
@@ -75,6 +88,8 @@ typedef enum {
     MENU_ACTION_NONE = 0,
     MENU_ACTION_UP,
     MENU_ACTION_DOWN,
+    MENU_ACTION_LEFT,
+    MENU_ACTION_RIGHT,
     MENU_ACTION_SELECT,
     MENU_ACTION_CANCEL,
     MENU_ACTION_EXIT,
