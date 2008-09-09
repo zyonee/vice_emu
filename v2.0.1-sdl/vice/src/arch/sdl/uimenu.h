@@ -42,6 +42,7 @@ typedef const char *(*ui_callback_t)(int activated, ui_callback_data_t callback_
 typedef enum {
     MENU_ENTRY_NONE,
     MENU_ENTRY_SEPARATOR,
+    MENU_ENTRY_TITLE,
     MENU_ENTRY_RESOURCE_TOGGLE,
     MENU_ENTRY_RESOURCE_RADIO,
     MENU_ENTRY_RESOURCE_INT,

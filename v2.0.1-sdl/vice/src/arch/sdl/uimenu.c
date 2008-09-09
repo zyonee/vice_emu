@@ -217,16 +217,33 @@ static int sdl_ui_display_title(const char *title)
     return sdl_ui_print_wrap(title, 0, 0);
 }
 
+static void sdl_ui_reverse_colors(void)
+{
+    BYTE color;
+
+    color = menu_draw_color_front;
+    menu_draw_color_front = menu_draw_color_back;
+    menu_draw_color_back = color;
+}
 
 static void sdl_ui_display_item(ui_menu_entry_t *item, int y_pos)
 {
     int i;
+    BYTE color;
 
-    if(((item->string == NULL) || (item->type == MENU_ENTRY_SEPARATOR))) {
+    if(item->string == NULL) {
         return;
     }
 
+    if (item->type == MENU_ENTRY_TITLE) {
+        sdl_ui_reverse_colors();
+    }
+
     i = sdl_ui_print(item->string, 1, y_pos+MENU_FIRST_Y);
+
+    if (item->type == MENU_ENTRY_TITLE) {
+        sdl_ui_reverse_colors();
+    }
 
     switch(item->type) {
         case MENU_ENTRY_RESOURCE_STRING:

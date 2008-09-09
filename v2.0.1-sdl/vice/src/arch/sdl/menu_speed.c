@@ -40,9 +40,13 @@ static UI_MENU_CALLBACK(custom_RefreshRate_callback);
 static UI_MENU_CALLBACK(custom_Speed_callback);
 
 UI_MENU_DEFINE_RADIO(RefreshRate)
+UI_MENU_DEFINE_RADIO(Speed)
 
-static const ui_menu_entry_t refresh_rate_menu[] = {
-    { "Auto",
+UI_MENU_DEFINE_TOGGLE(WarpMode)
+
+const ui_menu_entry_t speed_menu[] = {
+    { "Refresh rate", MENU_ENTRY_TITLE, NULL, NULL },
+    { "Automatic",
       MENU_ENTRY_RESOURCE_RADIO,
       radio_RefreshRate_callback,
       (ui_callback_data_t)0 },
@@ -66,36 +70,12 @@ static const ui_menu_entry_t refresh_rate_menu[] = {
       MENU_ENTRY_RESOURCE_RADIO,
       radio_RefreshRate_callback,
       (ui_callback_data_t)5 },
-    { "1/6",
-      MENU_ENTRY_RESOURCE_RADIO,
-      radio_RefreshRate_callback,
-      (ui_callback_data_t)6 },
-    { "1/7",
-      MENU_ENTRY_RESOURCE_RADIO,
-      radio_RefreshRate_callback,
-      (ui_callback_data_t)7 },
-    { "1/8",
-      MENU_ENTRY_RESOURCE_RADIO,
-      radio_RefreshRate_callback,
-      (ui_callback_data_t)8 },
-    { "1/9",
-      MENU_ENTRY_RESOURCE_RADIO,
-      radio_RefreshRate_callback,
-      (ui_callback_data_t)9 },
-    { "1/10",
-      MENU_ENTRY_RESOURCE_RADIO,
-      radio_RefreshRate_callback,
-      (ui_callback_data_t)10 },
-    { "Custom",
+    { "Custom refresh rate",
       MENU_ENTRY_DIALOG,
       custom_RefreshRate_callback,
       NULL },
-    { NULL }
-};
-
-UI_MENU_DEFINE_RADIO(Speed)
-
-static const ui_menu_entry_t maximum_speed_menu[] = {
+    { "", MENU_ENTRY_SEPARATOR, NULL, NULL },
+    { "Maximum speed", MENU_ENTRY_TITLE, NULL, NULL },
     { "10%",
       MENU_ENTRY_RESOURCE_RADIO,
       radio_Speed_callback,
@@ -120,24 +100,11 @@ static const ui_menu_entry_t maximum_speed_menu[] = {
       MENU_ENTRY_RESOURCE_RADIO,
       radio_Speed_callback,
       (ui_callback_data_t)0 },
-    { "Custom",
+    { "Custom maximum speed",
       MENU_ENTRY_DIALOG,
       custom_Speed_callback,
       NULL },
-    { NULL }
-};
-
-UI_MENU_DEFINE_TOGGLE(WarpMode)
-
-const ui_menu_entry_t speed_menu[] = {
-    { "Refresh rate",
-      MENU_ENTRY_SUBMENU,
-      NULL,
-      (ui_callback_data_t)refresh_rate_menu },
-    { "Maximum speed",
-      MENU_ENTRY_SUBMENU,
-      NULL,
-      (ui_callback_data_t)maximum_speed_menu },
+    { "", MENU_ENTRY_SEPARATOR, NULL, NULL },
     { "Warp mode",
       MENU_ENTRY_RESOURCE_TOGGLE,
       toggle_WarpMode_callback,
@@ -169,9 +136,10 @@ static UI_MENU_CALLBACK(custom_RefreshRate_callback)
     }
     else
     {
-        if(previous > 10)
+        if(previous > 5)
         {
-            return sdl_menu_text_tick;
+            sprintf(buf,"1/%i",previous);
+            return buf;
         }
     }
     return NULL;
@@ -204,9 +172,9 @@ static UI_MENU_CALLBACK(custom_Speed_callback)
         if (previous != 0 && previous != 10 && previous != 25 &&
             previous != 50 && previous != 100 && previous != 200)
         {
-            return sdl_menu_text_tick;
+            sprintf(buf,"%i%%",previous);
+            return buf;
         }
     }
     return NULL;
 }
-
