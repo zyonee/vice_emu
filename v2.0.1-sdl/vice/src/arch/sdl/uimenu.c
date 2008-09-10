@@ -466,6 +466,28 @@ static void sdl_ui_trap(WORD addr, void *data)
     }
 }
 
+static char* sdl_ui_hotkey_path_find(ui_menu_entry_t *action, ui_menu_entry_t *menu)
+{
+    char *p = NULL;
+    char *q = NULL;
+
+    while(menu->string) {
+        if(menu == action) {
+            return util_concat(menu->string, NULL);
+        }
+        if((menu->type) == MENU_ENTRY_SUBMENU) {
+            p = sdl_ui_hotkey_path_find(action, (ui_menu_entry_t *)menu->data);
+            if(p) {
+                q = util_concat(menu->string, SDL_UI_HOTKEY_DELIM, p, NULL);
+                lib_free(p);
+                return q;
+            }
+        }
+        ++menu;
+    }
+    return NULL;
+}
+
 /* ------------------------------------------------------------------ */
 /* External UI interface */
 
@@ -759,7 +781,7 @@ char* sdl_ui_file_selection_dialog(const char* title)
 
 char *sdl_ui_hotkey_path(ui_menu_entry_t *action)
 {
-    return "TODO";
+    return sdl_ui_hotkey_path_find(action, main_menu);
 }
 
 ui_menu_entry_t *sdl_ui_hotkey_action(char *path)

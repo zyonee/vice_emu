@@ -237,6 +237,7 @@ int sdlkbd_hotkeys_dump(const char *filename)
 {
     FILE *fp;
     int i;
+    char *hotkey_path;
 
     if (filename == NULL)
         return -1;
@@ -264,7 +265,9 @@ int sdlkbd_hotkeys_dump(const char *filename)
 
     for(i = 0; i < SDLKBD_UI_HOTKEYS_MAX; ++i) {
         if(sdlkbd_ui_hotkeys[i]) {
-            fprintf(fp,"%i %s\n",i,sdl_ui_hotkey_path(sdlkbd_ui_hotkeys[i]));
+            hotkey_path = sdl_ui_hotkey_path(sdlkbd_ui_hotkeys[i]);
+            fprintf(fp,"%i %s\n",i,hotkey_path);
+            lib_free(hotkey_path);
         }
     }
 

@@ -365,7 +365,8 @@ fprintf(stderr,"%s\n",__func__);
     int i, k;
     sdljoystick_input_t j;
     sdljoystick_action_t t;
-    
+    char *hotkey_path = NULL;
+
     if (filename == NULL)
         return -1;
 
@@ -426,9 +427,9 @@ fprintf(stderr,"%s\n",__func__);
                                 );
                         break;
                     case UI_FUNCTION:
-                        fprintf(fp, " %s", 
-                                sdl_ui_hotkey_path(sdljoystick[i].input[j][k].value.ui_function)
-                                );
+                        hotkey_path = sdl_ui_hotkey_path(sdljoystick[i].input[j][k].value.ui_function);
+                        fprintf(fp, " %s", hotkey_path);
+                        lib_free(hotkey_path);
                         break;
                     default:
                         break;
