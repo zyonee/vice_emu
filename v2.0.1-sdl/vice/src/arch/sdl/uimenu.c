@@ -87,6 +87,8 @@ static BYTE menu_draw_color_back = COLOR_BACK;
 /* ------------------------------------------------------------------ */
 /* static functions */
 
+static int sdl_ui_menu_item_activate(ui_menu_entry_t *item);
+
 static void sdl_ui_scroll_screen_up(void)
 {
     int i, j;
@@ -336,8 +338,9 @@ static char* sdl_ui_get_file_selector_entry(ioutil_dir_t *directory, int offset,
 
 static void sdl_ui_file_selector_redraw(ioutil_dir_t *directory, const char *title, int offset, int num_items, int more)
 {
-    int i, j, isdir;
+    int i, j, isdir = 0;
     char* title_string;
+    char* name;
 
     title_string = lib_malloc(strlen(title)+8);
     sprintf(title_string, "%s %s", title, (offset) ? ((more) ? "(<- ->)" : "(<-") : ((more) ? "(->)" : ""));
@@ -347,10 +350,12 @@ static void sdl_ui_file_selector_redraw(ioutil_dir_t *directory, const char *tit
     lib_free(title_string);
 
     for(i=0; i<num_items; ++i) {
-        j = sdl_ui_print(sdl_ui_get_file_selector_entry(directory, offset+i, &isdir), MENU_FIRST_X, i+MENU_FIRST_Y);
+        j = MENU_FIRST_X;
+        name = sdl_ui_get_file_selector_entry(directory, offset+i, &isdir);
         if (isdir) {
-            sdl_ui_print("(D)", j+2, i+MENU_FIRST_Y);
+            j += 1 + sdl_ui_print("(D)", MENU_FIRST_X, i+MENU_FIRST_Y);
         }
+        sdl_ui_print(name, j, i+MENU_FIRST_Y);
     }
 }
 
@@ -401,6 +406,29 @@ static int sdl_ui_menu_display(ui_menu_entry_t *menu, const char *title)
     return 0;
 }
 
+static int sdl_ui_menu_item_activate(ui_menu_entry_t *item)
+{
+    switch(item->type) {
+        case MENU_ENTRY_OTHER:
+        case MENU_ENTRY_DIALOG:
+        case MENU_ENTRY_RESOURCE_TOGGLE:
+        case MENU_ENTRY_RESOURCE_RADIO:
+        case MENU_ENTRY_RESOURCE_INT:
+        case MENU_ENTRY_RESOURCE_STRING:
+            item->callback(1, item->data);
+            return 1;
+            break;
+        case MENU_ENTRY_SUBMENU:
+            sdl_ui_menu_display((ui_menu_entry_t *)item->data, item->string);
+            return 1;
+            break;
+        default:
+            break;
+    }
+    return 0;
+}
+
+
 static void sdl_ui_trap(WORD addr, void *data)
 {
     int vcache_state;
@@ -409,7 +437,12 @@ static void sdl_ui_trap(WORD addr, void *data)
 
     SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
     sdl_menu_state = 1;
-    sdl_ui_menu_display(main_menu, "VICE main menu");
+    if(data == NULL) {
+        sdl_ui_menu_display(main_menu, "VICE main menu");
+    } else {
+        sdl_ui_init_draw_params();     
+        sdl_ui_menu_item_activate((ui_menu_entry_t *)data);
+    }
     sdl_menu_state = 0;
     SDL_EnableKeyRepeat(0, 0);
 
@@ -432,25 +465,26 @@ static void sdl_ui_trap(WORD addr, void *data)
 
 void sdl_ui_activate(void)
 {
-    interrupt_maincpu_trigger_trap(sdl_ui_trap, 0);
+    interrupt_maincpu_trigger_trap(sdl_ui_trap, NULL);
 }
 
-int sdl_ui_menu_item_activate(ui_menu_entry_t *item)
+int sdl_ui_hotkey(ui_menu_entry_t *item)
 {
+    if(item == NULL) {
+        return 0;
+    }
+
     switch(item->type) {
         case MENU_ENTRY_OTHER:
-        case MENU_ENTRY_DIALOG:
         case MENU_ENTRY_RESOURCE_TOGGLE:
         case MENU_ENTRY_RESOURCE_RADIO:
+            return sdl_ui_menu_item_activate(item);
+            break;
         case MENU_ENTRY_RESOURCE_INT:
         case MENU_ENTRY_RESOURCE_STRING:
-            item->callback(1, item->data);
-            return 1;
-            break;
+        case MENU_ENTRY_DIALOG:
         case MENU_ENTRY_SUBMENU:
-            sdl_ui_menu_display((ui_menu_entry_t *)item->data, item->string);
-            return 1;
-            break;
+            interrupt_maincpu_trigger_trap(sdl_ui_trap, (void *)item);
         default:
             break;
     }
@@ -601,7 +635,7 @@ char* sdl_ui_file_selection_dialog(const char* title)
     int offset = 0;
     int redraw = 1;
     char *retval = NULL;
-    int cur = 0, cur_old = -1, cur_offset = 0;
+    int cur = 0, cur_old = -1;
     ioutil_dir_t *directory;
     char *backup_dir;
     char *current_dir;
@@ -625,7 +659,6 @@ char* sdl_ui_file_selection_dialog(const char* title)
     total = dirs + files;
     menu_max = menu_draw_max_text_y - MENU_FIRST_Y;
 
-
     while(active) {
         if (redraw) {
             sdl_ui_file_selector_redraw(directory, title, offset,
@@ -633,7 +666,7 @@ char* sdl_ui_file_selection_dialog(const char* title)
                                         (total-offset > menu_max) ? 1 : 0);
             redraw = 0;
         }
-        sdl_ui_display_cursor(cur - cur_offset, cur_old - cur_offset);
+        sdl_ui_display_cursor(cur, cur_old);
         video_canvas_refresh_all(sdl_active_canvas);
 
         switch(sdl_ui_menu_poll_input()) {
@@ -649,17 +682,20 @@ char* sdl_ui_file_selection_dialog(const char* title)
                 }
                 break;
             case MENU_ACTION_LEFT:
-                if ((offset - menu_max) < 0) {
+                offset -= menu_max;
+                if(offset < 0) {
                     offset = 0;
-                } else {
-                    offset -= menu_max;
+                    cur_old = -1;
+                    cur = 0;
                 }
                 redraw = 1;
                 break;
             case MENU_ACTION_DOWN:
-                if(cur < (menu_draw_max_text_y - MENU_FIRST_Y - 1)) {
-                    cur_old = cur;
-                    ++cur;
+                if(cur < (menu_max - 1)) {
+                    if((cur+offset) < total-1) {
+                        cur_old = cur;
+                        ++cur;
+                      }
                 } else {
                     if (offset < (total-menu_max)) {
                         offset++;
@@ -668,10 +704,14 @@ char* sdl_ui_file_selection_dialog(const char* title)
                 }
                 break;
             case MENU_ACTION_RIGHT:
-                if ((offset + menu_max) > total) {
-                    offset = total - menu_max;
-                } else {
-                    offset += menu_max;
+                offset += menu_max;
+                if(offset >= total) {
+                    offset = total - 1;
+                    cur_old = -1;
+                    cur = 0;
+                } else if((cur+offset) >= total) {
+                    cur_old = -1;
+                    cur = total-offset-1;
                 }
                 redraw = 1;
                 break;
@@ -709,6 +749,46 @@ char* sdl_ui_file_selection_dialog(const char* title)
     lib_free(current_dir);
 
     return retval;
+}
+
+char *sdl_ui_hotkey_path(ui_menu_entry_t *action)
+{
+    return "TODO";
+}
+
+ui_menu_entry_t *sdl_ui_hotkey_action(char *path)
+{
+    ui_menu_entry_t *menupos = main_menu;
+    char *p;
+
+    p = strtok(path, SDL_UI_HOTKEY_DELIM);
+
+/*fprintf(stderr,"%s: searching %s\n",__func__,path);*/
+
+    if(p == NULL) {
+        return NULL;
+    }
+
+    while(menupos->string) {
+        if(strcmp(p, menupos->string) == 0) {
+/*fprintf(stderr,"%s: found %s (%08x)\n",__func__,menupos->string,menupos);*/
+            p = strtok(NULL, SDL_UI_HOTKEY_DELIM);
+            if(p == NULL) {
+/*fprintf(stderr,"%s: returning %s (%08x)\n",__func__,menupos->string,menupos);*/
+                return menupos;
+            } else {
+                if(menupos->type == MENU_ENTRY_SUBMENU) {
+/*fprintf(stderr,"%s: submenu %s (%08x)\n",__func__,menupos->string,menupos->data);*/
+                    menupos = (ui_menu_entry_t *)menupos->data;
+                } else {
+                    return NULL;
+                }
+            }
+        } else {
+            ++menupos;
+        }
+    }
+    return NULL;
 }
 
 /* ------------------------------------------------------------------ */

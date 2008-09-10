@@ -101,10 +101,12 @@ typedef enum {
 struct sdljoystick_mapping_s {
     /* Action to perform */
     sdljoystick_action_t action;
+    /* Previous state of input */
+    BYTE prev;
 
     union {
-        /* joy[0] = port number (0,1), joy[1] = pin number, joy[3] = previous value*/
-        BYTE joy[3];
+        /* joy[0] = port number (0,1), joy[1] = pin number */
+        BYTE joy[2];
         /* key[0] = row, key[1] = column */
         BYTE key[2];
         /* pointer to the menu item */
@@ -393,12 +395,12 @@ fprintf(stderr,"%s\n",__func__);
             "# Note that each axis has 2 inputindex entries and each hat has 4.\n"
             "#\n"
             "# action [action_parameters]:\n"
-            "# 0              none\n"
-            "# 1 port pin     joystick (pin: 1/2/4/8/16 = u/d/l/r/fire)\n"
-            "# 2 row col      keyboard\n"
-            "# 3              virtual keyboard\n"
-            "# 4              UI activate\n"
-            "# 5 TODO         UI function\n"
+            "# 0               none\n"
+            "# 1 port pin      joystick (pin: 1/2/4/8/16 = u/d/l/r/fire)\n"
+            "# 2 row col       keyboard\n"
+            "# 3               virtual keyboard\n"
+            "# 4               UI activate\n"
+            "# 5 path&to&item  UI function\n"
             "#\n\n"
         );
 
@@ -424,8 +426,8 @@ fprintf(stderr,"%s\n",__func__);
                                 );
                         break;
                     case UI_FUNCTION:
-                        fprintf(fp, " %08x", 
-                                sdljoystick[i].input[j][k].value.ui_function
+                        fprintf(fp, " %s", 
+                                sdl_ui_hotkey_path(sdljoystick[i].input[j][k].value.ui_function)
                                 );
                         break;
                     default:
@@ -480,7 +482,7 @@ static void joy_arch_parse_entry(char *buffer)
     joynum = atoi(p);
     
     if (joynum >= num_joysticks) {
-        log_error(sdljoy_log, _("Could not find joystick %i!"), joynum);
+        log_error(sdljoy_log, "Could not find joystick %i!", joynum);
         return;
     }
 
@@ -495,12 +497,13 @@ static void joy_arch_parse_entry(char *buffer)
                 action = (sdljoystick_action_t)atoi(p);
 
                 switch(action) {
+                    case UI_FUNCTION:
+                        p = strtok(NULL, "\t\r\n");
+                        break;
                     case JOYSTICK:
                     case KEYBOARD:
                         p = strtok(NULL, " \t");
                         data1 = atoi(p);
-                    /* fall through */
-                    case UI_FUNCTION:
                         p = strtok(NULL, " \t");
                         data2 = atoi(p);
                         break;
@@ -521,13 +524,13 @@ static void joy_arch_parse_entry(char *buffer)
                             sdljoystick[joynum].input[inputtype][inputindex].value.key[1] = data2;
                             break;
                         case UI_FUNCTION:
-                            sdljoystick[joynum].input[inputtype][inputindex].value.ui_function = NULL /*data2*/;
+                            sdljoystick[joynum].input[inputtype][inputindex].value.ui_function = sdl_ui_hotkey_action(p);
                             break;
                         default:
                             break;
                     }
                 } else {
-                    log_warning(sdljoy_log, _("inputindex %i too large for inputtype %i, joynum %i!"), inputindex, inputtype, joynum);
+                    log_warning(sdljoy_log, "inputindex %i too large for inputtype %i, joynum %i!", inputindex, inputtype, joynum);
                 }
             }
         }
@@ -554,12 +557,12 @@ fprintf(stderr,"%s, %s\n",__func__, filename);
     fp = sysfile_open(filename, &complete_path, MODE_READ_TEXT);
 
     if (fp == NULL) {
-        log_warning(sdljoy_log, _("Failed to open `%s'."), filename);
+        log_warning(sdljoy_log, "Failed to open `%s'.", filename);
         lib_free(complete_path);
         return -1;
     }
 
-    log_message(sdljoy_log, _("Loading joystick map `%s'."), complete_path);
+    log_message(sdljoy_log, "Loading joystick map `%s'.", complete_path);
 
     lib_free(complete_path);
 
@@ -616,7 +619,10 @@ ui_menu_action_t sdljoy_perform_event(sdljoystick_mapping_t *event, int value)
     ui_menu_action_t retval = MENU_ACTION_NONE;
 
     if(sdl_menu_state) {
-        if((value)&&(event->action == JOYSTICK)) {
+        if(!value) {
+            return retval;
+        }
+        if(event->action == JOYSTICK) {
             switch(event->value.joy[1]) {
                 case 0x01:
                     retval = MENU_ACTION_UP;
@@ -625,7 +631,10 @@ ui_menu_action_t sdljoy_perform_event(sdljoystick_mapping_t *event, int value)
                     retval = MENU_ACTION_DOWN;
                     break;
                 case 0x04:
-                    retval = MENU_ACTION_CANCEL;
+                    retval = MENU_ACTION_LEFT;
+                    break;
+                case 0x08:
+                    retval = MENU_ACTION_RIGHT;
                     break;
                 case 0x10:
                     retval = MENU_ACTION_SELECT;
@@ -633,6 +642,8 @@ ui_menu_action_t sdljoy_perform_event(sdljoystick_mapping_t *event, int value)
                 default:
                     break;
             }
+        } else if(event->action == UI_ACTIVATE) {
+            retval = MENU_ACTION_CANCEL;
         }
         return retval;
     }
@@ -656,7 +667,9 @@ ui_menu_action_t sdljoy_perform_event(sdljoystick_mapping_t *event, int value)
             sdl_ui_activate();
             break;
         case UI_FUNCTION:
-            sdl_ui_menu_item_activate(event->value.ui_function);
+            if(value && event->value.ui_function) {
+                sdl_ui_hotkey(event->value.ui_function);
+            }
             break;
         case NONE:
         default:
@@ -675,7 +688,7 @@ ui_menu_action_t sdljoy_axis_event(Uint8 joynum, Uint8 axis, Sint16 value)
     cur = sdljoy_axis_direction(value);
 
     index = axis*input_mult[AXIS];
-    prev = sdljoystick[joynum].input[AXIS][index].value.joy[2];
+    prev = sdljoystick[joynum].input[AXIS][index].prev;
 
     if(cur == prev)
         return retval;
@@ -698,7 +711,7 @@ ui_menu_action_t sdljoy_axis_event(Uint8 joynum, Uint8 axis, Sint16 value)
         }
     }
 
-    sdljoystick[joynum].input[AXIS][index].value.joy[2] = cur;
+    sdljoystick[joynum].input[AXIS][index].prev = cur;
     return retval;
 }
 
@@ -714,7 +727,7 @@ ui_menu_action_t sdljoy_hat_event(Uint8 joynum, Uint8 hat, Uint8 value)
     ui_menu_action_t retval = MENU_ACTION_NONE;
 
     index = hat*input_mult[HAT];
-    prev = sdljoystick[joynum].input[HAT][index].value.joy[2];
+    prev = sdljoystick[joynum].input[HAT][index].prev;
 
     if(value == prev)
         return retval;
@@ -756,7 +769,7 @@ ui_menu_action_t sdljoy_hat_event(Uint8 joynum, Uint8 hat, Uint8 value)
         }
     }
 
-    sdljoystick[joynum].input[HAT][index].value.joy[2] = value;
+    sdljoystick[joynum].input[HAT][index].prev = value;
     return retval;
 }
 

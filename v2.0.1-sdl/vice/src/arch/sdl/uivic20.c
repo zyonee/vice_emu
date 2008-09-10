@@ -105,7 +105,7 @@ static ui_menu_entry_t help_menu[] = {
 
 static const ui_menu_entry_t xvic_main_menu[] = {
     { "Autostart image",
-      MENU_ENTRY_OTHER,
+      MENU_ENTRY_DIALOG,
       autostart_callback,
       NULL },
     { "Drive",

@@ -35,6 +35,7 @@
 #include "autostart.h"
 #include "lib.h"
 #include "menu_common.h"
+#include "monitor.h"
 #include "resources.h"
 #include "uimenu.h"
 
@@ -72,6 +73,9 @@ UI_MENU_CALLBACK(pause_callback)
 
 UI_MENU_CALLBACK(monitor_callback)
 {
+    if(activated) {
+        monitor_startup();
+    }
     return NULL;
 }
 

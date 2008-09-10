@@ -31,6 +31,7 @@
 #include "uimenu.h"
 
 extern void kbd_arch_init(void);
+extern void kbd_arch_shutdown(void);
 
 extern signed long kbd_arch_keyname_to_keynum(char *keyname);
 extern const char *kbd_arch_keynum_to_keyname(signed long keynum);
@@ -67,6 +68,9 @@ extern void kbd_initialize_numpad_joykeys(int *joykeys);
 
 extern ui_menu_action_t sdlkbd_press(SDLKey key, SDLMod mod);
 extern void sdlkbd_release(SDLKey key, SDLMod mod);
+extern int sdlkbd_hotkeys_load(const char *filename);
+extern int sdlkbd_hotkeys_dump(const char *filename);
+
 extern void kbd_enter_leave(void);
 extern void kbd_focus_change(void);
 

@@ -33,22 +33,51 @@
 
 #include <SDL/SDL.h>
 
+#include "archdep.h"
 #include "kbd.h"
 #include "fullscreenarch.h"
 #include "keyboard.h"
+#include "lib.h"
 #include "log.h"
 #include "machine.h"
 #include "monitor.h"
 #include "resources.h"
+#include "sysfile.h"
 #include "ui.h"
 #include "uimenu.h"
 
+#define DEFAULT_HOTKEYFILE "sdl_hotkey.vkm"
+
+static log_t sdlkbd_log = LOG_ERR;
+
+/* Joystick mapping filename */
+static char *hotkey_file = NULL;
+
+/* Menu keys */
 int sdl_ui_menukeys[MENU_ACTION_NUM];
 
 /* UI hotkeys: index is the key(combo), value is a pointer to the menu item.
    5 is the number of the supported modifiers: none, shift, alt, control, meta. */
 #define SDLKBD_UI_HOTKEYS_MAX (SDLK_LAST * 5)
 ui_menu_entry_t *sdlkbd_ui_hotkeys[SDLKBD_UI_HOTKEYS_MAX];
+
+/* ------------------------------------------------------------------------ */
+
+/* Resources.  */
+
+static int hotkey_file_set(const char *val, void *param)
+{
+    if (util_string_set(&hotkey_file, val))
+        return 0;
+
+    return sdlkbd_hotkeys_load(hotkey_file);
+}
+
+static const resource_string_t resources_string[] = {
+    { "HotkeyFile", DEFAULT_HOTKEYFILE, RES_EVENT_NO, NULL,
+      &hotkey_file, hotkey_file_set, (void *)0 },
+    { NULL },
+};
 
 /* ------------------------------------------------------------------------ */
 
@@ -103,6 +132,147 @@ void sdlkbd_set_hotkey(SDLKey key, SDLMod mod, ui_menu_entry_t *value)
     sdlkbd_ui_hotkeys[sdlkbd_key_mod_to_index(key, mod)] = value;
 }
 
+static void sdlkbd_keyword_clear(void)
+{
+    int i;
+
+    for(i = 0; i < SDLKBD_UI_HOTKEYS_MAX; ++i) {
+        sdlkbd_ui_hotkeys[i] = NULL;
+    }
+}
+
+static void sdlkbd_parse_keyword(char *buffer)
+{
+    char *key;
+      
+    key = strtok(buffer + 1, " \t:");
+            
+    if (!strcmp(key, "CLEAR")) {
+        sdlkbd_keyword_clear();
+    }
+}
+
+static void sdlkbd_parse_entry(char *buffer)
+{
+    char *p;
+    int keynum;
+    ui_menu_entry_t *action;
+
+    p = strtok(buffer, " \t:");
+
+    keynum = atoi(p);
+
+    if (keynum >= SDLKBD_UI_HOTKEYS_MAX) {
+        log_error(sdlkbd_log, "Too large hotkey %i!", keynum);
+        return;
+    }
+    
+    p = strtok(NULL, " \t,");
+    if (p != NULL) {
+        p = strtok(NULL, "\t\r\n");
+        action = sdl_ui_hotkey_action(p);
+        if(action == NULL) {
+            log_warning(sdlkbd_log, "Cannot find menu item \"%s\"!", p);
+        } else {
+            sdlkbd_ui_hotkeys[keynum] = action;
+        }
+    }
+}
+
+int sdlkbd_hotkeys_load(const char *filename)
+{
+    FILE *fp;
+    char *complete_path;
+    char buffer[1000];
+
+    if (filename == NULL) {
+        return -1;
+    }
+    
+    fp = sysfile_open(filename, &complete_path, MODE_READ_TEXT);
+    
+    if (fp == NULL) {
+        log_warning(sdlkbd_log, "Failed to open `%s'.", filename);
+        lib_free(complete_path);
+        return -1;
+    }
+    
+    log_message(sdlkbd_log, "Loading hotkey map `%s'.", complete_path);
+        
+    lib_free(complete_path);
+            
+    do {
+        buffer[0] = 0;
+        if (fgets(buffer, 999, fp)) {
+        char *p;
+                
+            if (strlen(buffer) == 0)
+                break;
+                        
+            buffer[strlen(buffer) - 1] = 0; /* remove newline */
+        /* remove comments */
+        if((p = strchr(buffer, '#')))
+            *p=0;
+                        
+            switch(*buffer) {
+              case 0:
+                break;
+              case '!':
+                /* keyword handling */
+                sdlkbd_parse_keyword(buffer);
+                break;
+              default:
+                /* table entry handling */
+                sdlkbd_parse_entry(buffer);
+                break;
+            }
+        }
+    } while (!feof(fp));
+    fclose(fp);
+ 
+    return 0;
+}
+
+int sdlkbd_hotkeys_dump(const char *filename)
+{
+    FILE *fp;
+    int i;
+
+    if (filename == NULL)
+        return -1;
+
+    fp = fopen(filename, MODE_WRITE_TEXT);
+
+    if (fp == NULL)
+        return -1;
+
+    fprintf(fp, "# VICE hotkey mapping file\n"
+            "#\n"
+            "# A hotkey map is read in as patch to the current map.\n"
+            "#\n"
+            "# File format:\n"
+            "# - comment lines start with '#'\n"
+            "# - keyword lines start with '!keyword'\n"
+            "# - normal line has 'keynum path&to&menuitem'\n"
+            "#\n"
+            "# Keywords and their lines are:\n"
+            "# '!CLEAR'    clear all mappings\n"
+            "#\n\n"
+        );
+
+    fprintf(fp, "!CLEAR\n\n");
+
+    for(i = 0; i < SDLKBD_UI_HOTKEYS_MAX; ++i) {
+        if(sdlkbd_ui_hotkeys[i]) {
+            fprintf(fp,"%i %s\n",i,sdl_ui_hotkey_path(sdlkbd_ui_hotkeys[i]));
+        }
+    }
+
+    fclose(fp);
+
+    return 0;
+}
+
 /* ------------------------------------------------------------------------ */
 
 ui_menu_action_t sdlkbd_press(SDLKey key, SDLMod mod)
@@ -129,7 +299,7 @@ ui_menu_action_t sdlkbd_press(SDLKey key, SDLMod mod)
     }
 
     if((hotkey_action = sdlkbd_get_hotkey(key, mod)) != NULL) {
-        sdl_ui_menu_item_activate(hotkey_action);
+        sdl_ui_hotkey(hotkey_action);
         return retval;
     }
 
@@ -147,11 +317,23 @@ void sdlkbd_release(SDLKey key, SDLMod mod)
 
 void kbd_arch_init(void)
 {
-    int i;
 fprintf(stderr,"%s\n",__func__);
-    for(i = 0; i < SDLKBD_UI_HOTKEYS_MAX; ++i) {
-        sdlkbd_ui_hotkeys[i] = NULL;
+    sdlkbd_log = log_open("SDLKeyboard");
+
+    sdlkbd_keyword_clear();
+
+    if(resources_register_string(resources_string) < 0) {
+        log_error(sdlkbd_log, "Resource init failed!");
+        return;
     }
+
+    sdlkbd_hotkeys_load(DEFAULT_HOTKEYFILE);
+}
+
+void kbd_arch_shutdown(void)
+{
+fprintf(stderr,"%s\n",__func__);
+    lib_free(hotkey_file);
 }
 
 signed long kbd_arch_keyname_to_keynum(char *keyname)

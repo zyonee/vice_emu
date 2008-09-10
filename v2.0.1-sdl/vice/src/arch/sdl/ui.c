@@ -161,14 +161,18 @@ static const resource_int_t resources_int[] = {
       &sdl_ui_menukeys[1], set_ui_menukey, (void *)MENU_ACTION_UP },
     { "MenuKeyDown", SDLK_DOWN, RES_EVENT_NO, NULL,
       &sdl_ui_menukeys[2], set_ui_menukey, (void *)MENU_ACTION_DOWN },
+    { "MenuKeyLeft", SDLK_LEFT, RES_EVENT_NO, NULL,
+      &sdl_ui_menukeys[3], set_ui_menukey, (void *)MENU_ACTION_LEFT },
+    { "MenuKeyRight", SDLK_RIGHT, RES_EVENT_NO, NULL,
+      &sdl_ui_menukeys[4], set_ui_menukey, (void *)MENU_ACTION_RIGHT },
     { "MenuKeySelect", SDLK_RETURN, RES_EVENT_NO, NULL,
-      &sdl_ui_menukeys[3], set_ui_menukey, (void *)MENU_ACTION_SELECT },
+      &sdl_ui_menukeys[5], set_ui_menukey, (void *)MENU_ACTION_SELECT },
     { "MenuKeyCancel", SDLK_BACKSPACE, RES_EVENT_NO, NULL,
-      &sdl_ui_menukeys[4], set_ui_menukey, (void *)MENU_ACTION_CANCEL },
+      &sdl_ui_menukeys[6], set_ui_menukey, (void *)MENU_ACTION_CANCEL },
     { "MenuKeyExit", SDLK_ESCAPE, RES_EVENT_NO, NULL,
-      &sdl_ui_menukeys[5], set_ui_menukey, (void *)MENU_ACTION_EXIT },
+      &sdl_ui_menukeys[7], set_ui_menukey, (void *)MENU_ACTION_EXIT },
     { "MenuKeyMap", SDLK_m, RES_EVENT_NO, NULL,
-      &sdl_ui_menukeys[6], set_ui_menukey, (void *)MENU_ACTION_MAP },
+      &sdl_ui_menukeys[8], set_ui_menukey, (void *)MENU_ACTION_MAP },
     { NULL },
 };
 
@@ -236,6 +240,8 @@ fprintf(stderr,"%s\n",__func__);
 void ui_shutdown(void)
 {
 fprintf(stderr,"%s\n",__func__);
+    /* TODO find a better place */
+    kbd_arch_shutdown();
 }
 
 /* Print an error message.  */

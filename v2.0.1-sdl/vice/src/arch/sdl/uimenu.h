@@ -80,10 +80,14 @@ extern void sdl_ui_set_menu_borders(int x, int y);
 extern void sdl_ui_set_double_x(void);
 
 extern void sdl_ui_activate(void);
-extern int sdl_ui_menu_item_activate(ui_menu_entry_t *item);
 extern char* sdl_ui_readline(const char* previous, int pos_x, int pos_y);
 extern char* sdl_ui_text_input_dialog(const char* title, const char* previous);
 extern char* sdl_ui_file_selection_dialog(const char* title);
+
+#define SDL_UI_HOTKEY_DELIM "&"
+extern int sdl_ui_hotkey(ui_menu_entry_t *item);
+extern ui_menu_entry_t *sdl_ui_hotkey_action(char *path);
+extern char *sdl_ui_hotkey_path(ui_menu_entry_t *action);
 
 typedef enum {
     MENU_ACTION_NONE = 0,
