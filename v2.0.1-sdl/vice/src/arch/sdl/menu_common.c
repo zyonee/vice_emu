@@ -32,6 +32,7 @@
 
 #include <stdlib.h>
 
+#include "autostart.h"
 #include "lib.h"
 #include "menu_common.h"
 #include "resources.h"
@@ -48,6 +49,19 @@ const char* sdl_menu_text_unknown = "?";
 
 UI_MENU_CALLBACK(autostart_callback)
 {
+    char *name = NULL;
+
+    if (activated) {
+        name = sdl_ui_file_selection_dialog("Choose autostart image");
+        if (name != NULL) {
+            if (autostart_autodetect(name, NULL, 0, AUTOSTART_MODE_RUN) < 0) {
+                /* TODO:
+                   to be replaced with ui_error */
+                fprintf(stderr, "could not start auto-image\n");
+            }
+            lib_free(name);
+        }
+    }
     return NULL;
 }
 

@@ -83,6 +83,7 @@ extern void sdl_ui_activate(void);
 extern int sdl_ui_menu_item_activate(ui_menu_entry_t *item);
 extern char* sdl_ui_readline(const char* previous, int pos_x, int pos_y);
 extern char* sdl_ui_text_input_dialog(const char* title, const char* previous);
+extern char* sdl_ui_file_selection_dialog(const char* title);
 
 typedef enum {
     MENU_ACTION_NONE = 0,
