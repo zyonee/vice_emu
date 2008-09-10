@@ -343,7 +343,7 @@ static void sdl_ui_file_selector_redraw(ioutil_dir_t *directory, const char *tit
     char* name;
 
     title_string = lib_malloc(strlen(title)+8);
-    sprintf(title_string, "%s %s", title, (offset) ? ((more) ? "(<- ->)" : "(<-") : ((more) ? "(->)" : ""));
+    sprintf(title_string, "%s %s", title, (offset) ? ((more) ? "(<- ->)" : "(<-)") : ((more) ? "(->)" : ""));
 
     sdl_ui_clear();
     sdl_ui_display_title(title_string);
