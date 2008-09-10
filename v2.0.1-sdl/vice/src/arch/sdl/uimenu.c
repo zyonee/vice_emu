@@ -35,6 +35,7 @@
 #include "interrupt.h"
 #include "ioutil.h"
 #include "lib.h"
+#include "menu_common.h"
 #include "resources.h"
 #include "ui.h"
 #include "uimenu.h"
@@ -387,15 +388,16 @@ static int sdl_ui_menu_display(ui_menu_entry_t *menu, const char *title)
                 }
                 break;
             case MENU_ACTION_SELECT:
-                if(sdl_ui_menu_item_activate(&(menu[cur]))) {
-                    sdl_ui_menu_redraw(menu, title, num_items);
+                if(sdl_ui_menu_item_activate(&(menu[cur])) == 2) {
+                    return 2;
                 }
+                sdl_ui_menu_redraw(menu, title, num_items);
                 break;
             case MENU_ACTION_CANCEL:
-                return 0;
+                in_menu = 0;
                 break;
             case MENU_ACTION_EXIT:
-                in_menu = 0;
+                return 2;
                 break;
             default:
                 SDL_Delay(10);
@@ -408,6 +410,8 @@ static int sdl_ui_menu_display(ui_menu_entry_t *menu, const char *title)
 
 static int sdl_ui_menu_item_activate(ui_menu_entry_t *item)
 {
+    const char *p = NULL;
+
     switch(item->type) {
         case MENU_ENTRY_OTHER:
         case MENU_ENTRY_DIALOG:
@@ -415,12 +419,14 @@ static int sdl_ui_menu_item_activate(ui_menu_entry_t *item)
         case MENU_ENTRY_RESOURCE_RADIO:
         case MENU_ENTRY_RESOURCE_INT:
         case MENU_ENTRY_RESOURCE_STRING:
-            item->callback(1, item->data);
+            p = item->callback(1, item->data);
+            if(p == sdl_menu_text_exit_ui) {
+                return 2;
+            }
             return 1;
             break;
         case MENU_ENTRY_SUBMENU:
-            sdl_ui_menu_display((ui_menu_entry_t *)item->data, item->string);
-            return 1;
+            return sdl_ui_menu_display((ui_menu_entry_t *)item->data, item->string);
             break;
         default:
             break;

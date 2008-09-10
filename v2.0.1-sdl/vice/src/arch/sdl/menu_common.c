@@ -44,6 +44,7 @@
 
 const char* sdl_menu_text_tick = "*";
 const char* sdl_menu_text_unknown = "?";
+const char* sdl_menu_text_exit_ui = "\1";
 
 /* ------------------------------------------------------------------ */
 /* Common callbacks */
@@ -61,6 +62,7 @@ UI_MENU_CALLBACK(autostart_callback)
                 fprintf(stderr, "could not start auto-image\n");
             }
             lib_free(name);
+            return sdl_menu_text_exit_ui;
         }
     }
     return NULL;
