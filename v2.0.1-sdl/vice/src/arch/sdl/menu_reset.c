@@ -37,6 +37,7 @@ static UI_MENU_CALLBACK(maincpu_hard_reset_callback)
     if(activated) {
         vsync_suspend_speed_eval();
         machine_trigger_reset(MACHINE_RESET_MODE_HARD);
+        return sdl_menu_text_exit_ui;
     }
     return NULL;
 }
@@ -46,6 +47,7 @@ static UI_MENU_CALLBACK(maincpu_soft_reset_callback)
     if(activated) {
         vsync_suspend_speed_eval();
         machine_trigger_reset(MACHINE_RESET_MODE_SOFT);
+        return sdl_menu_text_exit_ui;
     }
     return NULL;
 }
@@ -55,6 +57,7 @@ static UI_MENU_CALLBACK(drive8cpu_reset_callback)
     if(activated) {
         vsync_suspend_speed_eval();
         drivecpu_trigger_reset(0);
+        return sdl_menu_text_exit_ui;
     }
     return NULL;
 }
@@ -64,6 +67,7 @@ static UI_MENU_CALLBACK(drive9cpu_reset_callback)
     if(activated) {
         vsync_suspend_speed_eval();
         drivecpu_trigger_reset(1);
+        return sdl_menu_text_exit_ui;
     }
     return NULL;
 }
@@ -73,6 +77,7 @@ static UI_MENU_CALLBACK(drive10cpu_reset_callback)
     if(activated) {
         vsync_suspend_speed_eval();
         drivecpu_trigger_reset(2);
+        return sdl_menu_text_exit_ui;
     }
     return NULL;
 }
@@ -82,6 +87,7 @@ static UI_MENU_CALLBACK(drive11cpu_reset_callback)
     if(activated) {
         vsync_suspend_speed_eval();
         drivecpu_trigger_reset(3);
+        return sdl_menu_text_exit_ui;
     }
     return NULL;
 }
