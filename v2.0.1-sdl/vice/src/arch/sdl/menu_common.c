@@ -54,7 +54,7 @@ UI_MENU_CALLBACK(autostart_callback)
     char *name = NULL;
 
     if (activated) {
-        name = sdl_ui_file_selection_dialog("Choose autostart image");
+        name = sdl_ui_file_selection_dialog("Choose autostart image", FILEREQ_MODE_LOAD_FILE);
         if (name != NULL) {
             if (autostart_autodetect(name, NULL, 0, AUTOSTART_MODE_RUN) < 0) {
                 /* TODO:

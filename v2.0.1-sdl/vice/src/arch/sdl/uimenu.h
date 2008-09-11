@@ -72,6 +72,12 @@ typedef struct ui_menu_entry_s {
     ui_callback_data_t data;
 } ui_menu_entry_t;
 
+typedef enum {
+    FILEREQ_MODE_LOAD_FILE = 0,
+    FILEREQ_MODE_SAVE_FILE,
+    FILEREQ_MODE_CHOOSE_DIR
+} ui_menu_filereq_mode_t;
+
 extern void sdl_ui_set_vcachename(const char *vcache_name);
 extern void sdl_ui_set_main_menu(const ui_menu_entry_t *menu);
 extern void sdl_ui_set_menu_font(BYTE *font, int w, int h);
@@ -82,7 +88,7 @@ extern void sdl_ui_set_double_x(void);
 extern void sdl_ui_activate(void);
 extern char* sdl_ui_readline(const char* previous, int pos_x, int pos_y);
 extern char* sdl_ui_text_input_dialog(const char* title, const char* previous);
-extern char* sdl_ui_file_selection_dialog(const char* title);
+extern char* sdl_ui_file_selection_dialog(const char* title, ui_menu_filereq_mode_t mode);
 
 #define SDL_UI_HOTKEY_DELIM "&"
 extern int sdl_ui_hotkey(ui_menu_entry_t *item);

@@ -85,6 +85,8 @@ static int menu_draw_max_text_x_double = 1;
 static BYTE menu_draw_color_front = COLOR_FRONT;
 static BYTE menu_draw_color_back = COLOR_BACK;
 
+static ui_menu_filereq_mode_t filereq_mode;
+
 /* ------------------------------------------------------------------ */
 /* static functions */
 
@@ -328,7 +330,12 @@ static char* sdl_ui_get_file_selector_entry(ioutil_dir_t *directory, int offset,
         return NULL;
     }
 
-    if (offset >= (directory->dir_amount)) {
+    if ((filereq_mode == FILEREQ_MODE_SAVE_FILE) && (offset == directory->dir_amount)) {
+        *isdir = 0;
+        return "<new file>";
+    }
+
+    if (offset >= directory->dir_amount) {
         *isdir = 0;
         return directory->files[offset-directory->dir_amount].name;
     } else {
@@ -656,7 +663,7 @@ char* sdl_ui_text_input_dialog(const char* title, const char* previous)
     return sdl_ui_readline(previous, 0, i+MENU_FIRST_Y);
 }
 
-char* sdl_ui_file_selection_dialog(const char* title)
+char* sdl_ui_file_selection_dialog(const char* title, ui_menu_filereq_mode_t mode)
 {
     int total, dirs, files, menu_max;
     int active = 1;
@@ -667,7 +674,10 @@ char* sdl_ui_file_selection_dialog(const char* title)
     ioutil_dir_t *directory;
     char *backup_dir;
     char *current_dir;
+    char *inputstring;
     unsigned int maxpathlen;
+
+    filereq_mode = mode;
 
     maxpathlen = ioutil_maxpathlen();
 
@@ -683,8 +693,8 @@ char* sdl_ui_file_selection_dialog(const char* title)
     }
 
     dirs = directory->dir_amount;
-    files = directory->file_amount;
-    total = dirs + files;
+    files = (mode == FILEREQ_MODE_CHOOSE_DIR) ? 0 : directory->file_amount;
+    total = dirs + files + ((mode == FILEREQ_MODE_SAVE_FILE) ? 1 : 0);
     menu_max = menu_draw_max_text_y - MENU_FIRST_Y;
 
     while(active) {
@@ -753,12 +763,19 @@ char* sdl_ui_file_selection_dialog(const char* title)
                     cur_old = -1;
                     cur = 0;
                     dirs = directory->dir_amount;
-                    files = directory->file_amount;
-                    total = dirs + files;
+                    files = (mode == FILEREQ_MODE_CHOOSE_DIR) ? 0 : directory->file_amount;
+                    total = dirs + files + ((mode == FILEREQ_MODE_SAVE_FILE) ? 1 : 0);
                     redraw = 1;
                 } else {
-                    retval = util_concat(current_dir, FSDEV_DIR_SEP_STR, directory->files[offset+cur-dirs].name, NULL);
-                    active = 0;
+                    if ((filereq_mode == FILEREQ_MODE_SAVE_FILE) && (offset + cur) == dirs) {
+                        inputstring = sdl_ui_text_input_dialog("Enter new filename", "");
+                        retval = util_concat(current_dir, FSDEV_DIR_SEP_STR, inputstring, NULL);
+                        lib_free(inputstring);
+                        active = 0;
+                    } else {
+                        retval = util_concat(current_dir, FSDEV_DIR_SEP_STR, directory->files[offset+cur-dirs].name, NULL);
+                        active = 0;
+                    }
                 }
                 break;
             case MENU_ACTION_CANCEL:
