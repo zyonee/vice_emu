@@ -185,6 +185,8 @@ fprintf(stderr,"%s\n",__func__);
     }
     sdl_ui_set_menu_font(pet_font, 8, 8);
     sdl_ui_set_menu_borders(32, (cols == 40) ? 40 : 28);
+    sdl_ui_set_double_x(0);
+    sdl_ui_set_menu_colors(1, 0);
     sdl_ui_set_vcachename("CrtcVideoCache");
     return 0;
 }

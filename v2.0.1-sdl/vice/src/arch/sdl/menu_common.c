@@ -3,6 +3,7 @@
  *
  * Written by
  *  Hannu Nuotio <hannu.nuotio@tut.fi>
+ *  Marco van den Heuvel <blackystardust68@yahoo.com>
  *
  * Based on code by
  *  Ettore Perazzoli <ettore@comm2000.it>
@@ -37,7 +38,9 @@
 #include "menu_common.h"
 #include "monitor.h"
 #include "resources.h"
+#include "uifilereq.h"
 #include "uimenu.h"
+
 
 /* ------------------------------------------------------------------ */
 /* Common strings */
@@ -54,7 +57,7 @@ UI_MENU_CALLBACK(autostart_callback)
     char *name = NULL;
 
     if (activated) {
-        name = sdl_ui_file_selection_dialog("Choose autostart image", FILEREQ_MODE_LOAD_FILE);
+        name = sdl_ui_file_selection_dialog("Choose autostart image", FILEREQ_MODE_CHOOSE_FILE);
         if (name != NULL) {
             if (autostart_autodetect(name, NULL, 0, AUTOSTART_MODE_RUN) < 0) {
                 /* TODO:

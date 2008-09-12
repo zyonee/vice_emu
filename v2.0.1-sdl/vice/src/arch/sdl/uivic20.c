@@ -197,7 +197,8 @@ fprintf(stderr,"%s\n",__func__);
 
     sdl_ui_set_menu_font(vic20_font, 8, 8);
     sdl_ui_set_menu_borders(0, (videostandard == MACHINE_SYNC_PAL) ? 28: 8);
-    sdl_ui_set_double_x();
+    sdl_ui_set_double_x(1);
+    sdl_ui_set_menu_colors(1, 0);
     return 0;
 }
 

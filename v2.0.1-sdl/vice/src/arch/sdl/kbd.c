@@ -45,6 +45,7 @@
 #include "sysfile.h"
 #include "ui.h"
 #include "uimenu.h"
+#include "util.h"
 
 #define DEFAULT_HOTKEYFILE "sdl_hotkey.vkm"
 

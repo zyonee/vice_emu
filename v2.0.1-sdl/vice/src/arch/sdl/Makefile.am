@@ -46,11 +46,13 @@ libarch_a_SOURCES = \
 	uic64dtv.c \
 	uicbm2.c \
 	uicmdline.c \
-	uipet.c \
-	uiplus4.c \
+	uifilereq.c \
+	uifilereq.h \
 	uimenu.c \
 	uimenu.h \
 	uimon.c \
+	uipet.c \
+	uiplus4.c \
 	uivic20.c \
 	video.c \
 	videoarch.h \

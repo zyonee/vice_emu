@@ -72,28 +72,20 @@ typedef struct ui_menu_entry_s {
     ui_callback_data_t data;
 } ui_menu_entry_t;
 
-typedef enum {
-    FILEREQ_MODE_LOAD_FILE = 0,
-    FILEREQ_MODE_SAVE_FILE,
-    FILEREQ_MODE_CHOOSE_DIR
-} ui_menu_filereq_mode_t;
-
-extern void sdl_ui_set_vcachename(const char *vcache_name);
-extern void sdl_ui_set_main_menu(const ui_menu_entry_t *menu);
-extern void sdl_ui_set_menu_font(BYTE *font, int w, int h);
-extern void sdl_ui_set_menu_colors(int front, int back);
-extern void sdl_ui_set_menu_borders(int x, int y);
-extern void sdl_ui_set_double_x(void);
-
-extern void sdl_ui_activate(void);
-extern char* sdl_ui_readline(const char* previous, int pos_x, int pos_y);
-extern char* sdl_ui_text_input_dialog(const char* title, const char* previous);
-extern char* sdl_ui_file_selection_dialog(const char* title, ui_menu_filereq_mode_t mode);
-
-#define SDL_UI_HOTKEY_DELIM "&"
-extern int sdl_ui_hotkey(ui_menu_entry_t *item);
-extern ui_menu_entry_t *sdl_ui_hotkey_action(char *path);
-extern char *sdl_ui_hotkey_path(ui_menu_entry_t *action);
+struct menu_draw_s {
+    int pitch;
+    int offset;
+    int first_x;
+    int first_y;
+    int max_text_x;
+    int max_text_y;
+    int extra_x;
+    int extra_y;
+    int max_text_x_double;
+    BYTE color_front;
+    BYTE color_back;
+};
+typedef struct menu_draw_s menu_draw_t;
 
 typedef enum {
     MENU_ACTION_NONE = 0,
@@ -108,5 +100,26 @@ typedef enum {
     MENU_ACTION_NUM
 } ui_menu_action_t;
 
-#endif
+extern void sdl_ui_set_vcachename(const char *vcache_name);
+extern void sdl_ui_set_main_menu(const ui_menu_entry_t *menu);
+extern void sdl_ui_set_menu_font(BYTE *font, int w, int h);
+extern void sdl_ui_set_menu_colors(int front, int back);
+extern void sdl_ui_set_menu_borders(int x, int y);
+extern void sdl_ui_set_double_x(int value);
+extern menu_draw_t *sdl_ui_get_menu_param(void);
 
+extern ui_menu_action_t sdl_ui_menu_poll_input(void);
+extern void sdl_ui_display_cursor(int pos, int old_pos);
+extern int sdl_ui_print(const char *text, int pos_x, int pos_y);
+extern int sdl_ui_display_title(const char *title);
+extern void sdl_ui_clear(void);
+extern void sdl_ui_activate(void);
+extern char* sdl_ui_readline(const char* previous, int pos_x, int pos_y);
+extern char* sdl_ui_text_input_dialog(const char* title, const char* previous);
+
+#define SDL_UI_HOTKEY_DELIM "&"
+extern int sdl_ui_hotkey(ui_menu_entry_t *item);
+extern ui_menu_entry_t *sdl_ui_hotkey_action(char *path);
+extern char *sdl_ui_hotkey_path(ui_menu_entry_t *action);
+
+#endif

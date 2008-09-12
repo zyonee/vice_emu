@@ -49,8 +49,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define COLOR_BACK 0
-#define COLOR_FRONT 1
 #define MENU_FIRST_Y 2
 #define MENU_FIRST_X 1
 
@@ -72,20 +70,7 @@ static menufont_t menufont = { NULL, sdl_default_translation, 0, 0 };
 
 static const char *vcache_name = NULL;
 
-static int menu_draw_pitch = 0;
-static int menu_draw_offset = 0;
-static int menu_draw_max_text_x = 0;
-static int menu_draw_max_text_y = 0;
-static int menu_draw_extra_x = 0;
-static int menu_draw_extra_y = 0;
-
-/* 1 = no double, 2 = double */
-static int menu_draw_max_text_x_double = 1;
-
-static BYTE menu_draw_color_front = COLOR_FRONT;
-static BYTE menu_draw_color_back = COLOR_BACK;
-
-static ui_menu_filereq_mode_t filereq_mode;
+static menu_draw_t menu_draw;
 
 /* ------------------------------------------------------------------ */
 /* static functions */
@@ -95,16 +80,16 @@ static int sdl_ui_menu_item_activate(ui_menu_entry_t *item);
 static void sdl_ui_scroll_screen_up(void)
 {
     int i, j;
-    BYTE *draw_pos = sdl_active_canvas->draw_buffer->draw_buffer + menu_draw_offset;
+    BYTE *draw_pos = sdl_active_canvas->draw_buffer->draw_buffer + menu_draw.offset;
 
-    for(i = 0; i < menu_draw_max_text_y-1; ++i) {
+    for(i = 0; i < menu_draw.max_text_y-1; ++i) {
         for(j = 0; j < menufont.h; ++j) {
-            memmove(draw_pos + (i * menufont.h + j) * menu_draw_pitch, draw_pos + (((i+1) * menufont.h) + j) * menu_draw_pitch, menu_draw_max_text_x * menufont.w);
+            memmove(draw_pos + (i * menufont.h + j) * menu_draw.pitch, draw_pos + (((i+1) * menufont.h) + j) * menu_draw.pitch, menu_draw.max_text_x * menufont.w);
         }
     }
 
     for(j = 0; j < menufont.h; ++j) {
-        memset(draw_pos + (i * menufont.h + j) * menu_draw_pitch, (char)menu_draw_color_back, menu_draw_max_text_x * menufont.w);
+        memset(draw_pos + (i * menufont.h + j) * menu_draw.pitch, (char)menu_draw.color_back, menu_draw.max_text_x * menufont.w);
     }
 }
 
@@ -116,14 +101,14 @@ static void sdl_ui_putchar(char c, int pos_x, int pos_y)
     BYTE *draw_pos;
 
     font_pos = &(menufont.font[menufont.translate[(int)c]]);
-    draw_pos = &(sdl_active_canvas->draw_buffer->draw_buffer[pos_x * menufont.w + pos_y * menufont.h * menu_draw_pitch]);
+    draw_pos = &(sdl_active_canvas->draw_buffer->draw_buffer[pos_x * menufont.w + pos_y * menufont.h * menu_draw.pitch]);
 
-    draw_pos += menu_draw_offset;
+    draw_pos += menu_draw.offset;
 
     for(y=0; y < menufont.h; ++y) {
         fontchar = *font_pos;
         for(x=0; x < menufont.w; ++x) {
-            draw_pos[x] = (fontchar & (0x80 >> x))?menu_draw_color_front:menu_draw_color_back;
+            draw_pos[x] = (fontchar & (0x80 >> x))?menu_draw.color_front:menu_draw.color_back;
         }
         ++font_pos;
         draw_pos += sdl_active_canvas->draw_buffer->draw_buffer_pitch;
@@ -135,46 +120,25 @@ static void sdl_ui_invert_char(int pos_x, int pos_y)
     int x, y;
     BYTE *draw_pos;
 
-    while(pos_x >= menu_draw_max_text_x) {
-        pos_x -= menu_draw_max_text_x;
+    while(pos_x >= menu_draw.max_text_x) {
+        pos_x -= menu_draw.max_text_x;
         ++pos_y;
     }
 
-    draw_pos = &(sdl_active_canvas->draw_buffer->draw_buffer[pos_x * menufont.w + pos_y * menufont.h * menu_draw_pitch]);
+    draw_pos = &(sdl_active_canvas->draw_buffer->draw_buffer[pos_x * menufont.w + pos_y * menufont.h * menu_draw.pitch]);
 
-    draw_pos += menu_draw_offset;
+    draw_pos += menu_draw.offset;
 
     for(y=0; y < menufont.h; ++y) {
         for(x=0; x < menufont.w; ++x) {
-            if(draw_pos[x] == menu_draw_color_front) {
-                draw_pos[x] = menu_draw_color_back;
+            if(draw_pos[x] == menu_draw.color_front) {
+                draw_pos[x] = menu_draw.color_back;
             } else {
-                draw_pos[x] = menu_draw_color_front;
+                draw_pos[x] = menu_draw.color_front;
             }
         }
         draw_pos += sdl_active_canvas->draw_buffer->draw_buffer_pitch;
     }
-}
-
-static int sdl_ui_print(const char *text, int pos_x, int pos_y)
-{
-    int i = 0;
-    BYTE c;
-
-    if(text == NULL) {
-        return 0;
-    }
-
-    if((pos_x >= menu_draw_max_text_x)||(pos_y >= menu_draw_max_text_y)) {
-        return -1;
-    }
-
-    while(((c = text[i]) != 0)&&((pos_x + i) < menu_draw_max_text_x)) {
-        sdl_ui_putchar(c, pos_x+i, pos_y);
-        ++i;
-    }
-
-    return i;
 }
 
 static int sdl_ui_print_wrap(const char *text, int pos_x, int pos_y)
@@ -186,18 +150,18 @@ static int sdl_ui_print_wrap(const char *text, int pos_x, int pos_y)
         return 0;
     }
 
-    while(pos_x >= menu_draw_max_text_x) {
-        pos_x -= menu_draw_max_text_x;
+    while(pos_x >= menu_draw.max_text_x) {
+        pos_x -= menu_draw.max_text_x;
         ++pos_y;
     }
 
     while((c = text[i]) != 0) {
-        if(pos_x == menu_draw_max_text_x) {
+        if(pos_x == menu_draw.max_text_x) {
             ++pos_y;
             pos_x = 0;
         }
 
-        if(pos_y == menu_draw_max_text_y) {
+        if(pos_y == menu_draw.max_text_y) {
             sdl_ui_scroll_screen_up();
             --pos_y;
         }
@@ -209,30 +173,13 @@ static int sdl_ui_print_wrap(const char *text, int pos_x, int pos_y)
     return i;
 }
 
-static void sdl_ui_clear(void)
-{
-    unsigned int x, y;
-    const char c = ' ';
-
-    for(y=0; y < menu_draw_max_text_y; ++y) {
-        for(x=0; x < menu_draw_max_text_x; ++x) {
-            sdl_ui_putchar(c, x, y);
-        }
-    }
-}
-
-static int sdl_ui_display_title(const char *title)
-{
-    return sdl_ui_print_wrap(title, 0, 0);
-}
-
 static void sdl_ui_reverse_colors(void)
 {
     BYTE color;
 
-    color = menu_draw_color_front;
-    menu_draw_color_front = menu_draw_color_back;
-    menu_draw_color_back = color;
+    color = menu_draw.color_front;
+    menu_draw.color_front = menu_draw.color_back;
+    menu_draw.color_back = color;
 }
 
 static void sdl_ui_display_item(ui_menu_entry_t *item, int y_pos)
@@ -272,40 +219,16 @@ static void sdl_ui_display_item(ui_menu_entry_t *item, int y_pos)
     }
 }
 
-static void sdl_ui_display_cursor(int pos, int old_pos)
-{
-    const char c_erase = ' ';
-    const char c_cursor = '>';
-
-    if(pos == old_pos) {
-        return;
-    }
-
-    if(old_pos >= 0) {
-        sdl_ui_putchar(c_erase, 0, old_pos+MENU_FIRST_Y);
-    }
-
-    sdl_ui_putchar(c_cursor, 0, pos+MENU_FIRST_Y);
-}
-
-static ui_menu_action_t sdl_ui_menu_poll_input(void)
-{
-    ui_menu_action_t retval = MENU_ACTION_NONE;
-    do {
-        SDL_Delay(20);
-        retval = ui_dispatch_events();
-    } while (retval == MENU_ACTION_NONE);
-    return retval;
-}
-
 static void sdl_ui_init_draw_params(void)
 {
-    menu_draw_max_text_x = sdl_active_canvas->geometry->text_size.width * (menu_draw_max_text_x_double);
-    menu_draw_max_text_y = sdl_active_canvas->geometry->text_size.height;
-    menu_draw_pitch = sdl_active_canvas->draw_buffer->draw_buffer_pitch;
-    menu_draw_offset = sdl_active_canvas->geometry->gfx_position.x + menu_draw_extra_x
-                     + (sdl_active_canvas->geometry->gfx_position.y + menu_draw_extra_y) * menu_draw_pitch
+    menu_draw.max_text_x = sdl_active_canvas->geometry->text_size.width * (menu_draw.max_text_x_double);
+    menu_draw.max_text_y = sdl_active_canvas->geometry->text_size.height;
+    menu_draw.pitch = sdl_active_canvas->draw_buffer->draw_buffer_pitch;
+    menu_draw.offset = sdl_active_canvas->geometry->gfx_position.x + menu_draw.extra_x
+                     + (sdl_active_canvas->geometry->gfx_position.y + menu_draw.extra_y) * menu_draw.pitch
                      + sdl_active_canvas->geometry->extra_offscreen_border_left;
+    menu_draw.first_x = MENU_FIRST_X;
+    menu_draw.first_y = MENU_FIRST_Y;
 }
 
 static void sdl_ui_menu_redraw(ui_menu_entry_t *menu, const char *title, int num_items)
@@ -317,53 +240,10 @@ static void sdl_ui_menu_redraw(ui_menu_entry_t *menu, const char *title, int num
     sdl_ui_display_title(title);
 
     for(i=0; i<num_items; ++i) {
-        if(num_items == (menu_draw_max_text_y - MENU_FIRST_Y)) {
+        if(num_items == (menu_draw.max_text_y - MENU_FIRST_Y)) {
             break;
         }
         sdl_ui_display_item(&(menu[i]), i);
-    }
-}
-
-static char* sdl_ui_get_file_selector_entry(ioutil_dir_t *directory, int offset, int *isdir)
-{
-    if (offset >= (directory->dir_amount + directory->file_amount)) {
-        return NULL;
-    }
-
-    if ((filereq_mode == FILEREQ_MODE_SAVE_FILE) && (offset == directory->dir_amount)) {
-        *isdir = 0;
-        return "<new file>";
-    }
-
-    if (offset >= directory->dir_amount) {
-        *isdir = 0;
-        return directory->files[offset-directory->dir_amount].name;
-    } else {
-        *isdir = 1;
-        return directory->dirs[offset].name;
-    }
-}
-
-static void sdl_ui_file_selector_redraw(ioutil_dir_t *directory, const char *title, int offset, int num_items, int more)
-{
-    int i, j, isdir = 0;
-    char* title_string;
-    char* name;
-
-    title_string = lib_malloc(strlen(title)+8);
-    sprintf(title_string, "%s %s", title, (offset) ? ((more) ? "(<- ->)" : "(<-)") : ((more) ? "(->)" : ""));
-
-    sdl_ui_clear();
-    sdl_ui_display_title(title_string);
-    lib_free(title_string);
-
-    for(i=0; i<num_items; ++i) {
-        j = MENU_FIRST_X;
-        name = sdl_ui_get_file_selector_entry(directory, offset+i, &isdir);
-        if (isdir) {
-            j += 1 + sdl_ui_print("(D)", MENU_FIRST_X, i+MENU_FIRST_Y);
-        }
-        sdl_ui_print(name, j, i+MENU_FIRST_Y);
     }
 }
 
@@ -497,6 +377,70 @@ static char* sdl_ui_hotkey_path_find(ui_menu_entry_t *action, ui_menu_entry_t *m
 
 /* ------------------------------------------------------------------ */
 /* External UI interface */
+
+ui_menu_action_t sdl_ui_menu_poll_input(void)
+{
+    ui_menu_action_t retval = MENU_ACTION_NONE;
+    do {
+        SDL_Delay(20);
+        retval = ui_dispatch_events();
+    } while (retval == MENU_ACTION_NONE);
+    return retval;
+}
+
+void sdl_ui_display_cursor(int pos, int old_pos)
+{
+    const char c_erase = ' ';
+    const char c_cursor = '>';
+
+    if(pos == old_pos) {
+        return;
+    }
+
+    if(old_pos >= 0) {
+        sdl_ui_putchar(c_erase, 0, old_pos+MENU_FIRST_Y);
+    }
+
+    sdl_ui_putchar(c_cursor, 0, pos+MENU_FIRST_Y);
+}
+
+int sdl_ui_print(const char *text, int pos_x, int pos_y)
+{
+    int i = 0;
+    BYTE c;
+
+    if(text == NULL) {
+        return 0;
+    }
+
+    if((pos_x >= menu_draw.max_text_x)||(pos_y >= menu_draw.max_text_y)) {
+        return -1;
+    }
+
+    while(((c = text[i]) != 0)&&((pos_x + i) < menu_draw.max_text_x)) {
+        sdl_ui_putchar(c, pos_x+i, pos_y);
+        ++i;
+    }
+
+    return i;
+}
+
+int sdl_ui_display_title(const char *title)
+{
+    return sdl_ui_print_wrap(title, 0, 0);
+}
+
+void sdl_ui_clear(void)
+{
+    unsigned int x, y;
+    const char c = ' ';
+
+    for(y=0; y < menu_draw.max_text_y; ++y) {
+        for(x=0; x < menu_draw.max_text_x; ++x) {
+            sdl_ui_putchar(c, x, y);
+        }
+    }
+}
 
 void sdl_ui_activate(void)
 {
@@ -659,141 +603,8 @@ char* sdl_ui_text_input_dialog(const char* title, const char* previous)
     int i;
 
     sdl_ui_clear();
-    i = sdl_ui_display_title(title) / menu_draw_max_text_x;
+    i = sdl_ui_display_title(title) / menu_draw.max_text_x;
     return sdl_ui_readline(previous, 0, i+MENU_FIRST_Y);
-}
-
-char* sdl_ui_file_selection_dialog(const char* title, ui_menu_filereq_mode_t mode)
-{
-    int total, dirs, files, menu_max;
-    int active = 1;
-    int offset = 0;
-    int redraw = 1;
-    char *retval = NULL;
-    int cur = 0, cur_old = -1;
-    ioutil_dir_t *directory;
-    char *backup_dir;
-    char *current_dir;
-    char *inputstring;
-    unsigned int maxpathlen;
-
-    filereq_mode = mode;
-
-    maxpathlen = ioutil_maxpathlen();
-
-    backup_dir = (char *)lib_malloc(maxpathlen);
-    current_dir = (char *)lib_malloc(maxpathlen);
-
-    ioutil_getcwd(backup_dir, maxpathlen);
-    ioutil_getcwd(current_dir, maxpathlen);
-
-    directory = ioutil_opendir(".");
-    if (directory == NULL) {
-        return NULL;
-    }
-
-    dirs = directory->dir_amount;
-    files = (mode == FILEREQ_MODE_CHOOSE_DIR) ? 0 : directory->file_amount;
-    total = dirs + files + ((mode == FILEREQ_MODE_SAVE_FILE) ? 1 : 0);
-    menu_max = menu_draw_max_text_y - MENU_FIRST_Y;
-
-    while(active) {
-        if (redraw) {
-            sdl_ui_file_selector_redraw(directory, title, offset,
-                                        (total-offset > menu_max) ? menu_max : total-offset,
-                                        (total-offset > menu_max) ? 1 : 0);
-            redraw = 0;
-        }
-        sdl_ui_display_cursor(cur, cur_old);
-        video_canvas_refresh_all(sdl_active_canvas);
-
-        switch(sdl_ui_menu_poll_input()) {
-            case MENU_ACTION_UP:
-                if(cur > 0) {
-                    cur_old = cur;
-                    --cur;
-                } else {
-                    if (offset > 0) {
-                        offset--;
-                        redraw = 1;
-                    }
-                }
-                break;
-            case MENU_ACTION_LEFT:
-                offset -= menu_max;
-                if(offset < 0) {
-                    offset = 0;
-                    cur_old = -1;
-                    cur = 0;
-                }
-                redraw = 1;
-                break;
-            case MENU_ACTION_DOWN:
-                if(cur < (menu_max - 1)) {
-                    if((cur+offset) < total-1) {
-                        cur_old = cur;
-                        ++cur;
-                      }
-                } else {
-                    if (offset < (total-menu_max)) {
-                        offset++;
-                        redraw = 1;
-                    }
-                }
-                break;
-            case MENU_ACTION_RIGHT:
-                offset += menu_max;
-                if(offset >= total) {
-                    offset = total - 1;
-                    cur_old = -1;
-                    cur = 0;
-                } else if((cur+offset) >= total) {
-                    cur_old = -1;
-                    cur = total-offset-1;
-                }
-                redraw = 1;
-                break;
-            case MENU_ACTION_SELECT:
-                if (offset+cur < dirs) {
-                    ioutil_chdir(directory->dirs[offset+cur].name);
-                    ioutil_closedir(directory);
-                    ioutil_getcwd(current_dir, maxpathlen);
-                    directory = ioutil_opendir(".");
-                    offset = 0;
-                    cur_old = -1;
-                    cur = 0;
-                    dirs = directory->dir_amount;
-                    files = (mode == FILEREQ_MODE_CHOOSE_DIR) ? 0 : directory->file_amount;
-                    total = dirs + files + ((mode == FILEREQ_MODE_SAVE_FILE) ? 1 : 0);
-                    redraw = 1;
-                } else {
-                    if ((filereq_mode == FILEREQ_MODE_SAVE_FILE) && (offset + cur) == dirs) {
-                        inputstring = sdl_ui_text_input_dialog("Enter new filename", "");
-                        retval = util_concat(current_dir, FSDEV_DIR_SEP_STR, inputstring, NULL);
-                        lib_free(inputstring);
-                        active = 0;
-                    } else {
-                        retval = util_concat(current_dir, FSDEV_DIR_SEP_STR, directory->files[offset+cur-dirs].name, NULL);
-                        active = 0;
-                    }
-                }
-                break;
-            case MENU_ACTION_CANCEL:
-            case MENU_ACTION_EXIT:
-                retval = NULL;
-                active = 0;
-                break;
-            default:
-                SDL_Delay(10);
-                break;
-        }
-    }
-    ioutil_closedir(directory);
-    ioutil_chdir(backup_dir);
-    lib_free(backup_dir);
-    lib_free(current_dir);
-
-    return retval;
 }
 
 char *sdl_ui_hotkey_path(ui_menu_entry_t *action)
@@ -846,8 +657,8 @@ void sdl_ui_set_vcachename(const char *vcache)
 
 void sdl_ui_set_menu_borders(int x, int y)
 {
-    menu_draw_extra_x = x;
-    menu_draw_extra_y = y;
+    menu_draw.extra_x = x;
+    menu_draw.extra_y = y;
 }
 
 void sdl_ui_set_main_menu(const ui_menu_entry_t *menu)
@@ -871,16 +682,20 @@ void sdl_ui_set_menu_font(BYTE *font, int w, int h)
 void sdl_ui_set_menu_colors(int front, int back)
 {
     if(front >= 0) {
-        menu_draw_color_front = (BYTE)(front & 0xff);
+        menu_draw.color_front = (BYTE)(front & 0xff);
     }
 
     if(back >= 0) {
-        menu_draw_color_back = (BYTE)(back & 0xff);
+        menu_draw.color_back = (BYTE)(back & 0xff);
     }
 }
 
-void sdl_ui_set_double_x(void)
+void sdl_ui_set_double_x(int value)
 {
-    menu_draw_max_text_x_double = 2;
+    menu_draw.max_text_x_double = (value) ? 2 : 1;
 }
 
+menu_draw_t *sdl_ui_get_menu_param(void)
+{
+  return &menu_draw;
+}

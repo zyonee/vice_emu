@@ -198,6 +198,8 @@ fprintf(stderr,"%s\n",__func__);
     sdl_ui_set_main_menu(xcbm2_main_menu);
     sdl_ui_set_menu_font(cbm2_font, 8, (model == 0) ? 14 : 8);
     sdl_ui_set_menu_borders(32, (model == 0) ? 16 : 40);
+    sdl_ui_set_menu_colors(1, 0);
+    sdl_ui_set_double_x(0);
     return 0;
 }
 
