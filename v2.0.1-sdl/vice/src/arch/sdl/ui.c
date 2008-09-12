@@ -34,9 +34,10 @@
 #include <stdio.h>
 
 #include "color.h"
+#include "interrupt.h"
 #include "joy.h"
 #include "kbd.h"
-#include "interrupt.h"
+#include "lib.h"
 #include "machine.h"
 #include "resources.h"
 #include "ui.h"

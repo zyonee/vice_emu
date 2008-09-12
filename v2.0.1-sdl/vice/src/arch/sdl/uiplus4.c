@@ -34,6 +34,7 @@
 #include "lib.h"
 #include "menu_common.h"
 #include "menu_reset.h"
+#include "menu_settings.h"
 #include "menu_speed.h"
 #include "plus4memrom.h"
 #include "resources.h"
@@ -165,18 +166,10 @@ static const ui_menu_entry_t xplus4_main_menu[] = {
       MENU_ENTRY_SUBMENU,
       NULL,
       (ui_callback_data_t)help_menu },
-    { "Save current settings",
-      MENU_ENTRY_OTHER,
-      save_settings_callback,
-      NULL },
-    { "Load settings",
-      MENU_ENTRY_OTHER,
-      load_settings_callback,
-      NULL },
-    { "Restore default settings",
-      MENU_ENTRY_OTHER,
-      default_settings_callback,
-      NULL },
+    { "Settings management",
+      MENU_ENTRY_SUBMENU,
+      NULL,
+      (ui_callback_data_t)settings_manager_menu },
     { "Quit emulator",
       MENU_ENTRY_OTHER,
       quit_callback,

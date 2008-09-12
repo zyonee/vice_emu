@@ -72,9 +72,6 @@ extern UI_MENU_CALLBACK(autostart_callback);
 extern UI_MENU_CALLBACK(pause_callback);
 extern UI_MENU_CALLBACK(monitor_callback);
 extern UI_MENU_CALLBACK(quit_callback);
-extern UI_MENU_CALLBACK(save_settings_callback);
-extern UI_MENU_CALLBACK(load_settings_callback);
-extern UI_MENU_CALLBACK(default_settings_callback);
 
 extern const char *sdl_ui_menu_toggle_helper(int activated, const char *resource_name);
 extern const char *sdl_ui_menu_radio_helper(int activated, ui_callback_data_t param, const char *resource_name);

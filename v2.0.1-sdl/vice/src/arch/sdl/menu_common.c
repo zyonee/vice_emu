@@ -92,47 +92,6 @@ UI_MENU_CALLBACK(quit_callback)
     return NULL;
 }
 
-UI_MENU_CALLBACK(save_settings_callback)
-{
-    if(activated) {
-        if (resources_save(NULL) < 0) {
-            ui_error("Cannot save current settings.");
-        } else { 
-            ui_message("Settings saved.");
-        }
-
-        /* TODO:
-           to be uncommented after the fliplist menus have been made
-        uifliplist_save_settings(); */
-
-        return sdl_menu_text_exit_ui;
-    }
-    return NULL;
-}
-
-UI_MENU_CALLBACK(load_settings_callback)
-{
-    if(activated) {
-        if (resources_load(NULL) < 0) {
-            ui_error("Cannot load settings.");
-        } else {
-            ui_message("Settings loaded.");
-        }
-        return sdl_menu_text_exit_ui;
-    }
-    return NULL;
-}
-
-UI_MENU_CALLBACK(default_settings_callback)
-{
-    if(activated) {
-        resources_set_defaults();
-        ui_message("Default settings restored.");
-        return sdl_menu_text_exit_ui;
-    }
-    return NULL;
-}
-
 /* ------------------------------------------------------------------ */
 /* Menu helpers */
 
@@ -211,4 +170,3 @@ const char *sdl_ui_menu_int_helper(int activated, ui_callback_data_t param, cons
     }
     return NULL;
 }
-
