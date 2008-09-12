@@ -219,7 +219,7 @@ inline static void interrupt_set_int(interrupt_cpu_status_t *cs, int int_num,
 
 /* ------------------------------------------------------------------------- */
 
-/* This function must be called by the CPU emulator when a pending NMI
+/* This function must be called by the CPU emulator when a pending NMI/IRQ
    request is served.  */
 inline static void interrupt_ack_nmi(interrupt_cpu_status_t *cs)
 {
@@ -230,6 +230,11 @@ inline static void interrupt_ack_nmi(interrupt_cpu_status_t *cs)
         cs->nmi_trap_func();
 }
 
+inline static void interrupt_ack_irq(interrupt_cpu_status_t *cs)
+{
+    cs->global_pending_int =
+        (cs->global_pending_int & ~IK_IRQPEND);
+}
 /* ------------------------------------------------------------------------- */
 
 /* Extern functions.  These are defined in `interrupt.c'.  */

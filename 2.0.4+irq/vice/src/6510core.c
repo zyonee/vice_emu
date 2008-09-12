@@ -357,6 +357,7 @@
                 if (monitor_mask[CALLER] & (MI_STEP)) {               \
                     monitor_check_icount_interrupt();                 \
                 }                                                     \
+                interrupt_ack_irq(CPU_INT_STATUS);                    \
                 LOCAL_SET_BREAK(0);                                   \
                 PUSH(reg_pc >> 8);                                    \
                 PUSH(reg_pc & 0xff);                                  \
@@ -365,7 +366,6 @@
                 JUMP(LOAD_ADDR(0xfffe));                              \
                 SET_LAST_OPCODE(0);                                   \
                 CLK_ADD(CLK,IRQ_CYCLES);                              \
-                CPU_INT_STATUS->global_pending_int &= ~IK_IRQPEND;    \
             }                                                         \
         }                                                             \
         if (ik & (IK_TRAP | IK_RESET)) {                              \
