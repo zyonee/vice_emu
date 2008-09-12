@@ -183,7 +183,7 @@ static void sdlkbd_parse_entry(char *buffer)
 int sdlkbd_hotkeys_load(const char *filename)
 {
     FILE *fp;
-    char *complete_path;
+    char *complete_path = NULL;
     char buffer[1000];
 
     if (filename == NULL) {
@@ -194,7 +194,6 @@ int sdlkbd_hotkeys_load(const char *filename)
     
     if (fp == NULL) {
         log_warning(sdlkbd_log, "Failed to open `%s'.", filename);
-        lib_free(complete_path);
         return -1;
     }
     

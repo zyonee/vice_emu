@@ -559,7 +559,6 @@ fprintf(stderr,"%s, %s\n",__func__, filename);
 
     if (fp == NULL) {
         log_warning(sdljoy_log, "Failed to open `%s'.", filename);
-        lib_free(complete_path);
         return -1;
     }
 
