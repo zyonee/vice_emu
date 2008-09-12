@@ -117,7 +117,19 @@ void archdep_ui_init(int argc, char *argv[])
 fprintf(stderr,"%s\n",__func__);
 }
 
-void ui_message(const char* format, ...){}
+void ui_message(const char* format, ...)
+{
+    va_list ap;
+    char *tmp;
+
+    va_start(ap, format);
+    tmp = lib_mvsprintf(format,ap);
+    va_end(ap);
+
+    fprintf(stderr, "SDL UI ui_message: %s\n", tmp);
+
+    lib_free(tmp);
+}
 
 static int is_paused = 0;
 
@@ -245,7 +257,20 @@ fprintf(stderr,"%s\n",__func__);
 }
 
 /* Print an error message.  */
-void ui_error(const char *format,...){}
+void ui_error(const char *format,...)
+{
+    va_list ap;
+    char *tmp;
+
+    va_start(ap, format);
+    tmp = lib_mvsprintf(format, ap);
+    va_end(ap);
+
+    fprintf(stderr, "SDL UI ui_error: %s\n", tmp);
+
+    lib_free(tmp);
+}
+
 
 /* Display a mesage without interrupting emulation */
 void ui_display_statustext(const char *text, int fade_out){}
