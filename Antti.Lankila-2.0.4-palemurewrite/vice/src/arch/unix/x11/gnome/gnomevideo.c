@@ -228,18 +228,18 @@ void video_canvas_refresh(video_canvas_t *canvas,
         exit(-1);
     }
 
+#ifdef HAVE_HWSCALE
     if (canvas->videoconfig->hwscale) {
         video_canvas_render(canvas, canvas->hwscale_image,
                             w, h, xs, ys, xi, yi, canvas->gdk_image->width * 3,
                             24);
         gtk_widget_queue_draw(canvas->emuwindow);
-    } else {
+    } else
+#endif
+    {
         video_canvas_render(canvas, canvas->gdk_image->mem,
                             w, h, xs, ys, xi, yi, canvas->gdk_image->bpl,
                             canvas->gdk_image->bits_per_pixel);
-
-        /* Schedule redraw of the rendered area. */
-        GdkRectangle rect = {xi, yi, w, h};
-        gdk_window_invalidate_rect (canvas->emuwindow->window, &rect, FALSE);
+        gtk_widget_queue_draw_area(canvas->emuwindow, xi, yi, w, h);
     }
 }

@@ -305,9 +305,15 @@ void ui_restore_mouse() {
 }
 
 void initBlankCursor() {
-    blankCursor = gdk_cursor_new(GDK_MOUSE);
+    static char cursor[] = { 0x00 };
+    GdkColor fg = { 0, 0, 0, 0 };
+    GdkColor bg = { 0, 0, 0, 0 };
+    GdkBitmap *source = gdk_bitmap_create_from_data (NULL, cursor, 1, 1);
+    GdkBitmap *mask = gdk_bitmap_create_from_data (NULL, cursor, 1, 1);
+    blankCursor = gdk_cursor_new_from_pixmap (source, mask, &fg, &bg, 1, 1);
+    gdk_pixmap_unref (source);
+    gdk_pixmap_unref (mask);
 }
-
 
 /* ------------------------------------------------------------------------- */
 
@@ -375,6 +381,8 @@ gboolean delete_event(GtkWidget *w, GdkEvent *e, gpointer data)
 
 void mouse_handler(GtkWidget *w, GdkEvent *event, gpointer data)
 {
+    video_canvas_t *canvas = (video_canvas_t *) data;
+
     if (! _mouse_enabled) {
 #if 0
     /* alankila: why do we need lmb/rmb menus when this same stuff is
@@ -391,6 +399,14 @@ void mouse_handler(GtkWidget *w, GdkEvent *event, gpointer data)
                            bevent->button, bevent->time);
         }
     }
+#else
+        /* show menubar in response to right click, assumed
+         * user is looking for way out of fullscreen... */
+        if (fullscreen_is_enabled && event->type == GDK_BUTTON_PRESS) {
+            GdkEventButton *bevent = (GdkEventButton *) event;
+            if (bevent->button == 3)
+                ui_fullscreen_statusbar(canvas, 1);
+        }
 #endif
         return;
     }
@@ -895,10 +911,12 @@ gboolean kbd_event_handler(GtkWidget *w, GdkEvent *report,gpointer gp);
 
 static void build_screen_canvas_widget(video_canvas_t *c)
 {
-    GdkColor color;
     GtkWidget *new_canvas = gtk_drawing_area_new();
-    gdk_color_parse("black", &color);
-    gtk_widget_modify_bg(new_canvas, GTK_STATE_NORMAL, &color);
+
+    /* if the eventbox already has a child, get rid of it, we are resizing */
+    GtkWidget *kid = gtk_bin_get_child(GTK_BIN(c->pane));
+    if (kid != NULL)
+        gtk_container_remove(GTK_CONTAINER(c->pane), kid);
 
 #ifdef HAVE_HWSCALE
     if (c->videoconfig->hwscale) {
@@ -958,12 +976,33 @@ static void build_screen_canvas_widget(video_canvas_t *c)
                      G_CALLBACK(kbd_event_handler),NULL);
     g_signal_connect(G_OBJECT(new_canvas),"key-release-event",
                      G_CALLBACK(kbd_event_handler),NULL);
-    
-    gtk_box_pack_start(GTK_BOX(c->pane), new_canvas, TRUE, TRUE, 0);
+
+    if (c->videoconfig->hwscale) {
+        /* For hwscale, it's a feature that new_canvas must bloat to 100% size
+         * of the containing GtkEventWindow. Unfortunately, for the other
+         * path, it's a PITA. */
+        gtk_container_add(GTK_CONTAINER(c->pane), new_canvas);
+    } else {
+        /* Believe it or not, but to get a gtkdrawingarea of fixed dimensions
+         * with a black background within our layout vbox requires this:
+         *
+         * toplvl < ui   < black bg < centering < SCREEN HERE
+         * window < vbox < eventbox < hbox<vbox < drawingarea.
+         *
+         * We do this to make fullscreen work. More gory details in the
+         * x11ui_fullscreen about how "nice" that is to get to work. */
+        GtkWidget *canvascontainer1 = gtk_hbox_new(FALSE, 0);
+        gtk_widget_show(canvascontainer1);
+        gtk_container_add(GTK_CONTAINER(c->pane), canvascontainer1);
+        GtkWidget *canvascontainer2 = gtk_vbox_new(FALSE, 0);
+        gtk_widget_show(canvascontainer2);
+        gtk_box_pack_start(GTK_BOX(canvascontainer1), canvascontainer2, TRUE, FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(canvascontainer2), new_canvas, TRUE, FALSE, 0);
+    }
+
     gtk_widget_show(new_canvas);
     GTK_WIDGET_SET_FLAGS(new_canvas, GTK_CAN_FOCUS);
     gtk_widget_grab_focus(new_canvas);
-
     c->emuwindow = new_canvas;
 }
 
@@ -971,9 +1010,11 @@ static void build_screen_canvas_widget(video_canvas_t *c)
 int ui_open_canvas_window(video_canvas_t *c, const char *title,
 			  int w, int h, int no_autorepeat)
 {
-    GtkWidget *new_window, *topmenu;
+    GtkWidget *new_window, *topmenu, *panelcontainer;
     GtkAccelGroup* accel;
+    GdkColor black = { 0, 0, 0, 255 };
     int i;
+    gint window_width, window_height;
     
     if (++num_app_shells > MAX_APP_SHELLS) {
 	log_error(ui_log, "Maximum number of toplevel windows reached.");
@@ -995,28 +1036,33 @@ int ui_open_canvas_window(video_canvas_t *c, const char *title,
     if (!_ui_top_level)
 	_ui_top_level = new_window;
 
-    c->pane = gtk_vbox_new(FALSE, 0);
-    gtk_container_add(GTK_CONTAINER(new_window), c->pane);
-    gtk_widget_show(c->pane);
+    panelcontainer = gtk_vbox_new(FALSE, 0);
+    gtk_container_add(GTK_CONTAINER(new_window), panelcontainer);
+    gtk_widget_show(panelcontainer);
     
     topmenu = gtk_menu_bar_new();
     gtk_widget_show(topmenu);
     g_signal_connect(G_OBJECT(topmenu),"button-press-event",
 		     G_CALLBACK(update_menu_cb),NULL);
-    gtk_box_pack_start(GTK_BOX(c->pane),topmenu, FALSE, TRUE,0);
+    gtk_box_pack_start(GTK_BOX(panelcontainer), topmenu, FALSE, TRUE, 0);
 
+    c->pane = gtk_event_box_new();
+    gtk_widget_modify_bg(c->pane, GTK_STATE_NORMAL, &black);
+    gtk_box_pack_start(GTK_BOX(panelcontainer), c->pane, TRUE, TRUE, 0);
+    gtk_widget_show(c->pane);
+    
     gtk_widget_show(new_window);
     if (vsid_mode) {
 	GtkWidget *new_canvas = build_vsid_ctrl_widget();
-        gtk_box_pack_start(GTK_BOX(c->pane), new_canvas, TRUE, TRUE, 0);
+        gtk_container_add(GTK_CONTAINER(c->pane), new_canvas);
         gtk_widget_show(new_canvas);
     } else
         build_screen_canvas_widget(c);
 
-    ui_create_status_bar(c->pane);
+    ui_create_status_bar(panelcontainer);
     if (! vsid_mode) {
         pal_ctrl_widget = build_pal_ctrl_widget(c);
-        gtk_box_pack_end(GTK_BOX(c->pane), pal_ctrl_widget, FALSE, FALSE, 0);
+        gtk_box_pack_end(GTK_BOX(panelcontainer), pal_ctrl_widget, FALSE, FALSE, 0);
         gtk_widget_hide(pal_ctrl_widget);
     }
  
@@ -1051,15 +1097,10 @@ int ui_open_canvas_window(video_canvas_t *c, const char *title,
     if (vsid_mode)
 	return 0;
 
-#ifdef HAVE_HWSCALE    
-    if (c->videoconfig->hwscale) {
-        gint window_width, window_height;
-        resources_get_int("WindowWidth", &window_width);
-        resources_get_int("WindowHeight", &window_height);
-        gtk_window_resize(GTK_WINDOW(new_window), window_width, 
-                          window_height);
-    }
-#endif
+    resources_get_int("WindowWidth", &window_width);
+    resources_get_int("WindowHeight", &window_height);
+    if (window_width > 0 && window_height > 0)
+        gtk_window_resize(GTK_WINDOW(new_window), window_width, window_height);
 
     if (!app_gc)
 	app_gc = gdk_gc_new(new_window->window);
@@ -1604,9 +1645,15 @@ void ui_dispatch_events(void)
 void
 x11ui_fullscreen(int i)
 {
-    if (i)
+    if (i) {
+        /* window managers (bug detected on compiz 0.7.4) may ignore
+         * fullscreen requests for windows not visible inside the screen.
+         * This can happen especially when using XRandR to resize the desktop.
+         * This tries to workaround that problem by ensuring^Whinting that the
+         * window should be placed to the top-left corner. GTK/X sucks. */
+        gtk_window_move(GTK_WINDOW(_ui_top_level), 0, 0);
 	gtk_window_fullscreen(GTK_WINDOW(_ui_top_level));
-    else
+    } else
 	gtk_window_unfullscreen(GTK_WINDOW(_ui_top_level));
 }
 
@@ -1638,17 +1685,9 @@ ui_fullscreen_statusbar(struct video_canvas_s *canvas, int enable)
 void 
 ui_resize_canvas_window(video_canvas_t *canvas, int width, int height)
 {
-    /* remove old canvas */
-    gtk_container_remove(GTK_CONTAINER(canvas->pane), canvas->emuwindow);
     build_screen_canvas_widget(canvas);
-
-    gtk_window_set_resizable(GTK_WINDOW(gtk_widget_get_toplevel(canvas->emuwindow)), (gboolean) canvas->videoconfig->hwscale);
-
-    if (canvas->videoconfig->hwscale) {
-       width = 0;
-       height = 0;
-    }
-    gtk_widget_set_size_request(canvas->emuwindow, width, height);
+    if (! canvas->videoconfig->hwscale)
+        gtk_widget_set_size_request(canvas->emuwindow, width, height);
 }
 
 void x11ui_move_canvas_window(ui_window_t w, int x, int y)
@@ -2634,6 +2673,17 @@ gboolean configure_callback_app(GtkWidget *w, GdkEventConfigure *e, gpointer cli
 
 gboolean configure_callback_canvas(GtkWidget *w, GdkEventConfigure *e, gpointer client_data)
 {
+    /* This should work, but doesn't... Sigh...
+    video_canvas_t *c = (video_canvas_t *) client_data;
+    c->draw_buffer->canvas_width = e->width;
+    c->draw_buffer->canvas_height = e->height;
+    if (c->videoconfig->doublesizex)
+        c->draw_buffer->canvas_width /= 2;
+    if (c->videoconfig->doublesizey)
+        c->draw_buffer->canvas_height /= 2;
+    video_viewport_resize(c);
+    */
+
 #ifdef HAVE_HWSCALE
     GdkGLContext *gl_context = gtk_widget_get_gl_context (w);
     GdkGLDrawable *gl_drawable = gtk_widget_get_gl_drawable (w);
@@ -2714,10 +2764,12 @@ gboolean exposure_callback_canvas(GtkWidget *w, GdkEventExpose *e,
     else
 #endif
     {
-        gdk_draw_image(w->window, app_gc,
-                       canvas->gdk_image, e->area.x, e->area.y, 
-                       e->area.x, e->area.y,
-                       e->area.width, e->area.height);
+        int x = e->area.x;
+        int y = e->area.y;
+        int width = e->area.width;
+        int height = e->area.height;
+        gdk_draw_image(w->window, app_gc, canvas->gdk_image, x, y, x, y,
+                       width, height);
     }
     
     return 0;

@@ -62,13 +62,17 @@ inline static void refresh_canvas(raster_t *raster)
 
     if (video_render_get_fake_pal_state()) {
         /* if pal emu is activated, more pixels have to be updated: around,
-         * above and below, because of blurring and scanline effects. */
+         * above and below, because of blurring and scanline effects.
+         *
+         * 1 line above and 2 lines below are required because the update on
+         * any line x only recalculates the scanline above it normally, so you
+         * have to calculate not only the next line, but the line after that.*/
         x -= 4;
         xx -= 4;
         w += 8;
         y --;
         yy --;
-        h += 2;
+        h += 3;
     }
 
     if (xx < 0) {
