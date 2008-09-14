@@ -36,56 +36,9 @@
 #include "menu_reset.h"
 #include "menu_settings.h"
 #include "menu_speed.h"
+#include "menu_video_c128.h"
 #include "ui.h"
 #include "uimenu.h"
-
-/* the following is only kept as an example for now */
-#if 0
-UI_MENU_DEFINE_RADIO(SidModel)
-
-static ui_menu_entry_t sid_model_menu[] = {
-    { "6581 (old)",
-      MENU_ENTRY_RESOURCE_RADIO,
-      radio_SidModel_callback,
-      (ui_callback_data_t)0 },
-    { "8580 (new)",
-      MENU_ENTRY_RESOURCE_RADIO,
-      radio_SidModel_callback,
-      (ui_callback_data_t)1 },
-    { "8580 + digiboost",
-      MENU_ENTRY_RESOURCE_RADIO,
-      radio_SidModel_callback,
-      (ui_callback_data_t)2 },
-    { "DTVSID",
-      MENU_ENTRY_RESOURCE_RADIO,
-      radio_SidModel_callback,
-      (ui_callback_data_t)4 },
-    { NULL }
-};
-
-UI_MENU_DEFINE_TOGGLE(VICIIDoubleSize)
-
-static ui_menu_entry_t x128_main_menu[] = {
-    { "Attach disk",
-      MENU_ENTRY_SUBMENU,
-      NULL, /* disk_attach_dialog */
-      NULL },
-    { "Doublesize",
-      MENU_ENTRY_RESOURCE_TOGGLE,
-      toggle_VICIIDoubleSize_callback,
-      NULL },
-    SDL_MENU_ITEM_SEPARATOR,
-    { "SID model",
-      MENU_ENTRY_SUBMENU,
-      NULL,
-      (ui_callback_data_t)sid_model_menu },
-    { "Quit",
-      MENU_ENTRY_OTHER,
-      quit_callback,
-      NULL },
-    { NULL }
-};
-#endif
 
 /* temporary empty drive menu, this one will be moved out to menu_drive.c */
 static ui_menu_entry_t drive_menu[] = {
@@ -113,12 +66,6 @@ static ui_menu_entry_t c128_hardware_menu[] = {
 
 /* temporary empty c128 rom menu, this one will be moved out to menu_c128rom.c */
 static ui_menu_entry_t c128_rom_menu[] = {
-    SDL_MENU_ITEM_SEPARATOR,
-    { NULL }
-};
-
-/* temporary empty c128 video menu, this one will be moved out to menu_c128video.c */
-static ui_menu_entry_t c128_video_menu[] = {
     SDL_MENU_ITEM_SEPARATOR,
     { NULL }
 };

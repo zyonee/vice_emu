@@ -36,6 +36,7 @@
 #include "menu_reset.h"
 #include "menu_settings.h"
 #include "menu_speed.h"
+#include "menu_video_plus4.h"
 #include "plus4memrom.h"
 #include "resources.h"
 #include "ui.h"
@@ -67,12 +68,6 @@ static ui_menu_entry_t plus4_hardware_menu[] = {
 
 /* temporary empty plus4 rom menu, this one will be moved out to menu_plus4rom.c */
 static ui_menu_entry_t plus4_rom_menu[] = {
-    SDL_MENU_ITEM_SEPARATOR,
-    { NULL }
-};
-
-/* temporary empty plus4 video menu, this one will be moved out to menu_plus4video.c */
-static ui_menu_entry_t plus4_video_menu[] = {
     SDL_MENU_ITEM_SEPARATOR,
     { NULL }
 };

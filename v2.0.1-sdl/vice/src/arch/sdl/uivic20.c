@@ -37,6 +37,7 @@
 #include "menu_reset.h"
 #include "menu_settings.h"
 #include "menu_speed.h"
+#include "menu_video_vic20.h"
 #include "resources.h"
 #include "ui.h"
 #include "uimenu.h"
@@ -68,12 +69,6 @@ static ui_menu_entry_t vic20_hardware_menu[] = {
 
 /* temporary empty vic20 rom menu, this one will be moved out to menu_vic20rom.c */
 static ui_menu_entry_t vic20_rom_menu[] = {
-    SDL_MENU_ITEM_SEPARATOR,
-    { NULL }
-};
-
-/* temporary empty vic20 video menu, this one will be moved out to menu_vic20video.c */
-static ui_menu_entry_t vic20_video_menu[] = {
     SDL_MENU_ITEM_SEPARATOR,
     { NULL }
 };

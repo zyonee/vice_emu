@@ -76,6 +76,7 @@ extern UI_MENU_CALLBACK(quit_callback);
 extern const char *sdl_ui_menu_toggle_helper(int activated, const char *resource_name);
 extern const char *sdl_ui_menu_radio_helper(int activated, ui_callback_data_t param, const char *resource_name);
 extern const char *sdl_ui_menu_string_helper(int activated, ui_callback_data_t param, const char *resource_name);
+extern const char *sdl_ui_menu_int_helper(int activated, ui_callback_data_t param, const char *resource_name);
 
 #endif
 

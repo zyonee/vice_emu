@@ -36,6 +36,7 @@
 #include "menu_reset.h"
 #include "menu_settings.h"
 #include "menu_speed.h"
+#include "menu_video_c64dtv.h"
 #include "ui.h"
 #include "uimenu.h"
 
@@ -53,12 +54,6 @@ static ui_menu_entry_t c64dtv_hardware_menu[] = {
 
 /* temporary empty c64dtv rom menu, this one will be moved out to menu_c64dtvrom.c */
 static ui_menu_entry_t c64dtv_rom_menu[] = {
-    SDL_MENU_ITEM_SEPARATOR,
-    { NULL }
-};
-
-/* temporary empty c64dtv video menu, this one will be moved out to menu_c64dtvvideo.c */
-static ui_menu_entry_t c64dtv_video_menu[] = {
     SDL_MENU_ITEM_SEPARATOR,
     { NULL }
 };
@@ -172,4 +167,3 @@ void c64dtvui_shutdown(void)
 {
 fprintf(stderr,"%s\n",__func__);
 }
-

@@ -38,8 +38,20 @@ libarch_a_SOURCES = \
 	menu_speed.h \
 	menu_video.c \
 	menu_video.h \
+	menu_video_c128.c \
+	menu_video_c128.h \
 	menu_video_c64.c \
 	menu_video_c64.h \
+	menu_video_c64dtv.c \
+	menu_video_c64dtv.h \
+	menu_video_cbm2.c \
+	menu_video_cbm2.h \
+	menu_video_pet.c \
+	menu_video_pet.h \
+	menu_video_plus4.c \
+	menu_video_plus4.h \
+	menu_video_vic20.c \
+	menu_video_vic20.h \
 	mousedrv.c \
 	mousedrv.h \
 	sdlmain.c \

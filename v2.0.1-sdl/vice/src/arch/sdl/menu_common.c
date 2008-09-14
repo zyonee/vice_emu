@@ -38,6 +38,7 @@
 #include "menu_common.h"
 #include "monitor.h"
 #include "resources.h"
+#include "ui.h"
 #include "uifilereq.h"
 #include "uimenu.h"
 

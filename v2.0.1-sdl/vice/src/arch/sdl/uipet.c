@@ -36,6 +36,7 @@
 #include "menu_reset.h"
 #include "menu_settings.h"
 #include "menu_speed.h"
+#include "menu_video_pet.h"
 #include "petmem.h"
 #include "resources.h"
 #include "ui.h"
@@ -61,12 +62,6 @@ static ui_menu_entry_t pet_hardware_menu[] = {
 
 /* temporary empty pet rom menu, this one will be moved out to menu_petrom.c */
 static ui_menu_entry_t pet_rom_menu[] = {
-    SDL_MENU_ITEM_SEPARATOR,
-    { NULL }
-};
-
-/* temporary empty pet video menu, this one will be moved out to menu_petvideo.c */
-static ui_menu_entry_t pet_video_menu[] = {
     SDL_MENU_ITEM_SEPARATOR,
     { NULL }
 };

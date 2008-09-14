@@ -38,6 +38,7 @@
 #include "menu_reset.h"
 #include "menu_settings.h"
 #include "menu_speed.h"
+#include "menu_video_cbm2.h"
 #include "resources.h"
 #include "ui.h"
 #include "uimenu.h"
@@ -62,12 +63,6 @@ static ui_menu_entry_t cbm2_hardware_menu[] = {
 
 /* temporary empty cbm2 rom menu, this one will be moved out to menu_cbm2rom.c */
 static ui_menu_entry_t cbm2_rom_menu[] = {
-    SDL_MENU_ITEM_SEPARATOR,
-    { NULL }
-};
-
-/* temporary empty cbm2 video menu, this one will be moved out to menu_cbm2video.c */
-static ui_menu_entry_t cbm2_video_menu[] = {
     SDL_MENU_ITEM_SEPARATOR,
     { NULL }
 };
@@ -98,7 +93,7 @@ static ui_menu_entry_t help_menu[] = {
     { NULL }
 };
 
-static const ui_menu_entry_t xcbm2_main_menu[] = {
+static const ui_menu_entry_t xcbm6x0_7x0_main_menu[] = {
     { "Autostart image",
       MENU_ENTRY_DIALOG,
       autostart_callback,
@@ -122,7 +117,77 @@ static const ui_menu_entry_t xcbm2_main_menu[] = {
     { "Video settings",
       MENU_ENTRY_SUBMENU,
       NULL,
-      (ui_callback_data_t)cbm2_video_menu },
+      (ui_callback_data_t)cbm6x0_7x0_video_menu },
+    { "Sound settings (todo)",
+      MENU_ENTRY_SUBMENU,
+      NULL,
+      (ui_callback_data_t)sound_menu },
+    { "Snapshot (todo)",
+      MENU_ENTRY_SUBMENU,
+      NULL,
+      (ui_callback_data_t)snapshot_menu },
+    { "Speed settings",
+      MENU_ENTRY_SUBMENU,
+      NULL,
+      (ui_callback_data_t)speed_menu },
+    { "Reset",
+      MENU_ENTRY_SUBMENU,
+      NULL,
+      (ui_callback_data_t)reset_menu },
+    { "Pause (todo)",
+      MENU_ENTRY_OTHER,
+      pause_callback,
+      NULL },
+    { "Monitor (todo)",
+      MENU_ENTRY_OTHER,
+      monitor_callback,
+      NULL },
+#ifdef DEBUG
+    { "Debug (todo)",
+      MENU_ENTRY_SUBMENU,
+      NULL,
+      (ui_callback_data_t)debug_menu },
+#endif
+    { "Help (todo)",
+      MENU_ENTRY_SUBMENU,
+      NULL,
+      (ui_callback_data_t)help_menu },
+    { "Settings management",
+      MENU_ENTRY_SUBMENU,
+      NULL,
+      (ui_callback_data_t)settings_manager_menu },
+    { "Quit emulator",
+      MENU_ENTRY_OTHER,
+      quit_callback,
+      NULL },
+    { NULL }
+};
+
+static const ui_menu_entry_t xcbm5x0_main_menu[] = {
+    { "Autostart image",
+      MENU_ENTRY_DIALOG,
+      autostart_callback,
+      NULL },
+    { "Drive (todo)",
+      MENU_ENTRY_SUBMENU,
+      NULL,
+      (ui_callback_data_t)drive_menu },
+    { "Tape (todo)",
+      MENU_ENTRY_SUBMENU,
+      NULL,
+      (ui_callback_data_t)tape_menu },
+    { "Machine settings (todo)",
+      MENU_ENTRY_SUBMENU,
+      NULL,
+      (ui_callback_data_t)cbm2_hardware_menu },
+    { "ROM settings (todo)",
+      MENU_ENTRY_SUBMENU,
+      NULL,
+      (ui_callback_data_t)cbm2_rom_menu },
+    { "Video settings",
+      MENU_ENTRY_SUBMENU,
+      NULL,
+      (ui_callback_data_t)cbm5x0_video_menu },
     { "Sound settings (todo)",
       MENU_ENTRY_SUBMENU,
       NULL,
@@ -180,18 +245,12 @@ fprintf(stderr,"%s\n",__func__);
     {
         sdl_ui_set_vcachename("VICIIVideoCache");
         sdl_ui_set_menu_borders(0, 0);
+        sdl_ui_set_menu_font(mem_chargen_rom + 0x800, 8, 8);
+        sdl_ui_set_main_menu(xcbm5x0_main_menu);
     }
     else
     {
         sdl_ui_set_vcachename("CrtcVideoCache");
-    }
-
-    if (cbm2_is_c500())
-    {
-        sdl_ui_set_menu_font(mem_chargen_rom + 0x800, 8, 8);
-    }
-    else
-    {
         resources_get_int("ModelLine", &model);
         if (model == 0)
         {
@@ -217,9 +276,8 @@ fprintf(stderr,"%s\n",__func__);
         }
         sdl_ui_set_menu_font(cbm2_font, 8, (model == 0) ? 14 : 8);
         sdl_ui_set_menu_borders(32, (model == 0) ? 16 : 40);
+        sdl_ui_set_main_menu(xcbm6x0_7x0_main_menu);
     }
-
-    sdl_ui_set_main_menu(xcbm2_main_menu);
     sdl_ui_set_menu_colors(1, 0);
     sdl_ui_set_double_x(0);
     return 0;
@@ -231,4 +289,3 @@ fprintf(stderr,"%s\n",__func__);
 
     lib_free(cbm2_font);
 }
-
