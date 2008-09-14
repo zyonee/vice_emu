@@ -36,6 +36,10 @@ libarch_a_SOURCES = \
 	menu_settings.h \
 	menu_speed.c \
 	menu_speed.h \
+	menu_video.c \
+	menu_video.h \
+	menu_video_c64.c \
+	menu_video_c64.h \
 	mousedrv.c \
 	mousedrv.h \
 	sdlmain.c \

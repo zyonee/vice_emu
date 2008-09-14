@@ -31,6 +31,7 @@
 #include <stdlib.h>
 
 #include "debug.h"
+#include "cbm2.h"
 #include "cbm2mem.h"
 #include "lib.h"
 #include "menu_common.h"
@@ -102,19 +103,19 @@ static const ui_menu_entry_t xcbm2_main_menu[] = {
       MENU_ENTRY_DIALOG,
       autostart_callback,
       NULL },
-    { "Drive",
+    { "Drive (todo)",
       MENU_ENTRY_SUBMENU,
       NULL,
       (ui_callback_data_t)drive_menu },
-    { "Tape",
+    { "Tape (todo)",
       MENU_ENTRY_SUBMENU,
       NULL,
       (ui_callback_data_t)tape_menu },
-    { "Machine settings",
+    { "Machine settings (todo)",
       MENU_ENTRY_SUBMENU,
       NULL,
       (ui_callback_data_t)cbm2_hardware_menu },
-    { "ROM settings",
+    { "ROM settings (todo)",
       MENU_ENTRY_SUBMENU,
       NULL,
       (ui_callback_data_t)cbm2_rom_menu },
@@ -122,11 +123,11 @@ static const ui_menu_entry_t xcbm2_main_menu[] = {
       MENU_ENTRY_SUBMENU,
       NULL,
       (ui_callback_data_t)cbm2_video_menu },
-    { "Sound settings",
+    { "Sound settings (todo)",
       MENU_ENTRY_SUBMENU,
       NULL,
       (ui_callback_data_t)sound_menu },
-    { "Snapshot",
+    { "Snapshot (todo)",
       MENU_ENTRY_SUBMENU,
       NULL,
       (ui_callback_data_t)snapshot_menu },
@@ -138,21 +139,21 @@ static const ui_menu_entry_t xcbm2_main_menu[] = {
       MENU_ENTRY_SUBMENU,
       NULL,
       (ui_callback_data_t)reset_menu },
-    { "Pause",
+    { "Pause (todo)",
       MENU_ENTRY_OTHER,
       pause_callback,
       NULL },
-    { "Monitor",
+    { "Monitor (todo)",
       MENU_ENTRY_OTHER,
       monitor_callback,
       NULL },
 #ifdef DEBUG
-    { "Debug",
+    { "Debug (todo)",
       MENU_ENTRY_SUBMENU,
       NULL,
       (ui_callback_data_t)debug_menu },
 #endif
-    { "Help",
+    { "Help (todo)",
       MENU_ENTRY_SUBMENU,
       NULL,
       (ui_callback_data_t)help_menu },
@@ -175,34 +176,50 @@ int cbm2ui_init(void)
 
 fprintf(stderr,"%s\n",__func__);
 
-    sdl_ui_set_vcachename("CrtcVideoCache");
-
-    resources_get_int("ModelLine", &model);
-    if (model == 0)
+    if (cbm2_is_c500())
     {
-        cbm2_font=lib_malloc(14*256);
-        for (i=0; i<256; i++)
-        {
-            for (j=0; j<14; j++)
-            {
-                cbm2_font[(i*14)+j]=mem_chargen_rom[(i*16)+j+1];
-            }
-        }
+        sdl_ui_set_vcachename("VICIIVideoCache");
+        sdl_ui_set_menu_borders(0, 0);
     }
     else
     {
-        cbm2_font=lib_malloc(8*256);
-        for (i=0; i<256; i++)
+        sdl_ui_set_vcachename("CrtcVideoCache");
+    }
+
+    if (cbm2_is_c500())
+    {
+        sdl_ui_set_menu_font(mem_chargen_rom + 0x800, 8, 8);
+    }
+    else
+    {
+        resources_get_int("ModelLine", &model);
+        if (model == 0)
         {
-            for (j=0; j<8; j++)
+            cbm2_font=lib_malloc(14*256);
+            for (i=0; i<256; i++)
             {
-                cbm2_font[(i*8)+j]=mem_chargen_rom[(i*16)+j];
+                for (j=0; j<14; j++)
+                {
+                    cbm2_font[(i*14)+j]=mem_chargen_rom[(i*16)+j+1];
+                }
             }
         }
+        else
+        {
+            cbm2_font=lib_malloc(8*256);
+            for (i=0; i<256; i++)
+            {
+                for (j=0; j<8; j++)
+                {
+                    cbm2_font[(i*8)+j]=mem_chargen_rom[(i*16)+j];
+                }
+            }
+        }
+        sdl_ui_set_menu_font(cbm2_font, 8, (model == 0) ? 14 : 8);
+        sdl_ui_set_menu_borders(32, (model == 0) ? 16 : 40);
     }
+
     sdl_ui_set_main_menu(xcbm2_main_menu);
-    sdl_ui_set_menu_font(cbm2_font, 8, (model == 0) ? 14 : 8);
-    sdl_ui_set_menu_borders(32, (model == 0) ? 16 : 40);
     sdl_ui_set_menu_colors(1, 0);
     sdl_ui_set_double_x(0);
     return 0;

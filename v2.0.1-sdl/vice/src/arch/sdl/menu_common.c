@@ -60,9 +60,7 @@ UI_MENU_CALLBACK(autostart_callback)
         name = sdl_ui_file_selection_dialog("Choose autostart image", FILEREQ_MODE_CHOOSE_FILE);
         if (name != NULL) {
             if (autostart_autodetect(name, NULL, 0, AUTOSTART_MODE_RUN) < 0) {
-                /* TODO:
-                   to be replaced with ui_error */
-                fprintf(stderr, "could not start auto-image\n");
+                ui_error("could not start auto-image");
             }
             lib_free(name);
             return sdl_menu_text_exit_ui;

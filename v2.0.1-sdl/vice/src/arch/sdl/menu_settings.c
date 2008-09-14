@@ -36,7 +36,7 @@
 #include "uimenu.h"
 
 
-UI_MENU_CALLBACK(save_settings_callback)
+static UI_MENU_CALLBACK(save_settings_callback)
 {
     if(activated) {
         if (resources_save(NULL) < 0) {
@@ -53,7 +53,7 @@ UI_MENU_CALLBACK(save_settings_callback)
     return NULL;
 }
 
-UI_MENU_CALLBACK(load_settings_callback)
+static UI_MENU_CALLBACK(load_settings_callback)
 {
     if(activated) {
         if (resources_load(NULL) < 0) {
@@ -61,17 +61,15 @@ UI_MENU_CALLBACK(load_settings_callback)
         } else {
             ui_message("Settings loaded.");
         }
-        return sdl_menu_text_exit_ui;
     }
     return NULL;
 }
 
-UI_MENU_CALLBACK(default_settings_callback)
+static UI_MENU_CALLBACK(default_settings_callback)
 {
     if(activated) {
         resources_set_defaults();
         ui_message("Default settings restored.");
-        return sdl_menu_text_exit_ui;
     }
     return NULL;
 }

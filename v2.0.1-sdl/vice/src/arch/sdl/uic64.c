@@ -36,6 +36,7 @@
 #include "menu_reset.h"
 #include "menu_settings.h"
 #include "menu_speed.h"
+#include "menu_video_c64.h"
 #include "ui.h"
 #include "uimenu.h"
 
@@ -65,12 +66,6 @@ static ui_menu_entry_t c64_hardware_menu[] = {
 
 /* temporary empty c64 rom menu, this one will be moved out to menu_c64rom.c */
 static ui_menu_entry_t c64_rom_menu[] = {
-    SDL_MENU_ITEM_SEPARATOR,
-    { NULL }
-};
-
-/* temporary empty c64 video menu, this one will be moved out to menu_c64video.c */
-static ui_menu_entry_t c64_video_menu[] = {
     SDL_MENU_ITEM_SEPARATOR,
     { NULL }
 };
@@ -106,23 +101,23 @@ static const ui_menu_entry_t x64_main_menu[] = {
       MENU_ENTRY_DIALOG,
       autostart_callback,
       NULL },
-    { "Drive",
+    { "Drive (todo)",
       MENU_ENTRY_SUBMENU,
       NULL,
       (ui_callback_data_t)drive_menu },
-    { "Tape",
+    { "Tape (todo)",
       MENU_ENTRY_SUBMENU,
       NULL,
       (ui_callback_data_t)tape_menu },
-    { "Cartridge",
+    { "Cartridge (todo)",
       MENU_ENTRY_SUBMENU,
       NULL,
       (ui_callback_data_t)c64_c128_cart_menu },
-    { "Machine settings",
+    { "Machine settings (todo)",
       MENU_ENTRY_SUBMENU,
       NULL,
       (ui_callback_data_t)c64_hardware_menu },
-    { "ROM settings",
+    { "ROM settings (todo)",
       MENU_ENTRY_SUBMENU,
       NULL,
       (ui_callback_data_t)c64_rom_menu },
@@ -130,11 +125,11 @@ static const ui_menu_entry_t x64_main_menu[] = {
       MENU_ENTRY_SUBMENU,
       NULL,
       (ui_callback_data_t)c64_video_menu },
-    { "Sound settings",
+    { "Sound settings (todo)",
       MENU_ENTRY_SUBMENU,
       NULL,
       (ui_callback_data_t)sound_menu },
-    { "Snapshot",
+    { "Snapshot (todo)",
       MENU_ENTRY_SUBMENU,
       NULL,
       (ui_callback_data_t)snapshot_menu },
@@ -146,21 +141,21 @@ static const ui_menu_entry_t x64_main_menu[] = {
       MENU_ENTRY_SUBMENU,
       NULL,
       (ui_callback_data_t)reset_menu },
-    { "Pause",
+    { "Pause (todo)",
       MENU_ENTRY_OTHER,
       pause_callback,
       NULL },
-    { "Monitor",
+    { "Monitor (todo)",
       MENU_ENTRY_OTHER,
       monitor_callback,
       NULL },
 #ifdef DEBUG
-    { "Debug",
+    { "Debug (todo)",
       MENU_ENTRY_SUBMENU,
       NULL,
       (ui_callback_data_t)debug_menu },
 #endif
-    { "Help",
+    { "Help (todo)",
       MENU_ENTRY_SUBMENU,
       NULL,
       (ui_callback_data_t)help_menu },

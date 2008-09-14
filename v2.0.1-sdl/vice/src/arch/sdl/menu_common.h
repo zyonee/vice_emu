@@ -63,7 +63,7 @@ extern const char *sdl_menu_text_exit_ui;
     }
 
 #define UI_MENU_DEFINE_INT(resource)                                \
-    static UI_MENU_CALLBACK(string_##resource##_callback)           \
+    static UI_MENU_CALLBACK(int_##resource##_callback)           \
     {                                                               \
         return sdl_ui_menu_int_helper(activated, param, #resource); \
     }
