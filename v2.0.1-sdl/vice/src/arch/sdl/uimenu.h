@@ -111,6 +111,7 @@ extern menu_draw_t *sdl_ui_get_menu_param(void);
 extern ui_menu_action_t sdl_ui_menu_poll_input(void);
 extern void sdl_ui_display_cursor(int pos, int old_pos);
 extern int sdl_ui_print(const char *text, int pos_x, int pos_y);
+extern int sdl_ui_print_center(const char *text, int pos_y);
 extern int sdl_ui_display_title(const char *title);
 extern void sdl_ui_clear(void);
 extern void sdl_ui_activate(void);

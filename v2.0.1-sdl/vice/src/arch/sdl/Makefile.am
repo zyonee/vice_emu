@@ -30,6 +30,8 @@ libarch_a_SOURCES = \
 	kbd.h \
 	menu_common.c \
 	menu_common.h \
+	menu_help.c \
+	menu_help.h \
 	menu_reset.c \
 	menu_reset.h \
 	menu_screenshot.c \

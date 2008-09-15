@@ -425,6 +425,39 @@ int sdl_ui_print(const char *text, int pos_x, int pos_y)
     return i;
 }
 
+int sdl_ui_print_center(const char *text, int pos_y)
+{
+    int len, pos_x;
+    int i = 0;
+    BYTE c;
+
+    if(text == NULL) {
+        return 0;
+    }
+
+    len = strlen(text);
+
+    if (len == 0) {
+        return 0;
+    }
+
+    pos_x = (menu_draw.max_text_x - len) / 2;
+    if (pos_x < 0) {
+        return -1;
+    }
+
+    if((pos_x >= menu_draw.max_text_x)||(pos_y >= menu_draw.max_text_y)) {
+        return -1;
+    }
+
+    while(((c = text[i]) != 0)&&((pos_x + i) < menu_draw.max_text_x)) {
+        sdl_ui_putchar(c, pos_x+i, pos_y);
+        ++i;
+    }
+
+    return i;
+}
+
 int sdl_ui_display_title(const char *title)
 {
     return sdl_ui_print_wrap(title, 0, 0);

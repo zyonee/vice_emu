@@ -35,6 +35,7 @@
 #include "cbm2mem.h"
 #include "lib.h"
 #include "menu_common.h"
+#include "menu_help.h"
 #include "menu_reset.h"
 #include "menu_screenshot.h"
 #include "menu_settings.h"
@@ -87,12 +88,6 @@ static ui_menu_entry_t debug_menu[] = {
     { NULL }
 };
 #endif
-
-/* temporary empty help menu, this one will be moved out to menu_help.c */
-static ui_menu_entry_t help_menu[] = {
-    SDL_MENU_ITEM_SEPARATOR,
-    { NULL }
-};
 
 static const ui_menu_entry_t xcbm6x0_7x0_main_menu[] = {
     { "Autostart image",
@@ -153,7 +148,7 @@ static const ui_menu_entry_t xcbm6x0_7x0_main_menu[] = {
       NULL,
       (ui_callback_data_t)debug_menu },
 #endif
-    { "Help (todo)",
+    { "Help",
       MENU_ENTRY_SUBMENU,
       NULL,
       (ui_callback_data_t)help_menu },
@@ -284,7 +279,7 @@ fprintf(stderr,"%s\n",__func__);
         sdl_ui_set_main_menu(xcbm6x0_7x0_main_menu);
     }
     sdl_ui_set_menu_colors(1, 0);
-    sdl_ui_set_double_x(0);
+    sdl_ui_set_double_x(1);
     return 0;
 }
 

@@ -33,6 +33,7 @@
 #include "debug.h"
 #include "lib.h"
 #include "menu_common.h"
+#include "menu_help.h"
 #include "menu_reset.h"
 #include "menu_screenshot.h"
 #include "menu_settings.h"
@@ -86,12 +87,6 @@ static ui_menu_entry_t debug_menu[] = {
     { NULL }
 };
 #endif
-
-/* temporary empty help menu, this one will be moved out to menu_help.c */
-static ui_menu_entry_t help_menu[] = {
-    SDL_MENU_ITEM_SEPARATOR,
-    { NULL }
-};
 
 static const ui_menu_entry_t xpet_main_menu[] = {
     { "Autostart image",
@@ -152,7 +147,7 @@ static const ui_menu_entry_t xpet_main_menu[] = {
       NULL,
       (ui_callback_data_t)debug_menu },
 #endif
-    { "Help (todo)",
+    { "Help",
       MENU_ENTRY_SUBMENU,
       NULL,
       (ui_callback_data_t)help_menu },
@@ -190,7 +185,7 @@ fprintf(stderr,"%s\n",__func__);
     }
     sdl_ui_set_menu_font(pet_font, 8, 8);
     sdl_ui_set_menu_borders(32, (cols == 40) ? 40 : 28);
-    sdl_ui_set_double_x(0);
+    sdl_ui_set_double_x((cols == 40) ? 0 : 1);
     sdl_ui_set_menu_colors(1, 0);
     sdl_ui_set_vcachename("CrtcVideoCache");
     return 0;

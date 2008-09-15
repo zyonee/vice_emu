@@ -39,11 +39,7 @@
 #include "uifilereq.h"
 #include "uimenu.h"
 
-static UI_MENU_CALLBACK(fullscreen_callback)
-{
-    return NULL;
-}
-
+UI_MENU_DEFINE_TOGGLE(TEDFullscreen)
 UI_MENU_DEFINE_TOGGLE(TEDDoubleSize)
 UI_MENU_DEFINE_TOGGLE(TEDDoubleScan)
 UI_MENU_DEFINE_TOGGLE(TEDVideoCache)
@@ -65,9 +61,9 @@ static UI_MENU_CALLBACK(external_palette_callback)
 }
 
 const ui_menu_entry_t plus4_video_menu[] = {
-    { "Fullscreen (todo)",
-      MENU_ENTRY_OTHER,
-      fullscreen_callback,
+    { "Fullscreen",
+      MENU_ENTRY_RESOURCE_TOGGLE,
+      toggle_TEDFullscreen_callback,
       NULL },
     { "Double size",
       MENU_ENTRY_RESOURCE_TOGGLE,

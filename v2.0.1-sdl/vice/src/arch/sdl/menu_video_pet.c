@@ -39,11 +39,7 @@
 #include "uifilereq.h"
 #include "uimenu.h"
 
-static UI_MENU_CALLBACK(fullscreen_callback)
-{
-    return NULL;
-}
-
+UI_MENU_DEFINE_TOGGLE(CrtcFullscreen)
 UI_MENU_DEFINE_TOGGLE(CrtcDoubleSize)
 UI_MENU_DEFINE_TOGGLE(CrtcDoubleScan)
 UI_MENU_DEFINE_TOGGLE(CrtcVideoCache)
@@ -63,9 +59,9 @@ static UI_MENU_CALLBACK(external_palette_callback)
 }
 
 const ui_menu_entry_t pet_video_menu[] = {
-    { "Fullscreen (todo)",
-      MENU_ENTRY_OTHER,
-      fullscreen_callback,
+    { "Fullscreen",
+      MENU_ENTRY_RESOURCE_TOGGLE,
+      toggle_CrtcFullscreen_callback,
       NULL },
     { "Double size",
       MENU_ENTRY_RESOURCE_TOGGLE,

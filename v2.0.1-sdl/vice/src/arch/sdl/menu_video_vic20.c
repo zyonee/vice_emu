@@ -39,15 +39,11 @@
 #include "uifilereq.h"
 #include "uimenu.h"
 
-static UI_MENU_CALLBACK(fullscreen_callback)
-{
-    return NULL;
-}
-
 static UI_MENU_CALLBACK(radio_MachineVideoStandard_callback)
 {
     if (activated) {
-        sdl_ui_set_menu_borders(0, (param == MACHINE_SYNC_PAL) ? 28: 8);
+        int value = (int)param;
+        sdl_ui_set_menu_borders(0, (value == MACHINE_SYNC_PAL) ? 28: 8);
     }
     return sdl_ui_menu_radio_helper(activated, param, "MachineVideoStandard");
 }
@@ -66,15 +62,16 @@ static UI_MENU_CALLBACK(external_palette_callback)
     return NULL;
 }
 
+UI_MENU_DEFINE_TOGGLE(VICFullscreen)
 UI_MENU_DEFINE_TOGGLE(VICDoubleSize)
 UI_MENU_DEFINE_TOGGLE(VICDoubleScan)
 UI_MENU_DEFINE_TOGGLE(VICVideoCache)
 UI_MENU_DEFINE_TOGGLE(VICExternalPalette)
 
 const ui_menu_entry_t vic20_video_menu[] = {
-    { "Fullscreen (todo)",
-      MENU_ENTRY_OTHER,
-      fullscreen_callback,
+    { "Fullscreen",
+      MENU_ENTRY_RESOURCE_TOGGLE,
+      toggle_VICFullscreen_callback,
       NULL },
     { "Double size",
       MENU_ENTRY_RESOURCE_TOGGLE,
