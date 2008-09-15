@@ -39,11 +39,7 @@
 #include "uifilereq.h"
 #include "uimenu.h"
 
-static UI_MENU_CALLBACK(fullscreen_callback)
-{
-    return NULL;
-}
-
+UI_MENU_DEFINE_TOGGLE(VICIIFullscreen)
 UI_MENU_DEFINE_TOGGLE(VICIIDoubleSize)
 UI_MENU_DEFINE_TOGGLE(VICIIDoubleScan)
 UI_MENU_DEFINE_TOGGLE(VICIIVideoCache)
@@ -65,9 +61,9 @@ static UI_MENU_CALLBACK(external_palette_callback)
 }
 
 const ui_menu_entry_t c64dtv_video_menu[] = {
-    { "Fullscreen (todo)",
-      MENU_ENTRY_OTHER,
-      fullscreen_callback,
+    { "Fullscreen",
+      MENU_ENTRY_RESOURCE_TOGGLE,
+      toggle_VICIIFullscreen_callback,
       NULL },
     { "Double size",
       MENU_ENTRY_RESOURCE_TOGGLE,

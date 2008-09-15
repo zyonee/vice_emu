@@ -134,16 +134,14 @@ video_canvas_t *video_canvas_create(video_canvas_t *canvas,
 
     if(fullscreen_is_enabled) {
         flags = SDL_FULLSCREEN | SDL_HWSURFACE;
-        if (canvas->fullscreenconfig->double_size) {
-            new_width *= 2;
-            new_height *= 2;
-        }
-    } else {
-        if (canvas->videoconfig->doublesizex)
-            new_width *= 2;
- 
-        if (canvas->videoconfig->doublesizey)
-            new_height *= 2;
+    }
+
+    if (canvas->videoconfig->doublesizex) {
+        new_width *= 2;
+    }
+
+    if (canvas->videoconfig->doublesizey) {
+        new_height *= 2;
     }
 
 /*fprintf(stderr,"%s: %ix%i,%i (%08x)\n",__func__,new_width,new_height,mapped,(unsigned int)canvas);*/
