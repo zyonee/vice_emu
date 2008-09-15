@@ -32,6 +32,8 @@ libarch_a_SOURCES = \
 	menu_common.h \
 	menu_reset.c \
 	menu_reset.h \
+	menu_screenshot.c \
+	menu_screenshot.h \
 	menu_settings.c \
 	menu_settings.h \
 	menu_speed.c \

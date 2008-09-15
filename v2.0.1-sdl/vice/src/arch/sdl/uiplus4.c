@@ -34,6 +34,7 @@
 #include "lib.h"
 #include "menu_common.h"
 #include "menu_reset.h"
+#include "menu_screenshot.h"
 #include "menu_settings.h"
 #include "menu_speed.h"
 #include "menu_video_plus4.h"
@@ -135,6 +136,10 @@ static const ui_menu_entry_t xplus4_main_menu[] = {
       MENU_ENTRY_SUBMENU,
       NULL,
       (ui_callback_data_t)snapshot_menu },
+    { "Screenshot (to be fixed)",
+      MENU_ENTRY_SUBMENU,
+      NULL,
+      (ui_callback_data_t)screenshot_menu },
     { "Speed settings",
       MENU_ENTRY_SUBMENU,
       NULL,
