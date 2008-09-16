@@ -30,6 +30,10 @@
 
 #include "archapi.h"
 
+/* Extra functions for SDL UI */
+extern char *archdep_default_hotkey_file_name(void);
+extern char *archdep_default_joymap_file_name(void);
+
 /* Filesystem dependant operators.  */
 #define FSDEVICE_DEFAULT_DIR   "."
 #define FSDEV_DIR_SEP_STR      "/"

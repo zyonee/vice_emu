@@ -29,6 +29,8 @@
 
 #include <stdlib.h>
 
+#include "joy.h"
+#include "kbd.h"
 #include "menu_common.h"
 #include "menu_settings.h"
 #include "resources.h"
@@ -74,6 +76,78 @@ static UI_MENU_CALLBACK(default_settings_callback)
     return NULL;
 }
 
+static UI_MENU_CALLBACK(save_hotkeys_callback)
+{
+    static const char *file = NULL;
+    if(activated) {
+        if(resources_get_string("HotkeyFile", &file)) {
+            ui_error("Cannot find resource.");
+            return NULL;
+        }
+
+        if(sdlkbd_hotkeys_dump(file)) {
+            ui_error("Cannot save hotkeys.");
+        } else {
+            ui_message("Hotkeys saved.");
+        }
+    }
+    return NULL;
+}
+
+static UI_MENU_CALLBACK(load_hotkeys_callback)
+{
+    static const char *file = NULL;
+    if(activated) {
+        if(resources_get_string("HotkeyFile", &file)) {
+            ui_error("Cannot find resource.");
+            return NULL;
+        }
+
+        if(sdlkbd_hotkeys_load(file)) {
+            ui_error("Cannot load hotkeys.");
+        } else {
+            ui_message("Hotkeys loaded.");
+        }
+    }
+    return NULL;
+}
+
+static UI_MENU_CALLBACK(save_joymap_callback)
+{
+    static const char *file = NULL;
+    if(activated) {
+        if(resources_get_string("JoyMapFile", &file)) {
+            ui_error("Cannot find resource.");
+            return NULL;
+        }
+
+        if(joy_arch_mapping_dump(file)) {
+            ui_error("Cannot save joymap.");
+        } else {
+            ui_message("Joymap saved.");
+        }
+    }
+    return NULL;
+}
+
+static UI_MENU_CALLBACK(load_joymap_callback)
+{
+    static const char *file = NULL;
+    if(activated) {
+        if(resources_get_string("JoyMapFile", &file)) {
+            ui_error("Cannot find resource.");
+            return NULL;
+        }
+
+        if(joy_arch_mapping_load(file)) {
+            ui_error("Cannot load joymap.");
+        } else {
+            ui_message("Joymap loaded.");
+        }
+    }
+    return NULL;
+}
+
 const ui_menu_entry_t settings_manager_menu[] = {
     { "Save current settings",
       MENU_ENTRY_OTHER,
@@ -86,6 +160,24 @@ const ui_menu_entry_t settings_manager_menu[] = {
     { "Restore default settings",
       MENU_ENTRY_OTHER,
       default_settings_callback,
+      NULL },
+    SDL_MENU_ITEM_SEPARATOR,
+    { "Save hotkeys",
+      MENU_ENTRY_OTHER,
+      save_hotkeys_callback,
+      NULL },
+    { "Load hotkeys",
+      MENU_ENTRY_OTHER,
+      load_hotkeys_callback,
+      NULL },
+    SDL_MENU_ITEM_SEPARATOR,
+    { "Save joystick map",
+      MENU_ENTRY_OTHER,
+      save_joymap_callback,
+      NULL },
+    { "Load joystick map",
+      MENU_ENTRY_OTHER,
+      load_joymap_callback,
       NULL },
     { NULL }
 };

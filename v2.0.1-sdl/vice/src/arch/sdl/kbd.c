@@ -32,6 +32,7 @@
 #include "types.h"
 
 #include <SDL/SDL.h>
+#include <stdio.h>
 
 #include "archdep.h"
 #include "kbd.h"
@@ -47,8 +48,6 @@
 #include "uihotkey.h"
 #include "uimenu.h"
 #include "util.h"
-
-#define DEFAULT_HOTKEYFILE "sdl_hotkey.vkm"
 
 static log_t sdlkbd_log = LOG_ERR;
 
@@ -69,42 +68,33 @@ ui_menu_entry_t *sdlkbd_ui_hotkeys[SDLKBD_UI_HOTKEYS_MAX];
 
 static int hotkey_file_set(const char *val, void *param)
 {
+fprintf(stderr,"%s: %s\n",__func__,val);
     if (util_string_set(&hotkey_file, val))
         return 0;
 
     return sdlkbd_hotkeys_load(hotkey_file);
 }
 
-static const resource_string_t resources_string[] = {
-    { "HotkeyFile", DEFAULT_HOTKEYFILE, RES_EVENT_NO, NULL,
+static resource_string_t resources_string[] = {
+    { "HotkeyFile", NULL, RES_EVENT_NO, NULL,
       &hotkey_file, hotkey_file_set, (void *)0 },
     { NULL },
 };
+
+int sdlkbd_init_resources(void)
+{
+    resources_string[0].factory_value = archdep_default_hotkey_file_name();
+
+    if(resources_register_string(resources_string) < 0) {
+        return -1;
+    }
+    return 0;
+}
 
 /* ------------------------------------------------------------------------ */
 
 static inline int sdlkbd_key_mod_to_index(SDLKey key, SDLMod mod)
 {
-#if 0
-    int i;
-    Uint16 mask;
-
-    /* Combine left&right shift/alt/meta/ctrl */
-    mod = (mod & 0x541) | ((mod >> 1) & 0x541);
-
-    /* shift = 0x01, alt = 0x02, ctrl = 0x40, meta = 0x08 */
-    mod = (mod & 0x041) | ((mod & 0x500)>>7);
-
-    /* shift = 0x01, alt = 0x02, ctrl = 0x04, meta = 0x08 */
-    mod = (mod & 0xb) | ((mod & 0x40)>>4);
-
-    /*  shift = 1, alt = 2, ctrl = 3, meta = 4 */
-    for(i = 4, mask = 0x8; mask > 0; mask >>= 1, --i) {
-        if(mod & mask) {
-            break;
-        }
-    }
-#else
     int i = 0;
 
     mod &= (KMOD_CTRL|KMOD_SHIFT|KMOD_ALT|KMOD_META);
@@ -120,7 +110,6 @@ static inline int sdlkbd_key_mod_to_index(SDLKey key, SDLMod mod)
             i = 4;
         }
     }
-#endif
     return i * SDLK_LAST + key;
 }
 
@@ -169,9 +158,8 @@ static void sdlkbd_parse_entry(char *buffer)
         return;
     }
     
-    p = strtok(NULL, " \t,");
+    p = strtok(NULL, "\r\n");
     if (p != NULL) {
-        p = strtok(NULL, "\t\r\n");
         action = sdl_ui_hotkey_action(p);
         if(action == NULL) {
             log_warning(sdlkbd_log, "Cannot find menu item \"%s\"!", p);
@@ -187,7 +175,13 @@ int sdlkbd_hotkeys_load(const char *filename)
     char *complete_path = NULL;
     char buffer[1000];
 
+    /* Silently ignore keymap load on resource & cmdline init */
+    if (sdlkbd_log == LOG_ERR) {
+        return 0;
+    }
+
     if (filename == NULL) {
+        log_warning(sdlkbd_log, "Failed to open NULL.");
         return -1;
     }
     
@@ -325,13 +319,8 @@ fprintf(stderr,"%s\n",__func__);
     sdlkbd_log = log_open("SDLKeyboard");
 
     sdlkbd_keyword_clear();
-
-    if(resources_register_string(resources_string) < 0) {
-        log_error(sdlkbd_log, "Resource init failed!");
-        return;
-    }
-
-    sdlkbd_hotkeys_load(DEFAULT_HOTKEYFILE);
+    sdlkbd_init_resources();
+    sdlkbd_hotkeys_load(hotkey_file);
 }
 
 void kbd_arch_shutdown(void)

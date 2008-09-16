@@ -235,6 +235,9 @@ fprintf(stderr,"%s\n",__func__);
         break;
     }
 
+    /* TODO move somewhere else */
+    sdlkbd_init_resources();
+
     return 0;
 }
 

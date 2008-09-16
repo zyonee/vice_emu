@@ -51,7 +51,6 @@
 
 #define DEFAULT_JOYSTICK_THRESHOLD 10000
 #define DEFAULT_JOYSTICK_FUZZ 1000
-#define DEFAULT_JOYMAPFILE "sdl_joymap.vjm"
 
 static log_t sdljoy_log = LOG_ERR;
 
@@ -166,8 +165,8 @@ static int set_joystick_fuzz(int val, void *param)
     return 0;
 }
 
-static const resource_string_t resources_string[] = {
-    { "JoyMapFile", DEFAULT_JOYMAPFILE, RES_EVENT_NO, NULL,
+static resource_string_t resources_string[] = {
+    { "JoyMapFile", NULL, RES_EVENT_NO, NULL,
       &joymap_file, joymap_file_set, (void *)0 },
     { NULL },
 };
@@ -203,6 +202,8 @@ static const cmdline_option_t cmdline_options[] = {
 int joystick_arch_init_resources(void)
 {
 fprintf(stderr,"%s\n",__func__);
+    resources_string[0].factory_value = archdep_default_joymap_file_name();
+
     if (resources_register_string(resources_string) < 0)
         return -1;
 
@@ -263,10 +264,11 @@ int joy_arch_init(void)
                 }
             }
 
-            joy_arch_init_default_mapping(i);
-
             log_message(sdljoy_log,"Device %i \"%s\" (%i axes, %i buttons, %i hats, %i balls)",
                         i, sdljoystick[i].name, axis, button, hat, ball);
+
+            joy_arch_init_default_mapping(i);
+
         } else {
             log_warning(sdljoy_log,"Couldn't open joystick %i",i);
         }
@@ -311,7 +313,7 @@ fprintf(stderr,"%s\n",__func__);
 
 void joy_arch_init_default_mapping(int joynum)
 {
-    int i, joyport, pin, state = 0;
+    int i, j, joyport, pin, state = 0;
 
     SDL_JoystickUpdate();
 
@@ -329,8 +331,10 @@ void joy_arch_init_default_mapping(int joynum)
            those to NONE (by default) avoids some problems. */
         if((state > joystick_threshold)||(state < -joystick_threshold)) {
             log_warning(sdljoy_log, "Axis %i exceeds threshold, mapping to NONE", i/input_mult[AXIS]);
-            sdljoystick[joynum].input[AXIS][i++].action = NONE;
-            sdljoystick[joynum].input[AXIS][i].action = NONE;
+            for(j = 0; j < input_mult[AXIS]; ++j) {
+                sdljoystick[joynum].input[AXIS][i+j].action = NONE;
+            }
+            i += (j-1);
         } else {
             sdljoystick[joynum].input[AXIS][i].action = JOYSTICK;
             sdljoystick[joynum].input[AXIS][i].value.joy[0] = joyport;

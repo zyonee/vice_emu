@@ -264,6 +264,30 @@ char *archdep_default_fliplist_file_name(void)
     }
 }
 
+char *archdep_default_hotkey_file_name(void)
+{
+    if(archdep_pref_path==NULL) {
+      const char *home;
+
+      home = archdep_home_path();
+      return util_concat(home, "/.vice/sdl-hotkey-", machine_name, ".vkm", NULL);
+    } else {
+      return util_concat(archdep_pref_path, "/sdl-hotkey-", machine_name, ".vkm", NULL);
+    }
+}
+
+char *archdep_default_joymap_file_name(void)
+{
+    if(archdep_pref_path==NULL) {
+      const char *home;
+
+      home = archdep_home_path();
+      return util_concat(home, "/.vice/sdl-joymap-", machine_name, ".vjm", NULL);
+    } else {
+      return util_concat(archdep_pref_path, "/sdl-joymap-", machine_name, ".vjm", NULL);
+    }
+}
+
 char *archdep_default_save_resource_file_name(void)
 { 
     char *fname;

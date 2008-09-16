@@ -74,6 +74,8 @@ extern int sdlkbd_hotkeys_load(const char *filename);
 extern int sdlkbd_hotkeys_load(const char *filename);
 extern int sdlkbd_hotkeys_dump(const char *filename);
 
+extern int sdlkbd_init_resources(void);
+
 extern void kbd_enter_leave(void);
 extern void kbd_focus_change(void);
 
