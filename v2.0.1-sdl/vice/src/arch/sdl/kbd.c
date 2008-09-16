@@ -44,6 +44,7 @@
 #include "resources.h"
 #include "sysfile.h"
 #include "ui.h"
+#include "uihotkey.h"
 #include "uimenu.h"
 #include "util.h"
 

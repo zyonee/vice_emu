@@ -36,8 +36,6 @@
 #include "menu_help.h"
 #include "ui.h"
 #include "uimenu.h"
-#include "video.h"
-#include "videoarch.h"
 
 static void show_text(const char *text)
 {
@@ -75,7 +73,7 @@ static void show_text(const char *text)
         }
         next_page = current_line;
         active_keys = 1;
-        video_canvas_refresh_all(sdl_active_canvas);
+        sdl_ui_refresh();
         while (active_keys)
         {
             switch(sdl_ui_menu_poll_input())
@@ -129,7 +127,7 @@ static UI_MENU_CALLBACK(about_callback)
         sdl_ui_print_center("(C) 2003-2005 David Hansel", 18);
         sdl_ui_print_center("(C) 1999-2004 Thomas Bretz", 19);
         sdl_ui_print_center("(C) 2000-2004 Markus Brenner", 20);
-        video_canvas_refresh_all(sdl_active_canvas);
+        sdl_ui_refresh();
         while(active)
         {
             switch(sdl_ui_menu_poll_input())

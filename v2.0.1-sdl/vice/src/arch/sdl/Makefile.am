@@ -70,6 +70,8 @@ libarch_a_SOURCES = \
 	uicmdline.c \
 	uifilereq.c \
 	uifilereq.h \
+	uihotkey.c \
+	uihotkey.h \
 	uimenu.c \
 	uimenu.h \
 	uimon.c \

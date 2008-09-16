@@ -46,9 +46,11 @@
 #include "resources.h"
 #include "sysfile.h"
 #include "util.h"
+#include "uihotkey.h"
 #include "uimenu.h"
 
 #define DEFAULT_JOYSTICK_THRESHOLD 10000
+#define DEFAULT_JOYSTICK_FUZZ 1000
 #define DEFAULT_JOYMAPFILE "sdl_joymap.vjm"
 
 static log_t sdljoy_log = LOG_ERR;
@@ -64,6 +66,9 @@ static int num_joysticks;
 
 /* Joystick threshold (0..32767) */
 static int joystick_threshold;
+
+/* Joystick fuzz (0..32767) */
+static int joystick_fuzz;
 
 /* Different types of joystick input */
 typedef enum {
@@ -155,6 +160,11 @@ static int set_joystick_threshold(int val, void *param)
     return 0;
 }
 
+static int set_joystick_fuzz(int val, void *param)
+{
+    joystick_fuzz = val;
+    return 0;
+}
 
 static const resource_string_t resources_string[] = {
     { "JoyMapFile", DEFAULT_JOYMAPFILE, RES_EVENT_NO, NULL,
@@ -169,6 +179,8 @@ static const resource_int_t resources_int[] = {
       &joystick_port_map[1], joyport2select, NULL },
     { "JoyThreshold", DEFAULT_JOYSTICK_THRESHOLD, RES_EVENT_NO, NULL,
       &joystick_threshold, set_joystick_threshold, NULL },
+    { "JoyFuzz", DEFAULT_JOYSTICK_FUZZ, RES_EVENT_NO, NULL,
+      &joystick_fuzz, set_joystick_fuzz, NULL },
     { NULL },
 };
 
@@ -176,13 +188,15 @@ static const resource_int_t resources_int[] = {
 
 static const cmdline_option_t cmdline_options[] = {
     { "-joydev1", SET_RESOURCE, 1, NULL, NULL, "JoyDevice1", NULL,
-      "<0-4>", N_("Set device for joystick port 1") },
+      "<0-4>", "Set device for joystick port 1" },
     { "-joydev2", SET_RESOURCE, 1, NULL, NULL, "JoyDevice2", NULL,
-      "<0-4>", N_("Set device for joystick port 2") },
+      "<0-4>", "Set device for joystick port 2" },
     { "-joymap", SET_RESOURCE, 1, NULL, NULL, "JoyMapFile", NULL,
-      N_("<name>"), N_("Specify name of joystick map file") },
+      N_("<name>"), "Specify name of joystick map file" },
     { "-joythreshold", SET_RESOURCE, 1, NULL, NULL, "JoyThreshold", NULL,
-      "<0-32767>", N_("Set joystick threshold") },
+      "<0-32767>", "Set joystick threshold" },
+    { "-joyfuzz", SET_RESOURCE, 1, NULL, NULL, "JoyFuzz", NULL,
+      "<0-32767>", "Set joystick fuzz" },
     { NULL },
 };
 
@@ -600,15 +614,25 @@ fprintf(stderr,"%s, %s\n",__func__, filename);
 
 /* ------------------------------------------------------------------------- */
 
-static inline BYTE sdljoy_axis_direction(Sint16 value)
+static inline BYTE sdljoy_axis_direction(Sint16 value, BYTE prev)
 {
-    if(value < -joystick_threshold) {
-        return 2;
-    } else if(value > joystick_threshold) {
-        return 1;
+    int thres = joystick_threshold;
+
+    if(prev == 0) {
+        thres += joystick_fuzz;
     } else {
+        thres -= joystick_fuzz;
+    }
+
+    if(value < -thres) {
+        return 2;
+    } else if(value > thres) {
+        return 1;
+    } else if((value < thres) && (value > -thres)) {
         return 0;
     }
+
+    return prev;
 }
 
 /* ------------------------------------------------------------------------- */
@@ -685,10 +709,10 @@ ui_menu_action_t sdljoy_axis_event(Uint8 joynum, Uint8 axis, Sint16 value)
     int index;
     ui_menu_action_t retval = MENU_ACTION_NONE;
 
-    cur = sdljoy_axis_direction(value);
-
     index = axis*input_mult[AXIS];
     prev = sdljoystick[joynum].input[AXIS][index].prev;
+
+    cur = sdljoy_axis_direction(value, prev);
 
     if(cur == prev)
         return retval;
@@ -782,7 +806,7 @@ ui_menu_entry_t *sdljoy_get_hotkey(SDL_Event e)
 
     switch(e.type) {
         case SDL_JOYAXISMOTION:
-            cur = sdljoy_axis_direction(e.jaxis.value);
+            cur = 0; /*sdljoy_axis_direction(e.jaxis.value);*/
             if(cur>0) {
                 --cur;
                 if(sdljoystick[e.jaxis.which].input[AXIS][e.jaxis.axis*input_mult[AXIS]+cur].action == UI_FUNCTION) {
@@ -808,7 +832,7 @@ void sdljoy_set_hotkey(SDL_Event e, ui_menu_entry_t *value)
 
     switch(e.type) {
         case SDL_JOYAXISMOTION:
-            cur = sdljoy_axis_direction(e.jaxis.value);
+            cur = 0; /*sdljoy_axis_direction(e.jaxis.value);*/
             if(cur>0) {
                 --cur;
                 sdljoystick[e.jaxis.which].input[AXIS][e.jaxis.axis*input_mult[AXIS]+cur].action = UI_FUNCTION;

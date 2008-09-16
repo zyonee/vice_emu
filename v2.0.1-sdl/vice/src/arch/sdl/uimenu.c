@@ -38,6 +38,7 @@
 #include "menu_common.h"
 #include "resources.h"
 #include "ui.h"
+#include "uihotkey.h"
 #include "uimenu.h"
 #include "util.h"
 #include "video.h"
@@ -259,7 +260,7 @@ static int sdl_ui_menu_display(ui_menu_entry_t *menu, const char *title)
 
     while(in_menu) {
         sdl_ui_display_cursor(cur - cur_offset, cur_old - cur_offset);
-        video_canvas_refresh_all(sdl_active_canvas);
+        sdl_ui_refresh();
 
         switch(sdl_ui_menu_poll_input()) {
             case MENU_ACTION_UP:
@@ -285,6 +286,11 @@ static int sdl_ui_menu_display(ui_menu_entry_t *menu, const char *title)
                 break;
             case MENU_ACTION_EXIT:
                 return 2;
+                break;
+            case MENU_ACTION_MAP:
+                if(sdl_ui_hotkey_map(&(menu[cur]))) {
+                    sdl_ui_menu_redraw(menu, title, num_items);
+                }
                 break;
             default:
                 SDL_Delay(10);
@@ -321,7 +327,6 @@ static int sdl_ui_menu_item_activate(ui_menu_entry_t *item)
     return 0;
 }
 
-
 static void sdl_ui_trap(WORD addr, void *data)
 {
     int vcache_state;
@@ -351,28 +356,6 @@ static void sdl_ui_trap(WORD addr, void *data)
     if (vcache_state != 0) {
         resources_set_int(vcache_name, vcache_state);
     }
-}
-
-static char* sdl_ui_hotkey_path_find(ui_menu_entry_t *action, ui_menu_entry_t *menu)
-{
-    char *p = NULL;
-    char *q = NULL;
-
-    while(menu->string) {
-        if(menu == action) {
-            return util_concat(menu->string, NULL);
-        }
-        if((menu->type) == MENU_ENTRY_SUBMENU) {
-            p = sdl_ui_hotkey_path_find(action, (ui_menu_entry_t *)menu->data);
-            if(p) {
-                q = util_concat(menu->string, SDL_UI_HOTKEY_DELIM, p, NULL);
-                lib_free(p);
-                return q;
-            }
-        }
-        ++menu;
-    }
-    return NULL;
 }
 
 /* ------------------------------------------------------------------ */
@@ -543,7 +526,7 @@ char* sdl_ui_readline(const char* previous, int pos_x, int pos_y)
         }
 
         if(screen_dirty) {
-            video_canvas_refresh_all(sdl_active_canvas);
+            sdl_ui_refresh();
             screen_dirty = 0;
         }
 
@@ -640,44 +623,14 @@ char* sdl_ui_text_input_dialog(const char* title, const char* previous)
     return sdl_ui_readline(previous, 0, i+MENU_FIRST_Y);
 }
 
-char *sdl_ui_hotkey_path(ui_menu_entry_t *action)
+ui_menu_entry_t *sdl_ui_get_main_menu(void)
 {
-    return sdl_ui_hotkey_path_find(action, main_menu);
+    return main_menu;
 }
 
-ui_menu_entry_t *sdl_ui_hotkey_action(char *path)
+void sdl_ui_refresh(void)
 {
-    ui_menu_entry_t *menupos = main_menu;
-    char *p;
-
-    p = strtok(path, SDL_UI_HOTKEY_DELIM);
-
-/*fprintf(stderr,"%s: searching %s\n",__func__,path);*/
-
-    if(p == NULL) {
-        return NULL;
-    }
-
-    while(menupos->string) {
-        if(strcmp(p, menupos->string) == 0) {
-/*fprintf(stderr,"%s: found %s (%08x)\n",__func__,menupos->string,menupos);*/
-            p = strtok(NULL, SDL_UI_HOTKEY_DELIM);
-            if(p == NULL) {
-/*fprintf(stderr,"%s: returning %s (%08x)\n",__func__,menupos->string,menupos);*/
-                return menupos;
-            } else {
-                if(menupos->type == MENU_ENTRY_SUBMENU) {
-/*fprintf(stderr,"%s: submenu %s (%08x)\n",__func__,menupos->string,menupos->data);*/
-                    menupos = (ui_menu_entry_t *)menupos->data;
-                } else {
-                    return NULL;
-                }
-            }
-        } else {
-            ++menupos;
-        }
-    }
-    return NULL;
+    video_canvas_refresh_all(sdl_active_canvas);
 }
 
 /* ------------------------------------------------------------------ */
@@ -696,7 +649,7 @@ void sdl_ui_set_menu_borders(int x, int y)
 
 void sdl_ui_set_main_menu(const ui_menu_entry_t *menu)
 {
-    main_menu = menu;
+    main_menu = (ui_menu_entry_t *)menu;
 }
 
 void sdl_ui_set_menu_font(BYTE *font, int w, int h)
@@ -732,3 +685,4 @@ menu_draw_t *sdl_ui_get_menu_param(void)
 {
   return &menu_draw;
 }
+

@@ -27,6 +27,7 @@
 #include "vice.h"
 #include "types.h"
 
+#include <SDL/SDL.h>
 #include <string.h>
 
 #include "archdep.h"
@@ -36,8 +37,6 @@
 #include "uimenu.h"
 #include "uifilereq.h"
 #include "util.h"
-#include "video.h"
-#include "videoarch.h"
 
 static ui_menu_filereq_mode_t filereq_mode;
 static menu_draw_t *menu_draw;
@@ -155,7 +154,7 @@ char* sdl_ui_file_selection_dialog(const char* title, ui_menu_filereq_mode_t mod
             redraw = 0;
         }
         sdl_ui_display_cursor(cur, cur_old);
-        video_canvas_refresh_all(sdl_active_canvas);
+        sdl_ui_refresh();
 
         switch(sdl_ui_menu_poll_input())
         {
