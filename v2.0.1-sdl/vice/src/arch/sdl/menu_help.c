@@ -30,12 +30,77 @@
 #include <stdlib.h>
 #include <SDL/SDL.h>
 
+#include "info.h"
+#include "lib.h"
 #include "menu_common.h"
 #include "menu_help.h"
 #include "ui.h"
 #include "uimenu.h"
 #include "video.h"
 #include "videoarch.h"
+
+static void show_text(const char *text)
+{
+    int next_line = 0;
+    int next_page = 0;
+    int current_line = 0;
+    int x, y;
+    int active = 1;
+    int active_keys;
+    char *string;
+    menu_draw_t *menu_draw;
+
+    menu_draw = sdl_ui_get_menu_param();
+
+    string = lib_malloc(81);
+    while(active)
+    {
+        sdl_ui_clear();
+        for (y = 0; (y < menu_draw->max_text_y) && (current_line < strlen(text)); y++)
+        {
+            for (x = 0; text[current_line + x] != '\n'; x++)
+            {
+                string[x] = text[current_line + x];
+            }
+            if (x != 0)
+            {
+                string[x] = 0;
+                sdl_ui_print(string, 0, y);
+            }
+            if (y == 0)
+            {
+                next_line = current_line + x + 1;
+            }
+            current_line += x + 1;
+        }
+        next_page = current_line;
+        active_keys = 1;
+        video_canvas_refresh_all(sdl_active_canvas);
+        while (active_keys)
+        {
+            switch(sdl_ui_menu_poll_input())
+            {
+                case MENU_ACTION_CANCEL:
+                case MENU_ACTION_EXIT:
+                    active_keys = 0;
+                    active = 0;
+                    break;
+                case MENU_ACTION_RIGHT:
+                    active_keys = 0;
+                    current_line = next_page;
+                    break;
+                case MENU_ACTION_DOWN:
+                    active_keys = 0;
+                    current_line = next_line;
+                    break;
+                default:
+                    SDL_Delay(10);
+                    break;
+            }
+        }
+    }
+    lib_free(string);
+}
 
 static UI_MENU_CALLBACK(about_callback)
 {
@@ -94,11 +159,39 @@ static UI_MENU_CALLBACK(contributors_callback)
 
 static UI_MENU_CALLBACK(license_callback)
 {
+    menu_draw_t *menu_draw;
+
+    if (activated)
+    {
+        menu_draw = sdl_ui_get_menu_param();
+        if (menu_draw->max_text_x_double == 2)
+        {
+            show_text(info_license_text);
+        }
+        else
+        {
+            show_text(info_license_text40);
+        }
+    }
     return NULL;
 }
 
 static UI_MENU_CALLBACK(warranty_callback)
 {
+    menu_draw_t *menu_draw;
+
+    if (activated)
+    {
+        menu_draw = sdl_ui_get_menu_param();
+        if (menu_draw->max_text_x_double == 2)
+        {
+            show_text(info_warranty_text);
+        }
+        else
+        {
+            show_text(info_warranty_text40);
+        }
+    }
     return NULL;
 }
 
@@ -115,11 +208,11 @@ const ui_menu_entry_t help_menu[] = {
       MENU_ENTRY_OTHER,
       contributors_callback,
       NULL },
-    { "License (todo)",
+    { "License",
       MENU_ENTRY_OTHER,
       license_callback,
       NULL },
-    { "Warranty (todo)",
+    { "Warranty",
       MENU_ENTRY_OTHER,
       warranty_callback,
       NULL },
