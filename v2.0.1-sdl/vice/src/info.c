@@ -1165,14 +1165,14 @@ const char info_contrib_text[] =
 "  Thomas Giesel <skoe@directbox.com> Added new monitor commands and\n"
 "  features.\n"
 "\n"
-" Marcus Sutton <loggedoubt@gmail.com> Made some console, dialog and\n"
-" joystick fixes for the BeOS port.\n"
+"  Marcus Sutton <loggedoubt@gmail.com> Made some console, dialog and\n"
+"  joystick fixes for the BeOS port.\n"
 "\n"
 "(We hope we have not forgotten anybody; if you think we have,\n"
 "please tell us.)\n"
 "\n"
 "Thanks also to everyone else for sending suggestions, ideas, bug\n"
-"reports, questions and requests.  In particular, a warm thank\n"
+"reports, questions and requests.  In particular, a warm thanks\n"
 "goes to the following people:\n"
 "\n"
 "  Lutz Sammer\n"
@@ -1190,8 +1190,7 @@ const char info_contrib_text[] =
 "  Ullrich von Bassewitz\n"
 "  Holger Busse\n"
 "\n"
-"Last but not least, a very special thank to Andreas Arens, Lutz\n"
+"Last but not least, a very special thanks to Andreas Arens, Lutz\n"
 "Sammer, Edgar Tornig, Christian Bauer, Wolfgang Lorenz, Miha\n"
 "Peternel and Per H^akan Sundell for writing cool emulators to\n"
-"compete with.  :-)\n";
-
+"compete with.  :-)\n\n";

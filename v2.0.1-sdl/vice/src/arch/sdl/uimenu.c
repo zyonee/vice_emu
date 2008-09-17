@@ -275,12 +275,14 @@ static int sdl_ui_menu_display(ui_menu_entry_t *menu, const char *title)
                     ++cur;
                 }
                 break;
+            case MENU_ACTION_RIGHT:
             case MENU_ACTION_SELECT:
                 if(sdl_ui_menu_item_activate(&(menu[cur])) == 2) {
                     return 2;
                 }
                 sdl_ui_menu_redraw(menu, title, num_items);
                 break;
+            case MENU_ACTION_LEFT:
             case MENU_ACTION_CANCEL:
                 in_menu = 0;
                 break;

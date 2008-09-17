@@ -121,5 +121,6 @@ extern void cmdline_shutdown(void);
 extern int cmdline_parse(int *argc, char **argv);
 extern void cmdline_show_help(void *userparam);
 extern char *cmdline_options_string(void);
+extern int cmdline_get_num_options(void);
 
 #endif
