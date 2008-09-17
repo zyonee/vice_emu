@@ -55,11 +55,11 @@ void store_line_and_scanline_2(
     const WORD red, const WORD grn, const WORD blu)
 {
     WORD *tmp1 = (WORD *) scanline;
+    WORD *tmp2 = (WORD *) line;
     *tmp1 = gamma_red_fac[(red + prevline[0]) >> 1]
           | gamma_grn_fac[(grn + prevline[1]) >> 1]
           | gamma_blu_fac[(blu + prevline[2]) >> 1];
     
-    WORD *tmp2 = (WORD *) line;
     *tmp2 = gamma_red[red] | gamma_grn[grn] | gamma_blu[blu];
 
     prevline[0] = red;
@@ -75,6 +75,7 @@ void store_line_and_scanline_3(
     DWORD tmp1 = gamma_red_fac[(red + prevline[0]) >> 1]
                | gamma_grn_fac[(grn + prevline[1]) >> 1]
                | gamma_blu_fac[(blu + prevline[2]) >> 1];
+    DWORD tmp2 = gamma_red[red] | gamma_grn[grn] | gamma_blu[blu];
 #ifdef WORDS_BIGENDIAN    
     scanline[0] = (BYTE) (tmp1 >> 16);
     scanline[1] = (BYTE) (tmp1 >> 8);
@@ -85,7 +86,6 @@ void store_line_and_scanline_3(
     scanline[2] = (BYTE) (tmp1 >> 16);
 #endif
     
-    DWORD tmp2 = gamma_red[red] | gamma_grn[grn] | gamma_blu[blu];
 #ifdef WORDS_BIGENDIAN    
     line[0] = (BYTE) (tmp2 >> 16);
     line[1] = (BYTE) (tmp2 >> 8);
@@ -107,11 +107,11 @@ void store_line_and_scanline_4(
     const WORD red, const WORD grn, const WORD blu)
 {
     DWORD *tmp1 = (DWORD *) scanline;
+    DWORD *tmp2 = (DWORD *) line;
     *tmp1 = gamma_red_fac[(red + prevline[0]) >> 1]
           | gamma_grn_fac[(grn + prevline[1]) >> 1]
           | gamma_blu_fac[(blu + prevline[2]) >> 1];
     
-    DWORD *tmp2 = (DWORD *) line;
     *tmp2 = gamma_red[red] | gamma_grn[grn] | gamma_blu[blu];
 
     prevline[0] = red;
