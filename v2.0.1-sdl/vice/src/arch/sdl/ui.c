@@ -72,7 +72,7 @@ ui_menu_action_t ui_dispatch_events(void)
     while(SDL_PollEvent(&e)) {
         switch(e.type) {
             case SDL_QUIT:
-                exit(0);
+                ui_sdl_quit();
                 break;
             case SDL_KEYDOWN:
                 retval = sdlkbd_press(e.key.keysym.sym, e.key.keysym.mod);
@@ -161,9 +161,24 @@ int ui_emulation_is_paused(void)
 /* ----------------------------------------------------------------- */
 /* uiapi.h */
 
+static int save_resources_on_exit;
+static int confirm_on_exit;
+
 static int set_ui_menukey(int val, void *param)
 {
     sdl_ui_menukeys[(ui_menu_action_t)param] = val;
+    return 0;
+}
+
+static int set_save_resources_on_exit(int val, void *param)
+{
+    save_resources_on_exit = val;
+    return 0;
+}
+
+static int set_confirm_on_exit(int val, void *param)
+{
+    confirm_on_exit = val;
     return 0;
 }
 
@@ -186,8 +201,25 @@ static const resource_int_t resources_int[] = {
       &sdl_ui_menukeys[7], set_ui_menukey, (void *)MENU_ACTION_EXIT },
     { "MenuKeyMap", SDLK_m, RES_EVENT_NO, NULL,
       &sdl_ui_menukeys[8], set_ui_menukey, (void *)MENU_ACTION_MAP },
+    { "SaveResourcesOnExit", 0, RES_EVENT_NO, NULL,
+      &save_resources_on_exit, set_save_resources_on_exit, NULL },
+    { "ConfirmOnExit", 1, RES_EVENT_NO, NULL,
+      &confirm_on_exit, set_confirm_on_exit, NULL },
     { NULL },
 };
+
+void ui_sdl_quit(void)
+{
+    if (save_resources_on_exit)
+    {
+        if (resources_save(NULL) < 0) {
+          ui_error("Cannot save current settings.");
+        } else {
+          ui_message("Settings saved.");
+        }
+    }
+    exit(0);
+}
 
 /* Initialization  */
 int ui_resources_init(void)

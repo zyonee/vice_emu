@@ -99,6 +99,7 @@ extern void ui_update_pal_ctrls(int v);
 
 extern void ui_common_init(void);
 extern void ui_common_shutdown(void);
+extern void ui_sdl_quit(void);
 
 #endif
 

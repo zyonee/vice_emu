@@ -148,6 +148,9 @@ static UI_MENU_CALLBACK(load_joymap_callback)
     return NULL;
 }
 
+UI_MENU_DEFINE_TOGGLE(SaveResourcesOnExit)
+UI_MENU_DEFINE_TOGGLE(ConfirmOnExit)
+
 const ui_menu_entry_t settings_manager_menu[] = {
     { "Save current settings",
       MENU_ENTRY_OTHER,
@@ -160,6 +163,15 @@ const ui_menu_entry_t settings_manager_menu[] = {
     { "Restore default settings",
       MENU_ENTRY_OTHER,
       default_settings_callback,
+      NULL },
+    { "Save settings on exit",
+      MENU_ENTRY_RESOURCE_TOGGLE,
+      toggle_SaveResourcesOnExit_callback,
+      NULL },
+    SDL_MENU_ITEM_SEPARATOR,
+    { "Confirm on exit (todo)",
+      MENU_ENTRY_RESOURCE_TOGGLE,
+      toggle_ConfirmOnExit_callback,
       NULL },
     SDL_MENU_ITEM_SEPARATOR,
     { "Save hotkeys",

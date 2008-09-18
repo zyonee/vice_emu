@@ -86,7 +86,7 @@ UI_MENU_CALLBACK(monitor_callback)
 UI_MENU_CALLBACK(quit_callback)
 {
     if(activated) {
-        exit(0);
+        ui_sdl_quit();
     }
     return NULL;
 }
