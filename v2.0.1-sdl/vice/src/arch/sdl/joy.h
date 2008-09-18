@@ -31,8 +31,11 @@
 #ifndef _JOY_H
 #define _JOY_H
 
-#include "uimenu.h"
+#include "types.h"
+
 #include <SDL/SDL.h>
+
+#include "uimenu.h"
 
 extern int joy_arch_init(void);
 extern void joystick_close(void);
@@ -44,6 +47,8 @@ extern int joy_arch_mapping_dump(const char *filename);
 extern ui_menu_action_t sdljoy_axis_event(Uint8 joynum, Uint8 axis, Sint16 value);
 extern ui_menu_action_t sdljoy_button_event(Uint8 joynum, Uint8 button, Uint8 value);
 extern ui_menu_action_t sdljoy_hat_event(Uint8 joynum, Uint8 hat, Uint8 value);
+extern BYTE sdljoy_check_axis_movement(SDL_Event e);
+extern void sdljoy_set_hotkey(SDL_Event e, ui_menu_entry_t *value);
 
 extern int joystick_port_map[2];
 

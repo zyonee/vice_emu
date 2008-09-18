@@ -73,7 +73,7 @@ const ui_menu_entry_t c64dtv_video_menu[] = {
       MENU_ENTRY_RESOURCE_TOGGLE,
       toggle_VICIIDoubleScan_callback,
       NULL },
-    { "Video cache",
+    { "Video cache (broken)",
       MENU_ENTRY_RESOURCE_TOGGLE,
       toggle_VICIIVideoCache_callback,
       NULL },

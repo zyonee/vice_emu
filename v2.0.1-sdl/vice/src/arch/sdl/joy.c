@@ -287,8 +287,6 @@ void joystick_close(void)
 
 fprintf(stderr,"%s\n",__func__);
 
-/*    joy_arch_mapping_dump(joymap_file);*/
-
     lib_free(joymap_file);
     joymap_file = NULL;
 
@@ -707,6 +705,30 @@ ui_menu_action_t sdljoy_perform_event(sdljoystick_mapping_t *event, int value)
     return retval;
 }
 
+BYTE sdljoy_check_axis_movement(SDL_Event e)
+{
+    BYTE cur, prev;
+    int index;
+    Uint8 joynum;
+    Uint8 axis;
+    Sint16 value;
+
+    joynum = e.jaxis.which;
+    axis = e.jaxis.axis;
+    value = e.jaxis.value;
+
+    index = axis*input_mult[AXIS];
+    prev = sdljoystick[joynum].input[AXIS][index].prev;
+
+    cur = sdljoy_axis_direction(value, prev);
+
+    if(cur == prev)
+        return 0;
+
+    sdljoystick[joynum].input[AXIS][index].prev = cur;
+    return cur;
+}
+
 ui_menu_action_t sdljoy_axis_event(Uint8 joynum, Uint8 axis, Sint16 value)
 {
     BYTE cur, prev;
@@ -810,7 +832,7 @@ ui_menu_entry_t *sdljoy_get_hotkey(SDL_Event e)
 
     switch(e.type) {
         case SDL_JOYAXISMOTION:
-            cur = 0; /*sdljoy_axis_direction(e.jaxis.value);*/
+            cur = sdljoy_axis_direction(e.jaxis.value, 0);
             if(cur>0) {
                 --cur;
                 if(sdljoystick[e.jaxis.which].input[AXIS][e.jaxis.axis*input_mult[AXIS]+cur].action == UI_FUNCTION) {
@@ -836,7 +858,7 @@ void sdljoy_set_hotkey(SDL_Event e, ui_menu_entry_t *value)
 
     switch(e.type) {
         case SDL_JOYAXISMOTION:
-            cur = 0; /*sdljoy_axis_direction(e.jaxis.value);*/
+            cur = sdljoy_axis_direction(e.jaxis.value, 0);
             if(cur>0) {
                 --cur;
                 sdljoystick[e.jaxis.which].input[AXIS][e.jaxis.axis*input_mult[AXIS]+cur].action = UI_FUNCTION;

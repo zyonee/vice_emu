@@ -27,6 +27,7 @@
 #include "vice.h"
 #include "types.h"
 
+#include "joy.h"
 #include "lib.h"
 #include "kbd.h"
 #include "uihotkey.h"
@@ -34,11 +35,6 @@
 #include "util.h"
 
 #include <SDL/SDL.h>
-/*
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-*/
 
 /* ------------------------------------------------------------------ */
 /* static functions */
@@ -123,13 +119,14 @@ int sdl_ui_hotkey_map(ui_menu_entry_t *item)
         return -1;
     }
 
+    /* Use text item for unsetting hotkeys */
     if(item->type == MENU_ENTRY_TEXT) {
-        return 0;
+        item = NULL;
     }
 
     sdl_ui_clear();
     sdl_ui_print("Polling hotkey for:", 0, 0);
-    sdl_ui_print(item->string, 0, 1);
+    sdl_ui_print(item?item->string:"(unmap hotkey)", 0, 1);
     sdl_ui_refresh();
 
     /* TODO check if key/event is suitable */
@@ -146,9 +143,15 @@ int sdl_ui_hotkey_map(ui_menu_entry_t *item)
                     }
                     break;
                 case SDL_JOYBUTTONDOWN:
-/*                  retval = sdljoy_button_event(e.jbutton.which, e.jbutton.button, 1);*/
+                    sdljoy_set_hotkey(e, item);
+                    polling = 0;
                     break;
                 case SDL_JOYAXISMOTION:
+                    if(sdljoy_check_axis_movement(e) != 0) {
+                        sdljoy_set_hotkey(e, item);
+                        polling = 0;
+                    }
+                    break;
                 case SDL_JOYHATMOTION:
                     break;
                 default:
