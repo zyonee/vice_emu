@@ -229,7 +229,7 @@ char* sdl_ui_file_selection_dialog(const char* title, ui_menu_filereq_mode_t mod
                             }
                             else
                             {
-                                if (archdep_path_is_relative(inputstring))
+                                if (archdep_path_is_relative(inputstring) && (strchr(inputstring, FSDEV_DIR_SEP_CHR) != NULL))
                                 {
                                     retval = inputstring;
                                 }

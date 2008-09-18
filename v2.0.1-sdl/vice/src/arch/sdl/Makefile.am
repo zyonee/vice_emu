@@ -38,6 +38,8 @@ libarch_a_SOURCES = \
 	menu_screenshot.h \
 	menu_settings.c \
 	menu_settings.h \
+	menu_sound.c \
+	menu_sound.h \
 	menu_speed.c \
 	menu_speed.h \
 	menu_video.c \

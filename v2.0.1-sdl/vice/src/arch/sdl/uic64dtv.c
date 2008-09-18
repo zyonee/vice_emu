@@ -37,6 +37,7 @@
 #include "menu_reset.h"
 #include "menu_screenshot.h"
 #include "menu_settings.h"
+#include "menu_sound.h"
 #include "menu_speed.h"
 #include "menu_video_c64dtv.h"
 #include "ui.h"
@@ -56,12 +57,6 @@ static ui_menu_entry_t c64dtv_hardware_menu[] = {
 
 /* temporary empty c64dtv rom menu, this one will be moved out to menu_c64dtvrom.c */
 static ui_menu_entry_t c64dtv_rom_menu[] = {
-    SDL_MENU_ITEM_SEPARATOR,
-    { NULL }
-};
-
-/* temporary empty sound menu, this one will be moved out to menu_sound.c */
-static ui_menu_entry_t sound_menu[] = {
     SDL_MENU_ITEM_SEPARATOR,
     { NULL }
 };
@@ -101,10 +96,14 @@ static const ui_menu_entry_t x64dtv_main_menu[] = {
       MENU_ENTRY_SUBMENU,
       NULL,
       (ui_callback_data_t)c64dtv_video_menu },
-    { "Sound settings (todo)",
+    { "Sound output settings",
       MENU_ENTRY_SUBMENU,
       NULL,
-      (ui_callback_data_t)sound_menu },
+      (ui_callback_data_t)sound_output_menu },
+    { "Sound record settings",
+      MENU_ENTRY_SUBMENU,
+      NULL,
+      (ui_callback_data_t)sound_record_menu },
     { "Snapshot (todo)",
       MENU_ENTRY_SUBMENU,
       NULL,

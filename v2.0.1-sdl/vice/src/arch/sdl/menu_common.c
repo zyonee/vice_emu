@@ -32,6 +32,7 @@
 #include "types.h"
 
 #include <stdlib.h>
+#include <string.h>
 
 #include "autostart.h"
 #include "lib.h"
@@ -114,12 +115,25 @@ const char *sdl_ui_menu_toggle_helper(int activated, const char *resource_name)
 const char *sdl_ui_menu_radio_helper(int activated, ui_callback_data_t param, const char *resource_name)
 {
     if(activated) {
-        resources_set_value(resource_name, (resource_value_t)param);
+        if (resources_query_type(resource_name) == RES_INTEGER) {
+            resources_set_int(resource_name, (int)param);
+        } else {
+            resources_set_string(resource_name, (char *)param);
+        }
     } else {
-        resource_value_t v;
-        resources_get_value(resource_name, (void *)&v);
-        if (v == (resource_value_t)param)
-            return sdl_menu_text_tick;
+        int v;
+        const char *w;
+        if (resources_query_type(resource_name) == RES_INTEGER) {
+            resources_get_int(resource_name, &v);
+            if (v == (int)param) {
+                return sdl_menu_text_tick;
+            }
+        } else {
+            resources_get_string(resource_name, &w);
+            if (!strcmp(w, (char *)param)) {
+                return sdl_menu_text_tick;
+            }
+        }
     }
     return NULL;
 }
