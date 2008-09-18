@@ -89,6 +89,7 @@ static console_t *console_log = NULL;
 
    #define OPEN_DISASSEMBLY_AS_POPUP
    #define OPEN_REGISTRY_AS_POPUP
+   #define OPEN_MEMORY_AS_POPUP
 
 static HWND hwndConsole   = NULL;
 static HWND hwndMdiClient = NULL;
@@ -110,6 +111,7 @@ static console_t  console_log_for_mon = { -50, -50, -50 };
 static char *pchCommandLine   = NULL;
 
 #define REG_CLASS MONITOR_CLASS ":Reg"
+#define MEM_CLASS MONITOR_CLASS ":Mem"
 #define DIS_CLASS MONITOR_CLASS ":Dis"
 
 static HWND hwndParent = NULL;
@@ -408,6 +410,58 @@ HWND OpenRegistry( HWND hwnd )
     return iOpenRegistry( hwnd, 0, 30, 100, 100, 100 );
 }
 
+static
+HWND iOpenMemory( HWND hwnd, DWORD dwStyle, int x, int y, int dx, int dy )
+{
+    HWND hwndMem;
+
+#ifdef OPEN_MEMORY_AS_POPUP
+    #define DEF_MEM_PROG DefWindowProc
+    hwndMem = CreateWindowEx(
+        WS_EX_TOOLWINDOW,
+        MEM_CLASS,
+        "Memory",
+        WS_OVERLAPPEDWINDOW|WS_VSCROLL|dwStyle, // WS_CAPTION|WS_POPUPWINDOW|WS_THICKFRAME|WS_SYSMENU|dwStyle,
+        x,
+        y,
+        dx,
+        dy,
+        hwndMonitor, // hwndMdiClient,
+        NULL,
+        winmain_instance,
+        NULL);
+
+    add_client_window( hwndMem );
+
+    ShowWindow( hwndMem, SW_SHOW );
+
+#else /* #ifdef OPEN_MEMORY_AS_POPUP */
+    #define DEF_MEM_PROG DefMDIChildProc
+    hwndMem = CreateMDIWindow(MEM_CLASS,
+        "Memory",
+        dwStyle,
+        x,
+        y,
+        dx,
+        dy,
+        hwndMdiClient,
+        winmain_instance,
+        0);
+
+    add_client_window( hwndMem );
+
+#endif /* #ifdef OPEN_DISASSEMBLY_AS_POPUP */
+
+    return hwndMem;
+}
+
+static
+HWND OpenMemory( HWND hwnd )
+{
+    // @SRT: TODO: Adjust parameter!
+    return iOpenMemory( hwnd, 0, 30, 100, 100, 100 );
+}
+
 /**********************************************************************************
 ***********************************************************************************
 ***********************************************************************************
@@ -583,7 +637,7 @@ return ok ? buffer : NULL;
 
 enum WindowType
 {
-    WT_END = 0, WT_CONSOLE, WT_DISASSEMBLY, WT_REGISTER
+    WT_END = 0, WT_CONSOLE, WT_DISASSEMBLY, WT_REGISTER, WT_MEMORY
 };
 typedef enum WindowType WindowType;
 
@@ -717,6 +771,10 @@ void OpenFromWindowDimensions(HWND hwnd,PWindowDimensions wd)
         case WT_REGISTER:
             hwndOpened = OpenRegistry(hwnd);
             break;
+
+        case WT_MEMORY:
+            hwndOpened = OpenMemory(hwnd);
+            break;
         case WT_END:
             /* this cannot occur, but since gcc complains if not specified... */
             hwndOpened = NULL;
@@ -848,7 +906,7 @@ void EnableCommands( HMENU hmnu, HWND hwndToolbar )
     ENABLE( IDM_MON_EVAL         , 0 );
     ENABLE( IDM_MON_WND_EVAL     , 0 );
 //  CHECK ( IDM_MON_WND_REG      , hwndReg     ? TRUE : FALSE );
-    ENABLE( IDM_MON_WND_MEM      , 0 );
+    ENABLE( IDM_MON_WND_MEM      , 1 );
 //  CHECK ( IDM_MON_WND_DIS      , hwndDis     ? TRUE : FALSE );
     CHECK ( IDM_MON_WND_CONSOLE  , hwndConsole ? TRUE : FALSE );
     ENABLE( IDM_MON_HELP         , 0 );
@@ -1062,6 +1120,10 @@ void OnCommand( HWND hwnd, WORD wNotifyCode, WORD wID, HWND hwndCtrl )
     case IDM_MON_WND_REG:
         OpenRegistry(hwnd);
         break;
+
+	case IDM_MON_WND_MEM:
+		OpenMemory(hwnd);
+		break;
 
     case IDM_MON_WND_CONSOLE:
         OpenConsole(hwnd,(BOOLEAN)(hwndConsole?FALSE:TRUE));
@@ -1518,7 +1580,6 @@ long CALLBACK reg_window_proc(HWND hwnd,
     return DEF_REG_PROG(hwnd, msg, wParam, lParam);
 }
 
-
 typedef
 struct dis_private
 {
@@ -1528,7 +1589,6 @@ struct dis_private
     struct mon_disassembly_private *pmdp;
 
 } dis_private_t;
-
 
 static
 int ExecuteDisassemblyPopup( HWND hwnd, dis_private_t *pdp, LPARAM lParam, BOOL bExecuteDefault )
@@ -1989,6 +2049,374 @@ static long CALLBACK dis_window_proc(HWND hwnd, UINT msg, WPARAM wParam,
     return DEF_DIS_PROG(hwnd, msg, wParam, lParam);
 }
 
+// MPi: TODO: Going to need some way to save the current window memory position and restore it later on
+// For now this hack to remember one window's position will do
+static WORD sHackMemoryWindowPos = 0;
+
+/* window procedure */
+static long CALLBACK mem_window_proc(HWND hwnd, UINT msg, WPARAM wParam,
+                                     LPARAM lParam)
+{
+    dis_private_t *pdp = (dis_private_t*)GetWindowLong(hwnd, GWL_USERDATA);
+
+    switch (msg)
+    {
+    case WM_DESTROY:
+		sHackMemoryWindowPos = mon_disassembly_get_start_address(pdp->pmdp);
+        delete_client_window(hwnd);
+        // clear the dis_private info 
+        SetWindowLong( hwnd, GWL_USERDATA, 0 );
+        lib_free(pdp);
+
+        return DEF_DIS_PROG(hwnd, msg, wParam, lParam);
+
+#ifdef OPEN_DISASSEMBLY_AS_POPUP
+
+    case WM_ACTIVATE:
+        ActivateChild( (LOWORD(wParam)!=WA_INACTIVE) ? TRUE:FALSE, hwnd, mon_disassembly_get_memspace(pdp->pmdp) );
+        break;
+
+#else  // #ifdef OPEN_DISASSEMBLY_AS_POPUP
+
+    case WM_MDIACTIVATE:
+        ActivateChild( ((HWND) wParam==hwnd)?FALSE:TRUE, hwnd, pdp->memspace );
+        break;
+
+#endif // #ifdef OPEN_DISASSEMBLY_AS_POPUP
+
+    case WM_GETWINDOWTYPE:
+        {
+            LONG* lp = (PLONG) lParam;
+            *lp = WT_MEMORY;
+        }
+        return 0;
+
+    case WM_CHANGECOMPUTERDRIVE:
+        switch (wParam)
+        {
+        case IDM_MON_COMPUTER:
+            mon_disassembly_set_memspace(pdp->pmdp, e_comp_space);
+            break;
+
+        case IDM_MON_DRIVE8:
+            mon_disassembly_set_memspace(pdp->pmdp, e_disk8_space);
+            break;
+
+        case IDM_MON_DRIVE9:
+            mon_disassembly_set_memspace(pdp->pmdp, e_disk9_space);
+            break;
+        }
+        SetMemspace( hwnd, mon_disassembly_get_memspace(pdp->pmdp) );
+        InvalidateRect(hwnd,NULL,FALSE);
+        break;
+
+    case WM_CREATE:
+        {
+            HDC hdc = GetDC( hwnd );
+            SIZE size;
+
+            pdp = lib_malloc(sizeof(dis_private_t));
+            
+            /* store pointer to structure with window */
+            SetWindowLong( hwnd, GWL_USERDATA, (long) pdp );
+
+            SelectObject( hdc, GetStockObject( ANSI_FIXED_FONT ) );
+
+            // get height and width of a character
+            GetTextExtentPoint32( hdc, " ", 1, &size );
+            pdp->charwidth    = size.cx;
+            pdp->charheight   = size.cy;
+
+            {
+            SCROLLINFO ScrollInfo;
+            ScrollInfo.cbSize = sizeof(ScrollInfo);
+            ScrollInfo.fMask  = SIF_RANGE;
+//          GetScrollInfo( hwnd, SB_VERT, &ScrollInfo );
+
+            ScrollInfo.nMin = 0;
+            ScrollInfo.nMax = 0x10000;
+
+            SetScrollInfo( hwnd, SB_VERT, &ScrollInfo, FALSE );
+            }
+
+            // initialize some window parameter
+            pdp->pmdp = mon_disassembly_init();
+
+			mon_disassembly_goto_address(pdp->pmdp,sHackMemoryWindowPos);
+
+            {
+                SCROLLINFO ScrollInfo;
+
+                ScrollInfo.cbSize = sizeof(ScrollInfo);
+                ScrollInfo.fMask  = SIF_POS;
+                GetScrollInfo( hwnd, SB_VERT, &ScrollInfo );
+
+                ScrollInfo.nPos   = mon_disassembly_scroll( pdp->pmdp, MON_SCROLL_NOTHING );
+
+                SetScrollInfo( hwnd, SB_VERT, &ScrollInfo, TRUE );
+                InvalidateRect( hwnd, NULL, FALSE );
+                UpdateWindow( hwnd );
+            }
+            break;
+        }
+
+    case WM_UPDATE:
+// MPi: We don't want the memory window to always hop to the PC address
+//        mon_disassembly_update(pdp->pmdp);
+        return 0;
+
+    case WM_LBUTTONDOWN:
+// MPi: Clicking left button could set a watch point, but not implemented right now
+//        return ExecuteDisassemblyPopup( hwnd, pdp, lParam, TRUE );
+		return 0;
+
+    case WM_RBUTTONDOWN:
+        return ExecuteDisassemblyPopup( hwnd, pdp, lParam, FALSE );
+
+    case WM_VSCROLL:
+        {
+            SCROLLINFO ScrollInfo;
+            BOOLEAN    changed = FALSE;
+
+            ScrollInfo.cbSize = sizeof(ScrollInfo);
+            ScrollInfo.fMask  = SIF_POS|SIF_TRACKPOS;
+            GetScrollInfo( hwnd, SB_VERT, &ScrollInfo );
+
+            ScrollInfo.fMask  = SIF_POS;
+
+            switch ( LOWORD(wParam) )
+            {
+            case SB_THUMBPOSITION:
+                return DEF_DIS_PROG(hwnd, msg, wParam, lParam);
+
+            case SB_THUMBTRACK:
+                ScrollInfo.nPos = mon_disassembly_scroll_to( pdp->pmdp, (WORD)ScrollInfo.nTrackPos );
+                changed         = TRUE;
+                break;
+
+            case SB_LINEUP:
+                ScrollInfo.nPos = mon_disassembly_scroll( pdp->pmdp, MON_SCROLL_UP );
+                changed         = TRUE;
+                break;
+
+            case SB_PAGEUP:
+                ScrollInfo.nPos = mon_disassembly_scroll( pdp->pmdp, MON_SCROLL_PAGE_UP );
+                changed         = TRUE;
+                break;
+
+            case SB_LINEDOWN:
+                ScrollInfo.nPos = mon_disassembly_scroll( pdp->pmdp, MON_SCROLL_DOWN );
+                changed         = TRUE;
+                break;
+
+            case SB_PAGEDOWN:
+                ScrollInfo.nPos = mon_disassembly_scroll( pdp->pmdp, MON_SCROLL_PAGE_DOWN );
+                changed         = TRUE;
+                break;
+            };
+
+            if (changed)
+            {
+                SetScrollInfo( hwnd, SB_VERT, &ScrollInfo, TRUE );
+                InvalidateRect( hwnd, NULL, FALSE );
+                UpdateWindow( hwnd );
+            }
+        }
+        break;
+
+    case WM_KEYDOWN:
+        switch ((int)wParam) /* nVirtKey */
+        {
+        case VK_UP:
+            SendMessage( hwnd, WM_VSCROLL, SB_LINEUP, 0 );
+            return 0;
+
+        case VK_DOWN:
+            SendMessage( hwnd, WM_VSCROLL, SB_LINEDOWN, 0 );
+            return 0;
+
+        case VK_PRIOR:
+            SendMessage( hwnd, WM_VSCROLL, SB_PAGEUP, 0 );
+            return 0;
+
+        case VK_NEXT:
+            SendMessage( hwnd, WM_VSCROLL, SB_PAGEDOWN, 0 );
+            return 0;
+        }
+        break;
+
+    case WM_COMMAND:
+        switch (LOWORD(wParam))
+        {
+        case IDM_MON_GOTO_PC:
+            mon_disassembly_goto_pc( pdp->pmdp );
+            break;
+
+        case IDM_MON_GOTO_ADDRESS:
+			// MPi: TODO: Modal dialog box with text entry field?
+/* @@@@@SRT not yet implemented
+            {
+                char *result;
+                result = uimon_inputaddress( "Please enter the address you want to go to:" );
+                if (result)
+                {
+                    mon_disassembly_goto_string( pdp->pmdp, result );
+                    lib_free( result );
+                }
+            }
+*/
+            break;
+
+        case IDM_MON_SET_BP:     mon_disassembly_set_breakpoint( pdp->pmdp );     break;
+        case IDM_MON_UNSET_BP:   mon_disassembly_unset_breakpoint( pdp->pmdp );   break;
+        case IDM_MON_ENABLE_BP:  mon_disassembly_enable_breakpoint( pdp->pmdp );  break;
+        case IDM_MON_DISABLE_BP: mon_disassembly_disable_breakpoint( pdp->pmdp ); break;
+
+        case IDM_MON_COMPUTER:
+        case IDM_MON_DRIVE8:
+        case IDM_MON_DRIVE9:
+            SendMessage( hwnd, WM_CHANGECOMPUTERDRIVE, LOWORD(wParam), 0 );
+            mon_disassembly_goto_pc( pdp->pmdp );
+            break;
+        }
+
+        InvalidateRect( hwnd, NULL, FALSE );
+        UpdateWindow( hwnd );
+        break;
+
+    case WM_PAINT:
+        {
+            struct mon_disassembly *md_contents = NULL;
+            PAINTSTRUCT ps;
+            HDC         hdc;
+            RECT        rect;
+            int         nHeightToPrint;
+            COLORREF    crOldTextColor;
+            COLORREF    crOldBkColor;
+            HPEN        hpenOld;
+            HBRUSH      hbrushOld;
+
+            int i;
+
+            typedef enum LINETYPE_S { 
+                LT_NORMAL,     
+                LT_EXECUTE, 
+                LT_EXECUTE_BREAKPOINT,
+                LT_EXECUTE_BREAKPOINT_INACTIVE,
+                LT_BREAKPOINT, 
+                LT_BREAKPOINT_INACTIVE,
+                LT_LAST } LINETYPE; 
+
+            const COLORREF crTextLineType[LT_LAST] = 
+                { RGB( 0x00, 0x00, 0x00 ), // LT_NORMAL
+                  RGB( 0xFF, 0xFF, 0xFF ), // LT_EXECUTE
+                  RGB( 0xFF, 0xFF, 0xFF ), // LT_EXECUTE_BREAKPOINT
+                  RGB( 0xFF, 0xFF, 0xFF ), // LT_EXECUTE_BREAKPOINT_INACTIVE
+                  RGB( 0x00, 0x00, 0x00 ), // LT_BREAKPOINT
+                  RGB( 0x00, 0x00, 0x00 )  // LT_BREAKPOINT_INACTIVE
+            };
+
+            const COLORREF crBackLineType[LT_LAST] = 
+                { RGB( 0xFF, 0xFF, 0xFF ), // LT_NORMAL
+                  RGB( 0x00, 0x00, 0xFF ), // LT_EXECUTE
+                  RGB( 0x00, 0x80, 0x80 ), // LT_EXECUTE_BREAKPOINT
+                  RGB( 0x00, 0x00, 0xFF ), // LT_EXECUTE_BREAKPOINT_INACTIVE
+                  RGB( 0xFF, 0x00, 0x00 ), // LT_BREAKPOINT
+                  RGB( 0xFF, 0xFF, 0x00 )  // LT_BREAKPOINT_INACTIVE
+            };
+
+            HBRUSH hbrushBack[LT_LAST];
+            HPEN   hpenBack  [LT_LAST];
+
+            GetClientRect(hwnd,&rect);
+            nHeightToPrint = (rect.bottom - rect.top) / pdp->charheight + 1;
+
+            hdc = BeginPaint(hwnd,&ps);
+
+            for (i=0; i<LT_LAST; i++)
+            {
+                hbrushBack[i] = CreateSolidBrush( crBackLineType[i] );
+                hpenBack[i]   = CreatePen( PS_SOLID, 1, crBackLineType[i] );
+            }
+
+            crOldTextColor = SetTextColor( hdc, RGB(0xFF,0xFF,0xFF) );
+            crOldBkColor   = SetBkColor  ( hdc, RGB(0,0,0) );
+            hpenOld        = SelectObject( hdc, GetStockObject( BLACK_PEN   ) );
+            hbrushOld      = SelectObject( hdc, GetStockObject( BLACK_BRUSH ) );
+
+            md_contents = mon_dump_get_lines( pdp->pmdp, nHeightToPrint, nHeightToPrint-1 );
+
+            for (i=0; i<nHeightToPrint; i++)
+            {
+                struct mon_disassembly *next = md_contents->next;
+
+                LINETYPE    lt;
+
+                COLORREF crText;
+                COLORREF crBack;
+
+                if (md_contents->flags.active_line)
+                {
+                    if (md_contents->flags.is_breakpoint)
+                    {
+                        if (md_contents->flags.breakpoint_active)
+                            lt = LT_EXECUTE_BREAKPOINT;
+                        else
+                            lt = LT_EXECUTE_BREAKPOINT_INACTIVE;
+                    }
+                    else
+                        lt = LT_EXECUTE;
+                }
+                else
+                {
+                    if (md_contents->flags.is_breakpoint)
+                    {
+                        if (md_contents->flags.breakpoint_active)
+                            lt = LT_BREAKPOINT;
+                        else
+                            lt = LT_BREAKPOINT_INACTIVE;
+                    }
+                    else
+                        lt = LT_NORMAL;
+                }
+
+                crText = crTextLineType[lt];
+                crBack = crBackLineType[lt];
+
+                SetTextColor( hdc, crText );
+                SetBkColor  ( hdc, crBack );
+
+                TextOut( hdc, 0, i*pdp->charheight, md_contents->content, md_contents->length );
+
+                /* make sure we clear all that is right from the text */
+                SelectObject( hdc, hbrushBack[lt] );
+                SelectObject( hdc, hpenBack[lt]   );
+                Rectangle( hdc, md_contents->length*pdp->charwidth, i*pdp->charheight, rect.right+1, (i+1)*pdp->charheight );
+
+                lib_free(md_contents->content);
+                lib_free(md_contents);
+                md_contents = next;
+            }
+
+            /* restore old settings */
+            SelectObject( hdc, hpenOld        );
+            SelectObject( hdc, hbrushOld      );
+            SetTextColor( hdc, crOldTextColor );
+            SetBkColor  ( hdc, crOldBkColor   );
+
+            for (i=0; i<LT_LAST; i++)
+            {
+                DeleteObject( hbrushBack[i] );
+                DeleteObject( hpenBack[i]   );
+            }
+
+            EndPaint(hwnd,&ps);
+        }
+    }
+
+    return DEF_DIS_PROG(hwnd, msg, wParam, lParam);
+}
+
 
 static 
 void uimon_init( void )
@@ -2039,6 +2467,19 @@ void uimon_init( void )
         wc.hbrBackground = CreateSolidBrush(RGB(0xFF,0xFF,0xFF));
         wc.lpszMenuName  = 0;
         wc.lpszClassName = REG_CLASS;
+        wc.hIconSm       = NULL;
+
+        RegisterClassEx(&wc);
+
+        /* Register window class for the memory window */
+        wc.lpfnWndProc   = mem_window_proc;
+        wc.cbClsExtra    = 0;
+        wc.cbWndExtra    = 0;
+        wc.hIcon         = NULL;
+        wc.hCursor       = NULL;
+        wc.hbrBackground = CreateSolidBrush(RGB(0xFF,0xFF,0xFF));
+        wc.lpszMenuName  = 0;
+        wc.lpszClassName = MEM_CLASS;
         wc.hIconSm       = NULL;
 
         RegisterClassEx(&wc);

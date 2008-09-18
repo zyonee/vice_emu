@@ -50,6 +50,7 @@
 #include "machine-bus.h"
 #include "machine.h"
 #include "mem.h"
+#include "../monitor/montypes.h"
 #include "network.h"
 #include "resources.h"
 #include "snapshot.h"
@@ -765,6 +766,31 @@ int autostart_prg(const char *file_name, unsigned int runmode)
 
 /* ------------------------------------------------------------------------- */
 
+/* Checks for a label file using the path as the root name but using a ".lbl" extension instead */
+static void check_for_label_file(const char *file_name)
+{
+    char *new_file;
+    char *last_pos;
+
+    if (!file_name) {
+        return;
+    }
+
+    new_file = strdup(file_name);
+    last_pos = strrchr(new_file,'.');
+    if (last_pos) {
+        /* Check we have enough room for the extension */
+        if (strlen(last_pos) >= 4) {
+            strcpy(last_pos,".lbl");
+            /* Check for read access to new_file */
+            if (1 /* TODO */) {
+                mon_load_symbols(default_memspace, new_file);
+            }
+        }
+    }
+    free(new_file);
+}
+
 /* Autostart `file_name', trying to auto-detect its type.  */
 int autostart_autodetect(const char *file_name, const char *program_name,
                          unsigned int program_number, unsigned int runmode)
@@ -782,6 +808,7 @@ int autostart_autodetect(const char *file_name, const char *program_name,
 
     if (autostart_disk(file_name, program_name, program_number, runmode) == 0) {
         log_message(autostart_log, "`%s' recognized as disk image.", file_name);
+        check_for_label_file(file_name);
         return 0;
     }
 
@@ -789,6 +816,7 @@ int autostart_autodetect(const char *file_name, const char *program_name,
     {
         if (autostart_tape(file_name, program_name, program_number, runmode) == 0) {
             log_message(autostart_log, "`%s' recognized as tape image.", file_name);
+            check_for_label_file(file_name);
             return 0;
         }
     }
@@ -796,11 +824,13 @@ int autostart_autodetect(const char *file_name, const char *program_name,
     if (autostart_snapshot(file_name, program_name) == 0) {
         log_message(autostart_log, "`%s' recognized as snapshot image.",
                     file_name);
+        check_for_label_file(file_name);
         return 0;
     }
     if (autostart_prg(file_name, runmode) == 0) {
         log_message(autostart_log, "`%s' recognized as program/p00 file.",
                     file_name);
+        check_for_label_file(file_name);
         return 0;
     }
 

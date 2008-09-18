@@ -151,6 +151,62 @@ struct mon_disassembly *mon_disassembly_get_lines(
     return ret;
 }
 
+
+struct mon_disassembly *mon_dump_get_lines(
+    struct mon_disassembly_private *pmdp, int lines_visible,
+    int lines_full_visible)
+{
+    WORD loc;
+    int  i;
+    unsigned int  have_label = pmdp->have_label;
+    struct mon_disassembly *contents = NULL;
+    struct mon_disassembly *ret;
+
+    loc = pmdp->StartAddress;
+    ret = NULL;
+
+    pmdp->Lines = lines_full_visible;
+
+    for (i = 0; i < lines_visible; i++ ) {
+        struct mon_disassembly *newcont;
+        mon_breakpoint_type_t bptype;
+
+        newcont = lib_malloc(sizeof(struct mon_disassembly));
+
+        if (ret == NULL) {
+            ret      =
+            contents = newcont;
+        } else {
+            contents = contents->next = newcont;
+        }
+
+        contents->next = NULL;
+        contents->flags.active_line = loc == pmdp->CurrentAddress ? 1 : 0;
+
+        /* determine type of breakpoint */
+        bptype = mon_breakpoint_is(new_addr(pmdp->memspace, loc));
+
+        contents->flags.is_breakpoint = bptype != BP_NONE;
+        contents->flags.breakpoint_active = bptype == BP_ACTIVE;
+
+        contents->content =
+            mon_dump_with_label(pmdp->memspace, loc, 1, &have_label);
+
+        contents->length  = strlen(contents->content);
+
+        pmdp->EndAddress = loc;
+
+        /* MPi: Could have labels with two bytes (lo/hi pairs for example) and display these as 16 bit quantities */
+        if (!have_label)
+        {
+            loc++;
+        }
+    }
+
+    return ret;
+}
+
+
 static
 WORD determine_address_of_line(struct mon_disassembly_private *pmdp, 
                                WORD loc, int line )
@@ -302,6 +358,10 @@ void mon_disassembly_goto_pc(struct mon_disassembly_private *pmdp)
         (WORD)(monitor_cpu_type.mon_register_get_val(pmdp->memspace, e_PC)));
 }
 
+WORD mon_disassembly_get_start_address(struct mon_disassembly_private *pmdp)
+{
+    return pmdp->StartAddress;
+}
 
 void mon_disassembly_determine_popup_commands(
                                    struct mon_disassembly_private *pmdp, 

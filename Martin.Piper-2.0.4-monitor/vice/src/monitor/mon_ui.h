@@ -61,6 +61,9 @@ extern void mon_disassembly_update(struct mon_disassembly_private *);
 extern struct mon_disassembly *mon_disassembly_get_lines(
     struct mon_disassembly_private *,
     int lines_visible, int lines_full_visible);
+extern struct mon_disassembly *mon_dump_get_lines(
+    struct mon_disassembly_private *pmdp, int lines_visible,
+    int lines_full_visible);
 extern void mon_disassembly_set_memspace(struct mon_disassembly_private *,
                                          MEMSPACE);
 extern MEMSPACE mon_disassembly_get_memspace(struct mon_disassembly_private *);
@@ -90,6 +93,8 @@ extern void mon_disassembly_disable_breakpoint(struct mon_disassembly_private *)
 extern void mon_disassembly_goto_address(struct mon_disassembly_private *,
                                          WORD addr);
 extern void mon_disassembly_goto_pc(struct mon_disassembly_private *);
+extern WORD mon_disassembly_get_start_address(struct mon_disassembly_private *pmdp);
+/* MPi: TODO. This would lookup a label or a hex address and then call mon_disassembly_goto_address() */
 extern void mon_disassembly_goto_string(struct mon_disassembly_private *,
                                         char *addr);
 

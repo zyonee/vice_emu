@@ -72,5 +72,8 @@
 #define uint64_t_C(c)    (c ## u64)
 /* end: for FFMPEG: common.h */
 
+//MPi: Missing from the default Win32, but very useful to have in the build.
+#define FEATURE_CPUMEMHISTORY
+
 #endif
 
