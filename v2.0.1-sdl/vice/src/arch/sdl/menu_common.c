@@ -122,7 +122,7 @@ const char *sdl_ui_menu_radio_helper(int activated, ui_callback_data_t param, co
         }
     } else {
         int v;
-        const char *w;
+        char *w;
         if (resources_query_type(resource_name) == RES_INTEGER) {
             resources_get_int(resource_name, &v);
             if (v == (int)param) {
