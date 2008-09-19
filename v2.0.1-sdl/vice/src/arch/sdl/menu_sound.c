@@ -147,7 +147,7 @@ static UI_MENU_CALLBACK(start_recording_callback)
         {
             char *name = NULL;
 
-            name = sdl_ui_file_selection_dialog("Choose autostart image", FILEREQ_MODE_CHOOSE_FILE);
+            name = sdl_ui_file_selection_dialog("Choose audio file", FILEREQ_MODE_CHOOSE_FILE);
             if (name != NULL)
             {
                 resources_set_string("SoundRecordDeviceArg", name);
