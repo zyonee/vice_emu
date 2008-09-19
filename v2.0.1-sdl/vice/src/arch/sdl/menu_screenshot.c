@@ -50,8 +50,6 @@ static UI_MENU_CALLBACK(save_screenshot_callback)
         if (name != NULL) {
             if (screenshot_save((char *)param, name, sdl_active_canvas) < 0) {
                 ui_error("Cannot save screenshot.");
-            } else {
-                ui_message("Screenshot saved.");
             }
             lib_free(name);
         }

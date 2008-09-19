@@ -28,10 +28,14 @@ libarch_a_SOURCES = \
 	joy.h \
 	kbd.c \
 	kbd.h \
+	menu_c64cart.c \
+	menu_c64cart.h \
 	menu_common.c \
 	menu_common.h \
 	menu_help.c \
 	menu_help.h \
+	menu_plus4cart.c \
+	menu_plus4cart.h \
 	menu_reset.c \
 	menu_reset.h \
 	menu_screenshot.c \
@@ -42,6 +46,8 @@ libarch_a_SOURCES = \
 	menu_sound.h \
 	menu_speed.c \
 	menu_speed.h \
+	menu_vic20cart.c \
+	menu_vic20cart.h \
 	menu_video.c \
 	menu_video.h \
 	menu_video_c128.c \

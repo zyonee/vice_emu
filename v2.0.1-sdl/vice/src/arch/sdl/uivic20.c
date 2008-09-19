@@ -40,6 +40,7 @@
 #include "menu_settings.h"
 #include "menu_sound.h"
 #include "menu_speed.h"
+#include "menu_vic20cart.h"
 #include "menu_video_vic20.h"
 #include "resources.h"
 #include "ui.h"
@@ -54,12 +55,6 @@ static ui_menu_entry_t drive_menu[] = {
 
 /* temporary empty tape menu, this one will be moved out to menu_tape.c */
 static ui_menu_entry_t tape_menu[] = {
-    SDL_MENU_ITEM_SEPARATOR,
-    { NULL }
-};
-
-/* temporary empty vic20 cart menu, this one will be moved out to menu_vic20_cart.c */
-static ui_menu_entry_t vic20_cart_menu[] = {
     SDL_MENU_ITEM_SEPARATOR,
     { NULL }
 };
@@ -103,10 +98,10 @@ static const ui_menu_entry_t xvic_main_menu[] = {
       MENU_ENTRY_SUBMENU,
       NULL,
       (ui_callback_data_t)tape_menu },
-    { "Cartridge (todo)",
+    { "Cartridge",
       MENU_ENTRY_SUBMENU,
       NULL,
-      (ui_callback_data_t)vic20_cart_menu },
+      (ui_callback_data_t)vic20cart_menu },
     { "Machine settings (todo)",
       MENU_ENTRY_SUBMENU,
       NULL,

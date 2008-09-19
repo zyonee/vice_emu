@@ -43,7 +43,7 @@ static UI_MENU_CALLBACK(save_settings_callback)
     if(activated) {
         if (resources_save(NULL) < 0) {
             ui_error("Cannot save current settings.");
-        } else { 
+        } else {
             ui_message("Settings saved.");
         }
 
@@ -149,7 +149,6 @@ static UI_MENU_CALLBACK(load_joymap_callback)
 }
 
 UI_MENU_DEFINE_TOGGLE(SaveResourcesOnExit)
-UI_MENU_DEFINE_TOGGLE(ConfirmOnExit)
 
 const ui_menu_entry_t settings_manager_menu[] = {
     { "Save current settings",
@@ -167,11 +166,6 @@ const ui_menu_entry_t settings_manager_menu[] = {
     { "Save settings on exit",
       MENU_ENTRY_RESOURCE_TOGGLE,
       toggle_SaveResourcesOnExit_callback,
-      NULL },
-    SDL_MENU_ITEM_SEPARATOR,
-    { "Confirm on exit (todo)",
-      MENU_ENTRY_RESOURCE_TOGGLE,
-      toggle_ConfirmOnExit_callback,
       NULL },
     SDL_MENU_ITEM_SEPARATOR,
     { "Save hotkeys",

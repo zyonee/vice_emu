@@ -34,6 +34,7 @@
 #include "lib.h"
 #include "menu_common.h"
 #include "menu_help.h"
+#include "menu_plus4cart.h"
 #include "menu_reset.h"
 #include "menu_screenshot.h"
 #include "menu_settings.h"
@@ -53,12 +54,6 @@ static ui_menu_entry_t drive_menu[] = {
 
 /* temporary empty tape menu, this one will be moved out to menu_tape.c */
 static ui_menu_entry_t tape_menu[] = {
-    SDL_MENU_ITEM_SEPARATOR,
-    { NULL }
-};
-
-/* temporary empty plus4 cart menu, this one will be moved out to menu_plus4_cart.c */
-static ui_menu_entry_t plus4_cart_menu[] = {
     SDL_MENU_ITEM_SEPARATOR,
     { NULL }
 };
@@ -102,10 +97,10 @@ static const ui_menu_entry_t xplus4_main_menu[] = {
       MENU_ENTRY_SUBMENU,
       NULL,
       (ui_callback_data_t)tape_menu },
-    { "Cartridge (todo)",
+    { "Cartridge",
       MENU_ENTRY_SUBMENU,
       NULL,
-      (ui_callback_data_t)plus4_cart_menu },
+      (ui_callback_data_t)plus4cart_menu },
     { "Machine settings (todo)",
       MENU_ENTRY_SUBMENU,
       NULL,

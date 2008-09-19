@@ -32,6 +32,7 @@
 
 #include "debug.h"
 #include "c64mem.h"
+#include "menu_c64cart.h"
 #include "menu_common.h"
 #include "menu_help.h"
 #include "menu_reset.h"
@@ -51,12 +52,6 @@ static ui_menu_entry_t drive_menu[] = {
 
 /* temporary empty tape menu, this one will be moved out to menu_tape.c */
 static ui_menu_entry_t tape_menu[] = {
-    SDL_MENU_ITEM_SEPARATOR,
-    { NULL }
-};
-
-/* temporary empty c128/c64 cart menu, this one will be moved out to menu_c64_c128_cart.c */
-static ui_menu_entry_t c64_c128_cart_menu[] = {
     SDL_MENU_ITEM_SEPARATOR,
     { NULL }
 };
@@ -100,10 +95,10 @@ static const ui_menu_entry_t x64_main_menu[] = {
       MENU_ENTRY_SUBMENU,
       NULL,
       (ui_callback_data_t)tape_menu },
-    { "Cartridge (todo)",
+    { "Cartridge",
       MENU_ENTRY_SUBMENU,
       NULL,
-      (ui_callback_data_t)c64_c128_cart_menu },
+      (ui_callback_data_t)c64cart_menu },
     { "Machine settings (todo)",
       MENU_ENTRY_SUBMENU,
       NULL,

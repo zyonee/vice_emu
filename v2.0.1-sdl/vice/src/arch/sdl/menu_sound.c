@@ -129,7 +129,7 @@ static UI_MENU_CALLBACK(custom_frequency_callback)
     {
         if (previous != 22050 && previous != 44100 && previous != 48000)
         {
-            sprintf(buf,"%i msec",previous);
+            sprintf(buf,"%i Hz",previous);
             return buf;
         }
     }
@@ -197,7 +197,7 @@ static ui_menu_entry_t sound_output_driver_menu[] = {
       (ui_callback_data_t)"allegro" },
 #endif
 #ifdef USE_ALSA
-    { "Alsa",
+    { "ALSA",
       MENU_ENTRY_RESOURCE_RADIO,
       radio_SoundDeviceName_callback,
       (ui_callback_data_t)"alsa" },
