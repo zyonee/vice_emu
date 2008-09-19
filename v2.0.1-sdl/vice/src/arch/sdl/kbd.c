@@ -319,7 +319,6 @@ fprintf(stderr,"%s\n",__func__);
     sdlkbd_log = log_open("SDLKeyboard");
 
     sdlkbd_keyword_clear();
-    sdlkbd_init_resources();
     sdlkbd_hotkeys_load(hotkey_file);
 }
 

@@ -37,6 +37,7 @@
 #include "lib.h"
 #include "menu_common.h"
 #include "resources.h"
+#include "sound.h"
 #include "ui.h"
 #include "uihotkey.h"
 #include "uimenu.h"
@@ -331,9 +332,10 @@ static int sdl_ui_menu_item_activate(ui_menu_entry_t *item)
 
 static void sdl_ui_trap(WORD addr, void *data)
 {
-    int vcache_state;
+    int warp_state, vcache_state;
 
     vsync_suspend_speed_eval();
+    sound_suspend();
 
     SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
     sdl_menu_state = 1;
@@ -345,6 +347,12 @@ static void sdl_ui_trap(WORD addr, void *data)
     }
     sdl_menu_state = 0;
     SDL_EnableKeyRepeat(0, 0);
+
+    /* Do not resume sound if in warp mode */
+    resources_get_int("WarpMode", &warp_state);
+    if(warp_state == 0) {
+        sound_resume();
+    }
 
     /* Force a video refresh by temprorarily disabling vcache */
     resources_get_int(vcache_name, &vcache_state);
