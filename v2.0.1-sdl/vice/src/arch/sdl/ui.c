@@ -44,6 +44,7 @@
 #include "uiapi.h"
 #include "uicolor.h"
 #include "uimenu.h"
+#include "uimsgbox.h"
 #include "vsync.h"
 
 
@@ -127,7 +128,7 @@ void ui_message(const char* format, ...)
     tmp = lib_mvsprintf(format,ap);
     va_end(ap);
 
-    fprintf(stderr, "SDL UI ui_message: %s\n", tmp);
+    message_box_ok("VICE MESSAGE", tmp);
 
     lib_free(tmp);
 }
@@ -291,7 +292,7 @@ void ui_error(const char *format,...)
     tmp = lib_mvsprintf(format, ap);
     va_end(ap);
 
-    fprintf(stderr, "SDL UI ui_error: %s\n", tmp);
+    message_box_ok("VICE ERROR", tmp);
 
     lib_free(tmp);
 }

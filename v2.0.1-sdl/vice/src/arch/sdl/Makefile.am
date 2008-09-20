@@ -83,6 +83,8 @@ libarch_a_SOURCES = \
 	uimenu.c \
 	uimenu.h \
 	uimon.c \
+	uimsgbox.c \
+	uimsgbox.h \
 	uipet.c \
 	uiplus4.c \
 	uivic20.c \

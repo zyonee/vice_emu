@@ -95,7 +95,7 @@ static void sdl_ui_scroll_screen_up(void)
     }
 }
 
-static void sdl_ui_putchar(char c, int pos_x, int pos_y)
+static void sdl_ui_putchar(BYTE c, int pos_x, int pos_y)
 {
     int x, y;
     BYTE fontchar;
@@ -173,15 +173,6 @@ static int sdl_ui_print_wrap(const char *text, int pos_x, int pos_y)
     }
 
     return i;
-}
-
-static void sdl_ui_reverse_colors(void)
-{
-    BYTE color;
-
-    color = menu_draw.color_front;
-    menu_draw.color_front = menu_draw.color_back;
-    menu_draw.color_back = color;
 }
 
 static void sdl_ui_display_item(ui_menu_entry_t *item, int y_pos)
@@ -370,6 +361,15 @@ static void sdl_ui_trap(WORD addr, void *data)
 
 /* ------------------------------------------------------------------ */
 /* External UI interface */
+
+void sdl_ui_reverse_colors(void)
+{
+    BYTE color;
+
+    color = menu_draw.color_front;
+    menu_draw.color_front = menu_draw.color_back;
+    menu_draw.color_back = color;
+}
 
 ui_menu_action_t sdl_ui_menu_poll_input(void)
 {
