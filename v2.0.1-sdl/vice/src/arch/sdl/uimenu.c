@@ -309,19 +309,32 @@ static int sdl_ui_menu_item_activate(ui_menu_entry_t *item)
 
 static void sdl_ui_trap(WORD addr, void *data)
 {
-    int warp_state, vcache_state;
-
-    vsync_suspend_speed_eval();
-    sound_suspend();
-
-    SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
-    sdl_menu_state = 1;
+    sdl_ui_activate_pre_action();
     if(data == NULL) {
         sdl_ui_menu_display(main_menu, "VICE main menu");
     } else {
         sdl_ui_init_draw_params();
         sdl_ui_menu_item_activate((ui_menu_entry_t *)data);
     }
+    sdl_ui_activate_post_action();
+}
+
+/* ------------------------------------------------------------------ */
+/* External UI interface */
+
+void sdl_ui_activate_pre_action(void)
+{
+    vsync_suspend_speed_eval();
+    sound_suspend();
+
+    SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
+    sdl_menu_state = 1;
+}
+
+void sdl_ui_activate_post_action(void)
+{
+    int warp_state, vcache_state;
+
     sdl_menu_state = 0;
     SDL_EnableKeyRepeat(0, 0);
 
@@ -344,9 +357,6 @@ static void sdl_ui_trap(WORD addr, void *data)
         resources_set_int(menu_draw.vcache_name, vcache_state);
     }
 }
-
-/* ------------------------------------------------------------------ */
-/* External UI interface */
 
 void sdl_ui_init_draw_params(void)
 {
