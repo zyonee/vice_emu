@@ -206,38 +206,12 @@ static int handle_message_box(const char *title, const char *message, int messag
 
 static int activate_dialog(const char *title, const char *message, int message_mode)
 {
-    int warp_state, vcache_state;
     int retval;
 
-    vsync_suspend_speed_eval();
-    sound_suspend();
-
-    SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
-    sdl_menu_state = 1;
-
+    sdl_ui_activate_pre_action();
     retval = handle_message_box(title, message, message_mode);
+    sdl_ui_activate_post_action();
 
-    sdl_menu_state = 0;
-    SDL_EnableKeyRepeat(0, 0);
-
-    /* Do not resume sound if in warp mode */
-    resources_get_int("WarpMode", &warp_state);
-    if(warp_state == 0) {
-        sound_resume();
-    }
-
-    /* Force a video refresh by temprorarily disabling vcache */
-    resources_get_int(menu_draw->vcache_name, &vcache_state);
-
-    if (vcache_state != 0) {
-        resources_set_int(menu_draw->vcache_name, 0);
-    }
-
-    sdl_ui_refresh();
-
-    if (vcache_state != 0) {
-        resources_set_int(menu_draw->vcache_name, vcache_state);
-    }
     return retval;
 }
 
