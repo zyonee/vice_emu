@@ -70,8 +70,6 @@ typedef struct menufont_s menufont_t;
 
 static menufont_t menufont = { NULL, sdl_default_translation, 0, 0 };
 
-static const char *vcache_name = NULL;
-
 static menu_draw_t menu_draw;
 
 /* ------------------------------------------------------------------ */
@@ -212,18 +210,6 @@ static void sdl_ui_display_item(ui_menu_entry_t *item, int y_pos)
     }
 }
 
-static void sdl_ui_init_draw_params(void)
-{
-    menu_draw.max_text_x = sdl_active_canvas->geometry->text_size.width * (menu_draw.max_text_x_double);
-    menu_draw.max_text_y = sdl_active_canvas->geometry->text_size.height;
-    menu_draw.pitch = sdl_active_canvas->draw_buffer->draw_buffer_pitch;
-    menu_draw.offset = sdl_active_canvas->geometry->gfx_position.x + menu_draw.extra_x
-                     + (sdl_active_canvas->geometry->gfx_position.y + menu_draw.extra_y) * menu_draw.pitch
-                     + sdl_active_canvas->geometry->extra_offscreen_border_left;
-    menu_draw.first_x = MENU_FIRST_X;
-    menu_draw.first_y = MENU_FIRST_Y;
-}
-
 static void sdl_ui_menu_redraw(ui_menu_entry_t *menu, const char *title, int num_items)
 {
     int i;
@@ -333,7 +319,7 @@ static void sdl_ui_trap(WORD addr, void *data)
     if(data == NULL) {
         sdl_ui_menu_display(main_menu, "VICE main menu");
     } else {
-        sdl_ui_init_draw_params();     
+        sdl_ui_init_draw_params();
         sdl_ui_menu_item_activate((ui_menu_entry_t *)data);
     }
     sdl_menu_state = 0;
@@ -346,21 +332,33 @@ static void sdl_ui_trap(WORD addr, void *data)
     }
 
     /* Force a video refresh by temprorarily disabling vcache */
-    resources_get_int(vcache_name, &vcache_state);
+    resources_get_int(menu_draw.vcache_name, &vcache_state);
 
     if (vcache_state != 0) {
-        resources_set_int(vcache_name, 0);
+        resources_set_int(menu_draw.vcache_name, 0);
     }
 
     video_canvas_refresh_all(sdl_active_canvas);
 
     if (vcache_state != 0) {
-        resources_set_int(vcache_name, vcache_state);
+        resources_set_int(menu_draw.vcache_name, vcache_state);
     }
 }
 
 /* ------------------------------------------------------------------ */
 /* External UI interface */
+
+void sdl_ui_init_draw_params(void)
+{
+    menu_draw.max_text_x = sdl_active_canvas->geometry->text_size.width * (menu_draw.max_text_x_double);
+    menu_draw.max_text_y = sdl_active_canvas->geometry->text_size.height;
+    menu_draw.pitch = sdl_active_canvas->draw_buffer->draw_buffer_pitch;
+    menu_draw.offset = sdl_active_canvas->geometry->gfx_position.x + menu_draw.extra_x
+                     + (sdl_active_canvas->geometry->gfx_position.y + menu_draw.extra_y) * menu_draw.pitch
+                     + sdl_active_canvas->geometry->extra_offscreen_border_left;
+    menu_draw.first_x = MENU_FIRST_X;
+    menu_draw.first_y = MENU_FIRST_Y;
+}
 
 void sdl_ui_reverse_colors(void)
 {
@@ -456,6 +454,11 @@ int sdl_ui_display_title(const char *title)
     return sdl_ui_print_wrap(title, 0, 0);
 }
 
+void sdl_ui_activate(void)
+{
+    interrupt_maincpu_trigger_trap(sdl_ui_trap, NULL);
+}
+
 void sdl_ui_clear(void)
 {
     unsigned int x, y;
@@ -466,11 +469,6 @@ void sdl_ui_clear(void)
             sdl_ui_putchar(c, x, y);
         }
     }
-}
-
-void sdl_ui_activate(void)
-{
-    interrupt_maincpu_trigger_trap(sdl_ui_trap, NULL);
 }
 
 int sdl_ui_hotkey(ui_menu_entry_t *item)
@@ -648,7 +646,7 @@ void sdl_ui_refresh(void)
 
 void sdl_ui_set_vcachename(const char *vcache)
 {
-    vcache_name = vcache;
+    menu_draw.vcache_name = vcache;
 }
 
 void sdl_ui_set_menu_borders(int x, int y)

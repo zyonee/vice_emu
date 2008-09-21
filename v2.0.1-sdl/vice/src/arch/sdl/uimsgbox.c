@@ -31,8 +31,14 @@
 #include <SDL/SDL.h>
 
 #include "lib.h"
+#include "resources.h"
+#include "sound.h"
 #include "ui.h"
 #include "uimenu.h"
+#include "uimsgbox.h"
+#include "vsync.h"
+
+static menu_draw_t *menu_draw;
 
 static int make_28_cols(char *text)
 {
@@ -52,14 +58,15 @@ static int make_28_cols(char *text)
     return j;
 }
 
-void message_box_ok(const char *title, char *message)
+static int handle_message_box(const char *title, const char *message, int message_mode)
 {
     char *text;
     char *pos;
     char template[40];
     int lines, before;
     int active = 1;
-    int i, j;
+    int i, j, x;
+    int cur_pos = 0;
 
     text = lib_stralloc(message);
     pos = text;
@@ -87,26 +94,162 @@ void message_box_ok(const char *title, char *message)
         pos += strlen(pos) + 1;
     }
     sdl_ui_print_center("\335                            \335", j + 5);
-    sdl_ui_print_center("\335            \260\300\300\256            \335", j + 6);
-    sdl_ui_print_center("\335            \335OK\335            \335", j + 7);
-    sdl_ui_print_center("\335            \255\300\300\275            \335", j + 8);
+    switch (message_mode)
+    {
+        case MESSAGE_OK:
+            sdl_ui_print_center("\335            \260\300\300\256            \335", j + 6);
+            x = sdl_ui_print_center("\335            \335OK\335            \335", j + 7);
+            sdl_ui_print_center("\335            \255\300\300\275            \335", j + 8);
+            break;
+        case MESSAGE_YESNO:
+            sdl_ui_print_center("\335      \260\300\300\300\256       \260\300\300\256      \335", j + 6);
+            x = sdl_ui_print_center("\335      \335YES\335       \335NO\335      \335", j + 7);
+            sdl_ui_print_center("\335      \255\300\300\300\275       \255\300\300\275      \335", j + 8);
+            break;
+        case MESSAGE_CPUJAM:
+        default:
+            sdl_ui_print_center("\335 \260\300\300\300\300\300\256  \260\300\300\300\300\300\300\300\256  \260\300\300\300\300\256 \335", j + 6);
+            x = sdl_ui_print_center("\335 \335RESET\335  \335MONITOR\335  \335CONT\335 \335", j + 7);
+            sdl_ui_print_center("\335 \255\300\300\300\300\300\275  \255\300\300\300\300\300\300\300\275  \255\300\300\300\300\275 \335", j + 8);
+            break;
+    }
     sdl_ui_print_center("\255\300\300\300\300\300\300\300\300\300\300\300\300\300\300\300\300\300\300\300\300\300\300\300\300\300\300\300\300\275", j + 9);
-    sdl_ui_reverse_colors();
-    sdl_ui_print_center("OK", j + 7);
-    sdl_ui_reverse_colors();
-    sdl_ui_refresh();
+    lib_free(text);
+    x += (menu_draw->max_text_x - 30) / 2;
     while (active)
     {
+        switch (message_mode)
+        {
+            case MESSAGE_OK:
+                sdl_ui_reverse_colors();
+                sdl_ui_print_center("OK", j + 7);
+                sdl_ui_reverse_colors();
+                break;
+            case MESSAGE_YESNO:
+                if (cur_pos == 0)
+                {
+                    sdl_ui_reverse_colors();
+                }
+                sdl_ui_print("YES", x - 22, j + 7);
+                sdl_ui_reverse_colors();
+                sdl_ui_print("NO", x - 10, j + 7);
+                if (cur_pos == 1)
+                {
+                    sdl_ui_reverse_colors();
+                }
+                break;
+           case MESSAGE_CPUJAM:
+           default:
+                if (cur_pos == 0)
+                {
+                    sdl_ui_reverse_colors();
+                }
+                sdl_ui_print("RESET", x - 27, j + 7);
+                if (cur_pos < 2)
+                {
+                    sdl_ui_reverse_colors();
+                }
+                sdl_ui_print("MONITOR", x - 18, j + 7);
+                if (cur_pos > 0)
+                {
+                    sdl_ui_reverse_colors();
+                }
+                sdl_ui_print("CONT", x - 7, j + 7);
+                if (cur_pos == 2)
+                {
+                    sdl_ui_reverse_colors();
+                }
+                break;
+        }
+
+        sdl_ui_refresh();
+
         switch(sdl_ui_menu_poll_input())
         {
             case MENU_ACTION_CANCEL:
             case MENU_ACTION_EXIT:
+                cur_pos = 0;
+                active = 0;
+                break;
             case MENU_ACTION_SELECT:
                 active = 0;
+                break;
+            case MENU_ACTION_LEFT:
+            case MENU_ACTION_UP:
+                if (message_mode != MESSAGE_OK)
+                {
+                    cur_pos--;
+                    if (cur_pos < 0)
+                    {
+                        cur_pos = message_mode;
+                    }
+                }
+                break;
+            case MENU_ACTION_RIGHT:
+            case MENU_ACTION_DOWN:
+                if (message_mode != MESSAGE_OK)
+                {
+                    cur_pos++;
+                    if (cur_pos > message_mode)
+                    {
+                        cur_pos = 0;
+                    }
+                }
                 break;
             default:
                 SDL_Delay(10);
                 break;
         }
     }
+    return cur_pos;
+}
+
+static int activate_dialog(const char *title, const char *message, int message_mode)
+{
+    int warp_state, vcache_state;
+    int retval;
+
+    vsync_suspend_speed_eval();
+    sound_suspend();
+
+    SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
+    sdl_menu_state = 1;
+
+    retval = handle_message_box(title, message, message_mode);
+
+    sdl_menu_state = 0;
+    SDL_EnableKeyRepeat(0, 0);
+
+    /* Do not resume sound if in warp mode */
+    resources_get_int("WarpMode", &warp_state);
+    if(warp_state == 0) {
+        sound_resume();
+    }
+
+    /* Force a video refresh by temprorarily disabling vcache */
+    resources_get_int(menu_draw->vcache_name, &vcache_state);
+
+    if (vcache_state != 0) {
+        resources_set_int(menu_draw->vcache_name, 0);
+    }
+
+    sdl_ui_refresh();
+
+    if (vcache_state != 0) {
+        resources_set_int(menu_draw->vcache_name, vcache_state);
+    }
+    return retval;
+}
+
+int message_box(const char *title, char *message, int message_mode)
+{
+    sdl_ui_init_draw_params();
+
+    menu_draw = sdl_ui_get_menu_param();
+
+    if (!sdl_menu_state)
+    {
+        return activate_dialog(title, (const char *)message, message_mode);
+    }
+    return handle_message_box(title, (const char *)message, message_mode);
 }

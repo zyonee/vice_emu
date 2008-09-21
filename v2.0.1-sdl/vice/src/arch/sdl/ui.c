@@ -128,7 +128,7 @@ void ui_message(const char* format, ...)
     tmp = lib_mvsprintf(format,ap);
     va_end(ap);
 
-    message_box_ok("VICE MESSAGE", tmp);
+    message_box("VICE MESSAGE", tmp, MESSAGE_OK);
 
     lib_free(tmp);
 }
@@ -163,6 +163,7 @@ int ui_emulation_is_paused(void)
 /* uiapi.h */
 
 static int save_resources_on_exit;
+static int confirm_on_exit;
 
 static int set_ui_menukey(int val, void *param)
 {
@@ -173,6 +174,12 @@ static int set_ui_menukey(int val, void *param)
 static int set_save_resources_on_exit(int val, void *param)
 {
     save_resources_on_exit = val;
+    return 0;
+}
+
+static int set_confirm_on_exit(int val, void *param)
+{
+    confirm_on_exit = val;
     return 0;
 }
 
@@ -197,15 +204,26 @@ static const resource_int_t resources_int[] = {
       &sdl_ui_menukeys[8], set_ui_menukey, (void *)MENU_ACTION_MAP },
     { "SaveResourcesOnExit", 0, RES_EVENT_NO, NULL,
       &save_resources_on_exit, set_save_resources_on_exit, NULL },
+    { "ConfirmOnExit", 0, RES_EVENT_NO, NULL,
+      &confirm_on_exit, set_confirm_on_exit, NULL },
     { NULL },
 };
 
 void ui_sdl_quit(void)
 {
+    if (confirm_on_exit)
+    {
+        if (message_box("VICE QUESTION","Do you really want to exit?", MESSAGE_YESNO) == 1)
+        {
+            return;
+        }
+    }
+
     if (save_resources_on_exit)
     {
-        if (resources_save(NULL) < 0) {
-          ui_error("Cannot save current settings.");
+        if (resources_save(NULL) < 0)
+        {
+            ui_error("Cannot save current settings.");
         }
     }
     exit(0);
@@ -292,7 +310,7 @@ void ui_error(const char *format,...)
     tmp = lib_mvsprintf(format, ap);
     va_end(ap);
 
-    message_box_ok("VICE ERROR", tmp);
+    message_box("VICE ERROR", tmp, MESSAGE_OK);
 
     lib_free(tmp);
 }
@@ -314,6 +332,10 @@ void ui_display_drive_current_image(unsigned int drive_number,
                                     const char *image){}
 int ui_extend_image_dialog(void)
 {
+    if (message_box("VICE QUESTION", "Extend image to 40-track format?", MESSAGE_YESNO) == 0)
+    {
+        return 1;
+    }
     return 0;
 }
 
@@ -327,7 +349,18 @@ void ui_display_tape_current_image(const char *image){}
 /* Show a CPU JAM dialog.  */
 ui_jam_action_t ui_jam_dialog(const char *format, ...)
 {
-    return 0;
+    int retval;
+
+    retval = message_box("VICE CPU JAM", "a CPU JAM has occured, choose the action to take", MESSAGE_CPUJAM);
+    if (retval == 0)
+    {
+        return UI_JAM_HARD_RESET;
+    }
+    if (retval == 1)
+    {
+        return UI_JAM_MONITOR;
+    }
+    return UI_JAM_NONE;
 }
 
 /* Update all menu entries.  */
@@ -373,4 +406,3 @@ int uicolor_set_palette(struct video_canvas_s *c,
 fprintf(stderr,"%s\n",__func__);
     return 0;
 }
-
