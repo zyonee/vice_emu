@@ -381,46 +381,29 @@ gboolean delete_event(GtkWidget *w, GdkEvent *e, gpointer data)
 
 void mouse_handler(GtkWidget *w, GdkEvent *event, gpointer data)
 {
-    video_canvas_t *canvas = (video_canvas_t *) data;
-
-    if (! _mouse_enabled) {
-#if 0
-    /* alankila: why do we need lmb/rmb menus when this same stuff is
-     * just at the top of the stupid emu window? */
-    if (event->type == GDK_BUTTON_PRESS) {
-        GdkEventButton *bevent = (GdkEventButton *) event;
-        if (bevent->button == 1) {
-            ui_menu_update_all_GTK();
-            gtk_menu_popup(GTK_MENU(left_menu),NULL,NULL,NULL,NULL,
-                           bevent->button, bevent->time);
-        } else {
-            ui_menu_update_all_GTK();
-            gtk_menu_popup(GTK_MENU(right_menu),NULL,NULL,NULL,NULL,
-                           bevent->button, bevent->time);
-        }
-    }
-#else
-        /* show menubar in response to right click, assumed
-         * user is looking for way out of fullscreen... */
-        if (fullscreen_is_enabled && event->type == GDK_BUTTON_PRESS) {
-            GdkEventButton *bevent = (GdkEventButton *) event;
-            if (bevent->button == 3)
-                ui_fullscreen_statusbar(canvas, 1);
-        }
-#endif
-        return;
-    }
-
-    if (event->type == GDK_BUTTON_PRESS) {
-        GdkEventButton *bevent = (GdkEventButton *) event;
-        mouse_button(bevent->button-1,TRUE);
-    } else if (event->type == GDK_BUTTON_RELEASE) {
-        GdkEventButton *bevent = (GdkEventButton *) event;
-        mouse_button(bevent->button-1,FALSE);
-    } else if (event->type == GDK_MOTION_NOTIFY) {
-        GdkEventMotion *mevent = (GdkEventMotion *) event;
-        mouse_move((int) mevent->x, (int) mevent->y);
-    }
+   if(event->type == GDK_BUTTON_PRESS) {
+      GdkEventButton *bevent = (GdkEventButton*) event;
+      if(_mouse_enabled) {
+          mouse_button(bevent->button-1,TRUE);
+      } else {
+          if(bevent->button == 1) {
+              ui_menu_update_all_GTK();
+              gtk_menu_popup(GTK_MENU(left_menu),NULL,NULL,NULL,NULL,
+                             bevent->button, bevent->time);
+          } else if(bevent->button == 3) {
+              ui_menu_update_all_GTK();
+              gtk_menu_popup(GTK_MENU(right_menu),NULL,NULL,NULL,NULL,
+                             bevent->button, bevent->time);
+          }
+      }
+   } else if (event->type == GDK_BUTTON_RELEASE && _mouse_enabled) {
+       GdkEventButton *bevent = (GdkEventButton*) event;
+      mouse_button(bevent->button-1,FALSE);
+   } else if (event->type == GDK_MOTION_NOTIFY && _mouse_enabled) {
+       GdkEventMotion *mevent = (GdkEventMotion*) event;
+       mouse_move((int)mevent->x, (int)mevent->y);
+      /* printf("%d/%d\n", (int)mevent->x, (int)mevent->y); */
+   }
 }
 
 static gboolean fliplist_popup_cb(GtkWidget *w, GdkEvent *event, gpointer data)
