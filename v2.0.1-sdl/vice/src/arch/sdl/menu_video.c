@@ -45,28 +45,61 @@ UI_MENU_DEFINE_INT(PALScanLineShade)
 UI_MENU_DEFINE_INT(PALBlur)
 UI_MENU_DEFINE_INT(PALOddLinePhase)
 UI_MENU_DEFINE_INT(PALOddLineOffset)
-UI_MENU_DEFINE_TOGGLE(PALEmulation)
-UI_MENU_DEFINE_RADIO(PALMode)
+
+static UI_MENU_CALLBACK(PALMode_callback)
+{
+    int palemulation;
+    int palmode;
+    int parameter;
+
+    parameter = (int)param;
+
+    if (activated)
+    {
+        if (parameter == 0)
+        {
+            resources_set_int("PALEmulation", 0);
+        }
+        else
+        {
+            resources_set_int("PALEmulation", 1);
+            resources_set_int("PALMode", parameter - 1);
+        }
+    }
+    else
+    {
+        resources_get_int("PALEmulation", &palemulation);
+        resources_get_int("PALMode", &palmode);
+        if (!parameter && !palemulation)
+        {
+            return sdl_menu_text_tick;
+        }
+        if (parameter && palemulation && palmode == parameter - 1)
+        {
+            return sdl_menu_text_tick;
+        }
+    }
+    return NULL;
+}
 
 const ui_menu_entry_t pal_controls_menu[] = {
-    { "PAL emulation",
-      MENU_ENTRY_RESOURCE_TOGGLE,
-      toggle_PALEmulation_callback,
-      NULL },
-    SDL_MENU_ITEM_SEPARATOR,
     SDL_MENU_ITEM_TITLE("PAL mode"),
-    { "Fast",
-      MENU_ENTRY_RESOURCE_RADIO,
-      radio_PALMode_callback,
+    { "None",
+      MENU_ENTRY_OTHER,
+      PALMode_callback,
       (ui_callback_data_t)0 },
-    { "Old",
-      MENU_ENTRY_RESOURCE_RADIO,
-      radio_PALMode_callback,
+    { "Fast",
+      MENU_ENTRY_OTHER,
+      PALMode_callback,
       (ui_callback_data_t)1 },
-    { "New",
-      MENU_ENTRY_RESOURCE_RADIO,
-      radio_PALMode_callback,
+    { "Old",
+      MENU_ENTRY_OTHER,
+      PALMode_callback,
       (ui_callback_data_t)2 },
+    { "New",
+      MENU_ENTRY_OTHER,
+      PALMode_callback,
+      (ui_callback_data_t)3 },
     SDL_MENU_ITEM_SEPARATOR,
     SDL_MENU_ITEM_TITLE("PAL controls"),
     { "PAL shade (0-1000) : ",
