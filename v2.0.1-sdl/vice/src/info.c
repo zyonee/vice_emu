@@ -1192,5 +1192,5 @@ const char info_contrib_text[] =
 "\n"
 "Last but not least, a very special thanks to Andreas Arens, Lutz\n"
 "Sammer, Edgar Tornig, Christian Bauer, Wolfgang Lorenz, Miha\n"
-"Peternel and Per H^akan Sundell for writing cool emulators to\n"
+"Peternel and Per Håkan Sundell for writing cool emulators to\n"
 "compete with.  :-)\n\n";

@@ -113,7 +113,7 @@ static char *contrib_convert(char *text)
         }
         else
         {
-            if (text[i] == ' ' && text[i + 1] == '<')
+            if ((text[i] == ' ' || text[i] == '\n') && text[i + 1] == '<')
             {
                 while (text[i] != '>')
                 {
@@ -203,8 +203,27 @@ static void show_text(const char *text)
             {
                 switch (text[current_line + x])
                 {
+                    case '`':
+                        string[x + z] = '\'';
+                        break;
+                    case 'ä':
+                        string[x + z] = 'a';
+                        break;
                     case '~':
                         string[x + z] = '-';
+                        break;
+                    case 'é':
+                    case 'è':
+                        string[x + z] = 'e';
+                        break;
+                    case 'Ö':
+                        string[x + z] = 'O';
+                        break;
+                    case 'ö':
+                        string[x + z] = 'o';
+                        break;
+                    case 'å':
+                        string[x + z] = 'a';
                         break;
                     case '\t':
                         string[x + z] = ' ';
