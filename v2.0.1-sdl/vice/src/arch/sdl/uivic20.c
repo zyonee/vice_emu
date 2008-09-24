@@ -34,6 +34,7 @@
 #include "lib.h"
 #include "machine.h"
 #include "menu_common.h"
+#include "menu_drive.h"
 #include "menu_help.h"
 #include "menu_reset.h"
 #include "menu_screenshot.h"
@@ -46,12 +47,6 @@
 #include "ui.h"
 #include "uimenu.h"
 #include "vic20memrom.h"
-
-/* temporary empty drive menu, this one will be moved out to menu_drive.c */
-static ui_menu_entry_t drive_menu[] = {
-    SDL_MENU_ITEM_SEPARATOR,
-    { NULL }
-};
 
 /* temporary empty tape menu, this one will be moved out to menu_tape.c */
 static ui_menu_entry_t tape_menu[] = {
@@ -90,53 +85,53 @@ static const ui_menu_entry_t xvic_main_menu[] = {
       MENU_ENTRY_DIALOG,
       autostart_callback,
       NULL },
-    { "Drive (todo)",
+    { "Drive",
       MENU_ENTRY_SUBMENU,
-      NULL,
+      submenu_callback,
       (ui_callback_data_t)drive_menu },
     { "Tape (todo)",
       MENU_ENTRY_SUBMENU,
-      NULL,
+      submenu_callback,
       (ui_callback_data_t)tape_menu },
     { "Cartridge",
       MENU_ENTRY_SUBMENU,
-      NULL,
+      submenu_callback,
       (ui_callback_data_t)vic20cart_menu },
     { "Machine settings (todo)",
       MENU_ENTRY_SUBMENU,
-      NULL,
+      submenu_callback,
       (ui_callback_data_t)vic20_hardware_menu },
     { "ROM settings (todo)",
       MENU_ENTRY_SUBMENU,
-      NULL,
+      submenu_callback,
       (ui_callback_data_t)vic20_rom_menu },
     { "Video settings",
       MENU_ENTRY_SUBMENU,
-      NULL,
+      submenu_callback,
       (ui_callback_data_t)vic20_video_menu },
     { "Sound output settings",
       MENU_ENTRY_SUBMENU,
-      NULL,
+      submenu_callback,
       (ui_callback_data_t)sound_output_menu },
     { "Sound record settings",
       MENU_ENTRY_SUBMENU,
-      NULL,
+      submenu_callback,
       (ui_callback_data_t)sound_record_menu },
     { "Snapshot (todo)",
       MENU_ENTRY_SUBMENU,
-      NULL,
+      submenu_callback,
       (ui_callback_data_t)snapshot_menu },
     { "Screenshot (to be fixed)",
       MENU_ENTRY_SUBMENU,
-      NULL,
+      submenu_callback,
       (ui_callback_data_t)screenshot_menu },
     { "Speed settings",
       MENU_ENTRY_SUBMENU,
-      NULL,
+      submenu_callback,
       (ui_callback_data_t)speed_menu },
     { "Reset",
       MENU_ENTRY_SUBMENU,
-      NULL,
+      submenu_callback,
       (ui_callback_data_t)reset_menu },
     { "Pause (todo)",
       MENU_ENTRY_OTHER,
@@ -149,16 +144,16 @@ static const ui_menu_entry_t xvic_main_menu[] = {
 #ifdef DEBUG
     { "Debug (todo)",
       MENU_ENTRY_SUBMENU,
-      NULL,
+      submenu_callback,
       (ui_callback_data_t)debug_menu },
 #endif
     { "Help",
       MENU_ENTRY_SUBMENU,
-      NULL,
+      submenu_callback,
       (ui_callback_data_t)help_menu },
     { "Settings management",
       MENU_ENTRY_SUBMENU,
-      NULL,
+      submenu_callback,
       (ui_callback_data_t)settings_manager_menu },
     { "Quit emulator",
       MENU_ENTRY_OTHER,

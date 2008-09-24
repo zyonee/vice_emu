@@ -32,6 +32,8 @@ libarch_a_SOURCES = \
 	menu_c64cart.h \
 	menu_common.c \
 	menu_common.h \
+	menu_drive.c \
+	menu_drive.h \
 	menu_help.c \
 	menu_help.h \
 	menu_plus4cart.c \

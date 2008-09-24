@@ -190,24 +190,7 @@ static void sdl_ui_display_item(ui_menu_entry_t *item, int y_pos)
     if((item->type == MENU_ENTRY_TEXT)&&((int)item->data == 1)) {
         sdl_ui_reverse_colors();
     }
-
-    switch(item->type) {
-        case MENU_ENTRY_RESOURCE_STRING:
-        case MENU_ENTRY_RESOURCE_INT:
-            i += 3;
-            /* fall through */
-        case MENU_ENTRY_RESOURCE_TOGGLE:
-        case MENU_ENTRY_RESOURCE_RADIO:
-        case MENU_ENTRY_DIALOG:
-        case MENU_ENTRY_OTHER:
-            sdl_ui_print(item->callback(0, item->data), MENU_FIRST_X+i+1, y_pos+MENU_FIRST_Y);
-            break;
-        case MENU_ENTRY_SUBMENU:
-            sdl_ui_print("->", MENU_FIRST_X+i, y_pos+MENU_FIRST_Y);
-            break;
-        default:
-            break;
-    }
+    sdl_ui_print(item->callback(0, item->data), MENU_FIRST_X+i+1, y_pos+MENU_FIRST_Y);
 }
 
 static void sdl_ui_menu_redraw(ui_menu_entry_t *menu, const char *title, int num_items)
@@ -219,7 +202,7 @@ static void sdl_ui_menu_redraw(ui_menu_entry_t *menu, const char *title, int num
     sdl_ui_display_title(title);
 
     for(i=0; i<num_items; ++i) {
-        if(num_items == (menu_draw.max_text_y - MENU_FIRST_Y)) {
+        if(num_items > (menu_draw.max_text_y - MENU_FIRST_Y)) {
             break;
         }
         sdl_ui_display_item(&(menu[i]), i);
@@ -701,6 +684,5 @@ void sdl_ui_set_double_x(int value)
 
 menu_draw_t *sdl_ui_get_menu_param(void)
 {
-  return &menu_draw;
+    return &menu_draw;
 }
-

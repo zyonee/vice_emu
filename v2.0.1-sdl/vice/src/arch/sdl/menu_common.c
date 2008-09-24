@@ -54,6 +54,16 @@ const char* sdl_menu_text_exit_ui = "\1";
 /* ------------------------------------------------------------------ */
 /* Common callbacks */
 
+UI_MENU_CALLBACK(submenu_callback)
+{
+    return "->";
+}
+
+UI_MENU_CALLBACK(seperator_callback)
+{
+    return NULL;
+}
+
 UI_MENU_CALLBACK(autostart_callback)
 {
     char *name = NULL;

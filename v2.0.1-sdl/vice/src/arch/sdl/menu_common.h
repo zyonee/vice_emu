@@ -39,7 +39,8 @@ extern const char *sdl_menu_text_tick;
 extern const char *sdl_menu_text_unknown;
 extern const char *sdl_menu_text_exit_ui;
 
-#define SDL_MENU_ITEM_SEPARATOR { "", MENU_ENTRY_TEXT, NULL, NULL }
+#define SDL_MENU_ITEM_SEPARATOR { "", MENU_ENTRY_TEXT, seperator_callback, NULL }
+#define SDL_MENU_ITEM_TITLE(title) { title, MENU_ENTRY_TEXT, seperator_callback, (ui_callback_data_t)1 }
 
 #define UI_MENU_CALLBACK(name)                            \
     const char *name(int activated, ui_callback_data_t param)
@@ -72,6 +73,8 @@ extern UI_MENU_CALLBACK(autostart_callback);
 extern UI_MENU_CALLBACK(pause_callback);
 extern UI_MENU_CALLBACK(monitor_callback);
 extern UI_MENU_CALLBACK(quit_callback);
+extern UI_MENU_CALLBACK(submenu_callback);
+extern UI_MENU_CALLBACK(seperator_callback);
 
 extern const char *sdl_ui_menu_toggle_helper(int activated, const char *resource_name);
 extern const char *sdl_ui_menu_radio_helper(int activated, ui_callback_data_t param, const char *resource_name);
@@ -79,4 +82,3 @@ extern const char *sdl_ui_menu_string_helper(int activated, ui_callback_data_t p
 extern const char *sdl_ui_menu_int_helper(int activated, ui_callback_data_t param, const char *resource_name);
 
 #endif
-

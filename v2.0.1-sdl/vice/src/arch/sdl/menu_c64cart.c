@@ -158,7 +158,7 @@ static const ui_menu_entry_t expert_cart_menu[] = {
       enable_expert_callback,
       NULL },
     SDL_MENU_ITEM_SEPARATOR,
-    { "Expert cartridge mode", MENU_ENTRY_TEXT, NULL, (ui_callback_data_t)1 },
+    SDL_MENU_ITEM_TITLE("Expert cartridge mode"),
     { "Off",
       MENU_ENTRY_RESOURCE_RADIO,
       radio_CartridgeMode_callback,
@@ -255,7 +255,7 @@ const ui_menu_entry_t c64cart_menu[] = {
     SDL_MENU_ITEM_SEPARATOR,
     { "Expert cartridge settings",
       MENU_ENTRY_SUBMENU,
-      NULL,
+      submenu_callback,
       (ui_callback_data_t)expert_cart_menu },
     { NULL }
 };
