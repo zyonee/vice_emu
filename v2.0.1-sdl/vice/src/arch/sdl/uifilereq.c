@@ -81,7 +81,76 @@ static char* sdl_ui_get_file_selector_entry(ioutil_dir_t *directory, int offset,
     }
 }
 
-static void sdl_ui_file_selector_redraw(ioutil_dir_t *directory, const char *title, int offset, int num_items, int more)
+
+static void sdl_ui_display_path(const char *current_dir)
+{
+    int len;
+    char *text = NULL;
+    char *temp = NULL;
+    int before = 0;
+    int after = 0;
+    int pos = 0;
+    int amount = 0;
+    int i;
+
+    len = strlen(current_dir);
+
+    if (len > menu_draw->max_text_x)
+    {
+        text = lib_stralloc(current_dir);
+        
+        temp = strchr(current_dir + 1, FSDEV_DIR_SEP_CHR);
+        before = temp - current_dir + 1;
+
+        while (temp != NULL)
+        {
+            amount++;
+            temp = strchr(temp + 1, FSDEV_DIR_SEP_CHR);
+        }
+
+        while(text[len - after] != FSDEV_DIR_SEP_CHR)
+        {
+            after++;
+        }
+
+        if (amount > 1 && (before + after + 3) < menu_draw->max_text_x)
+        {
+
+            temp = strchr(current_dir + 1, FSDEV_DIR_SEP_CHR);
+            while (((temp - current_dir + 1) < (menu_draw->max_text_x - after - 3)) && temp != NULL)
+            {
+                before = temp - current_dir + 1;
+                temp = strchr(temp + 1, FSDEV_DIR_SEP_CHR);
+            }
+        }
+        else
+        {
+            before = (menu_draw->max_text_x - 3) /2;
+            after = len - (len - menu_draw->max_text_x) - before - 3;
+        }
+        pos = len - after;
+        text[before] = '.';
+        text[before + 1] = '.';
+        text[before + 2] = '.';
+        for (i = 0; i < after; i++)
+        {
+            text[before + 3 + i] = text[pos + i];
+        }
+        text[before + 3 + after] = 0;
+        sdl_ui_print(text, 0, 2);
+    }
+    else
+    {
+        sdl_ui_print(current_dir, 0, 2);
+    }
+
+    if (text != NULL)
+    {
+        lib_free(text);
+    }
+}
+
+static void sdl_ui_file_selector_redraw(ioutil_dir_t *directory, const char *title, const char *current_dir, int offset, int num_items, int more)
 {
     int i, j, isdir = 0;
     char* title_string;
@@ -93,6 +162,7 @@ static void sdl_ui_file_selector_redraw(ioutil_dir_t *directory, const char *tit
     sdl_ui_clear();
     sdl_ui_display_title(title_string);
     lib_free(title_string);
+    sdl_ui_display_path(current_dir);
 
     for (i = 0; i < num_items; ++i)
     {
@@ -100,9 +170,9 @@ static void sdl_ui_file_selector_redraw(ioutil_dir_t *directory, const char *tit
         name = sdl_ui_get_file_selector_entry(directory, offset+i, &isdir);
         if (isdir)
         {
-            j += 1 + sdl_ui_print("(D)", menu_draw->first_x, i+menu_draw->first_y);
+            j += 1 + sdl_ui_print("(D)", menu_draw->first_x, i+menu_draw->first_y + 2);
         }
-        sdl_ui_print(name, j, i+menu_draw->first_y);
+        sdl_ui_print(name, j, i+menu_draw->first_y + 2);
     }
 }
 
@@ -142,18 +212,18 @@ char* sdl_ui_file_selection_dialog(const char* title, ui_menu_filereq_mode_t mod
     dirs = directory->dir_amount;
     files = directory->file_amount;
     total = dirs + files + 2;
-    menu_max = menu_draw->max_text_y - menu_draw->first_y;
+    menu_max = menu_draw->max_text_y - (menu_draw->first_y + 2);
 
     while(active)
     {
         if (redraw)
         {
-            sdl_ui_file_selector_redraw(directory, title, offset,
+            sdl_ui_file_selector_redraw(directory, title, current_dir, offset,
                                         (total-offset > menu_max) ? menu_max : total-offset,
                                         (total-offset > menu_max) ? 1 : 0);
             redraw = 0;
         }
-        sdl_ui_display_cursor(cur, cur_old);
+        sdl_ui_display_cursor((cur + 2) , (cur_old == -1) ? -1 : (cur_old + 2));
         sdl_ui_refresh();
 
         switch(sdl_ui_menu_poll_input())
