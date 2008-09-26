@@ -268,7 +268,7 @@ static int pause_pending;
 static ui_menu_translation_table_t *menu_translation_table;
 static ui_popup_translation_table_t *popup_translation_table;
 
-int ui_register_translation_tables(ui_menu_translation_table_t *menu_table, ui_popup_translation_table_t *popup_table)
+void ui_register_translation_tables(ui_menu_translation_table_t *menu_table, ui_popup_translation_table_t *popup_table)
 {
     menu_translation_table = menu_table;
     popup_translation_table = popup_table;
@@ -770,6 +770,25 @@ void ui_message(const char *format, ...)
     system_mbstowcs_free(st);
     vsync_suspend_speed_eval();
     lib_free(tmp);
+}
+
+/* Let the user browse for a filename */
+char *ui_get_file(const char *format,...)
+{
+    char *tmp;
+    char *st;
+    va_list args;
+
+    va_start(args, format);
+    tmp = lib_mvsprintf(format, args);
+    va_end(args);
+
+    st = uilib_select_file(NULL, tmp, UILIB_FILTER_ALL,
+                                UILIB_SELECTOR_TYPE_FILE_LOAD,
+                                UILIB_SELECTOR_STYLE_DISK);
+    lib_free(tmp);
+
+    return st;
 }
 
 /* Handle the "CPU JAM" case.  */

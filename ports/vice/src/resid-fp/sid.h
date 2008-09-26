@@ -17,10 +17,10 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //  ---------------------------------------------------------------------------
 
-#ifndef __SID_H__
-#define __SID_H__
+#ifndef __SID_FP_H__
+#define __SID_FP_H__
 
-#include "siddefs.h"
+#include "siddefs-fp.h"
 #include "voice.h"
 #include "filter.h"
 #include "extfilt.h"
@@ -33,6 +33,7 @@ public:
   ~SIDFP();
 
   static float kinked_dac(const int x, const float nonlinearity, const int bits);
+  bool sse_enabled() { return can_use_sse; }
 
   void set_chip_model(chip_model model);
   FilterFP& get_filter() { return filter; }
