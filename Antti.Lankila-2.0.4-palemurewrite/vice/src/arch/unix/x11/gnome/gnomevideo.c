@@ -133,19 +133,6 @@ void video_canvas_destroy(video_canvas_t *canvas)
 int video_canvas_set_palette(video_canvas_t *canvas, struct palette_s *palette)
 {
     canvas->palette = palette;
-   
-    canvas->needs_endianswap = 0;
-    if (canvas->gdk_image) {
-#ifdef WORDS_BIGENDIAN
-        if (canvas->gdk_image->byte_order == GDK_LSB_FIRST)
-#else
-        if (canvas->gdk_image->byte_order == GDK_MSB_FIRST)
-#endif
-        {
-            canvas->needs_endianswap = 1;
-        }
-    }
-
     return uicolor_set_palette(canvas, canvas->palette);
 }
 

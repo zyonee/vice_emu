@@ -76,25 +76,17 @@ void store_line_and_scanline_3(
                | gamma_grn_fac[(grn + prevline[1]) >> 1]
                | gamma_blu_fac[(blu + prevline[2]) >> 1];
     DWORD tmp2 = gamma_red[red] | gamma_grn[grn] | gamma_blu[blu];
-#ifdef WORDS_BIGENDIAN    
-    scanline[0] = (BYTE) (tmp1 >> 16);
-    scanline[1] = (BYTE) (tmp1 >> 8);
-    scanline[2] = (BYTE) (tmp1 >> 0);
-#else
-    scanline[0] = (BYTE) (tmp1 >> 0);
-    scanline[1] = (BYTE) (tmp1 >> 8);
-    scanline[2] = (BYTE) (tmp1 >> 16);
-#endif
+    scanline[0] = (BYTE) tmp1;
+    tmp1 >>= 8;
+    scanline[1] = (BYTE) tmp1;
+    tmp1 >>= 8;
+    scanline[2] = (BYTE) tmp1;
     
-#ifdef WORDS_BIGENDIAN    
-    line[0] = (BYTE) (tmp2 >> 16);
-    line[1] = (BYTE) (tmp2 >> 8);
-    line[2] = (BYTE) (tmp2 >> 0);
-#else
-    line[0] = (BYTE) (tmp2 >> 0);
-    line[1] = (BYTE) (tmp2 >> 8);
-    line[2] = (BYTE) (tmp2 >> 16);
-#endif
+    line[0] = (BYTE) tmp2;
+    tmp2 >>= 8;
+    line[1] = (BYTE) tmp2;
+    tmp2 >>= 8;
+    line[2] = (BYTE) tmp2;
 
     prevline[0] = red;
     prevline[1] = grn;
@@ -118,7 +110,6 @@ void store_line_and_scanline_4(
     prevline[1] = grn;
     prevline[2] = blu;
 }
-
 
 static inline
 void get_rgb_from_video(

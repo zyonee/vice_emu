@@ -104,6 +104,9 @@ unsigned int endian_swap(unsigned int color, unsigned int bpp, unsigned int swap
         return ((color >> 8) & 0x00ff)
              | ((color << 8) & 0xff00);
 
+    if (bpp == 24)
+        return color; /* 24 bpp output special case at renderer level, always writes out with LSB order regardless of host CPU, handled elsewhere */
+
     if (bpp == 32)
         return ((color >> 24) & 0x000000ff)
              | ((color >>  8) & 0x0000ff00)
@@ -116,74 +119,63 @@ unsigned int endian_swap(unsigned int color, unsigned int bpp, unsigned int swap
 
 int uicolor_set_palette(struct video_canvas_s *c, const palette_t *palette)
 {
-    unsigned int i, rs, gs, bs, redbits, grnbits, blubits;
-    unsigned int swap = c->needs_endianswap;
+    unsigned int i, rs, gs, bs, rb, gb, bb, bpp, swap;
 
-    /* hwscaled colours are special case, we must do GL_RGB then. */
+    /* Hwscaled colours are expected in GL_RGB order. 24 bpp renderers are
+     * special, they always seem to expect color order to be logically ABGR,
+     * which they write out in RGB memory order. (Glorious, eh?) */
     if (c->videoconfig->hwscale) {
-        swap = 0;
-        redbits = 8;
-        grnbits = 8;
-        blubits = 8;
-#ifdef WORDS_BIGENDIAN
-        rs = 16;
-        gs = 8;
-        bs = 0;
-#else
+        bpp = 24;
+        rb = 8;
+        gb = 8;
+        bb = 8;
         rs = 0;
         gs = 8;
         bs = 16;
-#endif
+        swap = 0;
     } else {
-        /* I don't support indexed palettes. */
-        if (c->gdk_image->depth == 16) {
-            redbits = 5;
-            grnbits = 6;
-            blubits = 5;
-        } else if (c->gdk_image->depth == 15) {
-            /* When I tested this on ATI Radeon Mobility 7500 the desktop had
-             * false colours, so not even GNOME really supports this. Also,
-             * the color order was not rgb, but more like brg... */
-            redbits = 5;
-            grnbits = 5;
-            blubits = 5;
-        } else if (c->gdk_image->bits_per_pixel == 24
-                   || c->gdk_image->bits_per_pixel == 32) {
-            redbits = 8;
-            grnbits = 8;
-            blubits = 8;
-        } else {
-            /* whoops. What is this mode? */
-            log_error(LOG_ERR, "Sorry. I don't know how to handle your video mode colours with %d depth and %d bits per pixel. At least 8-bit pseudocolor modes are not supported by GNOMEUI. 15, 16, 24 and 32, however, should work.", c->gdk_image->depth, c->gdk_image->bits_per_pixel);
-            exit(1);
-        }
-
-        rs = grnbits + blubits;
-        gs = blubits;
-        bs = 0;
+        GdkVisual *vis = c->gdk_image->visual;
+        bpp = vis->depth;
+        rb = vis->red_prec;
+        gb = vis->green_prec;
+        bb = vis->blue_prec;
+        rs = vis->red_shift;
+        gs = vis->green_shift;
+        bs = vis->blue_shift;
+#ifdef WORDS_BIGENDIAN
+        swap = vis->byte_order == GDK_LSB_FIRST;
+#else
+        swap = vis->byte_order == GDK_MSB_FIRST;
+#endif
+        /* 24 bpp modes do not really work with the existing
+         * arrangement as they have been written to assume the A component is
+         * in the 32-bit longword bits 24-31. If any arch needs 24 bpp, that
+         * code must be specially written for it. */
     }
 
     for (i = 0; i < palette->num_entries; i++) {
         palette_entry_t color = palette->entries[i];
+        /* scale 256 color palette for Gdk terms, then shift to precision,
+         * then move component where it needs to be. */
         DWORD color_pixel = endian_swap(
-            color.red   >> (8-redbits) << rs |
-            color.green >> (8-grnbits) << gs |
-            color.blue  >> (8-blubits) << bs,
-            c->gdk_image->bits_per_pixel,
+            color.red   << 8 >> (16 - rb) << rs |
+            color.green << 8 >> (16 - gb) << gs |
+            color.blue  << 8 >> (16 - bb) << bs,
+            bpp,
             swap
         );
         video_render_setphysicalcolor(c->videoconfig, i, color_pixel,
-                                      c->gdk_image->bits_per_pixel);
+                                      bpp);
     }
     
-    for (i = 0; i < 256; i++) {
+    for (i = 0; i < 256; i ++) {
         video_render_setrawrgb(i, 
-            endian_swap(i >> (8-redbits) << rs,
-                        c->gdk_image->bits_per_pixel, swap),
-            endian_swap(i >> (8-grnbits) << gs,
-                        c->gdk_image->bits_per_pixel, swap),
-            endian_swap(i >> (8-blubits) << bs,
-                        c->gdk_image->bits_per_pixel, swap)
+            endian_swap(i << 8 >> (16 - rb) << rs,
+                        bpp, swap),
+            endian_swap(i << 8 >> (16 - gb) << gs,
+                        bpp, swap),
+            endian_swap(i << 8 >> (16 - bb) << bs,
+                        bpp, swap)
         );
     }
     

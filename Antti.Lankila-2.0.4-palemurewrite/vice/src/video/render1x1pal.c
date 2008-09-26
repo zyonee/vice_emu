@@ -45,15 +45,11 @@ static inline void
 store_pixel_3(BYTE *trg, WORD red, WORD grn, WORD blu)
 {
     DWORD tmp = gamma_red[red] | gamma_grn[grn] | gamma_blu[blu];
-#ifdef WORDS_BIGENDIAN
-    trg[0] = (BYTE) (tmp >> 16);
-    trg[1] = (BYTE) (tmp >> 8);
-    trg[2] = (BYTE) (tmp >> 0);
-#else
-    trg[0] = (BYTE) (tmp >> 0);
-    trg[1] = (BYTE) (tmp >> 8);
-    trg[2] = (BYTE) (tmp >> 16);
-#endif
+    trg[0] = (BYTE) tmp;
+    tmp >>= 8;
+    trg[1] = (BYTE) tmp;
+    tmp >>= 8;
+    trg[2] = (BYTE) tmp;
 }
 
 static inline void
