@@ -37,6 +37,7 @@
 #include "ui.h"
 #include "uifilereq.h"
 #include "uimenu.h"
+#include "util.h"
 
 enum {
     UI_FLIP_ADD,
@@ -409,7 +410,7 @@ static UI_MENU_CALLBACK(fliplist_callback)
                fliplist_attach_head(8, 0);
                break;
             case UI_FLIP_LOAD:
-                name = sdl_ui_file_selection_dialog("select fliplist", FILEREQ_MODE_CHOOSE_FILE);
+                name = sdl_ui_file_selection_dialog("select fliplist to load", FILEREQ_MODE_CHOOSE_FILE);
                 if (name != NULL)
                 {
                     if (fliplist_load_list((unsigned int)-1, name, 0) != 0)
@@ -421,9 +422,10 @@ static UI_MENU_CALLBACK(fliplist_callback)
                break;
             case UI_FLIP_SAVE:
             default:
-                name = sdl_ui_file_selection_dialog("select fliplist", FILEREQ_MODE_CHOOSE_FILE);
+                name = sdl_ui_file_selection_dialog("select fliplist to save", FILEREQ_MODE_CHOOSE_FILE);
                 if (name != NULL)
                 {
+                    util_add_extension(&name, "vfl");
                     if (fliplist_save_list((unsigned int)-1, name) != 0)
                     {
                         ui_error("Cannot save fliplist.");

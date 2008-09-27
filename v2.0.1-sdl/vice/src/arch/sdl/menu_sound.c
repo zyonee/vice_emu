@@ -37,6 +37,7 @@
 #include "sound.h"
 #include "uifilereq.h"
 #include "uimenu.h"
+#include "util.h"
 
 UI_MENU_DEFINE_RADIO(SoundSampleRate)
 UI_MENU_DEFINE_RADIO(SoundOversample)
@@ -147,9 +148,10 @@ static UI_MENU_CALLBACK(start_recording_callback)
         {
             char *name = NULL;
 
-            name = sdl_ui_file_selection_dialog("Choose audio file", FILEREQ_MODE_CHOOSE_FILE);
+            name = sdl_ui_file_selection_dialog("Choose audio file to record to", FILEREQ_MODE_CHOOSE_FILE);
             if (name != NULL)
             {
+                util_add_extension(&name, parameter);
                 resources_set_string("SoundRecordDeviceArg", name);
                 resources_set_string("SoundRecordDeviceName", parameter);
                 lib_free(name);

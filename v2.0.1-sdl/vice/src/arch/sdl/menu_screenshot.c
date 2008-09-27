@@ -29,6 +29,7 @@
 
 #include <stdlib.h>
 
+#include "gfxoutput.h"
 #include "lib.h"
 #include "menu_common.h"
 #include "menu_screenshot.h"
@@ -37,6 +38,7 @@
 #include "ui.h"
 #include "uifilereq.h"
 #include "uimenu.h"
+#include "util.h"
 #include "videoarch.h"
 
 static UI_MENU_CALLBACK(save_screenshot_callback)
@@ -45,6 +47,7 @@ static UI_MENU_CALLBACK(save_screenshot_callback)
     char *name = NULL;
     int width;
     int height;
+    gfxoutputdrv_t *selected_driver = NULL;
 
     if (activated) {
         sprintf(title, "Choose %s file", (char *)param);
@@ -53,6 +56,8 @@ static UI_MENU_CALLBACK(save_screenshot_callback)
             width = sdl_active_canvas->draw_buffer->draw_buffer_width;
             height = sdl_active_canvas->draw_buffer->draw_buffer_height;
             memcpy(sdl_active_canvas->draw_buffer->draw_buffer, sdl_ui_get_draw_buffer(), width * height);
+            selected_driver = gfxoutput_get_driver((char *)param);
+            util_add_extension(&name, selected_driver->default_extension);
             if (screenshot_save((char *)param, name, sdl_active_canvas) < 0) {
                 ui_error("Cannot save screenshot.");
             }
@@ -81,7 +86,7 @@ const ui_menu_entry_t screenshot_menu[] = {
     { "Save JPG screenshot",
       MENU_ENTRY_DIALOG,
       save_screenshot_callback,
-      (ui_callback_data_t)"JPG" },
+      (ui_callback_data_t)"JEPG" },
 #endif
     { "Save PCX screenshot",
       MENU_ENTRY_DIALOG,

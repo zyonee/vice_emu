@@ -40,6 +40,7 @@
 #include "ui.h"
 #include "uifilereq.h"
 #include "uimenu.h"
+#include "util.h"
 
 static int save_disks = 0;
 static int save_roms = 0;
@@ -84,9 +85,10 @@ static UI_MENU_CALLBACK(save_snapshot_callback)
 
     if (activated)
     {
-        name = sdl_ui_file_selection_dialog("Choose snapshot file", FILEREQ_MODE_CHOOSE_FILE);
+        name = sdl_ui_file_selection_dialog("Choose snapshot file to save", FILEREQ_MODE_CHOOSE_FILE);
         if (name != NULL)
         {
+            util_add_extension(&name, "vsf");
             if (machine_write_snapshot(name, save_roms, save_disks, 0) < 0)
             {
                 ui_error("Cannot save snapshot image.");
@@ -157,7 +159,7 @@ static UI_MENU_CALLBACK(load_snapshot_callback)
 
     if (activated)
     {
-        name = sdl_ui_file_selection_dialog("Choose snapshot file", FILEREQ_MODE_CHOOSE_FILE);
+        name = sdl_ui_file_selection_dialog("Choose snapshot file to load", FILEREQ_MODE_CHOOSE_FILE);
         if (name != NULL)
         {
             if (machine_read_snapshot(name, 0) < 0)
