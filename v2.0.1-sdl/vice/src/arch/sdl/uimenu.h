@@ -110,6 +110,7 @@ extern void sdl_ui_set_menu_borders(int x, int y);
 extern void sdl_ui_set_double_x(int value);
 extern menu_draw_t *sdl_ui_get_menu_param(void);
 
+extern BYTE *sdl_ui_get_draw_buffer(void);
 extern void sdl_ui_activate_pre_action(void);
 extern void sdl_ui_activate_post_action(void);
 extern void sdl_ui_init_draw_params(void);

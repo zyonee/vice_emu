@@ -40,6 +40,7 @@
 #include "menu_reset.h"
 #include "menu_screenshot.h"
 #include "menu_settings.h"
+#include "menu_snapshot.h"
 #include "menu_sound.h"
 #include "menu_speed.h"
 #include "menu_video_cbm2.h"
@@ -61,12 +62,6 @@ static ui_menu_entry_t cbm2_hardware_menu[] = {
 
 /* temporary empty cbm2 rom menu, this one will be moved out to menu_cbm2rom.c */
 static ui_menu_entry_t cbm2_rom_menu[] = {
-    SDL_MENU_ITEM_SEPARATOR,
-    { NULL }
-};
-
-/* temporary empty snapshot menu, this one will be moved out to menu_snapshot.c */
-static ui_menu_entry_t snapshot_menu[] = {
     SDL_MENU_ITEM_SEPARATOR,
     { NULL }
 };
@@ -112,11 +107,11 @@ static const ui_menu_entry_t xcbm6x0_7x0_main_menu[] = {
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)sound_record_menu },
-    { "Snapshot (todo)",
+    { "Snapshot",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)snapshot_menu },
-    { "Screenshot (to be fixed)",
+    { "Screenshot",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)screenshot_menu },
@@ -162,7 +157,7 @@ static const ui_menu_entry_t xcbm5x0_main_menu[] = {
       MENU_ENTRY_DIALOG,
       autostart_callback,
       NULL },
-    { "Drive (todo)",
+    { "Drive",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)drive_menu },
@@ -190,7 +185,7 @@ static const ui_menu_entry_t xcbm5x0_main_menu[] = {
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)sound_record_menu },
-    { "Snapshot (todo)",
+    { "Snapshot",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)snapshot_menu },
@@ -216,7 +211,7 @@ static const ui_menu_entry_t xcbm5x0_main_menu[] = {
       submenu_callback,
       (ui_callback_data_t)debug_menu },
 #endif
-    { "Help (todo)",
+    { "Help",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)help_menu },

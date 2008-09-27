@@ -142,62 +142,62 @@ static char *get_drive_type_string(int drive)
     switch (type)
     {
         case 0:
-            return "(none) ->";
+            return "-> (none)";
             break;
         case ATTACH_DEVICE_FS:
-            return "(directory) ->";
+            return "-> (directory)";
             break;
 #ifdef HAVE_OPENCBM
         case ATTACH_DEVICE_REAL:
-            return "(real drive) ->";
+            return "-> (real drive)";
             break;
 #endif
 #ifdef HAVE_RAWDRIVE
         case ATTACH_DEVICE_RAW:
-            return "(block device) ->";
+            return "-> (block device)";
             break;
 #endif
         case DRIVE_TYPE_1541II:
-            return "(1541-II) ->";
+            return "-> (1541-II)";
             break;
         case DRIVE_TYPE_1551:
-            return "(1551) ->";
+            return "-> (1551)";
             break;
         case DRIVE_TYPE_1570:
-            return "(1570) ->";
+            return "-> (1570)";
             break;
         case DRIVE_TYPE_1571:
-            return "(1571) ->";
+            return "-> (1571)";
             break;
         case DRIVE_TYPE_1571CR:
-            return "(1571CR) ->";
+            return "-> (1571CR)";
             break;
         case DRIVE_TYPE_1581:
-            return "(1581) ->";
+            return "-> (1581)";
             break;
         case DRIVE_TYPE_2031:
-            return "(2031) ->";
+            return "-> (2031)";
             break;
         case DRIVE_TYPE_2040:
-            return "(2040) ->";
+            return "-> (2040)";
             break;
         case DRIVE_TYPE_3040:
-            return "(3040) ->";
+            return "-> (3040)";
             break;
         case DRIVE_TYPE_4040:
-            return "(4040) ->";
+            return "-> (4040)";
             break;
         case DRIVE_TYPE_1001:
-            return "(1001) ->";
+            return "-> (1001)";
             break;
         case DRIVE_TYPE_8050:
-            return "(8050) ->";
+            return "-> (8050)";
             break;
         case DRIVE_TYPE_8250:
-            return "(8250) ->";
+            return "-> (8250)";
             break;
         default:
-            return "(1541) ->";
+            return "-> (1541)";
             break;
     }
 }

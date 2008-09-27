@@ -43,11 +43,16 @@ static UI_MENU_CALLBACK(save_screenshot_callback)
 {
     char title[20];
     char *name = NULL;
+    int width;
+    int height;
 
     if (activated) {
         sprintf(title, "Choose %s file", (char *)param);
         name = sdl_ui_file_selection_dialog(title, FILEREQ_MODE_CHOOSE_FILE);
         if (name != NULL) {
+            width = sdl_active_canvas->draw_buffer->draw_buffer_width;
+            height = sdl_active_canvas->draw_buffer->draw_buffer_height;
+            memcpy(sdl_active_canvas->draw_buffer->draw_buffer, sdl_ui_get_draw_buffer(), width * height);
             if (screenshot_save((char *)param, name, sdl_active_canvas) < 0) {
                 ui_error("Cannot save screenshot.");
             }

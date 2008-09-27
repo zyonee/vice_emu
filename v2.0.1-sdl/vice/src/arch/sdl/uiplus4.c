@@ -39,6 +39,7 @@
 #include "menu_reset.h"
 #include "menu_screenshot.h"
 #include "menu_settings.h"
+#include "menu_snapshot.h"f
 #include "menu_sound.h"
 #include "menu_speed.h"
 #include "menu_video_plus4.h"
@@ -61,12 +62,6 @@ static ui_menu_entry_t plus4_hardware_menu[] = {
 
 /* temporary empty plus4 rom menu, this one will be moved out to menu_plus4rom.c */
 static ui_menu_entry_t plus4_rom_menu[] = {
-    SDL_MENU_ITEM_SEPARATOR,
-    { NULL }
-};
-
-/* temporary empty snapshot menu, this one will be moved out to menu_snapshot.c */
-static ui_menu_entry_t snapshot_menu[] = {
     SDL_MENU_ITEM_SEPARATOR,
     { NULL }
 };
@@ -116,11 +111,11 @@ static const ui_menu_entry_t xplus4_main_menu[] = {
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)sound_record_menu },
-    { "Snapshot (todo)",
+    { "Snapshot",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)snapshot_menu },
-    { "Screenshot (to be fixed)",
+    { "Screenshot",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)screenshot_menu },

@@ -60,6 +60,8 @@ static ui_menu_entry_t *main_menu = NULL;
 
 static WORD sdl_default_translation[256];
 
+static BYTE *draw_buffer_backup = NULL;
+
 struct menufont_s {
     BYTE *font;
     WORD *translate;
@@ -292,7 +294,16 @@ static int sdl_ui_menu_item_activate(ui_menu_entry_t *item)
 
 static void sdl_ui_trap(WORD addr, void *data)
 {
+    int width;
+    int height;
+
+    width = sdl_active_canvas->draw_buffer->draw_buffer_width;
+    height = sdl_active_canvas->draw_buffer->draw_buffer_height;
+    draw_buffer_backup = (BYTE *)lib_malloc(width * height);
+    memcpy(draw_buffer_backup, sdl_active_canvas->draw_buffer->draw_buffer, width * height);
+
     sdl_ui_activate_pre_action();
+
     if(data == NULL) {
         sdl_ui_menu_display(main_menu, "VICE main menu");
     } else {
@@ -300,10 +311,16 @@ static void sdl_ui_trap(WORD addr, void *data)
         sdl_ui_menu_item_activate((ui_menu_entry_t *)data);
     }
     sdl_ui_activate_post_action();
+    lib_free(draw_buffer_backup);
 }
 
 /* ------------------------------------------------------------------ */
 /* External UI interface */
+
+BYTE *sdl_ui_get_draw_buffer(void)
+{
+    return draw_buffer_backup;
+}
 
 void sdl_ui_activate_pre_action(void)
 {
@@ -334,7 +351,9 @@ void sdl_ui_activate_post_action(void)
         resources_set_int(menu_draw.vcache_name, 0);
     }
 
+#if 0
     video_canvas_refresh_all(sdl_active_canvas);
+#endif
 
     if (vcache_state != 0) {
         resources_set_int(menu_draw.vcache_name, vcache_state);
