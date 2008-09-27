@@ -1,8 +1,11 @@
 /*
- * c128-resources.h
+ * midi.h - MIDI emulation.
  *
  * Written by
- *  Andreas Boose <viceteam@t-online.de>
+ *  Hannu Nuotio <hannu.nuotio@tut.fi>
+ *
+ * Based on code by
+ *  Andr. Fachat <a.fachat@physik.tu-chemnitz.de>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -24,18 +27,25 @@
  *
  */
 
-#ifndef _C128_RESOURCES_H
-#define _C128_RESOURCES_H
+#ifndef _MIDI_H
+#define _MIDI_H
 
-extern int c128_resources_init(void);
-extern void c128_resources_shutdown(void);
+#include "types.h"
 
-extern int emu_id_enabled;
-extern int ieee488_enabled;
-extern int reu_enabled;
-extern int acia_de_enabled;
-extern int acia_d7_enabled;
-extern int midi_enabled;
+extern void midi_init(void);
+extern void midi_reset(void);
+
+extern BYTE REGPARM1 midi_read(WORD a);
+extern void REGPARM2 midi_store(WORD a, BYTE b);
+
+extern int midi_resources_init(void);
+extern void midi_resources_shutdown(void);
+extern int midi_cmdline_options_init(void);
+
+/* Emulated interfaces */
+#define MIDI_MODE_SEQUENTIAL 0  /* Sequential Circuits Inc. */
+#define MIDI_MODE_PASSPORT   1  /* Passport & Syntech */
+#define MIDI_MODE_DATEL      2  /* DATEL/Siel/JMS */
+#define MIDI_MODE_NAMESOFT   3  /* Namesoft */
 
 #endif
-

@@ -37,6 +37,7 @@
 #include "digimax.h"
 #include "emuid.h"
 #include "lib.h"
+#include "midi.h"
 #include "mmc64.h"
 #include "monitor.h"
 #include "reu.h"
@@ -108,6 +109,7 @@ static io_source_t io_source_table[] = {
     {IO_SOURCE_DIGIMAX, "DIGIMAX", IO_DETACH_RESOURCE, "DIGIMAX"},
     {IO_SOURCE_ACTION_REPLAY4, "ACTION REPLAY 4", IO_DETACH_CART, NULL},
     {IO_SOURCE_STARDOS, "STARDOS", IO_DETACH_CART, NULL},
+    {IO_SOURCE_MIDI, "MIDI", IO_DETACH_RESOURCE, NULL},
     {-1,NULL,0,NULL}
 };
 
@@ -302,6 +304,13 @@ BYTE REGPARM1 c64io1_read(WORD addr)
         io_source_counter++;
     }
 #endif
+    if (midi_enabled)
+    {
+        return_value = midi_read((WORD)(addr & 0x0f));
+        io_source = IO_SOURCE_MIDI; /* FIXME */
+        io_source_check(io_source_counter);
+        io_source_counter++;
+    }
 
     if (returned == 0)
         return vicii_read_phi1();
@@ -361,6 +370,10 @@ void REGPARM2 c64io1_store(WORD addr, BYTE value)
         acia1_store((WORD)(addr & 0x07), value);
     }
 #endif
+    if (midi_enabled) {
+        midi_store((WORD)(addr & 0x0f), value);
+    }
+
     return;
 }
 

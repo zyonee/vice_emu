@@ -1,8 +1,11 @@
 /*
- * c128-resources.h
+ * mididrv.h - MIDI driver interface.
  *
  * Written by
- *  Andreas Boose <viceteam@t-online.de>
+ *  Hannu Nuotio <hannu.nuotio@tut.fi>
+ *
+ * Based on code by
+ *  Andr. Fachat <a.fachat@physik.tu-chemnitz.de>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -24,18 +27,23 @@
  *
  */
 
-#ifndef _C128_RESOURCES_H
-#define _C128_RESOURCES_H
+#ifndef _MIDIDRV_H
+#define _MIDIDRV_H
 
-extern int c128_resources_init(void);
-extern void c128_resources_shutdown(void);
+#include "types.h"
 
-extern int emu_id_enabled;
-extern int ieee488_enabled;
-extern int reu_enabled;
-extern int acia_de_enabled;
-extern int acia_d7_enabled;
-extern int midi_enabled;
+extern void mididrv_init(void);
+
+/* Opens a MIDI device */
+extern int mididrv_in_open(void);
+extern int mididrv_out_open(void);
+
+/* Closes the MIDI device */
+extern void mididrv_in_close(void);
+extern void mididrv_out_close(void);
+
+/* MIDI device I/O */
+extern int mididrv_in(BYTE *b);
+extern void mididrv_out(BYTE b);
 
 #endif
-

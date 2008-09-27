@@ -121,6 +121,9 @@ int acia_d7_enabled;
 #endif
 #endif
 
+/* Flag: Do we enable the MIDI emulation?  */
+int midi_enabled;
+
 
 static int set_machine_type(int val, void *param)
 {
@@ -379,6 +382,12 @@ static int set_acia_de_enabled(int val, void *param)
 }
 #endif
 
+static int set_midi_enabled(int val, void *param)
+{
+    acia_de_enabled = val;
+    return 0;
+}
+
 static int set_sync_factor(int val, void *param)
 {
     int change_timing = 0;
@@ -505,6 +514,8 @@ static const resource_int_t resources_int[] =
 #endif
     { "SidStereoAddressStart", 0xde00, RES_EVENT_SAME, NULL,
       (int *)&sid_stereo_address_start, sid_set_sid_stereo_address, NULL },
+    { "MIDIEnable", 0, RES_EVENT_STRICT, (resource_value_t)0,
+      &midi_enabled, set_midi_enabled, NULL },
     { NULL }
 };
 
