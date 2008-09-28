@@ -109,7 +109,7 @@ static io_source_t io_source_table[] = {
     {IO_SOURCE_DIGIMAX, "DIGIMAX", IO_DETACH_RESOURCE, "DIGIMAX"},
     {IO_SOURCE_ACTION_REPLAY4, "ACTION REPLAY 4", IO_DETACH_CART, NULL},
     {IO_SOURCE_STARDOS, "STARDOS", IO_DETACH_CART, NULL},
-    {IO_SOURCE_MIDI, "MIDI", IO_DETACH_RESOURCE, NULL},
+    {IO_SOURCE_MIDI, "MIDI", IO_DETACH_RESOURCE, "MIDIEnable"},
     {-1,NULL,0,NULL}
 };
 
@@ -141,7 +141,7 @@ static int get_io_source_index(int id)
   return 0;
 }
 
-#define MAX_IO1_RETURNS 8
+#define MAX_IO1_RETURNS 9
 #define MAX_IO2_RETURNS 10
 
 #if MAX_IO1_RETURNS>MAX_IO2_RETURNS
