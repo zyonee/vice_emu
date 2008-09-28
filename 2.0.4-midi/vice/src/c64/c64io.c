@@ -304,10 +304,10 @@ BYTE REGPARM1 c64io1_read(WORD addr)
         io_source_counter++;
     }
 #endif
-    if (midi_enabled)
+    if (midi_enabled && midi_test_read((WORD)(addr & 0xff)))
     {
-        return_value = midi_read((WORD)(addr & 0x0f));
-        io_source = IO_SOURCE_MIDI; /* FIXME */
+        return_value = midi_read((WORD)(addr & 0xff));
+        io_source = IO_SOURCE_MIDI;
         io_source_check(io_source_counter);
         io_source_counter++;
     }

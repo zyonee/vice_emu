@@ -370,7 +370,7 @@ void REGPARM2 midi_store(WORD a, BYTE b)
         maincpu_clk++;
     }
 
-    a &= 0xf;
+    a &= 0xff;
 
     if(a == midi_interface[midi_mode].ctrl_addr) {
 #ifdef DEBUG
@@ -418,7 +418,7 @@ BYTE REGPARM1 midi_read(WORD a)
     log_message(midi_log, "read(%x)", a);
 #endif
     midi_last_read = 0xff;
-    a &= 0xf;
+    a &= 0xff;
 
     if(a == midi_interface[midi_mode].status_addr) {
 #ifdef DEBUG
@@ -442,6 +442,14 @@ BYTE REGPARM1 midi_read(WORD a)
     }
 
     return midi_last_read;
+}
+
+int REGPARM1 midi_test_read(WORD a)
+{
+    a &= 0xff;
+
+    return ((a == midi_interface[midi_mode].status_addr)
+          ||(a == midi_interface[midi_mode].rx_addr));
 }
 
 static void int_midi(CLOCK offset, void *data)
