@@ -193,7 +193,7 @@ void render_generic_2x2_pal(video_render_color_tables_t *color_tab,
     }
     
     /* Initialize line */
-    for (x = 0; x < width + wfirst + wlast; x++) {
+    for (x = 0; x < width + wfirst + wlast + 1; x++) {
         cl0 = tmpsrc[0];
         cl1 = tmpsrc[1];
         cl2 = tmpsrc[2];
