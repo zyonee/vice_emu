@@ -304,11 +304,13 @@ BYTE REGPARM1 c64io1_read(WORD addr)
         io_source_counter++;
     }
 #endif
-    if (midi_enabled && midi_test_read((WORD)(addr & 0xff)))
+    if (midi_enabled)
     {
-        return_value = midi_read((WORD)(addr & 0xff));
-        io_source = IO_SOURCE_MIDI;
-        io_source_check(io_source_counter);
+        if(midi_test_read((WORD)(addr & 0xff))) {
+            return_value = midi_read((WORD)(addr & 0xff));
+            io_source = IO_SOURCE_MIDI;
+            io_source_check(io_source_counter);
+        }
         io_source_counter++;
     }
 
@@ -371,7 +373,7 @@ void REGPARM2 c64io1_store(WORD addr, BYTE value)
     }
 #endif
     if (midi_enabled) {
-        midi_store((WORD)(addr & 0x0f), value);
+        midi_store((WORD)(addr & 0xff), value);
     }
 
     return;
