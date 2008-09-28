@@ -36,6 +36,7 @@
 #include "clkguard.h"
 #include "cmdline.h"
 #include "interrupt.h"
+#include "lib.h"
 #include "log.h"
 #include "machine.h"
 #include "maincpu.h"
@@ -46,8 +47,9 @@
 #include "translate.h"
 #endif
 #include "types.h"
+#include "util.h"
 
-#undef  DEBUG
+#undef DEBUG
 
 /******************************************************************/
 
@@ -93,12 +95,15 @@
 
 /******************************************************************/
 
+static char *midi_in_dev = NULL;
+static char *midi_out_dev = NULL;
+static int fd_in = -1;
+static int fd_out = -1;
+
 static alarm_t *midi_alarm = NULL;
 static unsigned int midi_int_num;
 
 static int midi_ticks = 0; /* number of clock ticks per char */
-static int fd_in = -1;
-static int fd_out = -1;
 static int intx = 0;    /* indicates that a transmit is currently ongoing */
 static int irq = 0;
 static BYTE ctrl;       /* control register */
@@ -122,6 +127,7 @@ static int midi_irq_res;
 static int midi_mode = MIDI_MODE_SEQUENTIAL;
 
 /******************************************************************/
+
 static const double midi_baud_table[4*2] = {
     16*31250, 31250, 16*31250/64, -1,
     64*31250, 64*31250/16, 31250, -1
@@ -212,6 +218,26 @@ static int midi_set_mode(int new_mode, void *param)
     return 0;
 }
 
+static int set_midi_in_dev(const char *val, void *param)
+{
+    util_string_set(&midi_in_dev, val);
+    return 0;
+}
+
+static int set_midi_out_dev(const char *val, void *param)
+{
+    util_string_set(&midi_out_dev, val);
+    return 0;
+}
+
+static const resource_string_t resources_string[] = {
+    { "MIDIInDev", ARCHDEP_MIDI_IN_DEV, RES_EVENT_NO, NULL,
+      &midi_in_dev, set_midi_in_dev, NULL },
+    { "MIDIOutDev", ARCHDEP_MIDI_OUT_DEV, RES_EVENT_NO, NULL,
+      &midi_out_dev, set_midi_out_dev, NULL },
+    { NULL }
+};
+
 static const resource_int_t resources_int[] = {
     { "MIDIMode", MIDI_MODE_SEQUENTIAL, RES_EVENT_NO, NULL,
       &midi_mode, midi_set_mode, NULL },
@@ -220,21 +246,35 @@ static const resource_int_t resources_int[] = {
 
 int midi_resources_init(void)
 {
+    if (resources_register_string(resources_string) < 0) {
+        return -1;
+    }
+
     return resources_register_int(resources_int);
 }
 
 void midi_resources_shutdown(void)
 {
+    lib_free(midi_in_dev);
+    lib_free(midi_out_dev);
 }
 
 #ifdef HAS_TRANSLATION
 static const cmdline_option_t cmdline_options[] = {
+    { "-midiin", SET_RESOURCE, 1, NULL, NULL, "MIDIInDev", NULL,
+      IDCLS_P_NAME, IDCLS_SPECIFY_MIDI_IN },
+    { "-midiout", SET_RESOURCE, 1, NULL, NULL, "MIDIOutDev", NULL,
+      IDCLS_P_NAME, IDCLS_SPECIFY_MIDI_OUT },
     { "-miditype", SET_RESOURCE, 1, NULL, NULL, "MIDIMode", NULL,
-      IDCLS_P_0_3, IDCLS_SPECIFY_ACIA_RS232_DEVICE },
+      IDCLS_P_0_3, IDCLS_SPECIFY_MIDI_TYPE },
     { NULL }
 };
 #else
 static const cmdline_option_t cmdline_options[] = {
+    { "-midiin", SET_RESOURCE, 1, NULL, NULL, "MIDIInDev", NULL,
+      N_("<name>"), N_("Specify MIDI-In device") },
+    { "-midiout", SET_RESOURCE, 1, NULL, NULL, "MIDIOutDev", NULL,
+      N_("<name>"), N_("Specify MIDI-Out device") },
     { "-miditype", SET_RESOURCE, 1, NULL, NULL, "MIDIMode", NULL,
       "<0-3>", N_("MIDI interface type") },
     { NULL }
@@ -321,8 +361,8 @@ void REGPARM2 midi_store(WORD a, BYTE b)
         ctrl = b;
 
         if(MIDI_CTRL_CD(ctrl) != MIDI_CTRL_RESET) {
-            fd_in = mididrv_in_open();
-            fd_out = mididrv_out_open();
+            fd_in = mididrv_in_open(midi_in_dev);
+            fd_out = mididrv_out_open(midi_out_dev);
             if(!intx) {
                 midi_alarm_clk = maincpu_clk + 1;
                 alarm_set(midi_alarm, midi_alarm_clk);
@@ -401,7 +441,7 @@ static void int_midi(CLOCK offset, void *data)
         intx--;
     }
 
-    if((fd_in >= 0) && (!(status & MIDI_STATUS_RDRF)) && mididrv_in(&rxdata)) {
+    if((fd_in >= 0) && (!(status & MIDI_STATUS_RDRF)) && (mididrv_in(&rxdata) == 1)) {
         status |= MIDI_STATUS_RDRF;
         rxirq = 1;
 #ifdef DEBUG

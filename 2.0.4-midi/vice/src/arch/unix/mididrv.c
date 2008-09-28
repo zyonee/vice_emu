@@ -72,9 +72,8 @@ void mididrv_init(void)
 }
 
 /* opens a MIDI-In device, returns handle */
-int mididrv_in_open(void)
+int mididrv_in_open(const char *dev)
 {
-    static const char *infile = "/dev/snd/midiC1D0"; /* FIXME */
 #ifdef DEBUG
     log_message(mididrv_log, "in_open");
 #endif
@@ -82,24 +81,42 @@ int mididrv_in_open(void)
         mididrv_in_close();
     }
 
-     fd_in = open(infile, O_RDONLY);
-     if(fd_in < 0) {
-         log_error(mididrv_log, "Cannot open file \"%s\": %s",
-                   infile, strerror(errno));
-         return -1;
-     }
+    if(dev == NULL) {
+        return -1;
+    }
+
+    fd_in = open(dev, O_RDONLY);
+    if(fd_in < 0) {
+        log_error(mididrv_log, "Cannot open file \"%s\": %s",
+                  dev, strerror(errno));
+        return -1;
+    }
 
     return fd_in;
 }
 
 /* opens a MIDI-Out device, returns handle */
-int mididrv_out_open(void)
+int mididrv_out_open(const char *dev)
 {
 #ifdef DEBUG
     log_message(mididrv_log, "out_open");
 #endif
-    /* TODO */
-    return -1;
+    if(fd_out >= 0) {
+        mididrv_out_close();
+    }
+
+    if(dev == NULL) {
+        return -1;
+    }
+
+    fd_out = open(dev, O_WRONLY);
+    if(fd_out < 0) {
+        log_error(mididrv_log, "Cannot open file \"%s\": %s",
+                  dev, strerror(errno));
+        return -1;
+    }
+
+    return fd_out;
 }
 
 /* closes the MIDI-In device*/

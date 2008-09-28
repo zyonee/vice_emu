@@ -65,6 +65,10 @@ static const cmdline_option_t cmdline_options[] =
     { "+acia1", SET_RESOURCE, 0, NULL, NULL, "Acia1Enable", (void *)0,
       0, IDCLS_DISABLE_DEXX_ACIA_RS232_EMU },
 #endif
+    { "-midi", SET_RESOURCE, 0, NULL, NULL, "MIDIEnable", (void *)1,
+      NULL, IDCLS_ENABLE_MIDI_EMU },
+    { "+midi", SET_RESOURCE, 0, NULL, NULL, "MIDIEnable", (void *)0,
+      NULL, IDCLS_DISABLE_MIDI_EMU },
 #ifdef COMMON_KBD
     { "-keymap", SET_RESOURCE, 1, NULL, NULL, "KeymapIndex", NULL,
       IDCLS_P_NUMBER, IDCLS_SPECIFY_INDEX_KEYMAP_FILE_0_2 },
@@ -105,6 +109,10 @@ static const cmdline_option_t cmdline_options[] =
     { "+acia1", SET_RESOURCE, 0, NULL, NULL, "Acia1Enable", (void *)0,
       NULL, N_("Disable the $DE** ACIA RS232 interface emulation") },
 #endif
+    { "-midi", SET_RESOURCE, 0, NULL, NULL, "MIDIEnable", (void *)1,
+      NULL, N_("Enable MIDI emulation") },
+    { "+midi", SET_RESOURCE, 0, NULL, NULL, "MIDIEnable", (void *)0,
+      NULL, N_("Disable MIDI emulation") },
 #ifdef COMMON_KBD
     { "-keymap", SET_RESOURCE, 1, NULL, NULL, "KeymapIndex", NULL,
       N_("<number>"), N_("Specify index of keymap file (0=sym, 1=symDE, 2=pos)") },

@@ -1,11 +1,11 @@
 /*
- * mididrv.h - MIDI driver interface.
+ * uimidi.h
  *
  * Written by
  *  Hannu Nuotio <hannu.nuotio@tut.fi>
  *
  * Based on code by
- *  Andr. Fachat <a.fachat@physik.tu-chemnitz.de>
+ *  Andreas Boose <viceteam@t-online.de>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -27,24 +27,12 @@
  *
  */
 
-#ifndef _MIDIDRV_H
-#define _MIDIDRV_H
+#ifndef _UIMIDI_H
+#define _UIMIDI_H
 
-#include "types.h"
+#include "uimenu.h"
 
-extern void mididrv_init(void);
-
-/* Opens a MIDI device */
-extern int mididrv_in_open(const char* dev);
-extern int mididrv_out_open(const char* dev);
-
-/* Closes the MIDI device */
-extern void mididrv_in_close(void);
-extern void mididrv_out_close(void);
-
-/* MIDI device I/O */
-/* return: -1 if error, 1 if a byte was read to *b, 0 if no new bytes */
-extern int mididrv_in(BYTE *b);
-extern void mididrv_out(BYTE b);
+extern struct ui_menu_entry_s midi_submenu[];
 
 #endif
+
