@@ -32,6 +32,8 @@
 
 #include "types.h"
 
+extern int midi_enabled;
+
 extern void midi_init(void);
 extern void midi_reset(void);
 

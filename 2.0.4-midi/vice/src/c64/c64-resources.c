@@ -79,9 +79,6 @@ int emu_id_enabled;
 int acia_de_enabled;
 #endif
 
-/* Flag: Do we enable the MIDI emulation?  */
-int midi_enabled;
-
 static int set_chargen_rom_name(const char *val, void *param)
 {
     if (util_string_set(&chargen_rom_name, val))
@@ -134,12 +131,6 @@ static int set_acia_de_enabled(int val, void *param)
 }
 
 #endif
-
-static int set_midi_enabled(int val, void *param)
-{
-    midi_enabled = val;
-    return 0;
-}
 
 static int set_sync_factor(int val, void *param)
 {
@@ -231,8 +222,6 @@ static const resource_int_t resources_int[] = {
 #endif
     { "SidStereoAddressStart", 0xde00, RES_EVENT_SAME, NULL,
       (int *)&sid_stereo_address_start, sid_set_sid_stereo_address, NULL },
-    { "MIDIEnable", 0, RES_EVENT_STRICT, (resource_value_t)0,
-      &midi_enabled, set_midi_enabled, NULL },
     { NULL }
 };
 

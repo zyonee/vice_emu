@@ -95,6 +95,8 @@
 
 /******************************************************************/
 
+int midi_enabled = 0;
+
 static char *midi_in_dev = NULL;
 static char *midi_out_dev = NULL;
 static int fd_in = -1;
@@ -230,6 +232,12 @@ static int set_midi_out_dev(const char *val, void *param)
     return 0;
 }
 
+static int set_midi_enabled(int val, void *param)
+{
+    midi_enabled = val;
+    return 0;
+}
+
 static const resource_string_t resources_string[] = {
     { "MIDIInDev", ARCHDEP_MIDI_IN_DEV, RES_EVENT_NO, NULL,
       &midi_in_dev, set_midi_in_dev, NULL },
@@ -239,6 +247,8 @@ static const resource_string_t resources_string[] = {
 };
 
 static const resource_int_t resources_int[] = {
+    { "MIDIEnable", 0, RES_EVENT_STRICT, (resource_value_t)0,
+      &midi_enabled, set_midi_enabled, NULL },
     { "MIDIMode", MIDI_MODE_SEQUENTIAL, RES_EVENT_NO, NULL,
       &midi_mode, midi_set_mode, NULL },
     { NULL }
@@ -261,6 +271,10 @@ void midi_resources_shutdown(void)
 
 #ifdef HAS_TRANSLATION
 static const cmdline_option_t cmdline_options[] = {
+    { "-midi", SET_RESOURCE, 0, NULL, NULL, "MIDIEnable", (void *)1,
+      NULL, IDCLS_ENABLE_MIDI_EMU },
+    { "+midi", SET_RESOURCE, 0, NULL, NULL, "MIDIEnable", (void *)0,
+      NULL, IDCLS_DISABLE_MIDI_EMU },
     { "-midiin", SET_RESOURCE, 1, NULL, NULL, "MIDIInDev", NULL,
       IDCLS_P_NAME, IDCLS_SPECIFY_MIDI_IN },
     { "-midiout", SET_RESOURCE, 1, NULL, NULL, "MIDIOutDev", NULL,
@@ -271,6 +285,10 @@ static const cmdline_option_t cmdline_options[] = {
 };
 #else
 static const cmdline_option_t cmdline_options[] = {
+    { "-midi", SET_RESOURCE, 0, NULL, NULL, "MIDIEnable", (void *)1,
+      NULL, N_("Enable MIDI emulation") },
+    { "+midi", SET_RESOURCE, 0, NULL, NULL, "MIDIEnable", (void *)0,
+      NULL, N_("Disable MIDI emulation") },
     { "-midiin", SET_RESOURCE, 1, NULL, NULL, "MIDIInDev", NULL,
       N_("<name>"), N_("Specify MIDI-In device") },
     { "-midiout", SET_RESOURCE, 1, NULL, NULL, "MIDIOutDev", NULL,
