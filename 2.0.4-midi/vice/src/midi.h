@@ -1,5 +1,5 @@
 /*
- * midi.h - MIDI emulation.
+ * midi.h - MIDI (6850 UART) emulation.
  *
  * Written by
  *  Hannu Nuotio <hannu.nuotio@tut.fi>
@@ -51,5 +51,6 @@ extern int midi_cmdline_options_init(void);
 #define MIDI_MODE_PASSPORT   1  /* Passport & Syntech */
 #define MIDI_MODE_DATEL      2  /* DATEL/Siel/JMS */
 #define MIDI_MODE_NAMESOFT   3  /* Namesoft */
+#define MIDI_MODE_MAPLIN     4  /* Electronics - Maplin magazine TODO $df00*/
 
 #endif

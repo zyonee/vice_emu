@@ -1,5 +1,5 @@
 /*
- * midi.c - MIDI emulation.
+ * midi.c - MIDI (6850 UART) emulation.
  *
  * Written by
  *  Hannu Nuotio <hannu.nuotio@tut.fi>
@@ -130,11 +130,6 @@ static int midi_mode = MIDI_MODE_SEQUENTIAL;
 
 /******************************************************************/
 
-static const double midi_baud_table[4*2] = {
-    16*31250, 31250, 16*31250/64, -1,
-    64*31250, 64*31250/16, 31250, -1
-};
-
 struct midi_interface_s {
     /* Control register address */
     WORD ctrl_addr;
@@ -144,22 +139,26 @@ struct midi_interface_s {
     WORD tx_addr;
     /* Receive register address */
     WORD rx_addr;
-    /* Offset to baud table */
-    int baud_offset;
+    /* Address mask (for mirroring) */
+    WORD mask;
+    /* Correct counter divide for 31250 bps */
+    BYTE midi_cd;
     /* Interrupt type: none (0), IRQ (1) or NMI (2) */
     int irq_type;
 };
 typedef struct midi_interface_s midi_interface_t;
 
-static midi_interface_t midi_interface[4] = {
+static midi_interface_t midi_interface[] = {
     /* Sequential Circuits Inc. */
-    { 0, 2, 1, 3, 0, 1 },
+    { 0, 2, 1, 3, 0xff, 1, 1 },
     /* Passport & Syntech */
-    { 8, 8, 9, 9, 0, 1 },
+    { 8, 8, 9, 9, 0xff, 1, 1 },
     /* DATEL/Siel/JMS */
-    { 4, 6, 5, 7, 4, 1 },
+    { 4, 6, 5, 7, 0xff, 2, 1 },
     /* Namesoft */
-    { 0, 2, 1, 3, 0, 2 }
+    { 0, 2, 1, 3, 0xff, 1, 2 },
+    /* Electronics - Maplin magazine */
+    { 0, 0, 1, 2, 0xff, 2, 0 }
 };
 
 /******************************************************************/
@@ -199,13 +198,12 @@ static int midi_set_irq(int new_irq_res, void *param)
 
 static int get_midi_ticks(void)
 {
-    int index = midi_interface[midi_mode].baud_offset + MIDI_CTRL_CD(ctrl);
-    return (int)(machine_get_cycles_per_second() / midi_baud_table[index]);
+    return (int)(machine_get_cycles_per_second() / 31250);
 }
 
 static int midi_set_mode(int new_mode, void *param)
 {
-    if(new_mode < 0 || new_mode > 3) {
+    if(new_mode < 0 || new_mode > 4) {
         return -1;
     }
 
@@ -327,15 +325,12 @@ void midi_init(void)
     midi_reset();
 }
 
-void midi_reset(void)
+
+static void midi_suspend(void)
 {
 #ifdef DEBUG
-    log_message(midi_log, "reset");
+    log_message(midi_log, "suspend");
 #endif
-    ctrl = MIDI_CTRL_DEFAULT;
-
-    midi_ticks = get_midi_ticks();
-
     status = MIDI_STATUS_DEFAULT;
     intx = 0;
 
@@ -357,6 +352,29 @@ void midi_reset(void)
     irq = 0;
 }
 
+void midi_reset(void)
+{
+#ifdef DEBUG
+    log_message(midi_log, "reset");
+#endif
+    ctrl = MIDI_CTRL_DEFAULT;
+    midi_ticks = get_midi_ticks();
+    midi_suspend();
+}
+
+static void midi_activate(void)
+{
+#ifdef DEBUG
+    log_message(midi_log, "activate");
+#endif
+    fd_in = mididrv_in_open(midi_in_dev);
+    fd_out = mididrv_out_open(midi_out_dev);
+    if(!intx) {
+        midi_alarm_clk = maincpu_clk + 1;
+        alarm_set(midi_alarm, midi_alarm_clk);
+        alarm_active = 1;
+    }
+}
 
 void REGPARM2 midi_store(WORD a, BYTE b)
 {
@@ -370,26 +388,23 @@ void REGPARM2 midi_store(WORD a, BYTE b)
         maincpu_clk++;
     }
 
-    a &= 0xff;
+    a &= midi_interface[midi_mode].mask;
 
     if(a == midi_interface[midi_mode].ctrl_addr) {
 #ifdef DEBUG
         log_message(midi_log, "store ctrl: %02x", b);
 #endif
         ctrl = b;
-
-        if(MIDI_CTRL_CD(ctrl) != MIDI_CTRL_RESET) {
-            fd_in = mididrv_in_open(midi_in_dev);
-            fd_out = mididrv_out_open(midi_out_dev);
-            if(!intx) {
-                midi_alarm_clk = maincpu_clk + 1;
-                alarm_set(midi_alarm, midi_alarm_clk);
-                alarm_active = 1;
-            }
-        } else {
-            midi_reset();
-        }
         midi_ticks = get_midi_ticks();
+
+        if(MIDI_CTRL_CD(ctrl) == midi_interface[midi_mode].midi_cd) {
+            /* TODO check WS */
+            midi_activate();
+        } else if(MIDI_CTRL_CD(ctrl) == MIDI_CTRL_RESET) {
+            midi_reset();
+        } else {
+            midi_suspend();
+        }
     } else if(a == midi_interface[midi_mode].tx_addr) {
         status &= ~MIDI_STATUS_IRQ;
 #ifdef DEBUG
@@ -418,7 +433,7 @@ BYTE REGPARM1 midi_read(WORD a)
     log_message(midi_log, "read(%x)", a);
 #endif
     midi_last_read = 0xff;
-    a &= 0xff;
+    a &= midi_interface[midi_mode].mask;
 
     if(a == midi_interface[midi_mode].status_addr) {
 #ifdef DEBUG
@@ -446,7 +461,7 @@ BYTE REGPARM1 midi_read(WORD a)
 
 int REGPARM1 midi_test_read(WORD a)
 {
-    a &= 0xff;
+    a &= midi_interface[midi_mode].mask;
 
     return ((a == midi_interface[midi_mode].status_addr)
           ||(a == midi_interface[midi_mode].rx_addr));

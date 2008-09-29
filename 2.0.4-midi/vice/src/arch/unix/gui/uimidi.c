@@ -59,6 +59,8 @@ static ui_menu_entry_t midi_mode_submenu[] = {
       (ui_callback_data_t)2, NULL },
     { "*Namesoft", (ui_callback_t)radio_MIDIMode,
       (ui_callback_data_t)3, NULL },
+    { "*Maplin", (ui_callback_t)radio_MIDIMode,
+      (ui_callback_data_t)4, NULL },
     { NULL }
 };
 
