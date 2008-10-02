@@ -50,6 +50,7 @@
 #include "machine.h"
 #include "maincpu.h"
 #include "mem.h"
+#include "midi.h"
 #include "monitor.h"
 #include "parallel.h"
 #include "printer.h"
@@ -234,7 +235,8 @@ int machine_resources_init(void)
 #endif
         || drive_resources_init() < 0
         || datasette_resources_init() < 0
-        || cartridge_resources_init() <0)
+        || cartridge_resources_init() <0
+        || midi_resources_init() <0)
         return -1;
 
     return 0;
@@ -250,6 +252,7 @@ void machine_resources_shutdown(void)
     printer_resources_shutdown();
     drive_resources_shutdown();
     cartridge_resources_shutdown();
+    midi_resources_shutdown();
 }
 
 /* VIC20-specific command-line option initialization.  */
@@ -271,7 +274,8 @@ int machine_cmdline_options_init(void)
 #endif
         || drive_cmdline_options_init() < 0
         || datasette_cmdline_options_init() < 0
-        || cartridge_cmdline_options_init() < 0)
+        || cartridge_cmdline_options_init() < 0
+        || midi_cmdline_options_init() < 0)
         return -1;
 
     return 0;
@@ -386,6 +390,8 @@ int machine_specific_init(void)
 
     vic20iec_init();
 
+    midi_init();
+
     machine_drive_stub();
 
     return 0;
@@ -407,6 +413,7 @@ void machine_specific_reset(void)
 
     rs232drv_reset();
     rsuser_reset();
+    midi_reset();
 
     printer_reset();
     drive_reset();

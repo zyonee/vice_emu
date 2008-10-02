@@ -580,7 +580,7 @@ xvic_libs =  \
 	$(video_lib) \
 	$(common_libs)
 
-xvic_SOURCES = $(base_sources) $(maincpu_sources) $(mouse_sources)
+xvic_SOURCES = $(base_sources) $(maincpu_sources) $(mouse_sources) $(midi_sources)
 xvic_LDADD = $(xvic_libs) $(emu_extlibs) @NETPLAY_LIBS@
 xvic_DEPENDENCIES = $(xvic_libs)
 xvic_LDFLAGS = @xvic_LDFLAGS@
