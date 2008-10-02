@@ -85,8 +85,8 @@
 #define ARCHDEP_RS232_DEV4 "10.0.0.1:25232"
 
 /* Default MIDI devices.  */
-#define ARCHDEP_MIDI_IN_DEV  "/dev/midi"
-#define ARCHDEP_MIDI_OUT_DEV "/dev/midi"
+#define ARCHDEP_MIDI_IN_DEV  "0"
+#define ARCHDEP_MIDI_OUT_DEV "0"
 
 /* Default location of raw disk images.  */
 #define ARCHDEP_RAWDRIVE_DEFAULT "A:"

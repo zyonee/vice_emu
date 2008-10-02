@@ -29,6 +29,7 @@
 #include "vice.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #if __GNUC__>2 || (__GNUC__==2 && __GNUC_MINOR__>=91)
@@ -42,23 +43,135 @@
 
 /* ------------------------------------------------------------------------- */
 
+static log_t mididrv_log = LOG_ERR;
+
 static HMIDIIN handle_in = 0;
 static HMIDIOUT handle_out = 0;
 
-static log_t mididrv_log = LOG_ERR;
-
 static void CALLBACK midi_callback(HMIDIIN handle, UINT uMsg, DWORD dwInstance, DWORD dwParam1, DWORD dwParam2);
 
-static DWORD uglydata = 0;
-
+/* ------------------------------------------------------------------------- */
 #define OUT_BUF_LEN 3
 static int out_index=0;
 static BYTE out_buf[OUT_BUF_LEN];
 
+/* ------------------------------------------------------------------------- */
 #define IN_BUF_LEN 1024
-static volatile int in_wi=0;
-static volatile int in_ri=0;
+static volatile unsigned int in_wi=0;
+static volatile unsigned int in_ri=0;
 static BYTE in_buf[IN_BUF_LEN];
+
+static void reset_fifo(void)
+{
+    in_wi=0;
+    in_ri=0;
+}
+
+static int write_fifo(BYTE data)
+{
+    if (((in_wi-in_ri) % IN_BUF_LEN) == (IN_BUF_LEN-1))
+        return 1;
+
+    in_buf[in_wi] = data;
+    in_wi = (in_wi+1) % IN_BUF_LEN;
+    return 0;
+}
+
+static int read_fifo(BYTE *data)
+{
+    if (((in_wi-in_ri) % IN_BUF_LEN) != 0) {
+        *data=in_buf[in_ri];
+        in_ri = (in_ri+1) % IN_BUF_LEN;
+        return 1;
+    }
+    return 0;
+}
+
+/* ------------------------------------------------------------------------- */
+static int message_len(BYTE msg)
+{
+    int len=0;
+    switch (msg & 0xf0) {
+    case 0x80: /* Note Off */
+    case 0x90: /* Note On */
+    case 0xa0: /* Polyphonic Aftertouch */
+    case 0xb0: /* Control Change */
+    case 0xe0: /* Pitch Wheel */
+        len=3;
+        break;
+    case 0xc0: /* Program Change */
+    case 0xd0: /* Channel Aftertouch */
+        len=2;
+        break;
+    case 0xf0: /* Special */
+        switch (msg) {
+        case 0xf0: /* Sysex Start (shouldn't happen here) */
+        case 0xf7: /* Sysex End (shouldn't happen here) */
+            len=-1;
+            break;
+        case 0xf2: /* Song Pointer */
+            len=3;
+            break;
+        case 0xf1: /* Quarter Frame */
+        case 0xf3: /* Song Select */
+        case 0xf9: /* Measure End */
+            len=2;
+            break;
+        case 0xf6: /* Tuning Request */
+        case 0xf8: /* Timing Clock */
+        case 0xfa: /* Start */
+        case 0xfb: /* Continue */
+        case 0xfc: /* Stop */
+        case 0xfe: /* Active Sensing */
+        case 0xff: /* Reset */
+            len=1;
+            break;
+        default:
+            break;
+        }
+    default: /* running status */
+        len=2;
+        break;
+    }
+    return len;
+}
+
+static void list_in_devs(void)
+{
+    MMRESULT ret;
+    MIDIINCAPS mic;
+    int num, i;
+
+    num = midiInGetNumDevs();
+
+    log_message(mididrv_log, "Listing available MIDI-In devices...");
+    for(i=0; i < num; i++) {
+        ret = midiInGetDevCaps(i, &mic, sizeof(MIDIINCAPS));
+        if (ret == MMSYSERR_NOERROR) {
+            log_message(mididrv_log, "  MIDI-In device #%d: %s", i, mic.szPname);
+        }
+    }
+}
+
+static void list_out_devs(void)
+{
+    MMRESULT ret;
+    MIDIOUTCAPS moc;
+    int num, i;
+
+    num = midiOutGetNumDevs();
+
+    log_message(mididrv_log, "Listing available MIDI-Out devices...");
+    for(i=0; i < num; i++) {
+        ret = midiOutGetDevCaps(i, &moc, sizeof(MIDIOUTCAPS));
+        if (ret == MMSYSERR_NOERROR){
+            log_message(mididrv_log, "  MIDI-Out device #%d: %s", i, moc.szPname);
+        }
+    }
+
+}
+
+
 
 /* ------------------------------------------------------------------------- */
 
@@ -72,11 +185,18 @@ void mididrv_init(void)
 /* opens a MIDI-In device, returns handle */
 int mididrv_in_open(const char *dev)
 {
-    int n=9;
+    int n;
     MMRESULT ret;
-#ifdef DEBUG
-    log_message(mididrv_log, "in_open");
-#endif
+    static listed=0;
+    if (!listed) {
+        list_in_devs();
+        listed=1;
+    }
+
+    /* the input string is just a number representing the port */
+    n = atoi(dev);
+
+    log_message(mididrv_log, "Opening MIDI-In device #%d", n);
     if(handle_in) {
         mididrv_in_close();
     }
@@ -93,6 +213,9 @@ int mididrv_in_open(const char *dev)
         return -1;
     }
 
+    /* reset FIFO */
+    reset_fifo();
+
     /* can theoretically return MMSYSERR_INVALHANDLE */
     ret = midiInStart(handle_in);
 
@@ -102,11 +225,18 @@ int mididrv_in_open(const char *dev)
 /* opens a MIDI-Out device, returns handle */
 int mididrv_out_open(const char *dev)
 {
-    int n=0;
+    int n;
     MMRESULT ret;
-#ifdef DEBUG
-    log_message(mididrv_log, "out_open");
-#endif
+    static listed=0;
+    if (!listed) {
+        list_out_devs();
+        listed=1;
+    }
+
+    /* the input string is just a number representing the port */
+    n = atoi(dev);
+
+    log_message(mididrv_log, "Opening MIDI-Out device #%d", n);
     if(handle_out) {
         mididrv_out_close();
     }
@@ -188,22 +318,7 @@ void mididrv_out(BYTE b)
         log_error(mididrv_log, "MIDI-Out overrun.");
     }
 
-    switch (out_buf[0] & 0xf0) {
-    case 0x80: /* Note Off */
-    case 0x90: /* Note On */
-    case 0xa0: /* Polyphonic Aftertouch */
-    case 0xb0: /* Control Change */
-    case 0xe0: /* Pitch Wheel */
-        thres=3;
-        break;
-    case 0xc0: /* Program Change */
-    case 0xd0: /* Channel Aftertouch */
-        thres=2;
-        break;
-    default: /* running status */
-        thres=2;
-        break;
-    }
+    thres = message_len(out_buf[0]);
 
     /* flush when enough bytes have been queued */
     if (out_index >=thres) {
@@ -223,6 +338,7 @@ void mididrv_out(BYTE b)
 }
 
 
+
 static void CALLBACK midi_callback(HMIDIIN handle, UINT uMsg, DWORD dwInstance, DWORD dwParam1, DWORD dwParam2)
 {
     int len;
@@ -232,39 +348,23 @@ static void CALLBACK midi_callback(HMIDIIN handle, UINT uMsg, DWORD dwInstance, 
 #ifdef DEBUG
         log_message(mididrv_log, "MIDI callback got %08x", dwParam1);
 #endif
-        switch (dwParam1 & 0xf0) {
-        case 0x80: /* Note Off */
-        case 0x90: /* Note On */
-        case 0xa0: /* Polyphonic Aftertouch */
-        case 0xb0: /* Control Change */
-        case 0xe0: /* Pitch Wheel */
-            len=3;
-            break;
-        case 0xc0: /* Program Change */
-        case 0xd0: /* Channel Aftertouch */
-            len=2;
-            break;
-        default: /* running status */
-            len=2;
-            break;
-        }
+        len=message_len(dwParam1 & 0xff);
         for (i=0; i<len; i++) {
-            in_buf[in_wi+i] = dwParam1 & 0xff;
+            write_fifo(dwParam1 & 0xff);
             dwParam1 >>= 8;
         }
-        in_wi += len;
         break;
 
-        /* Received all or part of some System Exclusive message */
     case MIM_LONGDATA:
         break;
 
-        /* Process these messages if you desire */
     case MIM_OPEN:
     case MIM_CLOSE:
     case MIM_ERROR:
     case MIM_LONGERROR:
     case MIM_MOREDATA:
+        break;
+    default:
         break;
     }
 }
@@ -278,9 +378,7 @@ int mididrv_in(BYTE *b)
         return -1;
     }
 
-    if (((in_wi-in_ri) % IN_BUF_LEN) != 0) {
-        *b=in_buf[in_ri];
-        in_ri++;
+    if (read_fifo(b)) {
 #ifdef DEBUG
         log_message(mididrv_log, "in got %02x", *b);
 #endif
