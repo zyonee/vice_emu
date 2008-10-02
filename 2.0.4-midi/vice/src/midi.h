@@ -41,6 +41,8 @@ extern BYTE REGPARM1 midi_read(WORD a);
 extern void REGPARM2 midi_store(WORD a, BYTE b);
 /* returns 1 if address is a readable MIDI register */
 extern int REGPARM1 midi_test_read(WORD a);
+/* returns 1 if interface is at $de00 (on C64) */
+extern int REGPARM1 midi_base_de00(void);
 
 extern int midi_resources_init(void);
 extern void midi_resources_shutdown(void);
@@ -51,6 +53,6 @@ extern int midi_cmdline_options_init(void);
 #define MIDI_MODE_PASSPORT   1  /* Passport & Syntech */
 #define MIDI_MODE_DATEL      2  /* DATEL/Siel/JMS */
 #define MIDI_MODE_NAMESOFT   3  /* Namesoft */
-#define MIDI_MODE_MAPLIN     4  /* Electronics - Maplin magazine TODO $df00*/
+#define MIDI_MODE_MAPLIN     4  /* Electronics - Maplin magazine */
 
 #endif

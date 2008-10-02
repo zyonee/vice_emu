@@ -304,7 +304,7 @@ BYTE REGPARM1 c64io1_read(WORD addr)
         io_source_counter++;
     }
 #endif
-    if (midi_enabled)
+    if (midi_enabled && midi_base_de00())
     {
         if(midi_test_read((WORD)(addr & 0xff))) {
             return_value = midi_read((WORD)(addr & 0xff));
@@ -372,7 +372,7 @@ void REGPARM2 c64io1_store(WORD addr, BYTE value)
         acia1_store((WORD)(addr & 0x07), value);
     }
 #endif
-    if (midi_enabled) {
+    if (midi_enabled && midi_base_de00()) {
         midi_store((WORD)(addr & 0xff), value);
     }
 
@@ -451,6 +451,16 @@ BYTE REGPARM1 c64io2_read(WORD addr)
         io_source_counter++;
     }
 
+    if (midi_enabled && !midi_base_de00())
+    {
+        if(midi_test_read((WORD)(addr & 0xff))) {
+            return_value = midi_read((WORD)(addr & 0xff));
+            io_source = IO_SOURCE_MIDI;
+            io_source_check(io_source_counter);
+        }
+        io_source_counter++;
+    }
+
     if (returned == 0)
         return vicii_read_phi1();
 
@@ -507,6 +517,12 @@ void REGPARM2 c64io2_store(WORD addr, BYTE value)
     if (mem_cartridge_type != CARTRIDGE_NONE) {
         cartridge_store_io2(addr, value);
     }
+
+    if (midi_enabled && !midi_base_de00()) {
+        midi_store((WORD)(addr & 0xff), value);
+    }
+
+
     return;
 }
 

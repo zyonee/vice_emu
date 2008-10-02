@@ -131,6 +131,8 @@ static int midi_mode = MIDI_MODE_SEQUENTIAL;
 /******************************************************************/
 
 struct midi_interface_s {
+    /* Base address (C64 specific) */
+    WORD base_addr;
     /* Control register address */
     WORD ctrl_addr;
     /* Status register address */
@@ -150,15 +152,15 @@ typedef struct midi_interface_s midi_interface_t;
 
 static midi_interface_t midi_interface[] = {
     /* Sequential Circuits Inc. */
-    { 0, 2, 1, 3, 0xff, 1, 1 },
+    { 0xde00, 0, 2, 1, 3, 0xff, 1, 1 },
     /* Passport & Syntech */
-    { 8, 8, 9, 9, 0xff, 1, 1 },
+    { 0xde00, 8, 8, 9, 9, 0xff, 1, 1 },
     /* DATEL/Siel/JMS */
-    { 4, 6, 5, 7, 0xff, 2, 1 },
+    { 0xde00, 4, 6, 5, 7, 0xff, 2, 1 },
     /* Namesoft */
-    { 0, 2, 1, 3, 0xff, 1, 2 },
+    { 0xde00, 0, 2, 1, 3, 0xff, 1, 2 },
     /* Electronics - Maplin magazine */
-    { 0, 0, 1, 2, 0xff, 2, 0 }
+    { 0xdf00, 0, 0, 1, 1, 0xff, 2, 0 }
 };
 
 /******************************************************************/
@@ -278,7 +280,7 @@ static const cmdline_option_t cmdline_options[] = {
     { "-midiout", SET_RESOURCE, 1, NULL, NULL, "MIDIOutDev", NULL,
       IDCLS_P_NAME, IDCLS_SPECIFY_MIDI_OUT },
     { "-miditype", SET_RESOURCE, 1, NULL, NULL, "MIDIMode", NULL,
-      IDCLS_P_0_3, IDCLS_SPECIFY_MIDI_TYPE },
+      IDCLS_P_0_4, IDCLS_SPECIFY_MIDI_TYPE },
     { NULL }
 };
 #else
@@ -292,7 +294,7 @@ static const cmdline_option_t cmdline_options[] = {
     { "-midiout", SET_RESOURCE, 1, NULL, NULL, "MIDIOutDev", NULL,
       N_("<name>"), N_("Specify MIDI-Out device") },
     { "-miditype", SET_RESOURCE, 1, NULL, NULL, "MIDIMode", NULL,
-      "<0-3>", N_("MIDI interface type") },
+      "<0-4>", N_("MIDI interface type (0: Sequential, 1: Passport, 2: DATEL, 3: Namesoft, 4: Maplin)") },
     { NULL }
 };
 #endif
@@ -465,6 +467,11 @@ int REGPARM1 midi_test_read(WORD a)
 
     return ((a == midi_interface[midi_mode].status_addr)
           ||(a == midi_interface[midi_mode].rx_addr));
+}
+
+int REGPARM1 midi_base_de00(void)
+{
+    return (midi_interface[midi_mode].base_addr == 0xde00)?1:0;
 }
 
 static void int_midi(CLOCK offset, void *data)
