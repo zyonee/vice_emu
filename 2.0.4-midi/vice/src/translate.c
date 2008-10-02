@@ -5244,8 +5244,57 @@ translate_t string_table[] = {
 /* it */ {IDCLS_DIGIMAX_BASE_IT, "Indirizzo base della cartuccia digimax"},
 /* nl */ {IDCLS_DIGIMAX_BASE_NL, "Basisadres van de digimaxcartridge"},
 /* pl */ {IDCLS_DIGIMAX_BASE_PL, ""},  /* fuzzy */
-/* sv */ {IDCLS_DIGIMAX_BASE_SV, "Basadress för Digimax-cartridge"}
+/* sv */ {IDCLS_DIGIMAX_BASE_SV, "Basadress för Digimax-cartridge"},
 
+/* midi.c */
+/* en */ {IDCLS_ENABLE_MIDI_EMU,    "Enable MIDI emulation"},
+/* de */ {IDCLS_ENABLE_MIDI_EMU_DE, ""},  /* fuzzy */
+/* fr */ {IDCLS_ENABLE_MIDI_EMU_FR, ""},  /* fuzzy */
+/* hu */ {IDCLS_ENABLE_MIDI_EMU_HU, ""},  /* fuzzy */
+/* it */ {IDCLS_ENABLE_MIDI_EMU_IT, ""},  /* fuzzy */
+/* nl */ {IDCLS_ENABLE_MIDI_EMU_NL, ""},  /* fuzzy */
+/* pl */ {IDCLS_ENABLE_MIDI_EMU_PL, ""},  /* fuzzy */
+/* sv */ {IDCLS_ENABLE_MIDI_EMU_SV, ""},  /* fuzzy */
+
+/* midi.c */
+/* en */ {IDCLS_DISABLE_MIDI_EMU,    "Disable MIDI emulation"},
+/* de */ {IDCLS_DISABLE_MIDI_EMU_DE, ""},  /* fuzzy */
+/* fr */ {IDCLS_DISABLE_MIDI_EMU_FR, ""},  /* fuzzy */
+/* hu */ {IDCLS_DISABLE_MIDI_EMU_HU, ""},  /* fuzzy */
+/* it */ {IDCLS_DISABLE_MIDI_EMU_IT, ""},  /* fuzzy */
+/* nl */ {IDCLS_DISABLE_MIDI_EMU_NL, ""},  /* fuzzy */
+/* pl */ {IDCLS_DISABLE_MIDI_EMU_PL, ""},  /* fuzzy */
+/* sv */ {IDCLS_DISABLE_MIDI_EMU_SV, ""},  /* fuzzy */
+
+/* midi.c */
+/* en */ {IDCLS_SPECIFY_MIDI_IN,    "Specify MIDI-In device"},
+/* de */ {IDCLS_SPECIFY_MIDI_IN_DE, ""},  /* fuzzy */
+/* fr */ {IDCLS_SPECIFY_MIDI_IN_FR, ""},  /* fuzzy */
+/* hu */ {IDCLS_SPECIFY_MIDI_IN_HU, ""},  /* fuzzy */
+/* it */ {IDCLS_SPECIFY_MIDI_IN_IT, ""},  /* fuzzy */
+/* nl */ {IDCLS_SPECIFY_MIDI_IN_NL, ""},  /* fuzzy */
+/* pl */ {IDCLS_SPECIFY_MIDI_IN_PL, ""},  /* fuzzy */
+/* sv */ {IDCLS_SPECIFY_MIDI_IN_SV, ""},  /* fuzzy */
+
+/* midi.c */
+/* en */ {IDCLS_SPECIFY_MIDI_OUT,    "Specify MIDI-Out device"},
+/* de */ {IDCLS_SPECIFY_MIDI_OUT_DE, ""},  /* fuzzy */
+/* fr */ {IDCLS_SPECIFY_MIDI_OUT_FR, ""},  /* fuzzy */
+/* hu */ {IDCLS_SPECIFY_MIDI_OUT_HU, ""},  /* fuzzy */
+/* it */ {IDCLS_SPECIFY_MIDI_OUT_IT, ""},  /* fuzzy */
+/* nl */ {IDCLS_SPECIFY_MIDI_OUT_NL, ""},  /* fuzzy */
+/* pl */ {IDCLS_SPECIFY_MIDI_OUT_PL, ""},  /* fuzzy */
+/* sv */ {IDCLS_SPECIFY_MIDI_OUT_SV, ""},  /* fuzzy */
+
+/* midi.c */
+/* en */ {IDCLS_SPECIFY_MIDI_TYPE,    "MIDI interface type"},
+/* de */ {IDCLS_SPECIFY_MIDI_TYPE_DE, ""},  /* fuzzy */
+/* fr */ {IDCLS_SPECIFY_MIDI_TYPE_FR, ""},  /* fuzzy */
+/* hu */ {IDCLS_SPECIFY_MIDI_TYPE_HU, ""},  /* fuzzy */
+/* it */ {IDCLS_SPECIFY_MIDI_TYPE_IT, ""},  /* fuzzy */
+/* nl */ {IDCLS_SPECIFY_MIDI_TYPE_NL, ""},  /* fuzzy */
+/* pl */ {IDCLS_SPECIFY_MIDI_TYPE_PL, ""},  /* fuzzy */
+/* sv */ {IDCLS_SPECIFY_MIDI_TYPE_SV, ""}  /* fuzzy */
 };
 
 #include "translate_table.h"

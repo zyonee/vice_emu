@@ -52,6 +52,7 @@ libarch_a_SOURCES = \
 	joy.h \
 	kbd.c \
 	kbd.h \
+	mididrv.c \
 	mousedrv.c \
 	mousedrv.h \
 	opencbm.h \
