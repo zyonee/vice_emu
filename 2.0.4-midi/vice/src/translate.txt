@@ -1521,3 +1521,7 @@ IDCLS_SPECIFY_MIDI_OUT
 
 /* midi.c */
 IDCLS_SPECIFY_MIDI_TYPE
+
+/* midi.c */
+IDCLS_P_0_4
+

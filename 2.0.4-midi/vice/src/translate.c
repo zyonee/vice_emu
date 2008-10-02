@@ -5287,14 +5287,24 @@ translate_t string_table[] = {
 /* sv */ {IDCLS_SPECIFY_MIDI_OUT_SV, ""},  /* fuzzy */
 
 /* midi.c */
-/* en */ {IDCLS_SPECIFY_MIDI_TYPE,    "MIDI interface type"},
+/* en */ {IDCLS_SPECIFY_MIDI_TYPE,    "MIDI interface type (0: Sequential, 1: Passport, 2: DATEL, 3: Namesoft, 4: Maplin)"},
 /* de */ {IDCLS_SPECIFY_MIDI_TYPE_DE, ""},  /* fuzzy */
 /* fr */ {IDCLS_SPECIFY_MIDI_TYPE_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_SPECIFY_MIDI_TYPE_HU, ""},  /* fuzzy */
 /* it */ {IDCLS_SPECIFY_MIDI_TYPE_IT, ""},  /* fuzzy */
 /* nl */ {IDCLS_SPECIFY_MIDI_TYPE_NL, ""},  /* fuzzy */
 /* pl */ {IDCLS_SPECIFY_MIDI_TYPE_PL, ""},  /* fuzzy */
-/* sv */ {IDCLS_SPECIFY_MIDI_TYPE_SV, ""}  /* fuzzy */
+/* sv */ {IDCLS_SPECIFY_MIDI_TYPE_SV, ""},  /* fuzzy */
+
+/* midi.c */
+/* en */ {IDCLS_P_0_4,    "<0-4>"},
+/* de */ {IDCLS_P_0_4_DE, "<0-4>"},
+/* fr */ {IDCLS_P_0_4_FR, "<0-4>"},
+/* hu */ {IDCLS_P_0_4_HU, "<0-4>"},
+/* it */ {IDCLS_P_0_4_IT, "<0-4>"},
+/* nl */ {IDCLS_P_0_4_NL, "<0-4>"},
+/* pl */ {IDCLS_P_0_4_PL, "<0-4>"},
+/* sv */ {IDCLS_P_0_4_SV, "<0-4>"}
 };
 
 #include "translate_table.h"
