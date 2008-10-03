@@ -368,7 +368,9 @@ darwin*)
   AM_CONDITIONAL(HAVE_RS232, true)
   AM_CONDITIONAL(HAVE_RAWDRIVE, true)
 
-  AC_DEFINE(HAVE_RS232,,[Enable RS232 emulation.])
+  if test x"$enable_sdlui" != "xyes"; then
+    AC_DEFINE(HAVE_RS232,,[Enable RS232 emulation.])
+  fi
 
   AC_DEFINE(HAVE_RAWDRIVE,,[Support for block device disk image access.])
   AC_DEFINE(HAVE_MOUSE,,[Enable 1351 mouse support])
@@ -647,11 +649,11 @@ if test x"$with_sdlsound" = "xyes" -o x"$enable_sdlui" = "xyes"; then
 
     dnl if no sdl-config was found we assume that there are no extra CFLAGS
     dnl and that libSDL can be found in the default lib search path
-    if test x"$sdl_config" = "xyes"; then
+    if test x"$sdl_config" = "xno"; then
+        LIBS="-lSDL"
+    else
         CFLAGS="$CFLAGS `sdl-config --cflags`"
         LIBS="$LIBS `sdl-config --libs`"
-    else
-        LIBS="-lSDL"
     fi
 
     AC_CHECK_HEADERS(SDL/SDL_audio.h,[AC_CHECK_LIB(SDL, SDL_OpenAudio,
@@ -1915,8 +1917,11 @@ if test x"$is_unix" = "xyes"; then
     ARCH_EXTRA_SUBDIR="gp2x"
   fi
 
-  if test x"$is_unix_macosx" = "xyes" -a x"$enable_sldui" != "xyes"; then
-    if test x"$with_cocoa" = "xyes" ; then
+  if test x"$is_unix_macosx" = "xyes" ; then
+    ARCH_MAKE_BINDIST_DIR="\$(top_srcdir)/src/arch/unix/macosx"
+    if test x"$enable_sdlui" = "xyes"; then
+      UNIX_MACOSX_UITYPE=sdl
+    elif test x"$with_cocoa" = "xyes" ; then
       ARCH_LIBS="$ARCH_DIR/macosx/cocoa/menu/libarchmacosxcocoamenu.a $ARCH_DIR/macosx/cocoa/dialog/libarchmacosxcocoadialog.a $ARCH_DIR/macosx/cocoa/libarchmacosxcocoa.a $ARCH_DIR/macosx/cocoa/view/libarchmacosxcocoaview.a $ARCH_DIR/macosx/libarchmacosx.a $ARCH_DIR/libarch.a $ARCH_LIBS"
       ARCH_INCLUDES="-I$ARCH_SRC_DIR/macosx/cocoa/menu -I$ARCH_SRC_DIR/macosx/cocoa/dialog -I$ARCH_SRC_DIR/macosx/cocoa/view -I$ARCH_SRC_DIR/macosx/cocoa -I$ARCH_SRC_DIR $ARCH_INCLUDES"
       ARCH_EXTRA_SUBDIR="macosx macosx/cocoa macosx/cocoa/view macosx/cocoa/menu macosx/cocoa/dialog"
@@ -2231,6 +2236,7 @@ AC_SUBST(ARCH_INCLUDES)
 AC_SUBST(ARCH_LIBS)
 AC_SUBST(ARCH_DIR)
 AC_SUBST(ARCH_SRC_DIR)
+AC_SUBST(ARCH_MAKE_BINDIST_DIR)
 AC_SUBST(ARCH_EXTRA_SUBDIR)
 AC_SUBST(UI_LIBS)
 AC_SUBST(SOUND_USS_OBJ)
