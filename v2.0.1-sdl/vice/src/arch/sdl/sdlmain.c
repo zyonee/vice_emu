@@ -32,7 +32,9 @@
 #include "machine.h"
 #include "main.h"
 
-int SDL_main(int argc, char **argv)
+#include "SDL_main.h"
+
+int main(int argc, char **argv)
 {
     return main_program(argc, argv);
 }
