@@ -100,8 +100,7 @@ extern void ui_register_res_values(const ui_res_value_list_t *valuelist);
 extern void ui_update_menu();
 extern HWND ui_get_main_hwnd(void);
 extern HWND ui_open_canvas_window(const char *title, unsigned int width,
-                                  unsigned int height,
-                                  int fullscreen);
+                                  unsigned int height);
 extern void ui_resize_canvas_window(HWND w, unsigned int width,
                                     unsigned int height);
 extern FILE *ui_console_save_dialog(HWND hwnd);
@@ -109,5 +108,19 @@ extern int ui_emulation_is_paused(void);
 extern void ui_set_alwaysontop(int alwaysontop);
 extern void ui_message(const char *format,...);
 
-#endif
+struct ui_menu_translation_table_s {
+    int idm;
+    int ids;
+};
+typedef struct ui_menu_translation_table_s ui_menu_translation_table_t;
 
+struct ui_popup_translation_table_s {
+    int level;
+    int ids;
+};
+typedef struct ui_popup_translation_table_s ui_popup_translation_table_t;
+
+extern void ui_register_translation_tables(ui_menu_translation_table_t *menu_table, ui_popup_translation_table_t *popup_table);
+extern void ui_translate_monitor_menu(HMENU menu);
+
+#endif
