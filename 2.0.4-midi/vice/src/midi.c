@@ -29,6 +29,7 @@
 
 #include "vice.h"
 
+#ifdef HAVE_MIDI
 #include <stdio.h>
 
 #include "alarm.h"
@@ -97,8 +98,6 @@
 
 int midi_enabled = 0;
 
-static char *midi_in_dev = NULL;
-static char *midi_out_dev = NULL;
 static int fd_in = -1;
 static int fd_out = -1;
 
@@ -126,42 +125,7 @@ static CLOCK midi_alarm_clk = 0;
 
 static int midi_irq = IK_NONE;
 static int midi_irq_res;
-static int midi_mode = MIDI_MODE_SEQUENTIAL;
-
-/******************************************************************/
-
-struct midi_interface_s {
-    /* Base address (C64 specific) */
-    WORD base_addr;
-    /* Control register address */
-    WORD ctrl_addr;
-    /* Status register address */
-    WORD status_addr;
-    /* Transmit register address */
-    WORD tx_addr;
-    /* Receive register address */
-    WORD rx_addr;
-    /* Address mask (for mirroring) */
-    WORD mask;
-    /* Correct counter divide for 31250 bps */
-    BYTE midi_cd;
-    /* Interrupt type: none (0), IRQ (1) or NMI (2) */
-    int irq_type;
-};
-typedef struct midi_interface_s midi_interface_t;
-
-static midi_interface_t midi_interface[] = {
-    /* Sequential Circuits Inc. */
-    { 0xde00, 0, 2, 1, 3, 0xff, 1, 1 },
-    /* Passport & Syntech */
-    { 0xde00, 8, 8, 9, 9, 0xff, 1, 1 },
-    /* DATEL/Siel/JMS */
-    { 0xde00, 4, 6, 5, 7, 0xff, 2, 1 },
-    /* Namesoft */
-    { 0xde00, 0, 2, 1, 3, 0xff, 1, 2 },
-    /* Electronics - Maplin magazine */
-    { 0xdf00, 0, 0, 1, 1, 0xff, 2, 0 }
-};
+int midi_mode = 0;
 
 /******************************************************************/
 
@@ -203,7 +167,7 @@ static int get_midi_ticks(void)
     return (int)(machine_get_cycles_per_second() / 31250);
 }
 
-static int midi_set_mode(int new_mode, void *param)
+int midi_set_mode(int new_mode, void *param)
 {
     if(new_mode < 0 || new_mode > 4) {
         return -1;
@@ -220,87 +184,57 @@ static int midi_set_mode(int new_mode, void *param)
     return 0;
 }
 
-static int set_midi_in_dev(const char *val, void *param)
-{
-    util_string_set(&midi_in_dev, val);
-    return 0;
-}
-
-static int set_midi_out_dev(const char *val, void *param)
-{
-    util_string_set(&midi_out_dev, val);
-    return 0;
-}
-
 static int set_midi_enabled(int val, void *param)
 {
     midi_enabled = val;
     return 0;
 }
 
-static const resource_string_t resources_string[] = {
-    { "MIDIInDev", ARCHDEP_MIDI_IN_DEV, RES_EVENT_NO, NULL,
-      &midi_in_dev, set_midi_in_dev, NULL },
-    { "MIDIOutDev", ARCHDEP_MIDI_OUT_DEV, RES_EVENT_NO, NULL,
-      &midi_out_dev, set_midi_out_dev, NULL },
-    { NULL }
-};
-
 static const resource_int_t resources_int[] = {
     { "MIDIEnable", 0, RES_EVENT_STRICT, (resource_value_t)0,
       &midi_enabled, set_midi_enabled, NULL },
-    { "MIDIMode", MIDI_MODE_SEQUENTIAL, RES_EVENT_NO, NULL,
-      &midi_mode, midi_set_mode, NULL },
     { NULL }
 };
 
 int midi_resources_init(void)
 {
-    if (resources_register_string(resources_string) < 0) {
+    if (resources_register_int(resources_int) < 0) {
         return -1;
     }
 
-    return resources_register_int(resources_int);
+    return mididrv_resources_init();
 }
 
 void midi_resources_shutdown(void)
 {
-    lib_free(midi_in_dev);
-    lib_free(midi_out_dev);
+    mididrv_resources_shutdown();
 }
 
 #ifdef HAS_TRANSLATION
 static const cmdline_option_t cmdline_options[] = {
-    { "-midi", SET_RESOURCE, 0, NULL, NULL, "MIDIEnable", (void *)1,
-      NULL, IDCLS_ENABLE_MIDI_EMU },
-    { "+midi", SET_RESOURCE, 0, NULL, NULL, "MIDIEnable", (void *)0,
-      NULL, IDCLS_DISABLE_MIDI_EMU },
-    { "-midiin", SET_RESOURCE, 1, NULL, NULL, "MIDIInDev", NULL,
-      IDCLS_P_NAME, IDCLS_SPECIFY_MIDI_IN },
-    { "-midiout", SET_RESOURCE, 1, NULL, NULL, "MIDIOutDev", NULL,
-      IDCLS_P_NAME, IDCLS_SPECIFY_MIDI_OUT },
-    { "-miditype", SET_RESOURCE, 1, NULL, NULL, "MIDIMode", NULL,
-      IDCLS_P_0_4, IDCLS_SPECIFY_MIDI_TYPE },
+    { "-midi", SET_RESOURCE, 0, NULL, NULL, "MIDIEnable", (resource_value_t)1,
+      0, IDCLS_ENABLE_MIDI_EMU },
+    { "+midi", SET_RESOURCE, 0, NULL, NULL, "MIDIEnable", (resource_value_t)0,
+      0, IDCLS_DISABLE_MIDI_EMU },
     { NULL }
 };
 #else
 static const cmdline_option_t cmdline_options[] = {
-    { "-midi", SET_RESOURCE, 0, NULL, NULL, "MIDIEnable", (void *)1,
+    { "-midi", SET_RESOURCE, 0, NULL, NULL, "MIDIEnable", (resource_value_t)1,
       NULL, N_("Enable MIDI emulation") },
-    { "+midi", SET_RESOURCE, 0, NULL, NULL, "MIDIEnable", (void *)0,
+    { "+midi", SET_RESOURCE, 0, NULL, NULL, "MIDIEnable", (resource_value_t)0,
       NULL, N_("Disable MIDI emulation") },
-    { "-midiin", SET_RESOURCE, 1, NULL, NULL, "MIDIInDev", NULL,
-      N_("<name>"), N_("Specify MIDI-In device") },
-    { "-midiout", SET_RESOURCE, 1, NULL, NULL, "MIDIOutDev", NULL,
-      N_("<name>"), N_("Specify MIDI-Out device") },
-    { "-miditype", SET_RESOURCE, 1, NULL, NULL, "MIDIMode", NULL,
-      "<0-4>", N_("MIDI interface type (0: Sequential, 1: Passport, 2: DATEL, 3: Namesoft, 4: Maplin)") },
     { NULL }
 };
 #endif
 
-int midi_cmdline_options_init(void) {
-    return cmdline_register_options(cmdline_options);
+int midi_cmdline_options_init(void)
+{
+    if (cmdline_register_options(cmdline_options) < 0) {
+        return -1;
+    }
+
+    return mididrv_cmdline_options_init();
 }
 
 /******************************************************************/
@@ -369,8 +303,8 @@ static void midi_activate(void)
 #ifdef DEBUG
     log_message(midi_log, "activate");
 #endif
-    fd_in = mididrv_in_open(midi_in_dev);
-    fd_out = mididrv_out_open(midi_out_dev);
+    fd_in = mididrv_in_open();
+    fd_out = mididrv_out_open();
     if(!intx) {
         midi_alarm_clk = maincpu_clk + 1;
         alarm_set(midi_alarm, midi_alarm_clk);
@@ -469,11 +403,6 @@ int REGPARM1 midi_test_read(WORD a)
           ||(a == midi_interface[midi_mode].rx_addr));
 }
 
-int REGPARM1 midi_base_de00(void)
-{
-    return (midi_interface[midi_mode].base_addr == 0xde00)?1:0;
-}
-
 static void int_midi(CLOCK offset, void *data)
 {
     int rxirq = 0;
@@ -516,3 +445,4 @@ static void int_midi(CLOCK offset, void *data)
     alarm_active = 1;
 }
 
+#endif

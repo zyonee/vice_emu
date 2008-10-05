@@ -5267,26 +5267,6 @@ translate_t string_table[] = {
 /* sv */ {IDCLS_DISABLE_MIDI_EMU_SV, ""},  /* fuzzy */
 
 /* midi.c */
-/* en */ {IDCLS_SPECIFY_MIDI_IN,    "Specify MIDI-In device"},
-/* de */ {IDCLS_SPECIFY_MIDI_IN_DE, ""},  /* fuzzy */
-/* fr */ {IDCLS_SPECIFY_MIDI_IN_FR, ""},  /* fuzzy */
-/* hu */ {IDCLS_SPECIFY_MIDI_IN_HU, ""},  /* fuzzy */
-/* it */ {IDCLS_SPECIFY_MIDI_IN_IT, ""},  /* fuzzy */
-/* nl */ {IDCLS_SPECIFY_MIDI_IN_NL, ""},  /* fuzzy */
-/* pl */ {IDCLS_SPECIFY_MIDI_IN_PL, ""},  /* fuzzy */
-/* sv */ {IDCLS_SPECIFY_MIDI_IN_SV, ""},  /* fuzzy */
-
-/* midi.c */
-/* en */ {IDCLS_SPECIFY_MIDI_OUT,    "Specify MIDI-Out device"},
-/* de */ {IDCLS_SPECIFY_MIDI_OUT_DE, ""},  /* fuzzy */
-/* fr */ {IDCLS_SPECIFY_MIDI_OUT_FR, ""},  /* fuzzy */
-/* hu */ {IDCLS_SPECIFY_MIDI_OUT_HU, ""},  /* fuzzy */
-/* it */ {IDCLS_SPECIFY_MIDI_OUT_IT, ""},  /* fuzzy */
-/* nl */ {IDCLS_SPECIFY_MIDI_OUT_NL, ""},  /* fuzzy */
-/* pl */ {IDCLS_SPECIFY_MIDI_OUT_PL, ""},  /* fuzzy */
-/* sv */ {IDCLS_SPECIFY_MIDI_OUT_SV, ""},  /* fuzzy */
-
-/* midi.c */
 /* en */ {IDCLS_SPECIFY_MIDI_TYPE,    "MIDI interface type (0: Sequential, 1: Passport, 2: DATEL, 3: Namesoft, 4: Maplin)"},
 /* de */ {IDCLS_SPECIFY_MIDI_TYPE_DE, ""},  /* fuzzy */
 /* fr */ {IDCLS_SPECIFY_MIDI_TYPE_FR, ""},  /* fuzzy */

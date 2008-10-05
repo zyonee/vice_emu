@@ -1,11 +1,9 @@
 /*
- * mididrv.h - MIDI driver interface.
+ * c64-midi.h - C64 specific MIDI (6850 UART) emulation.
  *
  * Written by
  *  Hannu Nuotio <hannu.nuotio@tut.fi>
- *
- * Based on code by
- *  Andr. Fachat <a.fachat@physik.tu-chemnitz.de>
+ *  Marco van den Heuvel <blackystardust68@yahoo.com>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -27,28 +25,23 @@
  *
  */
 
-#ifndef _MIDIDRV_H
-#define _MIDIDRV_H
+#ifndef _C64_MIDI_H
+#define _C64_MIDI_H
 
-#include "types.h"
+#include "midi.h"
 
-extern void mididrv_init(void);
+/* returns 1 if interface is at $de00 (on C64) */
+extern int REGPARM1 c64_midi_base_de00(void);
 
-/* Opens a MIDI device */
-extern int mididrv_in_open(void);
-extern int mididrv_out_open(void);
+extern int c64_midi_resources_init(void);
+extern int c64_midi_cmdline_options_init(void);
 
-/* Closes the MIDI device */
-extern void mididrv_in_close(void);
-extern void mididrv_out_close(void);
-
-/* MIDI device I/O */
-/* return: -1 if error, 1 if a byte was read to *b, 0 if no new bytes */
-extern int mididrv_in(BYTE *b);
-extern void mididrv_out(BYTE b);
-
-extern int mididrv_resources_init(void);
-extern void mididrv_resources_shutdown(void);
-extern int mididrv_cmdline_options_init(void);
+/* Emulated interfaces */
+enum { MIDI_MODE_SEQUENTIAL = 0,   /* Sequential Circuits Inc. */
+       MIDI_MODE_PASSPORT,         /* Passport & Syntech */
+       MIDI_MODE_DATEL,            /* DATEL/Siel/JMS */
+       MIDI_MODE_NAMESOFT,         /* Namesoft */
+       MIDI_MODE_MAPLIN            /* Electronics - Maplin magazine */
+};
 
 #endif

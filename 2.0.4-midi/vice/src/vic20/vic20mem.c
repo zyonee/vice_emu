@@ -211,13 +211,15 @@ static BYTE REGPARM1 io3_read(WORD addr)
         return vic20_cpu_last_data;
     }
 
-    if (midi_enabled && !midi_base_de00() && (addr & 0xff00) == 0x9c00)
+#ifdef HAVE_MIDI
+    if (midi_enabled && (addr & 0xff00) == 0x9c00)
     {
         if(midi_test_read((WORD)(addr & 0xff))) {
             vic20_cpu_last_data = midi_read((WORD)(addr & 0xff));
             return vic20_cpu_last_data;
         }
     }
+#endif
 
     vic20_cpu_last_data = 0xff;
     return 0xff;
@@ -235,8 +237,10 @@ static void REGPARM2 io3_store(WORD addr, BYTE value)
     if (emu_id_enabled && (addr & 0xff00) == 0x9f00)
         store_emuid(addr, value);
 
-    if (midi_enabled && !midi_base_de00() && (addr & 0xff00) == 0x9c00)
+#ifdef HAVE_MIDI
+    if (midi_enabled && (addr & 0xff00) == 0x9c00)
         midi_store((WORD)(addr & 0xff), value);
+#endif
 
     return;
 }

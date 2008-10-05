@@ -32,27 +32,44 @@
 
 #include "types.h"
 
+struct midi_interface_s {
+    /* Name of the interface */
+    char *name;
+    /* Base address (C64 specific) */
+    WORD base_addr;
+    /* Control register address */
+    WORD ctrl_addr;
+    /* Status register address */
+    WORD status_addr;
+    /* Transmit register address */
+    WORD tx_addr;
+    /* Receive register address */
+    WORD rx_addr;
+    /* Address mask (for mirroring) */
+    WORD mask;
+    /* Correct counter divide for 31250 bps */
+    BYTE midi_cd;
+    /* Interrupt type: none (0), IRQ (1) or NMI (2) */
+    int irq_type;
+};
+typedef struct midi_interface_s midi_interface_t;
+
+extern midi_interface_t midi_interface[];
+
 extern int midi_enabled;
+extern int midi_mode;
 
 extern void midi_init(void);
 extern void midi_reset(void);
+extern int midi_set_mode(int new_mode, void *param);
 
 extern BYTE REGPARM1 midi_read(WORD a);
 extern void REGPARM2 midi_store(WORD a, BYTE b);
 /* returns 1 if address is a readable MIDI register */
 extern int REGPARM1 midi_test_read(WORD a);
-/* returns 1 if interface is at $de00 (on C64) */
-extern int REGPARM1 midi_base_de00(void);
 
 extern int midi_resources_init(void);
 extern void midi_resources_shutdown(void);
 extern int midi_cmdline_options_init(void);
-
-/* Emulated interfaces */
-#define MIDI_MODE_SEQUENTIAL 0  /* Sequential Circuits Inc. */
-#define MIDI_MODE_PASSPORT   1  /* Passport & Syntech */
-#define MIDI_MODE_DATEL      2  /* DATEL/Siel/JMS */
-#define MIDI_MODE_NAMESOFT   3  /* Namesoft */
-#define MIDI_MODE_MAPLIN     4  /* Electronics - Maplin magazine */
 
 #endif

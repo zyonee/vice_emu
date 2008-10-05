@@ -31,14 +31,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-#if __GNUC__>2 || (__GNUC__==2 && __GNUC_MINOR__>=91)
 #include <windows.h>
 #include <mmsystem.h>
-#endif
 
+#include "cmdline.h"
 #include "log.h"
 #include "mididrv.h"
+#include "res.h"
+#include "resources.h"
+#include "translate.h"
 #include "types.h"
 
 /* ------------------------------------------------------------------------- */
@@ -60,6 +61,51 @@ static BYTE out_buf[OUT_BUF_LEN];
 static volatile unsigned int in_wi=0;
 static volatile unsigned int in_ri=0;
 static BYTE in_buf[IN_BUF_LEN];
+
+static int midi_in_dev = 0;
+static int midi_out_dev = 0;
+
+static int set_midi_in_dev(int val, void *param)
+{
+    midi_in_dev = val;
+    return 0;
+}
+
+static int set_midi_out_dev(int val, void *param)
+{
+    midi_out_dev = val;
+    return 0;
+}
+
+static const resource_int_t resources_int[] = {
+    { "MIDIInDev", 0, RES_EVENT_NO, (resource_value_t)0,
+      &midi_in_dev, set_midi_in_dev, NULL },
+    { "MIDIOutDev", 0, RES_EVENT_NO, (resource_value_t)0,
+      &midi_out_dev, set_midi_out_dev, NULL },
+    { NULL }
+};
+
+int mididrv_resources_init(void)
+{
+    return resources_register_int(resources_int);
+}
+
+void mididrv_resources_shutdown(void)
+{
+}
+
+static const cmdline_option_t cmdline_options[] = {
+    { "-midiin", SET_RESOURCE, 1, NULL, NULL, "MIDIInDev", NULL,
+      IDS_P_NUMBER, IDS_SPECIFY_MIDI_IN },
+    { "-midiout", SET_RESOURCE, 1, NULL, NULL, "MIDIOutDev", NULL,
+      IDS_P_NUMBER, IDS_SPECIFY_MIDI_OUT },
+    { NULL }
+};
+
+int mididrv_cmdline_options_init(void)
+{
+    return cmdline_register_options(cmdline_options);
+}
 
 static void reset_fifo(void)
 {
@@ -136,43 +182,6 @@ static int message_len(BYTE msg)
     return len;
 }
 
-static void list_in_devs(void)
-{
-    MMRESULT ret;
-    MIDIINCAPS mic;
-    int num, i;
-
-    num = midiInGetNumDevs();
-
-    log_message(mididrv_log, "Listing available MIDI-In devices...");
-    for(i=0; i < num; i++) {
-        ret = midiInGetDevCaps(i, &mic, sizeof(MIDIINCAPS));
-        if (ret == MMSYSERR_NOERROR) {
-            log_message(mididrv_log, "  MIDI-In device #%d: %s", i, mic.szPname);
-        }
-    }
-}
-
-static void list_out_devs(void)
-{
-    MMRESULT ret;
-    MIDIOUTCAPS moc;
-    int num, i;
-
-    num = midiOutGetNumDevs();
-
-    log_message(mididrv_log, "Listing available MIDI-Out devices...");
-    for(i=0; i < num; i++) {
-        ret = midiOutGetDevCaps(i, &moc, sizeof(MIDIOUTCAPS));
-        if (ret == MMSYSERR_NOERROR){
-            log_message(mididrv_log, "  MIDI-Out device #%d: %s", i, moc.szPname);
-        }
-    }
-
-}
-
-
-
 /* ------------------------------------------------------------------------- */
 
 void mididrv_init(void)
@@ -183,32 +192,19 @@ void mididrv_init(void)
 }
 
 /* opens a MIDI-In device, returns handle */
-int mididrv_in_open(const char *dev)
+int mididrv_in_open(void)
 {
-    int n;
     MMRESULT ret;
-    static listed=0;
-    if (!listed) {
-        list_in_devs();
-        listed=1;
-    }
 
-    /* the input string is just a number representing the port */
-    n = atoi(dev);
-
-    log_message(mididrv_log, "Opening MIDI-In device #%d", n);
+    log_message(mididrv_log, "Opening MIDI-In device #%d", midi_in_dev);
     if(handle_in) {
         mididrv_in_close();
     }
 
-    if(dev == NULL) {
-        return -1;
-    }
-
-    ret = midiInOpen(&handle_in, n, (DWORD)midi_callback, 0, CALLBACK_FUNCTION);
+    ret = midiInOpen(&handle_in, midi_in_dev, (DWORD)midi_callback, 0, CALLBACK_FUNCTION);
     if(ret != MMSYSERR_NOERROR) {
         log_error(mididrv_log, "Cannot open MIDI-In device #%d!",
-                  n);
+                  midi_in_dev);
         handle_in = 0;
         return -1;
     }
@@ -223,32 +219,19 @@ int mididrv_in_open(const char *dev)
 }
 
 /* opens a MIDI-Out device, returns handle */
-int mididrv_out_open(const char *dev)
+int mididrv_out_open(void)
 {
-    int n;
     MMRESULT ret;
-    static listed=0;
-    if (!listed) {
-        list_out_devs();
-        listed=1;
-    }
 
-    /* the input string is just a number representing the port */
-    n = atoi(dev);
-
-    log_message(mididrv_log, "Opening MIDI-Out device #%d", n);
+    log_message(mididrv_log, "Opening MIDI-Out device #%d", midi_out_dev);
     if(handle_out) {
         mididrv_out_close();
     }
 
-    if(dev == NULL) {
-        return -1;
-    }
-
-    ret = midiOutOpen(&handle_out, n, 0, 0, CALLBACK_NULL);
+    ret = midiOutOpen(&handle_out, midi_out_dev, 0, 0, CALLBACK_NULL);
     if(ret != MMSYSERR_NOERROR) {
         log_error(mididrv_log, "Cannot open MIDI-Out device #%d!",
-                  n);
+                  midi_out_dev);
         handle_out = 0;
         return -1;
     }
@@ -348,9 +331,9 @@ static void CALLBACK midi_callback(HMIDIIN handle, UINT uMsg, DWORD dwInstance, 
 #ifdef DEBUG
         log_message(mididrv_log, "MIDI callback got %08x", dwParam1);
 #endif
-        len=message_len(dwParam1 & 0xff);
+        len=message_len((BYTE)(dwParam1 & 0xff));
         for (i=0; i<len; i++) {
-            write_fifo(dwParam1 & 0xff);
+            write_fifo((BYTE)(dwParam1 & 0xff));
             dwParam1 >>= 8;
         }
         break;
@@ -386,4 +369,3 @@ int mididrv_in(BYTE *b)
     }
     return 0;
 }
-/* eof */

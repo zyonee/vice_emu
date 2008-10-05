@@ -273,6 +273,7 @@ int ui_register_translation_tables(ui_menu_translation_table_t *menu_table, ui_p
     menu_translation_table = menu_table;
     popup_translation_table = popup_table;
     ui_update_menu();
+    return 0;
 }
 
 /* Initialize the UI before setting all the resource values.  */

@@ -50,19 +50,69 @@
 #include <sys/select.h>
 #endif
 
+#include "archdep.h"
 #include "cmdline.h"
+#include "lib.h"
 #include "log.h"
 #include "mididrv.h"
+#include "resources.h"
 #include "types.h"
+#include "util.h"
 
 /* ------------------------------------------------------------------------- */
 
+static char *midi_in_dev = NULL;
+static char *midi_out_dev = NULL;
 static int fd_in = -1;
 static int fd_out = -1;
 
 static log_t mididrv_log = LOG_ERR;
 
 /* ------------------------------------------------------------------------- */
+
+static int set_midi_in_dev(const char *val, void *param)
+{
+    util_string_set(&midi_in_dev, val);
+    return 0;
+}
+
+static int set_midi_out_dev(const char *val, void *param)
+{
+    util_string_set(&midi_out_dev, val);
+    return 0;
+}
+
+static const resource_string_t resources_string[] = {
+    { "MIDIInDev", ARCHDEP_MIDI_IN_DEV, RES_EVENT_NO, NULL,
+      &midi_in_dev, set_midi_in_dev, NULL },
+    { "MIDIOutDev", ARCHDEP_MIDI_OUT_DEV, RES_EVENT_NO, NULL,
+      &midi_out_dev, set_midi_out_dev, NULL },
+    { NULL }
+};
+
+int mididrv_resources_init(void)
+{
+    return resources_register_string(resources_string);
+}
+
+void mididrv_resources_shutdown(void)
+{
+    lib_free(midi_in_dev);
+    lib_free(midi_out_dev);
+}
+
+static const cmdline_option_t cmdline_options[] = {
+    { "-midiin", SET_RESOURCE, 1, NULL, NULL, "MIDIInDev", NULL,
+      N_("<name>"), N_("Specify MIDI-In device") },
+    { "-midiout", SET_RESOURCE, 1, NULL, NULL, "MIDIOutDev", NULL,
+      N_("<name>"), N_("Specify MIDI-Out device") },
+    { NULL }
+};
+
+int mididrv_cmdline_options_init(void)
+{
+    return cmdline_register_options(cmdline_options);
+}
 
 void mididrv_init(void)
 {
@@ -72,7 +122,7 @@ void mididrv_init(void)
 }
 
 /* opens a MIDI-In device, returns handle */
-int mididrv_in_open(const char *dev)
+int mididrv_in_open(void)
 {
 #ifdef DEBUG
     log_message(mididrv_log, "in_open");
@@ -81,14 +131,14 @@ int mididrv_in_open(const char *dev)
         mididrv_in_close();
     }
 
-    if(dev == NULL) {
+    if(midi_in_dev == NULL) {
         return -1;
     }
 
-    fd_in = open(dev, O_RDONLY);
+    fd_in = open(midi_in_dev, O_RDONLY);
     if(fd_in < 0) {
         log_error(mididrv_log, "Cannot open file \"%s\": %s",
-                  dev, strerror(errno));
+                  midi_in_dev, strerror(errno));
         return -1;
     }
 
@@ -96,7 +146,7 @@ int mididrv_in_open(const char *dev)
 }
 
 /* opens a MIDI-Out device, returns handle */
-int mididrv_out_open(const char *dev)
+int mididrv_out_open(void)
 {
 #ifdef DEBUG
     log_message(mididrv_log, "out_open");
@@ -105,14 +155,14 @@ int mididrv_out_open(const char *dev)
         mididrv_out_close();
     }
 
-    if(dev == NULL) {
+    if(midi_out_dev == NULL) {
         return -1;
     }
 
-    fd_out = open(dev, O_WRONLY);
+    fd_out = open(midi_out_dev, O_WRONLY);
     if(fd_out < 0) {
         log_error(mididrv_log, "Cannot open file \"%s\": %s",
-                  dev, strerror(errno));
+                  midi_out_dev, strerror(errno));
         return -1;
     }
 
@@ -204,4 +254,3 @@ int mididrv_in(BYTE *b)
     }
     return 0;
 }
-
