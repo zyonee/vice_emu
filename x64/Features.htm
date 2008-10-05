@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Features</title>
+<meta name="GENERATOR" content="WinCHM">
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-1252">
+
+</head>
+
+<BODY>
+<P><FONT size=2><FONT size=3 face="Microsoft Sans Serif"><U><STRONG>Features of 
+the VICE Commodore 64 Emulator (x64)</STRONG></U></FONT></P>
+<P><FONT face="Microsoft Sans Serif">The C64 emulator, called 'x64', features a 
+fairly complete emulation of the VIC-II video chip: sprites, all registers and 
+all video modes are fully emulated. Custom palettes, gamma, contrast, and 
+several other settings are configurable.The emulation has been fully 
+cycle-accurate since version 0.13.0. </FONT></P>
+<P><FONT face="Microsoft Sans Serif">A rather complete emulation of the SID 
+sound chip is also provided. All the basic features are implemented as well as 
+most of the complex ones including synchronization, ring modulation and filters. 
+There are two emulators of the SID chip available: one is the "standard" VICE 
+emulator, available since VICE 0.12; the other one is Dag Lem's reSID engine. 
+The reSID engine is a lot more accurate than the standard engine, but it is also 
+a lot slower, and only suitable for faster machines. Dual SID chips are also 
+emulated and can be enabled in a configurable address space.</FONT></P>
+<P><FONT face="Microsoft Sans Serif">Naturally, both CIAs (or VIAs, in some 
+cases) are fully emulated and cycle accurate.</FONT></P>
+<P><FONT face="Microsoft Sans Serif">Kernal, basic, character, and drive roms 
+can be swapped out in favor of 3rd party replacement roms. Some rom sets known 
+to work are JiffyDos, DolphinDos, SpeedDos, and others.</FONT></P>
+<P><FONT face="Microsoft Sans Serif">NTSC and PAL modes are also fully 
+emulated.</FONT></P>
+<P><FONT face="Microsoft Sans Serif">A very powerful and robust ML monitor and 
+debugger is built in that includes support not only for the main machine but 
+also for emulated disk drives.</FONT></P>
+<P><FONT face="Microsoft Sans Serif">x64&nbsp;also supports a large number of 
+additional hardware devices and addons. Here's a&nbsp;good rundown of most of 
+them:</FONT></P>
+<UL dir=ltr>
+  <LI>
+  <DIV style="MARGIN-RIGHT: 0px" align=left><FONT 
+  face="Microsoft Sans Serif">Full 4 drive IEC&nbsp;emulation of the 1541, 
+  1541-II, 1570, 1571, and 1581. For drives that support such addons, emulation 
+  also includes up to 40k drive ram expansion, 35 -&gt; 40 track expansion, and 
+  userport parallel support for various hardware drive speeders. In additon, 
+  virtual device numbers can be mapped to a directory on the host PC to provide 
+  access to the host's filesystem. Real physical IEC drives can also be 
+  used&nbsp;in the emulator&nbsp;with the correct interface and&nbsp;OpenCBM 
+  drivers installed.</FONT></DIV>
+  <LI>
+  <DIV style="MARGIN-RIGHT: 0px" align=left><FONT 
+  face="Microsoft Sans Serif">IEEE488 emulation which allows additional drive 
+  types to be emulated. (2031, 2040, 3040, 4040, 1001, 8050 and 
+  8250)</FONT></FONT></DIV>
+  <LI>
+  <DIV align=left><FONT size=2 face="Microsoft Sans Serif">CBM Datasette 
+  emulation is included and has options for tweaking the virtual motor 
+  speed.</FONT></DIV>
+  <LI>
+  <DIV align=left><FONT size=2 face="Microsoft Sans Serif">Mass storage options 
+  including the IDE64 and MMC64</FONT></DIV>
+  <LI>
+  <DIV style="MARGIN-RIGHT: 0px" align=left><FONT size=2 
+  face="Microsoft Sans Serif">Userport and IEC printer emulation. Ascii, MPS803, 
+  and NL10 virtual printer emulation&nbsp;can print to printers attached to the 
+  PC, a text file, and a real IEC printer via OpenCBM</FONT></DIV>
+  <LI>
+  <DIV style="MARGIN-RIGHT: 0px" align=left><FONT size=2 
+  face="Microsoft Sans Serif">Fully customized&nbsp;keyboard mappings, dual 
+  joystick mappings, and 1351/Neos/Amiga mouse input on either 
+  JoyPort</FONT></DIV>
+  <LI>
+  <DIV style="MARGIN-RIGHT: 0px" align=left><FONT size=2 
+  face="Microsoft Sans Serif">Configurable C64 borders and sprite collision 
+  detection</FONT></DIV>
+  <LI>
+  <DIV style="MARGIN-RIGHT: 0px" align=left><FONT size=2 
+  face="Microsoft Sans Serif">Userport RS-232 emulation and support for ACIA 
+  RS-232 cartridges like the Swiftlink and Turbo232 with communication over 
+  tcpip</FONT></DIV>
+  <LI>
+  <DIV style="MARGIN-RIGHT: 0px" align=left><FONT size=2 
+  face="Microsoft Sans Serif">Ethernet&nbsp;support&nbsp;using RR-Net and TFE 
+  cart emulation</FONT></DIV>
+  <LI>
+  <DIV style="MARGIN-RIGHT: 0px" align=left><FONT size=2 
+  face="Microsoft Sans Serif">Up to 16 megabyte REU and 4 megabyte GEORam 
+  support with saving of the image to the host filesystem</FONT></DIV>
+  <LI>
+  <DIV style="MARGIN-RIGHT: 0px" align=left><FONT size=2 
+  face="Microsoft Sans Serif">Several other ram additions and hacks are emulated 
+  including the Ramcart, Plus60k, Plus256k, and 256k </FONT></DIV>
+  <LI>
+  <DIV style="MARGIN-RIGHT: 0px" align=left><FONT size=2 
+  face="Microsoft Sans Serif">Digimax support at a configurable 
+  address</FONT></DIV>
+  <LI>
+  <DIV style="MARGIN-RIGHT: 0px" align=left><FONT size=2 
+  face="Microsoft Sans Serif">Generic support for CRT images, plain binary rom 
+  images and many different cartridge types and configurations can be used such 
+  as Action Replay, Retro Replay, Expert Cartridge, Epyx Fastload, The Final 
+  Cartridge, and Super Snapshot</FONT></DIV></LI></UL>
+<P style="MARGIN-RIGHT: 0px" align=left><FONT size=2 
+face="Microsoft Sans Serif">New features and support for additional hardware is 
+being added all the time. If you have a new feature request, please dont 
+hesitate to visit the Sourceforge page and add it to the 
+tracker.</FONT></P></BODY>
+</html>
