@@ -29,6 +29,8 @@
 
 #include "vice.h"
 
+#ifdef HAVE_MIDI
+
 #include <stdio.h>
 
 #include "uilib.h"
@@ -64,7 +66,7 @@ static ui_menu_entry_t midi_mode_submenu[] = {
     { NULL }
 };
 
-ui_menu_entry_t midi_submenu[] = {
+ui_menu_entry_t midi_c64_submenu[] = {
     { N_("*Enable MIDI"),
       (ui_callback_t)toggle_MIDIEnable, NULL, NULL },
     { N_("MIDI type"),
@@ -78,3 +80,16 @@ ui_menu_entry_t midi_submenu[] = {
     { NULL }
 };
 
+ui_menu_entry_t midi_vic20_submenu[] = {
+    { N_("*Enable MIDI"),
+      (ui_callback_t)toggle_MIDIEnable, NULL, NULL },
+    { N_("MIDI-In device..."),
+      (ui_callback_t)set_midi_in_name,
+      (ui_callback_data_t)"MIDIInDev", NULL },
+    { N_("MIDI-Out device..."),
+      (ui_callback_t)set_midi_out_name,
+      (ui_callback_data_t)"MIDIOutDev", NULL },
+    { NULL }
+};
+
+#endif /* HAVE_MIDI */

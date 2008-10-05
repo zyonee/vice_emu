@@ -32,7 +32,8 @@
 
 #include "uimenu.h"
 
-extern struct ui_menu_entry_s midi_submenu[];
+extern struct ui_menu_entry_s midi_c64_submenu[];
+extern struct ui_menu_entry_s midi_vic20_submenu[];
 
 #endif
 

@@ -296,8 +296,10 @@ static ui_menu_entry_t io_extensions_submenu[] = {
     { N_("*Mouse Emulation"),
       NULL, NULL, mouse_submenu },
 #endif
+#ifdef HAVE_MIDI
     { N_("MIDI Emulation"),
-      NULL, NULL, midi_submenu },
+      NULL, NULL, midi_c64_submenu },
+#endif
     { NULL }
 };
 
