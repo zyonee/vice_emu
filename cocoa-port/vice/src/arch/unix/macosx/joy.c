@@ -322,7 +322,6 @@ static void build_joystick_button_axis_lists(joystick_descriptor_t *joy)
   joy->num_buttons = 0;
   joy->num_axis = 0;
 
-  printf("  available: ");
   for(element = HIDGetFirstDeviceElement(joy->device, kHIDElementTypeInput); 
       element != NULL;
       element = HIDGetNextDeviceElement(element, kHIDElementTypeInput)) {
@@ -331,11 +330,10 @@ static void build_joystick_button_axis_lists(joystick_descriptor_t *joy)
       const char *name = find_axis_name(element->usage);
       if(name!=NULL) {
         if(joy->num_axis==JOYSTICK_DESCRIPTOR_MAX_AXIS) {
-          printf("TOO MANY AXIS!");
+          log_message(LOG_DEFAULT,"may_joy: TOO MANY AXIS FOUND!");
         } else {
           joy->axis[joy->num_axis] = element;
           joy->num_axis++;
-          printf("%s ",name);
         }
       }
     }
@@ -343,28 +341,18 @@ static void build_joystick_button_axis_lists(joystick_descriptor_t *joy)
     else if(element->usagePage == kHIDPage_Button) {
       if(element->usage >= 1) {
         if(joy->num_buttons==JOYSTICK_DESCRIPTOR_MAX_BUTTONS) {
-          printf("TOO MANY BUTTONS!");
+          log_message(LOG_DEFAULT,"mac_joy: TOO MANY BUTTONS FOUND!");
         } else {
           joy->buttons[joy->num_buttons] = element;
           joy->num_buttons++;
-          printf("%ld ",element->usage);
         }
       }
     }
   }
-  printf("\n");
-}
-
-static void verbose_button_element(const char *desc,pRecElement element)
-{
-  if(element==NULL)
-    printf("  %s: NONE",desc);
-  else
-    printf("  %s: %ld",desc,element->usage);
 }
 
 static void setup_axis_calibration(pRecElement element,calibration_t *calib,
-                                   int threshold)
+                                   int threshold,const char *desc)
 {
   const char *name = find_axis_name(element->usage);
   int min = element->min;
@@ -373,8 +361,9 @@ static void setup_axis_calibration(pRecElement element,calibration_t *calib,
   int safe  = range * threshold / 200;
   int t_min = min + safe;
   int t_max = max - safe;
-  printf("    axis %s: range=[%d;%d]  null=[%d;%d]  threshold=%d%%\n",
-         name,min,max,t_min,t_max,threshold);
+  log_message(LOG_DEFAULT,
+    "mac_joy: %s axis: mapped to %s with range=[%d;%d] and null=[%d;%d] from threshold=%d%%",
+    desc,name,min,max,t_min,t_max,threshold);
   calib->min_threshold = t_min;
   calib->max_threshold = t_max;
 }
@@ -390,13 +379,15 @@ static void setup_axis_mapping(joystick_descriptor_t *joy)
   joy->y_axis = find_axis_element(joy,y_axis_id);
 
   /* setup calibration for axis */
-  printf("  horizontal axis: %s\n",joy->x_axis_name);
   if(joy->x_axis) {
-    setup_axis_calibration(joy->x_axis,&joy->x_calib,joy->x_threshold);
+    setup_axis_calibration(joy->x_axis,&joy->x_calib,joy->x_threshold,"horizontal");
+  } else {
+    log_message(LOG_DEFAULT,"mac_joy: horizontal axis not mapped!");
   }
-  printf("  vertical axis: %s\n",joy->y_axis_name);
   if(joy->y_axis) {
-    setup_axis_calibration(joy->y_axis,&joy->y_calib,joy->y_threshold);
+    setup_axis_calibration(joy->y_axis,&joy->y_calib,joy->y_threshold,"vertical");
+  } else {
+    log_message(LOG_DEFAULT,"mac_joy: vertical axis not mapped!");
   }
 }
 
@@ -414,19 +405,18 @@ static void setup_button_mapping(joystick_descriptor_t *joy)
   for(i=0;i<HID_NUM_BUTTONS;i++)
     joy->mapped_buttons[i]  = find_button_element(joy,ids[i]);
   
-  printf("  buttons:");
-  verbose_button_element("fire",joy->mapped_buttons[HID_FIRE]);
-  verbose_button_element("alt_fire",joy->mapped_buttons[HID_ALT_FIRE]);
-  verbose_button_element("left",joy->mapped_buttons[HID_LEFT]);
-  verbose_button_element("right",joy->mapped_buttons[HID_RIGHT]);
-  verbose_button_element("up",joy->mapped_buttons[HID_UP]);
-  verbose_button_element("down",joy->mapped_buttons[HID_DOWN]);
-  printf("\n");  
+  log_message(LOG_DEFAULT,"mac_joy: buttons: fire=%ld alt_fire=%ld left=%ld right=%ld up=%ld down=%ld",
+    joy->mapped_buttons[HID_FIRE]      ? joy->mapped_buttons[HID_FIRE]->usage : 0,
+    joy->mapped_buttons[HID_ALT_FIRE]  ? joy->mapped_buttons[HID_ALT_FIRE]->usage : 0,
+    joy->mapped_buttons[HID_LEFT]      ? joy->mapped_buttons[HID_LEFT]->usage : 0,
+    joy->mapped_buttons[HID_RIGHT]     ? joy->mapped_buttons[HID_RIGHT]->usage : 0,
+    joy->mapped_buttons[HID_UP]        ? joy->mapped_buttons[HID_UP]->usage : 0,
+    joy->mapped_buttons[HID_DOWN]      ? joy->mapped_buttons[HID_DOWN]->usage : 0);
 }
 
 static void setup_joystick(joystick_descriptor_t *joy,pRecDevice device,const char *desc)
 {
-  printf("mac_joy: setup %s HID joystick\n",desc);
+  log_message(LOG_DEFAULT,"mac_joy: setting up %s HID joystick",desc);
   
   joy->device = device;
   build_joystick_button_axis_lists(joy);
@@ -460,7 +450,6 @@ static int match_joystick(joystick_descriptor_t *joy,pRecDevice device,int seria
     int vid,pid;
     int want_serial;
     if(sscanf(joy->device_name,"%x:%x:%d",&vid,&pid,&want_serial)!=3) {
-      printf("mismatched vid pid!\n");
       return 0;
     }
     return (vid == device->vendorID) && (pid == device->productID) &&
@@ -496,7 +485,7 @@ static void assign_joysticks_from_device_list(void)
          
       int serial_num = get_device_serial(device);
 
-      printf("mac_joy: #%d joystick/gamepad: %04lx:%04lx:%d %s\n",
+      log_message(LOG_DEFAULT,"mac_joy: found #%d joystick/gamepad: %04lx:%04lx:%d %s",
         num_joysticks,device->vendorID,device->productID,serial_num,device->product);
 
       /* query joy A */
@@ -522,10 +511,10 @@ static void assign_joysticks_from_device_list(void)
   
   /* check if matched */
   if(!auto_assign_a && (joy_a.device==NULL)) {
-    printf("mac_joy: joystick A not matched!\n");
+    log_message(LOG_DEFAULT,"mac_joy: joystick A not matched!");
   }
   if(!auto_assign_b && (joy_b.device==NULL)) {
-    printf("mac_joy: joystick B not matched!\n");
+    log_message(LOG_DEFAULT,"mac_joy: joystick B not matched!");
   }
 }
 
