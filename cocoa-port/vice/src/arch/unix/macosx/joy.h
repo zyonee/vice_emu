@@ -34,6 +34,14 @@
 #define JOYDEV_HID_0        4
 #define JOYDEV_HID_1        5
 
+/* obsolete fallbacks for X11/Gtk */
+#define JOYDEV_ANALOG_0     4
+#define JOYDEV_ANALOG_1     5
+#define JOYDEV_ANALOG_2     6
+#define JOYDEV_ANALOG_3     7
+#define JOYDEV_ANALOG_4     8
+#define JOYDEV_ANALOG_5     9
+
 #define JOYSTICK_DESCRIPTOR_MAX_BUTTONS  32
 #define JOYSTICK_DESCRIPTOR_MAX_AXIS     6
 
