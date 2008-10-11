@@ -24,6 +24,8 @@
  *
  */
 
+#define JOY_INTERNAL
+
 #include "vice.h"
 
 #include "cmdline.h"
@@ -33,13 +35,16 @@
 #include "log.h"
 #include "resources.h"
 #include "types.h"
+#include "util.h"
+
+/* (Used by `kbd.c').  */
+int joystick_port_map[2] = { JOYDEV_NONE,JOYDEV_NONE };
 
 #ifdef HAS_JOYSTICK
 
 /* ----- Static Data ------------------------------------------------------ */
 
-/* (Used by `kbd.c').  */
-int joystick_port_map[2];
+static int joy_done_init = 0;
 
 /* axis map */
 axis_map_t joy_axis_map[] = {
@@ -52,10 +57,14 @@ axis_map_t joy_axis_map[] = {
 };
 
 /* the driver holds up to two USB joystick definitions */
-joystick_descriptor_t joy_a = { NULL,NULL,NULL,NULL,NULL,0,0 };
-joystick_descriptor_t joy_b = { NULL,NULL,NULL,NULL,NULL,0,0 };
+joystick_descriptor_t joy_a = { NULL,NULL,NULL,NULL,0,0 };
+joystick_descriptor_t joy_b = { NULL,NULL,NULL,NULL,0,0 };
 
 /* ----- VICE Resources --------------------------------------------------- */
+
+static void setup_axis_mapping(joystick_descriptor_t *joy);
+static void setup_button_mapping(joystick_descriptor_t *joy);
+static void assign_joysticks_from_device_list(void);
 
 static int joyport1select(int val, void *param)
 {
@@ -69,95 +78,105 @@ static int joyport2select(int val, void *param)
   return 0;
 }
 
-static int set_joy_a_serial(const char *val, void *param)
+static int set_joy_a_device_name(const char *val,void *param)
 {
-  util_string_set(&joy_a.query_serial,val);
-  return 0;
-}
-
-static int set_joy_a_vid_pid(const char *val,void *param)
-{
-  util_string_set(&joy_a.query_vid_pid,val);
+  util_string_set(&joy_a.device_name,val);
+  if(joy_done_init)
+    assign_joysticks_from_device_list();
   return 0;
 }
 
 static int set_joy_a_x_axis_name(const char *val,void *param)
 {
   util_string_set(&joy_a.x_axis_name,val);
+  if(joy_done_init)
+    setup_axis_mapping(&joy_a);
   return 0;
 }
 
 static int set_joy_a_y_axis_name(const char *val,void *param)
 {
   util_string_set(&joy_a.y_axis_name,val);
+  if(joy_done_init)
+    setup_axis_mapping(&joy_a);
   return 0;
 }
 
 static int set_joy_a_button_mapping(const char *val,void *param)
 {
   util_string_set(&joy_a.button_mapping,val);
+  if(joy_done_init)
+    setup_button_mapping(&joy_a);
   return 0;
 }
 
 static int set_joy_a_x_threshold(int val, void *param)
 {
   joy_a.x_threshold = val;
+  if(joy_done_init)
+    setup_axis_mapping(&joy_a);
   return 0;
 }
 
 static int set_joy_a_y_threshold(int val, void *param)
 {
   joy_a.y_threshold = val;
+  if(joy_done_init)
+    setup_axis_mapping(&joy_a);
   return 0;
 }
 
-static int set_joy_b_serial(const char *val, void *param)
+static int set_joy_b_device_name(const char *val,void *param)
 {
-  util_string_set(&joy_b.query_serial,val);
-  return 0;
-}
-
-static int set_joy_b_vid_pid(const char *val,void *param)
-{
-  util_string_set(&joy_b.query_vid_pid,val);
+  util_string_set(&joy_b.device_name,val);
+  if(joy_done_init)
+    assign_joysticks_from_device_list();
   return 0;
 }
 
 static int set_joy_b_x_axis_name(const char *val,void *param)
 {
   util_string_set(&joy_b.x_axis_name,val);
+  if(joy_done_init)
+    setup_axis_mapping(&joy_b);
   return 0;
 }
 
 static int set_joy_b_y_axis_name(const char *val,void *param)
 {
   util_string_set(&joy_b.y_axis_name,val);
+  if(joy_done_init)
+    setup_axis_mapping(&joy_b);
   return 0;
 }
 
 static int set_joy_b_button_mapping(const char *val,void *param)
 {
   util_string_set(&joy_b.button_mapping,val);
+  if(joy_done_init)
+    setup_button_mapping(&joy_a);
   return 0;
 }
 
 static int set_joy_b_x_threshold(int val, void *param)
 {
   joy_b.x_threshold = val;
+  if(joy_done_init)
+    setup_axis_mapping(&joy_b);
   return 0;
 }
 
 static int set_joy_b_y_threshold(int val, void *param)
 {
   joy_b.y_threshold = val;
+  if(joy_done_init)
+    setup_axis_mapping(&joy_b);
   return 0;
 }
 
 static const resource_string_t resources_string[] = {
-  { "JoyASerial", "", RES_EVENT_NO, NULL,
-    &joy_a.query_serial, set_joy_a_serial, NULL },
-  { "JoyAID", "", RES_EVENT_NO, NULL,
-    &joy_a.query_vid_pid, set_joy_a_vid_pid, NULL },
+  { "JoyADevice", "", RES_EVENT_NO, NULL,
+    &joy_a.device_name, set_joy_a_device_name, NULL },
   { "JoyAXAxis", "X", RES_EVENT_NO, NULL,
     &joy_a.x_axis_name, set_joy_a_x_axis_name, NULL },
   { "JoyAYAxis", "Y", RES_EVENT_NO, NULL,
@@ -165,10 +184,8 @@ static const resource_string_t resources_string[] = {
   { "JoyAButtons", "1:2:0:0:0:0", RES_EVENT_NO, NULL,
     &joy_a.button_mapping, set_joy_a_button_mapping, NULL },
 
-  { "JoyBSerial", "", RES_EVENT_NO, NULL,
-    &joy_b.query_serial, set_joy_b_serial, NULL },
-  { "JoyBID", "", RES_EVENT_NO, NULL,
-    &joy_b.query_vid_pid, set_joy_b_vid_pid, NULL },
+  { "JoyBDevice", "", RES_EVENT_NO, NULL,
+    &joy_b.device_name, set_joy_b_device_name, NULL },
   { "JoyBXAxis", "X", RES_EVENT_NO, NULL,
     &joy_b.x_axis_name, set_joy_b_x_axis_name, NULL },
   { "JoyBYAxis", "Y", RES_EVENT_NO, NULL,
@@ -176,7 +193,7 @@ static const resource_string_t resources_string[] = {
   { "JoyBButtons", "1:2:0:0:0:0", RES_EVENT_NO, NULL,
     &joy_b.button_mapping, set_joy_b_button_mapping, NULL },
 
-  NULL
+  { NULL }
 };
 
 static const resource_int_t resources_int[] = {
@@ -195,7 +212,7 @@ static const resource_int_t resources_int[] = {
   { "JoyBYThreshold", 50, RES_EVENT_NO, NULL,
     &joy_b.y_threshold, set_joy_b_y_threshold, NULL },
 
-  { NULL },
+  { NULL }
 };
 
 /* ----- VICE Command-line options ----- */
@@ -206,10 +223,8 @@ static const cmdline_option_t cmdline_options[] = {
   { "-joydev2", SET_RESOURCE, 1, NULL, NULL, "JoyDevice2", NULL,
     "<0-5>", N_("Set device for joystick port 2") },
 
-  { "-joyAserial", SET_RESOURCE, 1, NULL, NULL, "JoyASerial", NULL,
-    "<name>", N_("Set Serial Number for HID A device") },
-  { "-joyAid", SET_RESOURCE, 1, NULL, NULL, "JoyAID", NULL,
-    "<vid:pid>", N_("Set VendorID:ProductId for HID A device") },
+  { "-joyAdevice", SET_RESOURCE, 1, NULL, NULL, "JoyADevice", NULL,
+    "<vid:pid:sn>", N_("Set HID A device") },
   { "-joyAxaxis", SET_RESOURCE, 1, NULL, NULL, "JoyAXAxis", NULL,
     "<X,Y,Z,Rx,Ry,Rz>", N_("Set X Axis for HID A device") },
   { "-joyAyaxis", SET_RESOURCE, 1, NULL, NULL, "JoyAYAxis", NULL,
@@ -221,10 +236,8 @@ static const cmdline_option_t cmdline_options[] = {
   { "-joyAythreshold", SET_RESOURCE, 1, NULL, NULL, "JoyAYThreshold", NULL,
     "<0-100>", N_("Set Y Axis Threshold in Percent of HID A device") },
 
-  { "-joyBserial", SET_RESOURCE, 1, NULL, NULL, "JoyBSerial", NULL,
-    "<name>", N_("Set Serial Number for HID B device") },
-  { "-joyBid", SET_RESOURCE, 1, NULL, NULL, "JoyBID", NULL,
-    "<vid:pid>", N_("Set VendorID:ProductId for HID B device") },
+  { "-joyBdevice", SET_RESOURCE, 1, NULL, NULL, "JoyBDevice", NULL,
+    "<vid:pid:sn>", N_("Set HID B device") },
   { "-joyBxaxis", SET_RESOURCE, 1, NULL, NULL, "JoyBXAxis", NULL,
     "<X,Y,Z,Rx,Ry,Rz>", N_("Set X Axis for HID B device") },
   { "-joyByaxis", SET_RESOURCE, 1, NULL, NULL, "JoyBYAxis", NULL,
@@ -267,7 +280,7 @@ static int find_axis_tag(const char *name,int def)
   return def;
 }
 
-static const char *find_axis_name(int tag)
+const char *find_axis_name(int tag)
 {
   int i;
   for(i=0;i<JOYSTICK_DESCRIPTOR_MAX_AXIS;i++) {
@@ -302,7 +315,7 @@ static pRecElement find_button_element(joystick_descriptor_t *joy,int id)
 
 /* ----- Setup Joystick Descriptor ---------------------------------------- */
 
-static int build_joystick_button_axis_lists(joystick_descriptor_t *joy)
+static void build_joystick_button_axis_lists(joystick_descriptor_t *joy)
 {
   pRecElement element;
 
@@ -334,7 +347,7 @@ static int build_joystick_button_axis_lists(joystick_descriptor_t *joy)
         } else {
           joy->buttons[joy->num_buttons] = element;
           joy->num_buttons++;
-          printf("%d ",element->usage);
+          printf("%ld ",element->usage);
         }
       }
     }
@@ -347,7 +360,7 @@ static void verbose_button_element(const char *desc,pRecElement element)
   if(element==NULL)
     printf("  %s: NONE",desc);
   else
-    printf("  %s: %d",desc,element->usage);
+    printf("  %s: %ld",desc,element->usage);
 }
 
 static void setup_axis_calibration(pRecElement element,calibration_t *calib,
@@ -360,55 +373,54 @@ static void setup_axis_calibration(pRecElement element,calibration_t *calib,
   int safe  = range * threshold / 200;
   int t_min = min + safe;
   int t_max = max - safe;
-  printf("  axis %s: range=[%d;%d]  null=[%d;%d]  threshold=%d%%\n",
+  printf("    axis %s: range=[%d;%d]  null=[%d;%d]  threshold=%d%%\n",
          name,min,max,t_min,t_max,threshold);
   calib->min_threshold = t_min;
   calib->max_threshold = t_max;
 }
 
-void setup_axis_mapping(joystick_descriptor_t *joy)
+static void setup_axis_mapping(joystick_descriptor_t *joy)
 {
   /* extract tag from resource */
-  int x_axis_id = find_axis_tag(joy->x_axis_name,kHIDUsage_GD_X);
-  int y_axis_id = find_axis_tag(joy->y_axis_name,kHIDUsage_GD_Y);
+  int x_axis_id = find_axis_tag(joy->x_axis_name,-1);
+  int y_axis_id = find_axis_tag(joy->y_axis_name,-1);
 
   /* find element in current device */
   joy->x_axis = find_axis_element(joy,x_axis_id);
   joy->y_axis = find_axis_element(joy,y_axis_id);
 
   /* setup calibration for axis */
+  printf("  horizontal axis: %s\n",joy->x_axis_name);
   if(joy->x_axis) {
     setup_axis_calibration(joy->x_axis,&joy->x_calib,joy->x_threshold);
   }
+  printf("  vertical axis: %s\n",joy->y_axis_name);
   if(joy->y_axis) {
     setup_axis_calibration(joy->y_axis,&joy->y_calib,joy->y_threshold);
   }
 }
 
-void setup_button_mapping(joystick_descriptor_t *joy)
+static void setup_button_mapping(joystick_descriptor_t *joy)
 {
   /* setup button mapping */
-  int ids[6] = { 1,2,3,4,5,6 };
+  int i;
+  int ids[HID_NUM_BUTTONS] = { 1,2,3,4,5,6 };
   if(joy->button_mapping && strlen(joy->button_mapping)>0) {
     if(sscanf(joy->button_mapping,"%d:%d:%d:%d:%d:%d",
               &ids[0],&ids[1],&ids[2],&ids[3],&ids[4],&ids[5])!=6)
       return;
   }
   
-  joy->fire_button  = find_button_element(joy,ids[0]);
-  joy->alt_fire_button = find_button_element(joy,ids[1]);
-  joy->left_button  = find_button_element(joy,ids[2]);
-  joy->right_button = find_button_element(joy,ids[3]);
-  joy->up_button    = find_button_element(joy,ids[4]);
-  joy->down_button  = find_button_element(joy,ids[5]);
+  for(i=0;i<HID_NUM_BUTTONS;i++)
+    joy->mapped_buttons[i]  = find_button_element(joy,ids[i]);
   
   printf("  buttons:");
-  verbose_button_element("fire",joy->fire_button);
-  verbose_button_element("alt_fire",joy->alt_fire_button);
-  verbose_button_element("left",joy->left_button);
-  verbose_button_element("right",joy->right_button);
-  verbose_button_element("up",joy->up_button);
-  verbose_button_element("down",joy->down_button);
+  verbose_button_element("fire",joy->mapped_buttons[HID_FIRE]);
+  verbose_button_element("alt_fire",joy->mapped_buttons[HID_ALT_FIRE]);
+  verbose_button_element("left",joy->mapped_buttons[HID_LEFT]);
+  verbose_button_element("right",joy->mapped_buttons[HID_RIGHT]);
+  verbose_button_element("up",joy->mapped_buttons[HID_UP]);
+  verbose_button_element("down",joy->mapped_buttons[HID_DOWN]);
   printf("\n");  
 }
 
@@ -424,38 +436,47 @@ static void setup_joystick(joystick_descriptor_t *joy,pRecDevice device,const ch
 
 /* ---------- Query Joystick Device --------------------------------------- */
 
-/* determine if the given device matches the joystick descriptor */
-static int match_joystick(joystick_descriptor_t *joy,pRecDevice device)
+/* count devices with same vid:pid */
+int get_device_serial(pRecDevice last_device)
 {
-  int found = 0;
-  
-  /* match by vendor_id and product id */
-  if(joy->query_vid_pid && strlen(joy->query_vid_pid)>0) {
+  int count = 0;
+  pRecDevice device;
+
+  /* iterate through all devices */
+  for(device = HIDGetFirstDevice();device != last_device;device = HIDGetNextDevice(device)) {
+    if((device->vendorID==last_device->vendorID) && 
+       (device->productID==last_device->productID)) {
+      count++;
+    }
+  }
+  return count;
+}
+
+/* determine if the given device matches the joystick descriptor */
+static int match_joystick(joystick_descriptor_t *joy,pRecDevice device,int serial_num)
+{
+  /* match by device name */
+  if(joy->device_name && strlen(joy->device_name)>0) {
     int vid,pid;
-    if(sscanf(joy->query_vid_pid,"%x:%x",&vid,&pid)!=2) {
+    int want_serial;
+    if(sscanf(joy->device_name,"%x:%x:%d",&vid,&pid,&want_serial)!=3) {
       printf("mismatched vid pid!\n");
       return 0;
     }
-    found = (vid == device->vendorID) && (pid == device->productID);
+    return (vid == device->vendorID) && (pid == device->productID) &&
+           (serial_num == want_serial);
   }
   /* no match */
-  if(!found)
-    return 0;
-  
-  /* check serial if available */
-  if((joy->query_serial == NULL)||(strlen(joy->query_serial)==0))
-    return 1;
-  
-  return strcmp(device->serial,joy->query_serial) == 0;
+  return 0;
 }
 
 /* is the joystick auto assignable? */
 static int auto_assign_joystick(joystick_descriptor_t *joy)
 {
-  return ( (joy->query_vid_pid == NULL) || (strlen(joy->query_vid_pid)==0) );
+  return ( (joy->device_name== NULL) || (strlen(joy->device_name)==0) );
 }
 
-void assign_joysticks_from_device_list(void)
+static void assign_joysticks_from_device_list(void)
 { 
   pRecDevice device;
   int num_joysticks = 0;
@@ -472,16 +493,18 @@ void assign_joysticks_from_device_list(void)
     /* check if its a joystick or game pad device */
     if((device->usage == kHIDUsage_GD_Joystick) ||
        (device->usage == kHIDUsage_GD_GamePad)) {
+         
+      int serial_num = get_device_serial(device);
 
-      printf("mac_joy: #%d joystick/gamepad: name='%s' id=%04x:%04x serial='%s'\n",
-        num_joysticks,device->product,device->vendorID,device->productID,device->serial);
+      printf("mac_joy: #%d joystick/gamepad: %04lx:%04lx:%d %s\n",
+        num_joysticks,device->vendorID,device->productID,serial_num,device->product);
 
       /* query joy A */
-      if(!auto_assign_a && match_joystick(&joy_a,device)) {
+      if(!auto_assign_a && match_joystick(&joy_a,device,serial_num)) {
         setup_joystick(&joy_a,device,"matched A");
       }
       /* query joy B */
-      else if(!auto_assign_b && match_joystick(&joy_b,device)) {
+      else if(!auto_assign_b && match_joystick(&joy_b,device,serial_num)) {
         setup_joystick(&joy_b,device,"matched B");
       }
       /* auto assign a */
@@ -504,6 +527,40 @@ void assign_joysticks_from_device_list(void)
   if(!auto_assign_b && (joy_b.device==NULL)) {
     printf("mac_joy: joystick B not matched!\n");
   }
+}
+
+int build_device_list(pRecDevice **devices)
+{
+  int count = 0;
+  int i=0;
+  pRecDevice device;
+  
+  /* iterate through all devices */
+  for(device = HIDGetFirstDevice();device != NULL;device = HIDGetNextDevice(device)) {
+    
+    /* check if its a joystick or game pad device */
+    if((device->usage == kHIDUsage_GD_Joystick) ||
+       (device->usage == kHIDUsage_GD_GamePad)) {
+      count++;
+    }
+  }
+  
+  if(count==0)
+    return 0;
+
+  *devices = (pRecDevice *)malloc(sizeof(pRecDevice)*count);
+  
+  /* iterate through all devices */
+  for(device = HIDGetFirstDevice();device != NULL;device = HIDGetNextDevice(device)) {
+    
+    /* check if its a joystick or game pad device */
+    if((device->usage == kHIDUsage_GD_Joystick) ||
+       (device->usage == kHIDUsage_GD_GamePad)) {
+      (*devices)[i++] = device;
+    }
+  }
+  
+  return count;
 }
 
 static int load_device_list(void)
@@ -579,18 +636,44 @@ static BYTE read_joystick(joystick_descriptor_t *joy)
   pRecDevice device = joy->device;
 
   /* read buttons */
-  BYTE joy_bits = read_button_element(device,joy->fire_button,16)
-                | read_button_element(device,joy->alt_fire_button,16)
-                | read_button_element(device,joy->left_button,4)
-                | read_button_element(device,joy->right_button,8)
-                | read_button_element(device,joy->up_button,1)
-                | read_button_element(device,joy->down_button,2);
+  BYTE joy_bits = read_button_element(device,joy->mapped_buttons[HID_FIRE],16)
+                | read_button_element(device,joy->mapped_buttons[HID_ALT_FIRE],16)
+                | read_button_element(device,joy->mapped_buttons[HID_LEFT],4)
+                | read_button_element(device,joy->mapped_buttons[HID_RIGHT],8)
+                | read_button_element(device,joy->mapped_buttons[HID_UP],1)
+                | read_button_element(device,joy->mapped_buttons[HID_DOWN],2);
                 
   /* axis */
   joy_bits |= read_axis_element(device,joy->x_axis,&joy->x_calib,4,8)
             | read_axis_element(device,joy->y_axis,&joy->y_calib,1,2);
 
   return joy_bits;
+}
+
+/* ---------- Detect ------------------------------------------------------ */
+
+extern int detect_axis(joystick_descriptor_t *joy,int x_axis)
+{
+  int i;
+  for(i=0;i<joy->num_axis;i++) {
+    pRecElement element = joy->axis[i];
+    if(read_axis_element(joy->device,element,x_axis ? &joy->x_calib : &joy->y_calib,1,1)==1) {
+      return element->usage;
+    }
+  }
+  return 0;
+}
+
+extern int detect_button(joystick_descriptor_t *joy)
+{
+  int i;
+  for(i=0;i<joy->num_buttons;i++) {
+    pRecElement element = joy->buttons[i];
+    if(read_button_element(joy->device,element,1)==1) {
+      return element->usage;
+    }
+  }
+  return 0;
 }
 
 /* ----- Vice Interface ---------------------------------------------------- */
@@ -603,6 +686,9 @@ int joy_arch_init(void)
   
   /* now assign HID joystick A,B if available */
   assign_joysticks_from_device_list();
+  
+  joy_done_init = 1;
+  
   return 0;
 }
 

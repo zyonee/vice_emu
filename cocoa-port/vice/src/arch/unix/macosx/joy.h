@@ -27,8 +27,33 @@
 #ifndef _JOY_H
 #define _JOY_H
 
+#define JOYDEV_NONE         0
+#define JOYDEV_NUMPAD       1
+#define JOYDEV_KEYSET1      2
+#define JOYDEV_KEYSET2      3
+#define JOYDEV_HID_0        4
+#define JOYDEV_HID_1        5
+
+#define JOYSTICK_DESCRIPTOR_MAX_BUTTONS  32
+#define JOYSTICK_DESCRIPTOR_MAX_AXIS     6
+
+#define HID_FIRE        0
+#define HID_ALT_FIRE    1
+#define HID_LEFT        2
+#define HID_RIGHT       3
+#define HID_UP          4
+#define HID_DOWN        5
+#define HID_NUM_BUTTONS 6
+
+/* virtual joystick mapping */ 
+extern int joystick_port_map[2];
+
 #ifdef HAS_JOYSTICK
 
+#ifndef JOY_INTERNAL
+typedef void * pRecDevice;
+typedef void * pRecElement;
+#else
 /* NOTE: We use the HID Utilites Library provided by Apple for free
 
    http://developer.apple.com/samplecode/HID_Utilities_Source/index.html
@@ -39,6 +64,7 @@
 #include <IOKit/hid/IOHIDKeys.h>
 #include <IOKit/hid/IOHIDUsageTables.h>
 #include "HID_Utilities_External.h"
+#endif
 
 /* axis map */
 struct axis_map
@@ -58,15 +84,11 @@ struct calibration
 };
 typedef struct calibration calibration_t;
 
-#define JOYSTICK_DESCRIPTOR_MAX_BUTTONS  32
-#define JOYSTICK_DESCRIPTOR_MAX_AXIS     6
-
 /* describe a joystick HID device */
 struct joystick_descriptor 
 {
   /* resources/settings for joystick */
-  char         *query_vid_pid;    /* query by vid & pid */
-  char         *query_serial;     /* query for serial number */
+  char         *device_name;      /* device name: vid:pid:num */
   
   char         *x_axis_name;      /* set x axis */
   char         *y_axis_name;      /* sety y axis */
@@ -81,12 +103,7 @@ struct joystick_descriptor
   pRecElement  x_axis;
   pRecElement  y_axis;
   
-  pRecElement  fire_button;
-  pRecElement  alt_fire_button;
-  pRecElement  left_button;
-  pRecElement  right_button;
-  pRecElement  up_button;
-  pRecElement  down_button;
+  pRecElement  mapped_buttons[HID_NUM_BUTTONS];
   
   /* fill list of all buttons and axis */
   int          num_buttons;
@@ -104,29 +121,24 @@ typedef struct joystick_descriptor joystick_descriptor_t;
 extern joystick_descriptor_t joy_a;
 extern joystick_descriptor_t joy_b;
 
-/* virtual joystick mapping */ 
-extern int joystick_port_map[2];
-
-#define JOYDEV_NONE         0
-#define JOYDEV_NUMPAD       1
-#define JOYDEV_KEYSET1      2
-#define JOYDEV_KEYSET2      3
-#define JOYDEV_HID_0        4
-#define JOYDEV_HID_1        5
-
 /* functions */
 extern int joy_arch_init(void);
 extern void joystick_close(void);
 extern void joystick(void);
 
-/* readjust axis mapping of joystick after change of x/y_axis_name or threshold */
-extern void setup_axis_mapping(joystick_descriptor_t *joy);
-/* readjust button mapping of joystick after change of button_mapping */
-extern void setup_button_mapping(joystick_descriptor_t *joy);
-/* readjust joystick setup after change of query_vid_pid and/or query_serial */
-extern void assign_joysticks_from_device_list(void);
 /* reload device list */
 extern void reload_device_list(void);
+/* build device list */
+extern int build_device_list(pRecDevice **devices);
+/* get serial of device */
+extern int get_device_serial(pRecDevice last_device);
+
+/* detect axis */
+extern int detect_axis(joystick_descriptor_t *joy,int x_axis);
+/* detect button */
+extern int detect_button(joystick_descriptor_t *joy);
+/* find axis name */
+extern const char *find_axis_name(int tag);
 
 #endif
 
