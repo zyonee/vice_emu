@@ -563,7 +563,7 @@ void vsyncarch_verticalblank(video_canvas_t *c, float rate, int frames)
         nowi = vsyncarch_gettime();
         vbl = 1;
     }
-    if ((!vbl) && (nosynccount < 16)) {
+    if ((!vbl) && (nosynccount < 4)) {
         nosynccount ++;
     } else {
         last = nowi;

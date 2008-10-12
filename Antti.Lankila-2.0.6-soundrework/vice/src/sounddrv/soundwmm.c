@@ -226,13 +226,10 @@ static int wmm_init(const char *param, int *speed, int *fragsize, int *fragnr,
 
     /*
      * Set magic buffer pos. offset (it seems that the play position that
-     * Windows tells us is not entirely right)
+     * Windows tells us is not entirely right). We assume it's not wrong
+     * by more than one fragment.
      */
-    play_cursor_offset = *speed / 16;
-    if (is16bit)
-        play_cursor_offset <<= 1;
-    if (play_cursor_offset >= (int)buffer_size)
-        play_cursor_offset = 0;
+    play_cursor_offset = fragment_bytesize;
 
     /* If we're on Windows 2000/ME(?), no magic offset */
     dwVersion = GetVersion();

@@ -365,12 +365,6 @@ typedef struct
     /* is the device suspended? */
     int issuspended;
     SWORD lastsample[SOUND_CHANNELS_MAX];
-
-    /* nr of samples to oversame / real sample */
-    int oversamplenr;
-
-    /* number of shift needed on oversampling */
-    int oversampleshift;
 } snddata_t;
 
 static snddata_t snddata;
@@ -502,6 +496,93 @@ static void fill_buffer(int size, int rise)
 #endif
 }
 
+/* 0 = ok, 1 = error */
+static int sound_write_data(nr)
+{
+    int c, i;
+    if (nr == 0)
+        return 0;
+
+    if (!playback_enabled) {
+        return 0;
+    }
+
+    if (warp_mode_enabled
+        && snddata.playdev->bufferspace != NULL
+        && snddata.recdev == NULL) {
+        snddata.bufptr = 0;
+        return 0;
+    }
+
+    /* Flush buffer, all channels are already mixed into it. */
+    if (snddata.playdev) {
+        /* Some sound systems do not block when we call write().
+           It would be good idea to make them block. Right now
+           we'll write what we can and try again next time. */
+        int space = snddata.playdev->bufferspace();
+        /* never write the buffer to brim. If the driver can report only
+         * at fragment granularity, this is suboptimal, but luckily fragments
+         * are small. */
+        if (space <= snddata.fragsize)
+            space = 0;
+
+        space -= space % snddata.fragsize;
+        /* never overwrite old audio */
+        if (nr > space)
+            nr = space;
+
+        if (nr != 0 && snddata.playdev->write(snddata.buffer, nr * snddata.channels)) {
+#ifdef HAS_TRANSLATION
+            sound_error(translate_text(IDGS_WRITE_TO_SOUND_DEVICE_FAILED));
+#else
+            sound_error(_("write to sounddevice failed."));
+#endif
+            return 1;
+        }
+    }
+
+    if (snddata.recdev) {
+        if (nr != 0 && snddata.recdev->write(snddata.buffer, nr * snddata.channels)) {
+#ifdef HAS_TRANSLATION
+            sound_error(translate_text(IDGS_WRITE_TO_SOUND_DEVICE_FAILED));
+#else
+            sound_error(_("write to sounddevice failed."));
+#endif
+            return 1;
+        }
+    }
+
+    if (! snddata.recdev && snddata.bufptr > snddata.bufsize) {
+        log_warning(sound_log, "Audio is falling behind. Dumping buffer and resyncing.");
+        /* workaround a potential bug with many sounddrivers:
+         * when buffer is fully empty, the bufspace may return 0 instead of
+         * bufsize. If this happens, we lock up because 0 bytes available
+         * means writes end permanently. So we must output something here. */
+        if (snddata.playdev->bufferspace() == 0)
+            snddata.playdev->write(snddata.buffer, snddata.bufsize * snddata.channels);
+        /* vsync reset after we are done that operation above,
+         * which may have blocked, too... */
+        vsync_sync_reset();
+
+        snddata.bufptr = 0;
+        return 1;
+    }
+
+    /* move unwritten data at end of buffer to start of buffer. Since we call
+     * this often there is never much to move. */
+    snddata.bufptr -= nr;
+    for (c = 0; c < snddata.channels; c++) {
+        snddata.lastsample[c] = snddata.buffer[(nr - 1)
+                                * snddata.channels + c];
+        for (i = 0; i < snddata.bufptr; i++) {
+            snddata.buffer[i*snddata.channels + c] =
+                snddata.buffer[(i + nr)*snddata.channels + c];
+        }
+    }
+
+    return 0;
+}
+
 
 /* open SID engine */
 static int sid_open(void)
@@ -536,15 +617,11 @@ static int sid_init(void)
         /* "No limit" doesn't make sense for cycle based sound engines,
            which have a fixed sampling rate. */
         int speed_factor = speed_percent ? speed_percent : 100;
-        snddata.oversampleshift = 0;
-        snddata.oversamplenr = 1;
         speed = sample_rate * 100 / speed_factor;
     } else {
         /* For sample based sound engines, both simple average filtering
            and sample rate conversion is handled here. */
-        snddata.oversampleshift = oversampling_factor;
-        snddata.oversamplenr = 1 << snddata.oversampleshift;
-        speed = sample_rate*snddata.oversamplenr;
+        speed = sample_rate;
     }
 
     for (c = 0; c < snddata.channels; c++) {
@@ -557,15 +634,8 @@ static int sid_init(void)
         }
     }
 
-    snddata.clkstep = SOUNDCLK_CONSTANT(cycles_per_sec) / sample_rate;
-
-    if (snddata.oversamplenr > 1) {
-        snddata.clkstep /= snddata.oversamplenr;
-        log_message(sound_log, "Using %dx oversampling",
-                    snddata.oversamplenr);
-    }
-
-    snddata.origclkstep = snddata.clkstep;
+    snddata.origclkstep = SOUNDCLK_CONSTANT(cycles_per_sec) / sample_rate;
+    snddata.clkstep = snddata.origclkstep;
     snddata.clkfactor = SOUNDCLK_CONSTANT(1.0);
     snddata.fclk = SOUNDCLK_CONSTANT(maincpu_clk);
     snddata.wclk = maincpu_clk;
@@ -636,11 +706,11 @@ int sound_open(void)
             ? SOUND_SAMPLE_RATE : sample_rate;
 
     /* Calculate optimal fragments.
-       fragsize is rounded up to 2^i.
+       fragsize is rounded down to about 4 fragments per frame.
        fragnr is rounded up to bufsize/fragsize. */
     fragsize = speed / ((rfsh_per_sec < 1.0) ? 1 : ((int)rfsh_per_sec));
-    for (i = 1; 1 << i < fragsize; i++);
-    fragsize = 1 << i;
+    for (i = 2; 1 << i < fragsize; i++);
+    fragsize = 1 << (i - 2);
     fragnr = (int)((speed * bufsize + fragsize - 1) / fragsize);
     if (fragnr < 3)
         fragnr = 3;
@@ -829,7 +899,7 @@ void sound_close(void)
 /* run sid */
 static int sound_run_sound(void)
 {
-    int nr = 0, c, i;
+    int nr = 0, c, i, err;
     int delta_t = 0;
     SWORD *bufferptr;
 
@@ -906,6 +976,11 @@ static int sound_run_sound(void)
     snddata.bufptr += nr;
     snddata.lastclk = maincpu_clk;
 
+    /* write 0 .. nr frames to output */
+    err = sound_write_data(snddata.bufptr - snddata.bufptr % snddata.fragsize);
+    if (err)
+        return err;
+
     return 0;
 }
 
@@ -972,7 +1047,7 @@ int sound_flush(int relative_speed)
 double sound_flush(int relative_speed)
 #endif
 {
-    int c, i, nr, space = 0, used;
+    int i, nr, space = 0, used;
 
     if (!playback_enabled) {
         if (sdev_open)
@@ -998,12 +1073,6 @@ double sound_flush(int relative_speed)
         sid_state_changed = FALSE;
     }
 
-    if (warp_mode_enabled 
-        && snddata.playdev->bufferspace != NULL
-        && snddata.recdev == NULL) {
-        snddata.bufptr = 0;
-        return 0;
-    }
     sound_resume();
 
     if (snddata.playdev->flush) {
@@ -1021,38 +1090,8 @@ double sound_flush(int relative_speed)
     }
 
     /* Calculate the number of samples to flush - whole fragments. */
-    nr = snddata.bufptr -
-         snddata.bufptr % (snddata.fragsize * snddata.oversamplenr);
-    if (!nr)
-        return 0;
+    nr = snddata.bufptr - snddata.bufptr % snddata.fragsize;
 
-    /* handle oversampling */
-    if (snddata.oversamplenr > 1) {
-        int j, newnr;
-
-        newnr = nr >> snddata.oversampleshift;
-
-        /* Simple average filtering. */
-        for (c = 0; c < snddata.channels; c++) {
-            SDWORD v;
-            for (i = 0; i < newnr; i++) {
-                for (v = j = 0; j < snddata.oversamplenr; j++)
-                    v += snddata.buffer[(i * snddata.oversamplenr + j)
-                         * snddata.channels + c];
-                snddata.buffer[i * snddata.channels + c] =
-                    v >> snddata.oversampleshift;
-            }
-        }
-
-        /* Move remaining n % oversamplenr samples to new end of buffer. */
-        for (c = 0; c < snddata.channels; c++) {
-            for (i = 0; i < snddata.bufptr - nr; i++)
-                snddata.buffer[(newnr + i) * snddata.channels + c] =
-                      snddata.buffer[(nr + i) * snddata.channels + c];
-        }
-        snddata.bufptr -= (nr - newnr);
-        nr = newnr;
-    }
     /* adjust speed */
     if (snddata.playdev->bufferspace) {
         space = snddata.playdev->bufferspace();
@@ -1137,43 +1176,8 @@ double sound_flush(int relative_speed)
             }
             return 0;
         }
-
-        /* Don't block on write unless we're seriously out of sync. */
-        if (nr > space && nr < used)
-            nr = space;
     }
-
-    /* Flush buffer, all channels are already mixed into it. */
-    if (snddata.playdev->write(snddata.buffer, nr * snddata.channels)) {
-#ifdef HAS_TRANSLATION
-        sound_error(translate_text(IDGS_WRITE_TO_SOUND_DEVICE_FAILED));
-#else
-        sound_error(_("write to sounddevice failed."));
-#endif
-        return 0;
-    }
-
-    if (snddata.recdev) {
-        if (snddata.recdev->write(snddata.buffer, nr * snddata.channels)) {
-#ifdef HAS_TRANSLATION
-            sound_error(translate_text(IDGS_WRITE_TO_SOUND_DEVICE_FAILED));
-#else
-            sound_error(_("write to sounddevice failed."));
-#endif
-            return 0;
-        }
-    }
-
-    snddata.bufptr -= nr;
-
-    for (c = 0; c < snddata.channels; c++) {
-        snddata.lastsample[c] = snddata.buffer[(nr - 1)
-                                * snddata.channels + c];
-        for (i = 0; i < snddata.bufptr; i++) {
-            snddata.buffer[i*snddata.channels + c] =
-                snddata.buffer[(i + nr)*snddata.channels + c];
-        }
-    }
+    sound_write_data(nr);
 
     if (snddata.playdev->bufferspace
         && (cycle_based || speed_adjustment_setting == SOUND_ADJUST_EXACT))
