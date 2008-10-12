@@ -140,7 +140,7 @@ void FilterFP::writeMODE_VOL(reg8 mode_vol)
   hp_bp_lp = (mode_vol >> 4) & 0x07;
 
   vol = mode_vol & 0x0f;
-  volf = vol / 15.f;
+  volf = (float) vol / 15.f;
 }
 
 // Set filter cutoff frequency.
@@ -150,10 +150,18 @@ void FilterFP::set_w0()
     /* div once by extra kinkiness because I fitted the type3 eq with that variant. */
     float type3_fc_kink = SIDFP::kinked_dac(fc, kinkiness, 11) / kinkiness;
     type3_fc_kink_exp = type3_offset * expf(type3_fc_kink * type3_steepness);
-    if (distortion_rate != 0.f)
-        type3_fc_kink_distortion_offset = (distortion_point - type3_fc_kink) * 0.3f / distortion_rate;
-    else
-        type3_fc_kink_distortion_offset = 9e9f; /* never triggers */
+    if (distortion_rate != 0.f) {
+	type3_fc_distortion_offset_hp = (distortion_point - type3_fc_kink) * (0.5f * 0.5f) / distortion_rate;
+        /* the hp offset goes through the FC resistor circuitry and is felt
+         * on the bp side inverted, so it INCREASES the threshold. The output
+         * is scaled by time + capacitor values, which correspond to the
+         * current going through the system, so we cancel them. */
+	type3_fc_distortion_offset_bp = (1.f + type3_w0(type3_fc_distortion_offset_hp/2.f, 0.f) / distortion_CT) * type3_fc_distortion_offset_hp;
+    }
+    else {
+	type3_fc_distortion_offset_bp = 9e9;
+	type3_fc_distortion_offset_hp = 9e9;
+    }
   }
   if (model == MOS8580FP) {
     type4_w0_cache = type4_w0();
@@ -164,10 +172,5 @@ void FilterFP::set_w0()
 void FilterFP::set_Q()
 {
   float Q = res / 15.f;
-  if (model == MOS6581FP) {
-    _1_div_Q = 1.f / (0.8f + 1.1f * Q);
-  }
-  if (model == MOS8580FP) {
-    _1_div_Q = 1.f / (0.707f + Q);
-  }
+  _1_div_Q = 1.f / (0.707f + Q * 1.45f);
 }

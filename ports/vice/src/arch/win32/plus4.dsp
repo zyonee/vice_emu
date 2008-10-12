@@ -41,7 +41,7 @@ RSC=rc.exe
 # PROP Intermediate_Dir "libs\plus4\Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\drive" /I "..\..\tape" /I "..\..\raster" /I "..\..\monitor" /I "..\..\sid" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\drive" /I "..\..\tape" /I "..\..\raster" /I "..\..\monitor" /I "..\..\sid" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -64,7 +64,7 @@ LIB32=link.exe -lib
 # PROP Intermediate_Dir "libs\plus4\Debug"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /Z7 /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\drive" /I "..\..\tape" /I "..\..\raster" /I "..\..\monitor" /I "..\..\sid" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\drive" /I "..\..\tape" /I "..\..\raster" /I "..\..\monitor" /I "..\..\sid" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -111,6 +111,16 @@ SOURCE=..\..\plus4\plus4cart.c
 # Begin Source File
 
 SOURCE=..\..\plus4\plus4cpu.c
+
+!IF  "$(CFG)" == "plus4 - Win32 Release"
+
+# ADD CPP /Ot /Oa /Ow /Oi /Op /Oy
+# SUBTRACT CPP /Os
+
+!ELSEIF  "$(CFG)" == "plus4 - Win32 Debug"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 

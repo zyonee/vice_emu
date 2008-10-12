@@ -43,7 +43,7 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\drive" /I "..\..\vdrive" /I "..\..\monitor" /I "..\..\sid" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\drive" /I "..\..\vdrive" /I "..\..\monitor" /I "..\..\sid" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
 # ADD BASE RSC /l 0x409 /d "NDEBUG"
@@ -69,7 +69,7 @@ LINK32=link.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /Zi /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\drive" /I "..\..\vdrive" /I "..\..\monitor" /I "..\..\sid" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\drive" /I "..\..\vdrive" /I "..\..\monitor" /I "..\..\sid" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
 # ADD BASE RSC /l 0x409 /d "_DEBUG"
@@ -94,6 +94,15 @@ SOURCE=..\..\main.c
 # Begin Source File
 
 SOURCE=..\..\maincpu.c
+
+!IF  "$(CFG)" == "xpet - Win32 Release"
+
+# ADD CPP /Ot /Oa /Ow /Oi /Op /Oy
+
+!ELSEIF  "$(CFG)" == "xpet - Win32 Debug"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
@@ -102,7 +111,7 @@ SOURCE=.\respet.rc
 !IF  "$(CFG)" == "xpet - Win32 Release"
 
 # PROP Ignore_Default_Tool 1
-USERDEP__RESPE="respet.rc"	"res.rc"	"resacia.rc"	"resdrivepetcbm2.rc"	"respetreu.rc"	"ressidcart.rc"
+USERDEP__RESPE="respet.rc"	"res.rc"	"resacia.rc"	"resdrivepetcbm2.rc"	"respetreu.rc"	"ressidcart.rc"	
 # Begin Custom Build
 InputPath=.\respet.rc
 
@@ -114,7 +123,7 @@ InputPath=.\respet.rc
 !ELSEIF  "$(CFG)" == "xpet - Win32 Debug"
 
 # PROP Ignore_Default_Tool 1
-USERDEP__RESPE="respet.rc"	"res.rc"	"resacia.rc"	"resdrivepetcbm2.rc"	"respetreu.rc"	"ressidcart.rc"
+USERDEP__RESPE="respet.rc"	"res.rc"	"resacia.rc"	"resdrivepetcbm2.rc"	"respetreu.rc"	"ressidcart.rc"	
 # Begin Custom Build
 InputPath=.\respet.rc
 

@@ -41,6 +41,7 @@
 #include "uidrivevic20.h"
 #include "uikeyboard.h"
 #include "uilib.h"
+#include "uimidi.h"
 #include "uirom.h"
 #include "uirs232user.h"
 #include "uisidcart.h"
@@ -160,6 +161,7 @@ static const uicart_params_t vic20_ui_cartridges[] = {
 ui_menu_translation_table_t vic20ui_menu_translation_table[] = {
     { IDM_EXIT, IDS_MI_EXIT },
     { IDM_ABOUT, IDS_MI_ABOUT },
+    { IDM_HELP, IDS_MP_HELP },
     { IDM_PAUSE, IDS_MI_PAUSE },
     { IDM_EDIT_COPY, IDS_MI_EDIT_COPY },
     { IDM_EDIT_PASTE, IDS_MI_EDIT_PASTE },
@@ -268,6 +270,7 @@ ui_menu_translation_table_t vic20ui_menu_translation_table[] = {
     { IDM_WARRANTY, IDS_MI_WARRANTY },
     { IDM_TOGGLE_FULLSCREEN, IDS_MI_TOGGLE_FULLSCREEN },
     { IDM_SIDCART_SETTINGS, IDS_MI_SIDCART_SETTINGS },
+    { IDM_MIDI_SETTINGS, IDS_MI_MIDI_SETTINGS },
     { IDM_CART_VIC20_8KB_2000, IDS_MI_CART_VIC20_8KB_2000 },
     { IDM_CART_VIC20_16KB_4000, IDS_MI_CART_VIC20_16KB_4000 },
     { IDM_CART_VIC20_8KB_6000, IDS_MI_CART_VIC20_8KB_6000 },
@@ -325,6 +328,9 @@ static void vic20_ui_specific(WPARAM wparam, HWND hwnd)
         break;
       case IDM_SIDCART_SETTINGS:
         ui_sidcart_settings_dialog(hwnd);
+        break;
+      case IDM_MIDI_SETTINGS:
+        ui_midi_settings_dialog(hwnd);
         break;
       case IDM_ROM_SETTINGS:
         uirom_settings_dialog(hwnd, IDD_VIC20ROM_SETTINGS_DIALOG,

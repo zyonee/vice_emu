@@ -144,7 +144,7 @@ public:
 private:
   void set_Q();
   void set_w0();
-  float type3_w0(float source);
+  float type3_w0(const float source, const float offset);
   float type4_w0();
   void calculate_helpers();
   void nuke_denormals();
@@ -190,7 +190,8 @@ private:
   float Vhp, Vbp, Vlp;
 
   /* Resonance/Distortion/Type3/Type4 helpers. */
-  float type4_w0_cache, _1_div_Q, type3_fc_kink_exp, type3_fc_kink_distortion_offset, distortion_CT;
+  float type4_w0_cache, _1_div_Q, type3_fc_kink_exp, distortion_CT,
+        type3_fc_distortion_offset_bp, type3_fc_distortion_offset_hp;
 
 friend class SIDFP;
 };
@@ -235,7 +236,7 @@ static float fastexp(float val) {
 }
 
 RESID_INLINE
-float FilterFP::type3_w0(const float source)
+float FilterFP::type3_w0(const float source, const float distoffset)
 {
     /* The distortion appears to be the result of MOSFET entering saturation
      * mode. The conductance of a FET is proportional to:
@@ -268,8 +269,8 @@ float FilterFP::type3_w0(const float source)
      * match levels is 1/256. */
 
     float fetresistance = type3_fc_kink_exp;
-    if (source > type3_fc_kink_distortion_offset) {
-        const float dist = source - type3_fc_kink_distortion_offset;
+    if (source > distoffset) {
+        const float dist = source - distoffset;
         fetresistance *= fastexp(dist * type3_steepness * distortion_rate);
     }
     const float dynamic_resistance = type3_minimumfetresistance + fetresistance;
@@ -297,21 +298,21 @@ float FilterFP::clock(float voice1,
                    float ext_in)
 {
     /* Avoid denormal numbers by using small offsets from 0 */
-    float Vi = 0.f, Vf = 0;
+    float Vi = 0.f, Vnf = 0.f, Vf = 0.f;
 
     // Route voices into or around filter.
-    ((filt & 1) ? Vi : Vf) += voice1;
-    ((filt & 2) ? Vi : Vf) += voice2;
+    ((filt & 1) ? Vi : Vnf) += voice1;
+    ((filt & 2) ? Vi : Vnf) += voice2;
     // NB! Voice 3 is not silenced by voice3off if it is routed through
     // the filter.
     if (filt & 4)
         Vi += voice3;
     else if (! voice3off)
-        Vf += voice3;
-    ((filt & 8) ? Vi : Vf) += ext_in;
+        Vnf += voice3;
+    ((filt & 8) ? Vi : Vnf) += ext_in;
   
     if (! enabled)
-        return Vf - Vi;
+        return (Vnf - Vi) * volf;
 
     if (hp_bp_lp & 1)
         Vf += Vlp;
@@ -321,36 +322,36 @@ float FilterFP::clock(float voice1,
         Vf += Vhp;
     
     if (model == MOS6581FP) {
-        /* Model output strip mixing */
-        if (hp_bp_lp & 1)
-            Vlp += (Vf - Vlp) * (distortion_cf_threshold);
-        if (hp_bp_lp & 2)
-            Vbp += (Vf - Vbp) * (distortion_cf_threshold);
-        if (hp_bp_lp & 4)
-            Vhp += (Vf - Vhp) * (distortion_cf_threshold);
-
         /* -3 dB level correction for more resistance through filter path */
-        Vhp = Vbp * _1_div_Q - Vlp * 0.8f - Vi * 0.707107f;
-        /* Simulating the exponential VCR that the FET block is... */
-        Vlp -= Vbp * type3_w0(Vbp) * 1.25f;
-        Vbp -= Vhp * type3_w0(Vhp);
+	Vhp = Vbp * _1_div_Q - Vlp - Vi * 0.5f;
 
-        /* Two very short resistors bleed into the FC circuit. Unfortunately,
-         * it is difficult to say how much resistance the long polysilicon
-         * DAC gives us relative to the other resistors... If its resistance
-         * was hypotehtically 0, then we'd have 3.f here. */
-        Vhp -= Vhp * (distortion_cf_threshold * 2.5f);
-        Vbp -= Vbp * (distortion_cf_threshold * 2.5f);
+	/* Model output strip mixing. Doing it now that HP state
+         * variable modifying still makes some difference.
+         * (Phase error, though. XXX rethink this.) */
+	if (hp_bp_lp & 1)
+	    Vlp += (Vf + Vnf - Vlp) * (distortion_cf_threshold);
+	if (hp_bp_lp & 2)
+	    Vbp += (Vf + Vnf - Vbp) * (distortion_cf_threshold);
+	if (hp_bp_lp & 4)
+	    Vhp += (Vf + Vnf - Vhp) * (distortion_cf_threshold);
+       
+	/* Simulating the exponential VCR that the FET block is... */
+	Vlp -= Vbp * type3_w0(Vbp, type3_fc_distortion_offset_bp);
+	Vbp -= Vhp * type3_w0(Vhp, type3_fc_distortion_offset_hp);
+
+        Vf += Vnf + Vlp * 0.41f;
 
         /* Tuned based on Fred Gray's Break Thru. It is probably not a hard
          * discontinuity but a saturation effect... */
-        if (Vf > 3.0e6f)
-            Vf = 3.0e6f;
+        if (Vf > 3.1e6f)
+            Vf = 3.1e6f;
     } else {
         /* On the 8580, BP appears mixed in phase with the rest. */
         Vhp = -Vbp * _1_div_Q - Vlp - Vi;
         Vlp += Vbp * type4_w0_cache;
         Vbp += Vhp * type4_w0_cache;
+
+        Vf += Vnf;
     }
     
     return Vf * volf;
@@ -359,10 +360,9 @@ float FilterFP::clock(float voice1,
 RESID_INLINE
 void FilterFP::nuke_denormals()
 {
-    /* We could also switch the FPU status register to do this,
-     * but this doesn't work on Athlon XP, it seems. Since the SID output
-     * is calculated in short bursts, we get quite frequent calls to this
-     * method, hopefully we never actually see any denormals at all. */
+    /* We could use the flush-to-zero flag or denormals-are-zero on systems
+     * where compiling with -msse and -mfpmath=sse is acceptable. Since this
+     * doesn't include general VICE builds, we do this instead. */
     if (Vbp > -1e-12f && Vbp < 1e-12f)
         Vbp = 0;
     if (Vlp > -1e-12f && Vlp < 1e-12f)

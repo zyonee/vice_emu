@@ -98,14 +98,8 @@ static int set_delayloop_emulation(int val, void *param)
 
     if (video_color_update_palette(video_current_canvas) < 0) {
         video_resources.delayloop_emulation = old;
-        ui_update_pal_ctrls(video_resources.delayloop_emulation);
         return -1;
     }
-    ui_update_pal_ctrls(video_resources.delayloop_emulation);
-
-#ifdef WIN32
-    video_resources_check_win32_newpal();
-#endif
 
     return 0;
 }
@@ -150,18 +144,6 @@ static int set_pal_blur(int val, void *param)
     return video_color_update_palette(video_current_canvas);
 }
 
-static int set_pal_mode(int val, void *param)
-{
-    video_resources.pal_mode = val;
-
-#ifdef WIN32
-    if (val == 2)
-        video_resources_check_win32_newpal();
-#endif
-
-    return 0;
-}
-
 static const resource_int_t resources_int[] =
 {
     { "ColorSaturation", 1000, RES_EVENT_NO, NULL,
@@ -180,8 +162,6 @@ static const resource_int_t resources_int[] =
       &video_resources.pal_scanlineshade, set_pal_scanlineshade, NULL },
     { "PALBlur", 500, RES_EVENT_NO, NULL,
       &video_resources.pal_blur, set_pal_blur, NULL },
-    { "PALMode", VIDEO_RESOURCE_PAL_MODE_FAST, RES_EVENT_NO, NULL,
-      &video_resources.pal_mode, set_pal_mode, NULL },
     { "PALOddLinePhase", 1250, RES_EVENT_NO, NULL,
       &video_resources.pal_oddlines_phase, set_pal_oddlinesphase, NULL },
     { "PALOddLineOffset", 750, RES_EVENT_NO, NULL,
