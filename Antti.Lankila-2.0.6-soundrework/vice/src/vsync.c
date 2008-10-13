@@ -488,11 +488,7 @@ int vsync_do_vsync(struct video_canvas_s *c, int been_skipped)
         next_frame_start = now;
     }
 
-    /* Adjust frame output frequency to match sound speed.
-       This only kicks in for cycle based sound and SOUND_ADJUST_EXACT. */
-    if (frames_adjust < INT_MAX) {
-        frames_adjust++;
-    }
+    frames_adjust++;
 
     if (!network_connected()
         && (signed long)(now - adjust_start) >= vsyncarch_freq) {
@@ -504,7 +500,9 @@ int vsync_do_vsync(struct video_canvas_s *c, int been_skipped)
             if (labs(adjust) > frame_ticks/100) {
                 adjust = adjust / labs(adjust) * frame_ticks / 100;
             }
-            frame_ticks -= adjust;
+            frame_ticks += adjust;
+
+            /*log_warning(LOG_DEFAULT, "adjust: %d, min_sdelay: %d, sound_delay*vsyncfreq: %d, delay: %d", adjust, min_sdelay, (int) (sound_delay * vsyncarch_freq), delay);*/
 
             frames_adjust = 0;
             prev_sdelay = min_sdelay;
@@ -514,9 +512,9 @@ int vsync_do_vsync(struct video_canvas_s *c, int been_skipped)
         adjust_start = now;
     } else {
         if (sound_delay) {
-            /* Actual sound delay is sound delay minus vsync delay. */
-            signed long sdelay =
-                (signed long)(sound_delay*vsyncarch_freq) - delay;
+            /* Actual sound delay is sound delay minus vsync delay */
+            long sdelay =
+                (long)(sound_delay * vsyncarch_freq + delay);
 
             /* Find smallest delay in this period. We don't compare
                absolute values since we trust negative delays more
@@ -563,7 +561,7 @@ void vsyncarch_verticalblank(video_canvas_t *c, float rate, int frames)
         nowi = vsyncarch_gettime();
         vbl = 1;
     }
-    if ((!vbl) && (nosynccount < 4)) {
+    if ((!vbl) && (nosynccount < 2)) {
         nosynccount ++;
     } else {
         last = nowi;

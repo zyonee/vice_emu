@@ -85,7 +85,6 @@ static char *recorddevice_name = NULL;/* app_resources.soundDeviceName */
 static char *recorddevice_arg = NULL; /* app_resources.soundDeviceArg */
 static int buffer_size;               /* app_resources.soundBufferSize */
 static int suspend_time;              /* app_resources.soundSuspendTime */
-static int speed_adjustment_setting;  /* app_resources.soundSpeedAdjustment */
 static int oversampling_factor;       /* app_resources.soundOversample */
 static int volume;
 
@@ -164,12 +163,6 @@ static int set_suspend_time(int val, void *param)
     return 0;
 }
 
-static int set_speed_adjustment_setting(int val, void *param)
-{
-    speed_adjustment_setting = val;
-    return 0;
-}
-
 static int set_oversampling_factor(int val, void *param)
 {
     oversampling_factor = val;
@@ -220,8 +213,6 @@ static const resource_int_t resources_int[] = {
       (void *)&buffer_size, set_buffer_size, NULL },
     { "SoundSuspendTime", 0, RES_EVENT_NO, NULL,
       (void *)&suspend_time, set_suspend_time, NULL },
-    { "SoundSpeedAdjustment", SOUND_ADJUST_FLEXIBLE, RES_EVENT_NO, NULL,
-      (void *)&speed_adjustment_setting, set_speed_adjustment_setting, NULL },
     { "SoundOversample", 0, RES_EVENT_NO, NULL,
       (void *)&oversampling_factor, set_oversampling_factor, NULL },
     { "SoundVolume", 100, RES_EVENT_NO, NULL,
@@ -265,8 +256,6 @@ static const cmdline_option_t cmdline_options[] = {
       NULL, IDCLS_P_NAME, IDCLS_SPECIFY_RECORDING_SOUND_DRIVER },
     { "-soundrecarg", SET_RESOURCE, 1, NULL, NULL, "SoundRecordDeviceArg", NULL,
       IDCLS_P_ARGS, IDCLS_SPECIFY_REC_SOUND_DRIVER_PARAM },
-    { "-soundsync", SET_RESOURCE, 1, NULL, NULL, "SoundSpeedAdjustment", NULL,
-      IDCLS_P_SYNC, IDCLS_SET_SOUND_SPEED_ADJUST },
     { NULL }
 };
 #else
@@ -287,8 +276,6 @@ static const cmdline_option_t cmdline_options[] = {
       NULL, N_("<name>"), N_("Specify recording sound driver") },
     { "-soundrecarg", SET_RESOURCE, 1, NULL, NULL, "SoundRecordDeviceArg", NULL,
       N_("<args>"), N_("Specify initialization parameters for recording sound driver") },
-    { "-soundsync", SET_RESOURCE, 1, NULL, NULL, "SoundSpeedAdjustment", NULL,
-      N_("<sync>"), N_("Set sound speed adjustment (0: flexible, 1: adjusting, 2: exact)") },
     { NULL }
 };
 #endif
@@ -357,10 +344,6 @@ typedef struct
 
     /* number of samples in kernel buffer */
     int bufsize;
-
-    /* constants related to adjusting sound */
-    int prevused;
-    int prevfill;
 
     /* is the device suspended? */
     int issuspended;
@@ -886,8 +869,6 @@ void sound_close(void)
 
     sid_close();
 
-    snddata.prevused = snddata.prevfill = 0;
-
     sdev_open = FALSE;
     sound_state_changed = FALSE;
 
@@ -1041,11 +1022,7 @@ void sound_synthesize(SWORD *buffer, int length)
 
 /* flush all generated samples from buffer to sounddevice. adjust sid runspeed
    to match real running speed of program */
-#if defined(__MSDOS__) || defined(__riscos)
-int sound_flush(int relative_speed)
-#else
 double sound_flush(int relative_speed)
-#endif
 {
     int i, nr, space = 0, used;
 
@@ -1128,7 +1105,6 @@ double sound_flush(int relative_speed)
             if (j > 0) {
                 fill_buffer(j, 0);
             }
-            snddata.prevfill = j;
 
             /* Fresh start for vsync. */
 #ifndef DEBUG
@@ -1137,34 +1113,10 @@ double sound_flush(int relative_speed)
             vsync_sync_reset();
             return 0;
         }
-        if (cycle_based || speed_adjustment_setting
-            != SOUND_ADJUST_ADJUSTING) {
-            if (relative_speed > 0)
-                snddata.clkfactor = SOUNDCLK_CONSTANT(relative_speed) / 100;
-        } else {
-            if (snddata.prevfill)
-                snddata.prevused = used;
-            snddata.clkfactor = SOUNDCLK_MULT(snddata.clkfactor,
-                                              SOUNDCLK_CONSTANT(1.0)
-                                              + (SOUNDCLK_CONSTANT(0.9)
-                                              *(used - snddata.prevused))
-                                              / snddata.bufsize);
-        }
-        snddata.prevused = used;
-        snddata.prevfill = 0;
+        if (cycle_based)
+            snddata.clkfactor = SOUNDCLK_CONSTANT(relative_speed) / 100;
 
-        if (!cycle_based && speed_adjustment_setting != SOUND_ADJUST_EXACT
-            && snddata.recdev == NULL) {
-            snddata.clkfactor = SOUNDCLK_MULT(snddata.clkfactor,
-                                              SOUNDCLK_CONSTANT(0.9)
-                                              + ((used+nr)
-                                              * SOUNDCLK_CONSTANT(0.12))
-                                              / snddata.bufsize);
-        }
-        snddata.clkstep = SOUNDCLK_MULT(snddata.origclkstep,
-                                        snddata.clkfactor);
-        if (SOUNDCLK_CONSTANT(cycles_per_rfsh) / snddata.clkstep
-            >= snddata.bufsize) {
+        if (SOUNDCLK_CONSTANT(cycles_per_rfsh) / snddata.clkstep >= snddata.bufsize) {
             if (suspend_time > 0)
                 suspendsound("running too slow");
             else {
@@ -1179,38 +1131,15 @@ double sound_flush(int relative_speed)
     }
     sound_write_data(nr);
 
-    if (snddata.playdev->bufferspace
-        && (cycle_based || speed_adjustment_setting == SOUND_ADJUST_EXACT))
-#if defined(__MSDOS__) || (__riscos)
-    {
-        /* finetune VICE timer */
-        static int lasttime = 0;
-        int t = time(0);
-        if (t != lasttime) {
-            /* Aim for utilization of bufsize - fragsize. */
-            int dir = 0;
-            int remspace = space - snddata.bufptr;
-            if (remspace <= 0)
-                dir = -1;
-            if (remspace > snddata.fragsize)
-                dir = 1;
-            lasttime = t;
-            return dir;
-        }
-    }
-#else
-    {
-        /* finetune VICE timer */
-        /* Read bufferspace() just before returning to minimize the possibility
-           of getting interrupted before vsync delay calculation. */
-        /* Aim for utilization of bufsize - fragsize. */
-        int remspace =
-            snddata.playdev->bufferspace() - snddata.fragsize - snddata.bufptr;
+    if (snddata.playdev->bufferspace && cycle_based) {
+        /* Target utilization of half a frame. This gives us latitude in both
+         * directions. We hope the bufferspace() result is accurate, hopefully
+         * better than 1 fragment precision. */
+        int framesqueued =
+            snddata.bufsize/2 - snddata.playdev->bufferspace() + snddata.bufptr;
         /* Return delay in seconds. */
-        return (double)remspace/sample_rate;
+        return (double)framesqueued / sample_rate;
     }
-#endif
-
     return 0;
 }
 

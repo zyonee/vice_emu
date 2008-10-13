@@ -38,7 +38,6 @@
 
 UI_MENU_DEFINE_TOGGLE(Sound)
 UI_MENU_DEFINE_STRING_RADIO(SoundDeviceName)
-UI_MENU_DEFINE_RADIO(SoundSpeedAdjustment)
 UI_MENU_DEFINE_RADIO(SoundSampleRate)
 UI_MENU_DEFINE_RADIO(SoundBufferSize)
 UI_MENU_DEFINE_RADIO(SoundSuspendTime)
@@ -112,19 +111,6 @@ ui_menu_entry_t set_sound_oversample_submenu [] = {
     { NULL }
 };
 
-static ui_menu_entry_t set_sound_adjustment_submenu [] = {
-    { N_("*Flexible"),
-      (ui_callback_t)radio_SoundSpeedAdjustment,
-      (ui_callback_data_t)SOUND_ADJUST_FLEXIBLE, NULL },
-    { N_("*Adjusting"),
-      (ui_callback_t)radio_SoundSpeedAdjustment,
-      (ui_callback_data_t)SOUND_ADJUST_ADJUSTING, NULL },
-    { N_("*Exact"),
-      (ui_callback_t)radio_SoundSpeedAdjustment,
-      (ui_callback_data_t)SOUND_ADJUST_EXACT, NULL },
-    { NULL }
-};
-
 ui_menu_entry_t sound_settings_submenu[] = {
     { N_("*Enable sound playback"),
       (ui_callback_t)toggle_Sound, NULL, NULL },
@@ -135,9 +121,6 @@ ui_menu_entry_t sound_settings_submenu[] = {
     { N_("Sound driver argument..."),
       (ui_callback_t)set_sound_device_arg,
       (ui_callback_data_t)"SoundDeviceArg", NULL },
-    { "--" },
-    { N_("Sound synchronization"),
-      NULL, NULL, set_sound_adjustment_submenu },
     { "--" },
     { N_("Sample rate"),
       NULL, NULL, set_sound_sample_rate_submenu },

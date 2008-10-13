@@ -39,6 +39,9 @@
 #include "openGL_sync.h"
 #endif
 
+#ifdef HAVE_NANOSLEEP
+#include <time.h>
+#endif
 #include <sys/time.h>
 #include <unistd.h>
 
@@ -78,7 +81,14 @@ void vsyncarch_display_speed(double speed, double frame_rate, int warp_enabled)
 /* Sleep a number of timer units. */
 void vsyncarch_sleep(signed long delay)
 {
+#ifdef HAVE_NANOSLEEP
+    struct timespec required;
+    required.tv_sec = delay / 1000000;
+    required.tv_nsec = (delay % 1000000) * 1000;
+    nanosleep(&required, NULL);
+#else
     usleep(delay);
+#endif
 }
 
 void vsyncarch_presync(void)
