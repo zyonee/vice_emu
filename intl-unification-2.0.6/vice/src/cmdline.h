@@ -58,20 +58,11 @@ typedef struct cmdline_option_s {
        `need_arg' is zero.  */
     void *resource_value;
 
-#ifdef HAS_TRANSLATION
     /* ID of the string to display after the option name in the help screen. */
     int param_name;
 
     /* ID of the description string. */
     int description;
-#else
-    /* String to display after the option name in the help screen.  (Can be
-       NULL).  */
-    const char *param_name;
-
-    /* Description string.  */
-    const char *description;
-#endif
 } cmdline_option_t;
 
 
@@ -98,20 +89,11 @@ typedef struct cmdline_option_ram_s {
        `need_arg' is zero.  */
     void *resource_value;
 
-#ifdef HAS_TRANSLATION
     /* ID of the string to display after the option name in the help screen. */
     int param_name;
 
     /* ID of the description string. */
     int description;
-#else
-    /* String to display after the option name in the help screen.  (Can be
-       NULL).  */
-    const char *param_name;
-
-    /* Description string.  */
-    const char *description;
-#endif
 } cmdline_option_ram_t;
 
 extern int cmdline_init(void);

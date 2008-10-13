@@ -43,9 +43,7 @@
 #include "mem.h"
 #include "resources.h"
 #include "reu.h"
-#ifdef HAS_TRANSLATION
 #include "translate.h"
-#endif
 #include "types.h"
 #include "vdc.h"
 #include "vicii.h"
@@ -102,7 +100,6 @@ int mmu_resources_init(void)
     return resources_register_int(resources_int);
 }
 
-#ifdef HAS_TRANSLATION
 static const cmdline_option_t cmdline_options[] = {
     { "-40col", SET_RESOURCE, 0, NULL, NULL, "40/80ColumnKey",
       (resource_value_t) 1,
@@ -118,23 +115,6 @@ static const cmdline_option_t cmdline_options[] = {
       0, IDCLS_GO128_MODE },
     { NULL }
 };
-#else
-static const cmdline_option_t cmdline_options[] = {
-    { "-40col", SET_RESOURCE, 0, NULL, NULL, "40/80ColumnKey",
-      (resource_value_t) 1,
-      NULL, N_("Activate 40 column mode") },
-    { "-80col", SET_RESOURCE, 0, NULL, NULL, "40/80ColumnKey",
-      (resource_value_t) 0,
-      NULL, N_("Activate 80 column mode") },
-    { "-go64", SET_RESOURCE, 0, NULL, NULL, "Go64Mode",
-      (resource_value_t) 1,
-      NULL, N_("Always switch to C64 mode on reset") },
-    { "+go64", SET_RESOURCE, 0, NULL, NULL, "Go64Mode",
-      (resource_value_t) 0,
-      NULL, N_("Always switch to C128 mode on reset") },
-    { NULL }
-};
-#endif
 
 int mmu_cmdline_options_init(void)
 {

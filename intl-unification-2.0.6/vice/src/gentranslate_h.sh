@@ -28,8 +28,6 @@ echo " *  02111-1307  USA."
 echo " *"
 echo " */"
 echo ""
-echo "#ifdef HAS_TRANSLATION"
-echo ""
 echo "#ifndef _TRANSLATE_H"
 echo "#define _TRANSLATE_H"
 echo ""
@@ -61,5 +59,4 @@ do
 done
 
 echo "};"
-echo "#endif"
 echo "#endif"

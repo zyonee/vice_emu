@@ -1,21 +1,6 @@
 # List of Files which already gettext aware.
 
-# Emulator core files
-src/vsync.c
-src/screenshot.c
-src/autostart.c
-src/sound.c
-src/event.c
-src/c64/c64export.c
-src/c64/c64io.c
-src/debug.c
-src/network.c
-
 # command-line options
-src/aciacore.c
-src/attach.c
-src/c128/c128-cmdline-options.c
-src/c128/c128mmu.c
 src/c128/functionrom.c
 src/c64/c64-cmdline-options.c
 src/c64/cart/c64cart.c
@@ -234,8 +219,8 @@ src/arch/win32/restfe.rc.po.c
 src/arch/win32/resvic20.rc.po.c
 src/arch/win32/resvicii.rc.po.c
 
-# translate.c untranslated elements
-src/translate.c.po.c
-
 #amiga files
 src/arch/amigaos/intl.c.po.c
+
+#translate file
+src/translate.c.po.c

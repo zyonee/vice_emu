@@ -35,9 +35,7 @@
 #include "cmdline.h"
 #include "lib.h"
 #include "resources.h"
-#ifdef HAS_TRANSLATION
 #include "translate.h"
-#endif
 #include "types.h"
 #include "uicmdline.h"
 #include "util.h"
@@ -230,15 +228,9 @@ char *cmdline_options_string(void)
 
     for (i = 0; i < num_options; i++) {
         add_to_options1 = lib_msprintf("%s", options[i].name);
-#ifdef HAS_TRANSLATION
         add_to_options3 = lib_msprintf("\n\t%s\n", translate_text(options[i].description));
         if (options[i].need_arg && options[i].param_name != 0) {
             add_to_options2 = lib_msprintf(" %s", translate_text(options[i].param_name));
-#else
-        add_to_options3 = lib_msprintf("\n\t%s\n", options[i].description);
-        if (options[i].need_arg && options[i].param_name != NULL) {
-            add_to_options2 = lib_msprintf(" %s", options[i].param_name);
-#endif
             new_cmdline_string = util_concat(cmdline_string, add_to_options1,
                                              add_to_options2, add_to_options3,
                                              NULL);

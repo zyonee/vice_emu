@@ -31,8 +31,6 @@
 #include "c128-cmdline-options.h"
 #include "cmdline.h"
 #include "machine.h"
-
-#ifdef HAS_TRANSLATION
 #include "translate.h"
 
 static const cmdline_option_t cmdline_options[] = {
@@ -97,74 +95,7 @@ static const cmdline_option_t cmdline_options[] = {
     { NULL }
 };
 
-#else
-
-static const cmdline_option_t cmdline_options[] = {
-    { "-pal", SET_RESOURCE, 0, NULL, NULL, "MachineVideoStandard",
-      (void *)MACHINE_SYNC_PAL, NULL, N_("Use PAL sync factor") },
-    { "-ntsc", SET_RESOURCE, 0, NULL, NULL, "MachineVideoStandard",
-      (void *)MACHINE_SYNC_NTSC, NULL, N_("Use NTSC sync factor") },
-    { "-kernal", SET_RESOURCE, 1, NULL, NULL, "KernalIntName", NULL,
-      N_("<name>"), N_("Specify name of international Kernal ROM image") },
-    { "-kernalde", SET_RESOURCE, 1, NULL, NULL, "KernalDEName", NULL,
-      N_("<name>"), N_("Specify name of German Kernal ROM image") },
-    { "-kernalfi", SET_RESOURCE, 1, NULL, NULL, "KernalFIName", NULL,
-      N_("<name>"), N_("Specify name of Finnish Kernal ROM image") },
-    { "-kernalfr", SET_RESOURCE, 1, NULL, NULL, "KernalFRName", NULL,
-      N_("<name>"), N_("Specify name of French Kernal ROM image") },
-    { "-kernalit", SET_RESOURCE, 1, NULL, NULL, "KernalITName", NULL,
-      N_("<name>"), N_("Specify name of Italian Kernal ROM image") },
-    { "-kernalno", SET_RESOURCE, 1, NULL, NULL, "KernalNOName", NULL,
-      N_("<name>"), N_("Specify name of Norwegian Kernal ROM image") },
-    { "-kernalse", SET_RESOURCE, 1, NULL, NULL, "KernalSEName", NULL,
-      N_("<name>"), N_("Specify name of Swedish Kernal ROM image") },
-    { "-basiclo", SET_RESOURCE, 1, NULL, NULL, "BasicLoName", NULL,
-      N_("<name>"), N_("Specify name of BASIC ROM image (lower part)") },
-    { "-basichi", SET_RESOURCE, 1, NULL, NULL, "BasicHiName", NULL,
-      N_("<name>"), N_("Specify name of BASIC ROM image (higher part)") },
-    { "-chargen", SET_RESOURCE, 1, NULL, NULL, "ChargenIntName", NULL,
-      N_("<name>"), N_("Specify name of international character generator ROM image") },
-    { "-chargde", SET_RESOURCE, 1, NULL, NULL, "ChargenDEName", NULL,
-      N_("<name>"), N_("Specify name of German character generator ROM image") },
-    { "-chargfr", SET_RESOURCE, 1, NULL, NULL, "ChargenFRName", NULL,
-      N_("<name>"), N_("Specify name of French character generator ROM image") },
-    { "-chargse", SET_RESOURCE, 1, NULL, NULL, "ChargenSEName", NULL,
-      N_("<name>"), N_("Specify name of Swedish character generator ROM image") },
-    { "-kernal64", SET_RESOURCE, 1, NULL, NULL, "Kernal64Name", NULL,
-      N_("<name>"), N_("Specify name of C64 mode Kernal ROM image") },
-    { "-basic64", SET_RESOURCE, 1, NULL, NULL, "Basic64Name", NULL,
-      N_("<name>"), N_("Specify name of C64 mode BASIC ROM image") },
-    { "-emuid", SET_RESOURCE, 0, NULL, NULL, "EmuID", (void *)1,
-      NULL, N_("Enable emulator identification") },
-    { "+emuid", SET_RESOURCE, 0, NULL, NULL, "EmuID", (void *)0,
-      NULL, N_("Disable emulator identification") },
-    { "-ieee488", SET_RESOURCE, 0, NULL, NULL, "IEEE488", (void *)1,
-      NULL, N_("Enable the IEEE488 interface emulation") },
-    { "+ieee488", SET_RESOURCE, 0, NULL, NULL, "IEEE488", (void *)0,
-      NULL, N_("Disable the IEEE488 interface emulation") },
-    { "-kernalrev", SET_RESOURCE, 1, NULL, NULL, "KernalRev", NULL,
-      N_("<revision>"), N_("Patch the Kernal ROM to the specified <revision>") },
-#ifdef HAVE_RS232
-    { "-acia1", SET_RESOURCE, 0, NULL, NULL, "Acia1Enable", (void *)1,
-      NULL, N_("Enable the $DE** ACIA RS232 interface emulation") },
-    { "+acia1", SET_RESOURCE, 0, NULL, NULL, "Acia1Enable", (void *)0,
-      NULL, "Disable the $DE** ACIA RS232 interface emulation" },
-#endif
-#ifdef COMMON_KBD
-    { "-keymap", SET_RESOURCE, 1, NULL, NULL, "KeymapIndex", NULL,
-      N_("<number>"), N_("Specify index of keymap file (0=symbol, 1=positional)") },
-    { "-symkeymap", SET_RESOURCE, 1, NULL, NULL, "KeymapSymFile", NULL,
-      N_("<name>"), N_("Specify name of symbolic keymap file") },
-    { "-poskeymap", SET_RESOURCE, 1, NULL, NULL, "KeymapPosFile", NULL,
-      N_("<name>"), N_("Specify name of positional keymap file") },
-#endif
-    { NULL }
-};
-
-#endif
-
 int c128_cmdline_options_init(void)
 {
     return cmdline_register_options(cmdline_options);
 }
-
