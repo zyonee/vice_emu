@@ -93,9 +93,7 @@
 #include "plus256k.h"
 #include "plus60k.h"
 #include "snapshot.h"
-#ifdef HAS_TRANSLATION
 #include "translate.h"
-#endif
 #include "types.h"
 #include "uiapi.h"
 #include "util.h"
@@ -132,11 +130,7 @@ static int set_plus60k_enabled(int val, void *param)
         return 0;
     } else {
         if (c64_256k_enabled || plus256k_enabled) {
-#ifdef HAS_TRANSLATION
             ui_error(translate_text(IDGS_RESOURCE_S_BLOCKED_BY_S),"CPU-LINES", (c64_256k_enabled) ? "256K" : "PLUS256K");
-#else
-            ui_error(_("Resource %s blocked by %s."),"CPU-LINES", (c64_256k_enabled) ? "256K" : "PLUS256K");
-#endif
             return -1;
         } else {
             if (plus60k_activate() < 0) {
@@ -225,7 +219,6 @@ void plus60k_resources_shutdown(void)
 
 /* ------------------------------------------------------------------------- */
 
-#ifdef HAS_TRANSLATION
 static const cmdline_option_t cmdline_options[] =
 {
     { "-plus60k", SET_RESOURCE, 0, NULL, NULL, "PLUS60K", (resource_value_t)1,
@@ -238,20 +231,6 @@ static const cmdline_option_t cmdline_options[] =
       IDCLS_P_BASE_ADDRESS, IDCLS_PLUS60K_BASE },
     { NULL }
 };
-#else
-static const cmdline_option_t cmdline_options[] =
-{
-    { "-plus60k", SET_RESOURCE, 0, NULL, NULL, "PLUS60K", (resource_value_t)1,
-      NULL, N_("Enable the PLUS60K RAM expansion") },
-    { "+plus60k", SET_RESOURCE, 0, NULL, NULL, "PLUS60K", (resource_value_t)0,
-      NULL, N_("Disable the PLUS60K RAM expansion") },
-    { "-plus60kimage", SET_RESOURCE, 1, NULL, NULL, "PLUS60Kfilename", NULL,
-      N_("<name>"), N_("Specify name of PLUS60K image") },
-    { "-plus60kbase", SET_RESOURCE, 1, NULL, NULL, "PLUS60Kbase", NULL,
-      N_("<base address>"), N_("Base address of the PLUS60K expansion") },
-    { NULL }
-};
-#endif
 
 int plus60k_cmdline_options_init(void)
 {

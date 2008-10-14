@@ -32,12 +32,8 @@
 #include "c64dtv-cmdline-options.h"
 #include "cmdline.h"
 #include "machine.h"
-
-#ifdef HAS_TRANSLATION
 #include "translate.h"
-#endif
 
-#ifdef HAS_TRANSLATION
 static const cmdline_option_t cmdline_options[] =
 {
     { "-pal", SET_RESOURCE, 0, NULL, NULL, "MachineVideoStandard",
@@ -74,44 +70,6 @@ static const cmdline_option_t cmdline_options[] =
       IDCLS_P_PORT, IDCLS_HUMMER_JOY_PORT },
     { NULL }
 };
-#else
-static const cmdline_option_t cmdline_options[] =
-{
-    { "-pal", SET_RESOURCE, 0, NULL, NULL, "MachineVideoStandard",
-      (void *)MACHINE_SYNC_PAL, NULL, N_("Use PAL sync factor") },
-    { "-ntsc", SET_RESOURCE, 0, NULL, NULL, "MachineVideoStandard",
-      (void *)MACHINE_SYNC_NTSC, NULL, N_("Use NTSC sync factor") },
-    { "-kernal", SET_RESOURCE, 1, NULL, NULL, "KernalName", NULL,
-      N_("<name>"), N_("Specify name of Kernal ROM image") },
-    { "-basic", SET_RESOURCE, 1, NULL, NULL, "BasicName", NULL,
-      N_("<name>"), N_("Specify name of BASIC ROM image") },
-    { "-chargen", SET_RESOURCE, 1, NULL, NULL, "ChargenName", NULL,
-      N_("<name>"), N_("Specify name of character generator ROM image") },
-    { "-emuid", SET_RESOURCE, 0, NULL, NULL, "EmuID", (void *)1,
-      NULL, N_("Enable emulator identification") },
-    { "+emuid", SET_RESOURCE, 0, NULL, NULL, "EmuID", (void *)0,
-      NULL, N_("Disable emulator identification") },
-    { "-kernalrev", SET_RESOURCE, 1, NULL, NULL, "KernalRev", NULL,
-      N_("<revision>"), N_("Patch the Kernal ROM to the specified <revision>") },
-#ifdef COMMON_KBD
-    { "-keymap", SET_RESOURCE, 1, NULL, NULL, "KeymapIndex", NULL,
-      N_("<number>"), N_("Specify index of keymap file (0=sym, 1=symDE, 2=pos)") },
-    { "-symkeymap", SET_RESOURCE, 1, NULL, NULL, "KeymapSymFile", NULL,
-      N_("<name>"), N_("Specify name of symbolic keymap file") },
-    { "-symdekeymap", SET_RESOURCE, 1, NULL, NULL, "KeymapSymDeFile", NULL,
-      N_("<name>"), N_("Specify name of symbolic German keymap file") },
-    { "-poskeymap", SET_RESOURCE, 1, NULL, NULL, "KeymapPosFile", NULL,
-      N_("<name>"), N_("Specify name of positional keymap file") },
-#endif
-    { "-hummerusrjoy", SET_RESOURCE, 0, NULL, NULL, "HummerUserportJoy", (void *)1,
-      0, N_("Enable the Hummer Userport Joystick Emulation") },
-    { "+hummerusrjoy", SET_RESOURCE, 0, NULL, NULL, "HummerUserportJoy", (void *)0,
-      0, N_("Disable the Hummer Userport Joystick Emulation") },
-    { "-hummerusrjoyport", SET_RESOURCE, 1, NULL, NULL, "HummerUserportJoyPort",
-      NULL, N_("<port>"), N_("Select which joystick port should be mapped to the userport") },
-    { NULL }
-};
-#endif
 
 int c64dtv_cmdline_options_init(void)
 {

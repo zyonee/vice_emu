@@ -32,8 +32,6 @@
 #include "drive.h"
 #include "iec-cmdline-options.h"
 #include "lib.h"
-
-#ifdef HAS_TRANSLATION
 #include "translate.h"
 
 static const cmdline_option_t cmdline_options[] = {
@@ -76,48 +74,6 @@ static cmdline_option_t cmd_drive[] = {
       0, IDCLS_DISABLE_DRIVE_RAM_A000 },
     { NULL }
 };
-#else
-static const cmdline_option_t cmdline_options[] = {
-    { "-dos1541", SET_RESOURCE, 1, NULL, NULL, "DosName1541", "dos1541",
-      N_("<name>"), N_("Specify name of 1541 DOS ROM image") },
-    { "-dos1541II", SET_RESOURCE, 1, NULL, NULL, "DosName1541II", "d1541II",
-      N_("<name>"), N_("Specify name of 1541-II DOS ROM image") },
-    { "-dos1570", SET_RESOURCE, 1, NULL, NULL, "DosName1570", "dos1570",
-      N_("<name>"), N_("Specify name of 1570 DOS ROM image") },
-    { "-dos1571", SET_RESOURCE, 1, NULL, NULL, "DosName1571", "dos1571",
-      N_("<name>"), N_("Specify name of 1571 DOS ROM image") },
-    { "-dos1581", SET_RESOURCE, 1, NULL, NULL, "DosName1581", "dos1581",
-      N_("<name>"), N_("Specify name of 1581 DOS ROM image") },
-    { NULL }
-};
-
-static cmdline_option_t cmd_drive[] = {
-    { NULL, SET_RESOURCE, 1, NULL, NULL, NULL, (void *)DRIVE_IDLE_TRAP_IDLE,
-      N_("<method>"),
-      N_("Set drive idling method (0: no traps, 1: skip cycles, 2: trap idle)") },
-    { NULL, SET_RESOURCE, 0, NULL, NULL, NULL, (void *)1,
-      NULL, N_("Enable 8KB RAM expansion at $2000-$3FFF") },
-    { NULL, SET_RESOURCE, 0, NULL, NULL, NULL, (void *)0,
-      NULL, N_("Disable 8KB RAM expansion at $2000-$3FFF") },
-    { NULL, SET_RESOURCE, 0, NULL, NULL, NULL, (void *)1,
-      NULL, N_("Enable 8KB RAM expansion at $4000-$5FFF") },
-    { NULL, SET_RESOURCE, 0, NULL, NULL, NULL, (void *)0,
-      NULL, N_("Disable 8KB RAM expansion at $4000-$5FFF") },
-    { NULL, SET_RESOURCE, 0, NULL, NULL, NULL, (void *)1,
-      NULL, N_("Enable 8KB RAM expansion at $6000-$7FFF") },
-    { NULL, SET_RESOURCE, 0, NULL, NULL, NULL, (void *)0,
-      NULL, N_("Disable 8KB RAM expansion at $6000-$7FFF") },
-    { NULL, SET_RESOURCE, 0, NULL, NULL, NULL, (void *)1,
-      NULL, N_("Enable 8KB RAM expansion at $8000-$9FFF") },
-    { NULL, SET_RESOURCE, 0, NULL, NULL, NULL, (void *)0,
-      NULL, N_("Disable 8KB RAM expansion at $8000-$9FFF") },
-    { NULL, SET_RESOURCE, 0, NULL, NULL, NULL, (void *)1,
-      NULL, N_("Enable 8KB RAM expansion at $A000-$BFFF") },
-    { NULL, SET_RESOURCE, 0, NULL, NULL, NULL, (void *)0,
-      NULL, N_("Disable 8KB RAM expansion at $A000-$BFFF") },
-    { NULL }
-};
-#endif
 
 int iec_cmdline_options_init(void)
 {
@@ -169,4 +125,3 @@ int iec_cmdline_options_init(void)
 
     return cmdline_register_options(cmdline_options);
 }
-

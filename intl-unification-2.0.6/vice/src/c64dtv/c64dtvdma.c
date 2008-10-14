@@ -43,10 +43,7 @@
 #include "interrupt.h"
 #include "alarm.h"
 #include "snapshot.h"
-
-#ifdef HAS_TRANSLATION
 #include "translate.h"
-#endif
 
 static log_t c64dtvdma_log = LOG_ERR;
 
@@ -428,7 +425,6 @@ void c64dtvdma_resources_shutdown(void)
 {
 }
 
-#ifdef HAS_TRANSLATION
 static const cmdline_option_t cmdline_options[] =
 {
     { "-dtvdmalog", SET_RESOURCE, 0, NULL, NULL, "DtvDMALog",
@@ -437,16 +433,6 @@ static const cmdline_option_t cmdline_options[] =
       (resource_value_t)0, 0, IDCLS_DISABLE_DTV_DMA_LOG },
     { NULL }
 };
-#else
-static const cmdline_option_t cmdline_options[] =
-{
-    { "-dtvdmalog", SET_RESOURCE, 0, NULL, NULL, "DtvDMALog",
-      (resource_value_t)1, NULL, N_("Enable DTV dma logs.") },
-    { "+dtvdmalog", SET_RESOURCE, 0, NULL, NULL, "DtvDMALog",
-      (resource_value_t)0, NULL, N_("Disable DTV dma logs.") },
-    { NULL }
-};
-#endif
 
 int c64dtvdma_cmdline_options_init(void)
 {

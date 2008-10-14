@@ -32,10 +32,7 @@
 #include "log.h"
 #include "hummeradc.h"
 #include "keyboard.h"
-
-#ifdef HAS_TRANSLATION
 #include "translate.h"
-#endif
 
 static log_t hummeradc_log = LOG_ERR;
 
@@ -357,7 +354,6 @@ int hummeradc_resources_init(void)
     return resources_register_int(resources_int);
 }
 
-#ifdef HAS_TRANSLATION
 static const cmdline_option_t cmdline_options[] =
 {
     { "-hummeradc", SET_RESOURCE, 0, NULL, NULL, "hummeradc", (void *)1,
@@ -366,16 +362,6 @@ static const cmdline_option_t cmdline_options[] =
       0, IDCLS_DISABLE_HUMMERADC },
     { NULL }
 };
-#else
-static const cmdline_option_t cmdline_options[] =
-{
-    { "-hummeradc", SET_RESOURCE, 0, NULL, NULL, "hummeradc", (void *)1,
-      NULL, N_("Enable the Hummer ADC") },
-    { "+hummeradc", SET_RESOURCE, 0, NULL, NULL, "hummeradc", (void *)0,
-      NULL, N_("Disable the Hummer ADC") },
-    { NULL }
-};
-#endif
 
 int hummeradc_cmdline_options_init(void)
 {

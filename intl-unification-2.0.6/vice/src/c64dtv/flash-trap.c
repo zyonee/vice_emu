@@ -3,6 +3,7 @@
  *
  * Written by
  *  Daniel Kahlin <daniel@kahlin.net>
+ *
  * Based on code from serial by
  *  Teemu Rantanen <tvr@cs.hut.fi>
  *  Andreas Boose <viceteam@t-online.de>
@@ -50,10 +51,7 @@
 #include "types.h"
 #include "util.h"
 #include "resources.h"
-
-#ifdef HAS_TRANSLATION
 #include "translate.h"
-#endif
 
 /* Flag: Have traps been installed?  */
 static int traps_installed = 0;
@@ -318,7 +316,6 @@ void flash_trap_resources_shutdown(void)
     lib_free(flash_trap_fsflashdir);
 }
 
-#ifdef HAS_TRANSLATION
 static const cmdline_option_t cmdline_options[] =
 {
     { "-fsflash", SET_RESOURCE, 1, NULL, NULL, "FSFlashDir", NULL,
@@ -329,18 +326,6 @@ static const cmdline_option_t cmdline_options[] =
       0, IDCLS_DISABLE_TRUE_FLASH_FS },
     { NULL }
 };
-#else
-static const cmdline_option_t cmdline_options[] =
-{
-    { "-fsflash", SET_RESOURCE, 1, NULL, NULL, "FSFlashDir", NULL, 
-      N_("<name>"), N_("Use <name> as directory for flash file system device") },
-    { "-trueflashfs", SET_RESOURCE, 0, NULL, NULL, "FlashTrueFS", (void *)1,
-      NULL, N_("Enable true hardware flash file system") },
-    { "+trueflashfs", SET_RESOURCE, 0, NULL, NULL, "FlashTrueFS", (void *)0,
-      NULL, N_("Disable true hardware flash file system") },
-    { NULL }
-};
-#endif
 
 int flash_trap_cmdline_options_init(void)
 {

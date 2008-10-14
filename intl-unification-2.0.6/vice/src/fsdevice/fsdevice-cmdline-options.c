@@ -34,11 +34,8 @@
 #include "fsdevice.h"
 #include "ioutil.h"
 #include "lib.h"
-#ifdef HAS_TRANSLATION
 #include "translate.h"
-#endif
 #include "types.h"
-
 
 static int cmdline_fsdirectory(const char *param, void *extra_param)
 {
@@ -58,7 +55,6 @@ static int cmdline_fsdirectory(const char *param, void *extra_param)
     return 0;
 }
 
-#ifdef HAS_TRANSLATION
 static const cmdline_option_t cmdline_options[] = {
     { "-fs8", CALL_FUNCTION, 1, cmdline_fsdirectory, (void *)8, NULL, NULL,
       IDCLS_P_NAME, IDCLS_USE_AS_DIRECTORY_FSDEVICE_8 },
@@ -70,22 +66,8 @@ static const cmdline_option_t cmdline_options[] = {
       IDCLS_P_NAME, IDCLS_USE_AS_DIRECTORY_FSDEVICE_11 },
     { NULL }
 };
-#else
-static const cmdline_option_t cmdline_options[] = {
-    { "-fs8", CALL_FUNCTION, 1, cmdline_fsdirectory, (void *)8, NULL, NULL,
-      N_("<name>"), N_("Use <name> as directory for file system device #8") },
-    { "-fs9", CALL_FUNCTION, 1, cmdline_fsdirectory, (void *)9, NULL, NULL,
-      N_("<name>"), N_("Use <name> as directory for file system device #9") },
-    { "-fs10", CALL_FUNCTION, 1, cmdline_fsdirectory, (void *)10, NULL, NULL,
-      N_("<name>"), N_("Use <name> as directory for file system device #10") },
-    { "-fs11", CALL_FUNCTION, 1, cmdline_fsdirectory, (void *)11, NULL, NULL,
-      N_("<name>"), N_("Use <name> as directory for file system device #11") },
-    { NULL }
-};
-#endif
 
 int fsdevice_cmdline_options_init(void)
 {
     return cmdline_register_options(cmdline_options);
 }
-

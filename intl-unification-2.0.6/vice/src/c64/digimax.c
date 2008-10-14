@@ -39,10 +39,7 @@
 #include "sid.h"
 #include "sound.h"
 #include "ui.h"
-
-#ifdef HAS_TRANSLATION
 #include "translate.h"
-#endif
 
 /* Flag: Do we enable the external DIGIMAX cartridge?  */
 int digimax_enabled;
@@ -61,11 +58,7 @@ static int set_digimax_enabled(int val, void *param)
 {
   if (sid_sound_machine_cycle_based()==1 && val)
   {
-#ifdef HAS_TRANSLATION
     ui_error(translate_text(IDGS_DIGIMAX_NOT_WITH_RESID));
-#else
-    ui_error(_("Digimax cannot be used with ReSID\nPlease switch SID Engine to FastSID"));
-#endif
     return -1;
   }
   digimax_enabled=val;
@@ -119,7 +112,6 @@ int digimax_resources_init(void)
   return resources_register_int(resources_int);
 }
 
-#ifdef HAS_TRANSLATION
 static const cmdline_option_t cmdline_options[] =
 {
     { "-digimax", SET_RESOURCE, 0, NULL, NULL, "DIGIMAX", (resource_value_t)1,
@@ -130,18 +122,6 @@ static const cmdline_option_t cmdline_options[] =
       IDCLS_P_BASE_ADDRESS, IDCLS_DIGIMAX_BASE },
     { NULL }
 };
-#else
-static const cmdline_option_t cmdline_options[] =
-{
-    { "-digimax", SET_RESOURCE, 0, NULL, NULL, "DIGIMAX", (resource_value_t)1,
-      NULL, N_("Enable the digimax cartridge") },
-    { "+digimax", SET_RESOURCE, 0, NULL, NULL, "DIGIMAX", (resource_value_t)0,
-      NULL, N_("Disable the digimax cartridge") },
-    { "-digimaxbase", SET_RESOURCE, 1, NULL, NULL, "DIGIMAXbase", NULL,
-      N_("<base address>"), N_("Base address of the digimax cartridge") },
-    { NULL }
-};
-#endif
 
 int digimax_cmdline_options_init(void)
 {

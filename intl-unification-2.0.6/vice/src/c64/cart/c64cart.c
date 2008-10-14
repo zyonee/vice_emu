@@ -53,9 +53,7 @@
 #include "stardos.h"
 #include "stb.h"
 #include "supersnapshot.h"
-#ifdef HAS_TRANSLATION
 #include "translate.h"
-#endif
 #include "util.h"
 
 
@@ -170,7 +168,6 @@ static int attach_cartridge_cmdline(const char *param, void *extra_param)
     return cartridge_attach_image((int)extra_param, param);
 }
 
-#ifdef HAS_TRANSLATION
 static const cmdline_option_t cmdline_options[] =
 {
     { "-cartreset", SET_RESOURCE, 0, NULL, NULL, "CartridgeReset",
@@ -232,69 +229,6 @@ static const cmdline_option_t cmdline_options[] =
       0, IDCLS_ENABLE_EXPERT_CART },
     { NULL }
 };
-#else
-static const cmdline_option_t cmdline_options[] =
-{
-    { "-cartreset", SET_RESOURCE, 0, NULL, NULL, "CartridgeReset",
-      (void *)1, NULL,
-      N_("Reset machine if a cartridge is attached or detached") },
-    { "+cartreset", SET_RESOURCE, 0, NULL, NULL, "CartridgeReset",
-      (void *)0, NULL,
-      N_("Do not reset machine if a cartridge is attached or detached") },
-    { "-cartcrt", CALL_FUNCTION, 1, attach_cartridge_cmdline,
-      (void *)CARTRIDGE_CRT, NULL, NULL,
-      N_("<name>"), N_("Attach CRT cartridge image") },
-    { "-cart8", CALL_FUNCTION, 1, attach_cartridge_cmdline,
-      (void *)CARTRIDGE_GENERIC_8KB, NULL, NULL,
-      N_("<name>"), N_("Attach generic 8KB cartridge image") },
-    { "-cart16", CALL_FUNCTION, 1, attach_cartridge_cmdline,
-      (void *)CARTRIDGE_GENERIC_16KB, NULL, NULL,
-      N_("<name>"), N_("Attach generic 16KB cartridge image") },
-    { "-cartar", CALL_FUNCTION, 1, attach_cartridge_cmdline,
-      (void *)CARTRIDGE_ACTION_REPLAY, NULL, NULL,
-      N_("<name>"), N_("Attach raw 32KB Action Replay cartridge image") },
-    { "-cartar3", CALL_FUNCTION, 1, attach_cartridge_cmdline,
-      (void *)CARTRIDGE_ACTION_REPLAY3, NULL, NULL,
-      N_("<name>"), N_("Attach raw 16KB Action Replay III cartridge image") },
-    { "-cartar4", CALL_FUNCTION, 1, attach_cartridge_cmdline,
-      (void *)CARTRIDGE_ACTION_REPLAY4, NULL, NULL,
-      N_("<name>"), N_("Attach raw 32KB Action Replay IV cartridge image") },
-    { "-cartrr", CALL_FUNCTION, 1, attach_cartridge_cmdline,
-      (void *)CARTRIDGE_RETRO_REPLAY, NULL, NULL,
-      N_("<name>"), N_("Attach raw 64KB Retro Replay cartridge image") },
-    { "-cartide", CALL_FUNCTION, 1, attach_cartridge_cmdline,
-      (void *)CARTRIDGE_IDE64, NULL, NULL,
-      N_("<name>"), N_("Attach raw 64KB IDE64 cartridge image") },
-    { "-cartap", CALL_FUNCTION, 1, attach_cartridge_cmdline,
-      (void *)CARTRIDGE_ATOMIC_POWER, NULL, NULL,
-      N_("<name>"), N_("Attach raw 32KB Atomic Power cartridge image") },
-    { "-cartepyx", CALL_FUNCTION, 1, attach_cartridge_cmdline,
-      (void *)CARTRIDGE_EPYX_FASTLOAD, NULL, NULL,
-      N_("<name>"), N_("Attach raw 8KB Epyx fastload cartridge image") },
-    { "-cartss4", CALL_FUNCTION, 1, attach_cartridge_cmdline,
-      (void *)CARTRIDGE_SUPER_SNAPSHOT, NULL, NULL,
-      N_("<name>"), N_("Attach raw 32KB Super Snapshot cartridge image") },
-    { "-cartss5", CALL_FUNCTION, 1, attach_cartridge_cmdline,
-      (void *)CARTRIDGE_SUPER_SNAPSHOT_V5, NULL, NULL,
-      N_("<name>"), N_("Attach raw 64KB Super Snapshot cartridge image") },
-    { "-cartieee488", CALL_FUNCTION, 1, attach_cartridge_cmdline,
-      (void *)CARTRIDGE_IEEE488, NULL, NULL,
-      N_("<name>"), N_("Attach CBM IEEE488 cartridge image") },
-    { "-cartwestermann", CALL_FUNCTION, 1, attach_cartridge_cmdline,
-      (void *)CARTRIDGE_WESTERMANN, NULL, NULL,
-      N_("<name>"), N_("Attach raw 16KB Westermann learning cartridge image") },
-    { "-cartstb", CALL_FUNCTION, 1, attach_cartridge_cmdline,
-      (void *)CARTRIDGE_STRUCTURED_BASIC, NULL, NULL,
-      N_("<name>"), N_("Attach raw Structured Basic cartridge image") },
-    { "-cartstardos", CALL_FUNCTION, 1, attach_cartridge_cmdline,
-      (void *)CARTRIDGE_STARDOS, NULL, NULL,
-      N_("<name>"), N_("Attach raw 16KB StarDOS cartridge image") },
-    { "-cartexpert", CALL_FUNCTION, 0, attach_cartridge_cmdline,
-      (void *)CARTRIDGE_EXPERT, NULL, NULL,
-      NULL, N_("Enable expert cartridge") },
-    { NULL }
-};
-#endif
 
 int cartridge_cmdline_options_init(void)
 {

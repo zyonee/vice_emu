@@ -46,9 +46,7 @@
 #include "plus256k.h"
 #include "plus60k.h"
 #include "resources.h"
-#ifdef HAS_TRANSLATION
 #include "translate.h"
-#endif
 #include "types.h"
 #include "util.h"
 #include "vicii-phi1.h"
@@ -877,7 +875,6 @@ void mmc64_resources_shutdown(void)
 
 /* ------------------------------------------------------------------------- */
 
-#ifdef HAS_TRANSLATION
 static const cmdline_option_t cmdline_options[] =
 {
   { "-mmc64", SET_RESOURCE, 0, NULL, NULL, "MMC64", (resource_value_t)1,
@@ -896,26 +893,6 @@ static const cmdline_option_t cmdline_options[] =
     0, IDCLS_MMC64_BIOS_WRITE },
   { NULL }
 };
-#else
-static const cmdline_option_t cmdline_options[] =
-{
-  { "-mmc64", SET_RESOURCE, 0, NULL, NULL, "MMC64", (resource_value_t)1,
-    NULL, N_("Enable the MMC64 expansion") },
-  { "+mmc64", SET_RESOURCE, 0, NULL, NULL, "MMC64", (resource_value_t)0,
-    NULL, N_("Disable the MMC64 expansion") },
-  { "-mmc64bios", SET_RESOURCE, 1, NULL, NULL, "MMC64BIOSfilename", NULL,
-    N_("<name>"), N_("Specify name of MMC64 BIOS image") },
-  { "-mmc64image", SET_RESOURCE, 1, NULL, NULL, "MMC64imagefilename", NULL,
-    N_("<name>"), N_("Specify name of MMC64 image") },
-  { "-mmc64readonly", SET_RESOURCE, 0, NULL, NULL, "MMC64_RO", (resource_value_t)1,
-    NULL, N_("Set the MMC64 card to read-only") },
-  { "-mmc64readwrite", SET_RESOURCE, 0, NULL, NULL, "MMC64_RO", (resource_value_t)0,
-    NULL, N_("Set the MMC64 card to read/write") },
-  { "-mmc64bioswrite", SET_RESOURCE, 0, NULL, NULL, "MMC64_bios_write", (resource_value_t)1,
-    NULL, N_("Save the MMC64 bios when changed") },
-  { NULL }
-};
-#endif
 
 int mmc64_cmdline_options_init(void)
 {

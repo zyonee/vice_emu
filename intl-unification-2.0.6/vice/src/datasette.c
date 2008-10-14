@@ -43,9 +43,7 @@
 #include "resources.h"
 #include "snapshot.h"
 #include "tap.h"
-#ifdef HAS_TRANSLATION
 #include "translate.h"
-#endif
 #include "types.h"
 #include "ui.h"
 
@@ -152,7 +150,6 @@ int datasette_resources_init(void)
 
 /*---------- Commandline options --------------------------------------*/
 
-#ifdef HAS_TRANSLATION
 static const cmdline_option_t cmdline_options[] = {
     { "-dsresetwithcpu", SET_RESOURCE, 0, NULL, NULL,
       "DatasetteResetWithCPU", (resource_value_t)1,
@@ -168,24 +165,6 @@ static const cmdline_option_t cmdline_options[] = {
       IDCLS_P_VALUE, IDCLS_SET_CYCLES_ADDED_GAP_TAP },
     { NULL }
 };
-#else
-static const cmdline_option_t cmdline_options[] = {
-    { "-dsresetwithcpu", SET_RESOURCE, 0, NULL, NULL,
-      "DatasetteResetWithCPU", (resource_value_t)1,
-      NULL, N_("Enable automatic Datasette-Reset") },
-    { "+dsresetwithcpu", SET_RESOURCE, 0, NULL, NULL,
-      "DatasetteResetWithCPU", (resource_value_t)0,
-      NULL, N_("Disable automatic Datasette-Reset") },
-    { "-dszerogapdelay", SET_RESOURCE, 1, NULL, NULL,
-      "DatasetteZeroGapDelay", NULL,
-      N_("<value>"), N_("Set delay in cycles for a zero in the tap") },
-    { "-dsspeedtuning", SET_RESOURCE, 1, NULL, NULL,
-      "DatasetteSpeedTuning", NULL,
-      N_("<value>"), N_("Set number of cycles added to each gap in the tap") },
-    { NULL }
-};
-#endif
-
 
 int datasette_cmdline_options_init(void)
 {

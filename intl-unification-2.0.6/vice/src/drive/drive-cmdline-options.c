@@ -34,8 +34,6 @@
 #include "drive.h"
 #include "lib.h"
 #include "machine-drive.h"
-
-#ifdef HAS_TRANSLATION
 #include "translate.h"
 
 static const cmdline_option_t cmdline_options[] = {
@@ -45,17 +43,7 @@ static const cmdline_option_t cmdline_options[] = {
       (void *)0, 0, IDCLS_DISABLE_TRUE_DRIVE },
     { NULL }
 };
-#else
-static const cmdline_option_t cmdline_options[] = {
-    { "-truedrive", SET_RESOURCE, 0, NULL, NULL, "DriveTrueEmulation",
-      (void *)1, NULL, N_("Enable hardware-level emulation of disk drives") },
-    { "+truedrive", SET_RESOURCE, 0, NULL, NULL, "DriveTrueEmulation",
-      (void *)0, NULL, N_("Disable hardware-level emulation of disk drives") },
-    { NULL }
-};
-#endif
 
-#ifdef HAS_TRANSLATION
 static cmdline_option_t cmd_drive[] = {
     { NULL, SET_RESOURCE, 1, NULL, NULL, NULL, NULL, IDCLS_P_TYPE,
       IDCLS_SET_DRIVE_TYPE },
@@ -63,15 +51,6 @@ static cmdline_option_t cmd_drive[] = {
       IDCLS_SET_DRIVE_EXTENSION_POLICY},
     { NULL }
 };
-#else
-static cmdline_option_t cmd_drive[] = {
-    { NULL, SET_RESOURCE, 1, NULL, NULL, NULL, NULL, N_("<type>"),
-      N_("Set drive type (0: no drive)") },
-    { NULL, SET_RESOURCE, 1, NULL, NULL, NULL, NULL, N_("<method>"),
-      N_("Set drive 40 track extension policy (0: never, 1: ask, 2: on access)")},
-    { NULL }
-};
-#endif
 
 int drive_cmdline_options_init(void)
 {
