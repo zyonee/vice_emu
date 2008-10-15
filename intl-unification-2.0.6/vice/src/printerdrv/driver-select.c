@@ -35,9 +35,7 @@
 #include "lib.h"
 #include "log.h"
 #include "resources.h"
-#ifdef HAS_TRANSLATION
 #include "translate.h"
-#endif
 #include "types.h"
 #include "util.h"
 
@@ -107,7 +105,6 @@ void driver_select_shutdown_resources(void)
     lib_free(printer_driver[2]);
 }
 
-#ifdef HAS_TRANSLATION
 static const cmdline_option_t cmdline_options[] =
 {
     { "-pr4drv", SET_RESOURCE, 1, NULL, NULL, "Printer4Driver", NULL,
@@ -118,18 +115,6 @@ static const cmdline_option_t cmdline_options[] =
      IDCLS_P_NAME, IDCLS_SPECIFY_PRT_DRIVER_USR_NAME },
     { NULL }
 };
-#else
-static const cmdline_option_t cmdline_options[] =
-{
-    { "-pr4drv", SET_RESOURCE, 1, NULL, NULL, "Printer4Driver", NULL,
-     N_("<name>"), N_("Specify name of printer driver for device #4") },
-    { "-pr5drv", SET_RESOURCE, 1, NULL, NULL, "Printer5Driver", NULL,
-     N_("<name>"), N_("Specify name of printer driver for device #5") },
-    { "-pruserdrv", SET_RESOURCE, 1, NULL, NULL, "PrinterUserportDriver", NULL,
-     N_("<name>"), N_("Specify name of printer driver for the userport printer") },
-    { NULL }
-};
-#endif
 
 int driver_select_init_cmdline_options(void)
 {

@@ -37,12 +37,9 @@
 #include "output-text.h"
 #include "output.h"
 #include "resources.h"
-#ifdef HAS_TRANSLATION
 #include "translate.h"
-#endif
 #include "types.h"
 #include "util.h"
-
 
 static char *PrinterDev[3] = { NULL, NULL, NULL };
 static int printer_device[3];
@@ -86,7 +83,6 @@ static const resource_int_t resources_int[] = {
     { NULL }
 };
 
-#ifdef HAS_TRANSLATION
 static const cmdline_option_t cmdline_options[] =
 {
     { "-prtxtdev1", SET_RESOURCE, 1, NULL, NULL, "PrinterTextDevice1", NULL,
@@ -106,27 +102,6 @@ static const cmdline_option_t cmdline_options[] =
       IDCLS_P_0_2, IDCLS_SPECIFY_TEXT_USERPORT },
     { NULL }
 };
-#else
-static const cmdline_option_t cmdline_options[] =
-{
-    { "-prtxtdev1", SET_RESOURCE, 1, NULL, NULL, "PrinterTextDevice1", NULL,
-     N_("<name>"), N_("Specify name of printer text device or dump file") },
-    { "-prtxtdev2", SET_RESOURCE, 1, NULL, NULL, "PrinterTextDevice2", NULL,
-     N_("<name>"), N_("Specify name of printer text device or dump file") },
-    { "-prtxtdev3", SET_RESOURCE, 1, NULL, NULL, "PrinterTextDevice3", NULL,
-     N_("<name>"), N_("Specify name of printer text device or dump file") },
-    { "-pr4txtdev", SET_RESOURCE, 1, NULL, NULL, "Printer4TextDevice",
-      (resource_value_t)0,
-      "<0-2>", N_("Specify printer text output device for IEC printer #4") },
-    { "-pr5txtdev", SET_RESOURCE, 1, NULL, NULL, "Printer5TextDevice",
-      (resource_value_t)0,
-      "<0-2>", N_("Specify printer text output device for IEC printer #5") },
-    { "-prusertxtdev", SET_RESOURCE, 1, NULL, NULL, "PrinterUserportTextDevice",
-      (resource_value_t)0,
-      "<0-2>", N_("Specify printer text output device for userport printer") },
-    { NULL }
-};
-#endif
 
 int output_text_init_cmdline_options(void)
 {
@@ -227,4 +202,3 @@ void output_text_shutdown_resources(void)
     lib_free(PrinterDev[1]);
     lib_free(PrinterDev[2]);
 }
-

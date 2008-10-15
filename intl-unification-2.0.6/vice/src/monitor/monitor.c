@@ -56,9 +56,7 @@
 #include "log.h"
 #include "machine.h"
 #include "machine-video.h"
-#ifdef HAS_TRANSLATION
 #include "translate.h"
-#endif
 
 #ifdef WATCOM_COMPILE
 #include "../mem.h"
@@ -1032,7 +1030,6 @@ static int monitor_set_initial_breakpoint(const char *param, void *extra_param)
     return 0;
 }
 
-#ifdef HAS_TRANSLATION
 static const cmdline_option_t cmdline_options[] = {
     { "-moncommands", CALL_FUNCTION, 1, set_playback_name, NULL, NULL, NULL,
       IDCLS_P_NAME, IDCLS_EXECUTE_MONITOR_FROM_FILE },
@@ -1040,15 +1037,6 @@ static const cmdline_option_t cmdline_options[] = {
       IDCLS_P_VALUE, IDCLS_SET_INITIAL_BREAKPOINT },
     { NULL }
 };
-#else
-static const cmdline_option_t cmdline_options[] = {
-    { "-moncommands", CALL_FUNCTION, 1, set_playback_name, NULL, NULL, NULL,
-      N_("<name>"), N_("Execute monitor commands from file") },
-    { "-initbreak", CALL_FUNCTION, 1, monitor_set_initial_breakpoint, NULL, NULL, NULL,
-      N_("<value>"), N_("Set an initial breakpoint for the monitor") },
-    { NULL }
-};
-#endif
 
 int monitor_cmdline_options_init(void)
 {

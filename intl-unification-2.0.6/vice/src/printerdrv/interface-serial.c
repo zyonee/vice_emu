@@ -39,11 +39,8 @@
 #include "machine-bus.h"
 #include "printer.h"
 #include "resources.h"
-#ifdef HAS_TRANSLATION
 #include "translate.h"
-#endif
 #include "types.h"
-
 
 static int interface_serial_attach(unsigned int prnr);
 static int interface_serial_detach(unsigned int prnr);
@@ -105,7 +102,6 @@ int interface_serial_init_resources(void)
     return resources_register_int(resources_int);
 }
 
-#ifdef HAS_TRANSLATION
 static const cmdline_option_t cmdline_options[] = {
     { "-device4", SET_RESOURCE, 1, NULL, NULL, "Printer4",
       (void *)PRINTER_DEVICE_FS, IDCLS_P_TYPE,
@@ -115,17 +111,6 @@ static const cmdline_option_t cmdline_options[] = {
       IDCLS_SET_DEVICE_TYPE_5 },
     { NULL }
 };
-#else
-static const cmdline_option_t cmdline_options[] = {
-    { "-device4", SET_RESOURCE, 1, NULL, NULL, "Printer4",
-      (void *)PRINTER_DEVICE_FS, N_("<type>"),
-      N_("Set device type for device #4 (0: NONE, 1: FS, 2: REAL)") },
-    { "-device5", SET_RESOURCE, 1, NULL, NULL, "Printer5",
-      (void *)PRINTER_DEVICE_FS, N_("<type>"),
-      N_("Set device type for device #5 (0: NONE, 1: FS, 2: REAL)") },
-    { NULL }
-};
-#endif
 
 int interface_serial_init_cmdline_options(void)
 {

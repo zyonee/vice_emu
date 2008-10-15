@@ -32,12 +32,9 @@
 #include "resources.h"
 #include "rs232.h"
 #include "rs232drv.h"
-#ifdef HAS_TRANSLATION
 #include "translate.h"
-#endif
 #include "types.h"
 #include "util.h"
-
 
 #ifdef HAVE_RS232
 
@@ -83,7 +80,6 @@ void rs232drv_resources_shutdown(void)
     rs232_resources_shutdown();
 }
 
-#ifdef HAS_TRANSLATION
 static const cmdline_option_t cmdline_options[] = {
     { "-rsdev1", SET_RESOURCE, 1, NULL, NULL, "RsDevice1", NULL,
       IDCLS_P_NAME, IDCLS_SPECIFY_RS232_1_NAME },
@@ -95,19 +91,6 @@ static const cmdline_option_t cmdline_options[] = {
       IDCLS_P_NAME, IDCLS_SPECIFY_RS232_4_NAME },
     { NULL }
 };
-#else
-static const cmdline_option_t cmdline_options[] = {
-    { "-rsdev1", SET_RESOURCE, 1, NULL, NULL, "RsDevice1", NULL,
-      N_("<name>"), N_("Specify name of first RS232 device") },
-    { "-rsdev2", SET_RESOURCE, 1, NULL, NULL, "RsDevice2", NULL,
-      N_("<name>"), N_("Specify name of second RS232 device") },
-    { "-rsdev3", SET_RESOURCE, 1, NULL, NULL, "RsDevice3", NULL,
-      N_("<name>"), N_("Specify name of third RS232 device") },
-    { "-rsdev4", SET_RESOURCE, 1, NULL, NULL, "RsDevice4", NULL,
-      N_("<name>"), N_("Specify name of fourth RS232 device") },
-    { NULL }
-};
-#endif
 
 int rs232drv_cmdline_options_init(void)
 {
@@ -193,4 +176,3 @@ int rs232drv_cmdline_options_init(void)
 }
 
 #endif
-

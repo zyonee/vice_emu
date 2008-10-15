@@ -39,9 +39,7 @@
 #include "maincpu.h"
 #include "clkguard.h"
 #include "serial-iec-bus.h"
-#ifdef HAS_TRANSLATION
 #include "translate.h"
-#endif
 
 void serial_iec_device_enable(unsigned int devnr);
 void serial_iec_device_disable(unsigned int devnr);
@@ -93,7 +91,6 @@ int serial_iec_device_resources_init(void)
     return resources_register_int(resources_int);
 }
 
-#ifdef HAS_TRANSLATION
 static const cmdline_option_t cmdline_options[] = {
     { "-iecdevice4", SET_RESOURCE, 0, NULL, NULL, "IECDevice4",
       (resource_value_t)1,
@@ -133,47 +130,6 @@ static const cmdline_option_t cmdline_options[] = {
       0, IDCLS_DISABLE_IEC_11 },
     { NULL }
 };
-#else
-static const cmdline_option_t cmdline_options[] = {
-    { "-iecdevice4", SET_RESOURCE, 0, NULL, NULL, "IECDevice4",
-      (resource_value_t)1,
-      NULL, N_("Enable IEC device emulation for device #4") },
-    { "+iecdevice4", SET_RESOURCE, 0, NULL, NULL, "IECDevice4",
-      (resource_value_t)0,
-      NULL, N_("Disable IEC device emulation for device #4") },
-    { "-iecdevice5", SET_RESOURCE, 0, NULL, NULL, "IECDevice5",
-      (resource_value_t)1,
-      NULL, N_("Enable IEC device emulation for device #5") },
-    { "+iecdevice5", SET_RESOURCE, 0, NULL, NULL, "IECDevice5",
-      (resource_value_t)0,
-      NULL, N_("Disable IEC device emulation for device #5") },
-    { "-iecdevice8", SET_RESOURCE, 0, NULL, NULL, "IECDevice8",
-      (resource_value_t)1,
-      NULL, N_("Enable IEC device emulation for device #8") },
-    { "+iecdevice8", SET_RESOURCE, 0, NULL, NULL, "IECDevice8",
-      (resource_value_t)0,
-      NULL, N_("Disable IEC device emulation for device #8") },
-    { "-iecdevice9", SET_RESOURCE, 0, NULL, NULL, "IECDevice9",
-      (resource_value_t)1,
-      NULL, N_("Enable IEC device emulation for device #9") },
-    { "+iecdevice9", SET_RESOURCE, 0, NULL, NULL, "IECDevice9",
-      (resource_value_t)0,
-      NULL, N_("Disable IEC device emulation for device #9") },
-    { "-iecdevice10", SET_RESOURCE, 0, NULL, NULL, "IECDevice10",
-      (resource_value_t)1,
-      NULL, N_("Enable IEC device emulation for device #10") },
-    { "+iecdevice10", SET_RESOURCE, 0, NULL, NULL, "IECDevice10",
-      (resource_value_t)0,
-      NULL, N_("Disable IEC device emulation for device #10") },
-    { "-iecdevice11", SET_RESOURCE, 0, NULL, NULL, "IECDevice11",
-      (resource_value_t)1,
-      NULL, N_("Enable IEC device emulation for device #11") },
-    { "+iecdevice11", SET_RESOURCE, 0, NULL, NULL, "IECDevice11",
-      (resource_value_t)0,
-      NULL, N_("Disable IEC device emulation for device #11") },
-    { NULL }
-};
-#endif
 
 int serial_iec_device_cmdline_options_init(void)
 {

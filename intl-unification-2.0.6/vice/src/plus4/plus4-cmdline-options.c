@@ -33,9 +33,6 @@
 #include "plus4-cmdline-options.h"
 #include "plus4memcsory256k.h"
 #include "plus4memhannes256k.h"
-
-
-#ifdef HAS_TRANSLATION
 #include "translate.h"
 
 static const cmdline_option_t cmdline_options[] =
@@ -72,42 +69,6 @@ static const cmdline_option_t cmdline_options[] =
 #endif
     { NULL }
 };
-#else
-static const cmdline_option_t cmdline_options[] =
-{
-    { "-pal", SET_RESOURCE, 0, NULL, NULL, "MachineVideoStandard",
-      (void *)MACHINE_SYNC_PAL, NULL, N_("Use PAL sync factor") },
-    { "-ntsc", SET_RESOURCE, 0, NULL, NULL, "MachineVideoStandard",
-      (void *)MACHINE_SYNC_NTSC, NULL, N_("Use NTSC sync factor") },
-    { "-kernal", SET_RESOURCE, 1, NULL, NULL, "KernalName", NULL,
-      N_("<name>"), N_("Specify name of Kernal ROM image") },
-    { "-basic", SET_RESOURCE, 1, NULL, NULL, "BasicName", NULL,
-      N_("<name>"), N_("Specify name of BASIC ROM image") },
-    { "-functionlo", SET_RESOURCE, 1, NULL, NULL, "FunctionLowName", NULL,
-      N_("<name>"), N_("Specify name of Function low ROM image") },
-    { "-functionhi", SET_RESOURCE, 1, NULL, NULL, "FunctionHighName", NULL,
-      N_("<name>"), N_("Specify name of Function high ROM image") },
-    { "-c1lo", SET_RESOURCE, 1, NULL, NULL, "c1loName", NULL,
-      N_("<name>"), N_("Specify name of Cartridge 1 low ROM image") },
-    { "-c1hi", SET_RESOURCE, 1, NULL, NULL, "c1hiName", NULL,
-      N_("<name>"), N_("Specify name of Cartridge 1 high ROM image") },
-    { "-c2lo", SET_RESOURCE, 1, NULL, NULL, "c2loName", NULL,
-      N_("<name>"), N_("Specify name of Cartridge 2 low ROM image") },
-    { "-c2hi", SET_RESOURCE, 1, NULL, NULL, "c2hiName", NULL,
-      N_("<name>"), N_("Specify name of Cartridge 2 high ROM image") },
-    { "-ramsize", SET_RESOURCE, 1, NULL, NULL, "RamSize", NULL,
-      N_("<ramsize>"), N_("Specify size of RAM installed in kb (16/32/64)") },
-#ifdef COMMON_KBD
-    { "-keymap", SET_RESOURCE, 1, NULL, NULL, "KeymapIndex", NULL,
-      N_("<number>"), N_("Specify index of keymap file (0=symbol, 1=positional)") },
-    { "-symkeymap", SET_RESOURCE, 1, NULL, NULL, "KeymapSymFile", NULL,
-      N_("<name>"), N_("Specify name of symbolic keymap file") },
-    { "-poskeymap", SET_RESOURCE, 1, NULL, NULL, "KeymapPosFile", NULL,
-      N_("<name>"), N_("Specify name of positional keymap file") },
-#endif
-    { NULL }
-};
-#endif
 
 int plus4_cmdline_options_init(void)
 {

@@ -43,9 +43,7 @@
 #include "machine.h"
 #include "resources.h"
 #include "tape.h"
-#ifdef HAS_TRANSLATION
 #include "translate.h"
-#endif
 #include "util.h"
 
 
@@ -126,7 +124,6 @@ static int cmdline_attach(const char *param, void *extra_param)
     return 0;
 }
 
-#ifdef HAS_TRANSLATION
 static const cmdline_option_t common_cmdline_options[] = {
     { "-help", CALL_FUNCTION, 0, cmdline_help, NULL, NULL, NULL,
       0, IDCLS_SHOW_COMMAND_LINE_OPTIONS },
@@ -149,30 +146,6 @@ static const cmdline_option_t common_cmdline_options[] = {
 #endif
     { NULL }
 };
-#else
-static const cmdline_option_t common_cmdline_options[] = {
-    { "-help", CALL_FUNCTION, 0, cmdline_help, NULL, NULL, NULL,
-      NULL, N_("Show a list of the available options and exit normally") },
-    { "-?", CALL_FUNCTION, 0, cmdline_help, NULL, NULL, NULL,
-      NULL, N_("Show a list of the available options and exit normally") },
-    { "-h", CALL_FUNCTION, 0, cmdline_help, NULL, NULL, NULL,
-      NULL, N_("Show a list of the available options and exit normally") },
-#if (!defined  __OS2__ && !defined __BEOS__)
-    { "-console", CALL_FUNCTION, 0, cmdline_console, NULL, NULL, NULL,
-      NULL, N_("Console mode (for music playback)") },
-    { "-core", SET_RESOURCE, 0, NULL, NULL, "DoCoreDump", (resource_value_t)1,
-      NULL, N_("Allow production of core dumps") },
-    { "+core", SET_RESOURCE, 0, NULL, NULL, "DoCoreDump", (resource_value_t)0,
-      NULL, N_("Do not produce core dumps") },
-#else
-    { "-debug", SET_RESOURCE, 0, NULL, NULL, "DoCoreDump", (resource_value_t)1,
-      NULL, N_("Don't call exception handler") },
-    { "+debug", SET_RESOURCE, 0, NULL, NULL, "DoCoreDump", (resource_value_t)0,
-      NULL, N_("Call exception handler (default)") },
-#endif
-    { NULL }
-};
-#endif
 
 static const cmdline_option_t vsid_cmdline_options[] = {
     { NULL }
@@ -180,7 +153,6 @@ static const cmdline_option_t vsid_cmdline_options[] = {
 
 /* These are the command-line options for the initialization sequence.  */
 
-#ifdef HAS_TRANSLATION
 static const cmdline_option_t cmdline_options[] = {
     { "-default", CALL_FUNCTION, 0, cmdline_default, NULL, NULL, NULL,
       0, IDCLS_RESTORE_DEFAULT_SETTINGS },
@@ -200,27 +172,6 @@ static const cmdline_option_t cmdline_options[] = {
       IDCLS_P_NAME, IDCLS_ATTACH_AS_DISK_11 },
     { NULL }
 };
-#else
-static const cmdline_option_t cmdline_options[] = {
-    { "-default", CALL_FUNCTION, 0, cmdline_default, NULL, NULL, NULL,
-      NULL, N_("Restore default (factory) settings") },
-    { "-autostart", CALL_FUNCTION, 1, cmdline_autostart, NULL, NULL, NULL,
-      N_("<name>"), N_("Attach and autostart tape/disk image <name>") },
-    { "-autoload", CALL_FUNCTION, 1, cmdline_autoload, NULL, NULL, NULL,
-      N_("<name>"), N_("Attach and autoload tape/disk image <name>") },
-    { "-1", CALL_FUNCTION, 1, cmdline_attach, (void *)1, NULL, NULL,
-      N_("<name>"), N_("Attach <name> as a tape image") },
-    { "-8", CALL_FUNCTION, 1, cmdline_attach, (void *)8, NULL, NULL,
-      N_("<name>"), N_("Attach <name> as a disk image in drive #8") },
-    { "-9", CALL_FUNCTION, 1, cmdline_attach, (void *)9, NULL, NULL,
-      N_("<name>"), N_("Attach <name> as a disk image in drive #9") },
-    { "-10", CALL_FUNCTION, 1, cmdline_attach, (void *)10, NULL, NULL,
-      N_("<name>"), N_("Attach <name> as a disk image in drive #10") },
-    { "-11", CALL_FUNCTION, 1, cmdline_attach, (void *)11, NULL, NULL,
-      N_("<name>"), N_("Attach <name> as a disk image in drive #11") },
-    { NULL }
-};
-#endif
 
 int initcmdline_init(void)
 {

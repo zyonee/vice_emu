@@ -1,31 +1,7 @@
 # List of Files which already gettext aware.
 
 # command-line options
-src/initcmdline.c
-src/kbdbuf.c
-src/log.c
 src/monitor/mon_command.c
-src/monitor/monitor.c
-src/mouse.c
-src/pet/pet-cmdline-options.c
-src/pet/petpia1.c
-src/pet/petreu.c
-src/plus4/plus4-cmdline-options.c
-src/plus4/plus4memcsory256k.c
-src/plus4/plus4memhannes256k.c
-src/plus4/ted-cmdline-options.c
-src/printerdrv/driver-select.c
-src/printerdrv/interface-serial.c
-src/printerdrv/interface-userport.c
-src/printerdrv/output-select.c
-src/printerdrv/output-text.c
-src/ps2mouse.c
-src/ram.c
-src/raster/raster-cmdline-options.c
-src/rs232drv/rs232drv.c
-src/rs232drv/rsuser.c
-src/serial/serial-iec-device.c
-src/sid/sid-cmdline-options.c
 src/sysfile.c
 src/traps.c
 src/vdc/vdc-cmdline-options.c

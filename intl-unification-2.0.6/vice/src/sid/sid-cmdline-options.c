@@ -33,138 +33,25 @@
 #include "cmdline.h"
 #include "sid.h"
 #include "sid-cmdline-options.h"
-
-#ifdef HAS_TRANSLATION
 #include "translate.h"
-#endif
 
-#ifdef HAS_TRANSLATION
 static const cmdline_option_t sidcart_cmdline_options[] = {
     { "-sidengine", SET_RESOURCE, 1, NULL, NULL, "SidEngine", NULL,
       IDCLS_P_ENGINE, IDCLS_SPECIFY_SIDCART_ENGINE },
-    { "-sidenable", SET_RESOURCE, 1, NULL, NULL, "SidCart", NULL,
+    { "-sidcart", SET_RESOURCE, 1, NULL, NULL, "SidCart", NULL,
       0, IDCLS_ENABLE_SIDCART },
+    { "+sidcart", SET_RESOURCE, 0, NULL, NULL, "SidCart", NULL,
+      0, IDCLS_DISABLE_SIDCART },
     { NULL }
 };
-#else
-static const cmdline_option_t sidcart_cmdline_options[] = {
-    { "-sidengine", SET_RESOURCE, 1, NULL, NULL, "SidEngine", NULL,
-    N_("<engine>"),
-#ifdef HAVE_CATWEASELMKIII
-#  ifdef HAVE_HARDSID
-#    ifdef HAVE_PARSID
-       N_("Specify SID engine (0: FastSID, 2: Catweasel, 3: HardSID, 4: ParSID)")
-#    else
-       N_("Specify SID engine (0: FastSID, 2: Catweasel, 3: HardSID)")
-#    endif
-#  else
-#    ifdef HAVE_PARSID
-       N_("Specify SID engine (0: FastSID, 2: Catweasel, 4: ParSID)")
-#    else
-       N_("Specify SID engine (0: FastSID, 2: Catweasel)")
-#    endif
-#  endif
-#else
-#  ifdef HAVE_HARDSID
-#    ifdef HAVE_PARSID
-       N_("Specify SID engine (0: FastSID, 3: HardSID, 4: ParSID)")
-#    else
-       N_("Specify SID engine (0: FastSID, 3: HardSID)")
-#    endif
-#  else
-#    ifdef HAVE_PARSID
-       N_("Specify SID engine (0: FastSID, 4: ParSID)")
-#    else
-       N_("Specify SID engine (0: FastSID)")
-#    endif
-#  endif
-#endif
-    },
-    { "-sidenable", SET_RESOURCE, 1, NULL, NULL, "SidCart", NULL,
-    NULL, N_("Enable SID Cartridge") },
-    { NULL }
-};
-#endif
 
-#ifdef HAS_TRANSLATION
 static const cmdline_option_t sidengine_cmdline_options[] = {
     { "-sidengine", SET_RESOURCE, 1, NULL, NULL, "SidEngine", NULL,
       IDCLS_P_ENGINE, IDCLS_SPECIFY_SID_ENGINE },
     { NULL }
 };
-#else
-static const cmdline_option_t sidengine_cmdline_options[] = {
-    { "-sidengine", SET_RESOURCE, 1, NULL, NULL, "SidEngine", NULL,
-    N_("<engine>"),
-#ifdef HAVE_RESID
-#  ifdef HAVE_CATWEASELMKIII
-#    ifdef HAVE_HARDSID
-#      ifdef HAVE_PARSID
-         N_("Specify SID engine (0: FastSID, 1: ReSID, 2: Catweasel, 3: HardSID, 4: ParSID)")
-#      else
-         N_("Specify SID engine (0: FastSID, 1: ReSID, 2: Catweasel, 3: HardSID)")
-#      endif
-#    else
-#      ifdef HAVE_PARSID
-         N_("Specify SID engine (0: FastSID, 1: ReSID, 2: Catweasel, 4: ParSID)")
-#      else
-         N_("Specify SID engine (0: FastSID, 1: ReSID, 2: Catweasel)")
-#      endif
-#    endif
-#  else
-#    ifdef HAVE_HARDSID
-#      ifdef HAVE_PARSID
-         N_("Specify SID engine (0: FastSID, 1: ReSID, 3: HardSID, 4: ParSID)")
-#      else
-         N_("Specify SID engine (0: FastSID, 1: ReSID, 3: HardSID)")
-#      endif
-#    else
-#      ifdef HAVE_PARSID
-         N_("Specify SID engine (0: FastSID, 1: ReSID, 4: ParSID)")
-#      else
-         N_("Specify SID engine (0: FastSID, 1: ReSID)")
-#      endif
-#    endif
-#  endif
-#else
-#  ifdef HAVE_CATWEASELMKIII
-#    ifdef HAVE_HARDSID
-#      ifdef HAVE_PARSID
-         N_("Specify SID engine (0: FastSID, 2: Catweasel, 3: HardSID, 4: ParSID)")
-#      else
-         N_("Specify SID engine (0: FastSID, 2: Catweasel, 3: HardSID)")
-#      endif
-#    else
-#      ifdef HAVE_PARSID
-         N_("Specify SID engine (0: FastSID, 2: Catweasel, 4: ParSID)")
-#      else
-         N_("Specify SID engine (0: FastSID, 2: Catweasel)")
-#      endif
-#    endif
-#  else
-#    ifdef HAVE_HARDSID
-#      ifdef HAVE_PARSID
-         N_("Specify SID engine (0: FastSID, 3: HardSID, 4: ParSID)")
-#      else
-         N_("Specify SID engine (0: FastSID, 3: HardSID)")
-#      endif
-#    else
-#      ifdef HAVE_PARSID
-         N_("Specify SID engine (0: FastSID, 4: ParSID)")
-#      else
-         N_("Specify SID engine (0: FastSID)")
-#      endif
-#    endif
-#  endif
-#endif
-
-    },
-    { NULL }
-};
-#endif
 
 #ifdef HAVE_RESID
-#ifdef HAS_TRANSLATION
 static const cmdline_option_t resid_cmdline_options[] = {
     { "-residsamp", SET_RESOURCE, 1, NULL, NULL, "SidResidSampling",
       (void *)0, IDCLS_P_METHOD,
@@ -177,23 +64,8 @@ static const cmdline_option_t resid_cmdline_options[] = {
       IDCLS_RESID_GAIN_PERCENTAGE },
     { NULL }
 };
-#else
-static const cmdline_option_t resid_cmdline_options[] = {
-    { "-residsamp", SET_RESOURCE, 1, NULL, NULL, "SidResidSampling",
-      (void *)0, N_("<method>"),
-      N_("reSID sampling method (0: fast, 1: interpolating, 2: resampling, 3: fast resampling)") },
-    { "-residpass", SET_RESOURCE, 1, NULL, NULL, "SidResidPassband",
-      (void *)90, N_("<percent>"),
-      N_("reSID resampling passband in percentage of total bandwidth (0 - 90)") },
-    { "-residgain", SET_RESOURCE, 1, NULL, NULL, "SidResidGain",
-      (void *)97, N_("<percent>"),
-      N_("reSID gain in percent (90 - 100)") },
-    { NULL }
-};
-#endif
 #endif
 
-#ifdef HAS_TRANSLATION
 static const cmdline_option_t common_cmdline_options[] = {
     { "-sidstereo", SET_RESOURCE, 0, NULL, NULL, "SidStereo",
       (void *)1,
@@ -211,25 +83,6 @@ static const cmdline_option_t common_cmdline_options[] = {
       0, IDCLS_DISABLE_SID_FILTERS },
     { NULL }
 };
-#else
-static const cmdline_option_t common_cmdline_options[] = {
-    { "-sidstereo", SET_RESOURCE, 0, NULL, NULL, "SidStereo",
-      (void *)1,
-      NULL, N_("Enable second SID") },
-    { "-sidstereoaddress", SET_RESOURCE, 1, NULL, NULL,
-      "SidStereoAddressStart", NULL,
-      N_("<base address>"), N_("Specify base address for 2nd SID") },
-    { "-sidmodel", SET_RESOURCE, 1, NULL, NULL, "SidModel", NULL,
-      N_("<model>"), N_("Specify SID model (0: 6581, 1: 8580, 2: 8580 + digi boost, 4: DTV)") },
-    { "-sidfilters", SET_RESOURCE, 0, NULL, NULL, "SidFilters",
-      (void *)1,
-      NULL, N_("Emulate SID filters") },
-    { "+sidfilters", SET_RESOURCE, 0, NULL, NULL, "SidFilters",
-      (void *)0,
-      NULL, N_("Do not emulate SID filters") },
-    { NULL }
-};
-#endif
 
 int sidcart_cmdline_options_init(void)
 {

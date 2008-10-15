@@ -32,8 +32,6 @@
 #include "raster-cmdline-options.h"
 #include "ted-cmdline-options.h"
 #include "tedtypes.h"
-
-#ifdef HAS_TRANSLATION
 #include "translate.h"
 
 /* TED command-line options.  */
@@ -49,20 +47,6 @@ static const cmdline_option_t cmdline_options[] =
       IDCLS_P_0_2000, IDCLS_SET_GAMMA },
     { NULL }
 };
-#else
-static const cmdline_option_t cmdline_options[] =
-{
-    { "-saturation", SET_RESOURCE, 1, NULL, NULL, "ColorSaturation", NULL,
-      "<0-2000>", N_("Set saturation of internal calculated palette [1000]") },
-    { "-contrast", SET_RESOURCE, 1, NULL, NULL, "ColorContrast", NULL,
-      "<0-2000>", N_("Set contrast of internal calculated palette [1100]") },
-    { "-brightness", SET_RESOURCE, 1, NULL, NULL, "ColorBrightness", NULL,
-      "<0-2000>", N_("Set brightness of internal calculated palette [1100]") },
-    { "-gamma", SET_RESOURCE, 1, NULL, NULL, "ColorGamma", NULL,
-      "<0-2000>", N_("Set gamma of internal calculated palette [900]") },
-    { NULL }
-};
-#endif
 
 int ted_cmdline_options_init(void)
 {
@@ -71,4 +55,3 @@ int ted_cmdline_options_init(void)
 
     return cmdline_register_options(cmdline_options);
 }
-

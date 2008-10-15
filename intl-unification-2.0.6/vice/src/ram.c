@@ -32,11 +32,8 @@
 #include "cmdline.h"
 #include "ram.h"
 #include "resources.h"
-#ifdef HAS_TRANSLATION
 #include "translate.h"
-#endif
 #include "types.h"
-
 
 static int start_value;
 static int value_invert;
@@ -81,7 +78,6 @@ int ram_resources_init(void)
     return resources_register_int(resources_int);
 }
 
-#ifdef HAS_TRANSLATION
 static const cmdline_option_t cmdline_options[] = {
     { "-raminitstartvalue", SET_RESOURCE, 1, NULL, NULL,
       "RAMInitStartValue", NULL,
@@ -94,20 +90,6 @@ static const cmdline_option_t cmdline_options[] = {
       IDCLS_P_NUM_OF_BYTES, IDCLS_LENGTH_BLOCK_SAME_PATTERN },
     { NULL }
 };
-#else
-static const cmdline_option_t cmdline_options[] = {
-    { "-raminitstartvalue", SET_RESOURCE, 1, NULL, NULL,
-      "RAMInitStartValue", NULL,
-      N_("<value>"), N_("Set the value for the very first RAM address after powerup") },
-    { "-raminitvalueinvert", SET_RESOURCE, 1, NULL, NULL,
-      "RAMInitValueInvert", NULL,
-      N_("<num of bytes>"), N_("Length of memory block initialized with the same value") },
-    { "-raminitpatterninvert", SET_RESOURCE, 1, NULL, NULL,
-      "RAMInitPatternInvert", NULL,
-      N_("<num of bytes>"), N_("Length of memory block initialized with the same pattern") },
-    { NULL }
-};
-#endif
 
 int ram_cmdline_options_init(void)
 {
