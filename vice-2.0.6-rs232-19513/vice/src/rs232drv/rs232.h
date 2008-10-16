@@ -62,4 +62,9 @@ extern int rs232_resources_init(void);
 extern void rs232_resources_shutdown(void);
 extern int rs232_cmdline_options_init(void);
 
+
+#define RS232_NUM_DEVICES 4
+
+extern char *rs232_devfile[RS232_NUM_DEVICES];
+
 #endif

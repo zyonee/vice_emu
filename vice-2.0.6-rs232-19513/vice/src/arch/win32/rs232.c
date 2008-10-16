@@ -45,16 +45,11 @@
 #endif
 
 #include "log.h"
+#include "rs232.h"
 #include "types.h"
 #include "util.h"
 
-#define MAXRS232 4
-
 /* ------------------------------------------------------------------------- */
-
-#define NUM_DEVICES 4
-
-extern char *devfile[NUM_DEVICES];
 
 int rs232_resources_init(void)
 {
@@ -78,7 +73,7 @@ typedef struct rs232 {
     char *file;
 } rs232_t;
 
-static rs232_t fds[MAXRS232];
+static rs232_t fds[RS232_NUM_DEVICES];
 
 static log_t rs232_log = LOG_ERR;
 
@@ -95,7 +90,7 @@ void rs232_init(void)
 
     WSAStartup(wVersionRequested, &wsaData);
 
-    for (i = 0; i < MAXRS232; i++)
+    for (i = 0; i < RS232_NUM_DEVICES; i++)
         fds[i].inuse = 0;
 
     rs232_log = log_open("RS232");
@@ -106,7 +101,7 @@ void rs232_reset(void)
 {
     int i;
 
-    for (i = 0; i < MAXRS232; i++) {
+    for (i = 0; i < RS232_NUM_DEVICES; i++) {
         if (fds[i].inuse) {
             rs232_close(i);
         }
@@ -145,16 +140,16 @@ int rs232_open(int device)
     int i;
 
     // parse the address
-    if(getaddr(devfile[device], &ad) == -1) {
+    if(getaddr(rs232_devfile[device], &ad) == -1) {
         log_error(rs232_log, "Bad device name.  Should be ipaddr:port.");
         return -1;
     }
 
-    for (i = 0; i < MAXRS232; i++) {
+    for (i = 0; i < RS232_NUM_DEVICES; i++) {
         if (!fds[i].inuse)
             break;
     }
-    if (i >= MAXRS232) {
+    if (i >= RS232_NUM_DEVICES) {
         log_error(rs232_log, "No more devices available.");
         return -1;
     }
@@ -172,7 +167,7 @@ int rs232_open(int device)
     }
 
     fds[i].inuse = 1;
-    fds[i].file = devfile[device];
+    fds[i].file = rs232_devfile[device];
     return i;
 }
 
@@ -183,7 +178,7 @@ void rs232_close(int fd)
     log_debug(rs232_log, "close(fd=%d).", fd);
 #endif
 
-    if (fd < 0 || fd >= MAXRS232) {
+    if (fd < 0 || fd >= RS232_NUM_DEVICES) {
         log_error(rs232_log, "Attempt to close invalid fd %d.", fd);
         return;
     }
@@ -201,7 +196,7 @@ int rs232_putc(int fd, BYTE b)
 {
     size_t n;
 
-    if (fd < 0 || fd >= MAXRS232) {
+    if (fd < 0 || fd >= RS232_NUM_DEVICES) {
         log_error(rs232_log, "Attempt to write to invalid fd %d.", fd);
         return -1;
     }
@@ -238,7 +233,7 @@ int rs232_getc(int fd, BYTE * b)
     fd_set rdset;
     struct timeval ti;
 
-    if (fd < 0 || fd >= MAXRS232) {
+    if (fd < 0 || fd >= RS232_NUM_DEVICES) {
         log_error(rs232_log, "Attempt to read from invalid fd %d.", fd);
         return -1;
     }

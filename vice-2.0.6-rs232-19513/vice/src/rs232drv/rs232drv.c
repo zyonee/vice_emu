@@ -41,13 +41,11 @@
 
 #ifdef HAVE_RS232
 
-#define NUM_DEVICES 4
-
-/*static*/ char *devfile[NUM_DEVICES] = { NULL, NULL, NULL, NULL };
+char *rs232_devfile[RS232_NUM_DEVICES] = { NULL };
 
 static int set_devfile(const char *val, void *param)
 {
-    util_string_set(&devfile[(int)param], val);
+    util_string_set(&rs232_devfile[(int)param], val);
     return 0;
 }
 
@@ -55,15 +53,19 @@ static int set_devfile(const char *val, void *param)
 
 static const resource_string_t resources_string[] = {
     { "RsDevice1", ARCHDEP_RS232_DEV1, RES_EVENT_NO, NULL,
-      &devfile[0], set_devfile, (void *)0 },
+      &rs232_devfile[0], set_devfile, (void *)0 },
     { "RsDevice2", ARCHDEP_RS232_DEV2, RES_EVENT_NO, NULL,
-      &devfile[1], set_devfile, (void *)1 },
+      &rs232_devfile[1], set_devfile, (void *)1 },
     { "RsDevice3", ARCHDEP_RS232_DEV3, RES_EVENT_NO, NULL,
-      &devfile[2], set_devfile, (void *)2 },
+      &rs232_devfile[2], set_devfile, (void *)2 },
     { "RsDevice4", ARCHDEP_RS232_DEV4, RES_EVENT_NO, NULL,
-      &devfile[3], set_devfile, (void *)3 },
+      &rs232_devfile[3], set_devfile, (void *)3 },
     { NULL }
 };
+
+#if RS232_NUM_DEVICES != 4
+# error Please fix the count of resources_string[] and cmdline_options[]!
+#endif
 
 int rs232drv_resources_init(void)
 {
@@ -75,10 +77,9 @@ int rs232drv_resources_init(void)
 
 void rs232drv_resources_shutdown(void)
 {
-    lib_free(devfile[0]);
-    lib_free(devfile[1]);
-    lib_free(devfile[2]);
-    lib_free(devfile[3]);
+    int i;
+    for (i = 0; i < RS232_NUM_DEVICES; i++)
+        lib_free(rs232_devfile[i]);
 
     rs232_resources_shutdown();
 }
