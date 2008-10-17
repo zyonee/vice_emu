@@ -33,6 +33,7 @@
  */
 
 #undef        DEBUG
+/* #define DEBUG */
 
 #include "vice.h"
 
@@ -48,6 +49,12 @@
 #include "rs232.h"
 #include "types.h"
 #include "util.h"
+
+#ifdef DEBUG
+# define DEBUG_LOG_MESSAGE(_xxx) log_message _xxx
+#else
+# define DEBUG_LOG_MESSAGE(_xxx)
+#endif
 
 /* ------------------------------------------------------------------------- */
 
@@ -154,9 +161,7 @@ int rs232_open(int device)
         return -1;
     }
 
-#ifdef DEBUG
-    log_message(rs232_log, "rs232_open(device=%d).", device);
-#endif
+    DEBUG_LOG_MESSAGE((rs232_log, "rs232_open(device=%d).", device));
 
     // connect socket
     fds[i].fd = socket(AF_INET, SOCK_STREAM, 0);
@@ -174,9 +179,7 @@ int rs232_open(int device)
 /* closes the rs232 window again */
 void rs232_close(int fd)
 {
-#ifdef DEBUG
-    log_debug(rs232_log, "close(fd=%d).", fd);
-#endif
+    DEBUG_LOG_MESSAGE((rs232_log, "close(fd=%d).", fd));
 
     if (fd < 0 || fd >= RS232_NUM_DEVICES) {
         log_error(rs232_log, "Attempt to close invalid fd %d.", fd);
@@ -210,9 +213,7 @@ int rs232_putc(int fd, BYTE b)
         return 0;
 
     /* for the beginning... */
-#ifdef DEBUG
-    log_message(rs232_log, "Output `%c'.", b);
-#endif
+    DEBUG_LOG_MESSAGE((rs232_log, "Output `%c'.", b));
 
     n = send(fds[fd].fd, &b, 1, 0);
     if (n != 1) {
