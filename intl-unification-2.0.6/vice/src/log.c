@@ -97,8 +97,11 @@ void log_resources_shutdown(void)
 }
 
 static const cmdline_option_t cmdline_options[] = {
-    { "-logfile", SET_RESOURCE, 1, NULL, NULL,
-      "LogFileName", NULL, IDCLS_P_NAME, IDCLS_SPECIFY_LOG_FILE_NAME },
+    { "-logfile", SET_RESOURCE, 1,
+      NULL, NULL, "LogFileName", NULL,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_P_NAME, IDCLS_SPECIFY_LOG_FILE_NAME,
+      NULL, NULL },
     { NULL }
 };
 

@@ -101,18 +101,26 @@ int mmu_resources_init(void)
 }
 
 static const cmdline_option_t cmdline_options[] = {
-    { "-40col", SET_RESOURCE, 0, NULL, NULL, "40/80ColumnKey",
-      (resource_value_t) 1,
-      0, IDCLS_ACTIVATE_40_COL_MODE },
-    { "-80col", SET_RESOURCE, 0, NULL, NULL, "40/80ColumnKey",
-      (resource_value_t) 0,
-      0, IDCLS_ACTIVATE_80_COL_MODE },
-    { "-go64", SET_RESOURCE, 0, NULL, NULL, "Go64Mode",
-      (resource_value_t) 1,
-      0, IDCLS_GO64_MODE },
-    { "+go64", SET_RESOURCE, 0, NULL, NULL, "Go64Mode",
-      (resource_value_t) 0,
-      0, IDCLS_GO128_MODE },
+    { "-40col", SET_RESOURCE, 0,
+      NULL, NULL, "40/80ColumnKey", (resource_value_t) 1,
+      USE_PARAM_STRING, USE_DESCRIPTION_ID,
+      IDCLS_UNUSED, IDCLS_ACTIVATE_40_COL_MODE,
+      NULL, NULL },
+    { "-80col", SET_RESOURCE, 0,
+      NULL, NULL, "40/80ColumnKey", (resource_value_t) 0,
+      USE_PARAM_STRING, USE_DESCRIPTION_ID,
+      IDCLS_UNUSED, IDCLS_ACTIVATE_80_COL_MODE,
+      NULL, NULL },
+    { "-go64", SET_RESOURCE, 0,
+      NULL, NULL, "Go64Mode", (resource_value_t) 1,
+      USE_PARAM_STRING, USE_DESCRIPTION_ID,
+      IDCLS_UNUSED, IDCLS_GO64_MODE,
+      NULL, NULL },
+    { "+go64", SET_RESOURCE, 0,
+      NULL, NULL, "Go64Mode", (resource_value_t) 0,
+      USE_PARAM_STRING, USE_DESCRIPTION_ID,
+      IDCLS_UNUSED, IDCLS_GO128_MODE,
+      NULL, NULL },
     { NULL }
 };
 

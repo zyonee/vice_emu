@@ -56,14 +56,26 @@ static int cmdline_fsdirectory(const char *param, void *extra_param)
 }
 
 static const cmdline_option_t cmdline_options[] = {
-    { "-fs8", CALL_FUNCTION, 1, cmdline_fsdirectory, (void *)8, NULL, NULL,
-      IDCLS_P_NAME, IDCLS_USE_AS_DIRECTORY_FSDEVICE_8 },
-    { "-fs9", CALL_FUNCTION, 1, cmdline_fsdirectory, (void *)9, NULL, NULL,
-      IDCLS_P_NAME, IDCLS_USE_AS_DIRECTORY_FSDEVICE_9 },
-    { "-fs10", CALL_FUNCTION, 1, cmdline_fsdirectory, (void *)10, NULL, NULL,
-      IDCLS_P_NAME, IDCLS_USE_AS_DIRECTORY_FSDEVICE_10 },
-    { "-fs11", CALL_FUNCTION, 1, cmdline_fsdirectory, (void *)11, NULL, NULL,
-      IDCLS_P_NAME, IDCLS_USE_AS_DIRECTORY_FSDEVICE_11 },
+    { "-fs8", CALL_FUNCTION, 1,
+      cmdline_fsdirectory, (void *)8, NULL, NULL,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_P_NAME, IDCLS_USE_AS_DIRECTORY_FSDEVICE_8,
+      NULL, NULL },
+    { "-fs9", CALL_FUNCTION, 1,
+      cmdline_fsdirectory, (void *)9, NULL, NULL,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_P_NAME, IDCLS_USE_AS_DIRECTORY_FSDEVICE_9,
+      NULL, NULL },
+    { "-fs10", CALL_FUNCTION, 1,
+      cmdline_fsdirectory, (void *)10, NULL, NULL,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_P_NAME, IDCLS_USE_AS_DIRECTORY_FSDEVICE_10,
+      NULL, NULL },
+    { "-fs11", CALL_FUNCTION, 1,
+      cmdline_fsdirectory, (void *)11, NULL, NULL,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_P_NAME, IDCLS_USE_AS_DIRECTORY_FSDEVICE_11,
+      NULL, NULL },
     { NULL }
 };
 

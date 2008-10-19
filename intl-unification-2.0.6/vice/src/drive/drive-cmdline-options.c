@@ -37,18 +37,30 @@
 #include "translate.h"
 
 static const cmdline_option_t cmdline_options[] = {
-    { "-truedrive", SET_RESOURCE, 0, NULL, NULL, "DriveTrueEmulation",
-      (void *)1, 0, IDCLS_ENABLE_TRUE_DRIVE },
-    { "+truedrive", SET_RESOURCE, 0, NULL, NULL, "DriveTrueEmulation",
-      (void *)0, 0, IDCLS_DISABLE_TRUE_DRIVE },
+    { "-truedrive", SET_RESOURCE, 0,
+      NULL, NULL, "DriveTrueEmulation", (void *)1,
+      USE_PARAM_STRING, USE_DESCRIPTION_ID,
+      IDCLS_UNUSED, IDCLS_ENABLE_TRUE_DRIVE,
+      NULL, NULL },
+    { "+truedrive", SET_RESOURCE, 0,
+      NULL, NULL, "DriveTrueEmulation", (void *)0,
+      USE_PARAM_STRING, USE_DESCRIPTION_ID,
+      IDCLS_UNUSED, IDCLS_DISABLE_TRUE_DRIVE,
+      NULL, NULL },
     { NULL }
 };
 
 static cmdline_option_t cmd_drive[] = {
-    { NULL, SET_RESOURCE, 1, NULL, NULL, NULL, NULL, IDCLS_P_TYPE,
-      IDCLS_SET_DRIVE_TYPE },
-    { NULL, SET_RESOURCE, 1, NULL, NULL, NULL, NULL, IDCLS_P_METHOD,
-      IDCLS_SET_DRIVE_EXTENSION_POLICY},
+    { NULL, SET_RESOURCE, 1,
+      NULL, NULL, NULL, NULL,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_P_TYPE, IDCLS_SET_DRIVE_TYPE,
+      NULL, NULL },
+    { NULL, SET_RESOURCE, 1,
+      NULL, NULL, NULL, NULL,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_P_METHOD, IDCLS_SET_DRIVE_EXTENSION_POLICY,
+      NULL, NULL },
     { NULL }
 };
 

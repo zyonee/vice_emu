@@ -454,14 +454,26 @@ void reu_resources_shutdown(void)
 
 static const cmdline_option_t cmdline_options[] =
 {
-    { "-reu", SET_RESOURCE, 0, NULL, NULL, "REU", (resource_value_t)1,
-      0, IDCLS_ENABLE_REU },
-    { "+reu", SET_RESOURCE, 0, NULL, NULL, "REU", (resource_value_t)0,
-      0, IDCLS_DISABLE_REU },
-    { "-reuimage", SET_RESOURCE, 1, NULL, NULL, "REUfilename", NULL,
-      IDCLS_P_NAME, IDCLS_SPECIFY_REU_NAME },
-    { "-reusize", SET_RESOURCE, 1, NULL, NULL, "REUsize", NULL,
-      IDCLS_P_SIZE_IN_KB, IDCLS_REU_SIZE },
+    { "-reu", SET_RESOURCE, 0,
+      NULL, NULL, "REU", (resource_value_t)1,
+      USE_PARAM_STRING, USE_DESCRIPTION_ID,
+      IDCLS_UNUSED, IDCLS_ENABLE_REU,
+      NULL, NULL },
+    { "+reu", SET_RESOURCE, 0,
+      NULL, NULL, "REU", (resource_value_t)0,
+      USE_PARAM_STRING, USE_DESCRIPTION_ID,
+      IDCLS_UNUSED, IDCLS_DISABLE_REU,
+      NULL, NULL },
+    { "-reuimage", SET_RESOURCE, 1,
+      NULL, NULL, "REUfilename", NULL,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_P_NAME, IDCLS_SPECIFY_REU_NAME,
+      NULL, NULL },
+    { "-reusize", SET_RESOURCE, 1,
+      NULL, NULL, "REUsize", NULL,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_P_SIZE_IN_KB, IDCLS_REU_SIZE,
+      NULL, NULL },
     { NULL }
 };
 

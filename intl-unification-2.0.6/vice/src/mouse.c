@@ -339,14 +339,26 @@ int mouse_resources_init(void)
 }
 
 static const cmdline_option_t cmdline_options[] = {
-    { "-mouse", SET_RESOURCE, 0, NULL, NULL,
-      "Mouse", (void *)1, 0, IDCLS_ENABLE_MOUSE_GRAB },
-    { "+mouse", SET_RESOURCE, 0, NULL, NULL,
-      "Mouse", (void *)0, 0, IDCLS_DISABLE_MOUSE_GRAB },
-    { "-mouseport", SET_RESOURCE, 1, NULL, NULL,
-      "Mouseport", NULL, IDCLS_P_VALUE, IDCLS_SELECT_MOUSE_JOY_PORT },
-    { "-mousetype", SET_RESOURCE, 1, NULL, NULL,
-      "Mousetype", NULL, IDCLS_P_VALUE, IDCLS_SELECT_MOUSE_TYPE },
+    { "-mouse", SET_RESOURCE, 0,
+      NULL, NULL, "Mouse", (void *)1,
+      USE_PARAM_STRING, USE_DESCRIPTION_ID,
+      IDCLS_UNUSED, IDCLS_ENABLE_MOUSE_GRAB,
+      NULL, NULL },
+    { "+mouse", SET_RESOURCE, 0,
+      NULL, NULL, "Mouse", (void *)0,
+      USE_PARAM_STRING, USE_DESCRIPTION_ID,
+      IDCLS_UNUSED, IDCLS_DISABLE_MOUSE_GRAB,
+      NULL, NULL },
+    { "-mouseport", SET_RESOURCE, 1,
+      NULL, NULL, "Mouseport", NULL,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_P_VALUE, IDCLS_SELECT_MOUSE_JOY_PORT,
+      NULL, NULL },
+    { "-mousetype", SET_RESOURCE, 1,
+      NULL, NULL, "Mousetype", NULL,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_P_VALUE, IDCLS_SELECT_MOUSE_TYPE,
+      NULL, NULL },
     { NULL }
 };
 

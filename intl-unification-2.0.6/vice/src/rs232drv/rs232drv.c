@@ -81,14 +81,26 @@ void rs232drv_resources_shutdown(void)
 }
 
 static const cmdline_option_t cmdline_options[] = {
-    { "-rsdev1", SET_RESOURCE, 1, NULL, NULL, "RsDevice1", NULL,
-      IDCLS_P_NAME, IDCLS_SPECIFY_RS232_1_NAME },
-    { "-rsdev2", SET_RESOURCE, 1, NULL, NULL, "RsDevice2", NULL,
-      IDCLS_P_NAME, IDCLS_SPECIFY_RS232_2_NAME },
-    { "-rsdev3", SET_RESOURCE, 1, NULL, NULL, "RsDevice3", NULL,
-      IDCLS_P_NAME, IDCLS_SPECIFY_RS232_3_NAME },
-    { "-rsdev4", SET_RESOURCE, 1, NULL, NULL, "RsDevice4", NULL,
-      IDCLS_P_NAME, IDCLS_SPECIFY_RS232_4_NAME },
+    { "-rsdev1", SET_RESOURCE, 1,
+      NULL, NULL, "RsDevice1", NULL,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_P_NAME, IDCLS_SPECIFY_RS232_1_NAME,
+      NULL, NULL },
+    { "-rsdev2", SET_RESOURCE, 1,
+      NULL, NULL, "RsDevice2", NULL,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_P_NAME, IDCLS_SPECIFY_RS232_2_NAME,
+      NULL, NULL },
+    { "-rsdev3", SET_RESOURCE, 1,
+      NULL, NULL, "RsDevice3", NULL,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_P_NAME, IDCLS_SPECIFY_RS232_3_NAME,
+      NULL, NULL },
+    { "-rsdev4", SET_RESOURCE, 1,
+      NULL, NULL, "RsDevice4", NULL,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_P_NAME, IDCLS_SPECIFY_RS232_4_NAME,
+      NULL, NULL },
     { NULL }
 };
 

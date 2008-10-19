@@ -1031,10 +1031,16 @@ static int monitor_set_initial_breakpoint(const char *param, void *extra_param)
 }
 
 static const cmdline_option_t cmdline_options[] = {
-    { "-moncommands", CALL_FUNCTION, 1, set_playback_name, NULL, NULL, NULL,
-      IDCLS_P_NAME, IDCLS_EXECUTE_MONITOR_FROM_FILE },
-    { "-initbreak", CALL_FUNCTION, 1, monitor_set_initial_breakpoint, NULL, NULL, NULL,
-      IDCLS_P_VALUE, IDCLS_SET_INITIAL_BREAKPOINT },
+    { "-moncommands", CALL_FUNCTION, 1,
+      set_playback_name, NULL, NULL, NULL,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_P_NAME, IDCLS_EXECUTE_MONITOR_FROM_FILE,
+      NULL, NULL },
+    { "-initbreak", CALL_FUNCTION, 1,
+      monitor_set_initial_breakpoint, NULL, NULL, NULL,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_P_VALUE, IDCLS_SET_INITIAL_BREAKPOINT,
+      NULL, NULL },
     { NULL }
 };
 

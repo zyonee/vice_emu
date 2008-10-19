@@ -106,8 +106,11 @@ void fliplist_resources_shutdown(void)
 
 static const cmdline_option_t cmdline_options[] =
 {
-    { "-flipname", SET_RESOURCE, 1, NULL, NULL, "FliplistName", NULL,
-      IDCLS_P_NAME, IDCLS_SPECIFY_FLIP_LIST_NAME },
+    { "-flipname", SET_RESOURCE, 1,
+      NULL, NULL, "FliplistName", NULL,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_P_NAME, IDCLS_SPECIFY_FLIP_LIST_NAME,
+      NULL, NULL },
     { NULL }
 };
 

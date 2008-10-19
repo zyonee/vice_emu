@@ -2,19 +2,13 @@
 
 # command-line options
 src/monitor/mon_command.c
-src/sysfile.c
-src/traps.c
-src/vdc/vdc-cmdline-options.c
-src/vic20/vic20-cmdline-options.c
-src/vic20/vic20cartridge.c
-src/vicii/vicii-cmdline-options.c
-src/video/video-cmdline-options.c
 
 # Architecture Unix
 src/arch/unix/blockdev.c
 src/arch/unix/console.c
 src/arch/unix/coproc.c
 src/arch/unix/joy.c
+src/arch/unix/mididrv.c
 src/arch/unix/mousedrv.c
 src/arch/unix/rs232.c
 src/arch/unix/signals.c
@@ -130,6 +124,10 @@ src/arch/unix/x11/xaw/uisnapshot.c
 src/arch/unix/x11/xaw/uivsidcontrol.c
 src/arch/unix/x11/xaw/x11ui.c
 src/arch/unix/x11/xaw/x11video.c
+
+# macOSX
+src/arch/unix/macosx/joy.c
+src/arch/unix/macosx/cocoa/ui-cmdline-options.c
 
 # win32 files
 src/arch/win32/res.rc.po.c

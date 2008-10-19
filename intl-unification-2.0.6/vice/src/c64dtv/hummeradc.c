@@ -356,10 +356,16 @@ int hummeradc_resources_init(void)
 
 static const cmdline_option_t cmdline_options[] =
 {
-    { "-hummeradc", SET_RESOURCE, 0, NULL, NULL, "hummeradc", (void *)1,
-      0, IDCLS_ENABLE_HUMMERADC },
-    { "+hummeradc", SET_RESOURCE, 0, NULL, NULL, "hummeradc", (void *)0,
-      0, IDCLS_DISABLE_HUMMERADC },
+    { "-hummeradc", SET_RESOURCE, 0,
+      NULL, NULL, "hummeradc", (void *)1,
+      USE_PARAM_STRING, USE_DESCRIPTION_ID,
+      IDCLS_UNUSED, IDCLS_ENABLE_HUMMERADC,
+      NULL, NULL },
+    { "+hummeradc", SET_RESOURCE, 0,
+      NULL, NULL, "hummeradc", (void *)0,
+      USE_PARAM_STRING, USE_DESCRIPTION_ID,
+      IDCLS_UNUSED, IDCLS_DISABLE_HUMMERADC,
+      NULL, NULL },
     { NULL }
 };
 

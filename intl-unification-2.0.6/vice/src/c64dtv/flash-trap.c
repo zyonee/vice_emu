@@ -318,12 +318,21 @@ void flash_trap_resources_shutdown(void)
 
 static const cmdline_option_t cmdline_options[] =
 {
-    { "-fsflash", SET_RESOURCE, 1, NULL, NULL, "FSFlashDir", NULL,
-      IDCLS_P_NAME, IDCLS_USE_AS_DIRECTORY_FLASH_FS },
-    { "-trueflashfs", SET_RESOURCE, 0, NULL, NULL, "FlashTrueFS", (void *)1,
-      0, IDCLS_ENABLE_TRUE_FLASH_FS },
-    { "+trueflashfs", SET_RESOURCE, 0, NULL, NULL, "FlashTrueFS", (void *)0,
-      0, IDCLS_DISABLE_TRUE_FLASH_FS },
+    { "-fsflash", SET_RESOURCE, 1,
+      NULL, NULL, "FSFlashDir", NULL,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_P_NAME, IDCLS_USE_AS_DIRECTORY_FLASH_FS,
+      NULL, NULL },
+    { "-trueflashfs", SET_RESOURCE, 0,
+      NULL, NULL, "FlashTrueFS", (void *)1,
+      USE_PARAM_STRING, USE_DESCRIPTION_ID,
+      IDCLS_UNUSED, IDCLS_ENABLE_TRUE_FLASH_FS,
+      NULL, NULL },
+    { "+trueflashfs", SET_RESOURCE, 0,
+      NULL, NULL, "FlashTrueFS", (void *)0,
+      USE_PARAM_STRING, USE_DESCRIPTION_ID,
+      IDCLS_UNUSED, IDCLS_DISABLE_TRUE_FLASH_FS,
+      NULL, NULL },
     { NULL }
 };
 

@@ -161,10 +161,16 @@ int autostart_resources_init(void)
 
 static const cmdline_option_t cmdline_options[] =
 {
-    { "-autostartwithcolon", SET_RESOURCE, 0, NULL, NULL, "AutostartRunWithColon", (resource_value_t)1,
-      0, IDCLS_ENABLE_AUTOSTARTWITHCOLON },
-    { "+autostartwithcolon", SET_RESOURCE, 0, NULL, NULL, "AutostartRunWithColon", (resource_value_t)0,
-      0, IDCLS_DISABLE_AUTOSTARTWITHCOLON },
+    { "-autostartwithcolon", SET_RESOURCE, 0,
+      NULL, NULL, "AutostartRunWithColon", (resource_value_t)1,
+      USE_PARAM_STRING, USE_DESCRIPTION_ID,
+      IDCLS_UNUSED, IDCLS_ENABLE_AUTOSTARTWITHCOLON,
+      NULL, NULL },
+    { "+autostartwithcolon", SET_RESOURCE, 0,
+      NULL, NULL, "AutostartRunWithColon", (resource_value_t)0,
+      USE_PARAM_STRING, USE_DESCRIPTION_ID,
+      IDCLS_UNUSED, IDCLS_DISABLE_AUTOSTARTWITHCOLON,
+      NULL, NULL },
     { NULL }
 };
 

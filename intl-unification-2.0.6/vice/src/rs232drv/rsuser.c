@@ -162,16 +162,26 @@ int rsuser_resources_init(void)
 }
 
 static const cmdline_option_t cmdline_options[] = {
-    { "-rsuser", SET_RESOURCE, 0, NULL, NULL, "RsUserEnable", (void *)1,
-      0, IDCLS_ENABLE_RS232_USERPORT },
-    { "+rsuser", SET_RESOURCE, 0, NULL, NULL, "RsUserEnable", (void *)0,
-      0, IDCLS_DISABLE_RS232_USERPORT },
-    { "-rsuserbaud", SET_RESOURCE, 1, NULL, NULL, "RsUserBaud",
-      (resource_value_t)300, IDCLS_P_BAUD,
-      IDCLS_SET_BAUD_RS232_USERPORT },
-    { "-rsuserdev", SET_RESOURCE, 1, NULL, NULL, "RsUserDev",
-      (resource_value_t)0,
-      IDCLS_P_0_3, IDCLS_SPECIFY_RS232_DEVICE_USERPORT },
+    { "-rsuser", SET_RESOURCE, 0,
+      NULL, NULL, "RsUserEnable", (void *)1,
+      USE_PARAM_STRING, USE_DESCRIPTION_ID,
+      IDCLS_UNUSED, IDCLS_ENABLE_RS232_USERPORT,
+      NULL, NULL },
+    { "+rsuser", SET_RESOURCE, 0,
+      NULL, NULL, "RsUserEnable", (void *)0,
+      USE_PARAM_STRING, USE_DESCRIPTION_ID,
+      IDCLS_UNUSED, IDCLS_DISABLE_RS232_USERPORT,
+      NULL, NULL },
+    { "-rsuserbaud", SET_RESOURCE, 1,
+      NULL, NULL, "RsUserBaud", (resource_value_t)300,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_P_BAUD, IDCLS_SET_BAUD_RS232_USERPORT,
+      NULL, NULL },
+    { "-rsuserdev", SET_RESOURCE, 1,
+      NULL, NULL, "RsUserDev", (resource_value_t)0,
+      USE_PARAM_STRING, USE_DESCRIPTION_ID,
+      IDCLS_UNUSED, IDCLS_SPECIFY_RS232_DEVICE_USERPORT,
+      "<0-3>", NULL },
     { NULL }
 };
 

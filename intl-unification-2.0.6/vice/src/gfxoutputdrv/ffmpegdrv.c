@@ -183,12 +183,16 @@ int ffmpegdrv_resources_init(void)
 /*---------- Commandline options --------------------------------------*/
 
 static const cmdline_option_t cmdline_options[] = {
-    { "-ffmpegaudiobitrate", SET_RESOURCE, 1, NULL, NULL,
-      "FFMPEGAudioBitrate", NULL,
-      IDCLS_P_VALUE, IDCLS_SET_AUDIO_STREAM_BITRATE },
-    { "-ffmpegvideobitrate", SET_RESOURCE, 1, NULL, NULL,
-      "FFMPEGVideoBitrate", NULL,
-      IDCLS_P_VALUE, IDCLS_SET_VIDEO_STREAM_BITRATE },
+    { "-ffmpegaudiobitrate", SET_RESOURCE, 1,
+      NULL, NULL, "FFMPEGAudioBitrate", NULL,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_P_VALUE, IDCLS_SET_AUDIO_STREAM_BITRATE,
+      NULL, NULL },
+    { "-ffmpegvideobitrate", SET_RESOURCE, 1,
+      NULL, NULL, "FFMPEGVideoBitrate", NULL,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_P_VALUE, IDCLS_SET_VIDEO_STREAM_BITRATE,
+      NULL, NULL },
     { NULL }
 };
 

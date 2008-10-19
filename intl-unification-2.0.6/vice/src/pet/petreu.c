@@ -189,14 +189,26 @@ void petreu_resources_shutdown(void)
 
 static const cmdline_option_t cmdline_options[] =
 {
-    { "-petreu", SET_RESOURCE, 0, NULL, NULL, "PETREU", (resource_value_t)1,
-      0, IDCLS_ENABLE_PETREU },
-    { "+petreu", SET_RESOURCE, 0, NULL, NULL, "PETREU", (resource_value_t)0,
-      0, IDCLS_DISABLE_PETREU },
-    { "-petreuimage", SET_RESOURCE, 1, NULL, NULL, "PETREUfilename", NULL,
-      IDCLS_P_NAME, IDCLS_SPECIFY_PETREU_NAME },
-    { "-petreuramsize", SET_RESOURCE, 1, NULL, NULL, "PETREUsize", NULL,
-      IDCLS_P_SIZE_IN_KB, IDCLS_PETREU_SIZE },
+    { "-petreu", SET_RESOURCE, 0,
+      NULL, NULL, "PETREU", (resource_value_t)1,
+      USE_PARAM_STRING, USE_DESCRIPTION_ID,
+      IDCLS_UNUSED, IDCLS_ENABLE_PETREU,
+      NULL, NULL },
+    { "+petreu", SET_RESOURCE, 0,
+      NULL, NULL, "PETREU", (resource_value_t)0,
+      USE_PARAM_STRING, USE_DESCRIPTION_ID,
+      IDCLS_UNUSED, IDCLS_DISABLE_PETREU,
+      NULL, NULL },
+    { "-petreuimage", SET_RESOURCE, 1,
+      NULL, NULL, "PETREUfilename", NULL,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_P_NAME, IDCLS_SPECIFY_PETREU_NAME,
+      NULL, NULL },
+    { "-petreuramsize", SET_RESOURCE, 1,
+      NULL, NULL, "PETREUsize", NULL,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_P_SIZE_IN_KB, IDCLS_PETREU_SIZE,
+      NULL, NULL },
     { NULL }
 };
 

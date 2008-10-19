@@ -104,10 +104,16 @@ int pia1_init_resources(void)
 
 
 static const cmdline_option_t cmdline_options[] = {
-    { "-diagpin", SET_RESOURCE, 0, NULL, NULL, "DiagPin", (resource_value_t)1,
-      0, IDCLS_ENABLE_USERPORT_DIAG_PIN },
-    { "+diagpin", SET_RESOURCE, 0, NULL, NULL, "DiagPin", (resource_value_t)1,
-      0, IDCLS_DISABLE_USERPORT_DIAG_PIN },
+    { "-diagpin", SET_RESOURCE, 0,
+      NULL, NULL, "DiagPin", (resource_value_t)1,
+      USE_PARAM_STRING, USE_DESCRIPTION_ID,
+      IDCLS_UNUSED, IDCLS_ENABLE_USERPORT_DIAG_PIN,
+      NULL, NULL },
+    { "+diagpin", SET_RESOURCE, 0,
+      NULL, NULL, "DiagPin", (resource_value_t)1,
+      USE_PARAM_STRING, USE_DESCRIPTION_ID,
+      IDCLS_UNUSED, IDCLS_DISABLE_USERPORT_DIAG_PIN,
+      NULL, NULL },
     { NULL }
 };
 

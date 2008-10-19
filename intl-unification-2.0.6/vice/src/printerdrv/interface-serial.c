@@ -103,12 +103,16 @@ int interface_serial_init_resources(void)
 }
 
 static const cmdline_option_t cmdline_options[] = {
-    { "-device4", SET_RESOURCE, 1, NULL, NULL, "Printer4",
-      (void *)PRINTER_DEVICE_FS, IDCLS_P_TYPE,
-      IDCLS_SET_DEVICE_TYPE_4 },
-    { "-device5", SET_RESOURCE, 1, NULL, NULL, "Printer5",
-      (void *)PRINTER_DEVICE_FS, IDCLS_P_TYPE,
-      IDCLS_SET_DEVICE_TYPE_5 },
+    { "-device4", SET_RESOURCE, 1,
+      NULL, NULL, "Printer4", (void *)PRINTER_DEVICE_FS,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_P_TYPE, IDCLS_SET_DEVICE_TYPE_4,
+      NULL, NULL },
+    { "-device5", SET_RESOURCE, 1,
+      NULL, NULL, "Printer5", (void *)PRINTER_DEVICE_FS,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_P_TYPE, IDCLS_SET_DEVICE_TYPE_5,
+      NULL, NULL },
     { NULL }
 };
 

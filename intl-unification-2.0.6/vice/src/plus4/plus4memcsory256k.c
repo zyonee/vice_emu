@@ -106,8 +106,11 @@ int cs256k_resources_init(void)
 
 static const cmdline_option_t cmdline_options[] =
 {
-    { "-cs256k", SET_RESOURCE, 0, NULL, NULL, "CS256K", (resource_value_t)1,
-      0, IDCLS_ENABLE_CS256K_EXPANSION },
+    { "-cs256k", SET_RESOURCE, 0,
+      NULL, NULL, "CS256K", (resource_value_t)1,
+      USE_PARAM_STRING, USE_DESCRIPTION_ID,
+      IDCLS_UNUSED, IDCLS_ENABLE_CS256K_EXPANSION,
+      NULL, NULL },
     { NULL }
 };
 

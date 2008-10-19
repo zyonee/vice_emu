@@ -79,15 +79,21 @@ int ram_resources_init(void)
 }
 
 static const cmdline_option_t cmdline_options[] = {
-    { "-raminitstartvalue", SET_RESOURCE, 1, NULL, NULL,
-      "RAMInitStartValue", NULL,
-      IDCLS_P_VALUE, IDCLS_SET_FIRST_RAM_ADDRESS_VALUE },
-    { "-raminitvalueinvert" , SET_RESOURCE, 1, NULL, NULL,
-      "RAMInitValueInvert", NULL,
-      IDCLS_P_NUM_OF_BYTES, IDCLS_LENGTH_BLOCK_SAME_VALUE },
-    { "-raminitpatterninvert", SET_RESOURCE, 1, NULL, NULL,
-      "RAMInitPatternInvert", NULL,
-      IDCLS_P_NUM_OF_BYTES, IDCLS_LENGTH_BLOCK_SAME_PATTERN },
+    { "-raminitstartvalue", SET_RESOURCE, 1,
+      NULL, NULL, "RAMInitStartValue", NULL,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_P_VALUE, IDCLS_SET_FIRST_RAM_ADDRESS_VALUE,
+      NULL, NULL },
+    { "-raminitvalueinvert" , SET_RESOURCE, 1,
+      NULL, NULL, "RAMInitValueInvert", NULL,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_P_NUM_OF_BYTES, IDCLS_LENGTH_BLOCK_SAME_VALUE,
+      NULL, NULL },
+    { "-raminitpatterninvert", SET_RESOURCE, 1,
+      NULL, NULL, "RAMInitPatternInvert", NULL,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_P_NUM_OF_BYTES, IDCLS_LENGTH_BLOCK_SAME_PATTERN,
+      NULL, NULL },
     { NULL }
 };
 

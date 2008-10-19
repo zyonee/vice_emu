@@ -197,8 +197,11 @@ int myacia_init_mode_resources(void)
 }
 
 static const cmdline_option_t cmdline_options[] = {
-    { "-myaciadev", SET_RESOURCE, 1, NULL, NULL, MYACIA "Dev", NULL,
-      IDCLS_P_0_3, IDCLS_SPECIFY_ACIA_RS232_DEVICE },
+    { "-myaciadev", SET_RESOURCE, 1,
+      NULL, NULL, MYACIA "Dev", NULL,
+      USE_PARAM_STRING, USE_DESCRIPTION_ID,
+      IDCLS_UNUSED, IDCLS_SPECIFY_ACIA_RS232_DEVICE,
+      "<0-3>", NULL },
     { NULL }
 };
 

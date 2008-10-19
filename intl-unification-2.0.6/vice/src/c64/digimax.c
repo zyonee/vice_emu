@@ -114,12 +114,21 @@ int digimax_resources_init(void)
 
 static const cmdline_option_t cmdline_options[] =
 {
-    { "-digimax", SET_RESOURCE, 0, NULL, NULL, "DIGIMAX", (resource_value_t)1,
-      0, IDCLS_ENABLE_DIGIMAX },
-    { "+digimax", SET_RESOURCE, 0, NULL, NULL, "DIGIMAX", (resource_value_t)0,
-      0, IDCLS_DISABLE_DIGIMAX },
-    { "-digimaxbase", SET_RESOURCE, 1, NULL, NULL, "DIGIMAXbase", NULL,
-      IDCLS_P_BASE_ADDRESS, IDCLS_DIGIMAX_BASE },
+    { "-digimax", SET_RESOURCE, 0,
+      NULL, NULL, "DIGIMAX", (resource_value_t)1,
+      USE_PARAM_STRING, USE_DESCRIPTION_ID,
+      IDCLS_UNUSED, IDCLS_ENABLE_DIGIMAX,
+      NULL, NULL },
+    { "+digimax", SET_RESOURCE, 0,
+      NULL, NULL, "DIGIMAX", (resource_value_t)0,
+      USE_PARAM_STRING, USE_DESCRIPTION_ID,
+      IDCLS_UNUSED, IDCLS_DISABLE_DIGIMAX,
+      NULL, NULL },
+    { "-digimaxbase", SET_RESOURCE, 1,
+      NULL, NULL, "DIGIMAXbase", NULL,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_P_BASE_ADDRESS, IDCLS_DIGIMAX_BASE,
+      NULL, NULL },
     { NULL }
 };
 

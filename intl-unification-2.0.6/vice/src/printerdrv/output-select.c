@@ -100,13 +100,21 @@ void output_select_shutdown_resources(void)
 
 static const cmdline_option_t cmdline_options[] =
 {
-    { "-pr4output", SET_RESOURCE, 1, NULL, NULL, "Printer4Output", NULL,
-      IDCLS_P_NAME, IDCLS_SPECIFY_OUTPUT_DEVICE_4_NAME },
-    { "-pr5output", SET_RESOURCE, 1, NULL, NULL, "Printer5Output", NULL,
-      IDCLS_P_NAME, IDCLS_SPECIFY_OUTPUT_DEVICE_5_NAME },
-    { "-pruseroutput", SET_RESOURCE, 1, NULL, NULL,
-      "PrinterUserportOutput", NULL,
-      IDCLS_P_NAME, IDCLS_SPECIFY_OUTPUT_DEVICE_USR_NAME },
+    { "-pr4output", SET_RESOURCE, 1,
+      NULL, NULL, "Printer4Output", NULL,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_P_NAME, IDCLS_SPECIFY_OUTPUT_DEVICE_4_NAME,
+      NULL, NULL },
+    { "-pr5output", SET_RESOURCE, 1,
+      NULL, NULL, "Printer5Output", NULL,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_P_NAME, IDCLS_SPECIFY_OUTPUT_DEVICE_5_NAME,
+      NULL, NULL },
+    { "-pruseroutput", SET_RESOURCE, 1,
+      NULL, NULL, "PrinterUserportOutput", NULL,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_P_NAME, IDCLS_SPECIFY_OUTPUT_DEVICE_USR_NAME,
+      NULL, NULL },
     { NULL }
 };
 

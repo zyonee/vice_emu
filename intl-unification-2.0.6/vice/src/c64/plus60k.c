@@ -221,14 +221,26 @@ void plus60k_resources_shutdown(void)
 
 static const cmdline_option_t cmdline_options[] =
 {
-    { "-plus60k", SET_RESOURCE, 0, NULL, NULL, "PLUS60K", (resource_value_t)1,
-      0, IDCLS_ENABLE_PLUS60K_EXPANSION },
-    { "+plus60k", SET_RESOURCE, 0, NULL, NULL, "PLUS60K", (resource_value_t)0,
-      0, IDCLS_DISABLE_PLUS60K_EXPANSION },
-    { "-plus60kimage", SET_RESOURCE, 1, NULL, NULL, "PLUS60Kfilename", NULL,
-      IDCLS_P_NAME, IDCLS_SPECIFY_PLUS60K_NAME },
-    { "-plus60kbase", SET_RESOURCE, 1, NULL, NULL, "PLUS60Kbase", NULL,
-      IDCLS_P_BASE_ADDRESS, IDCLS_PLUS60K_BASE },
+    { "-plus60k", SET_RESOURCE, 0,
+      NULL, NULL, "PLUS60K", (resource_value_t)1,
+      USE_PARAM_STRING, USE_DESCRIPTION_ID,
+      IDCLS_UNUSED, IDCLS_ENABLE_PLUS60K_EXPANSION,
+      NULL, NULL },
+    { "+plus60k", SET_RESOURCE, 0,
+      NULL, NULL, "PLUS60K", (resource_value_t)0,
+      USE_PARAM_STRING, USE_DESCRIPTION_ID,
+      IDCLS_UNUSED, IDCLS_DISABLE_PLUS60K_EXPANSION,
+      NULL, NULL },
+    { "-plus60kimage", SET_RESOURCE, 1,
+      NULL, NULL, "PLUS60Kfilename", NULL,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_P_NAME, IDCLS_SPECIFY_PLUS60K_NAME,
+      NULL, NULL },
+    { "-plus60kbase", SET_RESOURCE, 1,
+      NULL, NULL, "PLUS60Kbase", NULL,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_P_BASE_ADDRESS, IDCLS_PLUS60K_BASE,
+      NULL, NULL },
     { NULL }
 };
 

@@ -149,12 +149,21 @@ void plus256k_resources_shutdown(void)
 
 static const cmdline_option_t cmdline_options[] =
 {
-    { "-plus256k", SET_RESOURCE, 0, NULL, NULL, "PLUS256K", (resource_value_t)1,
-      0, IDCLS_ENABLE_PLUS256K_EXPANSION },
-    { "+plus256k", SET_RESOURCE, 0, NULL, NULL, "PLUS256K", (resource_value_t)0,
-      0, IDCLS_DISABLE_PLUS256K_EXPANSION },
-    { "-plus256kimage", SET_RESOURCE, 1, NULL, NULL, "PLUS256Kfilename", NULL,
-      IDCLS_P_NAME, IDCLS_SPECIFY_PLUS256K_NAME },
+    { "-plus256k", SET_RESOURCE, 0,
+      NULL, NULL, "PLUS256K", (resource_value_t)1,
+      USE_PARAM_STRING, USE_DESCRIPTION_ID,
+      IDCLS_UNUSED, IDCLS_ENABLE_PLUS256K_EXPANSION,
+      NULL, NULL },
+    { "+plus256k", SET_RESOURCE, 0,
+      NULL, NULL, "PLUS256K", (resource_value_t)0,
+      USE_PARAM_STRING, USE_DESCRIPTION_ID,
+      IDCLS_UNUSED, IDCLS_DISABLE_PLUS256K_EXPANSION,
+      NULL, NULL },
+    { "-plus256kimage", SET_RESOURCE, 1,
+      NULL, NULL, "PLUS256Kfilename", NULL,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_P_NAME, IDCLS_SPECIFY_PLUS256K_NAME,
+      NULL, NULL },
     { NULL }
 };
 

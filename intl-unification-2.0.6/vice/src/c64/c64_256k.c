@@ -182,14 +182,26 @@ void c64_256k_resources_shutdown(void)
 
 static const cmdline_option_t cmdline_options[] =
 {
-    { "-256k", SET_RESOURCE, 0, NULL, NULL, "C64_256K", (resource_value_t)1,
-      0, IDCLS_ENABLE_C64_256K_EXPANSION },
-    { "+256k", SET_RESOURCE, 0, NULL, NULL, "C64_256K", (resource_value_t)0,
-      0, IDCLS_DISABLE_C64_256K_EXPANSION },
-    { "-256kimage", SET_RESOURCE, 1, NULL, NULL, "C64_256Kfilename", NULL,
-      IDCLS_P_NAME, IDCLS_SPECIFY_C64_256K_NAME },
-    { "-256kbase", SET_RESOURCE, 1, NULL, NULL, "C64_256Kbase", NULL,
-      IDCLS_P_BASE_ADDRESS, IDCLS_C64_256K_BASE },
+    { "-256k", SET_RESOURCE, 0,
+      NULL, NULL, "C64_256K", (resource_value_t)1,
+      USE_PARAM_STRING, USE_DESCRIPTION_ID,
+      IDCLS_UNUSED, IDCLS_ENABLE_C64_256K_EXPANSION,
+      NULL, NULL },
+    { "+256k", SET_RESOURCE, 0,
+      NULL, NULL, "C64_256K", (resource_value_t)0,
+      USE_PARAM_STRING, USE_DESCRIPTION_ID,
+      IDCLS_UNUSED, IDCLS_DISABLE_C64_256K_EXPANSION,
+      NULL, NULL },
+    { "-256kimage", SET_RESOURCE, 1,
+      NULL, NULL, "C64_256Kfilename", NULL,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_P_NAME, IDCLS_SPECIFY_C64_256K_NAME,
+      NULL, NULL },
+    { "-256kbase", SET_RESOURCE, 1,
+      NULL, NULL, "C64_256Kbase", NULL,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_P_BASE_ADDRESS, IDCLS_C64_256K_BASE,
+      NULL, NULL },
     { NULL }
 };
 

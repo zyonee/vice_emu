@@ -122,8 +122,11 @@ static int kdb_buf_feed_cmdline(const char *param, void *extra_param)
 
 static const cmdline_option_t cmdline_options[] =
 {
-    { "-keybuf", CALL_FUNCTION, 1, kdb_buf_feed_cmdline, NULL, NULL, NULL,
-      IDCLS_P_STRING, IDCLS_PUT_STRING_INTO_KEYBUF },
+    { "-keybuf", CALL_FUNCTION, 1,
+      kdb_buf_feed_cmdline, NULL, NULL, NULL,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_P_STRING, IDCLS_PUT_STRING_INTO_KEYBUF,
+      NULL, NULL },
     { NULL }
 };
 

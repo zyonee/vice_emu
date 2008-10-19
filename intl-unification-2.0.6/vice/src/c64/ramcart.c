@@ -260,14 +260,26 @@ void ramcart_resources_shutdown(void)
 
 static const cmdline_option_t cmdline_options[] =
 {
-    { "-ramcart", SET_RESOURCE, 0, NULL, NULL, "RAMCART", (resource_value_t)1,
-      0, IDCLS_ENABLE_RAMCART },
-    { "+ramcart", SET_RESOURCE, 0, NULL, NULL, "RAMCART", (resource_value_t)0,
-      0, IDCLS_DISABLE_RAMCART },
-    { "-ramcartimage", SET_RESOURCE, 1, NULL, NULL, "RAMCARTfilename", NULL,
-      IDCLS_P_NAME, IDCLS_SPECIFY_RAMCART_NAME },
-    { "-ramcartsize", SET_RESOURCE, 1, NULL, NULL, "RAMCARTsize", NULL,
-      IDCLS_P_SIZE_IN_KB, IDCLS_RAMCART_SIZE },
+    { "-ramcart", SET_RESOURCE, 0,
+      NULL, NULL, "RAMCART", (resource_value_t)1,
+      USE_PARAM_STRING, USE_DESCRIPTION_ID,
+      IDCLS_UNUSED, IDCLS_ENABLE_RAMCART,
+      NULL, NULL },
+    { "+ramcart", SET_RESOURCE, 0,
+      NULL, NULL, "RAMCART", (resource_value_t)0,
+      USE_PARAM_STRING, USE_DESCRIPTION_ID,
+      IDCLS_UNUSED, IDCLS_DISABLE_RAMCART,
+      NULL, NULL },
+    { "-ramcartimage", SET_RESOURCE, 1,
+      NULL, NULL, "RAMCARTfilename", NULL,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_P_NAME, IDCLS_SPECIFY_RAMCART_NAME,
+      NULL, NULL },
+    { "-ramcartsize", SET_RESOURCE, 1,
+      NULL, NULL, "RAMCARTsize", NULL,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_P_SIZE_IN_KB, IDCLS_RAMCART_SIZE,
+      NULL, NULL },
     { NULL }
 };
 

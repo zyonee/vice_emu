@@ -151,18 +151,26 @@ int datasette_resources_init(void)
 /*---------- Commandline options --------------------------------------*/
 
 static const cmdline_option_t cmdline_options[] = {
-    { "-dsresetwithcpu", SET_RESOURCE, 0, NULL, NULL,
-      "DatasetteResetWithCPU", (resource_value_t)1,
-      0, IDCLS_ENABLE_AUTO_DATASETTE_RESET },
-    { "+dsresetwithcpu", SET_RESOURCE, 0, NULL, NULL,
-      "DatasetteResetWithCPU", (resource_value_t)0,
-      0, IDCLS_DISABLE_AUTO_DATASETTE_RESET },
-    { "-dszerogapdelay", SET_RESOURCE, 1, NULL, NULL,
-      "DatasetteZeroGapDelay", NULL,
-      IDCLS_P_VALUE, IDCLS_SET_ZERO_TAP_DELAY },
-    { "-dsspeedtuning", SET_RESOURCE, 1, NULL, NULL,
-      "DatasetteSpeedTuning", NULL,
-      IDCLS_P_VALUE, IDCLS_SET_CYCLES_ADDED_GAP_TAP },
+    { "-dsresetwithcpu", SET_RESOURCE, 0,
+      NULL, NULL, "DatasetteResetWithCPU", (resource_value_t)1,
+      USE_PARAM_STRING, USE_DESCRIPTION_ID,
+      IDCLS_UNUSED, IDCLS_ENABLE_AUTO_DATASETTE_RESET,
+      NULL, NULL },
+    { "+dsresetwithcpu", SET_RESOURCE, 0,
+      NULL, NULL, "DatasetteResetWithCPU", (resource_value_t)0,
+      USE_PARAM_STRING, USE_DESCRIPTION_ID,
+      IDCLS_UNUSED, IDCLS_DISABLE_AUTO_DATASETTE_RESET,
+      NULL, NULL },
+    { "-dszerogapdelay", SET_RESOURCE, 1,
+      NULL, NULL, "DatasetteZeroGapDelay", NULL,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_P_VALUE, IDCLS_SET_ZERO_TAP_DELAY,
+      NULL, NULL },
+    { "-dsspeedtuning", SET_RESOURCE, 1,
+      NULL, NULL, "DatasetteSpeedTuning", NULL,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_P_VALUE, IDCLS_SET_CYCLES_ADDED_GAP_TAP,
+      NULL, NULL },
     { NULL }
 };
 

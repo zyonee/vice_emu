@@ -1214,8 +1214,11 @@ static int cmdline_help(const char *param, void *extra_param)
 }
 
 static const cmdline_option_t cmdline_options[] = {
-    { "-playback", CALL_FUNCTION, 0, cmdline_help, NULL, NULL, NULL,
-      0, IDCLS_PLAYBACK_RECORDED_EVENTS },
+    { "-playback", CALL_FUNCTION, 0,
+      cmdline_help, NULL, NULL, NULL,
+      USE_PARAM_STRING, USE_DESCRIPTION_ID,
+      IDCLS_UNUSED, IDCLS_PLAYBACK_RECORDED_EVENTS,
+      NULL, NULL },
     { NULL }
 };
 
