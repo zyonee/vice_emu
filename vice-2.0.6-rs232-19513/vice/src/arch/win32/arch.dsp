@@ -207,6 +207,14 @@ SOURCE=.\rs232.c
 # End Source File
 # Begin Source File
 
+SOURCE=.\rs232dev.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\rs232net.c
+# End Source File
+# Begin Source File
+
 SOURCE=.\signals.c
 # End Source File
 # Begin Source File

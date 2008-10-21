@@ -94,6 +94,8 @@ libarch_a_SOURCES = \
 	resvic20.rc \
 	resvicii.rc \
 	rs232.c \
+	rs232dev.c \
+	rs232net.c \
 	signals.c \
 	statusbar.c \
 	statusbar.h \
