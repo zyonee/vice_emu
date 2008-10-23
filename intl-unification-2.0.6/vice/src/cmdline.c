@@ -225,34 +225,35 @@ void cmdline_show_help(void *userparam)
     ui_cmdline_show_help(num_options, options, userparam);
 }
 
+char *cmdline_options_get_param(int counter)
+{
+    if (options[counter].use_param_name_id == USE_PARAM_ID)
+        return translate_text(options[counter].param_name_trans);
+    else
+        return (char *)_(options[counter].param_name);
+}
+
+char *cmdline_options_get_description(int counter)
+{
+    if (options[counter].use_description_id == USE_DESCRIPTION_ID)
+        return translate_text(options[counter].description_trans);
+    else
+        return (char *)_(options[counter].description);
+}
+
 char *cmdline_options_string(void)
 {
     unsigned int i;
     char *cmdline_string, *new_cmdline_string;
     char *add_to_options1, *add_to_options2, *add_to_options3;
-    int has_param;
 
     cmdline_string = lib_stralloc("\n");
 
     for (i = 0; i < num_options; i++) {
         add_to_options1 = lib_msprintf("%s", options[i].name);
-        add_to_options3 = lib_msprintf("\n\t%s\n", (options[i].use_description_id == 1) ? translate_text(options[i].description_trans) : _(options[i].description));
-        if (options[i].use_param_name_id == 1)
-        {
-            if (options[i].param_name_trans != 0)
-                has_param = 1;
-            else
-                has_param = 0;
-        }
-        else
-        {
-            if (options[i].param_name != NULL)
-                has_param = 1;
-            else
-                has_param = 0;
-        }
-        if (options[i].need_arg && has_param != 0) {
-            add_to_options2 = lib_msprintf(" %s", (options[i].use_param_name_id == 1) ? translate_text(options[i].param_name_trans) : _(options[i].param_name));
+        add_to_options3 = lib_msprintf("\n\t%s\n", cmdline_options_get_description(i));
+        if (options[i].need_arg && cmdline_options_get_param(i) != NULL) {
+            add_to_options2 = lib_msprintf(" %s", cmdline_options_get_param(i));
             new_cmdline_string = util_concat(cmdline_string, add_to_options1,
                                              add_to_options2, add_to_options3,
                                              NULL);
