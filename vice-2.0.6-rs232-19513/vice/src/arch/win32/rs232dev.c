@@ -33,7 +33,7 @@
  */
 
 #undef        DEBUG
-/* #define DEBUG */
+#define DEBUG /**/
 
 #include "vice.h"
 
@@ -78,6 +78,7 @@ typedef struct rs232 {
     int inuse;
     HANDLE fd;
     char *file;
+    DCB restore_dcb;
 } rs232dev_t;
 
 static rs232dev_t fds[RS232_NUM_DEVICES];
@@ -126,14 +127,24 @@ int rs232dev_open(int device)
 
     do {
         DCB dcb;
+        COMMTIMEOUTS comm_timeouts;
+        char * mode_string = strchr(rs232_devfile[device], ':');
+
+        if (mode_string != NULL) {
+            *mode_string = 0;
+        }
 
         serial_port = CreateFile(rs232_devfile[device], GENERIC_READ | GENERIC_WRITE,
                                  0, NULL, OPEN_EXISTING, 0, NULL);
 
+        if (mode_string != NULL) {
+            *mode_string = ':';
+        }
+
 
         if (serial_port == INVALID_HANDLE_VALUE) 
         {
-            DEBUG_LOG_MESSAGE(("CreateFile '%s' failed: %d.\n",
+            DEBUG_LOG_MESSAGE((rs232dev_log, "rs232dev: CreateFile '%s' failed: %d.\n",
                 rs232_devfile[device], GetLastError()));
             break;
         }
@@ -142,31 +153,53 @@ int rs232dev_open(int device)
         dcb.DCBlength = sizeof dcb;
 
         if ( ! GetCommState(serial_port, &dcb) ) {
-            DEBUG_LOG_MESSAGE(("GetCommState '%s' failed: %d.\n",
+            DEBUG_LOG_MESSAGE((rs232dev_log, "rs232dev: GetCommState '%s' failed: %d.\n",
                 rs232_devfile[device], GetLastError()));
             break;
         }
 
-        /*! \todo this is only for testing purposes! Use BuildCommDCB() instead! */
+        fds[i].restore_dcb = dcb;
 
-        dcb.BaudRate = CBR_57600;
-        dcb.ByteSize = 8;
-        dcb.Parity = NOPARITY;
-        dcb.StopBits = ONESTOPBIT;
+        if (mode_string != NULL) {
+            ++mode_string;
 
-        /*! \todo get st out of rs232_devfile, and activate this code.
+            while (*mode_string == ' ') {
+                ++mode_string;
+            }
 
-        { char st[] = "";
-        if ( BuildCommDCB(st, &dcb) == 0) {
-            DEBUG_LOG_MESSAGE(("BuildCommDCB '%s' for device '%s' failed: %d.\n",
-                st, rs232_devfile[device], GetLastError()));
-            break;
+            if ( ! BuildCommDCB(mode_string, &dcb) ) {
+                DEBUG_LOG_MESSAGE((rs232dev_log, "rs232dev: BuildCommDCB '%s' for "
+                    "device '%s' failed: %d.\n",
+                    mode_string + 1, rs232_devfile[device], GetLastError()));
+                break;
+            }
         }
-        }
-        */
 
         if ( ! SetCommState(serial_port, &dcb) ) {
-            DEBUG_LOG_MESSAGE(("SetCommState '%s' failed: %d.\n",
+            DEBUG_LOG_MESSAGE((rs232dev_log, "rs232dev: SetCommState '%s' failed: %d.\n",
+                rs232_devfile[device], GetLastError()));
+            break;
+        }
+
+        memset(&comm_timeouts, 0, sizeof comm_timeouts);
+
+        /*
+         * ensure that a read will always terminate and only return
+         * what is already in the buffers
+         */
+        comm_timeouts.ReadIntervalTimeout = MAXDWORD;
+        comm_timeouts.ReadTotalTimeoutMultiplier = 0;
+        comm_timeouts.ReadTotalTimeoutConstant = 0;
+
+        /*
+         * Do not use total timeouts for write operations
+         */
+        comm_timeouts.WriteTotalTimeoutConstant = 0;
+        comm_timeouts.WriteTotalTimeoutMultiplier = 0;
+
+        if ( ! SetCommTimeouts(serial_port, &comm_timeouts) ) {
+            DEBUG_LOG_MESSAGE((rs232dev_log, "rs232dev: SetCommTimeouts '%s' "
+                "failed: %d.\n",
                 rs232_devfile[device], GetLastError()));
             break;
         }
@@ -189,7 +222,7 @@ int rs232dev_open(int device)
 /* closes the rs232 window again */
 void rs232dev_close(int fd)
 {
-    DEBUG_LOG_MESSAGE((rs232dev_log, "close(fd=%d).", fd));
+    DEBUG_LOG_MESSAGE((rs232dev_log, "rs232dev: close(fd=%d).", fd));
 
     if (fd < 0 || fd >= RS232_NUM_DEVICES) {
         log_error(rs232dev_log, "Attempt to close invalid fd %d.", fd);
@@ -198,6 +231,11 @@ void rs232dev_close(int fd)
     if (!fds[fd].inuse) {
         log_error(rs232dev_log, "Attempt to close non-open fd %d.", fd);
         return;
+    }
+
+    if ( ! SetCommState(fds[fd].fd, &fds[fd].restore_dcb) ) {
+        DEBUG_LOG_MESSAGE((rs232dev_log, "rs232dev: SetCommState '%s' on close failed: %d.\n",
+            rs232_devfile[fd], GetLastError()));
     }
 
     CloseHandle(fds[fd].fd);
@@ -209,7 +247,7 @@ int rs232dev_putc(int fd, BYTE b)
 {
     DWORD number_of_bytes = 1;
 
-    DEBUG_LOG_MESSAGE((rs232dev_log, "Output `%c'.", b));
+    DEBUG_LOG_MESSAGE((rs232dev_log, "rs232dev: Output `%c'.", b));
 
     if ( WriteFile(fds[fd].fd, &b, number_of_bytes, &number_of_bytes, NULL) == 0)
         return -1;

@@ -107,10 +107,7 @@ void rs232_reset(void)
  */
 static int rs232_is_physical_device(int device)
 {
-    /*! \todo currently, we search for "COM" or "com"; that is, everything must be
-     * either uppercase, or either lowercase, but not mixed!
-     */
-    if (strnicmp(rs232_devfile[device], "\\\\.\\COM", sizeof "\\\\.\\COM") == 0) {
+    if (strnicmp(rs232_devfile[device], "\\\\.\\COM", (sizeof "\\\\.\\COM") - 1) == 0) {
         return 1;
     }
     else {
@@ -159,7 +156,7 @@ int rs232_putc(int fd, BYTE b)
 int rs232_getc(int fd, BYTE * b)
 {
     if (fd & RS232_IS_PHYSICAL_DEVICE)
-        return rs232net_getc(fd & ~RS232_IS_PHYSICAL_DEVICE, b);
+        return rs232dev_getc(fd & ~RS232_IS_PHYSICAL_DEVICE, b);
     else
         return rs232net_getc(fd, b);
 }
