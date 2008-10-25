@@ -142,8 +142,7 @@ int rs232dev_open(int device)
         }
 
 
-        if (serial_port == INVALID_HANDLE_VALUE) 
-        {
+        if (serial_port == INVALID_HANDLE_VALUE) {
             DEBUG_LOG_MESSAGE((rs232dev_log, "rs232dev: CreateFile '%s' failed: %d.\n",
                 rs232_devfile[device], GetLastError()));
             break;
@@ -249,11 +248,13 @@ int rs232dev_putc(int fd, BYTE b)
 
     DEBUG_LOG_MESSAGE((rs232dev_log, "rs232dev: Output %u = `%c'.", (unsigned) b, b));
 
-    if ( WriteFile(fds[fd].fd, &b, number_of_bytes, &number_of_bytes, NULL) == 0)
+    if ( WriteFile(fds[fd].fd, &b, number_of_bytes, &number_of_bytes, NULL) == 0) {
         return -1;
+    }
 
-    if (number_of_bytes != 1)
+    if (number_of_bytes != 1) {
         return -1;
+    }
 
     return 0;
 }
@@ -263,8 +264,9 @@ int rs232dev_getc(int fd, BYTE * b)
 {
     DWORD number_of_bytes = 1;
 
-    if ( ReadFile(fds[fd].fd, b, number_of_bytes, &number_of_bytes, NULL) == 0)
+    if ( ReadFile(fds[fd].fd, b, number_of_bytes, &number_of_bytes, NULL) == 0 ) {
         return -1;
+    }
 
     if (number_of_bytes) {
         DEBUG_LOG_MESSAGE((rs232dev_log, "rs232dev: Input %u = `%c'.", (unsigned) *b, *b));
