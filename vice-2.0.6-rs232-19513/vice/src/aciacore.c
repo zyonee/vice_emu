@@ -142,21 +142,21 @@ static int get_acia_ticks(void)
     switch(acia_mode) {
       case ACIA_MODE_NORMAL:
         return (int)(machine_get_cycles_per_second()
-            / acia_baud_table[ctrl & 0xf]);
+            / acia_baud_table[ctrl & ACIA_CTRL_BITS_BPS_MASK]);
         break;
 
       case ACIA_MODE_SWIFTLINK:
         return (int)(machine_get_cycles_per_second()
-            / (acia_baud_table[ctrl & 0xf]*2));
+            / (acia_baud_table[ctrl & ACIA_CTRL_BITS_BPS_MASK]*2));
         break;
 
       case ACIA_MODE_TURBO232:
-        if ((ctrl & 0xf) == 0)
+        if ((ctrl & ACIA_CTRL_BITS_BPS_MASK) == 0)
             return (int)(machine_get_cycles_per_second()
-                / t232_baud_table[ectrl & 0x3]);
+                / t232_baud_table[ectrl & T232_ECTRL_BITS_EXT_BPS_MASK]);
         else
             return (int)(machine_get_cycles_per_second()
-                / (acia_baud_table[ctrl & 0xf]*2));
+                / (acia_baud_table[ctrl & ACIA_CTRL_BITS_BPS_MASK]*2));
         break;
     }
 
@@ -165,7 +165,7 @@ static int get_acia_ticks(void)
 
 static int acia_set_mode(int new_mode, void *param)
 {
-    if (new_mode < 0 || new_mode > 2)
+    if (new_mode < ACIA_MODE_LOWEST || new_mode > ACIA_MODE_HIGHEST)
         return -1;
 
     acia_mode = new_mode;
@@ -300,7 +300,7 @@ int myacia_snapshot_write_module(snapshot_t *p)
 
     SMW_B(m, txdata);
     SMW_B(m, rxdata);
-    SMW_B(m, (BYTE)(status | (irq?0x80:0)));
+    SMW_B(m, (BYTE)(status | (irq ? ACIA_SR_BITS_IRQ : 0)));
     SMW_B(m, cmd);
     SMW_B(m, ctrl);
     SMW_B(m, (BYTE)(intx));
@@ -342,8 +342,8 @@ int myacia_snapshot_read_module(snapshot_t *p)
 
     irq = 0;
     SMR_B(m, &status);
-    if (status & 0x80) {
-        status &= 0x7f;
+    if (status & ACIA_SR_BITS_IRQ) {
+        status &= ~ACIA_SR_BITS_IRQ;
         irq = 1;
         mycpu_set_int_noclk(acia_int_num, acia_irq);
     } else {
@@ -351,10 +351,10 @@ int myacia_snapshot_read_module(snapshot_t *p)
     }
 
     SMR_B(m, &cmd);
-    if ((cmd & 1) && (fd < 0)) {
+    if ((cmd & ACIA_CMD_BITS_DTR_ENABLE_RECV_AND_IRQ) && (fd < 0)) {
         fd = rs232drv_open(acia_device);
     } else
-        if ((fd >= 0) && !(cmd & 1)) {
+        if ((fd >= 0) && !(cmd & ACIA_CMD_BITS_DTR_ENABLE_RECV_AND_IRQ)) {
         rs232drv_close(fd);
         fd = -1;
     }
@@ -396,7 +396,7 @@ void REGPARM2 myacia_store(WORD a, BYTE b)
         myclk ++;
     }
 
-    if (acia_mode==2)
+    if (acia_mode==ACIA_MODE_TURBO232)
       acia_register_size=7;
     else
       acia_register_size=3;
@@ -404,7 +404,7 @@ void REGPARM2 myacia_store(WORD a, BYTE b)
     switch(a & acia_register_size) {
       case ACIA_DR:
         txdata = b;
-        if (cmd & 1) {
+        if (cmd & ACIA_CMD_BITS_DTR_ENABLE_RECV_AND_IRQ) {
             if (!intx) {
                 acia_alarm_clk = myclk + 1;
                 alarm_set(acia_alarm, acia_alarm_clk);
@@ -414,15 +414,15 @@ void REGPARM2 myacia_store(WORD a, BYTE b)
                 if (intx == 1) {
                     intx++;
                 }
-                status &= 0xef;               /* clr TDRE */
+                status &= ~ ACIA_SR_BITS_TRANSMIT_DR_EMPTY; /* clr TDRE */
         }
         break;
       case ACIA_SR:
         if (fd >= 0)
             rs232drv_close(fd);
         fd = -1;
-        status &= ~4;
-        cmd &= 0xe0;
+        status &= ~ ACIA_SR_BITS_OVERRUN_ERROR;
+        cmd &= ACIA_CMD_BITS_PARITY_TYPE_MASK | ACIA_CMD_BITS_PARITY_ENABLED;
         intx = 0;
         acia_set_int(acia_irq, acia_int_num, 0);
         irq = 0;
@@ -435,13 +435,13 @@ void REGPARM2 myacia_store(WORD a, BYTE b)
         break;
       case ACIA_CMD:
         cmd = b;
-        if ((cmd & 1) && (fd < 0)) {
+        if ((cmd & ACIA_CMD_BITS_DTR_ENABLE_RECV_AND_IRQ) && (fd < 0)) {
             fd = rs232drv_open(acia_device);
             acia_alarm_clk = myclk + acia_ticks;
             alarm_set(acia_alarm, acia_alarm_clk);
             alarm_active = 1;
         } else
-            if ((fd >= 0) && !(cmd & 1)) {
+            if ((fd >= 0) && !(cmd & ACIA_CMD_BITS_DTR_ENABLE_RECV_AND_IRQ)) {
                 rs232drv_close(fd);
                 alarm_unset(acia_alarm);
                 alarm_active = 0;
@@ -449,8 +449,9 @@ void REGPARM2 myacia_store(WORD a, BYTE b)
             }
         break;
       case T232_ECTRL:
-        if ((ctrl & 0xf)==0)
+        if ((ctrl & ACIA_CTRL_BITS_BPS_MASK) == ACIA_CTRL_BITS_BPS_16X_EXT_CLK) {
           ectrl=b;
+        }
     }
 }
 
@@ -473,19 +474,19 @@ BYTE myacia_read_(WORD a)
 #endif
     int acia_register_size;
 
-    if (acia_mode==2)
+    if (acia_mode==ACIA_MODE_TURBO232)
       acia_register_size=7;
     else
       acia_register_size=3;
 
     switch(a & acia_register_size) {
       case ACIA_DR:
-        status &= ~8;
+        status &= ~ ACIA_SR_BITS_RECEIVE_DR_FULL;
         acia_last_read = rxdata;
         return rxdata;
       case ACIA_SR:
         {
-            BYTE c = status | (irq ? 0x80 : 0);
+            BYTE c = status | (irq ? ACIA_SR_BITS_IRQ : 0);
             acia_set_int(acia_irq, acia_int_num, 0);
             irq = 0;
             acia_last_read = c;
@@ -502,7 +503,10 @@ BYTE myacia_read_(WORD a)
       case T232_NDEF3:
         return 0xff;
       case T232_ECTRL:
-        return ectrl+((ctrl & 0xf)==0) ? 4 : 0;
+        return ectrl 
+                     + ((ctrl & ACIA_CTRL_BITS_BPS_MASK) == ACIA_CTRL_BITS_BPS_16X_EXT_CLK) 
+                       ? T232_ECTRL_BITS_EXT_ACTIVE 
+                       : 0;
     }
     /* should never happen */
     return 0;
@@ -515,7 +519,7 @@ BYTE myacia_peek(WORD a)
         return rxdata;
       case ACIA_SR:
         {
-            BYTE c = status | (irq ? 0x80 : 0);
+            BYTE c = status | (irq ? ACIA_SR_BITS_IRQ : 0);
             return c;
         }
       case ACIA_CTRL:
@@ -539,18 +543,20 @@ static void int_acia(CLOCK offset, void *data)
         intx--;
 
     rxirq = 0;
-    if ((fd >= 0) && (!(status&8)) && rs232drv_getc(fd, &rxdata)) {
-        status |= 8;
+    if ((fd >= 0) && (!(status & ACIA_SR_BITS_RECEIVE_DR_FULL)) && rs232drv_getc(fd, &rxdata)) {
+        status |= ACIA_SR_BITS_RECEIVE_DR_FULL;
         rxirq = 1;
     }
 
-    if ((rxirq && (!(cmd & 0x02))) || ((cmd & 0x0c) == 0x04) ) {
+    if ((rxirq 
+         && (!(cmd & ACIA_CMD_BITS_IRQ_ENABLED))) 
+         || ((cmd & ACIA_CMD_BITS_TRANSMITTER_MASK) == ACIA_CMD_BITS_TRANSMITTER_TX_WITH_IRQ) ) {
         acia_set_int(acia_irq, acia_int_num, acia_irq);
         irq = 1;
     }
 
-    if (!(status & 0x10)) {
-        status |= 0x10;
+    if (!(status & ACIA_SR_BITS_TRANSMIT_DR_EMPTY)) {
+        status |= ACIA_SR_BITS_TRANSMIT_DR_EMPTY;
     }
 
     acia_alarm_clk = myclk + acia_ticks;
