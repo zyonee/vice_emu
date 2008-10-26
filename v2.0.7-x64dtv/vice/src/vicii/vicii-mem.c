@@ -1183,8 +1183,14 @@ inline static void d04d_store(const BYTE value)
 /* DTV Palette registers at $d2xx */
 void REGPARM2 vicii_palette_store(WORD addr, BYTE value)
 {
-    if (!vicii.extended_enable) return; 
-    if (vicii.dtvpalette[addr&0xf]==value) return;
+    if (!vicii.extended_enable) {
+        return;
+    }
+
+    if (vicii.dtvpalette[addr&0xf]==value) {
+        return;
+    }
+
     vicii.dtvpalette[addr&0xf]=value;
     d020_store((BYTE)vicii.regs[0x20]);
     d021_store((BYTE)vicii.regs[0x21]);
@@ -1201,7 +1207,7 @@ void REGPARM2 vicii_palette_store(WORD addr, BYTE value)
     sprite_color_store(0x2c,(BYTE)vicii.regs[0x2c]);
     sprite_color_store(0x2d,(BYTE)vicii.regs[0x2d]);
     sprite_color_store(0x2e,(BYTE)vicii.regs[0x2e]);
-    if (vicii.raster.cache_enabled) vicii.raster.dont_cache = 1;
+    vicii.raster.dont_cache = 1;
 }
 
 BYTE REGPARM1 vicii_palette_read(WORD addr)
