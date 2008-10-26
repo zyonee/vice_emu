@@ -340,7 +340,11 @@ int myacia_snapshot_write_module(snapshot_t *p)
         SMW_DW(m, 0);
     }
 
-    /*! \todo: Handle alarm_active_rx! */
+    if (alarm_active_rx) {
+        SMW_DW(m, (acia_alarm_clk_rx - myclk));
+    } else {
+        SMW_DW(m, 0);
+    }
 
     snapshot_module_close(m);
 
@@ -403,12 +407,34 @@ int myacia_snapshot_read_module(snapshot_t *p)
         acia_alarm_clk_tx = myclk + dword;
         alarm_set(acia_alarm_tx, acia_alarm_clk_tx);
         alarm_active_tx = 1;
-    } else {
-        alarm_unset(acia_alarm_tx);
-        alarm_active_tx = 0;
+
+        /*
+         * for compatibility reasons of old snapshots with new ones,
+         * set the RX alarm to the same value.
+         * if we have a new snapshot (2.0.8 and up), this will be
+         * overwritten directly afterwards.
+         */
+        acia_alarm_clk_rx = myclk + dword;
+        alarm_set(acia_alarm_rx, acia_alarm_clk_rx);
+        alarm_active_rx = 1;
+
     }
 
-    /*! \todo: Handle alarm_active_rx! */
+    /*
+     * this is new with VICE 2.0.8; thus, only use the settings
+     * if it does exist.
+     */
+    if ( SMR_DW(m, &dword) >= 0 ) {
+        if (dword) {
+            acia_alarm_clk_rx = myclk + dword;
+            alarm_set(acia_alarm_rx, acia_alarm_clk_rx);
+            alarm_active_rx = 1;
+        } else {
+            alarm_unset(acia_alarm_rx);
+            alarm_active_rx = 0;
+        }
+    }
+
 
     if (snapshot_module_close(m) < 0)
         return -1;
