@@ -1927,8 +1927,9 @@ static const BYTE rewind_fetch_tab[] = {
             BYTE hi = (BYTE)(p2 >> 8);
 
             debug_drive((DWORD)(reg_pc), debug_clk,
-                        mon_disassemble_to_string(e_disk8_space, reg_pc, op,
-                        lo, hi, (BYTE)0, 1, "6502"), 
+                        mon_disassemble_to_string(e_disk8_space,
+                                                  (WORD) reg_pc, op,
+                                                  lo, hi, 0, 1, "6502"), 
                         reg_a_read, reg_x, reg_y, reg_sp);
         }
 #else
@@ -1938,8 +1939,9 @@ static const BYTE rewind_fetch_tab[] = {
             BYTE hi = (BYTE)(p2 >> 8);
 
             debug_maincpu((DWORD)(reg_pc), debug_clk,
-                          mon_disassemble_to_string(e_comp_space, reg_pc, op,
-                          lo, hi, (BYTE)0, 1, "6502"),
+                          mon_disassemble_to_string(e_comp_space,
+                                                    (WORD) reg_pc, op,
+                                                    lo, hi, 0, 1, "6502"),
                           reg_a_read, reg_x, reg_y, reg_sp);
         }
         if (debug_perform_break_into_monitor)
