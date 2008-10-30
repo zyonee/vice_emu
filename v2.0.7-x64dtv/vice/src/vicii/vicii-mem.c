@@ -985,12 +985,13 @@ inline static void d03b_store(const BYTE value)
     VICII_DEBUG_REGISTER(("Linear Count A Start middle: $%02x",value));
 }
 
-inline static void d03c_store(const BYTE value)
+static void d03c_store(const BYTE value)
 {
     int cycle, old_overscan;
   
-    if (!vicii.extended_enable)
+    if (!vicii.extended_enable) {
         return;
+    }
 
     cycle = VICII_RASTER_CYCLE(maincpu_clk);
     old_overscan = vicii.overscan;
@@ -1046,8 +1047,10 @@ inline static void d03d_store(const BYTE value)
 
 inline static void d03f_store(const BYTE value)
 {
-    if (vicii.extended_lockout)
+    if (vicii.extended_lockout) {
         return;
+    }
+
     vicii.extended_enable = value & 0x01 ? 1 : 0;
     vicii.extended_lockout = value & 0x02 ? 1 : 0;
 
@@ -1064,24 +1067,27 @@ int vicii_extended_regs(void)
 
 inline static void d040_store(const BYTE value)
 {
-    if (vicii.extended_enable) vicii.regs[0x40] = value;
+    if (vicii.extended_enable) {
+        vicii.regs[0x40] = value;
+    }
 
     VICII_DEBUG_REGISTER(("VICIIDTV register 2: $%02x",value));
 }
 
 inline static void d044_store(const BYTE value)
 {
+    int offs;
 
     if (vicii.extended_enable) {
-        int offs;
         vicii.regs[0x44] = value;
 
         offs = value & 0x7f;
         vicii.raster_irq_prevent = 0;
         if (offs <= 64) {
             if (vicii.cycles_per_line == 63 && offs > 53) {
-                if (offs == 54 || offs == 55)
+                if (offs == 54 || offs == 55) {
                     vicii.raster_irq_prevent = 1;
+                }
                 offs -= 2;
             }
             vicii.raster_irq_offset = (offs+1) % vicii.cycles_per_line;
@@ -1175,7 +1181,9 @@ inline static void d04c_store(const BYTE value)
 
 inline static void d04d_store(const BYTE value)
 {
-    if (vicii.extended_enable) vicii.regs[0x4d] = value & 0x1f;
+    if (vicii.extended_enable) {
+        vicii.regs[0x4d] = value & 0x1f;
+    }
 
     VICII_DEBUG_REGISTER(("Sprite bank: $%02x",value));
 }
