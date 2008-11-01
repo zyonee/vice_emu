@@ -709,7 +709,7 @@ static void int_acia_rx(CLOCK offset, void *data)
     DEBUG_VERBOSE_LOG_MESSAGE((acia_log, "int_acia_rx(offset=%ld, myclk=%d", offset, myclk));
 
     if (int_acia_read_data(IARD_NOREMOVE)) {
-        next_alarm *= 10; /*! \todo: Multiply with number of bits (data + parity + start + stop)
+        next_alarm *= 10; /*! \todo: Multiply with number of bits (data + parity + start + stop) */
     }
 
     acia_alarm_clk_rx = next_alarm;
