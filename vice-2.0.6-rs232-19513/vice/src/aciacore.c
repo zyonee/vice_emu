@@ -3,6 +3,7 @@
  *
  * Written by
  *  André Fachat <fachat@physik.tu-chemnitz.de>
+ *  Spiro Trikaliotis
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -67,7 +68,9 @@ static unsigned int acia_int_num;
 
 static int acia_ticks = 21111;  /* number of clock ticks per char */
 static int fd = -1;
+#if ! defined(REMOVE_INTX)
 static int intx = 0;    /* indicates that a transmit is currently ongoing */
+#endif
 static int irq = 0;
 static BYTE cmd;
 static BYTE ctrl;
@@ -88,7 +91,7 @@ enum e_int_acia_read_data {
     IARD_REMOVE = 1,
 };
 
-static void int_acia_read_data(enum e_int_acia_read_data remove_data);
+static int int_acia_read_data(enum e_int_acia_read_data remove_data);
 
 static BYTE acia_last_read = 0;  /* the byte read the last time (for RMW) */
 
@@ -176,7 +179,7 @@ static int get_acia_ticks(void)
         break;
 
       case ACIA_MODE_TURBO232:
-        if ((ctrl & ACIA_CTRL_BITS_BPS_MASK) == 0)
+        if ((ctrl & ACIA_CTRL_BITS_BPS_MASK) == ACIA_CTRL_BITS_BPS_16X_EXT_CLK)
             return (int)(machine_get_cycles_per_second()
                 / t232_baud_table[ectrl & T232_ECTRL_BITS_EXT_BPS_MASK]);
         else
@@ -268,14 +271,16 @@ void myacia_reset(void)
 {
     DEBUG_LOG_MESSAGE((acia_log, "reset_myacia"));
 
-    cmd = 0;
-    ctrl = 0;
-    ectrl = 0;
+    cmd = ACIA_CMD_DEFAULT_AFTER_HW_RESET;
+    ctrl = ACIA_CTRL_DEFAULT_AFTER_HW_RESET;
+    ectrl = T232_ECTRL_DEFAULT_AFTER_HW_RESET;
 
     acia_ticks=get_acia_ticks();
 
-    status = 0x10;
+    status = ACIA_SR_DEFAULT_AFTER_HW_RESET;
+#if ! defined(REMOVE_INTX)
     intx = 0;
+#endif
 
     if (fd >= 0)
         rs232drv_close(fd);
@@ -312,6 +317,11 @@ void myacia_reset(void)
  * UBYTE        INTX    0 = no data to tx; 2 = TDR valid; 1 = in transmit
  *
  * DWORD        TICKS   ticks till the next TDR empty interrupt
+ *
+ * DWORD        TICKS2  ticks till the next RDF empty interrupt
+ *                      TICKS2 has been added with 2.0.9; if it does not
+ *                      exist on read, it is assumed that it has the same
+ *                      value as TICKS to emulate the old behaviour.
  */
 
 static const char module_name[] = MYACIA;
@@ -332,7 +342,11 @@ int myacia_snapshot_write_module(snapshot_t *p)
     SMW_B(m, (BYTE)(status | (irq ? ACIA_SR_BITS_IRQ : 0)));
     SMW_B(m, cmd);
     SMW_B(m, ctrl);
+#if ! defined(REMOVE_INTX)
     SMW_B(m, (BYTE)(intx));
+#else
+    SMW_B(m, 0);
+#endif
 
     if (alarm_active_tx) {
         SMW_DW(m, (acia_alarm_clk_tx - myclk));
@@ -400,7 +414,9 @@ int myacia_snapshot_read_module(snapshot_t *p)
     acia_ticks=get_acia_ticks();
 
     SMR_B(m, &byte);
+#if ! defined(REMOVE_INTX)
     intx = byte;
+#endif
 
     SMR_DW(m, &dword);
     if (dword) {
@@ -465,16 +481,21 @@ void REGPARM2 myacia_store(WORD a, BYTE b)
       case ACIA_DR:
         txdata = b;
         if (cmd & ACIA_CMD_BITS_DTR_ENABLE_RECV_AND_IRQ) {
+#if ! defined(REMOVE_INTX)
             if (!intx) {
+#endif
                 acia_alarm_clk_tx = myclk + 1;
                 alarm_set(acia_alarm_tx, acia_alarm_clk_tx);
                 alarm_active_tx = 1;
+#if ! defined(REMOVE_INTX)
                 intx = 2;
-            } else
+            } else {
                 if (intx == 1) {
                     intx++;
                 }
-                status &= ~ ACIA_SR_BITS_TRANSMIT_DR_EMPTY; /* clr TDRE */
+            }
+#endif
+            status &= ~ ACIA_SR_BITS_TRANSMIT_DR_EMPTY; /* clr TDRE */
         }
         break;
       case ACIA_SR:
@@ -483,7 +504,9 @@ void REGPARM2 myacia_store(WORD a, BYTE b)
         fd = -1;
         status &= ~ ACIA_SR_BITS_OVERRUN_ERROR;
         cmd &= ACIA_CMD_BITS_PARITY_TYPE_MASK | ACIA_CMD_BITS_PARITY_ENABLED;
+#if ! defined(REMOVE_INTX)
         intx = 0;
+#endif
         acia_set_int(acia_irq, acia_int_num, 0);
         irq = 0;
         alarm_unset(acia_alarm_tx);
@@ -604,14 +627,24 @@ static void int_acia_tx(CLOCK offset, void *data)
 {
     DEBUG_VERBOSE_LOG_MESSAGE((acia_log, "int_acia_tx(offset=%ld, myclk=%d", offset, myclk));
 
+#if ! defined(REMOVE_INTX)
     if ((intx == 2) && (fd >= 0))
+#else
+    if (fd >= 0)
+#endif
         rs232drv_putc(fd,txdata);
+
+#if ! defined(REMOVE_INTX)
     if (intx)
         intx--;
 
     acia_alarm_clk_tx = myclk + acia_ticks;
     alarm_set(acia_alarm_tx, acia_alarm_clk_tx);
     alarm_active_tx = 1;
+#else
+    alarm_unset(acia_alarm_tx);
+    alarm_active_tx = 0;
+#endif
 
     status |= ACIA_SR_BITS_TRANSMIT_DR_EMPTY;
 
@@ -621,10 +654,12 @@ static void int_acia_tx(CLOCK offset, void *data)
     }
 }
 
-static void int_acia_read_data(enum e_int_acia_read_data remove_data)
+static int int_acia_read_data(enum e_int_acia_read_data remove_data)
 {
     static int have_received_byte = 0;
     static char received_byte = 0;
+
+    int read_data = 0;
 
     DEBUG_VERBOSE_LOG_MESSAGE((acia_log, "int_acia_read_data(%s)", remove ? "REMOVE" : ""));
 
@@ -647,6 +682,8 @@ static void int_acia_read_data(enum e_int_acia_read_data remove_data)
             break;
         }
 
+        read_data = 1;
+
         if ( ! (cmd & ACIA_CMD_BITS_IRQ_DISABLED) ) {
             acia_set_int(acia_irq, acia_int_num, acia_irq);
             irq = 1;
@@ -661,15 +698,21 @@ static void int_acia_read_data(enum e_int_acia_read_data remove_data)
     if (remove_data != IARD_NOREMOVE) {
         have_received_byte = 0;
     }
+
+    return read_data;
 }
 
 static void int_acia_rx(CLOCK offset, void *data)
 {
+    CLOCK next_alarm = myclk + acia_ticks;
+
     DEBUG_VERBOSE_LOG_MESSAGE((acia_log, "int_acia_rx(offset=%ld, myclk=%d", offset, myclk));
 
-    int_acia_read_data(IARD_NOREMOVE);
+    if (int_acia_read_data(IARD_NOREMOVE)) {
+        next_alarm *= 10; /*! \todo: Multiply with number of bits (data + parity + start + stop)
+    }
 
-    acia_alarm_clk_rx = myclk + acia_ticks;
+    acia_alarm_clk_rx = next_alarm;
     alarm_set(acia_alarm_rx, acia_alarm_clk_rx);
     alarm_active_rx = 1;
 }

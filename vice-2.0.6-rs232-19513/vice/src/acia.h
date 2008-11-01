@@ -3,6 +3,7 @@
  *
  * Written by
  *  Andre Fachat <a.fachat@physik.tu-chemnitz.de>
+ *  Spiro Trikaliotis
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -24,8 +25,8 @@
  *
  */
 
-#ifndef _ACIA_H
-#define _ACIA_H
+#ifndef VICE_ACIA_H
+#define VICE_ACIA_H
 
 enum {
     ACIA_DR    = 0, /* Data register */
@@ -45,7 +46,9 @@ enum {
     T232_ECTRL_BITS_EXT_BPS_57600    = 0x02,
     T232_ECTRL_BITS_EXT_BPS_RESERVED = 0x03,
 
-    T232_ECTRL_BITS_EXT_ACTIVE       = 0x04
+    T232_ECTRL_BITS_EXT_ACTIVE       = 0x04,
+
+    T232_ECTRL_DEFAULT_AFTER_HW_RESET = 0
 };
 
 enum {
@@ -55,7 +58,7 @@ enum {
     ACIA_SR_BITS_RECEIVE_DR_FULL   = 0x08, /* cleared automatically by read of ACIA_DR */
     ACIA_SR_BITS_TRANSMIT_DR_EMPTY = 0x10, /* cleared automatically by write of ACIA_DR */
     ACIA_SR_BITS_DCD               = 0x20, /* reflects current DCD state */
-    ACIA_SR_BITS_DSR               = 0x40, /* reflects current DCD state */
+    ACIA_SR_BITS_DSR               = 0x40, /* reflects current DSR state */
     ACIA_SR_BITS_IRQ               = 0x80, /* cleared by read of status register */
 
     ACIA_SR_DEFAULT_AFTER_HW_RESET = ACIA_SR_BITS_TRANSMIT_DR_EMPTY
@@ -73,7 +76,7 @@ enum {
     ACIA_CMD_BITS_ECHO                    = 0x10,
 
     ACIA_CMD_BITS_TRANSMITTER_MASK        = 0x0C,
-    ACIA_CMD_BITS_TRANSMITTER_NOT_RTS     = 0x00,
+    ACIA_CMD_BITS_TRANSMITTER_NO_RTS      = 0x00,
     ACIA_CMD_BITS_TRANSMITTER_TX_WITH_IRQ = 0x04,
     ACIA_CMD_BITS_TRANSMITTER_TX_WO_IRQ   = 0x08,
     ACIA_CMD_BITS_TRANSMITTER_BREAK       = 0x0C,
