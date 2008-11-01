@@ -541,7 +541,7 @@ Public License instead of this License.
 @chapter About VICE
 
 VICE is the one and only @dfn{Versatile Commodore Emulator}.  It provides
-emulation of the Commodore C64, C128, VIC20, PET, PLUS4 and CBM-II computers
+emulation of the Commodore C64, C64DTV, C128, VIC20, PET, PLUS4 and CBM-II computers
 within a single package.  The emulators run as separate programs, but have
 the same user interface, share the same settings and support the same
 file formats.
@@ -559,7 +559,7 @@ timing.  Unlike other emulators, VICE aims to be cycle
 accurate; it tries to emulate chip timings as precisely as possible and
 does so @emph{efficiently}.
 
-Please do @emph{not} expect the C128, PET, PLUS4 and CBM-II emulators to
+Please do @emph{not} expect the C64DTV, C128, PET, PLUS4 and CBM-II emulators to
 be as good as the C64 or VIC20 one, as they are still under construction.
 
 @emph{Notice:} This documentation is written for the Unix release of VICE.
@@ -606,6 +606,11 @@ and cycle accurate.
 The C64DTV emulator, called @samp{x64dtv}, features emulation of C64DTV
 revisions 2 and 3. The emulator is under construction, but most of the
 DTV specific features are already supported (with varying accuracy).
+
+Video cache is disabled by default as it currently doesn't work with
+some of C64DTV's new video modes. The new video modes have a simple
+"fake" video cache implementation that may give incorrect results
+and decreased performance.
 
 
 @node C128 emulator features, VIC20 emulator features, C64DTV emulator features, Preface
@@ -3559,7 +3564,7 @@ Set the device for joystick emulation of port 1 and 2, respectively
 * PET-specific::                Commands and settings specific to the
                                 PET emulator
 * CBM-II-specific::             Commands and settings specific to the
-				CBM-II emulator
+                                CBM-II emulator
 @end menu
 
 @node C64/128-specific, C64DTV-specific, Machine-specific features, Machine-specific features
@@ -4172,7 +4177,7 @@ Specify Kernal revision (@code{KernalRev}).
 
 
 @node C64DTV-specific, VIC20-specific, C64/128-specific, Machine-specific features
-@section C64DTV-specific
+@section C64DTV-specific commands and settings
 
 This section lists the settings and commands that are C64DTV specific
 and thus are not present in the other emulators.
@@ -4202,10 +4207,6 @@ basic and charset is automatically created.
 If writing to the C64DTV ROM is enabled, the image file is rewritten with
 the current data when exiting x64dtv.
 
-The trueflashfs option is analogous to True drive emulation.  If disabled,
-any file access to the flash filesystem (device 1) will go to the local
-file system instead.
-
 Note that x64dtv tries to load the image file from the C64DTV
 directory first, and if it isn't found there, x64dtv tries to
 load it from the current directory. If you do not have @file{dtvrom.bin}
@@ -4226,10 +4227,22 @@ Specify @file{NAME} as the C64DTV ROM image
 @itemx +c64dtvromrw
 Enable or disable writing to C64DTV ROM image
 
+@end table
+
+The trueflashfs option is analogous to True drive emulation.  If disabled,
+any file access to the flash filesystem (device 1) will go to the local
+file system instead.
+
+@table @code
+
 @cindex -trueflashfs, +trueflashfs
 @item -trueflashfs
 @itemx +trueflashfs
 Enable or disable true hardware flash file system
+
+@cindex -fsflash
+@item -fsflash NAME
+Specify @file{NAME} as directory for flash file system device
 
 @end table
 
