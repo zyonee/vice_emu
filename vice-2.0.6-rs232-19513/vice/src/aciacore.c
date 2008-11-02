@@ -531,7 +531,9 @@ void REGPARM2 myacia_store(WORD a, BYTE b)
                 fd = -1;
         }
         if ( ! (cmd & ACIA_CMD_BITS_IRQ_DISABLED) ) {
-            acia_alarm_clk_rx = myclk + acia_ticks;
+            if (acia_alarm_clk_rx <= myclk) {
+                acia_alarm_clk_rx = myclk + acia_ticks;
+            }
             alarm_set(acia_alarm_rx, acia_alarm_clk_rx);
             alarm_active_rx = 1;
         }
@@ -684,11 +686,6 @@ static int int_acia_read_data(enum e_int_acia_read_data remove_data)
 
         read_data = 1;
 
-        if ( ! (cmd & ACIA_CMD_BITS_IRQ_DISABLED) ) {
-            acia_set_int(acia_irq, acia_int_num, acia_irq);
-            irq = 1;
-        }
-
         rxdata = received_byte;
 
         status |= ACIA_SR_BITS_RECEIVE_DR_FULL;
@@ -709,7 +706,12 @@ static void int_acia_rx(CLOCK offset, void *data)
     DEBUG_VERBOSE_LOG_MESSAGE((acia_log, "int_acia_rx(offset=%ld, myclk=%d", offset, myclk));
 
     if (int_acia_read_data(IARD_NOREMOVE)) {
-        next_alarm *= 10; /*! \todo: Multiply with number of bits (data + parity + start + stop) */
+        next_alarm = myclk + acia_ticks * 15; /*! \todo: Multiply with number of bits (data + parity + start + stop) */
+
+        if ( ! (cmd & ACIA_CMD_BITS_IRQ_DISABLED) ) {
+            acia_set_int(acia_irq, acia_int_num, acia_irq);
+            irq = 1;
+        }
     }
 
     acia_alarm_clk_rx = next_alarm;
