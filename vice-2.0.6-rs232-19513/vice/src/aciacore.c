@@ -1,5 +1,6 @@
-/*
- * aciacore.c - Template file for ACIA 6551 emulation.
+/*! \file aciacore.c \n
+ *  \author André Fachat, Spiro Trikaliotis\n
+ *  \brief- Template file for ACIA 6551 emulation.
  *
  * Written by
  *  André Fachat <fachat@physik.tu-chemnitz.de>
@@ -62,20 +63,20 @@
 # define DEBUG_VERBOSE_LOG_MESSAGE(_x)
 #endif
 
-static alarm_t *acia_alarm_tx = NULL;
-static alarm_t *acia_alarm_rx = NULL;
-static unsigned int acia_int_num;
+static alarm_t *acia_alarm_tx = NULL; /*!< handling of the transmit (TX) alarm */
+static alarm_t *acia_alarm_rx = NULL; /*!< handling of the receive (RX) alarm */
+static unsigned int acia_int_num;     /*!< the (internal) number for the ACIA interrupt. */
 
-static int acia_ticks = 21111;  /* number of clock ticks per char */
-static int fd = -1;
+static int acia_ticks = 21111;  /*!< number of clock ticks per char */
+static int fd = -1;             /*!< file descriptor used to access the RS232 physical device on the host machine */
 #if ! defined(REMOVE_INTX)
-static int intx = 0;    /* indicates that a transmit is currently ongoing */
+static int intx = 0;    /*!< indicates that a transmit is currently ongoing */
 #endif
 static int irq = 0;
 static BYTE cmd;
 static BYTE ctrl;
-static BYTE rxdata;     /* data that has been received last */
-static BYTE txdata;     /* data prepared to send */
+static BYTE rxdata;     /*!< data that has been received last */
+static BYTE txdata;     /*!< data prepared to send */
 static BYTE status;
 static BYTE ectrl;
 static int alarm_active_tx = 0;    /* if alarm is set or not */
@@ -165,30 +166,46 @@ static int acia_set_irq(int new_irq_res, void *param)
     return 0;
 }
 
-static int get_acia_ticks(void)
+/*! \internal \brief get the bps rate ("baud rate") of the ACIA
+
+ \return
+   the bps rate the acia is currently programme to.
+*/
+static double get_acia_bps(void)
 {
     switch(acia_mode) {
       case ACIA_MODE_NORMAL:
-        return (int)(machine_get_cycles_per_second()
-            / acia_baud_table[ctrl & ACIA_CTRL_BITS_BPS_MASK]);
-        break;
+        return acia_baud_table[ctrl & ACIA_CTRL_BITS_BPS_MASK];
 
       case ACIA_MODE_SWIFTLINK:
-        return (int)(machine_get_cycles_per_second()
-            / (acia_baud_table[ctrl & ACIA_CTRL_BITS_BPS_MASK]*2));
-        break;
+        return acia_baud_table[ctrl & ACIA_CTRL_BITS_BPS_MASK] * 2;
 
       case ACIA_MODE_TURBO232:
         if ((ctrl & ACIA_CTRL_BITS_BPS_MASK) == ACIA_CTRL_BITS_BPS_16X_EXT_CLK)
-            return (int)(machine_get_cycles_per_second()
-                / t232_baud_table[ectrl & T232_ECTRL_BITS_EXT_BPS_MASK]);
+            return t232_baud_table[ectrl & T232_ECTRL_BITS_EXT_BPS_MASK];
         else
-            return (int)(machine_get_cycles_per_second()
-                / (acia_baud_table[ctrl & ACIA_CTRL_BITS_BPS_MASK]*2));
-        break;
-    }
+            return acia_baud_table[ctrl & ACIA_CTRL_BITS_BPS_MASK] * 2;
 
-    return 0;
+      default:
+        log_message(acia_log, "Invalid acia_mode = %u in get_acia_bps()", acia_mode);
+        return acia_baud_table[0]; /* return dummy value */
+    }
+}
+
+/*! \internal \brief get the bps rate ("baud rate") of the ACIA
+
+ \return
+   set the ticks that will pass for one character to be transferred
+   according to the current ACIA settings.
+
+ \todo
+   Currently, 10 bits (for example, 8 data bits, 1 start and 1 stop bit)
+   are hard-coded.
+*/
+static void set_acia_ticks(void)
+{
+    /* calculate time in ticks for 8 data bits, 1 start and 1 stop bit = 10 bit */
+    acia_ticks = (int) (machine_get_cycles_per_second() / get_acia_bps() * 10);
 }
 
 static int acia_set_mode(int new_mode, void *param)
@@ -197,11 +214,12 @@ static int acia_set_mode(int new_mode, void *param)
         return -1;
 
     acia_mode = new_mode;
-    acia_ticks = get_acia_ticks();
+    set_acia_ticks();
 
     return 0;
 }
 
+/*! \brief integer resources used by the ACIA module */
 static const resource_int_t resources_int[] = {
     { MYACIA "Dev", MyDevice, RES_EVENT_NO, NULL,
       &acia_device, acia_set_device, NULL },
@@ -210,17 +228,38 @@ static const resource_int_t resources_int[] = {
     { NULL }
 };
 
+/*! \brief initialize the ACIA resources
+ \return
+   0 on success, else -1.
+
+ \remark
+   Registers the integer resources
+
+ \todo
+   Why duality with myacia_init_mode_resources()?
+*/
 int myacia_init_resources(void)
 {
     return resources_register_int(resources_int);
 }
 
+/*! \brief integer resources used by the ACIA module */
 static const resource_int_t mode_resources_int[] = {
     { MYACIA "Mode", ACIA_MODE_NORMAL, RES_EVENT_NO, NULL,
       &acia_mode, acia_set_mode, NULL },
     { NULL }
 };
 
+/*! \brief initialize the ACIA resources
+ \return
+   0 on success, else -1.
+
+ \remark
+   Registers the integer resources
+
+ \todo
+   Why duality with myacia_init_resources()?
+*/
 int myacia_init_mode_resources(void)
 {
     return resources_register_int(mode_resources_int);
@@ -240,20 +279,34 @@ static const cmdline_option_t cmdline_options[] = {
 };
 #endif
 
+/*! \brief initialize the command-line options'
+ \return
+   0 on success, else -1.
+
+ \remark
+   Registers the command-line options
+*/
 int myacia_init_cmdline_options(void) {
     return cmdline_register_options(cmdline_options);
 }
 
 /******************************************************************/
 
+/*! \internal \brief Prevent clock overflow by adjusting clock value
+
+ \remark
+   In order to prevent a clock overflow, the system is able
+   to subtract a given amount from the clock values. When this
+   happens, this function is called in order for the module to
+   adjust its own values.
+*/
 static void clk_overflow_callback(CLOCK sub, void *var)
 {
-    if (alarm_active_tx)
-        acia_alarm_clk_tx -= sub;
-    if (alarm_active_rx)
-        acia_alarm_clk_rx -= sub;
+    acia_alarm_clk_tx -= sub;
+    acia_alarm_clk_rx -= sub;
 }
 
+/*! \brief initialize the ACIA */
 void myacia_init(void)
 {
     acia_int_num = interrupt_cpu_status_int_new(maincpu_int_status, MYACIA);
@@ -267,6 +320,7 @@ void myacia_init(void)
         acia_log = log_open(MYACIA);
 }
 
+/*! \brief reset the ACIA */
 void myacia_reset(void)
 {
     DEBUG_LOG_MESSAGE((acia_log, "reset_myacia"));
@@ -275,7 +329,7 @@ void myacia_reset(void)
     ctrl = ACIA_CTRL_DEFAULT_AFTER_HW_RESET;
     ectrl = T232_ECTRL_DEFAULT_AFTER_HW_RESET;
 
-    acia_ticks=get_acia_ticks();
+    set_acia_ticks();
 
     status = ACIA_SR_DEFAULT_AFTER_HW_RESET;
 #if ! defined(REMOVE_INTX)
@@ -411,7 +465,7 @@ int myacia_snapshot_read_module(snapshot_t *p)
     }
 
     SMR_B(m, &ctrl);
-    acia_ticks=get_acia_ticks();
+    set_acia_ticks();
 
     SMR_B(m, &byte);
 #if ! defined(REMOVE_INTX)
@@ -459,6 +513,15 @@ int myacia_snapshot_read_module(snapshot_t *p)
 }
 
 
+/*! \brief write the ACIA register values
+  This function is used to write the ACIA values from the computer.
+
+  \param addr
+    The address of the ACIA register to write
+
+  \param byte
+    The value to set the register to
+*/
 void REGPARM2 myacia_store(WORD a, BYTE b)
 {
     int acia_register_size;
@@ -514,7 +577,7 @@ void REGPARM2 myacia_store(WORD a, BYTE b)
         break;
       case ACIA_CTRL:
         ctrl = b;
-        acia_ticks=get_acia_ticks();
+        set_acia_ticks();
         break;
       case ACIA_CMD:
         cmd = b;
@@ -549,6 +612,16 @@ void REGPARM2 myacia_store(WORD a, BYTE b)
     }
 }
 
+/*! \brief read the ACIA register values
+  This function is used to read the ACIA values from the computer.
+  All side-effects are executed.
+
+  \param addr
+    The address of the ACIA register to read
+
+  \return
+    The value the register has
+*/
 BYTE REGPARM1 myacia_read(WORD a)
 {
 #if 0 /* def DEBUG */
@@ -607,6 +680,20 @@ static BYTE myacia_read_(WORD a)
     return 0;
 }
 
+/*! \brief read the ACIA register values without side effects
+  This function reads the ACIA values, so they can be accessed like
+  an array of bytes. No side-effects that would be performed if a real
+  read access would occur are executed.
+
+  \param addr
+    The address of the ACIA register to read
+
+  \return
+    The value the register has
+
+  \todo
+    Currently unused
+*/
 BYTE myacia_peek(WORD a)
 {
     switch(a & 3) {
