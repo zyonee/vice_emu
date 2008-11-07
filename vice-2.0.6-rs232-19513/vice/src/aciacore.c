@@ -72,7 +72,7 @@ static unsigned int acia_int_num;     /*!< the (internal) number for the ACIA in
 static int acia_ticks = 21111;  /*!< number of clock ticks per char */
 static int fd = -1;             /*!< file descriptor used to access the RS232 physical device on the host machine */
 #if ! defined(REMOVE_INTX)
-static int intx = 0;    /*!< indicates that a transmit is currently ongoing */
+static int in_tx = 0;   /*!< indicates that a transmit is currently ongoing */
 #endif
 static int irq = 0;
 static BYTE cmd;        /*!< value of the 6551 command register */
@@ -88,18 +88,6 @@ static log_t acia_log = LOG_ERR; /*!< the log where to write debugging messages 
 
 static void int_acia_tx(CLOCK offset, void *data);
 static void int_acia_rx(CLOCK offset, void *data);
-
-/*! \brief mode for int_acia_read_data()
-
- \remark
-    For details, cf. int_acia_read_data()
-*/
-enum e_int_acia_read_data {
-    IARD_NOREMOVE = 0, /*!< do not remove data from buffer */
-    IARD_REMOVE = 1,   /*!< remove data from buffer */
-};
-
-static int int_acia_read_data(enum e_int_acia_read_data remove_data);
 
 static BYTE acia_last_read = 0;  /*!< the byte read the last time (for RMW) */
 
@@ -263,7 +251,7 @@ static double get_acia_bps(void)
     }
 }
 
-/*! \internal \brief get the bps rate ("baud rate") of the ACIA
+/*! \internal \brief set the ticks between characters of the ACIA according to the bps rate
 
  \return
    set the ticks that will pass for one character to be transferred
@@ -276,7 +264,14 @@ static double get_acia_bps(void)
 static void set_acia_ticks(void)
 {
     /* calculate time in ticks for 8 data bits, 1 start and 1 stop bit = 10 bit */
-    acia_ticks = (int) (machine_get_cycles_per_second() / get_acia_bps() * 10);
+    acia_ticks = (int) (machine_get_cycles_per_second() / get_acia_bps() * 15);
+
+    /* adjust the alarm rate for reception */
+    if (alarm_active_rx) {
+        acia_alarm_clk_rx = myclk + acia_ticks;
+        alarm_set(acia_alarm_rx, acia_alarm_clk_rx);
+        alarm_active_rx = 1;
+    }
 }
 
 static int acia_set_mode(int new_mode, void *param)
@@ -381,7 +376,7 @@ void myacia_reset(void)
 
     status = ACIA_SR_DEFAULT_AFTER_HW_RESET;
 #if ! defined(REMOVE_INTX)
-    intx = 0;
+    in_tx = 0;
 #endif
 
     if (fd >= 0)
@@ -445,7 +440,7 @@ int myacia_snapshot_write_module(snapshot_t *p)
     SMW_B(m, cmd);
     SMW_B(m, ctrl);
 #if ! defined(REMOVE_INTX)
-    SMW_B(m, (BYTE)(intx));
+    SMW_B(m, (BYTE)(in_tx));
 #else
     SMW_B(m, 0);
 #endif
@@ -517,7 +512,7 @@ int myacia_snapshot_read_module(snapshot_t *p)
 
     SMR_B(m, &byte);
 #if ! defined(REMOVE_INTX)
-    intx = byte;
+    in_tx = byte;
 #endif
 
     SMR_DW(m, &dword);
@@ -593,16 +588,16 @@ void REGPARM2 myacia_store(WORD a, BYTE b)
         txdata = b;
         if (cmd & ACIA_CMD_BITS_DTR_ENABLE_RECV_AND_IRQ) {
 #if ! defined(REMOVE_INTX)
-            if (!intx) {
+            if (!in_tx) {
 #endif
                 acia_alarm_clk_tx = myclk + 1;
                 alarm_set(acia_alarm_tx, acia_alarm_clk_tx);
                 alarm_active_tx = 1;
 #if ! defined(REMOVE_INTX)
-                intx = 2;
+                in_tx = 2;
             } else {
-                if (intx == 1) {
-                    intx++;
+                if (in_tx == 1) {
+                    in_tx++;
                 }
             }
 #endif
@@ -616,7 +611,7 @@ void REGPARM2 myacia_store(WORD a, BYTE b)
         status &= ~ ACIA_SR_BITS_OVERRUN_ERROR;
         cmd &= ACIA_CMD_BITS_PARITY_TYPE_MASK | ACIA_CMD_BITS_PARITY_ENABLED;
 #if ! defined(REMOVE_INTX)
-        intx = 0;
+        in_tx = 0;
 #endif
         acia_set_int(acia_irq, acia_int_num, 0);
         irq = 0;
@@ -634,6 +629,9 @@ void REGPARM2 myacia_store(WORD a, BYTE b)
             acia_alarm_clk_tx = myclk + acia_ticks;
             alarm_set(acia_alarm_tx, acia_alarm_clk_tx);
             alarm_active_tx = 1;
+            /* enable RX alarm */
+            alarm_active_rx = 1;
+            set_acia_ticks();
         } else
             if ((fd >= 0) && !(cmd & ACIA_CMD_BITS_DTR_ENABLE_RECV_AND_IRQ)) {
                 rs232drv_close(fd);
@@ -641,21 +639,11 @@ void REGPARM2 myacia_store(WORD a, BYTE b)
                 alarm_active_tx = 0;
                 fd = -1;
         }
-        if ( ! (cmd & ACIA_CMD_BITS_IRQ_DISABLED) ) {
-            if (acia_alarm_clk_rx <= myclk) {
-                acia_alarm_clk_rx = myclk + acia_ticks;
-            }
-            alarm_set(acia_alarm_rx, acia_alarm_clk_rx);
-            alarm_active_rx = 1;
-        }
-        else {
-            alarm_unset(acia_alarm_rx);
-            alarm_active_rx = 0;
-        }
         break;
       case T232_ECTRL:
         if ((ctrl & ACIA_CTRL_BITS_BPS_MASK) == ACIA_CTRL_BITS_BPS_16X_EXT_CLK) {
           ectrl=b;
+          set_acia_ticks();
         }
     }
 }
@@ -696,7 +684,6 @@ static BYTE myacia_read_(WORD a)
 
     switch(a & acia_register_size) {
       case ACIA_DR:
-        int_acia_read_data(IARD_REMOVE);
         status &= ~ ACIA_SR_BITS_RECEIVE_DR_FULL;
         acia_last_read = rxdata;
         return rxdata;
@@ -765,15 +752,15 @@ static void int_acia_tx(CLOCK offset, void *data)
     DEBUG_VERBOSE_LOG_MESSAGE((acia_log, "int_acia_tx(offset=%ld, myclk=%d", offset, myclk));
 
 #if ! defined(REMOVE_INTX)
-    if ((intx == 2) && (fd >= 0))
+    if ((in_tx == 2) && (fd >= 0))
 #else
     if (fd >= 0)
 #endif
         rs232drv_putc(fd,txdata);
 
 #if ! defined(REMOVE_INTX)
-    if (intx)
-        intx--;
+    if (in_tx)
+        in_tx--;
 
     acia_alarm_clk_tx = myclk + acia_ticks;
     alarm_set(acia_alarm_tx, acia_alarm_clk_tx);
@@ -791,45 +778,41 @@ static void int_acia_tx(CLOCK offset, void *data)
     }
 }
 
-static int int_acia_read_data(enum e_int_acia_read_data remove_data)
+static int int_acia_read_data(void)
 {
-    static int have_received_byte = 0;
-    static char received_byte = 0;
+    char received_byte;
 
     int read_data = 0;
 
-    DEBUG_VERBOSE_LOG_MESSAGE((acia_log, "int_acia_read_data(%s)", remove ? "REMOVE" : ""));
+    DEBUG_VERBOSE_LOG_MESSAGE((acia_log, "int_acia_read_data()"));
 
     do {
         if (fd < 0) {
             break;
         }
 
-        if ( ! have_received_byte && rs232drv_getc(fd, &received_byte) ) {
-            have_received_byte = 1;
-            DEBUG_LOG_MESSAGE((acia_log, "received byte: %u = '%c'.", 
-                (unsigned) received_byte, received_byte));
-        }
-
-        if ( status & ACIA_SR_BITS_RECEIVE_DR_FULL) {
+        if ( ! rs232drv_getc(fd, &received_byte) ) {
             break;
         }
 
-        if ( ! have_received_byte ) {
-            break;
-        }
+        DEBUG_LOG_MESSAGE((acia_log, "received byte: %u = '%c'.", 
+            (unsigned) received_byte, received_byte));
+
+        /*! \todo: What happens on the real 6551? Is the old value overwritten in
+         * case of an overrun, or is it not?
+         */
+        rxdata = received_byte;
 
         read_data = 1;
 
-        rxdata = received_byte;
+        if ( status & ACIA_SR_BITS_RECEIVE_DR_FULL) {
+            status |= ACIA_SR_BITS_OVERRUN_ERROR;
+            break;
+        }
 
         status |= ACIA_SR_BITS_RECEIVE_DR_FULL;
 
     } while (0);
-
-    if (remove_data != IARD_NOREMOVE) {
-        have_received_byte = 0;
-    }
 
     return read_data;
 }
@@ -840,9 +823,7 @@ static void int_acia_rx(CLOCK offset, void *data)
 
     DEBUG_VERBOSE_LOG_MESSAGE((acia_log, "int_acia_rx(offset=%ld, myclk=%d", offset, myclk));
 
-    if (int_acia_read_data(IARD_NOREMOVE)) {
-        next_alarm = myclk + acia_ticks * 15; /*! \todo: Multiply with number of bits (data + parity + start + stop) */
-
+    if (int_acia_read_data()) {
         if ( ! (cmd & ACIA_CMD_BITS_IRQ_DISABLED) ) {
             acia_set_int(acia_irq, acia_int_num, acia_irq);
             irq = 1;
