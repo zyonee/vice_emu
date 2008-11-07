@@ -1,6 +1,6 @@
 /*! \file aciacore.c \n
  *  \author André Fachat, Spiro Trikaliotis\n
- *  \brief- Template file for ACIA 6551 emulation.
+ *  \brief  Template file for ACIA 6551 emulation.
  *
  * Written by
  *  André Fachat <fachat@physik.tu-chemnitz.de>
@@ -46,17 +46,19 @@
 #include "types.h"
 
 
-#undef  DEBUG
-#undef  DEBUG_VERBOSE
+#undef  DEBUG   /*!< define if you want "normal" debugging output */
+#undef  DEBUG_VERBOSE /*!< define if you want very verbose debugging output. */
 /* #define DEBUG */
 /* #define DEBUG_VERBOSE */
 
+/*! \brief Helper macro for outputting debugging messages */
 #ifdef DEBUG
 # define DEBUG_LOG_MESSAGE(_x) log_message _x
 #else
 # define DEBUG_LOG_MESSAGE(_x)
 #endif
 
+/*! \brief Helper macro for outputting verbose debugging messages */
 #ifdef DEBUG_VERBOSE
 # define DEBUG_VERBOSE_LOG_MESSAGE(_x) log_message _x
 #else
@@ -73,52 +75,121 @@ static int fd = -1;             /*!< file descriptor used to access the RS232 ph
 static int intx = 0;    /*!< indicates that a transmit is currently ongoing */
 #endif
 static int irq = 0;
-static BYTE cmd;
-static BYTE ctrl;
+static BYTE cmd;        /*!< value of the 6551 command register */
+static BYTE ctrl;       /*!< value of the 6551 control register */
 static BYTE rxdata;     /*!< data that has been received last */
-static BYTE txdata;     /*!< data prepared to send */
-static BYTE status;
-static BYTE ectrl;
-static int alarm_active_tx = 0;    /* if alarm is set or not */
-static int alarm_active_rx = 0;    /* if alarm is set or not */
+static BYTE txdata;     /*!< data prepared to be send */
+static BYTE status;     /*!< value of the 6551 status register */
+static BYTE ectrl;      /*!< value of the extended control register of the turbo232 card */
+static int alarm_active_tx = 0;    /*!< 1 if TX alarm is set; else 0 */
+static int alarm_active_rx = 0;    /*!< 1 if RX alarm is set; else 0 */
 
-static log_t acia_log = LOG_ERR;
+static log_t acia_log = LOG_ERR; /*!< the log where to write debugging messages */
 
 static void int_acia_tx(CLOCK offset, void *data);
 static void int_acia_rx(CLOCK offset, void *data);
 
+/*! \brief mode for int_acia_read_data()
+
+ \remark
+    For details, cf. int_acia_read_data()
+*/
 enum e_int_acia_read_data {
-    IARD_NOREMOVE = 0,
-    IARD_REMOVE = 1,
+    IARD_NOREMOVE = 0, /*!< do not remove data from buffer */
+    IARD_REMOVE = 1,   /*!< remove data from buffer */
 };
 
 static int int_acia_read_data(enum e_int_acia_read_data remove_data);
 
-static BYTE acia_last_read = 0;  /* the byte read the last time (for RMW) */
+static BYTE acia_last_read = 0;  /*!< the byte read the last time (for RMW) */
 
 /******************************************************************/
 
+/*! \brief the clock value the TX alarm has last been set to fire at
+
+ \note
+  If alarm_active_tx is set to 1, to alarm is
+  actually set. If alarm_active_tx is 0, then
+  the alarm either has already fired, or it
+  already has been cancelled.
+*/
 static CLOCK acia_alarm_clk_tx = 0;
+
+/*! \brief the clock value the RX alarm has last been set to fire at
+
+ \note
+  If alarm_active_rx is set to 1, to alarm is
+  actually set. If alarm_active_rx is 0, then
+  the alarm either has already fired, or it
+  already has been cancelled.
+*/
 static CLOCK acia_alarm_clk_rx = 0;
 
+/*! \brief the arch-dependant RS232 device to use for this acia implementation */
 static int acia_device;
-static int acia_irq = IK_NONE;
+
+/*! \brief the type of interrupt implemented by the ACIA
+ 
+ The ACIA either implements an IRQ (IK_IRQ), an NMI (IK_NMI),
+ or no interrupt at all (IK_NONE).
+
+ \note
+   As some cartridges can be switched between these modes,
+   it is necessary to remember this value.
+*/
+static enum cpu_int acia_irq = IK_NONE;
+
+/*! \brief the type of interrupt implemented by the ACIA,
+  as defined in the resources
+
+  Essentially, this is the same info as acia_irq. As the
+  resource stored in the VICE system is different from
+  the actual value in acia_irq, the resources value is
+  stored here.
+*/
 static int acia_irq_res;
-static int acia_mode = ACIA_MODE_NORMAL;
+
+/*! \brief the acia variant implemented.
+  Specifies if this acia implements a "raw" 6551 device
+  (ACIA_MODE_NORMAL), a swiftlink device (ACIA_MODE_SWIFTLINK)
+  or a turbo232 device (ACIA_MODE_TURBO232).
+*/
+static int acia_mode = ACIA_MODE_NORMAL; 
 
 /******************************************************************/
 
-/* note: the first value is bogus. It should be 16*external clock.
-   note: swiftlink mode uses the same table except it doubles the values. */
-static const double acia_baud_table[16] = {
+/*! \brief the bps rates available in the order of the control register
+
+  This array is used to set the bps rate of the 6551.
+  For this, the values are set in the same order as
+  they are defined in the CONTROL register.
+
+ \remark
+   the first value is bogus. It should be 16*external clock.
+
+ \remark
+   swiftlink and turbo232 modes use the same table
+   except they double the values.
+*/
+static const double acia_bps_table[16] = {
     10, 50, 75, 109.92, 134.58, 150, 300, 600, 1200, 1800,
     2400, 3600, 4800, 7200, 9600, 19200
 };
 
-/* turbo232 support, these values are used as enhanced baud rates.
-   note: the last value is a bogus value and in the real module
-   that value is reserved for future use. */
-static const double t232_baud_table[4] = {
+/*! \brief the extra bps rates of the turbo232 card
+
+   This lists the extra bps rates available in the
+   turbo232 card. In the turbo232 card, if the CTRL register
+   is set to the bps rate of 10 bps, the extended ctrl
+   register determines the bps rates. The extended ctrl
+   register is used as an index in this table to get the
+   bps rate.
+
+ \remark
+   the last value is a bogus value and in the real module
+   that value is reserved for future use.
+*/
+static const double t232_bps_table[4] = {
     230400, 115200, 57600, 28800
 };
 
@@ -175,20 +246,20 @@ static double get_acia_bps(void)
 {
     switch(acia_mode) {
       case ACIA_MODE_NORMAL:
-        return acia_baud_table[ctrl & ACIA_CTRL_BITS_BPS_MASK];
+        return acia_bps_table[ctrl & ACIA_CTRL_BITS_BPS_MASK];
 
       case ACIA_MODE_SWIFTLINK:
-        return acia_baud_table[ctrl & ACIA_CTRL_BITS_BPS_MASK] * 2;
+        return acia_bps_table[ctrl & ACIA_CTRL_BITS_BPS_MASK] * 2;
 
       case ACIA_MODE_TURBO232:
         if ((ctrl & ACIA_CTRL_BITS_BPS_MASK) == ACIA_CTRL_BITS_BPS_16X_EXT_CLK)
-            return t232_baud_table[ectrl & T232_ECTRL_BITS_EXT_BPS_MASK];
+            return t232_bps_table[ectrl & T232_ECTRL_BITS_EXT_BPS_MASK];
         else
-            return acia_baud_table[ctrl & ACIA_CTRL_BITS_BPS_MASK] * 2;
+            return acia_bps_table[ctrl & ACIA_CTRL_BITS_BPS_MASK] * 2;
 
       default:
         log_message(acia_log, "Invalid acia_mode = %u in get_acia_bps()", acia_mode);
-        return acia_baud_table[0]; /* return dummy value */
+        return acia_bps_table[0]; /* return dummy value */
     }
 }
 
@@ -225,26 +296,6 @@ static const resource_int_t resources_int[] = {
       &acia_device, acia_set_device, NULL },
     { MYACIA "Irq", MyIrq, RES_EVENT_NO, NULL,
       &acia_irq_res, acia_set_irq, NULL },
-    { NULL }
-};
-
-/*! \brief initialize the ACIA resources
- \return
-   0 on success, else -1.
-
- \remark
-   Registers the integer resources
-
- \todo
-   Why duality with myacia_init_mode_resources()?
-*/
-int myacia_init_resources(void)
-{
-    return resources_register_int(resources_int);
-}
-
-/*! \brief integer resources used by the ACIA module */
-static const resource_int_t mode_resources_int[] = {
     { MYACIA "Mode", ACIA_MODE_NORMAL, RES_EVENT_NO, NULL,
       &acia_mode, acia_set_mode, NULL },
     { NULL }
@@ -256,13 +307,10 @@ static const resource_int_t mode_resources_int[] = {
 
  \remark
    Registers the integer resources
-
- \todo
-   Why duality with myacia_init_resources()?
 */
-int myacia_init_mode_resources(void)
+int myacia_init_resources(void)
 {
-    return resources_register_int(mode_resources_int);
+    return resources_register_int(resources_int);
 }
 
 #ifdef HAS_TRANSLATION
