@@ -65,15 +65,21 @@
 # define DEBUG_VERBOSE_LOG_MESSAGE(_x)
 #endif
 
+/*! \brief specify the transmit state the ACIA is currently in
+*/
+enum acia_tx_state {
+    ACIA_TX_STATE_NO_TRANSMIT = 0, /*!< currently, no transmit */
+    ACIA_TX_STATE_TX_STARTED = 1,  /*!< the transmit has already begun */
+    ACIA_TX_STATE_DR_WRITTEN = 2   /*!< the data register has been written, but the byte written is not yet in transmit */
+};
+
 static alarm_t *acia_alarm_tx = NULL; /*!< handling of the transmit (TX) alarm */
 static alarm_t *acia_alarm_rx = NULL; /*!< handling of the receive (RX) alarm */
 static unsigned int acia_int_num;     /*!< the (internal) number for the ACIA interrupt. */
 
 static int acia_ticks = 21111;  /*!< number of clock ticks per char */
 static int fd = -1;             /*!< file descriptor used to access the RS232 physical device on the host machine */
-#if ! defined(REMOVE_INTX)
-static int in_tx = 0;   /*!< indicates that a transmit is currently ongoing */
-#endif
+static enum acia_tx_state in_tx = ACIA_TX_STATE_NO_TRANSMIT;   /*!< indicates that a transmit is currently ongoing */
 static int irq = 0;
 static BYTE cmd;        /*!< value of the 6551 command register */
 static BYTE ctrl;       /*!< value of the 6551 control register */
@@ -375,9 +381,7 @@ void myacia_reset(void)
     set_acia_ticks();
 
     status = ACIA_SR_DEFAULT_AFTER_HW_RESET;
-#if ! defined(REMOVE_INTX)
-    in_tx = 0;
-#endif
+    in_tx = ACIA_TX_STATE_NO_TRANSMIT;
 
     if (fd >= 0)
         rs232drv_close(fd);
@@ -439,11 +443,7 @@ int myacia_snapshot_write_module(snapshot_t *p)
     SMW_B(m, (BYTE)(status | (irq ? ACIA_SR_BITS_IRQ : 0)));
     SMW_B(m, cmd);
     SMW_B(m, ctrl);
-#if ! defined(REMOVE_INTX)
     SMW_B(m, (BYTE)(in_tx));
-#else
-    SMW_B(m, 0);
-#endif
 
     if (alarm_active_tx) {
         SMW_DW(m, (acia_alarm_clk_tx - myclk));
@@ -511,9 +511,7 @@ int myacia_snapshot_read_module(snapshot_t *p)
     set_acia_ticks();
 
     SMR_B(m, &byte);
-#if ! defined(REMOVE_INTX)
     in_tx = byte;
-#endif
 
     SMR_DW(m, &dword);
     if (dword) {
@@ -587,20 +585,18 @@ void REGPARM2 myacia_store(WORD a, BYTE b)
       case ACIA_DR:
         txdata = b;
         if (cmd & ACIA_CMD_BITS_DTR_ENABLE_RECV_AND_IRQ) {
-#if ! defined(REMOVE_INTX)
-            if (!in_tx) {
-#endif
+            if (in_tx != ACIA_TX_STATE_NO_TRANSMIT) {
                 acia_alarm_clk_tx = myclk + 1;
                 alarm_set(acia_alarm_tx, acia_alarm_clk_tx);
                 alarm_active_tx = 1;
-#if ! defined(REMOVE_INTX)
-                in_tx = 2;
+                in_tx = ACIA_TX_STATE_DR_WRITTEN;
             } else {
-                if (in_tx == 1) {
-                    in_tx++;
+                if (in_tx == ACIA_TX_STATE_DR_WRITTEN) {
+                    log_message(acia_log, "ACIA: data register written "
+                        "although data has not been sent yet.");
                 }
+                in_tx = ACIA_TX_STATE_DR_WRITTEN;
             }
-#endif
             status &= ~ ACIA_SR_BITS_TRANSMIT_DR_EMPTY; /* clr TDRE */
         }
         break;
@@ -610,9 +606,7 @@ void REGPARM2 myacia_store(WORD a, BYTE b)
         fd = -1;
         status &= ~ ACIA_SR_BITS_OVERRUN_ERROR;
         cmd &= ACIA_CMD_BITS_PARITY_TYPE_MASK | ACIA_CMD_BITS_PARITY_ENABLED;
-#if ! defined(REMOVE_INTX)
-        in_tx = 0;
-#endif
+        in_tx = ACIA_TX_STATE_NO_TRANSMIT;
         acia_set_int(acia_irq, acia_int_num, 0);
         irq = 0;
         alarm_unset(acia_alarm_tx);
@@ -751,24 +745,17 @@ static void int_acia_tx(CLOCK offset, void *data)
 {
     DEBUG_VERBOSE_LOG_MESSAGE((acia_log, "int_acia_tx(offset=%ld, myclk=%d", offset, myclk));
 
-#if ! defined(REMOVE_INTX)
-    if ((in_tx == 2) && (fd >= 0))
-#else
-    if (fd >= 0)
-#endif
+    if ((in_tx == ACIA_TX_STATE_DR_WRITTEN) && (fd >= 0)) {
         rs232drv_putc(fd,txdata);
+    }
 
-#if ! defined(REMOVE_INTX)
-    if (in_tx)
+    if (in_tx != ACIA_TX_STATE_NO_TRANSMIT) {
         in_tx--;
+    }
 
     acia_alarm_clk_tx = myclk + acia_ticks;
     alarm_set(acia_alarm_tx, acia_alarm_clk_tx);
     alarm_active_tx = 1;
-#else
-    alarm_unset(acia_alarm_tx);
-    alarm_active_tx = 0;
-#endif
 
     status |= ACIA_SR_BITS_TRANSMIT_DR_EMPTY;
 
