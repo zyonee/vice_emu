@@ -727,14 +727,14 @@ else
     RESID_INCLUDES="-I\$(top_builddir)/src/resid"
     RESID_DEP=libresid
 
-    disable_resid_fp = no
+    disable_resid_fp=no
 
     dnl disable reSID-FP for certain platforms
     if test x"$host_os" = "xamigaos" -a x"$host_cpu" = "xm68k"; then
-        disable_resid_fp = yes
+        disable_resid_fp=yes
     fi
     if test x"$host_os" = "xgp2x" -o x"$host_os" = "xlinux-gp2x" -o x"$host_vendor" = "xgp2x"; then
-        disable_resid_fp = yes
+        disable_resid_fp=yes
     fi
 
     if test x"$disable_resid_fp" != "xyes"; then
