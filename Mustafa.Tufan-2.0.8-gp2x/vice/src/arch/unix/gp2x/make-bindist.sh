@@ -14,21 +14,24 @@ TOPSRCDIR=$4
 echo Generating GP2X port binary distribution.
 rm -f -r vice-gp2x-$VICEVERSION
 mkdir vice-gp2x-$VICEVERSION
-$STRIP src/x64
-$STRIP src/x128
-$STRIP src/xvic
-$STRIP src/xpet
-$STRIP src/xplus4
-$STRIP src/xcbm2
-cp src/x64 src/x128 src/xvic vice-gp2x-$VICEVERSION
-cp src/xpet src/xplus4 src/xcbm2 vice-gp2x-$VICEVERSION
+$STRIP $TOPSRCDIR/src/x64
+$STRIP $TOPSRCDIR/src/x128
+$STRIP $TOPSRCDIR/src/xvic
+$STRIP $TOPSRCDIR/src/xpet
+$STRIP $TOPSRCDIR/src/xplus4
+$STRIP $TOPSRCDIR/src/xcbm2
+cp $TOPSRCDIR/src/x64 vice-gp2x-$VICEVERSION
+cp $TOPSRCDIR/src/x128 vice-gp2x-$VICEVERSION
+cp $TOPSRCDIR/src/xvic vice-gp2x-$VICEVERSION
+cp $TOPSRCDIR/src/xpet vice-gp2x-$VICEVERSION
+cp $TOPSRCDIR/src/xplus4 vice-gp2x-$VICEVERSION
+cp $TOPSRCDIR/src/xcbm2 vice-gp2x-$VICEVERSION
 cp $TOPSRCDIR/src/arch/unix/gp2x/gpe-files/x64.gpe vice-gp2x-$VICEVERSION
 cp $TOPSRCDIR/src/arch/unix/gp2x/gpe-files/x128.gpe vice-gp2x-$VICEVERSION
 cp $TOPSRCDIR/src/arch/unix/gp2x/gpe-files/xvic.gpe vice-gp2x-$VICEVERSION
 cp $TOPSRCDIR/src/arch/unix/gp2x/gpe-files/xpet.gpe vice-gp2x-$VICEVERSION
 cp $TOPSRCDIR/src/arch/unix/gp2x/gpe-files/xplus4.gpe vice-gp2x-$VICEVERSION
 cp $TOPSRCDIR/src/arch/unix/gp2x/gpe-files/xcbm2.gpe vice-gp2x-$VICEVERSION
-cp $TOPSRCDIR/src/arch/unix/gp2x/gpe-files/vsid.gpe vice-gp2x-$VICEVERSION
 mkdir vice-gp2x-$VICEVERSION/data
 cp -a $TOPSRCDIR/data/C128 $TOPSRCDIR/data/C64 $TOPSRCDIR/data/CBM-II $TOPSRCDIR/data/DRIVES vice-gp2x-$VICEVERSION/data
 cp -a $TOPSRCDIR/data/PET $TOPSRCDIR/data/PLUS4 $TOPSRCDIR/data/VIC20 vice-gp2x-$VICEVERSION/data

@@ -51,7 +51,6 @@ libarchgp2x_a_SOURCES = \
 	vsidui.c
 
 EXTRA_DIST = \
-	gpe-files/vsid.gpe \
 	gpe-files/x128.gpe \
 	gpe-files/x64.gpe \
 	gpe-files/xvic.gpe \
