@@ -733,7 +733,7 @@ else
     if test x"$host_os" = "xamigaos" -a x"$host_cpu" = "xm68k"; then
         disable_resid_fp = yes
     fi
-    if test x"$host_os" = "xgp2x"; then
+    if test x"$host_os" = "xgp2x" -o x"$host_os" = "xlinux-gp2x" -o x"$host_vendor" = "xgp2x"; then
         disable_resid_fp = yes
     fi
 
