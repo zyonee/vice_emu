@@ -826,6 +826,2125 @@ translate_t string_table[] = {
 /* sv */ {IDGS_DTV_ROM_CREATED_SV, "DTV-ROM-avbildning skapades framgångsrikt"},
 #endif
 
+/* monitor/mon_command.c */
+/* en */ {IDGS_COMMAND_S_UNKNOWN,    N_("Command `%s' unknown.\n")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_COMMAND_S_UNKNOWN_DE, "Kommand `%s' ist unbekannt.\n"},
+/* fr */ {IDGS_COMMAND_S_UNKNOWN_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_COMMAND_S_UNKNOWN_HU, "`%s' parancs ismeretlen.\n"},
+/* it */ {IDGS_COMMAND_S_UNKNOWN_IT, "Comando `%s' sconosciuto.\n"},
+/* nl */ {IDGS_COMMAND_S_UNKNOWN_NL, "Commando %s' is onbekent.\n"},
+/* pl */ {IDGS_COMMAND_S_UNKNOWN_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_COMMAND_S_UNKNOWN_SV, ""},  /* fuzzy */
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_NO_HELP_AVAILABLE_FOR_S,    N_("No help available for `%s'\n")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_NO_HELP_AVAILABLE_FOR_S_DE, "Es ist keine Hilfe für `%s' verfügbar\n"},
+/* fr */ {IDGS_NO_HELP_AVAILABLE_FOR_S_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_NO_HELP_AVAILABLE_FOR_S_HU, "Nincs súgó a `%s' parancshoz\n"},
+/* it */ {IDGS_NO_HELP_AVAILABLE_FOR_S_IT, "Nessun help disponibile per `%s'\n"},
+/* nl */ {IDGS_NO_HELP_AVAILABLE_FOR_S_NL, "Geen help beschikbaar voor `%s'\n"},
+/* pl */ {IDGS_NO_HELP_AVAILABLE_FOR_S_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_NO_HELP_AVAILABLE_FOR_S_SV, ""},  /* fuzzy */
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_SYNTAX_S_S,    N_("\nSyntax: %s %s\n")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_SYNTAX_S_S_DE, "\nSyntax: %s %s\n"},
+/* fr */ {IDGS_SYNTAX_S_S_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_SYNTAX_S_S_HU, "\nSzintaxis: %s %s\n"},
+/* it */ {IDGS_SYNTAX_S_S_IT, "\nSintassi: %s %s\n"},
+/* nl */ {IDGS_SYNTAX_S_S_NL, "\nSyntax: %s %s\n"},
+/* pl */ {IDGS_SYNTAX_S_S_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_SYNTAX_S_S_SV, ""},  /* fuzzy */
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_ABBREVIATION_S,    N_("Abbreviation: %s\n")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_ABBREVIATION_S_DE, "Abkürzung: %s\n"},
+/* fr */ {IDGS_ABBREVIATION_S_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_ABBREVIATION_S_HU, "Rövidítés: %s\n"},
+/* it */ {IDGS_ABBREVIATION_S_IT, "Abbreviazione: %s\n"},
+/* nl */ {IDGS_ABBREVIATION_S_NL, "Afkorting: %s\n"},
+/* pl */ {IDGS_ABBREVIATION_S_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_ABBREVIATION_S_SV, ""},  /* fuzzy */
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_AVAILABLE_COMMANDS_ARE,    N_("Available commands are:")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_AVAILABLE_COMMANDS_ARE_DE, "Zulässige Kommandos sind:"},
+/* fr */ {IDGS_AVAILABLE_COMMANDS_ARE_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_AVAILABLE_COMMANDS_ARE_HU, "Lehetséges parancsok:"},
+/* it */ {IDGS_AVAILABLE_COMMANDS_ARE_IT, "I comandi disponibili sono:"},
+/* nl */ {IDGS_AVAILABLE_COMMANDS_ARE_NL, "Beschikbare commandos zijn:"},
+/* pl */ {IDGS_AVAILABLE_COMMANDS_ARE_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_AVAILABLE_COMMANDS_ARE_SV, "Tillgängliga kommandon:"},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MACHINE_STATE_COMMANDS,    N_("Machine state commands:")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MACHINE_STATE_COMMANDS_DE, "Maschinen Zustandskommandos:"},
+/* fr */ {IDGS_MACHINE_STATE_COMMANDS_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MACHINE_STATE_COMMANDS_HU, "Gép állapot parancsok:"},
+/* it */ {IDGS_MACHINE_STATE_COMMANDS_IT, "Comandi di stato del computer:"},
+/* nl */ {IDGS_MACHINE_STATE_COMMANDS_NL, "Machine staat commandos:"},
+/* pl */ {IDGS_MACHINE_STATE_COMMANDS_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MACHINE_STATE_COMMANDS_SV, "Kommandon för maskinstatus:"},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_RP_MEMSPACE_R_BANKNAME,    N_("[<memspace>] [bankname]")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_RP_MEMSPACE_R_BANKNAME_DE, "[<Speicherbereich>] [Speicherbank]"},
+/* fr */ {IDGS_RP_MEMSPACE_R_BANKNAME_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_RP_MEMSPACE_R_BANKNAME_HU, "[<memória tér>] [lap név]"},
+/* it */ {IDGS_RP_MEMSPACE_R_BANKNAME_IT, "[<spazio di memoria>] [nome banco]"},
+/* nl */ {IDGS_RP_MEMSPACE_R_BANKNAME_NL, "[<geheugenruimte>] [banknaam]"},
+/* pl */ {IDGS_RP_MEMSPACE_R_BANKNAME_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_RP_MEMSPACE_R_BANKNAME_SV, "[<minnesområde>] [banknamn]"},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_BANK_DESCRIPTION,    N_("If bankname is not given, print the possible banks for the memspace.\n"
+                                           "If bankname is given set the current bank in the memspace to the given\n"
+                                           "bank.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_BANK_DESCRIPTION_DE, "Falls `bankname' nicht angegeben wird, Ausgabe der möglichen Bänke in `memspace'.\n"
+                                        "Falls `bankname' angegeben wird, setze aktuelle Bank in `memspace' mit angegebener Bank."},
+/* fr */ {IDGS_MON_BANK_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_BANK_DESCRIPTION_HU, "Ha a lap száma nincs megadva, kiírja a lehetséges lapokat a memória térbõl.\n"
+                                        "Ha meg van adva, az aktuális lap számot a memória térben a megadott lapra állítja."},
+/* it */ {IDGS_MON_BANK_DESCRIPTION_IT, "Se non viene specificato il nome del banco, stampa tutti i banchi\n"
+                                        "possibili per lo spazio di memoria.\n"
+                                        "Se viene specificato il nome del banco, imposta il banco attuale nello\n"
+                                        "spazio di memoria specificato."},
+/* nl */ {IDGS_MON_BANK_DESCRIPTION_NL, "Wanneer de banknaam niet is opgegeven, toon de mogelijke banken voor de geheugen-\n"
+                                        "ruimte. Wanneer de banknaam is opgegeven, zet de huidige bank in de geheugen-\n"
+                                        "ruimte naar de opgegeven bank."},
+/* pl */ {IDGS_MON_BANK_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_BANK_DESCRIPTION_SV, "Om banknamn inte anges, skriv ut möjliga bankar för minnesområdet.\n"
+                                        "Om banknamn anges, sätt aktuell bank i minnesområdet till den givna\n"
+                                        "banken."},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_BACKTRACE_DESCRIPTION,    N_("Print JSR call chain (most recent call first). Stack offset\n"
+                                                "relative to SP+1 is printed in parentheses. This is a best guess\n"
+                                                "only.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_BACKTRACE_DESCRIPTION_DE, "Zeige JSR Aufrufkette (letzter Aufruf zuerst). Stack offset\n"
+                                             "wird relative zu SP+1 in Klammern gezeigt. Dies ist jedoch nur\n"
+                                             "eine Schätzung."},
+/* fr */ {IDGS_MON_BACKTRACE_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_BACKTRACE_DESCRIPTION_HU, "JSR hívás lista kiírása (legutóbbi elõször). A verem SP+1\n"
+                                             "helyen lévõ tartalma zárójelben. Ez csak\n"
+                                             "egy legjobb becslés."},
+/* it */ {IDGS_MON_BACKTRACE_DESCRIPTION_IT, "Stampa la catena di chiamate JSR (la chiamata più recente per prima).\n"
+                                             "L'offset dello stack relativo a SP+1 è stampato tra parentesi. Questo è\n"
+                                             "solo l'ipotesi migliore."},
+/* nl */ {IDGS_MON_BACKTRACE_DESCRIPTION_NL, "Toon JSR aanvraag ketting (meest recente aanvraag eerst). De stack offset\n"
+                                             "relatief ten opzichte van SP+1 zal binnen aanhalingstekens worden getoond.\n"
+                                             "Dit is alleen de beste schatting"},
+/* pl */ {IDGS_MON_BACKTRACE_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_BACKTRACE_DESCRIPTION_SV, "Skriv JSR-anropskedja (senaste anrop först). Stackavstånd\n"
+                                             "relativt till SP+1 visas inom parantes. Detta är bara en\n"
+                                             "gissning."},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_CPU_DESCRIPTION,    N_("Specify the type of CPU currently used (6502/z80).")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_CPU_DESCRIPTION_DE, "CPU Typ setzen (6502/z80)"},
+/* fr */ {IDGS_MON_CPU_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_CPU_DESCRIPTION_HU, "A processzor típusának megadása (6502/z80)."},
+/* it */ {IDGS_MON_CPU_DESCRIPTION_IT, "Specifica il tipo di CPU utilizzata al momento (6502/z80)."},
+/* nl */ {IDGS_MON_CPU_DESCRIPTION_NL, "Geef het soort van de huidige CPU (6502/z80)."},
+/* pl */ {IDGS_MON_CPU_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_CPU_DESCRIPTION_SV, "Ange typ av CPU som används för närvarande (6502/z80)."},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_RP_COUNT,    N_("[<count>]")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_RP_COUNT_DE, "[<Zähler>]"},
+/* fr */ {IDGS_RP_COUNT_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_RP_COUNT_HU, "[<darab>]"},
+/* it */ {IDGS_RP_COUNT_IT, "[<contatore>]"},
+/* nl */ {IDGS_RP_COUNT_NL, "[<aantal>]"},
+/* pl */ {IDGS_RP_COUNT_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_RP_COUNT_SV, "[<antal>]"},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_CPUHISTORY_DESCRIPTION,    N_("Show <count> last executed commands.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_CPUHISTORY_DESCRIPTION_DE, "Zeige [<Zähler>] zuletzt ausgeführte Kommandos"},
+/* fr */ {IDGS_MON_CPUHISTORY_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_CPUHISTORY_DESCRIPTION_HU, "<darab> utoljára végrehajtott utasítás mutatása."},
+/* it */ {IDGS_MON_CPUHISTORY_DESCRIPTION_IT, "Mostra gli ultimi <contatore> comandi eseguiti."},
+/* nl */ {IDGS_MON_CPUHISTORY_DESCRIPTION_NL, "Toon laatst <aantal> uitgevoerde commandos."},
+/* pl */ {IDGS_MON_CPUHISTORY_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_CPUHISTORY_DESCRIPTION_SV, "Visa <antal> senast exekverade kommandon."},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_QP_FILENAME,    N_("\"<filename>\"")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_QP_FILENAME_DE, "\"<Dateiname>\""},
+/* fr */ {IDGS_QP_FILENAME_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_QP_FILENAME_HU, "\"<fájlnév>\""},
+/* it */ {IDGS_QP_FILENAME_IT, "\"<nome del file>\""},
+/* nl */ {IDGS_QP_FILENAME_NL, "\"<bestandsnaam>\""},
+/* pl */ {IDGS_QP_FILENAME_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_QP_FILENAME_SV, "\"<filnamn>\""},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_DUMP_DESCRIPTION,    N_("Write a snapshot of the machine into the file specified.\n"
+                                           "This snapshot is compatible with a snapshot written out by the UI.\n"
+                                           "Note: No ROM images are included into the dump.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_DUMP_DESCRIPTION_DE, "Schreibe eine Snapsho Datei der Maschine auf die angebene Datei.\n"
+                                        "Dieser Snapshot ist kompatible zu einem Snapshot initiiert aus dem Menü.\n"
+                                        "Hinweis: Die ROM Images werden im Snapshot nicht inkludiert."},
+/* fr */ {IDGS_MON_DUMP_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_DUMP_DESCRIPTION_HU, "Pillanatkép írása a géprõl a megadott fájlba. A pillanatkép\n"
+                                        "kompatibilis azzal, amelyet a grafikus felület hoz létre.\n"
+                                        "Megjegyzés: a ROM képmások nem kerülnek bele."},
+/* it */ {IDGS_MON_DUMP_DESCRIPTION_IT, "Scrive uno snapshot del computer sul file specificato.\n"
+                                        "Questo snapshot è compatibile con uno snapshot scritto dall'IU.\n"
+                                        "Nota: Le immagini ROM non sono incluse nel dump."},
+/* nl */ {IDGS_MON_DUMP_DESCRIPTION_NL, "Schrijf een momentopname van de machine naar de opgegeven bestand.\n"
+                                        "Deze momentopname is compatibel met een momentopname zoals geschreven van\n"
+                                        "uit het menu.\n"
+                                        "NB: ROM bestanden zijn niet opgenomen in de momentopname."},
+/* pl */ {IDGS_MON_DUMP_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_DUMP_DESCRIPTION_SV, "Skriv en ögonblicksbild av maskinen till den angivna filen.\n"
+                                        "Ögonblicksbilden är kompatibel med de som skapas från menyn.\n"
+                                        "Observera: ROM-avbildningar inkluderas inte i bilden."},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_P_ADDRESS,    N_("<address>")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_P_ADDRESS_DE, "<Adresse>"},
+/* fr */ {IDGS_P_ADDRESS_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_P_ADDRESS_HU, "<cím>"},
+/* it */ {IDGS_P_ADDRESS_IT, "<indirizzo>"},
+/* nl */ {IDGS_P_ADDRESS_NL, "<Adres"},
+/* pl */ {IDGS_P_ADDRESS_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_P_ADDRESS_SV, "<adress>"},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_GOTO_DESCRIPTION,    N_("Change the PC to ADDRESS and continue execution")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_GOTO_DESCRIPTION_DE, "Setze PC auf ADRESSE und setze Ausführung fort"},
+/* fr */ {IDGS_MON_GOTO_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_GOTO_DESCRIPTION_HU, "A PC állítása ADDRESS címre és folytatás"},
+/* it */ {IDGS_MON_GOTO_DESCRIPTION_IT, "Cambia il PC in INDIRIZZO e continua l'esecuzione"},
+/* nl */ {IDGS_MON_GOTO_DESCRIPTION_NL, "Zet de PC naar ADRES en ga door met de uitvoering van instructies."},
+/* pl */ {IDGS_MON_GOTO_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_GOTO_DESCRIPTION_SV, "Ändra PC till ADRESS och fortsätt exekveringen"},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_IO_DESCRIPTION,    N_("Print out the I/O area of the emulated machine.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_IO_DESCRIPTION_DE, "Drucke den I/O Bereich der emuliertern Maschine."},
+/* fr */ {IDGS_MON_IO_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_IO_DESCRIPTION_HU, "Az emulált gép I/O tartományának mutatása."},
+/* it */ {IDGS_MON_IO_DESCRIPTION_IT, "Stampa l'area di I/O del computer emulato."},
+/* nl */ {IDGS_MON_IO_DESCRIPTION_NL, "Toon de I/O geheugenruimte van de huidige machine."},
+/* pl */ {IDGS_MON_IO_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_IO_DESCRIPTION_SV, "Skriv I/O-området för den emulerade maskinen."},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_NEXT_DESCRIPTION,    N_("Advance to the next instruction.  Subroutines are treated as\n"
+                                           "a single instruction.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_NEXT_DESCRIPTION_DE, "Fahre bis zur nächsten Instruktion fort.\n"
+                                        "Unterroutinen werden wie eine einzelne Instruktion behandelt."},
+/* fr */ {IDGS_MON_NEXT_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_NEXT_DESCRIPTION_HU, "A következõ utasításra lépés.  A szubrutinokat egy\n"
+                                        "utasításnak tekinti."},
+/* it */ {IDGS_MON_NEXT_DESCRIPTION_IT, "Passa alla prossima istruzione. Le subrutine sono trattate come\n"
+                                        "una singola istruzione."},
+/* nl */ {IDGS_MON_NEXT_DESCRIPTION_NL, "Ga naar de volgende instructie. Subroutines worden behandled als een\n"
+                                        "enkele instructie."},
+/* pl */ {IDGS_MON_NEXT_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_NEXT_DESCRIPTION_SV, "Gå till nästa instruktion. Underrutiner hanteras som en\n"
+                                        "enda instruktion."},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_RP_REG_NAME_P_NUMBER,    N_("[<reg_name> = <number> [, <reg_name> = <number>]*]")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_RP_REG_NAME_P_NUMBER_DE, "[<Register Name> = <Zahl> [, <Register Name> = <Zahl>]*]"},
+/* fr */ {IDGS_RP_REG_NAME_P_NUMBER_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_RP_REG_NAME_P_NUMBER_HU, "[<reg_név> = <szám> [, <reg_név> = <szám>]*]"},
+/* it */ {IDGS_RP_REG_NAME_P_NUMBER_IT, "[<nome registro> = <numero> [, <nome registro> = <numero>]*]"},
+/* nl */ {IDGS_RP_REG_NAME_P_NUMBER_NL, "[<Register_naam> = <nummer> [, <register_naam> = <nummer>]*]"},
+/* pl */ {IDGS_RP_REG_NAME_P_NUMBER_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_RP_REG_NAME_P_NUMBER_SV, "[<regnamn> = <tal> [, <regnamn> = <tal>]*]"},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_REGISTERS_DESCRIPTION,    N_("Assign respective registers.  With no parameters, display register\n"
+                                                "values.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_REGISTERS_DESCRIPTION_DE, "Zuweisung auf entsprechende Register. Ohne Parameter, zeige Register Werte."},
+/* fr */ {IDGS_MON_REGISTERS_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_REGISTERS_DESCRIPTION_HU, "Megadott regiszterek beállítása. Paraméterek nélkül, a regiszterek\n"
+                                             "tartalmának kiírása."},
+/* it */ {IDGS_MON_REGISTERS_DESCRIPTION_IT, "Assegna i rispettivi registri. Senza parametri, mostra i valori dei\n"
+                                             "registri."},
+/* nl */ {IDGS_MON_REGISTERS_DESCRIPTION_NL, "Vul opgegeven registers met de toebehorende waarde. Zonder parameter, toon\n"
+                                             "de huidige waarden in de registers."},
+/* pl */ {IDGS_MON_REGISTERS_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_REGISTERS_DESCRIPTION_SV, "Tilldela respektive register. Utan parametrar visas innehållet\n"
+                                             "i registren."},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_RP_TYPE,    N_("[<type>]")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_RP_TYPE_DE, "[<Typ>]"},
+/* fr */ {IDGS_RP_TYPE_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_RP_TYPE_HU, "[<típus>]"},
+/* it */ {IDGS_RP_TYPE_IT, "[<typo>]"},
+/* nl */ {IDGS_RP_TYPE_NL, "[<soort>]"},
+/* pl */ {IDGS_RP_TYPE_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_RP_TYPE_SV, "[<typ>]"},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_RESET_DESCRIPTION,    N_("Reset the machine or drive. Type: 0 = soft, 1 = hard, 8-11 = drive.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_RESET_DESCRIPTION_DE, "Reset der Maschine oder des Laufwerks. Typ: 0 = soft, 1 = hart, 8-11 = Laufwerk."},
+/* fr */ {IDGS_MON_RESET_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_RESET_DESCRIPTION_HU, "A számítógép vagy meghajtó újraindítása. Típus: 0 = meleg, 1 = hideg, 8-11 = meghajtó."},
+/* it */ {IDGS_MON_RESET_DESCRIPTION_IT, "Resetta il computer o il drive. Tipo: 0 = soft, 1 = hard, 8-11 = drive."},
+/* nl */ {IDGS_MON_RESET_DESCRIPTION_NL, "Reset de machine of drive. Soort: 0 = zacht, 1 = hard, 8-11 = drive."},
+/* pl */ {IDGS_MON_RESET_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_RESET_DESCRIPTION_SV, "Återställ maskinen eller diskettstationen. Typ: 0 = mjuk, 1 = hård,\n"
+                                         "8-11 = diskettstation."},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_RETURN_DESCRIPTION,    N_("Continues execution and returns to the monitor just before the next\n"
+                                             "RTS or RTI is executed.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_RETURN_DESCRIPTION_DE, "Setzt Ausführung fort und retourniert bevor der nächsten RTS oder RTI instruction."},
+/* fr */ {IDGS_MON_RETURN_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_RETURN_DESCRIPTION_HU, "Folytatja a végrehajtást és visszatér a monitorba a következõ\n"
+                                          "RTS vagy RTI utasítás elõtt."},
+/* it */ {IDGS_MON_RETURN_DESCRIPTION_IT, "Continua l'esecuzione e ritorna al monitor subito prima della prossima\n"
+                                          "esecuzione di RTS o RTI."},
+/* nl */ {IDGS_MON_RETURN_DESCRIPTION_NL, "Ga door met uitvoeren van instructies en kom terug naar de monitor net voor de\n"
+                                          "volgende RTS of RTI wordt uitgevoerd."},
+/* pl */ {IDGS_MON_RETURN_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_RETURN_DESCRIPTION_SV, "Fortsätt exekveringen och återgå till monitorn precis innan nästa\n"
+                                          "RTS eller RTI exekveras."},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_SCREEN_DESCRIPTION,    N_("Displays the contents of the screen.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_SCREEN_DESCRIPTION_DE, "Zeigt Bildschirminhalt."},
+/* fr */ {IDGS_MON_SCREEN_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_SCREEN_DESCRIPTION_HU, "A képernyõ tartalmának mutatása."},
+/* it */ {IDGS_MON_SCREEN_DESCRIPTION_IT, "Mostra il contenuto dello schermo."},
+/* nl */ {IDGS_MON_SCREEN_DESCRIPTION_NL, "Toont de inhoud van het scherm."},
+/* pl */ {IDGS_MON_SCREEN_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_SCREEN_DESCRIPTION_SV, "Visar skärmens innehåll."},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_STEP_DESCRIPTION,    N_("Single-step through instructions.  COUNT allows stepping\n"
+                                           "more than a single instruction at a time.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_STEP_DESCRIPTION_DE, "Einzelschritt Ausführung durch Instruktionen. COUNT erlaubt die Ausführung\n"
+                                        "mehrerer Instruktionen auf einmal."},
+/* fr */ {IDGS_MON_STEP_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_STEP_DESCRIPTION_HU, "Lépkedés egyesével az utasításokon.  A DARAB-bal beállítható,\n"
+                                        "ha több utasítást kell ugrani egyszerre."},
+/* it */ {IDGS_MON_STEP_DESCRIPTION_IT, "Modalità single step attraverso le istruzioni. Il CONTATORE permette\n"
+                                        "di attraversare più di una singola istruzione per volta."},
+/* nl */ {IDGS_MON_STEP_DESCRIPTION_NL, "Enkel-stap door de instructies. AANTAL zorgt ervoor dat er meerdere\n"
+                                        "instructies worden uitgevoerd in een keer."},
+/* pl */ {IDGS_MON_STEP_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_STEP_DESCRIPTION_SV, "Stega genom instruktioner. ANTAL gör det möjligt att stega\n"
+                                        "genom mer än en enkel instruktion i varje steg."},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_UNDUMP_DESCRIPTION,    N_("Read a snapshot of the machine from the file specified.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_UNDUMP_DESCRIPTION_DE, "Lese einen Snapshot der Maschine aus der angegebenen Datei."},
+/* fr */ {IDGS_MON_UNDUMP_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_UNDUMP_DESCRIPTION_HU, "A pillanatkép betöltése a megadott fájlból."},
+/* it */ {IDGS_MON_UNDUMP_DESCRIPTION_IT, "Legge lo snapshot del computer dal file specificato."},
+/* nl */ {IDGS_MON_UNDUMP_DESCRIPTION_NL, "Lees een momentopname voor de machine van het opgegeven bestand."},
+/* pl */ {IDGS_MON_UNDUMP_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_UNDUMP_DESCRIPTION_SV, "Läs en ögonblicksbild för maskinen från den angivna filen."},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_SYMBOL_TABLE_COMMANDS,    N_("Symbol table commands:")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_SYMBOL_TABLE_COMMANDS_DE, "Symbol Tabellen Kommandos:"},
+/* fr */ {IDGS_SYMBOL_TABLE_COMMANDS_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_SYMBOL_TABLE_COMMANDS_HU, "Szimbólum táblázat parancsok:"},
+/* it */ {IDGS_SYMBOL_TABLE_COMMANDS_IT, "Comandi tabella dei simboli:"},
+/* nl */ {IDGS_SYMBOL_TABLE_COMMANDS_NL, "Symbool tabel commandos:"},
+/* pl */ {IDGS_SYMBOL_TABLE_COMMANDS_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_SYMBOL_TABLE_COMMANDS_SV, "Kommandon för symboltabell:"},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_RP_MEMSPACE_P_ADDRESS_P_LABEL,    N_("[<memspace>] <address> <label>")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_RP_MEMSPACE_P_ADDRESS_P_LABEL_DE, "[<Speicherbereich>] <Adresse> <Bezeichner>"},
+/* fr */ {IDGS_RP_MEMSPACE_P_ADDRESS_P_LABEL_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_RP_MEMSPACE_P_ADDRESS_P_LABEL_HU, "[<memória tér>] <cím> <címke>"},
+/* it */ {IDGS_RP_MEMSPACE_P_ADDRESS_P_LABEL_IT, "[<spazio di memoria>] <indirizzo> <etichetta>"},
+/* nl */ {IDGS_RP_MEMSPACE_P_ADDRESS_P_LABEL_NL, "[<geheugenruimte>] <adres> <label>"},
+/* pl */ {IDGS_RP_MEMSPACE_P_ADDRESS_P_LABEL_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_RP_MEMSPACE_P_ADDRESS_P_LABEL_SV, "[<minnesområde>] <adress> <etikett>"},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_ADD_LABEL_DESCRIPTION,    N_("<memspace> is one of: C: 8: 9: 10: 11:\n"
+                                                "<address>  is the address which should get the label.\n"
+                                                "<label>    is the name of the label; it must start with a dot (\".\").\n\n"
+                                                "Map a given address to a label.  This label can be used when entering\n"
+                                                "assembly code and is shown during disassembly.  Additionally, it can\n"
+                                                "be used whenever an address must be specified.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_ADD_LABEL_DESCRIPTION_DE, "<Speicherbereich> ist aus: C: 8: 9: 10: 11:\n"
+                                             "<Adresse>         bezeichnet die Adresse welche mit dem Bezeichner assoziert werden soll.\n"
+                                             "<Bezeichner>      Name des Bezeichners; Muß mit einem Punkt (\".\") starten.\n"
+                                             "\n"
+                                             "Assoziiert einen Bezeichner mit einer Adresse. Dieser Bezeichner kann \n"
+                                             "bei der Eingabe von Asssmblercode benutzt werden und wird auch beim\n"
+                                             "Disassemblieren gezeigt. Darüber hinaus kann der Bezeichner überall\n"
+                                             "dort genutzt werden, wo eine Adresseingabe nötig ist."},
+/* fr */ {IDGS_MON_ADD_LABEL_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_ADD_LABEL_DESCRIPTION_HU, "A <memória tér> ezek közül: C: 8: 9: 10: 11:\n"
+                                             "<cím>  amelyik címhez a címkét rendelje.\n"
+                                             "<címke>    a címke neve; ponttal kell kezdõdjön (\".\").\n"
+                                             "\n"
+                                             "Az adott cím rendelése a címkéhez.  Ez a címke használható assembly\n"
+                                             "program beírásakor, és visszafejtéskor megjelenik.  Mindig használható,\n"
+                                             "amikor valamilyen címet kell megadni."},
+/* it */ {IDGS_MON_ADD_LABEL_DESCRIPTION_IT, "<spazio di memoria> è uno tra: C: 8: 9: 10: 11:\n"
+                                             "<indirizzo> è l'indirizzo a cui deve essere associata l'etichettal.\n"
+                                             "<etichetta> è il nome dell'etichetta; deve iniziare con un punto (\".\").\n"
+                                             "\n"
+                                             "Associa l'indirizzo specificato all'etichetta. Questa etichetta può\n"
+                                             "essere usata quando si inserisce codice assembly ed è mostrata\n"
+                                             "nella disassemblazione. In aggiunta, può essere usata ogni volta che\n"
+                                             "deve essere specificato un indirizzo."},
+/* nl */ {IDGS_MON_ADD_LABEL_DESCRIPTION_NL, "<geheugenruimte> is een van: C: 8: 9: 10: 11:\n"
+                                             "<adres>          is het adres waaraan de label gekoppelt moet worden.\n"
+                                             "<label>          is de naam van de label; de naam moet beginnen met een punt\n"
+                                             "                 (\".\").\n\n"
+                                             "Koppel een opgegeven adres aan een label. Dit label kan worden gebruikt bij\n"
+                                             "het invoeren van assembleer code en wordt getoont bij een disassemblering.\n"
+                                             "Tevens kan de label gebruikt worden in plaats van het adres."},
+/* pl */ {IDGS_MON_ADD_LABEL_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_ADD_LABEL_DESCRIPTION_SV, "<minnesområde> är en av: C: 8: 9: 10: 11:\n"
+                                             "<adress>       är adressen som ska få etiketten.\n"
+                                             "<etikett>      är namnet på etiketten; måste starta med punkt (\".\").\n"
+                                             "\n"
+                                             "Koppla en adress till en etikett. Etiketten kan anges när assemblerkod\n"
+                                             "matas in och visas vid disassemblering. I tillägg kan den användas\n"
+                                             "närhelst en adress måste anges."},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_RP_MEMSPACE_P_LABEL,    N_("[<memspace>] <label>")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_RP_MEMSPACE_P_LABEL_DE, "[<Speicherbereich>] <Bezeichner>"},
+/* fr */ {IDGS_RP_MEMSPACE_P_LABEL_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_RP_MEMSPACE_P_LABEL_HU, "[<memória tartomány>] <címke>"},
+/* it */ {IDGS_RP_MEMSPACE_P_LABEL_IT, "[<spazio di memoria>] <etichetta>"},
+/* nl */ {IDGS_RP_MEMSPACE_P_LABEL_NL, "[<geheugenruimte>] <label>"},
+/* pl */ {IDGS_RP_MEMSPACE_P_LABEL_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_RP_MEMSPACE_P_LABEL_SV, "[<minnesområde>] <etikett>"},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_DELETE_LABEL_DESCRIPTION,    N_("<memspace> is one of: C: 8: 9: 10: 11:\n"
+                                                   "<label>    is the name of the label; it must start with a dot (\".\").\n\n"
+                                                   "Delete a previously defined label.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_DELETE_LABEL_DESCRIPTION_DE, "<Speicherbereich> ist aus: C: 8: 9: 10: 11:\n"
+                                                "<Bezeichner>      Name des Bezeichners; Muß mit einem Punkt (\\\".\\\") starten.\n"
+                                                "\n"
+                                                "Löscht einen zuvor definierten Bezeichner."},
+/* fr */ {IDGS_MON_DELETE_LABEL_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_DELETE_LABEL_DESCRIPTION_HU, "<memória tér> egy ezek közül: C: 8: 9: 10: 11:\n"
+                                                "<címke>    a címke neve; ponttal kell kezdõdjön (\".\").\n"
+                                                "\n"
+                                                "Elõzõleg megadott címke törlése."},
+/* it */ {IDGS_MON_DELETE_LABEL_DESCRIPTION_IT, "<spazio di memoria> è uno tra: C: 8: 9: 10: 11:\n"
+                                                "<etichetta> è il nome dell'etichetta; deve iniziare con un punto (\".\").\n"
+                                                "\n"
+                                                "Cancella una etichetta definita precedentemente."},
+/* nl */ {IDGS_MON_DELETE_LABEL_DESCRIPTION_NL, "<geheugenruimte> is een van: C: 8: 9: 10: 11:\n"
+                                                "<label>          is de naam van de label; de naam moet beginnen met een\n"
+                                                "punt (\".\").\n\n"
+                                                "Verwijder een gekoppelde label."},
+/* pl */ {IDGS_MON_DELETE_LABEL_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_DELETE_LABEL_DESCRIPTION_SV, "<minnesområde> är en av: C: 8: 9: 10: 11:\n"
+                                                "<etikett>      är namnet på etiketten; måste starta med punkt (\".\").\n"
+                                                "\n"
+                                                "Ta bort en tidigare angiven etikett."},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_RP_MEMSPACE_QP_FILENAME,    N_("[<memspace>] \"<filename>\"")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_RP_MEMSPACE_QP_FILENAME_DE, "[<Speicherbereich>] \"<Dateiname>\""},
+/* fr */ {IDGS_RP_MEMSPACE_QP_FILENAME_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_RP_MEMSPACE_QP_FILENAME_HU, "[<memória tartomány>] \"<fájlnév>\""},
+/* it */ {IDGS_RP_MEMSPACE_QP_FILENAME_IT, "[<spazio di memoria>] \"<nome file>\""},
+/* nl */ {IDGS_RP_MEMSPACE_QP_FILENAME_NL, "[<geheugenruimte>] \"<bestandsnaam>\""},
+/* pl */ {IDGS_RP_MEMSPACE_QP_FILENAME_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_RP_MEMSPACE_QP_FILENAME_SV, "[<minnesområde>] \"<filnamn>\""},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_LOAD_LABELS_DESCRIPTION,    N_("Load a file containing a mapping of labels to addresses.  If no memory\n"
+                                                  "space is specified, the default readspace is used.\n\n" 
+                                                  "The format of the file is the one written out by the `save_labels' command;\n" 
+                                                  "it consists of some `add_label' commands, written one after the other.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_LOAD_LABELS_DESCRIPTION_DE, "Laded eine Datei mit Zuordnung von Adressen zu Bezeichnern. Wenn kein \n"
+                                               "Speicherbereich angegeben wurde, wird der Standard Speicherplatz\n"
+                                               "verwendet.  Das Format der Datei wird durch das Kommande `save_lables'\n"
+                                               "definiert.  Es besteht aus eine Reihe von `add_label' Kommandos,\n"
+                                               "hintereinander angeordnet."},
+/* fr */ {IDGS_MON_LOAD_LABELS_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_LOAD_LABELS_DESCRIPTION_HU, "Címkékrõl címekre leképezéseket tartalmazó fájl betöltése.  Ha nincs memória\n"
+                                               "tér megadva, az alap tér lesz használva.\n"
+                                               "\n"
+                                               "A fájl formátuma megegyezik a `save_labels' parancs által kiírtéval;\n"
+                                               "néhány egymás után írt `add_label' parancsból áll."},
+/* it */ {IDGS_MON_LOAD_LABELS_DESCRIPTION_IT, "Carica un file che contiente l'associazione tra le etichette e gli indirizzi.\n"
+                                               "Se non è specificato alcuno spazio di memoria, viene usato lo spazio\n"
+                                               "di lettura predefinito.\n"
+                                               "\n"
+                                               "Il formato del file è quello dato in output dal comando `save_labels';\n"
+                                               "è composto da alcuni comandi `add_label', scritti uno di seguito all'altro."},
+/* nl */ {IDGS_MON_LOAD_LABELS_DESCRIPTION_NL, "Laad een bestand met de koppelingen tussen labels en adressen. Als er geen\n"
+                                               "geheugenruimte is opgegeven zal de standaard geheugenruimte worden gebruikt.\n"
+                                               "Het formaat van het bestand is die door het commando 'save_labels' wordt\n"
+                                               "geschreven; het bestaat uit een aantal 'add_label' commandos na elkaar."},
+/* pl */ {IDGS_MON_LOAD_LABELS_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_LOAD_LABELS_DESCRIPTION_SV, "Läs in en fil som innehåller koppling från etiketter till adresser.\n"
+                                               "Om inget minnesområde anges användas standard-läsadressen.\n"
+                                               "\n"
+                                               "Formatet på filen är samma som skrivs av \"save_labels\"-kommandot;\n"
+                                               "det består av några \"add_label\"-kommandon efter varandra."},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_SAVE_LABELS_DESCRIPTION,    N_("Save labels to a file.  If no memory space is specified, all of the\n"
+                                                  "labels are saved.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_SAVE_LABELS_DESCRIPTION_DE, "Speichere Bezeichner in eine Datei. Wenn kein Speicherbereich\n"
+                                               "angegeben wurde, werden alle Bezeichner gespeichert."},
+/* fr */ {IDGS_MON_SAVE_LABELS_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_SAVE_LABELS_DESCRIPTION_HU, "Címkék mentése fájlba.  Ha nincs memória tartomány megadva, az\n"
+                                               "összes címkét menti."},
+/* it */ {IDGS_MON_SAVE_LABELS_DESCRIPTION_IT, "Salva le etichette su file. Se non è specificato alcuno spazio di memoria,\n"
+                                               "vengono salvate tutte le etichette."},
+/* nl */ {IDGS_MON_SAVE_LABELS_DESCRIPTION_NL, "Sla de labels op in een bestand. Als er geen geheugenruimte is opgegeven\n"
+                                               "worden alle labels opgeslagen."},
+/* pl */ {IDGS_MON_SAVE_LABELS_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_SAVE_LABELS_DESCRIPTION_SV, "Spara etiketter till en fil. Om inget minnesområde anges sparas alla\n"
+                                               "etiketterna."},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_RP_MEMSPACE,    N_("[<memspace>]")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_RP_MEMSPACE_DE, "[<Speicherbereich>]"},
+/* fr */ {IDGS_RP_MEMSPACE_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_RP_MEMSPACE_HU, "[<memória tartomány>]"},
+/* it */ {IDGS_RP_MEMSPACE_IT, "[<spazio di memoria>]"},
+/* nl */ {IDGS_RP_MEMSPACE_NL, "[<geheugenruimte>]"},
+/* pl */ {IDGS_RP_MEMSPACE_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_RP_MEMSPACE_SV, "[<minnesområde>]"},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_SHOW_LABELS_DESCRIPTION,    N_("Display current label mappings.  If no memory space is specified, show\n"
+                                                  "all labels.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_SHOW_LABELS_DESCRIPTION_DE, "Zeige aktuelle Bezeichner Zuordnungen. Wenn kein Speicherbereich angegeben\n"
+                                               "wurde, werden alle Bezeichner gezeigt."},
+/* fr */ {IDGS_MON_SHOW_LABELS_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_SHOW_LABELS_DESCRIPTION_HU, "Az aktuális címke leképezések mutatása.  Ha nincs a memória tér megadva, az\n"
+                                               "összeset mutatja."},
+/* it */ {IDGS_MON_SHOW_LABELS_DESCRIPTION_IT, "Mostra l'associazione delle etichette correnti. Se non è specificato alcun\n"
+                                               "spazio di memoria, verranno mostrate tutte le etichette."},
+/* nl */ {IDGS_MON_SHOW_LABELS_DESCRIPTION_NL, "Toon huidige label koppelingen. Als er geen geheugenruimte is opgegeven\n"
+                                               "worden all labels getoont."},
+/* pl */ {IDGS_MON_SHOW_LABELS_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_SHOW_LABELS_DESCRIPTION_SV, "Visar aktuella etiketter. Om inget minnesområde anges visas alla\n"
+                                               "etiketter."},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_ASSEMBLER_AND_MEMORY_COMMANDS,    N_("Assembler and memory commands:")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_ASSEMBLER_AND_MEMORY_COMMANDS_DE, "Assembler und Speicher Kommandos:"},
+/* fr */ {IDGS_ASSEMBLER_AND_MEMORY_COMMANDS_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_ASSEMBLER_AND_MEMORY_COMMANDS_HU, "Assembler és memória parancsok:"},
+/* it */ {IDGS_ASSEMBLER_AND_MEMORY_COMMANDS_IT, "Comandi assembler e memoria:"},
+/* nl */ {IDGS_ASSEMBLER_AND_MEMORY_COMMANDS_NL, "Assembler en geheugen commandos:"},
+/* pl */ {IDGS_ASSEMBLER_AND_MEMORY_COMMANDS_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_ASSEMBLER_AND_MEMORY_COMMANDS_SV, "Assembler- och minneskommandon:"},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_RP_ADDRESS_P_DATA_LIST,    N_("[<address>] <data_list>")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_RP_ADDRESS_P_DATA_LIST_DE, "[<Adresse>] <Datenliste>"},
+/* fr */ {IDGS_RP_ADDRESS_P_DATA_LIST_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_RP_ADDRESS_P_DATA_LIST_HU, "[<cím>] <adat_lista>"},
+/* it */ {IDGS_RP_ADDRESS_P_DATA_LIST_IT, "[<indirizzo>] <lista di dati>"},
+/* nl */ {IDGS_RP_ADDRESS_P_DATA_LIST_NL, "[<adres>] <data_lijst>"},
+/* pl */ {IDGS_RP_ADDRESS_P_DATA_LIST_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_RP_ADDRESS_P_DATA_LIST_SV, "[<adress>] <datalista>"},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_WRITE_DESCRIPTION,    N_("Write the specified data at `address'.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_WRITE_DESCRIPTION_DE, "Schreibe das angegebene Datum auf `Adresse'."},
+/* fr */ {IDGS_MON_WRITE_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_WRITE_DESCRIPTION_HU, "A megadott adat `cím' helyre írása."},
+/* it */ {IDGS_MON_WRITE_DESCRIPTION_IT, "Scrive il dato specificato all'indirizzo."},
+/* nl */ {IDGS_MON_WRITE_DESCRIPTION_NL, "Schrijf de opgegevem data op `adres'."},
+/* pl */ {IDGS_MON_WRITE_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_WRITE_DESCRIPTION_SV, "Skriv angiven data på \"adress\"."},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_P_ADDRESS_RP_INSTRUCTION,    N_("<address> [ <instruction> [: <instruction>]* ]")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_P_ADDRESS_RP_INSTRUCTION_DE, "<Adresse> [ <Instruktion> [: <Instruktion>]* ]"},
+/* fr */ {IDGS_P_ADDRESS_RP_INSTRUCTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_P_ADDRESS_RP_INSTRUCTION_HU, "<cím> [ <utasítás> [: <utasítás>]* ]"},
+/* it */ {IDGS_P_ADDRESS_RP_INSTRUCTION_IT, "<indirizzo> [ <istruzione> [: <istruzione>]* ]"},
+/* nl */ {IDGS_P_ADDRESS_RP_INSTRUCTION_NL, "<adres> [ <instructie> [: <instructie>]* ]"},
+/* pl */ {IDGS_P_ADDRESS_RP_INSTRUCTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_P_ADDRESS_RP_INSTRUCTION_SV, "<adress> [ <instruktion> [: <instruktion>]* ]"},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_ASSEMBLE_DESCRIPTION,    N_("Assemble instructions to the specified address.  If only one\n"
+                                               "instruction is specified, enter assembly mode (enter an empty line to\n"
+                                               "exit assembly mode).")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_ASSEMBLE_DESCRIPTION_DE, "Assmbler Instruktionen zur angebenen Adresse. Wenn nur eine Instruktion\n"
+                                            "angegeben wurde, wird der assemblier Modus aktiviert (Eingabe einer leeren\n"
+                                            "Zeile beendet den assemblier Modus)."},
+/* fr */ {IDGS_MON_ASSEMBLE_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_ASSEMBLE_DESCRIPTION_HU, "Utasítások fordítása a megadott címre. Ha csak egy utasítás\n"
+                                            "van, fordító módba lép (üres sort kell beírni a kilépéshez)."},
+/* it */ {IDGS_MON_ASSEMBLE_DESCRIPTION_IT, "Assembla le istruzioni a partire dall'indirizzo specificato. Se solo una\n"
+                                            "istruzione è specificata, entra in modalità assembly (inserire una\n"
+                                            "linea vuota per uscire da questa modalità)."},
+/* nl */ {IDGS_MON_ASSEMBLE_DESCRIPTION_NL, "Assembleer instructies naar het opgegeven adres. Als er alleen een instructie\n"
+                                            "is opgegeven dan wordt de assembleer modus ingeschakelt (geef een lege regel\n"
+                                            "in om de assembleer modus te verlaten)."},
+/* pl */ {IDGS_MON_ASSEMBLE_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_ASSEMBLE_DESCRIPTION_SV, "Assemblera instruktioner till angiven adress. Om endast en\n"
+                                            "instruktion angavs, aktivera assemblerläge (mata in en tom rad\n"
+                                            "för att avsluta assemblerläget)."},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_P_ADDRESS_RANGE_P_ADDRESS,    N_("<address_range> <address>")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_P_ADDRESS_RANGE_P_ADDRESS_DE, "<Adressbereich> <Adresse>"},
+/* fr */ {IDGS_P_ADDRESS_RANGE_P_ADDRESS_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_P_ADDRESS_RANGE_P_ADDRESS_HU, "<címtartomány> <cím>"},
+/* it */ {IDGS_P_ADDRESS_RANGE_P_ADDRESS_IT, "<intervallo indirizzi> <indirizzo>"},
+/* nl */ {IDGS_P_ADDRESS_RANGE_P_ADDRESS_NL, "<adres_reeks> <adres>"},
+/* pl */ {IDGS_P_ADDRESS_RANGE_P_ADDRESS_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_P_ADDRESS_RANGE_P_ADDRESS_SV, "<adressområde> <adress>"},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_COMPARE_DESCRIPTION,    N_("Compare memory from the source specified by the address range to the\n"
+                                              "destination specified by the address.  The regions may overlap.  Any\n"
+                                              "values that miscompare are displayed using the default displaytype.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_COMPARE_DESCRIPTION_DE, "Vergleiche angegebenen Adressbereich mit der Zieladresse.\n"
+                                           "Die Bereiche können überlappen. Ungleiche Werte werden mit dem\n"
+                                           "Standardanzeigetyp gezeigt."},
+/* fr */ {IDGS_MON_COMPARE_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_COMPARE_DESCRIPTION_HU, "A forrás memóriatartomány összehasonlítása a céllal megadott\n"
+                                           "memóriatartománnyal. A tartományok átfedése megengedett.  Minden\n"
+                                           "meg nem egyezõ értéket kiír az alap adat típussal."},
+/* it */ {IDGS_MON_COMPARE_DESCRIPTION_IT, "Confronta la memoria della sorgente specificata dall'intervallo di\n"
+                                           "indirizzi con la destinazione specificata dall'indirizzo. Le regioni possono\n"
+                                           "sovrapporsi. Qualsiasi valore che non corrisponde è visualizzato\n"
+                                           "utilizzando il tipo di dato predefinito."},
+/* nl */ {IDGS_MON_COMPARE_DESCRIPTION_NL, "Vergelijk geheugen van de bron opgegeven door de adres reeks met het doel\n"
+                                           "opgegeven door het adres. De reeksen mogen overlappen. De data die niet\n"
+                                           "gelijk is zal worden getoont volgens de huidige toon soort."},
+/* pl */ {IDGS_MON_COMPARE_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_COMPARE_DESCRIPTION_SV, "Jämför minne från källan som anges av adressområdet mot destinationen\n"
+                                           "som anges av adressen. Områdena kan vara överlappande. Alla värden\n"
+                                           "som skiljer sig vid jämförelsen visas med standardvisningssättet."},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_P_CHECKNUM,    N_("<checknum>")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_P_CHECKNUM_DE, "<Checknummer>"},
+/* fr */ {IDGS_P_CHECKNUM_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_P_CHECKNUM_HU, "<ell_pont_szám>"},
+/* it */ {IDGS_P_CHECKNUM_IT, "<checknum>"},
+/* nl */ {IDGS_P_CHECKNUM_NL, "<checknum>"},
+/* pl */ {IDGS_P_CHECKNUM_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_P_CHECKNUM_SV, "<kontrollnr>"},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_DELETE_DESCRIPTION,    N_("Delete checkpoint `checknum'.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_DELETE_DESCRIPTION_DE, "Lösche Checkpoint `Checknummer'."},
+/* fr */ {IDGS_MON_DELETE_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_DELETE_DESCRIPTION_HU, "`ell_pont_szám' ellenõrzési pont törlése."},
+/* it */ {IDGS_MON_DELETE_DESCRIPTION_IT, "Cancella il punto di controllo `checknum'."},
+/* nl */ {IDGS_MON_DELETE_DESCRIPTION_NL, "Verwijder checkpunt `checknum'."},
+/* pl */ {IDGS_MON_DELETE_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_DELETE_DESCRIPTION_SV, "Ta bort kontrollpunkt \"kontrollnr\"."},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_RP_ADDRESS_RP_ADDRESS,    N_("[<address> [<address>]]")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_RP_ADDRESS_RP_ADDRESS_DE, "[<Adresse> [<Adresse>]]"},
+/* fr */ {IDGS_RP_ADDRESS_RP_ADDRESS_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_RP_ADDRESS_RP_ADDRESS_HU, "[<cím> [<cím>]]"},
+/* it */ {IDGS_RP_ADDRESS_RP_ADDRESS_IT, "[<indirizzo> [<indirizzo>]]"},
+/* nl */ {IDGS_RP_ADDRESS_RP_ADDRESS_NL, "[<adres> [<adres>]]"},
+/* pl */ {IDGS_RP_ADDRESS_RP_ADDRESS_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_RP_ADDRESS_RP_ADDRESS_SV, "[<adress> [<adress>]]"},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_DISASS_DESCRIPTION,    N_("Disassemble instructions.  If two addresses are specified, they are\n"
+                                             "used as a start and end address.  If only one is specified, it is\n"
+                                             "treated as the start address and a default number of instructions are\n"
+                                             "disassembled.  If no addresses are specified, a default number of\n"
+                                             "instructions are disassembled from the dot address.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_DISASS_DESCRIPTION_DE, "Disassembliere Instruktionen. Wenn zwei Adressen angegeben werden,\n"
+                                          "werden diese als Start- und Zieladresse interpretiert. Wenn nur eine\n"
+                                          "Adress angegeben wird, wird diese asl Startadresse interpretiert und\n"
+                                          "die Standardanzahl an Instruktionen werden disassembliert. Wenn keine\n"
+                                          "Adresse angegeben wird, wird von der aktuellen Adresse disassembliert."},
+/* fr */ {IDGS_MON_DISASS_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_DISASS_DESCRIPTION_HU, "Utasítások visszafejtése. Ha két cím van megadva, elsõ és utolsó\n"
+                                          "címként értelmezi õket. Ha csak egy, akkor elsõ címként, és az alap\n"
+                                          "számú utasítás kerül visszafejtésre. Ha nincs cím megadva, az aktuális\n"
+                                          "címtõl kezdi a visszafejtést, és a szokásos számú utasítást ír ki."},
+/* it */ {IDGS_MON_DISASS_DESCRIPTION_IT, "Disassembla le istruzioni. Se sono specificati due indirizzi, questi\n"
+                                          "sono utilizzati come indirizzo di inizio e fine. Se ne viene specificato\n"
+                                          "solo uno, è usato come indirizzo di partenza e viene disassemblato\n"
+                                          "il numero di istruzioni predefinito. Se non viene specificato nessun\n"
+                                          "indirizzo, viene disassemblato il numero di istruzioni predefinito\n"
+                                          "dall'indirizzo dot."},
+/* nl */ {IDGS_MON_DISASS_DESCRIPTION_NL, "Disassembleer instructies. Als er twee adressen zijn opgegeven dan worden\n"
+                                          "deze gebruikt als een start en eind adres. Als er maar een adres is\n"
+                                          "opgegeven dan wordt deze gebruikt als het start adres en een standaard\n"
+                                          "aantal instructies zal worden gedisassembleerd. Als er geen adressen zijn\n"
+                                          "opgegeven dan wordt een standaard aantal instructies gedisassembleerd vanaf\n"
+                                          "het huidige adres."},
+/* pl */ {IDGS_MON_DISASS_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_DISASS_DESCRIPTION_SV, "Disassemblera instruktioner. Om två adresser anges används de som\n"
+                                          "start- och slutadress. Om endast en anges används den som startadress\n"
+                                          "och ett standardantal instruktioner disassembleras. Om ingen adress\n"
+                                          "anges disassembleras ett standardantal instruktioner från punktadressen."},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_P_ADDRESS_RANGE_P_DATA_LIST,    N_("<address_range> <data_list>")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_P_ADDRESS_RANGE_P_DATA_LIST_DE, "<Adressbereich> <Datenliste>"},
+/* fr */ {IDGS_P_ADDRESS_RANGE_P_DATA_LIST_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_P_ADDRESS_RANGE_P_DATA_LIST_HU, "<cím_tartomány> <adat_lista>"},
+/* it */ {IDGS_P_ADDRESS_RANGE_P_DATA_LIST_IT, "<intervallo di indirizzi> <lista di dati>"},
+/* nl */ {IDGS_P_ADDRESS_RANGE_P_DATA_LIST_NL, "<adres_reeks> <data_lijst>"},
+/* pl */ {IDGS_P_ADDRESS_RANGE_P_DATA_LIST_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_P_ADDRESS_RANGE_P_DATA_LIST_SV, "<adressområde> <datalista>"},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_FILL_DESCRIPTION,    N_("Fill memory in the specified address range with the data in\n"
+                                           "<data_list>.  If the size of the address range is greater than the size\n"
+                                           "of the data_list, the data_list is repeated.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_FILL_DESCRIPTION_DE, "Fülle den angegebenen Adressbereich mit den Daten aus <Datenliste>.\n"
+                                        "Wenn die Größe des Adressbereichs größer als <Datenliste> ist, werden\n"
+                                        "die Daten wiederholt."},
+/* fr */ {IDGS_MON_FILL_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_FILL_DESCRIPTION_HU, "A memória kitöltése az <adat_lista> paraméterben megadott adatokkal.\n"
+                                        "Ha a címtartomány nagyobb, mint a lista, ismételni fogja azt."},
+/* it */ {IDGS_MON_FILL_DESCRIPTION_IT, "Riempe la memoria nell'intervallo di indirizzi specificato con i dati\n"
+                                        "presenti in <lista di dati>. Se la dimensione dell'intervallo è maggiore\n"
+                                        "della dimensione della lista di dati, la lista di dati è ripetuta."},
+/* nl */ {IDGS_MON_FILL_DESCRIPTION_NL, "Vul het geheugen van de opgegeven adres reeks op met de data in <data_lijst>.\n"
+                                        "Als de grootte van de adres reeks groter is dan de grootte van de data_lijst\n"
+                                        "dan zal de data_lijst worder herhaald."},
+/* pl */ {IDGS_MON_FILL_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_FILL_DESCRIPTION_SV, "Fyll minnet i det angivna området med data i <datalista>.\n"
+                                        "Om storleken på adressområdet är större än storleken på datalistan\n"
+                                        "repeteras innehållet i datalistan."},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_HUNT_DESCRIPTION,    N_("Hunt memory in the specified address range for the data in\n"
+                                           "<data_list>.  If the data is found, the starting address of the match\n"
+                                           "is displayed.  The entire range is searched for all possible matches.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_HUNT_DESCRIPTION_DE, "Suche in angebenen Adressbereich nach <Datenliste>. Wenn die Daten gefunden\n"
+                                        "wurden, wird die Startadresse gezeigt. Der komplette Bereich wird alle\n"
+                                        "Vorkommnisse von <Datenliste> untersucht."},
+/* fr */ {IDGS_MON_HUNT_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_HUNT_DESCRIPTION_HU, "Az <adat_lista> adat keresése a memóriában. Ha megtalálja a sorozatot,\n"
+                                        "a kezdõcímét kiírja. Az egész tartományt végignézi az összes lehetséges\n"
+                                        "találat felfedezéséhez."},
+/* it */ {IDGS_MON_HUNT_DESCRIPTION_IT, "Cerca nell'intervallo di indirizzi specificato i dati nella <lista di dati>.\n"
+                                        "Se il dato è trovato, viene visualizzato l'indirizzo iniziale della\n"
+                                        "corrispondenza. Tutto l'intervallo viene ricercato per tutte le possibili\n"
+                                        "corrispondenze."},
+/* nl */ {IDGS_MON_HUNT_DESCRIPTION_NL, "Zoek het adres bereik voor de data in <data_lijst>. Als de data is gevonden\n"
+                                        "dan wordt het start adres getoont. Er zal door de hele reeks worden gezocht."},
+/* pl */ {IDGS_MON_HUNT_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_HUNT_DESCRIPTION_SV, "Sök i minnet i det angivna området med data efter <datalista>.\n"
+                                        "Om data påträffas visas startadressen för träffen. Hela\n"
+                                        "området genomsöks för att hitta alla möjliga träffar."},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_P_ADDRESS_OPT_RANGE,    N_("<address_opt_range>")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_P_ADDRESS_OPT_RANGE_DE, "<Optionaler Adressbereich>"},
+/* fr */ {IDGS_P_ADDRESS_OPT_RANGE_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_P_ADDRESS_OPT_RANGE_HU, "<címtartomány>"},
+/* it */ {IDGS_P_ADDRESS_OPT_RANGE_IT, "<intervallo di indirizzi opzionale>"},
+/* nl */ {IDGS_P_ADDRESS_OPT_RANGE_NL, "<optionele_adres_reeks>"},
+/* pl */ {IDGS_P_ADDRESS_OPT_RANGE_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_P_ADDRESS_OPT_RANGE_SV, "<adress_ev_område>"},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_I_DESCRIPTION,    N_("Display memory contents as PETSCII text.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_I_DESCRIPTION_DE, "Zeige Speicherinhalt als PETSCII Text."},
+/* fr */ {IDGS_MON_I_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_I_DESCRIPTION_HU, "Memória tartalom mutatása PETSCII szövegként."},
+/* it */ {IDGS_MON_I_DESCRIPTION_IT, "Mostra il contenuto della memoria come testo PETSCII."},
+/* nl */ {IDGS_MON_I_DESCRIPTION_NL, "Toon geheugen inhoud als PETSCII tekst."},
+/* pl */ {IDGS_MON_I_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_I_DESCRIPTION_SV, "Visa minnesinnehåll som PETSCII-text."},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_II_DESCRIPTION,    N_("Display memory contents as screen code text.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_II_DESCRIPTION_DE, "Zeige Speicherinhalt als Bildschirmcode Text."},
+/* fr */ {IDGS_MON_II_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_II_DESCRIPTION_HU, "Memória tartalom megjelenítése képernyõ kód szövegként."},
+/* it */ {IDGS_MON_II_DESCRIPTION_IT, "Mostra il contenuto della memoria come testo screen code."},
+/* nl */ {IDGS_MON_II_DESCRIPTION_NL, "Toon geheugen inhoud als scherm code tekst."},
+/* pl */ {IDGS_MON_II_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_II_DESCRIPTION_SV, "Visa minnesinnehåll som skärmkodstext."},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_RP_DATA_TYPE_RP_ADDRESS_OPT_RANGE,    N_("[<data_type>] [<address_opt_range>]")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_RP_DATA_TYPE_RP_ADDRESS_OPT_RANGE_DE, "[<Datentyp>] [<Optionaler Adressbereich>]"},
+/* fr */ {IDGS_RP_DATA_TYPE_RP_ADDRESS_OPT_RANGE_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_RP_DATA_TYPE_RP_ADDRESS_OPT_RANGE_HU, "[<adat_típus>] [<címtartomány>]"},
+/* it */ {IDGS_RP_DATA_TYPE_RP_ADDRESS_OPT_RANGE_IT, "[<dati>] [<intervallo di indirizzi opzionale>]"},
+/* nl */ {IDGS_RP_DATA_TYPE_RP_ADDRESS_OPT_RANGE_NL, "[<data_soort>] [<optionele_adres_reeks>]"},
+/* pl */ {IDGS_RP_DATA_TYPE_RP_ADDRESS_OPT_RANGE_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_RP_DATA_TYPE_RP_ADDRESS_OPT_RANGE_SV, "[<datatyp>] [<adress_ev_område>]"},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_MEM_DESCRIPTION,    N_("Display the contents of memory.  If no datatype is given, the default\n"
+                                          "is used.  If only one address is specified, the length of data\n"
+                                          "displayed is based on the datatype.  If no addresses are given, the\n"
+                                          "'dot' address is used.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_MEM_DESCRIPTION_DE, "Zeige Speicherinhalt. Wenn kein Datentyp angegeben wurde, wird der\n"
+                                       "Standarddatentyp verwendet. Wenn nur eine Adresse angegeben wird, hängt\n"
+                                       "die Länge der Daten vom Datentyp ab. Wenn keine Adresse angeben wurde, \n"
+                                       "wird die aktuelle Adresse verwendet."},
+/* fr */ {IDGS_MON_MEM_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_MEM_DESCRIPTION_HU, "A memória tartalmának megjelenítése. Ha nincs adat típus megadva,\n"
+                                       "az alapbeállításthasználja. Ha egy cím van megadva, a megjelenített adat\n"
+                                       "mérete az adat típustól függ. Ha nincs cím megadva, a 'pont' címet használja."},
+/* it */ {IDGS_MON_MEM_DESCRIPTION_IT, "Mostra il contenuto della memoria. Se non è specificato alcun tipo di\n"
+                                       "dato, verrà utilizzato quello predefinito. Se è specificato solo un indirizzo,\n"
+                                       "la lunghezza del dato visualizato è basato sul tipo. Se non è specificato\n"
+                                       "nessun indirizzo, varrà utilizzato l'indirizzo 'dot'."},
+/* nl */ {IDGS_MON_MEM_DESCRIPTION_NL, "Toon de geheugen inhoud. Als er geen datasoort is opgegeven dan zal de standaard\n"
+                                       "worden gebruikt. Als er maar een adres is opgegeven dan zal de lengte van de\n"
+                                       "getoonde data gebaseerd worden op de datasoort. Als er geen adres is opgegeven\n"
+                                       "dan zal het huidige adres worden gebruikt."},
+/* pl */ {IDGS_MON_MEM_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_MEM_DESCRIPTION_SV, "Visa minnets innehåll. Om ingen datatyp anges, används standard.\n"
+                                       "Om endast en adress anges, justeras längden på visad data baserat\n"
+                                       "på datatypen. Om ingen adress anges används \"punkt\"-adressen."},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_MEMCHAR_DESCRIPTION,    N_("Display the contents of memory as character data.  If only one address\n"
+                                              "is specified, only one character is displayed.  If no addresses are\n"
+                                              "given, the ``dot'' address is used.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_MEMCHAR_DESCRIPTION_DE, "Zeige den Inhalt von Speicher als Character Daten. Wenn nur eine Adresse\n"
+                                           "angegeben wurde, wird nur ein Zeichen gezeigt. Wenn keine Adresse angegeben\n"
+                                           "wurde, wird die aktuelle Adresse verwendet."},
+/* fr */ {IDGS_MON_MEMCHAR_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_MEMCHAR_DESCRIPTION_HU, "A memória tartalmának megjelenítése karakter grafikaként.  Ha csak egy cím\n"
+                                           "adott, egyetlen karakter rajzolódik ki.  Ha nincs cím megadva,\n"
+                                           "a ``pont'' címet használja."},
+/* it */ {IDGS_MON_MEMCHAR_DESCRIPTION_IT, "Mosta il contenuto della memoria come dati caratteri. Se è specificato\n"
+                                           "solo un indirizzo, verrà visualizzato solo un carattere. Se non è\n"
+                                           "specificato alcun indirizzo, varrà utilizzato l'indirizzo ``dot'' ."},
+/* nl */ {IDGS_MON_MEMCHAR_DESCRIPTION_NL, "Toon de geheugen inhoud als karakter data. Als er maar een adres is\n"
+                                           "opgegeven dan zal er maar een karakter worden weergegeven. Als er geen\n"
+                                           "adres is opgegeven dan zal het huidige adres gebruikt worden."},
+/* pl */ {IDGS_MON_MEMCHAR_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_MEMCHAR_DESCRIPTION_SV, "Visa minnets innehåll som teckendata. Om endast en adress\n"
+                                           "anges, visas endast ett tecken. Om ingen adress anges används\n"
+                                           "\"punkt\"-adressen."},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_QP_FILENAME_P_FORMAT,    N_("\"<filename>\" <format>")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_QP_FILENAME_P_FORMAT_DE, "\"<Dateiname>\" <Format>"},
+/* fr */ {IDGS_QP_FILENAME_P_FORMAT_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_QP_FILENAME_P_FORMAT_HU, "\"<fájlnév>\" <formátum>"},
+/* it */ {IDGS_QP_FILENAME_P_FORMAT_IT, "\"<nome del file>\" <formato>"},
+/* nl */ {IDGS_QP_FILENAME_P_FORMAT_NL, "\"<betandsnaam>\" <formaat>"},
+/* pl */ {IDGS_QP_FILENAME_P_FORMAT_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_QP_FILENAME_P_FORMAT_SV, "\"<filnamn>\" <format>"},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_MEMMAPSAVE_DESCRIPTION,    N_("Save the memmap as a picture. Format is:\n"
+                                                 "0 = BMP, 1 = PCX, 2 = PNG, 3 = GIF, 4 = IFF.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_MEMMAPSAVE_DESCRIPTION_DE, "Speicher die memmap als Bilddaten. Formate:\n"
+                                              "0 = BMP, 1 = PCX, 2 = PNG, 3 = GIF, 4 = IFF."},
+/* fr */ {IDGS_MON_MEMMAPSAVE_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_MEMMAPSAVE_DESCRIPTION_HU, "Memória térkép mentése képként. A formátum:\n"
+                                              "0 = BMP, 1 = PCX, 2 = PNG, 3 = GIF, 4 = IFF."},
+/* it */ {IDGS_MON_MEMMAPSAVE_DESCRIPTION_IT, "Salva la mappa di memoria come immagine. I Formati sono:\n"
+                                              "0 = BMP, 1 = PCX, 2 = PNG, 3 = GIF, 4 = IFF."},
+/* nl */ {IDGS_MON_MEMMAPSAVE_DESCRIPTION_NL, "Sla de memmap op als een afbeelding. Formaat is:\n"
+                                                 "0 = BMP, 1 = PCX, 2 = PNG, 3 = GIF, 4 = IFF."},
+/* pl */ {IDGS_MON_MEMMAPSAVE_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_MEMMAPSAVE_DESCRIPTION_SV, "Sparar minneskartan som en bild. Format:\n"
+                                              "0 = BMP, 1 = PCX, 2 = PNG, 3 = GIF, 4 = IFF."},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_RP_MASK_RP_ADDRESS_OPT_RANGE,    N_("[<mask>] [<address_opt_range>]")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_RP_MASK_RP_ADDRESS_OPT_RANGE_DE, "[<Maske>] [<Optionaler Adressbereich>]"},
+/* fr */ {IDGS_RP_MASK_RP_ADDRESS_OPT_RANGE_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_RP_MASK_RP_ADDRESS_OPT_RANGE_HU, "[<maszk>] [<címtartomány>]"},
+/* it */ {IDGS_RP_MASK_RP_ADDRESS_OPT_RANGE_IT, "[<maschera>] [<intervallo di indirizzi opzionale>]"},
+/* nl */ {IDGS_RP_MASK_RP_ADDRESS_OPT_RANGE_NL, "[<masker>] [<optionele_adres_reeks>]"},
+/* pl */ {IDGS_RP_MASK_RP_ADDRESS_OPT_RANGE_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_RP_MASK_RP_ADDRESS_OPT_RANGE_SV, "[<mask>] [<adress_ev_område>]"},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_MEMMAPSHOW_DESCRIPTION,    N_("Show the memmap. The mask can be specified to show only those\n"
+                                                 "locations with accesses of certain type(s). The mask is a number\n"
+                                                 "with the bits \"ioRWXrwx\", where RWX are for ROM and rwx for RAM.\n"
+                                                 "Optionally, an address range can be specified.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_MEMMAPSHOW_DESCRIPTION_DE, "Zeige die memmap. Die Maske kann so definiert werden, dass nur jene Orte\n"
+                                              "mit Zugriff auf spezifische Typ(en) gezeigt werden. Die Maske ist eine Nummer\n"
+                                              "mit Bits \"ioRWXrwx\", wobei RWX für ROM und rwx für RAM steht.\n"
+                                              "Optional kann ein Adressbereich definiert werden."},
+/* fr */ {IDGS_MON_MEMMAPSHOW_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_MEMMAPSHOW_DESCRIPTION_HU, "A memória térkép mutatása. A maszk úgy állítható, hogy csak azokat a\n"
+                                              "helyeket mutassa, amelyek a megadott eléréssel rendelkeznek. A maszk\n"
+                                              "egy szám az \"ioRWXrwx\" bitekkel, ahol az RWX a ROM-ra, az rwx a RAM-ra\n"
+                                              "vonatkozik. Tetszés szerint egy címtartomány is megadható."},
+/* it */ {IDGS_MON_MEMMAPSHOW_DESCRIPTION_IT, "Mostra la mappa di memoria. La maschera può essere specificata per\n"
+                                              "mostrare solo quelle locazioni con accessi un un certo tipo. La maschera\n"
+                                              "è un numero con i bit \"ioRWXrwx\", dove RWX sono per la ROM e\n"
+                                              "rwx per la RAM.\n"
+                                              "Opzionalmente, può essere specificato anche un intervallo di indirizzi."},
+/* nl */ {IDGS_MON_MEMMAPSHOW_DESCRIPTION_NL, "Toon de memmap. Het masker kan worden opgegeven zodat er alleen de\n"
+                                              "adressen met toegrijpingen van een bepaalde soort(en) zal worden getoond.\n"
+                                              "Het masker is een nummer met de bits \"ioRWXrwx\", waar RWX is voor ROM,\n"
+                                              "en rwx voor RAM. Er kan optioneel een adres bereik worden opgegeven."},
+/* pl */ {IDGS_MON_MEMMAPSHOW_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_MEMMAPSHOW_DESCRIPTION_SV, "Visa minneskartan. Masken kan anges för att endast visa de\n"
+                                              "celler som gäller specifik(a) typ(er). Masken är ett tal\n"
+                                              "med bitarna \"ioRWXrwx\", där RWX är för ROM och rwx är för\n"
+                                              "RAM. Ett minnesområde kan eventuellt anges."},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_MEMMAPZAP_DESCRIPTION,    N_("Clear the memmap.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_MEMMAPZAP_DESCRIPTION_DE, "Lösche die memmap."},
+/* fr */ {IDGS_MON_MEMMAPZAP_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_MEMMAPZAP_DESCRIPTION_HU, "A memória térkép törlése."},
+/* it */ {IDGS_MON_MEMMAPZAP_DESCRIPTION_IT, "Cancella la mappa di meoria."},
+/* nl */ {IDGS_MON_MEMMAPZAP_DESCRIPTION_NL, "Veeg de memmap schoon."},
+/* pl */ {IDGS_MON_MEMMAPZAP_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_MEMMAPZAP_DESCRIPTION_SV, "Töm minneskartan."},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_MEMSPRITE_DESCRIPTION,    N_("Display the contents of memory as sprite data.  If only one address is\n"
+                                                "specified, only one sprite is displayed.  If no addresses are given,\n"
+                                                "the ``dot'' address is used.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_MEMSPRITE_DESCRIPTION_DE, "Zeige den Speicher als Sprite Daten. Wenn nur eine Adresse angegeben wurde,\n"
+                                             "wird nur ein Sprite gezeitg. Wenn keine Adresse angegeben wurde, wird\n"
+                                             "die aktuelle Adresse verwendet."},
+/* fr */ {IDGS_MON_MEMSPRITE_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_MEMSPRITE_DESCRIPTION_HU, "A memória tartalmának megjelenítése sprite adatkéne. Ha csak egy cím\n"
+                                             "van megadva, egyetlen sprite-ot mutat.  Ha egyáltalán nincs cím megadva,\n"
+                                             "az aktuális címet használja."},
+/* it */ {IDGS_MON_MEMSPRITE_DESCRIPTION_IT, "Mostra il contenuto della memoria come dati sprite. Se è specificato\n"
+                                             "solo un indirizzo, verrà mostrato solo uno sprite. Se non è specificato\n"
+                                             "alcun indirizzo, varrà utilizzato l'indirizzo ``dot''."},
+/* nl */ {IDGS_MON_MEMSPRITE_DESCRIPTION_NL, "Toon de geheugen inhoud als sprite data. Als er maar een adres is opgegeven\n"
+                                             "dan zal er maar een sprite worden getoond. Als er geen adres is opgegeven\n"
+                                             "dan zal het huidige adres worden gebruikt."},
+/* pl */ {IDGS_MON_MEMSPRITE_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_MEMSPRITE_DESCRIPTION_SV, "Visa minnets innehåll som spritedata. Om endast en adress\n"
+                                             "anges, visas endast en sprite. Om ingen adress anges används\n"
+                                             "\"punkt\"-adressen."},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_MOVE_DESCRIPTION,    N_("Move memory from the source specified by the address range to\n"
+                                           "the destination specified by the address.  The regions may overlap.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_MOVE_DESCRIPTION_DE, "Verschiebe Speicher von Startadresse definiert durch den Adressbereich zum\n"
+                                        "Zielbereich definiert durch die Adresse. Die Bereiche können überlappend sein."},
+/* fr */ {IDGS_MON_MOVE_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_MOVE_DESCRIPTION_HU, "Memória másolása a forrás területrõl a cél cím által meghatározott\n"
+                                        "területre. A tartományok átfedése megengedett."},
+/* it */ {IDGS_MON_MOVE_DESCRIPTION_IT, "Sposta la memoria dalla sorgente specificata dall'intervallo di indirizzi\n"
+                                        "alla destinazione specificata dall'indirizzo. Le regioni possono\n"
+                                        "sovrapporsi."},
+/* nl */ {IDGS_MON_MOVE_DESCRIPTION_NL, "Verplaats data van de opgegeven bron adres reeks naar het doel adres. De\n"
+                                        "reeksen kunnen overlappen."},
+/* pl */ {IDGS_MON_MOVE_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_MOVE_DESCRIPTION_SV, "Flytta minne från källadressen som anges av minnesområdet\n"
+                                        "till destinationen som anges av adressen. Regionerna kan vara\n"
+                                        "överlappande."},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_CHECKPOINT_COMMANDS,    N_("Checkpoint commands:")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_CHECKPOINT_COMMANDS_DE, "Checkpoint Kommandos"},
+/* fr */ {IDGS_CHECKPOINT_COMMANDS_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_CHECKPOINT_COMMANDS_HU, "Ellenõrzési pont parancsok:"},
+/* it */ {IDGS_CHECKPOINT_COMMANDS_IT, "Comandi punti di controllo:"},
+/* nl */ {IDGS_CHECKPOINT_COMMANDS_NL, "Checkpunt commandos:"},
+/* pl */ {IDGS_CHECKPOINT_COMMANDS_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_CHECKPOINT_COMMANDS_SV, "Kommandon för brytpunkter:"},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_RP_ADDRESS_RP_COND_EXPR,    N_("[<address> [if <cond_expr>] ]")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_RP_ADDRESS_RP_COND_EXPR_DE, "[<Adresse> [if <bedingter Ausdruck>] ]"},
+/* fr */ {IDGS_RP_ADDRESS_RP_COND_EXPR_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_RP_ADDRESS_RP_COND_EXPR_HU, "[<cím> [if <felt_kif>] ]"},
+/* it */ {IDGS_RP_ADDRESS_RP_COND_EXPR_IT, "[<indirizzo> [if <espressione condizione>] ]"},
+/* nl */ {IDGS_RP_ADDRESS_RP_COND_EXPR_NL, "[<adres> [ald <cond_expr>] ]"},
+/* pl */ {IDGS_RP_ADDRESS_RP_COND_EXPR_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_RP_ADDRESS_RP_COND_EXPR_SV, "[<adress> [om <villkorsuttryck>] ]"},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_BREAK_DESCRIPTION,    N_("If no address is given, the currently valid watchpoints are printed.\n"
+                                            "If an address is given, a breakpoint is set for that address and the\n"
+                                            "breakpoint number is printed.  A conditional expression can also be\n"
+                                            "specified for the breakpoint.  For more information on conditions, see\n"
+                                            "the CONDITION command.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_BREAK_DESCRIPTION_DE, "Wenn keine Adresse angegeben wurde, werden die aktuellen watchpoints gezeigt.\n"
+                                         "Wenn eine Adresse angegebene wurde, wird ein breakpoint auf diese Adresse\n"
+                                         "gesetzt und die breakpoint Nummer wird ausgegeben. Ein bedingter Ausdruck\n"
+                                         "can zu dem breakpoint zugeordnet werden. Für mehr Informations über \n"
+                                         "bedingte Ausdrücke, bitte Kommando CONDITION ansehen."},
+/* fr */ {IDGS_MON_BREAK_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_BREAK_DESCRIPTION_HU, "Ha nincs cím megadva, az aktuálisan érvényes figyelési pontokat\n"
+                                         "listázza. Ha van cím a paraméterben, töréspontot helyez el az adott\n"
+                                         "címre, és a számát kiírja. Egy feltétel kifejezés is megadható a törésponthoz.\n"
+                                         "A feltételekrõl több információhoz lásd a CONDITION parancs súgóját!"},
+/* it */ {IDGS_MON_BREAK_DESCRIPTION_IT, "Se non viene specificato alcun indirizzo, i watchpoint attuali vengono\n"
+                                         "stampati.Se viene specificato un indirizzo, viene impostato un breakpoint\n"
+                                         "per tale indirizzo e viene stampato il suo numero. Può anche essere\n"
+                                         "specificata una condizione per il breakpoint. Per ulteriori informazioni,\n"
+                                         "vedere il comando CONDITION."},
+/* nl */ {IDGS_MON_BREAK_DESCRIPTION_NL, "Als er geen adres is opgegeven dan zullen de huidige geldige kijkpunten\n"
+                                         "geprint. Als er een adres is opgegeven dan zal er een breekpunt gezet worden\n"
+                                         "voor dat adres en de nummer van het breekpunt zal worden getoond. Een\n"
+                                         "conditie kan worden opgegeven voor het breekpunt. Voor meer informatie over\n"
+                                         "condities zie het CONDITION commando."},
+/* pl */ {IDGS_MON_BREAK_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_BREAK_DESCRIPTION_SV, "Om ingen adress anges visas de övervakningspunkter som är giltiga.\n"
+                                         "Om en adress anges sätts en brytpunkt på den adressen och dess\n"
+                                         "nummer visas. Ett villkorsuttryck kan också anges för brytpunkten.\n"
+                                         "För mer information om villkor, se kommandot CONDITION."},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_P_CHECKNUM_QP_COMMAND,    N_("<checknum> \"<command>\"")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_P_CHECKNUM_QP_COMMAND_DE, "<Checknum> \"<Kommando>\""},
+/* fr */ {IDGS_P_CHECKNUM_QP_COMMAND_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_P_CHECKNUM_QP_COMMAND_HU, "<ell_pont_szám> \"<parancs>\""},
+/* it */ {IDGS_P_CHECKNUM_QP_COMMAND_IT, "<checknum> \"<comando>\""},
+/* nl */ {IDGS_P_CHECKNUM_QP_COMMAND_NL, "<checknum> \"<commando>\""},
+/* pl */ {IDGS_P_CHECKNUM_QP_COMMAND_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_P_CHECKNUM_QP_COMMAND_SV, "<kontrollnr> \"<kommando>\""},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_COMMAND_DESCRIPTION,    N_("Specify `command' as the command to execute when checkpoint `checknum'\n"
+                                              "is hit.  Note that the `x' command is not yet supported as a\n"
+                                              "command argument.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_COMMAND_DESCRIPTION_DE, "Definiere `Kommando', welches bei Checkpoint `Checknum' ausgeführt wird.\n"
+                                           "Achtung Kommando `x' wird zurzeit noch nicht als Kommando Argument\n"
+                                           "unterstützt."},
+/* fr */ {IDGS_MON_COMMAND_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_COMMAND_DESCRIPTION_HU, "`parancs' megadása egy `ell_pont_szám' sorszámával adott ellenõrzési pont\n"
+                                           "elérésekor történõ végrehajtásra.  Az `x' parancs egyelõre nem használható\n"
+                                           "itt paraméterként."},
+/* it */ {IDGS_MON_COMMAND_DESCRIPTION_IT, "Specifica `comando' come il comando da eseguire quando\n"
+                                           "viene incontrato il punto di controllo `checknum'. Nota che \n"
+                                           "il comando `x' non è ancora supportato come parametro."},
+/* nl */ {IDGS_MON_COMMAND_DESCRIPTION_NL, "Geef `commando' als het command om uit te voeren wanneer checkpunt `checknum'\n"
+                                           "wordt uitgevoerd. NB: het `x' commando is op dit moment geen geldige\n"
+                                           "parameter."},
+/* pl */ {IDGS_MON_COMMAND_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_COMMAND_DESCRIPTION_SV, "Ange \"kommando\" som kommando att exekvera när vid träff på\n"
+                                           "kontrollpunkten·\"kontrollnr\". Observera att kommandot \"x\" ännu\n"
+                                           "inte stöds som kommandoparameter."},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_P_CHECKNUM_IF_P_COND_EXPR,    N_("<checknum> if <cond_expr>")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_P_CHECKNUM_IF_P_COND_EXPR_DE, "<Checknum> if <bedingter Ausdruck>"},
+/* fr */ {IDGS_P_CHECKNUM_IF_P_COND_EXPR_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_P_CHECKNUM_IF_P_COND_EXPR_HU, "<ell_pont_szám> if <kifejezés>"},
+/* it */ {IDGS_P_CHECKNUM_IF_P_COND_EXPR_IT, "<checknum> if <espressione condizione>"},
+/* nl */ {IDGS_P_CHECKNUM_IF_P_COND_EXPR_NL, "<checknum> als <cond_expr>"},
+/* pl */ {IDGS_P_CHECKNUM_IF_P_COND_EXPR_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_P_CHECKNUM_IF_P_COND_EXPR_SV, "<kontrollnum> if <villkorsuttryck>"},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_CONDITION_DESCRIPTION,    N_("Each time the specified checkpoint is examined, the condition is\n"
+                                                "evaluated.  If it evalutes to true, the checkpoint is activated.\n"
+                                                "Otherwise, it is ignored.  If registers are specified in the expression,\n"
+                                                "the values used are those at the time the checkpoint is examined, not\n"
+                                                "when the condition is set.\n"
+                                                "The condition can make use of registers (.A, .X, .Y, .PC, .SP) and\n"
+                                                "compare them (==, !=, <, >, <=, >=) again other registers or constants.\n"
+                                                "Registers can be the registers of other devices; this is denoted by\n"
+                                                "a memspace prefix (i.e., c:, 8:, 9:, 10:, 11:\n"
+                                                "Examples: .A == 0, .X == .Y, 8:.X == .X\n")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_CONDITION_DESCRIPTION_DE, "Bei jeder Überprüfung des Checkpoints, wird die Bedingung evaluiert.\n"
+                                             "Ist das Ergebnis `Wahr', wird der Checkpoint aktiviert, sonst ingnoriert.\n"
+                                             "Wenn Register benutzt werden, werden deren Werte zum Zeitpunkt der \n"
+                                             "Überprüfung herangezogen.\n"
+                                             "Die Bedingung kann Register benutzen (.A, .X, .Y, .PC, .SP) und gegen \n"
+                                             "Register oder Konstanten vergleichen (==, !=, <, >, <=, >=).\n"
+                                             "Register können auch Geräteregister sein; dazu wird die memspace Prefix-syntax \n"
+                                             "verwendet: c:, 8:, 9:, 10:, 11:\n"
+                                             "Beispiel: .A == 0, .X == .Y, 8:.X == .X\n"},
+/* fr */ {IDGS_MON_CONDITION_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_CONDITION_DESCRIPTION_HU, "Minden alkalommal, amikor egy adott ellenõrzési pontot megvizsgál, a\n"
+                                             "feltételt kiértékeli. Ha az eredmény igaz, a töréspont aktiválódik.\n"
+                                             "Egyébként, figyelmen kívül hagyja. Ha regiszterek szerepelnek a kifejezésben,\n"
+                                             "az ellenõrzés pillanatában vett értékük számít, nem pedig a beállításkori.\n"
+                                             "A feltétel használhatja a regisztereket ( .A, .X, .Y, .PC, .SP) és össze is\n"
+                                             "hasonlíthatja õket (==, !=, <, >, <=, >=) más regiszterekkel.\n"
+                                             "A regiszterek lehetnek más eszközök regiszterei is; azokat egy memória tér\n"
+                                             "elõtaggal kell ellátni (vagyis c:, 8:, 9:, 10:, 11:).\n"
+                                             "Példák: .A == 0, .X == .Y, 8:.X == .X\n"},
+/* it */ {IDGS_MON_CONDITION_DESCRIPTION_IT, "Ogni volta che si esamina il punto di controllo specificato, viene valutata\n"
+                                             "la condizione. Se è vera, il punto di controllo è attivato.\n"
+                                             "Altrimenti viene ignorato. Se nell'espressione sono specificati i registri,\n"
+                                             "questi valori sono quelli usati quando viene esaminato il punto di controllo,\n"
+                                             "non quando viene impostata la condizione.\n"
+                                             "La condizione può fare uso dei registri (.A, .X, .Y, .PC, .SP) e confontarli\n"
+                                             "(==, !=, <, >, <=, >=) con altri registri o costanti.\n"
+                                             "I registri possono essere registri di altre periferiche; questo è denotato da\n"
+                                             "un prefisso che specifica lo spazio di memoria (cioé, c:, 8:, 9:, 10:, 11:)\n"
+                                             "Alcuni esempi: .A == 0, .X == .Y, 8:.X == .X\n"},
+/* nl */ {IDGS_MON_CONDITION_DESCRIPTION_NL, "Elke keer de opgegeven checkpunt wordt onderzocht zal de conditie worden\n"
+                                             "geevalueerd. Als de evaluatie positief is dan zal de checkpunt geactiveerd\n"
+                                             "worden, bij negatief zal er niets worden gedaan. Als er registers zijn\n"
+                                             "opgegeven in de expressie dan zullen de waarden in die registers gebruikt\n"
+                                             "worden op het moment dat de checkpunt wordt onderzocht, niet op het moment\n"
+                                             "dat de conditie is opgegeven.\n"
+                                             "De conditie kan gebruik maken van registers (.A, .X, .Y, .PC, .SP) en\n"
+                                             "kan ze vergelijken (==, !=, <, >, <=, >=) met andere registers of constanten\n"
+                                             "Registers kunnen de registers van andere apparaten zijn; de manier van opgeven\n"
+                                             "is door een geheugenruimte prefix (bijvoorbeeld: c:, 8:, 9:, 10:, 11:\n"
+                                             "Voorbeelden: .A == 0, .X == .Y, 8:.X == .X\n"},
+/* pl */ {IDGS_MON_CONDITION_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_CONDITION_DESCRIPTION_SV, ""},  /* fuzzy */
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_DISABLE_DESCRIPTION,    N_("Disable checkpoint `checknum'.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_DISABLE_DESCRIPTION_DE, "Checkpoint `Checknum' deaktivieren."},
+/* fr */ {IDGS_MON_DISABLE_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_DISABLE_DESCRIPTION_HU, "`ell_pont_szám' jelû ellenõrzési pont tiltása."},
+/* it */ {IDGS_MON_DISABLE_DESCRIPTION_IT, "Disattiva il punto di controllo `checknum'."},
+/* nl */ {IDGS_MON_DISABLE_DESCRIPTION_NL, "Checkpunt `checknum' uitschakelen."},
+/* pl */ {IDGS_MON_DISABLE_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_DISABLE_DESCRIPTION_SV, ""},  /* fuzzy */
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_ENABLE_DESCRIPTION,    N_("Enable checkpoint `checknum'.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_ENABLE_DESCRIPTION_DE, "Checkpoint `Checknum' aktivieren."},
+/* fr */ {IDGS_MON_ENABLE_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_ENABLE_DESCRIPTION_HU, "`ell_pont_szám' jelû ellenõrzési pont engedélyezése."},
+/* it */ {IDGS_MON_ENABLE_DESCRIPTION_IT, "Attiva il punto di controllo `checknum'."},
+/* nl */ {IDGS_MON_ENABLE_DESCRIPTION_NL, "Activeer checkpunt `checknum'."},
+/* pl */ {IDGS_MON_ENABLE_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_ENABLE_DESCRIPTION_SV, ""},  /* fuzzy */
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_P_CHECKNUM_RP_COUNT,    N_("<checknum> [<count>]")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_P_CHECKNUM_RP_COUNT_DE, "<Checknum> [<Zähler>]"},
+/* fr */ {IDGS_P_CHECKNUM_RP_COUNT_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_P_CHECKNUM_RP_COUNT_HU, "<ell_pont_szám> [<darab>]"},
+/* it */ {IDGS_P_CHECKNUM_RP_COUNT_IT, "<checknum> [<contatore>]"},
+/* nl */ {IDGS_P_CHECKNUM_RP_COUNT_NL, "<checknum> [<aantal>]"},
+/* pl */ {IDGS_P_CHECKNUM_RP_COUNT_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_P_CHECKNUM_RP_COUNT_SV, "<kontrollnum> [<antal>]"},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_IGNORE_DESCRIPTION,    N_("Ignore a checkpoint a given number of crossings.  If no count is given,\n"
+                                             "the default value is 1.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_IGNORE_DESCRIPTION_DE, "Ignoriere den Checkpoint für die angegebene Anzahl an Aktivierungen.\n"
+                                          "Wenn kein `Zähler' angegeben wurde, wird der Standardwert 1 verwendet."},
+/* fr */ {IDGS_MON_IGNORE_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_IGNORE_DESCRIPTION_HU, "Az ellenõrzési pont figyelmen kívül hagyása megadott számú áthaladáskor.  Ha nincs\n"
+                                          "szám megadva, az alapértelmezett érték 1."},
+/* it */ {IDGS_MON_IGNORE_DESCRIPTION_IT, "Ignora un punto di controllo un numero specificato di occorrenze. Se\n"
+                                          "non è specificato alcun valore, quello predefinito è 1."},
+/* nl */ {IDGS_MON_IGNORE_DESCRIPTION_NL, "Negeer een checkpunt een opgegeven aantal keer. Als er geen aantal is\n"
+                                          "opgegeven dan wordt de standaard waarde van 1 worden gebruikt."},
+/* pl */ {IDGS_MON_IGNORE_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_IGNORE_DESCRIPTION_SV, ""},  /* fuzzy */
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_RP_ADDRESS,    N_("[<address>]")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_RP_ADDRESS_DE, "[<Adresse>]"},
+/* fr */ {IDGS_RP_ADDRESS_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_RP_ADDRESS_HU, "[<cím>]"},
+/* it */ {IDGS_RP_ADDRESS_IT, "[<indirizzo>]"},
+/* nl */ {IDGS_RP_ADDRESS_NL, "[<adres>]"},
+/* pl */ {IDGS_RP_ADDRESS_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_RP_ADDRESS_SV, "[<adress>]"},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_UNTIL_DESCRIPTION,    N_("If no address is given, the currently valid breakpoints are printed.\n"
+                                            "If an address is given, a temporary breakpoint is set for that address\n"
+                                            "and the breakpoint number is printed.  Control is returned to the\n"
+                                            "emulator by this command.  The breakpoint is deleted once it is hit.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_UNTIL_DESCRIPTION_DE, "Wenn keine Adresse angegeben wurde, werden die aktuell gültigen \n"
+                                         "Breakpoints angezeigt. Wenn eine Adresse angegeben wurde, wird ein \n"
+                                         "temporärer Breakpoint auf dieser Adresse gesetzt und die Breakpoint Nummer wird\n"
+                                         "angezeigt. Die Kontrolle wirdd bei diesem Kommando an die Emulation gegeben.\n"
+                                         "Der Breakpoint wird gelöscht, wenn er einmal getroffen wurde."},
+/* fr */ {IDGS_MON_UNTIL_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_UNTIL_DESCRIPTION_HU, "Ha nincs cím megadva, a jelenleg érvényes töréspontokat írja ki.\n"
+                                         "Ha van adott cím, egy ideiglenes töréspontot helyez el az adott címre,\n"
+                                         "és a töréspont száma kiíródik.  A vezérlés visszakerül az emulátorhoz\n"
+                                         "e parancs által. A töréspont elérésekor törlõdik."},
+/* it */ {IDGS_MON_UNTIL_DESCRIPTION_IT, "Se non viene specificato alcun indirizzo, vengono stampati i\n"
+                                         "breakpoint attualmente validi. Se viene specificato un indirizzo,\n"
+                                         "viene impostato un breakpoint temporaneo per tale indirizzo e\n"
+                                         "viene stampato il suo numero. Il controllo ritorna all'emulatore\n"
+                                         "per mezzo di questo comando. Il breakpoint è cancellato quando\n"
+                                         "viene incontrato."},
+/* nl */ {IDGS_MON_UNTIL_DESCRIPTION_NL, "Als er geen adres is opgegeven dan zullen de huidig geldige breekpunten\n"
+                                         "worden geprint. Als er een adres is opgegeven dan wordt er een tijdelijk\n"
+                                         "breekpunt worden gezet voor dat adres en het breekpunt nummer zal worden\n"
+                                         "getoond. Na het geven van dit commando zal er terug worden gegaan naar de\n"
+                                         "emulator. Het breekpunt zal worden verwijdert na het uitvoeren."},
+/* pl */ {IDGS_MON_UNTIL_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_UNTIL_DESCRIPTION_SV, ""},  /* fuzzy */
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_R_LOADSTORE_R_ADDRESS_R_ADDRESS,    N_("[loadstore] [address [address]]")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_R_LOADSTORE_R_ADDRESS_R_ADDRESS_DE, "[lade/speichere] [Adresse [Adresse]]"},
+/* fr */ {IDGS_R_LOADSTORE_R_ADDRESS_R_ADDRESS_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_R_LOADSTORE_R_ADDRESS_R_ADDRESS_HU, "[loadstore] [cím [cím]]"},
+/* it */ {IDGS_R_LOADSTORE_R_ADDRESS_R_ADDRESS_IT, "[loadstore] [indirizzo [indirizzo]]"},
+/* nl */ {IDGS_R_LOADSTORE_R_ADDRESS_R_ADDRESS_NL, "[laad/opslaan] [adres [adres]]"},
+/* pl */ {IDGS_R_LOADSTORE_R_ADDRESS_R_ADDRESS_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_R_LOADSTORE_R_ADDRESS_R_ADDRESS_SV, ""},  /* fuzzy */
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_WATCH_DESCRIPTION,    N_("Set a watchpoint.  If a single address is specified, set a watchpoint\n"
+                                            "for that address.  If two addresses are specified, set a watchpoint\n"
+                                            "for the memory locations between the two addresses.\n"
+                                            "`loadstore' is either `load' or `store' to specify on which operation\n"
+                                            "the monitor breaks. If not specified, the monitor breaks on both\n"
+                                            "operations.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_WATCH_DESCRIPTION_DE, "Setze einen Watchpoint. Wenn eine einzelne Adresse angegeben wurde, setze \n"
+                                         "den Watchpoint für diese Adresse. Wenn zwei Adressen angegeben wurden, \n"
+                                         "setze den Watchpoint auf die Adressen zwischen den beiden Adressen.\n"
+                                         "`loadstore' ist entweder `load' oder `store' und bezeichnet die Operation, \n"
+                                         "bei welcher der Monitor anhalten soll. Wenn keine Angabe gemacht wurde, \n"
+                                         "hält der Monitor bei beiden Operationen an."},
+/* fr */ {IDGS_MON_WATCH_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_WATCH_DESCRIPTION_HU, "Figyelési pont megadása.  Ha egy cím van a paraméterben, az adott\n"
+                                         "címre állítbe figyelési pontot. Ha két cím adott, akkor a kettõ közötti\n"
+                                         "összes memória helyre beállítja.\n"
+                                         "A `loadstore' vagy `load' vagy `store' lehet, azt adja meg, hogy olvasás\n"
+                                         "vagy írás hatására áll meg a monitor program. Ha nincs megadva,\n"
+                                         "mindkét mûvelet hatására megáll."},
+/* it */ {IDGS_MON_WATCH_DESCRIPTION_IT, "Imposta un watchpoint. Se viene specificato solo un indirizzo, imposta\n"
+                                         "un watchpoint per tale indirizzo. Se vengono specificati due indirizzi,\n"
+                                         "imposta un watchpoint per le locazioni di memoria comprese tra i due\n"
+                                         "indirizzi.\n"
+                                         "`loadstore' può essere `load' o `store' per specificare su quale\n"
+                                         "operazione il monitor si interrompe. Se non viene specificato, il monitor\n"
+                                         "si interrompe su entrambe le operazioni."},
+/* nl */ {IDGS_MON_WATCH_DESCRIPTION_NL, "Zet een kijkpunt. Als er een enkel adres is opgegeven dan zal er een\n"
+                                         "kijkpunt worden gezet voor dat adres. Als er twee adressen zijn opgegeven\n"
+                                         "dan zal er een kijkpunt worden gezet voor de adressen tussen de twee\n"
+                                         "adressen.\n"
+                                         "laad/opslaan is 'load' of 'store' om aan te geven bij welke operatie de\n"
+                                         "monitor zou moeten starten. Als deze niet opgegeven is dan zal de monitor\n"
+                                         "starten bij beide operaties."},
+/* pl */ {IDGS_MON_WATCH_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_WATCH_DESCRIPTION_SV, ""},  /* fuzzy */
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_R_ADDRESS_R_ADDRESS,    N_("[address [address]]")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_R_ADDRESS_R_ADDRESS_DE, "[Adresse [Adresse]]"},
+/* fr */ {IDGS_R_ADDRESS_R_ADDRESS_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_R_ADDRESS_R_ADDRESS_HU, "[cím [cím]]"},
+/* it */ {IDGS_R_ADDRESS_R_ADDRESS_IT, "[indirizzo [indirizzo]]"},
+/* nl */ {IDGS_R_ADDRESS_R_ADDRESS_NL, "[adres [adres]]"},
+/* pl */ {IDGS_R_ADDRESS_R_ADDRESS_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_R_ADDRESS_R_ADDRESS_SV, "[adress [adress]]"},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_TRACE_DESCRIPTION,    N_("Set a tracepoint.  If a single address is specified, set a tracepoint\n"
+                                            "for that address.  If two addresses are specified, set a tracepoint\n"
+                                            "for the memory locations between the two addresses.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_TRACE_DESCRIPTION_DE, "Setze einen Tracepoint. Wenn eine einzelne Adresse angegeben wurde, setze eine\n"
+                                         "Tracepoint für diese Adresse. Wenn zwei Adressen angegeben wurden, \n"
+                                         "setze Tracepoints für die Speicheradressen zwischen diesen beiden Adressen."},
+/* fr */ {IDGS_MON_TRACE_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_TRACE_DESCRIPTION_HU, "Követési pont beállítása.  Ha egyetlen cím van megadva, a követési pontot\n"
+                                         "ahhoz állítja be.  Ha két cím van megadva, a követési pontot\n"
+                                         "az adott tartományra állítja be."},
+/* it */ {IDGS_MON_TRACE_DESCRIPTION_IT, "Imposta un tracepoint. Se viene specificato solo un indirizzo, imposta\n"
+                                         "un tracepoint per tale indirizzo. Se vengono specificati due indirizzi,\n"
+                                         "imposta un tracepoint per le locazioni di memoria comprese tra i\n"
+                                         "due indirizzi."},
+/* nl */ {IDGS_MON_TRACE_DESCRIPTION_NL, "Zet een traceerpunt. Als er een enkel adres is opgegeven dan zal er een\n"
+                                         "traceerpunt worden gezet voor het adres. Als er twee adressen zijn\n"
+                                         "opgegeven dan zal er een traceerpunt worden gezet voor de adressen tussen\n"
+                                         "de twee adressen."},
+/* pl */ {IDGS_MON_TRACE_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_TRACE_DESCRIPTION_SV, ""},  /* fuzzy */
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MONITOR_STATE_COMMANDS,    N_("Monitor state commands:")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MONITOR_STATE_COMMANDS_DE, "Monitor Zustand Kommandos:"},
+/* fr */ {IDGS_MONITOR_STATE_COMMANDS_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MONITOR_STATE_COMMANDS_HU, "Monitor állapot parancsok:"},
+/* it */ {IDGS_MONITOR_STATE_COMMANDS_IT, "Comandi stato monitor:"},
+/* nl */ {IDGS_MONITOR_STATE_COMMANDS_NL, "Monitor status commandos:"},
+/* pl */ {IDGS_MONITOR_STATE_COMMANDS_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MONITOR_STATE_COMMANDS_SV, "Kommandon för monitorstatus:"},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_DEVICE_DESCRIPTION,    N_("Set the default memory device to either the computer `c:' or the\n"
+                                             "specified disk drive (`8:', `9:').")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_DEVICE_DESCRIPTION_DE, "Setze das aktuelle Speichergerät entweder auf `c:' \n"
+                                          "oder das angegebene Laufwerk (`8:', `9:')."},
+/* fr */ {IDGS_MON_DEVICE_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_DEVICE_DESCRIPTION_HU, "Az alapértelmezett memória eszköz beállítása a számítógépre `c:' vagy\n"
+                                          "a megadott lemezmeghajtóra (`8:', `9:')."},
+/* it */ {IDGS_MON_DEVICE_DESCRIPTION_IT, "Imposta la periferica di memoria predefinita o sul computer `c:'\n"
+                                          "oppure sul disk drive specificato (`8:', `9:')."},
+/* nl */ {IDGS_MON_DEVICE_DESCRIPTION_NL, "Zet de standaard geheugen apparaat naar of de computer `c:' of de\n"
+                                          "opgegeven disk drive (`8:', `9:')."},
+/* pl */ {IDGS_MON_DEVICE_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_DEVICE_DESCRIPTION_SV, ""},  /* fuzzy */
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_EXIT_DESCRIPTION,    N_("Leave the monitor and return to execution.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_EXIT_DESCRIPTION_DE, "Verlasse Monitor und setze Ausführung fort."},
+/* fr */ {IDGS_MON_EXIT_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_EXIT_DESCRIPTION_HU, "A monitor elhagyása és a végrehajtás folytatása."},
+/* it */ {IDGS_MON_EXIT_DESCRIPTION_IT, "Esce dal monitor e ritorna all'esecuzione."},
+/* nl */ {IDGS_MON_EXIT_DESCRIPTION_NL, "Verlaat de monitor en ga terug naar de uitvoering."},
+/* pl */ {IDGS_MON_EXIT_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_EXIT_DESCRIPTION_SV, ""},  /* fuzzy */
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_QUIT_DESCRIPTION,    N_("Exit the emulator immediately.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_QUIT_DESCRIPTION_DE, "Emulator sofort beenden."},
+/* fr */ {IDGS_MON_QUIT_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_QUIT_DESCRIPTION_HU, "Azonnali kilépés az emulátorból."},
+/* it */ {IDGS_MON_QUIT_DESCRIPTION_IT, "Esci immediatamente dall'emulatore."},
+/* nl */ {IDGS_MON_QUIT_DESCRIPTION_NL, "Onmiddelijk de emulator sluiten."},
+/* pl */ {IDGS_MON_QUIT_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_QUIT_DESCRIPTION_SV, "Avsluta emulatorn omedelbart."},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_RADIX_DESCRIPTION,    N_("Set the default radix to hex, decimal, octal, or binary.  With no\n"
+                                            "argument, the current radix is printed.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_RADIX_DESCRIPTION_DE, "Setze die Standardzahlenbasis auf Hexadezimal, Dezimal, Oktal oder Binär.\n"
+                                         "Bei keinem Argument wird die akteulle Zahlenbasis ausgegeben."},
+/* fr */ {IDGS_MON_RADIX_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_RADIX_DESCRIPTION_HU, "Az alap számrendszer hexadecimális, decimális, oktális vagy bináris.\n"
+                                         "Paraméter nélkül az aktuálisat mutatja."},
+/* it */ {IDGS_MON_RADIX_DESCRIPTION_IT, "Imposta la radice predefinita a esadecimale, decimale, ottale o\n"
+                                         "binaria. Senza parametro viene stampata la radice attuale."},
+/* nl */ {IDGS_MON_RADIX_DESCRIPTION_NL, "Zet de standaard radix naar hex, decimaal, octaal of binair. Als er\n"
+                                         "geen parameter is opgegeven dan zal de huidige radix worden getoond."},
+/* pl */ {IDGS_MON_RADIX_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_RADIX_DESCRIPTION_SV, ""},  /* fuzzy */
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_R_ON_R_OFF_R_TOGGLE,    N_("[on|off|toggle]")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_R_ON_R_OFF_R_TOGGLE_DE, "[on|off|toggle]"},
+/* fr */ {IDGS_R_ON_R_OFF_R_TOGGLE_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_R_ON_R_OFF_R_TOGGLE_HU, ""},  /* fuzzy */
+/* it */ {IDGS_R_ON_R_OFF_R_TOGGLE_IT, "[on|off|toggle]"},
+/* nl */ {IDGS_R_ON_R_OFF_R_TOGGLE_NL, "[on|off|toggle]"},
+/* pl */ {IDGS_R_ON_R_OFF_R_TOGGLE_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_R_ON_R_OFF_R_TOGGLE_SV, ""},  /* fuzzy */
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_SIDEFX_DESCRIPTION,    N_("Control how monitor generated reads affect memory locations that have\n"
+                                             "read side-effects.  If the argument is 'on' then reads may cause\n"
+                                             "side-effects.  If the argument is 'off' then reads don't cause\n"
+                                             "side-effects.  If the argument is 'toggle' then the current mode is\n"
+                                             "switched.  No argument displays the current state.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_SIDEFX_DESCRIPTION_DE, "Steuerung, wie die vom Monitor erzeugten Lesezugriffe die Speicherzellen\n"
+                                          "mit Lese-Seiteneffekten betreffen.\n"
+                                          "Bei Argument \"on\" werden Lese-Seiteneffekte erzeugt.\n"
+                                          "Bei Argument \"off\" werden keine Lese-Seiteneffekte erzeugt.\n"
+                                          "Bei Argumenrt \"toggle\" wird das Verhalten vertauscht.\n"
+                                          "Bei keinem Argument wird das aktuelle Verhalten ausgegebene."},
+/* fr */ {IDGS_MON_SIDEFX_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_SIDEFX_DESCRIPTION_HU, "Beállítja, hogyan hatnak a monitorprogram memória olvasásai azokra a\n"
+                                          "memóriahelyekre, amelyeknek olvasás-mellékhatásai vannak. Ha a paraméter\n"
+                                          "'on', az olvasások okozhatnak mellékhatásokat. Ha a paraméter 'off', akkor pedig\n"
+                                          "nem okoznak. Ha a paraméter 'toggle', az aktuális módot átkapcsolja.\n"
+                                          "Paraméter nélküli hívás kiírja az aktuális módot."},
+/* it */ {IDGS_MON_SIDEFX_DESCRIPTION_IT, "Controlla come le letture generate dal monitor affliggono le locazioni\n"
+                                          "di memoria che hanno degli effetti collaterali sulla lettura.\n"
+                                          "Se il paremetro è 'on', le letture possono causare effetti collaterali.\n"
+                                          "Se il parametro è 'off', le letture non causano effetti collaterali.\n"
+                                          "Se il parametro è 'scambia', la modalità attuale viene invertita.\n"
+                                          "Nessun parametro mostra lo stato attuale."},
+/* nl */ {IDGS_MON_SIDEFX_DESCRIPTION_NL, "Geef aan hoe de lees acties van de monitor de geheugen locaties met lees\n"
+                                          "bij-effecten beinvloed. Als de parameter 'off' is dan zullen lees acties\n"
+                                          "geen bij-effecten vertonen. Als de parameter 'on' is dan zullen lees\n"
+                                          "acties bij-effecten vertonen. Als de parameter 'toggle' is dan zal de\n"
+                                          "huidige modus worden geschakeld. Als er geen parameter is dan zal de\n"
+                                          "huidige modus worden getoond."},
+/* pl */ {IDGS_MON_SIDEFX_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_SIDEFX_DESCRIPTION_SV, ""},  /* fuzzy */
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_DISK_COMMANDS,    N_("Disk commands:")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_DISK_COMMANDS_DE, "Disk Kommandos:"},
+/* fr */ {IDGS_DISK_COMMANDS_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_DISK_COMMANDS_HU, "Lemez parancsok:"},
+/* it */ {IDGS_DISK_COMMANDS_IT, "Comandi del disco:"},
+/* nl */ {IDGS_DISK_COMMANDS_NL, "Disk commandos:"},
+/* pl */ {IDGS_DISK_COMMANDS_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_DISK_COMMANDS_SV, "Diskettkommandon:"},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_P_DISK_COMMAND,    N_("<disk command>")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_P_DISK_COMMAND_DE, "<Disk Kommando>"},
+/* fr */ {IDGS_P_DISK_COMMAND_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_P_DISK_COMMAND_HU, "<lemez parancs>"},
+/* it */ {IDGS_P_DISK_COMMAND_IT, "<comando disco>"},
+/* nl */ {IDGS_P_DISK_COMMAND_NL, "<disk commando>"},
+/* pl */ {IDGS_P_DISK_COMMAND_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_P_DISK_COMMAND_SV, ""},  /* fuzzy */
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_AT_DESCRIPTION,    N_("Perform a disk command on the currently attached disk image on drive 8.\n"
+                                         "The specified disk command is sent to the drive's channel #15.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_AT_DESCRIPTION_DE, "Führe ein Diskkommando auf dem aktuell eingelegtem Diskimage auf Laufwerk 8\n"
+                                      "aus.\n"
+                                      "Das angegebene Kommando wird auf dem Laufwerks Kommandokanal #15 geschickt."},
+/* fr */ {IDGS_MON_AT_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_AT_DESCRIPTION_HU, "Lemez parancs végrehajtása az aktuálisan csatolt lemezen, a 8-as egységen.\n"
+                                      "A megadott lemez parancsot a meghajtó #15-ös csatornájára küldi."},
+/* it */ {IDGS_MON_AT_DESCRIPTION_IT, "Esegue un comando disco sull'immagine disco attualmente presente nel\n"
+                                      "drive 8. Il comando specificato è inviato al canale #15 del drive."},
+/* nl */ {IDGS_MON_AT_DESCRIPTION_NL, "Doe een disk commando operatie op de huidig gekoppelde disk bestand in drive\n"
+                                      "8, Het opgegeven disk commando zal worden gestuurt naar kanaal #15 van de\n"
+                                      "drive."},
+/* pl */ {IDGS_MON_AT_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_AT_DESCRIPTION_SV, ""},  /* fuzzy */
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_P_FILENAME_P_DEVICE,    N_("<filename> <device>")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_P_FILENAME_P_DEVICE_DE, "<Dateiname> <Gerät>"},
+/* fr */ {IDGS_P_FILENAME_P_DEVICE_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_P_FILENAME_P_DEVICE_HU, "<fájlnév> <eszköz>"},
+/* it */ {IDGS_P_FILENAME_P_DEVICE_IT, "<nome del file> <perifericd>"},
+/* nl */ {IDGS_P_FILENAME_P_DEVICE_NL, "<bestandsnaam> <apparaat>"},
+/* pl */ {IDGS_P_FILENAME_P_DEVICE_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_P_FILENAME_P_DEVICE_SV, "<filnamn> <enhet>"},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_ATTACH_DESCRIPTION,    N_("Attach file to device. (device 32 = cart)")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_ATTACH_DESCRIPTION_DE, "Benutze Datei für das Gerät. (Gerät 32 = Modul)"},
+/* fr */ {IDGS_MON_ATTACH_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_ATTACH_DESCRIPTION_HU, "Fájl csatolása az eszközhöz. (32-es eszköz = cart)"},
+/* it */ {IDGS_MON_ATTACH_DESCRIPTION_IT, "Seleziona il file per la perifica. (periferica 32 = cartuccia)"},
+/* nl */ {IDGS_MON_ATTACH_DESCRIPTION_NL, "Koppel bestand aan apparaat. (apparaat 32 = cart"},
+/* pl */ {IDGS_MON_ATTACH_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_ATTACH_DESCRIPTION_SV, ""},  /* fuzzy */
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_QP_FILENAME_P_DEVICE_P_ADDRESS,    N_("\"<filename>\" <device> <address>")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_QP_FILENAME_P_DEVICE_P_ADDRESS_DE, "\"<Dateiname>\" <Gerät> <Adresse>"},
+/* fr */ {IDGS_QP_FILENAME_P_DEVICE_P_ADDRESS_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_QP_FILENAME_P_DEVICE_P_ADDRESS_HU, "\"<fájlnév>\" <eszköz> <cím>"},
+/* it */ {IDGS_QP_FILENAME_P_DEVICE_P_ADDRESS_IT, "\"<nome del file>\" <periferica> <indirizzo>"},
+/* nl */ {IDGS_QP_FILENAME_P_DEVICE_P_ADDRESS_NL, "\"<bestandsnaam>\" <aparraat> <adres>"},
+/* pl */ {IDGS_QP_FILENAME_P_DEVICE_P_ADDRESS_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_QP_FILENAME_P_DEVICE_P_ADDRESS_SV, ""},  /* fuzzy */
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_BLOAD_DESCRIPTION,    N_("Load the specified file into memory at the specified address.\n"
+                                            "If device is 0, the file is read from the file system.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_BLOAD_DESCRIPTION_DE, "Lade angegebene Datei in den Speicher an die angegebene Adresse.\n"
+                                         "Bei Gerät 0, wird die Datei vom Dateisystem gelesen."},
+/* fr */ {IDGS_MON_BLOAD_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_BLOAD_DESCRIPTION_HU, "A megadott fájl betöltése a memóriába a megadott címre.\n"
+                                         "Ha az eszköz 0, a fájlt a fájlrendszerbõl olvassa."},
+/* it */ {IDGS_MON_BLOAD_DESCRIPTION_IT, "Carica il file specificato in memoria all'indirizzo specificato.\n"
+                                         "Se la periferica è 0, il file è letto dal file system."},
+/* nl */ {IDGS_MON_BLOAD_DESCRIPTION_NL, "Laad het opgegeven bestand naar het geheugen met het opgegeven adres.\n"
+                                         "Als het apparaat 0 is dan zal het bestand van het bestandssysteem\n"
+                                         "worden geladen."},
+/* pl */ {IDGS_MON_BLOAD_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_BLOAD_DESCRIPTION_SV, ""},  /* fuzzy */
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_P_TRACK_P_SECTOR_RP_ADDRESS,    N_("<track> <sector> [<address>]")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_P_TRACK_P_SECTOR_RP_ADDRESS_DE, "<Spur> <Sektor> [<Adresse>]"},
+/* fr */ {IDGS_P_TRACK_P_SECTOR_RP_ADDRESS_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_P_TRACK_P_SECTOR_RP_ADDRESS_HU, "<sáv> <szektor> [<cím>]"},
+/* it */ {IDGS_P_TRACK_P_SECTOR_RP_ADDRESS_IT, "<traccia> <settore> [<indirizzo>]"},
+/* nl */ {IDGS_P_TRACK_P_SECTOR_RP_ADDRESS_NL, "<spoor> <sector> [<adres>]"},
+/* pl */ {IDGS_P_TRACK_P_SECTOR_RP_ADDRESS_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_P_TRACK_P_SECTOR_RP_ADDRESS_SV, "<spår> <sektor> [<adress>]"},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_BLOCK_READ_DESCRIPTION,    N_("Read the block at the specified track and sector.  If an address is\n"
+                                                 "specified, the data is loaded into memory.  If no address is given, the\n"
+                                                 "data is displayed using the default datatype.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_BLOCK_READ_DESCRIPTION_DE, "Lese den Block von angegebener Spur und Sektor. Wenn eine Adresse\n"
+                                              "angegeben wurde, lade in auf die entsprechende Adresse. Wenn keine Adresse\n"
+                                              "angegeben ist, zeige die Daten im aktuellen Anzeigemodus für Daten."},
+/* fr */ {IDGS_MON_BLOCK_READ_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_BLOCK_READ_DESCRIPTION_HU, "Blokk beolvasása a megadott sávból és szektorból.,  Ha egy cím is meg\n"
+                                              "van adva, az adatot a memóriába tölti.  Ha az nincs, az\n"
+                                              "adatot az alapbeállítás szerinti formában mutatja."},
+/* it */ {IDGS_MON_BLOCK_READ_DESCRIPTION_IT, "Legge il blocco dalla traccia e settore specificati. Se è specificato\n"
+                                              "un indirizzo, il dato è caricato in memoria. Se non è specificato alcun\n"
+                                              "indirizzo, il dato è mostrato usando il tipo di dato predefinito."},
+/* nl */ {IDGS_MON_BLOCK_READ_DESCRIPTION_NL, "Lees het blok van de opgegeven spoor en sector. Als er een adres is\n"
+                                              "opgegeven dan zal de data naar dat adres in geheugen worden geladen.\n"
+                                              "Als er geen adres is opgegeven dan zal de data worder getoond met de\n"
+                                              "huidige datasoort."},
+/* pl */ {IDGS_MON_BLOCK_READ_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_BLOCK_READ_DESCRIPTION_SV, ""},  /* fuzzy */
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_QP_FILENAME_P_DEVICE_P_ADDRESS1_P_ADDRESS2,    N_("\"<filename>\" <device> <address1> <address2>")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_QP_FILENAME_P_DEVICE_P_ADDRESS1_P_ADDRESS2_DE, "\"<Dateiname>\" <Gerät> <Adresse1> <Adresse2>"},
+/* fr */ {IDGS_QP_FILENAME_P_DEVICE_P_ADDRESS1_P_ADDRESS2_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_QP_FILENAME_P_DEVICE_P_ADDRESS1_P_ADDRESS2_HU, "\"<fájlnév>\" <eszköz> <cím1> <cím2>"},
+/* it */ {IDGS_QP_FILENAME_P_DEVICE_P_ADDRESS1_P_ADDRESS2_IT, "\"<nome del file>\" <periferica> <indirizzo1> <indirizzo2>"},
+/* nl */ {IDGS_QP_FILENAME_P_DEVICE_P_ADDRESS1_P_ADDRESS2_NL, "\"<bestandsnaam>\" <aparraat> <adres1> <adres2>"},
+/* pl */ {IDGS_QP_FILENAME_P_DEVICE_P_ADDRESS1_P_ADDRESS2_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_QP_FILENAME_P_DEVICE_P_ADDRESS1_P_ADDRESS2_SV, ""},  /* fuzzy */
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_BSAVE_DESCRIPTION,    N_("Save the memory from address1 to address2 to the specified file.\n"
+                                            "If device is 0, the file is written to the file system.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_BSAVE_DESCRIPTION_DE, "Speichere den Speicherinhalt von Adresse1 zu Adresse2 in die angegebene Datei.\n"
+                                         "Wenn das Gerät 0 angegeben wurde, speichere im Dateisystem."},
+/* fr */ {IDGS_MON_BSAVE_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_BSAVE_DESCRIPTION_HU, "A memória cím1 és cím2 közötti részének fájlba mentése.\n"
+                                         "Ha az eszköz 0, a fájl a fájlrendszerbe kerül."},
+/* it */ {IDGS_MON_BSAVE_DESCRIPTION_IT, "Salva la memoria compresa tra indirizzo1 e indirizzo2 sul file specificato.\n"
+                                         "Se la periferica è 0, il file è scritto sul file system."},
+/* nl */ {IDGS_MON_BSAVE_DESCRIPTION_NL, "Sla het geheugen tussen adres1 en adres2 op naar het opgegeven bestand.\n"
+                                         "Als het apparaat 0 is dan zal het bestand naar het bestandssysteem worden\n"
+                                         "geschreven."},
+/* pl */ {IDGS_MON_BSAVE_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_BSAVE_DESCRIPTION_SV, ""},  /* fuzzy */
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_P_TRACK_P_SECTOR_P_ADDRESS,    N_("<track> <sector> <address>")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_P_TRACK_P_SECTOR_P_ADDRESS_DE, "<Spur> <Sektor> <Adress>"},
+/* fr */ {IDGS_P_TRACK_P_SECTOR_P_ADDRESS_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_P_TRACK_P_SECTOR_P_ADDRESS_HU, "<sáv> <szektor> <cím>"},
+/* it */ {IDGS_P_TRACK_P_SECTOR_P_ADDRESS_IT, "<traccia> <settore> <indirizzo>"},
+/* nl */ {IDGS_P_TRACK_P_SECTOR_P_ADDRESS_NL, "<spoor> <sector> <adres>"},
+/* pl */ {IDGS_P_TRACK_P_SECTOR_P_ADDRESS_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_P_TRACK_P_SECTOR_P_ADDRESS_SV, "<spår> <sektor> <adress>"},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_BLOCK_WRITE_DESCRIPTION,    N_("Write a block of data at `address' on the specified track and sector\n"
+                                                  "of disk in drive 8.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_BLOCK_WRITE_DESCRIPTION_DE, "Schreibe einen Datenblock von `Adresse' auf die angegebene Spure und Sektor\n"
+                                               "in die Imagedatei von Laufwerk 8."},
+/* fr */ {IDGS_MON_BLOCK_WRITE_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_BLOCK_WRITE_DESCRIPTION_HU, "Egy adat blokk írása `cím' helyrõl a megadott sávba és szektorba\n"
+                                               "a 8-as meghajtón."},
+/* it */ {IDGS_MON_BLOCK_WRITE_DESCRIPTION_IT, "Scrive il blocco di dati all'indirizzo sulla traccia e settore specificati\n"
+                                               "del disco nel drive 8."},
+/* nl */ {IDGS_MON_BLOCK_WRITE_DESCRIPTION_NL, "Schrijf een data blok van `adres' naar de opgegeven spoor en sector van\n"
+                                               "de disk in drive 8."},
+/* pl */ {IDGS_MON_BLOCK_WRITE_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_BLOCK_WRITE_DESCRIPTION_SV, ""},  /* fuzzy */
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_P_DIRECTORY,    N_("<directory>")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_P_DIRECTORY_DE, "<Verzeichnis>"},
+/* fr */ {IDGS_P_DIRECTORY_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_P_DIRECTORY_HU, "<könyvtár>"},
+/* it */ {IDGS_P_DIRECTORY_IT, "<directory>"},
+/* nl */ {IDGS_P_DIRECTORY_NL, "<directory>"},
+/* pl */ {IDGS_P_DIRECTORY_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_P_DIRECTORY_SV, "<katalog>"},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_CD_DESCRIPTION,    N_("Change the working directory.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_CD_DESCRIPTION_DE, "Arbeitsverzeichnis ändern."},
+/* fr */ {IDGS_MON_CD_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_CD_DESCRIPTION_HU, "Munkakönyvtár megváltoztatása."},
+/* it */ {IDGS_MON_CD_DESCRIPTION_IT, "Cambia la directory di lavoro."},
+/* nl */ {IDGS_MON_CD_DESCRIPTION_NL, "Verander de werkdirectory."},
+/* pl */ {IDGS_MON_CD_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_CD_DESCRIPTION_SV, "Byt arbetskatalog."},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_DETACH_DESCRIPTION,    N_("Detach file from device. (device 32 = cart)")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_DETACH_DESCRIPTION_DE, "Entferne Datei von Gerät. (Gerät 32 = Modul)"},
+/* fr */ {IDGS_MON_DETACH_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_DETACH_DESCRIPTION_HU, "Fájl leválasztása az eszközrõl. (32-es eszköz = cart)"},
+/* it */ {IDGS_MON_DETACH_DESCRIPTION_IT, "Rimuovi il file dalla periferica. (periferica 32 = cart)"},
+/* nl */ {IDGS_MON_DETACH_DESCRIPTION_NL, "Ontkoppel bestand van apparaat. (apparaat 32 = cart)"},
+/* pl */ {IDGS_MON_DETACH_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_DETACH_DESCRIPTION_SV, ""},  /* fuzzy */
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_RP_DIRECTORY,    N_("[<directory>]")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_RP_DIRECTORY_DE, "[<Verzeichnis>]"},
+/* fr */ {IDGS_RP_DIRECTORY_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_RP_DIRECTORY_HU, "[<könyvtár>]"},
+/* it */ {IDGS_RP_DIRECTORY_IT, "[<directory>]"},
+/* nl */ {IDGS_RP_DIRECTORY_NL, "[<directory>]"},
+/* pl */ {IDGS_RP_DIRECTORY_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_RP_DIRECTORY_SV, "[<katalog>]"},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_DIR_DESCRIPTION,    N_("Display the directory contents.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_DIR_DESCRIPTION_DE, "Zeige den Verzeichnisinhalt."},
+/* fr */ {IDGS_MON_DIR_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_DIR_DESCRIPTION_HU, "A könyvtár tartalmának mutatása."},
+/* it */ {IDGS_MON_DIR_DESCRIPTION_IT, "Mostra il contenuto della directory."},
+/* nl */ {IDGS_MON_DIR_DESCRIPTION_NL, "Toon de directory inhoud."},
+/* pl */ {IDGS_MON_DIR_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_DIR_DESCRIPTION_SV, ""},  /* fuzzy */
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_QP_FILENAME_P_DEVICE_RP_ADDRESS,    N_("\"<filename>\" <device> [<address>]")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_QP_FILENAME_P_DEVICE_RP_ADDRESS_DE, "\"<Dateiname>\" <Gerät> [<Adresse>]"},
+/* fr */ {IDGS_QP_FILENAME_P_DEVICE_RP_ADDRESS_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_QP_FILENAME_P_DEVICE_RP_ADDRESS_HU, "\"<fájlnév>\" <eszköz> [<cím>]"},
+/* it */ {IDGS_QP_FILENAME_P_DEVICE_RP_ADDRESS_IT, "\"<nome del file>\" <periferica> [<indirizzo>]"},
+/* nl */ {IDGS_QP_FILENAME_P_DEVICE_RP_ADDRESS_NL, "\"<bestandsnaam>\" <apparaat> [<adres>]"},
+/* pl */ {IDGS_QP_FILENAME_P_DEVICE_RP_ADDRESS_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_QP_FILENAME_P_DEVICE_RP_ADDRESS_SV, ""},  /* fuzzy */
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_LOAD_DESCRIPTION,    N_("Load the specified file into memory at the specified address. Set BASIC\n"
+                                           "pointers appropriately if loaded into computer memory (not all emulators).\n"
+                                           "Use (otherwise ignored) two-byte load address from file if no address\n"
+                                           "specified.\n"
+                                           "If device is 0, the file is read from the file system.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_LOAD_DESCRIPTION_DE, "Lade die angegebene Datei in den Speicher auf die angegebene Adresse.\n"
+                                        "Setze den BASIC Zeiger entsprechend, wenn in den Rechnerspeicher geladen \n"
+                                        "wurde (nicht bei allen Emulatoren!).\n"
+                                        "Verwende (sonst ignoriert) die zwei-Byte Lade-Adresse aus der Datei, wenn\n"
+                                        "keine Adresse angegeben wurde.\n"
+                                        "Bei Gerät 0, wird die Datei vom Dateisystem gelade."},
+/* fr */ {IDGS_MON_LOAD_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_LOAD_DESCRIPTION_HU, "A megadott fájl betöltése a megadott címre. A BASIC mutatókat\n"
+                                        "a megfelelõ módon beállítja, ha a számítógép memóriába tölti az adatot\n"
+                                        "(nem minden emulátornál). Ha nincs cím megadva, az amúgy figyelmen hagyott\n"
+                                        "két bájtos betöltési címet használja a fájlból.\n"
+                                        "Ha az eszköz 0, a fájlt a fájlrendszerrõl olvassa."},
+/* it */ {IDGS_MON_LOAD_DESCRIPTION_IT, "Carica il file specificato in memroia all'indirizzo specificato. Imposta\n"
+                                        "i puntatori del BASIC in modo appropriato se caricato nella memoria\n"
+                                        "del computer (non su tutti gli emulatori).\n"
+                                        "Usa (altrimenti ignora) l'indirizzo di caricamento su due byte del file\n"
+                                        "se non viene specificato alcun indirizzo.\n"
+                                        "Se la periferica è 0, il file viene letto dal file system."},
+/* nl */ {IDGS_MON_LOAD_DESCRIPTION_NL, "Laad het opgegeven bestand naar geheugen op het opgegeven adres. Zet de BASIC\n"
+                                        "start en eind indicators correct als het bestand naar het computer geheugen\n"
+                                        "geladen wordt (niet alle emulatoren). De eerste twee bytes van het bestand\n"
+                                        "zullen als laad adres worden gebruikt als er geen adres is opgegeven. Als\n"
+                                        "het apparaat 0 is dan zal het bestand van het bestandssysteem worden geladen."},
+/* pl */ {IDGS_MON_LOAD_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_LOAD_DESCRIPTION_SV, ""},  /* fuzzy */
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_PWD_DESCRIPTION,    N_("Show current working directory.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_PWD_DESCRIPTION_DE, "Zeige aktuelles Arbeitsverzeichnis."},
+/* fr */ {IDGS_MON_PWD_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_PWD_DESCRIPTION_HU, "Munkakönyvtár mutatása."},
+/* it */ {IDGS_MON_PWD_DESCRIPTION_IT, "Mostra la directory di lavoro attuale."},
+/* nl */ {IDGS_MON_PWD_DESCRIPTION_NL, "Toon de huidige werk directory."},
+/* pl */ {IDGS_MON_PWD_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_PWD_DESCRIPTION_SV, "Visa aktuell arbetskatalog."},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_SAVE_DESCRIPTION,    N_("Save the memory from address1 to address2 to the specified file.\n"
+                                           "Write two-byte load address.\n"
+                                           "If device is 0, the file is written to the file system.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_SAVE_DESCRIPTION_DE, "Speichere den Speicher von Adresse1 bis Adresse2 in die angegebene Datei.\n"
+                                        "Schreibe eine zwei-Byte Lade Adresse.\n"
+                                        "Bei Gerät 0, wird dei Datei in das Dateisystem geschrieben."},
+/* fr */ {IDGS_MON_SAVE_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_SAVE_DESCRIPTION_HU, "A memória cím1 és cím2 közötti tartományának fájlba mentése.\n"
+                                        "A kétbájtos betöltési címet is kiírja.\n"
+                                        "Ha az eszköz 0, a fájlt a fájlrendszeren hozza létre."},
+/* it */ {IDGS_MON_SAVE_DESCRIPTION_IT, "Salva la memoria compresa tra indirizzo1 e indirizzo2 sul file\n"
+                                        "specificato.\n"
+                                        "Scrive l'indirizzo di caricamento su due byte.\n"
+                                        "Se la periferica è 0, il file è scritto sul file system."},
+/* nl */ {IDGS_MON_SAVE_DESCRIPTION_NL, "Sla het geheugen tussen adres1 en adres2 op naar het opgegeven bestand.\n"
+                                        "Schrijf een load adres van twee bytes.\n"
+                                        "Als het apparaat 0 is dan zal het bestand geschreven worden naar het\n"
+                                        "bestandssysteem."},
+/* pl */ {IDGS_MON_SAVE_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_SAVE_DESCRIPTION_SV, ""},  /* fuzzy */
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_OTHER_COMMANDS,    N_("Other commands:")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_OTHER_COMMANDS_DE, "Andere Kommandos:"},
+/* fr */ {IDGS_OTHER_COMMANDS_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_OTHER_COMMANDS_HU, "Egyéb parancsok:"},
+/* it */ {IDGS_OTHER_COMMANDS_IT, "Altri comandi:"},
+/* nl */ {IDGS_OTHER_COMMANDS_NL, "Andere commandos:"},
+/* pl */ {IDGS_OTHER_COMMANDS_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_OTHER_COMMANDS_SV, "Andra kommandon:"},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_DISPLAY_NUMBER_DESCRIPTION,    N_("Display the specified number in decimal, hex, octal and binary.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_DISPLAY_NUMBER_DESCRIPTION_DE, "Zeige die angegebene Zahl in dezimal, hexadezimal, oktal oder binär."},
+/* fr */ {IDGS_MON_DISPLAY_NUMBER_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_DISPLAY_NUMBER_DESCRIPTION_HU, "A megadott szám kiírása decimálisan, hexadecimálisan, oktálisan és binárisan."},
+/* it */ {IDGS_MON_DISPLAY_NUMBER_DESCRIPTION_IT, "Mostra il numero specificato in decimale, esadecimale, ottale e binario."},
+/* nl */ {IDGS_MON_DISPLAY_NUMBER_DESCRIPTION_NL, "Toon het opgegeven nummer in decimaal, hex, octaal en binair."},
+/* pl */ {IDGS_MON_DISPLAY_NUMBER_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_DISPLAY_NUMBER_DESCRIPTION_SV, ""},  /* fuzzy */
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_CARTFREEZE_DESCRIPTION,    N_("Use cartridge freeze.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_CARTFREEZE_DESCRIPTION_DE, "Erweiterungsmodul Freeze benutzen."},
+/* fr */ {IDGS_MON_CARTFREEZE_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_CARTFREEZE_DESCRIPTION_HU, "Cartridge fagyasztás használata."},
+/* it */ {IDGS_MON_CARTFREEZE_DESCRIPTION_IT, "Usa freeze della cartuccia."},
+/* nl */ {IDGS_MON_CARTFREEZE_DESCRIPTION_NL, "Gebruik cartridge freeze."},
+/* pl */ {IDGS_MON_CARTFREEZE_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_CARTFREEZE_DESCRIPTION_SV, "Använd insticksmodulens frysfunktion."},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_RP_COMMAND,    N_("[<command>]")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_RP_COMMAND_DE, "[<Kommando>]"},
+/* fr */ {IDGS_RP_COMMAND_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_RP_COMMAND_HU, "[<parancs>]"},
+/* it */ {IDGS_RP_COMMAND_IT, "[<commando>]"},
+/* nl */ {IDGS_RP_COMMAND_NL, "[<commando>]"},
+/* pl */ {IDGS_RP_COMMAND_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_RP_COMMAND_SV, "[<kommando>]"},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_HELP_DESCRIPTION,    N_("If no argument is given, prints out a list of all available commands\n" 
+                                           "If an argument is given, prints out specific help for that command.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_HELP_DESCRIPTION_DE, "Wenn kein Argement angegeben wurde, werden alle Kommandos ausgegeben.\n"
+                                        "Mit Argument, zeige die Hilfe für das angegebene Kommand."},
+/* fr */ {IDGS_MON_HELP_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_HELP_DESCRIPTION_HU, "Ha nincs paraméter, az összes létezõ parancs listáját mutatja.\n"
+                                        "Ha van, az adott parancshoz mutatja a súgót."},
+/* it */ {IDGS_MON_HELP_DESCRIPTION_IT, "Se non viene specificato alcun argomeno, stamapa la lista di tutti i\n"
+                                        "comandi disponibili.\n"
+                                        "Se viene specificato un argomento, stampa l'aiuto relativo a quel\n"
+                                        "comando."},
+/* nl */ {IDGS_MON_HELP_DESCRIPTION_NL, "Als er geen parameter is opgegeven dan zal een lijst van alle commandos\n"
+                                        "worden weergegeven. Als er een parameter is opgegeven dan zal de help voor\n"
+                                        "het opgegeven command worden weergegeven."},
+/* pl */ {IDGS_MON_HELP_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_HELP_DESCRIPTION_SV, ""},  /* fuzzy */
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_QP_STRING,    N_("\"<string>\"")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_QP_STRING_DE, "\"<Zeichenkette>\""},
+/* fr */ {IDGS_QP_STRING_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_QP_STRING_HU, "\"<sztring>\""},
+/* it */ {IDGS_QP_STRING_IT, "\"<stringa>\""},
+/* nl */ {IDGS_QP_STRING_NL, "\"<string>\""},
+/* pl */ {IDGS_QP_STRING_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_QP_STRING_SV, "\"<sträng>\""},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_KEYBUF_DESCRIPTION,    N_("Put the specified string into the keyboard buffer.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_KEYBUF_DESCRIPTION_DE, "Definierte Eingabe in Tastaturpuffer bereitstellen."},
+/* fr */ {IDGS_MON_KEYBUF_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_KEYBUF_DESCRIPTION_HU, "A megadott sztring elhelyezése a billentyûzet pufferben."},
+/* it */ {IDGS_MON_KEYBUF_DESCRIPTION_IT, "Metti la stringa specificata nel buffer di tastiera."},
+/* nl */ {IDGS_MON_KEYBUF_DESCRIPTION_NL, "Plaats de opgegeven string in de toetsenbordbuffer."},
+/* pl */ {IDGS_MON_KEYBUF_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_KEYBUF_DESCRIPTION_SV, "Lägg den angivna strängen i tangentbordsbufferten."},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_PLAYBACK_DESCRIPTION,    N_("Monitor commands from the specified file are read and executed.  This\n"
+                                               "command stops at the end of file or when a STOP command is read.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_PLAYBACK_DESCRIPTION_DE, "Monitor Kommandos aus der angegebenen Datei werden gelesen und ausgeführt.\n"
+                                            "Dieses Kommando stoppt, wenn das Ende der Datei erreicht wurde, oder das\n"
+                                            "Kommando STOP gelesen wurde."},
+/* fr */ {IDGS_MON_PLAYBACK_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_PLAYBACK_DESCRIPTION_HU, "A monitor parancsokat beolvassa és végrehajtja a megadott fájlból.\n"
+                                            "A fájl végéig halad, vagy egy beolvasott STOP parancsig."},
+/* it */ {IDGS_MON_PLAYBACK_DESCRIPTION_IT, "I comandi del monitor sono letti ed eseguiti dal file specificato. Questo\n"
+                                            "comando si arresta alla fine del file o quando viene letto il comando\n"
+                                            "STOP."},
+/* nl */ {IDGS_MON_PLAYBACK_DESCRIPTION_NL, "Monitor commandos van het opgegeven bestand zullen worden gelezen en\n"
+                                            "uitgevoerd. Dit commando stopt aan het einde van het bestand of wanneer\n"
+                                            "een STOP commando wordt gelezen."},
+/* pl */ {IDGS_MON_PLAYBACK_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_PLAYBACK_DESCRIPTION_SV, ""},  /* fuzzy */
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_P_EXPRESSION,    N_("<expression>")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_P_EXPRESSION_DE, "<Bedingung>"},
+/* fr */ {IDGS_P_EXPRESSION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_P_EXPRESSION_HU, "<kifejezés>"},
+/* it */ {IDGS_P_EXPRESSION_IT, "<espressione>"},
+/* nl */ {IDGS_P_EXPRESSION_NL, "<expressie>"},
+/* pl */ {IDGS_P_EXPRESSION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_P_EXPRESSION_SV, "<uttryck>"},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_PRINT_DESCRIPTION,    N_("Evaluate the specified expression and output the result.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_PRINT_DESCRIPTION_DE, "Evaluiere den angegebenen Ausdruck und zeige das Ergebnis."},
+/* fr */ {IDGS_MON_PRINT_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_PRINT_DESCRIPTION_HU, "Kiértékeli a megadott kifejezést és kiírja az eredményt."},
+/* it */ {IDGS_MON_PRINT_DESCRIPTION_IT, "Calcola l'espressione specificata e mostra il risultato."},
+/* nl */ {IDGS_MON_PRINT_DESCRIPTION_NL, "Evalueer de opgegeven expressie en toon het resultaat."},
+/* pl */ {IDGS_MON_PRINT_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_PRINT_DESCRIPTION_SV, ""},  /* fuzzy */
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_RECORD_DESCRIPTION,    N_("After this command, all commands entered are written to the specified\n"
+                                             "file until the STOP command is entered.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_RECORD_DESCRIPTION_DE, "Nach diesem Kommando werden alle eingebenen Kommands in die angegebene\n"
+                                          "Datei gespeicher solang bis das Kommando STOP eingegeben wurde."},
+/* fr */ {IDGS_MON_RECORD_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_RECORD_DESCRIPTION_HU, "Ezután a parancs után az összes parancsot a megadott fájlba\n"
+                                          "írja, amíg STOP parancs nem érkezik."},
+/* it */ {IDGS_MON_RECORD_DESCRIPTION_IT, "Dopo questo comando, tutti i comandi inseriti saranno scritti sul file\n"
+                                          "specificato fino a quando verrà inserito il comando STOP."},
+/* nl */ {IDGS_MON_RECORD_DESCRIPTION_NL, "Na dit commando zullen alle opgegeven commandos worden geschreven naar\n"
+                                          "het opgegeven bestand totdat het STOP command wordt opgegeven."},
+/* pl */ {IDGS_MON_RECORD_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_RECORD_DESCRIPTION_SV, ""},  /* fuzzy */
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_QP_RESOURCE,    N_("\"<resource>\"")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_QP_RESOURCE_DE, "\"<Ressource>\""},
+/* fr */ {IDGS_QP_RESOURCE_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_QP_RESOURCE_HU, "\"<erõforrás>\""},
+/* it */ {IDGS_QP_RESOURCE_IT, "\"<risorsa>\""},
+/* nl */ {IDGS_QP_RESOURCE_NL, "\"<resource>\""},
+/* pl */ {IDGS_QP_RESOURCE_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_QP_RESOURCE_SV, ""},  /* fuzzy */
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_RESOURCEGET_DESCRIPTION,    N_("Displays the value of the resource.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_RESOURCEGET_DESCRIPTION_DE, "Zeige den Werde der Ressource."},
+/* fr */ {IDGS_MON_RESOURCEGET_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_RESOURCEGET_DESCRIPTION_HU, "Az erõforrás értékének kiírása."},
+/* it */ {IDGS_MON_RESOURCEGET_DESCRIPTION_IT, "Mostra il valore della risorsa."},
+/* nl */ {IDGS_MON_RESOURCEGET_DESCRIPTION_NL, "Toont de waarde van de resource."},
+/* pl */ {IDGS_MON_RESOURCEGET_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_RESOURCEGET_DESCRIPTION_SV, ""},  /* fuzzy */
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_QP_RESOURCE_QP_VALUE,    N_("\"<resource>\" \"<value>\"")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_QP_RESOURCE_QP_VALUE_DE, "\"<Ressource>\" \"<Wert>\""},
+/* fr */ {IDGS_QP_RESOURCE_QP_VALUE_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_QP_RESOURCE_QP_VALUE_HU, "\"<erõforrás>\" \"<érték>\""},
+/* it */ {IDGS_QP_RESOURCE_QP_VALUE_IT, "\"<risorsa>\" \"<valore>\""},
+/* nl */ {IDGS_QP_RESOURCE_QP_VALUE_NL, "\"<resource>\" \"<waarde>\""},
+/* pl */ {IDGS_QP_RESOURCE_QP_VALUE_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_QP_RESOURCE_QP_VALUE_SV, ""},  /* fuzzy */
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_RESOURCESET_DESCRIPTION,    N_("Sets the value of the resource.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_RESOURCESET_DESCRIPTION_DE, "Setze den Werde der Ressource."},
+/* fr */ {IDGS_MON_RESOURCESET_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_RESOURCESET_DESCRIPTION_HU, "Az erõforrás értékének beállítása."},
+/* it */ {IDGS_MON_RESOURCESET_DESCRIPTION_IT, "Imposta il valore della risorsa."},
+/* nl */ {IDGS_MON_RESOURCESET_DESCRIPTION_NL, "Plaats de waarde in de resource."},
+/* pl */ {IDGS_MON_RESOURCESET_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_RESOURCESET_DESCRIPTION_SV, ""},  /* fuzzy */
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_STOP_DESCRIPTION,    N_("Stop recording commands.  See `record'.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_STOP_DESCRIPTION_DE, "Stoppe die Aufnahme von Kommandos. Siehe auch `Record'."},
+/* fr */ {IDGS_MON_STOP_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_STOP_DESCRIPTION_HU, "A parancsok rögzítésének befejezése.  Lásd `record'"},
+/* it */ {IDGS_MON_STOP_DESCRIPTION_IT, "Ferma il comando di registrazione. Guarda `registra'."},
+/* nl */ {IDGS_MON_STOP_DESCRIPTION_NL, "Stop de opname van commandos. Zie 'record'."},
+/* pl */ {IDGS_MON_STOP_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_STOP_DESCRIPTION_SV, ""},  /* fuzzy */
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_QP_FILENAME_RP_FORMAT,    N_("\"<filename>\" [<format>]")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_QP_FILENAME_RP_FORMAT_DE, "\"<Dateiname>\" [<Format>]"},
+/* fr */ {IDGS_QP_FILENAME_RP_FORMAT_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_QP_FILENAME_RP_FORMAT_HU, "\"<fájlnév>\" [<formátum>]"},
+/* it */ {IDGS_QP_FILENAME_RP_FORMAT_IT, "\"<nome del file>\" [<formato>]"},
+/* nl */ {IDGS_QP_FILENAME_RP_FORMAT_NL, "\"<bestandsnaam>\" [<formaat>]"},
+/* pl */ {IDGS_QP_FILENAME_RP_FORMAT_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_QP_FILENAME_RP_FORMAT_SV, ""},  /* fuzzy */
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_SCREENSHOT_DESCRIPTION,    N_("Take a screenshot. Format is:\n"
+                                                 "default = BMP, 1 = PCX, 2 = PNG, 3 = GIF, 4 = IFF.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_SCREENSHOT_DESCRIPTION_DE, "Erzeuge Screenshot. Format ist:\n"
+                                              "Standard = BMP, 1 = PCX, 2 = PNG, 3 = GIF, 4 = IFF."},
+/* fr */ {IDGS_MON_SCREENSHOT_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_SCREENSHOT_DESCRIPTION_HU, "Képernyõkép készítése. A formátum lehet:\n"
+                                              "alap = BMP, 1 = PCX, 2 = PNG, 3 = GIF, 4 = IFF."},
+/* it */ {IDGS_MON_SCREENSHOT_DESCRIPTION_IT, "Cattura schermo. Il formato è:\n"
+                                              "predefinito = BMP, 1 = PCX, 2 = PNG, 3 = GIF, 4 = IFF."},
+/* nl */ {IDGS_MON_SCREENSHOT_DESCRIPTION_NL, "Sla een schermafdruk op. Formaat is:\n"
+                                              "standaard = BMP, 1 = PCX, 2 = PNG, 3 = GIF, 4 = IFF."},
+/* pl */ {IDGS_MON_SCREENSHOT_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_SCREENSHOT_DESCRIPTION_SV, ""},  /* fuzzy */
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_P_COMMAND,    N_("<command>")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_P_COMMAND_DE, "<Kommando>"},
+/* fr */ {IDGS_P_COMMAND_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_P_COMMAND_HU, "<parancs>"},
+/* it */ {IDGS_P_COMMAND_IT, "<commando>"},
+/* nl */ {IDGS_P_COMMAND_NL, "<commando>"},
+/* pl */ {IDGS_P_COMMAND_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_P_COMMAND_SV, "<kommando>"},
+#endif
+
+/* monitor/mon_command.c */
+/* en */ {IDGS_MON_TAPECTRL_DESCRIPTION,    N_("Control the datasette. Valid commands:\n"
+                                               "0 = stop, 1 = start, 2 = forward, 3 = rewind, 4 = record,\n"
+                                               "5 = reset, 6 = reset counter.")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDGS_MON_TAPECTRL_DESCRIPTION_DE, "Steuere die Datasette. Gültige Kommandos sind:\n"
+                                            "0 = Stop, 1 = Start, 2 = Forwärts, 3 = Rückwärts, 4 = Aufnahme,\n"
+                                            "5 = Reset, 6 = Reset Zähler."},
+/* fr */ {IDGS_MON_TAPECTRL_DESCRIPTION_FR, ""},  /* fuzzy */
+/* hu */ {IDGS_MON_TAPECTRL_DESCRIPTION_HU, "Szalagos egység vezérlése. Érvényes parancsok:\n"
+                                            "0 = start, 1 = indít, 2 = elõre, 3 = vissza, 4 = felvétel,\n"
+                                            "5 = újraindít, 6 = számlálót nulláz"},
+/* it */ {IDGS_MON_TAPECTRL_DESCRIPTION_IT, "Controlla il registratore. Comandi validi:\n"
+                                            "0 = ferma, 1 = avvia, 2 = avanti, 3 = indietro, 4 = registra,\n"
+                                            "5 = reset, 6 = reset contatore."},
+/* nl */ {IDGS_MON_TAPECTRL_DESCRIPTION_NL, "Geef datasetta commandos. Geldige commandos:\n"
+                                            "0 = stop, 1 = start, 2 = vooruit, 3 = terug, 4 = opnemen,\n"
+                                            "5 = reset, 6 = reset teller."},
+/* pl */ {IDGS_MON_TAPECTRL_DESCRIPTION_PL, ""},  /* fuzzy */
+/* sv */ {IDGS_MON_TAPECTRL_DESCRIPTION_SV, ""},  /* fuzzy */
+#endif
+
 /* ------------------------ COMMAND LINE OPTION STRINGS -------------------- */
 
 /* autostart.c */
@@ -1384,27 +3503,15 @@ translate_t string_table[] = {
 #endif
 
 /* c64dtv/c64dtv-cmdline-options.c */
-/* en */ {IDCLS_ENABLE_HUMMER_USERPORT_JOY,    N_("Enable the Hummer Userport Joystick Emulation")},
+/* en */ {IDCLS_SELECT_HUMMER_USERPORT_DEVICE,    N_("Select Hummer Userport device (0: None, 1: ADC, 2: Joystick)")},
 #ifdef HAS_TRANSLATION
-/* de */ {IDCLS_ENABLE_HUMMER_USERPORT_JOY_DE, "Hummer Userport Emulation deaktivieren"},
-/* fr */ {IDCLS_ENABLE_HUMMER_USERPORT_JOY_FR, ""},  /* fuzzy */
-/* hu */ {IDCLS_ENABLE_HUMMER_USERPORT_JOY_HU, "Hummer Userport botkormány emuláció engedélyezése"},
-/* it */ {IDCLS_ENABLE_HUMMER_USERPORT_JOY_IT, "Attiva l'emulazione del joystick sulla userport dell'Hummer"},
-/* nl */ {IDCLS_ENABLE_HUMMER_USERPORT_JOY_NL, "Aktiveer de Hummer Userport Joystick emulatie"},
-/* pl */ {IDCLS_ENABLE_HUMMER_USERPORT_JOY_PL, ""},  /* fuzzy */
-/* sv */ {IDCLS_ENABLE_HUMMER_USERPORT_JOY_SV, "Aktivera emulering av Hummer-användarportstyrspak"},
-#endif
-
-/* c64dtv/c64dtv-cmdline-options.c */
-/* en */ {IDCLS_DISABLE_HUMMER_USERPORT_JOY,    N_("Disable the Hummer Userport Joystick emulation")},
-#ifdef HAS_TRANSLATION
-/* de */ {IDCLS_DISABLE_HUMMER_USERPORT_JOY_DE, ""},  /* fuzzy */
-/* fr */ {IDCLS_DISABLE_HUMMER_USERPORT_JOY_FR, ""},  /* fuzzy */
-/* hu */ {IDCLS_DISABLE_HUMMER_USERPORT_JOY_HU, "Hummer userport botkormány emuláció tiltása"},
-/* it */ {IDCLS_DISABLE_HUMMER_USERPORT_JOY_IT, "Disattiva il joystick sulla userport dell'Hummer"},
-/* nl */ {IDCLS_DISABLE_HUMMER_USERPORT_JOY_NL, "De Hummer Userport Joystick emulatie afsluiten"},
-/* pl */ {IDCLS_DISABLE_HUMMER_USERPORT_JOY_PL, ""},  /* fuzzy */
-/* sv */ {IDCLS_DISABLE_HUMMER_USERPORT_JOY_SV, "Inaktivera emulering av Hummer-användarportstyrspak"},
+/* de */ {IDCLS_SELECT_HUMMER_USERPORT_DEVICE_DE, ""},  /* fuzzy */
+/* fr */ {IDCLS_SELECT_HUMMER_USERPORT_DEVICE_FR, ""},  /* fuzzy */
+/* hu */ {IDCLS_SELECT_HUMMER_USERPORT_DEVICE_HU, ""},  /* fuzzy */
+/* it */ {IDCLS_SELECT_HUMMER_USERPORT_DEVICE_IT, ""},  /* fuzzy */
+/* nl */ {IDCLS_SELECT_HUMMER_USERPORT_DEVICE_NL, "Selecteer Hummer Userport apparaat (0: Geen, 1: ADC, 2: Joystick"},
+/* pl */ {IDCLS_SELECT_HUMMER_USERPORT_DEVICE_PL, ""},  /* fuzzy */
+/* sv */ {IDCLS_SELECT_HUMMER_USERPORT_DEVICE_SV, ""},  /* fuzzy */
 #endif
 
 /* c64dtv/c64dtv-cmdline-options.c */
@@ -4655,7 +6762,7 @@ translate_t string_table[] = {
 #ifdef HAVE_RESID
 /* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_RESID_SAMPLING_METHOD,    N_("reSID sampling method (0: fast, 1: interpolating, 2: resampling, 3: fast "
-                                          "resampling)")},
+                                             "resampling)")},
 #ifdef HAS_TRANSLATION
 /* de */ {IDCLS_RESID_SAMPLING_METHOD_DE, "reSID Sample Methode (0: schnell, 1: interpolierend, 2: resampling, 3: "
                                           "schnelles resampling)"},
@@ -6504,7 +8611,7 @@ translate_t string_table[] = {
 /* fr */ {IDCLS_USE_AS_DIRECTORY_FLASH_FS_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_USE_AS_DIRECTORY_FLASH_FS_HU, "<név> könyvtár használata a flash fájlrendszer eszközhöz"},
 /* it */ {IDCLS_USE_AS_DIRECTORY_FLASH_FS_IT, "Una <nome> come directory per il file system flash"},
-/* nl */ {IDCLS_USE_AS_DIRECTORY_FLASH_FS_NL, ""},  /* fuzzy */
+/* nl */ {IDCLS_USE_AS_DIRECTORY_FLASH_FS_NL, "Gebruik <naam> als directory voor het flash bestandssysteem apparaat"},
 /* pl */ {IDCLS_USE_AS_DIRECTORY_FLASH_FS_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_USE_AS_DIRECTORY_FLASH_FS_SV, "Ange <namn> som katalog för filsystemsbaserad flashenhet"},
 #endif
@@ -6516,7 +8623,7 @@ translate_t string_table[] = {
 /* fr */ {IDCLS_ENABLE_TRUE_FLASH_FS_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_ENABLE_TRUE_FLASH_FS_HU, "Igazi hardver flash fájlrendszer engedélyezése"},
 /* it */ {IDCLS_ENABLE_TRUE_FLASH_FS_IT, "Attiva l'emulazione hardware del file system flash"},
-/* nl */ {IDCLS_ENABLE_TRUE_FLASH_FS_NL, ""},  /* fuzzy */
+/* nl */ {IDCLS_ENABLE_TRUE_FLASH_FS_NL, "Activeer hardwarmatige flash bestandssysteem"},
 /* pl */ {IDCLS_ENABLE_TRUE_FLASH_FS_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_ENABLE_TRUE_FLASH_FS_SV, "Aktivera maskinvarubaserat flash-filsystem"},
 #endif
@@ -6528,33 +8635,9 @@ translate_t string_table[] = {
 /* fr */ {IDCLS_DISABLE_TRUE_FLASH_FS_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_DISABLE_TRUE_FLASH_FS_HU, "Igazi hardver flash fájlrendszer tiltása"},
 /* it */ {IDCLS_DISABLE_TRUE_FLASH_FS_IT, "Disattiva l'emulazione hardware del file system flash"},
-/* nl */ {IDCLS_DISABLE_TRUE_FLASH_FS_NL, ""},  /* fuzzy */
+/* nl */ {IDCLS_DISABLE_TRUE_FLASH_FS_NL, "Hardwatematig flash bestandssysteem uitschakelen"},
 /* pl */ {IDCLS_DISABLE_TRUE_FLASH_FS_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_DISABLE_TRUE_FLASH_FS_SV, "Inaktivera maskinvaruemelring för flashfilsystem"},
-#endif
-
-/* c64dtv/hummeradc.c */
-/* en */ {IDCLS_ENABLE_HUMMERADC,    N_("Enable the Hummer ADC")},
-#ifdef HAS_TRANSLATION
-/* de */ {IDCLS_ENABLE_HUMMERADC_DE, ""},  /* fuzzy */
-/* fr */ {IDCLS_ENABLE_HUMMERADC_FR, ""},  /* fuzzy */
-/* hu */ {IDCLS_ENABLE_HUMMERADC_HU, "Hummer ADC engedélyezése"},
-/* it */ {IDCLS_ENABLE_HUMMERADC_IT, "Attiva l'ADC dell'Hummer"},
-/* nl */ {IDCLS_ENABLE_HUMMERADC_NL, "Aktiveer de Hummer ADC"},
-/* pl */ {IDCLS_ENABLE_HUMMERADC_PL, ""},  /* fuzzy */
-/* sv */ {IDCLS_ENABLE_HUMMERADC_SV, "Aktivera Hummer ADC"},
-#endif
-
-/* c64dtv/hummeradc.c */
-/* en */ {IDCLS_DISABLE_HUMMERADC,    N_("Disable the Hummer ADC")},
-#ifdef HAS_TRANSLATION
-/* de */ {IDCLS_DISABLE_HUMMERADC_DE, ""},  /* fuzzy */
-/* fr */ {IDCLS_DISABLE_HUMMERADC_FR, ""},  /* fuzzy */
-/* hu */ {IDCLS_DISABLE_HUMMERADC_HU, "Hummer ADC tiltása"},
-/* it */ {IDCLS_DISABLE_HUMMERADC_IT, "Disattiva l'ADC dell'Hummer"},
-/* nl */ {IDCLS_DISABLE_HUMMERADC_NL, "De Hummer ADC afsluiten"},
-/* pl */ {IDCLS_DISABLE_HUMMERADC_PL, ""},  /* fuzzy */
-/* sv */ {IDCLS_DISABLE_HUMMERADC_SV, "Inaktivera Hummer ADC"},
 #endif
 
 #ifdef HAVE_MIDI

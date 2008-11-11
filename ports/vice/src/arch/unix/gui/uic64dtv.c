@@ -28,6 +28,7 @@
 
 #include <stdio.h>
 
+#include "c64dtv-resources.h"
 #include "lib.h"
 #include "resources.h"
 #include "uilib.h"
@@ -38,8 +39,8 @@
 
 UI_MENU_DEFINE_RADIO(DtvRevision)
 UI_MENU_DEFINE_TOGGLE(c64dtvromrw)
-UI_MENU_DEFINE_TOGGLE(HummerUserportJoy)
 UI_MENU_DEFINE_RADIO(HummerUserportJoyPort)
+UI_MENU_DEFINE_RADIO(HummerUserportDevice)
 
 UI_CALLBACK(set_c64dtv_rom_name)
 {
@@ -48,24 +49,25 @@ UI_CALLBACK(set_c64dtv_rom_name)
     static char *last_dir;
 
     filename = ui_select_file(_("C64DTV ROM image name"),
-			      NULL, 0, 0, last_dir,
-			      "*.[bB][iI][nN]",
-			      &button, 0, NULL);
+                              NULL, 0, 0, last_dir,
+                    	      "*.[bB][iI][nN]",
+                    	      &button, 0, NULL);
 
     switch (button) {
-    case UI_BUTTON_OK:
-	resources_set_string("c64dtvromfilename", filename);
-	if (last_dir)
-	    lib_free(last_dir);
-	util_fname_split(filename, &last_dir, NULL);
-	break;
-    default:
-	/* Do nothing special. */
-	break;
+        case UI_BUTTON_OK:
+            resources_set_string("c64dtvromfilename", filename);
+            if (last_dir) {
+                lib_free(last_dir);
+            }
+            util_fname_split(filename, &last_dir, NULL);
+            break;
+        default:
+            /* Do nothing special. */
+        break;
     }
-    if (filename != NULL)
-	lib_free(filename);
-
+    if (filename != NULL) {
+        lib_free(filename);
+    }
 }
 
 static ui_menu_entry_t c64dtv_revision_submenu[] = {
@@ -77,10 +79,20 @@ static ui_menu_entry_t c64dtv_revision_submenu[] = {
 };
 
 static ui_menu_entry_t c64dtv_hummer_joy_submenu[] = {
-    { "*Joy1", (ui_callback_t)radio_HummerUserportJoyPort,
+    { N_("*Joy1"), (ui_callback_t)radio_HummerUserportJoyPort,
       (ui_callback_data_t)1, NULL },
-    { "*Joy2", (ui_callback_t)radio_HummerUserportJoyPort,
+    { N_("*Joy2"), (ui_callback_t)radio_HummerUserportJoyPort,
       (ui_callback_data_t)2, NULL },
+    { NULL }
+};
+
+static ui_menu_entry_t c64dtv_hummer_userport_device_submenu[] = {
+    { N_("*None"), (ui_callback_t)radio_HummerUserportDevice,
+      (ui_callback_data_t)HUMMER_USERPORT_NONE, NULL },
+    { "*ADC", (ui_callback_t)radio_HummerUserportDevice,
+      (ui_callback_data_t)HUMMER_USERPORT_ADC, NULL },
+    { N_("*Joystick"), (ui_callback_t)radio_HummerUserportDevice,
+      (ui_callback_data_t)HUMMER_USERPORT_JOY, NULL },
     { NULL }
 };
 
@@ -88,14 +100,17 @@ ui_menu_entry_t c64dtv_submenu[] = {
     { N_("C64DTV ROM image name..."),
       (ui_callback_t)set_c64dtv_rom_name,
       (ui_callback_data_t)"c64dtvromfilename", NULL },
-    { N_("C64DTV blitter revision"),
-      NULL, NULL, c64dtv_revision_submenu },
     { N_("*Enable writes to C64DTV ROM image"),
       (ui_callback_t)toggle_c64dtvromrw, NULL, NULL },
-    { N_("*Enable Hummer Userport joystick"),
-      (ui_callback_t)toggle_HummerUserportJoy, NULL, NULL },
+    { "--" },
+    { N_("C64DTV blitter revision"),
+      NULL, NULL, c64dtv_revision_submenu },
+    { "--" },
+    { N_("*Hummer Userport Device"),
+      NULL, NULL, c64dtv_hummer_userport_device_submenu },
     { N_("Hummer joystick port mapped to Userport"),
       NULL, NULL, c64dtv_hummer_joy_submenu },
     { N_("PS/2 mouse on Userport"),
       NULL, NULL, ps2_mouse_submenu },
+    { NULL }
 };
