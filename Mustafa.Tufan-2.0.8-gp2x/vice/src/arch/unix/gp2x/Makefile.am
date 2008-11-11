@@ -25,6 +25,7 @@ libarchgp2x_a_SOURCES = \
 	gp2xui.h \
 	input_gp2x.c \
 	input_gp2x.h \
+	keycodes.h \
 	minimal.c \
 	minimal.h \
 	minimal_940t.h \
