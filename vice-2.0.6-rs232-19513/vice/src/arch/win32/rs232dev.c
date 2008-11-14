@@ -2,6 +2,7 @@
  * rs232dev.c - RS232 emulation.
  *
  * Written by
+ *  Spiro Trikaliotis <spiro.trikaliotis@gmx.de>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -28,12 +29,14 @@
  * available (currently ACIA 6551, std C64 and Daniel Dallmanns fast RS232
  * with 9600 Baud).
  *
- * I/O is done to a socket.  If the socket isnt connected, no data
- * is read and written data is discarded.
+ * I/O is done to a physical COM port.
  */
 
 #undef        DEBUG
 /* #define DEBUG /**/
+
+#define DEBUG_FAKE_INPUT_OUTPUT (5*80)
+#undef DEBUG_FAKE_INPUT_OUTPUT
 
 #include "vice.h"
 
@@ -55,8 +58,6 @@
 #else
 # define DEBUG_LOG_MESSAGE(_xxx)
 #endif
-
-#define DEBUG_FAKE_INPUT_OUTPUT 0
 
 /* ------------------------------------------------------------------------- */
 
@@ -259,7 +260,7 @@ int rs232dev_putc(int fd, BYTE b)
 
 #if DEBUG_FAKE_INPUT_OUTPUT
 
-    rs232_debug_fake_input_available = 4 * 80;
+    rs232_debug_fake_input_available = DEBUG_FAKE_INPUT_OUTPUT;
     rs232_debug_fake_input = b;
 
 #else
