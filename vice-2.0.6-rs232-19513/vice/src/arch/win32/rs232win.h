@@ -53,6 +53,9 @@ extern int rs232dev_set_status(int fd, enum rs232handshake_out status);
 /* write the output handshake lines */
 extern enum rs232handshake_in rs232dev_get_status(int fd);
 
+extern void rs232dev_set_bps(int fd, unsigned int bps);
+
+
 extern int rs232dev_resources_init(void);
 extern void rs232dev_resources_shutdown(void);
 extern int rs232dev_cmdline_options_init(void);
