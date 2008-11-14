@@ -148,6 +148,21 @@ int rs232drv_getc(int fd, BYTE *b)
     return rs232_getc(fd, b);
 }
 
+int rs232drv_set_status(int fd, enum rs232handshake_out status)
+{
+    return rs232_set_status(fd, status);
+}
+
+enum rs232handshake_in rs232drv_get_status(int fd)
+{
+    return rs232_get_status(fd);
+}
+
+void rs232drv_set_bps(int fd, unsigned int bps)
+{
+    rs232_set_bps(fd, bps);
+}
+
 #else
 
 void rs232drv_init(void)
@@ -177,6 +192,20 @@ int rs232drv_putc(int fd, BYTE b)
 int rs232drv_getc(int fd, BYTE *b)
 {
     return -1;
+}
+
+int rs232drv_set_status(int fd, enum rs232handshake_out status)
+{
+    return -1;
+}
+
+enum rs232handshake_in rs232drv_get_status(int fd)
+{
+    return 0;
+}
+
+void rs232drv_set_bps(int fd, unsigned int bps)
+{
 }
 
 int rs232drv_resources_init(void)

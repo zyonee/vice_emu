@@ -2,7 +2,7 @@
  * rs232win.h - RS232 emulation.
  *
  * Written by
- *  Spiro Trikaliotis
+ *  Spiro Trikaliotis <spiro.trikaliotis@gmx.de>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -47,6 +47,12 @@ extern int rs232dev_putc(int fd, BYTE b);
 /* Gets a byte to the RS232 line, returns !=1 if byte received, byte in *b. */
 extern int rs232dev_getc(int fd, BYTE *b);
 
+/* write the output handshake lines */
+extern int rs232dev_set_status(int fd, enum rs232handshake_out status);
+
+/* write the output handshake lines */
+extern enum rs232handshake_in rs232dev_get_status(int fd);
+
 extern int rs232dev_resources_init(void);
 extern void rs232dev_resources_shutdown(void);
 extern int rs232dev_cmdline_options_init(void);
@@ -69,6 +75,12 @@ extern int rs232net_putc(int fd, BYTE b);
 
 /* Gets a byte to the RS232 line, returns !=1 if byte received, byte in *b. */
 extern int rs232net_getc(int fd, BYTE *b);
+
+/* write the output handshake lines */
+extern int rs232net_set_status(int fd, enum rs232handshake_out status);
+
+/* write the output handshake lines */
+extern enum rs232handshake_in rs232net_get_status(int fd);
 
 extern int rs232net_resources_init(void);
 extern void rs232net_resources_shutdown(void);

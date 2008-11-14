@@ -74,10 +74,12 @@ int rs232net_cmdline_options_init(void)
 
 /* ------------------------------------------------------------------------- */
 
-typedef struct rs232 {
+typedef struct rs232net {
     int inuse;
     SOCKET fd;
     char *file;
+    int rts;
+    int dtr;
 } rs232net_t;
 
 static rs232net_t fds[RS232_NUM_DEVICES];
@@ -268,3 +270,20 @@ int rs232net_getc(int fd, BYTE * b)
     return 0;
 }
 
+/* set the status lines of the RS232 device */
+int rs232net_set_status(int fd, enum rs232handshake_out status)
+{
+    fds[fd].rts = (status & RS232_HSO_RTS) ? 1 : 0;
+    fds[fd].dtr = (status & RS232_HSO_DTR) ? 1 : 0;
+
+    /*! \todo signal the RS232 device the current status, too */
+
+    return 0;
+}
+
+/* get the status lines of the RS232 device */
+enum rs232handshake_in rs232net_get_status(int fd)
+{
+    /*! \todo dummy */
+    return RS232_HSI_CTS | RS232_HSI_DSR;
+}

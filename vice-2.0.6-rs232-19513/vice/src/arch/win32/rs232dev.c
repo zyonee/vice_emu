@@ -33,7 +33,7 @@
  */
 
 #undef        DEBUG
-#define DEBUG /**/
+/* #define DEBUG /**/
 
 #include "vice.h"
 
@@ -56,6 +56,8 @@
 # define DEBUG_LOG_MESSAGE(_xxx)
 #endif
 
+#define DEBUG_FAKE_INPUT_OUTPUT 0
+
 /* ------------------------------------------------------------------------- */
 
 int rs232dev_resources_init(void)
@@ -74,11 +76,13 @@ int rs232dev_cmdline_options_init(void)
 
 /* ------------------------------------------------------------------------- */
 
-typedef struct rs232 {
+typedef struct rs232dev {
     int inuse;
     HANDLE fd;
     char *file;
     DCB restore_dcb;
+    int rts;
+    int dtr;
 } rs232dev_t;
 
 static rs232dev_t fds[RS232_NUM_DEVICES];
@@ -241,6 +245,11 @@ void rs232dev_close(int fd)
     fds[fd].inuse = 0;
 }
 
+#if DEBUG_FAKE_INPUT_OUTPUT
+static char rs232_debug_fake_input = 0;
+static int rs232_debug_fake_input_available = 0;
+#endif
+
 /* sends a byte to the RS232 line */
 int rs232dev_putc(int fd, BYTE b)
 {
@@ -248,6 +257,12 @@ int rs232dev_putc(int fd, BYTE b)
 
     DEBUG_LOG_MESSAGE((rs232dev_log, "rs232dev: Output %u = `%c'.", (unsigned) b, b));
 
+#if DEBUG_FAKE_INPUT_OUTPUT
+
+    rs232_debug_fake_input_available = 4 * 80;
+    rs232_debug_fake_input = b;
+
+#else
     if ( WriteFile(fds[fd].fd, &b, number_of_bytes, &number_of_bytes, NULL) == 0) {
         return -1;
     }
@@ -255,6 +270,7 @@ int rs232dev_putc(int fd, BYTE b)
     if (number_of_bytes != 1) {
         return -1;
     }
+#endif
 
     return 0;
 }
@@ -264,9 +280,29 @@ int rs232dev_getc(int fd, BYTE * b)
 {
     DWORD number_of_bytes = 1;
 
-    if ( ReadFile(fds[fd].fd, b, number_of_bytes, &number_of_bytes, NULL) == 0 ) {
-        return -1;
+#if DEBUG_FAKE_INPUT_OUTPUT
+
+    if (fds[fd].rts && fds[fd].dtr && rs232_debug_fake_input_available) {
+        if (rs232_debug_fake_input_available > 0) {
+            --rs232_debug_fake_input_available;
+        }
+        *b = rs232_debug_fake_input;
     }
+    else {
+        number_of_bytes = 0;
+    }
+
+#else
+    if ( fds[fd].rts && fds[fd].dtr ) {
+        if ( ReadFile(fds[fd].fd, b, number_of_bytes, &number_of_bytes, NULL) == 0 ) {
+            return -1;
+        }
+    }
+    else {
+        number_of_bytes = 0;
+    }
+
+#endif
 
     if (number_of_bytes) {
         DEBUG_LOG_MESSAGE((rs232dev_log, "rs232dev: Input %u = `%c'.", (unsigned) *b, *b));
@@ -274,4 +310,56 @@ int rs232dev_getc(int fd, BYTE * b)
     }
 
     return 0;
+}
+
+/* set the status lines of the RS232 device */
+int rs232dev_set_status(int fd, enum rs232handshake_out status)
+{
+    int new_rts = (status & RS232_HSO_RTS) ? 1 : 0;
+    int new_dtr = (status & RS232_HSO_DTR) ? 1 : 0;
+
+    /* signal the RS232 device the current status, too */
+
+    if ( new_rts != fds[fd].rts ) {
+        EscapeCommFunction(fds[fd].fd, new_rts ? SETRTS : CLRRTS);
+        fds[fd].rts = new_rts;
+    }
+
+    if ( new_dtr != fds[fd].dtr ) {
+        EscapeCommFunction(fds[fd].fd, new_dtr ? SETDTR : CLRDTR);
+        fds[fd].dtr = new_dtr;
+    }
+
+    return 0;
+}
+
+/* get the status lines of the RS232 device */
+enum rs232handshake_in rs232dev_get_status(int fd)
+{
+    enum rs232handshake_in modem_status = 0;
+
+    do {
+        DWORD modemstat = 0;
+        if ( GetCommModemStatus(fds[fd].fd, &modemstat) == 0) {
+            DEBUG_LOG_MESSAGE((rs232dev_log, "Could not get modem status for device %d.", device));
+            break;
+        }
+
+        if (modemstat & MS_CTS_ON) {
+            modem_status |= RS232_HSI_CTS;
+        }
+
+        if (modemstat & MS_DSR_ON) {
+            modem_status |= RS232_HSI_DSR;
+        }
+    } while (0);
+
+    return modem_status;
+}
+
+/* set the bps rate of the physical device */
+void rs232dev_set_bps(int fd, unsigned int bps)
+{
+    /*! \todo set the physical bps rate */
+    DEBUG_LOG_MESSAGE((rs232dev_log, "Setting bps to %u", bps));
 }

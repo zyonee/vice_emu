@@ -160,3 +160,28 @@ int rs232_getc(int fd, BYTE * b)
     else
         return rs232net_getc(fd, b);
 }
+
+/* set the status lines of the RS232 device */
+int rs232_set_status(int fd, enum rs232handshake_out status)
+{
+    if (fd & RS232_IS_PHYSICAL_DEVICE)
+        return rs232dev_set_status(fd & ~RS232_IS_PHYSICAL_DEVICE, status);
+    else
+        return rs232net_set_status(fd, status);
+}
+
+/* get the status lines of the RS232 device */
+enum rs232handshake_in rs232_get_status(int fd)
+{
+    if (fd & RS232_IS_PHYSICAL_DEVICE)
+        return rs232dev_get_status(fd & ~RS232_IS_PHYSICAL_DEVICE);
+    else
+        return rs232net_get_status(fd);
+}
+
+/* set the bps rate of the physical device */
+void rs232_set_bps(int fd, unsigned int bps)
+{
+    if (fd & RS232_IS_PHYSICAL_DEVICE)
+        rs232dev_set_bps(fd & ~RS232_IS_PHYSICAL_DEVICE, bps);
+}
