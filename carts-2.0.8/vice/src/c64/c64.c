@@ -62,6 +62,7 @@
 #include "drivecpu.h"
 #include "georam.h"
 #include "imagecontents.h"
+#include "isepic.h"
 #include "kbdbuf.h"
 #include "keyboard.h"
 #include "log.h"
@@ -252,6 +253,7 @@ int machine_resources_init(void)
         || reu_resources_init() < 0
         || georam_resources_init() < 0
         || ramcart_resources_init() < 0
+        || isepic_resources_init() < 0
         || plus60k_resources_init() < 0
         || plus256k_resources_init() < 0
         || c64_256k_resources_init() < 0
@@ -332,6 +334,7 @@ int machine_cmdline_options_init(void)
         || reu_cmdline_options_init() < 0
         || georam_cmdline_options_init() < 0
         || ramcart_cmdline_options_init() < 0
+        || isepic_cmdline_options_init() < 0
         || plus60k_cmdline_options_init() < 0
         || plus256k_cmdline_options_init() < 0
         || c64_256k_cmdline_options_init() < 0

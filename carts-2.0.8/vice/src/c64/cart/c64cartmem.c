@@ -49,6 +49,8 @@
 #include "expert.h"
 #include "final.h"
 #include "generic.h"
+#include "ide64.h"
+#include "isepic.h"
 #include "kcs.h"
 #include "log.h"
 #include "machine.h"
@@ -59,7 +61,6 @@
 #include "resources.h"
 #include "retroreplay.h"
 #include "rexep256.h"
-#include "ide64.h"
 #include "ramcart.h"
 #include "ross.h"
 #include "stardos.h"
@@ -473,6 +474,11 @@ BYTE REGPARM1 romh_read(WORD addr)
       case CARTRIDGE_IDE64:
         return romh_banks[(addr & 0x3fff) | (romh_bank << 14)];
     }
+    if (isepic_enabled && isepic_switch)
+    {
+        fprintf(stderr, "isepic returns from address %X : %X\n",addr,isepic_romh_read(addr));
+        return isepic_romh_read(addr);
+    }
     return romh_banks[(addr & 0x1fff) + (romh_bank << 13)];
 }
 
@@ -481,6 +487,11 @@ void REGPARM2 romh_store(WORD addr, BYTE value)
     switch (mem_cartridge_type) {
       case CARTRIDGE_MAGIC_FORMEL:
         magicformel_romh_store(addr, value);
+        return;
+    }
+    if (isepic_enabled && isepic_switch)
+    {
+        isepic_romh_store(addr, value);
         return;
     }
 }
@@ -492,6 +503,10 @@ BYTE REGPARM1 ultimax_1000_7fff_read(WORD addr)
         return export_ram0[addr & 0x7fff];
       case CARTRIDGE_MAGIC_FORMEL:
         return magicformel_1000_7fff_read(addr);
+    }
+    if (isepic_enabled && isepic_switch)
+    {
+        return isepic_1000_7fff_read(addr);
     }
     return vicii_read_phi1();
 }
@@ -506,6 +521,10 @@ void REGPARM2 ultimax_1000_7fff_store(WORD addr, BYTE value)
         magicformel_1000_7fff_store(addr, value);
         break;
     }
+    if (isepic_enabled && isepic_switch)
+    {
+        isepic_1000_7fff_store(addr, value);
+    }
 }
 
 BYTE REGPARM1 ultimax_a000_bfff_read(WORD addr)
@@ -517,6 +536,10 @@ BYTE REGPARM1 ultimax_a000_bfff_read(WORD addr)
         return romh_banks[(addr & 0x3fff) | (romh_bank << 14)];
       case CARTRIDGE_MAGIC_FORMEL:
         return magicformel_a000_bfff_read(addr);
+    }
+    if (isepic_enabled && isepic_switch)
+    {
+        return isepic_a000_bfff_read(addr);
     }
     return vicii_read_phi1();
 }
@@ -531,6 +554,10 @@ void REGPARM2 ultimax_a000_bfff_store(WORD addr, BYTE value)
         magicformel_a000_bfff_store(addr, value);
         break;
     }
+    if (isepic_enabled && isepic_switch)
+    {
+        isepic_a000_bfff_store(addr, value);
+    }
 }
 
 BYTE REGPARM1 ultimax_c000_cfff_read(WORD addr)
@@ -540,6 +567,10 @@ BYTE REGPARM1 ultimax_c000_cfff_read(WORD addr)
         return export_ram0[addr & 0x7fff];
       case CARTRIDGE_MAGIC_FORMEL:
         return magicformel_c000_cfff_read(addr);
+    }
+    if (isepic_enabled && isepic_switch)
+    {
+        return isepic_c000_cfff_read(addr);
     }
     return vicii_read_phi1();
 }
@@ -553,6 +584,10 @@ void REGPARM2 ultimax_c000_cfff_store(WORD addr, BYTE value)
       case CARTRIDGE_MAGIC_FORMEL:
         magicformel_c000_cfff_store(addr, value);
         break;
+    }
+    if (isepic_enabled && isepic_switch)
+    {
+        isepic_c000_cfff_store(addr, value);
     }
 }
 
@@ -991,6 +1026,10 @@ void cartridge_freeze(int type)
       case CARTRIDGE_FINAL_III:
         final_v3_freeze();
         break;
+    }
+    if (isepic_enabled && isepic_switch)
+    {
+        isepic_freeze();
     }
 }
 

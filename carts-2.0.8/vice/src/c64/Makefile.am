@@ -72,6 +72,8 @@ libc64_a_SOURCES = \
 	digimax.h \
 	georam.c \
 	georam.h \
+	isepic.c \
+	isepic.h \
 	mmc64.c \
 	mmc64.h \
 	patchrom.c \
@@ -149,6 +151,8 @@ libc64c128_a_SOURCES = \
 	digimax.h \
 	georam.c \
 	georam.h \
+	isepic.c \
+	isepic.h \
 	mmc64.c \
 	mmc64.h \
 	patchrom.c \

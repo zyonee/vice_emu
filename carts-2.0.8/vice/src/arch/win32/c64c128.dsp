@@ -162,6 +162,10 @@ SOURCE=..\..\c64\georam.c
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\c64\isepic.c
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\c64\mmc64.c
 # End Source File
 # Begin Source File
