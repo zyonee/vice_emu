@@ -538,6 +538,11 @@ static void acia_set_handshake_lines(void)
         case ACIA_CMD_BITS_TRANSMITTER_NO_RTS:
             /* unset RTS, we are NOT ready to receive */
             acia_rs232_status_lines &= ~ RS232_HSO_RTS;
+            if (alarm_active_rx) {
+                /* diable RX alarm */
+                alarm_active_rx = 0;
+                alarm_unset(acia_alarm_rx);
+            }
             break;
 
         case ACIA_CMD_BITS_TRANSMITTER_BREAK:
@@ -547,6 +552,12 @@ static void acia_set_handshake_lines(void)
         case ACIA_CMD_BITS_TRANSMITTER_TX_WO_IRQ:
             /* set RTS, we are ready to receive */
             acia_rs232_status_lines |= RS232_HSO_RTS;
+
+            if ( ! alarm_active_rx ) {
+                /* enable RX alarm */
+                alarm_active_rx = 1;
+                set_acia_ticks();
+            }
             break;
     }
 
