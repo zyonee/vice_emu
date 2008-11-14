@@ -4117,6 +4117,18 @@ translate_t string_table[] = {
 #endif
 
 /* c64/cart/c64cart.c */
+/* en */ {IDCLS_ATTACH_RAW_MMCREPLAY_CART,    N_("Attach raw 512KB MMCReplay cartridge image")},
+#ifdef HAS_TRANSLATION
+/* de */ {IDCLS_ATTACH_RAW_MMCREPLAY_CART_DE, "512KB MMCReplay Image einlegen"},
+/* fr */ {IDCLS_ATTACH_RAW_MMCREPLAY_CART_FR, "Insérer une cartouche MMCReplay 512KO"},
+/* hu */ {IDCLS_ATTACH_RAW_MMCREPLAY_CART_HU, "512KB-os MMCReplay cartridge képmás csatolása"},
+/* it */ {IDCLS_ATTACH_RAW_MMCREPLAY_CART_IT, "Seleziona l'immagine di una cartuccia MMCReplay di 512KB"},
+/* nl */ {IDCLS_ATTACH_RAW_MMCREPLAY_CART_NL, "Koppel binair 512KB MMCReplay-cartridgebestand aan"},
+/* pl */ {IDCLS_ATTACH_RAW_MMCREPLAY_CART_PL, ""},  /* fuzzy */
+/* sv */ {IDCLS_ATTACH_RAW_MMCREPLAY_CART_SV, "Anslut rå 512KB-MMCReplay-insticksmodulfil"},
+#endif
+
+/* c64/cart/c64cart.c */
 /* en */ {IDCLS_ATTACH_RAW_IDE64_CART,    N_("Attach raw 64KB IDE64 cartridge image")},
 #ifdef HAS_TRANSLATION
 /* de */ {IDCLS_ATTACH_RAW_IDE64_CART_DE, "64KB IDE64 Image einlegen"},

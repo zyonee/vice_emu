@@ -50,6 +50,7 @@
 #include "monitor.h"
 #include "resources.h"
 #include "retroreplay.h"
+#include "mmcreplay.h"
 #include "stardos.h"
 #include "stb.h"
 #include "supersnapshot.h"
@@ -214,6 +215,11 @@ static const cmdline_option_t cmdline_options[] =
       USE_PARAM_ID, USE_DESCRIPTION_ID,
       IDCLS_P_NAME, IDCLS_ATTACH_RAW_RETRO_REPLAY_CART,
       NULL, NULL },
+    { "-cartmmcr", CALL_FUNCTION, 1,
+      attach_cartridge_cmdline, (void *)CARTRIDGE_MMCREPLAY, NULL, NULL,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_P_NAME, IDCLS_ATTACH_RAW_MMCREPLAY_CART,
+      NULL, NULL },
     { "-cartide", CALL_FUNCTION, 1,
       attach_cartridge_cmdline, (void *)CARTRIDGE_IDE64, NULL, NULL,
       USE_PARAM_ID, USE_DESCRIPTION_ID,
@@ -297,7 +303,7 @@ int cartridge_attach_image(int type, const char *filename)
     }
 
     /* allocate temporary array */
-    rawcart = lib_malloc(0x88000);
+    rawcart = lib_malloc(0x88000); /* 544kb */
 
 /*  cart should always be detached. there is no reason for doing fancy checks
     here, and it will cause problems incase a cart MUST be detached before
@@ -341,6 +347,10 @@ int cartridge_attach_image(int type, const char *filename)
         break;
       case CARTRIDGE_RETRO_REPLAY:
         if (retroreplay_bin_attach(filename, rawcart) < 0)
+            goto done;
+        break;
+      case CARTRIDGE_MMCREPLAY:
+        if (mmcreplay_bin_attach(filename, rawcart) < 0)
             goto done;
         break;
       case CARTRIDGE_IDE64:
@@ -452,6 +462,12 @@ void cartridge_trigger_freeze(void)
         break;
       case CARTRIDGE_RETRO_REPLAY:
         if (retroreplay_freeze_allowed()) {
+            maincpu_set_nmi(cartridge_int_num, IK_NMI);
+            alarm_set(cartridge_alarm, maincpu_clk + 3);
+        }
+        break;
+      case CARTRIDGE_MMCREPLAY:
+        if (mmcreplay_freeze_allowed()) {
             maincpu_set_nmi(cartridge_int_num, IK_NMI);
             alarm_set(cartridge_alarm, maincpu_clk + 3);
         }

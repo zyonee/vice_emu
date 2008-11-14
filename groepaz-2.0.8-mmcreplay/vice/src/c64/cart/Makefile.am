@@ -47,6 +47,8 @@ libc64cart_a_SOURCES = \
 	mikroass.h \
 	retroreplay.c \
 	retroreplay.h \
+	mmcreplay.c \
+	mmcreplay.h \
 	rexep256.c \
 	rexep256.h \
 	ross.c \
