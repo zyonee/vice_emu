@@ -101,8 +101,7 @@ static int set_isepic_enabled(int val, void *param)
         isepic_enabled = 0;
         if (isepic_switch)
         {
-            export.game = 0;
-            mem_pla_config_changed();
+            cartridge_config_changed(2, 2, 0);
             cartridge_release_freeze();
         }
     }
@@ -113,8 +112,7 @@ static int set_isepic_enabled(int val, void *param)
         isepic_enabled = 1;
         if (isepic_switch)
         {
-            export.game = 1;
-            mem_pla_config_changed();
+            cartridge_config_changed(2, 3, 0);
         }
     }
     return 0;
@@ -127,8 +125,7 @@ static int set_isepic_switch(int val, void *param)
         isepic_switch = 0;
         if (isepic_enabled)
         {
-            export.game = 0;
-            mem_pla_config_changed();
+            cartridge_config_changed(2, 2, 0);
             cartridge_release_freeze();
         }
     }
@@ -146,14 +143,13 @@ static int set_isepic_switch(int val, void *param)
 
 void isepic_freeze(void)
 {
-    export.game = 1;
-    mem_pla_config_changed();
+    cartridge_config_changed(2, 3, 0);
 }
 
 static const resource_int_t resources_int[] = {
     { "Isepic", 0, RES_EVENT_STRICT, (resource_value_t)0,
       &isepic_enabled, set_isepic_enabled, NULL },
-    { "IsepicSwitch", 0, RES_EVENT_STRICT, (resource_value_t)0,
+    { "IsepicSwitch", 0, RES_EVENT_STRICT, (resource_value_t)1,
       &isepic_switch, set_isepic_switch, NULL },
     { NULL }
 };
