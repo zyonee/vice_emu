@@ -190,16 +190,20 @@
     [canvasView setupTexture:size];
 
     [self setContentMinSize:NSMakeSize(size.width / 2, STATUS_HEIGHT + size.height / 2)];
-    [self resizeToCanvasSize:nil];
+    [self resizeCanvasToMultipleSize:nil];
 }
 
-- (void)resizeToCanvasSize:(id)sender
+- (void)resizeCanvasToMultipleSize:(id)sender
 {
+    int factor = 1;
+    if(sender!=nil)
+        factor = [sender tag];
+    
     NSRect f = [self frame];
     NSSize s = [[self contentView] bounds].size;
     
-    f.size.width  = original_canvas_size.width;
-    f.size.height += original_canvas_size.height - s.height + STATUS_HEIGHT;
+    f.size.width  = original_canvas_size.width * factor;
+    f.size.height += original_canvas_size.height * factor - s.height + STATUS_HEIGHT;
     f.origin.y    += s.height - original_canvas_size.height;
     [self setFrame:f display:YES];
 }

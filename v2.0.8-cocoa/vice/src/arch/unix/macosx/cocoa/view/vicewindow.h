@@ -61,8 +61,8 @@
 
 // toggle fullscreen of canvas
 - (void)toggleFullscreen:(id)sender;
-// restore original size
-- (void)resizeToCanvasSize:(id)sender;
+// resize to multiple size taken from [sender tag]
+- (void)resizeCanvasToMultipleSize:(id)sender;
 
 -(void)updateCanvas:(id)sender;
 

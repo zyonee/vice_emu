@@ -7,7 +7,7 @@
 		<dict>
 			<key>ACTIONS</key>
 			<dict>
-				<key>resizeToCanvasSize</key>
+				<key>resizeCanvasToMultipleSize</key>
 				<string>id</string>
 				<key>toggleConsoleWindow</key>
 				<string>id</string>
