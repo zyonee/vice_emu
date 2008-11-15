@@ -565,6 +565,8 @@
 {
     NSOpenPanel *panel = [NSOpenPanel openPanel];
     [panel setAllowsMultipleSelection:NO];
+    [panel setCanChooseFiles:YES];
+    [panel setCanChooseDirectories:NO];
     [panel setTitle:title];    
     
     int result = [panel runModalForDirectory:nil file:nil types:types];
@@ -589,6 +591,16 @@
 
 - (NSString *)pickDirectoryWithTitle:(NSString *)title
 {
+    NSOpenPanel *panel = [NSOpenPanel openPanel];
+    [panel setAllowsMultipleSelection:NO];
+    [panel setCanChooseFiles:NO];
+    [panel setCanChooseDirectories:YES];
+    [panel setTitle:title];    
+    
+    int result = [panel runModalForDirectory:nil file:nil types:nil];
+    if(result==NSOKButton) {
+        return [panel filename];
+    }    
     return nil;
 }
 
