@@ -66,5 +66,11 @@
 
 -(void)updateCanvas:(id)sender;
 
+// ----- copy & paste support -----
+// copy
+-(IBAction)copy:(id)sender;
+// paste
+-(IBAction)paste:(id)sender;
+
 @end
 

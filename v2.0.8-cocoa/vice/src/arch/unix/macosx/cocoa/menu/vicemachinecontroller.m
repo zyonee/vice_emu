@@ -43,6 +43,7 @@
 #include "interrupt.h"
 #include "tape.h"
 #include "mouse.h"
+#include "clipboard.h"
 #include "vdrive-internal.h"
 #include "gfxoutputdrv/ffmpegdrv.h"
 
@@ -463,5 +464,35 @@ static void saveSnapshotTrap(WORD unusedWord, void *unusedData)
 {
     printer_formfeed(unit);
 }
+
+// ----- Cut & Paste -----
+
+-(NSString *)readScreenOutput
+{
+    char * text = clipboard_read_screen_output("\n");
+    if (text == NULL) {
+        return @"";
+    }
+    NSString * t = [NSString stringWithCString:text encoding:NSUTF8StringEncoding];
+    lib_free(text);
+    return t;
+}
+
+-(void)typeStringOnKeyboard:(NSString *)string toPetscii:(BOOL)convert
+{
+    const char *cstr = [string cStringUsingEncoding:NSUTF8StringEncoding];
+    if(convert) {
+        int len = [string length];
+        char *pstr = lib_malloc(len+1);
+        memcpy(pstr,cstr,len);
+        charset_petconvstring(pstr,0);
+        
+        kbdbuf_feed(pstr);
+        
+        free(pstr);        
+    } else {
+        kbdbuf_feed(cstr);
+    }
+}        
 
 @end

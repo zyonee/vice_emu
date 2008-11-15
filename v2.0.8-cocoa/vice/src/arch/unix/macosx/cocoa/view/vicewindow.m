@@ -334,4 +334,34 @@
 //    [recplayView animate:self];
 }
 
+// ----- copy & paste support -----
+
+-(IBAction)copy:(id)sender
+{
+    NSString *data = [[VICEApplication theMachineController] readScreenOutput];
+    if(data) {
+        NSPasteboard *pb = [NSPasteboard generalPasteboard];
+        [pb declareTypes:[NSArray arrayWithObject:NSStringPboardType]
+            owner:self];
+        [pb setString:data forType:NSStringPboardType];
+    } else {
+        NSBeep();
+    }
+}
+
+-(IBAction)paste:(id)sender
+{
+    NSPasteboard *pb = [NSPasteboard generalPasteboard];
+    NSString *type = [pb availableTypeFromArray:
+                        [NSArray arrayWithObject:NSStringPboardType]];
+    if(type) {
+        NSString *value = [pb stringForType:NSStringPboardType];
+        NSLog(value);
+        // type string on keyboard
+        [[VICEApplication theMachineController] typeStringOnKeyboard:value toPetscii:YES];
+    } else {
+        NSBeep();
+    }
+}
+
 @end

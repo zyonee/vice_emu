@@ -130,5 +130,11 @@
 // send form feed (unit #4=0,#5=1,Userport=2)
 -(void)printerFormFeed:(int)unit;
 
+// ----- Cut & Paste -----
+//! read output of screen into a string
+-(NSString *)readScreenOutput;
+//! type string on keyboard
+-(void)typeStringOnKeyboard:(NSString *)string toPetscii:(BOOL)convert;
+
 @end
 
