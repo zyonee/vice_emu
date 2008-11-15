@@ -39,6 +39,7 @@
 #include "emuid.h"
 #include "lib.h"
 #include "mmc64.h"
+#include "cart/mmcreplay.h"
 #include "monitor.h"
 #include "reu.h"
 #include "georam.h"
@@ -99,6 +100,7 @@ static io_source_t io_source_table[] = {
     {IO_SOURCE_KCS, "KCS POWER", IO_DETACH_CART, NULL},
     {IO_SOURCE_MAGIC_FORMEL, "MAGIC FORMEL", IO_DETACH_CART, NULL},
     {IO_SOURCE_RR, "RETRO REPLAY", IO_DETACH_CART, NULL},
+    {IO_SOURCE_MMCREPLAY, "MMCREPLAY", IO_DETACH_CART, NULL},
     {IO_SOURCE_SS4, "SUPER SNAPSHOT 4", IO_DETACH_CART, NULL},
     {IO_SOURCE_SS5, "SUPER SNAPSHOT 5", IO_DETACH_CART, NULL},
     {IO_SOURCE_WARPSPEED, "WARPSPEED", IO_DETACH_CART, NULL},
@@ -265,6 +267,12 @@ BYTE REGPARM1 c64io1_read(WORD addr)
         if (mmc64_enabled && tfe_as_rr_net) {
             if (mmc64_hw_clockport==0xde02 && mmc64_clockport_enabled && 
                 addr>0xde01 && addr<0xde10) {
+                return_value = tfe_read((WORD)(addr & 0x0f));
+                io_source_check(io_source_counter);
+                io_source_counter++;
+            }
+        } else if (mmcr_enabled && tfe_as_rr_net) {
+            if (mmcr_clockport_enabled && addr>0xde01 && addr<0xde10) {
                 return_value = tfe_read((WORD)(addr & 0x0f));
                 io_source_check(io_source_counter);
                 io_source_counter++;

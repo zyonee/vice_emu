@@ -1,8 +1,8 @@
 /*
- * mmcreplay.h - Cartridge handling, Retro Replay cart.
+ * mmcreplay.h - Cartridge handling, MMCReplay cart.
  *
  * Written by
- *  Andreas Boose <viceteam@t-online.de>
+ *  Groepaz/Hitmen <groepaz@gmx.net>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -24,8 +24,8 @@
  *
  */
 
-#ifndef _MMCREPLAY_H
-#define _MMCREPLAY_H
+#ifndef MMCREPLAY_H
+#define MMCREPLAY_H
 
 #include <stdio.h>
 
@@ -46,13 +46,16 @@ extern BYTE REGPARM1 mmcreplay_romh_read(WORD addr);
 extern void REGPARM2 mmcreplay_romh_store(WORD addr, BYTE value);
 
 extern void mmcreplay_freeze(void);
-extern int mmcreplay_freeze_allowed(void);
+extern int  mmcreplay_freeze_allowed(void);
 
 extern void mmcreplay_config_init(void);
 extern void mmcreplay_reset(void);
 extern void mmcreplay_config_setup(BYTE *rawcart);
-extern int mmcreplay_bin_attach(const char *filename, BYTE *rawcart);
+extern int  mmcreplay_bin_attach(const char *filename, BYTE *rawcart);
 extern void mmcreplay_detach(void);
+
+extern int  mmcr_enabled;
+extern int  mmcr_clockport_enabled;
 
 #endif
 
