@@ -77,6 +77,9 @@
 
 - (void)appendText:(NSString*)text
 {
+    if(text==nil)
+        return;
+    
     if(buffer==nil)
         buffer = [[NSMutableString alloc] initWithCapacity:BUFFER_SIZE];
 
