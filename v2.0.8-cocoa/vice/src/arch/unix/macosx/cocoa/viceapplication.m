@@ -66,7 +66,7 @@ extern int default_log_fd;
     consoleWindow = [[ConsoleWindow alloc] 
          initWithContentRect:NSMakeRect(600, 360, 500, 200)
                        title:[NSString stringWithCString:_("VICE: Console")]];
-    
+
     // set as new default console
     default_log_fd = [consoleWindow fdForWriting];
 
@@ -228,6 +228,15 @@ extern int default_log_fd;
     canvas->pitch  = [glView getCanvasPitch];
     canvas->depth  = [glView getCanvasDepth];
     
+    // open control window with first canvas
+    if(canvasCount==1) {
+        NSRect new_rect = NSMakeRect(NSMinX(rect)+NSWidth(rect),
+                                     NSMinY(rect)+NSHeight(rect)* 0.3,
+                                     200,
+                                     10);
+        [self openControlWindowWithRect:new_rect];
+    }
+    
     // make top-level window
     [window makeKeyAndOrderFront:nil];
 
@@ -329,6 +338,25 @@ extern int default_log_fd;
 }
 
 // ----- Console Window -----
+
+- (void)openControlWindowWithRect:(NSRect)rect
+{
+    if(controlWindow==nil) {
+        controlWindow = [[ControlWindow alloc] 
+                initWithContentRect:rect
+                              title:[NSString stringWithCString:_("VICE: Control")]];
+    }
+    [controlWindow orderFront:self];
+}
+
+- (void)toggleControlWindow:(id)sender
+{
+    if([controlWindow isVisible]) {
+        [controlWindow orderOut:sender];
+    } else {
+        [controlWindow makeKeyAndOrderFront:sender];
+    }
+}
 
 - (void)toggleConsoleWindow:(id)sender
 {

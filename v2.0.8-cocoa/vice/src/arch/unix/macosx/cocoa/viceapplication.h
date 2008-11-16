@@ -28,6 +28,7 @@
 #import "viceapplicationprotocol.h"
 #import "vicemachineprotocol.h"
 #import "consolewindow.h"
+#import "controlwindow.h"
 
 @class VICEAppController;
 
@@ -45,6 +46,8 @@
     
     ConsoleWindow *monitorWindow;
     NSWindow *oldKeyWindow;
+    
+    ControlWindow *controlWindow;
     
     IBOutlet VICEAppController *appController;
 }
@@ -75,6 +78,8 @@
 - (void)toggleConsoleWindow:(id)sender;
 // show/hide the monitor window
 - (void)toggleMonitorWindow:(id)sender;
+// show/hide the control window
+- (void)toggleControlWindow:(id)sender;
 
 // show error message
 + (void)runErrorMessage:(NSString *)message;

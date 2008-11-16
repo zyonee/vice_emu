@@ -26,7 +26,6 @@
  */
 
 #import "vicenotifications.h"
-#import "peripheraldrawer.h"
 #import "vicewindow.h"
 #import "viceapplication.h"
 
@@ -111,11 +110,6 @@
     joystickView2 = [[JoystickView alloc] initWithFrame:NSMakeRect(speedWidth+50+STATUS_HEIGHT,0,STATUS_HEIGHT,STATUS_HEIGHT)];
     [joystickView2 setAutoresizingMask: NSViewMinXMargin];
     [statusBox addSubview:joystickView2];
-
-    // drawer
-    peripheralDrawer = [[PeripheralDrawer alloc] initWithPreferredEdge:NSMaxXEdge];
-    [peripheralDrawer setParentWindow:self];
-    [peripheralDrawer open];
 
     [self setFrameAutosaveName:title];
 

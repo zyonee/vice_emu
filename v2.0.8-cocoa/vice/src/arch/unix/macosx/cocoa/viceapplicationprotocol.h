@@ -60,6 +60,10 @@ thread is passed through this protocol.
 // read from monitor
 -(NSString *)readMonitorLine:(NSString *)prompt;
 
+// ----- control window -----
+// open control window
+- (void)openControlWindowWithRect:(NSRect)rect;
+
 // ----- notifications -----
 // post a remove notification
 - (void)postRemoteNotification:(NSArray *)array;
