@@ -49,7 +49,7 @@
 }
 
 // create the window and setup canvas structure
-- (id)initWithRect:(NSRect)rect title:(NSString *)title;
+- (id)initWithContentRect:(NSRect)rect title:(NSString *)title;
 
 // return the GLView for render access
 - (VICEGLView *)getVICEGLView;

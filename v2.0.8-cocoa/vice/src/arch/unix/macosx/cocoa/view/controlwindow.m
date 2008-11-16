@@ -65,7 +65,6 @@
 
     [self setReleasedWhenClosed:NO];
     [self setFloatingPanel:TRUE];
-    [self setBecomesKeyOnlyIfNeeded:NO];
 
     // set title
     [self setTitle:title];
@@ -122,11 +121,17 @@
     [super dealloc];
 }
 
+- (BOOL)canBecomeMainWindow
+{
+    return NO;
+}
+
 - (void)enableDriveStatus:(NSNotification*)notification
 {
     NSRect frameRect = [self frame];
     NSRect boundsRect = [[self contentView] bounds];
     
+    // setup drive views
     NSDictionary * dict = [notification userInfo];
     int drive_led_color = [[dict objectForKey:@"drive_led_color"] intValue];
     int enable = [[dict objectForKey:@"enabled_drives"] intValue];
@@ -162,11 +167,15 @@
     total_height += PERIPH_HEIGHT*3;
     total_height += PERIPH_OFFSET;
     
-    // adjust window frame
+    // adjust window frame to stay on same top
+    float old_top = NSMinY(frameRect) + NSHeight(frameRect);
+    float title_h = NSHeight(frameRect) - NSHeight(boundsRect); 
+    float hf = total_height + title_h;
+    float yf = old_top - hf;
     [self setFrame:NSMakeRect(NSMinX(frameRect),
-                              NSMinY(frameRect),
+                              yf,
                               NSWidth(frameRect),
-                              NSHeight(frameRect)-NSHeight(boundsRect)+total_height) 
+                              hf) 
            display:TRUE
            animate:TRUE];
 }

@@ -53,6 +53,20 @@ extern int default_log_fd;
     [super run];
 }
 
+// console place
+- (NSRect)placeConsole:(BOOL)left
+{
+    NSRect screenRect = [[NSScreen mainScreen] visibleFrame];
+    float screenWidth = NSWidth(screenRect);
+    float screenHeight = NSHeight(screenRect);
+    float w = screenWidth * 0.5;
+    float h = screenHeight * 0.3;
+    if(left)
+        return NSMakeRect(NSMinX(screenRect),NSMinY(screenRect),w,h);
+    else
+        return NSMakeRect(NSMinX(screenRect)+w,NSMinY(screenRect),w,h);
+}
+
 // application is ready to run, so fire up machine thread
 - (void)applicationDidFinishLaunching:(NSNotification*)aNotification
 {
@@ -64,7 +78,7 @@ extern int default_log_fd;
  
     // open default log console
     consoleWindow = [[ConsoleWindow alloc] 
-         initWithContentRect:NSMakeRect(600, 360, 500, 200)
+         initWithContentRect:[self placeConsole:TRUE]
                        title:[NSString stringWithCString:_("VICE: Console")]];
 
     // set as new default console
@@ -202,7 +216,7 @@ extern int default_log_fd;
 
 // ----- Video -----
 
--(void)createCanvas:(NSData *)canvasPtr withRect:(NSRect)rect
+-(void)createCanvas:(NSData *)canvasPtr withSize:(NSSize)size
 {
     video_canvas_t *canvas = *(video_canvas_t **)[canvasPtr bytes];
     
@@ -213,10 +227,22 @@ extern int default_log_fd;
     else
         title = [NSString stringWithFormat:@"%s #%d",canvas->viewport->title,canvasCount];
     
+    // place canvas
+    const float control_win_width = 200;
+    NSRect screenRect = [[NSScreen mainScreen] visibleFrame];
+    if(canvasCount==1)
+        canvasStartXPos = NSMinX(screenRect) + control_win_width;
+    float top_pos = NSMinY(screenRect) + NSHeight(screenRect);
+    float canvasY = top_pos - size.height;     
+    NSRect rect = NSMakeRect(canvasStartXPos,
+                             canvasY,
+                             size.width,
+                             size.height);
+    canvasStartXPos += size.width;
+    
     // create a new vice window
-    VICEWindow *window = [[VICEWindow alloc] 
-        initWithRect:rect
-               title:title];
+    VICEWindow *window = [[VICEWindow alloc] initWithContentRect:rect
+                                                           title:title];
 
     // embedded gl view
     VICEGLView *glView = [window getVICEGLView];
@@ -230,11 +256,11 @@ extern int default_log_fd;
     
     // open control window with first canvas
     if(canvasCount==1) {
-        NSRect new_rect = NSMakeRect(NSMinX(rect)+NSWidth(rect),
-                                     NSMinY(rect)+NSHeight(rect)* 0.3,
-                                     200,
-                                     10);
-        [self openControlWindowWithRect:new_rect];
+        NSRect controlRect = NSMakeRect(NSMinX(screenRect),
+                                        top_pos - 10,
+                                        control_win_width,
+                                        10);
+        [self openControlWindowWithRect:controlRect];
     }
     
     // make top-level window
@@ -301,7 +327,7 @@ extern int default_log_fd;
 {
     if(monitorWindow==nil) {
         monitorWindow = [[ConsoleWindow alloc] 
-                initWithContentRect:NSMakeRect(600, 560, 500, 200)
+                initWithContentRect:[self placeConsole:FALSE]
                               title:[NSString stringWithCString:_("VICE: Monitor")]];
     }
     oldKeyWindow = [self keyWindow];

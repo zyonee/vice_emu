@@ -43,6 +43,7 @@
     ConsoleWindow *consoleWindow;
     int canvasCount;
     int currentCanvasId;
+    int canvasStartXPos;
     
     ConsoleWindow *monitorWindow;
     NSWindow *oldKeyWindow;
