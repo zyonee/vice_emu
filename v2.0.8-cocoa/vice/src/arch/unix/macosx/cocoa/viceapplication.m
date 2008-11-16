@@ -377,6 +377,9 @@ extern int default_log_fd;
 
 - (void)toggleControlWindow:(id)sender
 {
+    if(controlWindow==nil)
+        return;
+    
     if([controlWindow isVisible]) {
         [controlWindow orderOut:sender];
     } else {
@@ -422,6 +425,15 @@ extern int default_log_fd;
         } else {
             [menuItem setState:NSOffState];
         }
+    }
+    else if([menuItem action]==@selector(toggleControlWindow:)) {
+        if(controlWindow==nil)
+            return NO;
+        if([controlWindow isVisible]) {
+            [menuItem setState:NSOnState];
+        } else {
+            [menuItem setState:NSOffState];
+        }            
     }
     return [super validateMenuItem:menuItem];  
 }
