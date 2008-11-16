@@ -35,7 +35,51 @@
 // from archdep.c:
 extern int default_log_fd;
 
+// initial width of control panel
+const float control_win_width = 200;
+
 @implementation VICEApplication
+
+// ----- User Defaults -----
+
+- (BOOL)isWindowVisible:(NSWindow *)window default:(BOOL)show
+{
+    NSString *title = [window title];
+    NSString *key = [title stringByAppendingString:@"Visible"];
+    NSUserDefaults *def = [NSUserDefaults standardUserDefaults];
+
+    NSString *value = [def stringForKey:key];
+    BOOL visible;
+    if(value == nil) {
+        visible = show;
+    } else {
+        visible = [value boolValue];
+    }
+    return visible;
+}
+
+- (void)storeWindowVisibility:(NSWindow *)window visible:(BOOL)visible
+{
+    NSString *title = [window title];
+    NSString *key = [title stringByAppendingString:@"Visible"];
+    NSUserDefaults *def = [NSUserDefaults standardUserDefaults];
+
+    [def setObject:[[NSNumber numberWithBool:visible] stringValue] forKey:key];
+}
+
+- (void)setWindowVisibilityFromUserDefaults:(NSWindow *)window default:(BOOL)show
+{
+    if([self isWindowVisible:window default:show]) {
+        [window orderFront:self];
+    }
+}
+
+- (void)storeWindowVisibilityToUserDefaults:(NSWindow *)window
+{
+    [self storeWindowVisibility:window visible:[window isVisible]];
+}
+
+// ----- Startup -----
 
 // initial start up of application
 - (void)runWithArgC:(int)argc argV:(char**)argv
@@ -56,6 +100,7 @@ extern int default_log_fd;
 // console place
 - (NSRect)placeConsole:(BOOL)left
 {
+    // bottom left or right
     NSRect screenRect = [[NSScreen mainScreen] visibleFrame];
     float screenWidth = NSWidth(screenRect);
     float screenHeight = NSHeight(screenRect);
@@ -67,6 +112,18 @@ extern int default_log_fd;
         return NSMakeRect(NSMinX(screenRect)+w,NSMinY(screenRect),w,h);
 }
 
+// control place
+- (NSRect)placeControl
+{
+    // top left
+    NSRect screenRect = [[NSScreen mainScreen] visibleFrame];
+    float top_pos = NSMinY(screenRect) + NSHeight(screenRect);
+    return NSMakeRect(NSMinX(screenRect),
+                      top_pos - 10,
+                      control_win_width,
+                      10);
+}
+
 // application is ready to run, so fire up machine thread
 - (void)applicationDidFinishLaunching:(NSNotification*)aNotification
 {
@@ -74,13 +131,27 @@ extern int default_log_fd;
     machine = nil;
     canTerminate = NO;
     canvasCount = 0;
-    monitorWindow = nil;
  
-    // open default log console
+    // create default log console
     consoleWindow = [[ConsoleWindow alloc] 
          initWithContentRect:[self placeConsole:TRUE]
                        title:[NSString stringWithCString:_("VICE: Console")]];
 
+    // create monitor window
+    monitorWindow = [[ConsoleWindow alloc] 
+         initWithContentRect:[self placeConsole:FALSE]
+                       title:[NSString stringWithCString:_("VICE: Monitor")]];
+    
+    // create control window
+    controlWindow = [[ControlWindow alloc] 
+         initWithContentRect:[self placeControl]
+                       title:[NSString stringWithCString:_("VICE: Control")]];
+    
+    // set visibility of windows
+    [self setWindowVisibilityFromUserDefaults:consoleWindow default:YES];
+    [self setWindowVisibilityFromUserDefaults:monitorWindow default:NO];
+    [self setWindowVisibilityFromUserDefaults:controlWindow default:YES];
+    
     // set as new default console
     default_log_fd = [consoleWindow fdForWriting];
 
@@ -109,6 +180,8 @@ extern int default_log_fd;
     machine = (id<VICEMachineProtocol>)[aMachineObject retain];
     postponeAutostart = NO;
 }
+
+// ----- Query Machine/Controller -----
 
 - (id<VICEMachineProtocol>)machine
 {
@@ -176,6 +249,11 @@ extern int default_log_fd;
         }
     }
 
+    // save window visibility
+    [self storeWindowVisibilityToUserDefaults:consoleWindow];
+    [self storeWindowVisibilityToUserDefaults:monitorWindow];
+    [self storeWindowVisibilityToUserDefaults:controlWindow];
+
     // tell machine thread to shutdown and exit
     [machine stopMachine];
 
@@ -216,6 +294,22 @@ extern int default_log_fd;
 
 // ----- Video -----
 
+-(NSRect)placeCanvas:(NSSize)size
+{
+    NSRect screenRect = [[NSScreen mainScreen] visibleFrame];
+    if(canvasCount==1) {
+        canvasStartXPos = NSMinX(screenRect) + control_win_width;
+    }
+    float top_pos = NSMinY(screenRect) + NSHeight(screenRect);
+    float canvasY = top_pos - size.height;     
+    NSRect rect = NSMakeRect(canvasStartXPos,
+                              canvasY,
+                              size.width,
+                              size.height);
+    canvasStartXPos += size.width;
+    return rect;
+}
+
 -(void)createCanvas:(NSData *)canvasPtr withSize:(NSSize)size
 {
     video_canvas_t *canvas = *(video_canvas_t **)[canvasPtr bytes];
@@ -227,21 +321,8 @@ extern int default_log_fd;
     else
         title = [NSString stringWithFormat:@"%s #%d",canvas->viewport->title,canvasCount];
     
-    // place canvas
-    const float control_win_width = 200;
-    NSRect screenRect = [[NSScreen mainScreen] visibleFrame];
-    if(canvasCount==1)
-        canvasStartXPos = NSMinX(screenRect) + control_win_width;
-    float top_pos = NSMinY(screenRect) + NSHeight(screenRect);
-    float canvasY = top_pos - size.height;     
-    NSRect rect = NSMakeRect(canvasStartXPos,
-                             canvasY,
-                             size.width,
-                             size.height);
-    canvasStartXPos += size.width;
-    
     // create a new vice window
-    VICEWindow *window = [[VICEWindow alloc] initWithContentRect:rect
+    VICEWindow *window = [[VICEWindow alloc] initWithContentRect:[self placeCanvas:size]
                                                            title:title];
 
     // embedded gl view
@@ -254,17 +335,12 @@ extern int default_log_fd;
     canvas->pitch  = [glView getCanvasPitch];
     canvas->depth  = [glView getCanvasDepth];
     
-    // open control window with first canvas
-    if(canvasCount==1) {
-        NSRect controlRect = NSMakeRect(NSMinX(screenRect),
-                                        top_pos - 10,
-                                        control_win_width,
-                                        10);
-        [self openControlWindowWithRect:controlRect];
+    // is visible?
+    BOOL visible = [self isWindowVisible:window default:TRUE];
+    [window makeKeyAndOrderFront:self];
+    if(!visible) {
+        [window miniaturize:self];
     }
-    
-    // make top-level window
-    [window makeKeyAndOrderFront:nil];
 
     // activate app if not already done
     if(![self isActive])
@@ -276,8 +352,13 @@ extern int default_log_fd;
     video_canvas_t *canvas = *(video_canvas_t **)[canvasPtr bytes];
     
     // release vice windows
-    if(canvas->window!=nil) {
-        [canvas->window close];
+    NSWindow *window = canvas->window;
+    if(window!=nil) {
+        // store canvas state
+        [self storeWindowVisibility:window visible:[window isVisible]];
+        
+        // close window
+        [window close];
     }
 }
 
@@ -325,18 +406,17 @@ extern int default_log_fd;
 
 -(void)openMonitor
 {
-    if(monitorWindow==nil) {
-        monitorWindow = [[ConsoleWindow alloc] 
-                initWithContentRect:[self placeConsole:FALSE]
-                              title:[NSString stringWithCString:_("VICE: Monitor")]];
-    }
+    // check if window is already open
+    closeMonitor = ![monitorWindow isVisible];
     oldKeyWindow = [self keyWindow];
     [monitorWindow makeKeyAndOrderFront:self];
 }
 
 -(void)closeMonitor
 {
-    [monitorWindow orderOut:self];
+    if(closeMonitor) {
+        [monitorWindow orderOut:self];
+    }
     [oldKeyWindow makeKeyAndOrderFront:self];
 }
 
@@ -365,21 +445,8 @@ extern int default_log_fd;
 
 // ----- Console Window -----
 
-- (void)openControlWindowWithRect:(NSRect)rect
-{
-    if(controlWindow==nil) {
-        controlWindow = [[ControlWindow alloc] 
-                initWithContentRect:rect
-                              title:[NSString stringWithCString:_("VICE: Control")]];
-    }
-    [controlWindow orderFront:self];
-}
-
 - (void)toggleControlWindow:(id)sender
 {
-    if(controlWindow==nil)
-        return;
-    
     if([controlWindow isVisible]) {
         [controlWindow orderOut:sender];
     } else {
@@ -398,9 +465,6 @@ extern int default_log_fd;
 
 - (void)toggleMonitorWindow:(id)sender
 {
-    if(monitorWindow==nil)
-        return;
-    
     if([monitorWindow isVisible]) {
         [monitorWindow orderOut:sender];
     } else {
@@ -418,8 +482,6 @@ extern int default_log_fd;
         }
     }
     else if([menuItem action]==@selector(toggleMonitorWindow:)) {
-        if(monitorWindow==nil)
-            return NO;
         if([monitorWindow isVisible]) {
             [menuItem setState:NSOnState];
         } else {
@@ -427,8 +489,6 @@ extern int default_log_fd;
         }
     }
     else if([menuItem action]==@selector(toggleControlWindow:)) {
-        if(controlWindow==nil)
-            return NO;
         if([controlWindow isVisible]) {
             [menuItem setState:NSOnState];
         } else {
