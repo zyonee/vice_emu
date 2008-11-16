@@ -125,6 +125,8 @@
 -(BOOL)attachTapeImage:(NSString *)path;
 // detach tape image
 -(void)detachTapeImage;
+// control datasette
+-(void)controlDatasette:(int)command;
 
 // ----- Printer -----
 // send form feed (unit #4=0,#5=1,Userport=2)

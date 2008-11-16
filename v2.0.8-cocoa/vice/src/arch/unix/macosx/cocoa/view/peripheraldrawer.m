@@ -34,7 +34,7 @@
 #import "vicenotifications.h"
 #import "vicewindow.h"
 
-#define PERIPH_WIDTH            100
+#define PERIPH_WIDTH            140
 #define PERIPH_HEIGHT           22
 
 /* ============================================================== */
@@ -58,7 +58,7 @@
     if ((self = [super initWithContentSize:NSMakeSize(PERIPH_WIDTH, PERIPH_HEIGHT)
                              preferredEdge:edge]) != nil)
     {
-        [self setMinContentSize:NSMakeSize(PERIPH_WIDTH, 5*PERIPH_HEIGHT)];
+        [self setMinContentSize:NSMakeSize(PERIPH_WIDTH, 7*PERIPH_HEIGHT)];
 
         led_color[0] = [[NSColor redColor] retain];
         led_color[1] = [[NSColor greenColor] retain];
@@ -71,7 +71,12 @@
                                                  selector:@selector(enableDriveStatus:)
                                                      name:VICEEnableDriveStatusNotification
                                                    object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(enableTapeStatus:)
+                                                     name:VICEEnableTapeStatusNotification
+                                                   object:nil];
 
+        // create disk views
         int i;
         for (i = 0; i < DRIVE_NUM; i++)
         {
@@ -80,10 +85,9 @@
             [drive_view[i] setAutoresizingMask: NSViewWidthSizable];
         }
 
-        tape_view = [[TapeView alloc] initWithFrame:NSMakeRect(0, 0, PERIPH_WIDTH, PERIPH_HEIGHT)];
+        // create tape view
+        tape_view = [[TapeView alloc] initWithFrame:NSMakeRect(0, 0, PERIPH_WIDTH, PERIPH_HEIGHT*3)];
         [tape_view setAutoresizingMask: NSViewWidthSizable];
-
-//        [self setTapeStatus:0];
         [v addSubview:tape_view];
 
         [self setContentView:v];
@@ -134,13 +138,14 @@
     }
 
     // reposition tape display and rec/play field
-    [tape_view setFrame:NSMakeRect(0, count++ * PERIPH_HEIGHT * 2, width, PERIPH_HEIGHT)];
+    [tape_view setFrame:NSMakeRect(0, count++ * PERIPH_HEIGHT * 2, width, PERIPH_HEIGHT*3)];
     [[self contentView] setNeedsDisplay:YES];
 }
 
-- (void)setTapeStatus:(int)status
+- (void)enableTapeStatus:(NSNotification*)notification
 {
-    [tape_view setEnabled:status];
+    BOOL enable = [[[notification userInfo] objectForKey:@"enable"] intValue];
+    [tape_view setEnabled:enable];
     [[self contentView] setNeedsDisplay:YES];
 }
 

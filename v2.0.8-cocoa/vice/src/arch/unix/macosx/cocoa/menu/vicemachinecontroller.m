@@ -44,6 +44,7 @@
 #include "tape.h"
 #include "mouse.h"
 #include "clipboard.h"
+#include "datasette.h"
 #include "vdrive-internal.h"
 #include "gfxoutputdrv/ffmpegdrv.h"
 
@@ -456,6 +457,11 @@ static void saveSnapshotTrap(WORD unusedWord, void *unusedData)
 -(void)detachTapeImage
 {
     tape_image_detach(1);
+}
+
+-(void)controlDatasette:(int)command
+{
+    datasette_control(command);
 }
 
 // ----- Printer -----

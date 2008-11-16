@@ -438,4 +438,9 @@ extern int default_log_fd;
     return result == NSAlertFirstButtonReturn;
 }
 
++ (NSString *)getOpenFileName:(NSString *)title types:(NSArray *)types
+{
+    return [[VICEApplication theAppController] getOpenFileName:title types:types];
+}
+
 @end

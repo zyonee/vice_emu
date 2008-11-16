@@ -356,7 +356,6 @@
                         [NSArray arrayWithObject:NSStringPboardType]];
     if(type) {
         NSString *value = [pb stringForType:NSStringPboardType];
-        NSLog(value);
         // type string on keyboard
         [[VICEApplication theMachineController] typeStringOnKeyboard:value toPetscii:YES];
     } else {

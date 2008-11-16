@@ -80,6 +80,8 @@
 + (void)runErrorMessage:(NSString *)message;
 // show warning message
 + (void)runWarningMessage:(NSString *)message;
+// get a open file name
++ (NSString *)getOpenFileName:(NSString *)title types:(NSArray *)types;
 
 // get the app controller
 - (VICEAppController *)appController;
