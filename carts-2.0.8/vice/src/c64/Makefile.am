@@ -70,6 +70,8 @@ libc64_a_SOURCES = \
 	c64video.c \
 	digimax.c \
 	digimax.h \
+	dqbb.c \
+	dqbb.h \
 	georam.c \
 	georam.h \
 	isepic.c \
@@ -149,6 +151,8 @@ libc64c128_a_SOURCES = \
 	c64tpi.h \
 	digimax.c \
 	digimax.h \
+	dqbb.c \
+	dqbb.h \
 	georam.c \
 	georam.h \
 	isepic.c \

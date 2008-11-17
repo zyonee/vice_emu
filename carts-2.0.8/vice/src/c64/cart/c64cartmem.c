@@ -45,6 +45,7 @@
 #include "delaep256.h"
 #include "delaep64.h"
 #include "delaep7x8.h"
+#include "dqbb.h"
 #include "epyxfastload.h"
 #include "expert.h"
 #include "final.h"
@@ -412,6 +413,10 @@ BYTE REGPARM1 roml_read(WORD addr)
       case CARTRIDGE_MAGIC_FORMEL:
         return magicformel_roml_read(addr);
     }
+    if (dqbb_enabled)
+    {
+        return dqbb_roml_read(addr);
+    }
 
     if (export_ram)
         return export_ram0[addr & 0x1fff];
@@ -476,8 +481,11 @@ BYTE REGPARM1 romh_read(WORD addr)
     }
     if (isepic_enabled && isepic_switch)
     {
-        fprintf(stderr, "isepic returns from address %X : %X\n",addr,isepic_romh_read(addr));
         return isepic_romh_read(addr);
+    }
+    if (dqbb_enabled)
+    {
+        return dqbb_romh_read(addr);
     }
     return romh_banks[(addr & 0x1fff) + (romh_bank << 13)];
 }
@@ -494,6 +502,26 @@ void REGPARM2 romh_store(WORD addr, BYTE value)
         isepic_romh_store(addr, value);
         return;
     }
+}
+
+void REGPARM2 romh_no_ultimax_store(WORD addr, BYTE value)
+{
+    if (dqbb_enabled)
+    {
+        dqbb_romh_store(addr, value);
+        return;
+    }
+    mem_store_without_romlh(addr, value);
+}
+
+void REGPARM2 roml_no_ultimax_store(WORD addr, BYTE value)
+{
+    if (dqbb_enabled)
+    {
+        dqbb_roml_store(addr, value);
+        return;
+    }
+    mem_store_without_romlh(addr, value);
 }
 
 BYTE REGPARM1 ultimax_1000_7fff_read(WORD addr)

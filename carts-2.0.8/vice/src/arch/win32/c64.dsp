@@ -210,6 +210,10 @@ SOURCE=..\..\c64\digimax.c
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\c64\dqbb.c
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\c64\georam.c
 # End Source File
 # Begin Source File

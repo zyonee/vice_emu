@@ -36,6 +36,7 @@
 #include "c64io.h"
 #include "cartridge.h"
 #include "digimax.h"
+#include "dqbb.h"
 #include "emuid.h"
 #include "lib.h"
 #include "mmc64.h"
@@ -380,7 +381,9 @@ void REGPARM2 c64io1_store(WORD addr, BYTE value)
         midi_store((WORD)(addr & 0xff), value);
     }
 #endif
-
+    if (dqbb_enabled) {
+        dqbb_reg_store(addr, value);
+    }
     return;
 }
 
