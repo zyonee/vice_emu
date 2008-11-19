@@ -1127,12 +1127,15 @@ int ui_open_canvas_window(video_canvas_t *c, const char *title,
 /* Attach `w' as the left menu of all the current open windows.  */
 void ui_set_left_menu(ui_menu_entry_t *menu)
 {
+    int i;
+    
     static GtkAccelGroup *accel;
     if (accel)
 	g_object_unref(accel);
     
     accel = gtk_accel_group_new();
-    gtk_window_add_accel_group (GTK_WINDOW (app_shells[0].shell), accel);
+    for (i = 0; i < num_app_shells; i++)
+	gtk_window_add_accel_group (GTK_WINDOW (app_shells[i].shell), accel);
 
     if (left_menu != NULL)
         gtk_widget_destroy(left_menu);
@@ -1143,12 +1146,15 @@ void ui_set_left_menu(ui_menu_entry_t *menu)
 /* Attach `w' as the right menu of all the current open windows.  */
 void ui_set_right_menu(ui_menu_entry_t *menu)
 {
+    int i;
+    
     static GtkAccelGroup *accel;
     if (accel)
 	g_object_unref(accel);
     
     accel = gtk_accel_group_new();
-    gtk_window_add_accel_group (GTK_WINDOW (app_shells[0].shell), accel);
+    for (i = 0; i < num_app_shells; i++)
+	gtk_window_add_accel_group (GTK_WINDOW (app_shells[i].shell), accel);
 
     if (right_menu != NULL)
         gtk_widget_destroy(right_menu);
@@ -1648,6 +1654,7 @@ x11ui_fullscreen(int i)
          * window should be placed to the top-left corner. GTK/X sucks. */
         gtk_window_move(GTK_WINDOW(s), 0, 0);
 	gtk_window_fullscreen(GTK_WINDOW(s));
+	gtk_window_present(GTK_WINDOW(s));
     } else
 	gtk_window_unfullscreen(GTK_WINDOW(s));
 }
@@ -2397,6 +2404,8 @@ void ui_popup(GtkWidget *w, const char *title, gboolean wait_popdown)
 
     gtk_window_set_transient_for(GTK_WINDOW(w),GTK_WINDOW(_ui_top_level));
     gtk_widget_show(w);
+    gtk_window_present(GTK_WINDOW(w));
+
     gdk_window_set_decorations (w->window, GDK_DECOR_ALL | GDK_DECOR_MENU);
     gdk_window_set_functions (w->window, GDK_FUNC_ALL | GDK_FUNC_RESIZE);
     
