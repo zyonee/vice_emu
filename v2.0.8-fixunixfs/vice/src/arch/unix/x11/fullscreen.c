@@ -32,6 +32,7 @@
 
 #include "fullscreen.h"
 #include "fullscreenarch.h"
+#include "resources.h"
 #include "lib.h"
 #include "video.h"
 #include "videoarch.h"
@@ -168,6 +169,7 @@ static int fullscreen_enable(struct video_canvas_s *canvas, int enable)
             return -1;
 #endif
     fullscreen_is_enabled = canvas->fullscreenconfig->enable = enable;
+    resources_set_int("UseFullscreen",  enable);
     return 0;
 }
 
