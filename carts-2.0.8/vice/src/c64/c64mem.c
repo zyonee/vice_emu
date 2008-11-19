@@ -46,6 +46,7 @@
 #include "cart/c64cartmem.h"
 #include "cartridge.h"
 #include "clkguard.h"
+#include "dqbb.h"
 #include "machine.h"
 #include "maincpu.h"
 #include "mem.h"

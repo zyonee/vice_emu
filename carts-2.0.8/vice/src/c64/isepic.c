@@ -61,6 +61,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "cart/c64cartmem.h"
 #include "c64cart.h"
 #include "c64export.h"
 #include "c64io.h"

@@ -49,9 +49,11 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "cart/c64cartmem.h"
 #include "c64cart.h"
 #include "c64export.h"
 #include "c64io.h"
+#include "c64mem.h"
 #include "cartridge.h"
 #include "cmdline.h"
 #include "dqbb.h"
@@ -301,7 +303,7 @@ BYTE REGPARM1 dqbb_roml_read(WORD addr)
     return dqbb_ram[addr & 0x1fff];
 }
 
-BYTE REGPARM2 dqbb_roml_store(WORD addr, BYTE byte)
+void REGPARM2 dqbb_roml_store(WORD addr, BYTE byte)
 {
     if (dqbb_readwrite)
     {
@@ -315,7 +317,7 @@ BYTE REGPARM1 dqbb_romh_read(WORD addr)
     return dqbb_ram[(addr & 0x1fff) + 0x2000];
 }
 
-BYTE REGPARM2 dqbb_romh_store(WORD addr, BYTE byte)
+void REGPARM2 dqbb_romh_store(WORD addr, BYTE byte)
 {
     if (dqbb_readwrite)
     {
