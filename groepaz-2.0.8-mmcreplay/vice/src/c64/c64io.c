@@ -39,6 +39,7 @@
 #include "emuid.h"
 #include "lib.h"
 #include "mmc64.h"
+#include "cart/retroreplay.h"
 #include "cart/mmcreplay.h"
 #include "monitor.h"
 #include "reu.h"
@@ -271,6 +272,12 @@ BYTE REGPARM1 c64io1_read(WORD addr)
                 io_source_check(io_source_counter);
                 io_source_counter++;
             }
+        } else if (rr_active && tfe_as_rr_net) {
+            if (rr_clockport_enabled && addr>0xde01 && addr<0xde10) {
+                return_value = tfe_read((WORD)(addr & 0x0f));
+                io_source_check(io_source_counter);
+                io_source_counter++;
+            }
         } else if (mmcr_enabled && tfe_as_rr_net) {
             if (mmcr_clockport_enabled && addr>0xde01 && addr<0xde10) {
                 return_value = tfe_read((WORD)(addr & 0x0f));
@@ -355,6 +362,14 @@ void REGPARM2 c64io1_store(WORD addr, BYTE value)
         if (mmc64_enabled && tfe_as_rr_net) {
             if (mmc64_hw_clockport==0xde02 && mmc64_clockport_enabled && 
                 addr>0xde01 && addr<0xde10) {
+                tfe_store((WORD)(addr & 0x0f), value);
+            }
+        } else if (rr_active && tfe_as_rr_net) {
+            if (rr_clockport_enabled && addr>0xde01 && addr<0xde10) {
+                tfe_store((WORD)(addr & 0x0f), value);
+            }
+        } else if (mmcr_enabled && tfe_as_rr_net) {
+            if (mmcr_clockport_enabled && addr>0xde01 && addr<0xde10) {
                 tfe_store((WORD)(addr & 0x0f), value);
             }
         } else {

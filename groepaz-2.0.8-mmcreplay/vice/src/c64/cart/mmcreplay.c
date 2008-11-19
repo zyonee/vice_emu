@@ -24,6 +24,8 @@
  *
  */
 
+/* indent -gnu -bls -hnl -nut -sc -cli4 -npsl -i4 -bli0 -cbi0 -ci4 -di8 -l80 */
+
 #include "vice.h"
 
 #include <stdio.h>
@@ -32,26 +34,36 @@
 #include "maincpu.h"
 #include "c64cart.h"
 #include "c64cartmem.h"
+#include "c64mem.h"
 #include "c64export.h"
 #include "c64io.h"
 #include "mmcreplay.h"
+#include "par-flashrom.h"
+#include "ser-eeprom.h"
+#include "spi-sdcard.h"
 #include "reu.h"
 #ifdef HAVE_TFE
 #include "tfe.h"
 #endif
 #include "types.h"
 #include "util.h"
+#include "log.h"
+#include "machine.h"
 #include "vicii-phi1.h"
 
 #define DEBUG
 #define DEBUG_LOGBANKS          /* log access to banked rom/ram */
 #define DEBUG_IOBANKS           /* log access to banked rom/ram in io */
+
+/* #define LOG_CLOCKPORT */     /* log clockport i/o */
+
 //#define TEST_AR_MAPPER /* ok */
 //#define TEST_RR_MAPPER /* ok */
 //#define TEST_NORDIC_MAPPER
 //#define TEST_SUPER_8KCRT /* ok */
 //#define TEST_SUPER_16KCRT /* ok */
 
+//#define TEST_RESCUE_MODE
 
 #ifdef DEBUG
 #define LOG(_x_) log_debug _x_
@@ -64,6 +76,7 @@ static const c64export_resource_t export_res = {
 };
 
 int     mmcr_enabled = 1;       // FIXME
+int     enable_rescue_mode = 0;
 
 /*
 Features
@@ -449,7 +462,7 @@ void mmcreplay_dump_cfg (void)
 	    if(enable_ram_io) strcat(str,"RAM");
 	    else strcat(str,"ROM");
 */
-//          LOG(("MMCREPLAY: [%s] %s %s",str_mapper[mapper],str_config[config],str));   
+//LOG(("MMCREPLAY: [%s] %s %s",str_mapper[mapper],str_config[config],str));
         sprintf (ndumpstr, "MMCREPLAY: [%s] %s %s", str_mapper[mapper],
                  str_config[config], str);
         if (strcmp (dumpstr2, ndumpstr) != 0)
@@ -536,6 +549,7 @@ void mmcreplay_io2bank_set (unsigned int bank, unsigned int rambank)
   	1          0            8k game   roml ($8000)
   	1          1		16k game  roml ($8000),romh ($a000)
 */
+/* FIXME: phi1 vs phi2 is probably not quite correct */
 void mmcreplay_config_changed (BYTE mode_phi1,  /* game/exrom */
                                BYTE mode_phi2,  /* game/exrom */
                                unsigned int wflag, int release_freeze)
@@ -606,328 +620,344 @@ void mmcreplay_update_mapper_nolog (unsigned int wflag, int release_freeze)
     /*      df11:0  0 = mmcreplay bios mode */
     if (disable_mmc_bios == 0)
     {
-#ifdef DEBUG
-        if (last_mainmode != 111)
-        {
-            LOG (("main mode: mmc bios"));
-            last_mainmode = 111;
-        }
-#endif
-                /**************************************************************************************************
-			mmc bios mapper
-		***************************************************************************************************/
-
         /*
-         * "In MMC Replay Bios Mode, the ROM bank is normaly fixed to bank 7 when
-         * RAM is disabled. When enabling RAM, one can select betwen 2 different
-         * RAM modes usiing bit#5 of $DF11. Note that RAM enabled at $8000 is
-         * read only while RAM mapped at $E000 is both read and write enabled.
-         * GAME & EXROM bits have no effect, the serial EEPROM can be accessed."
+         * in rescue mode GAME and EXROM are tri-stated if bit0 of DF11 is 0
          */
-        cartbankl = ((7 << 3) | (bank_address_13_15)) & (0x3f); /* always last 64k bank in mmc bios mode */
-        cartbankh = cartbankl;
-
-
-
-        rambankl = ((7 << 3) | bank_address_13_15) & (0x3f);
-        rambankh = rambankl;
-        io1bank = ((7 << 3) | bank_address_13_15) & (0x3f);
-        io2bank = io1bank;
-        /* FIXME */
-        io1bank_ram = io1bank;
-        io2bank_ram = io2bank;
-
-        /* FIXME */
-        mapped_game = 1;
-        mapped_exrom = 1;
-
-        enable_raml = 0;
-        enable_ramh = 0;
-
-        /* df11:5 When in mmcreplay bios mode, bit 5 controls RAM banking
-         * 0 = $e000 - $ffff    (512K read/write window)
-         * 1 = $8000 - $9fff    (512K read only  window)
-         */
-        if (disable_rr_rom)     /* 1 = $8000 - $9fff (512K read only  window) */
+        if (enable_rescue_mode)
         {
-            /* 16k game mode,  16k game mode */
+            mapped_exrom = 0;
+            mapped_game = 0;
+            LOG (("main mode: rescue"));
+        }
+        else
+        {
+
+
+#ifdef DEBUG
+            if (last_mainmode != 111)
+            {
+                LOG (("main mode: mmc bios"));
+                last_mainmode = 111;
+            }
+#endif
+        /**************************************************************************************************
+         * mmc bios mapper
+         ***************************************************************************************************/
+
+            /*
+             * "In MMC Replay Bios Mode, the ROM bank is normaly fixed to bank 7 when
+             * RAM is disabled. When enabling RAM, one can select betwen 2 different
+             * RAM modes usiing bit#5 of $DF11. Note that RAM enabled at $8000 is
+             * read only while RAM mapped at $E000 is both read and write enabled.
+             * GAME & EXROM bits have no effect, the serial EEPROM can be accessed."
+             */
+            cartbankl = ((7 << 3) | (bank_address_13_15)) & (0x3f);     /* always last 64k bank in mmc bios mode */
+            cartbankh = cartbankl;
+
+
+
+            rambankl = ((7 << 3) | bank_address_13_15) & (0x3f);
+            rambankh = rambankl;
+            io1bank = ((7 << 3) | bank_address_13_15) & (0x3f);
+            io2bank = io1bank;
+            /* FIXME */
+            io1bank_ram = io1bank;
+            io2bank_ram = io2bank;
+
+            /* FIXME */
             mapped_game = 1;
             mapped_exrom = 1;
 
-            if (enable_ram_io1)
+            enable_raml = 0;
+            enable_ramh = 0;
+
+            /* df11:5 When in mmcreplay bios mode, bit 5 controls RAM banking
+             * 0 = $e000 - $ffff    (512K read/write window)
+             * 1 = $8000 - $9fff    (512K read only  window)
+             */
+            if (disable_rr_rom) /* 1 = $8000 - $9fff (512K read only  window) */
             {
+                /* 16k game mode,  16k game mode */
+                mapped_game = 1;
+                mapped_exrom = 1;
+
+                if (enable_ram_io1)
+                {
 #ifdef DEBUG
-                if (last_biosmode != 111)
-                {
-                    LOG (("bios mode: 111"));
-                    last_biosmode = 111;
-                }
+                    if (last_biosmode != 111)
+                    {
+                        LOG (("bios mode: 111"));
+                        last_biosmode = 111;
+                    }
 #endif
-                /*   
-                 * disable_rr_rom=1 (opt.banking)
-                 * enable_ram_io1=1  (use io1+2)
-                 * 
-                 * extended_mode=0   (1= toggle IO2 in cfg $22)
-                 * allow_bank (active for ram in IO)
-                 * 
-                 * enable_ram_io=0
-                 * 00 0Xro0Xro 0Xro---- kern
-                 * 00 0Xro0Xro 0Xro---- kern
-                 * 00 0Xro0Xro 0Xro---- kern
-                 * 00 0Xro0Xro 0Xro---- kern
-                 * 
-                 * $8000 - $9fff      bios rom
-                 * $a000 - $bfff      bios rom (mirror)
-                 * 
-                 * enable_ram_io=1
-                 * 20 0Xra0Xro 00ra00ra kern
-                 * 21 0Xra0Xro 00ra00ra kern
-                 * 22 0Xra0Xro 00ra00ra kern
-                 * 23 0Xra0Xro 00ra00ra kern
-                 * 
-                 * $8000 - $9fff        512K read only  ram window
-                 * $a000 - $bfff      bios rom (mirror)
-                 */
-                if (enable_ram_io)
-                {
-                    enable_raml = 1;
-                    enable_io1 = 1;
-                    enable_io2 = 1;
-                    if (allow_bank)
+                    /*
+                     * disable_rr_rom=1 (opt.banking)
+                     * enable_ram_io1=1  (use io1+2)
+                     *
+                     * extended_mode=0   (1= toggle IO2 in cfg $22)
+                     * allow_bank (active for ram in IO)
+                     *
+                     * enable_ram_io=0
+                     * 00 0Xro0Xro 0Xro---- kern
+                     * 00 0Xro0Xro 0Xro---- kern
+                     * 00 0Xro0Xro 0Xro---- kern
+                     * 00 0Xro0Xro 0Xro---- kern
+                     *
+                     * $8000 - $9fff      bios rom
+                     * $a000 - $bfff      bios rom (mirror)
+                     *
+                     * enable_ram_io=1
+                     * 20 0Xra0Xro 00ra00ra kern
+                     * 21 0Xra0Xro 00ra00ra kern
+                     * 22 0Xra0Xro 00ra00ra kern
+                     * 23 0Xra0Xro 00ra00ra kern
+                     *
+                     * $8000 - $9fff      512K read only  ram window
+                     * $a000 - $bfff      bios rom (mirror)
+                     */
+                    if (enable_ram_io)
                     {
-                        io1bank_ram = (7 << 3) | io1bank_ram;
-                        io2bank_ram = (7 << 3) | io2bank_ram;
-                    }
-                    else
-                    {
-                        io1bank_ram = (0 << 3) | 0;
-                        io2bank_ram = (0 << 3) | 0;
-                    }
-                }
-                else
-                {
-//                                      enable_raml=0;
-                    enable_io1 = 1;
-                    enable_io2 = 0;
-                }
-            }
-            else
-            {
-#ifdef DEBUG
-                if (last_biosmode != 222)
-                {
-                    LOG (("bios mode: 222"));
-                    last_biosmode = 222;
-                }
-#endif
-                /*
-                 * disable_rr_rom=1 (opt.banking)
-                 * enable_ram_io1=0  (use io2 only)
-                 * 
-                 * extended_mode=0   (1= toggle IO2 in cfg $22)
-                 * allow_bank (active for ram in IO)
-                 * 
-                 * enable_ram_io=0
-                 * 00 0Xro0Xro----0Xrokern
-                 * 00 0Xro0Xro----0Xr0kern
-                 * 00 0Xro0Xro----0Xrokern
-                 * 00 0Xro0Xro----0Xrokern
-                 * 
-                 * $8000 - $9fff      bios rom
-                 * $a000 - $bfff      bios rom (mirror)
-                 * 
-                 * enable_ram_io=1
-                 * 20 0Xra0Xro----00rakern
-                 * 21 0Xra0Xro----00rakern
-                 * 22 0Xra0Xro----00rakern (*)
-                 * 23 0Xra0Xro----00rakern
-                 * 
-                 * $8000 - $9fff        (512K read only  ram window)
-                 * $a000 - $bfff      bios rom (mirror)
-                 */
-                if (enable_ram_io)
-                {
-                    enable_raml = 1;
-                    enable_io1 = 0;
-                    enable_io2 = 1;
-                    if (allow_bank)
-                    {
-                        io1bank_ram = (7 << 3) | io1bank_ram;
-                        io2bank_ram = (7 << 3) | io2bank_ram;
-                    }
-                    else
-                    {
-                        io1bank_ram = (0 << 3) | 0;
-                        io2bank_ram = (0 << 3) | 0;
-                    }
-                    if (enable_extended_mode)
-                    {
-                        if (((enable_game) | (enable_exrom << 1)) == 2)
+                        enable_raml = 1;
+                        enable_io1 = 1;
+                        enable_io2 = 1;
+                        if (allow_bank)
                         {
-                            /* ??? ROM in io? */
-//                                                      enable_io2=0;
-                            enable_io1_ram = 0;
-                            enable_io2_ram = 0;
+                            io1bank_ram = (7 << 3) | io1bank_ram;
+                            io2bank_ram = (7 << 3) | io2bank_ram;
+                        }
+                        else
+                        {
+                            io1bank_ram = (0 << 3) | 0;
+                            io2bank_ram = (0 << 3) | 0;
                         }
                     }
+                    else
+                    {
+//                                      enable_raml=0;
+                        enable_io1 = 1;
+                        enable_io2 = 0;
+                    }
                 }
                 else
                 {
-//                                      enable_raml=0;
-                    enable_io1 = 0;
-                    enable_io2 = 1;
-                }
-            }
-        }
-        else                    /* disable_rr_rom=0   $e000 - $ffff    (512K read/write window) */
-        {
-            /* 16k game mode,  ultimax */
-            /* ultimax, ram at $e000, rom at $8000, rom at $a000 */
-            mapped_game = 1;
-            mapped_exrom = 1;
-
-            if (enable_ram_io1)
-            {
 #ifdef DEBUG
-                if (last_biosmode != 333)
-                {
-                    LOG (("bios mode: 333"));
-                    last_biosmode = 333;
-                }
-#endif
-                /*   
-                 * disable_rr_rom=0 (opt.banking)
-                 * enable_ram_io1=1  (use io1+2)
-                 * 
-                 * extended_mode=0   (not active ?)
-                 * allow_bank (active for ram in both IO)
-                 * 
-                 * enable_ram_io=0
-                 * 00 0Xro0Xro 0Xr0---- kern
-                 * 00 0Xro0Xro 0Xr0---- kern
-                 * 00 0Xro0Xro 0Xr0---- kern
-                 * 00 0Xro0Xro 0Xr0---- kern
-                 * 
-                 * $8000 - $9fff      bios rom
-                 * $a000 - $bfff      bios rom (mirror)
-                 * 
-                 * enable_ram_io=1
-                 * 20 0Xro0Xro 0Zra0Zra 0Xra
-                 * 21 0Xro0Xro 0Zra0Zra 0Xra
-                 * 22 0Xro0Xro 0Zra0Zra 0Xra
-                 * 23 0Xro0Xro 0Zra0Zra 0Xra
-                 * 
-                 * $8000 - $9fff      bios rom
-                 * $a000 - $bfff      bios rom (mirror)
-                 * $e000 - $ffff           512K read/write ram window
-                 */
-                if (enable_ram_io)      /* ultimax */
-                {
-                    /* ultimax, ram at $e000, rom at $8000, rom at $a000 */
-                    enable_ramh = 1;
-                    enable_io1 = 1;
-                    enable_io2 = 1;
-                    mapped_game = 1;
-                    mapped_exrom = 0;   /* ultimax */
-                    if (allow_bank)
+                    if (last_biosmode != 222)
                     {
-                        io1bank_ram = (7 << 3) | io1bank_ram;
-                        io2bank_ram = (7 << 3) | io2bank_ram;
+                        LOG (("bios mode: 222"));
+                        last_biosmode = 222;
+                    }
+#endif
+                    /*
+                     * disable_rr_rom=1 (opt.banking)
+                     * enable_ram_io1=0  (use io2 only)
+                     * 
+                     * extended_mode=0   (1= toggle IO2 in cfg $22)
+                     * allow_bank (active for ram in IO)
+                     * 
+                     * enable_ram_io=0
+                     * 00 0Xro0Xro----0Xrokern
+                     * 00 0Xro0Xro----0Xr0kern
+                     * 00 0Xro0Xro----0Xrokern
+                     * 00 0Xro0Xro----0Xrokern
+                     * 
+                     * $8000 - $9fff      bios rom
+                     * $a000 - $bfff      bios rom (mirror)
+                     * 
+                     * enable_ram_io=1
+                     * 20 0Xra0Xro----00rakern
+                     * 21 0Xra0Xro----00rakern
+                     * 22 0Xra0Xro----00rakern (*)
+                     * 23 0Xra0Xro----00rakern
+                     * 
+                     * $8000 - $9fff        (512K read only  ram window)
+                     * $a000 - $bfff      bios rom (mirror)
+                     */
+                    if (enable_ram_io)
+                    {
+                        enable_raml = 1;
+                        enable_io1 = 0;
+                        enable_io2 = 1;
+                        if (allow_bank)
+                        {
+                            io1bank_ram = (7 << 3) | io1bank_ram;
+                            io2bank_ram = (7 << 3) | io2bank_ram;
+                        }
+                        else
+                        {
+                            io1bank_ram = (0 << 3) | 0;
+                            io2bank_ram = (0 << 3) | 0;
+                        }
+                        if (enable_extended_mode)
+                        {
+                            if (((enable_game) | (enable_exrom << 1)) == 2)
+                            {
+                                /* ??? ROM in io? */
+//                                                      enable_io2=0;
+                                enable_io1_ram = 0;
+                                enable_io2_ram = 0;
+                            }
+                        }
                     }
                     else
                     {
-                        io1bank_ram = (0 << 3) | 0;
-                        io2bank_ram = (0 << 3) | 0;
+//                                      enable_raml=0;
+                        enable_io1 = 0;
+                        enable_io2 = 1;
                     }
                 }
-                else            /* 16k game */
-                {
-                    enable_io1 = 1;
-                    enable_io2 = 0;
-                    mapped_game = 1;
-                    mapped_exrom = 1;   /* 16k game */
-                }
+
+
+
             }
-            else
+            else                /* disable_rr_rom=0   $e000 - $ffff    (512K read/write window) */
             {
+                /* 16k game mode,  ultimax */
+                /* ultimax, ram at $e000, rom at $8000, rom at $a000 */
+                mapped_game = 1;
+                mapped_exrom = 1;
+
+                if (enable_ram_io1)
+                {
 #ifdef DEBUG
-                if (last_biosmode != 444)
-                {
-                    LOG (("bios mode: 444"));
-                    last_biosmode = 444;
-                }
+                    if (last_biosmode != 333)
+                    {
+                        LOG (("bios mode: 333"));
+                        last_biosmode = 333;
+                    }
 #endif
-                /*
-                 * disable_rr_rom=0 (opt.banking)
-                 * enable_ram_io1=0  (use io2 only)
-                 * 
-                 * extended_mode=0   (1= toggle IO2 in cfg $22)
-                 * allow_bank (active for ram in IO)
-                 * 
-                 * enable_ram_io=0
-                 * 00 0Wro0Wro ----0Wr0 kern
-                 * 01 0Wro0Wro ----0Wr0 kern
-                 * 02 0Wro0Wro ----0Wr0 kern
-                 * 03 0Wro0Wro ----0Wr0 kern
-                 * 
-                 * enable_ram_io=1
-                 * 20 0Wro0Wro ----0Zra 0Zra
-                 * 21 0Wro0Wro ----0Zra 0Zra
-                 * 22 0Wro0Wro ----0Yra 0Zra (*)
-                 * 23 0Wro0Wro ----0Zra 0Zra
-                 * 
-                 * $8000 - $9fff      bios rom
-                 * $a000 - $bfff      bios rom (mirror)
-                 * $e000 - $ffff           512K read/write ram window
-                 * 
-                 * X=normal bank
-                 * 
-                 * Y changes to ? if extended mode
-                 * else ==Z
-                 * W changes to 2 if extended mode and high bank=7              
-                 * full banking if extended mode and high bank!=7
-                 * else ==X
-                 * 
-                 * Z bank 00 if allow_bank=0
-                 * full banking in extended mode
-                 * high bank=7 if not extended mode
-                 */
-                if (enable_ram_io)      /* ultimax */
+                    /*
+                     * disable_rr_rom=0 (opt.banking)
+                     * enable_ram_io1=1  (use io1+2)
+                     *
+                     * extended_mode=0   (not active ?)
+                     * allow_bank (active for ram in both IO)
+                     *
+                     * enable_ram_io=0
+                     * 00 0Xro0Xro 0Xr0---- kern
+                     * 00 0Xro0Xro 0Xr0---- kern
+                     * 00 0Xro0Xro 0Xr0---- kern
+                     * 00 0Xro0Xro 0Xr0---- kern
+                     *
+                     * $8000 - $9fff      bios rom
+                     * $a000 - $bfff      bios rom (mirror)
+                     *
+                     * enable_ram_io=1
+                     * 20 0Xro0Xro 0Zra0Zra 0Xra
+                     * 21 0Xro0Xro 0Zra0Zra 0Xra
+                     * 22 0Xro0Xro 0Zra0Zra 0Xra
+                     * 23 0Xro0Xro 0Zra0Zra 0Xra
+                     *
+                     * $8000 - $9fff      bios rom
+                     * $a000 - $bfff      bios rom (mirror)
+                     * $e000 - $ffff           512K read/write ram window
+                     */
+                    if (enable_ram_io)  /* ultimax */
+                    {
+                        /* ultimax, ram at $e000, rom at $8000, rom at $a000 */
+                        enable_ramh = 1;
+                        enable_io1 = 1;
+                        enable_io2 = 1;
+                        mapped_game = 1;
+                        mapped_exrom = 0;       /* ultimax */
+                        if (allow_bank)
+                        {
+                            io1bank_ram = (7 << 3) | io1bank_ram;
+                            io2bank_ram = (7 << 3) | io2bank_ram;
+                        }
+                        else
+                        {
+                            io1bank_ram = (0 << 3) | 0;
+                            io2bank_ram = (0 << 3) | 0;
+                        }
+                    }
+                    else        /* 16k game */
+                    {
+                        enable_io1 = 1;
+                        enable_io2 = 0;
+                        mapped_game = 1;
+                        mapped_exrom = 1;       /* 16k game */
+                    }
+                }
+                else
                 {
+#ifdef DEBUG
+                    if (last_biosmode != 444)
+                    {
+                        LOG (("bios mode: 444"));
+                        last_biosmode = 444;
+                    }
+#endif
+                    /*
+                     * disable_rr_rom=0 (opt.banking)
+                     * enable_ram_io1=0  (use io2 only)
+                     * 
+                     * extended_mode=0   (1= toggle IO2 in cfg $22)
+                     * allow_bank (active for ram in IO)
+                     * 
+                     * enable_ram_io=0
+                     * 00 0Wro0Wro ----0Wr0 kern
+                     * 01 0Wro0Wro ----0Wr0 kern
+                     * 02 0Wro0Wro ----0Wr0 kern
+                     * 03 0Wro0Wro ----0Wr0 kern
+                     * 
+                     * enable_ram_io=1
+                     * 20 0Wro0Wro ----0Zra 0Zra
+                     * 21 0Wro0Wro ----0Zra 0Zra
+                     * 22 0Wro0Wro ----0Yra 0Zra (*)
+                     * 23 0Wro0Wro ----0Zra 0Zra
+                     * 
+                     * $8000 - $9fff      bios rom
+                     * $a000 - $bfff      bios rom (mirror)
+                     * $e000 - $ffff           512K read/write ram window
+                     * 
+                     * X=normal bank
+                     * 
+                     * Y changes to ? if extended mode
+                     * else ==Z
+                     * W changes to 2 if extended mode and high bank=7              
+                     * full banking if extended mode and high bank!=7
+                     * else ==X
+                     * 
+                     * Z bank 00 if allow_bank=0
+                     * full banking in extended mode
+                     * high bank=7 if not extended mode
+                     */
+                    if (enable_ram_io)  /* ultimax */
+                    {
 //LOG(("aaa"));                         
 #ifdef DEBUG
-                    if (last_biosmode444 != 111)
-                    {
-                        LOG (("bios mode 444: ram enabled"));
-                        last_biosmode444 = 111;
-                    }
+                        if (last_biosmode444 != 111)
+                        {
+                            LOG (("bios mode 444: ram enabled"));
+                            last_biosmode444 = 111;
+                        }
 #endif
-                    /* ultimax, ram at $e000, rom at $8000, rom at $a000 */
-                    enable_ramh = 1;
-                    enable_io1 = 0;
-                    enable_io2 = 1;
-                    mapped_game = 1;
-                    mapped_exrom = 0;   /* ultimax */
+                        /* ultimax, ram at $e000, rom at $8000, rom at $a000 */
+                        enable_ramh = 1;
+                        enable_io1 = 0;
+                        enable_io2 = 1;
+                        mapped_game = 1;
+                        mapped_exrom = 0;       /* ultimax */
 
 //                                      mapped_game=1;mapped_exrom=1; /* 16k game */
 //                                      mapped_game=0;mapped_exrom=1; /* 16k game */
 //                                      mapped_game=0;mapped_exrom=0; /* 16k game */
 
 //                                      if(enable_extended_mode)
-                    {
-                        /* full rom banking */
-                        cartbankl =
-                            ((bank_address_16_18 << 3) | bank_address_13_15) &
-                            (0x3f);
-                        cartbankh = cartbankl;
-                        rambankl =
-                            ((bank_address_16_18 << 3) | bank_address_13_15) &
-                            (0x3f);
-                        rambankh = rambankl;
-                        io1bank =
-                            ((bank_address_16_18 << 3) | bank_address_13_15) &
-                            (0x3f);
-                        io2bank = io1bank;
+                        {
+                            /* full rom banking */
+                            cartbankl =
+                                ((bank_address_16_18 << 3) | bank_address_13_15)
+                                & (0x3f);
+                            cartbankh = cartbankl;
+                            rambankl =
+                                ((bank_address_16_18 << 3) | bank_address_13_15)
+                                & (0x3f);
+                            rambankh = rambankl;
+                            io1bank =
+                                ((bank_address_16_18 << 3) | bank_address_13_15)
+                                & (0x3f);
+                            io2bank = io1bank;
 
 
 //                                              cartbankl=(7<<3)|0;
@@ -935,60 +965,62 @@ void mmcreplay_update_mapper_nolog (unsigned int wflag, int release_freeze)
 //                                              cartbankl=(7<<3)|bank_address_13_15;
 //                                              cartbankh=(7<<3)|bank_address_13_15;
 #if 0
-                        if (bank_address_16_18 == 4)
-                        {
-                            cartbankl = (7 << 3) | bank_address_13_15;
-                            cartbankh = (7 << 3) | bank_address_13_15;
-                        }
+                            if (bank_address_16_18 == 4)
+                            {
+                                cartbankl = (7 << 3) | bank_address_13_15;
+                                cartbankh = (7 << 3) | bank_address_13_15;
+                            }
 #endif
 #if 1
 //                                              if(bank_address_16_18==7)
-                        {
-                            switch (bank_address_13_15)
                             {
-                                case 6:
-                                case 7:
-                                    cartbankl = (7 << 3) | 0;
-                                    cartbankh = (7 << 3) | 0;
+                                switch (bank_address_13_15)
+                                {
+                                    case 6:
+                                    case 7:
+                                        cartbankl = (7 << 3) | 0;
+                                        cartbankh = (7 << 3) | 0;
 //LOG(("this"));                                                                        
-                                    break;
-                                default:
-                                    cartbankl = (7 << 3) | bank_address_13_15;
-                                    cartbankh = (7 << 3) | bank_address_13_15;
-                                    break;
+                                        break;
+                                    default:
+                                        cartbankl =
+                                            (7 << 3) | bank_address_13_15;
+                                        cartbankh =
+                                            (7 << 3) | bank_address_13_15;
+                                        break;
+                                }
                             }
-                        }
 #endif
 
-                        if (allow_bank)
-                        {
-                            /* full ram banking in extended mode */
-                            io1bank_ram =
-                                ((bank_address_16_18 << 3) | bank_address_13_15)
-                                & (0x3f);
-                            io2bank_ram = io1bank;
+                            if (allow_bank)
+                            {
+                                /* full ram banking in extended mode */
+                                io1bank_ram =
+                                    ((bank_address_16_18 << 3) |
+                                     bank_address_13_15) & (0x3f);
+                                io2bank_ram = io1bank;
+                            }
+                            else
+                            {
+                                io1bank_ram = (0 << 3) | 0;
+                                io2bank_ram = (0 << 3) | 0;
+                            }
+
                         }
-                        else
-                        {
-                            io1bank_ram = (0 << 3) | 0;
-                            io2bank_ram = (0 << 3) | 0;
-                        }
-
-                    }
 
 
-                    romA000_bank = cartbankl;
+                        romA000_bank = cartbankl;
 //                                              rambankl=cartbankl;
-                    ramA000_bank = cartbankl;
-                    rambankh = rambankl;
+                        ramA000_bank = cartbankl;
+                        rambankh = rambankl;
 #if 0
 /* FIXME: hack to make bios (filebrowser) work */
 
-                    if (cartbankl == ((7 << 3) | 1))
-                    {
-                        cartbankl = (7 << 3) | 0;
-                        LOG (("this"));
-                    }
+                        if (cartbankl == ((7 << 3) | 1))
+                        {
+                            cartbankl = (7 << 3) | 0;
+                            LOG (("this"));
+                        }
 #endif
 /*					
 					
@@ -1008,84 +1040,88 @@ void mmcreplay_update_mapper_nolog (unsigned int wflag, int release_freeze)
 					}
 */
 
-                    if (enable_extended_mode)
-                    {
-                        if (((enable_game) | (enable_exrom << 1)) == 2)
+                        if (enable_extended_mode)
                         {
-                            /* ??? ROM in io? */
+                            if (((enable_game) | (enable_exrom << 1)) == 2)
+                            {
+                                /* ??? ROM in io? */
 //                                                      enable_io2=0;
-                            //enable_io1_ram=0;
-                            //enable_io2_ram=0;
+                                //enable_io1_ram=0;
+                                //enable_io2_ram=0;
+                            }
                         }
                     }
-                }
-                else            /* 16k game */
-                {
+                    else        /* 16k game */
+                    {
 //LOG(("bbb"));                         
 #ifdef DEBUG
-                    if (last_biosmode444 != 222)
-                    {
-                        LOG (("bios mode 444: ram disabled"));
-                        last_biosmode444 = 222;
-                    }
+                        if (last_biosmode444 != 222)
+                        {
+                            LOG (("bios mode 444: ram disabled"));
+                            last_biosmode444 = 222;
+                        }
 #endif
-                    enable_io1 = 0;
-                    enable_io2 = 1;
-                    mapped_game = 1;
-                    mapped_exrom = 1;   /* 16k game */
+                        enable_io1 = 0;
+                        enable_io2 = 1;
+                        mapped_game = 1;
+                        mapped_exrom = 1;       /* 16k game */
 
 //                                      bank_address_13_15=0;
-                    cartbankl = ((7 << 3) | bank_address_13_15) & (0x3f);
-                    cartbankh = cartbankl;
-                    rambankl = ((7 << 3) | bank_address_13_15) & (0x3f);
-                    rambankh = rambankl;
-                    io1bank = ((7 << 3) | bank_address_13_15) & (0x3f);
-                    io2bank = io1bank;
-
-                    romA000_bank = cartbankl;
-
-
-                    if (enable_extended_mode)
-                    {
-#if 0
-                        /* full rom banking */
-                        cartbankl =
-                            ((bank_address_16_18 << 3) | bank_address_13_15) &
-                            (0x3f);
+                        cartbankl = ((7 << 3) | bank_address_13_15) & (0x3f);
                         cartbankh = cartbankl;
-                        rambankl =
-                            ((bank_address_16_18 << 3) | bank_address_13_15) &
-                            (0x3f);
+                        rambankl = ((7 << 3) | bank_address_13_15) & (0x3f);
                         rambankh = rambankl;
-                        io1bank =
-                            ((bank_address_16_18 << 3) | bank_address_13_15) &
-                            (0x3f);
+                        io1bank = ((7 << 3) | bank_address_13_15) & (0x3f);
                         io2bank = io1bank;
 
                         romA000_bank = cartbankl;
+
+
+                        if (enable_extended_mode)
+                        {
+#if 0
+                            /* full rom banking */
+                            cartbankl =
+                                ((bank_address_16_18 << 3) | bank_address_13_15)
+                                & (0x3f);
+                            cartbankh = cartbankl;
+                            rambankl =
+                                ((bank_address_16_18 << 3) | bank_address_13_15)
+                                & (0x3f);
+                            rambankh = rambankl;
+                            io1bank =
+                                ((bank_address_16_18 << 3) | bank_address_13_15)
+                                & (0x3f);
+                            io2bank = io1bank;
+
+                            romA000_bank = cartbankl;
 #endif
 
 #if 0
 //                                              if(bank_address_16_18==7)
-                        {
-                            switch (bank_address_13_15)
                             {
-                                case 6:
-                                case 7:
+                                switch (bank_address_13_15)
+                                {
+                                    case 6:
+                                    case 7:
 /* FIXME: is it really bank 0 ? else bios wont start */
-                                    cartbankl = (7 << 3) | 0;
-                                    cartbankh = (7 << 3) | 0;
-                                    io1bank = (7 << 3) | 0;
-                                    io2bank = (7 << 3) | 0;
+                                        cartbankl = (7 << 3) | 0;
+                                        cartbankh = (7 << 3) | 0;
+                                        io1bank = (7 << 3) | 0;
+                                        io2bank = (7 << 3) | 0;
 //LOG(("that"));                                                                        
-                                    break;
-                                default:
-                                    cartbankl = (7 << 3) | bank_address_13_15;
-                                    cartbankh = (7 << 3) | bank_address_13_15;
-                                    break;
+                                        break;
+                                    default:
+                                        cartbankl =
+                                            (7 << 3) | bank_address_13_15;
+                                        cartbankh =
+                                            (7 << 3) | bank_address_13_15;
+                                        break;
+                                }
                             }
-                        }
 #endif
+                        }
+
                     }
 
                 }
@@ -1104,9 +1140,9 @@ void mmcreplay_update_mapper_nolog (unsigned int wflag, int release_freeze)
             last_mainmode = 222;
         }
 #endif
-                /*************************************************************************************************
-			super mapper
-		**************************************************************************************************/
+        /*************************************************************************************************
+         * super mapper
+         *************************************************************************************************/
         cartbankl = ((bank_address_16_18 << 3) | bank_address_13_15) & (0x3e);
         cartbankh = cartbankl + 1;
         rambankl = ((bank_address_16_18 << 3) | bank_address_13_15) & (0x3e);
@@ -1468,7 +1504,9 @@ BYTE REGPARM1 mmcreplay_io1_read (WORD addr)
                 {
                     if (tfe_enabled && tfe_as_rr_net && (addr & 0xff) < 0x10)
                     {
-                        LOG (("MMCREPLAY: ETH RD %04x", addr));
+#ifdef LOG_CLOCKPORT
+                        LOG (("MMCREPLAY: Clockport RD %04x", addr));
+#endif
                         io_source = 0;
                         return 0;
                     }
@@ -1481,11 +1519,11 @@ BYTE REGPARM1 mmcreplay_io1_read (WORD addr)
             io_source = IO_SOURCE_MMCREPLAY;
             if (enable_ram_io)
             {
-//                  LOG(("read RAM IO1 %04x %02x (%02x:%04x)", addr,export_ram0[(addr & 0x1fff) + (io1_ram_bank << 13)],io1_ram_bank,(addr & 0x1fff)));
+//LOG(("read RAM IO1 %04x %02x (%02x:%04x)", addr,export_ram0[(addr & 0x1fff) + (io1_ram_bank << 13)],io1_ram_bank,(addr & 0x1fff)));
                 return export_ram0[(io1_ram_bank << 13) + 0x1e00 +
                                    (addr & 0xff)];
             }
-//              LOG(("read ROM IO1 %04x %02x (%02x:%04x)", addr,roml_banks[(addr & 0x1fff) + (io1_bank << 13)],io1_bank,(addr & 0x1fff)));
+//LOG(("read ROM IO1 %04x %02x (%02x:%04x)", addr,roml_banks[(addr & 0x1fff) + (io1_bank << 13)],io1_bank,(addr & 0x1fff)));
             return roml_banks[(addr & 0x1fff) + (io1_bank << 13)];
         }
         else
@@ -1504,11 +1542,11 @@ BYTE REGPARM1 mmcreplay_io1_read (WORD addr)
             io_source = IO_SOURCE_MMCREPLAY;
             if (enable_ram_io)
             {
-//                  LOG(("read RAM IO1 %04x %02x (%02x:%04x)", addr,export_ram0[(addr & 0x1fff) + (io1_ram_bank << 13)],io1_ram_bank,(addr & 0x1fff)));
+//LOG(("read RAM IO1 %04x %02x (%02x:%04x)", addr,export_ram0[(addr & 0x1fff) + (io1_ram_bank << 13)],io1_ram_bank,(addr & 0x1fff)));
                 return export_ram0[(io1_ram_bank << 13) + 0x1e00 +
                                    (addr & 0xff)];
             }
-//              LOG(("read ROM IO1 %04x %02x (%02x:%04x)", addr,roml_banks[(addr & 0x1fff) + (io1_bank << 13)],io1_bank,(addr & 0x1fff)));
+//LOG(("read ROM IO1 %04x %02x (%02x:%04x)", addr,roml_banks[(addr & 0x1fff) + (io1_bank << 13)],io1_bank,(addr & 0x1fff)));
             return roml_banks[(addr & 0x1fff) + (io1_bank << 13)];
         }
         else
@@ -1531,21 +1569,22 @@ BYTE REGPARM1 mmcreplay_io1_read (WORD addr)
 $DE01:	extended RR control register write
 		--------------------------------------
 		bit 0:	0 = disable clockport, 1 = enable clockport (W)
-		bit 1:	0 = disable io ram banking, 1 = enable io ram banking (W)
-		bit 2:	0 = enable freeze, 1 = disable freeze (W)
+(*2)		bit 1:	0 = disable io ram banking, 1 = enable io ram banking (W)
+(*2)		bit 2:	0 = enable freeze, 1 = disable freeze (W)
 		bit 3:	bank address 13 (mirror of $DE00) (W)
 		bit 4:	bank address 14 (mirror of $DE00) (W)
-		bit 5:	0 = enable MMC registers, 1 = disable MMC registers (W)(*)
-		bit 6:	0 = ram/rom @ DFxx, 1 = ram/rom @ $DExx (W)
+(*2)		bit 5:	0 = enable MMC registers, 1 = disable MMC registers (W)(*1)
+(*2)		bit 6:	0 = ram/rom @ DFxx, 1 = ram/rom @ $DExx (W)
 		bit 7:	bank address 15 (mirror of $DE00) (W)
 
-(*) Can only be written when bit 6 of $DF12 is 1. Register becomes effective
+(*1) Can only be written when bit 6 of $DF12 is 1. Register becomes effective
 		when bit 0 of $DF11 is 1.
+(*2) these bits are write-once if bit 0 of $DF11 is 1
 */
 
 void REGPARM2 mmcreplay_io1_store (WORD addr, BYTE value)
 {
-    LOG (("MMCREPLAY: IO1 ST %04x %02x", addr, value));
+//LOG (("MMCREPLAY: IO1 ST %04x %02x", addr, value));
     if (rr_active)
     {
         switch (addr & 0xff)
@@ -1576,18 +1615,17 @@ void REGPARM2 mmcreplay_io1_store (WORD addr, BYTE value)
                 LOG (("MMCREPLAY: IO1 ST %04x enable_ram_io %02x", addr,
                       enable_ram_io));
 
-//          mmcreplay_update_mapper();
-//          mmcreplay_config_changed((enable_exrom<<1)|enable_game, (enable_exrom<<1)|enable_game, CMODE_WRITE);
                 mmcreplay_update_mapper (CMODE_WRITE, enable_freeze_exit);
                 return;
                 break;
             case 1:            /* OK $DE01:   extended RR control register write */
                 /* Every bit in $de01 can always be altered in Super Mapper mode+MMC Bios Mode. */
-                if ((write_once == 0) || (enable_16k_mapping == 1)
-                    || (disable_mmc_bios == 0))
+                bank_address_13_15 = (((value >> 3) & 3) | ((value >> 5) & 4)); /* bit 3,4,7 */
+                mmcr_clockport_enabled = value & 1;     /* bit 0 */
+
+                /* bits 1,2,5,6 are "write once" if not in mmc bios mode */
+                if ((write_once == 0) || (disable_mmc_bios == 0))
                 {
-                    bank_address_13_15 = (((value >> 3) & 3) | ((value >> 5) & 4));     /* bit 3,4,7 */
-                    mmcr_clockport_enabled = value & 1; /* bit 0 */
                     allow_bank = (value >> 1) & 1;      /* bit 1 */
                     no_freeze = (value >> 2) & 1;       /* bit 2 */
                     enable_ram_io1 = (value >> 6) & 1;  /* bit 6 */
@@ -1595,18 +1633,15 @@ void REGPARM2 mmcreplay_io1_store (WORD addr, BYTE value)
                         || (enable_16k_mapping == 1))
                     {
                         /*bit 5:        0 = enable MMC registers, 1 = disable MMC registers (W) */
-//                      enable_mmc_regs = ((value>>5)&1)^1; /* bit 5 */
                         enable_mmc_regs_pending = ((value >> 5) & 1) ^ 1;       /* bit 5 */
                     }
-//    mmcreplay_update_mapper();
-//            mmcreplay_config_changed((enable_exrom<<1)|enable_game, (enable_exrom<<1)|enable_game, CMODE_WRITE);
-                    LOG (("MMCREPLAY: MAGIC IO1 ST %04x %02x", addr, value));
-                    mmcreplay_update_mapper (CMODE_WRITE, 0);
-                    if (!((enable_16k_mapping == 1) || (disable_mmc_bios == 0)))
+                    if (disable_mmc_bios != 0)
                     {
                         write_once = 1;
                     }
                 }
+                LOG (("MMCREPLAY: IO1 ST %04x %02x", addr, value));
+                mmcreplay_update_mapper (CMODE_WRITE, 0);
                 return;
                 break;
                 /* not for us */
@@ -1619,42 +1654,15 @@ void REGPARM2 mmcreplay_io1_store (WORD addr, BYTE value)
                 {
                     if (tfe_enabled && tfe_as_rr_net && (addr & 0xff) < 0x10)
                     {
-                        LOG (("MMCREPLAY: ETH ST %04x %02x", addr, value));
-                        /*return 0; */
+#ifdef LOG_CLOCKPORT
+                        LOG (("MMCREPLAY: Clockport ST %04x %02x", addr,
+                              value));
+#endif
+                        return;
                     }
                 }
 #endif
                 break;
-#if 0
-            case 2:            /* $DE02: */
-                if (disable_mmc_bios == 0)
-                {
-                    LOG (("MMCREPLAY: MAGIC IO1 ST %04x %02x", addr, value));
-                    return;
-                }
-                break;
-            case 3:            /* $DE03: */
-                if (disable_mmc_bios == 0)
-                {
-                    LOG (("MMCREPLAY: MAGIC IO1 ST %04x %02x", addr, value));
-                    return;
-                }
-                break;
-            case 4:            /* $DE04: */
-                if (disable_mmc_bios == 0)
-                {
-                    LOG (("MMCREPLAY: MAGIC IO1 ST %04x %02x", addr, value));
-                    return;
-                }
-                break;
-            case 5:            /* $DE05: */
-                if (disable_mmc_bios == 0)
-                {
-                    LOG (("MMCREPLAY: MAGIC IO1 ST %04x %02x", addr, value));
-                    return;
-                }
-                break;
-#endif
         }
         if (enable_io1)
         {
@@ -1676,7 +1684,6 @@ void REGPARM2 mmcreplay_io1_store (WORD addr, BYTE value)
             LOG (("store DISABLED IO1 %04x %02x (%02x:%04x)", addr, value,
                   io1_bank, (addr & 0x1fff)));
         }
-
     }                           /* rr active */
     else
     {
@@ -1751,7 +1758,7 @@ BYTE REGPARM1 mmcreplay_io2_read (WORD addr)
 {
     BYTE    value;
 
-//    LOG(("MMCREPLAY: IO2 RD %04x",addr)); 
+//LOG(("MMCREPLAY: IO2 RD %04x",addr));
 
     if (rr_active)
     {
@@ -1761,7 +1768,7 @@ BYTE REGPARM1 mmcreplay_io2_read (WORD addr)
             case 0x10:         /* OK $df10 MMC SPI transfer register */
                 if (enable_mmc_regs)
                 {
-//    LOG(("MMCREPLAY: IO2 RD %04x",addr)); 
+//LOG(("MMCREPLAY: IO2 RD %04x",addr));
                     io_source = IO_SOURCE_MMCREPLAY;
                     return spi_mmc_data_read ();
                 }
@@ -1962,7 +1969,7 @@ void REGPARM2 mmcreplay_io2_store (WORD addr, BYTE value)
                 if (enable_mmc_regs)
                 {
                     LOG (("MMCREPLAY: IO2 ST %04x %02x", addr, value));
-                    LOG (("MMCREPLAY: IO2 ST %04x  spi_mmc_card_selected %02x",
+                    LOG (("MMCREPLAY: IO2 ST %04x  spi_mmc_card_selected %1d",
                           addr, ((value >> 1) ^ 1) & 1));
 
                     disable_mmc_bios = (value) & 1;     /* bit 0 */
@@ -1979,6 +1986,11 @@ void REGPARM2 mmcreplay_io2_store (WORD addr, BYTE value)
                             enable_mmc_regs = enable_mmc_regs_pending;
                         }
                     }
+                    else
+                    {
+                        /* clearing bit 0 resets write once for de01 */
+                        write_once = 0;
+                    }
 //    mmcreplay_update_mapper();
 //            mmcreplay_config_changed((enable_exrom<<1)|enable_game, (enable_exrom<<1)|enable_game, CMODE_WRITE);
                     mmcreplay_update_mapper (CMODE_WRITE, 0);
@@ -1988,19 +2000,26 @@ void REGPARM2 mmcreplay_io2_store (WORD addr, BYTE value)
                 {
                     LOG (("MMCREPLAY: IO2 ST %04x (disabled!)", addr));
                 }
+                LOG (("MMCREPLAY: IO2 ST %04x disable_mmc_bios %02x", addr,
+                      disable_mmc_bios));
+                LOG (("MMCREPLAY: IO2 ST %04x disable_rr_rom %02x", addr,
+                      disable_rr_rom));
                 break;
             case 0x12:         /* OK $df12 MMC status register */
                 if (enable_mmc_regs)
                 {
-//   LOG(("MMCREPLAY: IO2 ST %04x %02x",addr,value));
+                    LOG (("MMCREPLAY: IO2 ST %04x %02x", addr, value));
 
                     /* FIXME bit 1: forbid write access to ROM */
 
                     disable_rom_write = (value ^ 1) & 1;        /* bit 0 */
                     enable_extended_mode = (value >> 6) & 1;    /* bit 6 */
                     if (enable_extended_mode)
+                    {
                         rr_active = 1;
-//    LOG(("MMCREPLAY: IO2 ST %04x enable_extended_mode %d",addr,enable_extended_mode));
+                    }
+                    LOG (("MMCREPLAY: IO2 ST %04x enable_extended_mode %d",
+                          addr, enable_extended_mode));
 
                     /* bit 2 ? FIXME */
                     /* bit 3 ? FIXME */
@@ -2008,7 +2027,7 @@ void REGPARM2 mmcreplay_io2_store (WORD addr, BYTE value)
                     /* EEPROM is only accessible in MMC Replay Bios mode */
                     if (disable_mmc_bios == 0)
                     {
-//    LOG(("MMCREPLAY: IO2 ST %04x (eeprom)",addr));
+                        LOG (("MMCREPLAY: IO2 ST %04x (eeprom)", addr));
                         /*
                          * bit 1: ddr FIXME
                          * bit 4: status
@@ -2049,6 +2068,10 @@ void REGPARM2 mmcreplay_io2_store (WORD addr, BYTE value)
                     mmcreplay_update_mapper (CMODE_WRITE, 0);
                     return;
                 }
+                LOG (("MMCREPLAY: IO2 ST %04x disable_rom_write %02x", addr,
+                      disable_rom_write));
+                LOG (("MMCREPLAY: IO2 ST %04x enable_extended_mode %02x", addr,
+                      enable_extended_mode));
 
 
                 break;
@@ -2084,6 +2107,10 @@ void REGPARM2 mmcreplay_io2_store (WORD addr, BYTE value)
                     }
 #endif
                 }
+                LOG (("MMCREPLAY: IO2 ST %04x enable_16k_mapping %02x", addr,
+                      enable_16k_mapping));
+                LOG (("MMCREPLAY: IO2 ST %04x enable_rr_regs %02x", addr,
+                      enable_rr_regs));
 
                 break;
         }
@@ -2237,7 +2264,8 @@ void REGPARM2 mmcreplay_roml_store (WORD addr, BYTE value)
         export_ram0[(addr & 0x1fff) + (raml_bank << 13)] = value;
         return;
     }
-//    LOG(("raml disabled! store RAML %04x %02x (%02x:%04x)", addr,value,raml_bank,(addr & 0x1fff)));
+    LOG (("raml disabled! store RAML %04x %02x (%02x:%04x)", addr, value,
+          raml_bank, (addr & 0x1fff)));
     flashrom_write ((addr & 0x1fff) + (roml_bank << 13), value);
 }
 
@@ -2495,6 +2523,16 @@ void mmcreplay_reset (void)
 
     bank_address_13_15 = 0;
     bank_address_16_18 = 7;
+
+    if (enable_rescue_mode)
+    {
+//        enable_exrom = 0;
+        //      enable_game = 0;
+        log_debug ("MMCREPLAY: Rescue Mode enabled");
+    }
+
+
+
     mmcreplay_update_mapper (CMODE_READ, 0);
     flashrom_init ();
 //    mmcreplay_set_stdcfg();
@@ -2602,7 +2640,12 @@ void mmcreplay_set_stdcfg (void)
 
     enable_exrom = 1;
     enable_game = 1;
-
+#elif defined(TEST_RESCUE_MODE)
+//    enable_exrom = 1;
+//    enable_game = 0;
+    enable_rescue_mode = 1;
+    enable_mmc_regs = 1;
+    enable_mmc_regs_pending = 1;
 #else
 #endif
 
@@ -2611,6 +2654,7 @@ void mmcreplay_set_stdcfg (void)
 void mmcreplay_config_init (void)
 {
     LOG (("mmcreplay_config_init"));
+#if 0
     {
         int     l, h, bank;
         for (h = 0; h < 8; h++)
@@ -2619,7 +2663,6 @@ void mmcreplay_config_init (void)
             {
                 bank = (h << 3) + l;
 //    LOG(("abnk %d",bank));
-#if 0
 // for testing with the scanner
                 export_ram0[0x0080 + (bank << 13)] = 1 + ('r' - 'a');
                 export_ram0[0x0081 + (bank << 13)] = 1 + ('a' - 'a');
@@ -2633,10 +2676,10 @@ void mmcreplay_config_init (void)
                 export_ram0[0x1f81 + (bank << 13)] = 1 + ('a' - 'a');
                 export_ram0[0x1f82 + (bank << 13)] = 0x30 + h;
                 export_ram0[0x1f83 + (bank << 13)] = 0x30 + l;
-#endif
             }
         }
     }
+#endif
     mmcreplay_set_stdcfg ();
 //    mmcreplay_update_mapper();
 //            mmcreplay_config_changed((enable_exrom<<1)|enable_game, (enable_exrom<<1)|enable_game, CMODE_WRITE);

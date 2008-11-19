@@ -1,10 +1,23 @@
 
+/*
+     29F040 Flash ROM 
+     - very incomplete, just barely enough to make the MMCR Rescue flasher work
+ */
+
+/* indent -gnu -bls -hnl -nut -sc -cli4 -npsl -i4 -bli0 -cbi0 -ci4 -di8 -l80 */
+
 #include "par-flashrom.h"
 #include "types.h"
 #include "util.h"
+#include "log.h"
 #include "c64cart.h"
 
 #define DEBUG
+
+/* #define LOG_READ_STATUS */         /* log flashrom status reads */
+/* #define LOG_CMD_BLOCK_ERASE */
+/* #define LOG_CMD_PROGRAM */
+/* #define LOG_CMD_RESET */
 
 #ifdef DEBUG
 #define LOG(_x_) log_debug _x_
@@ -12,23 +25,76 @@
 #define LOG(_x_)
 #endif
 
-static unsigned int flashrom_unlocked = 0;
+/*
+00h Read
+10h Chip Erase Confirm
+30h Block Erase Resume/Confirm
+80h Set-up Erase
+90h Read Electronic Signature/Block Protection Status
+A0h Program
+B0h Erase Suspend
+F0h Read Array/Reset
+*/
+
+#define FLASH_CMD_00	0x00
+#define FLASH_CMD_10	0x10
+#define FLASH_CMD_30	0x30
+#define FLASH_CMD_80	0x80
+#define FLASH_CMD_90	0x90
+#define FLASH_CMD_A0	0xA0
+#define FLASH_CMD_B0	0xB0
+#define FLASH_CMD_F0	0xF0
+
+#define FLASH_CMD_CHIP_ERASE	0x10
+#define FLASH_CMD_BLOCK_ERASE	0x30
+
+#define FLASH_CMD_NONE	0xff
+
 static unsigned int flashrom_status = 0;
+static unsigned int flashrom_cycle_count = 0;
+static unsigned int flashrom_read_cycle = 0;
+static unsigned int flashrom_current_command = 0;
 
 void flashrom_init (void)
 {
-    flashrom_unlocked = 0;
     flashrom_status = 0;
+    flashrom_cycle_count = 0;
+    flashrom_read_cycle = 0;
+    flashrom_current_command = FLASH_CMD_NONE;
 }
 
 BYTE flashrom_read (unsigned int addr)
 {
-    if (flashrom_unlocked)
+    if (flashrom_current_command != FLASH_CMD_NONE)
     {
         switch (addr & 0xffff)
         {
             case 0x0000:
+                switch (flashrom_read_cycle)
+                {
+                    case 0:
+                        flashrom_status = 0x80;
+                        flashrom_read_cycle++;
+                        break;
+                    case 1:
+                        flashrom_status = 0x00;
+                        flashrom_read_cycle++;
+                        break;
+                    case 2:
+                        flashrom_status = 0xff;
+                        flashrom_read_cycle++;
+                        break;
+                    case 3:
+                        flashrom_status = 0x00;
+                        flashrom_read_cycle++;
+                        break;
+                    case 4:
+                        flashrom_status = 0xff;
+                        break;
+                }
+#ifdef LOG_READ_STATUS
                 LOG (("FLASHROM read status %02x", flashrom_status));
+#endif
                 return flashrom_status;
                 break;
         }
@@ -36,82 +102,128 @@ BYTE flashrom_read (unsigned int addr)
     return roml_banks[addr];
 }
 
-static int flash_unlock_count = 0;
 
 void flashrom_write (unsigned int addr, BYTE value)
 {
-    if (flashrom_unlocked)
+    switch (flashrom_cycle_count)
     {
-        LOG (("FLASHROM write %04x:%02x", addr, value));
-        switch (value)
-        {
-            case 0x30:
-                LOG (("FLASHROM CMD30 erase bank %d", addr >> 16));
-                flashrom_status = 0xff;
-                break;
-        }
-    }
-    else
-    {
-/* LOG(("FLASHROM (locked) write %04x:%02x",addr,value)); */
-        switch (flash_unlock_count)
-        {
-            case 0:
-                if ((addr == 0x1555) & (value == 0xaa))
-                {
-                    flash_unlock_count++;
-                }
-                else
-                {
-                    flash_unlock_count = 0;
-                }
-                break;
-            case 1:
-                if ((addr == 0x0aaa) & (value == 0x55))
-                {
-                    flash_unlock_count++;
-                }
-                else
-                {
-                    flash_unlock_count = 0;
-                }
-                break;
-            case 2:
-                if ((addr == 0x1555) & (value == 0x80))
-                {
-                    flash_unlock_count++;
-                }
-                else
-                {
-                    flash_unlock_count = 0;
-                }
-                break;
-            case 3:
-                if ((addr == 0x1555) & (value == 0xaa))
-                {
-                    flash_unlock_count++;
-                }
-                else
-                {
-                    flash_unlock_count = 0;
-                }
-                break;
-            case 4:
-                if ((addr == 0x0aaa) & (value == 0x55))
-                {
-                    flash_unlock_count++;
-                }
-                else
-                {
-                    flash_unlock_count = 0;
-                }
-                break;
-        }
-        if (flash_unlock_count == 5)
-        {
-            LOG (("FLASHROM unlocked"));
-            flashrom_unlocked = 1;
-        }
+        case 0:
+            if ((addr == 0x5555) & (value == 0xaa))
+            {
+                flashrom_cycle_count++;
+            }
 
+            else if ((value == 0xf0))
+            {
+#ifdef LOG_CMD_RESET
+                LOG (("FLASHROM CMDF0: Read Array/Reset"));
+#endif
+                flashrom_read_cycle = 0;
+                flashrom_status = 0;
+                flashrom_cycle_count = 0;
+                flashrom_current_command = FLASH_CMD_NONE;
+            }
+            else
+            {
+                flashrom_cycle_count = 0;
+            }
+            break;
+        case 1:
+            if ((addr == 0x2aaa) & (value == 0x55))
+            {
+                flashrom_cycle_count++;
+            }
+            else
+            {
+                flashrom_cycle_count = 0;
+            }
+            break;
+        case 2:
+            if ((addr == 0x5555) & (value == 0x80))
+            {
+                flashrom_cycle_count++;
+            }
+            else if ((addr == 0x5555) & (value == 0x90))
+            {
+                flashrom_cycle_count++;
+            }
+            else if ((addr == 0x5555) & (value == 0xa0))
+            {
+                flashrom_cycle_count++;
+                flashrom_current_command = FLASH_CMD_A0;
+            }
+            else if ((addr == 0x5555) & (value == 0xf0))
+            {
+#ifdef LOG_CMD_RESET
+                LOG (("FLASHROM CMDF0: Read Array/Reset"));
+#endif
+                flashrom_current_command = FLASH_CMD_NONE;
+                flashrom_cycle_count = 0;
+            }
+            else
+            {
+                flashrom_cycle_count = 0;
+            }
+            break;
+        case 3:
+            if (flashrom_current_command == FLASH_CMD_A0)
+            {
+#ifdef LOG_CMD_PROGRAM
+                LOG (("FLASHROM CMDA0: Program %06x:%02x", addr, value));
+#endif
+                roml_banks[addr] = value;
+                flashrom_cycle_count = 0;
+            }
+            else
+            {
+                if ((addr == 0x5555) & (value == 0xaa))
+                {
+                    flashrom_cycle_count++;
+                }
+                else
+                {
+                    flashrom_cycle_count = 0;
+                }
+            }
+            break;
+        case 4:
+            if ((addr == 0x2aaa) & (value == 0x55))
+            {
+                /* block erase or chip erase */
+                flashrom_cycle_count++;
+            }
+            else
+            {
+                flashrom_cycle_count = 0;
+            }
+            break;
+        case 5:
+            if ((addr == 0x5555) & (value == 0x10))
+            {
+                /* chip erase */
+                flashrom_cycle_count++;
+                flashrom_current_command = FLASH_CMD_CHIP_ERASE;
+            }
+            else if ((value == 0x30))
+            {
+                /* block erase (addr=block addr) */
+                flashrom_current_command = FLASH_CMD_BLOCK_ERASE;
+#ifdef LOG_CMD_BLOCK_ERASE
+                LOG (("FLASHROM CMD30 Block Erase Addr %06x", addr));
+#endif
+                flashrom_status = 0xff; /* not erased */
+                flashrom_read_cycle = 0;
+            }
+            else
+            {
+                flashrom_cycle_count = 0;
+            }
+            break;
+        case 6:
+            /* FIXME: there could be more CMD30/cycle 5 blocks
+             * following */
+            break;
+        default:
+            break;
     }
 }

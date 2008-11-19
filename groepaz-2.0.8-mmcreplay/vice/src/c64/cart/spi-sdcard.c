@@ -2,7 +2,9 @@
 #include "spi-sdcard.h"
 #include "types.h"
 #include "util.h"
+#include "log.h"
 #include "c64io.h"
+#include <string.h>
 
 //#define TEST_MMC_ALWAYS_NOCARD
 //#define TEST_MMC_ALWAYS_READONLY
@@ -636,12 +638,12 @@ FILE   *mmc_open_card_image (char *name)
         {
             /* FIXME */
 //          mmcreplay_cardpresent=MMC_CARDPRS;
-            LOG (("could not open sd card image: %s"));
+            LOG (("could not open sd card image: %s",mmcreplay_image_filename));
         }
         else
         {
             /* FIXME */
-            LOG (("opened sd card image (ro): %s"));
+            LOG (("opened sd card image (ro): %s",mmcreplay_image_filename));
 //          mmcreplay_cardpresent=0;
 //          mmcreplay_image_file_readonly=1;
 //          mmcreplay_hw_writeprotect=1;
@@ -652,7 +654,7 @@ FILE   *mmc_open_card_image (char *name)
     {
 //        mmcreplay_image_file_readonly=0;
 //        mmcreplay_cardpresent=0;
-        LOG (("opened sd card image (rw): %s"));
+        LOG (("opened sd card image (rw): %s",mmcreplay_image_filename));
     }
     return mmcreplay_image_file;
 }
