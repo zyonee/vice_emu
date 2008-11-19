@@ -1644,7 +1644,7 @@ x11ui_fullscreen(int i)
        by checking the related resource */
     if (strncmp(machine_name, "C128", 4) == 0)
 	resources_get_int("40/80ColumnKey", &key);
-    s = gtk_widget_get_toplevel(app_shells[key].shell);
+    s = _ui_top_level = gtk_widget_get_toplevel(app_shells[key].shell);
     
     if (i) {
         /* window managers (bug detected on compiz 0.7.4) may ignore
