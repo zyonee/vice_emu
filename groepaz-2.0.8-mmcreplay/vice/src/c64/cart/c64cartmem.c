@@ -58,6 +58,7 @@
 #include "mmc64.h"
 #include "resources.h"
 #include "retroreplay.h"
+#include "mmcreplay.h"
 #include "rexep256.h"
 #include "ide64.h"
 #include "ramcart.h"

@@ -45,6 +45,13 @@ extern void REGPARM2 mmcreplay_roml_store(WORD addr, BYTE value);
 extern BYTE REGPARM1 mmcreplay_romh_read(WORD addr);
 extern void REGPARM2 mmcreplay_romh_store(WORD addr, BYTE value);
 
+extern BYTE REGPARM1 mmcreplay_1000_7fff_read(WORD addr);
+extern void REGPARM2 mmcreplay_1000_7fff_store(WORD addr, BYTE value);
+extern BYTE REGPARM1 mmcreplay_a000_read(WORD addr);
+extern void REGPARM2 mmcreplay_a000_store(WORD addr, BYTE value);
+extern BYTE REGPARM1 mmcreplay_c000_read(WORD addr);
+extern void REGPARM2 mmcreplay_c000_store(WORD addr, BYTE value);
+
 extern void mmcreplay_freeze(void);
 extern int  mmcreplay_freeze_allowed(void);
 

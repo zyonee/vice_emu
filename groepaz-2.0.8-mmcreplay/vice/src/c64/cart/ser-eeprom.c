@@ -1,3 +1,28 @@
+/*
+ * ser-eeprom.c
+ *
+ * Written by
+ *  Groepaz/Hitmen <groepaz@gmx.net>
+ *
+ * This file is part of VICE, the Versatile Commodore Emulator.
+ * See README for copyright notice.
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307  USA.
+ *
+ */
 
 #include "mmcreplay.h"
 #include "ser-eeprom.h"
@@ -9,6 +34,7 @@
 #define DEBUG
 /*#define LOG_READ_BYTES*/ /* log read bytes */
 /*#define LOG_WRITE_BYTES*/ /* log write bytes */
+/*#define LOG_COMMANDS*/ /* log eeprom commands */
 
 #ifdef DEBUG
 #define LOG(_x_) log_debug _x_
@@ -55,7 +81,7 @@ BYTE eeprom_data_readbit (void)
 {
     BYTE    value;
     static BYTE bits[8] = { 0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01 };
-    int     bitpos, bytepos;
+    int     bitpos;
     bitpos = eeprom_readpos & 7;
     value = eeprom_data_readbyte ();
 
@@ -211,8 +237,10 @@ int eeprom_execute_command (int eeprom_mode)
                     {
                         break;
                     }
+#ifdef LOG_COMMANDS
                     LOG (("eeprom CMDA1     (%02x) %02x", eeprom_cmdbuf[0],
                           eeprom_cmdbuf[1]));
+#endif
                     eeprom_mode = EEPROM_INCA1_DATA;
                     eeprom_readpos = ((eeprom_cmdbuf[1]) & 0x03ff) << 3;        // ?
                     break;
@@ -221,9 +249,11 @@ int eeprom_execute_command (int eeprom_mode)
                     {
                         break;
                     }
+#ifdef LOG_COMMANDS
                     LOG (("eeprom CMDA1 data [%04x]:%02x '%c'",
                           eeprom_readpos >> 3, eeprom_data_readbyte (),
                           eeprom_data_readbyte ()));
+#endif
                     break;
             }
             break;
@@ -395,7 +425,7 @@ void eeprom_port_write (int clk, int data, int ddr, int status)
 FILE   *eeprom_open_image (char *name)
 {
     eeprom_image_filename = name;
-    if (eeprom_image_filename == NULL)
+    if (eeprom_image_filename != NULL)
     {
         /* FIXME */
     }

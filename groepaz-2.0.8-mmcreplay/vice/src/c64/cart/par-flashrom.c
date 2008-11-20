@@ -1,7 +1,29 @@
-
 /*
-     29F040 Flash ROM 
-     - very incomplete, just barely enough to make the MMCR Rescue flasher work
+ * par-flashrom.c - 29F040 Flash ROM Emulation
+ *
+ *   - very incomplete, just barely enough to make the MMCR Rescue flasher work
+ *
+ * Written by
+ *  Groepaz/Hitmen <groepaz@gmx.net>
+ *
+ * This file is part of VICE, the Versatile Commodore Emulator.
+ * See README for copyright notice.
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ *  02111-1307  USA.
+ *
  */
 
 /* indent -gnu -bls -hnl -nut -sc -cli4 -npsl -i4 -bli0 -cbi0 -ci4 -di8 -l80 */
@@ -18,6 +40,7 @@
 /* #define LOG_CMD_BLOCK_ERASE */
 /* #define LOG_CMD_PROGRAM */
 /* #define LOG_CMD_RESET */
+/* #define LOG_BOGUS_WRITE */
 
 #ifdef DEBUG
 #define LOG(_x_) log_debug _x_
@@ -224,6 +247,9 @@ void flashrom_write (unsigned int addr, BYTE value)
              * following */
             break;
         default:
+#ifdef LOG_BOGUS_WRITE
+                LOG (("FLASHROM write %06x %02x", addr,value));
+#endif
             break;
     }
 }
