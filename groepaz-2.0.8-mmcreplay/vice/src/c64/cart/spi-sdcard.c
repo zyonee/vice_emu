@@ -27,12 +27,16 @@
  *
  */
 
+#include "vice.h"
+
+#include <stdio.h>
+#include <string.h>
+
+#include "c64io.h"
+#include "log.h"
 #include "spi-sdcard.h"
 #include "types.h"
 #include "util.h"
-#include "log.h"
-#include "c64io.h"
-#include <string.h>
 
 /* #define TEST_MMC_ALWAYS_NOCARD */
 /* #define TEST_MMC_ALWAYS_READONLY */
@@ -62,11 +66,8 @@
 void    spi_mmc_trigger_mode_write (BYTE value);
 BYTE    spi_mmc_trigger_mode_read (void);
 
-/* Image file name */
-static char *mmcreplay_image_filename = NULL;
-
 /* Image file */
-static FILE *mmcreplay_image_file;
+static FILE *mmcreplay_image_file = NULL;
 
 /* Pointer inside image */
 static unsigned int mmcreplay_image_pointer;
@@ -701,9 +702,10 @@ void spi_mmc_data_write (BYTE value)
 
 }
 
-FILE   *mmc_open_card_image (char *name)
+int mmc_open_card_image(char *name, int rw)
 {
-    mmcreplay_image_filename = name;
+    char *mmcreplay_image_filename = name;
+
     if (mmcreplay_image_filename != NULL)
     {
         /* FIXME */
@@ -714,12 +716,17 @@ FILE   *mmc_open_card_image (char *name)
     else
     {
         /* FIXME */
-        mmcreplay_image_filename = "./mmcimage.bin";
-        LOG (("sd card image name not set, using default: %s",
-              mmcreplay_image_filename));
+        LOG (("sd card image name not set"));
+        return 1;
     }
 
-    mmcreplay_image_file = fopen (mmcreplay_image_filename, "rb+");
+    if (mmcreplay_image_file != NULL) {
+        mmc_close_card_image();
+    }
+
+    if (rw) {
+        mmcreplay_image_file = fopen (mmcreplay_image_filename, "rb+");
+    }
 
     if (mmcreplay_image_file == NULL)
     {
@@ -730,6 +737,7 @@ FILE   *mmc_open_card_image (char *name)
             /* FIXME */
 //          mmcreplay_cardpresent=MMC_CARDPRS;
             LOG (("could not open sd card image: %s",mmcreplay_image_filename));
+            return 1;
         }
         else
         {
@@ -747,10 +755,10 @@ FILE   *mmc_open_card_image (char *name)
 //        mmcreplay_cardpresent=0;
         LOG (("opened sd card image (rw): %s",mmcreplay_image_filename));
     }
-    return mmcreplay_image_file;
+    return 0;
 }
 
-void mmc_close_card_image (void)
+void mmc_close_card_image(void)
 {
     /* unmount mmc cart image */
     if (mmcreplay_image_file != NULL)

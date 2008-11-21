@@ -31,25 +31,29 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "maincpu.h"
 #include "c64cart.h"
 #include "c64cartmem.h"
-#include "c64mem.h"
 #include "c64export.h"
 #include "c64io.h"
+#include "c64mem.h"
 #include "c64pla.h"
+#include "cmdline.h"
+#include "lib.h"
+#include "log.h"
+#include "machine.h"
+#include "maincpu.h"
 #include "mmcreplay.h"
 #include "par-flashrom.h"
 #include "ser-eeprom.h"
 #include "spi-sdcard.h"
 #include "reu.h"
+#include "resources.h"
 #ifdef HAVE_TFE
 #include "tfe.h"
 #endif
+#include "translate.h"
 #include "types.h"
 #include "util.h"
-#include "log.h"
-#include "machine.h"
 #include "vicii-phi1.h"
 
 #define DEBUG
@@ -103,8 +107,13 @@ static const c64export_resource_t export_res = {
     "MMC Replay", 1, 1
 };
 
-int     mmcr_enabled = 1;       // FIXME
+int     mmcr_enabled = 0;
 int     enable_rescue_mode = 0;
+char *mmcr_card_filename = NULL;
+char *mmcr_eeprom_filename = NULL;
+int mmcr_card_rw = 0;
+int mmcr_eeprom_rw = 0;
+
 
 /*
 Features
@@ -2668,17 +2677,157 @@ int mmcreplay_bin_attach (const char *filename, BYTE * rawcart)
         return -1;
     }
 
+    mmcr_enabled = 1;
 
     flashrom_init ();
-    mmc_open_card_image ("./mmcimage.bin");     /* FIXME */
-    eeprom_open_image ("./mmceeprom.bin");      /* FIXME */
+    mmc_open_card_image(mmcr_card_filename, mmcr_card_rw);
+    eeprom_open_image(mmcr_eeprom_filename, mmcr_eeprom_rw);
 
     return 0;
 }
 
 void mmcreplay_detach (void)
 {
-    mmc_close_card_image ();
-    eeprom_close_image ();
+    mmc_close_card_image();
+    eeprom_close_image(mmcr_eeprom_rw);
     c64export_remove (&export_res);
+    mmcr_enabled = 0;
+}
+
+/* ------------------------------------------------------------------------- */
+
+static int set_mmcr_card_filename(const char *name, void *param)
+{
+    if (mmcr_card_filename != NULL && name != NULL && strcmp(name, mmcr_card_filename) == 0) {
+        return 0;
+    }
+
+    if (name != NULL && *name != '\0') {
+        if (util_check_filename_access(name) < 0) {
+            return -1;
+        }
+    }
+
+    util_string_set(&mmcr_card_filename, name);
+
+    if (mmcr_enabled) {
+        return mmc_open_card_image(mmcr_card_filename, mmcr_card_rw);
+    }
+
+    return 0;
+}
+
+static int set_mmcr_eeprom_filename(const char *name, void *param)
+{
+    if (mmcr_eeprom_filename != NULL && name != NULL && strcmp(name, mmcr_eeprom_filename) == 0) {
+        return 0;
+    }
+
+    if (name != NULL && *name != '\0') {
+        if (util_check_filename_access(name) < 0) {
+            return -1;
+        }
+    }
+
+    util_string_set(&mmcr_eeprom_filename, name);
+
+    if (mmcr_enabled) {
+        return eeprom_open_image(mmcr_eeprom_filename, mmcr_eeprom_rw);
+    }
+
+    return 0;
+}
+
+static int set_mmcr_card_rw(int val, void* param)
+{
+    mmcr_card_rw = val;
+
+    if (mmcr_enabled) {
+        return mmc_open_card_image(mmcr_card_filename, mmcr_card_rw);
+    }
+
+    return 0;
+}
+
+static int set_mmcr_eeprom_rw(int val, void* param)
+{
+    mmcr_eeprom_rw = val;
+    return 0;
+}
+
+static int set_mmcr_rescue_mode(int val, void* param)
+{
+    enable_rescue_mode = val;
+    return 0;
+}
+
+static const resource_string_t resources_string[] = {
+    { "MMCRCardImage", "", RES_EVENT_NO, NULL,
+      &mmcr_card_filename, set_mmcr_card_filename, NULL },
+    { "MMCREEPROMImage", "", RES_EVENT_NO, NULL,
+      &mmcr_eeprom_filename, set_mmcr_eeprom_filename, NULL },
+    { NULL }
+};
+
+static const resource_int_t resources_int[] = {
+    { "MMCRCardRW", 1, RES_EVENT_NO, NULL,
+      &mmcr_card_rw, set_mmcr_card_rw, NULL },
+    { "MMCREEPROMRW", 1, RES_EVENT_NO, NULL,
+      &mmcr_eeprom_rw, set_mmcr_eeprom_rw, NULL },
+    { "MMCRRescueMode", 0, RES_EVENT_NO, NULL,
+      &enable_rescue_mode, set_mmcr_rescue_mode, NULL },
+    { NULL }
+};
+
+int mmcreplay_resources_init(void)
+{
+    if (resources_register_string(resources_string) < 0) {
+        return -1;
+    }
+    return resources_register_int(resources_int);
+}
+
+void mmcreplay_resources_shutdown(void)
+{
+    lib_free(mmcr_card_filename);
+    lib_free(mmcr_eeprom_filename);
+}
+
+static const cmdline_option_t cmdline_options[] = {
+    { "-mmcrcardimage", SET_RESOURCE, 1,
+      NULL, NULL, "MMCRCardImage", NULL,
+      USE_PARAM_STRING, USE_DESCRIPTION_STRING,
+      IDCLS_UNUSED, IDCLS_UNUSED,
+      T_("<filename>"), T_("Specify MMC Replay card image filename") },
+    { "-mmcrcardrw", SET_RESOURCE, 0,
+      NULL, NULL, "MMCRCardRW", (resource_value_t)1,
+      USE_PARAM_STRING, USE_DESCRIPTION_STRING,
+      IDCLS_UNUSED, IDCLS_UNUSED,
+      NULL, T_("Enable writes to MMC Replay card image") },
+    { "+mmcrcardrw", SET_RESOURCE, 0,
+      NULL, NULL, "MMCRCardRW", (resource_value_t)0,
+      USE_PARAM_STRING, USE_DESCRIPTION_STRING,
+      IDCLS_UNUSED, IDCLS_UNUSED,
+      NULL, T_("Disable writes to MMC Replay card image") },
+    { "-mmcreepromimage", SET_RESOURCE, 1,
+      NULL, NULL, "MMCREEPROMImage", NULL,
+      USE_PARAM_STRING, USE_DESCRIPTION_STRING,
+      IDCLS_UNUSED, IDCLS_UNUSED,
+      T_("<filename>"), T_("Specify MMC Replay EEPROM image filename") },
+    { "-mmcreepromrw", SET_RESOURCE, 0,
+      NULL, NULL, "MMCREEPROMRW", (resource_value_t)1,
+      USE_PARAM_STRING, USE_DESCRIPTION_STRING,
+      IDCLS_UNUSED, IDCLS_UNUSED,
+      NULL, T_("Enable writes to MMC Replay EEPROM image") },
+    { "+mmcreepromrw", SET_RESOURCE, 0,
+      NULL, NULL, "MMCREEPROMRW", (resource_value_t)0,
+      USE_PARAM_STRING, USE_DESCRIPTION_STRING,
+      IDCLS_UNUSED, IDCLS_UNUSED,
+      NULL, T_("Disable writes to MMC Replay EEPROM image") },
+    { NULL }
+};
+
+int mmcreplay_cmdline_options_init(void)
+{
+    return cmdline_register_options(cmdline_options);
 }

@@ -24,12 +24,16 @@
  *
  */
 
+#include "vice.h"
+
+#include <stdio.h>
+#include <string.h> /* for memset */
+
+#include "log.h"
 #include "mmcreplay.h"
 #include "ser-eeprom.h"
 #include "types.h"
 #include "util.h"
-#include "log.h"
-#include <string.h> /* for memset */
 
 #define DEBUG
 /*#define LOG_READ_BYTES*/ /* log read bytes */
@@ -42,9 +46,6 @@
 #define LOG(_x_)
 #endif
  
-/* Image file name */
-static char *eeprom_image_filename = NULL;
-
 /* Image file */
 static FILE *eeprom_image_file = NULL;
 
@@ -422,9 +423,9 @@ void eeprom_port_write (int clk, int data, int ddr, int status)
 
 }
 
-FILE   *eeprom_open_image (char *name)
+int eeprom_open_image(char *name, int rw)
 {
-    eeprom_image_filename = name;
+    char *eeprom_image_filename = name;
     if (eeprom_image_filename != NULL)
     {
         /* FIXME */
@@ -432,12 +433,17 @@ FILE   *eeprom_open_image (char *name)
     else
     {
         /* FIXME */
-        eeprom_image_filename = "./mmceeprom.bin";
-        log_debug("eeprom card image name not set, using default: %s",
-              eeprom_image_filename);
+        log_debug("eeprom card image name not set");
+        return 0;
     }
 
-    eeprom_image_file = fopen (eeprom_image_filename, "rb+");
+    if (eeprom_image_file != NULL) {
+        eeprom_close_image(rw);
+    }
+
+    if (rw) {
+        eeprom_image_file = fopen (eeprom_image_filename, "rb+");
+    }
 
     if (eeprom_image_file == NULL)
     {
@@ -446,6 +452,7 @@ FILE   *eeprom_open_image (char *name)
         if (eeprom_image_file == NULL)
         {
             log_debug("could not open eeprom card image: %s",eeprom_image_filename);
+            return -1;
         }
         else
         {
@@ -460,17 +467,18 @@ FILE   *eeprom_open_image (char *name)
         fseek (eeprom_image_file, 0, SEEK_SET);
         log_debug("opened eeprom card image (rw): %s",eeprom_image_filename);
     }
-    return eeprom_image_file;
+    return 0;
 }
 
-void eeprom_close_image (void)
+void eeprom_close_image(int rw)
 {
-    /* unmount mmc cart image */
+    /* unmount EEPROM image */
     if (eeprom_image_file != NULL)
     {
-        /* FIXME: saving image should be optional */
-        fseek (eeprom_image_file, 0, SEEK_SET);
-        fwrite (eeprom_data, 1, MMCREPLAY_EEPROM_SIZE, eeprom_image_file);
+        if (rw) {
+            fseek (eeprom_image_file, 0, SEEK_SET);
+            fwrite (eeprom_data, 1, MMCREPLAY_EEPROM_SIZE, eeprom_image_file);
+        }
         fclose (eeprom_image_file);
         eeprom_image_file = NULL;
     }

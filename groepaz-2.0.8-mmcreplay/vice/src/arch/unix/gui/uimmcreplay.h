@@ -1,10 +1,7 @@
 /*
- * spi-sdcard.h - SD Card over SPI Emulation
+ * uimmcreplay.h
  *
  * Written by
- *  Groepaz/Hitmen <groepaz@gmx.net>
- * large parts derived from mmc64.c written by
- *  Markus Stehr <bastetfurry@ircnet.de>
  *  Marco van den Heuvel <blackystardust68@yahoo.com>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
@@ -27,25 +24,12 @@
  *
  */
 
-#ifndef VICE_SPI_SDCARD
-#define VICE_SPI_SDCARD
+#ifndef VICE_UIMMCREPLAY_H
+#define VICE_UIMMCREPLAY_H
 
-#include "types.h"
+#include "uimenu.h"
 
-extern void spi_mmc_trigger_mode_write(BYTE value);
-extern BYTE spi_mmc_trigger_mode_read(void);
-extern BYTE spi_mmc_card_inserted(void);
-extern BYTE spi_mmc_busy(void);
-extern BYTE spi_mmc_card_write_enabled(void);
-extern BYTE spi_mmc_card_selected_read(void);
-extern void spi_mmc_card_selected_write(BYTE value);
-extern BYTE spi_mmc_enable_8mhz_read(void);
-extern void spi_mmc_enable_8mhz_write(BYTE value);
-extern BYTE spi_mmc_trigger_mode_read(void);
-extern void spi_mmc_trigger_mode_write(BYTE value);
-extern BYTE spi_mmc_data_read(void);
-extern void spi_mmc_data_write(BYTE value);
-extern int  mmc_open_card_image(char *name, int rw);
-extern void mmc_close_card_image(void);
+extern struct ui_menu_entry_s mmcreplay_submenu[];
 
 #endif
+

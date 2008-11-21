@@ -24,10 +24,8 @@
  *
  */
 
-#ifndef MMCREPLAY_H
-#define MMCREPLAY_H
-
-#include <stdio.h>
+#ifndef VICE_MMCREPLAY_H
+#define VICE_MMCREPLAY_H
 
 #include "types.h"
 
@@ -60,6 +58,10 @@ extern void mmcreplay_reset(void);
 extern void mmcreplay_config_setup(BYTE *rawcart);
 extern int  mmcreplay_bin_attach(const char *filename, BYTE *rawcart);
 extern void mmcreplay_detach(void);
+
+extern int mmcreplay_resources_init(void);
+extern void mmcreplay_resources_shutdown(void);
+extern int mmcreplay_cmdline_options_init(void);
 
 extern int  mmcr_enabled;
 extern int  mmcr_clockport_enabled;

@@ -151,6 +151,9 @@ int cartridge_resources_init(void)
     if (ide64_resources_init() < 0)
         return -1;
 
+    if (mmcreplay_resources_init() < 0)
+        return -1;
+
     if (resources_register_string(resources_string) < 0)
         return -1;
 
@@ -281,6 +284,9 @@ int cartridge_cmdline_options_init(void)
     mon_cart_cmd.cartridge_trigger_freeze_nmi_only = cartridge_trigger_freeze_nmi_only;
 
     if (ide64_cmdline_options_init() < 0)
+        return -1;
+
+    if (mmcreplay_cmdline_options_init() < 0)
         return -1;
 
     return cmdline_register_options(cmdline_options);
