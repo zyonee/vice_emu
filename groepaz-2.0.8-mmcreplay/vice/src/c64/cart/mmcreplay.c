@@ -53,10 +53,38 @@
 #include "vicii-phi1.h"
 
 #define DEBUG
-/* #define DEBUG_LOGBANKS */          /* log access to banked rom/ram */
+                                                        /* #define DEBUG_LOGBANKS *//* log access to banked rom/ram */
 #define DEBUG_IOBANKS           /* log access to banked rom/ram in io */
 #define LOG_MAPPER              /* log memory map changes */
-/* #define LOG_CLOCKPORT *//* log clockport i/o */
+                                                      /* #define LOG_CLOCKPORT *//* log clockport i/o */
+
+#define LOG_READ_DE00
+#define LOG_WRITE_DE00
+#define LOG_WRITE_DE01
+
+/* #define LOG_READ_IO1_RAM */
+/* #define LOG_READ_IO1_ROM */
+#define LOG_READ_IO1_DISABLED
+#define LOG_WRITE_IO1_RAM
+#define LOG_WRITE_IO1_ROM
+#define LOG_WRITE_IO1_DISABLED
+
+/* #define LOG_READ_DF10 */
+#define LOG_READ_DF11
+#define LOG_READ_DF12
+#define LOG_READ_DF13
+
+/* #define LOG_WRITE_DF10 */
+#define LOG_WRITE_DF11
+#define LOG_WRITE_DF12
+#define LOG_WRITE_DF13
+
+/* #define LOG_READ_IO2_RAM */
+/* #define LOG_READ_IO2_ROM */
+#define LOG_READ_IO2_DISABLED
+#define LOG_WRITE_IO2_RAM
+#define LOG_WRITE_IO2_ROM
+#define LOG_WRITE_IO2_DISABLED
 
 /* #define TEST_AR_MAPPER */
 /* #define TEST_RR_MAPPER */
@@ -110,6 +138,8 @@ static unsigned int enable_io1 = 0;
 static unsigned int enable_io2 = 0;
 static unsigned int enable_io1_ram = 0;
 static unsigned int enable_io2_ram = 0;
+
+static unsigned int ultimax_mapping_hack = 0;
 
 /*** $DE00:	RR control register write */
 /* bit 0:	GAME line (W) */
@@ -521,7 +551,7 @@ void mmcreplay_config_changed (BYTE mode_phi1,  /* game/exrom */
     /* FIXME: i'm totally not sure about these *shrug* */
 
     mode_phi1 ^= 2;             /* FIXME: invert exrom ? */
-    mode_phi1 = 2|0;
+    mode_phi1 = 2 | 0;
 
     cart_ultimax_phi1 = (mode_phi1 & 1) & ((mode_phi1 >> 1) & 1);
     cart_ultimax_phi2 = export.game & (export.exrom ^ 1)
@@ -532,23 +562,22 @@ void mmcreplay_config_changed (BYTE mode_phi1,  /* game/exrom */
 }
 
 #ifdef DEBUG
-int     last_mainmode = 0;
-int     last_biosmode = 0;
-int     last_biosmode444 = 0;
+static int     last_mainmode = 0;
+static int     last_biosmode = 0;
+static int     last_biosmode444 = 0;
 #endif
 
 /* FIXME: mapping in freeze mode */
 void mmcreplay_update_mapper_nolog (unsigned int wflag, int release_freeze)
 {
-//      unsigned int bank;
     unsigned int cartbankl = 0, cartbankh = 0;
     unsigned int rambankl = 0, rambankh = 0;
     unsigned int io1bank = 0, io2bank = 0;
     unsigned int io1bank_ram = 0, io2bank_ram = 0;
-//      unsigned int rambankl=0,rambankh=0;
-
-//      int mode_phi1,mode_phi2;
     int     mapped_game, mapped_exrom;
+
+    ultimax_mapping_hack = 0;
+
     mapped_exrom = enable_exrom;
     mapped_game = enable_game;
 
@@ -557,9 +586,6 @@ void mmcreplay_update_mapper_nolog (unsigned int wflag, int release_freeze)
 
     enable_ramA000 = 0;
 
-//      bank=(bank_address_16_18<<3)|(bank_address_13_15&6);
-
-//    export_ram = (mode_phi2 >> 5) & 1;
     /*      df11:0  0 = mmcreplay bios mode */
     if (disable_mmc_bios == 0)
     {
@@ -735,7 +761,6 @@ void mmcreplay_update_mapper_nolog (unsigned int wflag, int release_freeze)
                             if (((enable_game) | (enable_exrom << 1)) == 2)
                             {
                                 /* ??? ROM in io? */
-//                                                      enable_io2=0;
                                 enable_io1_ram = 0;
                                 enable_io2_ram = 0;
                             }
@@ -743,14 +768,10 @@ void mmcreplay_update_mapper_nolog (unsigned int wflag, int release_freeze)
                     }
                     else
                     {
-//                                      enable_raml=0;
                         enable_io1 = 0;
                         enable_io2 = 1;
                     }
                 }
-
-
-
             }
             else                /* disable_rr_rom=0   $e000 - $ffff    (512K read/write window) */
             {
@@ -758,6 +779,7 @@ void mmcreplay_update_mapper_nolog (unsigned int wflag, int release_freeze)
                 /* ultimax, ram at $e000, rom at $8000, rom at $a000 */
                 mapped_game = 1;
                 mapped_exrom = 1;
+                ultimax_mapping_hack = 1;
 
                 if (enable_ram_io1)
                 {
@@ -867,7 +889,6 @@ void mmcreplay_update_mapper_nolog (unsigned int wflag, int release_freeze)
                      */
                     if (enable_ram_io)  /* ultimax */
                     {
-//LOG(("aaa"));                         
 #ifdef DEBUG
                         if (last_biosmode444 != 111)
                         {
@@ -879,14 +900,12 @@ void mmcreplay_update_mapper_nolog (unsigned int wflag, int release_freeze)
                         enable_ramh = 1;
                         enable_io1 = 0;
                         enable_io2 = 1;
+
                         mapped_game = 1;
                         mapped_exrom = 0;       /* ultimax */
 
-//                                      mapped_game=1;mapped_exrom=1; /* 16k game */
-//                                      mapped_game=0;mapped_exrom=1; /* 16k game */
-//                                      mapped_game=0;mapped_exrom=0; /* 16k game */
 
-//                                      if(enable_extended_mode)
+/*                      if(enable_extended_mode) */
                         {
                             /* full rom banking */
                             cartbankl =
@@ -902,20 +921,7 @@ void mmcreplay_update_mapper_nolog (unsigned int wflag, int release_freeze)
                                 & (0x3f);
                             io2bank = io1bank;
 
-
-//                                              cartbankl=(7<<3)|0;
-//                                              cartbankh=(7<<3)|0;
-//                                              cartbankl=(7<<3)|bank_address_13_15;
-//                                              cartbankh=(7<<3)|bank_address_13_15;
-#if 0
-                            if (bank_address_16_18 == 4)
-                            {
-                                cartbankl = (7 << 3) | bank_address_13_15;
-                                cartbankh = (7 << 3) | bank_address_13_15;
-                            }
-#endif
-#if 1
-//                                              if(bank_address_16_18==7)
+/*                          if(bank_address_16_18==7) */
                             {
                                 switch (bank_address_13_15)
                                 {
@@ -923,7 +929,6 @@ void mmcreplay_update_mapper_nolog (unsigned int wflag, int release_freeze)
                                     case 7:
                                         cartbankl = (7 << 3) | 0;
                                         cartbankh = (7 << 3) | 0;
-//LOG(("this"));                                                                        
                                         break;
                                     default:
                                         cartbankl =
@@ -933,7 +938,6 @@ void mmcreplay_update_mapper_nolog (unsigned int wflag, int release_freeze)
                                         break;
                                 }
                             }
-#endif
 
                             if (allow_bank)
                             {
@@ -953,50 +957,12 @@ void mmcreplay_update_mapper_nolog (unsigned int wflag, int release_freeze)
 
 
                         romA000_bank = cartbankl;
-//                                              rambankl=cartbankl;
                         ramA000_bank = cartbankl;
                         rambankh = rambankl;
-#if 0
-/* FIXME: hack to make bios (filebrowser) work */
 
-                        if (cartbankl == ((7 << 3) | 1))
-                        {
-                            cartbankl = (7 << 3) | 0;
-                            LOG (("this"));
-                        }
-#endif
-/*					
-					
-					else
-					{
-						if(allow_bank)
-						{
-							io1bank_ram=(7<<3)|io1bank_ram;
-							io2bank_ram=(7<<3)|io2bank_ram;
-						}
-						else
-						{
-							io1bank_ram=(0<<3)|0;
-							io2bank_ram=(0<<3)|0;
-						}
-						
-					}
-*/
-
-                        if (enable_extended_mode)
-                        {
-                            if (((enable_game) | (enable_exrom << 1)) == 2)
-                            {
-                                /* ??? ROM in io? */
-//                                                      enable_io2=0;
-                                //enable_io1_ram=0;
-                                //enable_io2_ram=0;
-                            }
-                        }
                     }
                     else        /* 16k game */
                     {
-//LOG(("bbb"));                         
 #ifdef DEBUG
                         if (last_biosmode444 != 222)
                         {
@@ -1009,7 +975,6 @@ void mmcreplay_update_mapper_nolog (unsigned int wflag, int release_freeze)
                         mapped_game = 1;
                         mapped_exrom = 1;       /* 16k game */
 
-//                                      bank_address_13_15=0;
                         cartbankl = ((7 << 3) | bank_address_13_15) & (0x3f);
                         cartbankh = cartbankl;
                         rambankl = ((7 << 3) | bank_address_13_15) & (0x3f);
@@ -1018,7 +983,6 @@ void mmcreplay_update_mapper_nolog (unsigned int wflag, int release_freeze)
                         io2bank = io1bank;
 
                         romA000_bank = cartbankl;
-
 
                         if (enable_extended_mode)
                         {
@@ -1038,30 +1002,6 @@ void mmcreplay_update_mapper_nolog (unsigned int wflag, int release_freeze)
                             io2bank = io1bank;
 
                             romA000_bank = cartbankl;
-#endif
-
-#if 0
-//                                              if(bank_address_16_18==7)
-                            {
-                                switch (bank_address_13_15)
-                                {
-                                    case 6:
-                                    case 7:
-/* FIXME: is it really bank 0 ? else bios wont start */
-                                        cartbankl = (7 << 3) | 0;
-                                        cartbankh = (7 << 3) | 0;
-                                        io1bank = (7 << 3) | 0;
-                                        io2bank = (7 << 3) | 0;
-//LOG(("that"));                                                                        
-                                        break;
-                                    default:
-                                        cartbankl =
-                                            (7 << 3) | bank_address_13_15;
-                                        cartbankh =
-                                            (7 << 3) | bank_address_13_15;
-                                        break;
-                                }
-                            }
 #endif
                         }
 
@@ -1111,29 +1051,6 @@ void mmcreplay_update_mapper_nolog (unsigned int wflag, int release_freeze)
         enable_io1 = 1;
         enable_io2 = 1;
 
-#if 0
-        LOG (("mapped_game:%d mapped_exrom:%d", mapped_game, mapped_exrom));
-        switch (((enable_exrom ^ 1) << 1) | (enable_game))
-        {
-            case 0:
-                mapped_game = 0;
-                mapped_exrom = 1;       /*0 0 8k game   roml ($8000) */
-                break;
-            case 1:
-                mapped_game = 1;
-                mapped_exrom = 1;       /*1 0 16k game */
-                break;
-            case 2:
-                mapped_game = 0;
-                mapped_exrom = 1;       /*0 1 8k game   roml ($8000) */
-                break;
-            case 3:
-                mapped_game = 1;
-                mapped_exrom = 0;       /*1 1 ultimax   roml ($8000),romh ($e000) */
-                break;
-        }
-        LOG (("mapped_game:%d mapped_exrom:%d", mapped_game, mapped_exrom));
-#endif
         enable_raml = 0;
         enable_ramh = 0;
         if (disable_rr_rom)     /* When in 16K mode, bit 5 enables RAM at $a000 - $bfff */
@@ -1196,9 +1113,9 @@ void mmcreplay_update_mapper_nolog (unsigned int wflag, int release_freeze)
     }
     else if (disable_rr_rom)
     {
-                /**************************************************************************************************
-			normal mapper
-		***************************************************************************************************/
+    /**************************************************************************************************
+     * normal mapper
+     **************************************************************************************************/
 #ifdef DEBUG
         if (last_mainmode != 333)
         {
@@ -1232,9 +1149,9 @@ void mmcreplay_update_mapper_nolog (unsigned int wflag, int release_freeze)
     }
     else
     {
-                /**************************************************************************************************
-			retro replay mapper
-		***************************************************************************************************/
+        /**************************************************************************************************
+         * retro replay mapper
+         **************************************************************************************************/
 #ifdef DEBUG
         if (last_mainmode != 444)
         {
@@ -1349,7 +1266,6 @@ void mmcreplay_update_mapper_nolog (unsigned int wflag, int release_freeze)
             if (enable_ram_io1)
             {
                 enable_io1 = 1;
-//                              enable_io2=1;
                 enable_io2 = 0;
             }
             else
@@ -1410,18 +1326,19 @@ int     iobank_write = 0;
 #endif
 
 /********************************************************************************************************************
-	IO1 - $deXX
+  IO1 - $deXX
 ********************************************************************************************************************/
 
 BYTE REGPARM1 mmcreplay_io1_read (WORD addr)
 {
-//    LOG(("MMCREPLAY: IO1 RD %04x",addr));     
+    BYTE    value;
+
     if (rr_active)
     {
         switch (addr & 0xff)
         {
-                /* OK $DE00 / $DE01: RR control register read */
-                /*
+                /* $DE00 / $DE01: RR control register read
+                 *
                  * bit 0:     0 = Flash write protected, 1 = Flash write enabled
                  * bit 1:     0 = always map first ram bank in i/o space, 1 = enable io ram banking (R)
                  * bit 2:     1 = freeze button pressed
@@ -1434,12 +1351,17 @@ BYTE REGPARM1 mmcreplay_io1_read (WORD addr)
             case 0:
             case 1:
                 io_source = IO_SOURCE_MMCREPLAY;
-                return ((bank_address_13_15 & 3) << 3) |        /* bit 3,4 */
+                value = ((bank_address_13_15 & 3) << 3) |       /* bit 3,4 */
                     (enable_flash_write) |      /* bit 0 */
                     (allow_bank << 1) | /* bit 1 */
                     (freeze_pressed << 2) |     /* bit 2 */
                     (enable_ram_io1 << 6) |     /* bit 6 */
                     ((bank_address_13_15 & 4) << 5);    /* bit 7 */
+#ifdef LOG_READ_DE00
+                LOG (("MMCREPLAY: IO1 RD %04x %02x enable_flash_write %x allow_bank %x freeze_pressed %x bank_address_13_15 %x enable_ram_io1 %x", addr, value, enable_flash_write, allow_bank, freeze_pressed, bank_address_13_15, enable_ram_io1));
+#endif
+                return value;
+
                 break;
             default:
 #ifdef HAVE_TFE
@@ -1453,7 +1375,6 @@ BYTE REGPARM1 mmcreplay_io1_read (WORD addr)
 #ifdef LOG_CLOCKPORT
                         LOG (("MMCREPLAY: Clockport RD %04x", addr));
 #endif
-                        io_source = 0;
                         return 0;
                     }
                 }
@@ -1465,78 +1386,77 @@ BYTE REGPARM1 mmcreplay_io1_read (WORD addr)
             io_source = IO_SOURCE_MMCREPLAY;
             if (enable_ram_io)
             {
-//LOG(("read RAM IO1 %04x %02x (%02x:%04x)", addr,export_ram0[(addr & 0x1fff) + (io1_ram_bank << 13)],io1_ram_bank,(addr & 0x1fff)));
+#ifdef LOG_READ_IO1_RAM
+                LOG (("MMCREPLAY: RAM IO1 RD %04x %02x (%02x:%04x)", addr,
+                      export_ram0[(addr & 0x1fff) + (io1_ram_bank << 13)],
+                      io1_ram_bank, (addr & 0x1fff)));
+#endif
                 return export_ram0[(io1_ram_bank << 13) + 0x1e00 +
                                    (addr & 0xff)];
             }
-//LOG(("read ROM IO1 %04x %02x (%02x:%04x)", addr,roml_banks[(addr & 0x1fff) + (io1_bank << 13)],io1_bank,(addr & 0x1fff)));
-            return roml_banks[(addr & 0x1fff) + (io1_bank << 13)];
+#ifdef LOG_READ_IO1_ROM
+            LOG (("MMCREPLAY: ROM IO1 RD %04x %02x (%02x:%04x)", addr,
+                  roml_banks[(addr & 0x1fff) + (io1_bank << 13)], io1_bank,
+                  (addr & 0x1fff)));
+#endif
+            return flashrom_read ((io1_ram_bank << 13) + 0x1e00 +
+                                  (addr & 0xff));
         }
         else
         {
-            LOG (("read DISABLED IO1 %04x %02x (%02x:%04x)", addr,
+#ifdef LOG_READ_IO1_DISABLED
+            LOG (("MMCREPLAY: DISABLED IO1 RD %04x %02x (%02x:%04x)", addr,
                   roml_banks[(addr & 0x1fff) + (io1_bank << 13)], io1_bank,
                   (addr & 0x1fff)));
+#endif
         }
     }
     else
     {
-
-#if 1
+        /* FIXME: when RR regs are disabled, is the mapped RAM still there ? */
         if (enable_io1)
         {
             io_source = IO_SOURCE_MMCREPLAY;
             if (enable_ram_io)
             {
-//LOG(("read RAM IO1 %04x %02x (%02x:%04x)", addr,export_ram0[(addr & 0x1fff) + (io1_ram_bank << 13)],io1_ram_bank,(addr & 0x1fff)));
+#ifdef LOG_READ_IO1_RAM
+                LOG (("MMCREPLAY: RAM IO1 RD %04x %02x (%02x:%04x)", addr,
+                      export_ram0[(addr & 0x1fff) + (io1_ram_bank << 13)],
+                      io1_ram_bank, (addr & 0x1fff)));
+#endif
                 return export_ram0[(io1_ram_bank << 13) + 0x1e00 +
                                    (addr & 0xff)];
             }
-//LOG(("read ROM IO1 %04x %02x (%02x:%04x)", addr,roml_banks[(addr & 0x1fff) + (io1_bank << 13)],io1_bank,(addr & 0x1fff)));
-            return roml_banks[(addr & 0x1fff) + (io1_bank << 13)];
+#ifdef LOG_READ_IO1_ROM
+            LOG (("MMCREPLAY: ROM IO1 RD %04x %02x (%02x:%04x)", addr,
+                  roml_banks[(addr & 0x1fff) + (io1_bank << 13)], io1_bank,
+                  (addr & 0x1fff)));
+#endif
+            return flashrom_read ((io1_ram_bank << 13) + 0x1e00 +
+                                  (addr & 0xff));
         }
         else
         {
-            LOG (("read DISABLED IO1 %04x %02x (%02x:%04x)", addr,
+#ifdef LOG_READ_IO1_DISABLED
+            LOG (("MMCREPLAY: DISABLED IO1 RD %04x %02x (%02x:%04x)", addr,
                   roml_banks[(addr & 0x1fff) + (io1_bank << 13)], io1_bank,
                   (addr & 0x1fff)));
-        }
-#else
-        LOG (("read RR DISABLED IO1 %04x %02x (%02x:%04x)", addr,
-              roml_banks[(addr & 0x1fff) + (io1_bank << 13)], io1_bank,
-              (addr & 0x1fff)));
 #endif
-
+        }
     }
     return vicii_read_phi1 ();
 }
 
-/*
-$DE01:	extended RR control register write
-		--------------------------------------
-		bit 0:	0 = disable clockport, 1 = enable clockport (W)
-(*2)		bit 1:	0 = disable io ram banking, 1 = enable io ram banking (W)
-(*2)		bit 2:	0 = enable freeze, 1 = disable freeze (W)
-		bit 3:	bank address 13 (mirror of $DE00) (W)
-		bit 4:	bank address 14 (mirror of $DE00) (W)
-(*2)		bit 5:	0 = enable MMC registers, 1 = disable MMC registers (W)(*1)
-(*2)		bit 6:	0 = ram/rom @ DFxx, 1 = ram/rom @ $DExx (W)
-		bit 7:	bank address 15 (mirror of $DE00) (W)
-
-(*1) Can only be written when bit 6 of $DF12 is 1. Register becomes effective
-		when bit 0 of $DF11 is 1.
-(*2) these bits are write-once if bit 0 of $DF11 is 1
-*/
-
 void REGPARM2 mmcreplay_io1_store (WORD addr, BYTE value)
 {
-//LOG (("MMCREPLAY: IO1 ST %04x %02x", addr, value));
     if (rr_active)
     {
         switch (addr & 0xff)
         {
-            case 0:            /* OK $DE00:  RR control register */
-                /*    bit 0:  GAME line (W)
+            case 0:
+                /* $DE00:  RR control register write
+                 *
+                 * bit 0:     GAME line (W)
                  * bit 1:     EXROM line (W)
                  * bit 2:     1 = disable RR (W) (*)
                  * bit 3:     bank address 13 (W)
@@ -1544,9 +1464,8 @@ void REGPARM2 mmcreplay_io1_store (WORD addr, BYTE value)
                  * bit 5:     0 = rom enable, 1 = ram enable (W)
                  * bit 6:     1 = exit freeze mode (W)
                  * bit 7:     bank address 15 (W)
-                 * (*) bit can be reset by setting bit 6 of $df12 */
-
-//LOG(("MMCREPLAY: IO1 ST %04x %02x",addr,value));
+                 * (*) bit can be reset by setting bit 6 of $df12
+                 */
 
                 enable_game = value & 1;        /* bit 0 */
                 enable_exrom = ((value >> 1) & 1) ^ 1;  /* bit 1 FIXME: is the bit inverted in the register ?! */
@@ -1557,14 +1476,30 @@ void REGPARM2 mmcreplay_io1_store (WORD addr, BYTE value)
                 }
                 enable_ram_io = (value >> 5) & 1;       /* bit 5 */
                 enable_freeze_exit = (value >> 6) & 1;  /* bit 6 */
-
-                LOG (("MMCREPLAY: IO1 ST %04x enable_ram_io %02x", addr,
-                      enable_ram_io));
-
+#ifdef LOG_WRITE_DE00
+                LOG (("MMCREPLAY: IO1 ST %04x %02x enable_game %x enable_exrom %x disable freezer regs %x bank_address_13_15 %x enable_ram_io %x enable_freeze_exit %x", addr, value, enable_game, enable_exrom, value & 4, bank_address_13_15, enable_ram_io, enable_freeze_exit));
+#endif
                 mmcreplay_update_mapper (CMODE_WRITE, enable_freeze_exit);
                 return;
                 break;
-            case 1:            /* OK $DE01:   extended RR control register write */
+            case 1:
+                /*
+                 * $DE01: extended RR control register write
+                 *        --------------------------------------
+                 *        bit 0:  0 = disable clockport, 1 = enable clockport (W)
+                 *   (*2) bit 1:  0 = disable io ram banking, 1 = enable io ram banking (W)
+                 *   (*2) bit 2:  0 = enable freeze, 1 = disable freeze (W)
+                 *        bit 3:  bank address 13 (mirror of $DE00) (W)
+                 *        bit 4:  bank address 14 (mirror of $DE00) (W)
+                 *   (*2) bit 5:  0 = enable MMC registers, 1 = disable MMC registers (W)(*1)
+                 *   (*2) bit 6:  0 = ram/rom @ DFxx, 1 = ram/rom @ $DExx (W)
+                 *        bit 7:  bank address 15 (mirror of $DE00) (W)
+                 *
+                 * (*1) Can only be written when bit 6 of $DF12 is 1. Register becomes effective
+                 *      when bit 0 of $DF11 is 1.
+                 * (*2) these bits are write-once if bit 0 of $DF11 is 1
+                 */
+
                 /* Every bit in $de01 can always be altered in Super Mapper mode+MMC Bios Mode. */
                 bank_address_13_15 = (((value >> 3) & 3) | ((value >> 5) & 4)); /* bit 3,4,7 */
                 mmcr_clockport_enabled = value & 1;     /* bit 0 */
@@ -1578,19 +1513,26 @@ void REGPARM2 mmcreplay_io1_store (WORD addr, BYTE value)
                     if ((enable_extended_mode == 1)
                         || (enable_16k_mapping == 1))
                     {
+                        /* FIXME: documentation says that this bit becomes effective when df11 bit0 is 1 */
                         /*bit 5:        0 = enable MMC registers, 1 = disable MMC registers (W) */
                         enable_mmc_regs_pending = ((value >> 5) & 1) ^ 1;       /* bit 5 */
+                        if (disable_mmc_bios == 1)
+                        {
+                            enable_mmc_regs = ((value >> 5) & 1) ^ 1;   /* bit 5 */
+                        }
                     }
                     if (disable_mmc_bios != 0)
                     {
                         write_once = 1;
                     }
                 }
-                LOG (("MMCREPLAY: IO1 ST %04x %02x", addr, value));
+#ifdef LOG_WRITE_DE01
+                LOG (("MMCREPLAY: IO1 ST %04x %02x mmcr_clockport_enabled %x allow_bank %x no_freeze %x bank_address_13_15 %x enable_mmc_regs_pending %x enable_ram_io1 %x", addr, value, mmcr_clockport_enabled, allow_bank, no_freeze, bank_address_13_15, enable_mmc_regs_pending, enable_ram_io1));
+#endif
                 mmcreplay_update_mapper (CMODE_WRITE, 0);
                 return;
                 break;
-                /* not for us */
+
             default:
 #ifdef HAVE_TFE
                 /*
@@ -1614,504 +1556,425 @@ void REGPARM2 mmcreplay_io1_store (WORD addr, BYTE value)
         {
             if (enable_ram_io)
             {
+#ifdef LOG_WRITE_IO1_RAM
                 LOG (("store RAM IO1 %04x %02x (%02x:%04x)", addr, value,
                       io1_ram_bank, (addr & 0x1fff)));
+#endif
                 export_ram0[(io1_ram_bank << 13) + 0x1e00 + (addr & 0xff)] =
                     value;
             }
             else
             {
+#ifdef LOG_WRITE_IO1_ROM
                 LOG (("store DISABLED RAM IO1 %04x %02x (%02x:%04x)", addr,
                       value, io1_ram_bank, (addr & 0x1fff)));
+#endif
+                flashrom_write ((io1_ram_bank << 13) + 0x1e00 + (addr & 0xff),
+                                value);
             }
         }
         else
         {
+#ifdef LOG_WRITE_IO1_DISABLED
             LOG (("store DISABLED IO1 %04x %02x (%02x:%04x)", addr, value,
                   io1_bank, (addr & 0x1fff)));
+#endif
         }
     }                           /* rr active */
     else
     {
-        LOG (("store DISABLED RR IO1 %04x %02x (%02x:%04x)", addr, value,
-              io1_bank, (addr & 0x1fff)));
+        /* FIXME: when RR regs are disabled, is the mapped RAM still there ? */
+        if (enable_io1)
+        {
+            if (enable_ram_io)
+            {
+#ifdef LOG_WRITE_IO1_RAM
+                LOG (("store RAM IO1 %04x %02x (%02x:%04x)", addr, value,
+                      io1_ram_bank, (addr & 0x1fff)));
+#endif
+                export_ram0[(io1_ram_bank << 13) + 0x1e00 + (addr & 0xff)] =
+                    value;
+            }
+            else
+            {
+#ifdef LOG_WRITE_IO1_ROM
+                LOG (("store DISABLED RAM IO1 %04x %02x (%02x:%04x)", addr,
+                      value, io1_ram_bank, (addr & 0x1fff)));
+#endif
+                flashrom_write ((io1_ram_bank << 13) + 0x1e00 + (addr & 0xff),
+                                value);
+            }
+        }
+        else
+        {
+#ifdef LOG_WRITE_IO1_DISABLED
+            LOG (("store DISABLED IO1 %04x %02x (%02x:%04x)", addr, value,
+                  io1_bank, (addr & 0x1fff)));
+#endif
+        }
+
     }
 }
 
-/*
-	IO2 - $dfXX
-*/
-
-
-/*
-$DF10:	MMC SPI transfer register
-		-----------------------------
-		byte written is sent to the card & response from the card is read here
-
-$DF11:	MMC control register
-		------------------------
-		bit 0:	0 = MMC BIOS enabled, 1 = MMC BIOS disabled (R/W) (*)
-		bit 1:	0 = card selected, 1 = card not selected (R/W) (**)
-		bit 2:	0 = 250khz transfer, 1 = 8mhz transfer (R/W)
-		bit 3:	** ALWAYS 0 **
-		bit 4:	** ALWAYS 0 **
-		bit 5:	0 = allow RR rom when MMC BIOS disabled , 1 = disable RR ROM (R/W)	(***)
-		bit 6:	0 = SPI write trigger mode, 1 = SPI read trigger mode (R/W)
-		bit 7:	** ALWAYS 0 **
-
-(*) 	Enabling MMC Bios sets ROM banking to the last 64K bank
-(**) 	This bit also controls the green activity LED.
-(***)	When in mmcreplay bios mode, bit 5 controls RAM banking (0 = $e000 - $ffff, 1 = $8000 - $9fff)
-			When in 16K mode, bit 5 enables RAM at $a000 - $bfff
-
-$DF12:	MMC status register
-		-----------------------
-		bit 0:	0 = SPI ready, 1 = SPI busy (R)						
-						1 = forbid ROM write accesses (W) (*)
-	
-		bit 1:	feedback of $DE00 bit 0 (GAME) (R)					
-		bit 2:	feedback of $DE00 bit 1 (EXROM) (R)
-		bit 3:	0 = card inserted, 1 = no card inserted (R)
-		bit 4:  0 = card write enabled, 1 = card write disabled (R)
-		
-		bit 5:	EEPROM DATA line / DDR Register (R/W) (**)
-		bit 6:	0 = RR compatibility mode, 1 = Extended mode (W) (***)
-		bit 7:	EEPROM CLK line (W)
-
-(*) Setting this bit will disable writes to ROM until next reset.
-(**) Setting DATA to "1" enables reading data bit from EEPROM at this position.
-(***) Selecting RR compatibility mode limits RAM to 32K and
-		disables writes to extended banking register.
-		Selecting Extended mode enables full RAM banking and enables
-		Nordic Power mode in RR mode.
-
-$DF13:	Extended banking register (*)
-		-----------------------------
-		bit 0:	bank address 16	(R/W)
-		bit 1:	bank address 17 (R/W)
-		bit 2:	bank address 18 (R/W)
-		bit 3:	** ALWAYS 0 **
-		bit 4:	** ALWAYS 0 **
-		bit 5:	16K rom mapping (R/W)
-		bit 6:	1 = enable RR register
-		bit 7:	** ALWAYS 0 **
-
-(*) Can only be read/written to when bit 6 of $DF12 is 1.
-
-*/
+/********************************************************************************************************************
+  IO1 - $dfXX
+********************************************************************************************************************/
 
 BYTE REGPARM1 mmcreplay_io2_read (WORD addr)
 {
     BYTE    value;
 
-//LOG(("MMCREPLAY: IO2 RD %04x",addr));
-
-//    if (rr_active)
+    switch (addr & 0xff)
     {
-
-        switch (addr & 0xff)
-        {
-            case 0x10:         /* OK $df10 MMC SPI transfer register */
-                if (enable_mmc_regs)
-                {
-//LOG(("MMCREPLAY: IO2 RD %04x",addr));
-                    io_source = IO_SOURCE_MMCREPLAY;
-                    return spi_mmc_data_read ();
-                }
-                else
-                {
-
-                    if (!enable_io2)
-                    {
-                        LOG (("MMCREPLAY: IO2 RD %04x (disabled!)", addr));
-                    }
-
-                }
-                break;
-            case 0x11:         /* OK $df11 MMC control register */
-                if (enable_mmc_regs)
-                {
-//    LOG(("MMCREPLAY: IO2 RD %04x",addr)); 
-                    io_source = IO_SOURCE_MMCREPLAY;
-                    value = disable_mmc_bios;   /* bit 0 */
-                    value |= (spi_mmc_card_selected_read () << 1);      /* bit 1 */
-                    value |= (spi_mmc_enable_8mhz_read () << 2);        /* bit 2 */
-                    /* bit 3,4 always 0 */
-                    value |= (disable_rr_rom << 5);     /* bit 5 */
-                    value |= (spi_mmc_trigger_mode_read () << 6);       /* bit 6 */
-                    /* bit 7 always 0 */
-                    return value;
-                }
-                else
-                {
-
-                    if (!enable_io2)
-                    {
-                        LOG (("MMCREPLAY: IO2 RD %04x (disabled!)", addr));
-                    }
-
-                }
-                break;
-            case 0x12:         /* OK $df12 MMC status register */
-                if (enable_mmc_regs)
-                {
-                    BYTE    value = 0;
-                    io_source = IO_SOURCE_MMCREPLAY;
-                    /* EEPROM is only accessible in MMC Replay Bios mode */
-                    if (disable_mmc_bios == 0)
-                    {
-                        value = eeprom_data_read () << 5;       /* bit 5 */
-                    }
-                    value |= (spi_mmc_busy ()); /* bit 0 */
-                    value |= (enable_game << 1);        /* bit 1 */
-                    value |= (enable_exrom ^ 1) << 2;   /* bit 2 FIXME: inverted in reg ? */
-                    value |= (spi_mmc_card_inserted () ^ 1) << 3;       /* bit 3 */
-                    value |= (spi_mmc_card_write_enabled () ^ 1) << 4;  /* bit 4 */
-                    /* bit 6,7 not readable */
-#ifdef DEBUG
-                    if ((value != 0x18) && (value != 0x38))
-                        if (disable_mmc_bios == 0)
-                        {
-                            LOG (("MMCREPLAY: IO2 RD %04x (eeprom)", addr));
-                            LOG (("MMCREPLAY: IO2 RD %04x %02x", addr, value));
-                        }
-#endif
-                    return value;
-                }
-                else
-                {
-
-                    if (!enable_io2)
-                    {
-                        LOG (("MMCREPLAY: IO2 RD %04x (disabled!)", addr));
-                    }
-
-                }
-#if 0
-//                  else
-                {
-
-                    BYTE    value = 0;
-//    LOG(("MMCREPLAY: IO2 RD %04x",addr)); 
-                    /* EEPROM is only accessible in MMC Replay Bios mode */
-                    if (disable_mmc_bios == 0)
-                    {
-                        io_source = IO_SOURCE_MMCREPLAY;
-//    LOG(("MMCREPLAY: IO2 RD %04x (eeprom,reg disabled?)",addr));
-                        value = eeprom_data_read () << 5;       /* bit 5 */
-                        value |= (spi_mmc_busy ());     /* bit 0 */
-                        value |= (enable_game << 1);    /* bit 1 */
-                        value |= (enable_exrom ^ 1) << 2;       /* bit 2 FIXME: inverted in reg ? */
-                        value |= (spi_mmc_card_inserted () ^ 1) << 3;   /* bit 3 */
-                        value |= (spi_mmc_card_write_enabled () ^ 1) << 4;      /* bit 4 */
-                        /* bit 6,7 not readable */
-                        return value;
-                    }
-                }
-#endif
-                break;
-            case 0x13:         /* OK $df13 Extended banking register */
-
-                /* $df13 can only be READ AND WRITTEN if bit6 of $df12 = 1 */
-                if (enable_extended_mode)
-                {
-                    LOG (("MMCREPLAY: IO2 RD %04x", addr));
-                    io_source = IO_SOURCE_MMCREPLAY;
-                    value = bank_address_16_18; /* bit 0-2 */
-                    /* bit 3,4 always 0 */
-                    value |= enable_16k_mapping << 5;   /* bit 5 */
-                    /*value|=enable_rr_regs<<6; *//* bit 6 FIXME: readable ? */
-                    /* bit 7 always 0 */
-                    return value;
-                }
-                else
-                {
-
-                    if (!enable_io2)
-                    {
-                        LOG (("MMCREPLAY: IO2 RD %04x (disabled!)", addr));
-                    }
-
-                }
-                break;
-        }
-
-        if (enable_io2)
-        {
-            io_source = IO_SOURCE_MMCREPLAY;
-            if (enable_ram_io)
+        case 0x10:
+            /*
+             * $DF10: MMC SPI transfer register
+             *
+             * response from the card is read here
+             */
+            if (enable_mmc_regs)
             {
-//                  LOG(("read RAM IO2 %04x %02x (%02x:%04x)", addr,export_ram0[(addr & 0x1fff) + (io2_ram_bank << 13)],io2_ram_bank,(addr & 0x1fff)));
-                return export_ram0[(io2_ram_bank << 13) + 0x1f00 +
-                                   (addr & 0xff)];
+                io_source = IO_SOURCE_MMCREPLAY;
+                value = spi_mmc_data_read ();
+#ifdef LOG_READ_DF10
+                LOG (("MMCREPLAY: IO2 RD %04x %02x", addr, value));
+#endif
+                return value;
             }
-//              LOG(("read ROM IO2 %04x %02x (%02x:%04x)", addr,roml_banks[(addr & 0x1fff) + (io2_bank << 13)],io2_bank,(addr & 0x1fff)));
-            return roml_banks[(addr & 0x1fff) + (io2_bank << 13)];
-        }
-        else
-        {
-            LOG (("read DISABLED IO2 %04x %02x (%02x:%04x)", addr,
-                  roml_banks[(addr & 0x1fff) + (io2_bank << 13)], io2_bank,
-                  (addr & 0x1fff)));
-        }
-//        return 0;
-        return vicii_read_phi1 ();
-    }
-#if 0
-    else
-    {
-
-        LOG (("read RR DISABLED IO2 %04x %02x (%02x:%04x)", addr,
-              roml_banks[(addr & 0x1fff) + (io2_bank << 13)], io2_bank,
-              (addr & 0x1fff)));
-
-#if 0
-        if (enable_io2)
-        {
-            io_source = IO_SOURCE_MMCREPLAY;
-            if (enable_ram_io)
+            break;
+        case 0x11:
+            /*
+             * $DF11: MMC control register
+             *        ------------------------
+             *        bit 0:  0 = MMC BIOS enabled, 1 = MMC BIOS disabled                   (R/W) (*)
+             *        bit 1:  0 = card selected, 1 = card not selected                      (R/W) (**)
+             *        bit 2:  0 = 250khz transfer, 1 = 8mhz transfer                        (R/W)
+             *        bit 3:  ** ALWAYS 0 **
+             *        bit 4:  ** ALWAYS 0 **
+             *        bit 5:  0 = allow RR rom when MMC BIOS disabled , 1 = disable RR ROM  (R/W)  (***)
+             *        bit 6:  0 = SPI write trigger mode, 1 = SPI read trigger mode         (R/W)
+             *        bit 7:  ** ALWAYS 0 **
+             *
+             * (*)   Enabling MMC Bios sets ROM banking to the last 64K bank
+             * (**)  This bit also controls the green activity LED.
+             * (***) When in mmcreplay bios mode, bit 5 controls RAM banking (0 = $e000 - $ffff, 1 = $8000 - $9fff)
+             *       When in 16K mode, bit 5 enables RAM at $a000 - $bfff
+             */
+            if (enable_mmc_regs)
             {
-                LOG (("read RAM IO2 %04x %02x (%02x:%04x)", addr,
-                      export_ram0[(addr & 0x1fff) + (io2_ram_bank << 13)],
-                      io2_ram_bank, (addr & 0x1fff)));
-                return export_ram0[(io2_ram_bank << 13) + 0x1f00 +
-                                   (addr & 0xff)];
+                io_source = IO_SOURCE_MMCREPLAY;
+                value = disable_mmc_bios;       /* bit 0 */
+                value |= (spi_mmc_card_selected_read () << 1);  /* bit 1 */
+                value |= (spi_mmc_enable_8mhz_read () << 2);    /* bit 2 */
+                /* bit 3,4 always 0 */
+                value |= (disable_rr_rom << 5); /* bit 5 */
+                value |= (spi_mmc_trigger_mode_read () << 6);   /* bit 6 */
+                /* bit 7 always 0 */
+#ifdef LOG_READ_DF11
+                LOG (("MMCREPLAY: IO2 RD %04x %02x disable_mmc_bios %x disable_rr_rom %x", addr, value, disable_mmc_bios, disable_rr_rom));
+#endif
+                return value;
             }
-//              LOG(("read ROM IO2 %04x %02x (%02x:%04x)", addr,roml_banks[(addr & 0x1fff) + (io2_bank << 13)],io2_bank,(addr & 0x1fff)));
-            return roml_banks[(addr & 0x1fff) + (io2_bank << 13)];
-        }
-#endif
-        return vicii_read_phi1 ();
-    }
-#endif
-	return vicii_read_phi1 ();
-}
-
-#ifdef DEBUG
-int     store_io2_warn = 0;
-#endif
-
-void REGPARM2 mmcreplay_io2_store (WORD addr, BYTE value)
-{
-//    LOG(("MMCREPLAY: IO2 ST %04x %02x",addr,value));  
-    /*if (rr_active) */
-    /* FIXME: should IO2 regs work even when "cartridge not active" ? 
-     * how else would "re-enabling RR" make sense?
-     */
-    {
-
-        switch (addr & 0xff)
-        {
-            case 0x10:         /* OK $df10 MMC SPI transfer register */
-                if (enable_mmc_regs)
-                {
-//    LOG(("MMCREPLAY: IO2 ST %04x %02x",addr,value));  
-                    spi_mmc_data_write (value);
-                    return;
-                }
-                else
-                {
-                    LOG (("MMCREPLAY: IO2 ST %04x (disabled!)", addr));
-                }
-                break;
-            case 0x11:         /* OK $df11 MMC control register */
-                if (enable_mmc_regs)
-                {
-                    LOG (("MMCREPLAY: IO2 ST %04x %02x", addr, value));
-                    LOG (("MMCREPLAY: IO2 ST %04x  spi_mmc_card_selected %1d",
-                          addr, ((value >> 1) ^ 1) & 1));
-
-                    disable_mmc_bios = (value) & 1;     /* bit 0 */
-                    disable_rr_rom = (value >> 5) & 1;  /* bit 5 */
-                    spi_mmc_card_selected_write (((value >> 1) ^ 1) & 1);       /* bit 1 */
-                    spi_mmc_enable_8mhz_write (((value >> 2)) & 1);     /* bit 2 */
-                    /* bit 3,4 always 0 */
-                    spi_mmc_trigger_mode_write (((value >> 6)) & 1);    /* bit 6 */
-                    /* bit 7 always 0 */
-                    if (disable_mmc_bios)
-                    {
-                        //if(enable_mmc_regs_pending)
-                        {
-                            enable_mmc_regs = enable_mmc_regs_pending;
-                        }
-                    }
-                    else
-                    {
-                        /* clearing bit 0 resets write once for de01 */
-                        write_once = 0;
-                    }
-//    mmcreplay_update_mapper();
-//            mmcreplay_config_changed((enable_exrom<<1)|enable_game, (enable_exrom<<1)|enable_game, CMODE_WRITE);
-                    mmcreplay_update_mapper (CMODE_WRITE, 0);
-                    return;
-                }
-                else
-                {
-                    LOG (("MMCREPLAY: IO2 ST %04x (disabled!)", addr));
-                }
-                LOG (("MMCREPLAY: IO2 ST %04x disable_mmc_bios %02x", addr,
-                      disable_mmc_bios));
-                LOG (("MMCREPLAY: IO2 ST %04x disable_rr_rom %02x", addr,
-                      disable_rr_rom));
-                break;
-            case 0x12:         /* OK $df12 MMC status register */
-                if (enable_mmc_regs)
-                {
-                    LOG (("MMCREPLAY: IO2 ST %04x %02x", addr, value));
-
-                    /* FIXME bit 1: forbid write access to ROM */
-
-                    disable_rom_write = (value ^ 1) & 1;        /* bit 0 */
-                    enable_extended_mode = (value >> 6) & 1;    /* bit 6 */
-                    if (enable_extended_mode)
-                    {
-                        rr_active = 1;
-                    }
-                    LOG (("MMCREPLAY: IO2 ST %04x enable_extended_mode %d",
-                          addr, enable_extended_mode));
-
-                    /* bit 2 ? FIXME */
-                    /* bit 3 ? FIXME */
-
-                    /* EEPROM is only accessible in MMC Replay Bios mode */
-                    if (disable_mmc_bios == 0)
-                    {
-                        LOG (("MMCREPLAY: IO2 ST %04x (eeprom)", addr));
-                        /*
-                         * bit 1: ddr FIXME
-                         * bit 4: status
-                         * bit 5: data/ddr
-                         * bit 7: clk
-                         */
-                        eeprom_port_write ((value >> 7) & 1, (value >> 5) & 1,
-                                           (value >> 1) & 1, (value >> 4) & 1);
-                    }
-
-                    mmcreplay_update_mapper (CMODE_WRITE, 0);
-                    return;
-                }
-                else
-                {
-#if 0
-                    /* EEPROM is only accessible in MMC Replay Bios mode */
-                    if (disable_mmc_bios == 0)
-                    {
-//    LOG(("MMCREPLAY: IO2 ST %04x (eeprom, reg disabled?)",addr));
-                        /* FIXME bit 1: forbid write access to ROM */
-
-                        disable_rom_write = (value ^ 1) & 1;    /* bit 0 */
-                        enable_extended_mode = (value >> 6) & 1;        /* bit 6 */
-                        if (enable_extended_mode)
-			{
-                            rr_active = 1;
-			}
-
-                        /* bit 2 ? FIXME */
-                        /* bit 3 ? FIXME */
-                        /*
-                         * bit 1: ddr FIXME
-                         * bit 4: status
-                         * bit 5: data/ddr
-                         * bit 7: clk
-                         */
-                        eeprom_port_write ((value >> 7) & 1, (value >> 5) & 1,
-                                           (value >> 1) & 1, (value >> 4) & 1);
-                    }
-                    mmcreplay_update_mapper (CMODE_WRITE, 0);
-                    return;
-#endif
-		    LOG (("MMCREPLAY: IO2 ST %04x (disabled!)", addr));
-                }
-                LOG (("MMCREPLAY: IO2 ST %04x disable_rom_write %02x", addr,
-                      disable_rom_write));
-                LOG (("MMCREPLAY: IO2 ST %04x enable_extended_mode %02x", addr,
-                      enable_extended_mode));
-
-
-                break;
-            case 0x13:         /* OK $df13 Extended banking register */
-
-		if (enable_mmc_regs)
-		{
-			/* $df13 can only be READ AND WRITTEN if bit6 of $df12 = 1 */
-			if (enable_extended_mode)
-			{
-			    LOG (("MMCREPLAY: IO2 ST %04x %02x", addr, value));
-			    bank_address_16_18 = (value) & 7;   /* bit 0-2 */
-			    LOG (("MMCREPLAY: IO2 ST %04x bank_address_16_18 %02x",
-				  addr, bank_address_16_18));
-			    enable_16k_mapping = (value >> 5) & 1;      /* bit 5 */
-			    enable_rr_regs = (value >> 6) & 1;  /* bit 6 */
-			    if ((value >> 6) & 1)       /* bit 6 */
-			    {
-				/* re-enable RR cartridge */
-				rr_active = 1;
-			    }
-	//    mmcreplay_update_mapper();
-	//            mmcreplay_config_changed((enable_exrom<<1)|enable_game, (enable_exrom<<1)|enable_game, CMODE_WRITE);
-			    mmcreplay_update_mapper (CMODE_WRITE, 0);
-			    return;
-			}
-		}
-                else
-                {
-#ifdef DEBUG
-                    if (store_io2_warn < 10)
-                    {
-                        LOG (("MMCREPLAY: IO2 ST %04x %02x (disabled!)", addr,
-                              value));
-                        store_io2_warn++;
-                    }
-#endif
-                }
-                LOG (("MMCREPLAY: IO2 ST %04x enable_16k_mapping %02x", addr,
-                      enable_16k_mapping));
-                LOG (("MMCREPLAY: IO2 ST %04x enable_rr_regs %02x", addr,
-                      enable_rr_regs));
-
-                break;
-        }
-
-        if (enable_io2)
-        {
-            if (enable_ram_io)
+            break;
+        case 0x12:
+            /*
+             * $DF12: MMC status register
+             *        -----------------------
+             *        bit 0:  0 = SPI ready, 1 = SPI busy                       (R)
+             *                1 = forbid ROM write accesses                     (W) (*)
+             *        bit 1:  feedback of $DE00 bit 0 (GAME)                    (R)
+             *        bit 2:  feedback of $DE00 bit 1 (EXROM)                   (R)
+             *        bit 3:  0 = card inserted, 1 = no card inserted           (R)
+             *        bit 4:  0 = card write enabled, 1 = card write disabled   (R)
+             *        bit 5:  EEPROM DATA line / DDR Register                   (R/W) (**)
+             *        bit 6:  0 = RR compatibility mode, 1 = Extended mode      (W) (***)
+             *        bit 7:  EEPROM CLK line                                   (W)
+             *
+             * (*)   Setting this bit will disable writes to ROM until next reset.
+             * (**)  Setting DATA to "1" enables reading data bit from EEPROM at this position.
+             * (***) Selecting RR compatibility mode limits RAM to 32K and
+             *       disables writes to extended banking register.
+             *       Selecting Extended mode enables full RAM banking and enables
+             *       Nordic Power mode in RR mode.
+             */
+            if (enable_mmc_regs)
             {
-                LOG (("store RAM IO2 %04x %02x (%02x:%04x)", addr, value,
-                      io2_ram_bank, (addr & 0x1fff)));
-                export_ram0[(io2_ram_bank << 13) + 0x1f00 + (addr & 0xff)] =
-                    value;
+                BYTE    value = 0;
+                io_source = IO_SOURCE_MMCREPLAY;
+                /* EEPROM is only accessible in MMC Replay Bios mode */
+                if (disable_mmc_bios == 0)
+                {
+                    value = eeprom_data_read () << 5;   /* bit 5 */
+                }
+                value |= (spi_mmc_busy ());     /* bit 0 */
+                value |= (enable_game << 1);    /* bit 1 */
+                value |= (enable_exrom ^ 1) << 2;       /* bit 2 FIXME: inverted in reg ? */
+                value |= (spi_mmc_card_inserted () ^ 1) << 3;   /* bit 3 */
+                value |= (spi_mmc_card_write_enabled () ^ 1) << 4;      /* bit 4 */
+                /* bit 6,7 not readable */
+#ifdef LOG_READ_DF12
+                LOG (("MMCREPLAY: IO2 RD %04x %02x enable_game %x enable_exrom %x", addr, value, enable_game, (enable_exrom ^ 1)));
+#endif
+                return value;
+            }
+            break;
+        case 0x13:
+            /*
+             * $DF13: Extended banking register (*)
+             *        -----------------------------
+             *        bit 0: bank address 16        (R/W)
+             *        bit 1: bank address 17        (R/W)
+             *        bit 2: bank address 18        (R/W)
+             *        bit 3: ** ALWAYS 0 **
+             *        bit 4: ** ALWAYS 0 **
+             *        bit 5: 16K rom mapping        (R/W)
+             *        bit 6: 1 = enable RR register (W)
+             *        bit 7: ** ALWAYS 0 **
+             *
+             * (*) Can only be read/written to when bit 6 of $DF12 is 1.
+             */
+
+            if (enable_extended_mode)
+            {
+                io_source = IO_SOURCE_MMCREPLAY;
+                value = bank_address_16_18;     /* bit 0-2 */
+                /* bit 3,4 always 0 */
+                value |= enable_16k_mapping << 5;       /* bit 5 */
+                /* bit 7 always 0 */
+#ifdef LOG_READ_DF13
+                LOG (("MMCREPLAY: IO2 RD %04x %02x bank_address_16_18 %x enable_16k_mapping %x", addr, value, bank_address_16_18, enable_16k_mapping));
+#endif
+                return value;
             }
             else
             {
-#ifdef DEBUG
-                if (store_io2_warn < 10)
-                {
-                    LOG (("store DISABLED RAM in IO2 %04x %02x (%02x:%04x)",
-                          addr, value, io2_ram_bank, (addr & 0x1fff)));
-                    store_io2_warn++;
-                }
+#ifdef LOG_READ_DF13
+                LOG (("MMCREPLAY: DISABLED IO2 RD %04x", addr));
 #endif
             }
+            break;
+    }
+
+    if (enable_io2)
+    {
+        io_source = IO_SOURCE_MMCREPLAY;
+        if (enable_ram_io)
+        {
+#ifdef LOG_READ_IO2_RAM
+            LOG (("MMCREPLAY: RAM IO2 RD %04x %02x (%02x:%04x)", addr,
+                  export_ram0[(addr & 0x1fff) + (io2_ram_bank << 13)],
+                  io2_ram_bank, (addr & 0x1fff)));
+#endif
+            return export_ram0[(io2_ram_bank << 13) + 0x1f00 + (addr & 0xff)];
+        }
+#ifdef LOG_READ_IO2_ROM
+        LOG (("MMCREPLAY: ROM IO2 RD %04x %02x (%02x:%04x)", addr,
+              roml_banks[(addr & 0x1fff) + (io2_bank << 13)], io2_bank,
+              (addr & 0x1fff)));
+#endif
+        return flashrom_read ((io2_ram_bank << 13) + 0x1f00 + (addr & 0xff));
+    }
+    else
+    {
+#ifdef LOG_READ_IO2_DISABLED
+        LOG (("MMCREPLAY: DISABLED IO2 RD %04x %02x (%02x:%04x)", addr,
+              roml_banks[(io2_ram_bank << 13) + 0x1f00 +
+                         (addr & 0xff)], io2_bank, (addr & 0x1fff)));
+#endif
+    }
+
+    return vicii_read_phi1 ();
+}
+
+void REGPARM2 mmcreplay_io2_store (WORD addr, BYTE value)
+{
+    switch (addr & 0xff)
+    {
+        case 0x10:
+            /*
+             * $DF10: MMC SPI transfer register
+             *
+             * byte written is sent to the card
+             */
+            if (enable_mmc_regs)
+            {
+#ifdef LOG_WRITE_DF10
+                LOG (("MMCREPLAY: IO2 ST %04x %02x", addr, value));
+#endif
+                spi_mmc_data_write (value);
+                return;
+            }
+            break;
+        case 0x11:
+            /*
+             * $DF11: MMC control register
+             *        ------------------------
+             *        bit 0:  0 = MMC BIOS enabled, 1 = MMC BIOS disabled                    (R/W) (*)
+             *        bit 1:  0 = card selected, 1 = card not selected                       (R/W) (**)
+             *        bit 2:  0 = 250khz transfer, 1 = 8mhz transfer                         (R/W)
+             *        bit 3:  ** ALWAYS 0 **
+             *        bit 4:  ** ALWAYS 0 **
+             *        bit 5:  0 = allow RR rom when MMC BIOS disabled , 1 = disable RR ROM   (R/W) (***)
+             *        bit 6:  0 = SPI write trigger mode, 1 = SPI read trigger mode          (R/W)
+             *        bit 7:  ** ALWAYS 0 **
+             *
+             * (*)   Enabling MMC Bios sets ROM banking to the last 64K bank
+             * (**)  This bit also controls the green activity LED.
+             * (***) When in mmcreplay bios mode, bit 5 controls RAM banking (0 = $e000 - $ffff, 1 = $8000 - $9fff)
+             *       When in 16K mode, bit 5 enables RAM at $a000 - $bfff
+             */
+            if (enable_mmc_regs)
+            {
+                disable_mmc_bios = (value) & 1; /* bit 0 */
+                disable_rr_rom = (value >> 5) & 1;      /* bit 5 */
+
+#ifdef LOG_WRITE_DF11
+                LOG (("MMCREPLAY: IO2 ST %04x %02x disable_mmc_bios %x disable_rr_rom %x", addr, value, disable_mmc_bios, disable_rr_rom));
+#endif
+
+                spi_mmc_card_selected_write (((value >> 1) ^ 1) & 1);   /* bit 1 */
+                spi_mmc_enable_8mhz_write (((value >> 2)) & 1); /* bit 2 */
+                /* bit 3,4 always 0 */
+                spi_mmc_trigger_mode_write (((value >> 6)) & 1);        /* bit 6 */
+                /* bit 7 always 0 */
+                if (disable_mmc_bios)
+                {
+                    //if(enable_mmc_regs_pending)
+                    {
+                        enable_mmc_regs = enable_mmc_regs_pending;
+                    }
+                }
+                else
+                {
+                    /* clearing bit 0 resets write once for de01 */
+                    write_once = 0;
+                }
+                mmcreplay_update_mapper (CMODE_WRITE, 0);
+                return;
+            }
+            break;
+        case 0x12:
+            /*
+             * $DF12: MMC status register
+             *        -----------------------
+             *        bit 0:  0 = SPI ready, 1 = SPI busy                        (R)
+             *                1 = forbid ROM write accesses                      (W) (*)
+             *        bit 1:  feedback of $DE00 bit 0 (GAME)                     (R)
+             *        bit 2:  feedback of $DE00 bit 1 (EXROM)                    (R)
+             *        bit 3:  0 = card inserted, 1 = no card inserted            (R)
+             *        bit 4:  0 = card write enabled, 1 = card write disabled    (R)
+             *        bit 5:  EEPROM DATA line / DDR Register                    (R/W) (**)
+             *        bit 6:  0 = RR compatibility mode, 1 = Extended mode       (W) (***)
+             *        bit 7:  EEPROM CLK line                                    (W)
+             *
+             * (*)   Setting this bit will disable writes to ROM until next reset.
+             * (**)  Setting DATA to "1" enables reading data bit from EEPROM at this position.
+             * (***) Selecting RR compatibility mode limits RAM to 32K and
+             *       disables writes to extended banking register.
+             *       Selecting Extended mode enables full RAM banking and enables
+             *       Nordic Power mode in RR mode.
+             */
+            if (enable_mmc_regs)
+            {
+                /* FIXME bit 0: forbid write access to ROM */
+
+                disable_rom_write = (value ^ 1) & 1;    /* bit 0 */
+                enable_extended_mode = (value >> 6) & 1;        /* bit 6 */
+                if (enable_extended_mode)
+                {
+                    rr_active = 1;
+                }
+                /* bit 2 ? FIXME */
+                /* bit 3 ? FIXME */
+#ifdef LOG_WRITE_DF12
+                LOG (("MMCREPLAY: IO2 ST %04x %02x disable_rom_write %x enable_extended_mode %x", addr, value, disable_rom_write, enable_extended_mode));
+#endif
+
+                /* EEPROM is only accessible in MMC Replay Bios mode */
+                if (disable_mmc_bios == 0)
+                {
+                    /*
+                     * bit 1: ddr FIXME
+                     * bit 4: status
+                     * bit 5: data/ddr
+                     * bit 7: clk
+                     */
+                    eeprom_port_write ((value >> 7) & 1, (value >> 5) & 1,
+                                       (value >> 1) & 1, (value >> 4) & 1);
+                }
+
+                mmcreplay_update_mapper (CMODE_WRITE, 0);
+                return;
+            }
+            break;
+        case 0x13:
+            /*
+             * $DF13: Extended banking register (*)
+             *        -----------------------------
+             *        bit 0: bank address 16        (R/W)
+             *        bit 1: bank address 17        (R/W)
+             *        bit 2: bank address 18        (R/W)
+             *        bit 3: ** ALWAYS 0 **
+             *        bit 4: ** ALWAYS 0 **
+             *        bit 5: 16K rom mapping        (R/W)
+             *        bit 6: 1 = enable RR register (W)
+             *        bit 7: ** ALWAYS 0 **
+             *
+             * (*) Can only be read/written to when bit 6 of $DF12 is 1.
+             */
+
+            if (enable_mmc_regs)
+            {
+                /* $df13 can only be READ AND WRITTEN if bit6 of $df12 = 1 */
+                if (enable_extended_mode)
+                {
+                    bank_address_16_18 = (value) & 7;   /* bit 0-2 */
+                    enable_16k_mapping = (value >> 5) & 1;      /* bit 5 */
+                    enable_rr_regs = (value >> 6) & 1;  /* bit 6 */
+                    if ((value >> 6) & 1)       /* bit 6 */
+                    {
+                        /* re-enable RR cartridge */
+                        rr_active = 1;
+                    }
+#ifdef LOG_WRITE_DF13
+                    LOG (("MMCREPLAY: IO2 ST %04x %02x bank_address_16_18 %x enable_16k_mapping %x enable rr regs %x", addr, value, bank_address_16_18, enable_16k_mapping, ((value >> 6) & 1)));
+#endif
+                    mmcreplay_update_mapper (CMODE_WRITE, 0);
+                    return;
+                }
+            }
+
+            break;
+    }
+
+    if (enable_io2)
+    {
+        if (enable_ram_io)
+        {
+#ifdef LOG_WRITE_IO2_RAM
+            LOG (("MMCREPLAY: RAM IO2 ST %04x %02x (%02x:%04x)", addr, value,
+                  io2_ram_bank, (addr & 0x1fff)));
+#endif
+            export_ram0[(io2_ram_bank << 13) + 0x1f00 + (addr & 0xff)] = value;
         }
         else
         {
-#ifdef DEBUG
-            if (store_io2_warn < 10)
-            {
-                LOG (("store DISABLED IO2 %04x %02x (%02x:%04x)", addr, value,
-                      io2_bank, (addr & 0x1fff)));
-                store_io2_warn++;
-            }
+#ifdef LOG_WRITE_IO2_ROM
+            LOG (("MMCREPLAY: ROM IO2 ST %04x %02x (%02x:%04x)",
+                  addr, value, io2_ram_bank, (addr & 0x1fff)));
 #endif
+            flashrom_write ((io2_ram_bank << 13) + 0x1f00 + (addr & 0xff),
+                            value);
         }
-
     }
-/*    
     else
     {
-	LOG(("store RR DISABLED IO2 %04x %02x (%02x:%04x)", addr,value,io2_bank,(addr & 0x1fff)));
+#ifdef LOG_WRITE_IO2_DISABLED
+        LOG (("MMCREPLAY: DISABLED IO2 ST %04x %02x (%02x:%04x)", addr, value,
+              io2_bank, (addr & 0x1fff)));
+#endif
     }
-*/
+
 }
 
 /********************************************************************************************************************
@@ -2133,8 +1996,11 @@ BYTE REGPARM1 mmcreplay_1000_7fff_read (WORD addr)
         logbank_read = (addr & 0xe000);
     }
 #endif
-
-    return mem_read_without_ultimax (addr);
+    if (ultimax_mapping_hack)
+    {
+        return mem_read_without_ultimax (addr);
+    }
+    return vicii_read_phi1 ();
 }
 void REGPARM2 mmcreplay_1000_7fff_store (WORD addr, BYTE value)
 {
@@ -2145,7 +2011,10 @@ void REGPARM2 mmcreplay_1000_7fff_store (WORD addr, BYTE value)
         logbank_write = (addr & 0xe000);
     }
 #endif
-    mem_store_without_ultimax (addr, value);
+    if (ultimax_mapping_hack)
+    {
+        mem_store_without_ultimax (addr, value);
+    }
 }
 
 /*
@@ -2176,23 +2045,32 @@ BYTE REGPARM1 mmcreplay_roml_read (WORD addr)
     }
 #endif
 
-    if ((pport.data & 3) == 3)  /* if LoRAM + HiRAM */
-//    if ((pport.data & 1) == 1)  /* if LoRAM */
+    if (ultimax_mapping_hack)
     {
 
-        if (enable_raml)
+        if ((pport.data & 3) == 3)      /* if LoRAM + HiRAM */
         {
-            return export_ram0[(addr & 0x1fff) + (raml_bank << 13)];
+
+            if (enable_raml)
+            {
+                return export_ram0[(addr & 0x1fff) + (raml_bank << 13)];
+            }
+            return flashrom_read ((addr & 0x1fff) + (roml_bank << 13));
+
         }
-        return flashrom_read ((addr & 0x1fff) + (roml_bank << 13));
+        else if (enable_rescue_mode)
+        {
+            return flashrom_read ((addr & 0x1fff) + (roml_bank << 13));
+        }
 
+        return mem_read_without_ultimax (addr);
     }
-    else if (enable_rescue_mode)
+
+    if (enable_raml)
     {
-        return flashrom_read ((addr & 0x1fff) + (romA000_bank << 13));
+        return export_ram0[(addr & 0x1fff) + (raml_bank << 13)];
     }
-
-    return mem_read_without_ultimax (addr);
+    return flashrom_read ((addr & 0x1fff) + (roml_bank << 13));
 
 }
 
@@ -2217,8 +2095,29 @@ void REGPARM2 mmcreplay_roml_store (WORD addr, BYTE value)
     }
 #endif
 
-    if ((pport.data & 3) == 3)  /* if LoRAM + HiRAM */
-//    if ((pport.data & 1) == 1)  /* if LoRAM */
+    if (ultimax_mapping_hack)
+    {
+        if ((pport.data & 3) == 3)      /* if LoRAM + HiRAM */
+        {
+            if (enable_raml)
+            {
+                export_ram0[(addr & 0x1fff) + (raml_bank << 13)] = value;
+            }
+            else
+            {
+                flashrom_write ((addr & 0x1fff) + (roml_bank << 13), value);
+            }
+        }
+        else
+        {
+            if (enable_rescue_mode)
+            {
+                flashrom_write ((addr & 0x1fff) + (roml_bank << 13), value);
+            }
+            mem_store_without_ultimax (addr, value);
+        }
+    }
+    else
     {
         if (enable_raml)
         {
@@ -2228,14 +2127,6 @@ void REGPARM2 mmcreplay_roml_store (WORD addr, BYTE value)
         {
             flashrom_write ((addr & 0x1fff) + (roml_bank << 13), value);
         }
-    }
-    else
-    {
-	if (enable_rescue_mode)
-	{
-	    flashrom_write ((addr & 0x1fff) + (roml_bank << 13), value);
-	}
-        mem_store_without_ultimax (addr, value);
     }
 }
 
@@ -2252,19 +2143,24 @@ BYTE REGPARM1 mmcreplay_a000_read (WORD addr)
     }
 #endif
 
-    if ((pport.data & 3) == 3)  /* if LoRAM + HiRAM */
-//    if ((pport.data & 1) == 1)  /* if LoRAM */
+    if (ultimax_mapping_hack)
     {
-        if (!disable_mmc_bios)
+
+        if ((pport.data & 3) == 3)      /* if LoRAM + HiRAM */
         {
-            if (enable_ramA000)
+            if (!disable_mmc_bios)
             {
-                return export_ram0[(addr & 0x1fff) + (ramA000_bank << 13)];
+                if (enable_ramA000)
+                {
+                    return export_ram0[(addr & 0x1fff) + (ramA000_bank << 13)];
+                }
+                return flashrom_read ((addr & 0x1fff) + (romA000_bank << 13));
             }
-            return flashrom_read ((addr & 0x1fff) + (romA000_bank << 13));
         }
+        return mem_read_without_ultimax (addr);
+
     }
-    return mem_read_without_ultimax (addr);
+    return vicii_read_phi1 ();
 }
 void REGPARM2 mmcreplay_a000_store (WORD addr, BYTE value)
 {
@@ -2275,33 +2171,37 @@ void REGPARM2 mmcreplay_a000_store (WORD addr, BYTE value)
         logbank_write = (addr & 0xe000);
     }
 #endif
-    if ((pport.data & 3) == 3)  /* if LoRAM + HiRAM */
-//    if ((pport.data & 1) == 1)  /* if LoRAM */
+
+    if (ultimax_mapping_hack)
     {
-        if (!disable_mmc_bios)
+
+        if ((pport.data & 3) == 3)      /* if LoRAM + HiRAM */
         {
-/*
-		if (enable_ramA000)
-		{
-		    LOG (("store RAM A000 %04x %02x (%02x:%04x)", addr, value,
-			  ramA000_bank, (addr & 0x1fff)));
-		    export_ram0[(addr & 0x1fff) + (ramA000_bank << 13)] = value;
-		}
-		else
-		{
-		    LOG (("store DISABLED RAM A000 %04x %02x (%02x:%04x)", addr, value,
-			  romA000_bank, (addr & 0x1fff)));
-		        mem_store_without_ultimax (addr, value);
-		}
-*/
-            /* there won't be a chipselect generated for write, so writes
-             * always go to C64 memory */
+            if (!disable_mmc_bios)
+            {
+                /*
+                 * if (enable_ramA000)
+                 * {
+                 * LOG (("store RAM A000 %04x %02x (%02x:%04x)", addr, value,
+                 * ramA000_bank, (addr & 0x1fff)));
+                 * export_ram0[(addr & 0x1fff) + (ramA000_bank << 13)] = value;
+                 * }
+                 * else
+                 * {
+                 * LOG (("store DISABLED RAM A000 %04x %02x (%02x:%04x)", addr, value,
+                 * romA000_bank, (addr & 0x1fff)));
+                 * mem_store_without_ultimax (addr, value);
+                 * }
+                 */
+                /* there won't be a chipselect generated for write, so writes
+                 * always go to C64 memory */
+                mem_store_without_ultimax (addr, value);
+            }
+        }
+        else
+        {
             mem_store_without_ultimax (addr, value);
         }
-    }
-    else
-    {
-        mem_store_without_ultimax (addr, value);
     }
 }
 
@@ -2318,7 +2218,11 @@ BYTE REGPARM1 mmcreplay_c000_read (WORD addr)
         logbank_read = (addr & 0xe000);
     }
 #endif
-    return mem_read_without_ultimax (addr);
+    if (ultimax_mapping_hack)
+    {
+        return mem_read_without_ultimax (addr);
+    }
+    return vicii_read_phi1 ();
 }
 void REGPARM2 mmcreplay_c000_store (WORD addr, BYTE value)
 {
@@ -2329,7 +2233,10 @@ void REGPARM2 mmcreplay_c000_store (WORD addr, BYTE value)
         logbank_write = (addr & 0xe000);
     }
 #endif
-    mem_store_without_ultimax (addr, value);
+    if (ultimax_mapping_hack)
+    {
+        mem_store_without_ultimax (addr, value);
+    }
 }
 
 /*
@@ -2361,18 +2268,31 @@ BYTE REGPARM1 mmcreplay_romh_read (WORD addr)
     }
 #endif
 
-    if ((pport.data & 2) == 2)  /* if HiRAM */
-    { 
+    if (ultimax_mapping_hack)
+    {
 
-        if (enable_ramh)
+        if ((pport.data & 2) == 2)      /* if HiRAM */
         {
-            return export_ram0[(addr & 0x1fff) + (ramh_bank << 13)];
+
+            if (enable_ramh)
+            {
+                return export_ram0[(addr & 0x1fff) + (ramh_bank << 13)];
+            }
+
+            return flashrom_read ((addr & 0x1fff) + (romh_bank << 13));
         }
 
-        return flashrom_read ((addr & 0x1fff) + (romh_bank << 13));
+        return mem_read_without_ultimax (addr);
+
     }
 
-    return mem_read_without_ultimax (addr);
+    if (enable_ramh)
+    {
+        return export_ram0[(addr & 0x1fff) + (ramh_bank << 13)];
+    }
+
+    return flashrom_read ((addr & 0x1fff) + (romh_bank << 13));
+
 }
 
 void REGPARM2 mmcreplay_romh_store (WORD addr, BYTE value)
@@ -2394,23 +2314,28 @@ void REGPARM2 mmcreplay_romh_store (WORD addr, BYTE value)
     }
 #endif
 
-    if ((pport.data & 2) == 2)  /* if HiRAM */
+    if (ultimax_mapping_hack)
     {
 
-        if (enable_ramh)
+        if ((pport.data & 2) == 2)      /* if HiRAM */
         {
-            export_ram0[(addr & 0x1fff) + (ramh_bank << 13)] = value;
+
+            if (enable_ramh)
+            {
+                export_ram0[(addr & 0x1fff) + (ramh_bank << 13)] = value;
+            }
+            else
+            {
+                /* FIXME: write through to ram ? */
+                /* mem_store_without_ultimax (addr, value); */
+            }
+
         }
         else
         {
-            /* FIXME: write through to ram ? */
-            /* mem_store_without_ultimax (addr, value); */
+            mem_store_without_ultimax (addr, value);
         }
 
-    }
-    else
-    {
-        mem_store_without_ultimax (addr, value);
     }
 }
 
@@ -2418,149 +2343,6 @@ void REGPARM2 mmcreplay_romh_store (WORD addr, BYTE value)
 /*********************************************************************************************************************
 
 *********************************************************************************************************************/
-int mmcreplay_freeze_allowed (void)
-{
-    if (no_freeze)
-    {
-        return 0;
-    }
-    return 1;
-}
-
-/*
-
-generally freezing ONLY affects de00 and de01, df10-df13 are never altered on freeze!
-
-Freeze DOES NOT CLEAR banking bits 16-18.
-Banking bits A13-A15 are cleared when freeze is pressed.
-Ram is always enabled in freeze mode. The Ram bit ($de00 bit 5) however is reset
-$df11 bit 5 is not changed when freeze, meaning: you can put freeze code in ram!
-
-Super Mapper mapping in freeze mode
------------------------------------
-
-In freeze mode, the memory map is different than Retro Replay:
-
-$de00: bit 5 = 0
-----------------
-$de00 - $dfff (minus registers): 512 byte ROM area (mirrored from $9e00-$9fff)
-
-$de00: bit 5 = 1
-----------------
-Disables any memory at $de00-$dfff due to CPLD routing problems. This is however
-no problem, since RAM is always enabled at $8000-$9fff if you need it.
-
-$df11: bit 5 = 0
-----------------
-$8000 - $9fff: 8K RAM bank low
-$e000 - $ffff: 8K RAM bank hi
-
-$df11: bit 5 = 1
-----------------
-$8000 - $9fff: 8K RAM bank lo
-$e000 - $ffff: 8K FLASH rom bank hi
-
-*/
-void mmcreplay_freeze (void)
-{
-    LOG (("MMCREPLAY: freeze"));
-
-    /*** $DE00:	RR control register write */
-    /* bit 0:   GAME line (W) */
-    enable_game = 1;            /* (w) status of game line */
-    enable_flash_write = 0;     /* (r) */
-    /* bit 1:   EXROM line (W) */
-    enable_exrom = 1 ^ 1;       /* status of exrom line */
-    /* bit 2:   1 = disable RR (W) */
-    /*              (*) bit can be reset by setting bit 6 of $df12 */
-    rr_active = 1;              /* (w) Cart is activated.  */
-    freeze_pressed = 1;         /* (r) freeze button pressed.  */
-    /* ^ bit 3: bank address 13 (W) */
-    /* ^ bit 4: bank address 14 (W) */
-    /* bit 5:   0 = rom enable, 1 = ram enable (W) */
-    enable_ram_io = 0;          /* reset on freeze */
-    /* bit 6:   1 = exit freeze mode (W) */
-    enable_freeze_exit = 0;
-    /* bit 7:   bank address 15 (W) */
-    bank_address_13_15 = 0;     /* always cleared when freezed */
-
-    /*** $DE01:	extended RR control register write */
-    /* bit 0:   0 = disable clockport, 1 = enable clockport (W) */
-    mmcr_clockport_enabled = 0; /* used globally, eg in c64io.c */
-    /* bit 1:   0 = disable io ram banking, 1 = enable io ram banking (W) */
-    allow_bank = 1;             /* RAM bank switching allowed.  */
-    /* bit 2:   0 = enable freeze, 1 = disable freeze (W) */
-    no_freeze = 0;              /* Freeze is disallowed.  */
-    /* ^ bit 3: bank address 13 (mirror of $DE00) (W) */
-    /* ^ bit 4: bank address 14 (mirror of $DE00) (W) */
-    /* bit 5:   0 = enable MMC registers, 1 = disable MMC registers (W) */
-    /*              (*) Can only be written when bit 6 of $DF12 is 1. Register becomes effective
-     * when bit 0 of $DF11 is 1. */
-    enable_mmc_regs = 0;
-    enable_mmc_regs_pending = 0;
-    /* bit 6:   0 = ram/rom @ DFxx, 1 = ram/rom @ $DExx (W) */
-    enable_ram_io1 = 0;         /* REU compatibility mapping.  */
-    /* ^ bit 7: bank address 15 (mirror of $DE00) (W) */
-
-#ifdef TEST_AR_MAPPER           /* bank 0 */
-    enable_rr_regs = 1;
-#elif defined(TEST_RR_MAPPER)   /* bank 4 */
-    enable_ram_io = 1;          /* FIXME: should not actually be set here! */
-    enable_rr_regs = 1;
-#elif defined(TEST_NORDIC_MAPPER)       /* bank 1 */
-    enable_rr_regs = 1;
-#elif defined(TEST_SUPER_8KCRT) /* bank 2 */
-    enable_rr_regs = 0;
-#elif defined(TEST_SUPER_16KCRT)        /* bank 3 */
-    enable_rr_regs = 0;
-#else
-    enable_rr_regs = 1;
-#endif
-    /* FIXME: OR 0x20 ? enable ram in freeze mode ? */
-    mmcreplay_update_mapper (CMODE_READ, 0);
-    flashrom_init ();
-}
-
-/*
- generally on reset all registers will get initialized with 0, except
-
- $DE00: bit 2
- $DF11: bit 1
- $DF13: bit 0,1,2,5
-
- which will get initialized with 1
-*/
-
-void mmcreplay_reset (void)
-{
-    LOG (("MMCREPLAY: freeze"));
-
-    rr_active = 1;
-
-    /* 8 game */
-    enable_exrom = 1 ^ 1;
-    enable_game = 0;
-
-    enable_ram_io = 0;
-    enable_ram_io1 = 0;
-    enable_raml = 0;
-    enable_ramh = 0;
-    allow_bank = 0;
-    disable_mmc_bios = 0;
-    enable_16k_mapping = 0;
-    enable_extended_mode = 0;   /* enable nordic power mode */
-
-    bank_address_13_15 = 0;
-    bank_address_16_18 = 7;
-
-    if (enable_rescue_mode)
-    {
-        log_debug ("MMCREPLAY: Rescue Mode enabled");
-    }
-
-    mmcreplay_update_mapper (CMODE_READ, 0);
-    flashrom_init ();
-}
 
 /*
 The MMC-Replay Bios sets the following configurations:
@@ -2624,8 +2406,8 @@ void mmcreplay_set_stdcfg (void)
     disable_mmc_bios = 0;
 
 
-#elif defined(TEST_NORDIC_MAPPER)       /* bank 1 */
-    bank_address_16_18 = 1;
+#elif defined(TEST_NORDIC_MAPPER)       /* bank 2 */
+    bank_address_16_18 = 2;
     rr_active = 1;
     enable_extended_mode = 1;   /* enable nordic power mode */
     enable_rr_regs = 1;
@@ -2635,7 +2417,7 @@ void mmcreplay_set_stdcfg (void)
     enable_ram_io1 = 0;
 //    mmcreplay_config_changed((0<<1)|0, (0<<1)|0, CMODE_READ);
     enable_16k_mapping = 0;
-    disable_mmc_bios = 0;
+    disable_mmc_bios = 1;
 
 #elif defined(TEST_SUPER_8KCRT) /* bank 2 */
     bank_address_16_18 = 2;
@@ -2673,6 +2455,161 @@ void mmcreplay_set_stdcfg (void)
 #endif
 
 }
+
+int mmcreplay_freeze_allowed (void)
+{
+    if (no_freeze)
+    {
+        return 0;
+    }
+    return 1;
+}
+
+/*
+
+generally freezing ONLY affects de00 and de01, df10-df13 are never altered on freeze!
+
+Freeze DOES NOT CLEAR banking bits 16-18.
+Banking bits A13-A15 are cleared when freeze is pressed.
+Ram is always enabled in freeze mode. The Ram bit ($de00 bit 5) however is reset
+$df11 bit 5 is not changed when freeze, meaning: you can put freeze code in ram!
+
+Super Mapper mapping in freeze mode
+-----------------------------------
+
+In freeze mode, the memory map is different than Retro Replay:
+
+$de00: bit 5 = 0
+----------------
+$de00 - $dfff (minus registers): 512 byte ROM area (mirrored from $9e00-$9fff)
+
+$de00: bit 5 = 1
+----------------
+Disables any memory at $de00-$dfff due to CPLD routing problems. This is however
+no problem, since RAM is always enabled at $8000-$9fff if you need it.
+
+$df11: bit 5 = 0
+----------------
+$8000 - $9fff: 8K RAM bank low
+$e000 - $ffff: 8K RAM bank hi
+
+$df11: bit 5 = 1
+----------------
+$8000 - $9fff: 8K RAM bank lo
+$e000 - $ffff: 8K FLASH rom bank hi
+
+*/
+void mmcreplay_freeze (void)
+{
+    LOG (("MMCREPLAY: ----------------------------------------"));
+    LOG (("MMCREPLAY: Freeze"));
+    LOG (("MMCREPLAY: ----------------------------------------"));
+
+    /*** $DE00:	RR control register write */
+    /* bit 0:   GAME line (W) */
+    enable_game = 1;            /* (w) status of game line */
+    enable_flash_write = 0;     /* (r) */
+    /* bit 1:   EXROM line (W) */
+    enable_exrom = 1 ^ 1;       /* status of exrom line */
+    /* bit 2:   1 = disable RR (W) */
+    /*              (*) bit can be reset by setting bit 6 of $df12 */
+    rr_active = 1;              /* (w) Cart is activated.  */
+
+    /* we don't have a proper hook to release this bit after a while,
+     * so we can only set it to 0 and hope for the best */
+    /* freeze_pressed = 1; *//* (r) freeze button pressed.  */
+    freeze_pressed = 0;
+    /* ^ bit 3: bank address 13 (W) */
+    /* ^ bit 4: bank address 14 (W) */
+    /* bit 5:   0 = rom enable, 1 = ram enable (W) */
+    enable_ram_io = 0;          /* reset on freeze */
+    /* bit 6:   1 = exit freeze mode (W) */
+    enable_freeze_exit = 0;
+    /* bit 7:   bank address 15 (W) */
+    bank_address_13_15 = 0;     /* always cleared when freezed */
+
+    /*** $DE01:	extended RR control register write */
+    /* bit 0:   0 = disable clockport, 1 = enable clockport (W) */
+    mmcr_clockport_enabled = 0; /* used globally, eg in c64io.c */
+    /* bit 1:   0 = disable io ram banking, 1 = enable io ram banking (W) */
+    allow_bank = 1;             /* RAM bank switching allowed.  */
+    /* bit 2:   0 = enable freeze, 1 = disable freeze (W) */
+    no_freeze = 0;              /* Freeze is disallowed.  */
+    /* ^ bit 3: bank address 13 (mirror of $DE00) (W) */
+    /* ^ bit 4: bank address 14 (mirror of $DE00) (W) */
+    /* bit 5:   0 = enable MMC registers, 1 = disable MMC registers (W) */
+    /*              (*) Can only be written when bit 6 of $DF12 is 1. Register becomes effective
+     * when bit 0 of $DF11 is 1. */
+    enable_mmc_regs = 0;
+    enable_mmc_regs_pending = 0;
+    /* bit 6:   0 = ram/rom @ DFxx, 1 = ram/rom @ $DExx (W) */
+    enable_ram_io1 = 0;         /* REU compatibility mapping.  */
+    /* ^ bit 7: bank address 15 (mirror of $DE00) (W) */
+
+#ifdef TEST_AR_MAPPER           /* bank 0 */
+    enable_rr_regs = 1;
+#elif defined(TEST_RR_MAPPER)   /* bank 4 */
+    enable_ram_io = 1;          /* FIXME: should not actually be set here! */
+    enable_rr_regs = 1;
+#elif defined(TEST_NORDIC_MAPPER)       /* bank 1 */
+    enable_rr_regs = 1;
+#elif defined(TEST_SUPER_8KCRT) /* bank 2 */
+    enable_rr_regs = 0;
+#elif defined(TEST_SUPER_16KCRT)        /* bank 3 */
+    enable_rr_regs = 0;
+#else
+    enable_rr_regs = 1;
+#endif
+    /* FIXME: OR 0x20 ? enable ram in freeze mode ? */
+    mmcreplay_update_mapper (CMODE_READ, 0);
+    flashrom_init ();
+}
+
+/*
+ generally on reset all registers will get initialized with 0, except
+
+ $DE00: bit 2
+ $DF11: bit 1
+ $DF13: bit 0,1,2,5
+
+ which will get initialized with 1
+*/
+
+void mmcreplay_reset (void)
+{
+    LOG (("MMCREPLAY: ----------------------------------------"));
+    LOG (("MMCREPLAY: Reset"));
+    LOG (("MMCREPLAY: ----------------------------------------"));
+
+    rr_active = 1;
+
+    /* 8 game */
+    enable_exrom = 1 ^ 1;
+    enable_game = 0;
+
+    enable_ram_io = 0;
+    enable_ram_io1 = 0;
+    enable_raml = 0;
+    enable_ramh = 0;
+    allow_bank = 0;
+    disable_mmc_bios = 0;
+    enable_16k_mapping = 0;
+    enable_extended_mode = 0;   /* enable nordic power mode */
+
+    bank_address_13_15 = 0;
+    bank_address_16_18 = 7;
+
+    mmcreplay_set_stdcfg ();
+
+    if (enable_rescue_mode)
+    {
+        log_debug ("MMCREPLAY: Rescue Mode enabled");
+    }
+
+    mmcreplay_update_mapper (CMODE_READ, 0);
+    flashrom_init ();
+}
+
 
 void mmcreplay_config_init (void)
 {
