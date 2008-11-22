@@ -20,6 +20,7 @@ noinst_LIBRARIES = libarchmacosxcocoadialog.a
 noinst_HEADERS = \
 	drivesettingswindowcontroller.h \
 	iecdrivesettingswindowcontroller.h \
+	netplaycontrolwindowcontroller.h \
 	printersettingswindowcontroller.h \
 	joysticksettingswindowcontroller.h \
 	keyboardsettingswindowcontroller.h \
@@ -33,6 +34,7 @@ noinst_HEADERS = \
 libarchmacosxcocoadialog_a_SOURCES = \
 	drivesettingswindowcontroller.m \
 	iecdrivesettingswindowcontroller.m \
+	netplaycontrolwindowcontroller.m \
 	printersettingswindowcontroller.m \
 	joysticksettingswindowcontroller.m \
 	keyboardsettingswindowcontroller.m \

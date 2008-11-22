@@ -150,5 +150,15 @@
 //! attach next
 -(void)attachNextInFliplist:(int)unit direction:(BOOL)next;
 
+// ----- Netplay -----
+//! start server
+-(BOOL)startNetplayServer;
+//! connect to client
+-(BOOL)connectNetplayClient;
+//! disconnect
+-(void)disconnectNetplay;
+//! netplay mode (see network.h: network_mode_t)
+-(int)getNetplayMode;
+
 @end
 

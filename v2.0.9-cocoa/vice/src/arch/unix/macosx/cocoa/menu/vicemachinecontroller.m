@@ -48,6 +48,7 @@
 #include "vdrive-internal.h"
 #include "gfxoutputdrv/ffmpegdrv.h"
 #include "fliplist.h"
+#include "network.h"
 
 #import "vicemachinecontroller.h"
 #import "vicemachine.h"
@@ -533,6 +534,28 @@ static void saveSnapshotTrap(WORD unusedWord, void *unusedData)
 -(void)attachNextInFliplist:(int)unit direction:(BOOL)next
 {
     fliplist_attach_head(unit,next);
+}
+
+// ----- Netplay -----
+
+-(BOOL)startNetplayServer
+{
+    return network_start_server() == 0;
+}
+
+-(BOOL)connectNetplayClient
+{
+    return network_connect_client() == 0;
+}
+
+-(void)disconnectNetplay
+{
+    network_disconnect();
+}
+
+-(int)getNetplayMode
+{
+    return network_get_mode();
 }
 
 @end

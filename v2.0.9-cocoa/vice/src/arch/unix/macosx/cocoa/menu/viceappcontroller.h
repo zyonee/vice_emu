@@ -34,6 +34,7 @@
 #import "viceinformationwindowcontroller.h"
 #import "resourceeditorcontroller.h"
 #import "recordmediawindowcontroller.h"
+#import "netplaycontrolwindowcontroller.h"
 
 @interface VICEAppController : NSObject
 {
@@ -47,6 +48,7 @@
     VICEInformationWindowController *infoController;
     ResourceEditorController *resourceEditorController;
     RecordMediaWindowController *recordMediaController;
+    NetplayControlWindowController *netplayController;
     
     // Options Outlets
     IBOutlet NSMenu *refreshRateMenu;

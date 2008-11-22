@@ -16,6 +16,9 @@ EXTRA_DIST = \
 	IECDriveSettings.nib/classes.nib \
 	IECDriveSettings.nib/info.nib \
 	IECDriveSettings.nib/keyedobjects.nib \
+	NetplayControl.nib/classes.nib \
+	NetplayControl.nib/info.nib \
+	NetplayControl.nib/keyedobjects.nib \
 	PrinterSettings.nib/classes.nib \
 	PrinterSettings.nib/info.nib \
 	PrinterSettings.nib/keyedobjects.nib \

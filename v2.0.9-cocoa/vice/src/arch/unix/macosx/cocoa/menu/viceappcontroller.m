@@ -321,6 +321,10 @@
 
 - (IBAction)showNetplay:(id)sender
 {
+    if(!netplayController) {
+        netplayController = [[NetplayControlWindowController alloc] init];
+    }
+    [netplayController showWindow:self];
 }
 
 // ----- Options -----
