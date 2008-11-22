@@ -135,7 +135,7 @@ inline static void draw(BYTE *p, unsigned int xs, unsigned int xe, int reverse,
     c[0] = VIC_PIXEL(vic.raster.background_color);
 
     ix=0;
-    /* put the first pixel if different */
+    /* put the first pixel if border or auxiliary colors have changed */
     if (vic.mc_border_color != vic.old_mc_border_color ||
         vic.auxiliary_color != vic.old_auxiliary_color) {
 
@@ -144,7 +144,7 @@ inline static void draw(BYTE *p, unsigned int xs, unsigned int xe, int reverse,
 
         b = *(vic.color_ptr + vic.memptr + xs);
         c[2] = VIC_PIXEL(b & 0x7);
-        if (reverse & !(b & 0x8))
+        if (vic.old_reverse & !(b & 0x8))
             d = ~(GET_CHAR_DATA(*(vic.screen_ptr + vic.memptr + xs),
                             vic.raster.ycounter));
         else
@@ -155,15 +155,31 @@ inline static void draw(BYTE *p, unsigned int xs, unsigned int xe, int reverse,
         ix++;
     }
 
-    /* put the rest of the pixels */
     c[1] = VIC_PIXEL(vic.mc_border_color);
     c[3] = VIC_PIXEL(vic.auxiliary_color);
+    /* put two more pixels if different */
+    if (vic.reverse != vic.old_reverse ) {
+
+        b = *(vic.color_ptr + vic.memptr + xs);
+        c[2] = VIC_PIXEL(b & 0x7);
+        if (vic.old_reverse & !(b & 0x8))
+            d = ~(GET_CHAR_DATA(*(vic.screen_ptr + vic.memptr + xs),
+                            vic.raster.ycounter));
+        else
+            d = GET_CHAR_DATA(*(vic.screen_ptr + vic.memptr + xs),
+                          vic.raster.ycounter);
+        for (x=ix; x < 3; x++)
+            PUT_PIXEL(p, d, c, b, x, transparent);
+        ix=x;
+    }
+
+    /* put the rest of the pixels */
 
     /* xe can be -1.  */
     for (i = xs; (int)i <= (int)xe; i++, p += 8 * VIC_PIXEL_WIDTH) {
         b = *(vic.color_ptr + vic.memptr + i);
         c[2] = VIC_PIXEL(b & 0x7);
-        if (reverse & !(b & 0x8))
+        if (vic.reverse & !(b & 0x8))
             d = ~(GET_CHAR_DATA(*(vic.screen_ptr + vic.memptr + i),
                                 vic.raster.ycounter));
         else
@@ -185,16 +201,6 @@ static void draw_line(void)
     draw(p, 0, vic.text_cols - 1, 0, 0);
 }
 
-static void draw_reverse_line(void)
-{
-    BYTE *p;
-
-    p = (vic.raster.draw_buffer_ptr
-        + vic.raster.display_xstart);
-
-    draw(p, 0, vic.text_cols - 1, 1, 0);
-}
-
 static void draw_line_cached(raster_cache_t *cache, unsigned int xs,
                              unsigned int xe)
 {
@@ -206,18 +212,6 @@ static void draw_line_cached(raster_cache_t *cache, unsigned int xs,
     /* Scale back xs and xe from 8 pixel units to text_cols.  */
     draw(p, xs >> VIC_PIXEL_WIDTH_SHIFT,
          ((xe + 1) >> VIC_PIXEL_WIDTH_SHIFT) - 1, 0, 0);
-}
-
-static void draw_reverse_line_cached(raster_cache_t *cache, unsigned int xs,
-                                     unsigned int xe)
-{
-    BYTE *p;
-
-    p = (vic.raster.draw_buffer_ptr
-        + vic.raster.display_xstart);
-
-    draw(p, xs >> VIC_PIXEL_WIDTH_SHIFT,
-         ((xe + 1) >> VIC_PIXEL_WIDTH_SHIFT) - 1, 1, 0);
 }
 
 static void draw_std_background(unsigned int start_pixel,
@@ -239,16 +233,6 @@ static void draw_std_foreground(unsigned int start_char,
     draw(p, start_char, end_char, 0, 1);
 }
 
-static void draw_rev_foreground(unsigned int start_char, unsigned int end_char)
-{
-    BYTE *p;
-
-    p = (vic.raster.draw_buffer_ptr
-        + vic.raster.display_xstart);
-
-    draw(p, start_char, end_char, 1, 1);
-}
-
 static void setup_modes(void)
 {
     raster_modes_set(vic.raster.modes, VIC_STANDARD_MODE,
@@ -257,12 +241,6 @@ static void setup_modes(void)
                      draw_line,
                      draw_std_background,
                      draw_std_foreground);
-    raster_modes_set(vic.raster.modes, VIC_REVERSE_MODE,
-                     fill_cache,
-                     draw_reverse_line_cached,
-                     draw_reverse_line,
-                     draw_std_background,
-                     draw_rev_foreground);
 }
 
 void vic_draw_init(void)

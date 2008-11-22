@@ -103,7 +103,6 @@ typedef WORD VIC_PIXEL2;
 enum vic_video_mode_s
 {
     VIC_STANDARD_MODE,
-    VIC_REVERSE_MODE,
     VIC_NUM_VMODES
 };
 typedef enum vic_video_mode_s vic_video_mode_t;
@@ -142,6 +141,8 @@ struct vic_s
     int mc_border_color;
     int old_auxiliary_color;
     int old_mc_border_color;
+    int reverse;
+    int old_reverse;
 
     BYTE *color_ptr;
     BYTE *screen_ptr;
