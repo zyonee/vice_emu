@@ -297,9 +297,7 @@ void REGPARM2 vic_store(WORD addr, BYTE value)
                                      Reverse Video. */
         /*
             changes of border/background in cycle n are visible at pixel
-            4*(n-7)+1,
-            changes of reverse mode at pixel 4*(n-7)+3, which is quite ugly
-            'cause we're using a character-based emulation :(FIXME)
+            4*(n-7)+1, changes of reverse mode at pixel 4*(n-7)+3.
         */
         {
             static int old_background_color = -1;
