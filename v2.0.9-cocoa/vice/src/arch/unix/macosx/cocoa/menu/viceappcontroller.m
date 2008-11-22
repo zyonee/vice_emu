@@ -189,26 +189,48 @@
 
 - (IBAction)fliplistAddCurrentImage:(id)sender
 {
+    int unit = [sender tag];
+    [[VICEApplication theMachineController] addCurrentToFliplist:unit];
 }
 
 - (IBAction)fliplistRemoveCurrentImage:(id)sender
 {
+    int unit = [sender tag];
+    [[VICEApplication theMachineController] removeFromFliplist:unit path:nil];
 }
 
 - (IBAction)fliplistAttachNextImage:(id)sender
 {
+    int unit = [sender tag];
+    [[VICEApplication theMachineController] attachNextInFliplist:unit direction:TRUE];
 }
 
 - (IBAction)fliplistAttachPrevImage:(id)sender
 {
+    int unit = [sender tag];
+    [[VICEApplication theMachineController] attachNextInFliplist:unit direction:TRUE];
 }
 
 - (IBAction)fliplistLoad:(id)sender
 {
+    int unit = [sender tag];
+    NSArray *types = [NSArray arrayWithObject:@"vfl"];
+    NSString *path = [self pickOpenFileWithTitle:@"Loading Fliplist" types:types];
+    if(path!=nil) {
+        if(![[VICEApplication theMachineController] loadFliplist:unit path:path autoAttach:TRUE])
+            [VICEApplication runErrorMessage:@"Error loading fliplist!"];
+    }
 }
 
 - (IBAction)fliplistSave:(id)sender
 {
+    int unit = [sender tag];
+    NSArray *types = [NSArray arrayWithObject:@"vfl"];
+    NSString *path = [self pickSaveFileWithTitle:@"Saving Fliplist" types:types];
+    if(path!=nil) {
+        if(![[VICEApplication theMachineController] saveFliplist:unit path:path])
+            [VICEApplication runErrorMessage:@"Error saving fliplist!"];
+    }
 }
 
 // ----- Tape Image -----

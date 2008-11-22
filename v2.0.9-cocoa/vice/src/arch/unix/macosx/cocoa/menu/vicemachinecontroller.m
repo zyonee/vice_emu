@@ -47,6 +47,7 @@
 #include "datasette.h"
 #include "vdrive-internal.h"
 #include "gfxoutputdrv/ffmpegdrv.h"
+#include "fliplist.h"
 
 #import "vicemachinecontroller.h"
 #import "vicemachine.h"
@@ -500,5 +501,38 @@ static void saveSnapshotTrap(WORD unusedWord, void *unusedData)
         kbdbuf_feed(cstr);
     }
 }        
+
+// ----- Fliplist -----
+
+-(BOOL)loadFliplist:(int)unit path:(NSString *)path autoAttach:(BOOL)autoAttach
+{
+    const char *cstr = [path cStringUsingEncoding:NSUTF8StringEncoding];
+    return fliplist_load_list(unit,cstr,autoAttach) == 0;
+}
+
+-(BOOL)saveFliplist:(int)unit path:(NSString *)path
+{
+    const char *cstr = [path cStringUsingEncoding:NSUTF8StringEncoding];
+    return fliplist_save_list(unit,cstr) == 0;
+}
+
+-(void)addCurrentToFliplist:(int)unit
+{
+    fliplist_add_image(unit);
+}
+
+-(void)removeFromFliplist:(int)unit path:(NSString *)path
+{
+    const char *cstr = NULL;
+    if(path!=nil) {
+        cstr = [path cStringUsingEncoding:NSUTF8StringEncoding];
+    }
+    fliplist_remove(unit,cstr);
+}
+
+-(void)attachNextInFliplist:(int)unit direction:(BOOL)next
+{
+    fliplist_attach_head(unit,next);
+}
 
 @end

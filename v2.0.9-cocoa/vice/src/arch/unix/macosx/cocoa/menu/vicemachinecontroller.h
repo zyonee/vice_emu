@@ -138,5 +138,17 @@
 //! type string on keyboard
 -(void)typeStringOnKeyboard:(NSString *)string toPetscii:(BOOL)convert;
 
+// ----- Fliplist -----
+//! load flip list
+-(BOOL)loadFliplist:(int)unit path:(NSString *)path autoAttach:(BOOL)autoAttach;
+//! save flip list
+-(BOOL)saveFliplist:(int)unit path:(NSString *)path;
+//! add current image to fliplist
+-(void)addCurrentToFliplist:(int)unit;
+//! remove image from fliplist
+-(void)removeFromFliplist:(int)unit path:(NSString *)path;
+//! attach next
+-(void)attachNextInFliplist:(int)unit direction:(BOOL)next;
+
 @end
 

@@ -30,6 +30,7 @@
 #include "archdep.h"
 
 #import "vicemachine.h"
+#import "viceapplication.h"
 
 // ----- VICEMachineNotifier -----
 
