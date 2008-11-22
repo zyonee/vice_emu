@@ -140,6 +140,8 @@ struct vic_s
 
     int auxiliary_color;
     int mc_border_color;
+    int old_auxiliary_color;
+    int old_mc_border_color;
 
     BYTE *color_ptr;
     BYTE *screen_ptr;

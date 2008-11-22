@@ -3,6 +3,7 @@
  *
  * Written by
  *  Ettore Perazzoli <ettore@comm2000.it>
+ *  Daniel Kahlin <daniel@kahlin.net>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -125,12 +126,36 @@ inline static void draw(BYTE *p, unsigned int xs, unsigned int xe, int reverse,
     unsigned int i;
     int b, x;
     BYTE d;
+    int ix;
 
     /* Last character may exceed border, so we have some extra work */
     /* bordercheck asumes p pointing to display_xstart */
     p += xs * 8 * VIC_PIXEL_WIDTH;
 
     c[0] = VIC_PIXEL(vic.raster.background_color);
+
+    ix=0;
+    /* put the first pixel if different */
+    if (vic.mc_border_color != vic.old_mc_border_color ||
+        vic.auxiliary_color != vic.old_auxiliary_color) {
+
+        c[1] = VIC_PIXEL(vic.old_mc_border_color);
+        c[3] = VIC_PIXEL(vic.old_auxiliary_color);
+
+        b = *(vic.color_ptr + vic.memptr + xs);
+        c[2] = VIC_PIXEL(b & 0x7);
+        if (reverse & !(b & 0x8))
+            d = ~(GET_CHAR_DATA(*(vic.screen_ptr + vic.memptr + xs),
+                            vic.raster.ycounter));
+        else
+            d = GET_CHAR_DATA(*(vic.screen_ptr + vic.memptr + xs),
+                          vic.raster.ycounter);
+        PUT_PIXEL(p, d, c, b, 0, transparent);
+
+        ix++;
+    }
+
+    /* put the rest of the pixels */
     c[1] = VIC_PIXEL(vic.mc_border_color);
     c[3] = VIC_PIXEL(vic.auxiliary_color);
 
@@ -144,8 +169,9 @@ inline static void draw(BYTE *p, unsigned int xs, unsigned int xe, int reverse,
         else
             d = GET_CHAR_DATA(*(vic.screen_ptr + vic.memptr + i),
                               vic.raster.ycounter);
-        for (x = 0; x < 8; x++)
+        for (x = ix; x < 8; x++)
             PUT_PIXEL(p, d, c, b, x, transparent);
+        ix=0; /* put all 8 pixels the next lap */
     }
 }
 

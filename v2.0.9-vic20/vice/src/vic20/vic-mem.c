@@ -4,6 +4,7 @@
  * Written by
  *  Ettore Perazzoli <ettore@comm2000.it>
  *  Andreas Matthies <andreas.matthies@gmx.net>
+ *  Daniel Kahlin <daniel@kahlin.net>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -278,7 +279,12 @@ void REGPARM2 vic_store(WORD addr, BYTE value)
                     VIC_RASTER_CHAR(VIC_RASTER_CYCLE(maincpu_clk)),
                     &vic.auxiliary_color,
                     new_aux_color);
-
+                /* old_mc_auxilary_color is used by vic-draw.c to handle the
+                   one hires vic pixel lateness of change */
+                raster_changes_foreground_add_int(&vic.raster,
+                    VIC_RASTER_CHAR(VIC_RASTER_CYCLE(maincpu_clk+1)),
+                    &vic.old_auxiliary_color,
+                    new_aux_color);
 
                 old_aux_color = new_aux_color;
             }
@@ -308,7 +314,7 @@ void REGPARM2 vic_store(WORD addr, BYTE value)
 
             if (new_background_color != old_background_color) {
                 raster_changes_background_add_int(&vic.raster,
-                    VIC_RASTER_X(VIC_RASTER_CYCLE(maincpu_clk)),
+                    VIC_RASTER_X(VIC_RASTER_CYCLE(maincpu_clk))+2,
                     (int*)&vic.raster.background_color,
                     new_background_color);
 
@@ -317,7 +323,7 @@ void REGPARM2 vic_store(WORD addr, BYTE value)
 
             if (new_border_color != old_border_color) {
                 raster_changes_border_add_int(&vic.raster,
-                    VIC_RASTER_X(VIC_RASTER_CYCLE(maincpu_clk)),
+                    VIC_RASTER_X(VIC_RASTER_CYCLE(maincpu_clk))+2,
                     (int*)&vic.raster.border_color,
                     new_border_color);
 
@@ -327,12 +333,19 @@ void REGPARM2 vic_store(WORD addr, BYTE value)
                     VIC_RASTER_CHAR(VIC_RASTER_CYCLE(maincpu_clk)),
                     &vic.mc_border_color,
                     new_border_color);
+                /* old_mc_border_color is used by vic-draw.c to handle the
+                   one hires vic pixel lateness of change */
+                raster_changes_foreground_add_int(&vic.raster,
+                    VIC_RASTER_CHAR(VIC_RASTER_CYCLE(maincpu_clk+1)),
+                    &vic.old_mc_border_color,
+                    new_border_color);
 
 
                 old_border_color = new_border_color;
             }
 
             if (new_video_mode != old_video_mode) {
+                /* [tlr] this should be one hires vic pixel late (FIXME!) */
                 raster_changes_foreground_add_int(&vic.raster,
                     VIC_RASTER_CHAR(VIC_RASTER_CYCLE(maincpu_clk)),
                     &vic.raster.video_mode,

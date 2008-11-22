@@ -329,6 +329,8 @@ raster_t *vic_init(void)
 
     vic.auxiliary_color = 0;
     vic.mc_border_color = 0;
+    vic.old_auxiliary_color = 0;
+    vic.old_mc_border_color = 0;
 
     vic.color_ptr = mem_ram;
     vic.screen_ptr = mem_ram;
