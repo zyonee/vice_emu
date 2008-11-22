@@ -118,7 +118,7 @@ static int fill_cache(raster_cache_t *cache, unsigned int *xs,
     *(vic.chargen_ptr + ((code) * vic.char_height) \
     + (row & ((vic.char_height >> 1) | 7)))
 
-inline static void draw(BYTE *p, unsigned int xs, unsigned int xe, int reverse,
+inline static void draw(BYTE *p, unsigned int xs, unsigned int xe,
                         int transparent)
 /* transparent>0: don't overwrite background */
 {
@@ -157,7 +157,7 @@ inline static void draw(BYTE *p, unsigned int xs, unsigned int xe, int reverse,
 
     c[1] = VIC_PIXEL(vic.mc_border_color);
     c[3] = VIC_PIXEL(vic.auxiliary_color);
-    /* put two more pixels if different */
+    /* two more pixels (or all three) if reverse has changed */
     if (vic.reverse != vic.old_reverse ) {
 
         b = *(vic.color_ptr + vic.memptr + xs);
@@ -198,7 +198,7 @@ static void draw_line(void)
     p = (vic.raster.draw_buffer_ptr
         + vic.raster.display_xstart);
 
-    draw(p, 0, vic.text_cols - 1, 0, 0);
+    draw(p, 0, vic.text_cols - 1, 0);
 }
 
 static void draw_line_cached(raster_cache_t *cache, unsigned int xs,
@@ -211,7 +211,7 @@ static void draw_line_cached(raster_cache_t *cache, unsigned int xs,
 
     /* Scale back xs and xe from 8 pixel units to text_cols.  */
     draw(p, xs >> VIC_PIXEL_WIDTH_SHIFT,
-         ((xe + 1) >> VIC_PIXEL_WIDTH_SHIFT) - 1, 0, 0);
+         ((xe + 1) >> VIC_PIXEL_WIDTH_SHIFT) - 1, 0);
 }
 
 static void draw_std_background(unsigned int start_pixel,
@@ -230,7 +230,7 @@ static void draw_std_foreground(unsigned int start_char,
     p = (vic.raster.draw_buffer_ptr
         + vic.raster.display_xstart);
 
-    draw(p, start_char, end_char, 0, 1);
+    draw(p, start_char, end_char, 1);
 }
 
 static void setup_modes(void)
