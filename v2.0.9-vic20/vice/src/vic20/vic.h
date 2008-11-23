@@ -51,15 +51,12 @@
 
 #define VIC_NUM_COLORS 16
 
-/* This is the only machine that needs those defines.  */
+/* This is the only machine that needs those defines.  (MSDOS?, OS2?) */
 #define RASTER_PIXEL(c) (vic.pixel_table.sing[(c)])
 
-/* FIXME: MSDOS does not need double or quad pixel.
+/* FIXME: MSDOS does not need double pixel.
 `ifdef' them out once all video chips actually honour this.  */
-
 #define RASTER_PIXEL2(c) (vic.pixel_table.doub[(c)])
-#define RASTER_PIXEL4(c) (vic.pixel_table.quad[(c)])
-
 
 /* On MS-DOS, do not duplicate pixels.  Otherwise, we would always need at
    least 466 horizontal pixels to contain the whole screen.  */
@@ -135,9 +132,9 @@ struct vic_s
 
     int auxiliary_color;
     int mc_border_color;
+    int reverse;
     int old_auxiliary_color;
     int old_mc_border_color;
-    int reverse;
     int old_reverse;
 
     BYTE *color_ptr;
@@ -190,7 +187,6 @@ struct vic_s
     struct {
         BYTE sing[0x100];
         WORD doub[0x100];
-        DWORD quad[0x100];
     } pixel_table;
 };
 typedef struct vic_s vic_t;

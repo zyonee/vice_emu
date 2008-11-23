@@ -267,9 +267,6 @@ static void update_pixel_tables(raster_t *raster)
         *((BYTE *)(vic.pixel_table.doub + i))
         = *((BYTE *)(vic.pixel_table.doub + i) + 1)
         = vic.pixel_table.sing[i];
-        *((WORD *)(vic.pixel_table.quad + i))
-        = *((WORD *)(vic.pixel_table.quad + i) + 1)
-        = vic.pixel_table.doub[i];
     }
 }
 
