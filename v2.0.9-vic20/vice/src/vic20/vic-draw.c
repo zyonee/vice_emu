@@ -125,10 +125,8 @@ inline static void draw(BYTE *p, unsigned int xs, unsigned int xe,
 /* transparent>0: don't overwrite background */
 {
     VIC_PIXEL c[4];
-    unsigned int i;
-    int b, x;
-    BYTE d, dr;
-    int ix;
+    unsigned int i, x;
+    BYTE b, d, dr;
 
     /* Last character may exceed border, so we have some extra work */
     /* bordercheck asumes p pointing to display_xstart */
@@ -171,7 +169,6 @@ inline static void draw(BYTE *p, unsigned int xs, unsigned int xe,
     }
 
     /* put the rest of the chars if any */
-    /* xe can be -1.  */
     c[1] = VIC_PIXEL(vic.mc_border_color);
     c[3] = VIC_PIXEL(vic.auxiliary_color);
     for (i = xs; (int)i <= (int)xe; i++, p += 8 * VIC_PIXEL_WIDTH) {
