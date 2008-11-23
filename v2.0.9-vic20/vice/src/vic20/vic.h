@@ -71,15 +71,11 @@
 #ifdef VIC_DUPLICATES_PIXELS
 typedef WORD VIC_PIXEL;
 #define VIC_PIXEL(n)    RASTER_PIXEL2(n)
-typedef DWORD VIC_PIXEL2;
-#define VIC_PIXEL2(n)   RASTER_PIXEL4(n)
 #define VIC_PIXEL_WIDTH 2
 #define VIC_PIXEL_WIDTH_SHIFT 1
 #else
 typedef BYTE VIC_PIXEL;
 #define VIC_PIXEL(n)    RASTER_PIXEL(n)
-typedef WORD VIC_PIXEL2;
-#define VIC_PIXEL2(n)   RASTER_PIXEL2(n)
 #define VIC_PIXEL_WIDTH 1
 #define VIC_PIXEL_WIDTH_SHIFT 0
 #endif

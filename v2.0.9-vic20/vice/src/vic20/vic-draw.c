@@ -51,17 +51,22 @@ static void init_drawing_tables(void)
 {
     unsigned int byte, color, pos;
 
-    for (byte = 0; byte < 0x100; byte++)
-        for (color = 0; color < 0x100; color++)
-            if (color & 0x8)            /* Multicolor mode. */
-                for (pos = 0; pos < 8; pos += 2)
+    for (byte = 0; byte < 0x100; byte++) {
+        for (color = 0; color < 0x100; color++) {
+            if (color & 0x8) {         /* Multicolor mode. */
+                for (pos = 0; pos < 8; pos += 2) {
                     drawing_table[byte][color][pos]
                         = drawing_table[byte][color][pos + 1]
                         = (byte >> (6 - pos)) & 0x3;
-            else                      /* Standard mode. */
-                for (pos = 0; pos < 8; pos++)
+                }
+            } else {                   /* Standard mode. */
+                for (pos = 0; pos < 8; pos++) {
                     drawing_table[byte][color][pos]
                         = ((byte >> (7 - pos)) & 0x1) * 2;
+                }
+            }
+        }
+    }
 }
 
 
@@ -107,12 +112,9 @@ static int fill_cache(raster_cache_t *cache, unsigned int *xs,
 }
 
 #define PUT_PIXEL(p, d, c, b, x, t) \
-    if (!t || drawing_table[(d)][(b)][(x)]) \
-        *((VIC_PIXEL *)(p) + (x)) = (c)[drawing_table[(d)][(b)][(x)]]
-
-#define PUT_PIXEL2(p, d, c, b, x, t) \
-    if (!t || drawing_table[(d)][(b)][(x)]) \
-        *((VIC_PIXEL2 *)(p) + (x)) = (c)[drawing_table[(d)][(b)][(x)]]
+    if (!t || drawing_table[(d)][(b)][(x)]) { \
+        *((VIC_PIXEL *)(p) + (x)) = (c)[drawing_table[(d)][(b)][(x)]];  \
+    }
 
 #define GET_CHAR_DATA(code, row) \
     *(vic.chargen_ptr + ((code) * vic.char_height) \
@@ -144,12 +146,13 @@ inline static void draw(BYTE *p, unsigned int xs, unsigned int xe,
 
         b = *(vic.color_ptr + vic.memptr + xs);
         c[2] = VIC_PIXEL(b & 0x7);
-        if (vic.old_reverse & !(b & 0x8))
+        if (vic.old_reverse & !(b & 0x8)) {
             d = ~(GET_CHAR_DATA(*(vic.screen_ptr + vic.memptr + xs),
                             vic.raster.ycounter));
-        else
+        } else {
             d = GET_CHAR_DATA(*(vic.screen_ptr + vic.memptr + xs),
                           vic.raster.ycounter);
+        }
         PUT_PIXEL(p, d, c, b, 0, transparent);
 
         ix++;
@@ -162,14 +165,16 @@ inline static void draw(BYTE *p, unsigned int xs, unsigned int xe,
 
         b = *(vic.color_ptr + vic.memptr + xs);
         c[2] = VIC_PIXEL(b & 0x7);
-        if (vic.old_reverse & !(b & 0x8))
+        if (vic.old_reverse & !(b & 0x8)) {
             d = ~(GET_CHAR_DATA(*(vic.screen_ptr + vic.memptr + xs),
                             vic.raster.ycounter));
-        else
+        } else {
             d = GET_CHAR_DATA(*(vic.screen_ptr + vic.memptr + xs),
                           vic.raster.ycounter);
-        for (x=ix; x < 3; x++)
+        }
+        for (x=ix; x < 3; x++) {
             PUT_PIXEL(p, d, c, b, x, transparent);
+        }
         ix=x;
     }
 
@@ -179,14 +184,16 @@ inline static void draw(BYTE *p, unsigned int xs, unsigned int xe,
     for (i = xs; (int)i <= (int)xe; i++, p += 8 * VIC_PIXEL_WIDTH) {
         b = *(vic.color_ptr + vic.memptr + i);
         c[2] = VIC_PIXEL(b & 0x7);
-        if (vic.reverse & !(b & 0x8))
+        if (vic.reverse & !(b & 0x8)) {
             d = ~(GET_CHAR_DATA(*(vic.screen_ptr + vic.memptr + i),
                                 vic.raster.ycounter));
-        else
+        } else {
             d = GET_CHAR_DATA(*(vic.screen_ptr + vic.memptr + i),
                               vic.raster.ycounter);
-        for (x = ix; x < 8; x++)
+        }
+        for (x = ix; x < 8; x++) {
             PUT_PIXEL(p, d, c, b, x, transparent);
+        }
         ix=0; /* put all 8 pixels the next lap */
     }
 }
