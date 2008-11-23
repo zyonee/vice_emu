@@ -31,6 +31,8 @@
 #import "keyboardsettingswindowcontroller.h"
 #import "joysticksettingswindowcontroller.h"
 #import "soundsettingswindowcontroller.h"
+#import "videosettingswindowcontroller.h"
+
 #import "viceinformationwindowcontroller.h"
 #import "resourceeditorcontroller.h"
 #import "recordmediawindowcontroller.h"
@@ -45,6 +47,8 @@
     KeyboardSettingsWindowController *keyboardSettingsController;
     JoystickSettingsWindowController *joystickSettingsController;
     SoundSettingsWindowController *soundSettingsController;
+    VideoSettingsWindowController *videoSettingsController;
+
     VICEInformationWindowController *infoController;
     ResourceEditorController *resourceEditorController;
     RecordMediaWindowController *recordMediaController;
@@ -125,6 +129,7 @@
 - (IBAction)showKeyboardSettings:(id)sender;
 - (IBAction)showJoystickSettings:(id)sender;
 - (IBAction)showSoundSettings:(id)sender;
+- (IBAction)showVideoSettings:(id)sender;
 
 // Resources
 - (IBAction)showResourceEditor:(id)sender;

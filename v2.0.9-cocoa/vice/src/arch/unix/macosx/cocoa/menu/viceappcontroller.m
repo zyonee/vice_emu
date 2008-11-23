@@ -454,6 +454,14 @@
     [soundSettingsController showWindow:self];
 }
 
+- (IBAction)showVideoSettings:(id)sender
+{
+    if(!videoSettingsController) {
+        videoSettingsController = [[VideoSettingsWindowController alloc] init];
+    }
+    [videoSettingsController showWindow:self];
+}
+
 // ----- Resources -----
 
 - (IBAction)showResourceEditor:(id)sender

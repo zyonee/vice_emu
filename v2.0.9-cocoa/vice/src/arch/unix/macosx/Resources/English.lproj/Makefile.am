@@ -35,4 +35,8 @@ EXTRA_DIST = \
 	ResourceEditor.nib/keyedobjects.nib \
 	SoundSettings.nib/classes.nib \
 	SoundSettings.nib/info.nib \
-	SoundSettings.nib/keyedobjects.nib
+	SoundSettings.nib/keyedobjects.nib \
+	VideoSettings.nib/classes.nib \
+	VideoSettings.nib/info.nib \
+	VideoSettings.nib/keyedobjects.nib
+

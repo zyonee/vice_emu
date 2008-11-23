@@ -29,7 +29,8 @@ noinst_HEADERS = \
 	viceinformationwindowcontroller.h \
 	resourceeditorcontroller.h \
 	resourcetreeitem.h \
-	recordmediawindowcontroller.h
+	recordmediawindowcontroller.h \
+	videosettingswindowcontroller.h
    
 libarchmacosxcocoadialog_a_SOURCES = \
 	drivesettingswindowcontroller.m \
@@ -43,4 +44,6 @@ libarchmacosxcocoadialog_a_SOURCES = \
 	viceinformationwindowcontroller.m \
 	resourceeditorcontroller.m \
 	resourcetreeitem.m \
-	recordmediawindowcontroller.m
+	recordmediawindowcontroller.m \
+	videosettingswindowcontroller.m
+
