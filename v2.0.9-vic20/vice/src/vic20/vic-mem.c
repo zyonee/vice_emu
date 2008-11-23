@@ -50,8 +50,9 @@ void REGPARM2 vic_store(WORD addr, BYTE value)
     vic.regs[addr] = value;
     VIC_DEBUG_REGISTER (("VIC: write $90%02X, value = $%02X.", addr, value));
 
-    if (maincpu_clk >= vic.draw_clk)
+    if (maincpu_clk >= vic.draw_clk) {
         vic_raster_draw_alarm_handler(maincpu_clk - vic.draw_clk, NULL);
+    }
 
     switch (addr) {
       case 0:                     /* $9000  Screen X Location. */
@@ -67,10 +68,10 @@ void REGPARM2 vic_store(WORD addr, BYTE value)
             xstart = MIN((unsigned int)(value * 4), vic.screen_width);
 
             xstop = xstart + vic.text_cols * 8;
-            if (xstop >= (int)vic.screen_width)
+            if (xstop >= (int)vic.screen_width) {
                 xstop = vic.screen_width - 1;
                 /* FIXME: SCREEN-MIXUP not handled */
-
+            }
 
             xstart *= VIC_PIXEL_WIDTH;
             xstop *= VIC_PIXEL_WIDTH;
