@@ -35,6 +35,7 @@
 
 #import "viceinformationwindowcontroller.h"
 #import "resourceeditorcontroller.h"
+#import "recordhistorywindowcontroller.h"
 #import "recordmediawindowcontroller.h"
 #import "netplaycontrolwindowcontroller.h"
 
@@ -51,6 +52,7 @@
 
     VICEInformationWindowController *infoController;
     ResourceEditorController *resourceEditorController;
+    RecordHistoryWindowController *recordHistoryController;
     RecordMediaWindowController *recordMediaController;
     NetplayControlWindowController *netplayController;
     
@@ -101,7 +103,7 @@
 - (IBAction)loadQuickSnapshot:(id)sender;
 - (IBAction)saveQuickSnapshot:(id)sender;
 
-- (IBAction)showRecordSnapshot:(id)sender;
+- (IBAction)showRecordHistory:(id)sender;
 - (IBAction)showRecordMedia:(id)sender;
 
 - (IBAction)showNetplay:(id)sender; 

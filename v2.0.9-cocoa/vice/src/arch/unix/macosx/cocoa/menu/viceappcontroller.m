@@ -307,8 +307,12 @@
     [[VICEApplication theMachineController] saveQuickSnapshot];
 }
 
-- (IBAction)showRecordSnapshot:(id)sender
+- (IBAction)showRecordHistory:(id)sender
 {
+    if(!recordHistoryController) {
+        recordHistoryController = [[RecordHistoryWindowController alloc] init];
+    }
+    [recordHistoryController showWindow:self];
 }
 
 - (IBAction)showRecordMedia:(id)sender

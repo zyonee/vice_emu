@@ -30,6 +30,7 @@ noinst_HEADERS = \
 	resourceeditorcontroller.h \
 	resourcetreeitem.h \
 	recordmediawindowcontroller.h \
+	recordhistorywindowcontroller.h \
 	videosettingswindowcontroller.h
    
 libarchmacosxcocoadialog_a_SOURCES = \
@@ -45,5 +46,6 @@ libarchmacosxcocoadialog_a_SOURCES = \
 	resourceeditorcontroller.m \
 	resourcetreeitem.m \
 	recordmediawindowcontroller.m \
+	recordhistorywindowcontroller.m \
 	videosettingswindowcontroller.m
 

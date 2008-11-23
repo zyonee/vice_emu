@@ -90,9 +90,9 @@
 				<string>id</string>
 				<key>showPrinterSettings</key>
 				<string>id</string>
-				<key>showRecordMedia</key>
+				<key>showRecordHistory</key>
 				<string>id</string>
-				<key>showRecordSnapshot</key>
+				<key>showRecordMedia</key>
 				<string>id</string>
 				<key>showResourceEditor</key>
 				<string>id</string>

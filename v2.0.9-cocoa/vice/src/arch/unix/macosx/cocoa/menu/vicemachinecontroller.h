@@ -73,6 +73,16 @@
 // save a quick snapshot to a file
 -(void)saveQuickSnapshot;
 
+// ----- History -----
+-(BOOL)startRecordHistory;
+-(BOOL)stopRecordHistory;
+-(BOOL)startPlaybackHistory;
+-(BOOL)stopPlaybackHistory;
+-(BOOL)isRecordingHistory;
+-(BOOL)isPlayingBackHistory;
+-(BOOL)setRecordMilestone;
+-(BOOL)resetRecordMilestone;
+
 // ----- Media -----
 // start recording media/save screen shot
 -(BOOL)startRecordingMedia:(NSString *)driver 

@@ -30,6 +30,10 @@ EXTRA_DIST = \
 	JoystickSettings.nib/keyedobjects.nib \
 	RecordMedia.nib/classes.nib \
 	RecordMedia.nib/info.nib \
+	RecordMedia.nib/keyedobjects.nib \
+	RecordHistory.nib/classes.nib \
+	RecordHistory.nib/info.nib \
+	RecordHistory.nib/keyedobjects.nib \
 	ResourceEditor.nib/classes.nib \
 	ResourceEditor.nib/info.nib \
 	ResourceEditor.nib/keyedobjects.nib \

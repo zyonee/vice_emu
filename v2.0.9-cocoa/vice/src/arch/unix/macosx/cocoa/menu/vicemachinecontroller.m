@@ -49,6 +49,7 @@
 #include "gfxoutputdrv/ffmpegdrv.h"
 #include "fliplist.h"
 #include "network.h"
+#include "event.h"
 
 #import "vicemachinecontroller.h"
 #import "vicemachine.h"
@@ -276,6 +277,48 @@ static void saveSnapshotTrap(WORD unusedWord, void *unusedData)
     if(path!=nil) {
         [self loadSnapshot:path];
     }
+}
+
+// ----- History -----
+
+-(BOOL)startRecordHistory
+{
+    return event_record_start() == 0;
+}
+
+-(BOOL)stopRecordHistory
+{
+    return event_record_stop() == 0;
+}
+
+-(BOOL)startPlaybackHistory
+{
+    return event_playback_start() == 0;
+}
+
+-(BOOL)stopPlaybackHistory
+{
+    return event_playback_stop() == 0;
+}
+
+-(BOOL)isRecordingHistory
+{
+    return event_record_active();
+}
+
+-(BOOL)isPlayingBackHistory
+{
+    return event_playback_active();
+}
+
+-(BOOL)setRecordMilestone
+{
+    return event_record_set_milestone() == 0;
+}
+
+-(BOOL)resetRecordMilestone
+{
+    return event_record_reset_milestone() == 0;
 }
 
 // ----- Media -----
