@@ -124,10 +124,10 @@ inline static void draw(BYTE *p, unsigned int xs, unsigned int xe,
                         int transparent)
 /* transparent>0: don't overwrite background */
 {
-    static VIC_PIXEL c[4];
+    VIC_PIXEL c[4];
     unsigned int i;
     int b, x;
-    BYTE d;
+    BYTE d, dr;
     int ix;
 
     /* Last character may exceed border, so we have some extra work */
@@ -136,65 +136,53 @@ inline static void draw(BYTE *p, unsigned int xs, unsigned int xe,
 
     c[0] = VIC_PIXEL(vic.raster.background_color);
 
-    ix=0;
-    /* put the first pixel if border or auxiliary colors have changed */
+    /* if any of mc_border_color, auxiliary_color or reverse have
+       changed, handle the first char specially! */
     if (vic.mc_border_color != vic.old_mc_border_color ||
-        vic.auxiliary_color != vic.old_auxiliary_color) {
+        vic.auxiliary_color != vic.old_auxiliary_color ||
+        vic.reverse != vic.old_reverse) {
 
+        b = *(vic.color_ptr + vic.memptr + xs);
+        d = GET_CHAR_DATA(*(vic.screen_ptr + vic.memptr + xs),
+                          vic.raster.ycounter);
+        c[2] = VIC_PIXEL(b & 0x7);
+
+        /* put the first pixel to handle border or auxiliary color
+           changes */
         c[1] = VIC_PIXEL(vic.old_mc_border_color);
         c[3] = VIC_PIXEL(vic.old_auxiliary_color);
+        dr = (vic.old_reverse & !(b & 0x8)) ? ~d : d;
+        PUT_PIXEL(p, dr, c, b, 0, transparent);
 
-        b = *(vic.color_ptr + vic.memptr + xs);
-        c[2] = VIC_PIXEL(b & 0x7);
-        if (vic.old_reverse & !(b & 0x8)) {
-            d = ~(GET_CHAR_DATA(*(vic.screen_ptr + vic.memptr + xs),
-                            vic.raster.ycounter));
-        } else {
-            d = GET_CHAR_DATA(*(vic.screen_ptr + vic.memptr + xs),
-                          vic.raster.ycounter);
+        /* put two more pixels to handle reverse changes */
+        c[1] = VIC_PIXEL(vic.mc_border_color);
+        c[3] = VIC_PIXEL(vic.auxiliary_color);
+        PUT_PIXEL(p, dr, c, b, 1, transparent);
+        PUT_PIXEL(p, dr, c, b, 2, transparent);
+
+        /* put the last 5 pixels normally to complete the char */
+        dr = (vic.reverse & !(b & 0x8)) ? ~d : d;
+        for (x = 3; x < 8; x++) {
+            PUT_PIXEL(p, dr, c, b, x, transparent);
         }
-        PUT_PIXEL(p, d, c, b, 0, transparent);
 
-        ix++;
+        /* mark this char as processed */
+        xs++;
     }
 
+    /* put the rest of the chars if any */
+    /* xe can be -1.  */
     c[1] = VIC_PIXEL(vic.mc_border_color);
     c[3] = VIC_PIXEL(vic.auxiliary_color);
-    /* two more pixels (or all three) if reverse has changed */
-    if (vic.reverse != vic.old_reverse ) {
-
-        b = *(vic.color_ptr + vic.memptr + xs);
-        c[2] = VIC_PIXEL(b & 0x7);
-        if (vic.old_reverse & !(b & 0x8)) {
-            d = ~(GET_CHAR_DATA(*(vic.screen_ptr + vic.memptr + xs),
-                            vic.raster.ycounter));
-        } else {
-            d = GET_CHAR_DATA(*(vic.screen_ptr + vic.memptr + xs),
-                          vic.raster.ycounter);
-        }
-        for (x=ix; x < 3; x++) {
-            PUT_PIXEL(p, d, c, b, x, transparent);
-        }
-        ix=x;
-    }
-
-    /* put the rest of the pixels */
-
-    /* xe can be -1.  */
     for (i = xs; (int)i <= (int)xe; i++, p += 8 * VIC_PIXEL_WIDTH) {
         b = *(vic.color_ptr + vic.memptr + i);
         c[2] = VIC_PIXEL(b & 0x7);
-        if (vic.reverse & !(b & 0x8)) {
-            d = ~(GET_CHAR_DATA(*(vic.screen_ptr + vic.memptr + i),
-                                vic.raster.ycounter));
-        } else {
-            d = GET_CHAR_DATA(*(vic.screen_ptr + vic.memptr + i),
-                              vic.raster.ycounter);
+        d = GET_CHAR_DATA(*(vic.screen_ptr + vic.memptr + i),
+                          vic.raster.ycounter);
+        dr = (vic.reverse & !(b & 0x8)) ? ~d : d;
+        for (x = 0; x < 8; x++) {
+            PUT_PIXEL(p, dr, c, b, x, transparent);
         }
-        for (x = ix; x < 8; x++) {
-            PUT_PIXEL(p, d, c, b, x, transparent);
-        }
-        ix=0; /* put all 8 pixels the next lap */
     }
 }
 
