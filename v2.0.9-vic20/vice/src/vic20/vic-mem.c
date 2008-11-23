@@ -307,8 +307,7 @@ void REGPARM2 vic_store(WORD addr, BYTE value)
 
             new_background_color = value>>4;
             new_border_color = value & 0x7;
-            new_reverse = ((value & 0x8)
-                           ? 0 : 1);
+            new_reverse = ((value & 0x8) ? 0 : 1);
 
             if (new_background_color != old_background_color) {
                 raster_changes_background_add_int(&vic.raster,
