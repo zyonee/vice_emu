@@ -26,8 +26,8 @@
  *
  */
 
-#ifndef _VIDEOARCH_H
-#define _VIDEOARCH_H
+#ifndef VICE_VIDEOARCH_H
+#define VICE_VIDEOARCH_H
 
 #include "vice.h"
 
@@ -54,6 +54,7 @@ struct video_canvas_s {
     struct viewport_s *viewport;
     struct geometry_s *geometry;
     struct palette_s *palette;
+    struct raster_s *parent_raster;
 
     struct video_draw_buffer_callback_s *video_draw_buffer_callback;
     struct fullscreenconfig_s *fullscreenconfig;
@@ -61,6 +62,7 @@ struct video_canvas_s {
 #ifdef HAVE_HWSCALE
     GLint screen_texture;
 #endif
+
 };
 typedef struct video_canvas_s video_canvas_t;
 

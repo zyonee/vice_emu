@@ -179,6 +179,10 @@ void video_canvas_refresh(struct video_canvas_s *canvas,
                           unsigned int xi, unsigned int yi,
                           unsigned int w, unsigned int h)
 {
+    if (sdl_vkbd_state) {
+        sdl_vkbd_draw();
+    }
+
     if (canvas->videoconfig->doublesizex) {
         xi *= 2;
         w *= 2;
@@ -193,10 +197,6 @@ void video_canvas_refresh(struct video_canvas_s *canvas,
         if (SDL_LockSurface(canvas->screen) < 0) {
             return;
         }
-    }
-
-    if (sdl_vkbd_state) {
-        sdl_vkbd_draw();
     }
 
     video_canvas_render(canvas, (BYTE *)canvas->screen->pixels,

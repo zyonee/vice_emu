@@ -165,7 +165,6 @@ int vic20ui_init(void)
     int i, j, videostandard;
 fprintf(stderr,"%s\n",__func__);
 
-    sdl_ui_set_vcachename("VICVideoCache");
     sdl_ui_set_main_menu(xvic_main_menu);
 
     resources_get_int("MachineVideoStandard", &videostandard);

@@ -31,8 +31,10 @@
 #include "vice.h"
 
 #include "kbdbuf.h"
+#include "raster.h"
 #include "ui.h"
 #include "vkbd.h"
+#include "videoarch.h"
 #include "vsyncapi.h"
 
 #include <SDL/SDL.h>
@@ -77,6 +79,7 @@ void vsyncarch_presync(void)
 {
     if (sdl_vkbd_state) {
         while (sdl_vkbd_process(ui_dispatch_events()));
+        raster_force_repaint(sdl_active_canvas->parent_raster);
     } else {
         ui_dispatch_events();
     }

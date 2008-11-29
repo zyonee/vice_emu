@@ -73,7 +73,6 @@ typedef struct ui_menu_entry_s {
 } ui_menu_entry_t;
 
 struct menu_draw_s {
-    const char *vcache_name;
     int pitch;
     int offset;
     int first_x;
@@ -112,7 +111,6 @@ typedef enum {
     MENU_ACTION_VKBD_RELEASE
 } ui_menu_action_t;
 
-extern void sdl_ui_set_vcachename(const char *vcache_name);
 extern void sdl_ui_set_main_menu(const ui_menu_entry_t *menu);
 extern ui_menu_entry_t *sdl_ui_get_main_menu(void);
 extern void sdl_ui_set_menu_font(BYTE *font, int w, int h);

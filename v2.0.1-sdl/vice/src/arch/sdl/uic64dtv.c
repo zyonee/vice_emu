@@ -144,7 +144,6 @@ int c64dtvui_init(void)
 {
 fprintf(stderr,"%s\n",__func__);
 
-    sdl_ui_set_vcachename("VICIIVideoCache");
     sdl_ui_set_main_menu(x64dtv_main_menu);
     sdl_ui_set_menu_font(mem_chargen_rom + 0x800, 8, 8);
     sdl_ui_set_menu_colors(15, 0);

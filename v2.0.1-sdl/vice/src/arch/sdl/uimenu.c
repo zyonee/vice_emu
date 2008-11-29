@@ -36,6 +36,7 @@
 #include "ioutil.h"
 #include "lib.h"
 #include "menu_common.h"
+#include "raster.h"
 #include "resources.h"
 #include "sound.h"
 #include "ui.h"
@@ -312,7 +313,7 @@ void sdl_ui_activate_pre_action(void)
 
 void sdl_ui_activate_post_action(void)
 {
-    int warp_state, vcache_state;
+    int warp_state;
 
     sdl_menu_state = 0;
     SDL_EnableKeyRepeat(0, 0);
@@ -323,20 +324,8 @@ void sdl_ui_activate_post_action(void)
         sound_resume();
     }
 
-    /* Force a video refresh by temprorarily disabling vcache */
-    resources_get_int(menu_draw.vcache_name, &vcache_state);
-
-    if (vcache_state != 0) {
-        resources_set_int(menu_draw.vcache_name, 0);
-    }
-
-#if 0
-    video_canvas_refresh_all(sdl_active_canvas);
-#endif
-
-    if (vcache_state != 0) {
-        resources_set_int(menu_draw.vcache_name, vcache_state);
-    }
+    /* Force a video refresh */
+    raster_force_repaint(sdl_active_canvas->parent_raster);
 }
 
 void sdl_ui_init_draw_params(void)
@@ -660,11 +649,6 @@ void sdl_ui_refresh(void)
 
 /* ------------------------------------------------------------------ */
 /* Initialization/setting */
-
-void sdl_ui_set_vcachename(const char *vcache)
-{
-    menu_draw.vcache_name = vcache;
-}
 
 void sdl_ui_set_menu_borders(int x, int y)
 {
