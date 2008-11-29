@@ -48,6 +48,7 @@
 #include "util.h"
 #include "uihotkey.h"
 #include "uimenu.h"
+#include "vkbd.h"
 
 #define DEFAULT_JOYSTICK_THRESHOLD 10000
 #define DEFAULT_JOYSTICK_FUZZ 1000
@@ -250,7 +251,7 @@ int joy_arch_init(void)
     for(i=0; i<num_joysticks; ++i) {
         joy = sdljoystick[i].joyptr = SDL_JoystickOpen(i);
         if(joy) {
-            sdljoystick[i].name = SDL_JoystickName(i);
+            sdljoystick[i].name = lib_stralloc(SDL_JoystickName(i));
             axis = sdljoystick[i].input_max[AXIS] = SDL_JoystickNumAxes(joy);
             button = sdljoystick[i].input_max[BUTTON] = SDL_JoystickNumButtons(joy);
             hat = sdljoystick[i].input_max[HAT] = SDL_JoystickNumHats(joy);
@@ -294,8 +295,12 @@ fprintf(stderr,"%s\n",__func__);
         return;
 
     for(i=0; i<num_joysticks; ++i) {
-        if(sdljoystick[i].joyptr)
+        lib_free(sdljoystick[i].name);
+        sdljoystick[i].name = NULL;
+
+        if(sdljoystick[i].joyptr) {
             SDL_JoystickClose(sdljoystick[i].joyptr);
+        }
 
         for(j=AXIS; j<NUM_INPUT_TYPES; ++j) {
             lib_free(sdljoystick[i].input[j]);
@@ -644,10 +649,7 @@ ui_menu_action_t sdljoy_perform_event(sdljoystick_mapping_t *event, int value)
     BYTE t;
     ui_menu_action_t retval = MENU_ACTION_NONE;
 
-    if(sdl_menu_state) {
-        if(!value) {
-            return retval;
-        }
+    if(sdl_menu_state || sdl_vkbd_state) {
         if(event->action == JOYSTICK) {
             switch(event->value.joy[1]) {
                 case 0x01:
@@ -671,6 +673,9 @@ ui_menu_action_t sdljoy_perform_event(sdljoystick_mapping_t *event, int value)
         } else if(event->action == UI_ACTIVATE) {
             retval = MENU_ACTION_CANCEL;
         }
+        if(!value) {
+            retval += MENU_ACTION_NONE_RELEASE;
+        }
         return retval;
     }
 
@@ -689,6 +694,8 @@ ui_menu_action_t sdljoy_perform_event(sdljoystick_mapping_t *event, int value)
             keyboard_set_keyarr(event->value.key[0], event->value.key[1], value);
             break;
         case VIRTUAL_KBD:
+            sdl_vkbd_activate();
+            break;
         case UI_ACTIVATE:
             sdl_ui_activate();
             break;

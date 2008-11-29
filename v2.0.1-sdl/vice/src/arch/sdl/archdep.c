@@ -246,9 +246,9 @@ char *archdep_default_resource_file_name(void)
       const char *home;
       
       home = archdep_home_path();
-      return util_concat(home, "/.vice/vicerc", NULL);
+      return util_concat(home, "/.vice/sdl-vicerc", NULL);
     } else {
-      return util_concat(archdep_pref_path, "/vicerc", NULL);
+      return util_concat(archdep_pref_path, "/sdl-vicerc", NULL);
     }
 }
 
@@ -305,7 +305,7 @@ char *archdep_default_save_resource_file_name(void)
         mkdir(viceuserdir, 0700);
     }
 
-    fname = util_concat(viceuserdir, "/vicerc", NULL);
+    fname = util_concat(viceuserdir, "/sdl-vicerc", NULL);
     
     if(archdep_pref_path==NULL) {
       lib_free(viceuserdir);

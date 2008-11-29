@@ -94,5 +94,7 @@ libarch_a_SOURCES = \
 	uivic20.c \
 	video.c \
 	videoarch.h \
+	vkbd.c \
+	vkbd.h \
 	vsidui.c \
 	vsyncarch.c

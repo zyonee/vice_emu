@@ -32,6 +32,7 @@
 
 #include "kbdbuf.h"
 #include "ui.h"
+#include "vkbd.h"
 #include "vsyncapi.h"
 
 #include <SDL/SDL.h>
@@ -74,7 +75,11 @@ void vsyncarch_sleep(signed long delay)
 
 void vsyncarch_presync(void)
 {
-    ui_dispatch_events();
+    if (sdl_vkbd_state) {
+        while (sdl_vkbd_process(ui_dispatch_events()));
+    } else {
+        ui_dispatch_events();
+    }
     kbdbuf_flush();
 }
 

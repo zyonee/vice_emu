@@ -98,7 +98,18 @@ typedef enum {
     MENU_ACTION_CANCEL,
     MENU_ACTION_EXIT,
     MENU_ACTION_MAP,
-    MENU_ACTION_NUM
+    MENU_ACTION_VKBD,
+    MENU_ACTION_NUM,
+    MENU_ACTION_NONE_RELEASE,
+    MENU_ACTION_UP_RELEASE,
+    MENU_ACTION_DOWN_RELEASE,
+    MENU_ACTION_LEFT_RELEASE,
+    MENU_ACTION_RIGHT_RELEASE,
+    MENU_ACTION_SELECT_RELEASE,
+    MENU_ACTION_CANCEL_RELEASE,
+    MENU_ACTION_EXIT_RELEASE,
+    MENU_ACTION_MAP_RELEASE,
+    MENU_ACTION_VKBD_RELEASE
 } ui_menu_action_t;
 
 extern void sdl_ui_set_vcachename(const char *vcache_name);
@@ -125,5 +136,6 @@ extern void sdl_ui_clear(void);
 extern void sdl_ui_activate(void);
 extern char* sdl_ui_readline(const char* previous, int pos_x, int pos_y);
 extern char* sdl_ui_text_input_dialog(const char* title, const char* previous);
+extern void sdl_ui_invert_char(int pos_x, int pos_y);
 
 #endif

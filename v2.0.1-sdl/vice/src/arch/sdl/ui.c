@@ -79,7 +79,7 @@ ui_menu_action_t ui_dispatch_events(void)
                 retval = sdlkbd_press(e.key.keysym.sym, e.key.keysym.mod);
                 break;
             case SDL_KEYUP:
-                sdlkbd_release(e.key.keysym.sym, e.key.keysym.mod);
+                retval = sdlkbd_release(e.key.keysym.sym, e.key.keysym.mod);
                 break;
             case SDL_JOYAXISMOTION:
                 retval = sdljoy_axis_event(e.jaxis.which, e.jaxis.axis, e.jaxis.value);
@@ -88,7 +88,7 @@ ui_menu_action_t ui_dispatch_events(void)
                 retval = sdljoy_button_event(e.jbutton.which, e.jbutton.button, 1);
                 break;
             case SDL_JOYBUTTONUP:
-                sdljoy_button_event(e.jbutton.which, e.jbutton.button, 0);
+                retval = sdljoy_button_event(e.jbutton.which, e.jbutton.button, 0);
                 break;
             case SDL_JOYHATMOTION:
                 retval = sdljoy_hat_event(e.jhat.which, e.jhat.hat, e.jhat.value);
@@ -106,8 +106,9 @@ ui_menu_action_t ui_dispatch_events(void)
                 break;
         }
         /* When using the menu, pass every meaningful event to the caller */
-        if ((sdl_menu_state) && (retval != MENU_ACTION_NONE))
+        if ((sdl_menu_state) && (retval != MENU_ACTION_NONE) && (retval != MENU_ACTION_NONE_RELEASE)) {
             break;
+        }
     }
     return retval;
 }
@@ -202,6 +203,8 @@ static const resource_int_t resources_int[] = {
       &sdl_ui_menukeys[7], set_ui_menukey, (void *)MENU_ACTION_EXIT },
     { "MenuKeyMap", SDLK_m, RES_EVENT_NO, NULL,
       &sdl_ui_menukeys[8], set_ui_menukey, (void *)MENU_ACTION_MAP },
+    { "MenuKeyVKBD", SDLK_F10, RES_EVENT_NO, NULL,
+      &sdl_ui_menukeys[9], set_ui_menukey, (void *)MENU_ACTION_VKBD },
     { "SaveResourcesOnExit", 0, RES_EVENT_NO, NULL,
       &save_resources_on_exit, set_save_resources_on_exit, NULL },
     { "ConfirmOnExit", 0, RES_EVENT_NO, NULL,

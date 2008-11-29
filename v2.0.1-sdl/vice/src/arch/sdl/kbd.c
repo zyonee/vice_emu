@@ -48,10 +48,11 @@
 #include "uihotkey.h"
 #include "uimenu.h"
 #include "util.h"
+#include "vkbd.h"
 
 static log_t sdlkbd_log = LOG_ERR;
 
-/* Joystick mapping filename */
+/* Hotkey filename */
 static char *hotkey_file = NULL;
 
 /* Menu keys */
@@ -279,7 +280,7 @@ ui_menu_action_t sdlkbd_press(SDLKey key, SDLMod mod)
     ui_menu_entry_t *hotkey_action = NULL;
 
 /*fprintf(stderr,"%s: %i (%s),%i\n",__func__,key,SDL_GetKeyName(key),mod);*/
-    if(sdl_menu_state) {
+    if(sdl_menu_state || sdl_vkbd_state) {
         if(key != SDLK_UNKNOWN) {
             for(i = MENU_ACTION_UP; i < MENU_ACTION_NUM; ++i) {
                 if(sdl_ui_menukeys[i] == (int)key) {
@@ -288,6 +289,11 @@ ui_menu_action_t sdlkbd_press(SDLKey key, SDLMod mod)
                 }
             }
         }
+        return retval;
+    }
+
+    if((int)(key) == sdl_ui_menukeys[9]) {
+        sdl_vkbd_activate();
         return retval;
     }
 
@@ -305,10 +311,24 @@ ui_menu_action_t sdlkbd_press(SDLKey key, SDLMod mod)
     return retval;
 }
 
-void sdlkbd_release(SDLKey key, SDLMod mod)
+ui_menu_action_t sdlkbd_release(SDLKey key, SDLMod mod)
 {
+    ui_menu_action_t i, retval = MENU_ACTION_NONE_RELEASE;
 /*fprintf(stderr,"%s: %i (%s),%i\n",__func__,key,SDL_GetKeyName(key),mod);*/
+    if(sdl_vkbd_state) {
+        if(key != SDLK_UNKNOWN) {
+            for(i = MENU_ACTION_UP; i < MENU_ACTION_NUM; ++i) {
+                if(sdl_ui_menukeys[i] == (int)key) {
+                    retval = i;
+                    break;
+                }
+            }
+        }
+        return retval + MENU_ACTION_NONE_RELEASE;
+    }
+
     keyboard_key_released((unsigned long)key);
+    return retval;
 }
 
 /* ------------------------------------------------------------------------ */

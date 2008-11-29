@@ -1,5 +1,5 @@
 /*
- * joy.h - Joystick support for Linux.
+ * joy.h - SDL joystick support.
  *
  * Written by
  *  Hannu Nuotio <hannu.nuotio@tut.fi>

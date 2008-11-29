@@ -39,7 +39,7 @@
 #include "menu_reset.h"
 #include "menu_screenshot.h"
 #include "menu_settings.h"
-#include "menu_snapshot.h"f
+#include "menu_snapshot.h"
 #include "menu_sound.h"
 #include "menu_speed.h"
 #include "menu_video_plus4.h"

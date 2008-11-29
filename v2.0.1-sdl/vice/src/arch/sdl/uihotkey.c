@@ -155,10 +155,10 @@ int sdl_ui_hotkey_map(ui_menu_entry_t *item)
                 case SDL_JOYHATMOTION:
                     break;
                 default:
-                    SDL_Delay(10);
                     break;
             }
         }
+        SDL_Delay(20);
     }
     return 1;
 }

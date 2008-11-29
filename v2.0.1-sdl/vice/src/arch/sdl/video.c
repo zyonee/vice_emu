@@ -37,6 +37,7 @@
 #include "palette.h"
 #include "resources.h"
 #include "videoarch.h"
+#include "vkbd.h"
 
 static log_t sdlvideo_log = LOG_ERR;
 
@@ -192,6 +193,10 @@ void video_canvas_refresh(struct video_canvas_s *canvas,
         if (SDL_LockSurface(canvas->screen) < 0) {
             return;
         }
+    }
+
+    if (sdl_vkbd_state) {
+        sdl_vkbd_draw();
     }
 
     video_canvas_render(canvas, (BYTE *)canvas->screen->pixels,

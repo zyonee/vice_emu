@@ -67,7 +67,7 @@ extern void kbd_initialize_numpad_joykeys(int *joykeys);
 #define KBD_INDEX_CBM2_DEFAULT  KBD_INDEX_CBM2_BUKS
 
 extern ui_menu_action_t sdlkbd_press(SDLKey key, SDLMod mod);
-extern void sdlkbd_release(SDLKey key, SDLMod mod);
+extern ui_menu_action_t sdlkbd_release(SDLKey key, SDLMod mod);
 
 extern void sdlkbd_set_hotkey(SDLKey key, SDLMod mod, ui_menu_entry_t *value);
 extern int sdlkbd_hotkeys_load(const char *filename);

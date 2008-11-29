@@ -44,6 +44,7 @@
 #include "util.h"
 #include "video.h"
 #include "videoarch.h"
+#include "vkbd.h"
 #include "vsync.h"
 
 #include <SDL/SDL.h>
@@ -113,32 +114,6 @@ static void sdl_ui_putchar(BYTE c, int pos_x, int pos_y)
             draw_pos[x] = (fontchar & (0x80 >> x))?menu_draw.color_front:menu_draw.color_back;
         }
         ++font_pos;
-        draw_pos += sdl_active_canvas->draw_buffer->draw_buffer_pitch;
-    }
-}
-
-static void sdl_ui_invert_char(int pos_x, int pos_y)
-{
-    int x, y;
-    BYTE *draw_pos;
-
-    while(pos_x >= menu_draw.max_text_x) {
-        pos_x -= menu_draw.max_text_x;
-        ++pos_y;
-    }
-
-    draw_pos = &(sdl_active_canvas->draw_buffer->draw_buffer[pos_x * menufont.w + pos_y * menufont.h * menu_draw.pitch]);
-
-    draw_pos += menu_draw.offset;
-
-    for(y=0; y < menufont.h; ++y) {
-        for(x=0; x < menufont.w; ++x) {
-            if(draw_pos[x] == menu_draw.color_front) {
-                draw_pos[x] = menu_draw.color_back;
-            } else {
-                draw_pos[x] = menu_draw.color_front;
-            }
-        }
         draw_pos += sdl_active_canvas->draw_buffer->draw_buffer_pitch;
     }
 }
@@ -327,6 +302,10 @@ void sdl_ui_activate_pre_action(void)
     vsync_suspend_speed_eval();
     sound_suspend();
 
+    if(sdl_vkbd_state) {
+        sdl_vkbd_close();
+    }
+
     SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
     sdl_menu_state = 1;
 }
@@ -387,7 +366,7 @@ ui_menu_action_t sdl_ui_menu_poll_input(void)
     do {
         SDL_Delay(20);
         retval = ui_dispatch_events();
-    } while (retval == MENU_ACTION_NONE);
+    } while (retval == MENU_ACTION_NONE || retval == MENU_ACTION_NONE_RELEASE);
     return retval;
 }
 
@@ -464,6 +443,32 @@ int sdl_ui_print_center(const char *text, int pos_y)
 int sdl_ui_display_title(const char *title)
 {
     return sdl_ui_print_wrap(title, 0, 0);
+}
+
+void sdl_ui_invert_char(int pos_x, int pos_y)
+{
+    int x, y;
+    BYTE *draw_pos;
+
+    while(pos_x >= menu_draw.max_text_x) {
+        pos_x -= menu_draw.max_text_x;
+        ++pos_y;
+    }
+
+    draw_pos = &(sdl_active_canvas->draw_buffer->draw_buffer[pos_x * menufont.w + pos_y * menufont.h * menu_draw.pitch]);
+
+    draw_pos += menu_draw.offset;
+
+    for(y=0; y < menufont.h; ++y) {
+        for(x=0; x < menufont.w; ++x) {
+            if(draw_pos[x] == menu_draw.color_front) {
+                draw_pos[x] = menu_draw.color_back;
+            } else {
+                draw_pos[x] = menu_draw.color_front;
+            }
+        }
+        draw_pos += sdl_active_canvas->draw_buffer->draw_buffer_pitch;
+    }
 }
 
 void sdl_ui_activate(void)

@@ -45,6 +45,7 @@
 #include "menu_video_c64.h"
 #include "ui.h"
 #include "uimenu.h"
+#include "vkbd.h"
 
 /* temporary empty tape menu, this one will be moved out to menu_tape.c */
 static ui_menu_entry_t tape_menu[] = {
@@ -164,6 +165,7 @@ fprintf(stderr,"%s\n",__func__);
     sdl_ui_set_menu_colors(1, 0);
     sdl_ui_set_menu_borders(0, 0);
     sdl_ui_set_double_x(0);
+    sdl_vkbd_set_vkbd(&vkbd_c64);
     return 0;
 }
 
