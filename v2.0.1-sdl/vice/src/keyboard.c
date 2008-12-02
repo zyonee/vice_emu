@@ -532,6 +532,37 @@ void keyboard_key_clear(void)
     keyboard_key_clear_internal();
 }
 
+void keyboard_set_keyarr_any(int row, int col, int value)
+{
+    signed long sym;
+
+    if (row < 0) {
+        if (row == -3 && col == 0) {
+            sym = key_ctrl_restore1;
+        } else
+        if (row == -3 && col == 1) {
+            sym = key_ctrl_restore2;
+        } else
+        if (row == -4 && col == 0) {
+            sym = key_ctrl_column4080;
+        } else
+        if (row == -4 && col == 1) {
+            sym = key_ctrl_caps;
+        } else {
+            return;
+        }
+
+        if(value) {
+            keyboard_key_pressed(sym);
+        } else {
+            keyboard_key_released(sym);
+        }
+
+    } else {
+        keyboard_set_keyarr(row, col, value);
+    }
+}
+
 /*-----------------------------------------------------------------------*/
 
 void keyboard_alternative_set(int alternative)

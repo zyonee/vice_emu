@@ -45,6 +45,7 @@
 #include "uicolor.h"
 #include "uimenu.h"
 #include "uimsgbox.h"
+#include "vkbd.h"
 #include "vsync.h"
 
 
@@ -105,8 +106,8 @@ ui_menu_action_t ui_dispatch_events(void)
 /*fprintf(stderr,"%s: %i\n",__func__,e.type);*/
                 break;
         }
-        /* When using the menu, pass every meaningful event to the caller */
-        if ((sdl_menu_state) && (retval != MENU_ACTION_NONE) && (retval != MENU_ACTION_NONE_RELEASE)) {
+        /* When using the menu or vkbd, pass every meaningful event to the caller */
+        if (((sdl_menu_state)||(sdl_vkbd_state)) && (retval != MENU_ACTION_NONE) && (retval != MENU_ACTION_NONE_RELEASE)) {
             break;
         }
     }
