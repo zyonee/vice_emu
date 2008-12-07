@@ -1517,7 +1517,7 @@ static long CALLBACK window_proc(HWND window, UINT msg,
 //          if (!fullscreen_transition)
 //              ResumeFullscreenMode(window);
         }
-        //mouse_update_mouse_acquire();
+        mouse_update_mouse_acquire();
         break;
       case WM_SIZE:
         if (window_index<number_of_windows) {
@@ -1541,6 +1541,7 @@ static long CALLBACK window_proc(HWND window, UINT msg,
       case WM_ENTERSIZEMOVE:
         vsync_suspend_speed_eval();
         ui_active = FALSE;
+        mouse_update_mouse_acquire();
         break;
       case WM_EXITMENULOOP:
       case WM_EXITSIZEMOVE:
@@ -1549,6 +1550,7 @@ static long CALLBACK window_proc(HWND window, UINT msg,
         } else {
             ui_active = FALSE;
         }
+        mouse_update_mouse_acquire();
         break;
       case WM_MOVE:
         ui_wm_move(window, window_index);

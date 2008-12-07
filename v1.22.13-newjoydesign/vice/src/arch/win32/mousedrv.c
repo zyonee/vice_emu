@@ -27,7 +27,6 @@
 #include "vice.h"
 
 #include <windows.h>
-#include <dinput.h>
 #include <stdio.h>
 
 #include "log.h"
@@ -38,11 +37,19 @@
 
 
 int _mouse_x, _mouse_y;
+#ifdef HAVE_DINPUT
+#include "dinput_handle.h"
+static int mouse_acquired = 0;
+static LPDIRECTINPUTDEVICE di_mouse = NULL;
+
+
+#endif
 
 /* ------------------------------------------------------------------------- */
 
 void mousedrv_mouse_changed(void)
 {
+    mouse_update_mouse_acquire();
 }
 
 int mousedrv_resources_init(void)
@@ -59,6 +66,36 @@ int mousedrv_cmdline_options_init(void)
 
 void mousedrv_init(void)
 {
+#ifdef HAVE_DINPUT
+    IDirectInput_CreateDevice(get_directinput_handle(), (GUID *)&GUID_SysMouse, &di_mouse,
+                                            NULL);
+
+#endif
+}
+
+void mouse_update_mouse_acquire(void)
+{
+#ifdef HAVE_DINPUT
+    HRESULT res;
+    if (di_mouse == NULL)
+        return;
+    if (_mouse_enabled) {
+        if (ui_active) {
+            res = IDirectInputDevice_SetCooperativeLevel( 	 
+	              di_mouse, ui_active_window, DISCL_EXCLUSIVE | DISCL_FOREGROUND);
+            res = IDirectInputDevice_Acquire(di_mouse);
+            mouse_acquired = 1;
+        } else {
+            IDirectInputDevice_Unacquire(di_mouse);
+            mouse_acquired = 0;
+        }
+    } else {
+        if (mouse_acquired) {
+            IDirectInputDevice_Unacquire(di_mouse);
+            mouse_acquired = 0;
+        }
+    }
+#endif
 }
 
 BYTE mousedrv_get_x(void)
