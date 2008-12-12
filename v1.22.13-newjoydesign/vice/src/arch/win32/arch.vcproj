@@ -316,6 +316,10 @@
 			</FileConfiguration>
 		</File>
 		<File
+			RelativePath=".\dinput_handle.c"
+			>
+		</File>
+		<File
 			RelativePath="dirent.c"
 			>
 			<FileConfiguration

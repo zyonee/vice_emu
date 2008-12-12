@@ -1,4 +1,10 @@
+/* all GUIDs will be defined in this object file */
 #define INITGUID
+
+/* for CoInitializeEx */
+#ifndef HAVE_DINPUT_LIB
+#define _WIN32_DCOM
+#endif
 
 #include "dinput_handle.h"
 

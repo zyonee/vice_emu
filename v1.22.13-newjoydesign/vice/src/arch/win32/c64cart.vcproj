@@ -206,6 +206,10 @@
 			</FileConfiguration>
 		</File>
 		<File
+			RelativePath="..\..\c64\cart\actionreplay4.c"
+			>
+		</File>
+		<File
 			RelativePath="..\..\c64\cart\atomicpower.c"
 			>
 			<FileConfiguration
@@ -622,6 +626,10 @@
 					PreprocessorDefinitions=""
 				/>
 			</FileConfiguration>
+		</File>
+		<File
+			RelativePath="..\..\c64\cart\stardos.c"
+			>
 		</File>
 		<File
 			RelativePath="..\..\c64\cart\stb.c"

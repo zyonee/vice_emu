@@ -294,6 +294,10 @@
 			</FileConfiguration>
 		</File>
 		<File
+			RelativePath="..\..\clipboard.c"
+			>
+		</File>
+		<File
 			RelativePath="..\..\clkguard.c"
 			>
 			<FileConfiguration
