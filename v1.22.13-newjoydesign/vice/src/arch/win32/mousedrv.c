@@ -37,11 +37,19 @@
 
 
 int _mouse_x, _mouse_y;
+
 #ifdef HAVE_DINPUT
 #include "dinput_handle.h"
+
 static int mouse_acquired = 0;
 static LPDIRECTINPUTDEVICE di_mouse = NULL;
-
+typedef struct mouse_data_t {
+    DWORD X;
+    DWORD Y;
+    BYTE LeftButton;
+    BYTE RightButton;
+    BYTE padding[2];
+} mouse_data;
 
 #endif
 
@@ -64,12 +72,70 @@ int mousedrv_cmdline_options_init(void)
 
 /* ------------------------------------------------------------------------- */
 
+void mouse_update_mouse(void)
+{
+    mouse_data state;
+    HRESULT result;
+
+    if (di_mouse == NULL || !mouse_acquired)
+        return;
+
+    do {
+        result = IDirectInputDevice_GetDeviceState(di_mouse, sizeof(mouse_data),
+                                                   &state);
+        switch (result) {
+        case DI_OK:
+            break;
+        default:
+            return;
+        case DIERR_INPUTLOST:
+            result = IDirectInputDevice_Acquire(di_mouse);
+            if (result != DI_OK) {
+                return;
+            }
+        }
+    } while (result == DIERR_INPUTLOST);
+
+    _mouse_x += state.X;
+    _mouse_y += state.Y;
+
+    mouse_button_left((int)(state.LeftButton & 0x80));
+    mouse_button_right((int)(state.RightButton & 0x80));
+}
+
 void mousedrv_init(void)
 {
 #ifdef HAVE_DINPUT
-    IDirectInput_CreateDevice(get_directinput_handle(), (GUID *)&GUID_SysMouse, &di_mouse,
-                                            NULL);
+    HRESULT result;
+    DIOBJECTDATAFORMAT mouse_objects[] = {
+        { &GUID_XAxis, 0, DIDFT_AXIS | DIDFT_ANYINSTANCE, 0 },
+        { &GUID_YAxis, 4, DIDFT_AXIS | DIDFT_ANYINSTANCE, 0 },
+        { &GUID_Button, 8, DIDFT_BUTTON | DIDFT_ANYINSTANCE, 0 },
+        { &GUID_Button, 9, DIDFT_BUTTON | DIDFT_ANYINSTANCE, 0 }
+    };
 
+    DIDATAFORMAT mouse_data_format={
+        sizeof(DIDATAFORMAT),
+        sizeof(DIOBJECTDATAFORMAT),
+        DIDF_RELAXIS,
+        sizeof(mouse_data),
+        sizeof(mouse_objects) / sizeof(*mouse_objects),
+        mouse_objects
+    };
+    
+    LPDIRECTINPUT di = get_directinput_handle();
+    
+    if (di == NULL)
+        return;
+
+    if (IDirectInput_CreateDevice(di, (GUID *)&GUID_SysMouse, &di_mouse,
+                                            NULL) == S_OK) {
+        if (IDirectInputDevice_SetDataFormat(di_mouse, &mouse_data_format) != S_OK) {
+            IDirectInput_Release(di_mouse);
+            log_debug("Can't set Mouse DataFormat");
+            di_mouse = NULL;
+        }
+    }
 #endif
 }
 
