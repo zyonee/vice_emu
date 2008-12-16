@@ -203,15 +203,19 @@ static int sdl_ui_menu_display(ui_menu_entry_t *menu, const char *title)
 
         switch (sdl_ui_menu_poll_input()) {
             case MENU_ACTION_UP:
+                cur_old = cur;
                 if (cur > 0) {
-                    cur_old = cur;
                     --cur;
+                } else {
+                    cur = (num_items-1);
                 }
                 break;
             case MENU_ACTION_DOWN:
+                cur_old = cur;
                 if (cur < (num_items-1)) {
-                    cur_old = cur;
                     ++cur;
+                } else {
+                    cur = 0;
                 }
                 break;
             case MENU_ACTION_RIGHT:

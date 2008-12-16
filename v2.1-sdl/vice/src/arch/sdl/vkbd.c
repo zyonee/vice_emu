@@ -248,6 +248,6 @@ vkbd_t vkbd_c64 = {
 vkbd_t vkbd_vic20 = {
     keyb_c64,
     keytable_vic20,
-    '\x17'
+    '\x13'
 };
 

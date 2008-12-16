@@ -39,6 +39,7 @@
 #include "uimenu.h"
 #include "util.h"
 
+UI_MENU_DEFINE_TOGGLE(Sound)
 UI_MENU_DEFINE_RADIO(SoundSampleRate)
 UI_MENU_DEFINE_RADIO(SoundOversample)
 UI_MENU_DEFINE_RADIO(SoundSpeedAdjustment)
@@ -315,6 +316,10 @@ const ui_menu_entry_t sound_record_menu[] = {
 };
 
 const ui_menu_entry_t sound_output_menu[] = {
+    { "Sound",
+      MENU_ENTRY_RESOURCE_TOGGLE,
+      toggle_Sound_callback,
+      NULL },
     { "Output driver",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
