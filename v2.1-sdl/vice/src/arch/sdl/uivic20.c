@@ -181,7 +181,7 @@ fprintf(stderr,"%s\n",__func__);
     sdl_ui_set_menu_borders(0, (videostandard == MACHINE_SYNC_PAL) ? 28: 8);
     sdl_ui_set_double_x(1);
     sdl_ui_set_menu_colors(1, 0);
-    sdl_vkbd_set_vkbd(&vkbd_c64);
+    sdl_vkbd_set_vkbd(&vkbd_vic20);
     return 0;
 }
 

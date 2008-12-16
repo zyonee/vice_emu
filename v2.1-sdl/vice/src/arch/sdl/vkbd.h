@@ -44,6 +44,7 @@ typedef struct vkbd_s {
 extern void sdl_vkbd_set_vkbd(const vkbd_t *machine_vkbd);
 
 extern vkbd_t vkbd_c64;
+extern vkbd_t vkbd_vic20;
 
 extern int sdl_vkbd_state;
 
