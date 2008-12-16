@@ -44,6 +44,7 @@ struct snapshot_s;
 extern void keyboard_init(void);
 extern void keyboard_shutdown(void);
 extern void keyboard_set_keyarr(int row, int col, int value);
+extern void keyboard_set_keyarr_any(int row, int col, int value);
 extern void keyboard_clear_keymatrix(void);
 extern void keyboard_event_playback(CLOCK offset, void *data);
 extern void keyboard_restore_event_playback(CLOCK offset, void *data);

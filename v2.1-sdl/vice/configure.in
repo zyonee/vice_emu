@@ -61,12 +61,13 @@ AC_ARG_WITH(arts, [  --with-arts             use aRts sound system])
 AC_ARG_WITH(esd, [  --without-esd           do not use the Enlightened Sound Daemon system])
 AC_ARG_WITH(alsa, [  --without-alsa          do not use the ALSA sound system])
 AC_ARG_WITH(oss, [  --without-oss           do not use the OSS sound system])
-AC_ARG_ENABLE(sdl, [  --with-sdl              use sdl sound system])
+AC_ARG_WITH(sdlsound, [  --with-sdlsound         use sdl sound system])
 AC_ARG_WITH(resid, [  --without-resid         do not use the reSID engine])
 AC_ARG_WITH(png, [  --without-png           do not use the PNG screenshot system])
 AC_ARG_WITH(zlib, [  --without-zlib          do not use the ZLIB support])
 AC_ARG_ENABLE(fullscreen, [  --enable-fullscreen     enable XFree86 fullscreen detection], [ echo checking for XFree86 fullscreen requested...], [enable_fullscreen="no"; echo no explicit checking for XFree86 fullscreen requested, disabling fullscreen...])
 AC_ARG_ENABLE(gnomeui,[  --enable-gnomeui        enables gnome ui support])
+AC_ARG_ENABLE(sdlui,[  --enable-sdlui          enables sdl ui support])
 AC_ARG_ENABLE(nls,[  --disable-nls           disables national language support])
 AC_ARG_ENABLE(realdevice,[  --disable-realdevice    disables access to real peripheral devices (CBM4Linux/OpenCBM)])
 AC_ARG_ENABLE(ffmpeg,[  --enable-ffmpeg         enables ffmpeg library support])
@@ -372,7 +373,10 @@ darwin*)
   AM_CONDITIONAL(HAVE_RS232, true)
   AM_CONDITIONAL(HAVE_RAWDRIVE, true)
 
-  AC_DEFINE(HAVE_RS232,,[Enable RS232 emulation.])
+  if test x"$enable_sdlui" != "xyes"; then
+    AC_DEFINE(HAVE_RS232,,[Enable RS232 emulation.])
+  fi
+
   AC_DEFINE(HAVE_RAWDRIVE,,[Support for block device disk image access.])
   AC_DEFINE(HAVE_MOUSE,,[Enable 1351 mouse support])
 
@@ -456,10 +460,15 @@ dnl All other UN*X systems
   AM_CONDITIONAL(HAVE_RS232, true)
   AM_CONDITIONAL(HAVE_RAWDRIVE, true)
 
-  AC_DEFINE(HAVE_RS232,,[Enable RS232 emulation.])
+  dnl for the time being disabled for SDL UI
+
+  if test x"$enable_sdlui" != "xyes"; then
+    AC_DEFINE(HAVE_RS232,,[Enable RS232 emulation.])
+    AC_DEFINE(HAVE_MIDI,,[Enable support for midi.])
+  fi
+
   AC_DEFINE(HAVE_RAWDRIVE,,[Support for block device disk image access.])
   AC_DEFINE(HAVE_MOUSE,,[Enable 1351 mouse support])
-  AC_DEFINE(HAVE_MIDI,,[Enable support for midi.])
 
   AC_CHECK_HEADER(linux/hardsid.h,
       [ AC_DEFINE(HAVE_HARDSID,,[Support for HardSID.]) ],)
@@ -667,15 +676,50 @@ else
 	with_arts=no
 fi
 
+dnl Set output drivers to none
+SOUND_DRIVERS=""
+GFXOUTPUT_DRIVERS=""
+
 dnl Check and setup SDL compilation.
-if test x"$with_sdl" = "xyes"; then
-	AC_CHECK_PROGS(sdl_config, sdl-config, no)
-	if test x"$sdl_config" = "xno"; then
-		AC_MSG_WARN([sdl-config not found. SDL will not be configured])
-                with_sdl=no
+if test x"$with_sdlsound" = "xyes" -o x"$enable_sdlui" = "xyes"; then
+
+    dnl check for sdl-config
+    AC_CHECK_PROGS(sdl_config, sdl-config, no)
+
+    old_cflags=$CFLAGS
+    old_libs=$LIBS
+
+    dnl if no sdl-config was found we assume that there are no extra CFLAGS
+    dnl and that libSDL can be found in the default lib search path
+    if test x"$sdl_config" = "xno"; then
+        LIBS="-lSDL"
+    else
+        CFLAGS="$CFLAGS `sdl-config --cflags`"
+        LIBS="$LIBS `sdl-config --libs`"
+    fi
+
+    AC_CHECK_HEADERS(SDL/SDL_audio.h,[AC_CHECK_LIB(SDL, SDL_OpenAudio,
+                     [SOUND_DRIVERS="$SOUND_DRIVERS soundsdl.o";
+                      AC_DEFINE(USE_SDL_AUDIO,,[Enable sdl sound support.])],
+                     [CFLAGS=$old_cflags; LIBS=$old_libs; break],$SOUND_LIBS)],
+                     [CFLAGS=$old_cflags; LIBS=$old_libs; break])
+
+    if test x"$ac_cv_lib_SDL_SDL_OpenAudio" != "xyes"; then
+        with_sdlsound=no
+    fi
+
+    if test x"$enable_sdlui" = "xyes"; then
+        AC_CHECK_HEADERS(SDL/SDL.h,[AC_CHECK_LIB(SDL, SDL_SetVideoMode,
+                         [AC_DEFINE(USE_SDLUI,,[Enable sdl ui support.])],
+                         [CFLAGS=$old_cflags; LIBS=$old_libs; break])],
+                         [CFLAGS=$old_cflags; LIBS=$old_libs; break])
+
+        if test x"$ac_cv_lib_SDL_SDL_SetVideoMode" != "xyes"; then
+            enable_sdlui=no
+        else
+            AC_DEFINE(HAVE_FULLSCREEN,,[Enable Fullscreen support.])
         fi
-else
-	with_sdl=no
+    fi
 fi
 
 dnl Setup reSID compilation.  We need a C++ compiler for this.
@@ -1146,10 +1190,6 @@ LIBS="$old_LIBS"
 AC_SUBST(NETPLAY_LIBS)
 
 
-dnl Configure output drivers
-SOUND_DRIVERS=""
-GFXOUTPUT_DRIVERS=""
-
 dnl ----- FFMPEG -----
 FFMPEG_INCLUDES=
 FFMPEG_LIBS=
@@ -1277,18 +1317,6 @@ if test x"$is_unix" = "xyes"; then
                       AC_DEFINE(USE_ESD,,[Enable esd sound support.])],,$SOUND_LIBS)])
   fi
 
-  if test x"$with_sdl" = "xyes"; then
-    old_cflags=$CFLAGS
-    old_libs=$LIBS
-    CFLAGS="$CFLAGS `sdl-config --cflags`"
-    LIBS="$LIBS `sdl-config --libs`"
-    AC_CHECK_HEADERS(SDL/SDL_audio.h,[AC_CHECK_LIB(SDL, SDL_OpenAudio,
-                     [SOUND_DRIVERS="$SOUND_DRIVERS soundsdl.o";
-                      AC_DEFINE(USE_SDL_AUDIO,,[Enable sdl sound support.])],
-                     [CFLAGS=$old_cflags; LIBS=$old_libs; break],$SOUND_LIBS)],
-                     [CFLAGS=$old_cflags; LIBS=$old_libs; break])
-  fi
-
   case "$host_os" in
     hpux*)
       AC_CHECK_HEADERS(sys/audio.h,
@@ -1356,23 +1384,25 @@ fi
 
 if test x"$is_win32" = "xyes"; then
     SOUND_DRIVERS="$SOUND_DRIVERS sounddx.o soundwmm.o"
-    AC_PATH_PROGS(WINDRES, windres, windres)
-    AC_PATH_PROGS(WRC, wrc , windres)
-    if test x"$WRC" != "xwindres"; then
-        WRC_VERSION=`($WRC --version) 2>/dev/null`
-        case "$WRC_VERSION" in
-            Wine*)
-                winerc=yes
-                ;;
-            *)
-                winerc=no
-                AC_MSG_WARN([WRC found, but is not the Wine Resource Compiler])
-                WRC="$WINDRES"
-                ;;
-        esac
-    else
-        AC_MSG_WARN([WRC not found, WRC is required for propper internationalization support])
-        WRC="$WINDRES"
+    if test x"$enable_sdlui" != "xyes"; then
+        AC_PATH_PROGS(WINDRES, windres, windres)
+        AC_PATH_PROGS(WRC, wrc , windres)
+        if test x"$WRC" != "xwindres"; then
+            WRC_VERSION=`($WRC --version) 2>/dev/null`
+            case "$WRC_VERSION" in
+                Wine*)
+                    winerc=yes
+                    ;;
+                *)
+                    winerc=no
+                    AC_MSG_WARN([WRC found, but is not the Wine Resource Compiler])
+                    WRC="$WINDRES"
+                    ;;
+            esac
+        else
+            AC_MSG_WARN([WRC not found, WRC is required for propper internationalization support])
+            WRC="$WINDRES"
+        fi
     fi
 fi
 
@@ -1549,7 +1579,7 @@ AC_SUBST(READLINE)
 AC_SUBST(READLINE_LIBS)
 
 dnl check Amiga graphics support
-if test x"$is_amiga" = "xyes"; then
+if test x"$is_amiga" = "xyes" -a x"$enable_sdlui" != "xyes"; then
   cgx_present=no
   p96_present=no
   if test x"$with_picasso96" != "xyes"; then
@@ -1643,7 +1673,7 @@ AC_SUBST(VICE_LIBPNG_INCLUDES)
 
 
 dnl Check for libraries and header files
-if test x"$is_unix_x11" = "xyes"; then
+if test x"$is_unix_x11" = "xyes" -a x"$enable_sdlui" != "xyes"; then
   X_LIBS=""
   AC_PATH_XTRA
 
@@ -1809,7 +1839,11 @@ elif test x"$is_dos" = "xyes"; then
 
   dnl On MS-DOS, we already know what we want.
 
-  LIBS="$LIBS -lalleg $LIBMIDAS"
+  if test x"$enable_sdlui" = "xyes"; then
+    LIBS="$LIBS $LIBMIDAS"
+  else
+    LIBS="$LIBS -lalleg $LIBMIDAS"
+  fi
   AC_SUBST(LDFLAGS)
 
 elif test x"$is_amiga" = "xyes"; then
@@ -1820,11 +1854,15 @@ elif test x"$is_amiga" = "xyes"; then
       LIBS="$LIBS -lauto"
     fi
   else
-    LIBS="$LIBS -lmui"
+    if test x"$enable_sdlui" != "xyes"; then
+      LIBS="$LIBS -lmui"
+    fi
   fi
   AC_SUBST(LDFLAGS)
 
-  AC_DEFINE(HAS_TRANSLATION,,[Enable internationalization support])
+  if test x"$enable_sdlui" != "xyes"; then
+    AC_DEFINE(HAS_TRANSLATION,,[Enable internationalization support])
+  fi
 
 elif test x"$is_beos" = "xyes"; then
 
@@ -1840,7 +1878,7 @@ elif test x"$is_unix_gp2x" = "xyes"; then
   LDFLAGS="$LDFLAGS -static"
   AC_SUBST(LDFLAGS)
 
-elif test x"$is_win32" = "xyes"; then
+elif test x"$is_win32" = "xyes" -a x"$enable_sdlui" != "xyes"; then
 
   dnl On Windows, we already know what we want.
 
@@ -1935,35 +1973,49 @@ else
 fi
 
 dnl Setup the system-specific object files.
+if test x"$enable_sdlui" = "xyes"; then
+  ARCH_DIR="\$(top_builddir)/src/arch/sdl"
+  ARCH_SRC_DIR="\$(top_srcdir)/src/arch/sdl"
+  ARCH_LIBS="$ARCH_DIR/libarch.a"
+  ARCH_INCLUDES="-I$ARCH_SRC_DIR"
+fi
+
 if test x"$is_unix" = "xyes"; then
-  ARCH_DIR="\$(top_builddir)/src/arch/unix"
-  ARCH_SRC_DIR="\$(top_srcdir)/src/arch/unix"
-  ARCH_EXTRA_SUBDIR="gui x11"
 
-  if test x"$is_unix_x11" = "xyes" ; then
-    if test x"$enable_gnomeui" != "xyes" ; then
-      ARCH_LIBS="$ARCH_DIR/libarch.a $ARCH_DIR/gui/libarchgui.a $ARCH_DIR/x11/libx11ui.a $ARCH_DIR/x11/xaw/libxawui.a $ARCH_DIR/x11/xaw/widgets/libwidgets.a $ARCH_DIR/libarch.a $ARCH_DIR/gui/libarchgui.a $ARCH_DIR/x11/libx11ui.a"
-      ARCH_INCLUDES="-I$ARCH_SRC_DIR"
-    else
-      ARCH_LIBS="$ARCH_DIR/libarch.a $ARCH_DIR/gui/libarchgui.a $ARCH_DIR/x11/gnome/libgnomeui.a $ARCH_DIR/x11/libx11ui.a"
-      ARCH_INCLUDES="-I$ARCH_SRC_DIR $GTK_CFLAGS $GTKGL_CFLAGS"
-    fi
+  if test x"$enable_sdlui" != "xyes"; then
+    ARCH_DIR="\$(top_builddir)/src/arch/unix"
+    ARCH_SRC_DIR="\$(top_srcdir)/src/arch/unix"
+    ARCH_EXTRA_SUBDIR="gui x11"
+
+    if test x"$is_unix_x11" = "xyes" ; then
+      if test x"$enable_gnomeui" != "xyes" ; then
+        ARCH_LIBS="$ARCH_DIR/libarch.a $ARCH_DIR/gui/libarchgui.a $ARCH_DIR/x11/libx11ui.a $ARCH_DIR/x11/xaw/libxawui.a $ARCH_DIR/x11/xaw/widgets/libwidgets.a $ARCH_DIR/libarch.a $ARCH_DIR/gui/libarchgui.a $ARCH_DIR/x11/libx11ui.a"
+        ARCH_INCLUDES="-I$ARCH_SRC_DIR"
+      else
+        ARCH_LIBS="$ARCH_DIR/libarch.a $ARCH_DIR/gui/libarchgui.a $ARCH_DIR/x11/gnome/libgnomeui.a $ARCH_DIR/x11/libx11ui.a"
+        ARCH_INCLUDES="-I$ARCH_SRC_DIR $GTK_CFLAGS $GTKGL_CFLAGS"
+      fi
     
-    AC_DEFINE(HAVE_READLINE,,[Are we using the readline library replacement?])
-    if test x"$READLINE" != x ; then
-      ARCH_EXTRA_SUBDIR="$ARCH_EXTRA_SUBDIR readline"
+      AC_DEFINE(HAVE_READLINE,,[Are we using the readline library replacement?])
+      if test x"$READLINE" != x ; then
+        ARCH_EXTRA_SUBDIR="$ARCH_EXTRA_SUBDIR readline"
+      fi
     fi
-
+  else
+    AC_DEFINE(UNIX_COMPILE,,[Are we compiling for unix?])
   fi
 
-  if test x"$is_unix_gp2x" = "xyes" ; then
+  if test x"$is_unix_gp2x" = "xyes" -a x"$enable_sdlui" != "xyes"; then
     ARCH_LIBS="$ARCH_DIR/libarch.a $ARCH_DIR/gp2x/libarchgp2x.a"
     ARCH_INCLUDES="-I$ARCH_SRC_DIR"
     ARCH_EXTRA_SUBDIR="gp2x"
   fi
 
   if test x"$is_unix_macosx" = "xyes" ; then
-    if test x"$with_cocoa" = "xyes" ; then
+    ARCH_MAKE_BINDIST_DIR="\$(top_srcdir)/src/arch/unix/macosx"
+    if test x"$enable_sdlui" = "xyes"; then
+      UNIX_MACOSX_UITYPE=sdl
+    elif test x"$with_cocoa" = "xyes" ; then
       ARCH_LIBS="$ARCH_DIR/macosx/cocoa/menu/libarchmacosxcocoamenu.a $ARCH_DIR/macosx/cocoa/dialog/libarchmacosxcocoadialog.a $ARCH_DIR/macosx/cocoa/libarchmacosxcocoa.a $ARCH_DIR/macosx/cocoa/view/libarchmacosxcocoaview.a $ARCH_DIR/macosx/libarchmacosx.a $ARCH_DIR/libarch.a $ARCH_LIBS"
       ARCH_INCLUDES="-I$ARCH_SRC_DIR/macosx/cocoa/menu -I$ARCH_SRC_DIR/macosx/cocoa/dialog -I$ARCH_SRC_DIR/macosx/cocoa/view -I$ARCH_SRC_DIR/macosx/cocoa -I$ARCH_SRC_DIR/macosx -I$ARCH_SRC_DIR $ARCH_INCLUDES"
       ARCH_EXTRA_SUBDIR="macosx macosx/cocoa macosx/cocoa/view macosx/cocoa/menu macosx/cocoa/dialog"
@@ -1982,7 +2034,13 @@ if test x"$is_unix" = "xyes"; then
   fi
   AC_SUBST(UNIX_MACOSX_UITYPE)
 
-  AM_CONDITIONAL(UNIX_COMPILE, true)
+  if test x"$enable_sdlui" = "xyes"; then
+    AM_CONDITIONAL(SDL_COMPILE, true)
+    AM_CONDITIONAL(UNIX_COMPILE, false)
+  else
+    AM_CONDITIONAL(SDL_COMPILE, false)
+    AM_CONDITIONAL(UNIX_COMPILE, true)
+  fi
   AM_CONDITIONAL(WIN32_COMPILE, false)
   AM_CONDITIONAL(MSDOS_COMPILE, false)
   AM_CONDITIONAL(RISCOS_COMPILE, false)
@@ -2101,6 +2159,7 @@ elif test x"$is_win32" = "xyes"; then
   ARCH_SRC_DIR="\$(top_srcdir)/src/arch/win32"
   ARCH_LIBS="$ARCH_DIR/libarch.a"
   ARCH_INCLUDES="-I\$(top_srcdir)/src/arch/win32"
+  AM_CONDITIONAL(SDL_COMPILE, false)
   AM_CONDITIONAL(UNIX_COMPILE, false)
   AM_CONDITIONAL(UNIX_GP2X_COMPILE, false)
   AM_CONDITIONAL(UNIX_SKYOS_COMPILE, false)
@@ -2125,6 +2184,7 @@ elif test x"$is_amiga" = "xyes"; then
   ARCH_SRC_DIR="\$(top_srcdir)/src/arch/amigaos"
   ARCH_LIBS="$ARCH_DIR/libarch.a"
   ARCH_INCLUDES="-I\$(top_srcdir)/src/arch/amigaos"
+  AM_CONDITIONAL(SDL_COMPILE, false)
   AM_CONDITIONAL(UNIX_COMPILE, false)
   AM_CONDITIONAL(UNIX_GP2X_COMPILE, false)
   AM_CONDITIONAL(UNIX_SKYOS_COMPILE, false)
@@ -2153,6 +2213,7 @@ elif test x"$is_dos" = "xyes"; then
   else
   ARCH_LIBS="$ARCH_DIR/libarch.a"
   fi
+  AM_CONDITIONAL(SDL_COMPILE, false)
   AM_CONDITIONAL(UNIX_COMPILE, false)
   AM_CONDITIONAL(UNIX_GP2X_COMPILE, false)
   AM_CONDITIONAL(UNIX_SKYOS_COMPILE, false)
@@ -2177,6 +2238,7 @@ elif test x"$is_os2" = "xyes"; then
   ARCH_DIR="\$(top_builddir)/src/arch/os2"
   ARCH_SRC_DIR="\$(top_srcdir)/src/arch/os2"
   ARCH_LIBS="$ARCH_DIR/libarch.a"
+  AM_CONDITIONAL(SDL_COMPILE, false)
   AM_CONDITIONAL(UNIX_COMPILE, false)
   AM_CONDITIONAL(UNIX_GP2X_COMPILE, false)
   AM_CONDITIONAL(UNIX_SKYOS_COMPILE, false)
@@ -2201,6 +2263,7 @@ elif test x"$is_beos" = "xyes"; then
   ARCH_DIR="\$(top_builddir)/src/arch/beos"
   ARCH_SRC_DIR="\$(top_srcdir)/src/arch/beos"
   ARCH_LIBS="$ARCH_DIR/libarch.a"
+  AM_CONDITIONAL(SDL_COMPILE, false)
   AM_CONDITIONAL(UNIX_COMPILE, false)
   AM_CONDITIONAL(UNIX_GP2X_COMPILE, false)
   AM_CONDITIONAL(UNIX_SKYOS_COMPILE, false)
@@ -2225,6 +2288,7 @@ elif test x"$is_riscos" = "xyes"; then
   ARCH_DIR="\$(top_builddir)/src/arch/riscos"
   ARCH_SRC_DIR="\$(top_srcdir)/src/arch/riscos"
   ARCH_LIBS="$ARCH_DIR/libarch.a"
+  AM_CONDITIONAL(SDL_COMPILE, false)
   AM_CONDITIONAL(UNIX_COMPILE, false)
   AM_CONDITIONAL(UNIX_GP2X_COMPILE, false)
   AM_CONDITIONAL(UNIX_SKYOS_COMPILE, false)
@@ -2270,6 +2334,7 @@ AC_SUBST(ARCH_INCLUDES)
 AC_SUBST(ARCH_LIBS)
 AC_SUBST(ARCH_DIR)
 AC_SUBST(ARCH_SRC_DIR)
+AC_SUBST(ARCH_MAKE_BINDIST_DIR)
 AC_SUBST(ARCH_EXTRA_SUBDIR)
 AC_SUBST(UI_LIBS)
 AC_SUBST(SOUND_USS_OBJ)
@@ -2320,6 +2385,7 @@ if false ; then
     mkdir -p arch/os2/snippets
     mkdir -p arch/os2/vac++
     mkdir -p arch/riscos
+    mkdir -p arch/sdl
     mkdir -p arch/unix
     mkdir -p arch/unix/gp2x
     mkdir -p arch/unix/gui
@@ -2418,6 +2484,7 @@ AC_OUTPUT([Makefile
            src/arch/os2/snippets/Makefile
            src/arch/os2/vac++/Makefile
            src/arch/riscos/Makefile
+           src/arch/sdl/Makefile
            src/arch/unix/Makefile
            src/arch/unix/gp2x/Makefile
            src/arch/unix/gui/Makefile
