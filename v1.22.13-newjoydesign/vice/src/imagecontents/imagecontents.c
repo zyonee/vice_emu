@@ -199,8 +199,11 @@ char *image_contents_to_string(image_contents_t *contents,
         memset(print_name, 0, IMAGE_CONTENTS_FILE_NAME_LEN + 1);
         for (i = 0; i < IMAGE_CONTENTS_FILE_NAME_LEN; i++) {
             if (p->name[i] == 0xa0)
-                break;           
-            print_name[i] = (char)p->name[i];
+                break;
+            if (p->name[i] >= 0x20)
+                print_name[i] = (char)p->name[i];
+            else
+                print_name[i] = 0x20; /* replace non-printable chars with spaces */
         }
 
         len = sprintf(line_buf, "\n%-5d \"%s\" ", p->size, print_name);
