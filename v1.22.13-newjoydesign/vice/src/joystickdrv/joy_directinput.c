@@ -296,7 +296,7 @@ int joystick_di_open(void* dev)
         { NULL, 0x4f, DIDFT_OPTIONAL | DIDFT_ANYINSTANCE | DIDFT_BUTTON, 0 }
     };
 
-    LPCDIDATAFORMAT data_format = {
+    DIDATAFORMAT data_format_struct = {
         sizeof(DIDATAFORMAT),
         sizeof(DIOBJECTDATAFORMAT),
         DIDF_ABSAXIS,
@@ -304,6 +304,7 @@ int joystick_di_open(void* dev)
         sizeof(joystick_objects) / sizeof(*joystick_objects),
         joystick_objects
     };
+    LPCDIDATAFORMAT data_format = &data_format_struct;
 #else
     LPCDIDATAFORMAT data_format = &c_dfDIJoystick;
 #endif
