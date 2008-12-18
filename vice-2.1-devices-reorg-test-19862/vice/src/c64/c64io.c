@@ -305,7 +305,7 @@ BYTE REGPARM1 c64io1_read(WORD addr)
 #ifdef HAVE_RS232
     if (acia_de_enabled && addr <= 0xde07)
     {
-        return_value = acia1_read((WORD)(addr & 0x07));
+        return_value = device_acia1.read((WORD)(addr & 0x07));
         io_source_check(io_source_counter);
         io_source_counter++;
     }
@@ -384,7 +384,7 @@ void REGPARM2 c64io1_store(WORD addr, BYTE value)
     }
 #ifdef HAVE_RS232
     if (acia_de_enabled) {
-        acia1_store((WORD)(addr & 0x07), value);
+        device_acia1.store((WORD)(addr & 0x07), value);
     }
 #endif
 #ifdef HAVE_MIDI

@@ -35,6 +35,7 @@
 #include "acia.h"
 #include "alarm.h"
 #include "clkguard.h"
+#include "chip.h"
 #include "cmdline.h"
 #include "interrupt.h"
 #include "log.h"
@@ -472,7 +473,8 @@ static const resource_int_t resources_int[] = {
  \remark
    Registers the integer resources
 */
-int myacia_init_resources(void)
+chip_init_resources_t myacia_init_resources;
+static int myacia_init_resources(void)
 {
     return resources_register_int(resources_int);
 }
@@ -495,7 +497,8 @@ static const cmdline_option_t cmdline_options[] = {
  \remark
    Registers the command-line options
 */
-int myacia_init_cmdline_options(void) {
+chip_init_cmdline_options_t myacia_init_cmdline_options;
+static int myacia_init_cmdline_options(void) {
     return cmdline_register_options(cmdline_options);
 }
 
@@ -597,7 +600,8 @@ static void acia_set_handshake_lines(void)
 }
 
 /*! \brief initialize the ACIA */
-void myacia_init(void)
+chip_init_t myacia_init;
+static void myacia_init(void)
 {
     acia.int_num = interrupt_cpu_status_int_new(maincpu_int_status, MYACIA);
 
@@ -611,7 +615,8 @@ void myacia_init(void)
 }
 
 /*! \brief reset the ACIA */
-void myacia_reset(void)
+chip_reset_t myacia_reset;
+static void myacia_reset(void)
 {
     DEBUG_LOG_MESSAGE((acia.log, "reset_myacia"));
 
@@ -692,7 +697,8 @@ static const char module_name[] = MYACIA;
 
  \todo FIXME!!!  If no connection, emulate carrier lost or so.
 */
-int myacia_snapshot_write_module(snapshot_t *p)
+chip_snapshot_write_module_t myacia_snapshot_write_module;
+static int myacia_snapshot_write_module(snapshot_t *p)
 {
     snapshot_module_t *m;
 
@@ -747,7 +753,8 @@ int myacia_snapshot_write_module(snapshot_t *p)
    old behaviour, as the old implementation was
    severely broken.
 */
-int myacia_snapshot_read_module(snapshot_t *p)
+chip_snapshot_read_module_t myacia_snapshot_read_module;
+static int myacia_snapshot_read_module(snapshot_t *p)
 {
     BYTE vmajor, vminor;
     BYTE byte;
@@ -847,7 +854,8 @@ int myacia_snapshot_read_module(snapshot_t *p)
   \param byte
     The value to set the register to
 */
-void REGPARM2 myacia_store(WORD addr, BYTE byte)
+chip_store_t myacia_store;
+static void REGPARM2 myacia_store(WORD addr, BYTE byte)
 {
     int acia_register_size;
 
@@ -933,6 +941,7 @@ void REGPARM2 myacia_store(WORD addr, BYTE byte)
   \return
     The value the register has
 */
+chip_read_t myacia_read;
 BYTE REGPARM1 myacia_read(WORD addr)
 {
 #if 0 /* def DEBUG */
@@ -1004,7 +1013,8 @@ static BYTE myacia_read_(WORD addr)
   \todo
     Currently unused
 */
-BYTE myacia_peek(WORD addr)
+chip_peek_t myacia_peek;
+static BYTE myacia_peek(WORD addr)
 {
     switch(addr & 3) {
       case ACIA_DR:

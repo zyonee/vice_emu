@@ -2,6 +2,7 @@
  * c64acia.h - Definitions for a 6551 ACIA interface
  *
  * Written by
+ *  Spiro Trikaliotis <spiro.trikaliotis@gmx.de>
  *  Andre' Fachat <fachat@physik.tu-chemnitz.de>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
@@ -24,23 +25,11 @@
  *
  */
 
-#ifndef _C64ACIA_H
-#define _C64ACIA_H
+#ifndef VICE_C64ACIA_H
+#define VICE_C64ACIA_H
 
-#include "types.h"
+#include "chip.h"
 
-struct snapshot_s;
-
-extern void acia1_init(void);
-extern void acia1_reset(void);
-extern BYTE REGPARM1 acia1_read(WORD a);
-extern BYTE REGPARM1 acia1_peek(WORD a);
-extern void REGPARM2 acia1_store(WORD a, BYTE b);
-
-extern int acia1_cmdline_options_init(void);
-extern int acia1_resources_init(void);
-
-extern int acia1_snapshot_write_module(struct snapshot_s *p);
-extern int acia1_snapshot_read_module(struct snapshot_s *p);
+extern vice_chip_interface_t device_acia1;
 
 #endif

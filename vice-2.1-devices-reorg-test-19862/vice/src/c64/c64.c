@@ -267,7 +267,7 @@ int machine_resources_init(void)
         || vicii_resources_init() < 0
         || sound_resources_init() < 0
         || sid_resources_init() < 0
-        || acia1_resources_init() < 0
+        || device_acia1.init_resources() < 0
         || rs232drv_resources_init() < 0
         || rsuser_resources_init() < 0
         || serial_resources_init() < 0
@@ -349,7 +349,7 @@ int machine_cmdline_options_init(void)
         || vicii_cmdline_options_init() < 0
         || sound_cmdline_options_init() < 0
         || sid_cmdline_options_init() < 0
-        || acia1_cmdline_options_init() < 0
+        || device_acia1.init_cmdline_options() < 0
         || rs232drv_cmdline_options_init() < 0
         || rsuser_cmdline_options_init() < 0
         || serial_cmdline_options_init() < 0
@@ -456,7 +456,7 @@ int machine_specific_init(void)
     if (!vsid_mode) {
         tpi_init(machine_context.tpi1);
 
-        acia1_init();
+        device_acia1.init();
 
 #ifndef COMMON_KBD
         /* Initialize the keyboard.  */
@@ -560,7 +560,7 @@ void machine_specific_reset(void)
     if (!vsid_mode) {
         tpicore_reset(machine_context.tpi1);
 
-        acia1_reset();
+        device_acia1.reset();
         rs232drv_reset();
         rsuser_reset();
 

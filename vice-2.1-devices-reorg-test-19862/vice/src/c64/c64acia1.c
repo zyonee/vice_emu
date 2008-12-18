@@ -38,14 +38,6 @@
 
 #define myaciadev       acia1dev
 
-#define myacia_init acia1_init
-#define myacia_init_cmdline_options acia1_cmdline_options_init
-#define myacia_init_resources acia1_resources_init
-#define myacia_snapshot_read_module acia1_snapshot_read_module
-#define myacia_snapshot_write_module acia1_snapshot_write_module
-#define myacia_peek acia1_peek
-#define myacia_reset acia1_reset
-#define myacia_store acia1_store
 
 #include "maincpu.h"
 #include "c64io.h"
@@ -66,3 +58,23 @@ BYTE REGPARM1 acia1_read(WORD addr)
   return myacia_read(addr);
 }
 
+DEFINE_CHIP_INTERFACE(chip_acia1,
+                      myacia_init_cmdline_options,
+                      myacia_init_resources,
+                      myacia_init,
+                      NULL, /* myacia_shutdown, */
+                      myacia_reset,
+                      myacia_snapshot_read_module,
+                      myacia_snapshot_write_module,
+                      myacia_peek,
+                      acia1_read,
+                      myacia_store);
+
+vice_chip_instance_t device_acia1 = 
+DEFINE_CHIP_INSTANCE(&chip_acia1,
+                     MYACIA,
+                     &acia,
+                     0x0007,
+                     0xDF00,
+                     0xDF07,
+                     0xDFFF)

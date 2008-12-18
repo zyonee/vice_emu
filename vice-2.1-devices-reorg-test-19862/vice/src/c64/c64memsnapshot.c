@@ -212,7 +212,7 @@ int c64_snapshot_write_module(snapshot_t *s, int save_roms)
 
 #ifdef HAVE_RS232
     /* ACIA module.  */
-    if (acia_de_enabled && acia1_snapshot_write_module(s) < 0)
+    if (acia_de_enabled && device_acia1.snapshot_write_module(s) < 0)
         goto fail;
 #endif
 
@@ -281,11 +281,11 @@ int c64_snapshot_read_module(snapshot_t *s)
 
 #ifdef HAVE_RS232
     /* ACIA module.  */
-    if (acia1_snapshot_read_module(s) < 0) {
+    if (device_acia1.snapshot_read_module(s) < 0) {
         acia_de_enabled = 0;
     } else {
         /* FIXME: Why do we need to do so???  */
-        acia1_reset();          /* Clear interrupts.  */
+        device_acia1.reset();          /* Clear interrupts.  */
         acia_de_enabled = 1;
     }
 #endif
