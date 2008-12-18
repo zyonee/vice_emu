@@ -4,6 +4,7 @@
 	Version="8.00"
 	Name="c1541"
 	ProjectGUID="{0A9495F9-8AD8-4844-B8DB-83D5AD263514}"
+	RootNamespace="c1541"
 	>
 	<Platforms>
 		<Platform
@@ -43,7 +44,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;C:\Program Files\Microsoft DirectX SDK (November 2007)\Include&quot;;msvc;msvc\wpcap;.;..\..;..\..\c64;..\..\cbm2;..\..\crtc;..\..\drive;..\..\monitor;..\..\plus4;..\..\pet;..\..\raster;..\..\sid;..\..\tape;..\..\vdc;..\..\vicii;..\..\vdrive;..\..\lib\libffmpeg;..\..\lib\lpng;..\..\lib\zlib"
+				AdditionalIncludeDirectories="&quot;C:\Program Files\Microsoft DirectX SDK (November 2007)\Include&quot;;msvc;msvc\wpcap;.;..\..;..\..\c64;..\..\cbm2;..\..\crtc;..\..\drive;..\..\monitor;..\..\plus4;..\..\pet;..\..\raster;..\..\sid;..\..\tape;..\..\vdc;..\..\vicii;..\..\vdrive;..\..\lib\libffmpeg;..\..\lib\lpng;..\..\lib\zlib;..\..\imagecontents"
 				PreprocessorDefinitions="DONT_USE_UNISTD_H;WIN32;_DEBUG;_CONSOLE"
 				RuntimeLibrary="1"
 				PrecompiledHeaderFile=".\libs\c1541\Debug/c1541.pch"

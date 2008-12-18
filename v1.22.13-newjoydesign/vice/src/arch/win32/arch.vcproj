@@ -113,7 +113,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;C:\Program Files\Microsoft DirectX SDK (November 2007)\Include&quot;;msvc;msvc\wpcap;.;..\..;..\..\c64;..\..\cbm2;..\..\crtc;..\..\drive;..\..\monitor;..\..\plus4;..\..\pet;..\..\raster;..\..\sid;..\..\tape;..\..\vdc;..\..\vicii;..\..\vdrive;..\..\lib\libffmpeg;..\..\lib\lpng;..\..\lib\zlib"
+				AdditionalIncludeDirectories="&quot;C:\Program Files\Microsoft DirectX SDK (November 2007)\Include&quot;;msvc;msvc\wpcap;.;..\..;..\..\c64;..\..\cbm2;..\..\crtc;..\..\drive;..\..\monitor;..\..\plus4;..\..\pet;..\..\raster;..\..\sid;..\..\tape;..\..\vdc;..\..\vicii;..\..\vdrive;..\..\lib\libffmpeg;..\..\lib\lpng;..\..\lib\zlib;..\..\imagecontents"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				RuntimeLibrary="1"
 				PrecompiledHeaderFile=".\libs\arch\Debug/arch.pch"

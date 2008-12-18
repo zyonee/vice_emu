@@ -156,137 +156,72 @@ image_contents_screencode_t *image_contents_to_screencode(image_contents_t
     return image_contents_screencode;
 }
 
-char *image_contents_to_string(image_contents_t *contents,
-                               unsigned int conversion_rule)
+char *image_contents_string_from_image_contents(image_contents_t * contents,
+                                                       unsigned int conversion_rule)
 {
-    /* 16 spaces are a 17byte string. is this ok with '+1' ? */
-    static char filler[IMAGE_CONTENTS_FILE_NAME_LEN+1] = "                ";
-    image_contents_file_list_t *p;
-    char line_buf[256];
-    BYTE *buf;
-    int buf_size;
-    size_t max_buf_size;
-    int len;
+    char *string = lib_msprintf("0 \"%s\" %s", contents->name, contents->id);
+    if (conversion_rule == IMAGE_CONTENTS_STRING_ASCII)
+        charset_petconvstring(string, 1);
 
-#define BUFCAT(s, n) \
-    util_bufcat(buf, &buf_size, &max_buf_size, ((BYTE *)s), (n))
+    return string;
+}
 
-    max_buf_size = 4096;
-    buf = (BYTE *)lib_malloc(max_buf_size);
-    buf_size = 0;
+char *element_string_from_image_contents(image_contents_file_list_t * p,
+                                                unsigned int conversion_rule)
+{
+    int i;
+    char print_name[IMAGE_CONTENTS_FILE_NAME_LEN + 1];
+    char* string;
+    char encountered_a0 = 0;
 
-    buf = BUFCAT("0 \"", 3);
-    buf = BUFCAT(contents->name, strlen((char *)contents->name));
-    buf = BUFCAT("\" ", 2);
-    buf = BUFCAT(contents->id, strlen((char *)contents->id));
-
-    if (contents->file_list == NULL) {
-        const char *s;
-
-        if (conversion_rule == IMAGE_CONTENTS_STRING_PETSCII)
-            s = "\n(EMPTY IMAGE.)";
-        else
-            s = "\n(eMPTY IMAGE.)";
-
-        buf = BUFCAT(s, strlen(s));
+    memset(print_name, 0, sizeof(print_name));
+    for (i = 0; i < IMAGE_CONTENTS_FILE_NAME_LEN; i++) {
+        if (p->name[i] == 0xa0)
+            encountered_a0 = 1;
+        print_name[i] = (encountered_a0 || p->name[i] == 0) ? ' ' : (char)p->name[i];
     }
 
-    for (p = contents->file_list; p != NULL; p = p->next) {
-        size_t name_len;
-        int i;
-        char print_name[IMAGE_CONTENTS_FILE_NAME_LEN + 1];
-
-        memset(print_name, 0, IMAGE_CONTENTS_FILE_NAME_LEN + 1);
-        for (i = 0; i < IMAGE_CONTENTS_FILE_NAME_LEN; i++) {
-            if (p->name[i] == 0xa0)
-                break;
-            if (p->name[i] >= 0x20)
-                print_name[i] = (char)p->name[i];
-            else
-                print_name[i] = 0x20; /* replace non-printable chars with spaces */
-        }
-
-        len = sprintf(line_buf, "\n%-5d \"%s\" ", p->size, print_name);
-        buf = BUFCAT(line_buf, len);
-
-        name_len = strlen((char *)print_name);
-        if (name_len < IMAGE_CONTENTS_FILE_NAME_LEN)
-            buf = BUFCAT(filler, IMAGE_CONTENTS_FILE_NAME_LEN - name_len);
-
-        buf = BUFCAT((char *)p->type, strlen((char *)p->type));
-    }
-
-    if (contents->blocks_free >= 0) {
-        if (conversion_rule == IMAGE_CONTENTS_STRING_PETSCII)
-            len = sprintf(line_buf, "\n%d BLOCKS FREE.", contents->blocks_free);
-        else
-            len = sprintf(line_buf, "\n%d blocks free.", contents->blocks_free);
-
-        buf = BUFCAT(line_buf, len);
-    }
-
-    buf = BUFCAT("\n", 2); /* With a closing zero.  */
+    string = lib_msprintf("%-5d \"%s\" %s", p->size, print_name, p->type);
 
     if (conversion_rule == IMAGE_CONTENTS_STRING_ASCII)
-        charset_petconvstring(buf, 1);
+      charset_petconvstring(string, 1);
 
-    return (char *)buf;
+    return string;
 }
-
-image_contents_t *image_contents_read(unsigned int type, const char *filename,
-                                      unsigned int unit)
-{
-    image_contents_t *contents = NULL;
-
-    switch (type) {
-      case IMAGE_CONTENTS_AUTO:
-        contents = diskcontents_read(filename, unit);
-        if (contents != NULL)
-            break;
-        contents = tapecontents_read(filename, unit);
-        break;
-      case IMAGE_CONTENTS_DISK:
-        contents = diskcontents_read(filename, unit);
-        break;
-      case IMAGE_CONTENTS_TAPE:
-        contents = tapecontents_read(filename, unit);
-        break;
-    }
-
-    return contents;
-}
-
-char *image_contents_read_string(unsigned int type, const char *filename,
-                                 unsigned int unit, unsigned int conversion)
-{
-    image_contents_t *contents;
-    char *s;
-
-    contents = image_contents_read(type, filename, unit);
-
-    if (contents == NULL)
-        return NULL;
-
-    s = image_contents_to_string(contents, conversion);
-
-    image_contents_destroy(contents);
-
-    return s;
-}
-
 
 char *image_contents_filename_by_number(unsigned int type,
                                         const char *filename,
                                         unsigned int unit,
                                         unsigned int file_index)
 {
+    image_contents_t *contents = NULL;
+    image_contents_file_list_t *current;
+    char *s = NULL;
+
     switch (type) {
       case IMAGE_CONTENTS_DISK:
-        return diskcontents_filename_by_number(filename, unit, file_index);
+        contents = diskcontents_read(filename, unit);
       case IMAGE_CONTENTS_TAPE:
-        return tapecontents_filename_by_number(filename, unit, file_index);
+        contents = tapecontents_read(filename, unit);
     }
 
-    return NULL;
+    if (contents == NULL)
+      return NULL;
+
+    if (file_index != 0) {
+      current = contents->file_list;
+      file_index--;
+      while ((file_index != 0) && (current != NULL)) {
+        current = current->next;
+        file_index--;
+      }
+      if (current != NULL) {
+        s = lib_stralloc((char *)(current->name));
+      }
+    }
+
+    image_contents_destroy(contents);
+
+    return s;
 }
 

@@ -31,8 +31,5 @@ struct image_contents_s;
 
 extern struct image_contents_s *diskcontents_read(const char *file_name,
                                                   unsigned int unit);
-extern char *diskcontents_filename_by_number(const char *filename,
-                                             unsigned int unit,
-                                             unsigned int file_index);
 #endif
 

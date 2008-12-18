@@ -106,7 +106,6 @@ void mouse_update_mouse(void)
 void mousedrv_init(void)
 {
 #ifdef HAVE_DINPUT
-    HRESULT result;
     DIOBJECTDATAFORMAT mouse_objects[] = {
         { &GUID_XAxis, 0, DIDFT_AXIS | DIDFT_ANYINSTANCE, 0 },
         { &GUID_YAxis, 4, DIDFT_AXIS | DIDFT_ANYINSTANCE, 0 },
