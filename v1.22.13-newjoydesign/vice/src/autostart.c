@@ -43,6 +43,8 @@
 #include "fileio.h"
 #include "fsdevice.h"
 #include "imagecontents.h"
+#include "tapecontents.h"
+#include "diskcontents.h"
 #include "interrupt.h"
 #include "kbdbuf.h"
 #include "lib.h"
@@ -613,8 +615,7 @@ int autostart_tape(const char *file_name, const char *program_name,
     /* Get program name first to avoid more than one file handle open on
        image.  */
     if (!program_name && program_number > 0)
-        name = image_contents_filename_by_number(IMAGE_CONTENTS_TAPE,
-                                                 file_name, 0, program_number);
+        name = image_contents_filename_by_number(tapecontents_read(file_name), program_number);
     else
         name = lib_stralloc(program_name ? program_name : "");
 
@@ -681,8 +682,7 @@ int autostart_disk(const char *file_name, const char *program_name,
     /* Get program name first to avoid more than one file handle open on
        image.  */
     if (!program_name && program_number > 0)
-        name = image_contents_filename_by_number(IMAGE_CONTENTS_DISK,
-                                                 file_name, 0, program_number);
+        name = image_contents_filename_by_number(diskcontents_read(file_name, 0), program_number);
     else
         name = lib_stralloc(program_name ? program_name : "*");
 

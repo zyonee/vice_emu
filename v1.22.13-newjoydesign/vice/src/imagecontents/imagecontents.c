@@ -156,19 +156,20 @@ image_contents_screencode_t *image_contents_to_screencode(image_contents_t
     return image_contents_screencode;
 }
 
-char *image_contents_string_from_image_contents(image_contents_t * contents,
-                                                       unsigned int conversion_rule)
+char *image_contents_to_string(image_contents_t * contents,
+                               char convert_to_ascii)
 {
     char *string = lib_msprintf("0 \"%s\" %s", contents->name, contents->id);
-    if (conversion_rule == IMAGE_CONTENTS_STRING_ASCII)
+    if (convert_to_ascii)
         charset_petconvstring(string, 1);
 
     return string;
 }
 
-char *element_string_from_image_contents(image_contents_file_list_t * p,
-                                                unsigned int conversion_rule)
+char *image_contents_file_to_string(image_contents_file_list_t * p,
+                                    char convert_to_ascii)
 {
+
     int i;
     char print_name[IMAGE_CONTENTS_FILE_NAME_LEN + 1];
     char* string;
@@ -183,41 +184,31 @@ char *element_string_from_image_contents(image_contents_file_list_t * p,
 
     string = lib_msprintf("%-5d \"%s\" %s", p->size, print_name, p->type);
 
-    if (conversion_rule == IMAGE_CONTENTS_STRING_ASCII)
-      charset_petconvstring(string, 1);
+    if (convert_to_ascii)
+        charset_petconvstring(string, 1);
 
     return string;
 }
 
-char *image_contents_filename_by_number(unsigned int type,
-                                        const char *filename,
-                                        unsigned int unit,
+char *image_contents_filename_by_number(image_contents_t *contents,
                                         unsigned int file_index)
 {
-    image_contents_t *contents = NULL;
     image_contents_file_list_t *current;
     char *s = NULL;
 
-    switch (type) {
-      case IMAGE_CONTENTS_DISK:
-        contents = diskcontents_read(filename, unit);
-      case IMAGE_CONTENTS_TAPE:
-        contents = tapecontents_read(filename, unit);
-    }
-
     if (contents == NULL)
-      return NULL;
+        return NULL;
 
     if (file_index != 0) {
-      current = contents->file_list;
-      file_index--;
-      while ((file_index != 0) && (current != NULL)) {
-        current = current->next;
+        current = contents->file_list;
         file_index--;
-      }
-      if (current != NULL) {
-        s = lib_stralloc((char *)(current->name));
-      }
+        while ((file_index != 0) && (current != NULL)) {
+            current = current->next;
+            file_index--;
+        }
+        if (current != NULL) {
+            s = lib_stralloc((char *)(current->name));
+        }
     }
 
     image_contents_destroy(contents);

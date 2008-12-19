@@ -1331,7 +1331,7 @@ static int list_cmd(int nargs, char **args)
     listing = diskcontents_read(name, dnr + 8);
 
     if (listing != NULL) {
-        char *string = image_contents_string_from_image_contents(listing, IMAGE_CONTENTS_STRING_ASCII);
+        char *string = image_contents_to_string(listing, 1);
         image_contents_file_list_t *element = listing->file_list;
 
         pager_init();
@@ -1342,7 +1342,7 @@ static int list_cmd(int nargs, char **args)
             pager_print("Empty image\n");
         }
         else do {
-            string = element_string_from_image_contents(element, IMAGE_CONTENTS_STRING_ASCII);
+            string = image_contents_file_to_string(element, 1);
             pager_print(string);
             pager_print("\n");
             lib_free(string);

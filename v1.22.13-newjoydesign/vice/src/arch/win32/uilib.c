@@ -138,7 +138,7 @@ static void create_content_list(image_contents_t *contents, HWND list)
     image_contents_file_list_t *p = contents->file_list;
 
 
-    start = image_contents_string_from_image_contents(contents, IMAGE_CONTENTS_STRING_PETSCII);
+    start = image_contents_to_string(contents, 0);
     SendMessage(list, LB_ADDSTRING, 0, (LPARAM)start);
     lib_free(start);
 
@@ -146,7 +146,7 @@ static void create_content_list(image_contents_t *contents, HWND list)
       SendMessage(list, LB_ADDSTRING, 0, (LPARAM)"(EMPTY IMAGE.)");
     }
     else do {
-        start = element_string_from_image_contents(p, IMAGE_CONTENTS_STRING_PETSCII);
+        start = image_contents_file_to_string(p, 0);
         SendMessage(list, LB_ADDSTRING, 0, (LPARAM)start);
         lib_free(start);
     } while ( (p = p->next) != NULL);

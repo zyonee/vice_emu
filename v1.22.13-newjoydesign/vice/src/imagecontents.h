@@ -65,24 +65,15 @@ typedef struct image_contents_screencode_s image_contents_screencode_t;
 extern void image_contents_destroy(image_contents_t *contents);
 extern image_contents_t *image_contents_new(void);
 
-#define IMAGE_CONTENTS_STRING_PETSCII 0
-#define IMAGE_CONTENTS_STRING_ASCII   1
-
 extern image_contents_screencode_t *image_contents_to_screencode
                                    (image_contents_t *contents);
 extern void image_contents_screencode_destroy(image_contents_screencode_t *c);
 
-#define IMAGE_CONTENTS_AUTO 0
-#define IMAGE_CONTENTS_DISK 1
-#define IMAGE_CONTENTS_TAPE 2
-
-extern char *image_contents_string_from_image_contents(image_contents_t * contents,
-                                        unsigned int conversion_rule);
-extern char *element_string_from_image_contents(image_contents_file_list_t * p,
-                                                       unsigned int conversion_rule);
-extern char *image_contents_filename_by_number(unsigned int type,
-                                               const char *filename,
-                                               unsigned int unit,
+extern char *image_contents_to_string(image_contents_t * contents,
+                                      char convert_to_ascii);
+extern char *image_contents_file_to_string(image_contents_file_list_t * p,
+                                           char convert_to_ascii);
+extern char *image_contents_filename_by_number(image_contents_t *contents,
                                                unsigned int file_index);
 
 extern image_contents_t *diskcontents_iec_read(unsigned int unit);
