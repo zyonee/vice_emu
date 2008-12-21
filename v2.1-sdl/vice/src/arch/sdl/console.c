@@ -2,6 +2,9 @@
  * console.c - Console access interface.
  *
  * Written by
+ *  Hannu Nuotio <hannu.nuotio@tut.fi>
+ *
+ * Based on code by
  *  Andreas Boose <viceteam@t-online.de>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
@@ -26,101 +29,19 @@
 
 #include "vice.h"
 
-#include <stdarg.h>
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 #include "console.h"
-#include "lib.h"
-
-
-static FILE *mon_input, *mon_output;
-
-#if defined(HAVE_READLINE) && defined(HAVE_RLNAME)
-extern char *rl_readline_name;
-#endif
 
 int console_init(void)
 {
-#if defined(HAVE_READLINE) && defined(HAVE_RLNAME)
-    rl_readline_name = "VICE";
-#endif
-
-    return 0;
-}
-
-console_t *console_open(const char *id)
-{
-    console_t *console;
-
-    console = lib_malloc(sizeof(console_t));
-
-    mon_input = stdin;
-    mon_output = stdout;
-
-    console->console_xres = 80;
-    console->console_yres = 25;
-    console->console_can_stay_open = 0;
-    console->console_cannot_output = 0;
-
-    return console;
-}
-
-int console_close(console_t *log)
-{
-    lib_free(log);
-
     return 0;
 }
 
 int console_out(console_t *log, const char *format, ...)
 {
-    va_list ap;
-
-    va_start(ap, format);
-    vfprintf(stdout, format, ap);
-
+fprintf(stderr,"%s - remove this\n", __func__);
     return 0;
-}
-
-#ifdef HAVE_READLINE
-extern char *readline ( const char *prompt );
-extern void add_history ( const char *str );
-#else
-char *readline(const char *prompt)
-{
-    char *p = (char *)lib_malloc(1024);
-
-    console_out(NULL, "%s", prompt);
-
-    fflush(mon_output);
-    fgets(p, 1024, mon_input);
-
-    /* Remove trailing newlines.  */
-    {
-        int len;
-
-        for (len = strlen(p);
-            len > 0 && (p[len - 1] == '\r' || p[len - 1] == '\n');
-            len--)
-            p[len - 1] = '\0';
-    }
-
-    return p;
-}
-#endif
-
-char *console_in(console_t *log, const char *prompt)
-{
-    char *p, *ret_sting;
-
-    p = readline(prompt);
-
-    ret_sting = lib_stralloc(p);
-    free(p);
-
-    return ret_sting;
 }
 
 int console_close_all(void)
