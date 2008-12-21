@@ -90,6 +90,7 @@ UI_MENU_CALLBACK(monitor_callback)
 {
     if (activated) {
         monitor_startup();
+        return sdl_menu_text_exit_ui;
     }
     return NULL;
 }

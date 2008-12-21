@@ -2,6 +2,9 @@
  * uimon.c - Monitor access interface.
  *
  * Written by
+ *  Hannu Nuotio <hannu.nuotio@tut.fi>
+ *
+ * Based on code by
  *  Spiro Trikaliotis <Spiro.Trikaliotis@gmx.de>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
@@ -26,68 +29,106 @@
 
 #include "vice.h"
 
-#include <stdarg.h>
 #include <stdio.h>
-#include <stdlib.h>
 
 #include "console.h"
-#include "lib.h"
 #include "monitor.h"
 #include "uimon.h"
 #include "ui.h"
+#include "uimenu.h"
 
 
-static console_t *console_log = NULL;
+static console_t mon_console = {
+    40,
+    25,
+    0,
+    0,
+    NULL
+};
 
+static menu_draw_t *menu_draw = NULL;
 
-void uimon_window_close( void )
+static int x_pos = 0;
+
+void uimon_window_close(void)
 {
-    console_close(console_log);
-    console_log = NULL;
-#ifdef HAVE_MOUSE
-    ui_check_mouse_cursor();
-#endif
+fprintf(stderr,"%s\n",__func__);
 }
 
 
-console_t *uimon_window_open( void )
+console_t *uimon_window_open(void)
 {
-    console_log = console_open("Monitor");
-    return console_log;
+fprintf(stderr,"%s\n",__func__);
+    sdl_ui_init_draw_params();
+    sdl_ui_clear();
+    menu_draw = sdl_ui_get_menu_param();
+    mon_console.console_xres = menu_draw->max_text_x;
+    mon_console.console_yres = menu_draw->max_text_y;
+    x_pos = 0;
+    return &mon_console;
 }
 
-void uimon_window_suspend( void )
+void uimon_window_suspend(void)
 {
+fprintf(stderr,"%s\n",__func__);
+/*
     uimon_window_close();
+*/
 }
 
-console_t *uimon_window_resume( void )
+console_t *uimon_window_resume(void)
 {
+fprintf(stderr,"%s\n",__func__);
     return uimon_window_open();
 }
 
 int uimon_out(const char *buffer)
 {
-    int   rc = 0;
+    int y = menu_draw->max_text_y - 1;
+    char *p = (char *)buffer;
+    int i = 0;
+    char c;
 
-    if (console_log)
-    {
-        rc = console_out(console_log, "%s", buffer);
+    while((c = p[i]) != 0) {
+        if(c == '\n') {
+            p[i] = 0;
+            sdl_ui_print(p, x_pos, y);
+            sdl_ui_scroll_screen_up();
+            x_pos = 0;
+            p += i + 1;
+            i = 0;
+        } else {
+            ++i;
+        }
     }
-    return rc;
+
+    if(p[0] != 0) {
+        x_pos += sdl_ui_print(p, x_pos, y);
+    }
+    return 0;
 }
 
 char *uimon_get_in(char **ppchCommandLine, const char *prompt)
 {
-    return console_in(console_log, prompt);
+    int y, x_off;
+    char *input;
+
+    y = menu_draw->max_text_y - 1;
+    x_pos = 0;
+
+    x_off = sdl_ui_print(prompt, 0, y);
+    input = sdl_ui_readline(NULL, x_off, y);
+    sdl_ui_scroll_screen_up();
+    return input;
 }
 
-void uimon_notify_change( void )
+void uimon_notify_change(void)
 {
+    sdl_ui_refresh();
 }
 
 void uimon_set_interface(monitor_interface_t **monitor_interface_init,
-                         int count )
+                         int count)
 {
 }
 

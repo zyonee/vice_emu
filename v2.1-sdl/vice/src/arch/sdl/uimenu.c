@@ -81,22 +81,6 @@ static menu_draw_t menu_draw;
 
 static int sdl_ui_menu_item_activate(ui_menu_entry_t *item);
 
-static void sdl_ui_scroll_screen_up(void)
-{
-    int i, j;
-    BYTE *draw_pos = sdl_active_canvas->draw_buffer->draw_buffer + menu_draw.offset;
-
-    for (i = 0; i < menu_draw.max_text_y-1; ++i) {
-        for (j = 0; j < menufont.h; ++j) {
-            memmove(draw_pos + (i * menufont.h + j) * menu_draw.pitch, draw_pos + (((i+1) * menufont.h) + j) * menu_draw.pitch, menu_draw.max_text_x * menufont.w);
-        }
-    }
-
-    for (j = 0; j < menufont.h; ++j) {
-        memset(draw_pos + (i * menufont.h + j) * menu_draw.pitch, (char)menu_draw.color_back, menu_draw.max_text_x * menufont.w);
-    }
-}
-
 static void sdl_ui_putchar(BYTE c, int pos_x, int pos_y)
 {
     int x, y;
@@ -300,6 +284,11 @@ static void sdl_ui_trap(WORD addr, void *data)
 BYTE *sdl_ui_get_draw_buffer(void)
 {
     return draw_buffer_backup;
+}
+
+menu_draw_t *sdl_ui_get_menu_param(void)
+{
+    return &menu_draw;
 }
 
 void sdl_ui_activate_pre_action(void)
@@ -602,6 +591,7 @@ char* sdl_ui_readline(const char* previous, int pos_x, int pos_y)
                 string_changed = 0;
                 /* fall through */
             case SDLK_RETURN:
+                sdl_ui_invert_char(pos_x + i, pos_y);
                 done = 1;
                 break;
             default:
@@ -651,6 +641,22 @@ void sdl_ui_refresh(void)
     video_canvas_refresh_all(sdl_active_canvas);
 }
 
+void sdl_ui_scroll_screen_up(void)
+{
+    int i, j;
+    BYTE *draw_pos = sdl_active_canvas->draw_buffer->draw_buffer + menu_draw.offset;
+
+    for (i = 0; i < menu_draw.max_text_y-1; ++i) {
+        for (j = 0; j < menufont.h; ++j) {
+            memmove(draw_pos + (i * menufont.h + j) * menu_draw.pitch, draw_pos + (((i+1) * menufont.h) + j) * menu_draw.pitch, menu_draw.max_text_x * menufont.w);
+        }
+    }
+
+    for (j = 0; j < menufont.h; ++j) {
+        memset(draw_pos + (i * menufont.h + j) * menu_draw.pitch, (char)menu_draw.color_back, menu_draw.max_text_x * menufont.w);
+    }
+}
+
 /* ------------------------------------------------------------------ */
 /* Initialization/setting */
 
@@ -692,9 +698,4 @@ void sdl_ui_set_menu_colors(int front, int back)
 void sdl_ui_set_double_x(int value)
 {
     menu_draw.max_text_x_double = (value) ? 2 : 1;
-}
-
-menu_draw_t *sdl_ui_get_menu_param(void)
-{
-    return &menu_draw;
 }
