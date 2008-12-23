@@ -63,3 +63,24 @@ image_contents_t *diskcontents_read(const char *file_name, unsigned int unit)
 
     return contents;
 }
+
+image_contents_t *diskcontents_read_unit8(const char *file_name)
+{
+    return diskcontents_read(file_name, 8);
+}
+
+image_contents_t *diskcontents_read_unit9(const char *file_name)
+{
+    return diskcontents_read(file_name, 9);
+}
+
+image_contents_t *diskcontents_read_unit10(const char *file_name)
+{
+    return diskcontents_read(file_name, 10);
+}
+
+image_contents_t *diskcontents_read_unit11(const char *file_name)
+{
+    return diskcontents_read(file_name, 11);
+}
+
