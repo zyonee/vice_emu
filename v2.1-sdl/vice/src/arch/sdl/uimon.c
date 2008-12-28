@@ -29,8 +29,6 @@
 
 #include "vice.h"
 
-#include <stdio.h>
-
 #include "console.h"
 #include "monitor.h"
 #include "uimon.h"
@@ -52,13 +50,12 @@ static int x_pos = 0;
 
 void uimon_window_close(void)
 {
-fprintf(stderr,"%s\n",__func__);
+    sdl_ui_activate_post_action();
 }
-
 
 console_t *uimon_window_open(void)
 {
-fprintf(stderr,"%s\n",__func__);
+    sdl_ui_activate_pre_action();
     sdl_ui_init_draw_params();
     sdl_ui_clear();
     menu_draw = sdl_ui_get_menu_param();
@@ -70,15 +67,11 @@ fprintf(stderr,"%s\n",__func__);
 
 void uimon_window_suspend(void)
 {
-fprintf(stderr,"%s\n",__func__);
-/*
     uimon_window_close();
-*/
 }
 
 console_t *uimon_window_resume(void)
 {
-fprintf(stderr,"%s\n",__func__);
     return uimon_window_open();
 }
 

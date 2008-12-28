@@ -126,7 +126,7 @@ static const ui_menu_entry_t xpet_main_menu[] = {
       MENU_ENTRY_OTHER,
       pause_callback,
       NULL },
-    { "Monitor (todo)",
+    { "Monitor",
       MENU_ENTRY_OTHER,
       monitor_callback,
       NULL },

@@ -131,7 +131,7 @@ static const ui_menu_entry_t xplus4_main_menu[] = {
       MENU_ENTRY_OTHER,
       pause_callback,
       NULL },
-    { "Monitor (todo)",
+    { "Monitor",
       MENU_ENTRY_OTHER,
       monitor_callback,
       NULL },
