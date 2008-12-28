@@ -5,7 +5,7 @@
  *  Andreas Boose <viceteam@t-online.de>
  *
  * NEOS and Amiga mouse support by
- *  H.Nuotio <hannu.nuotio@pp.inet.fi>
+ *  Hannu Nuotio <hannu.nuotio@tut.fi>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -28,8 +28,6 @@
  */
 
 #include "vice.h"
-
-#include <stdio.h>
 
 #include "alarm.h"
 #include "cmdline.h"
@@ -112,27 +110,26 @@ void neos_get_new_movement(void)
 
 void neos_mouse_store(BYTE val) 
 {
-    switch (neos_state)
-    {
+    switch (neos_state) {
         case NEOS_IDLE:
-            if (((val & 16) ^ (neos_prev & 16)) && ((val & 16)==0))
-            {
-	        ++neos_state;
-		neos_get_new_movement();
-	    }
+            if (((val & 16) ^ (neos_prev & 16)) && ((val & 16)==0)) {
+                ++neos_state;
+                neos_get_new_movement();
+            }
             break;
         case NEOS_XH:
-            if (((val & 16) ^ (neos_prev & 16)) && ((val & 16)!=0))
+            if (((val & 16) ^ (neos_prev & 16)) && ((val & 16)!=0)) {
                 ++neos_state;
+            }
             break;
         case NEOS_XL:
-            if (((val & 16) ^ (neos_prev & 16)) && ((val & 16)==0))
+            if (((val & 16) ^ (neos_prev & 16)) && ((val & 16)==0)) {
                 ++neos_state;
+            }
             break;
         case NEOS_YH:
-            if (((val & 16) ^ (neos_prev & 16)) && ((val & 16)!=0))
-            {
-	        ++neos_state;
+            if (((val & 16) ^ (neos_prev & 16)) && ((val & 16)!=0)) {
+                ++neos_state;
                 alarm_set(neosmouse_alarm, maincpu_clk + NEOS_RESET_CLK);
             }
             break;
@@ -293,6 +290,50 @@ BYTE amiga_mouse_read(void)
     return (amiga_mouse_table[x_count & 3] << 1) | amiga_mouse_table[y_count & 3] | 0xf0;
 }
 
+static inline BYTE mouse_paddle_update(BYTE paddle_v, BYTE *old_v, BYTE new_v)
+{
+    BYTE diff = new_v - *old_v;
+    BYTE new_paddle;
+
+    if (new_v < *old_v) {
+        if (*old_v > 0x6f && new_v < 0x10) {
+            diff += 0x80;
+        }
+    } else if (new_v > *old_v) {
+        if(*old_v < 0x10 && new_v > 0x6f) {
+            diff += 0x80;
+        }
+    }
+
+    new_paddle = paddle_v + diff;
+
+    *old_v = new_v;
+
+    if (((paddle_v & 0x80) ^ (new_paddle & 0x80)) && ((new_paddle & 0x80) == (diff & 0x80))) {
+        new_paddle = (paddle_v & 0x80)?0xff:0;
+    }
+
+    return new_paddle;
+}
+
+static BYTE mouse_get_paddle_x(void)
+{
+    static BYTE paddle_x = 0x80;
+
+    paddle_x = mouse_paddle_update(paddle_x, &old_x, mousedrv_get_x());
+
+    return 0xff-paddle_x;
+}
+
+static BYTE mouse_get_paddle_y(void)
+{
+    static BYTE paddle_y = 0x80;
+
+    paddle_y = mouse_paddle_update(paddle_y, &old_y, mousedrv_get_y());
+
+    return paddle_y;
+}
+
 static int set_mouse_enabled(int val, void *param)
 {
     _mouse_enabled = val;
@@ -312,8 +353,9 @@ static int set_mouse_port(int val, void *param)
 
 static int set_mouse_type(int val, void *param)
 {
-    if (!((val >= 0) && (val <= 2)))
+    if (!((val >= 0) && (val <= 3))) {
         return -1;
+    }
 
     mouse_type = val;
 
@@ -380,45 +422,77 @@ void mouse_init(void)
 
 void mouse_button_left(int pressed)
 {
+    BYTE joypin = ((mouse_type == MOUSE_TYPE_PADDLE) ? 4 : 16);
+
     if (pressed) {
-        joystick_set_value_or(mouse_port, 16);
+        joystick_set_value_or(mouse_port, joypin);
     } else {
-        joystick_set_value_and(mouse_port, ~16);
+        joystick_set_value_and(mouse_port, ~joypin);
     }
 }
 
 void mouse_button_right(int pressed)
 {
-    if (mouse_type != MOUSE_TYPE_1351)
-    {
-        if (pressed)
-        {
-            neos_and_amiga_buttons |= 1;
-        }
-        else
-        {
-            neos_and_amiga_buttons &= ~1;
-        }
-    }
-    else
-    {
-        if (pressed)
-        {
-            joystick_set_value_or(mouse_port, 1);
-        }
-        else
-        {
-            joystick_set_value_and(mouse_port, ~1);
-        }
+    switch (mouse_type) {
+        case MOUSE_TYPE_1351:
+            if (pressed) {
+                joystick_set_value_or(mouse_port, 1);
+            } else {
+                joystick_set_value_and(mouse_port, ~1);
+            }
+            break;
+        case MOUSE_TYPE_PADDLE:
+            if (pressed) {
+                joystick_set_value_or(mouse_port, 8);
+            } else {
+                joystick_set_value_and(mouse_port, ~8);
+            }
+            break;
+        case MOUSE_TYPE_NEOS:
+        case MOUSE_TYPE_AMIGA:
+            if (pressed) {
+                neos_and_amiga_buttons |= 1;
+            } else {
+                neos_and_amiga_buttons &= ~1;
+            }
+            break;
+        default:
+            break;
     }
 }
 
 BYTE mouse_get_x(void)
 {
-    return ((mouse_type == MOUSE_TYPE_1351) ? mousedrv_get_x() : (neos_and_amiga_buttons & 1) ? 0xff : 0);
+    switch (mouse_type) {
+        case MOUSE_TYPE_1351:
+            return mousedrv_get_x();
+            break;
+        case MOUSE_TYPE_PADDLE:
+            return mouse_get_paddle_x();
+            break;
+        case MOUSE_TYPE_NEOS:
+        case MOUSE_TYPE_AMIGA:
+            return (neos_and_amiga_buttons & 1) ? 0xff : 0;
+            break;
+        default:
+            break;
+    }
+    return 0xff;
 }
 
 BYTE mouse_get_y(void)
 {
-    return ((mouse_type == MOUSE_TYPE_1351) ? mousedrv_get_y() : 0xff);
+    switch (mouse_type) {
+        case MOUSE_TYPE_1351:
+            return mousedrv_get_y();
+            break;
+        case MOUSE_TYPE_PADDLE:
+            return mouse_get_paddle_y();
+            break;
+        case MOUSE_TYPE_NEOS:
+        case MOUSE_TYPE_AMIGA:
+        default:
+            break;
+    }
+    return 0xff;
 }

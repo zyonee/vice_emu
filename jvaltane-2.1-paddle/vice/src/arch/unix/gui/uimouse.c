@@ -43,6 +43,8 @@ static ui_menu_entry_t mousetype_submenu[] = {
       (ui_callback_data_t)1, NULL },
     { "*AMIGA", (ui_callback_t)radio_Mousetype,
       (ui_callback_data_t)2, NULL },
+    { "*Paddles", (ui_callback_t)radio_Mousetype,
+      (ui_callback_data_t)3, NULL },
     { NULL }
 };
 
