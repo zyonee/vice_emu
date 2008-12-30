@@ -58,6 +58,7 @@ do
            echo $data"_NL,"
            echo $data"_PL,"
            echo $data"_SV,"
+           echo $data"_TR,"
            ok="yes"
     ;;
   esac
