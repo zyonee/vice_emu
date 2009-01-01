@@ -2253,7 +2253,7 @@ translate_t string_table[] = {
 /* nl */ {IDGS_MON_DISABLE_DESCRIPTION_NL, "Checkpunt `checknum' uitschakelen."},
 /* pl */ {IDGS_MON_DISABLE_DESCRIPTION_PL, ""},  /* fuzzy */
 /* sv */ {IDGS_MON_DISABLE_DESCRIPTION_SV, "Inaktivera kontrollpunkt \"kontrollnr\"."},
-/* tr */ {IDGS_MON_DISABLE_DESCRIPTION_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_MON_DISABLE_DESCRIPTION_TR, "Kontrol Noktasý `kontrolnumarasý'ný pasifleþtir."},
 #endif
 
 /* monitor/mon_command.c */
@@ -2266,7 +2266,7 @@ translate_t string_table[] = {
 /* nl */ {IDGS_MON_ENABLE_DESCRIPTION_NL, "Activeer checkpunt `checknum'."},
 /* pl */ {IDGS_MON_ENABLE_DESCRIPTION_PL, ""},  /* fuzzy */
 /* sv */ {IDGS_MON_ENABLE_DESCRIPTION_SV, "Aktivera kontrollpunkt \"kontrollnr\"."},
-/* tr */ {IDGS_MON_ENABLE_DESCRIPTION_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_MON_ENABLE_DESCRIPTION_TR, "Kontrol Noktasý `kontrolnumarasý'ný aktif et."},
 #endif
 
 /* monitor/mon_command.c */
@@ -2279,7 +2279,7 @@ translate_t string_table[] = {
 /* nl */ {IDGS_P_CHECKNUM_RP_COUNT_NL, "<checknum> [<aantal>]"},
 /* pl */ {IDGS_P_CHECKNUM_RP_COUNT_PL, ""},  /* fuzzy */
 /* sv */ {IDGS_P_CHECKNUM_RP_COUNT_SV, "<kontrollnum> [<antal>]"},
-/* tr */ {IDGS_P_CHECKNUM_RP_COUNT_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_P_CHECKNUM_RP_COUNT_TR, "<kontrolnumarasý> [<adet>]"},
 #endif
 
 /* monitor/mon_command.c */
@@ -2298,7 +2298,8 @@ translate_t string_table[] = {
 /* pl */ {IDGS_MON_IGNORE_DESCRIPTION_PL, ""},  /* fuzzy */
 /* sv */ {IDGS_MON_IGNORE_DESCRIPTION_SV, "Ignorera en kontrollpunkt det givna antalet gånger. Om inget antal ges\n"
                                           "är standardvärdet 1."},
-/* tr */ {IDGS_MON_IGNORE_DESCRIPTION_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_MON_IGNORE_DESCRIPTION_TR, "Bir kontrol noktasýný verilen adette geçiþ için yoksay.  Eðer adet verilmemiþse,\n"
+                                          "varsayýlan deðer 1'dir."},
 #endif
 
 /* monitor/mon_command.c */
@@ -2311,7 +2312,7 @@ translate_t string_table[] = {
 /* nl */ {IDGS_RP_ADDRESS_NL, "[<adres>]"},
 /* pl */ {IDGS_RP_ADDRESS_PL, ""},  /* fuzzy */
 /* sv */ {IDGS_RP_ADDRESS_SV, "[<adress>]"},
-/* tr */ {IDGS_RP_ADDRESS_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_RP_ADDRESS_TR, "[<adres>]"},
 #endif
 
 /* monitor/mon_command.c */
@@ -2347,7 +2348,10 @@ translate_t string_table[] = {
                                          "den adressen och numret på den nya brytpunkten visas. Styrningen\n"
                                          "återlämnas till emulatorn för det här kommandot. Brytpunkten\n"
                                          "tas bort när den har nåtts."},
-/* tr */ {IDGS_MON_UNTIL_DESCRIPTION_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_MON_UNTIL_DESCRIPTION_TR, "Eðer adres girilmemiþse, geçerli mevcut kesme noktalarý yazdýrýlýr.\n"
+                                         "Eðer bir adres girilmiþse, o adres için geçici bir kesme noktasý\n"
+                                         "iþaretlenir ve kesme noktasý sayýsý yazdýrýlýr.  Kontrol bu komutla\n"
+                                         "emülatöre döndürülür.  Bir kere eriþildiði zaman kesme noktasý silinir."},
 #endif
 
 /* monitor/mon_command.c */
@@ -2360,7 +2364,7 @@ translate_t string_table[] = {
 /* nl */ {IDGS_R_LOADSTORE_R_ADDRESS_R_ADDRESS_NL, "[laad/opslaan] [adres [adres]]"},
 /* pl */ {IDGS_R_LOADSTORE_R_ADDRESS_R_ADDRESS_PL, ""},  /* fuzzy */
 /* sv */ {IDGS_R_LOADSTORE_R_ADDRESS_R_ADDRESS_SV, "[loadstore] [adress [adress]]"},
-/* tr */ {IDGS_R_LOADSTORE_R_ADDRESS_R_ADDRESS_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_R_LOADSTORE_R_ADDRESS_R_ADDRESS_TR, "[yükle/depola] [adres [adres]]"},
 #endif
 
 /* monitor/mon_command.c */
@@ -2405,7 +2409,12 @@ translate_t string_table[] = {
                                          "\"loadstore\" är antingen \"load\" eller \"store\" och anger vilken\n"
                                          "operation emulatorn skall stoppa för. Om den inte anges stoppar\n"
                                          "emulatorn på bägge operationerna."},
-/* tr */ {IDGS_MON_WATCH_DESCRIPTION_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_MON_WATCH_DESCRIPTION_TR, "Bir izleme noktasý koy.  Eðer tek bir adres belirtilmiþse, izleme\n"
+                                         "noktasýný o adrese koy.  Eðer iki adres belirtilmiþse, izleme noktasýný\n"
+                                         "o iki adres arasýnda kalan adreslere koy.\n"
+                                         "`yükle/depola' monitörün kesildiði operatöre baðlý olarak `yükle' ya da\n"
+                                         "`depola' iþlemlerinde çalýþabilir. Eðer belirtilmemiþse, her iki iþlemde de\n"
+                                         "monitör kesilecektir."},
 #endif
 
 /* monitor/mon_command.c */
@@ -2418,7 +2427,7 @@ translate_t string_table[] = {
 /* nl */ {IDGS_R_ADDRESS_R_ADDRESS_NL, "[adres [adres]]"},
 /* pl */ {IDGS_R_ADDRESS_R_ADDRESS_PL, ""},  /* fuzzy */
 /* sv */ {IDGS_R_ADDRESS_R_ADDRESS_SV, "[adress [adress]]"},
-/* tr */ {IDGS_R_ADDRESS_R_ADDRESS_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_R_ADDRESS_R_ADDRESS_TR, "[adres [adres]]"},
 #endif
 
 /* monitor/mon_command.c */
@@ -2445,7 +2454,9 @@ translate_t string_table[] = {
 /* sv */ {IDGS_MON_TRACE_DESCRIPTION_SV, "Sätt en spårningspunkt. Om du anger en ensam adress sätts en\n"
                                          "spårningspunkt för adressen. Om två adresser anges sätts en\n"
                                          "spårningspunkt för minnesområdet mellan adresserna."},
-/* tr */ {IDGS_MON_TRACE_DESCRIPTION_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_MON_TRACE_DESCRIPTION_TR, "Takip noktasý koy.  Eðer tek bir adres belirtilmiþse, takip nokasýný\n"
+                                         "o adrese koy.  Eðer iki adres belirtilmiþse, izleme noktasýný\n"
+                                         "o iki adres arasýnda kalan adreslere koy."},
 #endif
 
 /* monitor/mon_command.c */
@@ -2458,7 +2469,7 @@ translate_t string_table[] = {
 /* nl */ {IDGS_MONITOR_STATE_COMMANDS_NL, "Monitor status commandos:"},
 /* pl */ {IDGS_MONITOR_STATE_COMMANDS_PL, ""},  /* fuzzy */
 /* sv */ {IDGS_MONITOR_STATE_COMMANDS_SV, "Kommandon för monitorstatus:"},
-/* tr */ {IDGS_MONITOR_STATE_COMMANDS_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_MONITOR_STATE_COMMANDS_TR, "Monitör durum komutlarý:"},
 #endif
 
 /* monitor/mon_command.c */
@@ -2477,7 +2488,8 @@ translate_t string_table[] = {
 /* pl */ {IDGS_MON_DEVICE_DESCRIPTION_PL, ""},  /* fuzzy */
 /* sv */ {IDGS_MON_DEVICE_DESCRIPTION_SV, "Sätt förvald minnesenhet antingen till datorn \"c:\" eller\n"
                                           "den angivna diskettenheten (\"8:\", \"9:\")."},
-/* tr */ {IDGS_MON_DEVICE_DESCRIPTION_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_MON_DEVICE_DESCRIPTION_TR, "Varsayýlan bellek aygýtýný bilgisayar `c:' ya da (`8:', `9:') ile\n"
+                                          "belirtilmiþ disket dürücü olarak belirle."},
 #endif
 
 /* monitor/mon_command.c */
@@ -2490,7 +2502,7 @@ translate_t string_table[] = {
 /* nl */ {IDGS_MON_EXIT_DESCRIPTION_NL, "Verlaat de monitor en ga terug naar de uitvoering."},
 /* pl */ {IDGS_MON_EXIT_DESCRIPTION_PL, ""},  /* fuzzy */
 /* sv */ {IDGS_MON_EXIT_DESCRIPTION_SV, "Lämna monitorn och återgå till programkörningen."},
-/* tr */ {IDGS_MON_EXIT_DESCRIPTION_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_MON_EXIT_DESCRIPTION_TR, "Monitörü terk et ve çalýþtýrmaya geri dön."},
 #endif
 
 /* monitor/mon_command.c */
@@ -2503,7 +2515,7 @@ translate_t string_table[] = {
 /* nl */ {IDGS_MON_QUIT_DESCRIPTION_NL, "Onmiddelijk de emulator sluiten."},
 /* pl */ {IDGS_MON_QUIT_DESCRIPTION_PL, ""},  /* fuzzy */
 /* sv */ {IDGS_MON_QUIT_DESCRIPTION_SV, "Avsluta emulatorn omedelbart."},
-/* tr */ {IDGS_MON_QUIT_DESCRIPTION_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_MON_QUIT_DESCRIPTION_TR, "Emülasyondan derhal çýk."},
 #endif
 
 /* monitor/mon_command.c */
@@ -2522,7 +2534,8 @@ translate_t string_table[] = {
 /* pl */ {IDGS_MON_RADIX_DESCRIPTION_PL, ""},  /* fuzzy */
 /* sv */ {IDGS_MON_RADIX_DESCRIPTION_SV, "Sätt standardradix till hex, decimal, oktal eller binär. Om du\n"
                                          "inte ger något argument visas nuvarande radix."},
-/* tr */ {IDGS_MON_RADIX_DESCRIPTION_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_MON_RADIX_DESCRIPTION_TR, "Varsayýlan sayý tabanýný 16'lý, 10'lu, 8'li ya da 2'li yap.\n"
+                                         "Argümansýz olarak geçerli sayý tabaný yazdýrýlýr."},
 #endif
 
 /* monitor/mon_command.c */
@@ -2535,7 +2548,7 @@ translate_t string_table[] = {
 /* nl */ {IDGS_R_ON_R_OFF_R_TOGGLE_NL, "[on|off|toggle]"},
 /* pl */ {IDGS_R_ON_R_OFF_R_TOGGLE_PL, ""},  /* fuzzy */
 /* sv */ {IDGS_R_ON_R_OFF_R_TOGGLE_SV, "[on|off|toggle]"},
-/* tr */ {IDGS_R_ON_R_OFF_R_TOGGLE_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_R_ON_R_OFF_R_TOGGLE_TR, "[on|off|toggle]"},
 #endif
 
 /* monitor/mon_command.c */
@@ -2576,7 +2589,11 @@ translate_t string_table[] = {
                                           "läsningar att orsaka sidoeffekter. Om argumentet är \"toggle\" byts\n"
                                           "det nuvarande läget. Om du inte anger några argument visas\n"
                                           "nuvarande läge."},
-/* tr */ {IDGS_MON_SIDEFX_DESCRIPTION_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_MON_SIDEFX_DESCRIPTION_TR, "Okuma yan etkileri bulunan bellek konumlarýný monitör tarafýndan oluþturulan\n"
+                                          "okumalarýn nasýl etkilediðini kontrol et.  Argüman 'on' ise, okumalar yan\n"
+                                          "etkiye neden olabilir.  Argüman 'off' ise okumalarýn bir yan etkisi\n"
+                                          "olmayacaktýr.  Eðer argüman 'toggle' ise geçerli mod deðiþtirilecektir.\n"
+                                          "Argüman verilmemesi o anki durumu görüntüler."},
 #endif
 
 /* monitor/mon_command.c */
@@ -2589,7 +2606,7 @@ translate_t string_table[] = {
 /* nl */ {IDGS_DISK_COMMANDS_NL, "Disk commandos:"},
 /* pl */ {IDGS_DISK_COMMANDS_PL, ""},  /* fuzzy */
 /* sv */ {IDGS_DISK_COMMANDS_SV, "Diskettkommandon:"},
-/* tr */ {IDGS_DISK_COMMANDS_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_DISK_COMMANDS_TR, "Disk komutlarý:"},
 #endif
 
 /* monitor/mon_command.c */
@@ -2602,7 +2619,7 @@ translate_t string_table[] = {
 /* nl */ {IDGS_P_DISK_COMMAND_NL, "<disk commando>"},
 /* pl */ {IDGS_P_DISK_COMMAND_PL, ""},  /* fuzzy */
 /* sv */ {IDGS_P_DISK_COMMAND_SV, "<diskkommando>"},
-/* tr */ {IDGS_P_DISK_COMMAND_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_P_DISK_COMMAND_TR, "<disk komutu>"},
 #endif
 
 /* monitor/mon_command.c */
@@ -2623,7 +2640,8 @@ translate_t string_table[] = {
 /* pl */ {IDGS_MON_AT_DESCRIPTION_PL, ""},  /* fuzzy */
 /* sv */ {IDGS_MON_AT_DESCRIPTION_SV, "Utför ett diskkommando på den diskettavbildning som är ansluten till\n"
                                       "enhet 8. Diskkommandot sänds på diskettenhetens kanal nummer 15."},
-/* tr */ {IDGS_MON_AT_DESCRIPTION_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_MON_AT_DESCRIPTION_TR, "8 nolu sürücüde takýlý disk imajý üzerinde bir disk komutu çalýþtýr.\n"
+                                      "Belirtilen disk komutu sürücünün 15 numaralý kanalýna gönderilir."},
 #endif
 
 /* monitor/mon_command.c */
@@ -2636,7 +2654,7 @@ translate_t string_table[] = {
 /* nl */ {IDGS_P_FILENAME_P_DEVICE_NL, "<bestandsnaam> <apparaat>"},
 /* pl */ {IDGS_P_FILENAME_P_DEVICE_PL, ""},  /* fuzzy */
 /* sv */ {IDGS_P_FILENAME_P_DEVICE_SV, "<filnamn> <enhet>"},
-/* tr */ {IDGS_P_FILENAME_P_DEVICE_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_P_FILENAME_P_DEVICE_TR, "<dosyaismi> <aygýt>"},
 #endif
 
 /* monitor/mon_command.c */
@@ -2649,7 +2667,7 @@ translate_t string_table[] = {
 /* nl */ {IDGS_MON_ATTACH_DESCRIPTION_NL, "Koppel bestand aan apparaat. (apparaat 32 = cart"},
 /* pl */ {IDGS_MON_ATTACH_DESCRIPTION_PL, ""},  /* fuzzy */
 /* sv */ {IDGS_MON_ATTACH_DESCRIPTION_SV, "Anslut en fil till en enhet. (enhet 32 = insticksmodul)"},
-/* tr */ {IDGS_MON_ATTACH_DESCRIPTION_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_MON_ATTACH_DESCRIPTION_TR, "Aygýta dosya yerleþtir. (aygýt 32 = kartuþ)"},
 #endif
 
 /* monitor/mon_command.c */
@@ -2662,7 +2680,7 @@ translate_t string_table[] = {
 /* nl */ {IDGS_QP_FILENAME_P_DEVICE_P_ADDRESS_NL, "\"<bestandsnaam>\" <aparraat> <adres>"},
 /* pl */ {IDGS_QP_FILENAME_P_DEVICE_P_ADDRESS_PL, ""},  /* fuzzy */
 /* sv */ {IDGS_QP_FILENAME_P_DEVICE_P_ADDRESS_SV, "\"<filnamn>\" <enhet> <adress>"},
-/* tr */ {IDGS_QP_FILENAME_P_DEVICE_P_ADDRESS_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_QP_FILENAME_P_DEVICE_P_ADDRESS_TR, "\"<dosyaismi>\" <aygýt> <adres>"},
 #endif
 
 /* monitor/mon_command.c */
@@ -2682,7 +2700,8 @@ translate_t string_table[] = {
 /* pl */ {IDGS_MON_BLOAD_DESCRIPTION_PL, ""},  /* fuzzy */
 /* sv */ {IDGS_MON_BLOAD_DESCRIPTION_SV, "Läs den angivna filen till minnet på den angivna adressen.\n"
                                          "Om enheten är 0 läses filen från filsystemet."},
-/* tr */ {IDGS_MON_BLOAD_DESCRIPTION_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_MON_BLOAD_DESCRIPTION_TR, "Belirtilmiþ dosyayý belirtilen adresten itibaren belleðe yükle.\n"
+                                         "Aygýt 0 ise, dosya dosya sistemi üzerinden okunur."},
 #endif
 
 /* monitor/mon_command.c */
@@ -2695,7 +2714,7 @@ translate_t string_table[] = {
 /* nl */ {IDGS_P_TRACK_P_SECTOR_RP_ADDRESS_NL, "<spoor> <sector> [<adres>]"},
 /* pl */ {IDGS_P_TRACK_P_SECTOR_RP_ADDRESS_PL, ""},  /* fuzzy */
 /* sv */ {IDGS_P_TRACK_P_SECTOR_RP_ADDRESS_SV, "<spår> <sektor> [<adress>]"},
-/* tr */ {IDGS_P_TRACK_P_SECTOR_RP_ADDRESS_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_P_TRACK_P_SECTOR_RP_ADDRESS_TR, "<track> <sektör> [<adres>]"},
 #endif
 
 /* monitor/mon_command.c */
@@ -2721,7 +2740,9 @@ translate_t string_table[] = {
 /* sv */ {IDGS_MON_BLOCK_READ_DESCRIPTION_SV, "Läser blocket på det angivna spåret och sektorn. Om du anger en\n"
                                               "adress läses data till minnet. Om du inte anger någon adress visas\n"
                                               "innehållet enligt standarddatatypen."},
-/* tr */ {IDGS_MON_BLOCK_READ_DESCRIPTION_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_MON_BLOCK_READ_DESCRIPTION_TR, "Belirtilmiþ track ve sektördeki bloðu oku.  Eðer bir adres belirtilmiþse,\n"
+                                              "veri belleðe yüklenir.  Eðer adres belirtilmemiþse, veri varsayýlan veri\n"
+                                              "tipi kullanýlarak görüntülenir."},
 #endif
 
 /* monitor/mon_command.c */
@@ -2734,7 +2755,7 @@ translate_t string_table[] = {
 /* nl */ {IDGS_QP_FILENAME_P_DEVICE_P_ADDRESS1_P_ADDRESS2_NL, "\"<bestandsnaam>\" <aparraat> <adres1> <adres2>"},
 /* pl */ {IDGS_QP_FILENAME_P_DEVICE_P_ADDRESS1_P_ADDRESS2_PL, ""},  /* fuzzy */
 /* sv */ {IDGS_QP_FILENAME_P_DEVICE_P_ADDRESS1_P_ADDRESS2_SV, "\"<filnamn>\" <enhet> <adress1> <adress2>"},
-/* tr */ {IDGS_QP_FILENAME_P_DEVICE_P_ADDRESS1_P_ADDRESS2_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_QP_FILENAME_P_DEVICE_P_ADDRESS1_P_ADDRESS2_TR, "\"<dosyaismi>\" <aygýt> <adres1> <adres2>"},
 #endif
 
 /* monitor/mon_command.c */
@@ -2754,7 +2775,8 @@ translate_t string_table[] = {
 /* pl */ {IDGS_MON_BSAVE_DESCRIPTION_PL, ""},  /* fuzzy */
 /* sv */ {IDGS_MON_BSAVE_DESCRIPTION_SV, "Spara minnet från adress1 till adress2 till den angivna filen.\n"
                                          "Om enheten är 0 skrivs filen till filsystemet."},
-/* tr */ {IDGS_MON_BSAVE_DESCRIPTION_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_MON_BSAVE_DESCRIPTION_TR, "Adres1'den adres2'ye kadar olan belleði belirtilen dosyaya kaydet.\n"
+                                         "Eðer aygýt 0 ise, dosya dosya sistemine yazýlýr."},
 #endif
 
 /* monitor/mon_command.c */
@@ -2767,7 +2789,7 @@ translate_t string_table[] = {
 /* nl */ {IDGS_P_TRACK_P_SECTOR_P_ADDRESS_NL, "<spoor> <sector> <adres>"},
 /* pl */ {IDGS_P_TRACK_P_SECTOR_P_ADDRESS_PL, ""},  /* fuzzy */
 /* sv */ {IDGS_P_TRACK_P_SECTOR_P_ADDRESS_SV, "<spår> <sektor> <adress>"},
-/* tr */ {IDGS_P_TRACK_P_SECTOR_P_ADDRESS_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_P_TRACK_P_SECTOR_P_ADDRESS_TR, "<track> <sektör> <adres>"},
 #endif
 
 /* monitor/mon_command.c */
@@ -2786,7 +2808,8 @@ translate_t string_table[] = {
 /* pl */ {IDGS_MON_BLOCK_WRITE_DESCRIPTION_PL, ""},  /* fuzzy */
 /* sv */ {IDGS_MON_BLOCK_WRITE_DESCRIPTION_SV, "Skriv ett datablock på \"adress\" till det angivna spåret och sektorn\n"
                                                "på disken i enhet 8."},
-/* tr */ {IDGS_MON_BLOCK_WRITE_DESCRIPTION_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_MON_BLOCK_WRITE_DESCRIPTION_TR, "Belirtilmiþ track ve sektörlerde `adres'te yer alan veri bloðunu 8\n"
+                                               "numaralý sürücüdeki diske yaz."},
 #endif
 
 /* monitor/mon_command.c */
@@ -2799,7 +2822,7 @@ translate_t string_table[] = {
 /* nl */ {IDGS_P_DIRECTORY_NL, "<directory>"},
 /* pl */ {IDGS_P_DIRECTORY_PL, ""},  /* fuzzy */
 /* sv */ {IDGS_P_DIRECTORY_SV, "<katalog>"},
-/* tr */ {IDGS_P_DIRECTORY_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_P_DIRECTORY_TR, "<dizin>"},
 #endif
 
 /* monitor/mon_command.c */
@@ -2812,7 +2835,7 @@ translate_t string_table[] = {
 /* nl */ {IDGS_MON_CD_DESCRIPTION_NL, "Verander de werkdirectory."},
 /* pl */ {IDGS_MON_CD_DESCRIPTION_PL, ""},  /* fuzzy */
 /* sv */ {IDGS_MON_CD_DESCRIPTION_SV, "Byt arbetskatalog."},
-/* tr */ {IDGS_MON_CD_DESCRIPTION_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_MON_CD_DESCRIPTION_TR, "Çalýþma dizinini deðiþtir."},
 #endif
 
 /* monitor/mon_command.c */
@@ -2825,7 +2848,7 @@ translate_t string_table[] = {
 /* nl */ {IDGS_MON_DETACH_DESCRIPTION_NL, "Ontkoppel bestand van apparaat. (apparaat 32 = cart)"},
 /* pl */ {IDGS_MON_DETACH_DESCRIPTION_PL, ""},  /* fuzzy */
 /* sv */ {IDGS_MON_DETACH_DESCRIPTION_SV, "Koppla från filen från enheten. (enhet 32 = insticksmodul)"},
-/* tr */ {IDGS_MON_DETACH_DESCRIPTION_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_MON_DETACH_DESCRIPTION_TR, "Aygýttan dosya çýkart. (aygýt 32 = kartuþ)"},
 #endif
 
 /* monitor/mon_command.c */
@@ -2838,7 +2861,7 @@ translate_t string_table[] = {
 /* nl */ {IDGS_RP_DIRECTORY_NL, "[<directory>]"},
 /* pl */ {IDGS_RP_DIRECTORY_PL, ""},  /* fuzzy */
 /* sv */ {IDGS_RP_DIRECTORY_SV, "[<katalog>]"},
-/* tr */ {IDGS_RP_DIRECTORY_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_RP_DIRECTORY_TR, "[<dizin>]"},
 #endif
 
 /* monitor/mon_command.c */
@@ -2851,7 +2874,7 @@ translate_t string_table[] = {
 /* nl */ {IDGS_MON_DIR_DESCRIPTION_NL, "Toon de directory inhoud."},
 /* pl */ {IDGS_MON_DIR_DESCRIPTION_PL, ""},  /* fuzzy */
 /* sv */ {IDGS_MON_DIR_DESCRIPTION_SV, "Visa katalogens innehåll."},
-/* tr */ {IDGS_MON_DIR_DESCRIPTION_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_MON_DIR_DESCRIPTION_TR, "Dizin içeriðini görüntüle."},
 #endif
 
 /* monitor/mon_command.c */
@@ -2864,7 +2887,7 @@ translate_t string_table[] = {
 /* nl */ {IDGS_QP_FILENAME_P_DEVICE_RP_ADDRESS_NL, "\"<bestandsnaam>\" <apparaat> [<adres>]"},
 /* pl */ {IDGS_QP_FILENAME_P_DEVICE_RP_ADDRESS_PL, ""},  /* fuzzy */
 /* sv */ {IDGS_QP_FILENAME_P_DEVICE_RP_ADDRESS_SV, "\"<filnamn>\" <enhet> [<adress>]"},
-/* tr */ {IDGS_QP_FILENAME_P_DEVICE_RP_ADDRESS_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_QP_FILENAME_P_DEVICE_RP_ADDRESS_TR, "\"<dosyaismi>\" <aygýt> [<adres>]"},
 #endif
 
 /* monitor/mon_command.c */
@@ -2902,7 +2925,11 @@ translate_t string_table[] = {
                                         "motsvarande BASIC-pekare vid läsning till datorminnet (inte alla\n"
                                         "emulatorer). Om ingen adress anges används tvåbytesadressen i filen (ignoreras annars).\n"
                                         "Om enheten är 0 läses filen från filsystemet."},
-/* tr */ {IDGS_MON_LOAD_DESCRIPTION_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_MON_LOAD_DESCRIPTION_TR, "Belirtilmiþ dosyayý belirtilen adresten itibaren belleðe yükle. Eðer\n"
+                                        "bilgisayar belleðine yüklenmiþse BASIC imleçlerini uygun bir biçimde\n"
+                                        "ayarla (tüm emülatörlerde deðil). Eðer adres belirtilmemiþse iki bytelýk\n"
+                                        "dosya yükleme adresini kullan (diðer ihtimalde yoksay).\n"
+                                        "Eðer aygýt 0 ise, dosya dosya sisteminden okunur."},
 #endif
 
 /* monitor/mon_command.c */
@@ -2915,7 +2942,7 @@ translate_t string_table[] = {
 /* nl */ {IDGS_MON_PWD_DESCRIPTION_NL, "Toon de huidige werk directory."},
 /* pl */ {IDGS_MON_PWD_DESCRIPTION_PL, ""},  /* fuzzy */
 /* sv */ {IDGS_MON_PWD_DESCRIPTION_SV, "Visa aktuell arbetskatalog."},
-/* tr */ {IDGS_MON_PWD_DESCRIPTION_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_MON_PWD_DESCRIPTION_TR, "Geçerli çalýþma dizinini göster."},
 #endif
 
 /* monitor/mon_command.c */
@@ -2942,7 +2969,9 @@ translate_t string_table[] = {
 /* sv */ {IDGS_MON_SAVE_DESCRIPTION_SV, "Spara minnet från adress1 till adress2 till den angivna filen.\n"
                                         "Skriv tvåbytes inläsningsadress.\n"
                                         "Om enheten är 0 skrivs filen till filsystemet."},
-/* tr */ {IDGS_MON_SAVE_DESCRIPTION_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_MON_SAVE_DESCRIPTION_TR, "Adres1'den adres2'ye kadar olan belleði belirtilen dosyaya kaydet.\n"
+                                        "Ýki bytelýk yükeme adresini yaz.\n"
+                                        "Eðer aygýt 0 ise, dosya dosya sistemine yazýlýr."},
 #endif
 
 /* monitor/mon_command.c */
@@ -2955,7 +2984,7 @@ translate_t string_table[] = {
 /* nl */ {IDGS_OTHER_COMMANDS_NL, "Andere commandos:"},
 /* pl */ {IDGS_OTHER_COMMANDS_PL, ""},  /* fuzzy */
 /* sv */ {IDGS_OTHER_COMMANDS_SV, "Andra kommandon:"},
-/* tr */ {IDGS_OTHER_COMMANDS_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_OTHER_COMMANDS_TR, "Diðer komutlar:"},
 #endif
 
 /* monitor/mon_command.c */
@@ -2968,7 +2997,7 @@ translate_t string_table[] = {
 /* nl */ {IDGS_MON_DISPLAY_NUMBER_DESCRIPTION_NL, "Toon het opgegeven nummer in decimaal, hex, octaal en binair."},
 /* pl */ {IDGS_MON_DISPLAY_NUMBER_DESCRIPTION_PL, ""},  /* fuzzy */
 /* sv */ {IDGS_MON_DISPLAY_NUMBER_DESCRIPTION_SV, "Visa det angivna talet decimalt, hexadecimalt, oktalt och binärt."},
-/* tr */ {IDGS_MON_DISPLAY_NUMBER_DESCRIPTION_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_MON_DISPLAY_NUMBER_DESCRIPTION_TR, "Belirtilen sayýyý 10'lu, 16'lý, 8'li ya da 2'li olarak görüntüle."},
 #endif
 
 /* monitor/mon_command.c */
@@ -2981,7 +3010,7 @@ translate_t string_table[] = {
 /* nl */ {IDGS_MON_CARTFREEZE_DESCRIPTION_NL, "Gebruik cartridge freeze."},
 /* pl */ {IDGS_MON_CARTFREEZE_DESCRIPTION_PL, ""},  /* fuzzy */
 /* sv */ {IDGS_MON_CARTFREEZE_DESCRIPTION_SV, "Använd insticksmodulens frysfunktion."},
-/* tr */ {IDGS_MON_CARTFREEZE_DESCRIPTION_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_MON_CARTFREEZE_DESCRIPTION_TR, "Kartuþ freeze kullan"},
 #endif
 
 /* monitor/mon_command.c */
@@ -2994,7 +3023,7 @@ translate_t string_table[] = {
 /* nl */ {IDGS_RP_COMMAND_NL, "[<commando>]"},
 /* pl */ {IDGS_RP_COMMAND_PL, ""},  /* fuzzy */
 /* sv */ {IDGS_RP_COMMAND_SV, "[<kommando>]"},
-/* tr */ {IDGS_RP_COMMAND_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_RP_COMMAND_TR, "[<komut>]"},
 #endif
 
 /* monitor/mon_command.c */
@@ -3016,7 +3045,8 @@ translate_t string_table[] = {
 /* pl */ {IDGS_MON_HELP_DESCRIPTION_PL, ""},  /* fuzzy */
 /* sv */ {IDGS_MON_HELP_DESCRIPTION_SV, "Om du inte anger några argument visas alla tillgängliga kommandon.\n"
                                         "Om du anger ett argument visas hjälp för det specifika kommandot."},
-/* tr */ {IDGS_MON_HELP_DESCRIPTION_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_MON_HELP_DESCRIPTION_TR, "Eðer hiç argüman verilmemiþse, tüm mevcut komutlarýn listesi yazdýrýlýr\n"
+                                        "Eðer bir argüman verilmiþse, o komuta özel yardým bilgisi yazdýrýlýr."},
 #endif
 
 /* monitor/mon_command.c */
@@ -3029,7 +3059,7 @@ translate_t string_table[] = {
 /* nl */ {IDGS_QP_STRING_NL, "\"<string>\""},
 /* pl */ {IDGS_QP_STRING_PL, ""},  /* fuzzy */
 /* sv */ {IDGS_QP_STRING_SV, "\"<sträng>\""},
-/* tr */ {IDGS_QP_STRING_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_QP_STRING_TR, "\"<yazý>\""},
 #endif
 
 /* monitor/mon_command.c */
@@ -3042,7 +3072,7 @@ translate_t string_table[] = {
 /* nl */ {IDGS_MON_KEYBUF_DESCRIPTION_NL, "Plaats de opgegeven string in de toetsenbordbuffer."},
 /* pl */ {IDGS_MON_KEYBUF_DESCRIPTION_PL, ""},  /* fuzzy */
 /* sv */ {IDGS_MON_KEYBUF_DESCRIPTION_SV, "Lägg den angivna strängen i tangentbordsbufferten."},
-/* tr */ {IDGS_MON_KEYBUF_DESCRIPTION_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_MON_KEYBUF_DESCRIPTION_TR, "Klavye arabelleðine belirtilen yazýyý koy."},
 #endif
 
 /* monitor/mon_command.c */
@@ -3064,7 +3094,8 @@ translate_t string_table[] = {
 /* pl */ {IDGS_MON_PLAYBACK_DESCRIPTION_PL, ""},  /* fuzzy */
 /* sv */ {IDGS_MON_PLAYBACK_DESCRIPTION_SV, "Monitorkommandon läses in och körs från den angivna filen. Kommandot\n"
                                             "stoppar vid filslut eller när ett STOP-kommando läses."},
-/* tr */ {IDGS_MON_PLAYBACK_DESCRIPTION_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_MON_PLAYBACK_DESCRIPTION_TR, "Belirtilen dosyadaki monitör komutlarý okundu ve çalýþtýrýldý.  Bu\n"
+                                            "komut dosya sonunda ya da STOP komutu okunduðunda sonlanýr."},
 #endif
 
 /* monitor/mon_command.c */
@@ -3077,7 +3108,7 @@ translate_t string_table[] = {
 /* nl */ {IDGS_P_EXPRESSION_NL, "<expressie>"},
 /* pl */ {IDGS_P_EXPRESSION_PL, ""},  /* fuzzy */
 /* sv */ {IDGS_P_EXPRESSION_SV, "<uttryck>"},
-/* tr */ {IDGS_P_EXPRESSION_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_P_EXPRESSION_TR, "<ifade>"},
 #endif
 
 /* monitor/mon_command.c */
@@ -3090,7 +3121,7 @@ translate_t string_table[] = {
 /* nl */ {IDGS_MON_PRINT_DESCRIPTION_NL, "Evalueer de opgegeven expressie en toon het resultaat."},
 /* pl */ {IDGS_MON_PRINT_DESCRIPTION_PL, ""},  /* fuzzy */
 /* sv */ {IDGS_MON_PRINT_DESCRIPTION_SV, "Utvärdera det angivna uttrycket och visa resultatet."},
-/* tr */ {IDGS_MON_PRINT_DESCRIPTION_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_MON_PRINT_DESCRIPTION_TR, "Belirtilen ifadeyi deðerlendir ve sonucun çýktýsýný ver."},
 #endif
 
 /* monitor/mon_command.c */
@@ -3109,7 +3140,8 @@ translate_t string_table[] = {
 /* pl */ {IDGS_MON_RECORD_DESCRIPTION_PL, ""},  /* fuzzy */
 /* sv */ {IDGS_MON_RECORD_DESCRIPTION_SV, "Efter detta kommando kommer alla kommandon som anges att skrivas till\n"
                                           "den angivna filen tills ett STOP-kommando anges."},
-/* tr */ {IDGS_MON_RECORD_DESCRIPTION_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_MON_RECORD_DESCRIPTION_TR, "Bu komuttan sonra, tüm girilen komutlar ve STOP komutunu görene dek\n"
+                                          "belirtilen dosyaya yazýlacaktýr."},
 #endif
 
 /* monitor/mon_command.c */
@@ -3122,7 +3154,7 @@ translate_t string_table[] = {
 /* nl */ {IDGS_QP_RESOURCE_NL, "\"<resource>\""},
 /* pl */ {IDGS_QP_RESOURCE_PL, ""},  /* fuzzy */
 /* sv */ {IDGS_QP_RESOURCE_SV, "\"<resurs>\""},
-/* tr */ {IDGS_QP_RESOURCE_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_QP_RESOURCE_TR, "\"<kaynak>\""},
 #endif
 
 /* monitor/mon_command.c */
@@ -3135,7 +3167,7 @@ translate_t string_table[] = {
 /* nl */ {IDGS_MON_RESOURCEGET_DESCRIPTION_NL, "Toont de waarde van de resource."},
 /* pl */ {IDGS_MON_RESOURCEGET_DESCRIPTION_PL, ""},  /* fuzzy */
 /* sv */ {IDGS_MON_RESOURCEGET_DESCRIPTION_SV, "Visar värdet för resursen."},
-/* tr */ {IDGS_MON_RESOURCEGET_DESCRIPTION_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_MON_RESOURCEGET_DESCRIPTION_TR, "Kaynaðýn deðerini görüntüler."},
 #endif
 
 /* monitor/mon_command.c */
@@ -3148,7 +3180,7 @@ translate_t string_table[] = {
 /* nl */ {IDGS_QP_RESOURCE_QP_VALUE_NL, "\"<resource>\" \"<waarde>\""},
 /* pl */ {IDGS_QP_RESOURCE_QP_VALUE_PL, ""},  /* fuzzy */
 /* sv */ {IDGS_QP_RESOURCE_QP_VALUE_SV, "\"<resurs>\" \"<värde>\""},
-/* tr */ {IDGS_QP_RESOURCE_QP_VALUE_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_QP_RESOURCE_QP_VALUE_TR, "\"<kaynak>\" \"<deðer>\""},
 #endif
 
 /* monitor/mon_command.c */
@@ -3161,7 +3193,7 @@ translate_t string_table[] = {
 /* nl */ {IDGS_MON_RESOURCESET_DESCRIPTION_NL, "Plaats de waarde in de resource."},
 /* pl */ {IDGS_MON_RESOURCESET_DESCRIPTION_PL, ""},  /* fuzzy */
 /* sv */ {IDGS_MON_RESOURCESET_DESCRIPTION_SV, "Ställer in ett värde för resursen."},
-/* tr */ {IDGS_MON_RESOURCESET_DESCRIPTION_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_MON_RESOURCESET_DESCRIPTION_TR, "Kaynaðýn deðerini belirler."},
 #endif
 
 /* monitor/mon_command.c */
@@ -3174,7 +3206,7 @@ translate_t string_table[] = {
 /* nl */ {IDGS_MON_STOP_DESCRIPTION_NL, "Stop de opname van commandos. Zie 'record'."},
 /* pl */ {IDGS_MON_STOP_DESCRIPTION_PL, ""},  /* fuzzy */
 /* sv */ {IDGS_MON_STOP_DESCRIPTION_SV, "Sluta spela in kommandon. Se \"record\"."},
-/* tr */ {IDGS_MON_STOP_DESCRIPTION_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_MON_STOP_DESCRIPTION_TR, "Kayýt komutlarýný durdur.  `record'a bak."},
 #endif
 
 /* monitor/mon_command.c */
@@ -3187,7 +3219,7 @@ translate_t string_table[] = {
 /* nl */ {IDGS_QP_FILENAME_RP_FORMAT_NL, "\"<bestandsnaam>\" [<formaat>]"},
 /* pl */ {IDGS_QP_FILENAME_RP_FORMAT_PL, ""},  /* fuzzy */
 /* sv */ {IDGS_QP_FILENAME_RP_FORMAT_SV, "\"<filnamn>\" [<format>]"},
-/* tr */ {IDGS_QP_FILENAME_RP_FORMAT_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_QP_FILENAME_RP_FORMAT_TR, "\"<dosyaismi>\" [<biçim>]"},
 #endif
 
 /* monitor/mon_command.c */
@@ -3206,7 +3238,8 @@ translate_t string_table[] = {
 /* pl */ {IDGS_MON_SCREENSHOT_DESCRIPTION_PL, ""},  /* fuzzy */
 /* sv */ {IDGS_MON_SCREENSHOT_DESCRIPTION_SV, "Ta en skärmbild. Format är:\n"
                                               "standard = BMP, 1 = PCX, 2 = PNG, 3 = GIF, 4 = IFF."},
-/* tr */ {IDGS_MON_SCREENSHOT_DESCRIPTION_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_MON_SCREENSHOT_DESCRIPTION_TR, "Ekran görüntüsü al. Biçim:\n"
+                                              "varsayýlan = BMP, 1 = PCX, 2 = PNG, 3 = GIF, 4 = IFF."},
 #endif
 
 /* monitor/mon_command.c */
@@ -3219,7 +3252,7 @@ translate_t string_table[] = {
 /* nl */ {IDGS_P_COMMAND_NL, "<commando>"},
 /* pl */ {IDGS_P_COMMAND_PL, ""},  /* fuzzy */
 /* sv */ {IDGS_P_COMMAND_SV, "<kommando>"},
-/* tr */ {IDGS_P_COMMAND_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_P_COMMAND_TR, "<komut>"},
 #endif
 
 /* monitor/mon_command.c */
@@ -3244,7 +3277,9 @@ translate_t string_table[] = {
 /* sv */ {IDGS_MON_TAPECTRL_DESCRIPTION_SV, "Styr bandspelaren. Giltiga kommandon:\n"
                                             "0 = stoppa, 1 = starta, 2 = spola framåt, 3 = spola bakåt,\n"
                                             "4 = spela in, 5 = återställ, 6 = nollställ räknare."},
-/* tr */ {IDGS_MON_TAPECTRL_DESCRIPTION_TR, ""},  /* fuzzy */
+/* tr */ {IDGS_MON_TAPECTRL_DESCRIPTION_TR, "Teybi kontrol et. Geçerli komutlar:\n"
+                                            "0 = durdur, 1 = baþlat, 2 = ileri, 3 = geri, 4 = kayýt,\n"
+                                            "5 = reset, 6 = reset sayacý."},
 #endif
 
 /* ------------------------ COMMAND LINE OPTION STRINGS -------------------- */
@@ -3260,7 +3295,7 @@ translate_t string_table[] = {
                                               "'RUN:'"},
 /* pl */ {IDCLS_ENABLE_AUTOSTARTWITHCOLON_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_ENABLE_AUTOSTARTWITHCOLON_SV, "Vid autostart, använd \"RUN\"-kommando med kolon, dvs. \"RUN:\""},
-/* tr */ {IDCLS_ENABLE_AUTOSTARTWITHCOLON_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_ENABLE_AUTOSTARTWITHCOLON_TR, "Otomatik baþlatýldýðýnda, 'RUN' komutunu ':' ile kullan, yani, 'RUN:'"},
 #endif
 
 /* autostart.c */
@@ -3274,7 +3309,7 @@ translate_t string_table[] = {
                                                "punt, dus 'RUN'"},
 /* pl */ {IDCLS_DISABLE_AUTOSTARTWITHCOLON_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_DISABLE_AUTOSTARTWITHCOLON_SV, "Vid autostart, använd inte \"RUN\"-kommando med kolon, dvs. \"RUN\""},
-/* tr */ {IDCLS_DISABLE_AUTOSTARTWITHCOLON_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_DISABLE_AUTOSTARTWITHCOLON_TR, "Otomatik baþlatýldýðýnda, 'RUN' komutunu ':' ile kullanma, yani, 'RUN'"},
 #endif
 
 /* c128/c128-cmdline-options.c, c64/c64-cmdline-options.c,
@@ -3289,7 +3324,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_USE_PAL_SYNC_FACTOR_NL, "Gebruik PAL-synchronisatiefaktor"},
 /* pl */ {IDCLS_USE_PAL_SYNC_FACTOR_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_USE_PAL_SYNC_FACTOR_SV, "Använd PAL-synkfaktor"},
-/* tr */ {IDCLS_USE_PAL_SYNC_FACTOR_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_USE_PAL_SYNC_FACTOR_TR, "PAL senkron faktörü kullan"},
 #endif
 
 /* c128/c128-cmdline-options.c, c64/c64-cmdline-options.c,
@@ -3304,7 +3339,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_USE_NTSC_SYNC_FACTOR_NL, "Gebruik NTSC-synchronisatiefaktor"},
 /* pl */ {IDCLS_USE_NTSC_SYNC_FACTOR_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_USE_NTSC_SYNC_FACTOR_SV, "Använd NTSC-synkfaktor"},
-/* tr */ {IDCLS_USE_NTSC_SYNC_FACTOR_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_USE_NTSC_SYNC_FACTOR_TR, "NTSC senkron faktörü kullan"},
 #endif
 
 /* c128/c128-cmdline-options.c, c128/functionrom.c,
@@ -3329,7 +3364,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_P_NAME_NL, "<naam>"},
 /* pl */ {IDCLS_P_NAME_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_P_NAME_SV, "<namn>"},
-/* tr */ {IDCLS_P_NAME_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_P_NAME_TR, "<isim>"},
 #endif
 
 /* c128/c128-cmdline-options.c */
@@ -3342,7 +3377,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_SPECIFY_INT_KERNEL_NAME_NL, "Geef de naam van het internationaal Kernal-ROM-bestand"},
 /* pl */ {IDCLS_SPECIFY_INT_KERNEL_NAME_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SPECIFY_INT_KERNEL_NAME_SV, "Ange namn på internationell kernal-ROM-avbildning"},
-/* tr */ {IDCLS_SPECIFY_INT_KERNEL_NAME_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_SPECIFY_INT_KERNEL_NAME_TR, "Uluslararasý Kernal ROM imajýnýn ismini belirt"},
 #endif
 
 /* c128/c128-cmdline-options.c */
@@ -3355,7 +3390,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_SPECIFY_DE_KERNEL_NAME_NL, "Geef de naam van het Duitse Kernal-ROM-bestand"},
 /* pl */ {IDCLS_SPECIFY_DE_KERNEL_NAME_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SPECIFY_DE_KERNEL_NAME_SV, "Ange namn på tysk kernal-ROM-avbildning"},
-/* tr */ {IDCLS_SPECIFY_DE_KERNEL_NAME_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_SPECIFY_DE_KERNEL_NAME_TR, "Alman Kernal ROM imajýnýn ismini belirt"},
 #endif
 
 /* c128/c128-cmdline-options.c */
@@ -3368,7 +3403,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_SPECIFY_FI_KERNEL_NAME_NL, "Geef de naam van het Fins Kernal-ROM-bestand"},
 /* pl */ {IDCLS_SPECIFY_FI_KERNEL_NAME_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SPECIFY_FI_KERNEL_NAME_SV, "Ange namn på finsk kernal-ROM-avbildning"},
-/* tr */ {IDCLS_SPECIFY_FI_KERNEL_NAME_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_SPECIFY_FI_KERNEL_NAME_TR, "Finlandiya Kernal ROM imajýnýn ismini belirt"},
 #endif
 
 /* c128/c128-cmdline-options.c */
@@ -3381,7 +3416,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_SPECIFY_FR_KERNEL_NAME_NL, "Geef de naam van het Frans Kernal-ROM-bestand"},
 /* pl */ {IDCLS_SPECIFY_FR_KERNEL_NAME_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SPECIFY_FR_KERNEL_NAME_SV, "Ange namn på fransk kernal-ROM-avbildning"},
-/* tr */ {IDCLS_SPECIFY_FR_KERNEL_NAME_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_SPECIFY_FR_KERNEL_NAME_TR, "Fransýz Kernal ROM imajýnýn ismini belirt"},
 #endif
 
 /* c128/c128-cmdline-options.c */
@@ -3394,7 +3429,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_SPECIFY_IT_KERNEL_NAME_NL, "Geef de naam van het Italiaans Kernal-ROM-bestand"},
 /* pl */ {IDCLS_SPECIFY_IT_KERNEL_NAME_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SPECIFY_IT_KERNEL_NAME_SV, "Ange namn på italiensk kernal-ROM-avbildning"},
-/* tr */ {IDCLS_SPECIFY_IT_KERNEL_NAME_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_SPECIFY_IT_KERNEL_NAME_TR, "Ýtalyan Kernal ROM imajýnýn ismini belirt"},
 #endif
 
 /* c128/c128-cmdline-options.c */
@@ -3407,7 +3442,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_SPECIFY_NO_KERNEL_NAME_NL, "Geef de naam van het Noors Kernal-ROM-bestand"},
 /* pl */ {IDCLS_SPECIFY_NO_KERNEL_NAME_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SPECIFY_NO_KERNEL_NAME_SV, "Ange namn på norsk kernal-ROM-avbildning"},
-/* tr */ {IDCLS_SPECIFY_NO_KERNEL_NAME_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_SPECIFY_NO_KERNEL_NAME_TR, "Norveç Kernal ROM imajýnýn ismini belirt"},
 #endif
 
 /* c128/c128-cmdline-options.c */
@@ -3420,7 +3455,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_SPECIFY_SV_KERNEL_NAME_NL, "Geef de naam van het Zweeds Kernal-ROM-bestand"},
 /* pl */ {IDCLS_SPECIFY_SV_KERNEL_NAME_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SPECIFY_SV_KERNEL_NAME_SV, "Ange namn på svensk kernal-ROM-avbildning"},
-/* tr */ {IDCLS_SPECIFY_SV_KERNEL_NAME_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_SPECIFY_SV_KERNEL_NAME_TR, "Ýsveç Kernal ROM imajýnýn ismini belirt"},
 #endif
 
 /* c128/c128-cmdline-options.c */
@@ -3433,7 +3468,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_SPECIFY_BASIC_ROM_NAME_LOW_NL, "Geef de naam van het BASIC-ROM-bestand (laag gedeelte)"},
 /* pl */ {IDCLS_SPECIFY_BASIC_ROM_NAME_LOW_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SPECIFY_BASIC_ROM_NAME_LOW_SV, "Ange namn på BASIC ROM-avbildning (nedre delen)"},
-/* tr */ {IDCLS_SPECIFY_BASIC_ROM_NAME_LOW_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_SPECIFY_BASIC_ROM_NAME_LOW_TR, "BASIC ROM imajýnýn (alt kýsým) ismini belirt"},
 #endif
 
 /* c128/c128-cmdline-options.c */
@@ -3446,7 +3481,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_SPECIFY_BASIC_ROM_NAME_HIGH_NL, "Geef de naam van het BASIC-ROM-bestand (hoog gedeelte)"},
 /* pl */ {IDCLS_SPECIFY_BASIC_ROM_NAME_HIGH_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SPECIFY_BASIC_ROM_NAME_HIGH_SV, "Ange namn på BASIC ROM-avbildning (övre delen)"},
-/* tr */ {IDCLS_SPECIFY_BASIC_ROM_NAME_HIGH_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_SPECIFY_BASIC_ROM_NAME_HIGH_TR, "BASIC ROM imajýnýn (üst kýsým) ismini belirt"},
 #endif
 
 /* c128/c128-cmdline-options.c */
@@ -3460,7 +3495,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_SPECIFY_INT_CHARGEN_ROM_NAME_NL, "Geef de naam van het internationaal CHARGEN-ROM-bestand"},
 /* pl */ {IDCLS_SPECIFY_INT_CHARGEN_ROM_NAME_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SPECIFY_INT_CHARGEN_ROM_NAME_SV, "Ange namn på internationell teckengenerator-ROM-avbildning"},
-/* tr */ {IDCLS_SPECIFY_INT_CHARGEN_ROM_NAME_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_SPECIFY_INT_CHARGEN_ROM_NAME_TR, "Uluslararasý Karakter Oluþturucu ROM imajýnýn ismini belirt"},
 #endif
 
 /* c128/c128-cmdline-options.c */
@@ -3474,7 +3509,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_SPECIFY_DE_CHARGEN_ROM_NAME_NL, "Geef de naam van het Duitse CHARGEN-ROM-bestand"},
 /* pl */ {IDCLS_SPECIFY_DE_CHARGEN_ROM_NAME_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SPECIFY_DE_CHARGEN_ROM_NAME_SV, "Ange namn på tysk teckengenerator-ROM-avbildning"},
-/* tr */ {IDCLS_SPECIFY_DE_CHARGEN_ROM_NAME_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_SPECIFY_DE_CHARGEN_ROM_NAME_TR, "Alman Karakter Oluþturucu ROM imajýnýn ismini belirt"},
 #endif
 
 /* c128/c128-cmdline-options.c */
@@ -3488,7 +3523,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_SPECIFY_FR_CHARGEN_ROM_NAME_NL, "Geef de naam van het Franse CHARGEN-ROM-bestand"},
 /* pl */ {IDCLS_SPECIFY_FR_CHARGEN_ROM_NAME_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SPECIFY_FR_CHARGEN_ROM_NAME_SV, "Ange namn på fransk teckengenerator-ROM-avbildning"},
-/* tr */ {IDCLS_SPECIFY_FR_CHARGEN_ROM_NAME_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_SPECIFY_FR_CHARGEN_ROM_NAME_TR, "Finlandiya Karakter Oluþturucu ROM imajýnýn ismini belirt"},
 #endif
 
 /* c128/c128-cmdline-options.c */
@@ -3502,7 +3537,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_SPECIFY_SV_CHARGEN_ROM_NAME_NL, "Geef de naam van het Zweedse CHARGEN-ROM-bestand"},
 /* pl */ {IDCLS_SPECIFY_SV_CHARGEN_ROM_NAME_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SPECIFY_SV_CHARGEN_ROM_NAME_SV, "Ange namn på svensk teckengenerator-ROM-avbildning"},
-/* tr */ {IDCLS_SPECIFY_SV_CHARGEN_ROM_NAME_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_SPECIFY_SV_CHARGEN_ROM_NAME_TR, "Ýsveç Karakter Oluþturucu ROM imajýnýn ismini belirt"},
 #endif
 
 /* c128/c128-cmdline-options.c */
@@ -3515,7 +3550,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_SPECIFY_C64_MODE_KERNAL_NAME_NL, "Geef de naam van het Kernal-ROM-bestand voor de C64-modus"},
 /* pl */ {IDCLS_SPECIFY_C64_MODE_KERNAL_NAME_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SPECIFY_C64_MODE_KERNAL_NAME_SV, "Ange namn på C64-kernal-ROM-avbildning"},
-/* tr */ {IDCLS_SPECIFY_C64_MODE_KERNAL_NAME_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_SPECIFY_C64_MODE_KERNAL_NAME_TR, "C64 modu Kernal ROM imajýnýn ismini belirt"},
 #endif
 
 /* c128/c128-cmdline-options.c */
@@ -3528,7 +3563,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_SPECIFY_C64_MODE_BASIC_NAME_NL, "Geef de naam van het BASIC-ROM-bestand voor de C64-modus"},
 /* pl */ {IDCLS_SPECIFY_C64_MODE_BASIC_NAME_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SPECIFY_C64_MODE_BASIC_NAME_SV, "Ange namn på C64-BASIC-ROM-avbildning"},
-/* tr */ {IDCLS_SPECIFY_C64_MODE_BASIC_NAME_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_SPECIFY_C64_MODE_BASIC_NAME_TR, "C64 modu BASIC ROM imajýnýn ismini belirt"},
 #endif
 
 /* c128/c128-cmdline-options.c, c64/c64-cmdline-options.c,
@@ -3543,7 +3578,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_ENABLE_EMULATOR_ID_NL, "Activeer emulatoridentificatie"},
 /* pl */ {IDCLS_ENABLE_EMULATOR_ID_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_ENABLE_EMULATOR_ID_SV, "Aktivera emulatoridentifiering"},
-/* tr */ {IDCLS_ENABLE_EMULATOR_ID_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_ENABLE_EMULATOR_ID_TR, "Emülatör tespitini aktif et"},
 #endif
 
 /* c128/c128-cmdline-options.c, c64/c64-cmdline-options.c,
@@ -3558,7 +3593,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_DISABLE_EMULATOR_ID_NL, "Emulatoridentificatie uitschakelen"},
 /* pl */ {IDCLS_DISABLE_EMULATOR_ID_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_DISABLE_EMULATOR_ID_SV, "Inaktivera emulatoridentifiering"},
-/* tr */ {IDCLS_DISABLE_EMULATOR_ID_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_DISABLE_EMULATOR_ID_TR, "Emülatör tespitini pasifleþtir"},
 #endif
 
 /* c128/c128-cmdline-options.c */
@@ -3571,7 +3606,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_ENABLE_IEE488_NL, "Activeer de IEEE488-interface-emulatie"},
 /* pl */ {IDCLS_ENABLE_IEE488_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_ENABLE_IEE488_SV, "Aktivera emulering av IEEE488-gränssnitt"},
-/* tr */ {IDCLS_ENABLE_IEE488_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_ENABLE_IEE488_TR, "IEEE488 arabirim emülasyonunu aktif et"},
 #endif
 
 /* c128/c128-cmdline-options.c */
@@ -3584,7 +3619,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_DISABLE_IEE488_NL, "De IEEE488-interface-emulatie uitschakelen"},
 /* pl */ {IDCLS_DISABLE_IEE488_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_DISABLE_IEE488_SV, "Inaktivera emulering av IEEE488-gränssnitt"},
-/* tr */ {IDCLS_DISABLE_IEE488_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_DISABLE_IEE488_TR, "IEEE488 arabirim emülasyonunu pasifleþtir"},
 #endif
 
 /* c128/c128-cmdline-options.c, c64/c64-cmdline-options.c */
@@ -3597,7 +3632,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_P_REVISION_NL, "<revisie>"},
 /* pl */ {IDCLS_P_REVISION_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_P_REVISION_SV, "<utgåva>"},
-/* tr */ {IDCLS_P_REVISION_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_P_REVISION_TR, "<revizyon>"},
 #endif
 
 /* c128/c128-cmdline-options.c, c64/c64-cmdline-options.c */
@@ -3610,7 +3645,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_PATCH_KERNAL_TO_REVISION_NL, "Verbeter de Kernal-ROM naar de opgegeven <revisie>"},
 /* pl */ {IDCLS_PATCH_KERNAL_TO_REVISION_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_PATCH_KERNAL_TO_REVISION_SV, "Patcha kernal-ROM till angiven <utgåva>"},
-/* tr */ {IDCLS_PATCH_KERNAL_TO_REVISION_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_PATCH_KERNAL_TO_REVISION_TR, "Kernal ROM'u belirtilmiþ <revizyon>'a yama"},
 #endif
 
 #ifdef HAVE_RS232
@@ -3624,7 +3659,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_ENABLE_DEXX_ACIA_RS232_EMU_NL, "Activeer de $DE** ACIA RS232-interface-emulatie"},
 /* pl */ {IDCLS_ENABLE_DEXX_ACIA_RS232_EMU_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_ENABLE_DEXX_ACIA_RS232_EMU_SV, "Aktivera $DE** ACIA RS232-gränssnittsemulering"},
-/* tr */ {IDCLS_ENABLE_DEXX_ACIA_RS232_EMU_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_ENABLE_DEXX_ACIA_RS232_EMU_TR, "$DE** ACIA RS232 arabirim emülasyonunu aktif et"},
 #endif
 
 /* c128/c128-cmdline-options.c, c64/c64-cmdline-options.c */
@@ -3637,7 +3672,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_DISABLE_DEXX_ACIA_RS232_EMU_NL, "De $DE** ACIA RS232 interface emulatie afsluiten"},
 /* pl */ {IDCLS_DISABLE_DEXX_ACIA_RS232_EMU_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_DISABLE_DEXX_ACIA_RS232_EMU_SV, "Inaktivera $DE** ACIA-RS232-gränssnittsemulering"},
-/* tr */ {IDCLS_DISABLE_DEXX_ACIA_RS232_EMU_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_DISABLE_DEXX_ACIA_RS232_EMU_TR, "$DE** ACIA RS232 arabirim emülasyonunu pasifleþtir"},
 #endif
 #endif
 
@@ -3654,7 +3689,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_P_NUMBER_NL, "<nummer>"},
 /* pl */ {IDCLS_P_NUMBER_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_P_NUMBER_SV, "<nummer>"},
-/* tr */ {IDCLS_P_NUMBER_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_P_NUMBER_TR, "<sayý>"},
 #endif
 
 #ifdef COMMON_KBD
@@ -3672,7 +3707,7 @@ translate_t string_table[] = {
 /* pl */ {IDCLS_SPECIFY_KEYMAP_FILE_INDEX_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SPECIFY_KEYMAP_FILE_INDEX_SV, "Ange index för för tangentbordsinställningsfil (0=symbolisk, "
                                               "1=positionsriktig)"},
-/* tr */ {IDCLS_SPECIFY_KEYMAP_FILE_INDEX_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_SPECIFY_KEYMAP_FILE_INDEX_TR, "Tuþ haritasý dosyasýnýn indeksini belirt (0=sembol, 1=konumsal)"},
 #endif
 
 /* c128/c128-cmdline-options.c, c64/c64-cmdline-options.c,
@@ -3686,7 +3721,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_SPECIFY_SYM_KEYMAP_FILE_NAME_NL, "Geef naam van het symbolisch keymapbestand"},
 /* pl */ {IDCLS_SPECIFY_SYM_KEYMAP_FILE_NAME_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SPECIFY_SYM_KEYMAP_FILE_NAME_SV, "Ange fil för symbolisk tangentbordsemulering"},
-/* tr */ {IDCLS_SPECIFY_SYM_KEYMAP_FILE_NAME_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_SPECIFY_SYM_KEYMAP_FILE_NAME_TR, "Sembolik tuþ haritasý dosyasýnýn ismini belirt"},
 #endif
 
 /* c128/c128-cmdline-options.c, c64/c64-cmdline-options.c,
@@ -3700,7 +3735,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_SPECIFY_POS_KEYMAP_FILE_NAME_NL, "Geef naam van het positioneel keymapbestand"},
 /* pl */ {IDCLS_SPECIFY_POS_KEYMAP_FILE_NAME_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SPECIFY_POS_KEYMAP_FILE_NAME_SV, "Ange fil för positionsriktig tangentbordsemulering"},
-/* tr */ {IDCLS_SPECIFY_POS_KEYMAP_FILE_NAME_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_SPECIFY_POS_KEYMAP_FILE_NAME_TR, "Konumsal tuþ haritasý dosyasýnýn ismini belirt"},
 #endif
 #endif
 
@@ -3714,7 +3749,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_ACTIVATE_40_COL_MODE_NL, "Activeer 40 kolomsmodus"},
 /* pl */ {IDCLS_ACTIVATE_40_COL_MODE_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_ACTIVATE_40_COL_MODE_SV, "Aktivera 40-kolumnersläge"},
-/* tr */ {IDCLS_ACTIVATE_40_COL_MODE_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_ACTIVATE_40_COL_MODE_TR, "40 sütun modunu aktif et"},
 #endif
 
 /* c128/c128mmu.c */
@@ -3727,7 +3762,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_ACTIVATE_80_COL_MODE_NL, "Activeer 80 kolomsmodus"},
 /* pl */ {IDCLS_ACTIVATE_80_COL_MODE_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_ACTIVATE_80_COL_MODE_SV, "Aktivera 80-kolumnersläge"},
-/* tr */ {IDCLS_ACTIVATE_80_COL_MODE_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_ACTIVATE_80_COL_MODE_TR, "80 sütun modunu aktif et"},
 #endif
 
 /* c128/c128mmu.c */
@@ -3740,7 +3775,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_GO64_MODE_NL, "Start altijd op in C64-modus na reset"},
 /* pl */ {IDCLS_GO64_MODE_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_GO64_MODE_SV, "Växla alltid till C64-läge vid återställning"},
-/* tr */ {IDCLS_GO64_MODE_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_GO64_MODE_TR, "Resetlendiðinde her zaman C64 moduna geç"},
 #endif
 
 /* c128/c128mmu.c */
@@ -3753,7 +3788,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_GO128_MODE_NL, "Start altijd op in C128-modus na reset"},
 /* pl */ {IDCLS_GO128_MODE_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_GO128_MODE_SV, "Växla alltid till C128-läge vid återställning"},
-/* tr */ {IDCLS_GO128_MODE_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_GO128_MODE_TR, "Resetlendiðinde her zaman C128 moduna geç"},
 #endif
 
 /* c128/functionrom.c */
@@ -3766,7 +3801,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_SPECIFY_INT_FUNC_ROM_NAME_NL, "Geef de naam van het intern functie-ROM-bestand"},
 /* pl */ {IDCLS_SPECIFY_INT_FUNC_ROM_NAME_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SPECIFY_INT_FUNC_ROM_NAME_SV, "Ange namn på intern funktions-ROM-avbildning"},
-/* tr */ {IDCLS_SPECIFY_INT_FUNC_ROM_NAME_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_SPECIFY_INT_FUNC_ROM_NAME_TR, "Dahili Function ROM imajýnýn ismini belirt"},
 #endif
 
 /* c128/functionrom.c */
@@ -3779,7 +3814,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_SPECIFY_EXT_FUNC_ROM_NAME_NL, "Geef de naam van het extern functie-ROM-bestand"},
 /* pl */ {IDCLS_SPECIFY_EXT_FUNC_ROM_NAME_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SPECIFY_EXT_FUNC_ROM_NAME_SV, "Ange namn på extern funktions-ROM-avbildning"},
-/* tr */ {IDCLS_SPECIFY_EXT_FUNC_ROM_NAME_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_SPECIFY_EXT_FUNC_ROM_NAME_TR, "Harici Function ROM imajýnýn ismini belirt"},
 #endif
 
 /* c128/functionrom.c */
@@ -3792,7 +3827,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_ENABLE_INT_FUNC_ROM_NL, "Activeer de interne functie-ROM"},
 /* pl */ {IDCLS_ENABLE_INT_FUNC_ROM_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_ENABLE_INT_FUNC_ROM_SV, "Aktivera internt funktions-ROM"},
-/* tr */ {IDCLS_ENABLE_INT_FUNC_ROM_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_ENABLE_INT_FUNC_ROM_TR, "Dahili Function ROM'u aktif et"},
 #endif
 
 /* c128/functionrom.c */
@@ -3805,7 +3840,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_DISABLE_INT_FUNC_ROM_NL, "De interne functie-ROM uitschakelen"},
 /* pl */ {IDCLS_DISABLE_INT_FUNC_ROM_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_DISABLE_INT_FUNC_ROM_SV, "Inaktivera internt funktions-ROM"},
-/* tr */ {IDCLS_DISABLE_INT_FUNC_ROM_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_DISABLE_INT_FUNC_ROM_TR, "Dahili Function ROM'u pasifleþtir"},
 #endif
 
 /* c128/functionrom.c */
@@ -3818,7 +3853,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_ENABLE_EXT_FUNC_ROM_NL, "Activeer de externe functie-ROM"},
 /* pl */ {IDCLS_ENABLE_EXT_FUNC_ROM_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_ENABLE_EXT_FUNC_ROM_SV, "Aktivera externt funktions-ROM"},
-/* tr */ {IDCLS_ENABLE_EXT_FUNC_ROM_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_ENABLE_EXT_FUNC_ROM_TR, "Harici Function ROM'u aktif et"},
 #endif
 
 /* c128/functionrom.c */
@@ -3831,7 +3866,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_DISABLE_EXT_FUNC_ROM_NL, "De externe functie-ROM uitschakelen"},
 /* pl */ {IDCLS_DISABLE_EXT_FUNC_ROM_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_DISABLE_EXT_FUNC_ROM_SV, "Inaktivera externt funktions-ROM"},
-/* tr */ {IDCLS_DISABLE_EXT_FUNC_ROM_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_DISABLE_EXT_FUNC_ROM_TR, "Harici Function ROM'u pasifleþtir"},
 #endif
 
 /* c64/c64-cmdline-options.c, c64/psid.c */
@@ -3844,7 +3879,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_USE_OLD_NTSC_SYNC_FACTOR_NL, "Gebruik oude NTSC-synchronisatiefactor"},
 /* pl */ {IDCLS_USE_OLD_NTSC_SYNC_FACTOR_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_USE_OLD_NTSC_SYNC_FACTOR_SV, "Använd gammal NTSC-synkfaktor"},
-/* tr */ {IDCLS_USE_OLD_NTSC_SYNC_FACTOR_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_USE_OLD_NTSC_SYNC_FACTOR_TR, "Eski NTSC senkron faktörü kullan"},
 #endif
 
 /* c64dtv/c64dtv-cmdline-options.c */
@@ -3858,7 +3893,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_SELECT_HUMMER_USERPORT_DEVICE_NL, "Selecteer Hummer Userport apparaat (0: Geen, 1: ADC, 2: Joystick"},
 /* pl */ {IDCLS_SELECT_HUMMER_USERPORT_DEVICE_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SELECT_HUMMER_USERPORT_DEVICE_SV, "Välj enhet för Hummeranvändarport (0: ingen, 1: ADC, 2: styrspak)"},
-/* tr */ {IDCLS_SELECT_HUMMER_USERPORT_DEVICE_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_SELECT_HUMMER_USERPORT_DEVICE_TR, "Hummer Userport aygýtýný seç (0: Yok, 1: ADC, 2: Joystick)"},
 #endif
 
 /* c64dtv/c64dtv-cmdline-options.c */
@@ -3871,7 +3906,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_P_PORT_NL, "<poort>"},
 /* pl */ {IDCLS_P_PORT_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_P_PORT_SV, "<port>"},
-/* tr */ {IDCLS_P_PORT_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_P_PORT_TR, "<port>"},
 #endif
 
 /* c64dtv/c64dtv-cmdline-options.c */
@@ -3884,7 +3919,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_HUMMER_JOY_PORT_NL, "Selecteer welke joystick poort moet worden omgeleidt naar de userport"},
 /* pl */ {IDCLS_HUMMER_JOY_PORT_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_HUMMER_JOY_PORT_SV, "Ange vilken spelport som skall kopplas till användarporten"},
-/* tr */ {IDCLS_HUMMER_JOY_PORT_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_HUMMER_JOY_PORT_TR, "Bu userporta hangi joystick portunun eþleþtirilmesi gerektiðini seçin"},
 #endif
 
 /* c64/c64-cmdline-options.c, cbm2/cbm2-cmdline-options.c,
@@ -3899,7 +3934,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_SPECIFY_KERNAL_ROM_NAME_NL, "Geef de naam van het Kernal-ROM-bestand"},
 /* pl */ {IDCLS_SPECIFY_KERNAL_ROM_NAME_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SPECIFY_KERNAL_ROM_NAME_SV, "Ange namn på kernal-ROM-avbildning"},
-/* tr */ {IDCLS_SPECIFY_KERNAL_ROM_NAME_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_SPECIFY_KERNAL_ROM_NAME_TR, "Kernal ROM imajýnýn ismini belirt"},
 #endif
 
 /* c64/c64-cmdline-options.c, cbm2/cbm2-cmdline-options.c,
@@ -3914,7 +3949,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_SPECIFY_BASIC_ROM_NAME_NL, "Geef de naam van het BASIC-ROM-bestand"},
 /* pl */ {IDCLS_SPECIFY_BASIC_ROM_NAME_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SPECIFY_BASIC_ROM_NAME_SV, "Ange namn på BASIC-ROM-avbildning"},
-/* tr */ {IDCLS_SPECIFY_BASIC_ROM_NAME_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_SPECIFY_BASIC_ROM_NAME_TR, "BASIC ROM imajýnýn ismini belirt"},
 #endif
 
 /* c64/c64-cmdline-options.c, cbm2/cbm2-cmdline-options.c,
@@ -3928,7 +3963,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_SPECIFY_CHARGEN_ROM_NAME_NL, "Geef de naam van het CHARGEN-ROM-bestand"},
 /* pl */ {IDCLS_SPECIFY_CHARGEN_ROM_NAME_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SPECIFY_CHARGEN_ROM_NAME_SV, "Ange namn på teckengenerator-ROM-avbildning"},
-/* tr */ {IDCLS_SPECIFY_CHARGEN_ROM_NAME_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_SPECIFY_CHARGEN_ROM_NAME_TR, "Karakter Oluþturucu ROM imajýnýn ismini belirt"},
 #endif
 
 #ifdef COMMON_KBD
@@ -3945,7 +3980,8 @@ translate_t string_table[] = {
 /* pl */ {IDCLS_SPECIFY_INDEX_KEYMAP_FILE_0_2_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SPECIFY_INDEX_KEYMAP_FILE_0_2_SV, "Ange index för för tangentbordsinställningsfil (0=symbolisk, "
                                                   "1=symbolisk tysk, 2=positionsriktig)"},
-/* tr */ {IDCLS_SPECIFY_INDEX_KEYMAP_FILE_0_2_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_SPECIFY_INDEX_KEYMAP_FILE_0_2_TR, "Tuþ haritasý dosyasýnýn indeksini belirt (0=sembol, 1=sembol Almanca, "
+                                                  "2=konumsal)"},
 #endif
 
 /* c64/c64-cmdline-options.c */
@@ -3958,7 +3994,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_SPECIFY_NAME_SYM_DE_KEYMAP_NL, "Geef de naam van het symbolische Duitse keymapbestand"},
 /* pl */ {IDCLS_SPECIFY_NAME_SYM_DE_KEYMAP_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SPECIFY_NAME_SYM_DE_KEYMAP_SV, "Ange fil för tysk symbolisk tangentbordsemulering"},
-/* tr */ {IDCLS_SPECIFY_NAME_SYM_DE_KEYMAP_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_SPECIFY_NAME_SYM_DE_KEYMAP_TR, "Sembolik Almanca tuþ haritasý dosyasýnýn ismini belirt"},
 #endif
 #endif
 
@@ -3972,7 +4008,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_ENABLE_GEORAM_NL, "Activeer de GEORAM-uitbreidingseenheid"},
 /* pl */ {IDCLS_ENABLE_GEORAM_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_ENABLE_GEORAM_SV, "Aktivera GEORAM-expansionsenhet"},
-/* tr */ {IDCLS_ENABLE_GEORAM_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_ENABLE_GEORAM_TR, "GEORAM geniþletme birimini aktif et"},
 #endif
 
 /* c64/georam.c */
@@ -3985,7 +4021,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_DISABLE_GEORAM_NL, "De GEORAM-uitbreidingseenheid uitschakelen"},
 /* pl */ {IDCLS_DISABLE_GEORAM_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_DISABLE_GEORAM_SV, "Inaktivera GEORAM-expansionsenhet"},
-/* tr */ {IDCLS_DISABLE_GEORAM_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_DISABLE_GEORAM_TR, "GEORAM geniþletme birimini pasifleþtir"},
 #endif
 
 /* c64/georam.c */
@@ -3998,7 +4034,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_SPECIFY_GEORAM_NAME_NL, "Geef de naam van het GEORAM-bestand"},
 /* pl */ {IDCLS_SPECIFY_GEORAM_NAME_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SPECIFY_GEORAM_NAME_SV, "Ange namn på GEORAM-avbildning"},
-/* tr */ {IDCLS_SPECIFY_GEORAM_NAME_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_SPECIFY_GEORAM_NAME_TR, "GEORAM imajýnýn ismini belirt"},
 #endif
 
 /* c64/georam.c, c64/ramcart.c, c64/reu.c, pet/petreu.c */
@@ -4011,7 +4047,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_P_SIZE_IN_KB_NL, "<grootte in KB>"},
 /* pl */ {IDCLS_P_SIZE_IN_KB_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_P_SIZE_IN_KB_SV, "<storlek i KB>"},
-/* tr */ {IDCLS_P_SIZE_IN_KB_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_P_SIZE_IN_KB_TR, "<KB cinsinden boyut>"},
 #endif
 
 /* c64/georam.c */
@@ -4024,7 +4060,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_GEORAM_SIZE_NL, "Grootte van de GEORAM-uitbreidingseenheid"},
 /* pl */ {IDCLS_GEORAM_SIZE_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_GEORAM_SIZE_SV, "Storlek på GEORAM-expansionsenhet"},
-/* tr */ {IDCLS_GEORAM_SIZE_TR, ""},  /* fuzzy */
+/* tr */ {IDCLS_GEORAM_SIZE_TR, "GEORAM geniþletme biriminin boyutu"},
 #endif
 
 /* pet/petreu.c */
