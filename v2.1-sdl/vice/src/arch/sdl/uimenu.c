@@ -302,6 +302,7 @@ void sdl_ui_activate_pre_action(void)
 
     SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
     sdl_menu_state = 1;
+    ui_check_mouse_cursor();
 }
 
 void sdl_ui_activate_post_action(void)
@@ -309,6 +310,7 @@ void sdl_ui_activate_post_action(void)
     int warp_state;
 
     sdl_menu_state = 0;
+    ui_check_mouse_cursor();
     SDL_EnableKeyRepeat(0, 0);
 
     /* Do not resume sound if in warp mode */

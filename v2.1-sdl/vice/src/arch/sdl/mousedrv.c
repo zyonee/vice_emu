@@ -2,6 +2,9 @@
  * mousedrv.c - Mouse handling for SDL.
  *
  * Written by
+ *  Hannu Nuotio <hannu.nuotio@tut.fi>
+ *
+ * Based on code by
  *  Ettore Perazzoli <ettore@comm2000.it>
  *  Oliver Schaertel <orschaer@forwiss.uni-erlangen.de>
  *
@@ -24,16 +27,12 @@
  *
  */
 
-/* This is a first rough implementation of mouse emulation for MS-DOS.
-   A smarter and less buggy emulation is of course possible. */
-
 #include "vice.h"
 
-#include <stdio.h>
+#include <SDL/SDL.h>
 
 #include "mouse.h"
 #include "mousedrv.h"
-#include "log.h"
 #include "ui.h"
 
 int mouse_x, mouse_y;
@@ -42,7 +41,7 @@ int mouse_accelx = 2, mouse_accely = 2;
 
 void mousedrv_mouse_changed(void)
 {
-/*    ui_check_mouse_cursor();*/
+    ui_check_mouse_cursor();
 }
 
 int mousedrv_resources_init(void)
@@ -67,17 +66,17 @@ void mousedrv_init(void)
 
 void mouse_button(int bnumber, int state)
 {
-/*
-    if (bnumber == 0)
+    if (bnumber == (int)SDL_BUTTON_LEFT) {
         mouse_button_left(state);
-    if (bnumber == 2)
+    }
+
+    if (bnumber == (int)SDL_BUTTON_RIGHT) {
         mouse_button_right(state);
-*/
+    }
 }
 
 BYTE mousedrv_get_x(void)
 {
-/*
     static int last_mouse_x=0;
 
     if (last_mouse_x - mouse_x > 16) {
@@ -90,13 +89,10 @@ BYTE mousedrv_get_x(void)
     }
     last_mouse_x = mouse_x;
     return (BYTE)((last_mouse_x * mouse_accelx) >> 1) & 0x7e;
-*/
-    return 0;
 }
 
 BYTE mousedrv_get_y(void)
 {
-/*
     static int last_mouse_y=0;
 
     if (last_mouse_y - mouse_y > 16) {
@@ -109,18 +105,11 @@ BYTE mousedrv_get_y(void)
     }
     last_mouse_y = mouse_y;
     return (BYTE)((last_mouse_y * mouse_accely) >> 1) & 0x7e;
-*/
-    return 0;
 }
 
 void mouse_move(int x, int y)
 {
-/*
-    if (!_mouse_enabled)
-        return;
-
-    mouse_x = x;
-    mouse_y = 256 - y;
-*/
+    mouse_x += x;
+    mouse_y -= y;
 }
 

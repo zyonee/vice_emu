@@ -34,11 +34,14 @@
 #include <stdio.h>
 
 #include "color.h"
+#include "fullscreenarch.h"
 #include "interrupt.h"
 #include "joy.h"
 #include "kbd.h"
 #include "lib.h"
 #include "machine.h"
+#include "mouse.h"
+#include "mousedrv.h"
 #include "resources.h"
 #include "ui.h"
 #include "uiapi.h"
@@ -94,6 +97,17 @@ ui_menu_action_t ui_dispatch_events(void)
             case SDL_JOYHATMOTION:
                 retval = sdljoy_hat_event(e.jhat.which, e.jhat.hat, e.jhat.value);
                 break;
+            case SDL_MOUSEMOTION:
+                if (_mouse_enabled) {
+                    mouse_move((int)(e.motion.xrel), (int)(e.motion.yrel));
+                }
+                break;
+            case SDL_MOUSEBUTTONDOWN:
+            case SDL_MOUSEBUTTONUP:
+                if (_mouse_enabled) {
+                    mouse_button((int)(e.button.button), (e.button.state == SDL_PRESSED));
+                }
+                break;
             case SDL_ACTIVEEVENT:
                 if (e.active.state & SDL_APPACTIVE) {
                     if (e.active.gain) {
@@ -114,7 +128,16 @@ ui_menu_action_t ui_dispatch_events(void)
     return retval;
 }
 
-void ui_check_mouse_cursor(void){}
+void ui_check_mouse_cursor(void)
+{
+    if(_mouse_enabled && !sdl_menu_state) {
+        SDL_ShowCursor(SDL_DISABLE);
+        SDL_WM_GrabInput(SDL_GRAB_ON);
+    } else {
+        SDL_ShowCursor(fullscreen_is_enabled?SDL_DISABLE:SDL_ENABLE);
+        SDL_WM_GrabInput(SDL_GRAB_OFF);
+    }
+}
 
 void archdep_ui_init(int argc, char *argv[])
 {
@@ -321,7 +344,10 @@ void ui_error(const char *format,...)
 void ui_display_statustext(const char *text, int fade_out){}
 
 /* Let the user browse for a filename; display format as a titel */
-extern char* ui_get_file(const char *format,...){}
+extern char* ui_get_file(const char *format,...)
+{
+    return NULL;
+}
 
 /* Drive related UI.  */
 void ui_enable_drive_status(ui_drive_enable_t state,
