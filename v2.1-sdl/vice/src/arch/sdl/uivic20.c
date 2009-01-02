@@ -43,7 +43,7 @@
 #include "menu_sound.h"
 #include "menu_speed.h"
 #include "menu_vic20cart.h"
-#include "menu_video_vic20.h"
+#include "menu_video.h"
 #include "resources.h"
 #include "ui.h"
 #include "uimenu.h"

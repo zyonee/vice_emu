@@ -1,5 +1,5 @@
 /*
- * menu_video.h - Common SDL video settings functions.
+ * menu_video.h - SDL video settings menus.
  *
  * Written by
  *  Marco van den Heuvel <blackystardust68@yahoo.com>
@@ -31,7 +31,13 @@
 #include "types.h"
 #include "uimenu.h"
 
-extern const ui_menu_entry_t color_controls_menu[];
-extern const ui_menu_entry_t pal_controls_menu[];
+extern const ui_menu_entry_t c128_video_menu[];
+extern const ui_menu_entry_t c64_video_menu[];
+extern const ui_menu_entry_t c64dtv_video_menu[];
+extern const ui_menu_entry_t cbm5x0_video_menu[];
+extern const ui_menu_entry_t cbm6x0_7x0_video_menu[];
+extern const ui_menu_entry_t pet_video_menu[];
+extern const ui_menu_entry_t plus4_video_menu[];
+extern const ui_menu_entry_t vic20_video_menu[];
 
 #endif

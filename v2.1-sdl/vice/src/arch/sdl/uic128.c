@@ -42,7 +42,7 @@
 #include "menu_snapshot.h"
 #include "menu_sound.h"
 #include "menu_speed.h"
-#include "menu_video_c128.h"
+#include "menu_video.h"
 #include "ui.h"
 #include "uimenu.h"
 

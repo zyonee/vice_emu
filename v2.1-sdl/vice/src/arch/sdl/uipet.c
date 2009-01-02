@@ -41,7 +41,7 @@
 #include "menu_snapshot.h"
 #include "menu_sound.h"
 #include "menu_speed.h"
-#include "menu_video_pet.h"
+#include "menu_video.h"
 #include "petmem.h"
 #include "resources.h"
 #include "ui.h"
