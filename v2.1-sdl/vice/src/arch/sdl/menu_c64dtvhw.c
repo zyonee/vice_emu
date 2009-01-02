@@ -29,6 +29,7 @@
 
 #include "lib.h"
 #include "menu_common.h"
+#include "menu_sid.h"
 #include "resources.h"
 #include "uifilereq.h"
 #include "uimenu.h"
@@ -56,6 +57,11 @@ UI_MENU_DEFINE_TOGGLE(ps2mouse)
 UI_MENU_DEFINE_TOGGLE(Mouse)
 
 const ui_menu_entry_t c64dtv_hardware_menu[] = {
+    { "SID settings",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)sid_dtv_menu },
+    SDL_MENU_ITEM_SEPARATOR,
     SDL_MENU_ITEM_TITLE("C64DTV ROM image"),
     { "C64DTV ROM image name...",
       MENU_ENTRY_DIALOG,

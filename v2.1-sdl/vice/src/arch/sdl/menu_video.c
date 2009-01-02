@@ -35,13 +35,27 @@
 #include "ui.h"
 #include "uifilereq.h"
 #include "uimenu.h"
+#include "vicii.h"
+
+UI_MENU_DEFINE_RADIO(VICIIBorderMode)
+
+static const ui_menu_entry_t vicii_border_menu[] = {
+    { "Normal",
+      MENU_ENTRY_RESOURCE_RADIO,
+      radio_VICIIBorderMode_callback,
+      (ui_callback_data_t)VICII_NORMAL_BORDERS },
+    { "Full",
+      MENU_ENTRY_RESOURCE_RADIO,
+      radio_VICIIBorderMode_callback,
+      (ui_callback_data_t)VICII_FULL_BORDERS },
+    { "Debug",
+      MENU_ENTRY_RESOURCE_RADIO,
+      radio_VICIIBorderMode_callback,
+      (ui_callback_data_t)VICII_DEBUG_BORDERS },
+    { NULL }
+};
 
 UI_MENU_DEFINE_TOGGLE(PALEmulation)
-UI_MENU_DEFINE_INT(ColorGamma)
-UI_MENU_DEFINE_INT(ColorTint)
-UI_MENU_DEFINE_INT(ColorSaturation)
-UI_MENU_DEFINE_INT(ColorContrast)
-UI_MENU_DEFINE_INT(ColorBrightness)
 UI_MENU_DEFINE_INT(PALScanLineShade)
 UI_MENU_DEFINE_INT(PALBlur)
 UI_MENU_DEFINE_INT(PALOddLinePhase)
@@ -72,6 +86,12 @@ static const ui_menu_entry_t pal_controls_menu[] = {
       (ui_callback_data_t)"Set PAL oddline offset (0-2000)"},
     { NULL }
 };
+
+UI_MENU_DEFINE_INT(ColorGamma)
+UI_MENU_DEFINE_INT(ColorTint)
+UI_MENU_DEFINE_INT(ColorSaturation)
+UI_MENU_DEFINE_INT(ColorContrast)
+UI_MENU_DEFINE_INT(ColorBrightness)
 
 static const ui_menu_entry_t color_controls_menu[] = {
     { "Gamma (0-2000) : ",
@@ -229,6 +249,10 @@ const ui_menu_entry_t c128_video_menu[] = {
       MENU_ENTRY_RESOURCE_TOGGLE,
       toggle_VDCVideoCache_callback,
       NULL },
+    { "VICII border mode",
+      MENU_ENTRY_SUBMENU,
+      submenu_radio_callback,
+      (ui_callback_data_t)vicii_border_menu },
     { "Color controls",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
@@ -279,6 +303,10 @@ const ui_menu_entry_t c64_video_menu[] = {
       MENU_ENTRY_RESOURCE_TOGGLE,
       toggle_VICIIVideoCache_callback,
       NULL },
+    { "VICII border mode",
+      MENU_ENTRY_SUBMENU,
+      submenu_radio_callback,
+      (ui_callback_data_t)vicii_border_menu },
     { "Color controls",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
@@ -329,6 +357,10 @@ const ui_menu_entry_t c64dtv_video_menu[] = {
       MENU_ENTRY_RESOURCE_TOGGLE,
       toggle_VICIIVideoCache_callback,
       NULL },
+    { "VICII border mode",
+      MENU_ENTRY_SUBMENU,
+      submenu_radio_callback,
+      (ui_callback_data_t)vicii_border_menu },
     { "Color controls",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
@@ -375,6 +407,10 @@ const ui_menu_entry_t cbm5x0_video_menu[] = {
       MENU_ENTRY_RESOURCE_TOGGLE,
       toggle_VICIIVideoCache_callback,
       NULL },
+    { "VICII border mode",
+      MENU_ENTRY_SUBMENU,
+      submenu_radio_callback,
+      (ui_callback_data_t)vicii_border_menu },
     { "Color controls",
       MENU_ENTRY_SUBMENU,
       submenu_callback,

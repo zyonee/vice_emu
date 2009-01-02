@@ -33,6 +33,8 @@ libarch_a_SOURCES = \
 	menu_c64cart.h \
 	menu_c64dtvhw.c \
 	menu_c64dtvhw.h \
+	menu_c64hw.c \
+	menu_c64hw.h \
 	menu_common.c \
 	menu_common.h \
 	menu_drive.c \
@@ -47,6 +49,8 @@ libarch_a_SOURCES = \
 	menu_screenshot.h \
 	menu_settings.c \
 	menu_settings.h \
+	menu_sid.c \
+	menu_sid.h \
 	menu_snapshot.c \
 	menu_snapshot.h \
 	menu_sound.c \

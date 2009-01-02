@@ -322,7 +322,7 @@ const ui_menu_entry_t sound_output_menu[] = {
       NULL },
     { "Output driver",
       MENU_ENTRY_SUBMENU,
-      submenu_callback,
+      submenu_radio_callback,
       (ui_callback_data_t)sound_output_driver_menu },
     { "Volume",
       MENU_ENTRY_DIALOG,

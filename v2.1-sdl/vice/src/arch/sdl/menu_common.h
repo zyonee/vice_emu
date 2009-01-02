@@ -74,6 +74,7 @@ extern UI_MENU_CALLBACK(pause_callback);
 extern UI_MENU_CALLBACK(monitor_callback);
 extern UI_MENU_CALLBACK(quit_callback);
 extern UI_MENU_CALLBACK(submenu_callback);
+extern UI_MENU_CALLBACK(submenu_radio_callback);
 extern UI_MENU_CALLBACK(seperator_callback);
 
 extern const char *sdl_ui_menu_toggle_helper(int activated, const char *resource_name);

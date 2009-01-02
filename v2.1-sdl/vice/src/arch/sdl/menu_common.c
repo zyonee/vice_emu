@@ -59,6 +59,30 @@ UI_MENU_CALLBACK(submenu_callback)
     return "->";
 }
 
+UI_MENU_CALLBACK(submenu_radio_callback)
+{
+    static char buf[100] = "-> ";
+    char *dest = &(buf[3]);
+    const char *src = NULL;
+    ui_menu_entry_t *item = (ui_menu_entry_t *)param;
+
+    while (item->string != NULL) {
+        if (item->callback(0, item->data) != NULL) {
+            src = item->string;
+            break;
+        }
+        ++item;
+    }
+
+    if (src == NULL) {
+        return "-> ???";
+    }
+
+    while((*dest++ = *src++));
+
+    return buf;
+}
+
 UI_MENU_CALLBACK(seperator_callback)
 {
     return NULL;
