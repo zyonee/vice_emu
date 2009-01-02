@@ -193,6 +193,9 @@ int language_id(char *text)
       return 1;
   }
 
+  if (text[i-3]=='_' && text[i-2]=='D' && text[i-1]=='A')
+    return 1;
+
   if (text[i-3]=='_' && text[i-2]=='D' && text[i-1]=='E')
     return 1;
 

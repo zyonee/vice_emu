@@ -36,6 +36,7 @@ do
   case ${data%%_*} in
     ID*)
            echo "/* en */ {"$data","
+           echo "/* de */  "$data"_DA,"
            echo "/* de */  "$data"_DE,"
            echo "/* fr */  "$data"_FR,"
            echo "/* hu */  "$data"_HU,"

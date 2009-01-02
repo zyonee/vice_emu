@@ -42,6 +42,7 @@ do
   case ${data%%_*} in
     ID*)
            echo $data","
+           echo $data"_DA,"
            echo $data"_DE,"
            echo $data"_FR,"
            echo $data"_HU,"
