@@ -49,6 +49,7 @@ extern ui_menu_action_t sdljoy_button_event(Uint8 joynum, Uint8 button, Uint8 va
 extern ui_menu_action_t sdljoy_hat_event(Uint8 joynum, Uint8 hat, Uint8 value);
 extern BYTE sdljoy_check_axis_movement(SDL_Event e);
 extern void sdljoy_set_hotkey(SDL_Event e, ui_menu_entry_t *value);
+extern void sdljoy_swap_ports(void);
 
 extern int joystick_port_map[2];
 

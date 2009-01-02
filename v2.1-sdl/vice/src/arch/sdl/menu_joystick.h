@@ -1,8 +1,8 @@
 /*
- * menu_c64hw.c - C64 HW menu for SDL UI.
+ * menu_joystick.h - Joystick menu for SDL UI.
  *
  * Written by
- *  Hannu Nuotio <hannu.nuotio@tut.fi>
+ *  Marco van den Heuvel <blackystardust68@yahoo.com>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -24,22 +24,14 @@
  *
  */
 
+#ifndef VICE_MENU_JOYSTICK_H
+#define VICE_MENU_JOYSTICK_H
+
 #include "vice.h"
 #include "types.h"
-
-#include "menu_common.h"
-#include "menu_joystick.h"
-#include "menu_sid.h"
 #include "uimenu.h"
 
-const ui_menu_entry_t c64_hardware_menu[] = {
-    { "Joystick settings",
-      MENU_ENTRY_SUBMENU,
-      submenu_callback,
-      (ui_callback_data_t)joystick_menu },
-    { "SID settings",
-      MENU_ENTRY_SUBMENU,
-      submenu_callback,
-      (ui_callback_data_t)sid_c64_menu },
-    { NULL }
-};
+extern const ui_menu_entry_t joystick_menu[];
+extern const ui_menu_entry_t joystick_single_menu[];
+
+#endif

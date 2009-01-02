@@ -895,3 +895,26 @@ void sdljoy_set_hotkey(SDL_Event e, ui_menu_entry_t *value)
     }
 }
 
+/* ------------------------------------------------------------------------- */
+
+void sdljoy_swap_ports(void)
+{
+    int i, k;
+    sdljoystick_input_t j;
+
+    resources_get_int("JoyDevice1", &i);
+    resources_get_int("JoyDevice2", &k);
+    resources_set_int("JoyDevice1", k);
+    resources_set_int("JoyDevice2", i);
+
+    for (i=0; i<num_joysticks; ++i) {
+        for (j=AXIS; j<NUM_INPUT_TYPES; ++j) {
+            for (k=0; k<sdljoystick[i].input_max[j]*input_mult[j]; ++k) {
+                if (sdljoystick[i].input[j][k].action == JOYSTICK) {
+                    sdljoystick[i].input[j][k].value.joy[0] ^= 1;
+                }
+            }
+        }
+    }
+}
+

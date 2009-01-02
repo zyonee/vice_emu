@@ -41,6 +41,8 @@ libarch_a_SOURCES = \
 	menu_drive.h \
 	menu_help.c \
 	menu_help.h \
+	menu_joystick.c \
+	menu_joystick.h \
 	menu_plus4cart.c \
 	menu_plus4cart.h \
 	menu_reset.c \
