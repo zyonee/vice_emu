@@ -55,6 +55,9 @@
 #include "ffmpeglib.h"
 #endif
 
+#ifdef HAVE_QUICKTIME
+#include "quicktimedrv.h"
+#endif
 
 struct gfxoutputdrv_list_s {
     struct gfxoutputdrv_s *drv;
@@ -113,6 +116,9 @@ int gfxoutput_early_init(void)
     gfxoutput_init_ppm();
 #ifdef HAVE_FFMPEG
     gfxoutput_init_ffmpeg();
+#endif
+#ifdef HAVE_QUICKTIME
+    gfxoutput_init_quicktime();
 #endif
 
     return 0;
