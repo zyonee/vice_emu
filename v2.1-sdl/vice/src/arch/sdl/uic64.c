@@ -43,16 +43,11 @@
 #include "menu_snapshot.h"
 #include "menu_sound.h"
 #include "menu_speed.h"
+#include "menu_tape.h"
 #include "menu_video.h"
 #include "ui.h"
 #include "uimenu.h"
 #include "vkbd.h"
-
-/* temporary empty tape menu, this one will be moved out to menu_tape.c */
-static ui_menu_entry_t tape_menu[] = {
-    SDL_MENU_ITEM_SEPARATOR,
-    { NULL }
-};
 
 /* temporary empty c64 rom menu, this one will be moved out to menu_c64rom.c */
 static ui_menu_entry_t c64_rom_menu[] = {
@@ -77,7 +72,7 @@ static const ui_menu_entry_t x64_main_menu[] = {
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)drive_menu },
-    { "Tape (todo)",
+    { "Tape",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)tape_menu },

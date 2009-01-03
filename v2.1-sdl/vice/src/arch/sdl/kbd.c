@@ -147,6 +147,7 @@ static void sdlkbd_parse_keyword(char *buffer)
 static void sdlkbd_parse_entry(char *buffer)
 {
     char *p;
+    char *full_path;
     int keynum;
     ui_menu_entry_t *action;
 
@@ -161,12 +162,14 @@ static void sdlkbd_parse_entry(char *buffer)
     
     p = strtok(NULL, "\r\n");
     if (p != NULL) {
+        full_path = lib_stralloc(p);
         action = sdl_ui_hotkey_action(p);
         if (action == NULL) {
-            log_warning(sdlkbd_log, "Cannot find menu item \"%s\"!", p);
+            log_warning(sdlkbd_log, "Cannot find menu item \"%s\"!", full_path);
         } else {
             sdlkbd_ui_hotkeys[keynum] = action;
         }
+        lib_free(full_path);
     }
 }
 

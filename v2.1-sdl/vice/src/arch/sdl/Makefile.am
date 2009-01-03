@@ -59,6 +59,8 @@ libarch_a_SOURCES = \
 	menu_sound.h \
 	menu_speed.c \
 	menu_speed.h \
+	menu_tape.c \
+	menu_tape.h \
 	menu_vic20cart.c \
 	menu_vic20cart.h \
 	menu_video.c \

@@ -42,17 +42,12 @@
 #include "menu_snapshot.h"
 #include "menu_sound.h"
 #include "menu_speed.h"
+#include "menu_tape.h"
 #include "menu_video.h"
 #include "plus4memrom.h"
 #include "resources.h"
 #include "ui.h"
 #include "uimenu.h"
-
-/* temporary empty tape menu, this one will be moved out to menu_tape.c */
-static ui_menu_entry_t tape_menu[] = {
-    SDL_MENU_ITEM_SEPARATOR,
-    { NULL }
-};
 
 /* temporary empty plus4 hardware menu, this one will be moved out to menu_plus4hw.c */
 static ui_menu_entry_t plus4_hardware_menu[] = {
@@ -83,7 +78,7 @@ static const ui_menu_entry_t xplus4_main_menu[] = {
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)drive_menu },
-    { "Tape (todo)",
+    { "Tape",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)tape_menu },
