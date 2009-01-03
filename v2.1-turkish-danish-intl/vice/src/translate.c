@@ -8567,6 +8567,7 @@ translate_t string_table[] = {
 /* video/video-cmdline-options.c */
 /* en */ {IDCLS_DISABLE_DOUBLE_SCAN_FULLSCREEN,    N_("Disable double scan in fullscreen mode")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_DISABLE_DOUBLE_SCAN_FULLSCREEN_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_DISABLE_DOUBLE_SCAN_FULLSCREEN_DE, "Doppelt Scan im Vollbild Modus deaktivieren"},
 /* fr */ {IDCLS_DISABLE_DOUBLE_SCAN_FULLSCREEN_FR, "Désactiver \"Double scan\" en plein écran"},
 /* hu */ {IDCLS_DISABLE_DOUBLE_SCAN_FULLSCREEN_HU, "Dupla pásztázás tiltása teljesképernyõs módban"},
@@ -8574,11 +8575,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_DISABLE_DOUBLE_SCAN_FULLSCREEN_NL, "Dubbele scan in volschermmodus uitschakelen"},
 /* pl */ {IDCLS_DISABLE_DOUBLE_SCAN_FULLSCREEN_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_DISABLE_DOUBLE_SCAN_FULLSCREEN_SV, "Inaktivera dubbelskanning i fullskärmsläge"},
+/* tr */ {IDCLS_DISABLE_DOUBLE_SCAN_FULLSCREEN_TR, "Tam ekran modunda çift taramayý pasifleþtir"},
 #endif
 
 /* video/video-cmdline-options.c */
 /* en */ {IDCLS_P_MODE,    N_("<mode>")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_P_MODE_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_P_MODE_DE, "<Modus>"},
 /* fr */ {IDCLS_P_MODE_FR, "<mode>"},
 /* hu */ {IDCLS_P_MODE_HU, "<mód>"},
@@ -8586,11 +8589,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_P_MODE_NL, "<modus>"},
 /* pl */ {IDCLS_P_MODE_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_P_MODE_SV, "<läge>"},
+/* tr */ {IDCLS_P_MODE_TR, "<mod>"},
 #endif
 
 /* video/video-cmdline-options.c */
 /* en */ {IDCLS_SELECT_FULLSCREEN_MODE,    N_("Select fullscreen mode")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_SELECT_FULLSCREEN_MODE_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_SELECT_FULLSCREEN_MODE_DE, "Vollbild Modus wählen"},
 /* fr */ {IDCLS_SELECT_FULLSCREEN_MODE_FR, "Sélectionner le mode plein écran"},
 /* hu */ {IDCLS_SELECT_FULLSCREEN_MODE_HU, "Teljes képernyõs mód kiválasztása"},
@@ -8598,11 +8603,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_SELECT_FULLSCREEN_MODE_NL, "Selecteer volschermmodus"},
 /* pl */ {IDCLS_SELECT_FULLSCREEN_MODE_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SELECT_FULLSCREEN_MODE_SV, "Aktivera fullskärmsläge"},
+/* tr */ {IDCLS_SELECT_FULLSCREEN_MODE_TR, "Tam ekran modu seç"},
 #endif
 
 /* aciacore.c */
 /* en */ {IDCLS_SPECIFY_ACIA_RS232_DEVICE,    N_("Specify RS232 device this ACIA should work on")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_SPECIFY_ACIA_RS232_DEVICE_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_SPECIFY_ACIA_RS232_DEVICE_DE, "RS232 Gerät für welches ACIA funktionieren soll ist zu spezifizieren"},
 /* fr */ {IDCLS_SPECIFY_ACIA_RS232_DEVICE_FR, "Spécifier le périphérique RS232 sur lequel cet ACIA doit fonctionner"},
 /* hu */ {IDCLS_SPECIFY_ACIA_RS232_DEVICE_HU, "Adja meg az RS232-es egységet, amivel az ACIA mûködni fog"},
@@ -8611,12 +8618,14 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_SPECIFY_ACIA_RS232_DEVICE_NL, "Geef het RS232-apparaat waarmee deze ACIA moet werken"},
 /* pl */ {IDCLS_SPECIFY_ACIA_RS232_DEVICE_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SPECIFY_ACIA_RS232_DEVICE_SV, "Ange RS232-enhet denna ACIA skall arbeta på"},
+/* tr */ {IDCLS_SPECIFY_ACIA_RS232_DEVICE_TR, "Bu ACIA'in çalýþmasý gereken RS232 aygýtýný belirt"},
 #endif
 
 /* attach.c */
 /* en */ {IDCLS_SET_DEVICE_TYPE_8,    N_("Set device type for device #8 (0: NONE, 1: FILESYSTEM, 2: OPENCBM, 3: "
                                          "BLOCK DEVICE)")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_SET_DEVICE_TYPE_8_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_SET_DEVICE_TYPE_8_DE, "Geräte Typ für Gerät #8 (0: Kein, 1: Dateisystem, 2: OpenCBM, 3: Block Gerät)"},
 /* fr */ {IDCLS_SET_DEVICE_TYPE_8_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_SET_DEVICE_TYPE_8_HU, "Adja meg a #8-es egység típusát (0: Nincs, 1: fájlrendszer, 2: OPENCBM, 3 "
@@ -8627,12 +8636,15 @@ translate_t string_table[] = {
                                       "BLOCK APPARAAT)"},
 /* pl */ {IDCLS_SET_DEVICE_TYPE_8_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SET_DEVICE_TYPE_8_SV, "Ställ in enhetstyp för enhet 8 (0: INGEN, 1: FILSYSTEM, 2: OPENCBM, 3: BLOCKENHET)"},
+/* tr */ {IDCLS_SET_DEVICE_TYPE_8_TR, "Aygýt #8 için aygýt tipini belirt (0: YOK, 1: DOSYASÝSTEMÝ, 2: OPENCBM, 3: "
+                                      "BLOK AYIGTI)"},
 #endif
 
 /* attach.c */
 /* en */ {IDCLS_SET_DEVICE_TYPE_9,    N_("Set device type for device #9 (0: NONE, 1: FILESYSTEM, 2: OPENCBM, 3: "
                                          "BLOCK DEVICE)")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_SET_DEVICE_TYPE_9_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_SET_DEVICE_TYPE_9_DE, "Geräte Typ für Gerät #9 (0: Kein, 1: Dateisystem, 2: OpenCBM, 3: Block Gerät)"},
 /* fr */ {IDCLS_SET_DEVICE_TYPE_9_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_SET_DEVICE_TYPE_9_HU, "Adja meg a #9-es egység típusát (0: Nincs, 1: fájlrendszer, 2: OPENCBM, 3 "
@@ -8643,12 +8655,15 @@ translate_t string_table[] = {
                                       "BLOCK APPARAAT)"},
 /* pl */ {IDCLS_SET_DEVICE_TYPE_9_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SET_DEVICE_TYPE_9_SV, "Ställ in enhetstyp för enhet 9 (0: INGEN, 1: FILSYSTEM, 2: OPENCBM, 3: BLOCKENHET)"},
+/* tr */ {IDCLS_SET_DEVICE_TYPE_9_TR, "Aygýt #9 için aygýt tipini belirt (0: YOK, 1: DOSYASÝSTEMÝ, 2: OPENCBM, 3: "
+                                      "BLOK AYIGTI)"},
 #endif
 
 /* attach.c */
 /* en */ {IDCLS_SET_DEVICE_TYPE_10,    N_("Set device type for device #10 (0: NONE, 1: FILESYSTEM, 2: OPENCBM, 3: BLOCK "
                                           "DEVICE)")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_SET_DEVICE_TYPE_10_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_SET_DEVICE_TYPE_10_DE, "Geräte Typ für Gerät #10 (0: Kein, 1: Dateisystem, 2: OpenCBM, 3: Block Gerät)"},
 /* fr */ {IDCLS_SET_DEVICE_TYPE_10_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_SET_DEVICE_TYPE_10_HU, "Adja meg a #10-es egység típusát (0: Nincs, 1: fájlrendszer, 2: OPENCBM, 3 "
@@ -8659,12 +8674,15 @@ translate_t string_table[] = {
                                        "BLOCK APPARAAT)"},
 /* pl */ {IDCLS_SET_DEVICE_TYPE_10_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SET_DEVICE_TYPE_10_SV, "Ställ in enhetstyp för enhet 10 (0: INGEN, 1: FILSYSTEM, 2: OPENCBM, 3: BLOCKENHET)"},
+/* tr */ {IDCLS_SET_DEVICE_TYPE_10_TR, "Aygýt #10 için aygýt tipini belirt (0: YOK, 1: DOSYASÝSTEMÝ, 2: OPENCBM, 3: "
+                                       "BLOK AYIGTI)"},
 #endif
 
 /* attach.c */
 /* en */ {IDCLS_SET_DEVICE_TYPE_11,    N_("Set device type for device #11 (0: NONE, 1: FILESYSTEM, 2: OPENCBM, 3: BLOCK "
                                           "DEVICE)")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_SET_DEVICE_TYPE_11_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_SET_DEVICE_TYPE_11_DE, "Geräte Typ für Gerät #11 (0: Kein, 1: Dateisystem, 2: OpenCBM, 3: Block Gerät)"},
 /* fr */ {IDCLS_SET_DEVICE_TYPE_11_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_SET_DEVICE_TYPE_11_HU, "Adja meg a #11-es egység típusát (0: Nincs, 1: fájlrendszer, 2: OPENCBM, 3 "
@@ -8675,11 +8693,14 @@ translate_t string_table[] = {
                                        "BLOCK APPARAAT)"},
 /* pl */ {IDCLS_SET_DEVICE_TYPE_11_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SET_DEVICE_TYPE_11_SV, "Ställ in enhetstyp för enhet 11 (0: INGEN, 1: FILSYSTEM, 2: OPENCBM, 3: BLOCKENHET)"},
+/* tr */ {IDCLS_SET_DEVICE_TYPE_11_TR, "Aygýt #11 için aygýt tipini belirt (0: YOK, 1: DOSYASÝSTEMÝ, 2: OPENCBM, 3: "
+                                       "BLOK AYIGTI)"},
 #endif
 
 /* attach.c */
 /* en */ {IDCLS_ATTACH_READ_ONLY_8,    N_("Attach disk image for drive #8 read only")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_ATTACH_READ_ONLY_8_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_ATTACH_READ_ONLY_8_DE, "Disk Image als Laufwerk #8 benutzen (schreibgeschützt)"},
 /* fr */ {IDCLS_ATTACH_READ_ONLY_8_FR, "Charger une image de disque pour le lecteur #8 en lecture seule"},
 /* hu */ {IDCLS_ATTACH_READ_ONLY_8_HU, "Csak olvasható képmás csatolása a #8-as lemezegységhez"},
@@ -8687,11 +8708,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_ATTACH_READ_ONLY_8_NL, "Koppel schijfbestand voor drive #8 als alleen-lezen"},
 /* pl */ {IDCLS_ATTACH_READ_ONLY_8_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_ATTACH_READ_ONLY_8_SV, "Anslut diskettavbildningsfil för enhet 8 med skrivskydd"},
+/* tr */ {IDCLS_ATTACH_READ_ONLY_8_TR, "Sürücü #8 için disk imajýný salt okunur olarak yerleþtir"},
 #endif
 
 /* attach.c */
 /* en */ {IDCLS_ATTACH_READ_WRITE_8,    N_("Attach disk image for drive #8 read write (if possible)")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_ATTACH_READ_WRITE_8_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_ATTACH_READ_WRITE_8_DE, "Disk Image als Laufwerk #8 benutzen (Schreibzugriff, wenn möglich)"},
 /* fr */ {IDCLS_ATTACH_READ_WRITE_8_FR, "Charger une image de disque pour le lecteur #8 en lecture-écriture (si "
                                         "possible)"},
@@ -8701,11 +8724,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_ATTACH_READ_WRITE_8_NL, "Koppel schijfbestand voor drive #8 als schrijfbaar (indien mogelijk)"},
 /* pl */ {IDCLS_ATTACH_READ_WRITE_8_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_ATTACH_READ_WRITE_8_SV, "Anslut diskettavbildningsfil för enhet 8 skrivbar (om möjligt)"},
+/* tr */ {IDCLS_ATTACH_READ_WRITE_8_TR, "Sürücü #8 için disk imajýný okunur/yazýlýr olarak yerleþtir (mümkünse)"},
 #endif
 
 /* attach.c */
 /* en */ {IDCLS_ATTACH_READ_ONLY_9,    N_("Attach disk image for drive #9 read only")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_ATTACH_READ_ONLY_9_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_ATTACH_READ_ONLY_9_DE, "Disk Image als Laufwerk #9 benutzen (schreibgeschützt)"},
 /* fr */ {IDCLS_ATTACH_READ_ONLY_9_FR, "Charger une image de disque pour le lecteur #9 en lecture seule"},
 /* hu */ {IDCLS_ATTACH_READ_ONLY_9_HU, "Csak olvasható képmás csatolása a #9-es lemezegységhez"},
@@ -8713,11 +8738,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_ATTACH_READ_ONLY_9_NL, "Koppel schijfbestand voor drive #9 als alleen-lezen"},
 /* pl */ {IDCLS_ATTACH_READ_ONLY_9_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_ATTACH_READ_ONLY_9_SV, "Anslut diskettavbildningsfil för enhet 9 med skrivskydd"},
+/* tr */ {IDCLS_ATTACH_READ_ONLY_9_TR, "Sürücü #9 için disk imajýný salt okunur olarak yerleþtir"},
 #endif
 
 /* attach.c */
 /* en */ {IDCLS_ATTACH_READ_WRITE_9,    N_("Attach disk image for drive #9 read write (if possible)")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_ATTACH_READ_WRITE_9_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_ATTACH_READ_WRITE_9_DE, "Disk Image als Laufwerk #9 benutzen (Schreibzugriff, wenn möglich)"},
 /* fr */ {IDCLS_ATTACH_READ_WRITE_9_FR, "Charger une image de disque pour le lecteur #9 en lecture-écriture (si "
                                         "possible)"},
@@ -8727,11 +8754,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_ATTACH_READ_WRITE_9_NL, "Koppel schijfbestand voor drive #9 als schrijfbaar (indien mogelijk)"},
 /* pl */ {IDCLS_ATTACH_READ_WRITE_9_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_ATTACH_READ_WRITE_9_SV, "Anslut diskettavbildningsfil för enhet 9 skrivbar (om möjligt)"},
+/* tr */ {IDCLS_ATTACH_READ_WRITE_9_TR, "Sürücü #9 için disk imajýný okunur/yazýlýr olarak yerleþtir (mümkünse)"},
 #endif
 
 /* attach.c */
 /* en */ {IDCLS_ATTACH_READ_ONLY_10,    N_("Attach disk image for drive #10 read only")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_ATTACH_READ_ONLY_10_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_ATTACH_READ_ONLY_10_DE, "Disk Image als Laufwerk #10 benutzen (schreibgeschützt)"},
 /* fr */ {IDCLS_ATTACH_READ_ONLY_10_FR, "Charger une image de disque pour le lecteur #10 en lecture seule"},
 /* hu */ {IDCLS_ATTACH_READ_ONLY_10_HU, "Csak olvasható képmás csatolása a #10-es lemezegységhez"},
@@ -8739,11 +8768,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_ATTACH_READ_ONLY_10_NL, "Koppel schijfbestand voor drive #10 als alleen-lezen"},
 /* pl */ {IDCLS_ATTACH_READ_ONLY_10_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_ATTACH_READ_ONLY_10_SV, "Anslut diskettavbildningsfil för enhet 10 med skrivskydd"},
+/* tr */ {IDCLS_ATTACH_READ_ONLY_10_TR, "Sürücü #10 için disk imajýný salt okunur olarak yerleþtir"},
 #endif
 
 /* attach.c */
 /* en */ {IDCLS_ATTACH_READ_WRITE_10,    N_("Attach disk image for drive #10 read write (if possible)")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_ATTACH_READ_WRITE_10_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_ATTACH_READ_WRITE_10_DE, "Disk Image als Laufwerk #10 benutzen (Schreibzugriff, wenn möglich)"},
 /* fr */ {IDCLS_ATTACH_READ_WRITE_10_FR, "Charger une image de disque pour le lecteur #10 en lecture-écriture (si "
                                          "possible)"},
@@ -8753,11 +8784,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_ATTACH_READ_WRITE_10_NL, "Koppel schijfbestand voor drive #10 als schrijfbaar (indien mogelijk)"},
 /* pl */ {IDCLS_ATTACH_READ_WRITE_10_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_ATTACH_READ_WRITE_10_SV, "Anslut diskettavbildningsfil för enhet 10 skrivbar (om möjligt)"},
+/* tr */ {IDCLS_ATTACH_READ_WRITE_10_TR, "Sürücü #10 için disk imajýný okunur/yazýlýr olarak yerleþtir (mümkünse)"},
 #endif
 
 /* attach.c */
 /* en */ {IDCLS_ATTACH_READ_ONLY_11,    N_("Attach disk image for drive #11 read only")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_ATTACH_READ_ONLY_11_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_ATTACH_READ_ONLY_11_DE, "Disk Image als Laufwerk #11 benutzen (schreibgeschützt)"},
 /* fr */ {IDCLS_ATTACH_READ_ONLY_11_FR, "Charger une image de disque pour le lecteur #11 en lecture seule"},
 /* hu */ {IDCLS_ATTACH_READ_ONLY_11_HU, "Csak olvasható képmás csatolása a #11-es lemezegységhez"},
@@ -8765,11 +8798,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_ATTACH_READ_ONLY_11_NL, "Koppel schijfbestand voor drive #11 als alleen-lezen"},
 /* pl */ {IDCLS_ATTACH_READ_ONLY_11_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_ATTACH_READ_ONLY_11_SV, "Anslut diskettavbildningsfil för enhet 11 med skrivskydd"},
+/* tr */ {IDCLS_ATTACH_READ_ONLY_11_TR, "Sürücü #11 için disk imajýný salt okunur olarak yerleþtir"},
 #endif
 
 /* attach.c */
 /* en */ {IDCLS_ATTACH_READ_WRITE_11,    N_("Attach disk image for drive #11 read write (if possible)")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_ATTACH_READ_WRITE_11_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_ATTACH_READ_WRITE_11_DE, "Disk Image als Laufwerk #11 benutzen (Schreibzugriff, wenn möglich)"},
 /* fr */ {IDCLS_ATTACH_READ_WRITE_11_FR, "Charger une image de disque pour le lecteur #11 en lecture-écriture (si "
                                          "possible)"},
@@ -8779,11 +8814,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_ATTACH_READ_WRITE_11_NL, "Koppel schijfbestand voor drive #11 als schrijfbaar (indien mogelijk)"},
 /* pl */ {IDCLS_ATTACH_READ_WRITE_11_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_ATTACH_READ_WRITE_11_SV, "Anslut diskettavbildningsfil för enhet 11 skrivbar (om möjligt)"},
+/* tr */ {IDCLS_ATTACH_READ_WRITE_11_TR, "Sürücü #11 için disk imajýný okunur/yazýlýr olarak yerleþtir (mümkünse)"},
 #endif
 
 /* datasette.c */
 /* en */ {IDCLS_ENABLE_AUTO_DATASETTE_RESET,    N_("Enable automatic Datasette-Reset")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_ENABLE_AUTO_DATASETTE_RESET_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_ENABLE_AUTO_DATASETTE_RESET_DE, "Automatisches Datasette-Reset aktivieren"},
 /* fr */ {IDCLS_ENABLE_AUTO_DATASETTE_RESET_FR, "Activer le redémarrage automatique du Datasette"},
 /* hu */ {IDCLS_ENABLE_AUTO_DATASETTE_RESET_HU, "Automatikus magnó Reset engedélyezése"},
@@ -8791,11 +8828,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_ENABLE_AUTO_DATASETTE_RESET_NL, "Activeer automatische Datasette-Reset"},
 /* pl */ {IDCLS_ENABLE_AUTO_DATASETTE_RESET_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_ENABLE_AUTO_DATASETTE_RESET_SV, "Aktivera automatisk Datasetteåterställning"},
+/* tr */ {IDCLS_ENABLE_AUTO_DATASETTE_RESET_TR, "Otomatik Teyp-Reset'i aktif et"},
 #endif
 
 /* datasette.c */
 /* en */ {IDCLS_DISABLE_AUTO_DATASETTE_RESET,    N_("Disable automatic Datasette-Reset")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_DISABLE_AUTO_DATASETTE_RESET_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_DISABLE_AUTO_DATASETTE_RESET_DE, "Automatisches Datasette-Reset deaktivieren"},
 /* fr */ {IDCLS_DISABLE_AUTO_DATASETTE_RESET_FR, "Désactiver le redémarrage automatique du Datasette"},
 /* hu */ {IDCLS_DISABLE_AUTO_DATASETTE_RESET_HU, "Automatikus magnó Reset tiltása"},
@@ -8803,11 +8842,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_DISABLE_AUTO_DATASETTE_RESET_NL, "Automatische Datasette-Reset uitschakelen"},
 /* pl */ {IDCLS_DISABLE_AUTO_DATASETTE_RESET_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_DISABLE_AUTO_DATASETTE_RESET_SV, "Inaktivera automatisk Datasetteåterställning"},
+/* tr */ {IDCLS_DISABLE_AUTO_DATASETTE_RESET_TR, "Otomatik Teyp-Reset'i pasifleþtir"},
 #endif
 
 /* datasette.c */
 /* en */ {IDCLS_SET_ZERO_TAP_DELAY,    N_("Set delay in cycles for a zero in the tap")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_SET_ZERO_TAP_DELAY_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_SET_ZERO_TAP_DELAY_DE, "Verzögerung für Zero in Zyklen im Tap"},
 /* fr */ {IDCLS_SET_ZERO_TAP_DELAY_FR, "Spécifier le délai en cycles pour un zéro sur le ruban"},
 /* hu */ {IDCLS_SET_ZERO_TAP_DELAY_HU, "Adja meg ciklusokban a legelsõ szalagrés hosszát"},
@@ -8815,11 +8856,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_SET_ZERO_TAP_DELAY_NL, "Zet de vertraging in cycli voor een nul in de tap"},
 /* pl */ {IDCLS_SET_ZERO_TAP_DELAY_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SET_ZERO_TAP_DELAY_SV, "Ange väntecykler för nolla i tap-filen"},
+/* tr */ {IDCLS_SET_ZERO_TAP_DELAY_TR, "Baðlantý anýnda cycle tipinden bekleme süresini ayarla"},
 #endif
 
 /* datasette.c */
 /* en */ {IDCLS_SET_CYCLES_ADDED_GAP_TAP,    N_("Set number of cycles added to each gap in the tap")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_SET_CYCLES_ADDED_GAP_TAP_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_SET_CYCLES_ADDED_GAP_TAP_DE, "Setze Anzahl der Zyklen für jedes Loch im Tap"},
 /* fr */ {IDCLS_SET_CYCLES_ADDED_GAP_TAP_FR, "Spécifier le nombre de cycles ajouté a chaque raccord du ruban"},
 /* hu */ {IDCLS_SET_CYCLES_ADDED_GAP_TAP_HU, "Adja meg ciklusokban a szalagfájlok közti üres rés hosszát"},
@@ -8827,12 +8870,14 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_SET_CYCLES_ADDED_GAP_TAP_NL, "Zet aantal extra cycli voor elk gat in de tap"},
 /* pl */ {IDCLS_SET_CYCLES_ADDED_GAP_TAP_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SET_CYCLES_ADDED_GAP_TAP_SV, "Ange cykler som läggs till varje gap i tap-filen"},
+/* tr */ {IDCLS_SET_CYCLES_ADDED_GAP_TAP_TR, "Baðlantý anýnda her boþluk için eklenecek cycle sayýsýný ayarla"},
 #endif
 
 #ifdef DEBUG
 /* debug.c */
 /* en */ {IDCLS_TRACE_MAIN_CPU,    N_("Trace the main CPU")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_TRACE_MAIN_CPU_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_TRACE_MAIN_CPU_DE, "Haupt CPU verfolgen"},
 /* fr */ {IDCLS_TRACE_MAIN_CPU_FR, "Tracer l'UCT principal"},
 /* hu */ {IDCLS_TRACE_MAIN_CPU_HU, "Fõ CPU nyomkövetése"},
@@ -8840,11 +8885,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_TRACE_MAIN_CPU_NL, "Traceer de hoofd-CPU"},
 /* pl */ {IDCLS_TRACE_MAIN_CPU_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_TRACE_MAIN_CPU_SV, "Spåra huvudprocessorn"},
+/* tr */ {IDCLS_TRACE_MAIN_CPU_TR, "Ana CPU'yu izle"},
 #endif
 
 /* debug.c */
 /* en */ {IDCLS_DONT_TRACE_MAIN_CPU,    N_("Do not trace the main CPU")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_DONT_TRACE_MAIN_CPU_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_DONT_TRACE_MAIN_CPU_DE, "Haupt CPU nicht verfolgen"},
 /* fr */ {IDCLS_DONT_TRACE_MAIN_CPU_FR, "Ne pas tracer l'UCT principal"},
 /* hu */ {IDCLS_DONT_TRACE_MAIN_CPU_HU, "Fõ CPU nyomkövetésének tiltása"},
@@ -8852,11 +8899,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_DONT_TRACE_MAIN_CPU_NL, "Traceer de hoofd-CPU niet"},
 /* pl */ {IDCLS_DONT_TRACE_MAIN_CPU_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_DONT_TRACE_MAIN_CPU_SV, "Spåra inte huvudprocessorn"},
+/* tr */ {IDCLS_DONT_TRACE_MAIN_CPU_TR, "Ana CPU'yu izleme"},
 #endif
 
 /* debug.c */
 /* en */ {IDCLS_TRACE_DRIVE0_CPU,    N_("Trace the drive0 CPU")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_TRACE_DRIVE0_CPU_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_TRACE_DRIVE0_CPU_DE, "Laufwerk0 CPU verfolgen"},
 /* fr */ {IDCLS_TRACE_DRIVE0_CPU_FR, "Tracer l'UCT du drive0"},
 /* hu */ {IDCLS_TRACE_DRIVE0_CPU_HU, "A 0-s lemezegység CPU-jának nyomkövetése"},
@@ -8864,11 +8913,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_TRACE_DRIVE0_CPU_NL, "Traceer de CPU van drive 0/8"},
 /* pl */ {IDCLS_TRACE_DRIVE0_CPU_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_TRACE_DRIVE0_CPU_SV, "Spåra processor i diskettstation 0"},
+/* tr */ {IDCLS_TRACE_DRIVE0_CPU_TR, "Sürücü0 CPU'sunu izle"},
 #endif
 
 /* debug.c */
 /* en */ {IDCLS_DONT_TRACE_DRIVE0_CPU,    N_("Do not trace the drive0 CPU")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_DONT_TRACE_DRIVE0_CPU_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_DONT_TRACE_DRIVE0_CPU_DE, "Laufwerk0 CPU nicht verfolgen"},
 /* fr */ {IDCLS_DONT_TRACE_DRIVE0_CPU_FR, "Ne pas tracer l'UCT du drive0"},
 /* hu */ {IDCLS_DONT_TRACE_DRIVE0_CPU_HU, "A 0-s lemezegység CPU-ja nyomkövetésének tiltása"},
@@ -8876,11 +8927,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_DONT_TRACE_DRIVE0_CPU_NL, "Traceer de CPU van drive 0/8 niet"},
 /* pl */ {IDCLS_DONT_TRACE_DRIVE0_CPU_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_DONT_TRACE_DRIVE0_CPU_SV, "Spåra inte processor i diskettstation 0"},
+/* tr */ {IDCLS_DONT_TRACE_DRIVE0_CPU_TR, "Sürücü0 CPU'sunu izleme"},
 #endif
 
 /* debug.c */
 /* en */ {IDCLS_TRACE_DRIVE1_CPU,    N_("Trace the drive1 CPU")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_TRACE_DRIVE1_CPU_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_TRACE_DRIVE1_CPU_DE, "Laufwerk1 CPU verfolgen"},
 /* fr */ {IDCLS_TRACE_DRIVE1_CPU_FR, "Tracer l'UCT du drive1"},
 /* hu */ {IDCLS_TRACE_DRIVE1_CPU_HU, "Az 1-es lemezegység CPU-jának nyomkövetése"},
@@ -8888,11 +8941,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_TRACE_DRIVE1_CPU_NL, "Traceer de CPU van drive 1/9"},
 /* pl */ {IDCLS_TRACE_DRIVE1_CPU_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_TRACE_DRIVE1_CPU_SV, "Spåra processor i diskettstation 1"},
+/* tr */ {IDCLS_TRACE_DRIVE1_CPU_TR, "Sürücü1 CPU'sunu izle"},
 #endif
 
 /* debug.c */
 /* en */ {IDCLS_DONT_TRACE_DRIVE1_CPU,    N_("Do not trace the drive1 CPU")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_DONT_TRACE_DRIVE1_CPU_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_DONT_TRACE_DRIVE1_CPU_DE, "Laufwerk1 CPU nicht verfolgen"},
 /* fr */ {IDCLS_DONT_TRACE_DRIVE1_CPU_FR, "Ne pas tracer l'UCT du drive1"},
 /* hu */ {IDCLS_DONT_TRACE_DRIVE1_CPU_HU, "Az 1-es lemezegység CPU-ja nyomkövetésének tiltása"},
@@ -8900,12 +8955,14 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_DONT_TRACE_DRIVE1_CPU_NL, "Traceer de CPU van drive 1/9 niet"},
 /* pl */ {IDCLS_DONT_TRACE_DRIVE1_CPU_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_DONT_TRACE_DRIVE1_CPU_SV, "Spåra inte processor i diskettstation 1"},
+/* tr */ {IDCLS_DONT_TRACE_DRIVE1_CPU_TR, "Sürücü1 CPU'sunu izleme"},
 #endif
 
 #if DRIVE_NUM > 2
 /* debug.c */
 /* en */ {IDCLS_TRACE_DRIVE2_CPU,    N_("Trace the drive2 CPU")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_TRACE_DRIVE2_CPU_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_TRACE_DRIVE2_CPU_DE, "Laufwerk2 CPU verfolgen"},
 /* fr */ {IDCLS_TRACE_DRIVE2_CPU_FR, "Tracer l'UCT du drive2"},
 /* hu */ {IDCLS_TRACE_DRIVE2_CPU_HU, "A 2-es lemezegység CPU-jának nyomkövetése"},
@@ -8913,11 +8970,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_TRACE_DRIVE2_CPU_NL, "Traceer de CPU van drive 2/10"},
 /* pl */ {IDCLS_TRACE_DRIVE2_CPU_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_TRACE_DRIVE2_CPU_SV, "Spåra processor i diskettstation 2"},
+/* tr */ {IDCLS_TRACE_DRIVE2_CPU_TR, "Sürücü2 CPU'sunu izle"},
 #endif
 
 /* debug.c */
 /* en */ {IDCLS_DONT_TRACE_DRIVE2_CPU,    N_("Do not trace the drive2 CPU")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_DONT_TRACE_DRIVE2_CPU_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_DONT_TRACE_DRIVE2_CPU_DE, "Laufwerk2 CPU nicht verfolgen"},
 /* fr */ {IDCLS_DONT_TRACE_DRIVE2_CPU_FR, "Ne pas tracer l'UCT du drive2"},
 /* hu */ {IDCLS_DONT_TRACE_DRIVE2_CPU_HU, "A 2-es lemezegység CPU-ja nyomkövetésének tiltása"},
@@ -8925,6 +8984,7 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_DONT_TRACE_DRIVE2_CPU_NL, "Traceer de CPU van drive 2/10 niet"},
 /* pl */ {IDCLS_DONT_TRACE_DRIVE2_CPU_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_DONT_TRACE_DRIVE2_CPU_SV, "Spåra inte processor i diskettstation 2"},
+/* tr */ {IDCLS_DONT_TRACE_DRIVE2_CPU_TR, "Sürücü2 CPU'sunu izleme"},
 #endif
 #endif
 
@@ -8932,6 +8992,7 @@ translate_t string_table[] = {
 /* debug.c */
 /* en */ {IDCLS_TRACE_DRIVE3_CPU,    N_("Trace the drive3 CPU")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_TRACE_DRIVE3_CPU_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_TRACE_DRIVE3_CPU_DE, "Laufwerk3 CPU verfolgen"},
 /* fr */ {IDCLS_TRACE_DRIVE3_CPU_FR, "Tracer l'UCT du drive3"},
 /* hu */ {IDCLS_TRACE_DRIVE3_CPU_HU, "A 3-as lemezegység CPU-jának nyomkövetése"},
@@ -8939,11 +9000,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_TRACE_DRIVE3_CPU_NL, "Traceer de CPU van drive 3/11"},
 /* pl */ {IDCLS_TRACE_DRIVE3_CPU_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_TRACE_DRIVE3_CPU_SV, "Spåra processor i diskettstation 3"},
+/* tr */ {IDCLS_TRACE_DRIVE3_CPU_TR, "Sürücü3 CPU'sunu izle"},
 #endif
 
 /* debug.c */
 /* en */ {IDCLS_DONT_TRACE_DRIVE3_CPU,    N_("Do not trace the drive3 CPU")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_DONT_TRACE_DRIVE3_CPU_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_DONT_TRACE_DRIVE3_CPU_DE, "Laufwerk3 CPU nicht verfolgen"},
 /* fr */ {IDCLS_DONT_TRACE_DRIVE3_CPU_FR, "Ne pas tracer l'UCT du drive3"},
 /* hu */ {IDCLS_DONT_TRACE_DRIVE3_CPU_HU, "A 3-as lemezegység CPU-ja nyomkövetésének tiltása"},
@@ -8951,12 +9014,14 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_DONT_TRACE_DRIVE3_CPU_NL, "Traceer de CPU van drive 3/11 niet"},
 /* pl */ {IDCLS_DONT_TRACE_DRIVE3_CPU_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_DONT_TRACE_DRIVE3_CPU_SV, "Spåra inte processor i diskettstation 0"},
+/* tr */ {IDCLS_DONT_TRACE_DRIVE3_CPU_TR, "Sürücü3 CPU'sunu izleme"},
 #endif
 #endif
 
 /* debug.c */
 /* en */ {IDCLS_TRACE_MODE,    N_("Trace mode (0=normal 1=small 2=history)")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_TRACE_MODE_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_TRACE_MODE_DE, "Verfolgung Modus (0=normal 1=klein 2=Geschichte)"},
 /* fr */ {IDCLS_TRACE_MODE_FR, "Mode de trace (0=normal 1=petit 2=historique)"},
 /* hu */ {IDCLS_TRACE_MODE_HU, "Nyomkövetési mód (0=normál 1=kicsi 2=elõzmények)"},
@@ -8964,12 +9029,14 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_TRACE_MODE_NL, "Traceermodus (0=normaal 1=klein 2=geschiedenis)"},
 /* pl */ {IDCLS_TRACE_MODE_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_TRACE_MODE_SV, "Spårningsläge (0=normal 1=liten 2=historik)"},
+/* tr */ {IDCLS_TRACE_MODE_TR, "Ýzleme modu (0=normal 1=küçük 2=tarihçe)"},
 #endif
 #endif
 
 /* event.c */
 /* en */ {IDCLS_PLAYBACK_RECORDED_EVENTS,    N_("Playback recorded events")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_PLAYBACK_RECORDED_EVENTS_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_PLAYBACK_RECORDED_EVENTS_DE, "Wiedergabe von aufgenommener Ereignisse"},
 /* fr */ {IDCLS_PLAYBACK_RECORDED_EVENTS_FR, "Lire les événements enregistrés"},
 /* hu */ {IDCLS_PLAYBACK_RECORDED_EVENTS_HU, "A felvett események visszajátszása"},
@@ -8977,11 +9044,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_PLAYBACK_RECORDED_EVENTS_NL, "Afspelen opgenomen gebeurtenissen"},
 /* pl */ {IDCLS_PLAYBACK_RECORDED_EVENTS_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_PLAYBACK_RECORDED_EVENTS_SV, "Spela upp inspelade händelser"},
+/* tr */ {IDCLS_PLAYBACK_RECORDED_EVENTS_TR, "Kayýttan yürütme kaydedilmiþ olaylarý"},
 #endif
 
 /* monitor.c */
 /* en */ {IDCLS_EXECUTE_MONITOR_FROM_FILE,    N_("Execute monitor commands from file")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_EXECUTE_MONITOR_FROM_FILE_DA, ""}, /* fuzzy */
 /* de */ {IDCLS_EXECUTE_MONITOR_FROM_FILE_DE, "Monitor Kommandos von Datei ausführen"},
 /* fr */ {IDCLS_EXECUTE_MONITOR_FROM_FILE_FR, "Exécuter des commandes moniteur depuis un fichier"},
 /* hu */ {IDCLS_EXECUTE_MONITOR_FROM_FILE_HU, "Monitorprogram parancsok futtatása fájlból"},
@@ -8989,11 +9058,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_EXECUTE_MONITOR_FROM_FILE_NL, "Uitvoeren van commandos uit bestand"},
 /* pl */ {IDCLS_EXECUTE_MONITOR_FROM_FILE_PL, ""}, /* fuzzy */
 /* sv */ {IDCLS_EXECUTE_MONITOR_FROM_FILE_SV, "Exekvera monitorkommandon från fil"},
+/* tr */ {IDCLS_EXECUTE_MONITOR_FROM_FILE_TR, "Dosyadan monitör komutlarý çalýþtýr"},
 #endif
 
 /* monitor.c */
 /* en */ {IDCLS_SET_INITIAL_BREAKPOINT,    N_("Set an initial breakpoint for the monitor")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_SET_INITIAL_BREAKPOINT_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_SET_INITIAL_BREAKPOINT_DE, "Setze initialen Breakpoint für Monitor"},
 /* fr */ {IDCLS_SET_INITIAL_BREAKPOINT_FR, "Régler un point d’arrêt initial pour le moniteur"},
 /* hu */ {IDCLS_SET_INITIAL_BREAKPOINT_HU, "Kezdeti töréspont megadása a monitorprogramnak"},
@@ -9001,11 +9072,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_SET_INITIAL_BREAKPOINT_NL, "Zet een beginnende breekpunt voor de monitor"},
 /* pl */ {IDCLS_SET_INITIAL_BREAKPOINT_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SET_INITIAL_BREAKPOINT_SV, "Sätt en ursprunglig brytpunkt för monitorn"},
+/* tr */ {IDCLS_SET_INITIAL_BREAKPOINT_TR, "Monitör için dahili bir kesme noktasý ayarla"},
 #endif
 
 /* fliplist.c */
 /* en */ {IDCLS_SPECIFY_FLIP_LIST_NAME,    N_("Specify name of the flip list file image")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_SPECIFY_FLIP_LIST_NAME_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_SPECIFY_FLIP_LIST_NAME_DE, "Namen für Fliplist Datei definieren"},
 /* fr */ {IDCLS_SPECIFY_FLIP_LIST_NAME_FR, "Spécifier le nom de l'image du fichier de groupement de disques"},
 /* hu */ {IDCLS_SPECIFY_FLIP_LIST_NAME_HU, "Adja meg a lemezlista fájl nevét"},
@@ -9013,11 +9086,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_SPECIFY_FLIP_LIST_NAME_NL, "Geef de naam van het fliplijstbestand"},
 /* pl */ {IDCLS_SPECIFY_FLIP_LIST_NAME_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SPECIFY_FLIP_LIST_NAME_SV, "Ange namn på vallistefilavbildningen"},
+/* tr */ {IDCLS_SPECIFY_FLIP_LIST_NAME_TR, "Sýralama listesi dosya imajý ismi belirt"},
 #endif
 
 /* initcmdline.c */
 /* en */ {IDCLS_SHOW_COMMAND_LINE_OPTIONS,    N_("Show a list of the available options and exit normally")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_SHOW_COMMAND_LINE_OPTIONS_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_SHOW_COMMAND_LINE_OPTIONS_DE, "Liste von verfügbaren Optionen zeigen und beenden"},
 /* fr */ {IDCLS_SHOW_COMMAND_LINE_OPTIONS_FR, "Montrer une liste des options disponibles et terminer normalement"},
 /* hu */ {IDCLS_SHOW_COMMAND_LINE_OPTIONS_HU, "Kilistázza a lehetséges opciókat és kilép"},
@@ -9025,12 +9100,14 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_SHOW_COMMAND_LINE_OPTIONS_NL, "Toon een lijst van de beschikbare opties en exit zoals normaal"},
 /* pl */ {IDCLS_SHOW_COMMAND_LINE_OPTIONS_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SHOW_COMMAND_LINE_OPTIONS_SV, "Visa lista över tillgängliga flaggor och avsluta normalt"},
+/* tr */ {IDCLS_SHOW_COMMAND_LINE_OPTIONS_TR, "Mevcut seçeneklerin listesini göster ve normal çýk"},
 #endif
 
 #if (!defined  __OS2__ && !defined __BEOS__)
 /* initcmdline.c */
 /* en */ {IDCLS_CONSOLE_MODE,    N_("Console mode (for music playback)")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_CONSOLE_MODE_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_CONSOLE_MODE_DE, "Konsolenmodus (für Musikwiedergabe)"},
 /* fr */ {IDCLS_CONSOLE_MODE_FR, "Mode console (pour l'écoute de musique)"},
 /* hu */ {IDCLS_CONSOLE_MODE_HU, "Konzol mód (zene lejátszáshoz)"},
@@ -9038,11 +9115,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_CONSOLE_MODE_NL, "Consolemodus (voor afspelen voor muziek)"},
 /* pl */ {IDCLS_CONSOLE_MODE_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_CONSOLE_MODE_SV, "Konsolläge (för musikspelning)"},
+/* tr */ {IDCLS_CONSOLE_MODE_TR, "Konsol modu (müzik çalmak için)"},
 #endif
 
 /* initcmdline.c */
 /* en */ {IDCLS_ALLOW_CORE_DUMPS,    N_("Allow production of core dumps")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_ALLOW_CORE_DUMPS_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_ALLOW_CORE_DUMPS_DE, "Core Dumps ermöglichen"},
 /* fr */ {IDCLS_ALLOW_CORE_DUMPS_FR, "Permettre la production de \"core dumps\""},
 /* hu */ {IDCLS_ALLOW_CORE_DUMPS_HU, "Core dump készítés engedélyezése"},
@@ -9050,11 +9129,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_ALLOW_CORE_DUMPS_NL, "Maken van core dumps toestaan"},
 /* pl */ {IDCLS_ALLOW_CORE_DUMPS_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_ALLOW_CORE_DUMPS_SV, "Tillåt skapa minnesutskrift"},
+/* tr */ {IDCLS_ALLOW_CORE_DUMPS_TR, "Bellek durumunun kayýtlarýnýn üretilmesine izin ver"},
 #endif
 
 /* initcmdline.c */
 /* en */ {IDCLS_DONT_ALLOW_CORE_DUMPS,    N_("Do not produce core dumps")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_DONT_ALLOW_CORE_DUMPS_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_DONT_ALLOW_CORE_DUMPS_DE, "Core Dumps verhindern"},
 /* fr */ {IDCLS_DONT_ALLOW_CORE_DUMPS_FR, "Ne pas produire de \"core dumps\""},
 /* hu */ {IDCLS_DONT_ALLOW_CORE_DUMPS_HU, "Core dump készítés tiltása"},
@@ -9062,11 +9143,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_DONT_ALLOW_CORE_DUMPS_NL, "Maken van core dumps niet toestaan"},
 /* pl */ {IDCLS_DONT_ALLOW_CORE_DUMPS_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_DONT_ALLOW_CORE_DUMPS_SV, "Skapa inte minnesutskrift"},
+/* tr */ {IDCLS_DONT_ALLOW_CORE_DUMPS_TR, "Bellek durumunun kayýtlarýný üretme"},
 #endif
 #else
 /* initcmdline.c */
 /* en */ {IDCLS_DONT_CALL_EXCEPTION_HANDLER,    N_("Don't call exception handler")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_DONT_CALL_EXCEPTION_HANDLER_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_DONT_CALL_EXCEPTION_HANDLER_DE, "Ausnahmebehandlung vermeiden"},
 /* fr */ {IDCLS_DONT_CALL_EXCEPTION_HANDLER_FR, "Ne pas utiliser l'assistant d'exception"},
 /* hu */ {IDCLS_DONT_CALL_EXCEPTION_HANDLER_HU, "Ne hívja a kivétel kezelõt"},
@@ -9074,11 +9157,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_DONT_CALL_EXCEPTION_HANDLER_NL, "Geen gebruik maken van de exception handler"},
 /* pl */ {IDCLS_DONT_CALL_EXCEPTION_HANDLER_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_DONT_CALL_EXCEPTION_HANDLER_SV, "Anropa inte undantagshanterare"},
+/* tr */ {IDCLS_DONT_CALL_EXCEPTION_HANDLER_TR, "Kural dýþý iþleyiciyi çaðýrma"},
 #endif
 
 /* initcmdline.c */
 /* en */ {IDCLS_CALL_EXCEPTION_HANDLER,    N_("Call exception handler (default)")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_CALL_EXCEPTION_HANDLER_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_CALL_EXCEPTION_HANDLER_DE, "Ausnahmebehandlung aktivieren (Default)"},
 /* fr */ {IDCLS_CALL_EXCEPTION_HANDLER_FR, "Utiliser l'assistant d'exception (par défaut)"},
 /* hu */ {IDCLS_CALL_EXCEPTION_HANDLER_HU, "Kivétel kezelõ hívása (alapértelmezés)"},
@@ -9086,12 +9171,14 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_CALL_EXCEPTION_HANDLER_NL, "Gebruik maken van de exception handler (standaard)"},
 /* pl */ {IDCLS_CALL_EXCEPTION_HANDLER_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_CALL_EXCEPTION_HANDLER_SV, "Anropa undantagshanterare (standard)"},
+/* tr */ {IDCLS_CALL_EXCEPTION_HANDLER_TR, "Kural dýþý iþleyiciyi çaðýr (varsayýlan)"},
 #endif
 #endif
 
 /* initcmdline.c */
 /* en */ {IDCLS_RESTORE_DEFAULT_SETTINGS,    N_("Restore default (factory) settings")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_RESTORE_DEFAULT_SETTINGS_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_RESTORE_DEFAULT_SETTINGS_DE, "Wiederherstellen Standard Einstellungen"},
 /* fr */ {IDCLS_RESTORE_DEFAULT_SETTINGS_FR, "Rétablir les paramètres par défaut (usine)"},
 /* hu */ {IDCLS_RESTORE_DEFAULT_SETTINGS_HU, "Alap (gyári) beállítások visszaállítása"},
@@ -9099,11 +9186,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_RESTORE_DEFAULT_SETTINGS_NL, "Herstel standaardinstelling"},
 /* pl */ {IDCLS_RESTORE_DEFAULT_SETTINGS_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_RESTORE_DEFAULT_SETTINGS_SV, "Återställ förvalda inställningar"},
+/* tr */ {IDCLS_RESTORE_DEFAULT_SETTINGS_TR, "Varsayýlan ayarlara (fabrika ayarlarý) geri dön"},
 #endif
 
 /* initcmdline.c */
 /* en */ {IDCLS_P_FILE,    N_("<filename>")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_P_FILE_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_P_FILE_DE, "<Dateiname>"},
 /* fr */ {IDCLS_P_FILE_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_P_FILE_HU, "<fájlnév>"},
@@ -9111,11 +9200,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_P_FILE_NL, "<bestandsnaam>"},
 /* pl */ {IDCLS_P_FILE_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_P_FILE_SV, "<filnamn>"},
+/* tr */ {IDCLS_P_FILE_TR, "<dosyaismi>"},
 #endif
 
 /* initcmdline.c */
 /* en */ {IDCLS_SPECIFY_CONFIG_FILE,    N_("Specify config file")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_SPECIFY_CONFIG_FILE_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_SPECIFY_CONFIG_FILE_DE, "Konfigurationsdateiname definieren"},
 /* fr */ {IDCLS_SPECIFY_CONFIG_FILE_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_SPECIFY_CONFIG_FILE_HU, "Adja meg a konfigurációs fájl nevét"},
@@ -9123,11 +9214,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_SPECIFY_CONFIG_FILE_NL, "Geef configuratie bestandsnaam"},
 /* pl */ {IDCLS_SPECIFY_CONFIG_FILE_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SPECIFY_CONFIG_FILE_SV, "Ange inställningsfil"},
+/* tr */ {IDCLS_SPECIFY_CONFIG_FILE_TR, "Konfigürasyon dosyasýný belirt"},
 #endif
 
 /* initcmdline.c */
 /* en */ {IDCLS_ATTACH_AND_AUTOSTART,    N_("Attach and autostart tape/disk image <name>")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_ATTACH_AND_AUTOSTART_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_ATTACH_AND_AUTOSTART_DE, "Einlegen und Autostart Disk/Band Image Datei <Name>"},
 /* fr */ {IDCLS_ATTACH_AND_AUTOSTART_FR, "Insérer et démarrer l'image de disque/datassette <nom>"},
 /* hu */ {IDCLS_ATTACH_AND_AUTOSTART_HU, "<név> lemez/szalag képmás csatolása és automatikus elindítása"},
@@ -9135,11 +9228,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_ATTACH_AND_AUTOSTART_NL, "Koppel en autostart een tape/diskbestand <naam>"},
 /* pl */ {IDCLS_ATTACH_AND_AUTOSTART_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_ATTACH_AND_AUTOSTART_SV, "Anslut och starta band-/diskettavbildning <namn>"},
+/* tr */ {IDCLS_ATTACH_AND_AUTOSTART_TR, "Teyp/Disk imajý <isim> yerleþtir ve otomatik baþlat"},
 #endif
 
 /* initcmdline.c */
 /* en */ {IDCLS_ATTACH_AND_AUTOLOAD,    N_("Attach and autoload tape/disk image <name>")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_ATTACH_AND_AUTOLOAD_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_ATTACH_AND_AUTOLOAD_DE, "Einlegen und Autoload Disk/Band Image Datei <Name>"},
 /* fr */ {IDCLS_ATTACH_AND_AUTOLOAD_FR, "Insérer et charger l'image de disque/datassette <nom>"},
 /* hu */ {IDCLS_ATTACH_AND_AUTOLOAD_HU, "<név> lemez/szalag képmás csatolása és automatikus betöltése"},
@@ -9147,11 +9242,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_ATTACH_AND_AUTOLOAD_NL, "Koppel en autolaad een tape-/diskbestand <naam>"},
 /* pl */ {IDCLS_ATTACH_AND_AUTOLOAD_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_ATTACH_AND_AUTOLOAD_SV, "Anslut och läs in band-/diskettavbildning <namn>"},
+/* tr */ {IDCLS_ATTACH_AND_AUTOLOAD_TR, "Teyp/Disk imajý <isim> yerleþtir ve otomatik yükle"},
 #endif
 
 /* initcmdline.c */
 /* en */ {IDCLS_ATTACH_AS_TAPE,    N_("Attach <name> as a tape image")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_ATTACH_AS_TAPE_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_ATTACH_AS_TAPE_DE, "Image Datei <Name> einlegen"},
 /* fr */ {IDCLS_ATTACH_AS_TAPE_FR, "Insérer <nom> comme image de datassette"},
 /* hu */ {IDCLS_ATTACH_AS_TAPE_HU, "<név> szalag képmás csatolása"},
@@ -9159,11 +9256,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_ATTACH_AS_TAPE_NL, "Koppel <naam> als een tapebestand"},
 /* pl */ {IDCLS_ATTACH_AS_TAPE_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_ATTACH_AS_TAPE_SV, "Anslut <namn> som bandavbildning"},
+/* tr */ {IDCLS_ATTACH_AS_TAPE_TR, "Teyp imajý olarak <isim> yerleþtir"},
 #endif
 
 /* initcmdline.c */
 /* en */ {IDCLS_ATTACH_AS_DISK_8,    N_("Attach <name> as a disk image in drive #8")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_ATTACH_AS_DISK_8_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_ATTACH_AS_DISK_8_DE, "Image Datei <Name> im Laufwerk #8 einlegen"},
 /* fr */ {IDCLS_ATTACH_AS_DISK_8_FR, "Insérer <nom> comme image de disque dans le lecteur #8"},
 /* hu */ {IDCLS_ATTACH_AS_DISK_8_HU, "<név> lemezképmás csatolása #8-as egységként"},
@@ -9171,11 +9270,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_ATTACH_AS_DISK_8_NL, "Koppel <naam> aan als een schijfbestand in drive #8"},
 /* pl */ {IDCLS_ATTACH_AS_DISK_8_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_ATTACH_AS_DISK_8_SV, "Anslut <namn> som diskettavbildning i enhet 8"},
+/* tr */ {IDCLS_ATTACH_AS_DISK_8_TR, "Sürücü #8 disk imajý olarak <isim> yerleþtir"},
 #endif
 
 /* initcmdline.c */
 /* en */ {IDCLS_ATTACH_AS_DISK_9,    N_("Attach <name> as a disk image in drive #9")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_ATTACH_AS_DISK_9_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_ATTACH_AS_DISK_9_DE, "Image Datei <Name> im Laufwerk #9 einlegen"},
 /* fr */ {IDCLS_ATTACH_AS_DISK_9_FR, "Insérer <nom> comme image de disque dans le lecteur #9"},
 /* hu */ {IDCLS_ATTACH_AS_DISK_9_HU, "<név> lemezképmás csatolása #9-es egységként"},
@@ -9183,11 +9284,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_ATTACH_AS_DISK_9_NL, "Koppel <naam> aan als een schijfbestand in drive #9"},
 /* pl */ {IDCLS_ATTACH_AS_DISK_9_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_ATTACH_AS_DISK_9_SV, "Anslut <namn> som diskettavbildning i enhet 9"},
+/* tr */ {IDCLS_ATTACH_AS_DISK_9_TR, "Sürücü #9 disk imajý olarak <isim> yerleþtir"},
 #endif
 
 /* initcmdline.c */
 /* en */ {IDCLS_ATTACH_AS_DISK_10,    N_("Attach <name> as a disk image in drive #10")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_ATTACH_AS_DISK_10_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_ATTACH_AS_DISK_10_DE, "Image Datei <Name> im Laufwerk #10 einlegen"},
 /* fr */ {IDCLS_ATTACH_AS_DISK_10_FR, "Insérer <nom> comme image de disque dans le lecteur #10"},
 /* hu */ {IDCLS_ATTACH_AS_DISK_10_HU, "<név> lemezképmás csatolása #10-es egységként"},
@@ -9195,11 +9298,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_ATTACH_AS_DISK_10_NL, "Koppel <naam> aan als een schijfbestand in drive #10"},
 /* pl */ {IDCLS_ATTACH_AS_DISK_10_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_ATTACH_AS_DISK_10_SV, "Anslut <namn> som diskettavbildning i enhet 10"},
+/* tr */ {IDCLS_ATTACH_AS_DISK_10_TR, "Sürücü #10 disk imajý olarak <isim> yerleþtir"},
 #endif
 
 /* initcmdline.c */
 /* en */ {IDCLS_ATTACH_AS_DISK_11,    N_("Attach <name> as a disk image in drive #11")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_ATTACH_AS_DISK_11_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_ATTACH_AS_DISK_11_DE, "Image Datei <Name> im Laufwerk #11 einlegen"},
 /* fr */ {IDCLS_ATTACH_AS_DISK_11_FR, "Insérer <nom> comme image de disque dans le lecteur #11"},
 /* hu */ {IDCLS_ATTACH_AS_DISK_11_HU, "<név> lemezképmás csatolása #11-es egységként"},
@@ -9207,11 +9312,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_ATTACH_AS_DISK_11_NL, "Koppel <naam> aan als een schijfbestand in drive #11"},
 /* pl */ {IDCLS_ATTACH_AS_DISK_11_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_ATTACH_AS_DISK_11_SV, "Anslut <namn> som diskettavbildning i enhet 11"},
+/* tr */ {IDCLS_ATTACH_AS_DISK_11_TR, "Sürücü #11 disk imajý olarak <isim> yerleþtir"},
 #endif
 
 /* kbdbuf.c */
 /* en */ {IDCLS_P_STRING,    N_("<string>")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_P_STRING_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_P_STRING_DE, "<String>"},
 /* fr */ {IDCLS_P_STRING_FR, "<chaine>"},
 /* hu */ {IDCLS_P_STRING_HU, "<sztring>"},
@@ -9219,11 +9326,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_P_STRING_NL, "<string>"},
 /* pl */ {IDCLS_P_STRING_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_P_STRING_SV, "<sträng>"},
+/* tr */ {IDCLS_P_STRING_TR, "<yazý>"},
 #endif
 
 /* kbdbuf.c */
 /* en */ {IDCLS_PUT_STRING_INTO_KEYBUF,    N_("Put the specified string into the keyboard buffer.")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_PUT_STRING_INTO_KEYBUF_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_PUT_STRING_INTO_KEYBUF_DE, "Definierte Eingabe in Tastaturpuffer bereitstellen."},
 /* fr */ {IDCLS_PUT_STRING_INTO_KEYBUF_FR, "Placer la chaîne spécifiée dans le tampon clavier."},
 /* hu */ {IDCLS_PUT_STRING_INTO_KEYBUF_HU, "A megadott string bemásolása a billentyûzet pufferbe."},
@@ -9231,11 +9340,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_PUT_STRING_INTO_KEYBUF_NL, "Plaats de opgegeven string in de toetsenbordbuffer."},
 /* pl */ {IDCLS_PUT_STRING_INTO_KEYBUF_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_PUT_STRING_INTO_KEYBUF_SV, "Lägg den angivna strängen i tangentbordsbufferten."},
+/* tr */ {IDCLS_PUT_STRING_INTO_KEYBUF_TR, "Klavye arabelleðine belirtilen yazýyý koy."},
 #endif
 
 /* log.c */
 /* en */ {IDCLS_SPECIFY_LOG_FILE_NAME,    N_("Specify log file name")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_SPECIFY_LOG_FILE_NAME_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_SPECIFY_LOG_FILE_NAME_DE, "Logdateiname definieren"},
 /* fr */ {IDCLS_SPECIFY_LOG_FILE_NAME_FR, "Spécifier le nom du fichier log"},
 /* hu */ {IDCLS_SPECIFY_LOG_FILE_NAME_HU, "Adja meg a naplófájl nevét"},
@@ -9243,11 +9354,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_SPECIFY_LOG_FILE_NAME_NL, "Geef de naam van het logbestand"},
 /* pl */ {IDCLS_SPECIFY_LOG_FILE_NAME_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SPECIFY_LOG_FILE_NAME_SV, "Ange namn på loggfil"},
+/* tr */ {IDCLS_SPECIFY_LOG_FILE_NAME_TR, "Log dosyasý ismini belirt"},
 #endif
 
 /* mouse.c */
 /* en */ {IDCLS_ENABLE_MOUSE_GRAB,    N_("Enable mouse grab")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_ENABLE_MOUSE_GRAB_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_ENABLE_MOUSE_GRAB_DE, "Maus aktivieren"},
 /* fr */ {IDCLS_ENABLE_MOUSE_GRAB_FR, "Saisir la souris"},
 /* hu */ {IDCLS_ENABLE_MOUSE_GRAB_HU, "Egér elkapás engedélyezése"},
@@ -9255,11 +9368,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_ENABLE_MOUSE_GRAB_NL, "Gebruiken van de muis inschakelen"},
 /* pl */ {IDCLS_ENABLE_MOUSE_GRAB_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_ENABLE_MOUSE_GRAB_SV, "Aktivera fångande av mus"},
+/* tr */ {IDCLS_ENABLE_MOUSE_GRAB_TR, "Mouse yakalamayý aktif et"},
 #endif
 
 /* mouse.c */
 /* en */ {IDCLS_DISABLE_MOUSE_GRAB,    N_("Disable mouse grab")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_DISABLE_MOUSE_GRAB_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_DISABLE_MOUSE_GRAB_DE, "Maus deaktivieren"},
 /* fr */ {IDCLS_DISABLE_MOUSE_GRAB_FR, "Ne pas saisir la souris"},
 /* hu */ {IDCLS_DISABLE_MOUSE_GRAB_HU, "Egér elkapás tiltása"},
@@ -9267,11 +9382,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_DISABLE_MOUSE_GRAB_NL, "Gebruiken van de muis uitschakelen"},
 /* pl */ {IDCLS_DISABLE_MOUSE_GRAB_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_DISABLE_MOUSE_GRAB_SV, "Inaktivera fångande av mus"},
+/* tr */ {IDCLS_DISABLE_MOUSE_GRAB_TR, "Mouse yakalamayý pasifleþtir"},
 #endif
 
 /* mouse.c */
 /* en */ {IDCLS_SELECT_MOUSE_JOY_PORT,    N_("Select the joystick port the mouse is attached to")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_SELECT_MOUSE_JOY_PORT_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_SELECT_MOUSE_JOY_PORT_DE, "Joystickport für Maus auswählen"},
 /* fr */ {IDCLS_SELECT_MOUSE_JOY_PORT_FR, "Sélectionner le port sur lequel attacher la souris"},
 /* hu */ {IDCLS_SELECT_MOUSE_JOY_PORT_HU, "Válassza ki a joystick portot, ahová az egér csatolva van"},
@@ -9279,11 +9396,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_SELECT_MOUSE_JOY_PORT_NL, "Selecteer de joystickpoort waar de muis aan gekoppelt is"},
 /* pl */ {IDCLS_SELECT_MOUSE_JOY_PORT_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SELECT_MOUSE_JOY_PORT_SV, "Ange vilken spelport musen är ansluten till"},
+/* tr */ {IDCLS_SELECT_MOUSE_JOY_PORT_TR, "Mouse'un baðlý olduðu joystick portunu seçin"},
 #endif
 
 /* mouse.c */
 /* en */ {IDCLS_SELECT_MOUSE_TYPE,    N_("Select the mouse type (0 = 1351, 1 = NEOS, 2 = Amiga)")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_SELECT_MOUSE_TYPE_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_SELECT_MOUSE_TYPE_DE, "Maus typ wählen (0 = 1351, 1 = NEOS, 2 = Amiga)"},
 /* fr */ {IDCLS_SELECT_MOUSE_TYPE_FR, "Sélectionner le type de souris (0 = 1351, 1 = NEOS, 2 = Amiga)"},
 /* hu */ {IDCLS_SELECT_MOUSE_TYPE_HU, "Egér típus kiválasztása (0 = 1351, 1 = NEOS, 2 = Amiga)"},
@@ -9291,11 +9410,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_SELECT_MOUSE_TYPE_NL, "Selecteer de muis soort (0 = 1351, 1 = NEOS, 2 = Amiga)"},
 /* pl */ {IDCLS_SELECT_MOUSE_TYPE_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SELECT_MOUSE_TYPE_SV, "Välj mustyp (0 = 1351, 1 = NEOS, 2 = Amiga)"},
+/* tr */ {IDCLS_SELECT_MOUSE_TYPE_TR, "Mouse tipini seçin (0 = 1351, 1 = NEOS, 2 = Amiga)"},
 #endif
 
 /* ps2mouse.c */
 /* en */ {IDCLS_ENABLE_PS2MOUSE,    N_("Enable PS/2 mouse on userport")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_ENABLE_PS2MOUSE_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_ENABLE_PS2MOUSE_DE, "PS/2 Userport Emulation aktivieren"},
 /* fr */ {IDCLS_ENABLE_PS2MOUSE_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_ENABLE_PS2MOUSE_HU, "PS/2 egér engedélyezése a userporton"},
@@ -9303,11 +9424,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_ENABLE_PS2MOUSE_NL, "Aktiveer emulatie van een PS/2 muis op de userport"},
 /* pl */ {IDCLS_ENABLE_PS2MOUSE_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_ENABLE_PS2MOUSE_SV, "Aktivera PS/2-mus på användarport"},
+/* tr */ {IDCLS_ENABLE_PS2MOUSE_TR, "Userport üzerinde PS/2 mouse'u aktif et"},
 #endif
 
 /* ps2mouse.c */
 /* en */ {IDCLS_DISABLE_PS2MOUSE,    N_("Disable PS/2 mouse on userport")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_DISABLE_PS2MOUSE_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_DISABLE_PS2MOUSE_DE, "PS/2 Userport Emulation deaktivieren\""},
 /* fr */ {IDCLS_DISABLE_PS2MOUSE_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_DISABLE_PS2MOUSE_HU, "PS/2 egér tiltása a userporton"},
@@ -9315,11 +9438,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_DISABLE_PS2MOUSE_NL, "Emulatie van een PS/2 muis op de userport afsluiten"},
 /* pl */ {IDCLS_DISABLE_PS2MOUSE_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_DISABLE_PS2MOUSE_SV, "Inaktivera PS/2-mus på användarport"},
+/* tr */ {IDCLS_DISABLE_PS2MOUSE_TR, "Userport üzerinde PS/2 mouse'u pasifleþtir"},
 #endif
 
 /* ram.c */
 /* en */ {IDCLS_SET_FIRST_RAM_ADDRESS_VALUE,    N_("Set the value for the very first RAM address after powerup")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_SET_FIRST_RAM_ADDRESS_VALUE_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_SET_FIRST_RAM_ADDRESS_VALUE_DE, "Wert für erstes Byte im RAM nach Kaltstart setzen"},
 /* fr */ {IDCLS_SET_FIRST_RAM_ADDRESS_VALUE_FR, "Spécifier la valeur de la première adresse RAM après la mise sous "
                                                 "tension"},
@@ -9328,11 +9453,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_SET_FIRST_RAM_ADDRESS_VALUE_NL, "Zet de waarde voor het allereerste RAM adres na koude start"},
 /* pl */ {IDCLS_SET_FIRST_RAM_ADDRESS_VALUE_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SET_FIRST_RAM_ADDRESS_VALUE_SV, "Ange värdet på den allra första RAM-adressen efter strömpåslag"},
+/* tr */ {IDCLS_SET_FIRST_RAM_ADDRESS_VALUE_TR, "Güç verildiðinde baþlangýçtaki RAM adreslerine atanacak deðeri belirle"},
 #endif
 
 /* ram.c */
 /* en */ {IDCLS_P_NUM_OF_BYTES,    N_("<num of bytes>")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_P_NUM_OF_BYTES_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_P_NUM_OF_BYTES_DE, "<Anzahl an Bytes>"},
 /* fr */ {IDCLS_P_NUM_OF_BYTES_FR, "<nombre d'octets>"},
 /* hu */ {IDCLS_P_NUM_OF_BYTES_HU, "<bájtok száma>"},
@@ -9340,11 +9467,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_P_NUM_OF_BYTES_NL, "<aantal bytes>"},
 /* pl */ {IDCLS_P_NUM_OF_BYTES_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_P_NUM_OF_BYTES_SV, "<antal byte>"},
+/* tr */ {IDCLS_P_NUM_OF_BYTES_TR, "<byte sayýsý>"},
 #endif
 
 /* ram.c */
 /* en */ {IDCLS_LENGTH_BLOCK_SAME_VALUE,    N_("Length of memory block initialized with the same value")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_LENGTH_BLOCK_SAME_VALUE_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_LENGTH_BLOCK_SAME_VALUE_DE, "Länge des Speicherblocks der mit dem gleichen Wert initialisiert ist"},
 /* fr */ {IDCLS_LENGTH_BLOCK_SAME_VALUE_FR, "Longeur du premier bloc mémoire initialisé avec la même valeur"},
 /* hu */ {IDCLS_LENGTH_BLOCK_SAME_VALUE_HU, "Azonos értékkel feltöltött memória blokkoknak a hossza"},
@@ -9352,11 +9481,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_LENGTH_BLOCK_SAME_VALUE_NL, "Geheugenblokgrootte die dezelfde waarde krijgt bij initialisatie"},
 /* pl */ {IDCLS_LENGTH_BLOCK_SAME_VALUE_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_LENGTH_BLOCK_SAME_VALUE_SV, "Längd på minnesblock som initierats med samma värde"},
+/* tr */ {IDCLS_LENGTH_BLOCK_SAME_VALUE_TR, "Ayný deðerle balangýç ayarlarý yapýlan bellek bloðu uzunluðu"},
 #endif
 
 /* ram.c */
 /* en */ {IDCLS_LENGTH_BLOCK_SAME_PATTERN,    N_("Length of memory block initialized with the same pattern")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_LENGTH_BLOCK_SAME_PATTERN_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_LENGTH_BLOCK_SAME_PATTERN_DE, "Länge des Speicherblocks der mit dem gleichen Muster initialisiert ist"},
 /* fr */ {IDCLS_LENGTH_BLOCK_SAME_PATTERN_FR, "Longeur du premier bloc mémoire initialisé avec le même pattern"},
 /* hu */ {IDCLS_LENGTH_BLOCK_SAME_PATTERN_HU, "Azonos mintával feltöltött memória blokkoknak a hossza"},
@@ -9364,11 +9495,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_LENGTH_BLOCK_SAME_PATTERN_NL, "Geheugenblokgrootte met hetzelfde patroon bij initialisatie"},
 /* pl */ {IDCLS_LENGTH_BLOCK_SAME_PATTERN_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_LENGTH_BLOCK_SAME_PATTERN_SV, "Längd på minnesblock som initierats med samma mönster"},
+/* tr */ {IDCLS_LENGTH_BLOCK_SAME_PATTERN_TR, "Ayný desenle balangýç ayarlarý yapýlan bellek bloðu uzunluðu"},
 #endif
 
 /* sound.c */
 /* en */ {IDCLS_ENABLE_SOUND_PLAYBACK,    N_("Enable sound playback")},
 #ifdef HAS_TRANSLATE
+/* da */ {IDCLS_ENABLE_SOUND_PLAYBACK_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_ENABLE_SOUND_PLAYBACK_DE, "Sound Wiedergaben einschalten"},
 /* fr */ {IDCLS_ENABLE_SOUND_PLAYBACK_FR, "Activer le son"},
 /* hu */ {IDCLS_ENABLE_SOUND_PLAYBACK_HU, "Hangok engedélyezése"},
@@ -9376,11 +9509,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_ENABLE_SOUND_PLAYBACK_NL, "Activeer geluidsweergave"},
 /* pl */ {IDCLS_ENABLE_SOUND_PLAYBACK_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_ENABLE_SOUND_PLAYBACK_SV, "Aktivera ljudåtergivning"},
+/* tr */ {IDCLS_ENABLE_SOUND_PLAYBACK_PL, "Sesi aktif et"},
 #endif
 
 /* sound.c */
 /* en */ {IDCLS_DISABLE_SOUND_PLAYBACK,    N_("Disable sound playback")},
 #ifdef HAS_TRANSLATE
+/* da */ {IDCLS_DISABLE_SOUND_PLAYBACK_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_DISABLE_SOUND_PLAYBACK_DE, "Sound Wiedergaben ausschalten"},
 /* fr */ {IDCLS_DISABLE_SOUND_PLAYBACK_FR, "Désactiver le son"},
 /* hu */ {IDCLS_DISABLE_SOUND_PLAYBACK_HU, "Hangok tiltása"},
@@ -9388,11 +9523,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_DISABLE_SOUND_PLAYBACK_NL, "Geluid uitschakelen"},
 /* pl */ {IDCLS_DISABLE_SOUND_PLAYBACK_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_DISABLE_SOUND_PLAYBACK_SV, "Inaktivera ljudåtergivning"},
+/* tr */ {IDCLS_DISABLE_SOUND_PLAYBACK_TR, "Sesi pasifleþtir"},
 #endif
 
 /* sound.c */
 /* en */ {IDCLS_SET_SAMPLE_RATE_VALUE_HZ,    N_("Set sound sample rate to <value> Hz")},
 #ifdef HAS_TRANSLATE
+/* da */ {IDCLS_SET_SAMPLE_RATE_VALUE_HZ_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_SET_SAMPLE_RATE_VALUE_HZ_DE, "Setze Sound Sample Rate zu <Wert> Hz"},
 /* fr */ {IDCLS_SET_SAMPLE_RATE_VALUE_HZ_FR, "Régler le taux d'échantillonage à <valeur> Hz"},
 /* hu */ {IDCLS_SET_SAMPLE_RATE_VALUE_HZ_HU, "Hang mintavételezési ráta beállítása <érték> Hz-re"},
@@ -9400,11 +9537,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_SET_SAMPLE_RATE_VALUE_HZ_NL, "Zet de geluid sample rate naar <waarde> Hz"},
 /* pl */ {IDCLS_SET_SAMPLE_RATE_VALUE_HZ_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SET_SAMPLE_RATE_VALUE_HZ_SV, "Sätt ljudsamplingshastighet till <värde> Hz"},
+/* tr */ {IDCLS_SET_SAMPLE_RATE_VALUE_HZ_TR, "Ses örnekleme hýzýný <deðer> Hz olarak ayarla"},
 #endif
 
 /* sound.c */
 /* en */ {IDCLS_SET_SOUND_BUFFER_SIZE_MSEC,    N_("Set sound buffer size to <value> msec")},
 #ifdef HAS_TRANSLATE
+/* da */ {IDCLS_SET_SOUND_BUFFER_SIZE_MSEC_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_SET_SOUND_BUFFER_SIZE_MSEC_DE, "Setze Source Buffer Größe zu <Wert> msek"},
 /* fr */ {IDCLS_SET_SOUND_BUFFER_SIZE_MSEC_FR, "Régler la taille du tampon son à <valeur> ms"},
 /* hu */ {IDCLS_SET_SOUND_BUFFER_SIZE_MSEC_HU, "A hangpuffer méretét <érték> mp-re állítja"},
@@ -9412,11 +9551,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_SET_SOUND_BUFFER_SIZE_MSEC_NL, "Zet de geluidsbuffergrootte naar <waarde> msec"},
 /* pl */ {IDCLS_SET_SOUND_BUFFER_SIZE_MSEC_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SET_SOUND_BUFFER_SIZE_MSEC_SV, "Sätt ljudbuffertstorlek till <värde> ms"},
+/* tr */ {IDCLS_SET_SOUND_BUFFER_SIZE_MSEC_TR, "Ses arabellek boyutunu <deðer> milisaniye olarak ayarla"},
 #endif
 
 /* sound.c */
 /* en */ {IDCLS_SPECIFY_SOUND_DRIVER,    N_("Specify sound driver")},
 #ifdef HAS_TRANSLATE
+/* da */ {IDCLS_SPECIFY_SOUND_DRIVER_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_SPECIFY_SOUND_DRIVER_DE, "Sound Treiber spezifieren"},
 /* fr */ {IDCLS_SPECIFY_SOUND_DRIVER_FR, "Spécifier le pilote de son"},
 /* hu */ {IDCLS_SPECIFY_SOUND_DRIVER_HU, "Adja meg a hangmodul nevét"},
@@ -9424,11 +9565,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_SPECIFY_SOUND_DRIVER_NL, "Geef geluidsstuurprogramma"},
 /* pl */ {IDCLS_SPECIFY_SOUND_DRIVER_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SPECIFY_SOUND_DRIVER_SV, "Ange ljuddrivrutin"},
+/* tr */ {IDCLS_SPECIFY_SOUND_DRIVER_TR, "Ses sürücüsü belirt"},
 #endif
 
 /* sound.c */
 /* en */ {IDCLS_P_ARGS,    N_("<args>")},
 #ifdef HAS_TRANSLATE
+/* da */ {IDCLS_P_ARGS_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_P_ARGS_DE, "<Argumente>"},
 /* fr */ {IDCLS_P_ARGS_FR, "<args>"},
 /* hu */ {IDCLS_P_ARGS_HU, "<argumentumok>"},
@@ -9436,11 +9579,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_P_ARGS_NL, "<parameters>"},
 /* pl */ {IDCLS_P_ARGS_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_P_ARGS_SV, "<flaggor>"},
+/* tr */ {IDCLS_P_ARGS_TR, "<argümanlar>"},
 #endif
 
 /* sound.c */
 /* en */ {IDCLS_SPECIFY_SOUND_DRIVER_PARAM,    N_("Specify initialization parameters for sound driver")},
 #ifdef HAS_TRANSLATE
+/* da */ {IDCLS_SPECIFY_SOUND_DRIVER_PARAM_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_SPECIFY_SOUND_DRIVER_PARAM_DE, "Initialisierungsparameter des Sound Treibers spezifizieren"},
 /* fr */ {IDCLS_SPECIFY_SOUND_DRIVER_PARAM_FR, "Spécifier les paramètres d'initialisation pour le pilote son"},
 /* hu */ {IDCLS_SPECIFY_SOUND_DRIVER_PARAM_HU, "Adja meg a hangmodul indulási paramétereit"},
@@ -9448,11 +9593,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_SPECIFY_SOUND_DRIVER_PARAM_NL, "Geef de initialisatieparameters voor het geluidsstuurprogramma"},
 /* pl */ {IDCLS_SPECIFY_SOUND_DRIVER_PARAM_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SPECIFY_SOUND_DRIVER_PARAM_SV, "Ange initieringsflaggor för ljuddrivrutin"},
+/* tr */ {IDCLS_SPECIFY_SOUND_DRIVER_PARAM_TR, "Ses sürücüsü için baþlangýç parametrelerini belirt"},
 #endif
 
 /* sound.c */
 /* en */ {IDCLS_SPECIFY_RECORDING_SOUND_DRIVER,    N_("Specify recording sound driver")},
 #ifdef HAS_TRANSLATE
+/* da */ {IDCLS_SPECIFY_RECORDING_SOUND_DRIVER_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_SPECIFY_RECORDING_SOUND_DRIVER_DE, "Sound Treiber für Aufnahme spezifizieren"},
 /* fr */ {IDCLS_SPECIFY_RECORDING_SOUND_DRIVER_FR, "Spécifier le pilote d'enregistrement"},
 /* hu */ {IDCLS_SPECIFY_RECORDING_SOUND_DRIVER_HU, "Adja meg a felvételhez használt hangmodult"},
@@ -9460,11 +9607,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_SPECIFY_RECORDING_SOUND_DRIVER_NL, "Geef geluidsstuurprogramma voor opname"},
 /* pl */ {IDCLS_SPECIFY_RECORDING_SOUND_DRIVER_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SPECIFY_RECORDING_SOUND_DRIVER_SV, "Ange ljuddrivrutin för inspelning"},
+/* tr */ {IDCLS_SPECIFY_RECORDING_SOUND_DRIVER_TR, "Ses kayýt sürücüsünü belirt"},
 #endif
 
 /* sound.c */
 /* en */ {IDCLS_SPECIFY_REC_SOUND_DRIVER_PARAM,    N_("Specify initialization parameters for recording sound driver")},
 #ifdef HAS_TRANSLATE
+/* da */ {IDCLS_SPECIFY_REC_SOUND_DRIVER_PARAM_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_SPECIFY_REC_SOUND_DRIVER_PARAM_DE, "Initialisierungsparameter für Aufnahme Sound Treiber spezifieren"},
 /* fr */ {IDCLS_SPECIFY_REC_SOUND_DRIVER_PARAM_FR, "Spécifier les paramètres d'initialisation pour le pilote "
                                                    "d'enregistrement"},
@@ -9475,11 +9624,13 @@ translate_t string_table[] = {
                                                    "opname"},
 /* pl */ {IDCLS_SPECIFY_REC_SOUND_DRIVER_PARAM_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SPECIFY_REC_SOUND_DRIVER_PARAM_SV, "Ange initieringsflaggor för ljuddrivrutin för inspelning"},
+/* tr */ {IDCLS_SPECIFY_REC_SOUND_DRIVER_PARAM_TR, "Ses kayýt sürücüsü için baþlangýç parametrelerini belirt"},
 #endif
 
 /* sound.c */
 /* en */ {IDCLS_P_SYNC,    N_("<sync>")},
 #ifdef HAS_TRANSLATE
+/* da */ {IDCLS_P_SYNC_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_P_SYNC_DE, "<Sync>"},
 /* fr */ {IDCLS_P_SYNC_FR, "<sync>"},
 /* hu */ {IDCLS_P_SYNC_HU, "<sync>"},
@@ -9487,11 +9638,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_P_SYNC_NL, "<sync>"},
 /* pl */ {IDCLS_P_SYNC_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_P_SYNC_SV, "<synk>"},
+/* tr */ {IDCLS_P_SYNC_TR, "<senkron>"},
 #endif
 
 /* sound.c */
 /* en */ {IDCLS_SET_SOUND_SPEED_ADJUST,    N_("Set sound speed adjustment (0: flexible, 1: adjusting, 2: exact)")},
 #ifdef HAS_TRANSLATE
+/* da */ {IDCLS_SET_SOUND_SPEED_ADJUST_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_SET_SOUND_SPEED_ADJUST_DE, "Setze Sound Geschwindigkeit Anpassung (0: flexibel, 1: anpassend, 2: exakt)"},
 /* fr */ {IDCLS_SET_SOUND_SPEED_ADJUST_FR, "Choisir la méthode d'ajustement du son (0: flexible, 1: ajusté 2: exact)"},
 /* hu */ {IDCLS_SET_SOUND_SPEED_ADJUST_HU, "Adja meg a zene sebesség igazítását (0: rugalmas. 1: igazodó, 2: pontos)"},
@@ -9500,11 +9653,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_SET_SOUND_SPEED_ADJUST_NL, "Zet geluidssnelheid aanpassing (0: flexibel, 1: aanpassend, 2: exact)"},
 /* pl */ {IDCLS_SET_SOUND_SPEED_ADJUST_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SET_SOUND_SPEED_ADJUST_SV, "Ställ in ljudhastighetsjustering (0: flexibel, 1: justerande, 2: exakt)"},
+/* tr */ {IDCLS_SET_SOUND_SPEED_ADJUST_TR, "Ses hýzý ayarlamasýný yapýn (0: esnek, 1: düzeltme, 2: aynen)"},
 #endif
 
 /* sysfile.c */
 /* en */ {IDCLS_P_PATH,    N_("<path>")},
 #ifdef HAS_TRANSLATE
+/* da */ {IDCLS_P_PATH_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_P_PATH_DE, "<Pfad>"},
 /* fr */ {IDCLS_P_PATH_FR, "<chemin>"},
 /* hu */ {IDCLS_P_PATH_HU, "<elérési út>"},
@@ -9512,11 +9667,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_P_PATH_NL, "<pad>"},
 /* pl */ {IDCLS_P_PATH_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_P_PATH_SV, "<sökväg>"},
+/* tr */ {IDCLS_P_PATH_TR, "<yol>"},
 #endif
 
 /* sysfile.c */
 /* en */ {IDCLS_DEFINE_SYSTEM_FILES_PATH,    N_("Define search path to locate system files")},
 #ifdef HAS_TRANSLATE
+/* da */ {IDCLS_DEFINE_SYSTEM_FILES_PATH_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_DEFINE_SYSTEM_FILES_PATH_DE, "Suchpfad für Systemdateien definieren"},
 /* fr */ {IDCLS_DEFINE_SYSTEM_FILES_PATH_FR, "Définir le chemin de recherche pour trouver les fichiers systèmes"},
 /* hu */ {IDCLS_DEFINE_SYSTEM_FILES_PATH_HU, "Keresési útvonal megadása a rendszerfájlok megtalálására"},
@@ -9524,11 +9681,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_DEFINE_SYSTEM_FILES_PATH_NL, "Geef het zoek pad waar de systeem bestanden te vinden zijn"},
 /* pl */ {IDCLS_DEFINE_SYSTEM_FILES_PATH_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_DEFINE_SYSTEM_FILES_PATH_SV, "Ange sökväg för att hitta systemfiler"},
+/* tr */ {IDCLS_DEFINE_SYSTEM_FILES_PATH_TR, "Sistem dosyalarýnýn konumunu belirlemek için arama yolu tanýmlayýn"},
 #endif
 
 /* traps.c */
 /* en */ {IDCLS_ENABLE_TRAPS_FAST_EMULATION,    N_("Enable general mechanisms for fast disk/tape emulation")},
 #ifdef HAS_TRANSLATE
+/* da */ {IDCLS_ENABLE_TRAPS_FAST_EMULATION_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_ENABLE_TRAPS_FAST_EMULATION_DE, "Allgemeine Mechanismen für schnelle Disk/Band Emulation aktivieren"},
 /* fr */ {IDCLS_ENABLE_TRAPS_FAST_EMULATION_FR, "Activer les méchanismes généraux pour l'émulation disque/datassette "
                                                 "rapide"},
@@ -9537,11 +9696,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_ENABLE_TRAPS_FAST_EMULATION_NL, "Activeer algemene methoden voor snelle disk/tape emulatie"},
 /* pl */ {IDCLS_ENABLE_TRAPS_FAST_EMULATION_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_ENABLE_TRAPS_FAST_EMULATION_SV, "Aktivera generella mekanismer för snabb disk-/bandemulering"},
+/* tr */ {IDCLS_ENABLE_TRAPS_FAST_EMULATION_TR, "Hýzlý disk/teyp emülasyonu için genel mekanizmayý aktif et"},
 #endif
 
 /* traps.c */
 /* en */ {IDCLS_DISABLE_TRAPS_FAST_EMULATION,    N_("Disable general mechanisms for fast disk/tape emulation")},
 #ifdef HAS_TRANSLATE
+/* da */ {IDCLS_DISABLE_TRAPS_FAST_EMULATION_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_DISABLE_TRAPS_FAST_EMULATION_DE, "Allgemeine Mechanismen für schnelle Disk/Band Emulation deaktivieren"},
 /* fr */ {IDCLS_DISABLE_TRAPS_FAST_EMULATION_FR, "Désactiver les méchanismes généraux pour l'émulation disque/datassette "
                                                  "rapide"},
@@ -9551,11 +9712,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_DISABLE_TRAPS_FAST_EMULATION_NL, "Algemene methoden voor snelle disk/tape emulatie uitschakelen"},
 /* pl */ {IDCLS_DISABLE_TRAPS_FAST_EMULATION_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_DISABLE_TRAPS_FAST_EMULATION_SV, "Inaktivera generella mekanismer för snabb disk-/bandemulering"},
+/* tr */ {IDCLS_DISABLE_TRAPS_FAST_EMULATION_TR, "Hýzlý disk/teyp emülasyonu için genel mekanizmayý pasifleþtir"},
 #endif
 
 /* vsync.c */
 /* en */ {IDCLS_LIMIT_SPEED_TO_VALUE,    N_("Limit emulation speed to specified value")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_LIMIT_SPEED_TO_VALUE_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_LIMIT_SPEED_TO_VALUE_DE, "Emulationsgeschwindigkeit auf Wert beschränken."},
 /* fr */ {IDCLS_LIMIT_SPEED_TO_VALUE_FR, "Limiter la vitesse d'émulation à une valeur specifiée"},
 /* hu */ {IDCLS_LIMIT_SPEED_TO_VALUE_HU, "Emulációs sebesség lehatárolása adott értékre"},
@@ -9563,11 +9726,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_LIMIT_SPEED_TO_VALUE_NL, "Beperk emulatiesnelheid tot de opgegeven waarde"},
 /* pl */ {IDCLS_LIMIT_SPEED_TO_VALUE_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_LIMIT_SPEED_TO_VALUE_SV, "Begränsa emuleringshastighet till angivet värde"},
+/* tr */ {IDCLS_LIMIT_SPEED_TO_VALUE_TR, "Emülasyon hýzýný belirtilmiþ deðer ile limitle"},
 #endif
 
 /* vsync.c */
 /* en */ {IDCLS_UPDATE_EVERY_VALUE_FRAMES,    N_("Update every <value> frames (`0' for automatic)")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_UPDATE_EVERY_VALUE_FRAMES_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_UPDATE_EVERY_VALUE_FRAMES_DE, "Jedes <Wert> Bild aktualisieren (`0' für Automatik)"},
 /* fr */ {IDCLS_UPDATE_EVERY_VALUE_FRAMES_FR, "Mise à jour toutes les <valeur> images (`0' pour auto.)"},
 /* hu */ {IDCLS_UPDATE_EVERY_VALUE_FRAMES_HU, "Frissítsen minden <érték> képkocka elteltével (0 automatikust jelent)"},
@@ -9575,11 +9740,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_UPDATE_EVERY_VALUE_FRAMES_NL, "Scherm opbouw elke <waarde> frames (`0' voor automatisch)"},
 /* pl */ {IDCLS_UPDATE_EVERY_VALUE_FRAMES_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_UPDATE_EVERY_VALUE_FRAMES_SV, "Uppdatera varje <värde> ramar (\"0\" för automatiskt)"},
+/* tr */ {IDCLS_UPDATE_EVERY_VALUE_FRAMES_TR, "Her <deðer> framede bir güncelle (otomatik için `0')"},
 #endif
 
 /* vsync.c */
 /* en */ {IDCLS_ENABLE_WARP_MODE,    N_("Enable warp mode")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_ENABLE_WARP_MODE_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_ENABLE_WARP_MODE_DE, "Warp Mode Aktivieren"},
 /* fr */ {IDCLS_ENABLE_WARP_MODE_FR, "Activer Turbo"},
 /* hu */ {IDCLS_ENABLE_WARP_MODE_HU, "Hipergyors mód engedélyezése"},
@@ -9587,11 +9754,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_ENABLE_WARP_MODE_NL, "Activeer warpmodus"},
 /* pl */ {IDCLS_ENABLE_WARP_MODE_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_ENABLE_WARP_MODE_SV, "Aktivera warpläge"},
+/* tr */ {IDCLS_ENABLE_WARP_MODE_TR, "Warp modu aktif et"},
 #endif
 
 /* vsync.c */
 /* en */ {IDCLS_DISABLE_WARP_MODE,    N_("Disable warp mode")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_DISABLE_WARP_MODE_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_DISABLE_WARP_MODE_DE, "*Warp Mode Deaktivieren"},
 /* fr */ {IDCLS_DISABLE_WARP_MODE_FR, "Désactiver Turbo"},
 /* hu */ {IDCLS_DISABLE_WARP_MODE_HU, "Hipergyors mód tiltása"},
@@ -9599,11 +9768,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_DISABLE_WARP_MODE_NL, "Warpmodus uitschakelen"},
 /* pl */ {IDCLS_DISABLE_WARP_MODE_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_DISABLE_WARP_MODE_SV, "Inaktivera warpläge"},
+/* tr */ {IDCLS_DISABLE_WARP_MODE_TR, "Warp modu pasifleþtir"},
 #endif
 
 /* translate.c */
 /* en */ {IDCLS_P_ISO_LANGUAGE_CODE,    N_("<iso language code>")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_P_ISO_LANGUAGE_CODE_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_P_ISO_LANGUAGE_CODE_DE, "<iso Sprachcode>"},
 /* fr */ {IDCLS_P_ISO_LANGUAGE_CODE_FR, "<iso language code>"},
 /* hu */ {IDCLS_P_ISO_LANGUAGE_CODE_HU, "<iso nyelv kód>"},
@@ -9611,11 +9782,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_P_ISO_LANGUAGE_CODE_NL, "<iso taalcode>"},
 /* pl */ {IDCLS_P_ISO_LANGUAGE_CODE_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_P_ISO_LANGUAGE_CODE_SV, "<iso-språkkod>"},
+/* tr */ {IDCLS_P_ISO_LANGUAGE_CODE_TR, "<iso dil kodu>"},
 #endif
 
 /* translate.c */
 /* en */ {IDCLS_SPECIFY_ISO_LANG_CODE,    N_("Specify the iso code of the language")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_SPECIFY_ISO_LANG_CODE_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_SPECIFY_ISO_LANG_CODE_DE, "Iso Sprachcode spezifizieren"},
 /* fr */ {IDCLS_SPECIFY_ISO_LANG_CODE_FR, "Spécifier le code iso du langage"},
 /* hu */ {IDCLS_SPECIFY_ISO_LANG_CODE_HU, "Adja meg a nyelv iso kódját"},
@@ -9623,11 +9796,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_SPECIFY_ISO_LANG_CODE_NL, "Geef de isocode van de taal"},
 /* pl */ {IDCLS_SPECIFY_ISO_LANG_CODE_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SPECIFY_ISO_LANG_CODE_SV, "Ange ISO-koden för språket"},
+/* tr */ {IDCLS_SPECIFY_ISO_LANG_CODE_TR, "Dil için iso kodu belirt"},
 #endif
 
 /* c64/plus256k.c */
 /* en */ {IDCLS_ENABLE_PLUS256K_EXPANSION,    N_("Enable the PLUS256K RAM expansion")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_ENABLE_PLUS256K_EXPANSION_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_ENABLE_PLUS256K_EXPANSION_DE, "PLUS256K RAM Erweiterung aktivieren"},
 /* fr */ {IDCLS_ENABLE_PLUS256K_EXPANSION_FR, "Activer l'expansion PLUS256K RAM"},
 /* hu */ {IDCLS_ENABLE_PLUS256K_EXPANSION_HU, "PLUS256K RAM kiterjesztés engedélyezése"},
@@ -9635,11 +9810,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_ENABLE_PLUS256K_EXPANSION_NL, "Activeer de PLUS256K-geheugenuitbreiding"},
 /* pl */ {IDCLS_ENABLE_PLUS256K_EXPANSION_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_ENABLE_PLUS256K_EXPANSION_SV, "Aktivera PLUS256K RAM-expansion"},
+/* tr */ {IDCLS_ENABLE_PLUS256K_EXPANSION_TR, "PLUS256K RAM geniþletmesini aktif et"},
 #endif
 
 /* c64/plus256k.c */
 /* en */ {IDCLS_DISABLE_PLUS256K_EXPANSION,    N_("Disable the PLUS256K RAM expansion")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_DISABLE_PLUS256K_EXPANSION_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_DISABLE_PLUS256K_EXPANSION_DE, "PLUS256K RAM Erweiterung deaktivieren"},
 /* fr */ {IDCLS_DISABLE_PLUS256K_EXPANSION_FR, "Désactiver l'expansion PLUS256K RAM"},
 /* hu */ {IDCLS_DISABLE_PLUS256K_EXPANSION_HU, "PLUS256K RAM kiterjesztés tiltása"},
@@ -9647,11 +9824,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_DISABLE_PLUS256K_EXPANSION_NL, "De PLUS256K-geheugenuitbreiding uitschakelen"},
 /* pl */ {IDCLS_DISABLE_PLUS256K_EXPANSION_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_DISABLE_PLUS256K_EXPANSION_SV, "Inaktivera PLUS256K RAM-expansion"},
+/* tr */ {IDCLS_DISABLE_PLUS256K_EXPANSION_TR, "PLUS256K RAM geniþletmesini pasifleþtir"},
 #endif
 
 /* c64/plus256k.c */
 /* en */ {IDCLS_SPECIFY_PLUS256K_NAME,    N_("Specify name of PLUS256K image")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_SPECIFY_PLUS256K_NAME_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_SPECIFY_PLUS256K_NAME_DE, "Name der PLUS256K Image Datei definieren"},
 /* fr */ {IDCLS_SPECIFY_PLUS256K_NAME_FR, "Spécifier le nom de l'image PLUS256K RAM"},
 /* hu */ {IDCLS_SPECIFY_PLUS256K_NAME_HU, "Adja meg a PLUS256K-s képmás nevét"},
@@ -9659,11 +9838,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_SPECIFY_PLUS256K_NAME_NL, "Geef de naam van het PLUS256K-bestand"},
 /* pl */ {IDCLS_SPECIFY_PLUS256K_NAME_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SPECIFY_PLUS256K_NAME_SV, "Ange namn på PLUS256K-avbildning"},
+/* tr */ {IDCLS_SPECIFY_PLUS256K_NAME_TR, "PLUS256K imajýnýn ismini belirt"},
 #endif
 
 /* c64/plus60k.c */
 /* en */ {IDCLS_ENABLE_PLUS60K_EXPANSION,    N_("Enable the PLUS60K RAM expansion")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_ENABLE_PLUS60K_EXPANSION_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_ENABLE_PLUS60K_EXPANSION_DE, "PLUS60K RAM Erweiterung aktivieren"},
 /* fr */ {IDCLS_ENABLE_PLUS60K_EXPANSION_FR, "Activer l'expansion PLUS60K RAM"},
 /* hu */ {IDCLS_ENABLE_PLUS60K_EXPANSION_HU, "PLUS60K RAM bõvítés engedélyezése"},
@@ -9671,11 +9852,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_ENABLE_PLUS60K_EXPANSION_NL, "Activeer de PLUS60K-geheugenuitbreiding"},
 /* pl */ {IDCLS_ENABLE_PLUS60K_EXPANSION_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_ENABLE_PLUS60K_EXPANSION_SV, "Aktivera PLUS60K RAM-expansion"},
+/* tr */ {IDCLS_ENABLE_PLUS60K_EXPANSION_TR, "PLUS60K RAM geniþletmesini aktif et"},
 #endif
 
 /* c64/plus60k.c */
 /* en */ {IDCLS_DISABLE_PLUS60K_EXPANSION,    N_("Disable the PLUS60K RAM expansion")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_DISABLE_PLUS60K_EXPANSION_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_DISABLE_PLUS60K_EXPANSION_DE, "PLUS60K RAM Erweiterung deaktivieren"},
 /* fr */ {IDCLS_DISABLE_PLUS60K_EXPANSION_FR, "Désactiver l'expansion PLUS60K RAM"},
 /* hu */ {IDCLS_DISABLE_PLUS60K_EXPANSION_HU, "PLUS60K RAM bõvítés tiltása"},
@@ -9683,11 +9866,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_DISABLE_PLUS60K_EXPANSION_NL, "De PLUS60K-geheugenuitbreiding uitschakelen"},
 /* pl */ {IDCLS_DISABLE_PLUS60K_EXPANSION_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_DISABLE_PLUS60K_EXPANSION_SV, "Inaktivera PLUS60K RAM-expansion"},
+/* tr */ {IDCLS_DISABLE_PLUS60K_EXPANSION_TR, "PLUS60K RAM geniþletmesini pasifleþtir"},
 #endif
 
 /* c64/plus60k.c */
 /* en */ {IDCLS_SPECIFY_PLUS60K_NAME,    N_("Specify name of PLUS60K image")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_SPECIFY_PLUS60K_NAME_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_SPECIFY_PLUS60K_NAME_DE, "Name der PLUS60K Image Datei definieren"},
 /* fr */ {IDCLS_SPECIFY_PLUS60K_NAME_FR, "Spécifier le nom de l'image PLUS60K RAM"},
 /* hu */ {IDCLS_SPECIFY_PLUS60K_NAME_HU, "Adja meg a nevét a PLUS60K képmásnak"},
@@ -9695,11 +9880,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_SPECIFY_PLUS60K_NAME_NL, "Geef de naam van het PLUS60K-bestand"},
 /* pl */ {IDCLS_SPECIFY_PLUS60K_NAME_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SPECIFY_PLUS60K_NAME_SV, "Ange namn på PLUS60K-avbildning"},
+/* tr */ {IDCLS_SPECIFY_PLUS60K_NAME_TR, "PLUS60K imajýnýn ismini belirt"},
 #endif
 
 /* c64/plus60k.c */
 /* en */ {IDCLS_PLUS60K_BASE,    N_("Base address of the PLUS60K expansion")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_PLUS60K_BASE_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_PLUS60K_BASE_DE, "Basis Adresse für PLUS60K Erweiterung"},
 /* fr */ {IDCLS_PLUS60K_BASE_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_PLUS60K_BASE_HU, "A PLUS60K bõvítés báziscíme"},
@@ -9707,11 +9894,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_PLUS60K_BASE_NL, "Basisadres van de PLUS60K-geheugenuitbreiding"},
 /* pl */ {IDCLS_PLUS60K_BASE_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_PLUS60K_BASE_SV, "Basadress för PLUS60K-expansion"},
+/* tr */ {IDCLS_PLUS60K_BASE_TR, "PLUS60K geniþletmesinin taban adresi"},
 #endif
 
 /* c64/c64_256k.c */
 /* en */ {IDCLS_ENABLE_C64_256K_EXPANSION,    N_("Enable the 256K RAM expansion")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_ENABLE_C64_256K_EXPANSION_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_ENABLE_C64_256K_EXPANSION_DE, "256K RAM Erweiterung aktivieren"},
 /* fr */ {IDCLS_ENABLE_C64_256K_EXPANSION_FR, "Activer l'expansion RAM 256K"},
 /* hu */ {IDCLS_ENABLE_C64_256K_EXPANSION_HU, "256K RAM kiterjesztés engedélyezése"},
@@ -9719,11 +9908,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_ENABLE_C64_256K_EXPANSION_NL, "Activeer de 256K-geheugenuitbreiding"},
 /* pl */ {IDCLS_ENABLE_C64_256K_EXPANSION_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_ENABLE_C64_256K_EXPANSION_SV, "Aktivera 256K RAM-expansion"},
+/* tr */ {IDCLS_ENABLE_C64_256K_EXPANSION_TR, "256K RAM geniþletmesini aktif et"},
 #endif
 
 /* c64/c64_256k.c */
 /* en */ {IDCLS_DISABLE_C64_256K_EXPANSION,    N_("Disable the 256K RAM expansion")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_DISABLE_C64_256K_EXPANSION_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_DISABLE_C64_256K_EXPANSION_DE, "256K RAM Erweiterung deaktivieren"},
 /* fr */ {IDCLS_DISABLE_C64_256K_EXPANSION_FR, "Désactiver l'expansion RAM 256K"},
 /* hu */ {IDCLS_DISABLE_C64_256K_EXPANSION_HU, "256K RAM kiterjesztés tiltása"},
@@ -9731,11 +9922,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_DISABLE_C64_256K_EXPANSION_NL, "De 256K-geheugenuitbreiding uitschakelen"},
 /* pl */ {IDCLS_DISABLE_C64_256K_EXPANSION_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_DISABLE_C64_256K_EXPANSION_SV, "Inaktivera 256K RAM-expansion"},
+/* tr */ {IDCLS_DISABLE_C64_256K_EXPANSION_TR, "256K RAM geniþletmesini pasifleþtir"},
 #endif
 
 /* c64/c64_256k.c */
 /* en */ {IDCLS_SPECIFY_C64_256K_NAME,    N_("Specify name of 256K image")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_SPECIFY_C64_256K_NAME_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_SPECIFY_C64_256K_NAME_DE, "Name der 256K Image Datei definieren"},
 /* fr */ {IDCLS_SPECIFY_C64_256K_NAME_FR, "Spécifier le nom de l'image 256K"},
 /* hu */ {IDCLS_SPECIFY_C64_256K_NAME_HU, "Adja meg a 256K-s képmás nevét"},
@@ -9743,11 +9936,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_SPECIFY_C64_256K_NAME_NL, "Geef de naam van het 256K-bestand"},
 /* pl */ {IDCLS_SPECIFY_C64_256K_NAME_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SPECIFY_C64_256K_NAME_SV, "Ange namn på 256K-avbildning"},
+/* tr */ {IDCLS_SPECIFY_C64_256K_NAME_TR, "256K imajýnýn ismini belirt"},
 #endif
 
 /* c64/c64_256k.c */
 /* en */ {IDCLS_C64_256K_BASE,    N_("Base address of the 256K expansion")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_C64_256K_BASE_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_C64_256K_BASE_DE, "Basis Adresse für 256K RAM Erweiterung"},
 /* fr */ {IDCLS_C64_256K_BASE_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_C64_256K_BASE_HU, "A 256K-s RAM kiterjesztés báziscíme"},
@@ -9755,10 +9950,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_C64_256K_BASE_NL, "Basisadres van de 256K-geheugenuitbreiding"},
 /* pl */ {IDCLS_C64_256K_BASE_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_C64_256K_BASE_SV, "Basadress för 256K-expansionen"},
+/* tr */ {IDCLS_C64_256K_BASE_TR, "256K geniþletmesinin taban adresi"},
 #endif
 
 /* c64/cart/c64cart.c */
 /* en */ {IDCLS_ATTACH_RAW_STB_CART,    "Attach raw Structured Basic cartridge image"},
+#ifdef HAS_TRANSLATION
+/* da */ {IDCLS_ATTACH_RAW_STB_CART_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_ATTACH_RAW_STB_CART_DE, "Structured Basic (raw) Image einlegen"},
 /* fr */ {IDCLS_ATTACH_RAW_STB_CART_FR, "Insérer une cartouche Raw Structured Basic"},
 /* hu */ {IDCLS_ATTACH_RAW_STB_CART_HU, "Structured Basic cartridge képmás csatolása"},
@@ -9766,10 +9964,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_ATTACH_RAW_STB_CART_NL, "Koppel binair Structured-Basic-cartridgebestand aan"},
 /* pl */ {IDCLS_ATTACH_RAW_STB_CART_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_ATTACH_RAW_STB_CART_SV, "Anslut rå Strucured Basic-insticksmodulfil"},
+/* tr */ {IDCLS_ATTACH_RAW_STB_CART_TR, "Düz yapýlandýrýlmýþ Basic kartuþ imajý yerleþtir"},
+#endif
 
 /* plus4/plus4memcsory256k.c */
 /* en */ {IDCLS_ENABLE_CS256K_EXPANSION,    N_("Enable the CSORY 256K RAM expansion")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_ENABLE_CS256K_EXPANSION_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_ENABLE_CS256K_EXPANSION_DE, "CSORY 256K RAM Erweiterung aktivieren"},
 /* fr */ {IDCLS_ENABLE_CS256K_EXPANSION_FR, "Activer l'expansion RAM 256K CSORY"},
 /* hu */ {IDCLS_ENABLE_CS256K_EXPANSION_HU, "CSORY 256K RAM kiterjesztés engedélyezése"},
@@ -9777,11 +9978,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_ENABLE_CS256K_EXPANSION_NL, "Activeer de CSORY 256K-geheugenuitbreiding"},
 /* pl */ {IDCLS_ENABLE_CS256K_EXPANSION_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_ENABLE_CS256K_EXPANSION_SV, "Aktivera CSORY 256K RAM-expansion"},
+/* tr */ {IDCLS_ENABLE_CS256K_EXPANSION_TR, "CSORY 256K RAM geniþletmesini aktif et"},
 #endif
 
 /* plus4/plus4memhannes256k.c */
 /* en */ {IDCLS_ENABLE_H256K_EXPANSION,    N_("Enable the HANNES 256K RAM expansion")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_ENABLE_H256K_EXPANSION_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_ENABLE_H256K_EXPANSION_DE, "HANNES 256K RAM Erweiterung aktivieren"},
 /* fr */ {IDCLS_ENABLE_H256K_EXPANSION_FR, "Activer l'expansion RAM 256K HANNES"},
 /* hu */ {IDCLS_ENABLE_H256K_EXPANSION_HU, "HANNES 256K RAM kiterjesztés engedélyezése"},
@@ -9789,11 +9992,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_ENABLE_H256K_EXPANSION_NL, "Activeer de HANNES 256K-geheugenuitbreiding"},
 /* pl */ {IDCLS_ENABLE_H256K_EXPANSION_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_ENABLE_H256K_EXPANSION_SV, "Aktivera HANNES 256K RAM-expansion"},
+/* tr */ {IDCLS_ENABLE_H256K_EXPANSION_TR, "HANNES 256K RAM geniþletmesini aktif et"},
 #endif
 
 /* plus4/plus4memhannes256k.c */
 /* en */ {IDCLS_ENABLE_H1024K_EXPANSION,    N_("Enable the HANNES 1024K RAM expansion")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_ENABLE_H1024K_EXPANSION_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_ENABLE_H1024K_EXPANSION_DE, "HANNES 1024K RAM Erweiterung aktivieren"},
 /* fr */ {IDCLS_ENABLE_H1024K_EXPANSION_FR, "Activer l'expansion RAM 1024K HANNES"},
 /* hu */ {IDCLS_ENABLE_H1024K_EXPANSION_HU, "HANNES 1024K RAM kiterjesztés engedélyezése"},
@@ -9801,11 +10006,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_ENABLE_H1024K_EXPANSION_NL, "Activeer de HANNES 1024K-geheugenuitbreiding"},
 /* pl */ {IDCLS_ENABLE_H1024K_EXPANSION_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_ENABLE_H1024K_EXPANSION_SV, "Aktivera HANNES 1024K RAM-expansion"},
+/* tr */ {IDCLS_ENABLE_H1024K_EXPANSION_TR, "HANNES 1024K RAM geniþletmesini aktif et"},
 #endif
 
 /* plus4/plus4memhannes256k.c */
 /* en */ {IDCLS_ENABLE_H4096K_EXPANSION,    N_("Enable the HANNES 4096K RAM expansion")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_ENABLE_H4096K_EXPANSION_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_ENABLE_H4096K_EXPANSION_DE, "HANNES 4096K RAM Erweiterung aktivieren"},
 /* fr */ {IDCLS_ENABLE_H4096K_EXPANSION_FR, "Activer l'expansion RAM 4096K HANNES"},
 /* hu */ {IDCLS_ENABLE_H4096K_EXPANSION_HU, "HANNES 4096K RAM kiterjesztés engedélyezése"},
@@ -9813,11 +10020,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_ENABLE_H4096K_EXPANSION_NL, "Activeer de HANNES 4096K-geheugenuitbreiding"},
 /* pl */ {IDCLS_ENABLE_H4096K_EXPANSION_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_ENABLE_H4096K_EXPANSION_SV, "Aktivera HANNES 4096K RAM-expansion"},
+/* tr */ {IDCLS_ENABLE_H4096K_EXPANSION_TR, "HANNES 4096K RAM geniþletmesini aktif et"},
 #endif
 
 /* c64dtv/c64dtvblitter.c */
 /* en */ {IDCLS_SPECIFY_DTV_REVISION,    N_("Specify DTV Revision (2: DTV2, 3: DTV3)")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_SPECIFY_DTV_REVISION_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_SPECIFY_DTV_REVISION_DE, "DTV Revision definieren (2: DTV2, 3: DTV3)"},
 /* fr */ {IDCLS_SPECIFY_DTV_REVISION_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_SPECIFY_DTV_REVISION_HU, "Adja meg a DTV verzióját (2: DTV2, 3: DTV3)"},
@@ -9825,11 +10034,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_SPECIFY_DTV_REVISION_NL, "Geef de DTV revisie (2: DTV2, 3: DTV3)"},
 /* pl */ {IDCLS_SPECIFY_DTV_REVISION_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SPECIFY_DTV_REVISION_SV, "Ange DTV-revision (2: DTV2, 3: DTV3)"},
+/* tr */ {IDCLS_SPECIFY_DTV_REVISION_TR, "DTV Revizyonunu belirt (2: DTV2, 3: DTV3)"},
 #endif
 
 /* c64dtv/c64dtvblitter.c */
 /* en */ {IDCLS_ENABLE_DTV_BLITTER_LOG,    N_("Enable DTV blitter logs.")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_ENABLE_DTV_BLITTER_LOG_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_ENABLE_DTV_BLITTER_LOG_DE, "DTV Blitter Log aktivieren."},
 /* fr */ {IDCLS_ENABLE_DTV_BLITTER_LOG_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_ENABLE_DTV_BLITTER_LOG_HU, "DTV blit naplók engedélyezése."},
@@ -9837,11 +10048,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_ENABLE_DTV_BLITTER_LOG_NL, "Aktiveer DTV blitter logs."},
 /* pl */ {IDCLS_ENABLE_DTV_BLITTER_LOG_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_ENABLE_DTV_BLITTER_LOG_SV, "Aktivera DTV-blitterloggar."},
+/* tr */ {IDCLS_ENABLE_DTV_BLITTER_LOG_TR, "DTV blitter loglarýný aktif et"},
 #endif
 
 /* c64dtv/c64dtvblitter.c */
 /* en */ {IDCLS_DISABLE_DTV_BLITTER_LOG,    N_("Disable DTV blitter logs.")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_DISABLE_DTV_BLITTER_LOG_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_DISABLE_DTV_BLITTER_LOG_DE, "DTV Blitter Log deaktivieren."},
 /* fr */ {IDCLS_DISABLE_DTV_BLITTER_LOG_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_DISABLE_DTV_BLITTER_LOG_HU, "DTV blit naplók tiltása."},
@@ -9849,11 +10062,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_DISABLE_DTV_BLITTER_LOG_NL, "DTV Blitter logs afsluiten."},
 /* pl */ {IDCLS_DISABLE_DTV_BLITTER_LOG_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_DISABLE_DTV_BLITTER_LOG_SV, "Inaktivera DTV-blitterloggar."},
+/* tr */ {IDCLS_DISABLE_DTV_BLITTER_LOG_TR, "DTV blitter loglarýný pasifleþtir"},
 #endif
 
 /* c64dtv/c64dtvdma.c */
 /* en */ {IDCLS_ENABLE_DTV_DMA_LOG,    N_("Enable DTV DMA logs.")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_ENABLE_DTV_DMA_LOG_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_ENABLE_DTV_DMA_LOG_DE, "DTV DMA Logs aktivieren."},
 /* fr */ {IDCLS_ENABLE_DTV_DMA_LOG_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_ENABLE_DTV_DMA_LOG_HU, "DTV DMA naplók engedélyezése."},
@@ -9861,11 +10076,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_ENABLE_DTV_DMA_LOG_NL, "Aktiveer DTV DMA logs."},
 /* pl */ {IDCLS_ENABLE_DTV_DMA_LOG_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_ENABLE_DTV_DMA_LOG_SV, "Aktivera DTV-dma-loggar."},
+/* tr */ {IDCLS_ENABLE_DTV_DMA_LOG_TR, "DTV DMA loglarýný aktif et"},
 #endif
 
 /* c64dtv/c64dtvdma.c */
 /* en */ {IDCLS_DISABLE_DTV_DMA_LOG,    N_("Disable DTV DMA logs.")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_DISABLE_DTV_DMA_LOG_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_DISABLE_DTV_DMA_LOG_DE, "DTV DMA Logs deaktivieren."},
 /* fr */ {IDCLS_DISABLE_DTV_DMA_LOG_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_DISABLE_DTV_DMA_LOG_HU, "DTV dma naplók tiltása."},
@@ -9873,11 +10090,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_DISABLE_DTV_DMA_LOG_NL, "DTV DMA logs afsluiten."},
 /* pl */ {IDCLS_DISABLE_DTV_DMA_LOG_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_DISABLE_DTV_DMA_LOG_SV, "Inaktivera DTV-dma-loggar."},
+/* tr */ {IDCLS_DISABLE_DTV_DMA_LOG_TR, "DTV DMA loglarýný pasifleþtir"},
 #endif
 
 /* c64dtv/c64dtvflash.c */
 /* en */ {IDCLS_SPECIFY_C64DTVROM_NAME,    N_("Specify name of C64DTV ROM image")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_SPECIFY_C64DTVROM_NAME_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_SPECIFY_C64DTVROM_NAME_DE, "Name von C64DTV ROM Datei definieren"},
 /* fr */ {IDCLS_SPECIFY_C64DTVROM_NAME_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_SPECIFY_C64DTVROM_NAME_HU, "Adja meg a C64DTV ROM képmás nevét"},
@@ -9885,11 +10104,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_SPECIFY_C64DTVROM_NAME_NL, "Geef de naam van her C64DTV ROM bestand"},
 /* pl */ {IDCLS_SPECIFY_C64DTVROM_NAME_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SPECIFY_C64DTVROM_NAME_SV, "Ange namn på C64DTV-ROM-avbildning"},
+/* tr */ {IDCLS_SPECIFY_C64DTVROM_NAME_TR, "C64DTV ROM imajýnýn ismini belirt"},
 #endif
 
 /* c64dtv/c64dtvflash.c */
 /* en */ {IDCLS_ENABLE_C64DTVROM_RW,    N_("Enable writing to C64DTV ROM image")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_ENABLE_C64DTVROM_RW_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_ENABLE_C64DTVROM_RW_DE, "Schreibzugriff auf C64DTV ROM Image erlauben"},
 /* fr */ {IDCLS_ENABLE_C64DTVROM_RW_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_ENABLE_C64DTVROM_RW_HU, "C64DTV ROM képmásba írás engedélyezése"},
@@ -9897,11 +10118,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_ENABLE_C64DTVROM_RW_NL, "Aktiveer schrijven naar C64DTV ROM bestand"},
 /* pl */ {IDCLS_ENABLE_C64DTVROM_RW_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_ENABLE_C64DTVROM_RW_SV, "Aktivera skrivning till C64DTV-ROM-avbildning."},
+/* tr */ {IDCLS_ENABLE_C64DTVROM_RW_TR, "C64DTV ROM imajýna yazmayý aktif et"},
 #endif
 
 /* c64dtv/c64dtvflash.c */
 /* en */ {IDCLS_DISABLE_C64DTVROM_RW,    N_("Disable writing to C64DTV ROM image")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_DISABLE_C64DTVROM_RW_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_DISABLE_C64DTVROM_RW_DE, "Schreibzugriff auf C64DTV ROM Image verhindern"},
 /* fr */ {IDCLS_DISABLE_C64DTVROM_RW_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_DISABLE_C64DTVROM_RW_HU, "C64DTV ROM képmásba írás tiltása"},
@@ -9909,11 +10132,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_DISABLE_C64DTVROM_RW_NL, "Schrijven naar C64DTV ROM bestand afsluiten"},
 /* pl */ {IDCLS_DISABLE_C64DTVROM_RW_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_DISABLE_C64DTVROM_RW_SV, "Inaktivera skrivning till C64DTV-ROM-avbildning."},
+/* tr */ {IDCLS_DISABLE_C64DTVROM_RW_TR, "C64DTV ROM imajýna yazmayý pasifleþtir"},
 #endif
 
 /* c64dtv/c64dtvflash.c */
 /* en */ {IDCLS_ENABLE_DTV_FLASH_LOG,    N_("Enable DTV flash chip logs.")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_ENABLE_DTV_FLASH_LOG_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_ENABLE_DTV_FLASH_LOG_DE, "DTV Flashchip Log aktivieren."},
 /* fr */ {IDCLS_ENABLE_DTV_FLASH_LOG_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_ENABLE_DTV_FLASH_LOG_HU, "DTV flash chip naplók engedélyezése."},
@@ -9921,11 +10146,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_ENABLE_DTV_FLASH_LOG_NL, "Aktiveer DTV flash chip logs."},
 /* pl */ {IDCLS_ENABLE_DTV_FLASH_LOG_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_ENABLE_DTV_FLASH_LOG_SV, "Aktivera loggar för DTV-flashkrets."},
+/* tr */ {IDCLS_ENABLE_DTV_FLASH_LOG_TR, "DTV flash çip loglarýný aktif et."},
 #endif
 
 /* c64dtv/c64dtvflash.c */
 /* en */ {IDCLS_DISABLE_DTV_FLASH_LOG,    N_("Disable DTV flash chip logs.")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_DISABLE_DTV_FLASH_LOG_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_DISABLE_DTV_FLASH_LOG_DE, "DTV Flashchip Log deaktivieren."},
 /* fr */ {IDCLS_DISABLE_DTV_FLASH_LOG_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_DISABLE_DTV_FLASH_LOG_HU, "DTV flash chip naplók tiltása."},
@@ -9933,11 +10160,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_DISABLE_DTV_FLASH_LOG_NL, "DTV flash chip logs afsluiten."},
 /* pl */ {IDCLS_DISABLE_DTV_FLASH_LOG_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_DISABLE_DTV_FLASH_LOG_SV, "Inaktivera loggar för DTV-flashkrets."},
+/* tr */ {IDCLS_DISABLE_DTV_FLASH_LOG_TR, "DTV flash çip loglarýný pasifleþtir."},
 #endif
 
 /* c64dtv/flash-trap.c */
 /* en */ {IDCLS_USE_AS_DIRECTORY_FLASH_FS,    N_("Use <name> as directory for flash file system device")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_USE_AS_DIRECTORY_FLASH_FS_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_USE_AS_DIRECTORY_FLASH_FS_DE, "Benutze <Name> für Verzeichnis Gerät Flash Dateisystem"},
 /* fr */ {IDCLS_USE_AS_DIRECTORY_FLASH_FS_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_USE_AS_DIRECTORY_FLASH_FS_HU, "<név> könyvtár használata a flash fájlrendszer eszközhöz"},
@@ -9945,11 +10174,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_USE_AS_DIRECTORY_FLASH_FS_NL, "Gebruik <naam> als directory voor het flash bestandssysteem apparaat"},
 /* pl */ {IDCLS_USE_AS_DIRECTORY_FLASH_FS_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_USE_AS_DIRECTORY_FLASH_FS_SV, "Ange <namn> som katalog för filsystemsbaserad flashenhet"},
+/* tr */ {IDCLS_USE_AS_DIRECTORY_FLASH_FS_TR, "Flash dosya sistem aygýtý için <isim>'i dizin olarak kullan"},
 #endif
 
 /* c64dtv/flash-trap.c */
 /* en */ {IDCLS_ENABLE_TRUE_FLASH_FS,    N_("Enable true hardware flash file system")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_ENABLE_TRUE_FLASH_FS_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_ENABLE_TRUE_FLASH_FS_DE, "Präzises Hardware Flashdateisystem aktivieren"},
 /* fr */ {IDCLS_ENABLE_TRUE_FLASH_FS_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_ENABLE_TRUE_FLASH_FS_HU, "Igazi hardver flash fájlrendszer engedélyezése"},
@@ -9957,11 +10188,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_ENABLE_TRUE_FLASH_FS_NL, "Activeer hardwarmatige flash bestandssysteem"},
 /* pl */ {IDCLS_ENABLE_TRUE_FLASH_FS_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_ENABLE_TRUE_FLASH_FS_SV, "Aktivera maskinvarubaserat flash-filsystem"},
+/* tr */ {IDCLS_ENABLE_TRUE_FLASH_FS_TR, "Gerçek donaným flash dosya sistemini aktif et"},
 #endif
 
 /* c64dtv/flash-trap.c */
 /* en */ {IDCLS_DISABLE_TRUE_FLASH_FS,    N_("Disable true hardware flash file system")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_DISABLE_TRUE_FLASH_FS_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_DISABLE_TRUE_FLASH_FS_DE, "Präzises Hardware Flashdateisystem deaktivieren"},
 /* fr */ {IDCLS_DISABLE_TRUE_FLASH_FS_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_DISABLE_TRUE_FLASH_FS_HU, "Igazi hardver flash fájlrendszer tiltása"},
@@ -9969,12 +10202,14 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_DISABLE_TRUE_FLASH_FS_NL, "Hardwatematig flash bestandssysteem uitschakelen"},
 /* pl */ {IDCLS_DISABLE_TRUE_FLASH_FS_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_DISABLE_TRUE_FLASH_FS_SV, "Inaktivera maskinvaruemelring för flashfilsystem"},
+/* tr */ {IDCLS_DISABLE_TRUE_FLASH_FS_TR, "Gerçek donaným flash dosya sistemini pasifleþtir"},
 #endif
 
 #ifdef HAVE_MIDI
 /* midi.c */
 /* en */ {IDCLS_ENABLE_MIDI_EMU,    N_("Enable MIDI emulation")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_ENABLE_MIDI_EMU_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_ENABLE_MIDI_EMU_DE, "MIDI Emulation aktivieren"},
 /* fr */ {IDCLS_ENABLE_MIDI_EMU_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_ENABLE_MIDI_EMU_HU, "MIDI emuláció engedélyezése"},
@@ -9982,11 +10217,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_ENABLE_MIDI_EMU_NL, "Activeer MIDI emulatie"},
 /* pl */ {IDCLS_ENABLE_MIDI_EMU_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_ENABLE_MIDI_EMU_SV, "Aktivera MIDI-emulering"},
+/* tr */ {IDCLS_ENABLE_MIDI_EMU_TR, "MIDI emülasyonunu aktif et"},
 #endif
 
 /* midi.c */
 /* en */ {IDCLS_DISABLE_MIDI_EMU,    N_("Disable MIDI emulation")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_DISABLE_MIDI_EMU_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_DISABLE_MIDI_EMU_DE, "MIDI Emulation deaktivieren"},
 /* fr */ {IDCLS_DISABLE_MIDI_EMU_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_DISABLE_MIDI_EMU_HU, "MIDI emuláció tiltása"},
@@ -9994,12 +10231,14 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_DISABLE_MIDI_EMU_NL, "MIDI emulatie uitschakelen"},
 /* pl */ {IDCLS_DISABLE_MIDI_EMU_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_DISABLE_MIDI_EMU_SV, "Inaktivera MIDI-emulering"},
+/* tr */ {IDCLS_DISABLE_MIDI_EMU_TR, "MIDI emülasyonunu pasifleþtir"},
 #endif
 
 /* c64/c64-midi.c */
 /* en */ {IDCLS_SPECIFY_C64_MIDI_TYPE,    N_("MIDI interface type (0: Sequential, 1: Passport, 2: DATEL, 3: Namesoft, 4: "
                                              "Maplin)")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_SPECIFY_C64_MIDI_TYPE_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_SPECIFY_C64_MIDI_TYPE_DE, "MIDI Interface Typ (0: Sequential, 1: Passport, 2: DATEL, 3: Namesoft, 4: Maplin)"},
 /* fr */ {IDCLS_SPECIFY_C64_MIDI_TYPE_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_SPECIFY_C64_MIDI_TYPE_HU, "MIDI interfész típus (0: soros, 1: Passport, 2: DATEL, 3: Namesoft, 4: Maplin)"},
@@ -10010,12 +10249,15 @@ translate_t string_table[] = {
 /* pl */ {IDCLS_SPECIFY_C64_MIDI_TYPE_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_SPECIFY_C64_MIDI_TYPE_SV, "Typ av MIDI-gränssnitt (0: sekventiell, 1: Passport, 2: DATEL, 3: Namesoft, "
                                           "4: Maplin)"},
+/* tr */ {IDCLS_SPECIFY_C64_MIDI_TYPE_TR, "MIDI arabirim tipi (0: Sequential, 1: Passport, 2: DATEL, 3: Namesoft, 4: "
+                                          "Maplin)"},
 #endif
 #endif
 
 /* c64/digimax.c */
 /* en */ {IDCLS_ENABLE_DIGIMAX,    N_("Enable the digimax cartridge")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_ENABLE_DIGIMAX_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_ENABLE_DIGIMAX_DE, "Digimax Cartridge aktivieren"},
 /* fr */ {IDCLS_ENABLE_DIGIMAX_FR, "Activer la cartouche Digimax"},
 /* hu */ {IDCLS_ENABLE_DIGIMAX_HU, "Digimax cartridge engedélyezése"},
@@ -10023,11 +10265,13 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_ENABLE_DIGIMAX_NL, "Activeer de digimaxcartridge"},
 /* pl */ {IDCLS_ENABLE_DIGIMAX_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_ENABLE_DIGIMAX_SV, "Aktivera Digimax-cartridge"},
+/* tr */ {IDCLS_ENABLE_DIGIMAX_TR, "Digimax kartuþunu aktif et"},
 #endif
 
 /* c64/digimax.c */
 /* en */ {IDCLS_DISABLE_DIGIMAX,    N_("Disable the digimax cartridge")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_DISABLE_DIGIMAX_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_DISABLE_DIGIMAX_DE, "Digimax Cartridge deaktivieren"},
 /* fr */ {IDCLS_DISABLE_DIGIMAX_FR, "Désactiver la cartouche Digimax"},
 /* hu */ {IDCLS_DISABLE_DIGIMAX_HU, "Digimax cartridge tiltása"},
@@ -10035,18 +10279,21 @@ translate_t string_table[] = {
 /* nl */ {IDCLS_DISABLE_DIGIMAX_NL, "De digimaxcartridge uitschakelen"},
 /* pl */ {IDCLS_DISABLE_DIGIMAX_PL, ""},  /* fuzzy */
 /* sv */ {IDCLS_DISABLE_DIGIMAX_SV, "Inaktivera Digimax Cartridge"},
+/* tr */ {IDCLS_DISABLE_DIGIMAX_TR, "Digimax kartuþunu pasifleþtir"},
 #endif
 
 /* c64/digimax.c */
 /* en */ {IDCLS_DIGIMAX_BASE,    N_("Base address of the digimax cartridge")},
 #ifdef HAS_TRANSLATION
+/* da */ {IDCLS_DIGIMAX_BASE_DA, ""},  /* fuzzy */
 /* de */ {IDCLS_DIGIMAX_BASE_DE, "Basis Adresse für Digimax Erweiterung"},
 /* fr */ {IDCLS_DIGIMAX_BASE_FR, "Adresse de base de la cartouche Digimax"},
 /* hu */ {IDCLS_DIGIMAX_BASE_HU, "A digimax cartridge báziscíme"},
 /* it */ {IDCLS_DIGIMAX_BASE_IT, "Indirizzo base della cartuccia digimax"},
 /* nl */ {IDCLS_DIGIMAX_BASE_NL, "Basisadres van de digimaxcartridge"},
 /* pl */ {IDCLS_DIGIMAX_BASE_PL, ""},  /* fuzzy */
-/* sv */ {IDCLS_DIGIMAX_BASE_SV, "Basadress för Digimax-cartridge"}
+/* sv */ {IDCLS_DIGIMAX_BASE_SV, "Basadress för Digimax-cartridge"},
+/* tr */ {IDCLS_DIGIMAX_BASE_PL, "Digimax kartuþunun taban adresi"}
 #endif
 
 };
