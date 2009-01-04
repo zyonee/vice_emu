@@ -4892,7 +4892,7 @@ translate_t string_table[] = {
 /* c64/cart/c64cart.c */
 /* en */ {IDCLS_ATTACH_CRT_CART,    N_("Attach CRT cartridge image")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ATTACH_CRT_CART_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ATTACH_CRT_CART_DA, "Tilslut CRT-cartridge image"},
 /* de */ {IDCLS_ATTACH_CRT_CART_DE, "CRT Erweiterungsmodul Image einlegen"},
 /* fr */ {IDCLS_ATTACH_CRT_CART_FR, "Insérer une cartouche CRT"},
 /* hu */ {IDCLS_ATTACH_CRT_CART_HU, "CRT cartridge képmás csatolása"},
@@ -4906,7 +4906,7 @@ translate_t string_table[] = {
 /* c64/cart/c64cart.c */
 /* en */ {IDCLS_ATTACH_GENERIC_8KB_CART,    N_("Attach generic 8KB cartridge image")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ATTACH_GENERIC_8KB_CART_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ATTACH_GENERIC_8KB_CART_DA, "Tilslut standard 8KB-cartridge image"},
 /* de */ {IDCLS_ATTACH_GENERIC_8KB_CART_DE, "Generisches 8K Erweiterungsmodul Image einlegen"},
 /* fr */ {IDCLS_ATTACH_GENERIC_8KB_CART_FR, "Insérer une cartouche générique 8KO"},
 /* hu */ {IDCLS_ATTACH_GENERIC_8KB_CART_HU, "Általános 8KB cartridge képmás csatolása"},
@@ -4920,7 +4920,7 @@ translate_t string_table[] = {
 /* c64/cart/c64cart.c */
 /* en */ {IDCLS_ATTACH_GENERIC_16KB_CART,    N_("Attach generic 16KB cartridge image")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ATTACH_GENERIC_16KB_CART_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ATTACH_GENERIC_16KB_CART_DA, "Tilslut standard 16KB-cartridge image"},
 /* de */ {IDCLS_ATTACH_GENERIC_16KB_CART_DE, "Generisches 16K Erweiterungsmodul Image einlegen"},
 /* fr */ {IDCLS_ATTACH_GENERIC_16KB_CART_FR, "Insérer une cartouche générique 16KO"},
 /* hu */ {IDCLS_ATTACH_GENERIC_16KB_CART_HU, "Általános 16KB cartridge képmás csatolása"},
@@ -4934,7 +4934,7 @@ translate_t string_table[] = {
 /* c64/cart/c64cart.c */
 /* en */ {IDCLS_ATTACH_RAW_STARDOS_CART,    N_("Attach raw 16KB StarDOS cartridge image")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ATTACH_RAW_STARDOS_CART_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ATTACH_RAW_STARDOS_CART_DA, "Tilslut råt 16KB StarDOS-cartridge image"},
 /* de */ {IDCLS_ATTACH_RAW_STARDOS_CART_DE, "16KB StarDOS Erweiterungsmodul Image einlegen"},
 /* fr */ {IDCLS_ATTACH_RAW_STARDOS_CART_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_ATTACH_RAW_STARDOS_CART_HU, "Nyers 16KB-os StarDOS cartridge képmás csatolása"},
@@ -4948,7 +4948,7 @@ translate_t string_table[] = {
 /* c64/cart/c64cart.c */
 /* en */ {IDCLS_ATTACH_RAW_ACTION_REPLAY4_CART,    N_("Attach raw 32KB Action Replay IV cartridge image")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ATTACH_RAW_ACTION_REPLAY4_CART_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ATTACH_RAW_ACTION_REPLAY4_CART_DA, "Tilslut råt 32KB-Action Replay IV-cartridge image"},
 /* de */ {IDCLS_ATTACH_RAW_ACTION_REPLAY4_CART_DE, "32K Action Replay Image IV einlegen"},
 /* fr */ {IDCLS_ATTACH_RAW_ACTION_REPLAY4_CART_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_ATTACH_RAW_ACTION_REPLAY4_CART_HU, "32KB-os Action Replay IV cartridge képmás csatolása"},
@@ -4962,7 +4962,7 @@ translate_t string_table[] = {
 /* c64/cart/c64cart.c */
 /* en */ {IDCLS_ATTACH_RAW_ACTION_REPLAY3_CART,    N_("Attach raw 16KB Action Replay III cartridge image")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ATTACH_RAW_ACTION_REPLAY3_CART_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ATTACH_RAW_ACTION_REPLAY3_CART_DA, "Tilslut råt 16KB-Action Replay III-cartridge image"},
 /* de */ {IDCLS_ATTACH_RAW_ACTION_REPLAY3_CART_DE, "16KB Action Replay Image III (raw) einlegen"},
 /* fr */ {IDCLS_ATTACH_RAW_ACTION_REPLAY3_CART_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_ATTACH_RAW_ACTION_REPLAY3_CART_HU, "16KB-os Action Replay III cartridge képmás csatolása"},
@@ -4976,7 +4976,7 @@ translate_t string_table[] = {
 /* c64/cart/c64cart.c */
 /* en */ {IDCLS_ATTACH_RAW_ACTION_REPLAY_CART,    N_("Attach raw 32KB Action Replay cartridge image")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ATTACH_RAW_ACTION_REPLAY_CART_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ATTACH_RAW_ACTION_REPLAY_CART_DA, "Tilslut råt 32KB-Action Replay-cartridge image"},
 /* de */ {IDCLS_ATTACH_RAW_ACTION_REPLAY_CART_DE, "32K Action Replay Image einlegen"},
 /* fr */ {IDCLS_ATTACH_RAW_ACTION_REPLAY_CART_FR, "Insérer une cartouche Action Replay 32KO"},
 /* hu */ {IDCLS_ATTACH_RAW_ACTION_REPLAY_CART_HU, "32KB-os Action Replay cartridge képmás csatolása"},
@@ -4990,7 +4990,7 @@ translate_t string_table[] = {
 /* c64/cart/c64cart.c */
 /* en */ {IDCLS_ATTACH_RAW_RETRO_REPLAY_CART,    N_("Attach raw 64KB Retro Replay cartridge image")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ATTACH_RAW_RETRO_REPLAY_CART_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ATTACH_RAW_RETRO_REPLAY_CART_DA, "Tilslut råt 64KB-Retro Replay-cartridge image"},
 /* de */ {IDCLS_ATTACH_RAW_RETRO_REPLAY_CART_DE, "64K Retro Replay Image einlegen"},
 /* fr */ {IDCLS_ATTACH_RAW_RETRO_REPLAY_CART_FR, "Insérer une cartouche Retro Replay 64KO"},
 /* hu */ {IDCLS_ATTACH_RAW_RETRO_REPLAY_CART_HU, "64KB-os Retro Replay cartridge képmás csatolása"},
@@ -5004,7 +5004,7 @@ translate_t string_table[] = {
 /* c64/cart/c64cart.c */
 /* en */ {IDCLS_ATTACH_RAW_IDE64_CART,    N_("Attach raw 64KB IDE64 cartridge image")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ATTACH_RAW_IDE64_CART_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ATTACH_RAW_IDE64_CART_DA, "Tilslut råt 64KB IDE64-cartridge image"},
 /* de */ {IDCLS_ATTACH_RAW_IDE64_CART_DE, "64KB IDE64 Image einlegen"},
 /* fr */ {IDCLS_ATTACH_RAW_IDE64_CART_FR, "Insérer une cartouche IDE64 64KO"},
 /* hu */ {IDCLS_ATTACH_RAW_IDE64_CART_HU, "64KB-os IDE64 cartridge képmás csatolása"},
@@ -5018,7 +5018,7 @@ translate_t string_table[] = {
 /* c64/cart/c64cart.c */
 /* en */ {IDCLS_ATTACH_RAW_ATOMIC_POWER_CART,    N_("Attach raw 32KB Atomic Power cartridge image")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ATTACH_RAW_ATOMIC_POWER_CART_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ATTACH_RAW_ATOMIC_POWER_CART_DA, "Tilslut råt 32KB Atomic Power-cartridge image"},
 /* de */ {IDCLS_ATTACH_RAW_ATOMIC_POWER_CART_DE, "32KB Atomic Power Image einlegen"},
 /* fr */ {IDCLS_ATTACH_RAW_ATOMIC_POWER_CART_FR, "Insérer une cartouche Atomic Power 32KO"},
 /* hu */ {IDCLS_ATTACH_RAW_ATOMIC_POWER_CART_HU, "32KB-os Atomic Power cartridge képmás csatolása"},
@@ -5032,7 +5032,7 @@ translate_t string_table[] = {
 /* c64/cart/c64cart.c */
 /* en */ {IDCLS_ATTACH_RAW_EPYX_FASTLOAD_CART,    N_("Attach raw 8KB Epyx fastload cartridge image")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ATTACH_RAW_EPYX_FASTLOAD_CART_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ATTACH_RAW_EPYX_FASTLOAD_CART_DA, "Tilslut råt 8KB Epyx fastload-cartridge image"},
 /* de */ {IDCLS_ATTACH_RAW_EPYX_FASTLOAD_CART_DE, "8KB Epyx Fastload Image einlegen"},
 /* fr */ {IDCLS_ATTACH_RAW_EPYX_FASTLOAD_CART_FR, "Insérer une cartouche Epyx FastLoad 8KO"},
 /* hu */ {IDCLS_ATTACH_RAW_EPYX_FASTLOAD_CART_HU, "8KB-os Epyx gyorstöltõ cartridge képmás csatolása"},
@@ -5046,7 +5046,7 @@ translate_t string_table[] = {
 /* c64/cart/c64cart.c */
 /* en */ {IDCLS_ATTACH_RAW_SS4_CART,    N_("Attach raw 32KB Super Snapshot cartridge image")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ATTACH_RAW_SS4_CART_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ATTACH_RAW_SS4_CART_DA, "Tilslut råt 32KB Super Snapshot-cartridge image"},
 /* de */ {IDCLS_ATTACH_RAW_SS4_CART_DE, "32KB Super Snapshot (raw) Image einlegen"},
 /* fr */ {IDCLS_ATTACH_RAW_SS4_CART_FR, "Insérer une cartouche Super Snapshot 32KO"},
 /* hu */ {IDCLS_ATTACH_RAW_SS4_CART_HU, "32KB-os Super Snapshot cartridge képmás csatolása"},
@@ -5060,7 +5060,7 @@ translate_t string_table[] = {
 /* c64/cart/c64cart.c */
 /* en */ {IDCLS_ATTACH_RAW_SS5_CART,    N_("Attach raw 64KB Super Snapshot cartridge image")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ATTACH_RAW_SS5_CART_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ATTACH_RAW_SS5_CART_DA, "Tilslut råt 64KB-Super Snapshot-cartridge image"},
 /* de */ {IDCLS_ATTACH_RAW_SS5_CART_DE, "64KB Super Snapshot (raw) Image einlegen"},
 /* fr */ {IDCLS_ATTACH_RAW_SS5_CART_FR, "Insérer une cartouche Super Snapshot 64KO"},
 /* hu */ {IDCLS_ATTACH_RAW_SS5_CART_HU, "64KB-os Super Snapshot cartridge képmás csatolása"},
@@ -5074,7 +5074,7 @@ translate_t string_table[] = {
 /* c64/cart/c64cart.c */
 /* en */ {IDCLS_ATTACH_CBM_IEEE488_CART,    N_("Attach CBM IEEE488 cartridge image")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ATTACH_CBM_IEEE488_CART_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ATTACH_CBM_IEEE488_CART_DA, "Tilslut CBM IEEE488-cartridge image"},
 /* de */ {IDCLS_ATTACH_CBM_IEEE488_CART_DE, "CBM IEEE488 Erweiterungsmodul einlegen"},
 /* fr */ {IDCLS_ATTACH_CBM_IEEE488_CART_FR, "Insérer une cartouche CBM IEEE488"},
 /* hu */ {IDCLS_ATTACH_CBM_IEEE488_CART_HU, "CBM IEEE488 cartridge képmás csatolása"},
@@ -5088,7 +5088,7 @@ translate_t string_table[] = {
 /* c64/cart/c64cart.c */
 /* en */ {IDCLS_ATTACH_RAW_WESTERMANN_CART,    N_("Attach raw 16KB Westermann learning cartridge image")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ATTACH_RAW_WESTERMANN_CART_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ATTACH_RAW_WESTERMANN_CART_DA, "Tilslut råt 16KB-Westermann learning-cartridge image"},
 /* de */ {IDCLS_ATTACH_RAW_WESTERMANN_CART_DE, "16KB Westermann learning (raw) Image einlegen"},
 /* fr */ {IDCLS_ATTACH_RAW_WESTERMANN_CART_FR, "Insérer une cartouche Westermann Learning 16KO"},
 /* hu */ {IDCLS_ATTACH_RAW_WESTERMANN_CART_HU, "16KB-os Westermann learning cartridge képmás csatolása"},
@@ -5102,7 +5102,7 @@ translate_t string_table[] = {
 /* c64/cart/c64cart.c */
 /* en */ {IDCLS_ENABLE_EXPERT_CART,    N_("Enable expert cartridge")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ENABLE_EXPERT_CART_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ENABLE_EXPERT_CART_DA, "Aktivér Expert Cartridge"},
 /* de */ {IDCLS_ENABLE_EXPERT_CART_DE, "Expert Cartridge aktivieren"},
 /* fr */ {IDCLS_ENABLE_EXPERT_CART_FR, "Activer les paramètres experts de cartouches"},
 /* hu */ {IDCLS_ENABLE_EXPERT_CART_HU, "Expert cartridge engedélyezése"},
@@ -5116,7 +5116,7 @@ translate_t string_table[] = {
 /* c64/cart/c64cart.c */
 /* en */ {IDCLS_DISABLE_CART,    N_("Disable default cartridge")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_DISABLE_CART_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_DISABLE_CART_DA, "Deaktiver standard cartridge"},
 /* de */ {IDCLS_DISABLE_CART_DE, "Standard Modul deaktivieren"},
 /* fr */ {IDCLS_DISABLE_CART_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_DISABLE_CART_HU, "Alap cartridge tiltása"},
@@ -5130,7 +5130,7 @@ translate_t string_table[] = {
 /* c64/cart/ide64.c */
 /* en */ {IDCLS_SPECIFY_IDE64_NAME,    N_("Specify name of IDE64 image file")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_IDE64_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_IDE64_NAME_DA, "Angiv navn på IDE64-cartridge image"},
 /* de */ {IDCLS_SPECIFY_IDE64_NAME_DE, "Namen für IDE64 Image Datei definieren"},
 /* fr */ {IDCLS_SPECIFY_IDE64_NAME_FR, "Spécifier le nom de l'image IDE64"},
 /* hu */ {IDCLS_SPECIFY_IDE64_NAME_HU, "Adja meg az IDE64 képmás fájlnevét"},
@@ -5145,7 +5145,7 @@ translate_t string_table[] = {
    debug.c, mouse.c, ram.c, sound.c, vsync.c */
 /* en */ {IDCLS_P_VALUE,    N_("<value>")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_P_VALUE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_P_VALUE_DA, "<værdi>"},
 /* de */ {IDCLS_P_VALUE_DE, "<Wert>"},
 /* fr */ {IDCLS_P_VALUE_FR, "<valeur>"},
 /* hu */ {IDCLS_P_VALUE_HU, "<érték>"},
@@ -5159,7 +5159,7 @@ translate_t string_table[] = {
 /* c64/cart/ide64.c */
 /* en */ {IDCLS_SET_AMOUNT_CYLINDERS_IDE64,    N_("Set number of cylinders for the IDE64 emulation")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SET_AMOUNT_CYLINDERS_IDE64_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SET_AMOUNT_CYLINDERS_IDE64_DA, "Vælg antal cylindrer for IDE64-emuleringen"},
 /* de */ {IDCLS_SET_AMOUNT_CYLINDERS_IDE64_DE, "Anzahl der Zylinder für IDE64 Emulation"},
 /* fr */ {IDCLS_SET_AMOUNT_CYLINDERS_IDE64_FR, "Régler le nombre de cylindres pour l'émulation IDE64"},
 /* hu */ {IDCLS_SET_AMOUNT_CYLINDERS_IDE64_HU, "Adja meg a sávok számát IDE64 emulációhoz"},
@@ -5173,7 +5173,7 @@ translate_t string_table[] = {
 /* c64/cart/ide64.c */
 /* en */ {IDCLS_SET_AMOUNT_HEADS_IDE64,    N_("Set number of heads for the IDE64 emulation")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SET_AMOUNT_HEADS_IDE64_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SET_AMOUNT_HEADS_IDE64_DA, "Vælg antal hoveder for IDE64-emuleringen"},
 /* de */ {IDCLS_SET_AMOUNT_HEADS_IDE64_DE, "Anzahl der Laufwerksköpfe für IDE64 Emulation"},
 /* fr */ {IDCLS_SET_AMOUNT_HEADS_IDE64_FR, "Régler le nombre de têtes pour l'émulation IDE64"},
 /* hu */ {IDCLS_SET_AMOUNT_HEADS_IDE64_HU, "Adja meg a fejek számát IDE64 emulációhoz"},
@@ -5187,7 +5187,7 @@ translate_t string_table[] = {
 /* c64/cart/ide64.c */
 /* en */ {IDCLS_SET_AMOUNT_SECTORS_IDE64,    N_("Set number of sectors for the IDE64 emulation")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SET_AMOUNT_SECTORS_IDE64_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SET_AMOUNT_SECTORS_IDE64_DA, "Vælg antal sektorer for IDE64-emuleringen"},
 /* de */ {IDCLS_SET_AMOUNT_SECTORS_IDE64_DE, "Anzahl der Sektoren für IDE64 Emulation"},
 /* fr */ {IDCLS_SET_AMOUNT_SECTORS_IDE64_FR, "Régler le nombre de secteurs pour l'émulation IDE64"},
 /* hu */ {IDCLS_SET_AMOUNT_SECTORS_IDE64_HU, "Adja meg a szektorok számát IDE64 emulációhoz"},
@@ -5201,7 +5201,7 @@ translate_t string_table[] = {
 /* c64/cart/ide64.c */
 /* en */ {IDCLS_AUTODETECT_IDE64_GEOMETRY,    N_("Autodetect geometry of formatted images")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_AUTODETECT_IDE64_GEOMETRY_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_AUTODETECT_IDE64_GEOMETRY_DA, "Autodetektér geometri fra formatterede images"},
 /* de */ {IDCLS_AUTODETECT_IDE64_GEOMETRY_DE, "Geometrie von formatierten Image Dateien automatisch erkennen"},
 /* fr */ {IDCLS_AUTODETECT_IDE64_GEOMETRY_FR, "Détecter automatiquement la géométrie des images formattées"},
 /* hu */ {IDCLS_AUTODETECT_IDE64_GEOMETRY_HU, "Formázott képmások geometriájának automatikus felismerése"},
@@ -5215,7 +5215,7 @@ translate_t string_table[] = {
 /* c64/cart/ide64.c */
 /* en */ {IDCLS_NO_AUTODETECT_IDE64_GEOMETRY,    N_("Do not autodetect geometry of formatted images")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_NO_AUTODETECT_IDE64_GEOMETRY_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_NO_AUTODETECT_IDE64_GEOMETRY_DA, "Autodetektér ikke geometri fra formatterede images"},
 /* de */ {IDCLS_NO_AUTODETECT_IDE64_GEOMETRY_DE, "Geometrie von formatierten Image Dateien nicht automatisch erkennen"},
 /* fr */ {IDCLS_NO_AUTODETECT_IDE64_GEOMETRY_FR, "Ne pas détecter automatiquement la géométrie des images formattées"},
 /* hu */ {IDCLS_NO_AUTODETECT_IDE64_GEOMETRY_HU, "Formázott képmások geometriáját ne ismerje fel automatikusan"},
@@ -5229,7 +5229,7 @@ translate_t string_table[] = {
 /* cbm2/cbm2-cmdline-options.c, pet/pet-cmdline-options.c */
 /* en */ {IDCLS_P_MODELNUMBER,    N_("<modelnumber>")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_P_MODELNUMBER_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_P_MODELNUMBER_DA, "<modelnummer>"},
 /* de */ {IDCLS_P_MODELNUMBER_DE, "<Modell Nummer>"},
 /* fr */ {IDCLS_P_MODELNUMBER_FR, "<numerodemodele>"},
 /* hu */ {IDCLS_P_MODELNUMBER_HU, "<modellszám>"},
@@ -5243,7 +5243,7 @@ translate_t string_table[] = {
 /* cbm2/cbm2-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_CBM2_MODEL,    N_("Specify CBM-II model to emulate")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_CBM2_MODEL_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_CBM2_MODEL_DA, "Angiv emuleret CBM-II-model"},
 /* de */ {IDCLS_SPECIFY_CBM2_MODEL_DE, "CBM-II Modell für Emulation definieren"},
 /* fr */ {IDCLS_SPECIFY_CBM2_MODEL_FR, "Spécifier le modèle CBM-II à émuler"},
 /* hu */ {IDCLS_SPECIFY_CBM2_MODEL_HU, "Adja meg az emulálandó CBM-II modell számát"},
@@ -5257,7 +5257,7 @@ translate_t string_table[] = {
 /* cbm2/cbm2-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_TO_USE_VIC_II,    N_("Specify to use VIC-II")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_TO_USE_VIC_II_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_TO_USE_VIC_II_DA, "Brug VIC-II"},
 /* de */ {IDCLS_SPECIFY_TO_USE_VIC_II_DE, "VIC-II Unterstützung aktivieren"},
 /* fr */ {IDCLS_SPECIFY_TO_USE_VIC_II_FR, "Spécifier l'utilisation de VIC-II"},
 /* hu */ {IDCLS_SPECIFY_TO_USE_VIC_II_HU, "VIC-II használata"},
@@ -5271,7 +5271,7 @@ translate_t string_table[] = {
 /* cbm2/cbm2-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_TO_USE_CRTC,    N_("Specify to use CRTC")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_TO_USE_CRTC_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_TO_USE_CRTC_DA, "Brug CRTC"},
 /* de */ {IDCLS_SPECIFY_TO_USE_CRTC_DE, "CRTC Unterstützung aktivieren"},
 /* fr */ {IDCLS_SPECIFY_TO_USE_CRTC_FR, "Spécifier l'utilisation de CRTC"},
 /* hu */ {IDCLS_SPECIFY_TO_USE_CRTC_HU, "CRTC használata"},
@@ -5285,7 +5285,7 @@ translate_t string_table[] = {
 /* cbm2/cbm2-cmdline-options.c */
 /* en */ {IDCLS_P_LINENUMBER,    N_("<linenumber>")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_P_LINENUMBER_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_P_LINENUMBER_DA, "<linjenummer>"},
 /* de */ {IDCLS_P_LINENUMBER_DE, "<Zeilennummer>"},
 /* fr */ {IDCLS_P_LINENUMBER_FR, "<numérodeligne>"},
 /* hu */ {IDCLS_P_LINENUMBER_HU, "<sorszám>"},
@@ -5299,7 +5299,7 @@ translate_t string_table[] = {
 /* cbm2/cbm2-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_CBM2_MODEL_HARDWARE,    N_("Specify CBM-II model hardware (0=6x0, 1=7x0)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_CBM2_MODEL_HARDWARE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_CBM2_MODEL_HARDWARE_DA, "Angiv hardware for CBM-II-model (0=6x0, 1=7x0)"},
 /* de */ {IDCLS_SPECIFY_CBM2_MODEL_HARDWARE_DE, "CBM-II Hardware Modell definieren (0=6x0, 1=7x0)"},
 /* fr */ {IDCLS_SPECIFY_CBM2_MODEL_HARDWARE_FR, "Spécifier le modèle hardware CBM-II (0=6x0, 1=7x0)"},
 /* hu */ {IDCLS_SPECIFY_CBM2_MODEL_HARDWARE_HU, "Adja meg a CBM-II hardver modellt (0=6x0, 1=7x0)"},
@@ -5313,7 +5313,7 @@ translate_t string_table[] = {
 /* cbm2/cbm2-cmdline-options.c, plus4/plus4-cmdline-options.c */
 /* en */ {IDCLS_P_RAMSIZE,    N_("<ramsize>")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_P_RAMSIZE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_P_RAMSIZE_DA, "<ramstørrelse>"},
 /* de */ {IDCLS_P_RAMSIZE_DE, "<RAM Größe>"},
 /* fr */ {IDCLS_P_RAMSIZE_FR, "<tailleram>"},
 /* hu */ {IDCLS_P_RAMSIZE_HU, "<ramméret>"},
@@ -5327,7 +5327,7 @@ translate_t string_table[] = {
 /* cbm2/cbm2-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_SIZE_OF_RAM,    N_("Specify size of RAM (64/128/256/512/1024 kByte)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_SIZE_OF_RAM_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_SIZE_OF_RAM_DA, "Angiv størrelse på RAM (64/128/256/512/1024 kByte)"},
 /* de */ {IDCLS_SPECIFY_SIZE_OF_RAM_DE, "RAM Größe definieren (64/128/256/512/1024 kByte)"},
 /* fr */ {IDCLS_SPECIFY_SIZE_OF_RAM_FR, "Spécifier la taille de la RAM (64/128/256/512/1024 KO)"},
 /* hu */ {IDCLS_SPECIFY_SIZE_OF_RAM_HU, "Adja meg a RAM méretét (64/128/256/512/1024 kBájt)"},
@@ -5341,7 +5341,7 @@ translate_t string_table[] = {
 /* cbm2/cbm2-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_CART_ROM_1000_NAME,    N_("Specify name of cartridge ROM image for $1000")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_CART_ROM_1000_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_CART_ROM_1000_NAME_DA, "Angiv navn på cartridge-ROM-image for $1000"},
 /* de */ {IDCLS_SPECIFY_CART_ROM_1000_NAME_DE, "Name für ROM Module Image Datei ($1000)"},
 /* fr */ {IDCLS_SPECIFY_CART_ROM_1000_NAME_FR, "Spécifier le nom de l’image de cartouche ROM pour $1000"},
 /* hu */ {IDCLS_SPECIFY_CART_ROM_1000_NAME_HU, "Adja meg a $1000 címû cartridge ROM képmás nevét"},
@@ -5355,7 +5355,7 @@ translate_t string_table[] = {
 /* cbm2/cbm2-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_CART_ROM_2000_NAME,    N_("Specify name of cartridge ROM image for $2000-$3fff")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_CART_ROM_2000_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_CART_ROM_2000_NAME_DA, "Angiv navn på cartridge-ROM-image for $2000-3fff"},
 /* de */ {IDCLS_SPECIFY_CART_ROM_2000_NAME_DE, "Name für ROM Module Image Datei ($2000-3fff)"},
 /* fr */ {IDCLS_SPECIFY_CART_ROM_2000_NAME_FR, "Spécifier le nom de l’image de cartouche ROM pour $2000-$3fff"},
 /* hu */ {IDCLS_SPECIFY_CART_ROM_2000_NAME_HU, "Adja meg a $2000-$3fff címû cartridge ROM képmás nevét"},
@@ -5370,7 +5370,7 @@ translate_t string_table[] = {
 /* cbm2/cbm2-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_CART_ROM_4000_NAME,    N_("Specify name of cartridge ROM image for $4000-$5fff")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_CART_ROM_4000_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_CART_ROM_4000_NAME_DA, "Angiv navn på cartridge-ROM-image for $4000-$5fff"},
 /* de */ {IDCLS_SPECIFY_CART_ROM_4000_NAME_DE, "Name für ROM Module Image Datei ($4000-5fff)"},
 /* fr */ {IDCLS_SPECIFY_CART_ROM_4000_NAME_FR, "Spécifier le nom de l’image de cartouche ROM pour $4000-$5fff"},
 /* hu */ {IDCLS_SPECIFY_CART_ROM_4000_NAME_HU, "Adja meg a $4000-$5fff címû cartridge ROM képmás nevét"},
@@ -5385,7 +5385,7 @@ translate_t string_table[] = {
 /* cbm2/cbm2-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_CART_ROM_6000_NAME,    N_("Specify name of cartridge ROM image for $6000-$7fff")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_CART_ROM_6000_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_CART_ROM_6000_NAME_DA, "Angiv navn på cartridge-ROM-image for $6000-$7fff"},
 /* de */ {IDCLS_SPECIFY_CART_ROM_6000_NAME_DE, "Name für ROM Module Image Datei ($6000-7fff)"},
 /* fr */ {IDCLS_SPECIFY_CART_ROM_6000_NAME_FR, "Spécifier le nom de l’image de cartouche ROM pour $6000-$7fff"},
 /* hu */ {IDCLS_SPECIFY_CART_ROM_6000_NAME_HU, "Adja meg a $6000-$7fff címû cartridge ROM képmás nevét"},
@@ -5400,7 +5400,7 @@ translate_t string_table[] = {
 /* cbm2/cbm2-cmdline-options.c */
 /* en */ {IDCLS_ENABLE_RAM_MAPPING_IN_0800,    N_("Enable RAM mapping in $0800-$0FFF")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ENABLE_RAM_MAPPING_IN_0800_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ENABLE_RAM_MAPPING_IN_0800_DA, "Aktivér RAM-mappning på $0800-$0FFF"},
 /* de */ {IDCLS_ENABLE_RAM_MAPPING_IN_0800_DE, "RAM Zuordnung in $0800-$0FFF aktivieren"},
 /* fr */ {IDCLS_ENABLE_RAM_MAPPING_IN_0800_FR, "Activer le mappage RAM dans $0800-$0FFF"},
 /* hu */ {IDCLS_ENABLE_RAM_MAPPING_IN_0800_HU, "$0800-$0FFF RAM leképzés engedélyezése"},
@@ -5414,7 +5414,7 @@ translate_t string_table[] = {
 /* cbm2/cbm2-cmdline-options.c */
 /* en */ {IDCLS_DISABLE_RAM_MAPPING_IN_0800,    N_("Disable RAM mapping in $0800-$0FFF")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_DISABLE_RAM_MAPPING_IN_0800_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_DISABLE_RAM_MAPPING_IN_0800_DA, "Deaktiver RAM-mappning på $0800-$0FFF"},
 /* de */ {IDCLS_DISABLE_RAM_MAPPING_IN_0800_DE, "RAM Zuordnung in $0800-$0FFF deaktivieren"},
 /* fr */ {IDCLS_DISABLE_RAM_MAPPING_IN_0800_FR, "Désactiver le mappage RAM dans $0800-$0FFF"},
 /* hu */ {IDCLS_DISABLE_RAM_MAPPING_IN_0800_HU, "$0800-$0FFF RAM leképzés tiltása"},
@@ -5428,7 +5428,7 @@ translate_t string_table[] = {
 /* cbm2/cbm2-cmdline-options.c */
 /* en */ {IDCLS_ENABLE_RAM_MAPPING_IN_1000,    N_("Enable RAM mapping in $1000-$1FFF")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ENABLE_RAM_MAPPING_IN_1000_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ENABLE_RAM_MAPPING_IN_1000_DA, "Aktivér RAM-mappning på $1000-$1FFF"},
 /* de */ {IDCLS_ENABLE_RAM_MAPPING_IN_1000_DE, "RAM Zuordnung in $1000-$1FFF aktivieren"},
 /* fr */ {IDCLS_ENABLE_RAM_MAPPING_IN_1000_FR, "Activer le mappage RAM dans $1000-$1FFF"},
 /* hu */ {IDCLS_ENABLE_RAM_MAPPING_IN_1000_HU, "$1000-$1FFF RAM leképzés engedélyezése"},
@@ -5442,7 +5442,7 @@ translate_t string_table[] = {
 /* cbm2/cbm2-cmdline-options.c */
 /* en */ {IDCLS_DISABLE_RAM_MAPPING_IN_1000,    N_("Disable RAM mapping in $1000-$1FFF")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_DISABLE_RAM_MAPPING_IN_1000_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_DISABLE_RAM_MAPPING_IN_1000_DA, "Deaktiver RAM-mappning på $1000-$1FFF"},
 /* de */ {IDCLS_DISABLE_RAM_MAPPING_IN_1000_DE, "RAM Zuordnung in $1000-$1FFF deaktivieren"},
 /* fr */ {IDCLS_DISABLE_RAM_MAPPING_IN_1000_FR, "Désactiver le mappage RAM dans $1000-$1FFF"},
 /* hu */ {IDCLS_DISABLE_RAM_MAPPING_IN_1000_HU, "$1000-$1FFF RAM leképzés tiltása"},
@@ -5456,7 +5456,7 @@ translate_t string_table[] = {
 /* cbm2/cbm2-cmdline-options.c */
 /* en */ {IDCLS_ENABLE_RAM_MAPPING_IN_2000,    N_("Enable RAM mapping in $2000-$3FFF")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ENABLE_RAM_MAPPING_IN_2000_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ENABLE_RAM_MAPPING_IN_2000_DA, "Aktivér RAM-mappning på $2000-$3FFF"},
 /* de */ {IDCLS_ENABLE_RAM_MAPPING_IN_2000_DE, "RAM Zuordnung in $2000-$3FFF aktivieren"},
 /* fr */ {IDCLS_ENABLE_RAM_MAPPING_IN_2000_FR, "Activer le mappage RAM dans $2000-$3FFF"},
 /* hu */ {IDCLS_ENABLE_RAM_MAPPING_IN_2000_HU, "$2000-$3FFF RAM leképzés engedélyezése"},
@@ -5470,7 +5470,7 @@ translate_t string_table[] = {
 /* cbm2/cbm2-cmdline-options.c */
 /* en */ {IDCLS_DISABLE_RAM_MAPPING_IN_2000,    N_("Disable RAM mapping in $2000-$3FFF")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_DISABLE_RAM_MAPPING_IN_2000_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_DISABLE_RAM_MAPPING_IN_2000_DA, "Deaktiver RAM-mappning på $2000-$3FFF"},
 /* de */ {IDCLS_DISABLE_RAM_MAPPING_IN_2000_DE, "RAM Zuordnung in $2000-$3FFF deaktivieren"},
 /* fr */ {IDCLS_DISABLE_RAM_MAPPING_IN_2000_FR, "Désactiver le mappage RAM dans $2000-$3FFF"},
 /* hu */ {IDCLS_DISABLE_RAM_MAPPING_IN_2000_HU, "$2000-$3FFF RAM leképzés tiltása"},
@@ -5484,7 +5484,7 @@ translate_t string_table[] = {
 /* cbm2/cbm2-cmdline-options.c */
 /* en */ {IDCLS_ENABLE_RAM_MAPPING_IN_4000,    N_("Enable RAM mapping in $4000-$5FFF")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ENABLE_RAM_MAPPING_IN_4000_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ENABLE_RAM_MAPPING_IN_4000_DA, "Aktivér RAM-mappning på $4000-$5FFF"},
 /* de */ {IDCLS_ENABLE_RAM_MAPPING_IN_4000_DE, "RAM Zuordnung in $4000-$5FFF aktivieren"},
 /* fr */ {IDCLS_ENABLE_RAM_MAPPING_IN_4000_FR, "Activer le mappage RAM dans $4000-$5FFF"},
 /* hu */ {IDCLS_ENABLE_RAM_MAPPING_IN_4000_HU, "$4000-$5FFF RAM leképzés engedélyezése"},
@@ -5498,7 +5498,7 @@ translate_t string_table[] = {
 /* cbm2/cbm2-cmdline-options.c */
 /* en */ {IDCLS_DISABLE_RAM_MAPPING_IN_4000,    N_("Disable RAM mapping in $4000-$5FFF")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_DISABLE_RAM_MAPPING_IN_4000_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_DISABLE_RAM_MAPPING_IN_4000_DA, "Deaktiver RAM-mappning på $4000-$5FFF"},
 /* de */ {IDCLS_DISABLE_RAM_MAPPING_IN_4000_DE, "RAM Zuordnung in $4000-$5FFF deaktivieren"},
 /* fr */ {IDCLS_DISABLE_RAM_MAPPING_IN_4000_FR, "Désactiver le mappage RAM dans $4000-$5FFF"},
 /* hu */ {IDCLS_DISABLE_RAM_MAPPING_IN_4000_HU, "$4000-$5FFF RAM leképzés tiltása"},
@@ -5512,7 +5512,7 @@ translate_t string_table[] = {
 /* cbm2/cbm2-cmdline-options.c */
 /* en */ {IDCLS_ENABLE_RAM_MAPPING_IN_6000,    N_("Enable RAM mapping in $6000-$7FFF")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ENABLE_RAM_MAPPING_IN_6000_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ENABLE_RAM_MAPPING_IN_6000_DA, "Aktivér RAM-mappning på $6000-$7FFF"},
 /* de */ {IDCLS_ENABLE_RAM_MAPPING_IN_6000_DE, "RAM Zuordnung in $6000-$7FFF aktivieren"},
 /* fr */ {IDCLS_ENABLE_RAM_MAPPING_IN_6000_FR, "Activer le mappage RAM dans $6000-$7FFF"},
 /* hu */ {IDCLS_ENABLE_RAM_MAPPING_IN_6000_HU, "$6000-$7FFF RAM leképzés engedélyezése"},
@@ -5526,7 +5526,7 @@ translate_t string_table[] = {
 /* cbm2/cbm2-cmdline-options.c */
 /* en */ {IDCLS_DISABLE_RAM_MAPPING_IN_6000,    N_("Disable RAM mapping in $6000-$7FFF")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_DISABLE_RAM_MAPPING_IN_6000_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_DISABLE_RAM_MAPPING_IN_6000_DA, "Deaktiver RAM-mappning på $6000-$7FFF"},
 /* de */ {IDCLS_DISABLE_RAM_MAPPING_IN_6000_DE, "RAM Zuordnung in $6000-$7FFF deaktivieren"},
 /* fr */ {IDCLS_DISABLE_RAM_MAPPING_IN_6000_FR, "Désactiver le mappage RAM dans $6000-$7FFF"},
 /* hu */ {IDCLS_DISABLE_RAM_MAPPING_IN_6000_HU, "$6000-$7FFF RAM leképzés tiltása"},
@@ -5540,7 +5540,7 @@ translate_t string_table[] = {
 /* cbm2/cbm2-cmdline-options.c */
 /* en */ {IDCLS_ENABLE_RAM_MAPPING_IN_C000,    N_("Enable RAM mapping in $C000-$CFFF")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ENABLE_RAM_MAPPING_IN_C000_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ENABLE_RAM_MAPPING_IN_C000_DA, "Aktivér RAM-mappning på $C000-$CFFF"},
 /* de */ {IDCLS_ENABLE_RAM_MAPPING_IN_C000_DE, "RAM Zuordnung in $C000-$CFFF aktivieren"},
 /* fr */ {IDCLS_ENABLE_RAM_MAPPING_IN_C000_FR, "Activer le mappage RAM dans $C000-$CFFF"},
 /* hu */ {IDCLS_ENABLE_RAM_MAPPING_IN_C000_HU, "$C000-$CFFF RAM leképzés engedélyezése"},
@@ -5554,7 +5554,7 @@ translate_t string_table[] = {
 /* cbm2/cbm2-cmdline-options.c */
 /* en */ {IDCLS_DISABLE_RAM_MAPPING_IN_C000,    N_("Disable RAM mapping in $C000-$CFFF")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_DISABLE_RAM_MAPPING_IN_C000_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_DISABLE_RAM_MAPPING_IN_C000_DA, "Deaktiver RAM-mappning på $C000-$CFFF"},
 /* de */ {IDCLS_DISABLE_RAM_MAPPING_IN_C000_DE, "RAM Zuordnung in $C000-$CFFF deaktivieren"},
 /* fr */ {IDCLS_DISABLE_RAM_MAPPING_IN_C000_FR, "Désactiver le mappage RAM dans $C000-$CFFF"},
 /* hu */ {IDCLS_DISABLE_RAM_MAPPING_IN_C000_HU, "$C000-$CFFF RAM leképzés tiltása"},
@@ -5569,7 +5569,7 @@ translate_t string_table[] = {
 /* cbm2/cbm2-cmdline-options.c, pet/pet-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_KEYMAP_INDEX,    N_("Specify index of keymap file")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_KEYMAP_INDEX_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_KEYMAP_INDEX_DA, "Angiv indeks for tastaturindstillingsfil"},
 /* de */ {IDCLS_SPECIFY_KEYMAP_INDEX_DE, "Index der Keymap Datei definieren"},
 /* fr */ {IDCLS_SPECIFY_KEYMAP_INDEX_FR, "Spécifier l'index du fichier de mappage clavier"},
 /* hu */ {IDCLS_SPECIFY_KEYMAP_INDEX_HU, "Adja meg a billentyûzet leképzés fájl típusát"},
@@ -5583,7 +5583,7 @@ translate_t string_table[] = {
 /* cbm2/cbm2-cmdline-options.c, pet/pet-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_GFX_SYM_KEYMAP_NAME,    N_("Specify name of graphics keyboard symbolic keymap file")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_GFX_SYM_KEYMAP_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_GFX_SYM_KEYMAP_NAME_DA, "Angiv fil for symbolsk tastaturemulering for \"graphics\"-tastatur"},
 /* de */ {IDCLS_SPECIFY_GFX_SYM_KEYMAP_NAME_DE, "Keymap Datei für graphics keyboard symbolic definieren"},
 /* fr */ {IDCLS_SPECIFY_GFX_SYM_KEYMAP_NAME_FR, "Spécifier le nom du fichier de mappage clavier symbolique"},
 /* hu */ {IDCLS_SPECIFY_GFX_SYM_KEYMAP_NAME_HU, "Adja meg a grafikus és szimbolikus billentyûzet leképzési fájl nevét."},
@@ -5599,7 +5599,8 @@ translate_t string_table[] = {
 /* cbm2/cbm2-cmdline-options.c, pet/pet-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_GFX_POS_KEYMAP_NAME,    N_("Specify name of graphics keyboard positional keymap file")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_GFX_POS_KEYMAP_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_GFX_POS_KEYMAP_NAME_DA, "Angiv fil for positionsbestemt tastaturemulering for \"graphics\"-"
+                                                "tastatur"},
 /* de */ {IDCLS_SPECIFY_GFX_POS_KEYMAP_NAME_DE, "Keymap Datei für graphics keyboard positional definieren"},
 /* fr */ {IDCLS_SPECIFY_GFX_POS_KEYMAP_NAME_FR, "Spécifier le nom du fichier de mappage clavier positionnel"},
 /* hu */ {IDCLS_SPECIFY_GFX_POS_KEYMAP_NAME_HU, "Adja meg a grafikus és pozíció szerinti billentyûzet leképzési fájl "
@@ -5617,7 +5618,8 @@ translate_t string_table[] = {
 /* cbm2/cbm2-cmdline-options.c, pet/pet-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_BUK_SYM_KEYMAP_NAME,    N_("Specify name of UK business keyboard symbolic keymap file")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_BUK_SYM_KEYMAP_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_BUK_SYM_KEYMAP_NAME_DA, "Angiv fil for symbolsk tastaturemulering for Britisk \"business\"-"
+                                                "tastatur"},
 /* de */ {IDCLS_SPECIFY_BUK_SYM_KEYMAP_NAME_DE, "Keymap Datei für UK business keyboard symbolic definieren"},
 /* fr */ {IDCLS_SPECIFY_BUK_SYM_KEYMAP_NAME_FR, "Spécifier le nom du fichier de mappage clavier symbolique UK"},
 /* hu */ {IDCLS_SPECIFY_BUK_SYM_KEYMAP_NAME_HU, "Adja meg az angol, hivatalos, szimbolikus billentyûzet leképzési fájl "
@@ -5635,7 +5637,8 @@ translate_t string_table[] = {
 /* cbm2/cbm2-cmdline-options.c, pet/pet-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_BUK_POS_KEYMAP_NAME,    N_("Specify name of UK business keyboard positional keymap file")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_BUK_POS_KEYMAP_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_BUK_POS_KEYMAP_NAME_DA, "Angiv fil for positionsbestemt tastaturemulering for Britisk "
+                                                "\"business\"-tastatur"},
 /* de */ {IDCLS_SPECIFY_BUK_POS_KEYMAP_NAME_DE, "Keymap Datei für UK business keyboard positional definieren"},
 /* fr */ {IDCLS_SPECIFY_BUK_POS_KEYMAP_NAME_FR, "Spécifier le nom du fichier de mappage clavier positionnel UK"},
 /* hu */ {IDCLS_SPECIFY_BUK_POS_KEYMAP_NAME_HU, "Adja meg a UK hivatalos pozíció szerinti billentyûzet leképzési fájl "
@@ -5653,7 +5656,7 @@ translate_t string_table[] = {
 /* cbm2/cbm2-cmdline-options.c, pet/pet-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_BDE_SYM_KEYMAP_NAME,    N_("Specify name of German business keyboard symbolic keymap file")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_BDE_SYM_KEYMAP_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_BDE_SYM_KEYMAP_NAME_DA, "Angiv fil for symbolsk tastaturemulering for Tysk \"business\"-tastatur"},
 /* de */ {IDCLS_SPECIFY_BDE_SYM_KEYMAP_NAME_DE, "Keymap Datei für German business keyboard symbolic definieren"},
 /* fr */ {IDCLS_SPECIFY_BDE_SYM_KEYMAP_NAME_FR, "Spécifier le nom du fichier de mappage clavier symbolique allemand"},
 /* hu */ {IDCLS_SPECIFY_BDE_SYM_KEYMAP_NAME_HU, "Adja meg a német, hivatalos, szimbolikus billentyûzet leképzési fájl "
@@ -5671,7 +5674,8 @@ translate_t string_table[] = {
 /* cbm2/cbm2-cmdline-options.c, pet/pet-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_BDE_POS_KEYMAP_NAME,    N_("Specify name of German business keyboard positional keymap file")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_BDE_POS_KEYMAP_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_BDE_POS_KEYMAP_NAME_DA, "Angiv fil for positionsbestemt tastaturemulering for Tysk "
+                                                "\"business\"-tastatur"},
 /* de */ {IDCLS_SPECIFY_BDE_POS_KEYMAP_NAME_DE, "Keymap Datei für German business keyboard positional definieren"},
 /* fr */ {IDCLS_SPECIFY_BDE_POS_KEYMAP_NAME_FR, "Spécifier le nom du fichier de mappage clavier positionnel allemand"},
 /* hu */ {IDCLS_SPECIFY_BDE_POS_KEYMAP_NAME_HU, "Adja meg a német, hivatalos, pozíció szerinti billentyûzet leképzési "
@@ -5690,7 +5694,7 @@ translate_t string_table[] = {
 /* drive/drive-cmdline-options.c */
 /* en */ {IDCLS_ENABLE_TRUE_DRIVE,    N_("Enable hardware-level emulation of disk drives")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ENABLE_TRUE_DRIVE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ENABLE_TRUE_DRIVE_DA, "Aktivér emulering af diskettedrev på hardware-niveau"},
 /* de */ {IDCLS_ENABLE_TRUE_DRIVE_DE, "Hardware Emulation für Disklaufwerke aktivieren"},
 /* fr */ {IDCLS_ENABLE_TRUE_DRIVE_FR, "Activer l'émulation de disques au niveau physique"},
 /* hu */ {IDCLS_ENABLE_TRUE_DRIVE_HU, "Lemezegységek hardver szintû emulációjának engedélyezése"},
@@ -5704,7 +5708,7 @@ translate_t string_table[] = {
 /* drive/drive-cmdline-options.c */
 /* en */ {IDCLS_DISABLE_TRUE_DRIVE,    N_("Disable hardware-level emulation of disk drives")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_DISABLE_TRUE_DRIVE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_DISABLE_TRUE_DRIVE_DA, "Deaktivér emulering af diskettedrev på hardware-niveau"},
 /* de */ {IDCLS_DISABLE_TRUE_DRIVE_DE, "Hardware Emulation für Disklaufwerke deaktivieren"},
 /* fr */ {IDCLS_DISABLE_TRUE_DRIVE_FR, "Désactiver l'émulation de disques au niveau physique"},
 /* hu */ {IDCLS_DISABLE_TRUE_DRIVE_HU, "Lemezegységek hardver szintû emulációjának tiltása"},
@@ -5719,7 +5723,7 @@ translate_t string_table[] = {
    attach.c, drive/iec/iec-cmdline-options.c */
 /* en */ {IDCLS_P_TYPE,    N_("<type>")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_P_TYPE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_P_TYPE_DA, "<type>"},
 /* de */ {IDCLS_P_TYPE_DE, "<Typ>"},
 /* fr */ {IDCLS_P_TYPE_FR, "<type>"},
 /* hu */ {IDCLS_P_TYPE_HU, "<típus>"},
@@ -5733,7 +5737,7 @@ translate_t string_table[] = {
 /* drive/drive-cmdline-options.c */
 /* en */ {IDCLS_SET_DRIVE_TYPE,    N_("Set drive type (0: no drive)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SET_DRIVE_TYPE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SET_DRIVE_TYPE_DA, "Angiv enhedstype (0: ingen enhed)"},
 /* de */ {IDCLS_SET_DRIVE_TYPE_DE, "Setze Laufwerkstyp (0: kein Laufwerk)"},
 /* fr */ {IDCLS_SET_DRIVE_TYPE_FR, "Spécifier le type de lecteur de disque (0: pas de lecteur)"},
 /* hu */ {IDCLS_SET_DRIVE_TYPE_HU, "Adja meg a lemezegység típusát (0: nincs)"},
@@ -5748,7 +5752,7 @@ translate_t string_table[] = {
    drive/iec/iec-cmdline-options.c */
 /* en */ {IDCLS_P_METHOD,    N_("<method>")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_P_METHOD_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_P_METHOD_DA, "<metode>"},
 /* de */ {IDCLS_P_METHOD_DE, "<Methode>"},
 /* fr */ {IDCLS_P_METHOD_FR, "<methode>"},
 /* hu */ {IDCLS_P_METHOD_HU, "<mód>"},
@@ -5762,7 +5766,8 @@ translate_t string_table[] = {
 /* drive/drive-cmdline-options.c */
 /* en */ {IDCLS_SET_DRIVE_EXTENSION_POLICY,    N_("Set drive 40 track extension policy (0: never, 1: ask, 2: on access)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SET_DRIVE_EXTENSION_POLICY_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SET_DRIVE_EXTENSION_POLICY_DA, "Angiv drevets regel for 40-spors udviddelse (0: aldrig, 1: spørg, 2: ved "
+                                               "tilgang)"},
 /* de */ {IDCLS_SET_DRIVE_EXTENSION_POLICY_DE, "40 Spur Erweiterungsmethode (0: nie, 1: Rückfrage, 2: bei Bedarf)"},
 /* fr */ {IDCLS_SET_DRIVE_EXTENSION_POLICY_FR, "Spécifier la règle d'extention 40 pistes (0: jamais, 1: demander, 2: à "
                                                "l'accès)"},
@@ -5780,7 +5785,7 @@ translate_t string_table[] = {
 /* drive/iec/iec-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_1541_DOS_ROM_NAME,    N_("Specify name of 1541 DOS ROM image")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_1541_DOS_ROM_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_1541_DOS_ROM_NAME_DA, "Angiv navn på 1541-DOS-ROM-image"},
 /* de */ {IDCLS_SPECIFY_1541_DOS_ROM_NAME_DE, "Name der 1541 DOS ROM Image Datei definieren"},
 /* fr */ {IDCLS_SPECIFY_1541_DOS_ROM_NAME_FR, "Spécifier le nom de l'image 1541 DOS ROM"},
 /* hu */ {IDCLS_SPECIFY_1541_DOS_ROM_NAME_HU, "Adja meg az 1541 DOS ROM képmás nevét"},
@@ -5794,7 +5799,7 @@ translate_t string_table[] = {
 /* drive/iec/iec-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_1541_II_DOS_ROM_NAME,    N_("Specify name of 1541-II DOS ROM image")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_1541_II_DOS_ROM_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_1541_II_DOS_ROM_NAME_DA, "Angivn navn på 1541-II-DOS-ROM-image"},
 /* de */ {IDCLS_SPECIFY_1541_II_DOS_ROM_NAME_DE, "Name der 1541-II DOS ROM Image Datei definieren"},
 /* fr */ {IDCLS_SPECIFY_1541_II_DOS_ROM_NAME_FR, "Spécifier le nom de l'image 1541-II DOS ROM"},
 /* hu */ {IDCLS_SPECIFY_1541_II_DOS_ROM_NAME_HU, "Adja meg az 1541-II DOS ROM képmás nevét"},
@@ -5808,7 +5813,7 @@ translate_t string_table[] = {
 /* drive/iec/iec-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_1570_DOS_ROM_NAME,    N_("Specify name of 1570 DOS ROM image")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_1570_DOS_ROM_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_1570_DOS_ROM_NAME_DA, "Angivn navn på 1570-DOS-ROM-image"},
 /* de */ {IDCLS_SPECIFY_1570_DOS_ROM_NAME_DE, "Name der 1570 DOS ROM Image Datei definieren"},
 /* fr */ {IDCLS_SPECIFY_1570_DOS_ROM_NAME_FR, "Spécifier le nom de l'image 1570 DOS ROM"},
 /* hu */ {IDCLS_SPECIFY_1570_DOS_ROM_NAME_HU, "Adja meg az 1570 DOS ROM képmás nevét"},
@@ -5822,7 +5827,7 @@ translate_t string_table[] = {
 /* drive/iec/iec-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_1571_DOS_ROM_NAME,    N_("Specify name of 1571 DOS ROM image")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_1571_DOS_ROM_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_1571_DOS_ROM_NAME_DA, "Angivn navn på 1571-DOS-ROM-image"},
 /* de */ {IDCLS_SPECIFY_1571_DOS_ROM_NAME_DE, "Name der 1571 DOS ROM Image Datei definieren"},
 /* fr */ {IDCLS_SPECIFY_1571_DOS_ROM_NAME_FR, "Spécifier le nom de l'image 1571 DOS ROM"},
 /* hu */ {IDCLS_SPECIFY_1571_DOS_ROM_NAME_HU, "Adja meg az 1571 DOS ROM képmás nevét"},
@@ -5836,7 +5841,7 @@ translate_t string_table[] = {
 /* drive/iec/iec-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_1581_DOS_ROM_NAME,    N_("Specify name of 1581 DOS ROM image")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_1581_DOS_ROM_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_1581_DOS_ROM_NAME_DA, "Angivn navn på 1581-DOS-ROM-image"},
 /* de */ {IDCLS_SPECIFY_1581_DOS_ROM_NAME_DE, "Name der 1581 DOS ROM Image Datei definieren"},
 /* fr */ {IDCLS_SPECIFY_1581_DOS_ROM_NAME_FR, "Spécifier le nom de l'image 1581 DOS ROM"},
 /* hu */ {IDCLS_SPECIFY_1581_DOS_ROM_NAME_HU, "Adja meg az 1581 DOS ROM képmás nevét"},
@@ -5850,7 +5855,8 @@ translate_t string_table[] = {
 /* drive/iec/iec-cmdline-options.c */
 /* en */ {IDCLS_SET_IDLE_METHOD,    N_("Set drive idling method (0: no traps, 1: skip cycles, 2: trap idle)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SET_IDLE_METHOD_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SET_IDLE_METHOD_DA, "Vælg pausemetode for diskettedrev (0: ingen traps, 1: spring over cykler, 2: "
+                                    "trap ledig)"},
 /* de */ {IDCLS_SET_IDLE_METHOD_DE, "Laufwerks idling Methode (0: kein Traps, 1: Zyklen verwerfen, 2: trap idle)"},
 /* fr */ {IDCLS_SET_IDLE_METHOD_FR, "Spécifier la méthode d'idle (0: pas de traps, 1: sauter des cycles, 2: trap idle)"},
 /* hu */ {IDCLS_SET_IDLE_METHOD_HU, "Lemezegység üresjárási módja (0: folytonos emuláció, 1: ciklusok kihagyása, 2: üres "
@@ -5868,7 +5874,7 @@ translate_t string_table[] = {
 /* drive/iec/iec-cmdline-options.c */
 /* en */ {IDCLS_ENABLE_DRIVE_RAM_2000,    N_("Enable 8KB RAM expansion at $2000-$3FFF")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ENABLE_DRIVE_RAM_2000_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ENABLE_DRIVE_RAM_2000_DA, "Aktivér 8KB RAM-udviddelse på $2000-$3FFF"},
 /* de */ {IDCLS_ENABLE_DRIVE_RAM_2000_DE, "8KB RAM Erweiterung bei $2000-3fff aktivieren"},
 /* fr */ {IDCLS_ENABLE_DRIVE_RAM_2000_FR, "Enable 8KB RAM expansion at $2000-$3FFF"},
 /* hu */ {IDCLS_ENABLE_DRIVE_RAM_2000_HU, "8KB RAM kiterjeszés engedélyezése a $2000-$3FFF címen"},
@@ -5882,7 +5888,7 @@ translate_t string_table[] = {
 /* drive/iec/iec-cmdline-options.c */
 /* en */ {IDCLS_DISABLE_DRIVE_RAM_2000,    N_("Disable 8KB RAM expansion at $2000-$3FFF")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_DISABLE_DRIVE_RAM_2000_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_DISABLE_DRIVE_RAM_2000_DA, "Deaktiver 8KB RAM-udviddelse på $2000-$3FFF"},
 /* de */ {IDCLS_DISABLE_DRIVE_RAM_2000_DE, "8KB RAM Erweiterung bei $2000-3fff deaktivieren"},
 /* fr */ {IDCLS_DISABLE_DRIVE_RAM_2000_FR, "Désactiver l'exansion de 8KB RAM à $2000-$3FFF"},
 /* hu */ {IDCLS_DISABLE_DRIVE_RAM_2000_HU, "8KB RAM kiterjeszés tiltása a $2000-$3FFF címen"},
@@ -5896,7 +5902,7 @@ translate_t string_table[] = {
 /* drive/iec/iec-cmdline-options.c */
 /* en */ {IDCLS_ENABLE_DRIVE_RAM_4000,    N_("Enable 8KB RAM expansion at $4000-$5FFF")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ENABLE_DRIVE_RAM_4000_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ENABLE_DRIVE_RAM_4000_DA, "Aktivér 8KB RAM-udviddelse på $4000-$5FFF"},
 /* de */ {IDCLS_ENABLE_DRIVE_RAM_4000_DE, "8KB RAM Erweiterung bei $4000-5fff aktivieren"},
 /* fr */ {IDCLS_ENABLE_DRIVE_RAM_4000_FR, "Enable 8KB RAM expansion at $4000-$5FFF"},
 /* hu */ {IDCLS_ENABLE_DRIVE_RAM_4000_HU, "8KB RAM kiterjeszés engedélyezése a $4000-$5FFF címen"},
@@ -5910,7 +5916,7 @@ translate_t string_table[] = {
 /* drive/iec/iec-cmdline-options.c */
 /* en */ {IDCLS_DISABLE_DRIVE_RAM_4000,    N_("Disable 8KB RAM expansion at $4000-$5FFF")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_DISABLE_DRIVE_RAM_4000_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_DISABLE_DRIVE_RAM_4000_DA, "Deaktiver 8KB RAM-udviddelse på $4000-$5FFF"},
 /* de */ {IDCLS_DISABLE_DRIVE_RAM_4000_DE, "8KB RAM Erweiterung bei $4000-5fff deaktivieren"},
 /* fr */ {IDCLS_DISABLE_DRIVE_RAM_4000_FR, "Désactiver l'exansion de 8KB RAM à $4000-$5FFF"},
 /* hu */ {IDCLS_DISABLE_DRIVE_RAM_4000_HU, "8KB RAM kiterjeszés tiltása a $4000-$5FFF címen"},
@@ -5924,7 +5930,7 @@ translate_t string_table[] = {
 /* drive/iec/iec-cmdline-options.c */
 /* en */ {IDCLS_ENABLE_DRIVE_RAM_6000,    N_("Enable 8KB RAM expansion at $6000-$7FFF")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ENABLE_DRIVE_RAM_6000_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ENABLE_DRIVE_RAM_6000_DA, "Aktivér 8KB RAM-udviddelse på $6000-$7FFF"},
 /* de */ {IDCLS_ENABLE_DRIVE_RAM_6000_DE, "8KB RAM Erweiterung bei $6000-7fff aktivieren"},
 /* fr */ {IDCLS_ENABLE_DRIVE_RAM_6000_FR, "Enable 8KB RAM expansion at $6000-$7FFF"},
 /* hu */ {IDCLS_ENABLE_DRIVE_RAM_6000_HU, "8KB RAM kiterjeszés engedélyezése a $6000-$7FFF címen"},
@@ -5938,7 +5944,7 @@ translate_t string_table[] = {
 /* drive/iec/iec-cmdline-options.c */
 /* en */ {IDCLS_DISABLE_DRIVE_RAM_6000,    N_("Disable 8KB RAM expansion at $6000-$7FFF")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_DISABLE_DRIVE_RAM_6000_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_DISABLE_DRIVE_RAM_6000_DA, "Deaktiver 8KB RAM-udviddelse på $6000-$7FFF"},
 /* de */ {IDCLS_DISABLE_DRIVE_RAM_6000_DE, "8KB RAM Erweiterung bei $6000-7fff deaktivieren"},
 /* fr */ {IDCLS_DISABLE_DRIVE_RAM_6000_FR, "Désactiver l'exansion de 8KB RAM à $6000-$7FFF"},
 /* hu */ {IDCLS_DISABLE_DRIVE_RAM_6000_HU, "8KB RAM kiterjeszés tiltása a $6000-$7FFF címen"},
@@ -5952,7 +5958,7 @@ translate_t string_table[] = {
 /* drive/iec/iec-cmdline-options.c */
 /* en */ {IDCLS_ENABLE_DRIVE_RAM_8000,    N_("Enable 8KB RAM expansion at $8000-$9FFF")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ENABLE_DRIVE_RAM_8000_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ENABLE_DRIVE_RAM_8000_DA, "Aktivér 8KB RAM-udviddelse på $8000-$9FFF"},
 /* de */ {IDCLS_ENABLE_DRIVE_RAM_8000_DE, "8KB RAM Erweiterung bei $8000-9fff aktivieren"},
 /* fr */ {IDCLS_ENABLE_DRIVE_RAM_8000_FR, "Enable 8KB RAM expansion at $8000-$9FFF"},
 /* hu */ {IDCLS_ENABLE_DRIVE_RAM_8000_HU, "8KB RAM kiterjeszés engedélyezése a $8000-$9FFF címen"},
@@ -5966,7 +5972,7 @@ translate_t string_table[] = {
 /* drive/iec/iec-cmdline-options.c */
 /* en */ {IDCLS_DISABLE_DRIVE_RAM_8000,    N_("Disable 8KB RAM expansion at $8000-$9FFF")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_DISABLE_DRIVE_RAM_8000_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_DISABLE_DRIVE_RAM_8000_DA, "Deaktiver 8KB RAM-udviddelse på $8000-$9FFF"},
 /* de */ {IDCLS_DISABLE_DRIVE_RAM_8000_DE, "8KB RAM Erweiterung bei $8000-9fff deaktivieren"},
 /* fr */ {IDCLS_DISABLE_DRIVE_RAM_8000_FR, "Désactiver l'exansion de 8KB RAM à $8000-$9FFF"},
 /* hu */ {IDCLS_DISABLE_DRIVE_RAM_8000_HU, "8KB RAM kiterjeszés tiltása a $8000-$9FFF címen"},
@@ -5980,7 +5986,7 @@ translate_t string_table[] = {
 /* drive/iec/iec-cmdline-options.c */
 /* en */ {IDCLS_ENABLE_DRIVE_RAM_A000,    N_("Enable 8KB RAM expansion at $A000-$BFFF")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ENABLE_DRIVE_RAM_A000_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ENABLE_DRIVE_RAM_A000_DA, "Aktivér 8KB RAM-udviddelse på $A000-$BFFF"},
 /* de */ {IDCLS_ENABLE_DRIVE_RAM_A000_DE, "8KB RAM Erweiterung bei $a000-bfff aktivieren"},
 /* fr */ {IDCLS_ENABLE_DRIVE_RAM_A000_FR, "Enable 8KB RAM expansion at $A000-$BFFF"},
 /* hu */ {IDCLS_ENABLE_DRIVE_RAM_A000_HU, "8KB RAM kiterjeszés engedélyezése a $A000-$BFFF címen"},
@@ -5994,7 +6000,7 @@ translate_t string_table[] = {
 /* drive/iec/iec-cmdline-options.c */
 /* en */ {IDCLS_DISABLE_DRIVE_RAM_A000,    N_("Disable 8KB RAM expansion at $A000-$BFFF")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_DISABLE_DRIVE_RAM_A000_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_DISABLE_DRIVE_RAM_A000_DA, "Deaktiver 8KB RAM-udviddelse på $A000-$BFFF"},
 /* de */ {IDCLS_DISABLE_DRIVE_RAM_A000_DE, "8KB RAM Erweiterung bei $a000-bfff deaktivieren"},
 /* fr */ {IDCLS_DISABLE_DRIVE_RAM_A000_FR, "Désactiver l'exansion de 8KB RAM à $A000-$BFFF"},
 /* hu */ {IDCLS_DISABLE_DRIVE_RAM_A000_HU, "8KB RAM kiterjeszés tiltása a $A000-$BFFF címen"},
@@ -6008,7 +6014,7 @@ translate_t string_table[] = {
 /* drive/iec/c64exp/c64exp-cmdline-options.c */
 /* en */ {IDCLS_PAR_CABLE_C64EXP_TYPE,    N_("Set parallel cable type (0: none, 1: standard, 2: Dolphin DOS 3)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_PAR_CABLE_C64EXP_TYPE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_PAR_CABLE_C64EXP_TYPE_DA, "Vælg typen af parallelkabel (0: ingen, 1: standard, 2: Dolphin DOS 3)"},
 /* de */ {IDCLS_PAR_CABLE_C64EXP_TYPE_DE, "Parallelkabel Typ (0: kein, 1: Standard, 2: Dolphin DOS 3)"},
 /* fr */ {IDCLS_PAR_CABLE_C64EXP_TYPE_FR, "Définir le type de câble parallèle (0: aucun, 1: standard, 2: Dolphin DOS 3)"},
 /* hu */ {IDCLS_PAR_CABLE_C64EXP_TYPE_HU, "Adja meg a párhuzamos kábel típusát (0: nincs, 1: standard, 2: Dolphin DOS 3)"},
@@ -6022,7 +6028,7 @@ translate_t string_table[] = {
 /* drive/iec/c64exp/c64exp-cmdline-options.c */
 /* en */ {IDCLS_ENABLE_PROFDOS,    N_("Enable Professional DOS")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ENABLE_PROFDOS_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ENABLE_PROFDOS_DA, "Aktivér Professional DOS"},
 /* de */ {IDCLS_ENABLE_PROFDOS_DE, "Professional DOS aktivieren"},
 /* fr */ {IDCLS_ENABLE_PROFDOS_FR, "Activer le DOS Professionnel"},
 /* hu */ {IDCLS_ENABLE_PROFDOS_HU, "Professional DOS engedélyezése"},
@@ -6036,7 +6042,7 @@ translate_t string_table[] = {
 /* drive/iec/c64exp/c64exp-cmdline-options.c */
 /* en */ {IDCLS_DISABLE_PROFDOS,    N_("Disable Professional DOS")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_DISABLE_PROFDOS_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_DISABLE_PROFDOS_DA, "Deaktiver Professional DOS"},
 /* de */ {IDCLS_DISABLE_PROFDOS_DE, "Professional DOS deaktivieren"},
 /* fr */ {IDCLS_DISABLE_PROFDOS_FR, "Désactiver le DOS Professionnel"},
 /* hu */ {IDCLS_DISABLE_PROFDOS_HU, "Professional DOS tiltása"},
@@ -6050,7 +6056,7 @@ translate_t string_table[] = {
 /* drive/iec/c64exp/c64exp-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_PROFDOS_1571_ROM_NAME,    N_("Specify name of Professional DOS 1571 ROM image")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_PROFDOS_1571_ROM_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_PROFDOS_1571_ROM_NAME_DA, "Angiv navn på Professional DOS 1571-ROM-image"},
 /* de */ {IDCLS_SPECIFY_PROFDOS_1571_ROM_NAME_DE, "Name von Professional DOS 1571 Datei definieren"},
 /* fr */ {IDCLS_SPECIFY_PROFDOS_1571_ROM_NAME_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_SPECIFY_PROFDOS_1571_ROM_NAME_HU, "Adja meg a Professional DOS 1571 ROM képmást"},
@@ -6064,7 +6070,7 @@ translate_t string_table[] = {
 /* drive/iec/plus4exp/plus4exp-cmdline-options.c */
 /* en */ {IDCLS_PAR_CABLE_PLUS4EXP_TYPE,    N_("Set parallel cable type (0: none, 1: standard)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_PAR_CABLE_PLUS4EXP_TYPE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_PAR_CABLE_PLUS4EXP_TYPE_DA, "Vælg typen af parallelkabel parallellkabel (0: ingen, 1: standard)"},
 /* de */ {IDCLS_PAR_CABLE_PLUS4EXP_TYPE_DE, "Parallelkabel Typ (0: kein, 1: Standard)"},
 /* fr */ {IDCLS_PAR_CABLE_PLUS4EXP_TYPE_FR, "Définir le type de câble parallèle (0: aucun, 1: standard)"},
 /* hu */ {IDCLS_PAR_CABLE_PLUS4EXP_TYPE_HU, "Adja meg a párhuzamos kábel típusát (0: nincs, 1: standard)"},
@@ -6078,7 +6084,7 @@ translate_t string_table[] = {
 /* drive/iec128dcr/iec128dcr-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_1571CR_DOS_ROM_NAME,    N_("Specify name of 1571CR DOS ROM image")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_1571CR_DOS_ROM_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_1571CR_DOS_ROM_NAME_DA, "Angiv navn på 1571CR-DOS-ROM-image"},
 /* de */ {IDCLS_SPECIFY_1571CR_DOS_ROM_NAME_DE, "Name der 1571CR DOS ROM Datei definieren"},
 /* fr */ {IDCLS_SPECIFY_1571CR_DOS_ROM_NAME_FR, "Spécifier le nom de l'image 1571CR DOS ROM"},
 /* hu */ {IDCLS_SPECIFY_1571CR_DOS_ROM_NAME_HU, "Adja meg az 1571CR DOS ROM képmás nevét"},
@@ -6092,7 +6098,7 @@ translate_t string_table[] = {
 /* drive/ieee/ieee-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_2031_DOS_ROM_NAME,    N_("Specify name of 2031 DOS ROM image")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_2031_DOS_ROM_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_2031_DOS_ROM_NAME_DA, "Angiv navn på 2031-DOS-ROM-image"},
 /* de */ {IDCLS_SPECIFY_2031_DOS_ROM_NAME_DE, "Name der 2031 DOS ROM Datei definieren"},
 /* fr */ {IDCLS_SPECIFY_2031_DOS_ROM_NAME_FR, "Spécifier le nom de l'image 2031 DOS ROM"},
 /* hu */ {IDCLS_SPECIFY_2031_DOS_ROM_NAME_HU, "Adja meg a 2031 DOS ROM képmás nevét"},
@@ -6106,7 +6112,7 @@ translate_t string_table[] = {
 /* drive/ieee/ieee-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_2040_DOS_ROM_NAME,    N_("Specify name of 2040 DOS ROM image")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_2040_DOS_ROM_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_2040_DOS_ROM_NAME_DA, "Angiv navn på 2040-DOS-ROM-image"},
 /* de */ {IDCLS_SPECIFY_2040_DOS_ROM_NAME_DE, "Name der 2040 DOS ROM Datei definieren"},
 /* fr */ {IDCLS_SPECIFY_2040_DOS_ROM_NAME_FR, "Spécifier le nom de l'image 2040 DOS ROM"},
 /* hu */ {IDCLS_SPECIFY_2040_DOS_ROM_NAME_HU, "Adja meg a 2040 DOS ROM képmás nevét"},
@@ -6120,7 +6126,7 @@ translate_t string_table[] = {
 /* drive/ieee/ieee-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_3040_DOS_ROM_NAME,    N_("Specify name of 3040 DOS ROM image")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_3040_DOS_ROM_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_3040_DOS_ROM_NAME_DA, "Angiv navn på 3040-DOS-ROM-image"},
 /* de */ {IDCLS_SPECIFY_3040_DOS_ROM_NAME_DE, "Name der 3040 DOS ROM Datei definieren"},
 /* fr */ {IDCLS_SPECIFY_3040_DOS_ROM_NAME_FR, "Spécifier le nom de l'image 3040 DOS ROM"},
 /* hu */ {IDCLS_SPECIFY_3040_DOS_ROM_NAME_HU, "Adja meg a 3040 DOS ROM képmás nevét"},
@@ -6134,7 +6140,7 @@ translate_t string_table[] = {
 /* drive/ieee/ieee-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_4040_DOS_ROM_NAME,    N_("Specify name of 4040 DOS ROM image")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_4040_DOS_ROM_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_4040_DOS_ROM_NAME_DA, "Angiv navn på 4040-DOS-ROM-image"},
 /* de */ {IDCLS_SPECIFY_4040_DOS_ROM_NAME_DE, "Name der 4040 DOS ROM Datei definieren"},
 /* fr */ {IDCLS_SPECIFY_4040_DOS_ROM_NAME_FR, "Spécifier le nom de l'image 4040 DOS ROM"},
 /* hu */ {IDCLS_SPECIFY_4040_DOS_ROM_NAME_HU, "Adja meg a 4040 DOS ROM képmás nevét"},
@@ -6148,7 +6154,7 @@ translate_t string_table[] = {
 /* drive/ieee/ieee-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_1001_DOS_ROM_NAME,    N_("Specify name of 1001/8050/8250 DOS ROM image")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_1001_DOS_ROM_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_1001_DOS_ROM_NAME_DA, "Angiv navn på 1001/8050/8250-DOS-ROM-image"},
 /* de */ {IDCLS_SPECIFY_1001_DOS_ROM_NAME_DE, "Name der 1001/8040/8205 DOS ROM Datei definieren"},
 /* fr */ {IDCLS_SPECIFY_1001_DOS_ROM_NAME_FR, "Spécifier le nom de l'image 1001/8050/8250 DOS ROM"},
 /* hu */ {IDCLS_SPECIFY_1001_DOS_ROM_NAME_HU, "Adja meg az 1001/8050/8250 DOS ROM képmás nevét"},
@@ -6162,7 +6168,7 @@ translate_t string_table[] = {
 /* drive/tcbm/tcbm-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_1551_DOS_ROM_NAME,    N_("Specify name of 1551 DOS ROM image")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_1551_DOS_ROM_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_1551_DOS_ROM_NAME_DA, "Angiv navn på 1551-DOS-ROM-image"},
 /* de */ {IDCLS_SPECIFY_1551_DOS_ROM_NAME_DE, "Name der 4040 DOS ROM Datei definieren"},
 /* fr */ {IDCLS_SPECIFY_1551_DOS_ROM_NAME_FR, "Spécifier le nom de l'image 1551 DOS ROM"},
 /* hu */ {IDCLS_SPECIFY_1551_DOS_ROM_NAME_HU, "Adja meg az 1551 DOS ROM képmás nevét"},
@@ -6176,7 +6182,7 @@ translate_t string_table[] = {
 /* fsdevice/fsdevice-cmdline-options.c */
 /* en */ {IDCLS_USE_AS_DIRECTORY_FSDEVICE_8,    N_("Use <name> as directory for file system device #8")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_USE_AS_DIRECTORY_FSDEVICE_8_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_USE_AS_DIRECTORY_FSDEVICE_8_DA, "Brug <navn> som katalog for filsystembaseret drev #8"},
 /* de */ {IDCLS_USE_AS_DIRECTORY_FSDEVICE_8_DE, "Benutze <Name> für Verzeichnis beim Verzeichniszugriff für Gerät #8"},
 /* fr */ {IDCLS_USE_AS_DIRECTORY_FSDEVICE_8_FR, "Utiliser le répertoire <nom> comme système de fichiers pour le lecteur "
                                                 "#8"},
@@ -6191,7 +6197,7 @@ translate_t string_table[] = {
 /* fsdevice/fsdevice-cmdline-options.c */
 /* en */ {IDCLS_USE_AS_DIRECTORY_FSDEVICE_9,    N_("Use <name> as directory for file system device #9")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_USE_AS_DIRECTORY_FSDEVICE_9_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_USE_AS_DIRECTORY_FSDEVICE_9_DA, "Brug <navn> som katalog for filsystembaseret drev #9"},
 /* de */ {IDCLS_USE_AS_DIRECTORY_FSDEVICE_9_DE, "Benutze <Name> für Verzeichnis beim Verzeichniszugriff für Gerät #9"},
 /* fr */ {IDCLS_USE_AS_DIRECTORY_FSDEVICE_9_FR, "Utiliser le répertoire <nom> comme système de fichiers pour le lecteur "
                                                 "#9"},
@@ -6206,7 +6212,7 @@ translate_t string_table[] = {
 /* fsdevice/fsdevice-cmdline-options.c */
 /* en */ {IDCLS_USE_AS_DIRECTORY_FSDEVICE_10,    N_("Use <name> as directory for file system device #10")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_USE_AS_DIRECTORY_FSDEVICE_10_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_USE_AS_DIRECTORY_FSDEVICE_10_DA, "Brug <navn> som katalog for filsystembaseret drev #10"},
 /* de */ {IDCLS_USE_AS_DIRECTORY_FSDEVICE_10_DE, "Benutze <Name> für Verzeichnis beim Verzeichniszugriff für Gerät #10"},
 /* fr */ {IDCLS_USE_AS_DIRECTORY_FSDEVICE_10_FR, "Utiliser le répertoire <nom> comme système de fichiers pour le lecteur "
                                                  "#10"},
@@ -6221,7 +6227,7 @@ translate_t string_table[] = {
 /* fsdevice/fsdevice-cmdline-options.c */
 /* en */ {IDCLS_USE_AS_DIRECTORY_FSDEVICE_11,    N_("Use <name> as directory for file system device #11")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_USE_AS_DIRECTORY_FSDEVICE_11_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_USE_AS_DIRECTORY_FSDEVICE_11_DA, "Brug <navn> som katalog for filsystembaseret drev #11"},
 /* de */ {IDCLS_USE_AS_DIRECTORY_FSDEVICE_11_DE, "Benutze <Name> für Verzeichnis beim Verzeichniszugriff für Gerät #11"},
 /* fr */ {IDCLS_USE_AS_DIRECTORY_FSDEVICE_11_FR, "Utiliser le répertoire <nom> comme système de fichiers pour le lecteur "
                                                  "#11"},
@@ -6237,7 +6243,7 @@ translate_t string_table[] = {
 /* gfxoutputdrv/ffmpegdrv.c */
 /* en */ {IDCLS_SET_AUDIO_STREAM_BITRATE,    N_("Set bitrate for audio stream in media file")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SET_AUDIO_STREAM_BITRATE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SET_AUDIO_STREAM_BITRATE_DA, "Angiv bitrate for lydstrøm i mediefil"},
 /* de */ {IDCLS_SET_AUDIO_STREAM_BITRATE_DE, "Bitrate für Audio Stream für Media Datei setzen"},
 /* fr */ {IDCLS_SET_AUDIO_STREAM_BITRATE_FR, "Régler le bitrate audio du fichier média"},
 /* hu */ {IDCLS_SET_AUDIO_STREAM_BITRATE_HU, "Adja meg az audió bitrátát a média fájlhoz"},
@@ -6251,7 +6257,7 @@ translate_t string_table[] = {
 /* gfxoutputdrv/ffmpegdrv.c */
 /* en */ {IDCLS_SET_VIDEO_STREAM_BITRATE,    N_("Set bitrate for video stream in media file")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SET_VIDEO_STREAM_BITRATE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SET_VIDEO_STREAM_BITRATE_DA, "Angiv bitrate for videostrøm i mediefil"},
 /* de */ {IDCLS_SET_VIDEO_STREAM_BITRATE_DE, "Bitrate für Video Stream für Media Datei setzen"},
 /* fr */ {IDCLS_SET_VIDEO_STREAM_BITRATE_FR, "Régler le bitrate vidéo du fichier média"},
 /* it */ {IDCLS_SET_VIDEO_STREAM_BITRATE_IT, "Imposta il bitrate per il flusso video nel file multimediale"},
@@ -6266,7 +6272,7 @@ translate_t string_table[] = {
 /* pet/pet-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_PET_MODEL,    N_("Specify PET model to emulate")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_PET_MODEL_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_PET_MODEL_DA, "Angiv emuleret PET-model"},
 /* de */ {IDCLS_SPECIFY_PET_MODEL_DE, "PET Modell spezifizieren"},
 /* fr */ {IDCLS_SPECIFY_PET_MODEL_FR, "Spécifier le modèle PET à émuler"},
 /* hu */ {IDCLS_SPECIFY_PET_MODEL_HU, "Adja meg az emulált PET modellt"},
@@ -6280,7 +6286,7 @@ translate_t string_table[] = {
 /* pet/pet-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_EDITOR_ROM_NAME,    N_("Specify name of Editor ROM image")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_EDITOR_ROM_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_EDITOR_ROM_NAME_DA, "Angiv navn på Editor-ROM-image"},
 /* de */ {IDCLS_SPECIFY_EDITOR_ROM_NAME_DE, "Name für Editor ROM Image Datei definieren"},
 /* fr */ {IDCLS_SPECIFY_EDITOR_ROM_NAME_FR, "Spécifier le nom de l’image ROM Editor"},
 /* hu */ {IDCLS_SPECIFY_EDITOR_ROM_NAME_HU, "Adja meg a szerkesztõ ROM képmás nevét"},
@@ -6294,7 +6300,7 @@ translate_t string_table[] = {
 /* pet/pet-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_4K_ROM_9XXX_NAME,    N_("Specify 4K extension ROM name at $9***")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_4K_ROM_9XXX_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_4K_ROM_9XXX_NAME_DA, "Angiv navn på 4K-udviddelses-ROM på $9***"},
 /* de */ {IDCLS_SPECIFY_4K_ROM_9XXX_NAME_DE, "4K Erweiterungs ROM Datei Name bei $9*** definieren"},
 /* fr */ {IDCLS_SPECIFY_4K_ROM_9XXX_NAME_FR, "Spécifier le nom de l'extension ROM 4K à $9***"},
 /* hu */ {IDCLS_SPECIFY_4K_ROM_9XXX_NAME_HU, "Adja meg a $9*** címû 4K ROM kiterjesztés nevét"},
@@ -6308,7 +6314,7 @@ translate_t string_table[] = {
 /* pet/pet-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_4K_ROM_AXXX_NAME,    N_("Specify 4K extension ROM name at $A***")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_4K_ROM_AXXX_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_4K_ROM_AXXX_NAME_DA, "Angiv navn på 4K-udviddelses-ROM på $A***"},
 /* de */ {IDCLS_SPECIFY_4K_ROM_AXXX_NAME_DE, "4K Erweiterungs ROM Datei Name bei $A*** definieren"},
 /* fr */ {IDCLS_SPECIFY_4K_ROM_AXXX_NAME_FR, "Spécifier le nom de l'extension ROM 4K à $A***"},
 /* hu */ {IDCLS_SPECIFY_4K_ROM_AXXX_NAME_HU, "Adja meg a $A*** címû 4K ROM kiterjesztés nevét"},
@@ -6322,7 +6328,7 @@ translate_t string_table[] = {
 /* pet/pet-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_4K_ROM_BXXX_NAME,    N_("Specify 4K extension ROM name at $B***")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_4K_ROM_BXXX_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_4K_ROM_BXXX_NAME_DA, "Angiv navn på 4K-udviddelses-ROM på $B***"},
 /* de */ {IDCLS_SPECIFY_4K_ROM_BXXX_NAME_DE, "4K Erweiterungs ROM Datei Name bei $B*** definieren"},
 /* fr */ {IDCLS_SPECIFY_4K_ROM_BXXX_NAME_FR, "Spécifier le nom de l'extension ROM 4K à $B***"},
 /* hu */ {IDCLS_SPECIFY_4K_ROM_BXXX_NAME_HU, "Adja meg a $B*** címû 4K ROM kiterjesztés nevét"},
@@ -6336,7 +6342,7 @@ translate_t string_table[] = {
 /* pet/pet-cmdline-options.c */
 /* en */ {IDCLS_PET8296_ENABLE_4K_RAM_AT_9000,    N_("Enable PET8296 4K RAM mapping at $9***")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_PET8296_ENABLE_4K_RAM_AT_9000_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_PET8296_ENABLE_4K_RAM_AT_9000_DA, "Aktivér PET8296 4K-RAM-mapping på $9***"},
 /* de */ {IDCLS_PET8296_ENABLE_4K_RAM_AT_9000_DE, "PET8296 4K RAM Zuordnung bei $9*** aktivieren"},
 /* fr */ {IDCLS_PET8296_ENABLE_4K_RAM_AT_9000_FR, "Activer l'extension PET8296 4K à $9***"},
 /* hu */ {IDCLS_PET8296_ENABLE_4K_RAM_AT_9000_HU, "PET8296 4K RAM engedélyezése a $9*** címen"},
@@ -6350,7 +6356,7 @@ translate_t string_table[] = {
 /* pet/pet-cmdline-options.c */
 /* en */ {IDCLS_PET8296_DISABLE_4K_RAM_AT_9000,    N_("Disable PET8296 4K RAM mapping at $9***")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_PET8296_DISABLE_4K_RAM_AT_9000_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_PET8296_DISABLE_4K_RAM_AT_9000_DA, "Deaktiver PET8296 4K-RAM-mapping på $9***"},
 /* de */ {IDCLS_PET8296_DISABLE_4K_RAM_AT_9000_DE, "PET8296 4K RAM Zuordnung bei $9*** deaktivieren"},
 /* fr */ {IDCLS_PET8296_DISABLE_4K_RAM_AT_9000_FR, "Désactiver l'extension PET8296 4K à $9***"},
 /* hu */ {IDCLS_PET8296_DISABLE_4K_RAM_AT_9000_HU, "PET8296 4K RAM tiltása a $9*** címen"},
@@ -6364,7 +6370,7 @@ translate_t string_table[] = {
 /* pet/pet-cmdline-options.c */
 /* en */ {IDCLS_PET8296_ENABLE_4K_RAM_AT_A000,    N_("Enable PET8296 4K RAM mapping at $A***")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_PET8296_ENABLE_4K_RAM_AT_A000_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_PET8296_ENABLE_4K_RAM_AT_A000_DA, "Aktivér PET8296 4K-RAM-mapping på $A***"},
 /* de */ {IDCLS_PET8296_ENABLE_4K_RAM_AT_A000_DE, "PET8296 4K RAM Zuordnung bei $A*** aktivieren"},
 /* fr */ {IDCLS_PET8296_ENABLE_4K_RAM_AT_A000_FR, "Activer l'extension PET8296 4K à $A***"},
 /* hu */ {IDCLS_PET8296_ENABLE_4K_RAM_AT_A000_HU, "PET8296 4K RAM engedélyezése a $A*** címen"},
@@ -6378,7 +6384,7 @@ translate_t string_table[] = {
 /* pet/pet-cmdline-options.c */
 /* en */ {IDCLS_PET8296_DISABLE_4K_RAM_AT_A000,    N_("Disable PET8296 4K RAM mapping at $A***")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_PET8296_DISABLE_4K_RAM_AT_A000_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_PET8296_DISABLE_4K_RAM_AT_A000_DA, "Deaktiver PET8296 4K-RAM-mapping på $A***"},
 /* de */ {IDCLS_PET8296_DISABLE_4K_RAM_AT_A000_DE, "PET8296 4K RAM Zuordnung bei $A*** deaktivieren"},
 /* fr */ {IDCLS_PET8296_DISABLE_4K_RAM_AT_A000_FR, "Désactiver l'extension PET8296 4K à $A***"},
 /* hu */ {IDCLS_PET8296_DISABLE_4K_RAM_AT_A000_HU, "PET8296 4K RAM tiltása a $A*** címen"},
@@ -6392,7 +6398,7 @@ translate_t string_table[] = {
 /* pet/pet-cmdline-options.c */
 /* en */ {IDCLS_ENABLE_SUPERPET_IO,    N_("Enable SuperPET I/O")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ENABLE_SUPERPET_IO_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ENABLE_SUPERPET_IO_DA, "Aktivér SuperPET-I/O"},
 /* de */ {IDCLS_ENABLE_SUPERPET_IO_DE, "SuperPET I/O aktivieren"},
 /* fr */ {IDCLS_ENABLE_SUPERPET_IO_FR, "Activer les E/S SuperPET"},
 /* hu */ {IDCLS_ENABLE_SUPERPET_IO_HU, "SuperPET I/O engedélyezése"},
@@ -6406,7 +6412,7 @@ translate_t string_table[] = {
 /* pet/pet-cmdline-options.c */
 /* en */ {IDCLS_DISABLE_SUPERPET_IO,    N_("Disable SuperPET I/O")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_DISABLE_SUPERPET_IO_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_DISABLE_SUPERPET_IO_DA, "Deaktiver SuperPET-I/O"},
 /* de */ {IDCLS_DISABLE_SUPERPET_IO_DE, "SuperPET I/O deaktivieren"},
 /* fr */ {IDCLS_DISABLE_SUPERPET_IO_FR, "Désactiver les E/S SuperPET"},
 /* hu */ {IDCLS_DISABLE_SUPERPET_IO_HU, "SuperPET I/O tiltása"},
@@ -6420,7 +6426,7 @@ translate_t string_table[] = {
 /* pet/pet-cmdline-options.c */
 /* en */ {IDCLS_ENABLE_ROM_1_KERNAL_PATCHES,    N_("Enable ROM 1 Kernal patches")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ENABLE_ROM_1_KERNAL_PATCHES_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ENABLE_ROM_1_KERNAL_PATCHES_DA, "Aktivér ROM 1 kerneændringer"},
 /* de */ {IDCLS_ENABLE_ROM_1_KERNAL_PATCHES_DE, "ROM 1 Kernal patches aktivieren"},
 /* fr */ {IDCLS_ENABLE_ROM_1_KERNAL_PATCHES_FR, "Activer les patches ROM 1 Kernal"},
 /* hu */ {IDCLS_ENABLE_ROM_1_KERNAL_PATCHES_HU, "ROM 1 Kernal foltozás engedélyezése"},
@@ -6434,7 +6440,7 @@ translate_t string_table[] = {
 /* pet/pet-cmdline-options.c */
 /* en */ {IDCLS_DISABLE_ROM_1_KERNAL_PATCHES,    N_("Disable ROM 1 Kernal patches")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_DISABLE_ROM_1_KERNAL_PATCHES_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_DISABLE_ROM_1_KERNAL_PATCHES_DA, "Deaktiver ROM 1 kerneændringer"},
 /* de */ {IDCLS_DISABLE_ROM_1_KERNAL_PATCHES_DE, "ROM 1 Kernal patches deaktivieren"},
 /* fr */ {IDCLS_DISABLE_ROM_1_KERNAL_PATCHES_FR, "Désactiver les patches ROM 1 Kernal"},
 /* hu */ {IDCLS_DISABLE_ROM_1_KERNAL_PATCHES_HU, "ROM 1 Kernal foltozás tiltása"},
@@ -6448,7 +6454,7 @@ translate_t string_table[] = {
 /* pet/pet-cmdline-options.c */
 /* en */ {IDCLS_SWITCH_UPPER_LOWER_CHARSET,    N_("Switch upper/lower case charset")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SWITCH_UPPER_LOWER_CHARSET_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SWITCH_UPPER_LOWER_CHARSET_DA, "Skift mellem store og små bogstaver"},
 /* de */ {IDCLS_SWITCH_UPPER_LOWER_CHARSET_DE, "Wechsel Groß-/Kleinschreibung Zeichensatz"},
 /* fr */ {IDCLS_SWITCH_UPPER_LOWER_CHARSET_FR, "Inverser le charset majuscule et minuscule"},
 /* hu */ {IDCLS_SWITCH_UPPER_LOWER_CHARSET_HU, "Váltás nagy-/kisbetûs karakterkészletre"},
@@ -6462,7 +6468,7 @@ translate_t string_table[] = {
 /* pet/pet-cmdline-options.c */
 /* en */ {IDCLS_NO_SWITCH_UPPER_LOWER_CHARSET,    N_("Do not switch upper/lower case charset")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_NO_SWITCH_UPPER_LOWER_CHARSET_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_NO_SWITCH_UPPER_LOWER_CHARSET_DA, "Skift ikke mellem store og små bogstaver"},
 /* de */ {IDCLS_NO_SWITCH_UPPER_LOWER_CHARSET_DE, "Kein Wechsel Groß-/Kleinschreibung Zeichensatz"},
 /* fr */ {IDCLS_NO_SWITCH_UPPER_LOWER_CHARSET_FR, "Ne pas inverser le charset majuscule et minuscule"},
 /* hu */ {IDCLS_NO_SWITCH_UPPER_LOWER_CHARSET_HU, "Ne váltson a nagy-/kisbetûs karakterkészletre"},
@@ -6476,7 +6482,7 @@ translate_t string_table[] = {
 /* pet/pet-cmdline-options.c */
 /* en */ {IDCLS_EOI_BLANKS_SCREEN,    N_("EOI blanks screen")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_EOI_BLANKS_SCREEN_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_EOI_BLANKS_SCREEN_DA, "EOI sletter skærmen"},
 /* de */ {IDCLS_EOI_BLANKS_SCREEN_DE, "EOI löscht Bildschirm"},
 /* fr */ {IDCLS_EOI_BLANKS_SCREEN_FR, "EOI vide l'écran"},
 /* hu */ {IDCLS_EOI_BLANKS_SCREEN_HU, "EOI törli a képernyõt"},
@@ -6490,7 +6496,7 @@ translate_t string_table[] = {
 /* pet/pet-cmdline-options.c */
 /* en */ {IDCLS_EOI_DOES_NOT_BLANK_SCREEN,    N_("EOI does not blank screen")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_EOI_DOES_NOT_BLANK_SCREEN_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_EOI_DOES_NOT_BLANK_SCREEN_DA, "EOI sletter ikke skærmen"},
 /* de */ {IDCLS_EOI_DOES_NOT_BLANK_SCREEN_DE, "EIO löscht Bildschirm nicht"},
 /* fr */ {IDCLS_EOI_DOES_NOT_BLANK_SCREEN_FR, "EOI ne vide pas l'écran"},
 /* hu */ {IDCLS_EOI_DOES_NOT_BLANK_SCREEN_HU, "EOI nem törli a képernyõt"},
@@ -6504,7 +6510,7 @@ translate_t string_table[] = {
 /* pet/petpia1.c */
 /* en */ {IDCLS_ENABLE_USERPORT_DIAG_PIN,    N_("Enable userport diagnostic pin")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ENABLE_USERPORT_DIAG_PIN_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ENABLE_USERPORT_DIAG_PIN_DA, "Aktivér diagnostik på brugerporten"},
 /* de */ {IDCLS_ENABLE_USERPORT_DIAG_PIN_DE, "Userport Diagnose Pin aktivieren"},
 /* fr */ {IDCLS_ENABLE_USERPORT_DIAG_PIN_FR, "Activer la pin de diagnostique userport"},
 /* hu */ {IDCLS_ENABLE_USERPORT_DIAG_PIN_HU, "Userport diagnosztikai láb engedélyezése"},
@@ -6518,7 +6524,7 @@ translate_t string_table[] = {
 /* pet/petpia1.c */
 /* en */ {IDCLS_DISABLE_USERPORT_DIAG_PIN,    N_("Disable userport diagnostic pin")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_DISABLE_USERPORT_DIAG_PIN_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_DISABLE_USERPORT_DIAG_PIN_DA, "Deaktiver diagnostik på brugerporten"},
 /* de */ {IDCLS_DISABLE_USERPORT_DIAG_PIN_DE, "Userport Diagnose Pin deaktivieren"},
 /* fr */ {IDCLS_DISABLE_USERPORT_DIAG_PIN_FR, "Désactiver la pin de diagnostique userport"},
 /* hu */ {IDCLS_DISABLE_USERPORT_DIAG_PIN_HU, "Userport diagnosztikai láb tiltása"},
@@ -6532,7 +6538,7 @@ translate_t string_table[] = {
 /* plus4/plus4-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_FUNCTION_LOW_ROM_NAME,    N_("Specify name of Function low ROM image")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_FUNCTION_LOW_ROM_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_FUNCTION_LOW_ROM_NAME_DA, "Angiv navn på image for lav funktions-ROM"},
 /* de */ {IDCLS_SPECIFY_FUNCTION_LOW_ROM_NAME_DE, "Namen für Funktions ROM Datei (unterer Bereich) definieren"},
 /* fr */ {IDCLS_SPECIFY_FUNCTION_LOW_ROM_NAME_FR, "Spécifier le nom de l'image basse ROM Fonction"},
 /* hu */ {IDCLS_SPECIFY_FUNCTION_LOW_ROM_NAME_HU, "Adja meg az alsó Function ROM képmás nevét"},
@@ -6546,7 +6552,7 @@ translate_t string_table[] = {
 /* plus4/plus4-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_FUNCTION_HIGH_ROM_NAME,    N_("Specify name of Function high ROM image")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_FUNCTION_HIGH_ROM_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_FUNCTION_HIGH_ROM_NAME_DA, "Angiv navn på image for høj funktions-ROM"},
 /* de */ {IDCLS_SPECIFY_FUNCTION_HIGH_ROM_NAME_DE, "Namen für Funktions ROM Datei (oberer Bereich) definieren"},
 /* fr */ {IDCLS_SPECIFY_FUNCTION_HIGH_ROM_NAME_FR, "Spécifier le nom de l'image haute ROM Fonction"},
 /* hu */ {IDCLS_SPECIFY_FUNCTION_HIGH_ROM_NAME_HU, "Adja meg a felsõ Function ROM képmás nevét"},
@@ -6560,7 +6566,7 @@ translate_t string_table[] = {
 /* plus4/plus4-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_CART_1_LOW_ROM_NAME,    N_("Specify name of Cartridge 1 low ROM image")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_CART_1_LOW_ROM_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_CART_1_LOW_ROM_NAME_DA, "Angiv navn på image for lav cartridge 1 ROM"},
 /* de */ {IDCLS_SPECIFY_CART_1_LOW_ROM_NAME_DE, "Name für Erweiterungsmodul 1 ROM Datei (unterer Bereich) definieren"},
 /* fr */ {IDCLS_SPECIFY_CART_1_LOW_ROM_NAME_FR, "Spécifier le nom de l'image basse ROM Cartouche 1"},
 /* hu */ {IDCLS_SPECIFY_CART_1_LOW_ROM_NAME_HU, "Adja meg az alsó Cartridge 1 ROM képmás nevét"},
@@ -6574,7 +6580,7 @@ translate_t string_table[] = {
 /* plus4/plus4-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_CART_1_HIGH_ROM_NAME,    N_("Specify name of Cartridge 1 high ROM image")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_CART_1_HIGH_ROM_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_CART_1_HIGH_ROM_NAME_DA, "Angiv navn på image for høj cartridge 1 ROM"},
 /* de */ {IDCLS_SPECIFY_CART_1_HIGH_ROM_NAME_DE, "Name für Erweiterungsmodul 1 ROM Datei (oberer Bereich) definieren"},
 /* fr */ {IDCLS_SPECIFY_CART_1_HIGH_ROM_NAME_FR, "Spécifier le nom de l'image haute ROM Cartouche 1"},
 /* hu */ {IDCLS_SPECIFY_CART_1_HIGH_ROM_NAME_HU, "Adja meg a felsõ Cartridge 1 ROM képmás nevét"},
@@ -6588,7 +6594,7 @@ translate_t string_table[] = {
 /* plus4/plus4-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_CART_2_LOW_ROM_NAME,    N_("Specify name of Cartridge 2 low ROM image")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_CART_2_LOW_ROM_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_CART_2_LOW_ROM_NAME_DA, "Angiv navn på image for lav cartridge 2 ROM"},
 /* de */ {IDCLS_SPECIFY_CART_2_LOW_ROM_NAME_DE, "Name für Erweiterungsmodul 2 ROM Datei (unterer Bereich) definieren"},
 /* fr */ {IDCLS_SPECIFY_CART_2_LOW_ROM_NAME_FR, "Spécifier le nom de l'image basse ROM Cartouche 2"},
 /* hu */ {IDCLS_SPECIFY_CART_2_LOW_ROM_NAME_HU, "Adja meg az alsó Cartridge 2 ROM képmás nevét"},
@@ -6602,7 +6608,7 @@ translate_t string_table[] = {
 /* plus4/plus4-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_CART_2_HIGH_ROM_NAME,    N_("Specify name of Cartridge 2 high ROM image")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_CART_2_HIGH_ROM_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_CART_2_HIGH_ROM_NAME_DA, "Angiv navn på image for høj cartridge 1 ROM"},
 /* de */ {IDCLS_SPECIFY_CART_2_HIGH_ROM_NAME_DE, "Name für Erweiterungsmodul 2 ROM Datei (oberer Bereich) definieren"},
 /* fr */ {IDCLS_SPECIFY_CART_2_HIGH_ROM_NAME_FR, "Spécifier le nom de l'image haute ROM Cartouche 2"},
 /* hu */ {IDCLS_SPECIFY_CART_2_HIGH_ROM_NAME_HU, "Adja meg a felsõ Cartridge 2 ROM képmás nevét"},
@@ -6616,7 +6622,7 @@ translate_t string_table[] = {
 /* plus4/plus4-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_RAM_INSTALLED,    N_("Specify size of RAM installed in kb (16/32/64)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_RAM_INSTALLED_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_RAM_INSTALLED_DA, "Angiv størrelse på installeret RAM i kB (16/32/64)"},
 /* de */ {IDCLS_SPECIFY_RAM_INSTALLED_DE, "Größe des emulierten RAM Speichers in kb (16/32/64) spezifizieren"},
 /* fr */ {IDCLS_SPECIFY_RAM_INSTALLED_FR, "Spécifier la taille du RAM installé (16/32/64)"},
 /* hu */ {IDCLS_SPECIFY_RAM_INSTALLED_HU, "Adja meg a telepített RAM méretét kb-ban (16/32/64)"},
@@ -6630,7 +6636,7 @@ translate_t string_table[] = {
 /* plus4/ted-cmdline-options.c, vicii/vicii-cmdline-options.c */
 /* en */ {IDCLS_SET_SATURATION,    N_("Set saturation of internal calculated palette [1000]")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SET_SATURATION_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SET_SATURATION_DA, "Indstil mætning af internt beregnet palette [1000]"},
 /* de */ {IDCLS_SET_SATURATION_DE, "Sättigung für intern berechneten Palette setzen [1000]"},
 /* fr */ {IDCLS_SET_SATURATION_FR, "Régler la saturation de la palette interne calculée [1000]"},
 /* hu */ {IDCLS_SET_SATURATION_HU, "A számolt paletta telítettsége [1000]"},
@@ -6644,7 +6650,7 @@ translate_t string_table[] = {
 /* plus4/ted-cmdline-options.c, vicii/vicii-cmdline-options.c */
 /* en */ {IDCLS_SET_CONTRAST,    N_("Set contrast of internal calculated palette [1100]")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SET_CONTRAST_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SET_CONTRAST_DA, "Indstil kontrast for internt beregnet palette [1100]"},
 /* de */ {IDCLS_SET_CONTRAST_DE, "Kontrast für intern berechneten Palette setzen [1100]"},
 /* fr */ {IDCLS_SET_CONTRAST_FR, "Régler le contraste de la palette interne calculée [1100]"},
 /* hu */ {IDCLS_SET_CONTRAST_HU, "A számolt paletta kontraszt értéke [1100]"},
@@ -6658,7 +6664,7 @@ translate_t string_table[] = {
 /* plus4/ted-cmdline-options.c, vicii/vicii-cmdline-options.c */
 /* en */ {IDCLS_SET_BRIGHTNESS,    N_("Set brightness of internal calculated palette [1100]")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SET_BRIGHTNESS_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SET_BRIGHTNESS_DA, "Indstil lysstyrke for internt beregnet palette [1100]"},
 /* de */ {IDCLS_SET_BRIGHTNESS_DE, "Helliogkeit für intern berechneten Palette setzen [1100]"},
 /* fr */ {IDCLS_SET_BRIGHTNESS_FR, "Régler la luminosité de la palette interne calculée [1100]"},
 /* hu */ {IDCLS_SET_BRIGHTNESS_HU, "A számolt paletta fényerõssége [1100]"},
@@ -6672,7 +6678,7 @@ translate_t string_table[] = {
 /* plus4/ted-cmdline-options.c`, vicii/vicii-cmdline-options.c */
 /* en */ {IDCLS_SET_GAMMA,    N_("Set gamma of internal calculated palette [900]")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SET_GAMMA_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SET_GAMMA_DA, "Indstil gamma for internt beregnet palette [900]"},
 /* de */ {IDCLS_SET_GAMMA_DE, "Gamma für intern berechneten Palette setzen [900]"},
 /* fr */ {IDCLS_SET_GAMMA_FR, "Régler le gamma de la palette interne calculée [900]"},
 /* hu */ {IDCLS_SET_GAMMA_HU, "A számolt paletta gammája [900]"},
@@ -6686,7 +6692,7 @@ translate_t string_table[] = {
 /* vicii/vicii-cmdline-options.c */
 /* en */ {IDCLS_SET_TINT,    N_("Set tint of internal calculated palette [1000]")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SET_TINT_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SET_TINT_DA, "Indstil farvetone for internt beregnet palette [1000]"},
 /* de */ {IDCLS_SET_TINT_DE, "Farbton für intern berechneten Palette setzen [1000]"},
 /* fr */ {IDCLS_SET_TINT_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_SET_TINT_HU, "A számolt, belsõ paletta telítettsége [1000]"},
@@ -6700,7 +6706,7 @@ translate_t string_table[] = {
 /* vicii/vicii-cmdline-options.c */
 /* en */ {IDCLS_SET_ODDLINES_PHASE,    N_("Set phase for color carrier in odd lines [1250]")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SET_ODDLINES_PHASE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SET_ODDLINES_PHASE_DA, "Vælg fase for farve-bærebølge på ulige scanlinjer [1250]"},
 /* de */ {IDCLS_SET_ODDLINES_PHASE_DE, "Phase für Farbträger in ungeraden Zeilen setzen [1250]"},
 /* fr */ {IDCLS_SET_ODDLINES_PHASE_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_SET_ODDLINES_PHASE_HU, "Szín vivõ fázisa a páratlan sorokban [1250]"},
@@ -6714,7 +6720,7 @@ translate_t string_table[] = {
 /* vicii/vicii-cmdline-options.c */
 /* en */ {IDCLS_SET_ODDLINES_OFFSET,    N_("Set phase offset for color carrier in odd lines [750]")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SET_ODDLINES_OFFSET_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SET_ODDLINES_OFFSET_DA, "Vælg fase-offset for farve-bærebølge på ulige scanlinjer [750]"},
 /* de */ {IDCLS_SET_ODDLINES_OFFSET_DE, "Phasenoffset für Farbträger in ungeraden Zeilen setzen [750]"},
 /* fr */ {IDCLS_SET_ODDLINES_OFFSET_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_SET_ODDLINES_OFFSET_HU, "Szín vivõ fázis offszet a páratlan sorokban [750]"},
@@ -6728,7 +6734,7 @@ translate_t string_table[] = {
 /* printerdrv/driver-select.c */
 /* en */ {IDCLS_SPECIFY_PRT_DRIVER_4_NAME,    N_("Specify name of printer driver for device #4")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_PRT_DRIVER_4_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_PRT_DRIVER_4_NAME_DA, "Angiv navn på printer-driver for enhed #4"},
 /* de */ {IDCLS_SPECIFY_PRT_DRIVER_4_NAME_DE, "Name für Druckertreiber Gerät #4 definieren"},
 /* fr */ {IDCLS_SPECIFY_PRT_DRIVER_4_NAME_FR, "Spécifier le nom du pilote imprimante pour le périphérique #4"},
 /* hu */ {IDCLS_SPECIFY_PRT_DRIVER_4_NAME_HU, "Adja meg a #4-es nyomtatómeghajtó nevét"},
@@ -6742,7 +6748,7 @@ translate_t string_table[] = {
 /* printerdrv/driver-select.c */
 /* en */ {IDCLS_SPECIFY_PRT_DRIVER_5_NAME,    N_("Specify name of printer driver for device #5")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_PRT_DRIVER_5_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_PRT_DRIVER_5_NAME_DA, "Angiv navn på printer-driver for enhed #5"},
 /* de */ {IDCLS_SPECIFY_PRT_DRIVER_5_NAME_DE, "Name für Druckertreiber Gerät #5 definieren"},
 /* fr */ {IDCLS_SPECIFY_PRT_DRIVER_5_NAME_FR, "Spécifier le nom du pilote imprimante pour le périphérique #5"},
 /* hu */ {IDCLS_SPECIFY_PRT_DRIVER_5_NAME_HU, "Adja meg a #5-ös nyomtatómeghajtó nevét"},
@@ -6756,7 +6762,7 @@ translate_t string_table[] = {
 /* printerdrv/driver-select.c */
 /* en */ {IDCLS_SPECIFY_PRT_DRIVER_USR_NAME,    N_("Specify name of printer driver for the userport printer")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_PRT_DRIVER_USR_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_PRT_DRIVER_USR_NAME_DA, "Angiv navn på printerdriver for brugerport-printer"},
 /* de */ {IDCLS_SPECIFY_PRT_DRIVER_USR_NAME_DE, "Name für Userport Druckertreiber definieren"},
 /* fr */ {IDCLS_SPECIFY_PRT_DRIVER_USR_NAME_FR, "Spécifier le nom du pilote imprimante pour l'imprimante userport"},
 /* hu */ {IDCLS_SPECIFY_PRT_DRIVER_USR_NAME_HU, "Adja meg a userport nyomtatómeghajtó nevét"},
@@ -6770,7 +6776,7 @@ translate_t string_table[] = {
 /* printerdrv/interface-serial.c */
 /* en */ {IDCLS_SET_DEVICE_TYPE_4,    N_("Set device type for device #4 (0: NONE, 1: FS, 2: REAL)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SET_DEVICE_TYPE_4_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SET_DEVICE_TYPE_4_DA, "Sæt enhedstype for enhed #4 (0: INGEN, 1: FS, 2: ÆGTE)"},
 /* de */ {IDCLS_SET_DEVICE_TYPE_4_DE, "Geräte Typ für Gerät #4 (0: NONE, 1: FS, 2: REAL) setzen"},
 /* fr */ {IDCLS_SET_DEVICE_TYPE_4_FR, "Spécifier le type de périphérique pour #4 (0: AUCUN, 1: SF, 2: RÉEL)"},
 /* hu */ {IDCLS_SET_DEVICE_TYPE_4_HU, "Adja meg a #4-es eszköz típusát (0:Nincs, 1: Fájlrendszer, 2: Valódi)"},
@@ -6784,7 +6790,7 @@ translate_t string_table[] = {
 /* printerdrv/interface-serial.c */
 /* en */ {IDCLS_SET_DEVICE_TYPE_5,    N_("Set device type for device #5 (0: NONE, 1: FS, 2: REAL)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SET_DEVICE_TYPE_5_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SET_DEVICE_TYPE_5_DA, "Sæt enhedstype for enhed #5 (0: INGEN, 1: FS, 2: ÆGTE)"},
 /* de */ {IDCLS_SET_DEVICE_TYPE_5_DE, "Geräte Typ für Gerät #5 (0: NONE, 1: FS, 2: REAL) setzen"},
 /* fr */ {IDCLS_SET_DEVICE_TYPE_5_FR, "Spécifier le type de périphérique pour #5 (0: AUCUN, 1: SF, 2: RÉEL)"},
 /* hu */ {IDCLS_SET_DEVICE_TYPE_5_HU, "Adja meg a #5-ös eszköz típusát (0:Nincs, 1: Fájlrendszer, 2: Valódi)"},
@@ -6798,7 +6804,7 @@ translate_t string_table[] = {
 /* printerdrv/interface-userport.c */
 /* en */ {IDCLS_ENABLE_USERPORT_PRINTER,    N_("Enable the userport printer emulation")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ENABLE_USERPORT_PRINTER_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ENABLE_USERPORT_PRINTER_DA, "Aktivér emulering af printer på brugerporten"},
 /* de */ {IDCLS_ENABLE_USERPORT_PRINTER_DE, "Userport Drucker Emulation aktivieren"},
 /* fr */ {IDCLS_ENABLE_USERPORT_PRINTER_FR, "Acviver l'émulation de l'imprimante userport"},
 /* hu */ {IDCLS_ENABLE_USERPORT_PRINTER_HU, "Userport nyomtató emulációjának engedélyezése"},
@@ -6812,7 +6818,7 @@ translate_t string_table[] = {
 /* printerdrv/interface-userport.c */
 /* en */ {IDCLS_DISABLE_USERPORT_PRINTER,    N_("Disable the userport printer emulation")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_DISABLE_USERPORT_PRINTER_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_DISABLE_USERPORT_PRINTER_DA, "Deaktivér emulering af printer på brugerporten"},
 /* de */ {IDCLS_DISABLE_USERPORT_PRINTER_DE, "Userport Drucker Emulation deaktivieren"},
 /* fr */ {IDCLS_DISABLE_USERPORT_PRINTER_FR, "Désactiver l'émulation de l'imprimante userport"},
 /* hu */ {IDCLS_DISABLE_USERPORT_PRINTER_HU, "Userport nyomtató emulációjának tiltása"},
@@ -6826,7 +6832,7 @@ translate_t string_table[] = {
 /* printerdrv/output-select.c */
 /* en */ {IDCLS_SPECIFY_OUTPUT_DEVICE_4_NAME,    N_("Specify name of output device for device #4")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_OUTPUT_DEVICE_4_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_OUTPUT_DEVICE_4_NAME_DA, "Angiv navn på uddataenhed for enhed #4"},
 /* de */ {IDCLS_SPECIFY_OUTPUT_DEVICE_4_NAME_DE, "Name für Druckerausgabe Datei Gerät #4 definieren"},
 /* fr */ {IDCLS_SPECIFY_OUTPUT_DEVICE_4_NAME_FR, "Spécifiez le nom du périphérique de sortie pour le périphérique #4"},
 /* hu */ {IDCLS_SPECIFY_OUTPUT_DEVICE_4_NAME_HU, "Adja meg a kimeneti eszköz nevét a #4-es egységhez"},
@@ -6840,7 +6846,7 @@ translate_t string_table[] = {
 /* printerdrv/output-select.c */
 /* en */ {IDCLS_SPECIFY_OUTPUT_DEVICE_5_NAME,    N_("Specify name of output device for device #5")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_OUTPUT_DEVICE_5_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_OUTPUT_DEVICE_5_NAME_DA, "Angiv navn på uddataenhed for enhed #5"},
 /* de */ {IDCLS_SPECIFY_OUTPUT_DEVICE_5_NAME_DE, "Name für Druckerausgabe Datei Gerät #5 definieren"},
 /* fr */ {IDCLS_SPECIFY_OUTPUT_DEVICE_5_NAME_FR, "Spécifiez le nom du périphérique de sortie pour le périphérique #5"},
 /* hu */ {IDCLS_SPECIFY_OUTPUT_DEVICE_5_NAME_HU, "Adja meg a kimeneti eszköz nevét a #5-ös egységhez"},
@@ -6854,7 +6860,7 @@ translate_t string_table[] = {
 /* printerdrv/output-select.c */
 /* en */ {IDCLS_SPECIFY_OUTPUT_DEVICE_USR_NAME,    N_("Specify name of output device for the userport printer")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_OUTPUT_DEVICE_USR_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_OUTPUT_DEVICE_USR_NAME_DA, "Angiv navn på uddataenhed for brugerports-printer"},
 /* de */ {IDCLS_SPECIFY_OUTPUT_DEVICE_USR_NAME_DE, "Name für Druckerausgabe Datei Userport definieren"},
 /* fr */ {IDCLS_SPECIFY_OUTPUT_DEVICE_USR_NAME_FR, "Spécifiez le nom du périphérique de sortie pour l'imprimante "
                                                    "userport"},
