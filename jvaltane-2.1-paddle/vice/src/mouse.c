@@ -4,7 +4,7 @@
  * Written by
  *  Andreas Boose <viceteam@t-online.de>
  *
- * NEOS and Amiga mouse support by
+ * NEOS & Amiga mouse and paddle support by
  *  Hannu Nuotio <hannu.nuotio@tut.fi>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
@@ -32,27 +32,34 @@
 #include "alarm.h"
 #include "cmdline.h"
 #include "joystick.h"
+#include "machine.h"
 #include "maincpu.h"
 #include "mouse.h"
 #include "mousedrv.h"
 #include "resources.h"
 #include "translate.h"
 
+/* --------------------------------------------------------- */
+/* extern variables */
+
+int _mouse_enabled = 0;
+int mouse_port = 1;
+int mouse_type;
+
+
+/* --------------------------------------------------------- */
+/* NEOS mouse */
+
 #define NEOS_RESET_CLK 100
 struct alarm_s *neosmouse_alarm;
 
-int _mouse_enabled = 0;
+static int neos_and_amiga_buttons;
+static int neos_prev;
 
-int mouse_port;
-int mouse_type;
-
-int neos_and_amiga_buttons;
-int neos_prev;
-
-BYTE neos_x;
-BYTE neos_y;
-BYTE neos_lastx;
-BYTE neos_lasty;
+static BYTE neos_x;
+static BYTE neos_y;
+static BYTE neos_lastx;
+static BYTE neos_lasty;
 
 enum {
     NEOS_IDLE = 0,
@@ -63,7 +70,7 @@ enum {
     NEOS_DONE
 } neos_state = NEOS_IDLE;
 
-void neos_get_new_movement(void)
+static void neos_get_new_movement(void)
 {
     BYTE new_x, new_y;
     
@@ -168,15 +175,17 @@ BYTE neos_mouse_read(void)
 }
 
 
-void neosmouse_alarm_handler(CLOCK offset, void *data)
+static void neosmouse_alarm_handler(CLOCK offset, void *data)
 {
     alarm_unset(neosmouse_alarm);
     neos_state = NEOS_IDLE;
 }
 
-/* Amiga mouse support is currently experimental */
 
-BYTE amiga_mouse_table[4] = { 0x0, 0x1, 0x5, 0x4 };
+/* --------------------------------------------------------- */
+/* Amiga mouse support (currently experimental) */
+
+static const BYTE amiga_mouse_table[4] = { 0x0, 0x1, 0x5, 0x4 };
 
 /* the method below results in alot of overflows */
 #if 0
@@ -290,6 +299,27 @@ BYTE amiga_mouse_read(void)
     return (amiga_mouse_table[x_count & 3] << 1) | amiga_mouse_table[y_count & 3] | 0xf0;
 }
 
+
+/* --------------------------------------------------------- */
+/* Paddle support */
+
+static BYTE paddle_val[] = { 
+/*  x     y  */
+    0x00, 0xff, /* no port */
+    0x00, 0xff, /* port 1 */
+    0x00, 0xff, /* port 2 */
+    0x00, 0xff  /* both ports */
+};
+
+static BYTE paddle_old[] = { 
+    0xff, 0xff, 
+    0xff, 0xff, 
+    0xff, 0xff, 
+    0xff, 0xff
+};
+
+static BYTE paddle_port = 1;
+
 static inline BYTE mouse_paddle_update(BYTE paddle_v, BYTE *old_v, BYTE new_v)
 {
     BYTE diff = new_v - *old_v;
@@ -318,21 +348,33 @@ static inline BYTE mouse_paddle_update(BYTE paddle_v, BYTE *old_v, BYTE new_v)
 
 static BYTE mouse_get_paddle_x(void)
 {
-    static BYTE paddle_x = 0x80;
+    int i = (paddle_port << 1);
 
-    paddle_x = mouse_paddle_update(paddle_x, &old_x, mousedrv_get_x());
+    if (paddle_port == mouse_port) {
+        paddle_val[i] = mouse_paddle_update(paddle_val[i], &(paddle_old[i]), mousedrv_get_x());
+    }
 
-    return 0xff-paddle_x;
+    return 0xff-paddle_val[i];
 }
 
 static BYTE mouse_get_paddle_y(void)
 {
-    static BYTE paddle_y = 0x80;
+    int i = (paddle_port << 1) + 1;
 
-    paddle_y = mouse_paddle_update(paddle_y, &old_y, mousedrv_get_y());
+    if (paddle_port == mouse_port) {
+        paddle_val[i] = mouse_paddle_update(paddle_val[i], &(paddle_old[i]), mousedrv_get_y());
+    }
 
-    return paddle_y;
+    return paddle_val[i];
 }
+
+void mouse_set_paddle_port(int port)
+{
+    paddle_port = port & 3;
+}
+
+/* --------------------------------------------------------- */
+/* Resources & cmdline */
 
 static int set_mouse_enabled(int val, void *param)
 {
@@ -365,10 +407,14 @@ static int set_mouse_type(int val, void *param)
 static const resource_int_t resources_int[] = {
     { "Mouse", 0, RES_EVENT_SAME, NULL,
       &_mouse_enabled, set_mouse_enabled, NULL },
-    { "Mouseport", 1, RES_EVENT_SAME, NULL,
-      &mouse_port, set_mouse_port, NULL },
     { "Mousetype", MOUSE_TYPE_1351, RES_EVENT_SAME, NULL,
       &mouse_type, set_mouse_type, NULL },
+    { NULL }
+};
+
+static const resource_int_t resources_port_int[] = {
+    { "Mouseport", 1, RES_EVENT_SAME, NULL,
+      &mouse_port, set_mouse_port, NULL },
     { NULL }
 };
 
@@ -376,6 +422,13 @@ int mouse_resources_init(void)
 {
     if (resources_register_int(resources_int) < 0)
         return -1;
+
+    /* FIXME ugly kludge to remove port setting from xvic */
+    if (machine_class != VICE_MACHINE_VIC20) {
+        if (resources_register_int(resources_port_int) < 0) {
+            return -1;
+        }
+    }
 
     return mousedrv_resources_init();
 }
@@ -391,11 +444,6 @@ static const cmdline_option_t cmdline_options[] = {
       USE_PARAM_STRING, USE_DESCRIPTION_ID,
       IDCLS_UNUSED, IDCLS_DISABLE_MOUSE_GRAB,
       NULL, NULL },
-    { "-mouseport", SET_RESOURCE, 1,
-      NULL, NULL, "Mouseport", NULL,
-      USE_PARAM_ID, USE_DESCRIPTION_ID,
-      IDCLS_P_VALUE, IDCLS_SELECT_MOUSE_JOY_PORT,
-      NULL, NULL },
     { "-mousetype", SET_RESOURCE, 1,
       NULL, NULL, "Mousetype", NULL,
       USE_PARAM_ID, USE_DESCRIPTION_ID,
@@ -404,10 +452,26 @@ static const cmdline_option_t cmdline_options[] = {
     { NULL }
 };
 
+static const cmdline_option_t cmdline_port_option[] = {
+    { "-mouseport", SET_RESOURCE, 1,
+      NULL, NULL, "Mouseport", NULL,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_P_VALUE, IDCLS_SELECT_MOUSE_JOY_PORT,
+      NULL, NULL },
+    { NULL }
+};
+
 int mouse_cmdline_options_init(void)
 {
     if (cmdline_register_options(cmdline_options) < 0)
         return -1;
+
+    /* FIXME ugly kludge to remove port setting from xvic */
+    if (machine_class != VICE_MACHINE_VIC20) {
+        if (cmdline_register_options(cmdline_port_option) < 0) {
+            return -1;
+        }
+    }
 
     return mousedrv_cmdline_options_init();
 }
@@ -419,6 +483,9 @@ void mouse_init(void)
     neosmouse_alarm = alarm_new(maincpu_alarm_context, "NEOSMOUSEAlarm", neosmouse_alarm_handler, NULL);
     mousedrv_init();
 }
+
+/* --------------------------------------------------------- */
+/* Main API */
 
 void mouse_button_left(int pressed)
 {
