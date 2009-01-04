@@ -244,6 +244,7 @@ static gfxoutputdrv_t gif_drv =
     "GIF",
     "GIF screenshot",
     "gif",
+    NULL, /* formatlist */
     gifdrv_open,
     gifdrv_close,
     gifdrv_write,

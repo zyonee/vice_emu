@@ -435,6 +435,7 @@ static gfxoutputdrv_t pcx_drv =
     "PCX",
     "PCX screenshot",
     "pcx",
+    NULL, /* formatlist */
     pcxdrv_open,
     pcxdrv_close,
     pcxdrv_write,

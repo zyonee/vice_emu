@@ -58,7 +58,7 @@ static ffmpegdrv_codec_t avi_video_codeclist[] = {
     { 0, NULL }
 };
 
-ffmpegdrv_format_t ffmpegdrv_formatlist[] =
+static ffmpegdrv_format_t ffmpegdrv_formatlist[] =
 {
     { "avi", avi_audio_codeclist, avi_video_codeclist },
     { "wav", NULL, NULL },
@@ -780,7 +780,8 @@ static gfxoutputdrv_t ffmpeg_drv = {
     "FFMPEG",
     "FFMPEG",
     NULL,
-    NULL,
+    ffmpegdrv_formatlist,
+    NULL, /* open */
     ffmpegdrv_close,
     ffmpegdrv_write,
     ffmpegdrv_save,

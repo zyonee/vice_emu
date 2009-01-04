@@ -236,6 +236,7 @@ static gfxoutputdrv_t ppm_drv =
     "PPM",
     "PPM screenshot",
     "ppm",
+    NULL, /* formatlist */
     ppmdrv_open,
     ppmdrv_close,
     ppmdrv_write,

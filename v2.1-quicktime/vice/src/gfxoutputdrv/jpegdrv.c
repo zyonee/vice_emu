@@ -218,6 +218,7 @@ static gfxoutputdrv_t jpeg_drv =
     "JPEG",
     "JPEG screenshot",
     "jpg",
+    NULL, /* formatlist */
     jpegdrv_open,
     jpegdrv_close,
     jpegdrv_write,

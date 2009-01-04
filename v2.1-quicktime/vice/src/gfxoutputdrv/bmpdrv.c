@@ -501,6 +501,7 @@ static gfxoutputdrv_t bmp_drv =
     "BMP",
     "BMP screenshot",
     "bmp",
+    NULL, /* formatlist */
     bmpdrv_open,
     bmpdrv_close,
     bmpdrv_write,

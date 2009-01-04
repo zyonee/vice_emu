@@ -274,6 +274,7 @@ static gfxoutputdrv_t png_drv =
     "PNG",
     "PNG screenshot",
     "png",
+    NULL, /* formatlist */
     pngdrv_open,
     pngdrv_close,
     pngdrv_write,

@@ -37,6 +37,10 @@
 #include "screenshot.h"
 #include "palette.h"
 #include "log.h"
+#include "util.h"
+#include "resources.h"
+#include "cmdline.h"
+#include "translate.h"
 
 #if (MAC_OS_X_VERSION_MIN_REQUIRED<MAC_OS_X_VERSION_10_5) && defined(__APPLE__)
 // define missing pixel format in pre 10.5 headers
@@ -44,6 +48,31 @@ enum {
     kCVPixelFormatType_24RGB = 0x00000018
 };
 #endif
+
+// ----- define formats -----------------------------------------------------
+
+static gfxoutputdrv_codec_t mov_audio_codeclist[] = { 
+    { -1, "None" },
+    { 0, NULL }
+};
+
+static gfxoutputdrv_codec_t mov_video_codeclist[] = { 
+    { kPNGCodecType,        "PNG" },
+    { kH264CodecType,       "H.264" },
+    { kMotionJPEGACodecType,"Motion JPEG/A"},
+    { kMotionJPEGBCodecType,"Motion JPEG/B"},
+    { kVideoCodecType,      "Video"},
+    { kAnimationCodecType,  "Animation"},
+    { 0, NULL }
+};
+
+static gfxoutputdrv_format_t quicktimedrv_formatlist[] =
+{
+    { "mov", mov_audio_codeclist, mov_video_codeclist },
+    { NULL, NULL, NULL }
+};
+
+// ----- global state -------------------------------------------------------
 
 static  Movie           movie=NULL;
 static  DataHandler     dataHandler=NULL;
@@ -54,6 +83,105 @@ static  TimeValue64     timestamp=0;
 static  TimeValue64     divider=0;
 static  CVPixelBufferRef pixelBuffer=NULL;
 static  int video_width, video_height, video_xoff, video_yoff;
+static  int ready_for_encoding = 0;
+
+// ----- resources & command line -------------------------------------------
+
+static char *quicktime_format = NULL;
+static int audio_bitrate;
+static int video_bitrate;
+static int audio_codec;
+static int video_codec;
+
+static int set_format(const char *val, void *param)
+{
+    int i;
+    
+    util_string_set(&quicktime_format, val);
+    for (i = 0; quicktimedrv_formatlist[i].name != NULL; i++) {
+        if (strcmp(quicktime_format, quicktimedrv_formatlist[i].name) == 0) {
+            return 0;
+        }
+    }
+    return -1;
+}
+
+static int set_audio_bitrate(int val, void *param)
+{
+    audio_bitrate = (CLOCK)val;
+    if (audio_bitrate < 16000 || audio_bitrate > 128000)
+        audio_bitrate = 64000;
+
+    return 0;
+}
+
+static int set_video_bitrate(int val, void *param)
+{
+    video_bitrate = (CLOCK)val;
+    if (video_bitrate < 100000 || video_bitrate > 10000000)
+        video_bitrate = 800000;
+
+    return 0;
+}
+
+static int set_audio_codec(int val, void *param)
+{
+    audio_codec = val;
+    return 0;
+}
+
+static int set_video_codec(int val, void *param)
+{
+    video_codec = val;
+    return 0;
+}
+
+static const resource_string_t resources_string[] = {
+    { "QuickTimeFormat", "mov", RES_EVENT_NO, NULL,
+      &quicktime_format, set_format, NULL },
+    { NULL }
+};
+
+static const resource_int_t resources_int[] = {
+    { "QuickTimeAudioBitrate", 64000, RES_EVENT_NO, NULL,
+      &audio_bitrate, set_audio_bitrate, NULL },
+    { "QuickTimeVideoBitrate", 800000, RES_EVENT_NO, NULL,
+      &video_bitrate, set_video_bitrate, NULL },
+    { "QuickTimeAudioCodec", -1, RES_EVENT_NO, NULL,
+      &audio_codec, set_audio_codec, NULL },
+    { "QuickTimeVideoCodec", kPNGCodecType, RES_EVENT_NO, NULL,
+      &video_codec, set_video_codec, NULL },
+    { NULL }
+};
+
+static int quicktimedrv_resources_init(void)
+{
+    if (resources_register_string(resources_string) < 0)
+        return -1;
+
+    return resources_register_int(resources_int);
+}
+
+static const cmdline_option_t cmdline_options[] = {
+    { "-quicktimeaudiobitrate", SET_RESOURCE, 1,
+      NULL, NULL, "QuickTimeAudioBitrate", NULL,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_UNUSED, IDCLS_UNUSED,
+      NULL, NULL },
+    { "-quicktimevideobitrate", SET_RESOURCE, 1,
+      NULL, NULL, "QuickTimeVideoBitrate", NULL,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_UNUSED, IDCLS_UNUSED,
+      NULL, NULL },
+    { NULL }
+};
+
+static int quicktimedrv_cmdline_options_init(void)
+{
+    return cmdline_register_options(cmdline_options);
+}
+
+// ----- callbacks ----------------------------------------------------------
 
 static OSStatus FrameOutputCallback(void* encodedFrameOutputRefCon, 
     ICMCompressionSessionRef session, OSStatus error, ICMEncodedFrameRef frame,
@@ -82,6 +210,8 @@ static int quicktimedrv_open(screenshot_t *screenshot, const char *filename)
 
 static int quicktimedrv_save(screenshot_t *screenshot, const char *filename)
 {
+    ready_for_encoding = 0;
+    
     // align and center video
     video_width  = screenshot->width;
     video_height = screenshot->height;
@@ -187,7 +317,7 @@ static int quicktimedrv_save(screenshot_t *screenshot, const char *filename)
     // close component
     CloseComponent(component);
 #else
-    CodecType codec = kPNGCodecType;
+    CodecType codec = (CodecType)video_codec;
 #endif
 
     // Create compression session
@@ -211,11 +341,16 @@ static int quicktimedrv_save(screenshot_t *screenshot, const char *filename)
 
     // set initial time stamp
     timestamp = CVGetCurrentHostTime() / divider;
+
+    ready_for_encoding = 1;
     return 0;
 }
 
 static int quicktimedrv_record(screenshot_t *screenshot)
 {
+    if(!ready_for_encoding)
+        return 0;
+    
     OSErr theError;
 
     // lock buffer
@@ -335,19 +470,19 @@ static int quicktimedrv_write(screenshot_t *screenshot)
     return 0;
 }
 
-
 static gfxoutputdrv_t quicktime_drv = {
     "QuickTime",
     "QuickTime",
     "mov",
+    quicktimedrv_formatlist,
     quicktimedrv_open,
     quicktimedrv_close,
     quicktimedrv_write,
     quicktimedrv_save,
     quicktimedrv_record,
     NULL,
-    NULL,
-    NULL
+    quicktimedrv_resources_init,
+    quicktimedrv_cmdline_options_init,
 #ifdef FEATURE_CPUMEMHISTORY
     ,NULL
 #endif

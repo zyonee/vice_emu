@@ -360,6 +360,7 @@ static gfxoutputdrv_t iff_drv =
     "IFF",
     "IFF screenshot",
     "iff",
+    NULL, /* formatlist */
     iffdrv_open,
     iffdrv_close,
     iffdrv_write,
