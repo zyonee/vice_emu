@@ -222,11 +222,12 @@ static gfxoutputdrv_t jpeg_drv =
     jpegdrv_close,
     jpegdrv_write,
     jpegdrv_save,
-#ifdef FEATURE_CPUMEMHISTORY
     NULL,
-    jpegdrv_save_memmap
-#else
+    NULL,
+    NULL,
     NULL
+#ifdef FEATURE_CPUMEMHISTORY
+    ,jpegdrv_save_memmap
 #endif
 };
 

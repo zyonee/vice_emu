@@ -31,11 +31,19 @@
 
 #include <QuickTime/Movies.h>
 #include <QuickTime/QuickTimeComponents.h>
+#include <CoreVideo/CVPixelBuffer.h>
 
 #include "gfxoutput.h"
 #include "screenshot.h"
 #include "palette.h"
 #include "log.h"
+
+#if (MAC_OS_X_VERSION_MIN_REQUIRED<MAC_OS_X_VERSION_10_5) && defined(__APPLE__)
+// define missing pixel format in pre 10.5 headers
+enum {
+    kCVPixelFormatType_24RGB = 0x00000018
+};
+#endif
 
 static  Movie           movie=NULL;
 static  DataHandler     dataHandler=NULL;
@@ -336,7 +344,10 @@ static gfxoutputdrv_t quicktime_drv = {
     quicktimedrv_close,
     quicktimedrv_write,
     quicktimedrv_save,
-    quicktimedrv_record
+    quicktimedrv_record,
+    NULL,
+    NULL,
+    NULL
 #ifdef FEATURE_CPUMEMHISTORY
     ,NULL
 #endif

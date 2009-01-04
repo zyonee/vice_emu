@@ -278,11 +278,12 @@ static gfxoutputdrv_t png_drv =
     pngdrv_close,
     pngdrv_write,
     pngdrv_save,
-#ifdef FEATURE_CPUMEMHISTORY
     NULL,
-    pngdrv_save_memmap
-#else
+    NULL,
+    NULL,
     NULL
+#ifdef FEATURE_CPUMEMHISTORY
+    ,pngdrv_save_memmap
 #endif
 };
 

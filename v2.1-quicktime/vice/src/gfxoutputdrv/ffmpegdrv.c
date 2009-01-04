@@ -170,7 +170,7 @@ static const resource_int_t resources_int[] = {
 };
 
 
-int ffmpegdrv_resources_init(void)
+static int ffmpegdrv_resources_init(void)
 {
     if (resources_register_string(resources_string) < 0)
         return -1;
@@ -196,7 +196,7 @@ static const cmdline_option_t cmdline_options[] = {
     { NULL }
 };
 
-int ffmpegdrv_cmdline_options_init(void)
+static int ffmpegdrv_cmdline_options_init(void)
 {
     return cmdline_register_options(cmdline_options);
 }
@@ -770,78 +770,36 @@ static int ffmpegdrv_write(screenshot_t *screenshot)
     return 0;
 }
 
-
-static gfxoutputdrv_t ffmpeg_drv[] = {
-    {
-        "FFMPEG",
-        "FFMPEG",
-        NULL,
-        NULL,
-        ffmpegdrv_close,
-        ffmpegdrv_write,
-        ffmpegdrv_save,
-#ifdef FEATURE_CPUMEMHISTORY
-        ffmpegdrv_record,
-        NULL
-#else
-        ffmpegdrv_record
-#endif
-    },
-/*
+static void ffmpegdrv_shutdown(void)
 {
-        "FFMPEG",
-        "MPEG video (MPEG1/MP2)",
-        "mpeg",
-        NULL,
-        ffmpegdrv_close,
-        ffmpegdrv_write,
-        ffmpegdrv_save,
-        ffmpegdrv_record
-    },
-    {
-        "FFMPEG",
-        "MP3 audio",
-        "mp3",
-        NULL,
-        ffmpegdrv_close,
-        ffmpegdrv_write,
-        ffmpegdrv_save,
-        ffmpegdrv_record
-    },
-    {
-        "FFMPEG",
-        "WAV audio",
-        "wav",
-        NULL,
-        ffmpegdrv_close,
-        ffmpegdrv_write,
-        ffmpegdrv_save,
-        ffmpegdrv_record
-    },
-*/
-    { NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    ffmpeglib_close(&ffmpeglib);
+    lib_free(ffmpeg_format);
+}
+
+static gfxoutputdrv_t ffmpeg_drv = {
+    "FFMPEG",
+    "FFMPEG",
+    NULL,
+    NULL,
+    ffmpegdrv_close,
+    ffmpegdrv_write,
+    ffmpegdrv_save,
+    ffmpegdrv_record,
+    ffmpegdrv_shutdown,
+    ffmpegdrv_resources_init,
+    ffmpegdrv_cmdline_options_init
 #ifdef FEATURE_CPUMEMHISTORY
-      NULL,
+    ,NULL
 #endif
-      NULL }
 };
 
 void gfxoutput_init_ffmpeg(void)
 {
-    int i = 0;
-
     if (ffmpeglib_open(&ffmpeglib) < 0)
         return;
 
-    while (ffmpeg_drv[i].name != NULL)
-        gfxoutput_register(&ffmpeg_drv[i++]);
+    gfxoutput_register(&ffmpeg_drv);
 
     (*ffmpeglib.p_av_register_all)();
-}
-
-void ffmpegdrv_shutdown(void)
-{
-    ffmpeglib_close(&ffmpeglib);
-    lib_free(ffmpeg_format);
 }
 

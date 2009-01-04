@@ -40,6 +40,9 @@ typedef struct gfxoutputdrv_s {
     int (*write)(struct screenshot_s *);
     int (*save)(struct screenshot_s *, const char *);
     int (*record)(struct screenshot_s *);
+    void (*shutdown)(void);
+    int (*resources_init)(void);
+    int (*cmdline_options_init)(void);
 #ifdef FEATURE_CPUMEMHISTORY
     int (*savememmap)(const char *, int, int, BYTE *, BYTE *);
 #endif

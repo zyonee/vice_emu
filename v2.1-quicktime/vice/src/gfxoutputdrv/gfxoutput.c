@@ -138,14 +138,19 @@ void gfxoutput_shutdown(void)
     list = gfxoutputdrv_list;
 
     while (list != NULL) {
+        
+        /* call shutdown function of driver */
+        gfxoutputdrv_t *driver = list->drv;
+        if(driver != NULL) {
+            if(driver->shutdown != NULL) {
+                driver->shutdown();
+            }
+        }
+        
         next = list->next;
         lib_free(list);
         list = next;
     }
-
-#ifdef HAVE_FFMPEG
-    ffmpegdrv_shutdown();
-#endif
 }
 
 /*-----------------------------------------------------------------------*/
@@ -193,22 +198,38 @@ gfxoutputdrv_t *gfxoutput_get_driver(const char *drvname)
     return current->drv;
 }
 
-int  gfxoutput_resources_init()
+int gfxoutput_resources_init()
 {
-#ifdef HAVE_FFMPEG
-    if (ffmpegdrv_resources_init() < 0)
-        return -1;
-#endif
+    gfxoutputdrv_list_t *current = gfxoutputdrv_list;
+
+    while (current->next != NULL) {
+        gfxoutputdrv_t *driver = current->drv;
+        if(driver && (driver->resources_init != NULL)) {
+            int result = driver->resources_init();
+            if(result!=0) {
+                return result;
+            }
+        }
+       current = current->next;
+    }
 
     return 0;
 }
 
 int gfxoutput_cmdline_options_init()
 {
-#ifdef HAVE_FFMPEG
-    if (ffmpegdrv_cmdline_options_init() < 0)
-        return -1;
-#endif
+    gfxoutputdrv_list_t *current = gfxoutputdrv_list;
+
+    while (current->next != NULL) {
+        gfxoutputdrv_t *driver = current->drv;
+        if(driver && (driver->cmdline_options_init != NULL)) {
+            int result = driver->cmdline_options_init();
+            if(result!=0) {
+                return result;
+            }
+        }
+       current = current->next;
+    }
 
     return 0;
 }

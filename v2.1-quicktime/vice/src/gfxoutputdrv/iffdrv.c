@@ -364,11 +364,12 @@ static gfxoutputdrv_t iff_drv =
     iffdrv_close,
     iffdrv_write,
     iffdrv_save,
-#ifdef FEATURE_CPUMEMHISTORY
     NULL,
-    iffdrv_save_memmap
-#else
+    NULL,
+    NULL,
     NULL
+#ifdef FEATURE_CPUMEMHISTORY
+    ,iffdrv_save_memmap
 #endif
 };
 
