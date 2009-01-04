@@ -38,8 +38,10 @@
 
 UI_MENU_DEFINE_RADIO(HummerUserportDevice)
 UI_MENU_DEFINE_RADIO(HummerUserportJoyPort)
+#ifdef HAVE_MOUSE
 UI_MENU_DEFINE_TOGGLE(ps2mouse)
 UI_MENU_DEFINE_TOGGLE(Mouse)
+#endif
 
 static const ui_menu_entry_t c64dtv_userport_menu[] = {
     SDL_MENU_ITEM_TITLE("Hummer userport device"),
@@ -65,6 +67,7 @@ static const ui_menu_entry_t c64dtv_userport_menu[] = {
       MENU_ENTRY_RESOURCE_RADIO,
       radio_HummerUserportJoyPort_callback,
       (ui_callback_data_t)2 },
+#ifdef HAVE_MOUSE
     SDL_MENU_ITEM_SEPARATOR,
     SDL_MENU_ITEM_TITLE("PS/2 mouse on userport"),
     { "Enable PS/2 mouse",
@@ -75,6 +78,7 @@ static const ui_menu_entry_t c64dtv_userport_menu[] = {
       MENU_ENTRY_RESOURCE_TOGGLE,
       toggle_Mouse_callback,
       NULL },
+#endif
     { NULL }
 };
 

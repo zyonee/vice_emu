@@ -68,7 +68,31 @@ void ui_display_speed(float percent, float framerate, int warp_flag)
 void ui_display_paused(int flag){}
 void ui_dispatch_next_event(void){}
 
-/* SDL event handling */
+/* Misc. SDL event handling */
+void ui_handle_misc_sdl_event(SDL_Event e)
+{
+    switch (e.type) {
+        case SDL_QUIT:
+            ui_sdl_quit();
+            break;
+        case SDL_ACTIVEEVENT:
+            if (e.active.state & SDL_APPACTIVE) {
+                if (e.active.gain) {
+/*fprintf(stderr,"%s: activeevent %i,%i\n",__func__,e.active.state,e.active.gain);*/
+                } else {
+                }
+            }
+            break;
+        case SDL_VIDEORESIZE:
+/*fprintf(stderr,"%s: videoresize %ix%i\n",__func__,e.resize.w,e.resize.h);*/
+            break;
+        default:
+/*fprintf(stderr,"%s: %i\n",__func__,e.type);*/
+            break;
+    }
+}
+
+/* Main event handler */
 ui_menu_action_t ui_dispatch_events(void)
 {
     SDL_Event e;
@@ -76,9 +100,6 @@ ui_menu_action_t ui_dispatch_events(void)
 
     while (SDL_PollEvent(&e)) {
         switch (e.type) {
-            case SDL_QUIT:
-                ui_sdl_quit();
-                break;
             case SDL_KEYDOWN:
                 retval = sdlkbd_press(e.key.keysym.sym, e.key.keysym.mod);
                 break;
@@ -108,16 +129,8 @@ ui_menu_action_t ui_dispatch_events(void)
                     mouse_button((int)(e.button.button), (e.button.state == SDL_PRESSED));
                 }
                 break;
-            case SDL_ACTIVEEVENT:
-                if (e.active.state & SDL_APPACTIVE) {
-                    if (e.active.gain) {
-/*fprintf(stderr,"%s: activeevent %i,%i\n",__func__,e.active.state,e.active.gain);*/
-                    } else {
-                    }
-                }
-                break;
             default:
-/*fprintf(stderr,"%s: %i\n",__func__,e.type);*/
+                ui_handle_misc_sdl_event(e);
                 break;
         }
         /* When using the menu or vkbd, pass every meaningful event to the caller */

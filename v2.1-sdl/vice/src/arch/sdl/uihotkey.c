@@ -30,6 +30,7 @@
 #include "joy.h"
 #include "lib.h"
 #include "kbd.h"
+#include "ui.h"
 #include "uihotkey.h"
 #include "uimenu.h"
 #include "util.h"
@@ -133,9 +134,6 @@ int sdl_ui_hotkey_map(ui_menu_entry_t *item)
     while (polling) {
         while (SDL_PollEvent(&e)) {
             switch (e.type) {
-                case SDL_QUIT:
-                    exit(0);
-                    break;
                 case SDL_KEYDOWN:
                     if (is_not_modifier(e.key.keysym.sym)) {
                         sdlkbd_set_hotkey(e.key.keysym.sym, e.key.keysym.mod, item);
@@ -155,6 +153,7 @@ int sdl_ui_hotkey_map(ui_menu_entry_t *item)
                 case SDL_JOYHATMOTION:
                     break;
                 default:
+                    ui_handle_misc_sdl_event(e);
                     break;
             }
         }

@@ -29,18 +29,11 @@
 
 #include "vice.h"
 
+#include <SDL/SDL.h>
+
 #include "types.h"
 #include "uiapi.h"
 #include "uimenu.h"
-
-
-/* If this is #defined, `Alt' is handled the same as `Meta'.  On
-   systems which have Meta, it's better to use Meta instead of Alt as
-   a shortcut modifier (because Alt is usually used by Window
-   Managers), but systems that don't have Meta (eg. GNU/Linux, HP-UX)
-   would suffer then.  So it's easier to just handle Meta as Alt in
-   such cases.  */
-#define ALT_AS_META
 
 /* Number of drives we support in the UI.  */
 #define NUM_DRIVES 4
@@ -64,6 +57,7 @@ struct palette_s;
 void ui_display_speed(float percent, float framerate, int warp_flag);
 void ui_display_paused(int flag);
 void ui_dispatch_next_event(void);
+extern void ui_handle_misc_sdl_event(SDL_Event e);
 ui_menu_action_t ui_dispatch_events(void);
 extern void ui_exit(void);
 extern void ui_message(const char *format,...);

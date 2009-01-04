@@ -1,5 +1,5 @@
 /*
- * menu_c64hw.c - C64 HW menu for SDL UI.
+ * menu_mouse.h - Mouse menu for SDL UI.
  *
  * Written by
  *  Hannu Nuotio <hannu.nuotio@tut.fi>
@@ -24,31 +24,13 @@
  *
  */
 
+#ifndef VICE_MENU_MOUSE_H
+#define VICE_MENU_MOUSE_H
+
 #include "vice.h"
 #include "types.h"
-
-#include "menu_common.h"
-#include "menu_joystick.h"
-#ifdef HAVE_MOUSE
-#include "menu_mouse.h"
-#endif
-#include "menu_sid.h"
 #include "uimenu.h"
 
-const ui_menu_entry_t c64_hardware_menu[] = {
-    { "Joystick settings",
-      MENU_ENTRY_SUBMENU,
-      submenu_callback,
-      (ui_callback_data_t)joystick_menu },
-    { "SID settings",
-      MENU_ENTRY_SUBMENU,
-      submenu_callback,
-      (ui_callback_data_t)sid_c64_menu },
-#ifdef HAVE_MOUSE
-    { "Mouse emulation",
-      MENU_ENTRY_SUBMENU,
-      submenu_callback,
-      (ui_callback_data_t)mouse_menu },
+extern const ui_menu_entry_t mouse_menu[];
+
 #endif
-    { NULL }
-};

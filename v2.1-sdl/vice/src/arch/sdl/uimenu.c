@@ -543,18 +543,15 @@ char* sdl_ui_readline(const char* previous, int pos_x, int pos_y)
         do {
             SDL_WaitEvent(&e);
             switch (e.type) {
-                case SDL_QUIT:
-                    exit(0);
-                    break;
                 case SDL_KEYDOWN:
                     key = e.key.keysym.sym;
                     mod = e.key.keysym.mod;
                     c_uni = e.key.keysym.unicode;
                     got_key = 1;
-                break;
-            default:
-/*fprintf(stderr,"%s: %i\n",__func__,e.type);*/
-                break;
+                    break;
+                default:
+                    ui_handle_misc_sdl_event(e);
+                    break;
             }
         } while(!got_key);
 
