@@ -407,12 +407,12 @@ static int set_mouse_type(int val, void *param)
 static const resource_int_t resources_int[] = {
     { "Mouse", 0, RES_EVENT_SAME, NULL,
       &_mouse_enabled, set_mouse_enabled, NULL },
-    { "Mousetype", MOUSE_TYPE_1351, RES_EVENT_SAME, NULL,
-      &mouse_type, set_mouse_type, NULL },
     { NULL }
 };
 
-static const resource_int_t resources_port_int[] = {
+static const resource_int_t resources_extra_int[] = {
+    { "Mousetype", MOUSE_TYPE_1351, RES_EVENT_SAME, NULL,
+      &mouse_type, set_mouse_type, NULL },
     { "Mouseport", 1, RES_EVENT_SAME, NULL,
       &mouse_port, set_mouse_port, NULL },
     { NULL }
@@ -423,9 +423,9 @@ int mouse_resources_init(void)
     if (resources_register_int(resources_int) < 0)
         return -1;
 
-    /* FIXME ugly kludge to remove port setting from xvic */
+    /* FIXME ugly kludge to remove port and type setting from xvic */
     if (machine_class != VICE_MACHINE_VIC20) {
-        if (resources_register_int(resources_port_int) < 0) {
+        if (resources_register_int(resources_extra_int) < 0) {
             return -1;
         }
     }
@@ -444,15 +444,15 @@ static const cmdline_option_t cmdline_options[] = {
       USE_PARAM_STRING, USE_DESCRIPTION_ID,
       IDCLS_UNUSED, IDCLS_DISABLE_MOUSE_GRAB,
       NULL, NULL },
+    { NULL }
+};
+
+static const cmdline_option_t cmdline_extra_option[] = {
     { "-mousetype", SET_RESOURCE, 1,
       NULL, NULL, "Mousetype", NULL,
       USE_PARAM_ID, USE_DESCRIPTION_ID,
       IDCLS_P_VALUE, IDCLS_SELECT_MOUSE_TYPE,
       NULL, NULL },
-    { NULL }
-};
-
-static const cmdline_option_t cmdline_port_option[] = {
     { "-mouseport", SET_RESOURCE, 1,
       NULL, NULL, "Mouseport", NULL,
       USE_PARAM_ID, USE_DESCRIPTION_ID,
@@ -466,9 +466,9 @@ int mouse_cmdline_options_init(void)
     if (cmdline_register_options(cmdline_options) < 0)
         return -1;
 
-    /* FIXME ugly kludge to remove port setting from xvic */
+    /* FIXME ugly kludge to remove port and type setting from xvic */
     if (machine_class != VICE_MACHINE_VIC20) {
-        if (cmdline_register_options(cmdline_port_option) < 0) {
+        if (cmdline_register_options(cmdline_extra_option) < 0) {
             return -1;
         }
     }
@@ -478,6 +478,12 @@ int mouse_cmdline_options_init(void)
 
 void mouse_init(void)
 {
+    /* FIXME ugly kludge to set the correct port and type setting for xvic */
+    if (machine_class == VICE_MACHINE_VIC20) {
+        set_mouse_port(1, NULL);
+        set_mouse_type(MOUSE_TYPE_PADDLE, NULL);
+    }
+
     neos_and_amiga_buttons = 0;
     neos_prev = 0xff;
     neosmouse_alarm = alarm_new(maincpu_alarm_context, "NEOSMOUSEAlarm", neosmouse_alarm_handler, NULL);

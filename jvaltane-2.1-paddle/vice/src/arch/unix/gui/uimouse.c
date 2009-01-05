@@ -69,10 +69,8 @@ ui_menu_entry_t mouse_submenu[] = {
 };
 
 ui_menu_entry_t mouse_vic20_submenu[] = {
-    { N_("*Enable mouse"),
+    { N_("*Enable paddles"),
       (ui_callback_t)toggle_Mouse, NULL, NULL, KEYSYM_m, UI_HOTMOD_META },
-    { N_("Mouse type"),
-      NULL, NULL, mousetype_submenu },
     { NULL }
 };
 

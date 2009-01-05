@@ -471,7 +471,7 @@ static ui_menu_entry_t vic20_menu[] = {
       NULL, NULL, memory_settings_submenu },
     { N_("SID cartridge settings"),
       NULL, NULL, sidcart_submenu },
-    { N_("Mouse emulation"),
+    { N_("Paddle emulation"),
       NULL, NULL, mouse_vic20_submenu },
 #ifdef HAVE_MIDI
     { N_("MIDI emulation"),
