@@ -52,8 +52,6 @@ int soundmovie_start(soundmovie_funcs_t *f)
 extern int soundmovie_stop()
 {
     resources_set_string("SoundRecordDeviceName", "");
-    
-    funcs = NULL;
     return 0;
 }
 
@@ -90,6 +88,7 @@ static int soundmovie_write(SWORD *pbuf, size_t nr)
         copied += samples_to_copy;
         if (buffer->used == buffer_size) {
             funcs->encode(buffer);
+            buffer->used = 0;
         }
     }
 
