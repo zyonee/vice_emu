@@ -1155,7 +1155,6 @@ dnl ----- FFMPEG -----
 FFMPEG_INCLUDES=
 FFMPEG_LIBS=
 if test x"$enable_ffmpeg" = "xyes" -o x"$is_win32" = "xyes"; then
-  SOUND_DRIVERS="$SOUND_DRIVERS soundffmpegaudio.o"
   GFXOUTPUT_DRIVERS="$GFXOUTPUT_DRIVERS ffmpegdrv.o"
   AC_CHECK_HEADERS( ffmpeg/avformat.h )
   if test x"$ac_cv_header_ffmpeg_avformat_h" = "xno" ; then
@@ -1200,7 +1199,6 @@ if test x"$enable_quicktime" = "xyes" -o x"$is_unix_macosx" = "xyes"; then
     AC_TRY_LINK([#include <QuickTime/Movies.h>],
                 [EnterMovies();],
                 [AC_MSG_RESULT(yes);
-                 dnl SOUND_DRIVERS="$SOUND_DRIVERS soundffmpegaudio.o"
                  GFXOUTPUT_DRIVERS="$GFXOUTPUT_DRIVERS quicktimedrv.o"
                  QUICKTIME_LIBS="-framework QuickTime -framework CoreVideo"
                  AC_DEFINE(HAVE_QUICKTIME,,[Enable QuickTime support.])],
