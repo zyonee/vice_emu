@@ -6876,7 +6876,7 @@ translate_t string_table[] = {
 /* printerdrv/output-text.c */
 /* en */ {IDCLS_SPECIFY_TEXT_DEVICE_DUMP_NAME,    N_("Specify name of printer text device or dump file")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_TEXT_DEVICE_DUMP_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_TEXT_DEVICE_DUMP_NAME_DA, "Angiv navn på printer-tekst-enhed eller dump-fil"},
 /* de */ {IDCLS_SPECIFY_TEXT_DEVICE_DUMP_NAME_DE, "Name für Druckerausgabe Textgerät oder Dump Datei definieren"},
 /* fr */ {IDCLS_SPECIFY_TEXT_DEVICE_DUMP_NAME_FR, "Spécifier le nom de l'imprimante texte ou \"dump file\""},
 /* hu */ {IDCLS_SPECIFY_TEXT_DEVICE_DUMP_NAME_HU, "Adja meg a szövegnyomtató eszköz nevét, vagy a kimeneti fájlt"},
@@ -6890,7 +6890,7 @@ translate_t string_table[] = {
 /* printerdrv/output-text.c */
 /* en */ {IDCLS_SPECIFY_TEXT_DEVICE_4,    N_("Specify printer text output device for IEC printer #4")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_TEXT_DEVICE_4_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_TEXT_DEVICE_4_DA, "Angiv printer tekst-uddata enhed for IEC-printer #4"},
 /* de */ {IDCLS_SPECIFY_TEXT_DEVICE_4_DE, "IEC Drucker #4 Gerät für Textausgabe definieren"},
 /* fr */ {IDCLS_SPECIFY_TEXT_DEVICE_4_FR, "Spécifier le périphérique de sortie text pour l'imprimante IEC #4"},
 /* hu */ {IDCLS_SPECIFY_TEXT_DEVICE_4_HU, "Adja meg a szövegnyomtató eszközt a #4-es IEC nyomtatóhoz"},
@@ -6905,7 +6905,7 @@ translate_t string_table[] = {
 /* printerdrv/output-text.c */
 /* en */ {IDCLS_SPECIFY_TEXT_DEVICE_5,    N_("Specify printer text output device for IEC printer #5")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_TEXT_DEVICE_5_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_TEXT_DEVICE_5_DA, "Angiv printer tekst-uddata enhed for IEC-printer #5"},
 /* de */ {IDCLS_SPECIFY_TEXT_DEVICE_5_DE, "IEC Drucker #5 Gerät für Textausgabe definieren"},
 /* fr */ {IDCLS_SPECIFY_TEXT_DEVICE_5_FR, "Spécifier le périphérique de sortie text pour l'imprimante IEC #5"},
 /* hu */ {IDCLS_SPECIFY_TEXT_DEVICE_5_HU, "Adja meg a szövegnyomtató eszközt a #5-es IEC nyomtatóhoz"},
@@ -6920,7 +6920,7 @@ translate_t string_table[] = {
 /* printerdrv/output-text.c */
 /* en */ {IDCLS_SPECIFY_TEXT_USERPORT,    N_("Specify printer text output device for userport printer")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_TEXT_USERPORT_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_TEXT_USERPORT_DA, "Angiv printer tekst-uddata enhed for brugerports-printer"},
 /* de */ {IDCLS_SPECIFY_TEXT_USERPORT_DE, "IEC Userport Drucker Gerät für Textausgabe definieren"},
 /* fr */ {IDCLS_SPECIFY_TEXT_USERPORT_FR, "Spécifier le périphérique de sortie text pour l'imprimante userport"},
 /* hu */ {IDCLS_SPECIFY_TEXT_USERPORT_HU, "Adja meg a szövegnyomtató eszközt a userport nyomtatóhoz"},
@@ -6935,7 +6935,7 @@ translate_t string_table[] = {
 /* raster/raster-cmdline-options.c */
 /* en */ {IDCLS_ENABLE_VIDEO_CACHE,    N_("Enable the video cache")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ENABLE_VIDEO_CACHE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ENABLE_VIDEO_CACHE_DA, "Aktivér videocache"},
 /* de */ {IDCLS_ENABLE_VIDEO_CACHE_DE, "Video Cache aktivieren"},
 /* fr */ {IDCLS_ENABLE_VIDEO_CACHE_FR, "Activer le cache vidéo"},
 /* hu */ {IDCLS_ENABLE_VIDEO_CACHE_HU, "Videó gyorsítótár engedélyezése"},
@@ -6949,7 +6949,7 @@ translate_t string_table[] = {
 /* raster/raster-cmdline-options.c */
 /* en */ {IDCLS_DISABLE_VIDEO_CACHE,    N_("Disable the video cache")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_DISABLE_VIDEO_CACHE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_DISABLE_VIDEO_CACHE_DA, "Deaktiver videocache"},
 /* de */ {IDCLS_DISABLE_VIDEO_CACHE_DE, "Video Cache deaktivieren"},
 /* fr */ {IDCLS_DISABLE_VIDEO_CACHE_FR, "Désactiver le cache vidéo"},
 /* hu */ {IDCLS_DISABLE_VIDEO_CACHE_HU, "Videó gyorsítótár tiltása"},
@@ -6964,7 +6964,7 @@ translate_t string_table[] = {
 /* rs232drv/rs232drv.c */
 /* en */ {IDCLS_SPECIFY_RS232_1_NAME,    N_("Specify name of first RS232 device")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_RS232_1_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_RS232_1_NAME_DA, "Angiv navn på første RS232-enhed"},
 /* de */ {IDCLS_SPECIFY_RS232_1_NAME_DE, "Name für erstes RS232 Gerät definieren"},
 /* fr */ {IDCLS_SPECIFY_RS232_1_NAME_FR, "Spécifier le nom du 1er périphérique RS232"},
 /* hu */ {IDCLS_SPECIFY_RS232_1_NAME_HU, "Adja meg az elsõ RS232-es eszköz nevét"},
@@ -6978,7 +6978,7 @@ translate_t string_table[] = {
 /* rs232drv/rs232drv.c */
 /* en */ {IDCLS_SPECIFY_RS232_2_NAME,    N_("Specify name of second RS232 device")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_RS232_2_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_RS232_2_NAME_DA, "Angiv navn på anden RS232-enhed"},
 /* de */ {IDCLS_SPECIFY_RS232_2_NAME_DE, "Name für zweites RS232 Gerät definieren"},
 /* fr */ {IDCLS_SPECIFY_RS232_2_NAME_FR, "Spécifier le nom du 2e périphérique RS232"},
 /* hu */ {IDCLS_SPECIFY_RS232_2_NAME_HU, "Adja meg a második RS232-es eszköz nevét"},
@@ -6992,7 +6992,7 @@ translate_t string_table[] = {
 /* rs232drv/rs232drv.c */
 /* en */ {IDCLS_SPECIFY_RS232_3_NAME,    N_("Specify name of third RS232 device")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_RS232_3_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_RS232_3_NAME_DA, "Angiv navn på tredje RS232-enhed"},
 /* de */ {IDCLS_SPECIFY_RS232_3_NAME_DE, "Name für drittes RS232 Gerät definieren"},
 /* fr */ {IDCLS_SPECIFY_RS232_3_NAME_FR, "Spécifier le nom du 3e périphérique RS232"},
 /* hu */ {IDCLS_SPECIFY_RS232_3_NAME_HU, "Adja meg a harmadik RS232-es eszköz nevét"},
@@ -7006,7 +7006,7 @@ translate_t string_table[] = {
 /* rs232drv/rs232drv.c */
 /* en */ {IDCLS_SPECIFY_RS232_4_NAME,    N_("Specify name of fourth RS232 device")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_RS232_4_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_RS232_4_NAME_DA, "Angiv navn på fjerde RS232-enhed"},
 /* de */ {IDCLS_SPECIFY_RS232_4_NAME_DE, "Name für viertes RS232 Gerät definieren"},
 /* fr */ {IDCLS_SPECIFY_RS232_4_NAME_FR, "Spécifier le nom du 4e périphérique RS232"},
 /* hu */ {IDCLS_SPECIFY_RS232_4_NAME_HU, "Adja meg a negyedik RS232-es eszköz nevét"},
@@ -7021,7 +7021,7 @@ translate_t string_table[] = {
 /* rs232drv/rsuser.c */
 /* en */ {IDCLS_ENABLE_RS232_USERPORT,    N_("Enable RS232 userport emulation")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ENABLE_RS232_USERPORT_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ENABLE_RS232_USERPORT_DA, "Aktivér RS232-emulering på brugerporten"},
 /* de */ {IDCLS_ENABLE_RS232_USERPORT_DE, "RS232 Userport Emulation aktivieren"},
 /* fr */ {IDCLS_ENABLE_RS232_USERPORT_FR, "Activer l'émulation de périphérique RS232 userport"},
 /* hu */ {IDCLS_ENABLE_RS232_USERPORT_HU, "RS232 userport emuláció engedélyezése"},
@@ -7035,7 +7035,7 @@ translate_t string_table[] = {
 /* rs232drv/rsuser.c */
 /* en */ {IDCLS_DISABLE_RS232_USERPORT,    N_("Disable RS232 userport emulation")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_DISABLE_RS232_USERPORT_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_DISABLE_RS232_USERPORT_DA, "Deaktiver RS232-emulering på brugerporten"},
 /* de */ {IDCLS_DISABLE_RS232_USERPORT_DE, "RS232 Userport Emulation deaktivieren"},
 /* fr */ {IDCLS_DISABLE_RS232_USERPORT_FR, "Désactiver l'émulation de périphérique RS232 userport"},
 /* hu */ {IDCLS_DISABLE_RS232_USERPORT_HU, "RS232 userport emuláció tiltása"},
@@ -7049,7 +7049,7 @@ translate_t string_table[] = {
 /* rs232drv/rsuser.c */
 /* en */ {IDCLS_P_BAUD,    N_("<baud>")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_P_BAUD_PL, ""},   /* fuzzy */
+/* da */ {IDCLS_P_BAUD_PL, "<baud>"},
 /* de */ {IDCLS_P_BAUD_DE, "<Baud>"},
 /* fr */ {IDCLS_P_BAUD_FR, "<baud>"},
 /* hu */ {IDCLS_P_BAUD_HU, "<bitráta>"},
@@ -7063,7 +7063,7 @@ translate_t string_table[] = {
 /* rs232drv/rsuser.c */
 /* en */ {IDCLS_SET_BAUD_RS232_USERPORT,    N_("Set the baud rate of the RS232 userport emulation.")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SET_BAUD_RS232_USERPORT_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SET_BAUD_RS232_USERPORT_DA, "Angiv baudhastighet for RS232-emuleringen på brugerporten."},
 /* de */ {IDCLS_SET_BAUD_RS232_USERPORT_DE, "Baudrate für RS232 Userport Emulation setzen"},
 /* fr */ {IDCLS_SET_BAUD_RS232_USERPORT_FR, "Spécifiez la vitesse en baud du périphérique RS232 userport"},
 /* hu */ {IDCLS_SET_BAUD_RS232_USERPORT_HU, "Bitráta megadása az RS232 userport emulációhoz."},
@@ -7077,7 +7077,7 @@ translate_t string_table[] = {
 /* rs232drv/rsuser.c */
 /* en */ {IDCLS_SPECIFY_RS232_DEVICE_USERPORT,    N_("Specify VICE RS232 device for userport")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_RS232_DEVICE_USERPORT_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_RS232_DEVICE_USERPORT_DA, "Angiv VICE RS232-enhet for brugerporten"},
 /* de */ {IDCLS_SPECIFY_RS232_DEVICE_USERPORT_DE, "VICE RS232 Gerät für Userport definieren"},
 /* fr */ {IDCLS_SPECIFY_RS232_DEVICE_USERPORT_FR, "Spécifier un périphérique VICE RS232 pour le userport"},
 /* hu */ {IDCLS_SPECIFY_RS232_DEVICE_USERPORT_HU, "VICE RS232-es userport eszköz megadása"},
@@ -7091,7 +7091,7 @@ translate_t string_table[] = {
 /* serial/serial-iec-device.c */
 /* en */ {IDCLS_ENABLE_IEC_4,    N_("Enable IEC device emulation for device #4")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ENABLE_IEC_4_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ENABLE_IEC_4_DA, "Aktivér IEC-enhedsemulering for enhed #4"},
 /* de */ {IDCLS_ENABLE_IEC_4_DE, "IEC Geräte Emulation für Gerät #4 aktivieren"},
 /* fr */ {IDCLS_ENABLE_IEC_4_FR, "Activer l'émulation IEC pour le périphérique #4"},
 /* hu */ {IDCLS_ENABLE_IEC_4_HU, "IEC eszköz #4 emulációjának engedélyezése"},
@@ -7105,7 +7105,7 @@ translate_t string_table[] = {
 /* serial/serial-iec-device.c */
 /* en */ {IDCLS_DISABLE_IEC_4,    N_("Disable IEC device emulation for device #4")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_DISABLE_IEC_4_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_DISABLE_IEC_4_DA, "Deaktiver IEC-enhedsemulering for enhed #4"},
 /* de */ {IDCLS_DISABLE_IEC_4_DE, "IEC Geräte Emulation für Gerät #4 deaktivieren"},
 /* fr */ {IDCLS_DISABLE_IEC_4_FR, "Désactiver l'émulation IEC pour le périphérique #4"},
 /* hu */ {IDCLS_DISABLE_IEC_4_HU, "IEC eszköz #4 emulációjának tiltása"},
@@ -7119,7 +7119,7 @@ translate_t string_table[] = {
 /* serial/serial-iec-device.c */
 /* en */ {IDCLS_ENABLE_IEC_5,    N_("Enable IEC device emulation for device #5")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ENABLE_IEC_5_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ENABLE_IEC_5_DA, "Aktivér IEC-enhedsemulering for enhed #5"},
 /* de */ {IDCLS_ENABLE_IEC_5_DE, "IEC Geräte Emulation für Gerät #5 aktivieren"},
 /* fr */ {IDCLS_ENABLE_IEC_5_FR, "Activer l'émulation IEC pour le périphérique #5"},
 /* hu */ {IDCLS_ENABLE_IEC_5_HU, "IEC eszköz #5 emulációjának engedélyezése"},
@@ -7133,7 +7133,7 @@ translate_t string_table[] = {
 /* serial/serial-iec-device.c */
 /* en */ {IDCLS_DISABLE_IEC_5,    N_("Disable IEC device emulation for device #5")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_DISABLE_IEC_5_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_DISABLE_IEC_5_DA, "Deaktiver IEC-enhedsemulering for enhed #5"},
 /* de */ {IDCLS_DISABLE_IEC_5_DE, "IEC Geräte Emulation für Gerät #5 deaktivieren"},
 /* fr */ {IDCLS_DISABLE_IEC_5_FR, "Désactiver l'émulation IEC pour le périphérique #5"},
 /* hu */ {IDCLS_DISABLE_IEC_5_HU, "IEC eszköz #5 emulációjának tiltása"},
@@ -7147,7 +7147,7 @@ translate_t string_table[] = {
 /* serial/serial-iec-device.c */
 /* en */ {IDCLS_ENABLE_IEC_8,    N_("Enable IEC device emulation for device #8")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ENABLE_IEC_8_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ENABLE_IEC_8_DA, "Aktivér IEC-enhedsemulering for enhed #8"},
 /* de */ {IDCLS_ENABLE_IEC_8_DE, "IEC Geräte Emulation für Gerät #8 aktivieren"},
 /* fr */ {IDCLS_ENABLE_IEC_8_FR, "Activer l'émulation IEC pour le périphérique #8"},
 /* hu */ {IDCLS_ENABLE_IEC_8_HU, "IEC eszköz #8 emulációjának engedélyezése"},
@@ -7161,7 +7161,7 @@ translate_t string_table[] = {
 /* serial/serial-iec-device.c */
 /* en */ {IDCLS_DISABLE_IEC_8,    N_("Disable IEC device emulation for device #8")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_DISABLE_IEC_8_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_DISABLE_IEC_8_DA, "Deaktiver IEC-enhedsemulering for enhed #8"},
 /* de */ {IDCLS_DISABLE_IEC_8_DE, "IEC Geräte Emulation für Gerät #8 deaktivieren"},
 /* fr */ {IDCLS_DISABLE_IEC_8_FR, "Désactiver l'émulation IEC pour le périphérique #8"},
 /* hu */ {IDCLS_DISABLE_IEC_8_HU, "IEC eszköz #8 emulációjának tiltása"},
@@ -7175,7 +7175,7 @@ translate_t string_table[] = {
 /* serial/serial-iec-device.c */
 /* en */ {IDCLS_ENABLE_IEC_9,    N_("Enable IEC device emulation for device #9")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ENABLE_IEC_9_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ENABLE_IEC_9_DA, "Aktivér IEC-enhedsemulering for enhed #9"},
 /* de */ {IDCLS_ENABLE_IEC_9_DE, "IEC Geräte Emulation für Gerät #9 aktivieren"},
 /* fr */ {IDCLS_ENABLE_IEC_9_FR, "Activer l'émulation IEC pour le périphérique #9"},
 /* hu */ {IDCLS_ENABLE_IEC_9_HU, "IEC eszköz #9 emulációjának engedélyezése"},
@@ -7189,7 +7189,7 @@ translate_t string_table[] = {
 /* serial/serial-iec-device.c */
 /* en */ {IDCLS_DISABLE_IEC_9,    N_("Disable IEC device emulation for device #9")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_DISABLE_IEC_9_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_DISABLE_IEC_9_DA, "Deaktiver IEC-enhedsemulering for enhed #9"},
 /* de */ {IDCLS_DISABLE_IEC_9_DE, "IEC Geräte Emulation für Gerät #9 deaktivieren"},
 /* fr */ {IDCLS_DISABLE_IEC_9_FR, "Désactiver l'émulation IEC pour le périphérique #9"},
 /* hu */ {IDCLS_DISABLE_IEC_9_HU, "IEC eszköz #9 emulációjának tiltása"},
@@ -7203,7 +7203,7 @@ translate_t string_table[] = {
 /* serial/serial-iec-device.c */
 /* en */ {IDCLS_ENABLE_IEC_10,    N_("Enable IEC device emulation for device #10")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ENABLE_IEC_10_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ENABLE_IEC_10_DA, "Aktivér IEC-enhedsemulering for enhed #10"},
 /* de */ {IDCLS_ENABLE_IEC_10_DE, "IEC Geräte Emulation für Gerät #10 aktivieren"},
 /* fr */ {IDCLS_ENABLE_IEC_10_FR, "Activer l'émulation IEC pour le périphérique #10"},
 /* hu */ {IDCLS_ENABLE_IEC_10_HU, "IEC eszköz #10 emulációjának engedélyezése"},
@@ -7217,7 +7217,7 @@ translate_t string_table[] = {
 /* serial/serial-iec-device.c */
 /* en */ {IDCLS_DISABLE_IEC_10,    N_("Disable IEC device emulation for device #10")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_DISABLE_IEC_10_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_DISABLE_IEC_10_DA, "Deaktiver IEC-enhedsemulering for enhed #10"},
 /* de */ {IDCLS_DISABLE_IEC_10_DE, "IEC Geräte Emulation für Gerät #10 deaktivieren"},
 /* fr */ {IDCLS_DISABLE_IEC_10_FR, "Désactiver l'émulation IEC pour le périphérique #10"},
 /* hu */ {IDCLS_DISABLE_IEC_10_HU, "IEC eszköz #10 emulációjának tiltása"},
@@ -7231,7 +7231,7 @@ translate_t string_table[] = {
 /* serial/serial-iec-device.c */
 /* en */ {IDCLS_ENABLE_IEC_11,    N_("Enable IEC device emulation for device #11")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ENABLE_IEC_11_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ENABLE_IEC_11_DA, "Aktivér IEC-enhedsemulering for enhed #11"},
 /* de */ {IDCLS_ENABLE_IEC_11_DE, "IEC Geräte Emulation für Gerät #11 aktivieren"},
 /* fr */ {IDCLS_ENABLE_IEC_11_FR, "Activer l'émulation IEC pour le périphérique #11"},
 /* hu */ {IDCLS_ENABLE_IEC_11_HU, "IEC eszköz #11 emulációjának engedélyezése"},
@@ -7245,7 +7245,7 @@ translate_t string_table[] = {
 /* serial/serial-iec-device.c */
 /* en */ {IDCLS_DISABLE_IEC_11,    N_("Disable IEC device emulation for device #11")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_DISABLE_IEC_11_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_DISABLE_IEC_11_DA, "Deaktiver IEC-enhedsemulering for enhed #11"},
 /* de */ {IDCLS_DISABLE_IEC_11_DE, "IEC Geräte Emulation für Gerät #11 deaktivieren"},
 /* fr */ {IDCLS_DISABLE_IEC_11_FR, "Désactiver l'émulation IEC pour le périphérique #11"},
 /* hu */ {IDCLS_DISABLE_IEC_11_HU, "IEC eszköz #11 emulációjának tiltása"},
@@ -7259,7 +7259,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_P_ENGINE,    N_("<engine>")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_P_ENGINE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_P_ENGINE_DA, "<motor>"},
 /* de */ {IDCLS_P_ENGINE_DE, "<Engine>"},
 /* fr */ {IDCLS_P_ENGINE_FR, "<engin>"},
 /* hu */ {IDCLS_P_ENGINE_HU, "<motor>"},
@@ -7274,7 +7274,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_SID_ENGINE,    N_("Specify SID engine (0: FastSID)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, "Vælg SID-motor (0: FastSID)"},
 /* de */ {IDCLS_SPECIFY_SID_ENGINE_DE, "SID Engine wählen (0: FastSID)"},
 /* fr */ {IDCLS_SPECIFY_SID_ENGINE_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_SPECIFY_SID_ENGINE_HU, "Adja meg a SID motort (0: Gyors SID)"},
@@ -7290,7 +7290,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_SID_ENGINE,    N_("Specify SID engine (0: FastSID, 1: ReSID)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, "Vælg SID-motor (0: FastSID, 1: ReSID)"},
 /* de */ {IDCLS_SPECIFY_SID_ENGINE_DE, "SID Engine wählen (0: FastSID, 1: ReSID)"},
 /* fr */ {IDCLS_SPECIFY_SID_ENGINE_FR, "Spécifier l’engin SID (0: FastSID, 1: ReSID)"},
 /* hu */ {IDCLS_SPECIFY_SID_ENGINE_HU, "Adja meg a SID motort (0: Gyors SID, 1: ReSID)"},
@@ -7306,7 +7306,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_SID_ENGINE,    N_("Specify SID engine (0: FastSID, 2: Catweasel)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, "Vælg SID-motor (0: FastSID, 2: Catweasel)"},
 /* de */ {IDCLS_SPECIFY_SID_ENGINE_DE, "SID Engine wählen (0: FastSID, 2: Catweasel)"},
 /* fr */ {IDCLS_SPECIFY_SID_ENGINE_FR, "Spécifier l’engin SID (0: FastSID, 2: Catweasel)"},
 /* hu */ {IDCLS_SPECIFY_SID_ENGINE_HU, "Adja meg a SID motort (0: Gyors SID, 2: Catweasel)"},
@@ -7322,7 +7322,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_SID_ENGINE,    N_("Specify SID engine (0: FastSID, 3: HardSID)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, "Vælg SID-motor (0: FastSID, 3: HardSID)"},
 /* de */ {IDCLS_SPECIFY_SID_ENGINE_DE, "SID Engine wählen (0: FastSID, 3: HardSID)"},
 /* fr */ {IDCLS_SPECIFY_SID_ENGINE_FR, "Spécifier l’engin SID (0: FastSID, 3: HardSID)"},
 /* hu */ {IDCLS_SPECIFY_SID_ENGINE_HU, "Adja meg a SID motort (0: Gyors SID, 3: HardSID)"},
@@ -7338,7 +7338,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_SID_ENGINE,    N_("Specify SID engine (0: FastSID, 4: ParSID)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, "Vælg SID-motor (0: FastSID, 4: ParSID)"},
 /* de */ {IDCLS_SPECIFY_SID_ENGINE_DE, "SID Engine wählen (0: FastSID, 4: ParSID)"},
 /* fr */ {IDCLS_SPECIFY_SID_ENGINE_FR, "Spécifier l’engin SID (0: FastSID, 4: ParSID)"},
 /* hu */ {IDCLS_SPECIFY_SID_ENGINE_HU, "Adja meg a SID motort (0: Gyors SID, 4: ParSID)"},
@@ -7354,7 +7354,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_SID_ENGINE,    N_("Specify SID engine (0: FastSID, 7: ReSID-FP)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, "Vælg SID-motor (0: FastSID, 7: ReSID-FP)"},
 /* de */ {IDCLS_SPECIFY_SID_ENGINE_DE, "SID Engine wählen (0: FastSID, 7: ReSID-FP)"},
 /* fr */ {IDCLS_SPECIFY_SID_ENGINE_FR, "Spécifier l’engin SID (0: FastSID, 7: ReSID-FP)"},
 /* hu */ {IDCLS_SPECIFY_SID_ENGINE_HU, "Adja meg a SID motort (0: Gyors SID, 7: ReSID-FP)"},
@@ -7370,7 +7370,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_SID_ENGINE,    N_("Specify SID engine (0: FastSID, 1: ReSID, 2: Catweasel)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, "Vælg SID-motor (0: FastSID, 1: ReSID, 2: Catweasel)"},
 /* de */ {IDCLS_SPECIFY_SID_ENGINE_DE, "SID Engine wählen (0: FastSID, 1: ReSID, 2: Catweasel)"},
 /* fr */ {IDCLS_SPECIFY_SID_ENGINE_FR, "Spécifier l’engin SID (0: FastSID, 1: ReSID, 2: Catweasel)"},
 /* hu */ {IDCLS_SPECIFY_SID_ENGINE_HU, "Adja meg a SID motort (0: Gyors SID, 1: ReSID, 2: Catweasel)"},
@@ -7386,7 +7386,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_SID_ENGINE,    N_("Specify SID engine (0: FastSID, 1: ReSID, 3: HardSID)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, "Vælg SID-motor (0: FastSID, 1: ReSID, 3: HardSID)"},
 /* de */ {IDCLS_SPECIFY_SID_ENGINE_DE, "SID Engine wählen (0: FastSID, 1: ReSID, 3: HardSID)"},
 /* fr */ {IDCLS_SPECIFY_SID_ENGINE_FR, "Spécifier l’engin SID (0: FastSID, 1: ReSID, 3: HardSID)"},
 /* hu */ {IDCLS_SPECIFY_SID_ENGINE_HU, "Adja meg a SID motort (0: Gyors SID, 1: ReSID, 3: HardSID)"},
@@ -7402,7 +7402,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_SID_ENGINE,    N_("Specify SID engine (0: FastSID, 1: ReSID, 4: ParSID)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, "Vælg SID-motor (0: FastSID, 1: ReSID, 4: ParSID)"},
 /* de */ {IDCLS_SPECIFY_SID_ENGINE_DE, "SID Engine wählen (0: FastSID, 1: ReSID, 4: ParSID)"},
 /* fr */ {IDCLS_SPECIFY_SID_ENGINE_FR, "Spécifier l’engin SID (0: FastSID, 1: ReSID, 4: ParSID)"},
 /* hu */ {IDCLS_SPECIFY_SID_ENGINE_HU, "Adja meg a SID motort (0: Gyors SID, 1: ReSID, 3: HardSID, 4: ParSID)"},
@@ -7418,7 +7418,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_SID_ENGINE,    N_("Specify SID engine (0: FastSID, 1: ReSID, 7: ReSID-FP)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, "Vælg SID-motor (0: FastSID, 1: ReSID, 7: ParSID-FP)"},
 /* de */ {IDCLS_SPECIFY_SID_ENGINE_DE, "SID Engine wählen (0: FastSID, 1: ReSID, 7: ReSID-FP)"},
 /* fr */ {IDCLS_SPECIFY_SID_ENGINE_FR, "Spécifier l’engin SID (0: FastSID, 1: ReSID, 7: ReSID-FP)"},
 /* hu */ {IDCLS_SPECIFY_SID_ENGINE_HU, "Adja meg a SID motort (0: Gyors SID, 1: ReSID, 3: HardSID, 7: ReSID-FP)"},
@@ -7434,7 +7434,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_SID_ENGINE,    N_("Specify SID engine (0: FastSID, 2: Catweasel, 3: HardSID)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, "Vælg SID-motor (0: FastSID, 2: Catweasel, 3: HardSID)"},
 /* de */ {IDCLS_SPECIFY_SID_ENGINE_DE, "SID Engine wählen (0: FastSID, 2: Catweasel, 3: HardSID)"},
 /* fr */ {IDCLS_SPECIFY_SID_ENGINE_FR, "Spécifier l’engin SID (0: FastSID, 2: Catweasel, 3: HardSID)"},
 /* hu */ {IDCLS_SPECIFY_SID_ENGINE_HU, "Adja meg a SID motort (0: Gyors SID, 2: Catweasel, 3: HardSID)"},
@@ -7451,7 +7451,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_SID_ENGINE,    N_("Specify SID engine (0: FastSID, 2: Catweasel, 4: ParSID)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, "Vælg SID-motor (0: FastSID, 2: Catweasel, 4: ParSID)"},
 /* de */ {IDCLS_SPECIFY_SID_ENGINE_DE, "SID Engine wählen (0: FastSID, 2: Catweasel, 4: ParSID)"},
 /* fr */ {IDCLS_SPECIFY_SID_ENGINE_FR, "Spécifier l’engin SID (0: FastSID, 2: Catweasel, 4:ParSID)"},
 /* hu */ {IDCLS_SPECIFY_SID_ENGINE_HU, "Adja meg a SID motort (0: Gyors SID, 2: Catweasel, 3: HardSID, 4: ParSID)"},
@@ -7468,7 +7468,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_SID_ENGINE,    N_("Specify SID engine (0: FastSID, 2: Catweasel, 7: ReSID-FP)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, "Vælg SID-motor (0: FastSID, 2: Catweasel, 7: ReSID-FP)"},
 /* de */ {IDCLS_SPECIFY_SID_ENGINE_DE, "SID Engine wählen (0: FastSID, 2: Catweasel, 7: ReSID-FP)"},
 /* fr */ {IDCLS_SPECIFY_SID_ENGINE_FR, "Spécifier l’engin SID (0: FastSID, 2: Catweasel, 7: ReSID-FP)"},
 /* hu */ {IDCLS_SPECIFY_SID_ENGINE_HU, "Adja meg a SID motort (0: Gyors SID, 2: Catweasel, 3: HardSID, 7: ReSID-FP)"},
@@ -7485,7 +7485,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_SID_ENGINE,    N_("Specify SID engine (0: FastSID, 3: HardSID, 4: ParSID)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, "Vælg SID-motor (0: FastSID, 3: HardSID, 4: ParSID)"},
 /* de */ {IDCLS_SPECIFY_SID_ENGINE_DE, "SID Engine wählen (0: FastSID, 3: HardSID, 4: ParSID)"},
 /* fr */ {IDCLS_SPECIFY_SID_ENGINE_FR, "Spécifier l’engin SID (0: FastSID, 3: HardSID, 4: ParSID)"},
 /* hu */ {IDCLS_SPECIFY_SID_ENGINE_HU, "Adja meg a SID motort (0: Gyors SID, 3: HardSID, 4: ParSID)"},
@@ -7501,7 +7501,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_SID_ENGINE,    N_("Specify SID engine (0: FastSID, 3: HardSID, 7: ReSID-FP)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, "Vælg SID-motor (0: FastSID, 3: HardSID, 7: ReSID-FP)"},
 /* de */ {IDCLS_SPECIFY_SID_ENGINE_DE, "SID Engine wählen (0: FastSID, 3: HardSID, 7: ReSID-FP)"},
 /* fr */ {IDCLS_SPECIFY_SID_ENGINE_FR, "Spécifier l’engin SID (0: FastSID, 3: HardSID, 7: ReSID-FP)"},
 /* hu */ {IDCLS_SPECIFY_SID_ENGINE_HU, "Adja meg a SID motort (0: Gyors SID, 3: HardSID, 7: ReSID-FP)"},
@@ -7518,7 +7518,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_SID_ENGINE,    N_("Specify SID engine (0: FastSID, 4: ParSID, 7: ReSID-FP)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, "Vælg SID-motor (0: FastSID, 4: ParSID, 7: ReSID-FP)"},
 /* de */ {IDCLS_SPECIFY_SID_ENGINE_DE, "SID Engine wählen (0: FastSID, 4: ParSID, 7: ReSID-FP)"},
 /* fr */ {IDCLS_SPECIFY_SID_ENGINE_FR, "Spécifier l’engin SID (0: FastSID, 4: ParSID, 7: ReSID-FP)"},
 /* hu */ {IDCLS_SPECIFY_SID_ENGINE_HU, "Adja meg a SID motort (0: Gyors SID, 4: ParSID, 7: ReSID-FP)"},
@@ -7535,7 +7535,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_SID_ENGINE,    N_("Specify SID engine (0: FastSID, 1: ReSID, 2: Catweasel, 3: HardSID)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, "Vælg SID-motor (0: FastSID, 1: ReSID, 2: Catweasel, 3: HardSID)"},
 /* de */ {IDCLS_SPECIFY_SID_ENGINE_DE, "SID Engine wählen (0: FastSID, 1: ReSID, 2: Catweasel, 3: HardSID)"},
 /* fr */ {IDCLS_SPECIFY_SID_ENGINE_FR, "Spécifier l’engin SID (0: FastSID, 1: ReSID, 2: Catweasel, 3: HardSID)"},
 /* hu */ {IDCLS_SPECIFY_SID_ENGINE_HU, "Adja meg a SID motort (0: Gyors SID, 1: ReSID, 2: Catweasel, 3: HardSID)"},
@@ -7552,7 +7552,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_SID_ENGINE,    N_("Specify SID engine (0: FastSID, 1: ReSID, 2: Catweasel, 4: ParSID)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, "Vælg SID-motor (0: FastSID, 1: ReSID, 2: Catweasel, 4: ParSID)"},
 /* de */ {IDCLS_SPECIFY_SID_ENGINE_DE, "SID Engine wählen (0: FastSID, 1: ReSID, 2: Catweasel, 4: ParSID)"},
 /* fr */ {IDCLS_SPECIFY_SID_ENGINE_FR, "Spécifier l’engin SID (0: FastSID, 1: ReSID, 2: Catweasel, 4: ParSID)"},
 /* hu */ {IDCLS_SPECIFY_SID_ENGINE_HU, "Adja meg a SID motort (0: Gyors SID, 1: ReSID, 2: Catweasel, 4: ParSID)"},
@@ -7569,7 +7569,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_SID_ENGINE,    N_("Specify SID engine (0: FastSID, 1: ReSID, 2: Catweasel, 7: ReSID-FP)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, "Vælg SID-motor (0: FastSID, 1: ReSID, 2: Catweasel, 7: ReSID-FP)"},
 /* de */ {IDCLS_SPECIFY_SID_ENGINE_DE, "SID Engine wählen (0: FastSID, 1: ReSID, 2: Catweasel, 7: ReSID-FP)"},
 /* fr */ {IDCLS_SPECIFY_SID_ENGINE_FR, "Spécifier l’engin SID (0: FastSID, 1: ReSID, 2: Catweasel, 7: ReSID-FP)"},
 /* hu */ {IDCLS_SPECIFY_SID_ENGINE_HU, "Adja meg a SID motort (0: Gyors SID, 1: ReSID, 2: Catweasel, 7: ReSID-FP)"},
@@ -7586,7 +7586,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_SID_ENGINE,    N_("Specify SID engine (0: FastSID, 1: ReSID, 3: HardSID, 4: ParSID)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, "Vælg SID-motor (0: FastSID, 1: ReSID, 3: HardSID, 4: ParSID)"},
 /* de */ {IDCLS_SPECIFY_SID_ENGINE_DE, "SID Engine wählen (0: FastSID, 1: ReSID, 3: HardSID, 4: ParSID)"},
 /* fr */ {IDCLS_SPECIFY_SID_ENGINE_FR, "Spécifier l’engin SID (0: FastSID, 1: ReSID, 3: HardSID, 4: ParSID)"},
 /* hu */ {IDCLS_SPECIFY_SID_ENGINE_HU, "Adja meg a SID motort (0: Gyors SID, 1: ReSID, 3: HardSID, 4: ParSID)"},
@@ -7603,7 +7603,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_SID_ENGINE,    N_("Specify SID engine (0: FastSID, 1: ReSID, 3: HardSID, 7: ReSID-FP)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, "Vælg SID-motor (0: FastSID, 1: ReSID, 3: HardSID, 7: ReSID-FP)"},
 /* de */ {IDCLS_SPECIFY_SID_ENGINE_DE, "SID Engine wählen (0: FastSID, 1: ReSID, 3: HardSID, 7: ReSID-FP)"},
 /* fr */ {IDCLS_SPECIFY_SID_ENGINE_FR, "Spécifier l’engin SID (0: FastSID, 1: ReSID, 3: HardSID, 7: ReSID-FP)"},
 /* hu */ {IDCLS_SPECIFY_SID_ENGINE_HU, "Adja meg a SID motort (0: Gyors SID, 1: ReSID, 3: HardSID, 7: ReSID-FP)"},
@@ -7620,7 +7620,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_SID_ENGINE,    N_("Specify SID engine (0: FastSID, 1: ReSID, 4: ParSID, 7: ReSID-FP)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, "Vælg SID-motor (0: FastSID, 1: ReSID, 4: ParSID, 7: ReSID-FP)"},
 /* de */ {IDCLS_SPECIFY_SID_ENGINE_DE, "SID Engine wählen (0: FastSID, 1: ReSID, 4: ParSID, 7: ReSID-FP)"},
 /* fr */ {IDCLS_SPECIFY_SID_ENGINE_FR, "Spécifier l’engin SID (0: FastSID, 1: ReSID, 4: ParSID, 7: ReSID-FP)"},
 /* hu */ {IDCLS_SPECIFY_SID_ENGINE_HU, "Adja meg a SID motort (0: Gyors SID, 1: ReSID, 4: ParSID, 7: ReSID-FP)"},
@@ -7637,7 +7637,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_SID_ENGINE,    N_("Specify SID engine (0: FastSID, 2: Catweasel, 3: HardSID, 4: ParSID)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, "Vælg SID-motor (0: FastSID, 2: Catweasel, 3: HardSID, 4: ParSID)"},
 /* de */ {IDCLS_SPECIFY_SID_ENGINE_DE, "SID Engine wählen (0: FastSID, 2: Catweasel, 3: HardSID, 4: ParSID)"},
 /* fr */ {IDCLS_SPECIFY_SID_ENGINE_FR, "Spécifier l’engin SID (0: FastSID, 2: Catweasel, 3: HardSID, 4: ParSID)"},
 /* hu */ {IDCLS_SPECIFY_SID_ENGINE_HU, "Adja meg a SID motort (0: Gyors SID, 2: Catweasel, 3: HardSID, 4: ParSID)"},
@@ -7654,7 +7654,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_SID_ENGINE,    N_("Specify SID engine (0: FastSID, 2: Catweasel, 3: HardSID, 7: ReSID-FP)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, "Vælg SID-motor (0: FastSID, 2: Catweasel, 3: HardSID, 7: ReSID-FP)"},
 /* de */ {IDCLS_SPECIFY_SID_ENGINE_DE, "SID Engine wählen (0: FastSID, 2: Catweasel, 3: HardSID, 7: ReSID-FP)"},
 /* fr */ {IDCLS_SPECIFY_SID_ENGINE_FR, "Spécifier l’engin SID (0: FastSID, 2: Catweasel, 3: HardSID, 7: ReSID-FP)"},
 /* hu */ {IDCLS_SPECIFY_SID_ENGINE_HU, "Adja meg a SID motort (0: Gyors SID, 2: Catweasel, 3: HardSID, 7: ReSID-FP)"},
@@ -7671,7 +7671,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_SID_ENGINE,    N_("Specify SID engine (0: FastSID, 2: Catweasel, 4: ParSID, 7: ReSID-FP)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, "Vælg SID-motor (0: FastSID, 2: Catweasel, 4: ParSID, 7: ReSID-FP)"},
 /* de */ {IDCLS_SPECIFY_SID_ENGINE_DE, "SID Engine wählen (0: FastSID, 2: Catweasel, 4: ParSID, 7: ReSID-FP)"},
 /* fr */ {IDCLS_SPECIFY_SID_ENGINE_FR, "Spécifier l’engin SID (0: FastSID, 2: Catweasel, 4: ParSID, 7: ReSID-FP)"},
 /* hu */ {IDCLS_SPECIFY_SID_ENGINE_HU, "Adja meg a SID motort (0: Gyors SID, 2: Catweasel, 4: ParSID, 7: ReSID-FP)"},
@@ -7688,7 +7688,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_SID_ENGINE,    N_("Specify SID engine (0: FastSID, 3: HardSID, 4: ParSID, 7: ReSID-FP)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, "Vælg SID-motor (0: FastSID, 3: HardSID, 4: ParSID, 7: ReSID-FP)"},
 /* de */ {IDCLS_SPECIFY_SID_ENGINE_DE, "SID Engine wählen (0: FastSID, 3: HardSID, 4: ParSID, 7: ReSID-FP)"},
 /* fr */ {IDCLS_SPECIFY_SID_ENGINE_FR, "Spécifier l’engin SID (0: FastSID, 3: HardSID, 4: ParSID, 7: ReSID-FP)"},
 /* hu */ {IDCLS_SPECIFY_SID_ENGINE_HU, "Adja meg a SID motort (0: Gyors SID, 3: HardSID, 4: ParSID, 7: ReSID-FP)"},
@@ -7705,7 +7705,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_SID_ENGINE,    N_("Specify SID engine (0: FastSID, 1: ReSID, 2: Catweasel, 3: HardSID, 4: ParSID)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, "Vælg SID-motor (0: FastSID, 1: ReSID, 2: Catweasel, 3: HardSID, 4: ParSID)"},
 /* de */ {IDCLS_SPECIFY_SID_ENGINE_DE, "SID Engine wählen (0: FastSID, 1: ReSID, 2: Catweasel, 3: HardSID, 4: ParSID)"},
 /* fr */ {IDCLS_SPECIFY_SID_ENGINE_FR, "Spécifier l’engin SID (0: FastSID, 1: ReSID, 2: Catweasel, 3: HardSID, 4: ParSID)"},
 /* hu */ {IDCLS_SPECIFY_SID_ENGINE_HU, "Adja meg a SID motort (0: Gyors SID, 1: ReSID, 2: Catweasel, 3: HardSID, 4: "
@@ -7724,7 +7724,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_SID_ENGINE,    N_("Specify SID engine (0: FastSID, 1: ReSID, 2: Catweasel, 3: HardSID, 7: ReSID-FP)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, "Vælg SID-motor (0: FastSID, 1: ReSID, 2: Catweasel, 3: HardSID, 7: ReSID-FP)"},
 /* de */ {IDCLS_SPECIFY_SID_ENGINE_DE, "SID Engine wählen (0: FastSID, 1: ReSID, 2: Catweasel, 3: HardSID, 7: ReSID-FP)"},
 /* fr */ {IDCLS_SPECIFY_SID_ENGINE_FR, "Spécifier l’engin SID (0: FastSID, 1: ReSID, 2: Catweasel, 3: HardSID, 7: ReSID-FP)"},
 /* hu */ {IDCLS_SPECIFY_SID_ENGINE_HU, "Adja meg a SID motort (0: Gyors SID, 1: ReSID, 2: Catweasel, 3: HardSID, "
@@ -7743,7 +7743,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_SID_ENGINE,    N_("Specify SID engine (0: FastSID, 1: ReSID, 2: Catweasel, 4: ParSID, 7: ReSID-FP)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, "Vælg SID-motor (0: FastSID, 1: ReSID, 2: Catweasel, 4: ParSID, 7: ReSID-FP)"},
 /* de */ {IDCLS_SPECIFY_SID_ENGINE_DE, "SID Engine wählen (0: FastSID, 1: ReSID, 2: Catweasel, 4: ParSID, 7: ReSID-FP)"},
 /* fr */ {IDCLS_SPECIFY_SID_ENGINE_FR, "Spécifier l’engin SID (0: FastSID, 1: ReSID, 2: Catweasel, 4: ParSID, 7: ReSID-FP)"},
 /* hu */ {IDCLS_SPECIFY_SID_ENGINE_HU, "Adja meg a SID motort (0: Gyors SID, 1: ReSID, 2: Catweasel, 4: ParSID, "
@@ -7762,7 +7762,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_SID_ENGINE,    N_("Specify SID engine (0: FastSID, 1: ReSID, 3: HardSID, 4: ParSID, 7: ReSID-FP)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, "Vælg SID-motor (0: FastSID, 1: ReSID, 3: HardSID, 4: ParSID, 7: ReSID-FP)"},
 /* de */ {IDCLS_SPECIFY_SID_ENGINE_DE, "SID Engine wählen (0: FastSID, 1: ReSID, 3: HardSID, 4: ParSID, 7: ReSID-FP)"},
 /* fr */ {IDCLS_SPECIFY_SID_ENGINE_FR, "Spécifier l’engin SID (0: FastSID, 1: ReSID, 3: HardSID, 4: ParSID, 7: ReSID-FP)"},
 /* hu */ {IDCLS_SPECIFY_SID_ENGINE_HU, "Adja meg a SID motort (0: Gyors SID, 1: ReSID, 3: HardSID, 4: ParSID, "
@@ -7781,7 +7781,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_SID_ENGINE,    N_("Specify SID engine (0: FastSID, 2: Catweasel, 3: HardSID, 4: ParSID, 7: ReSID-FP)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, "Vælg SID-motor (0: FastSID, 2: Catweasel, 3: HardSID, 4: ParSID, 7: ReSID-FP)"},
 /* de */ {IDCLS_SPECIFY_SID_ENGINE_DE, "SID Engine wählen (0: FastSID, 2: Catweasel, 3: HardSID, 4: ParSID, 7: ReSID-FP)"},
 /* fr */ {IDCLS_SPECIFY_SID_ENGINE_FR, "Spécifier l’engin SID (0: FastSID, 2: Catweasel, 3: HardSID, 4: ParSID, "
                                        "7: ReSID-FP)"},
@@ -7799,9 +7799,11 @@ translate_t string_table[] = {
 
 #if defined(HAVE_RESID) && defined(HAVE_RESID_FP) && defined(HAVE_CATWEASELMKIII) && defined(HAVE_HARDSID) && defined(HAVE_PARSID)
 /* sid/sid-cmdline-options.c */
-/* en */ {IDCLS_SPECIFY_SID_ENGINE,    N_("Specify SID engine (0: FastSID, 1: ReSID, 2: Catweasel, 3: HardSID, 4: ParSID, 7: ReSID-FP)")},
+/* en */ {IDCLS_SPECIFY_SID_ENGINE,    N_("Specify SID engine (0: FastSID, 1: ReSID, 2: Catweasel, 3: HardSID, 4: ParSID, "
+                                          "7: ReSID-FP)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_SID_ENGINE_DA, "Vælg SID-motor (0: FastSID, 1: ReSID, 2: Catweasel, 3: HardSID, 4: ParSID, "
+"7: ReSID-FP)"},
 /* de */ {IDCLS_SPECIFY_SID_ENGINE_DE, "SID Engine wählen (0: FastSID, 1: ReSID, 2: Catweasel, 3: HardSID, 4: ParSID, "
                                        "7: ReSID-FP)"},
 /* fr */ {IDCLS_SPECIFY_SID_ENGINE_FR, "Spécifier l’engin SID (0: FastSID, 1: ReSID, 2: Catweasel, 3: HardSID, 4: ParSID, "
@@ -7824,7 +7826,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_SIDCART_ENGINE,    N_("Specify SID engine (0: FastSID)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_SIDCART_ENGINE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_SIDCART_ENGINE_DA, "Vælg SID-motor (0: FastSID)"},
 /* de */ {IDCLS_SPECIFY_SIDCART_ENGINE_DE, "SID Engine wählen (0: FastSID)"},
 /* fr */ {IDCLS_SPECIFY_SIDCART_ENGINE_FR, "Spécifier l’engin SID (0: FastSID)"},
 /* hu */ {IDCLS_SPECIFY_SIDCART_ENGINE_HU, "Adja meg a SID motort (0: Gyors SID)"},
@@ -7840,7 +7842,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_SIDCART_ENGINE,    N_("Specify SID engine (0: FastSID, 1: Catweasel)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_SIDCART_ENGINE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_SIDCART_ENGINE_DA, "Vælg SID-motor (0: FastSID, 1: Catweasel)"},
 /* de */ {IDCLS_SPECIFY_SIDCART_ENGINE_DE, "SID Engine wählen (0: FastSID, 1: Catweasel)"},
 /* fr */ {IDCLS_SPECIFY_SIDCART_ENGINE_FR, "Spécifier l’engin SID (0: FastSID, 1: Catweasel)"},
 /* hu */ {IDCLS_SPECIFY_SIDCART_ENGINE_HU, "Adja meg a SID motort (0: Gyors SID, 1: Catweasel)"},
@@ -7856,7 +7858,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_SIDCART_ENGINE,    N_("Specify SID engine (0: FastSID, 2: HardSID)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_SIDCART_ENGINE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_SIDCART_ENGINE_DA, "Vælg SID-motor (0: FastSID, 2: HardSID)"},
 /* de */ {IDCLS_SPECIFY_SIDCART_ENGINE_DE, "SID Engine wählen (0: FastSID, 2: HardSID)"},
 /* fr */ {IDCLS_SPECIFY_SIDCART_ENGINE_FR, "Spécifier l’engin SID (0: FastSID, 2: HardSID)"},
 /* hu */ {IDCLS_SPECIFY_SIDCART_ENGINE_HU, "Adja meg a SID motort (0: Gyors SID, 2: HardSID)"},
@@ -7872,7 +7874,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_SIDCART_ENGINE,    N_("Specify SID engine (0: FastSID, 3: ParSID)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_SIDCART_ENGINE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_SIDCART_ENGINE_DA, "Vælg SID-motor (0: FastSID, 3: ParSID)"},
 /* de */ {IDCLS_SPECIFY_SIDCART_ENGINE_DE, "SID Engine wählen (0: FastSID, 3: ParSID)"},
 /* fr */ {IDCLS_SPECIFY_SIDCART_ENGINE_FR, "Spécifier l’engin SID (0: FastSID, 3: ParSID)"},
 /* hu */ {IDCLS_SPECIFY_SIDCART_ENGINE_HU, "Adja meg a SID motort (0: Gyors SID, 3: ParSID)"},
@@ -7888,7 +7890,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_SIDCART_ENGINE,    N_("Specify SID engine (0: FastSID, 1: Catweasel, 2: HardSID)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_SIDCART_ENGINE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_SIDCART_ENGINE_DA, "Vælg SID-motor (0: FastSID, 1: Catweasel, 2: HardSID)"},
 /* de */ {IDCLS_SPECIFY_SIDCART_ENGINE_DE, "SID Engine wählen (0: FastSID, 1: Catweasel, 2: HardSID)"},
 /* fr */ {IDCLS_SPECIFY_SIDCART_ENGINE_FR, "Spécifier l’engin SID (0: FastSID, 1: Catweasel, 2: HardSID)"},
 /* hu */ {IDCLS_SPECIFY_SIDCART_ENGINE_HU, "Adja meg a SID motort (0: Gyors SID, 1: Catweasel, 2: HardSID)"},
@@ -7905,7 +7907,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_SIDCART_ENGINE,    N_("Specify SID engine (0: FastSID, 1: Catweasel, 3: ParSID)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_SIDCART_ENGINE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_SIDCART_ENGINE_DA, "Vælg SID-motor (0: FastSID, 1: Catweasel, 3: ParSID)"},
 /* de */ {IDCLS_SPECIFY_SIDCART_ENGINE_DE, "SID Engine wählen (0: FastSID, 1: Catweasel, 3: ParSID)"},
 /* fr */ {IDCLS_SPECIFY_SIDCART_ENGINE_FR, "Spécifier l’engin SID (0: FastSID, 1: Catweasel, 3: ParSID)"},
 /* hu */ {IDCLS_SPECIFY_SIDCART_ENGINE_HU, "Adja meg a SID motort (0: Gyors SID, 1: Catweasel, 3: ParSID)"},
@@ -7922,7 +7924,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_SIDCART_ENGINE,    N_("Specify SID engine (0: FastSID, 2: HardSID, 3: ParSID)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_SIDCART_ENGINE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_SIDCART_ENGINE_DA, "Vælg SID-motor (0: FastSID, 2: HardSID, 3: ParSID)"},
 /* de */ {IDCLS_SPECIFY_SIDCART_ENGINE_DE, "SID Engine wählen (0: FastSID, 2: HardSID, 3: ParSID)"},
 /* fr */ {IDCLS_SPECIFY_SIDCART_ENGINE_FR, "Spécifier l’engin SID (0: FastSID, 2: HardSID, 3: ParSID)"},
 /* hu */ {IDCLS_SPECIFY_SIDCART_ENGINE_HU, "Adja meg a SID motort (0: Gyors SID, 2: HardSID, 3: ParSID)"},
@@ -7939,7 +7941,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_SIDCART_ENGINE,    N_("Specify SID engine (0: FastSID, 1: Catweasel, 2: HardSID, 3: ParSID)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_SIDCART_ENGINE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_SIDCART_ENGINE_DA, "Vælg SID-motor (0: FastSID, 1: Catweasel, 2: HardSID, 3: ParSID)"},
 /* de */ {IDCLS_SPECIFY_SIDCART_ENGINE_DE, "SID Engine wählen (0: FastSID, 1: Catweasel, 2: HardSID, 3: ParSID)"},
 /* fr */ {IDCLS_SPECIFY_SIDCART_ENGINE_FR, "Spécifier l’engin SID (0: FastSID, 1: Catweasel, 2: HardSID, 3: ParSID)"},
 /* hu */ {IDCLS_SPECIFY_SIDCART_ENGINE_HU, "Adja meg a SID motort (0: Gyors SID, 1: Catweasel, 2: HardSID, 3: ParSID)"},
@@ -7955,7 +7957,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_ENABLE_SECOND_SID,    N_("Enable second SID")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ENABLE_SECOND_SID_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ENABLE_SECOND_SID_DA, "Aktivér sekundær SID"},
 /* de */ {IDCLS_ENABLE_SECOND_SID_DE, "Zweiten SID aktivieren"},
 /* fr */ {IDCLS_ENABLE_SECOND_SID_FR, "Activer le second SID"},
 /* hu */ {IDCLS_ENABLE_SECOND_SID_HU, "Második SID engedélyezése"},
@@ -7969,7 +7971,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_ENABLE_SIDCART,    N_("Enable SID Cartridge")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ENABLE_SIDCART_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ENABLE_SIDCART_DA, "Aktivér SID-cartridge"},
 /* de */ {IDCLS_ENABLE_SIDCART_DE, "SID Modul aktivieren"},
 /* fr */ {IDCLS_ENABLE_SIDCART_FR, "Activer la cartouche SID"},
 /* hu */ {IDCLS_ENABLE_SIDCART_HU, "SID cartridge engedélyezése"},
@@ -7983,7 +7985,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_DISABLE_SIDCART,    N_("Disable SID Cartridge")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_DISABLE_SIDCART_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_DISABLE_SIDCART_DA, "Deaktiver SID-cartridge"},
 /* de */ {IDCLS_DISABLE_SIDCART_DE, "SID Modul deaktivieren"},
 /* fr */ {IDCLS_DISABLE_SIDCART_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_DISABLE_SIDCART_HU, "SID cartridge tiltása"},
@@ -7997,7 +7999,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c, c64/plus60k, c64/c64_256k.c */
 /* en */ {IDCLS_P_BASE_ADDRESS,    N_("<base address>")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_P_BASE_ADDRESS_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_P_BASE_ADDRESS_DA, "<baseadresse>"},
 /* de */ {IDCLS_P_BASE_ADDRESS_DE, "<Basis Adresse>"},
 /* fr */ {IDCLS_P_BASE_ADDRESS_FR, "<adresse de base>"},
 /* hu */ {IDCLS_P_BASE_ADDRESS_HU, "<báziscím>"},
@@ -8011,7 +8013,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_SID_2_ADDRESS,    N_("Specify base address for 2nd SID")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_SID_2_ADDRESS_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_SID_2_ADDRESS_DA, "Angiv baseadresse for sekundær SID"},
 /* de */ {IDCLS_SPECIFY_SID_2_ADDRESS_DE, "Basis Adresse für zweiten SID definieren"},
 /* fr */ {IDCLS_SPECIFY_SID_2_ADDRESS_FR, "Spécifier l'adresse de base pour le second SID"},
 /* hu */ {IDCLS_SPECIFY_SID_2_ADDRESS_HU, "Adja meg a báziscímét a második SID-nek"},
@@ -8025,7 +8027,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_P_MODEL,    N_("<model>")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_P_MODEL_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_P_MODEL_DA, "<model>"},
 /* de */ {IDCLS_P_MODEL_DE, "<Modell>"},
 /* fr */ {IDCLS_P_MODEL_FR, "<modèle>"},
 /* hu */ {IDCLS_P_MODEL_HU, "<modell>"},
@@ -8039,7 +8041,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_SID_MODEL,    N_("Specify SID model (0: 6581, 1: 8580, 2: 8580 + digi boost, 4: DTV)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_SID_MODEL_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_SID_MODEL_DA, "Angiv SID-model (0: 6581, 1: 8580, 2: 8580 + digitalforstærkning, 4: DTV)"},
 /* de */ {IDCLS_SPECIFY_SID_MODEL_DE, "SID Modell definieren (0: 6581, 1: 8580, 2: 8580 + digi boost, 4: DTV)"},
 /* fr */ {IDCLS_SPECIFY_SID_MODEL_FR, "Spécifier le modèle SID (0: 6581, 1: 8580, 2: 8580 + Boost digital, 4: DTV)"},
 /* hu */ {IDCLS_SPECIFY_SID_MODEL_HU, "Adja meg a SID típusát (0: 6581, 1: 8580, 2: 8580 + digi boost, 4: DTV)"},
@@ -8053,7 +8055,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_ENABLE_SID_FILTERS,    N_("Emulate SID filters")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ENABLE_SID_FILTERS_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ENABLE_SID_FILTERS_DA, "Emulér SID-filtre"},
 /* de */ {IDCLS_ENABLE_SID_FILTERS_DE, "SID Filter Emulation aktivieren"},
 /* fr */ {IDCLS_ENABLE_SID_FILTERS_FR, "Émuler les filtres SID"},
 /* hu */ {IDCLS_ENABLE_SID_FILTERS_HU, "SID szûrõk emulációja"},
@@ -8067,7 +8069,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_DISABLE_SID_FILTERS,    N_("Do not emulate SID filters")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_DISABLE_SID_FILTERS_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_DISABLE_SID_FILTERS_DA, "Emulér ikke SID-filtre"},
 /* de */ {IDCLS_DISABLE_SID_FILTERS_DE, "SID Filter Emulation deaktivieren"},
 /* fr */ {IDCLS_DISABLE_SID_FILTERS_FR, "Ne pas émuler les filtres SID"},
 /* hu */ {IDCLS_DISABLE_SID_FILTERS_HU, "Nem emulálja a SID szûrõket"},
@@ -8083,7 +8085,8 @@ translate_t string_table[] = {
 /* en */ {IDCLS_RESID_SAMPLING_METHOD,    N_("reSID sampling method (0: fast, 1: interpolating, 2: resampling, 3: fast "
                                              "resampling)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_RESID_SAMPLING_METHOD_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_RESID_SAMPLING_METHOD_DA, "reSID-samplingmetode (0: hurtig, 1: interpolerende, 2: omsampling, 3: hurtig "
+                                          "omsampling)"},
 /* de */ {IDCLS_RESID_SAMPLING_METHOD_DE, "reSID Sample Methode (0: schnell, 1: interpolierend, 2: resampling, 3: "
                                           "schnelles resampling)"},
 /* fr */ {IDCLS_RESID_SAMPLING_METHOD_FR, "Méthode reSID (0: rapide, 1: interpolation, 2: rééchantillonnage, 3: "
@@ -8104,7 +8107,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c, vsync.c */
 /* en */ {IDCLS_P_PERCENT,    N_("<percent>")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_P_PERCENT_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_P_PERCENT_DA, "<procent>"},
 /* de */ {IDCLS_P_PERCENT_DE, "<prozent>"},
 /* fr */ {IDCLS_P_PERCENT_FR, "<pourcent>"},
 /* hu */ {IDCLS_P_PERCENT_HU, "<százalék>"},
@@ -8118,7 +8121,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_PASSBAND_PERCENTAGE,    N_("reSID resampling passband in percentage of total bandwidth (0 - 90)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_PASSBAND_PERCENTAGE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_PASSBAND_PERCENTAGE_DA, "Pasbånd for reSID-resampling i procent af total båndbredde (0 - 90)"},
 /* de */ {IDCLS_PASSBAND_PERCENTAGE_DE, "reSID Resampling Passband Prozentwert der gesamte Bandbreite (0 - 90)\n(0 - 90, "
                                         "niedrig ist schneller, höher ist besser)"},
 /* fr */ {IDCLS_PASSBAND_PERCENTAGE_FR, "Bande passante pour le resampling reSID en pourcentage de la bande totale "
@@ -8137,7 +8140,7 @@ translate_t string_table[] = {
 /* sid/sid-cmdline-options.c */
 /* en */ {IDCLS_RESID_GAIN_PERCENTAGE,    N_("reSID gain in percent (90 - 100)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_RESID_GAIN_PERCENTAGE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_RESID_GAIN_PERCENTAGE_DA, "Gain for reSID i procent (90 - 100)"},
 /* de */ {IDCLS_RESID_GAIN_PERCENTAGE_DE, "reSID Gain in Prozent (90 - 100)"},
 /* fr */ {IDCLS_RESID_GAIN_PERCENTAGE_FR, "Gain reSID en pourcent (90 - 100)"},
 /* hu */ {IDCLS_RESID_GAIN_PERCENTAGE_HU, "reSID százalékos erõsítés (90 - 100)"},
@@ -8152,7 +8155,7 @@ translate_t string_table[] = {
 /* vdc/vdc-cmdline-options.c */
 /* en */ {IDCLS_SET_VDC_MEMORY_16KB,    N_("Set the VDC memory size to 16KB")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SET_VDC_MEMORY_16KB_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SET_VDC_MEMORY_16KB_DA, "Sæt VDC-hukommelsesstørrelse til 16KB"},
 /* de */ {IDCLS_SET_VDC_MEMORY_16KB_DE, "VDC Speichgröße auf 16KB setzen"},
 /* fr */ {IDCLS_SET_VDC_MEMORY_16KB_FR, "Régler la taille de la mémoire VDC à 16KO"},
 /* hu */ {IDCLS_SET_VDC_MEMORY_16KB_HU, "VDC memória méret beállítása 16KB-ra"},
@@ -8166,7 +8169,7 @@ translate_t string_table[] = {
 /* vdc/vdc-cmdline-options.c */
 /* en */ {IDCLS_SET_VDC_MEMORY_64KB,    N_("Set the VDC memory size to 64KB")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SET_VDC_MEMORY_64KB_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SET_VDC_MEMORY_64KB_DA, "Sæt VDC-hukommelsesstørrelse til 64KB"},
 /* de */ {IDCLS_SET_VDC_MEMORY_64KB_DE, "VDC Speichgröße auf 64KB setzen"},
 /* fr */ {IDCLS_SET_VDC_MEMORY_64KB_FR, "Régler la taille de la mémoire VDC à 64KO"},
 /* hu */ {IDCLS_SET_VDC_MEMORY_64KB_HU, "VDC memória méret beállítása 64KB-ra"},
@@ -8180,7 +8183,7 @@ translate_t string_table[] = {
 /* vdc/vdc-cmdline-options.c */
 /* en */ {IDCLS_SET_VDC_REVISION,    N_("Set VDC revision (0..2)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SET_VDC_REVISION_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SET_VDC_REVISION_DA, "Angiv VDC-revision (0..2)"},
 /* de */ {IDCLS_SET_VDC_REVISION_DE, "VDC Revision (0..2) setzen"},
 /* fr */ {IDCLS_SET_VDC_REVISION_FR, "Régler la révision VDC (0..2)"},
 /* hu */ {IDCLS_SET_VDC_REVISION_HU, "VDC változatszám beállítása (0-2)"},
@@ -8194,7 +8197,7 @@ translate_t string_table[] = {
 /* vic20/vic20-cmdline-options.c */
 /* en */ {IDCLS_P_SPEC,    N_("<spec>")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_P_SPEC_DA, ""},   /* fuzzy */
+/* da */ {IDCLS_P_SPEC_DA, "<spec>"},
 /* de */ {IDCLS_P_SPEC_DE, "<Spec>"},
 /* fr */ {IDCLS_P_SPEC_FR, "<spec>"},
 /* hu */ {IDCLS_P_SPEC_HU, "<spec>"},
@@ -8208,7 +8211,7 @@ translate_t string_table[] = {
 /* vic20/vic20-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_MEMORY_CONFIG,    N_("Specify memory configuration")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_MEMORY_CONFIG_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_MEMORY_CONFIG_DA, "Angiv hukommelseskonfiguration"},
 /* de */ {IDCLS_SPECIFY_MEMORY_CONFIG_DE, "Speicher Konfiguration definieren"},
 /* fr */ {IDCLS_SPECIFY_MEMORY_CONFIG_FR, "Spécifier la configuration de la mémoire"},
 /* hu */ {IDCLS_SPECIFY_MEMORY_CONFIG_HU, "Adja meg a memória konfigurációt"},
@@ -8222,7 +8225,7 @@ translate_t string_table[] = {
 /* vic20/vic20-cmdline-options.c */
 /* en */ {IDCLS_ENABLE_VIC1112_IEEE488,    N_("Enable VIC-1112 IEEE488 interface")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ENABLE_VIC1112_IEEE488_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ENABLE_VIC1112_IEEE488_DA, "Aktivér VIC-1112-IEEE488-interface"},
 /* de */ {IDCLS_ENABLE_VIC1112_IEEE488_DE, "VIC-1112 IEEE488 Schnittstelle aktivieren"},
 /* fr */ {IDCLS_ENABLE_VIC1112_IEEE488_FR, "Activer l'interface VIC-1112 IEEE488"},
 /* hu */ {IDCLS_ENABLE_VIC1112_IEEE488_HU, "VIC-1112 IEEE488 interfész engedélyezése"},
@@ -8236,7 +8239,7 @@ translate_t string_table[] = {
 /* vic20/vic20-cmdline-options.c */
 /* en */ {IDCLS_DISABLE_VIC1112_IEEE488,    N_("Disable VIC-1112 IEEE488 interface")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_DISABLE_VIC1112_IEEE488_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_DISABLE_VIC1112_IEEE488_DA, "Deaktiver VIC-1112-IEEE488-interface"},
 /* de */ {IDCLS_DISABLE_VIC1112_IEEE488_DE, "VIC-1112 IEEE488 Schnittstelle deaktivieren"},
 /* fr */ {IDCLS_DISABLE_VIC1112_IEEE488_FR, "Désactiver l'interface VIC-1112 IEEE488"},
 /* hu */ {IDCLS_DISABLE_VIC1112_IEEE488_HU, "VIC-1112 IEEE488 interfész tiltása"},
@@ -8250,7 +8253,7 @@ translate_t string_table[] = {
 /* vic20/vic20cartridge.c */
 /* en */ {IDCLS_SPECIFY_EXT_ROM_2000_NAME,    N_("Specify 4/8/16K extension ROM name at $2000")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_EXT_ROM_2000_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_EXT_ROM_2000_NAME_DA, "Angiv navn for 4/8/16K-udviddelses-ROM på $2000"},
 /* de */ {IDCLS_SPECIFY_EXT_ROM_2000_NAME_DE, "4/8/16K Erweiterungs ROM Datei Name für $2000 definieren"},
 /* fr */ {IDCLS_SPECIFY_EXT_ROM_2000_NAME_FR, "Spécifier le nom de l'extension ROM 4/8/16K à $2000"},
 /* hu */ {IDCLS_SPECIFY_EXT_ROM_2000_NAME_HU, "Adja meg a $2000 címû 4/8/16K ROM kiterjesztés nevét"},
@@ -8264,7 +8267,7 @@ translate_t string_table[] = {
 /* vic20/vic20cartridge.c */
 /* en */ {IDCLS_SPECIFY_EXT_ROM_4000_NAME,    N_("Specify 4/8/16K extension ROM name at $4000")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_EXT_ROM_4000_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_EXT_ROM_4000_NAME_DA, "Angiv navn for 4/8/16K-udviddelses-ROM på $4000"},
 /* de */ {IDCLS_SPECIFY_EXT_ROM_4000_NAME_DE, "4/8/16K Erweiterungs ROM Datei Name für $4000 definieren"},
 /* fr */ {IDCLS_SPECIFY_EXT_ROM_4000_NAME_FR, "Spécifier le nom de l'extension ROM 4/8/16K à $4000"},
 /* hu */ {IDCLS_SPECIFY_EXT_ROM_4000_NAME_HU, "Adja meg a $4000 címû 4/8/16K ROM kiterjesztés nevét"},
@@ -8278,7 +8281,7 @@ translate_t string_table[] = {
 /* vic20/vic20cartridge.c */
 /* en */ {IDCLS_SPECIFY_EXT_ROM_6000_NAME,    N_("Specify 4/8/16K extension ROM name at $6000")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_EXT_ROM_6000_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_EXT_ROM_6000_NAME_DA, "Angiv navn for 4/8/16K-udviddelses-ROM på $6000"},
 /* de */ {IDCLS_SPECIFY_EXT_ROM_6000_NAME_DE, "4/8/16K Erweiterungs ROM Datei Name für $6000 definieren"},
 /* fr */ {IDCLS_SPECIFY_EXT_ROM_6000_NAME_FR, "Spécifier le nom de l'extension ROM 4/8/16K à $6000"},
 /* hu */ {IDCLS_SPECIFY_EXT_ROM_6000_NAME_HU, "Adja meg a $6000 címû 4/8/16K ROM kiterjesztés nevét"},
@@ -8292,7 +8295,7 @@ translate_t string_table[] = {
 /* vic20/vic20cartridge.c */
 /* en */ {IDCLS_SPECIFY_EXT_ROM_A000_NAME,    N_("Specify 4/8K extension ROM name at $A000")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_EXT_ROM_A000_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_EXT_ROM_A000_NAME_DA, "Angiv navn for 4/8K-udviddelses-ROM på $A000"},
 /* de */ {IDCLS_SPECIFY_EXT_ROM_A000_NAME_DE, "4/8K Erweiterungs ROM Datei Name für $A000 definieren"},
 /* fr */ {IDCLS_SPECIFY_EXT_ROM_A000_NAME_FR, "Spécifier le nom de l'extension ROM 4/8K à $A000"},
 /* hu */ {IDCLS_SPECIFY_EXT_ROM_A000_NAME_HU, "Adja meg a $A000 címû 4/8K ROM kiterjesztés nevét"},
@@ -8306,7 +8309,7 @@ translate_t string_table[] = {
 /* vic20/vic20cartridge.c */
 /* en */ {IDCLS_SPECIFY_EXT_ROM_B000_NAME,    N_("Specify 4K extension ROM name at $B000")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_EXT_ROM_B000_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_EXT_ROM_B000_NAME_DA, "Angiv navn for 4K-udviddelses-ROM på $B000"},
 /* de */ {IDCLS_SPECIFY_EXT_ROM_B000_NAME_DE, "4K Erweiterungs ROM Datei Name für $B000 definieren"},
 /* fr */ {IDCLS_SPECIFY_EXT_ROM_B000_NAME_FR, "Spécifier le nom de l'extension ROM 4K à $B000"},
 /* hu */ {IDCLS_SPECIFY_EXT_ROM_B000_NAME_HU, "Adja meg a $B000 címû 4K ROM kiterjesztés nevét"},
@@ -8320,7 +8323,7 @@ translate_t string_table[] = {
 /* vicii/vicii-cmdline-options.c */
 /* en */ {IDCLS_SET_BORDER_MODE,    N_("Set VIC-II border display mode (0: normal, 1: full, 2: debug)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SET_BORDER_MODE_DA, ""}, /* fuzzy */
+/* da */ {IDCLS_SET_BORDER_MODE_DA, "Vælg VIC-II-rammevisningstilstand (0: normal, 1: fuld, 2: fejlsøgning)"},
 /* de */ {IDCLS_SET_BORDER_MODE_DE, "VIC-II Rahmen Darstellung Modus (0: normal, 1: full, 2: debug)"},
 /* fr */ {IDCLS_SET_BORDER_MODE_FR, "Régler le mode de bordure VIC-II (0: normal, 1: complet, 2: debug)"},
 /* hu */ {IDCLS_SET_BORDER_MODE_HU, "VIC-II keret megjelenítési mód (0: normál, 1: teljes, 2: hibakeresés)"},
@@ -8335,7 +8338,7 @@ translate_t string_table[] = {
 /* vicii/vicii-cmdline-options.c */
 /* en */ {IDCLS_ENABLE_SPRITE_BACKGROUND,    N_("Enable sprite-background collision registers")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ENABLE_SPRITE_BACKGROUND_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ENABLE_SPRITE_BACKGROUND_DA, "Aktivér sprite-til-baggrunds-kollisionsregistre"},
 /* de */ {IDCLS_ENABLE_SPRITE_BACKGROUND_DE, "Sprite-Hintergrund Kollisionen aktivieren"},
 /* fr */ {IDCLS_ENABLE_SPRITE_BACKGROUND_FR, "Activer les registres de collisions de sprite avec arrière-plan"},
 /* hu */ {IDCLS_ENABLE_SPRITE_BACKGROUND_HU, "Sprite-háttér ütközési regiszterek engedélyezése"},
@@ -8349,7 +8352,7 @@ translate_t string_table[] = {
 /* vicii/vicii-cmdline-options.c */
 /* en */ {IDCLS_DISABLE_SPRITE_BACKGROUND,    N_("Disable sprite-background collision registers")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_DISABLE_SPRITE_BACKGROUND_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_DISABLE_SPRITE_BACKGROUND_DA, "Deaktiver sprite-til-baggrunds-kollisionsregistre"},
 /* de */ {IDCLS_DISABLE_SPRITE_BACKGROUND_DE, "Sprite-Hintergrund Kollisionen deaktivieren"},
 /* fr */ {IDCLS_DISABLE_SPRITE_BACKGROUND_FR, "Désactiver les registres de collisions de sprite avec arrière-plan"},
 /* hu */ {IDCLS_DISABLE_SPRITE_BACKGROUND_HU, "Sprite-háttér ütközési regiszterek tiltása"},
@@ -8363,7 +8366,7 @@ translate_t string_table[] = {
 /* vicii/vicii-cmdline-options.c */
 /* en */ {IDCLS_ENABLE_SPRITE_SPRITE,    N_("Enable sprite-sprite collision registers")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ENABLE_SPRITE_SPRITE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ENABLE_SPRITE_SPRITE_DA, "Aktivér sprite-til-sprite-kollisionsregistre"},
 /* de */ {IDCLS_ENABLE_SPRITE_SPRITE_DE, "Sprite-Sprite Kollisionen aktivieren"},
 /* fr */ {IDCLS_ENABLE_SPRITE_SPRITE_FR, "Activer les registres de collisions de sprite avec sprite"},
 /* hu */ {IDCLS_ENABLE_SPRITE_SPRITE_HU, "Sprite-sprite ütközési regiszterek engedélyezése"},
@@ -8377,7 +8380,7 @@ translate_t string_table[] = {
 /* vicii/vicii-cmdline-options.c */
 /* en */ {IDCLS_DISABLE_SPRITE_SPRITE,    N_("Disable sprite-sprite collision registers")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_DISABLE_SPRITE_SPRITE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_DISABLE_SPRITE_SPRITE_DA, "Deaktiver sprite-til-sprite-kollisionsregistre"},
 /* de */ {IDCLS_DISABLE_SPRITE_SPRITE_DE, "Sprite-Sprite Kollisionen deaktivieren"},
 /* fr */ {IDCLS_DISABLE_SPRITE_SPRITE_FR, "Désactiver les registres de collisions de sprite avec sprite"},
 /* hu */ {IDCLS_DISABLE_SPRITE_SPRITE_HU, "Sprite-sprite ütközési regiszterek tiltása"},
@@ -8391,7 +8394,7 @@ translate_t string_table[] = {
 /* vicii/vicii-cmdline-options.c */
 /* en */ {IDCLS_USE_NEW_LUMINANCES,    N_("Use new luminances")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_USE_NEW_LUMINANCES_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_USE_NEW_LUMINANCES_DA, "Brug nye lysstyrker"},
 /* de */ {IDCLS_USE_NEW_LUMINANCES_DE, "Neue Helligkeitsemulation"},
 /* fr */ {IDCLS_USE_NEW_LUMINANCES_FR, "Utiliser les nouvelles luminescences"},
 /* hu */ {IDCLS_USE_NEW_LUMINANCES_HU, "Az új fényerõket használja"},
@@ -8405,7 +8408,7 @@ translate_t string_table[] = {
 /* vicii/vicii-cmdline-options.c */
 /* en */ {IDCLS_USE_OLD_LUMINANCES,    N_("Use old luminances")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_USE_OLD_LUMINANCES_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_USE_OLD_LUMINANCES_DA, "Brug gamle lysstyrker"},
 /* de */ {IDCLS_USE_OLD_LUMINANCES_DE, "Alte Helligkeitsemulation"},
 /* fr */ {IDCLS_USE_OLD_LUMINANCES_FR, "Utiliser les anciennes luminescences"},
 /* hu */ {IDCLS_USE_OLD_LUMINANCES_HU, "A régi fényerõket használja"},
@@ -8419,7 +8422,7 @@ translate_t string_table[] = {
 /* video/video-cmdline-options.c */
 /* en */ {IDCLS_ENABLE_DOUBLE_SIZE,    N_("Enable double size")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ENABLE_DOUBLE_SIZE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ENABLE_DOUBLE_SIZE_DA, "Aktivér dobbelt størrelse"},
 /* de */ {IDCLS_ENABLE_DOUBLE_SIZE_DE, "Doppelte Größe aktivieren"},
 /* fr */ {IDCLS_ENABLE_DOUBLE_SIZE_FR, "Taille double"},
 /* hu */ {IDCLS_ENABLE_DOUBLE_SIZE_HU, "Dupla méret engedélyezése"},
@@ -8433,7 +8436,7 @@ translate_t string_table[] = {
 /* video/video-cmdline-options.c */
 /* en */ {IDCLS_DISABLE_DOUBLE_SIZE,    N_("Disable double size")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_DISABLE_DOUBLE_SIZE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_DISABLE_DOUBLE_SIZE_DA, "Deaktiver dobbelt størrelse"},
 /* de */ {IDCLS_DISABLE_DOUBLE_SIZE_DE, "Doppelte Größe deaktivieren"},
 /* fr */ {IDCLS_DISABLE_DOUBLE_SIZE_FR, "Taille normale"},
 /* hu */ {IDCLS_DISABLE_DOUBLE_SIZE_HU, "Dupla méret tiltása"},
@@ -8447,7 +8450,7 @@ translate_t string_table[] = {
 /* video/video-cmdline-options.c */
 /* en */ {IDCLS_ENABLE_DOUBLE_SCAN,    N_("Enable double scan")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ENABLE_DOUBLE_SCAN_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ENABLE_DOUBLE_SCAN_DA, "Aktivér dobbelt-skan"},
 /* de */ {IDCLS_ENABLE_DOUBLE_SCAN_DE, "Doppelt Scan aktivieren"},
 /* fr */ {IDCLS_ENABLE_DOUBLE_SCAN_FR, "Activer le mode double scan"},
 /* hu */ {IDCLS_ENABLE_DOUBLE_SCAN_HU, "Dupla pásztázás engedélyezése"},
@@ -8461,7 +8464,7 @@ translate_t string_table[] = {
 /* video/video-cmdline-options.c */
 /* en */ {IDCLS_DISABLE_DOUBLE_SCAN,    N_("Disable double scan")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_DISABLE_DOUBLE_SCAN_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_DISABLE_DOUBLE_SCAN_DA, "Deaktiver dobbelt-skan"},
 /* de */ {IDCLS_DISABLE_DOUBLE_SCAN_DE, "Doppelt Scan deaktivieren"},
 /* fr */ {IDCLS_DISABLE_DOUBLE_SCAN_FR, "Désactiver le mode double scan"},
 /* hu */ {IDCLS_DISABLE_DOUBLE_SCAN_HU, "Dupla pásztázás tiltása"},
@@ -8475,7 +8478,7 @@ translate_t string_table[] = {
 /* video/video-cmdline-options.c */
 /* en */ {IDCLS_ENABLE_HARDWARE_SCALING,    N_("Enable hardware scaling")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ENABLE_HARDWARE_SCALING_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ENABLE_HARDWARE_SCALING_DA, "Aktivér hardware-skalering"},
 /* de */ {IDCLS_ENABLE_HARDWARE_SCALING_DE, "Hardwareunterstützung für Skalierung aktivieren"},
 /* fr */ {IDCLS_ENABLE_HARDWARE_SCALING_FR, "Activer le \"scaling\" matériel"},
 /* hu */ {IDCLS_ENABLE_HARDWARE_SCALING_HU, "Hardver átméretezés engedélyezése"},
@@ -8489,7 +8492,7 @@ translate_t string_table[] = {
 /* video/video-cmdline-options.c */
 /* en */ {IDCLS_DISABLE_HARDWARE_SCALING,    N_("Disable hardware scaling")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_DISABLE_HARDWARE_SCALING_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_DISABLE_HARDWARE_SCALING_DA, "Deaktiver hardware-skalering"},
 /* de */ {IDCLS_DISABLE_HARDWARE_SCALING_DE, "Hardwareunterstützung für Skalierung deaktivieren"},
 /* fr */ {IDCLS_DISABLE_HARDWARE_SCALING_FR, "Désactiver le \"scaling\" matériel"},
 /* hu */ {IDCLS_DISABLE_HARDWARE_SCALING_HU, "Hardver átméretezés tiltása"},
@@ -8503,7 +8506,7 @@ translate_t string_table[] = {
 /* video/video-cmdline-options.c */
 /* en */ {IDCLS_ENABLE_SCALE2X,    N_("Enable Scale2x")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ENABLE_SCALE2X_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ENABLE_SCALE2X_DA, "Aktivér Scale2x"},
 /* de */ {IDCLS_ENABLE_SCALE2X_DE, "Scale2x aktivieren"},
 /* fr */ {IDCLS_ENABLE_SCALE2X_FR, "Activer Scale2x"},
 /* hu */ {IDCLS_ENABLE_SCALE2X_HU, "Élsimítás engedélyezése"},
@@ -8517,7 +8520,7 @@ translate_t string_table[] = {
 /* video/video-cmdline-options.c */
 /* en */ {IDCLS_DISABLE_SCALE2X,    N_("Disable Scale2x")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_DISABLE_SCALE2X_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_DISABLE_SCALE2X_DA, "Deaktiver Scale2x"},
 /* de */ {IDCLS_DISABLE_SCALE2X_DE, "Scale2x deaktivieren"},
 /* fr */ {IDCLS_DISABLE_SCALE2X_FR, "Désactiver Scale2x"},
 /* hu */ {IDCLS_DISABLE_SCALE2X_HU, "Élsimítás tiltása"},
@@ -8531,7 +8534,7 @@ translate_t string_table[] = {
 /* video/video-cmdline-options.c */
 /* en */ {IDCLS_USE_INTERNAL_CALC_PALETTE,    N_("Use an internal calculated palette")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_USE_INTERNAL_CALC_PALETTE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_USE_INTERNAL_CALC_PALETTE_DA, "Brug en internt beregnet palette"},
 /* de */ {IDCLS_USE_INTERNAL_CALC_PALETTE_DE, "Benutzse intern berechnete Palette"},
 /* fr */ {IDCLS_USE_INTERNAL_CALC_PALETTE_FR, "Utiliser une palette interne calculée"},
 /* hu */ {IDCLS_USE_INTERNAL_CALC_PALETTE_HU, "Belsõleg számított paletta használata"},
@@ -8545,7 +8548,7 @@ translate_t string_table[] = {
 /* video/video-cmdline-options.c */
 /* en */ {IDCLS_USE_EXTERNAL_FILE_PALETTE,    N_("Use an external palette (file)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_USE_EXTERNAL_FILE_PALETTE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_USE_EXTERNAL_FILE_PALETTE_DA, "Brug en ekstern palette (fil)"},
 /* de */ {IDCLS_USE_EXTERNAL_FILE_PALETTE_DE, "Benutze externe Palette (Datei)"},
 /* fr */ {IDCLS_USE_EXTERNAL_FILE_PALETTE_FR, "Utiliser une palette externe (fichier)"},
 /* hu */ {IDCLS_USE_EXTERNAL_FILE_PALETTE_HU, "Külsõ paletta használata (fájl)"},
@@ -8559,7 +8562,7 @@ translate_t string_table[] = {
 /* video/video-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_EXTERNAL_PALETTE_NAME,    N_("Specify name of file of external palette")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_EXTERNAL_PALETTE_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_EXTERNAL_PALETTE_NAME_DA, "Angiv filnavn for ekstern palette"},
 /* de */ {IDCLS_SPECIFY_EXTERNAL_PALETTE_NAME_DE, "Dateiname für externe Palette definieren"},
 /* fr */ {IDCLS_SPECIFY_EXTERNAL_PALETTE_NAME_FR, "Spécifier le nom du fichier de la palette externe"},
 /* hu */ {IDCLS_SPECIFY_EXTERNAL_PALETTE_NAME_HU, "Adja meg a külsõ paletta nevét"},
@@ -8573,7 +8576,7 @@ translate_t string_table[] = {
 /* video/video-cmdline-options.c */
 /* en */ {IDCLS_ENABLE_FULLSCREEN_MODE,    N_("Enable fullscreen mode")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ENABLE_FULLSCREEN_MODE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ENABLE_FULLSCREEN_MODE_DA, "Aktivér fuldskærmstilstand"},
 /* de */ {IDCLS_ENABLE_FULLSCREEN_MODE_DE, "Vollbild Modus aktivieren"},
 /* fr */ {IDCLS_ENABLE_FULLSCREEN_MODE_FR, "Activer le mode plein écran"},
 /* hu */ {IDCLS_ENABLE_FULLSCREEN_MODE_HU, "Teljesképernyõs mód engedélyezése"},
@@ -8587,7 +8590,7 @@ translate_t string_table[] = {
 /* video/video-cmdline-options.c */
 /* en */ {IDCLS_DISABLE_FULLSCREEN_MODE,    N_("Disable fullscreen mode")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_DISABLE_FULLSCREEN_MODE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_DISABLE_FULLSCREEN_MODE_DA, "Deaktiver fuldskærmstilstand"},
 /* de */ {IDCLS_DISABLE_FULLSCREEN_MODE_DE, "Vollbild Modus deaktivieren"},
 /* fr */ {IDCLS_DISABLE_FULLSCREEN_MODE_FR, "Désactiver le mode plein écran"},
 /* hu */ {IDCLS_DISABLE_FULLSCREEN_MODE_HU, "Teljesképernyõs mód tiltása"},
@@ -8601,7 +8604,7 @@ translate_t string_table[] = {
 /* video/video-cmdline-options.c */
 /* en */ {IDCLS_P_DEVICE,    N_("<device>")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_P_DEVICE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_P_DEVICE_DA, "<enhed>"},
 /* de */ {IDCLS_P_DEVICE_DE, "<Gerät>"},
 /* fr */ {IDCLS_P_DEVICE_FR, "<périphérique>"},
 /* hu */ {IDCLS_P_DEVICE_HU, "<eszköz>"},
@@ -8615,7 +8618,7 @@ translate_t string_table[] = {
 /* video/video-cmdline-options.c */
 /* en */ {IDCLS_SELECT_FULLSCREEN_DEVICE,    N_("Select fullscreen device")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SELECT_FULLSCREEN_DEVICE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SELECT_FULLSCREEN_DEVICE_DA, "Angiv fuldskærmsenhed"},
 /* de */ {IDCLS_SELECT_FULLSCREEN_DEVICE_DE, "Vollbild Gerät selektieren"},
 /* fr */ {IDCLS_SELECT_FULLSCREEN_DEVICE_FR, "Sélectionner le périphérique plein écran"},
 /* hu */ {IDCLS_SELECT_FULLSCREEN_DEVICE_HU, "Teljesképernyõs eszköz kiválasztása"},
@@ -8629,7 +8632,7 @@ translate_t string_table[] = {
 /* video/video-cmdline-options.c */
 /* en */ {IDCLS_ENABLE_DOUBLE_SIZE_FULLSCREEN,    N_("Enable double size in fullscreen mode")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ENABLE_DOUBLE_SIZE_FULLSCREEN_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ENABLE_DOUBLE_SIZE_FULLSCREEN_DA, "Aktivér dobbelt størrelse i fuldskærms-tilstand"},
 /* de */ {IDCLS_ENABLE_DOUBLE_SIZE_FULLSCREEN_DE, "Doppelte Größe im Vollbild Modus aktivieren"},
 /* fr */ {IDCLS_ENABLE_DOUBLE_SIZE_FULLSCREEN_FR, "Activer \"Taille double\" en plein écran"},
 /* hu */ {IDCLS_ENABLE_DOUBLE_SIZE_FULLSCREEN_HU, "Dupla méret engedélyezése teljesképernyõs módban"},
@@ -8643,7 +8646,7 @@ translate_t string_table[] = {
 /* video/video-cmdline-options.c */
 /* en */ {IDCLS_DISABLE_DOUBLE_SIZE_FULLSCREEN,    N_("Disable double size in fullscreen mode")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_DISABLE_DOUBLE_SIZE_FULLSCREEN_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_DISABLE_DOUBLE_SIZE_FULLSCREEN_DA, "Deaktiver dobbelt størrelse i fuldskærms-tilstand"},
 /* de */ {IDCLS_DISABLE_DOUBLE_SIZE_FULLSCREEN_DE, "Doppelte Große im Vollbild Modus deaktivieren"},
 /* fr */ {IDCLS_DISABLE_DOUBLE_SIZE_FULLSCREEN_FR, "Désactiver \"Taille double\" en plein écran"},
 /* hu */ {IDCLS_DISABLE_DOUBLE_SIZE_FULLSCREEN_HU, "Dupla méret tiltása teljesképernyõs módban"},
@@ -8657,7 +8660,7 @@ translate_t string_table[] = {
 /* video/video-cmdline-options.c */
 /* en */ {IDCLS_ENABLE_DOUBLE_SCAN_FULLSCREEN,    N_("Enable double scan in fullscreen mode")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ENABLE_DOUBLE_SCAN_FULLSCREEN_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ENABLE_DOUBLE_SCAN_FULLSCREEN_DA, "Aktivér dobbelt-skan i fuldskærms-tilstand"},
 /* de */ {IDCLS_ENABLE_DOUBLE_SCAN_FULLSCREEN_DE, "Doppelt Scan im Vollbild Modus aktivieren"},
 /* fr */ {IDCLS_ENABLE_DOUBLE_SCAN_FULLSCREEN_FR, "Activer \"Double scan\" en plein écran"},
 /* hu */ {IDCLS_ENABLE_DOUBLE_SCAN_FULLSCREEN_HU, "Dupla pásztázás engedélyezése teljesképernyõs módban"},
@@ -8671,7 +8674,7 @@ translate_t string_table[] = {
 /* video/video-cmdline-options.c */
 /* en */ {IDCLS_DISABLE_DOUBLE_SCAN_FULLSCREEN,    N_("Disable double scan in fullscreen mode")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_DISABLE_DOUBLE_SCAN_FULLSCREEN_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_DISABLE_DOUBLE_SCAN_FULLSCREEN_DA, "Deaktiver dobbelt-skan i fuldskærms-tilstand"},
 /* de */ {IDCLS_DISABLE_DOUBLE_SCAN_FULLSCREEN_DE, "Doppelt Scan im Vollbild Modus deaktivieren"},
 /* fr */ {IDCLS_DISABLE_DOUBLE_SCAN_FULLSCREEN_FR, "Désactiver \"Double scan\" en plein écran"},
 /* hu */ {IDCLS_DISABLE_DOUBLE_SCAN_FULLSCREEN_HU, "Dupla pásztázás tiltása teljesképernyõs módban"},
@@ -8685,7 +8688,7 @@ translate_t string_table[] = {
 /* video/video-cmdline-options.c */
 /* en */ {IDCLS_P_MODE,    N_("<mode>")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_P_MODE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_P_MODE_DA, "<tilstand>"},
 /* de */ {IDCLS_P_MODE_DE, "<Modus>"},
 /* fr */ {IDCLS_P_MODE_FR, "<mode>"},
 /* hu */ {IDCLS_P_MODE_HU, "<mód>"},
@@ -8699,7 +8702,7 @@ translate_t string_table[] = {
 /* video/video-cmdline-options.c */
 /* en */ {IDCLS_SELECT_FULLSCREEN_MODE,    N_("Select fullscreen mode")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SELECT_FULLSCREEN_MODE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SELECT_FULLSCREEN_MODE_DA, "Aktivér fuldskærms-tilstand"},
 /* de */ {IDCLS_SELECT_FULLSCREEN_MODE_DE, "Vollbild Modus wählen"},
 /* fr */ {IDCLS_SELECT_FULLSCREEN_MODE_FR, "Sélectionner le mode plein écran"},
 /* hu */ {IDCLS_SELECT_FULLSCREEN_MODE_HU, "Teljes képernyõs mód kiválasztása"},
@@ -8713,7 +8716,7 @@ translate_t string_table[] = {
 /* aciacore.c */
 /* en */ {IDCLS_SPECIFY_ACIA_RS232_DEVICE,    N_("Specify RS232 device this ACIA should work on")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_ACIA_RS232_DEVICE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_ACIA_RS232_DEVICE_DA, "Angiv RS232-enhed denne ACIA skal bruge"},
 /* de */ {IDCLS_SPECIFY_ACIA_RS232_DEVICE_DE, "RS232 Gerät für welches ACIA funktionieren soll ist zu spezifizieren"},
 /* fr */ {IDCLS_SPECIFY_ACIA_RS232_DEVICE_FR, "Spécifier le périphérique RS232 sur lequel cet ACIA doit fonctionner"},
 /* hu */ {IDCLS_SPECIFY_ACIA_RS232_DEVICE_HU, "Adja meg az RS232-es egységet, amivel az ACIA mûködni fog"},
@@ -8729,7 +8732,7 @@ translate_t string_table[] = {
 /* en */ {IDCLS_SET_DEVICE_TYPE_8,    N_("Set device type for device #8 (0: NONE, 1: FILESYSTEM, 2: OPENCBM, 3: "
                                          "BLOCK DEVICE)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SET_DEVICE_TYPE_8_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SET_DEVICE_TYPE_8_DA, "Vælg type for enhed #8 (0: INGEN, 1: FILSYSTEM, 2: OPENCBM, 3: BLOKENHED)"},
 /* de */ {IDCLS_SET_DEVICE_TYPE_8_DE, "Geräte Typ für Gerät #8 (0: Kein, 1: Dateisystem, 2: OpenCBM, 3: Block Gerät)"},
 /* fr */ {IDCLS_SET_DEVICE_TYPE_8_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_SET_DEVICE_TYPE_8_HU, "Adja meg a #8-es egység típusát (0: Nincs, 1: fájlrendszer, 2: OPENCBM, 3 "
@@ -8748,7 +8751,7 @@ translate_t string_table[] = {
 /* en */ {IDCLS_SET_DEVICE_TYPE_9,    N_("Set device type for device #9 (0: NONE, 1: FILESYSTEM, 2: OPENCBM, 3: "
                                          "BLOCK DEVICE)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SET_DEVICE_TYPE_9_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SET_DEVICE_TYPE_9_DA, "Vælg type for enhed #9 (0: INGEN, 1: FILSYSTEM, 2: OPENCBM, 3: BLOKENHED)"},
 /* de */ {IDCLS_SET_DEVICE_TYPE_9_DE, "Geräte Typ für Gerät #9 (0: Kein, 1: Dateisystem, 2: OpenCBM, 3: Block Gerät)"},
 /* fr */ {IDCLS_SET_DEVICE_TYPE_9_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_SET_DEVICE_TYPE_9_HU, "Adja meg a #9-es egység típusát (0: Nincs, 1: fájlrendszer, 2: OPENCBM, 3 "
@@ -8767,7 +8770,7 @@ translate_t string_table[] = {
 /* en */ {IDCLS_SET_DEVICE_TYPE_10,    N_("Set device type for device #10 (0: NONE, 1: FILESYSTEM, 2: OPENCBM, 3: BLOCK "
                                           "DEVICE)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SET_DEVICE_TYPE_10_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SET_DEVICE_TYPE_10_DA, "Vælg type for enhed #10 (0: INGEN, 1: FILSYSTEM, 2: OPENCBM, 3: BLOKENHED)"},
 /* de */ {IDCLS_SET_DEVICE_TYPE_10_DE, "Geräte Typ für Gerät #10 (0: Kein, 1: Dateisystem, 2: OpenCBM, 3: Block Gerät)"},
 /* fr */ {IDCLS_SET_DEVICE_TYPE_10_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_SET_DEVICE_TYPE_10_HU, "Adja meg a #10-es egység típusát (0: Nincs, 1: fájlrendszer, 2: OPENCBM, 3 "
@@ -8786,7 +8789,7 @@ translate_t string_table[] = {
 /* en */ {IDCLS_SET_DEVICE_TYPE_11,    N_("Set device type for device #11 (0: NONE, 1: FILESYSTEM, 2: OPENCBM, 3: BLOCK "
                                           "DEVICE)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SET_DEVICE_TYPE_11_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SET_DEVICE_TYPE_11_DA, "Vælg type for enhed #11 (0: INGEN, 1: FILSYSTEM, 2: OPENCBM, 3: BLOKENHED)"},
 /* de */ {IDCLS_SET_DEVICE_TYPE_11_DE, "Geräte Typ für Gerät #11 (0: Kein, 1: Dateisystem, 2: OpenCBM, 3: Block Gerät)"},
 /* fr */ {IDCLS_SET_DEVICE_TYPE_11_FR, ""},  /* fuzzy */
 /* hu */ {IDCLS_SET_DEVICE_TYPE_11_HU, "Adja meg a #11-es egység típusát (0: Nincs, 1: fájlrendszer, 2: OPENCBM, 3 "
@@ -8804,7 +8807,7 @@ translate_t string_table[] = {
 /* attach.c */
 /* en */ {IDCLS_ATTACH_READ_ONLY_8,    N_("Attach disk image for drive #8 read only")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ATTACH_READ_ONLY_8_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ATTACH_READ_ONLY_8_DA, "Tilslut disk-image til drev #8 skrivebeskyttet"},
 /* de */ {IDCLS_ATTACH_READ_ONLY_8_DE, "Disk Image als Laufwerk #8 benutzen (schreibgeschützt)"},
 /* fr */ {IDCLS_ATTACH_READ_ONLY_8_FR, "Charger une image de disque pour le lecteur #8 en lecture seule"},
 /* hu */ {IDCLS_ATTACH_READ_ONLY_8_HU, "Csak olvasható képmás csatolása a #8-as lemezegységhez"},
@@ -8818,7 +8821,7 @@ translate_t string_table[] = {
 /* attach.c */
 /* en */ {IDCLS_ATTACH_READ_WRITE_8,    N_("Attach disk image for drive #8 read write (if possible)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ATTACH_READ_WRITE_8_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ATTACH_READ_WRITE_8_DA, "Tilslut disk-image til drev #8 skrivbar (hvis muligt)"},
 /* de */ {IDCLS_ATTACH_READ_WRITE_8_DE, "Disk Image als Laufwerk #8 benutzen (Schreibzugriff, wenn möglich)"},
 /* fr */ {IDCLS_ATTACH_READ_WRITE_8_FR, "Charger une image de disque pour le lecteur #8 en lecture-écriture (si "
                                         "possible)"},
@@ -8834,7 +8837,7 @@ translate_t string_table[] = {
 /* attach.c */
 /* en */ {IDCLS_ATTACH_READ_ONLY_9,    N_("Attach disk image for drive #9 read only")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ATTACH_READ_ONLY_9_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ATTACH_READ_ONLY_9_DA, "Tilslut disk-image til drev #9 skrivebeskyttet"},
 /* de */ {IDCLS_ATTACH_READ_ONLY_9_DE, "Disk Image als Laufwerk #9 benutzen (schreibgeschützt)"},
 /* fr */ {IDCLS_ATTACH_READ_ONLY_9_FR, "Charger une image de disque pour le lecteur #9 en lecture seule"},
 /* hu */ {IDCLS_ATTACH_READ_ONLY_9_HU, "Csak olvasható képmás csatolása a #9-es lemezegységhez"},
@@ -8848,7 +8851,7 @@ translate_t string_table[] = {
 /* attach.c */
 /* en */ {IDCLS_ATTACH_READ_WRITE_9,    N_("Attach disk image for drive #9 read write (if possible)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ATTACH_READ_WRITE_9_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ATTACH_READ_WRITE_9_DA, "Tilslut disk-image til drev #9 skrivbar (hvis muligt)"},
 /* de */ {IDCLS_ATTACH_READ_WRITE_9_DE, "Disk Image als Laufwerk #9 benutzen (Schreibzugriff, wenn möglich)"},
 /* fr */ {IDCLS_ATTACH_READ_WRITE_9_FR, "Charger une image de disque pour le lecteur #9 en lecture-écriture (si "
                                         "possible)"},
@@ -8864,7 +8867,7 @@ translate_t string_table[] = {
 /* attach.c */
 /* en */ {IDCLS_ATTACH_READ_ONLY_10,    N_("Attach disk image for drive #10 read only")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ATTACH_READ_ONLY_10_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ATTACH_READ_ONLY_10_DA, "Tilslut disk-image til drev #10 skrivebeskyttet"},
 /* de */ {IDCLS_ATTACH_READ_ONLY_10_DE, "Disk Image als Laufwerk #10 benutzen (schreibgeschützt)"},
 /* fr */ {IDCLS_ATTACH_READ_ONLY_10_FR, "Charger une image de disque pour le lecteur #10 en lecture seule"},
 /* hu */ {IDCLS_ATTACH_READ_ONLY_10_HU, "Csak olvasható képmás csatolása a #10-es lemezegységhez"},
@@ -8878,7 +8881,7 @@ translate_t string_table[] = {
 /* attach.c */
 /* en */ {IDCLS_ATTACH_READ_WRITE_10,    N_("Attach disk image for drive #10 read write (if possible)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ATTACH_READ_WRITE_10_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ATTACH_READ_WRITE_10_DA, "Tilslut disk-image til drev #10 skrivbar (hvis muligt)"},
 /* de */ {IDCLS_ATTACH_READ_WRITE_10_DE, "Disk Image als Laufwerk #10 benutzen (Schreibzugriff, wenn möglich)"},
 /* fr */ {IDCLS_ATTACH_READ_WRITE_10_FR, "Charger une image de disque pour le lecteur #10 en lecture-écriture (si "
                                          "possible)"},
@@ -8894,7 +8897,7 @@ translate_t string_table[] = {
 /* attach.c */
 /* en */ {IDCLS_ATTACH_READ_ONLY_11,    N_("Attach disk image for drive #11 read only")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ATTACH_READ_ONLY_11_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ATTACH_READ_ONLY_11_DA, "Tilslut disk-image til drev #11 skrivebeskyttet"},
 /* de */ {IDCLS_ATTACH_READ_ONLY_11_DE, "Disk Image als Laufwerk #11 benutzen (schreibgeschützt)"},
 /* fr */ {IDCLS_ATTACH_READ_ONLY_11_FR, "Charger une image de disque pour le lecteur #11 en lecture seule"},
 /* hu */ {IDCLS_ATTACH_READ_ONLY_11_HU, "Csak olvasható képmás csatolása a #11-es lemezegységhez"},
@@ -8908,7 +8911,7 @@ translate_t string_table[] = {
 /* attach.c */
 /* en */ {IDCLS_ATTACH_READ_WRITE_11,    N_("Attach disk image for drive #11 read write (if possible)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ATTACH_READ_WRITE_11_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ATTACH_READ_WRITE_11_DA, "Tilslut disk-image til drev #11 skrivbar (hvis muligt)"},
 /* de */ {IDCLS_ATTACH_READ_WRITE_11_DE, "Disk Image als Laufwerk #11 benutzen (Schreibzugriff, wenn möglich)"},
 /* fr */ {IDCLS_ATTACH_READ_WRITE_11_FR, "Charger une image de disque pour le lecteur #11 en lecture-écriture (si "
                                          "possible)"},
@@ -8924,7 +8927,7 @@ translate_t string_table[] = {
 /* datasette.c */
 /* en */ {IDCLS_ENABLE_AUTO_DATASETTE_RESET,    N_("Enable automatic Datasette-Reset")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ENABLE_AUTO_DATASETTE_RESET_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ENABLE_AUTO_DATASETTE_RESET_DA, "Aktivér automatisk Datasette-reset"},
 /* de */ {IDCLS_ENABLE_AUTO_DATASETTE_RESET_DE, "Automatisches Datasette-Reset aktivieren"},
 /* fr */ {IDCLS_ENABLE_AUTO_DATASETTE_RESET_FR, "Activer le redémarrage automatique du Datasette"},
 /* hu */ {IDCLS_ENABLE_AUTO_DATASETTE_RESET_HU, "Automatikus magnó Reset engedélyezése"},
@@ -8938,7 +8941,7 @@ translate_t string_table[] = {
 /* datasette.c */
 /* en */ {IDCLS_DISABLE_AUTO_DATASETTE_RESET,    N_("Disable automatic Datasette-Reset")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_DISABLE_AUTO_DATASETTE_RESET_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_DISABLE_AUTO_DATASETTE_RESET_DA, "Deaktiver automatisk Datasette-reset"},
 /* de */ {IDCLS_DISABLE_AUTO_DATASETTE_RESET_DE, "Automatisches Datasette-Reset deaktivieren"},
 /* fr */ {IDCLS_DISABLE_AUTO_DATASETTE_RESET_FR, "Désactiver le redémarrage automatique du Datasette"},
 /* hu */ {IDCLS_DISABLE_AUTO_DATASETTE_RESET_HU, "Automatikus magnó Reset tiltása"},
@@ -8952,7 +8955,7 @@ translate_t string_table[] = {
 /* datasette.c */
 /* en */ {IDCLS_SET_ZERO_TAP_DELAY,    N_("Set delay in cycles for a zero in the tap")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SET_ZERO_TAP_DELAY_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SET_ZERO_TAP_DELAY_DA, "Angiv forsinkelse i cykler for et nul i tap-filen"},
 /* de */ {IDCLS_SET_ZERO_TAP_DELAY_DE, "Verzögerung für Zero in Zyklen im Tap"},
 /* fr */ {IDCLS_SET_ZERO_TAP_DELAY_FR, "Spécifier le délai en cycles pour un zéro sur le ruban"},
 /* hu */ {IDCLS_SET_ZERO_TAP_DELAY_HU, "Adja meg ciklusokban a legelsõ szalagrés hosszát"},
@@ -8966,7 +8969,7 @@ translate_t string_table[] = {
 /* datasette.c */
 /* en */ {IDCLS_SET_CYCLES_ADDED_GAP_TAP,    N_("Set number of cycles added to each gap in the tap")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SET_CYCLES_ADDED_GAP_TAP_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SET_CYCLES_ADDED_GAP_TAP_DA, "Angiv antal cykler der lægges til hvert hul i tap-filen"},
 /* de */ {IDCLS_SET_CYCLES_ADDED_GAP_TAP_DE, "Setze Anzahl der Zyklen für jedes Loch im Tap"},
 /* fr */ {IDCLS_SET_CYCLES_ADDED_GAP_TAP_FR, "Spécifier le nombre de cycles ajouté a chaque raccord du ruban"},
 /* hu */ {IDCLS_SET_CYCLES_ADDED_GAP_TAP_HU, "Adja meg ciklusokban a szalagfájlok közti üres rés hosszát"},
@@ -8981,7 +8984,7 @@ translate_t string_table[] = {
 /* debug.c */
 /* en */ {IDCLS_TRACE_MAIN_CPU,    N_("Trace the main CPU")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_TRACE_MAIN_CPU_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_TRACE_MAIN_CPU_DA, "Trace hovedprocessoren"},
 /* de */ {IDCLS_TRACE_MAIN_CPU_DE, "Haupt CPU verfolgen"},
 /* fr */ {IDCLS_TRACE_MAIN_CPU_FR, "Tracer l'UCT principal"},
 /* hu */ {IDCLS_TRACE_MAIN_CPU_HU, "Fõ CPU nyomkövetése"},
@@ -8995,7 +8998,7 @@ translate_t string_table[] = {
 /* debug.c */
 /* en */ {IDCLS_DONT_TRACE_MAIN_CPU,    N_("Do not trace the main CPU")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_DONT_TRACE_MAIN_CPU_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_DONT_TRACE_MAIN_CPU_DA, "Trace ikke hovedprocessoren"},
 /* de */ {IDCLS_DONT_TRACE_MAIN_CPU_DE, "Haupt CPU nicht verfolgen"},
 /* fr */ {IDCLS_DONT_TRACE_MAIN_CPU_FR, "Ne pas tracer l'UCT principal"},
 /* hu */ {IDCLS_DONT_TRACE_MAIN_CPU_HU, "Fõ CPU nyomkövetésének tiltása"},
@@ -9009,7 +9012,7 @@ translate_t string_table[] = {
 /* debug.c */
 /* en */ {IDCLS_TRACE_DRIVE0_CPU,    N_("Trace the drive0 CPU")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_TRACE_DRIVE0_CPU_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_TRACE_DRIVE0_CPU_DA, "Trace processor i drev 0"},
 /* de */ {IDCLS_TRACE_DRIVE0_CPU_DE, "Laufwerk0 CPU verfolgen"},
 /* fr */ {IDCLS_TRACE_DRIVE0_CPU_FR, "Tracer l'UCT du drive0"},
 /* hu */ {IDCLS_TRACE_DRIVE0_CPU_HU, "A 0-s lemezegység CPU-jának nyomkövetése"},
@@ -9023,7 +9026,7 @@ translate_t string_table[] = {
 /* debug.c */
 /* en */ {IDCLS_DONT_TRACE_DRIVE0_CPU,    N_("Do not trace the drive0 CPU")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_DONT_TRACE_DRIVE0_CPU_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_DONT_TRACE_DRIVE0_CPU_DA, "Trace ikke processor i drev 0"},
 /* de */ {IDCLS_DONT_TRACE_DRIVE0_CPU_DE, "Laufwerk0 CPU nicht verfolgen"},
 /* fr */ {IDCLS_DONT_TRACE_DRIVE0_CPU_FR, "Ne pas tracer l'UCT du drive0"},
 /* hu */ {IDCLS_DONT_TRACE_DRIVE0_CPU_HU, "A 0-s lemezegység CPU-ja nyomkövetésének tiltása"},
@@ -9037,7 +9040,7 @@ translate_t string_table[] = {
 /* debug.c */
 /* en */ {IDCLS_TRACE_DRIVE1_CPU,    N_("Trace the drive1 CPU")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_TRACE_DRIVE1_CPU_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_TRACE_DRIVE1_CPU_DA, "Trace processor i drev 1"},
 /* de */ {IDCLS_TRACE_DRIVE1_CPU_DE, "Laufwerk1 CPU verfolgen"},
 /* fr */ {IDCLS_TRACE_DRIVE1_CPU_FR, "Tracer l'UCT du drive1"},
 /* hu */ {IDCLS_TRACE_DRIVE1_CPU_HU, "Az 1-es lemezegység CPU-jának nyomkövetése"},
@@ -9051,7 +9054,7 @@ translate_t string_table[] = {
 /* debug.c */
 /* en */ {IDCLS_DONT_TRACE_DRIVE1_CPU,    N_("Do not trace the drive1 CPU")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_DONT_TRACE_DRIVE1_CPU_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_DONT_TRACE_DRIVE1_CPU_DA, "Trace ikke processor i drev 1"},
 /* de */ {IDCLS_DONT_TRACE_DRIVE1_CPU_DE, "Laufwerk1 CPU nicht verfolgen"},
 /* fr */ {IDCLS_DONT_TRACE_DRIVE1_CPU_FR, "Ne pas tracer l'UCT du drive1"},
 /* hu */ {IDCLS_DONT_TRACE_DRIVE1_CPU_HU, "Az 1-es lemezegység CPU-ja nyomkövetésének tiltása"},
@@ -9066,7 +9069,7 @@ translate_t string_table[] = {
 /* debug.c */
 /* en */ {IDCLS_TRACE_DRIVE2_CPU,    N_("Trace the drive2 CPU")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_TRACE_DRIVE2_CPU_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_TRACE_DRIVE2_CPU_DA, "Trace processor i drev 2"},
 /* de */ {IDCLS_TRACE_DRIVE2_CPU_DE, "Laufwerk2 CPU verfolgen"},
 /* fr */ {IDCLS_TRACE_DRIVE2_CPU_FR, "Tracer l'UCT du drive2"},
 /* hu */ {IDCLS_TRACE_DRIVE2_CPU_HU, "A 2-es lemezegység CPU-jának nyomkövetése"},
@@ -9080,7 +9083,7 @@ translate_t string_table[] = {
 /* debug.c */
 /* en */ {IDCLS_DONT_TRACE_DRIVE2_CPU,    N_("Do not trace the drive2 CPU")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_DONT_TRACE_DRIVE2_CPU_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_DONT_TRACE_DRIVE2_CPU_DA, "Trace ikke processor i drev 2"},
 /* de */ {IDCLS_DONT_TRACE_DRIVE2_CPU_DE, "Laufwerk2 CPU nicht verfolgen"},
 /* fr */ {IDCLS_DONT_TRACE_DRIVE2_CPU_FR, "Ne pas tracer l'UCT du drive2"},
 /* hu */ {IDCLS_DONT_TRACE_DRIVE2_CPU_HU, "A 2-es lemezegység CPU-ja nyomkövetésének tiltása"},
@@ -9096,7 +9099,7 @@ translate_t string_table[] = {
 /* debug.c */
 /* en */ {IDCLS_TRACE_DRIVE3_CPU,    N_("Trace the drive3 CPU")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_TRACE_DRIVE3_CPU_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_TRACE_DRIVE3_CPU_DA, "Trace processor i drev 3"},
 /* de */ {IDCLS_TRACE_DRIVE3_CPU_DE, "Laufwerk3 CPU verfolgen"},
 /* fr */ {IDCLS_TRACE_DRIVE3_CPU_FR, "Tracer l'UCT du drive3"},
 /* hu */ {IDCLS_TRACE_DRIVE3_CPU_HU, "A 3-as lemezegység CPU-jának nyomkövetése"},
@@ -9110,7 +9113,7 @@ translate_t string_table[] = {
 /* debug.c */
 /* en */ {IDCLS_DONT_TRACE_DRIVE3_CPU,    N_("Do not trace the drive3 CPU")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_DONT_TRACE_DRIVE3_CPU_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_DONT_TRACE_DRIVE3_CPU_DA, "Trace ikke processor i drev 3"},
 /* de */ {IDCLS_DONT_TRACE_DRIVE3_CPU_DE, "Laufwerk3 CPU nicht verfolgen"},
 /* fr */ {IDCLS_DONT_TRACE_DRIVE3_CPU_FR, "Ne pas tracer l'UCT du drive3"},
 /* hu */ {IDCLS_DONT_TRACE_DRIVE3_CPU_HU, "A 3-as lemezegység CPU-ja nyomkövetésének tiltása"},
@@ -9125,7 +9128,7 @@ translate_t string_table[] = {
 /* debug.c */
 /* en */ {IDCLS_TRACE_MODE,    N_("Trace mode (0=normal 1=small 2=history)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_TRACE_MODE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_TRACE_MODE_DA, "Trace-tilstand (0=normal 1=lille 2=historik)"},
 /* de */ {IDCLS_TRACE_MODE_DE, "Verfolgung Modus (0=normal 1=klein 2=Geschichte)"},
 /* fr */ {IDCLS_TRACE_MODE_FR, "Mode de trace (0=normal 1=petit 2=historique)"},
 /* hu */ {IDCLS_TRACE_MODE_HU, "Nyomkövetési mód (0=normál 1=kicsi 2=elõzmények)"},
@@ -9140,7 +9143,7 @@ translate_t string_table[] = {
 /* event.c */
 /* en */ {IDCLS_PLAYBACK_RECORDED_EVENTS,    N_("Playback recorded events")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_PLAYBACK_RECORDED_EVENTS_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_PLAYBACK_RECORDED_EVENTS_DA, "Afspil hændelsesoptagelse"},
 /* de */ {IDCLS_PLAYBACK_RECORDED_EVENTS_DE, "Wiedergabe von aufgenommener Ereignisse"},
 /* fr */ {IDCLS_PLAYBACK_RECORDED_EVENTS_FR, "Lire les événements enregistrés"},
 /* hu */ {IDCLS_PLAYBACK_RECORDED_EVENTS_HU, "A felvett események visszajátszása"},
@@ -9154,7 +9157,7 @@ translate_t string_table[] = {
 /* monitor.c */
 /* en */ {IDCLS_EXECUTE_MONITOR_FROM_FILE,    N_("Execute monitor commands from file")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_EXECUTE_MONITOR_FROM_FILE_DA, ""}, /* fuzzy */
+/* da */ {IDCLS_EXECUTE_MONITOR_FROM_FILE_DA, "Udfør monitorkommandoer fra fil"},
 /* de */ {IDCLS_EXECUTE_MONITOR_FROM_FILE_DE, "Monitor Kommandos von Datei ausführen"},
 /* fr */ {IDCLS_EXECUTE_MONITOR_FROM_FILE_FR, "Exécuter des commandes moniteur depuis un fichier"},
 /* hu */ {IDCLS_EXECUTE_MONITOR_FROM_FILE_HU, "Monitorprogram parancsok futtatása fájlból"},
@@ -9168,7 +9171,7 @@ translate_t string_table[] = {
 /* monitor.c */
 /* en */ {IDCLS_SET_INITIAL_BREAKPOINT,    N_("Set an initial breakpoint for the monitor")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SET_INITIAL_BREAKPOINT_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SET_INITIAL_BREAKPOINT_DA, "Sæt et initielt breakpoint for monitoren"},
 /* de */ {IDCLS_SET_INITIAL_BREAKPOINT_DE, "Setze initialen Breakpoint für Monitor"},
 /* fr */ {IDCLS_SET_INITIAL_BREAKPOINT_FR, "Régler un point d’arrêt initial pour le moniteur"},
 /* hu */ {IDCLS_SET_INITIAL_BREAKPOINT_HU, "Kezdeti töréspont megadása a monitorprogramnak"},
@@ -9182,7 +9185,7 @@ translate_t string_table[] = {
 /* fliplist.c */
 /* en */ {IDCLS_SPECIFY_FLIP_LIST_NAME,    N_("Specify name of the flip list file image")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SPECIFY_FLIP_LIST_NAME_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SPECIFY_FLIP_LIST_NAME_DA, "Angiv navn på bladreliste"},
 /* de */ {IDCLS_SPECIFY_FLIP_LIST_NAME_DE, "Namen für Fliplist Datei definieren"},
 /* fr */ {IDCLS_SPECIFY_FLIP_LIST_NAME_FR, "Spécifier le nom de l'image du fichier de groupement de disques"},
 /* hu */ {IDCLS_SPECIFY_FLIP_LIST_NAME_HU, "Adja meg a lemezlista fájl nevét"},
@@ -9196,7 +9199,7 @@ translate_t string_table[] = {
 /* initcmdline.c */
 /* en */ {IDCLS_SHOW_COMMAND_LINE_OPTIONS,    N_("Show a list of the available options and exit normally")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SHOW_COMMAND_LINE_OPTIONS_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_SHOW_COMMAND_LINE_OPTIONS_DA, "Vis en liste over tilgængelige parametre og afslut"},
 /* de */ {IDCLS_SHOW_COMMAND_LINE_OPTIONS_DE, "Liste von verfügbaren Optionen zeigen und beenden"},
 /* fr */ {IDCLS_SHOW_COMMAND_LINE_OPTIONS_FR, "Montrer une liste des options disponibles et terminer normalement"},
 /* hu */ {IDCLS_SHOW_COMMAND_LINE_OPTIONS_HU, "Kilistázza a lehetséges opciókat és kilép"},
@@ -9211,7 +9214,7 @@ translate_t string_table[] = {
 /* initcmdline.c */
 /* en */ {IDCLS_CONSOLE_MODE,    N_("Console mode (for music playback)")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_CONSOLE_MODE_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_CONSOLE_MODE_DA, "Konsoltilstand (for musikafspilning)"},
 /* de */ {IDCLS_CONSOLE_MODE_DE, "Konsolenmodus (für Musikwiedergabe)"},
 /* fr */ {IDCLS_CONSOLE_MODE_FR, "Mode console (pour l'écoute de musique)"},
 /* hu */ {IDCLS_CONSOLE_MODE_HU, "Konzol mód (zene lejátszáshoz)"},
@@ -9225,7 +9228,7 @@ translate_t string_table[] = {
 /* initcmdline.c */
 /* en */ {IDCLS_ALLOW_CORE_DUMPS,    N_("Allow production of core dumps")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_ALLOW_CORE_DUMPS_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_ALLOW_CORE_DUMPS_DA, "Tillad generering af core-dumps"},
 /* de */ {IDCLS_ALLOW_CORE_DUMPS_DE, "Core Dumps ermöglichen"},
 /* fr */ {IDCLS_ALLOW_CORE_DUMPS_FR, "Permettre la production de \"core dumps\""},
 /* hu */ {IDCLS_ALLOW_CORE_DUMPS_HU, "Core dump készítés engedélyezése"},
@@ -9239,7 +9242,7 @@ translate_t string_table[] = {
 /* initcmdline.c */
 /* en */ {IDCLS_DONT_ALLOW_CORE_DUMPS,    N_("Do not produce core dumps")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_DONT_ALLOW_CORE_DUMPS_DA, ""},  /* fuzzy */
+/* da */ {IDCLS_DONT_ALLOW_CORE_DUMPS_DA, "Lav ikke core-dumps"},
 /* de */ {IDCLS_DONT_ALLOW_CORE_DUMPS_DE, "Core Dumps verhindern"},
 /* fr */ {IDCLS_DONT_ALLOW_CORE_DUMPS_FR, "Ne pas produire de \"core dumps\""},
 /* hu */ {IDCLS_DONT_ALLOW_CORE_DUMPS_HU, "Core dump készítés tiltása"},
