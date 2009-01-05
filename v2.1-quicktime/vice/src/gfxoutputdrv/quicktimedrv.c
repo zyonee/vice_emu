@@ -53,8 +53,8 @@ enum {
 
 static gfxoutputdrv_codec_t mov_audio_codeclist[] = { 
     { -1, "None" },
-    { 1, "Test" },
-    { 0, NULL }
+    { 1,  "PCM" },
+    { 0,  NULL }
 };
 
 static gfxoutputdrv_codec_t mov_video_codeclist[] = { 

@@ -190,7 +190,7 @@ export PATH=/usr/X11R6/bin:$PATH
 COMMON_CFLAGS="-O3"
 
 # extra flags
-if [ "$UI_TYPE" = "gtk" ]; then
+if [ "$UI_TYPE" != "cocoa" ]; then
   LDFLAGS_EXTRA="-dylib_file /System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libGL.dylib:/System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libGL.dylib"
 fi
 
