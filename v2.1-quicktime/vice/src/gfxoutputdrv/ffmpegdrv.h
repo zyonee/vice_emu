@@ -28,6 +28,7 @@
 #define _FFMPEGDRV_H
 
 #include "screenshot.h"
+#include "gfxoutput.h"
 
 extern void gfxoutput_init_ffmpeg(void);
 
