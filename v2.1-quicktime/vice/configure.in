@@ -1196,7 +1196,7 @@ if test x"$enable_quicktime" = "xyes" -o x"$is_unix_macosx" = "xyes"; then
     AC_CHECK_HEADER(QuickTime/QuickTime.h,,)
     if test x"$ac_cv_header_QuickTime_QuickTime_h" = "xyes" ; then
       AC_CHECK_HEADER(CoreVideo/CVPixelBuffer.h,,)
-      if test x"$ac_cv_header_CoreVideo_CoreVideo_h" = "xyes" ; then
+      if test x"$ac_cv_header_CoreVideo_CVPixelBuffer_h" = "xyes" ; then
         AC_MSG_CHECKING(whether we can link the QuickTime framework)
         old_LIBS="${LIBS}"
         LIBS="${LIBS} -framework QuickTime -framework CoreVideo"
