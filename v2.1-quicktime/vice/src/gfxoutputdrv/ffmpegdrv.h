@@ -31,4 +31,7 @@
 
 extern void gfxoutput_init_ffmpeg(void);
 
+/* deprecated access for UIs that do not use the gfxoutputdrv->formatlist yet: */
+extern gfxoutputdrv_format_t ffmpegdrv_formatlist[];
+
 #endif

@@ -62,7 +62,7 @@ if [ "$BUILD_DIR" = "" ]; then
 fi
 SDK_VERSION="$6"
 if [ "x$SDK_VERSION" = "x" ]; then
-  SDK_VERSION="10.3+4"
+  SDK_VERSION="10.4"
 fi
 echo "  architecture: $ARCH"
 echo "  ui type:      $UI_TYPE"

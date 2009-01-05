@@ -59,7 +59,7 @@ static gfxoutputdrv_codec_t avi_video_codeclist[] = {
     { 0, NULL }
 };
 
-static gfxoutputdrv_format_t ffmpegdrv_formatlist[] =
+gfxoutputdrv_format_t ffmpegdrv_formatlist[] =
 {
     { "avi", avi_audio_codeclist, avi_video_codeclist },
     { "wav", NULL, NULL },
