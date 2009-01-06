@@ -264,7 +264,7 @@ static void load_snapshot_trap(WORD unused_addr, void *data)
         log_debug("Quickloading file %s.", (char *)data);
         filename = (char *)data;
     } else {
-        filename = ui_select_file(_("Load snapshot"), NULL, 0, 0,
+        filename = ui_select_file(_("Load snapshot"), NULL, 0,
                                   load_snapshot_last_dir,
                                   "*.vsf", &button, 0, NULL, UI_FC_LOAD);
         if (button != UI_BUTTON_OK) {

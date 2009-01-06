@@ -82,7 +82,8 @@ INCLUDES = \
 	-I$(top_builddir)/src \
 	-I$(top_srcdir)/src \
 	-I$(top_srcdir)/src/drive \
-	-I$(top_srcdir)/src/vdrive
+	-I$(top_srcdir)/src/vdrive \
+	-I$(top_srcdir)/src/imagecontents
 
 noinst_HEADERS = \
 	6510core.h \

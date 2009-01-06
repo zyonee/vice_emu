@@ -1,5 +1,6 @@
+#line 2 "mon_lex.c"
 
-#line 3 "mon_lex.c"
+#line 4 "mon_lex.c"
 
 #define  YY_INT_ALIGNED short int
 
@@ -1251,7 +1252,7 @@ YY_BUFFER_STATE my_state;
 #define YY_USER_ACTION { last_len = cur_len; cur_len += yyleng; }
 
 
-#line 1255 "mon_lex.c"
+#line 1256 "mon_lex.c"
 
 #define INITIAL 0
 #define FNAME 1
@@ -1431,7 +1432,7 @@ YY_DECL
    }
 
 
-#line 1435 "mon_lex.c"
+#line 1436 "mon_lex.c"
 
 	if ( !(yy_init) )
 		{
@@ -2603,7 +2604,7 @@ YY_RULE_SETUP
 #line 356 "mon_lex.l"
 ECHO;
 	YY_BREAK
-#line 2607 "mon_lex.c"
+#line 2608 "mon_lex.c"
 			case YY_STATE_EOF(INITIAL):
 			case YY_STATE_EOF(FNAME):
 			case YY_STATE_EOF(CMD):
@@ -2815,7 +2816,7 @@ static int yy_get_next_buffer (void)
 
 		/* Read in more data. */
 		YY_INPUT( (&YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[number_to_move]),
-			(yy_n_chars), (size_t) num_to_read );
+			(yy_n_chars), num_to_read );
 
 		YY_CURRENT_BUFFER_LVALUE->yy_n_chars = (yy_n_chars);
 		}
@@ -3311,7 +3312,7 @@ YY_BUFFER_STATE yy_scan_buffer  (char * base, yy_size_t  size )
 
 /** Setup the input buffer state to scan a string. The next call to yylex() will
  * scan from a @e copy of @a str.
- * @param yystr a NUL-terminated string to scan
+ * @param str a NUL-terminated string to scan
  * 
  * @return the newly allocated buffer state object.
  * @note If you want to scan bytes that may contain NUL values, then use

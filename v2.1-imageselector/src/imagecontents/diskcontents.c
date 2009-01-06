@@ -64,34 +64,23 @@ image_contents_t *diskcontents_read(const char *file_name, unsigned int unit)
     return contents;
 }
 
-char *diskcontents_filename_by_number(const char *filename, unsigned int unit,
-                                      unsigned int file_index)
+image_contents_t *diskcontents_read_unit8(const char *file_name)
 {
-    image_contents_t *contents;
-    image_contents_file_list_t *current;
-    char *s;
+    return diskcontents_read(file_name, 8);
+}
 
-    contents = diskcontents_read(filename, unit);
+image_contents_t *diskcontents_read_unit9(const char *file_name)
+{
+    return diskcontents_read(file_name, 9);
+}
 
-    if (contents == NULL)
-        return NULL;
+image_contents_t *diskcontents_read_unit10(const char *file_name)
+{
+    return diskcontents_read(file_name, 10);
+}
 
-    s = NULL;
-
-    if (file_index != 0) {
-        current = contents->file_list;
-        file_index--;
-        while ((file_index != 0) && (current != NULL)) {
-            current = current->next;
-            file_index--;
-        }
-        if (current != NULL) {
-            s = lib_stralloc((char *)(current->name));
-        }
-    }
-
-    image_contents_destroy(contents);
-
-    return s;
+image_contents_t *diskcontents_read_unit11(const char *file_name)
+{
+    return diskcontents_read(file_name, 11);
 }
 
