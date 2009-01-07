@@ -52,6 +52,7 @@ struct image_contents_s {
     image_contents_file_list_t *file_list;
 };
 typedef struct image_contents_s image_contents_t;
+typedef struct image_contents_t *(*read_contents_func_type)(const char *);
 
 struct image_contents_screencode_s {
     BYTE *line;

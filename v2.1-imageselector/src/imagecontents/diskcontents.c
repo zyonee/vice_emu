@@ -41,27 +41,16 @@
 
 image_contents_t *diskcontents_read(const char *file_name, unsigned int unit)
 {
-    image_contents_t *contents = NULL;
-
     if (machine_bus_device_fsimage_state_get(unit))
-        unit = 0;
+        return diskcontents_block_read(file_name, 0);
+    if (machine_bus_device_realdevice_state_get(unit))
+        return machine_diskcontents_bus_read(unit);
+    return diskcontents_block_read(file_name, unit);
+}
 
-    switch (unit) {
-      case 0:
-        contents = diskcontents_block_read(file_name, unit);
-        break;
-      case 8:
-      case 9:
-      case 10:
-      case 11:
-        if (machine_bus_device_realdevice_state_get(unit))
-            contents = machine_diskcontents_bus_read(unit);
-        else
-            contents = diskcontents_block_read(file_name, unit);
-        break;
-    }
-
-    return contents;
+image_contents_t *diskcontents_read_unit0(const char *file_name)
+{
+    return diskcontents_block_read(file_name, 0);
 }
 
 image_contents_t *diskcontents_read_unit8(const char *file_name)

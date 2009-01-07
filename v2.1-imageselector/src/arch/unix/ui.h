@@ -53,8 +53,6 @@ typedef enum {
     UI_BUTTON_YES, UI_BUTTON_NO, UI_BUTTON_RESET, UI_BUTTON_HARDRESET,
     UI_BUTTON_MON, UI_BUTTON_DEBUG, UI_BUTTON_CONTENTS, UI_BUTTON_AUTOSTART
 } ui_button_t;
-struct image_contents_s;
-typedef struct image_contents_s *(*read_contents_func_type)(const char *);
 
 /* ------------------------------------------------------------------------- */
 /* Prototypes */
