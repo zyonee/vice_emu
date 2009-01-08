@@ -780,10 +780,6 @@ TCHAR *uilib_select_file_autostart(HWND hwnd, const TCHAR *title,
         lib_free(tmpdir);
         lib_free(tmpfile);
     }
-    else {
-        DWORD why = CommDlgExtendedError();
-        printf("ciao %u\n", why);
-    }
 
     lib_free(filter);
 
