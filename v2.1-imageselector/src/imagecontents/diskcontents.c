@@ -37,15 +37,19 @@
 #include "lib.h"
 #include "machine-bus.h"
 #include "machine.h"
+#include "serial.h"
 
 
 image_contents_t *diskcontents_read(const char *file_name, unsigned int unit)
 {
-    if (machine_bus_device_fsimage_state_get(unit))
+    switch (machine_bus_device_type_get(unit)) {
+    default:
         return diskcontents_block_read(file_name, 0);
-    if (machine_bus_device_realdevice_state_get(unit))
+    case SERIAL_DEVICE_REAL:
         return machine_diskcontents_bus_read(unit);
-    return diskcontents_block_read(file_name, unit);
+    case SERIAL_DEVICE_RAW:
+        return diskcontents_block_read(file_name, unit);
+    }
 }
 
 image_contents_t *diskcontents_read_unit0(const char *file_name)
