@@ -212,7 +212,7 @@ void file_system_init(void)
 
     attach_log = log_open("Attach");
 
-    for (i = 0; i < 7; i++)
+    for (i = 0; i < 8; i++)
         serial_device_type_set(SERIAL_DEVICE_VIRT, i);
     
     for (i = 0; i < 4; i++) {

@@ -38,23 +38,25 @@
 #include "machine-bus.h"
 #include "machine.h"
 #include "serial.h"
+#include "attach.h"
+#include "vdrive-internal.h"
 
 
 image_contents_t *diskcontents_read(const char *file_name, unsigned int unit)
 {
     switch (machine_bus_device_type_get(unit)) {
     default:
-        return diskcontents_block_read(file_name, 0);
+        return diskcontents_filesystem_read(file_name);
     case SERIAL_DEVICE_REAL:
         return machine_diskcontents_bus_read(unit);
     case SERIAL_DEVICE_RAW:
-        return diskcontents_block_read(file_name, unit);
+        return diskcontents_block_read(file_system_get_vdrive(unit));
     }
 }
 
-image_contents_t *diskcontents_read_unit0(const char *file_name)
+image_contents_t *diskcontents_filesystem_read(const char *file_name)
 {
-    return diskcontents_block_read(file_name, 0);
+    return diskcontents_block_read(vdrive_internal_open_fsimage(file_name, 1));
 }
 
 image_contents_t *diskcontents_read_unit8(const char *file_name)
@@ -76,4 +78,3 @@ image_contents_t *diskcontents_read_unit11(const char *file_name)
 {
     return diskcontents_read(file_name, 11);
 }
-

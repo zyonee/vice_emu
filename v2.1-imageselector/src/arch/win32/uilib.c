@@ -350,7 +350,7 @@ static UINT APIENTRY uilib_select_disk_hook_proc(HWND hwnd, UINT uimsg,
               if (!(GetFileAttributes(st_filename)
                 & FILE_ATTRIBUTE_DIRECTORY)) {
                   system_wcstombs(filename, st_filename, 256);
-                  contents = diskcontents_read(filename, 0);
+                  contents = diskcontents_filesystem_read(filename);
                   if (contents != NULL)
                   {
                       create_content_list(contents, preview);
@@ -538,7 +538,7 @@ static UINT APIENTRY uilib_select_hook_proc(HWND hwnd, UINT uimsg,
                      if (!(GetFileAttributes(st_filename)
                          & FILE_ATTRIBUTE_DIRECTORY)) {
                          system_wcstombs(filename, st_filename, 256);
-                         contents = diskcontents_read(filename, 0);
+                         contents = diskcontents_filesystem_read(filename);
                          if (contents == NULL) {
                              contents = tapecontents_read(filename);
                          }
