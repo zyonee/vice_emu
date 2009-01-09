@@ -41,6 +41,7 @@
 #include "vdrive-dir.h"
 #include "vdrive-internal.h"
 #include "vdrive.h"
+#include "machine-drive.h"
 
 
 /* This code is used to check whether the directory is circular.  It should
