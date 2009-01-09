@@ -988,7 +988,7 @@ intl_translate_t intl_string_table[] = {
 /* tr */ {IDMS_SET_MILESTONE_TR, "Kayýt kilometre taþý koy"},
 
 /* en */ {IDMS_RETURN_TO_MILESTONE,    "Return to Milestone"},
-/* da */ {IDMS_RETURN_TO_MILESTONE_DA, ""},  /* fuzzy */
+/* da */ {IDMS_RETURN_TO_MILESTONE_DA, "Gå til bogmærke"},
 /* de */ {IDMS_RETURN_TO_MILESTONE_DE, "Rückkehr zum Meilenstein"},
 /* fr */ {IDMS_RETURN_TO_MILESTONE_FR, "Retourner au Signet d'enregistrement"},
 /* hu */ {IDMS_RETURN_TO_MILESTONE_HU, "Visszaugrás az elõzõ kilóméterkõhöz"},
@@ -996,10 +996,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_RETURN_TO_MILESTONE_NL, "Ga terug naar Mijlpaal"},
 /* pl */ {IDMS_RETURN_TO_MILESTONE_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_RETURN_TO_MILESTONE_SV, "Återgå till bokmärke"},
-/* tr */ {IDMS_RETURN_TO_MILESTONE_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_RETURN_TO_MILESTONE_TR, "Kilometre taþýna geri dön"},
 
 /* en */ {IDMS_RECORDING_START_MODE,    "Recording start mode"},
-/* da */ {IDMS_RECORDING_START_MODE_DA, ""},  /* fuzzy */
+/* da */ {IDMS_RECORDING_START_MODE_DA, "Indspiller start-tilstand"},
 /* de */ {IDMS_RECORDING_START_MODE_DE, "Aufnahme Start Modus"},
 /* fr */ {IDMS_RECORDING_START_MODE_FR, "Mode de départ d'enregistrement"},
 /* hu */ {IDMS_RECORDING_START_MODE_HU, "Rögzítés indításának módja"},
@@ -1007,10 +1007,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_RECORDING_START_MODE_NL, "Opname start modus"},
 /* pl */ {IDMS_RECORDING_START_MODE_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_RECORDING_START_MODE_SV, "Spelar in startläge"},
-/* tr */ {IDMS_RECORDING_START_MODE_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_RECORDING_START_MODE_TR, "Kayýt baþlangýç modu"},
 
 /* en */ {IDMS_SAVE_NEW_SNAPSHOT,    "Save new snapshot"},
-/* da */ {IDMS_SAVE_NEW_SNAPSHOT_DA, ""},  /* fuzzy */
+/* da */ {IDMS_SAVE_NEW_SNAPSHOT_DA, "Gem nyt snapshot"},
 /* de */ {IDMS_SAVE_NEW_SNAPSHOT_DE, "Speichere neuen Snapshot"},
 /* fr */ {IDMS_SAVE_NEW_SNAPSHOT_FR, "Enregistrer une nouvelle sauvegarde"},
 /* hu */ {IDMS_SAVE_NEW_SNAPSHOT_HU, "Új pillanatkép mentése"},
@@ -1018,10 +1018,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_SAVE_NEW_SNAPSHOT_NL, "Opslaan nieuwe momentopname"},
 /* pl */ {IDMS_SAVE_NEW_SNAPSHOT_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_SAVE_NEW_SNAPSHOT_SV, "Spara ny ögonblicksbild"},
-/* tr */ {IDMS_SAVE_NEW_SNAPSHOT_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_SAVE_NEW_SNAPSHOT_TR, "Yeni anlýk görüntü kaydet"},
 
 /* en */ {IDMS_LOAD_EXISTING_SNAPSHOT,    "Load existing snapshot"},
-/* da */ {IDMS_LOAD_EXISTING_SNAPSHOT_DA, ""},  /* fuzzy */
+/* da */ {IDMS_LOAD_EXISTING_SNAPSHOT_DA, "Indlæs eksisterende snapshot"},
 /* de */ {IDMS_LOAD_EXISTING_SNAPSHOT_DE, "Lade existierenden Snapshot"},
 /* fr */ {IDMS_LOAD_EXISTING_SNAPSHOT_FR, "Charger une sauvegarde"},
 /* hu */ {IDMS_LOAD_EXISTING_SNAPSHOT_HU, "Létezõ pillanatkép betöltése"},
@@ -1029,10 +1029,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_LOAD_EXISTING_SNAPSHOT_NL, "Laad bestaande momentopname"},
 /* pl */ {IDMS_LOAD_EXISTING_SNAPSHOT_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_LOAD_EXISTING_SNAPSHOT_SV, "Läs in existerande ögonblicksbild"},
-/* tr */ {IDMS_LOAD_EXISTING_SNAPSHOT_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_LOAD_EXISTING_SNAPSHOT_TR, "Varolan anlýk görüntüyü yükle"},
 
 /* en */ {IDMS_START_WITH_RESET,    "Start with reset"},
-/* da */ {IDMS_START_WITH_RESET_DA, ""},  /* fuzzy */
+/* da */ {IDMS_START_WITH_RESET_DA, "Start med reset"},
 /* de */ {IDMS_START_WITH_RESET_DE, "Mit Reset starten"},
 /* fr */ {IDMS_START_WITH_RESET_FR, "Réinitialiser au démarrage"},
 /* hu */ {IDMS_START_WITH_RESET_HU, "Indulás RESET-tel"},
@@ -1040,10 +1040,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_START_WITH_RESET_NL, "Start bij reset"},
 /* pl */ {IDMS_START_WITH_RESET_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_START_WITH_RESET_SV, "Starta med nollställning"},
-/* tr */ {IDMS_START_WITH_RESET_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_START_WITH_RESET_TR, "Reset ile baþlat"},
 
 /* en */ {IDMS_OVERWRITE_PLAYBACK,    "Overwrite Playback"},
-/* da */ {IDMS_OVERWRITE_PLAYBACK_DA, ""},  /* fuzzy */
+/* da */ {IDMS_OVERWRITE_PLAYBACK_DA, "Overskriv afspilning"},
 /* de */ {IDMS_OVERWRITE_PLAYBACK_DE, "Laufende Aufnahme überschreiben"},
 /* fr */ {IDMS_OVERWRITE_PLAYBACK_FR, "Écraser la lecture actuelle"},
 /* hu */ {IDMS_OVERWRITE_PLAYBACK_HU, "Visszajátszás felülírása"},
@@ -1051,10 +1051,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_OVERWRITE_PLAYBACK_NL, "Overschrijf weergave"},
 /* pl */ {IDMS_OVERWRITE_PLAYBACK_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_OVERWRITE_PLAYBACK_SV, "Skriv över aktiv uppspelning"},
-/* tr */ {IDMS_OVERWRITE_PLAYBACK_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_OVERWRITE_PLAYBACK_TR, "Kayýttan Yürütmenin Üzerine Yaz"},
 
 /* en */ {IDMS_SELECT_HISTORY_DIR,    "Select History files/directory"},
-/* da */ {IDMS_SELECT_HISTORY_DIR_DA, ""},  /* fuzzy */
+/* da */ {IDMS_SELECT_HISTORY_DIR_DA, "Vælg historikfiler/-katalog"},
 /* de */ {IDMS_SELECT_HISTORY_DIR_DE, "Verzeichnis für Event Aufnahme"},
 /* fr */ {IDMS_SELECT_HISTORY_DIR_FR, "Sélectionnez le répertoire des captures"},
 /* hu */ {IDMS_SELECT_HISTORY_DIR_HU, "Válassza ki a felvételeket/könyvtárat"},
@@ -1062,10 +1062,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_SELECT_HISTORY_DIR_NL, "Selecteer geschiedenisdirectory"},
 /* pl */ {IDMS_SELECT_HISTORY_DIR_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_SELECT_HISTORY_DIR_SV, "Välj historikfiler/-katalog"},
-/* tr */ {IDMS_SELECT_HISTORY_DIR_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_SELECT_HISTORY_DIR_TR, "Tarihçe dosyalarý/dizin seç"},
 
 /* en */ {IDMS_SAVE_STOP_MEDIA_FILE,    "Save/stop media file..."},
-/* da */ {IDMS_SAVE_STOP_MEDIA_FILE_DA, ""},  /* fuzzy */
+/* da */ {IDMS_SAVE_STOP_MEDIA_FILE_DA, "Gem/stop mediefil..."},
 /* de */ {IDMS_SAVE_STOP_MEDIA_FILE_DE, "Speichern/stop media Datei..."},
 /* fr */ {IDMS_SAVE_STOP_MEDIA_FILE_FR, "Enregistrer/Arrêter fichier média..."},
 /* hu */ {IDMS_SAVE_STOP_MEDIA_FILE_HU, "Média fájl mentése/megállítása..."},
@@ -1073,10 +1073,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_SAVE_STOP_MEDIA_FILE_NL, "Opslaan/stop mediabestand..."},
 /* pl */ {IDMS_SAVE_STOP_MEDIA_FILE_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_SAVE_STOP_MEDIA_FILE_SV, "Starta/stoppa mediafil..."},
-/* tr */ {IDMS_SAVE_STOP_MEDIA_FILE_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_SAVE_STOP_MEDIA_FILE_TR, "Ortam dosyasý kaydet/durdur..."},
 
 /* en */ {IDMS_NETPLAY,    "Netplay (experimental)..."},
-/* da */ {IDMS_NETPLAY_DA, ""},  /* fuzzy */
+/* da */ {IDMS_NETPLAY_DA, "Netværksspil (eksperimentelt)..."},
 /* de */ {IDMS_NETPLAY_DE, "Netplay (experimentell)..."},
 /* fr */ {IDMS_NETPLAY_FR, "Jeu en réseau (expérimental)..."},
 /* hu */ {IDMS_NETPLAY_HU, "Hálózati játék (kísérleti)..."},
@@ -1084,10 +1084,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_NETPLAY_NL, "Netplay (experimenteel)..."},
 /* pl */ {IDMS_NETPLAY_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_NETPLAY_SV, "Nätverksspel (experimentellt)..."},
-/* tr */ {IDMS_NETPLAY_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_NETPLAY_TR, "Netplay (deneysel)..."},
 
 /* en */ {IDMS_OPTIONS,    "Options"},
-/* da */ {IDMS_OPTIONS_DA, ""},  /* fuzzy */
+/* da */ {IDMS_OPTIONS_DA, "Valg"},
 /* de */ {IDMS_OPTIONS_DE, "Optionen"},
 /* fr */ {IDMS_OPTIONS_FR, "Options"},
 /* hu */ {IDMS_OPTIONS_HU, "Opciók"},
@@ -1095,10 +1095,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_OPTIONS_NL, "Opties"},
 /* pl */ {IDMS_OPTIONS_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_OPTIONS_SV, "Alternativ"},
-/* tr */ {IDMS_OPTIONS_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_OPTIONS_TR, "Seçenekler"},
 
 /* en */ {IDMS_REFRESH_RATE,    "Refresh rate"},
-/* da */ {IDMS_REFRESH_RATE_DA, ""},  /* fuzzy */
+/* da */ {IDMS_REFRESH_RATE_DA, "Opdateringsfrekvens"},
 /* de */ {IDMS_REFRESH_RATE_DE, "Wiederholrate"},
 /* fr */ {IDMS_REFRESH_RATE_FR, "Taux de rafraîchissement"},
 /* hu */ {IDMS_REFRESH_RATE_HU, "Frissítési ráta"},
@@ -1106,10 +1106,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_REFRESH_RATE_NL, "Vernieuwings snelheid"},
 /* pl */ {IDMS_REFRESH_RATE_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_REFRESH_RATE_SV, "Uppdateringshastighet"},
-/* tr */ {IDMS_REFRESH_RATE_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_REFRESH_RATE_TR, "Yenileme hýzý"},
 
 /* en */ {IDMS_AUTO,    "Auto"},
-/* da */ {IDMS_AUTO_DA, ""},  /* fuzzy */
+/* da */ {IDMS_AUTO_DA, "Auto"},
 /* de */ {IDMS_AUTO_DE, "Automatisch"},
 /* fr */ {IDMS_AUTO_FR, "Automatique"},
 /* hu */ {IDMS_AUTO_HU, "Automatikus"},
@@ -1117,7 +1117,7 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_AUTO_NL, "Auto"},
 /* pl */ {IDMS_AUTO_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_AUTO_SV, "Auto"},
-/* tr */ {IDMS_AUTO_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_AUTO_TR, "Otomatik"},
 
 /* en */ {IDMS_1_1,    "1/1"},
 /* da */ {IDMS_1_1_DA, "1/1"},
@@ -1230,7 +1230,7 @@ intl_translate_t intl_string_table[] = {
 /* tr */ {IDMS_1_10_TR, "1/10"},
 
 /* en */ {IDMS_MAXIMUM_SPEED,    "Maximum Speed"},
-/* da */ {IDMS_MAXIMUM_SPEED_DA, ""},  /* fuzzy */
+/* da */ {IDMS_MAXIMUM_SPEED_DA, "Maximal hastighed"},
 /* de */ {IDMS_MAXIMUM_SPEED_DE, "Maximale Geschwindigkeit"},
 /* fr */ {IDMS_MAXIMUM_SPEED_FR, "Vitesse Maximale"},
 /* hu */ {IDMS_MAXIMUM_SPEED_HU, "Maximális sebesség"},
@@ -1238,7 +1238,7 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_MAXIMUM_SPEED_NL, "Maximale Snelheid"},
 /* pl */ {IDMS_MAXIMUM_SPEED_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_MAXIMUM_SPEED_SV, "Maximal hastighet"},
-/* tr */ {IDMS_MAXIMUM_SPEED_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_MAXIMUM_SPEED_TR, "Maksimum Hýz"},
 
 /* en */ {IDMS_200_PERCENT,    "200%"},
 /* da */ {IDMS_200_PERCENT_DA, "200%"},
@@ -1296,7 +1296,7 @@ intl_translate_t intl_string_table[] = {
 /* tr */ {IDMS_10_PERCENT_TR, "10%"},
 
 /* en */ {IDMS_NO_LIMIT,    "No limit"},
-/* da */ {IDMS_NO_LIMIT_DA, ""},  /* fuzzy */
+/* da */ {IDMS_NO_LIMIT_DA, "Ubegrænset"},
 /* de */ {IDMS_NO_LIMIT_DE, "Kein Limit"},
 /* fr */ {IDMS_NO_LIMIT_FR, "Aucune limite"},
 /* hu */ {IDMS_NO_LIMIT_HU, "Nincs határ"},
@@ -1304,10 +1304,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_NO_LIMIT_NL, "Geen limiet"},
 /* pl */ {IDMS_NO_LIMIT_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_NO_LIMIT_SV, "Ingen gräns"},
-/* tr */ {IDMS_NO_LIMIT_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_NO_LIMIT_TR, "Limitsiz"},
 
 /* en */ {IDMS_CUSTOM,    "Custom"},
-/* da */ {IDMS_CUSTOM_DA, ""},  /* fuzzy */
+/* da */ {IDMS_CUSTOM_DA, "Egen"},
 /* de */ {IDMS_CUSTOM_DE, "Benutzerdefiniert"},
 /* fr */ {IDMS_CUSTOM_FR, "Personnalisé"},
 /* hu */ {IDMS_CUSTOM_HU, "Egyéni"},
@@ -1315,10 +1315,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_CUSTOM_NL, "Aangepast"},
 /* pl */ {IDMS_CUSTOM_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_CUSTOM_SV, "Egen"},
-/* tr */ {IDMS_CUSTOM_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_CUSTOM_TR, "Özel"},
 
 /* en */ {IDMS_WARP_MODE,    "Warp mode"},
-/* da */ {IDMS_WARP_MODE_DA, ""},  /* fuzzy */
+/* da */ {IDMS_WARP_MODE_DA, "Warp-tilstand"},
 /* de */ {IDMS_WARP_MODE_DE, "Warp modus"},
 /* fr */ {IDMS_WARP_MODE_FR, "Mode turbo"},
 /* hu */ {IDMS_WARP_MODE_HU, "Hipergyors mód"},
@@ -1326,10 +1326,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_WARP_MODE_NL, "Warpmodus"},
 /* pl */ {IDMS_WARP_MODE_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_WARP_MODE_SV, "Warpläge"},
-/* tr */ {IDMS_WARP_MODE_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_WARP_MODE_TR, "Warp modu"},
 
 /* en */ {IDMS_FULLSCREEN,    "Fullscreen"},
-/* da */ {IDMS_FULLSCREEN_DA, ""},  /* fuzzy */
+/* da */ {IDMS_FULLSCREEN_DA, "Fuldskærm"},
 /* de */ {IDMS_FULLSCREEN_DE, "Vollbild"},
 /* fr */ {IDMS_FULLSCREEN_FR, "Périphérique plein écran"},
 /* hu */ {IDMS_FULLSCREEN_HU, "Teljes képernyõ"},
@@ -1337,10 +1337,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_FULLSCREEN_NL, "Volscherm"},
 /* pl */ {IDMS_FULLSCREEN_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_FULLSCREEN_SV, "Fullskärm"},
-/* tr */ {IDMS_FULLSCREEN_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_FULLSCREEN_TR, "Tam ekran"},
 
 /* en */ {IDMS_VIDEO_CACHE,    "Video cache"},
-/* da */ {IDMS_VIDEO_CACHE_DA, ""},  /* fuzzy */
+/* da */ {IDMS_VIDEO_CACHE_DA, "Grafikcache"},
 /* de */ {IDMS_VIDEO_CACHE_DE, "Video cache"},
 /* fr */ {IDMS_VIDEO_CACHE_FR, "Cache vidéo"},
 /* hu */ {IDMS_VIDEO_CACHE_HU, "Kép gyorsítótár"},
@@ -1348,10 +1348,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_VIDEO_CACHE_NL, "Videocache"},
 /* pl */ {IDMS_VIDEO_CACHE_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_VIDEO_CACHE_SV, "Grafikcache"},
-/* tr */ {IDMS_VIDEO_CACHE_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_VIDEO_CACHE_TR, "Görüntü önbelleði"},
 
 /* en */ {IDMS_DOUBLE_SIZE,    "Double size"},
-/* da */ {IDMS_DOUBLE_SIZE_DA, ""},  /* fuzzy */
+/* da */ {IDMS_DOUBLE_SIZE_DA, "Dobbelt størrelse"},
 /* de */ {IDMS_DOUBLE_SIZE_DE, "Doppelte Größe"},
 /* fr */ {IDMS_DOUBLE_SIZE_FR, "Taille double"},
 /* hu */ {IDMS_DOUBLE_SIZE_HU, "Dupla méret"},
@@ -1359,10 +1359,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_DOUBLE_SIZE_NL, "Dubbele grootte"},
 /* pl */ {IDMS_DOUBLE_SIZE_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_DOUBLE_SIZE_SV, "Dubbel storlek"},
-/* tr */ {IDMS_DOUBLE_SIZE_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_DOUBLE_SIZE_TR, "Çift boyut"},
 
 /* en */ {IDMS_DOUBLE_SCAN,    "Double scan"},
-/* da */ {IDMS_DOUBLE_SCAN_DA, ""},  /* fuzzy */
+/* da */ {IDMS_DOUBLE_SCAN_DA, "Dobbelt-skan"},
 /* de */ {IDMS_DOUBLE_SCAN_DE, "Doppelt Scan"},
 /* fr */ {IDMS_DOUBLE_SCAN_FR, "Double scan"},
 /* hu */ {IDMS_DOUBLE_SCAN_HU, "Dupla pásztázás"},
@@ -1370,10 +1370,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_DOUBLE_SCAN_NL, "Dubbele scan"},
 /* pl */ {IDMS_DOUBLE_SCAN_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_DOUBLE_SCAN_SV, "Dubbelskanning"},
-/* tr */ {IDMS_DOUBLE_SCAN_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_DOUBLE_SCAN_TR, "Çift tarama"},
 
 /* en */ {IDMS_SCALE2X,    "Scale2x"},
-/* da */ {IDMS_SCALE2X_DA, ""},  /* fuzzy */
+/* da */ {IDMS_SCALE2X_DA, "Scale2x"},
 /* de */ {IDMS_SCALE2X_DE, "Scale2x"},
 /* fr */ {IDMS_SCALE2X_FR, "Scale2x"},
 /* hu */ {IDMS_SCALE2X_HU, "Élsimítás"},
@@ -1381,10 +1381,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_SCALE2X_NL, "Schaal2x"},
 /* pl */ {IDMS_SCALE2X_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_SCALE2X_SV, "Scale2x"},
-/* tr */ {IDMS_SCALE2X_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_SCALE2X_TR, "2x Geniþlet"},
 
 /* en */ {IDMS_VDC_SETTINGS,    "VDC settings"},
-/* da */ {IDMS_VDC_SETTINGS_PL, ""},  /* fuzzy */
+/* da */ {IDMS_VDC_SETTINGS_PL, "VDC-indstillinger"},
 /* de */ {IDMS_VDC_SETTINGS_DE, "VDC Einstellungen"},
 /* fr */ {IDMS_VDC_SETTINGS_FR, "Paramètres VDC"},
 /* it */ {IDMS_VDC_SETTINGS_IT, "Impostazioni VDC"},
@@ -1392,10 +1392,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_VDC_SETTINGS_NL, "VDC-instellingen"},
 /* pl */ {IDMS_VDC_SETTINGS_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_VDC_SETTINGS_SV, "VDC-inställningar"},
-/* tr */ {IDMS_VDC_SETTINGS_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_VDC_SETTINGS_TR, "VDC ayarlarý"},
 
 /* en */ {IDMS_64KB_VIDEO_MEMORY,    "64KB video memory"},
-/* da */ {IDMS_64KB_VIDEO_MEMORY_DA, ""},  /* fuzzy */
+/* da */ {IDMS_64KB_VIDEO_MEMORY_DA, "64KB grafikhukommelse"},
 /* de */ {IDMS_64KB_VIDEO_MEMORY_DE, "64KB Bildschirm Speicher"},
 /* fr */ {IDMS_64KB_VIDEO_MEMORY_FR, "Mémoire d'affichage de 64Ko"},
 /* it */ {IDMS_64KB_VIDEO_MEMORY_IT, "64KB di memoria video"},
@@ -1403,10 +1403,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_64KB_VIDEO_MEMORY_NL, "64KB videogeheugen"},
 /* pl */ {IDMS_64KB_VIDEO_MEMORY_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_64KB_VIDEO_MEMORY_SV, "64KB grafikminne"},
-/* tr */ {IDMS_64KB_VIDEO_MEMORY_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_64KB_VIDEO_MEMORY_TR, "64KB görüntü belleði"},
 
 /* en */ {IDMS_SWAP_JOYSTICKS,    "Swap Joysticks"},
-/* da */ {IDMS_SWAP_JOYSTICKS_DA, ""},  /* fuzzy */
+/* da */ {IDMS_SWAP_JOYSTICKS_DA, "Byt om på joystickportene"},
 /* de */ {IDMS_SWAP_JOYSTICKS_DE, "Joystick ports austauschen"},
 /* fr */ {IDMS_SWAP_JOYSTICKS_FR, "Interchanger les joysticks"},
 /* hu */ {IDMS_SWAP_JOYSTICKS_HU, "Botkormányok felcserélése"},
@@ -1414,10 +1414,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_SWAP_JOYSTICKS_NL, "Verwissel joysticks"},
 /* pl */ {IDMS_SWAP_JOYSTICKS_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_SWAP_JOYSTICKS_SV, "Växla spelportarna"},
-/* tr */ {IDMS_SWAP_JOYSTICKS_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_SWAP_JOYSTICKS_TR, "Joysticklerin Yerlerini Deðiþtir"},
 
 /* en */ {IDMS_ENABLE_JOY_KEYS,   "Enable Joy Keys"},
-/* da */ {IDMS_SWAP_JOYSTICKS_DA, ""},  /* fuzzy */
+/* da */ {IDMS_SWAP_JOYSTICKS_DA, "Aktivér joystick via keyboard"},
 /* de */ {IDMS_SWAP_JOYSTICKS_DE, "Joystick Tasten aktivieren"},
 /* fr */ {IDMS_SWAP_JOYSTICKS_FR, ""},  /* fuzzy */
 /* hu */ {IDMS_SWAP_JOYSTICKS_HU, "Botkormány gombok engedélyezése"},
@@ -1425,10 +1425,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_SWAP_JOYSTICKS_NL, "Activeer Joy Keys"},
 /* pl */ {IDMS_SWAP_JOYSTICKS_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_SWAP_JOYSTICKS_SV, "Aktivera styrspak via tangenter"},
-/* tr */ {IDMS_SWAP_JOYSTICKS_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_SWAP_JOYSTICKS_TR, "Joy Tuþlarýný Aktif Et"},
 
 /* en */ {IDMS_SOUND_PLAYBACK,    "Sound playback"},
-/* da */ {IDMS_SOUND_PLAYBACK_DA, ""},  /* fuzzy */
+/* da */ {IDMS_SOUND_PLAYBACK_DA, "Slå lydemulering til"},
 /* de */ {IDMS_SOUND_PLAYBACK_DE, "Sound Einschalten"},
 /* fr */ {IDMS_SOUND_PLAYBACK_FR, "Lecture audio"},
 /* hu */ {IDMS_SOUND_PLAYBACK_HU, "Hangok engedélyezése"},
@@ -1436,10 +1436,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_SOUND_PLAYBACK_NL, "Geluidsuitvoer"},
 /* pl */ {IDMS_SOUND_PLAYBACK_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_SOUND_PLAYBACK_SV, "Aktivera ljudåtergivning"},
-/* tr */ {IDMS_SOUND_PLAYBACK_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_SOUND_PLAYBACK_TR, "Ses"},
 
 /* en */ {IDMS_TRUE_DRIVE_EMU,    "True drive emulation"},
-/* da */ {IDMS_TRUE_DRIVE_EMU_DA, ""},  /* fuzzy */
+/* da */ {IDMS_TRUE_DRIVE_EMU_DA, "Ægte drev-emulering"},
 /* de */ {IDMS_TRUE_DRIVE_EMU_DE, "Präzise Floppy Emulation"},
 /* fr */ {IDMS_TRUE_DRIVE_EMU_FR, "Activer l'émulation réelle des lecteurs"},
 /* hu */ {IDMS_TRUE_DRIVE_EMU_HU, "Valós lemezegység emuláció"},
@@ -1447,10 +1447,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_TRUE_DRIVE_EMU_NL, "Hardwarematige driveemulatie"},
 /* pl */ {IDMS_TRUE_DRIVE_EMU_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_TRUE_DRIVE_EMU_SV, "Äkta diskettenhetsemulering"},
-/* tr */ {IDMS_TRUE_DRIVE_EMU_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_TRUE_DRIVE_EMU_TR, "Gerçek sürücü emülasyonu"},
 
 /* en */ {IDMS_VIRTUAL_DEVICE_TRAPS,    "Virtual device traps"},
-/* da */ {IDMS_VIRTUAL_DEVICE_TRAPS_DA, ""},  /* fuzzy */
+/* da */ {IDMS_VIRTUAL_DEVICE_TRAPS_DA, "Virtuelle enheds-traps"},
 /* de */ {IDMS_VIRTUAL_DEVICE_TRAPS_DE, "Virtuelle Geräte Traps"},
 /* fr */ {IDMS_VIRTUAL_DEVICE_TRAPS_FR, "Activer les périphériques virtuels"},
 /* hu */ {IDMS_VIRTUAL_DEVICE_TRAPS_HU, "Virtuális eszközök ciklus kihagyása"},
@@ -1458,10 +1458,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_VIRTUAL_DEVICE_TRAPS_NL, "Virtuele apparaattraps"},
 /* pl */ {IDMS_VIRTUAL_DEVICE_TRAPS_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_VIRTUAL_DEVICE_TRAPS_SV, "Virtuella enhetstrap:ar"},
-/* tr */ {IDMS_VIRTUAL_DEVICE_TRAPS_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_VIRTUAL_DEVICE_TRAPS_TR, "Sanal a&ygýt trapleri"},
 
 /* en */ {IDMS_DRIVE_SYNC_FACTOR,    "Drive sync factor"},
-/* da */ {IDMS_DRIVE_SYNC_FACTOR_DA, ""},  /* fuzzy */
+/* da */ {IDMS_DRIVE_SYNC_FACTOR_DA, "Synkfaktor for diskettedrev"},
 /* de */ {IDMS_DRIVE_SYNC_FACTOR_DE, "Laufwerkt Sync Faktor"},
 /* fr */ {IDMS_DRIVE_SYNC_FACTOR_FR, "Facteur de synchro du lecteur"},
 /* hu */ {IDMS_DRIVE_SYNC_FACTOR_HU, "Lemezegység szinkron faktor"},
@@ -1469,7 +1469,7 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_DRIVE_SYNC_FACTOR_NL, "Drive synchronisatiefactor"},
 /* pl */ {IDMS_DRIVE_SYNC_FACTOR_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_DRIVE_SYNC_FACTOR_SV, "Synkfaktor för diskettstation"},
-/* tr */ {IDMS_DRIVE_SYNC_FACTOR_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_DRIVE_SYNC_FACTOR_TR, "Sürücü senkron faktörü"},
 
 /* en */ {IDMS_PAL,    "PAL"},
 /* da */ {IDMS_PAL_DA, "PAL"},
@@ -1494,7 +1494,7 @@ intl_translate_t intl_string_table[] = {
 /* tr */ {IDMS_NTSC_TR, "NTSC"},
 
 /* en */ {IDMS_VIDEO_STANDARD,    "Video standard"},
-/* da */ {IDMS_VIDEO_STANDARD_DA, ""},  /* fuzzy */
+/* da */ {IDMS_VIDEO_STANDARD_DA, "TV-standard"},
 /* de */ {IDMS_VIDEO_STANDARD_DE, "Video standard"},
 /* fr */ {IDMS_VIDEO_STANDARD_FR, "Standard vidéo"},
 /* hu */ {IDMS_VIDEO_STANDARD_HU, "Videó szabvány"},
@@ -1502,7 +1502,7 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_VIDEO_STANDARD_NL, "Videostandaard"},
 /* pl */ {IDMS_VIDEO_STANDARD_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_VIDEO_STANDARD_SV, "TV-standard"},
-/* tr */ {IDMS_VIDEO_STANDARD_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_VIDEO_STANDARD_TR, "Görüntü standardý"},
 
 /* en */ {IDMS_PAL_G,    "PAL-G"},
 /* da */ {IDMS_PAL_G_DA, "PAL-G"},
@@ -1527,7 +1527,7 @@ intl_translate_t intl_string_table[] = {
 /* tr */ {IDMS_NTSC_M_TR, "NTSC-M"},
 
 /* en */ {IDMS_OLD_NTSC_M,    "Old NTSC-M"},
-/* da */ {IDMS_OLD_NTSC_M_DA, ""},  /* fuzzy */
+/* da */ {IDMS_OLD_NTSC_M_DA, "Gammel NTSC-M"},
 /* de */ {IDMS_OLD_NTSC_M_DE, "NTSC-M alt"},
 /* fr */ {IDMS_OLD_NTSC_M_FR, "Ancien NTSC-M"},
 /* hu */ {IDMS_OLD_NTSC_M_HU, "Régi NTSC-M"},
@@ -1535,10 +1535,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_OLD_NTSC_M_NL, "Oud NTSC-M"},
 /* pl */ {IDMS_OLD_NTSC_M_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_OLD_NTSC_M_SV, "Gammal NTSC-M"},
-/* tr */ {IDMS_OLD_NTSC_M_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_OLD_NTSC_M_TR, "Eski NTSC-M"},
 
 /* en */ {IDMS_EMU_ID,    "Emulator Identification"},
-/* da */ {IDMS_EMU_ID_DA, ""},  /* fuzzy */
+/* da */ {IDMS_EMU_ID_DA, "Emulatoridentifikation"},
 /* de */ {IDMS_EMU_ID_DE, "Emulator Identifikation"},
 /* fr */ {IDMS_EMU_ID_FR, "Identification de l'émulateur"},
 /* hu */ {IDMS_EMU_ID_HU, "Emulátor azonosító"},
@@ -1546,10 +1546,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_EMU_ID_NL, "Emulatoridentificatie"},
 /* pl */ {IDMS_EMU_ID_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_EMU_ID_SV, "Emulatoridentifiering"},
-/* tr */ {IDMS_EMU_ID_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_EMU_ID_TR, "Emülatör Tespiti"},
 
 /* en */ {IDMS_VIC_1112_IEEE_488,    "VIC-1112 IEEE 488 module"},
-/* da */ {IDMS_VIC_1112_IEEE_488_DA, ""},  /* fuzzy */
+/* da */ {IDMS_VIC_1112_IEEE_488_DA, "VIC-1112 IEEE 488-modul"},
 /* de */ {IDMS_VIC_1112_IEEE_488_DE, "VIC-1112 IEEE 488 Modul"},
 /* fr */ {IDMS_VIC_1112_IEEE_488_FR, "Module VIC-1112 IEEE 488"},
 /* hu */ {IDMS_VIC_1112_IEEE_488_HU, "VIC-1112 IEEE 488 modul"},
@@ -1557,10 +1557,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_VIC_1112_IEEE_488_NL, "VIC-1112 IEEE 488-module"},
 /* pl */ {IDMS_VIC_1112_IEEE_488_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_VIC_1112_IEEE_488_SV, "VIC-1112 IEEE 488-modul"},
-/* tr */ {IDMS_VIC_1112_IEEE_488_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_VIC_1112_IEEE_488_TR, "VIC-1112 IEEE 488 modülü"},
 
 /* en */ {IDMS_IEEE_488_INTERFACE,    "IEEE 488 Interface emulation"},
-/* da */ {IDMS_IEEE_488_INTERFACE_DA, ""},  /* fuzzy */
+/* da */ {IDMS_IEEE_488_INTERFACE_DA, "Emulering af IEEE 488-interface"},
 /* de */ {IDMS_IEEE_488_INTERFACE_DE, "IEEE488 Schnittstellen-Emulation"},
 /* fr */ {IDMS_IEEE_488_INTERFACE_FR, "Interface d'émulation IEEE488"},
 /* hu */ {IDMS_IEEE_488_INTERFACE_HU, "IEEE488 interfész emuláció"},
@@ -1568,10 +1568,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_IEEE_488_INTERFACE_NL, "IEEE 488 interfaceemulatie"},
 /* pl */ {IDMS_IEEE_488_INTERFACE_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_IEEE_488_INTERFACE_SV, "Emulering av IEEE488-gränssnitt"},
-/* tr */ {IDMS_IEEE_488_INTERFACE_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_IEEE_488_INTERFACE_TR, "IEEE 488 Arabirimi emülasyonu"},
 
 /* en */ {IDMS_GRAB_MOUSE,    "Grab mouse events"},
-/* da */ {IDMS_GRAB_MOUSE_DA, ""},  /* fuzzy */
+/* da */ {IDMS_GRAB_MOUSE_DA, "Fang mussehændelser"},
 /* de */ {IDMS_GRAB_MOUSE_DE, "Maus Ereignisse abfangen"},
 /* fr */ {IDMS_GRAB_MOUSE_FR, "Attraper les événements souris"},
 /* hu */ {IDMS_GRAB_MOUSE_HU, "Egér események elkapása"},
@@ -1579,10 +1579,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_GRAB_MOUSE_NL, "Gebruik de muis"},
 /* pl */ {IDMS_GRAB_MOUSE_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_GRAB_MOUSE_SV, "Fånga mushändelser"},
-/* tr */ {IDMS_GRAB_MOUSE_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_GRAB_MOUSE_TR, "Mouse olaylarýný yakala"},
 
 /* en */ {IDMS_PS2_MOUSE,    "PS/2 mouse emulation"},
-/* da */ {IDMS_PS2_MOUSE_DA, ""},  /* fuzzy */
+/* da */ {IDMS_PS2_MOUSE_DA, "Emulering af PS/2-mus"},
 /* de */ {IDMS_PS2_MOUSE_DE, "PS/2 Mausemulation"},
 /* fr */ {IDMS_PS2_MOUSE_FR, ""},  /* fuzzy */
 /* hu */ {IDMS_PS2_MOUSE_HU, "PS/2 egér emuláció"},
@@ -1590,10 +1590,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_PS2_MOUSE_NL, "PS/2 muis emulatie"},
 /* pl */ {IDMS_PS2_MOUSE_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_PS2_MOUSE_SV, "PS/2-musemulering"},
-/* tr */ {IDMS_PS2_MOUSE_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_PS2_MOUSE_TR, "PS/2 mouse emülasyonu"},
 
 /* en */ {IDMS_SETTINGS,    "Settings"},
-/* da */ {IDMS_SETTINGS_DA, ""},  /* fuzzy */
+/* da */ {IDMS_SETTINGS_DA, "Indstillinger"},
 /* de */ {IDMS_SETTINGS_DE, "Einstellungen"},
 /* fr */ {IDMS_SETTINGS_FR, "Paramètres"},
 /* hu */ {IDMS_SETTINGS_HU, "Beállítások"},
@@ -1601,10 +1601,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_SETTINGS_NL, "Instellingen"},
 /* pl */ {IDMS_SETTINGS_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_SETTINGS_SV, "Inställningar"},
-/* tr */ {IDMS_SETTINGS_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_SETTINGS_TR, "Ayarlar"},
 
 /* en */ {IDMS_VIDEO_SETTINGS,    "Video settings..."},
-/* da */ {IDMS_VIDEO_SETTINGS_DA, ""},  /* fuzzy */
+/* da */ {IDMS_VIDEO_SETTINGS_DA, "Grafikindstillinger..."},
 /* de */ {IDMS_VIDEO_SETTINGS_DE, "Video Einstellungen..."},
 /* fr */ {IDMS_VIDEO_SETTINGS_FR, "Paramètres vidéo..."},
 /* hu */ {IDMS_VIDEO_SETTINGS_HU, "Videó beállításai..."},
@@ -1612,10 +1612,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_VIDEO_SETTINGS_NL, "Video-instellingen..."},
 /* pl */ {IDMS_VIDEO_SETTINGS_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_VIDEO_SETTINGS_SV, "Grafikinställningar..."},
-/* tr */ {IDMS_VIDEO_SETTINGS_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_VIDEO_SETTINGS_TR, "Görüntü ayalarý..."},
 
 /* en */ {IDMS_VIC_SETTINGS,    "VIC settings..."},
-/* da */ {IDMS_VIC_SETTINGS_DA, ""},  /* fuzzy */
+/* da */ {IDMS_VIC_SETTINGS_DA, "VIC-indstillinger..."},
 /* de */ {IDMS_VIC_SETTINGS_DE, "VIC Einstellungen..."},
 /* fr */ {IDMS_VIC_SETTINGS_FR, "Paramètres VIC..."},
 /* hu */ {IDMS_VIC_SETTINGS_HU, "VIC beállításai..."},
@@ -1623,10 +1623,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_VIC_SETTINGS_NL, "VIC-instellingen..."},
 /* pl */ {IDMS_VIC_SETTINGS_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_VIC_SETTINGS_SV, "VIC-inställningar..."},
-/* tr */ {IDMS_VIC_SETTINGS_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_VIC_SETTINGS_TR, "VIC ayarlarý..."},
 
 /* en */ {IDMS_CBM2_SETTINGS,    "CBM2 settings..."},
-/* da */ {IDMS_CBM2_SETTINGS_DA, ""},  /* fuzzy */
+/* da */ {IDMS_CBM2_SETTINGS_DA, "CBM2-indstillinger..."},
 /* de */ {IDMS_CBM2_SETTINGS_DE, "CBM2 Einstellungen..."},
 /* fr */ {IDMS_CBM2_SETTINGS_FR, "Paramètres CBM2..."},
 /* hu */ {IDMS_CBM2_SETTINGS_HU, "CBM beállításai..."},
@@ -1634,10 +1634,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_CBM2_SETTINGS_NL, "CBM2-instellingen..."},
 /* pl */ {IDMS_CBM2_SETTINGS_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_CBM2_SETTINGS_SV, "CBM2-inställningar..."},
-/* tr */ {IDMS_CBM2_SETTINGS_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_CBM2_SETTINGS_TR, "CBM2 ayarlarý..."},
 
 /* en */ {IDMS_SET_PET_MODEL,    "Change PET model"},
-/* da */ {IDMS_SET_PET_MODEL_DA, ""},  /* fuzzy */
+/* da */ {IDMS_SET_PET_MODEL_DA, "Skift PET-model"},
 /* de */ {IDMS_SET_PET_MODEL_DE, "PET Modell verändern"},
 /* fr */ {IDMS_SET_PET_MODEL_FR, ""},  /* fuzzy */
 /* hu */ {IDMS_SET_PET_MODEL_HU, "PET modell kiválasztása"},
@@ -1645,10 +1645,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_SET_PET_MODEL_NL, "Verander PET-model"},
 /* pl */ {IDMS_SET_PET_MODEL_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_SET_PET_MODEL_SV, "Byt PET-modell"},
-/* tr */ {IDMS_SET_PET_MODEL_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_SET_PET_MODEL_TR, "PET modelini deðiþtir"},
 
 /* en */ {IDMS_PET_SETTINGS,    "PET settings..."},
-/* da */ {IDMS_PET_SETTINGS_DA, ""},  /* fuzzy */
+/* da */ {IDMS_PET_SETTINGS_DA, "PET-indstillinger..."},
 /* de */ {IDMS_PET_SETTINGS_DE, "PET Einstellungen..."},
 /* fr */ {IDMS_PET_SETTINGS_FR, "Paramètres PET..."},
 /* hu */ {IDMS_PET_SETTINGS_HU, "PET beállításai..."},
@@ -1656,10 +1656,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_PET_SETTINGS_NL, "PET-instellingen..."},
 /* pl */ {IDMS_PET_SETTINGS_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_PET_SETTINGS_SV, "PET-inställningar..."},
-/* tr */ {IDMS_PET_SETTINGS_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_PET_SETTINGS_TR, "PET ayarlarý..."},
 
 /* en */ {IDMS_PERIPHERAL_SETTINGS,    "Peripheral settings..."},
-/* da */ {IDMS_PERIPHERAL_SETTINGS_DA, ""},  /* fuzzy */
+/* da */ {IDMS_PERIPHERAL_SETTINGS_DA, "Ekstern-enhedsindstillinger..."},
 /* de */ {IDMS_PERIPHERAL_SETTINGS_DE, "Peripherie Einstellungen..."},
 /* fr */ {IDMS_PERIPHERAL_SETTINGS_FR, "Paramètres des périphériques..."},
 /* hu */ {IDMS_PERIPHERAL_SETTINGS_HU, "Perifériák beállításai..."},
@@ -1667,10 +1667,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_PERIPHERAL_SETTINGS_NL, "Randapparateninstellingen..."},
 /* pl */ {IDMS_PERIPHERAL_SETTINGS_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_PERIPHERAL_SETTINGS_SV, "Inställningar för kringutrustning..."},
-/* tr */ {IDMS_PERIPHERAL_SETTINGS_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_PERIPHERAL_SETTINGS_TR, "Çevresel ayarlar..."},
 
 /* en */ {IDMS_DRIVE_SETTINGS,    "Drive settings..."},
-/* da */ {IDMS_DRIVE_SETTINGS_DA, ""},  /* fuzzy */
+/* da */ {IDMS_DRIVE_SETTINGS_DA, "Diskettedrevsindstillinger..."},
 /* de */ {IDMS_DRIVE_SETTINGS_DE, "Floppy Einstellungen..."},
 /* fr */ {IDMS_DRIVE_SETTINGS_FR, "Paramètres des lecteurs..."},
 /* hu */ {IDMS_DRIVE_SETTINGS_HU, "Lemezegység beállításai..."},
@@ -1678,10 +1678,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_DRIVE_SETTINGS_NL, "Drive-instellingen..."},
 /* pl */ {IDMS_DRIVE_SETTINGS_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_DRIVE_SETTINGS_SV, "Diskettenhetsinställningar..."},
-/* tr */ {IDMS_DRIVE_SETTINGS_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_DRIVE_SETTINGS_TR, "Sürücü ayarlarý..."},
 
 /* en */ {IDMS_DATASETTE_SETTINGS,    "Datasette settings..."},
-/* da */ {IDMS_DATASETTE_SETTINGS_DA, ""},  /* fuzzy */
+/* da */ {IDMS_DATASETTE_SETTINGS_DA, "Datasetteindstillinger..."},
 /* de */ {IDMS_DATASETTE_SETTINGS_DE, "Bandlaufwerk Einstellungen..."},
 /* fr */ {IDMS_DATASETTE_SETTINGS_FR, "Paramètres du datassette..."},
 /* hu */ {IDMS_DATASETTE_SETTINGS_HU, "Magnó beállításai..."},
@@ -1689,10 +1689,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_DATASETTE_SETTINGS_NL, "Datasette-instellingen..."},
 /* pl */ {IDMS_DATASETTE_SETTINGS_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_DATASETTE_SETTINGS_SV, "Datasetteinställningar..."},
-/* tr */ {IDMS_DATASETTE_SETTINGS_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_DATASETTE_SETTINGS_TR, "Teyp ayarlarý..."},
 
 /* en */ {IDMS_PLUS4_SETTINGS,    "Plus4 settings..."},
-/* da */ {IDMS_PLUS4_SETTINGS_DA, ""},  /* fuzzy */
+/* da */ {IDMS_PLUS4_SETTINGS_DA, "Plus4-indstillinger..."},
 /* de */ {IDMS_PLUS4_SETTINGS_DE, "Plus4 Einstellungen..."},
 /* fr */ {IDMS_PLUS4_SETTINGS_FR, "Paramètres Plus4..."},
 /* hu */ {IDMS_PLUS4_SETTINGS_HU, "Plus4 beállításai..."},
@@ -1700,10 +1700,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_PLUS4_SETTINGS_NL, "Plus4-instellingen..."},
 /* pl */ {IDMS_PLUS4_SETTINGS_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_PLUS4_SETTINGS_SV, "Plus4-inställningar..."},
-/* tr */ {IDMS_PLUS4_SETTINGS_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_PLUS4_SETTINGS_TR, "Plus4 ayarlarý..."},
 
 /* en */ {IDMS_VICII_SETTINGS,    "VIC-II settings..."},
-/* da */ {IDMS_VICII_SETTINGS_DA, ""},  /* fuzzy */
+/* da */ {IDMS_VICII_SETTINGS_DA, "VIC-II-indstillinger..."},
 /* de */ {IDMS_VICII_SETTINGS_DE, "VIC-II Einstellungen..."},
 /* fr */ {IDMS_VICII_SETTINGS_FR, "Paramètres VIC-II..."},
 /* hu */ {IDMS_VICII_SETTINGS_HU, "VIC-II beállításai..."},
@@ -1711,10 +1711,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_VICII_SETTINGS_NL, "VIC-II-instellingen..."},
 /* pl */ {IDMS_VICII_SETTINGS_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_VICII_SETTINGS_SV, "VIC-II-inställningar..."},
-/* tr */ {IDMS_VICII_SETTINGS_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_VICII_SETTINGS_TR, "VIC-II ayarlarý..."},
 
 /* en */ {IDMS_JOYSTICK_SETTINGS,    "Joystick settings..."},
-/* da */ {IDMS_JOYSTICK_SETTINGS_DA, ""},  /* fuzzy */
+/* da */ {IDMS_JOYSTICK_SETTINGS_DA, "Joystickindstillinger..."},
 /* de */ {IDMS_JOYSTICK_SETTINGS_DE, "Joystick Einstellungen..."},
 /* fr */ {IDMS_JOYSTICK_SETTINGS_FR, "Paramètres des joysticks..."},
 /* hu */ {IDMS_JOYSTICK_SETTINGS_HU, "Botkormány beállításai..."},
@@ -1722,10 +1722,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_JOYSTICK_SETTINGS_NL, "Joystick-instellingen..."},
 /* pl */ {IDMS_JOYSTICK_SETTINGS_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_JOYSTICK_SETTINGS_SV, "Inställningar för joystick..."},
-/* tr */ {IDMS_JOYSTICK_SETTINGS_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_JOYSTICK_SETTINGS_TR, "Joystick ayarlarý..."},
 
 /* en */ {IDMS_JOYSTICK_DEVICE_SELECT,    "Joystick device selection"},
-/* da */ {IDMS_JOYSTICK_DEVICE_SELECT_DA, ""},  /* fuzzy */
+/* da */ {IDMS_JOYSTICK_DEVICE_SELECT_DA, "Joystick enheds-valg"},
 /* de */ {IDMS_JOYSTICK_DEVICE_SELECT_DE, "Joystick Geräte Auswahl"},
 /* fr */ {IDMS_JOYSTICK_DEVICE_SELECT_FR, ""},  /* fuzzy */
 /* hu */ {IDMS_JOYSTICK_DEVICE_SELECT_HU, "Botkormány eszköz kiválasztása"},
@@ -1733,10 +1733,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_JOYSTICK_DEVICE_SELECT_NL, "Joystickapparaatselectie"},
 /* pl */ {IDMS_JOYSTICK_DEVICE_SELECT_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_JOYSTICK_DEVICE_SELECT_SV, "enhetsinställningar för joystick"},
-/* tr */ {IDMS_JOYSTICK_DEVICE_SELECT_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_JOYSTICK_DEVICE_SELECT_TR, "Joystick aygýt seçimi"},
 
 /* en */ {IDMS_JOYSTICK_FIRE_SELECT,    "Joystick fire button selection"},
-/* da */ {IDMS_JOYSTICK_FIRE_SELECT_DA, ""},  /* fuzzy */
+/* da */ {IDMS_JOYSTICK_FIRE_SELECT_DA, "Vælg fireknap for joystick"},
 /* de */ {IDMS_JOYSTICK_FIRE_SELECT_DE, "Joystick Feuerknopf Wahl"},
 /* fr */ {IDMS_JOYSTICK_FIRE_SELECT_FR, ""},  /* fuzzy */
 /* hu */ {IDMS_JOYSTICK_FIRE_SELECT_HU, "Botkormány tûzgomb kiválasztás"},
@@ -1744,10 +1744,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_JOYSTICK_FIRE_SELECT_NL, "Joystickvuurknopselectie"},
 /* pl */ {IDMS_JOYSTICK_FIRE_SELECT_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_JOYSTICK_FIRE_SELECT_SV, "val för joystickens fire-knapp"},
-/* tr */ {IDMS_JOYSTICK_FIRE_SELECT_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_JOYSTICK_FIRE_SELECT_TR, "Joystick ateþ düþmesi seçimi"},
 
 /* en */ {IDMS_KEYBOARD_SETTINGS,    "Keyboard settings..."},
-/* da */ {IDMS_KEYBOARD_SETTINGS_DA, ""},  /* fuzzy */
+/* da */ {IDMS_KEYBOARD_SETTINGS_DA, "Tastaturindstillinger..."},
 /* de */ {IDMS_KEYBOARD_SETTINGS_DE, "Tastatur Einstellungen..."},
 /* fr */ {IDMS_KEYBOARD_SETTINGS_FR, "Paramètres du clavier..."},
 /* hu */ {IDMS_KEYBOARD_SETTINGS_HU, "Billentyûzet beállításai..."},
@@ -1755,10 +1755,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_KEYBOARD_SETTINGS_NL, "Toetsenbordinstellingen..."},
 /* pl */ {IDMS_KEYBOARD_SETTINGS_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_KEYBOARD_SETTINGS_SV, "Tangentbordsinställningar..."},
-/* tr */ {IDMS_KEYBOARD_SETTINGS_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_KEYBOARD_SETTINGS_TR, "Klavye ayarlarý..."},
 
 /* en */ {IDMS_MOUSE_SETTINGS,    "Mouse settings..."},
-/* da */ {IDMS_MOUSE_SETTINGS_DA, ""},  /* fuzzy */
+/* da */ {IDMS_MOUSE_SETTINGS_DA, "Musseindstillinger..."},
 /* de */ {IDMS_MOUSE_SETTINGS_DE, "Maus Einstellungen..."},
 /* fr */ {IDMS_MOUSE_SETTINGS_FR, ""},  /* fuzzy */
 /* hu */ {IDMS_MOUSE_SETTINGS_HU, "Egér beállításai..."},
@@ -1766,10 +1766,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_MOUSE_SETTINGS_NL, "Muis instellingen..."},
 /* pl */ {IDMS_MOUSE_SETTINGS_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_MOUSE_SETTINGS_SV, "Musinställningar..."},
-/* tr */ {IDMS_MOUSE_SETTINGS_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_MOUSE_SETTINGS_TR, "Mouse ayarlarý..."},
 
 /* en */ {IDMS_SOUND_SETTINGS,    "Sound settings..."},
-/* da */ {IDMS_SOUND_SETTINGS_DA, ""},  /* fuzzy */
+/* da */ {IDMS_SOUND_SETTINGS_DA, "Lydindstillinger..."},
 /* de */ {IDMS_SOUND_SETTINGS_DE, "Sound Einstellungen..."},
 /* fr */ {IDMS_SOUND_SETTINGS_FR, "Paramètres son..."},
 /* hu */ {IDMS_SOUND_SETTINGS_HU, "Hang beállításai..."},
@@ -1777,10 +1777,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_SOUND_SETTINGS_NL, "Geluidsinstellingen..."},
 /* pl */ {IDMS_SOUND_SETTINGS_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_SOUND_SETTINGS_SV, "Ljudinställningar..."},
-/* tr */ {IDMS_SOUND_SETTINGS_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_SOUND_SETTINGS_TR, "Ses ayarlarý..."},
 
 /* en */ {IDMS_SID_SETTINGS,    "SID settings..."},
-/* da */ {IDMS_SID_SETTINGS_DA, ""},  /* fuzzy */
+/* da */ {IDMS_SID_SETTINGS_DA, "SID-indstillinger..."},
 /* de */ {IDMS_SID_SETTINGS_DE, "SID Einstellungen..."},
 /* fr */ {IDMS_SID_SETTINGS_FR, "Paramètres SID..."},
 /* hu */ {IDMS_SID_SETTINGS_HU, "SID beállításai..."},
@@ -1788,10 +1788,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_SID_SETTINGS_NL, "SID-instellingen..."},
 /* pl */ {IDMS_SID_SETTINGS_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_SID_SETTINGS_SV, "SID-inställningar..."},
-/* tr */ {IDMS_SID_SETTINGS_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_SID_SETTINGS_TR, "SID ayarlarý..."},
 
 /* en */ {IDMS_COMPUTER_ROM_SETTINGS,    "Computer ROM settings..."},
-/* da */ {IDMS_COMPUTER_ROM_SETTINGS_DA, ""},  /* fuzzy */
+/* da */ {IDMS_COMPUTER_ROM_SETTINGS_DA, "Compute ROM-indstillinger..."},
 /* de */ {IDMS_COMPUTER_ROM_SETTINGS_DE, "Computer ROM Einstellungen..."},
 /* fr */ {IDMS_COMPUTER_ROM_SETTINGS_FR, ""},  /* fuzzy */
 /* hu */ {IDMS_COMPUTER_ROM_SETTINGS_HU, "ROM-ok beállításai..."},
@@ -1799,10 +1799,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_COMPUTER_ROM_SETTINGS_NL, "Computer-ROM-instellingen..."},
 /* pl */ {IDMS_COMPUTER_ROM_SETTINGS_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_COMPUTER_ROM_SETTINGS_SV, "ROM-inställningar för dator..."},
-/* tr */ {IDMS_COMPUTER_ROM_SETTINGS_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_COMPUTER_ROM_SETTINGS_TR, "Bilgisayar ROM ayarlarý..."},
 
 /* en */ {IDMS_DRIVE_ROM_SETTINGS,    "Drive ROM settings..."},
-/* da */ {IDMS_DRIVE_ROM_SETTINGS_DA, ""},  /* fuzzy */
+/* da */ {IDMS_DRIVE_ROM_SETTINGS_DA, "Drev ROM-indstillinger..."},
 /* de */ {IDMS_DRIVE_ROM_SETTINGS_DE, "Floppy ROM Einstellungen..."},
 /* fr */ {IDMS_DRIVE_ROM_SETTINGS_FR, ""},  /* fuzzy */
 /* hu */ {IDMS_DRIVE_ROM_SETTINGS_HU, "Lemezegység ROM beállításai..."},
@@ -1810,10 +1810,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_DRIVE_ROM_SETTINGS_NL, "Drive-ROM-instellingen..."},
 /* pl */ {IDMS_DRIVE_ROM_SETTINGS_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_DRIVE_ROM_SETTINGS_SV, "ROM-inställningar för diskettenhet..."},
-/* tr */ {IDMS_DRIVE_ROM_SETTINGS_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_DRIVE_ROM_SETTINGS_TR, "Sürücü ROM ayarlarý..."},
 
 /* en */ {IDMS_RAM_SETTINGS,    "RAM settings..."},
-/* da */ {IDMS_RAM_SETTINGS_DA, ""},  /* fuzzy */
+/* da */ {IDMS_RAM_SETTINGS_DA, "RAM-indstillinger..."},
 /* de */ {IDMS_RAM_SETTINGS_DE, "RAM Einstellungen..."},
 /* fr */ {IDMS_RAM_SETTINGS_FR, "Paramètres de la RAM..."},
 /* hu */ {IDMS_RAM_SETTINGS_HU, "RAM beállításai..."},
@@ -1821,10 +1821,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_RAM_SETTINGS_NL, "RAM-instellingen..."},
 /* pl */ {IDMS_RAM_SETTINGS_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_RAM_SETTINGS_SV, "RAM-inställningar..."},
-/* tr */ {IDMS_RAM_SETTINGS_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_RAM_SETTINGS_TR, "RAM ayarlarý..."},
 
 /* en */ {IDMS_RS232_SETTINGS,    "RS232 settings..."},
-/* da */ {IDMS_RS232_SETTINGS_DA, ""},  /* fuzzy */
+/* da */ {IDMS_RS232_SETTINGS_DA, "RS232-indstillinger..."},
 /* de */ {IDMS_RS232_SETTINGS_DE, "RS232 Einstellungen..."},
 /* fr */ {IDMS_RS232_SETTINGS_FR, "Paramètres RS232..."},
 /* hu */ {IDMS_RS232_SETTINGS_HU, "RS232 beállításai..."},
@@ -1832,10 +1832,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_RS232_SETTINGS_NL, "RS232-instellingen..."},
 /* pl */ {IDMS_RS232_SETTINGS_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_RS232_SETTINGS_SV, "RS232-inställningar..."},
-/* tr */ {IDMS_RS232_SETTINGS_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_RS232_SETTINGS_TR, "RS232 ayarlarý..."},
 
 /* en */ {IDMS_C128_SETTINGS,    "C128 settings..."},
-/* da */ {IDMS_C128_SETTINGS_DA, ""},  /* fuzzy */
+/* da */ {IDMS_C128_SETTINGS_DA, "C128-indstillinger..."},
 /* de */ {IDMS_C128_SETTINGS_DE, "C128 Einstellungen..."},
 /* fr */ {IDMS_C128_SETTINGS_FR, "Paramètres C128..."},
 /* hu */ {IDMS_C128_SETTINGS_HU, "C128 beállításai..."},
@@ -1843,10 +1843,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_C128_SETTINGS_NL, "C128-instellingen..."},
 /* pl */ {IDMS_C128_SETTINGS_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_C128_SETTINGS_SV, "C128-inställningar..."},
-/* tr */ {IDMS_C128_SETTINGS_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_C128_SETTINGS_TR, "C128 ayarlarý..."},
 
 /* en */ {IDMS_CART_IO_SETTINGS,    "Cartridge/IO settings"},
-/* da */ {IDMS_CART_IO_SETTINGS_DA, ""},  /* fuzzy */
+/* da */ {IDMS_CART_IO_SETTINGS_DA, "Modul/IO-indstillinger"},
 /* de */ {IDMS_CART_IO_SETTINGS_DE, "Erweiterungsmodul Einstellungen"},
 /* fr */ {IDMS_CART_IO_SETTINGS_FR, "Paramètres E/S cartouche"},
 /* hu */ {IDMS_CART_IO_SETTINGS_HU, "Cartridge/IO beállításai"},
@@ -1854,10 +1854,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_CART_IO_SETTINGS_NL, "Cartridge/IO-instellingen"},
 /* pl */ {IDMS_CART_IO_SETTINGS_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_CART_IO_SETTINGS_SV, "Inställningar för insticksmoduler..."},
-/* tr */ {IDMS_CART_IO_SETTINGS_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_CART_IO_SETTINGS_TR, "Kartuþ/GÇ ayarlarý"},
 
 /* en */ {IDMS_REU_SETTINGS,    "REU settings..."},
-/* da */ {IDMS_REU_SETTINGS_DA, ""},  /* fuzzy */
+/* da */ {IDMS_REU_SETTINGS_DA, "REU-indstillinger..."},
 /* de */ {IDMS_REU_SETTINGS_DE, "REU Einstellungen..."},
 /* fr */ {IDMS_REU_SETTINGS_FR, "Paramètres REU..."},
 /* hu */ {IDMS_REU_SETTINGS_HU, "REU beállításai..."},
@@ -1865,10 +1865,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_REU_SETTINGS_NL, "REU-instellingen..."},
 /* pl */ {IDMS_REU_SETTINGS_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_REU_SETTINGS_SV, "REU-inställningar..."},
-/* tr */ {IDMS_REU_SETTINGS_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_REU_SETTINGS_TR, "REU ayarlarý..."},
 
 /* en */ {IDMS_GEORAM_SETTINGS,    "GEORAM settings..."},
-/* da */ {IDMS_GEORAM_SETTINGS_DA, ""},  /* fuzzy */
+/* da */ {IDMS_GEORAM_SETTINGS_DA, "GEORAM-indstillinger..."},
 /* de */ {IDMS_GEORAM_SETTINGS_DE, "GEORAM Einstellungen..."},
 /* fr */ {IDMS_GEORAM_SETTINGS_FR, "Paramètres GEORAM..."},
 /* hu */ {IDMS_GEORAM_SETTINGS_HU, "GEORAM beállításai..."},
@@ -1876,10 +1876,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_GEORAM_SETTINGS_NL, "GEORAM-instellingen..."},
 /* pl */ {IDMS_GEORAM_SETTINGS_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_GEORAM_SETTINGS_SV, "GEORAM-inställningar..."},
-/* tr */ {IDMS_GEORAM_SETTINGS_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_GEORAM_SETTINGS_TR, "GEORAM ayarlarý..."},
 
 /* en */ {IDMS_RAMCART_SETTINGS,    "RAMCART settings..."},
-/* da */ {IDMS_RAMCART_SETTINGS_DA, ""},  /* fuzzy */
+/* da */ {IDMS_RAMCART_SETTINGS_DA, "RAMCART-indstillinger..."},
 /* de */ {IDMS_RAMCART_SETTINGS_DE, "RAMCART Einstellungen..."},
 /* fr */ {IDMS_RAMCART_SETTINGS_FR, "Paramètres RAMCART..."},
 /* hu */ {IDMS_RAMCART_SETTINGS_HU, "RAMCART beállításai..."},
@@ -1887,10 +1887,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_RAMCART_SETTINGS_NL, "RAMCART-instellingen..."},
 /* pl */ {IDMS_RAMCART_SETTINGS_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_RAMCART_SETTINGS_SV, "RAMCART-inställningar..."},
-/* tr */ {IDMS_RAMCART_SETTINGS_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_RAMCART_SETTINGS_TR, "RAMCART ayarlarý..."},
 
 /* en */ {IDMS_DQBB_SETTINGS,    "Double Quick Brown Box settings..."},
-/* da */ {IDMS_DQBB_SETTINGS_DA, ""},  /* fuzzy */
+/* da */ {IDMS_DQBB_SETTINGS_DA, "Double Quick Brown Box indstillinger..."},
 /* de */ {IDMS_DQBB_SETTINGS_DE, "Double Quick Brown Box Einstellungen..."},
 /* fr */ {IDMS_DQBB_SETTINGS_FR, ""},  /* fuzzy */
 /* hu */ {IDMS_DQBB_SETTINGS_HU, "Double Quick Brown Box beállítások..."},
@@ -1898,10 +1898,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_DQBB_SETTINGS_NL, "Double Quick Brown Box instellingen..."},
 /* pl */ {IDMS_DQBB_SETTINGS_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_DQBB_SETTINGS_SV, "Inställninga för dubbel Quick Brown Box..."},
-/* tr */ {IDMS_DQBB_SETTINGS_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_DQBB_SETTINGS_TR, "Double Quick Brown Box ayarlarý..."},
 
 /* en */ {IDMS_ISEPIC_SETTINGS,    "Isepic settings..."},
-/* da */ {IDMS_ISEPIC_SETTINGS_DA, ""},  /* fuzzy */
+/* da */ {IDMS_ISEPIC_SETTINGS_DA, "Isepic-indstillinger..."},
 /* de */ {IDMS_ISEPIC_SETTINGS_DE, "Isepic Einstellungen..."},
 /* fr */ {IDMS_ISEPIC_SETTINGS_FR, ""},  /* fuzzy */
 /* hu */ {IDMS_ISEPIC_SETTINGS_HU, "Isepic beállításai..."},
@@ -1909,10 +1909,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_ISEPIC_SETTINGS_NL, "Isepic instellingen..."},
 /* pl */ {IDMS_ISEPIC_SETTINGS_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_ISEPIC_SETTINGS_SV, "Isepic-inställningar..."},
-/* tr */ {IDMS_ISEPIC_SETTINGS_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_ISEPIC_SETTINGS_TR, "Isepic ayarlarý..."},
 
 /* en */ {IDMS_PLUS60K_SETTINGS,    "PLUS60K settings..."},
-/* da */ {IDMS_PLUS60K_SETTINGS_DA, ""},  /* fuzzy */
+/* da */ {IDMS_PLUS60K_SETTINGS_DA, "PLUS60K-indstillinger..."},
 /* de */ {IDMS_PLUS60K_SETTINGS_DE, "PLUS60K Einstellungen..."},
 /* fr */ {IDMS_PLUS60K_SETTINGS_FR, "Paramètres PLUS60K..."},
 /* hu */ {IDMS_PLUS60K_SETTINGS_HU, "PLUS60K beállításai..."},
@@ -1920,10 +1920,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_PLUS60K_SETTINGS_NL, "PLUS60K-instellingen..."},
 /* pl */ {IDMS_PLUS60K_SETTINGS_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_PLUS60K_SETTINGS_SV, "PLUS60K-inställningar..."},
-/* tr */ {IDMS_PLUS60K_SETTINGS_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_PLUS60K_SETTINGS_TR, "PLUS60K ayarlarý..."},
 
 /* en */ {IDS_PLUS256K_FILENAME,    "PLUS256K file"},
-/* da */ {IDS_PLUS256K_FILENAME_DA, ""},  /* fuzzy */
+/* da */ {IDS_PLUS256K_FILENAME_DA, "PLUS256K-indstillinger..."},
 /* de */ {IDS_PLUS256K_FILENAME_DE, "PLUS256K Datei"},
 /* fr */ {IDS_PLUS256K_FILENAME_FR, "Fichier PLUS256K"},
 /* hu */ {IDS_PLUS256K_FILENAME_HU, "PLUS256K fájl"},
@@ -1931,10 +1931,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDS_PLUS256K_FILENAME_NL, "PLUS256K-bestand"},
 /* pl */ {IDS_PLUS256K_FILENAME_PL, ""},  /* fuzzy */
 /* sv */ {IDS_PLUS256K_FILENAME_SV, "PLUS256K-fil"},
-/* tr */ {IDS_PLUS256K_FILENAME_TR, ""},  /* fuzzy */
+/* tr */ {IDS_PLUS256K_FILENAME_TR, "PLUS256K ayarlarý..."},
 
 /* en */ {IDS_PLUS256K_FILENAME_SELECT,    "Select file for PLUS256K"},
-/* da */ {IDS_PLUS256K_FILENAME_SELECT_DA, ""},  /* fuzzy */
+/* da */ {IDS_PLUS256K_FILENAME_SELECT_DA, "Vælg fil for PLUS256K"},
 /* de */ {IDS_PLUS256K_FILENAME_SELECT_DE, "Datei für PLUS256K selektieren"},
 /* fr */ {IDS_PLUS256K_FILENAME_SELECT_FR, "Sélectionner fichier pour PLUS256K"},
 /* hu */ {IDS_PLUS256K_FILENAME_SELECT_HU, "Válasszon fájlt a PLUS256K-hoz"},
@@ -1942,10 +1942,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDS_PLUS256K_FILENAME_SELECT_NL, "Selecteer bestand voor PLUS256K"},
 /* pl */ {IDS_PLUS256K_FILENAME_SELECT_PL, ""},  /* fuzzy */
 /* sv */ {IDS_PLUS256K_FILENAME_SELECT_SV, "Ange fil för PLUS256K"},
-/* tr */ {IDS_PLUS256K_FILENAME_SELECT_TR, ""},  /* fuzzy */
+/* tr */ {IDS_PLUS256K_FILENAME_SELECT_TR, "PLUS256K için dosya seçin"},
 
 /* en */ {IDMS_PLUS256K_SETTINGS,    "PLUS256K settings..."},
-/* da */ {IDMS_PLUS256K_SETTINGS_DA, ""},  /* fuzzy */
+/* da */ {IDMS_PLUS256K_SETTINGS_DA, "PLUS256K-indstillinger..."},
 /* de */ {IDMS_PLUS256K_SETTINGS_DE, "PLUS256K Einstellungen..."},
 /* fr */ {IDMS_PLUS256K_SETTINGS_FR, "Paramètres PLUS256K..."},
 /* hu */ {IDMS_PLUS256K_SETTINGS_HU, "PLUS256K beállításai..."},
@@ -1953,7 +1953,7 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_PLUS256K_SETTINGS_NL, "PLUS256K-instellingen..."},
 /* pl */ {IDMS_PLUS256K_SETTINGS_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_PLUS256K_SETTINGS_SV, "PLUS256K-inställningar..."},
-/* tr */ {IDMS_PLUS256K_SETTINGS_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_PLUS256K_SETTINGS_TR, "PLUS256K ayarlarý..."},
 
 /* en */ {IDMS_256K_SETTINGS,    "256K settings..."},
 /* da */ {IDMS_256K_SETTINGS_DA, ""},  /* fuzzy */
