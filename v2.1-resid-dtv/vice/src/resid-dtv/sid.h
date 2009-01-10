@@ -27,7 +27,6 @@
 #include "voice.h"
 #include "filter.h"
 #include "extfilt.h"
-#include "pot.h"
 
 class SIDDTV
 {
@@ -102,15 +101,11 @@ protected:
   VoiceDTV voice[3];
   FilterDTV filter;
   ExternalFilterDTV extfilt;
-  PotentiometerDTV potx;
-  PotentiometerDTV poty;
 
   reg8 bus_value;
   cycle_count bus_value_ttl;
 
   double clock_frequency;
-
-  bool is_dtv;
 
   // External audio input.
   int ext_in;

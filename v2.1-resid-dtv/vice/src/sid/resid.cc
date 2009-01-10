@@ -5,8 +5,6 @@
  *  Teemu Rantanen <tvr@cs.hut.fi>
  *  Dag Lem <resid@nimrod.no>
  *  Andreas Boose <viceteam@t-online.de>
- * C64 DTV modifications written by
- *  Daniel Kahlin <daniel@kahlin.net>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -28,7 +26,6 @@
  *
  */
 
-/* resid itself is always compiled with C64DTV support */
 #include "resid/sid.h"
 
 extern "C" {
@@ -131,12 +128,6 @@ static int resid_init(sound_t *psid, int speed, int cycles_per_sec)
       strcpy(model_text, "MOS6581R4");
       break;
 #endif
-    case 4:
-      psid->sid->set_chip_model(DTVSID);
-      psid->sid->input(0);
-      filters_enabled = 0;
-      strcpy(model_text, "DTVSID");
-      break;
     }
     psid->sid->enable_filter(filters_enabled ? true : false);
     psid->sid->enable_external_filter(filters_enabled ? true : false);

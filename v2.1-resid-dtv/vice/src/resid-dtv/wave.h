@@ -19,6 +19,8 @@
 // C64 DTV modifications written by
 //   Daniel Kahlin <daniel@kahlin.net>
 // Copyright (C) 2007  Daniel Kahlin <daniel@kahlin.net>
+//   Hannu Nuotio <hannu.nuotio@tut.fi>
+// Copyright (C) 2009  Hannu Nuotio <hannu.nuotio@tut.fi>
 
 #ifndef __WAVE_H__
 #define __WAVE_H__
@@ -99,22 +101,6 @@ protected:
   RESID_INLINE reg12 outputNP_T();
   RESID_INLINE reg12 outputNPS_();
   RESID_INLINE reg12 outputNPST();
-
-  // Sample data for combinations of waveforms.
-  static reg8 wave6581__ST[];
-  static reg8 wave6581_P_T[];
-  static reg8 wave6581_PS_[];
-  static reg8 wave6581_PST[];
-
-  static reg8 wave8580__ST[];
-  static reg8 wave8580_P_T[];
-  static reg8 wave8580_PS_[];
-  static reg8 wave8580_PST[];
-
-  reg8* wave__ST;
-  reg8* wave_P_T;
-  reg8* wave_PS_;
-  reg8* wave_PST;
 
 friend class VoiceDTV;
 friend class SIDDTV;
@@ -324,136 +310,75 @@ reg12 WaveformGeneratorDTV::outputN___()
 }
 
 // Combined waveforms:
-// By combining waveforms, the bits of each waveform are effectively short
-// circuited. A zero bit in one waveform will result in a zero output bit
-// (thus the infamous claim that the waveforms are AND'ed).
-// However, a zero bit in one waveform will also affect the neighboring bits
-// in the output. The reason for this has not been determined.
-//
-// Example:
-// 
-//             1 1
-// Bit #       1 0 9 8 7 6 5 4 3 2 1 0
-//             -----------------------
-// Sawtooth    0 0 0 1 1 1 1 1 1 0 0 0
-//
-// Triangle    0 0 1 1 1 1 1 1 0 0 0 0
-//
-// AND         0 0 0 1 1 1 1 1 0 0 0 0
-//
-// Output      0 0 0 0 1 1 1 0 0 0 0 0
-//
-//
-// This behavior would be quite difficult to model exactly, since the SID
-// in this case does not act as a digital state machine. Tests show that minor
-// (1 bit)  differences can actually occur in the output from otherwise
-// identical samples from OSC3 when waveforms are combined. To further
-// complicate the situation the output changes slightly with time (more
-// neighboring bits are successively set) when the 12-bit waveform
-// registers are kept unchanged.
-//
-// It is probably possible to come up with a valid model for the
-// behavior, however this would be far too slow for practical use since it
-// would have to be based on the mutual influence of individual bits.
-//
-// The output is instead approximated by using the upper bits of the
-// accumulator as an index to look up the combined output in a table
-// containing actual combined waveform samples from OSC3.
-// These samples are 8 bit, so 4 bits of waveform resolution is lost.
-// All OSC3 samples are taken with FREQ=0x1000, adding a 1 to the upper 12
-// bits of the accumulator each cycle for a sample period of 4096 cycles.
-//
-// Sawtooth+Triangle:
-// The sawtooth output is used to look up an OSC3 sample.
-// 
-// Pulse+Triangle:
-// The triangle output is right-shifted and used to look up an OSC3 sample.
-// The sample is output if the pulse output is on.
-// The reason for using the triangle output as the index is to handle ring
-// modulation. Only the first half of the sample is used, which should be OK
-// since the triangle waveform has half the resolution of the accumulator.
-// 
-// Pulse+Sawtooth:
-// The sawtooth output is used to look up an OSC3 sample.
-// The sample is output if the pulse output is on.
-//
-// Pulse+Sawtooth+Triangle:
-// The sawtooth output is used to look up an OSC3 sample.
-// The sample is output if the pulse output is on.
+// DTVSID simply ANDs the waveforms.
 // 
 RESID_INLINE
 reg12 WaveformGeneratorDTV::output__ST()
 {
-  return wave__ST[output__S_()] << 4;
+  return output__S_() & output___T();
 }
 
 RESID_INLINE
 reg12 WaveformGeneratorDTV::output_P_T()
 {
-  return (wave_P_T[output___T() >> 1] << 4) & output_P__();
+  return output_P__() & output___T();
 }
 
 RESID_INLINE
 reg12 WaveformGeneratorDTV::output_PS_()
 {
-  return (wave_PS_[output__S_()] << 4) & output_P__();
+  return output_P__() & output__S_();
 }
 
 RESID_INLINE
 reg12 WaveformGeneratorDTV::output_PST()
 {
-  return (wave_PST[output__S_()] << 4) & output_P__();
+  return output_P__() & output__S_() & output___T();
 }
 
 // Combined waveforms including noise:
-// All waveform combinations including noise output zero after a few cycles.
-// NB! The effects of such combinations are not fully explored. It is claimed
-// that the shift register may be filled with zeroes and locked up, which
-// seems to be true.
-// We have not attempted to model this behavior, suffice to say that
-// there is very little audible output from waveform combinations including
-// noise. We hope that nobody is actually using it.
+// DTVSID simply ANDs the waveforms.
 //
 RESID_INLINE
 reg12 WaveformGeneratorDTV::outputN__T()
 {
-  return 0;
+  return outputN___() & output___T();
 }
 
 RESID_INLINE
 reg12 WaveformGeneratorDTV::outputN_S_()
 {
-  return 0;
+  return outputN___() & output__S_();
 }
 
 RESID_INLINE
 reg12 WaveformGeneratorDTV::outputN_ST()
 {
-  return 0;
+  return outputN___() & output__S_() & output___T();
 }
 
 RESID_INLINE
 reg12 WaveformGeneratorDTV::outputNP__()
 {
-  return 0;
+  return outputN___() & output_P__();
 }
 
 RESID_INLINE
 reg12 WaveformGeneratorDTV::outputNP_T()
 {
-  return 0;
+  return outputN___() & output_P__() & output___T();
 }
 
 RESID_INLINE
 reg12 WaveformGeneratorDTV::outputNPS_()
 {
-  return 0;
+  return outputN___() & output_P__() & output__S_();
 }
 
 RESID_INLINE
 reg12 WaveformGeneratorDTV::outputNPST()
 {
-  return 0;
+  return outputN___() & output_P__() & output__S_() & output___T();
 }
 
 // ----------------------------------------------------------------------------

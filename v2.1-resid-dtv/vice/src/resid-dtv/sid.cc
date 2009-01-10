@@ -66,8 +66,6 @@ void SIDDTV::set_chip_model(chip_model model)
 
   filter.set_chip_model(model);
   extfilt.set_chip_model(model);
-
-  is_dtv = (model == DTVSID) ? true : false;
 }
 
 
@@ -154,13 +152,9 @@ reg8 SIDDTV::read(reg8 offset)
 {
   switch (offset) {
   case 0x19:
-    if (is_dtv)
-      return 0x00;
-    return potx.readPOT();
+    return 0x00;
   case 0x1a:
-    if (is_dtv)
-      return 0x00;
-    return poty.readPOT();
+    return 0x00;
   case 0x1b:
     return voice[2].wave.readOSC();
   case 0x1c:
@@ -256,12 +250,10 @@ void SIDDTV::write(reg8 offset, reg8 value)
     filter.writeMODE_VOL(value);
     break;
   case 0x1e:
-    if (is_dtv)
-      voice[0].wave.writeACC_HI(value);
+    voice[0].wave.writeACC_HI(value);
     break;
   case 0x1f:
-    if (is_dtv)
-      voice[1].envelope.writeENV(value);
+    voice[1].envelope.writeENV(value);
     break;
   default:
     break;
