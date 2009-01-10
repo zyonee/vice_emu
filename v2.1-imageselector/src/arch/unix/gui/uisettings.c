@@ -264,7 +264,7 @@ static UI_CALLBACK(save_resources_file)
 
 #ifdef USE_GNOMEUI
     filename = ui_select_file(_("File to save settings to"), 
-			      NULL, 0, 0, resources_last_dir,
+			      NULL, 0, resources_last_dir,
                               "*", &button, 0, NULL, UI_FC_SAVE);
 #else
     button = ui_input_string(_("File to save settings to"),

@@ -144,7 +144,6 @@ static GtkStyle *ui_style_green;
 static GdkCursor *blankCursor;
 static GtkWidget *image_preview_list, *auto_start_button, *last_file_selection;
 static GtkWidget *pal_ctrl_widget;
-static char *(*current_image_contents_func)(const char *, unsigned int unit);
 static char *fixedfontname="CBM 10";
 static PangoFontDescription *fixed_font_desc;
 static int have_cbm_font = 0;
@@ -234,7 +233,8 @@ static GtkWidget* build_file_selector(const char *title,
 				      int show_preview,
 				      const char *pat,
 				      const char *default_dir,
-				      GtkFileChooserAction action);
+				      GtkFileChooserAction action,
+				      read_contents_func_type read_contents_func);
 static GtkWidget* build_show_text(const gchar *text, int width, int height);
 static GtkWidget* build_confirm_dialog(GtkWidget **confirm_dialog_message);
 static gboolean enter_window_callback(GtkWidget *w, GdkEvent *e, gpointer p);
@@ -2176,18 +2176,17 @@ char *ui_select_file(const char *title,
     if (attach_wp)
 	file_selector = build_file_selector(title, &wp, allow_autostart, 
 					    show_preview, default_pattern, 
-					    default_dir, a);
+					    default_dir, a, read_contents_func);
     else
 	file_selector = build_file_selector(title, NULL, allow_autostart, 
 					    show_preview, default_pattern, 
-					    default_dir, a);
+					    default_dir, a, read_contents_func);
 
     g_signal_connect(G_OBJECT(file_selector),
 		     "destroy",
 		     G_CALLBACK(gtk_widget_destroyed),
 		     &file_selector);
 
-    current_image_contents_func = read_contents_func;
     res = gtk_dialog_run(GTK_DIALOG(file_selector));
     switch (res)
     {
@@ -2455,7 +2454,8 @@ static GtkWidget *build_file_selector(const char *title,
 				      int show_preview,
 				      const char *pat,
 				      const char *default_dir,
-				      GtkFileChooserAction action)
+				      GtkFileChooserAction action,
+				      read_contents_func_type read_contents_func)
 {  
     GtkWidget *fileselect, *scrollw, *wp_checkbox, *sh_checkbox, *extra;
     GtkFileFilter *ff = NULL, *allf;
