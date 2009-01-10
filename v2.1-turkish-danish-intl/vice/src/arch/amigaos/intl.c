@@ -1956,7 +1956,7 @@ intl_translate_t intl_string_table[] = {
 /* tr */ {IDMS_PLUS256K_SETTINGS_TR, "PLUS256K ayarlarý..."},
 
 /* en */ {IDMS_256K_SETTINGS,    "256K settings..."},
-/* da */ {IDMS_256K_SETTINGS_DA, ""},  /* fuzzy */
+/* da */ {IDMS_256K_SETTINGS_DA, "256K-indstillinger..."},
 /* de */ {IDMS_256K_SETTINGS_DE, "256K Einstellungen..."},
 /* fr */ {IDMS_256K_SETTINGS_FR, "Paramètres 256K..."},
 /* hu */ {IDMS_256K_SETTINGS_HU, "256K beállításai..."},
@@ -1964,10 +1964,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_256K_SETTINGS_NL, "256K-instellingen..."},
 /* pl */ {IDMS_256K_SETTINGS_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_256K_SETTINGS_SV, "256K-inställningar..."},
-/* tr */ {IDMS_256K_SETTINGS_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_256K_SETTINGS_TR, "256K ayarlarý..."},
 
 /* en */ {IDMS_IDE64_SETTINGS,    "IDE64 settings..."},
-/* da */ {IDMS_IDE64_SETTINGS_DA, ""},  /* fuzzy */
+/* da */ {IDMS_IDE64_SETTINGS_DA, "IDE64-indstillinger..."},
 /* de */ {IDMS_IDE64_SETTINGS_DE, "IDE64 Einstellungen..."},
 /* fr */ {IDMS_IDE64_SETTINGS_FR, "Paramètres IDE64..."},
 /* hu */ {IDMS_IDE64_SETTINGS_HU, "IDE64 beállításai..."},
@@ -1975,10 +1975,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_IDE64_SETTINGS_NL, "IDE64-instellingen..."},
 /* pl */ {IDMS_IDE64_SETTINGS_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_IDE64_SETTINGS_SV, "IDE64-inställningar..."},
-/* tr */ {IDMS_IDE64_SETTINGS_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_IDE64_SETTINGS_TR, "IDE64 ayarlarý..."},
 
 /* en */ {IDMS_MMC64_SETTINGS,    "MMC64 settings..."},
-/* da */ {IDMS_MMC64_SETTINGS_DA, ""},  /* fuzzy */
+/* da */ {IDMS_MMC64_SETTINGS_DA, "MMC64-indstillinger..."},
 /* de */ {IDMS_MMC64_SETTINGS_DE, "MMC64 Einstellungen..."},
 /* fr */ {IDMS_MMC64_SETTINGS_FR, "Paramètres MMC64..."},
 /* hu */ {IDMS_MMC64_SETTINGS_HU, "MMC64 beállításai..."},
@@ -1986,10 +1986,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_MMC64_SETTINGS_NL, "MMC64-instellingen..."},
 /* pl */ {IDMS_MMC64_SETTINGS_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_MMC64_SETTINGS_SV, "MMC64-inställningar..."},
-/* tr */ {IDMS_MMC64_SETTINGS_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_MMC64_SETTINGS_TR, "MMC64 ayarlarý..."},
 
 /* en */ {IDMS_DIGIMAX_SETTINGS,    "Digimax settings..."},
-/* da */ {IDMS_DIGIMAX_SETTINGS_DA, ""},  /* fuzzy */
+/* da */ {IDMS_DIGIMAX_SETTINGS_DA, "Digimaxindstillinger..."},
 /* de */ {IDMS_DIGIMAX_SETTINGS_DE, "Digimax Einstellungen..."},
 /* fr */ {IDMS_DIGIMAX_SETTINGS_FR, ""},  /* fuzzy */
 /* hu */ {IDMS_DIGIMAX_SETTINGS_HU, "Digimax beállításai..."},
@@ -1997,10 +1997,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_DIGIMAX_SETTINGS_NL, "Digimaxinstellingen..."},
 /* pl */ {IDMS_DIGIMAX_SETTINGS_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_DIGIMAX_SETTINGS_SV, "Digimaxinställningar..."},
-/* tr */ {IDMS_DIGIMAX_SETTINGS_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_DIGIMAX_SETTINGS_TR, "Digimax ayarlarý..."},
 
 /* en */ {IDMS_ETHERNET_SETTINGS,    "Ethernet settings..."},
-/* da */ {IDMS_ETHERNET_SETTINGS_DA, ""},  /* fuzzy */
+/* da */ {IDMS_ETHERNET_SETTINGS_DA, "Ethernetindstillinger..."},
 /* de */ {IDMS_ETHERNET_SETTINGS_DE, "Ethernet Einstellungen..."},
 /* fr */ {IDMS_ETHERNET_SETTINGS_FR, "Émulation Ethernet..."},
 /* hu */ {IDMS_ETHERNET_SETTINGS_HU, "Ethernet beállításai..."},
@@ -2008,10 +2008,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_ETHERNET_SETTINGS_NL, "Ethernetinstellingen..."},
 /* pl */ {IDMS_ETHERNET_SETTINGS_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_ETHERNET_SETTINGS_SV, "Ethernetinställningar..."},
-/* tr */ {IDMS_ETHERNET_SETTINGS_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_ETHERNET_SETTINGS_TR, "Ethernet ayarlarý..."},
 
 /* en */ {IDMS_ACIA_SETTINGS,    "ACIA settings..."},
-/* da */ {IDMS_ACIA_SETTINGS_DA, ""},  /* fuzzy */
+/* da */ {IDMS_ACIA_SETTINGS_DA, "ACIA-indstillinger..."},
 /* de */ {IDMS_ACIA_SETTINGS_DE, "ACIA Einstellungen..."},
 /* fr */ {IDMS_ACIA_SETTINGS_FR, "Paramètres ACIA..."},
 /* hu */ {IDMS_ACIA_SETTINGS_HU, "ACIA beállításai..."},
@@ -2019,10 +2019,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_ACIA_SETTINGS_NL, "ACIA-instellingen..."},
 /* pl */ {IDMS_ACIA_SETTINGS_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_ACIA_SETTINGS_SV, "ACIA-inställningar..."},
-/* tr */ {IDMS_ACIA_SETTINGS_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_ACIA_SETTINGS_TR, "ACIA ayarlarý..."},
 
 /* en */ {IDMS_PETREU_SETTINGS,    "PET REU settings..."},
-/* da */ {IDMS_PETREU_SETTINGS_DA, ""},  /* fuzzy */
+/* da */ {IDMS_PETREU_SETTINGS_DA, "PET REU-indstillinger..."},
 /* de */ {IDMS_PETREU_SETTINGS_DE, "PET REU Einstellungen..."},
 /* fr */ {IDMS_PETREU_SETTINGS_FR, "Paramètres PET REU..."},
 /* hu */ {IDMS_PETREU_SETTINGS_HU, "PET REU beállításai..."},
@@ -2030,10 +2030,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_PETREU_SETTINGS_NL, "PET REU-instellingen..."},
 /* pl */ {IDMS_PETREU_SETTINGS_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_PETREU_SETTINGS_SV, "PET REU-inställningar..."},
-/* tr */ {IDMS_PETREU_SETTINGS_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_PETREU_SETTINGS_TR, "PET REU ayarlarý..."},
 
 /* en */ {IDMS_SIDCART_SETTINGS,    "SID cart settings..."},
-/* da */ {IDMS_SIDCART_SETTINGS_DA, ""},  /* fuzzy */
+/* da */ {IDMS_SIDCART_SETTINGS_DA, "SID-indstillinger..."},
 /* de */ {IDMS_SIDCART_SETTINGS_DE, "SID Modul Einstellungen..."},
 /* fr */ {IDMS_SIDCART_SETTINGS_FR, ""},  /* fuzzy */
 /* hu */ {IDMS_SIDCART_SETTINGS_HU, "SID kártya beállításai..."},
@@ -2041,10 +2041,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_SIDCART_SETTINGS_NL, "SID-cartinstellingen..."},
 /* pl */ {IDMS_SIDCART_SETTINGS_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_SIDCART_SETTINGS_SV, "SID-modulinställningar..."},
-/* tr */ {IDMS_SIDCART_SETTINGS_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_SIDCART_SETTINGS_TR, "SID katuþ ayarlarý..."},
 
 /* en */ {IDMS_C64DTV_SETTINGS,    "C64DTV settings..."},
-/* da */ {IDMS_C64DTV_SETTINGS_DA, ""},  /* fuzzy */
+/* da */ {IDMS_C64DTV_SETTINGS_DA, "C64DTV-indstillinger..."},
 /* de */ {IDMS_C64DTV_SETTINGS_DE, "C64DTV Einstellungen..."},
 /* fr */ {IDMS_C64DTV_SETTINGS_FR, ""},  /* fuzzy */
 /* hu */ {IDMS_C64DTV_SETTINGS_HU, "C64DTV beállításai..."},
@@ -2052,10 +2052,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_C64DTV_SETTINGS_NL, "C64DTV instellingen..."},
 /* pl */ {IDMS_C64DTV_SETTINGS_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_C64DTV_SETTINGS_SV, "C64DTV-inställningar..."},
-/* tr */ {IDMS_C64DTV_SETTINGS_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_C64DTV_SETTINGS_TR, "C64DTV ayarlarý..."},
 
 /* en */ {IDMS_RS232_USERPORT_SETTINGS,    "RS232 userport settings..."},
-/* da */ {IDMS_RS232_USERPORT_SETTINGS_DA, ""},  /* fuzzy */
+/* da */ {IDMS_RS232_USERPORT_SETTINGS_DA, "RS232-brugerportindstillinger..."},
 /* de */ {IDMS_RS232_USERPORT_SETTINGS_DE, "RS232 Userport Einstellungen..."},
 /* fr */ {IDMS_RS232_USERPORT_SETTINGS_FR, "Paramètres RS232 userport..."},
 /* hu */ {IDMS_RS232_USERPORT_SETTINGS_HU, "RS232 userport beállításai..."},
@@ -2063,10 +2063,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_RS232_USERPORT_SETTINGS_NL, "RS232-userportinstellingen..."},
 /* pl */ {IDMS_RS232_USERPORT_SETTINGS_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_RS232_USERPORT_SETTINGS_SV, "RS232-användarportinställningar..."},
-/* tr */ {IDMS_RS232_USERPORT_SETTINGS_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_RS232_USERPORT_SETTINGS_TR, "RS232 userport ayarlarý..."},
 
 /* en */ {IDMS_SAVE_CURRENT_SETTINGS_FILE,    "Save current settings to specified file"},
-/* da */ {IDMS_SAVE_CURRENT_SETTINGS_FILE_DA, ""},  /* fuzzy */
+/* da */ {IDMS_SAVE_CURRENT_SETTINGS_FILE_DA, "Gem indstillinger som"},
 /* de */ {IDMS_SAVE_CURRENT_SETTINGS_FILE_DE, "Speichere Einstellungen in angegebene Datei"},
 /* fr */ {IDMS_SAVE_CURRENT_SETTINGS_FILE_FR, ""},  /* fuzzy */
 /* hu */ {IDMS_SAVE_CURRENT_SETTINGS_FILE_HU, "Jelenlegi beállítások mentése adott fájlba"},
@@ -2074,10 +2074,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_SAVE_CURRENT_SETTINGS_FILE_NL, "Huidige instellingen opslaan naar opgegeven bestand"},
 /* pl */ {IDMS_SAVE_CURRENT_SETTINGS_FILE_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_SAVE_CURRENT_SETTINGS_FILE_SV, "Spara nuvarande inställningar till den angivna filen"},
-/* tr */ {IDMS_SAVE_CURRENT_SETTINGS_FILE_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_SAVE_CURRENT_SETTINGS_FILE_TR, "Belirtilen dosyaya geçerli ayarlarý kaydet"},
 
 /* en */ {IDMS_LOAD_SAVED_SETTINGS_FILE,    "Load settings from specified file"},
-/* da */ {IDMS_LOAD_SAVED_SETTINGS_FILE_DA, ""},  /* fuzzy */
+/* da */ {IDMS_LOAD_SAVED_SETTINGS_FILE_DA, "Indlæs indstillinger fra"},
 /* de */ {IDMS_LOAD_SAVED_SETTINGS_FILE_DE, "Lade Einstellungen von Datei"},
 /* fr */ {IDMS_LOAD_SAVED_SETTINGS_FILE_FR, ""},  /* fuzzy */
 /* hu */ {IDMS_LOAD_SAVED_SETTINGS_FILE_HU, "Beállítások betöltése a megadott fájlból"},
@@ -2085,10 +2085,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_LOAD_SAVED_SETTINGS_FILE_NL, "Instelling laden van opgegevn bestand"},
 /* pl */ {IDMS_LOAD_SAVED_SETTINGS_FILE_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_LOAD_SAVED_SETTINGS_FILE_SV, "Läs inställningar från den angivna filen"},
-/* tr */ {IDMS_LOAD_SAVED_SETTINGS_FILE_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_LOAD_SAVED_SETTINGS_FILE_TR, "Belirtilen dosyadan ayarlarý yükle"},
 
 /* en */ {IDMS_SAVE_CURRENT_SETTINGS,    "Save current settings"},
-/* da */ {IDMS_SAVE_CURRENT_SETTINGS_DA, ""},  /* fuzzy */
+/* da */ {IDMS_SAVE_CURRENT_SETTINGS_DA, "Gen aktuelle indstillinger"},
 /* de */ {IDMS_SAVE_CURRENT_SETTINGS_DE, "Einstellungen speichern"},
 /* fr */ {IDMS_SAVE_CURRENT_SETTINGS_FR, "Enregistrer les paramètres courants"},
 /* hu */ {IDMS_SAVE_CURRENT_SETTINGS_HU, "Jelenlegi beállítások mentése"},
@@ -2096,10 +2096,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_SAVE_CURRENT_SETTINGS_NL, "Huidige instellingen opslaan"},
 /* pl */ {IDMS_SAVE_CURRENT_SETTINGS_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_SAVE_CURRENT_SETTINGS_SV, "Spara nuvarande inställningar"},
-/* tr */ {IDMS_SAVE_CURRENT_SETTINGS_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_SAVE_CURRENT_SETTINGS_TR, "Geçerli ayarlarý kaydet"},
 
 /* en */ {IDMS_LOAD_SAVED_SETTINGS,    "Load saved settings"},
-/* da */ {IDMS_LOAD_SAVED_SETTINGS_DA, ""},  /* fuzzy */
+/* da */ {IDMS_LOAD_SAVED_SETTINGS_DA, "Indlæs gemte indstillinger"},
 /* de */ {IDMS_LOAD_SAVED_SETTINGS_DE, "Einstellungen Laden"},
 /* fr */ {IDMS_LOAD_SAVED_SETTINGS_FR, "Charger les paramètres"},
 /* hu */ {IDMS_LOAD_SAVED_SETTINGS_HU, "Beállítások betöltése"},
@@ -2107,10 +2107,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_LOAD_SAVED_SETTINGS_NL, "Opgeslagen instelling laden"},
 /* pl */ {IDMS_LOAD_SAVED_SETTINGS_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_LOAD_SAVED_SETTINGS_SV, "Läs sparade inställningar"},
-/* tr */ {IDMS_LOAD_SAVED_SETTINGS_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_LOAD_SAVED_SETTINGS_TR, "Kaydedilmiþ ayarlarý yükle"},
 
 /* en */ {IDMS_SET_DEFAULT_SETTINGS,    "Set default settings"},
-/* da */ {IDMS_SET_DEFAULT_SETTINGS_DA, ""},  /* fuzzy */
+/* da */ {IDMS_SET_DEFAULT_SETTINGS_DA, "Gendan standard indstillinger"},
 /* de */ {IDMS_SET_DEFAULT_SETTINGS_DE, "Wiederherstellen Standard Einstellungen"},
 /* fr */ {IDMS_SET_DEFAULT_SETTINGS_FR, "Rétablir les paramètres par défaut"},
 /* hu */ {IDMS_SET_DEFAULT_SETTINGS_HU, "Alapértelmezés beállítása"},
@@ -2118,10 +2118,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_SET_DEFAULT_SETTINGS_NL, "Herstel standaardinstellingen"},
 /* pl */ {IDMS_SET_DEFAULT_SETTINGS_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_SET_DEFAULT_SETTINGS_SV, "Återställ förvalda inställningar"},
-/* tr */ {IDMS_SET_DEFAULT_SETTINGS_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_SET_DEFAULT_SETTINGS_TR, "Mevcut ayarlarý varsayýlan olarak kaydet"},
 
 /* en */ {IDMS_SAVE_SETTING_ON_EXIT,    "Save settings on exit"},
-/* da */ {IDMS_SAVE_SETTING_ON_EXIT_DA, ""},  /* fuzzy */
+/* da */ {IDMS_SAVE_SETTING_ON_EXIT_DA, "Gem indstillinger når programmet afsluttes"},
 /* de */ {IDMS_SAVE_SETTING_ON_EXIT_DE, "Einstellungen beim Beenden speichern"},
 /* fr */ {IDMS_SAVE_SETTING_ON_EXIT_FR, "Enregistrer les paramètres à la sortie"},
 /* hu */ {IDMS_SAVE_SETTING_ON_EXIT_HU, "Beállítások mentése kilépéskor"},
@@ -2129,10 +2129,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_SAVE_SETTING_ON_EXIT_NL, "Sla instellingen op bij afsluiten"},
 /* pl */ {IDMS_SAVE_SETTING_ON_EXIT_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_SAVE_SETTING_ON_EXIT_SV, "Spara inställningar vid avslut"},
-/* tr */ {IDMS_SAVE_SETTING_ON_EXIT_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_SAVE_SETTING_ON_EXIT_TR, "Çýkýþta ayarlarý kaydet"},
 
 /* en */ {IDMS_CONFIRM_ON_EXIT,    "Confirm on exit"},
-/* da */ {IDMS_CONFIRM_ON_EXIT_DA, ""},  /* fuzzy */
+/* da */ {IDMS_CONFIRM_ON_EXIT_DA, "Bekræft programafslutning"},
 /* de */ {IDMS_CONFIRM_ON_EXIT_DE, "Bestätigung beim Beenden"},
 /* fr */ {IDMS_CONFIRM_ON_EXIT_FR, "Confirmation à la sortie"},
 /* hu */ {IDMS_CONFIRM_ON_EXIT_HU, "Megerõsítés kilépéskor"},
@@ -2140,10 +2140,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_CONFIRM_ON_EXIT_NL, "Bevestigen bij afsluiten"},
 /* pl */ {IDMS_CONFIRM_ON_EXIT_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_CONFIRM_ON_EXIT_SV, "Bekräfta avslutning"},
-/* tr */ {IDMS_CONFIRM_ON_EXIT_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_CONFIRM_ON_EXIT_TR, "Çýkýþta teyit et"},
 
 /* en */ {IDMS_HELP,    "Help"},
-/* da */ {IDMS_HELP_DA, ""},  /* fuzzy */
+/* da */ {IDMS_HELP_DA, "Hjælp"},
 /* de */ {IDMS_HELP_DE, "Hilfe"},
 /* fr */ {IDMS_HELP_FR, "Aide"},
 /* hu */ {IDMS_HELP_HU, "Segítség"},
@@ -2151,10 +2151,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_HELP_NL, "Help"},
 /* pl */ {IDMS_HELP_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_HELP_SV, "Hjälp"},
-/* tr */ {IDMS_HELP_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_HELP_TR, "Yardým"},
 
 /* en */ {IDMS_ABOUT,    "About..."},
-/* da */ {IDMS_ABOUT_DA, ""},  /* fuzzy */
+/* da */ {IDMS_ABOUT_DA, "Om..."},
 /* de */ {IDMS_ABOUT_DE, "Über VICE..."},
 /* fr */ {IDMS_ABOUT_FR, "À Propos..."},
 /* hu */ {IDMS_ABOUT_HU, "Névjegy..."},
@@ -2162,10 +2162,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_ABOUT_NL, "Over VICE..."},
 /* pl */ {IDMS_ABOUT_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_ABOUT_SV, "Om VICE..."},
-/* tr */ {IDMS_ABOUT_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_ABOUT_TR, "Hakkýnda..."},
 
 /* en */ {IDMS_COMMAND_LINE_OPTIONS,    "Command line options"},
-/* da */ {IDMS_COMMAND_LINE_OPTIONS_DA, ""},  /* fuzzy */
+/* da */ {IDMS_COMMAND_LINE_OPTIONS_DA, "Kommandolinjeparametre"},
 /* de */ {IDMS_COMMAND_LINE_OPTIONS_DE, "Kommandozeilen Optionen"},
 /* fr */ {IDMS_COMMAND_LINE_OPTIONS_FR, "Options de ligne de commande"},
 /* hu */ {IDMS_COMMAND_LINE_OPTIONS_HU, "Parancssori opciók"},
@@ -2173,10 +2173,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_COMMAND_LINE_OPTIONS_NL, "Commando invoer opties"},
 /* pl */ {IDMS_COMMAND_LINE_OPTIONS_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_COMMAND_LINE_OPTIONS_SV, "Kommandoradsflaggor"},
-/* tr */ {IDMS_COMMAND_LINE_OPTIONS_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_COMMAND_LINE_OPTIONS_TR, "Komut satýrý seçenekleri"},
 
 /* en */ {IDMS_CONTRIBUTORS,    "Contributors"},
-/* da */ {IDMS_CONTRIBUTORS_DA, ""},  /* fuzzy */
+/* da */ {IDMS_CONTRIBUTORS_DA, "Bidragsydere"},
 /* de */ {IDMS_CONTRIBUTORS_DE, "VICE Hackers"},
 /* fr */ {IDMS_CONTRIBUTORS_FR, "Contributeurs"},
 /* hu */ {IDMS_CONTRIBUTORS_HU, "Közremûködõk"},
@@ -2184,10 +2184,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_CONTRIBUTORS_NL, "Medewerkers aan het VICE project"},
 /* pl */ {IDMS_CONTRIBUTORS_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_CONTRIBUTORS_SV, "Bidragslämnare"},
-/* tr */ {IDMS_CONTRIBUTORS_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_CONTRIBUTORS_TR, "Katýlýmcýlar"},
 
 /* en */ {IDMS_LICENSE,    "License"},
-/* da */ {IDMS_LICENSE_DA, ""},  /* fuzzy */
+/* da */ {IDMS_LICENSE_DA, "Licens"},
 /* de */ {IDMS_LICENSE_DE, "Lizenz"},
 /* fr */ {IDMS_LICENSE_FR, "License"},
 /* hu */ {IDMS_LICENSE_HU, "Licensz"},
@@ -2195,10 +2195,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_LICENSE_NL, "Licentie"},
 /* pl */ {IDMS_LICENSE_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_LICENSE_SV, "Licens"},
-/* tr */ {IDMS_LICENSE_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_LICENSE_TR, "Lisans"},
 
 /* en */ {IDMS_NO_WARRANTY,    "No warranty"},
-/* pl */ {IDMS_NO_WARRANTY_DA, ""},  /* fuzzy */
+/* pl */ {IDMS_NO_WARRANTY_DA, "Ingen garanti"},
 /* de */ {IDMS_NO_WARRANTY_DE, "Keine Garantie!"},
 /* fr */ {IDMS_NO_WARRANTY_FR, "Aucune garantie!"},
 /* hu */ {IDMS_NO_WARRANTY_HU, "Nincs garancia!"},
@@ -2206,10 +2206,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_NO_WARRANTY_NL, "Geen garantie"},
 /* pl */ {IDMS_NO_WARRANTY_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_NO_WARRANTY_SV, "Ingen garanti"},
-/* tr */ {IDMS_NO_WARRANTY_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_NO_WARRANTY_TR, "Garanti verilmez"},
 
 /* en */ {IDMS_LANGUAGE_INTERNATIONAL,    "International"},
-/* da */ {IDMS_LANGUAGE_INTERNATIONAL_DA, ""},  /* fuzzy */
+/* da */ {IDMS_LANGUAGE_INTERNATIONAL_DA, "International"},
 /* de */ {IDMS_LANGUAGE_INTERNATIONAL_DE, "International"},
 /* fr */ {IDMS_LANGUAGE_INTERNATIONAL_FR, ""},  /* fuzzy */
 /* hu */ {IDMS_LANGUAGE_INTERNATIONAL_HU, "Nemzetközi"},
@@ -2217,10 +2217,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_LANGUAGE_INTERNATIONAL_NL, "Internationaal"},
 /* pl */ {IDMS_LANGUAGE_INTERNATIONAL_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_LANGUAGE_INTERNATIONAL_SV, "Internationell"},
-/* tr */ {IDMS_LANGUAGE_INTERNATIONAL_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_LANGUAGE_INTERNATIONAL_TR, "Uluslararasý"},
 
 /* en */ {IDMS_LANGUAGE_ENGLISH,    "English"},
-/* da */ {IDMS_LANGUAGE_ENGLISH_DA, ""},  /* fuzzy */
+/* da */ {IDMS_LANGUAGE_ENGLISH_DA, "Engelsk"},
 /* de */ {IDMS_LANGUAGE_ENGLISH_DE, "Englisch"},
 /* fr */ {IDMS_LANGUAGE_ENGLISH_FR, "Anglais"},
 /* hu */ {IDMS_LANGUAGE_ENGLISH_HU, "Angol"},
@@ -2228,10 +2228,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_LANGUAGE_ENGLISH_NL, "Engels"},
 /* pl */ {IDMS_LANGUAGE_ENGLISH_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_LANGUAGE_ENGLISH_SV, "Engelska"},
-/* tr */ {IDMS_LANGUAGE_ENGLISH_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_LANGUAGE_ENGLISH_TR, "Ýngilizce"},
 
 /* en */ {IDMS_LANGUAGE_GERMAN,    "German"},
-/* da */ {IDMS_LANGUAGE_GERMAN_DA, ""},  /* fuzzy */
+/* da */ {IDMS_LANGUAGE_GERMAN_DA, "Tysk"},
 /* de */ {IDMS_LANGUAGE_GERMAN_DE, "Deutsch"},
 /* fr */ {IDMS_LANGUAGE_GERMAN_FR, "Allemand"},
 /* hu */ {IDMS_LANGUAGE_GERMAN_HU, "Német"},
@@ -2239,10 +2239,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_LANGUAGE_GERMAN_NL, "Duits"},
 /* pl */ {IDMS_LANGUAGE_GERMAN_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_LANGUAGE_GERMAN_SV, "Tyska"},
-/* tr */ {IDMS_LANGUAGE_GERMAN_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_LANGUAGE_GERMAN_TR, "Almanca"},
 
 /* en */ {IDMS_LANGUAGE_FINNISH,    "Finnish"},
-/* da */ {IDMS_LANGUAGE_FINNISH_DA, ""},  /* fuzzy */
+/* da */ {IDMS_LANGUAGE_FINNISH_DA, "Finsk"},
 /* de */ {IDMS_LANGUAGE_FINNISH_DE, "Finnisch"},
 /* fr */ {IDMS_LANGUAGE_FINNISH_FR, ""},  /* fuzzy */
 /* hu */ {IDMS_LANGUAGE_FINNISH_HU, "Finn"},
@@ -2250,10 +2250,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_LANGUAGE_FINNISH_NL, "Fins"},
 /* pl */ {IDMS_LANGUAGE_FINNISH_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_LANGUAGE_FINNISH_SV, "Finska"},
-/* tr */ {IDMS_LANGUAGE_FINNISH_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_LANGUAGE_FINNISH_TR, "Fince"},
 
 /* en */ {IDMS_LANGUAGE_FRENCH,    "French"},
-/* da */ {IDMS_LANGUAGE_FRENCH_DA, ""},  /* fuzzy */
+/* da */ {IDMS_LANGUAGE_FRENCH_DA, "Fransk"},
 /* de */ {IDMS_LANGUAGE_FRENCH_DE, "Französisch"},
 /* fr */ {IDMS_LANGUAGE_FRENCH_FR, "Français"},
 /* hu */ {IDMS_LANGUAGE_FRENCH_HU, "Francia"},
@@ -2261,10 +2261,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_LANGUAGE_FRENCH_NL, "Frans"},
 /* pl */ {IDMS_LANGUAGE_FRENCH_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_LANGUAGE_FRENCH_SV, "Franska"},
-/* tr */ {IDMS_LANGUAGE_FRENCH_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_LANGUAGE_FRENCH_TR, "Fransýzca"},
 
 /* en */ {IDMS_LANGUAGE_HUNGARIAN,    "Hungarian"},
-/* da */ {IDMS_LANGUAGE_HUNGARIAN_DA, ""},  /* fuzzy */
+/* da */ {IDMS_LANGUAGE_HUNGARIAN_DA, "Ungersk"},
 /* de */ {IDMS_LANGUAGE_HUNGARIAN_DE, "Ungarisch"},
 /* fr */ {IDMS_LANGUAGE_HUNGARIAN_FR, "Hungarian"},
 /* hu */ {IDMS_LANGUAGE_HUNGARIAN_HU, "Magyar"},
@@ -2272,10 +2272,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_LANGUAGE_HUNGARIAN_NL, "Hongaars"},
 /* pl */ {IDMS_LANGUAGE_HUNGARIAN_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_LANGUAGE_HUNGARIAN_SV, "Ungerska"},
-/* tr */ {IDMS_LANGUAGE_HUNGARIAN_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_LANGUAGE_HUNGARIAN_TR, "Macarca"},
 
 /* en */ {IDMS_LANGUAGE_ITALIAN,    "Italian"},
-/* da */ {IDMS_LANGUAGE_ITALIAN_DA, ""},  /* fuzzy */
+/* da */ {IDMS_LANGUAGE_ITALIAN_DA, "Italiensk"},
 /* de */ {IDMS_LANGUAGE_ITALIAN_DE, "Italienisch"},
 /* fr */ {IDMS_LANGUAGE_ITALIAN_FR, "Italien"},
 /* hu */ {IDMS_LANGUAGE_ITALIAN_HU, "Olasz"},
@@ -2283,10 +2283,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_LANGUAGE_ITALIAN_NL, "Italiaans"},
 /* pl */ {IDMS_LANGUAGE_ITALIAN_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_LANGUAGE_ITALIAN_SV, "Italienska"},
-/* tr */ {IDMS_LANGUAGE_ITALIAN_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_LANGUAGE_ITALIAN_TR, "Ýtalyanca"},
 
 /* en */ {IDMS_LANGUAGE_DUTCH,    "Dutch"},
-/* da */ {IDMS_LANGUAGE_DUTCH_DA, ""},  /* fuzzy */
+/* da */ {IDMS_LANGUAGE_DUTCH_DA, "Hollandsk"},
 /* de */ {IDMS_LANGUAGE_DUTCH_DE, "Holländisch"},
 /* fr */ {IDMS_LANGUAGE_DUTCH_FR, "Hollandais"},
 /* hu */ {IDMS_LANGUAGE_DUTCH_HU, "Holland"},
@@ -2294,10 +2294,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_LANGUAGE_DUTCH_NL, "Nederlands"},
 /* pl */ {IDMS_LANGUAGE_DUTCH_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_LANGUAGE_DUTCH_SV, "Nederländska"},
-/* tr */ {IDMS_LANGUAGE_DUTCH_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_LANGUAGE_DUTCH_TR, "Hollandaca"},
 
 /* en */ {IDMS_LANGUAGE_NORWEGIAN,    "Norwegian"},
-/* da */ {IDMS_LANGUAGE_NORWEGIAN_DA, ""},  /* fuzzy */
+/* da */ {IDMS_LANGUAGE_NORWEGIAN_DA, "Norsk"},
 /* de */ {IDMS_LANGUAGE_NORWEGIAN_DE, "Norwegisch"},
 /* fr */ {IDMS_LANGUAGE_NORWEGIAN_FR, ""},  /* fuzzy */
 /* hu */ {IDMS_LANGUAGE_NORWEGIAN_HU, "Norvég"},
@@ -2305,10 +2305,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_LANGUAGE_NORWEGIAN_NL, "Noors"},
 /* pl */ {IDMS_LANGUAGE_NORWEGIAN_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_LANGUAGE_NORWEGIAN_SV, "Norska"},
-/* tr */ {IDMS_LANGUAGE_NORWEGIAN_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_LANGUAGE_NORWEGIAN_TR, "Norveççe"},
 
 /* en */ {IDMS_LANGUAGE_POLISH,    "Polish"},
-/* da */ {IDMS_LANGUAGE_POLISH_DA, ""},  /* fuzzy */
+/* da */ {IDMS_LANGUAGE_POLISH_DA, "Polsk"},
 /* de */ {IDMS_LANGUAGE_POLISH_DE, "Polnisch"},
 /* fr */ {IDMS_LANGUAGE_POLISH_FR, "Polonais"},
 /* hu */ {IDMS_LANGUAGE_POLISH_HU, "Lengyel"},
@@ -2316,10 +2316,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_LANGUAGE_POLISH_NL, "Pools"},
 /* pl */ {IDMS_LANGUAGE_POLISH_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_LANGUAGE_POLISH_SV, "Polska"},
-/* tr */ {IDMS_LANGUAGE_POLISH_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_LANGUAGE_POLISH_TR, "Polonyaca"},
 
 /* en */ {IDMS_LANGUAGE_SWEDISH,    "Swedish"},
-/* da */ {IDMS_LANGUAGE_SWEDISH_DA, ""},  /* fuzzy */
+/* da */ {IDMS_LANGUAGE_SWEDISH_DA, "Svensk"},
 /* de */ {IDMS_LANGUAGE_SWEDISH_DE, "Schwedisch"},
 /* fr */ {IDMS_LANGUAGE_SWEDISH_FR, "Suédois"},
 /* hu */ {IDMS_LANGUAGE_SWEDISH_HU, "Svéd"},
@@ -2327,10 +2327,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_LANGUAGE_SWEDISH_NL, "Zweeds"},
 /* pl */ {IDMS_LANGUAGE_SWEDISH_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_LANGUAGE_SWEDISH_SV, "Svenska"},
-/* tr */ {IDMS_LANGUAGE_SWEDISH_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_LANGUAGE_SWEDISH_TR, "Ýsveççe"},
 
 /* en */ {IDMS_LANGUAGE,    "Language"},
-/* da */ {IDMS_LANGUAGE_DA, ""},  /* fuzzy */
+/* da */ {IDMS_LANGUAGE_DA, "Sprog"},
 /* de */ {IDMS_LANGUAGE_DE, "Sprache"},
 /* fr */ {IDMS_LANGUAGE_FR, "Langage"},
 /* hu */ {IDMS_LANGUAGE_HU, "Nyelv"},
@@ -2338,10 +2338,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_LANGUAGE_NL, "Taal"},
 /* pl */ {IDMS_LANGUAGE_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_LANGUAGE_SV, "Språk"},
-/* tr */ {IDMS_LANGUAGE_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_LANGUAGE_TR, "Dil"},
 
 /* en */ {IDMS_FULLSCREEN_STATUSBAR,    "Fullscreen Statusbar"},
-/* da */ {IDMS_FULLSCREEN_STATUSBAR_DA, ""},  /* fuzzy */
+/* da */ {IDMS_FULLSCREEN_STATUSBAR_DA, "Statusbar i fullscreen"},
 /* de */ {IDMS_FULLSCREEN_STATUSBAR_DE, "Vollbild Statusleiste"},
 /* fr */ {IDMS_FULLSCREEN_STATUSBAR_FR, ""},  /* fuzzy */
 /* hu */ {IDMS_FULLSCREEN_STATUSBAR_HU, "Állapotsor teljes képernyõnél"},
@@ -2349,10 +2349,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_FULLSCREEN_STATUSBAR_NL, "Volscherm Statusbalk"},
 /* pl */ {IDMS_FULLSCREEN_STATUSBAR_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_FULLSCREEN_STATUSBAR_SV, "Status rad vid fullskärm"},
-/* tr */ {IDMS_FULLSCREEN_STATUSBAR_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_FULLSCREEN_STATUSBAR_TR, "Tam ekran durum çubuðu"},
 
 /* en */ {IDMS_VIDEO_OVERLAY,    "Video overlay"},
-/* da */ {IDMS_VIDEO_OVERLAY_DA, ""},  /* fuzzy */
+/* da */ {IDMS_VIDEO_OVERLAY_DA, "Video-overlay"},
 /* de */ {IDMS_VIDEO_OVERLAY_DE, "Video Overlay"},
 /* fr */ {IDMS_VIDEO_OVERLAY_FR, ""},  /* fuzzy */
 /* hu */ {IDMS_VIDEO_OVERLAY_HU, "Videó overlay"},
@@ -2360,10 +2360,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_VIDEO_OVERLAY_NL, "Video overlay"},
 /* pl */ {IDMS_VIDEO_OVERLAY_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_VIDEO_OVERLAY_SV, "Video overlay"},
-/* tr */ {IDMS_VIDEO_OVERLAY_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_VIDEO_OVERLAY_TR, "Görüntü bindirme"},
 
 /* en */ {IDMS_START_SOUND_RECORD,    "Start Sound Record..."},
-/* da */ {IDMS_START_SOUND_RECORD_DA, ""},  /* fuzzy */
+/* da */ {IDMS_START_SOUND_RECORD_DA, "Start lydoptagelse..."},
 /* de */ {IDMS_START_SOUND_RECORD_DE, "Tonaufnahme starten..."},
 /* fr */ {IDMS_START_SOUND_RECORD_FR, ""},  /* fuzzy */
 /* hu */ {IDMS_START_SOUND_RECORD_HU, "Hangfelvétel indítása..."},
@@ -2371,10 +2371,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_START_SOUND_RECORD_NL, "Start Geluidsopname..."},
 /* pl */ {IDMS_START_SOUND_RECORD_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_START_SOUND_RECORD_SV, "Starta ljudinspelning..."},
-/* tr */ {IDMS_START_SOUND_RECORD_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_START_SOUND_RECORD_TR, "Ses Kaydýný Baþlat..."},
 
 /* en */ {IDMS_STOP_SOUND_RECORD,    "Stop Sound Record"},
-/* da */ {IDMS_STOP_SOUND_RECORD_DA, ""},  /* fuzzy */
+/* da */ {IDMS_STOP_SOUND_RECORD_DA, "Stop lydoptagelse"},
 /* de */ {IDMS_STOP_SOUND_RECORD_DE, "Tonaufnahme stoppen"},
 /* fr */ {IDMS_STOP_SOUND_RECORD_FR, ""},  /* fuzzy */
 /* hu */ {IDMS_STOP_SOUND_RECORD_HU, "Hangfelvétel leállítása..."},
@@ -2382,10 +2382,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_STOP_SOUND_RECORD_NL, "Stop Geluidsopname"},
 /* pl */ {IDMS_STOP_SOUND_RECORD_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_STOP_SOUND_RECORD_SV, "Stoppa ljudinspelning"},
-/* tr */ {IDMS_STOP_SOUND_RECORD_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_STOP_SOUND_RECORD_TR, "Ses Kaydýný Durdur..."},
 
 /* en */ {IDMS_PAL_EMULATION,    "PAL Emulation"},
-/* da */ {IDMS_PAL_EMULATION_DA, ""},  /* fuzzy */
+/* da */ {IDMS_PAL_EMULATION_DA, "PAL-emulering"},
 /* de */ {IDMS_PAL_EMULATION_DE, "PAL Emulation"},
 /* fr */ {IDMS_PAL_EMULATION_FR, "Émulation PAL"},
 /* hu */ {IDMS_PAL_EMULATION_HU, "PAL emuláció"},
@@ -2393,11 +2393,12 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMS_PAL_EMULATION_NL, "PAL-emulatie"},
 /* pl */ {IDMS_PAL_EMULATION_PL, ""},  /* fuzzy */
 /* sv */ {IDMS_PAL_EMULATION_SV, "PAL-emulering"},
-/* tr */ {IDMS_PAL_EMULATION_TR, ""},  /* fuzzy */
+/* tr */ {IDMS_PAL_EMULATION_TR, "PAL Emülasyonu"},
 
 /* ----------------------- AmigaOS Message/Error Strings ----------------------- */
 
 /* en */ {IDMES_SETTINGS_SAVED_SUCCESS,    "Settings saved successfully."},
+/* da */ {IDMES_SETTINGS_SAVED_SUCCESS_DA, "Indstillingerne er gemt."},
 /* de */ {IDMES_SETTINGS_SAVED_SUCCESS_DE, "Einstellungen erfolgreich gespeichert."},
 /* fr */ {IDMES_SETTINGS_SAVED_SUCCESS_FR, "Sauvegarde des paramètres effectuée correctement."},
 /* hu */ {IDMES_SETTINGS_SAVED_SUCCESS_HU, "Beállítások sikeresen elmentve."},
@@ -2405,8 +2406,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMES_SETTINGS_SAVED_SUCCESS_NL, "Instellingen met succes opgeslagen."},
 /* pl */ {IDMES_SETTINGS_SAVED_SUCCESS_PL, ""},  /* fuzzy */
 /* sv */ {IDMES_SETTINGS_SAVED_SUCCESS_SV, "Inställningarna har sparats."},
+/* tr */ {IDMES_SETTINGS_SAVED_SUCCESS_TR, "Ayarlar baþarýyla kaydedildi."},
 
 /* en */ {IDMES_SETTINGS_LOAD_SUCCESS,    "Settings loaded successfully."},
+/* da */ {IDMES_SETTINGS_LOAD_SUCCESS_DA, "Indstillinger indlæst med success."},
 /* de */ {IDMES_SETTINGS_LOAD_SUCCESS_DE, "Einstellungen erfolgreich geladen."},
 /* fr */ {IDMES_SETTINGS_LOAD_SUCCESS_FR, "Chargement des paramètres réussi."},
 /* hu */ {IDMES_SETTINGS_LOAD_SUCCESS_HU, "Beállítások sikeresen elmentve."},
@@ -2414,8 +2417,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMES_SETTINGS_LOAD_SUCCESS_NL, "Instellingen met succes geladen."},
 /* pl */ {IDMES_SETTINGS_LOAD_SUCCESS_PL, ""},  /* fuzzy */
 /* sv */ {IDMES_SETTINGS_LOAD_SUCCESS_SV, "Inställningarna har lästs in."},
+/* tr */ {IDMES_SETTINGS_LOAD_SUCCESS_TR, "Ayarlar baþarýyla yüklendi."},
 
 /* en */ {IDMES_DFLT_SETTINGS_RESTORED,    "Default settings restored."},
+/* da */ {IDMES_DFLT_SETTINGS_RESTORED_DA, "Standardindstillinger gendannet."},
 /* de */ {IDMES_DFLT_SETTINGS_RESTORED_DE, "Standard wiederhergestellt."},
 /* fr */ {IDMES_DFLT_SETTINGS_RESTORED_FR, "Paramètres par défaut restaurés."},
 /* hu */ {IDMES_DFLT_SETTINGS_RESTORED_HU, "Alapértelmezett beállítások visszaállítva."},
@@ -2423,8 +2428,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMES_DFLT_SETTINGS_RESTORED_NL, "Standaardinstellingen hersteld."},
 /* pl */ {IDMES_DFLT_SETTINGS_RESTORED_PL, ""},  /* fuzzy */
 /* sv */ {IDMES_DFLT_SETTINGS_RESTORED_SV, "Förvalda inställningar återställda."},
+/* tr */ {IDMES_DFLT_SETTINGS_RESTORED_TR, "Varsayýlan ayarlara geri dönüldü."},
 
 /* en */ {IDMES_VICE_MESSAGE,    "VICE Message"},
+/* da */ {IDMES_VICE_MESSAGE_DA, "VICE-besked"},
 /* de */ {IDMES_VICE_MESSAGE_DE, "VICE Nachricht"},
 /* fr */ {IDMES_VICE_MESSAGE_FR, "Message VICE"},
 /* hu */ {IDMES_VICE_MESSAGE_HU, "VICE üzenet"},
@@ -2432,8 +2439,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMES_VICE_MESSAGE_NL, "VICE-bericht"},
 /* pl */ {IDMES_VICE_MESSAGE_PL, ""},  /* fuzzy */
 /* sv */ {IDMES_VICE_MESSAGE_SV, "VICE-meddelande"},
+/* tr */ {IDMES_VICE_MESSAGE_TR, "VICE Mesajý"},
 
 /* en */ {IDMES_OK,    "OK"},
+/* da */ {IDMES_OK_DA, "OK"},
 /* de */ {IDMES_OK_DE, "OK"},
 /* fr */ {IDMES_OK_FR, "OK"},
 /* hu */ {IDMES_OK_HU, "OK"},
@@ -2441,8 +2450,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMES_OK_NL, "OK"},
 /* pl */ {IDMES_OK_PL, "OK"},
 /* sv */ {IDMES_OK_SV, "OK"},
+/* tr */ {IDMES_OK_TR, "Tamam"},
 
 /* en */ {IDMES_VICE_CONTRIBUTORS,    "VICE contributors"},
+/* da */ {IDMES_VICE_CONTRIBUTORS_DA, "VICE bidragsydere"},
 /* de */ {IDMES_VICE_CONTRIBUTORS_DE, "VICE Hackers"},
 /* fr */ {IDMES_VICE_CONTRIBUTORS_FR, "VICE Contributeurs"},
 /* hu */ {IDMES_VICE_CONTRIBUTORS_HU, "VICE - közremûködõk"},
@@ -2450,8 +2461,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMES_VICE_CONTRIBUTORS_NL, "Medewerkers aan het VICE project"},
 /* pl */ {IDMES_VICE_CONTRIBUTORS_PL, ""},  /* fuzzy */
 /* sv */ {IDMES_VICE_CONTRIBUTORS_SV, "VICE Bidragslämnare"},
+/* tr */ {IDMES_VICE_CONTRIBUTORS_TR, "VICE katýlýmcýlarý"},
 
 /* en */ {IDMES_WHO_MADE_WHAT,    "Who made what?"},
+/* da */ {IDMES_WHO_MADE_WHAT_DA, "Hvem har lavet hvad?"},
 /* de */ {IDMES_WHO_MADE_WHAT_DE, "Wer hat was gemacht?"},
 /* fr */ {IDMES_WHO_MADE_WHAT_FR, "Qui fait quoi?"},
 /* hu */ {IDMES_WHO_MADE_WHAT_HU, "Ki mit csinált?"},
@@ -2459,8 +2472,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMES_WHO_MADE_WHAT_NL, "Wie heeft wat gemaakt?"},
 /* pl */ {IDMES_WHO_MADE_WHAT_PL, ""},  /* fuzzy */
 /* sv */ {IDMES_WHO_MADE_WHAT_SV, "Vem gjorde vad?"},
+/* tr */ {IDMES_WHO_MADE_WHAT_TR, "Kim ne yaptý?"},
 
 /* en */ {IDMES_VICE_DIST_NO_WARRANTY,    "VICE is distributed WITHOUT ANY WARRANTY!"},
+/* da */ {IDMES_VICE_DIST_NO_WARRANTY_DA, "VICE distribueres UDEN NOGEN SOM HELST GARANTI!"},
 /* de */ {IDMES_VICE_DIST_NO_WARRANTY_DE, "VICE ist ohne Garantie"},
 /* fr */ {IDMES_VICE_DIST_NO_WARRANTY_FR, "VICE est distribué SANS AUCUN GARANTIE!"},
 /* hu */ {IDMES_VICE_DIST_NO_WARRANTY_HU, "A VICE-t garancia nélkül terjesztjük!"},
@@ -2468,8 +2483,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMES_VICE_DIST_NO_WARRANTY_NL, "VICE heeft ABSOLUUT GEEN GARANTIE!"},
 /* pl */ {IDMES_VICE_DIST_NO_WARRANTY_PL, ""},  /* fuzzy */
 /* sv */ {IDMES_VICE_DIST_NO_WARRANTY_SV, "VICE distribueras UTAN NÅGON SOM HELST GARANTI!"},
+/* tr */ {IDMES_VICE_DIST_NO_WARRANTY_TR, "VICE HÝÇBÝR GARANTÝ VERÝLMEDEN daðýtýlmýþtýr!"},
 
 /* en */ {IDMES_WHICH_COMMANDS_AVAILABLE,    "Which command line options are available?"},
+/* da */ {IDMES_WHICH_COMMANDS_AVAILABLE_DA, "Hvilke kommandolinjeparametre er tilgængelige?"},
 /* de */ {IDMES_WHICH_COMMANDS_AVAILABLE_DE, "Welche Kommandozeilen Parameter sind verfügbar?"},
 /* fr */ {IDMES_WHICH_COMMANDS_AVAILABLE_FR, "Quelles sont les lignes de commandes disponibles?"},
 /* hu */ {IDMES_WHICH_COMMANDS_AVAILABLE_HU, "Milyen parancssori opciók lehetségesek?"},
@@ -2477,8 +2494,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMES_WHICH_COMMANDS_AVAILABLE_NL, "Welke commando opties zijn beschikbaar?"},
 /* pl */ {IDMES_WHICH_COMMANDS_AVAILABLE_PL, ""},  /* fuzzy */
 /* sv */ {IDMES_WHICH_COMMANDS_AVAILABLE_SV, "Vilka kommandoradsflaggor är tillgängliga?"},
+/* tr */ {IDMES_WHICH_COMMANDS_AVAILABLE_TR, "Hangi komut satýrý seçenekleri mevcut?"},
 
 /* en */ {IDMES_CANNOT_SAVE_SETTINGS,    "Cannot save settings."},
+/* da */ {IDMES_CANNOT_SAVE_SETTINGS_DA, "Kunne ikke gemme indstillinger."},
 /* de */ {IDMES_CANNOT_SAVE_SETTINGS_DE, "Fehler beim Speichern der Einstellungen."},
 /* fr */ {IDMES_CANNOT_SAVE_SETTINGS_FR, "Impossible d'enregistrer les paramètres."},
 /* hu */ {IDMES_CANNOT_SAVE_SETTINGS_HU, "A beállítások mentése nem sikerült."},
@@ -2486,8 +2505,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMES_CANNOT_SAVE_SETTINGS_NL, "Kan de instellingen niet opslaan."},
 /* pl */ {IDMES_CANNOT_SAVE_SETTINGS_PL, ""},  /* fuzzy */
 /* sv */ {IDMES_CANNOT_SAVE_SETTINGS_SV, "Kan inte spara inställningar."},
+/* tr */ {IDMES_CANNOT_SAVE_SETTINGS_TR, "Ayarlar kaydedilemedi."},
 
 /* en */ {IDMES_CANNOT_LOAD_SETTINGS,    "Cannot load settings."},
+/* da */ {IDMES_CANNOT_LOAD_SETTINGS_DA, "Kunne ikke indlæse indstillinger."},
 /* de */ {IDMES_CANNOT_LOAD_SETTINGS_DE, "Fehler beim Laden der Einstellungen."},
 /* fr */ {IDMES_CANNOT_LOAD_SETTINGS_FR, "Impossible de charger les paramètres."},
 /* hu */ {IDMES_CANNOT_LOAD_SETTINGS_HU, "A beállítások betöltése nem sikerült."},
@@ -2495,8 +2516,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMES_CANNOT_LOAD_SETTINGS_NL, "Kan de instellingen niet laden."},
 /* pl */ {IDMES_CANNOT_LOAD_SETTINGS_PL, ""},  /* fuzzy */
 /* sv */ {IDMES_CANNOT_LOAD_SETTINGS_SV, "Kan inte läsa inställningar."},
+/* tr */ {IDMES_CANNOT_LOAD_SETTINGS_TR, "Ayarlar yüklenemedi."},
 
 /* en */ {IDMES_VICE_ERROR,    "VICE Error"},
+/* da */ {IDMES_VICE_ERROR_DA, "VICE-fejl"},
 /* de */ {IDMES_VICE_ERROR_DE, "VICE Fehler"},
 /* fr */ {IDMES_VICE_ERROR_FR, "Erreur VICE"},
 /* hu */ {IDMES_VICE_ERROR_HU, "VICE hiba"},
@@ -2504,8 +2527,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMES_VICE_ERROR_NL, "Vice-fout"},
 /* pl */ {IDMES_VICE_ERROR_PL, ""},  /* fuzzy */
 /* sv */ {IDMES_VICE_ERROR_SV, "VICE-fel"},
+/* tr */ {IDMES_VICE_ERROR_TR, "VICE Hatasý"},
 
 /* en */ {IDMES_NO_JOY_ON_PORT_D,    "No joystick or joypad found on port %d"},
+/* da */ {IDMES_NO_JOY_ON_PORT_D_DA, "Fandt intet joystick eller joypad på port %d"},
 /* de */ {IDMES_NO_JOY_ON_PORT_D_DE, "Kein Joystick oder Joypad am Port %d gefunden"},
 /* fr */ {IDMES_NO_JOY_ON_PORT_D_FR, "Aucun joystick ou manette trouvée sur le port %d"},
 /* hu */ {IDMES_NO_JOY_ON_PORT_D_HU, "Nem találtam botkormányt a %d porton"},
@@ -2513,8 +2538,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMES_NO_JOY_ON_PORT_D_NL, "Geen joystick of joypad gevonden op poort %d"},
 /* pl */ {IDMES_NO_JOY_ON_PORT_D_PL, ""},  /* fuzzy */
 /* sv */ {IDMES_NO_JOY_ON_PORT_D_SV, "Ingen joystick eller joypad hittades på port %d"},
+/* tr */ {IDMES_NO_JOY_ON_PORT_D_TR, "Port %d üzerinde joystick veya joypad bulunamadý"},
 
 /* en */ {IDMES_MOUSE_ON_PORT_D,    "A mouse was found on port %d"},
+/* da */ {IDMES_MOUSE_ON_PORT_D_DA, "Mus fundet på port %d"},
 /* de */ {IDMES_MOUSE_ON_PORT_D_DE, "Eine Maus wurde in Port %d gefunden"},
 /* fr */ {IDMES_MOUSE_ON_PORT_D_FR, "Une souris à été trouvée sur le port %d"},
 /* hu */ {IDMES_MOUSE_ON_PORT_D_HU, "Nem találtam egeret a %d porton"},
@@ -2522,8 +2549,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMES_MOUSE_ON_PORT_D_NL, "Een muis was gevonden op poort %d"},
 /* pl */ {IDMES_MOUSE_ON_PORT_D_PL, ""},  /* fuzzy */
 /* sv */ {IDMES_MOUSE_ON_PORT_D_SV, "En mus hittades på port %d"},
+/* tr */ {IDMES_MOUSE_ON_PORT_D_TR, "Port %d üzerinde bir mouse bulundu"},
 
 /* en */ {IDMES_UNKNOWN_DEVICE_ON_PORT_D,    "Unknown device found on port %d"},
+/* da */ {IDMES_UNKNOWN_DEVICE_ON_PORT_D_DA, "Ukendt enhed fundet på port %d"},
 /* de */ {IDMES_UNKNOWN_DEVICE_ON_PORT_D_DE, "Unbekanntes Gerät im Port %d gefunden"},
 /* fr */ {IDMES_UNKNOWN_DEVICE_ON_PORT_D_FR, ""},  /* fuzzy */
 /* hu */ {IDMES_UNKNOWN_DEVICE_ON_PORT_D_HU, "%d porton ismeretlen eszközt találtam"},
@@ -2531,8 +2560,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMES_UNKNOWN_DEVICE_ON_PORT_D_NL, "Onbekend apparaat gevonden op poort %d"},
 /* pl */ {IDMES_UNKNOWN_DEVICE_ON_PORT_D_PL, ""},  /* fuzzy */
 /* sv */ {IDMES_UNKNOWN_DEVICE_ON_PORT_D_SV, "En okänd enhet hittades på port %d"},
+/* tr */ {IDMES_UNKNOWN_DEVICE_ON_PORT_D_TR, "Port %d üzeride bilinmeyen bir aygýt bulundu"},
 
 /* en */ {IDMES_DEVICE_NOT_GAMEPAD,    "The device on this port is not a gamepad"},
+/* da */ {IDMES_DEVICE_NOT_GAMEPAD_DA, "Enheden på denne port er ikke en joypad"},
 /* de */ {IDMES_DEVICE_NOT_GAMEPAD_DE, "Das Gerät in diesem Port ist kein Gamepad"},
 /* fr */ {IDMES_DEVICE_NOT_GAMEPAD_FR, "Le périphérique sur ce port n’est pas une manette"},
 /* hu */ {IDMES_DEVICE_NOT_GAMEPAD_HU, "Az eszköz ezen a porton nem gamepad"},
@@ -2540,8 +2571,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMES_DEVICE_NOT_GAMEPAD_NL, "Het apparaat op deze poort is geen gamepad"},
 /* pl */ {IDMES_DEVICE_NOT_GAMEPAD_PL, ""},  /* fuzzy */
 /* sv */ {IDMES_DEVICE_NOT_GAMEPAD_SV, "Enheten på denna port är ingen gamepad"},
+/* tr */ {IDMES_DEVICE_NOT_GAMEPAD_TR, "Bu port üzerindeki aygýt gamepad deðil"},
 
 /* en */ {IDMES_NOT_MAPPED_TO_AMIGA_PORT,    "The port is not mapped to an Amiga port"},
+/* da */ {IDMES_NOT_MAPPED_TO_AMIGA_PORT_DA, "Denne port er ikke koblet til en Amigaport"},
 /* de */ {IDMES_NOT_MAPPED_TO_AMIGA_PORT_DE, "Dieses Port ist keinem Amiga Port zugeordnet"},
 /* fr */ {IDMES_NOT_MAPPED_TO_AMIGA_PORT_FR, "Le port n’est pas mappé sur un port Amiga"},
 /* hu */ {IDMES_NOT_MAPPED_TO_AMIGA_PORT_HU, "A port nincs leképezve egy Amiga portra"},
@@ -2549,8 +2582,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMES_NOT_MAPPED_TO_AMIGA_PORT_NL, "De poort is niet verbonden met een Amigapoort"},
 /* pl */ {IDMES_NOT_MAPPED_TO_AMIGA_PORT_PL, ""},  /* fuzzy */
 /* sv */ {IDMES_NOT_MAPPED_TO_AMIGA_PORT_SV, "Porten är inte bunden till en Amiga port"},
+/* tr */ {IDMES_NOT_MAPPED_TO_AMIGA_PORT_TR, "Port bir Amiga portuyla eþleþtirilemedi"},
 
 /* en */ {IDMES_CANNOT_AUTOSTART_FILE,    "Cannot autostart specified file."},
+/* da */ {IDMES_CANNOT_AUTOSTART_FILE_DA, "Kan ikke autostarte valgt fil"},
 /* de */ {IDMES_CANNOT_AUTOSTART_FILE_DE, "Autostart von angeforderter Datei fehlgeschlagen."},
 /* fr */ {IDMES_CANNOT_AUTOSTART_FILE_FR, "Impossible de démarrer automatiquement le fichier spécifié"},
 /* hu */ {IDMES_CANNOT_AUTOSTART_FILE_HU, "Nem lehet automatikusan elindítani a megadott fájlt."},
@@ -2558,8 +2593,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMES_CANNOT_AUTOSTART_FILE_NL, "Kan opgegeven bestand niet autostarten."},
 /* pl */ {IDMES_CANNOT_AUTOSTART_FILE_PL, ""},  /* fuzzy */
 /* sv */ {IDMES_CANNOT_AUTOSTART_FILE_SV, "Kan inte autostarta angiven fil."},
+/* tr */ {IDMES_CANNOT_AUTOSTART_FILE_TR, "Belirtilen dosya otomatik baþlatýlamadý."},
 
 /* en */ {IDMES_CANNOT_ATTACH_FILE,    "Cannot attach specified file"},
+/* da */ {IDMES_CANNOT_ATTACH_FILE_DA, "Kan ikke tilslutte den valgte fil"},
 /* de */ {IDMES_CANNOT_ATTACH_FILE_DE, "Kann Image Datei nicht einlegen"},
 /* fr */ {IDMES_CANNOT_ATTACH_FILE_FR, "Impossible d'attacher le fichier spécifié"},
 /* hu */ {IDMES_CANNOT_ATTACH_FILE_HU, "Nem lehet csatolni a megadott fájlt"},
@@ -2567,8 +2604,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMES_CANNOT_ATTACH_FILE_NL, "Kan het opgegeven bestand niet koppelen"},
 /* pl */ {IDMES_CANNOT_ATTACH_FILE_PL, ""},  /* fuzzy */
 /* sv */ {IDMES_CANNOT_ATTACH_FILE_SV, "Kan inte ansluta filen"},
+/* tr */ {IDMES_CANNOT_ATTACH_FILE_TR, "Belirtilen dosya yerleþtirilemedi"},
 
 /* en */ {IDMES_INVALID_CART,    "Invalid cartridge"},
+/* da */ {IDMES_INVALID_CART_DA, "Ugyldigt cartridge"},
 /* de */ {IDMES_INVALID_CART_DE, "Ungültiges Erweiterungsmodul"},
 /* fr */ {IDMES_INVALID_CART_FR, "Cartouche invalide"},
 /* hu */ {IDMES_INVALID_CART_HU, "Érvénytelen cartridge"},
@@ -2576,8 +2615,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMES_INVALID_CART_NL, "Ongeldige cartridge"},
 /* pl */ {IDMES_INVALID_CART_PL, ""},  /* fuzzy */
 /* sv */ {IDMES_INVALID_CART_SV, "Ogiltig insticksmodul"},
+/* tr */ {IDMES_INVALID_CART_TR, "Geçersiz kartuþ"},
 
 /* en */ {IDMES_BAD_CART_CONFIG_IN_UI,    "Bad cartridge config in UI!"},
+/* da */ {IDMES_BAD_CART_CONFIG_IN_UI_DA, "Ugyldig cartridgekonfiguration i brugergrænseflade!"},
 /* de */ {IDMES_BAD_CART_CONFIG_IN_UI_DE, "Fehlerhafte Modul Konfiguration im UI!"},
 /* fr */ {IDMES_BAD_CART_CONFIG_IN_UI_FR, "Mauvaise configuration de la cartouche dans l'interface utilisateur!"},
 /* hu */ {IDMES_BAD_CART_CONFIG_IN_UI_HU, "Rossz cartridge konfiguráció!"},
@@ -2585,8 +2626,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMES_BAD_CART_CONFIG_IN_UI_NL, "Slechte cartridge configuratie in UI!"},
 /* pl */ {IDMES_BAD_CART_CONFIG_IN_UI_PL, ""},  /* fuzzy */
 /* sv */ {IDMES_BAD_CART_CONFIG_IN_UI_SV, "Felaktiga insticksmodulsinställningar i UI!"},
+/* tr */ {IDMES_BAD_CART_CONFIG_IN_UI_TR, "UI'de kötü kartuþ konfigürasyonu!"},
 
 /* en */ {IDMES_INVALID_CART_IMAGE,    "Invalid cartridge image"},
+/* da */ {IDMES_INVALID_CART_IMAGE_DA, "Ugyldigt cartridge-image"},
 /* de */ {IDMES_INVALID_CART_IMAGE_DE, "Ungültiges Erweiterungsmodul Image"},
 /* fr */ {IDMES_INVALID_CART_IMAGE_FR, "Image de cartouche invalide"},
 /* hu */ {IDMES_INVALID_CART_IMAGE_HU, "Érvénytelen cartridge képmás"},
@@ -2594,8 +2637,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMES_INVALID_CART_IMAGE_NL, "Ongeldig cartridgebestand"},
 /* pl */ {IDMES_INVALID_CART_IMAGE_PL, ""},  /* fuzzy */
 /* sv */ {IDMES_INVALID_CART_IMAGE_SV, "Ogiltig insticksmodulfil"},
+/* tr */ {IDMES_INVALID_CART_IMAGE_TR, "Geçersiz kartuþ imajý"},
 
 /* en */ {IDMES_CANNOT_CREATE_IMAGE,    "Cannot create image"},
+/* da */ {IDMES_CANNOT_CREATE_IMAGE_DA, "Kunne ikke oprette image"},
 /* de */ {IDMES_CANNOT_CREATE_IMAGE_DE, "Kann Image Datei nicht erzeugen"},
 /* fr */ {IDMES_CANNOT_CREATE_IMAGE_FR, "Impossible de créer l'image"},
 /* hu */ {IDMES_CANNOT_CREATE_IMAGE_HU, "Nem sikerült a képmást létrehozni"},
@@ -2603,8 +2648,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMES_CANNOT_CREATE_IMAGE_NL, "Kan bestand niet maken"},
 /* pl */ {IDMES_CANNOT_CREATE_IMAGE_PL, ""},  /* fuzzy */
 /* sv */ {IDMES_CANNOT_CREATE_IMAGE_SV, "Kan inte skapa avbildningsfil"},
+/* tr */ {IDMES_CANNOT_CREATE_IMAGE_TR, "Imaj yaratýlamadý"},
 
 /* en */ {IDMES_ERROR_STARTING_SERVER,    "An error occured starting the server."},
+/* da */ {IDMES_ERROR_STARTING_SERVER_DA, "Fejl under start af serveren."},
 /* de */ {IDMES_ERROR_STARTING_SERVER_DE, "Fehler beim Starten des Netplay Servers."},
 /* fr */ {IDMES_ERROR_STARTING_SERVER_FR, "Il y a eu une erreur au démarrage du serveur."},
 /* hu */ {IDMES_ERROR_STARTING_SERVER_HU, "Hiba történt a játék kiszolgáló indításakor."},
@@ -2612,8 +2659,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMES_ERROR_STARTING_SERVER_NL, "Er is een fout opgetreden bij het opstarten van de server"},
 /* pl */ {IDMES_ERROR_STARTING_SERVER_PL, ""},  /* fuzzy */
 /* sv */ {IDMES_ERROR_STARTING_SERVER_SV, "Fel vid anslutning till server."},
+/* tr */ {IDMES_ERROR_STARTING_SERVER_TR, "Sunucu baþlatýlýrken bir hata oluþtu."},
 
 /* en */ {IDMES_ERROR_CONNECTING_CLIENT,    "An error occured connecting the client."},
+/* da */ {IDMES_ERROR_CONNECTING_CLIENT_DA, "Fejl under tilslutning af klienten."},
 /* de */ {IDMES_ERROR_CONNECTING_CLIENT_DE, "Fehler beim Verbindungsaufbau zum Client"},
 /* fr */ {IDMES_ERROR_CONNECTING_CLIENT_FR, ""},  /* fuzzy */
 /* hu */ {IDMES_ERROR_CONNECTING_CLIENT_HU, "Hiba történt a kapcsolódáskor."},
@@ -2621,8 +2670,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMES_ERROR_CONNECTING_CLIENT_NL, "Een fout is opgetreden bij het verbinden."},
 /* pl */ {IDMES_ERROR_CONNECTING_CLIENT_PL, ""},  /* fuzzy */
 /* sv */ {IDMES_ERROR_CONNECTING_CLIENT_SV, "Fel vid anslutning till klient."},
+/* tr */ {IDMES_ERROR_CONNECTING_CLIENT_TR, "Ýstemciye baðlanýrken bir hata oluþtu."},
 
-/* en */ {IDMES_INVALID_PORT_NUMBER,    "Invalid port number"},
+/* en */ {IDMES_INVALID_PORT_NUMBER,    "Invalid Port number"},
+/* da */ {IDMES_INVALID_PORT_NUMBER_DA, "Ugyldigt portnummer"},
 /* de */ {IDMES_INVALID_PORT_NUMBER_DE, "Ungültige Port Nummer"},
 /* fr */ {IDMES_INVALID_PORT_NUMBER_FR, "Numéro de port invalide"},
 /* hu */ {IDMES_INVALID_PORT_NUMBER_HU, "Érvénytelen port szám"},
@@ -2630,8 +2681,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMES_INVALID_PORT_NUMBER_NL, "Ongeldig poort nummer"},
 /* pl */ {IDMES_INVALID_PORT_NUMBER_PL, ""},  /* fuzzy */
 /* sv */ {IDMES_INVALID_PORT_NUMBER_SV, "Ogiltigt portnummer"},
+/* tr */ {IDMES_INVALID_PORT_NUMBER_TR, "Geçersiz port numarasý"},
 
 /* en */ {IDMES_THIS_MACHINE_NO_SID,    "This machine may not have a SID"},
+/* da */ {IDMES_THIS_MACHINE_NO_SID_DA, "Denne maskine kan ikke have en SID"},
 /* de */ {IDMES_THIS_MACHINE_NO_SID_DE, "Diese Maschine hat möglicherweise keinen SID"},
 /* fr */ {IDMES_THIS_MACHINE_NO_SID_FR, "Cette machine n'a peut-être pas de SID"},
 /* hu */ {IDMES_THIS_MACHINE_NO_SID_HU, "Ennek a gépnek nem lehet SIDje"},
@@ -2639,8 +2692,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMES_THIS_MACHINE_NO_SID_NL, "Deze machine heeft mogelijk geen SID"},
 /* pl */ {IDMES_THIS_MACHINE_NO_SID_PL, ""},  /* fuzzy */
 /* sv */ {IDMES_THIS_MACHINE_NO_SID_SV, "Denna maskin kan inte ha en SID"},
+/* tr */ {IDMES_THIS_MACHINE_NO_SID_TR, "Bu makinede SID olmayabilir"},
 
 /* en */ {IDMES_SCREENSHOT_SAVE_S_FAILED,    "Screenshot save of %s failed"},
+/* da */ {IDMES_SCREENSHOT_SAVE_S_FAILED_DA, "Kunne ikke gemme screenshot %s"},
 /* de */ {IDMES_SCREENSHOT_SAVE_S_FAILED_DE, "Screenshot speicherung von %s ist fehlgeschlagen"},
 /* fr */ {IDMES_SCREENSHOT_SAVE_S_FAILED_FR, ""},  /* fuzzy */
 /* hu */ {IDMES_SCREENSHOT_SAVE_S_FAILED_HU, "Fénykép fájl mentése %s fájlba nem sikerült"},
@@ -2648,8 +2703,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMES_SCREENSHOT_SAVE_S_FAILED_NL, "Opslaan schermafdrukbestand %s is mislukt"},
 /* pl */ {IDMES_SCREENSHOT_SAVE_S_FAILED_PL, ""},  /* fuzzy */
 /* sv */ {IDMES_SCREENSHOT_SAVE_S_FAILED_SV, "Fel vid skrivning av skärmdump \"%s\""},
+/* tr */ {IDMES_SCREENSHOT_SAVE_S_FAILED_TR, "%s ekran görüntüsü kaydedilemedi"},
 
 /* en */ {IDMES_SCREENSHOT_S_SAVED,    "Screenshot %s saved."},
+/* da */ {IDMES_SCREENSHOT_S_SAVED_DA, "Screenshot %s gemt."},
 /* de */ {IDMES_SCREENSHOT_S_SAVED_DE, "Screenshots %s gespeicher."},
 /* fr */ {IDMES_SCREENSHOT_S_SAVED_FR, ""},  /* fuzzy */
 /* hu */ {IDMES_SCREENSHOT_S_SAVED_HU, "Fénykép %s fájlba elmentve."},
@@ -2657,10 +2714,12 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDMES_SCREENSHOT_S_SAVED_NL, "Schermafdruk %s opgeslagen."},
 /* pl */ {IDMES_SCREENSHOT_S_SAVED_PL, ""},  /* fuzzy */
 /* sv */ {IDMES_SCREENSHOT_S_SAVED_SV, "Skärmdump \"%s\" sparad."},
+/* tr */ {IDMES_SCREENSHOT_S_SAVED_TR, "%s ekran görüntüsü kaydedildi."},
 
 /* ----------------------- AmigaOS Strings ----------------------- */
 
 /* en */ {IDS_PRESS_KEY_BUTTON,    "Press desired key/button, move stick or press ESC for no key."},
+/* da */ {IDS_PRESS_KEY_BUTTON_DA, "Tryk ønsket tast, bevæg joystick eller tryk ESC for ingen binding."},
 /* de */ {IDS_PRESS_KEY_BUTTON_DE, "Gewünschte Taste/Knopf drücken, Knüppel bewegen oder ESC für keine Taste drücken."},
 /* fr */ {IDS_PRESS_KEY_BUTTON_FR, "Appuyez sur la touche/bouton desire(e), déplacez le stick ou appuyez sur ESC pour effacer cette touche."},
 /* hu */ {IDS_PRESS_KEY_BUTTON_HU, "Nyomja meg a választott gombot, mozdítsa a botkormányt, vagy nyomjon ESC-et üreshez"},
@@ -2668,8 +2727,11 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDS_PRESS_KEY_BUTTON_NL, "Druk de toets/knop, beweeg de joystick of druk op ESC voor geen toets."},
 /* pl */ {IDS_PRESS_KEY_BUTTON_PL, ""},  /* fuzzy */
 /* sv */ {IDS_PRESS_KEY_BUTTON_SV, "Tryck önskad tangent/knapp, rör joysticken eller tryck ESC för att inte välja någon knapp."},
+/* tr */ {IDS_PRESS_KEY_BUTTON_TR, "Ýstenilen tuþ/düðmeye basýn, çubuðu hareket ettirin veya tuþ seçmemek için ESC'e "
+                                   "basýn."},
 
 /* en */ {IDS_SAVE,    "Save"},
+/* da */ {IDS_SAVE_DA, "Gem"},
 /* de */ {IDS_SAVE_DE, "Speichern"},
 /* fr */ {IDS_SAVE_FR, "Enregistrer"},
 /* hu */ {IDS_SAVE_HU, "Mentés"},
@@ -2677,8 +2739,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDS_SAVE_NL, "Opslaan"},
 /* pl */ {IDS_SAVE_PL, ""},  /* fuzzy */
 /* sv */ {IDS_SAVE_SV, "Spara"},
+/* tr */ {IDS_SAVE_TR, "Kaydet"},
 
 /* en */ {IDS_BROWSE,    "Browse"},
+/* da */ {IDS_BROWSE_DA, "Gennemse"},
 /* de */ {IDS_BROWSE_DE, "Stöbern"},
 /* fr */ {IDS_BROWSE_FR, "Parcourir"},
 /* hu */ {IDS_BROWSE_HU, "Tallóz"},
@@ -2686,8 +2750,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDS_BROWSE_NL, "Bladeren"},
 /* pl */ {IDS_BROWSE_PL, ""},  /* fuzzy */
 /* sv */ {IDS_BROWSE_SV, "Bläddra"},
+/* tr */ {IDS_BROWSE_TR, "Göz at"},
 
 /* en */ {IDS_CURRENT_MODE,    "Current mode"},
+/* da */ {IDS_CURRENT_MODE_DA, "Nuværende tilstand"},
 /* de */ {IDS_CURRENT_MODE_DE, "Aktueller Modus"},
 /* fr */ {IDS_CURRENT_MODE_FR, ""},  /* fuzzy */
 /* hu */ {IDS_CURRENT_MODE_HU, "Jelenlegi mód"},
@@ -2695,8 +2761,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDS_CURRENT_MODE_NL, "Huidige modus"},
 /* pl */ {IDS_CURRENT_MODE_PL, ""},  /* fuzzy */
 /* sv */ {IDS_CURRENT_MODE_SV, "Nuvarande läge"},
+/* tr */ {IDS_CURRENT_MODE_TR, "Geçerli mod"},
 
 /* en */ {IDS_TCP_PORT,    "TCP-Port"},
+/* da */ {IDS_TCP_PORT_DA, "TCP-port"},
 /* de */ {IDS_TCP_PORT_DE, "TCP-Port"},
 /* fr */ {IDS_TCP_PORT_FR, "Port TCP"},
 /* hu */ {IDS_TCP_PORT_HU, "TCP-Port"},
@@ -2704,8 +2772,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDS_TCP_PORT_NL, "TCP-Poort"},
 /* pl */ {IDS_TCP_PORT_PL, ""},  /* fuzzy */
 /* sv */ {IDS_TCP_PORT_SV, "TCP-port"},
+/* tr */ {IDS_TCP_PORT_TR, "TCP-Port"},
 
 /* en */ {IDS_START_SERVER,    "Start Server"},
+/* da */ {IDS_START_SERVER_DA, "Start server"},
 /* de */ {IDS_START_SERVER_DE, "Server starten"},
 /* fr */ {IDS_START_SERVER_FR, "Démarrer le serveur"},
 /* hu */ {IDS_START_SERVER_HU, "Kiszolgáló elindítása"},
@@ -2713,8 +2783,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDS_START_SERVER_NL, "Start server"},
 /* pl */ {IDS_START_SERVER_PL, ""},  /* fuzzy */
 /* sv */ {IDS_START_SERVER_SV, "Starta server"},
+/* tr */ {IDS_START_SERVER_TR, "Sunucuyu baþlat"},
 
 /* en */ {IDS_CONNECT_TO,    "Connect to"},
+/* da */ {IDS_CONNECT_TO_DA, "Tilslut til"},
 /* de */ {IDS_CONNECT_TO_DE, "Verbinden mit"},
 /* fr */ {IDS_CONNECT_TO_FR, "Se connecter à"},
 /* hu */ {IDS_CONNECT_TO_HU, "Kapcsolódás ehhez:"},
@@ -2722,8 +2794,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDS_CONNECT_TO_NL, "Maak verbinding naar"},
 /* pl */ {IDS_CONNECT_TO_PL, ""},  /* fuzzy */
 /* sv */ {IDS_CONNECT_TO_SV, "Anslut till"},
+/* tr */ {IDS_CONNECT_TO_TR, "Baðlanýlan"},
 
 /* en */ {IDS_DISCONNECT,    "Disconnect"},
+/* da */ {IDS_DISCONNECT_DA, "Afbryd forbindelse"},
 /* de */ {IDS_DISCONNECT_DE, "Verbindung Trennen"},
 /* fr */ {IDS_DISCONNECT_FR, "Se déconnecter du serveur"},
 /* hu */ {IDS_DISCONNECT_HU, "Szétkapcsolódás"},
@@ -2731,8 +2805,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDS_DISCONNECT_NL, "Verbreek verbinding"},
 /* pl */ {IDS_DISCONNECT_PL, ""},  /* fuzzy */
 /* sv */ {IDS_DISCONNECT_SV, "Koppla från"},
+/* tr */ {IDS_DISCONNECT_TR, "Baðlantýyý kes"},
 
 /* en */ {IDS_IDLE,    "Idle"},
+/* da */ {IDS_IDLE_DA, "Venter"},
 /* de */ {IDS_IDLE_DE, "Idle"},
 /* fr */ {IDS_IDLE_FR, "Inactif"},
 /* hu */ {IDS_IDLE_HU, "Tétlen"},
@@ -2740,8 +2816,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDS_IDLE_NL, "Idle"},
 /* pl */ {IDS_IDLE_PL, ""},  /* fuzzy */
 /* sv */ {IDS_IDLE_SV, "Väntar"},
+/* tr */ {IDS_IDLE_TR, "Boþa vakit geçirme"},
 
 /* en */ {IDS_SERVER_LISTENING,    "Server listening"},
+/* da */ {IDS_SERVER_LISTENING_DA, "Server lytter"},
 /* de */ {IDS_SERVER_LISTENING_DE, "Server wartet auf Verbindung"},
 /* fr */ {IDS_SERVER_LISTENING_FR, ""},  /* fuzzy */
 /* hu */ {IDS_SERVER_LISTENING_HU, "Várakozás kliensre"},
@@ -2749,8 +2827,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDS_SERVER_LISTENING_NL, "Server wacht op verbinding"},
 /* pl */ {IDS_SERVER_LISTENING_PL, ""},  /* fuzzy */
 /* sv */ {IDS_SERVER_LISTENING_SV, "Servern lyssnar"},
+/* tr */ {IDS_SERVER_LISTENING_TR, "Sunucu dinleniyor"},
 
 /* en */ {IDS_CONNECTED_SERVER,    "Connected server"},
+/* da */ {IDS_CONNECTED_SERVER_DA, "Tilsluttet server"},
 /* de */ {IDS_CONNECTED_SERVER_DE, "Verbunden, Server"},
 /* fr */ {IDS_CONNECTED_SERVER_FR, "Connecté au serveur"},
 /* hu */ {IDS_CONNECTED_SERVER_HU, "Kiszolgáló a kapcsolatban"},
@@ -2758,8 +2838,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDS_CONNECTED_SERVER_NL, "Verbonden Server"},
 /* pl */ {IDS_CONNECTED_SERVER_PL, ""},  /* fuzzy */
 /* sv */ {IDS_CONNECTED_SERVER_SV, "Ansluten server"},
+/* tr */ {IDS_CONNECTED_SERVER_TR, "Sunucu Baðlandý"},
 
 /* en */ {IDS_CONNECTED_CLIENT,    "Connected client"},
+/* da */ {IDS_CONNECTED_CLIENT_DA, "Tilsluttet klient"},
 /* de */ {IDS_CONNECTED_CLIENT_DE, "Verbunden, Client"},
 /* fr */ {IDS_CONNECTED_CLIENT_FR, "Client connecté"},
 /* hu */ {IDS_CONNECTED_CLIENT_HU, "Kapcsolódó kliens"},
@@ -2767,8 +2849,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDS_CONNECTED_CLIENT_NL, "Verbonden Client"},
 /* pl */ {IDS_CONNECTED_CLIENT_PL, ""},  /* fuzzy */
 /* sv */ {IDS_CONNECTED_CLIENT_SV, "Ansluten klient"},
+/* tr */ {IDS_CONNECTED_CLIENT_TR, "Ýstemci Baðlandý"},
 
 /* en */ {IDS_NETPLAY_SETTINGS,    "Netplay Settings"},
+/* da */ {IDS_NETPLAY_SETTINGS_DA, "Nætværksspilindstillinger"},
 /* de */ {IDS_NETPLAY_SETTINGS_DE, "Netplay Einstellungen"},
 /* fr */ {IDS_NETPLAY_SETTINGS_FR, "Paramètres de jeu en réseau"},
 /* hu */ {IDS_NETPLAY_SETTINGS_HU, "Hálózati játék beállításai"},
@@ -2776,8 +2860,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDS_NETPLAY_SETTINGS_NL, "Netplayinstellingen"},
 /* pl */ {IDS_NETPLAY_SETTINGS_PL, ""},  /* fuzzy */
 /* sv */ {IDS_NETPLAY_SETTINGS_SV, "Inställningar för nätverksspel"},
+/* tr */ {IDS_NETPLAY_SETTINGS_TR, "Netplay Ayarlarý"},
 
 /* en */ {IDS_SAVE_SCREENSHOT,    "Save Screenshot"},
+/* da */ {IDS_SAVE_SCREENSHOT_DA, "Gem screenshot"},
 /* de */ {IDS_SAVE_SCREENSHOT_DE, "Screenshot Speichern"},
 /* fr */ {IDS_SAVE_SCREENSHOT_FR, "Enregistrer une capture d'écran"},
 /* hu */ {IDS_SAVE_SCREENSHOT_HU, "Fénykép mentése"},
@@ -2785,8 +2871,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDS_SAVE_SCREENSHOT_NL, "Schermafdruk opslaan"},
 /* pl */ {IDS_SAVE_SCREENSHOT_PL, ""},  /* fuzzy */
 /* sv */ {IDS_SAVE_SCREENSHOT_SV, "Spara skärmdump"},
+/* tr */ {IDS_SAVE_SCREENSHOT_TR, "Ekran Görüntüsü Kaydet"},
 
 /* en */ {IDS_CANCEL,    "Cancel"},
+/* da */ {IDS_CANCEL_DA, "Annullér"},
 /* de */ {IDS_CANCEL_DE, "Abbruch"},
 /* fr */ {IDS_CANCEL_FR, "Annuler"},
 /* hu */ {IDS_CANCEL_HU, "Mégsem"},
@@ -2794,8 +2882,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDS_CANCEL_NL, "Annuleren"},
 /* pl */ {IDS_CANCEL_PL, ""},  /* fuzzy */
 /* sv */ {IDS_CANCEL_SV, "Avbryt"},
+/* tr */ {IDS_CANCEL_TR, "Ýptal"},
 
 /* en */ {IDS_CHOOSE_SCREENSHOT_FORMAT,    "Choose screenshot format"},
+/* da */ {IDS_CHOOSE_SCREENSHOT_FORMAT_DA, "Vælg screenshot format"},
 /* de */ {IDS_CHOOSE_SCREENSHOT_FORMAT_DE, "Wähle Screenshot Format"},
 /* fr */ {IDS_CHOOSE_SCREENSHOT_FORMAT_FR, "Chosir le format de capture d'écran"},
 /* hu */ {IDS_CHOOSE_SCREENSHOT_FORMAT_HU, "Válasszon fénykép formátumot"},
@@ -2803,8 +2893,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDS_CHOOSE_SCREENSHOT_FORMAT_NL, "Kies schermafdrukformaat"},
 /* pl */ {IDS_CHOOSE_SCREENSHOT_FORMAT_PL, ""},  /* fuzzy */
 /* sv */ {IDS_CHOOSE_SCREENSHOT_FORMAT_SV, "Välj önskat format för skärmdumpen"},
+/* tr */ {IDS_CHOOSE_SCREENSHOT_FORMAT_TR, "Ekran görüntüsü biçimi seçin"},
 
 /* en */ {IDS_SAVE_S_SCREENSHOT,    "Save %s screenshot"},
+/* da */ {IDS_SAVE_S_SCREENSHOT_DA, "Gem %s-screenshot"},
 /* de */ {IDS_SAVE_S_SCREENSHOT_DE, "Screenshot %s speichern"},
 /* fr */ {IDS_SAVE_S_SCREENSHOT_FR, "Enregistrer une capture d'écran %s"},
 /* hu */ {IDS_SAVE_S_SCREENSHOT_HU, "%s fénykép mentése"},
@@ -2812,8 +2904,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDS_SAVE_S_SCREENSHOT_NL, "Sla schermafdruk %s op"},
 /* pl */ {IDS_SAVE_S_SCREENSHOT_PL, ""},  /* fuzzy */
 /* sv */ {IDS_SAVE_S_SCREENSHOT_SV, "Spara skärmdumpen i %s format"},
+/* tr */ {IDS_SAVE_S_SCREENSHOT_TR, "%s ekran görüntüsünü kaydet"},
 
 /* en */ {IDS_DETACHED_DEVICE_D,    "Detached device %d"},
+/* da */ {IDS_DETACHED_DEVICE_D_DA, "Frakoblet enhed %d"},
 /* de */ {IDS_DETACHED_DEVICE_D_DE, "Gerät %d entfernt"},
 /* fr */ {IDS_DETACHED_DEVICE_D_FR, "Périphérique détaché %d"},
 /* hu */ {IDS_DETACHED_DEVICE_D_HU, "%d eszköz leválasztva"},
@@ -2821,8 +2915,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDS_DETACHED_DEVICE_D_NL, "Apparaat %d ontkoppelt"},
 /* pl */ {IDS_DETACHED_DEVICE_D_PL, ""},  /* fuzzy */
 /* sv */ {IDS_DETACHED_DEVICE_D_SV, "Kopplade fran enhet %d"},
+/* tr */ {IDS_DETACHED_DEVICE_D_TR, "Çýkartýlmýþ aygýt %d"},
 
 /* en */ {IDS_ATTACHED_S_TO_DEVICE_D,    "Attached %s to device#%d"},
+/* da */ {IDS_ATTACHED_S_TO_DEVICE_D_DA, "Tilsluttet %s til enhed #%d"},
 /* de */ {IDS_ATTACHED_S_TO_DEVICE_D_DE, "%s mit Gerät #%d verbunden"},
 /* fr */ {IDS_ATTACHED_S_TO_DEVICE_D_FR, "%s attaché au périphérique #%d"},
 /* hu */ {IDS_ATTACHED_S_TO_DEVICE_D_HU, "%s csatolva #%d eszközhöz"},
@@ -2830,8 +2926,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDS_ATTACHED_S_TO_DEVICE_D_NL, "%s aan apparaat#%d gekoppelt"},
 /* pl */ {IDS_ATTACHED_S_TO_DEVICE_D_PL, ""},  /* fuzzy */
 /* sv */ {IDS_ATTACHED_S_TO_DEVICE_D_SV, "Anslöt %s till enhet %d"},
+/* tr */ {IDS_ATTACHED_S_TO_DEVICE_D_TR, "%s aygýt#%d'e baðlanmýþ"},
 
 /* en */ {IDS_VICE_QUESTION,    "VICE Question"},
+/* da */ {IDS_VICE_QUESTION_DA, "VICE-spørgsmål"},
 /* de */ {IDS_VICE_QUESTION_DE, "VICE Frage"},
 /* fr */ {IDS_VICE_QUESTION_FR, "Question VICE"},
 /* hu */ {IDS_VICE_QUESTION_HU, "VICE kérdés"},
@@ -2839,8 +2937,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDS_VICE_QUESTION_NL, "VICE vraag"},
 /* pl */ {IDS_VICE_QUESTION_PL, ""},  /* fuzzy */
 /* sv */ {IDS_VICE_QUESTION_SV, "VICE-fraga"},
+/* tr */ {IDS_VICE_QUESTION_TR, "VICE Sorusu"},
 
 /* en */ {IDS_EXTEND_TO_40_TRACK,    "Extend image to 40-track format?"},
+/* da */ {IDS_EXTEND_TO_40_TRACK_DA, "Udvid disk-image til 40 spor?"},
 /* de */ {IDS_EXTEND_TO_40_TRACK_DE, "Image Dateu auf 40-Spur Format erweitern?"},
 /* fr */ {IDS_EXTEND_TO_40_TRACK_FR, "Étendre l'image au format 40 pistes?"},
 /* hu */ {IDS_EXTEND_TO_40_TRACK_HU, "Kiterjesszem a képmást 40 sávos formátumra?"},
@@ -2848,8 +2948,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDS_EXTEND_TO_40_TRACK_NL, "Bestand uitbreiden naar 40-sporen formaat?"},
 /* pl */ {IDS_EXTEND_TO_40_TRACK_PL, ""},  /* fuzzy */
 /* sv */ {IDS_EXTEND_TO_40_TRACK_SV, "Utöka avbildning till 40-sparsformat?"},
+/* tr */ {IDS_EXTEND_TO_40_TRACK_TR, "Imaj 40-track biçimine geniþletilsin mi?"},
 
 /* en */ {IDS_YES_NO,    "Yes|No"},
+/* da */ {IDS_YES_NO_DA, "Ja|Nej"},
 /* de */ {IDS_YES_NO_DE, "Ja|Nein"},
 /* fr */ {IDS_YES_NO_FR, "Oui|Non"},
 /* hu */ {IDS_YES_NO_HU, "Igen|Nem"},
@@ -2857,8 +2959,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDS_YES_NO_NL, "Ja|Nee"},
 /* pl */ {IDS_YES_NO_PL, ""},  /* fuzzy */
 /* sv */ {IDS_YES_NO_SV, "Ja|Nej"},
+/* tr */ {IDS_YES_NO_TR, "Evet|Hayýr"},
 
 /* en */ {IDS_DETACHED_TAPE,    "Detached tape"},
+/* da */ {IDS_DETACHED_TAPE_DA, "Frakoblet bånd"},
 /* de */ {IDS_DETACHED_TAPE_DE, "Band Image entfernt"},
 /* fr */ {IDS_DETACHED_TAPE_FR, "Datassette détaché"},
 /* hu */ {IDS_DETACHED_TAPE_HU, "Szalag leválasztva"},
@@ -2866,8 +2970,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDS_DETACHED_TAPE_NL, "Tape ontkoppelt"},
 /* pl */ {IDS_DETACHED_TAPE_PL, ""},  /* fuzzy */
 /* sv */ {IDS_DETACHED_TAPE_SV, "Kopplade fran band"},
+/* tr */ {IDS_DETACHED_TAPE_TR, "Teyp çýkartýldý"},
 
 /* en */ {IDS_ATTACHED_TAPE_S,    "Attached tape %s"},
+/* da */ {IDS_ATTACHED_TAPE_S_DA, "Tilsluttet bånd %s"},
 /* de */ {IDS_ATTACHED_TAPE_S_DE, "Band Image %s eingelegt"},
 /* fr */ {IDS_ATTACHED_TAPE_S_FR, "Datassette %s attaché"},
 /* hu */ {IDS_ATTACHED_TAPE_S_HU, "%s szalag csatolva"},
@@ -2875,8 +2981,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDS_ATTACHED_TAPE_S_NL, "Tape %s gekoppelt"},
 /* pl */ {IDS_ATTACHED_TAPE_S_PL, ""},  /* fuzzy */
 /* sv */ {IDS_ATTACHED_TAPE_S_SV, "Anslöt band %s"},
+/* tr */ {IDS_ATTACHED_TAPE_S_TR, "Yerleþtirilmiþ teyp %s"},
 
 /* en */ {IDS_SELECT_START_SNAPSHOT,    "Select start snapshot for event history"},
+/* da */ {IDS_SELECT_START_SNAPSHOT_DA, "Vælg start-snapshot for hændelseshistorik"},
 /* de */ {IDS_SELECT_START_SNAPSHOT_DE, "Startsnapshot für Ereignishistory festlegen"},
 /* fr */ {IDS_SELECT_START_SNAPSHOT_FR, "Sélectionner l'instantané de départ pour l'historique des événements"},
 /* hu */ {IDS_SELECT_START_SNAPSHOT_HU, "Válasszon kezdeti pillanatképet az esemény rögzítéshez"},
@@ -2884,8 +2992,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDS_SELECT_START_SNAPSHOT_NL, "Selecteer start momentopname voor gebeurtenis geschiedenis"},
 /* pl */ {IDS_SELECT_START_SNAPSHOT_PL, ""},  /* fuzzy */
 /* sv */ {IDS_SELECT_START_SNAPSHOT_SV, "Välj startögonblicksmodul för händelsehistorik"},
+/* tr */ {IDS_SELECT_START_SNAPSHOT_TR, "Olay tarihçesi için baþlangýç anlýk görüntüsünü seç"},
 
 /* en */ {IDS_SELECT_END_SNAPSHOT,    "Select end snapshot for event history"},
+/* da */ {IDS_SELECT_END_SNAPSHOT_DA, "Vælg slut-snapshot for hændelseshistorik"},
 /* de */ {IDS_SELECT_END_SNAPSHOT_DE, "Startsnapshot für Ereignishistory festlegen"},
 /* fr */ {IDS_SELECT_END_SNAPSHOT_FR, "Sélectionner l'instantané de départ pour l'historique des événements"},
 /* hu */ {IDS_SELECT_END_SNAPSHOT_HU, "Válasszon végsõ pillanatképet az esemény rögzítéshez"},
@@ -2893,17 +3003,23 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDS_SELECT_END_SNAPSHOT_NL, "Selecteer eind momentopname voor gebeurtenis geschiedenis"},
 /* pl */ {IDS_SELECT_END_SNAPSHOT_PL, ""},  /* fuzzy */
 /* sv */ {IDS_SELECT_END_SNAPSHOT_SV, "Välj slutögonblicksmodul för händelsehistorik"},
+/* tr */ {IDS_SELECT_END_SNAPSHOT_TR, "Olay tarihçesi için bitiþ anlýk görüntüsünü seç"},
 
 /* en */ {IDS_REALLY_EXIT,    "Do you really want to exit?\n\nAll the data present in the emulated RAM will be lost."},
+/* da */ {IDS_REALLY_EXIT_DA, "Vil du virkelig afslutte?\n\nAlla data i emuleret RAM går tabt."},
 /* de */ {IDS_REALLY_EXIT_DE, "Willst Du wirklich beenden?\n\nDaten im emulierten Speicher RAM gehen verloren."},
-/* fr */ {IDS_REALLY_EXIT_FR, "Désirez-vous vraiment quitter?\n\nToutes les données présentes dans la mémoire de l'émulateur seront perdues."},
+/* fr */ {IDS_REALLY_EXIT_FR, "Désirez-vous vraiment quitter?\n\nToutes les données présentes dans la mémoire de "
+                              "l'émulateur seront perdues."},
 /* hu */ {IDS_REALLY_EXIT_HU, "Biztosan kilép?\n\nAz emulált memória teljes tartalma el fog veszni."},
 /* it */ {IDS_REALLY_EXIT_IT, "Uscire davvero?\n\nTutti i dati presenti nella RAM emulata saranno persi."},
 /* nl */ {IDS_REALLY_EXIT_NL, "Wilt U echt afsluiten?\n\nAlle data in geëmuleerd geheugen zal verloren gaan."},
 /* pl */ {IDS_REALLY_EXIT_PL, ""},  /* fuzzy */
 /* sv */ {IDS_REALLY_EXIT_SV, "Vill du verkligen avsluta?\n\nAlla data i emulerat RAM kommer förloras."},
+/* tr */ {IDS_REALLY_EXIT_TR, "Çýkmak istediðinizden emin misiniz?\n\nEmüle edilmiþ RAM'de bulunan mevcut tüm veri "
+                              "kaybedilecektir."},
 
 /* en */ {IDS_ATTACH_CRT_IMAGE,    "Attach CRT cartridge image"},
+/* da */ {IDS_ATTACH_CRT_IMAGE_DA, "Tilslut CRT-cartridge image"},
 /* de */ {IDS_ATTACH_CRT_IMAGE_DE, "CRT Erweiterungsmodul Image einlegen"},
 /* fr */ {IDS_ATTACH_CRT_IMAGE_FR, "Insérer une cartouche CRT"},
 /* hu */ {IDS_ATTACH_CRT_IMAGE_HU, "CRT cartridge képmás csatolása"},
@@ -2911,8 +3027,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDS_ATTACH_CRT_IMAGE_NL, "Koppel CRT cartridge bestand"},
 /* pl */ {IDS_ATTACH_CRT_IMAGE_PL, ""},  /* fuzzy */
 /* sv */ {IDS_ATTACH_CRT_IMAGE_SV, "Anslut CRT-insticksmodulfil"},
+/* tr */ {IDS_ATTACH_CRT_IMAGE_TR, "CRT kartuþ imajý yerleþtir"},
 
 /* en */ {IDS_ATTACH_RAW_8KB_IMAGE,    "Attach raw 8KB cartridge image"},
+/* da */ {IDS_ATTACH_RAW_8KB_IMAGE_DA, "Tilslut råt 8KB-cartridge image"},
 /* de */ {IDS_ATTACH_RAW_8KB_IMAGE_DE, "8KB Erweiterungsmodul (raw) Image einlegen"},
 /* fr */ {IDS_ATTACH_RAW_8KB_IMAGE_FR, "Insérer une cartouche 8KO"},
 /* hu */ {IDS_ATTACH_RAW_8KB_IMAGE_HU, "Nyers 8KB-os cartridge képmás csatolása"},
@@ -2920,8 +3038,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDS_ATTACH_RAW_8KB_IMAGE_NL, "Koppel binair 8KB cartridgebestand"},
 /* pl */ {IDS_ATTACH_RAW_8KB_IMAGE_PL, ""},  /* fuzzy */
 /* sv */ {IDS_ATTACH_RAW_8KB_IMAGE_SV, "Anslut ra 8KB-insticksmodulavbilding"},
+/* tr */ {IDS_ATTACH_RAW_8KB_IMAGE_TR, "Düz 8KB kartuþ imajý yerleþtir"},
 
 /* en */ {IDS_ATTACH_RAW_16KB_IMAGE,    "Attach raw 16KB cartridge image"},
+/* da */ {IDS_ATTACH_RAW_16KB_IMAGE_DA, "Tilslut råt 16KB-cartridge image"},
 /* de */ {IDS_ATTACH_RAW_16KB_IMAGE_DE, "16KB Erweiterungsmodul (raw) Image einlegen"},
 /* fr */ {IDS_ATTACH_RAW_16KB_IMAGE_FR, "Insérer une cartouche 16KO"},
 /* hu */ {IDS_ATTACH_RAW_16KB_IMAGE_HU, "Nyers 16KB-os cartridge képmás csatolása"},
@@ -2929,8 +3049,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDS_ATTACH_RAW_16KB_IMAGE_NL, "Koppel binair 16KB cartridgebestand"},
 /* pl */ {IDS_ATTACH_RAW_16KB_IMAGE_PL, ""},  /* fuzzy */
 /* sv */ {IDS_ATTACH_RAW_16KB_IMAGE_SV, "Anslut ra 16KB-insticksmodulavbilding"},
+/* tr */ {IDS_ATTACH_RAW_16KB_IMAGE_TR, "Düz 16KB kartuþ imajý yerleþtir"},
 
 /* en */ {IDS_ATTACH_ACTION_REPLAY_IMAGE,    "Attach Action Replay cartridge image"},
+/* da */ {IDS_ATTACH_ACTION_REPLAY_IMAGE_DA, "Tilslut Action Replay-cartridge image"},
 /* de */ {IDS_ATTACH_ACTION_REPLAY_IMAGE_DE, "Action Replay Erweiterungsmodul Image einlegen"},
 /* fr */ {IDS_ATTACH_ACTION_REPLAY_IMAGE_FR, "Insérer une cartouche Action Replay"},
 /* hu */ {IDS_ATTACH_ACTION_REPLAY_IMAGE_HU, "Action Replay cartridge képmás csatolása"},
@@ -2938,8 +3060,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDS_ATTACH_ACTION_REPLAY_IMAGE_NL, "Koppel Action Replay cartridgebestand"},
 /* pl */ {IDS_ATTACH_ACTION_REPLAY_IMAGE_PL, ""},  /* fuzzy */
 /* sv */ {IDS_ATTACH_ACTION_REPLAY_IMAGE_SV, "Anslut Action Replay-insticksmodulfil"},
+/* tr */ {IDS_ATTACH_ACTION_REPLAY_IMAGE_TR, "Action Replay kartuþ imajý yerleþtir"},
 
 /* en */ {IDS_ATTACH_ACTION_REPLAY3_IMAGE,    "Attach Action Replay 3 cartridge image"},
+/* da */ {IDS_ATTACH_ACTION_REPLAY3_IMAGE_DA, "Tilslut Action Replay 3-cartridge image"},
 /* de */ {IDS_ATTACH_ACTION_REPLAY3_IMAGE_DE, "Action Replay 3 Erweiterungsmodul Image einlegen"},
 /* fr */ {IDS_ATTACH_ACTION_REPLAY3_IMAGE_FR, "Insrer une cartouche Action Replay 3"},
 /* hu */ {IDS_ATTACH_ACTION_REPLAY3_IMAGE_HU, "Action Replay 3 cartridge képmás csatolása"},
@@ -2947,8 +3071,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDS_ATTACH_ACTION_REPLAY3_IMAGE_NL, "Koppel Action Replay 3 cartridgebestand"},
 /* pl */ {IDS_ATTACH_ACTION_REPLAY3_IMAGE_PL, ""},  /* fuzzy */
 /* sv */ {IDS_ATTACH_ACTION_REPLAY3_IMAGE_SV, "Anslut Action Replay 3-avbildningsfil"},
+/* tr */ {IDS_ATTACH_ACTION_REPLAY3_IMAGE_TR, "Action Replay 3 kartuþ imajý yerleþtir"},
 
 /* en */ {IDS_ATTACH_ACTION_REPLAY4_IMAGE,    "Attach Action Replay 4 cartridge image"},
+/* da */ {IDS_ATTACH_ACTION_REPLAY4_IMAGE_DA, "Tilslut Action Replay 4-cartridge image"},
 /* de */ {IDS_ATTACH_ACTION_REPLAY4_IMAGE_DE, "Action Replay 4 Erweiterungsmodul Image einlegen"},
 /* fr */ {IDS_ATTACH_ACTION_REPLAY4_IMAGE_FR, "Insrer une cartouche Action Replay 4"},
 /* hu */ {IDS_ATTACH_ACTION_REPLAY4_IMAGE_HU, "Action Replay 4 cartridge kpms csatolsa"},
@@ -2956,8 +3082,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDS_ATTACH_ACTION_REPLAY4_IMAGE_NL, "Koppel Action Replay 4 cartridgebestand"},
 /* pl */ {IDS_ATTACH_ACTION_REPLAY4_IMAGE_PL, ""},  /* fuzzy */
 /* sv */ {IDS_ATTACH_ACTION_REPLAY4_IMAGE_SV, "Anslut Action Replay 4-insticksmodulfil"},
+/* tr */ {IDS_ATTACH_ACTION_REPLAY4_IMAGE_TR, "Action Replay 4 kartuþ imajý yerleþtir"},
 
 /* en */ {IDS_ATTACH_STARDOS_IMAGE,    "Attach StarDOS cartridge image"},
+/* da */ {IDS_ATTACH_STARDOS_IMAGE_DA, "Tilslut StarDOS-cartridge image"},
 /* de */ {IDS_ATTACH_STARDOS_IMAGE_DE, "Erweiterungsmodul StarDOS Image einlegen"},
 /* fr */ {IDS_ATTACH_STARDOS_IMAGE_FR, ""},  /* fuzzy */
 /* hu */ {IDS_ATTACH_STARDOS_IMAGE_HU, "StarDOS cartridge képmás csatolása"},
@@ -2965,8 +3093,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDS_ATTACH_STARDOS_IMAGE_NL, "Koppel StarDOS cartridgebestand"},
 /* pl */ {IDS_ATTACH_STARDOS_IMAGE_PL, ""},  /* fuzzy */
 /* sv */ {IDS_ATTACH_STARDOS_IMAGE_SV, "Anslut StarDOS-insticksmodulfil"},
+/* tr */ {IDS_ATTACH_STARDOS_IMAGE_TR, "StarDOS kartuþ imajý yerleþtir"},
 
 /* en */ {IDS_ATTACH_ATOMIC_POWER_IMAGE,    "Attach Atomic Power cartridge image"},
+/* da */ {IDS_ATTACH_ATOMIC_POWER_IMAGE_PL, "Tilslut Atomic Power-cartridge image"},
 /* de */ {IDS_ATTACH_ATOMIC_POWER_IMAGE_DE, "Atomic Power Erweiterungsmodul Image einlegen"},
 /* fr */ {IDS_ATTACH_ATOMIC_POWER_IMAGE_FR, "Insérer une cartouche Atomic Power"},
 /* hu */ {IDS_ATTACH_ATOMIC_POWER_IMAGE_HU, "Atomic Power cartridge képmás csatolása"},
@@ -2974,8 +3104,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDS_ATTACH_ATOMIC_POWER_IMAGE_NL, "Koppel Atomic Power cartridgebestand"},
 /* pl */ {IDS_ATTACH_ATOMIC_POWER_IMAGE_PL, ""},  /* fuzzy */
 /* sv */ {IDS_ATTACH_ATOMIC_POWER_IMAGE_SV, "Anslut Atomic Power-avbildningsfil"},
+/* tr */ {IDS_ATTACH_ATOMIC_POWER_IMAGE_TR, "Atomic Power kartuþ imajý yerleþtir"},
 
 /* en */ {IDS_ATTACH_EPYX_FASTLOAD_IMAGE,    "Attach Epyx fastload cartridge image"},
+/* da */ {IDS_ATTACH_EPYX_FASTLOAD_IMAGE_DA, "Tilslut Epyx fastload-cartridge image"},
 /* de */ {IDS_ATTACH_EPYX_FASTLOAD_IMAGE_DE, "Epyx Fastload Erweiterungsmodul Image einlegen"},
 /* fr */ {IDS_ATTACH_EPYX_FASTLOAD_IMAGE_FR, "Insérer une cartouche Epyx FastLoad"},
 /* hu */ {IDS_ATTACH_EPYX_FASTLOAD_IMAGE_HU, "Epyx gyorstöltõ cartridge képmás csatolása"},
@@ -2983,8 +3115,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDS_ATTACH_EPYX_FASTLOAD_IMAGE_NL, "Koppel Epyx fastload cartridgebestand"},
 /* pl */ {IDS_ATTACH_EPYX_FASTLOAD_IMAGE_PL, ""},  /* fuzzy */
 /* sv */ {IDS_ATTACH_EPYX_FASTLOAD_IMAGE_SV, "Anslut Epyx fastload-avbildningsfil"},
+/* tr */ {IDS_ATTACH_EPYX_FASTLOAD_IMAGE_TR, "Epyx fastload kartuþ imajý yerleþtir"},
 
 /* en */ {IDS_ATTACH_IEEE488_IMAGE,    "Attach IEEE interface cartridge image"},
+/* da */ {IDS_ATTACH_IEEE488_IMAGE_DA, "Tilslut IEEE-interface cartridge image"},
 /* de */ {IDS_ATTACH_IEEE488_IMAGE_DE, "IEEE Schnittstellen Erweiterungsmodul Image einlegen"},
 /* fr */ {IDS_ATTACH_IEEE488_IMAGE_FR, "Insérer une cartouche interface IEEE"},
 /* hu */ {IDS_ATTACH_IEEE488_IMAGE_HU, "IEEE interfész cartridge képmás csatolása"},
@@ -2992,8 +3126,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDS_ATTACH_IEEE488_IMAGE_NL, "Koppel IEEE interface cartridgebestand"},
 /* pl */ {IDS_ATTACH_IEEE488_IMAGE_PL, ""},  /* fuzzy */
 /* sv */ {IDS_ATTACH_IEEE488_IMAGE_SV, "Anslut IEE-gränssnittsavbildningsfil"},
+/* tr */ {IDS_ATTACH_IEEE488_IMAGE_TR, "IEEE arabirimi kartuþ imajý yerleþtir"},
 
 /* en */ {IDS_ATTACH_RETRO_REPLAY_IMAGE,    "Attach Retro Replay cartridge image"},
+/* da */ {IDS_ATTACH_RETRO_REPLAY_IMAGE_DA, "Tilslut Retro Replay-cartridge image"},
 /* de */ {IDS_ATTACH_RETRO_REPLAY_IMAGE_DE, "Retro Replay Erweiterungsmodul Image einlegen"},
 /* fr */ {IDS_ATTACH_RETRO_REPLAY_IMAGE_FR, "Insérer une cartouche Retro Replay"},
 /* hu */ {IDS_ATTACH_RETRO_REPLAY_IMAGE_HU, "Retro Replay cartridge képmás csatolása"},
@@ -3001,8 +3137,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDS_ATTACH_RETRO_REPLAY_IMAGE_NL, "Koppel Retro Replay cartridgebestand"},
 /* pl */ {IDS_ATTACH_RETRO_REPLAY_IMAGE_PL, ""},  /* fuzzy */
 /* sv */ {IDS_ATTACH_RETRO_REPLAY_IMAGE_SV, "Anslut Retro Replay-avbildningsfil"},
+/* tr */ {IDS_ATTACH_RETRO_REPLAY_IMAGE_TR, "Retro Replay kartuþ imajý yerleþtir"},
 
 /* en */ {IDS_ATTACH_IDE64_IMAGE,    "Attach IDE64 interface cartridge image"},
+/* da */ {IDS_ATTACH_IDE64_IMAGE_DA, "Tilslut IDE64-interface cartridge image"},
 /* de */ {IDS_ATTACH_IDE64_IMAGE_DE, "IDE64 Schnittstellen Erweiterungsmodul Image einlegen"},
 /* fr */ {IDS_ATTACH_IDE64_IMAGE_FR, "Insérer une cartouche interface IDE64"},
 /* hu */ {IDS_ATTACH_IDE64_IMAGE_HU, "IDE64 interfész képmás csatolása"},
@@ -3010,8 +3148,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDS_ATTACH_IDE64_IMAGE_NL, "Koppel IDE64 interface cartridgebestand"},
 /* pl */ {IDS_ATTACH_IDE64_IMAGE_PL, ""},  /* fuzzy */
 /* sv */ {IDS_ATTACH_IDE64_IMAGE_SV, "Anslut IDE64-gränssnittsavbildningsfil"},
+/* tr */ {IDS_ATTACH_IDE64_IMAGE_TR, "IDE64 arabirimi kartuþ imajý yerleþtir"},
 
 /* en */ {IDS_ATTACH_SS4_IMAGE,    "Attach Super Snapshot 4 cartridge image"},
+/* da */ {IDS_ATTACH_SS4_IMAGE_DA, "Tilslut Super Snapshot 4-cartridge image"},
 /* de */ {IDS_ATTACH_SS4_IMAGE_DE, "Super Snapshot 4 Erweiterungsmodul Image einlegen"},
 /* fr */ {IDS_ATTACH_SS4_IMAGE_FR, "Insérer une cartouche Super Snapshot 4"},
 /* hu */ {IDS_ATTACH_SS4_IMAGE_HU, "Super Snapshot 4 cartridge képmás csatolása"},
@@ -3019,8 +3159,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDS_ATTACH_SS4_IMAGE_NL, "Koppel Super Snapshot 4 cartridgebestand"},
 /* pl */ {IDS_ATTACH_SS4_IMAGE_PL, ""},  /* fuzzy */
 /* sv */ {IDS_ATTACH_SS4_IMAGE_SV, "Anslut Super Snapshot 4-avbildningsfil"},
+/* tr */ {IDS_ATTACH_SS4_IMAGE_TR, "Super Snapshot 4 kartuþ imajý yerleþtir"},
 
 /* en */ {IDS_ATTACH_SS5_IMAGE,    "Attach Super Snapshot 5 cartridge image"},
+/* da */ {IDS_ATTACH_SS5_IMAGE_DA, "Tilslut Super Snapshot 5-cartridge image"},
 /* de */ {IDS_ATTACH_SS5_IMAGE_DE, "Super Snapshot 5 Erweiterungsmodul Image einlegen"},
 /* fr */ {IDS_ATTACH_SS5_IMAGE_FR, "Insérer une cartouche Super Snapshot 5"},
 /* hu */ {IDS_ATTACH_SS5_IMAGE_HU, "Super Snapshot 5 cartridge képmás csatolása"},
@@ -3028,8 +3170,10 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDS_ATTACH_SS5_IMAGE_NL, "Koppel Super Snapshot 5 cartridgebestand"},
 /* pl */ {IDS_ATTACH_SS5_IMAGE_PL, ""},  /* fuzzy */
 /* sv */ {IDS_ATTACH_SS5_IMAGE_SV, "Anslut Super Snapshot 5-avbildningsfil"},
+/* tr */ {IDS_ATTACH_SS5_IMAGE_TR, "Super Snapshot 5 kartuþ imajý yerleþtir"},
 
 /* en */ {IDS_ATTACH_SB_IMAGE,    "Attach Structured Basic cartridge image"},
+/* da */ {IDS_ATTACH_SB_IMAGE_DA, "Tilslut Strucured Basic-cartridge image"},
 /* de */ {IDS_ATTACH_SB_IMAGE_DE, "Erweiterungsmodul Structured Basic einlegen"},
 /* fr */ {IDS_ATTACH_SB_IMAGE_FR, ""},  /* fuzzy */
 /* hu */ {IDS_ATTACH_SB_IMAGE_HU, "Structured Basic cartridge képmás csatolása"},
@@ -3037,15 +3181,18 @@ intl_translate_t intl_string_table[] = {
 /* nl */ {IDS_ATTACH_SB_IMAGE_NL, "Koppel Structured Basic cartridgebestand"},
 /* pl */ {IDS_ATTACH_SB_IMAGE_PL, ""},  /* fuzzy */
 /* sv */ {IDS_ATTACH_SB_IMAGE_SV, "Anslut Structured Basic insticksavbildningsfil"},
+/* tr */ {IDS_ATTACH_SB_IMAGE_TR, "Structured Basic kartuþ imajý yerleþtir"},
 
 /* en */ {IDS_AVAILABLE_CMDLINE_OPTIONS,    "\nAvailable command-line options:\n\n"},
+/* da */ {IDS_AVAILABLE_CMDLINE_OPTIONS_DA, "\nMulige kommandolinjeparametre:\n\n"},
 /* de */ {IDS_AVAILABLE_CMDLINE_OPTIONS_DE, "\nZulässige Kommandozeilen Optionen:\n\n"},
 /* fr */ {IDS_AVAILABLE_CMDLINE_OPTIONS_FR, "\nOptions de ligne de commande disponibles:\n\n"},
 /* hu */ {IDS_AVAILABLE_CMDLINE_OPTIONS_HU, "\nLehetséges parancssori opciók:\n\n"},
 /* it */ {IDS_AVAILABLE_CMDLINE_OPTIONS_IT, "\nOpzioni disponibili da riga di comando:\n\n"},
 /* nl */ {IDS_AVAILABLE_CMDLINE_OPTIONS_NL, "\nBeschikbare command-line opties:\n\n"},
-/* pl */ {IDS_AVAILABLE_CMDLINE_OPTIONS_PL, "\nTillgängliga kommandoradsflaggor:\n\n"},
+/* pl */ {IDS_AVAILABLE_CMDLINE_OPTIONS_PL, ""},  /* fuzzy */
 /* sv */ {IDS_AVAILABLE_CMDLINE_OPTIONS_SV, "\nTillgängliga kommandoradsargument:\n\n"},
+/* tr */ {IDS_AVAILABLE_CMDLINE_OPTIONS_TR, "\nMevcut komut satýrý seçenekleri:\n\n"},
 
 /* en */ {IDS_ATTACH_4_8_16KB_AT_2000,    "Attach 4/8/16KB cartridge image at $2000"},
 /* de */ {IDS_ATTACH_4_8_16KB_AT_2000_DE, "4/8/16KB Modul Image bei $2000 einlegen"},
