@@ -31,6 +31,7 @@
 
 #include "types.h"
 #include "uiapi.h"
+#include "imagecontents.h"
 
 
 /* If this is #defined, `Alt' is handled the same as `Meta'.  On

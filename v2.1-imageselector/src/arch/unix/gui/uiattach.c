@@ -244,7 +244,7 @@ static image_contents_t *read_disk_or_tape_image_contents(const char *fname)
 {
     image_contents_t *tmp;
 
-    tmp = diskcontents_read(fname, 0);
+    tmp = diskcontents_filesystem_read(fname);
     if (tmp)
         return tmp;
     return tapecontents_read(fname);
@@ -270,7 +270,7 @@ static UI_CALLBACK(smart_attach)
         do_free_dir = 1;
     }
     filename = ui_select_file(_("Smart-attach a file"),
-                              read_disk_or_tape_image_contents, 0,
+                              read_disk_or_tape_image_contents,
                               1, dir, NULL, &button, 1, NULL, UI_FC_LOAD);
     if (do_free_dir)
         lib_free(dir);
