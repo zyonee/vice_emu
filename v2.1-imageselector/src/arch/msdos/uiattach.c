@@ -201,7 +201,7 @@ static TUI_MENU_CALLBACK(attach_disk_callback)
         name = tui_file_selector("Attach a disk image", directory,
                                  "*.d64;*.d71;*.d81;*.g64;*.g41;*.x64;*.d80;*.d82;"
                                  "*.d6z;*.d7z;*.d8z;*.g6z;*.g4z;*.x6z;*.zip;*.gz;*.lzh",
-                                 default_item, diskcontents_read_unit0, &file,
+                                 default_item, diskcontents_filesystem_read, &file,
                                  &file_number);
         if (file_number > 0) {
             if (autostart_disk(name, NULL, file_number, AUTOSTART_MODE_RUN) < 0)
