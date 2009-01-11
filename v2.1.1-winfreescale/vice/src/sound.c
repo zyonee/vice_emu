@@ -1294,7 +1294,9 @@ void sound_init(unsigned int clock_rate, unsigned int ticks_per_frame)
     sound_init_mp3_device();
 #endif
 
-    sound_init_movie_device();
+#ifdef HAVE_FFMPEG
+    sound_init_ffmpegaudio_device();
+#endif
 
 #if 0
     sound_init_test_device();   /* XXX: missing */

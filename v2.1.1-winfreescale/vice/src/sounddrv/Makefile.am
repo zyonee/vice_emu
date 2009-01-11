@@ -20,6 +20,7 @@ EXTRA_libsounddrv_a_SOURCES = \
 	sounddart.c \
 	sounddx.c \
 	soundesd.c \
+	soundffmpegaudio.c \
 	soundhpux.c \
 	soundmidas.c \
 	soundmmos2.c \
@@ -39,11 +40,7 @@ libsounddrv_a_SOURCES = \
 	soundiff.c \
 	soundspeed.c \
 	soundvoc.c \
-	soundwav.c \
-	soundmovie.c
-
-noinst_HEADERS = \
-  soundmovie.h
+	soundwav.c
 
 libsounddrv_a_DEPENDENCIES = \
 	@SOUND_DRIVERS@ \

@@ -218,17 +218,15 @@ static gfxoutputdrv_t jpeg_drv =
     "JPEG",
     "JPEG screenshot",
     "jpg",
-    NULL, /* formatlist */
     jpegdrv_open,
     jpegdrv_close,
     jpegdrv_write,
     jpegdrv_save,
-    NULL,
-    NULL,
-    NULL,
-    NULL
 #ifdef FEATURE_CPUMEMHISTORY
-    ,jpegdrv_save_memmap
+    NULL,
+    jpegdrv_save_memmap
+#else
+    NULL
 #endif
 };
 

@@ -5,7 +5,6 @@ INCLUDES = \
 	@VICE_LIBPNG_INCLUDES@ \
 	@VICE_ZLIB_INCLUDES@ \
 	@FFMPEG_INCLUDES@ \
-	@QUICKTIME_INCLUDES@ \
 	-I$(top_builddir)/src \
 	-I$(top_srcdir)/src
 
@@ -21,9 +20,7 @@ EXTRA_libgfxoutputdrv_a_SOURCES = \
 	jpegdrv.c \
 	jpegdrv.h \
 	pngdrv.c \
-	pngdrv.h \
-	quicktimedrv.h \
-	quicktimedrv.c
+	pngdrv.h
 
 # These sources are always built.
 libgfxoutputdrv_a_SOURCES = \

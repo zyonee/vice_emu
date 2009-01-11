@@ -360,17 +360,15 @@ static gfxoutputdrv_t iff_drv =
     "IFF",
     "IFF screenshot",
     "iff",
-    NULL, /* formatlist */
     iffdrv_open,
     iffdrv_close,
     iffdrv_write,
     iffdrv_save,
-    NULL,
-    NULL,
-    NULL,
-    NULL
 #ifdef FEATURE_CPUMEMHISTORY
-    ,iffdrv_save_memmap
+    NULL,
+    iffdrv_save_memmap
+#else
+    NULL
 #endif
 };
 

@@ -222,7 +222,7 @@ static GtkWidget *build_screenshot_dialog(void)
     GtkWidget *l, *hbox, *tmp;
     GtkObject *adj;
     int audio_bitrate, video_bitrate;
-    gfxoutputdrv_format_t *f;
+    ffmpegdrv_format_t *f;
     GtkListStore *drv_store;
     GtkTreeIter iter;
     GtkCellRenderer *renderer;

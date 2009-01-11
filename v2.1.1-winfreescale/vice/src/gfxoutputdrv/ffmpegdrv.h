@@ -28,11 +28,32 @@
 #define _FFMPEGDRV_H
 
 #include "screenshot.h"
-#include "gfxoutput.h"
+
+typedef struct ffmpegdrv_audio_in_s {
+    SWORD *buffer;
+    int buffersamples;
+    int used;
+} ffmpegdrv_audio_in_t;
+
+typedef struct ffmpegdrv_codec_s {
+    int id;
+    const char *name;
+} ffmpegdrv_codec_t;
+
+typedef struct ffmpegdrv_format_s {
+    char *name;
+    ffmpegdrv_codec_t *audio_codecs;
+    ffmpegdrv_codec_t *video_codecs;
+} ffmpegdrv_format_t;
+
+extern ffmpegdrv_format_t ffmpegdrv_formatlist[];
 
 extern void gfxoutput_init_ffmpeg(void);
-
-/* deprecated access for UIs that do not use the gfxoutputdrv->formatlist yet: */
-extern gfxoutputdrv_format_t ffmpegdrv_formatlist[];
+extern void ffmpegdrv_init_audio(int speed, int channels, 
+                               ffmpegdrv_audio_in_t** audio_in);
+extern void ffmpegdrv_encode_audio(ffmpegdrv_audio_in_t *audio_in);
+extern int  ffmpegdrv_resources_init(void);
+extern int ffmpegdrv_cmdline_options_init(void);
+extern void ffmpegdrv_shutdown(void);
 
 #endif
