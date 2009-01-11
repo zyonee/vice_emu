@@ -118,10 +118,10 @@
 //          Vw
 //
 // ----------------------------------------------------------------------------
-class FilterDTV
+class Filter
 {
 public:
-  FilterDTV();
+  Filter();
 
   void enable_filter(bool enable);
   void set_chip_model(chip_model model);
@@ -196,7 +196,7 @@ protected:
   fc_point* f0_points;
   int f0_count;
 
-friend class SIDDTV;
+friend class SID;
 };
 
 
@@ -212,7 +212,7 @@ friend class SIDDTV;
 // SID clocking - 1 cycle.
 // ----------------------------------------------------------------------------
 RESID_INLINE
-void FilterDTV::clock(sound_sample voice1,
+void Filter::clock(sound_sample voice1,
 		   sound_sample voice2,
 		   sound_sample voice3,
 		   sound_sample ext_in)
@@ -334,7 +334,7 @@ void FilterDTV::clock(sound_sample voice1,
 // SID clocking - delta_t cycles.
 // ----------------------------------------------------------------------------
 RESID_INLINE
-void FilterDTV::clock(cycle_count delta_t,
+void Filter::clock(cycle_count delta_t,
 		   sound_sample voice1,
 		   sound_sample voice2,
 		   sound_sample voice3,
@@ -475,7 +475,7 @@ void FilterDTV::clock(cycle_count delta_t,
 // SID audio output (20 bits).
 // ----------------------------------------------------------------------------
 RESID_INLINE
-sound_sample FilterDTV::output()
+sound_sample Filter::output()
 {
   // This is handy for testing.
   if (!enabled) {

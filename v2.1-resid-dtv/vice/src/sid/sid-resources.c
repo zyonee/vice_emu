@@ -101,9 +101,6 @@ static int set_sid_engine(int set_engine, void *param)
 #ifdef HAVE_RESID_FP
         && engine != SID_ENGINE_RESID_FP
 #endif
-#ifdef HAVE_RESID_DTV
-        && engine != SID_ENGINE_RESID_DTV
-#endif
 #ifdef HAVE_CATWEASELMKIII
         && engine != SID_ENGINE_CATWEASELMKIII
 #endif
@@ -191,8 +188,8 @@ static int set_sid_model(int val, void *param)
         return -1;
 
     /* DTVSID is only supported in ReSID-DTV */
-    if((sid_model == SID_MODEL_DTVSID) && (sidengine != SID_ENGINE_RESID_DTV)) {
-        set_sid_engine(SID_ENGINE_RESID_DTV, NULL);
+    if((sid_model == SID_MODEL_DTVSID) && (sidengine != SID_ENGINE_RESID)) {
+        set_sid_engine(SID_ENGINE_RESID, NULL);
         return 0;
     }
 #ifdef HAVE_RESID_FP

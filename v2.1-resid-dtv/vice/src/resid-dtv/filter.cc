@@ -42,7 +42,7 @@
 // NB! Cutoff frequency characteristics may vary, we have modeled two
 // particular Commodore 64s.
 
-fc_point FilterDTV::f0_points_6581[] =
+fc_point Filter::f0_points_6581[] =
 {
   //  FC      f         FCHI FCLO
   // ----------------------------
@@ -79,7 +79,7 @@ fc_point FilterDTV::f0_points_6581[] =
   { 2047, 18000 }    // 0xff 0x07 - repeated end point
 };
 
-fc_point FilterDTV::f0_points_8580[] =
+fc_point Filter::f0_points_8580[] =
 {
   //  FC      f         FCHI FCLO
   // ----------------------------
@@ -108,7 +108,7 @@ fc_point FilterDTV::f0_points_8580[] =
 // ----------------------------------------------------------------------------
 // Constructor.
 // ----------------------------------------------------------------------------
-FilterDTV::FilterDTV()
+Filter::Filter()
 {
   fc = 0;
 
@@ -145,7 +145,7 @@ FilterDTV::FilterDTV()
 // ----------------------------------------------------------------------------
 // Enable filter.
 // ----------------------------------------------------------------------------
-void FilterDTV::enable_filter(bool enable)
+void Filter::enable_filter(bool enable)
 {
   enabled = enable;
 }
@@ -154,7 +154,7 @@ void FilterDTV::enable_filter(bool enable)
 // ----------------------------------------------------------------------------
 // Set chip model.
 // ----------------------------------------------------------------------------
-void FilterDTV::set_chip_model(chip_model model)
+void Filter::set_chip_model(chip_model model)
 {
   if ((model == MOS6581)||(model == DTVSID)) {
     // The mixer has a small input DC offset. This is found as follows:
@@ -190,7 +190,7 @@ void FilterDTV::set_chip_model(chip_model model)
 // ----------------------------------------------------------------------------
 // SID reset.
 // ----------------------------------------------------------------------------
-void FilterDTV::reset()
+void Filter::reset()
 {
   fc = 0;
 
@@ -218,19 +218,19 @@ void FilterDTV::reset()
 // ----------------------------------------------------------------------------
 // Register functions.
 // ----------------------------------------------------------------------------
-void FilterDTV::writeFC_LO(reg8 fc_lo)
+void Filter::writeFC_LO(reg8 fc_lo)
 {
   fc = fc & 0x7f8 | fc_lo & 0x007;
   set_w0();
 }
 
-void FilterDTV::writeFC_HI(reg8 fc_hi)
+void Filter::writeFC_HI(reg8 fc_hi)
 {
   fc = (fc_hi << 3) & 0x7f8 | fc & 0x007;
   set_w0();
 }
 
-void FilterDTV::writeRES_FILT(reg8 res_filt)
+void Filter::writeRES_FILT(reg8 res_filt)
 {
   res = (res_filt >> 4) & 0x0f;
   set_Q();
@@ -238,7 +238,7 @@ void FilterDTV::writeRES_FILT(reg8 res_filt)
   filt = res_filt & 0x0f;
 }
 
-void FilterDTV::writeMODE_VOL(reg8 mode_vol)
+void Filter::writeMODE_VOL(reg8 mode_vol)
 {
   voice3off = mode_vol & 0x80;
 
@@ -248,7 +248,7 @@ void FilterDTV::writeMODE_VOL(reg8 mode_vol)
 }
 
 // Set filter cutoff frequency.
-void FilterDTV::set_w0()
+void Filter::set_w0()
 {
   const double pi = 3.1415926535897932385;
 
@@ -266,7 +266,7 @@ void FilterDTV::set_w0()
 }
 
 // Set filter resonance.
-void FilterDTV::set_Q()
+void Filter::set_Q()
 {
   // Q is controlled linearly by res. Q has approximate range [0.707, 1.7].
   // As resonance is increased, the filter must be clocked more often to keep
@@ -285,7 +285,7 @@ void FilterDTV::set_Q()
 // Return the array of spline interpolation points used to map the FC register
 // to filter cutoff frequency.
 // ----------------------------------------------------------------------------
-void FilterDTV::fc_default(const fc_point*& points, int& count)
+void Filter::fc_default(const fc_point*& points, int& count)
 {
   points = f0_points;
   count = f0_count;
@@ -299,7 +299,7 @@ void FilterDTV::fc_default(const fc_point*& points, int& count)
 // and that additional end points *must* be present since the end points
 // are not interpolated.
 // ----------------------------------------------------------------------------
-PointPlotter<sound_sample> FilterDTV::fc_plotter()
+PointPlotter<sound_sample> Filter::fc_plotter()
 {
   return PointPlotter<sound_sample>(f0);
 }

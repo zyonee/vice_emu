@@ -23,7 +23,7 @@
 // ----------------------------------------------------------------------------
 // Constructor.
 // ----------------------------------------------------------------------------
-VoiceDTV::VoiceDTV()
+Voice::Voice()
 {
   set_chip_model(DTVSID);
 }
@@ -31,7 +31,7 @@ VoiceDTV::VoiceDTV()
 // ----------------------------------------------------------------------------
 // Set chip model.
 // ----------------------------------------------------------------------------
-void VoiceDTV::set_chip_model(chip_model model)
+void Voice::set_chip_model(chip_model model)
 {
   wave.set_chip_model(model);
 
@@ -108,7 +108,7 @@ void VoiceDTV::set_chip_model(chip_model model)
 // ----------------------------------------------------------------------------
 // Set sync source.
 // ----------------------------------------------------------------------------
-void VoiceDTV::set_sync_source(VoiceDTV* source)
+void Voice::set_sync_source(Voice* source)
 {
   wave.set_sync_source(&source->wave);
 }
@@ -116,7 +116,7 @@ void VoiceDTV::set_sync_source(VoiceDTV* source)
 // ----------------------------------------------------------------------------
 // Register functions.
 // ----------------------------------------------------------------------------
-void VoiceDTV::writeCONTROL_REG(reg8 control)
+void Voice::writeCONTROL_REG(reg8 control)
 {
   wave.writeCONTROL_REG(control);
   envelope.writeCONTROL_REG(control);
@@ -125,7 +125,7 @@ void VoiceDTV::writeCONTROL_REG(reg8 control)
 // ----------------------------------------------------------------------------
 // SID reset.
 // ----------------------------------------------------------------------------
-void VoiceDTV::reset()
+void Voice::reset()
 {
   wave.reset();
   envelope.reset();

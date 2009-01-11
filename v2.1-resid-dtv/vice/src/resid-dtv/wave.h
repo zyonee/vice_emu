@@ -35,12 +35,12 @@
 // The noise waveform is taken from intermediate bits of a 23 bit shift
 // register. This register is clocked by bit 19 of the accumulator.
 // ----------------------------------------------------------------------------
-class WaveformGeneratorDTV
+class WaveformGenerator
 {
 public:
-  WaveformGeneratorDTV();
+  WaveformGenerator();
 
-  void set_sync_source(WaveformGeneratorDTV*);
+  void set_sync_source(WaveformGenerator*);
   void set_chip_model(chip_model model);
 
   RESID_INLINE void clock();
@@ -60,8 +60,8 @@ public:
   RESID_INLINE reg12 output();
 
 protected:
-  const WaveformGeneratorDTV* sync_source;
-  WaveformGeneratorDTV* sync_dest;
+  const WaveformGenerator* sync_source;
+  WaveformGenerator* sync_dest;
 
   // Tell whether the accumulator MSB was set high on this cycle.
   bool msb_rising;
@@ -102,8 +102,8 @@ protected:
   RESID_INLINE reg12 outputNPS_();
   RESID_INLINE reg12 outputNPST();
 
-friend class VoiceDTV;
-friend class SIDDTV;
+friend class Voice;
+friend class SID;
 };
 
 
@@ -119,7 +119,7 @@ friend class SIDDTV;
 // SID clocking - 1 cycle.
 // ----------------------------------------------------------------------------
 RESID_INLINE
-void WaveformGeneratorDTV::clock()
+void WaveformGenerator::clock()
 {
   // No operation if test bit is set.
   if (test) {
@@ -148,7 +148,7 @@ void WaveformGeneratorDTV::clock()
 // SID clocking - delta_t cycles.
 // ----------------------------------------------------------------------------
 RESID_INLINE
-void WaveformGeneratorDTV::clock(cycle_count delta_t)
+void WaveformGenerator::clock(cycle_count delta_t)
 {
   // No operation if test bit is set.
   if (test) {
@@ -210,7 +210,7 @@ void WaveformGeneratorDTV::clock(cycle_count delta_t)
 // MSB is set high for hard sync to operate correctly. See SID::clock().
 // ----------------------------------------------------------------------------
 RESID_INLINE
-void WaveformGeneratorDTV::synchronize()
+void WaveformGenerator::synchronize()
 {
   // A special case occurs when a sync source is synced itself on the same
   // cycle as when its MSB is set high. In this case the destination will
@@ -231,7 +231,7 @@ void WaveformGeneratorDTV::synchronize()
 // Zero output.
 //
 RESID_INLINE
-reg12 WaveformGeneratorDTV::output____()
+reg12 WaveformGenerator::output____()
 {
   return 0x000;
 }
@@ -244,7 +244,7 @@ reg12 WaveformGeneratorDTV::output____()
 // Ring modulation substitutes the MSB with MSB EOR sync_source MSB.
 //
 RESID_INLINE
-reg12 WaveformGeneratorDTV::output___T()
+reg12 WaveformGenerator::output___T()
 {
   reg24 msb = (ring_mod ? accumulator ^ sync_source->accumulator : accumulator)
     & 0x800000;
@@ -255,7 +255,7 @@ reg12 WaveformGeneratorDTV::output___T()
 // The output is identical to the upper 12 bits of the accumulator.
 //
 RESID_INLINE
-reg12 WaveformGeneratorDTV::output__S_()
+reg12 WaveformGenerator::output__S_()
 {
   return accumulator >> 12;
 }
@@ -271,7 +271,7 @@ reg12 WaveformGeneratorDTV::output__S_()
 // regardless of the pulse width setting.
 //
 RESID_INLINE
-reg12 WaveformGeneratorDTV::output_P__()
+reg12 WaveformGenerator::output_P__()
 {
   return (test || (accumulator >> 12) >= pw) ? 0xfff : 0x000;
 }
@@ -296,7 +296,7 @@ reg12 WaveformGeneratorDTV::output_P__()
 // Since waveform output is 12 bits the output is left-shifted 4 times.
 //
 RESID_INLINE
-reg12 WaveformGeneratorDTV::outputN___()
+reg12 WaveformGenerator::outputN___()
 {
   return
     ((shift_register & 0x400000) >> 11) |
@@ -313,25 +313,25 @@ reg12 WaveformGeneratorDTV::outputN___()
 // DTVSID simply ANDs the waveforms.
 // 
 RESID_INLINE
-reg12 WaveformGeneratorDTV::output__ST()
+reg12 WaveformGenerator::output__ST()
 {
   return output__S_() & output___T();
 }
 
 RESID_INLINE
-reg12 WaveformGeneratorDTV::output_P_T()
+reg12 WaveformGenerator::output_P_T()
 {
   return output_P__() & output___T();
 }
 
 RESID_INLINE
-reg12 WaveformGeneratorDTV::output_PS_()
+reg12 WaveformGenerator::output_PS_()
 {
   return output_P__() & output__S_();
 }
 
 RESID_INLINE
-reg12 WaveformGeneratorDTV::output_PST()
+reg12 WaveformGenerator::output_PST()
 {
   return output_P__() & output__S_() & output___T();
 }
@@ -340,43 +340,43 @@ reg12 WaveformGeneratorDTV::output_PST()
 // DTVSID simply ANDs the waveforms.
 //
 RESID_INLINE
-reg12 WaveformGeneratorDTV::outputN__T()
+reg12 WaveformGenerator::outputN__T()
 {
   return outputN___() & output___T();
 }
 
 RESID_INLINE
-reg12 WaveformGeneratorDTV::outputN_S_()
+reg12 WaveformGenerator::outputN_S_()
 {
   return outputN___() & output__S_();
 }
 
 RESID_INLINE
-reg12 WaveformGeneratorDTV::outputN_ST()
+reg12 WaveformGenerator::outputN_ST()
 {
   return outputN___() & output__S_() & output___T();
 }
 
 RESID_INLINE
-reg12 WaveformGeneratorDTV::outputNP__()
+reg12 WaveformGenerator::outputNP__()
 {
   return outputN___() & output_P__();
 }
 
 RESID_INLINE
-reg12 WaveformGeneratorDTV::outputNP_T()
+reg12 WaveformGenerator::outputNP_T()
 {
   return outputN___() & output_P__() & output___T();
 }
 
 RESID_INLINE
-reg12 WaveformGeneratorDTV::outputNPS_()
+reg12 WaveformGenerator::outputNPS_()
 {
   return outputN___() & output_P__() & output__S_();
 }
 
 RESID_INLINE
-reg12 WaveformGeneratorDTV::outputNPST()
+reg12 WaveformGenerator::outputNPST()
 {
   return outputN___() & output_P__() & output__S_() & output___T();
 }
@@ -385,7 +385,7 @@ reg12 WaveformGeneratorDTV::outputNPST()
 // Select one of 16 possible combinations of waveforms.
 // ----------------------------------------------------------------------------
 RESID_INLINE
-reg12 WaveformGeneratorDTV::output()
+reg12 WaveformGenerator::output()
 {
   // It may seem cleaner to use an array of member functions to return
   // waveform output; however a switch with inline functions is faster.

@@ -34,10 +34,10 @@
 // The period of this counter is set to 1, 2, 4, 8, 16, 30 at the envelope
 // counter values 255, 93, 54, 26, 14, 6, respectively.
 // ----------------------------------------------------------------------------
-class EnvelopeGeneratorDTV
+class EnvelopeGenerator
 {
 public:
-  EnvelopeGeneratorDTV();
+  EnvelopeGenerator();
 
   enum State { ATTACK, DECAY_SUSTAIN, RELEASE };
 
@@ -78,7 +78,7 @@ protected:
   // The 16 selectable sustain levels.
   static reg8 sustain_level[];
 
-friend class SIDDTV;
+friend class SID;
 };
 
 
@@ -94,7 +94,7 @@ friend class SIDDTV;
 // SID clocking - 1 cycle.
 // ----------------------------------------------------------------------------
 RESID_INLINE
-void EnvelopeGeneratorDTV::clock()
+void EnvelopeGenerator::clock()
 {
   // Check for ADSR delay bug.
   // If the rate counter comparison value is set below the current value of the
@@ -190,7 +190,7 @@ void EnvelopeGeneratorDTV::clock()
 // SID clocking - delta_t cycles.
 // ----------------------------------------------------------------------------
 RESID_INLINE
-void EnvelopeGeneratorDTV::clock(cycle_count delta_t)
+void EnvelopeGenerator::clock(cycle_count delta_t)
 {
   // Check for ADSR delay bug.
   // If the rate counter comparison value is set below the current value of the
@@ -299,7 +299,7 @@ void EnvelopeGeneratorDTV::clock(cycle_count delta_t)
 // Read the envelope generator output.
 // ----------------------------------------------------------------------------
 RESID_INLINE
-reg8 EnvelopeGeneratorDTV::output()
+reg8 EnvelopeGenerator::output()
 {
   return envelope_counter;
 }

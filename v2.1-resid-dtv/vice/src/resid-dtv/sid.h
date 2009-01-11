@@ -28,11 +28,11 @@
 #include "filter.h"
 #include "extfilt.h"
 
-class SIDDTV
+class SID
 {
 public:
-  SIDDTV();
-  ~SIDDTV();
+  SID();
+  ~SID();
 
   void set_chip_model(chip_model model);
   void enable_filter(bool enable);
@@ -72,7 +72,7 @@ public:
     reg16 exponential_counter[3];
     reg16 exponential_counter_period[3];
     reg8 envelope_counter[3];
-    EnvelopeGeneratorDTV::State envelope_state[3];
+    EnvelopeGenerator::State envelope_state[3];
     bool hold_zero[3];
   };
     
@@ -98,9 +98,9 @@ protected:
   RESID_INLINE int clock_resample_fast(cycle_count& delta_t, short* buf,
 				       int n, int interleave);
 
-  VoiceDTV voice[3];
-  FilterDTV filter;
-  ExternalFilterDTV extfilt;
+  Voice voice[3];
+  Filter filter;
+  ExternalFilter extfilt;
 
   reg8 bus_value;
   cycle_count bus_value_ttl;

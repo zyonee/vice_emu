@@ -347,7 +347,9 @@ viciidtv_lib = $(top_builddir)/src/vicii/libviciidtv.a
 video_lib = $(top_builddir)/src/video/libvideo.a
 xcbm2_lib = $(top_builddir)/src/cbm2/libcbm2.a
 
-common_libs = @ARCH_LIBS@ @LIBOBJS@ @READLINE@ @RESID_LIBS@ @RESID_DTV_LIBS@ @RESID_FP_LIBS@ @VICE_LIBPNG@ @VICE_ZLIB@
+common_libs = @ARCH_LIBS@ @LIBOBJS@ @READLINE@ @VICE_LIBPNG@ @VICE_ZLIB@
+resid_libs = @RESID_LIBS@ @RESID_FP_LIBS@
+resid_dtv_libs = @RESID_DTV_LIBS@ @RESID_FP_LIBS@
 
 # external libraries required for all emulators
 emu_extlibs = @X_LIBS@ @UI_LIBS@ @INTLLIBS@ @SOUND_LIBS@ @FFMPEG_LIBS@ @JOY_LIBS@ @READLINE_LIBS@ @GFXOUTPUT_LIBS@ @ZLIB_LIBS@
@@ -393,7 +395,8 @@ x64_libs =  \
 	$(vicii_lib) \
 	$(raster_lib) \
 	$(video_lib) \
-	$(common_libs)
+	$(common_libs) \
+	$(resid_libs)
 
 x64_SOURCES = $(base_sources) $(maincpu_sources) $(mouse_sources) $(midi_sources)
 x64_LDADD = $(x64_libs) $(emu_extlibs) @TFE_LIBS@ @NETPLAY_LIBS@
@@ -404,7 +407,6 @@ x64_LDFLAGS = @x64_LDFLAGS@
 x64-all: \
 	$(BUILT_SOURCES) \
 	@RESID_DEP@ \
-	@RESID_DTV_DEP@ \
 	@RESID_FP_DEP@ \
 	@VICE_LIBPNG_DEP@ \
 	@VICE_ZLIB_DEP@ \
@@ -457,8 +459,8 @@ x64dtv_libs =  \
 	$(raster_lib) \
 	$(video_lib) \
 	$(common_libs) \
+	$(resid_dtv_libs) \
 	$(c64dtvstubs_lib)
-	
 
 x64dtv_SOURCES = $(base_sources) $(ps2mouse_sources)
 x64dtv_LDADD = $(x64dtv_libs) $(emu_extlibs) @TFE_LIBS@ @NETPLAY_LIBS@
@@ -468,7 +470,6 @@ x64dtv_LDFLAGS = @x64_LDFLAGS@
 .PHONY: x64dtv-all
 x64dtv-all: \
 	$(BUILT_SOURCES) \
-	@RESID_DEP@ \
 	@RESID_DTV_DEP@ \
 	@RESID_FP_DEP@ \
 	@VICE_LIBPNG_DEP@ \
@@ -525,7 +526,8 @@ x128_libs =  \
 	$(vdc_lib) \
 	$(raster_lib) \
 	$(video_lib) \
-	$(common_libs)
+	$(common_libs) \
+	$(resid_libs)
 
 x128_SOURCES = $(base_sources) $(mouse_sources) $(midi_sources)
 x128_LDADD = $(x128_libs) $(emu_extlibs) @TFE_LIBS@ @NETPLAY_LIBS@
@@ -566,7 +568,6 @@ x128-all: \
 	libfileio \
 	libcore \
 	@RESID_DEP@ \
-	@RESID_DTV_DEP@ \
 	@RESID_FP_DEP@ \
 	@VICE_LIBPNG_DEP@ \
 	@VICE_ZLIB_DEP@ \
@@ -588,7 +589,8 @@ xvic_libs =  \
 	$(raster_lib) \
 	$(sid_lib) \
 	$(video_lib) \
-	$(common_libs)
+	$(common_libs) \
+	$(resid_libs)
 
 xvic_SOURCES = $(base_sources) $(maincpu_sources) $(mouse_sources) $(midi_sources)
 xvic_LDADD = $(xvic_libs) $(emu_extlibs) @NETPLAY_LIBS@
@@ -641,7 +643,8 @@ xpet_libs =  \
 	$(raster_lib) \
 	$(video_lib) \
 	$(sid_lib) \
-	$(common_libs)
+	$(common_libs) \
+	$(resid_libs)
 
 xpet_SOURCES = $(base_sources) $(maincpu_sources) $(mouse_sources)
 xpet_LDADD = $(xpet_libs) $(emu_extlibs) @NETPLAY_LIBS@
@@ -694,7 +697,8 @@ xplus4_libs =  \
 	$(sid_lib) \
 	$(raster_lib) \
 	$(video_lib) \
-	$(common_libs)
+	$(common_libs) \
+	$(resid_libs)
 
 xplus4_SOURCES = $(base_sources) $(mouse_sources)
 xplus4_LDADD = $(xplus4_libs) $(emu_extlibs) @NETPLAY_LIBS@
@@ -748,7 +752,8 @@ xcbm2_libs = \
 	$(vicii_lib) \
 	$(raster_lib) \
 	$(video_lib) \
-	$(common_libs)
+	$(common_libs) \
+	$(resid_libs)
 
 xcbm2_SOURCES = $(base_sources) $(mouse_sources)
 xcbm2_LDADD = $(xcbm2_libs) $(emu_extlibs) @NETPLAY_LIBS@
@@ -766,7 +771,6 @@ xcbm2-all: \
 	libarch \
 	libsid \
 	@RESID_DEP@ \
-	@RESID_DTV_DEP@ \
 	@RESID_FP_DEP@ \
 	@VICE_LIBPNG_DEP@ \
 	@VICE_ZLIB_DEP@ \

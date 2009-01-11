@@ -35,10 +35,10 @@
 // of kHz. This calls for a sampling frequency of several MHz, which is far
 // too high for practical use.
 // ----------------------------------------------------------------------------
-class ExternalFilterDTV
+class ExternalFilter
 {
 public:
-  ExternalFilterDTV();
+  ExternalFilter();
 
   void enable_filter(bool enable);
   void set_chip_model(chip_model model);
@@ -66,7 +66,7 @@ protected:
   sound_sample w0lp;
   sound_sample w0hp;
 
-friend class SIDDTV;
+friend class SID;
 };
 
 
@@ -82,7 +82,7 @@ friend class SIDDTV;
 // SID clocking - 1 cycle.
 // ----------------------------------------------------------------------------
 RESID_INLINE
-void ExternalFilterDTV::clock(sound_sample Vi)
+void ExternalFilter::clock(sound_sample Vi)
 {
   // This is handy for testing.
   if (!enabled) {
@@ -111,7 +111,7 @@ void ExternalFilterDTV::clock(sound_sample Vi)
 // SID clocking - delta_t cycles.
 // ----------------------------------------------------------------------------
 RESID_INLINE
-void ExternalFilterDTV::clock(cycle_count delta_t,
+void ExternalFilter::clock(cycle_count delta_t,
 			   sound_sample Vi)
 {
   // This is handy for testing.
@@ -154,7 +154,7 @@ void ExternalFilterDTV::clock(cycle_count delta_t,
 // Audio output (19.5 bits).
 // ----------------------------------------------------------------------------
 RESID_INLINE
-sound_sample ExternalFilterDTV::output()
+sound_sample ExternalFilter::output()
 {
   return Vo;
 }

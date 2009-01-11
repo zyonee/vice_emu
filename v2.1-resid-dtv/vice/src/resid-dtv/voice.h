@@ -24,13 +24,13 @@
 #include "wave.h"
 #include "envelope.h"
 
-class VoiceDTV
+class Voice
 {
 public:
-  VoiceDTV();
+  Voice();
 
   void set_chip_model(chip_model model);
-  void set_sync_source(VoiceDTV*);
+  void set_sync_source(Voice*);
   void reset();
 
   void writeCONTROL_REG(reg8);
@@ -40,8 +40,8 @@ public:
   RESID_INLINE sound_sample output();
 
 protected:
-  WaveformGeneratorDTV wave;
-  EnvelopeGeneratorDTV envelope;
+  WaveformGenerator wave;
+  EnvelopeGenerator envelope;
 
   // Waveform D/A zero level.
   sound_sample wave_zero;
@@ -49,7 +49,7 @@ protected:
   // Multiplying D/A DC offset.
   sound_sample voice_DC;
 
-friend class SIDDTV;
+friend class SID;
 };
 
 
@@ -66,7 +66,7 @@ friend class SIDDTV;
 // Ideal range [-2048*255, 2047*255].
 // ----------------------------------------------------------------------------
 RESID_INLINE
-sound_sample VoiceDTV::output()
+sound_sample Voice::output()
 {
   // Multiply oscillator output with envelope output.
   return (wave.output() - wave_zero)*envelope.output() + voice_DC;

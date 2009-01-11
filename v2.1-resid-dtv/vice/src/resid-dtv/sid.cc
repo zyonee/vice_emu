@@ -26,7 +26,7 @@
 // ----------------------------------------------------------------------------
 // Constructor.
 // ----------------------------------------------------------------------------
-SIDDTV::SIDDTV()
+SID::SID()
 {
   // Initialize pointers.
   sample = 0;
@@ -48,7 +48,7 @@ SIDDTV::SIDDTV()
 // ----------------------------------------------------------------------------
 // Destructor.
 // ----------------------------------------------------------------------------
-SIDDTV::~SIDDTV()
+SID::~SID()
 {
   delete[] sample;
   delete[] fir;
@@ -58,7 +58,7 @@ SIDDTV::~SIDDTV()
 // ----------------------------------------------------------------------------
 // Set chip model.
 // ----------------------------------------------------------------------------
-void SIDDTV::set_chip_model(chip_model model)
+void SID::set_chip_model(chip_model model)
 {
   for (int i = 0; i < 3; i++) {
     voice[i].set_chip_model(model);
@@ -72,7 +72,7 @@ void SIDDTV::set_chip_model(chip_model model)
 // ----------------------------------------------------------------------------
 // SID reset.
 // ----------------------------------------------------------------------------
-void SIDDTV::reset()
+void SID::reset()
 {
   for (int i = 0; i < 3; i++) {
     voice[i].reset();
@@ -91,7 +91,7 @@ void SIDDTV::reset()
 // Note that to mix in an external audio signal, the signal should be
 // resampled to 1MHz first to avoid sampling noise.
 // ----------------------------------------------------------------------------
-void SIDDTV::input(int sample)
+void SID::input(int sample)
 {
   // Voice outputs are 20 bits. Scale up to match three voices in order
   // to facilitate simulation of the MOS8580 "digi boost" hardware hack.
@@ -102,7 +102,7 @@ void SIDDTV::input(int sample)
 // Read sample from audio output.
 // Both 16-bit and n-bit output is provided.
 // ----------------------------------------------------------------------------
-int SIDDTV::output()
+int SID::output()
 {
   const int range = 1 << 16;
   const int half = range >> 1;
@@ -116,7 +116,7 @@ int SIDDTV::output()
   return sample;
 }
 
-int SIDDTV::output(int bits)
+int SID::output(int bits)
 {
   const int range = 1 << bits;
   const int half = range >> 1;
@@ -148,7 +148,7 @@ int SIDDTV::output(int bits)
 // value instead). With this in mind we return the last value written to
 // any SID register for $2000 cycles without modeling the bit fading.
 // ----------------------------------------------------------------------------
-reg8 SIDDTV::read(reg8 offset)
+reg8 SID::read(reg8 offset)
 {
   switch (offset) {
   case 0x19:
@@ -168,7 +168,7 @@ reg8 SIDDTV::read(reg8 offset)
 // ----------------------------------------------------------------------------
 // Write registers.
 // ----------------------------------------------------------------------------
-void SIDDTV::write(reg8 offset, reg8 value)
+void SID::write(reg8 offset, reg8 value)
 {
   bus_value = value;
   bus_value_ttl = 0x4000;
@@ -264,7 +264,7 @@ void SIDDTV::write(reg8 offset, reg8 value)
 // ----------------------------------------------------------------------------
 // Constructor.
 // ----------------------------------------------------------------------------
-SIDDTV::State::State()
+SID::State::State()
 {
   int i;
 
@@ -283,7 +283,7 @@ SIDDTV::State::State()
     exponential_counter[i] = 0;
     exponential_counter_period[i] = 1;
     envelope_counter[i] = 0;
-    envelope_state[i] = EnvelopeGeneratorDTV::RELEASE;
+    envelope_state[i] = EnvelopeGenerator::RELEASE;
     hold_zero[i] = true;
   }
 }
@@ -292,14 +292,14 @@ SIDDTV::State::State()
 // ----------------------------------------------------------------------------
 // Read state.
 // ----------------------------------------------------------------------------
-SIDDTV::State SIDDTV::read_state()
+SID::State SID::read_state()
 {
   State state;
   int i, j;
 
   for (i = 0, j = 0; i < 3; i++, j += 7) {
-    WaveformGeneratorDTV& wave = voice[i].wave;
-    EnvelopeGeneratorDTV& envelope = voice[i].envelope;
+    WaveformGenerator& wave = voice[i].wave;
+    EnvelopeGenerator& envelope = voice[i].envelope;
     state.sid_register[j + 0] = wave.freq & 0xff;
     state.sid_register[j + 1] = wave.freq >> 8;
     state.sid_register[j + 2] = wave.pw & 0xff;
@@ -352,7 +352,7 @@ SIDDTV::State SIDDTV::read_state()
 // ----------------------------------------------------------------------------
 // Write state.
 // ----------------------------------------------------------------------------
-void SIDDTV::write_state(const State& state)
+void SID::write_state(const State& state)
 {
   int i;
 
@@ -380,7 +380,7 @@ void SIDDTV::write_state(const State& state)
 // ----------------------------------------------------------------------------
 // Enable filter.
 // ----------------------------------------------------------------------------
-void SIDDTV::enable_filter(bool enable)
+void SID::enable_filter(bool enable)
 {
   filter.enable_filter(enable);
 }
@@ -389,7 +389,7 @@ void SIDDTV::enable_filter(bool enable)
 // ----------------------------------------------------------------------------
 // Enable external filter.
 // ----------------------------------------------------------------------------
-void SIDDTV::enable_external_filter(bool enable)
+void SID::enable_external_filter(bool enable)
 {
   extfilt.enable_filter(enable);
 }
@@ -399,7 +399,7 @@ void SIDDTV::enable_external_filter(bool enable)
 // I0() computes the 0th order modified Bessel function of the first kind.
 // This function is originally from resample-1.5/filterkit.c by J. O. Smith.
 // ----------------------------------------------------------------------------
-double SIDDTV::I0(double x)
+double SID::I0(double x)
 {
   // Max error acceptable in I0.
   const double I0e = 1e-6;
@@ -442,7 +442,7 @@ double SIDDTV::I0(double x)
 // to slightly below 20kHz. This constraint ensures that the FIR table is
 // not overfilled.
 // ----------------------------------------------------------------------------
-bool SIDDTV::set_sampling_parameters(double clock_freq, sampling_method method,
+bool SID::set_sampling_parameters(double clock_freq, sampling_method method,
 				  double sample_freq, double pass_freq,
 				  double filter_scale)
 {
@@ -580,7 +580,7 @@ bool SIDDTV::set_sampling_parameters(double clock_freq, sampling_method method,
 // that any adjustment of the sampling frequency will change the
 // characteristics of the resampling filter, since the filter is not rebuilt.
 // ----------------------------------------------------------------------------
-void SIDDTV::adjust_sampling_frequency(double sample_freq)
+void SID::adjust_sampling_frequency(double sample_freq)
 {
   cycles_per_sample =
     cycle_count(clock_frequency/sample_freq*(1 << FIXP_SHIFT) + 0.5);
@@ -591,7 +591,7 @@ void SIDDTV::adjust_sampling_frequency(double sample_freq)
 // Return array of default spline interpolation points to map FC to
 // filter cutoff frequency.
 // ----------------------------------------------------------------------------
-void SIDDTV::fc_default(const fc_point*& points, int& count)
+void SID::fc_default(const fc_point*& points, int& count)
 {
   filter.fc_default(points, count);
 }
@@ -600,7 +600,7 @@ void SIDDTV::fc_default(const fc_point*& points, int& count)
 // ----------------------------------------------------------------------------
 // Return FC spline plotter object.
 // ----------------------------------------------------------------------------
-PointPlotter<sound_sample> SIDDTV::fc_plotter()
+PointPlotter<sound_sample> SID::fc_plotter()
 {
   return filter.fc_plotter();
 }
@@ -609,7 +609,7 @@ PointPlotter<sound_sample> SIDDTV::fc_plotter()
 // ----------------------------------------------------------------------------
 // SID clocking - 1 cycle.
 // ----------------------------------------------------------------------------
-void SIDDTV::clock()
+void SID::clock()
 {
   int i;
 
@@ -645,7 +645,7 @@ void SIDDTV::clock()
 // ----------------------------------------------------------------------------
 // SID clocking - delta_t cycles.
 // ----------------------------------------------------------------------------
-void SIDDTV::clock(cycle_count delta_t)
+void SID::clock(cycle_count delta_t)
 {
   int i;
 
@@ -675,7 +675,7 @@ void SIDDTV::clock(cycle_count delta_t)
     // We have to clock on each MSB on / MSB off for hard sync to operate
     // correctly.
     for (i = 0; i < 3; i++) {
-      WaveformGeneratorDTV& wave = voice[i].wave;
+      WaveformGenerator& wave = voice[i].wave;
 
       // It is only necessary to clock on the MSB of an oscillator that is
       // a sync source and has freq != 0.
@@ -736,7 +736,7 @@ void SIDDTV::clock(cycle_count delta_t)
 // }
 // 
 // ----------------------------------------------------------------------------
-int SIDDTV::clock(cycle_count& delta_t, short* buf, int n, int interleave)
+int SID::clock(cycle_count& delta_t, short* buf, int n, int interleave)
 {
   switch (sampling) {
   default:
@@ -755,7 +755,7 @@ int SIDDTV::clock(cycle_count& delta_t, short* buf, int n, int interleave)
 // SID clocking with audio sampling - delta clocking picking nearest sample.
 // ----------------------------------------------------------------------------
 RESID_INLINE
-int SIDDTV::clock_fast(cycle_count& delta_t, short* buf, int n,
+int SID::clock_fast(cycle_count& delta_t, short* buf, int n,
 		    int interleave)
 {
   int s = 0;
@@ -792,7 +792,7 @@ int SIDDTV::clock_fast(cycle_count& delta_t, short* buf, int n,
 // sampling noise.
 // ----------------------------------------------------------------------------
 RESID_INLINE
-int SIDDTV::clock_interpolate(cycle_count& delta_t, short* buf, int n,
+int SID::clock_interpolate(cycle_count& delta_t, short* buf, int n,
 			   int interleave)
 {
   int s = 0;
@@ -874,7 +874,7 @@ int SIDDTV::clock_interpolate(cycle_count& delta_t, short* buf, int n,
 // implementation dependent in the C++ standard.
 // ----------------------------------------------------------------------------
 RESID_INLINE
-int SIDDTV::clock_resample_interpolate(cycle_count& delta_t, short* buf, int n,
+int SID::clock_resample_interpolate(cycle_count& delta_t, short* buf, int n,
 				    int interleave)
 {
   int s = 0;
@@ -958,7 +958,7 @@ int SIDDTV::clock_resample_interpolate(cycle_count& delta_t, short* buf, int n,
 // SID clocking with audio sampling - cycle based with audio resampling.
 // ----------------------------------------------------------------------------
 RESID_INLINE
-int SIDDTV::clock_resample_fast(cycle_count& delta_t, short* buf, int n,
+int SID::clock_resample_fast(cycle_count& delta_t, short* buf, int n,
 			     int interleave)
 {
   int s = 0;

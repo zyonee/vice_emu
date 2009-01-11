@@ -26,7 +26,7 @@
 // ----------------------------------------------------------------------------
 // Constructor.
 // ----------------------------------------------------------------------------
-WaveformGeneratorDTV::WaveformGeneratorDTV()
+WaveformGenerator::WaveformGenerator()
 {
   sync_source = this;
 
@@ -39,7 +39,7 @@ WaveformGeneratorDTV::WaveformGeneratorDTV()
 // ----------------------------------------------------------------------------
 // Set sync source.
 // ----------------------------------------------------------------------------
-void WaveformGeneratorDTV::set_sync_source(WaveformGeneratorDTV* source)
+void WaveformGenerator::set_sync_source(WaveformGenerator* source)
 {
   sync_source = source;
   source->sync_dest = this;
@@ -49,7 +49,7 @@ void WaveformGeneratorDTV::set_sync_source(WaveformGeneratorDTV* source)
 // ----------------------------------------------------------------------------
 // Set chip model.
 // ----------------------------------------------------------------------------
-void WaveformGeneratorDTV::set_chip_model(chip_model model)
+void WaveformGenerator::set_chip_model(chip_model model)
 {
 }
 
@@ -57,27 +57,27 @@ void WaveformGeneratorDTV::set_chip_model(chip_model model)
 // ----------------------------------------------------------------------------
 // Register functions.
 // ----------------------------------------------------------------------------
-void WaveformGeneratorDTV::writeFREQ_LO(reg8 freq_lo)
+void WaveformGenerator::writeFREQ_LO(reg8 freq_lo)
 {
   freq = freq & 0xff00 | freq_lo & 0x00ff;
 }
 
-void WaveformGeneratorDTV::writeFREQ_HI(reg8 freq_hi)
+void WaveformGenerator::writeFREQ_HI(reg8 freq_hi)
 {
   freq = (freq_hi << 8) & 0xff00 | freq & 0x00ff;
 }
 
-void WaveformGeneratorDTV::writePW_LO(reg8 pw_lo)
+void WaveformGenerator::writePW_LO(reg8 pw_lo)
 {
   pw = pw & 0xf00 | pw_lo & 0x0ff;
 }
 
-void WaveformGeneratorDTV::writePW_HI(reg8 pw_hi)
+void WaveformGenerator::writePW_HI(reg8 pw_hi)
 {
   pw = (pw_hi << 8) & 0xf00 | pw & 0x0ff;
 }
 
-void WaveformGeneratorDTV::writeCONTROL_REG(reg8 control)
+void WaveformGenerator::writeCONTROL_REG(reg8 control)
 {
   waveform = (control >> 4) & 0x0f;
   ring_mod = control & 0x04;
@@ -112,12 +112,12 @@ void WaveformGeneratorDTV::writeCONTROL_REG(reg8 control)
   // The gate bit is handled by the EnvelopeGenerator.
 }
 
-reg8 WaveformGeneratorDTV::readOSC()
+reg8 WaveformGenerator::readOSC()
 {
   return output() >> 4;
 }
 
-void WaveformGeneratorDTV::writeACC_HI(reg8 value)
+void WaveformGenerator::writeACC_HI(reg8 value)
 {
   accumulator = (value << 16) | (accumulator & 0xffff);
 }
@@ -125,7 +125,7 @@ void WaveformGeneratorDTV::writeACC_HI(reg8 value)
 // ----------------------------------------------------------------------------
 // SID reset.
 // ----------------------------------------------------------------------------
-void WaveformGeneratorDTV::reset()
+void WaveformGenerator::reset()
 {
   accumulator = 0;
   shift_register = 0x7ffff8;

@@ -26,7 +26,7 @@
 // ----------------------------------------------------------------------------
 // Constructor.
 // ----------------------------------------------------------------------------
-EnvelopeGeneratorDTV::EnvelopeGeneratorDTV()
+EnvelopeGenerator::EnvelopeGenerator()
 {
   reset();
 }
@@ -34,7 +34,7 @@ EnvelopeGeneratorDTV::EnvelopeGeneratorDTV()
 // ----------------------------------------------------------------------------
 // SID reset.
 // ----------------------------------------------------------------------------
-void EnvelopeGeneratorDTV::reset()
+void EnvelopeGenerator::reset()
 {
   envelope_counter = 0;
 
@@ -99,7 +99,7 @@ void EnvelopeGeneratorDTV::reset()
 // The described method is thus sufficient for exact calculation of the rate
 // periods.
 //
-reg16 EnvelopeGeneratorDTV::rate_counter_period[] = {
+reg16 EnvelopeGenerator::rate_counter_period[] = {
       9,  //   2ms*1.0MHz/256 =     7.81
      32,  //   8ms*1.0MHz/256 =    31.25
      63,  //  16ms*1.0MHz/256 =    62.50
@@ -156,7 +156,7 @@ reg16 EnvelopeGeneratorDTV::rate_counter_period[] = {
 // envelope counter are compared to the 4-bit sustain value.
 // This has been verified by sampling ENV3.
 //
-reg8 EnvelopeGeneratorDTV::sustain_level[] = {
+reg8 EnvelopeGenerator::sustain_level[] = {
   0x00,
   0x11,
   0x22,
@@ -179,7 +179,7 @@ reg8 EnvelopeGeneratorDTV::sustain_level[] = {
 // ----------------------------------------------------------------------------
 // Register functions.
 // ----------------------------------------------------------------------------
-void EnvelopeGeneratorDTV::writeCONTROL_REG(reg8 control)
+void EnvelopeGenerator::writeCONTROL_REG(reg8 control)
 {
   reg8 gate_next = control & 0x01;
 
@@ -203,7 +203,7 @@ void EnvelopeGeneratorDTV::writeCONTROL_REG(reg8 control)
   gate = gate_next;
 }
 
-void EnvelopeGeneratorDTV::writeATTACK_DECAY(reg8 attack_decay)
+void EnvelopeGenerator::writeATTACK_DECAY(reg8 attack_decay)
 {
   attack = (attack_decay >> 4) & 0x0f;
   decay = attack_decay & 0x0f;
@@ -215,7 +215,7 @@ void EnvelopeGeneratorDTV::writeATTACK_DECAY(reg8 attack_decay)
   }
 }
 
-void EnvelopeGeneratorDTV::writeSUSTAIN_RELEASE(reg8 sustain_release)
+void EnvelopeGenerator::writeSUSTAIN_RELEASE(reg8 sustain_release)
 {
   sustain = (sustain_release >> 4) & 0x0f;
   release = sustain_release & 0x0f;
@@ -224,12 +224,12 @@ void EnvelopeGeneratorDTV::writeSUSTAIN_RELEASE(reg8 sustain_release)
   }
 }
 
-reg8 EnvelopeGeneratorDTV::readENV()
+reg8 EnvelopeGenerator::readENV()
 {
   return output();
 }
 
-void EnvelopeGeneratorDTV::writeENV(reg8 value)
+void EnvelopeGenerator::writeENV(reg8 value)
 {
     envelope_counter = value;
 }

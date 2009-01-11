@@ -24,7 +24,7 @@
 // ----------------------------------------------------------------------------
 // Constructor.
 // ----------------------------------------------------------------------------
-ExternalFilterDTV::ExternalFilterDTV()
+ExternalFilter::ExternalFilter()
 {
   reset();
   enable_filter(true);
@@ -43,7 +43,7 @@ ExternalFilterDTV::ExternalFilterDTV()
 // ----------------------------------------------------------------------------
 // Enable filter.
 // ----------------------------------------------------------------------------
-void ExternalFilterDTV::enable_filter(bool enable)
+void ExternalFilter::enable_filter(bool enable)
 {
   enabled = enable;
 }
@@ -52,7 +52,7 @@ void ExternalFilterDTV::enable_filter(bool enable)
 // ----------------------------------------------------------------------------
 // Set chip model.
 // ----------------------------------------------------------------------------
-void ExternalFilterDTV::set_chip_model(chip_model model)
+void ExternalFilter::set_chip_model(chip_model model)
 {
   if (model == DTVSID) {
     // Maximum mixer DC output level; to be removed if the external
@@ -70,7 +70,7 @@ void ExternalFilterDTV::set_chip_model(chip_model model)
 // ----------------------------------------------------------------------------
 // SID reset.
 // ----------------------------------------------------------------------------
-void ExternalFilterDTV::reset()
+void ExternalFilter::reset()
 {
   // State of filter.
   Vlp = 0;
