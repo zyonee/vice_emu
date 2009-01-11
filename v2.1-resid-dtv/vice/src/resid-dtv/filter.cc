@@ -143,11 +143,11 @@ Filter::Filter()
 
 
 // ----------------------------------------------------------------------------
-// Enable filter.
+// "Enable" filter (always disabled on DTVSID).
 // ----------------------------------------------------------------------------
 void Filter::enable_filter(bool enable)
 {
-  enabled = enable;
+  enabled = false;
 }
 
 
@@ -156,7 +156,7 @@ void Filter::enable_filter(bool enable)
 // ----------------------------------------------------------------------------
 void Filter::set_chip_model(chip_model model)
 {
-  if ((model == MOS6581)||(model == DTVSID)) {
+  if (1 || (model == MOS6581)||(model == DTVSID)) {
     // The mixer has a small input DC offset. This is found as follows:
     //
     // The "zero" output level of the mixer measured on the SID audio

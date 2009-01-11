@@ -19,6 +19,8 @@
 // C64 DTV modifications written by
 //   Daniel Kahlin <daniel@kahlin.net>
 // Copyright (C) 2007  Daniel Kahlin <daniel@kahlin.net>
+//   Hannu Nuotio <hannu.nuotio@tut.fi>
+// Copyright (C) 2009  Hannu Nuotio <hannu.nuotio@tut.fi>
 
 #ifndef __ENVELOPE_H__
 #define __ENVELOPE_H__
@@ -71,9 +73,11 @@ protected:
 
   State state;
 
-  // Lookup table to convert from attack, decay, or release value to rate
+  // Lookup tables to convert from attack, decay, or release value to rate
   // counter period.
-  static reg16 rate_counter_period[];
+  static reg16 attack_rate_counter_period[];
+  static reg16 decay_rate_counter_period[];
+  static reg16 release_rate_counter_period[];
 
   // The 16 selectable sustain levels.
   static reg8 sustain_level[];
@@ -116,7 +120,7 @@ void EnvelopeGenerator::clock()
   // The first envelope step in the attack state also resets the exponential
   // counter. This has been verified by sampling ENV3.
   //
-  if (state == ATTACK || ++exponential_counter == exponential_counter_period)
+  if (state == ATTACK || state == DECAY_SUSTAIN || ++exponential_counter == exponential_counter_period)
   {
     exponential_counter = 0;
 
@@ -133,9 +137,13 @@ void EnvelopeGenerator::clock()
       // then to attack. This has been verified by sampling ENV3.
       //
       ++envelope_counter &= 0xff;
+      // DTVSID attack = 0 takes 0 cycles
+      if (attack == 0) {
+	envelope_counter = 0xff;
+      }
       if (envelope_counter == 0xff) {
 	state = DECAY_SUSTAIN;
-	rate_period = rate_counter_period[decay];
+	rate_period = decay_rate_counter_period[decay];
       }
       break;
     case DECAY_SUSTAIN:
@@ -221,7 +229,7 @@ void EnvelopeGenerator::clock(cycle_count delta_t)
     // The first envelope step in the attack state also resets the exponential
     // counter. This has been verified by sampling ENV3.
     //
-    if (state == ATTACK	|| ++exponential_counter == exponential_counter_period)
+    if (state == ATTACK	|| state == DECAY_SUSTAIN || ++exponential_counter == exponential_counter_period)
     {
       exponential_counter = 0;
 
@@ -239,9 +247,13 @@ void EnvelopeGenerator::clock(cycle_count delta_t)
 	// then to attack. This has been verified by sampling ENV3.
 	//
 	++envelope_counter &= 0xff;
+    // DTVSID attack = 0 takes 0 cycles
+    if (attack == 0) {
+      envelope_counter = 0xff;
+    }
 	if (envelope_counter == 0xff) {
 	  state = DECAY_SUSTAIN;
-	  rate_period = rate_counter_period[decay];
+	  rate_period = decay_rate_counter_period[decay];
 	}
 	break;
       case DECAY_SUSTAIN:

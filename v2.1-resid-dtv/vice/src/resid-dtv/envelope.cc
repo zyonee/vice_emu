@@ -19,6 +19,8 @@
 // C64 DTV modifications written by
 //   Daniel Kahlin <daniel@kahlin.net>
 // Copyright (C) 2007  Daniel Kahlin <daniel@kahlin.net>
+//   Hannu Nuotio <hannu.nuotio@tut.fi>
+// Copyright (C) 2009  Hannu Nuotio <hannu.nuotio@tut.fi>
 
 #define __ENVELOPE_CC__
 #include "envelope.h"
@@ -50,7 +52,7 @@ void EnvelopeGenerator::reset()
   exponential_counter_period = 1;
 
   state = RELEASE;
-  rate_period = rate_counter_period[release];
+  rate_period = release_rate_counter_period[release];
   hold_zero = true;
 }
 
@@ -99,7 +101,7 @@ void EnvelopeGenerator::reset()
 // The described method is thus sufficient for exact calculation of the rate
 // periods.
 //
-reg16 EnvelopeGenerator::rate_counter_period[] = {
+reg16 EnvelopeGenerator::release_rate_counter_period[] = {
       9,  //   2ms*1.0MHz/256 =     7.81
      32,  //   8ms*1.0MHz/256 =    31.25
      63,  //  16ms*1.0MHz/256 =    62.50
@@ -118,6 +120,48 @@ reg16 EnvelopeGenerator::rate_counter_period[] = {
   31251   //   8 s*1.0MHz/256 = 31250.00
 };
 
+// DTVSID has different rates for attack and decay (and possibly release).
+// Attack = 0 results in immediate 0x00 -> 0xff (handled elsewhere).
+// Decay is linear.
+// These values are measured by polling ENV3 with DMA.
+//
+reg16 EnvelopeGenerator::attack_rate_counter_period[] = {
+    0,
+    24,
+    40,
+    56,
+    80,
+    120,
+    144,
+    176,
+    208,
+    504,
+    1008,
+    2032,
+    2040,
+    6008,
+    10008,
+    16024
+};
+
+reg16 EnvelopeGenerator::decay_rate_counter_period[] = {
+    24,
+    72,
+    120,
+    168,
+    240,
+    360,
+    432,
+    528,
+    624,
+    1512,
+    3024,
+    6096,
+    6120,
+    18024,
+    30024,
+    48072
+};
 
 // For decay and release, the clock to the envelope counter is sequentially
 // divided by 1, 2, 4, 8, 16, 30, 1 to create a piece-wise linear approximation
@@ -152,26 +196,24 @@ reg16 EnvelopeGenerator::rate_counter_period[] = {
 // NB! This one cycle delay is not modeled.
 
 
-// From the sustain levels it follows that both the low and high 4 bits of the
-// envelope counter are compared to the 4-bit sustain value.
-// This has been verified by sampling ENV3.
+// The DTVSID sustain levels. These have been verified by sampling ENV3.
 //
 reg8 EnvelopeGenerator::sustain_level[] = {
   0x00,
-  0x11,
-  0x22,
-  0x33,
-  0x44,
-  0x55,
-  0x66,
-  0x77,
-  0x88,
-  0x99,
-  0xaa,
-  0xbb,
-  0xcc,
-  0xdd,
-  0xee,
+  0x1f,
+  0x20,
+  0x3f,
+  0x40,
+  0x5f,
+  0x60,
+  0x7f,
+  0x80,
+  0x9f,
+  0xa0,
+  0xbf,
+  0xc0,
+  0xdf,
+  0xe0,
   0xff,
 };
 
@@ -189,7 +231,7 @@ void EnvelopeGenerator::writeCONTROL_REG(reg8 control)
   // Gate bit on: Start attack, decay, sustain.
   if (!gate && gate_next) {
     state = ATTACK;
-    rate_period = rate_counter_period[attack];
+    rate_period = attack_rate_counter_period[attack];
 
     // Switching to attack state unlocks the zero freeze.
     hold_zero = false;
@@ -197,7 +239,7 @@ void EnvelopeGenerator::writeCONTROL_REG(reg8 control)
   // Gate bit off: Start release.
   else if (gate && !gate_next) {
     state = RELEASE;
-    rate_period = rate_counter_period[release];
+    rate_period = release_rate_counter_period[release];
   }
 
   gate = gate_next;
@@ -208,10 +250,10 @@ void EnvelopeGenerator::writeATTACK_DECAY(reg8 attack_decay)
   attack = (attack_decay >> 4) & 0x0f;
   decay = attack_decay & 0x0f;
   if (state == ATTACK) {
-    rate_period = rate_counter_period[attack];
+    rate_period = attack_rate_counter_period[attack];
   }
   else if (state == DECAY_SUSTAIN) {
-    rate_period = rate_counter_period[decay];
+    rate_period = decay_rate_counter_period[decay];
   }
 }
 
@@ -220,7 +262,7 @@ void EnvelopeGenerator::writeSUSTAIN_RELEASE(reg8 sustain_release)
   sustain = (sustain_release >> 4) & 0x0f;
   release = sustain_release & 0x0f;
   if (state == RELEASE) {
-    rate_period = rate_counter_period[release];
+    rate_period = release_rate_counter_period[release];
   }
 }
 
