@@ -1977,7 +1977,7 @@ static GtkWidget *rebuild_contents_menu(int unit, const char *name)
 
     s = (unit == 1) ?
         tapecontents_read(name) :
-        diskcontents_read(name, 0);
+        diskcontents_filesystem_read(name);
 
     if (s == NULL)
         return (GtkWidget *)NULL;
@@ -2100,7 +2100,7 @@ static void ui_fill_preview(GtkFileChooser *fs, gpointer data)
         tmp1 = image_contents_to_string(contents, !have_cbm_font);
         tmp2 = (char *)convert_utf8((unsigned char *)tmp1);
 	gtk_list_store_append(store, &iter);
-	gtk_list_store_set(store, &iter, 0, tmp2, 1, row, -1);
+	gtk_list_store_set(store, &iter, 0, tmp2, 1, row++, -1);
         lib_free(tmp1);
         for (element = contents->file_list; element != NULL; element = element->next, row++) {
             tmp1 = (char *)image_contents_file_to_string(element, !have_cbm_font);
