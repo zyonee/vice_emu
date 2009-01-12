@@ -21,6 +21,8 @@
 // Copyright (C) 2007  Daniel Kahlin <daniel@kahlin.net>
 //   Hannu Nuotio <hannu.nuotio@tut.fi>
 // Copyright (C) 2009  Hannu Nuotio <hannu.nuotio@tut.fi>
+//   Antti S. Lankila <alankila@bel.fi>
+// Copyright (C) 2009  Antti S. Lankila <alankila@bel.fi>
 
 #ifndef __WAVE_H__
 #define __WAVE_H__
@@ -87,19 +89,8 @@ protected:
   RESID_INLINE reg12 output____();
   RESID_INLINE reg12 output___T();
   RESID_INLINE reg12 output__S_();
-  RESID_INLINE reg12 output__ST();
   RESID_INLINE reg12 output_P__();
-  RESID_INLINE reg12 output_P_T();
-  RESID_INLINE reg12 output_PS_();
-  RESID_INLINE reg12 output_PST();
   RESID_INLINE reg12 outputN___();
-  RESID_INLINE reg12 outputN__T();
-  RESID_INLINE reg12 outputN_S_();
-  RESID_INLINE reg12 outputN_ST();
-  RESID_INLINE reg12 outputNP__();
-  RESID_INLINE reg12 outputNP_T();
-  RESID_INLINE reg12 outputNPS_();
-  RESID_INLINE reg12 outputNPST();
 
 friend class Voice;
 friend class SID;
@@ -219,22 +210,6 @@ void WaveformGenerator::synchronize()
   }
 }
 
-
-// ----------------------------------------------------------------------------
-// Output functions.
-// NB! The output from SID 8580 is delayed one cycle compared to SID 6581,
-// this is not modeled.
-// ----------------------------------------------------------------------------
-
-// No waveform:
-// Zero output.
-//
-RESID_INLINE
-reg12 WaveformGenerator::output____()
-{
-  return 0x000;
-}
-
 // Triangle:
 // The upper 12 bits of the accumulator are used.
 // The MSB is used to create the falling edge of the triangle by inverting
@@ -247,7 +222,7 @@ reg12 WaveformGenerator::output___T()
 {
   reg24 msb = (ring_mod ? accumulator ^ sync_source->accumulator : accumulator)
     & 0x800000;
-  return ((msb ? accumulator : ~accumulator) >> 11) & 0xfff;
+  return ((msb ? ~accumulator : accumulator) >> 11) & 0xfff;
 }
 
 // Sawtooth:
@@ -256,7 +231,7 @@ reg12 WaveformGenerator::output___T()
 RESID_INLINE
 reg12 WaveformGenerator::output__S_()
 {
-  return ((~accumulator) >> 12) & 0xfff;
+  return accumulator >> 12;
 }
 
 // Pulse:
@@ -272,7 +247,7 @@ reg12 WaveformGenerator::output__S_()
 RESID_INLINE
 reg12 WaveformGenerator::output_P__()
 {
-  return (test || (accumulator >> 12) >= pw) ? 0x000 : 0xfff;
+  return (test || (accumulator >> 12) >= pw) ? 0xfff : 0x000;
 }
 
 // Noise:
@@ -308,122 +283,22 @@ reg12 WaveformGenerator::outputN___()
     ((shift_register & 0x000004) << 2);
 }
 
-// Combined waveforms:
-// DTVSID simply ANDs the waveforms.
-// 
-RESID_INLINE
-reg12 WaveformGenerator::output__ST()
-{
-  return output__S_() & output___T();
-}
-
-RESID_INLINE
-reg12 WaveformGenerator::output_P_T()
-{
-  return output_P__() & output___T();
-}
-
-RESID_INLINE
-reg12 WaveformGenerator::output_PS_()
-{
-  return output_P__() & output__S_();
-}
-
-RESID_INLINE
-reg12 WaveformGenerator::output_PST()
-{
-  return output_P__() & output__S_() & output___T();
-}
-
-// Combined waveforms including noise:
-// DTVSID simply ANDs the waveforms.
-//
-RESID_INLINE
-reg12 WaveformGenerator::outputN__T()
-{
-  return outputN___() & output___T();
-}
-
-RESID_INLINE
-reg12 WaveformGenerator::outputN_S_()
-{
-  return outputN___() & output__S_();
-}
-
-RESID_INLINE
-reg12 WaveformGenerator::outputN_ST()
-{
-  return outputN___() & output__S_() & output___T();
-}
-
-RESID_INLINE
-reg12 WaveformGenerator::outputNP__()
-{
-  return outputN___() & output_P__();
-}
-
-RESID_INLINE
-reg12 WaveformGenerator::outputNP_T()
-{
-  return outputN___() & output_P__() & output___T();
-}
-
-RESID_INLINE
-reg12 WaveformGenerator::outputNPS_()
-{
-  return outputN___() & output_P__() & output__S_();
-}
-
-RESID_INLINE
-reg12 WaveformGenerator::outputNPST()
-{
-  return outputN___() & output_P__() & output__S_() & output___T();
-}
-
 // ----------------------------------------------------------------------------
 // Select one of 16 possible combinations of waveforms.
 // ----------------------------------------------------------------------------
 RESID_INLINE
 reg12 WaveformGenerator::output()
 {
-  // It may seem cleaner to use an array of member functions to return
-  // waveform output; however a switch with inline functions is faster.
-
-  switch (waveform) {
-  default:
-  case 0x0:
-    return output____();
-  case 0x1:
-    return output___T();
-  case 0x2:
-    return output__S_();
-  case 0x3:
-    return output__ST();
-  case 0x4:
-    return output_P__();
-  case 0x5:
-    return output_P_T();
-  case 0x6:
-    return output_PS_();
-  case 0x7:
-    return output_PST();
-  case 0x8:
-    return outputN___();
-  case 0x9:
-    return outputN__T();
-  case 0xa:
-    return outputN_S_();
-  case 0xb:
-    return outputN_ST();
-  case 0xc:
-    return outputNP__();
-  case 0xd:
-    return outputNP_T();
-  case 0xe:
-    return outputNPS_();
-  case 0xf:
-    return outputNPST();
-  }
+  reg12 output = 0;
+  if (waveform & 0x1)
+    output |= output___T();
+  if (waveform & 0x2)
+    output |= output__S_();
+  if (waveform & 0x4)
+    output |= output_P__();
+  if (waveform & 0x8)
+    output |= outputN___();
+  return output;
 }
 
 #endif // RESID_INLINING || defined(__WAVE_CC__)

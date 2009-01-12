@@ -73,11 +73,9 @@ protected:
 
   State state;
 
-  // Lookup tables to convert from attack, decay, or release value to rate
+  // Lookup table to convert from attack, decay, or release value to rate
   // counter period.
-  static reg16 attack_rate_counter_period[];
-  static reg16 decay_rate_counter_period[];
-  static reg16 release_rate_counter_period[];
+  static reg16 rate_counter_period[];
 
   // The 16 selectable sustain levels.
   static reg8 sustain_level[];
@@ -143,7 +141,7 @@ void EnvelopeGenerator::clock()
       }
       if (envelope_counter == 0xff) {
 	state = DECAY_SUSTAIN;
-	rate_period = decay_rate_counter_period[decay];
+	rate_period = 3*rate_counter_period[decay];
       }
       break;
     case DECAY_SUSTAIN:
@@ -253,7 +251,7 @@ void EnvelopeGenerator::clock(cycle_count delta_t)
     }
 	if (envelope_counter == 0xff) {
 	  state = DECAY_SUSTAIN;
-	  rate_period = decay_rate_counter_period[decay];
+	  rate_period = 3*rate_counter_period[decay];
 	}
 	break;
       case DECAY_SUSTAIN:
@@ -277,20 +275,26 @@ void EnvelopeGenerator::clock(cycle_count delta_t)
       case 0xff:
 	exponential_counter_period = 1;
 	break;
-      case 0x5d:
+      case 0xde:
 	exponential_counter_period = 2;
 	break;
-      case 0x36:
+      case 0xbe:
+	exponential_counter_period = 3;
+	break;
+      case 0x9e:
 	exponential_counter_period = 4;
 	break;
-      case 0x1a:
+      case 0x7e:
+	exponential_counter_period = 5;
+	break;
+      case 0x5e:
+	exponential_counter_period = 6;
+	break;
+      case 0x3e:
+	exponential_counter_period = 7;
+	break;
+      case 0x1e:
 	exponential_counter_period = 8;
-	break;
-      case 0x0e:
-	exponential_counter_period = 16;
-	break;
-      case 0x06:
-	exponential_counter_period = 30;
 	break;
       case 0x00:
 	exponential_counter_period = 1;
