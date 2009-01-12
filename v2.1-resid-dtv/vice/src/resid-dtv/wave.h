@@ -41,7 +41,6 @@ public:
   WaveformGenerator();
 
   void set_sync_source(WaveformGenerator*);
-  void set_chip_model(chip_model model);
 
   RESID_INLINE void clock();
   RESID_INLINE void clock(cycle_count delta_t);
@@ -248,7 +247,7 @@ reg12 WaveformGenerator::output___T()
 {
   reg24 msb = (ring_mod ? accumulator ^ sync_source->accumulator : accumulator)
     & 0x800000;
-  return ((msb ? ~accumulator : accumulator) >> 11) & 0xfff;
+  return ((msb ? accumulator : ~accumulator) >> 11) & 0xfff;
 }
 
 // Sawtooth:
@@ -257,7 +256,7 @@ reg12 WaveformGenerator::output___T()
 RESID_INLINE
 reg12 WaveformGenerator::output__S_()
 {
-  return accumulator >> 12;
+  return ((~accumulator) >> 12) & 0xfff;
 }
 
 // Pulse:
@@ -273,7 +272,7 @@ reg12 WaveformGenerator::output__S_()
 RESID_INLINE
 reg12 WaveformGenerator::output_P__()
 {
-  return (test || (accumulator >> 12) >= pw) ? 0xfff : 0x000;
+  return (test || (accumulator >> 12) >= pw) ? 0x000 : 0xfff;
 }
 
 // Noise:

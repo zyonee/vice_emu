@@ -33,17 +33,18 @@ class SID
 public:
   SID();
   ~SID();
-
-  void set_chip_model(chip_model model);
+  
+  /* Some hacks to keep DTV looking like regular ReSID engine -- hopefully
+   * removed at some point. */
+  void set_chip_model(chip_model ignored);
   void enable_filter(bool enable);
+
+
   void enable_external_filter(bool enable);
   bool set_sampling_parameters(double clock_freq, sampling_method method,
 			       double sample_freq, double pass_freq = -1,
 			       double filter_scale = 0.97);
   void adjust_sampling_frequency(double sample_freq);
-
-  void fc_default(const fc_point*& points, int& count);
-  PointPlotter<sound_sample> fc_plotter();
 
   void clock();
   void clock(cycle_count delta_t);

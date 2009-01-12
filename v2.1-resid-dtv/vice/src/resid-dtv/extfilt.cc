@@ -28,15 +28,9 @@ ExternalFilter::ExternalFilter()
 {
   reset();
   enable_filter(true);
-  set_chip_model(DTVSID);
 
-  // Low-pass:  R = 10kOhm, C = 1000pF; w0l = 1/RC = 1/(1e4*1e-9) = 100000
-  // High-pass: R =  1kOhm, C =   10uF; w0h = 1/RC = 1/(1e3*1e-5) =    100
-  // Multiply with 1.048576 to facilitate division by 1 000 000 by right-
-  // shifting 20 times (2 ^ 20 = 1048576).
-
-  w0lp = 104858;
-  w0hp = 105;
+  w0lp = 37500; /* ~6 kHz */
+  w0hp = 105;   /* 20 Hz */
 }
 
 
@@ -46,24 +40,6 @@ ExternalFilter::ExternalFilter()
 void ExternalFilter::enable_filter(bool enable)
 {
   enabled = enable;
-}
-
-
-// ----------------------------------------------------------------------------
-// Set chip model.
-// ----------------------------------------------------------------------------
-void ExternalFilter::set_chip_model(chip_model model)
-{
-  if (model == DTVSID) {
-    // Maximum mixer DC output level; to be removed if the external
-    // filter is turned off: ((wave DC + voice DC)*voices + mixer DC)*volume
-    // See voice.cc and filter.cc for an explanation of the values.
-    mixer_DC = ((((0x800 - 0x380) + 0x800)*0xff*3 - 0xfff*0xff/18) >> 7)*0x0f;
-  }
-  else {
-    // No DC offsets in the MOS8580.
-    mixer_DC = 0;
-  }
 }
 
 

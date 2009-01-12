@@ -54,21 +54,6 @@ SID::~SID()
   delete[] fir;
 }
 
-
-// ----------------------------------------------------------------------------
-// Set chip model.
-// ----------------------------------------------------------------------------
-void SID::set_chip_model(chip_model model)
-{
-  for (int i = 0; i < 3; i++) {
-    voice[i].set_chip_model(model);
-  }
-
-  filter.set_chip_model(model);
-  extfilt.set_chip_model(model);
-}
-
-
 // ----------------------------------------------------------------------------
 // SID reset.
 // ----------------------------------------------------------------------------
@@ -378,15 +363,6 @@ void SID::write_state(const State& state)
 
 
 // ----------------------------------------------------------------------------
-// Enable filter.
-// ----------------------------------------------------------------------------
-void SID::enable_filter(bool enable)
-{
-  filter.enable_filter(enable);
-}
-
-
-// ----------------------------------------------------------------------------
 // Enable external filter.
 // ----------------------------------------------------------------------------
 void SID::enable_external_filter(bool enable)
@@ -585,26 +561,6 @@ void SID::adjust_sampling_frequency(double sample_freq)
   cycles_per_sample =
     cycle_count(clock_frequency/sample_freq*(1 << FIXP_SHIFT) + 0.5);
 }
-
-
-// ----------------------------------------------------------------------------
-// Return array of default spline interpolation points to map FC to
-// filter cutoff frequency.
-// ----------------------------------------------------------------------------
-void SID::fc_default(const fc_point*& points, int& count)
-{
-  filter.fc_default(points, count);
-}
-
-
-// ----------------------------------------------------------------------------
-// Return FC spline plotter object.
-// ----------------------------------------------------------------------------
-PointPlotter<sound_sample> SID::fc_plotter()
-{
-  return filter.fc_plotter();
-}
-
 
 // ----------------------------------------------------------------------------
 // SID clocking - 1 cycle.
@@ -900,7 +856,7 @@ int SID::clock_resample_interpolate(cycle_count& delta_t, short* buf, int n,
     int fir_offset = sample_offset*fir_RES >> FIXP_SHIFT;
     int fir_offset_rmd = sample_offset*fir_RES & FIXP_MASK;
     short* fir_start = fir + fir_offset*fir_N;
-    short* sample_start = sample + sample_index - fir_N + RINGSIZE;
+    short* sample_start = sample + sample_index - fir_N + RINGSIZE - 1;
 
     // Convolution with filter impulse response.
     int j;
@@ -1015,3 +971,7 @@ int SID::clock_resample_fast(cycle_count& delta_t, short* buf, int n,
   delta_t = 0;
   return s;
 }
+
+/* ReSID API adaptation hacks */
+void SID::set_chip_model(chip_model model) { }
+void SID::enable_filter(bool enable) { }

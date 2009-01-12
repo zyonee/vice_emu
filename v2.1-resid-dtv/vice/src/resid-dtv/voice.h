@@ -29,7 +29,6 @@ class Voice
 public:
   Voice();
 
-  void set_chip_model(chip_model model);
   void set_sync_source(Voice*);
   void reset();
 
@@ -42,12 +41,6 @@ public:
 protected:
   WaveformGenerator wave;
   EnvelopeGenerator envelope;
-
-  // Waveform D/A zero level.
-  sound_sample wave_zero;
-
-  // Multiplying D/A DC offset.
-  sound_sample voice_DC;
 
 friend class SID;
 };
@@ -69,7 +62,7 @@ RESID_INLINE
 sound_sample Voice::output()
 {
   // Multiply oscillator output with envelope output.
-  return (wave.output() - wave_zero)*envelope.output() + voice_DC;
+  return wave.output() * envelope.output();
 }
 
 #endif // RESID_INLINING || defined(__VOICE_CC__)
