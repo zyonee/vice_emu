@@ -1,3 +1,58 @@
+2009-01-12  Fabrizio Gennari <fabrizio.ge@tiscali.it>
+
+	* src/arch/msdos/uiattach.c, src/arch/msdos/uiscreenshot.c,
+	  src/arch/msdos/tuifs.c, src/arch/msdos/c64ui.c,
+	  src/arch/msdos/tuifs.h, src/arch/msdos/petui.c,
+	  src/arch/msdos/menudefs.c, src/arch/msdos/c64dtvui.c,
+	  src/arch/msdos/vic20ui.c, src/arch/msdos/uic64cart.c,
+	  src/arch/msdos/plus4ui.c, src/arch/msdos/tuiimagebrowser.c,
+	  src/arch/msdos/c128ui.c, src/arch/msdos/tuiimagebrowser.h,
+	  src/arch/msdos/cbm2ui.c, src/arch/msdos/Makefile.am,
+	  src/arch/msdos/uisnapshot.c, src/arch/win32/Makefile.am,
+	  src/arch/win32/uilib.c, src/arch/unix/ui.h,
+	  src/arch/unix/gui/uikeyboard.c, src/arch/unix/gui/uicommands.c,
+	  src/arch/unix/gui/vsidui.c, src/arch/unix/gui/uipalette.c,
+	  src/arch/unix/gui/uiattach.c, src/arch/unix/gui/vic20ui.c,
+	  src/arch/unix/gui/uic64cart.c, src/arch/unix/gui/uifliplist.c,
+	  src/arch/unix/gui/Makefile.am, src/arch/unix/gui/uic64dtv.c,
+	  src/arch/unix/gui/uirs232.c, src/arch/unix/gui/uisettings.c,
+	  src/arch/unix/gui/uiromset.c, src/arch/unix/gui/c128ui.c,
+	  src/arch/unix/x11/xaw/uicartridge.c,
+	  src/arch/unix/x11/xaw/x11ui.c,
+	  src/arch/unix/x11/xaw/uiscreenshot.c,
+	  src/arch/unix/x11/xaw/uisnapshot.c,
+	  src/arch/unix/x11/xaw/uiedisk.c,
+	  src/arch/unix/x11/gnome/x11ui.c,
+	  src/arch/unix/x11/gnome/Makefile.am,
+	  src/serial/serial-device.c, src/serial/serial-device.h,
+	  src/machine-bus.h, src/diskimage.h, src/vic20/vic20bus.c,
+	  src/imagecontents.h, src/vdrive/vdrive.c,
+	  src/vdrive/vdrive-internal.c, src/vdrive/vdrive-internal.h,
+	  src/plus4/plus4bus.c, src/diskimage/diskimage.c,
+	  src/autostart.c, src/c64/c64bus.c, src/serial.h,
+	  src/imagecontents/diskcontents-block.c,
+	  src/imagecontents/imagecontents.c,
+	  src/imagecontents/diskcontents-block.h,
+	  src/imagecontents/tapecontents.c,
+	  src/imagecontents/diskcontents.c,
+	  src/imagecontents/tapecontents.h,
+	  src/imagecontents/diskcontents.h, src/Makefile.am, src/c1541.c,
+	  src/cbm2/cbm2bus.c, src/attach.c, src/drive/iec/wd1770.c,
+	  src/drive/ieee/fdc.c, src/drive/driveimage.c, src/pet/petbus.c:
+	  Change the way image content listing are created. Instead of
+	  turning a list into a string and calculate another list from
+	  the string, the elements of the final list are mapped 1-1 with
+	  the element of the original one. Fixes a bug with C64 names
+	  containing a 0x0a (Ctrl-J) character being incorrectly
+	  split in two.
+
+	* src/arch/win32/res.rc, src/arch/win32/resdialogs.txt: Removed
+	  button Create image from window Autostart disk/tape image, it
+	  is unfair with tapes. Button still present in window Attach
+	  disk image.
+
+	* src/monitor/mon_lex.c: rebuilt.
+
 2008-12-15  Spiro Trikaliotis <spiro.trikaliotis@gmx.de>
 
 	* Version 2.1
