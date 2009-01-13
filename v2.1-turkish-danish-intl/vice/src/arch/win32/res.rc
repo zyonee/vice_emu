@@ -5334,6 +5334,26 @@ BEGIN
 END
 
 
+// DANISH version of dialog
+
+IDD_RS232_SETTINGS_DIALOG_DA DIALOG DISCARDABLE  0, 0, 180, 120
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "RS232-indstillinger"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "RS232-enhed 1",IDC_STATIC, 9,8,60,8
+    EDITTEXT        IDC_RS232_DEVICE1, 75,7,85,12,WS_TABSTOP | ES_AUTOHSCROLL
+    LTEXT           "RS232-enhed 2", IDC_STATIC, 9,28,60,8
+    EDITTEXT        IDC_RS232_DEVICE2, 75,27,85,12,WS_TABSTOP | ES_AUTOHSCROLL
+    LTEXT           "RS232-enhed 3", IDC_STATIC, 9,48,60,8
+    EDITTEXT        IDC_RS232_DEVICE3, 75,47,85,12,WS_TABSTOP | ES_AUTOHSCROLL
+    LTEXT           "RS232-enhed 4",IDC_STATIC, 9,68,60,8
+    EDITTEXT        IDC_RS232_DEVICE4, 75,67,85,12,WS_TABSTOP | ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK", IDOK, 30,100,50,14, WS_TABSTOP
+    PUSHBUTTON      "Annullér", IDCANCEL, 90,100,50,14, WS_TABSTOP
+END
+
+
 // GERMAN version of dialog
 
 IDD_RS232_SETTINGS_DIALOG_DE DIALOG DISCARDABLE  0, 0, 180, 120
@@ -5477,6 +5497,28 @@ BEGIN
     PUSHBUTTON      "Avbryt", IDCANCEL, 90,100,50,14, WS_TABSTOP | ES_AUTOHSCROLL
 END
 
+
+// TURKISH version of dialog
+
+#pragma code_page(28599)
+IDD_RS232_SETTINGS_DIALOG_TR DIALOG DISCARDABLE  0, 0, 180, 120
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "RS232 Ayarlarý"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "RS232 aygýt 1",IDC_STATIC, 9,8,60,8
+    EDITTEXT        IDC_RS232_DEVICE1, 75,7,85,12,WS_TABSTOP | ES_AUTOHSCROLL
+    LTEXT           "RS232 aygýt 2", IDC_STATIC, 9,28,60,8
+    EDITTEXT        IDC_RS232_DEVICE2, 75,27,85,12,WS_TABSTOP | ES_AUTOHSCROLL
+    LTEXT           "RS232 aygýt 3", IDC_STATIC, 9,48,60,8
+    EDITTEXT        IDC_RS232_DEVICE3, 75,47,85,12,WS_TABSTOP | ES_AUTOHSCROLL
+    LTEXT           "RS232 aygýt 4",IDC_STATIC, 9,68,60,8
+    EDITTEXT        IDC_RS232_DEVICE4, 75,67,85,12,WS_TABSTOP | ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "Tamam", IDOK, 30,100,50,14, WS_TABSTOP
+    PUSHBUTTON      "Ýptal", IDCANCEL, 90,100,50,14, WS_TABSTOP
+END
+#pragma code_page(28591)
+
 // -----------------------------------------------------------------------------
 
 // original and default ENGLISH version of dialog
@@ -5490,7 +5532,7 @@ BEGIN
     EDITTEXT        IDC_NETWORK_MODE, 60,7,75,12,WS_TABSTOP
     LTEXT           "TCP-Port",IDC_STATIC, 9,32,30,8
     EDITTEXT        IDC_NETWORK_PORT, 45,31,30,12,WS_TABSTOP
-    PUSHBUTTON      "Start Server", IDC_NETWORK_SERVER, 85,30,48,14,WS_TABSTOP
+    PUSHBUTTON      "Start server", IDC_NETWORK_SERVER, 85,30,48,14,WS_TABSTOP
     PUSHBUTTON      "Connect to", IDC_NETWORK_CLIENT, 9,54,50,14,WS_TABSTOP
     EDITTEXT        IDC_NETWORK_SERVERNAME, 65,55,70,12,WS_TABSTOP
     PUSHBUTTON      "Disconnect", IDC_NETWORK_DISCONNECT, 37,78,60,14,WS_TABSTOP
@@ -5518,6 +5560,52 @@ BEGIN
     AUTOCHECKBOX    "",IDC_NETWORK_DEVC_CLIENT,230,66,10,10,
                     BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP
     LTEXT           "Settings", IDC_STATIC, 150,78,45,10
+    AUTOCHECKBOX    "",IDC_NETWORK_RSRC_SERVER,200,78,10,10,
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP
+    AUTOCHECKBOX    "",IDC_NETWORK_RSRC_CLIENT,230,78,10,10,
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP
+END
+
+
+// DANISH version of dialog
+
+IDD_NETWORK_SETTINGS_DIALOG_DA DIALOG DISCARDABLE  0, 0, 260, 110
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Nætværksspilindstillinger"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Nuværende tilstand",IDC_STATIC, 9,8,45,8
+    EDITTEXT        IDC_NETWORK_MODE, 60,7,75,12,WS_TABSTOP
+    LTEXT           "TCP-port",IDC_STATIC, 9,32,30,8
+    EDITTEXT        IDC_NETWORK_PORT, 45,31,30,12,WS_TABSTOP
+    PUSHBUTTON      "Start server", IDC_NETWORK_SERVER, 85,30,48,14,WS_TABSTOP
+    PUSHBUTTON      "Tilslut til", IDC_NETWORK_CLIENT, 9,54,50,14,WS_TABSTOP
+    EDITTEXT        IDC_NETWORK_SERVERNAME, 65,55,70,12,WS_TABSTOP
+    PUSHBUTTON      "Afbryd forbindelse", IDC_NETWORK_DISCONNECT, 37,78,60,14,WS_TABSTOP
+    GROUPBOX        "Styring",IDC_STATIC,140,5,115,100
+    LTEXT           "Server", IDC_STATIC, 195,15,25,10
+    LTEXT           "Klient", IDC_STATIC, 225,15,25,10
+    LTEXT           "Tastatur", IDC_STATIC, 150,30,45,10
+    AUTOCHECKBOX    "",IDC_NETWORK_KEYB_SERVER,200,30,10,10,
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP
+    AUTOCHECKBOX    "",IDC_NETWORK_KEYB_CLIENT,230,30,10,10,
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP
+    LTEXT           "Joystick 1", IDC_STATIC, 150,42,45,10
+    AUTOCHECKBOX    "",IDC_NETWORK_JOY1_SERVER,200,42,10,10,
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP
+    AUTOCHECKBOX    "",IDC_NETWORK_JOY1_CLIENT,230,42,10,10,
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP
+    LTEXT           "Joystick 2", IDC_STATIC, 150,54,45,10
+    AUTOCHECKBOX    "",IDC_NETWORK_JOY2_SERVER,200,54,10,10,
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP
+    AUTOCHECKBOX    "",IDC_NETWORK_JOY2_CLIENT,230,54,10,10,
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP
+    LTEXT           "Enheder", IDC_STATIC, 150,66,45,10
+    AUTOCHECKBOX    "",IDC_NETWORK_DEVC_SERVER,200,66,10,10,
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP
+    AUTOCHECKBOX    "",IDC_NETWORK_DEVC_CLIENT,230,66,10,10,
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP
+    LTEXT           "Indstillinger", IDC_STATIC, 150,78,45,10
     AUTOCHECKBOX    "",IDC_NETWORK_RSRC_SERVER,200,78,10,10,
                     BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP
     AUTOCHECKBOX    "",IDC_NETWORK_RSRC_CLIENT,230,78,10,10,
@@ -5850,6 +5938,54 @@ BEGIN
                     BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP
 END
 
+
+// TURKISH version of dialog
+
+#pragma code_page(28599)
+IDD_NETWORK_SETTINGS_DIALOG_TR DIALOG DISCARDABLE  0, 0, 260, 110
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Netplay Ayarlarý"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Geçerli mod",IDC_STATIC, 9,8,45,8
+    EDITTEXT        IDC_NETWORK_MODE, 60,7,75,12,WS_TABSTOP
+    LTEXT           "TCP-Port",IDC_STATIC, 9,32,30,8
+    EDITTEXT        IDC_NETWORK_PORT, 45,31,30,12,WS_TABSTOP
+    PUSHBUTTON      "Sunucuyu baþlat", IDC_NETWORK_SERVER, 85,30,48,14,WS_TABSTOP
+    PUSHBUTTON      "Baðlanýlan", IDC_NETWORK_CLIENT, 9,54,50,14,WS_TABSTOP
+    EDITTEXT        IDC_NETWORK_SERVERNAME, 65,55,70,12,WS_TABSTOP
+    PUSHBUTTON      "Baðlantýyý kes", IDC_NETWORK_DISCONNECT, 37,78,60,14,WS_TABSTOP
+    GROUPBOX        "Kontrol",IDC_STATIC,140,5,115,100
+    LTEXT           "Sunucu", IDC_STATIC, 195,15,25,10
+    LTEXT           "Ýstemci", IDC_STATIC, 225,15,25,10
+    LTEXT           "Klavye", IDC_STATIC, 150,30,45,10
+    AUTOCHECKBOX    "",IDC_NETWORK_KEYB_SERVER,200,30,10,10,
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP
+    AUTOCHECKBOX    "",IDC_NETWORK_KEYB_CLIENT,230,30,10,10,
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP
+    LTEXT           "Joystick 1", IDC_STATIC, 150,42,45,10
+    AUTOCHECKBOX    "",IDC_NETWORK_JOY1_SERVER,200,42,10,10,
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP
+    AUTOCHECKBOX    "",IDC_NETWORK_JOY1_CLIENT,230,42,10,10,
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP
+    LTEXT           "Joystick 2", IDC_STATIC, 150,54,45,10
+    AUTOCHECKBOX    "",IDC_NETWORK_JOY2_SERVER,200,54,10,10,
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP
+    AUTOCHECKBOX    "",IDC_NETWORK_JOY2_CLIENT,230,54,10,10,
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP
+    LTEXT           "Aygýtlar", IDC_STATIC, 150,66,45,10
+    AUTOCHECKBOX    "",IDC_NETWORK_DEVC_SERVER,200,66,10,10,
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP
+    AUTOCHECKBOX    "",IDC_NETWORK_DEVC_CLIENT,230,66,10,10,
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP
+    LTEXT           "Ayarlar", IDC_STATIC, 150,78,45,10
+    AUTOCHECKBOX    "",IDC_NETWORK_RSRC_SERVER,200,78,10,10,
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP
+    AUTOCHECKBOX    "",IDC_NETWORK_RSRC_CLIENT,230,78,10,10,
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP
+END
+#pragma code_page(28591)
+
 // -----------------------------------------------------------------------------
 
 // original and default ENGLISH version of dialog
@@ -5868,6 +6004,25 @@ BEGIN
     EDITTEXT        IDC_SOUND_RECORD_FILE, 9, 40, 160, 12, WS_TABSTOP
     DEFPUSHBUTTON   "OK", IDOK, 30, 64, 50, 14, WS_TABSTOP
     PUSHBUTTON      "Cancel", IDCANCEL, 90, 64, 50, 14, WS_TABSTOP
+END
+
+
+// DANISH version of dialog
+
+IDD_SOUND_RECORD_SETTINGS_DIALOG_DA DIALOG DISCARDABLE  0, 0, 180, 90
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Format for lydoptagelse",
+                    IDC_SOUND_RECORD_FORMAT_LABEL, 9, 9, 53, 8
+    COMBOBOX        IDC_SOUND_RECORD_FORMAT, 66, 7, 50, 80, CBS_DROPDOWNLIST |
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "&Fil for lydoptagelse",
+                    IDC_SOUND_RECORD_FILE_LABEL, 9, 24, 50, 8
+    PUSHBUTTON      "Gennemse...", IDC_SOUND_RECORD_BROWSE, 66, 24, 50, 14, 0
+    EDITTEXT        IDC_SOUND_RECORD_FILE, 9, 40, 160, 12, WS_TABSTOP
+    DEFPUSHBUTTON   "OK", IDOK, 30, 64, 50, 14, WS_TABSTOP
+    PUSHBUTTON      "Annullér", IDCANCEL, 90, 64, 50, 14, WS_TABSTOP
 END
 
 
@@ -6007,8 +6162,28 @@ BEGIN
     PUSHBUTTON      "Avbryt", IDCANCEL, 90, 64, 50, 14, WS_TABSTOP
 END
 
-// -----------------------------------------------------------------------------
 
+// TURKISH version of dialog
+
+#pragma code_page(28599)
+IDD_SOUND_RECORD_SETTINGS_DIALOG_TR DIALOG DISCARDABLE  0, 0, 180, 90
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Ses Kayýt Biçimi",
+                    IDC_SOUND_RECORD_FORMAT_LABEL, 9, 9, 53, 8
+    COMBOBOX        IDC_SOUND_RECORD_FORMAT, 66, 7, 50, 80, CBS_DROPDOWNLIST |
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "&Ses Kayýt Dosyasý",
+                    IDC_SOUND_RECORD_FILE_LABEL, 9, 24, 50, 8
+    PUSHBUTTON      "Göz at...", IDC_SOUND_RECORD_BROWSE, 66, 24, 50, 14, 0
+    EDITTEXT        IDC_SOUND_RECORD_FILE, 9, 40, 160, 12, WS_TABSTOP
+    DEFPUSHBUTTON   "Tamam", IDOK, 30, 64, 50, 14, WS_TABSTOP
+    PUSHBUTTON      "Ýptal", IDCANCEL, 90, 64, 50, 14, WS_TABSTOP
+END
+#pragma code_page(28591)
+
+// -----------------------------------------------------------------------------
 
 // original and default ENGLISH text
 
@@ -6402,6 +6577,401 @@ BEGIN
   IDS_MI_MON_TILE_VERT            "Tile &vertically"
   IDS_MI_MON_TILE_HORIZ           "Tile &horizontally"
   IDS_MI_MON_ARRANGE_ICONS        "&Arrange icons"
+END
+
+
+// DANISH text
+
+STRINGTABLE
+LANGUAGE LANG_DANISH, SUBLANG_NEUTRAL
+BEGIN
+  IDS_VICE_ERROR                  "VICE-fejl!"
+  IDS_VICE_INFORMATION            "VICE-information"
+  IDS_VICE_QUESTION               "VICE-spørgsmål"
+  IDS_FFMPEG_DLL_MISMATCH         "Versionen på din ffmpeg-dll passer ikke."
+  IDS_DIRECTDRAW_ERROR            "DirectDraw-fejl: Kode:%8x Fejl:%s"
+  IDS_CANNOT_SAVE_SETTINGS        "Kunne ikke gemme indstillinger."
+  IDS_CANNOT_LOAD_SETTINGS        "Kunne ikke indlæse indstillinger."
+  IDS_DEFAULT_SETTINGS_RESTORED   "Standardindstillinger gendannet."
+  IDS_CANNOT_ATTACH_FILE          "Kan ikke tilslutte den valgte fil"
+  IDS_START_MONITOR               "%s\012\012Start monitor? (Nej resetter, Annuler Fortsætter)"
+  IDS_VICE_CPU_JAM                "VICE CPU JAM"
+  IDS_EXTEND_TO_40_TRACKS         "Udvid disk-image til 40 spor?"
+  IDS_DETACHED_DEVICE_S           "Frakoblet enhed %s"
+  IDS_ATTACHED_S_TO_DEVICE_S      "Tilsluttet %s til enhed %s"
+  IDS_DETACHED_TAPE               "Frakoblet bånd"
+  IDS_HISTORY_RECORDED_UNKNOWN    "Historik optaget med ukendt version"
+  IDS_HISTORY_RECORDED_VICE_S     "Historik optaget med VICE-%s"
+  IDS_PAUSED                      "pauset"
+  IDS_FRAME_NUMBER                "frame #"
+  IDS_RESUMED                     "genoptaget"
+  IDS_REALLY_EXIT                 "Vil du virkelig afslutte?\012\012Alla data i emuleret RAM går tabt."
+  IDS_CANNOT_AUTOSTART_FILE       "Kan ikke autostarte valgt fil"
+  IDS_ATTACHED_TAPE_S             "Tilsluttet bånd %s"
+  IDS_SETTINGS_SAVED_SUCCESS      "Indstillingerne er gemt."
+  IDS_SETTINGS_LOADED_SUCCESS     "Indstillinger indlæst med success."
+  IDS_ATTACH_DISK_IMAGE           "Tilslut disk-image"
+  IDS_ATTACH_TAPE_IMAGE           "Tilslut bånd-image"
+  IDS_AUTOSTART_IMAGE             "Autostart disk-/bånd-image"
+  IDS_INVALID_CARTRIDGE           "Ugyldigt cartridge"
+  IDS_BAD_CARTRIDGE_CONFIG        "Ugyldig cartridgekonfiguration i brugergrænseflade!"
+  IDS_INVALID_CARTRIDGE_IMAGE     "Ugyldigt cartridge-image"
+  IDS_LOG_CONSOLE_OUTPUT_IMAGE    "Log konsol uddata image"
+  IDS_LOG_FILES_TYPE              "VICE konsolloggfiler (*.dbg)"
+  IDS_CANNOT_WRITE_LOGFILE_S      "Kan ikke skrive logfil \"%s\"."
+  IDS_LOAD_FLIP_LIST_FILE         "Indlæs bladrelistefil"
+  IDS_CANNOT_READ_FLIP_LIST       "Kunne ikke læse bladrelistefil"
+  IDS_SAVE_FLIP_LIST_FILE         "Gem bladrelistefil"
+  IDS_CANNOT_WRITE_FLIP_LIST      "Kunne ikke skrive bladrelistefil"
+  IDS_SELECT_KEYMAP_FILE          "Vælg tastelayout"
+  IDS_SAVE_KEYMAP_FILE            "Gem tastelayout"
+  IDS_CANNOT_WRITE_KEYMAP_FILE    "Kunne ikke gemme tastelayour"
+  IDS_SAVE_CONFIG_FILE            "Gem indstillinger"
+  IDS_LOAD_CONFIG_FILE            "Indlæs indstillinger"
+  IDS_MAPPING                     "Mapning"
+  IDS_KEYBOARD_SETTINGS           "Tastaturindstillinger"
+  IDS_ATTACH                      "&Tilslut"
+  IDS_PLEASE_ENTER_A_FILENAME     "Angiv filnavn."
+  IDS_OVERWRITE_EXISTING_IMAGE    "Overskriv eksisterende image?"
+  IDS_CANNOT_CREATE_IMAGE         "Kunne ikke oprette image"
+  IDS_COMMAND_LINE_OPTIONS        "Kommandolinjeparametre"
+  IDS_COMMAND_OPTIONS_AVAIL       "Hvilke kommandolinjeparametre er tilgængelige?"
+  IDS_NO_DRIVER_SELECT_SUPPORT    "Ingen driver valgt, eller valgt driver ikke understøttet"
+  IDS_CANT_WRITE_SCREENSHOT_S     "Kunne ikke gemme screenshot \"%s\"."
+  IDS_AUTOSTART_DISK_IMAGE        "Autostart disk-image"
+  IDS_SELECT_FS_DIRECTORY         "Angiv katalog"
+  IDS_PRINTER_USERPORT            "Printer brugerport"
+  IDS_PRINTER_4                   "Printer 4"
+  IDS_PRINTER_5                   "Printer 5"
+  IDS_DRIVE_8                     "Drev 8"
+  IDS_DRIVE_9                     "Drev 9"
+  IDS_DRIVE_10                    "Drev 10"
+  IDS_DRIVE_11                    "Drev 11"
+  IDS_PERIPHERAL_SETTINGS         "Indstillinger for eksterne enheder"
+  IDS_CANT_WRITE_SNAPSHOT_FILE    "Kunne ikke skrive snapshot fil."
+  IDS_CANNOT_READ_SNAPSHOT_IMG    "Kunne ikke indlæse snapshot fil"
+  IDS_LOAD_S_ROM_IMAGE            "Indlæs %s-ROM-fil"
+  IDS_SELECT_ROMSET_ARCHIVE       "Vælg ROM-set arkiv"
+  IDS_CANNOT_LOAD_ROMSET_ARCH     "Kunne ikke indlæse ROM-set arkiv!"
+  IDS_CANNOT_SAVE_ROMSET_ARCH     "Kunne ikke gemme ROM-set arkiv!"
+  IDS_CANNOT_LOAD_ROMSET_FILE     "Kunne ikke indlæse ROM-set fil!"
+  IDS_CANNOT_SAVE_ROMSET_FILE     "Kunne ikke gemme ROM-set fil!"
+  IDS_SELECT_ROMSET_FILE          "Vælg ROM-set fil"
+  IDS_ROMSET                      "ROM-set"
+  IDS_COMPUTER                    "Computer"
+  IDS_DRIVE                       "Drev"
+  IDS_ROM_SETTINGS                "ROM-indstillinger"
+  IDS_SAVE_SNAPSHOT_IMAGE         "Gem snapshot"
+  IDS_CANNOT_WRITE_SNAPSHOT_S     "Kunne ikke gemme snapshot \"%s\"."
+  IDS_LOAD_SNAPSHOT_IMAGE         "Indlæs snapshot"
+  IDS_COULD_NOT_LOAD_PALETTE      "Kunne ikke indlæse palettefil."
+  IDS_LOAD_VICE_PALETTE_FILE      "Indlæs VICE-palette"
+  IDS_FULLSCREEN                  "Fuldskærm"
+  IDS_COLORS                      "Farver"
+  IDS_NEW_PAL                     "Ny PAL-emulering"
+  IDS_VIDEO_SETTINGS              "Grafikindstillinger"
+  IDS_FILE_SYSTEM                 "Filsystem"
+#ifdef HAVE_OPENCBM
+  IDS_REAL_IEC_DEVICE             "Ægte IEC-enhed"
+#endif
+  IDS_RS232_DEVICE_I              "RS232-enhed %i"
+  IDS_ATTACH_CRT_CART_IMAGE       "Tilslut CRT-cartridge image"
+  IDS_ATTACH_RAW_8KB_CART_IMAGE   "Tilslut råt 8KB-cartridge image"
+  IDS_ATTACH_RAW_16KB_CART_IMG    "Tilslut råt 16KB-cartridge image"
+  IDS_ATTACH_AR_CART_IMAGE        "Tilslut Action Replay-cartridge image"
+  IDS_ATTACH_AR3_CART_IMAGE       "Tilslut Action Replay III-cartridge image"
+  IDS_ATTACH_AR4_CART_IMAGE       "Tilslut Action Replay 4-cartridge image"
+  IDS_ATTACH_STARDOS_CART_IMAGE   "Tilslut StarDOS-cartridge image"
+  IDS_ATTACH_ATOMIC_P_CART_IMG    "Tilslut Atomic Power-cartridge image"
+  IDS_ATTACH_EPYX_FL_CART_IMG     "Tilslut Epyx fastload-cartridge image"
+  IDS_ATTACH_IEEE488_CART_IMG     "Tilslut IEEE-interface cartridge image"
+  IDS_ATTACH_RETRO_R_CART_IMG     "Tilslut Retro Replay-cartridge image"
+  IDS_ATTACH_IDE64_CART_IMAGE     "Tilslut IDE64-interface cartridge image"
+  IDS_ATTACH_SS4_CART_IMAGE       "Tilslut Super Snapshot 4-cartridge image"
+  IDS_ATTACH_SS5_CART_IMAGE       "Tilslut Super Snapshot 5-cartridge image"
+  IDS_ATTACH_STB_CART_IMAGE       "Tilslut Strucured Basic-cartridge image"
+  IDS_MODEL                       "Model"
+  IDS_DRIVE_SETTINGS              "Diskettedrevindstillinger"
+  IDS_SELECT_START_SNAP_EVENT     "Vælg start-snapshot for hændelseshistorik"
+  IDS_SELECT_END_SNAP_EVENT       "Vælg slut-snapshot for hændelseshistorik"
+#ifdef UNSTABLE
+  IDS_VERSION_S_UNSTABLE          "Version %s *USTABIL*"
+#else
+  IDS_VERSION_S                   "Version %s"
+#endif
+  IDS_VICE_CONTRIBUTORS           "VICE bidragsydere"
+  IDS_WHO_MADE_WHAT               "Hvem har lavet hvad?"
+  IDS_LICENSE                     "Licens"
+  IDS_NO_WARRANTY                 "Ingen garanti!"
+  IDS_VICE_WITHOUT_WARRANTY       "VICE distribueres UDEN NOGEN SOM HELST GARANTI!"
+  IDS_PRESS_KEY_NORTHWEST         "Tryk tast for nordvest"
+  IDS_PRESS_KEY_NORTH             "Tryk tast for nord"
+  IDS_PRESS_KEY_NORTHEAST         "Tryk tast for nordøst"
+  IDS_PRESS_KEY_EAST              "Tryk tast for øst"
+  IDS_PRESS_KEY_SOUTHEAST         "Tryk tast for sydøst"
+  IDS_PRESS_KEY_SOUTH             "Tryk tast for syd"
+  IDS_PRESS_KEY_SOUTHWEST         "Tryk tast for sydvest"
+  IDS_PRESS_KEY_WEST              "Tryk tast for vest"
+  IDS_PRESS_KEY_FIRE              "Tryk tast for skyd"
+  IDS_NUMPAD_AND_RCTRL            "Numerisk tastatur + højre Ctrl"
+  IDS_KEYSET_A                    "Tastesæt A"
+  IDS_KEYSET_B                    "Tastesæt B"
+  IDS_ALL_BUTTONS_AS_FIRE         "Alle knapper bruges som skydeknap"
+  IDS_NUMERIC_SEE_ABOVE           "numerisk (se ovenfor)"
+  IDS_NO_BUTTON_NO_AUTOFIRE       "Ingen knap - Autofire inaktiv"
+  IDS_ALL_FILES_FILTER            "Alle filer (*.*)"
+  IDS_PALETTE_FILES_FILTER        "VICE-palettefiler (*.vpl)"
+  IDS_SNAPSHOT_FILES_FILTER       "VICE-snapshot filer (*.vsf)"
+  IDS_CBM_IMAGE_FILES_FILTER      "CBM-filer (*.d64;*.d71;*.d80;*.d81;*.d82;*.g64;*.g41;*.x64;*.t64;*.tap;*.prg;*.p00)"
+  IDS_DISK_IMAGE_FILES_FILTER     "Disk-image filer (*.d64;*.d71;*.d80;*.d81;*.d82;*.g64;*.g41;*.x64)"
+  IDS_TAPE_IMAGE_FILES_FILTER     "Bånd-image filer (*.t64;*.tap)"
+  IDS_ZIPPED_FILES_FILTER         "Pakkede filer (*.zip;*.bz2;*.gz;*.d6z;*.d7z;*.d8z;*.g6z;*.g4z;*.x6z)"
+  IDS_CRT_FILES_FILTER            "CRT cartridge-image filer (*.crt)"
+  IDS_RAW_CART_FILES_FILTER       "Rå cartridge-image filer (*.bin)"
+  IDS_FLIP_LIST_FILES_FILTER      "VICE-bladrelistefiler (*.vfl)"
+  IDS_ROMSET_FILES_FILTER         "VICE-ROM-set filer (*.vrs)"
+  IDS_ROMSET_ARCHIVES_FILTER      "VICE-ROM-set arkiver (*.vra)"
+  IDS_KEYMAP_FILES_FILTER         "VICE-tastesæt filer (*.vkm)"
+  IDS_PRGP00_FILES_FILTER         "Commodoreemulatorfiler (*.prg;*.p00)"
+  IDS_FLEXIBLE                    "Fleksibel"
+  IDS_ADJUSTING                   "Tilpassende"
+  IDS_EXACT                       "Nøjagtig"
+  IDS_SOUND_DRIVER_DIRECTX        "Lyd-driver: DirectX"
+  IDS_SOUND_DRIVER_WMM            "Lyd-driver: WMM"
+  IDS_MEDIA_FILES_FILTER          "Mediefiler (*.bmp;*.gif;*.iff;*.jpg;*.pcx;*.png;*.ppm;*.wav;*.mp3;*.avi;*.mpg)"
+  IDS_SPACE_KB                    " kB"
+  IDS_CONFIGURE_KEYSET_A          "Konfigurér tastesæt A"
+  IDS_CONFIGURE_KEYSET_B          "Konfigurér tastesæt B"
+  IDS_SAVE_MEDIA_IMAGE            "Gem medie-image"
+  IDS_S_AT_D_SPEED                "%s med %d%% hastighed, %d b/s%s"
+  IDS_TAPE                        "Bånd:"
+  IDS_JOYSTICK_C                  "Joystick:"
+  IDS_RECORDING                   "Optager\n%02d:%02d"
+  IDS_PLAYBACK                    "Afspiller\n%02d:%02d (%02d:%02d)"
+  IDS_UNKNOWN                     "Ukendt"
+  IDS_P_NUMBER                    "<nummer>"
+  IDS_SET_INPUT_JOYSTICK_1        "Vælg inddataenhed for joystick 1"
+  IDS_SET_INPUT_JOYSTICK_2        "Vælg inddataenhed for joystick 2"
+  IDS_SAVE_SETTINGS_ON_EXIT       "Gem indstillinger når programmet afsluttes"
+  IDS_NO_SAVE_SETTINGS_ON_EXIT    "Gem aldrig indstillinger når programmet afsluttes"
+  IDS_CONFIRM_QUIT_VICE           "Bekræft programafslutning"
+  IDS_NO_CONFIRM_QUIT_VICE        "Bekræft ikke programafslutning"
+  IDS_USE_ALL_CPU_SMP             "Brug alle CPU'er på SMP-systemer"
+  IDS_USE_FIRST_CPU_SMP           "Brug kun første CPU på SMP-systemer"
+  IDS_START_VICE_FULLSCREEN_MODE  "Start VICE i fullscreen-tilstand"
+#ifdef SYS_SIGLIST_DECLARED
+  IDS_RECEIVED_SIGNAL_D_S         "Uventet fejl. Modtog signal %d (%s)."
+#else
+  IDS_RECEIVED_SIGNAL_D           "Uventet fejl. Modtog signal %d."
+#endif
+#ifdef HAVE_NETWORK
+  IDS_IDLE                        "Venter"
+  IDS_SERVER_LISTENING            "Server lytter"
+  IDS_CONNECTED_SERVER            "Tilsluttet server"
+  IDS_CONNECTED_CLIENT            "Tilsluttet klient"
+  IDS_INVALID_PORT_NUMBER         "Ugyldigt portnummer"
+  IDS_ERROR_STARTING_SERVER       "Fejl under start af serveren."
+  IDS_ERROR_CONNECTING_CLIENT     "Fejl under tilslutning af klienten."
+#endif
+  IDS_SOUND_RECORDING_STARTED     "Lydoptagelse startet..."
+  IDS_SOUND_RECORDING_STOPPED     "Lydoptagelse stoppet..."
+  IDS_OK                          "OK"
+  IDS_CANCEL                      "Annullér"
+  IDS_NONE                        "Ingen"
+  IDS_BROWSE                      "&Gennemse..."
+  IDS_SPECIFY_MIDI_IN             "Angiv enhed for MIDI-ind"
+  IDS_SPECIFY_MIDI_OUT            "Angiv enhed for MIDI-ud"
+  IDS_MP_FILE                     "&Fil"
+  IDS_MP_ATTACH_DISK_IMAGE        "Tilslut &Disk-image"
+  IDS_MP_DETACH_DISK_IMAGE        "&Frakobl disk-image"
+  IDS_MP_FLIP_LIST                "&Bladreliste"
+  IDS_MP_DATASETTE_CONTROL        "Datasette kontro&l"
+  IDS_MP_ATTACH_CARTRIDGE_IMAGE   "Tilslut &cartridge-image..."
+  IDS_MP_EXPERT_CARTRIDGE         "Expert Cartridge"
+  IDS_MP_RESET                    "&Reset"
+  IDS_MP_DEBUG                    "&Debug"
+#ifdef DEBUG
+  IDS_MP_MODE                     "&Tilstand"
+#endif
+  IDS_MP_EDIT                     "Redigér"
+  IDS_MP_SNAPSHOT                 "Sna&pshot"
+  IDS_MP_RECORDING_START_MODE     "Indspiller start-tilstand"
+  IDS_MP_OPTIONS                  "&Indstillinger"
+  IDS_MP_REFRESH_RATE             "&Opdateringsfrekvens"
+  IDS_MP_MAXIMUM_SPEED            "&Maksimal hastighed"
+  IDS_MP_VIDEO_STANDARD           "&TV-standard"
+  IDS_MP_DRIVE_SYNC_FACTOR        "S&ynkfaktor for diskettedrev"
+  IDS_MP_SETTINGS                 "&Indstillinger"
+  IDS_MP_CARTRIDGE_IO_SETTINGS    "&Cartridge/IO-indstillinger"
+  IDS_MP_LANGUAGE                 "&Sprog"
+  IDS_MP_HELP                     "&Hjælp"
+  IDS_MP_VIEW                     "&Vis"
+  IDS_MP_WINDOW                   "Vi&ndue"
+  IDS_MI_EXIT                     "Af&slut"
+  IDS_MI_ABOUT                    "&Om VICE..."
+  IDS_MI_PAUSE                    "&Pause"
+  IDS_MI_EDIT_COPY                "&Kopiér"
+  IDS_MI_EDIT_PASTE               "&Indsæt"
+  IDS_MI_AUTOSTART                "&Autostart disk-/bånd-image..."
+  IDS_MI_RESET_HARD               "&Hård"
+  IDS_MI_RESET_SOFT               "&Blød"
+  IDS_MI_DRIVE8                   "Enhed &8"
+  IDS_MI_DRIVE9                   "Enhed &9"
+  IDS_MI_DRIVE10                  "Enhed 1&0"
+  IDS_MI_DRIVE11                  "Enhed 1&1"
+  IDS_MI_ATTACH_TAPE              "&Tilslut et bånd-image..."
+  IDS_MI_DETACH_TAPE              "F&rakobl bånd-image"
+  IDS_MI_DETACH_ALL               "&Alle"
+  IDS_MI_TOGGLE_SOUND             "Aktivér l&ydemulering"
+  IDS_MI_TOGGLE_DOUBLESIZE        "&Dobbelt størrelse"
+  IDS_MI_TOGGLE_DOUBLESCAN        "Do&bbelt-skan"
+  IDS_MI_DRIVE_TRUE_EMULATION     "Æg&te drev-emulering"
+  IDS_MI_TOGGLE_VIDEOCACHE        "Grafik&cache"
+  IDS_MI_DRIVE_SETTINGS           "&Diskettedrevsindstillinger..."
+  IDS_MI_CART_ATTACH_CRT          "&CRT-image..."
+  IDS_MI_CART_ATTACH_8KB          "Almindeligt &8KB-image..."
+  IDS_MI_CART_ATTACH_16KB         "Almindeligt &16KB-image..."
+  IDS_MI_CART_ATTACH_AR           "&Action Replay-image..."
+  IDS_MI_CART_ATTACH_AR3          "&Action Replay 3-image..."
+  IDS_MI_CART_ATTACH_AR4          "&Action Replay 4-image..."
+  IDS_MI_CART_ATTACH_STARDOS      "&StarDOS-image..."
+  IDS_MI_CART_ATTACH_AT           "Atomic &Power-image..."
+  IDS_MI_CART_ATTACH_EPYX         "&Epyx FastLoad-image..."
+  IDS_MI_CART_ATTACH_IEEE488      "&IEEE488-interface image..."
+  IDS_MI_CART_ATTACH_RR           "&Retro Replay-image..."
+  IDS_MI_CART_ATTACH_IDE64        "IDE&64-interface image..."
+  IDS_MI_CART_ATTACH_SS4          "Super Snapshot &4-image..."
+  IDS_MI_CART_ATTACH_SS5          "Super Snapshot &5-image..."
+  IDS_MI_CART_ATTACH_STB          "Structured &BASIC-image..."
+  IDS_MI_FLIP_ADD                 "&Tilføj nuværende image"
+  IDS_MI_FLIP_REMOVE              "&Fjern nuværende image"
+  IDS_MI_FLIP_NEXT                "Tilslut &næste image"
+  IDS_MI_FLIP_PREVIOUS            "Tilslut f&orrige image"
+  IDS_MI_FLIP_LOAD                "Ind&læs bladreliste"
+  IDS_MI_FLIP_SAVE                "Gem Bladreli&ste"
+  IDS_MI_DATASETTE_STOP           "S&top"
+  IDS_MI_DATASETTE_START          "&Start"
+  IDS_MI_DATASETTE_FORWARD        "Spol &frem"
+  IDS_MI_DATASETTE_REWIND         "Spol Til&bage"
+  IDS_MI_DATASETTE_RECORD         "&Optag"
+  IDS_MI_DATASETTE_RESET          "R&eset"
+  IDS_MI_DATASETTE_RESET_COUNTER  "Nulstil T&æller"
+  IDS_MI_CART_ENABLE_EXPERT       "Aktivér"
+  IDS_MI_CART_MODE_OFF            "Slukket"
+  IDS_MI_CART_MODE_ON             "Tændt"
+  IDS_MI_CART_SET_DEFAULT         "Vælg cartridge som stan&dard"
+  IDS_MI_TOGGLE_CART_RESET        "Reset &ved cartridge-skift"
+  IDS_MI_CART_DETACH              "Frakobl cartridge-&image"
+  IDS_MI_CART_FREEZE              "Cartridge &frys-funktion"
+  IDS_MI_MONITOR                  "&Monitor"
+#ifdef DEBUG
+  IDS_MI_DEBUG_MODE_NORMAL        "&Normal"
+  IDS_MI_DEBUG_MODE_SMALL         "&Lille"
+  IDS_MI_DEBUG_MODE_HISTORY       "&Historik"
+  IDS_MI_DEBUG_MODE_AUTOPLAY      "Automatisk afspilning af &Historik"
+  IDS_MI_TOGGLE_MAINCPU_TRACE     "Hoved-&CPU trace"
+  IDS_MI_TOGGLE_DRIVE0CPU_TRACE   "Enhed &0 CPU trace"
+  IDS_MI_TOGGLE_DRIVE1CPU_TRACE   "Enhed &1 CPU trace"
+#endif
+  IDS_MI_SNAPSHOT_LOAD            "&Indlæs snapshot..."
+  IDS_MI_SNAPSHOT_SAVE            "Gem Sna&pshot..."
+  IDS_MI_LOADQUICK                "Hurtigind&læs snapshot"
+  IDS_MI_SAVEQUICK                "Hurtig-gem &snapshot"
+  IDS_MI_EVENT_TOGGLE_RECORD      "Start/stop optagelse af &hændelser"
+  IDS_MI_EVENT_TOGGLE_PLAYBACK    "Start/stop afspilning af &hændelser"
+  IDS_MI_EVENT_SETMILESTONE       "Angiv optagelses-bogmærke"
+  IDS_MI_EVENT_RESETMILESTONE     "Gå til bogmærke"
+  IDS_MI_EVENT_START_MODE_SAVE    "Gem nyt &snapshot"
+  IDS_MI_EVENT_START_MODE_LOAD    "Ind&læs eksisterende snapshot"
+  IDS_MI_EVENT_START_MODE_RESET   "Start med &reset"
+  IDS_MI_EVENT_START_MODE_PLAYBCK "Overskriv eksisterende o&ptagelse"
+  IDS_MI_EVENT_DIRECTORY          "Vælg historikfiler/-katalog"
+  IDS_MI_MEDIAFILE                "Gem/stop mediefil..."
+  IDS_MI_SOUND_RECORD_START       "Optag lyd..."
+  IDS_MI_SOUND_RECORD_STOP        "Stop lydoptagelse"
+  IDS_MI_REFRESH_RATE_AUTO        "&Auto"
+  IDS_MI_MAXIMUM_SPEED_NO_LIMIT   "&Ubegrænset"
+  IDS_MI_MAXIMUM_SPEED_CUSTOM     "&Egen"
+  IDS_MI_TOGGLE_WARP_MODE         "&Warp-tilstand"
+  IDS_MI_TOGGLE_ALWAYSONTOP       "Altid øverst"
+  IDS_MI_TOGGLE_FASTPAL           "PAL-emulering"
+  IDS_MI_TOGGLE_SCALE2X           "Scale2x"
+  IDS_MI_SWAP_JOYSTICK            "Byt om på &joystickportene"
+  IDS_MI_JOYKEYS_TOGGLE           "Aktivér joystick via keyboard"
+  IDS_MI_TOGGLE_VIRTUAL_DEVICES   "&Virtuelle enheds-traps"
+  IDS_MI_TOGGLE_EMUID             "Emulator&identificering"
+  IDS_MI_MOUSE                    "Fan&g mussehændelser"
+  IDS_MI_VIDEO_SETTINGS           "&Grafikindstillinger..."
+  IDS_MI_DEVICEMANAGER            "&Ekstern-enhedsindstillinger..."
+  IDS_MI_JOY_SETTINGS             "&Joystick indstillinger..."
+  IDS_MI_KEYBOARD_SETTINGS        "&Tastaturindstillinger..."
+  IDS_MI_SOUND_SETTINGS           "L&ydindstillinger..."
+  IDS_MI_ROM_SETTINGS             "&ROM-indstillinger..."
+  IDS_MI_RAM_SETTINGS             "RA&M-indstillinger..."
+  IDS_MI_DATASETTE_SETTINGS       "D&atasetteindstillinger..."
+  IDS_MI_VICII_SETTINGS           "VIC-II-indstillinger..."
+  IDS_MI_MOUSE_SETTINGS           "M&usseindstillinger..."
+  IDS_MI_SID_SETTINGS             "S&ID-indstillinger..."
+  IDS_MI_RS232_SETTINGS           "RS&232-indstillinger..."
+  IDS_MI_REU_SETTINGS             "&REU-indstillinger..."
+  IDS_MI_GEORAM_SETTINGS          "&GEORAM-indstillinger..."
+  IDS_MI_RAMCART_SETTINGS         "&RAMCART-indstillinger..."
+  IDS_MI_DQBB_SETTINGS            "&Double Quick Brown Box indstillinger..."
+  IDS_MI_ISEPIC_SETTINGS          "I&sepic-indstillinger..."
+  IDS_MI_MMC64_SETTINGS           "&MMC64-indstillinger..."
+  IDS_MI_MIDI_SETTINGS            "M&IDI-indstillinger..."
+  IDS_MI_DIGIMAX_SETTINGS         "&DIGIMAX-indstillinger..."
+  IDS_MI_IDE64_SETTINGS           "&IDE64-indstillinger..."
+#ifdef HAVE_TFE
+  IDS_MI_TFE_SETTINGS             "&Ethernetindstillinger..."
+#endif
+  IDS_MI_ACIA_SETTINGS            "&ACIA-indstillinger..."
+  IDS_MI_RS232USER_SETTINGS       "RS&232-brugerportsindstillinger..."
+  IDS_MI_SETTINGS_SAVE_FILE       "Gem indstillinger som"
+  IDS_MI_SETTINGS_LOAD_FILE       "Indlæs indstillinger fra"
+  IDS_MI_SETTINGS_SAVE            "Gem nuværende ind&stillinger"
+  IDS_MI_SETTINGS_LOAD            "Ind&læs gemte indstillinger"
+  IDS_MI_SETTINGS_DEFAULT         "Gen&dan standardindstillinger"
+  IDS_MI_SAVE_SETTINGS_ON_EXIT    "Gem indstillinger når programmet afs&luttes"
+  IDS_MI_CONFIRM_ON_EXIT          "&Bekræft programafslutning"
+  IDS_MI_LANG_EN                  "&Engelsk"
+  IDS_MI_LANG_DE                  "&Tysk"
+  IDS_MI_LANG_FR                  "&Fransk"
+  IDS_MI_LANG_HU                  "&Ungersk"
+  IDS_MI_LANG_IT                  "&Italiensk"
+  IDS_MI_LANG_NL                  "&Hollandsk"
+  IDS_MI_LANG_PL                  "&Polsk"
+  IDS_MI_LANG_SV                  "&Svensk"
+  IDS_MI_CMDLINE                  "Kommand&olinjeparametre"
+  IDS_MI_CONTRIBUTORS             "&Bidragslämnare"
+  IDS_MI_LICENSE                  "&Licens"
+  IDS_MI_WARRANTY                 "Ingen &garanti"
+  IDS_MI_TOGGLE_FULLSCREEN        "Fuldskærm"
+  IDS_MI_SIDCART_SETTINGS         "&SID-cartridge indstillinger..."
+  IDS_MI_MON_OPEN                 "&Åbn"
+  IDS_MI_MON_SAVE                 "&Gem"
+  IDS_MI_MON_PRINT                "&Print"
+  IDS_MI_MON_EXIT                 "&Afslut\tAlt+F4"
+  IDS_MI_MON_STOP_DEBUG           "&Stop debugging"
+  IDS_MI_MON_STOP_EXEC            "Stop E&ksekvering"
+  IDS_MI_MON_STEP_INTO            "Step &ind i"
+  IDS_MI_MON_STEP_OVER            "Step &over"
+  IDS_MI_MON_SKIP_RETURN          "Step til &retur"
+  IDS_MI_MON_GOTO_CURSOR          "Gå til &cursor"
+  IDS_MI_MON_EVAL                 "&Evaluér udtryk"
+  IDS_MI_MON_CURRENT              "&Aktuel instruktion"
+  IDS_MI_MON_WND_EVAL             "Evaluerings&vindue"
+  IDS_MI_MON_WND_REG              "&Registervindue"
+  IDS_MI_MON_WND_MEM              "&Hukommelsesvindue"
+  IDS_MI_MON_WND_DIS              "&Disassembleringsvindue"
+  IDS_MI_MON_WND_CONSOLE          "&Konsolvindue"
+  IDS_MI_MON_COMPUTER             "&Computer"
+  IDS_MI_MON_DRIVE8               "Enhed &8"
+  IDS_MI_MON_DRIVE9               "Enhed &9"
+  IDS_MI_MON_CASCADE              "&Kaskade"
+  IDS_MI_MON_TILE_VERT            "&Side om side"
+  IDS_MI_MON_TILE_HORIZ           "&Over og under"
+  IDS_MI_MON_ARRANGE_ICONS        "&Arrangér ikoner"
 END
 
 
@@ -9172,6 +9742,403 @@ BEGIN
   IDS_MI_MON_TILE_HORIZ           "&Över och under"
   IDS_MI_MON_ARRANGE_ICONS        "&Arrangera ikoner"
 END
+
+
+// TURKISH text
+
+#pragma code_page(28599)
+STRINGTABLE
+LANGUAGE LANG_TURKISH, SUBLANG_NEUTRAL
+BEGIN
+  IDS_VICE_ERROR                  "VICE Hatasý!"
+  IDS_VICE_INFORMATION            "VICE Bilgisi"
+  IDS_VICE_QUESTION               "VICE sorusu"
+  IDS_FFMPEG_DLL_MISMATCH         "ffmpeg dll versiyonunuz uyumlu deðil."
+  IDS_DIRECTDRAW_ERROR            "DirectDraw hatasý: Kod:%8x Hata:%s"
+  IDS_CANNOT_SAVE_SETTINGS        "Ayarlar kaydedilemedi."
+  IDS_CANNOT_LOAD_SETTINGS        "Ayarlar yüklenemedi."
+  IDS_DEFAULT_SETTINGS_RESTORED   "Varsayýlan ayarlara geri dönüldü."
+  IDS_CANNOT_ATTACH_FILE          "Belirtilen dosya yerleþtirilemedi"
+  IDS_START_MONITOR               "%s\012\012Monitörü baþlat? (Hayýr reset atacaktýr, Ýptal devam edecektir)"
+  IDS_VICE_CPU_JAM                "VICE CPU SIKIÞMASI"
+  IDS_EXTEND_TO_40_TRACKS         "Imaj 40-track biçimine geniþletilsin mi?"
+  IDS_DETACHED_DEVICE_S           "Aygýt %s çýkartýldý"
+  IDS_ATTACHED_S_TO_DEVICE_S      "%s aygýt#%s'a yerleþtirildi"
+  IDS_DETACHED_TAPE               "Teyp çýkartýldý"
+  IDS_HISTORY_RECORDED_UNKNOWN    "Tarihçe bilinmeyen yayýmlanmayla kaydedildi"
+  IDS_HISTORY_RECORDED_VICE_S     "Tarihçe VICE-%s ile kaydedildi"
+  IDS_PAUSED                      "duraklatýldý"
+  IDS_FRAME_NUMBER                "frame #"
+  IDS_RESUMED                     "yeniden baþlatýldý"
+  IDS_REALLY_EXIT                 "Çýkmak istediðinizden emin misiniz?\n\nEmüle edilmiþ RAM'de bulunan mevcut tüm veri kaybedilecektir."
+  IDS_CANNOT_AUTOSTART_FILE       "Belirtilen dosya otomatik baþlatýlamadý."
+  IDS_ATTACHED_TAPE_S             "Yerleþtirilmiþ teyp %s"
+  IDS_SETTINGS_SAVED_SUCCESS      "Ayarlar baþarýyla kaydedildi."
+  IDS_SETTINGS_LOADED_SUCCESS     "Ayarlar baþarýyla yüklendi."
+  IDS_ATTACH_DISK_IMAGE           "Disk imajýný yerleþtir"
+  IDS_ATTACH_TAPE_IMAGE           "Teyp imajýný yerleþtir"
+  IDS_AUTOSTART_IMAGE             "Disk/Teyp imajýný otomatik baþlat"
+  IDS_INVALID_CARTRIDGE           "Geçersiz kartuþ"
+  IDS_BAD_CARTRIDGE_CONFIG        "UI'de kötü kartuþ konfigürasyonu!"
+  IDS_INVALID_CARTRIDGE_IMAGE     "Geçersiz kartuþ imajý"
+  IDS_LOG_CONSOLE_OUTPUT_IMAGE    "konsol imaj çýktýsý loglanýyor"
+  IDS_LOG_FILES_TYPE              "VICE konsol log dosyalarý (*.dbg)"
+  IDS_CANNOT_WRITE_LOGFILE_S      "Log dosyasý `%s' yazýlamadý."
+  IDS_LOAD_FLIP_LIST_FILE         "Sýralama listesi dosyasýný yükle"
+  IDS_CANNOT_READ_FLIP_LIST       "Sýralama listesi dosyasý okunamadý."
+  IDS_SAVE_FLIP_LIST_FILE         "Sýralama listesi dosyasýný kaydet"
+  IDS_CANNOT_WRITE_FLIP_LIST      "Sýralama listesi dosyasý yazýlamadý"
+  IDS_SELECT_KEYMAP_FILE          "Tuþ Haritasý dosyasý seç"
+  IDS_SAVE_KEYMAP_FILE            "Tuþ Haritasý dosyasýný kaydet"
+  IDS_CANNOT_WRITE_KEYMAP_FILE    "Tuþ Haritasý dosyasý yazýlamadý"
+  IDS_SAVE_CONFIG_FILE            "Konfigürasyon dosyasýný kaydet"
+  IDS_LOAD_CONFIG_FILE            "Konfigürasyon dosyasýný yükle"
+  IDS_MAPPING                     "Haritalama"
+  IDS_KEYBOARD_SETTINGS           "Klavye ayarlarý"
+  IDS_ATTACH                      "&Yerleþtir"
+  IDS_PLEASE_ENTER_A_FILENAME     "Lütfen dosya ismi girin."
+  IDS_OVERWRITE_EXISTING_IMAGE    "Varolan imajýn üzerine yazýlsýn mý?"
+  IDS_CANNOT_CREATE_IMAGE         "Imaj yaratýlamadý"
+  IDS_COMMAND_LINE_OPTIONS        "Komut satýrý seçenekleri"
+  IDS_COMMAND_OPTIONS_AVAIL       "Hangi komut satýrý seçenekleri mevcut?"
+  IDS_NO_DRIVER_SELECT_SUPPORT    "Seçilmiþ sürücü yok ya da desteklenmiyor"
+  IDS_CANT_WRITE_SCREENSHOT_S     "Ekran görüntüsü dosyasý `%s' yazýlamadý."
+  IDS_AUTOSTART_DISK_IMAGE        "Disk imajýný otomatik baþlat"
+  IDS_SELECT_FS_DIRECTORY         "Dosya sistem dizinini seç"
+  IDS_PRINTER_USERPORT            "Yazýcý Userport'u"
+  IDS_PRINTER_4                   "Yazýcý 4"
+  IDS_PRINTER_5                   "Yazýcý 5"
+  IDS_DRIVE_8                     "Sürücü 8"
+  IDS_DRIVE_9                     "Sürücü 9"
+  IDS_DRIVE_10                    "Sürücü 10"
+  IDS_DRIVE_11                    "Sürücü 11"
+  IDS_PERIPHERAL_SETTINGS         "Çevresel Ayarlar"
+  IDS_CANT_WRITE_SNAPSHOT_FILE    "Anlýk görüntü dosyasý yazýlamadý."
+  IDS_CANNOT_READ_SNAPSHOT_IMG    "Anlýk görüntü dosyasý okunamadý."
+  IDS_LOAD_S_ROM_IMAGE            "%s ROM imajýný yükle"
+  IDS_SELECT_ROMSET_ARCHIVE       "Romset arþivini seç"
+  IDS_CANNOT_LOAD_ROMSET_ARCH     "Romset arþivi yüklenemedi!"
+  IDS_CANNOT_SAVE_ROMSET_ARCH     "Romset arþivi kaydedilemedi!"
+  IDS_CANNOT_LOAD_ROMSET_FILE     "Romset dosyasý yüklenemedi!"
+  IDS_CANNOT_SAVE_ROMSET_FILE     "Romset dosyasý kaydedilemedi!"
+  IDS_SELECT_ROMSET_FILE          "Romset dosyasýný seç"
+  IDS_ROMSET                      "Romset"
+  IDS_COMPUTER                    "Bilgisayar"
+  IDS_DRIVE                       "Sürücü"
+  IDS_ROM_SETTINGS                "ROM ayarlarý"
+  IDS_SAVE_SNAPSHOT_IMAGE         "Anlýk görüntü imajýný kaydet"
+  IDS_CANNOT_WRITE_SNAPSHOT_S     "Anlýk görüntü dosyasý yazýlamadý `%s'."
+  IDS_LOAD_SNAPSHOT_IMAGE         "Anlýk görüntü imajýný yükle"
+  IDS_COULD_NOT_LOAD_PALETTE      "Palet dosyasý yüklenemedi."
+  IDS_LOAD_VICE_PALETTE_FILE      "VICE palet dosyasý yükle"
+  IDS_FULLSCREEN                  "Tam ekran"
+  IDS_COLORS                      "Renkler"
+  IDS_NEW_PAL                     "Yeni PAL emülasyonu"
+  IDS_VIDEO_SETTINGS              "Görüntü ayarlarý"
+  IDS_FILE_SYSTEM                 "Dosya sistemi"
+#ifdef HAVE_OPENCBM
+  IDS_REAL_IEC_DEVICE             "Gerçek IEC aygýtý"
+#endif
+  IDS_RS232_DEVICE_I              "RS232 aygýtý %i"
+  IDS_ATTACH_CRT_CART_IMAGE       "CRT kartuþ imajý yerleþtir"
+  IDS_ATTACH_RAW_8KB_CART_IMAGE   "Düz 8KB kartuþ imajý yerleþtir"
+  IDS_ATTACH_RAW_16KB_CART_IMG    "Düz 16KB kartuþ imajý yerleþtir"
+  IDS_ATTACH_AR_CART_IMAGE        "Action Replay kartuþ imajý yerleþtir"
+  IDS_ATTACH_AR3_CART_IMAGE       "Action Replay III kartuþ imajý yerleþtir"
+  IDS_ATTACH_AR4_CART_IMAGE       "Action Replay 4 kartuþ imajý yerleþtir"
+  IDS_ATTACH_STARDOS_CART_IMAGE   "StarDOS kartuþ imajý yerleþtir"
+  IDS_ATTACH_ATOMIC_P_CART_IMG    "Atomic Power kartuþ imajý yerleþtir"
+  IDS_ATTACH_EPYX_FL_CART_IMG     "Epyx fastload kartuþ imajý yerleþtir"
+  IDS_ATTACH_IEEE488_CART_IMG     "IEEE arabirimi kartuþ imajý yerleþtir"
+  IDS_ATTACH_RETRO_R_CART_IMG     "Retro Replay kartuþ imajý yerleþtir"
+  IDS_ATTACH_IDE64_CART_IMAGE     "IDE64 arabirimi kartuþ imajý yerleþtir"
+  IDS_ATTACH_SS4_CART_IMAGE       "Super Snapshot 4 kartuþ imajý yerleþtir"
+  IDS_ATTACH_SS5_CART_IMAGE       "Super Snapshot 5 kartuþ imajý yerleþtir"
+  IDS_ATTACH_STB_CART_IMAGE       "Structured Basic kartuþ imajý yerleþtir"
+  IDS_MODEL                       "Model"
+  IDS_DRIVE_SETTINGS              "Sürücü Ayarlarý"
+  IDS_SELECT_START_SNAP_EVENT     "Olay tarihçesi için baþlangýç anlýk görüntüsünü seç"
+  IDS_SELECT_END_SNAP_EVENT       "Olay tarihçesi için bitiþ anlýk görüntüsünü seç"
+#ifdef UNSTABLE
+  IDS_VERSION_S_UNSTABLE          "Versiyon %s *ÝSTÝKRARSIZ*"
+#else
+  IDS_VERSION_S                   "Versiyon %s"
+#endif
+  IDS_VICE_CONTRIBUTORS           "VICE katýlýmcýlarý"
+  IDS_WHO_MADE_WHAT               "Kim ne yaptý?"
+  IDS_LICENSE                     "Lisans"
+  IDS_NO_WARRANTY                 "Garanti verilmez!"
+  IDS_VICE_WITHOUT_WARRANTY       "VICE HÝÇBÝR GARANTÝ VERÝLMEDEN daðýtýlmýþtýr!"
+  IDS_PRESS_KEY_NORTHWEST         "KuzeyBatý için bir tuþa basýn"
+  IDS_PRESS_KEY_NORTH             "Kuzey için bir tuþa basýn"
+  IDS_PRESS_KEY_NORTHEAST         "KuzeyDoðu için bir tuþa basýn"
+  IDS_PRESS_KEY_EAST              "Doðu için bir tuþa basýn"
+  IDS_PRESS_KEY_SOUTHEAST         "GüneyDoðu için bir tuþa basýn"
+  IDS_PRESS_KEY_SOUTH             "Güney için bir tuþa basýn"
+  IDS_PRESS_KEY_SOUTHWEST         "GüneyBatý için bir tuþa basýn"
+  IDS_PRESS_KEY_WEST              "Batý için bir tuþa basýn"
+  IDS_PRESS_KEY_FIRE              "Ateþ için bir tuþa basýn"
+  IDS_NUMPAD_AND_RCTRL            "Numpad + Sað Ctrl"
+  IDS_KEYSET_A                    "Tuþ Seti A"
+  IDS_KEYSET_B                    "Tuþ Seti B"
+  IDS_ALL_BUTTONS_AS_FIRE         "Tüm düðmeler ateþ olarak kullanýlýr"
+  IDS_NUMERIC_SEE_ABOVE           "Nümerik (yukarýya bakýn)"
+  IDS_NO_BUTTON_NO_AUTOFIRE       "Düðme yok - Otomatik ateþi pasifleþtir"
+  IDS_ALL_FILES_FILTER            "Tüm dosyalar (*.*)"
+  IDS_PALETTE_FILES_FILTER        "VICE palet dosyalarý (*.vpl)"
+  IDS_SNAPSHOT_FILES_FILTER       "VICE anlýk görüntü dosyalarý (*.vsf)"
+  IDS_CBM_IMAGE_FILES_FILTER      "CBM dosyalarý (*.d64;*.d71;*.d80;*.d81;*.d82;*.g64;*.g41;*.x64;*.t64;*.tap;*.prg;*.p00)"
+  IDS_DISK_IMAGE_FILES_FILTER     "Disk imaj dosyalarý (*.d64;*.d71;*.d80;*.d81;*.d82;*.g64;*.g41;*.x64)"
+  IDS_TAPE_IMAGE_FILES_FILTER     "Teyp imaj dosyalarý (*.t64;*.tap)"
+  IDS_ZIPPED_FILES_FILTER         "Ziplenmiþ dosyalar (*.zip;*.bz2;*.gz;*.d6z;*.d7z;*.d8z;*.g6z;*.g4z;*.x6z)"
+  IDS_CRT_FILES_FILTER            "CRT kartuþ imajý dosyalarý (*.crt)"
+  IDS_RAW_CART_FILES_FILTER       "Düz kartuþ imajý dosyalarý (*.bin)"
+  IDS_FLIP_LIST_FILES_FILTER      "VICE sýralama listesi dosyalarý (*.vfl)"
+  IDS_ROMSET_FILES_FILTER         "VICE romset dosyalarý (*.vrs)"
+  IDS_ROMSET_ARCHIVES_FILTER      "VICE romset arþivleri (*.vra)"
+  IDS_KEYMAP_FILES_FILTER         "VICE tuþ haritasý dosyalarý (*.vkm)"
+  IDS_PRGP00_FILES_FILTER         "Commodore emülatörü dosyalarý (*.prg;*.p00)"
+  IDS_FLEXIBLE                    "Esnek"
+  IDS_ADJUSTING                   "Düzeltme"
+  IDS_EXACT                       "Aynen"
+  IDS_SOUND_DRIVER_DIRECTX        "Ses sürücüsü: DirectX"
+  IDS_SOUND_DRIVER_WMM            "Ses sürücüsü: WMM"
+  IDS_MEDIA_FILES_FILTER          "Ortam dosyalarý (*.bmp;*.gif;*.iff;*.jpg;*.pcx;*.png;*.ppm;*.wav;*.mp3;*.avi;*.mpg)"
+  IDS_SPACE_KB                    " kB"
+  IDS_CONFIGURE_KEYSET_A          "Tuþ Seti A'yý Konfigüre Et"
+  IDS_CONFIGURE_KEYSET_B          "Tuþ Seti B'yi Konfigüre Et"
+  IDS_SAVE_MEDIA_IMAGE            "Ortam imajý kaydet"
+  IDS_S_AT_D_SPEED                "%s %d%% hýzýnda, %d fps%s"
+  IDS_TAPE                        "Teyp:"
+  IDS_JOYSTICK_C                  "Joystick:"
+  IDS_RECORDING                   "Kaydediliyor\n%02d:%02d"
+  IDS_PLAYBACK                    "Kayýttan yürütülüyor\n%02d:%02d (%02d:%02d)"
+  IDS_UNKNOWN                     "Bilinmeyen"
+  IDS_P_NUMBER                    "<sayý>"
+  IDS_SET_INPUT_JOYSTICK_1        "Joystick #1 için giriþ aygýtý belirle"
+  IDS_SET_INPUT_JOYSTICK_2        "Joystick #2 için giriþ aygýtý belirle"
+  IDS_SAVE_SETTINGS_ON_EXIT       "Çýkýþta ayarlarý (kaynaklarý) kaydet"
+  IDS_NO_SAVE_SETTINGS_ON_EXIT    "Çýkýþta asla ayarlarý (kaynaklarý) kaydetme"
+  IDS_CONFIRM_QUIT_VICE           "VICE'dan çýkarken teyit et"
+  IDS_NO_CONFIRM_QUIT_VICE        "VICE'dan çýkarken asla teyit etme"
+  IDS_USE_ALL_CPU_SMP             "SMP sistemlerinde tüm CPUlarý kullan"
+  IDS_USE_FIRST_CPU_SMP           "SMP sistemlerinde yalnýzca ilk CPU'yu kullan"
+  IDS_START_VICE_FULLSCREEN_MODE  "VICE'ý tam ekran modunda baþlat"
+#ifdef SYS_SIGLIST_DECLARED
+  IDS_RECEIVED_SIGNAL_D_S         "Beklenmeyen hata oluþtu. %d sinyali alýndý (%s)."
+#else
+  IDS_RECEIVED_SIGNAL_D           "Beklenmeyen hata oluþtu. %d sinyali alýndý."
+#endif
+#ifdef HAVE_NETWORK
+  IDS_IDLE                        "Boþa vakit geçirme"
+  IDS_SERVER_LISTENING            "Sunucu dinleniyor"
+  IDS_CONNECTED_SERVER            "Sunucu Baðlandý"
+  IDS_CONNECTED_CLIENT            "Ýstemci Baðlandý"
+  IDS_INVALID_PORT_NUMBER         "Geçersiz port numarasý"
+  IDS_ERROR_STARTING_SERVER       "Sunucu baþlatýlýrken bir hata oluþtu."
+  IDS_ERROR_CONNECTING_CLIENT     "Ýstemciye baðlanýrken bir hata oluþtu."
+#endif
+  IDS_SOUND_RECORDING_STARTED     "Ses Kaydý baþladý..."
+  IDS_SOUND_RECORDING_STOPPED     "Ses Kaydý durduruldu"
+  IDS_OK                          "Tamam"
+  IDS_CANCEL                      "Ýptal"
+  IDS_NONE                        "Yok"
+  IDS_BROWSE                      "&Göz at..."
+  IDS_SPECIFY_MIDI_IN             "Midi-In aygýtýný belirleyin"
+  IDS_SPECIFY_MIDI_OUT            "Midi-Out aygýtýný belirleyin"
+  IDS_MP_FILE                     "&Dosya"
+  IDS_MP_ATTACH_DISK_IMAGE        "&Disk imajý yerleþtir"
+  IDS_MP_DETACH_DISK_IMAGE        "Disk imajý çýkar&t"
+  IDS_MP_FLIP_LIST                "&Sýralama listesi"
+  IDS_MP_DATASETTE_CONTROL        "Teyp kontro&lü"
+  IDS_MP_ATTACH_CARTRIDGE_IMAGE   "&Kartuþ imajý yerleþtir..."
+  IDS_MP_EXPERT_CARTRIDGE         "Expert Kartuþu"
+  IDS_MP_RESET                    "&Reset"
+  IDS_MP_DEBUG                    "&Hata Ayýkla"
+#ifdef DEBUG
+  IDS_MP_MODE                     "M&od"
+#endif
+  IDS_MP_EDIT                     "Düzenle"
+  IDS_MP_SNAPSHOT                 "&Anlýk Görüntü"
+  IDS_MP_RECORDING_START_MODE     "Kayýt baþlangýç modu"
+  IDS_MP_OPTIONS                  "&Seçenekler"
+  IDS_MP_REFRESH_RATE             "&Yenileme hýzý"
+  IDS_MP_MAXIMUM_SPEED            "&Maksimum Hýz"
+  IDS_MP_VIDEO_STANDARD           "G&orüntü standartý"
+  IDS_MP_DRIVE_SYNC_FACTOR        "Sürücü s&ync faktörü"
+  IDS_MP_SETTINGS                 "&Ayarlar"
+  IDS_MP_CARTRIDGE_IO_SETTINGS    "&Kartuþ/GÇ ayarlarý"
+  IDS_MP_LANGUAGE                 "Di&l"
+  IDS_MP_HELP                     "&Yardým"
+  IDS_MP_VIEW                     "&Görünüm"
+  IDS_MP_WINDOW                   "&Pencere"
+  IDS_MI_EXIT                     "Çý&kýþ"
+  IDS_MI_ABOUT                    "H&akkýnda..."
+  IDS_MI_PAUSE                    "&Duraklat"
+  IDS_MI_EDIT_COPY                "&Kopyala"
+  IDS_MI_EDIT_PASTE               "Ya&pýþtýr"
+  IDS_MI_AUTOSTART                "Disk/Teyp imajlarýný otom&atik baþlat..."
+  IDS_MI_RESET_HARD               "&Hard"
+  IDS_MI_RESET_SOFT               "&Soft"
+  IDS_MI_DRIVE8                   "Sürücü &8"
+  IDS_MI_DRIVE9                   "Sürücü &9"
+  IDS_MI_DRIVE10                  "Sürücü 1&0"
+  IDS_MI_DRIVE11                  "Sürücü 1&1"
+  IDS_MI_ATTACH_TAPE              "&Teyp imajý yerleþtir..."
+  IDS_MI_DETACH_TAPE              "Teyp imajýný çý&kart"
+  IDS_MI_DETACH_ALL               "&Tümü"
+  IDS_MI_TOGGLE_SOUND             "&Ses"
+  IDS_MI_TOGGLE_DOUBLESIZE        "Çift &boyut"
+  IDS_MI_TOGGLE_DOUBLESCAN        "Çift &tarama"
+  IDS_MI_DRIVE_TRUE_EMULATION     "&Gerçek sürücü emülasyonu"
+  IDS_MI_TOGGLE_VIDEOCACHE        "Görüntü ö&nbelleði"
+  IDS_MI_DRIVE_SETTINGS           "&Sürücü ayarlarý..."
+  IDS_MI_CART_ATTACH_CRT          "&CRT imajý..."
+  IDS_MI_CART_ATTACH_8KB          "&8KB jenerik imaj..."
+  IDS_MI_CART_ATTACH_16KB         "&16KB jenerik imaj..."
+  IDS_MI_CART_ATTACH_AR           "&Action Replay imajý..."
+  IDS_MI_CART_ATTACH_AR3          "&Action Replay 3 imajý..."
+  IDS_MI_CART_ATTACH_AR4          "&Action Replay 4 imajý..."
+  IDS_MI_CART_ATTACH_STARDOS      "&StarDOS imajý..."
+  IDS_MI_CART_ATTACH_AT           "Atomic &Power imajý..."
+  IDS_MI_CART_ATTACH_EPYX         "&Epyx fastload imajý..."
+  IDS_MI_CART_ATTACH_IEEE488      "&IEEE488 arabirimi imajý..."
+  IDS_MI_CART_ATTACH_RR           "&Retro Replay imajý..."
+  IDS_MI_CART_ATTACH_IDE64        "IDE&64 arabirimi imajý..."
+  IDS_MI_CART_ATTACH_SS4          "Super Snapshot &4 imajý..."
+  IDS_MI_CART_ATTACH_SS5          "Super Snapshot &5 imajý..."
+  IDS_MI_CART_ATTACH_STB          "Structured &Basic imajý..."
+  IDS_MI_FLIP_ADD                 "Geçerli im&ajý ekle"
+  IDS_MI_FLIP_REMOVE              "Geçerli imajý kaldý&r"
+  IDS_MI_FLIP_NEXT                "So&nraki imajý yerleþtir"
+  IDS_MI_FLIP_PREVIOUS            "Önce&ki imajý yerleþtir"
+  IDS_MI_FLIP_LOAD                "Sýralama &listesi yükle"
+  IDS_MI_FLIP_SAVE                "&Sýralama listesi kaydet"
+  IDS_MI_DATASETTE_STOP           "&Durdur"
+  IDS_MI_DATASETTE_START          "&Baþlat"
+  IDS_MI_DATASETTE_FORWARD        "Ýle&ri"
+  IDS_MI_DATASETTE_REWIND         "&Geri"
+  IDS_MI_DATASETTE_RECORD         "&Kayýt"
+  IDS_MI_DATASETTE_RESET          "R&eset"
+  IDS_MI_DATASETTE_RESET_COUNTER  "Sayacý &Resetle"
+  IDS_MI_CART_ENABLE_EXPERT       "Aktif Et"
+  IDS_MI_CART_MODE_OFF            "Kapalý"
+  IDS_MI_CART_MODE_ON             "Açýk"
+  IDS_MI_CART_SET_DEFAULT         "Kartuþu &varsayýlan yap"
+  IDS_MI_TOGGLE_CART_RESET        "Kartuþ &deðiþiminde resetle"
+  IDS_MI_CART_DETACH              "Kartuþ &imajýný çýkart"
+  IDS_MI_CART_FREEZE              "&Kartuþ dondurma"
+  IDS_MI_MONITOR                  "&Monitör"
+#ifdef DEBUG
+  IDS_MI_DEBUG_MODE_NORMAL        "&Normal"
+  IDS_MI_DEBUG_MODE_SMALL         "&Küçük"
+  IDS_MI_DEBUG_MODE_HISTORY       "Tari&hçe"
+  IDS_MI_DEBUG_MODE_AUTOPLAY      "Tari&h Otomatik Yürütme"
+  IDS_MI_TOGGLE_MAINCPU_TRACE     "Ana CPU Ýzle&me"
+  IDS_MI_TOGGLE_DRIVE0CPU_TRACE   "Sürücü&0 CPU Ýzleme"
+  IDS_MI_TOGGLE_DRIVE1CPU_TRACE   "Sürücü&1 CPU Ýzleme"
+#endif
+  IDS_MI_SNAPSHOT_LOAD            "Anlýk görüntü imajýný yükle..."
+  IDS_MI_SNAPSHOT_SAVE            "Anlýk görüntü imajýný &kaydet..."
+  IDS_MI_LOADQUICK                "Hýzlý anlýk görüntü imajý yük&le"
+  IDS_MI_SAVEQUICK                "Hýzlý anlýk görüntü imajý ka&ydet"
+  IDS_MI_EVENT_TOGGLE_RECORD      "Kayýt Tarihçesini Baþlat/Du&rdur"
+  IDS_MI_EVENT_TOGGLE_PLAYBACK    "K&ayýttan Yürütme Tarihçesini Baþlat/Durdur"
+  IDS_MI_EVENT_SETMILESTONE       "Kayýt kilometre taþý koy"
+  IDS_MI_EVENT_RESETMILESTONE     "Kilometre taþýna geri dön"
+  IDS_MI_EVENT_START_MODE_SAVE    "Yeni anlýk görüntü &kaydet"
+  IDS_MI_EVENT_START_MODE_LOAD    "Varolan anlýk görüntüyü yük&le"
+  IDS_MI_EVENT_START_MODE_RESET   "&Reset ile baþla"
+  IDS_MI_EVENT_START_MODE_PLAYBCK "Kayýttan yürütmenin ü&zerine yaz"
+  IDS_MI_EVENT_DIRECTORY          "Tarihçe dosyalarý/dizin seç"
+  IDS_MI_MEDIAFILE                "Ortam dosyasý kaydet/durdur..."
+  IDS_MI_SOUND_RECORD_START       "Ses Kaydet..."
+  IDS_MI_SOUND_RECORD_STOP        "Ses Kaydýný Durdur"
+  IDS_MI_REFRESH_RATE_AUTO        "Otom&atik"
+  IDS_MI_MAXIMUM_SPEED_NO_LIMIT   "&Limitsiz"
+  IDS_MI_MAXIMUM_SPEED_CUSTOM     "Öz&el"
+  IDS_MI_TOGGLE_WARP_MODE         "&Warp modu"
+  IDS_MI_TOGGLE_ALWAYSONTOP       "Her zaman üstte"
+  IDS_MI_TOGGLE_FASTPAL           "PAL Emülasyonu"
+  IDS_MI_TOGGLE_SCALE2X           "2x Geniþlet"
+  IDS_MI_SWAP_JOYSTICK            "&Joystickleri Yer Deðiþtir"
+  IDS_MI_JOYKEYS_TOGGLE           "Joy Tuþlarýný Aktif Et"
+  IDS_MI_TOGGLE_VIRTUAL_DEVICES   "Sanal a&ygýt trapleri"
+  IDS_MI_TOGGLE_EMUID             "Emülatör Tesp&iti"
+  IDS_MI_MOUSE                    "Mouse olaylarýný &yakala"
+  IDS_MI_VIDEO_SETTINGS           "&Görüntü ayalarlarý..."
+  IDS_MI_DEVICEMANAGER            "Çe&vresel ayarlar..."
+  IDS_MI_JOY_SETTINGS             "&Joystick ayarlarý..."
+  IDS_MI_KEYBOARD_SETTINGS        "&Klavye ayarlarý..."
+  IDS_MI_SOUND_SETTINGS           "&Ses ayarlarý..."
+  IDS_MI_ROM_SETTINGS             "&ROM ayarlarý..."
+  IDS_MI_RAM_SETTINGS             "RA&M ayarlarý..."
+  IDS_MI_DATASETTE_SETTINGS       "Teyp &ayarlarý..."
+  IDS_MI_VICII_SETTINGS           "VIC-II ayarlarý..."
+  IDS_MI_MOUSE_SETTINGS           "Mo&use ayarlarý..."
+  IDS_MI_SID_SETTINGS             "S&ID ayarlarý..."
+  IDS_MI_RS232_SETTINGS           "RS&232 ayarlarý"
+  IDS_MI_REU_SETTINGS             "&REU ayarlarý..."
+  IDS_MI_GEORAM_SETTINGS          "&GEORAM ayarlarý..."
+  IDS_MI_RAMCART_SETTINGS         "&RAMCART ayarlarý..."
+  IDS_MI_DQBB_SETTINGS            "&Double Quick Brown Box ayarlarý..."
+  IDS_MI_ISEPIC_SETTINGS          "I&sepic ayarlarý..."
+  IDS_MI_MMC64_SETTINGS           "&MMC64 ayarlarý..."
+  IDS_MI_MIDI_SETTINGS            "M&IDI ayarlarý..."
+  IDS_MI_DIGIMAX_SETTINGS         "&DIGIMAX ayarlarý..."
+  IDS_MI_IDE64_SETTINGS           "&IDE64 ayarlarý..."
+#ifdef HAVE_TFE
+  IDS_MI_TFE_SETTINGS             "&Ethernet ayarlarý..."
+#endif
+  IDS_MI_ACIA_SETTINGS            "&ACIA ayarlarý..."
+  IDS_MI_RS232USER_SETTINGS       "RS&232 userport ayarlarý..."
+  IDS_MI_SETTINGS_SAVE_FILE       "Belirtilen dosyaya geçerli ayarlarý kaydet"
+  IDS_MI_SETTINGS_LOAD_FILE       "Belirtilen dosyadan ayarlarý yükle"
+  IDS_MI_SETTINGS_SAVE            "Geçerli ayarlarý &kaydet"
+  IDS_MI_SETTINGS_LOAD            "Kaydedilmiþ ayarlarý yük&le"
+  IDS_MI_SETTINGS_DEFAULT         "&Varsayýlan ayarlarý belirle"
+  IDS_MI_SAVE_SETTINGS_ON_EXIT    "Çý&kýþta ayarlarý kaydet"
+  IDS_MI_CONFIRM_ON_EXIT          "Çýkýþta &teyit et"
+  IDS_MI_LANG_EN                  "Ýngilizc&e"
+  IDS_MI_LANG_DE                  "&Almanca"
+  IDS_MI_LANG_FR                  "&Fransýzca"
+  IDS_MI_LANG_HU                  "&Macarca"
+  IDS_MI_LANG_IT                  "&Ýtalyanca"
+  IDS_MI_LANG_NL                  "Hollan&daca"
+  IDS_MI_LANG_PL                  "&Polonyaca"
+  IDS_MI_LANG_SV                  "Ý&sveççe"
+  IDS_MI_CMDLINE                  "K&omut satýrý seçenekleri"
+  IDS_MI_CONTRIBUTORS             "Katýlým&cýlar"
+  IDS_MI_LICENSE                  "&Lisans"
+  IDS_MI_WARRANTY                 "Garanti &verilmez"
+  IDS_MI_TOGGLE_FULLSCREEN        "Tam ekran"
+  IDS_MI_SIDCART_SETTINGS         "&SID kartuþu ayarlarý..."
+  IDS_MI_MON_OPEN                 "&Aç"
+  IDS_MI_MON_SAVE                 "&Kaydet"
+  IDS_MI_MON_PRINT                "&Yazdýr"
+  IDS_MI_MON_EXIT                 "Çý&kýþ\tAlt+F4"
+  IDS_MI_MON_STOP_DEBUG           "Hata Ayýklamayý &Durdur"
+  IDS_MI_MON_STOP_EXEC            "Çalýþtý&rmayý Durdur"
+  IDS_MI_MON_STEP_INTO            "&Adýmla"
+  IDS_MI_MON_STEP_OVER            "Üzerinden &geç"
+  IDS_MI_MON_SKIP_RETURN          "Dönene kada&r adýmla"
+  IDS_MI_MON_GOTO_CURSOR          "Ýmle&ce git"
+  IDS_MI_MON_EVAL                 "H&esapla"
+  IDS_MI_MON_CURRENT              "&Geçerli komut"
+  IDS_MI_MON_WND_EVAL             "Hesaplama &penceresi"
+  IDS_MI_MON_WND_REG              "Pence&reyi kaydet"
+  IDS_MI_MON_WND_MEM              "&Bellek penceresi"
+  IDS_MI_MON_WND_DIS              "&Daðýlým penceresi"
+  IDS_MI_MON_WND_CONSOLE          "Konsol pen&ceresi"
+  IDS_MI_MON_COMPUTER             "&Bilgisayar"
+  IDS_MI_MON_DRIVE8               "Sürücü &8"
+  IDS_MI_MON_DRIVE9               "Sürücü &9"
+  IDS_MI_MON_CASCADE              "&Basamakla"
+  IDS_MI_MON_TILE_VERT            "&Dikey döþe"
+  IDS_MI_MON_TILE_HORIZ           "&Yatay döþe"
+  IDS_MI_MON_ARRANGE_ICONS        "&Simgeleri yerleþtir"
+END
+#pragma code_page(28591)
 
 // -----------------------------------------------------------------------------
 
