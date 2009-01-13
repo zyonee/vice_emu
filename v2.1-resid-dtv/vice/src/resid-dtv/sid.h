@@ -85,13 +85,9 @@ public:
 
   // 16-bit output (AUDIO OUT).
   int output();
-  // n-bit output.
-  int output(int bits);
 
 protected:
   static double I0(double x);
-  RESID_INLINE int clock_fast(cycle_count& delta_t, short* buf, int n,
-			      int interleave);
   RESID_INLINE int clock_interpolate(cycle_count& delta_t, short* buf, int n,
 				     int interleave);
   RESID_INLINE int clock_resample_interpolate(cycle_count& delta_t, short* buf,
@@ -127,6 +123,9 @@ protected:
   // Fixpoint constants (16.16 bits).
   enum { FIXP_SHIFT = 16 };
   enum { FIXP_MASK = 0xffff };
+
+  // for DTV volume bittrain emulation
+  unsigned int master_volume;
 
   // Sampling variables.
   sampling_method sampling;

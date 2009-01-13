@@ -42,6 +42,7 @@ SID::SID()
   bus_value_ttl = 0;
 
   ext_in = 0;
+  master_volume = 0;
 }
 
 
@@ -78,9 +79,9 @@ void SID::reset()
 // ----------------------------------------------------------------------------
 void SID::input(int sample)
 {
-  // Voice outputs are 20 bits. Scale up to match three voices in order
+  // Voice outputs are 17 bits. Scale up to match three voices in order
   // to facilitate simulation of the MOS8580 "digi boost" hardware hack.
-  ext_in = (sample << 4)*3;
+  ext_in = (sample << 1)*3;
 }
 
 // ----------------------------------------------------------------------------
@@ -91,7 +92,7 @@ int SID::output()
 {
   const int range = 1 << 16;
   const int half = range >> 1;
-  int sample = extfilt.output()/((4095*255 >> 7)*3*15*2/range);
+  int sample = extfilt.output() / ((4096 * 32 >> 4) * 4 * 2 / range);
   if (sample >= half) {
     return half - 1;
   }
@@ -100,21 +101,6 @@ int SID::output()
   }
   return sample;
 }
-
-int SID::output(int bits)
-{
-  const int range = 1 << bits;
-  const int half = range >> 1;
-  int sample = extfilt.output()/((4095*255 >> 7)*3*15*2/range);
-  if (sample >= half) {
-    return half - 1;
-  }
-  if (sample < -half) {
-    return -half;
-  }
-  return sample;
-}
-
 
 // ----------------------------------------------------------------------------
 // Read registers.
@@ -233,6 +219,7 @@ void SID::write(reg8 offset, reg8 value)
     break;
   case 0x18:
     filter.writeMODE_VOL(value);
+    master_volume = value & 0xf;
     break;
   case 0x1e:
     voice[0].wave.writeACC_HI(value);
@@ -264,7 +251,7 @@ SID::State::State()
     accumulator[i] = 0;
     shift_register[i] = 0x7ffff8;
     rate_counter[i] = 0;
-    rate_counter_period[i] = 9;
+    rate_counter_period[i] = 8;
     exponential_counter[i] = 0;
     exponential_counter_period[i] = 1;
     envelope_counter[i] = 0;
@@ -591,92 +578,11 @@ void SID::clock()
   }
 
   // Clock filter.
-  filter.clock(voice[0].output(), voice[1].output(), voice[2].output(), ext_in);
+  filter.clock(voice[0].output(master_volume), voice[1].output(master_volume), voice[2].output(master_volume), ext_in);
 
   // Clock external filter.
   extfilt.clock(filter.output());
 }
-
-
-// ----------------------------------------------------------------------------
-// SID clocking - delta_t cycles.
-// ----------------------------------------------------------------------------
-void SID::clock(cycle_count delta_t)
-{
-  int i;
-
-  if (delta_t <= 0) {
-    return;
-  }
-
-  // Age bus value.
-  bus_value_ttl -= delta_t;
-  if (bus_value_ttl <= 0) {
-    bus_value = 0;
-    bus_value_ttl = 0;
-  }
-
-  // Clock amplitude modulators.
-  for (i = 0; i < 3; i++) {
-    voice[i].envelope.clock(delta_t);
-  }
-
-  // Clock and synchronize oscillators.
-  // Loop until we reach the current cycle.
-  cycle_count delta_t_osc = delta_t;
-  while (delta_t_osc) {
-    cycle_count delta_t_min = delta_t_osc;
-
-    // Find minimum number of cycles to an oscillator accumulator MSB toggle.
-    // We have to clock on each MSB on / MSB off for hard sync to operate
-    // correctly.
-    for (i = 0; i < 3; i++) {
-      WaveformGenerator& wave = voice[i].wave;
-
-      // It is only necessary to clock on the MSB of an oscillator that is
-      // a sync source and has freq != 0.
-      if (!(wave.sync_dest->sync && wave.freq)) {
-	continue;
-      }
-
-      reg16 freq = wave.freq;
-      reg24 accumulator = wave.accumulator;
-
-      // Clock on MSB off if MSB is on, clock on MSB on if MSB is off.
-      reg24 delta_accumulator =
-	(accumulator & 0x800000 ? 0x1000000 : 0x800000) - accumulator;
-
-      cycle_count delta_t_next = delta_accumulator/freq;
-      if (delta_accumulator%freq) {
-	++delta_t_next;
-      }
-
-      if (delta_t_next < delta_t_min) {
-	delta_t_min = delta_t_next;
-      }
-    }
-
-    // Clock oscillators.
-    for (i = 0; i < 3; i++) {
-      voice[i].wave.clock(delta_t_min);
-    }
-
-    // Synchronize oscillators.
-    for (i = 0; i < 3; i++) {
-      voice[i].wave.synchronize();
-    }
-
-    delta_t_osc -= delta_t_min;
-  }
-
-  // Clock filter.
-  filter.clock(delta_t,
-	       voice[0].output(), voice[1].output(), voice[2].output(), ext_in);
-
-  // Clock external filter.
-  extfilt.clock(delta_t, filter.output());
-}
-
 
 // ----------------------------------------------------------------------------
 // SID clocking with audio sampling.
@@ -697,7 +603,6 @@ int SID::clock(cycle_count& delta_t, short* buf, int n, int interleave)
   switch (sampling) {
   default:
   case SAMPLE_FAST:
-    return clock_fast(delta_t, buf, n, interleave);
   case SAMPLE_INTERPOLATE:
     return clock_interpolate(delta_t, buf, n, interleave);
   case SAMPLE_RESAMPLE_INTERPOLATE:
@@ -706,37 +611,6 @@ int SID::clock(cycle_count& delta_t, short* buf, int n, int interleave)
     return clock_resample_fast(delta_t, buf, n, interleave);
   }
 }
-
-// ----------------------------------------------------------------------------
-// SID clocking with audio sampling - delta clocking picking nearest sample.
-// ----------------------------------------------------------------------------
-RESID_INLINE
-int SID::clock_fast(cycle_count& delta_t, short* buf, int n,
-		    int interleave)
-{
-  int s = 0;
-
-  for (;;) {
-    cycle_count next_sample_offset = sample_offset + cycles_per_sample + (1 << (FIXP_SHIFT - 1));
-    cycle_count delta_t_sample = next_sample_offset >> FIXP_SHIFT;
-    if (delta_t_sample > delta_t) {
-      break;
-    }
-    if (s >= n) {
-      return s;
-    }
-    clock(delta_t_sample);
-    delta_t -= delta_t_sample;
-    sample_offset = (next_sample_offset & FIXP_MASK) - (1 << (FIXP_SHIFT - 1));
-    buf[s++*interleave] = output();
-  }
-
-  clock(delta_t);
-  sample_offset -= delta_t << FIXP_SHIFT;
-  delta_t = 0;
-  return s;
-}
-
 
 // ----------------------------------------------------------------------------
 // SID clocking with audio sampling - cycle based with linear sample

@@ -36,7 +36,7 @@ public:
 
   // Amplitude modulated waveform output.
   // Range [-2048*255, 2047*255].
-  RESID_INLINE sound_sample output();
+  RESID_INLINE sound_sample output(unsigned int volume);
 
 protected:
   WaveformGenerator wave;
@@ -59,10 +59,10 @@ friend class SID;
 // Ideal range [-2048*255, 2047*255].
 // ----------------------------------------------------------------------------
 RESID_INLINE
-sound_sample Voice::output()
+sound_sample Voice::output(unsigned int volume)
 {
   // Multiply oscillator output with envelope output.
-  return wave.output() * envelope.output();
+  return wave.output() * envelope.output(volume);
 }
 
 #endif // RESID_INLINING || defined(__VOICE_CC__)

@@ -30,10 +30,6 @@ public:
   RESID_INLINE
   void clock(sound_sample voice1, sound_sample voice2, sound_sample voice3,
 	     sound_sample ext_in);
-  RESID_INLINE
-  void clock(cycle_count delta_t,
-  	     sound_sample voice1, sound_sample voice2, sound_sample voice3,
-	     sound_sample ext_in);
   void reset();
 
   // Write registers.
@@ -94,27 +90,8 @@ void Filter::clock(sound_sample voice1,
     voice3 = 0;
   }
   
-  Vnf = (voice1 + voice2 + voice3 + ext_in) >> 7;
+  Vnf = (voice1 + voice2 + voice3 + ext_in) >> 4;
 }
-
-// ----------------------------------------------------------------------------
-// SID clocking - delta_t cycles.
-// ----------------------------------------------------------------------------
-RESID_INLINE
-void Filter::clock(cycle_count delta_t,
-		   sound_sample voice1,
-		   sound_sample voice2,
-		   sound_sample voice3,
-		   sound_sample ext_in)
-{
-  // NB! Voice 3 is not silenced by voice3off if it is routed through
-  // the filter.
-  if (voice3off && !(filt & 0x04)) {
-    voice3 = 0;
-  }
-  Vnf = (voice1 + voice2 + voice3 + ext_in) >> 7;
-}
-
 
 // ----------------------------------------------------------------------------
 // SID audio output (20 bits).
@@ -122,8 +99,7 @@ void Filter::clock(cycle_count delta_t,
 RESID_INLINE
 sound_sample Filter::output()
 {
-  sound_sample svol = static_cast<sound_sample>(vol);
-  return (Vnf + (1 << 13)) * svol; /* 1 << 13 approximates digi mixing level */
+  return Vnf + (static_cast<sound_sample>(vol) << 10);
 }
 
 #endif // RESID_INLINING || defined(__FILTER_CC__)

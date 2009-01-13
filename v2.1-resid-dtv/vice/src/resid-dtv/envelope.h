@@ -21,6 +21,8 @@
 // Copyright (C) 2007  Daniel Kahlin <daniel@kahlin.net>
 //   Hannu Nuotio <hannu.nuotio@tut.fi>
 // Copyright (C) 2009  Hannu Nuotio <hannu.nuotio@tut.fi>
+//   Antti S. Lankila <alankila@bel.fi>
+// Copyright (C) 2009  Antti S. Lankila <alankila@bel.fi>
 
 #ifndef __ENVELOPE_H__
 #define __ENVELOPE_H__
@@ -44,7 +46,6 @@ public:
   enum State { ATTACK, DECAY_SUSTAIN, RELEASE };
 
   RESID_INLINE void clock();
-  RESID_INLINE void clock(cycle_count delta_t);
   void reset();
 
   void writeCONTROL_REG(reg8);
@@ -54,15 +55,18 @@ public:
   void writeENV(reg8);
 
   // 8-bit envelope output.
-  RESID_INLINE reg8 output();
+  RESID_INLINE reg8 output(unsigned int bittrain);
 
 protected:
+  void init_train_lut();
+
   reg16 rate_counter;
   reg16 rate_period;
   reg8 exponential_counter;
   reg8 exponential_counter_period;
   reg8 envelope_counter;
   bool hold_zero;
+  unsigned int envelope_train_counter;
 
   reg4 attack;
   reg4 decay;
@@ -80,9 +84,11 @@ protected:
   // The 16 selectable sustain levels.
   static reg8 sustain_level[];
 
+  // bit train construction
+  static reg8 envelope_train_lut[16][256][8];
+
 friend class SID;
 };
-
 
 // ----------------------------------------------------------------------------
 // Inline functions.
@@ -98,226 +104,84 @@ friend class SID;
 RESID_INLINE
 void EnvelopeGenerator::clock()
 {
-  // Check for ADSR delay bug.
-  // If the rate counter comparison value is set below the current value of the
-  // rate counter, the counter will continue counting up until it wraps around
-  // to zero at 2^15 = 0x8000, and then count rate_period - 1 before the
-  // envelope can finally be stepped.
-  // This has been verified by sampling ENV3.
-  //
-  if (++rate_counter & 0x8000) {
-    ++rate_counter &= 0x7fff;
-  }
+  envelope_train_counter += envelope_counter;
+  envelope_train_counter &= 0x7;
 
-  if (rate_counter != rate_period) {
+  /* envelope always waits for the previous rate counter to trigger.
+   * Therefore we formulate it differently from exponential counter. */
+  if (-- rate_counter) {
     return;
   }
-
-  rate_counter = 0;
-
-  // The first envelope step in the attack state also resets the exponential
-  // counter. This has been verified by sampling ENV3.
-  //
-  if (state == ATTACK || state == DECAY_SUSTAIN || ++exponential_counter == exponential_counter_period)
-  {
-    exponential_counter = 0;
-
-    // Check whether the envelope counter is frozen at zero.
-    if (hold_zero) {
-      return;
-    }
-
-    switch (state) {
-    case ATTACK:
-      // The envelope counter can flip from 0xff to 0x00 by changing state to
-      // release, then to attack. The envelope counter is then frozen at
-      // zero; to unlock this situation the state must be changed to release,
-      // then to attack. This has been verified by sampling ENV3.
-      //
-      ++envelope_counter &= 0xff;
-      // DTVSID attack = 0 takes 0 cycles
-      if (attack == 0) {
-	envelope_counter = 0xff;
-      }
-      if (envelope_counter == 0xff) {
-	state = DECAY_SUSTAIN;
-	rate_period = 3*rate_counter_period[decay];
-      }
-      break;
-    case DECAY_SUSTAIN:
-      if (envelope_counter != sustain_level[sustain]) {
-	--envelope_counter;
-      }
-      break;
-    case RELEASE:
-      // The envelope counter can flip from 0x00 to 0xff by changing state to
-      // attack, then to release. The envelope counter will then continue
-      // counting down in the release state.
-      // This has been verified by sampling ENV3.
-      // NB! The operation below requires two's complement integer.
-      //
-      --envelope_counter &= 0xff;
-      break;
-    }
-    
-    // Check for change of exponential counter period.
-    switch (envelope_counter) {
-    case 0xff:
-      exponential_counter_period = 1;
-      break;
-    case 0x5d:
-      exponential_counter_period = 2;
-      break;
-    case 0x36:
-      exponential_counter_period = 4;
-      break;
-    case 0x1a:
-      exponential_counter_period = 8;
-      break;
-    case 0x0e:
-      exponential_counter_period = 16;
-      break;
-    case 0x06:
-      exponential_counter_period = 30;
-      break;
-    case 0x00:
-      exponential_counter_period = 1;
-
-      // When the envelope counter is changed to zero, it is frozen at zero.
-      // This has been verified by sampling ENV3.
-      hold_zero = true;
-      break;
-    }
+  /* Note: counter overwritten when state changes to decay. */
+  rate_counter = rate_period;
+  
+  /* Envelope skips this wait during ATTACK.
+   * This is handled during control register write: switching to attack
+   * sets counter=0, period=1. Envelope uses this during decay and release,
+   * with decay having 1/3 rate. */
+  if (++ exponential_counter != exponential_counter_period) {
+    return;
   }
-}
+  exponential_counter = 0;
 
-
-// ----------------------------------------------------------------------------
-// SID clocking - delta_t cycles.
-// ----------------------------------------------------------------------------
-RESID_INLINE
-void EnvelopeGenerator::clock(cycle_count delta_t)
-{
-  // Check for ADSR delay bug.
-  // If the rate counter comparison value is set below the current value of the
-  // rate counter, the counter will continue counting up until it wraps around
-  // to zero at 2^15 = 0x8000, and then count rate_period - 1 before the
-  // envelope can finally be stepped.
-  // This has been verified by sampling ENV3.
-  //
-
-  // NB! This requires two's complement integer.
-  int rate_step = rate_period - rate_counter;
-  if (rate_step <= 0) {
-    rate_step += 0x7fff;
-  }
-
-  while (delta_t) {
-    if (delta_t < rate_step) {
-      rate_counter += delta_t;
-      if (rate_counter & 0x8000) {
-	++rate_counter &= 0x7fff;
-      }
-      return;
-    }
-
-    rate_counter = 0;
-    delta_t -= rate_step;
-
-    // The first envelope step in the attack state also resets the exponential
-    // counter. This has been verified by sampling ENV3.
-    //
-    if (state == ATTACK	|| state == DECAY_SUSTAIN || ++exponential_counter == exponential_counter_period)
-    {
-      exponential_counter = 0;
-
-      // Check whether the envelope counter is frozen at zero.
-      if (hold_zero) {
-	rate_step = rate_period;
-	continue;
-      }
-
-      switch (state) {
-      case ATTACK:
-	// The envelope counter can flip from 0xff to 0x00 by changing state to
-	// release, then to attack. The envelope counter is then frozen at
-	// zero; to unlock this situation the state must be changed to release,
-	// then to attack. This has been verified by sampling ENV3.
-	//
-	++envelope_counter &= 0xff;
-    // DTVSID attack = 0 takes 0 cycles
+  if (state == ATTACK) {
+    /* attack 0 is a special case: envelope simply jumps to 0xff. */
     if (attack == 0) {
       envelope_counter = 0xff;
     }
-	if (envelope_counter == 0xff) {
-	  state = DECAY_SUSTAIN;
-	  rate_period = 3*rate_counter_period[decay];
-	}
-	break;
-      case DECAY_SUSTAIN:
-	if (envelope_counter != sustain_level[sustain]) {
-	  --envelope_counter;
-	}
-	break;
-      case RELEASE:
-	// The envelope counter can flip from 0x00 to 0xff by changing state to
-	// attack, then to release. The envelope counter will then continue
-	// counting down in the release state.
-	// This has been verified by sampling ENV3.
-	// NB! The operation below requires two's complement integer.
-	//
-	--envelope_counter &= 0xff;
-	break;
-      }
+    if (envelope_counter != 0xff) {
+      ++ envelope_counter;
+    } else {
+      state = DECAY_SUSTAIN;
 
-      // Check for change of exponential counter period.
-      switch (envelope_counter) {
-      case 0xff:
-	exponential_counter_period = 1;
-	break;
-      case 0xde:
-	exponential_counter_period = 2;
-	break;
-      case 0xbe:
-	exponential_counter_period = 3;
-	break;
-      case 0x9e:
-	exponential_counter_period = 4;
-	break;
-      case 0x7e:
-	exponential_counter_period = 5;
-	break;
-      case 0x5e:
-	exponential_counter_period = 6;
-	break;
-      case 0x3e:
-	exponential_counter_period = 7;
-	break;
-      case 0x1e:
-	exponential_counter_period = 8;
-	break;
-      case 0x00:
-	exponential_counter_period = 1;
+      /* decay rates are 1/3 of attack rates. If one now switches to attack,
+       * DTVSID notices this after 1 rate_period has elapsed. */
+      rate_counter = rate_period = rate_counter_period[decay];
+      exponential_counter_period = 3;
+    }
+    return;
+  }
 
-	// When the envelope counter is changed to zero, it is frozen at zero.
-	// This has been verified by sampling ENV3.
-	hold_zero = true;
-	break;
-      }
+  if (state == DECAY_SUSTAIN) {
+    if (envelope_counter != 0 && envelope_counter != sustain_level[sustain]) {
+      -- envelope_counter;
+    }
+    return;
+  }
+
+  if (state == RELEASE) {
+    if (envelope_counter != 0) {
+      -- envelope_counter;
     }
 
-    rate_step = rate_period;
+    if (envelope_counter > 0xde) {
+        exponential_counter_period = 1;
+    } else if (envelope_counter > 0xbe) {
+        exponential_counter_period = 2;
+    } else if (envelope_counter > 0x9e) {
+        exponential_counter_period = 3;
+    } else if (envelope_counter > 0x7e) {
+        exponential_counter_period = 4;
+    } else if (envelope_counter > 0x5e) {
+        exponential_counter_period = 5;
+    } else if (envelope_counter > 0x3e) {
+        exponential_counter_period = 6;
+    } else if (envelope_counter > 0x1e) {
+        exponential_counter_period = 7;
+    } else {
+        exponential_counter_period = 8;
+    }
+    return;
   }
 }
-
 
 // ----------------------------------------------------------------------------
 // Read the envelope generator output.
 // ----------------------------------------------------------------------------
 RESID_INLINE
-reg8 EnvelopeGenerator::output()
+reg8 EnvelopeGenerator::output(unsigned int volume)
 {
-  return envelope_counter;
+  return envelope_train_lut[volume][envelope_counter][envelope_train_counter];
 }
 
 #endif // RESID_INLINING || defined(__ENVELOPE_CC__)

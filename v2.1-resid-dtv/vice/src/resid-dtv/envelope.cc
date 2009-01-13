@@ -25,11 +25,65 @@
 #define __ENVELOPE_CC__
 #include "envelope.h"
 
+/* volume, envelope level, phase */
+reg8 EnvelopeGenerator::envelope_train_lut[16][256][8];
+
+static reg8 bitcount(unsigned int n) {
+    int k = 0;
+    for (int i = 0; i < 32; i ++) {
+        if (n & (1 << i))
+            k ++;
+    }
+    return k;
+}
+
+void EnvelopeGenerator::init_train_lut() {
+    for (int vol = 0; vol < 16; vol ++) {
+        for (int env = 0; env < 256; env ++) {
+            for (int phase1 = 0; phase1 < 8; phase1 ++) {
+                /* we always start envelope on particular phase value out of
+                 * 256, which corresponds to how many clock we have been
+                 * running. The volume train always begins from reset-synced
+                 * position of being 1 clock ahead of ENV. Its loop time is 16
+                 * clocks at max, so it's always repeating twice within one
+                 * system clock. */
+                unsigned int envcounter = phase1 * 32;
+                unsigned int volcounter = vol;
+                
+                unsigned int voltrain = 0;
+                unsigned int envtrain = 0;
+
+                /* calculate envelope train */
+                for (int phase2 = 0; phase2 < 32; phase2 ++) {
+                    envcounter += env;
+                    envtrain <<= 1;
+                    envtrain |= envcounter >> 8;
+                    envcounter &= 0xff;
+
+                    volcounter += vol;
+                    voltrain <<= 1;
+                    voltrain |= volcounter >> 4;
+                    volcounter &= 0xf;
+                }
+
+                /* Volume is the count of 1-bits in the ANDed
+                 * envelope and volume trains. */
+                envelope_train_lut[vol][env][phase1] = bitcount(envtrain & voltrain);
+            }
+        }
+    }
+}
+
 // ----------------------------------------------------------------------------
 // Constructor.
 // ----------------------------------------------------------------------------
 EnvelopeGenerator::EnvelopeGenerator()
 {
+  static bool tableinit = false;
+  if (! tableinit) {
+    init_train_lut();
+    tableinit = true;
+  }
   reset();
 }
 
@@ -39,6 +93,7 @@ EnvelopeGenerator::EnvelopeGenerator()
 void EnvelopeGenerator::reset()
 {
   envelope_counter = 0;
+  envelope_train_counter = 0;
 
   attack = 0;
   decay = 0;
@@ -47,13 +102,11 @@ void EnvelopeGenerator::reset()
 
   gate = 0;
 
-  rate_counter = 0;
   exponential_counter = 0;
   exponential_counter_period = 1;
 
   state = RELEASE;
-  rate_period = rate_counter_period[release];
-  hold_zero = true;
+  rate_counter = rate_period = rate_counter_period[release];
 }
 
 
@@ -119,14 +172,17 @@ void EnvelopeGenerator::writeCONTROL_REG(reg8 control)
   if (!gate && gate_next) {
     state = ATTACK;
     rate_period = rate_counter_period[attack];
-
-    // Switching to attack state unlocks the zero freeze.
-    hold_zero = false;
+    exponential_counter = 0;
+    exponential_counter_period = 1;
   }
   // Gate bit off: Start release.
   else if (gate && !gate_next) {
     state = RELEASE;
     rate_period = rate_counter_period[release];
+    /* XXX: we should check if the envelope decrements after one rate-period
+     *      during release, or whether the exp.period is looked up already. */
+    exponential_counter = 0;
+    exponential_counter_period = 1;
   }
 
   gate = gate_next;
@@ -140,7 +196,7 @@ void EnvelopeGenerator::writeATTACK_DECAY(reg8 attack_decay)
     rate_period = rate_counter_period[attack];
   }
   else if (state == DECAY_SUSTAIN) {
-    rate_period = 3*rate_counter_period[decay];
+    rate_period = rate_counter_period[decay];
   }
 }
 
@@ -155,10 +211,27 @@ void EnvelopeGenerator::writeSUSTAIN_RELEASE(reg8 sustain_release)
 
 reg8 EnvelopeGenerator::readENV()
 {
-  return output();
+  return envelope_counter;
 }
 
 void EnvelopeGenerator::writeENV(reg8 value)
 {
+    exponential_counter = 0;
     envelope_counter = value;
+
+    if (envelope_counter < sustain_level[sustain]) {
+        state = RELEASE;
+        rate_period = rate_counter_period[release];
+        exponential_counter_period = 1; /* will be corrected by next clock() */
+    }
+    else if (envelope_counter > sustain_level[sustain]) {
+        state = ATTACK;
+        rate_period = rate_counter_period[attack];
+        exponential_counter_period = 1; /* permanent setting for attack */
+    }
+    else {
+        state = DECAY_SUSTAIN;
+        rate_period = rate_counter_period[decay];
+        exponential_counter_period = 3; /* permanent setting for decay */
+    }
 }

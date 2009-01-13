@@ -45,7 +45,6 @@ public:
   void set_sync_source(WaveformGenerator*);
 
   RESID_INLINE void clock();
-  RESID_INLINE void clock(cycle_count delta_t);
   RESID_INLINE void synchronize();
   void reset();
 
@@ -133,64 +132,6 @@ void WaveformGenerator::clock()
     shift_register |= bit0;
   }
 }
-
-// ----------------------------------------------------------------------------
-// SID clocking - delta_t cycles.
-// ----------------------------------------------------------------------------
-RESID_INLINE
-void WaveformGenerator::clock(cycle_count delta_t)
-{
-  // No operation if test bit is set.
-  if (test) {
-    return;
-  }
-
-  reg24 accumulator_prev = accumulator;
-
-  // Calculate new accumulator value;
-  reg24 delta_accumulator = delta_t*freq;
-  accumulator += delta_accumulator;
-  accumulator &= 0xffffff;
-
-  // Check whether the MSB is set high. This is used for synchronization.
-  msb_rising = !(accumulator_prev & 0x800000) && (accumulator & 0x800000);
-
-  // Shift noise register once for each time accumulator bit 19 is set high.
-  // Bit 19 is set high each time 2^20 (0x100000) is added to the accumulator.
-  reg24 shift_period = 0x100000;
-
-  while (delta_accumulator) {
-    if (delta_accumulator < shift_period) {
-      shift_period = delta_accumulator;
-      // Determine whether bit 19 is set on the last period.
-      // NB! Requires two's complement integer.
-      if (shift_period <= 0x080000) {
-	// Check for flip from 0 to 1.
-	if (((accumulator - shift_period) & 0x080000) || !(accumulator & 0x080000))
-	{
-	  break;
-	}
-      }
-      else {
-	// Check for flip from 0 (to 1 or via 1 to 0) or from 1 via 0 to 1.
-	if (((accumulator - shift_period) & 0x080000) && !(accumulator & 0x080000))
-	{
-	  break;
-	}
-      }
-    }
-
-    // Shift the noise/random register.
-    // NB! The shift is actually delayed 2 cycles, this is not modeled.
-    reg24 bit0 = ((shift_register >> 22) ^ (shift_register >> 17)) & 0x1;
-    shift_register <<= 1;
-    shift_register &= 0x7fffff;
-    shift_register |= bit0;
-
-    delta_accumulator -= shift_period;
-  }
-}
-
 
 // ----------------------------------------------------------------------------
 // Synchronize oscillators.
