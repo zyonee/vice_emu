@@ -3513,7 +3513,7 @@ intl_translate_t intl_string_table[] = {
 /* sv */ {IDS_NMI_SV, "NMI"},
 /* tr */ {IDS_NMI_TR, "NMI"},
 
-/* en */ {IDS_ACIA_DEVICE,    "ACIA Device"},
+/* en */ {IDS_ACIA_DEVICE,    "ACIA device"},
 /* da */ {IDS_ACIA_DEVICE_DA, "ACIA-enhed"},
 /* de */ {IDS_ACIA_DEVICE_DE, "ACIA Gerät"},
 /* fr */ {IDS_ACIA_DEVICE_FR, "Périphérique ACIA"},
