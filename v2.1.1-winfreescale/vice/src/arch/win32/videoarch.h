@@ -35,6 +35,7 @@
 #undef DWORD
 #include <ddraw.h>
 
+#include "palette.h"
 #include "types.h"
 #include "video.h"
 
@@ -105,5 +106,6 @@ extern float video_refresh_rate(video_canvas_t *c);
 
 extern void video_update_overlay(HWND hwnd);
 
-#endif
+extern void init_palette(const palette_t *p, PALETTEENTRY *ape);
 
+#endif

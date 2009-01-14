@@ -1061,37 +1061,39 @@ log_debug("video_canvas_update(%p, %p, xclient=%u, yclient=%u, w=%u, h=%u",
             cut_bottomline = c->draw_buffer->draw_buffer_height * pixel_height;
         }
 
+#if 1
         //  Check if it's out
         if ((xs + w <= safex) || (xs >= cut_rightline) ||
             (ys + h <= safey) || (ys >= cut_bottomline)) {
-            clear(hdc, xi, yi, xi + w, yi + h);
+//            clear(hdc, xi, yi, xi + w, yi + h);
             return;
         }
 
         //  Cut top
         if (ys < safey) {
-            clear(hdc, xi, yi, xi + w, yi - ys + safey);
+//            clear(hdc, xi, yi, xi + w, yi - ys + safey);
             yi -= ys - safey;
             h += ys - safey;
             ys = safey;
         }
         //  Cut left
         if (xs < safex) {
-            clear(hdc, xi, yi, xi - xs + safex, yi + h);
+//            clear(hdc, xi, yi, xi - xs + safex, yi + h);
             xi -= xs - safex;
             w += xs - safex;
             xs = safex;
         }
         //  Cut bottom
         if (ys + h > safey2) {
-            clear(hdc, xi, yi + safey2 - ys, xi + w, yi + h);
+//            clear(hdc, xi, yi + safey2 - ys, xi + w, yi + h);
             h = safey2 - ys;
         }
         //  Cut right
         if (xs + w > cut_rightline) {
-            clear(hdc, xi + cut_rightline - xs, yi, xi + w, yi + h);
+//            clear(hdc, xi + cut_rightline - xs, yi, xi + w, yi + h);
             w = cut_rightline - xs;
         }
+#endif
 
         //  Update remaining area from framebuffer....
 
@@ -1106,7 +1108,6 @@ void video_canvas_refresh(video_canvas_t *canvas,
                           unsigned int xi, unsigned int yi,
                           unsigned int w, unsigned int h)
 {
-#if 0
     int window_index;
     unsigned int client_x;
     unsigned int client_y;
@@ -1135,6 +1136,7 @@ log_debug("video_canvas_refresh(%p, xs=%u, ys=%u, xi=%u, yi=%u, w=%u, h=%u",
         DEBUG(("PANIC: can't find window"));
         return;
     }
+
     client_x = xi;
     client_y = yi;
 
@@ -1147,6 +1149,7 @@ log_debug("video_canvas_refresh(%p, xs=%u, ys=%u, xi=%u, yi=%u, w=%u, h=%u",
     client_y += (rect.bottom - statusbar_get_status_height()
                 - window_canvas_ysize[window_index]) / 2;
 
+#if 1
     real_refresh(canvas, xs, ys, client_x, client_y, w, h);
 #endif
 }
@@ -1161,12 +1164,15 @@ static void real_refresh(video_canvas_t *c,
     LPDIRECTDRAWSURFACE surface = NULL;
     RECT rect;
     RECT trect;
+    RECT scaledrect;
+    RECT clientrect;
     int depth, pitch;
 
+#ifdef DBG_CALCTIME
     DWORD starttime;
-/*
     DWORD difftime;
-*/
+#endif /* #ifdef DBG_CALCTIME */
+
     int bytesmoved;
     DWORD clipsize;
     int regioncount, j;
@@ -1182,7 +1188,10 @@ static void real_refresh(video_canvas_t *c,
     if (fullscreen_transition)
         return;
 
+#ifdef DBG_CALCTIME
     starttime = timeGetTime();
+#endif /* #ifdef DBG_CALCTIME */
+
     bytesmoved = 0;
 
     {
@@ -1366,9 +1375,71 @@ if (trect.left   != c->scaled_rect_on_window.left) {
 if (trect.right  != c->scaled_rect_on_window.right) {
     int a = 1;
 }
+
+#if 1
 /* @@@ */
+    /* find out which part of the (scaled) window to update */
+
+    /* get the dimensions of the client window without scaling */
+
+    clientrect.right = c->client_width;
+    clientrect.bottom = c->client_height;
+    clientrect.left = 0;
+    clientrect.top = 0;
+    ClientToScreen(c->hwnd, (LPPOINT) &clientrect);
+    ClientToScreen(c->hwnd, (LPPOINT) &((LPPOINT) &clientrect)[1]);
+
+log_debug("---      trect(%u, %u, %u, %u",
+               trect.top,      trect.left,      trect.bottom,      trect.right);
+log_debug("---       rect(%u, %u, %u, %u",
+                rect.top,       rect.left,       rect.bottom,       rect.right);
+log_debug("--- clientrect(%u, %u, %u, %u",
+          clientrect.top, clientrect.left, clientrect.bottom, clientrect.right);
+#endif
+    // now, scale the output area
+
+    memcpy(&scaledrect, &c->scaled_rect_on_window, sizeof(scaledrect));
+#if 1
+log_debug("--- scaledrect(%u, %u, %u, %u",
+          scaledrect.top, scaledrect.left, scaledrect.bottom, scaledrect.right);
+log_debug("--- i(%u, %u), s(%u, %u), delta(%u, %u)",
+          xi, yi, xs, ys, w, h);
+
+    {
+#if 1
+    float SCALEX = ((float)((c->scaled_rect_on_window.right - c->scaled_rect_on_window.left))) / (clientrect.right - clientrect.left);
+    unsigned int SCALEY = 1; // ((float)((c->scaled_rect_on_window.bottom - c->scaled_rect_on_window.top))) / (clientrect.bottom - clientrect.top);
+    int dx;
+    int dy;
+
+    dx = 0; // xi - xs;
+    dy = 0; // yi - ys;
+
+    // dx = - dx;
+    // dy = - dy;
+
+    scaledrect.top    = (trect.top    - clientrect.top  + dy) * SCALEY + c->scaled_rect_on_window.top;
+    scaledrect.bottom = (trect.bottom - clientrect.top  + dy) * SCALEY + c->scaled_rect_on_window.top;
+
+    scaledrect.left   = (trect.left   - clientrect.left + dx) * SCALEX + c->scaled_rect_on_window.left;
+    scaledrect.right  = (trect.right  - clientrect.left + dx) * SCALEX + c->scaled_rect_on_window.left;
+
+/*
+    trect.left   = trect.left   - xi + xs;
+    trect.right  = trect.right  - xi + xs;
+    trect.top    = trect.top    - yi + ys;
+    trect.bottom = trect.bottom - yi + ys;
+*/
+#endif
+    }
+log_debug("+++ scaledrect(%u, %u, %u, %u\n",
+          scaledrect.top, scaledrect.left, scaledrect.bottom, scaledrect.right);
+#endif
+
+/* @@@ */
+
             result = IDirectDrawSurface_Blt(c->primary_surface,
-                                            &c->scaled_rect_on_window,
+                                            &scaledrect,
                                             surface,
                                             &trect,
                                             DDBLT_WAIT, NULL);
@@ -1388,11 +1459,12 @@ if (trect.right  != c->scaled_rect_on_window.right) {
             }
         }
     }
-/*
+
+#ifdef DBG_CALCTIME
     difftime = timeGetTime() - starttime;
     DEBUG(("screen update took %d msec, moved %d bytes, width %d, height %d",
           difftime, bytesmoved, w, h));
-*/
+#endif /* #ifdef DBG_CALCTIME */
 }
 
 

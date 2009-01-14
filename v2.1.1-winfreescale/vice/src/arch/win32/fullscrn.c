@@ -48,8 +48,6 @@
 #include "statusbar.h"
 
 
-extern void init_palette(const palette_t *p, PALETTEENTRY *ape);
-
 // ----------------------------------------------
 
 #ifndef HAVE_GUIDLIB
