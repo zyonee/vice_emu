@@ -2033,6 +2033,26 @@ BEGIN
 END
 
 
+// DANISH version of dialog
+
+IDD_C64DTV_CREATE_FLASH_IMAGE_DIALOG_DA DIALOG DISCARDABLE  0, 0, 180, 100
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Opret DTV-flashimage"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "DTV-ROM oprettelse",
+                    IDC_STATIC,3,2,174,55
+    LTEXT           "DTV ROM-&imagefil",
+                    IDC_C64DTV_ROM_IMAGE_FILE_LABEL, 9, 14, 100, 8
+    PUSHBUTTON      "Gennemse...", IDC_C64DTV_ROM_IMAGE_BROWSE, 123, 10, 50, 14, 0
+    EDITTEXT        IDC_C64DTV_ROM_IMAGE_FILE, 9, 26, 164, 12, WS_TABSTOP
+    AUTOCHECKBOX    "Kopiér C64-ROM'mer til image", IDC_C64DTV_ROM_COPY_C64,
+                    7, 41, 120, 10, BS_AUTOCHECKBOX | WS_TABSTOP
+    DEFPUSHBUTTON   "Opret", IDOK, 30, 74, 50, 14, WS_TABSTOP
+    PUSHBUTTON      "Annullér", IDCANCEL, 90, 74, 50, 14, WS_TABSTOP
+END
+
+
 // GERMAN version of dialog
 
 IDD_C64DTV_CREATE_FLASH_IMAGE_DIALOG_DE DIALOG DISCARDABLE  0, 0, 180, 100
@@ -2177,6 +2197,29 @@ BEGIN
 END
 
 
+// TURKISH version of dialog
+
+#pragma code_page(28599)
+IDD_C64DTV_CREATE_FLASH_IMAGE_DIALOG_TR DIALOG DISCARDABLE  0, 0, 180, 100
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "DTV Flash Imajý Oluþtur"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "DTV ROM Yaratma",
+                    IDC_STATIC,3,2,174,55
+    LTEXT           "DTV ROM &imaj Dosyasý",
+                    IDC_C64DTV_ROM_IMAGE_FILE_LABEL, 9, 14, 100, 8
+    PUSHBUTTON      "Göz at...", IDC_C64DTV_ROM_IMAGE_BROWSE, 123, 10, 50, 14, 0
+    EDITTEXT        IDC_C64DTV_ROM_IMAGE_FILE, 9, 26, 164, 12, WS_TABSTOP
+    AUTOCHECKBOX    "C64 ROMlarýný imaja kopyala", IDC_C64DTV_ROM_COPY_C64,
+                    7, 41, 120, 10, BS_AUTOCHECKBOX | WS_TABSTOP
+    DEFPUSHBUTTON   "Yarat", IDOK, 30, 74, 50, 14, WS_TABSTOP
+    PUSHBUTTON      "Ýptal", IDCANCEL, 90, 74, 50, 14, WS_TABSTOP
+END
+#pragma code_page(28591)
+
+// -----------------------------------------------------------------------------
+
 // original and default ENGLISH text
 
 STRINGTABLE
@@ -2193,6 +2236,24 @@ BEGIN
     IDS_JOYSTICK                   "Joystick"
 END
 
+
+// DANISH text
+
+STRINGTABLE
+LANGUAGE LANG_DANISH, SUBLANG_NEUTRAL
+BEGIN
+    IDS_MP_DTV_FLASH_ROM_IMAGE     "DTV-flash&rom image"
+    IDS_MI_AUTOSTART_DISK          "&Autostart disketteimage..."
+    IDS_MI_ATTACH_DTV_FLASH        "Tilslut &flash-rom-image"
+    IDS_MI_DETACH_DTV_FLASH        "Fra&kobl flash-rom-imagesfil"
+    IDS_MI_CREATE_DTV_FLASH        "&Opret nyt flash-rom-image"
+    IDS_MI_FLASH_TRUE_FILESYSTEM   "&Ægte flash-filsystem"
+    IDS_MI_PS2MOUSE                "Emulering af &PS/2-mus"
+    IDS_MI_C64DTV_SETTINGS         "&C64DTV-indstillinger..."
+    IDS_JOYSTICK                   "Joystick"
+END
+
+
 // GERMAN text
 
 STRINGTABLE
@@ -2208,6 +2269,7 @@ BEGIN
     IDS_MI_C64DTV_SETTINGS         "&C64DTV Einstellungen..."
     IDS_JOYSTICK                   "Joystick"
 END
+
 
 // FRENCH text
 
@@ -2261,6 +2323,7 @@ BEGIN
     IDS_JOYSTICK                   "Joystick"
 END
 
+
 // DUTCH text
 
 STRINGTABLE
@@ -2276,6 +2339,7 @@ BEGIN
     IDS_MI_C64DTV_SETTINGS         "&C64DTV instellingen..."
     IDS_JOYSTICK                   "Joystick"
 END
+
 
 // POLISH text
 
@@ -2295,6 +2359,7 @@ BEGIN
 END
 #pragma code_page(28591)
 
+
 // SWEDISH text
 
 STRINGTABLE
@@ -2310,3 +2375,22 @@ BEGIN
     IDS_MI_C64DTV_SETTINGS         "&C64DTV-inställningar..."
     IDS_JOYSTICK                   "Styrspak"
 END
+
+
+// TURKISH text
+
+#pragma code_page(28599)
+STRINGTABLE
+LANGUAGE LANG_TURKISH, SUBLANG_NEUTRAL
+BEGIN
+    IDS_MP_DTV_FLASH_ROM_IMAGE     "DTV flash &rom imajý"
+    IDS_MI_AUTOSTART_DISK          "Disk imajýný otom&atik baþlat..."
+    IDS_MI_ATTACH_DTV_FLASH        "&Flash rom imajý yerleþtir"
+    IDS_MI_DETACH_DTV_FLASH        "Flash rom imajýný çý&kart"
+    IDS_MI_CREATE_DTV_FLASH        "&Yeni flash rom imajý oluþtur"
+    IDS_MI_FLASH_TRUE_FILESYSTEM   "Gerçek flash dosya sis&temi"
+    IDS_MI_PS2MOUSE                "&PS/2 mouse emülasyonu"
+    IDS_MI_C64DTV_SETTINGS         "&C64DTV ayarlarý..."
+    IDS_JOYSTICK                   "Joystick"
+END
+#pragma code_page(28591)
