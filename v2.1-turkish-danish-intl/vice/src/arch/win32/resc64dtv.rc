@@ -200,6 +200,7 @@ BEGIN
     POPUP "&Language"
     BEGIN
         MENUITEM "", IDM_LANG_EN
+        MENUITEM "", IDM_LANG_DA
         MENUITEM "", IDM_LANG_DE
         MENUITEM "", IDM_LANG_FR
         MENUITEM "", IDM_LANG_HU
@@ -207,6 +208,7 @@ BEGIN
         MENUITEM "", IDM_LANG_NL
         MENUITEM "", IDM_LANG_PL
         MENUITEM "", IDM_LANG_SV
+        MENUITEM "", IDM_LANG_TR
     END
     POPUP "&Help"
     BEGIN
