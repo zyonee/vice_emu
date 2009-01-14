@@ -93,8 +93,6 @@
 #include "statusbar.h"
 
 
-extern char *intl_speed_at_text;
-
 #define countof(array) (sizeof(array) / sizeof((array)[0]))
 
 #ifndef VK_OEM_PLUS
@@ -492,7 +490,7 @@ HWND ui_open_canvas_window(const char *title, unsigned int width,
                             hwnd_titles[number_of_windows],
                             WS_OVERLAPPED | WS_CLIPCHILDREN | WS_BORDER
                             | WS_DLGFRAME | WS_SYSMENU | WS_MINIMIZEBOX
-                            | WS_MAXIMIZEBOX,
+                            | WS_MAXIMIZEBOX | WS_SIZEBOX,
                             xpos,
                             ypos,
                             CW_USEDEFAULT,
@@ -572,7 +570,6 @@ void ui_resize_canvas_window(HWND w, unsigned int width, unsigned int height)
     ClientToScreen(w, ((LPPOINT)&wrect) + 1);
     wrect.right = wrect.left + width;
     wrect.bottom = wrect.top + height + statusbar_get_status_height();
-    //status_height;
     AdjustWindowRect(&wrect, WS_OVERLAPPED|WS_BORDER|WS_DLGFRAME, TRUE);
     if (place.showCmd == SW_SHOWNORMAL) {
         MoveWindow(w,
@@ -1578,8 +1575,6 @@ static long CALLBACK dummywindowproc(HWND window, UINT msg,
     return DefWindowProc(window, msg, wparam, lparam);
 }
 
-extern int fullscreen_transition;
-
 static void ui_wm_move(HWND window, int window_index)
 {
     if (window_index<number_of_windows) {
@@ -1675,6 +1670,9 @@ static long CALLBACK window_proc(HWND window, UINT msg,
       case WM_CREATE:
         DragAcceptFiles(window, TRUE);
         return 0;
+      case WM_WINDOWPOSCHANGING:
+        video_update_overlay(window);
+        break;
       case WM_WINDOWPOSCHANGED:
         /* SRT: if focus is changed in full-screen mode, this message is sent 
           Make sure that all windows are repainted.*/
@@ -1720,6 +1718,7 @@ static long CALLBACK window_proc(HWND window, UINT msg,
         if (window_index<number_of_windows) {
             statusbar_handle_WMSIZE(msg, wparam, lparam, window_index);
         }
+        video_update_overlay(window);
         return 0;
       case WM_DRAWITEM:
         statusbar_handle_WMDRAWITEM(wparam,lparam);

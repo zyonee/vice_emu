@@ -66,10 +66,23 @@ typedef struct video_canvas_s {
     LPDIRECTDRAWSURFACE temporary_surface;
     LPDIRECTDRAWCLIPPER clipper;
     LPDIRECTDRAWPALETTE dd_palette;
+    RECT                scaled_rect_on_window;
     int client_width;
     int client_height;
     struct video_draw_buffer_callback_s *video_draw_buffer_callback;
 } video_canvas_t;
+
+/* ------------------------------------------------------------------------ */
+
+extern int fullscreen_active;
+extern int fullscreen_transition;
+
+extern HWND window_handles[2];
+extern int number_of_windows;
+extern int window_canvas_xsize[2];
+extern int window_canvas_ysize[2];
+
+extern int syscolorchanged, displaychanged, querynewpalette, palettechanged;
 
 /* ------------------------------------------------------------------------ */
 
@@ -89,6 +102,8 @@ extern void video_canvas_update(HWND hwnd, HDC hdc, int xclient, int yclient,
                                 int w, int h);
 
 extern float video_refresh_rate(video_canvas_t *c);
+
+extern void video_update_overlay(HWND hwnd);
 
 #endif
 

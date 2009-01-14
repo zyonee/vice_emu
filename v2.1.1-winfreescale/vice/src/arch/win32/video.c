@@ -76,7 +76,7 @@ static void video_debug(const char *format, ...)
     va_start(args, format);
     vsprintf(tmp, format, args);
     va_end(args);
-    log_debug(tmp);
+    log_debug("%s", tmp);
 }
 #define DEBUG(x) video_debug x
 #else
@@ -510,8 +510,10 @@ int video_set_physical_colors(video_canvas_t *c)
         }
         video_render_setphysicalcolor(c->videoconfig, i, p, c->depth);
 
+/*
         DEBUG(("Physical color for %d is 0x%04X", i,
               c->videoconfig->physical_colors[i]));
+*/
         if (c->depth == 8) {
             if (IDirectDrawSurface_Unlock(c->primary_surface, NULL)
                 == DDERR_SURFACELOST) {
@@ -659,8 +661,6 @@ int video_create_single_surface(video_canvas_t *canvas, int width, int height)
 
 int video_number_of_canvases;
 video_canvas_t *video_canvases[2];
-extern int fullscreen_active;
-extern int fullscreen_transition;
 
 void video_arch_canvas_init(struct video_canvas_s *canvas)
 {
@@ -684,6 +684,8 @@ video_canvas_t *video_canvas_create(video_canvas_t *canvas, unsigned int *width,
     canvas->title = lib_stralloc(canvas->viewport->title);
     canvas->width = *width;
     canvas->height = *height;
+
+    memset(&canvas->scaled_rect_on_window, 0, sizeof(canvas->scaled_rect_on_window));
 
     if (canvas->videoconfig->doublesizex)
         canvas->width *= 2;
@@ -985,12 +987,6 @@ static void real_refresh(video_canvas_t *c,
                          unsigned int xi, unsigned int yi,
                          unsigned int w, unsigned int h);
 
-extern HWND window_handles[2];
-extern int number_of_windows;
-extern int window_canvas_xsize[2];
-extern int window_canvas_ysize[2];
-//extern int status_height;
-
 void video_canvas_update(HWND hwnd, HDC hdc, int xclient, int yclient, int w,
                          int h)
 {
@@ -1004,6 +1000,9 @@ void video_canvas_update(HWND hwnd, HDC hdc, int xclient, int yclient, int w,
     int safex, safey, safey2;
     int cut_rightline, cut_bottomline;
     unsigned int pixel_width, pixel_height;
+
+log_debug("video_canvas_update(%p, %p, xclient=%u, yclient=%u, w=%u, h=%u",
+          hwnd, hdc, xclient, yclient, w, h);
 
     c = video_canvas_for_hwnd(hwnd);
 
@@ -1107,10 +1106,14 @@ void video_canvas_refresh(video_canvas_t *canvas,
                           unsigned int xi, unsigned int yi,
                           unsigned int w, unsigned int h)
 {
+#if 0
     int window_index;
     unsigned int client_x;
     unsigned int client_y;
     RECT rect;
+
+log_debug("video_canvas_refresh(%p, xs=%u, ys=%u, xi=%u, yi=%u, w=%u, h=%u",
+          canvas, xs, ys, xi, yi, w, h);
 
     if (canvas->videoconfig->doublesizex) {
         xs *= 2;
@@ -1145,6 +1148,7 @@ void video_canvas_refresh(video_canvas_t *canvas,
                 - window_canvas_ysize[window_index]) / 2;
 
     real_refresh(canvas, xs, ys, client_x, client_y, w, h);
+#endif
 }
 
 static void real_refresh(video_canvas_t *c,
@@ -1182,9 +1186,6 @@ static void real_refresh(video_canvas_t *c,
     bytesmoved = 0;
 
     {
-        extern int syscolorchanged, displaychanged, querynewpalette,
-                   palettechanged;
-
         if (syscolorchanged) {
             ui_error("System colors changed!\n(not implemented yet)");
             syscolorchanged = 0;
@@ -1351,8 +1352,23 @@ static void real_refresh(video_canvas_t *c,
             trect.bottom = ((RECT*)((RGNDATA*)Region)->Buffer)[j].bottom;
             trect.left = ((RECT*)((RGNDATA*)Region)->Buffer)[j].left;
             trect.right = ((RECT*)((RGNDATA*)Region)->Buffer)[j].right;
+
+/* @@@ */
+if (trect.top    != c->scaled_rect_on_window.top) {
+    int a = 1;
+}
+if (trect.bottom != c->scaled_rect_on_window.bottom) {
+    int a = 1;
+}
+if (trect.left   != c->scaled_rect_on_window.left) {
+    int a = 1;
+}
+if (trect.right  != c->scaled_rect_on_window.right) {
+    int a = 1;
+}
+/* @@@ */
             result = IDirectDrawSurface_Blt(c->primary_surface,
-                                            &trect,
+                                            &c->scaled_rect_on_window,
                                             surface,
                                             &trect,
                                             DDBLT_WAIT, NULL);
@@ -1479,3 +1495,25 @@ void fullscreen_capability(cap_fullscreen_t *cap_fullscreen)
     cap_fullscreen->device_num = 0;
 }
 
+void video_update_overlay(HWND hwnd)
+{
+    video_canvas_t * canvas;
+
+    RECT rectDest;
+
+    /* Specify the destination rectangle in absolute screen coordinates */
+
+    GetClientRect(hwnd,&rectDest);
+    rectDest.bottom -= statusbar_get_status_height();
+
+    ClientToScreen(hwnd, (LPPOINT) &rectDest);
+    ClientToScreen(hwnd, &((LPPOINT) &rectDest)[1]);
+
+    canvas = video_canvas_for_hwnd(hwnd);
+
+    if (NULL != canvas)
+    {
+        memcpy(&canvas->scaled_rect_on_window, &rectDest, 
+            sizeof(canvas->scaled_rect_on_window));
+    }
+}
