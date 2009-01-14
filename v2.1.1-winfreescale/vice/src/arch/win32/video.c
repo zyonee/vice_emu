@@ -1001,8 +1001,10 @@ void video_canvas_update(HWND hwnd, HDC hdc, int xclient, int yclient, int w,
     int cut_rightline, cut_bottomline;
     unsigned int pixel_width, pixel_height;
 
+/*
 log_debug("video_canvas_update(%p, %p, xclient=%u, yclient=%u, w=%u, h=%u",
           hwnd, hdc, xclient, yclient, w, h);
+*/
 
     c = video_canvas_for_hwnd(hwnd);
 
@@ -1033,11 +1035,11 @@ log_debug("video_canvas_update(%p, %p, xclient=%u, yclient=%u, w=%u, h=%u",
 */
 
     //  Calculate upperleft point's framebuffer coords
-    xs = xclient - ((rect.right - window_canvas_xsize[window_index]) / 2)
+    xs = 0 // xclient - ((rect.right - window_canvas_xsize[window_index]) / 2)
          + (c->viewport->first_x - c->viewport->x_offset
          + c->geometry->extra_offscreen_border_left) * pixel_width;
-    ys = yclient - ((rect.bottom - statusbar_get_status_height()
-         - window_canvas_ysize[window_index]) / 2)
+    ys = 0 // yclient - ((rect.bottom - statusbar_get_status_height()
+         // - window_canvas_ysize[window_index]) / 2)
          + (c->viewport->first_line - c->viewport->y_offset) * pixel_height;
     //  Cut off areas outside of framebuffer and clear them
     xi = xclient;
@@ -1065,32 +1067,32 @@ log_debug("video_canvas_update(%p, %p, xclient=%u, yclient=%u, w=%u, h=%u",
         //  Check if it's out
         if ((xs + w <= safex) || (xs >= cut_rightline) ||
             (ys + h <= safey) || (ys >= cut_bottomline)) {
-//            clear(hdc, xi, yi, xi + w, yi + h);
+            clear(hdc, xi, yi, xi + w, yi + h);
             return;
         }
 
         //  Cut top
         if (ys < safey) {
-//            clear(hdc, xi, yi, xi + w, yi - ys + safey);
+            clear(hdc, xi, yi, xi + w, yi - ys + safey);
             yi -= ys - safey;
             h += ys - safey;
             ys = safey;
         }
         //  Cut left
         if (xs < safex) {
-//            clear(hdc, xi, yi, xi - xs + safex, yi + h);
+            clear(hdc, xi, yi, xi - xs + safex, yi + h);
             xi -= xs - safex;
             w += xs - safex;
             xs = safex;
         }
         //  Cut bottom
         if (ys + h > safey2) {
-//            clear(hdc, xi, yi + safey2 - ys, xi + w, yi + h);
+            clear(hdc, xi, yi + safey2 - ys, xi + w, yi + h);
             h = safey2 - ys;
         }
         //  Cut right
         if (xs + w > cut_rightline) {
-//            clear(hdc, xi + cut_rightline - xs, yi, xi + w, yi + h);
+            clear(hdc, xi + cut_rightline - xs, yi, xi + w, yi + h);
             w = cut_rightline - xs;
         }
 #endif
@@ -1108,13 +1110,16 @@ void video_canvas_refresh(video_canvas_t *canvas,
                           unsigned int xi, unsigned int yi,
                           unsigned int w, unsigned int h)
 {
+#if 1
     int window_index;
     unsigned int client_x;
     unsigned int client_y;
     RECT rect;
 
+/*
 log_debug("video_canvas_refresh(%p, xs=%u, ys=%u, xi=%u, yi=%u, w=%u, h=%u",
           canvas, xs, ys, xi, yi, w, h);
+*/
 
     if (canvas->videoconfig->doublesizex) {
         xs *= 2;
@@ -1145,11 +1150,10 @@ log_debug("video_canvas_refresh(%p, xs=%u, ys=%u, xi=%u, yi=%u, w=%u, h=%u",
         rect.right = canvas->client_width;
         rect.bottom = canvas->client_height;
     }
-    client_x += (rect.right - window_canvas_xsize[window_index]) / 2;
-    client_y += (rect.bottom - statusbar_get_status_height()
-                - window_canvas_ysize[window_index]) / 2;
+//    client_x += (rect.right - window_canvas_xsize[window_index]) / 2;
+//    client_y += (rect.bottom - statusbar_get_status_height()
+//                - window_canvas_ysize[window_index]) / 2;
 
-#if 1
     real_refresh(canvas, xs, ys, client_x, client_y, w, h);
 #endif
 }
@@ -1210,14 +1214,17 @@ static void real_refresh(video_canvas_t *c,
         }
     }
 
+/*
     rect.right = c->client_width;
     rect.bottom = c->client_height;
+*/
     rect.left = xi;
     rect.top = yi;
     ClientToScreen(c->hwnd, (LPPOINT) &rect);
     rect.right = rect.left + w;
     rect.bottom = rect.top + h;
 
+#if 0
     if (c->back_surface != NULL) {
         desc.dwSize = sizeof(desc);
         do {
@@ -1230,6 +1237,7 @@ static void real_refresh(video_canvas_t *c,
         if (result == DD_OK)
             surface = c->back_surface;
     }
+#endif
 
     if ((surface == NULL) && (dx_primary_surface_rendering)) {
         desc.dwSize = sizeof(desc);
@@ -1362,21 +1370,13 @@ static void real_refresh(video_canvas_t *c,
             trect.left = ((RECT*)((RGNDATA*)Region)->Buffer)[j].left;
             trect.right = ((RECT*)((RGNDATA*)Region)->Buffer)[j].right;
 
-/* @@@ */
-if (trect.top    != c->scaled_rect_on_window.top) {
-    int a = 1;
-}
-if (trect.bottom != c->scaled_rect_on_window.bottom) {
-    int a = 1;
-}
-if (trect.left   != c->scaled_rect_on_window.left) {
-    int a = 1;
-}
-if (trect.right  != c->scaled_rect_on_window.right) {
-    int a = 1;
-}
+#if 0
+    memcpy(&scaledrect, &trect, sizeof(scaledrect));
+#else
+    // now, scale the output area
 
-#if 1
+    memcpy(&scaledrect, &c->scaled_rect_on_window, sizeof(scaledrect));
+
 /* @@@ */
     /* find out which part of the (scaled) window to update */
 
@@ -1386,54 +1386,80 @@ if (trect.right  != c->scaled_rect_on_window.right) {
     clientrect.bottom = c->client_height;
     clientrect.left = 0;
     clientrect.top = 0;
+    GetClientRect(c->hwnd, &clientrect);
+    clientrect.bottom -= statusbar_get_status_height();
     ClientToScreen(c->hwnd, (LPPOINT) &clientrect);
     ClientToScreen(c->hwnd, (LPPOINT) &((LPPOINT) &clientrect)[1]);
 
+/*
 log_debug("---      trect(%u, %u, %u, %u",
                trect.top,      trect.left,      trect.bottom,      trect.right);
 log_debug("---       rect(%u, %u, %u, %u",
                 rect.top,       rect.left,       rect.bottom,       rect.right);
 log_debug("--- clientrect(%u, %u, %u, %u",
           clientrect.top, clientrect.left, clientrect.bottom, clientrect.right);
-#endif
-    // now, scale the output area
 
-    memcpy(&scaledrect, &c->scaled_rect_on_window, sizeof(scaledrect));
-#if 1
 log_debug("--- scaledrect(%u, %u, %u, %u",
           scaledrect.top, scaledrect.left, scaledrect.bottom, scaledrect.right);
 log_debug("--- i(%u, %u), s(%u, %u), delta(%u, %u)",
           xi, yi, xs, ys, w, h);
+*/
 
     {
-#if 1
-    float SCALEX = ((float)((c->scaled_rect_on_window.right - c->scaled_rect_on_window.left))) / (clientrect.right - clientrect.left);
-    unsigned int SCALEY = 1; // ((float)((c->scaled_rect_on_window.bottom - c->scaled_rect_on_window.top))) / (clientrect.bottom - clientrect.top);
-    int dx;
-    int dy;
+    unsigned long SCALEX_nom   = clientrect.right - clientrect.left;
+    unsigned long SCALEX_denom = c->draw_buffer->canvas_width; //. trect.right - trect.left;
+    unsigned long SCALEY_nom   = clientrect.bottom - clientrect.top;
+    unsigned long SCALEY_denom = c->draw_buffer->canvas_height; // trect.bottom - trect.top;
 
-    dx = 0; // xi - xs;
-    dy = 0; // yi - ys;
+    RECT trect2;
+
+    //int dx = xs - xi;
+    //int dy = ys - yi;
+
+    // dx = 0; // xi - xs;
+    // dy = 0; // yi - ys;
 
     // dx = - dx;
     // dy = - dy;
 
-    scaledrect.top    = (trect.top    - clientrect.top  + dy) * SCALEY + c->scaled_rect_on_window.top;
-    scaledrect.bottom = (trect.bottom - clientrect.top  + dy) * SCALEY + c->scaled_rect_on_window.top;
+    memcpy(&trect2, &trect, sizeof(trect2));
+    ScreenToClient(c->hwnd, (LPPOINT) &trect2);
+    ScreenToClient(c->hwnd, &((LPPOINT) &trect2)[1]);
 
-    scaledrect.left   = (trect.left   - clientrect.left + dx) * SCALEX + c->scaled_rect_on_window.left;
-    scaledrect.right  = (trect.right  - clientrect.left + dx) * SCALEX + c->scaled_rect_on_window.left;
+/**
+    trect2.right -= (scaledrect.right - window_canvas_xsize[window_index]) / 2;
+    trect2.left   = (scaledrect.right - window_canvas_xsize[window_index]) / 2;
+
+    trect2.bottom -= trect2.top;
+    trect2.top     = 0;
+/**/
+
+/**
+    scaledrect.top    = (trect.top    - ys + dy) * SCALEY_nom / SCALEY_denom + c->scaled_rect_on_window.top;
+    scaledrect.bottom = (trect.bottom - ys + dy) * SCALEY_nom / SCALEY_denom + c->scaled_rect_on_window.top;
+/**/
+    scaledrect.top    = (trect2.top   ) * SCALEY_nom / SCALEY_denom;
+    scaledrect.bottom = (trect2.bottom) * SCALEY_nom / SCALEY_denom;
+/**/
+    scaledrect.left   = (trect2.left  ) * SCALEX_nom / SCALEX_denom;
+    scaledrect.right  = (trect2.right ) * SCALEX_nom / SCALEX_denom;
+
+/**
+    trect.left   = trect.left   - xi;// + xs;
+    trect.right  = trect.right  - xi;// + xs;
+/**
+    trect.top    = trect.top    + (ys - yi);
+    trect.bottom = trect.bottom + (ys - yi);
+/**/
+
+    ClientToScreen(c->hwnd, (LPPOINT) &scaledrect);
+    ClientToScreen(c->hwnd, &((LPPOINT) &scaledrect)[1]);
+    }
 
 /*
-    trect.left   = trect.left   - xi + xs;
-    trect.right  = trect.right  - xi + xs;
-    trect.top    = trect.top    - yi + ys;
-    trect.bottom = trect.bottom - yi + ys;
-*/
-#endif
-    }
 log_debug("+++ scaledrect(%u, %u, %u, %u\n",
           scaledrect.top, scaledrect.left, scaledrect.bottom, scaledrect.right);
+*/
 #endif
 
 /* @@@ */
@@ -1443,6 +1469,7 @@ log_debug("+++ scaledrect(%u, %u, %u, %u\n",
                                             surface,
                                             &trect,
                                             DDBLT_WAIT, NULL);
+
             if (result == DD_OK) {
             }else if (result == DDERR_INVALIDRECT) {
                 DEBUG(("INVALID rect %d, %d, %d, %d",
@@ -1578,9 +1605,10 @@ void video_update_overlay(HWND hwnd)
     GetClientRect(hwnd,&rectDest);
     rectDest.bottom -= statusbar_get_status_height();
 
+/*
     ClientToScreen(hwnd, (LPPOINT) &rectDest);
     ClientToScreen(hwnd, &((LPPOINT) &rectDest)[1]);
-
+*/
     canvas = video_canvas_for_hwnd(hwnd);
 
     if (NULL != canvas)

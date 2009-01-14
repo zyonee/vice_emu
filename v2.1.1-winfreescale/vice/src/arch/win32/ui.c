@@ -1724,7 +1724,7 @@ static long CALLBACK window_proc(HWND window, UINT msg,
         statusbar_handle_WMDRAWITEM(wparam,lparam);
         /* SRT: Make sure that all windows are repainted.
           This message seems to be a good candidate for the remote desktop. */
-        ui_redraw_all_windows();
+        //ui_redraw_all_windows();
         return 0;
       case WM_INITMENUPOPUP:
         handle_wm_initmenupopup((HMENU)wparam);
