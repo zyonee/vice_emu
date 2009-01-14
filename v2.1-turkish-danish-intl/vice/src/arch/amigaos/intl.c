@@ -4398,7 +4398,7 @@ intl_translate_t intl_string_table[] = {
 /* sv */ {IDS_NEVER_CONFIRM_QUITING_VICE_SV, "Bekräfta inte för att avsluta VICE"},
 /* tr */ {IDS_NEVER_CONFIRM_QUITING_VICE_TR, "VICE'dan çýkarken asla teyit etme"},
 
-/* en */ {IDS_PET_REU_SIZE,    "PET REU Size"},
+/* en */ {IDS_PET_REU_SIZE,    "PET REU size"},
 /* da */ {IDS_PET_REU_SIZE_DA, "PET REU-størrelse"},
 /* de */ {IDS_PET_REU_SIZE_DE, "PET REU Größe"},
 /* fr */ {IDS_PET_REU_SIZE_FR, "Taille du PET REU"},

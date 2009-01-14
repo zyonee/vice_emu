@@ -666,6 +666,30 @@ static int intl_table[][countof(language_table)] = {
 /* tr */  IDD_PLUS4KBD_MAPPING_SETTINGS_DIALOG_TR},   /* fuzzy, size */
 
 /* resvic20.rc */
+/* en */ {IDD_VIC20ROM_SETTINGS_DIALOG,
+/* da */  IDD_VIC20ROM_SETTINGS_DIALOG_DA,    /* fuzzy, size */
+/* de */  IDD_VIC20ROM_SETTINGS_DIALOG_DE,    /* size */
+/* fr */  IDD_VIC20ROM_SETTINGS_DIALOG_FR,    /* size */
+/* hu */  IDD_VIC20ROM_SETTINGS_DIALOG_HU,    /* size */
+/* it */  IDD_VIC20ROM_SETTINGS_DIALOG_IT,    /* size */
+/* nl */  IDD_VIC20ROM_SETTINGS_DIALOG_NL,
+/* pl */  IDD_VIC20ROM_SETTINGS_DIALOG_PL,    /* fuzzy, size */
+/* sv */  IDD_VIC20ROM_SETTINGS_DIALOG_SV,    /* size */
+/* tr */  IDD_VIC20ROM_SETTINGS_DIALOG_TR},   /* fuzzy, size */
+
+/* resvic20.rc */
+/* en */ {IDD_VIC20DRIVEROM_SETTINGS_DIALOG,
+/* da */  IDD_VIC20DRIVEROM_SETTINGS_DIALOG_DA,    /* fuzzy, size */
+/* de */  IDD_VIC20DRIVEROM_SETTINGS_DIALOG_DE,    /* size */
+/* fr */  IDD_VIC20DRIVEROM_SETTINGS_DIALOG_FR,    /* size */
+/* hu */  IDD_VIC20DRIVEROM_SETTINGS_DIALOG_HU,    /* size */
+/* it */  IDD_VIC20DRIVEROM_SETTINGS_DIALOG_IT,    /* size */
+/* nl */  IDD_VIC20DRIVEROM_SETTINGS_DIALOG_NL,
+/* pl */  IDD_VIC20DRIVEROM_SETTINGS_DIALOG_PL,    /* fuzzy, size */
+/* sv */  IDD_VIC20DRIVEROM_SETTINGS_DIALOG_SV,    /* size */
+/* tr */  IDD_VIC20DRIVEROM_SETTINGS_DIALOG_TR},   /* fuzzy, size */
+
+/* resvic20.rc */
 /* en */ {IDD_VIC20ROM_RESOURCE_DIALOG,
 /* da */  IDD_VIC20ROM_RESOURCE_DIALOG_DA,    /* fuzzy, size */
 /* de */  IDD_VIC20ROM_RESOURCE_DIALOG_DE,    /* size */
