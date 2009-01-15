@@ -86,7 +86,7 @@ static char *language_table[] = {
   "pl",
 
 /* swedish */
-  "sv"
+  "sv",
 
 /* turkish */
   "tr"
@@ -124,7 +124,7 @@ static int language_cp_table[] = {
   28592,	/* ISO 8859-2 */
 
 /* swedish */
-  28591	/* ISO 8859-1 */
+  28591,	/* ISO 8859-1 */
 
 /* turkish */
   28599	/* ISO 8859-9 */
@@ -1892,7 +1892,7 @@ translate_t string_table[] = {
                                            "<data_list>.  If the size of the address range is greater than the size\n"
                                            "of the data_list, the data_list is repeated.")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDGS_MON_FILL_DESCRIPTION_DS, "Fyld hukommelsen i det angivne adresseområde med data fra <dataliste>.\n"
+/* da */ {IDGS_MON_FILL_DESCRIPTION_DA, "Fyld hukommelsen i det angivne adresseområde med data fra <dataliste>.\n"
                                         "Hvis størrelsen på adresseområdet er større end størrelsen af dataliste\n"
                                         "gentages indholdet i dataliste."},
 /* de */ {IDGS_MON_FILL_DESCRIPTION_DE, "Fülle den angegebenen Adressbereich mit den Daten aus <Datenliste>.\n"
