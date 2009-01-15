@@ -29,8 +29,8 @@ ExternalFilter::ExternalFilter()
   reset();
   enable_filter(true);
 
-  w0lp = 37500; /* ~6 kHz */
-  w0hp = 105;   /* 20 Hz */
+  w0lp = 64474; /* 3.3 kO and 4.7 nF */
+  w0hp = 105;   /* ~20 Hz, old resid value */
 }
 
 

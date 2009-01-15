@@ -60,6 +60,8 @@ public:
   RESID_INLINE reg12 output();
 
 protected:
+  RESID_INLINE void clock_noise();
+
   const WaveformGenerator* sync_source;
   WaveformGenerator* sync_dest;
 
@@ -68,6 +70,7 @@ protected:
 
   reg24 accumulator;
   reg24 shift_register;
+  reg12 noise;
 
   // Fout  = (Fn*Fclk/16777216)Hz
   reg16 freq;
@@ -85,7 +88,6 @@ protected:
   // The gate bit is handled by the EnvelopeGenerator.
 
   // 16 possible combinations of waveforms.
-  RESID_INLINE reg12 output____();
   RESID_INLINE reg12 output___T();
   RESID_INLINE reg12 output__S_();
   RESID_INLINE reg12 output_P__();
@@ -103,6 +105,25 @@ friend class SID;
 // ----------------------------------------------------------------------------
 
 #if RESID_INLINING || defined(__WAVE_CC__)
+
+RESID_INLINE
+void WaveformGenerator::clock_noise()
+{
+  reg24 bit0 = ((shift_register >> 22) ^ (shift_register >> 17)) & 0x1;
+  shift_register <<= 1;
+  shift_register &= 0x7fffff;
+  shift_register |= bit0;
+    
+  noise =
+    ((shift_register & 0x400000) >> 11) |
+    ((shift_register & 0x100000) >> 10) |
+    ((shift_register & 0x010000) >> 7) |
+    ((shift_register & 0x002000) >> 5) |
+    ((shift_register & 0x000800) >> 4) |
+    ((shift_register & 0x000080) >> 1) |
+    ((shift_register & 0x000010) << 1) |
+    ((shift_register & 0x000004) << 2);
+}
 
 // ----------------------------------------------------------------------------
 // SID clocking - 1 cycle.
@@ -126,10 +147,7 @@ void WaveformGenerator::clock()
 
   // Shift noise register once for each time accumulator bit 19 is set high.
   if (!(accumulator_prev & 0x080000) && (accumulator & 0x080000)) {
-    reg24 bit0 = ((shift_register >> 22) ^ (shift_register >> 17)) & 0x1;
-    shift_register <<= 1;
-    shift_register &= 0x7fffff;
-    shift_register |= bit0;
+    clock_noise();
   }
 }
 
@@ -156,13 +174,12 @@ void WaveformGenerator::synchronize()
 // The MSB is used to create the falling edge of the triangle by inverting
 // the lower 11 bits. The MSB is thrown away and the lower 11 bits are
 // left-shifted (half the resolution, full amplitude).
-// Ring modulation substitutes the MSB with MSB EOR sync_source MSB.
+// Ring modulation substitutes the MSB with sync_source MSB.
 //
 RESID_INLINE
 reg12 WaveformGenerator::output___T()
 {
-  reg24 msb = (ring_mod ? accumulator ^ sync_source->accumulator : accumulator)
-    & 0x800000;
+  reg24 msb = (ring_mod ? sync_source->accumulator : accumulator) & 0x800000;
   return ((msb ? ~accumulator : accumulator) >> 11) & 0xfff;
 }
 
@@ -188,7 +205,7 @@ reg12 WaveformGenerator::output__S_()
 RESID_INLINE
 reg12 WaveformGenerator::output_P__()
 {
-  return (test || (accumulator >> 12) >= pw) ? 0xfff : 0x000;
+  return (accumulator >> 12) >= pw ? 0xfff : 0x000;
 }
 
 // Noise:
@@ -213,15 +230,7 @@ reg12 WaveformGenerator::output_P__()
 RESID_INLINE
 reg12 WaveformGenerator::outputN___()
 {
-  return
-    ((shift_register & 0x400000) >> 11) |
-    ((shift_register & 0x100000) >> 10) |
-    ((shift_register & 0x010000) >> 7) |
-    ((shift_register & 0x002000) >> 5) |
-    ((shift_register & 0x000800) >> 4) |
-    ((shift_register & 0x000080) >> 1) |
-    ((shift_register & 0x000010) << 1) |
-    ((shift_register & 0x000004) << 2);
+  return noise;
 }
 
 // ----------------------------------------------------------------------------

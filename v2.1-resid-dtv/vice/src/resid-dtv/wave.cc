@@ -19,6 +19,8 @@
 // C64 DTV modifications written by
 //   Daniel Kahlin <daniel@kahlin.net>
 // Copyright (C) 2007  Daniel Kahlin <daniel@kahlin.net>
+//   Antti S. Lankila <alankila@bel.fi>
+// Copyright (C) 2009  Antti S. Lankila <alankila@bel.fi>
 
 #define __WAVE_CC__
 #include "wave.h"
@@ -70,44 +72,30 @@ void WaveformGenerator::writeCONTROL_REG(reg8 control)
   waveform = (control >> 4) & 0x0f;
   ring_mod = control & 0x04;
   sync = control & 0x02;
+  test = control & 0x08;
 
-  reg8 test_next = control & 0x08;
-
-  // Test bit set.
-  // The accumulator and the shift register are both cleared.
-  // NB! The shift register is not really cleared immediately. It seems like
-  // the individual bits in the shift register start to fade down towards
-  // zero when test is set. All bits reach zero within approximately
-  // $2000 - $4000 cycles.
-  // This is not modeled. There should fortunately be little audible output
-  // from this peculiar behavior.
-  if (test_next) {
+  // Test bit set. Accumulator is cleared.
+  if (test) {
     accumulator = 0;
-    shift_register = 0;
   }
-  // Test bit cleared.
-  // The accumulator starts counting, and the shift register is reset to
-  // the value 0x7ffff8.
-  // NB! The shift register will not actually be set to this exact value if the
-  // shift register bits have not had time to fade to zero.
-  // This is not modeled.
-  else if (test) {
-    shift_register = 0x7ffff8;
-  }
-
-  test = test_next;
 
   // The gate bit is handled by the EnvelopeGenerator.
 }
 
 reg8 WaveformGenerator::readOSC()
 {
-  return output() >> 4;
+  return outputN___() >> 4;
 }
 
+/* LFSR is clocked if the bit 19 is incremented */
 void WaveformGenerator::writeACC_HI(reg8 value)
 {
+  reg24 accumulator_prev = accumulator;
   accumulator = (value << 16) | (accumulator & 0xffff);
+  if (!(accumulator_prev & 0x080000) && (accumulator & 0x080000)) {
+    /* This has been measured to happen also with test bit on. */
+    clock_noise();
+  }
 }
 
 // ----------------------------------------------------------------------------
@@ -116,7 +104,8 @@ void WaveformGenerator::writeACC_HI(reg8 value)
 void WaveformGenerator::reset()
 {
   accumulator = 0;
-  shift_register = 0x7ffff8;
+  shift_register = 0x7ffffc;
+  noise = 0xff0;
   freq = 0;
   pw = 0;
 

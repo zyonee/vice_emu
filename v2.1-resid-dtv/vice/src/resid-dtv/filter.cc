@@ -20,28 +20,6 @@
 #define __FILTER_CC__
 #include "filter.h"
 
-// Maximum cutoff frequency is specified as
-// FCmax = 2.6e-5/C = 2.6e-5/2200e-12 = 11818.
-//
-// Measurements indicate a cutoff frequency range of approximately
-// 220Hz - 18kHz on a MOS6581 fitted with 470pF capacitors. The function
-// mapping FC to cutoff frequency has the shape of the tanh function, with
-// a discontinuity at FCHI = 0x80.
-// In contrast, the MOS8580 almost perfectly corresponds with the
-// specification of a linear mapping from 30Hz to 12kHz.
-// 
-// The mappings have been measured by feeding the SID with an external
-// signal since the chip itself is incapable of generating waveforms of
-// higher fundamental frequency than 4kHz. It is best to use the bandpass
-// output at full resonance to pick out the cutoff frequency at any given
-// FC setting.
-//
-// The mapping function is specified with spline interpolation points and
-// the function values are retrieved via table lookup.
-//
-// NB! Cutoff frequency characteristics may vary, we have modeled two
-// particular Commodore 64s.
-
 // ----------------------------------------------------------------------------
 // Constructor.
 // ----------------------------------------------------------------------------
@@ -69,12 +47,12 @@ void Filter::reset()
 // ----------------------------------------------------------------------------
 void Filter::writeFC_LO(reg8 fc_lo)
 {
-  fc = fc & 0x7f8 | fc_lo & 0x007;
+  fc = (fc & 0x7f8) | (fc_lo & 0x007);
 }
 
 void Filter::writeFC_HI(reg8 fc_hi)
 {
-  fc = (fc_hi << 3) & 0x7f8 | fc & 0x007;
+  fc = ((fc_hi << 3) & 0x7f8) | (fc & 0x007);
 }
 
 void Filter::writeRES_FILT(reg8 res_filt)

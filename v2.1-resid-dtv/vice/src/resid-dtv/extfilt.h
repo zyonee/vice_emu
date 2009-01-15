@@ -92,7 +92,7 @@ void ExternalFilter::clock(sound_sample Vi)
   // Vlp = Vlp + w0lp*(Vi - Vlp);
   // Vhp = Vhp + w0hp*(Vlp - Vhp);
 
-  sound_sample dVlp = (w0lp >> 8)*(Vi - Vlp) >> 12;
+  sound_sample dVlp = (w0lp >> 8)*((Vi << 8) - Vlp) >> 12;
   sound_sample dVhp = w0hp*(Vlp - Vhp) >> 20;
   Vo = Vlp - Vhp;
   Vlp += dVlp;
@@ -105,7 +105,7 @@ void ExternalFilter::clock(sound_sample Vi)
 RESID_INLINE
 sound_sample ExternalFilter::output()
 {
-  return Vo;
+  return Vo >> 8;
 }
 
 #endif // RESID_INLINING || defined(__EXTFILT_CC__)
