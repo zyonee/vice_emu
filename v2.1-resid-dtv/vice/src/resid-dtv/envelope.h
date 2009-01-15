@@ -112,17 +112,16 @@ void EnvelopeGenerator::clock()
   if (-- rate_counter) {
     return;
   }
-  /* Note: counter overwritten when state changes to decay. */
   rate_counter = rate_period;
   
   /* Envelope skips this wait during ATTACK.
    * This is handled during control register write: switching to attack
    * sets counter=0, period=1. Envelope uses this during decay and release,
    * with decay having 1/3 rate. */
-  if (++ exponential_counter != exponential_counter_period) {
+  if (-- exponential_counter) {
     return;
   }
-  exponential_counter = 0;
+  exponential_counter = exponential_counter_period;
 
   if (state == ATTACK) {
     /* attack 0 is a special case: envelope simply jumps to 0xff. */
@@ -131,12 +130,15 @@ void EnvelopeGenerator::clock()
     }
     if (envelope_counter != 0xff) {
       ++ envelope_counter;
-    } else {
+    }
+    if (envelope_counter == 0xff) {
       state = DECAY_SUSTAIN;
 
       /* decay rates are 1/3 of attack rates. If one now switches to attack,
-       * DTVSID notices this after 1 rate_period has elapsed. */
-      rate_counter = rate_period = rate_counter_period[decay];
+       * DTVSID notices this after 1 rate_period has elapsed. The first decay
+       * occurs at attack rate on DTV, presumably because the counter changes
+       * are seen only after the currently set counters manage to elapse. */
+      rate_period = rate_counter_period[decay];
       exponential_counter_period = 3;
     }
     return;
@@ -153,24 +155,7 @@ void EnvelopeGenerator::clock()
     if (envelope_counter != 0) {
       -- envelope_counter;
     }
-
-    if (envelope_counter > 0xde) {
-        exponential_counter_period = 1;
-    } else if (envelope_counter > 0xbe) {
-        exponential_counter_period = 2;
-    } else if (envelope_counter > 0x9e) {
-        exponential_counter_period = 3;
-    } else if (envelope_counter > 0x7e) {
-        exponential_counter_period = 4;
-    } else if (envelope_counter > 0x5e) {
-        exponential_counter_period = 5;
-    } else if (envelope_counter > 0x3e) {
-        exponential_counter_period = 6;
-    } else if (envelope_counter > 0x1e) {
-        exponential_counter_period = 7;
-    } else {
-        exponential_counter_period = 8;
-    }
+    exponential_counter_period = 8 - (envelope_counter >> 5);
     return;
   }
 }

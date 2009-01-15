@@ -102,8 +102,7 @@ void EnvelopeGenerator::reset()
 
   gate = 0;
 
-  exponential_counter = 0;
-  exponential_counter_period = 1;
+  exponential_counter = exponential_counter_period = 1;
 
   state = RELEASE;
   rate_counter = rate_period = rate_counter_period[release];
@@ -172,16 +171,22 @@ void EnvelopeGenerator::writeCONTROL_REG(reg8 control)
   if (!gate && gate_next) {
     state = ATTACK;
     rate_period = rate_counter_period[attack];
-    exponential_counter = 0;
+
+    /* Attacks are delayed by 1 decay period.
+     * Turning on attack ignores even the current release interval, indicating
+     * that somehow shifting to attack overwrites the counter. & 7 is for
+     * keeping 8-sync intact. */
+    rate_counter = (rate_counter & 7) + rate_counter_period[decay];
+    exponential_counter = 1;
     exponential_counter_period = 1;
   }
   // Gate bit off: Start release.
   else if (gate && !gate_next) {
     state = RELEASE;
     rate_period = rate_counter_period[release];
-    /* XXX: we should check if the envelope decrements after one rate-period
-     *      during release, or whether the exp.period is looked up already. */
-    exponential_counter = 0;
+    /* during switch to release, envelope spends at least one full period
+     * twiddling its thumbs. */
+    exponential_counter = 2;
     exponential_counter_period = 1;
   }
 
@@ -216,22 +221,5 @@ reg8 EnvelopeGenerator::readENV()
 
 void EnvelopeGenerator::writeENV(reg8 value)
 {
-    exponential_counter = 0;
-    envelope_counter = value;
-
-    if (envelope_counter < sustain_level[sustain]) {
-        state = RELEASE;
-        rate_period = rate_counter_period[release];
-        exponential_counter_period = 1; /* will be corrected by next clock() */
-    }
-    else if (envelope_counter > sustain_level[sustain]) {
-        state = ATTACK;
-        rate_period = rate_counter_period[attack];
-        exponential_counter_period = 1; /* permanent setting for attack */
-    }
-    else {
-        state = DECAY_SUSTAIN;
-        rate_period = rate_counter_period[decay];
-        exponential_counter_period = 3; /* permanent setting for decay */
-    }
+  envelope_counter = value;
 }
