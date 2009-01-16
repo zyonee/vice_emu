@@ -30,7 +30,8 @@ ExternalFilter::ExternalFilter()
   enable_filter(true);
 
   w0lp = 64475; /* 10 kHz, 3.3 kO and 4.7 nF RC filter from schematic */
-  w0hp = 148;   /* ~23 Hz, approximated from some recordings. */
+  w0hp1 = 100;  /* 0.1 uF to transistor base, unknown resistance, estimated */
+  w0hp2 = 167;  /* 26.5 Hz output */
 }
 
 
@@ -48,8 +49,5 @@ void ExternalFilter::enable_filter(bool enable)
 // ----------------------------------------------------------------------------
 void ExternalFilter::reset()
 {
-  // State of filter.
-  Vlp = 0;
-  Vhp = 0;
-  Vo = 0;
+  Vhp1 = Vhp2 = Vlp = Vo = 0;
 }

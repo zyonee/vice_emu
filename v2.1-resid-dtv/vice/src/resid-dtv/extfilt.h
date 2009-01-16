@@ -54,12 +54,14 @@ protected:
 
   // State of filters.
   sound_sample Vlp; // lowpass
-  sound_sample Vhp; // highpass
+  sound_sample Vhp1; // highpass
+  sound_sample Vhp2; // highpass
   sound_sample Vo;
 
   // Cutoff frequencies.
   sound_sample w0lp;
-  sound_sample w0hp;
+  sound_sample w0hp1;
+  sound_sample w0hp2;
 
 friend class SID;
 };
@@ -82,7 +84,7 @@ void ExternalFilter::clock(sound_sample Vi)
   // This is handy for testing.
   if (!enabled) {
     // Remove maximum DC level since there is no filter to do it.
-    Vlp = Vhp = 0;
+    Vlp = Vhp1 = Vhp2 = 0;
     Vo = Vi;
     return;
   }
@@ -92,11 +94,17 @@ void ExternalFilter::clock(sound_sample Vi)
   // Vlp = Vlp + w0lp*(Vi - Vlp);
   // Vhp = Vhp + w0hp*(Vlp - Vhp);
 
-  sound_sample dVlp = (w0lp >> 8)*((Vi << 7) - Vlp) >> 12;
-  sound_sample dVhp = w0hp*(Vlp - Vhp) >> 20;
-  Vo = Vlp - Vhp;
-  Vlp += dVlp;
-  Vhp += dVhp;
+  Vlp += (w0lp >> 8)*((Vi << 7) - Vlp) >> 12;
+  /* output is now Vlp because of lowpass configuration */
+
+  Vhp1 += w0hp1 * (Vlp - Vhp1) >> 20;
+  sound_sample output = Vlp - Vhp1;
+  /* hardclipping at transistor amplifier */
+  if (output > 23000 << 7)
+    output = 23000 << 7;
+
+  Vhp2 += w0hp2 * (output - Vhp2) >> 20;
+  Vo = (output - Vhp2) >> 7;
 }
 
 // ----------------------------------------------------------------------------
@@ -105,11 +113,7 @@ void ExternalFilter::clock(sound_sample Vi)
 RESID_INLINE
 sound_sample ExternalFilter::output()
 {
-  sound_sample Vo_clip = Vo >> 7;
-  /* hardclipping level approximated from recording of Matilda Mother. */
-  if (Vo_clip > 23000)
-    Vo_clip = 23000;
-  return Vo_clip;
+  return Vo;
 }
 
 #endif // RESID_INLINING || defined(__EXTFILT_CC__)
