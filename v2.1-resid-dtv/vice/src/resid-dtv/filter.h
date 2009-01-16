@@ -90,7 +90,7 @@ void Filter::clock(sound_sample voice1,
     voice3 = 0;
   }
   
-  Vnf = (voice1 + voice2 + voice3 + ext_in) >> 4;
+  Vnf = (voice1 + voice2 + voice3 + ext_in) >> 3;
 }
 
 // ----------------------------------------------------------------------------

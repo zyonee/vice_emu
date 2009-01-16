@@ -70,7 +70,6 @@ void SID::reset()
   bus_value_ttl = 0;
 }
 
-
 // ----------------------------------------------------------------------------
 // Write 16-bit sample to audio input.
 // NB! The caller is responsible for keeping the value within 16 bits.
@@ -79,27 +78,17 @@ void SID::reset()
 // ----------------------------------------------------------------------------
 void SID::input(int sample)
 {
-  // Voice outputs are 17 bits. Scale up to match three voices in order
+  // Voice outputs are 14 bits. Scale up to match three voices in order
   // to facilitate simulation of the MOS8580 "digi boost" hardware hack.
-  ext_in = (sample << 1)*3;
+  ext_in = sample * 3 >> 2;
 }
 
 // ----------------------------------------------------------------------------
 // Read sample from audio output.
-// Both 16-bit and n-bit output is provided.
 // ----------------------------------------------------------------------------
 int SID::output()
 {
-  const int range = 1 << 16;
-  const int half = range >> 1;
-  int sample = extfilt.output() / ((4096 * 32 >> 4) * 4 * 2 / range);
-  if (sample >= half) {
-    return half - 1;
-  }
-  if (sample < -half) {
-    return -half;
-  }
-  return sample;
+  return extfilt.output();
 }
 
 // ----------------------------------------------------------------------------
