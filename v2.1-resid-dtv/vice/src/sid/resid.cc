@@ -27,6 +27,7 @@
  */
 
 #include "resid/sid.h"
+/* resid-dtv/ is used for DTVSID, but the API is the same */
 
 extern "C" {
 
@@ -94,16 +95,6 @@ static int resid_init(sound_t *psid, int speed, int cycles_per_sec)
     passband = speed * passband_percentage / 200.0;
     gain = gain_percentage / 100.0;
  
-#if 0
-    psid->sid->set_chip_model(model == 0 ? MOS6581 : MOS8580);
-
-    /* 8580 + digi boost. */
-    psid->sid->input(model == 2 ? -32768 : 0);
-
-    psid->sid->enable_filter(filters_enabled ? true : false);
-    psid->sid->enable_external_filter(filters_enabled ? true : false);
-#endif
-
     switch (model) {
     default:
     case 0:
@@ -128,6 +119,11 @@ static int resid_init(sound_t *psid, int speed, int cycles_per_sec)
       strcpy(model_text, "MOS6581R4");
       break;
 #endif
+    case 4:
+      /* resid-dtv has only the DTVSID model */
+      psid->sid->input(0);
+      strcpy(model_text, "DTVSID");
+      break;
     }
     psid->sid->enable_filter(filters_enabled ? true : false);
     psid->sid->enable_external_filter(filters_enabled ? true : false);

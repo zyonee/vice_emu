@@ -192,6 +192,12 @@ static int set_sid_model(int val, void *param)
         set_sid_engine(SID_ENGINE_RESID, NULL);
         return 0;
     }
+
+    /* Only DTVSID is supported in ReSID-DTV */
+    if ((machine_class == VICE_MACHINE_C64DTV) && (sid_model < SID_MODEL_DTVSID)) {
+        set_sid_engine(SID_ENGINE_FASTSID, NULL);
+        return 0;
+    }
 #ifdef HAVE_RESID_FP
     if((sid_model < SID_MODEL_6581R3_4885) && (sidengine == SID_ENGINE_RESID_FP)) {
         set_sid_engine(SID_ENGINE_RESID, NULL);
