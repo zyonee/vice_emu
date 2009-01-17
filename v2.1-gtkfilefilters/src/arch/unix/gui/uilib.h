@@ -30,11 +30,6 @@
 extern void uilib_select_string(const char *resname, const char *title,
                                 const char *name);
 
-typedef struct uilib_file_filter_s {
-  const char* filter_name;
-  const char** filters;
-} uilib_file_filter_t;
-
 typedef enum uilib_file_filter_enum_s {
   UILIB_FILTER_ALL,
   UILIB_FILTER_PALETTE,
@@ -58,8 +53,6 @@ typedef enum uilib_file_filter_enum_s {
   UILIB_FILTER_SID,
   UILIB_FILTER_DTVROM,
 } uilib_file_filter_enum_t;
-
-extern uilib_file_filter_t filters[];
 
 #endif
 
