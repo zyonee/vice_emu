@@ -39,7 +39,7 @@
         * voice.h, envelope.h: Simulate voice output based on emulation of two
           of the three sigma-delta converters:
 
-          - 12-bit delta-sigma converter at oscillator
+          - 8-bit delta-sigma converter at oscillator
           - 8-bit delta-sigma for envelope level
           - 4-bit delta-sigma for volume level
 
@@ -54,6 +54,10 @@
           as its repetition length is 4096 clocks or about 8 kHz, bringing it
           well into audible range. How bad the phenomenom is depends on the
           envelope and volume levels.
+
+          It is not yet 100% certain whether the delta-sigma converter at
+          oscillator runs at 8 or 12 bits. The 8 bit sound is a bit noisier
+          than the 12-bit sound, and seems to sound more correct.
 
         * sid.cc, envelope.cc: New register added to set the voice 2 envelope
           level.
