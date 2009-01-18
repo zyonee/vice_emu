@@ -26,16 +26,7 @@
 #include "envelope.h"
 
 /* volume, envelope level, phase */
-reg8 EnvelopeGenerator::envelope_train_lut[16][256][8];
-
-static reg8 bitcount(unsigned int n) {
-    int k = 0;
-    for (int i = 0; i < 32; i ++) {
-        if (n & (1 << i))
-            k ++;
-    }
-    return k;
-}
+int EnvelopeGenerator::envelope_train_lut[16][256][8];
 
 void EnvelopeGenerator::init_train_lut() {
     for (int vol = 0; vol < 16; vol ++) {
@@ -68,7 +59,7 @@ void EnvelopeGenerator::init_train_lut() {
 
                 /* Volume is the count of 1-bits in the ANDed
                  * envelope and volume trains. */
-                envelope_train_lut[vol][env][phase1] = bitcount(envtrain & voltrain);
+                envelope_train_lut[vol][env][phase1] = envtrain & voltrain;
             }
         }
     }

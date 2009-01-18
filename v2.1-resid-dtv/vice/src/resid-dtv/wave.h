@@ -57,10 +57,11 @@ public:
   void writeACC_HI(reg8);
 
   // 12-bit waveform output.
-  RESID_INLINE reg12 output();
+  RESID_INLINE int output();
 
 protected:
   RESID_INLINE void clock_noise();
+  void init_train_lut();
 
   const WaveformGenerator* sync_source;
   WaveformGenerator* sync_dest;
@@ -68,7 +69,7 @@ protected:
   // Tell whether the accumulator MSB was set high on this cycle.
   bool msb_rising;
 
-  reg24 accumulator;
+  reg24 accumulator, counter;
   reg24 shift_register;
   reg12 noise;
 
@@ -92,6 +93,8 @@ protected:
   RESID_INLINE reg12 output__S_();
   RESID_INLINE reg12 output_P__();
   RESID_INLINE reg12 outputN___();
+
+  static int wave_train_lut[4096][128];
 
 friend class Voice;
 friend class SID;
@@ -237,7 +240,7 @@ reg12 WaveformGenerator::outputN___()
 // Select one of 16 possible combinations of waveforms.
 // ----------------------------------------------------------------------------
 RESID_INLINE
-reg12 WaveformGenerator::output()
+int WaveformGenerator::output()
 {
   reg12 output = 0;
   if (waveform & 0x1)
@@ -248,7 +251,10 @@ reg12 WaveformGenerator::output()
     output |= output_P__();
   if (waveform & 0x8)
     output |= outputN___();
-  return output;
+
+  counter += output;
+  counter &= 0x7f;
+  return wave_train_lut[output][counter];
 }
 
 #endif // RESID_INLINING || defined(__WAVE_CC__)

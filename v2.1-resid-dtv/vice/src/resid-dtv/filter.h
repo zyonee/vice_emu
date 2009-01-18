@@ -28,8 +28,7 @@ public:
   Filter();
 
   RESID_INLINE
-  void clock(sound_sample voice1, sound_sample voice2, sound_sample voice3,
-	     sound_sample ext_in);
+  void clock(sound_sample voice1, sound_sample voice2, sound_sample voice3);
   void reset();
 
   // Write registers.
@@ -81,8 +80,7 @@ friend class SID;
 RESID_INLINE
 void Filter::clock(sound_sample voice1,
 		   sound_sample voice2,
-		   sound_sample voice3,
-		   sound_sample ext_in)
+		   sound_sample voice3)
 {
   // NB! Voice 3 is not silenced by voice3off if it is routed through
   // the filter.
@@ -90,7 +88,7 @@ void Filter::clock(sound_sample voice1,
     voice3 = 0;
   }
   
-  Vnf = (voice1 + voice2 + voice3 + ext_in) >> 3;
+  Vnf = (voice1 + voice2 + voice3) << 9;
 }
 
 // ----------------------------------------------------------------------------

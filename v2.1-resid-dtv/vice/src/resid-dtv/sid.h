@@ -38,7 +38,7 @@ public:
    * removed at some point. */
   void set_chip_model(chip_model ignored);
   void enable_filter(bool enable);
-
+  void input(int input);
 
   void enable_external_filter(bool enable);
   bool set_sampling_parameters(double clock_freq, sampling_method method,
@@ -80,9 +80,6 @@ public:
   State read_state();
   void write_state(const State& state);
 
-  // 16-bit input (EXT IN).
-  void input(int sample);
-
   // 16-bit output (AUDIO OUT).
   int output();
 
@@ -103,9 +100,6 @@ protected:
   cycle_count bus_value_ttl;
 
   double clock_frequency;
-
-  // External audio input.
-  int ext_in;
 
   // Resampling constants.
   // The error in interpolated lookup is bounded by 1.234/L^2,
@@ -132,7 +126,7 @@ protected:
   cycle_count cycles_per_sample;
   cycle_count sample_offset;
   int sample_index;
-  short sample_prev;
+  int sample_prev;
   int fir_N;
   int fir_RES;
 

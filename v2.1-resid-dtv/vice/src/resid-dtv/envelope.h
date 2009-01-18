@@ -54,8 +54,7 @@ public:
   reg8 readENV();
   void writeENV(reg8);
 
-  // 8-bit envelope output.
-  RESID_INLINE reg8 output(unsigned int bittrain);
+  RESID_INLINE int output(unsigned int bittrain);
 
 protected:
   void init_train_lut();
@@ -85,7 +84,7 @@ protected:
   static reg8 sustain_level[];
 
   // bit train construction
-  static reg8 envelope_train_lut[16][256][8];
+  static int envelope_train_lut[16][256][8];
 
 friend class SID;
 };
@@ -164,7 +163,7 @@ void EnvelopeGenerator::clock()
 // Read the envelope generator output.
 // ----------------------------------------------------------------------------
 RESID_INLINE
-reg8 EnvelopeGenerator::output(unsigned int volume)
+int EnvelopeGenerator::output(unsigned int volume)
 {
   return envelope_train_lut[volume][envelope_counter][envelope_train_counter];
 }

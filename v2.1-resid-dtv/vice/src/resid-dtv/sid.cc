@@ -41,7 +41,6 @@ SID::SID()
   bus_value = 0;
   bus_value_ttl = 0;
 
-  ext_in = 0;
   master_volume = 0;
 }
 
@@ -71,24 +70,19 @@ void SID::reset()
 }
 
 // ----------------------------------------------------------------------------
-// Write 16-bit sample to audio input.
-// NB! The caller is responsible for keeping the value within 16 bits.
-// Note that to mix in an external audio signal, the signal should be
-// resampled to 1MHz first to avoid sampling noise.
-// ----------------------------------------------------------------------------
-void SID::input(int sample)
-{
-  // Voice outputs are 14 bits. Scale up to match three voices in order
-  // to facilitate simulation of the MOS8580 "digi boost" hardware hack.
-  ext_in = sample * 3 >> 2;
-}
-
-// ----------------------------------------------------------------------------
 // Read sample from audio output.
 // ----------------------------------------------------------------------------
 int SID::output()
 {
-  return extfilt.output();
+  int v = extfilt.output();
+  const int half = 1 << 15;
+  if (v >= half) {
+    v = half - 1;
+  }
+  else if (v < -half) {
+    v = -half;
+  }
+  return v;
 }
 
 // ----------------------------------------------------------------------------
@@ -567,7 +561,7 @@ void SID::clock()
   }
 
   // Clock filter.
-  filter.clock(voice[0].output(master_volume), voice[1].output(master_volume), voice[2].output(master_volume), ext_in);
+  filter.clock(voice[0].output(master_volume), voice[1].output(master_volume), voice[2].output(master_volume));
 
   // Clock external filter.
   extfilt.clock(filter.output());
@@ -838,3 +832,4 @@ int SID::clock_resample_fast(cycle_count& delta_t, short* buf, int n,
 /* ReSID API adaptation hacks */
 void SID::set_chip_model(chip_model model) { }
 void SID::enable_filter(bool enable) { }
+void SID::input(int sample) { }

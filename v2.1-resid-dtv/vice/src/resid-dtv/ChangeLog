@@ -33,16 +33,13 @@
           corresponding attack. Release rates are slowed down with decreasing
           envelope level, but not exponentially as in classical SID.
 
-        * sid.cc, envelope.cc: New register added to set the voice 2 envelope
-          level.
-
         * voice.h, voice.cc: There is no waveform zero-level compensation. The
           compensation occurs only via external capacitors.
 
         * voice.h, envelope.h: Simulate voice output based on emulation of two
           of the three sigma-delta converters:
 
-          - presumed 12-bit delta-sigma converter at oscillator (NOT emulated)
+          - 12-bit delta-sigma converter at oscillator
           - 8-bit delta-sigma for envelope level
           - 4-bit delta-sigma for volume level
 
@@ -53,10 +50,13 @@
           correlation is apparent as sound level jumping during slow ADSR
           curves, and as scratchy noises during faster ADSR curves.
 
-          The oscillator sigma-delta converter contributes some wideband noise,
-          which is not emulated due to CPU and memory cost of the required
-          tables and computation. Also, it is not clear that the noise is
-          musically interesting; it comes off as an artifact.
+          The oscillator sigma-delta converter produces some wideband noise,
+          as its repetition length is 4096 clocks or about 8 kHz, bringing it
+          well into audible range. How bad the phenomenom is depends on the
+          envelope and volume levels.
+
+        * sid.cc, envelope.cc: New register added to set the voice 2 envelope
+          level.
 
           Normally envelope and volume retain certain phase with each other
           because all attack, decay and release times are divisble by 8 C64

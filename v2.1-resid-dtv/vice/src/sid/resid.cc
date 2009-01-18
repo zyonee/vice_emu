@@ -120,8 +120,7 @@ static int resid_init(sound_t *psid, int speed, int cycles_per_sec)
       break;
 #endif
     case 4:
-      /* resid-dtv has only the DTVSID model */
-      psid->sid->input(0);
+      /* resid-dtv has only the DTVSID model and no ext input*/
       strcpy(model_text, "DTVSID");
       break;
     }

@@ -61,8 +61,13 @@ friend class SID;
 RESID_INLINE
 sound_sample Voice::output(unsigned int volume)
 {
-  // Multiply oscillator output with envelope output.
-  return wave.output() * envelope.output(volume);
+  /* AND oscillator output with envelope output ANDed with volume output */
+  int v = wave.output() & envelope.output(volume);
+
+  /* http://graphics.stanford.edu/~seander/bithacks.html#CountBitsSetParallel */
+  v = v - ((v >> 1) & 0x55555555);
+  v = (v & 0x33333333) + ((v >> 2) & 0x33333333);
+  return (((v + (v >> 4)) & 0xF0F0F0F) * 0x1010101) >> 24;
 }
 
 #endif // RESID_INLINING || defined(__VOICE_CC__)
