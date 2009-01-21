@@ -141,6 +141,19 @@ UI_MENU_DEFINE_TOGGLE(VICIIExternalPalette)
 UI_MENU_DEFINE_TOGGLE(TEDExternalPalette)
 UI_MENU_DEFINE_RADIO(MachineVideoStandard)
 
+#ifdef HAVE_HWSCALE
+UI_MENU_DEFINE_TOGGLE(VICIIHwScale)
+
+static UI_MENU_CALLBACK(custom_VICIIHwScale_callback)
+{
+    const char *retval = toggle_VICIIHwScale_callback(activated, param);
+
+    sdl_ui_refresh();
+
+    return retval;
+}
+#endif
+
 static UI_MENU_CALLBACK(external_vicii_palette_callback)
 {
     char *name = NULL;
@@ -237,6 +250,12 @@ const ui_menu_entry_t c128_video_menu[] = {
       MENU_ENTRY_RESOURCE_TOGGLE,
       toggle_VICIIVideoCache_callback,
       NULL },
+#ifdef HAVE_HWSCALE
+    { "VICII OpenGL",
+      MENU_ENTRY_RESOURCE_TOGGLE,
+      custom_VICIIHwScale_callback,
+      NULL },
+#endif
     { "VDC Double size",
       MENU_ENTRY_RESOURCE_TOGGLE,
       toggle_VDCDoubleSize_callback,
@@ -303,6 +322,12 @@ const ui_menu_entry_t c64_video_menu[] = {
       MENU_ENTRY_RESOURCE_TOGGLE,
       toggle_VICIIVideoCache_callback,
       NULL },
+#ifdef HAVE_HWSCALE
+    { "OpenGL",
+      MENU_ENTRY_RESOURCE_TOGGLE,
+      custom_VICIIHwScale_callback,
+      NULL },
+#endif
     { "VICII border mode",
       MENU_ENTRY_SUBMENU,
       submenu_radio_callback,
@@ -357,6 +382,12 @@ const ui_menu_entry_t c64dtv_video_menu[] = {
       MENU_ENTRY_RESOURCE_TOGGLE,
       toggle_VICIIVideoCache_callback,
       NULL },
+#ifdef HAVE_HWSCALE
+    { "OpenGL",
+      MENU_ENTRY_RESOURCE_TOGGLE,
+      custom_VICIIHwScale_callback,
+      NULL },
+#endif
     { "VICII border mode",
       MENU_ENTRY_SUBMENU,
       submenu_radio_callback,

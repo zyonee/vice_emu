@@ -48,6 +48,7 @@
 #include "uicolor.h"
 #include "uimenu.h"
 #include "uimsgbox.h"
+#include "videoarch.h"
 #include "vkbd.h"
 #include "vsync.h"
 
@@ -85,6 +86,7 @@ void ui_handle_misc_sdl_event(SDL_Event e)
             break;
         case SDL_VIDEORESIZE:
 /*fprintf(stderr,"%s: videoresize %ix%i\n",__func__,e.resize.w,e.resize.h);*/
+            sdl_video_resize(e.resize.w, e.resize.h);
             break;
         default:
 /*fprintf(stderr,"%s: %i\n",__func__,e.type);*/

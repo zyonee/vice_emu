@@ -37,7 +37,7 @@
 #include <SDL/SDL.h>
 
 #ifdef HAVE_HWSCALE
-#include <GL/gl.h>
+#include <SDL/SDL_opengl.h>
 #endif
 
 
@@ -60,6 +60,7 @@ struct video_canvas_s {
     struct fullscreenconfig_s *fullscreenconfig;
     video_refresh_func_t video_fullscreen_refresh_func;
 #ifdef HAVE_HWSCALE
+    SDL_Surface *hwscale_screen;
     GLint screen_texture;
 #endif
 
@@ -67,5 +68,5 @@ struct video_canvas_s {
 typedef struct video_canvas_s video_canvas_t;
 
 extern video_canvas_t *sdl_active_canvas;
-
+extern void sdl_video_resize(int w, int h);
 #endif
