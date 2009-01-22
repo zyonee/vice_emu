@@ -142,13 +142,13 @@ UI_MENU_DEFINE_TOGGLE(TEDExternalPalette)
 UI_MENU_DEFINE_RADIO(MachineVideoStandard)
 
 #ifdef HAVE_HWSCALE
-UI_MENU_DEFINE_TOGGLE(VICIIHwScale)
-
-static UI_MENU_CALLBACK(custom_VICIIHwScale_callback)
+static UI_MENU_CALLBACK(custom_HwScale_callback)
 {
-    const char *retval = toggle_VICIIHwScale_callback(activated, param);
+    const char *retval = sdl_ui_menu_toggle_helper(activated, (const char *)param);
 
-    sdl_ui_refresh();
+    if (activated) {
+        sdl_ui_refresh();
+    }
 
     return retval;
 }
@@ -253,8 +253,8 @@ const ui_menu_entry_t c128_video_menu[] = {
 #ifdef HAVE_HWSCALE
     { "VICII OpenGL",
       MENU_ENTRY_RESOURCE_TOGGLE,
-      custom_VICIIHwScale_callback,
-      NULL },
+      custom_HwScale_callback,
+      (ui_callback_data_t)"VICIIHwScale" },
 #endif
     { "VDC Double size",
       MENU_ENTRY_RESOURCE_TOGGLE,
@@ -325,8 +325,8 @@ const ui_menu_entry_t c64_video_menu[] = {
 #ifdef HAVE_HWSCALE
     { "OpenGL",
       MENU_ENTRY_RESOURCE_TOGGLE,
-      custom_VICIIHwScale_callback,
-      NULL },
+      custom_HwScale_callback,
+      (ui_callback_data_t)"VICIIHwScale" },
 #endif
     { "VICII border mode",
       MENU_ENTRY_SUBMENU,
@@ -385,8 +385,8 @@ const ui_menu_entry_t c64dtv_video_menu[] = {
 #ifdef HAVE_HWSCALE
     { "OpenGL",
       MENU_ENTRY_RESOURCE_TOGGLE,
-      custom_VICIIHwScale_callback,
-      NULL },
+      custom_HwScale_callback,
+      (ui_callback_data_t)"VICIIHwScale" },
 #endif
     { "VICII border mode",
       MENU_ENTRY_SUBMENU,
@@ -536,6 +536,12 @@ const ui_menu_entry_t plus4_video_menu[] = {
       MENU_ENTRY_RESOURCE_TOGGLE,
       toggle_TEDVideoCache_callback,
       NULL },
+#ifdef HAVE_HWSCALE
+    { "OpenGL",
+      MENU_ENTRY_RESOURCE_TOGGLE,
+      custom_HwScale_callback,
+      (ui_callback_data_t)"TEDHwScale" },
+#endif
     { "Color controls",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
@@ -582,6 +588,12 @@ const ui_menu_entry_t vic20_video_menu[] = {
       MENU_ENTRY_RESOURCE_TOGGLE,
       toggle_VICVideoCache_callback,
       NULL },
+#ifdef HAVE_HWSCALE
+    { "OpenGL",
+      MENU_ENTRY_RESOURCE_TOGGLE,
+      custom_HwScale_callback,
+      (ui_callback_data_t)"VICHwScale" },
+#endif
     { "Color controls",
       MENU_ENTRY_SUBMENU,
       submenu_callback,

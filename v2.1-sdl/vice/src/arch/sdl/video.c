@@ -218,9 +218,20 @@ video_canvas_t *video_canvas_create(video_canvas_t *canvas,
         new_screen = SDL_SetVideoMode(new_width, new_height, sdl_bitdepth, flags);
 #ifdef HAVE_HWSCALE
         if (hwscale) {
+            /* free the old rendering surface when staying in hwscale mode */
+            if ((canvas->hwscale_screen)&&(canvas->screen)) {
+                SDL_FreeSurface(canvas->screen);
+            }
             canvas->hwscale_screen = new_screen;
             new_screen = SDL_CreateRGBSurface(SDL_SWSURFACE, new_width, new_height, sdl_bitdepth, rmask, gmask, bmask, amask);
             glViewport(0, 0, new_width, new_height);
+        } else {
+            /* free the old rendering surface when leaving hwscale mode */
+            if ((canvas->hwscale_screen)&&(canvas->screen)) {
+                SDL_FreeSurface(canvas->screen);
+                SDL_FreeSurface(canvas->hwscale_screen);
+                canvas->hwscale_screen = NULL;
+            }
         }
 #endif
     } else {
@@ -418,6 +429,9 @@ fprintf(stderr,"%s: (%08x)\n",__func__,(unsigned int)canvas);
     sdl_canvaslist[sdl_num_screens++] = canvas;
 
     canvas->screen = NULL;
+#ifdef HAVE_HWSCALE
+    canvas->hwscale_screen = NULL;
+#endif
 }
 
 void video_canvas_destroy(struct video_canvas_s *canvas)
