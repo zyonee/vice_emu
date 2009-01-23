@@ -243,8 +243,6 @@ static const resource_int_t resources_int[] = {
       &sdl_ui_menukeys[7], set_ui_menukey, (void *)MENU_ACTION_EXIT },
     { "MenuKeyMap", SDLK_m, RES_EVENT_NO, NULL,
       &sdl_ui_menukeys[8], set_ui_menukey, (void *)MENU_ACTION_MAP },
-    { "MenuKeyVKBD", SDLK_F10, RES_EVENT_NO, NULL,
-      &sdl_ui_menukeys[9], set_ui_menukey, (void *)MENU_ACTION_VKBD },
     { "SaveResourcesOnExit", 0, RES_EVENT_NO, NULL,
       &save_resources_on_exit, set_save_resources_on_exit, NULL },
     { "ConfirmOnExit", 0, RES_EVENT_NO, NULL,

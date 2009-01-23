@@ -30,7 +30,9 @@
 #include "vice.h"
 #include "types.h"
 
+#include "joy.h"
 #include "keyboard.h"
+#include "ui.h"
 #include "uimenu.h"
 #include "videoarch.h"
 #include "vkbd.h"
@@ -70,7 +72,11 @@ static void sdl_vkbd_key_press(int value, int shift)
     }
 
     if (b == VKBD_COMMAND_MOVE) {
-        vkbd_move = value;
+        if (value && shift) {
+            sdl_vkbd_close();
+        } else {
+            vkbd_move = value;
+        }
         return;
     }
 
@@ -91,6 +97,90 @@ static void sdl_vkbd_key_press(int value, int shift)
     }
 
     keyboard_set_keyarr_any(mr, mc, value);
+}
+
+static void sdl_vkbd_key_map(void)
+{
+    int mr, mc, neg, i, j;
+    BYTE b;
+    SDL_Event e;
+    int polling = 1;
+    int unmap = 0;
+    char keyname[10];
+
+    b = vkbd->keytable[vkbd_x + vkbd_y*vkbd_w];
+
+    if (b == VKBD_COMMAND_CLOSE) {
+        return;
+    }
+
+    sdl_ui_activate_pre_action();
+
+    /* Use blank for unmapping */
+    if (b == VKBD_COMMAND_MOVE) {
+        unmap = 1;
+    } else {
+        /* get the key name for displaying */
+        for(j = vkbd_x; (j > -1) && (vkbd->keytable[j + vkbd_y*vkbd_w] == b); --j);
+        ++j;
+
+        for(i = 0; ((i + j) < vkbd_w) && (vkbd->keytable[i + j + vkbd_y*vkbd_w] == b); ++i) {
+            keyname[i] = vkbd->keyb[vkbd_y][i + j];
+        }
+
+        keyname[i] = 0;
+    }
+
+    neg = b & 0x80;
+    mc = (int)(b & 0xf);
+    mr = (int)((b >> 4) & 0x7);
+
+    if (neg) {
+        mr = -mr;
+    }
+
+    sdl_ui_clear();
+    sdl_ui_print("Polling joystick event for", 0, 0);
+    sdl_ui_print(unmap?"(unmap)":keyname, 0, 1);
+    sdl_ui_refresh();
+ 
+    /* TODO check if key/event is suitable */
+    while (polling) {
+        while (SDL_PollEvent(&e)) {
+            switch (e.type) {
+                case SDL_KEYDOWN:
+                    /* TODO */
+                    polling = 0;
+                    break;
+                case SDL_JOYBUTTONDOWN:
+                    if(unmap) {
+                        sdljoy_unset(e);
+                    } else {
+                        sdljoy_set_keypress(e, mr, mc);
+                    }
+                    polling = 0;
+                    break;
+                case SDL_JOYAXISMOTION:
+                    if (sdljoy_check_axis_movement(e) != 0) {
+                        if(unmap) {
+                            sdljoy_unset(e);
+                        } else {
+                            sdljoy_set_keypress(e, mr, mc);
+                        }
+                        polling = 0;
+                    }
+                    break;
+                case SDL_JOYHATMOTION:
+                    break;
+                default:
+                    ui_handle_misc_sdl_event(e);
+                    break;
+            }
+        }
+        SDL_Delay(20);
+    }
+    sdl_ui_activate_post_action();
+    sdl_vkbd_state = 1;
 }
 
 static inline void sdl_vkbd_move(int *var, int amount, int min, int max)
@@ -189,10 +279,6 @@ int sdl_vkbd_process(ui_menu_action_t input)
                 sdl_vkbd_move(&vkbd_x, 1, 0, vkbd_w);
             }
             break;
-        case MENU_ACTION_VKBD:
-            sdl_vkbd_close();
-            retval = 0;
-            break;
         case MENU_ACTION_SELECT:
             sdl_vkbd_key_press(1, 0);
             break;
@@ -204,6 +290,14 @@ int sdl_vkbd_process(ui_menu_action_t input)
             break;
         case MENU_ACTION_CANCEL_RELEASE:
             sdl_vkbd_key_press(0, 1);
+            break;
+        case MENU_ACTION_MAP:
+            sdl_vkbd_key_map();
+            retval = 0;
+            break;
+        case MENU_ACTION_EXIT:
+            sdl_vkbd_close();
+            retval = 0;
             break;
         default:
             retval = 0;

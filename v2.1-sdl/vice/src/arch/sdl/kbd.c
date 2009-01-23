@@ -297,11 +297,6 @@ ui_menu_action_t sdlkbd_press(SDLKey key, SDLMod mod)
         return retval;
     }
 
-    if ((int)(key) == sdl_ui_menukeys[9]) {
-        sdl_vkbd_activate();
-        return retval;
-    }
-
     if ((int)(key) == sdl_ui_menukeys[0]) {
         sdl_ui_activate();
         return retval;

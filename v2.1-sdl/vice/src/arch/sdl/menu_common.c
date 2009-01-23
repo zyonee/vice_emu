@@ -42,6 +42,7 @@
 #include "ui.h"
 #include "uifilereq.h"
 #include "uimenu.h"
+#include "vkbd.h"
 
 
 /* ------------------------------------------------------------------ */
@@ -114,6 +115,15 @@ UI_MENU_CALLBACK(monitor_callback)
 {
     if (activated) {
         monitor_startup();
+        return sdl_menu_text_exit_ui;
+    }
+    return NULL;
+}
+
+UI_MENU_CALLBACK(vkbd_callback)
+{
+    if (activated) {
+        sdl_vkbd_activate();
         return sdl_menu_text_exit_ui;
     }
     return NULL;

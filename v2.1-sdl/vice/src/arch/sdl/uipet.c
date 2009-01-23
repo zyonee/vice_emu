@@ -125,6 +125,10 @@ static const ui_menu_entry_t xpet_main_menu[] = {
       MENU_ENTRY_OTHER,
       monitor_callback,
       NULL },
+    { "Virtual keyboard",
+      MENU_ENTRY_OTHER,
+      vkbd_callback,
+      NULL },
 #ifdef DEBUG
     { "Debug (todo)",
       MENU_ENTRY_SUBMENU,

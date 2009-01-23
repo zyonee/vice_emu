@@ -72,6 +72,7 @@ extern const char *sdl_menu_text_exit_ui;
 extern UI_MENU_CALLBACK(autostart_callback);
 extern UI_MENU_CALLBACK(pause_callback);
 extern UI_MENU_CALLBACK(monitor_callback);
+extern UI_MENU_CALLBACK(vkbd_callback);
 extern UI_MENU_CALLBACK(quit_callback);
 extern UI_MENU_CALLBACK(submenu_callback);
 extern UI_MENU_CALLBACK(submenu_radio_callback);

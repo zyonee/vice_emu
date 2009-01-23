@@ -95,8 +95,8 @@ typedef enum {
     JOYSTICK = 1,
     /* Keyboard key press */
     KEYBOARD = 2,
-    /* (De)Activate virtual keyboard */
-    VIRTUAL_KBD = 3,
+    /* Map button */
+    MAP = 3,
     /* (De)Activate UI */
     UI_ACTIVATE = 4,
     /* Call UI function */
@@ -114,7 +114,7 @@ struct sdljoystick_mapping_s {
         /* joy[0] = port number (0,1), joy[1] = pin number */
         BYTE joy[2];
         /* key[0] = row, key[1] = column */
-        BYTE key[2];
+        int key[2];
         /* pointer to the menu item */
         ui_menu_entry_t *ui_function;
     } value;
@@ -367,7 +367,7 @@ void joy_arch_init_default_mapping(int joynum)
                 sdljoystick[joynum].input[BUTTON][i].action = UI_ACTIVATE;
                 break;
             case 3:
-                sdljoystick[joynum].input[BUTTON][i].action = VIRTUAL_KBD;
+                sdljoystick[joynum].input[BUTTON][i].action = MAP;
                 break;
         }
     }
@@ -429,7 +429,7 @@ fprintf(stderr,"%s\n",__func__);
             "# 0               none\n"
             "# 1 port pin      joystick (pin: 1/2/4/8/16 = u/d/l/r/fire)\n"
             "# 2 row col       keyboard\n"
-            "# 3               virtual keyboard\n"
+            "# 3               map\n"
             "# 4               UI activate\n"
             "# 5 path&to&item  UI function\n"
             "#\n\n"
@@ -653,6 +653,28 @@ static inline BYTE sdljoy_axis_direction(Sint16 value, BYTE prev)
     return prev;
 }
 
+static sdljoystick_mapping_t *sdljoy_get_mapping(SDL_Event e)
+{
+    sdljoystick_mapping_t *retval = NULL;
+    BYTE cur;
+
+    switch (e.type) {
+        case SDL_JOYAXISMOTION:
+            cur = sdljoy_axis_direction(e.jaxis.value, 0);
+            if (cur>0) {
+                --cur;
+                retval = &(sdljoystick[e.jaxis.which].input[AXIS][e.jaxis.axis*input_mult[AXIS]+cur]);
+            }
+            break;
+        case SDL_JOYBUTTONDOWN:
+            retval = &(sdljoystick[e.jbutton.which].input[BUTTON][e.jbutton.button]);
+            break;
+        default:
+            break;
+    }
+    return retval;
+}
+
 /* ------------------------------------------------------------------------- */
 
 ui_menu_action_t sdljoy_perform_event(sdljoystick_mapping_t *event, int value)
@@ -702,10 +724,7 @@ ui_menu_action_t sdljoy_perform_event(sdljoystick_mapping_t *event, int value)
             }
             break;
         case KEYBOARD:
-            keyboard_set_keyarr(event->value.key[0], event->value.key[1], value);
-            break;
-        case VIRTUAL_KBD:
-            sdl_vkbd_activate();
+            keyboard_set_keyarr_any(event->value.key[0], event->value.key[1], value);
             break;
         case UI_ACTIVATE:
             sdl_ui_activate();
@@ -849,25 +868,10 @@ ui_menu_action_t sdljoy_hat_event(Uint8 joynum, Uint8 hat, Uint8 value)
 ui_menu_entry_t *sdljoy_get_hotkey(SDL_Event e)
 {
     ui_menu_entry_t *retval = NULL;
-    BYTE cur;
+    sdljoystick_mapping_t *joyevent = sdljoy_get_mapping(e);
 
-    switch (e.type) {
-        case SDL_JOYAXISMOTION:
-            cur = sdljoy_axis_direction(e.jaxis.value, 0);
-            if (cur>0) {
-                --cur;
-                if (sdljoystick[e.jaxis.which].input[AXIS][e.jaxis.axis*input_mult[AXIS]+cur].action == UI_FUNCTION) {
-                    retval = sdljoystick[e.jaxis.which].input[AXIS][e.jaxis.axis*input_mult[AXIS]+cur].value.ui_function;
-                }
-            }
-            break;
-        case SDL_JOYBUTTONDOWN:
-            if (sdljoystick[e.jbutton.which].input[BUTTON][e.jbutton.button].action == UI_FUNCTION) {
-                retval = sdljoystick[e.jbutton.which].input[BUTTON][e.jbutton.button].value.ui_function;
-            }
-            break;
-        default:
-            break;
+    if ((joyevent != NULL) && (joyevent->action == UI_FUNCTION)) {
+        retval = joyevent->value.ui_function;
     }
 
     return retval;
@@ -875,23 +879,31 @@ ui_menu_entry_t *sdljoy_get_hotkey(SDL_Event e)
 
 void sdljoy_set_hotkey(SDL_Event e, ui_menu_entry_t *value) 
 {
-    BYTE cur;
+    sdljoystick_mapping_t *joyevent = sdljoy_get_mapping(e);
 
-    switch (e.type) {
-        case SDL_JOYAXISMOTION:
-            cur = sdljoy_axis_direction(e.jaxis.value, 0);
-            if (cur>0) {
-                --cur;
-                sdljoystick[e.jaxis.which].input[AXIS][e.jaxis.axis*input_mult[AXIS]+cur].action = UI_FUNCTION;
-                sdljoystick[e.jaxis.which].input[AXIS][e.jaxis.axis*input_mult[AXIS]+cur].value.ui_function = value;
-            }
-            break;
-        case SDL_JOYBUTTONDOWN:
-            sdljoystick[e.jbutton.which].input[BUTTON][e.jbutton.button].action = UI_FUNCTION;
-            sdljoystick[e.jbutton.which].input[BUTTON][e.jbutton.button].value.ui_function = value;
-            break;
-        default:
-            break;
+    if (joyevent != NULL) {
+        joyevent->action = UI_FUNCTION;
+        joyevent->value.ui_function = value;
+    }
+}
+
+void sdljoy_set_keypress(SDL_Event e, int row, int col)
+{
+    sdljoystick_mapping_t *joyevent = sdljoy_get_mapping(e);
+
+    if (joyevent != NULL) {
+        joyevent->action = KEYBOARD;
+        joyevent->value.key[0] = row;
+        joyevent->value.key[1] = col;
+    }
+}
+
+void sdljoy_unset(SDL_Event e)
+{
+    sdljoystick_mapping_t *joyevent = sdljoy_get_mapping(e);
+
+    if (joyevent != NULL) {
+        joyevent->action = NONE;
     }
 }
 

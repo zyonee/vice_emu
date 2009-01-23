@@ -97,7 +97,6 @@ typedef enum {
     MENU_ACTION_CANCEL,
     MENU_ACTION_EXIT,
     MENU_ACTION_MAP,
-    MENU_ACTION_VKBD,
     MENU_ACTION_NUM,
     MENU_ACTION_NONE_RELEASE,
     MENU_ACTION_UP_RELEASE,
@@ -108,7 +107,6 @@ typedef enum {
     MENU_ACTION_CANCEL_RELEASE,
     MENU_ACTION_EXIT_RELEASE,
     MENU_ACTION_MAP_RELEASE,
-    MENU_ACTION_VKBD_RELEASE
 } ui_menu_action_t;
 
 extern void sdl_ui_set_main_menu(const ui_menu_entry_t *menu);
