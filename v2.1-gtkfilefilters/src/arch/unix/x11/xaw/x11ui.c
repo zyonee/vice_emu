@@ -1800,7 +1800,7 @@ static const char* file_filters[] = {
 /* disk */ "*.[gdxGDX]*",
 /* tape */ "*.[tT]",
 /* cartridge */ "*.[cCbB][rRiI][tTnN]",
-/* raw_cart_filter, abused for cartridge save */ "*.[cC][rR][tT]",
+/* crt filter */ "*.[cC][rR][tT]",
 /* flip_list */ "*.vfl",
 /* romset */ "*.vrs",
 /* romset archive */ "*.vra",

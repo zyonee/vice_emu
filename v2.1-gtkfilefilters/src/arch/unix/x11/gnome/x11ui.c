@@ -2488,8 +2488,12 @@ static uilib_file_filter_t tape_image_filter[]      = {
                                                         { "*.tap", 0},
                                                         {NULL}
                                                       };
-static uilib_file_filter_t cartridge_image_filter[] = { { "*.crt", 0}, {NULL} };
-static uilib_file_filter_t raw_cart_filter[]        = { { "*.bin", 0}, {NULL} };
+static uilib_file_filter_t cartridge_image_filter[] = {
+                                                        { "*.crt", 0},
+                                                        { "*.bin", 0},
+                                                        {NULL}
+                                                      };
+static uilib_file_filter_t crt_image_filter[]       = { { "*.crt", 0}, {NULL} };
 static uilib_file_filter_t flip_list_filter[]       = { { "*.vfl", 0}, {NULL} };
 static uilib_file_filter_t romset_filter[]          = { { "*.vrs", 0}, {NULL} };
 static uilib_file_filter_t romset_archives_filter[] = { { "*.vra", 0}, {NULL} };
@@ -2525,7 +2529,7 @@ struct {
   { "Disk image files"     , disk_image_filter },
   { "Tape image files"     , tape_image_filter },
   { "Cartridge image files", cartridge_image_filter },
-  { "Raw cart files"       , raw_cart_filter },
+  { "CRT cartridge files"  , crt_image_filter },
   { "Flip list files"      , flip_list_filter },
   { "Romset files"         , romset_filter },
   { "Romset archives"      , romset_archives_filter },

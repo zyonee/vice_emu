@@ -73,7 +73,7 @@ static Widget cancel_button;
 static UI_CALLBACK(browse_callback)
 {
     ui_button_t button;
-    uilib_file_filter_enum_t filter = UILIB_FILTER_BIN;
+    uilib_file_filter_enum_t filter = UILIB_FILTER_CRT_CARTRIDGE;
     char *filename;
 
     filename = ui_select_file(_("Save cartridge image file"),

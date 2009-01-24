@@ -63,7 +63,7 @@ static UI_CALLBACK(attach_cartridge)
             char *filename;
             ui_button_t button;
             static char *last_dir;
-            uilib_file_filter_enum_t filter[] = { UILIB_FILTER_CRT, UILIB_FILTER_BIN, UILIB_FILTER_ALL };
+            uilib_file_filter_enum_t filter[] = { UILIB_FILTER_CARTRIDGE, UILIB_FILTER_ALL };
 
             filename = ui_select_file(_("Attach cartridge image"),
                                       NULL, 0, 0, last_dir,
