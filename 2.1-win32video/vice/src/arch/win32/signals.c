@@ -75,7 +75,7 @@ static RETSIGTYPE break64(int sig)
 }
 
 void signals_init(int do_core_dumps)
-{
+{return;
     signal(SIGINT, break64);
     signal(SIGTERM, break64);
 

@@ -143,8 +143,7 @@ void vsyncarch_display_speed(double speed, double frame_rate, int warp_enabled)
 
 void vsyncarch_sync_with_raster(video_canvas_t *c)
 {
-    IDirectDraw2_WaitForVerticalBlank(c->dd_object2, DDWAITVB_BLOCKBEGIN,
-				      0);
+    //IDirectDraw2_WaitForVerticalBlank(c->dd_object2, DDWAITVB_BLOCKBEGIN, 0);
 }
 
 void vsyncarch_sleep(signed long delay)

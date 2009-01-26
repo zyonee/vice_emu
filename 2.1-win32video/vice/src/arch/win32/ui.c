@@ -344,7 +344,7 @@ int ui_init(int *argc, char **argv)
        in the future.  */
     main_hwnd = CreateWindow(APPLICATION_CLASS_MAIN,
                              TEXT("No title"), /* (for now) */
-                             WS_OVERLAPPED | WS_CLIPCHILDREN | WS_BORDER
+                             WS_CAPTION | WS_CLIPCHILDREN | WS_BORDER
                              | WS_DLGFRAME| WS_SYSMENU | WS_MINIMIZEBOX
                              | WS_MAXIMIZEBOX,
                              CW_USEDEFAULT,
@@ -374,7 +374,7 @@ void ui_shutdown(void)
 int ui_init_finish(void)
 {
     ui_accelerator = uikeyboard_create_accelerator_table();
-    ui_fullscreen_init();
+    //ui_fullscreen_init();
     atexit(ui_exit);
     return 0;
 }
@@ -396,7 +396,7 @@ void ui_exit(void)
         DestroyAcceleratorTable(ui_accelerator);
     }
 
-    ui_fullscreen_shutdown();
+    //ui_fullscreen_shutdown();
     uilib_shutdown();
 }
 
@@ -489,9 +489,9 @@ HWND ui_open_canvas_window(const char *title, unsigned int width,
     hwnd_titles[number_of_windows] = system_mbstowcs_alloc(title);
     hwnd = CreateWindow(APPLICATION_CLASS,
                             hwnd_titles[number_of_windows],
-                            WS_OVERLAPPED | WS_CLIPCHILDREN | WS_BORDER
+                            WS_CAPTION | WS_CLIPCHILDREN | WS_BORDER
                             | WS_DLGFRAME | WS_SYSMENU | WS_MINIMIZEBOX
-                            | WS_MAXIMIZEBOX,
+                            | WS_MAXIMIZEBOX | WS_SIZEBOX,
                             xpos,
                             ypos,
                             CW_USEDEFAULT,
@@ -570,16 +570,21 @@ void ui_resize_canvas_window(HWND w, unsigned int width, unsigned int height)
     ClientToScreen(w, (LPPOINT)&wrect);
     ClientToScreen(w, ((LPPOINT)&wrect) + 1);
     wrect.right = wrect.left + width;
-    wrect.bottom = wrect.top + height + statusbar_get_status_height();
-    //status_height;
-    AdjustWindowRect(&wrect, WS_OVERLAPPED|WS_BORDER|WS_DLGFRAME, TRUE);
+    wrect.bottom = wrect.top + height /*+ statusbar_get_status_height()*/;
+    AdjustWindowRect(&wrect, WS_CAPTION | WS_CLIPCHILDREN | WS_BORDER
+                            | WS_DLGFRAME | WS_SYSMENU | WS_MINIMIZEBOX
+                            | WS_MAXIMIZEBOX | WS_SIZEBOX, TRUE);
     if (place.showCmd == SW_SHOWNORMAL) {
+        SetWindowPos(w, 0, wrect.left, wrect.top, wrect.right - wrect.left, wrect.bottom - wrect.top, SWP_NOZORDER);
+        GetClientRect(w, &wrect);
+#if 0
         MoveWindow(w,
                    wrect.left,
                    wrect.top,
                    wrect.right - wrect.left,
                    wrect.bottom - wrect.top,
                    TRUE);
+#endif
     } else {
         place.rcNormalPosition.right = place.rcNormalPosition.left
                                        + wrect.right - wrect.left;
@@ -1674,9 +1679,13 @@ static long CALLBACK window_proc(HWND window, UINT msg,
       case WM_CREATE:
         DragAcceptFiles(window, TRUE);
         return 0;
+      case WM_WINDOWPOSCHANGING:
+        //video_ensure_windowpos(window, (LPWINDOWPOS) lparam);
+        break;
       case WM_WINDOWPOSCHANGED:
         /* SRT: if focus is changed in full-screen mode, this message is sent 
           Make sure that all windows are repainted.*/
+        //video_update_overlay(window);
         ui_redraw_all_windows();
         break;
       case WM_SETREDRAW:
@@ -1719,6 +1728,7 @@ static long CALLBACK window_proc(HWND window, UINT msg,
         if (window_index<number_of_windows) {
             statusbar_handle_WMSIZE(msg, wparam, lparam, window_index);
         }
+        //video_update_overlay(window);
         return 0;
       case WM_DRAWITEM:
         statusbar_handle_WMDRAWITEM(wparam,lparam);

@@ -43,6 +43,19 @@
 struct palette_s;
 struct video_draw_buffer_callback_s;
 
+typedef struct video_scaler_s {
+    unsigned long nominator;
+    unsigned long denominator;
+} video_scaler_t;
+
+typedef struct video_canvas_win32_s {
+    RECT clientrect;
+
+    video_scaler_t xscale;
+    video_scaler_t yscale;
+
+} video_canvas_win32_t;
+
 typedef struct video_canvas_s {
     unsigned int initialized;
     unsigned int created;
@@ -58,6 +71,7 @@ typedef struct video_canvas_s {
     struct palette_s *palette;
     BYTE *pixels;
     HWND hwnd;
+#if 0
     LPDIRECTDRAW        dd_object;
     LPDIRECTDRAW2       dd_object2;
     LPDIRECTDRAWSURFACE render_surface;
@@ -66,9 +80,12 @@ typedef struct video_canvas_s {
     LPDIRECTDRAWSURFACE temporary_surface;
     LPDIRECTDRAWCLIPPER clipper;
     LPDIRECTDRAWPALETTE dd_palette;
+#endif
+
     int client_width;
     int client_height;
     struct video_draw_buffer_callback_s *video_draw_buffer_callback;
+    video_canvas_win32_t displayoptions;
 } video_canvas_t;
 
 /* ------------------------------------------------------------------------ */

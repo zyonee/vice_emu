@@ -151,7 +151,7 @@ void statusbar_create(HWND hwnd)
 {
     RECT rect;
     int res_val;
-
+return;
     status_hwnd[number_of_status_windows] =
         CreateStatusWindow(WS_CHILD | WS_VISIBLE, TEXT(""), hwnd,
                            IDM_STATUS_WINDOW);
