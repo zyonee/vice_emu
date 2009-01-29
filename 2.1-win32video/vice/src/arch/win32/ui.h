@@ -30,6 +30,7 @@
 
 #include "types.h"
 #include "uiapi.h"
+#include "videoarch.h"
 
 #include <stdio.h>
 
@@ -99,10 +100,8 @@ extern void ui_register_res_values(const ui_res_value_list_t *valuelist);
 
 extern void ui_update_menu();
 extern HWND ui_get_main_hwnd(void);
-extern HWND ui_open_canvas_window(const char *title, unsigned int width,
-                                  unsigned int height);
-extern void ui_resize_canvas_window(HWND w, unsigned int width,
-                                    unsigned int height);
+extern void ui_open_canvas_window(video_canvas_t *canvas);
+extern void ui_resize_canvas_window(video_canvas_t *canvas);
 extern FILE *ui_console_save_dialog(HWND hwnd);
 extern int ui_emulation_is_paused(void);
 extern void ui_set_alwaysontop(int alwaysontop);

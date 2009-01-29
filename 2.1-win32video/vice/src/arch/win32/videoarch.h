@@ -34,6 +34,7 @@
 #undef WORD
 #undef DWORD
 #include <ddraw.h>
+#include <d3d9.h>
 
 #include "types.h"
 #include "video.h"
@@ -71,6 +72,7 @@ typedef struct video_canvas_s {
     struct palette_s *palette;
     BYTE *pixels;
     HWND hwnd;
+    HWND render_hwnd;
 #if 0
     LPDIRECTDRAW        dd_object;
     LPDIRECTDRAW2       dd_object2;
@@ -80,6 +82,9 @@ typedef struct video_canvas_s {
     LPDIRECTDRAWSURFACE temporary_surface;
     LPDIRECTDRAWCLIPPER clipper;
     LPDIRECTDRAWPALETTE dd_palette;
+#else
+    LPDIRECT3DDEVICE9 d3ddev;
+    LPDIRECT3DSURFACE9 d3dsurface;
 #endif
 
     int client_width;

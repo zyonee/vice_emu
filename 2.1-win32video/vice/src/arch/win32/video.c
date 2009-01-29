@@ -2,8 +2,7 @@
  * video.c - Video implementation for Win32, using DirectDraw.
  *
  * Written by
- *  Ettore Perazzoli <ettore@comm2000.it>
- *  Tibor Biczo <crown@matavnet.hu>
+ *  Andreas Matthies <andreas.matthies@gmx.net>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -51,8 +50,6 @@ static int video_number_of_canvases;
 static video_canvas_t *video_canvases[2];
 
 static LPDIRECT3D9 d3d;
-static LPDIRECT3DDEVICE9 d3ddev;
-static LPDIRECT3DSURFACE9 d3dsurface;
 
 
 /* ------------------------------------------------------------------------ */
@@ -169,10 +166,9 @@ void video_canvas_resize(video_canvas_t *canvas, unsigned int width,
                          unsigned int height)
 {
     HRESULT ddresult;
+    LPDIRECT3DSURFACE9 d3dbackbuffer = NULL;
     LPDIRECT3DSWAPCHAIN9 d3dsc;
     D3DPRESENT_PARAMETERS d3dpp;
-    PDIRECT3DSURFACE9 BackBuffer = NULL;
-    HDC hdc;
 
     if (canvas->videoconfig->doublesizex)
         width *= 2;
@@ -186,42 +182,25 @@ void video_canvas_resize(video_canvas_t *canvas, unsigned int width,
     canvas->client_width = width;
     canvas->client_height = height;
 
-    ui_resize_canvas_window(canvas->hwnd, width, height);
+    ui_resize_canvas_window(canvas);
 
-    ddresult = IDirect3DSurface9_GetDC(d3dsurface, &hdc);
-    ddresult = IDirect3DSurface9_ReleaseDC(d3dsurface, hdc);
-    ddresult = IDirect3DSurface9_Release(d3dsurface);
-
-    ddresult = IDirect3DDevice9_GetSwapChain(d3ddev, 0, &d3dsc);
+    ddresult = IDirect3DSurface9_Release(canvas->d3dsurface);
+    ddresult = IDirect3DDevice9_GetSwapChain(canvas->d3ddev, 0, &d3dsc);
     ddresult = IDirect3DSwapChain9_GetPresentParameters(d3dsc, &d3dpp);
     ddresult = IDirect3DSwapChain9_Release(d3dsc);
 
-    ddresult = IDirect3DDevice9_GetBackBuffer(d3ddev, 0, 0, D3DBACKBUFFER_TYPE_MONO, &BackBuffer);
-    if (BackBuffer)
-        ddresult = IDirect3DSurface9_Release(BackBuffer);
+    ddresult = IDirect3DDevice9_GetBackBuffer(canvas->d3ddev, 0, 0, D3DBACKBUFFER_TYPE_MONO, &d3dbackbuffer);
+    if (d3dbackbuffer)
+        ddresult = IDirect3DSurface9_Release(d3dbackbuffer);
 
 
     d3dpp.BackBufferWidth = width;
     d3dpp.BackBufferHeight = height;
 
-    //ZeroMemory(&d3dpp, sizeof(d3dpp));    // clear out the struct for use
-    //d3dpp.Windowed = TRUE;    // program windowed, not fullscreen
-    //d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;    // discard old frames
-    //d3dpp.hDeviceWindow = canvas->hwnd;    // set the window to be used by Direct3D
-	//d3dpp.BackBufferFormat = D3DFMT_X8R8G8B8;
-	//d3dpp.BackBufferCount = 1;
-	//d3dpp.MultiSampleType = D3DMULTISAMPLE_NONE;
-	//d3dpp.Flags = D3DPRESENTFLAG_LOCKABLE_BACKBUFFER;
-	//d3dpp.EnableAutoDepthStencil = TRUE;
-    //d3dpp.AutoDepthStencilFormat = D3DFMT_X8R8G8B8;
-	//d3dpp.FullScreen_RefreshRateInHz = D3DPRESENT_RATE_DEFAULT;
-	//d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;
-
-    ddresult = IDirect3DDevice9_TestCooperativeLevel(d3ddev);
-    ddresult = IDirect3DDevice9_Reset(d3ddev, &d3dpp);
-
+    ddresult = IDirect3DDevice9_TestCooperativeLevel(canvas->d3ddev);
+    ddresult = IDirect3DDevice9_Reset(canvas->d3ddev, &d3dpp);
     
-    ddresult = IDirect3DDevice9_CreateOffscreenPlainSurface(d3ddev, width, height, D3DFMT_X8R8G8B8, D3DPOOL_DEFAULT, &d3dsurface, NULL);
+    ddresult = IDirect3DDevice9_CreateOffscreenPlainSurface(canvas->d3ddev, width, height, D3DFMT_X8R8G8B8, D3DPOOL_DEFAULT, &canvas->d3dsurface, NULL);
 }
 
 
@@ -237,9 +216,8 @@ void video_canvas_refresh(video_canvas_t *canvas,
                           unsigned int w, unsigned int h)
 {
     HRESULT ddresult;
-    IDirect3DSurface9 *BackBuffer;
-    D3DLOCKED_RECT LockedRect;
-    RECT rect;
+    LPDIRECT3DSURFACE9 d3dbackbuffer = NULL;
+    D3DLOCKED_RECT lockedrect;
 
     if (canvas->videoconfig->doublesizex) {
         xi *= 2;
@@ -251,45 +229,30 @@ void video_canvas_refresh(video_canvas_t *canvas,
         h *= 2;
     }
 
-    ddresult = IDirect3DDevice9_BeginScene(d3ddev);
-    ddresult = IDirect3DDevice9_GetBackBuffer(d3ddev, 0, 0, D3DBACKBUFFER_TYPE_MONO, &BackBuffer);
-    ddresult = IDirect3DSurface9_LockRect(d3dsurface, &LockedRect, NULL, 0);
+    ddresult = IDirect3DDevice9_BeginScene(canvas->d3ddev);
+    ddresult = IDirect3DDevice9_GetBackBuffer(
+                    canvas->d3ddev, 0, 0,
+                    D3DBACKBUFFER_TYPE_MONO, &d3dbackbuffer);
+    ddresult = IDirect3DSurface9_LockRect(
+                    canvas->d3dsurface, &lockedrect, NULL, 0);
 
-    rect.left = xi;
-    rect.right = xi + w;
-    rect.top = yi;
-    rect.bottom = yi + w;
+    video_canvas_render(canvas, lockedrect.pBits,
+                        w, h, xs, ys, xi, yi,
+                        lockedrect.Pitch, 32);
 
-        video_canvas_render(canvas,
-                            LockedRect.pBits,
-                            w, h,
-                            xs, ys,
-                            xi, yi,
-                            LockedRect.Pitch,
-                            32);
-
-        rect.left = xi;
-        rect.right = xi + w - 1;
-        rect.top = yi;
-        rect.bottom = yi + h - 1;
-
-    ddresult = IDirect3DSurface9_UnlockRect(d3dsurface);
-    ddresult = IDirect3DDevice9_StretchRect(d3ddev, d3dsurface, NULL, BackBuffer, NULL, D3DTEXF_POINT);
-    ddresult = IDirect3DSurface9_Release(BackBuffer);
-
-    ddresult = IDirect3DDevice9_EndScene(d3ddev);
-    ddresult = IDirect3DDevice9_Present(d3ddev, NULL, NULL, NULL, NULL);
-
-
-
+    ddresult = IDirect3DSurface9_UnlockRect(canvas->d3dsurface);
+    ddresult = IDirect3DDevice9_StretchRect(
+                    canvas->d3ddev, canvas->d3dsurface,
+                    NULL, d3dbackbuffer, NULL, D3DTEXF_NONE);
+    ddresult = IDirect3DSurface9_Release(d3dbackbuffer);
+    ddresult = IDirect3DDevice9_EndScene(canvas->d3ddev);
+    ddresult = IDirect3DDevice9_Present(canvas->d3ddev, NULL, NULL, NULL, NULL);
 }
 
 
 int video_canvas_set_palette(struct video_canvas_s *canvas, palette_t *p)
 {
-    /* Always OK.  */
     canvas->palette = p;
-    /* Create palette.  */
     video_set_physical_colors(canvas);
     return 0;
 }
@@ -298,44 +261,39 @@ video_canvas_t *video_canvas_create(video_canvas_t *canvas, unsigned int *width,
                                     unsigned int *height, int mapped)
 {
     HRESULT ddresult;
+    D3DPRESENT_PARAMETERS d3dpp;
 
-    D3DPRESENT_PARAMETERS d3dpp;    // create a struct to hold various device information
+    ui_open_canvas_window(canvas);
 
-    canvas->hwnd = ui_open_canvas_window(canvas->viewport->title,
-                                         canvas->width, canvas->height);
+    d3d = Direct3DCreate9(D3D_SDK_VERSION);
 
-    d3d = Direct3DCreate9(D3D_SDK_VERSION);    // create the Direct3D interface
+    ZeroMemory(&d3dpp, sizeof(d3dpp));
+    d3dpp.Windowed = TRUE;
+    d3dpp.hDeviceWindow = canvas->render_hwnd;
+    d3dpp.BackBufferWidth = *width;
+    d3dpp.BackBufferHeight = *height;
+    d3dpp.BackBufferFormat = D3DFMT_X8R8G8B8;
+    d3dpp.BackBufferCount = 1;
+    d3dpp.MultiSampleType = D3DMULTISAMPLE_NONE;
+    d3dpp.SwapEffect = D3DSWAPEFFECT_FLIP;
+    d3dpp.Flags = 0;
+    d3dpp.EnableAutoDepthStencil = FALSE;
+    d3dpp.FullScreen_RefreshRateInHz = D3DPRESENT_RATE_DEFAULT;
+    d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;
 
-    ZeroMemory(&d3dpp, sizeof(d3dpp));    // clear out the struct for use
-    d3dpp.Windowed = TRUE;    // program windowed, not fullscreen
-    d3dpp.SwapEffect = D3DSWAPEFFECT_FLIP;    // discard old frames
-    d3dpp.hDeviceWindow = canvas->hwnd;    // set the window to be used by Direct3D
-	d3dpp.BackBufferWidth = *width;
-	d3dpp.BackBufferHeight = *height;
-	d3dpp.BackBufferFormat = D3DFMT_X8R8G8B8;
-	d3dpp.BackBufferCount = 1;
-	d3dpp.MultiSampleType = D3DMULTISAMPLE_NONE;
-	d3dpp.SwapEffect = D3DSWAPEFFECT_FLIP;
-	d3dpp.Flags = 0;
-	d3dpp.EnableAutoDepthStencil = FALSE;
-	d3dpp.FullScreen_RefreshRateInHz = D3DPRESENT_RATE_DEFAULT;
-	d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;
+    ddresult = IDirect3D9_CreateDevice(
+                    d3d,D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL,
+                    canvas->render_hwnd,
+                    D3DCREATE_SOFTWARE_VERTEXPROCESSING,
+                    &d3dpp, &canvas->d3ddev);
 
-
-    // create a device class using this information and information from the d3dpp stuct
-    ddresult = IDirect3D9_CreateDevice(d3d,
-                        D3DADAPTER_DEFAULT,
-                      D3DDEVTYPE_HAL,
-                      canvas->hwnd,
-                      D3DCREATE_SOFTWARE_VERTEXPROCESSING,
-                      &d3dpp,
-                      &d3ddev);
-
-    ddresult = IDirect3DDevice9_CreateOffscreenPlainSurface(d3ddev, *width, *height, D3DFMT_X8R8G8B8, D3DPOOL_DEFAULT, &d3dsurface, NULL);
+    ddresult = IDirect3DDevice9_CreateOffscreenPlainSurface(
+                    canvas->d3ddev,
+                    *width, *height, D3DFMT_X8R8G8B8,
+                    D3DPOOL_DEFAULT, &canvas->d3dsurface, NULL);
 
     if (video_set_physical_colors(canvas) < 0)
         return NULL;
-
 
     video_canvases[video_number_of_canvases++] = canvas;
 
@@ -344,6 +302,16 @@ video_canvas_t *video_canvas_create(video_canvas_t *canvas, unsigned int *width,
     return canvas;
 }
 
+
 void video_canvas_destroy(video_canvas_t *canvas)
 {
+    if (canvas != NULL) {
+        if (canvas->hwnd !=0) {
+            DestroyWindow(canvas->hwnd);
+        }
+        if (canvas->title != NULL) {
+            lib_free(canvas->title);
+        }
+        video_canvas_shutdown(canvas);
+    }
 }

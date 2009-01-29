@@ -151,10 +151,10 @@ void statusbar_create(HWND hwnd)
 {
     RECT rect;
     int res_val;
-return;
+
     status_hwnd[number_of_status_windows] =
-        CreateStatusWindow(WS_CHILD | WS_VISIBLE, TEXT(""), hwnd,
-                           IDM_STATUS_WINDOW);
+        CreateWindowEx(0, STATUSCLASSNAME, TEXT(""), WS_CHILD | WS_VISIBLE, 0, 0, 0, 0, hwnd,
+                           (HMENU)IDM_STATUS_WINDOW, 0, NULL);
     SendMessage(status_hwnd[number_of_status_windows], SB_SETMINHEIGHT, 40,
                 (LPARAM)0);
     SendMessage(status_hwnd[number_of_status_windows], WM_SIZE, 0, (LPARAM)0);
