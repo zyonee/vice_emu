@@ -488,6 +488,12 @@ const ui_menu_entry_t cbm6x0_7x0_video_menu[] = {
       MENU_ENTRY_RESOURCE_TOGGLE,
       toggle_CrtcVideoCache_callback,
       NULL },
+#ifdef HAVE_HWSCALE
+    { "OpenGL",
+      MENU_ENTRY_RESOURCE_TOGGLE,
+      custom_HwScale_callback,
+      (ui_callback_data_t)"CrtcHwScale" },
+#endif
     { "Select external palette file",
       MENU_ENTRY_DIALOG,
       external_crtc_palette_callback,
@@ -512,6 +518,12 @@ const ui_menu_entry_t pet_video_menu[] = {
       MENU_ENTRY_RESOURCE_TOGGLE,
       toggle_CrtcVideoCache_callback,
       NULL },
+#ifdef HAVE_HWSCALE
+    { "OpenGL",
+      MENU_ENTRY_RESOURCE_TOGGLE,
+      custom_HwScale_callback,
+      (ui_callback_data_t)"CrtcHwScale" },
+#endif
     { "Select external palette file",
       MENU_ENTRY_DIALOG,
       external_crtc_palette_callback,
