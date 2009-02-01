@@ -25,6 +25,9 @@
  */
 
 #include "vice.h"
+
+#include <stdio.h>
+
 #include "types.h"
 
 #include "menu_common.h"

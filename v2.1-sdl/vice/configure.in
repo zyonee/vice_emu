@@ -720,6 +720,36 @@ if test x"$with_sdlsound" = "xyes" -o x"$enable_sdlui" = "xyes"; then
             AC_DEFINE(HAVE_FULLSCREEN,,[Enable Fullscreen support.])
         fi
     fi
+
+    dnl check for opengl libs.
+    if test x"$enable_sdlui" = "xyes"; then
+        AC_MSG_CHECKING(whether we can use the GL library)
+
+        old_LIBS="$LIBS"
+        LIBS="$LIBS -lGL"
+        AC_TRY_LINK([#include <SDL/SDL_opengl.h>],
+                    [glViewport(1,2,3,4)],
+                    [AC_MSG_RESULT(yes);
+                     have_opengl_lib=yes],
+                    [AC_MSG_RESULT(no);
+                     LIBS="$old_LIBS"])
+
+        if test x"$have_opengl_lib" != "xyes"; then
+            AC_MSG_CHECKING(whether we can use the opengl32 library)
+            old_LIBS="$LIBS"
+            LIBS="$LIBS -lopengl32"
+            AC_TRY_LINK([#include <SDL/SDL_opengl.h>],
+                        [glViewport(1,2,3,4)],
+                        [AC_MSG_RESULT(yes);
+                         have_opengl_lib=yes],
+                        [AC_MSG_RESULT(no);
+                         LIBS="$old_LIBS"])
+        fi
+
+        if test x"$have_opengl_lib" = "xyes"; then
+            AC_DEFINE(HAVE_HWSCALE,,[Enable arbitrary window scaling])
+        fi
+    fi
 fi
 
 dnl Setup reSID compilation.  We need a C++ compiler for this.

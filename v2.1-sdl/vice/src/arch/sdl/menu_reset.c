@@ -26,6 +26,8 @@
 
 #include "vice.h"
 
+#include <stdio.h>
+
 #include "drivecpu.h"
 #include "machine.h"
 #include "menu_common.h"
