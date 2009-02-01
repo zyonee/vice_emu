@@ -78,6 +78,7 @@
 #include "uimenu.h"
 #include "uisettings.h"
 #include "uicommands.h"
+#include "uifileentry.h"
 #include "uilib.h"
 #include "util.h"
 #include "version.h"
@@ -2168,17 +2169,6 @@ char *ui_select_file(const char *title,
     char *filename = NULL;
     GtkWidget *wp;
     gint res;
-    GtkFileChooserAction a;
-
-    switch (action)
-    {
-    case UI_FC_LOAD: a = GTK_FILE_CHOOSER_ACTION_OPEN;
-	break;
-    case UI_FC_SAVE: a = GTK_FILE_CHOOSER_ACTION_SAVE;
-	break;
-    default:
-	return NULL;
-    }
 
     /* reset old selection */
     ui_set_selected_file(0);
@@ -2192,11 +2182,11 @@ char *ui_select_file(const char *title,
     if (attach_wp)
 	file_selector = build_file_selector(title, &wp, allow_autostart, 
 					    show_preview, patterns, num_patterns, 
-					    default_dir, a);
+					    default_dir, action);
     else
 	file_selector = build_file_selector(title, NULL, allow_autostart, 
 					    show_preview, patterns, num_patterns, 
-					    default_dir, a);
+					    default_dir, action);
 
     g_signal_connect(G_OBJECT(file_selector),
 		     "destroy",
@@ -2464,88 +2454,6 @@ sh_checkbox_cb(GtkWidget *w, gpointer data)
 	gtk_file_chooser_set_show_hidden(GTK_FILE_CHOOSER(data), FALSE);
 }
 
-typedef struct uilib_file_filter_s {
-  const char* filter_string;
-  unsigned char filter_string_is_case_sensitive;
-} uilib_file_filter_t;
-
-static uilib_file_filter_t all_files_filter[]       = { {"*", 0}, {NULL} };
-static uilib_file_filter_t palette_filter[]         = { { "*.vpl", 0}, {NULL} };
-static uilib_file_filter_t snapshot_filter[]        = { { "*.vsf", 0}, {NULL} };
-static uilib_file_filter_t disk_image_filter[]      = {
-                                                        { "*.d64", 0},
-                                                        { "*.d71", 0},
-                                                        { "*.d80", 0},
-                                                        { "*.d81", 0},
-                                                        { "*.d82", 0},
-                                                        { "*.g64", 0},
-                                                        { "*.g41", 0},
-                                                        { "*.x64", 0},
-                                                        {NULL} 
-                                                      };
-static uilib_file_filter_t tape_image_filter[]      = {
-                                                        { "*.t64", 0},
-                                                        { "*.tap", 0},
-                                                        {NULL}
-                                                      };
-static uilib_file_filter_t cartridge_image_filter[] = {
-                                                        { "*.crt", 0},
-                                                        { "*.bin", 0},
-                                                        {NULL}
-                                                      };
-static uilib_file_filter_t crt_image_filter[]       = { { "*.crt", 0}, {NULL} };
-static uilib_file_filter_t flip_list_filter[]       = { { "*.vfl", 0}, {NULL} };
-static uilib_file_filter_t romset_filter[]          = { { "*.vrs", 0}, {NULL} };
-static uilib_file_filter_t romset_archives_filter[] = { { "*.vra", 0}, {NULL} };
-static uilib_file_filter_t keymap_filter[]          = { { "*.vkm", 0}, {NULL} };
-static uilib_file_filter_t emulator_filter[]        = { 
-                                                        { "*.prg", 0},
-                                                        { "*.p00", 0},
-                                                        {NULL}
-                                                      };
-static uilib_file_filter_t wav_filter[]             = { { "*.wav", 0}, {NULL} };
-static uilib_file_filter_t voc_filter[]             = { { "*.voc", 0}, {NULL} };
-static uilib_file_filter_t iff_filter[]             = { { "*.iff", 0}, {NULL} };
-static uilib_file_filter_t aiff_filter[]            = { { "*.aiff", 0}, {NULL} };
-static uilib_file_filter_t mp3_filter[]             = { { "*.mp3", 0}, {NULL} };
-static uilib_file_filter_t serial_filter[]          = { { "ttyS*", 1}, {NULL} };
-static uilib_file_filter_t vic20cart_filter[]       = { { "*.prg", 0}, {NULL} };
-static uilib_file_filter_t sid_filter[]             = {
-                                                        { "*.psid", 0},
-                                                        { "*.sid", 0},
-                                                        {NULL}
-                                                      };
-static uilib_file_filter_t dtvrom_filter[]          = { { "*.bin", 0}, {NULL} };
-
-
-/* this must be in sync with uilib_file_filter_enum_t */
-struct {
-    const char* filter_name;
-    uilib_file_filter_t *filters;
-} file_filters[] = {
-  { "All files"            , all_files_filter },
-  { "Palette files"        , palette_filter },
-  { "Snapshot files"       , snapshot_filter },
-  { "Disk image files"     , disk_image_filter },
-  { "Tape image files"     , tape_image_filter },
-  { "Cartridge image files", cartridge_image_filter },
-  { "CRT cartridge files"  , crt_image_filter },
-  { "Flip list files"      , flip_list_filter },
-  { "Romset files"         , romset_filter },
-  { "Romset archives"      , romset_archives_filter },
-  { "Keymap files"         , keymap_filter },
-  { "Emulator files"       , emulator_filter },
-  { "WAV files"            , wav_filter },
-  { "VOC files"            , voc_filter },
-  { "IFF files"            , iff_filter },
-  { "AIFF files"           , aiff_filter },
-  { "MP3 files"            , mp3_filter },
-  { "Serial ports"         , serial_filter },
-  { "VIC20 cartridges"     , vic20cart_filter },
-  { "SID files"            , sid_filter },
-  { "C64DTV ROM images"    , dtvrom_filter }
-};
-
 /* These functions build all the widgets. */
 static GtkWidget *build_file_selector(const char *title,
 				      GtkWidget **attach_write_protect,
@@ -2562,58 +2470,8 @@ static GtkWidget *build_file_selector(const char *title,
     GtkListStore *store;
     int i;    
 
-    fileselect = gtk_file_chooser_dialog_new(title, GTK_WINDOW(_ui_top_level), 
-					     action, 
-					     GTK_STOCK_CANCEL, 
-					     GTK_RESPONSE_CANCEL,
-					     GTK_STOCK_OPEN, 
-					     GTK_RESPONSE_ACCEPT,
-					     NULL);
+    fileselect = vice_file_entry(title, _ui_top_level, default_dir, patterns, num_patterns, action);
 
-    for (i = 0; i < num_patterns; i++)
-    {
-        int j;
-	GtkFileFilter *ff = gtk_file_filter_new();
-        char filter_name[1024];
-        int filter_name_len = sizeof(filter_name);
-
-        snprintf(filter_name, filter_name_len, "%s", file_filters[patterns[i]].filter_name);
-        filter_name_len = sizeof(filter_name) - strlen(filter_name);
-        for (j = 0; file_filters[patterns[i]].filters[j].filter_string != NULL; j++) {
-            char filter_made_case_insensitive[1024];
-            char *dst = filter_made_case_insensitive;
-            char *dstend = filter_made_case_insensitive + sizeof(filter_made_case_insensitive) - 1;
-            const char *src = file_filters[patterns[i]].filters[j].filter_string;
-
-            strncat(filter_name, j == 0 ? " (":";", filter_name_len);
-            filter_name_len = sizeof(filter_name) - strlen(filter_name);
-            strncat(filter_name, file_filters[patterns[i]].filters[j].filter_string, filter_name_len);
-            filter_name_len = sizeof(filter_name) - strlen(filter_name);
-            while (*src) {
-                if (dst >= dstend) break;
-                if (!file_filters[patterns[i]].filters[j].filter_string_is_case_sensitive && isalpha(*src) && islower(*src)) {
-                    *dst++ = '[';
-                    if (dst >= dstend) break;
-                    *dst++ = *src;
-                    if (dst >= dstend) break;
-                    *dst++ = toupper(*src++);
-                    if (dst >= dstend) break;
-                    *dst++ = ']';
-                } else
-                    *dst++ = *src++;
-            }
-            *dst = 0;
-            gtk_file_filter_add_pattern(ff, filter_made_case_insensitive);
-        }
-        if (j > 0)
-            strncat(filter_name, ")", filter_name_len);
-        gtk_file_filter_set_name(ff, filter_name);
-	gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(fileselect), ff);
-    }
-
-    if (default_dir)
-	gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER(fileselect), 
-					    default_dir);
     /* Contents preview */
     if (show_preview)
     {

@@ -61,7 +61,10 @@ struct video_canvas_s;
 struct palette_s;
 
 enum uilib_file_filter_enum_s;
-typedef enum { UI_FC_LOAD = 0, UI_FC_SAVE } ui_filechooser_t;
+typedef enum ui_filechooser_s {
+    UI_FC_LOAD = 0,
+    UI_FC_SAVE
+} ui_filechooser_t;
 
 void ui_display_speed(float percent, float framerate, int warp_flag);
 void ui_display_paused(int flag);
