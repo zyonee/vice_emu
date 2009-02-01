@@ -1,5 +1,5 @@
 /*
- * uicmb2.c - Implementation of the CBM-II-specific part of the UI.
+ * xvic_ui.c - Implementation of the VIC20-specific part of the UI.
  *
  * Written by
  *  Hannu Nuotio <hannu.nuotio@tut.fi>
@@ -31,9 +31,8 @@
 #include <stdlib.h>
 
 #include "debug.h"
-#include "cbm2.h"
-#include "cbm2mem.h"
 #include "lib.h"
+#include "machine.h"
 #include "menu_common.h"
 #include "menu_drive.h"
 #include "menu_help.h"
@@ -44,19 +43,22 @@
 #include "menu_sound.h"
 #include "menu_speed.h"
 #include "menu_tape.h"
+#include "menu_vic20cart.h"
 #include "menu_video.h"
 #include "resources.h"
 #include "ui.h"
 #include "uimenu.h"
+#include "vic20memrom.h"
+#include "vkbd.h"
 
-/* temporary empty cbm2 hardware menu, this one will be moved out to menu_cbm2hw.c */
-static ui_menu_entry_t cbm2_hardware_menu[] = {
+/* temporary empty vic20 hardware menu, this one will be moved out to menu_vic20hw.c */
+static ui_menu_entry_t vic20_hardware_menu[] = {
     SDL_MENU_ITEM_SEPARATOR,
     { NULL }
 };
 
-/* temporary empty cbm2 rom menu, this one will be moved out to menu_cbm2rom.c */
-static ui_menu_entry_t cbm2_rom_menu[] = {
+/* temporary empty vic20 rom menu, this one will be moved out to menu_vic20rom.c */
+static ui_menu_entry_t vic20_rom_menu[] = {
     SDL_MENU_ITEM_SEPARATOR,
     { NULL }
 };
@@ -69,7 +71,7 @@ static ui_menu_entry_t debug_menu[] = {
 };
 #endif
 
-static const ui_menu_entry_t xcbm6x0_7x0_main_menu[] = {
+static const ui_menu_entry_t xvic_main_menu[] = {
     { "Autostart image",
       MENU_ENTRY_DIALOG,
       autostart_callback,
@@ -82,18 +84,22 @@ static const ui_menu_entry_t xcbm6x0_7x0_main_menu[] = {
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)tape_menu },
+    { "Cartridge",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)vic20cart_menu },
     { "Machine settings (todo)",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
-      (ui_callback_data_t)cbm2_hardware_menu },
+      (ui_callback_data_t)vic20_hardware_menu },
     { "ROM settings (todo)",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
-      (ui_callback_data_t)cbm2_rom_menu },
+      (ui_callback_data_t)vic20_rom_menu },
     { "Video settings",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
-      (ui_callback_data_t)cbm6x0_7x0_video_menu },
+      (ui_callback_data_t)vic20_video_menu },
     { "Sound output settings",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
@@ -110,80 +116,6 @@ static const ui_menu_entry_t xcbm6x0_7x0_main_menu[] = {
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)screenshot_menu },
-    { "Speed settings",
-      MENU_ENTRY_SUBMENU,
-      submenu_callback,
-      (ui_callback_data_t)speed_menu },
-    { "Reset",
-      MENU_ENTRY_SUBMENU,
-      submenu_callback,
-      (ui_callback_data_t)reset_menu },
-    { "Pause (todo)",
-      MENU_ENTRY_OTHER,
-      pause_callback,
-      NULL },
-    { "Monitor",
-      MENU_ENTRY_OTHER,
-      monitor_callback,
-      NULL },
-#ifdef DEBUG
-    { "Debug (todo)",
-      MENU_ENTRY_SUBMENU,
-      submenu_callback,
-      (ui_callback_data_t)debug_menu },
-#endif
-    { "Help",
-      MENU_ENTRY_SUBMENU,
-      submenu_callback,
-      (ui_callback_data_t)help_menu },
-    { "Settings management",
-      MENU_ENTRY_SUBMENU,
-      submenu_callback,
-      (ui_callback_data_t)settings_manager_menu },
-    { "Quit emulator",
-      MENU_ENTRY_OTHER,
-      quit_callback,
-      NULL },
-    { NULL }
-};
-
-static const ui_menu_entry_t xcbm5x0_main_menu[] = {
-    { "Autostart image",
-      MENU_ENTRY_DIALOG,
-      autostart_callback,
-      NULL },
-    { "Drive",
-      MENU_ENTRY_SUBMENU,
-      submenu_callback,
-      (ui_callback_data_t)drive_menu },
-    { "Tape (todo)",
-      MENU_ENTRY_SUBMENU,
-      submenu_callback,
-      (ui_callback_data_t)tape_menu },
-    { "Machine settings (todo)",
-      MENU_ENTRY_SUBMENU,
-      submenu_callback,
-      (ui_callback_data_t)cbm2_hardware_menu },
-    { "ROM settings (todo)",
-      MENU_ENTRY_SUBMENU,
-      submenu_callback,
-      (ui_callback_data_t)cbm2_rom_menu },
-    { "Video settings",
-      MENU_ENTRY_SUBMENU,
-      submenu_callback,
-      (ui_callback_data_t)cbm5x0_video_menu },
-    { "Sound output settings",
-      MENU_ENTRY_SUBMENU,
-      submenu_callback,
-      (ui_callback_data_t)sound_output_menu },
-    { "Sound record settings",
-      MENU_ENTRY_SUBMENU,
-      submenu_callback,
-      (ui_callback_data_t)sound_record_menu },
-    { "Snapshot",
-      MENU_ENTRY_SUBMENU,
-      submenu_callback,
-      (ui_callback_data_t)snapshot_menu },
     { "Speed settings",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
@@ -225,47 +157,37 @@ static const ui_menu_entry_t xcbm5x0_main_menu[] = {
     { NULL }
 };
 
-static BYTE *cbm2_font;
+static BYTE *vic20_font;
 
-int cbm2ui_init(void)
+int vic20ui_init(void)
 {
-    int i, j, model;
-
+    int i, j, videostandard;
 fprintf(stderr,"%s\n",__func__);
 
-    if (cbm2_is_c500()) {
-        sdl_ui_set_menu_borders(0, 0);
-        sdl_ui_set_menu_font(mem_chargen_rom + 0x800, 8, 8);
-        sdl_ui_set_main_menu(xcbm5x0_main_menu);
-    } else {
-        resources_get_int("ModelLine", &model);
-        if (model == 0) {
-            cbm2_font=lib_malloc(14*256);
-            for (i=0; i<256; i++) {
-                for (j=0; j<14; j++) {
-                    cbm2_font[(i*14)+j]=mem_chargen_rom[(i*16)+j+1];
-                }
-            }
-        } else {
-            cbm2_font=lib_malloc(8*256);
-            for (i=0; i<256; i++) {
-                for (j=0; j<8; j++) {
-                    cbm2_font[(i*8)+j]=mem_chargen_rom[(i*16)+j];
-                }
-            }
+    sdl_ui_set_main_menu(xvic_main_menu);
+
+    resources_get_int("MachineVideoStandard", &videostandard);
+
+    vic20_font=lib_malloc(8*256);
+    for (i=0; i<128; i++) {
+        for (j=0; j<8; j++) {
+            vic20_font[(i*8)+j]=vic20memrom_chargen_rom[(i*8)+(128*8)+j+0x800];
+            vic20_font[(i*8)+(128*8)+j]=vic20memrom_chargen_rom[(i*8)+j+0x800];
         }
-        sdl_ui_set_menu_font(cbm2_font, 8, (model == 0) ? 14 : 8);
-        sdl_ui_set_menu_borders(32, (model == 0) ? 16 : 40);
-        sdl_ui_set_main_menu(xcbm6x0_7x0_main_menu);
     }
-    sdl_ui_set_menu_colors(1, 0);
+
+    sdl_ui_set_menu_font(vic20_font, 8, 8);
+    sdl_ui_set_menu_borders(0, (videostandard == MACHINE_SYNC_PAL) ? 28: 8);
     sdl_ui_set_double_x(1);
+    sdl_ui_set_menu_colors(1, 0);
+    sdl_vkbd_set_vkbd(&vkbd_vic20);
     return 0;
 }
 
-void cbm2ui_shutdown(void)
+void vic20ui_shutdown(void)
 {
 fprintf(stderr,"%s\n",__func__);
 
-    lib_free(cbm2_font);
+    lib_free(vic20_font);
 }
+

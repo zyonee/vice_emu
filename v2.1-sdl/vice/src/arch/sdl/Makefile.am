@@ -74,10 +74,6 @@ libarch_a_SOURCES = \
 	types.h \
 	ui.c \
 	ui.h \
-	uic128.c \
-	uic64.c \
-	uic64dtv.c \
-	uicbm2.c \
 	uicmdline.c \
 	uifilereq.c \
 	uifilereq.h \
@@ -88,12 +84,16 @@ libarch_a_SOURCES = \
 	uimon.c \
 	uimsgbox.c \
 	uimsgbox.h \
-	uipet.c \
-	uiplus4.c \
-	uivic20.c \
 	video.c \
 	videoarch.h \
 	vkbd.c \
 	vkbd.h \
 	vsidui.c \
-	vsyncarch.c
+	vsyncarch.c \
+	x128_ui.c \
+	x64_ui.c \
+	x64dtv_ui.c \
+	xcbm2_ui.c \
+	xpet_ui.c \
+	xplus4_ui.c \
+	xvic_ui.c

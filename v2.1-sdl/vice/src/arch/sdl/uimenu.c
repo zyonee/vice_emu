@@ -164,7 +164,7 @@ static void sdl_ui_menu_redraw(ui_menu_entry_t *menu, const char *title, int num
     sdl_ui_display_title(title);
 
     for (i=0; i<num_items; ++i) {
-        if (num_items > (menu_draw.max_text_y - MENU_FIRST_Y)) {
+        if (i > (menu_draw.max_text_y - MENU_FIRST_Y)) {
             break;
         }
         sdl_ui_display_item(&(menu[i]), i);
@@ -495,10 +495,10 @@ int sdl_ui_hotkey(ui_menu_entry_t *item)
     return 0;
 }
 
-char* sdl_ui_readline(const char* previous, int pos_x, int pos_y)
+char* sdl_ui_readline(const char* previous, int pos_x, int pos_y, int escaped_is_null)
 {
 #define SDL_UI_STRING_LEN_MAX 1024
-    int i = 0, prev = -1, done = 0, got_key = 0, string_changed = 0, screen_dirty = 1;
+    int i = 0, prev = -1, done = 0, got_key = 0, string_changed = 0, screen_dirty = 1, escaped = 0;
     size_t size = 0, max;
     char *new_string = NULL;
     SDL_Event e;
@@ -588,6 +588,7 @@ char* sdl_ui_readline(const char* previous, int pos_x, int pos_y)
                 break;
             case SDLK_ESCAPE:
                 string_changed = 0;
+                escaped = 1;
                 /* fall through */
             case SDLK_RETURN:
                 sdl_ui_invert_char(pos_x + i, pos_y);
@@ -614,7 +615,7 @@ char* sdl_ui_readline(const char* previous, int pos_x, int pos_y)
 
     SDL_EnableUNICODE(0);
 
-    if (!string_changed && previous) {
+    if ((!string_changed && previous) || (escaped && escaped_is_null)) {
         lib_free(new_string);
         new_string = NULL;
     }
@@ -627,7 +628,7 @@ char* sdl_ui_text_input_dialog(const char* title, const char* previous)
 
     sdl_ui_clear();
     i = sdl_ui_display_title(title) / menu_draw.max_text_x;
-    return sdl_ui_readline(previous, 0, i+MENU_FIRST_Y);
+    return sdl_ui_readline(previous, 0, i+MENU_FIRST_Y, 0);
 }
 
 ui_menu_entry_t *sdl_ui_get_main_menu(void)

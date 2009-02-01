@@ -1,5 +1,5 @@
 /*
- * uic64dtv.c - Implementation of the C64DTV-specific part of the UI.
+ * x128_ui.c - Implementation of the C128-specific part of the UI.
  *
  * Written by
  *  Hannu Nuotio <hannu.nuotio@tut.fi>
@@ -31,8 +31,8 @@
 #include <stdlib.h>
 
 #include "debug.h"
-#include "c64mem.h"
-#include "menu_c64dtvhw.h"
+#include "c128mem.h"
+#include "menu_c64cart.h"
 #include "menu_common.h"
 #include "menu_drive.h"
 #include "menu_help.h"
@@ -42,13 +42,19 @@
 #include "menu_snapshot.h"
 #include "menu_sound.h"
 #include "menu_speed.h"
+#include "menu_tape.h"
 #include "menu_video.h"
 #include "ui.h"
 #include "uimenu.h"
-#include "vkbd.h"
 
-/* temporary empty c64dtv rom menu, this one will be moved out to menu_c64dtvrom.c */
-static ui_menu_entry_t c64dtv_rom_menu[] = {
+/* temporary empty c128 hardware menu, this one will be moved out to menu_c128hw.c */
+static ui_menu_entry_t c128_hardware_menu[] = {
+    SDL_MENU_ITEM_SEPARATOR,
+    { NULL }
+};
+
+/* temporary empty c128 rom menu, this one will be moved out to menu_c128rom.c */
+static ui_menu_entry_t c128_rom_menu[] = {
     SDL_MENU_ITEM_SEPARATOR,
     { NULL }
 };
@@ -61,7 +67,7 @@ static ui_menu_entry_t debug_menu[] = {
 };
 #endif
 
-static const ui_menu_entry_t x64dtv_main_menu[] = {
+static const ui_menu_entry_t x128_main_menu[] = {
     { "Autostart image",
       MENU_ENTRY_DIALOG,
       autostart_callback,
@@ -70,18 +76,26 @@ static const ui_menu_entry_t x64dtv_main_menu[] = {
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)drive_menu },
-    { "Machine settings",
+    { "Tape",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
-      (ui_callback_data_t)c64dtv_hardware_menu },
+      (ui_callback_data_t)tape_menu },
+    { "Cartridge",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)c64cart_menu },
+    { "Machine settings (todo)",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)c128_hardware_menu },
     { "ROM settings (todo)",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
-      (ui_callback_data_t)c64dtv_rom_menu },
+      (ui_callback_data_t)c128_rom_menu },
     { "Video settings",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
-      (ui_callback_data_t)c64dtv_video_menu },
+      (ui_callback_data_t)c128_video_menu },
     { "Sound output settings",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
@@ -139,20 +153,20 @@ static const ui_menu_entry_t x64dtv_main_menu[] = {
     { NULL }
 };
 
-int c64dtvui_init(void)
+int c128ui_init(void)
 {
 fprintf(stderr,"%s\n",__func__);
 
-    sdl_ui_set_main_menu(x64dtv_main_menu);
+    sdl_ui_set_main_menu(x128_main_menu);
     sdl_ui_set_menu_font(mem_chargen_rom + 0x800, 8, 8);
-    sdl_ui_set_menu_colors(15, 0);
+    sdl_ui_set_menu_colors(1, 0);
     sdl_ui_set_menu_borders(0, 0);
     sdl_ui_set_double_x(0);
-    sdl_vkbd_set_vkbd(&vkbd_c64);
     return 0;
 }
 
-void c64dtvui_shutdown(void)
+void c128ui_shutdown(void)
 {
 fprintf(stderr,"%s\n",__func__);
 }
+

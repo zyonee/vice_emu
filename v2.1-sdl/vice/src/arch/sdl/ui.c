@@ -63,7 +63,7 @@ void ui_display_speed(float percent, float framerate, int warp_flag)
     char caption[100];
 
     sprintf(caption, "%s - %d%%/%d fps %s", ui_machine_name, (int)(percent + .5), (int)(framerate + .5), warp_flag ? "(warp)" : "");
-    SDL_WM_SetCaption(caption, 0 );
+    SDL_WM_SetCaption(caption, "VICE");
 }
 
 void ui_display_paused(int flag){}
@@ -327,6 +327,7 @@ fprintf(stderr,"%s\n",__func__);
 int ui_init_finalize(void)
 {
 fprintf(stderr,"%s\n",__func__);
+    SDL_WM_SetCaption(ui_machine_name, "VICE");
     return 0;
 }
 

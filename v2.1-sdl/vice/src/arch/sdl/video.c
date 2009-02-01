@@ -392,7 +392,7 @@ fprintf(stderr,"%s: %i,%i (%08x)\n",__func__,width,height,(unsigned int)canvas);
 
 void sdl_video_resize(int w, int h)
 {
-fprintf(stderr,"%s: %i,%i\n",__func__,w,h);
+/*fprintf(stderr,"%s: %i,%i\n",__func__,w,h);*/
 #ifdef HAVE_HWSCALE
     if (sdl_active_canvas->videoconfig->hwscale) {
         sdl_active_canvas->hwscale_screen = SDL_SetVideoMode(w, h, sdl_bitdepth, SDL_OPENGL | SDL_RESIZABLE);

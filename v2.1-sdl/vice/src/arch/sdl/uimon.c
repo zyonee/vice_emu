@@ -30,6 +30,7 @@
 #include "vice.h"
 
 #include "console.h"
+#include "lib.h"
 #include "monitor.h"
 #include "uimon.h"
 #include "ui.h"
@@ -110,8 +111,13 @@ char *uimon_get_in(char **ppchCommandLine, const char *prompt)
     x_pos = 0;
 
     x_off = sdl_ui_print(prompt, 0, y);
-    input = sdl_ui_readline(NULL, x_off, y);
+    input = sdl_ui_readline(NULL, x_off, y, 1);
     sdl_ui_scroll_screen_up();
+
+    if (input == NULL) {
+        input = lib_stralloc("x");
+    }
+
     return input;
 }
 

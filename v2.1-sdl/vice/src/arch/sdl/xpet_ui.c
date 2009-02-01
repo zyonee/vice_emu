@@ -1,5 +1,5 @@
 /*
- * uic64.c - Implementation of the C64-specific part of the UI.
+ * xpet_ui.c - Implementation of the PET-specific part of the UI.
  *
  * Written by
  *  Hannu Nuotio <hannu.nuotio@tut.fi>
@@ -31,9 +31,7 @@
 #include <stdlib.h>
 
 #include "debug.h"
-#include "c64mem.h"
-#include "menu_c64cart.h"
-#include "menu_c64hw.h"
+#include "lib.h"
 #include "menu_common.h"
 #include "menu_drive.h"
 #include "menu_help.h"
@@ -45,12 +43,19 @@
 #include "menu_speed.h"
 #include "menu_tape.h"
 #include "menu_video.h"
+#include "petmem.h"
+#include "resources.h"
 #include "ui.h"
 #include "uimenu.h"
-#include "vkbd.h"
 
-/* temporary empty c64 rom menu, this one will be moved out to menu_c64rom.c */
-static ui_menu_entry_t c64_rom_menu[] = {
+/* temporary empty pet hardware menu, this one will be moved out to menu_pethw.c */
+static ui_menu_entry_t pet_hardware_menu[] = {
+    SDL_MENU_ITEM_SEPARATOR,
+    { NULL }
+};
+
+/* temporary empty pet rom menu, this one will be moved out to menu_petrom.c */
+static ui_menu_entry_t pet_rom_menu[] = {
     SDL_MENU_ITEM_SEPARATOR,
     { NULL }
 };
@@ -63,7 +68,7 @@ static ui_menu_entry_t debug_menu[] = {
 };
 #endif
 
-static const ui_menu_entry_t x64_main_menu[] = {
+static const ui_menu_entry_t xpet_main_menu[] = {
     { "Autostart image",
       MENU_ENTRY_DIALOG,
       autostart_callback,
@@ -76,22 +81,18 @@ static const ui_menu_entry_t x64_main_menu[] = {
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)tape_menu },
-    { "Cartridge",
+    { "Machine settings (todo)",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
-      (ui_callback_data_t)c64cart_menu },
-    { "Machine settings",
-      MENU_ENTRY_SUBMENU,
-      submenu_callback,
-      (ui_callback_data_t)c64_hardware_menu },
+      (ui_callback_data_t)pet_hardware_menu },
     { "ROM settings (todo)",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
-      (ui_callback_data_t)c64_rom_menu },
+      (ui_callback_data_t)pet_rom_menu },
     { "Video settings",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
-      (ui_callback_data_t)c64_video_menu },
+      (ui_callback_data_t)pet_video_menu },
     { "Sound output settings",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
@@ -149,21 +150,36 @@ static const ui_menu_entry_t x64_main_menu[] = {
     { NULL }
 };
 
-int c64ui_init(void)
+static BYTE *pet_font;
+
+int petui_init(void)
 {
+    int i, j, cols;
+
 fprintf(stderr,"%s\n",__func__);
 
-    sdl_ui_set_main_menu(x64_main_menu);
-    sdl_ui_set_menu_font(mem_chargen_rom + 0x800, 8, 8);
+    sdl_ui_set_main_menu(xpet_main_menu);
+
+    resources_get_int("VideoSize", &cols);
+
+    pet_font=lib_malloc(8*256);
+    for (i=0; i<128; i++) {
+        for (j=0; j<8; j++) {
+            pet_font[(i*8)+j]=mem_chargen_rom[(i*16)+(256*16)+j];
+            pet_font[(i*8)+(128*8)+j]=mem_chargen_rom[(i*16)+j];
+        }
+    }
+    sdl_ui_set_menu_font(pet_font, 8, 8);
+    sdl_ui_set_menu_borders(32, (cols == 40) ? 40 : 28);
+    sdl_ui_set_double_x((cols == 40) ? 0 : 1);
     sdl_ui_set_menu_colors(1, 0);
-    sdl_ui_set_menu_borders(0, 0);
-    sdl_ui_set_double_x(0);
-    sdl_vkbd_set_vkbd(&vkbd_c64);
     return 0;
 }
 
-void c64ui_shutdown(void)
+void petui_shutdown(void)
 {
 fprintf(stderr,"%s\n",__func__);
+
+    lib_free(pet_font);
 }
 
