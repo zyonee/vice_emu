@@ -2,7 +2,7 @@
  *  \author Spiro Trikaliotis\n
  *  \brief  Abstraction from network sockets.
  *
- * socket.c - Abstraction from network sockets.
+ * socket.c - Abstraction from network sockets. Windows implementation.
  *
  * Written by
  *  Spiro Trikaliotis <spiro.trikaliotis@gmx.de>
@@ -40,7 +40,7 @@
 
 struct vice_network_socket_address_s
 {
-    unsigned int len;
+    size_t len;
     struct sockaddr * address;
 
 };
