@@ -219,6 +219,10 @@ SOURCE=.\signals.c
 # End Source File
 # Begin Source File
 
+SOURCE=.\socket.c
+# End Source File
+# Begin Source File
+
 SOURCE=.\statusbar.c
 # End Source File
 # Begin Source File
