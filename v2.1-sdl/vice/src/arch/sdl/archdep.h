@@ -33,6 +33,30 @@
 extern char *archdep_default_hotkey_file_name(void);
 extern char *archdep_default_joymap_file_name(void);
 
+/* Video chip scaling.  */
+#define ARCHDEP_VICII_DSIZE   1
+#define ARCHDEP_VICII_DSCAN   1
+#define ARCHDEP_VICII_HWSCALE 1
+#define ARCHDEP_VDC_DSIZE     1
+#define ARCHDEP_VDC_DSCAN     1
+#define ARCHDEP_VDC_HWSCALE   0
+#define ARCHDEP_VIC_DSIZE     1
+#define ARCHDEP_VIC_DSCAN     1
+#define ARCHDEP_VIC_HWSCALE   1
+#define ARCHDEP_CRTC_DSIZE    1
+#define ARCHDEP_CRTC_DSCAN    1
+#define ARCHDEP_CRTC_HWSCALE  1
+#define ARCHDEP_TED_DSIZE     1
+#define ARCHDEP_TED_DSCAN     1
+#define ARCHDEP_TED_HWSCALE   1
+
+/* Video chip double buffering.  */
+#define ARCHDEP_VICII_DBUF 0
+#define ARCHDEP_VDC_DBUF   0
+#define ARCHDEP_VIC_DBUF   0
+#define ARCHDEP_CRTC_DBUF  0
+#define ARCHDEP_TED_DBUF   0
+
 #ifdef UNIX_COMPILE
 #include "archdep_unix.h"
 #endif

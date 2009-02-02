@@ -55,30 +55,6 @@
 #define ARCHDEP_PRINTER_DEFAULT_DEV2 "|lpr"
 #define ARCHDEP_PRINTER_DEFAULT_DEV3 "|petlp -F PS|lpr"
 
-/* Video chip scaling.  */
-#define ARCHDEP_VICII_DSIZE   1
-#define ARCHDEP_VICII_DSCAN   1
-#define ARCHDEP_VICII_HWSCALE 1
-#define ARCHDEP_VDC_DSIZE     1
-#define ARCHDEP_VDC_DSCAN     1
-#define ARCHDEP_VDC_HWSCALE   0
-#define ARCHDEP_VIC_DSIZE     1
-#define ARCHDEP_VIC_DSCAN     1
-#define ARCHDEP_VIC_HWSCALE   1
-#define ARCHDEP_CRTC_DSIZE    1
-#define ARCHDEP_CRTC_DSCAN    1
-#define ARCHDEP_CRTC_HWSCALE  1
-#define ARCHDEP_TED_DSIZE     1
-#define ARCHDEP_TED_DSCAN     1
-#define ARCHDEP_TED_HWSCALE   1
-
-/* Video chip double buffering.  */
-#define ARCHDEP_VICII_DBUF 0
-#define ARCHDEP_VDC_DBUF   0
-#define ARCHDEP_VIC_DBUF   0
-#define ARCHDEP_CRTC_DBUF  0
-#define ARCHDEP_TED_DBUF   0
-
 /* Default RS232 devices.  */
 #define ARCHDEP_RS232_DEV1 "/dev/ttyS0"
 #define ARCHDEP_RS232_DEV2 "/dev/ttyS1"
