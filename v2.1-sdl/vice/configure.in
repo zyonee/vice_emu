@@ -272,27 +272,32 @@ elif test x"$host_os" = "xcygwin32" -o x"$host_os" = "xcygwin" -o x"$host_os" = 
 
   AC_DEFINE(HAS_JOYSTICK,,[Enable joystick emulation.])
   AC_DEFINE(HAVE_MOUSE,,[Enable 1351 mouse support])
-  AC_DEFINE(HAVE_RS232,,[Enable RS232 emulation.])
-  AM_CONDITIONAL(HAVE_RS232, true)
-  AM_CONDITIONAL(HAVE_RAWDRIVE, false)
-  AC_DEFINE(HAVE_CATWEASELMKIII,,[Support for Catweasel MKIII.])
-  AC_DEFINE(HAVE_HARDSID,,[Support for HardSID.])
-  AC_DEFINE(HAVE_TFE,,[Support for The final Ethernet.])
-  AC_DEFINE(HAVE_HTONL,,[Define to 1 if you have the htonl function.])
-  AC_DEFINE(HAVE_HTONS,,[Define to 1 if you have the htons function.])
-  AC_DEFINE(HAVE_NETWORK,,[Enable netplay support])
-  AC_DEFINE(HAVE_MIDI,,[Enable support for midi.])
-  if test x"$enable_parsid" = "xyes"; then
-    AC_DEFINE(HAVE_PARSID,,[Support for ParSID.])
+
+  if test x"$enable_sdlui" != "xyes"; then
+    AC_DEFINE(HAVE_RS232,,[Enable RS232 emulation.])
+    AM_CONDITIONAL(HAVE_RS232, true)
+    AC_DEFINE(HAVE_CATWEASELMKIII,,[Support for Catweasel MKIII.])
+    AC_DEFINE(HAVE_HARDSID,,[Support for HardSID.])
+    AC_DEFINE(HAVE_TFE,,[Support for The final Ethernet.])
+    AC_DEFINE(HAVE_HTONL,,[Define to 1 if you have the htonl function.])
+    AC_DEFINE(HAVE_HTONS,,[Define to 1 if you have the htons function.])
+    AC_DEFINE(HAVE_NETWORK,,[Enable netplay support])
+    AC_DEFINE(HAVE_MIDI,,[Enable support for midi.])
+    if test x"$enable_parsid" = "xyes"; then
+      AC_DEFINE(HAVE_PARSID,,[Support for ParSID.])
+    fi
+    AC_TRY_LINK([#include <windows.h>],
+                [LARGE_INTEGER li; return (int) li.QuadPart],
+                AC_DEFINE(HAS_LONGLONG_INTEGER,,
+                  [Support 64bit integer for Win32 performance counter]),)
+    AC_TRY_LINK([#include <windows.h>],
+                [HGLOBAL hGlobal; UnlockResource(hGlobal); return 0],
+                AC_DEFINE(HAS_UNLOCKRESOURCE,,[Do we have UnlockResource()?]),)
+  else
+    AM_CONDITIONAL(HAVE_RS232, false)
   fi
 
-  AC_TRY_LINK([#include <windows.h>],
-              [LARGE_INTEGER li; return (int) li.QuadPart],
-              AC_DEFINE(HAS_LONGLONG_INTEGER,,
-                [Support 64bit integer for Win32 performance counter]),)
-  AC_TRY_LINK([#include <windows.h>],
-              [HGLOBAL hGlobal; UnlockResource(hGlobal); return 0],
-              AC_DEFINE(HAS_UNLOCKRESOURCE,,[Do we have UnlockResource()?]),)
+  AM_CONDITIONAL(HAVE_RAWDRIVE, false)
 
 elif test x"$host_os" = "xbeos"; then
 
@@ -715,7 +720,7 @@ if test x"$with_sdlsound" = "xyes" -o x"$enable_sdlui" = "xyes"; then
                          [CFLAGS=$old_cflags; LIBS=$old_libs; break])
 
         if test x"$ac_cv_lib_SDL_SDL_SetVideoMode" != "xyes"; then
-            enable_sdlui=no
+            AC_MSG_ERROR([SDL headers and/or libraries missing])
         else
             AC_DEFINE(HAVE_FULLSCREEN,,[Enable Fullscreen support.])
         fi
@@ -1223,7 +1228,7 @@ AC_SUBST(NETPLAY_LIBS)
 dnl ----- FFMPEG -----
 FFMPEG_INCLUDES=
 FFMPEG_LIBS=
-if test x"$enable_ffmpeg" = "xyes" -o x"$is_win32" = "xyes"; then
+if test x"$enable_ffmpeg" = "xyes" -o x"$is_win32" = "xyes" -a x"$enable_sdlui" != "xyes"; then
   SOUND_DRIVERS="$SOUND_DRIVERS soundffmpegaudio.o"
   GFXOUTPUT_DRIVERS="$GFXOUTPUT_DRIVERS ffmpegdrv.o"
   AC_CHECK_HEADERS( ffmpeg/avformat.h )
@@ -1413,8 +1418,8 @@ if test x"$is_dos" = "xyes"; then
 fi
 
 if test x"$is_win32" = "xyes"; then
-    SOUND_DRIVERS="$SOUND_DRIVERS sounddx.o soundwmm.o"
     if test x"$enable_sdlui" != "xyes"; then
+        SOUND_DRIVERS="$SOUND_DRIVERS sounddx.o soundwmm.o"
         AC_PATH_PROGS(WINDRES, windres, windres)
         AC_PATH_PROGS(WRC, wrc , windres)
         if test x"$WRC" != "xwindres"; then
@@ -1433,6 +1438,8 @@ if test x"$is_win32" = "xyes"; then
             AC_MSG_WARN([WRC not found, WRC is required for propper internationalization support])
             WRC="$WINDRES"
         fi
+    else
+        SOUND_DRIVERS="$SOUND_DRIVERS soundwmm.o"
     fi
 fi
 
@@ -1955,7 +1962,7 @@ fi
 
 dnl CBM4Linux/OpenCBM
 if test x"$enable_realdevice" != "xno"; then
-  if test x"$host_os" = "xcygwin32" -o x"$host_os" = "xcygwin" -o x"$host_os" = "xmingw32"; then
+  if test x"$host_os" = "xcygwin32" -o x"$host_os" = "xcygwin" -o x"$host_os" = "xmingw32" -a x"$enable_sdlui" != "xyes"; then
     AC_DEFINE(HAVE_OPENCBM,,[Support for OpenCBM (former CBM4Linux).])
     AM_CONDITIONAL(HAVE_REALDEVICE, true)
   else
@@ -2009,6 +2016,8 @@ if test x"$enable_sdlui" = "xyes"; then
   ARCH_LIBS="$ARCH_DIR/libarch.a"
   ARCH_INCLUDES="-I$ARCH_SRC_DIR"
 fi
+
+SDL_EXTRA_LIBS=""
 
 if test x"$is_unix" = "xyes"; then
 
@@ -2185,11 +2194,24 @@ if test x"$is_unix" = "xyes"; then
   fi
 
 elif test x"$is_win32" = "xyes"; then
-  ARCH_DIR="\$(top_builddir)/src/arch/win32"
-  ARCH_SRC_DIR="\$(top_srcdir)/src/arch/win32"
-  ARCH_LIBS="$ARCH_DIR/libarch.a"
-  ARCH_INCLUDES="-I\$(top_srcdir)/src/arch/win32"
-  AM_CONDITIONAL(SDL_COMPILE, false)
+  if test x"$enable_sdlui" != "xyes"; then
+    ARCH_DIR="\$(top_builddir)/src/arch/win32"
+    ARCH_SRC_DIR="\$(top_srcdir)/src/arch/win32"
+    ARCH_LIBS="$ARCH_DIR/libarch.a"
+    ARCH_INCLUDES="-I\$(top_srcdir)/src/arch/win32"
+  else
+    AC_DEFINE(WIN32_COMPILE,,[Are we compiling for win32?])
+  fi
+
+  if test x"$enable_sdlui" = "xyes"; then
+    AM_CONDITIONAL(SDL_COMPILE, true)
+    AM_CONDITIONAL(WIN32_COMPILE, false)
+    SDL_EXTRA_LIBS="$UI_LIBS -lwinmm -lwsock32"
+  else
+    AM_CONDITIONAL(SDL_COMPILE, false)
+    AM_CONDITIONAL(WIN32_COMPILE, true)
+  fi
+
   AM_CONDITIONAL(UNIX_COMPILE, false)
   AM_CONDITIONAL(UNIX_GP2X_COMPILE, false)
   AM_CONDITIONAL(UNIX_SKYOS_COMPILE, false)
@@ -2200,7 +2222,6 @@ elif test x"$is_win32" = "xyes"; then
   AM_CONDITIONAL(UNIX_OPENSERVER6_COMPILE, false)
   AM_CONDITIONAL(UNIX_UNIXWARE_COMPILE, false)
   AM_CONDITIONAL(UNIX_HPUX_COMPILE, false)
-  AM_CONDITIONAL(WIN32_COMPILE, true)
   AM_CONDITIONAL(MSDOS_COMPILE, false)
   AM_CONDITIONAL(RISCOS_COMPILE, false)
   AM_CONDITIONAL(OS2_COMPILE, false)
@@ -2367,6 +2388,7 @@ AC_SUBST(ARCH_SRC_DIR)
 AC_SUBST(ARCH_MAKE_BINDIST_DIR)
 AC_SUBST(ARCH_EXTRA_SUBDIR)
 AC_SUBST(UI_LIBS)
+AC_SUBST(SDL_EXTRA_LIBS)
 AC_SUBST(SOUND_USS_OBJ)
 AC_SUBST(SOUND_SGI_OBJ)
 AC_SUBST(SOUND_HPUX_OBJ)

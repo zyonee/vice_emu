@@ -34,12 +34,21 @@
 
 #include <SDL/SDL.h>
 
+#ifdef WIN32_COMPILE
+typedef unsigned char BYTE;
+typedef unsigned short WORD;
+typedef unsigned long DWORD;
+typedef signed char SIGNED_CHAR;
+typedef signed short SWORD;
+typedef signed long SDWORD;
+#else
 #define BYTE Uint8
 #define SIGNED_CHAR Sint8
 #define WORD Uint16
 #define SWORD Sint16
 #define DWORD Uint32
 #define SDWORD Sint32
+#endif
 
 typedef DWORD CLOCK;
 /* Maximum value of a CLOCK.  */
@@ -68,4 +77,3 @@ typedef DWORD CLOCK;
 #endif
 
 #endif
-

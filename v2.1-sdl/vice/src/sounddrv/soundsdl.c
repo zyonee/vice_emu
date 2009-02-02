@@ -142,7 +142,11 @@ static int sdl_write(SWORD *pbuf, size_t nr)
 	    amount--;
           
           if (amount <= 0) {
+#ifdef WIN32
+            Sleep(5);
+#else
             usleep(5000);
+#endif
 	    continue;
 	}
           

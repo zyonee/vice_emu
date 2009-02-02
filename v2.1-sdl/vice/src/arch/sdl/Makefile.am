@@ -21,6 +21,8 @@ noinst_LIBRARIES = libarch.a
 libarch_a_SOURCES = \
 	archdep.c \
 	archdep.h \
+	archdep_unix.h \
+	archdep_win32.h \
 	blockdev.c \
 	console.c \
 	fullscreen.c \
@@ -97,3 +99,7 @@ libarch_a_SOURCES = \
 	xpet_ui.c \
 	xplus4_ui.c \
 	xvic_ui.c
+
+EXTRA_DIST = \
+	archdep_unix.c \
+	archdep_win32.c
