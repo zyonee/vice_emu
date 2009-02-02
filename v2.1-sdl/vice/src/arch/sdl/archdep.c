@@ -26,6 +26,9 @@
 
 #include "vice.h"
 
+#include <SDL/SDL.h>
+#include <stdio.h>
+
 #ifdef UNIX_COMPILE
 #include "archdep_unix.c"
 #endif
@@ -33,3 +36,19 @@
 #ifdef WIN32_COMPILE
 #include "archdep_win32.c"
 #endif
+
+int archdep_init(int *argc, char **argv)
+{
+    if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0) {
+        fprintf(stderr, "SDL error: %s\n", SDL_GetError());
+        return 1;
+    }
+
+    return archdep_init_extra(argc, argv);
+}
+ 
+void archdep_shutdown(void)
+{
+    SDL_Quit();
+    archdep_shutdown_extra();
+}

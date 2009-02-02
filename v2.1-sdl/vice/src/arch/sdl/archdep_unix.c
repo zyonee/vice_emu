@@ -68,15 +68,8 @@ static char *boot_path = NULL;
 /* alternate storage of preferences */
 const char *archdep_pref_path = NULL; /* NULL -> use home_path + ".vice" */
 
-int archdep_init(int *argc, char **argv)
+static int archdep_init_extra(int *argc, char **argv)
 {
-fprintf(stderr,"%s\n",__func__);
-
-    if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0) {
-        fprintf(stderr, "SDL error: %s\n", SDL_GetError());
-        return 1;
-    }
-
     argv0 = lib_stralloc(argv[0]);
 
     archdep_ui_init(*argc, argv);
@@ -615,10 +608,8 @@ int archdep_file_is_chardev(const char *name)
     return 0;
 }
 
-void archdep_shutdown(void)
+static void archdep_shutdown_extra(void)
 {
-fprintf(stderr,"%s\n",__func__);
-    SDL_Quit();
     lib_free(argv0);
     lib_free(boot_path);
 }

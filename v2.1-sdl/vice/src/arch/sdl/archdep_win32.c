@@ -145,7 +145,7 @@ static void archdep_network_shutdown(void)
     WSACleanup();
 }
 
-int archdep_init(int *argc, char **argv)
+static int archdep_init_extra(int *argc, char **argv)
 {
     _fmode = O_BINARY;
 
@@ -273,7 +273,7 @@ char *archdep_default_save_resource_file_name(void)
 
 char *archdep_default_resource_file_name(void)
 {
-    return util_concat(archdep_boot_path(), "\\vice.ini", NULL);
+    return util_concat(archdep_boot_path(), "\\sdl-vice.ini", NULL);
 }
 
 char *archdep_default_fliplist_file_name(void)
@@ -537,7 +537,7 @@ int archdep_file_is_chardev(const char *name)
     return 0;
 }
 
-void archdep_shutdown(void)
+static void archdep_shutdown_extra(void)
 {
     archdep_network_shutdown();
 
