@@ -293,6 +293,13 @@ elif test x"$host_os" = "xcygwin32" -o x"$host_os" = "xcygwin" -o x"$host_os" = 
   AC_TRY_LINK([#include <windows.h>],
               [HGLOBAL hGlobal; UnlockResource(hGlobal); return 0],
               AC_DEFINE(HAS_UNLOCKRESOURCE,,[Do we have UnlockResource()?]),)
+  AC_CHECK_HEADER(dinput.h,
+      [ AC_DEFINE(HAVE_DINPUT,,[Use DirectInput joystick driver]) ]
+      [ AC_CHECK_LIB(dinput, DirectInputCreateA@16,
+          [ AC_DEFINE(HAVE_DINPUT_LIB, [], [dinput.lib or libdinput.a are present]) ] [ LIBS="-ldinput $LIBS" ],
+          [ LIBS="-lole32 $LIBS" ])
+      ]
+      )
 
 elif test x"$host_os" = "xbeos"; then
 

@@ -30,10 +30,10 @@
 #include "cmdline.h"
 #include "resources.h"
 
-#define DIRECTINPUT_VERSION     0x0500
+#ifdef HAVE_DINPUT
+#include "dinput_handle.h"
+#endif
 #include <winerror.h>
-#include <ddraw.h>
-#include <dinput.h>
 #include <mmsystem.h>
 
 #include "lib.h"
@@ -47,7 +47,13 @@
 #include "ui.h"
 #include "winmain.h"
 
-int joystick_inited = 0;
+static enum {
+    WIN_JOY_UNINIT,
+#ifdef HAVE_DINPUT
+    WIN_JOY_DINPUT,
+#endif
+    WIN_JOY_WINMM
+} joystick_inited = WIN_JOY_UNINIT;
 
 /* Notice that this has to be `int' to make resources work.  */
 static int joystick_fire_speed[2];
@@ -62,11 +68,10 @@ int joystick_port_map[2];
 
 /* ------------------------------------------------------------------------ */
 
+#ifdef HAVE_DINPUT
 /* Joystick devices.  */
 static LPDIRECTINPUTDEVICE  joystick_di_devices[2] = {NULL, NULL};
 static LPDIRECTINPUTDEVICE2  joystick_di_devices2[2] = {NULL, NULL};
-int                         di_version;
-LPDIRECTINPUT               di;
 
 typedef struct _JoyAxis {
     struct _JoyAxis *next;
@@ -95,10 +100,8 @@ static JoyInfo  *joystick_list = NULL;
 
 static BOOL CALLBACK EnumJoyAxes(LPCDIDEVICEOBJECTINSTANCE lpddoi, LPVOID pvRef)
 {
-JoyAxis *axis;
-JoyInfo *joy;
-
-//    log_debug("Axis, offset : %s %d", lpddoi->tszName, lpddoi->dwOfs);
+    JoyAxis *axis;
+    JoyInfo *joy;
 
     joy = (JoyInfo*)pvRef;
 
@@ -125,10 +128,8 @@ JoyInfo *joy;
 
 static BOOL CALLBACK EnumJoyButtons(LPCDIDEVICEOBJECTINSTANCE lpddoi, LPVOID pvRef)
 {
-JoyButton *button;
-JoyInfo *joy;
-
-//    log_debug("Button, offset : %s %d", lpddoi->tszName, lpddoi->dwOfs);
+    JoyButton *button;
+    JoyInfo *joy;
 
     joy = (JoyInfo*)pvRef;
 
@@ -179,7 +180,7 @@ static void joystick_release_buttons(JoyButton *button)
 
 static void joystick_release_joysticks(void)
 {
-JoyInfo     *joystick;
+    JoyInfo     *joystick;
 
     joystick = joystick_list;
 
@@ -197,9 +198,12 @@ JoyInfo     *joystick;
 
 int joystick_di_open(int index, int dev)
 {
-JoyInfo *joy;
-int     i = 0;
+    JoyInfo *joy;
+    int i = 0;
+    LPDIRECTINPUT di = get_directinput_handle();
 
+    if (di == NULL)
+        return 0;
     joy = joystick_list;
     while (joy && i < dev - JOYDEV_HW1) {
         joy = joy->next;
@@ -237,23 +241,26 @@ void joystick_di_close(int index)
     joystick_di_devices[index] = NULL;
     joystick_di_devices2[index] = NULL;
 }
-
+#endif
 
 static int set_joystick_device_1(int val, void *param)
 {
     joystick_device_t dev = (joystick_device_t)val;
 
-    if (!joystick_inited) joy_arch_init();
+    if (joystick_inited == WIN_JOY_UNINIT) joy_arch_init();
 
-    if ((di_version == 5) && (joystick_port_map[0] >= JOYDEV_HW1)) {
+#ifdef HAVE_DINPUT
+    if ((joystick_inited == WIN_JOY_DINPUT) && (joystick_port_map[0] >= JOYDEV_HW1)) {
         joystick_di_close(0);
     }
 
-    if ((di_version == 5) && (dev >= JOYDEV_HW1)) {
+    if ((joystick_inited == WIN_JOY_DINPUT) && (dev >= JOYDEV_HW1)) {
         if (joystick_di_open(0, dev)) {
             joystick_port_map[0] = dev;
         }
-    } else {
+    } else
+#endif
+    {
         joystick_port_map[0] = dev;
     }
 
@@ -264,18 +271,20 @@ static int set_joystick_device_2(int val, void *param)
 {
     joystick_device_t dev = (joystick_device_t)val;
 
-    if (!joystick_inited) joy_arch_init();
+    if (joystick_inited == WIN_JOY_UNINIT) joy_arch_init();
 
-    if ((di_version == 5) && (joystick_port_map[1] >= JOYDEV_HW1)) {
+#ifdef HAVE_DINPUT
+    if ((joystick_inited == WIN_JOY_DINPUT) && (joystick_port_map[1] >= JOYDEV_HW1)) {
         joystick_di_close(1);
     }
 
-
-    if ((di_version == 5) && (dev >= JOYDEV_HW1)) {
+    if ((joystick_inited == WIN_JOY_DINPUT) && (dev >= JOYDEV_HW1)) {
         if (joystick_di_open(1, dev)) {
             joystick_port_map[1] = dev;
         }
-    } else {
+    } else
+#endif
+    {
         joystick_port_map[1] = dev;
     }
 
@@ -420,16 +429,10 @@ int joystick_init_cmdline_options(void)
 
 /* ------------------------------------------------------------------------- */
 
-int                         directinput_inited;
-extern LPDIRECTINPUTDEVICE  di_mouse;
-void mouse_set_format(void);
-
+#ifdef HAVE_DINPUT
 static BOOL CALLBACK EnumCallBack(LPCDIDEVICEINSTANCE lpddi, LPVOID pvref)
 {
-JoyInfo *new_joystick;
-
-//    log_debug("ProductName: %s", lpddi->tszProductName);
-//    log_debug("Instance Name: %s", lpddi->tszInstanceName);
+    JoyInfo *new_joystick;
 
     new_joystick = lib_malloc(sizeof(JoyInfo));
     new_joystick->next = NULL;
@@ -450,40 +453,23 @@ JoyInfo *new_joystick;
     }
     return DIENUM_CONTINUE;
 }
+#endif
 
 int joy_arch_init(void)
 {
     HRESULT result;
-
-    if (!joystick_inited) {
-        di_version = 5;
-        result = DirectInputCreate(winmain_instance, 0x0500, &di, NULL);
-        if (result == DIERR_OLDDIRECTINPUTVERSION) {
-            di_version = 3;
-            result = DirectInputCreate(winmain_instance, 0x0300, &di, NULL);
-        }
-        if (result != DI_OK) {
-            di = NULL;
-            di_mouse = NULL;
-            return 0;
-        }
-        if (di_version == 5 ) {
+#ifdef HAVE_DINPUT
+    LPDIRECTINPUT di = get_directinput_handle();
+#endif
+    if (joystick_inited == WIN_JOY_UNINIT) {
+#ifdef HAVE_DINPUT
+        if (di) {
             IDirectInput_EnumDevices(di, DIDEVTYPE_JOYSTICK, EnumCallBack, NULL, DIEDFL_ALLDEVICES);
+            joystick_inited = WIN_JOY_DINPUT;
         }
-
-        joystick_inited = 1;
-
-        /*  Init mouse device */
-        result = IDirectInput_CreateDevice(di, (GUID *)&GUID_SysMouse, &di_mouse,
-                                           NULL);
-        if (result != DI_OK) {
-            di_mouse = NULL;
-            return 0;
-        }
-        mouse_set_format();
-
-    //    IDirectInput_EnumDevices(di, 0, EnumCallBack, 0, 0);
-
+        else
+#endif
+            joystick_inited = WIN_JOY_WINMM;
     }
 
     return 0;
@@ -491,40 +477,36 @@ int joy_arch_init(void)
 
 int joystick_close(void)
 {
-    if (di_mouse != NULL) {
-        IDirectInputDevice_Unacquire(di_mouse);
-        IDirectInputDevice_Release(di_mouse);
-        di_mouse = NULL;
-    }
-    if ((di_version == 5) && (joystick_port_map[0] >= JOYDEV_HW1)) {
+#ifdef HAVE_DINPUT
+    if ((joystick_inited == WIN_JOY_DINPUT) && (joystick_port_map[0] >= JOYDEV_HW1)) {
         joystick_di_close(0);
     }
-    if ((di_version == 5) && (joystick_port_map[1] >= JOYDEV_HW1)) {
+    if ((joystick_inited == WIN_JOY_DINPUT) && (joystick_port_map[1] >= JOYDEV_HW1)) {
         joystick_di_close(1);
     }
     joystick_release_joysticks();
-    if (di != NULL)
-        IDirectInput_Release(di);
-    joystick_inited = 0;
+#endif
+    joystick_inited = WIN_JOY_UNINIT;
     return 0;
 }
 
+#ifdef HAVE_DINPUT
 JOYINFOEX   joy_info;
 JOYCAPS     joy_caps;
 
 static BYTE joystick_di5_update(int joy_no)
 {
-BYTE value;
-int i;
-DIPROPRANGE    prop;
-UINT amin;
-UINT amax;
-DWORD apos;
-DIJOYSTATE  js;
-JoyInfo *joy;
-JoyButton *button;
-int     afire_button;
-int		fire_button;
+    BYTE value;
+    int i;
+    DIPROPRANGE    prop;
+    UINT amin;
+    UINT amax;
+    DWORD apos;
+    DIJOYSTATE  js;
+    JoyInfo *joy;
+    JoyButton *button;
+    int     afire_button;
+    int		fire_button;
 
     value = 0;
 
@@ -637,6 +619,7 @@ int		fire_button;
     }
     return value;
 }
+#endif
 
 void joystick_update(void)
 {
@@ -651,14 +634,17 @@ void joystick_update(void)
 	int fire_button;
     int j;
 
-    if (di_version == 5) {
+#ifdef HAVE_DINPUT
+    if (joystick_inited == WIN_JOY_DINPUT) {
         int i;
         for (i = 0; i < 2; i++) {
             if (joystick_port_map[i] >= JOYDEV_HW1) {
                 joystick_set_value_absolute(i + 1, joystick_di5_update(i));
             }
         }
-    } else {
+    } else
+#endif
+    {
         if ((idx = (joystick_port_map[0] == JOYDEV_HW1)
             ? 0 : ((joystick_port_map[1] == JOYDEV_HW1) ? 1 : -1)) != -1) {
             switch (joystick_fire_axis[idx]) {
@@ -845,23 +831,29 @@ void joystick_update(void)
     }
 }
 
+#ifdef HAVE_DINPUT
 void joystick_calibrate(HWND hwnd)
 {
-    IDirectInput_RunControlPanel(di,hwnd,0);
+    LPDIRECTINPUT di = get_directinput_handle();
+    if (di != NULL)
+        IDirectInput_RunControlPanel(di,hwnd,0);
 }
-
+#endif
 
 void joystick_ui_get_device_list(HWND joy_hwnd)
 {
-JoyInfo *joy;
+#ifdef HAVE_DINPUT
+    JoyInfo *joy;
 
-    if (di_version == 5) {
+    if (joystick_inited == WIN_JOY_DINPUT) {
         joy = joystick_list;
         while (joy) {
             SendMessage(joy_hwnd, CB_ADDSTRING, 0, (LPARAM)joy->name);
             joy = joy->next;
         }
-    } else {
+    } else
+#endif
+    {
         SendMessage(joy_hwnd, CB_ADDSTRING, 0, (LPARAM)"PC joystick #1");
         SendMessage(joy_hwnd, CB_ADDSTRING, 0, (LPARAM)"PC joystick #2");
     }
@@ -869,11 +861,12 @@ JoyInfo *joy;
 
 void joystick_ui_get_autofire_axes(HWND joy_hwnd, int device)
 {
-JoyInfo *joy;
-JoyAxis *axis;
-int     i;
+    int     i;
+#ifdef HAVE_DINPUT
+    JoyInfo *joy;
+    JoyAxis *axis;
 
-    if (di_version == 5) {
+    if (joystick_inited == WIN_JOY_DINPUT) {
         device = device - JOYDEV_HW1;
         joy = joystick_list;
         i = 0;
@@ -888,7 +881,9 @@ int     i;
                 axis = axis->next;
             }
         }
-    } else {
+    } else
+#endif
+    {
         SendMessage(joy_hwnd, CB_ADDSTRING, 0, (LPARAM)"Z-axis");
         SendMessage(joy_hwnd, CB_ADDSTRING, 0, (LPARAM)"V-axis");
         SendMessage(joy_hwnd, CB_ADDSTRING, 0, (LPARAM)"U-axis");
@@ -898,11 +893,12 @@ int     i;
 
 void joystick_ui_get_autofire_buttons(HWND joy_hwnd, int device)
 {
-JoyInfo *joy;
-JoyButton *button;
-int     i;
+    int     i;
+#ifdef HAVE_DINPUT
+    JoyInfo *joy;
+    JoyButton *button;
 
-    if (di_version == 5) {
+    if (joystick_inited == WIN_JOY_DINPUT) {
         device = device - JOYDEV_HW1;
         joy = joystick_list;
         i = 0;
@@ -917,7 +913,9 @@ int     i;
                 button = button->next;
             }
         }
-    } else {
+    } else
+#endif
+    {
         SendMessage(joy_hwnd, CB_ADDSTRING, 0, (LPARAM)"Button 1");
         SendMessage(joy_hwnd, CB_ADDSTRING, 0, (LPARAM)"Button 2");
         SendMessage(joy_hwnd, CB_ADDSTRING, 0, (LPARAM)"Button 3");
@@ -927,4 +925,13 @@ int     i;
         SendMessage(joy_hwnd, CB_ADDSTRING, 0, (LPARAM)"Button 7");
         SendMessage(joy_hwnd, CB_ADDSTRING, 0, (LPARAM)"Button 8");
     }
+}
+
+char joystick_uses_direct_input(void)
+{
+#ifdef HAVE_DINPUT
+    return (joystick_inited == WIN_JOY_DINPUT);
+#else
+    return 0;
+#endif
 }
