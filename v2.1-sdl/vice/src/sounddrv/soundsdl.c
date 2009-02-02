@@ -4,6 +4,7 @@
  * Written by
  *  Teemu Rantanen <tvr@cs.hut.fi>
  *  Daniel Aarno <macbishop@users.sourceforge.net>
+ *  Hannu Nuotio <hannu.nuotio@tut.fi>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -177,10 +178,10 @@ static int sdl_bufferspace(void)
     amount = sdl_inptr - sdl_outptr;
 
     if (amount < 0) {
-        amount += sdl_len;
+        amount += sdl_len - 1;
     }
 
-    return sdl_len - amount;
+    return sdl_len - 1 - amount;
 }
 
 static void sdl_close(void)
@@ -191,6 +192,17 @@ static void sdl_close(void)
     sdl_inptr = sdl_outptr = sdl_len = 0;
 }
 
+static int sdl_suspend(void)
+{
+    SDL_PauseAudio(1);
+    return 0;
+}
+
+static int sdl_resume(void)
+{
+    SDL_PauseAudio(0);
+    return 0;
+}
 
 static sound_device_t sdl_device =
 {
@@ -201,8 +213,8 @@ static sound_device_t sdl_device =
     NULL,
     sdl_bufferspace,
     sdl_close,
-    NULL,
-    NULL,
+    sdl_suspend,
+    sdl_resume,
     1
 };
 
