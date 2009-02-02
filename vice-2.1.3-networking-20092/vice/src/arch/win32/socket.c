@@ -54,7 +54,7 @@ vice_network_socket_t vice_network_socket_tcp(void)
 
 vice_network_socket_t vice_network_socket_udp(void)
 {
-    vice_network_socket_t sockfd = socket(PF_INET, SOCK_STREAM, IPPROTO_UDP);
+    vice_network_socket_t sockfd = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP);
 
     return sockfd;
 }
