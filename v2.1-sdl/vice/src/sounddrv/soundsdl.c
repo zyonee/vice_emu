@@ -97,7 +97,7 @@ static int sdl_init(const char *param, int *speed,
         return 1;
     }
 
-    sdl_len = (*fragsize)*(*fragnr) + 1;
+    sdl_len = (*fragsize)*(*fragnr);
     sdl_inptr = sdl_outptr = 0;
     sdl_buf = lib_malloc(sizeof(SWORD)*sdl_len);
 
@@ -148,8 +148,8 @@ static int sdl_write(SWORD *pbuf, size_t nr)
             amount = sdl_len - sdl_inptr;
         }
 
-        if ((sdl_inptr + amount)%sdl_len == sdl_outptr) {
-            amount--;
+        if (total + amount > nr) {
+            amount = nr - total;
         }
 
         if (amount <= 0) {
@@ -157,9 +157,6 @@ static int sdl_write(SWORD *pbuf, size_t nr)
             continue;
         }
 
-        if (total + amount > nr) {
-            amount = nr - total;
-        }
         memcpy(sdl_buf + sdl_inptr, pbuf + total, amount*sizeof(SWORD));
         sdl_inptr += amount;
         total += amount;
@@ -178,10 +175,10 @@ static int sdl_bufferspace(void)
     amount = sdl_inptr - sdl_outptr;
 
     if (amount < 0) {
-        amount += sdl_len - 1;
+        amount += sdl_len;
     }
 
-    return sdl_len - 1 - amount;
+    return sdl_len - amount - 1;
 }
 
 static void sdl_close(void)
