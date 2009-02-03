@@ -42,7 +42,7 @@
 #include "pngdrv.h"
 #endif
 
-#if defined(HAVE_GIF) || defined(WIN32)
+#if defined(HAVE_GIF) || (defined(WIN32) && !defined(USE_SDLUI))
 #include "gifdrv.h"
 #endif
 
@@ -99,7 +99,7 @@ int gfxoutput_early_init(void)
     gfxoutputdrv_list->next = NULL;
 
     gfxoutput_init_bmp();
-#if defined(HAVE_GIF) || defined(WIN32)
+#if defined(HAVE_GIF) || (defined(WIN32) && !defined(USE_SDLUI))
     gfxoutput_init_gif();
 #endif
     gfxoutput_init_iff();

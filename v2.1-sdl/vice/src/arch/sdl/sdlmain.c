@@ -32,7 +32,9 @@
 #include "machine.h"
 #include "main.h"
 
+#ifdef HAVE_SDLMAIN
 #include <SDL/SDL_main.h>
+#endif
 
 int main(int argc, char **argv)
 {
@@ -47,4 +49,3 @@ void main_exit(void)
 
     putchar('\n');
 }
-

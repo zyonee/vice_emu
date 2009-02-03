@@ -724,10 +724,8 @@ if test x"$with_sdlsound" = "xyes" -o x"$enable_sdlui" = "xyes"; then
         else
             AC_DEFINE(HAVE_FULLSCREEN,,[Enable Fullscreen support.])
         fi
-    fi
 
-    dnl check for opengl libs.
-    if test x"$enable_sdlui" = "xyes"; then
+        dnl check for opengl libs.
         AC_MSG_CHECKING(whether we can use the GL library)
 
         old_LIBS="$LIBS"
@@ -754,6 +752,57 @@ if test x"$with_sdlsound" = "xyes" -o x"$enable_sdlui" = "xyes"; then
         if test x"$have_opengl_lib" = "xyes"; then
             AC_DEFINE(HAVE_HWSCALE,,[Enable arbitrary window scaling])
         fi
+
+        dnl check for the SDL/SDL_main.h header
+        AC_CHECK_HEADERS(SDL/SDL_main.h)
+
+        AC_MSG_CHECKING(whether we can use the SDLmain library)
+        old_LIBS="$LIBS"
+        LIBS="$LIBS -lSDLmain -lSDL"
+        AC_TRY_LINK([#include <SDL/SDL_main.h>
+                     int main(int argc, char *argv[])
+                     { return 0; }
+                     #undef main
+                     #define main something_else],
+                    [return 0;],
+                    [AC_MSG_RESULT(yes);
+                     have_sdlmain=yes],
+                    [AC_MSG_RESULT(no);
+                     LIBS="$old_LIBS"])
+
+        if test x"$have_sdlmain" != "xyes"; then
+            AC_MSG_CHECKING(whether we can use the SDLmain library when adding -lmingw32)
+            old_LIBS="$LIBS"
+            LIBS="$LIBS -lmingw32 -lSDLmain -lSDL"
+            AC_TRY_LINK([#include <SDL/SDL_main.h>
+                         int main(int argc, char *argv[])
+                         { return 0; }
+                         #undef main
+                         #define main something_else],
+                        [return 0;],
+                        [AC_MSG_RESULT(yes);
+                         have_sdlmain=yes],
+                        [AC_MSG_RESULT(no);
+                         LIBS="$old_LIBS"])
+        fi
+
+        if test x"$have_sdlmain" = "xyes"; then
+            AC_DEFINE(HAVE_SDLMAIN,,[Enable SDLmain replacement])
+        fi
+
+        AC_MSG_CHECKING(whether we can use directx sound)
+        old_LIBS="$LIBS"
+        LIBS="$LIBS -ldsound"
+        AC_TRY_LINK([#define DIRECTSOUND_VERSION 0x500
+                         #include <dsound.h>],
+                        [LPDIRECTSOUNDBUFFER buffer=NULL;
+                         IDirectSoundBuffer_Restore(buffer);],
+                        [AC_MSG_RESULT(yes);
+                         SOUND_DRIVERS="$SOUND_DRIVERS sounddx.o";
+                         SOUND_LIBS="$SOUND_LIBS -ldsound";
+                         AC_DEFINE(USE_DXSOUND,,[Enable directx sound support.])],
+                        [AC_MSG_RESULT(no)])
+        LIBS="$old_LIBS"
     fi
 fi
 
@@ -1420,6 +1469,7 @@ fi
 if test x"$is_win32" = "xyes"; then
     if test x"$enable_sdlui" != "xyes"; then
         SOUND_DRIVERS="$SOUND_DRIVERS sounddx.o soundwmm.o"
+        AC_DEFINE(USE_DXSOUND,,[Enable directx sound support.])
         AC_PATH_PROGS(WINDRES, windres, windres)
         AC_PATH_PROGS(WRC, wrc , windres)
         if test x"$WRC" != "xwindres"; then
