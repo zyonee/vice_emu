@@ -362,7 +362,7 @@ static void create_content_list(image_contents_t *contents, Object *list)
     lib_free(start);
 
     if (p == NULL) {
-        DoMethod(list, MUIM_List_InsertSingle, "(EMPRY IMAGE.)", MUIV_List_Insert_Bottom);
+        DoMethod(list, MUIM_List_InsertSingle, "(EMPTY IMAGE.)", MUIV_List_Insert_Bottom);
     }
     else do {
         start = image_contents_file_to_string(p, 0);
