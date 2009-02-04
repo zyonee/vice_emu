@@ -355,7 +355,7 @@ void joy_arch_init_default_mapping(int joynum)
     for (i=0; i<sdljoystick[joynum].input_max[BUTTON]*input_mult[BUTTON]; ++i) {
         switch (i&3) {
             case 0:
-            case 1:
+            case 3:
             default:
                 joyport = ((1+joynum+(i&1))&1);
                 pin = 1<<4;
@@ -363,10 +363,10 @@ void joy_arch_init_default_mapping(int joynum)
                 sdljoystick[joynum].input[BUTTON][i].value.joy[0] = joyport;
                 sdljoystick[joynum].input[BUTTON][i].value.joy[1] = pin;
                 break;
-            case 2:
+            case 1:
                 sdljoystick[joynum].input[BUTTON][i].action = UI_ACTIVATE;
                 break;
-            case 3:
+            case 2:
                 sdljoystick[joynum].input[BUTTON][i].action = MAP;
                 break;
         }
