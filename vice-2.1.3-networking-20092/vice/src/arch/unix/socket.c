@@ -51,14 +51,20 @@ vice_network_socket_t vice_network_socket_tcp(void)
 {
     vice_network_socket_t sockfd = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
 
-    return sockfd;
+    if (sockfd < 0) {
+        sockfd = INVALID_SOCKET;
+    }
+    return sockfd ^ INVALID_SOCKET;
 }
 
 vice_network_socket_t vice_network_socket_udp(void)
 {
     vice_network_socket_t sockfd = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP);
 
-    return sockfd;
+    if (sockfd < 0) {
+        sockfd = INVALID_SOCKET;
+    }
+    return sockfd ^ INVALID_SOCKET;
 }
 
 static vice_network_socket_address_t * vice_network_alloc_new_socket_address(struct sockaddr * input_address, int address_length)
@@ -171,17 +177,17 @@ void vice_network_address_close(vice_network_socket_address_t * address)
 
 int vice_network_bind(vice_network_socket_t sockfd, const vice_network_socket_address_t * addr)
 {
-    return bind(sockfd, addr->address, addr->len);
+    return bind(sockfd ^ INVALID_SOCKET, addr->address, addr->len);
 }
 
 int vice_network_listen(vice_network_socket_t sockfd, int backlog)
 {
-    return listen(sockfd, backlog);
+    return listen(sockfd ^ INVALID_SOCKET, backlog);
 }
 
 int vice_network_connect(vice_network_socket_t sockfd, const vice_network_socket_address_t * server_address)
 {
-    return connect(sockfd, server_address->address, server_address->len);
+    return connect(sockfd ^ INVALID_SOCKET, server_address->address, server_address->len);
 }
 
 vice_network_socket_t vice_network_accept(vice_network_socket_t sockfd, vice_network_socket_address_t ** client_address)
@@ -191,27 +197,27 @@ vice_network_socket_t vice_network_accept(vice_network_socket_t sockfd, vice_net
 
     vice_network_socket_t newsocket;
 
-    newsocket = accept(sockfd, addr, &addr_length);
+    newsocket = accept(sockfd ^ INVALID_SOCKET, addr, &addr_length);
 
-    if (newsocket != INVALID_SOCKET && client_address) {
+    if (newsocket >= 0 && client_address) {
         *client_address = vice_network_alloc_new_socket_address(addr, addr_length);
     }
-    return newsocket;
+    return newsocket ^ INVALID_SOCKET;
 }
 
 int vice_network_socket_close(vice_network_socket_t sockfd)
 {
-    return closesocket(sockfd);
+    return closesocket(sockfd ^ INVALID_SOCKET);
 }
 
 int vice_network_send(vice_network_socket_t sockfd, const void * buffer, size_t buffer_length, int flags)
 {
-    return send(sockfd, buffer, buffer_length, flags);
+    return send(sockfd ^ INVALID_SOCKET, buffer, buffer_length, flags);
 }
 
 int vice_network_receive(vice_network_socket_t sockfd, void * buffer, size_t buffer_length, int flags)
 {
-    return recv(sockfd, buffer, buffer_length, flags);
+    return recv(sockfd ^ INVALID_SOCKET, buffer, buffer_length, flags);
 }
 
 int vice_network_select_poll_one(vice_network_socket_t readsockfd)
@@ -221,9 +227,9 @@ int vice_network_select_poll_one(vice_network_socket_t readsockfd)
     fd_set fdsockset;
 
     FD_ZERO(&fdsockset);
-    FD_SET(readsockfd, &fdsockset);
+    FD_SET(readsockfd ^ INVALID_SOCKET, &fdsockset);
 
-    return select(readsockfd + 1, &fdsockset, NULL, NULL, &timeout);
+    return select( (readsockfd ^ INVALID_SOCKET) + 1, &fdsockset, NULL, NULL, &timeout);
 }
 
 int vice_network_get_errorcode(void)
