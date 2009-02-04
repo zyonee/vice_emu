@@ -32,14 +32,13 @@
 
 #include "vice.h"
 
+#include <errno.h>
+#include <stdlib.h>
+#include <string.h>
+
 #include "lib.h"
 #include "socket.h"
-
-#include <winsock.h>
-
-#ifndef FD_SETSIZE
-#define FD_SETSIZE 64 /* just in case mingw or msvc doesn't define it */
-#endif
+#include "socketimpl.h"
 
 struct vice_network_socket_address_s
 {
@@ -188,7 +187,7 @@ int vice_network_connect(vice_network_socket_t sockfd, const vice_network_socket
 vice_network_socket_t vice_network_accept(vice_network_socket_t sockfd, vice_network_socket_address_t ** client_address)
 {
     struct sockaddr * addr = { 0 };
-    int addr_length = sizeof(*addr);
+    socklen_t addr_length = sizeof(*addr);
 
     vice_network_socket_t newsocket;
 
@@ -224,10 +223,10 @@ int vice_network_select_poll_one(vice_network_socket_t readsockfd)
     FD_ZERO(&fdsockset);
     FD_SET(readsockfd, &fdsockset);
 
-    return select(0, &fdsockset, NULL, NULL, &timeout);
+    return select(readsockfd + 1, &fdsockset, NULL, NULL, &timeout);
 }
 
 int vice_network_get_errorcode(void)
 {
-    return WSAGetLastError();
+    return errno;
 }

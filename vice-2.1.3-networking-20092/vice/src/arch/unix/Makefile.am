@@ -63,6 +63,8 @@ libarch_a_SOURCES = \
 	parsid.c \
 	rs232.c \
 	signals.c \
+	socket.c \
+	socketimpl.h \
 	tfearch.c \
 	types.h \
 	ui.h \
