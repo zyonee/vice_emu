@@ -191,8 +191,8 @@ vice_network_socket_t vice_network_accept(vice_network_socket_t sockfd, vice_net
 
     newsocket = accept(sockfd, addr, &addr_length);
 
-    if (newsocket != INVALID_SOCKET) {
-        * client_address = vice_network_alloc_new_socket_address(addr, addr_length);
+    if (newsocket != INVALID_SOCKET && client_address) {
+        *client_address = vice_network_alloc_new_socket_address(addr, addr_length);
     }
     return newsocket;
 }
