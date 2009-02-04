@@ -27,6 +27,7 @@
 #include "vice.h"
 #include "types.h"
 
+#include <SDL/SDL.h>
 #include <stdlib.h>
 
 #include "joy.h"
@@ -36,6 +37,7 @@
 #include "resources.h"
 #include "ui.h"
 #include "uimenu.h"
+#include "uipoll.h"
 
 
 static UI_MENU_CALLBACK(save_settings_callback)
@@ -151,6 +153,67 @@ static UI_MENU_CALLBACK(load_joymap_callback)
 UI_MENU_DEFINE_TOGGLE(SaveResourcesOnExit)
 UI_MENU_DEFINE_TOGGLE(ConfirmOnExit)
 
+static UI_MENU_CALLBACK(custom_ui_keyset_callback)
+{
+    SDL_Event e;
+    int previous;
+    
+    if(resources_get_int((const char *)param, &previous)) {
+        return sdl_menu_text_unknown;
+    }
+        
+    if (activated) {
+        e = sdl_ui_poll_event("key", (const char *)param, SDL_POLL_KEYBOARD | SDL_POLL_MODIFIER, 5);
+        
+        if(e.type == SDL_KEYDOWN) {
+            resources_set_int((const char *)param, (int)e.key.keysym.sym);
+        }
+    } else {
+        return SDL_GetKeyName(previous);
+    }
+    return NULL;
+}
+
+static const ui_menu_entry_t define_ui_keyset_menu[] = {
+    { "Activate menu ",
+      MENU_ENTRY_DIALOG,
+      custom_ui_keyset_callback,
+      (ui_callback_data_t)"MenuKey" },
+    { "Menu up       ",
+      MENU_ENTRY_DIALOG,
+      custom_ui_keyset_callback,
+      (ui_callback_data_t)"MenuKeyUp" },
+    { "Menu down     ",
+      MENU_ENTRY_DIALOG,
+      custom_ui_keyset_callback,
+      (ui_callback_data_t)"MenuKeyDown" },
+    { "Menu left     ",
+      MENU_ENTRY_DIALOG,
+      custom_ui_keyset_callback,
+      (ui_callback_data_t)"MenuKeyLeft" },
+    { "Menu right    ",
+      MENU_ENTRY_DIALOG,
+      custom_ui_keyset_callback,
+      (ui_callback_data_t)"MenuKeyRight" },
+    { "Menu select   ",
+      MENU_ENTRY_DIALOG,
+      custom_ui_keyset_callback,
+      (ui_callback_data_t)"MenuKeySelect" },
+    { "Menu cancel   ",
+      MENU_ENTRY_DIALOG,
+      custom_ui_keyset_callback,
+      (ui_callback_data_t)"MenuKeyCancel" },
+    { "Menu exit     ",
+      MENU_ENTRY_DIALOG,
+      custom_ui_keyset_callback,
+      (ui_callback_data_t)"MenuKeyExit" },
+    { "Menu map      ",
+      MENU_ENTRY_DIALOG,
+      custom_ui_keyset_callback,
+      (ui_callback_data_t)"MenuKeyMap" },
+    { NULL }
+};
+
 const ui_menu_entry_t settings_manager_menu[] = {
     { "Save current settings",
       MENU_ENTRY_OTHER,
@@ -191,5 +254,10 @@ const ui_menu_entry_t settings_manager_menu[] = {
       MENU_ENTRY_OTHER,
       load_joymap_callback,
       NULL },
+    SDL_MENU_ITEM_SEPARATOR,
+    { "Define UI keys",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)define_ui_keyset_menu },
     { NULL }
 };

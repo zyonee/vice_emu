@@ -877,6 +877,17 @@ ui_menu_entry_t *sdljoy_get_hotkey(SDL_Event e)
     return retval;
 }
 
+void sdljoy_set_joystick(SDL_Event e, int port, int bits) 
+{
+    sdljoystick_mapping_t *joyevent = sdljoy_get_mapping(e);
+
+    if (joyevent != NULL) {
+        joyevent->action = JOYSTICK;
+        joyevent->value.joy[0] = (BYTE)port;
+        joyevent->value.joy[1] = (BYTE)bits;
+    }
+}
+
 void sdljoy_set_hotkey(SDL_Event e, ui_menu_entry_t *value) 
 {
     sdljoystick_mapping_t *joyevent = sdljoy_get_mapping(e);

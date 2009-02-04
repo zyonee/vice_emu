@@ -33,6 +33,7 @@
 #include "ui.h"
 #include "uihotkey.h"
 #include "uimenu.h"
+#include "uipoll.h"
 #include "util.h"
 
 #include <SDL/SDL.h>
@@ -60,17 +61,6 @@ static char* sdl_ui_hotkey_path_find(ui_menu_entry_t *action, ui_menu_entry_t *m
         ++menu;
     }
     return NULL;
-}
-
-static inline int is_not_modifier(SDLKey k)
-{
-    return ((k != SDLK_RSHIFT) &&
-            (k != SDLK_LSHIFT) &&
-            (k != SDLK_RCTRL) &&
-            (k != SDLK_LCTRL) &&
-            (k != SDLK_RALT) &&
-            (k != SDLK_LALT))
-            ?1:0;
 }
 
 /* ------------------------------------------------------------------ */
@@ -114,7 +104,6 @@ ui_menu_entry_t *sdl_ui_hotkey_action(char *path)
 int sdl_ui_hotkey_map(ui_menu_entry_t *item)
 {
     SDL_Event e;
-    int polling = 1;
 
     if (item == NULL) {
         return -1;
@@ -125,39 +114,20 @@ int sdl_ui_hotkey_map(ui_menu_entry_t *item)
         item = NULL;
     }
 
-    sdl_ui_clear();
-    sdl_ui_print("Polling hotkey for:", 0, 0);
-    sdl_ui_print(item?item->string:"(unmap hotkey)", 0, 1);
-    sdl_ui_refresh();
+    e = sdl_ui_poll_event("hotkey", item?item->string:"(unmap hotkey)", SDL_POLL_JOYSTICK | SDL_POLL_KEYBOARD, 5);
 
     /* TODO check if key/event is suitable */
-    while (polling) {
-        while (SDL_PollEvent(&e)) {
-            switch (e.type) {
-                case SDL_KEYDOWN:
-                    if (is_not_modifier(e.key.keysym.sym)) {
-                        sdlkbd_set_hotkey(e.key.keysym.sym, e.key.keysym.mod, item);
-                        polling = 0;
-                    }
-                    break;
-                case SDL_JOYBUTTONDOWN:
-                    sdljoy_set_hotkey(e, item);
-                    polling = 0;
-                    break;
-                case SDL_JOYAXISMOTION:
-                    if (sdljoy_check_axis_movement(e) != 0) {
-                        sdljoy_set_hotkey(e, item);
-                        polling = 0;
-                    }
-                    break;
-                case SDL_JOYHATMOTION:
-                    break;
-                default:
-                    ui_handle_misc_sdl_event(e);
-                    break;
-            }
-        }
-        SDL_Delay(20);
+    switch (e.type) {
+        case SDL_KEYDOWN:
+            sdlkbd_set_hotkey(e.key.keysym.sym, e.key.keysym.mod, item);
+            break;
+        case SDL_JOYAXISMOTION:
+        case SDL_JOYBUTTONDOWN:
+        case SDL_JOYHATMOTION:
+            sdljoy_set_hotkey(e, item);
+            break;
+        default:
+            break;
     }
     return 1;
 }

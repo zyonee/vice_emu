@@ -30,10 +30,13 @@
 #include "vice.h"
 #include "types.h"
 
+#include <stdio.h>
+
 #include "joy.h"
 #include "keyboard.h"
 #include "ui.h"
 #include "uimenu.h"
+#include "uipoll.h"
 #include "videoarch.h"
 #include "vkbd.h"
 
@@ -104,7 +107,6 @@ static void sdl_vkbd_key_map(void)
     int mr, mc, neg, i, j;
     BYTE b;
     SDL_Event e;
-    int polling = 1;
     int unmap = 0;
     char keyname[10];
 
@@ -139,46 +141,29 @@ static void sdl_vkbd_key_map(void)
         mr = -mr;
     }
 
-    sdl_ui_clear();
-    sdl_ui_print("Polling joystick event for", 0, 0);
-    sdl_ui_print(unmap?"(unmap)":keyname, 0, 1);
-    sdl_ui_refresh();
- 
+    e = sdl_ui_poll_event("key or joystick event", unmap?"(unmap)":keyname, SDL_POLL_KEYBOARD | SDL_POLL_MODIFIER | SDL_POLL_JOYSTICK, 5);
+
     /* TODO check if key/event is suitable */
-    while (polling) {
-        while (SDL_PollEvent(&e)) {
-            switch (e.type) {
-                case SDL_KEYDOWN:
-                    /* TODO */
-                    polling = 0;
-                    break;
-                case SDL_JOYBUTTONDOWN:
-                    if(unmap) {
-                        sdljoy_unset(e);
-                    } else {
-                        sdljoy_set_keypress(e, mr, mc);
-                    }
-                    polling = 0;
-                    break;
-                case SDL_JOYAXISMOTION:
-                    if (sdljoy_check_axis_movement(e) != 0) {
-                        if(unmap) {
-                            sdljoy_unset(e);
-                        } else {
-                            sdljoy_set_keypress(e, mr, mc);
-                        }
-                        polling = 0;
-                    }
-                    break;
-                case SDL_JOYHATMOTION:
-                    break;
-                default:
-                    ui_handle_misc_sdl_event(e);
-                    break;
+    switch (e.type) {
+        case SDL_KEYDOWN:
+            /* TODO shift handling, unmap */
+            if (!unmap) {
+                keyboard_set_map_any((signed long)e.key.keysym.sym, mr, mc, 0);
             }
-        }
-        SDL_Delay(20);
+            break;
+        case SDL_JOYAXISMOTION:
+        case SDL_JOYBUTTONDOWN:
+        case SDL_JOYHATMOTION:
+            if(unmap) {
+                sdljoy_unset(e);
+            } else {
+                sdljoy_set_keypress(e, mr, mc);
+            }
+            break;
+        default:
+            break;
     }
+
     sdl_ui_activate_post_action();
     sdl_vkbd_state = 1;
 }

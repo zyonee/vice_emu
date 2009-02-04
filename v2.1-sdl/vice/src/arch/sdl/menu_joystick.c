@@ -27,10 +27,15 @@
 #include "vice.h"
 #include "types.h"
 
+#include <SDL/SDL.h>
+
 #include "joy.h"
+#include "lib.h"
 #include "menu_common.h"
 #include "menu_joystick.h"
+#include "resources.h"
 #include "uimenu.h"
+#include "uipoll.h"
 
 UI_MENU_DEFINE_RADIO(JoyDevice1)
 
@@ -94,6 +99,156 @@ static UI_MENU_CALLBACK(custom_swap_ports_callback)
     return NULL;
 }
 
+static UI_MENU_CALLBACK(custom_keyset_callback)
+{
+    SDL_Event e;
+    int previous;
+
+    if(resources_get_int((const char *)param, &previous)) {
+        return sdl_menu_text_unknown;
+    }
+            
+    if (activated) {
+        e = sdl_ui_poll_event("key", (const char *)param, SDL_POLL_KEYBOARD | SDL_POLL_MODIFIER, 5);
+
+        if(e.type == SDL_KEYDOWN) {
+            resources_set_int((const char *)param, (int)e.key.keysym.sym);
+        }
+    } else {
+        return SDL_GetKeyName(previous);
+    }
+    return NULL;
+}
+
+static const ui_menu_entry_t define_keyset_menu[] = {
+    { "Keyset 1 Up    ",
+      MENU_ENTRY_DIALOG,
+      custom_keyset_callback,
+      (ui_callback_data_t)"KeySet1North" },
+    { "Keyset 1 Down  ",
+      MENU_ENTRY_DIALOG,
+      custom_keyset_callback,
+      (ui_callback_data_t)"KeySet1South" },
+    { "Keyset 1 Left  ",
+      MENU_ENTRY_DIALOG,
+      custom_keyset_callback,
+      (ui_callback_data_t)"KeySet1West" },
+    { "Keyset 1 Right ",
+      MENU_ENTRY_DIALOG,
+      custom_keyset_callback,
+      (ui_callback_data_t)"KeySet1East" },
+    { "Keyset 1 Fire  ",
+      MENU_ENTRY_DIALOG,
+      custom_keyset_callback,
+      (ui_callback_data_t)"KeySet1Fire" },
+    SDL_MENU_ITEM_SEPARATOR,
+    { "Keyset 2 Up    ",
+      MENU_ENTRY_DIALOG,
+      custom_keyset_callback,
+      (ui_callback_data_t)"KeySet2North" },
+    { "Keyset 2 Down  ",
+      MENU_ENTRY_DIALOG,
+      custom_keyset_callback,
+      (ui_callback_data_t)"KeySet2South" },
+    { "Keyset 2 Left  ",
+      MENU_ENTRY_DIALOG,
+      custom_keyset_callback,
+      (ui_callback_data_t)"KeySet2West" },
+    { "Keyset 2 Right ",
+      MENU_ENTRY_DIALOG,
+      custom_keyset_callback,
+      (ui_callback_data_t)"KeySet2East" },
+    { "Keyset 2 Fire  ",
+      MENU_ENTRY_DIALOG,
+      custom_keyset_callback,
+      (ui_callback_data_t)"KeySet2Fire" },
+    { NULL }
+};
+
+static const char *joy_pin[] = {
+    "Up",
+    "Down",
+    "Left",
+    "Right",
+    "Fire"
+};
+
+static UI_MENU_CALLBACK(custom_joymap_callback)
+{
+    char *target = NULL;
+    SDL_Event e;
+    int pin, port;
+
+    if (activated) {
+        pin = ((int)param) & 7;
+        port = ((int)param) >> 4;
+
+        target = lib_msprintf("Port %i %s", port+1, joy_pin[pin]);
+        e = sdl_ui_poll_event("joystick", target, SDL_POLL_JOYSTICK, 5);
+        lib_free(target);
+
+        switch(e.type) {
+            case SDL_JOYAXISMOTION:
+            case SDL_JOYBUTTONDOWN:
+            case SDL_JOYHATMOTION:
+                sdljoy_set_joystick(e, port, (1<<pin));
+                break;
+            default:
+                break;
+        }
+    }
+
+    return NULL;
+}
+
+static const ui_menu_entry_t define_joy1_menu[] = {
+    { "Joystick 1 Up",
+      MENU_ENTRY_DIALOG,
+      custom_joymap_callback,
+      (ui_callback_data_t)0 },
+    { "Joystick 1 Down",
+      MENU_ENTRY_DIALOG,
+      custom_joymap_callback,
+      (ui_callback_data_t)1 },
+    { "Joystick 1 Left",
+      MENU_ENTRY_DIALOG,
+      custom_joymap_callback,
+      (ui_callback_data_t)2 },
+    { "Joystick 1 Right",
+      MENU_ENTRY_DIALOG,
+      custom_joymap_callback,
+      (ui_callback_data_t)3 },
+    { "Joystick 1 Fire",
+      MENU_ENTRY_DIALOG,
+      custom_joymap_callback,
+      (ui_callback_data_t)4 },
+    { NULL }
+};
+
+static const ui_menu_entry_t define_joy2_menu[] = {
+    { "Joystick 2 Up",
+      MENU_ENTRY_DIALOG,
+      custom_joymap_callback,
+      (ui_callback_data_t)0x10 },
+    { "Joystick 2 Down",
+      MENU_ENTRY_DIALOG,
+      custom_joymap_callback,
+      (ui_callback_data_t)0x11 },
+    { "Joystick 2 Left",
+      MENU_ENTRY_DIALOG,
+      custom_joymap_callback,
+      (ui_callback_data_t)0x12 },
+    { "Joystick 2 Right",
+      MENU_ENTRY_DIALOG,
+      custom_joymap_callback,
+      (ui_callback_data_t)0x13 },
+    { "Joystick 2 Fire",
+      MENU_ENTRY_DIALOG,
+      custom_joymap_callback,
+      (ui_callback_data_t)0x14 },
+    { NULL }
+};
+
 const ui_menu_entry_t joystick_menu[] = {
     { "Joystick device in port 1",
       MENU_ENTRY_SUBMENU,
@@ -103,14 +258,26 @@ const ui_menu_entry_t joystick_menu[] = {
       MENU_ENTRY_SUBMENU,
       submenu_radio_callback,
       (ui_callback_data_t)joystick_port2_device_menu },
-    { "Allow keyset joystick",
-      MENU_ENTRY_RESOURCE_TOGGLE,
-      toggle_KeySetEnable_callback,
-      NULL },
     { "Swap joystick ports",
       MENU_ENTRY_OTHER,
       custom_swap_ports_callback,
       NULL },
+    { "Allow keyset joystick",
+      MENU_ENTRY_RESOURCE_TOGGLE,
+      toggle_KeySetEnable_callback,
+      NULL },
+    { "Define keysets",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)define_keyset_menu },
+    { "Joystick 1 mapping", /* TODO better name */
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)define_joy1_menu },
+    { "Joystick 2 mapping", /* TODO better name */
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)define_joy2_menu },
     { NULL }
 };
 
@@ -123,5 +290,13 @@ const ui_menu_entry_t joystick_single_menu[] = {
       MENU_ENTRY_RESOURCE_TOGGLE,
       toggle_KeySetEnable_callback,
       NULL },
+    { "Define keysets",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)define_keyset_menu },
+    { "Joystick mapping", /* TODO better name */
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)define_joy1_menu },
     { NULL }
 };

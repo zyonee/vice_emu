@@ -86,6 +86,8 @@ libarch_a_SOURCES = \
 	uimon.c \
 	uimsgbox.c \
 	uimsgbox.h \
+	uipoll.c \
+	uipoll.h \
 	video.c \
 	videoarch.h \
 	vkbd.c \

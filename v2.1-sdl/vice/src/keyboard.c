@@ -856,6 +856,15 @@ static int keyboard_keymap_load(const char *filename)
 
 /*-----------------------------------------------------------------------*/
 
+void keyboard_set_map_any(signed long sym, int row, int col, int shift)
+{
+    if (row >= 0) {
+        keyboard_parse_set_pos_row(sym, row, col, shift);
+    } else {
+        keyboard_parse_set_neg_row(sym, row, col);
+    }
+}
+
 int keyboard_keymap_dump(const char *filename)
 {
     FILE *fp;
