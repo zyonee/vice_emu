@@ -51,6 +51,7 @@ rm `find VICE-$VICEVERSION -name "os2*.vkm"`
 rm `find VICE-$VICEVERSION -name "osx*.vkm"`
 rm `find VICE-$VICEVERSION -name "win_*.vkm"`
 rm `find VICE-$VICEVERSION -name "RO*.vkm"`
+rm `find VICE-$VICEVERSION -name "sdl*.vkm"`
 rm `find VICE-$VICEVERSION -name "*.vsc"`
 if test x"$ZIPKIND" = "xzip"; then
   gcc $TOPSRCDIR/src/arch/unix/qnx6/getsize.c -o ./getsize

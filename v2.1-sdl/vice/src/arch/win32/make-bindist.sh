@@ -50,6 +50,7 @@ rm `find WinVICE-$VICEVERSION -name "osx*.vkm"`
 rm `find WinVICE-$VICEVERSION -name "beos_*.vkm"`
 rm `find WinVICE-$VICEVERSION -name "x11_*.vkm"`
 rm `find WinVICE-$VICEVERSION -name "RO*.vkm"`
+rm `find WinVICE-$VICEVERSION -name "sdl*.vkm"`
 rm WinVICE-$VICEVERSION/html/texi2html
 if test x"$ZIPKIND" = "xzip"; then
   if test x"$ZIP" = "x"; then

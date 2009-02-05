@@ -104,4 +104,5 @@ libarch_a_SOURCES = \
 
 EXTRA_DIST = \
 	archdep_unix.c \
-	archdep_win32.c
+	archdep_win32.c \
+	make-bindist_win32.sh

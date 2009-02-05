@@ -2256,10 +2256,12 @@ elif test x"$is_win32" = "xyes"; then
   if test x"$enable_sdlui" = "xyes"; then
     AM_CONDITIONAL(SDL_COMPILE, true)
     AM_CONDITIONAL(WIN32_COMPILE, false)
+    AM_CONDITIONAL(SDL_WIN32_COMPILE, true)
     SDL_EXTRA_LIBS="$UI_LIBS -lwinmm -lwsock32"
   else
     AM_CONDITIONAL(SDL_COMPILE, false)
     AM_CONDITIONAL(WIN32_COMPILE, true)
+    AM_CONDITIONAL(SDL_WIN32_COMPILE, false)
   fi
 
   AM_CONDITIONAL(UNIX_COMPILE, false)

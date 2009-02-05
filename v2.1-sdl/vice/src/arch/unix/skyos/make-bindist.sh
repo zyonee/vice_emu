@@ -70,6 +70,7 @@ rm `find VICE-$VERSION -name "os2*.vkm"`
 rm `find VICE-$VERSION -name "osx*.vkm"`
 rm `find VICE-$VERSION -name "win_*.vkm"`
 rm `find VICE-$VERSION -name "RO*.vkm"`
+rm `find VICE-$VERSION -name "sdl*.vkm"`
 mkdir -p VICE-$VERSION/programs/VICE/share/man/man1
 mv /boot/programs/VICE/share/man/man1/* VICE-$VERSION/programs/VICE/share/man/man1/
 mkdir -p VICE-$VERSION/programs/VICE/info

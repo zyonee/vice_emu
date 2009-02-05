@@ -117,6 +117,7 @@ rm `find VICE-$VICEVERSION -name "os2*.vkm"`
 rm `find VICE-$VICEVERSION -name "osx*.vkm"`
 rm `find VICE-$VICEVERSION -name "win_*.vkm"`
 rm `find VICE-$VICEVERSION -name "RO*.vkm"`
+rm `find VICE-$VICEVERSION -name "sdl*.vkm"`
 rm `find VICE-$VICEVERSION -name "*.vsc"`
 mkdir -p VICE-$VICEVERSION$MANDIR/man1
 if test x"$ZIPKIND" = "xzip"; then
