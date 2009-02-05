@@ -1625,7 +1625,7 @@ dnl ----- Readline -----
 dnl Check whether we have GNU readline.  If not, use our replacement.
 dnl The user can force us to use the replacement with `--without-readline'.
 READLINE_LIBS=
-if test x"$is_unix_x11" = "xyes"; then
+if test x"$is_unix_x11" = "xyes" -a x"$enable_sdlui" != "xyes"; then
   if test x"$with_readline" != "xno" ; then
     READLINE=""
     unset ac_cv_lib_readline_readline
@@ -2131,6 +2131,7 @@ if test x"$is_unix" = "xyes"; then
     AM_CONDITIONAL(UNIX_COMPILE, true)
   fi
   AM_CONDITIONAL(WIN32_COMPILE, false)
+  AM_CONDITIONAL(SDL_WIN32_COMPILE, false)
   AM_CONDITIONAL(MSDOS_COMPILE, false)
   AM_CONDITIONAL(RISCOS_COMPILE, false)
   AM_CONDITIONAL(OS2_COMPILE, false)
@@ -2299,6 +2300,7 @@ elif test x"$is_amiga" = "xyes"; then
   AM_CONDITIONAL(UNIX_UNIXWARE_COMPILE, false)
   AM_CONDITIONAL(UNIX_HPUX_COMPILE, false)
   AM_CONDITIONAL(WIN32_COMPILE, false)
+  AM_CONDITIONAL(SDL_WIN32_COMPILE, false)
   AM_CONDITIONAL(MSDOS_COMPILE, false)
   AM_CONDITIONAL(RISCOS_COMPILE, false)
   AM_CONDITIONAL(OS2_COMPILE, false)
@@ -2328,6 +2330,7 @@ elif test x"$is_dos" = "xyes"; then
   AM_CONDITIONAL(UNIX_UNIXWARE_COMPILE, false)
   AM_CONDITIONAL(UNIX_HPUX_COMPILE, false)
   AM_CONDITIONAL(WIN32_COMPILE, false)
+  AM_CONDITIONAL(SDL_WIN32_COMPILE, false)
   AM_CONDITIONAL(MSDOS_COMPILE, true)
   AM_CONDITIONAL(RISCOS_COMPILE, false)
   AM_CONDITIONAL(OS2_COMPILE, false)
@@ -2353,6 +2356,7 @@ elif test x"$is_os2" = "xyes"; then
   AM_CONDITIONAL(UNIX_UNIXWARE_COMPILE, false)
   AM_CONDITIONAL(UNIX_HPUX_COMPILE, false)
   AM_CONDITIONAL(WIN32_COMPILE, false)
+  AM_CONDITIONAL(SDL_WIN32_COMPILE, false)
   AM_CONDITIONAL(MSDOS_COMPILE, false)
   AM_CONDITIONAL(RISCOS_COMPILE, false)
   AM_CONDITIONAL(OS2_COMPILE, true)
@@ -2378,6 +2382,7 @@ elif test x"$is_beos" = "xyes"; then
   AM_CONDITIONAL(UNIX_UNIXWARE_COMPILE, false)  
   AM_CONDITIONAL(UNIX_HPUX_COMPILE, false)
   AM_CONDITIONAL(WIN32_COMPILE, false)
+  AM_CONDITIONAL(SDL_WIN32_COMPILE, false)
   AM_CONDITIONAL(MSDOS_COMPILE, false)
   AM_CONDITIONAL(RISCOS_COMPILE, false)
   AM_CONDITIONAL(OS2_COMPILE, false)
@@ -2403,6 +2408,7 @@ elif test x"$is_riscos" = "xyes"; then
   AM_CONDITIONAL(UNIX_UNIXWARE_COMPILE, false)
   AM_CONDITIONAL(UNIX_HPUX_COMPILE, false)
   AM_CONDITIONAL(WIN32_COMPILE, false)
+  AM_CONDITIONAL(SDL_WIN32_COMPILE, false)
   AM_CONDITIONAL(MSDOS_COMPILE, false)
   AM_CONDITIONAL(RISCOS_COMPILE, true)
   AM_CONDITIONAL(OS2_COMPILE, false)
