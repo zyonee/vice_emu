@@ -249,6 +249,53 @@ static const ui_menu_entry_t define_joy2_menu[] = {
     { NULL }
 };
 
+static UI_MENU_CALLBACK(custom_joy_misc_callback)
+{
+    char *target = NULL;
+    SDL_Event e;
+
+    if (activated) {
+        e = sdl_ui_poll_event("joystick", ((int)param)?"Map":"Menu activate", SDL_POLL_JOYSTICK, 5);
+        lib_free(target);
+
+        switch(e.type) {
+            case SDL_JOYAXISMOTION:
+            case SDL_JOYBUTTONDOWN:
+            case SDL_JOYHATMOTION:
+                sdljoy_set_extra(e, (int)param);
+                break;
+            default:
+                break;
+        }
+    }
+
+    return NULL;
+}
+
+UI_MENU_DEFINE_INT(JoyThreshold)
+UI_MENU_DEFINE_INT(JoyFuzz)
+
+static const ui_menu_entry_t define_joy_misc_menu[] = {
+    { "Menu activate",
+      MENU_ENTRY_DIALOG,
+      custom_joy_misc_callback,
+      (ui_callback_data_t)0 },
+    { "Map",
+      MENU_ENTRY_DIALOG,
+      custom_joy_misc_callback,
+      (ui_callback_data_t)1 },
+    SDL_MENU_ITEM_SEPARATOR,
+    { "Threshold",
+      MENU_ENTRY_RESOURCE_INT,
+      int_JoyThreshold_callback,
+      (ui_callback_data_t)"Set joystick threshold (0 - 32767)" },
+    { "Fuzz",
+      MENU_ENTRY_RESOURCE_INT,
+      int_JoyFuzz_callback,
+      (ui_callback_data_t)"Set joystick fuzz (0 - 32767)" },
+    { NULL }
+};
+
 const ui_menu_entry_t joystick_menu[] = {
     { "Joystick device in port 1",
       MENU_ENTRY_SUBMENU,
@@ -278,6 +325,10 @@ const ui_menu_entry_t joystick_menu[] = {
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)define_joy2_menu },
+    { "Joystick extra options", /* TODO better name */
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)define_joy_misc_menu },
     { NULL }
 };
 
@@ -298,5 +349,9 @@ const ui_menu_entry_t joystick_single_menu[] = {
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)define_joy1_menu },
+    { "Joystick extra options", /* TODO better name */
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)define_joy_misc_menu },
     { NULL }
 };

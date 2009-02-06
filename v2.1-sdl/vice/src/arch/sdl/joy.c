@@ -909,6 +909,15 @@ void sdljoy_set_keypress(SDL_Event e, int row, int col)
     }
 }
 
+void sdljoy_set_extra(SDL_Event e, int type)
+{
+    sdljoystick_mapping_t *joyevent = sdljoy_get_mapping(e);
+
+    if (joyevent != NULL) {
+        joyevent->action = type?MAP:UI_ACTIVATE;
+    }
+}
+
 void sdljoy_unset(SDL_Event e)
 {
     sdljoystick_mapping_t *joyevent = sdljoy_get_mapping(e);

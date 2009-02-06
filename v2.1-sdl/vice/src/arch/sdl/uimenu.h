@@ -130,6 +130,7 @@ extern int sdl_ui_print_center(const char *text, int pos_y);
 extern int sdl_ui_display_title(const char *title);
 extern void sdl_ui_clear(void);
 extern void sdl_ui_activate(void);
+extern int sdl_ui_external_menu_activate(ui_menu_entry_t *item);
 extern char* sdl_ui_readline(const char* previous, int pos_x, int pos_y, int escaped_is_null);
 extern char* sdl_ui_text_input_dialog(const char* title, const char* previous);
 extern void sdl_ui_invert_char(int pos_x, int pos_y);

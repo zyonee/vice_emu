@@ -34,6 +34,7 @@
 
 #include "joy.h"
 #include "keyboard.h"
+#include "menu_common.h"
 #include "ui.h"
 #include "uimenu.h"
 #include "uipoll.h"
@@ -41,6 +42,9 @@
 #include "vkbd.h"
 
 int sdl_vkbd_state = 0;
+
+/* ------------------------------------------------------------------ */
+/* static functions/variables */
 
 static int vkbd_pos_x = 0;
 static int vkbd_pos_y = 0;
@@ -56,11 +60,63 @@ static int vkbd_y = 0;
 
 static int vkbd_move = 0;
 
+static int vkbd_shiftflags;
+
+static UI_MENU_CALLBACK(custom_shift_callback)
+{
+    int flag = (1 << ((int)param));
+
+    if (activated) {
+        vkbd_shiftflags ^= flag;
+    } else {
+        if (vkbd_shiftflags & flag) {
+            return sdl_menu_text_tick;
+        }
+    }
+    return NULL;
+}
+
+static const ui_menu_entry_t define_shift_options_menu[] = {
+    { "Virtual shift",
+      MENU_ENTRY_OTHER,
+      custom_shift_callback,
+      (ui_callback_data_t)0 },
+    { "Left shift",
+      MENU_ENTRY_OTHER,
+      custom_shift_callback,
+      (ui_callback_data_t)1 },
+    { "Right shift",
+      MENU_ENTRY_OTHER,
+      custom_shift_callback,
+      (ui_callback_data_t)2 },
+    { "Allow shift",
+      MENU_ENTRY_OTHER,
+      custom_shift_callback,
+      (ui_callback_data_t)3 },
+    { "Deshift shift",
+      MENU_ENTRY_OTHER,
+      custom_shift_callback,
+      (ui_callback_data_t)4 },
+    { "Allow other",
+      MENU_ENTRY_OTHER,
+      custom_shift_callback,
+      (ui_callback_data_t)5 },
+    { "Alt map",
+      MENU_ENTRY_OTHER,
+      custom_shift_callback,
+      (ui_callback_data_t)8 },
+    { NULL }
+};
+
+static const ui_menu_entry_t shift_menu[] = {
+    { "Define shift options",
+      MENU_ENTRY_SUBMENU,
+      submenu_radio_callback,
+      (ui_callback_data_t)define_shift_options_menu },
+};
+
 #define VKBD_COMMAND_MOVE  0xff
 #define VKBD_COMMAND_CLOSE 0xfe
-
-/* ------------------------------------------------------------------ */
-/* static functions */
 
 static void sdl_vkbd_key_press(int value, int shift)
 {
@@ -146,9 +202,11 @@ static void sdl_vkbd_key_map(void)
     /* TODO check if key/event is suitable */
     switch (e.type) {
         case SDL_KEYDOWN:
-            /* TODO shift handling, unmap */
+            /* TODO unmap */
             if (!unmap) {
-                keyboard_set_map_any((signed long)e.key.keysym.sym, mr, mc, 0);
+                vkbd_shiftflags = 0;
+                sdl_ui_external_menu_activate((ui_menu_entry_t *)shift_menu);
+                keyboard_set_map_any((signed long)e.key.keysym.sym, mr, mc, vkbd_shiftflags);
             }
             break;
         case SDL_JOYAXISMOTION:
@@ -165,7 +223,7 @@ static void sdl_vkbd_key_map(void)
     }
 
     sdl_ui_activate_post_action();
-    sdl_vkbd_state = 1;
+    sdl_vkbd_state = SDL_VKBD_ACTIVE;
 }
 
 static inline void sdl_vkbd_move(int *var, int amount, int min, int max)
@@ -177,6 +235,8 @@ static inline void sdl_vkbd_move(int *var, int amount, int min, int max)
     } else if (*var >= max) {
         *var = min;
     }
+
+    sdl_vkbd_state |= SDL_VKBD_REPAINT;
 }
 
 /* ------------------------------------------------------------------ */
@@ -210,14 +270,14 @@ void sdl_vkbd_activate(void)
     vkbd_pos_max_x = limits->max_text_x - vkbd_w + 1;
     vkbd_pos_max_y = limits->max_text_y - vkbd_h + 1;
 
-    sdl_vkbd_state = 1;
+    sdl_vkbd_state = SDL_VKBD_ACTIVE | SDL_VKBD_REPAINT;
     vkbd_move = 0;
 }
 
 void sdl_vkbd_close(void)
 {
     keyboard_key_clear();
-    sdl_vkbd_state = 0;
+    sdl_vkbd_state = SDL_VKBD_REPAINT;
 }
 
 void sdl_vkbd_draw(void)

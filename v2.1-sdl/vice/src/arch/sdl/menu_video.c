@@ -121,6 +121,7 @@ UI_MENU_DEFINE_TOGGLE(VICIIFullscreen)
 UI_MENU_DEFINE_TOGGLE(VICIIDoubleSize)
 UI_MENU_DEFINE_TOGGLE(VICIIDoubleScan)
 UI_MENU_DEFINE_TOGGLE(VICIIVideoCache)
+UI_MENU_DEFINE_TOGGLE(VICIIScale2x)
 UI_MENU_DEFINE_TOGGLE(VDCDoubleSize)
 UI_MENU_DEFINE_TOGGLE(VDCDoubleScan)
 UI_MENU_DEFINE_TOGGLE(VDCVideoCache)
@@ -132,10 +133,12 @@ UI_MENU_DEFINE_TOGGLE(TEDFullscreen)
 UI_MENU_DEFINE_TOGGLE(TEDDoubleSize)
 UI_MENU_DEFINE_TOGGLE(TEDDoubleScan)
 UI_MENU_DEFINE_TOGGLE(TEDVideoCache)
+UI_MENU_DEFINE_TOGGLE(TEDScale2x)
 UI_MENU_DEFINE_TOGGLE(VICFullscreen)
 UI_MENU_DEFINE_TOGGLE(VICDoubleSize)
 UI_MENU_DEFINE_TOGGLE(VICDoubleScan)
 UI_MENU_DEFINE_TOGGLE(VICVideoCache)
+UI_MENU_DEFINE_TOGGLE(VICScale2x)
 UI_MENU_DEFINE_TOGGLE(VICExternalPalette)
 UI_MENU_DEFINE_TOGGLE(VICIIExternalPalette)
 UI_MENU_DEFINE_TOGGLE(TEDExternalPalette)
@@ -250,6 +253,10 @@ const ui_menu_entry_t c128_video_menu[] = {
       MENU_ENTRY_RESOURCE_TOGGLE,
       toggle_VICIIVideoCache_callback,
       NULL },
+    { "VICII Scale2x",
+      MENU_ENTRY_RESOURCE_TOGGLE,
+      toggle_VICIIScale2x_callback,
+      NULL },
 #ifdef HAVE_HWSCALE
     { "VICII OpenGL",
       MENU_ENTRY_RESOURCE_TOGGLE,
@@ -322,6 +329,10 @@ const ui_menu_entry_t c64_video_menu[] = {
       MENU_ENTRY_RESOURCE_TOGGLE,
       toggle_VICIIVideoCache_callback,
       NULL },
+    { "Scale2x",
+      MENU_ENTRY_RESOURCE_TOGGLE,
+      toggle_VICIIScale2x_callback,
+      NULL },
 #ifdef HAVE_HWSCALE
     { "OpenGL",
       MENU_ENTRY_RESOURCE_TOGGLE,
@@ -382,6 +393,10 @@ const ui_menu_entry_t c64dtv_video_menu[] = {
       MENU_ENTRY_RESOURCE_TOGGLE,
       toggle_VICIIVideoCache_callback,
       NULL },
+    { "Scale2x",
+      MENU_ENTRY_RESOURCE_TOGGLE,
+      toggle_VICIIScale2x_callback,
+      NULL },
 #ifdef HAVE_HWSCALE
     { "OpenGL",
       MENU_ENTRY_RESOURCE_TOGGLE,
@@ -437,6 +452,10 @@ const ui_menu_entry_t cbm5x0_video_menu[] = {
     { "Video cache",
       MENU_ENTRY_RESOURCE_TOGGLE,
       toggle_VICIIVideoCache_callback,
+      NULL },
+    { "Scale2x",
+      MENU_ENTRY_RESOURCE_TOGGLE,
+      toggle_VICIIScale2x_callback,
       NULL },
     { "VICII border mode",
       MENU_ENTRY_SUBMENU,
@@ -548,6 +567,10 @@ const ui_menu_entry_t plus4_video_menu[] = {
       MENU_ENTRY_RESOURCE_TOGGLE,
       toggle_TEDVideoCache_callback,
       NULL },
+    { "Scale2x",
+      MENU_ENTRY_RESOURCE_TOGGLE,
+      toggle_TEDScale2x_callback,
+      NULL },
 #ifdef HAVE_HWSCALE
     { "OpenGL",
       MENU_ENTRY_RESOURCE_TOGGLE,
@@ -599,6 +622,10 @@ const ui_menu_entry_t vic20_video_menu[] = {
     { "Video cache",
       MENU_ENTRY_RESOURCE_TOGGLE,
       toggle_VICVideoCache_callback,
+      NULL },
+    { "Scale2x",
+      MENU_ENTRY_RESOURCE_TOGGLE,
+      toggle_VICScale2x_callback,
       NULL },
 #ifdef HAVE_HWSCALE
     { "OpenGL",

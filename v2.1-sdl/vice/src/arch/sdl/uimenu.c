@@ -281,6 +281,15 @@ static void sdl_ui_trap(WORD addr, void *data)
 /* ------------------------------------------------------------------ */
 /* External UI interface */
 
+int sdl_ui_external_menu_activate(ui_menu_entry_t *item)
+{
+    if (item && (item->type == MENU_ENTRY_SUBMENU)) {
+        return sdl_ui_menu_display((ui_menu_entry_t *)item->data, item->string);
+    }
+
+    return 0;
+}
+
 BYTE *sdl_ui_get_draw_buffer(void)
 {
     return draw_buffer_backup;

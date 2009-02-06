@@ -115,17 +115,17 @@ return 0;
 static int fullscreen_enable(struct video_canvas_s *canvas, int enable)
 {
 fprintf(stderr,"%s: %i\n",__func__,enable);
-    if (canvas->fullscreenconfig->device == NULL)
-	return 0;
+    if (canvas->fullscreenconfig->device == NULL) {
+        return 0;
+    }
 
     fullscreen_is_enabled = canvas->fullscreenconfig->enable = enable;
 
-    if(enable) {
-        SDL_ShowCursor(SDL_DISABLE);
-    } else {
-        SDL_ShowCursor(SDL_ENABLE);
+    SDL_ShowCursor(enable?SDL_ENABLE:SDL_DISABLE);
+
+    if (canvas->initialized) {
+        video_viewport_resize(canvas);
     }
-    video_viewport_resize(canvas);
     return 0;
 }
 

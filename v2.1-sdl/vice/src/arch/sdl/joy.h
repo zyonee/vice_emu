@@ -51,6 +51,7 @@ extern BYTE sdljoy_check_axis_movement(SDL_Event e);
 extern void sdljoy_set_joystick(SDL_Event e, int port, int bits);
 extern void sdljoy_set_hotkey(SDL_Event e, ui_menu_entry_t *value);
 extern void sdljoy_set_keypress(SDL_Event e, int row, int col);
+extern void sdljoy_set_extra(SDL_Event e, int type);
 extern void sdljoy_unset(SDL_Event e);
 extern void sdljoy_swap_ports(void);
 
