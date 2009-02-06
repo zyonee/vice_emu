@@ -45,6 +45,8 @@ libarch_a_SOURCES = \
 	ffmpeglib.c \
 	fullscrn.c \
 	fullscrn.h \
+	fullscrn-ddraw.c \
+	fullscrn-dx9.c \
 	gifdrv.c \
 	hardsid.c \
 	intl.c \
@@ -223,6 +225,8 @@ libarch_a_SOURCES = \
 	uivideo.h \
 	vic20ui.c \
 	video.c \
+	video-ddraw.c \
+	video-dx9.c \
 	videoarch.h \
 	vsidui.c \
 	vsyncarch.c \
