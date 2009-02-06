@@ -27,6 +27,12 @@
 #ifndef VICE_FULLSCRN_H
 #define VICE_FULLSCRN_H
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include <windows.h>
+
 extern void GetCurrentModeParameters(int *width, int *height, int *bitdepth,
                                      int *refreshrate);
 extern GUID *GetGUIDForActualDevice();
@@ -42,6 +48,19 @@ extern void SwitchToFullscreenMode(HWND hwnd);
 extern void init_fullscreen_dialog(HWND hwnd);
 extern BOOL CALLBACK dialog_fullscreen_proc(HWND hwnd, UINT msg, WPARAM wparam,
                                             LPARAM lparam);
+
+/* DDraw functions */
+extern void SwitchToFullscreenModeDDraw(HWND hwnd);
+extern void SwitchToWindowedModeDDraw(HWND hwnd);
+
+/* DX9 functions */
+extern void SwitchToFullscreenModeDx9(HWND hwnd);
+extern void SwitchToWindowedModeDx9(HWND hwnd);
+
+
+/* FIXME: ugly */
+extern int fullscreen_active;
+extern int fullscreen_transition;
 
 #endif
 
