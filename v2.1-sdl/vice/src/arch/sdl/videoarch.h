@@ -33,10 +33,6 @@
 
 #include <SDL/SDL.h>
 
-#ifdef HAVE_HWSCALE
-#include <SDL/SDL_opengl.h>
-#endif
-
 #include "viewport.h"
 #include "video.h"
 
@@ -60,7 +56,6 @@ struct video_canvas_s {
     video_refresh_func_t video_fullscreen_refresh_func;
 #ifdef HAVE_HWSCALE
     SDL_Surface *hwscale_screen;
-    GLint screen_texture;
 #endif
 
 };

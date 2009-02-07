@@ -62,6 +62,7 @@ static video_canvas_t *sdl_canvaslist[MAX_CANVAS_NUM];
 video_canvas_t *sdl_active_canvas = NULL;
 #ifdef HAVE_HWSCALE
 int sdl_gl_mode;
+GLint screen_texture;
 #endif
 
 /* ------------------------------------------------------------------------- */
@@ -313,7 +314,7 @@ void video_canvas_refresh(struct video_canvas_s *canvas,
 #endif
 
         glEnable (GL_TEXTURE_RECTANGLE_EXT);
-        glBindTexture (GL_TEXTURE_RECTANGLE_EXT, canvas->screen_texture);
+        glBindTexture (GL_TEXTURE_RECTANGLE_EXT, screen_texture);
         glTexParameteri (GL_TEXTURE_RECTANGLE_EXT, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glTexParameteri (GL_TEXTURE_RECTANGLE_EXT, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexImage2D  (GL_TEXTURE_RECTANGLE_EXT, 0, sdl_gl_mode,
