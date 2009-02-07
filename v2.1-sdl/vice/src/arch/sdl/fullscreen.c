@@ -34,11 +34,11 @@
 #include <string.h>
 #include <SDL/SDL.h>
 
-#include "videoarch.h"
 #include "fullscreen.h"
 #include "fullscreenarch.h"
 #include "lib.h"
 #include "video.h"
+#include "videoarch.h"
 
 int fullscreen_is_enabled;
 

@@ -29,7 +29,6 @@
 
 #include "vice.h"
 
-#include "videoarch.h"
 #include "archdep.h"
 #include "charset.h"
 #include "interrupt.h"
@@ -45,6 +44,7 @@
 #include "uimenu.h"
 #include "util.h"
 #include "video.h"
+#include "videoarch.h"
 #include "vkbd.h"
 #include "vsync.h"
 

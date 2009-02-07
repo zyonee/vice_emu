@@ -29,6 +29,8 @@
 
 #include "vice.h"
 
+#include <SDL/SDL_keysym.h>
+
 /* Extra functions for SDL UI */
 extern char *archdep_default_hotkey_file_name(void);
 extern char *archdep_default_joymap_file_name(void);
@@ -56,6 +58,9 @@ extern char *archdep_default_joymap_file_name(void);
 #define ARCHDEP_VIC_DBUF   0
 #define ARCHDEP_CRTC_DBUF  0
 #define ARCHDEP_TED_DBUF   0
+
+/* No key symcode.  */
+#define ARCHDEP_KEYBOARD_SYM_NONE SDLK_UNKNOWN
 
 #ifdef AMIGA_SUPPORT
 #include "archdep_amiga.h"

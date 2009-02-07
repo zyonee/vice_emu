@@ -52,7 +52,6 @@ int vsync_frame_counter;
 #include <limits.h>
 #endif
 
-#include "videoarch.h"
 #include "clkguard.h"
 #include "cmdline.h"
 #include "debug.h"
@@ -64,6 +63,7 @@ int vsync_frame_counter;
 #include "sound.h"
 #include "translate.h"
 #include "types.h"
+#include "videoarch.h"
 #include "vsync.h"
 #include "vsyncapi.h"
 

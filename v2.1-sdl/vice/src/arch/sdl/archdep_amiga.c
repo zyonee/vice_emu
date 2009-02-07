@@ -142,7 +142,7 @@ char *archdep_default_resource_file_name(void)
   const char *home;
 
   home = archdep_boot_path();
-  return util_concat(home, "vice.ini", NULL);
+  return util_concat(home, "vice-sdl.ini", NULL);
 }
 
 char *archdep_default_fliplist_file_name(void)

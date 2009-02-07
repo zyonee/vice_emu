@@ -26,10 +26,10 @@
 
 #include "vice.h"
 
-#include "videoarch.h"
 #include "lib.h"
 #include "machine.h"
 #include "video.h"
+#include "videoarch.h"
 #include "viewport.h"
 
 

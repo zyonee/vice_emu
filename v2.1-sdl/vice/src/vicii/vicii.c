@@ -48,11 +48,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "videoarch.h"
 #include "alarm.h"
 #include "c64.h"
 #include "cartridge.h"
 #include "c64cart.h"
+#include "c64dtvblitter.h"
+#include "c64dtvdma.h"
 #include "clkguard.h"
 #include "dma.h"
 #include "lib.h"
@@ -86,9 +87,8 @@
 #include "viciitypes.h"
 #include "vsync.h"
 #include "video.h"
+#include "videoarch.h"
 #include "viewport.h"
-#include "c64dtvblitter.h"
-#include "c64dtvdma.h"
 
 
 void vicii_set_phi1_addr_options(WORD mask, WORD offset)

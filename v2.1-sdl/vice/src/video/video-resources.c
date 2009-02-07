@@ -29,12 +29,12 @@
 
 #include <stdio.h>
 
-#include "videoarch.h"
-#include "resources.h"
 #include "lib.h"
+#include "resources.h"
 #include "video-resources.h"
 #include "video-color.h"
 #include "video.h"
+#include "videoarch.h"
 #include "viewport.h"
 #include "util.h"
 #include "log.h"

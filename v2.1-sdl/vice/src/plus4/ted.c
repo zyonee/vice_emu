@@ -32,7 +32,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "videoarch.h"
 #include "alarm.h"
 #include "clkguard.h"
 #include "dma.h"
@@ -68,8 +67,9 @@
 #include "ted.h"
 #include "tedtypes.h"
 #include "types.h"
-#include "vsync.h"
 #include "video.h"
+#include "videoarch.h"
+#include "vsync.h"
 
 
 ted_t ted;

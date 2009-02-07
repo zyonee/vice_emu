@@ -34,7 +34,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "videoarch.h"
 #include "lib.h"
 #include "log.h"
 #include "machine.h"
@@ -49,6 +48,7 @@
 #include "types.h"
 #include "util.h"
 #include "video.h"
+#include "videoarch.h"
 #include "viewport.h"
 
 

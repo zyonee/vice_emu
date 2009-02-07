@@ -28,7 +28,6 @@
 
 #include <stdlib.h>
 
-#include "videoarch.h"
 #include "gfxoutput.h"
 #include "lib.h"
 #include "menu_common.h"
@@ -40,6 +39,7 @@
 #include "uifilereq.h"
 #include "uimenu.h"
 #include "util.h"
+#include "videoarch.h"
 
 static UI_MENU_CALLBACK(save_screenshot_callback)
 {
