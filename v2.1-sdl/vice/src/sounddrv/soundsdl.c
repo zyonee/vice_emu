@@ -111,7 +111,7 @@ static int sdl_init(const char *param, int *speed,
     return 0;
 }
 
-#if defined(WORDS_BIGENDIAN) && !defined(HAVE_SWAB)
+#if defined(WORDS_BIGENDIAN) && !defined(HAVE_SWAB) && !defined(AMIGA_MORPHOS)
 void swab(void *src, void *dst, size_t length)
 {
     const char *from=src;

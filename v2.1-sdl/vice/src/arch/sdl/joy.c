@@ -388,12 +388,13 @@ void joy_arch_init_default_mapping(int joynum)
 
 int joy_arch_mapping_dump(const char *filename)
 {
-fprintf(stderr,"%s\n",__func__);
     FILE *fp;
     int i, k;
     sdljoystick_input_t j;
     sdljoystick_action_t t;
     char *hotkey_path = NULL;
+
+fprintf(stderr,"%s\n",__func__);
 
     if (filename == NULL) {
         return -1;
