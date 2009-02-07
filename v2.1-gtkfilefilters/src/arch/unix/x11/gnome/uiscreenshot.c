@@ -2,7 +2,7 @@
  * uiscreenshot.c - screenshot dialog for the Gnome widget set.
  *
  * Written by
- *  Martin Pottendorfer (Martin.Pottendorfer@alcatel.at)
+ *  pottendo <pottendo@gmx.net>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -224,7 +224,7 @@ static GtkWidget *build_screenshot_dialog(void)
     GtkWidget *l, *hbox, *tmp;
     GtkObject *adj;
     int audio_bitrate, video_bitrate;
-    ffmpegdrv_format_t *f;
+    gfxoutputdrv_format_t *f;
     GtkListStore *drv_store;
     GtkTreeIter iter;
     GtkCellRenderer *renderer;

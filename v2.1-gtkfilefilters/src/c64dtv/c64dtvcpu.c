@@ -27,6 +27,9 @@
 
 #include "vice.h"
 
+#include <stdio.h>
+
+#include "alarm.h"
 #include "c64mem.h"
 #include "c64dtvblitter.h"
 #include "c64dtvdma.h"
@@ -65,11 +68,14 @@ BYTE dtvrewind;
 
 int dtvclockneg = 0;
 
-#if defined CYCLE_EXACT_DMA || defined CYCLE_EXACT_BLITTER
-#define REWIND_FETCH_OPCODE(clock) clock-=dtvrewind; dtvclockneg+=dtvrewind
-#else
-#define REWIND_FETCH_OPCODE(clock) clock-=dtvrewind
+/* Experimental cycle exact alarm handling */
+#define CYCLE_EXACT_ALARM
+
+#ifdef CYCLE_EXACT_ALARM
+alarm_context_t *maincpu_alarm_context = NULL;
 #endif
+
+#define REWIND_FETCH_OPCODE(clock) clock-=dtvrewind; dtvclockneg+=dtvrewind
 
 /* Burst mode implementation */
 
@@ -80,29 +86,28 @@ WORD burst_addr, burst_last_addr;
 
 inline static void c64dtvcpu_clock_add(CLOCK *clock, int amount)
 {
-    if(burst_diff && (amount>0)) {
-        if(burst_diff>=amount) {
+    if (burst_diff && (amount > 0)) {
+        if (burst_diff >= amount) {
             burst_diff -= amount;
             return;
         }
         amount -= burst_diff;
         burst_diff = 0;
     }
-#if defined CYCLE_EXACT_DMA || defined CYCLE_EXACT_BLITTER
-    if(amount>0) {
-        while(amount) {
+
+    if (amount >= 0) {
+        while (amount) {
+#ifdef CYCLE_EXACT_ALARM
+            while ((*clock) >= alarm_context_next_pending_clk(maincpu_alarm_context)) {
+                alarm_context_dispatch(maincpu_alarm_context, (*clock));
+            }
+#endif
             (*clock)++;
             --amount;
             if (dtvclockneg == 0) {
-#if defined CYCLE_EXACT_DMA && defined CYCLE_EXACT_BLITTER
-                if (!c64dtvblitter_perform_blitter()) c64dtvdma_perform_dma();
-#else
-#ifdef CYCLE_EXACT_BLITTER
-                c64dtvblitter_perform_blitter();
-#else
-                c64dtvdma_perform_dma();
-#endif
-#endif
+                if (!c64dtvblitter_perform_blitter()) {
+                    c64dtvdma_perform_dma();
+                }
             } else {
                 --dtvclockneg;
             }
@@ -111,9 +116,6 @@ inline static void c64dtvcpu_clock_add(CLOCK *clock, int amount)
         dtvclockneg -= amount;
         *clock += amount;
     }
-#else
-    *clock += amount;
-#endif
 }
 
 #define CLK_ADD(clock, amount) c64dtvcpu_clock_add(&clock, amount)

@@ -43,7 +43,7 @@
 #include "uikeyboard.h"
 #include "uirom.h"
 #include "uirs232user.h"
-#include "uisid.h"
+#include "uisiddtv.h"
 #include "uivicii.h"
 #include "uivideo.h"
 
@@ -139,6 +139,7 @@ ui_menu_translation_table_t c64dtvui_menu_translation_table[] = {
     { IDM_TOGGLE_DOUBLESIZE, IDS_MI_TOGGLE_DOUBLESIZE },
     { IDM_TOGGLE_DOUBLESCAN, IDS_MI_TOGGLE_DOUBLESCAN },
     { IDM_TOGGLE_DRIVE_TRUE_EMULATION, IDS_MI_DRIVE_TRUE_EMULATION },
+    { IDM_TOGGLE_AUTOSTART_HANDLE_TDE, IDS_MI_AUTOSTART_HANDLE_TDE },
     { IDM_TOGGLE_FLASH_TRUE_FILESYSTEM, IDS_MI_FLASH_TRUE_FILESYSTEM },
     { IDM_TOGGLE_VIDEOCACHE, IDS_MI_TOGGLE_VIDEOCACHE },
     { IDM_DRIVE_SETTINGS, IDS_MI_DRIVE_SETTINGS },
@@ -203,6 +204,7 @@ ui_menu_translation_table_t c64dtvui_menu_translation_table[] = {
     { IDM_TOGGLE_SAVE_SETTINGS_ON_EXIT, IDS_MI_SAVE_SETTINGS_ON_EXIT },
     { IDM_TOGGLE_CONFIRM_ON_EXIT, IDS_MI_CONFIRM_ON_EXIT },
     { IDM_LANG_EN, IDS_MI_LANG_EN },
+    { IDM_LANG_DA, IDS_MI_LANG_DA },
     { IDM_LANG_DE, IDS_MI_LANG_DE },
     { IDM_LANG_FR, IDS_MI_LANG_FR },
     { IDM_LANG_HU, IDS_MI_LANG_HU },
@@ -210,6 +212,7 @@ ui_menu_translation_table_t c64dtvui_menu_translation_table[] = {
     { IDM_LANG_NL, IDS_MI_LANG_NL },
     { IDM_LANG_PL, IDS_MI_LANG_PL },
     { IDM_LANG_SV, IDS_MI_LANG_SV },
+    { IDM_LANG_TR, IDS_MI_LANG_TR },
     { IDM_CMDLINE, IDS_MI_CMDLINE },
     { IDM_CONTRIBUTORS, IDS_MI_CONTRIBUTORS },
     { IDM_LICENSE, IDS_MI_LICENSE },
@@ -251,7 +254,7 @@ static void c64dtv_ui_specific(WPARAM wparam, HWND hwnd)
         ui_vicii_settings_dialog(hwnd);
         break;
       case IDM_SID_SETTINGS:
-        ui_sid_settings_dialog(hwnd);
+        ui_siddtv_settings_dialog(hwnd);
         break;
       case IDM_ROM_SETTINGS:
         uirom_settings_dialog(hwnd, translate_res(IDD_C64ROM_SETTINGS_DIALOG),

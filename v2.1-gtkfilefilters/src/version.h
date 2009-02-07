@@ -24,15 +24,15 @@
  *
  */
 
-#ifndef __VERSION_H__
-#define __VERSION_H__
+#ifndef VICE__VERSION_H__
+#define VICE__VERSION_H__
 
 #ifndef VERSION
-#define VERSION "2.1"
+#define VERSION "2.1.3"
 #endif
 
 #ifndef VERSION_RC_NUMBER
-#define VERSION_RC_NUMBER 2,1,0,0
+#define VERSION_RC_NUMBER 2,1,3,0
 #endif
 
 #ifndef PACKAGE

@@ -26,8 +26,8 @@
  *
  */
 
-#ifndef _MONTYPES_H
-#define _MONTYPES_H
+#ifndef VICE_MONTYPES_H
+#define VICE_MONTYPES_H
 
 #include "monitor.h"
 #include "types.h"
@@ -75,7 +75,7 @@ enum t_reg_id {
    e_R14,
    e_R15,
    e_ACM,
-   e_XYM
+   e_YXM
 };
 typedef enum t_reg_id REG_ID;
 

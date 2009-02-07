@@ -2,7 +2,7 @@
  * uifileentry.h - file entry widget.
  *
  * Written by
- *  Martin Pottendorfer (Martin.Pottendorfer@alcatel.at)
+ *  pottendo <pottendo@gmx.net>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -24,8 +24,8 @@
  *
  */
 
-#ifndef __uifileentry_h__
-#define __uifileentry_h__
+#ifndef VICE__uifileentry_h__
+#define VICE__uifileentry_h__
 
 enum uilib_file_filter_enum_s;
 enum ui_filechooser_s;

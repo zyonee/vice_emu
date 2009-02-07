@@ -2,7 +2,7 @@
  * fliplist.h
  *
  * Written by
- *  Martin Pottendorfer <Martin.Pottendorfer@aut.alcatel.at>
+ *  pottendo <pottendo@gmx.net>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -24,8 +24,8 @@
  *
  */
 
-#ifndef _FLIPLIST_H
-#define _FLIPLIST_H
+#ifndef VICE_FLIPLIST_H
+#define VICE_FLIPLIST_H
 
 #define FLIP_NEXT 1
 #define FLIP_PREV 0

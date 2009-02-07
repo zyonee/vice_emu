@@ -15,10 +15,10 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //  ---------------------------------------------------------------------------
-//  Filter distortion code written by Antti S. Lankila 2007 - 2008.
+//  Filter distortion code written by Antti S. Lankila 2007 - 2009.
 
-#ifndef __FILTER_H__
-#define __FILTER_H__
+#ifndef VICE__FILTER_H__
+#define VICE__FILTER_H__
 
 #include <math.h>
 #include "siddefs-fp.h"
@@ -206,8 +206,8 @@ friend class SIDFP;
  * some chips have more, some less. We should make this tunable. */
 const float kinkiness = 0.966f;
 const float sidcaps_6581 = 470e-12f;
-const float outputleveldifference_lp_bp = 1.4f;
-const float outputleveldifference_bp_hp = 1.2f;
+const float outputleveldifference_lp_bp = 1.33f;
+const float outputleveldifference_bp_hp = 1.33f;
 
 RESID_INLINE
 static float fastexp(float val) {
@@ -273,7 +273,7 @@ float FilterFP::type3_w0(const float source, const float distoffset)
     float fetresistance = type3_fc_kink_exp;
     if (source > distoffset) {
         const float dist = source - distoffset;
-        fetresistance *= fastexp(dist * type3_steepness * distortion_rate);
+        fetresistance *= fastexp(dist * type3_steepness);
     }
     const float dynamic_resistance = type3_minimumfetresistance + fetresistance;
 
@@ -300,21 +300,21 @@ float FilterFP::clock(float voice1,
                    float ext_in)
 {
     /* Avoid denormal numbers by using small offsets from 0 */
-    float Vi = 0.f, Vnf = 0.f, Vf = 0.f;
+    float Vi = 0.f, Vf = 0.f;
 
     // Route voices into or around filter.
-    ((filt & 1) ? Vi : Vnf) += voice1;
-    ((filt & 2) ? Vi : Vnf) += voice2;
+    ((filt & 1) ? Vi : Vf) += voice1;
+    ((filt & 2) ? Vi : Vf) += voice2;
     // NB! Voice 3 is not silenced by voice3off if it is routed through
     // the filter.
     if (filt & 4)
         Vi += voice3;
     else if (! voice3off)
-        Vnf += voice3;
-    ((filt & 8) ? Vi : Vnf) += ext_in;
+        Vf += voice3;
+    ((filt & 8) ? Vi : Vf) += ext_in;
   
     if (! enabled)
-        return (Vnf - Vi) * volf;
+        return (Vf - Vi) * volf;
 
     if (hp_bp_lp & 1)
         Vf += Vlp;
@@ -324,45 +324,49 @@ float FilterFP::clock(float voice1,
         Vf += Vhp;
     
     if (model == MOS6581FP) {
-        float diff1, diff2;
+        float diff1, diff2, diff3;
 
-        Vhp = Vbp * _1_div_Q * (1.f/outputleveldifference_bp_hp) - Vlp * (1.f/outputleveldifference_bp_hp) - Vi * 0.5f;
+        /* Turning on resonance doesn't come alone: it brings a bit of
+         * lowpass into the bandpass in its wake, but in the opposite phase...
+         */
+        if (hp_bp_lp & 2)
+            Vf -= Vlp * res * (1.f / 15.f / 5.f);
+
+        Vhp = Vbp * _1_div_Q * (1.f/outputleveldifference_bp_hp) - Vlp * (1.f/outputleveldifference_bp_hp/outputleveldifference_lp_bp) - Vi * distortion_rate;
 
         /* the input summer mixing, or something like it... */
-        diff1 = (Vlp - Vbp) * distortion_cf_threshold;
-        diff2 = (Vhp - Vbp) * distortion_cf_threshold;
+        diff1 = (Vlp - Vbp) * (distortion_cf_threshold * 0.5f);
+        diff2 = (Vhp - Vbp) * (distortion_cf_threshold * 0.5f);
+        diff3 = (Vlp - Vhp) * (distortion_cf_threshold * 0.5f);
         Vlp -= diff1;
+        Vlp -= diff3;
         Vbp += diff1;
         Vbp += diff2;
         Vhp -= diff2;
+        Vhp += diff3;
 
         /* Model output strip mixing. Doing it now that HP state
          * variable modifying still makes some difference.
          * (Phase error, though.) */
         if (hp_bp_lp & 1)
-            Vlp += (Vf + Vnf - Vlp) * distortion_cf_threshold;
+            Vlp += (Vf - Vlp) * distortion_cf_threshold;
         if (hp_bp_lp & 2)
-            Vbp += (Vf + Vnf - Vbp) * distortion_cf_threshold;
+            Vbp += (Vf - Vbp) * distortion_cf_threshold;
         if (hp_bp_lp & 4)
-            Vhp += (Vf + Vnf - Vhp) * distortion_cf_threshold;
+            Vhp += (Vf - Vhp) * distortion_cf_threshold;
        
         /* Simulating the exponential VCR that the FET block is... */
-        Vlp -= Vbp * type3_w0(Vbp, type3_fc_distortion_offset_bp);
+        Vlp -= Vbp * type3_w0(Vbp, type3_fc_distortion_offset_bp) * outputleveldifference_lp_bp;
         Vbp -= Vhp * type3_w0(Vhp, type3_fc_distortion_offset_hp) * outputleveldifference_bp_hp;
 
-        /* Tuned based on Fred Gray's Break Thru. It is probably not a hard
-         * discontinuity but a saturation effect... */
-        if (Vnf > 3.2e6f)
-            Vnf = 3.2e6f;
-        
-        Vf += Vnf + Vlp * (outputleveldifference_lp_bp - 1.f);
+        /* saturate. This is likely the output inverter saturation. */
+        if (Vf > 3.0e6f)
+            Vf -= (Vf - 3.0e6f) / 2.f;
     } else {
         /* On the 8580, BP appears mixed in phase with the rest. */
         Vhp = -Vbp * _1_div_Q - Vlp - Vi;
         Vlp += Vbp * type4_w0_cache;
         Vbp += Vhp * type4_w0_cache;
-
-        Vf += Vnf;
     }
     
     return Vf * volf;

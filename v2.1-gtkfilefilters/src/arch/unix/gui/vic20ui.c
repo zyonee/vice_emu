@@ -48,6 +48,7 @@
 #include "uilib.h"
 #include "uimenu.h"
 #include "uimidi.h"
+#include "uimouse.h"
 #include "uiperipheraliec.h"
 #include "uiromset.h"
 #include "uirs232.h"
@@ -473,6 +474,8 @@ static ui_menu_entry_t vic20_menu[] = {
       NULL, NULL, memory_settings_submenu },
     { N_("SID cartridge settings"),
       NULL, NULL, sidcart_submenu },
+    { N_("Paddle emulation"),
+      NULL, NULL, mouse_vic20_submenu },
 #ifdef HAVE_MIDI
     { N_("MIDI emulation"),
       NULL, NULL, midi_vic20_submenu },

@@ -36,6 +36,7 @@ ALT             'C'         IDM_MEDIAFILE                     C
 ALT             'G'         IDM_EVENT_SETMILESTONE            G
 ALT             'H'         IDM_EVENT_RESETMILESTONE          H
 ALT             'D'         IDM_TOGGLE_FULLSCREEN             D
+ALT             'Q'         IDM_PADDLES                       Q
 ALT             0x0D        IDM_TOGGLE_FULLSCREEN             D
 ALT             0x13        IDM_PAUSE                         Pause
 ALT             0xBB        IDM_SINGLE_FRAME_ADVANCE          +
@@ -115,5 +116,5 @@ ALT             0x2D        IDM_EDIT_PASTE                    Ins
 # IDM_MON_SET_BP                          IDM_MON_UNSET_BP
 # IDM_MON_ENABLE_BP                       IDM_MON_DISABLE_BP
 # IDM_WNDCHILD                            IDM_SIDCART_SETTINGS
-# IDM_SOUND_RECORD_START                  IDM_SOUND_RECORD_STOP                   
-# IDM_KEYBOARD_SETTINGS
+# IDM_SOUND_RECORD_START                  IDM_SOUND_RECORD_STOP
+# IDM_KEYBOARD_SETTINGS                   IDM_TOGGLE_AUTOSTART_HANDLE_TDE

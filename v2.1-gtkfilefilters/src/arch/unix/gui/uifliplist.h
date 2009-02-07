@@ -2,7 +2,7 @@
  * uifliplist.h
  *
  * Written by
- *  Martin Pottendorfer <Martin.Pottendorfer@aut.alcatel.at>
+ *  pottendo <pottendo@gmx.net>
  *  Andreas Boose <viceteam@t-online.de>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
@@ -25,8 +25,8 @@
  *
  */
 
-#ifndef _UIFLIPLIST_H
-#define _UIFLIPLIST_H
+#ifndef VICE_UIFLIPLIST_H
+#define VICE_UIFLIPLIST_H
 
 #include "uimenu.h"
 

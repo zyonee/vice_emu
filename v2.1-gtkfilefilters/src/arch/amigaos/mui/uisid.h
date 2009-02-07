@@ -24,8 +24,8 @@
  *
  */
 
-#ifndef _UISID_H
-#define _UISID_H
+#ifndef VICE_UISID_H
+#define VICE_UISID_H
 
 extern void ui_sid_settings_dialog(void);
 

@@ -2,7 +2,7 @@
  * ui.h
  *
  * Written by
- *  Martin Pottendorfer (Martin.Pottendorfer@alcatel.at)
+ *  pottendo <pottendo@gmx.net>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -24,8 +24,8 @@
  *
  */
 
-#ifndef _UI_H_
-#define _UI_H_
+#ifndef VICE_UI_H_
+#define VICE_UI_H_
 
 #include "vice.h"
 

@@ -268,7 +268,7 @@
       GLOBAL_REGS.r14 = dtv_registers[14]; \
       GLOBAL_REGS.r15 = dtv_registers[15]; \
       GLOBAL_REGS.acm = (reg_a_write_idx << 4) | (reg_a_read_idx); \
-      GLOBAL_REGS.xym = (reg_y_idx << 4) | (reg_x_idx); \
+      GLOBAL_REGS.yxm = (reg_y_idx << 4) | (reg_x_idx); \
   } while (0)
 
 /* Import the public version of the registers.  */
@@ -296,8 +296,8 @@
       dtv_registers[15] = GLOBAL_REGS.r15; \
       reg_a_write_idx = GLOBAL_REGS.acm >> 4; \
       reg_a_read_idx = GLOBAL_REGS.acm & 0xf; \
-      reg_y_idx = GLOBAL_REGS.xym >> 4; \
-      reg_x_idx = GLOBAL_REGS.xym & 0xf; \
+      reg_y_idx = GLOBAL_REGS.yxm >> 4; \
+      reg_x_idx = GLOBAL_REGS.yxm & 0xf; \
       JUMP(GLOBAL_REGS.pc); \
   } while (0)
 
@@ -1861,10 +1861,12 @@ static const BYTE rewind_fetch_tab[] = {
 
     CPU_DELAY_CLK
 
+#ifndef CYCLE_EXACT_ALARM
     while (CLK >= alarm_context_next_pending_clk(ALARM_CONTEXT)) {
         alarm_context_dispatch(ALARM_CONTEXT, CLK);
         CPU_DELAY_CLK
     }
+#endif
 
     {
         enum cpu_int pending_interrupt;
@@ -1876,10 +1878,12 @@ static const BYTE rewind_fetch_tab[] = {
                 && CPU_INT_STATUS->global_pending_int & IK_IRQPEND)
                     CPU_INT_STATUS->global_pending_int &= ~IK_IRQPEND;
             CPU_DELAY_CLK
+#ifndef CYCLE_EXACT_ALARM
             while (CLK >= alarm_context_next_pending_clk(ALARM_CONTEXT)) {
                 alarm_context_dispatch(ALARM_CONTEXT, CLK);
                 CPU_DELAY_CLK
             }
+#endif
         }
     }
 

@@ -2,7 +2,7 @@
  * xrandr.h
  *
  * Written by
- * Martin Pottendorfer
+ * pottendo <pottendo@gmx.net>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -24,8 +24,8 @@
  *
  */
 
-#ifndef __xrandr_h__
-#define __xrandr_h__
+#ifndef VICE__xrandr_h__
+#define VICE__xrandr_h__
 
 struct ui_menu_entry_s;
 

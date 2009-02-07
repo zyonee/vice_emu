@@ -114,9 +114,6 @@ static char *ui_sid_model[] =
   "6581",
   "8580",
   "8580 + digiboost",
-#ifdef HAVE_RESID
-  "DTVSID (ReSID)",
-#endif
 #ifdef HAVE_RESID_FP
   "6581R3 4885 (ReSID-fp)",
   "6581R3 0486S (ReSID-fp)",
@@ -137,9 +134,6 @@ static const int ui_sid_model_values[] =
   SID_MODEL_6581,
   SID_MODEL_8580,
   SID_MODEL_8580D,
-#ifdef HAVE_RESID
-  SID_MODEL_DTVSID,
-#endif
 #ifdef HAVE_RESID_FP
   SID_MODEL_6581R3_4885,
   SID_MODEL_6581R3_0486S,

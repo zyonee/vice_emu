@@ -2,7 +2,7 @@
  * uipalemu.h
  *
  * Written by
- *  Martin Pottendorfer <pottendo@utanet.at>
+ *  pottendo <pottendo@gmx.net>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -24,8 +24,8 @@
  *
  */
 
-#ifndef _UIPALEMU_H
-#define _UIPALEMU_H
+#ifndef VICE_UIPALEMU_H
+#define VICE_UIPALEMU_H
 
 #include "uimenu.h"
 

@@ -1,5 +1,5 @@
-#ifndef _CONFIG_H_
-#define _CONFIG_H_
+#ifndef VICE_CONFIG_H_
+#define VICE_CONFIG_H_
 
 #define UNSTABLE
 
@@ -9,6 +9,7 @@
 #define RETSIGTYPE              void
 #define HAVE_RESID              1
 #define HAVE_RESID_FP           1
+#define HAVE_RESID_DTV          1
 #define HAVE_PNG                1
 #define HAVE_ZLIB               1
 #define HAS_JOYSTICK            1

@@ -129,6 +129,7 @@ static const ui_menu_toggle_t grayed_list[] = {
 static const ui_menu_toggle_t toggle_list[] = {
     { "Sound", IDM_TOGGLE_SOUND },
     { "DriveTrueEmulation", IDM_TOGGLE_DRIVE_TRUE_EMULATION },
+    { "AutostartHandleTrueDriveEmulation", IDM_TOGGLE_AUTOSTART_HANDLE_TDE },
     { "WarpMode", IDM_TOGGLE_WARP_MODE },
     { "VirtualDevices", IDM_TOGGLE_VIRTUAL_DEVICES },
     { "SaveResourcesOnExit", IDM_TOGGLE_SAVE_SETTINGS_ON_EXIT },
@@ -212,6 +213,7 @@ static const struct {
     UINT item_id;
 } ui_lang_menu_entries [] = {
     { "en", IDM_LANG_EN },
+    { "da", IDM_LANG_DA },
     { "de", IDM_LANG_DE },
     { "fr", IDM_LANG_FR },
     { "hu", IDM_LANG_HU },
@@ -219,6 +221,7 @@ static const struct {
     { "nl", IDM_LANG_NL },
     { "pl", IDM_LANG_PL },
     { "sv", IDM_LANG_SV },
+    { "tr", IDM_LANG_TR },
     { NULL, 0}
 };
 
@@ -1523,6 +1526,7 @@ static void handle_wm_command(WPARAM wparam, LPARAM lparam, HWND hwnd)
         ui_rs232_settings_dialog(hwnd);
         break;
       case IDM_LANG_EN:
+      case IDM_LANG_DA:
       case IDM_LANG_DE:
       case IDM_LANG_FR:
       case IDM_LANG_HU:
@@ -1530,6 +1534,7 @@ static void handle_wm_command(WPARAM wparam, LPARAM lparam, HWND hwnd)
       case IDM_LANG_NL:
       case IDM_LANG_PL:
       case IDM_LANG_SV:
+      case IDM_LANG_TR:
         ui_set_language(wparam);
         break;
       case IDM_SOUND_RECORD_START:

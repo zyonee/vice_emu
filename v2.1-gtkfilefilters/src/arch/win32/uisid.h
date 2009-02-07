@@ -1,5 +1,5 @@
 /*
- * uisid.h - Implementation of the SID settings dialog box.
+ * uisid.h - Implementation of the C64, C128 and CBM-II SID settings dialog box.
  *
  * Written by
  *  Andreas Matthies <andreas.matthies@gmx.net>
@@ -24,8 +24,8 @@
  *
  */
 
-#ifndef _UISID_H
-#define _UISID_H
+#ifndef VICE_UISID_H
+#define VICE_UISID_H
 
 void ui_sid_settings_dialog(HWND hwnd);
 

@@ -9,7 +9,7 @@ AC_INIT(src/maincpu.c)
 
 VICE_VERSION_MAJOR=2
 VICE_VERSION_MINOR=1
-VICE_VERSION_BUILD=0
+VICE_VERSION_BUILD=3
 
 AC_SUBST(VICE_VERSION_MAJOR)
 AC_SUBST(VICE_VERSION_MINOR)
@@ -70,6 +70,7 @@ AC_ARG_ENABLE(gnomeui,[  --enable-gnomeui        enables gnome ui support])
 AC_ARG_ENABLE(nls,[  --disable-nls           disables national language support])
 AC_ARG_ENABLE(realdevice,[  --disable-realdevice    disables access to real peripheral devices (CBM4Linux/OpenCBM)])
 AC_ARG_ENABLE(ffmpeg,[  --enable-ffmpeg         enables ffmpeg library support])
+AC_ARG_ENABLE(quicktime,[  --enable-quicktime      enables Apple QuickTime support])
 AC_ARG_ENABLE(ethernet,[  --enable-ethernet       enables Tfe Final Ethernet emulation])
 AC_ARG_ENABLE(ipv6,[  --disable-ipv6          disables the checking for ipv6 compatibility])
 AC_ARG_ENABLE(parsid,[  --enable-parsid         enables ParSID support])
@@ -490,7 +491,7 @@ dnl a simple check to find `libintl.h' and `gettext'.
 dnl
 
 dnl Add new languages here
-ALL_LINGUAS="de fr it sv pl nl hu"
+ALL_LINGUAS="de fr it sv pl nl hu tr da"
 
 dnl These rules are solely for the distribution goal.  While doing this
 dnl we only have to keep exactly one list of the available catalogs
@@ -697,6 +698,11 @@ RESID_FP_LIBS=
 RESID_FP_INCLUDES=
 RESID_FP_DEP=
 
+RESID_DTV_DIR=
+RESID_DTV_LIBS=
+RESID_DTV_INCLUDES=
+RESID_DTV_DEP=
+
 
 LINKCC='$(CC)'
 
@@ -767,6 +773,14 @@ else
       RESID_FP_INCLUDES="-I\$(top_builddir)/src/resid-fp"
       RESID_FP_DEP=libresidfp
     fi
+
+    AC_DEFINE(HAVE_RESID_DTV,,[This version provides ReSID-DTV support.])
+    AC_CONFIG_SUBDIRS(src/resid-dtv)
+    RESID_DTV_DIR=resid-dtv
+    RESID_DTV_LIBS="\$(top_builddir)/src/resid-dtv/libresiddtv.a"
+    RESID_DTV_INCLUDES="-I\$(top_builddir)/src/resid-dtv"
+    RESID_DTV_DEP=libresiddtv
+
   else
     dnl reSID is installed elsewhere, no need to configure.
     no_recursion=yes
@@ -810,6 +824,12 @@ AC_SUBST(RESID_FP_DIR)
 AC_SUBST(RESID_FP_LIBS)
 AC_SUBST(RESID_FP_INCLUDES)
 AC_SUBST(RESID_FP_DEP)
+
+AM_CONDITIONAL(HAVE_RESID_DTV, test x"$with_resid" != "xno")
+AC_SUBST(RESID_DTV_DIR)
+AC_SUBST(RESID_DTV_LIBS)
+AC_SUBST(RESID_DTV_INCLUDES)
+AC_SUBST(RESID_DTV_DEP)
 
 dnl Check for typedefs, structures, and compiler characteristics.
 AC_CHECK_HEADERS(sys/types.h)
@@ -1154,7 +1174,6 @@ dnl ----- FFMPEG -----
 FFMPEG_INCLUDES=
 FFMPEG_LIBS=
 if test x"$enable_ffmpeg" = "xyes" -o x"$is_win32" = "xyes"; then
-  SOUND_DRIVERS="$SOUND_DRIVERS soundffmpegaudio.o"
   GFXOUTPUT_DRIVERS="$GFXOUTPUT_DRIVERS ffmpegdrv.o"
   AC_CHECK_HEADERS( ffmpeg/avformat.h )
   if test x"$ac_cv_header_ffmpeg_avformat_h" = "xno" ; then
@@ -1185,6 +1204,41 @@ if test x"$enable_ffmpeg" = "xyes" -o x"$is_win32" = "xyes"; then
 fi
 AC_SUBST(FFMPEG_INCLUDES)
 AC_SUBST(FFMPEG_LIBS)
+
+dnl ----- Apple QuickTime -----
+QUICKTIME_INCLUDES=
+QUICKTIME_LIBS=
+if test x"$enable_quicktime" = "xyes" -o x"$is_unix_macosx" = "xyes"; then
+
+  dnl ---- Mac OS X -----
+  if test x"$is_unix_macosx" = x"yes" ; then
+    AC_CHECK_HEADER(QuickTime/QuickTime.h,,)
+    if test x"$ac_cv_header_QuickTime_QuickTime_h" = "xyes" ; then
+      AC_CHECK_HEADER(CoreVideo/CVPixelBuffer.h,,)
+      if test x"$ac_cv_header_CoreVideo_CVPixelBuffer_h" = "xyes" ; then
+        AC_MSG_CHECKING(whether we can link the QuickTime framework)
+        old_LIBS="${LIBS}"
+        LIBS="${LIBS} -framework QuickTime -framework CoreVideo"
+        AC_TRY_LINK([#include <QuickTime/Movies.h>
+                     #include <CoreVideo/CVPixelBuffer.h>],
+                    [EnterMovies(); CVPixelBufferGetTypeID();],
+                    [AC_MSG_RESULT(yes);
+                     GFXOUTPUT_DRIVERS="$GFXOUTPUT_DRIVERS quicktimedrv.o"
+                     QUICKTIME_LIBS="-framework QuickTime -framework CoreVideo"
+                     AC_DEFINE(HAVE_QUICKTIME,,[Enable QuickTime support.])],
+                    [AC_MSG_RESULT(no)])
+        LIBS=${old_LIBS}
+      fi
+    fi
+  fi
+  dnl ----- Windows -----
+  if test x"$is_win32" = x"yes" ; then
+    echo "TODO"
+  fi
+
+fi
+AC_SUBST(QUICKTIME_INCLUDES)
+AC_SUBST(QUICKTIME_LIBS)
 
 dnl ----- Ethernet -----
 TFE_LIBS=
@@ -2365,6 +2419,7 @@ if false ; then
     mkdir -p printerdrv
     mkdir -p raster
     mkdir -p resid
+    mkdir -p resid-dtv
     mkdir -p resid-fp
     mkdir -p rs232drv
     mkdir -p serial

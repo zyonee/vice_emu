@@ -1,5 +1,5 @@
 /*
- * uisid.c - Implementation of the SID settings dialog box.
+ * uisid.c - Implementation of the C64, C128 and CBM-II SID settings dialog box.
  *
  * Written by
  *  Andreas Matthies <andreas.matthies@gmx.net>
@@ -100,9 +100,6 @@ static const TCHAR *ui_sid_model[] =
     TEXT("6581"),
     TEXT("8580"),
     TEXT("8580 + digi boost"),
-#ifdef HAVE_RESID
-    TEXT("DTVSID (reSID)"),
-#endif
 #ifdef HAVE_RESID_FP
     TEXT("8580R5 1489 (reSID-fp)"),
     TEXT("8580R5 1489 + digi boost (reSID-fp)"),
@@ -125,9 +122,6 @@ static const int ui_sid_model_values[] =
     SID_MODEL_6581,
     SID_MODEL_8580,
     SID_MODEL_8580D,
-#ifdef HAVE_RESID
-    SID_MODEL_DTVSID,
-#endif
 #ifdef HAVE_RESID_FP
     SID_MODEL_8580R5_1489,
     SID_MODEL_8580R5_1489D,

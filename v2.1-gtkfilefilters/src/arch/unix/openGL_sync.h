@@ -2,7 +2,7 @@
  * openGL_sync.h
  *
  * Written by
- * Martin Pottendorfer
+ * pottendo <pottendo@gmx.net>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -24,8 +24,9 @@
  *
  */
 
-#ifndef __openGL_sync_h__
-#define __openGL_sync_h__
+#ifndef VICE__openGL_sync_h__
+#define VICE__openGL_sync_h__
+
 #include "vice.h"
 #include "videoarch.h"
 

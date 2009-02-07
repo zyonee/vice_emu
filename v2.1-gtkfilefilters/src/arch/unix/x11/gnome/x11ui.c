@@ -4,7 +4,7 @@
  * Written by
  *  Ettore Perazzoli
  *  Oliver Schaertel
- *  Martin Pottendorfer
+ *  pottendo <pottendo@gmx.net>
  *
  * Support for multiple visuals and depths by
  *  Teemu Rantanen <tvr@cs.hut.fi>
@@ -540,8 +540,8 @@ int ui_init_finish(void)
     }
     
 #ifdef HAVE_FULLSCREEN
-    if (fullscreen_init() < 0)
-	return -1;
+    if (fullscreen_init() != 0)
+	log_warning(ui_log, "Some fullscreen devices aren't initialized properly.");
 #endif
     return ui_menu_init();
 }

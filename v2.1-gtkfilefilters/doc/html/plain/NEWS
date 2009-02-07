@@ -5,6 +5,65 @@ This file lists the most important user-visible changes for each
 official release of VICE.  See `src/ChangeLog' for a more detailed
 list of all the changes in the code.
 
+* Changes in VICE 2.2
+======================
+
+** General
+----------
+
+- On autostart, do not change true drive emulation (TDE) anymore by
+  default. The old behaviour can be switched on again by specifiying
+  -autostart-handle-tde on the command line.
+  There is one drawback of this behaviour: If TDE is switched on, an
+  image attached must fit to the drive type set. For example, when you
+  attach a .D81, you must have the drive type set to 1581, or the
+  autostart will fail.
+
+** C64/C128 changes
+-------------------
+
+- 
+
+** C64 changes
+--------------
+
+- 
+
+** VIC20 changes
+----------------
+
+- 
+
+** C64DTV changes
+-----------------
+
+- 
+
+** Unix changes
+---------------
+
+- 
+
+** AmigaOS changes
+------------------
+
+- 
+
+** OS/2 changes
+---------------
+
+- 
+
+** GP2X changes
+---------------
+
+- 
+
+** Mac OS X changes
+-------------------
+
+- 
+
 * Changes in VICE 2.1
 ======================
 

@@ -99,11 +99,11 @@ static int residfp_init(sound_t *psid, int speed, int cycles_per_sec)
     if (model < 8 || model > 15) {
       psid->sid->set_chip_model(MOS8580FP);
       psid->sid->set_voice_nonlinearity(1.0f);
-      psid->sid->get_filter().set_distortion_properties(0.f, 0.f, 0.f);
+      psid->sid->get_filter().set_distortion_properties(0.5f, 0.f, 0.f);
     } else {
       psid->sid->set_chip_model(MOS6581FP);
       psid->sid->set_voice_nonlinearity(0.96f);
-      psid->sid->get_filter().set_distortion_properties(3.7e-3f, 2048.f, 1.2e-4f);
+      psid->sid->get_filter().set_distortion_properties(0.5f, 1400.f, 1.2e-4f);
     }
 
     switch (model) {
@@ -142,7 +142,7 @@ static int residfp_init(sound_t *psid, int speed, int cycles_per_sec)
       break;
     default:
     case SID_MODEL_6581R4AR_3789:
-      psid->sid->get_filter().set_type3_properties(1.40e6f, 1.47e8f, 1.0059f, 1.55e4f);
+      psid->sid->get_filter().set_type3_properties(1.37e6f, 1.70e8f, 1.006f, 1.55e4f);
       strcpy(model_text, "6581R4AR 3789");
       break;
     case SID_MODEL_6581R3_4485:

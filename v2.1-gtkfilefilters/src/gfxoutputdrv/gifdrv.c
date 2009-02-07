@@ -32,7 +32,6 @@
 #include <gif_lib.h>
 
 #include "archdep.h"
-#include "gifdrv.h"
 #include "lib.h"
 #include "log.h"
 #include "gfxoutput.h"
@@ -244,15 +243,17 @@ static gfxoutputdrv_t gif_drv =
     "GIF",
     "GIF screenshot",
     "gif",
+    NULL, /* formatlist */
     gifdrv_open,
     gifdrv_close,
     gifdrv_write,
     gifdrv_save,
-#ifdef FEATURE_CPUMEMHISTORY
     NULL,
-    gifdrv_save_memmap
-#else
+    NULL,
+    NULL,
     NULL
+#ifdef FEATURE_CPUMEMHISTORY
+    ,gifdrv_save_memmap
 #endif
 };
 

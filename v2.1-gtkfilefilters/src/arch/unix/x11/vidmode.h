@@ -2,7 +2,7 @@
  * vidmode.h
  *
  * Written by
- *  Martin Pottendorfer <pottendo@utanet.at>
+ *  pottendo <pottendo@gmx.net>
  *  Andreas Boose <viceteam@t-online.de>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
@@ -25,8 +25,8 @@
  *
  */
 
-#ifndef _VIDMODE_H
-#define _VIDMODE_H
+#ifndef VICE_VIDMODE_H
+#define VICE_VIDMODE_H
 
 struct video_canvas_s;
 struct ui_menu_entry_s;

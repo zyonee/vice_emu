@@ -62,7 +62,7 @@ if [ "$BUILD_DIR" = "" ]; then
 fi
 SDK_VERSION="$6"
 if [ "x$SDK_VERSION" = "x" ]; then
-  SDK_VERSION="10.3+4"
+  SDK_VERSION="10.4"
 fi
 echo "  architecture: $ARCH"
 echo "  ui type:      $UI_TYPE"
@@ -190,7 +190,7 @@ export PATH=/usr/X11R6/bin:$PATH
 COMMON_CFLAGS="-O3"
 
 # extra flags
-if [ "$UI_TYPE" = "gtk" ]; then
+if [ "$UI_TYPE" != "cocoa" ]; then
   LDFLAGS_EXTRA="-dylib_file /System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libGL.dylib:/System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libGL.dylib"
 fi
 
@@ -220,6 +220,7 @@ build_vice () {
     PATH="$EXTLIB_DIR/$BUILD_ARCH/bin:$PATH" \
     CPPFLAGS="-I$EXTLIB_DIR/$BUILD_ARCH/include" \
     CFLAGS="$COMMON_CFLAGS" \
+    OBJCFLAGS="$COMMON_CFLAGS" \
     LDFLAGS="-L$EXTLIB_DIR/$BUILD_ARCH/lib $LDFLAGS_EXTRA" \
     CC="gcc -arch $BUILD_ARCH -isysroot $BUILD_SDK -mmacosx-version-min=$BUILD_SDK_VERSION" \
     CXX="g++ -arch $BUILD_ARCH -isysroot $BUILD_SDK -mmacosx-version-min=$BUILD_SDK_VERSION" \
@@ -227,7 +228,9 @@ build_vice () {
     $VICE_SRC/configure --host=$BUILD_ARCH2-apple-darwin $CONFIGURE_FLAGS \
       --x-includes=$BUILD_SDK/usr/X11R6/include --x-libraries=$BUILD_SDK/usr/X11R6/lib
   set +x
-  make
+  make 2>&1 | tee build.log 
+  echo "--- Warnings ---" 
+  fgrep warning: build.log
   popd
 
   # check if all went well
@@ -310,6 +313,12 @@ case "$SDK_VERSION" in
   PPC_SDK=$SDK_BASE/MacOSX10.3.9.sdk
   I386_SDK=$SDK_BASE/MacOSX10.4u.sdk
   PPC_SDK_VERSION=10.3
+  I386_SDK_VERSION=10.4
+  ;;
+10.4)
+  PPC_SDK=$SDK_BASE/MacOSX10.4u.sdk
+  I386_SDK=$SDK_BASE/MacOSX10.4u.sdk
+  PPC_SDK_VERSION=10.4
   I386_SDK_VERSION=10.4
   ;;
 10.5)
