@@ -30,11 +30,11 @@
 
 #include "vice.h"
 
+#include "videoarch.h"
 #include "kbdbuf.h"
 #include "raster.h"
 #include "ui.h"
 #include "vkbd.h"
-#include "videoarch.h"
 #include "vsyncapi.h"
 
 #include <SDL/SDL.h>

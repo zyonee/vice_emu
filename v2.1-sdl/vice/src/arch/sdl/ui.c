@@ -28,11 +28,11 @@
  */
 
 #include "vice.h"
-#include "types.h"
 
 #include <SDL/SDL.h>
 #include <stdio.h>
 
+#include "videoarch.h"
 #include "color.h"
 #include "fullscreenarch.h"
 #include "interrupt.h"
@@ -43,12 +43,12 @@
 #include "mouse.h"
 #include "mousedrv.h"
 #include "resources.h"
+#include "types.h"
 #include "ui.h"
 #include "uiapi.h"
 #include "uicolor.h"
 #include "uimenu.h"
 #include "uimsgbox.h"
-#include "videoarch.h"
 #include "vkbd.h"
 #include "vsync.h"
 

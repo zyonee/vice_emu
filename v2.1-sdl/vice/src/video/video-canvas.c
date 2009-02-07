@@ -29,6 +29,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "videoarch.h"
 #include "lib.h"
 #include "machine.h"
 #include "types.h"
@@ -36,7 +37,6 @@
 #include "video-color.h"
 #include "video-render.h"
 #include "video.h"
-#include "videoarch.h"
 #include "viewport.h"
 
 

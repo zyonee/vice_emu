@@ -30,13 +30,13 @@
 #include <stdlib.h>
 #include <math.h>       /* needed for pow function */
 
+#include "videoarch.h"
 #include "lib.h"
 #include "machine.h"
 #include "palette.h"
 #include "video-canvas.h"
 #include "video-color.h"
 #include "video-resources.h"
-#include "videoarch.h"
 #include "video.h"
 
 DWORD gamma_red[256 * 3];

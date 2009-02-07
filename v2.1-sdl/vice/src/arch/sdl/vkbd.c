@@ -28,17 +28,17 @@
  */
 
 #include "vice.h"
-#include "types.h"
 
 #include <stdio.h>
 
+#include "videoarch.h"
 #include "joy.h"
 #include "keyboard.h"
 #include "menu_common.h"
+#include "types.h"
 #include "ui.h"
 #include "uimenu.h"
 #include "uipoll.h"
-#include "videoarch.h"
 #include "vkbd.h"
 
 int sdl_vkbd_state = 0;

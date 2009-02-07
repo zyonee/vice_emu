@@ -28,8 +28,8 @@
  */
 
 #include "vice.h"
-#include "types.h"
 
+#include "videoarch.h"
 #include "archdep.h"
 #include "charset.h"
 #include "interrupt.h"
@@ -39,12 +39,12 @@
 #include "raster.h"
 #include "resources.h"
 #include "sound.h"
+#include "types.h"
 #include "ui.h"
 #include "uihotkey.h"
 #include "uimenu.h"
 #include "util.h"
 #include "video.h"
-#include "videoarch.h"
 #include "vkbd.h"
 #include "vsync.h"
 

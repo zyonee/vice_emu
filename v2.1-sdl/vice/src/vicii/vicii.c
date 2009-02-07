@@ -48,6 +48,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "videoarch.h"
 #include "alarm.h"
 #include "c64.h"
 #include "cartridge.h"
@@ -84,7 +85,6 @@
 #include "vicii.h"
 #include "viciitypes.h"
 #include "vsync.h"
-#include "videoarch.h"
 #include "video.h"
 #include "viewport.h"
 #include "c64dtvblitter.h"

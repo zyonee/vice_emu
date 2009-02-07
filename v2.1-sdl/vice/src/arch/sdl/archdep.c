@@ -29,6 +29,10 @@
 #include <SDL/SDL.h>
 #include <stdio.h>
 
+#ifdef AMIGA_SUPPORT
+#include "archdep_amiga.c"
+#endif
+
 #ifdef UNIX_COMPILE
 #include "archdep_unix.c"
 #endif

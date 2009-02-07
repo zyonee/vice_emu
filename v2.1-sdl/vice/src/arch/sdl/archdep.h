@@ -57,6 +57,10 @@ extern char *archdep_default_joymap_file_name(void);
 #define ARCHDEP_CRTC_DBUF  0
 #define ARCHDEP_TED_DBUF   0
 
+#ifdef AMIGA_SUPPORT
+#include "archdep_amiga.h"
+#endif
+
 #ifdef UNIX_COMPILE
 #include "archdep_unix.h"
 #endif

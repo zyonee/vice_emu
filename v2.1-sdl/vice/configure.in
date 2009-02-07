@@ -191,11 +191,14 @@ elif test x"$host_os" = "xamigaos" -o x"$host_os" = "xamigaos4" -o x"$host_os" =
   AM_CONDITIONAL(HAVE_RS232, true)
   AM_CONDITIONAL(HAVE_RAWDRIVE, true)
 
-  AC_DEFINE(HAVE_RS232,,[Enable RS232 emulation.])
-  AC_DEFINE(HAVE_RAWDRIVE,,[Support for block device disk image access.])
-  AC_DEFINE(HAS_JOYSTICK,,[Enable joystick emulation.])
-  AC_DEFINE(HAVE_MOUSE,,[Enable 1351 mouse support])
-  AC_DEFINE(HAVE_HARDSID,,[Support for HardSID.])
+  if test x"$enable_sdlui" != "xyes"; then
+      AC_DEFINE(HAVE_RS232,,[Enable RS232 emulation.])
+      AC_DEFINE(HAVE_RAWDRIVE,,[Support for block device disk image access.])
+      AC_DEFINE(HAS_JOYSTICK,,[Enable joystick emulation.])
+      AC_DEFINE(HAVE_MOUSE,,[Enable 1351 mouse support])
+      AC_DEFINE(HAVE_HARDSID,,[Support for HardSID.])
+  fi
+
   AC_DEFINE(AMIGA_SUPPORT,,[Should we enable Amigaos support.])
 
   is_amigaos4=yes
@@ -208,7 +211,9 @@ elif test x"$host_os" = "xamigaos" -o x"$host_os" = "xamigaos4" -o x"$host_os" =
     AC_DEFINE(HAVE_HTONL,,[Define to 1 if you have the htonl function.])
     AC_DEFINE(HAVE_HTONS,,[Define to 1 if you have the htons function.])
     AC_DEFINE(HAVE_NETWORK,,[Enable netplay support])
-    AC_DEFINE(HAVE_XVIDEO,,[Enable XVideo (overlay) support.])
+    if test x"$enable_sdlui" != "xyes"; then
+        AC_DEFINE(HAVE_XVIDEO,,[Enable XVideo (overlay) support.])
+    fi
     is_amigaos4=no
   fi
 
@@ -252,7 +257,9 @@ elif test x"$host_os" = "xamigaos" -o x"$host_os" = "xamigaos4" -o x"$host_os" =
 
   if test x"$is_amigaos4" = "xyes"; then
     AC_DEFINE(AMIGA_OS4,,[Should we enable AmigaOS4 support.])
-    AC_DEFINE(HAVE_CATWEASELMKIII,,[Support for Catweasel MKIII.])  
+    if test x"$enable_sdlui" != "xyes"; then
+        AC_DEFINE(HAVE_CATWEASELMKIII,,[Support for Catweasel MKIII.])
+    fi
     with_picasso96=yes
   fi
 
@@ -1417,7 +1424,7 @@ if test x"$is_unix" = "xyes"; then
                      AC_DEFINE(USE_AIX_AUDIO,,[Enable aix sound support.])],,$SOUND_LIBS)])])
 fi
 
-if test x"$is_amiga" = "xyes"; then
+if test x"$is_amiga" = "xyes" -a x"$enable_sdlui" != "xyes"; then
   AC_CHECK_HEADERS(devices/ahi.h,
                    [SOUND_DRIVERS="$SOUND_DRIVERS soundahi.o"; break])
 fi
@@ -1443,15 +1450,17 @@ else
 fi
 
 if test x"$is_amigaos4" = "xyes"; then
-  AC_MSG_CHECKING(whether devices/timer.h defines TimeVal)
-  AC_TRY_COMPILE([ #include <devices/timer.h> ],
-                 [ struct TimeVal djs; ],
-                 [ AC_DEFINE(AMIGA_OS4_ALT,,
-                             [Enable alternate OS4 includes.])
-                   AC_MSG_RESULT(yes) ], AC_MSG_RESULT(no))
+  if test x"$enable_sdlui" != "xyes"; then
+      AC_MSG_CHECKING(whether devices/timer.h defines TimeVal)
+      AC_TRY_COMPILE([ #include <devices/timer.h> ],
+                     [ struct TimeVal djs; ],
+                     [ AC_DEFINE(AMIGA_OS4_ALT,,
+                                 [Enable alternate OS4 includes.])
+                       AC_MSG_RESULT(yes) ], AC_MSG_RESULT(no))
+  fi
 
   dnl for AmigaOS4 native resid needs to be configured without dependency tracking
-  if test x"$cross_compiling" != "xyes"; then
+    if test x"$cross_compiling" != "xyes"; then
     ac_configure_args="$ac_configure_args --disable-dependency-tracking"
   fi
 fi
@@ -2065,6 +2074,9 @@ if test x"$enable_sdlui" = "xyes"; then
   ARCH_SRC_DIR="\$(top_srcdir)/src/arch/sdl"
   ARCH_LIBS="$ARCH_DIR/libarch.a"
   ARCH_INCLUDES="-I$ARCH_SRC_DIR"
+  AM_CONDITIONAL(SDL_COMPILE, true)
+else
+  AM_CONDITIONAL(SDL_COMPILE, false)
 fi
 
 SDL_EXTRA_LIBS=""
@@ -2123,15 +2135,8 @@ if test x"$is_unix" = "xyes"; then
   fi
   AC_SUBST(UNIX_MACOSX_UITYPE)
 
-  if test x"$enable_sdlui" = "xyes"; then
-    AM_CONDITIONAL(SDL_COMPILE, true)
-    AM_CONDITIONAL(UNIX_COMPILE, false)
-  else
-    AM_CONDITIONAL(SDL_COMPILE, false)
-    AM_CONDITIONAL(UNIX_COMPILE, true)
-  fi
+  AM_CONDITIONAL(UNIX_COMPILE, true)
   AM_CONDITIONAL(WIN32_COMPILE, false)
-  AM_CONDITIONAL(SDL_WIN32_COMPILE, false)
   AM_CONDITIONAL(MSDOS_COMPILE, false)
   AM_CONDITIONAL(RISCOS_COMPILE, false)
   AM_CONDITIONAL(OS2_COMPILE, false)
@@ -2255,16 +2260,10 @@ elif test x"$is_win32" = "xyes"; then
   fi
 
   if test x"$enable_sdlui" = "xyes"; then
-    AM_CONDITIONAL(SDL_COMPILE, true)
-    AM_CONDITIONAL(WIN32_COMPILE, false)
-    AM_CONDITIONAL(SDL_WIN32_COMPILE, true)
     SDL_EXTRA_LIBS="$UI_LIBS -lwinmm -lwsock32"
-  else
-    AM_CONDITIONAL(SDL_COMPILE, false)
-    AM_CONDITIONAL(WIN32_COMPILE, true)
-    AM_CONDITIONAL(SDL_WIN32_COMPILE, false)
   fi
 
+  AM_CONDITIONAL(WIN32_COMPILE, true)
   AM_CONDITIONAL(UNIX_COMPILE, false)
   AM_CONDITIONAL(UNIX_GP2X_COMPILE, false)
   AM_CONDITIONAL(UNIX_SKYOS_COMPILE, false)
@@ -2284,11 +2283,12 @@ elif test x"$is_win32" = "xyes"; then
   AM_CONDITIONAL(HAVE_TRANSLATION, true)
   AM_CONDITIONAL(MAKE_BINDIST, true)
 elif test x"$is_amiga" = "xyes"; then
-  ARCH_DIR="\$(top_builddir)/src/arch/amigaos"
-  ARCH_SRC_DIR="\$(top_srcdir)/src/arch/amigaos"
-  ARCH_LIBS="$ARCH_DIR/libarch.a"
-  ARCH_INCLUDES="-I\$(top_srcdir)/src/arch/amigaos"
-  AM_CONDITIONAL(SDL_COMPILE, false)
+  if test x"$enable_sdlui" != "xyes"; then
+    ARCH_DIR="\$(top_builddir)/src/arch/amigaos"
+    ARCH_SRC_DIR="\$(top_srcdir)/src/arch/amigaos"
+    ARCH_LIBS="$ARCH_DIR/libarch.a"
+    ARCH_INCLUDES="-I\$(top_srcdir)/src/arch/amigaos"
+  fi
   AM_CONDITIONAL(UNIX_COMPILE, false)
   AM_CONDITIONAL(UNIX_GP2X_COMPILE, false)
   AM_CONDITIONAL(UNIX_SKYOS_COMPILE, false)
@@ -2300,7 +2300,6 @@ elif test x"$is_amiga" = "xyes"; then
   AM_CONDITIONAL(UNIX_UNIXWARE_COMPILE, false)
   AM_CONDITIONAL(UNIX_HPUX_COMPILE, false)
   AM_CONDITIONAL(WIN32_COMPILE, false)
-  AM_CONDITIONAL(SDL_WIN32_COMPILE, false)
   AM_CONDITIONAL(MSDOS_COMPILE, false)
   AM_CONDITIONAL(RISCOS_COMPILE, false)
   AM_CONDITIONAL(OS2_COMPILE, false)
@@ -2318,7 +2317,6 @@ elif test x"$is_dos" = "xyes"; then
   else
   ARCH_LIBS="$ARCH_DIR/libarch.a"
   fi
-  AM_CONDITIONAL(SDL_COMPILE, false)
   AM_CONDITIONAL(UNIX_COMPILE, false)
   AM_CONDITIONAL(UNIX_GP2X_COMPILE, false)
   AM_CONDITIONAL(UNIX_SKYOS_COMPILE, false)
@@ -2330,7 +2328,6 @@ elif test x"$is_dos" = "xyes"; then
   AM_CONDITIONAL(UNIX_UNIXWARE_COMPILE, false)
   AM_CONDITIONAL(UNIX_HPUX_COMPILE, false)
   AM_CONDITIONAL(WIN32_COMPILE, false)
-  AM_CONDITIONAL(SDL_WIN32_COMPILE, false)
   AM_CONDITIONAL(MSDOS_COMPILE, true)
   AM_CONDITIONAL(RISCOS_COMPILE, false)
   AM_CONDITIONAL(OS2_COMPILE, false)
@@ -2344,7 +2341,6 @@ elif test x"$is_os2" = "xyes"; then
   ARCH_DIR="\$(top_builddir)/src/arch/os2"
   ARCH_SRC_DIR="\$(top_srcdir)/src/arch/os2"
   ARCH_LIBS="$ARCH_DIR/libarch.a"
-  AM_CONDITIONAL(SDL_COMPILE, false)
   AM_CONDITIONAL(UNIX_COMPILE, false)
   AM_CONDITIONAL(UNIX_GP2X_COMPILE, false)
   AM_CONDITIONAL(UNIX_SKYOS_COMPILE, false)
@@ -2356,7 +2352,6 @@ elif test x"$is_os2" = "xyes"; then
   AM_CONDITIONAL(UNIX_UNIXWARE_COMPILE, false)
   AM_CONDITIONAL(UNIX_HPUX_COMPILE, false)
   AM_CONDITIONAL(WIN32_COMPILE, false)
-  AM_CONDITIONAL(SDL_WIN32_COMPILE, false)
   AM_CONDITIONAL(MSDOS_COMPILE, false)
   AM_CONDITIONAL(RISCOS_COMPILE, false)
   AM_CONDITIONAL(OS2_COMPILE, true)
@@ -2370,7 +2365,6 @@ elif test x"$is_beos" = "xyes"; then
   ARCH_DIR="\$(top_builddir)/src/arch/beos"
   ARCH_SRC_DIR="\$(top_srcdir)/src/arch/beos"
   ARCH_LIBS="$ARCH_DIR/libarch.a"
-  AM_CONDITIONAL(SDL_COMPILE, false)
   AM_CONDITIONAL(UNIX_COMPILE, false)
   AM_CONDITIONAL(UNIX_GP2X_COMPILE, false)
   AM_CONDITIONAL(UNIX_SKYOS_COMPILE, false)
@@ -2382,7 +2376,6 @@ elif test x"$is_beos" = "xyes"; then
   AM_CONDITIONAL(UNIX_UNIXWARE_COMPILE, false)  
   AM_CONDITIONAL(UNIX_HPUX_COMPILE, false)
   AM_CONDITIONAL(WIN32_COMPILE, false)
-  AM_CONDITIONAL(SDL_WIN32_COMPILE, false)
   AM_CONDITIONAL(MSDOS_COMPILE, false)
   AM_CONDITIONAL(RISCOS_COMPILE, false)
   AM_CONDITIONAL(OS2_COMPILE, false)
@@ -2396,7 +2389,6 @@ elif test x"$is_riscos" = "xyes"; then
   ARCH_DIR="\$(top_builddir)/src/arch/riscos"
   ARCH_SRC_DIR="\$(top_srcdir)/src/arch/riscos"
   ARCH_LIBS="$ARCH_DIR/libarch.a"
-  AM_CONDITIONAL(SDL_COMPILE, false)
   AM_CONDITIONAL(UNIX_COMPILE, false)
   AM_CONDITIONAL(UNIX_GP2X_COMPILE, false)
   AM_CONDITIONAL(UNIX_SKYOS_COMPILE, false)
@@ -2408,7 +2400,6 @@ elif test x"$is_riscos" = "xyes"; then
   AM_CONDITIONAL(UNIX_UNIXWARE_COMPILE, false)
   AM_CONDITIONAL(UNIX_HPUX_COMPILE, false)
   AM_CONDITIONAL(WIN32_COMPILE, false)
-  AM_CONDITIONAL(SDL_WIN32_COMPILE, false)
   AM_CONDITIONAL(MSDOS_COMPILE, false)
   AM_CONDITIONAL(RISCOS_COMPILE, true)
   AM_CONDITIONAL(OS2_COMPILE, false)

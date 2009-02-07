@@ -52,6 +52,7 @@ int vsync_frame_counter;
 #include <limits.h>
 #endif
 
+#include "videoarch.h"
 #include "clkguard.h"
 #include "cmdline.h"
 #include "debug.h"
@@ -279,8 +280,6 @@ void vsync_sync_reset(void)
 {
     sync_reset = 1;
 }
-
-#include "videoarch.h"
 
 /* This is called at the end of each screen frame. It flushes the
    audio buffer and keeps control of the emulation speed. */

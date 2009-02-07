@@ -31,15 +31,14 @@
 
 #include "vice.h"
 
-#include "viewport.h"
-#include "video.h"
-
 #include <SDL/SDL.h>
 
 #ifdef HAVE_HWSCALE
 #include <SDL/SDL_opengl.h>
 #endif
 
+#include "viewport.h"
+#include "video.h"
 
 typedef void (*video_refresh_func_t)(struct video_canvas_s *,
               int, int, int, int, unsigned int, unsigned int);
