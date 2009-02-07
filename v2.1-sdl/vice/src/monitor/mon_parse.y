@@ -152,7 +152,7 @@ extern int cur_len, last_len;
 %token<i> REG_AF REG_BC REG_DE REG_HL REG_IX REG_IY REG_SP
 %token<i> REG_IXH REG_IXL REG_IYH REG_IYL
 %token<str> STRING FILENAME R_O_L OPCODE LABEL BANKNAME CPUTYPE
-%token<reg> REGISTER
+%token<reg> MON_REGISTER
 %left<cond_op> COMPARE_OP
 %token<rt> RADIX_TYPE INPUT_SPEC
 %token<action> CMD_CHECKPT_ON CMD_CHECKPT_OFF TOGGLE
@@ -539,8 +539,8 @@ opt_mem_op: MEM_OP { $$ = $1; }
           | { $$ = e_load_store; }
           ;
 
-register: REGISTER          { $$ = new_reg(default_memspace, $1); }
-        | memspace REGISTER { $$ = new_reg($1, $2); }
+register: MON_REGISTER          { $$ = new_reg(default_memspace, $1); }
+        | memspace MON_REGISTER { $$ = new_reg($1, $2); }
         ;
 
 reg_list: reg_list COMMA reg_asgn
