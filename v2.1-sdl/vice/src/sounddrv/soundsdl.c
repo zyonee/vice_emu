@@ -111,7 +111,8 @@ static int sdl_init(const char *param, int *speed,
     return 0;
 }
 
-#if defined(WORDS_BIGENDIAN) && !defined(HAVE_SWAB) && !defined(AMIGA_MORPHOS)
+#if defined(WORDS_BIGENDIAN) && !defined(HAVE_SWAB)
+#ifndef AMIGA_MORPHOS
 void swab(void *src, void *dst, size_t length)
 {
     const char *from=src;
@@ -129,6 +130,25 @@ void swab(void *src, void *dst, size_t length)
         to[ptr-1]=0;
     }
 }
+#else
+#define swab(src, dst, length)              \
+    do {                                    \
+        const char *from=src;               \
+        char *to=dst;                       \
+        size_t ptr;                         \
+                                            \
+        for (ptr=1; ptr<(length); ptr+=2) { \
+            char p=from[ptr];               \
+            char q=from[ptr-1];             \
+            to[ptr-1]=p;                    \
+            to[ptr]=q;                      \
+        }                                   \
+        if (ptr==(length)) {                \
+            to[ptr-1]=0;                    \
+        }                                   \
+    }                                       \
+    while (0)
+#endif
 #endif
 
 static int sdl_write(SWORD *pbuf, size_t nr)
