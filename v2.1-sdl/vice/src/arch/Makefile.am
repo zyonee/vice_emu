@@ -2,7 +2,7 @@ if SDL_COMPILE
 
 SUBDIRS = sdl
 
-endif
+else
 
 if UNIX_COMPILE
 
@@ -44,4 +44,5 @@ if AMIGA_COMPILE
 
 SUBDIRS = amigaos
 
+endif
 endif
