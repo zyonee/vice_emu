@@ -137,7 +137,7 @@ HDIGIT  [0-9a-fA-F]
         radix|rad       { BEGIN(INITIAL);       return CMD_RADIX; }
         record|rec      { BEGIN(FNAME);         return CMD_RECORD; }
         registers|r     { BEGIN(REG_ASGN);      return CMD_REGISTERS; }
-        reset           { BEGIN(INITIAL);       return CMD_RESET; }
+        reset           { BEGIN(INITIAL);       return CMD_MON_RESET; }
         resourceget|resget { BEGIN(INITIAL);    return CMD_RESOURCE_GET; }
         resourceset|resset { BEGIN(INITIAL);    return CMD_RESOURCE_SET; }
         return|ret      { BEGIN(INITIAL);       return CMD_RETURN; }
@@ -148,7 +148,7 @@ HDIGIT  [0-9a-fA-F]
         show_labels|shl { BEGIN(INITIAL);       return CMD_SHOW_LABELS; }
         sidefx|sfx      { BEGIN(INITIAL);       return CMD_SIDEFX; }
         step|z          { BEGIN(INITIAL);       return CMD_STEP; }
-        stop            { BEGIN(INITIAL);       return CMD_STOP; }
+        stop            { BEGIN(INITIAL);       return CMD_MON_STOP; }
         tapectrl        { BEGIN(INITIAL);       return CMD_TAPECTRL; }
         trace|tr        { BEGIN(INITIAL);       return CMD_TRACE; }
         until|un        { BEGIN(INITIAL);       return CMD_UNTIL; }

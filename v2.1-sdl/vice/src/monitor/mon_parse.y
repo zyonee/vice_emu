@@ -139,12 +139,12 @@ extern int cur_len, last_len;
 %token CMD_ASSEMBLE CMD_DISASSEMBLE CMD_NEXT CMD_STEP CMD_PRINT CMD_DEVICE
 %token CMD_HELP CMD_WATCH CMD_DISK CMD_SYSTEM CMD_QUIT CMD_CHDIR CMD_BANK
 %token CMD_LOAD_LABELS CMD_SAVE_LABELS CMD_ADD_LABEL CMD_DEL_LABEL CMD_SHOW_LABELS
-%token CMD_RECORD CMD_STOP CMD_PLAYBACK CMD_CHAR_DISPLAY CMD_SPRITE_DISPLAY
+%token CMD_RECORD CMD_MON_STOP CMD_PLAYBACK CMD_CHAR_DISPLAY CMD_SPRITE_DISPLAY
 %token CMD_TEXT_DISPLAY CMD_SCREENCODE_DISPLAY CMD_ENTER_DATA CMD_ENTER_BIN_DATA CMD_KEYBUF
 %token CMD_BLOAD CMD_BSAVE CMD_SCREEN CMD_UNTIL CMD_CPU CMD_YYDEBUG
 %token CMD_BACKTRACE CMD_SCREENSHOT CMD_PWD CMD_DIR
 %token CMD_RESOURCE_GET CMD_RESOURCE_SET
-%token CMD_ATTACH CMD_DETACH CMD_RESET CMD_TAPECTRL CMD_CARTFREEZE
+%token CMD_ATTACH CMD_DETACH CMD_MON_RESET CMD_TAPECTRL CMD_CARTFREEZE
 %token CMD_CPUHISTORY CMD_MEMMAPZAP CMD_MEMMAPSHOW CMD_MEMMAPSAVE
 %token<str> CMD_LABEL_ASGN
 %token<i> L_PAREN R_PAREN ARG_IMMEDIATE REG_A REG_X REG_Y COMMA INST_SEP
@@ -463,9 +463,9 @@ monitor_misc_rules: CMD_DISK rest_of_line end_cmd
                     { mon_resource_get($2); }
                   | CMD_RESOURCE_SET STRING STRING end_cmd
                     { mon_resource_set($2,$3); }
-                  | CMD_RESET end_cmd
+                  | CMD_MON_RESET end_cmd
                     { mon_reset_machine(-1); }
-                  | CMD_RESET opt_sep expression end_cmd
+                  | CMD_MON_RESET opt_sep expression end_cmd
                     { mon_reset_machine($3); }
                   | CMD_TAPECTRL opt_sep expression end_cmd
                     { mon_tape_ctrl($3); }
@@ -504,7 +504,7 @@ disk_rules: CMD_LOAD filename device_num opt_address end_cmd
 
 cmd_file_rules: CMD_RECORD filename end_cmd
                 { mon_record_commands($2); }
-              | CMD_STOP end_cmd
+              | CMD_MON_STOP end_cmd
                 { mon_end_recording(); }
               | CMD_PLAYBACK filename end_cmd
                 { mon_playback_init($2); }
