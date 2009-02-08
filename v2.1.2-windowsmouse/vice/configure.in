@@ -295,11 +295,16 @@ elif test x"$host_os" = "xcygwin32" -o x"$host_os" = "xcygwin" -o x"$host_os" = 
               AC_DEFINE(HAS_UNLOCKRESOURCE,,[Do we have UnlockResource()?]),)
   AC_CHECK_HEADER(dinput.h,
               [ AC_DEFINE(HAVE_DINPUT,,[Use DirectInput joystick driver]) ]
+              [ AC_MSG_CHECKING(for -ldinput) ]
               [SAVELIBS="$LIBS"] [ LIBS="-ldinput $LIBS" ]
-              [ AC_LINK_IFELSE([int __attribute__((stdcall)) DirectInputCreateA(void*,int,void*,void*);int main(){return DirectInputCreateA(0,0,0,0);}],
-                            [ AC_DEFINE(HAVE_DINPUT_LIB, [], [dinput.lib or libdinput.a are present]) ],
+              [ AC_LINK_IFELSE([
+                               AC_LANG_PROGRAM([#include <dinput.h>],[return DirectInputCreateA(0,0,0,0);])
+                               ],
+                            [ AC_DEFINE(HAVE_DINPUT_LIB, [], [dinput.lib or libdinput.a are present]) ]
+   	                        [ AC_MSG_RESULT(yes) ],
                             [ LIBS="-lole32 $SAVELIBS" ]
-			   )]
+                            [ AC_MSG_RESULT(no) ]
+              )]
 		 )
 
 elif test x"$host_os" = "xbeos"; then
