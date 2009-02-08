@@ -47,6 +47,7 @@
 #include "resources.h"
 #include "ui.h"
 #include "uimenu.h"
+#include "vkbd.h"
 
 /* temporary empty pet hardware menu, this one will be moved out to menu_pethw.c */
 static ui_menu_entry_t pet_hardware_menu[] = {
@@ -173,6 +174,7 @@ fprintf(stderr,"%s\n",__func__);
     sdl_ui_set_menu_borders(32, (cols == 40) ? 40 : 28);
     sdl_ui_set_double_x((cols == 40) ? 0 : 1);
     sdl_ui_set_menu_colors(1, 0);
+    sdl_vkbd_set_vkbd(&vkbd_pet);
     return 0;
 }
 
