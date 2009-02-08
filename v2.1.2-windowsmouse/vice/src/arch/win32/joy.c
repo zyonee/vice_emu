@@ -203,11 +203,6 @@ int joystick_di_open(int index, int dev)
     LPDIRECTINPUT di = get_directinput_handle();
 #ifndef HAVE_DINPUT_LIB
 
-/* not defined in DirectInput headers prior to 8 */
-#ifndef DIDFT_OPTIONAL
-#define DIDFT_OPTIONAL          0x80000000
-#endif
-
     DIOBJECTDATAFORMAT joystick_objects[] = {
         { &GUID_XAxis, 0, DIDFT_OPTIONAL | DIDFT_ANYINSTANCE | DIDFT_AXIS, DIDOI_ASPECTPOSITION },
         { &GUID_YAxis, 4, DIDFT_OPTIONAL | DIDFT_ANYINSTANCE | DIDFT_AXIS, DIDOI_ASPECTPOSITION },

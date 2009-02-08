@@ -101,13 +101,13 @@ void mousedrv_init(void)
     LPDIDATAFORMAT mouse_data_format_ptr = &c_dfDIMouse;
 #else
     DIOBJECTDATAFORMAT mouse_objects[] = {
-        { &GUID_XAxis, 0, DIDFT_AXIS | DIDFT_ANYINSTANCE, 0 },
-        { &GUID_YAxis, 4, DIDFT_AXIS | DIDFT_ANYINSTANCE, 0 },
-        { &GUID_ZAxis, 8, DIDFT_AXIS | DIDFT_ANYINSTANCE, 0 },
-        { &GUID_Button, 12, DIDFT_BUTTON | DIDFT_ANYINSTANCE, 0 },
-        { &GUID_Button, 13, DIDFT_BUTTON | DIDFT_ANYINSTANCE, 0 },
-        { &GUID_Button, 14, DIDFT_BUTTON | DIDFT_ANYINSTANCE, 0 },
-        { &GUID_Button, 15, DIDFT_BUTTON | DIDFT_ANYINSTANCE, 0 }
+        { &GUID_XAxis, 0, DIDFT_OPTIONAL | DIDFT_AXIS | DIDFT_ANYINSTANCE, 0 },
+        { &GUID_YAxis, 4, DIDFT_OPTIONAL | DIDFT_AXIS | DIDFT_ANYINSTANCE, 0 },
+        { &GUID_ZAxis, 8, DIDFT_OPTIONAL | DIDFT_AXIS | DIDFT_ANYINSTANCE, 0 },
+        { &GUID_Button, 12, DIDFT_OPTIONAL | DIDFT_BUTTON | DIDFT_ANYINSTANCE, 0 },
+        { &GUID_Button, 13, DIDFT_OPTIONAL | DIDFT_BUTTON | DIDFT_ANYINSTANCE, 0 },
+        { &GUID_Button, 14, DIDFT_OPTIONAL | DIDFT_BUTTON | DIDFT_ANYINSTANCE, 0 },
+        { &GUID_Button, 15, DIDFT_OPTIONAL | DIDFT_BUTTON | DIDFT_ANYINSTANCE, 0 }
     };
 
     DIDATAFORMAT mouse_data_format = {
@@ -122,14 +122,13 @@ void mousedrv_init(void)
 #endif
 
     LPDIRECTINPUT di = get_directinput_handle();
-HRESULT r;
+
     if (di == NULL)
         return;
 
     if (IDirectInput_CreateDevice(di, (GUID *)&GUID_SysMouse, &di_mouse,
                                             NULL) == S_OK) {
-        r = IDirectInputDevice_SetDataFormat(di_mouse, mouse_data_format_ptr);
-        if (r!=S_OK){
+        if (IDirectInputDevice_SetDataFormat(di_mouse, mouse_data_format_ptr) !=S_OK) {
             IDirectInput_Release(di_mouse);
             log_debug("Can't set Mouse DataFormat");
             di_mouse = NULL;
