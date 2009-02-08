@@ -710,6 +710,8 @@ if test x"$with_sdlsound" = "xyes" -o x"$enable_sdlui" = "xyes"; then
         LIBS="$LIBS `sdl-config --libs`"
     fi
 
+    AC_CHECK_LIB(debug, kprintf, [DEBUG_LIB="-ldebug"; LIBS="$LIBS -ldebug"], [DEBUG_LIB=""])
+
     AC_CHECK_HEADERS(SDL/SDL_audio.h,[AC_CHECK_LIB(SDL, SDL_OpenAudio,
                      [SOUND_DRIVERS="$SOUND_DRIVERS soundsdl.o";
                       AC_DEFINE(USE_SDL_AUDIO,,[Enable sdl sound support.])],
@@ -718,6 +720,8 @@ if test x"$with_sdlsound" = "xyes" -o x"$enable_sdlui" = "xyes"; then
 
     if test x"$ac_cv_lib_SDL_SDL_OpenAudio" != "xyes"; then
         with_sdlsound=no
+    else
+        SOUND_LIBS="$SOUND_LIBS $DEBUG_LIB"
     fi
 
     if test x"$enable_sdlui" = "xyes"; then
@@ -730,6 +734,10 @@ if test x"$with_sdlsound" = "xyes" -o x"$enable_sdlui" = "xyes"; then
             AC_MSG_ERROR([SDL headers and/or libraries missing])
         else
             AC_DEFINE(HAVE_FULLSCREEN,,[Enable Fullscreen support.])
+        fi
+
+        if test x"$ac_cv_lib_SDL_SDL_OpenAudio" != "xyes"; then
+            LIBS="$LIBS $DEBUG_LIB"
         fi
 
         dnl check for opengl libs.
