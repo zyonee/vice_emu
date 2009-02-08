@@ -46,6 +46,7 @@
 #include "menu_video.h"
 #include "ui.h"
 #include "uimenu.h"
+#include "vkbd.h"
 
 /* temporary empty c128 hardware menu, this one will be moved out to menu_c128hw.c */
 static ui_menu_entry_t c128_hardware_menu[] = {
@@ -162,6 +163,7 @@ fprintf(stderr,"%s\n",__func__);
     sdl_ui_set_menu_colors(1, 0);
     sdl_ui_set_menu_borders(0, 0);
     sdl_ui_set_double_x(0);
+    sdl_vkbd_set_vkbd(&vkbd_c128);
     return 0;
 }
 

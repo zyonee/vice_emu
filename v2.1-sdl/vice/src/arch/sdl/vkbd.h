@@ -45,6 +45,7 @@ extern void sdl_vkbd_set_vkbd(const vkbd_t *machine_vkbd);
 
 extern vkbd_t vkbd_c64;
 extern vkbd_t vkbd_vic20;
+extern vkbd_t vkbd_c128;
 
 #define SDL_VKBD_ACTIVE  (1<<0)
 #define SDL_VKBD_REPAINT (1<<1)
