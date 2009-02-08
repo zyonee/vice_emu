@@ -589,7 +589,7 @@ int joystick_close(void)
     return 0;
 }
 
-JOYINFOEX   joy_info;
+static JOYINFOEX joy_info;
 
 #ifdef HAVE_DINPUT
 static BYTE joystick_di5_update(int joy_no)
