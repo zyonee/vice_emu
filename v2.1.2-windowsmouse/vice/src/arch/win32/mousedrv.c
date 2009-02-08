@@ -68,6 +68,7 @@ int mousedrv_cmdline_options_init(void)
 
 void mouse_update_mouse(void)
 {
+#ifdef HAVE_DINPUT
     DIMOUSESTATE state;
     HRESULT result;
 
@@ -92,6 +93,7 @@ void mouse_update_mouse(void)
 
     mouse_button_left((int)(state.rgbButtons[0] & 0x80));
     mouse_button_right((int)(state.rgbButtons[1] & 0x80));
+#endif
 }
 
 void mousedrv_init(void)

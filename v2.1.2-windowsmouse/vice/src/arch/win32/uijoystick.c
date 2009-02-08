@@ -454,9 +454,11 @@ static BOOL CALLBACK dialog_proc(HWND hwnd, UINT msg, WPARAM wparam,
       case WM_COMMAND:
         command = LOWORD(wparam);
         switch (command) {
+#ifdef HAVE_DINPUT
           case IDC_JOY_CALIBRATE:
             joystick_calibrate(hwnd);
             return TRUE;
+#endif
           case IDC_JOY_CONFIG_A:
             current_keyset_index = 0;
             DialogBox(winmain_instance, (LPCTSTR)translate_res(IDD_CONFIG_KEYSET_DIALOG),
