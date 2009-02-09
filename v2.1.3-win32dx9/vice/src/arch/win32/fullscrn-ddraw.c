@@ -35,6 +35,7 @@
 #include <mmsystem.h>
 #include <prsht.h>
 
+#include "fullscrn.h"
 #include "intl.h"
 #include "lib.h"
 #include "log.h"
@@ -58,24 +59,6 @@ const GUID IID_IDirectDraw2 = { 0xB3A6F3E0, 0x2B43, 0x11CF,
                               };
 #endif
 
-typedef struct _DDL {
-    struct _DDL *next;
-    int isNullGUID;
-    GUID guid;
-    LPSTR desc;
-} DirectDrawDeviceList;
-
-typedef struct _ML {
-    struct _ML *next;
-    int devicenumber;
-    int width;
-    int height;
-    int bitdepth;
-    int refreshrate;
-} DirectDrawModeList;
-
-static DirectDrawDeviceList *devices = NULL;
-static DirectDrawModeList *modes = NULL;
 static LPDIRECTDRAW DirectDrawObject;
 static LPDIRECTDRAW2 DirectDrawObject2;
 
@@ -179,7 +162,7 @@ static HRESULT WINAPI ModeCallBack(LPDDSURFACEDESC desc, LPVOID context)
     return DDENUMRET_OK;
 }
 
-void fullscreen_getmodes(void)
+void fullscreen_getmodes_ddraw(void)
 {
     HRESULT ddresult;
     DirectDrawDeviceList *search_device;
@@ -645,50 +628,6 @@ BOOL CALLBACK dialog_fullscreen_proc(HWND hwnd, UINT msg, WPARAM wparam,
     return FALSE;
 }
 
-void ui_fullscreen_init(void)
-{
-    fullscreen_getmodes();
-}
-
-void ui_fullscreen_shutdown(void)
-{
-    DirectDrawModeList *m1, *m2;
-    DirectDrawDeviceList *d1, *d2;
-
-    m1 = modes;
-    while (m1 != NULL) {
-        m2 = m1->next;
-        lib_free(m1);
-        m1 = m2;
-    }
-
-    d1 = devices;
-    while (d1 != NULL) {
-        d2 = d1->next;
-        lib_free(d1->desc);
-        lib_free(d1);
-        d1 = d2;
-    }
-}
-
-int IsFullscreenEnabled(void)
-{
-    int b;
-
-    resources_get_int("FullscreenEnabled", &b);
-
-    return b;
-}
-
-void GetCurrentModeParameters(int *width, int *height, int *bitdepth,
-                              int *refreshrate)
-{
-    resources_get_int("FullscreenBitdepth", bitdepth);
-    resources_get_int("FullscreenWidth", width);
-    resources_get_int("FullscreenHeight", height);
-    resources_get_int("FullscreenRefreshRate", refreshrate);
-}
-
 
 static HMENU   old_menu;
 static RECT    old_rect;
@@ -977,3 +916,12 @@ void ResumeFullscreenModeKeep(HWND hwnd)
     }
 }
 
+void fullscreen_get_current_display_ddraw(int *bitdepth, int *width,
+                                          int *height, int *refreshrate)
+{
+    /* Provide standard values for now (as the old code did it) */
+    *bitdepth = 8;
+    *width = 640;
+    *height = 480;
+    *refreshrate = 0;
+}

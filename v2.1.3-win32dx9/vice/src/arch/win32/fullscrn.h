@@ -33,11 +33,30 @@
 
 #include <windows.h>
 
+
+typedef struct _DDL {
+    struct _DDL *next;
+    int isNullGUID;
+    GUID guid;
+    LPSTR desc;
+} DirectDrawDeviceList;
+
+typedef struct _ML {
+    struct _ML *next;
+    int devicenumber;
+    int width;
+    int height;
+    int bitdepth;
+    int refreshrate;
+} DirectDrawModeList;
+
+
 extern void GetCurrentModeParameters(int *width, int *height, int *bitdepth,
                                      int *refreshrate);
 extern GUID *GetGUIDForActualDevice();
 extern void ui_fullscreen_init(void);
 extern void ui_fullscreen_shutdown(void);
+extern void fullscreen_set_res_from_current_display(void);
 extern int IsFullscreenEnabled(void);
 extern void SuspendFullscreenMode(HWND hwnd);
 extern void ResumeFullscreenMode(HWND hwnd);
@@ -52,15 +71,24 @@ extern BOOL CALLBACK dialog_fullscreen_proc(HWND hwnd, UINT msg, WPARAM wparam,
 /* DDraw functions */
 extern void SwitchToFullscreenModeDDraw(HWND hwnd);
 extern void SwitchToWindowedModeDDraw(HWND hwnd);
+extern void fullscreen_getmodes_ddraw(void);
+extern void fullscreen_get_current_display_ddraw(int *bitdepth, int *width,
+                                                 int *height, int *refreshrate);
 
 /* DX9 functions */
 extern void SwitchToFullscreenModeDx9(HWND hwnd);
 extern void SwitchToWindowedModeDx9(HWND hwnd);
+extern void fullscreen_getmodes_dx9(void);
+extern void fullscreen_get_current_display_dx9(int *bitdepth, int *width,
+                                               int *height, int *refreshrate);
 
 
 /* FIXME: ugly */
 extern int fullscreen_active;
 extern int fullscreen_transition;
+
+extern DirectDrawDeviceList *devices;
+extern DirectDrawModeList *modes;
 
 #endif
 

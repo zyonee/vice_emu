@@ -32,6 +32,7 @@
 #include "cmdline.h"
 #include "fullscrn.h"
 #include "lib.h"
+#include "log.h"
 #include "palette.h"
 #include "res.h"
 #include "resources.h"
@@ -104,6 +105,7 @@ int video_init(void)
 
 void video_shutdown(void)
 {
+    video_shutdown_dx9();
 }
 
 void video_arch_canvas_init(struct video_canvas_s *canvas)
@@ -147,6 +149,8 @@ void video_canvas_add(video_canvas_t *canvas)
 video_canvas_t *video_canvas_create(video_canvas_t *canvas, unsigned int *width,
                                     unsigned int *height, int mapped)
 {
+    video_canvas_t *canvas_temp;
+
     fullscreen_transition = 1;
 
     canvas->title = lib_stralloc(canvas->viewport->title);
@@ -162,11 +166,17 @@ video_canvas_t *video_canvas_create(video_canvas_t *canvas, unsigned int *width,
     ui_open_canvas_window(canvas);
 
     if (dx9_enabled) {
-        ui_open_canvas_render_window(canvas);
-        return video_canvas_create_dx9(canvas, width, height, mapped);
-    } else {
-        return video_canvas_create_ddraw(canvas, width, height, mapped);
+        ui_canvas_child_window(canvas, 1);
+        canvas_temp = video_canvas_create_dx9(canvas, width, height, mapped);
+        if (canvas_temp == NULL) {
+            log_debug("video: Falling back to DirectDraw canvas!");
+            dx9_enabled = 0;
+            ui_canvas_child_window(canvas, 0);
+        } else {
+            return canvas_temp;
+        }
     }
+    return video_canvas_create_ddraw(canvas, width, height, mapped);
 }
 
 

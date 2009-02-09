@@ -538,9 +538,10 @@ void ui_open_canvas_window(video_canvas_t *canvas)
 
 
 /*  Create a child Window for the DX9 rendering.  */
-void ui_open_canvas_render_window(video_canvas_t *canvas)
+void ui_canvas_child_window(video_canvas_t *canvas, int enable)
 {
-    canvas->client_hwnd = CreateWindowEx(WS_EX_NOPARENTNOTIFY, 
+    if (canvas->client_hwnd == NULL) {
+        canvas->client_hwnd = CreateWindowEx(WS_EX_NOPARENTNOTIFY, 
                             APPLICATION_CLASS,
                             TEXT(""),
                             WS_VISIBLE | WS_CHILD,
@@ -552,7 +553,13 @@ void ui_open_canvas_render_window(video_canvas_t *canvas)
                             NULL,
                             winmain_instance,
                             NULL);
+    }
 
+    if (enable) {
+        ShowWindow(canvas->client_hwnd, SW_SHOW);
+    } else {
+        ShowWindow(canvas->client_hwnd, SW_HIDE);
+    }
     ui_set_render_window(canvas, 0);
 }
 

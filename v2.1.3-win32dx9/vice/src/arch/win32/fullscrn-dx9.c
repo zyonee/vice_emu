@@ -26,10 +26,13 @@
 
 #include "vice.h"
 
+#include <d3d9.h>
 #include <windows.h>
 
 #include "fullscrn.h"
+#include "lib.h"
 #include "statusbar.h"
+#include "ui.h"
 #include "videoarch.h"
 
 
@@ -44,6 +47,113 @@ static int     old_client_height;
 static float   old_refreshrate;
 
 
+void fullscreen_getmodes_dx9(void)
+{
+    int adapter, numAdapter, mode, numAdapterModes;
+    D3DADAPTER_IDENTIFIER9 d3didentifier;
+    D3DDISPLAYMODE displayMode;
+    DirectDrawDeviceList *new_device;
+    DirectDrawDeviceList *search_device;
+    DirectDrawModeList *new_mode;
+    DirectDrawModeList *search_mode;
+
+    numAdapter = 0;
+    while (D3D_OK == IDirect3D9_GetAdapterIdentifier(d3d, numAdapter, 0, &d3didentifier))
+    {
+        new_device = lib_malloc(sizeof(DirectDrawDeviceList));
+        new_device->next = NULL;
+        new_device->desc = lib_stralloc(d3didentifier.Description);
+
+        if (devices == NULL) {
+            devices = new_device;
+        } else {
+            search_device = devices;
+            while (search_device->next != NULL) {
+                search_device = search_device->next;
+            }
+            search_device->next = new_device;
+        }
+        numAdapter++;
+    }
+    
+    for (adapter = 0; adapter < numAdapter; adapter++)
+    {
+        numAdapterModes = IDirect3D9_GetAdapterModeCount(d3d, adapter, D3DFMT_X8R8G8B8);
+    
+        for (mode = 0; mode < numAdapterModes; mode++) {
+            if (S_OK == IDirect3D9_EnumAdapterModes(d3d, D3DADAPTER_DEFAULT, 
+                                                    D3DFMT_X8R8G8B8, mode, &displayMode))
+            {
+                new_mode = lib_malloc(sizeof(DirectDrawModeList));
+                new_mode->next = NULL;
+                new_mode->devicenumber = adapter;
+                new_mode->width = displayMode.Width;
+                new_mode->height = displayMode.Height;
+                new_mode->bitdepth = 32;
+                new_mode->refreshrate = displayMode.RefreshRate;
+
+                if (modes == NULL) {
+                    modes = new_mode;
+                } else {
+                    search_mode = modes;
+                    while (search_mode->next != NULL) {
+                        search_mode = search_mode->next;
+                    }
+                    search_mode->next = new_mode;
+                }
+            }
+        }
+    }
+
+
+#if 0
+    /*  Enumerate DirectDraw Devices */
+    ddresult = DirectDrawEnumerate(DDEnumCallbackFunction, NULL);
+
+    /*  List all available modes for all available devices */
+    search_device = devices;
+    i = 0;
+    while (search_device != NULL) {
+//        log_debug("--- Video modes for device %s", search_device->desc);
+//        log_debug("MODEPROBE_Create");
+        if (search_device->isNullGUID) {
+            ddresult = DirectDrawCreate(NULL, &DirectDrawObject, NULL);
+        } else {
+            ddresult = DirectDrawCreate(&search_device->guid,
+                                        &DirectDrawObject, NULL);
+        }
+        CHECK_DDRESULT(ddresult);
+//        log_debug("MODEPROBE_SetCooperativeLevel");
+        ddresult = IDirectDraw_SetCooperativeLevel(DirectDrawObject,
+                                                   ui_get_main_hwnd(),
+                                                   DDSCL_EXCLUSIVE
+                                                   | DDSCL_FULLSCREEN);
+        CHECK_DDRESULT(ddresult);
+//        log_debug("MODEPROBE_ObtainDirectDraw2");
+        ddresult = IDirectDraw_QueryInterface(DirectDrawObject,
+                                              (GUID *)&IID_IDirectDraw2,
+                                              (LPVOID *)&DirectDrawObject2);
+        CHECK_DDRESULT(ddresult);
+//        log_debug("MODEPROBE_EnumDisplayModes");
+        ddresult = IDirectDraw2_EnumDisplayModes(DirectDrawObject2,
+                                                 DDEDM_REFRESHRATES, NULL, &i,
+                                                 ModeCallBack);
+        CHECK_DDRESULT(ddresult);
+        IDirectDraw2_Release(DirectDrawObject2);
+        DirectDrawObject2 = NULL;
+        IDirectDraw_Release(DirectDrawObject);
+        DirectDrawObject = NULL;
+        search_device = search_device->next;
+        i++;
+    }
+
+    /*  This is here because some Matrox G200 drivers don't leave the window
+        in its previous state */
+    ShowWindow(ui_get_main_hwnd(), SW_HIDE);
+#endif
+}
+
+
 void SwitchToFullscreenModeDx9(HWND hwnd)
 {
     int w, h, wnow, hnow;
@@ -51,9 +161,6 @@ void SwitchToFullscreenModeDx9(HWND hwnd)
     int fullscreen_height;
     int bitdepth;
     video_canvas_t *c;
-    HRESULT ddresult;
-    int i;
-    HDC hdc;
 
     fullscreen_transition = 1;
 
@@ -183,9 +290,6 @@ void SwitchToWindowedModeDx9(HWND hwnd)
 {
     video_canvas_t *c;
     HRESULT ddresult;
-    /*DDSURFACEDESC desc;*/
-    DDSURFACEDESC desc2;
-    HDC hdc;
 
     fullscreen_transition = 1;
 
@@ -206,6 +310,8 @@ void SwitchToWindowedModeDx9(HWND hwnd)
     log_debug("releasing device...");
     video_device_release_dx9(c);
     log_debug("opening new render window...");
+    /* Create statusbar here go get correct dimensions for client window */
+    statusbar_create(hwnd);
     ui_set_render_window(c, 0);
 
 
@@ -221,9 +327,9 @@ void SwitchToWindowedModeDx9(HWND hwnd)
     c->client_height = old_client_height;
     LockWindowUpdate(NULL);
 
-    statusbar_create(hwnd);
 
-    ui_resize_canvas_window(c);
+    //ui_resize_canvas_window(c);
+
     log_debug("creating device...");
     video_device_create_dx9(c, 0);
     log_debug("switch to window done");
@@ -272,4 +378,27 @@ void SwitchToWindowedModeDx9(HWND hwnd)
     fullscreen_transition = 0;
 
     c->refreshrate = old_refreshrate;
+}
+
+
+void fullscreen_get_current_display_dx9(int *bitdepth, int *width,
+                                          int *height, int *refreshrate)
+{
+    D3DDISPLAYMODE mode;
+
+    if (S_OK == IDirect3D9_GetAdapterDisplayMode(
+                            d3d, D3DADAPTER_DEFAULT , &mode))
+    {
+        *bitdepth = 32;
+        *width = mode.Width;
+        *height = mode.Height;
+        *refreshrate = mode.RefreshRate;
+    } else {
+        /* provide defaults if GetDisplayMode fails for some reason */
+        log_debug("fullscreen_get_current_display_dx9 failed to get mode!");
+        *bitdepth = 32;
+        *width = 640;
+        *height = 480;
+        *refreshrate = 0;
+    }
 }

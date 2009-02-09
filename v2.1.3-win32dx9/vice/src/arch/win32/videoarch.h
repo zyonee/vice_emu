@@ -116,14 +116,15 @@ extern void video_set_physical_colors_get_format_ddraw(video_canvas_t *c,
 
 /* DX9 functions */
 extern int video_setup_dx9(void);
+extern void video_shutdown_dx9(void);
 extern int video_device_create_dx9(video_canvas_t *canvas, int fullscreen);
 extern video_canvas_t *video_canvas_create_dx9(video_canvas_t *canvas, 
                             unsigned int *width, unsigned int *height,
                             int mapped);
-extern void video_video_device_release_dx9(video_canvas_t *canvas);
-extern void video_canvas_resize_dx9(video_canvas_t *canvas,
+extern void video_device_release_dx9(video_canvas_t *canvas);
+extern int video_canvas_resize_dx9(video_canvas_t *canvas,
                             unsigned int width, unsigned int height);
-extern void video_canvas_refresh_dx9(video_canvas_t *canvas,
+extern int video_canvas_refresh_dx9(video_canvas_t *canvas,
                             unsigned int xs, unsigned int ys,
                             unsigned int xi, unsigned int yi,
                             unsigned int w, unsigned int h);
@@ -132,6 +133,7 @@ extern void video_canvas_refresh_dx9(video_canvas_t *canvas,
 /* FIXME: ugly */
 extern int fullscreen_enabled;
 extern int dx_primary_surface_rendering;
+extern LPDIRECT3D9 d3d;
 
 #endif
 

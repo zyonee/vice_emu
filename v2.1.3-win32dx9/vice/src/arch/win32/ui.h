@@ -101,7 +101,7 @@ extern void ui_register_res_values(const ui_res_value_list_t *valuelist);
 extern void ui_update_menu();
 extern HWND ui_get_main_hwnd(void);
 extern void ui_open_canvas_window(video_canvas_t *canvas);
-extern void ui_open_canvas_render_window(video_canvas_t *canvas);
+extern void ui_canvas_child_window(video_canvas_t *canvas, int enable);
 extern void ui_set_render_window(video_canvas_t *canvas, int fullscreen);
 extern void ui_resize_canvas_window(video_canvas_t *canvas);
 extern FILE *ui_console_save_dialog(HWND hwnd);
