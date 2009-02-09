@@ -876,8 +876,8 @@ void joystick_ui_get_device_list(HWND joy_hwnd)
 
 void joystick_ui_get_autofire_axes(HWND joy_hwnd, int device)
 {
-    int     i;
 #ifdef HAVE_DINPUT
+    int     i;
     JoyInfo *joy;
     JoyAxis *axis;
 
@@ -908,8 +908,8 @@ void joystick_ui_get_autofire_axes(HWND joy_hwnd, int device)
 
 void joystick_ui_get_autofire_buttons(HWND joy_hwnd, int device)
 {
-    int     i;
 #ifdef HAVE_DINPUT
+    int     i;
     JoyInfo *joy;
     JoyButton *button;
 
