@@ -535,25 +535,27 @@ int joy_arch_init(void)
         }
         else
 #endif
-        joystick_inited = WIN_JOY_WINMM;
-        if (joy_winmm_list == NULL) {
-            joy_winmm_priv_t** joy_add = &joy_winmm_list;
-            UINT wNumDevs = joyGetNumDevs();
-            UINT i;
-            MMRESULT result;
+        {
+            joystick_inited = WIN_JOY_WINMM;
+            if (joy_winmm_list == NULL) {
+                joy_winmm_priv_t** joy_add = &joy_winmm_list;
+                UINT wNumDevs = joyGetNumDevs();
+                UINT i;
+                MMRESULT result;
 
-            for (i = JOYSTICKID1; i < wNumDevs; i++)
-            {
-                joy_winmm_priv_t* priv = lib_malloc(sizeof(joy_winmm_priv_t));
-                result = joyGetDevCaps(i, &priv->joy_caps, sizeof(priv->joy_caps));
-                if (result != JOYERR_NOERROR) {
-                    lib_free(priv);
-                }
-                else {
-                    priv->uJoyID = i;
-                    priv->next = NULL;
-                    *joy_add = priv;
-                    joy_add = &priv->next;
+                for (i = JOYSTICKID1; i < wNumDevs; i++)
+                {
+                    joy_winmm_priv_t* priv = lib_malloc(sizeof(joy_winmm_priv_t));
+                    result = joyGetDevCaps(i, &priv->joy_caps, sizeof(priv->joy_caps));
+                    if (result != JOYERR_NOERROR) {
+                        lib_free(priv);
+                    }
+                    else {
+                        priv->uJoyID = i;
+                        priv->next = NULL;
+                        *joy_add = priv;
+                        joy_add = &priv->next;
+                    }
                 }
             }
         }
