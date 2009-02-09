@@ -86,20 +86,7 @@ char *archdep_program_name(void)
 
 const char *archdep_boot_path(void)
 {
-  if (boot_path == NULL) {
-    char cwd[1024];
-    BPTR lock;
-
-    lock = GetProgramDir();
-    if (NameFromLock(lock, cwd, 1024)) {
-      if (cwd[strlen(cwd) - 1] != ':') {
-        strcat(cwd, "/");
-      }
-      boot_path = lib_stralloc(cwd);
-    }
-  }
-
-  return boot_path;
+  return "PROGDIR:";
 }
 
 char *archdep_default_sysfile_pathlist(const char *emu_id)
