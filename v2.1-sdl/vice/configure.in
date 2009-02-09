@@ -266,7 +266,11 @@ elif test x"$host_os" = "xamigaos" -o x"$host_os" = "xamigaos4" -o x"$host_os" =
   is_amiga=yes
 
   CFLAGS="$CFLAGS -finline-functions"
-  
+
+  if test x"$enable_sdlui" = "xyes" -a x"is_amigaos4" = "xyes"; then
+    LIBS="$LIBS -lunix"
+  fi
+
 elif test x"$host_os" = "xcygwin32" -o x"$host_os" = "xcygwin" -o x"$host_os" = "xmingw32"; then
 
   dnl This is used by subsequent tests.
