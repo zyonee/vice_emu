@@ -84,10 +84,8 @@ static void sdl_ui_print_translate_seperator(char *text, int x, int y)
     len = strlen(text);
     new_text = lib_stralloc(text);
 
-    for (i=0; i<len; i++)
-    {
-        if (new_text[i] == '\\')
-        {
+    for (i=0; i<len; i++) {
+        if (new_text[i] == '\\') {
             new_text[i] = '/';
         }
     }
