@@ -107,7 +107,7 @@ const char *archdep_boot_path(void)
 
 const char *archdep_home_path(void)
 {
-#ifdef GP2X
+#if defined(GP2X) || defined(GP2X_SDL)
     char *home;
 
     home = ".";
@@ -441,7 +441,7 @@ char *archdep_quote_parameter(const char *name)
 
 char *archdep_tmpnam(void)
 {
-#ifdef GP2X
+#if defined(GP2X) || defined(GP2X_SDL)
     static unsigned int tmp_string_counter=0;
     char tmp_string[32];
 
@@ -477,7 +477,7 @@ char *archdep_tmpnam(void)
 
 FILE *archdep_mkstemp_fd(char **filename, const char *mode)
  {
-#ifdef GP2X
+#if defined(GP2X) || defined(GP2X_SDL)
     static unsigned int tmp_string_counter = 0;
     char *tmp;
     FILE *fd;

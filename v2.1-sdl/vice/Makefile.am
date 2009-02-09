@@ -111,11 +111,19 @@ bindistzip:
 endif
 
 if UNIX_GP2X_COMPILE
+if SDL_COMPILE
+bindist:
+	$(SHELL) @ARCH_SRC_DIR@/make-bindist_gp2x.sh $(STRIP) $(VICE_VERSION) nozip $(top_srcdir)
+
+bindistzip:
+	$(SHELL) @ARCH_SRC_DIR@/make-bindist_gp2x.sh $(STRIP) $(VICE_VERSION) zip $(top_srcdir)
+else
 bindist:
 	$(SHELL) @ARCH_SRC_DIR@/gp2x/make-bindist.sh $(STRIP) $(VICE_VERSION) nozip $(top_srcdir)
 
 bindistzip:
 	$(SHELL) @ARCH_SRC_DIR@/gp2x/make-bindist.sh $(STRIP) $(VICE_VERSION) zip $(top_srcdir)
+endif
 endif
 
 if UNIX_MACOSX_COMPILE

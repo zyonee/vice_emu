@@ -347,12 +347,15 @@ elif test x"$host_os" = "xgp2x" -o x"$host_os" = "xlinux-gp2x" -o x"$host_vendor
 
   CFLAGS="$CFLAGS -fomit-frame-pointer -mcpu=arm920t -msoft-float"
 
-  AC_DEFINE(HAVE_MOUSE,,[Enable 1351 mouse support])
-  AC_DEFINE(DEBUG_ZFILE,,[Use debugging of the zfile])
-  AC_DEFINE(GP2X,,[Enable GP2X compilation])
+  if test x"$enable_sdlui" != "xyes"; then
+    AC_DEFINE(HAVE_MOUSE,,[Enable 1351 mouse support])
+    AC_DEFINE(DEBUG_ZFILE,,[Use debugging of the zfile])
+    AC_DEFINE(GP2X,,[Enable GP2X compilation])
+  else
+    AC_DEFINE(GP2X_SDL,,[Enable SDL GP2X compilation])
+  fi
   AM_CONDITIONAL(HAVE_RS232, false)
   AM_CONDITIONAL(HAVE_RAWDRIVE, false)
-
 else
 
 dnl Check for host os with version attached. Typically on UN*X like systems.
@@ -822,6 +825,10 @@ if test x"$with_sdlsound" = "xyes" -o x"$enable_sdlui" = "xyes"; then
                          AC_DEFINE(USE_DXSOUND,,[Enable directx sound support.])],
                         [AC_MSG_RESULT(no)])
         LIBS="$old_LIBS"
+
+        if test x"$is_unix_gp2x" = "xyes"; then
+            LIBS="$LIBS -lpthread"
+        fi
     fi
 fi
 
@@ -2070,7 +2077,7 @@ AC_SUBST(XPLUS4_WINRES)
 AC_SUBST(XCBM2_WINRES)
 
 
-if test x"$is_unix_gp2x" = "xyes" ; then
+if test x"$is_unix_gp2x" = "xyes" -a x"$enable_sdlui" != "xyes"; then
   AM_CONDITIONAL(SUPPORT_X64DTV, false)
 else
   if test x"$is_riscos" = "xyes"; then

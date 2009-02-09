@@ -108,4 +108,5 @@ EXTRA_DIST = \
 	archdep_win32.c \
 	archdep_win32.h \
 	make-bindist_amiga.sh \
+	make-bindist_gp2x.sh \
 	make-bindist_win32.sh
