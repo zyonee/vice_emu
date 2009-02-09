@@ -275,9 +275,9 @@ int video_set_palette(video_canvas_t *c)
 
 
 void video_set_physical_colors_get_format_ddraw(video_canvas_t *c, 
-                            int *rshift, int *rbits, int *rmask,
-                            int *gshift, int *gbits, int *gmask,
-                            int *bshift, int *bbits, int *bmask)
+                            int *rshift, int *rbits, DWORD *rmask,
+                            int *gshift, int *gbits, DWORD *gmask,
+                            int *bshift, int *bbits, DWORD *bmask)
 {
     DDPIXELFORMAT format;
     DWORD mask;

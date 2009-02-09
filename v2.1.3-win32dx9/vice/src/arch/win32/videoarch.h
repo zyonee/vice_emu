@@ -110,9 +110,9 @@ extern void video_canvas_set_palette_ddraw_8bit(video_canvas_t *canvas);
 extern int video_set_physical_colors_ddraw(video_canvas_t *c);
 extern DWORD video_get_color_from_palette_ddraw(video_canvas_t *c, unsigned int i);
 extern void video_set_physical_colors_get_format_ddraw(video_canvas_t *c, 
-                            int *rshift, int *rbits, int *rmask,
-                            int *gshift, int *gbits, int *gmask,
-                            int *bshift, int *bbits, int *bmask);
+                            int *rshift, int *rbits, DWORD *rmask,
+                            int *gshift, int *gbits, DWORD *gmask,
+                            int *bshift, int *bbits, DWORD *bmask);
 
 /* DX9 functions */
 extern int video_setup_dx9(void);
