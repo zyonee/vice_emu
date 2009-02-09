@@ -74,6 +74,27 @@ static char* sdl_ui_get_file_selector_entry(ioutil_dir_t *directory, int offset,
     }
 }
 
+#if (FSDEV_DIR_SEP_CHR=='\\')
+static void sdl_ui_print_translate_seperator(char *text, int x, int y)
+{
+    int len;
+    int i;
+    char *new_text = NULL;
+
+    len = strlen(text);
+    new_text = lib_stralloc(text);
+
+    for (i=0; i<len; i++)
+    {
+        if (new_text[i] == '\\')
+        {
+            new_text[i] = '/';
+        }
+    }
+    sdl_ui_print(new_text, x, y);
+    lib_free(new_text);
+}
+#endif
 
 static void sdl_ui_display_path(const char *current_dir)
 {
@@ -122,9 +143,17 @@ static void sdl_ui_display_path(const char *current_dir)
             text[before + 3 + i] = text[pos + i];
         }
         text[before + 3 + after] = 0;
+#if (FSDEV_DIR_SEP_CHR=='\\')
+        sdl_ui_print_translate_seperator(text, 0, 2);
+#else
         sdl_ui_print(text, 0, 2);
+#endif
     } else {
+#if (FSDEV_DIR_SEP_CHR=='\\')
+        sdl_ui_print_translate_seperator(current_dir, 0, 2);
+#else
         sdl_ui_print(current_dir, 0, 2);
+#endif
     }
 
     if (text != NULL) {
