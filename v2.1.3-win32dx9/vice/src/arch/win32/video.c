@@ -224,12 +224,6 @@ int video_set_physical_colors(video_canvas_t *c)
     DWORD gmask;
     DWORD bmask;
 
-/*
-    if (!dx9_enabled) {
-        video_set_physical_colors_ddraw(c);
-        return 0;
-    }
-*/
     if (dx9_enabled) {
         /* Use hard coded D3DFMT_X8R8G8B8 format, driver does conversion */
         rshift = 16;
@@ -305,11 +299,12 @@ void video_canvas_resize(video_canvas_t *canvas, unsigned int width,
     }
 
     if (dx9_enabled) {
-        video_canvas_resize_dx9(canvas, width, height);
+        video_canvas_reset_dx9(canvas);
     }
 }
 
 
+/* Raster code has updated display */
 void video_canvas_refresh(video_canvas_t *canvas,
                           unsigned int xs, unsigned int ys,
                           unsigned int xi, unsigned int yi,
@@ -323,3 +318,13 @@ void video_canvas_refresh(video_canvas_t *canvas,
 }
 
 
+/* Window got a WM_PAINT and needs a refresh */
+void video_canvas_update(HWND hwnd, HDC hdc, int xclient, int yclient,
+                               int w, int h)
+{
+    if (dx9_enabled) {
+        video_canvas_update_dx9(hwnd, hdc, xclient, yclient, w, h);
+    } else {
+        video_canvas_update_ddraw(hwnd, hdc, xclient, yclient, w, h);
+    }
+}

@@ -113,6 +113,8 @@ extern void video_set_physical_colors_get_format_ddraw(video_canvas_t *c,
                             int *rshift, int *rbits, DWORD *rmask,
                             int *gshift, int *gbits, DWORD *gmask,
                             int *bshift, int *bbits, DWORD *bmask);
+extern void video_canvas_update_ddraw(HWND hwnd, HDC hdc, 
+                                      int xclient, int yclient, int w, int h);
 
 /* DX9 functions */
 extern int video_setup_dx9(void);
@@ -122,12 +124,13 @@ extern video_canvas_t *video_canvas_create_dx9(video_canvas_t *canvas,
                             unsigned int *width, unsigned int *height,
                             int mapped);
 extern void video_device_release_dx9(video_canvas_t *canvas);
-extern int video_canvas_resize_dx9(video_canvas_t *canvas,
-                            unsigned int width, unsigned int height);
+extern HRESULT video_canvas_reset_dx9(video_canvas_t *canvas);
 extern int video_canvas_refresh_dx9(video_canvas_t *canvas,
                             unsigned int xs, unsigned int ys,
                             unsigned int xi, unsigned int yi,
                             unsigned int w, unsigned int h);
+extern void video_canvas_update_dx9(HWND hwnd, HDC hdc, 
+                                    int xclient, int yclient, int w, int h);
 
 
 /* FIXME: ugly */

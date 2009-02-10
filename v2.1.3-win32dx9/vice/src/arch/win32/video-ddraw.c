@@ -852,8 +852,8 @@ extern int number_of_windows;
 extern int window_canvas_xsize[2];
 extern int window_canvas_ysize[2];
 
-void video_canvas_update(HWND hwnd, HDC hdc, int xclient, int yclient, int w,
-                         int h)
+void video_canvas_update_ddraw(HWND hwnd, HDC hdc, int xclient, int yclient,
+                               int w, int h)
 {
     video_canvas_t *c;
     int xs;   //  upperleft x in framebuffer

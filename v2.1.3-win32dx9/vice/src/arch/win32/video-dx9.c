@@ -150,13 +150,18 @@ void video_device_release_dx9(video_canvas_t *canvas)
 }
 
 
-int video_canvas_resize_dx9(video_canvas_t *canvas, unsigned int width,
-                         unsigned int height)
+HRESULT video_canvas_reset_dx9(video_canvas_t *canvas)
 {
     LPDIRECT3DSURFACE9 d3dbackbuffer = NULL;
     LPDIRECT3DSWAPCHAIN9 d3dsc;
     D3DPRESENT_PARAMETERS d3dpp;
+    HRESULT ddresult;
 
+    if (canvas->d3ddev == NULL || canvas->d3dsurface == NULL)
+    {
+        log_debug("video_dx9: Cannot reset canvas. Invalid D3D objects.");
+        return -1;
+    }
 
     if (S_OK != IDirect3DSurface9_Release(canvas->d3dsurface)
         || S_OK != IDirect3DDevice9_GetSwapChain(canvas->d3ddev, 0, &d3dsc)
@@ -169,27 +174,45 @@ int video_canvas_resize_dx9(video_canvas_t *canvas, unsigned int width,
     
     canvas->d3dsurface = NULL;
 
-    d3dpp.BackBufferWidth = width;
-    d3dpp.BackBufferHeight = height;
+    d3dpp.BackBufferWidth = canvas->width;
+    d3dpp.BackBufferHeight = canvas->height;
 
-    if (S_OK != IDirect3DDevice9_TestCooperativeLevel(canvas->d3ddev)
-        || S_OK != IDirect3DDevice9_Reset(canvas->d3ddev, &d3dpp))
+    if (S_OK != (ddresult = IDirect3DDevice9_Reset(canvas->d3ddev, &d3dpp)))
     {
         log_debug("video_dx9: Failed to reset the DirectX9 device!");
         canvas->d3ddev = NULL;
-        return -1;
+        return ddresult;
     }
     
-    if (S_OK != IDirect3DDevice9_CreateOffscreenPlainSurface(
-                    canvas->d3ddev, width, height,
+    if (S_OK != (ddresult = IDirect3DDevice9_CreateOffscreenPlainSurface(
+                    canvas->d3ddev, canvas->width, canvas->height,
                     D3DFMT_X8R8G8B8, D3DPOOL_DEFAULT,
-                    &canvas->d3dsurface, NULL))
+                    &canvas->d3dsurface, NULL)))
     {
         log_debug("video_dx9: Failed to create new offscreen surface!");
+        return ddresult;
+    }
+
+    return IDirect3DDevice9_TestCooperativeLevel(canvas->d3ddev);
+}
+
+
+static HRESULT video_canvas_prepare_for_update(video_canvas_t *canvas)
+{
+    HRESULT coopresult;
+
+    if (canvas->d3ddev == NULL
+        || canvas->d3dsurface == NULL)
+    {
         return -1;
     }
 
-    return 0;
+    coopresult = IDirect3DDevice9_TestCooperativeLevel(canvas->d3ddev);
+    if (coopresult == D3DERR_DEVICENOTRESET) {
+        coopresult = video_canvas_reset_dx9(canvas);
+    }
+    /* log_debug("video_dx9: prepare_for_update returns %d", coopresult); */
+    return coopresult;
 }
 
 
@@ -198,15 +221,9 @@ int video_canvas_refresh_dx9(video_canvas_t *canvas,
                           unsigned int xi, unsigned int yi,
                           unsigned int w, unsigned int h)
 {
-    HRESULT ddresult;
+    HRESULT stretchresult;
     LPDIRECT3DSURFACE9 d3dbackbuffer = NULL;
     D3DLOCKED_RECT lockedrect;
-
-    if (canvas->d3ddev == NULL
-        || canvas->d3dsurface == NULL)
-    {
-        return -1;
-    }
 
     if (canvas->videoconfig->doublesizex) {
         xi *= 2;
@@ -217,6 +234,9 @@ int video_canvas_refresh_dx9(video_canvas_t *canvas,
         yi *= 2;
         h *= 2;
     }
+    
+    if (S_OK != video_canvas_prepare_for_update(canvas))
+        return -1;
 
     if (S_OK != IDirect3DDevice9_BeginScene(canvas->d3ddev)
         || S_OK != IDirect3DDevice9_GetBackBuffer(
@@ -240,7 +260,7 @@ int video_canvas_refresh_dx9(video_canvas_t *canvas,
     }
 
     do {
-        ddresult = IDirect3DDevice9_StretchRect(
+        stretchresult = IDirect3DDevice9_StretchRect(
                     canvas->d3ddev, canvas->d3dsurface,
                     NULL, d3dbackbuffer, NULL, d3dpreffilter);
 
@@ -248,25 +268,42 @@ int video_canvas_refresh_dx9(video_canvas_t *canvas,
             break;
         }
 
-        if (ddresult != S_OK) {
+        if (stretchresult != S_OK) {
             /* Some adapters don't support filtering */
             d3dpreffilter = D3DTEXF_NONE;
             log_debug("video_dx9: Disabled StretchRect filtering!");
         }
 
-    } while (ddresult != S_OK);
-    if (ddresult != S_OK) {
+    } while (stretchresult != S_OK);
+    if (stretchresult != S_OK) {
         log_debug("video_dx9: StretchRect failed even without filtering!");
     }
 
     if (S_OK != IDirect3DSurface9_Release(d3dbackbuffer)
-        || S_OK != IDirect3DDevice9_EndScene(canvas->d3ddev)
-        || S_OK != IDirect3DDevice9_Present(canvas->d3ddev, NULL, NULL, NULL, NULL))
+        || S_OK != IDirect3DDevice9_EndScene(canvas->d3ddev))
     {
-        log_debug("video_dx9: Failed to present the scene!");
+        log_debug("video_dx9: EndScene failed!");
+        return -1;
+    }
+
+    if (S_OK != IDirect3DDevice9_Present(canvas->d3ddev, NULL, NULL, NULL, NULL))
+    {
+        log_debug("video_dx9: Refresh failed to present the scene!");
         return -1;
     }
 	return 0;
 }
 
 
+void video_canvas_update_dx9(HWND hwnd, HDC hdc, int xclient, int yclient,
+                             int w, int h)
+{
+    video_canvas_t *canvas;
+
+    canvas = video_canvas_for_hwnd(hwnd);
+    if (canvas == NULL)
+        return;
+    
+    /* Just refresh the whole canvas */
+  	video_canvas_refresh_all(canvas);
+}
