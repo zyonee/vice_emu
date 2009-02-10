@@ -45,7 +45,7 @@
 
 static int video_number_of_canvases;
 static video_canvas_t *video_canvases[2];
-static int dx9_enabled;
+static int dx9_available;
 
 /* ------------------------------------------------------------------------ */
 /* Video-related resources.  */
@@ -53,6 +53,7 @@ static int dx9_enabled;
 /* Flag: are we in fullscreen mode?  */
 int fullscreen_enabled;
 int dx_primary_surface_rendering;
+int dx9_disable;
 
 static int set_dx_primary_surface_rendering(int val, void *param)
 {
@@ -60,9 +61,17 @@ static int set_dx_primary_surface_rendering(int val, void *param)
     return 0;
 }
 
+static int set_dx9_disable(int val, void *param)
+{
+    dx9_disable = val;
+    return 0;
+}
+
 static const resource_int_t resources_int[] = {
     { "DXPrimarySurfaceRendering", 0, RES_EVENT_NO, NULL,
       &dx_primary_surface_rendering, set_dx_primary_surface_rendering, NULL },
+    { "DX9Disable", 0, RES_EVENT_NO, NULL,
+      &dx9_disable, set_dx9_disable, NULL },
     { NULL }
 };
 
@@ -84,6 +93,11 @@ static const cmdline_option_t cmdline_options[] = {
       NULL, NULL, "FullScreenEnabled", (resource_value_t) 1,
       USE_PARAM_STRING, USE_DESCRIPTION_ID,
       IDCLS_UNUSED, IDS_START_VICE_FULLSCREEN_MODE,
+      NULL, NULL },
+    { "-dx9disable", SET_RESOURCE, 0,
+      NULL, NULL, "DX9Disable", (resource_value_t) 1,
+      USE_PARAM_STRING, USE_DESCRIPTION_ID,
+      IDCLS_UNUSED, IDS_DISABLE_DX9,
       NULL, NULL },
     { NULL }
 };
@@ -111,9 +125,9 @@ void video_shutdown(void)
 void video_arch_canvas_init(struct video_canvas_s *canvas)
 {
     if (video_setup_dx9() < 0) {
-        dx9_enabled = 0;
+        dx9_available = 0;
     } else {
-        dx9_enabled = 1;
+        dx9_available = 1;
     }
 
     canvas->video_draw_buffer_callback = NULL;
@@ -121,7 +135,7 @@ void video_arch_canvas_init(struct video_canvas_s *canvas)
 
 int video_dx9_enabled(void)
 {
-    return dx9_enabled;
+    return (dx9_available && !dx9_disable);
 }
 /* ------------------------------------------------------------------------ */
 
@@ -165,12 +179,12 @@ video_canvas_t *video_canvas_create(video_canvas_t *canvas, unsigned int *width,
 
     ui_open_canvas_window(canvas);
 
-    if (dx9_enabled) {
+    if (video_dx9_enabled()) {
         ui_canvas_child_window(canvas, 1);
         canvas_temp = video_canvas_create_dx9(canvas, width, height, mapped);
         if (canvas_temp == NULL) {
             log_debug("video: Falling back to DirectDraw canvas!");
-            dx9_enabled = 0;
+            dx9_available = 0;
             ui_canvas_child_window(canvas, 0);
         } else {
             return canvas_temp;
@@ -182,7 +196,7 @@ video_canvas_t *video_canvas_create(video_canvas_t *canvas, unsigned int *width,
 
 void video_canvas_destroy(video_canvas_t *canvas)
 {
-    if (dx9_enabled) {
+    if (video_dx9_enabled()) {
         video_device_release_dx9(canvas);
     }
 
@@ -224,7 +238,7 @@ int video_set_physical_colors(video_canvas_t *c)
     DWORD gmask;
     DWORD bmask;
 
-    if (dx9_enabled) {
+    if (video_dx9_enabled()) {
         /* Use hard coded D3DFMT_X8R8G8B8 format, driver does conversion */
         rshift = 16;
         rmask = 0xff;
@@ -298,7 +312,7 @@ void video_canvas_resize(video_canvas_t *canvas, unsigned int width,
         ui_resize_canvas_window(canvas);
     }
 
-    if (dx9_enabled) {
+    if (video_dx9_enabled()) {
         video_canvas_reset_dx9(canvas);
     }
 }
@@ -310,7 +324,7 @@ void video_canvas_refresh(video_canvas_t *canvas,
                           unsigned int xi, unsigned int yi,
                           unsigned int w, unsigned int h)
 {
-    if (dx9_enabled) {
+    if (video_dx9_enabled()) {
         video_canvas_refresh_dx9(canvas, xs, ys, xi, yi, w, h);
     } else {
         video_canvas_refresh_ddraw(canvas, xs, ys, xi, yi, w, h);
@@ -322,7 +336,7 @@ void video_canvas_refresh(video_canvas_t *canvas,
 void video_canvas_update(HWND hwnd, HDC hdc, int xclient, int yclient,
                                int w, int h)
 {
-    if (dx9_enabled) {
+    if (video_dx9_enabled()) {
         video_canvas_update_dx9(hwnd, hdc, xclient, yclient, w, h);
     } else {
         video_canvas_update_ddraw(hwnd, hdc, xclient, yclient, w, h);
