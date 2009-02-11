@@ -53,7 +53,6 @@ typedef struct _ML {
 
 extern void GetCurrentModeParameters(int *width, int *height, int *bitdepth,
                                      int *refreshrate);
-extern GUID *GetGUIDForActualDevice();
 extern void ui_fullscreen_init(void);
 extern void ui_fullscreen_shutdown(void);
 extern void fullscreen_set_res_from_current_display(void);
@@ -66,6 +65,7 @@ extern void SwitchFullscreenMode(HWND hwnd);
 extern void SwitchToFullscreenMode(HWND hwnd);
 extern BOOL CALLBACK dialog_fullscreen_proc(HWND hwnd, UINT msg, WPARAM wparam,
                                             LPARAM lparam);
+extern void fullscrn_invalidate_refreshrate(void);
 
 /* DDraw functions */
 extern void SwitchToFullscreenModeDDraw(HWND hwnd);

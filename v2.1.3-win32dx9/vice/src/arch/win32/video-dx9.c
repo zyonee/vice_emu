@@ -121,8 +121,10 @@ int video_device_create_dx9(video_canvas_t *canvas, int fullscreen)
 
 video_canvas_t *video_canvas_create_dx9(video_canvas_t *canvas, 
                                         unsigned int *width,
-                                        unsigned int *height, int mapped)
+                                        unsigned int *height)
 {
+    ui_make_resizable(canvas, 1);
+
     canvas->depth = 32;
 
     if  (video_device_create_dx9(canvas, 0) != 0)

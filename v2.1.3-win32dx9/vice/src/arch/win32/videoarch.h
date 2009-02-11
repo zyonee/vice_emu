@@ -99,8 +99,7 @@ extern int video_dx9_enabled(void);
 
 /* DDraw functions */
 extern video_canvas_t *video_canvas_create_ddraw(video_canvas_t *canvas, 
-                            unsigned int *width, unsigned int *height,
-                            int mapped);
+                            unsigned int *width, unsigned int *height);
 extern void video_canvas_destroy_ddraw(video_canvas_t *canvas);
 extern void video_canvas_refresh_ddraw(video_canvas_t *canvas,
                             unsigned int xs, unsigned int ys,
@@ -121,8 +120,7 @@ extern int video_setup_dx9(void);
 extern void video_shutdown_dx9(void);
 extern int video_device_create_dx9(video_canvas_t *canvas, int fullscreen);
 extern video_canvas_t *video_canvas_create_dx9(video_canvas_t *canvas, 
-                            unsigned int *width, unsigned int *height,
-                            int mapped);
+                            unsigned int *width, unsigned int *height);
 extern void video_device_release_dx9(video_canvas_t *canvas);
 extern HRESULT video_canvas_reset_dx9(video_canvas_t *canvas);
 extern int video_canvas_refresh_dx9(video_canvas_t *canvas,

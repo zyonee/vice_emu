@@ -181,7 +181,7 @@ video_canvas_t *video_canvas_create(video_canvas_t *canvas, unsigned int *width,
 
     if (video_dx9_enabled()) {
         ui_canvas_child_window(canvas, 1);
-        canvas_temp = video_canvas_create_dx9(canvas, width, height, mapped);
+        canvas_temp = video_canvas_create_dx9(canvas, width, height);
         if (canvas_temp == NULL) {
             log_debug("video: Falling back to DirectDraw canvas!");
             dx9_available = 0;
@@ -190,7 +190,7 @@ video_canvas_t *video_canvas_create(video_canvas_t *canvas, unsigned int *width,
             return canvas_temp;
         }
     }
-    return video_canvas_create_ddraw(canvas, width, height, mapped);
+    return video_canvas_create_ddraw(canvas, width, height);
 }
 
 

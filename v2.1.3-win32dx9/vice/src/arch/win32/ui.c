@@ -504,7 +504,7 @@ void ui_open_canvas_window(video_canvas_t *canvas)
                             hwnd_titles[number_of_windows],
                             WS_CAPTION | WS_CLIPCHILDREN | WS_BORDER
                             | WS_DLGFRAME | WS_SYSMENU | WS_MINIMIZEBOX
-                            | WS_MAXIMIZEBOX | WS_SIZEBOX,
+                            | WS_MAXIMIZEBOX,
                             xpos,
                             ypos,
                             CW_USEDEFAULT,
@@ -523,6 +523,7 @@ void ui_open_canvas_window(video_canvas_t *canvas)
     number_of_windows++;
 
     statusbar_create(hwnd);
+    canvas->hwnd = hwnd;
 
     ui_resize_canvas_window(canvas);
 
@@ -532,8 +533,7 @@ void ui_open_canvas_window(video_canvas_t *canvas)
     SetMenu(hwnd,menu);
     uikeyboard_menu_shortcuts(menu);
     ShowWindow(hwnd, winmain_cmd_show);
-    canvas->hwnd = hwnd;
-    canvas->client_hwnd = 0; /* disabled for DDraw interface */
+    canvas->client_hwnd = NULL; /* disabled for DDraw interface */
 }
 
 
@@ -564,22 +564,19 @@ void ui_canvas_child_window(video_canvas_t *canvas, int enable)
 }
 
 
-void ui_update_menu()
+void ui_make_resizable(video_canvas_t *canvas, int enable)
 {
-HMENU menu;
-int   i;
+    DWORD style;
 
-    menu = LoadMenu(winmain_instance, MAKEINTRESOURCE(emu_menu));
-    if (menu_translation_table != NULL)
-    {
-        ui_translate_menu_items(menu, menu_translation_table);
-        ui_translate_menu_popups(menu, popup_translation_table);
-        uikeyboard_menu_shortcuts(menu);
+    style = GetWindowLong(canvas->hwnd, GWL_STYLE);
+    if (enable) {
+        style |= WS_SIZEBOX;
+    } else {
+        style &= ~WS_SIZEBOX;
     }
-    for (i = 0; i < number_of_windows; i++) {
-        SetMenu(window_handles[i], menu);
-    }
+    SetWindowLong(canvas->hwnd, GWL_STYLE, style);
 }
+
 
 /* Resize `w' so that the client rectangle is of the requested size.  */
 void ui_resize_canvas_window(video_canvas_t *canvas)
@@ -589,6 +586,7 @@ void ui_resize_canvas_window(video_canvas_t *canvas)
     WINDOWPLACEMENT place;
     HWND w, cw;
     unsigned int width, height;
+    DWORD adjust_style;
 
     w = canvas->hwnd;
     cw = canvas->client_hwnd;
@@ -619,7 +617,10 @@ void ui_resize_canvas_window(video_canvas_t *canvas)
     ClientToScreen(w, ((LPPOINT)&wrect) + 1);
     wrect.right = wrect.left + width;
     wrect.bottom = wrect.top + height + statusbar_get_status_height();
-    AdjustWindowRect(&wrect, WS_CAPTION | WS_BORDER | WS_DLGFRAME | WS_SIZEBOX, TRUE);
+    adjust_style = WS_CAPTION | WS_BORDER | WS_DLGFRAME
+                    | (GetWindowLong(w, GWL_STYLE) & WS_SIZEBOX);
+
+    AdjustWindowRect(&wrect, adjust_style, TRUE);
     if (place.showCmd == SW_SHOWNORMAL) {
         MoveWindow(w,
                    wrect.left,
@@ -666,13 +667,33 @@ void ui_set_alwaysontop(int alwaysontop)
                         0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
 }
 
+
+static const ui_menu_toggle_t *machine_specific_toggles = NULL;
+static const ui_res_value_list_t *machine_specific_values = NULL;
+
 /* Update all the menus according to the current settings.  */
 void ui_update_menus(void)
 {
 }
 
-static const ui_menu_toggle_t *machine_specific_toggles = NULL;
-static const ui_res_value_list_t *machine_specific_values = NULL;
+
+void ui_update_menu()
+{
+    HMENU menu;
+    int   i;
+
+    menu = LoadMenu(winmain_instance, MAKEINTRESOURCE(emu_menu));
+    if (menu_translation_table != NULL)
+    {
+        ui_translate_menu_items(menu, menu_translation_table);
+        ui_translate_menu_popups(menu, popup_translation_table);
+        uikeyboard_menu_shortcuts(menu);
+    }
+    for (i = 0; i < number_of_windows; i++) {
+        SetMenu(window_handles[i], menu);
+    }
+}
+
 
 void ui_register_menu_toggles(const ui_menu_toggle_t *toggles)
 {

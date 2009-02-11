@@ -692,12 +692,13 @@ int video_create_single_surface(video_canvas_t *canvas, int width, int height)
 /* Create a video canvas.  If specified width/height is not possible,
    return an alternative in `*width' and `*height'.  */
 video_canvas_t *video_canvas_create_ddraw(video_canvas_t *canvas, unsigned int *width,
-                                    unsigned int *height, int mapped)
+                                    unsigned int *height)
 {
     HRESULT ddresult;
     DDSURFACEDESC desc2;
     GUID *device_guid;
 
+    ui_make_resizable(canvas, 0);
 
     /*  Create the DirectDraw object */
     device_guid = NULL;

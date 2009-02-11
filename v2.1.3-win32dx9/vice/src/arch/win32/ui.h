@@ -103,6 +103,7 @@ extern HWND ui_get_main_hwnd(void);
 extern void ui_open_canvas_window(video_canvas_t *canvas);
 extern void ui_canvas_child_window(video_canvas_t *canvas, int enable);
 extern void ui_set_render_window(video_canvas_t *canvas, int fullscreen);
+extern void ui_make_resizable(video_canvas_t *canvas, int enable);
 extern void ui_resize_canvas_window(video_canvas_t *canvas);
 extern FILE *ui_console_save_dialog(HWND hwnd);
 extern int ui_emulation_is_paused(void);
