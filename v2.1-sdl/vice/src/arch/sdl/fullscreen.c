@@ -44,33 +44,46 @@ int fullscreen_is_enabled;
 
 int fullscreen_available(void) 
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
+#endif
+
     return 0;
 }
 
 void fullscreen_shutdown(void)
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
+#endif
 }
 
 void fullscreen_suspend(int level)
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s: %i\n",__func__,level);
+#endif
 }
 
 void fullscreen_resume(void)
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
+#endif
 }
 
 void fullscreen_set_mouse_timeout(void)
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
+#endif
 }
 
 void fullscreen_mode_callback(const char *device, void *callback)
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s: %s\n",__func__,device);
+#endif
 /*
 #ifdef USE_XF86_VIDMODE_EXT
     if (strcmp(STR_VIDMODE, device) == 0)
@@ -81,40 +94,58 @@ fprintf(stderr,"%s: %s\n",__func__,device);
 
 void fullscreen_menu_create(struct ui_menu_entry_s *menu)
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
+#endif
 }
 
 void fullscreen_menu_shutdown(struct ui_menu_entry_s *menu)
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
+#endif
 }
 
 int fullscreen_init(void)
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
+#endif
+
     return 0;
 }
 
 int fullscreen_init_alloc_hooks(struct video_canvas_s *canvas)
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
+#endif
+
     return 0;
 }
 
 void fullscreen_shutdown_alloc_hooks(struct video_canvas_s *canvas)
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
+#endif
 }
 
 static int fullscreen_statusbar(struct video_canvas_s *canvas, int enable)
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s: %i\n",__func__,enable);
+#endif
+
 return 0;
 }
 
 static int fullscreen_enable(struct video_canvas_s *canvas, int enable)
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s: %i\n",__func__,enable);
+#endif
+
     if (canvas->fullscreenconfig->device == NULL) {
         return 0;
     }
@@ -132,7 +163,10 @@ fprintf(stderr,"%s: %i\n",__func__,enable);
 static int fullscreen_double_size(struct video_canvas_s *canvas,
                                   int double_size)
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s: %i\n",__func__,double_size);
+#endif
+
     canvas->fullscreenconfig->double_size = double_size;
     return 0;
 }
@@ -140,14 +174,20 @@ fprintf(stderr,"%s: %i\n",__func__,double_size);
 static int fullscreen_double_scan(struct video_canvas_s *canvas,
                                   int double_scan)
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s: %i\n",__func__,double_scan);
+#endif
+
     canvas->fullscreenconfig->double_scan = double_scan;
     return 0;
 }
 
 static int fullscreen_device(struct video_canvas_s *canvas, const char *device)
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s: %s\n",__func__,device);
+#endif
+
     if (strcmp("SDL", device) != 0)
         return -1;
 
@@ -161,13 +201,19 @@ fprintf(stderr,"%s: %s\n",__func__,device);
 
 static int fullscreen_mode_sdl(struct video_canvas_s *canvas, int mode)
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s: %i\n",__func__,mode);
+#endif
+
     return 0;
 }
 
 void fullscreen_capability(cap_fullscreen_t *cap_fullscreen)
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
+#endif
+
     cap_fullscreen->device_num = 0;
     cap_fullscreen->device_name[cap_fullscreen->device_num] = "SDL";
     cap_fullscreen->enable = fullscreen_enable;
@@ -178,4 +224,3 @@ fprintf(stderr,"%s\n",__func__);
     cap_fullscreen->mode[cap_fullscreen->device_num] = fullscreen_mode_sdl;
     cap_fullscreen->device_num += 1;
 }
-

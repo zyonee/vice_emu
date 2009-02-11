@@ -161,7 +161,9 @@ int plus4ui_init(void)
 {
     int i, j;
 
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
+#endif
 
     sdl_ui_set_main_menu(xplus4_main_menu);
 
@@ -182,7 +184,9 @@ fprintf(stderr,"%s\n",__func__);
 
 void plus4ui_shutdown(void)
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
+#endif
 
     lib_free(plus4_font);
 }

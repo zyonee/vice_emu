@@ -59,7 +59,9 @@ unsigned long vsyncarch_gettime(void)
 
 void vsyncarch_init(void)
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
+#endif
 }
 
 /* Display speed (percentage) and frame rate (frames per second). */

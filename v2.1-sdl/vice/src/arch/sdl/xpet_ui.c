@@ -157,7 +157,9 @@ int petui_init(void)
 {
     int i, j, cols;
 
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
+#endif
 
     sdl_ui_set_main_menu(xpet_main_menu);
 
@@ -180,7 +182,9 @@ fprintf(stderr,"%s\n",__func__);
 
 void petui_shutdown(void)
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
+#endif
 
     lib_free(pet_font);
 }

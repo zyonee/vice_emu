@@ -231,7 +231,9 @@ int cbm2ui_init(void)
 {
     int i, j, model;
 
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
+#endif
 
     if (cbm2_is_c500()) {
         sdl_ui_set_menu_borders(0, 0);
@@ -265,7 +267,9 @@ fprintf(stderr,"%s\n",__func__);
 
 void cbm2ui_shutdown(void)
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
+#endif
 
     lib_free(cbm2_font);
 }

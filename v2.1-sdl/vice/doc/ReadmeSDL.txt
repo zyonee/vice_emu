@@ -43,6 +43,7 @@ The SDL port has been tested to work on:
  - Morphos / powerpc
  - AROS / x86, powerpc, x86_64/amd64
  - GP2X / arm (needs fixing)
+ - BeOS / x86, powerpc
  - ...
 
 

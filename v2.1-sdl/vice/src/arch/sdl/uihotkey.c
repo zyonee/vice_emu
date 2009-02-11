@@ -37,6 +37,7 @@
 #include "util.h"
 
 #include <SDL/SDL.h>
+#include <string.h>
 
 /* ------------------------------------------------------------------ */
 /* static functions */

@@ -156,7 +156,9 @@ static const ui_menu_entry_t x128_main_menu[] = {
 
 int c128ui_init(void)
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
+#endif
 
     sdl_ui_set_main_menu(x128_main_menu);
     sdl_ui_set_menu_font(mem_chargen_rom + 0x800, 8, 8);
@@ -169,6 +171,7 @@ fprintf(stderr,"%s\n",__func__);
 
 void c128ui_shutdown(void)
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
+#endif
 }
-

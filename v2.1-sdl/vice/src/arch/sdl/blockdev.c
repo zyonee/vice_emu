@@ -35,7 +35,6 @@
 #include "log.h"
 #include "types.h"
 
-
 /*static log_t blockdev_log = LOG_DEFAULT;*/
 
 static SDL_RWops* device = NULL;
@@ -43,7 +42,9 @@ static SDL_RWops* device = NULL;
 
 int blockdev_open(const char *name, unsigned int *read_only)
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
+#endif
     if (*read_only == 0) {
         device = SDL_RWFromFile(name, "rw");
 
@@ -61,7 +62,9 @@ fprintf(stderr,"%s\n",__func__);
 
 int blockdev_close(void)
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
+#endif
     if(device && SDL_RWclose(device)) {
         return -1;
     }
@@ -75,7 +78,11 @@ fprintf(stderr,"%s\n",__func__);
 int blockdev_read_sector(BYTE *buf, unsigned int track, unsigned int sector)
 {
     int offset;
+
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
+#endif
+
     offset = ((track - 1) * 40 + sector) * 256;
 
     SDL_RWseek(device, offset, SEEK_SET);
@@ -89,7 +96,10 @@ fprintf(stderr,"%s\n",__func__);
 int blockdev_write_sector(BYTE *buf, unsigned int track, unsigned int sector)
 {
     int offset;
+
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
+#endif
 
     offset = ((track - 1) * 40 + sector) * 256;
 
@@ -116,4 +126,3 @@ int blockdev_cmdline_options_init()
 {
     return 0;
 }
-

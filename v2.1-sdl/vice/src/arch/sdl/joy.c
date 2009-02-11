@@ -35,6 +35,7 @@
 #include <SDL/SDL.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "archdep.h"
 #include "cmdline.h"
@@ -208,7 +209,10 @@ static const cmdline_option_t cmdline_options[] = {
 
 int joystick_arch_init_resources(void)
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
+#endif
+
     resources_string[0].factory_value = archdep_default_joymap_file_name();
 
     if (resources_register_string(resources_string) < 0)
@@ -219,7 +223,10 @@ fprintf(stderr,"%s\n",__func__);
 
 int joystick_init_cmdline_options(void)
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
+#endif
+
     return cmdline_register_options(cmdline_options);
 }
 
@@ -292,7 +299,9 @@ void joystick_close(void)
     int i;
     sdljoystick_input_t j;
 
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
+#endif
 
     lib_free(joymap_file);
     joymap_file = NULL;
@@ -394,7 +403,9 @@ int joy_arch_mapping_dump(const char *filename)
     sdljoystick_action_t t;
     char *hotkey_path = NULL;
 
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
+#endif
 
     if (filename == NULL) {
         return -1;
@@ -575,7 +586,9 @@ int joy_arch_mapping_load(const char *filename)
     char *complete_path;
     char buffer[1000];
 
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s, %s\n",__func__, filename);
+#endif
 
     /* Silently ignore keymap load on resource & cmdline init */
     if (sdljoystick == NULL) {

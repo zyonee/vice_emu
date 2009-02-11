@@ -162,7 +162,10 @@ static BYTE *vic20_font;
 int vic20ui_init(void)
 {
     int i, j, videostandard;
+
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
+#endif
 
     sdl_ui_set_main_menu(xvic_main_menu);
 
@@ -186,8 +189,9 @@ fprintf(stderr,"%s\n",__func__);
 
 void vic20ui_shutdown(void)
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
+#endif
 
     lib_free(vic20_font);
 }
-

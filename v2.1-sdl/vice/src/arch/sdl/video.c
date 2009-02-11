@@ -99,7 +99,10 @@ static const resource_int_t resources_int[] = {
 
 int video_arch_resources_init(void)
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
+#endif
+
     if (resources_register_string(resources_string) < 0)
         return -1;
 
@@ -108,7 +111,9 @@ fprintf(stderr,"%s\n",__func__);
 
 void video_arch_resources_shutdown(void)
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
+#endif
 }
 
 /* ------------------------------------------------------------------------- */
@@ -123,7 +128,10 @@ static const cmdline_option_t cmdline_options[] = {
 
 int video_init_cmdline_options(void)
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
+#endif
+
     return cmdline_register_options(cmdline_options);
 }
 
@@ -137,7 +145,10 @@ int video_init(void)
 
 void video_shutdown(void)
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
+#endif
+
     sdl_active_canvas = NULL;
 }
 
@@ -387,7 +398,10 @@ int video_canvas_set_palette(struct video_canvas_s *canvas,
 void video_canvas_resize(struct video_canvas_s *canvas,
                          unsigned int width, unsigned int height)
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s: %i,%i (%08x)\n",__func__,width,height,(unsigned int)canvas);
+#endif
+
     video_canvas_create(canvas, &width, &height, 0);
 }
 
@@ -410,7 +424,9 @@ void sdl_video_resize(int w, int h)
 
 void video_arch_canvas_init(struct video_canvas_s *canvas)
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s: (%08x)\n",__func__,(unsigned int)canvas);
+#endif
 
     if (sdl_num_screens == MAX_CANVAS_NUM) {
         log_error(sdlvideo_log,"Too many canvases!");
@@ -438,7 +454,10 @@ fprintf(stderr,"%s: (%08x)\n",__func__,(unsigned int)canvas);
 void video_canvas_destroy(struct video_canvas_s *canvas)
 {
     int i;
+
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s: (%08x)\n",__func__,(unsigned int)canvas);
+#endif
 
     for (i=0; i<sdl_num_screens; ++i) {
         if ((sdl_canvaslist[i] == canvas) && (i != sdl_active_canvas_num)) {
@@ -450,6 +469,7 @@ fprintf(stderr,"%s: (%08x)\n",__func__,(unsigned int)canvas);
 
 void video_add_handlers(void)
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
+#endif
 }
-

@@ -40,7 +40,10 @@ int console_init(void)
 
 int console_out(console_t *log, const char *format, ...)
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s - remove this\n", __func__);
+#endif
+
     return 0;
 }
 
@@ -48,4 +51,3 @@ int console_close_all(void)
 {
     return 0;
 }
-

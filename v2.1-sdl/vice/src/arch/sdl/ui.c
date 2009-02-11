@@ -156,7 +156,9 @@ void ui_check_mouse_cursor(void)
 
 void archdep_ui_init(int argc, char *argv[])
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
+#endif
 }
 
 void ui_message(const char* format, ...)
@@ -269,24 +271,34 @@ void ui_sdl_quit(void)
 /* Initialization  */
 int ui_resources_init(void)
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
+#endif
+
     return resources_register_int(resources_int);
 }
 
 void ui_resources_shutdown(void)
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
+#endif
 }
 
 int ui_cmdline_options_init(void)
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
+#endif
+
     return 0;
 }
 
 int ui_init(int *argc, char **argv)
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
+#endif
 
     switch (machine_class) {
         case VICE_MACHINE_C64:
@@ -320,20 +332,29 @@ fprintf(stderr,"%s\n",__func__);
 
 int ui_init_finish(void)
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
+#endif
+
     return 0;
 }
 
 int ui_init_finalize(void)
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
+#endif
+
     SDL_WM_SetCaption(ui_machine_name, "VICE");
     return 0;
 }
 
 void ui_shutdown(void)
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
+#endif
+
     /* TODO find a better place */
     kbd_arch_shutdown();
 }
@@ -425,25 +446,35 @@ int uicolor_alloc_color(unsigned int red, unsigned int green,
                         unsigned int blue, unsigned long *color_pixel,
                         BYTE *pixel_return)
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
+#endif
+
     return 0;
 }
 
 void uicolor_free_color(unsigned int red, unsigned int green,
                         unsigned int blue, unsigned long color_pixel)
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
+#endif
 }
 
 void uicolor_convert_color_table(unsigned int colnr, BYTE *data,
                                  long color_pixel, void *c)
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
+#endif
 }
 
 int uicolor_set_palette(struct video_canvas_s *c,
                         const struct palette_s *palette)
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
+#endif
+
     return 0;
 }

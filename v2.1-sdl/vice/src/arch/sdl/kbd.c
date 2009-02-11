@@ -33,6 +33,7 @@
 
 #include <SDL/SDL.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "archdep.h"
 #include "kbd.h"
@@ -69,7 +70,10 @@ ui_menu_entry_t *sdlkbd_ui_hotkeys[SDLKBD_UI_HOTKEYS_MAX];
 
 static int hotkey_file_set(const char *val, void *param)
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s: %s\n",__func__,val);
+#endif
+
     if (util_string_set(&hotkey_file, val))
         return 0;
 
@@ -335,7 +339,10 @@ ui_menu_action_t sdlkbd_release(SDLKey key, SDLMod mod)
 
 void kbd_arch_init(void)
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
+#endif
+
     sdlkbd_log = log_open("SDLKeyboard");
 
     sdlkbd_keyword_clear();
@@ -344,7 +351,10 @@ fprintf(stderr,"%s\n",__func__);
 
 void kbd_arch_shutdown(void)
 {
+#ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
+#endif
+
     lib_free(hotkey_file);
 }
 
