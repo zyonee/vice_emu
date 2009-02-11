@@ -216,7 +216,7 @@ void SuspendFullscreenModeKeep(HWND hwnd)
     int width, height, bitdepth, rate;
 
     GetCurrentModeParameters(&width, &height, &bitdepth, &rate);
-    if ((width < 640) && (height < 480)) {
+    if (video_dx9_enabled() || ((width < 640) && (height < 480))) {
         SuspendFullscreenMode(hwnd);
     } else {
         if (IsFullscreenEnabled()) {
@@ -233,7 +233,7 @@ void ResumeFullscreenModeKeep(HWND hwnd)
     int width, height, bitdepth, rate;
 
     GetCurrentModeParameters(&width, &height, &bitdepth, &rate);
-    if ((width < 640) && (height < 480)) {
+    if (video_dx9_enabled() || ((width < 640) && (height < 480))) {
         ResumeFullscreenMode(hwnd);
     } else {
         if (IsFullscreenEnabled()) {
