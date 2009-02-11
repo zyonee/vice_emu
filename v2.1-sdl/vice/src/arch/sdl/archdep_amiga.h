@@ -1,5 +1,5 @@
 /*
- * archdep.h
+ * archdep_amiga.h
  *
  * Written by
  *  Mathias Roslund <vice.emu@amidog.se>

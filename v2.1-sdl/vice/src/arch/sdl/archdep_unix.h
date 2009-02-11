@@ -1,5 +1,5 @@
 /*
- * archdep.h - Miscellaneous system-specific stuff.
+ * archdep_unix.h - Miscellaneous system-specific stuff.
  *
  * Written by
  *  Ettore Perazzoli <ettore@comm2000.it>

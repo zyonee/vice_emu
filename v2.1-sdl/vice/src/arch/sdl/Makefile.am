@@ -103,10 +103,13 @@ libarch_a_SOURCES = \
 EXTRA_DIST = \
 	archdep_amiga.c \
 	archdep_amiga.h \
+	archdep_beos.c \
+	archdep_beos.h \
 	archdep_unix.c \
 	archdep_unix.h \
 	archdep_win32.c \
 	archdep_win32.h \
 	make-bindist_amiga.sh \
+	make-bindist_beos.sh \
 	make-bindist_gp2x.sh \
 	make-bindist_win32.sh

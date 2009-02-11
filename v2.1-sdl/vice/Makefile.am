@@ -95,11 +95,19 @@ endif
 endif
 
 if BEOS_COMPILE
+if SDL_COMPILE
+bindist:
+	$(SHELL) @ARCH_SRC_DIR@/make-bindist_beos.sh $(STRIP) $(VICE_VERSION) $(host_cpu) nozip $(top_srcdir)
+
+bindistzip:
+	$(SHELL) @ARCH_SRC_DIR@/make-bindist_beos.sh $(STRIP) $(VICE_VERSION) $(host_cpu) zip $(top_srcdir)
+else
 bindist:
 	$(SHELL) @ARCH_SRC_DIR@/make-bindist.sh $(STRIP) $(VICE_VERSION) $(host_cpu) nozip $(top_srcdir)
 
 bindistzip:
 	$(SHELL) @ARCH_SRC_DIR@/make-bindist.sh $(STRIP) $(VICE_VERSION) $(host_cpu) zip $(top_srcdir)
+endif
 endif
 
 if MSDOS_COMPILE

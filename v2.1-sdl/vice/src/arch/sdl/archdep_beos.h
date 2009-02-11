@@ -1,8 +1,8 @@
 /*
- * archdep_win32.h - Architecture dependant defines.
+ * archdep_beos.h - Miscellaneous system-specific stuff.
  *
  * Written by
- *  Andreas Boose <viceteam@t-online.de>
+ *  Andreas Matthies <andreas.matthies@gmx.net>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -24,15 +24,15 @@
  *
  */
 
-#ifndef VICE_ARCHDEP_WIN32_H
-#define VICE_ARCHDEP_WIN32_H
+#ifndef VICE_ARCHDEP_BEOS_H
+#define VICE_ARCHDEP_BEOS_H
 
 #include "archapi.h"
 
 /* Filesystem dependant operators.  */
 #define FSDEVICE_DEFAULT_DIR   "."
-#define FSDEV_DIR_SEP_STR      "\\"
-#define FSDEV_DIR_SEP_CHR      '\\'
+#define FSDEV_DIR_SEP_STR      "/"
+#define FSDEV_DIR_SEP_CHR      '/'
 #define FSDEV_EXT_SEP_STR      "."
 #define FSDEV_EXT_SEP_CHR      '.'
 
@@ -41,33 +41,27 @@
 #define ARCHDEP_FINDPATH_SEPARATOR_STRING       ";"
 
 /* Modes for fopen().  */
-#define MODE_READ              "r"
+#define MODE_READ              "rb"
 #define MODE_READ_TEXT         "rt"
-#define MODE_READ_WRITE        "r+"
-#define MODE_WRITE             "w"
+#define MODE_READ_WRITE        "r+b"
+#define MODE_WRITE             "wb"
 #define MODE_WRITE_TEXT        "wt"
-#define MODE_APPEND            "w+"
-#define MODE_APPEND_READ_WRITE "a+"
+#define MODE_APPEND            "wb"
+#define MODE_APPEND_READ_WRITE "a+b"
 
 /* Printer default devices.  */
-#define ARCHDEP_PRINTER_DEFAULT_DEV1 "viceprnt.out"
-#define ARCHDEP_PRINTER_DEFAULT_DEV2 "LPT1:"
-#define ARCHDEP_PRINTER_DEFAULT_DEV3 "LPT2:"
-
-/* Default RS232 devices.  */
-#define ARCHDEP_RS232_DEV1 "10.0.0.1:25232"
-#define ARCHDEP_RS232_DEV2 "10.0.0.1:25232"
-#define ARCHDEP_RS232_DEV3 "10.0.0.1:25232"
-#define ARCHDEP_RS232_DEV4 "10.0.0.1:25232"
+#define ARCHDEP_PRINTER_DEFAULT_DEV1 "PrinterFile"
+#define ARCHDEP_PRINTER_DEFAULT_DEV2 "LPT:"
+#define ARCHDEP_PRINTER_DEFAULT_DEV3 "hmm"
 
 /* Default location of raw disk images.  */
-#define ARCHDEP_RAWDRIVE_DEFAULT "A:"
+#define ARCHDEP_RAWDRIVE_DEFAULT "A:FIXME!!!"
 
 /* Access types */
-#define ARCHDEP_R_OK 4
-#define ARCHDEP_W_OK 2
-#define ARCHDEP_X_OK 1
-#define ARCHDEP_F_OK 0
+#define ARCHDEP_R_OK R_OK
+#define ARCHDEP_W_OK W_OK
+#define ARCHDEP_X_OK X_OK
+#define ARCHDEP_F_OK F_OK
 
 /* Standard line delimiter.  */
 #define ARCHDEP_LINE_DELIMITER "\r\n"
@@ -75,6 +69,4 @@
 /* Ethernet default device */
 #define ARCHDEP_ETHERNET_DEFAULT_DEVICE ""
 
-extern void archdep_workaround_nop(const char *otto);
- 
 #endif

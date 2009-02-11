@@ -1,5 +1,5 @@
 /*
- * archdep.c - Miscellaneous system-specific stuff.
+ * archdep_win32.c - Miscellaneous system-specific stuff.
  *
  * Written by
  *  Tibor Biczo <crown@mail.matav.hu>

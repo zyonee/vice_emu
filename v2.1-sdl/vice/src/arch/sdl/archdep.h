@@ -66,6 +66,10 @@ extern char *archdep_default_joymap_file_name(void);
 #include "archdep_amiga.h"
 #endif
 
+#ifdef __BEOS__
+#include "archdep_beos.h"
+#endif
+
 #ifdef UNIX_COMPILE
 #include "archdep_unix.h"
 #endif

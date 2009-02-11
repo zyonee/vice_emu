@@ -33,6 +33,10 @@
 #include "archdep_amiga.c"
 #endif
 
+#ifdef __BEOS__
+#include "archdep_beos.c"
+#endif
+
 #ifdef UNIX_COMPILE
 #include "archdep_unix.c"
 #endif
