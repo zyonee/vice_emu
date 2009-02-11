@@ -40,10 +40,10 @@
 
 int vsync_frame_counter;
 
-/* Port me... */
-#if !defined(MSDOS) && !defined(RISCOS)
-
 #include "vice.h"
+
+/* Port me... */
+#if (!defined(MSDOS) && !defined(RISCOS)) || (defined(RISCOS) && defined(USE_SDLUI))
 
 #include <stdio.h>
 #include <stdlib.h>

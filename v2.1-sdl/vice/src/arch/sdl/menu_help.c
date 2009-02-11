@@ -38,6 +38,7 @@
 #include "ui.h"
 #include "uimenu.h"
 #include "util.h"
+#include "version.h"
 
 static char *convert_cmdline_to_40_cols(char *text)
 {

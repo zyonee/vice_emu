@@ -37,6 +37,10 @@
 #include "archdep_beos.c"
 #endif
 
+#ifdef __riscos
+#include "archdep_riscos.c"
+#endif
+
 #ifdef UNIX_COMPILE
 #include "archdep_unix.c"
 #endif

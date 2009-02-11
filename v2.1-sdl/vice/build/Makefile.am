@@ -17,4 +17,5 @@ EXTRA_DIST = \
 	minix3/build-package.sh \
 	qnx4/build.sh \
 	riscos/build-cross.sh \
+	riscos/build-cross_riscos.sh \
 	vms/build.sh

@@ -70,6 +70,10 @@ extern char *archdep_default_joymap_file_name(void);
 #include "archdep_beos.h"
 #endif
 
+#ifdef __riscos
+#include "archdep_riscos.h"
+#endif
+
 #ifdef UNIX_COMPILE
 #include "archdep_unix.h"
 #endif
