@@ -176,8 +176,15 @@ HRESULT video_canvas_reset_dx9(video_canvas_t *canvas)
     
     canvas->d3dsurface = NULL;
 
-    d3dpp.BackBufferWidth = canvas->width;
-    d3dpp.BackBufferHeight = canvas->height;
+    if (d3dpp.Windowed == 0) {
+        int width, height, bitdepth, refreshrate;
+        GetCurrentModeParameters(&width, &height, &bitdepth, &refreshrate);
+        d3dpp.BackBufferWidth = width;
+        d3dpp.BackBufferHeight = height;
+    } else {
+        d3dpp.BackBufferWidth = canvas->width;
+        d3dpp.BackBufferHeight = canvas->height;
+    }
 
     if (S_OK != (ddresult = IDirect3DDevice9_Reset(canvas->d3ddev, &d3dpp)))
     {
