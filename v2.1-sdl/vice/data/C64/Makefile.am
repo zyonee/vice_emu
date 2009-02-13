@@ -59,4 +59,4 @@ else
 c64_DATA = $(roms) $(romsets) $(palettes) $(x11_keymaps) $(sym_file)
 
 EXTRA_DIST = $(c64_DATA) $(extra_keymaps) $(sdl_keymaps) $(win32_shortcuts)
-fi
+endif
