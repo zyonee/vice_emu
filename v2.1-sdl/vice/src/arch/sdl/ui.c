@@ -52,6 +52,9 @@
 #include "vkbd.h"
 #include "vsync.h"
 
+#ifndef SDL_DISABLE
+#define SDL_DISABLE SDL_IGNORE
+#endif
 
 /* ----------------------------------------------------------------- */
 /* ui.h */

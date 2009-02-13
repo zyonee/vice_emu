@@ -40,6 +40,10 @@
 #include "video.h"
 #include "videoarch.h"
 
+#ifndef SDL_DISABLE
+#define SDL_DISABLE SDL_IGNORE
+#endif
+
 int fullscreen_is_enabled;
 
 int fullscreen_available(void) 
