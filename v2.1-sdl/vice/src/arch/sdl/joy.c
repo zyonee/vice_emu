@@ -719,6 +719,8 @@ ui_menu_action_t sdljoy_perform_event(sdljoystick_mapping_t *event, int value)
             }
         } else if(event->action == UI_ACTIVATE) {
             retval = MENU_ACTION_CANCEL;
+        } else if(event->action == MAP) {
+            retval = MENU_ACTION_MAP;
         }
         if (!value) {
             retval += MENU_ACTION_NONE_RELEASE;
@@ -741,7 +743,9 @@ ui_menu_action_t sdljoy_perform_event(sdljoystick_mapping_t *event, int value)
             keyboard_set_keyarr_any(event->value.key[0], event->value.key[1], value);
             break;
         case UI_ACTIVATE:
-            sdl_ui_activate();
+            if (value) {
+                sdl_ui_activate();
+            }
             break;
         case UI_FUNCTION:
             if (value && event->value.ui_function) {
