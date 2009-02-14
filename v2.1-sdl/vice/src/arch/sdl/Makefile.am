@@ -116,4 +116,5 @@ EXTRA_DIST = \
 	make-bindist_gp2x.sh \
 	make-bindist_riscos.sh \
 	make-bindist_scosol.sh \
+	make-bindist_skyos.sh \
 	make-bindist_win32.sh
