@@ -146,13 +146,8 @@ int rs232net_open(int device)
         DEBUG_LOG_MESSAGE((rs232net_log, "rs232net_open(device=%d).", device));
 
         /* connect socket */
-        fds[i].fd = vice_network_socket_tcp();
+        fds[i].fd = vice_network_client(ad);
         if ( ! fds[i].fd ) {
-            log_error(rs232net_log, "Can't open socket.");
-            break;
-        }
-
-        if ( vice_network_connect(fds[i].fd, ad) < 0 ) {
             log_error(rs232net_log, "Cant open connection.");
             break;
         }
