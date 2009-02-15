@@ -114,6 +114,7 @@ EXTRA_DIST = \
 	make-bindist_amiga.sh \
 	make-bindist_beos.sh \
 	make-bindist_gp2x.sh \
+	make-bindist_qnx6.sh \
 	make-bindist_riscos.sh \
 	make-bindist_scosol.sh \
 	make-bindist_skyos.sh \
