@@ -36,15 +36,12 @@ typedef unsigned int vice_network_socket_t;
 
 typedef struct vice_network_socket_address_s vice_network_socket_address_t;
 
-vice_network_socket_t vice_network_socket_tcp(void);
-vice_network_socket_t vice_network_socket_udp(void);
+vice_network_socket_t vice_network_server(const vice_network_socket_address_t * server_address);
+vice_network_socket_t vice_network_client(const vice_network_socket_address_t * server_address);
 
 vice_network_socket_address_t * vice_network_address_generate(const char * address, unsigned short port);
 void vice_network_address_close(vice_network_socket_address_t *);
 
-int vice_network_bind(vice_network_socket_t sockfd, const vice_network_socket_address_t * addr);
-int vice_network_listen(vice_network_socket_t sockfd, int backlog);
-int vice_network_connect(vice_network_socket_t sockfd, const vice_network_socket_address_t * server_address);
 vice_network_socket_t vice_network_accept(vice_network_socket_t sockfd, vice_network_socket_address_t ** client_address);
 
 int vice_network_socket_close(vice_network_socket_t sockfd);

@@ -55,13 +55,6 @@ vice_network_socket_t vice_network_socket_tcp(void)
     return sockfd;
 }
 
-vice_network_socket_t vice_network_socket_udp(void)
-{
-    vice_network_socket_t sockfd = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP);
-
-    return sockfd;
-}
-
 static vice_network_socket_address_t * vice_network_alloc_new_socket_address(struct sockaddr * input_address, int address_length)
 {
     vice_network_socket_address_t * return_address = NULL;

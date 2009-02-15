@@ -40,70 +40,126 @@
 #include "socket.h"
 #include "socketimpl.h"
 
-struct vice_network_socket_address_s
-{
-    size_t len;
-    struct sockaddr * address;
+#define arraysize(_x) ( sizeof _x / sizeof _x[0] )
 
+union socket_addresses_u {
+    struct sockaddr     generic;
+    struct sockaddr_un  local;
+    struct sockaddr_in  ipv4;
+    struct sockaddr_in6 ipv6;
 };
 
-vice_network_socket_t vice_network_socket_tcp(void)
+struct vice_network_socket_address_s
 {
-    vice_network_socket_t sockfd = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
+    unsigned int used;
+    int domain;
+    int protocol;
+    size_t len;
+    union socket_addresses_u address;
+};
 
-    if (sockfd < 0) {
-        sockfd = INVALID_SOCKET;
-    }
-    return sockfd ^ INVALID_SOCKET;
-}
+static vice_network_socket_address_t address_pool[16] = { { 0 } };
 
-vice_network_socket_t vice_network_socket_udp(void)
+vice_network_socket_t vice_network_server(const vice_network_socket_address_t * server_address)
 {
-    vice_network_socket_t sockfd = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP);
-
-    if (sockfd < 0) {
-        sockfd = INVALID_SOCKET;
-    }
-    return sockfd ^ INVALID_SOCKET;
-}
-
-static vice_network_socket_address_t * vice_network_alloc_new_socket_address(struct sockaddr * input_address, int address_length)
-{
-    vice_network_socket_address_t * return_address = NULL;
+    int sockfd = INVALID_SOCKET;
+    int error = 1;
 
     do {
-        return_address = lib_malloc(sizeof(* return_address));
-        if (return_address == NULL)
-            break;
+        sockfd = socket(server_address->domain, SOCK_STREAM, server_address->protocol);
 
-        return_address->len = address_length;
-        return_address->address = lib_malloc(return_address->len);
-
-        if ( ! return_address->address ) {
-            lib_free(return_address);
-            return_address=NULL;
+        if (sockfd < 0) {
+            sockfd = INVALID_SOCKET;
             break;
         }
 
-        memcpy(return_address->address, input_address, return_address->len);
+        if (bind(sockfd, & server_address->address.generic, server_address->len) < 0) {
+            break;
+        }
+        if (listen(sockfd, 2) < 0) {
+            break;
+        }
+        error = 0;
+    } while(0);
 
-    } while (0);
+    if (error) {
+        if (sockfd >= 0) {
+            closesocket(sockfd);
+        }
+        sockfd = INVALID_SOCKET;
+    }
+
+    return (vice_network_socket_t) (sockfd ^ INVALID_SOCKET);
+}
+
+vice_network_socket_t vice_network_client(const vice_network_socket_address_t * server_address)
+{
+    int sockfd = INVALID_SOCKET;
+    int error = 1;
+
+    do {
+        sockfd = socket(server_address->domain, SOCK_STREAM, server_address->protocol);
+
+        if (sockfd < 0) {
+            sockfd = INVALID_SOCKET;
+            break;
+        }
+
+        if (connect(sockfd, & server_address->address.generic, server_address->len) < 0) {
+            break;
+        }
+        error = 0;
+    } while(0);
+
+    if (error) {
+        if (sockfd >= 0) {
+            closesocket(sockfd);
+        }
+        sockfd = INVALID_SOCKET;
+    }
+
+    return (vice_network_socket_t) (sockfd ^ INVALID_SOCKET);
+}
+
+static vice_network_socket_address_t * vice_network_alloc_new_socket_address(void)
+{
+    vice_network_socket_address_t * return_address = NULL;
+    int i;
+
+    for (i = 0; i < arraysize(address_pool); i++)
+    {
+        if (address_pool[i].used == 0) {
+            return_address = & address_pool[i];
+            memset(return_address, 0, sizeof * return_address);
+            return_address->used = 1;
+            return_address->len = sizeof return_address->address;
+            break;
+        }
+    }
 
     return return_address;
 }
 
 vice_network_socket_address_t * vice_network_address_generate(const char * address_string, unsigned short port)
 {
-    struct sockaddr_in socket_addr = { 0 };
+    vice_network_socket_address_t * socket_address = NULL;
 
     const char * address_part = address_string;
 
     do {
+        socket_address = vice_network_alloc_new_socket_address();
+        if (socket_address == NULL) {
+            break;
+        }
+
         /* preset the socket address with port and INADDR_ANY */
 
-        socket_addr.sin_family = PF_INET;
-        socket_addr.sin_port = htons(port);
-        socket_addr.sin_addr.s_addr = INADDR_ANY;
+        socket_address->domain = PF_INET;
+        socket_address->protocol = IPPROTO_TCP;
+        socket_address->len = sizeof socket_address->address.ipv4;
+        socket_address->address.ipv4.sin_family = PF_INET;
+        socket_address->address.ipv4.sin_port = htons(port);
+        socket_address->address.ipv4.sin_addr.s_addr = INADDR_ANY;
 
         if (address_string) {
             /* an address string was specified, try to use it */
@@ -130,14 +186,14 @@ vice_network_socket_address_t * vice_network_address_generate(const char * addre
 
                 if (*p == 0) {
 
-                    socket_addr.sin_port = htons((unsigned short) new_port);
+                    socket_address->address.ipv4.sin_port = htons((unsigned short) new_port);
                 }
             }
  
             host_entry = gethostbyname(address_part);
 
             if (host_entry != NULL && host_entry->h_addrtype == AF_INET) {
-                if ( host_entry->h_length != sizeof socket_addr.sin_addr.s_addr ) {
+                if ( host_entry->h_length != sizeof socket_address->address.ipv4.sin_addr.s_addr ) {
                     /* something weird happened... SHOULD NOT HAPPEN! */
                     fprintf(stderr, 
                               "gethostbyname() returned an IPv4 address, "
@@ -145,11 +201,11 @@ vice_network_socket_address_t * vice_network_address_generate(const char * addre
                     break;
                 }
 
-                memcpy(&socket_addr.sin_addr.s_addr, host_entry->h_addr_list[0], host_entry->h_length);
+                memcpy(&socket_address->address.ipv4.sin_addr.s_addr, host_entry->h_addr_list[0], host_entry->h_length);
             }
             else {
                 /* no host name: Assume it is an IP address */
-                socket_addr.sin_addr.s_addr = inet_addr(address_part);
+                socket_address->address.ipv4.sin_addr.s_addr = inet_addr(address_part);
             }
         }
     } while (0);
@@ -162,7 +218,7 @@ vice_network_socket_address_t * vice_network_address_generate(const char * addre
         lib_free(address_part);
     }
 
-    return vice_network_alloc_new_socket_address((struct sockaddr *) &socket_addr, sizeof socket_addr);
+    return socket_address;
 }
 
 
@@ -170,38 +226,32 @@ void vice_network_address_close(vice_network_socket_address_t * address)
 {
     if (address)
     {
-        free(address->address);
-        free(address);
+        address->used = 0;
     }
-}
-
-int vice_network_bind(vice_network_socket_t sockfd, const vice_network_socket_address_t * addr)
-{
-    return bind(sockfd ^ INVALID_SOCKET, addr->address, addr->len);
-}
-
-int vice_network_listen(vice_network_socket_t sockfd, int backlog)
-{
-    return listen(sockfd ^ INVALID_SOCKET, backlog);
-}
-
-int vice_network_connect(vice_network_socket_t sockfd, const vice_network_socket_address_t * server_address)
-{
-    return connect(sockfd ^ INVALID_SOCKET, server_address->address, server_address->len);
 }
 
 vice_network_socket_t vice_network_accept(vice_network_socket_t sockfd, vice_network_socket_address_t ** client_address)
 {
-    struct sockaddr * addr = { 0 };
-    socklen_t addr_length = sizeof(*addr);
+    vice_network_socket_t newsocket = -1;
+    vice_network_socket_address_t * socket_address;
 
-    vice_network_socket_t newsocket;
+    do {
+        socket_address = vice_network_alloc_new_socket_address();
+        if (socket_address == NULL) {
+            break;
+        }
 
-    newsocket = accept(sockfd ^ INVALID_SOCKET, addr, &addr_length);
+        newsocket = accept(sockfd ^ INVALID_SOCKET, & socket_address->address.generic, & socket_address->len);
+
+    } while (0);
 
     if (newsocket >= 0 && client_address) {
-        *client_address = vice_network_alloc_new_socket_address(addr, addr_length);
+        * client_address = socket_address;
     }
+    else {
+        vice_network_address_close(socket_address);
+    }
+
     return newsocket ^ INVALID_SOCKET;
 }
 

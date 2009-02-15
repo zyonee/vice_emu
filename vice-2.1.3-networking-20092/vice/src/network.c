@@ -542,7 +542,6 @@ int network_connected(void)
 
 int network_start_server(void)
 {
-    int return_value;
     vice_network_socket_address_t * server_addr;
 
     if (network_init() < 0)
@@ -553,19 +552,8 @@ int network_start_server(void)
 
     server_addr = vice_network_address_generate(NULL, server_port);
 
-    listen_socket = vice_network_socket_tcp();
-    if ( ! listen_socket )
-        return -1;
-
-    return_value=vice_network_bind(listen_socket, server_addr);
-
-    if (return_value < 0) {
-        vice_network_socket_close(listen_socket);
-        return -1;
-    }
-
-    if (vice_network_listen(listen_socket, 2) < 0) {
-        vice_network_socket_close(listen_socket);
+    listen_socket = vice_network_server(server_addr);
+    if ( ! listen_socket ) {
         return -1;
     }
 
@@ -589,7 +577,6 @@ int network_connect_client(void)
     BYTE *buf;
     BYTE recv_buf4[4];
     size_t buf_size;
-    int return_value;
 
     if (network_init() < 0)
         return -1;
@@ -613,16 +600,9 @@ int network_connect_client(void)
         ui_error(translate_text(IDGS_CANNOT_RESOLVE_S), server_name);
         return -1;
     }
-    network_socket = vice_network_socket_tcp();
+    network_socket = vice_network_client(server_addr);
 
     if ( ! network_socket ) {
-        lib_free(snapshotfilename);
-        return -1;
-    }
-
-    return_value = vice_network_connect(network_socket, server_addr);
-    if (return_value < 0) {
-        vice_network_socket_close(network_socket);
         ui_error(translate_text(IDGS_CANNOT_CONNECT_TO_S),
                     server_name, server_port);
         lib_free(snapshotfilename);
