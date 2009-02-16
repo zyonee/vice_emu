@@ -234,7 +234,7 @@ static GtkWidget* build_file_selector(const char *title,
 				      uilib_file_filter_enum_t* patterns,
                                       int num_patterns,
 				      const char *default_dir,
-				      GtkFileChooserAction action);
+				      ui_filechooser_t action);
 static GtkWidget* build_show_text(const gchar *text, int width, int height);
 static GtkWidget* build_confirm_dialog(GtkWidget **confirm_dialog_message);
 static gboolean enter_window_callback(GtkWidget *w, GdkEvent *e, gpointer p);
@@ -2462,13 +2462,12 @@ static GtkWidget *build_file_selector(const char *title,
 				      uilib_file_filter_enum_t* patterns,
                                       int num_patterns,
 				      const char *default_dir,
-				      GtkFileChooserAction action)
+				      ui_filechooser_t action)
 {  
     GtkWidget *fileselect, *scrollw, *wp_checkbox, *sh_checkbox, *extra;
     GtkCellRenderer *renderer;
     GtkTreeViewColumn *column;
     GtkListStore *store;
-    int i;    
 
     fileselect = vice_file_entry(title, _ui_top_level, default_dir, patterns, num_patterns, action);
 
