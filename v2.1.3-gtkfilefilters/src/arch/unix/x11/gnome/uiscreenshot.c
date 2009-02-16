@@ -406,7 +406,11 @@ static GtkWidget *build_screenshot_dialog(void)
     gtk_container_add(GTK_CONTAINER(frame), vbox);
     gtk_widget_show(vbox);
 
+#if GTK_CHECK_VERSION(2, 14, 0)
     gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(d))), frame, TRUE, TRUE, 0);
+#else
+    gtk_box_pack_start(GTK_BOX(GTK_DIALOG(d)->vbox), frame, TRUE, TRUE, 0);
+#endif
     gtk_widget_show(frame);
     gtk_widget_show(d);
 
