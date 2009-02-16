@@ -33,6 +33,7 @@
 #include "charset.h"
 #include "interrupt.h"
 #include "ioutil.h"
+#include "joy.h"
 #include "lib.h"
 #include "menu_common.h"
 #include "raster.h"

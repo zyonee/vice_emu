@@ -150,7 +150,7 @@ fprintf(stderr,"%s\n",__func__);
     sdl_ui_set_menu_colors(15, 0);
     sdl_ui_set_menu_borders(0, 0);
     sdl_ui_set_double_x(0);
-    sdl_vkbd_set_vkbd(&vkbd_c64);
+    sdl_vkbd_set_vkbd(&vkbd_c64dtv);
     return 0;
 }
 
