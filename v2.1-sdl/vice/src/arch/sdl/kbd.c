@@ -297,6 +297,9 @@ ui_menu_action_t sdlkbd_press(SDLKey key, SDLMod mod)
                     break;
                 }
             }
+            if ((int)(key) == sdl_ui_menukeys[0]) {
+                retval = MENU_ACTION_EXIT;
+            }
         }
         return retval;
     }

@@ -57,6 +57,10 @@
 
 static log_t sdljoy_log = LOG_ERR;
 
+/* Autorepeat in menu & vkbd */
+static ui_menu_action_t autorepeat;
+static int autorepeat_delay;
+
 /* Joystick mapping filename */
 static char *joymap_file = NULL;
 
@@ -689,27 +693,33 @@ static sdljoystick_mapping_t *sdljoy_get_mapping(SDL_Event e)
     return retval;
 }
 
-/* ------------------------------------------------------------------------- */
-
-ui_menu_action_t sdljoy_perform_event(sdljoystick_mapping_t *event, int value)
+static ui_menu_action_t sdljoy_perform_event(sdljoystick_mapping_t *event, int value)
 {
     BYTE t;
     ui_menu_action_t retval = MENU_ACTION_NONE;
+
+    autorepeat = MENU_ACTION_NONE;
 
     if (sdl_menu_state || sdl_vkbd_state) {
         if (event->action == JOYSTICK) {
             switch (event->value.joy[1]) {
                 case 0x01:
-                    retval = MENU_ACTION_UP;
+                    retval = autorepeat = MENU_ACTION_UP;
                     break;
                 case 0x02:
-                    retval = MENU_ACTION_DOWN;
+                    retval = autorepeat = MENU_ACTION_DOWN;
                     break;
                 case 0x04:
                     retval = MENU_ACTION_LEFT;
+                    if (sdl_vkbd_state) {
+                        autorepeat = retval;
+                    }
                     break;
                 case 0x08:
                     retval = MENU_ACTION_RIGHT;
+                    if (sdl_vkbd_state) {
+                        autorepeat = retval;
+                    }
                     break;
                 case 0x10:
                     retval = MENU_ACTION_SELECT;
@@ -723,10 +733,14 @@ ui_menu_action_t sdljoy_perform_event(sdljoystick_mapping_t *event, int value)
             retval = MENU_ACTION_MAP;
         }
         if (!value) {
+            autorepeat = MENU_ACTION_NONE;
+            autorepeat_delay = 30;
             retval += MENU_ACTION_NONE_RELEASE;
         }
         return retval;
     }
+
+    autorepeat_delay = 30;
 
     switch (event->action) {
         case JOYSTICK:
@@ -758,6 +772,21 @@ ui_menu_action_t sdljoy_perform_event(sdljoystick_mapping_t *event, int value)
     }
 
     return retval;
+}
+
+/* ------------------------------------------------------------------------- */
+
+ui_menu_action_t sdljoy_autorepeat(void)
+{
+    if (autorepeat_delay) {
+        if (autorepeat != MENU_ACTION_NONE) {
+            --autorepeat_delay;
+        }
+        return MENU_ACTION_NONE;
+    } else {
+        autorepeat_delay = 4;
+    }
+    return autorepeat;
 }
 
 BYTE sdljoy_check_axis_movement(SDL_Event e)

@@ -155,34 +155,35 @@ static void sdl_ui_display_item(ui_menu_entry_t *item, int y_pos)
     sdl_ui_print(item->callback(0, item->data), MENU_FIRST_X+i+1, y_pos+MENU_FIRST_Y);
 }
 
-static void sdl_ui_menu_redraw(ui_menu_entry_t *menu, const char *title, int num_items)
+static void sdl_ui_menu_redraw(ui_menu_entry_t *menu, const char *title, int offset)
 {
-    int i;
+    int i = 0;
 
     sdl_ui_init_draw_params();
     sdl_ui_clear();
     sdl_ui_display_title(title);
 
-    for (i=0; i<num_items; ++i) {
-        if (i > (menu_draw.max_text_y - MENU_FIRST_Y)) {
-            break;
-        }
-        sdl_ui_display_item(&(menu[i]), i);
+    while ((menu[i + offset].string != NULL) && (i <= (menu_draw.max_text_y - MENU_FIRST_Y))) {
+        sdl_ui_display_item(&(menu[i + offset]), i);
+        ++i;
     }
 }
 
 static int sdl_ui_menu_display(ui_menu_entry_t *menu, const char *title)
 {
-    int num_items = 0, cur = 0, cur_old = -1, cur_offset = 0, in_menu = 1;
+    int num_items = 0, cur = 0, cur_old = -1, cur_offset = 0, in_menu = 1, redraw = 1;
 
     while (menu[num_items].string != NULL) {
         ++num_items;
     }
 
-    sdl_ui_menu_redraw(menu, title, num_items);
-
     while (in_menu) {
-        sdl_ui_display_cursor(cur - cur_offset, cur_old - cur_offset);
+        if (redraw) {
+            sdl_ui_menu_redraw(menu, title, cur_offset);
+            cur_old = -1;
+            redraw = 0;
+        }
+        sdl_ui_display_cursor(cur, cur_old);
         sdl_ui_refresh();
 
         switch (sdl_ui_menu_poll_input()) {
@@ -191,23 +192,42 @@ static int sdl_ui_menu_display(ui_menu_entry_t *menu, const char *title)
                 if (cur > 0) {
                     --cur;
                 } else {
-                    cur = (num_items-1);
+                    if (cur_offset > 0) {
+                        --cur_offset;
+                    } else {
+                        cur_offset = num_items - (menu_draw.max_text_y - MENU_FIRST_Y);
+                        cur = (menu_draw.max_text_y - MENU_FIRST_Y) - 1;
+                        if (cur_offset < 0) {
+                            cur += cur_offset;
+                            cur_offset = 0;
+                        }
+                    }
+                    redraw = 1;
                 }
                 break;
             case MENU_ACTION_DOWN:
                 cur_old = cur;
-                if (cur < (num_items-1)) {
-                    ++cur;
+                if ((cur + cur_offset) < (num_items - 1)) {
+                    if (++cur == (menu_draw.max_text_y - MENU_FIRST_Y)) {
+                        --cur;
+                        ++cur_offset;
+                        redraw = 1;
+                    }
                 } else {
-                    cur = 0;
+                    cur = cur_offset = 0;
+                    redraw = 1;
                 }
                 break;
             case MENU_ACTION_RIGHT:
+                if (menu[cur + cur_offset].type != MENU_ENTRY_SUBMENU) {
+                    break;
+                }
+                /* fall through */
             case MENU_ACTION_SELECT:
-                if (sdl_ui_menu_item_activate(&(menu[cur])) == 2) {
+                if (sdl_ui_menu_item_activate(&(menu[cur + cur_offset])) == 2) {
                     return 2;
                 }
-                sdl_ui_menu_redraw(menu, title, num_items);
+                sdl_ui_menu_redraw(menu, title, cur_offset);
                 break;
             case MENU_ACTION_LEFT:
             case MENU_ACTION_CANCEL:
@@ -217,8 +237,8 @@ static int sdl_ui_menu_display(ui_menu_entry_t *menu, const char *title)
                 return 2;
                 break;
             case MENU_ACTION_MAP:
-                if (sdl_ui_hotkey_map(&(menu[cur]))) {
-                    sdl_ui_menu_redraw(menu, title, num_items);
+                if (sdl_ui_hotkey_map(&(menu[cur + cur_offset]))) {
+                    sdl_ui_menu_redraw(menu, title, cur_offset);
                 }
                 break;
             default:
@@ -356,9 +376,13 @@ void sdl_ui_reverse_colors(void)
 ui_menu_action_t sdl_ui_menu_poll_input(void)
 {
     ui_menu_action_t retval = MENU_ACTION_NONE;
+
     do {
         SDL_Delay(20);
         retval = ui_dispatch_events();
+        if (retval == MENU_ACTION_NONE || retval == MENU_ACTION_NONE_RELEASE) {
+            retval = sdljoy_autorepeat();
+        }
     } while (retval == MENU_ACTION_NONE || retval == MENU_ACTION_NONE_RELEASE);
     return retval;
 }

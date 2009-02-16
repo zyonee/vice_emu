@@ -37,7 +37,7 @@ Some new features that are missing from (some of) the native versions:
 1.3 Ports
 
 The SDL port has been tested to work on:
- - Linux / x86, ...
+ - Linux / x86, x86_64/amd64, ppc
  - win32 / x86
  - Amiga OS 4.x / powerpc
  - Morphos / powerpc
@@ -66,7 +66,7 @@ Activate | F9    | btn2 | Activate the menu
 Up       | up    |  u   | Move cursor up
 Down     | down  |  d   | Move cursor down
 Left     | left  |  l   | Cancel/Page up
-Right    | right |  r   | Select/Page down
+Right    | right |  r   | Enter menu/Page down
 Select   | enter | fire | Select the item
 Cancel   | <-    | N/A  | Return to previous menu
 Exit     | ESC   | N/A  | Exit the menu
@@ -76,7 +76,7 @@ Map      | m     | btn3 | Map a hotkey (see 2.2)
 The keys and joystick events can be configured via the menu.
 
 Left/Right work as Page up/down on the file selector, otherwise
-they do the same as Cancel/Select.
+left does Cancel and right enters the selected submenu.
 
 
 2.2 Hotkeys

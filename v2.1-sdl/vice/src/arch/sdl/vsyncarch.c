@@ -30,6 +30,7 @@
 
 #include "vice.h"
 
+#include "joy.h"
 #include "kbdbuf.h"
 #include "raster.h"
 #include "ui.h"
@@ -81,6 +82,7 @@ void vsyncarch_presync(void)
 {
     if (sdl_vkbd_state) {
         while (sdl_vkbd_process(ui_dispatch_events()));
+        sdl_vkbd_process(sdljoy_autorepeat());
         if (sdl_vkbd_state & SDL_VKBD_REPAINT) {
             raster_force_repaint(sdl_active_canvas->parent_raster);
             sdl_vkbd_state &= ~SDL_VKBD_REPAINT;
