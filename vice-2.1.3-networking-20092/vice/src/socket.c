@@ -342,7 +342,9 @@ vice_network_socket_address_t * vice_network_address_generate(const char * addre
         }
 
         if (address_string && address_string[0] == '|') {
-            vice_network_address_generate_local(socket_address, &address_string[1], port);
+            if (vice_network_address_generate_local(socket_address, &address_string[1], port)) {
+                break;
+            }
         }
         else if (address_string && strncmp("ip6://", address_string, sizeof "ip6://" - 1) == 0) {
             if (vice_network_address_generate_ipv6(socket_address, &address_string[sizeof "ip6://" - 1], port)) {
