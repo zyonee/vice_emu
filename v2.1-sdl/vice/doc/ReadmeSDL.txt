@@ -48,6 +48,7 @@ The SDL port has been tested to work on:
  - Unixware / x86
  - Solaris / x86, sparc
  - SkyOS / x86
+ - QNX 6.x / x86, armle, mipsle, ppcbe, shle
  - ...
 
 

@@ -3,8 +3,8 @@
 #
 # written by Marco van den Heuvel <blackystardust68@yahoo.com>
 #
-# make-bindist.sh <strip> <vice-version> <prefix> <cross> <zip|nozip> <topsrcdir> <make-command>
-#                 $1      $2             $3       $4      $5          $6          $7
+# make-bindist.sh <strip> <vice-version> <prefix> <cross> <zip|nozip> <topsrcdir> <make-command> <cpu>
+#                 $1      $2             $3       $4      $5          $6          $7             $8
 
 STRIP=$1
 VICEVERSION=$2
@@ -13,14 +13,10 @@ CROSS=$4
 ZIPKIND=$5
 TOPSRCDIR=$6
 MAKECOMMAND=$7
+CPU=$8
 
 if test x"$PREFIX" != "x/opt"; then
   echo Error: installation path is not /opt
-  exit 1
-fi
-
-if test x"$CROSS" = "xtrue"; then
-  echo Error: \"make bindist\" for QNX 6 can only be done on QNX 6
   exit 1
 fi
 
@@ -30,7 +26,29 @@ then
   exit 1
 fi
 
-echo Generating QNX 6 SDL port binary distribution.
+VICECPU=""
+
+if test x"$CPU" = "xarm"; then
+  VICECPU="armle"
+fi
+
+if test x"$CPU" = "xmips"; then
+  VICECPU="mipsle"
+fi
+
+if test x"$CPU" = "xppc" -o x"$CPU" = "xpowerpc"; then
+  VICECPU="ppcbe"
+fi
+
+if test x"$CPU" = "xsh"; then
+  VICECPU="shle"
+fi
+
+if test x"$VICECPU" = "x"; then
+  VICECPU="x86"
+fi
+
+echo Generating $VICECPU QNX 6 SDL port binary distribution.
 rm -f -r SDLVICE-$VICEVERSION
 curdir=`pwd`
 $MAKECOMMAND prefix=$curdir/SDLVICE-$VICEVERSION/opt VICEDIR=$curdir/SDLVICE-$VICEVERSION/opt/lib/vice install
@@ -47,11 +65,11 @@ $STRIP SDLVICE-$VICEVERSION/opt/bin/cartconv
 if test x"$ZIPKIND" = "xzip"; then
   gcc $TOPSRCDIR/src/arch/unix/qnx6/getsize.c -o ./getsize
   gcc $TOPSRCDIR/src/arch/unix/qnx6/getlibs.c -o ./getlibs
-  mkdir -p public/SDLVICE/core-$VICEVERSION/x86/opt/bin
-  mv SDLVICE-$VICEVERSION/opt/bin/x* public/SDLVICE/core-$VICEVERSION/x86/opt/bin
-  mv SDLVICE-$VICEVERSION/opt/bin/c1541 public/SDLVICE/core-$VICEVERSION/x86/opt/bin
-  mv SDLVICE-$VICEVERSION/opt/bin/cartconv public/SDLVICE/core-$VICEVERSION/x86/opt/bin
-  mv SDLVICE-$VICEVERSION/opt/bin/petcat public/SDLVICE/core-$VICEVERSION/x86/opt/bin
+  mkdir -p public/SDLVICE/core-$VICEVERSION/$VICECPU/opt/bin
+  mv SDLVICE-$VICEVERSION/opt/bin/x* public/SDLVICE/core-$VICEVERSION/$VICECPU/opt/bin
+  mv SDLVICE-$VICEVERSION/opt/bin/c1541 public/SDLVICE/core-$VICEVERSION/$VICECPU/opt/bin
+  mv SDLVICE-$VICEVERSION/opt/bin/cartconv public/SDLVICE/core-$VICEVERSION/$VICECPU/opt/bin
+  mv SDLVICE-$VICEVERSION/opt/bin/petcat public/SDLVICE/core-$VICEVERSION/$VICECPU/opt/bin
 
   current_date=`date +%Y/%m/%d`
 
@@ -62,7 +80,7 @@ cat >manifest.01 <<_END
       <QPM:PackageManifest>
          <QPM:PackageDescription>
             <QPM:PackageType>Application</QPM:PackageType>
-            <QPM:PackageName>SDLVICE-$VICEVERSION-x86-public</QPM:PackageName>
+            <QPM:PackageName>SDLVICE-$VICEVERSION-$VICECPU-public</QPM:PackageName>
 _END
 
 echo >manifest.02 "            <QPM:PackageSize/>"
@@ -75,15 +93,15 @@ cat >manifest.03 <<_END
          </QPM:PackageDescription>
 
          <QPM:ProductDescription>
-            <QPM:ProductName>SDLVICE for x86</QPM:ProductName>
+            <QPM:ProductName>SDLVICE for $VICECPU</QPM:ProductName>
 _END
 
-  ls -l -R public/SDLVICE/core-$VICEVERSION/x86/opt >size.tmp
+  ls -l -R public/SDLVICE/core-$VICEVERSION/$VICECPU/opt >size.tmp
   manifest_size=`./getsize size.tmp`
   rm -f -r size.tmp
   echo >manifest.04 "            <QPM:ProductSize>$manifest_size</QPM:ProductSize>"
 
-  echo >manifest.05 "            <QPM:ProductIdentifier>SDLVICE-host_x86</QPM:ProductIdentifier>"
+  echo >manifest.05 "            <QPM:ProductIdentifier>SDLVICE-host_$VICECPU</QPM:ProductIdentifier>"
 
   cat >manifest.06 <<_END
             <QPM:ProductEmail>vice-devel@firenze.linux.it</QPM:ProductEmail>
@@ -104,7 +122,7 @@ _END
             <QPM:ProductDescriptionEmbedURL/>
 _END
 
-echo >manifest.07 "            <QPM:InstallPath>public/SDLVICE/core-$VICEVERSION/x86</QPM:InstallPath>"
+echo >manifest.07 "            <QPM:InstallPath>public/SDLVICE/core-$VICEVERSION/$VICECPU</QPM:InstallPath>"
 
 cat >manifest.08 <<_END
          </QPM:ProductDescription>
@@ -144,7 +162,7 @@ cat >manifest.10 <<_END
             <QPM:ContentKeyword>c64,c128,vic20,plus4,c16,cbm510,cbm610,c510,c610,cbm,commodore,emulator,pet</QPM:ContentKeyword>
 _END
 
-echo >manifest.11 "            <QPM:Processor>x86</QPM:Processor>"
+echo >manifest.11 "            <QPM:Processor>$VICECPU</QPM:Processor>"
 
 cat >manifest.12 <<_END
             <QPM:TargetProcessor/>
@@ -154,7 +172,7 @@ cat >manifest.12 <<_END
             <QPM:TargetAudience>User</QPM:TargetAudience>
 _END
 
-  ./getlibs public/SDLVICE/core-$VICEVERSION/x86/opt/bin/x64 >manifest.13
+  ./getlibs public/SDLVICE/core-$VICEVERSION/$VICECPU/opt/bin/x64 >manifest.13
 
 cat >manifest.14 <<_END
          </QPM:ContentDescription>
@@ -192,22 +210,22 @@ cat >manifest.15 <<_END
 </RDF:RDF>
 _END
 
-  cat >public/SDLVICE/core-$VICEVERSION/x86/MANIFEST manifest.01 manifest.02 \
+  cat >public/SDLVICE/core-$VICEVERSION/$VICECPU/MANIFEST manifest.01 manifest.02 \
       manifest.03 manifest.04 manifest.05 manifest.06 manifest.07 manifest.08 \
       manifest.09 manifest.10 manifest.11 manifest.12 manifest.13 manifest.14 \
       manifest.15
 
-  tar cf SDLVICE-x86.tar public
-  gzip SDLVICE-x86.tar
-  mv SDLVICE-x86.tar.gz SDLVICE-$VICEVERSION-x86-public.qpk
+  tar cf SDLVICE-$VICECPU.tar public
+  gzip SDLVICE-$VICECPU.tar
+  mv SDLVICE-$VICECPU.tar.gz SDLVICE-$VICEVERSION-$VICECPU-public.qpk
 
-  ls -l -R SDLVICE-$VICEVERSION-x86-public.qpk >size.tmp
+  ls -l -R SDLVICE-$VICEVERSION-$VICECPU-public.qpk >size.tmp
   manifest_size=`./getsize size.tmp` 
   rm -f -r size.tmp
 
   echo >manifest.04 "            <QPM:PackageSize>$manifest_size</QPM:PackageSize>"
 
-  cat >SDLVICE-$VICEVERSION-x86-public.qpm manifest.01 manifest.02 manifest.03 manifest.04 \
+  cat >SDLVICE-$VICEVERSION-$VICECPU-public.qpm manifest.01 manifest.02 manifest.03 manifest.04 \
       manifest.05 manifest.06 manifest.07 manifest.08 manifest.09 manifest.10 \
       manifest.11 manifest.12 manifest.13 manifest.14 manifest.15
 
@@ -711,13 +729,13 @@ _END
 
   rm -f -r public
 
-  tar cf SDLVICE-x86.tar SDLVICE-$VICEVERSION-public.qp? SDLVICE-$VICEVERSION-public.repdata SDLVICE-$VICEVERSION-x86-public.qp?
-  gzip SDLVICE-x86.tar
-  mv SDLVICE-x86.tar.gz SDLVICE-$VICEVERSION-x86-public.qpr
+  tar cf SDLVICE-$VICECPU.tar SDLVICE-$VICEVERSION-public.qp? SDLVICE-$VICEVERSION-public.repdata SDLVICE-$VICEVERSION-$VICECPU-public.qp?
+  gzip SDLVICE-$VICECPU.tar
+  mv SDLVICE-$VICECPU.tar.gz SDLVICE-$VICEVERSION-$VICECPU-public.qpr
 
   rm -f -r *.qpk *.qpm *.repdata manifest.* SDLVICE-$VICEVERSION
 
-  echo QNX 6 SDL port binary package part generated as SDLVICE-$VICEVERSION-x86-public.qpr
+  echo QNX 6 SDL port binary package part generated as SDLVICE-$VICEVERSION-$VICECPU-public.qpr
 else
   echo QNX 6 SDL port binary distribution directory generated as SDLVICE-$VICEVERSION
 fi
