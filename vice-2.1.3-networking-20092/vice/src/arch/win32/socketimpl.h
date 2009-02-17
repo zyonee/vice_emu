@@ -39,6 +39,8 @@
 
 #define SOCKET_IS_INVALID(_x) ((_x) == INVALID_SOCKET)
 
+typedef unsigned long in_addr_t;
+
 #endif /* #ifdef HAVE_NETWORK */
 
 #endif /* #ifndef VICE_SOCKETIMPL_H */

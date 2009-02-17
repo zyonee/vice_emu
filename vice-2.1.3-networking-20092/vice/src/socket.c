@@ -210,10 +210,20 @@ static int vice_network_address_generate_ipv4(vice_network_socket_address_t * so
                 /* Assume it is an IP address */
 
                 if (address_part[0] != 0) {
+#ifdef HAVE_INET_ATON
                     if (inet_aton(address_part, &socket_address->address.ipv4.sin_addr.s_addr) == 0) {
                         /* no valid IP address */
                         break;
                     }
+#else
+                    in_addr_t ip = inet_addr(address_part);
+
+                    if (ip == INADDR_NONE) {
+                        /* no valid IP address */
+                        break;
+                    }
+                    socket_address->address.ipv4.sin_addr.s_addr = ip;
+#endif
                 }
             }
 
@@ -236,6 +246,7 @@ static int vice_network_address_generate_ipv6(vice_network_socket_address_t * so
 {
     int error = 1;
 
+#ifdef HAVE_IPV6
     do {
         struct hostent * host_entry = NULL;
         int err6;
@@ -268,7 +279,6 @@ static int vice_network_address_generate_ipv6(vice_network_socket_address_t * so
         error = 0;
 
     } while (0);
-#ifdef HAVE_IPV6
 #else /* #ifdef HAVE_IPV6 */
     log_message(LOG_DEFAULT, "IPv6 is not supported in this installation of VICE!\n");
 #endif /* #ifdef HAVE_IPV6 */
