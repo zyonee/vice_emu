@@ -37,6 +37,7 @@
 #include <string.h>
 
 #include "lib.h"
+#include "log.h"
 #include "socket.h"
 #include "socketimpl.h"
 
@@ -45,13 +46,13 @@
 union socket_addresses_u {
     struct sockaddr     generic;
 
-#ifdef HAVE_NETWORK_UNIXDOMAINSOCKETS
+#ifdef HAVE_UNIX_DOMAIN_SOCKETS
     struct sockaddr_un  local;
 #endif
 
     struct sockaddr_in  ipv4;
 
-#ifdef HAVE_NETWORK_IPV6
+#ifdef HAVE_IPV6
     struct sockaddr_in6 ipv6;
 #endif
 };
@@ -147,24 +148,19 @@ static vice_network_socket_address_t * vice_network_alloc_new_socket_address(voi
     return return_address;
 }
 
-vice_network_socket_address_t * vice_network_address_generate(const char * address_string, unsigned short port)
+static int vice_network_address_generate_ipv4(vice_network_socket_address_t * socket_address, const char * address_string, unsigned short port)
 {
-    vice_network_socket_address_t * socket_address = NULL;
-
     const char * address_part = address_string;
+    int error = 1;
 
     do {
-        socket_address = vice_network_alloc_new_socket_address();
-        if (socket_address == NULL) {
-            break;
-        }
-
         /* preset the socket address with port and INADDR_ANY */
 
+        memset(&socket_address->address, 0, sizeof socket_address->address);
         socket_address->domain = PF_INET;
         socket_address->protocol = IPPROTO_TCP;
         socket_address->len = sizeof socket_address->address.ipv4;
-        socket_address->address.ipv4.sin_family = PF_INET;
+        socket_address->address.ipv4.sin_family = AF_INET;
         socket_address->address.ipv4.sin_port = htons(port);
         socket_address->address.ipv4.sin_addr.s_addr = INADDR_ANY;
 
@@ -202,7 +198,7 @@ vice_network_socket_address_t * vice_network_address_generate(const char * addre
             if (host_entry != NULL && host_entry->h_addrtype == AF_INET) {
                 if ( host_entry->h_length != sizeof socket_address->address.ipv4.sin_addr.s_addr ) {
                     /* something weird happened... SHOULD NOT HAPPEN! */
-                    fprintf(stderr, 
+                    log_message(LOG_DEFAULT, 
                               "gethostbyname() returned an IPv4 address, "
                               "but the length is wrong: %u", host_entry->h_length );
                     break;
@@ -211,9 +207,17 @@ vice_network_socket_address_t * vice_network_address_generate(const char * addre
                 memcpy(&socket_address->address.ipv4.sin_addr.s_addr, host_entry->h_addr_list[0], host_entry->h_length);
             }
             else {
-                /* no host name: Assume it is an IP address */
-                socket_address->address.ipv4.sin_addr.s_addr = inet_addr(address_part);
+                /* Assume it is an IP address */
+
+                if (address_part[0] != 0) {
+                    if (inet_aton(address_part, &socket_address->address.ipv4.sin_addr.s_addr) == 0) {
+                        /* no valid IP address */
+                        break;
+                    }
+                }
             }
+
+            error = 0;
         }
     } while (0);
 
@@ -223,6 +227,135 @@ vice_network_socket_address_t * vice_network_address_generate(const char * addre
      */
     if (address_part != address_string) {
         lib_free(address_part);
+    }
+
+    return error;
+}
+
+static int vice_network_address_generate_ipv6(vice_network_socket_address_t * socket_address, const char * address_string, unsigned short port)
+{
+    int error = 1;
+
+    do {
+        struct hostent * host_entry = NULL;
+        int err6;
+
+        /* preset the socket address */
+
+        memset(&socket_address->address, 0, sizeof socket_address->address);
+        socket_address->domain = PF_INET6;
+        socket_address->protocol = IPPROTO_TCP;
+        socket_address->len = sizeof socket_address->address.ipv6;
+        socket_address->address.ipv6.sin6_family = AF_INET6;
+        socket_address->address.ipv6.sin6_port = htons(port);
+        socket_address->address.ipv6.sin6_addr = in6addr_any;
+
+#ifdef HAVE_GETHOSTBYNAME2
+        host_entry = gethostbyname2(address_string, AF_INET6);
+#else
+        host_entry = getipnodebyname(address_string, AF_INET6, AI_DEFAULT, &err6);
+#endif
+        if (host_entry == NULL) {
+            break;
+        }
+
+        memcpy(&socket_address->address.ipv6.sin6_addr, host_entry->h_addr, host_entry->h_length);
+
+#ifdef HAVE_GETHOSTBYNAME2
+#else
+        freehostent(host_entry);
+#endif
+        error = 0;
+
+    } while (0);
+#ifdef HAVE_IPV6
+#else /* #ifdef HAVE_IPV6 */
+    log_message(LOG_DEFAULT, "IPv6 is not supported in this installation of VICE!\n");
+#endif /* #ifdef HAVE_IPV6 */
+
+    return error;
+}
+
+static int vice_network_address_generate_local(vice_network_socket_address_t * socket_address, const char * address_string, unsigned short port)
+{
+    int error = 1;
+
+#ifdef HAVE_UNIX_DOMAIN_SOCKETS
+    do {
+        if (address_string[0] == 0) {
+            break;
+        }
+
+        /* preset the socket address with port and INADDR_ANY */
+
+        memset(&socket_address->address, 0, sizeof socket_address->address);
+        socket_address->domain = PF_UNIX;
+        socket_address->protocol = 0;
+        socket_address->len = sizeof socket_address->address.local;
+        socket_address->address.local.sun_family = AF_UNIX;
+
+        if ( strlen(address_string) >= sizeof socket_address->address.local.sun_path ) {
+            log_message(LOG_DEFAULT,
+                        "Unix domain socket name of '%s' is too long; only %u chars are allowed.",
+                        address_string, sizeof socket_address->address.local.sun_path);
+            break;
+        }
+        strcpy(socket_address->address.local.sun_path, address_string);
+
+        error = 0;
+    } while (0);
+
+#else /* #ifdef HAVE_UNIX_DOMAIN_SOCKETS */
+    log_message(LOG_DEFAULT, "Unix domain sockets are not supported in this installation of VICE!\n");
+#endif /* #ifdef HAVE_UNIX_DOMAIN_SOCKETS */
+
+    return error;
+}
+
+vice_network_socket_address_t * vice_network_address_generate(const char * address_string, unsigned short port)
+{
+    vice_network_socket_address_t * socket_address = NULL;
+    int error = 1;
+
+    do {
+        socket_address = vice_network_alloc_new_socket_address();
+        if (socket_address == NULL) {
+            break;
+        }
+
+        if (address_string && address_string[0] == '|') {
+            vice_network_address_generate_local(socket_address, &address_string[1], port);
+        }
+        else if (address_string && strncmp("ip6://", address_string, sizeof "ip6://" - 1) == 0) {
+            if (vice_network_address_generate_ipv6(socket_address, &address_string[sizeof "ip6://" - 1], port)) {
+                break;
+            }
+        }
+        else if (address_string && strncmp("ip4://", address_string, sizeof "ip4://" - 1) == 0) {
+            if (vice_network_address_generate_ipv4(socket_address, &address_string[sizeof "ip4://" - 1], port)) {
+                break;
+            }
+        }
+        else {
+            /* the user did not specify the type of the address, try to guess it by trying IPv6, then IPv4 */
+#ifdef HAVE_IPV6
+            if ( vice_network_address_generate_ipv6(socket_address, address_string, port))
+#endif /* #ifdef HAVE_IPV6 */
+            {
+                if ( vice_network_address_generate_ipv4(socket_address, address_string, port)) {
+                    break;
+                }
+            }
+
+        }
+
+        error = 0;
+
+    } while (0);
+
+    if (error && socket_address) {
+        vice_network_address_close(socket_address);
+        socket_address = NULL;
     }
 
     return socket_address;
