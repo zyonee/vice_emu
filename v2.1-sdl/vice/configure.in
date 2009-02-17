@@ -147,6 +147,11 @@ if test x"$host_os" = "xcygwin32" -o x"$host_os" = "xcygwin"; then
   fi
 fi
 
+dnl Enable the SDL UI by default for syllable.
+if test x"$host_os" = "xsyllable"; then
+  enable_sdlui=yes
+fi
+
 dnl Setup crosscompiling.
 if test x"$host_vendor" = "xgo32" -o x"$host_vendor" = "xmsdos" -o x"$host_os" = "xmsdosdjgpp"; then
 
