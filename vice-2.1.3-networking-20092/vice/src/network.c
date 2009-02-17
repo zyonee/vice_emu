@@ -69,6 +69,7 @@ static int network_init_done = 0;
 static int suspended;
 
 static char *server_name = NULL;
+static char *server_bind_address = NULL;
 static unsigned short server_port;
 static int res_server_port;
 static int frame_delta;
@@ -82,6 +83,12 @@ static char *snapshotfilename;
 static int set_server_name(const char *val, void *param)
 {
     util_string_set(&server_name, val);
+    return 0;
+}
+
+static int set_server_bind_address(const char *val, void *param)
+{
+    util_string_set(&server_bind_address, val);
     return 0;
 }
 
@@ -128,6 +135,8 @@ static int network_init(void)
 static const resource_string_t resources_string[] = {
     { "NetworkServerName", "127.0.0.1", RES_EVENT_NO, NULL,
       &server_name, set_server_name, NULL },
+    { "NetworkServerBindAddress", "", RES_EVENT_NO, NULL,
+      &server_bind_address, set_server_bind_address, NULL },
     { NULL }
 };
 
@@ -550,7 +559,7 @@ int network_start_server(void)
     if (network_mode != NETWORK_IDLE)
         return -1;
 
-    server_addr = vice_network_address_generate(NULL, server_port);
+    server_addr = vice_network_address_generate(server_bind_address, server_port);
 
     listen_socket = vice_network_server(server_addr);
     if ( ! listen_socket ) {
@@ -807,6 +816,7 @@ void network_shutdown(void)
 
     network_free_frame_event_list();
     lib_free(server_name);
+    lib_free(server_bind_address);
 
 #if defined(AMIGA_SUPPORT) && !defined(AMIGA_OS4)
     if (SocketBase != NULL) {
