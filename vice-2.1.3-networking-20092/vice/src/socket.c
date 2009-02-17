@@ -2,7 +2,7 @@
  *  \author Spiro Trikaliotis\n
  *  \brief  Abstraction from network sockets.
  *
- * socket.c - Abstraction from network sockets. Windows implementation.
+ * socket.c - Abstraction from network sockets.
  *
  * Written by
  *  Spiro Trikaliotis <spiro.trikaliotis@gmx.de>
