@@ -52,6 +52,7 @@
 #define HAVE_HTONS              1
 #define HAVE_NETWORK            1
 #define HAVE_GETCWD             1
+#define HAVE_D3D9_H				1
 
 #define __i386__                1
 

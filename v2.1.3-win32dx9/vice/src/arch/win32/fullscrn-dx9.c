@@ -26,7 +26,6 @@
 
 #include "vice.h"
 
-#include <d3d9.h>
 #include <windows.h>
 
 #include "fullscrn.h"
@@ -35,6 +34,10 @@
 #include "statusbar.h"
 #include "ui.h"
 #include "videoarch.h"
+
+#ifdef HAVE_D3D9_H
+
+#include <d3d9.h>
 
 
 static HMENU   old_menu;
@@ -188,3 +191,26 @@ void fullscreen_get_current_display_dx9(int *bitdepth, int *width,
         *refreshrate = 0;
     }
 }
+
+#else
+
+/* some dummies for compilation without DirectX9 header */
+
+void fullscreen_getmodes_dx9(void)
+{
+}
+
+void fullscreen_get_current_display_dx9(int *bitdepth, int *width,
+                                          int *height, int *refreshrate)
+{
+}
+
+void SwitchToFullscreenModeDx9(HWND hwnd)
+{
+}
+
+void SwitchToWindowedModeDx9(HWND hwnd)
+{
+}
+
+#endif /* HAVE_D3D9_H */

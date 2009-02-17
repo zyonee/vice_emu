@@ -27,8 +27,6 @@
 
 #include "vice.h"
 
-#include <d3d9.h>
-
 #include "cmdline.h"
 #include "fullscrn.h"
 #include "lib.h"

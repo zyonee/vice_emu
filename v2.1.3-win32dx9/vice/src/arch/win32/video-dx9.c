@@ -26,13 +26,16 @@
 
 #include "vice.h"
 
-#include <d3d9.h>
-
 #include "fullscrn.h"
 #include "log.h"
 #include "ui.h"
 #include "video.h"
 #include "videoarch.h"
+
+#ifdef HAVE_D3D9_H
+
+#include <d3d9.h>
+
 
 
 typedef IDirect3D9    *(WINAPI* Direct3DCreate9_t)  (UINT SDKVersion);
@@ -134,6 +137,9 @@ video_canvas_t *video_canvas_create_dx9(video_canvas_t *canvas,
         return NULL;
 
     video_canvas_add(canvas);
+    if (IsFullscreenEnabled()) {
+        SwitchToFullscreenMode(canvas->hwnd);
+    }
 
     return canvas;
 }
@@ -316,3 +322,47 @@ void video_canvas_update_dx9(HWND hwnd, HDC hdc, int xclient, int yclient,
     /* Just refresh the whole canvas */
   	video_canvas_refresh_all(canvas);
 }
+
+#else
+
+/* some dummies for compilation without DirectX9 header */
+
+void video_shutdown_dx9(void)
+{
+}
+
+int video_setup_dx9(void)
+{
+    return -1;
+}
+
+video_canvas_t *video_canvas_create_dx9(video_canvas_t *canvas, 
+                                        unsigned int *width,
+                                        unsigned int *height)
+{
+    return NULL;
+}
+
+void video_device_release_dx9(video_canvas_t *canvas)
+{
+}
+
+HRESULT video_canvas_reset_dx9(video_canvas_t *canvas)
+{
+    return -1;
+}
+
+int video_canvas_refresh_dx9(video_canvas_t *canvas,
+                          unsigned int xs, unsigned int ys,
+                          unsigned int xi, unsigned int yi,
+                          unsigned int w, unsigned int h)
+{
+    return -1;
+}
+
+void video_canvas_update_dx9(HWND hwnd, HDC hdc, int xclient, int yclient,
+                             int w, int h)
+{
+}
+
+#endif
