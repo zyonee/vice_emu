@@ -37,6 +37,8 @@
 
 #include <winsock2.h>
 
+#define SOCKET_IS_INVALID(_x) ((_x) == INVALID_SOCKET)
+
 #endif /* #ifdef HAVE_NETWORK */
 
 #endif /* #ifndef VICE_SOCKETIMPL_H */

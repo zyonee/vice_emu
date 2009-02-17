@@ -2,7 +2,7 @@
  *  \author Spiro Trikaliotis\n
  *  \brief  Abstraction from network sockets.
  *
- * socketimpl.h - Abstraction from network sockets. Windows implementation.
+ * socketimpl.h - Abstraction from network sockets. Unix implementation.
  *
  * Written by
  *  Spiro Trikaliotis <spiro.trikaliotis@gmx.de>
@@ -123,6 +123,8 @@ typedef struct timeval TIMEVAL;
 # endif
 
 #endif /* UNIX */
+
+#define SOCKET_IS_INVALID(_x) ((_x) < 0)
 
 #endif /* #ifdef HAVE_NETWORK */
 

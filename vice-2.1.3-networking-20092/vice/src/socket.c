@@ -44,9 +44,16 @@
 
 union socket_addresses_u {
     struct sockaddr     generic;
+
+#ifdef HAVE_NETWORK_UNIXDOMAINSOCKETS
     struct sockaddr_un  local;
+#endif
+
     struct sockaddr_in  ipv4;
+
+#ifdef HAVE_NETWORK_IPV6
     struct sockaddr_in6 ipv6;
+#endif
 };
 
 struct vice_network_socket_address_s
@@ -68,7 +75,7 @@ vice_network_socket_t vice_network_server(const vice_network_socket_address_t * 
     do {
         sockfd = socket(server_address->domain, SOCK_STREAM, server_address->protocol);
 
-        if (sockfd < 0) {
+        if (SOCKET_IS_INVALID(sockfd)) {
             sockfd = INVALID_SOCKET;
             break;
         }
@@ -83,7 +90,7 @@ vice_network_socket_t vice_network_server(const vice_network_socket_address_t * 
     } while(0);
 
     if (error) {
-        if (sockfd >= 0) {
+        if ( ! SOCKET_IS_INVALID(sockfd) ) {
             closesocket(sockfd);
         }
         sockfd = INVALID_SOCKET;
@@ -100,7 +107,7 @@ vice_network_socket_t vice_network_client(const vice_network_socket_address_t * 
     do {
         sockfd = socket(server_address->domain, SOCK_STREAM, server_address->protocol);
 
-        if (sockfd < 0) {
+        if (SOCKET_IS_INVALID(sockfd)) {
             sockfd = INVALID_SOCKET;
             break;
         }
@@ -112,7 +119,7 @@ vice_network_socket_t vice_network_client(const vice_network_socket_address_t * 
     } while(0);
 
     if (error) {
-        if (sockfd >= 0) {
+        if ( ! SOCKET_IS_INVALID(sockfd) ) {
             closesocket(sockfd);
         }
         sockfd = INVALID_SOCKET;
@@ -245,7 +252,7 @@ vice_network_socket_t vice_network_accept(vice_network_socket_t sockfd, vice_net
 
     } while (0);
 
-    if (newsocket >= 0 && client_address) {
+    if ( ! SOCKET_IS_INVALID(newsocket) && client_address) {
         * client_address = socket_address;
     }
     else {
