@@ -560,6 +560,9 @@ int network_start_server(void)
         return -1;
 
     server_addr = vice_network_address_generate(server_bind_address, server_port);
+    if ( ! server_addr ) {
+        return -1;
+    }
 
     listen_socket = vice_network_server(server_addr);
     if ( ! listen_socket ) {
@@ -604,7 +607,6 @@ int network_connect_client(void)
     }
 
     server_addr = vice_network_address_generate(server_name, server_port);
-
     if (server_addr == NULL) {
         ui_error(translate_text(IDGS_CANNOT_RESOLVE_S), server_name);
         return -1;
