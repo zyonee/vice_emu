@@ -211,6 +211,14 @@ static int vice_network_address_generate_ipv4(vice_network_socket_address_t * so
 
                 if (address_part[0] != 0) {
 #ifdef HAVE_INET_ATON
+                    /*
+                     * this implementation is preferable, as inet_addr() cannot
+                     * return the broadcast address, as it has the same encoding
+                     * as INADDR_NONE.
+                     *
+                     * Unfortunately, not all ports have inet_aton(), so, we must
+                     * provide both implementations.
+                     */
                     if (inet_aton(address_part, &socket_address->address.ipv4.sin_addr.s_addr) == 0) {
                         /* no valid IP address */
                         break;
