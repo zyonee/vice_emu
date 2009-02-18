@@ -66,6 +66,38 @@ struct vice_network_socket_address_s
     union socket_addresses_u address;
 };
 
+#ifndef HAVE_HTONL
+#ifndef htonl
+inline static unsigned int htonl(unsigned int ip)
+{
+#ifdef WORDS_BIGENDIAN
+    return ip;
+#else /* !WORDS_BIGENDIAN */
+    unsigned int ip2;
+
+    ip2=((ip>>24)&0xff)+(((ip>>16)&0xff)<<8)+(((ip>>8)&0xff)<<16)+((ip&0xff)<<24);
+    return ip2;
+#endif /* WORDS_BIGENDIAN */
+}
+#endif /* !htonl */
+#endif /* !HAVE_HTONL */
+
+#ifndef HAVE_HTONS
+#ifndef htons
+inline static unsigned short htons(unsigned short ip)
+{
+#ifdef WORDS_BIGENDIAN
+    return ip;
+#else /* !WORDS_BIGENDIAN */
+    unsigned short ip2;
+
+    ip2=((ip>>8)&0xff)+((ip&0xff)<<8);
+    return ip2;
+#endif /* WORDS_BIGENDIAN */
+}
+#endif /* !htons */
+#endif /* !HAVE_HTONS */
+
 static vice_network_socket_address_t address_pool[16] = { { 0 } };
 
 vice_network_socket_t vice_network_server(const vice_network_socket_address_t * server_address)
