@@ -32,6 +32,8 @@
 
 #include "vice.h"
 
+#ifdef HAVE_NETWORK
+
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>
@@ -478,3 +480,4 @@ int vice_network_get_errorcode(void)
 {
     return errno;
 }
+#endif
