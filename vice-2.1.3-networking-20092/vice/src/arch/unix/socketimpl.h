@@ -46,83 +46,38 @@ extern ssize_t send(int socket, const void *buffer, size_t length, int flags);
 
 #endif /* #ifdef MINIX_SUPPORT */
 
-#ifdef AMIGA_SUPPORT
-# ifndef AMIGA_OS4
-#  ifdef AMIGA_M68K
-#   include <utility/tagitem.h>
-#   include <clib/exec_protos.h>
-#  endif
-#  ifdef AMIGA_AROS
-#   include <proto/exec.h>
-#  endif
-#  include <proto/socket.h>
-struct Library *SocketBase;
-# else
-#  define __USE_INLINE__
-#  include <proto/bsdsocket.h>
-# endif
-# if !defined(AMIGA_AROS) && !defined(AMIGA_MORPHOS)
-#  define select(nfds, read_fds, write_fds, except_fds, timeout) \
-          WaitSelect(nfds, read_fds, write_fds, except_fds, timeout, NULL)
-# endif
+#if !defined(HAVE_GETDTABLESIZE) && defined(HAVE_GETRLIMIT)
+# include <sys/resource.h>
 #endif
 
-#ifdef __BEOS__
-# include <socket.h>
-# include <netdb.h>
-# include <byteorder.h>
-typedef unsigned int SOCKET;
-typedef struct timeval TIMEVAL;
-# define PF_INET AF_INET
-# define INVALID_SOCKET (SOCKET)(~0)
-# define HAVE_HTONS
-# define HAVE_HTONL
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <sys/un.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <netdb.h>
+#include <sys/time.h>
 
-#else /* #ifdef __BEOS__ */
+#ifndef VMS
+#include <sys/select.h>
+#endif
+ 
+#include <unistd.h>
 
-# if !defined(HAVE_GETDTABLESIZE) && defined(HAVE_GETRLIMIT)
-#  include <sys/resource.h>
-# endif
-# include <sys/types.h>
-# include <sys/socket.h>
-# include <sys/un.h>
-# include <netinet/in.h>
-# include <arpa/inet.h>
-# include <netdb.h>
-# ifndef __MSDOS__
-#  include <sys/time.h>
-#  if !defined(AMIGA_SUPPORT) && !defined(VMS)
-#   include <sys/select.h>
-#  endif
-# endif
-# if !defined(AMIGA_M68K) && !defined(AMIGA_AROS)
-#  include <unistd.h>
-# endif
-
-# ifdef __minix
-#  define recv(socket, buffer, length, flags) \
-          recvfrom(socket, buffer, length, flags, NULL, NULL)
+#ifdef __minix
+# define recv(socket, buffer, length, flags) \
+         recvfrom(socket, buffer, length, flags, NULL, NULL)
 extern ssize_t send(int socket, const void *buffer, size_t length, int flags);
-# endif
+#endif
 
 typedef unsigned int SOCKET;
 typedef struct timeval TIMEVAL;
 
-# ifdef AMIGA_SUPPORT
-#  ifdef AMIGA_OS4
-#   define closesocket close
-#  else
-#   define closesocket CloseSocket
-#  endif
-# else
-#  define closesocket close
-# endif
+#define closesocket close
 
-# ifndef INVALID_SOCKET
-#  define INVALID_SOCKET (SOCKET)(~0)
-# endif
-
-#endif /* UNIX */
+#ifndef INVALID_SOCKET
+# define INVALID_SOCKET (SOCKET)(~0)
+#endif
 
 #define SOCKET_IS_INVALID(_x) ((_x) < 0)
 
