@@ -70,7 +70,7 @@ struct vice_network_socket_address_s
 
 #ifndef HAVE_HTONL
 #ifndef htonl
-inline static unsigned int htonl(unsigned int ip)
+static unsigned int htonl(unsigned int ip)
 {
 #ifdef WORDS_BIGENDIAN
     return ip;
@@ -86,7 +86,7 @@ inline static unsigned int htonl(unsigned int ip)
 
 #ifndef HAVE_HTONS
 #ifndef htons
-inline static unsigned short htons(unsigned short ip)
+static unsigned short htons(unsigned short ip)
 {
 #ifdef WORDS_BIGENDIAN
     return ip;
@@ -101,6 +101,29 @@ inline static unsigned short htons(unsigned short ip)
 #endif /* !HAVE_HTONS */
 
 static vice_network_socket_address_t address_pool[16] = { { 0 } };
+
+int vice_network_init(void)
+{
+#if defined(AMIGA_SUPPORT) && !defined(AMIGA_OS4)
+    if (SocketBase == NULL) {
+        SocketBase = OpenLibrary("bsdsocket.library", 3);
+        if (SocketBase == NULL) {
+            return -1;
+        }
+    }
+#endif
+    return 0;
+}
+
+void vice_network_shutdown(void)
+{
+#if defined(AMIGA_SUPPORT) && !defined(AMIGA_OS4)
+    if (SocketBase != NULL) {
+        CloseLibrary(SocketBase);
+        SocketBase = NULL;
+    }
+#endif
+}
 
 vice_network_socket_t vice_network_server(const vice_network_socket_address_t * server_address)
 {

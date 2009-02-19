@@ -115,19 +115,10 @@ static int network_init(void)
     if (network_init_done)
         return 0;
 
-#if defined(AMIGA_SUPPORT) && defined(HAVE_NETWORK) && !defined(AMIGA_OS4)
-    if (SocketBase == NULL) {
-        SocketBase = OpenLibrary("bsdsocket.library", 3);
-        if (SocketBase == NULL) {
-            return -1;
-        }
-    }
-#endif
-
     network_mode = NETWORK_IDLE;
     network_init_done = 1;
 
-    return 0;
+    return vice_network_init();
 }
 
 /*---------- Resources ------------------------------------------------*/
@@ -819,13 +810,7 @@ void network_shutdown(void)
     network_free_frame_event_list();
     lib_free(server_name);
     lib_free(server_bind_address);
-
-#if defined(AMIGA_SUPPORT) && !defined(AMIGA_OS4)
-    if (SocketBase != NULL) {
-        CloseLibrary(SocketBase);
-        SocketBase = NULL;
-    }
-#endif
+    vice_network_shutdown();
 }
 
 #else
