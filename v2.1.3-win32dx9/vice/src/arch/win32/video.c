@@ -61,6 +61,12 @@ static int set_dx_primary_surface_rendering(int val, void *param)
 
 static int set_dx9_disable(int val, void *param)
 {
+    if (dx9_disable != val && video_number_of_canvases > 0) {
+        ui_error("Sorry. Cannot change video engine on the fly. " \
+                 "Please restart emulator to change engine.");
+        return 0;
+    }
+
     dx9_disable = val;
     return 0;
 }
