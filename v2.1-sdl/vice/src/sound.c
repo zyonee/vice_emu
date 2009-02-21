@@ -1256,7 +1256,9 @@ void sound_init(unsigned int clock_rate, unsigned int ticks_per_frame)
 #ifdef USE_DXSOUND
     sound_init_dx_device();
 #endif
+#ifndef __XBOX__
     sound_init_wmm_device();
+#endif
 #endif
 
 #ifdef WINCE

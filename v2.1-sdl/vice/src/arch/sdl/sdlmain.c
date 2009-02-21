@@ -36,10 +36,23 @@
 #include <SDL/SDL_main.h>
 #endif
 
+#ifdef __XBOX__
+void XBoxStartup(void)
+{
+  int argc = 1;
+  char *argv[2];
+
+  argv[0] = "vice";
+  argv[1] = NULL;
+
+  main_program(argc, argv);
+}
+#else
 int main(int argc, char **argv)
 {
     return main_program(argc, argv);
 }
+#endif
 
 void main_exit(void)
 {

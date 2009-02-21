@@ -45,8 +45,12 @@
 #include "archdep_unix.c"
 #endif
 
-#ifdef WIN32_COMPILE
+#if defined(WIN32_COMPILE) && !defined(__XBOX__)
 #include "archdep_win32.c"
+#endif
+
+#ifdef __XBOX__
+#include "archdep_xbox.c"
 #endif
 
 int archdep_init(int *argc, char **argv)

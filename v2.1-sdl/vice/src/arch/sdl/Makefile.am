@@ -111,6 +111,8 @@ EXTRA_DIST = \
 	archdep_unix.h \
 	archdep_win32.c \
 	archdep_win32.h \
+	archdep_xbox.c \
+	archdep_xbox.h \
 	make-bindist_amiga.sh \
 	make-bindist_beos.sh \
 	make-bindist_gp2x.sh \
