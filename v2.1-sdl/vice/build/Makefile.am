@@ -19,4 +19,4 @@ EXTRA_DIST = \
 	riscos/build-cross.sh \
 	riscos/build-cross-sdl.sh \
 	vms/build.sh \
-	xbox-sdl\build.sh
+	xbox-sdl/build.sh
