@@ -48,6 +48,7 @@
 #include "resources.h"
 #include "ui.h"
 #include "uimenu.h"
+#include "vkbd.h"
 
 /* temporary empty plus4 hardware menu, this one will be moved out to menu_plus4hw.c */
 static ui_menu_entry_t plus4_hardware_menu[] = {
@@ -176,9 +177,10 @@ fprintf(stderr,"%s\n",__func__);
     }
 
     sdl_ui_set_menu_font(plus4_font, 8, 8);
-    sdl_ui_set_menu_colors(120, 0);
+    sdl_ui_set_menu_colors(113, 0);
     sdl_ui_set_menu_borders(0, 55);
     sdl_ui_set_double_x(0);
+    sdl_vkbd_set_vkbd(&vkbd_plus4);
     return 0;
 }
 
