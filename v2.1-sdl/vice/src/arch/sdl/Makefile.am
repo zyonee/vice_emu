@@ -65,6 +65,8 @@ libarch_a_SOURCES = \
 	menu_tape.h \
 	menu_vic20cart.c \
 	menu_vic20cart.h \
+	menu_vic20hw.c \
+	menu_vic20hw.h \
 	menu_video.c \
 	menu_video.h \
 	mousedrv.c \

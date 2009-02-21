@@ -44,18 +44,13 @@
 #include "menu_speed.h"
 #include "menu_tape.h"
 #include "menu_vic20cart.h"
+#include "menu_vic20hw.h"
 #include "menu_video.h"
 #include "resources.h"
 #include "ui.h"
 #include "uimenu.h"
 #include "vic20memrom.h"
 #include "vkbd.h"
-
-/* temporary empty vic20 hardware menu, this one will be moved out to menu_vic20hw.c */
-static ui_menu_entry_t vic20_hardware_menu[] = {
-    SDL_MENU_ITEM_SEPARATOR,
-    { NULL }
-};
 
 /* temporary empty vic20 rom menu, this one will be moved out to menu_vic20rom.c */
 static ui_menu_entry_t vic20_rom_menu[] = {
@@ -88,7 +83,7 @@ static const ui_menu_entry_t xvic_main_menu[] = {
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)vic20cart_menu },
-    { "Machine settings (todo)",
+    { "Machine settings",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)vic20_hardware_menu },

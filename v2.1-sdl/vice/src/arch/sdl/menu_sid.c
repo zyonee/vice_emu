@@ -195,6 +195,34 @@ static const ui_menu_entry_t sid_engine_menu[] = {
     { NULL }
 };
 
+static const ui_menu_entry_t sid_noresid_engine_menu[] = {
+    { "Fast SID",
+      MENU_ENTRY_RESOURCE_RADIO,
+      radio_SidEngine_callback,
+      (ui_callback_data_t)SID_ENGINE_FASTSID },
+#ifdef HAVE_CATWEASELMKIII
+    { "Catweasel MKIII",
+      MENU_ENTRY_RESOURCE_RADIO,
+      radio_SidEngine_callback,
+      (ui_callback_data_t)SID_ENGINE_CATWEASELMKIII },
+#endif
+#ifdef HAVE_PARSID
+    { "ParSID Port 1",
+      MENU_ENTRY_RESOURCE_RADIO,
+      radio_SidEngine_callback,
+      (ui_callback_data_t)SID_ENGINE_PARSID_PORT1 },
+    { "ParSID Port 2",
+      MENU_ENTRY_RESOURCE_RADIO,
+      radio_SidEngine_callback,
+      (ui_callback_data_t)SID_ENGINE_PARSID_PORT2 },
+    { "ParSID Port 3",
+      MENU_ENTRY_RESOURCE_RADIO,
+      radio_SidEngine_callback,
+      (ui_callback_data_t)SID_ENGINE_PARSID_PORT3 },
+#endif
+    { NULL }
+};
+
 #ifdef HAVE_RESID
 UI_MENU_DEFINE_RADIO(SidResidSampling)
 
@@ -306,6 +334,58 @@ const ui_menu_entry_t sid_dtv_menu[] = {
       int_SidResidPassband_callback,
       (ui_callback_data_t)"Enter passband in percentage of total bandwidth (0 - 90, lower is faster, higher is better)" },
 #endif
+    { NULL }
+};
+
+UI_MENU_DEFINE_TOGGLE(SidCart)
+UI_MENU_DEFINE_RADIO(SidAddress)
+UI_MENU_DEFINE_RADIO(SidClock)
+
+const ui_menu_entry_t sid_vic_menu[] = {
+    { "Enable SID cart emulation",
+      MENU_ENTRY_RESOURCE_TOGGLE,
+      toggle_SidCart_callback,
+      NULL },
+    SDL_MENU_ITEM_SEPARATOR,
+    SDL_MENU_ITEM_TITLE("SID model"),
+    { "6581 (old)",
+      MENU_ENTRY_RESOURCE_RADIO,
+      radio_SidModel_callback,
+      (ui_callback_data_t)SID_MODEL_6581 },
+    { "8580 (new)",
+      MENU_ENTRY_RESOURCE_RADIO,
+      radio_SidModel_callback,
+      (ui_callback_data_t)SID_MODEL_8580 },
+    SDL_MENU_ITEM_SEPARATOR,
+    { "SID Engine",
+      MENU_ENTRY_SUBMENU,
+      submenu_radio_callback,
+      (ui_callback_data_t)sid_noresid_engine_menu },
+    SDL_MENU_ITEM_SEPARATOR,
+    { "Emulate filters",
+      MENU_ENTRY_RESOURCE_TOGGLE,
+      toggle_SidFilters_callback,
+      NULL },
+    SDL_MENU_ITEM_SEPARATOR,
+    SDL_MENU_ITEM_TITLE("SID address"),
+    { "$9800",
+      MENU_ENTRY_RESOURCE_RADIO,
+      radio_SidAddress_callback,
+      (ui_callback_data_t)0 },
+    { "$9C00",
+      MENU_ENTRY_RESOURCE_RADIO,
+      radio_SidAddress_callback,
+      (ui_callback_data_t)1 },
+    SDL_MENU_ITEM_SEPARATOR,
+    SDL_MENU_ITEM_TITLE("SID clock"),
+    { "C64",
+      MENU_ENTRY_RESOURCE_RADIO,
+      radio_SidClock_callback,
+      (ui_callback_data_t)0 },
+    { "VIC20",
+      MENU_ENTRY_RESOURCE_RADIO,
+      radio_SidClock_callback,
+      (ui_callback_data_t)1 },
     { NULL }
 };
 

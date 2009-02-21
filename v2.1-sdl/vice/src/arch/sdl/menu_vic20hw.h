@@ -1,8 +1,8 @@
 /*
- * menu_sid.h - Implementation of the SID settings menu for the SDL UI.
+ * menu_vic20hw.h - VIC-20 HW menu for SDL UI.
  *
  * Written by
- *  Hannu Nuotio <hannu.nuotio@tut.fi>
+ *  Marco van den Heuvel <blackystardust68@yahoo.com>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -24,15 +24,13 @@
  *
  */
 
-#ifndef VICE_MENU_SID_H
-#define VICE_MENU_SID_H
+#ifndef VICE_MENU_VIC20HW_H
+#define VICE_MENU_VIC20HW_H
 
 #include "vice.h"
-
+#include "types.h"
 #include "uimenu.h"
 
-extern const ui_menu_entry_t sid_c64_menu[];
-extern const ui_menu_entry_t sid_dtv_menu[];
-extern const ui_menu_entry_t sid_vic_menu[];
+extern const ui_menu_entry_t vic20_hardware_menu[];
 
 #endif
