@@ -62,21 +62,21 @@
 #define LOG_MAPPER              /* log memory map changes */
                                                       /* #define LOG_CLOCKPORT *//* log clockport i/o */
 
-#define LOG_READ_DE00
+/* #define LOG_READ_DE00 */
 #define LOG_WRITE_DE00
 #define LOG_WRITE_DE01
 
 /* #define LOG_READ_IO1_RAM */
 /* #define LOG_READ_IO1_ROM */
-#define LOG_READ_IO1_DISABLED
+/* #define LOG_READ_IO1_DISABLED */
 #define LOG_WRITE_IO1_RAM
 #define LOG_WRITE_IO1_ROM
 #define LOG_WRITE_IO1_DISABLED
 
 /* #define LOG_READ_DF10 */
-#define LOG_READ_DF11
-#define LOG_READ_DF12
-#define LOG_READ_DF13
+/* #define LOG_READ_DF11 */
+/* #define LOG_READ_DF12 */
+/* #define LOG_READ_DF13 */
 
 /* #define LOG_WRITE_DF10 */
 #define LOG_WRITE_DF11
@@ -113,6 +113,7 @@ char *mmcr_card_filename = NULL;
 char *mmcr_eeprom_filename = NULL;
 int mmcr_card_rw = 0;
 int mmcr_eeprom_rw = 0;
+int mmcr_sd_type = 0;
 
 
 /*
@@ -1848,7 +1849,7 @@ void REGPARM2 mmcreplay_io2_store (WORD addr, BYTE value)
                 /* bit 7 always 0 */
                 if (disable_mmc_bios)
                 {
-                    //if(enable_mmc_regs_pending)
+                    /* if(enable_mmc_regs_pending) */
                     {
                         enable_mmc_regs = enable_mmc_regs_pending;
                     }
@@ -2666,10 +2667,26 @@ void mmcreplay_config_setup (BYTE * rawcart)
 
 int mmcreplay_bin_attach (const char *filename, BYTE * rawcart)
 {
+int len=0;
+FILE *fd;
+
     if (util_file_load (filename, rawcart, MMCREPLAY_FLASHROM_SIZE,
                         UTIL_FILE_LOAD_SKIP_ADDRESS | UTIL_FILE_LOAD_FILL) < 0)
     {
         return -1;
+    }
+
+    fd=fopen(filename,"rb");
+    len=util_file_length(fd);
+    fclose(fd);
+
+    if(len==0x10000)
+    {
+        if (util_file_load (filename, &rawcart[7*0x10000], 0x10000,
+                            UTIL_FILE_LOAD_SKIP_ADDRESS | UTIL_FILE_LOAD_FILL) < 0)
+        {
+            return -1;
+        }
     }
 
     if (c64export_add (&export_res) < 0)
@@ -2761,6 +2778,14 @@ static int set_mmcr_rescue_mode(int val, void* param)
     return 0;
 }
 
+static int set_mmcr_sd_type(int val, void* param)
+{
+//	printf("%d - %d\n",mmcr_sd_type,val);
+    mmcr_sd_type = val;
+    mmc_set_card_type (val);
+    return 0;
+}
+
 static const resource_string_t resources_string[] = {
     { "MMCRCardImage", "", RES_EVENT_NO, NULL,
       &mmcr_card_filename, set_mmcr_card_filename, NULL },
@@ -2776,6 +2801,8 @@ static const resource_int_t resources_int[] = {
       &mmcr_eeprom_rw, set_mmcr_eeprom_rw, NULL },
     { "MMCRRescueMode", 0, RES_EVENT_NO, NULL,
       &enable_rescue_mode, set_mmcr_rescue_mode, NULL },
+    { "MMCRSDType", 0, RES_EVENT_NO, NULL,
+      &mmcr_sd_type, set_mmcr_sd_type, NULL },
     { NULL }
 };
 

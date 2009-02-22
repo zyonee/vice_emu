@@ -36,7 +36,8 @@
 UI_MENU_DEFINE_TOGGLE(MMCRCardRW)
 UI_MENU_DEFINE_TOGGLE(MMCREEPROMRW)
 UI_MENU_DEFINE_TOGGLE(MMCRRescueMode)
-
+UI_MENU_DEFINE_RADIO(MMCRSDType)
+		
 UI_CALLBACK(set_mmcreplay_card_filename)
 {
     uilib_select_string((char *)UI_MENU_CB_PARAM, _("MMC Replay card image filename"),
@@ -48,6 +49,19 @@ UI_CALLBACK(set_mmcreplay_eeprom_filename)
     uilib_select_string((char *)UI_MENU_CB_PARAM, _("MMC Replay EEPROM image filename"),
                         _("Filename:"));
 }
+
+static ui_menu_entry_t mmcreplay_sd_type_submenu[] = {
+    { "*auto", (ui_callback_t)radio_MMCRSDType,
+      (ui_callback_data_t)0, NULL },
+    { "*MMC", (ui_callback_t)radio_MMCRSDType,
+      (ui_callback_data_t)1, NULL },
+    { "*SD", (ui_callback_t)radio_MMCRSDType,
+      (ui_callback_data_t)2, NULL },
+    { "*SDHC", (ui_callback_t)radio_MMCRSDType,
+      (ui_callback_data_t)3, NULL },
+    { NULL }
+};
+
 
 ui_menu_entry_t mmcreplay_submenu[] = {
     { N_("Card image filename..."),
@@ -62,5 +76,7 @@ ui_menu_entry_t mmcreplay_submenu[] = {
       (ui_callback_t)toggle_MMCREEPROMRW, NULL, NULL },
     { N_("*Enable rescue mode"),
       (ui_callback_t)toggle_MMCRRescueMode, NULL, NULL },
-    { NULL }
+    { N_("*Card Type"),
+      NULL, NULL, mmcreplay_sd_type_submenu },
+      { NULL }
 };

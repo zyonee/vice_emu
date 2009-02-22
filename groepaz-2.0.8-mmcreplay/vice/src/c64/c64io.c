@@ -548,8 +548,34 @@ void REGPARM2 c64io2_store(WORD addr, BYTE value)
 
 void c64io_ioreg_add_list(struct mem_ioreg_list_s **mem_ioreg_list)
 {
+    if (mmc64_enabled)
+    {
+        mon_ioreg_add_list(mem_ioreg_list, "MMC64", 0xdf10, 0xdf13);
+	if(mmc64_clockport_enabled)
+	{
+		if(mmc64_hw_clockport==0xdf22)
+		{
+			mon_ioreg_add_list(mem_ioreg_list, "MMC64CP", 0xdf22, 0xdf30);
+		}
+		else
+		{
+			mon_ioreg_add_list(mem_ioreg_list, "MMC64CP", 0xde02, 0xde0f);
+		}
+	}
+    }
+    if (mmcr_enabled)
+    {
+        mon_ioreg_add_list(mem_ioreg_list, "MMCR", 0xde00, 0xde01);
+        mon_ioreg_add_list(mem_ioreg_list, "MMCR", 0xdf10, 0xdf13);
+	if(mmcr_clockport_enabled)
+	{
+        	mon_ioreg_add_list(mem_ioreg_list, "MMCRCP", 0xde02, 0xde0f);
+	}
+    }
     if (reu_enabled)
+    {
         mon_ioreg_add_list(mem_ioreg_list, "REU", 0xdf00, 0xdf0f);
+    }
     if (georam_enabled) {
         mon_ioreg_add_list(mem_ioreg_list, "GEORAM", 0xde00, 0xdeff);
         mon_ioreg_add_list(mem_ioreg_list, "GEORAM", 0xdffe, 0xdfff);

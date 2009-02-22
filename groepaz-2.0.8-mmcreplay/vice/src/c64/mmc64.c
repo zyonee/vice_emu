@@ -50,6 +50,27 @@
 #include "types.h"
 #include "util.h"
 #include "vicii-phi1.h"
+#include "cart/spi-sdcard.h"
+
+#define DEBUG
+
+/*
+#define LOG_READ_DF10
+#define LOG_READ_DF11
+#define LOG_READ_DF12
+#define LOG_READ_DF13
+
+#define LOG_WRITE_DF10
+#define LOG_WRITE_DF11
+#define LOG_WRITE_DF12
+#define LOG_WRITE_DF13
+*/
+
+#ifdef DEBUG
+#define LOG(_x_) log_debug _x_
+#else
+#define LOG(_x_)
+#endif
 
 static const c64export_resource_t export_res = {
     "MMC64", 1, 0
@@ -76,15 +97,6 @@ static char *mmc64_image_filename = NULL;
 /* Image file */
 static FILE *mmc64_image_file;
 
-/* Pointer inside image */
-static unsigned int mmc64_image_pointer;
-
-/* write sequence counter */
-static int mmc64_write_sequence;
-
-/* Command buffer */
-static unsigned char mmc64_cmd_puffer[9];
-static unsigned int mmc64_cmd_puffer_pointer;
 
 /* $DF11 bit 7 unlock flag */
 static int mmc64_bit7_unlocked=0;
@@ -103,14 +115,15 @@ static int mmc64_hw_writeprotect;
 
 /* Control Bits */
 /* $DF11 (R/W): MMC64 control register */
-#define MMC_ACTIVE  0x80	/* bit 7: 0 = MMC64 is active, 1 = MMC64 is completely disabled                   */
-#define MMC_SPIMODE 0x40	/* bit 6: 0 = SPI write trigger mode, 1 = SPI read trigger mode                   */
-#define MMC_EXTROM  0x20	/* bit 5: 0 = allow external rom when BIOS is disabled , 1 = disable external ROM */
-#define MMC_FLASH   0x10	/* bit 4: 0 = normal Operation, 1 = flash mode                                    */
-#define MMC_CPORT   0x08	/* bit 3: 0 = clock port @ $DE00, 1 = clock port @ $DF20                          */
-#define MMC_SPEED   0x04	/* bit 2: 0 = 250khz transfer, 1 = 8mhz transfer                                  */
-#define MMC_CARDSEL 0x02	/* bit 1: 0 = card selected, 1 = card not selected                                */
-#define MMC_BIOSSEL 0x01	/* bit 0: 0 = MMC64 BIOS active, 1 = external ROM active                          */
+#define MMC_ACTIVE  1	/* bit 7: 0 = MMC64 is active, 1 = MMC64 is completely disabled                   */
+#define MMC_SPIMODE 1	/* bit 6: 0 = SPI write trigger mode, 1 = SPI read trigger mode                   */
+#define MMC_EXTROM  1	/* bit 5: 0 = allow external rom when BIOS is disabled , 1 = disable external ROM */
+#define MMC_FLASH   1	/* bit 4: 0 = normal Operation, 1 = flash mode                                    */
+#define MMC_CPORT   1	/* bit 3: 0 = clock port @ $DE00, 1 = clock port @ $DF20                          */
+#define MMC_SPEED   1	/* bit 2: 0 = 250khz transfer, 1 = 8mhz transfer                                  */
+#define MMC_CARDSEL 1   /* bit 1: 0 = card selected, 1 = card not selected                                */
+#define MMC_BIOSSEL 1 	/* bit 0: 0 = MMC64 BIOS active, 1 = external ROM active                          */
+
 
 /* Variables of the various control bits */
 static BYTE mmc64_active;
@@ -134,78 +147,20 @@ static BYTE mmc64_biossel;
 
 /* Variables of the various status bits */
 static BYTE mmc64_flashjumper;
-static BYTE mmc64_writeprotect;
-static BYTE mmc64_cardpresent;
 static BYTE mmc64_extexrom;
 static BYTE mmc64_extgame;
-static BYTE mmc64_spistatus;
 
-#define MMC_CARD_IDLE          0
-#define MMC_CARD_RESET         1
-#define MMC_CARD_INIT          2
-#define MMC_CARD_READ          3
-#define MMC_CARD_DUMMY_READ    4
-#define MMC_CARD_WRITE         5
-#define MMC_CARD_DUMMY_WRITE   6
-#define MMC_CARD_RETURN_WRITE  7
-
-static BYTE mmc64_card_state;
-static BYTE mmc64_card_reset_count;
 static int mmc64_revision;
+static int mmc64_sd_type=0;
 static BYTE mmc64_image_file_readonly=0;
-
-/* Gets set when dummy byte is read */
-static unsigned int mmc64_read_firstbyte;
-
-static unsigned int mmc64_block_size;
 
 static log_t mmc64_log = LOG_ERR;
 
 static BYTE mmc64_bios[0x2002];
-
 static int mmc64_bios_offset=0;
 
 static int mmc64_activate(void);
 static int mmc64_deactivate(void);
-
-static void mmc64_clear_cmd_puffer(void)
-{
-  int i;
-
-  for (i = 0; i < 9; i++)
-  {
-    mmc64_cmd_puffer[i] = 0;
-  }
-  mmc64_cmd_puffer_pointer = 0;
-}
-
-/* Resets the card */
-static void mmc64_reset_card(void)
-{
-  mmc64_active=0;
-  mmc64_spi_mode=0;
-  mmc64_extrom=0;
-  mmc64_flashmode=0;
-  mmc64_cport=0;
-  mmc64_speed=0;
-  mmc64_cardsel=0;
-  mmc64_biossel=0;
-
-  mmc64_extexrom=0x04;
-  mmc64_extgame=0x02;
-  mmc64_spistatus=0;
-  mmc64_clockport_enabled=1;
-
-  mmc64_card_reset_count=0;
-  mmc64_image_pointer = 0;
-  mmc64_block_size=512;
-  mmc64_clear_cmd_puffer();
-  if (mmc64_enabled)
-  {
-    export.exrom = 1;
-    mem_pla_config_changed();
-  }
-}
 
 void mmc64_reset(void)
 {
@@ -218,15 +173,10 @@ void mmc64_reset(void)
   mmc64_cardsel=0;
   mmc64_biossel=0;
 
-  mmc64_extexrom=0x04;
-  mmc64_extgame=0x02;
-  mmc64_spistatus=0;
+  mmc64_extexrom=1; //0x04;
+  mmc64_extgame=1; //0x02;
   mmc64_clockport_enabled=1;
 
-  mmc64_card_reset_count=0;
-  mmc64_image_pointer = 0;
-  mmc64_block_size=512;
-  mmc64_clear_cmd_puffer();
   if (mmc64_enabled)
   {
     export.exrom = 1;
@@ -285,14 +235,22 @@ static int set_mmc64_readonly(int val, void *param)
   if (!mmc64_image_file_readonly)
   {
     mmc64_hw_writeprotect = val;
-    mmc64_writeprotect = val*MMC_WRITEPROT;
-    return 0;
+    	if(!(*mmc64_image_filename)==0)
+	{
+           return mmc_open_card_image(mmc64_image_filename, mmc64_hw_writeprotect^1);
+	}
+        return 0;
   }
   else
   {
     mmc64_hw_writeprotect=1;
-    mmc64_writeprotect=1;
   }
+
+    	if(!(*mmc64_image_filename)==0)
+	{
+           return mmc_open_card_image(mmc64_image_filename, mmc64_hw_writeprotect^1);
+	}
+  
   return -1;
 }
 
@@ -306,6 +264,13 @@ static int set_mmc64_flashjumper(int val, void *param)
 static int set_mmc64_revision(int val, void *param)
 {
   mmc64_revision = val;
+  return 0;
+}
+
+static int set_mmc64_sd_type(int val, void *param)
+{
+  mmc64_sd_type = val;
+    mmc_set_card_type (val);
   return 0;
 }
 
@@ -375,9 +340,10 @@ void mmc64_init_card_config(void)
   mmc64_cardsel=0;
   mmc64_biossel=0;
 
-  mmc64_extexrom=0x04;  /* for now external exrom and game are constantly   *
-  mmc64_extgame=0x02;    * high until the pass-through port support is made */
-  mmc64_spistatus=0;
+  /* for now external exrom and game are constantly   *
+    * high until the pass-through port support is made */
+  mmc64_extexrom=1; //0x04;
+  mmc64_extgame=1; //0x02;
 
   if (mmc64_enabled)
   {
@@ -386,139 +352,6 @@ void mmc64_init_card_config(void)
   }
 }
 
-/* Executes a command */
-static void mmc64_execute_cmd(void)
-{
-  unsigned int mmc_current_address_pointer;
-  log_message(mmc64_log,"Executing CMD %02x %02x %02x %02x %02x %02x %02x %02x %02x",mmc64_cmd_puffer[0]
-                         ,mmc64_cmd_puffer[1],mmc64_cmd_puffer[2],mmc64_cmd_puffer[3],mmc64_cmd_puffer[4]
-                         ,mmc64_cmd_puffer[5],mmc64_cmd_puffer[6],mmc64_cmd_puffer[7],mmc64_cmd_puffer[8]);
-  switch(mmc64_cmd_puffer[1])
-  {
-    case 0xff:
-      log_message(mmc64_log,"Hard reset received");
-	mmc64_card_state = MMC_CARD_IDLE;
-      break;
-    case 0x40:    /* CMD00 Reset */
-      log_message(mmc64_log,"CMD Reset received");
-      mmc64_reset_card();
-      mmc64_card_state = MMC_CARD_RESET;
-      break;
-    case 0x41:    /* CMD01 Init */
-      log_message(mmc64_log,"CMD Init received");
-      mmc64_card_state = MMC_CARD_INIT;
-      break;
-    case 0x4c:    /* CMD12 Stop */
-      log_message(mmc64_log,"CMD Stop received");
-      mmc64_card_state = MMC_CARD_IDLE;
-      break;
-    case 0x50:
-      log_message(mmc64_log,"CMD Set Block Size received");
-      mmc64_card_state = MMC_CARD_IDLE;
-      mmc64_block_size = mmc64_cmd_puffer[5] + (mmc64_cmd_puffer[4]*0x100) + (mmc64_cmd_puffer[3]*0x10000) + (mmc64_cmd_puffer[2]*0x1000000);
-      break;
-    case 0x51:
-      log_message(mmc64_log,"CMD Block Read received");
-      if (!mmc64_cardpresent)
-      {
-        mmc64_card_state = MMC_CARD_READ;
-        mmc64_read_firstbyte = 0;
-        mmc_current_address_pointer = mmc64_cmd_puffer[5] + (mmc64_cmd_puffer[4]*0x100) + (mmc64_cmd_puffer[3]*0x10000) +
-                                     (mmc64_cmd_puffer[2]*0x1000000);
-        log_message(mmc64_log,"Address: %08x",mmc_current_address_pointer);
-        if (fseek(mmc64_image_file, mmc_current_address_pointer, SEEK_SET)!=0)
-        {
-          mmc64_card_state = MMC_CARD_DUMMY_READ;
-        }
-      }
-      else
-      {
-        mmc64_card_state = MMC_CARD_DUMMY_READ;
-        mmc64_read_firstbyte = 0;
-      }
-      break;
-    case 0x58:
-      log_message(mmc64_log,"CMD Block Write received");
-      if (!mmc64_cardpresent && mmc64_block_size>0)
-      {
-        mmc64_write_sequence=0;
-        mmc64_card_state = MMC_CARD_WRITE;
-        mmc_current_address_pointer = mmc64_cmd_puffer[5] + (mmc64_cmd_puffer[4]*0x100) + (mmc64_cmd_puffer[3]*0x10000) +
-                                     (mmc64_cmd_puffer[2]*0x1000000);
-        log_message(mmc64_log,"Address: %08x",mmc_current_address_pointer);
-        if (fseek(mmc64_image_file, mmc_current_address_pointer, SEEK_SET)!=0 || mmc64_writeprotect)
-        {
-          mmc64_card_state = MMC_CARD_DUMMY_WRITE;
-        }
-      }
-      else
-      {
-        mmc64_write_sequence=0;
-        mmc64_card_state = MMC_CARD_DUMMY_WRITE;
-      }
-      break;
-  }
-}
-
-static void mmc64_write_to_cmd_puffer(unsigned char mmc64_cmd_char)
-{
-  /* Check for 0xff sync byte */
-  if (mmc64_cmd_puffer_pointer == 0)
-  {
-    if (mmc64_cmd_char < 0xff)
-    {
-      return;
-    }
-  }
-
-  /* Check for 0xff sync byte too much */
-  if (mmc64_cmd_puffer_pointer == 1)
-  {
-    if (mmc64_cmd_char == 0xff)
-    {
-      mmc64_cmd_puffer_pointer = 0;
-      return;
-    }
-  }
-
-  /* Write byte to buffer */
-  mmc64_cmd_puffer[mmc64_cmd_puffer_pointer] = mmc64_cmd_char;
-  mmc64_cmd_puffer_pointer++;
-
-  /* If the buffer is full, execute the buffer and clear it */
-  if (mmc64_cmd_puffer_pointer > 9 || (mmc64_cmd_puffer_pointer > 8 && mmc64_cmd_puffer[1]==0x50))
-  {
-    mmc64_execute_cmd();
-    mmc64_clear_cmd_puffer();
-  }
-}
-
-static void mmc64_write_to_mmc(BYTE value)
-{
-  switch (mmc64_write_sequence)
-  {
-    case 0:
-      if (value==0xfe)
-      {
-        mmc64_write_sequence++;
-        mmc64_image_pointer=0;
-      }
-      break;
-    case 1:
-      if (mmc64_card_state==MMC_CARD_WRITE)
-        fwrite(&value,1,1,mmc64_image_file);
-      mmc64_image_pointer++;
-      if (mmc64_image_pointer==mmc64_block_size)
-        mmc64_write_sequence++;
-      break;
-    case 2:
-      mmc64_write_sequence++;
-      break;
-    case 3:
-      mmc64_card_state = MMC_CARD_RETURN_WRITE;
-      break;
-  }
-}
 
 void mmc64_clockport_enable_store(BYTE value)
 {
@@ -537,18 +370,99 @@ void REGPARM2 mmc64_io2_store(WORD addr, BYTE value)
   switch(addr)
   {
     case 0xdf10:    /* MMC64 SPI transfer register */
-      if (mmc64_active==0)    /* if the MMC64 has been disabled in software this input is ignored */
-      {
-        if (mmc64_card_state==MMC_CARD_WRITE || mmc64_card_state==MMC_CARD_DUMMY_WRITE)
-        {
-          mmc64_write_to_mmc(value);
-        }
-        else
-        {
-          mmc64_write_to_cmd_puffer(value);
-        }
-      }
+            /*
+             * $DF10: MMC SPI transfer register
+             *
+             * byte written is sent to the card
+             */
+            if (mmc64_active==0)
+            {
+#ifdef LOG_WRITE_DF10
+                LOG (("MMC64: IO2 ST %04x %02x", addr, value));
+#endif
+                spi_mmc_data_write (value);
+                return;
+            }
+      
       break;
+
+
+
+        case 0xdf11:
+            /*
+             * $DF11: MMC control register
+             *        ------------------------
+             *        bit 0:  0 = MMC BIOS enabled, 1 = MMC BIOS disabled                   (R/W)
+             *        bit 1:  0 = card selected, 1 = card not selected                      (R/W)
+             *        bit 2:  0 = 250khz transfer, 1 = 8mhz transfer                        (R/W)
+             *        bit 3:  0 = clock port @ $DE00, 1 = clock port @ $DF20                (R/W)
+             *        bit 4:  0 = normal Operation, 1 = flash mode                          (R/W)  (*)
+             *        bit 5:  0 = allow external rom when BIOS is disabled , 1 = disable    (R/W)
+             *        bit 6:  0 = SPI write trigger mode, 1 = SPI read trigger mode         (R/W)
+             *        bit 7:  0 = MMC64 is active, 1 = MMC64 is completely disabled         (R/W)  (**)
+             *
+             * (*) bit can only be programmed when flash jumper is set
+             * (**) bit can only be modified after unlocking
+             */	
+            if (mmc64_active==0)
+            {
+                mmc64_biossel = (value) & 1; /* bit 0 */
+                mmc64_extrom = (value >> 5) & 1;      /* bit 5 */
+
+#ifdef LOG_WRITE_DF11
+                LOG (("MMC64: IO2 ST %04x %02x mmc64_biossel %x mmc64_extrom %x", addr, value, mmc64_biossel, mmc64_extrom));
+#endif
+
+                spi_mmc_card_selected_write (((value >> 1) ^ 1) & 1);   /* bit 1 */
+                spi_mmc_enable_8mhz_write (((value >> 2)) & 1); /* bit 2 */
+		mmc64_cport=(((value >> 3)) & 1); /* bit 3 */
+		mmc64_flashmode=(((value >> 4)) & 1); /* bit 4 */
+                spi_mmc_trigger_mode_write (((value >> 6)) & 1);        /* bit 6 */
+
+		//mmc64_active=(((value >> 7)) & 1); /* bit 4 */
+		
+                /* bit 7 always 0 */
+                if (mmc64_active)
+                {
+                    log_message(mmc64_log,"disabling MMC64");
+                }
+
+		if(mmc64_active)
+		{
+		    export.exrom = 0;
+		    mem_pla_config_changed();
+		}
+		else
+		{
+			if (mmc64_biossel)   /* this controls the mapping of the MMC64 bios */
+			{
+			  export.exrom = 0;
+			  mem_pla_config_changed();
+			}
+			else
+			{
+			  export.exrom = 1;
+			  mem_pla_config_changed();
+			}
+		}
+
+                if (mmc64_cport)
+                {
+                          mmc64_hw_clockport = 0xdf22;
+                }
+                else
+                {
+                       mmc64_hw_clockport = 0xde02;
+                }
+		
+                return;
+            }
+            break;
+
+
+#if 0
+
+      
     case 0xdf11:    /* MMC64 control register */
       if (mmc64_active==0)    /* if the MMC64 has been disabled in software this input is ignored */
       {
@@ -630,6 +544,8 @@ void REGPARM2 mmc64_io2_store(WORD addr, BYTE value)
         }
       }
       break;
+#endif
+						  
     case 0xdf12:  /* MMC64 status register, read only */
       break;
     case 0xdf13:  /* MMC64 identification register, also used for unlocking sequences */
@@ -654,115 +570,118 @@ void REGPARM2 mmc64_io2_store(WORD addr, BYTE value)
 
 BYTE REGPARM1 mmc64_io2_read(WORD addr)
 {
-  BYTE mmc_readbyte;
+  BYTE value;
 
   switch(addr)
   {
-    case 0xdf10:    /* MMC64 SPI transfer register */
-      io_source=IO_SOURCE_MMC64;
-      switch(mmc64_card_state)
-      {
-        case MMC_CARD_RETURN_WRITE:
-          mmc64_card_state=MMC_CARD_IDLE;
-          return 0xff;
-          break;
-        case MMC_CARD_RESET:
-          log_message(mmc64_log,"Card Reset Response!");
-          switch(mmc64_card_reset_count)
-          {
-            case 0:
-              log_message(mmc64_log,"Reset 0");
-              mmc64_card_reset_count++;
-              return 0x00;
-              break;
-            case 1:
-              log_message(mmc64_log,"Reset 1");
-              mmc64_card_reset_count++;
-              return 0x01;
-              break;
-            case 2:
-              log_message(mmc64_log,"Reset 2");
-              mmc64_card_reset_count++;
-              return 0x01;
-              break;
-            case 3:
-              log_message(mmc64_log,"Reset 3");
-              mmc64_card_reset_count++;
-              return 0x00;
-              break;
-            case 4:
-              log_message(mmc64_log,"Reset 4");
-              mmc64_card_reset_count++;
-              return 0x01;
-              break;
-            case 5:
-              log_message(mmc64_log,"Reset 5");
-              mmc64_card_reset_count=0;
-              return 0x01;
-              break;
-          }
-          break;
-        case MMC_CARD_INIT:
-          io_source=IO_SOURCE_MMC64;
-          log_message(mmc64_log,"SPI Card Init Response!");
-          return 0x00;
-          break;
-        case MMC_CARD_READ:
-        case MMC_CARD_DUMMY_READ:
-          io_source=IO_SOURCE_MMC64;
-          if (mmc64_spi_mode==MMC_SPIMODE)
-          {
-            if (mmc64_read_firstbyte != mmc64_block_size+5)
-              mmc64_read_firstbyte++;
 
-            if (mmc64_read_firstbyte == mmc64_block_size+3)
-              return 0x00;
-
-            if (mmc64_read_firstbyte == mmc64_block_size+4)
-              return 0x01;
-
-            if (mmc64_read_firstbyte == mmc64_block_size+5)
-              return 0x00;
-          }
-          else
-          {
-            if (mmc64_read_firstbyte != mmc64_block_size+2)
-              mmc64_read_firstbyte++;
-
-            if (mmc64_read_firstbyte == mmc64_block_size+1)
-              return 0x00;
-
-            if (mmc64_read_firstbyte == mmc64_block_size+2)
-              return 0x01;
-          }
-
-          if (mmc64_read_firstbyte == 1)
-            return 0xFE;
-
-          if (mmc64_read_firstbyte == 2 && mmc64_spi_mode==MMC_SPIMODE)
-            return 0xFE;
-          
-          if (!mmc64_cardpresent && mmc64_card_state!=MMC_CARD_DUMMY_READ)
-          {
-            fread(&mmc_readbyte, 1,1, mmc64_image_file);
-            return mmc_readbyte;
-          }
-          else
-          {
-            return 0x00;
-          }
-          break;
-      }
-      return 0x00;
-      break;
+        case 0xdf10:
+            /*
+             * $DF10: MMC SPI transfer register
+             *
+             * response from the card is read here
+             */
+//            if (enable_mmc_regs)
+            {
+                io_source = IO_SOURCE_MMC64;
+                value = spi_mmc_data_read ();
+#ifdef LOG_READ_DF10
+                LOG (("MMC64: IO2 RD %04x %02x", addr, value));
+#endif
+                return value;
+            }
+            break;
+#if 0
     case 0xdf11:    /* MMC64 control register */
       io_source=IO_SOURCE_MMC64;
       return (mmc64_biossel + mmc64_cardsel + mmc64_speed + mmc64_cport + mmc64_flashmode + mmc64_extrom + mmc64_spi_mode + mmc64_active);
       break;
+#endif
+        case 0xdf11:
+            /*
+             * $DF11: MMC control register
+             *        ------------------------
+             *        bit 0:  0 = MMC BIOS enabled, 1 = MMC BIOS disabled                   (R/W)
+             *        bit 1:  0 = card selected, 1 = card not selected                      (R/W)
+             *        bit 2:  0 = 250khz transfer, 1 = 8mhz transfer                        (R/W)
+             *        bit 3:  0 = clock port @ $DE00, 1 = clock port @ $DF20                (R/W)
+             *        bit 4:  0 = normal Operation, 1 = flash mode                          (R/W)  (*)
+             *        bit 5:  0 = allow external rom when BIOS is disabled , 1 = disable    (R/W)
+             *        bit 6:  0 = SPI write trigger mode, 1 = SPI read trigger mode         (R/W)
+             *        bit 7:  0 = MMC64 is active, 1 = MMC64 is completely disabled         (R/W)  (**)
+             *
+             * (*) bit can only be programmed when flash jumper is set
+             * (**) bit can only be modified after unlocking
+             */
+//            if (enable_mmc_regs)
+            {
+                io_source = IO_SOURCE_MMC64;
+                value = mmc64_biossel;       /* bit 0 */
+                value |= (spi_mmc_card_selected_read () << 1);  /* bit 1 */
+                value |= (spi_mmc_enable_8mhz_read () << 2);    /* bit 2 */
+                /* bit 3,4 always 0 */
+                value|=mmc64_cport<<3;
+                value|=mmc64_flashmode<<4;
+                value |= (mmc64_extrom << 5); /* bit 5 */
+                value |= (spi_mmc_trigger_mode_read () << 6);   /* bit 6 */
+		
+		//value|=mmc64_active<<7;
+                /* bit 7 always 0 */
+#ifdef LOG_READ_DF11
+                LOG (("MMC64: IO2 RD %04x %02x mmc64_biossel %x mmc64_extrom %x", addr, value, mmc64_biossel, mmc64_extrom));
+#endif
+                return value;
+            }
+            break;
+#if 0
     case 0xdf12:    /* MMC64 status register */
       io_source=IO_SOURCE_MMC64;
       return (mmc64_flashjumper + mmc64_writeprotect + mmc64_cardpresent + mmc64_extexrom + mmc64_extgame + mmc64_spistatus);
       break;
+#endif
+
+        case 0xdf12:
+            /*
+             * $DF12: MMC status register
+             *        -----------------------
+             *        bit 0:  0 = SPI ready, 1 = SPI busy                       (R)
+             *        bit 1:  feedback of $DE00 bit 0 (GAME)                    (R)
+             *        bit 2:  feedback of $DE00 bit 1 (EXROM)                   (R)
+             *        bit 3:  0 = card inserted, 1 = no card inserted           (R)
+             *        bit 4:  0 = card write enabled, 1 = card write disabled   (R)
+             *        bit 5:  0 = flash jumper not set, 1 = flash jumper set    (R)
+             *        bit 6:  0
+             *        bit 7:  0
+             */
+//            if (enable_mmc_regs)
+            {
+                BYTE    value = 0;
+                io_source = IO_SOURCE_MMC64;
+                value=mmc64_flashjumper<<5;    /* bit 5 */
+                value |= (spi_mmc_busy ());     /* bit 0 */
+                value |= (mmc64_extexrom << 1);    /* bit 1 */
+                value |= (mmc64_extgame) << 2;       /* bit 2 */
+                value |= (spi_mmc_card_inserted () ^ 1) << 3;   /* bit 3 */
+                value |= (spi_mmc_card_write_enabled () ^ 1) << 4;      /* bit 4 */
+
+                /* bit 6,7 not readable */
+#ifdef LOG_READ_DF12
+                LOG (("MMC64: IO2 RD %04x %02x mmc64_extgame %x mmc64_extexrom %x", addr, value, mmc64_extgame, (mmc64_extexrom ^ 1)));
+#endif
+                return value;
+            }
+            break;
+
+
+      
+            /*
+             * $DF13 (R/W): MMC64 identification register
+             *              -----------------------------
+             * (R) #$64 when bit 1 of $DF11 is 0
+             *     #$01 when bit 1 of $DF11 is 1 and REV A hardware is used
+             *     #$02 when bit 1 of $DF11 is 1 and REV B hardware is used
+             */
+      
     case 0xdf13:    /* MMC64 identification register */
       io_source=IO_SOURCE_MMC64;
       if (!mmc64_cardsel)
@@ -856,6 +775,8 @@ static const resource_int_t resources_int[] = {
     &mmc64_revision, set_mmc64_revision, NULL },
   { "MMC64_bios_write", 0, RES_EVENT_NO, NULL,
     &mmc64_bios_write, set_mmc64_bios_write, NULL },
+  { "MMC64_sd_type", 0, RES_EVENT_NO, NULL,
+    &mmc64_sd_type, set_mmc64_sd_type, NULL },
   { NULL }
 };
 
@@ -925,6 +846,7 @@ int mmc64_cmdline_options_init(void)
 void mmc64_init(void)
 {
   mmc64_log = log_open("MMC64");
+//  mmc64_log = stderr;
 }
 
 static int mmc64_activate(void)
@@ -954,36 +876,7 @@ static int mmc64_activate(void)
 
   mmc64_bios_changed=0;
 
-  if (mmc64_image_filename==NULL)
-  {
-    mmc64_cardpresent=MMC_CARDPRS;
-    mmc64_reset();
-    return 0;
-  }
-
-  mmc64_image_file=fopen(mmc64_image_filename,"rb+");
-
-  if (mmc64_image_file==NULL)
-  {
-    mmc64_image_file=fopen(mmc64_image_filename,"rb");
-
-    if (mmc64_image_file==NULL)
-    {
-      mmc64_cardpresent=MMC_CARDPRS;
-    }
-    else
-    {
-      mmc64_cardpresent=0;
-      mmc64_image_file_readonly=1;
-      mmc64_hw_writeprotect=1;
-      mmc64_writeprotect=MMC_WRITEPROT;
-    }
-  }
-  else
-  {
-    mmc64_image_file_readonly=0;
-    mmc64_cardpresent=0;
-  }
+  mmc_open_card_image(mmc64_image_filename, mmc64_hw_writeprotect^1);
   mmc64_reset();
   return 0;
 
@@ -993,12 +886,8 @@ static int mmc64_deactivate(void)
 {
   FILE *bios_file=NULL;
 
-  if (mmc64_image_file!=NULL)
-  {
-    fclose(mmc64_image_file);
-    mmc64_image_file=NULL;
-  }
-
+  mmc_close_card_image();
+ 
   if (mmc64_bios_changed && mmc64_bios_write)
   {
     bios_file=fopen(mmc64_bios_filename,"wb");

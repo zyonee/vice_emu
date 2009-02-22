@@ -47,5 +47,5 @@ extern BYTE spi_mmc_data_read(void);
 extern void spi_mmc_data_write(BYTE value);
 extern int  mmc_open_card_image(char *name, int rw);
 extern void mmc_close_card_image(void);
-
+extern BYTE mmc_set_card_type (BYTE value);
 #endif
