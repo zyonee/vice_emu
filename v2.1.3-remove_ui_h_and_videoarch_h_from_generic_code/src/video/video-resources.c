@@ -124,7 +124,14 @@ static int set_double_size_enabled(int val, void *param)
         || old_doublesizex != canvas->videoconfig->doublesizex
         || old_doublesizey != canvas->videoconfig->doublesizey)
         && canvas->viewport->update_canvas > 0) {
-        video_viewport_resize(canvas->canvas, canvas->geometry, canvas->viewport, canvas->canvas_width, canvas->canvas_height);
+        video_viewport_resize(canvas->canvas,
+            canvas->geometry,
+            canvas->viewport,
+            canvas->canvas_width,
+            canvas->canvas_height,
+            canvas->videoconfig->doublesizex,
+            canvas->videoconfig->doublesizey
+           );
     }
 
     canvas->videoconfig->double_size_enabled = val;
@@ -149,7 +156,7 @@ static int set_double_scan_enabled(int val, void *param)
 
     canvas->videoconfig->doublescan = val;
 
-    video_canvas_refresh_all(canvas->canvas);
+    video_canvas_refresh_all(canvas);
 
     video_resources_update_ui(canvas);
 
@@ -187,7 +194,9 @@ static int set_hwscale_enabled(int val, void *param)
 
     canvas->videoconfig->hwscale = val;
 
-    video_viewport_resize(canvas->canvas, canvas->geometry, canvas->viewport, canvas->canvas_width, canvas->canvas_height);
+    video_viewport_resize(canvas->canvas, canvas->geometry, canvas->viewport, canvas->canvas_width, canvas->canvas_height,
+            canvas->videoconfig->doublesizex,
+            canvas->videoconfig->doublesizey);
     video_color_update_palette(canvas);
 
     video_resources_update_ui(canvas);
@@ -223,7 +232,7 @@ static int set_scale2x_enabled(int val, void *param)
 
     canvas->videoconfig->scale2x = val;
 
-    video_canvas_refresh_all(canvas->canvas);
+    video_canvas_refresh_all(canvas);
 
     video_resources_update_ui(canvas);
 

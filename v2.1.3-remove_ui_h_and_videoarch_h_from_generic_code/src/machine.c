@@ -181,8 +181,6 @@ void machine_early_init(void)
 
 int machine_init(void)
 {
-    machine_video_init();
-
     fsdevice_init();
     file_system_init();
 

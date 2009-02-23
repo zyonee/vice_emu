@@ -31,9 +31,9 @@
 #include "ui.h"
 #include "video.h"
 #include "resources.h"
+#include "uipalcontrol.h"
 #include "videoarch.h"
 
-static video_canvas_t *cached_canvas;
 
 typedef struct pal_res_s {
     char *label;		/* Label of Adjustmentbar */
@@ -89,10 +89,10 @@ static void pal_ctrl_reset (GtkWidget *w, gpointer data)
         }
     }      
     
-    video_canvas_refresh_all(cached_canvas);
+    video_canvas_refresh_all((struct raster_s*)data);
 }
 
-GtkWidget *build_pal_ctrl_widget(video_canvas_t *canvas)
+GtkWidget *build_pal_ctrl_widget(struct raster_s *raster)
 {
     GtkWidget *b, *hb;
     GtkObject *adj;
@@ -105,7 +105,6 @@ GtkWidget *build_pal_ctrl_widget(video_canvas_t *canvas)
     unsigned int i;
     int v;
 
-    cached_canvas = canvas;
     f = gtk_frame_new(_("PAL Settings"));
     
     b = gtk_vbox_new(FALSE, 5);
@@ -154,7 +153,7 @@ GtkWidget *build_pal_ctrl_widget(video_canvas_t *canvas)
     gtk_box_pack_start(GTK_BOX(box), rb, FALSE, FALSE, 5);
     g_signal_connect(G_OBJECT(rb), "clicked",
                      G_CALLBACK(pal_ctrl_reset),
-                     rb);
+                     raster);
     GTK_WIDGET_UNSET_FLAGS (rb, GTK_CAN_FOCUS);
     gtk_widget_show(rb);
 

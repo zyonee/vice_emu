@@ -31,6 +31,7 @@
 
 struct video_canvas_s;
 struct palette_s;
+struct raster_s;
 
 extern int uicolor_alloc_color(unsigned int red, unsigned int green,
                                unsigned int blue, unsigned long *color_pixel,
@@ -41,9 +42,6 @@ extern void uicolor_convert_color_table(unsigned int colnr, BYTE *data,
                                         long color_pixel, void *c);
 extern int uicolor_set_palette(struct video_canvas_s *c,
                                const struct palette_s *palette);
-
-/* Temporary! */
-extern int uicolor_alloc_colors(struct video_canvas_s *c);
 
 #endif
 

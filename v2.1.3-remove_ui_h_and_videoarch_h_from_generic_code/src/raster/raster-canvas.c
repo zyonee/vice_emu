@@ -98,7 +98,9 @@ inline static void refresh_canvas(raster_t *raster)
         && (int)(raster->canvas_width) >= xx)
         video_canvas_refresh(raster->canvas, x, y, xx, yy,
             MIN(w, (int)(raster->canvas_width - xx)),
-            MIN(h, (int)(raster->canvas_height - yy)));
+            MIN(h, (int)(raster->canvas_height - yy)),
+            raster->videoconfig->doublesizex,
+            raster->videoconfig->doublesizey);
 
     update_area->is_null = 1;
 }
@@ -115,7 +117,7 @@ void raster_canvas_handle_end_of_frame(raster_t *raster)
         return;
 
     if (raster->dont_cache)
-        video_canvas_refresh_all(raster->canvas);
+        video_canvas_refresh_all(raster);
     else
         refresh_canvas(raster);
 }

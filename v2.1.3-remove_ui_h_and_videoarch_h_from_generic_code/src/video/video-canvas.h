@@ -27,9 +27,6 @@
 #ifndef VICE_VIDEO_CANVAS_H
 #define VICE_VIDEO_CANVAS_H
 
-struct video_canvas_s;
-struct palette_s;
-
 
 #endif
 

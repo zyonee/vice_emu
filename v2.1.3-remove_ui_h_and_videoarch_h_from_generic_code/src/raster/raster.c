@@ -142,14 +142,12 @@ static int realize_canvas(raster_t *raster)
     if (!console_mode && !vsid_mode) {
         new_canvas = video_canvas_create(raster->canvas,
                      &raster->canvas_width,
-                     &raster->canvas_height, 1);
+                     &raster->canvas_height, raster->viewport->title, 1);
 
         if (new_canvas == NULL)
             return -1;
 
         raster->canvas = new_canvas;
-
-        video_canvas_create_set(raster->canvas);
     }
 
     if (raster_realize_frame_buffer(raster) < 0)
@@ -157,15 +155,15 @@ static int realize_canvas(raster_t *raster)
 
     /* The canvas might give us something different from what we
        requested. FIXME: Only do this if really something changed. */
-    video_viewport_resize(raster->canvas, raster->geometry, raster->viewport, raster->canvas_width, raster->canvas_height);
+    video_viewport_resize(raster->canvas, raster->geometry, raster->viewport, raster->canvas_width, raster->canvas_height,
+                          raster->videoconfig->doublesizex,
+                          raster->videoconfig->doublesizey);
     return 0;
 }
 
 static int perform_mode_change(raster_t *raster)
 {
-    if (raster->canvas && raster->palette != NULL) {
-        if (video_canvas_set_palette(raster->canvas,
-            raster->palette) < 0)
+    if ((raster->palette != NULL) && video_canvas_set_palette(raster->palette, raster->videoconfig->color_tables.physical_colors) < 0) {
             return -1;
     }
 
@@ -173,10 +171,9 @@ static int perform_mode_change(raster_t *raster)
 
     /* FIXME: `video_viewport_resize()' already calls
        `video_canvas_resize()'. */
-    video_canvas_resize(raster->canvas,
-                        raster->canvas_width,
-                        raster->canvas_height);
-    video_viewport_resize(raster->canvas, raster->geometry, raster->viewport, raster->canvas_width, raster->canvas_height);
+    video_viewport_resize(raster->canvas, raster->geometry, raster->viewport, raster->canvas_width, raster->canvas_height,
+                          raster->videoconfig->doublesizex,
+                          raster->videoconfig->doublesizey);
     return 0;
 }
 
@@ -391,7 +388,7 @@ int raster_realize(raster_t *raster)
         raster_realize_init_done++;
     }
 
-    video_canvas_refresh_all(raster->canvas);
+    video_canvas_refresh_all(raster);
 
     rlist = (raster_list_t *)lib_malloc(sizeof(raster_list_t));
     rlist->raster = raster;

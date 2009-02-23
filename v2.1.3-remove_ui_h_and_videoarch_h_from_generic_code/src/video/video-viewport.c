@@ -36,7 +36,9 @@ void video_viewport_resize(struct video_canvas_s *canvas,
                            geometry_t *geometry,
                            viewport_t *viewport,
                            unsigned width,
-                           unsigned height)
+                           unsigned height,
+                           int doublesizex,
+                           int doublesizey)
 {
     rectangle_t *screen_size;
     rectangle_t *gfx_size;
@@ -98,7 +100,8 @@ void video_viewport_resize(struct video_canvas_s *canvas,
         viewport->last_line = (geometry->first_displayed_line + height - 1);
     }
     if (!vsid_mode && !console_mode)
-        video_canvas_resize(canvas, width, height);
+        video_canvas_resize(canvas, width, height, doublesizex,
+                            doublesizey);
 
     video_canvas_refresh_all(canvas);
 }

@@ -73,11 +73,13 @@
 #include "maincpu.h"
 #include "mouse.h"
 #include "mousedrv.h"
+#include "raster.h"
 #include "resources.h"
 #include "uicolor.h"
 #include "uimenu.h"
 #include "uisettings.h"
 #include "uicommands.h"
+#include "uipalcontrol.h"
 #include "util.h"
 #include "version.h"
 #include "vsync.h"
@@ -147,7 +149,7 @@ static char *fixedfontname="CBM 10";
 static PangoFontDescription *fixed_font_desc;
 static int have_cbm_font = 0;
 static int cursor_is_blank = 0;
-static video_canvas_t *ui_cached_video_canvas;
+static raster_t *ui_cached_video_canvas;
 static int statustext_display_time = 0;
 static int popped_up_count = 0;
 
@@ -249,7 +251,6 @@ static gboolean update_menu_cb(GtkWidget *w, GdkEvent *event,gpointer data);
 static gboolean speed_popup_cb(GtkWidget *w, GdkEvent *event, gpointer data);
 
 static GtkWidget* rebuild_contents_menu(int unit, const char *image_name);
-extern GtkWidget* build_pal_ctrl_widget(video_canvas_t *canvas);
 
 /* ------------------------------------------------------------------------- */
 
@@ -895,14 +896,14 @@ int x11ui_get_screen()
 
 gboolean kbd_event_handler(GtkWidget *w, GdkEvent *report,gpointer gp);
 
-static void build_screen_canvas_widget(video_canvas_t *c)
+static void build_screen_canvas_widget(raster_t *c)
 {
     GtkWidget *new_canvas = gtk_drawing_area_new();
 
     /* if the eventbox already has a child, get rid of it, we are resizing */
-    GtkWidget *kid = gtk_bin_get_child(GTK_BIN(c->pane));
+    GtkWidget *kid = gtk_bin_get_child(GTK_BIN(c->canvas->pane));
     if (kid != NULL)
-        gtk_container_remove(GTK_CONTAINER(c->pane), kid);
+        gtk_container_remove(GTK_CONTAINER(c->canvas->pane), kid);
 
 #ifdef HAVE_HWSCALE
     if (c->videoconfig->hwscale) {
@@ -967,7 +968,7 @@ static void build_screen_canvas_widget(video_canvas_t *c)
         /* For hwscale, it's a feature that new_canvas must bloat to 100% size
          * of the containing GtkEventWindow. Unfortunately, for the other
          * path, it's a PITA. */
-        gtk_container_add(GTK_CONTAINER(c->pane), new_canvas);
+        gtk_container_add(GTK_CONTAINER(c->canvas->pane), new_canvas);
     } else {
         /* Believe it or not, but to get a gtkdrawingarea of fixed dimensions
          * with a black background within our layout vbox requires this:
@@ -979,7 +980,7 @@ static void build_screen_canvas_widget(video_canvas_t *c)
          * x11ui_fullscreen about how "nice" that is to get to work. */
         GtkWidget *canvascontainer1 = gtk_hbox_new(FALSE, 0);
         gtk_widget_show(canvascontainer1);
-        gtk_container_add(GTK_CONTAINER(c->pane), canvascontainer1);
+        gtk_container_add(GTK_CONTAINER(c->canvas->pane), canvascontainer1);
         GtkWidget *canvascontainer2 = gtk_vbox_new(FALSE, 0);
         gtk_widget_show(canvascontainer2);
         gtk_box_pack_start(GTK_BOX(canvascontainer1), canvascontainer2, TRUE, FALSE, 0);
@@ -989,11 +990,48 @@ static void build_screen_canvas_widget(video_canvas_t *c)
     gtk_widget_show(new_canvas);
     GTK_WIDGET_SET_FLAGS(new_canvas, GTK_CAN_FOCUS);
     gtk_widget_grab_focus(new_canvas);
-    c->emuwindow = new_canvas;
+    c->canvas->emuwindow = new_canvas;
+}
+
+static void uicolor_alloc_colors(void)
+{
+    int i;
+
+    drive_led_off_pixel.red = 0;
+    drive_led_off_pixel.green = 0;
+    drive_led_off_pixel.blue = 0;
+
+    drive_led_on_red_pixel.red = 0xff00;
+    drive_led_on_red_pixel.green = 0;
+    drive_led_on_red_pixel.blue = 0;
+
+    drive_led_on_green_pixel.red = 0;
+    drive_led_on_green_pixel.green = 0xff00;
+    drive_led_on_green_pixel.blue = 0;
+
+    motor_running_pixel.red = 0xff00;
+    motor_running_pixel.green = 0xff00;
+    motor_running_pixel.blue = 0x7f00;
+
+    tape_control_pixel.red = 0xaf00;
+    tape_control_pixel.green = 0xaf00;
+    tape_control_pixel.blue = 0xaf00;
+
+    /* different colors intensities for drive leds */
+    for (i = 0; i < 16; i++)
+    {
+	drive_led_on_red_pixels[i].red = 0x1000*i + 0xf00;
+	drive_led_on_red_pixels[i].green = 0;
+	drive_led_on_red_pixels[i].blue = 0;
+
+	drive_led_on_green_pixels[i].red = 0;
+	drive_led_on_green_pixels[i].green =  0x1000*i + 0xf00;
+	drive_led_on_green_pixels[i].blue = 0;
+    }
 }
 
 /* Create a shell with a canvas widget in it.  */
-int ui_open_canvas_window(video_canvas_t *c, const char *title,
+int ui_open_canvas_window(raster_t *c, const char *title,
 			  int w, int h, int no_autorepeat)
 {
     GtkWidget *new_window, *topmenu, *panelcontainer, *sb;
@@ -1032,15 +1070,15 @@ int ui_open_canvas_window(video_canvas_t *c, const char *title,
 		     G_CALLBACK(update_menu_cb),NULL);
     gtk_box_pack_start(GTK_BOX(panelcontainer), topmenu, FALSE, TRUE, 0);
 
-    c->pane = gtk_event_box_new();
-    gtk_widget_modify_bg(c->pane, GTK_STATE_NORMAL, &black);
-    gtk_box_pack_start(GTK_BOX(panelcontainer), c->pane, TRUE, TRUE, 0);
-    gtk_widget_show(c->pane);
+    c->canvas->pane = gtk_event_box_new();
+    gtk_widget_modify_bg(c->canvas->pane, GTK_STATE_NORMAL, &black);
+    gtk_box_pack_start(GTK_BOX(panelcontainer), c->canvas->pane, TRUE, TRUE, 0);
+    gtk_widget_show(c->canvas->pane);
     
     gtk_widget_show(new_window);
     if (vsid_mode) {
 	GtkWidget *new_canvas = build_vsid_ctrl_widget();
-        gtk_container_add(GTK_CONTAINER(c->pane), new_canvas);
+        gtk_container_add(GTK_CONTAINER(c->canvas->pane), new_canvas);
         gtk_widget_show(new_canvas);
     } else
         build_screen_canvas_widget(c);
@@ -1092,8 +1130,7 @@ int ui_open_canvas_window(video_canvas_t *c, const char *title,
     if (!app_gc)
 	app_gc = gdk_gc_new(new_window->window);
 
-    if (uicolor_alloc_colors(c) < 0)
-        return -1;
+    uicolor_alloc_colors();
 
     /* This is necessary because the status might have been set before we
        actually open the canvas window. e.g. by commandline */
@@ -1686,11 +1723,11 @@ ui_fullscreen_statusbar(struct video_canvas_s *canvas, int enable)
 
 /* Resize one window. */
 void 
-ui_resize_canvas_window(video_canvas_t *canvas, int width, int height)
+ui_resize_canvas_window(raster_t *canvas, int width, int height)
 {
     build_screen_canvas_widget(canvas);
     if (! canvas->videoconfig->hwscale)
-        gtk_widget_set_size_request(canvas->emuwindow, width, height);
+        gtk_widget_set_size_request(canvas->canvas->emuwindow, width, height);
 }
 
 void x11ui_move_canvas_window(ui_window_t w, int x, int y)
@@ -2721,12 +2758,13 @@ gboolean configure_callback_canvas(GtkWidget *w, GdkEventConfigure *e, gpointer 
 gboolean exposure_callback_canvas(GtkWidget *w, GdkEventExpose *e, 
 				  gpointer client_data)
 {
-    video_canvas_t *canvas = (video_canvas_t *)client_data;
+    raster_t *raster = (raster_t *)client_data;
+    video_canvas_t *canvas = raster->canvas;
     
     if (canvas == NULL)
         return 0;
 #ifdef HAVE_HWSCALE
-    if (canvas->videoconfig->hwscale) {
+    if (raster->videoconfig->hwscale) {
         GdkGLContext *gl_context = gtk_widget_get_gl_context (w);
         GdkGLDrawable *gl_drawable = gtk_widget_get_gl_drawable (w);
         (void) gdk_gl_drawable_gl_begin (gl_drawable, gl_context);
@@ -2786,7 +2824,7 @@ gboolean exposure_callback_canvas(GtkWidget *w, GdkEventExpose *e,
         int y = e->area.y;
         int width = e->area.width;
         int height = e->area.height;
-        gdk_draw_image(w->window, app_gc, canvas->gdk_image, x, y, x, y,
+        gdk_draw_image(w->window, app_gc, canvas->hwscale_image, x, y, x, y,
                        width, height);
     }
     

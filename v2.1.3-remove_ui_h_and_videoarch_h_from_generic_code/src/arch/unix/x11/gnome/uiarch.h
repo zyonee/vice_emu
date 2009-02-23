@@ -31,13 +31,10 @@
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
 
-#include "vice.h"
-#include "ui.h"
-
 typedef GtkWidget *ui_window_t;
 typedef GCallback ui_callback_t;
 typedef gpointer ui_callback_data_t;
-enum ui_keysym_s {
+typedef enum ui_keysym_s {
   KEYSYM_NONE = 0,
   KEYSYM_0 = GDK_0,
   KEYSYM_1 = GDK_1,
@@ -75,8 +72,8 @@ enum ui_keysym_s {
   KEYSYM_F10 = GDK_F10,
   KEYSYM_F11 = GDK_F11,
   KEYSYM_F12 = GDK_F12,
-};
-typedef enum ui_keysym_s ui_keysym_t;
+} ui_keysym_t;
+struct raster_s;
 
 #define UI_CALLBACK(name) \
     void name(GtkWidget *w, ui_callback_data_t event_data)
@@ -88,9 +85,9 @@ extern GtkWidget *_ui_top_level;
 extern GdkVisual *visual;
 extern GtkWidget *canvasw;
 
-int ui_open_canvas_window(struct video_canvas_s *c, const char *title, 
+int ui_open_canvas_window(struct raster_s *c, const char *title, 
 			  int width, int heigth, int no_autorepeat);
-void ui_resize_canvas_window(struct video_canvas_s *c, int height, int width);
+void ui_resize_canvas_window(struct raster_s *c, int height, int width);
 GtkWidget *ui_create_transient_shell(GtkWidget *parent, const char *name);
 void ui_popdown(GtkWidget *w);
 void ui_popup(GtkWidget *w, const char *title, gboolean wait_popdown);

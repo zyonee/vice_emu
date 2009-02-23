@@ -36,20 +36,23 @@
 /* RGB is for anything which doesn't need any color filtering  */
 /* for display, like monochrome or rgbi (CRTC and VDC)         */
 
-#define VIDEO_RENDER_NULL       0
-#define VIDEO_RENDER_PAL_1X1    1
-#define VIDEO_RENDER_PAL_2X2    2
-#define VIDEO_RENDER_RGB_1X1    3
-#define VIDEO_RENDER_RGB_1X2    4
-#define VIDEO_RENDER_RGB_2X2    5
+typedef enum video_render_mode_s {
+  VIDEO_RENDER_NULL = 0,
+  VIDEO_RENDER_PAL_1X1 = 1,
+  VIDEO_RENDER_PAL_2X2 = 2,
+  VIDEO_RENDER_RGB_1X1 = 3,
+  VIDEO_RENDER_RGB_1X2 = 4,
+  VIDEO_RENDER_RGB_2X2 = 5
+} video_render_mode_t;
 
 struct video_canvas_s;
 struct video_cbm_palette_s;
 struct viewport_s;
 struct geometry_s;
 struct palette_s;
+struct raster_s;
 
-struct canvas_refresh_s
+typedef struct canvas_refresh_s
 {
     BYTE *draw_buffer;
     int draw_buffer_line_size;
@@ -58,23 +61,20 @@ struct canvas_refresh_s
 #endif
     int x;
     int y;
-};
-typedef struct canvas_refresh_s canvas_refresh_t;
+} canvas_refresh_t;
 
-struct draw_buffer_s {
+typedef struct draw_buffer_s {
     BYTE *draw_buffer;
     unsigned int draw_buffer_width;
     unsigned int draw_buffer_height;
     unsigned int draw_buffer_pitch;
-};
-typedef struct draw_buffer_s draw_buffer_t;
+} draw_buffer_t;
 
-struct cap_render_s {
+typedef struct cap_render_s {
     unsigned int sizex;
     unsigned int sizey;
     unsigned int rmode;
-};
-typedef struct cap_render_s cap_render_t;
+} cap_render_t;
 
 #define FULLSCREEN_MAXDEV 4
 
@@ -108,7 +108,7 @@ struct video_chip_cap_s {
 };
 typedef struct video_chip_cap_s video_chip_cap_t;
 
-struct video_render_color_tables_s {
+typedef struct video_render_color_tables_s {
     DWORD physical_colors[256];
     SDWORD ytable[256];		/* unscaled luminance */
     SDWORD ytablel[256];	/* luminance for neighbouring pixels */
@@ -123,12 +123,11 @@ struct video_render_color_tables_s {
     SDWORD line_yuv_0[1024 * 3];
     WORD prevrgbline[1024 * 3];
     BYTE rgbscratchbuffer[1024 * 4];
-};
-typedef struct video_render_color_tables_s video_render_color_tables_t;
+} video_render_color_tables_t;
 
 struct video_render_config_s {
     video_chip_cap_t *cap;         /* Which renders are allowed?  */
-    int rendermode;                /* What render is active?  */
+    video_render_mode_t rendermode;/* What render is active?  */
     int double_size_enabled;       /* Double size enabled?  */
     int doublesizex;               /* Doublesizex enabled? (true if double size is enabled and screen is large enough in x direction) */
     int doublesizey;               /* Doublesizey enabled? (true if double size is enabled and screen is large enough in y direction) */
@@ -151,11 +150,18 @@ struct video_render_config_s {
 typedef struct video_render_config_s video_render_config_t;
 
 extern void video_render_initconfig(video_render_config_t *config);
-extern void video_render_setphysicalcolor(video_render_config_t *config,
+extern void video_render_setphysicalcolor(DWORD *physical_colors,
                                           int index, DWORD color, int depth);
 extern void video_render_setrawrgb(unsigned int index, DWORD r, DWORD g,
                                    DWORD b);
 extern void video_render_initraw(void);
+extern void video_render_main(enum video_render_mode_s rendermode, BYTE *src,
+                              BYTE *trg, int width, int height,
+                              int xs, int ys, int xt, int yt,
+                              int pitchs, int pitcht, int depth,
+                              struct viewport_s *viewport,
+                              const struct video_render_color_tables_s* colortab,
+                              int doublescan, int scale2x);
 
 /**************************************************************/
 
@@ -165,36 +171,35 @@ extern void video_shutdown(void);
 
 extern struct video_canvas_s *video_canvas_create(struct video_canvas_s *canvas,
                                  unsigned int *width, unsigned int *height,
+                                 char *title,
                                  int mapped);
-extern void video_arch_canvas_init(struct video_canvas_s *canvas);
-extern void video_canvas_shutdown(struct video_canvas_s *canvas);
-extern struct video_canvas_s *video_canvas_init(void);
-extern void video_canvas_refresh(struct video_canvas_s *canvas,
+extern struct video_canvas_s *video_arch_canvas_init(void);
+extern void video_canvas_refresh(struct raster_s *canvas,
                                  unsigned int xs, unsigned int ys,
                                  unsigned int xi, unsigned int yi,
-                                 unsigned int w, unsigned int h);
-extern int video_canvas_set_palette(struct video_canvas_s *canvas,
-                                    struct palette_s *palette);
+                                 unsigned int w, unsigned int h,
+                                 int doublesizex, int doublesizey);
+extern int video_canvas_set_palette(struct palette_s *palette, DWORD *physical_colors);
 /* This will go away.  */
-extern int video_canvas_palette_set(struct video_canvas_s *canvas,
+extern int video_canvas_palette_set(struct raster_s *canvas,
                                     struct palette_s *palette);
-extern void video_canvas_create_set(struct video_canvas_s *canvas);
 extern void video_canvas_destroy(struct video_canvas_s *canvas);
 extern void video_canvas_map(struct video_canvas_s *canvas);
 extern void video_canvas_unmap(struct video_canvas_s *canvas);
 extern void video_canvas_resize(struct video_canvas_s *canvas,
-                                unsigned int width, unsigned int height);
-extern void video_canvas_render(struct video_canvas_s *canvas, BYTE *trg,
-                                int width, int height, int xs, int ys,
-                                int xt, int yt, int pitcht, int depth);
-extern void video_canvas_refresh_all(struct video_canvas_s *canvas);
-extern void video_canvas_redraw_size(struct video_canvas_s *canvas,
+                                unsigned int width, unsigned int height,
+                                int doublesizex, int doublesizey
+);
+extern void video_canvas_refresh_all(struct raster_s *canvas);
+extern void video_canvas_redraw_size(struct raster_s *canvas,
                                      unsigned int width, unsigned int height);
 extern void video_viewport_resize(struct video_canvas_s *canvas,
                                   struct geometry_s *geometry,
                                   struct viewport_s *viewport,
                                   unsigned width,
-                                  unsigned height);
+                                  unsigned height,
+                                  int doublesizex,
+                                  int doublesizey);
 extern void video_viewport_title_set(struct viewport_s *viewport,
                                      const char *title);
 extern void video_viewport_title_free(struct viewport_s *viewport);
@@ -245,9 +250,6 @@ extern void video_color_palette_free(struct palette_s *palette);
 extern void video_color_set_canvas(struct video_canvas_s *canvas);
 
 extern int video_render_get_fake_pal_state(void);
-extern void video_render_1x2_init(void);
-extern void video_render_2x2_init(void);
-extern void video_render_pal_init(void);
 
 #endif
 

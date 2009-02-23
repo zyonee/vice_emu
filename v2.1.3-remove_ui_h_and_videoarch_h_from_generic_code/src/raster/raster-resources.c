@@ -102,7 +102,13 @@ int raster_resources_chip_init(const char *chipname, raster_t *raster,
         resources_chip[i].param = (void *)raster_resource_chip;
     }
 
-    raster->canvas = video_canvas_init();
+    raster->videoconfig = (video_render_config_t *)lib_calloc(1, 	 
+	         sizeof(video_render_config_t)); 	 
+	  	 
+    raster->draw_buffer = (draw_buffer_t *)lib_calloc(1, sizeof(draw_buffer_t)); 	 
+    raster->viewport = (viewport_t *)lib_calloc(1, sizeof(viewport_t)); 	 
+    raster->geometry = (geometry_t *)lib_calloc(1, sizeof(geometry_t));
+    raster->canvas = video_arch_canvas_init();
 
     if (resources_register_int(resources_chip) < 0)
         return -1;
