@@ -84,7 +84,6 @@ src/arch/unix/x11/gnome/about.c
 src/arch/unix/x11/gnome/gnomekbd.c
 src/arch/unix/x11/gnome/gnomevideo.c
 src/arch/unix/x11/gnome/uicartridge.c
-src/arch/unix/x11/gnome/uicolor.c
 src/arch/unix/x11/gnome/uiedisk.c
 src/arch/unix/x11/gnome/uimenu.c
 src/arch/unix/x11/gnome/uipalcontrol.c

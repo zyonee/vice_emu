@@ -13,7 +13,6 @@ libgnomeui_a_SOURCES = \
 	gnomevideo.c \
 	uiarch.h \
 	uicartridge.c \
-	uicolor.c \
 	uiedisk.c \
 	uijoystickkeys.c \
 	uimenu.c \
