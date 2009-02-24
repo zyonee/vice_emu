@@ -36,11 +36,11 @@
 #include <ddraw.h>
 
 #include "types.h"
-#include "video.h"
 
 #define CANVAS_USES_TRIPLE_BUFFERING(c) 0
 
 struct palette_s;
+struct raster_s;
 struct video_draw_buffer_callback_s;
 
 typedef struct video_canvas_s {
@@ -70,14 +70,14 @@ typedef struct video_canvas_s {
 const char *dd_error(HRESULT ddrval);
 
 extern int video_set_palette(video_canvas_t *c);
-extern int video_set_physical_colors(video_canvas_t *c, palette_t *p);
+extern int video_set_physical_colors(struct raster_s *c, struct palette_s *p);
 
 extern int video_create_triple_surface(struct video_canvas_s *canvas,
                                        int width, int height);
 extern int video_create_single_surface(struct video_canvas_s *canvas,
                                        int width, int height);
 
-extern video_canvas_t *video_canvas_for_hwnd(HWND hwnd);
+extern struct raster_s *raster_for_hwnd(HWND hwnd);
 
 extern void video_canvas_update(HWND hwnd, HDC hdc, int xclient, int yclient,
                                 int w, int h);

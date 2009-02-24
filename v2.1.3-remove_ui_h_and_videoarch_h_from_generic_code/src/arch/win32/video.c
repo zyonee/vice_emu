@@ -42,6 +42,7 @@
 #include "fullscrn.h"
 #include "fullscreen.h"
 #include "palette.h"
+#include "raster.h"
 #include "res.h"
 #include "resources.h"
 #include "statusbar.h"
@@ -341,7 +342,7 @@ int video_set_palette(video_canvas_t *c)
     return 0;
 }
 
-int video_set_physical_colors(video_canvas_t *c, palette_t *palette)
+int video_set_physical_colors(raster_t *c, palette_t *palette)
 {
     HDC hdc;
     DDSURFACEDESC ddsd;
@@ -361,7 +362,7 @@ int video_set_physical_colors(video_canvas_t *c, palette_t *palette)
     DWORD bmask = 0;
 
     format.dwSize = sizeof(DDPIXELFORMAT);    
-    IDirectDrawSurface_GetPixelFormat(c->primary_surface, &format);
+    IDirectDrawSurface_GetPixelFormat(c->canvas->primary_surface, &format);
     if (format.dwFlags & DDPF_RGB) {
         log_debug("RGB surface...");
 #ifdef _ANONYMOUS_UNION
@@ -375,7 +376,7 @@ int video_set_physical_colors(video_canvas_t *c, palette_t *palette)
         log_debug("dwGBitMask: %08x", (unsigned int)format.u3.dwGBitMask);
         log_debug("dwBBitMask: %08x", (unsigned int)format.u4.dwBBitMask);
 #endif
-        if (c->depth != 8) {
+        if (c->canvas->depth != 8) {
 
 #ifdef _ANONYMOUS_UNION
             mask = format.dwRBitMask;
@@ -445,7 +446,7 @@ int video_set_physical_colors(video_canvas_t *c, palette_t *palette)
         log_debug("Non RGB surface...");
     }
 
-    if (c->depth > 8) {
+    if (c->canvas->depth > 8) {
         for (i = 0; i < 256; i++) {
             video_render_setrawrgb(i,
                 ((i & (rmask << rbits)) >> rbits) << rshift,
@@ -461,12 +462,12 @@ int video_set_physical_colors(video_canvas_t *c, palette_t *palette)
         DEBUG(("Allocating color \"%s\"",
                palette->entries[i].name));
 
-        if (c->depth == 8) {
+        if (c->canvas->depth == 8) {
 //            log_debug("depth==8");
-            result = IDirectDrawSurface_GetDC(c->primary_surface, &hdc);
+            result = IDirectDrawSurface_GetDC(c->canvas->primary_surface, &hdc);
             if (result == DDERR_SURFACELOST) {
-                IDirectDrawSurface_Restore(c->primary_surface);
-                result = IDirectDrawSurface_GetDC(c->primary_surface,
+                IDirectDrawSurface_Restore(c->canvas->primary_surface);
+                result = IDirectDrawSurface_GetDC(c->canvas->primary_surface,
                                                   &hdc);
             }
             if (result != DD_OK) {
@@ -478,18 +479,18 @@ int video_set_physical_colors(video_canvas_t *c, palette_t *palette)
             SetPixel(hdc, 0, 0, PALETTERGB(palette->entries[i].red,
                                            palette->entries[i].green,
                                            palette->entries[i].blue));
-            IDirectDrawSurface_ReleaseDC(c->primary_surface, hdc);
+            IDirectDrawSurface_ReleaseDC(c->canvas->primary_surface, hdc);
 
             ddsd.dwSize = sizeof(ddsd);
             while ((result
-                    = IDirectDrawSurface_Lock(c->primary_surface,
+                    = IDirectDrawSurface_Lock(c->canvas->primary_surface,
                                               NULL, &ddsd, 0,
                                               NULL))
                    == DDERR_WASSTILLDRAWING)
                 ;
             if (result == DDERR_SURFACELOST) {
-                IDirectDrawSurface_Restore(c->primary_surface);
-                result = IDirectDrawSurface_Lock(c->primary_surface,
+                IDirectDrawSurface_Restore(c->canvas->primary_surface);
+                result = IDirectDrawSurface_Lock(c->canvas->primary_surface,
                                                  NULL, &ddsd, 0, NULL);
             }
             if (result != DD_OK) {
@@ -508,19 +509,19 @@ int video_set_physical_colors(video_canvas_t *c, palette_t *palette)
                 (((palette->entries[i].blue&(bmask << bbits)) >> bbits)
                 << bshift);
         }
-        video_render_setphysicalcolor(c->videoconfig, i, p, c->depth);
+        video_render_setphysicalcolor(c->videoconfig->color_tables.physical_colors, i, p, c->canvas->depth);
 
         DEBUG(("Physical color for %d is 0x%04X", i,
               c->videoconfig->physical_colors[i]));
-        if (c->depth == 8) {
-            if (IDirectDrawSurface_Unlock(c->primary_surface, NULL)
+        if (c->canvas->depth == 8) {
+            if (IDirectDrawSurface_Unlock(c->canvas->primary_surface, NULL)
                 == DDERR_SURFACELOST) {
-                IDirectDrawSurface_Restore(c->primary_surface);
-                IDirectDrawSurface_Unlock(c->primary_surface, NULL);
+                IDirectDrawSurface_Restore(c->canvas->primary_surface);
+                IDirectDrawSurface_Unlock(c->canvas->primary_surface, NULL);
             }
-            IDirectDrawSurface_GetDC(c->primary_surface, &hdc);
+            IDirectDrawSurface_GetDC(c->canvas->primary_surface, &hdc);
             SetPixel(hdc, 0, 0, oldcolor);
-            IDirectDrawSurface_ReleaseDC(c->primary_surface, hdc); 
+            IDirectDrawSurface_ReleaseDC(c->canvas->primary_surface, hdc); 
         }
     }
     return 0;
@@ -658,19 +659,21 @@ int video_create_single_surface(video_canvas_t *canvas, int width, int height)
 
 
 int video_number_of_canvases;
-video_canvas_t *video_canvases[2];
+raster_t *video_canvases[2];
 extern int fullscreen_active;
 extern int fullscreen_transition;
 
-void video_arch_canvas_init(struct video_canvas_s *canvas)
+video_canvas_t *video_arch_canvas_init(void)
 {
-    canvas->video_draw_buffer_callback = NULL;
+    video_canvas_t *canvas = (video_canvas_t *)lib_calloc(1, sizeof(video_canvas_t));
 }
 
 /* Create a video canvas.  If specified width/height is not possible,
    return an alternative in `*width' and `*height'.  */
 video_canvas_t *video_canvas_create(video_canvas_t *canvas, unsigned int *width,
-                                    unsigned int *height, int mapped)
+                                    unsigned int *height,
+                                    char *title,
+                                    int mapped)
 {
 /*    HRESULT result;*/
     HRESULT ddresult;
@@ -681,7 +684,7 @@ video_canvas_t *video_canvas_create(video_canvas_t *canvas, unsigned int *width,
     fullscreen_transition = 1;
 
     /* "Normal" window stuff.  */
-    canvas->title = lib_stralloc(canvas->viewport->title);
+    canvas->title = lib_stralloc(title);
     canvas->width = *width;
     canvas->height = *height;
 
@@ -691,7 +694,7 @@ video_canvas_t *video_canvas_create(video_canvas_t *canvas, unsigned int *width,
     if (canvas->videoconfig->doublesizey)
         canvas->height *= 2;
 
-    canvas->hwnd = ui_open_canvas_window(canvas->viewport->title,
+    canvas->hwnd = ui_open_canvas_window(title,
                                          canvas->width, canvas->height);
 
     /*  Create the DirectDraw object */
@@ -852,7 +855,6 @@ void video_canvas_destroy(video_canvas_t *canvas)
         if (canvas->title != NULL) {
             lib_free(canvas->title);
         }
-        video_canvas_shutdown(canvas);
     }
 }
 
@@ -949,12 +951,12 @@ int video_canvas_set_palette(struct video_canvas_s *canvas, palette_t *p)
 
 char Region[2048];
 
-video_canvas_t *video_canvas_for_hwnd(HWND hwnd)
+raster_t *raster_for_hwnd(HWND hwnd)
 {
     int i;
 
     for (i = 0; i < video_number_of_canvases; i++) {
-        if (video_canvases[i]->hwnd == hwnd) {
+        if (video_canvases[i]->canvas->hwnd == hwnd) {
             return video_canvases[i];
         }
     }
@@ -992,7 +994,7 @@ extern int window_canvas_ysize[2];
 void video_canvas_update(HWND hwnd, HDC hdc, int xclient, int yclient, int w,
                          int h)
 {
-    video_canvas_t *c;
+    raster_t *c;
     int xs;   //  upperleft x in framebuffer
     int ys;   //  upperleft y in framebuffer
     int xi;   //  upperleft x in client space
@@ -1003,7 +1005,7 @@ void video_canvas_update(HWND hwnd, HDC hdc, int xclient, int yclient, int w,
     int cut_rightline, cut_bottomline;
     unsigned int pixel_width, pixel_height;
 
-    c = video_canvas_for_hwnd(hwnd);
+    c = raster_for_hwnd(hwnd);
 
     if (c == NULL)
         return;
@@ -1018,8 +1020,8 @@ void video_canvas_update(HWND hwnd, HDC hdc, int xclient, int yclient, int w,
 
     GetClientRect(hwnd, &rect);
     if (fullscreen_active) {
-        rect.right = c->client_width;
-        rect.bottom = c->client_height;
+        rect.right = c->canvas->client_width;
+        rect.bottom = c->canvas->client_height;
     }
 
 /*
@@ -1100,7 +1102,7 @@ void video_canvas_update(HWND hwnd, HDC hdc, int xclient, int yclient, int w,
     }
 }
 
-void video_canvas_refresh(video_canvas_t *canvas,
+void video_canvas_refresh(raster_t *canvas,
                           unsigned int xs, unsigned int ys,
                           unsigned int xi, unsigned int yi,
                           unsigned int w, unsigned int h)
@@ -1133,10 +1135,10 @@ void video_canvas_refresh(video_canvas_t *canvas,
     client_x = xi;
     client_y = yi;
 
-    GetClientRect(canvas->hwnd, &rect);
+    GetClientRect(canvas->canvas->hwnd, &rect);
     if (fullscreen_active) {
-        rect.right = canvas->client_width;
-        rect.bottom = canvas->client_height;
+        rect.right = canvas->canvas->client_width;
+        rect.bottom = canvas->canvas->client_height;
     }
     client_x += (rect.right - window_canvas_xsize[window_index]) / 2;
     client_y += (rect.bottom - statusbar_get_status_height()
@@ -1145,7 +1147,7 @@ void video_canvas_refresh(video_canvas_t *canvas,
     real_refresh(canvas, xs, ys, client_x, client_y, w, h);
 }
 
-static void real_refresh(video_canvas_t *c,
+static void real_refresh(raster_t *c,
                          unsigned int xs, unsigned int ys,
                          unsigned int xi, unsigned int yi,
                          unsigned int w, unsigned int h)
@@ -1170,7 +1172,7 @@ static void real_refresh(video_canvas_t *c,
     DEBUG(("Entering canvas_render : xs=%d ys=%d xi=%d yi=%d w=%d h=%d",
           xs, ys, xi, yi, w, h));
 */
-    if (IsIconic(c->hwnd))
+    if (IsIconic(c->canvas->hwnd))
         return;
 
     if (fullscreen_transition)
@@ -1198,38 +1200,38 @@ static void real_refresh(video_canvas_t *c,
         }
     }
 
-    rect.right = c->client_width;
-    rect.bottom = c->client_height;
+    rect.right = c->canvas->client_width;
+    rect.bottom = c->canvas->client_height;
     rect.left = xi;
     rect.top = yi;
-    ClientToScreen(c->hwnd, (LPPOINT) &rect);
+    ClientToScreen(c->canvas->hwnd, (LPPOINT) &rect);
     rect.right = rect.left + w;
     rect.bottom = rect.top + h;
 
-    if (c->back_surface != NULL) {
+    if (c->canvas->back_surface != NULL) {
         desc.dwSize = sizeof(desc);
         do {
-            result = IDirectDrawSurface_Lock(c->back_surface, NULL, &desc,
+            result = IDirectDrawSurface_Lock(c->canvas->back_surface, NULL, &desc,
                                              DDLOCK_WAIT, NULL);
             if (result == DDERR_SURFACELOST)
-                if (IDirectDrawSurface_Restore(c->back_surface) != DD_OK)
+                if (IDirectDrawSurface_Restore(c->canvas->back_surface) != DD_OK)
                     break;
         } while (result == DDERR_SURFACELOST);
         if (result == DD_OK)
-            surface = c->back_surface;
+            surface = c->canvas->back_surface;
     }
 
     if ((surface == NULL) && (dx_primary_surface_rendering)) {
         desc.dwSize = sizeof(desc);
         do {
-            result = IDirectDrawSurface_Lock(c->primary_surface, NULL, &desc,
+            result = IDirectDrawSurface_Lock(c->canvas->primary_surface, NULL, &desc,
                                              0, NULL);
             if (result == DDERR_SURFACELOST)
-                if (IDirectDrawSurface_Restore(c->primary_surface) != DD_OK)
+                if (IDirectDrawSurface_Restore(c->canvas->primary_surface) != DD_OK)
                     break;
         } while (result == DDERR_SURFACELOST);
         if (result == DD_OK)
-            surface = c->primary_surface;
+            surface = c->canvas->primary_surface;
         else {
             static int no_primary_lock_reported;
 
@@ -1247,14 +1249,14 @@ static void real_refresh(video_canvas_t *c,
         /* Try to lock the temporary surface (last resort).  */
         desc.dwSize = sizeof(desc);
         do {
-            result = IDirectDrawSurface_Lock(c->temporary_surface, NULL, &desc,
+            result = IDirectDrawSurface_Lock(c->canvas->temporary_surface, NULL, &desc,
                                              0, NULL);
             if (result == DDERR_SURFACELOST)
-                if (IDirectDrawSurface_Restore(c->temporary_surface) != DD_OK)
+                if (IDirectDrawSurface_Restore(c->canvas->temporary_surface) != DD_OK)
                     break;
         } while (result == DDERR_WASSTILLDRAWING);
         if (result == DD_OK)
-            surface = c->temporary_surface;
+            surface = c->canvas->temporary_surface;
     }
 
     if (surface == NULL) {
@@ -1273,14 +1275,14 @@ static void real_refresh(video_canvas_t *c,
     DEBUG(("Original rect: %d %d %d %d", rect.left, rect.top, rect.right,
           rect.bottom));
 */
-    result = IDirectDrawClipper_SetHWnd(c->clipper, 0, c->hwnd);
+    result = IDirectDrawClipper_SetHWnd(c->canvas->clipper, 0, c->canvas->hwnd);
     if (result != DD_OK) {
         ui_error("Cannot set HWND for primary surface clipper:\n%s",
                  dd_error(result));
     }
 
     clipsize = 2048;
-    IDirectDrawClipper_GetClipList(c->clipper, &rect, (LPRGNDATA)&Region,
+    IDirectDrawClipper_GetClipList(c->canvas->clipper, &rect, (LPRGNDATA)&Region,
                                    &clipsize);
     regioncount = ((RGNDATA*)Region)->rdh.nCount;
     DEBUG(("REGION count: %d",regioncount));
@@ -1338,9 +1340,9 @@ static void real_refresh(video_canvas_t *c,
         IDirectDrawSurface_Restore(surface);
         IDirectDrawSurface_Unlock(surface, NULL);
     }
-    if (surface == c->back_surface) {
+    if (surface == c->canvas->back_surface) {
         /* Back surface: we can flip.  */
-    } else if (surface == c->primary_surface) {
+    } else if (surface == c->canvas->primary_surface) {
         /* Nothing to do...  the window has already been updated.  */
     } else{
         /* Temporary surface: we have to blit.  */
@@ -1349,7 +1351,7 @@ static void real_refresh(video_canvas_t *c,
             trect.bottom = ((RECT*)((RGNDATA*)Region)->Buffer)[j].bottom;
             trect.left = ((RECT*)((RGNDATA*)Region)->Buffer)[j].left;
             trect.right = ((RECT*)((RGNDATA*)Region)->Buffer)[j].right;
-            result = IDirectDrawSurface_Blt(c->primary_surface,
+            result = IDirectDrawSurface_Blt(c->canvas->primary_surface,
                                             &trect,
                                             surface,
                                             &trect,
@@ -1360,7 +1362,7 @@ static void real_refresh(video_canvas_t *c,
                        rect.left, rect.top,
                        rect.right, rect.bottom));
             } else if (result == DDERR_SURFACELOST) {
-                result = IDirectDrawSurface_Restore(c->primary_surface);
+                result = IDirectDrawSurface_Restore(c->canvas->primary_surface);
                 if (result != DD_OK) {
                 }
             } else if (result == DDERR_SURFACEBUSY) {

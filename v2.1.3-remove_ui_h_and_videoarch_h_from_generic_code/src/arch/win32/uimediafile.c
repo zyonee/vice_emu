@@ -324,7 +324,7 @@ void ui_mediafile_save_dialog(HWND hwnd)
         util_add_extension(&s, selected_driver->default_extension);
 
         if (screenshot_save(selected_driver->name, s,
-            video_canvas_for_hwnd(hwnd)) < 0)
+            raster_for_hwnd(hwnd)) < 0)
             ui_error(translate_text(IDS_CANT_WRITE_SCREENSHOT_S), s);
         lib_free(s);
     }

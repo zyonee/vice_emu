@@ -710,7 +710,7 @@ void SwitchToFullscreenMode(HWND hwnd)
     int fullscreen_height;
     int bitdepth;
     int refreshrate;
-    video_canvas_t *c;
+    raster_t *c;
     HRESULT ddresult;
     /*DDSURFACEDESC desc;*/
     DDSURFACEDESC desc2;
@@ -723,7 +723,7 @@ void SwitchToFullscreenMode(HWND hwnd)
     GetCurrentModeParameters(&fullscreen_width, &fullscreen_height, &bitdepth,
                              &refreshrate);
     //  Get the Canvas for this window
-    c = video_canvas_for_hwnd(hwnd);
+    c = raster_for_hwnd(hwnd);
 
     memset(&desc2, 0, sizeof(desc2));
     desc2.dwSize = sizeof(desc2);
@@ -833,7 +833,7 @@ void SwitchToWindowedMode(HWND hwnd)
     fullscreen_transition = 1;
 
     //  Get the Canvas for this window
-    c = video_canvas_for_hwnd(hwnd);
+    c = raster_for_hwnd(hwnd);
 
     IDirectDrawSurface_Release(c->temporary_surface);
     IDirectDrawSurface_Release(c->primary_surface);
