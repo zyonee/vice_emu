@@ -89,6 +89,8 @@ struct video_canvas_s * video_arch_canvas_init(void)
         = (fullscreenconfig_t *)lib_calloc(1, sizeof(fullscreenconfig_t));
     fullscreen_init_alloc_hooks(canvas);
 #endif
+
+    return canvas;
 }
 
 

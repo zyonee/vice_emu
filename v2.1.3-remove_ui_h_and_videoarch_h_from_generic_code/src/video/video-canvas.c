@@ -57,7 +57,7 @@ void video_canvas_refresh_all(raster_t *canvas)
     viewport = canvas->viewport;
     geometry = canvas->geometry;
 
-    video_canvas_refresh(canvas->canvas,
+    video_canvas_refresh(canvas,
                  viewport->first_x
                  + geometry->extra_offscreen_border_left,
                  viewport->first_line,

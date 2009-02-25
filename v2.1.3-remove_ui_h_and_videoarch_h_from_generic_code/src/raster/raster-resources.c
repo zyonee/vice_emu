@@ -116,7 +116,7 @@ int raster_resources_chip_init(const char *chipname, raster_t *raster,
     for (i = 0; rname_chip[i] != NULL; i++)
         lib_free((char *)(resources_chip[i].name));
 
-    if (video_resources_chip_init(chipname, &raster->canvas, video_chip_cap)
+    if (video_resources_chip_init(chipname, raster, video_chip_cap)
         < 0)
         return -1;
 
