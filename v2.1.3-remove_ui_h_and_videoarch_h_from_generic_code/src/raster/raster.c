@@ -140,14 +140,10 @@ static int realize_canvas(raster_t *raster)
     raster->intialized = 1;
 
     if (!console_mode && !vsid_mode) {
-        new_canvas = video_canvas_create(raster->canvas,
+        if(!video_canvas_create(raster,
                      &raster->canvas_width,
-                     &raster->canvas_height, raster->viewport->title, 1);
-
-        if (new_canvas == NULL)
+                     &raster->canvas_height, raster->viewport->title, 1))
             return -1;
-
-        raster->canvas = new_canvas;
     }
 
     if (raster_realize_frame_buffer(raster) < 0)
@@ -155,9 +151,7 @@ static int realize_canvas(raster_t *raster)
 
     /* The canvas might give us something different from what we
        requested. FIXME: Only do this if really something changed. */
-    video_viewport_resize(raster->canvas, raster->geometry, raster->viewport, raster->canvas_width, raster->canvas_height,
-                          raster->videoconfig->doublesizex,
-                          raster->videoconfig->doublesizey);
+    video_viewport_resize(raster);
     return 0;
 }
 
@@ -171,9 +165,7 @@ static int perform_mode_change(raster_t *raster)
 
     /* FIXME: `video_viewport_resize()' already calls
        `video_canvas_resize()'. */
-    video_viewport_resize(raster->canvas, raster->geometry, raster->viewport, raster->canvas_width, raster->canvas_height,
-                          raster->videoconfig->doublesizex,
-                          raster->videoconfig->doublesizey);
+    video_viewport_resize(raster->canvas);
     return 0;
 }
 

@@ -524,7 +524,7 @@ int video_color_update_palette(raster_t *raster)
     video_ycbcr_palette_free(ycbcr);
 
     if (palette != NULL)
-        return video_canvas_palette_set(raster->canvas, palette);
+        return video_canvas_palette_set(raster, palette);
 
     return -1;
 }

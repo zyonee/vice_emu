@@ -75,7 +75,7 @@ static int set_sprite_background_collisions_enabled(int val, void *param)
 static int set_new_luminances(int val, void *param)
 {
     vicii_resources.new_luminances = val;
-    return vicii_color_update_palette(vicii.raster.canvas);
+    return vicii_color_update_palette(&vicii.raster);
 }
 
 static const resource_int_t resources_int[] =

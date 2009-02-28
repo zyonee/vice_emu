@@ -94,28 +94,28 @@ struct video_canvas_s * video_arch_canvas_init(void)
 }
 
 
-video_canvas_t *video_canvas_create(video_canvas_t *canvas, unsigned int *width,
+unsigned char video_canvas_create(raster_t *canvas, unsigned int *width,
                                     unsigned int *height, char *title,
                                     int mapped)
 {
     int res;
 
-    canvas->gdk_image = NULL;
+    canvas->canvas->gdk_image = NULL;
 #ifdef HAVE_HWSCALE
-    canvas->hwscale_image = NULL;
+    canvas->canvas->hwscale_image = NULL;
 #endif
 
     res = ui_open_canvas_window(canvas, title,
 				*width, *height, 1);
     if (res < 0) {
-        return NULL;
+        return 0;
     }
 
 #ifdef HAVE_OPENGL_SYNC
     openGL_sync_init(canvas);
 #endif
 
-    return canvas;
+    return 1;
 }
 
 void video_canvas_destroy(video_canvas_t *canvas)
@@ -269,7 +269,7 @@ void video_canvas_refresh(raster_t *canvas,
               canvas->draw_buffer->draw_buffer_width);
 #endif
 
-    if (console_mode || vsid_mode)
+    if (console_mode || vsid_mode || canvas->canvas->gdk_image == NULL)
         return;
 
     if (doublesizex) {
@@ -309,3 +309,9 @@ void video_canvas_refresh(raster_t *canvas,
                       canvas->videoconfig->scale2x);
     gtk_widget_queue_draw(canvas->canvas->emuwindow);
 }
+
+void video_canvas_refresh_all(raster_t *canvas)
+{
+    gtk_widget_queue_draw(canvas->canvas->emuwindow);
+}
+

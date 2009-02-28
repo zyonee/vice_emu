@@ -145,7 +145,7 @@ static video_cbm_palette_t vicii_palette =
     VICII_PHASE
 };
 
-int vicii_color_update_palette(struct video_canvas_s *canvas)
+int vicii_color_update_palette(raster_t *canvas)
 {
     video_cbm_palette_t *cp;
 

@@ -28,26 +28,30 @@
 
 #include "lib.h"
 #include "machine.h"
+#include "raster.h"
 #include "video.h"
 #include "viewport.h"
 
 
-void video_viewport_resize(struct video_canvas_s *canvas,
-                           geometry_t *geometry,
-                           viewport_t *viewport,
-                           unsigned width,
-                           unsigned height,
-                           int doublesizex,
-                           int doublesizey)
+void video_viewport_resize(raster_t *canvas)
 {
+    geometry_t *geometry;
+    viewport_t *viewport;
     rectangle_t *screen_size;
     rectangle_t *gfx_size;
     position_t *gfx_position;
     unsigned int gfx_height;
+    unsigned width, height;
+ 
+    geometry = canvas->geometry;
+    viewport = canvas->viewport;
 
     screen_size = &geometry->screen_size;
     gfx_size = &geometry->gfx_size;
     gfx_position = &geometry->gfx_position;
+ 
+    width = canvas->canvas_width;
+    height = canvas->canvas_height;
 
     if (width >= screen_size->width) {
         viewport->x_offset = (width - screen_size->width) / 2;
@@ -99,9 +103,6 @@ void video_viewport_resize(struct video_canvas_s *canvas,
         viewport->first_line = geometry->first_displayed_line;
         viewport->last_line = (geometry->first_displayed_line + height - 1);
     }
-    if (!vsid_mode && !console_mode)
-        video_canvas_resize(canvas, width, height, doublesizex,
-                            doublesizey);
 
     video_canvas_refresh_all(canvas);
 }

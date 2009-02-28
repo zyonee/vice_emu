@@ -78,7 +78,7 @@ typedef struct cap_render_s {
 
 #define FULLSCREEN_MAXDEV 4
 
-struct cap_fullscreen_s {
+typedef struct cap_fullscreen_s {
     unsigned int device_num;
     const char *device_name[FULLSCREEN_MAXDEV];
     int (*enable)(struct video_canvas_s *canvas, int enable);
@@ -87,10 +87,9 @@ struct cap_fullscreen_s {
     int (*double_scan)(struct video_canvas_s *canvas, int double_scan);
     int (*device)(struct video_canvas_s *canvas, const char *device);
     int (*mode[FULLSCREEN_MAXDEV])(struct video_canvas_s *canvas, int mode);
-};
-typedef struct cap_fullscreen_s cap_fullscreen_t;
+} cap_fullscreen_t;
 
-struct video_chip_cap_s {
+typedef struct video_chip_cap_s {
     unsigned int dsize_allowed;
     unsigned int dsize_default;
     unsigned int dsize_limit_width;
@@ -105,8 +104,7 @@ struct video_chip_cap_s {
     cap_render_t single_mode;
     cap_render_t double_mode;
     cap_fullscreen_t fullscreen;
-};
-typedef struct video_chip_cap_s video_chip_cap_t;
+} video_chip_cap_t;
 
 typedef struct video_render_color_tables_s {
     DWORD physical_colors[256];
@@ -125,7 +123,7 @@ typedef struct video_render_color_tables_s {
     BYTE rgbscratchbuffer[1024 * 4];
 } video_render_color_tables_t;
 
-struct video_render_config_s {
+typedef struct video_render_config_s {
     video_chip_cap_t *cap;         /* Which renders are allowed?  */
     video_render_mode_t rendermode;/* What render is active?  */
     int double_size_enabled;       /* Double size enabled?  */
@@ -146,8 +144,7 @@ struct video_render_config_s {
     int fullscreen_double_size_enabled;
     int fullscreen_double_scan_enabled;
     int fullscreen_mode[FULLSCREEN_MAXDEV];
-};
-typedef struct video_render_config_s video_render_config_t;
+} video_render_config_t;
 
 extern void video_render_initconfig(video_render_config_t *config);
 extern void video_render_setphysicalcolor(DWORD *physical_colors,
@@ -169,7 +166,7 @@ extern int video_init_cmdline_options(void);
 extern int video_init(void);
 extern void video_shutdown(void);
 
-extern struct video_canvas_s *video_canvas_create(struct video_canvas_s *canvas,
+extern unsigned char video_canvas_create(struct raster_s *canvas,
                                  unsigned int *width, unsigned int *height,
                                  char *title,
                                  int mapped);
@@ -193,13 +190,7 @@ extern void video_canvas_resize(struct video_canvas_s *canvas,
 extern void video_canvas_refresh_all(struct raster_s *canvas);
 extern void video_canvas_redraw_size(struct raster_s *canvas,
                                      unsigned int width, unsigned int height);
-extern void video_viewport_resize(struct video_canvas_s *canvas,
-                                  struct geometry_s *geometry,
-                                  struct viewport_s *viewport,
-                                  unsigned width,
-                                  unsigned height,
-                                  int doublesizex,
-                                  int doublesizey);
+extern void video_viewport_resize(struct raster_s *canvas);
 extern void video_viewport_title_set(struct viewport_s *viewport,
                                      const char *title);
 extern void video_viewport_title_free(struct viewport_s *viewport);

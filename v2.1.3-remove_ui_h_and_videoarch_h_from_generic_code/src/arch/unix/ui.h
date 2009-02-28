@@ -30,7 +30,6 @@
 #include "vice.h"
 
 #include "types.h"
-#include "uiapi.h"
 
 
 /* If this is #defined, `Alt' is handled the same as `Meta'.  On

@@ -45,31 +45,6 @@
 #endif
 
 
-void video_canvas_refresh_all(raster_t *canvas)
-{
-    viewport_t *viewport;
-    geometry_t *geometry;
-
-    if (console_mode || vsid_mode) {
-        return;
-    }
-
-    viewport = canvas->viewport;
-    geometry = canvas->geometry;
-
-    video_canvas_refresh(canvas,
-                 viewport->first_x
-                 + geometry->extra_offscreen_border_left,
-                 viewport->first_line,
-                 viewport->x_offset,
-                 viewport->y_offset,
-                 MIN(canvas->canvas_width,
-                     geometry->screen_size.width - viewport->first_x),
-                 MIN(canvas->canvas_height,
-                     viewport->last_line - viewport->first_line + 1),
-                 canvas->videoconfig->doublesizex,
-                 canvas->videoconfig->doublesizey);
-}
 
 void video_canvas_redraw_size(raster_t *canvas, unsigned int width,
                               unsigned int height)
@@ -83,13 +58,7 @@ void video_canvas_redraw_size(raster_t *canvas, unsigned int width,
         || height != canvas->canvas_height) {
         canvas->canvas_width = width;
         canvas->canvas_height = height;
-        video_viewport_resize(canvas->canvas,
-            canvas->geometry,
-            canvas->viewport,
-            canvas->canvas_width,
-            canvas->canvas_height,
-            canvas->videoconfig->doublesizex,
-            canvas->videoconfig->doublesizey);
+        video_viewport_resize(canvas);
     }
     video_canvas_refresh_all(canvas);
 }

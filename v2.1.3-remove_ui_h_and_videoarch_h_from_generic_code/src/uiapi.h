@@ -99,5 +99,9 @@ extern void ui_display_joyport(BYTE *joyport);
 /* Volume UI */
 void ui_display_volume(int vol);
 
+struct raster_s;
+void ui_resize_canvas_window(struct raster_s *canvas, int width, int height);
+
+
 #endif
 

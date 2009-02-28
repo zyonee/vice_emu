@@ -96,7 +96,7 @@ inline static void refresh_canvas(raster_t *raster)
 
     if ((int)(raster->canvas_height) >= yy
         && (int)(raster->canvas_width) >= xx)
-        video_canvas_refresh(raster->canvas, x, y, xx, yy,
+        video_canvas_refresh(raster, x, y, xx, yy,
             MIN(w, (int)(raster->canvas_width - xx)),
             MIN(h, (int)(raster->canvas_height - yy)),
             raster->videoconfig->doublesizex,
