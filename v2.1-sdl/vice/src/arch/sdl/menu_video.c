@@ -157,75 +157,11 @@ static UI_MENU_CALLBACK(custom_HwScale_callback)
 }
 #endif
 
-static UI_MENU_CALLBACK(external_vicii_palette_callback)
-{
-    char *name = NULL;
-
-    if (activated) {
-        name = sdl_ui_file_selection_dialog("Choose VICII palette file", FILEREQ_MODE_CHOOSE_FILE);
-        if (name != NULL) {
-            resources_set_string("VICIIPaletteFile", name);
-            lib_free(name);
-        }
-    }
-    return NULL;
-}
-
-static UI_MENU_CALLBACK(external_vdc_palette_callback)
-{
-    char *name = NULL;
-
-    if (activated) {
-        name = sdl_ui_file_selection_dialog("Choose VDC palette file", FILEREQ_MODE_CHOOSE_FILE);
-        if (name != NULL) {
-            resources_set_string("VDCPaletteFile", name);
-            lib_free(name);
-        }
-    }
-    return NULL;
-}
-
-static UI_MENU_CALLBACK(external_crtc_palette_callback)
-{
-    char *name = NULL;
-
-    if (activated) {
-        name = sdl_ui_file_selection_dialog("Choose palette file", FILEREQ_MODE_CHOOSE_FILE);
-        if (name != NULL) {
-            resources_set_string("CrtcPaletteFile", name);
-            lib_free(name);
-        }
-    }
-    return NULL;
-}
-
-static UI_MENU_CALLBACK(external_ted_palette_callback)
-{
-    char *name = NULL;
-
-    if (activated) {
-        name = sdl_ui_file_selection_dialog("Choose palette file", FILEREQ_MODE_CHOOSE_FILE);
-        if (name != NULL) {
-            resources_set_string("TEDPaletteFile", name);
-            lib_free(name);
-        }
-    }
-    return NULL;
-}
-
-static UI_MENU_CALLBACK(external_vic_palette_callback)
-{
-    char *name = NULL;
-
-    if (activated) {
-        name = sdl_ui_file_selection_dialog("Choose palette file", FILEREQ_MODE_CHOOSE_FILE);
-        if (name != NULL) {
-            resources_set_string("VICPaletteFile", name);
-            lib_free(name);
-        }
-    }
-    return NULL;
-}
+UI_MENU_DEFINE_FILE_STRING(VICIIPaletteFile)
+UI_MENU_DEFINE_FILE_STRING(VDCPaletteFile)
+UI_MENU_DEFINE_FILE_STRING(CrtcPaletteFile)
+UI_MENU_DEFINE_FILE_STRING(TEDPaletteFile)
+UI_MENU_DEFINE_FILE_STRING(VICPaletteFile)
 
 static UI_MENU_CALLBACK(radio_MachineVideoStandard_vic20_callback)
 {
@@ -291,14 +227,14 @@ const ui_menu_entry_t c128_video_menu[] = {
       MENU_ENTRY_RESOURCE_TOGGLE,
       toggle_VICIIExternalPalette_callback,
       NULL },
-    { "Select VICII external palette file",
+    { "VICII external palette file",
       MENU_ENTRY_DIALOG,
-      external_vicii_palette_callback,
-      NULL },
-    { "Select VDC external palette file",
+      file_string_VICIIPaletteFile_callback,
+      (ui_callback_data_t)"Choose VICII palette file" },
+    { "VDC external palette file",
       MENU_ENTRY_DIALOG,
-      external_vdc_palette_callback,
-      NULL },
+      file_string_VDCPaletteFile_callback,
+      (ui_callback_data_t)"Choose VDC palette file" },
     SDL_MENU_ITEM_SEPARATOR,
     SDL_MENU_ITEM_TITLE("Video Standard"),
     { "PAL",
@@ -355,10 +291,10 @@ const ui_menu_entry_t c64_video_menu[] = {
       MENU_ENTRY_RESOURCE_TOGGLE,
       toggle_VICIIExternalPalette_callback,
       NULL },
-    { "Select external palette file",
+    { "External palette file",
       MENU_ENTRY_DIALOG,
-      external_vicii_palette_callback,
-      NULL },
+      file_string_VICIIPaletteFile_callback,
+      (ui_callback_data_t)"Choose palette file" },
     SDL_MENU_ITEM_SEPARATOR,
     SDL_MENU_ITEM_TITLE("Video Standard"),
     { "PAL",
@@ -419,10 +355,10 @@ const ui_menu_entry_t c64dtv_video_menu[] = {
       MENU_ENTRY_RESOURCE_TOGGLE,
       toggle_VICIIExternalPalette_callback,
       NULL },
-    { "Select external palette file",
+    { "External palette file",
       MENU_ENTRY_DIALOG,
-      external_vicii_palette_callback,
-      NULL },
+      file_string_VICIIPaletteFile_callback,
+      (ui_callback_data_t)"Choose palette file" },
     SDL_MENU_ITEM_SEPARATOR,
     SDL_MENU_ITEM_TITLE("Video Standard"),
     { "PAL",
@@ -473,10 +409,10 @@ const ui_menu_entry_t cbm5x0_video_menu[] = {
       MENU_ENTRY_RESOURCE_TOGGLE,
       toggle_VICIIExternalPalette_callback,
       NULL },
-    { "Select external palette file",
+    { "External palette file",
       MENU_ENTRY_DIALOG,
-      external_vicii_palette_callback,
-      NULL },
+      file_string_VICIIPaletteFile_callback,
+      (ui_callback_data_t)"Choose palette file" },
     SDL_MENU_ITEM_SEPARATOR,
     SDL_MENU_ITEM_TITLE("Video Standard"),
     { "PAL",
@@ -513,10 +449,10 @@ const ui_menu_entry_t cbm6x0_7x0_video_menu[] = {
       custom_HwScale_callback,
       (ui_callback_data_t)"CrtcHwScale" },
 #endif
-    { "Select external palette file",
+    { "External palette file",
       MENU_ENTRY_DIALOG,
-      external_crtc_palette_callback,
-      NULL },
+      file_string_CrtcPaletteFile_callback,
+      (ui_callback_data_t)"Choose palette file" },
     { NULL }
 };
 
@@ -543,10 +479,10 @@ const ui_menu_entry_t pet_video_menu[] = {
       custom_HwScale_callback,
       (ui_callback_data_t)"CrtcHwScale" },
 #endif
-    { "Select external palette file",
+    { "External palette file",
       MENU_ENTRY_DIALOG,
-      external_crtc_palette_callback,
-      NULL },
+      file_string_CrtcPaletteFile_callback,
+      (ui_callback_data_t)"Choose palette file" },
     { NULL }
 };
 
@@ -589,10 +525,10 @@ const ui_menu_entry_t plus4_video_menu[] = {
       MENU_ENTRY_RESOURCE_TOGGLE,
       toggle_TEDExternalPalette_callback,
       NULL },
-    { "Select external palette file",
+    { "External palette file",
       MENU_ENTRY_DIALOG,
-      external_ted_palette_callback,
-      NULL },
+      file_string_TEDPaletteFile_callback,
+      (ui_callback_data_t)"Choose palette file" },
     SDL_MENU_ITEM_SEPARATOR,
     SDL_MENU_ITEM_TITLE("Video Standard"),
     { "PAL",
@@ -645,10 +581,10 @@ const ui_menu_entry_t vic20_video_menu[] = {
       MENU_ENTRY_RESOURCE_TOGGLE,
       toggle_VICExternalPalette_callback,
       NULL },
-    { "Select external palette file",
+    { "External palette file",
       MENU_ENTRY_DIALOG,
-      external_vic_palette_callback,
-      NULL },
+      file_string_VICPaletteFile_callback,
+      (ui_callback_data_t)"Choose palette file" },
     SDL_MENU_ITEM_SEPARATOR,
     SDL_MENU_ITEM_TITLE("Video Standard"),
     { "PAL",

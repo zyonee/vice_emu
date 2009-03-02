@@ -28,12 +28,9 @@
 #include "types.h"
 
 #include "c64dtv-resources.h"
-#include "lib.h"
 #include "menu_common.h"
 #include "menu_joystick.h"
 #include "menu_sid.h"
-#include "resources.h"
-#include "uifilereq.h"
 #include "uimenu.h"
 
 UI_MENU_DEFINE_RADIO(HummerUserportDevice)
@@ -82,20 +79,7 @@ static const ui_menu_entry_t c64dtv_userport_menu[] = {
     { NULL }
 };
 
-static UI_MENU_CALLBACK(c64dtvromimage_callback)
-{
-    char *name = NULL;
-
-    if (activated) {
-        name = sdl_ui_file_selection_dialog("C64DTV ROM image", FILEREQ_MODE_CHOOSE_FILE);
-        if (name != NULL) {
-            resources_set_string("c64dtvromfilename", name);
-            lib_free(name);
-        }
-    }
-    return NULL;
-}
-
+UI_MENU_DEFINE_FILE_STRING(c64dtvromfilename)
 UI_MENU_DEFINE_TOGGLE(c64dtvromrw)
 UI_MENU_DEFINE_TOGGLE(FlashTrueFS)
 UI_MENU_DEFINE_RADIO(DtvRevision)
@@ -111,10 +95,10 @@ const ui_menu_entry_t c64dtv_hardware_menu[] = {
       (ui_callback_data_t)sid_dtv_menu },
     SDL_MENU_ITEM_SEPARATOR,
     SDL_MENU_ITEM_TITLE("C64DTV ROM image"),
-    { "C64DTV ROM image name...",
+    { "C64DTV ROM image file",
       MENU_ENTRY_DIALOG,
-      c64dtvromimage_callback,
-      NULL },
+      file_string_c64dtvromfilename_callback,
+      (ui_callback_data_t)"Select C64DTV ROM image" },
     { "Enable writes to C64DTV ROM image",
       MENU_ENTRY_RESOURCE_TOGGLE,
       toggle_c64dtvromrw_callback,

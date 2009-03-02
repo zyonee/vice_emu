@@ -231,3 +231,25 @@ const char *sdl_ui_menu_int_helper(int activated, ui_callback_data_t param, cons
     }
     return NULL;
 }
+
+const char *sdl_ui_menu_file_string_helper(int activated, ui_callback_data_t param, const char *resource_name)
+{
+    char *value = NULL;
+    static const char *previous = NULL;
+
+    if (resources_get_string(resource_name, &previous)) {
+        return sdl_menu_text_unknown;
+    }
+
+    if (activated) {
+        value = sdl_ui_file_selection_dialog((const char*)param, FILEREQ_MODE_CHOOSE_FILE);
+        if(value) {
+            resources_set_value_string(resource_name, value);
+            lib_free(value);
+        }
+    } else {
+        return previous;
+    }
+    return NULL;
+}
+
