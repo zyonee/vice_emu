@@ -41,6 +41,8 @@ libarch_a_SOURCES = \
 	menu_c64dtvhw.h \
 	menu_c64hw.c \
 	menu_c64hw.h \
+	menu_cbm2hw.c \
+	menu_cbm2hw.h \
 	menu_common.c \
 	menu_common.h \
 	menu_drive.c \

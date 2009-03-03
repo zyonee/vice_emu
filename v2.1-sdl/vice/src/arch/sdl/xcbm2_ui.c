@@ -34,6 +34,7 @@
 #include "cbm2.h"
 #include "cbm2mem.h"
 #include "lib.h"
+#include "menu_cbm2hw.h"
 #include "menu_common.h"
 #include "menu_drive.h"
 #include "menu_help.h"
@@ -48,12 +49,6 @@
 #include "resources.h"
 #include "ui.h"
 #include "uimenu.h"
-
-/* temporary empty cbm2 hardware menu, this one will be moved out to menu_cbm2hw.c */
-static ui_menu_entry_t cbm2_hardware_menu[] = {
-    SDL_MENU_ITEM_SEPARATOR,
-    { NULL }
-};
 
 /* temporary empty cbm2 rom menu, this one will be moved out to menu_cbm2rom.c */
 static ui_menu_entry_t cbm2_rom_menu[] = {
@@ -82,10 +77,10 @@ static const ui_menu_entry_t xcbm6x0_7x0_main_menu[] = {
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)tape_menu },
-    { "Machine settings (todo)",
+    { "Machine settings",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
-      (ui_callback_data_t)cbm2_hardware_menu },
+      (ui_callback_data_t)cbm6x0_7x0_hardware_menu },
     { "ROM settings (todo)",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
@@ -160,10 +155,10 @@ static const ui_menu_entry_t xcbm5x0_main_menu[] = {
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)tape_menu },
-    { "Machine settings (todo)",
+    { "Machine settings",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
-      (ui_callback_data_t)cbm2_hardware_menu },
+      (ui_callback_data_t)cbm5x0_hardware_menu },
     { "ROM settings (todo)",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
