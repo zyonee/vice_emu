@@ -77,7 +77,7 @@ const ui_menu_entry_t c128_hardware_menu[] = {
     { "SID settings",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
-      (ui_callback_data_t)sid_c64_menu },
+      (ui_callback_data_t)sid_c128_menu },
     { "VDC settings",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
