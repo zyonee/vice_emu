@@ -81,7 +81,7 @@ UI_MENU_DEFINE_FILE_STRING(DQBBfilename)
 const ui_menu_entry_t dqbb_menu[] = {
     { "Enable DQBB",
       MENU_ENTRY_RESOURCE_TOGGLE,
-      toggle_C64_256K_callback,
+      toggle_DQBB_callback,
       NULL },
     SDL_MENU_ITEM_SEPARATOR,
     SDL_MENU_ITEM_TITLE("RAM image"),

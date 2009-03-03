@@ -82,7 +82,7 @@ const ui_menu_entry_t c64_hardware_menu[] = {
     { "IDE64 settings",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
-      (ui_callback_data_t)georam_menu },
+      (ui_callback_data_t)ide64_menu },
     { "Isepic settings",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
