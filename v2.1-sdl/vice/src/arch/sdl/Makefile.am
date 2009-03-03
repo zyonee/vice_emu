@@ -31,6 +31,10 @@ libarch_a_SOURCES = \
 	kbd.h \
 	menu_c64cart.c \
 	menu_c64cart.h \
+	menu_c64_common_expansions.c \
+	menu_c64_common_expansions.h \
+	menu_c64_expansions.c \
+	menu_c64_expansions.h \
 	menu_c64dtvhw.c \
 	menu_c64dtvhw.h \
 	menu_c64hw.c \

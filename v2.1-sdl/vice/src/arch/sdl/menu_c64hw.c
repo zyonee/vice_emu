@@ -30,6 +30,8 @@
 
 #include "types.h"
 
+#include "menu_c64_common_expansions.h"
+#include "menu_c64_expansions.h"
 #include "menu_common.h"
 #include "menu_joystick.h"
 #ifdef HAVE_MOUSE
@@ -52,6 +54,74 @@ const ui_menu_entry_t c64_hardware_menu[] = {
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)mouse_menu },
+#endif
+    SDL_MENU_ITEM_SEPARATOR,
+    SDL_MENU_ITEM_TITLE("Hardware expansions"),
+    { "256K settings",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)c64_256k_menu },
+#if 0 /* TODO */
+    { "ACIA settings",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)c64_acia_menu },
+#endif
+    { "Digimax settings",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)digimax_menu },
+    { "Double Quick Brown Box settings",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)dqbb_menu },
+    { "GEORAM settings",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)georam_menu },
+    { "IDE64 settings",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)georam_menu },
+    { "Isepic settings",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)isepic_menu },
+#if 0 /* TODO */
+    { "MIDI settings",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)c64_midi_menu },
+#endif
+    { "MMC64 settings",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)mmc64_menu },
+    { "PLUS60K settings",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)plus60k_menu },
+    { "PLUS256K settings",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)plus256k_menu },
+    { "RAMCART settings",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)ramcart_menu },
+    { "REU settings",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)reu_menu },
+#if 0 /* TODO */
+    { "RS232 userport settings",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)rs232user_menu },
+    { "The Final Ethernet settings",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)tfe_menu },
 #endif
     { NULL }
 };
