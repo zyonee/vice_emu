@@ -29,6 +29,8 @@ libarch_a_SOURCES = \
 	joy.h \
 	kbd.c \
 	kbd.h \
+	menu_c128hw.c \
+	menu_c128hw.h \
 	menu_c64cart.c \
 	menu_c64cart.h \
 	menu_c64_common_expansions.c \

@@ -32,6 +32,7 @@
 
 #include "debug.h"
 #include "c128mem.h"
+#include "menu_c128hw.h"
 #include "menu_c64cart.h"
 #include "menu_common.h"
 #include "menu_drive.h"
@@ -47,12 +48,6 @@
 #include "ui.h"
 #include "uimenu.h"
 #include "vkbd.h"
-
-/* temporary empty c128 hardware menu, this one will be moved out to menu_c128hw.c */
-static ui_menu_entry_t c128_hardware_menu[] = {
-    SDL_MENU_ITEM_SEPARATOR,
-    { NULL }
-};
 
 /* temporary empty c128 rom menu, this one will be moved out to menu_c128rom.c */
 static ui_menu_entry_t c128_rom_menu[] = {
@@ -85,7 +80,7 @@ static const ui_menu_entry_t x128_main_menu[] = {
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)c64cart_menu },
-    { "Machine settings (todo)",
+    { "Machine settings",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)c128_hardware_menu },
