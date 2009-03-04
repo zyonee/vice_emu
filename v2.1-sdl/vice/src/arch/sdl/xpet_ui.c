@@ -35,6 +35,7 @@
 #include "menu_common.h"
 #include "menu_drive.h"
 #include "menu_help.h"
+#include "menu_pethw.h"
 #include "menu_reset.h"
 #include "menu_screenshot.h"
 #include "menu_settings.h"
@@ -48,12 +49,6 @@
 #include "ui.h"
 #include "uimenu.h"
 #include "vkbd.h"
-
-/* temporary empty pet hardware menu, this one will be moved out to menu_pethw.c */
-static ui_menu_entry_t pet_hardware_menu[] = {
-    SDL_MENU_ITEM_SEPARATOR,
-    { NULL }
-};
 
 /* temporary empty pet rom menu, this one will be moved out to menu_petrom.c */
 static ui_menu_entry_t pet_rom_menu[] = {
@@ -82,7 +77,7 @@ static const ui_menu_entry_t xpet_main_menu[] = {
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)tape_menu },
-    { "Machine settings (todo)",
+    { "Machine settings",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)pet_hardware_menu },
