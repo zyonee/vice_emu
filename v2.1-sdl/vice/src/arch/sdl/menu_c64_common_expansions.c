@@ -175,81 +175,9 @@ const ui_menu_entry_t georam_menu[] = {
 
 UI_MENU_DEFINE_FILE_STRING(IDE64Image)
 UI_MENU_DEFINE_TOGGLE(IDE64AutodetectSize)
-
-static UI_MENU_CALLBACK(custom_cylinders_callback)
-{
-    static char buf[20];
-    char *value = NULL;
-    int previous, new_value;
-
-    resources_get_int("IDE64Cylinders", &previous);
-
-    if (activated) {
-        sprintf(buf, "%i", previous);
-        value = sdl_ui_text_input_dialog("Enter amount of cylinders (1-1024)", buf);
-        if (value) {
-            new_value = strtol(value, NULL, 0);
-            if (new_value != previous) {
-                resources_set_int("IDE64Cylinders", new_value);
-            }
-            lib_free(value);
-        }
-    } else {
-        sprintf(buf,"%i",previous);
-        return buf;
-    }
-    return NULL;
-}
-
-static UI_MENU_CALLBACK(custom_heads_callback)
-{
-    static char buf[20];
-    char *value = NULL;
-    int previous, new_value;
-
-    resources_get_int("IDE64Heads", &previous);
-
-    if (activated) {
-        sprintf(buf, "%i", previous);
-        value = sdl_ui_text_input_dialog("Enter amount of heads (1-16)", buf);
-        if (value) {
-            new_value = strtol(value, NULL, 0);
-            if (new_value != previous) {
-                resources_set_int("IDE64Heads", new_value);
-            }
-            lib_free(value);
-        }
-    } else {
-        sprintf(buf,"%i",previous);
-        return buf;
-    }
-    return NULL;
-}
-
-static UI_MENU_CALLBACK(custom_sectors_callback)
-{
-    static char buf[20];
-    char *value = NULL;
-    int previous, new_value;
-
-    resources_get_int("IDE64Sectors", &previous);
-
-    if (activated) {
-        sprintf(buf, "%i", previous);
-        value = sdl_ui_text_input_dialog("Enter amount of sectors (0-63)", buf);
-        if (value) {
-            new_value = strtol(value, NULL, 0);
-            if (new_value != previous) {
-                resources_set_int("IDE64Sectors", new_value);
-            }
-            lib_free(value);
-        }
-    } else {
-        sprintf(buf,"%i",previous);
-        return buf;
-    }
-    return NULL;
-}
+UI_MENU_DEFINE_INT(IDE64Cylinders)
+UI_MENU_DEFINE_INT(IDE64Heads)
+UI_MENU_DEFINE_INT(IDE64Sectors)
 
 const ui_menu_entry_t ide64_menu[] = {
     SDL_MENU_ITEM_TITLE("HD image"),
@@ -264,17 +192,17 @@ const ui_menu_entry_t ide64_menu[] = {
       toggle_IDE64AutodetectSize_callback,
       NULL },
     { "Cylinders",
-      MENU_ENTRY_DIALOG,
-      custom_cylinders_callback,
-      NULL },
+      MENU_ENTRY_RESOURCE_INT,
+      int_IDE64Cylinders_callback,
+      (ui_callback_data_t)"Enter amount of cylinders (1-1024)" },
     { "Heads",
-      MENU_ENTRY_DIALOG,
-      custom_heads_callback,
-      NULL },
+      MENU_ENTRY_RESOURCE_INT,
+      int_IDE64Heads_callback,
+      (ui_callback_data_t)"Enter amount of heads (1-16)" },
     { "Sectors",
-      MENU_ENTRY_DIALOG,
-      custom_sectors_callback,
-      NULL },
+      MENU_ENTRY_RESOURCE_INT,
+      int_IDE64Sectors_callback,
+      (ui_callback_data_t)"Enter amount of sectors (0-63)" },
     { NULL }
 };
 
