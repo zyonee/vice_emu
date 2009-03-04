@@ -1,8 +1,8 @@
 /*
- * menu_sid.h - Implementation of the SID settings menu for the SDL UI.
+ * menu_plus4hw.h - PLUS4 HW menu for SDL UI.
  *
  * Written by
- *  Hannu Nuotio <hannu.nuotio@tut.fi>
+ *  Marco van den Heuvel <blackystardust68@yahoo.com>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -24,19 +24,13 @@
  *
  */
 
-#ifndef VICE_MENU_SID_H
-#define VICE_MENU_SID_H
+#ifndef VICE_MENU_PLUS4HW_H
+#define VICE_MENU_PLUS4HW_H
 
 #include "vice.h"
-
+#include "types.h"
 #include "uimenu.h"
 
-extern const ui_menu_entry_t sid_c64_menu[];
-extern const ui_menu_entry_t sid_c128_menu[];
-extern const ui_menu_entry_t sid_cbm2_menu[];
-extern const ui_menu_entry_t sid_dtv_menu[];
-extern const ui_menu_entry_t sid_pet_menu[];
-extern const ui_menu_entry_t sid_plus4_menu[];
-extern const ui_menu_entry_t sid_vic_menu[];
+extern const ui_menu_entry_t plus4_hardware_menu[];
 
 #endif

@@ -36,6 +36,7 @@
 #include "menu_drive.h"
 #include "menu_help.h"
 #include "menu_plus4cart.h"
+#include "menu_plus4hw.h"
 #include "menu_reset.h"
 #include "menu_screenshot.h"
 #include "menu_settings.h"
@@ -49,12 +50,6 @@
 #include "ui.h"
 #include "uimenu.h"
 #include "vkbd.h"
-
-/* temporary empty plus4 hardware menu, this one will be moved out to menu_plus4hw.c */
-static ui_menu_entry_t plus4_hardware_menu[] = {
-    SDL_MENU_ITEM_SEPARATOR,
-    { NULL }
-};
 
 /* temporary empty plus4 rom menu, this one will be moved out to menu_plus4rom.c */
 static ui_menu_entry_t plus4_rom_menu[] = {
@@ -87,7 +82,7 @@ static const ui_menu_entry_t xplus4_main_menu[] = {
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)plus4cart_menu },
-    { "Machine settings (todo)",
+    { "Machine settings",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)plus4_hardware_menu },
