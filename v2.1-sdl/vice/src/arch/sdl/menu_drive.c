@@ -287,22 +287,6 @@ static UI_MENU_CALLBACK(set_directory_callback)
     return NULL;
 }
 
-#ifdef HAVE_RAWDRIVE
-static UI_MENU_CALLBACK(set_blockdev_callback)
-{
-    char *name;
-
-    if (activated) {
-        name = sdl_ui_file_selection_dialog("select device file to use as drive", FILEREQ_MODE_CHOOSE_FILE);
-        if (name != NULL) {
-            resources_set_string("RawDriveDriver", name);
-            lib_free(name);
-        }
-    }
-    return NULL;
-}
-#endif
-
 static UI_MENU_CALLBACK(attach_disk_callback)
 {
     char *name;
@@ -1351,6 +1335,10 @@ static const ui_menu_entry_t drive_11_idle_menu[] = {
     { NULL }
 };
 
+#ifdef HAVE_RAWDRIVE
+UI_MENU_DEFINE_FILE_STRING(RawDriveDriver)
+#endif
+
 static const ui_menu_entry_t drive_8_menu[] = {
    { "Drive 8 type",
       MENU_ENTRY_SUBMENU,
@@ -1378,9 +1366,9 @@ static const ui_menu_entry_t drive_8_menu[] = {
       (ui_callback_data_t)8},
 #ifdef HAVE_RAWDRIVE
    { "Choose blockdevice",
-      MENU_ENTRY_OTHER,
-      set_blockdev_callback,
-      NULL },
+      MENU_ENTRY_DIALOG,
+      file_string_RawDriveDriver_callback,
+      (ui_callback_data_t)"Select device file to use as drive" },
 #endif
     { NULL }
 };
@@ -1412,9 +1400,9 @@ static const ui_menu_entry_t drive_9_menu[] = {
       (ui_callback_data_t)9},
 #ifdef HAVE_RAWDRIVE
    { "Choose blockdevice",
-      MENU_ENTRY_OTHER,
-      set_blockdev_callback,
-      NULL },
+      MENU_ENTRY_DIALOG,
+      file_string_RawDriveDriver_callback,
+      (ui_callback_data_t)"Select device file to use as drive" },
 #endif
     { NULL }
 };
@@ -1446,9 +1434,9 @@ static const ui_menu_entry_t drive_10_menu[] = {
       (ui_callback_data_t)10},
 #ifdef HAVE_RAWDRIVE
    { "Choose blockdevice",
-      MENU_ENTRY_OTHER,
-      set_blockdev_callback,
-      NULL },
+      MENU_ENTRY_DIALOG,
+      file_string_RawDriveDriver_callback,
+      (ui_callback_data_t)"Select device file to use as drive" },
 #endif
     { NULL }
 };
@@ -1480,9 +1468,9 @@ static const ui_menu_entry_t drive_11_menu[] = {
       (ui_callback_data_t)11},
 #ifdef HAVE_RAWDRIVE
    { "Choose blockdevice",
-      MENU_ENTRY_OTHER,
-      set_blockdev_callback,
-      NULL },
+      MENU_ENTRY_DIALOG,
+      file_string_RawDriveDriver_callback,
+      (ui_callback_data_t)"Select device file to use as drive" },
 #endif
     { NULL }
 };

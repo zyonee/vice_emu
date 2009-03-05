@@ -136,7 +136,7 @@ const ui_menu_entry_t cbm6x0_7x0_hardware_menu[] = {
       (ui_callback_data_t)sid_cbm2_menu },
     { "CBM2 model settings",
       MENU_ENTRY_SUBMENU,
-      submenu_callback,
+      submenu_radio_callback,
       (ui_callback_data_t)cbm2_model_menu },
     { "CBM2 memory setting",
       MENU_ENTRY_SUBMENU,

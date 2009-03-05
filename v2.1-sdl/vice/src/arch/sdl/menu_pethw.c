@@ -40,7 +40,6 @@
 UI_MENU_DEFINE_RADIO(VideoSize)
 
 static const ui_menu_entry_t pet_video_menu[] = {
-    SDL_MENU_ITEM_TITLE("Video size"),
     { "Auto (from ROM)",
       MENU_ENTRY_RESOURCE_RADIO,
       radio_VideoSize_callback,
@@ -226,7 +225,6 @@ static UI_MENU_CALLBACK(select_pet_model_callback)
 }
 
 static const ui_menu_entry_t pet_model_menu[] = {
-    SDL_MENU_ITEM_TITLE("Select PET model"),
     { "PET 2001-8N",
       MENU_ENTRY_OTHER,
       select_pet_model_callback,
@@ -304,7 +302,7 @@ const ui_menu_entry_t pet_hardware_menu[] = {
       (ui_callback_data_t)pet_memory_menu },
     { "Video size",
       MENU_ENTRY_SUBMENU,
-      submenu_callback,
+      submenu_radio_callback,
       (ui_callback_data_t)pet_video_menu },
     { "CRTC chip enable",
       MENU_ENTRY_RESOURCE_TOGGLE,
