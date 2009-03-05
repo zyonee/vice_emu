@@ -34,6 +34,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "archdep.h"
 #include "autostart.h"
 #include "lib.h"
 #include "menu_common.h"
@@ -232,6 +233,28 @@ const char *sdl_ui_menu_int_helper(int activated, ui_callback_data_t param, cons
     return NULL;
 }
 
+#if (FSDEV_DIR_SEP_CHR=='\\')
+char win32_path_buf[80];
+
+static char *sdl_ui_menu_file_translate_seperator(const char *text)
+{
+    int len;
+    int i;
+
+    len = strlen(text);
+
+    for (i=0; i<len; i++) {
+        if (text[i] == '\\') {
+            win32_path_buf[i] = '/';
+        } else {
+            win32_path_buf[i] = text[i];
+        }
+    }
+    win32_path_buf[i]=0;
+    return win32_path_buf;
+}
+#endif
+
 const char *sdl_ui_menu_file_string_helper(int activated, ui_callback_data_t param, const char *resource_name)
 {
     char *value = NULL;
@@ -248,8 +271,11 @@ const char *sdl_ui_menu_file_string_helper(int activated, ui_callback_data_t par
             lib_free(value);
         }
     } else {
+#if (FSDEV_DIR_SEP_CHR=='\\')
+        return (const char *)sdl_ui_menu_file_translate_seperator(previous);
+#else
         return previous;
+#endif
     }
     return NULL;
 }
-
