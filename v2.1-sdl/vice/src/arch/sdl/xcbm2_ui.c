@@ -231,7 +231,7 @@ fprintf(stderr,"%s\n",__func__);
 #endif
 
     if (cbm2_is_c500()) {
-        sdl_ui_set_menu_borders(0, 0);
+        sdl_ui_set_menu_borders(0, 0, 0);
         sdl_ui_set_menu_font(mem_chargen_rom + 0x800, 8, 8);
         sdl_ui_set_main_menu(xcbm5x0_main_menu);
     } else {
@@ -252,11 +252,11 @@ fprintf(stderr,"%s\n",__func__);
             }
         }
         sdl_ui_set_menu_font(cbm2_font, 8, (model == 0) ? 14 : 8);
-        sdl_ui_set_menu_borders(32, (model == 0) ? 16 : 40);
+        sdl_ui_set_menu_borders(32, (model == 0) ? 16 : 40, 0);
         sdl_ui_set_main_menu(xcbm6x0_7x0_main_menu);
     }
     sdl_ui_set_menu_colors(1, 0);
-    sdl_ui_set_double_x(1);
+    sdl_ui_set_double_x(1, 0);
     return 0;
 }
 

@@ -167,7 +167,7 @@ static UI_MENU_CALLBACK(radio_MachineVideoStandard_vic20_callback)
 {
     if (activated) {
         int value = (int)param;
-        sdl_ui_set_menu_borders(0, (value == MACHINE_SYNC_PAL) ? 28: 8);
+        sdl_ui_set_menu_borders(0, (value == MACHINE_SYNC_PAL) ? 28: 8, 0);
     }
     return sdl_ui_menu_radio_helper(activated, param, "MachineVideoStandard");
 }

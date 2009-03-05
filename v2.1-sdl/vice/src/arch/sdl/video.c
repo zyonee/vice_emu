@@ -55,9 +55,8 @@ static log_t sdlvideo_log = LOG_ERR;
 
 static int sdl_bitdepth;
 
-#define MAX_CANVAS_NUM 2           
+int sdl_active_canvas_num = 0;
 static int sdl_num_screens = 0;
-static int sdl_active_canvas_num = 0;
 static video_canvas_t *sdl_canvaslist[MAX_CANVAS_NUM];
 video_canvas_t *sdl_active_canvas = NULL;
 #ifdef HAVE_HWSCALE
@@ -433,7 +432,7 @@ fprintf(stderr,"%s: (%08x)\n",__func__,(unsigned int)canvas);
         exit(-1);
     }
 
-	canvas->video_draw_buffer_callback=NULL;
+    canvas->video_draw_buffer_callback=NULL;
 
     canvas->fullscreenconfig
         = (fullscreenconfig_t *)lib_calloc(1, sizeof(fullscreenconfig_t));
@@ -442,6 +441,8 @@ fprintf(stderr,"%s: (%08x)\n",__func__,(unsigned int)canvas);
     if (sdl_active_canvas_num == sdl_num_screens) {
         sdl_active_canvas = canvas;
     }
+
+    canvas->index = sdl_num_screens;
 
     sdl_canvaslist[sdl_num_screens++] = canvas;
 

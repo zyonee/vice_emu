@@ -36,12 +36,15 @@
 #include "viewport.h"
 #include "video.h"
 
+#define MAX_CANVAS_NUM 2
+
 typedef void (*video_refresh_func_t)(struct video_canvas_s *,
               int, int, int, int, unsigned int, unsigned int);
 
 struct video_canvas_s {
     unsigned int initialized;
     unsigned int created;
+    unsigned index;
     unsigned int width, height, depth;
     SDL_Surface* screen;
     struct video_render_config_s *videoconfig;
@@ -63,4 +66,6 @@ typedef struct video_canvas_s video_canvas_t;
 
 extern video_canvas_t *sdl_active_canvas;
 extern void sdl_video_resize(int w, int h);
+extern int sdl_active_canvas_num;
+
 #endif

@@ -77,6 +77,11 @@ static menufont_t menufont = { NULL, sdl_default_translation, 0, 0 };
 
 static menu_draw_t menu_draw;
 
+static int menu_borders_x[MAX_CANVAS_NUM];
+static int menu_borders_y[MAX_CANVAS_NUM];
+static int menu_double_x[MAX_CANVAS_NUM];
+static int sdl_params_canvas = MAX_CANVAS_NUM + 1;
+
 /* ------------------------------------------------------------------ */
 /* static functions */
 
@@ -355,6 +360,13 @@ void sdl_ui_activate_post_action(void)
 
 void sdl_ui_init_draw_params(void)
 {
+    if (sdl_params_canvas != sdl_active_canvas->index) {
+        menu_draw.extra_x = menu_borders_x[sdl_active_canvas->index];
+        menu_draw.extra_y = menu_borders_y[sdl_active_canvas->index];
+        menu_draw.max_text_x_double = menu_double_x[sdl_active_canvas->index] ? 2 : 1;
+        sdl_params_canvas = sdl_active_canvas->index;
+    }
+
     menu_draw.max_text_x = sdl_active_canvas->geometry->text_size.width * (menu_draw.max_text_x_double);
     menu_draw.max_text_y = sdl_active_canvas->geometry->text_size.height;
     menu_draw.pitch = sdl_active_canvas->draw_buffer->draw_buffer_pitch;
@@ -694,10 +706,10 @@ void sdl_ui_scroll_screen_up(void)
 /* ------------------------------------------------------------------ */
 /* Initialization/setting */
 
-void sdl_ui_set_menu_borders(int x, int y)
+void sdl_ui_set_menu_borders(int x, int y, int index)
 {
-    menu_draw.extra_x = x;
-    menu_draw.extra_y = y;
+    menu_borders_x[index] = x;
+    menu_borders_y[index] = y;
 }
 
 void sdl_ui_set_main_menu(const ui_menu_entry_t *menu)
@@ -729,7 +741,7 @@ void sdl_ui_set_menu_colors(int front, int back)
     }
 }
 
-void sdl_ui_set_double_x(int value)
+void sdl_ui_set_double_x(int value, int index)
 {
-    menu_draw.max_text_x_double = (value) ? 2 : 1;
+    menu_double_x[index] = value;
 }
