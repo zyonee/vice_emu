@@ -110,6 +110,8 @@ static const ui_menu_entry_t cbm2_memory_menu[] = {
     { NULL }
 };
 
+UI_MENU_DEFINE_TOGGLE(EmuID)
+
 const ui_menu_entry_t cbm5x0_hardware_menu[] = {
     { "Joystick settings",
       MENU_ENTRY_SUBMENU,
@@ -127,6 +129,10 @@ const ui_menu_entry_t cbm5x0_hardware_menu[] = {
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)cbm2_memory_menu },
+    { "Emulator ID",
+      MENU_ENTRY_RESOURCE_TOGGLE,
+      toggle_EmuID_callback,
+      NULL },
     { NULL }
 };
 
@@ -151,5 +157,9 @@ const ui_menu_entry_t cbm6x0_7x0_hardware_menu[] = {
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)cbm2_memory_menu },
+    { "Emulator ID",
+      MENU_ENTRY_RESOURCE_TOGGLE,
+      toggle_EmuID_callback,
+      NULL },
     { NULL }
 };

@@ -34,6 +34,7 @@
 #include "menu_sid.h"
 #include "uimenu.h"
 
+UI_MENU_DEFINE_TOGGLE(EmuID)
 UI_MENU_DEFINE_RADIO(HummerUserportDevice)
 UI_MENU_DEFINE_RADIO(HummerUserportJoyPort)
 #ifdef HAVE_MOUSE
@@ -77,6 +78,11 @@ static const ui_menu_entry_t c64dtv_userport_menu[] = {
       toggle_Mouse_callback,
       NULL },
 #endif
+    SDL_MENU_ITEM_SEPARATOR,
+    { "Emulator ID",
+      MENU_ENTRY_RESOURCE_TOGGLE,
+      toggle_EmuID_callback,
+      NULL },
     { NULL }
 };
 

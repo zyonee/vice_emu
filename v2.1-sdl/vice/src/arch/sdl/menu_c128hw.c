@@ -70,6 +70,9 @@ static const ui_menu_entry_t vdc_menu[] = {
     { NULL }
 };
 
+UI_MENU_DEFINE_TOGGLE(EmuID)
+UI_MENU_DEFINE_TOGGLE(IEEE488)
+
 const ui_menu_entry_t c128_hardware_menu[] = {
     { "Joystick settings",
       MENU_ENTRY_SUBMENU,
@@ -113,6 +116,10 @@ const ui_menu_entry_t c128_hardware_menu[] = {
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)ide64_menu },
+    { "IEEE488 interface",
+      MENU_ENTRY_RESOURCE_TOGGLE,
+      toggle_IEEE488_callback,
+      NULL },
 #if 0 /* TODO */
     { "MIDI settings",
       MENU_ENTRY_SUBMENU,
@@ -141,5 +148,9 @@ const ui_menu_entry_t c128_hardware_menu[] = {
       submenu_callback,
       (ui_callback_data_t)tfe_menu },
 #endif
+    { "Emulator ID",
+      MENU_ENTRY_RESOURCE_TOGGLE,
+      toggle_EmuID_callback,
+      NULL },
     { NULL }
 };

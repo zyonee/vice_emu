@@ -111,6 +111,8 @@ UI_MENU_DEFINE_TOGGLE(RAMBlock1)
 UI_MENU_DEFINE_TOGGLE(RAMBlock2)
 UI_MENU_DEFINE_TOGGLE(RAMBlock3)
 UI_MENU_DEFINE_TOGGLE(RAMBlock5)
+UI_MENU_DEFINE_TOGGLE(EmuID)
+UI_MENU_DEFINE_TOGGLE(IEEE488)
 
 const ui_menu_entry_t vic20_hardware_menu[] = {
     { "Joystick settings",
@@ -125,6 +127,14 @@ const ui_menu_entry_t vic20_hardware_menu[] = {
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)ram_menu },
+    { "IEEE488 interface",
+      MENU_ENTRY_RESOURCE_TOGGLE,
+      toggle_IEEE488_callback,
+      NULL },
+    { "Emulator ID",
+      MENU_ENTRY_RESOURCE_TOGGLE,
+      toggle_EmuID_callback,
+      NULL },
 /*
 #ifdef HAVE_MOUSE
     { "Paddle emulation",

@@ -278,6 +278,7 @@ static const ui_menu_entry_t pet_model_menu[] = {
 };
 
 UI_MENU_DEFINE_TOGGLE(Crtc)
+UI_MENU_DEFINE_TOGGLE(EmuID)
 
 const ui_menu_entry_t pet_hardware_menu[] = {
     { "Select PET model",
@@ -312,6 +313,10 @@ const ui_menu_entry_t pet_hardware_menu[] = {
     { "CRTC chip enable",
       MENU_ENTRY_RESOURCE_TOGGLE,
       toggle_Crtc_callback,
+      NULL },
+    { "Emulator ID",
+      MENU_ENTRY_RESOURCE_TOGGLE,
+      toggle_EmuID_callback,
       NULL },
     { NULL }
 };
