@@ -32,6 +32,7 @@
 
 #include "menu_common.h"
 #include "menu_joystick.h"
+#include "menu_ram.h"
 #include "menu_sid.h"
 #include "uimenu.h"
 
@@ -118,6 +119,10 @@ const ui_menu_entry_t cbm5x0_hardware_menu[] = {
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)sid_cbm2_menu },
+    { "RAM pattern settings",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)ram_menu },
     { "CBM2 memory setting",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
@@ -134,6 +139,10 @@ const ui_menu_entry_t cbm6x0_7x0_hardware_menu[] = {
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)sid_cbm2_menu },
+    { "RAM pattern settings",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)ram_menu },
     { "CBM2 model settings",
       MENU_ENTRY_SUBMENU,
       submenu_radio_callback,

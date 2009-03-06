@@ -30,6 +30,7 @@
 #include "c64dtv-resources.h"
 #include "menu_common.h"
 #include "menu_joystick.h"
+#include "menu_ram.h"
 #include "menu_sid.h"
 #include "uimenu.h"
 
@@ -93,6 +94,10 @@ const ui_menu_entry_t c64dtv_hardware_menu[] = {
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)sid_dtv_menu },
+    { "RAM pattern settings",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)ram_menu },
     SDL_MENU_ITEM_SEPARATOR,
     SDL_MENU_ITEM_TITLE("C64DTV ROM image"),
     { "C64DTV ROM image file",

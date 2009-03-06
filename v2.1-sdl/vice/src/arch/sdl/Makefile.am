@@ -59,6 +59,8 @@ libarch_a_SOURCES = \
 	menu_plus4cart.h \
 	menu_plus4hw.c \
 	menu_plus4hw.h \
+	menu_ram.c \
+	menu_ram.h \
 	menu_reset.c \
 	menu_reset.h \
 	menu_screenshot.c \

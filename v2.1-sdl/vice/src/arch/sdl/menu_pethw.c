@@ -32,6 +32,7 @@
 
 #include "menu_common.h"
 #include "menu_joystick.h"
+#include "menu_ram.h"
 #include "menu_sid.h"
 #include "uimenu.h"
 
@@ -292,6 +293,10 @@ const ui_menu_entry_t pet_hardware_menu[] = {
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)sid_pet_menu },
+    { "RAM pattern settings",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)ram_menu },
     { "PET REU settings",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
