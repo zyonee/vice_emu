@@ -36,6 +36,7 @@
 #include "uifilereq.h"
 #include "uimenu.h"
 #include "vicii.h"
+#include "videoarch.h"
 
 UI_MENU_DEFINE_RADIO(VICIIBorderMode)
 
@@ -163,16 +164,50 @@ UI_MENU_DEFINE_FILE_STRING(CrtcPaletteFile)
 UI_MENU_DEFINE_FILE_STRING(TEDPaletteFile)
 UI_MENU_DEFINE_FILE_STRING(VICPaletteFile)
 
+static UI_MENU_CALLBACK(radio_VideoOutput_c128_callback)
+{
+    int value = (int)param;
+
+    if (activated) {
+
+        /* placeholder for function that switches screens */
+
+        sdl_ui_set_menu_borders(0, (sdl_active_canvas->index == 0) ? 0: 0);	/* vicii value, vdc value */
+        sdl_ui_set_double_x((sdl_active_canvas->index == 0) ? 0: 0);		/* vicii value, vdc value */
+
+        machine_trigger_reset(MACHINE_RESET_MODE_HARD);
+        return sdl_menu_text_exit_ui;
+    } else {
+        if (value == sdl_active_canvas->index) {
+            return sdl_menu_text_tick;
+        }
+        return NULL;
+    }
+}
+
 static UI_MENU_CALLBACK(radio_MachineVideoStandard_vic20_callback)
 {
     if (activated) {
         int value = (int)param;
-        sdl_ui_set_menu_borders(0, (value == MACHINE_SYNC_PAL) ? 28: 8, 0);
+        sdl_ui_set_menu_borders(0, (value == MACHINE_SYNC_PAL) ? 28: 8);
+        resources_set_int("MachineVideoStandard", value);
+        machine_trigger_reset(MACHINE_RESET_MODE_HARD);
+        return sdl_menu_text_exit_ui;
     }
     return sdl_ui_menu_radio_helper(activated, param, "MachineVideoStandard");
 }
 
 const ui_menu_entry_t c128_video_menu[] = {
+    SDL_MENU_ITEM_TITLE("Video output"),
+    { "VICII (40 cols)",
+      MENU_ENTRY_RESOURCE_RADIO,
+      radio_VideoOutput_c128_callback,
+      (ui_callback_data_t)0 },
+    { "VDC (80 cols)",
+      MENU_ENTRY_RESOURCE_RADIO,
+      radio_VideoOutput_c128_callback,
+      (ui_callback_data_t)1 },
+    SDL_MENU_ITEM_SEPARATOR,
     { "Fullscreen",
       MENU_ENTRY_RESOURCE_TOGGLE,
       toggle_VICIIFullscreen_callback,

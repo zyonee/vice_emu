@@ -30,6 +30,7 @@
 
 #include "types.h"
 
+#include "machine.h"
 #include "menu_common.h"
 #include "menu_joystick.h"
 #include "menu_ram.h"
@@ -37,24 +38,6 @@
 #include "uimenu.h"
 
 /* PET VIDEO SETTINGS */
-
-UI_MENU_DEFINE_RADIO(VideoSize)
-
-static const ui_menu_entry_t pet_video_menu[] = {
-    { "Auto (from ROM)",
-      MENU_ENTRY_RESOURCE_RADIO,
-      radio_VideoSize_callback,
-      (ui_callback_data_t)0 },
-    { "40 Cols",
-      MENU_ENTRY_RESOURCE_RADIO,
-      radio_VideoSize_callback,
-      (ui_callback_data_t)40 },
-    { "80 Cols",
-      MENU_ENTRY_RESOURCE_RADIO,
-      radio_VideoSize_callback,
-      (ui_callback_data_t)80 },
-    { NULL }
-};
 
 /* PET MEMORY SETTINGS */
 
@@ -183,43 +166,68 @@ static UI_MENU_CALLBACK(select_pet_model_callback)
         switch (model)
         {
             case PET_MODEL_2001_8N:
+                sdl_ui_set_menu_borders(32, 40);
+                sdl_ui_set_double_x(0);
                 pet_set_model("2001", NULL);
                 break;
             case PET_MODEL_3008:
+                sdl_ui_set_menu_borders(32, 40);
+                sdl_ui_set_double_x(0);
                 pet_set_model("3008", NULL);
                 break;
             case PET_MODEL_3016:
+                sdl_ui_set_menu_borders(32, 40);
+                sdl_ui_set_double_x(0);
                 pet_set_model("3016", NULL);
                 break;
             case PET_MODEL_3032:
+                sdl_ui_set_menu_borders(32, 40);
+                sdl_ui_set_double_x(0);
                 pet_set_model("3032", NULL);
                 break;
             case PET_MODEL_3032B:
+                sdl_ui_set_menu_borders(32, 40);
+                sdl_ui_set_double_x(0);
                 pet_set_model("3032B", NULL);
                 break;
             case PET_MODEL_4016:
+                sdl_ui_set_menu_borders(32, 40);
+                sdl_ui_set_double_x(0);
                 pet_set_model("4016", NULL);
                 break;
             case PET_MODEL_4032:
+                sdl_ui_set_menu_borders(32, 40);
+                sdl_ui_set_double_x(0);
                 pet_set_model("4032", NULL);
                 break;
             case PET_MODEL_4032B:
+                sdl_ui_set_menu_borders(32, 40);
+                sdl_ui_set_double_x(0);
                 pet_set_model("4032B", NULL);
                 break;
             case PET_MODEL_8032:
+                sdl_ui_set_menu_borders(32, 28);
+                sdl_ui_set_double_x(1);
                 pet_set_model("8032", NULL);
                 break;
             case PET_MODEL_8096:
+                sdl_ui_set_menu_borders(32, 28);
+                sdl_ui_set_double_x(1);
                 pet_set_model("8096", NULL);
                 break;
             case PET_MODEL_8296:
+                sdl_ui_set_menu_borders(32, 28);
+                sdl_ui_set_double_x(1);
                 pet_set_model("8296", NULL);
                 break;
             default:
             case PET_MODEL_SUPERPET:
+                sdl_ui_set_menu_borders(32, 28);
+                sdl_ui_set_double_x(1);
                 pet_set_model("SuperPET", NULL);
                 break;
         }
+        machine_trigger_reset(MACHINE_RESET_MODE_HARD);
         return sdl_menu_text_exit_ui;
     }
     return NULL;
@@ -306,10 +314,6 @@ const ui_menu_entry_t pet_hardware_menu[] = {
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)pet_memory_menu },
-    { "Video size",
-      MENU_ENTRY_SUBMENU,
-      submenu_radio_callback,
-      (ui_callback_data_t)pet_video_menu },
     { "CRTC chip enable",
       MENU_ENTRY_RESOURCE_TOGGLE,
       toggle_Crtc_callback,

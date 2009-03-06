@@ -30,6 +30,8 @@
 
 #include "types.h"
 
+#include "machine.h"
+#include "menu_cbm2hw.h"
 #include "menu_common.h"
 #include "menu_joystick.h"
 #include "menu_ram.h"
@@ -45,25 +47,92 @@ UI_MENU_DEFINE_TOGGLE(Ram4)
 UI_MENU_DEFINE_TOGGLE(Ram6)
 UI_MENU_DEFINE_TOGGLE(RamC)
 
+/* CBM2 MODEL SELECTION */
+
+enum {
+    CBM2_MODEL_610,
+    CBM2_MODEL_620,
+    CBM2_MODEL_620PLUS,
+    CBM2_MODEL_710,
+    CBM2_MODEL_720,
+    CBM2_MODEL_720PLUS
+};
+
+static UI_MENU_CALLBACK(select_cbm2_model_callback)
+{
+    int model;
+
+    model = (int)param;
+    if (activated) {
+        switch (model)
+        {
+            case CBM2_MODEL_610:
+                cbm2_set_model("610", NULL);
+                cbm2ui_free_font();
+                cbm2ui_set_menu_parameters();
+                break;
+            case CBM2_MODEL_620:
+                cbm2_set_model("620", NULL);
+                cbm2ui_free_font();
+                cbm2ui_set_menu_parameters();
+                break;
+            case CBM2_MODEL_620PLUS:
+                cbm2_set_model("620+", NULL);
+                cbm2ui_free_font();
+                cbm2ui_set_menu_parameters();
+                break;
+            case CBM2_MODEL_710:
+                cbm2_set_model("710", NULL);
+                cbm2ui_free_font();
+                cbm2ui_set_menu_parameters();
+                break;
+            case CBM2_MODEL_720:
+                cbm2_set_model("720", NULL);
+                cbm2ui_free_font();
+                cbm2ui_set_menu_parameters();
+                break;
+            default:
+            case CBM2_MODEL_720PLUS:
+                cbm2_set_model("720+", NULL);
+                cbm2ui_free_font();
+                cbm2ui_set_menu_parameters();
+                break;
+        }
+        machine_trigger_reset(MACHINE_RESET_MODE_HARD);
+        return sdl_menu_text_exit_ui;
+    }
+    return NULL;
+}
+
 static const ui_menu_entry_t cbm2_model_menu[] = {
-    SDL_MENU_ITEM_TITLE("Model line"),
-    { "7x0 (50 Hz)",
-      MENU_ENTRY_RESOURCE_RADIO,
-      radio_ModelLine_callback,
-      (ui_callback_data_t)0 },
-    { "6x0 60 Hz",
-      MENU_ENTRY_RESOURCE_RADIO,
-      radio_ModelLine_callback,
-      (ui_callback_data_t)1 },
-    { "6x0 50 Hz",
-      MENU_ENTRY_RESOURCE_RADIO,
-      radio_ModelLine_callback,
-      (ui_callback_data_t)2 },
+    { "CBM 610",
+      MENU_ENTRY_OTHER,
+      select_cbm2_model_callback,
+      (ui_callback_data_t)CBM2_MODEL_610},
+    { "CBM 620",
+      MENU_ENTRY_OTHER,
+      select_cbm2_model_callback,
+      (ui_callback_data_t)CBM2_MODEL_620},
+    { "CBM 620+",
+      MENU_ENTRY_OTHER,
+      select_cbm2_model_callback,
+      (ui_callback_data_t)CBM2_MODEL_620PLUS},
+    { "CBM 710",
+      MENU_ENTRY_OTHER,
+      select_cbm2_model_callback,
+      (ui_callback_data_t)CBM2_MODEL_710},
+    { "CBM 720",
+      MENU_ENTRY_OTHER,
+      select_cbm2_model_callback,
+      (ui_callback_data_t)CBM2_MODEL_720},
+    { "CBM 720+",
+      MENU_ENTRY_OTHER,
+      select_cbm2_model_callback,
+      (ui_callback_data_t)CBM2_MODEL_720PLUS},
     { NULL }
 };
 
 static const ui_menu_entry_t cbm2_memory_menu[] = {
-    SDL_MENU_ITEM_SEPARATOR,
     SDL_MENU_ITEM_TITLE("CBM2 memory size"),
     { "128K",
       MENU_ENTRY_RESOURCE_RADIO,
@@ -137,6 +206,11 @@ const ui_menu_entry_t cbm5x0_hardware_menu[] = {
 };
 
 const ui_menu_entry_t cbm6x0_7x0_hardware_menu[] = {
+    { "Select CBM2 model",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)cbm2_model_menu },
+    SDL_MENU_ITEM_SEPARATOR,
     { "Joystick settings",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
@@ -149,10 +223,6 @@ const ui_menu_entry_t cbm6x0_7x0_hardware_menu[] = {
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)ram_menu },
-    { "CBM2 model settings",
-      MENU_ENTRY_SUBMENU,
-      submenu_radio_callback,
-      (ui_callback_data_t)cbm2_model_menu },
     { "CBM2 memory setting",
       MENU_ENTRY_SUBMENU,
       submenu_callback,

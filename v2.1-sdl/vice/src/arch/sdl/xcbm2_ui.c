@@ -222,16 +222,12 @@ static const ui_menu_entry_t xcbm5x0_main_menu[] = {
 
 static BYTE *cbm2_font;
 
-int cbm2ui_init(void)
+void cbm2ui_set_menu_parameters(void)
 {
     int i, j, model;
 
-#ifdef SDL_DEBUG
-fprintf(stderr,"%s\n",__func__);
-#endif
-
     if (cbm2_is_c500()) {
-        sdl_ui_set_menu_borders(0, 0, 0);
+        sdl_ui_set_menu_borders(0, 0);
         sdl_ui_set_menu_font(mem_chargen_rom + 0x800, 8, 8);
         sdl_ui_set_main_menu(xcbm5x0_main_menu);
     } else {
@@ -252,12 +248,23 @@ fprintf(stderr,"%s\n",__func__);
             }
         }
         sdl_ui_set_menu_font(cbm2_font, 8, (model == 0) ? 14 : 8);
-        sdl_ui_set_menu_borders(32, (model == 0) ? 16 : 40, 0);
+        sdl_ui_set_menu_borders(32, (model == 0) ? 16 : 40);
         sdl_ui_set_main_menu(xcbm6x0_7x0_main_menu);
     }
     sdl_ui_set_menu_colors(1, 0);
-    sdl_ui_set_double_x(1, 0);
+    sdl_ui_set_double_x(1);
     return 0;
+}
+
+int cbm2ui_init(void)
+{
+    cbm2ui_set_menu_parameters();
+    return 0;
+}
+
+void cbm2ui_free_font(void)
+{
+    lib_free(cbm2_font);
 }
 
 void cbm2ui_shutdown(void)
@@ -266,5 +273,5 @@ void cbm2ui_shutdown(void)
 fprintf(stderr,"%s\n",__func__);
 #endif
 
-    lib_free(cbm2_font);
+    cbm2ui_free_font();
 }

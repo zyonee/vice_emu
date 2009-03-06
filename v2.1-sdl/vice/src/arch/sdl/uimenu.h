@@ -113,8 +113,8 @@ extern void sdl_ui_set_main_menu(const ui_menu_entry_t *menu);
 extern ui_menu_entry_t *sdl_ui_get_main_menu(void);
 extern void sdl_ui_set_menu_font(BYTE *font, int w, int h);
 extern void sdl_ui_set_menu_colors(int front, int back);
-extern void sdl_ui_set_menu_borders(int x, int y, int index);
-extern void sdl_ui_set_double_x(int value, int index);
+extern void sdl_ui_set_menu_borders(int x, int y);
+extern void sdl_ui_set_double_x(int value);
 extern menu_draw_t *sdl_ui_get_menu_param(void);
 
 extern BYTE *sdl_ui_get_draw_buffer(void);

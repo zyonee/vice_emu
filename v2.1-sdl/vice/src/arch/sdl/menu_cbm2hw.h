@@ -34,4 +34,7 @@
 extern const ui_menu_entry_t cbm5x0_hardware_menu[];
 extern const ui_menu_entry_t cbm6x0_7x0_hardware_menu[];
 
+extern void cbm2ui_set_menu_parameters(void);
+extern void cbm2ui_free_font(void);
+
 #endif
