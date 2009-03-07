@@ -1,5 +1,5 @@
 /*
- * menu_c64cart.c - Implementation of the c64 cartridge settings menu for the SDL UI.
+ * menu_c128cart.c - Implementation of the c128 cartridge settings menu for the SDL UI.
  *
  * Written by
  *  Marco van den Heuvel <blackystardust68@yahoo.com>
@@ -31,15 +31,43 @@
 #include <string.h>
 
 #include "cartridge.h"
+#include "menu_c128cart.h"
 #include "menu_common.h"
-#include "menu_c64cart.h"
 #include "menu_c64cart_common.h"
 #include "ui.h"
 #include "uimenu.h"
 
 UI_MENU_DEFINE_TOGGLE(CartridgeReset)
 
-const ui_menu_entry_t c64cart_menu[] = {
+UI_MENU_DEFINE_TOGGLE(InternalFunctionROM)
+UI_MENU_DEFINE_TOGGLE(ExternalFunctionROM)
+UI_MENU_DEFINE_FILE_STRING(InternalFunctionName)
+UI_MENU_DEFINE_FILE_STRING(ExternalFunctionName)
+
+static const ui_menu_entry_t function_rom_menu[] = {
+    SDL_MENU_ITEM_TITLE("Internal function ROM"),
+    { "Enable",
+      MENU_ENTRY_RESOURCE_TOGGLE,
+      toggle_InternalFunctionROM_callback,
+      NULL },
+    { "ROM file",
+      MENU_ENTRY_DIALOG,
+      file_string_InternalFunctionName_callback,
+      (ui_callback_data_t)"Select internal function ROM image" },
+    SDL_MENU_ITEM_SEPARATOR,
+    SDL_MENU_ITEM_TITLE("External function ROM"),
+    { "Enable",
+      MENU_ENTRY_RESOURCE_TOGGLE,
+      toggle_ExternalFunctionROM_callback,
+      NULL },
+    { "ROM file",
+      MENU_ENTRY_DIALOG,
+      file_string_ExternalFunctionName_callback,
+      (ui_callback_data_t)"Select external function ROM image" },
+    { NULL }
+};
+
+const ui_menu_entry_t c128cart_menu[] = {
     { "Attach CRT image",
       MENU_ENTRY_DIALOG,
       attach_c64_cart_callback,
@@ -122,5 +150,9 @@ const ui_menu_entry_t c64cart_menu[] = {
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)expert_cart_menu },
+    { "Function ROM settings",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)function_rom_menu },
     { NULL }
 };

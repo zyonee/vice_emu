@@ -1,5 +1,5 @@
 /*
- * menu_c64cart.h - Implementation of the c64 cartridge settings menu for the SDL UI.
+ * menu_c128cart.h - Implementation of the c128 cartridge settings menu for the SDL UI.
  *
  * Written by
  *  Marco van den Heuvel <blackystardust68@yahoo.com>
@@ -24,13 +24,13 @@
  *
  */
 
-#ifndef VICE_UIMENU_C64CART_H
-#define VICE_UIMENU_C64CART_H
+#ifndef VICE_UIMENU_C128CART_H
+#define VICE_UIMENU_C128CART_H
 
 #include "vice.h"
 
 #include "uimenu.h"
 
-extern const ui_menu_entry_t c64cart_menu[];
+extern const ui_menu_entry_t c128cart_menu[];
 
 #endif
