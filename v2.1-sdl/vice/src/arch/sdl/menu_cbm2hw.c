@@ -30,7 +30,7 @@
 
 #include "types.h"
 
-#include "machine.h"
+#include "cbm2mem.h"
 #include "menu_cbm2hw.h"
 #include "menu_common.h"
 #include "menu_joystick.h"
@@ -38,7 +38,6 @@
 #include "menu_sid.h"
 #include "uimenu.h"
 
-UI_MENU_DEFINE_RADIO(ModelLine)
 UI_MENU_DEFINE_RADIO(RamSize)
 UI_MENU_DEFINE_TOGGLE(Ram08)
 UI_MENU_DEFINE_TOGGLE(Ram1)
@@ -64,8 +63,7 @@ static UI_MENU_CALLBACK(select_cbm2_model_callback)
 
     model = (int)param;
     if (activated) {
-        switch (model)
-        {
+        switch (model) {
             case CBM2_MODEL_610:
                 cbm2_set_model("610", NULL);
                 break;
@@ -86,8 +84,6 @@ static UI_MENU_CALLBACK(select_cbm2_model_callback)
                 cbm2_set_model("720+", NULL);
                 break;
         }
-        machine_trigger_reset(MACHINE_RESET_MODE_HARD);
-        return sdl_menu_text_exit_ui;
     }
     return NULL;
 }

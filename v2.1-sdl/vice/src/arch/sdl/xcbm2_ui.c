@@ -226,56 +226,48 @@ static BYTE *cbm2_font_8 = NULL;
 
 void cbm2ui_set_menu_params(int index)
 {
-    int model;
+    int model, i, j;
 
-    if (cbm2_is_c500()) {
-        sdl_ui_set_menu_borders(0, 0);
-        sdl_ui_set_menu_font(mem_chargen_rom + 0x800, 8, 8);
-    } else {
-        resources_get_int("ModelLine", &model);
+    resources_get_int("ModelLine", &model);
 
-        if (model == 0) {
-            sdl_ui_set_menu_borders(32, 16);
-            sdl_ui_set_menu_font(cbm2_font_14, 8, 14);
-        } else {
-            sdl_ui_set_menu_borders(32, 40);
-            sdl_ui_set_menu_font(cbm2_font_8, 8, 8);
+    if (model == 0) {
+        sdl_ui_set_menu_borders(32, 16);
+        for (i=0; i<256; i++) {
+            for (j=0; j<14; j++) {
+                cbm2_font_14[(i*14)+j] = mem_chargen_rom[(i*16)+j+1];
+            }
         }
+        sdl_ui_set_menu_font(cbm2_font_14, 8, 14);
+    } else {
+        sdl_ui_set_menu_borders(32, 40);
+        for (i=0; i<256; i++) {
+            for (j=0; j<8; j++) {
+                cbm2_font_8[(i*8)+j] = mem_chargen_rom[(i*16)+j];
+            }
+        }
+        sdl_ui_set_menu_font(cbm2_font_8, 8, 8);
     }
     return;
 }
 
 int cbm2ui_init(void)
 {
-    int i, j;
-
     cbm2_font_14 = lib_malloc(14*256);
-    for (i=0; i<256; i++) {
-        for (j=0; j<14; j++) {
-            cbm2_font_14[(i*14)+j] = mem_chargen_rom[(i*16)+j+1];
-        }
-    }
-
     cbm2_font_8 = lib_malloc(8*256);
-    for (i=0; i<256; i++) {
-        for (j=0; j<8; j++) {
-            cbm2_font_8[(i*8)+j] = mem_chargen_rom[(i*16)+j];
-        }
-    }
 
     sdl_ui_set_menu_colors(1, 0);
     sdl_ui_set_double_x(1);
 
     if (cbm2_is_c500()) {
         sdl_ui_set_menu_params = NULL;  /* no parameter changes needed */
+        sdl_ui_set_menu_borders(0, 0);
+        sdl_ui_set_menu_font(mem_chargen_rom + 0x800, 8, 8);
         sdl_ui_set_main_menu(xcbm5x0_main_menu);
         sdl_video_canvas_switch(1);
     } else {
         sdl_ui_set_menu_params = cbm2ui_set_menu_params;
         sdl_ui_set_main_menu(xcbm6x0_7x0_main_menu);
     }
-
-    cbm2ui_set_menu_params(0);
     return 0;
 }
 

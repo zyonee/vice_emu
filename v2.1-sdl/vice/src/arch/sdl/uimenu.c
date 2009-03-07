@@ -714,17 +714,13 @@ void sdl_ui_set_main_menu(const ui_menu_entry_t *menu)
 void sdl_ui_set_menu_font(BYTE *font, int w, int h)
 {
     int i;
-    static int translate_done = 0;
 
     menufont.font = font;
     menufont.w = w;
     menufont.h = h;
 
-    if (!translate_done) {
-        for (i=0; i<256; ++i) {
-            menufont.translate[i] = h*charset_petcii_to_screencode(charset_p_topetcii((char)i), 0);
-        }
-        translate_done = 1;
+    for (i=0; i<256; ++i) {
+        menufont.translate[i] = h*charset_petcii_to_screencode(charset_p_topetcii((char)i), 0);
     }
 }
 
