@@ -34,6 +34,7 @@
 #include "cbm2.h"
 #include "cbm2mem.h"
 #include "lib.h"
+#include "menu_cbm2cart.h"
 #include "menu_cbm2hw.h"
 #include "menu_common.h"
 #include "menu_drive.h"
@@ -78,6 +79,10 @@ static const ui_menu_entry_t xcbm6x0_7x0_main_menu[] = {
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)tape_menu },
+    { "Cartridge",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)cbm2cart_menu },
     { "Machine settings",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
