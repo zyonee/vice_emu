@@ -40,7 +40,6 @@ typedef struct fullscreenconfig_s fullscreenconfig_t;
 
 struct ui_menu_entry_s;
 
-extern int fullscreen_is_enabled; 
 extern int fullscreen_available(void);
 
 extern void fullscreen_shutdown(void);

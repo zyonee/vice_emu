@@ -161,7 +161,7 @@ int plus4ui_init(void)
 fprintf(stderr,"%s\n",__func__);
 #endif
 
-    sdl_ui_set_menu_params = NULL;		/* no param changes needed */
+    sdl_ui_set_menu_params = NULL; /* no param changes needed */
 
     sdl_ui_set_main_menu(xplus4_main_menu);
 

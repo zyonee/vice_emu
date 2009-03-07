@@ -66,6 +66,7 @@ typedef struct video_canvas_s video_canvas_t;
 
 extern video_canvas_t *sdl_active_canvas;
 extern void sdl_video_resize(int w, int h);
+extern void sdl_video_canvas_switch(int index);
 extern int sdl_active_canvas_num;
 
 #endif

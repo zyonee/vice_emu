@@ -145,7 +145,7 @@ int c64dtvui_init(void)
 fprintf(stderr,"%s\n",__func__);
 #endif
 
-    sdl_ui_set_menu_params = NULL;		/* no parameter changes neeeded */
+    sdl_ui_set_menu_params = NULL; /* no parameter changes neeeded */
 
     sdl_ui_set_main_menu(x64dtv_main_menu);
     sdl_ui_set_menu_font(mem_chargen_rom + 0x800, 8, 8);

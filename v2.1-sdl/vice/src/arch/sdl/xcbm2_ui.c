@@ -49,6 +49,7 @@
 #include "resources.h"
 #include "ui.h"
 #include "uimenu.h"
+#include "videoarch.h"
 
 /* temporary empty cbm2 rom menu, this one will be moved out to menu_cbm2rom.c */
 static ui_menu_entry_t cbm2_rom_menu[] = {
@@ -220,56 +221,61 @@ static const ui_menu_entry_t xcbm5x0_main_menu[] = {
     { NULL }
 };
 
-static BYTE *cbm2_font = NULL;
+static BYTE *cbm2_font_14 = NULL;
+static BYTE *cbm2_font_8 = NULL;
 
-void cbm2ui_set_menu_params(void)
+void cbm2ui_set_menu_params(int index)
 {
-    int i, j, model;
+    int model;
 
     if (cbm2_is_c500()) {
         sdl_ui_set_menu_borders(0, 0);
         sdl_ui_set_menu_font(mem_chargen_rom + 0x800, 8, 8);
     } else {
-
         resources_get_int("ModelLine", &model);
-        if (cbm2_font != NULL) {
-            lib_free(cbm2_font);
-        }
 
         if (model == 0) {
-            cbm2_font=lib_malloc(14*256);
-            for (i=0; i<256; i++) {
-                for (j=0; j<14; j++) {
-                    cbm2_font[(i*14)+j]=mem_chargen_rom[(i*16)+j+1];
-                }
-            }
+            sdl_ui_set_menu_borders(32, 16);
+            sdl_ui_set_menu_font(cbm2_font_14, 8, 14);
         } else {
-            cbm2_font=lib_malloc(8*256);
-            for (i=0; i<256; i++) {
-                for (j=0; j<8; j++) {
-                    cbm2_font[(i*8)+j]=mem_chargen_rom[(i*16)+j];
-                }
-            }
+            sdl_ui_set_menu_borders(32, 40);
+            sdl_ui_set_menu_font(cbm2_font_8, 8, 8);
         }
-        sdl_ui_set_menu_font(cbm2_font, 8, (model == 0) ? 14 : 8);
-        sdl_ui_set_menu_borders(32, (model == 0) ? 16 : 40);
     }
-    sdl_ui_set_menu_colors(1, 0);
-    sdl_ui_set_double_x(1);
-    return 0;
+    return;
 }
 
 int cbm2ui_init(void)
 {
+    int i, j;
+
+    cbm2_font_14 = lib_malloc(14*256);
+    for (i=0; i<256; i++) {
+        for (j=0; j<14; j++) {
+            cbm2_font_14[(i*14)+j] = mem_chargen_rom[(i*16)+j+1];
+        }
+    }
+
+    cbm2_font_8 = lib_malloc(8*256);
+    for (i=0; i<256; i++) {
+        for (j=0; j<8; j++) {
+            cbm2_font_8[(i*8)+j] = mem_chargen_rom[(i*16)+j];
+        }
+    }
+
+    sdl_ui_set_menu_colors(1, 0);
+    sdl_ui_set_double_x(1);
+
     if (cbm2_is_c500()) {
-        sdl_ui_set_menu_params = NULL;	/* no parameter changes needed */
+        sdl_ui_set_menu_params = NULL;  /* no parameter changes needed */
         sdl_ui_set_main_menu(xcbm5x0_main_menu);
+        sdl_video_canvas_switch(1);
     } else {
         sdl_ui_set_menu_params = cbm2ui_set_menu_params;
         sdl_ui_set_main_menu(xcbm6x0_7x0_main_menu);
     }
 
-    cbm2ui_set_menu_params();
+    cbm2ui_set_menu_params(0);
     return 0;
 }
 
@@ -278,6 +284,6 @@ void cbm2ui_shutdown(void)
 #ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
 #endif
-
-    lib_free(cbm2_font);
+    lib_free(cbm2_font_14);
+    lib_free(cbm2_font_8);
 }

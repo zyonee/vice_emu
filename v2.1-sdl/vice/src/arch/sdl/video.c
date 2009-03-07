@@ -139,7 +139,7 @@ fprintf(stderr,"%s\n",__func__);
 int video_init(void)
 {
     sdlvideo_log = log_open("SDLVideo");
-	return 0;
+    return 0;
 }
 
 void video_shutdown(void)
@@ -153,8 +153,9 @@ fprintf(stderr,"%s\n",__func__);
 
 /* ------------------------------------------------------------------------- */
 
-video_canvas_t *video_canvas_create(video_canvas_t *canvas, 
-		unsigned int *width, unsigned int *height, int mapped)
+video_canvas_t *video_canvas_create(video_canvas_t *canvas,
+                                    unsigned int *width, unsigned int *height,
+                                    int mapped)
 {
     SDL_Surface *new_screen;
     unsigned int new_width, new_height;
@@ -175,7 +176,7 @@ video_canvas_t *video_canvas_create(video_canvas_t *canvas,
     new_width = *width;
     new_height = *height;
 
-    if (fullscreen_is_enabled) {
+    if (canvas->fullscreenconfig->enable) {
         flags = SDL_FULLSCREEN | SDL_HWSURFACE;
     }
 
@@ -188,11 +189,11 @@ video_canvas_t *video_canvas_create(video_canvas_t *canvas,
     }
 
 #ifdef HAVE_HWSCALE
-    if (canvas->videoconfig->hwscale) {
+    if ((canvas == sdl_active_canvas) && (canvas->videoconfig->hwscale)) {
         flags = SDL_OPENGL | SDL_RESIZABLE;
         hwscale = 1;
 
-        if (fullscreen_is_enabled) {
+        if (canvas->fullscreenconfig->enable) {
             flags |= SDL_FULLSCREEN;
         }
 
@@ -263,7 +264,7 @@ video_canvas_t *video_canvas_create(video_canvas_t *canvas,
     canvas->height = new_height;
     canvas->screen = new_screen;
 
-    log_message(sdlvideo_log, "%ix%i %ibpp %s%s", new_width, new_height, sdl_bitdepth, hwscale?"OpenGL ":"", fullscreen_is_enabled?"(fullscreen)":"");
+    log_message(sdlvideo_log, "%ix%i %ibpp %s%s", new_width, new_height, sdl_bitdepth, hwscale?"OpenGL ":"", (canvas->fullscreenconfig->enable)?"(fullscreen)":"");
 
     video_canvas_set_palette(canvas, canvas->palette);
 
@@ -406,7 +407,9 @@ fprintf(stderr,"%s: %i,%i (%08x)\n",__func__,width,height,(unsigned int)canvas);
 
 void sdl_video_resize(int w, int h)
 {
-/*fprintf(stderr,"%s: %i,%i\n",__func__,w,h);*/
+#ifdef SDL_DEBUG
+fprintf(stderr,"%s: %i,%i\n",__func__,w,h);
+#endif
 #ifdef HAVE_HWSCALE
     if (sdl_active_canvas->videoconfig->hwscale) {
         sdl_active_canvas->hwscale_screen = SDL_SetVideoMode(w, h, sdl_bitdepth, SDL_OPENGL | SDL_RESIZABLE);
@@ -419,6 +422,68 @@ void sdl_video_resize(int w, int h)
         }
     }
 #endif
+}
+
+void sdl_video_canvas_switch(int index)
+{
+    int old_active;
+    unsigned int w, h;
+    struct video_canvas_s *canvas;
+
+#ifdef SDL_DEBUG
+fprintf(stderr,"%s: %i->%i\n",__func__,sdl_active_canvas_num, index);
+#endif
+
+    if (sdl_active_canvas_num == index) {
+        return;
+    }
+
+    if (index >= sdl_num_screens) {
+        return;
+    }
+
+    if (sdl_canvaslist[index]->screen != NULL) {
+        SDL_FreeSurface(sdl_canvaslist[index]->screen);
+        sdl_canvaslist[index]->screen = NULL;
+    }
+
+    old_active = sdl_active_canvas_num;
+    sdl_active_canvas_num = index;
+
+    canvas = sdl_canvaslist[sdl_active_canvas_num];
+    sdl_active_canvas = canvas;
+
+    w = canvas->width;
+    h = canvas->height;
+
+    if (canvas->videoconfig->doublesizex) {
+        w /= 2;
+    }
+
+    if (canvas->videoconfig->doublesizey) {
+        h /= 2;
+    }
+
+    video_canvas_create(canvas, &w, &h, 0);
+
+    canvas = sdl_canvaslist[old_active];
+
+    if(!canvas->initialized) {
+        return;
+    }
+
+    w = canvas->width;
+    h = canvas->height;
+
+    if (canvas->videoconfig->doublesizex) {
+        w /= 2;
+    }
+
+    if (canvas->videoconfig->doublesizey) {
+        h /= 2;
+    }
+
+    video_canvas_create(canvas, &w, &h, 0);
 }
 
 void video_arch_canvas_init(struct video_canvas_s *canvas)

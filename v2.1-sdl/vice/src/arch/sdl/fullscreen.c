@@ -32,26 +32,19 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <SDL/SDL.h>
 
 #include "fullscreen.h"
 #include "fullscreenarch.h"
 #include "lib.h"
+#include "ui.h"
 #include "video.h"
 #include "videoarch.h"
-
-#ifndef SDL_DISABLE
-#define SDL_DISABLE SDL_IGNORE
-#endif
-
-int fullscreen_is_enabled;
 
 int fullscreen_available(void) 
 {
 #ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
 #endif
-
     return 0;
 }
 
@@ -88,12 +81,6 @@ void fullscreen_mode_callback(const char *device, void *callback)
 #ifdef SDL_DEBUG
 fprintf(stderr,"%s: %s\n",__func__,device);
 #endif
-/*
-#ifdef USE_XF86_VIDMODE_EXT
-    if (strcmp(STR_VIDMODE, device) == 0)
-        vidmode_mode_callback(callback);
-#endif
-*/
 }
 
 void fullscreen_menu_create(struct ui_menu_entry_s *menu)
@@ -154,9 +141,9 @@ fprintf(stderr,"%s: %i\n",__func__,enable);
         return 0;
     }
 
-    fullscreen_is_enabled = canvas->fullscreenconfig->enable = enable;
+    canvas->fullscreenconfig->enable = enable;
 
-    SDL_ShowCursor(enable?SDL_ENABLE:SDL_DISABLE);
+    ui_check_mouse_cursor();
 
     if (canvas->initialized) {
         video_viewport_resize(canvas);
@@ -195,9 +182,10 @@ fprintf(stderr,"%s: %s\n",__func__,device);
     if (strcmp("SDL", device) != 0)
         return -1;
 
-    if (canvas->fullscreenconfig->device)
-	lib_free(canvas->fullscreenconfig->device);
-    
+    if (canvas->fullscreenconfig->device) {
+        lib_free(canvas->fullscreenconfig->device);
+    }
+
     canvas->fullscreenconfig->device = lib_stralloc(device);
 
     return 0;

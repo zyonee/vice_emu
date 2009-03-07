@@ -152,7 +152,7 @@ void ui_check_mouse_cursor(void)
         SDL_ShowCursor(SDL_DISABLE);
         SDL_WM_GrabInput(SDL_GRAB_ON);
     } else {
-        SDL_ShowCursor(fullscreen_is_enabled?SDL_DISABLE:SDL_ENABLE);
+        SDL_ShowCursor(sdl_active_canvas->fullscreenconfig->enable?SDL_DISABLE:SDL_ENABLE);
         SDL_WM_GrabInput(SDL_GRAB_OFF);
     }
 }

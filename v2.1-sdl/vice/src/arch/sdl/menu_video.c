@@ -123,6 +123,7 @@ UI_MENU_DEFINE_TOGGLE(VICIIDoubleSize)
 UI_MENU_DEFINE_TOGGLE(VICIIDoubleScan)
 UI_MENU_DEFINE_TOGGLE(VICIIVideoCache)
 UI_MENU_DEFINE_TOGGLE(VICIIScale2x)
+UI_MENU_DEFINE_TOGGLE(VDCFullscreen)
 UI_MENU_DEFINE_TOGGLE(VDCDoubleSize)
 UI_MENU_DEFINE_TOGGLE(VDCDoubleScan)
 UI_MENU_DEFINE_TOGGLE(VDCVideoCache)
@@ -169,16 +170,13 @@ static UI_MENU_CALLBACK(radio_VideoOutput_c128_callback)
     int value = (int)param;
 
     if (activated) {
-
-        /* placeholder for function that switches screens */
-
-        return sdl_menu_text_exit_ui;
+        sdl_video_canvas_switch(value);
     } else {
         if (value == sdl_active_canvas->index) {
             return sdl_menu_text_tick;
         }
-        return NULL;
     }
+    return NULL;
 }
 
 static UI_MENU_CALLBACK(radio_MachineVideoStandard_vic20_callback)
@@ -192,18 +190,8 @@ static UI_MENU_CALLBACK(radio_MachineVideoStandard_vic20_callback)
     return sdl_ui_menu_radio_helper(activated, param, "MachineVideoStandard");
 }
 
-const ui_menu_entry_t c128_video_menu[] = {
-    SDL_MENU_ITEM_TITLE("Video output"),
-    { "VICII (40 cols)",
-      MENU_ENTRY_RESOURCE_RADIO,
-      radio_VideoOutput_c128_callback,
-      (ui_callback_data_t)0 },
-    { "VDC (80 cols)",
-      MENU_ENTRY_RESOURCE_RADIO,
-      radio_VideoOutput_c128_callback,
-      (ui_callback_data_t)1 },
-    SDL_MENU_ITEM_SEPARATOR,
-    { "Fullscreen",
+static const ui_menu_entry_t c128_video_vicii_menu[] = {
+    { "VICII Fullscreen",
       MENU_ENTRY_RESOURCE_TOGGLE,
       toggle_VICIIFullscreen_callback,
       NULL },
@@ -229,18 +217,7 @@ const ui_menu_entry_t c128_video_menu[] = {
       custom_HwScale_callback,
       (ui_callback_data_t)"VICIIHwScale" },
 #endif
-    { "VDC Double size",
-      MENU_ENTRY_RESOURCE_TOGGLE,
-      toggle_VDCDoubleSize_callback,
-      NULL },
-    { "VDC Double scan",
-      MENU_ENTRY_RESOURCE_TOGGLE,
-      toggle_VDCDoubleScan_callback,
-      NULL },
-    { "VDC Video cache",
-      MENU_ENTRY_RESOURCE_TOGGLE,
-      toggle_VDCVideoCache_callback,
-      NULL },
+    SDL_MENU_ITEM_SEPARATOR,
     { "VICII border mode",
       MENU_ENTRY_SUBMENU,
       submenu_radio_callback,
@@ -261,10 +238,59 @@ const ui_menu_entry_t c128_video_menu[] = {
       MENU_ENTRY_DIALOG,
       file_string_VICIIPaletteFile_callback,
       (ui_callback_data_t)"Choose VICII palette file" },
+    { NULL }
+};
+
+static const ui_menu_entry_t c128_video_vdc_menu[] = {
+    { "VDC Fullscreen",
+      MENU_ENTRY_RESOURCE_TOGGLE,
+      toggle_VDCFullscreen_callback,
+      NULL },
+    { "VDC Double size",
+      MENU_ENTRY_RESOURCE_TOGGLE,
+      toggle_VDCDoubleSize_callback,
+      NULL },
+    { "VDC Double scan",
+      MENU_ENTRY_RESOURCE_TOGGLE,
+      toggle_VDCDoubleScan_callback,
+      NULL },
+    { "VDC Video cache",
+      MENU_ENTRY_RESOURCE_TOGGLE,
+      toggle_VDCVideoCache_callback,
+      NULL },
+#ifdef HAVE_HWSCALE
+    { "VDC OpenGL",
+      MENU_ENTRY_RESOURCE_TOGGLE,
+      custom_HwScale_callback,
+      (ui_callback_data_t)"VDCHwScale" },
+#endif
     { "VDC external palette file",
       MENU_ENTRY_DIALOG,
       file_string_VDCPaletteFile_callback,
       (ui_callback_data_t)"Choose VDC palette file" },
+    { NULL }
+};
+
+
+const ui_menu_entry_t c128_video_menu[] = {
+    SDL_MENU_ITEM_TITLE("Video output"),
+    { "VICII (40 cols)",
+      MENU_ENTRY_RESOURCE_RADIO,
+      radio_VideoOutput_c128_callback,
+      (ui_callback_data_t)0 },
+    { "VDC (80 cols)",
+      MENU_ENTRY_RESOURCE_RADIO,
+      radio_VideoOutput_c128_callback,
+      (ui_callback_data_t)1 },
+    SDL_MENU_ITEM_SEPARATOR,
+    { "VICII settings",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)c128_video_vicii_menu },
+    { "VDC settings",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)c128_video_vdc_menu },
     SDL_MENU_ITEM_SEPARATOR,
     SDL_MENU_ITEM_TITLE("Video Standard"),
     { "PAL",

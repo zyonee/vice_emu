@@ -332,10 +332,6 @@ void sdl_ui_activate_pre_action(void)
         sdl_vkbd_close();
     }
 
-    if (sdl_ui_set_menu_params != NULL) {
-        sdl_ui_set_menu_params(sdl_active_canvas->index);
-    }
-
     SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
     sdl_menu_state = 1;
     ui_check_mouse_cursor();
@@ -361,6 +357,10 @@ void sdl_ui_activate_post_action(void)
 
 void sdl_ui_init_draw_params(void)
 {
+    if (sdl_ui_set_menu_params != NULL) {
+        sdl_ui_set_menu_params(sdl_active_canvas->index);
+    }
+
     menu_draw.max_text_x = sdl_active_canvas->geometry->text_size.width * (menu_draw.max_text_x_double);
     menu_draw.max_text_y = sdl_active_canvas->geometry->text_size.height;
     menu_draw.pitch = sdl_active_canvas->draw_buffer->draw_buffer_pitch;
@@ -714,13 +714,17 @@ void sdl_ui_set_main_menu(const ui_menu_entry_t *menu)
 void sdl_ui_set_menu_font(BYTE *font, int w, int h)
 {
     int i;
+    static int translate_done = 0;
 
     menufont.font = font;
     menufont.w = w;
     menufont.h = h;
 
-    for (i=0; i<256; ++i) {
-        menufont.translate[i] = h*charset_petcii_to_screencode(charset_p_topetcii((char)i), 0);
+    if (!translate_done) {
+        for (i=0; i<256; ++i) {
+            menufont.translate[i] = h*charset_petcii_to_screencode(charset_p_topetcii((char)i), 0);
+        }
+        translate_done = 1;
     }
 }
 
