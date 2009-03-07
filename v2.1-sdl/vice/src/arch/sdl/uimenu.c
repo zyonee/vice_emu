@@ -77,6 +77,8 @@ static menufont_t menufont = { NULL, sdl_default_translation, 0, 0 };
 
 static menu_draw_t menu_draw;
 
+void (*sdl_ui_set_menu_params)(int index);
+
 /* ------------------------------------------------------------------ */
 /* static functions */
 
@@ -328,6 +330,10 @@ void sdl_ui_activate_pre_action(void)
 
     if (sdl_vkbd_state) {
         sdl_vkbd_close();
+    }
+
+    if (sdl_ui_set_menu_params != NULL) {
+        sdl_ui_set_menu_params(sdl_active_canvas->index);
     }
 
     SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);

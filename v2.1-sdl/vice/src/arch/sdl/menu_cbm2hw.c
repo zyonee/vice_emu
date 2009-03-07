@@ -68,34 +68,22 @@ static UI_MENU_CALLBACK(select_cbm2_model_callback)
         {
             case CBM2_MODEL_610:
                 cbm2_set_model("610", NULL);
-                cbm2ui_free_font();
-                cbm2ui_set_menu_parameters();
                 break;
             case CBM2_MODEL_620:
                 cbm2_set_model("620", NULL);
-                cbm2ui_free_font();
-                cbm2ui_set_menu_parameters();
                 break;
             case CBM2_MODEL_620PLUS:
                 cbm2_set_model("620+", NULL);
-                cbm2ui_free_font();
-                cbm2ui_set_menu_parameters();
                 break;
             case CBM2_MODEL_710:
                 cbm2_set_model("710", NULL);
-                cbm2ui_free_font();
-                cbm2ui_set_menu_parameters();
                 break;
             case CBM2_MODEL_720:
                 cbm2_set_model("720", NULL);
-                cbm2ui_free_font();
-                cbm2ui_set_menu_parameters();
                 break;
             default:
             case CBM2_MODEL_720PLUS:
                 cbm2_set_model("720+", NULL);
-                cbm2ui_free_font();
-                cbm2ui_set_menu_parameters();
                 break;
         }
         machine_trigger_reset(MACHINE_RESET_MODE_HARD);

@@ -172,10 +172,6 @@ static UI_MENU_CALLBACK(radio_VideoOutput_c128_callback)
 
         /* placeholder for function that switches screens */
 
-        sdl_ui_set_menu_borders(0, (sdl_active_canvas->index == 0) ? 0: 0);	/* vicii value, vdc value */
-        sdl_ui_set_double_x((sdl_active_canvas->index == 0) ? 0: 0);		/* vicii value, vdc value */
-
-        machine_trigger_reset(MACHINE_RESET_MODE_HARD);
         return sdl_menu_text_exit_ui;
     } else {
         if (value == sdl_active_canvas->index) {
@@ -189,7 +185,6 @@ static UI_MENU_CALLBACK(radio_MachineVideoStandard_vic20_callback)
 {
     if (activated) {
         int value = (int)param;
-        sdl_ui_set_menu_borders(0, (value == MACHINE_SYNC_PAL) ? 28: 8);
         resources_set_int("MachineVideoStandard", value);
         machine_trigger_reset(MACHINE_RESET_MODE_HARD);
         return sdl_menu_text_exit_ui;

@@ -148,6 +148,15 @@ static const ui_menu_entry_t xpet_main_menu[] = {
 
 static BYTE *pet_font;
 
+void petui_set_menu_params(int index)
+{
+    int cols;
+
+    resources_get_int("VideoSize", &cols);
+    sdl_ui_set_menu_borders(32, (cols == 40) ? 40 : 28);
+    sdl_ui_set_double_x((cols == 40) ? 0 : 1);
+}
+
 int petui_init(void)
 {
     int i, j, cols;
@@ -155,6 +164,8 @@ int petui_init(void)
 #ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
 #endif
+
+    sdl_ui_set_menu_params = petui_set_menu_params;
 
     sdl_ui_set_main_menu(xpet_main_menu);
 
@@ -168,8 +179,6 @@ fprintf(stderr,"%s\n",__func__);
         }
     }
     sdl_ui_set_menu_font(pet_font, 8, 8);
-    sdl_ui_set_menu_borders(32, (cols == 40) ? 40 : 28);
-    sdl_ui_set_double_x((cols == 40) ? 0 : 1);
     sdl_ui_set_menu_colors(1, 0);
     sdl_vkbd_set_vkbd(&vkbd_pet);
     return 0;
@@ -183,4 +192,3 @@ fprintf(stderr,"%s\n",__func__);
 
     lib_free(pet_font);
 }
-

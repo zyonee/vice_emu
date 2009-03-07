@@ -136,4 +136,6 @@ extern char* sdl_ui_text_input_dialog(const char* title, const char* previous);
 extern void sdl_ui_invert_char(int pos_x, int pos_y);
 extern void sdl_ui_scroll_screen_up(void);
 
+extern void (*sdl_ui_set_menu_params)(int index);
+
 #endif

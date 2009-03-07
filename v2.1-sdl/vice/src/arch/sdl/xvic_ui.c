@@ -154,6 +154,14 @@ static const ui_menu_entry_t xvic_main_menu[] = {
 
 static BYTE *vic20_font;
 
+void vic20ui_set_menu_params(int index)
+{
+    int videostandard;
+
+    resources_get_int("MachineVideoStandard", &videostandard);
+    sdl_ui_set_menu_borders(0, (videostandard == MACHINE_SYNC_PAL) ? 28: 8);
+}
+
 int vic20ui_init(void)
 {
     int i, j, videostandard;
@@ -161,6 +169,8 @@ int vic20ui_init(void)
 #ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
 #endif
+
+    sdl_ui_set_menu_params = vic20ui_set_menu_params;
 
     sdl_ui_set_main_menu(xvic_main_menu);
 
@@ -175,7 +185,6 @@ fprintf(stderr,"%s\n",__func__);
     }
 
     sdl_ui_set_menu_font(vic20_font, 8, 8);
-    sdl_ui_set_menu_borders(0, (videostandard == MACHINE_SYNC_PAL) ? 28: 8);
     sdl_ui_set_double_x(1);
     sdl_ui_set_menu_colors(1, 0);
     sdl_vkbd_set_vkbd(&vkbd_vic20);
