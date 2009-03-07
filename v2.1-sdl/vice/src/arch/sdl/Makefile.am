@@ -59,6 +59,8 @@ libarch_a_SOURCES = \
 	menu_joystick.h \
 	menu_mouse.c \
 	menu_mouse.h \
+	menu_petcart.c \
+	menu_petcart.h \
 	menu_pethw.c \
 	menu_pethw.h \
 	menu_plus4cart.c \

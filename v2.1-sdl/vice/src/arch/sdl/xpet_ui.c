@@ -35,6 +35,7 @@
 #include "menu_common.h"
 #include "menu_drive.h"
 #include "menu_help.h"
+#include "menu_petcart.h"
 #include "menu_pethw.h"
 #include "menu_reset.h"
 #include "menu_screenshot.h"
@@ -77,6 +78,10 @@ static const ui_menu_entry_t xpet_main_menu[] = {
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)tape_menu },
+    { "Cartridge",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)petcart_menu },
     { "Machine settings",
       MENU_ENTRY_SUBMENU,
       submenu_callback,

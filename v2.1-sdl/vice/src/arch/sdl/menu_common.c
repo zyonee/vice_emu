@@ -272,7 +272,10 @@ const char *sdl_ui_menu_file_string_helper(int activated, ui_callback_data_t par
         }
     } else {
 #if (FSDEV_DIR_SEP_CHR=='\\')
-        return (const char *)sdl_ui_menu_file_translate_seperator(previous);
+        if (previous != NULL && previous[0] != 0) {
+            return (const char *)sdl_ui_menu_file_translate_seperator(previous);
+        }
+        return previous;
 #else
         return previous;
 #endif

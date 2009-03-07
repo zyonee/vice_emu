@@ -1,5 +1,5 @@
 /*
- * menu_cbm2cart.c - Implementation of the cbm2 cartridge settings menu for the SDL UI.
+ * menu_petcart.c - Implementation of the pet cartridge settings menu for the SDL UI.
  *
  * Written by
  *  Marco van den Heuvel <blackystardust68@yahoo.com>
@@ -30,15 +30,14 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "menu_cbm2cart.h"
+#include "menu_petcart.h"
 #include "menu_common.h"
 #include "ui.h"
 #include "uimenu.h"
 
-UI_MENU_DEFINE_FILE_STRING(Cart1Name)
-UI_MENU_DEFINE_FILE_STRING(Cart2Name)
-UI_MENU_DEFINE_FILE_STRING(Cart4Name)
-UI_MENU_DEFINE_FILE_STRING(Cart6Name)
+UI_MENU_DEFINE_FILE_STRING(RomModule9Name)
+UI_MENU_DEFINE_FILE_STRING(RomModuleAName)
+UI_MENU_DEFINE_FILE_STRING(RomModuleBName)
 
 static UI_MENU_CALLBACK(detach_cart_callback)
 {
@@ -48,45 +47,35 @@ static UI_MENU_CALLBACK(detach_cart_callback)
     return NULL;
 }
 
-const ui_menu_entry_t cbm2cart_menu[] = {
-    SDL_MENU_ITEM_TITLE("Cart 1"),
+const ui_menu_entry_t petcart_menu[] = {
+    SDL_MENU_ITEM_TITLE("ROM 9"),
     { "attach",
       MENU_ENTRY_DIALOG,
-      file_string_Cart1Name_callback,
-      (ui_callback_data_t)"Select Cart 1 image" },
+      file_string_RomModule9Name_callback,
+      (ui_callback_data_t)"Select ROM 9 image" },
     { "Detach",
       MENU_ENTRY_OTHER,
       detach_cart_callback,
-      (ui_callback_data_t)"Cart1Name" },
+      (ui_callback_data_t)"RomModule9Name" },
     SDL_MENU_ITEM_SEPARATOR,
-    SDL_MENU_ITEM_TITLE("Cart 2"),
+    SDL_MENU_ITEM_TITLE("ROM A"),
     { "attach",
       MENU_ENTRY_DIALOG,
-      file_string_Cart2Name_callback,
-      (ui_callback_data_t)"Select Cart 2 image" },
+      file_string_RomModuleAName_callback,
+      (ui_callback_data_t)"Select ROM A image" },
     { "Detach",
       MENU_ENTRY_OTHER,
       detach_cart_callback,
-      (ui_callback_data_t)"Cart2Name" },
+      (ui_callback_data_t)"RomModuleAName" },
     SDL_MENU_ITEM_SEPARATOR,
-    SDL_MENU_ITEM_TITLE("Cart 4"),
+    SDL_MENU_ITEM_TITLE("ROM B"),
     { "attach",
       MENU_ENTRY_DIALOG,
-      file_string_Cart4Name_callback,
-      (ui_callback_data_t)"Select Cart 4 image" },
+      file_string_RomModuleBName_callback,
+      (ui_callback_data_t)"Select ROM B image" },
     { "Detach",
       MENU_ENTRY_OTHER,
       detach_cart_callback,
-      (ui_callback_data_t)"Cart4Name" },
-    SDL_MENU_ITEM_SEPARATOR,
-    SDL_MENU_ITEM_TITLE("Cart 6"),
-    { "attach",
-      MENU_ENTRY_DIALOG,
-      file_string_Cart6Name_callback,
-      (ui_callback_data_t)"Select Cart 6 image" },
-    { "Detach",
-      MENU_ENTRY_OTHER,
-      detach_cart_callback,
-      (ui_callback_data_t)"Cart6Name" },
+      (ui_callback_data_t)"RomModuleBName" },
     { NULL }
 };
