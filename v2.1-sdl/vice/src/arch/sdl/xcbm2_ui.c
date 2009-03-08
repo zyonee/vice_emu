@@ -37,6 +37,7 @@
 #include "menu_cbm2cart.h"
 #include "menu_cbm2hw.h"
 #include "menu_common.h"
+#include "menu_debug.h"
 #include "menu_drive.h"
 #include "menu_help.h"
 #include "menu_reset.h"
@@ -52,14 +53,6 @@
 #include "ui.h"
 #include "uimenu.h"
 #include "videoarch.h"
-
-#ifdef DEBUG
-/* temporary empty debug menu, this one will be moved out to menu_debug.c */
-static ui_menu_entry_t debug_menu[] = {
-    SDL_MENU_ITEM_SEPARATOR,
-    { NULL }
-};
-#endif
 
 static const ui_menu_entry_t xcbm6x0_7x0_main_menu[] = {
     { "Autostart image",
@@ -123,7 +116,7 @@ static const ui_menu_entry_t xcbm6x0_7x0_main_menu[] = {
       monitor_callback,
       NULL },
 #ifdef DEBUG
-    { "Debug (todo)",
+    { "Debug",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)debug_menu },

@@ -33,6 +33,7 @@
 #include "debug.h"
 #include "lib.h"
 #include "menu_common.h"
+#include "menu_debug.h"
 #include "menu_drive.h"
 #include "menu_help.h"
 #include "menu_plus4cart.h"
@@ -51,14 +52,6 @@
 #include "ui.h"
 #include "uimenu.h"
 #include "vkbd.h"
-
-#ifdef DEBUG
-/* temporary empty debug menu, this one will be moved out to menu_debug.c */
-static ui_menu_entry_t debug_menu[] = {
-    SDL_MENU_ITEM_SEPARATOR,
-    { NULL }
-};
-#endif
 
 static const ui_menu_entry_t xplus4_main_menu[] = {
     { "Autostart image",
@@ -126,7 +119,7 @@ static const ui_menu_entry_t xplus4_main_menu[] = {
       vkbd_callback,
       NULL },
 #ifdef DEBUG
-    { "Debug (todo)",
+    { "Debug",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)debug_menu },

@@ -51,6 +51,8 @@ libarch_a_SOURCES = \
 	menu_cbm2hw.h \
 	menu_common.c \
 	menu_common.h \
+	menu_debug.c \
+	menu_debug.h \
 	menu_drive.c \
 	menu_drive.h \
 	menu_drive_rom.c \
