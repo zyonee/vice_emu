@@ -33,8 +33,6 @@ libarch_a_SOURCES = \
 	menu_c128cart.h \
 	menu_c128hw.c \
 	menu_c128hw.h \
-	menu_c128_rom.c \
-	menu_c128_rom.h \
 	menu_c64cart.c \
 	menu_c64cart.h \
 	menu_c64cart_common.c \
@@ -75,6 +73,8 @@ libarch_a_SOURCES = \
 	menu_ram.h \
 	menu_reset.c \
 	menu_reset.h \
+	menu_rom.c \
+	menu_rom.h \
 	menu_screenshot.c \
 	menu_screenshot.h \
 	menu_settings.c \

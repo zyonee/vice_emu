@@ -38,6 +38,7 @@
 #include "menu_petcart.h"
 #include "menu_pethw.h"
 #include "menu_reset.h"
+#include "menu_rom.h"
 #include "menu_screenshot.h"
 #include "menu_settings.h"
 #include "menu_snapshot.h"
@@ -50,12 +51,6 @@
 #include "ui.h"
 #include "uimenu.h"
 #include "vkbd.h"
-
-/* temporary empty pet rom menu, this one will be moved out to menu_petrom.c */
-static ui_menu_entry_t pet_rom_menu[] = {
-    SDL_MENU_ITEM_SEPARATOR,
-    { NULL }
-};
 
 #ifdef DEBUG
 /* temporary empty debug menu, this one will be moved out to menu_debug.c */
@@ -86,7 +81,7 @@ static const ui_menu_entry_t xpet_main_menu[] = {
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)pet_hardware_menu },
-    { "ROM settings (todo)",
+    { "ROM settings",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)pet_rom_menu },

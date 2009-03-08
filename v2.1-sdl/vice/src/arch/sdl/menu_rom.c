@@ -30,9 +30,9 @@
 
 #include "types.h"
 
-#include "menu_c128_rom.h"
 #include "menu_common.h"
 #include "menu_drive_rom.h"
+#include "menu_rom.h"
 #include "uimenu.h"
 
 UI_MENU_DEFINE_FILE_STRING(KernalIntName)
@@ -50,6 +50,15 @@ UI_MENU_DEFINE_FILE_STRING(ChargenFRName)
 UI_MENU_DEFINE_FILE_STRING(ChargenSEName)
 UI_MENU_DEFINE_FILE_STRING(Kernal64Name)
 UI_MENU_DEFINE_FILE_STRING(Basic64Name)
+
+UI_MENU_DEFINE_FILE_STRING(KernalName)
+UI_MENU_DEFINE_FILE_STRING(BasicName)
+UI_MENU_DEFINE_FILE_STRING(ChargenName)
+
+UI_MENU_DEFINE_FILE_STRING(EditorName)
+
+UI_MENU_DEFINE_FILE_STRING(3plus1loName)
+UI_MENU_DEFINE_FILE_STRING(3plus1hiName)
 
 const ui_menu_entry_t c128_rom_menu[] = {
     { "Drive ROMS",
@@ -118,5 +127,123 @@ const ui_menu_entry_t c128_rom_menu[] = {
       MENU_ENTRY_DIALOG,
       file_string_Basic64Name_callback,
       (ui_callback_data_t)"Select C64 mode basic ROM image" },
+    { NULL }
+};
+
+const ui_menu_entry_t c64_vic20_rom_menu[] = {
+    { "Drive ROMS",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)iec_ieee_drive_rom_menu },
+    SDL_MENU_ITEM_SEPARATOR,
+    SDL_MENU_ITEM_TITLE("Computer ROMS"),
+    { "Kernal",
+      MENU_ENTRY_DIALOG,
+      file_string_KernalName_callback,
+      (ui_callback_data_t)"Select kernal ROM image" },
+    { "Basic",
+      MENU_ENTRY_DIALOG,
+      file_string_BasicName_callback,
+      (ui_callback_data_t)"Select basic ROM image" },
+    { "Chargen",
+      MENU_ENTRY_DIALOG,
+      file_string_ChargenName_callback,
+      (ui_callback_data_t)"Select chargen ROM image" },
+    { NULL }
+};
+
+const ui_menu_entry_t c64dtv_rom_menu[] = {
+    { "Drive ROMS",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)iec_drive_rom_menu },
+    SDL_MENU_ITEM_SEPARATOR,
+    SDL_MENU_ITEM_TITLE("Computer ROMS"),
+    { "Kernal",
+      MENU_ENTRY_DIALOG,
+      file_string_KernalName_callback,
+      (ui_callback_data_t)"Select kernal ROM image" },
+    { "Basic",
+      MENU_ENTRY_DIALOG,
+      file_string_BasicName_callback,
+      (ui_callback_data_t)"Select basic ROM image" },
+    { "Chargen",
+      MENU_ENTRY_DIALOG,
+      file_string_ChargenName_callback,
+      (ui_callback_data_t)"Select chargen ROM image" },
+    { NULL }
+};
+
+const ui_menu_entry_t cbm2_rom_menu[] = {
+    { "Drive ROMS",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)ieee_drive_rom_menu },
+    SDL_MENU_ITEM_SEPARATOR,
+    SDL_MENU_ITEM_TITLE("Computer ROMS"),
+    { "Kernal",
+      MENU_ENTRY_DIALOG,
+      file_string_KernalName_callback,
+      (ui_callback_data_t)"Select kernal ROM image" },
+    { "Basic",
+      MENU_ENTRY_DIALOG,
+      file_string_BasicName_callback,
+      (ui_callback_data_t)"Select basic ROM image" },
+    { "Chargen",
+      MENU_ENTRY_DIALOG,
+      file_string_ChargenName_callback,
+      (ui_callback_data_t)"Select chargen ROM image" },
+    { NULL }
+};
+
+const ui_menu_entry_t pet_rom_menu[] = {
+    { "Drive ROMS",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)ieee_drive_rom_menu },
+    SDL_MENU_ITEM_SEPARATOR,
+    SDL_MENU_ITEM_TITLE("Computer ROMS"),
+    { "Kernal",
+      MENU_ENTRY_DIALOG,
+      file_string_KernalName_callback,
+      (ui_callback_data_t)"Select kernal ROM image" },
+    { "Basic",
+      MENU_ENTRY_DIALOG,
+      file_string_BasicName_callback,
+      (ui_callback_data_t)"Select basic ROM image" },
+    { "Chargen",
+      MENU_ENTRY_DIALOG,
+      file_string_ChargenName_callback,
+      (ui_callback_data_t)"Select chargen ROM image" },
+    { "Editor",
+      MENU_ENTRY_DIALOG,
+      file_string_EditorName_callback,
+      (ui_callback_data_t)"Select editor ROM image" },
+    { NULL }
+};
+
+const ui_menu_entry_t plus4_rom_menu[] = {
+    { "Drive ROMS",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)plus4_drive_rom_menu },
+    SDL_MENU_ITEM_SEPARATOR,
+    SDL_MENU_ITEM_TITLE("Computer ROMS"),
+    { "Kernal",
+      MENU_ENTRY_DIALOG,
+      file_string_KernalName_callback,
+      (ui_callback_data_t)"Select kernal ROM image" },
+    { "Basic",
+      MENU_ENTRY_DIALOG,
+      file_string_BasicName_callback,
+      (ui_callback_data_t)"Select basic ROM image" },
+    { "3+1 low",
+      MENU_ENTRY_DIALOG,
+      file_string_3plus1loName_callback,
+      (ui_callback_data_t)"Select 3+1 low ROM image" },
+    { "3+1 high",
+      MENU_ENTRY_DIALOG,
+      file_string_3plus1hiName_callback,
+      (ui_callback_data_t)"Select 3+1 high ROM image" },
     { NULL }
 };

@@ -24,13 +24,18 @@
  *
  */
 
-#ifndef VICE_C128_ROM_H
-#define VICE_C128_ROM_H
+#ifndef VICE_MENU_ROM_H
+#define VICE_MENU_ROM_H
 
 #include "vice.h"
 #include "types.h"
 #include "uimenu.h"
 
 extern const ui_menu_entry_t c128_rom_menu[];
+extern const ui_menu_entry_t c64_vic20_rom_menu[];
+extern const ui_menu_entry_t c64dtv_rom_menu[];
+extern const ui_menu_entry_t cbm2_rom_menu[];
+extern const ui_menu_entry_t pet_rom_menu[];
+extern const ui_menu_entry_t plus4_rom_menu[];
 
 #endif
