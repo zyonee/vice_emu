@@ -1266,7 +1266,7 @@ if test x"$with_sdlsound" = "xyes" -o x"$enable_sdlui" = "xyes"; then
     else
 
         dnl check for sdl-config
-        AC_CHECK_PROGS(sdl_config, sdl-config, no)
+        AC_CHECK_TOOLS(sdl_config, sdl-config, no)
 
         old_cflags=$CFLAGS
         old_libs=$LIBS
@@ -1276,8 +1276,8 @@ if test x"$with_sdlsound" = "xyes" -o x"$enable_sdlui" = "xyes"; then
         if test x"$sdl_config" = "xno"; then
             LIBS="-lSDL"
         else
-            CFLAGS="$CFLAGS `sdl-config --cflags`"
-            LIBS="$LIBS `sdl-config --libs`"
+            CFLAGS="$CFLAGS `$sdl_config --cflags`"
+            LIBS="$LIBS `$sdl_config --libs`"
         fi
 
         AC_CHECK_LIB(debug, kprintf, [EXTRA_SDL_LIBS="-ldebug"; LIBS="$LIBS -ldebug"], [EXTRA_SDL_LIBS=""])
@@ -1516,7 +1516,7 @@ if test x"$is_win32" = "xyes"; then
     if test x"$enable_sdlui" != "xyes"; then
         SOUND_DRIVERS="$SOUND_DRIVERS sounddx.o soundwmm.o"
         AC_DEFINE(USE_DXSOUND,,[Enable directx sound support.])
-        AC_PATH_PROGS(WINDRES, windres, windres)
+        AC_PATH_TOOL(WINDRES, windres, windres)
         AC_PATH_PROGS(WRC, wrc , windres)
         if test x"$WRC" != "xwindres"; then
             WRC_VERSION=`($WRC --version) 2>/dev/null`
@@ -2299,7 +2299,11 @@ elif test x"$is_win32" = "xyes"; then
   fi
 
   if test x"$enable_sdlui" = "xyes"; then
-    SDL_EXTRA_LIBS="$UI_LIBS -lwinmm -lwsock32"
+    if test x"$host_cpu" = "xx86_64" -o x"$host_cpu" = "xamd64"; then
+      SDL_EXTRA_LIBS="$UI_LIBS -lwinmm -lws2_32"
+    else
+      SDL_EXTRA_LIBS="$UI_LIBS -lwinmm -lwsock32"
+    fi
   fi
 
   AM_CONDITIONAL(WIN32_COMPILE, true)
