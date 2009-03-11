@@ -1431,7 +1431,7 @@ fi
 
 if test x"$is_win32" = "xyes"; then
     SOUND_DRIVERS="$SOUND_DRIVERS sounddx.o soundwmm.o"
-    AC_PATH_PROGS(WINDRES, windres, windres)
+    AC_PATH_TOOL(WINDRES, windres, windres)
     AC_PATH_PROGS(WRC, wrc , windres)
     if test x"$WRC" != "xwindres"; then
         WRC_VERSION=`($WRC --version) 2>/dev/null`

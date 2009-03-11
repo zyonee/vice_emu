@@ -341,6 +341,7 @@ EXTRA_DIST = \
 	drive.dsp \
 	fileio.dsp \
 	fsdevice.dsp \
+	genmanifest.sh \
 	genmsvcver.dsp \
 	gentranslate.dsp \
 	genwinres.dsp \
@@ -390,13 +391,15 @@ EXTRA_DIST = \
 	xvic.dsp \
 	zlib.dsp \
 	vice.dsw \
-	vice.manifest \
+	vice.manifest_x86 \
+	vice.manifest_amd64 \
+	vice.manifest_ia64 \
 	montb.bmp \
 	make-bindist.sh \
 	make-msvc-bindist.bat \
 	c64.ico 
 
-BUILT_SOURCES = res.h
+BUILT_SOURCES = res.h vice.manifest
 
 res.h:	$(srcdir)/res.txt $(srcdir)/resdialogs.txt $(srcdir)/resmenu.txt $(srcdir)/resstrings.txt
 	echo "generating res.h..."
@@ -406,6 +409,9 @@ res.h:	$(srcdir)/res.txt $(srcdir)/resdialogs.txt $(srcdir)/resmenu.txt $(srcdir
 @CROSS_TRUE@	rm -f resall.txt
 @CROSS_FALSE@	(cd utils; $(MAKE))
 @CROSS_FALSE@	utils/genwinres res.h menuid.h $(srcdir)/res.txt $(srcdir)/resdialogs.txt $(srcdir)/resmenu.txt $(srcdir)/resstrings.txt
+
+vice.manifest:	genmanifest.sh vice.manifest_x86 vice.manifest_amd64 vice.manifest_ia64
+	. $(srcdir)/genmanifest.sh $(srcdir) $(host_cpu)
 
 resc128.o : $(srcdir)/resc128.rc $(srcdir)/res.rc res.h $(srcdir)/resacia.rc \
 	$(srcdir)/resrs232user.rc $(srcdir)/ressid.rc $(srcdir)/resvicii.rc \

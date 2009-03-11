@@ -18,7 +18,8 @@ n_2sn
 1
 4
 MCommand
-1310
+1348
+copy vice.manifest_x86 vice.manifest
 copy /b ..\resc128.rc + ..\res.rc + ..\resacia.rc + ..\reside64.rc + ..\resreu.rc + ..\resgeoram.rc + ..\resramcart.rc + ..\resmmc64.rc + ..\resrs232user.rc + ..\ressid.rc + ..\resvicii.rc + ..\resdrivec128.rc + ..\resdigimax.rc + ..\resmouse.rc + ..\resmidi.rc + ..\restfe.rc ..\resc128cat.rc /b
 copy /b ..\resc64.rc + ..\res.rc + ..\resacia.rc + ..\resdrivec64.rc + ..\reside64.rc + ..\resreu.rc + ..\resgeoram.rc + ..\resramcart.rc + ..\resplus256k.rc + ..\resplus60k.rc + ..\resc64_256k.rc + ..\resmmc64.rc + ..\resrs232user.rc + ..\ressid.rc + ..\resvicii.rc + ..\resdigimax.rc + ..\resmouse.rc + ..\resmidi.rc + ..\resdqbb.rc + ..\resisepic.rc + ..\restfe.rc ..\resc64cat.rc /b
 copy /b ..\resc64dtv.rc + ..\res.rc + ..\resdrivec64.rc  + ..\ressiddtv.rc + ..\resvicii.rc  ..\resc64dtvcat.rc /b
