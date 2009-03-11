@@ -46,7 +46,7 @@ static UI_MENU_CALLBACK(attach_cart_callback)
     char *name = NULL;
 
     if (activated) {
-        switch ((int)param) {
+        switch ((int)(long)param) {
             case CARTRIDGE_VIC20_16KB_2000:
             case CARTRIDGE_VIC20_16KB_4000:
             case CARTRIDGE_VIC20_16KB_6000:
@@ -62,7 +62,7 @@ static UI_MENU_CALLBACK(attach_cart_callback)
         }
         name = sdl_ui_file_selection_dialog(title, FILEREQ_MODE_CHOOSE_FILE);
         if (name != NULL) {
-            if (cartridge_attach_image((int)param, name) < 0) {
+            if (cartridge_attach_image((int)(long)param, name) < 0) {
                 ui_error("Cannot load cartridge image.");
             }
             lib_free(name);

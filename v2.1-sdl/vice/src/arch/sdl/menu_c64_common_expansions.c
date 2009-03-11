@@ -30,10 +30,8 @@
 
 #include "types.h"
 
-#include "lib.h"
 #include "menu_c64_common_expansions.h"
 #include "menu_common.h"
-#include "resources.h"
 #include "uimenu.h"
 
 /* DIGIMAX MENU */

@@ -198,7 +198,7 @@ static UI_MENU_CALLBACK(set_hide_p00_files_callback)
     int drive;
     int hide_p00;
 
-    drive = (int)param;
+    drive = (int)(long)param;
     if (activated) {
         if (check_current_drive_type(ATTACH_DEVICE_FS, drive)) {
             resources_get_int_sprintf("FSDevice%iHideCBMFiles", &hide_p00, drive);
@@ -222,7 +222,7 @@ static UI_MENU_CALLBACK(set_write_p00_files_callback)
     int drive;
     int write_p00;
 
-    drive = (int)param;
+    drive = (int)(long)param;
     if (activated) {
         if (check_current_drive_type(ATTACH_DEVICE_FS, drive)) {
             resources_get_int_sprintf("FSDevice%iSaveP00", &write_p00, drive);
@@ -246,7 +246,7 @@ static UI_MENU_CALLBACK(set_read_p00_files_callback)
     int drive;
     int read_p00;
 
-    drive = (int)param;
+    drive = (int)(long)param;
     if (activated) {
         if (check_current_drive_type(ATTACH_DEVICE_FS, drive)) {
             resources_get_int_sprintf("FSDevice%iConvertP00", &read_p00, drive);
@@ -270,7 +270,7 @@ static UI_MENU_CALLBACK(set_directory_callback)
     char *name;
     int drive;
 
-    drive = (int)param;
+    drive = (int)(long)param;
     if (activated) {
         if (check_current_drive_type(ATTACH_DEVICE_FS, drive)) {
             name = sdl_ui_file_selection_dialog("select directory", FILEREQ_MODE_CHOOSE_DIR);
@@ -294,7 +294,7 @@ static UI_MENU_CALLBACK(attach_disk_callback)
     if (activated) {
         name = sdl_ui_file_selection_dialog("select disk image", FILEREQ_MODE_CHOOSE_FILE);
         if (name != NULL) {
-            if (file_system_attach_disk((int)param, name) < 0) {
+            if (file_system_attach_disk((int)(long)param, name) < 0) {
                 ui_error("Cannot attach disk image.");
             }
             lib_free(name);
@@ -308,7 +308,7 @@ static UI_MENU_CALLBACK(detach_disk_callback)
     int parameter;
 
     if (activated) {
-        parameter = (int)param;
+        parameter = (int)(long)param;
         if (parameter == 0) {
            file_system_detach_disk(8);
            file_system_detach_disk(9);
@@ -326,7 +326,7 @@ static UI_MENU_CALLBACK(fliplist_callback)
     char *name;
 
     if (activated) {
-        switch ((int)param) {
+        switch ((int)(long)param) {
             case UI_FLIP_ADD:
                fliplist_add_image(8);
                break;
@@ -567,8 +567,8 @@ static UI_MENU_CALLBACK(set_idle_callback)
     int current;
     int idle = 0;
 
-    drive = (int)((int) param >> 8);
-    parameter = (int)((int)param & 0xff);
+    drive = (int)((int)(long)param >> 8);
+    parameter = (int)((int)(long)param & 0xff);
     current = get_drive_type(drive);
 
     if (activated) {
@@ -595,8 +595,8 @@ static UI_MENU_CALLBACK(set_extend_callback)
     int current;
     int extend = 0;
 
-    drive = (int)((int) param >> 8);
-    parameter = (int)((int)param & 0xff);
+    drive = (int)((int)(long)param >> 8);
+    parameter = (int)((int)(long)param & 0xff);
     current = get_drive_type(drive);
 
     if (activated) {
@@ -622,7 +622,7 @@ static UI_MENU_CALLBACK(set_par_callback)
     int current;
     int par;
     
-    drive = (int)param;
+    drive = (int)(long)param;
 
     current = get_drive_type(drive);
 
@@ -651,8 +651,8 @@ static UI_MENU_CALLBACK(set_expand_callback)
     int current;
     int memory;
     
-    drive = (int)((int)param >> 16);
-    parameter = (int)((int)param & 0xffff);
+    drive = (int)((int)(long)param >> 16);
+    parameter = (int)((int)(long)param & 0xffff);
 
     current = get_drive_type(drive);
 
@@ -681,8 +681,8 @@ static UI_MENU_CALLBACK(set_drive_type_callback)
     int support;
     int current;
 
-    drive = (int)((int) param >> 16);
-    parameter = (int)((int)param & 0xffff);
+    drive = (int)((int)(long)param >> 16);
+    parameter = (int)((int)(long)param & 0xffff);
     support = (is_fs(parameter) || drive_check_type(parameter, drive - 8));
     current = check_current_drive_type(parameter, drive);
 

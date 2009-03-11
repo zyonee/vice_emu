@@ -64,7 +64,7 @@ static int vkbd_shiftflags;
 
 static UI_MENU_CALLBACK(custom_shift_callback)
 {
-    int flag = (1 << ((int)param));
+    int flag = (1 << ((int)(long)param));
 
     if (activated) {
         vkbd_shiftflags ^= flag;
@@ -268,8 +268,17 @@ void sdl_vkbd_activate(void)
 
     sdl_ui_init_draw_params();
     limits = sdl_ui_get_menu_param();
+
     vkbd_pos_max_x = limits->max_text_x - vkbd_w + 1;
     vkbd_pos_max_y = limits->max_text_y - vkbd_h + 1;
+
+    if (vkbd_pos_x >= vkbd_pos_max_x) {
+        vkbd_pos_x = vkbd_pos_max_x-1;
+    }
+
+    if (vkbd_pos_y >= vkbd_pos_max_y) {
+        vkbd_pos_y = vkbd_pos_max_y-1;
+    }
 
     sdl_vkbd_state = SDL_VKBD_ACTIVE | SDL_VKBD_REPAINT;
     vkbd_move = 0;

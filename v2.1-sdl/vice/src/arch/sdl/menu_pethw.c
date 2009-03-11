@@ -35,6 +35,7 @@
 #include "menu_joystick.h"
 #include "menu_ram.h"
 #include "menu_sid.h"
+#include "pets.h"
 #include "uimenu.h"
 
 /* PET VIDEO SETTINGS */
@@ -161,7 +162,7 @@ static UI_MENU_CALLBACK(select_pet_model_callback)
 {
     int model;
 
-    model = (int)param;
+    model = (int)(long)param;
     if (activated) {
         switch (model)
         {

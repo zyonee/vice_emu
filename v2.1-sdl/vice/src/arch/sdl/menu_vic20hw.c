@@ -50,7 +50,7 @@ static UI_MENU_CALLBACK(custom_memory_callback)
     int blocks, value;
 
     if (activated) {
-        blocks = (int)param;
+        blocks = (int)(long)param;
         resources_set_int("RAMBlock0", blocks & BLOCK_0 ? 1 : 0);
         resources_set_int("RAMBlock1", blocks & BLOCK_1 ? 1 : 0);
         resources_set_int("RAMBlock2", blocks & BLOCK_2 ? 1 : 0);
@@ -68,7 +68,7 @@ static UI_MENU_CALLBACK(custom_memory_callback)
         resources_get_int("RAMBlock5", &value);
         blocks |= (value << 5);
 
-        if (blocks == (int)param) {
+        if (blocks == (int)(long)param) {
             return sdl_menu_text_tick;
         }
     }

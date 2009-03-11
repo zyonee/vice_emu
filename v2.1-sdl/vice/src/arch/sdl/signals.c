@@ -32,10 +32,6 @@ void signals_init(int do_core_dumps)
 {
 }
 
-static void handle_abort(int signo)
-{
-}
-
 void signals_abort_set(void)
 {
 }

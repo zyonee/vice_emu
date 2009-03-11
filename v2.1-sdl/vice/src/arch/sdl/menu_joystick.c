@@ -180,8 +180,8 @@ static UI_MENU_CALLBACK(custom_joymap_callback)
     int pin, port;
 
     if (activated) {
-        pin = ((int)param) & 7;
-        port = ((int)param) >> 4;
+        pin = ((int)(long)param) & 7;
+        port = ((int)(long)param) >> 4;
 
         target = lib_msprintf("Port %i %s", port+1, joy_pin[pin]);
         e = sdl_ui_poll_event("joystick", target, SDL_POLL_JOYSTICK, 5);
@@ -255,14 +255,14 @@ static UI_MENU_CALLBACK(custom_joy_misc_callback)
     SDL_Event e;
 
     if (activated) {
-        e = sdl_ui_poll_event("joystick", ((int)param)?"Map":"Menu activate", SDL_POLL_JOYSTICK, 5);
+        e = sdl_ui_poll_event("joystick", ((int)(long)param)?"Map":"Menu activate", SDL_POLL_JOYSTICK, 5);
         lib_free(target);
 
         switch(e.type) {
             case SDL_JOYAXISMOTION:
             case SDL_JOYBUTTONDOWN:
             case SDL_JOYHATMOTION:
-                sdljoy_set_extra(e, (int)param);
+                sdljoy_set_extra(e, (int)(long)param);
                 break;
             default:
                 break;

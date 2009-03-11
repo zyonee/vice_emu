@@ -63,7 +63,7 @@ static UI_MENU_CALLBACK(detach_tape_callback)
 static UI_MENU_CALLBACK(custom_datasette_control_callback)
 {
     if (activated) {
-        datasette_control((int)param);
+        datasette_control((int)(long)param);
     }
     return NULL;
 }
@@ -111,11 +111,11 @@ const ui_menu_entry_t tape_menu[] = {
     { "Datasette speed tuning",
       MENU_ENTRY_RESOURCE_INT,
       int_DatasetteSpeedTuning_callback,
-      (ui_callback_data_t)"Datasette speed tuning" },
+      (ui_callback_data_t)"Set datasette speed tuning" },
     { "Datasette zero gap delay",
       MENU_ENTRY_RESOURCE_INT,
       int_DatasetteZeroGapDelay_callback,
-      (ui_callback_data_t)"Datasette zero gap delay" },
+      (ui_callback_data_t)"Set datasette zero gap delay" },
     { "Reset Datasette on CPU Reset",
       MENU_ENTRY_RESOURCE_TOGGLE,
       toggle_DatasetteResetWithCPU_callback,

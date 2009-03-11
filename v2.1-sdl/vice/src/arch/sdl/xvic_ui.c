@@ -142,12 +142,18 @@ static const ui_menu_entry_t xvic_main_menu[] = {
 
 static BYTE *vic20_font;
 
-void vic20ui_set_menu_params(int index)
+void vic20ui_set_menu_params(int index, menu_draw_t *menu_draw)
 {
     int videostandard;
 
     resources_get_int("MachineVideoStandard", &videostandard);
-    sdl_ui_set_menu_borders(0, (videostandard == MACHINE_SYNC_PAL) ? 28: 8);
+
+    menu_draw->max_text_x = 44;
+    menu_draw->max_text_y = 23;
+    menu_draw->extra_x = 0;
+    menu_draw->extra_y = (videostandard == MACHINE_SYNC_PAL) ? 28 : 8;
+    menu_draw->color_front = 1;
+    menu_draw->color_back = 0;
 }
 
 int vic20ui_init(void)
@@ -173,8 +179,6 @@ fprintf(stderr,"%s\n",__func__);
     }
 
     sdl_ui_set_menu_font(vic20_font, 8, 8);
-    sdl_ui_set_double_x(1);
-    sdl_ui_set_menu_colors(1, 0);
     sdl_vkbd_set_vkbd(&vkbd_vic20);
     return 0;
 }

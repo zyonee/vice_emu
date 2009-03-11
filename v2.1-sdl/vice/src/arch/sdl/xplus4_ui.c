@@ -139,6 +139,16 @@ static const ui_menu_entry_t xplus4_main_menu[] = {
     { NULL }
 };
 
+void plus4ui_set_menu_params(int index, menu_draw_t *menu_draw)
+{
+    menu_draw->max_text_x = 40;
+    menu_draw->max_text_y = 25;
+    menu_draw->extra_x = 0;
+    menu_draw->extra_y = 55;
+    menu_draw->color_front = 113;
+    menu_draw->color_back = 0;
+}
+
 static BYTE *plus4_font;
 
 int plus4ui_init(void)
@@ -149,7 +159,7 @@ int plus4ui_init(void)
 fprintf(stderr,"%s\n",__func__);
 #endif
 
-    sdl_ui_set_menu_params = NULL; /* no param changes needed */
+    sdl_ui_set_menu_params = plus4ui_set_menu_params;
 
     sdl_ui_set_main_menu(xplus4_main_menu);
 
@@ -162,9 +172,6 @@ fprintf(stderr,"%s\n",__func__);
     }
 
     sdl_ui_set_menu_font(plus4_font, 8, 8);
-    sdl_ui_set_menu_colors(113, 0);
-    sdl_ui_set_menu_borders(0, 55);
-    sdl_ui_set_double_x(0);
     sdl_vkbd_set_vkbd(&vkbd_plus4);
     return 0;
 }

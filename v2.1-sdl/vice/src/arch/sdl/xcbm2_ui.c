@@ -214,17 +214,33 @@ static const ui_menu_entry_t xcbm5x0_main_menu[] = {
     { NULL }
 };
 
+void cbm2ui_c500_set_menu_params(int index, menu_draw_t *menu_draw)
+{
+    menu_draw->max_text_x = 40;
+    menu_draw->max_text_y = 25;
+    menu_draw->extra_x = 0;
+    menu_draw->extra_y = 0;
+    menu_draw->color_front = 1;
+    menu_draw->color_back = 0;
+}
+
 static BYTE *cbm2_font_14 = NULL;
 static BYTE *cbm2_font_8 = NULL;
 
-void cbm2ui_set_menu_params(int index)
+void cbm2ui_set_menu_params(int index, menu_draw_t *menu_draw)
 {
     int model, i, j;
 
     resources_get_int("ModelLine", &model);
 
+    menu_draw->max_text_x = 80;
+    menu_draw->max_text_y = 25;
+    menu_draw->extra_x = 32;
+    menu_draw->color_front = 1;
+    menu_draw->color_back = 0;
+
     if (model == 0) {
-        sdl_ui_set_menu_borders(32, 16);
+        menu_draw->extra_y = 16;
         for (i=0; i<256; i++) {
             for (j=0; j<14; j++) {
                 cbm2_font_14[(i*14)+j] = mem_chargen_rom[(i*16)+j+1];
@@ -232,7 +248,7 @@ void cbm2ui_set_menu_params(int index)
         }
         sdl_ui_set_menu_font(cbm2_font_14, 8, 14);
     } else {
-        sdl_ui_set_menu_borders(32, 40);
+        menu_draw->extra_y = 40;
         for (i=0; i<256; i++) {
             for (j=0; j<8; j++) {
                 cbm2_font_8[(i*8)+j] = mem_chargen_rom[(i*16)+j];
@@ -248,19 +264,14 @@ int cbm2ui_init(void)
     cbm2_font_14 = lib_malloc(14*256);
     cbm2_font_8 = lib_malloc(8*256);
 
-    sdl_ui_set_menu_colors(1, 0);
-
     if (cbm2_is_c500()) {
-        sdl_ui_set_menu_params = NULL;  /* no parameter changes needed */
-        sdl_ui_set_menu_borders(0, 0);
+        sdl_ui_set_menu_params = cbm2ui_c500_set_menu_params;
         sdl_ui_set_menu_font(mem_chargen_rom + 0x800, 8, 8);
         sdl_ui_set_main_menu(xcbm5x0_main_menu);
-        sdl_ui_set_double_x(0);
         sdl_video_canvas_switch(1);
     } else {
         sdl_ui_set_menu_params = cbm2ui_set_menu_params;
         sdl_ui_set_main_menu(xcbm6x0_7x0_main_menu);
-        sdl_ui_set_double_x(1);
     }
     return 0;
 }

@@ -32,6 +32,7 @@
 
 #include "menu_petcart.h"
 #include "menu_common.h"
+#include "resources.h"
 #include "ui.h"
 #include "uimenu.h"
 

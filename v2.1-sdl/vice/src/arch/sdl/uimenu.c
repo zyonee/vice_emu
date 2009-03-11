@@ -77,7 +77,7 @@ static menufont_t menufont = { NULL, sdl_default_translation, 0, 0 };
 
 static menu_draw_t menu_draw;
 
-void (*sdl_ui_set_menu_params)(int index);
+void (*sdl_ui_set_menu_params)(int index, menu_draw_t *menu_draw);
 
 /* ------------------------------------------------------------------ */
 /* static functions */
@@ -146,13 +146,13 @@ static void sdl_ui_display_item(ui_menu_entry_t *item, int y_pos)
         return;
     }
 
-    if ((item->type == MENU_ENTRY_TEXT)&&((int)item->data == 1)) {
+    if ((item->type == MENU_ENTRY_TEXT)&&((int)(long)item->data == 1)) {
         sdl_ui_reverse_colors();
     }
 
     i = sdl_ui_print(item->string, MENU_FIRST_X, y_pos+MENU_FIRST_Y);
 
-    if ((item->type == MENU_ENTRY_TEXT)&&((int)item->data == 1)) {
+    if ((item->type == MENU_ENTRY_TEXT)&&((int)(long)item->data == 1)) {
         sdl_ui_reverse_colors();
     }
     sdl_ui_print(item->callback(0, item->data), MENU_FIRST_X+i+1, y_pos+MENU_FIRST_Y);
@@ -358,11 +358,9 @@ void sdl_ui_activate_post_action(void)
 void sdl_ui_init_draw_params(void)
 {
     if (sdl_ui_set_menu_params != NULL) {
-        sdl_ui_set_menu_params(sdl_active_canvas->index);
+        sdl_ui_set_menu_params(sdl_active_canvas->index, &menu_draw);
     }
 
-    menu_draw.max_text_x = sdl_active_canvas->geometry->text_size.width * (menu_draw.max_text_x_double);
-    menu_draw.max_text_y = sdl_active_canvas->geometry->text_size.height;
     menu_draw.pitch = sdl_active_canvas->draw_buffer->draw_buffer_pitch;
     menu_draw.offset = sdl_active_canvas->geometry->gfx_position.x + menu_draw.extra_x
                      + (sdl_active_canvas->geometry->gfx_position.y + menu_draw.extra_y) * menu_draw.pitch
@@ -700,12 +698,6 @@ void sdl_ui_scroll_screen_up(void)
 /* ------------------------------------------------------------------ */
 /* Initialization/setting */
 
-void sdl_ui_set_menu_borders(int x, int y)
-{
-    menu_draw.extra_x = x;
-    menu_draw.extra_y = y;
-}
-
 void sdl_ui_set_main_menu(const ui_menu_entry_t *menu)
 {
     main_menu = (ui_menu_entry_t *)menu;
@@ -724,18 +716,3 @@ void sdl_ui_set_menu_font(BYTE *font, int w, int h)
     }
 }
 
-void sdl_ui_set_menu_colors(int front, int back)
-{
-    if (front >= 0) {
-        menu_draw.color_front = (BYTE)(front & 0xff);
-    }
-
-    if (back >= 0) {
-        menu_draw.color_back = (BYTE)(back & 0xff);
-    }
-}
-
-void sdl_ui_set_double_x(int value)
-{
-    menu_draw.max_text_x_double = value ? 2 : 1;
-}

@@ -167,7 +167,7 @@ UI_MENU_DEFINE_FILE_STRING(VICPaletteFile)
 
 static UI_MENU_CALLBACK(radio_VideoOutput_c128_callback)
 {
-    int value = (int)param;
+    int value = (int)(long)param;
 
     if (activated) {
         sdl_video_canvas_switch(value);
@@ -182,7 +182,7 @@ static UI_MENU_CALLBACK(radio_VideoOutput_c128_callback)
 static UI_MENU_CALLBACK(radio_MachineVideoStandard_vic20_callback)
 {
     if (activated) {
-        int value = (int)param;
+        int value = (int)(long)param;
         resources_set_int("MachineVideoStandard", value);
         machine_trigger_reset(MACHINE_RESET_MODE_HARD);
         return sdl_menu_text_exit_ui;

@@ -137,17 +137,20 @@ static const ui_menu_entry_t x128_main_menu[] = {
     { NULL }
 };
 
-void c128ui_set_menu_params(int index)
+void c128ui_set_menu_params(int index, menu_draw_t *menu_draw)
 {
-    if (index == 0) { /* VICII */
-        sdl_ui_set_menu_borders(0, 0);
-        sdl_ui_set_double_x(0);
-        sdl_ui_set_menu_colors(1, 0);
-    } else {         /* VDC */
-        sdl_ui_set_menu_borders(0, 0);
-        sdl_ui_set_double_x(1);
-        sdl_ui_set_menu_colors(15, 0);
+    menu_draw->extra_x = 0;
+    menu_draw->extra_y = 0;
+    menu_draw->color_back = 0;
 
+    if (index == 0) { /* VICII */
+        menu_draw->max_text_x = 40;
+        menu_draw->max_text_y = 25;
+        menu_draw->color_front = 1;
+    } else {         /* VDC */
+        menu_draw->max_text_x = 80;
+        menu_draw->max_text_y = 25;
+        menu_draw->color_front = 15;
     }
 }
 
