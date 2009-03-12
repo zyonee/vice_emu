@@ -49,6 +49,9 @@
 #include "uirom.h"
 #include "winmain.h"
 
+#ifdef _WIN64
+#define _ANONYMOUS_UNION
+#endif
 
 static const uirom_settings_t *settings;
 

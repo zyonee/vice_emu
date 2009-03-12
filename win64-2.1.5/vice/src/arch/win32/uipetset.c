@@ -43,6 +43,9 @@
 #include "uipetset.h"
 #include "winmain.h"
 
+#ifdef _WIN64
+#define _ANONYMOUS_UNION
+#endif
 
 static void init_dialog(HWND hwnd)
 {

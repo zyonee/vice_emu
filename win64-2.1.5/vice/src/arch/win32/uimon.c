@@ -46,6 +46,7 @@
 #include "ui.h"
 #include "uimon.h"
 #include "uimonmsg.h"
+#include "winlong.h"
 #include "winmain.h"
 
 
@@ -1377,7 +1378,7 @@ long CALLBACK reg_window_proc(HWND hwnd,
     UINT msg, WPARAM wParam, LPARAM lParam)
 
 {
-    reg_private_t *prp = (reg_private_t*) GetWindowLong( hwnd, GWL_USERDATA );
+    reg_private_t *prp = (reg_private_t*) GetWindowLongPtr( hwnd, GWLP_USERDATA );
 
     switch (msg)
     {
@@ -1389,7 +1390,7 @@ long CALLBACK reg_window_proc(HWND hwnd,
         delete_client_window(hwnd);
         // free the reg_private info 
         lib_free(prp);
-        SetWindowLong( hwnd, GWL_USERDATA, 0 );
+        SetWindowLongPtr( hwnd, GWLP_USERDATA, 0 );
 
         return DEF_REG_PROG(hwnd, msg, wParam, lParam);
 
@@ -1444,7 +1445,7 @@ long CALLBACK reg_window_proc(HWND hwnd,
             prp->RegCount      = 0;
             
             /* store pointer to structure with window */
-            SetWindowLong( hwnd, GWL_USERDATA, (long) prp );
+            SetWindowLongPtr( hwnd, GWLP_USERDATA, (long) prp );
 
             SelectObject( hdc, GetStockObject( ANSI_FIXED_FONT ) );
 
@@ -1506,7 +1507,7 @@ long CALLBACK reg_window_proc(HWND hwnd,
 /**/
 
                 AdjustWindowRectEx( &rect, 
-                    GetWindowLong( hwnd, GWL_STYLE ), FALSE, GetWindowLong( hwnd, GWL_EXSTYLE ) );
+                    GetWindowLongPtr( hwnd, GWL_STYLE ), FALSE, GetWindowLongPtr( hwnd, GWL_EXSTYLE ) );
 
                 MoveWindow( hwnd, rect.left, rect.top,
                     rect.right - rect.left, rect.bottom - rect.top, TRUE );
@@ -1637,14 +1638,14 @@ int ExecuteDisassemblyPopup( HWND hwnd, dis_private_t *pdp, LPARAM lParam, BOOL 
 static long CALLBACK dis_window_proc(HWND hwnd, UINT msg, WPARAM wParam,
                                      LPARAM lParam)
 {
-    dis_private_t *pdp = (dis_private_t*)GetWindowLong(hwnd, GWL_USERDATA);
+    dis_private_t *pdp = (dis_private_t*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
 
     switch (msg)
     {
     case WM_DESTROY:
         delete_client_window(hwnd);
         // clear the dis_private info 
-        SetWindowLong( hwnd, GWL_USERDATA, 0 );
+        SetWindowLongPtr( hwnd, GWLP_USERDATA, 0 );
         lib_free(pdp);
 
         return DEF_DIS_PROG(hwnd, msg, wParam, lParam);
@@ -1697,7 +1698,7 @@ static long CALLBACK dis_window_proc(HWND hwnd, UINT msg, WPARAM wParam,
             pdp = lib_malloc(sizeof(dis_private_t));
             
             /* store pointer to structure with window */
-            SetWindowLong( hwnd, GWL_USERDATA, (long) pdp );
+            SetWindowLongPtr( hwnd, GWLP_USERDATA, (long) pdp );
 
             SelectObject( hdc, GetStockObject( ANSI_FIXED_FONT ) );
 

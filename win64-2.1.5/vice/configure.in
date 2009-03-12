@@ -1919,7 +1919,11 @@ elif test x"$is_win32" = "xyes"; then
 
   dnl On Windows, we already know what we want.
 
-  LIBS="$LIBS -lkernel32 -luser32 -lgdi32 -lwinmm -lcomdlg32 -lcomctl32 -lddraw -ldsound -lth32 -lwsock32 -lversion"
+  if test x"$host_cpu" = "xx86_64" -o x"$host_cpu" = "xamd64"; then
+    LIBS="$LIBS -lkernel32 -luser32 -lgdi32 -lwinmm -lcomdlg32 -lcomctl32 -lddraw -ldsound -lws2_32 -lversion"
+  else
+    LIBS="$LIBS -lkernel32 -luser32 -lgdi32 -lwinmm -lcomdlg32 -lcomctl32 -lddraw -ldsound -lth32 -lwsock32 -lversion"
+  fi
 
   AC_CHECK_HEADER(d3d9.h,
       [ AC_DEFINE(HAVE_D3D9_H,,[Support for DirectX9.]) ],)

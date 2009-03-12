@@ -40,6 +40,7 @@
 #define DUMMYUNIONNAME  u1
 #endif
 
+#include "fullscrn.h"
 #include "intl.h"
 #include "lib.h"
 #include "res.h"
@@ -49,9 +50,12 @@
 #include "uiapi.h"
 #include "uilib.h"
 #include "uivideo.h"
-#include "fullscrn.h"
+#include "winlong.h"
 #include "winmain.h"
 
+#ifdef _WIN64
+#define _ANONYMOUS_UNION
+#endif
 
 static char *palette_file = NULL;
 static char *palette_file2 = NULL;
@@ -295,7 +299,7 @@ static BOOL CALLBACK dialog_color_proc(HWND hwnd, UINT msg,
             ival = (int)(tf * 1000.0 + 0.5);
             resources_set_int("ColorBrightness", ival);
             querynewpalette = 1;
-            SetWindowLong(hwnd, DWL_MSGRESULT, FALSE);
+            SetWindowLongPtr(hwnd, DWLP_MSGRESULT, FALSE);
             return TRUE;
         }
         return FALSE;
@@ -339,7 +343,7 @@ static BOOL CALLBACK dialog_new_pal_proc(HWND hwnd, UINT msg,
             ival = (int)(tf * 1000.0 + 0.5);
             resources_set_int("PALOddLineOffset", ival);
             querynewpalette = 1;
-            SetWindowLong(hwnd, DWL_MSGRESULT, FALSE);
+            SetWindowLongPtr(hwnd, DWLP_MSGRESULT, FALSE);
             return TRUE;
         }
         return FALSE;
@@ -394,14 +398,14 @@ static BOOL CALLBACK dialog_advanced_proc(HWND hwnd, UINT msg,
                 ui_error(translate_text(IDS_COULD_NOT_LOAD_PALETTE));
                 resources_set_int(current_chip->res_ExternalPalette_name,
                                   res_extpalette);
-                SetWindowLong (hwnd, DWL_MSGRESULT, TRUE);
+                SetWindowLongPtr(hwnd, DWLP_MSGRESULT, TRUE);
                 return TRUE;
             }
             lib_free(palette_file);
             palette_file = NULL;
             resources_set_int(current_chip->res_ExternalPalette_name,
                               res_extpalette);
-            SetWindowLong(hwnd, DWL_MSGRESULT, FALSE);
+            SetWindowLongPtr(hwnd, DWLP_MSGRESULT, FALSE);
             return TRUE;
         }
         return FALSE;
@@ -475,12 +479,12 @@ static BOOL CALLBACK dialog_palette_proc(HWND hwnd, UINT msg,
             if (resources_set_string(current_chip2->res_PaletteFile_name,
                 palette_file2) < 0) {
                 ui_error(translate_text(IDS_COULD_NOT_LOAD_PALETTE));
-                SetWindowLong (hwnd, DWL_MSGRESULT, TRUE);
+                SetWindowLongPtr(hwnd, DWLP_MSGRESULT, TRUE);
                 return TRUE;
             }
             lib_free(palette_file2);
             palette_file2 = NULL;
-            SetWindowLong (hwnd, DWL_MSGRESULT, FALSE);
+            SetWindowLongPtr(hwnd, DWLP_MSGRESULT, FALSE);
             return TRUE;
         }
         return FALSE;

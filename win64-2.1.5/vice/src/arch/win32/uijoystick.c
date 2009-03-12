@@ -29,11 +29,12 @@
 
 #include "intl.h"
 #include "joy.h"
+#include "kbd.h"
 #include "res.h"
 #include "resources.h"
 #include "translate.h"
+#include "winlong.h"
 #include "winmain.h"
-#include "kbd.h"
 
 /*  These are in joystick.c . */
 extern void joystick_calibrate(HWND hwnd);
@@ -97,7 +98,7 @@ static BOOL CALLBACK key_dialog(HWND hwnd, UINT msg, WPARAM wparam,
     switch (msg) {
       case WM_INITDIALOG:
         SetWindowText(hwnd, translate_text(keydefine_texts[current_key_index]));
-        SetWindowLong(hwnd, GWL_WNDPROC, (LONG)real_callback);
+        SetWindowLongPtr(hwnd, GWLP_WNDPROC, (LONG)real_callback);
         return FALSE;
     }
     return FALSE;

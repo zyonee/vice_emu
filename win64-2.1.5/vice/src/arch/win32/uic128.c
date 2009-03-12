@@ -46,6 +46,9 @@
 #include "uilib.h"
 #include "winmain.h"
 
+#ifdef _WIN64
+#define _ANONYMOUS_UNION
+#endif
 
 static const TCHAR *ui_machine[] = 
 {

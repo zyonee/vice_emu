@@ -54,6 +54,10 @@
 
 #include "menuid.h"
 
+#ifdef _WIN64
+#define _ANONYMOUS_UNION
+#endif
+
 #define MAXACCEL 1000
 
 static ACCEL accellist[MAXACCEL];

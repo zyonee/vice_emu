@@ -49,6 +49,10 @@
 #include "winmain.h"
 #include "uilib.h"
 
+#ifdef _WIN64
+#define _ANONYMOUS_UNION
+#endif
+
 static const TCHAR *ui_sid_engine[] = 
 {
     TEXT("Fast SID"),

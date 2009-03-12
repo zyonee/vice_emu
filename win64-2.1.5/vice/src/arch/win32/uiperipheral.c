@@ -55,8 +55,12 @@
 #include "uiapi.h"
 #include "uilib.h"
 #include "uiperipheral.h"
+#include "winlong.h"
 #include "winmain.h"
 
+#ifdef _WIN64
+#define _ANONYMOUS_UNION
+#endif
 
 /* -------------------------------------------------------------------------- */
 /*                             Disk Peripherals (8-11)                        */
@@ -315,7 +319,7 @@ static BOOL CALLBACK dialog_proc(unsigned int num, HWND hwnd, UINT msg,
 
             switch (nmhdr->code) {
               case PSN_APPLY:
-                SetWindowLong(hwnd, DWL_MSGRESULT, 
+                SetWindowLongPtr(hwnd, DWLP_MSGRESULT, 
                               store_dialog_results(hwnd, num)
                               ? PSNRET_NOERROR : PSNRET_INVALID);
                 return TRUE;
@@ -622,7 +626,7 @@ static BOOL CALLBACK printer_dialog_proc(unsigned int num, HWND hwnd, UINT msg,
 
             switch (nmhdr->code) {
               case PSN_APPLY:
-                SetWindowLong(hwnd, DWL_MSGRESULT, 
+                SetWindowLongPtr(hwnd, DWLP_MSGRESULT, 
                               store_printer_dialog_results(hwnd, num)
                               ? PSNRET_NOERROR : PSNRET_INVALID);
                 return TRUE;

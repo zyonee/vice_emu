@@ -46,6 +46,9 @@
 #include "uilib.h"
 #include "winmain.h"
 
+#ifdef _WIN64
+#define _ANONYMOUS_UNION
+#endif
 
 static void enable_controls_for_drive_settings(HWND hwnd, int type)
 {
