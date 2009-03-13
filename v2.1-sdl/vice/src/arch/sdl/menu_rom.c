@@ -1,5 +1,5 @@
 /*
- * menu_c128hw.c - C128 HW menu for SDL UI.
+ * menu_rom.c - ROM menu for SDL UI.
  *
  * Written by
  *  Marco van den Heuvel <blackystardust68@yahoo.com>

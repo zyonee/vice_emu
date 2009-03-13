@@ -81,7 +81,6 @@ struct menu_draw_s {
     int max_text_y;
     int extra_x;
     int extra_y;
-    int max_text_x_double;
     BYTE color_front;
     BYTE color_back;
 };

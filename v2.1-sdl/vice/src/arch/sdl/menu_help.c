@@ -294,7 +294,7 @@ static UI_MENU_CALLBACK(cmdline_callback)
 
     if (activated) {
         menu_draw = sdl_ui_get_menu_param();
-        if (menu_draw->max_text_x_double == 2 && menu_draw->max_text_x > 60) {
+        if (menu_draw->max_text_x > 60) {
             options = cmdline_options_string();
             show_text((const char *)options);
             lib_free(options);
@@ -316,7 +316,7 @@ static UI_MENU_CALLBACK(contributors_callback)
 
     if (activated) {
         menu_draw = sdl_ui_get_menu_param();
-        if (menu_draw->max_text_x_double == 2 && menu_draw->max_text_x > 60) {
+        if (menu_draw->max_text_x > 60) {
             show_text((const char *)info_contrib_text);
         } else {
             info_contrib_text40 = contrib_convert((char *)info_contrib_text);
@@ -333,7 +333,7 @@ static UI_MENU_CALLBACK(license_callback)
 
     if (activated) {
         menu_draw = sdl_ui_get_menu_param();
-        if (menu_draw->max_text_x_double == 2 && menu_draw->max_text_x > 60) {
+        if (menu_draw->max_text_x > 60) {
             show_text(info_license_text);
         } else {
             show_text(info_license_text40);
@@ -348,7 +348,7 @@ static UI_MENU_CALLBACK(warranty_callback)
 
     if (activated) {
         menu_draw = sdl_ui_get_menu_param();
-        if (menu_draw->max_text_x_double == 2 && menu_draw->max_text_x > 60) {
+        if (menu_draw->max_text_x > 60) {
             show_text(info_warranty_text);
         } else {
             show_text(info_warranty_text40);
@@ -359,23 +359,23 @@ static UI_MENU_CALLBACK(warranty_callback)
 
 const ui_menu_entry_t help_menu[] = {
     { "About",
-      MENU_ENTRY_OTHER,
+      MENU_ENTRY_DIALOG,
       about_callback,
       NULL },
     { "Command-line options",
-      MENU_ENTRY_OTHER,
+      MENU_ENTRY_DIALOG,
       cmdline_callback,
       NULL },
     { "Contributors",
-      MENU_ENTRY_OTHER,
+      MENU_ENTRY_DIALOG,
       contributors_callback,
       NULL },
     { "License",
-      MENU_ENTRY_OTHER,
+      MENU_ENTRY_DIALOG,
       license_callback,
       NULL },
     { "Warranty",
-      MENU_ENTRY_OTHER,
+      MENU_ENTRY_DIALOG,
       warranty_callback,
       NULL },
     { NULL }

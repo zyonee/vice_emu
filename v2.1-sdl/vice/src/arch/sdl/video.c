@@ -276,7 +276,7 @@ void video_canvas_refresh(struct video_canvas_s *canvas,
                           unsigned int xi, unsigned int yi,
                           unsigned int w, unsigned int h)
 {
-    if (sdl_vkbd_state) {
+    if (sdl_vkbd_state & SDL_VKBD_ACTIVE) {
         sdl_vkbd_draw();
     }
 
