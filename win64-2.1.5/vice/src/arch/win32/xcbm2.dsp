@@ -93,37 +93,6 @@ SOURCE=..\..\main.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\vice.manifest_x86
-
-!IF  "$(CFG)" == "xcbm2 - Win32 Release"
-
-# PROP Ignore_Default_Tool 1
-USERDEP__RESC1="vice.manifest_x86"	
-# Begin Custom Build
-InputPath=.\vice.manifest_x86
-
-"vice.manifest" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy vice.manifest_x86 vice.manifest
-
-# End Custom Build
-
-!ELSEIF  "$(CFG)" == "xcbm2 - Win32 Debug"
-
-# PROP Ignore_Default_Tool 1
-USERDEP__RESC1="vice.manifest_x86"
-# Begin Custom Build
-InputPath=.\vice.manifest_x86
-
-"vice.manifest" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy vice.manifest_x86 vice.manifest
-
-# End Custom Build
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
 SOURCE=.\rescbm2.rc
 
 !IF  "$(CFG)" == "xcbm2 - Win32 Release"

@@ -97,37 +97,6 @@ SOURCE=..\..\ps2mouse.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\vice.manifest_x86
-
-!IF  "$(CFG)" == "x64dtv - Win32 Release"
-
-# PROP Ignore_Default_Tool 1
-USERDEP__RESC1="vice.manifest_x86"	
-# Begin Custom Build
-InputPath=.\vice.manifest_x86
-
-"vice.manifest" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy vice.manifest_x86 vice.manifest
-
-# End Custom Build
-
-!ELSEIF  "$(CFG)" == "x64dtv - Win32 Debug"
-
-# PROP Ignore_Default_Tool 1
-USERDEP__RESC1="vice.manifest_x86"
-# Begin Custom Build
-InputPath=.\vice.manifest_x86
-
-"vice.manifest" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy vice.manifest_x86 vice.manifest
-
-# End Custom Build
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
 SOURCE=.\resc64dtv.rc
 
 !IF  "$(CFG)" == "x64dtv - Win32 Release"
