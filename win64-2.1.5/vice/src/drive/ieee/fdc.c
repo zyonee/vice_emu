@@ -741,7 +741,7 @@ void fdc_init(drive_context_t *drv)
     lib_free(buffer);
 
     clk_guard_add_callback(drv->cpu->clk_guard, clk_overflow_callback,
-                           vice_uptr_to_void_ptr(drv->mynumber));
+                           uint_to_void_ptr(drv->mynumber));
 }
 
 /************************************************************************/

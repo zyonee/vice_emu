@@ -578,7 +578,7 @@ static void file_system_detach_disk_single(unsigned int unit)
         ui_display_drive_current_image(unit - 8, "");
     }
 
-    set_file_system_device(file_system_device_enabled[unit - 8], vice_uptr_to_void_ptr(unit));
+    set_file_system_device(file_system_device_enabled[unit - 8], uint_to_void_ptr(unit));
 }
 
 static void file_system_detach_disk_internal(int unit)

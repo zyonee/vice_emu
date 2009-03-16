@@ -114,7 +114,7 @@ void wd1770d_init(drive_context_t *drv)
         wd1770_log = log_open("WD1770");
 
     clk_guard_add_callback(drv->cpu->clk_guard, clk_overflow_callback,
-                           vice_uptr_to_void_ptr(drv->mynumber));
+                           uint_to_void_ptr(drv->mynumber));
 }
 
 void REGPARM3 wd1770d_store(drive_context_t *drv, WORD addr, BYTE byte)

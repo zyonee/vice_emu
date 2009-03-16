@@ -283,7 +283,7 @@ int drive_resources_type_init(unsigned int default_type)
         res_drive_type[0].name = lib_msprintf("Drive%iType", dnr + 8);
         res_drive_type[0].factory_value = (int)type;
         res_drive_type[0].value_ptr = (int *)&(drive->type);
-        res_drive_type[0].param = vice_uptr_to_void_ptr(dnr);
+        res_drive_type[0].param = uint_to_void_ptr(dnr);
 
         if (resources_register_int(res_drive_type) < 0)
             return -1;
@@ -317,7 +317,7 @@ int drive_resources_init(void)
 
         res_drive[0].name = lib_msprintf("Drive%iExtendImagePolicy", dnr + 8);
         res_drive[0].value_ptr = (int *)&(drive->extend_image_policy);
-        res_drive[0].param = vice_uptr_to_void_ptr(dnr);
+        res_drive[0].param = uint_to_void_ptr(dnr);
 
         if (resources_register_int(res_drive) < 0)
             return -1;

@@ -236,7 +236,7 @@ int resources_register_int(const resource_int_t *r)
 
         dp->name = lib_stralloc(sp->name);
         dp->type = RES_INTEGER;
-        dp->factory_value = vice_uptr_to_void_ptr(sp->factory_value);
+        dp->factory_value = uint_to_void_ptr(sp->factory_value);
         dp->value_ptr = (void *)(sp->value_ptr);
         dp->event_relevant = sp->event_relevant;
         dp->event_strict_value = sp->event_strict_value;
@@ -524,7 +524,7 @@ int resources_set_int(const char *name, int value)
 
     if (r->event_relevant == RES_EVENT_SAME && network_connected())
     {
-        resource_record_event(r, vice_uptr_to_void_ptr(value));
+        resource_record_event(r, uint_to_void_ptr(value));
         return 0;
     }
 
@@ -863,7 +863,7 @@ int resources_toggle(const char *name, int *new_value_return)
         *new_value_return = value;
 
     if (r->event_relevant == RES_EVENT_SAME && network_connected()) {
-        resource_record_event(r, vice_uptr_to_void_ptr(value));
+        resource_record_event(r, uint_to_void_ptr(value));
         return 0;
     }
 

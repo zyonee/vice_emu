@@ -261,22 +261,22 @@ int iec_resources_init(void)
 
         res_drive[0].name = lib_msprintf("Drive%iIdleMethod", dnr + 8);
         res_drive[0].value_ptr = &(drive->idling_method);
-        res_drive[0].param = vice_uptr_to_void_ptr(dnr);
+        res_drive[0].param = uint_to_void_ptr(dnr);
         res_drive[1].name = lib_msprintf("Drive%iRAM2000", dnr + 8);
         res_drive[1].value_ptr = &(drive->drive_ram2_enabled);
-        res_drive[1].param = vice_uptr_to_void_ptr(dnr);
+        res_drive[1].param = uint_to_void_ptr(dnr);
         res_drive[2].name = lib_msprintf("Drive%iRAM4000", dnr + 8);
         res_drive[2].value_ptr = &(drive->drive_ram4_enabled);
-        res_drive[2].param = vice_uptr_to_void_ptr(dnr);
+        res_drive[2].param = uint_to_void_ptr(dnr);
         res_drive[3].name = lib_msprintf("Drive%iRAM6000", dnr + 8);
         res_drive[3].value_ptr = &(drive->drive_ram6_enabled);
-        res_drive[3].param = vice_uptr_to_void_ptr(dnr);
+        res_drive[3].param = uint_to_void_ptr(dnr);
         res_drive[4].name = lib_msprintf("Drive%iRAM8000", dnr + 8);
         res_drive[4].value_ptr = &(drive->drive_ram8_enabled);
-        res_drive[4].param = vice_uptr_to_void_ptr(dnr);
+        res_drive[4].param = uint_to_void_ptr(dnr);
         res_drive[5].name = lib_msprintf("Drive%iRAMA000", dnr + 8);
         res_drive[5].value_ptr = &(drive->drive_rama_enabled);
-        res_drive[5].param = vice_uptr_to_void_ptr(dnr);
+        res_drive[5].param = uint_to_void_ptr(dnr);
 
         if (resources_register_int(res_drive) < 0)
             return -1;

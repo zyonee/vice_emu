@@ -78,7 +78,7 @@ int plus4exp_resources_init(void)
 
         res_drive[0].name = lib_msprintf("Drive%iParallelCable", dnr + 8);
         res_drive[0].value_ptr = &(drive->parallel_cable);
-        res_drive[0].param = vice_uptr_to_void_ptr(dnr);
+        res_drive[0].param = uint_to_void_ptr(dnr);
 
         if (resources_register_int(res_drive) < 0)
             return -1;

@@ -71,6 +71,6 @@ void drive_overflow_init(void)
 
     for (dnr = 0; dnr < DRIVE_NUM; dnr++) {
         clk_guard_add_callback(drive_context[dnr]->cpu->clk_guard,
-                               drive_clk_overflow_callback, vice_uptr_to_void_ptr(dnr));
+                               drive_clk_overflow_callback, uint_to_void_ptr(dnr));
     }
 }
