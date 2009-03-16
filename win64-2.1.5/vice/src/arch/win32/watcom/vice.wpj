@@ -4,10 +4,10 @@ projectIdent
 VpeMain
 1
 WRect
-10
-0
+-40
+-53
 10320
-9960
+9973
 2
 MProject
 3
@@ -759,7 +759,7 @@ WFileName
 12
 sounddrv.tgt
 0
-0
+7
 159
 VComponent
 160
