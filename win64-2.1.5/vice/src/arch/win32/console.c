@@ -1299,9 +1299,8 @@ static BOOLEAN  bIsMdiChild = FALSE;
 
 
 /* window procedure */
-static long CALLBACK console_window_proc(HWND hwnd, 
-    UINT msg, WPARAM wParam, LPARAM lParam)
-
+static LRESULT CALLBACK console_window_proc(HWND hwnd, UINT msg, 
+                                            WPARAM wParam, LPARAM lParam)
 {
     console_private_t *pcp = (console_private_t*) GetWindowLongPtr( hwnd, GWLP_USERDATA );
 
@@ -1828,7 +1827,7 @@ static console_t *console_open_internal(const char *id, HWND hwndParent, HWND hw
     SetBkColor( pcp->hdc, GetSysColor( COLOR_WINDOW ) );
 
     /* store pointer to structure with window */
-    SetWindowLongPtr( pcp->hwndConsole, GWLP_USERDATA, (long) pcp );
+    SetWindowLongPtr( pcp->hwndConsole, GWLP_USERDATA, (UINT_PTR) pcp );
 
     /* get the dimensions of one char */
     get_char_dimensions( pcp );

@@ -192,8 +192,8 @@ static void select_wmm(void)
     ui_display_statustext(translate_text(IDS_SOUND_DRIVER_WMM), 1);
 }
 
-static BOOL CALLBACK dialog_proc(HWND hwnd, UINT msg, WPARAM wparam,
-                                 LPARAM lparam)
+static INT_PTR CALLBACK dialog_proc(HWND hwnd, UINT msg, WPARAM wparam,
+                                    LPARAM lparam)
 {
     int command;
 
@@ -302,8 +302,8 @@ static void browse_sound_record_file(HWND hwnd)
                         IDC_SOUND_RECORD_FILE);
 }
 
-static BOOL CALLBACK sound_record_dialog_proc(HWND hwnd, UINT msg, WPARAM wparam,
-                                              LPARAM lparam)
+static INT_PTR CALLBACK sound_record_dialog_proc(HWND hwnd, UINT msg,
+                                                 WPARAM wparam, LPARAM lparam)
 {
   int command;
 
@@ -335,6 +335,6 @@ static BOOL CALLBACK sound_record_dialog_proc(HWND hwnd, UINT msg, WPARAM wparam
 
 void ui_sound_record_settings_dialog(HWND hwnd)
 {
-  DialogBox(winmain_instance, (LPCTSTR)translate_res(IDD_SOUND_RECORD_SETTINGS_DIALOG), hwnd,
+  DialogBox(winmain_instance, (LPCTSTR)(UINT_PTR)translate_res(IDD_SOUND_RECORD_SETTINGS_DIALOG), hwnd,
             sound_record_dialog_proc);
 }

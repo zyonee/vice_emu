@@ -110,8 +110,8 @@ static void init_dialog(HWND hwnd)
     CheckRadioButton(hwnd, IDC_SELECT_CBMII_HW0, IDC_SELECT_CBMII_HW2, n);
 }
 
-static BOOL CALLBACK dialog_proc(HWND hwnd, UINT msg,
-                                 WPARAM wparam, LPARAM lparam)
+static INT_PTR CALLBACK dialog_proc(HWND hwnd, UINT msg,
+                                    WPARAM wparam, LPARAM lparam)
 {
     int type;
 

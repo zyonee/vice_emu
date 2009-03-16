@@ -577,8 +577,8 @@ static void fullscreen_dialog_init(HWND hwnd)
     init_fullscreen_dialog(hwnd);
 }
 
-BOOL CALLBACK dialog_fullscreen_proc(HWND hwnd, UINT msg, WPARAM wparam,
-                                     LPARAM lparam)
+INT_PTR CALLBACK dialog_fullscreen_proc(HWND hwnd, UINT msg, WPARAM wparam,
+                                        LPARAM lparam)
 {
     int notifycode;
     int item;
@@ -645,5 +645,3 @@ BOOL CALLBACK dialog_fullscreen_proc(HWND hwnd, UINT msg, WPARAM wparam,
     }
     return FALSE;
 }
-
-

@@ -738,12 +738,14 @@ PWindowDimensions LoadMonitorDimensions(HWND hwnd)
 
     const char *dimensions;
     BYTE *buffer;
-    int   len;
+    int len;
+    size_t len_temp;
     BOOLEAN bError = FALSE;
 
     resources_get_string("MonitorDimensions", &dimensions);
-    buffer = decode(dimensions,&len);
+    buffer = decode(dimensions,&len_temp);
 
+    len = (int)len_temp;
     if (len!=0)
     {
         char *p = buffer;
@@ -1085,10 +1087,8 @@ void OnCommand( HWND hwnd, WORD wNotifyCode, WORD wID, HWND hwndCtrl )
 
 
 /* window procedure */
-static 
-long CALLBACK mon_window_proc(HWND hwnd, 
-    UINT msg, WPARAM wParam, LPARAM lParam)
-
+static LRESULT CALLBACK mon_window_proc(HWND hwnd, UINT msg, WPARAM wParam,
+                                        LPARAM lParam)
 {
     switch (msg)
     {
@@ -1373,10 +1373,8 @@ BOOLEAN output_register(HDC hdc, reg_private_t *prp, RECT *clientrect)
 }
 
 /* window procedure */
-static 
-long CALLBACK reg_window_proc(HWND hwnd, 
-    UINT msg, WPARAM wParam, LPARAM lParam)
-
+static LRESULT CALLBACK reg_window_proc(HWND hwnd, UINT msg, WPARAM wParam,
+                                        LPARAM lParam)
 {
     reg_private_t *prp = (reg_private_t*) GetWindowLongPtr( hwnd, GWLP_USERDATA );
 
@@ -1445,7 +1443,7 @@ long CALLBACK reg_window_proc(HWND hwnd,
             prp->RegCount      = 0;
             
             /* store pointer to structure with window */
-            SetWindowLongPtr( hwnd, GWLP_USERDATA, (long) prp );
+            SetWindowLongPtr( hwnd, GWLP_USERDATA, (UINT_PTR) prp );
 
             SelectObject( hdc, GetStockObject( ANSI_FIXED_FONT ) );
 
@@ -1635,8 +1633,8 @@ int ExecuteDisassemblyPopup( HWND hwnd, dis_private_t *pdp, LPARAM lParam, BOOL 
 
 
 /* window procedure */
-static long CALLBACK dis_window_proc(HWND hwnd, UINT msg, WPARAM wParam,
-                                     LPARAM lParam)
+static LRESULT CALLBACK dis_window_proc(HWND hwnd, UINT msg, WPARAM wParam,
+                                        LPARAM lParam)
 {
     dis_private_t *pdp = (dis_private_t*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
 
@@ -1698,7 +1696,7 @@ static long CALLBACK dis_window_proc(HWND hwnd, UINT msg, WPARAM wParam,
             pdp = lib_malloc(sizeof(dis_private_t));
             
             /* store pointer to structure with window */
-            SetWindowLongPtr( hwnd, GWLP_USERDATA, (long) pdp );
+            SetWindowLongPtr( hwnd, GWLP_USERDATA, (UINT_PTR) pdp );
 
             SelectObject( hdc, GetStockObject( ANSI_FIXED_FONT ) );
 

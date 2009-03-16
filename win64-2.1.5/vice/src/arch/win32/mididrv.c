@@ -207,7 +207,7 @@ int mididrv_in_open(void)
         mididrv_in_close();
     }
 
-    ret = midiInOpen(&handle_in, midi_in_dev, (DWORD)midi_callback, 0, CALLBACK_FUNCTION);
+    ret = midiInOpen(&handle_in, midi_in_dev, (UINT_PTR)midi_callback, 0, CALLBACK_FUNCTION);
     if(ret != MMSYSERR_NOERROR) {
         log_error(mididrv_log, "Cannot open MIDI-In device #%d!",
                   midi_in_dev);
@@ -221,7 +221,7 @@ int mididrv_in_open(void)
     /* can theoretically return MMSYSERR_INVALHANDLE */
     ret = midiInStart(handle_in);
 
-    return (DWORD)handle_in;
+    return vice_ptr_to_int(handle_in);
 }
 
 /* opens a MIDI-Out device, returns handle */
@@ -245,7 +245,7 @@ int mididrv_out_open(void)
     /* reset buffer */
     out_index=0;
 
-    return (DWORD)handle_out;
+    return vice_ptr_to_int(handle_out);
 }
 
 /* closes the MIDI-In device*/

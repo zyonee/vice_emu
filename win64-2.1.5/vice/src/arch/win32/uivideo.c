@@ -275,8 +275,8 @@ static void update_palettename2(char *name)
     palette_file2 = lib_stralloc(name);
 }
 
-static BOOL CALLBACK dialog_color_proc(HWND hwnd, UINT msg,
-                                       WPARAM wparam, LPARAM lparam)
+static INT_PTR CALLBACK dialog_color_proc(HWND hwnd, UINT msg,
+                                          WPARAM wparam, LPARAM lparam)
 {
     int type, ival;
     float tf;
@@ -319,8 +319,8 @@ static BOOL CALLBACK dialog_color_proc(HWND hwnd, UINT msg,
     return FALSE;
 }
 
-static BOOL CALLBACK dialog_new_pal_proc(HWND hwnd, UINT msg,
-                                       WPARAM wparam, LPARAM lparam)
+static INT_PTR CALLBACK dialog_new_pal_proc(HWND hwnd, UINT msg,
+                                            WPARAM wparam, LPARAM lparam)
 {
     int type, ival;
     float tf;
@@ -363,8 +363,8 @@ static BOOL CALLBACK dialog_new_pal_proc(HWND hwnd, UINT msg,
     return FALSE;
 }
 
-static BOOL CALLBACK dialog_advanced_proc(HWND hwnd, UINT msg,
-                                          WPARAM wparam, LPARAM lparam)
+static INT_PTR CALLBACK dialog_advanced_proc(HWND hwnd, UINT msg,
+                                             WPARAM wparam, LPARAM lparam)
 {
     int type, ival;
     float tf;
@@ -466,8 +466,8 @@ static BOOL CALLBACK dialog_advanced_proc(HWND hwnd, UINT msg,
     return FALSE;
 }
 
-static BOOL CALLBACK dialog_palette_proc(HWND hwnd, UINT msg,
-                                          WPARAM wparam, LPARAM lparam)
+static INT_PTR CALLBACK dialog_palette_proc(HWND hwnd, UINT msg,
+                                            WPARAM wparam, LPARAM lparam)
 {
     int type;
     extern int querynewpalette;
