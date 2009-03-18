@@ -404,15 +404,27 @@ void vic_update_memory_ptrs(void)
     static BYTE *old_screen_ptr = NULL;
 
     WORD char_addr;
-    int tmp;
+    WORD col_addr;
+    WORD scr_addr;
+    WORD offs;
+    BYTE tmp;
   
     BYTE *new_chargen_ptr;
     BYTE *new_color_ptr;
     BYTE *new_screen_ptr;
 
+    offs = (vic.regs[0x2] & 0x80) ? 0x0200 : 0x0000;
+
     tmp = vic.regs[0x5] & 0xf;
     char_addr = (tmp & 0x8) ? 0x0000 : 0x8000;
     char_addr += (tmp & 0x7) * 0x400;
+
+    tmp = (vic.regs[0x5] & 0xf0) >> 4;
+    scr_addr = (tmp & 0x8) ? 0x0000 : 0x8000;
+    scr_addr += (tmp & 0x7) * 0x400;
+    scr_addr += offs;
+
+    col_addr = 0x9400 + offs;
 
     if (char_addr >= 0x8000 && char_addr < 0x9000) {
         new_chargen_ptr = vic20memrom_chargen_rom + 0x400 + (char_addr & 0xfff);
@@ -429,12 +441,16 @@ void vic_update_memory_ptrs(void)
         VIC_DEBUG_REGISTER (("Character memory at $%04X.", char_addr));
     }
 
-    new_color_ptr = mem_ram + 0x9400 + (vic.regs[0x2] & 0x80 ? 0x200 : 0x0);
-    new_screen_ptr = mem_ram + (((vic.regs[0x2] & 0x80) << 2)
-                     | ((vic.regs[0x5] & 0x70) << 6));
+    new_color_ptr = mem_ram + col_addr;
 
-    VIC_DEBUG_REGISTER(("Color memory at $%04X.", vic.color_ptr - ram));
-    VIC_DEBUG_REGISTER(("Screen memory at $%04X.", vic.screen_ptr - ram));
+    if (scr_addr >= 0x8000 && scr_addr < 0x9000) {
+        new_screen_ptr = vic20memrom_chargen_rom + 0x400 + (scr_addr & 0xfff);
+    } else {
+        new_screen_ptr = mem_ram + scr_addr;
+    }
+
+    VIC_DEBUG_REGISTER(("Color memory at $%04X.", col_addr));
+    VIC_DEBUG_REGISTER(("Screen memory at $%04X.", scr_addr));
 
     if (new_chargen_ptr != old_chargen_ptr) {
         raster_changes_foreground_add_ptr(&vic.raster,
