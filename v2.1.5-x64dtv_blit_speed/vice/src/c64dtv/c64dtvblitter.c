@@ -88,6 +88,26 @@ static int have_blitter_bug;
 #define GET_REG8(a) (c64dtvmem_blitter[a])
 
 
+/* shadow register fields */
+int reg03_sourceA_modulo;
+int reg05_sourceA_line_length;
+int reg07_sourceA_step;
+int reg0b_sourceB_modulo;
+int reg0d_sourceB_line_length;
+int reg0f_sourceB_step;
+int reg13_dest_modulo;
+int reg15_dest_line_length;
+int reg17_dest_step;
+int reg1a_sourceA_direction;
+int reg1a_sourceB_direction;
+int reg1a_dest_direction;
+int reg1b_force_sourceB_zero;
+int reg1b_write_if_sourceA_zero;
+int reg1b_write_if_sourceA_nonzero;
+int reg1e_sourceA_right_shift;
+int reg1e_mintermALU;
+
+
 /* ------------------------------------------------------------------------- */
 
 void c64dtvblitter_init(void)
@@ -108,6 +128,7 @@ void c64dtvblitter_reset(void)
 {
     int i;
     if(blitter_log_enabled) log_message(c64dtvblitter_log, "reset");
+
     /* TODO move register file initialization somewhere else? */
     for (i=0;i<0x20;++i) c64dtvmem_blitter[i] = 0;
 
@@ -115,6 +136,7 @@ void c64dtvblitter_reset(void)
     c64dtvmem_blitter[0x0f] = 0x10;
     c64dtvmem_blitter[0x17] = 0x10;
 
+    /* reset internal states */
     blit_sourceA_off = 0;
     blit_sourceB_off = 0;
     blit_dest_off = 0;
@@ -158,13 +180,11 @@ static inline int do_blitter_read_a(void)
 
 static inline int do_blitter_read_b(void)
 {
-    int force_sourceB_zero = GET_REG8(0x1b) & 0x01;
-
     int was_read = 0;
     int offs  = (blit_sourceB_off >> 4) & 0x1ffffc;
     int loffs = (blit_sourceB_off >> 4) & 0x000003;
 
-    if (force_sourceB_zero) {
+    if (reg1b_force_sourceB_zero) {
         sourceB = 0;
         return 0;
     }
@@ -181,30 +201,25 @@ static inline int do_blitter_read_b(void)
 
 static inline int do_blitter_write(void)
 {
-    int sourceA_right_shift = GET_REG8(0x1e) & 0x07;
-    int mintermALU = (GET_REG8(0x1e) >> 3) & 0x07;
-    int write_if_sourceA_zero = GET_REG8(0x1b) & 0x02;
-    int write_if_sourceA_nonzero = GET_REG8(0x1b) & 0x04;
-
     int was_write = 0;
     int offs  = (blit_dest_off >> 4) & 0x1fffff;
 
-
-    if(!(write_if_sourceA_zero || write_if_sourceA_nonzero)) {
-        write_if_sourceA_zero = write_if_sourceA_nonzero = 1;
+    /* this logic should probably be moved to the write switch */
+    if(!(reg1b_write_if_sourceA_zero || reg1b_write_if_sourceA_nonzero)) {
+        reg1b_write_if_sourceA_zero = reg1b_write_if_sourceA_nonzero = 1;
     }
         
-    if ( (write_if_sourceA_zero    && sourceA == 0) ||
-         (write_if_sourceA_nonzero && sourceA != 0) ||
+    if ( (reg1b_write_if_sourceA_zero    && sourceA == 0) ||
+         (reg1b_write_if_sourceA_nonzero && sourceA != 0) ||
          (have_blitter_bug && srca_fetched) ) {
         BYTE dest;
         BYTE lastA_tmp = sourceA;
-        sourceA >>= sourceA_right_shift;
-        sourceA |= lastA << (8 - sourceA_right_shift);
+        sourceA >>= reg1e_sourceA_right_shift;
+        sourceA |= lastA << (8 - reg1e_sourceA_right_shift);
         lastA = lastA_tmp;
 
         dest = 0;
-        switch(mintermALU) {
+        switch(reg1e_mintermALU) {
         case 0: dest = sourceA & sourceB; break;
         case 1: dest = ~(sourceA & sourceB); break;
         case 2: dest = ~(sourceA | sourceB); break;
@@ -219,46 +234,33 @@ static inline int do_blitter_write(void)
         mem_ram[offs] = dest;
         was_write = 1;
     }
-    if(blitter_log_enabled) log_message(c64dtvblitter_log, "Blitter: %s %x.%x/%x.%x to %x.%x, %d to go, minterm %d", was_write ? "transferred" : "skipped", blit_sourceA_off >> 4, blit_sourceA_off & 15, blit_sourceB_off >> 4, blit_sourceB_off & 15, blit_dest_off >> 4, blit_dest_off & 15, blitter_count - 1, mintermALU);
+    if(blitter_log_enabled) log_message(c64dtvblitter_log, "Blitter: %s %x.%x/%x.%x to %x.%x, %d to go, minterm %d", was_write ? "transferred" : "skipped", blit_sourceA_off >> 4, blit_sourceA_off & 15, blit_sourceB_off >> 4, blit_sourceB_off & 15, blit_dest_off >> 4, blit_dest_off & 15, blitter_count - 1, reg1e_mintermALU);
     return was_write;
 }
 
 static inline void update_counters(void)
 {
-    int sourceA_modulo = GET_REG16(0x03);
-    int sourceA_line_length = GET_REG16(0x05);
-    int sourceA_step = GET_REG8(0x07);
-    int sourceB_modulo = GET_REG16(0x0b);
-    int sourceB_line_length = GET_REG16(0x0d);
-    int sourceB_step = GET_REG8(0x0f);
-    int dest_modulo = GET_REG16(0x13);
-    int dest_line_length = GET_REG16(0x15);
-    int dest_step = GET_REG8(0x17);
-    int sourceA_direction = (GET_REG8(0x1a)&0x02) ? +1 : -1;
-    int sourceB_direction = (GET_REG8(0x1a)&0x04) ? +1 : -1;
-    int dest_direction = (GET_REG8(0x1a)&0x08) ? +1 : -1;
-
-    if(sourceA_line_off >= sourceA_line_length) {
+    if(sourceA_line_off >= reg05_sourceA_line_length) {
         lastA = 0;
         sourceA_line_off = 0;
-        blit_sourceA_off = ((blit_sourceA_off >> 4) + sourceA_modulo * sourceA_direction) << 4;
+        blit_sourceA_off = ((blit_sourceA_off >> 4) + reg03_sourceA_modulo * reg1a_sourceA_direction) << 4;
     } else {
         sourceA_line_off++;
-        blit_sourceA_off += sourceA_step * sourceA_direction;
+        blit_sourceA_off += reg07_sourceA_step * reg1a_sourceA_direction;
     }
-    if(sourceB_line_off >= sourceB_line_length) {
+    if(sourceB_line_off >= reg0d_sourceB_line_length) {
         sourceB_line_off = 0;
-        blit_sourceB_off = ((blit_sourceB_off >> 4) + sourceB_modulo * sourceB_direction) << 4;
+        blit_sourceB_off = ((blit_sourceB_off >> 4) + reg0b_sourceB_modulo * reg1a_sourceB_direction) << 4;
     } else {
         sourceB_line_off++;
-        blit_sourceB_off += sourceB_step * sourceB_direction;
+        blit_sourceB_off += reg0f_sourceB_step * reg1a_sourceB_direction;
     }
-    if(dest_line_off >= dest_line_length) {
+    if(dest_line_off >= reg15_dest_line_length) {
         dest_line_off = 0;
-        blit_dest_off = ((blit_dest_off >> 4) + dest_modulo * dest_direction) << 4;
+        blit_dest_off = ((blit_dest_off >> 4) + reg13_dest_modulo * reg1a_dest_direction) << 4;
     } else {
         dest_line_off++;
-        blit_dest_off += dest_step * dest_direction;
+        blit_dest_off += reg17_dest_step * reg1a_dest_direction;
     }
 }
 
@@ -383,6 +385,58 @@ void c64dtv_blitter_store(WORD addr, BYTE value)
        perform if necessary. */
     c64dtvmem_blitter[addr] = value;
 
+    switch(addr) {
+    case 0x03:
+    case 0x04:
+        reg03_sourceA_modulo = GET_REG16(0x03);
+        break;
+    case 0x05:
+    case 0x06:
+        reg05_sourceA_line_length = GET_REG16(0x05);
+        break;
+    case 0x07:
+        reg07_sourceA_step = GET_REG8(0x07);
+        break;
+    case 0x0b:
+    case 0x0c:
+        reg0b_sourceB_modulo = GET_REG16(0x0b);
+        break;
+    case 0x0d:
+    case 0x0e:
+        reg0d_sourceB_line_length = GET_REG16(0x0d);
+        break;
+    case 0x0f:
+        reg0f_sourceB_step = GET_REG8(0x0f);
+        break;
+    case 0x13:
+    case 0x14:
+        reg13_dest_modulo = GET_REG16(0x13);
+        break;
+    case 0x15:
+    case 0x16:
+        reg15_dest_line_length = GET_REG16(0x15);
+        break;
+    case 0x17:
+        reg17_dest_step = GET_REG8(0x17);
+        break;
+    case 0x1a:
+        reg1a_sourceA_direction = (GET_REG8(0x1a)&0x02) ? +1 : -1;
+        reg1a_sourceB_direction = (GET_REG8(0x1a)&0x04) ? +1 : -1;
+        reg1a_dest_direction = (GET_REG8(0x1a)&0x08) ? +1 : -1;
+        break;
+    case 0x1b:
+        reg1b_force_sourceB_zero = GET_REG8(0x1b) & 0x01;
+        reg1b_write_if_sourceA_zero = GET_REG8(0x1b) & 0x02;
+        reg1b_write_if_sourceA_nonzero = GET_REG8(0x1b) & 0x04;
+        break;
+    case 0x1e:
+        reg1e_sourceA_right_shift = GET_REG8(0x1e) & 0x07;
+        reg1e_mintermALU = (GET_REG8(0x1e) >> 3) & 0x07;
+        break;
+    default:
+        break;
+    }
+
     /* Blitter code */
     blitter_on_irq = GET_REG8(0x1a)&0x70;
   
@@ -408,6 +462,8 @@ void c64dtv_blitter_store(WORD addr, BYTE value)
         /* reset force start strobe bit */
         c64dtvmem_blitter[0x1a] &= 0xfe;
     }
+
+
 }
 
 
