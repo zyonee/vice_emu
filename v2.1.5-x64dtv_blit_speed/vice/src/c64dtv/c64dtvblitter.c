@@ -89,23 +89,23 @@ static int have_blitter_bug;
 
 
 /* shadow register fields */
-int reg03_sourceA_modulo;
-int reg05_sourceA_line_length;
-int reg07_sourceA_step;
-int reg0b_sourceB_modulo;
-int reg0d_sourceB_line_length;
-int reg0f_sourceB_step;
-int reg13_dest_modulo;
-int reg15_dest_line_length;
-int reg17_dest_step;
-int reg1a_sourceA_direction;
-int reg1a_sourceB_direction;
-int reg1a_dest_direction;
-int reg1b_force_sourceB_zero;
-int reg1b_write_if_sourceA_zero;
-int reg1b_write_if_sourceA_nonzero;
-int reg1e_sourceA_right_shift;
-int reg1e_mintermALU;
+static int reg03_sourceA_modulo;
+static int reg05_sourceA_line_length;
+static int reg07_sourceA_step;
+static int reg0b_sourceB_modulo;
+static int reg0d_sourceB_line_length;
+static int reg0f_sourceB_step;
+static int reg13_dest_modulo;
+static int reg15_dest_line_length;
+static int reg17_dest_step;
+static int reg1a_sourceA_direction;
+static int reg1a_sourceB_direction;
+static int reg1a_dest_direction;
+static int reg1b_force_sourceB_zero;
+static int reg1b_write_if_sourceA_zero;
+static int reg1b_write_if_sourceA_nonzero;
+static int reg1e_sourceA_right_shift;
+static int reg1e_mintermALU;
 
 
 /* ------------------------------------------------------------------------- */
@@ -204,11 +204,6 @@ static inline int do_blitter_write(void)
     int was_write = 0;
     int offs  = (blit_dest_off >> 4) & 0x1fffff;
 
-    /* this logic should probably be moved to the write switch */
-    if(!(reg1b_write_if_sourceA_zero || reg1b_write_if_sourceA_nonzero)) {
-        reg1b_write_if_sourceA_zero = reg1b_write_if_sourceA_nonzero = 1;
-    }
-        
     if ( (reg1b_write_if_sourceA_zero    && sourceA == 0) ||
          (reg1b_write_if_sourceA_nonzero && sourceA != 0) ||
          (have_blitter_bug && srca_fetched) ) {
@@ -428,6 +423,11 @@ void c64dtv_blitter_store(WORD addr, BYTE value)
         reg1b_force_sourceB_zero = GET_REG8(0x1b) & 0x01;
         reg1b_write_if_sourceA_zero = GET_REG8(0x1b) & 0x02;
         reg1b_write_if_sourceA_nonzero = GET_REG8(0x1b) & 0x04;
+
+        /* zero and nonzero == 0 seems to do exactly the same as both ==1 */
+        if(!(reg1b_write_if_sourceA_zero || reg1b_write_if_sourceA_nonzero)) {
+            reg1b_write_if_sourceA_zero = reg1b_write_if_sourceA_nonzero = 1;
+        }
         break;
     case 0x1e:
         reg1e_sourceA_right_shift = GET_REG8(0x1e) & 0x07;
