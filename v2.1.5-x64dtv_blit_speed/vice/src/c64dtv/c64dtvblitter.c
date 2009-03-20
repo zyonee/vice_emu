@@ -1,5 +1,5 @@
 /*
- * c64dtvblitter.c - C64DTV blitter and DMA controller
+ * c64dtvblitter.c - C64DTV blitter
  *
  * Written by
  *  M.Kiesel <mayne@users.sourceforge.net>
@@ -374,7 +374,18 @@ static inline void c64dtv_blitter_done(void)
     }
 }
 
-void c64dtv_blitter_store(WORD addr, BYTE value)
+
+BYTE REGPARM1 c64dtv_blitter_read(WORD addr)
+{
+    if(addr==0x1f) {
+        return blitter_busy;
+    /* the default return value is 0x00 too but I have seen some strangeness
+       here.  I've seen something that looks like DMAed data. - tlr */
+    }
+    return 0x00;
+}
+
+void REGPARM2 c64dtv_blitter_store(WORD addr, BYTE value)
 {
     /* Store first, then check whether DMA access has been requested,
        perform if necessary. */
@@ -475,40 +486,6 @@ void c64dtvblitter_perform_blitter(void)
         c64dtv_blitter_done();
     }
 }
-
-
-/* ------------------------------------------------------------------------- */
-
-/* These are called on read/writes to $D3xx */
-
-BYTE REGPARM1 c64dtv_dmablit_read(WORD addr)
-{
-    if (!vicii_extended_regs())
-        return vicii_read(addr);
-
-    if((addr&0xff)==0x1f)
-        return dma_busy;
-    if((addr&0xff)==0x3f)
-        return blitter_busy;
-    /* the default return value is 0x00 too but I have seen some strangeness
-       here.  I've seen something that looks like DMAed data. - tlr */
-    return 0x00;
-}
-
-
-void REGPARM2 c64dtv_dmablit_store(WORD addr, BYTE value)
-{
-    if (!vicii_extended_regs()) {
-        vicii_store(addr, value);
-        return;
-    }
-
-    addr &= 0x3f;
-  
-    if (addr & 0x20) c64dtv_blitter_store((WORD)(addr & 0x1f), value);
-    else c64dtv_dma_store(addr, value);
-}
-
 
 /* ------------------------------------------------------------------------- */
 static int set_dtvrevision(int val, void *param)
