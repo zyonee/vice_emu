@@ -1,8 +1,8 @@
 /*
- * dirent.h - Fake implementation of dirent stuff for Windows.
+ * menu_pethw.h - PET HW menu for SDL UI.
  *
  * Written by
- *  Ettore Perazzoli <ettore@comm2000.it>
+ *  Marco van den Heuvel <blackystardust68@yahoo.com>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -24,19 +24,13 @@
  *
  */
 
-#ifndef VICE_DIRENT_H
-#define VICE_DIRENT_H
+#ifndef VICE_MENU_PETHW_H
+#define VICE_MENU_PETHW_H
 
-typedef struct _vice_dir DIR;
+#include "vice.h"
+#include "types.h"
+#include "uimenu.h"
 
-struct dirent {
-    char *d_name;
-    int d_namlen;
-};
-
-extern DIR *opendir(const char *path);
-struct dirent *readdir(DIR *dir);
-extern void closedir(DIR *dir);
+extern const ui_menu_entry_t pet_hardware_menu[];
 
 #endif
-

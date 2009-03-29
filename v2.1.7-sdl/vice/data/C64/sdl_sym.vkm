@@ -1,0 +1,136 @@
+# VICE keyboard mapping file
+#
+# A Keyboard map is read in as patch to the current map.
+#
+# File format:
+# - comment lines start with '#'
+# - keyword lines start with '!keyword'
+# - normal line has 'keysym/scancode row column shiftflag'
+#
+# Keywords and their lines are:
+# '!CLEAR'               clear whole table
+# '!INCLUDE filename'    read file as mapping file
+# '!LSHIFT row col'      left shift keyboard row/column
+# '!RSHIFT row col'      right shift keyboard row/column
+# '!VSHIFT shiftkey'     virtual shift key (RSHIFT or LSHIFT)
+# '!UNDEF keysym'        remove keysym from table
+#
+# Shiftflag can have the values:
+# 0      key is not shifted for this keysym/scancode
+# 1      key is shifted for this keysym/scancode
+# 2      left shift
+# 4      right shift
+# 8      key can be shifted or not with this keysym/scancode
+# 16     deshift key for this keysym/scancode
+# 32     another definition for this keysym/scancode follows
+#
+# Negative row values:
+# 'keysym -1 n' joystick #1, direction n
+# 'keysym -2 n' joystick #2, direction n
+# 'keysym -3 0' first RESTORE key
+# 'keysym -3 1' second RESTORE key
+# 'keysym -4 0' 40/80 column key
+# 'keysym -4 1' CAPS (ASCII/DIN) key
+#
+
+!CLEAR
+!LSHIFT 1 7
+!RSHIFT 6 4
+!VSHIFT RSHIFT
+
+9 7 2 8    /* Tab = CTRL */
+9 7 2 8    /* Shift + Tab = CTRL */
+306 5 8    /* Control_L = CBM */
+8 0 0 8    /* BackSpace */
+127 0 0 8  /* Delete */
+274 0 7 8  /* Down */
+27 7 7 8   /* Escape */
+282 0 4 8  /* F1 */
+283 0 4 1  /* F2 */
+284 0 5 8  /* F3 */
+285 0 5 1  /* F4 */
+286 0 6 8  /* F5 */
+287 0 6 1  /* F6 */
+288 0 3 8  /* F7 */
+289 0 3 1  /* F8 */
+278 6 3 8  /* Home */
+277 0 0 16 /* Insert */
+276 0 2 1  /* Left */
+13 0 1 8   /* Return */
+275 0 2 8  /* Right */
+304 1 7 2  /* Shift_L */
+303 6 4 4  /* Shift_R */
+273 0 7 1  /* Up */
+#ampersand 2 3 1
+#39 3 0 8   /* ' */
+#asciicircum 6 6 0
+#asciitilde 6 6 0
+39 6 1 8 /* * */
+#at 5 6 0
+#backslash 6 0 0
+#bar 6 0 8
+#bracketleft 5 5 1
+#bracketright 6 2 1
+228 5 5 8 /* : */
+44 5 7 8 /* , */
+#dollar 1 3 1
+#48 6 5 1 /* = */
+#exclam 7 0 1
+#grave 6 6 0
+#greater 5 4 1
+#less 5 7 1
+45 5 3 8 /* - */
+#numbersign 1 0 1
+#parenleft 3 3 1
+#parenright 4 0 1
+#percent 2 0 1
+46 5 4 8 /* . */
+43 5 0 8 /* + */
+#question 6 7 1
+#quotedbl 7 3 1
+246 6 2 8 /* ; */
+#slash 6 7 0
+32 7 4 8  /* Space */
+#sterling 6 0 0
+#underscore 7 1 0
+48 4 3 8  /* 0 */
+49 7 0 8  /* 1 */
+50 7 3 8  /* 2 */
+51 1 0 8  /* 3 */
+52 1 3 8  /* 4 */
+53 2 0 8  /* 5 */
+54 2 3 8  /* 6 */
+55 3 0 8  /* 7 */
+56 3 3 8  /* 8 */
+57 4 0 8  /* 9 */
+97 1 2 8  /* a */
+98 3 4 8  /* b */
+99 2 4 8  /* c */
+100 2 2 8 /* d */
+101 1 6 8 /* e */
+102 2 5 8 /* f */
+103 3 2 8 /* g */
+104 3 5 8 /* h */
+105 4 1 8 /* i */
+106 4 2 8 /* j */
+107 4 5 8 /* k */
+108 5 2 8 /* l */
+109 4 4 8 /* m */
+110 4 7 8 /* n */
+111 4 6 8 /* o */
+112 5 1 8 /* p */
+113 7 6 8 /* q */
+114 2 1 8 /* r */
+115 1 5 8 /* s */
+116 2 6 8 /* t */
+117 3 6 8 /* u */
+118 3 7 8 /* v */
+119 1 1 8 /* w */
+120 2 7 8 /* x */
+121 3 1 8 /* y */
+122 1 4 8 /* z */
+
+# Restore key mappings
+280 -3 0
+0 -3 1
+

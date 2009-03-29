@@ -4,6 +4,7 @@
  * Written by
  *  Teemu Rantanen <tvr@cs.hut.fi>
  *  Daniel Aarno <macbishop@users.sourceforge.net>
+ *  Hannu Nuotio <hannu.nuotio@tut.fi>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -25,12 +26,10 @@
  *
  */
 
-/* XXX: includes */
-
-#include <SDL/SDL_audio.h>
-#include <unistd.h>
-
 #include "vice.h"
+
+#include <SDL/SDL.h>
+#include <unistd.h>
 
 #include "lib.h"
 #include "sound.h"
@@ -45,33 +44,39 @@ static volatile int sdl_len = 0;
 
 static void sdl_callback(void *userdata, Uint8 *stream, int len)
 {
-    int			amount, total;
+    int	amount, total;
     total = 0;
-    while (total < len/sizeof(SWORD))
-    {
-	amount = sdl_inptr - sdl_outptr;
-	if (amount < 0)
-	    amount = sdl_len - sdl_outptr;
-	if (amount + total > len/sizeof(SWORD))
-	    amount = len/sizeof(SWORD) - total;
-	if (!amount)
-	{
-	    memset(stream + total*sizeof(SWORD), 0, len - total*sizeof(SWORD));
-		return;
-	    }
-	memcpy(stream + total*sizeof(SWORD), sdl_buf + sdl_outptr,
-	       amount*sizeof(SWORD));
-	total += amount;
-	sdl_outptr += amount;
-	if (sdl_outptr == sdl_len)
-	    sdl_outptr = 0;
+
+    while (total < len/sizeof(SWORD)) {
+        amount = sdl_inptr - sdl_outptr;
+        if (amount < 0) {
+            amount = sdl_len - sdl_outptr;
+        }
+
+        if (amount + total > len/sizeof(SWORD)) {
+            amount = len/sizeof(SWORD) - total;
+        }
+
+        if (!amount) {
+            memset(stream + total*sizeof(SWORD), 0, len - total*sizeof(SWORD));
+            return;
+        }
+
+        memcpy(stream + total*sizeof(SWORD), sdl_buf + sdl_outptr,
+               amount*sizeof(SWORD));
+        total += amount;
+        sdl_outptr += amount;
+
+        if (sdl_outptr == sdl_len) {
+	        sdl_outptr = 0;
+        }
     }
 }
 
 static int sdl_init(const char *param, int *speed,
-		    int *fragsize, int *fragnr, int *channels)
+                    int *fragsize, int *fragnr, int *channels)
 {
-    SDL_AudioSpec		spec;
+    SDL_AudioSpec spec;
 
     /* No stereo capability. */
     *channels = 1;
@@ -82,91 +87,118 @@ static int sdl_init(const char *param, int *speed,
     spec.channels = 1;
     spec.samples = *fragsize;
     spec.callback = sdl_callback;
-    if(SDL_OpenAudio(&spec, &sdl_spec))
-    {
-	return 1;
+
+    if (SDL_OpenAudio(&spec, &sdl_spec)) {
+        return 1;
     }
-    if (sdl_spec.format != AUDIO_S16 || sdl_spec.channels != 1)
-    {
-	SDL_CloseAudio();
-	return 1;
+
+    if (sdl_spec.format != AUDIO_S16 || sdl_spec.channels != 1) {
+        SDL_CloseAudio();
+        return 1;
     }
-    sdl_len = (*fragsize)*(*fragnr) + 1;
+
+    sdl_len = (*fragsize)*(*fragnr);
     sdl_inptr = sdl_outptr = 0;
     sdl_buf = lib_malloc(sizeof(SWORD)*sdl_len);
-    if (!sdl_buf)
-    {
-	SDL_CloseAudio();
-	return 1;
+
+    if (!sdl_buf) {
+        SDL_CloseAudio();
+        return 1;
     }
+
     *speed = sdl_spec.freq;
     SDL_PauseAudio(0);
     return 0;
 }
 
-#if defined(WORDS_BIGENDIAN) && !defined(HAVE_SWAB)
-void swab (void *src, void *dst, size_t length)
+#if defined(WORDS_BIGENDIAN) && (!defined(HAVE_SWAB) || defined(__BEOS__))
+#if !defined(AMIGA_MORPHOS) && !defined(AMIGA_M68K)
+void swab(void *src, void *dst, size_t length)
 {
-  const char *from=src;
-  char *to=dst;
-  size_t ptr;
-  for (ptr=1; ptr<length; ptr+=2)
-  {
-    char p=from[ptr];
-    char q=from[ptr-1];
-    to[ptr-1]=p;
-    to[ptr]=q;
-  }
-  if (ptr==length)
-    to[ptr-1]=0;
+    const char *from=src;
+    char *to=dst;
+    size_t ptr;
+
+    for (ptr=1; ptr<length; ptr+=2)  {
+        char p=from[ptr];
+        char q=from[ptr-1];
+        to[ptr-1]=p;
+        to[ptr]=q;
+    }
+
+    if (ptr==length) {
+        to[ptr-1]=0;
+    }
 }
+#else
+#define swab(src, dst, length)              \
+    do {                                    \
+        const char *from=src;               \
+        char *to=dst;                       \
+        size_t ptr;                         \
+                                            \
+        for (ptr=1; ptr<(length); ptr+=2) { \
+            char p=from[ptr];               \
+            char q=from[ptr-1];             \
+            to[ptr-1]=p;                    \
+            to[ptr]=q;                      \
+        }                                   \
+        if (ptr==(length)) {                \
+            to[ptr-1]=0;                    \
+        }                                   \
+    }                                       \
+    while (0)
+#endif
 #endif
 
 static int sdl_write(SWORD *pbuf, size_t nr)
 {
-    int			total, amount;
+    int total, amount;
     total = 0;
-    
+
 #ifdef WORDS_BIGENDIAN
      /* Swap bytes if we're on a big-endian machine, like the Macintosh */
      swab(pbuf, pbuf, sizeof(SWORD)*nr);
 #endif
-    
-     while (total < nr) {
-	amount = sdl_outptr - sdl_inptr;
-          
-	if (amount <= 0)
-	    amount = sdl_len - sdl_inptr;
-               
-	if ((sdl_inptr + amount)%sdl_len == sdl_outptr)
-	    amount--;
-          
-          if (amount <= 0) {
-            usleep(5000);
-	    continue;
-	}
-          
-	if (total + amount > nr)
-	    amount = nr - total;
-          
-	memcpy(sdl_buf + sdl_inptr, pbuf + total, amount*sizeof(SWORD));
-	sdl_inptr += amount;
-	total += amount;
-          
-	if (sdl_inptr == sdl_len)
-	    sdl_inptr = 0;
+
+    while (total < nr) {
+        amount = sdl_outptr - sdl_inptr;
+
+        if (amount <= 0) {
+            amount = sdl_len - sdl_inptr;
+        }
+
+        if (total + amount > nr) {
+            amount = nr - total;
+        }
+
+        if (amount <= 0) {
+            SDL_Delay(5);
+            continue;
+        }
+
+        memcpy(sdl_buf + sdl_inptr, pbuf + total, amount*sizeof(SWORD));
+        sdl_inptr += amount;
+        total += amount;
+
+        if (sdl_inptr == sdl_len) {
+            sdl_inptr = 0;
+        }
     }
-     
+
     return 0;
 }
 
 static int sdl_bufferspace(void)
 {
-    int		amount;
+    int	amount;
     amount = sdl_inptr - sdl_outptr;
-    if (amount < 0)
-	amount += sdl_len;
-    return sdl_len - amount;
+
+    if (amount < 0) {
+        amount += sdl_len;
+    }
+
+    return sdl_len - amount - 1;
 }
 
 static void sdl_close(void)
@@ -177,6 +209,17 @@ static void sdl_close(void)
     sdl_inptr = sdl_outptr = sdl_len = 0;
 }
 
+static int sdl_suspend(void)
+{
+    SDL_PauseAudio(1);
+    return 0;
+}
+
+static int sdl_resume(void)
+{
+    SDL_PauseAudio(0);
+    return 0;
+}
 
 static sound_device_t sdl_device =
 {
@@ -187,8 +230,8 @@ static sound_device_t sdl_device =
     NULL,
     sdl_bufferspace,
     sdl_close,
-    NULL,
-    NULL,
+    sdl_suspend,
+    sdl_resume,
     1
 };
 
