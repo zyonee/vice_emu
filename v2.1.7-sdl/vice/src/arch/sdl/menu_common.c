@@ -165,7 +165,7 @@ const char *sdl_ui_menu_radio_helper(int activated, ui_callback_data_t param, co
 {
     if (activated) {
         if (resources_query_type(resource_name) == RES_INTEGER) {
-            resources_set_int(resource_name, (int)(long)param);
+            resources_set_int(resource_name, vice_ptr_to_int(param));
         } else {
             resources_set_string(resource_name, (char *)param);
         }
@@ -174,7 +174,7 @@ const char *sdl_ui_menu_radio_helper(int activated, ui_callback_data_t param, co
         const char *w;
         if (resources_query_type(resource_name) == RES_INTEGER) {
             resources_get_int(resource_name, &v);
-            if (v == (int)(long)param) {
+            if (v == vice_ptr_to_int(param)) {
                 return sdl_menu_text_tick;
             }
         } else {

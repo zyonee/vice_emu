@@ -54,6 +54,7 @@ extern void keyboard_event_delayed_playback(void *data);
 extern void keyboard_register_delay(unsigned int delay);
 extern void keyboard_register_clear(void);
 extern void keyboard_set_map_any(signed long sym, int row, int col, int shift);
+extern void keyboard_set_unmap_any(signed long sym);
 
 extern int keyboard_set_keymap_index(int vak, void *param);
 extern int keyboard_set_keymap_file(const char *val, void *param);

@@ -63,7 +63,7 @@ static UI_MENU_CALLBACK(detach_tape_callback)
 static UI_MENU_CALLBACK(custom_datasette_control_callback)
 {
     if (activated) {
-        datasette_control((int)(long)param);
+        datasette_control(vice_ptr_to_int(param));
     }
     return NULL;
 }

@@ -64,7 +64,7 @@ static int vkbd_shiftflags;
 
 static UI_MENU_CALLBACK(custom_shift_callback)
 {
-    int flag = (1 << ((int)(long)param));
+    int flag = (1 << (vice_ptr_to_int(param)));
 
     if (activated) {
         vkbd_shiftflags ^= flag;
@@ -203,11 +203,12 @@ static void sdl_vkbd_key_map(void)
     /* TODO check if key/event is suitable */
     switch (e.type) {
         case SDL_KEYDOWN:
-            /* TODO unmap */
             if (!unmap) {
-                vkbd_shiftflags = 0;
+                vkbd_shiftflags = (1 << 3);
                 sdl_ui_external_menu_activate((ui_menu_entry_t *)shift_menu);
                 keyboard_set_map_any((signed long)e.key.keysym.sym, mr, mc, vkbd_shiftflags);
+            } else {
+                keyboard_set_unmap_any((signed long)e.key.keysym.sym);
             }
             break;
         case SDL_JOYAXISMOTION:
@@ -492,3 +493,26 @@ vkbd_t vkbd_plus4 = {
     '\x17'
 };
 
+static const char *keyb_cbm2[] = {
+    "X f1234567890 v\x1e<> conr/s",
+    "esc 1234567890-=\x1ci/d ?c*/",
+    "tab  QWERTYUIOP()rtn 789-",
+    "shift ASDFGHJKL;'_rt 456+",
+    " shift ZXCVBNM,./sc= 123e",
+    "    ctrl space       0.0e",
+    NULL
+};
+
+static const BYTE keytable_cbm2[] =
+    "\xfe\xff\x80\x80\x90\xa0\xb0\xc0\xd0\xe0\xf0\x00\x10\xff\x20\x30\x31\x32\xff\x40\x50\x60\x70\x70\x70"
+    "\x70\x70\x70\xff\x91\xa1\xb1\xc1\xd1\xd2\xe1\xf1\x01\x11\x12\x21\x22\x33\x33\x33\xff\x41\x51\x61\x71"
+    "\x82\x82\x82\xff\xff\x92\xa2\xb2\xc2\xc3\xd3\xe2\xf2\x02\x13\x14\x23\x24\x24\x24\xff\x42\x52\x62\x72"
+    "\x84\x84\x84\x84\x84\xff\x93\xa3\xb3\xb4\xc4\xd4\xe3\xf3\x03\x04\x15\x25\x24\x24\xff\x43\x53\x63\x73"
+    "\xff\x84\x84\x84\x84\x84\xff\x94\xa4\xa5\xb5\xc5\xd5\xe4\xf4\xf5\x05\x83\x34\x34\xff\x44\x54\x64\x74"
+    "\xff\xff\xff\xff\x85\x85\x85\x85\xff\xe5\xe5\xe5\xe5\xe5\xff\xff\xff\xff\xff\xff\xff\x45\x55\x65\x74";
+
+vkbd_t vkbd_cbm2 = {
+    keyb_cbm2,
+    keytable_cbm2,
+    '\x84'
+};

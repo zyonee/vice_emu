@@ -146,13 +146,13 @@ static void sdl_ui_display_item(ui_menu_entry_t *item, int y_pos)
         return;
     }
 
-    if ((item->type == MENU_ENTRY_TEXT)&&((int)(long)item->data == 1)) {
+    if ((item->type == MENU_ENTRY_TEXT)&&(vice_ptr_to_int(item->data) == 1)) {
         sdl_ui_reverse_colors();
     }
 
     i = sdl_ui_print(item->string, MENU_FIRST_X, y_pos+MENU_FIRST_Y);
 
-    if ((item->type == MENU_ENTRY_TEXT)&&((int)(long)item->data == 1)) {
+    if ((item->type == MENU_ENTRY_TEXT)&&(vice_ptr_to_int(item->data) == 1)) {
         sdl_ui_reverse_colors();
     }
     sdl_ui_print(item->callback(0, item->data), MENU_FIRST_X+i+1, y_pos+MENU_FIRST_Y);

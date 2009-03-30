@@ -657,15 +657,10 @@ static void keyboard_keyword_include(void)
     keyboard_parse_keymap(key);
 }
 
-static void keyboard_keyword_undef(void)
+static void keyboard_keysym_undef(signed long sym)
 {
-    char *key;
-    signed long sym;
     int i;
 
-    /* TODO: this only unsets from the main table, not for joysticks */
-    key = strtok(NULL, " \t");
-    sym = kbd_arch_keyname_to_keynum(key);
     if (sym >= 0) {
         for (i = 0; i < keyc_num; i++) {
             if (keyconvmap[i].sym == sym) {
@@ -677,6 +672,15 @@ static void keyboard_keyword_undef(void)
             }
         }
     }
+}
+
+static void keyboard_keyword_undef(void)
+{
+    char *key;
+
+    /* TODO: this only unsets from the main table, not for joysticks */
+    key = strtok(NULL, " \t");
+    keyboard_keysym_undef(kbd_arch_keyname_to_keynum(key));
 }
 
 static void keyboard_parse_keyword(char *buffer)
@@ -863,6 +867,11 @@ void keyboard_set_map_any(signed long sym, int row, int col, int shift)
     } else {
         keyboard_parse_set_neg_row(sym, row, col);
     }
+}
+
+void keyboard_set_unmap_any(signed long sym)
+{
+    keyboard_keysym_undef(sym);
 }
 
 int keyboard_keymap_dump(const char *filename)

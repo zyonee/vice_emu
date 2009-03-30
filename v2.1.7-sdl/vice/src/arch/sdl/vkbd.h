@@ -49,6 +49,7 @@ extern vkbd_t vkbd_c64dtv;
 extern vkbd_t vkbd_c128;
 extern vkbd_t vkbd_pet;
 extern vkbd_t vkbd_plus4;
+extern vkbd_t vkbd_cbm2;
 
 #define SDL_VKBD_ACTIVE  (1<<0)
 #define SDL_VKBD_REPAINT (1<<1)

@@ -61,7 +61,7 @@ static UI_MENU_CALLBACK(select_cbm2_model_callback)
 {
     int model;
 
-    model = (int)(long)param;
+    model = vice_ptr_to_int(param);
     if (activated) {
         switch (model) {
             case CBM2_MODEL_610:

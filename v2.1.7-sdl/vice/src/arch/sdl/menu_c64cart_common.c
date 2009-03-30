@@ -48,7 +48,7 @@ UI_MENU_CALLBACK(attach_c64_cart_callback)
     char *name = NULL;
 
     if(activated) {
-        switch ((int)(long)param) {
+        switch (vice_ptr_to_int(param)) {
             case CARTRIDGE_CRT:
                 title = "Select CRT image";
                 break;
@@ -98,7 +98,7 @@ UI_MENU_CALLBACK(attach_c64_cart_callback)
         }
         name = sdl_ui_file_selection_dialog(title, FILEREQ_MODE_CHOOSE_FILE);
         if (name != NULL) {
-            if (cartridge_attach_image((int)(long)param, name) < 0) {
+            if (cartridge_attach_image(vice_ptr_to_int(param), name) < 0) {
                 ui_error("Cannot load cartridge image.");
             }
             lib_free(name);

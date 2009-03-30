@@ -162,7 +162,7 @@ static UI_MENU_CALLBACK(select_pet_model_callback)
 {
     int model;
 
-    model = (int)(long)param;
+    model = vice_ptr_to_int(param);
     if (activated) {
         switch (model)
         {

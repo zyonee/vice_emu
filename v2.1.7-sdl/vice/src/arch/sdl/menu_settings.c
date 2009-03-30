@@ -32,10 +32,14 @@
 
 #include "joy.h"
 #include "kbd.h"
+#include "keyboard.h"
+#include "lib.h"
+#include "machine.h"
 #include "menu_common.h"
 #include "menu_settings.h"
 #include "resources.h"
 #include "ui.h"
+#include "uifilereq.h"
 #include "uimenu.h"
 #include "uipoll.h"
 
@@ -74,6 +78,41 @@ static UI_MENU_CALLBACK(default_settings_callback)
     if(activated) {
         resources_set_defaults();
         ui_message("Default settings restored.");
+    }
+    return NULL;
+}
+
+static UI_MENU_CALLBACK(save_keymap_callback)
+{
+    if(activated) {
+        char *name = NULL;
+      
+        name = sdl_ui_file_selection_dialog("Choose file for keymap", FILEREQ_MODE_CHOOSE_FILE);
+
+        if (name != NULL) {
+            if (keyboard_keymap_dump(name) < 0) {
+                ui_error("Cannot save keymap.");
+            }
+            lib_free(name);
+        }
+    }
+    return NULL;
+}
+
+static UI_MENU_CALLBACK(load_keymap_callback)
+{
+    if(activated) {
+        char *name = NULL;
+        const char *resname = machine_keymap_res_name_list[0];
+      
+        name = sdl_ui_file_selection_dialog("Choose keymap file", FILEREQ_MODE_CHOOSE_FILE);
+
+        if (name != NULL) {
+            if (resources_set_string(resname, name)) {
+                ui_error("Cannot load keymap.");
+            }
+            lib_free(name);
+        }
     }
     return NULL;
 }
@@ -237,6 +276,14 @@ const ui_menu_entry_t settings_manager_menu[] = {
       toggle_ConfirmOnExit_callback,
       NULL },
     SDL_MENU_ITEM_SEPARATOR,
+    { "Save keymap",
+      MENU_ENTRY_OTHER,
+      save_keymap_callback,
+      NULL },
+    { "Load keymap",
+      MENU_ENTRY_OTHER,
+      load_keymap_callback,
+      NULL },
     { "Save hotkeys",
       MENU_ENTRY_OTHER,
       save_hotkeys_callback,

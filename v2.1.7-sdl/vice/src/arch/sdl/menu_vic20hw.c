@@ -50,7 +50,7 @@ static UI_MENU_CALLBACK(custom_memory_callback)
     int blocks, value;
 
     if (activated) {
-        blocks = (int)(long)param;
+        blocks = vice_ptr_to_int(param);
         resources_set_int("RAMBlock0", blocks & BLOCK_0 ? 1 : 0);
         resources_set_int("RAMBlock1", blocks & BLOCK_1 ? 1 : 0);
         resources_set_int("RAMBlock2", blocks & BLOCK_2 ? 1 : 0);
@@ -68,7 +68,7 @@ static UI_MENU_CALLBACK(custom_memory_callback)
         resources_get_int("RAMBlock5", &value);
         blocks |= (value << 5);
 
-        if (blocks == (int)(long)param) {
+        if (blocks == vice_ptr_to_int(param)) {
             return sdl_menu_text_tick;
         }
     }
@@ -103,9 +103,7 @@ static const ui_menu_entry_t vic20_memory_common_menu[] = {
     { NULL }
 };
 
-/*
 UI_MENU_DEFINE_TOGGLE(Mouse)
-*/
 UI_MENU_DEFINE_TOGGLE(RAMBlock0)
 UI_MENU_DEFINE_TOGGLE(RAMBlock1)
 UI_MENU_DEFINE_TOGGLE(RAMBlock2)
@@ -135,14 +133,12 @@ const ui_menu_entry_t vic20_hardware_menu[] = {
       MENU_ENTRY_RESOURCE_TOGGLE,
       toggle_EmuID_callback,
       NULL },
-/*
 #ifdef HAVE_MOUSE
     { "Paddle emulation",
       MENU_ENTRY_RESOURCE_TOGGLE,
       toggle_Mouse_callback,
       NULL },
 #endif
-*/
     SDL_MENU_ITEM_SEPARATOR,
     SDL_MENU_ITEM_TITLE("Memory expansions"),
     { "Common configurations",

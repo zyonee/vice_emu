@@ -59,12 +59,10 @@ const ui_menu_entry_t mouse_menu[] = {
       MENU_ENTRY_RESOURCE_RADIO,
       radio_Mousetype_callback,
       (ui_callback_data_t)MOUSE_TYPE_AMIGA },
-/*
     { "Paddles",
       MENU_ENTRY_RESOURCE_RADIO,
       radio_Mousetype_callback,
       (ui_callback_data_t)MOUSE_TYPE_PADDLE },
-*/
     SDL_MENU_ITEM_SEPARATOR,
     SDL_MENU_ITEM_TITLE("Mouse port"),
     { "Port 1",

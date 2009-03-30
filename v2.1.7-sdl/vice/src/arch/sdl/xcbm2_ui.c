@@ -53,6 +53,7 @@
 #include "ui.h"
 #include "uimenu.h"
 #include "videoarch.h"
+#include "vkbd.h"
 
 static const ui_menu_entry_t xcbm6x0_7x0_main_menu[] = {
     { "Autostart image",
@@ -114,6 +115,10 @@ static const ui_menu_entry_t xcbm6x0_7x0_main_menu[] = {
     { "Monitor",
       MENU_ENTRY_OTHER,
       monitor_callback,
+      NULL },
+    { "Virtual keyboard",
+      MENU_ENTRY_OTHER,
+      vkbd_callback,
       NULL },
 #ifdef DEBUG
     { "Debug",
@@ -273,6 +278,8 @@ int cbm2ui_init(void)
         sdl_ui_set_menu_params = cbm2ui_set_menu_params;
         sdl_ui_set_main_menu(xcbm6x0_7x0_main_menu);
     }
+
+    sdl_vkbd_set_vkbd(&vkbd_cbm2);
     return 0;
 }
 
