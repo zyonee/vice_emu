@@ -940,7 +940,7 @@ dnl ----- Dynamic Lib Loading Support -----
 dynlib_support=no
 DYNLIB_LIBS=
 dnl check for dlopen support on unix systems
-if test x"$is_unix" = "xyes" ; then
+if test x"$is_unix" = "xyes" -a x"$enable_sdlui" != "xyes"; then
   AC_CHECK_HEADER(dlfcn.h,,)
   if test x"$ac_cv_header_dlfcn_h" = "xyes" ; then
     AC_CHECK_LIB(dl, dlopen,
