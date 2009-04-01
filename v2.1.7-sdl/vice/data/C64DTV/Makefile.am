@@ -23,6 +23,9 @@ x11_keymaps = \
 	x11_sym.vkm \
 	x11_pos.vkm
 
+sdl_keymaps = \
+	sdl_sym.vkm
+
 extra_keymaps = \
 	amiga_sym.vkm \
 	amiga_pos.vkm \
@@ -49,3 +52,13 @@ sym_file = \
 c64dtv_DATA = $(roms) $(romsets) $(palettes) $(x11_keymaps) $(sym_file)
 
 EXTRA_DIST = $(c64dtv_DATA) $(extra_keymaps) $(win32_shortcuts)
+
+if SDL_COMPILE
+c64dtv_DATA = $(roms) $(romsets) $(palettes) $(sdl_keymaps) $(sym_file)
+
+EXTRA_DIST = $(c64dtv_DATA) $(extra_keymaps) $(x11_keymaps) $(win32_shortcuts)
+else
+c64_DATA = $(roms) $(romsets) $(palettes) $(x11_keymaps) $(sym_file)
+
+EXTRA_DIST = $(c64dtv_DATA) $(extra_keymaps) $(sdl_keymaps) $(win32_shortcuts)
+endif
