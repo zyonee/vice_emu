@@ -523,6 +523,7 @@ _END
                            <QPM:File>Readme.beos</QPM:File>
                            <QPM:File>Readme.dos</QPM:File>
                            <QPM:File>ReadmeMacOSX.txt</QPM:File>
+                           <QPM:File>ReadmeSDL.txt</QPM:File>
                            <QPM:File>TODO</QPM:File>
                            <QPM:File>Walkthrough-Howto.txt</QPM:File>
                            <QPM:File>Win32-Howto.txt</QPM:File>

@@ -55,7 +55,7 @@ cp -a $TOPSRCDIR/doc/html SDLVICE-$BEOSCPU-beos-$VICEVERSION/doc
 cp $TOPSRCDIR/doc/iec-bus.txt SDLVICE-$BEOSCPU-beos-$VICEVERSION/doc
 cp $TOPSRCDIR/doc/mon.txt SDLVICE-$BEOSCPU-beos-$VICEVERSION/doc
 cp $TOPSRCDIR/doc/cartconv.txt SDLVICE-$BEOSCPU-beos-$VICEVERSION/doc
-cp $TOPSRCDIR/doc/Readme.beos SDLVICE-$BEOSCPU-beos-$VICEVERSION/doc
+cp $TOPSRCDIR/doc/ReadmeSDL.txt SDLVICE-$BEOSCPU-beos-$VICEVERSION/doc
 cp $TOPSRCDIR/FEEDBACK $TOPSRCDIR/README SDLVICE-$BEOSCPU-beos-$VICEVERSION
 rm `find SDLVICE-$BEOSCPU-beos-$VICEVERSION -name "Makefile*"`
 rm `find SDLVICE-$BEOSCPU-beos-$VICEVERSION -name "*.vkm" -and ! -name "sdl*.vkm"`

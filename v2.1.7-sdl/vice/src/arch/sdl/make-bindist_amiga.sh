@@ -104,7 +104,7 @@ cp -a $TOPSCRDIR/data/VIC20 $TOPSCRDIR/data/fonts SDLVICE-$AMIGAFLAVOR
 cp -a $TOPSCRDIR/doc/html SDLVICE-$AMIGAFLAVOR
 cp $TOPSCRDIR/FEEDBACK $TOPSCRDIR/README SDLVICE-$AMIGAFLAVOR
 cp $TOPSCRDIR/doc/cartconv.txt SDLVICE-$AMIGAFLAVOR
-cp $TOPSCRDIR/src/arch/amigaos/README.AMIGA SDLVICE-$AMIGAFLAVOR
+cp $TOPSCRDIR/doc/ReadmeSDL.txt SDLVICE-$AMIGAFLAVOR
 if test x"$HOSTSYSTEM" = "xwarpos"; then
   for i in cartconv.exe c1541.exe petcat.exe x64.exe x64dtv.exe x128.exe xcbm2.exe \
            xpet.exe xplus4.exe xvic.exe
