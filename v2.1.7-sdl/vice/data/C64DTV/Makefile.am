@@ -54,7 +54,7 @@ c64dtv_DATA = $(roms) $(romsets) $(palettes) $(sdl_keymaps) $(sym_file)
 
 EXTRA_DIST = $(c64dtv_DATA) $(extra_keymaps) $(x11_keymaps) $(win32_shortcuts)
 else
-c64_DATA = $(roms) $(romsets) $(palettes) $(x11_keymaps) $(sym_file)
+c64dtv_DATA = $(roms) $(romsets) $(palettes) $(x11_keymaps) $(sym_file)
 
 EXTRA_DIST = $(c64dtv_DATA) $(extra_keymaps) $(sdl_keymaps) $(win32_shortcuts)
 endif
