@@ -49,10 +49,6 @@ win32_shortcuts = \
 sym_file = \
 	c64mem.sym
 
-c64dtv_DATA = $(roms) $(romsets) $(palettes) $(x11_keymaps) $(sym_file)
-
-EXTRA_DIST = $(c64dtv_DATA) $(extra_keymaps) $(win32_shortcuts)
-
 if SDL_COMPILE
 c64dtv_DATA = $(roms) $(romsets) $(palettes) $(sdl_keymaps) $(sym_file)
 
