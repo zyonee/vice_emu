@@ -39,10 +39,8 @@
 !VSHIFT RSHIFT
 
 9 7 2 8    /* Tab = CTRL */
-9 7 2 8    /* Shift + Tab = CTRL */
-306 5 8    /* Control_L = CBM */
+306 7 5 8  /* Control_L = CBM */
 8 0 0 8    /* BackSpace */
-127 0 0 8  /* Delete */
 274 0 7 8  /* Down */
 27 7 7 8   /* Escape */
 282 0 4 8  /* F1 */
@@ -54,7 +52,6 @@
 288 0 3 8  /* F7 */
 289 0 3 1  /* F8 */
 278 6 3 8  /* Home */
-277 0 0 16 /* Insert */
 276 0 2 1  /* Left */
 13 0 1 8   /* Return */
 275 0 2 8  /* Right */
@@ -65,7 +62,6 @@
 #39 3 0 8   /* ' */
 #asciicircum 6 6 0
 #asciitilde 6 6 0
-39 6 1 8 /* * */
 #at 5 6 0
 #backslash 6 0 0
 #bar 6 0 8
@@ -79,7 +75,6 @@
 #grave 6 6 0
 #greater 5 4 1
 #less 5 7 1
-45 5 3 8 /* - */
 #numbersign 1 0 1
 #parenleft 3 3 1
 #parenright 4 0 1
@@ -130,7 +125,25 @@
 121 3 1 8 /* y */
 122 1 4 8 /* z */
 
+# Added by marco
+96 7 1 8  /* left arrow */
+45 5 0 8  /* + */
+61 5 3 8  /* - */
+91 5 6 8  /* @ */
+93 6 1 8  /* * */
+59 5 5 8  /* : */
+39 6 2 8  /* ; */
+277 6 0 8 /* pound */
+92 6 5 8  /* = */
+47 6 7 8  /* slash */
+127 6 6 8 /* up arrow */
+
+# Removed by marco
+# 45 5 3 8   /* - */
+# 39 6 1 8   /* * */
+# 277 0 0 16 /* Insert */
+# 127 0 0 8  /* Delete *
+
 # Restore key mappings
 280 -3 0
 0 -3 1
-
