@@ -65,14 +65,6 @@ static WORD sdl_default_translation[256];
 
 static BYTE *draw_buffer_backup = NULL;
 
-struct menufont_s {
-    BYTE *font;
-    WORD *translate;
-    int w;
-    int h;
-};
-typedef struct menufont_s menufont_t;
-
 static menufont_t menufont = { NULL, sdl_default_translation, 0, 0 };
 
 static menu_draw_t menu_draw;
@@ -102,7 +94,7 @@ static void sdl_ui_putchar(BYTE c, int pos_x, int pos_y)
             draw_pos[x] = (fontchar & (0x80 >> x))?menu_draw.color_front:menu_draw.color_back;
         }
         ++font_pos;
-        draw_pos += sdl_active_canvas->draw_buffer->draw_buffer_pitch;
+        draw_pos += menu_draw.pitch;
     }
 }
 
@@ -321,6 +313,11 @@ BYTE *sdl_ui_get_draw_buffer(void)
 menu_draw_t *sdl_ui_get_menu_param(void)
 {
     return &menu_draw;
+}
+
+menufont_t *sdl_ui_get_menu_font(void)
+{
+    return &menufont;
 }
 
 void sdl_ui_activate_pre_action(void)

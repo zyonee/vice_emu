@@ -72,6 +72,14 @@ typedef struct ui_menu_entry_s {
     ui_callback_data_t data;
 } ui_menu_entry_t;
 
+struct menufont_s {
+    BYTE *font;
+    WORD *translate;
+    int w;
+    int h;
+};
+typedef struct menufont_s menufont_t;
+
 struct menu_draw_s {
     int pitch;
     int offset;
@@ -112,6 +120,7 @@ extern void sdl_ui_set_main_menu(const ui_menu_entry_t *menu);
 extern ui_menu_entry_t *sdl_ui_get_main_menu(void);
 extern void sdl_ui_set_menu_font(BYTE *font, int w, int h);
 extern menu_draw_t *sdl_ui_get_menu_param(void);
+extern menufont_t *sdl_ui_get_menu_font(void);
 extern void (*sdl_ui_set_menu_params)(int index, menu_draw_t *menu_draw);
 
 extern BYTE *sdl_ui_get_draw_buffer(void);

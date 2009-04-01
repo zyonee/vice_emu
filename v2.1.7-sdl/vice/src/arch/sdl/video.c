@@ -48,6 +48,7 @@
 #include "resources.h"
 #include "translate.h"
 #include "uimenu.h"
+#include "uistatusbar.h"
 #include "videoarch.h"
 #include "vkbd.h"
 
@@ -278,6 +279,10 @@ void video_canvas_refresh(struct video_canvas_s *canvas,
 {
     if (sdl_vkbd_state & SDL_VKBD_ACTIVE) {
         sdl_vkbd_draw();
+    }
+
+    if (uistatusbar_state & UISTATUSBAR_ACTIVE) {
+        uistatusbar_draw();
     }
 
     if (canvas->videoconfig->doublesizex) {

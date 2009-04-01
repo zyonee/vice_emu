@@ -34,6 +34,7 @@
 #include "kbdbuf.h"
 #include "raster.h"
 #include "ui.h"
+#include "uistatusbar.h"
 #include "videoarch.h"
 #include "vkbd.h"
 #include "vsyncapi.h"
@@ -87,9 +88,10 @@ void vsyncarch_presync(void)
         ui_dispatch_events();
     }
 
-    if (sdl_vkbd_state & SDL_VKBD_REPAINT) {
+    if ((sdl_vkbd_state & SDL_VKBD_REPAINT) || (uistatusbar_state & UISTATUSBAR_REPAINT)) {
         raster_force_repaint(sdl_active_canvas->parent_raster);
         sdl_vkbd_state &= ~SDL_VKBD_REPAINT;
+        uistatusbar_state &= ~UISTATUSBAR_REPAINT;
     }
 
     kbdbuf_flush();

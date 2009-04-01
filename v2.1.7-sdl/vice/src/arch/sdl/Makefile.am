@@ -116,6 +116,8 @@ libarch_a_SOURCES = \
 	uimsgbox.h \
 	uipoll.c \
 	uipoll.h \
+	uistatusbar.c \
+	uistatusbar.h \
 	video.c \
 	videoarch.h \
 	vkbd.c \

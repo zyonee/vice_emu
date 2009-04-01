@@ -48,6 +48,7 @@
 #include "uicolor.h"
 #include "uimenu.h"
 #include "uimsgbox.h"
+#include "uistatusbar.h"
 #include "videoarch.h"
 #include "vkbd.h"
 #include "vsync.h"
@@ -61,15 +62,6 @@
 
 static char *ui_machine_name=NULL;
 
-void ui_display_speed(float percent, float framerate, int warp_flag)
-{
-    char caption[100];
-
-    sprintf(caption, "%s - %d%%/%d fps %s", ui_machine_name, (int)(percent + .5), (int)(framerate + .5), warp_flag ? "(warp)" : "");
-    SDL_WM_SetCaption(caption, "VICE");
-}
-
-void ui_display_paused(int flag){}
 void ui_dispatch_next_event(void){}
 
 /* Misc. SDL event handling */
@@ -329,6 +321,7 @@ fprintf(stderr,"%s\n",__func__);
 
     /* TODO move somewhere else */
     sdlkbd_init_resources();
+    uistatusbar_init_resources();
 
     return 0;
 }
@@ -378,9 +371,6 @@ void ui_error(const char *format,...)
 }
 
 
-/* Display a mesage without interrupting emulation */
-void ui_display_statustext(const char *text, int fade_out){}
-
 /* Let the user browse for a filename; display format as a titel */
 extern char* ui_get_file(const char *format,...)
 {
@@ -388,16 +378,6 @@ extern char* ui_get_file(const char *format,...)
 }
 
 /* Drive related UI.  */
-void ui_enable_drive_status(ui_drive_enable_t state,
-                            int *drive_led_color){}
-void ui_display_drive_track(unsigned int drive_number,
-                            unsigned int drive_base,
-                            unsigned int half_track_number){}
-/* The pwm value will vary between 0 and 1000.  */
-void ui_display_drive_led(int drive_number, unsigned int pwm1,
-                          unsigned int led_pwm2){}
-void ui_display_drive_current_image(unsigned int drive_number,
-                                    const char *image){}
 int ui_extend_image_dialog(void)
 {
     if (message_box("VICE QUESTION", "Extend image to 40-track format?", MESSAGE_YESNO) == 0) {
@@ -405,13 +385,6 @@ int ui_extend_image_dialog(void)
     }
     return 0;
 }
-
-/* Tape related UI */
-void ui_set_tape_status(int tape_status){}
-void ui_display_tape_motor_status(int motor){}
-void ui_display_tape_control_status(int control){}
-void ui_display_tape_counter(int counter){}
-void ui_display_tape_current_image(const char *image){}
 
 /* Show a CPU JAM dialog.  */
 ui_jam_action_t ui_jam_dialog(const char *format, ...)
@@ -430,17 +403,6 @@ ui_jam_action_t ui_jam_dialog(const char *format, ...)
 
 /* Update all menu entries.  */
 void ui_update_menus(void){}
-
-/* Recording UI */
-void ui_display_playback(int playback_status, char *version){}
-void ui_display_recording(int recording_status){}
-void ui_display_event_time(unsigned int current, unsigned int total){}
-
-/* Joystick UI */
-void ui_display_joyport(BYTE *joyport){}
-
-/* Volume UI */
-void ui_display_volume(int vol){}
 
 /* ----------------------------------------------------------------- */
 /* uicolor.h */
