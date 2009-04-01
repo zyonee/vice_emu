@@ -43,7 +43,6 @@ libarch_a_SOURCES = \
 	console.c \
 	dinput_handle.c \
 	dinput_handle.h \
-	dirent.c \
 	ffmpeglib.c \
 	fullscrn.c \
 	fullscrn.h \
