@@ -40,7 +40,8 @@ static SWORD *sdl_buf = NULL;
 static SDL_AudioSpec sdl_spec;
 static volatile int sdl_inptr = 0;
 static volatile int sdl_outptr = 0;
-static volatile int sdl_len = 0;
+static volatile int sdl_full = 0;
+static int sdl_len = 0;
 
 static void sdl_callback(void *userdata, Uint8 *stream, int len)
 {
@@ -49,13 +50,15 @@ static void sdl_callback(void *userdata, Uint8 *stream, int len)
 
     while (total < len/sizeof(SWORD)) {
         amount = sdl_inptr - sdl_outptr;
-        if (amount < 0) {
+        if (amount <= 0) {
             amount = sdl_len - sdl_outptr;
         }
 
         if (amount + total > len/sizeof(SWORD)) {
             amount = len/sizeof(SWORD) - total;
         }
+
+        sdl_full = 0;
 
         if (!amount) {
             memset(stream + total*sizeof(SWORD), 0, len - total*sizeof(SWORD));
@@ -81,6 +84,11 @@ static int sdl_init(const char *param, int *speed,
     /* No stereo capability. */
     *channels = 1;
 
+#ifdef WIN32
+    /* FIXME win32 seems to need larger fragments to work properly */
+    *fragsize *= 2;
+#endif
+
     memset(&spec, 0, sizeof(spec));
     spec.freq = *speed;
     spec.format = AUDIO_S16;
@@ -98,7 +106,7 @@ static int sdl_init(const char *param, int *speed,
     }
 
     sdl_len = (*fragsize)*(*fragnr);
-    sdl_inptr = sdl_outptr = 0;
+    sdl_inptr = sdl_outptr = sdl_full = 0;
     sdl_buf = lib_malloc(sizeof(SWORD)*sdl_len);
 
     if (!sdl_buf) {
@@ -186,19 +194,28 @@ static int sdl_write(SWORD *pbuf, size_t nr)
         }
     }
 
+    if (sdl_inptr == sdl_outptr) {
+        sdl_full = 1;
+    }
+
     return 0;
 }
 
 static int sdl_bufferspace(void)
 {
-    int	amount;
-    amount = sdl_inptr - sdl_outptr;
+    int amount;
+
+    if (sdl_full) {
+        amount = sdl_len;
+    } else {
+        amount = sdl_inptr - sdl_outptr;
+    }
 
     if (amount < 0) {
         amount += sdl_len;
     }
 
-    return sdl_len - amount - 1;
+    return sdl_len - amount;
 }
 
 static void sdl_close(void)
@@ -206,12 +223,13 @@ static void sdl_close(void)
     SDL_CloseAudio();
     lib_free(sdl_buf);
     sdl_buf = NULL;
-    sdl_inptr = sdl_outptr = sdl_len = 0;
+    sdl_inptr = sdl_outptr = sdl_len = sdl_full = 0;
 }
 
 static int sdl_suspend(void)
 {
     SDL_PauseAudio(1);
+    sdl_full = 0;
     return 0;
 }
 
