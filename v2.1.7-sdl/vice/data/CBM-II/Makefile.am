@@ -32,6 +32,9 @@ palettes = \
 x11_keymaps = \
 	x11_buks.vkm
 
+sdl_keymaps = \
+	sdl_sym.vkm
+
 extra_keymaps = \
 	amiga_bukp.vkm \
 	amiga_buks.vkm \
@@ -50,3 +53,13 @@ win32_shortcuts = \
 cbm2_DATA = $(roms) $(romsets) $(palettes) $(x11_keymaps)
 
 EXTRA_DIST = $(cbm2_DATA) $(extra_keymaps) $(win32_shortcuts)
+
+if SDL_COMPILE
+cbm2_DATA = $(roms) $(romsets) $(palettes) $(sdl_keymaps)
+
+EXTRA_DIST = $(cbm2_DATA) $(extra_keymaps) $(x11_keymaps) $(win32_shortcuts)
+else
+cbm2_DATA = $(roms) $(romsets) $(palettes) $(x11_keymaps)
+
+EXTRA_DIST = $(cbm2_DATA) $(extra_keymaps) $(sdl_keymaps) $(win32_shortcuts)
+endif
