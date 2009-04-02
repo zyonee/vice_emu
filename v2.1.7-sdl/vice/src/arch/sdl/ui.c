@@ -222,7 +222,7 @@ static int set_confirm_on_exit(int val, void *param)
 }
 
 static const resource_int_t resources_int[] = {
-    { "MenuKey", SDLK_F9, RES_EVENT_NO, NULL,
+    { "MenuKey", SDLK_F12, RES_EVENT_NO, NULL,
       &sdl_ui_menukeys[0], set_ui_menukey, (void *)MENU_ACTION_NONE },
     { "MenuKeyUp", SDLK_UP, RES_EVENT_NO, NULL,
       &sdl_ui_menukeys[1], set_ui_menukey, (void *)MENU_ACTION_UP },

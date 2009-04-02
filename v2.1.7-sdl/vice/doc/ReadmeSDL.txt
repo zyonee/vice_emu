@@ -65,7 +65,7 @@ The menu is used with the following commands:
 --------------------------------------------------
 Command  | Key   | Joy  | Function
 --------------------------------------------------
-Activate | F9    | btn2 | Activate the menu
+Activate | F12   | btn2 | Activate the menu
 Up       | up    |  u   | Move cursor up
 Down     | down  |  d   | Move cursor down
 Left     | left  |  l   | Cancel/Page up
