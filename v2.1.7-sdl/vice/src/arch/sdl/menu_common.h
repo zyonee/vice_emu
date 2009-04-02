@@ -75,11 +75,6 @@ extern const char *sdl_menu_text_exit_ui;
         return sdl_ui_menu_file_string_helper(activated, param, #resource); \
     }
 
-extern UI_MENU_CALLBACK(autostart_callback);
-extern UI_MENU_CALLBACK(pause_callback);
-extern UI_MENU_CALLBACK(monitor_callback);
-extern UI_MENU_CALLBACK(vkbd_callback);
-extern UI_MENU_CALLBACK(quit_callback);
 extern UI_MENU_CALLBACK(submenu_callback);
 extern UI_MENU_CALLBACK(submenu_radio_callback);
 extern UI_MENU_CALLBACK(seperator_callback);
@@ -89,5 +84,12 @@ extern const char *sdl_ui_menu_radio_helper(int activated, ui_callback_data_t pa
 extern const char *sdl_ui_menu_string_helper(int activated, ui_callback_data_t param, const char *resource_name);
 extern const char *sdl_ui_menu_int_helper(int activated, ui_callback_data_t param, const char *resource_name);
 extern const char *sdl_ui_menu_file_string_helper(int activated, ui_callback_data_t param, const char *resource_name);
+
+extern UI_MENU_CALLBACK(autostart_callback);
+extern UI_MENU_CALLBACK(pause_callback);
+extern UI_MENU_CALLBACK(monitor_callback);
+extern UI_MENU_CALLBACK(vkbd_callback);
+extern UI_MENU_CALLBACK(statusbar_callback);
+extern UI_MENU_CALLBACK(quit_callback);
 
 #endif

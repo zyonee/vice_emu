@@ -109,6 +109,12 @@ UI_MENU_CALLBACK(autostart_callback)
 
 UI_MENU_CALLBACK(pause_callback)
 {
+    int paused = ui_emulation_is_paused();
+
+    if (activated) {
+        ui_pause_emulation(!paused);
+        return sdl_menu_text_exit_ui;
+    }
     return NULL;
 }
 
@@ -128,6 +134,11 @@ UI_MENU_CALLBACK(vkbd_callback)
         return sdl_menu_text_exit_ui;
     }
     return NULL;
+}
+
+UI_MENU_CALLBACK(statusbar_callback)
+{
+    return sdl_ui_menu_toggle_helper(activated, "SDLStatusbar");
 }
 
 UI_MENU_CALLBACK(quit_callback)

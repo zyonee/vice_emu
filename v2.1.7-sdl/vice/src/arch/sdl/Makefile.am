@@ -114,6 +114,7 @@ libarch_a_SOURCES = \
 	uimon.c \
 	uimsgbox.c \
 	uimsgbox.h \
+	uipause.c \
 	uipoll.c \
 	uipoll.h \
 	uistatusbar.c \

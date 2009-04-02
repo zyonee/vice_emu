@@ -289,7 +289,14 @@ static void sdl_ui_trap(WORD addr, void *data)
         sdl_ui_init_draw_params();
         sdl_ui_menu_item_activate((ui_menu_entry_t *)data);
     }
+
+    if (ui_emulation_is_paused()) {
+        memcpy(sdl_active_canvas->draw_buffer->draw_buffer, draw_buffer_backup, width * height);
+        sdl_ui_refresh();
+    }
+
     sdl_ui_activate_post_action();
+
     lib_free(draw_buffer_backup);
 }
 
@@ -486,12 +493,15 @@ void sdl_ui_invert_char(int pos_x, int pos_y)
                 draw_pos[x] = menu_draw.color_front;
             }
         }
-        draw_pos += sdl_active_canvas->draw_buffer->draw_buffer_pitch;
+        draw_pos += menu_draw.pitch;
     }
 }
 
 void sdl_ui_activate(void)
 {
+    if (ui_emulation_is_paused()) {
+        ui_pause_emulation(0);
+    }
     interrupt_maincpu_trigger_trap(sdl_ui_trap, NULL);
 }
 

@@ -39,15 +39,14 @@
 #include "uistatusbar.h"
 #include "videoarch.h"
 
-/*#define SDL_DEBUG*/
-
 /* ----------------------------------------------------------------- */
 /* static functions/variables */
 
 #define MAX_STATUSBAR_LEN 128
 #define STATUSBAR_SPEED_POS 0
-#define STATUSBAR_DRIVE_POS 14
-#define STATUSBAR_TAPE_POS 19
+#define STATUSBAR_PAUSE_POS 4
+#define STATUSBAR_DRIVE_POS 12
+#define STATUSBAR_TAPE_POS 17
 
 static char statusbar_text[MAX_STATUSBAR_LEN] = "                       ";
 
@@ -61,12 +60,12 @@ static inline void uistatusbar_putchar(BYTE c, int pos_x, int pos_y, BYTE color_
     BYTE fontchar;
     BYTE *font_pos;
     BYTE *draw_pos;
- 
+
     font_pos = &(menufont->font[menufont->translate[(int)c]]);
     draw_pos = &(sdl_active_canvas->draw_buffer->draw_buffer[pos_x * menufont->w + pos_y * menufont->h * pitch]);
- 
+
     draw_pos += draw_offset;
- 
+
     for (y=0; y < menufont->h; ++y) {
         fontchar = *font_pos;
         for (x=0; x < menufont->w; ++x) {
@@ -87,10 +86,6 @@ static void display_tape(void)
 {
     int len;
 
-#ifdef SDL_DEBUG
-fprintf(stderr,"%s: %i\n",__func__,tape_enabled);
-#endif
-
     if (tape_enabled) {
         len = sprintf(&(statusbar_text[STATUSBAR_TAPE_POS]), "%c%03d%c", (tape_motor)?'*':' ', tape_counter," >f<R"[tape_control]);
     } else {
@@ -101,13 +96,27 @@ fprintf(stderr,"%s: %i\n",__func__,tape_enabled);
     uistatusbar_state |= UISTATUSBAR_REPAINT;
 }
 
+static int per = 0;
+static int fps = 0;
+static int warp = 0;
+static int paused = 0;
+
+static void display_speed(void)
+{
+    int len;
+    char sep = paused ? ('P' | 0x80) : warp ? ('W' | 0x80) : '/';
+
+    len = sprintf(&(statusbar_text[STATUSBAR_SPEED_POS]), "%3d%%%c%2dfps", per, sep, fps);
+    statusbar_text[STATUSBAR_SPEED_POS + len] = ' ';
+
+    uistatusbar_state |= UISTATUSBAR_REPAINT;
+}
+
 /* ----------------------------------------------------------------- */
 /* ui.h */
 
 void ui_display_speed(float percent, float framerate, int warp_flag)
 {
-    int per, fps, len;
-
     per = (int)(percent + .5);
     if (per > 999) {
         per = 999;
@@ -118,17 +127,16 @@ void ui_display_speed(float percent, float framerate, int warp_flag)
         fps = 99;
     }
 
-    len = sprintf(&(statusbar_text[STATUSBAR_SPEED_POS]), "%3d%%/%2dfps %c", per, fps, warp_flag ? 'W' : ' ');
-    statusbar_text[STATUSBAR_SPEED_POS + len] = ' ';
+    warp = warp_flag;
 
-    uistatusbar_state |= UISTATUSBAR_REPAINT;
+    display_speed();
 }
 
 void ui_display_paused(int flag)
 {
-#ifdef SDL_DEBUG
-fprintf(stderr,"%s: %i\n",__func__, flag);
-#endif
+    paused = flag;
+
+    display_speed();
 }
 
 /* ----------------------------------------------------------------- */
@@ -148,9 +156,7 @@ void ui_enable_drive_status(ui_drive_enable_t state,
 {
     int drive_number;
     int drive_state = (int)state;
-#ifdef SDL_DEBUG
-fprintf(stderr,"%s: %i\n",__func__,drive_state);
-#endif
+
     for (drive_number = 0; drive_number < 4; ++drive_number) {
         if (drive_state & 1) {
             ui_display_drive_led(drive_number, 0, 0);
@@ -197,10 +203,6 @@ fprintf(stderr,"%s\n",__func__);
 
 void ui_set_tape_status(int tape_status)
 {
-    int t;
-#ifdef SDL_DEBUG
-fprintf(stderr,"%s: %i\n",__func__,tape_status);
-#endif
     tape_enabled = tape_status;
 
     display_tape();
@@ -208,9 +210,6 @@ fprintf(stderr,"%s: %i\n",__func__,tape_status);
 
 void ui_display_tape_motor_status(int motor)
 {
-#ifdef SDL_DEBUG
-fprintf(stderr,"%s: %i\n",__func__,motor);
-#endif
     tape_motor = motor;
 
     display_tape();
@@ -218,9 +217,6 @@ fprintf(stderr,"%s: %i\n",__func__,motor);
 
 void ui_display_tape_control_status(int control)
 {
-#ifdef SDL_DEBUG
-fprintf(stderr,"%s: %i\n",__func__,control);
-#endif
     tape_control = control;
 
     display_tape();
@@ -228,9 +224,6 @@ fprintf(stderr,"%s: %i\n",__func__,control);
 
 void ui_display_tape_counter(int counter)
 {
-#ifdef SDL_DEBUG
-/*fprintf(stderr,"%s: %i\n",__func__,counter);*/
-#endif
     if (tape_counter != counter) {
         display_tape();
     }
@@ -301,7 +294,7 @@ static int set_statusbar(int val, void *param)
 
     return 0;
 }
-  
+
 static const resource_int_t resources_int[] = {
     { "SDLStatusbar", 0, RES_EVENT_NO, NULL,
       &statusbar_enabled, set_statusbar, NULL },
@@ -324,17 +317,11 @@ int uistatusbar_state = 0;
 
 void uistatusbar_open(void)
 {
-#ifdef SDL_DEBUG
-fprintf(stderr,"%s\n",__func__);
-#endif
     uistatusbar_state = UISTATUSBAR_ACTIVE | UISTATUSBAR_REPAINT;
 }
 
 void uistatusbar_close(void)
 {
-#ifdef SDL_DEBUG
-fprintf(stderr,"%s\n",__func__);
-#endif
     uistatusbar_state = UISTATUSBAR_REPAINT;
 }
 

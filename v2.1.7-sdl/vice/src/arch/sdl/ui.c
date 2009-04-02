@@ -62,8 +62,6 @@
 
 static char *ui_machine_name=NULL;
 
-void ui_dispatch_next_event(void){}
-
 /* Misc. SDL event handling */
 void ui_handle_misc_sdl_event(SDL_Event e)
 {
@@ -168,33 +166,6 @@ void ui_message(const char* format, ...)
     message_box("VICE MESSAGE", tmp, MESSAGE_OK);
 
     lib_free(tmp);
-}
-
-static int is_paused = 0;
-
-static void pause_trap(WORD addr, void *data)
-{
-    ui_display_paused(1);
-    is_paused = 1;
-    vsync_suspend_speed_eval();
-    while (is_paused) {
-        ui_dispatch_next_event();
-    }
-}
-
-void ui_pause_emulation(int flag)
-{
-    if (flag) {
-        interrupt_maincpu_trigger_trap(pause_trap, 0);
-    } else {
-        ui_display_paused(0);
-        is_paused = 0;
-    }
-}
-
-int ui_emulation_is_paused(void)
-{
-    return is_paused;
 }
 
 /* ----------------------------------------------------------------- */
