@@ -101,8 +101,8 @@
 287 10 4 8              /*           F6 -> DOWN         */
 288 10 5 8              /*           F7 -> LEFT         */
 289 10 6 8              /*           F8 -> RIGHT        */
-291 9 0 8               /*          F10 -> ESC          */
-292 8 3 8               /*          F11 -> TAB          */
+290 9 0 8               /*           F9 -> ESC          */
+291 8 3 8               /*          F10 -> TAB          */
 281 8 0 8               /*       PgDown -> HELP         */
 19 9 3 8                /*  Pause/Break -> LINE FEED    */
 268 10 7 8              /*     Numpad * -> NO SCROLL    */
@@ -136,7 +136,7 @@
 #
 # CAPS (ASCII/DIN) key mapping
 #
-293 -4 1 /* F12 */
+292 -4 1 /* F11 */
 
 #
 # 40/80 column key
