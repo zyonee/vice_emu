@@ -34,11 +34,9 @@
 
 #include "color.h"
 #include "fullscreenarch.h"
-#include "interrupt.h"
 #include "joy.h"
 #include "kbd.h"
 #include "lib.h"
-#include "machine.h"
 #include "mouse.h"
 #include "mousedrv.h"
 #include "resources.h"
@@ -60,8 +58,6 @@
 /* ----------------------------------------------------------------- */
 /* ui.h */
 
-static char *ui_machine_name=NULL;
-
 /* Misc. SDL event handling */
 void ui_handle_misc_sdl_event(SDL_Event e)
 {
@@ -69,17 +65,11 @@ void ui_handle_misc_sdl_event(SDL_Event e)
         case SDL_QUIT:
             ui_sdl_quit();
             break;
-        case SDL_ACTIVEEVENT:
-            if (e.active.state & SDL_APPACTIVE) {
-                if (e.active.gain) {
-/*fprintf(stderr,"%s: activeevent %i,%i\n",__func__,e.active.state,e.active.gain);*/
-                } else {
-                }
-            }
-            break;
         case SDL_VIDEORESIZE:
-/*fprintf(stderr,"%s: videoresize %ix%i\n",__func__,e.resize.w,e.resize.h);*/
             sdl_video_resize(e.resize.w, e.resize.h);
+            break;
+        case SDL_VIDEOEXPOSE:
+            video_canvas_refresh_all(sdl_active_canvas);
             break;
         default:
 /*fprintf(stderr,"%s: %i\n",__func__,e.type);*/
@@ -265,31 +255,6 @@ int ui_init(int *argc, char **argv)
 #ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
 #endif
-
-    switch (machine_class) {
-        case VICE_MACHINE_C64:
-            ui_machine_name = "VICE C64 Emulator";
-            break;
-      case VICE_MACHINE_C64DTV:
-            ui_machine_name = "VICE C64DTV Emulator";
-            break;
-      case VICE_MACHINE_C128:
-            ui_machine_name = "VICE C128 Emulator";
-            break;
-      case VICE_MACHINE_CBM2:
-            ui_machine_name = "VICE CBM2 Emulator";
-            break;
-      case VICE_MACHINE_PET:
-            ui_machine_name = "VICE PET Emulator";
-            break;
-      case VICE_MACHINE_PLUS4:
-            ui_machine_name = "VICE PLUS4 Emulator";
-            break;
-      case VICE_MACHINE_VIC20:
-            ui_machine_name = "VICE VIC20 Emulator";
-            break;
-    }
-
     /* TODO move somewhere else */
     sdlkbd_init_resources();
     uistatusbar_init_resources();
@@ -312,7 +277,7 @@ int ui_init_finalize(void)
 fprintf(stderr,"%s\n",__func__);
 #endif
 
-    SDL_WM_SetCaption(ui_machine_name, "VICE");
+    SDL_WM_SetCaption(sdl_active_canvas->viewport->title, "VICE");
     return 0;
 }
 

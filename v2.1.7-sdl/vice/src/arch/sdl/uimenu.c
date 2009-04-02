@@ -290,7 +290,7 @@ static void sdl_ui_trap(WORD addr, void *data)
         sdl_ui_menu_item_activate((ui_menu_entry_t *)data);
     }
 
-    if (ui_emulation_is_paused()) {
+    if (ui_emulation_is_paused() && (width == sdl_active_canvas->draw_buffer->draw_buffer_width) && (height == sdl_active_canvas->draw_buffer->draw_buffer_height)) {
         memcpy(sdl_active_canvas->draw_buffer->draw_buffer, draw_buffer_backup, width * height);
         sdl_ui_refresh();
     }

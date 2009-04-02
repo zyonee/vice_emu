@@ -147,16 +147,11 @@ UI_MENU_DEFINE_TOGGLE(TEDExternalPalette)
 UI_MENU_DEFINE_RADIO(MachineVideoStandard)
 
 #ifdef HAVE_HWSCALE
-static UI_MENU_CALLBACK(custom_HwScale_callback)
-{
-    const char *retval = sdl_ui_menu_toggle_helper(activated, (const char *)param);
-
-    if (activated) {
-        sdl_ui_refresh();
-    }
-
-    return retval;
-}
+UI_MENU_DEFINE_TOGGLE(VICIIHwScale)
+UI_MENU_DEFINE_TOGGLE(VDCHwScale)
+UI_MENU_DEFINE_TOGGLE(CrtcHwScale)
+UI_MENU_DEFINE_TOGGLE(TEDHwScale)
+UI_MENU_DEFINE_TOGGLE(VICHwScale)
 #endif
 
 UI_MENU_DEFINE_FILE_STRING(VICIIPaletteFile)
@@ -214,8 +209,8 @@ static const ui_menu_entry_t c128_video_vicii_menu[] = {
 #ifdef HAVE_HWSCALE
     { "VICII OpenGL",
       MENU_ENTRY_RESOURCE_TOGGLE,
-      custom_HwScale_callback,
-      (ui_callback_data_t)"VICIIHwScale" },
+      toggle_VICIIHwScale_callback,
+      NULL },
 #endif
     SDL_MENU_ITEM_SEPARATOR,
     { "VICII border mode",
@@ -261,8 +256,8 @@ static const ui_menu_entry_t c128_video_vdc_menu[] = {
 #ifdef HAVE_HWSCALE
     { "VDC OpenGL",
       MENU_ENTRY_RESOURCE_TOGGLE,
-      custom_HwScale_callback,
-      (ui_callback_data_t)"VDCHwScale" },
+      toggle_VDCHwScale_callback,
+      NULL },
 #endif
     { "VDC external palette file",
       MENU_ENTRY_DIALOG,
@@ -328,8 +323,8 @@ const ui_menu_entry_t c64_video_menu[] = {
 #ifdef HAVE_HWSCALE
     { "OpenGL",
       MENU_ENTRY_RESOURCE_TOGGLE,
-      custom_HwScale_callback,
-      (ui_callback_data_t)"VICIIHwScale" },
+      toggle_VICIIHwScale_callback,
+      NULL },
 #endif
     { "VICII border mode",
       MENU_ENTRY_SUBMENU,
@@ -392,8 +387,8 @@ const ui_menu_entry_t c64dtv_video_menu[] = {
 #ifdef HAVE_HWSCALE
     { "OpenGL",
       MENU_ENTRY_RESOURCE_TOGGLE,
-      custom_HwScale_callback,
-      (ui_callback_data_t)"VICIIHwScale" },
+      toggle_VICIIHwScale_callback,
+      NULL },
 #endif
     { "VICII border mode",
       MENU_ENTRY_SUBMENU,
@@ -502,8 +497,8 @@ const ui_menu_entry_t cbm6x0_7x0_video_menu[] = {
 #ifdef HAVE_HWSCALE
     { "OpenGL",
       MENU_ENTRY_RESOURCE_TOGGLE,
-      custom_HwScale_callback,
-      (ui_callback_data_t)"CrtcHwScale" },
+      toggle_CrtcHwScale_callback,
+      NULL },
 #endif
     { "External palette file",
       MENU_ENTRY_DIALOG,
@@ -532,8 +527,8 @@ const ui_menu_entry_t pet_video_menu[] = {
 #ifdef HAVE_HWSCALE
     { "OpenGL",
       MENU_ENTRY_RESOURCE_TOGGLE,
-      custom_HwScale_callback,
-      (ui_callback_data_t)"CrtcHwScale" },
+      toggle_CrtcHwScale_callback,
+      NULL },
 #endif
     { "External palette file",
       MENU_ENTRY_DIALOG,
@@ -566,8 +561,8 @@ const ui_menu_entry_t plus4_video_menu[] = {
 #ifdef HAVE_HWSCALE
     { "OpenGL",
       MENU_ENTRY_RESOURCE_TOGGLE,
-      custom_HwScale_callback,
-      (ui_callback_data_t)"TEDHwScale" },
+      toggle_TEDHwScale_callback,
+      NULL },
 #endif
     { "Color controls",
       MENU_ENTRY_SUBMENU,
@@ -622,8 +617,8 @@ const ui_menu_entry_t vic20_video_menu[] = {
 #ifdef HAVE_HWSCALE
     { "OpenGL",
       MENU_ENTRY_RESOURCE_TOGGLE,
-      custom_HwScale_callback,
-      (ui_callback_data_t)"VICHwScale" },
+      toggle_VICHwScale_callback,
+      NULL },
 #endif
     { "Color controls",
       MENU_ENTRY_SUBMENU,

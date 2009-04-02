@@ -32,7 +32,6 @@
 #include <SDL/SDL.h>
 
 #include "interrupt.h"
-#include "machine.h"
 #include "types.h"
 #include "ui.h"
 #include "uiapi.h"
