@@ -54,9 +54,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MENU_FIRST_Y 2
-#define MENU_FIRST_X 1
-
 int sdl_menu_state = 0;
 
 static ui_menu_entry_t *main_menu = NULL;
@@ -423,8 +420,6 @@ void sdl_ui_init_draw_params(void)
     menu_draw.offset = sdl_active_canvas->geometry->gfx_position.x + menu_draw.extra_x
                      + (sdl_active_canvas->geometry->gfx_position.y + menu_draw.extra_y) * menu_draw.pitch
                      + sdl_active_canvas->geometry->extra_offscreen_border_left;
-    menu_draw.first_x = MENU_FIRST_X;
-    menu_draw.first_y = MENU_FIRST_Y;
 }
 
 void sdl_ui_reverse_colors(void)

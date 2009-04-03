@@ -174,12 +174,12 @@ static void sdl_ui_file_selector_redraw(ioutil_dir_t *directory, const char *tit
     sdl_ui_display_path(current_dir);
 
     for (i = 0; i < num_items; ++i) {
-        j = menu_draw->first_x;
+        j = MENU_FIRST_X;
         name = sdl_ui_get_file_selector_entry(directory, offset+i, &isdir);
         if (isdir) {
-            j += 1 + sdl_ui_print("(D)", menu_draw->first_x, i+menu_draw->first_y + 2);
+            j += 1 + sdl_ui_print("(D)", MENU_FIRST_X, i + MENU_FIRST_Y + 2);
         }
-        sdl_ui_print(name, j, i+menu_draw->first_y + 2);
+        sdl_ui_print(name, j, i + MENU_FIRST_Y + 2);
     }
 }
 
@@ -218,7 +218,7 @@ char* sdl_ui_file_selection_dialog(const char* title, ui_menu_filereq_mode_t mod
     dirs = directory->dir_amount;
     files = directory->file_amount;
     total = dirs + files + 2;
-    menu_max = menu_draw->max_text_y - (menu_draw->first_y + 2);
+    menu_max = menu_draw->max_text_y - (MENU_FIRST_Y + 2);
 
     while(active) {
         if (redraw) {

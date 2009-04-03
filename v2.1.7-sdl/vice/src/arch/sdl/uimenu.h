@@ -88,8 +88,6 @@ typedef struct menufont_s menufont_t;
 struct menu_draw_s {
     int pitch;
     int offset;
-    int first_x;
-    int first_y;
     int max_text_x;
     int max_text_y;
     int extra_x;
@@ -98,6 +96,9 @@ struct menu_draw_s {
     BYTE color_back;
 };
 typedef struct menu_draw_s menu_draw_t;
+
+#define MENU_FIRST_Y 2
+#define MENU_FIRST_X 1
 
 typedef enum {
     MENU_ACTION_NONE = 0,

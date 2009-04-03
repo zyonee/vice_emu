@@ -340,7 +340,9 @@ void uistatusbar_draw(void)
     pitch = limits->pitch;
 
     draw_offset = (sdl_active_canvas->geometry->last_displayed_line - menufont->h + 1) * pitch
-                + sdl_active_canvas->geometry->extra_offscreen_border_left + limits->extra_x;
+                + sdl_active_canvas->geometry->extra_offscreen_border_left
+                + sdl_active_canvas->viewport->first_x
+                + limits->extra_x;
 
 
     for(i = 0; i < MAX_STATUSBAR_LEN; ++i) {
