@@ -64,7 +64,7 @@ static BYTE *draw_buffer_backup = NULL;
 
 static menufont_t menufont = { NULL, sdl_default_translation, 0, 0 };
 
-static menu_draw_t menu_draw;
+static menu_draw_t menu_draw = { 0, 0, 40, 25, 0, 0, 1, 0 };
 
 void (*sdl_ui_set_menu_params)(int index, menu_draw_t *menu_draw);
 

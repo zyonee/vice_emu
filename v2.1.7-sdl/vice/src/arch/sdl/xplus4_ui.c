@@ -140,12 +140,10 @@ static const ui_menu_entry_t xplus4_main_menu[] = {
 
 void plus4ui_set_menu_params(int index, menu_draw_t *menu_draw)
 {
-    menu_draw->max_text_x = 40;
-    menu_draw->max_text_y = 25;
-    menu_draw->extra_x = 0;
     menu_draw->extra_y = 55;
     menu_draw->color_front = 113;
-    menu_draw->color_back = 0;
+
+    sdl_ui_set_menu_params = NULL;
 }
 
 static BYTE *plus4_font;

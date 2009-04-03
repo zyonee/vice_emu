@@ -149,10 +149,7 @@ void vic20ui_set_menu_params(int index, menu_draw_t *menu_draw)
 
     menu_draw->max_text_x = 44;
     menu_draw->max_text_y = 23;
-    menu_draw->extra_x = 0;
     menu_draw->extra_y = (videostandard == MACHINE_SYNC_PAL) ? 28 : 8;
-    menu_draw->color_front = 1;
-    menu_draw->color_back = 0;
 }
 
 int vic20ui_init(void)

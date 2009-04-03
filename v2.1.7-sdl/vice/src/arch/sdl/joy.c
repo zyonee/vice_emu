@@ -416,7 +416,7 @@ fprintf(stderr,"%s\n",__func__);
     }
 
     fp = fopen(filename, MODE_WRITE_TEXT);
- 
+
     if (fp == NULL) {
         return -1;
     }
@@ -429,7 +429,7 @@ fprintf(stderr,"%s\n",__func__);
             "# - comment lines start with '#'\n"
             "# - keyword lines start with '!keyword'\n"
             "# - normal line has 'joynum inputtype inputindex action'\n"
-            "#\n"              
+            "#\n"
             "# Keywords and their lines are:\n"
             "# '!CLEAR'    clear all mappings\n"
             "#\n"
@@ -509,9 +509,9 @@ static void joy_arch_keyword_clear(void)
 static void joy_arch_parse_keyword(char *buffer)
 {
     char *key;
-    
+
     key = strtok(buffer + 1, " \t:");
-    
+
     if (!strcmp(key, "CLEAR")) {
         joy_arch_keyword_clear();
     }
@@ -527,7 +527,7 @@ static void joy_arch_parse_entry(char *buffer)
     p = strtok(buffer, " \t:");
 
     joynum = atoi(p);
-    
+
     if (joynum >= num_joysticks) {
         log_error(sdljoy_log, "Could not find joystick %i!", joynum);
         return;

@@ -138,17 +138,11 @@ static const ui_menu_entry_t x128_main_menu[] = {
 
 void c128ui_set_menu_params(int index, menu_draw_t *menu_draw)
 {
-    menu_draw->extra_x = 0;
-    menu_draw->extra_y = 0;
-    menu_draw->color_back = 0;
-
     if (index == 0) { /* VICII */
         menu_draw->max_text_x = 40;
-        menu_draw->max_text_y = 25;
         menu_draw->color_front = 1;
     } else {         /* VDC */
         menu_draw->max_text_x = 80;
-        menu_draw->max_text_y = 25;
         menu_draw->color_front = 15;
     }
 }

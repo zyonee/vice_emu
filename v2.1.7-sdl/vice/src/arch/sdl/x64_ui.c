@@ -136,23 +136,13 @@ static const ui_menu_entry_t x64_main_menu[] = {
     { NULL }
 };
 
-void c64ui_set_menu_params(int index, menu_draw_t *menu_draw)
-{
-    menu_draw->max_text_x = 40;
-    menu_draw->max_text_y = 25;
-    menu_draw->extra_x = 0;
-    menu_draw->extra_y = 0;
-    menu_draw->color_front = 1;
-    menu_draw->color_back = 0;
-}
-
 int c64ui_init(void)
 {
 #ifdef SDL_DEBUG
 fprintf(stderr,"%s\n",__func__);
 #endif
 
-    sdl_ui_set_menu_params = c64ui_set_menu_params;
+    sdl_ui_set_menu_params = NULL;
 
     sdl_ui_set_main_menu(x64_main_menu);
     sdl_ui_set_menu_font(mem_chargen_rom + 0x800, 8, 8);

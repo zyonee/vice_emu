@@ -35,6 +35,8 @@
 
 int vsid_ui_init(void)
 {
+    log_message(LOG_DEFAULT, "SDL vsid is not supported yet.");
+    exit(-1);
     return 0;
 }
 

@@ -218,16 +218,6 @@ static const ui_menu_entry_t xcbm5x0_main_menu[] = {
     { NULL }
 };
 
-void cbm2ui_c500_set_menu_params(int index, menu_draw_t *menu_draw)
-{
-    menu_draw->max_text_x = 40;
-    menu_draw->max_text_y = 25;
-    menu_draw->extra_x = 0;
-    menu_draw->extra_y = 0;
-    menu_draw->color_front = 1;
-    menu_draw->color_back = 0;
-}
-
 static BYTE *cbm2_font_14 = NULL;
 static BYTE *cbm2_font_8 = NULL;
 
@@ -238,10 +228,7 @@ void cbm2ui_set_menu_params(int index, menu_draw_t *menu_draw)
     resources_get_int("ModelLine", &model);
 
     menu_draw->max_text_x = 80;
-    menu_draw->max_text_y = 25;
     menu_draw->extra_x = 32;
-    menu_draw->color_front = 1;
-    menu_draw->color_back = 0;
 
     if (model == 0) {
         menu_draw->extra_y = 16;
@@ -269,7 +256,7 @@ int cbm2ui_init(void)
     cbm2_font_8 = lib_malloc(8*256);
 
     if (cbm2_is_c500()) {
-        sdl_ui_set_menu_params = cbm2ui_c500_set_menu_params;
+        sdl_ui_set_menu_params = NULL;
         sdl_ui_set_menu_font(mem_chargen_rom + 0x800, 8, 8);
         sdl_ui_set_main_menu(xcbm5x0_main_menu);
         sdl_video_canvas_switch(1);

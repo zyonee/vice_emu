@@ -140,9 +140,9 @@ static void sdlkbd_keyword_clear(void)
 static void sdlkbd_parse_keyword(char *buffer)
 {
     char *key;
-      
+
     key = strtok(buffer + 1, " \t:");
-            
+
     if (!strcmp(key, "CLEAR")) {
         sdlkbd_keyword_clear();
     }
@@ -163,7 +163,7 @@ static void sdlkbd_parse_entry(char *buffer)
         log_error(sdlkbd_log, "Too large hotkey %i!", keynum);
         return;
     }
-    
+
     p = strtok(NULL, "\r\n");
     if (p != NULL) {
         full_path = lib_stralloc(p);
@@ -192,23 +192,23 @@ int sdlkbd_hotkeys_load(const char *filename)
         log_warning(sdlkbd_log, "Failed to open NULL.");
         return -1;
     }
-    
+
     fp = sysfile_open(filename, &complete_path, MODE_READ_TEXT);
-    
+
     if (fp == NULL) {
         log_warning(sdlkbd_log, "Failed to open `%s'.", filename);
         return -1;
     }
-    
+
     log_message(sdlkbd_log, "Loading hotkey map `%s'.", complete_path);
-        
+
     lib_free(complete_path);
-            
+
     do {
         buffer[0] = 0;
         if (fgets(buffer, 999, fp)) {
             char *p;
-                
+
             if (strlen(buffer) == 0) {
                 break;
             }
@@ -234,7 +234,7 @@ int sdlkbd_hotkeys_load(const char *filename)
         }
     } while (!feof(fp));
     fclose(fp);
- 
+
     return 0;
 }
 
