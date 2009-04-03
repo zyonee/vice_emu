@@ -14,6 +14,7 @@ INCLUDES = \
 	-I$(top_srcdir)/src/plus4 \
 	-I$(top_srcdir)/src/raster \
 	-I$(top_srcdir)/src/sid \
+	-I$(top_srcdir)/src/vdrive \
 	-I$(top_srcdir)/src
 
 noinst_LIBRARIES = libarch.a

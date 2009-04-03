@@ -40,7 +40,7 @@
 #include "uimenu.h"
 #include "uimsgbox.h"
 #include "util.h"
-#include "vdrive.h"
+#include "vdrive-internal.h"
 
 enum {
     UI_FLIP_ADD,
