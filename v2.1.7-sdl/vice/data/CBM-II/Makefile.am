@@ -33,7 +33,7 @@ x11_keymaps = \
 	x11_buks.vkm
 
 sdl_keymaps = \
-	sdl_sym.vkm
+	sdl_buks.vkm
 
 extra_keymaps = \
 	amiga_bukp.vkm \
