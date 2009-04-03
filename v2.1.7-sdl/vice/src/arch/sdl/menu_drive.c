@@ -28,6 +28,7 @@
 
 #include "attach.h"
 #include "drive.h"
+#include "diskimage.h"
 #include "fliplist.h"
 #include "lib.h"
 #include "machine.h"
@@ -37,6 +38,7 @@
 #include "ui.h"
 #include "uifilereq.h"
 #include "uimenu.h"
+#include "uimsgbox.h"
 #include "util.h"
 
 enum {
@@ -710,6 +712,89 @@ static UI_MENU_CALLBACK(set_drive_type_callback)
     }
     return NULL;
 }
+
+static int new_disk_image_type = DISK_IMAGE_TYPE_D64;
+
+static UI_MENU_CALLBACK(set_disk_type_callback)
+{
+    int disk_type;
+
+    disk_type = (int)(vice_ptr_to_int(param));
+
+    if (activated) {
+        new_disk_image_type = disk_type;
+    } else {
+        if (disk_type == new_disk_image_type) {
+                return sdl_menu_text_tick;
+        }
+    }
+    return NULL;
+}
+
+UI_MENU_CALLBACK(create_disk_image_callback)
+{
+    char *name = NULL;
+    char *format_name;
+    int overwrite = 1;
+
+    if (activated) {
+        name = sdl_ui_file_selection_dialog("Select diskimage name", FILEREQ_MODE_CHOOSE_FILE);
+        if (name != NULL) {
+            if (util_file_exists(name)) {
+                if (message_box("VICE QUESTION","File exists, do you want to overwrite?", MESSAGE_YESNO) == 1) {
+                    overwrite = 0;
+                }
+                if (overwrite == 1) {
+                    format_name = lib_msprintf("%s,dsk", name);
+                    if (vdrive_internal_create_format_disk_image(name, format_name, new_disk_image_type) < 0) {
+                        ui_error("Cannot create disk image");
+                    }
+                    lib_free(format_name);
+                }
+            }
+            lib_free(name);
+        }
+    }
+    return NULL;
+}
+
+static const ui_menu_entry_t create_disk_image_menu[] = {
+    SDL_MENU_ITEM_TITLE("Choose disk image type"),
+    { "D64",
+      MENU_ENTRY_OTHER,
+      set_disk_type_callback,
+      (ui_callback_data_t)DISK_IMAGE_TYPE_D64},
+    { "D71",
+      MENU_ENTRY_OTHER,
+      set_disk_type_callback,
+      (ui_callback_data_t)DISK_IMAGE_TYPE_D71},
+    { "D80",
+      MENU_ENTRY_OTHER,
+      set_disk_type_callback,
+      (ui_callback_data_t)DISK_IMAGE_TYPE_D80},
+    { "D81",
+      MENU_ENTRY_OTHER,
+      set_disk_type_callback,
+      (ui_callback_data_t)DISK_IMAGE_TYPE_D81},
+    { "D82",
+      MENU_ENTRY_OTHER,
+      set_disk_type_callback,
+      (ui_callback_data_t)DISK_IMAGE_TYPE_D82},
+    { "G64",
+      MENU_ENTRY_OTHER,
+      set_disk_type_callback,
+      (ui_callback_data_t)DISK_IMAGE_TYPE_G64},
+    { "X64",
+      MENU_ENTRY_OTHER,
+      set_disk_type_callback,
+      (ui_callback_data_t)DISK_IMAGE_TYPE_X64},
+    SDL_MENU_ITEM_SEPARATOR,
+    { "Create",
+      MENU_ENTRY_OTHER,
+      create_disk_image_callback,
+      NULL},
+    { NULL }
+};
 
 static const ui_menu_entry_t drive_8_type_menu[] = {
     { "None",
@@ -1541,6 +1626,10 @@ const ui_menu_entry_t drive_menu[] = {
       MENU_ENTRY_OTHER,
       detach_disk_callback,
       (ui_callback_data_t)0 },
+   { "Create new disk image",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)create_disk_image_menu },
     SDL_MENU_ITEM_SEPARATOR,
    { "Drive 8 settings",
       MENU_ENTRY_SUBMENU,

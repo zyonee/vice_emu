@@ -29,12 +29,14 @@
 
 #include "attach.h"
 #include "datasette.h"
+#include "diskimage.h"
 #include "lib.h"
 #include "menu_common.h"
 #include "tape.h"
 #include "ui.h"
 #include "uifilereq.h"
 #include "uimenu.h"
+#include "uimsgbox.h"
 
 static UI_MENU_CALLBACK(attach_tape_callback)
 {
@@ -68,6 +70,30 @@ static UI_MENU_CALLBACK(custom_datasette_control_callback)
     return NULL;
 }
 
+UI_MENU_CALLBACK(create_tape_image_callback)
+{
+    char *name = NULL;
+    int overwrite = 1;
+
+    if (activated) {
+        name = sdl_ui_file_selection_dialog("Select tape image name", FILEREQ_MODE_CHOOSE_FILE);
+        if (name != NULL) {
+            if (util_file_exists(name)) {
+                if (message_box("VICE QUESTION","File exists, do you want to overwrite?", MESSAGE_YESNO) == 1) {
+                    overwrite = 0;
+                }
+                if (overwrite == 1) {
+                    if (cbmimage_create_image(name, DISK_IMAGE_TYPE_TAP)) {
+                        ui_error("Cannot create tape image");
+                    }
+                }
+            }
+            lib_free(name);
+        }
+    }
+    return NULL;
+}
+
 UI_MENU_DEFINE_INT(DatasetteSpeedTuning)
 UI_MENU_DEFINE_INT(DatasetteZeroGapDelay)
 UI_MENU_DEFINE_TOGGLE(DatasetteResetWithCPU)
@@ -80,6 +106,10 @@ const ui_menu_entry_t tape_menu[] = {
     { "Detach tape image",
       MENU_ENTRY_OTHER,
       detach_tape_callback,
+      NULL },
+    { "Create new tape image",
+      MENU_ENTRY_DIALOG,
+      create_tape_image_callback,
       NULL },
     SDL_MENU_ITEM_SEPARATOR,
     SDL_MENU_ITEM_TITLE("Datasette control"),
