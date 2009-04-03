@@ -72,6 +72,11 @@ typedef struct ui_menu_entry_s {
     ui_callback_data_t data;
 } ui_menu_entry_t;
 
+typedef enum {
+    MENU_RETVAL_DEFAULT,
+    MENU_RETVAL_EXIT_UI
+} ui_menu_retval_t;
+
 struct menufont_s {
     BYTE *font;
     WORD *translate;
@@ -136,7 +141,7 @@ extern int sdl_ui_print_center(const char *text, int pos_y);
 extern int sdl_ui_display_title(const char *title);
 extern void sdl_ui_clear(void);
 extern void sdl_ui_activate(void);
-extern int sdl_ui_external_menu_activate(ui_menu_entry_t *item);
+extern ui_menu_retval_t sdl_ui_external_menu_activate(ui_menu_entry_t *item);
 extern char* sdl_ui_readline(const char* previous, int pos_x, int pos_y, int escaped_is_null);
 extern char* sdl_ui_text_input_dialog(const char* title, const char* previous);
 extern void sdl_ui_invert_char(int pos_x, int pos_y);

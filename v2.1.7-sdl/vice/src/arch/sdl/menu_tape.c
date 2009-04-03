@@ -28,6 +28,7 @@
 #include "types.h"
 
 #include "attach.h"
+#include "cbmimage.h"
 #include "datasette.h"
 #include "diskimage.h"
 #include "lib.h"
@@ -37,6 +38,7 @@
 #include "uifilereq.h"
 #include "uimenu.h"
 #include "uimsgbox.h"
+#include "util.h"
 
 static UI_MENU_CALLBACK(attach_tape_callback)
 {

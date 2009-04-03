@@ -74,7 +74,7 @@ void (*sdl_ui_set_menu_params)(int index, menu_draw_t *menu_draw);
 /* ------------------------------------------------------------------ */
 /* static functions */
 
-static int sdl_ui_menu_item_activate(ui_menu_entry_t *item);
+static ui_menu_retval_t sdl_ui_menu_item_activate(ui_menu_entry_t *item);
 
 static void sdl_ui_putchar(BYTE c, int pos_x, int pos_y)
 {
@@ -130,7 +130,50 @@ static int sdl_ui_print_wrap(const char *text, int pos_x, int pos_y)
     return i;
 }
 
-static void sdl_ui_display_item(ui_menu_entry_t *item, int y_pos)
+static int *sdl_ui_menu_get_offsets(ui_menu_entry_t *menu, int num_items)
+{
+    int i, j, len, max_len;
+    ui_menu_entry_type_t block_type;
+    int *offsets = NULL;
+
+    offsets = (int *)lib_malloc(num_items * sizeof(int));
+
+    for (i = 0; i < num_items; ++i) {
+        block_type = menu[i].type;
+
+        switch (block_type) {
+            case MENU_ENTRY_SUBMENU:
+            case MENU_ENTRY_TEXT:
+                offsets[i] = 1;
+                break;
+            default:
+                max_len = 0;
+                j = i;
+
+                while (menu[j].type == block_type) {
+                    len = strlen(menu[j].string);
+                    offsets[j] = len;
+                    if (len > max_len) {
+                        max_len = len;
+                    }
+                    ++j;
+                }
+
+                while (i < j) {
+                    len = offsets[i];
+                    offsets[i] = max_len - len + 2;
+                    ++i;
+                }
+                --i;
+                break;
+        }
+    }
+
+    return offsets;
+}
+
+
+static void sdl_ui_display_item(ui_menu_entry_t *item, int y_pos, int value_offset)
 {
     int i;
 
@@ -147,10 +190,11 @@ static void sdl_ui_display_item(ui_menu_entry_t *item, int y_pos)
     if ((item->type == MENU_ENTRY_TEXT)&&(vice_ptr_to_int(item->data) == 1)) {
         sdl_ui_reverse_colors();
     }
-    sdl_ui_print(item->callback(0, item->data), MENU_FIRST_X+i+1, y_pos+MENU_FIRST_Y);
+
+    sdl_ui_print(item->callback(0, item->data), MENU_FIRST_X+i+value_offset, y_pos+MENU_FIRST_Y);
 }
 
-static void sdl_ui_menu_redraw(ui_menu_entry_t *menu, const char *title, int offset)
+static void sdl_ui_menu_redraw(ui_menu_entry_t *menu, const char *title, int offset, int *value_offsets)
 {
     int i = 0;
 
@@ -159,22 +203,30 @@ static void sdl_ui_menu_redraw(ui_menu_entry_t *menu, const char *title, int off
     sdl_ui_display_title(title);
 
     while ((menu[i + offset].string != NULL) && (i <= (menu_draw.max_text_y - MENU_FIRST_Y))) {
-        sdl_ui_display_item(&(menu[i + offset]), i);
+        sdl_ui_display_item(&(menu[i + offset]), i, value_offsets[i + offset]);
         ++i;
     }
 }
 
-static int sdl_ui_menu_display(ui_menu_entry_t *menu, const char *title)
+static ui_menu_retval_t sdl_ui_menu_display(ui_menu_entry_t *menu, const char *title)
 {
     int num_items = 0, cur = 0, cur_old = -1, cur_offset = 0, in_menu = 1, redraw = 1;
+    int *value_offsets = NULL;
+    ui_menu_retval_t menu_retval = MENU_RETVAL_DEFAULT;
 
     while (menu[num_items].string != NULL) {
         ++num_items;
     }
 
+    if (num_items == 0) {
+        return 0;
+    }
+
+    value_offsets = sdl_ui_menu_get_offsets(menu, num_items);
+
     while (in_menu) {
         if (redraw) {
-            sdl_ui_menu_redraw(menu, title, cur_offset);
+            sdl_ui_menu_redraw(menu, title, cur_offset, value_offsets);
             cur_old = -1;
             redraw = 0;
         }
@@ -219,21 +271,23 @@ static int sdl_ui_menu_display(ui_menu_entry_t *menu, const char *title)
                 }
                 /* fall through */
             case MENU_ACTION_SELECT:
-                if (sdl_ui_menu_item_activate(&(menu[cur + cur_offset])) == 2) {
-                    return 2;
+                if (sdl_ui_menu_item_activate(&(menu[cur + cur_offset])) == MENU_RETVAL_EXIT_UI) {
+                    in_menu = 0;
+                    menu_retval = MENU_RETVAL_EXIT_UI;
+                } else {
+                    sdl_ui_menu_redraw(menu, title, cur_offset, value_offsets);
                 }
-                sdl_ui_menu_redraw(menu, title, cur_offset);
                 break;
+            case MENU_ACTION_EXIT:
+                menu_retval = MENU_RETVAL_EXIT_UI;
+                /* fall through */
             case MENU_ACTION_LEFT:
             case MENU_ACTION_CANCEL:
                 in_menu = 0;
                 break;
-            case MENU_ACTION_EXIT:
-                return 2;
-                break;
             case MENU_ACTION_MAP:
                 if (sdl_ui_hotkey_map(&(menu[cur + cur_offset]))) {
-                    sdl_ui_menu_redraw(menu, title, cur_offset);
+                    sdl_ui_menu_redraw(menu, title, cur_offset, value_offsets);
                 }
                 break;
             default:
@@ -242,10 +296,11 @@ static int sdl_ui_menu_display(ui_menu_entry_t *menu, const char *title)
         }
     }
 
-    return 0;
+    lib_free(value_offsets);
+    return menu_retval;
 }
 
-static int sdl_ui_menu_item_activate(ui_menu_entry_t *item)
+static ui_menu_retval_t sdl_ui_menu_item_activate(ui_menu_entry_t *item)
 {
     const char *p = NULL;
 
@@ -258,9 +313,8 @@ static int sdl_ui_menu_item_activate(ui_menu_entry_t *item)
         case MENU_ENTRY_RESOURCE_STRING:
             p = item->callback(1, item->data);
             if (p == sdl_menu_text_exit_ui) {
-                return 2;
+                return MENU_RETVAL_EXIT_UI;
             }
-            return 1;
             break;
         case MENU_ENTRY_SUBMENU:
             return sdl_ui_menu_display((ui_menu_entry_t *)item->data, item->string);
@@ -268,7 +322,7 @@ static int sdl_ui_menu_item_activate(ui_menu_entry_t *item)
         default:
             break;
     }
-    return 0;
+    return MENU_RETVAL_DEFAULT;
 }
 
 static void sdl_ui_trap(WORD addr, void *data)
@@ -303,13 +357,13 @@ static void sdl_ui_trap(WORD addr, void *data)
 /* ------------------------------------------------------------------ */
 /* External UI interface */
 
-int sdl_ui_external_menu_activate(ui_menu_entry_t *item)
+ui_menu_retval_t sdl_ui_external_menu_activate(ui_menu_entry_t *item)
 {
     if (item && (item->type == MENU_ENTRY_SUBMENU)) {
         return sdl_ui_menu_display((ui_menu_entry_t *)item->data, item->string);
     }
 
-    return 0;
+    return MENU_RETVAL_DEFAULT;
 }
 
 BYTE *sdl_ui_get_draw_buffer(void)
