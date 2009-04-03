@@ -50,10 +50,6 @@ extra_keymaps = \
 win32_shortcuts = \
 	win_shortcuts.vsc
 
-cbm2_DATA = $(roms) $(romsets) $(palettes) $(x11_keymaps)
-
-EXTRA_DIST = $(cbm2_DATA) $(extra_keymaps) $(win32_shortcuts)
-
 if SDL_COMPILE
 cbm2_DATA = $(roms) $(romsets) $(palettes) $(sdl_keymaps)
 
