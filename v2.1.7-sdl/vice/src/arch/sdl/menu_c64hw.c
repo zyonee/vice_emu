@@ -38,6 +38,7 @@
 #include "menu_mouse.h"
 #endif
 #include "menu_ram.h"
+#include "menu_rom.h"
 #include "menu_sid.h"
 #include "uimenu.h"
 
@@ -62,6 +63,10 @@ const ui_menu_entry_t c64_hardware_menu[] = {
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)ram_menu },
+    { "ROM settings",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)c64_vic20_rom_menu },
     SDL_MENU_ITEM_SEPARATOR,
     SDL_MENU_ITEM_TITLE("Hardware expansions"),
     { "256K settings",

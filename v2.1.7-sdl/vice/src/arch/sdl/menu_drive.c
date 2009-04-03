@@ -132,62 +132,62 @@ static char *get_drive_type_string(int drive)
     type = get_drive_type(drive);
     switch (type) {
         case 0:
-            return "-> (none)";
+            return "-> none";
             break;
         case ATTACH_DEVICE_FS:
-            return "-> (directory)";
+            return "-> directory";
             break;
 #ifdef HAVE_OPENCBM
         case ATTACH_DEVICE_REAL:
-            return "-> (real drive)";
+            return "-> real drive";
             break;
 #endif
 #ifdef HAVE_RAWDRIVE
         case ATTACH_DEVICE_RAW:
-            return "-> (block device)";
+            return "-> block device";
             break;
 #endif
         case DRIVE_TYPE_1541II:
-            return "-> (1541-II)";
+            return "-> 1541-II";
             break;
         case DRIVE_TYPE_1551:
-            return "-> (1551)";
+            return "-> 1551";
             break;
         case DRIVE_TYPE_1570:
-            return "-> (1570)";
+            return "-> 1570";
             break;
         case DRIVE_TYPE_1571:
-            return "-> (1571)";
+            return "-> 1571";
             break;
         case DRIVE_TYPE_1571CR:
-            return "-> (1571CR)";
+            return "-> 1571CR";
             break;
         case DRIVE_TYPE_1581:
-            return "-> (1581)";
+            return "-> 1581";
             break;
         case DRIVE_TYPE_2031:
-            return "-> (2031)";
+            return "-> 2031";
             break;
         case DRIVE_TYPE_2040:
-            return "-> (2040)";
+            return "-> 2040";
             break;
         case DRIVE_TYPE_3040:
-            return "-> (3040)";
+            return "-> 3040";
             break;
         case DRIVE_TYPE_4040:
-            return "-> (4040)";
+            return "-> 4040";
             break;
         case DRIVE_TYPE_1001:
-            return "-> (1001)";
+            return "-> 1001";
             break;
         case DRIVE_TYPE_8050:
-            return "-> (8050)";
+            return "-> 8050";
             break;
         case DRIVE_TYPE_8250:
-            return "-> (8250)";
+            return "-> 8250";
             break;
         default:
-            return "-> (1541)";
+            return "-> 1541";
             break;
     }
 }
@@ -276,7 +276,7 @@ static UI_MENU_CALLBACK(set_directory_callback)
     drive = vice_ptr_to_int(param);
     if (activated) {
         if (check_current_drive_type(ATTACH_DEVICE_FS, drive)) {
-            name = sdl_ui_file_selection_dialog("select directory", FILEREQ_MODE_CHOOSE_DIR);
+            name = sdl_ui_file_selection_dialog("Select directory", FILEREQ_MODE_CHOOSE_DIR);
             if (name != NULL) {
                 resources_set_string_sprintf("FSDevice%iDir", name, drive);
                 lib_free(name);
@@ -295,7 +295,7 @@ static UI_MENU_CALLBACK(attach_disk_callback)
     char *name;
 
     if (activated) {
-        name = sdl_ui_file_selection_dialog("select disk image", FILEREQ_MODE_CHOOSE_FILE);
+        name = sdl_ui_file_selection_dialog("Select disk image", FILEREQ_MODE_CHOOSE_FILE);
         if (name != NULL) {
             if (file_system_attach_disk(vice_ptr_to_int(param), name) < 0) {
                 ui_error("Cannot attach disk image.");
@@ -343,7 +343,7 @@ static UI_MENU_CALLBACK(fliplist_callback)
                fliplist_attach_head(8, 0);
                break;
             case UI_FLIP_LOAD:
-                name = sdl_ui_file_selection_dialog("select fliplist to load", FILEREQ_MODE_CHOOSE_FILE);
+                name = sdl_ui_file_selection_dialog("Select fliplist to load", FILEREQ_MODE_CHOOSE_FILE);
                 if (name != NULL) {
                     if (fliplist_load_list((unsigned int)-1, name, 0) != 0) {
                         ui_error("Cannot load fliplist.");
@@ -353,7 +353,7 @@ static UI_MENU_CALLBACK(fliplist_callback)
                break;
             case UI_FLIP_SAVE:
             default:
-                name = sdl_ui_file_selection_dialog("select fliplist to save", FILEREQ_MODE_CHOOSE_FILE);
+                name = sdl_ui_file_selection_dialog("Select fliplist to save", FILEREQ_MODE_CHOOSE_FILE);
                 if (name != NULL) {
                     util_add_extension(&name, "vfl");
                     if (fliplist_save_list((unsigned int)-1, name) != 0) {
@@ -624,7 +624,7 @@ static UI_MENU_CALLBACK(set_par_callback)
     int drive;
     int current;
     int par;
-    
+
     drive = vice_ptr_to_int(param);
 
     current = get_drive_type(drive);
@@ -725,7 +725,7 @@ static UI_MENU_CALLBACK(set_disk_type_callback)
         new_disk_image_type = disk_type;
     } else {
         if (disk_type == new_disk_image_type) {
-                return sdl_menu_text_tick;
+            return sdl_menu_text_tick;
         }
     }
     return NULL;
@@ -758,41 +758,47 @@ UI_MENU_CALLBACK(create_disk_image_callback)
     return NULL;
 }
 
-static const ui_menu_entry_t create_disk_image_menu[] = {
-    SDL_MENU_ITEM_TITLE("Choose disk image type"),
+static const ui_menu_entry_t create_disk_image_type_menu[] = {
     { "D64",
-      MENU_ENTRY_OTHER,
+      MENU_ENTRY_RESOURCE_RADIO,
       set_disk_type_callback,
       (ui_callback_data_t)DISK_IMAGE_TYPE_D64},
     { "D71",
-      MENU_ENTRY_OTHER,
+      MENU_ENTRY_RESOURCE_RADIO,
       set_disk_type_callback,
       (ui_callback_data_t)DISK_IMAGE_TYPE_D71},
     { "D80",
-      MENU_ENTRY_OTHER,
+      MENU_ENTRY_RESOURCE_RADIO,
       set_disk_type_callback,
       (ui_callback_data_t)DISK_IMAGE_TYPE_D80},
     { "D81",
-      MENU_ENTRY_OTHER,
+      MENU_ENTRY_RESOURCE_RADIO,
       set_disk_type_callback,
       (ui_callback_data_t)DISK_IMAGE_TYPE_D81},
     { "D82",
-      MENU_ENTRY_OTHER,
+      MENU_ENTRY_RESOURCE_RADIO,
       set_disk_type_callback,
       (ui_callback_data_t)DISK_IMAGE_TYPE_D82},
     { "G64",
-      MENU_ENTRY_OTHER,
+      MENU_ENTRY_RESOURCE_RADIO,
       set_disk_type_callback,
       (ui_callback_data_t)DISK_IMAGE_TYPE_G64},
     { "X64",
-      MENU_ENTRY_OTHER,
+      MENU_ENTRY_RESOURCE_RADIO,
       set_disk_type_callback,
       (ui_callback_data_t)DISK_IMAGE_TYPE_X64},
-    SDL_MENU_ITEM_SEPARATOR,
+    { NULL }
+};
+
+static const ui_menu_entry_t create_disk_image_menu[] = {
+   { "Image type",
+      MENU_ENTRY_SUBMENU,
+      submenu_radio_callback,
+      (ui_callback_data_t)create_disk_image_type_menu },
     { "Create",
-      MENU_ENTRY_OTHER,
+      MENU_ENTRY_DIALOG,
       create_disk_image_callback,
-      NULL},
+      NULL },
     { NULL }
 };
 
@@ -1451,7 +1457,7 @@ static const ui_menu_entry_t drive_8_menu[] = {
       set_par_callback,
       (ui_callback_data_t)8},
 #ifdef HAVE_RAWDRIVE
-   { "Choose blockdevice",
+   { "Blockdevice",
       MENU_ENTRY_DIALOG,
       file_string_RawDriveDriver_callback,
       (ui_callback_data_t)"Select device file to use as drive" },
@@ -1485,7 +1491,7 @@ static const ui_menu_entry_t drive_9_menu[] = {
       set_par_callback,
       (ui_callback_data_t)9},
 #ifdef HAVE_RAWDRIVE
-   { "Choose blockdevice",
+   { "Blockdevice",
       MENU_ENTRY_DIALOG,
       file_string_RawDriveDriver_callback,
       (ui_callback_data_t)"Select device file to use as drive" },
@@ -1519,7 +1525,7 @@ static const ui_menu_entry_t drive_10_menu[] = {
       set_par_callback,
       (ui_callback_data_t)10},
 #ifdef HAVE_RAWDRIVE
-   { "Choose blockdevice",
+   { "Blockdevice",
       MENU_ENTRY_DIALOG,
       file_string_RawDriveDriver_callback,
       (ui_callback_data_t)"Select device file to use as drive" },
@@ -1553,7 +1559,7 @@ static const ui_menu_entry_t drive_11_menu[] = {
       set_par_callback,
       (ui_callback_data_t)11},
 #ifdef HAVE_RAWDRIVE
-   { "Choose blockdevice",
+   { "Blockdevice",
       MENU_ENTRY_DIALOG,
       file_string_RawDriveDriver_callback,
       (ui_callback_data_t)"Select device file to use as drive" },

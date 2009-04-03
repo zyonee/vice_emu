@@ -39,7 +39,6 @@
 #include "menu_plus4cart.h"
 #include "menu_plus4hw.h"
 #include "menu_reset.h"
-#include "menu_rom.h"
 #include "menu_screenshot.h"
 #include "menu_settings.h"
 #include "menu_snapshot.h"
@@ -74,10 +73,6 @@ static const ui_menu_entry_t xplus4_main_menu[] = {
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)plus4_hardware_menu },
-    { "ROM settings",
-      MENU_ENTRY_SUBMENU,
-      submenu_callback,
-      (ui_callback_data_t)plus4_rom_menu },
     { "Video settings",
       MENU_ENTRY_SUBMENU,
       submenu_callback,

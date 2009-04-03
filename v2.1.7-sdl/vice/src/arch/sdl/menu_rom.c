@@ -61,12 +61,12 @@ UI_MENU_DEFINE_FILE_STRING(3plus1loName)
 UI_MENU_DEFINE_FILE_STRING(3plus1hiName)
 
 const ui_menu_entry_t c128_rom_menu[] = {
-    { "Drive ROMS",
+    { "Drive ROMs",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)c128_drive_rom_menu },
     SDL_MENU_ITEM_SEPARATOR,
-    SDL_MENU_ITEM_TITLE("Computer ROMS"),
+    SDL_MENU_ITEM_TITLE("Computer ROMs"),
     { "International kernal",
       MENU_ENTRY_DIALOG,
       file_string_KernalIntName_callback,
@@ -131,12 +131,12 @@ const ui_menu_entry_t c128_rom_menu[] = {
 };
 
 const ui_menu_entry_t c64_vic20_rom_menu[] = {
-    { "Drive ROMS",
+    { "Drive ROMs",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)iec_ieee_drive_rom_menu },
     SDL_MENU_ITEM_SEPARATOR,
-    SDL_MENU_ITEM_TITLE("Computer ROMS"),
+    SDL_MENU_ITEM_TITLE("Computer ROMs"),
     { "Kernal",
       MENU_ENTRY_DIALOG,
       file_string_KernalName_callback,
@@ -153,12 +153,12 @@ const ui_menu_entry_t c64_vic20_rom_menu[] = {
 };
 
 const ui_menu_entry_t c64dtv_rom_menu[] = {
-    { "Drive ROMS",
+    { "Drive ROMs",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)iec_drive_rom_menu },
     SDL_MENU_ITEM_SEPARATOR,
-    SDL_MENU_ITEM_TITLE("Computer ROMS"),
+    SDL_MENU_ITEM_TITLE("Computer ROMs"),
     { "Kernal",
       MENU_ENTRY_DIALOG,
       file_string_KernalName_callback,
@@ -175,12 +175,12 @@ const ui_menu_entry_t c64dtv_rom_menu[] = {
 };
 
 const ui_menu_entry_t cbm2_rom_menu[] = {
-    { "Drive ROMS",
+    { "Drive ROMs",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)ieee_drive_rom_menu },
     SDL_MENU_ITEM_SEPARATOR,
-    SDL_MENU_ITEM_TITLE("Computer ROMS"),
+    SDL_MENU_ITEM_TITLE("Computer ROMs"),
     { "Kernal",
       MENU_ENTRY_DIALOG,
       file_string_KernalName_callback,
@@ -197,12 +197,12 @@ const ui_menu_entry_t cbm2_rom_menu[] = {
 };
 
 const ui_menu_entry_t pet_rom_menu[] = {
-    { "Drive ROMS",
+    { "Drive ROMs",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)ieee_drive_rom_menu },
     SDL_MENU_ITEM_SEPARATOR,
-    SDL_MENU_ITEM_TITLE("Computer ROMS"),
+    SDL_MENU_ITEM_TITLE("Computer ROMs"),
     { "Kernal",
       MENU_ENTRY_DIALOG,
       file_string_KernalName_callback,
@@ -223,12 +223,12 @@ const ui_menu_entry_t pet_rom_menu[] = {
 };
 
 const ui_menu_entry_t plus4_rom_menu[] = {
-    { "Drive ROMS",
+    { "Drive ROMs",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)plus4_drive_rom_menu },
     SDL_MENU_ITEM_SEPARATOR,
-    SDL_MENU_ITEM_TITLE("Computer ROMS"),
+    SDL_MENU_ITEM_TITLE("Computer ROMs"),
     { "Kernal",
       MENU_ENTRY_DIALOG,
       file_string_KernalName_callback,

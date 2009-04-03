@@ -31,10 +31,10 @@
 #include "menu_common.h"
 #include "menu_joystick.h"
 #include "menu_ram.h"
+#include "menu_rom.h"
 #include "menu_sid.h"
 #include "uimenu.h"
 
-UI_MENU_DEFINE_TOGGLE(EmuID)
 UI_MENU_DEFINE_RADIO(HummerUserportDevice)
 UI_MENU_DEFINE_RADIO(HummerUserportJoyPort)
 #ifdef HAVE_MOUSE
@@ -78,12 +78,6 @@ static const ui_menu_entry_t c64dtv_userport_menu[] = {
       toggle_Mouse_callback,
       NULL },
 #endif
-    SDL_MENU_ITEM_SEPARATOR,
-    { "Emulator ID",
-      MENU_ENTRY_RESOURCE_TOGGLE,
-      toggle_EmuID_callback,
-      NULL },
-    { NULL }
 };
 
 UI_MENU_DEFINE_FILE_STRING(c64dtvromfilename)
@@ -104,17 +98,21 @@ const ui_menu_entry_t c64dtv_hardware_menu[] = {
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)ram_menu },
+    { "Fallback ROM settings",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)c64dtv_rom_menu },
     SDL_MENU_ITEM_SEPARATOR,
     SDL_MENU_ITEM_TITLE("C64DTV ROM image"),
-    { "C64DTV ROM image file",
+    { "File",
       MENU_ENTRY_DIALOG,
       file_string_c64dtvromfilename_callback,
-      (ui_callback_data_t)"Select C64DTV ROM image" },
-    { "Enable writes to C64DTV ROM image",
+      (ui_callback_data_t)"Select C64DTV ROM image file" },
+    { "Enable writes",
       MENU_ENTRY_RESOURCE_TOGGLE,
       toggle_c64dtvromrw_callback,
       NULL },
-    { "Enable true flash filesystem",
+    { "True flash filesystem",
       MENU_ENTRY_RESOURCE_TOGGLE,
       toggle_FlashTrueFS_callback,
       NULL },

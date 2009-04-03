@@ -37,6 +37,7 @@
 #include "menu_mouse.h"
 #endif
 #include "menu_ram.h"
+#include "menu_rom.h"
 #include "menu_sid.h"
 #include "uimenu.h"
 
@@ -59,11 +60,11 @@ static const ui_menu_entry_t vdc_menu[] = {
       (ui_callback_data_t)2 },
     SDL_MENU_ITEM_SEPARATOR,
     SDL_MENU_ITEM_TITLE("VDC memory size"),
-    { "16K",
+    { "16kB",
       MENU_ENTRY_RESOURCE_RADIO,
       radio_VDC64KB_callback,
       (ui_callback_data_t)0 },
-    { "64K",
+    { "64kB",
       MENU_ENTRY_RESOURCE_RADIO,
       radio_VDC64KB_callback,
       (ui_callback_data_t)1 },
@@ -96,6 +97,10 @@ const ui_menu_entry_t c128_hardware_menu[] = {
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)ram_menu },
+    { "ROM settings",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)c128_rom_menu },
     SDL_MENU_ITEM_SEPARATOR,
     SDL_MENU_ITEM_TITLE("Hardware expansions"),
 #if 0 /* TODO */

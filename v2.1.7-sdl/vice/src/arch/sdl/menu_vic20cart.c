@@ -50,14 +50,14 @@ static UI_MENU_CALLBACK(attach_cart_callback)
             case CARTRIDGE_VIC20_16KB_2000:
             case CARTRIDGE_VIC20_16KB_4000:
             case CARTRIDGE_VIC20_16KB_6000:
-                title = "Select 4/8/16KB image";
+                title = "Select 4/8/16kB image";
                 break;
             case CARTRIDGE_VIC20_8KB_A000:
-                title = "Select 4/8KB image";
+                title = "Select 4/8kB image";
                 break;
             case CARTRIDGE_VIC20_4KB_B000:
             default:
-                title = "Select 4KB image";
+                title = "Select 4kB image";
                 break;
         }
         name = sdl_ui_file_selection_dialog(title, FILEREQ_MODE_CHOOSE_FILE);
@@ -88,23 +88,23 @@ static UI_MENU_CALLBACK(set_cart_default_callback)
 }
 
 const ui_menu_entry_t vic20cart_menu[] = {
-    { "Attach 4/8/16KB image at $2000",
+    { "Attach 4/8/16kB image at $2000",
       MENU_ENTRY_DIALOG,
       attach_cart_callback,
       (ui_callback_data_t)CARTRIDGE_VIC20_16KB_2000 },
-    { "Attach 4/8/16KB image at $4000",
+    { "Attach 4/8/16kB image at $4000",
       MENU_ENTRY_DIALOG,
       attach_cart_callback,
       (ui_callback_data_t)CARTRIDGE_VIC20_16KB_4000 },
-    { "Attach 4/8/16KB image at $6000",
+    { "Attach 4/8/16kB image at $6000",
       MENU_ENTRY_DIALOG,
       attach_cart_callback,
       (ui_callback_data_t)CARTRIDGE_VIC20_16KB_6000 },
-    { "Attach 4/8KB image at $A000",
+    { "Attach 4/8kB image at $A000",
       MENU_ENTRY_DIALOG,
       attach_cart_callback,
       (ui_callback_data_t)CARTRIDGE_VIC20_8KB_A000 },
-    { "Attach 4KB image at $B000",
+    { "Attach 4kB image at $B000",
       MENU_ENTRY_DIALOG,
       attach_cart_callback,
       (ui_callback_data_t)CARTRIDGE_VIC20_4KB_B000 },

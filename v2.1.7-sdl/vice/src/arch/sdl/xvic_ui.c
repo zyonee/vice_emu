@@ -38,7 +38,6 @@
 #include "menu_drive.h"
 #include "menu_help.h"
 #include "menu_reset.h"
-#include "menu_rom.h"
 #include "menu_screenshot.h"
 #include "menu_settings.h"
 #include "menu_snapshot.h"
@@ -75,10 +74,6 @@ static const ui_menu_entry_t xvic_main_menu[] = {
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)vic20_hardware_menu },
-    { "ROM settings",
-      MENU_ENTRY_SUBMENU,
-      submenu_callback,
-      (ui_callback_data_t)c64_vic20_rom_menu },
     { "Video settings",
       MENU_ENTRY_SUBMENU,
       submenu_callback,

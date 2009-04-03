@@ -53,25 +53,25 @@ UI_MENU_CALLBACK(attach_c64_cart_callback)
                 title = "Select CRT image";
                 break;
             case CARTRIDGE_GENERIC_8KB:
-                title = "Select generic 8KB image";
+                title = "Select generic 8kB image";
                 break;
             case CARTRIDGE_GENERIC_16KB:
-                title = "Select generic 16KB image";
+                title = "Select generic 16kB image";
                 break;
             case CARTRIDGE_ACTION_REPLAY:
-                title = "Select action replay image";
+                title = "Select Action Replay image";
                 break;
             case CARTRIDGE_ACTION_REPLAY3:
-                title = "Select action replay 3 image";
+                title = "Select Action Replay 3 image";
                 break;
             case CARTRIDGE_ACTION_REPLAY4:
-                title = "Select action replay 4 image";
+                title = "Select Action Replay 4 image";
                 break;
             case CARTRIDGE_ATOMIC_POWER:
-                title = "Select atomic power image";
+                title = "Select Atomic Power image";
                 break;
             case CARTRIDGE_EPYX_FASTLOAD:
-                title = "Select epyx fastload image";
+                title = "Select Epyx Fastload image";
                 break;
             case CARTRIDGE_IDE64:
                 title = "Select IDE64 interface image";
@@ -80,20 +80,20 @@ UI_MENU_CALLBACK(attach_c64_cart_callback)
                 title = "Select IEEE488 interface image";
                 break;
             case CARTRIDGE_RETRO_REPLAY:
-                title = "Select retro replay image";
+                title = "Select Retro Replay image";
                 break;
             case CARTRIDGE_STARDOS:
-                title = "Select stardos image";
+                title = "Select StarDOS image";
                 break;
             case CARTRIDGE_STRUCTURED_BASIC:
-                title = "Select structured basic image";
+                title = "Select Structured BASIC image";
                 break;
             case CARTRIDGE_SUPER_SNAPSHOT:
-                title = "Select super snapshot 4 image";
+                title = "Select Super Snapshot 4 image";
                 break;
             case CARTRIDGE_SUPER_SNAPSHOT_V5:
             default:
-                title = "Select super snapshot 5 image";
+                title = "Select Super Snapshot 5 image";
                 break;
         }
         name = sdl_ui_file_selection_dialog(title, FILEREQ_MODE_CHOOSE_FILE);
@@ -136,14 +136,14 @@ UI_MENU_CALLBACK(enable_expert_callback)
 {
     if (activated) {
         if (cartridge_attach_image(CARTRIDGE_EXPERT, NULL) < 0) {
-            ui_error("Cannot enable expert cartridge.");
+            ui_error("Cannot enable Expert cartridge.");
         }
     }
     return NULL;
 }
 
 const ui_menu_entry_t expert_cart_menu[] = {
-    { "Enable expert cartridge",
+    { "Enable Expert cartridge",
       MENU_ENTRY_OTHER,
       enable_expert_callback,
       NULL },

@@ -104,7 +104,7 @@ static UI_MENU_CALLBACK(load_keymap_callback)
     if(activated) {
         char *name = NULL;
         const char *resname = machine_keymap_res_name_list[0];
-      
+
         name = sdl_ui_file_selection_dialog("Choose keymap file", FILEREQ_MODE_CHOOSE_FILE);
 
         if (name != NULL) {
@@ -196,14 +196,14 @@ static UI_MENU_CALLBACK(custom_ui_keyset_callback)
 {
     SDL_Event e;
     int previous;
-    
+
     if(resources_get_int((const char *)param, &previous)) {
         return sdl_menu_text_unknown;
     }
-        
+
     if (activated) {
         e = sdl_ui_poll_event("key", (const char *)param, SDL_POLL_KEYBOARD | SDL_POLL_MODIFIER, 5);
-        
+
         if(e.type == SDL_KEYDOWN) {
             resources_set_int((const char *)param, (int)e.key.keysym.sym);
         }

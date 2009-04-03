@@ -35,6 +35,7 @@
 #include "menu_common.h"
 #include "menu_joystick.h"
 #include "menu_ram.h"
+#include "menu_rom.h"
 #include "menu_sid.h"
 #include "uimenu.h"
 
@@ -118,19 +119,19 @@ static const ui_menu_entry_t cbm2_model_menu[] = {
 
 static const ui_menu_entry_t cbm2_memory_menu[] = {
     SDL_MENU_ITEM_TITLE("CBM2 memory size"),
-    { "128K",
+    { "128kB",
       MENU_ENTRY_RESOURCE_RADIO,
       radio_RamSize_callback,
       (ui_callback_data_t)128 },
-    { "256K",
+    { "256kB",
       MENU_ENTRY_RESOURCE_RADIO,
       radio_RamSize_callback,
       (ui_callback_data_t)256 },
-    { "512K",
+    { "512kB",
       MENU_ENTRY_RESOURCE_RADIO,
       radio_RamSize_callback,
       (ui_callback_data_t)512 },
-    { "1024K",
+    { "1024kB",
       MENU_ENTRY_RESOURCE_RADIO,
       radio_RamSize_callback,
       (ui_callback_data_t)1024 },
@@ -178,6 +179,10 @@ const ui_menu_entry_t cbm5x0_hardware_menu[] = {
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)ram_menu },
+    { "ROM settings",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)cbm2_rom_menu },
     { "CBM2 memory setting",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
@@ -207,6 +212,10 @@ const ui_menu_entry_t cbm6x0_7x0_hardware_menu[] = {
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)ram_menu },
+    { "ROM settings",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)cbm2_rom_menu },
     { "CBM2 memory setting",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
