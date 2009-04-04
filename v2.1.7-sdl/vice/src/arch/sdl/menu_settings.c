@@ -86,7 +86,7 @@ static UI_MENU_CALLBACK(save_keymap_callback)
 {
     if(activated) {
         char *name = NULL;
-      
+
         name = sdl_ui_file_selection_dialog("Choose file for keymap", FILEREQ_MODE_CHOOSE_FILE);
 
         if (name != NULL) {
@@ -102,8 +102,16 @@ static UI_MENU_CALLBACK(save_keymap_callback)
 static UI_MENU_CALLBACK(load_keymap_callback)
 {
     if(activated) {
+        int keymap;
         char *name = NULL;
-        const char *resname = machine_keymap_res_name_list[0];
+        const char *resname;
+
+        resources_get_int("KeymapIndex", &keymap);
+        resname = machine_keymap_res_name_list[keymap];
+
+#ifdef SDL_DEBUG
+fprintf(stderr,"%s: map %i, \"%s\"\n",__func__,keymap,resname);
+#endif
 
         name = sdl_ui_file_selection_dialog("Choose keymap file", FILEREQ_MODE_CHOOSE_FILE);
 
@@ -119,7 +127,7 @@ static UI_MENU_CALLBACK(load_keymap_callback)
 
 static UI_MENU_CALLBACK(save_hotkeys_callback)
 {
-    static const char *file = NULL;
+    const char *file = NULL;
     if(activated) {
         if(resources_get_string("HotkeyFile", &file)) {
             ui_error("Cannot find resource.");
@@ -137,7 +145,7 @@ static UI_MENU_CALLBACK(save_hotkeys_callback)
 
 static UI_MENU_CALLBACK(load_hotkeys_callback)
 {
-    static const char *file = NULL;
+    const char *file = NULL;
     if(activated) {
         if(resources_get_string("HotkeyFile", &file)) {
             ui_error("Cannot find resource.");
@@ -155,7 +163,7 @@ static UI_MENU_CALLBACK(load_hotkeys_callback)
 
 static UI_MENU_CALLBACK(save_joymap_callback)
 {
-    static const char *file = NULL;
+    const char *file = NULL;
     if(activated) {
         if(resources_get_string("JoyMapFile", &file)) {
             ui_error("Cannot find resource.");
@@ -173,7 +181,7 @@ static UI_MENU_CALLBACK(save_joymap_callback)
 
 static UI_MENU_CALLBACK(load_joymap_callback)
 {
-    static const char *file = NULL;
+    const char *file = NULL;
     if(activated) {
         if(resources_get_string("JoyMapFile", &file)) {
             ui_error("Cannot find resource.");

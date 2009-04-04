@@ -263,6 +263,20 @@ static const ui_menu_entry_t pet_model_menu[] = {
     { NULL }
 };
 
+UI_MENU_DEFINE_RADIO(KeymapIndex)
+
+static const ui_menu_entry_t pet_keyboard_menu[] = {
+    { "Graphics",
+      MENU_ENTRY_RESOURCE_RADIO,
+      radio_KeymapIndex_callback,
+      (ui_callback_data_t)2 },
+    { "Business (UK)",
+      MENU_ENTRY_RESOURCE_RADIO,
+      radio_KeymapIndex_callback,
+      (ui_callback_data_t)0 },
+    { NULL }
+};
+
 UI_MENU_DEFINE_TOGGLE(Crtc)
 UI_MENU_DEFINE_TOGGLE(EmuID)
 
@@ -271,6 +285,10 @@ const ui_menu_entry_t pet_hardware_menu[] = {
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)pet_model_menu },
+    { "Keyboard",
+      MENU_ENTRY_SUBMENU,
+      submenu_radio_callback,
+      (ui_callback_data_t)pet_keyboard_menu },
     SDL_MENU_ITEM_SEPARATOR,
     { "Joystick settings",
       MENU_ENTRY_SUBMENU,

@@ -142,13 +142,26 @@ static BYTE *pet_font;
 
 void petui_set_menu_params(int index, menu_draw_t *menu_draw)
 {
-    int cols;
+    static int old_keymap = -1;
+    int cols, keymap;
 
     resources_get_int("VideoSize", &cols);
 
     menu_draw->max_text_x = cols;
     menu_draw->extra_x = 32;
     menu_draw->extra_y = (cols == 40) ? 40 : 28;
+
+    resources_get_int("KeymapIndex", &keymap);
+
+    keymap &= 2;
+    if (keymap != old_keymap) {
+        if (keymap) {
+            sdl_vkbd_set_vkbd(&vkbd_pet_gr);
+        } else {
+            sdl_vkbd_set_vkbd(&vkbd_pet_uk);
+        }
+        old_keymap = keymap;
+    }
 }
 
 int petui_init(void)
@@ -171,7 +184,6 @@ fprintf(stderr,"%s\n",__func__);
         }
     }
     sdl_ui_set_menu_font(pet_font, 8, 8);
-    sdl_vkbd_set_vkbd(&vkbd_pet_uk);
     return 0;
 }
 
