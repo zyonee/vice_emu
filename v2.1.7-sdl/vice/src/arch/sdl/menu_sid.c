@@ -195,6 +195,46 @@ static const ui_menu_entry_t sid_engine_menu[] = {
     { NULL }
 };
 
+static const ui_menu_entry_t sid_dtv_engine_menu[] = {
+    { "Fast SID",
+      MENU_ENTRY_RESOURCE_RADIO,
+      radio_SidEngine_callback,
+      (ui_callback_data_t)SID_ENGINE_FASTSID },
+#ifdef HAVE_RESID
+    { "ReSID-DTV",
+      MENU_ENTRY_RESOURCE_RADIO,
+      radio_SidEngine_callback,
+      (ui_callback_data_t)SID_ENGINE_RESID },
+#endif
+#ifdef HAVE_RESID_FP
+    { "ReSID-FP",
+      MENU_ENTRY_RESOURCE_RADIO,
+      radio_SidEngine_callback,
+      (ui_callback_data_t)SID_ENGINE_RESID_FP },
+#endif
+#ifdef HAVE_CATWEASELMKIII
+    { "Catweasel MKIII",
+      MENU_ENTRY_RESOURCE_RADIO,
+      radio_SidEngine_callback,
+      (ui_callback_data_t)SID_ENGINE_CATWEASELMKIII },
+#endif
+#ifdef HAVE_PARSID
+    { "ParSID Port 1",
+      MENU_ENTRY_RESOURCE_RADIO,
+      radio_SidEngine_callback,
+      (ui_callback_data_t)SID_ENGINE_PARSID_PORT1 },
+    { "ParSID Port 2",
+      MENU_ENTRY_RESOURCE_RADIO,
+      radio_SidEngine_callback,
+      (ui_callback_data_t)SID_ENGINE_PARSID_PORT2 },
+    { "ParSID Port 3",
+      MENU_ENTRY_RESOURCE_RADIO,
+      radio_SidEngine_callback,
+      (ui_callback_data_t)SID_ENGINE_PARSID_PORT3 },
+#endif
+    { NULL }
+};
+
 static const ui_menu_entry_t sid_noresid_engine_menu[] = {
     { "Fast SID",
       MENU_ENTRY_RESOURCE_RADIO,
@@ -698,7 +738,7 @@ const ui_menu_entry_t sid_dtv_menu[] = {
     { "SID Engine",
       MENU_ENTRY_SUBMENU,
       submenu_radio_callback,
-      (ui_callback_data_t)sid_engine_menu },
+      (ui_callback_data_t)sid_dtv_engine_menu },
     { "Emulate filters",
       MENU_ENTRY_RESOURCE_TOGGLE,
       toggle_SidFilters_callback,

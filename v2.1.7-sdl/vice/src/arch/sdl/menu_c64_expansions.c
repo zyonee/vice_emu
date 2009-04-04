@@ -99,11 +99,11 @@ UI_MENU_DEFINE_TOGGLE(Isepic)
 UI_MENU_DEFINE_TOGGLE(IsepicSwitch)
 
 const ui_menu_entry_t isepic_menu[] = {
-    { "Enable isepic cart",
+    { "Enable Isepic cart",
       MENU_ENTRY_RESOURCE_TOGGLE,
       toggle_Isepic_callback,
       NULL },
-    { "Enable isepic switch",
+    { "Enable Isepic switch",
       MENU_ENTRY_RESOURCE_TOGGLE,
       toggle_IsepicSwitch_callback,
       NULL },

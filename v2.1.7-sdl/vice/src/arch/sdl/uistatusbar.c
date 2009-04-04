@@ -93,7 +93,9 @@ static void display_tape(void)
     }
     statusbar_text[STATUSBAR_TAPE_POS + len] = ' ';
 
-    uistatusbar_state |= UISTATUSBAR_REPAINT;
+    if (uistatusbar_state & UISTATUSBAR_ACTIVE) {
+        uistatusbar_state |= UISTATUSBAR_REPAINT;
+    }
 }
 
 static int per = 0;
@@ -109,7 +111,9 @@ static void display_speed(void)
     len = sprintf(&(statusbar_text[STATUSBAR_SPEED_POS]), "%3d%%%c%2dfps", per, sep, fps);
     statusbar_text[STATUSBAR_SPEED_POS + len] = ' ';
 
-    uistatusbar_state |= UISTATUSBAR_REPAINT;
+    if (uistatusbar_state & UISTATUSBAR_ACTIVE) {
+        uistatusbar_state |= UISTATUSBAR_REPAINT;
+    }
 }
 
 /* ----------------------------------------------------------------- */
@@ -165,7 +169,10 @@ void ui_enable_drive_status(ui_drive_enable_t state,
         }
         drive_state >>= 1;
     }
-    uistatusbar_state |= UISTATUSBAR_REPAINT;
+
+    if (uistatusbar_state & UISTATUSBAR_ACTIVE) {
+        uistatusbar_state |= UISTATUSBAR_REPAINT;
+    }
 }
 
 void ui_display_drive_track(unsigned int drive_number,
@@ -188,7 +195,9 @@ fprintf(stderr,"%s: drive %i, pwm1 = %i, led_pwm2 = %u\n",__func__, drive_number
     c = "8901"[drive_number] | ((pwm1 > 500)?0x80:0);
     statusbar_text[STATUSBAR_DRIVE_POS + drive_number] = c;
 
-    uistatusbar_state |= UISTATUSBAR_REPAINT;
+    if (uistatusbar_state & UISTATUSBAR_ACTIVE) {
+        uistatusbar_state |= UISTATUSBAR_REPAINT;
+    }
 }
 
 void ui_display_drive_current_image(unsigned int drive_number,
