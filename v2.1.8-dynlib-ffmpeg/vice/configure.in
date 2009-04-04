@@ -914,6 +914,8 @@ if test x"$is_unix" = "xyes" ; then
                    dynlib_support=yes
                  ],,)
   fi
+elif test x"$is_win32" = "xyes" ; then
+  AC_DEFINE(HAVE_DYNLIB_SUPPORT,,[Support for dynamic library loading.])
 fi
 AC_SUBST(DYNLIB_LIBS)
 
@@ -1203,12 +1205,18 @@ dnl ----- FFMPEG -----
 FFMPEG_INCLUDES=
 FFMPEG_LIBS=
 if test x"$enable_ffmpeg" = "xyes" -o x"$is_win32" = "xyes" -o x"$is_unix" = "xyes" ; then
-  GFXOUTPUT_DRIVERS="$GFXOUTPUT_DRIVERS ffmpegdrv.o"
-  AC_CHECK_HEADERS( ffmpeg/avformat.h )
-  if test x"$ac_cv_header_ffmpeg_avformat_h" = "xno" ; then
-    FFMPEG_INCLUDES="-I\$(top_srcdir)/src/lib/libffmpeg"
-  fi
-
+  GFXOUTPUT_DRIVERS="$GFXOUTPUT_DRIVERS ffmpegdrv.o ffmpeglib.o"
+  
+  PKG_CHECK_MODULES(FFMPEG_AV,  [libavcodec libavformat libavutil], 
+    [AC_DEFINE([HAVE_FFMPEG_AV],,[Have FFMPEG av* libs available])
+     FFMPEG_INCLUDES="$FFMPEG_INCLUDES $FFMPEG_AV_CFLAGS"],
+    [FFMPEG_INCLUDES="-I\$(top_srcdir)/src/lib/libffmpeg"]
+  )
+  PKG_CHECK_MODULES(FFMPEG_SWSCALE, [libswscale],
+    [AC_DEFINE([HAVE_FFMPEG_SWSCALE],,[Have FFMPEG swscale lib available])
+     FFMPEG_INCLUDES="$FFMPEG_INCLUDES $FFMPEG_SWSCALE_CFLAGS"],
+  )
+  
   AC_MSG_CHECKING([for FFMPEG support])
   if test x"$is_unix" = "xyes" ; then
     if test x"$dynlib_support" = "xyes" ; then

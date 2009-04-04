@@ -29,12 +29,8 @@
 
 #include "vice.h"
 
-#if defined (WIN32) && !defined(__GNUC__)
-/* #undef inline */
-#endif
-
-#ifdef HAVE_FFMPEG_AVFORMAT_H
-#include <ffmpeg/avformat.h>
+#if defined(MACOSX_SUPPORT) && defined(HAVE_FFMPEG_AV)
+#include "libavformat/avformat.h"
 #else
 #include "ffmpeg/avformat.h"
 #endif
@@ -93,7 +89,6 @@ struct ffmpeglib_s {
 };
 
 typedef struct ffmpeglib_s ffmpeglib_t;
-
 
 extern int ffmpeglib_open(ffmpeglib_t *lib);
 extern void ffmpeglib_close(ffmpeglib_t *lib);

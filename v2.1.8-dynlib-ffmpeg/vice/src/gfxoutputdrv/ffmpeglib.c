@@ -3,6 +3,7 @@
  *
  * Written by
  *  Andreas Matthies <andreas.matthies@gmx.net>
+ *  Christian Vogelgsang <chris@vogelgsang.org>
  * 
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -28,36 +29,41 @@
 
 #ifdef HAVE_FFMPEG 
 
-#include <windows.h>
-
 #include "gfxoutputdrv/ffmpeglib.h"
-#include "intl.h"
 #include "log.h"
-#include "res.h"
 #include "translate.h"
 #include "uiapi.h"
+#include "dynlib.h"
 
-#define AVCODEC_DLL_NAME "avcodec-51.dll"
-#define AVFORMAT_DLL_NAME "avformat-51.dll"
-#define AVUTIL_DLL_NAME "avutil-49.dll"
+#ifdef WIN32
+#define AVCODEC_SO_NAME     "avcodec-51.dll"
+#define AVFORMAT_SO_NAME    "avformat-51.dll"
+#define AVUTIL_SO_NAME      "avutil-49.dll"
+#else
+#ifdef MACOSX_SUPPORT
+/* assume MacPorts paths here */
+#define AVCODEC_SO_NAME     "/opt/local/lib/libavcodec.52.dylib"
+#define AVFORMAT_SO_NAME    "/opt/local/lib/libavformat.52.dylib"
+#define AVUTIL_SO_NAME      "/opt/local/lib/libavutil.49.dylib"
+#else
+#define AVCODEC_SO_NAME     "libavcodec.so.51"
+#define AVFORMAT_SO_NAME    "libavformat.so.52"
+#define AVUTIL_SO_NAME      "libavutil.so.49"
+#endif
+#endif
 
-static HINSTANCE avcodec_dll = NULL;
-static HINSTANCE avformat_dll = NULL;
-static HINSTANCE avutil_dll = NULL;
-
-static void my_av_init_packet(AVPacket *pkt)
-{
-    av_init_packet(pkt);
-}
+static void *avcodec_so = NULL;
+static void *avformat_so = NULL;
+static void *avutil_so = NULL;
 
 static void ffmpeglib_free_library(ffmpeglib_t *lib)
 {
-    if (avcodec_dll) {
-        if (!FreeLibrary(avcodec_dll)) {
-            log_debug("FreeLibrary " AVCODEC_DLL_NAME " failed!");
+    if (avcodec_so) {
+        if (!vice_dynlib_close(avcodec_so)) {
+            log_debug("closing dynamic library " AVCODEC_SO_NAME " failed!");
         }
     }
-    avcodec_dll = NULL;
+    avcodec_so = NULL;
 
     lib->p_avcodec_open = NULL;
     lib->p_avcodec_close = NULL;
@@ -68,12 +74,12 @@ static void ffmpeglib_free_library(ffmpeglib_t *lib)
     lib->p_avpicture_get_size = NULL;
     lib->p_img_convert = NULL;
 
-    if (avformat_dll) {
-        if (!FreeLibrary(avformat_dll)) {
-            log_debug("FreeLibrary " AVFORMAT_DLL_NAME " failed!");
+    if (avformat_so) {
+        if (!vice_dynlib_close(avformat_so)) {
+            log_debug("closing dynamic library " AVFORMAT_SO_NAME " failed!");
         }
     }
-    avformat_dll = NULL;
+    avformat_so = NULL;
 
     lib->p_av_init_packet = NULL;
     lib->p_av_register_all = NULL;
@@ -87,39 +93,39 @@ static void ffmpeglib_free_library(ffmpeglib_t *lib)
     lib->p_dump_format = NULL;
     lib->p_guess_format = NULL;
 
-    if (avutil_dll) {
-        if (!FreeLibrary(avutil_dll)) {
-            log_debug("FreeLibrary " AVUTIL_DLL_NAME " failed!");
+    if (avutil_so) {
+        if (!vice_dynlib_close(avutil_so)) {
+            log_debug("closing dynamic library " AVUTIL_SO_NAME " failed!");
         }
     }
-    avutil_dll = NULL;
+    avutil_so = NULL;
 
     lib->p_av_free = NULL;
 }
 
 /* macro for getting functionpointers from avcodec */
 #define GET_PROC_ADDRESS_AND_TEST_AVCODEC( _name_ ) \
-    lib->p_##_name_ = (_name_##_t) GetProcAddress(avcodec_dll, #_name_ ); \
+    lib->p_##_name_ = (_name_##_t) vice_dynlib_symbol(avcodec_so, #_name_ ); \
     if (!lib->p_##_name_ ) { \
-        log_debug("GetProcAddress " #_name_ " failed!"); \
+        log_debug("getting symbol " #_name_ " failed!"); \
         ffmpeglib_free_library(lib); \
         return -1; \
     } 
 
 /* macro for getting functionpointers from avformat */
 #define GET_PROC_ADDRESS_AND_TEST_AVFORMAT( _name_ ) \
-    lib->p_##_name_ = (_name_##_t) GetProcAddress(avformat_dll, #_name_ ); \
+    lib->p_##_name_ = (_name_##_t) vice_dynlib_symbol(avformat_so, #_name_ ); \
     if (!lib->p_##_name_ ) { \
-        log_debug("GetProcAddress " #_name_ " failed!"); \
+        log_debug("getting symbol " #_name_ " failed!"); \
         ffmpeglib_free_library(lib); \
         return -1; \
     } 
 
 /* macro for getting functionpointers from avutil */
 #define GET_PROC_ADDRESS_AND_TEST_AVUTIL( _name_ ) \
-    lib->p_##_name_ = (_name_##_t) GetProcAddress(avutil_dll, #_name_ ); \
+    lib->p_##_name_ = (_name_##_t) vice_dynlib_symbol(avutil_so, #_name_ ); \
     if (!lib->p_##_name_ ) { \
-        log_debug("GetProcAddress " #_name_ " failed!"); \
+        log_debug("getting symbol " #_name_ " failed!"); \
         ffmpeglib_free_library(lib); \
         return -1; \
     } 
@@ -128,11 +134,11 @@ static int ffmpeglib_load_library(ffmpeglib_t *lib)
 {
     avcodec_version_t avcodec_version;
 
-    if (!avcodec_dll) {
-        avcodec_dll = LoadLibrary(AVCODEC_DLL_NAME);
+    if (!avcodec_so) {
+        avcodec_so = vice_dynlib_open(AVCODEC_SO_NAME);
 
-        if (!avcodec_dll) {
-            log_debug("LoadLibrary " AVCODEC_DLL_NAME " failed!");
+        if (!avcodec_so) {
+            log_debug("opening dynamic library " AVCODEC_SO_NAME " failed!");
             return -1;
         }
 
@@ -146,18 +152,15 @@ static int ffmpeglib_load_library(ffmpeglib_t *lib)
         GET_PROC_ADDRESS_AND_TEST_AVCODEC(img_convert);
     }
 
-    if (!avformat_dll) {
-        avformat_dll = LoadLibrary(AVFORMAT_DLL_NAME);
+    if (!avformat_so) {
+        avformat_so = vice_dynlib_open(AVFORMAT_SO_NAME);
 
-        if (!avformat_dll) {
-            log_debug("LoadLibrary " AVFORMAT_DLL_NAME " failed!");
+        if (!avformat_so) {
+            log_debug("opening dynamic library " AVFORMAT_SO_NAME " failed!");
             return -1;
         }
 
-        /* the current version of FFMPEG uses an inline function 
-           v52 will replace this with an external function reference
-        */
-        lib->p_av_init_packet = my_av_init_packet;
+        GET_PROC_ADDRESS_AND_TEST_AVFORMAT(av_init_packet);
         GET_PROC_ADDRESS_AND_TEST_AVFORMAT(av_register_all);
         GET_PROC_ADDRESS_AND_TEST_AVFORMAT(av_new_stream);
         GET_PROC_ADDRESS_AND_TEST_AVFORMAT(av_set_parameters);
@@ -170,20 +173,23 @@ static int ffmpeglib_load_library(ffmpeglib_t *lib)
         GET_PROC_ADDRESS_AND_TEST_AVFORMAT(guess_format);
     }
 
-    if (!avutil_dll) {
-        avutil_dll = LoadLibrary(AVUTIL_DLL_NAME);
+    if (!avutil_so) {
+        avutil_so = vice_dynlib_open(AVUTIL_SO_NAME);
 
-        if (!avformat_dll) {
-            log_debug("LoadLibrary " AVUTIL_DLL_NAME " failed!");
+        if (!avformat_so) {
+            log_debug("opening dynamic library " AVUTIL_SO_NAME " failed!");
             return -1;
         }
 
         GET_PROC_ADDRESS_AND_TEST_AVUTIL(av_free);
     }
-    avcodec_version = (avcodec_version_t)GetProcAddress(avcodec_dll, "avcodec_version");
+    
+    /* check lib vs. header versions */
+    avcodec_version = (avcodec_version_t)vice_dynlib_symbol(avcodec_so, "avcodec_version");
 
     if (avcodec_version() != LIBAVCODEC_VERSION_INT) {
-        ui_error(translate_text(IDS_FFMPEG_DLL_MISMATCH));
+        log_debug("version mismatch: avcodec lib has version %d, VICE expects %d",
+                  avcodec_version(),LIBAVCODEC_VERSION_INT);
         return -1;
     }
     return 0;

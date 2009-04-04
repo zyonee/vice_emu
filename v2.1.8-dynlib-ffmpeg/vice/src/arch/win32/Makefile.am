@@ -45,7 +45,7 @@ libarch_a_SOURCES = \
 	dinput_handle.h \
 	dirent.c \
 	dirent.h \
-	ffmpeglib.c \
+	dynlib.c \
 	fullscrn.c \
 	fullscrn.h \
 	fullscrn-ddraw.c \
