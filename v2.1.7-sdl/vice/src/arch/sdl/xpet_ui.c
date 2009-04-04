@@ -171,7 +171,7 @@ fprintf(stderr,"%s\n",__func__);
         }
     }
     sdl_ui_set_menu_font(pet_font, 8, 8);
-    sdl_vkbd_set_vkbd(&vkbd_pet);
+    sdl_vkbd_set_vkbd(&vkbd_pet_uk);
     return 0;
 }
 
