@@ -29,16 +29,9 @@
 
 #include "vice.h"
 
-#if defined(MACOSX_SUPPORT)
 #include "libavformat/avformat.h"
 #ifdef HAVE_FFMPEG_SWSCALE
 #include "libswscale/swscale.h"
-#endif
-#else
-#include "ffmpeg/avformat.h"
-#ifdef HAVE_FFMPEG_SWSCALE
-#include "ffmpeg/swscale.h"
-#endif
 #endif
 
 /* generic version function */
