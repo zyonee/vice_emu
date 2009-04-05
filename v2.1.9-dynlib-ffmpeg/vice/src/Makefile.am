@@ -117,6 +117,7 @@ noinst_HEADERS = \
 	diskconstants.h \
 	diskimage.h \
 	dma.h \
+	dynlib.h \
 	emuid.h \
 	event.h \
 	fileio.h \

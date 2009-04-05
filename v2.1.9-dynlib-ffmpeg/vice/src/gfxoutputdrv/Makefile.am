@@ -15,6 +15,7 @@ noinst_LIBRARIES = libgfxoutputdrv.a
 EXTRA_libgfxoutputdrv_a_SOURCES = \
 	ffmpegdrv.c \
 	ffmpegdrv.h \
+	ffmpeglib.c \
 	ffmpeglib.h \
 	gifdrv.c \
 	jpegdrv.c \

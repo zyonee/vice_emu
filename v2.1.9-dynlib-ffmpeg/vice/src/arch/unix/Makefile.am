@@ -47,7 +47,7 @@ libarch_a_SOURCES = \
 	console.c \
 	coproc.h \
 	coproc.c \
-	ffmpeglib.c \
+	dynlib.c \
 	fullscreenarch.h \
 	hardsid.c \
 	icon.h \
