@@ -95,6 +95,8 @@ static int check_version(const char *lib_name, void *handle, const char *symbol,
 {
     ffmpeg_version_t  version_func;
     unsigned ver_lib;
+    const char *result_msgs[] = { "full match","major.minor matches","major matches","unsupported" };
+    enum { FULL_MATCH=0, MAJOR_MINOR_MATCH=1, MAJOR_MATCH=2, NO_MATCH=3 } result;
     
     version_func = (ffmpeg_version_t)vice_dynlib_symbol(handle, symbol);
     if(version_func == NULL) {
@@ -103,9 +105,33 @@ static int check_version(const char *lib_name, void *handle, const char *symbol,
     }
 
     ver_lib = version_func();
-    log_debug("ffmpeg %8s lib has version %06x, VICE expects %06x",
-              lib_name, ver_lib, ver_inc);
-    if (ver_lib != ver_inc) {
+    
+    /* version matches exactly */
+    if(ver_lib == ver_inc) {
+        result = FULL_MATCH;
+    } else {
+        /* compare major.minor */
+        ver_lib >>= 8;
+        ver_inc >>= 8;
+        if(ver_lib == ver_inc) {
+            result = MAJOR_MINOR_MATCH;
+        } else {
+            /* compare major */
+            ver_lib >>= 8;
+            ver_inc >>= 8;
+            if(ver_lib == ver_inc) {
+                result = MAJOR_MATCH;
+            } else {
+                result = NO_MATCH;
+            }
+        }
+    }
+    
+    log_debug("ffmpeg %8s lib has version %06x, VICE expects %06x: %s",
+              lib_name, ver_lib, ver_inc, result_msgs[result]);
+
+    /* now decide what level of matching fails */
+    if(result == NO_MATCH) {
         return -1;
     }
     return 0;
