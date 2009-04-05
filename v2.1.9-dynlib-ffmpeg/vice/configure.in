@@ -1252,10 +1252,12 @@ if test x"$enable_ffmpeg" != "xno" -o x"$enable_sdlui" != "xyes" ; then
       [AC_DEFINE([HAVE_FFMPEG],,[Have FFMPEG av* libs available])
        FFMPEG_INCLUDES="$FFMPEG_AV_CFLAGS"
        GFXOUTPUT_DRIVERS="$GFXOUTPUT_DRIVERS ffmpegdrv.o ffmpeglib.o"],
+      [echo "no. disabled."]
     )
     PKG_CHECK_MODULES(FFMPEG_SWSCALE, [libswscale],
       [AC_DEFINE([HAVE_FFMPEG_SWSCALE],,[Have FFMPEG swscale lib available])
        FFMPEG_INCLUDES="$FFMPEG_INCLUDES $FFMPEG_SWSCALE_CFLAGS"],
+      [echo "no. using img_convert"]
     )
   else
     AC_MSG_RESULT([not available])

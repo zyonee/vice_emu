@@ -93,7 +93,9 @@ static int video_outbuf_size;
 static int video_width, video_height;
 static AVFrame *picture, *tmp_picture;
 static double video_pts;
+#ifdef HAVE_FFMPEG_SWSCALE
 static struct SwsContext *sws_ctx;
+#endif
 
 /* resources */
 static char *ffmpeg_format = NULL;
@@ -485,10 +487,12 @@ static void ffmpegdrv_close_video(void)
         lib_free(tmp_picture);
         tmp_picture = NULL;
     }
-    
+
+#ifdef HAVE_FFMPEG_SWSCALE
     if(sws_ctx != NULL) {
         (*ffmpeglib.p_sws_freeContext)(sws_ctx);
     }
+#endif
 }
 
 
@@ -532,6 +536,7 @@ static void ffmpegdrv_init_video(screenshot_t *screenshot)
         c->pix_fmt = PIX_FMT_RGBA32;
     }
 
+#ifdef HAVE_FFMPEG_SWSCALE
     /* setup scaler */
     if(c->pix_fmt != PIX_FMT_RGB24) {
         sws_ctx = (*ffmpeglib.p_sws_getContext)
@@ -543,6 +548,7 @@ static void ffmpegdrv_init_video(screenshot_t *screenshot)
             log_debug("ffmpegdrv: Can't create Scaler!\n");
         }
     }
+#endif
 
     video_st = st;
     video_pts = 0;
@@ -710,11 +716,17 @@ static int ffmpegdrv_record(screenshot_t *screenshot)
 
     if (c->pix_fmt != PIX_FMT_RGB24) {
         ffmpegdrv_fill_rgb_image(screenshot, tmp_picture);
+#ifdef HAVE_FFMPEG_SWSCALE
         if(sws_ctx != NULL) {
             (*ffmpeglib.p_sws_scale)(sws_ctx, 
                 tmp_picture->data, tmp_picture->linesize, 0, c->height,
                 picture->data, picture->linesize);
         }
+#else
+        (*ffmpeglib.p_img_convert)((AVPicture *)picture, c->pix_fmt,
+                    (AVPicture *)tmp_picture, PIX_FMT_RGB24,
+                    c->width, c->height);
+#endif
     } else {
         ffmpegdrv_fill_rgb_image(screenshot, picture);
     }

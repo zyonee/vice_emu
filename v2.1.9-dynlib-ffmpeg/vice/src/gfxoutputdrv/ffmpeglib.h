@@ -31,10 +31,14 @@
 
 #if defined(MACOSX_SUPPORT)
 #include "libavformat/avformat.h"
+#ifdef HAVE_FFMPEG_SWSCALE
 #include "libswscale/swscale.h"
+#endif
 #else
 #include "ffmpeg/avformat.h"
+#ifdef HAVE_FFMPEG_SWSCALE
 #include "ffmpeg/swscale.h"
+#endif
 #endif
 
 /* generic version function */
@@ -61,10 +65,12 @@ typedef int (*url_fopen_t) (ByteIOContext**, const char*, int);
 typedef int (*url_fclose_t) (ByteIOContext*);
 typedef void (*dump_format_t) (AVFormatContext *, int, const char*, int);
 typedef AVOutputFormat* (*guess_format_t) (const char*, const char*, const char*);
+typedef int (*img_convert_t) (AVPicture*, int, AVPicture*, int, int, int);
 
 /* avutil functions */
 typedef void (*av_free_t) (void**);
 
+#ifdef HAVE_FFMPEG_SWSCALE
 /* swscale functions */
 typedef struct SwsContext * (*sws_getContext_t)(int srcW, int srcH,
   enum PixelFormat srcFormat, int dstW, int dstH, enum PixelFormat dstFormat,
@@ -73,6 +79,7 @@ typedef void (*sws_freeContext_t)(struct SwsContext *swsContext);
 typedef int (*sws_scale_t)(struct SwsContext *context, uint8_t* srcSlice[],
   int srcStride[], int srcSliceY, int srcSliceH, uint8_t* dst[],
   int dstStride[]);
+#endif
 
 struct ffmpeglib_s {
     /* avcodec */
@@ -96,14 +103,19 @@ struct ffmpeglib_s {
     url_fclose_t                p_url_fclose;
     dump_format_t               p_dump_format;
     guess_format_t              p_guess_format;
+#ifndef HAVE_FFMPEG_SWSCALE
+    img_convert_t               p_img_convert;
+#endif
 
     /* avutil */
     av_free_t                   p_av_free;
-    
+
+#ifdef HAVE_FFMPEG_SWSCALE    
     /* swscale */
     sws_getContext_t            p_sws_getContext;
     sws_freeContext_t           p_sws_freeContext;
     sws_scale_t                 p_sws_scale;
+#endif
 };
 
 typedef struct ffmpeglib_s ffmpeglib_t;

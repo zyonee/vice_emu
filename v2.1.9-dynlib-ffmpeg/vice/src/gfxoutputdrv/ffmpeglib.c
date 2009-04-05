@@ -198,6 +198,9 @@ static int load_avformat(ffmpeglib_t *lib)
         GET_SYMBOL_AND_TEST_AVFORMAT(url_fclose);
         GET_SYMBOL_AND_TEST_AVFORMAT(dump_format);
         GET_SYMBOL_AND_TEST_AVFORMAT(guess_format);
+#ifndef HAVE_FFMPEG_SWSCALE
+        GET_SYMBOL_AND_TEST_AVFORMAT(img_convert);
+#endif
     }
     
     return check_version("avformat",avformat_so,"avformat_version",LIBAVFORMAT_VERSION_INT);
@@ -223,6 +226,9 @@ static void free_avformat(ffmpeglib_t *lib)
     lib->p_url_fclose = NULL;
     lib->p_dump_format = NULL;
     lib->p_guess_format = NULL;    
+#ifndef HAVE_FFMPEG_SWSCALE
+    lib->p_img_convert = NULL;
+#endif
 }
 
 static int load_avutil(ffmpeglib_t *lib)
@@ -252,6 +258,8 @@ static void free_avutil(ffmpeglib_t *lib)
 
     lib->p_av_free = NULL;    
 }
+
+#ifdef HAVE_FFMPEG_SWSCALE
 
 static int load_swscale(ffmpeglib_t *lib)
 {    
@@ -285,6 +293,8 @@ static void free_swscale(ffmpeglib_t *lib)
     lib->p_sws_scale = NULL;
 }
 
+#endif
+
 int ffmpeglib_open(ffmpeglib_t *lib)
 {
     int result;
@@ -310,6 +320,7 @@ int ffmpeglib_open(ffmpeglib_t *lib)
         return result;
     }
 
+#ifdef HAVE_FFMPEG_SWSCALE
     result = load_swscale(lib);
     if(result != 0) {
         free_avformat(lib);
@@ -318,6 +329,7 @@ int ffmpeglib_open(ffmpeglib_t *lib)
         free_swscale(lib);
         return result;
     }
+#endif
 
     return 0;
 }
@@ -327,7 +339,9 @@ void ffmpeglib_close(ffmpeglib_t *lib)
     free_avformat(lib);
     free_avcodec(lib);
     free_avutil(lib);
+#ifdef HAVE_FFMPEG_SWSCALE
     free_swscale(lib);
+#endif
 }
 
 #endif /* #ifdef HAVE_FFMPEG */
