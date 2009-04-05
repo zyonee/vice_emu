@@ -204,7 +204,7 @@ static int load_avutil(ffmpeglib_t *lib)
     if (!avutil_so) {
         avutil_so = vice_dynlib_open(AVUTIL_SO_NAME);
 
-        if (!avformat_so) {
+        if (!avutil_so) {
             log_debug("opening dynamic library " AVUTIL_SO_NAME " failed!");
             return -1;
         }
@@ -232,7 +232,7 @@ static int load_swscale(ffmpeglib_t *lib)
     if (!swscale_so) {
         swscale_so = vice_dynlib_open(SWSCALE_SO_NAME);
         
-        if (!avformat_so) {
+        if (!swscale_so) {
             log_debug("opening dynamic library " SWSCALE_SO_NAME " failed!");
             return -1;
         }

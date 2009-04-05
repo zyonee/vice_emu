@@ -29,7 +29,7 @@
 
 #include "vice.h"
 
-#if defined(MACOSX_SUPPORT) && defined(HAVE_FFMPEG_AV)
+#if defined(MACOSX_SUPPORT)
 #include "libavformat/avformat.h"
 #include "libswscale/swscale.h"
 #else
