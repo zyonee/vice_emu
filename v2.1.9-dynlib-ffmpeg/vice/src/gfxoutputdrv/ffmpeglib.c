@@ -48,6 +48,22 @@
 // add second level macro to allow expansion and stringification
 #define MAKE_SO_NAME2(n,v) MAKE_SO_NAME(n,v)
 
+// define major version if its not already defined
+#ifndef LIBAVCODEC_VERSION_MAJOR
+#define LIBAVCODEC_VERSION_MAJOR  51
+#endif
+#ifndef LIBAVFORMAT_VERSION_MAJOR
+#define LIBAVFORMAT_VERSION_MAJOR 52
+#define NO_AVFORMAT_CHECK 1
+#endif
+#ifndef LIBAVUTIL_VERSION_MAJOR
+#define LIBAVUTIL_VERSION_MAJOR   49
+#define NO_AVUTIL_CHECK 1
+#endif
+#ifndef LIBSWSCALE_VERSION_MAJOR
+#define LIBSWSCALE_VERSION_MAJOR  0
+#endif
+
 #define AVCODEC_SO_NAME     MAKE_SO_NAME2(avcodec,LIBAVCODEC_VERSION_MAJOR)
 #define AVFORMAT_SO_NAME    MAKE_SO_NAME2(avformat,LIBAVFORMAT_VERSION_MAJOR)
 #define AVUTIL_SO_NAME      MAKE_SO_NAME2(avutil,LIBAVUTIL_VERSION_MAJOR)
@@ -56,7 +72,9 @@
 static void *avcodec_so = NULL;
 static void *avformat_so = NULL;
 static void *avutil_so = NULL;
+#ifdef HAVE_FFMPEG_SWSCALE
 static void *swscale_so = NULL;
+#endif
 
 /* macro for getting functionpointers from avcodec */
 #define GET_SYMBOL_AND_TEST_AVCODEC( _name_ ) \
@@ -202,8 +220,12 @@ static int load_avformat(ffmpeglib_t *lib)
         GET_SYMBOL_AND_TEST_AVFORMAT(img_convert);
 #endif
     }
-    
+
+#ifdef NO_AVFORMAT_CHECK
+    return 0;
+#else
     return check_version("avformat",avformat_so,"avformat_version",LIBAVFORMAT_VERSION_INT);
+#endif
 }
 
 static void free_avformat(ffmpeglib_t *lib)
@@ -243,8 +265,12 @@ static int load_avutil(ffmpeglib_t *lib)
 
         GET_SYMBOL_AND_TEST_AVUTIL(av_free);
     }
-    
+
+#ifdef NO_AVUTIL_CHECK
+    return 0;
+#else
     return check_version("avutil",avutil_so,"avutil_version",LIBAVUTIL_VERSION_INT);
+#endif
 }
 
 static void free_avutil(ffmpeglib_t *lib)
