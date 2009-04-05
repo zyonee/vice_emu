@@ -51,6 +51,8 @@
 #define DWORD_IS_LONG           1
 #define HAVE_TFE                1
 #define HAVE_FFMPEG             1
+#define HAVE_FFMPEG_SWSCALE     1
+#define FFMPEG_ALIGNMENT_HACK   1
 #define HAVE_OPENCBM            1
 #define HAVE_MIDI               1
 #define HAVE_CRTDBG             1
