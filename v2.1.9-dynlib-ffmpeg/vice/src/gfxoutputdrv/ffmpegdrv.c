@@ -540,8 +540,8 @@ static void ffmpegdrv_init_video(screenshot_t *screenshot)
     /* setup scaler */
     if(c->pix_fmt != PIX_FMT_RGB24) {
         sws_ctx = (*ffmpeglib.p_sws_getContext)
-            (video_width, video_height, c->pix_fmt, 
-             video_width, video_height, PIX_FMT_BGR24, 
+            (video_width, video_height, PIX_FMT_BGR24, 
+             video_width, video_height, c->pix_fmt, 
              SWS_BICUBIC, 
              NULL, NULL, NULL);
         if(sws_ctx == NULL) {
@@ -693,6 +693,28 @@ static int ffmpegdrv_close(screenshot_t *screenshot)
     return 0;
 }
 
+#if FFMPEG_ALIGNMENT_HACK
+__declspec(naked) static int ffmpeg_avcodec_encode_video(AVCodecContext* c, uint8_t* video_outbuf, int video_outbuf_size, const AVFrame* picture)
+{
+    _asm {
+        push ebp
+        mov ebp,esp
+        sub esp, __LOCAL_SIZE /* not needed, but safer against errors when changing this function */
+
+        /* adjust stack to 16 byte boundary */
+        and esp,~0x0f
+    }
+        /* now, copy the parameters for our new call */
+
+    (*ffmpeglib.p_avcodec_encode_video)(c, video_outbuf, video_outbuf_size, picture);
+
+    _asm {
+        mov esp,ebp
+        pop ebp
+        ret
+    }
+}
+#endif
 
 /* triggered by screenshot_record */
 static int ffmpegdrv_record(screenshot_t *screenshot)
@@ -742,8 +764,12 @@ static int ffmpegdrv_record(screenshot_t *screenshot)
         ret = (*ffmpeglib.p_av_write_frame)(ffmpegdrv_oc, &pkt);
     } else {
         /* encode the image */
+#if FFMPEG_ALIGNMENT_HACK
+        out_size = ffmpeg_avcodec_encode_video(c, video_outbuf, video_outbuf_size, picture);
+#else
         out_size = (*ffmpeglib.p_avcodec_encode_video)(c, video_outbuf, 
                                                 video_outbuf_size, picture);
+#endif
         /* if zero size, it means the image was buffered */
         if (out_size != 0) {
             /* write the compressed frame in the media file */
