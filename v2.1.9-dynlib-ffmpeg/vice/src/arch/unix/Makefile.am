@@ -58,7 +58,6 @@ libarch_a_SOURCES = \
 	mousedrv.c \
 	mousedrv.h \
 	openGL_sync.h \
-	opencbmlib.c \
 	parsid.c \
 	rs232.c \
 	signals.c \

@@ -242,6 +242,7 @@ base_sources = \
 	machine.c \
 	main.c \
 	network.c \
+	opencbmlib.c \
 	palette.c \
 	ram.c \
 	rawfile.c \
