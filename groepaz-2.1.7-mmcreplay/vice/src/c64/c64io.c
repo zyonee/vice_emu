@@ -41,6 +41,7 @@
 #include "lib.h"
 #include "mmc64.h"
 #include "cart/retroreplay.h"
+#include "cart/mmcreplay.h"
 #include "monitor.h"
 #include "reu.h"
 #include "georam.h"
@@ -102,6 +103,7 @@ static io_source_t io_source_table[] = {
     {IO_SOURCE_KCS, "KCS POWER", IO_DETACH_CART, NULL},
     {IO_SOURCE_MAGIC_FORMEL, "MAGIC FORMEL", IO_DETACH_CART, NULL},
     {IO_SOURCE_RR, "RETRO REPLAY", IO_DETACH_CART, NULL},
+    {IO_SOURCE_MMCREPLAY, "MMCREPLAY", IO_DETACH_CART, NULL},
     {IO_SOURCE_SS4, "SUPER SNAPSHOT 4", IO_DETACH_CART, NULL},
     {IO_SOURCE_SS5, "SUPER SNAPSHOT 5", IO_DETACH_CART, NULL},
     {IO_SOURCE_WARPSPEED, "WARPSPEED", IO_DETACH_CART, NULL},
@@ -285,6 +287,12 @@ BYTE REGPARM1 c64io1_read(WORD addr)
                 io_source_check(io_source_counter);
                 io_source_counter++;
             }
+        } else if (mmcr_enabled && tfe_as_rr_net) {
+            if (mmcr_clockport_enabled && addr>0xde01 && addr<0xde10) {
+                return_value = tfe_read((WORD)(addr & 0x0f));
+                io_source_check(io_source_counter);
+                io_source_counter++;
+            }
         } else {
             if ((tfe_as_rr_net && addr<0xde10) || !tfe_as_rr_net) {
                 return_value = tfe_read((WORD)(addr & 0x0f));
@@ -370,6 +378,10 @@ void REGPARM2 c64io1_store(WORD addr, BYTE value)
             }
         } else if (rr_active && tfe_as_rr_net) {
             if (rr_clockport_enabled && addr>0xde01 && addr<0xde10) {
+                tfe_store((WORD)(addr & 0x0f), value);
+            }
+        } else if (mmcr_enabled && tfe_as_rr_net) {
+            if (mmcr_clockport_enabled && addr>0xde01 && addr<0xde10) {
                 tfe_store((WORD)(addr & 0x0f), value);
             }
         } else {
@@ -558,16 +570,39 @@ void REGPARM2 c64io2_store(WORD addr, BYTE value)
 
 void c64io_ioreg_add_list(struct mem_ioreg_list_s **mem_ioreg_list)
 {
-    if (reu_enabled)
+    if (mmc64_enabled) {
+        mon_ioreg_add_list(mem_ioreg_list, "MMC64", 0xdf10, 0xdf13);
+        if(mmc64_clockport_enabled) {
+            if(mmc64_hw_clockport==0xdf22) {
+                mon_ioreg_add_list(mem_ioreg_list, "MMC64CP", 0xdf22, 0xdf30);
+            } else {
+                mon_ioreg_add_list(mem_ioreg_list, "MMC64CP", 0xde02, 0xde0f);
+            }
+        }
+    }
+
+    if (mmcr_enabled) {
+        mon_ioreg_add_list(mem_ioreg_list, "MMCR", 0xde00, 0xde01);
+        mon_ioreg_add_list(mem_ioreg_list, "MMCR", 0xdf10, 0xdf13);
+        if(mmcr_clockport_enabled) {
+            mon_ioreg_add_list(mem_ioreg_list, "MMCRCP", 0xde02, 0xde0f);
+        }
+    }
+
+    if (reu_enabled) {
         mon_ioreg_add_list(mem_ioreg_list, "REU", 0xdf00, 0xdf0f);
+    }
+
     if (georam_enabled) {
         mon_ioreg_add_list(mem_ioreg_list, "GEORAM", 0xde00, 0xdeff);
         mon_ioreg_add_list(mem_ioreg_list, "GEORAM", 0xdffe, 0xdfff);
     }
+
     if (ramcart_enabled) {
         mon_ioreg_add_list(mem_ioreg_list, "RAMCART", 0xde00, 0xde01);
         mon_ioreg_add_list(mem_ioreg_list, "RAMCART", 0xdf00, 0xdfff);
     }
+
     if (c64_256k_enabled && c64_256k_start==0xde00)
         mon_ioreg_add_list(mem_ioreg_list, "C64_256K", 0xde00, 0xde7f);
     if (c64_256k_enabled && c64_256k_start==0xde80)

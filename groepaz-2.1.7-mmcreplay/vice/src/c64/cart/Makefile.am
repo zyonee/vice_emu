@@ -47,6 +47,14 @@ libc64cart_a_SOURCES = \
 	mikroass.h \
 	retroreplay.c \
 	retroreplay.h \
+	mmcreplay.c \
+	mmcreplay.h \
+	par-flashrom.c \
+	par-flashrom.h \
+	ser-eeprom.c \
+	ser-eeprom.h \
+	spi-sdcard.c \
+	spi-sdcard.h \
 	rexep256.c \
 	rexep256.h \
 	ross.c \
