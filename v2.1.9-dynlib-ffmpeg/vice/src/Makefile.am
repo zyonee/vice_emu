@@ -368,7 +368,7 @@ blockdev_lib =
 endif
 
 if HAVE_REALDEVICE
-realdevice_lib = @ARCH_DIR@/opencbmlib.o
+realdevice_lib = opencbmlib.o @ARCH_DIR@/dynlib.o
 else
 realdevice_lib =
 endif
