@@ -540,7 +540,7 @@ static void ffmpegdrv_init_video(screenshot_t *screenshot)
     /* setup scaler */
     if(c->pix_fmt != PIX_FMT_RGB24) {
         sws_ctx = (*ffmpeglib.p_sws_getContext)
-            (video_width, video_height, PIX_FMT_BGR24, 
+            (video_width, video_height, PIX_FMT_RGB24, 
              video_width, video_height, c->pix_fmt, 
              SWS_BICUBIC, 
              NULL, NULL, NULL);
