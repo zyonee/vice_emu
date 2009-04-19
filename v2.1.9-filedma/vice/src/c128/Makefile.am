@@ -14,6 +14,7 @@ noinst_LIBRARIES = libc128.a
 libc128_a_SOURCES = \
 	c128-cmdline-options.c \
 	c128-cmdline-options.h \
+	c128-filedma.c \
 	c128-resources.c \
 	c128-resources.h \
 	c128-snapshot.c \

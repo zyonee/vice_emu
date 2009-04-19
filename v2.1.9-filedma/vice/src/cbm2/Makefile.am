@@ -13,6 +13,7 @@ noinst_LIBRARIES = libcbm2.a
 libcbm2_a_SOURCES = \
 	cbm2-cmdline-options.c \
 	cbm2-cmdline-options.h \
+	cbm2-filedma.c \
 	cbm2-resources.c \
 	cbm2-resources.h \
 	cbm2-snapshot.c \

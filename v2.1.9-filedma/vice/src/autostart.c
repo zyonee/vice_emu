@@ -40,6 +40,7 @@
 #include "cmdline.h"
 #include "datasette.h"
 #include "drive.h"
+#include "filedma.h"
 #include "fileio.h"
 #include "fsdevice.h"
 #include "imagecontents.h"
@@ -124,6 +125,8 @@ static int AutostartRunWithColon = 0;
 
 static int AutostartHandleTrueDriveEmulation = 1;
 
+static int AutostartDMA = 0;
+
 static const char * const AutostartRunCommandsAvailable[] = { "RUN\r", "RUN:\r" };
 
 static const char * AutostartRunCommand = NULL;
@@ -177,12 +180,20 @@ static int set_autostart_handle_tde(int val, void *param)
     return 0;
 }
 
+static int set_autostart_dma(int val, void *param)
+{
+    AutostartDMA = val ? 1 : 0;
+    return 0;
+}
+
 /*! \brief integer resources used by the REU module */
 static const resource_int_t resources_int[] = {
     { "AutostartRunWithColon", 0, RES_EVENT_NO, (resource_value_t)0,
       &AutostartRunWithColon, set_autostart_run_with_colon, NULL },
     { "AutostartHandleTrueDriveEmulation", 0, RES_EVENT_NO, (resource_value_t)0,
       &AutostartHandleTrueDriveEmulation, set_autostart_handle_tde, NULL },
+    { "AutostartDMA", 1, RES_EVENT_NO, (resource_value_t)0,
+      &AutostartDMA, set_autostart_dma, NULL },
     { NULL }
 };
 
@@ -222,6 +233,16 @@ static const cmdline_option_t cmdline_options[] =
       USE_PARAM_STRING, USE_DESCRIPTION_ID,
       IDCLS_UNUSED, IDCLS_DISABLE_AUTOSTART_HANDLE_TDE,
       NULL, NULL },
+    { "-autostart-dma", SET_RESOURCE, 0,
+      NULL, NULL, "AutostartDMA", (resource_value_t)1,
+      USE_PARAM_STRING, USE_DESCRIPTION_STRING,
+      IDCLS_UNUSED, IDCLS_UNUSED,
+      NULL, T_("Enable DMA loading in autostart if possible") },
+    { "+autostart-dma", SET_RESOURCE, 0,
+      NULL, NULL, "AutostartDMA", (resource_value_t)0,
+      USE_PARAM_STRING, USE_DESCRIPTION_STRING,
+      IDCLS_UNUSED, IDCLS_UNUSED,
+      NULL, T_("Disable DMA loading in autostart") },
     { NULL }
 };
 
@@ -806,6 +827,24 @@ int autostart_prg(const char *file_name, unsigned int runmode)
     return 0;
 }
 
+/* Autostart PRG with DMA */
+int autostart_prg_dma(const char *file_name, unsigned int runmode)
+{
+    if (network_connected())
+        return -1;
+    
+    if(filedma_load_via_fileio(file_name, autostart_log)==0) {
+        /* autostart it */
+        if (autostart_run_mode == AUTOSTART_MODE_RUN) {
+            log_message(autostart_log, "Running program.");
+            kbdbuf_feed(AutostartRunCommand);
+        }
+        return 0;
+    } else {
+        return -1;
+    }
+}
+
 /* ------------------------------------------------------------------------- */
 
 /* Autostart `file_name', trying to auto-detect its type.  */
@@ -841,6 +880,15 @@ int autostart_autodetect(const char *file_name, const char *program_name,
                     file_name);
         return 0;
     }
+    
+    if (AutostartDMA) {
+        if (autostart_prg_dma(file_name, runmode) == 0) {
+            log_message(autostart_log, "`%s' recognized as program/p00 file.",
+                        file_name);
+            return 0;
+        }
+    }
+    
     if (autostart_prg(file_name, runmode) == 0) {
         log_message(autostart_log, "`%s' recognized as program/p00 file.",
                     file_name);

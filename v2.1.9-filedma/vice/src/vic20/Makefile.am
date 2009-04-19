@@ -26,6 +26,7 @@ libvic20_a_SOURCES = \
 	vic.h \
 	vic20-cmdline-options.c \
 	vic20-cmdline-options.h \
+	vic20-filedma.c \
 	vic20-midi.c \
 	vic20-midi.h \
 	vic20-resources.c \

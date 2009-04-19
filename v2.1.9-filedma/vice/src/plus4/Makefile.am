@@ -12,6 +12,7 @@ noinst_LIBRARIES = libplus4.a
 libplus4_a_SOURCES = \
 	plus4-cmdline-options.c \
 	plus4-cmdline-options.h \
+	plus4-filedma.c \
 	plus4-resources.c \
 	plus4-resources.h \
 	plus4-snapshot.c \

@@ -31,6 +31,7 @@ libc64dtv_a_SOURCES = \
 	c64dtvflash.h \
 	c64dtv-cmdline-options.c \
 	c64dtv-cmdline-options.h \
+	c64dtv-filedma.c \
 	c64dtv-resources.c \
 	c64dtv-resources.h \
 	c64dtv-snapshot.c \

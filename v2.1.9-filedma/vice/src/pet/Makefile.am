@@ -12,6 +12,7 @@ noinst_LIBRARIES = libpet.a
 libpet_a_SOURCES = \
 	pet-cmdline-options.c \
 	pet-cmdline-options.h \
+	pet-filedma.c \
 	pet-resources.c \
 	pet-resources.h \
 	pet-snapshot.c \

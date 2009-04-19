@@ -119,6 +119,7 @@ noinst_HEADERS = \
 	dma.h \
 	emuid.h \
 	event.h \
+	filedma.h \
 	fileio.h \
 	findpath.h \
 	fixpoint.h \
@@ -223,6 +224,7 @@ base_sources = \
 	dma.c \
 	emuid.c \
 	event.c \
+	filedma.c \
 	findpath.c \
 	fliplist.c \
 	gcr.c \
