@@ -609,7 +609,7 @@ int c64dtvblitter_snapshot_read_module(snapshot_t *s)
 {
     BYTE major_version, minor_version;
     snapshot_module_t *m;
-    int temp_blitter_state;
+    int temp_blitter_state, i;
 
     /* Blitter module.  */
     m = snapshot_module_open(s, snap_blitter_module_name,
@@ -649,6 +649,10 @@ int c64dtvblitter_snapshot_read_module(snapshot_t *s)
         goto fail;
 
     blitter_state = temp_blitter_state;
+
+    for (i = 0; i < 0x20; ++i) {
+        c64dtv_blitter_store((WORD)i, c64dtvmem_blitter[i]);
+    }
 
     if (snapshot_module_close(m) < 0)
         goto fail;
