@@ -1,5 +1,6 @@
 /*
- * vicii-mem.h - Memory interface for the MOS6569 (VIC-II) emulation.
+ * viciidtv-snapshot.c - Snapshot functionality for the MOS 6569 (VIC-II)
+ * emulation.
  *
  * Written by
  *  Ettore Perazzoli <ettore@comm2000.it>
@@ -25,17 +26,13 @@
  *
  */
 
-#ifndef VICE_VICII_MEM_H
-#define VICE_VICII_MEM_H
+#ifndef VICE_VICIIDTV_SNAPSHOT_H
+#define VICE_VICIIDTV_SNAPSHOT_H
 
-#include "types.h"
+struct snapshot_s;
 
-extern void REGPARM2 vicii_store(WORD addr, BYTE value);
-extern BYTE REGPARM1 vicii_read(WORD addr);
-extern BYTE REGPARM1 vicii_peek(WORD addr);
-extern void REGPARM2 vicii_mem_vbank_store(WORD addr, BYTE value);
-extern void REGPARM2 vicii_mem_vbank_39xx_store(WORD addr, BYTE value);
-extern void REGPARM2 vicii_mem_vbank_3fxx_store(WORD addr, BYTE value);
+extern int vicii_snapshot_write_module(struct snapshot_s *s);
+extern int vicii_snapshot_read_module(struct snapshot_s *s);
 
 #endif
 

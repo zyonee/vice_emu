@@ -1,9 +1,13 @@
 /*
- * vicii-badline.c - Bad line handling for the MOS 6569 (VIC-II) emulation.
+ * viciidtv-badline.c - Bad line handling for the VIC-II DTV emulation.
  *
  * Written by
  *  Andreas Boose <viceteam@t-online.de>
  *  Ettore Perazzoli <ettore@comm2000.it>
+ *
+ * DTV sections written by
+ *  Hannu Nuotio <hannu.nuotio@tut.fi>
+ *  Daniel Kahlin <daniel@kahlin.net>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -31,9 +35,9 @@
 #include "maincpu.h"
 #include "raster.h"
 #include "types.h"
-#include "vicii-badline.h"
-#include "vicii-fetch.h"
-#include "viciitypes.h"
+#include "viciidtv-badline.h"
+#include "viciidtv-fetch.h"
+#include "viciidtvtypes.h"
 
 
 inline static void switch_to_display_state(const int cycle)
@@ -84,11 +88,18 @@ inline static void line_becomes_bad(const int cycle)
 
         xpos = cycle - (VICII_FETCH_CYCLE + 3);
 
+        /* there is a skew of DMA delay on the DTV.
+           this fix partly works. */
+        xpos -=  1;
+
         num_chars = VICII_SCREEN_TEXTCOLS - xpos;
 
         /* Take over the bus until the memory fetch is done.  */
-        if (vicii.fastmode == 0) {
+        if (!vicii.badline_disable && !vicii.colorfetch_disable) {
             dma_maincpu_steal_cycles(maincpu_clk, num_chars, 0);
+        } else if (!vicii.colorfetch_disable) {
+            /* Steal cycles from DMA/Blitter */
+            dtvclockneg += num_chars;
         }
 
         if (num_chars <= VICII_SCREEN_TEXTCOLS) {

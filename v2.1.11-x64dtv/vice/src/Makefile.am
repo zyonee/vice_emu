@@ -25,6 +25,7 @@ SUBDIRS = \
 	video \
 	raster \
 	vicii \
+	viciidtv \
 	vdc \
 	crtc \
 	gfxoutputdrv \
@@ -57,6 +58,7 @@ DIST_SUBDIRS = \
 	video \
 	raster \
 	vicii \
+	viciidtv \
 	vdc \
 	crtc \
 	gfxoutputdrv \
@@ -348,7 +350,7 @@ vdc_lib = $(top_builddir)/src/vdc/libvdc.a
 vdrive_lib = $(top_builddir)/src/vdrive/libvdrive.a
 vic20_lib = $(top_builddir)/src/vic20/libvic20.a
 vicii_lib = $(top_builddir)/src/vicii/libvicii.a
-viciidtv_lib = $(top_builddir)/src/vicii/libviciidtv.a
+viciidtv_lib = $(top_builddir)/src/viciidtv/libviciidtv.a
 video_lib = $(top_builddir)/src/video/libvideo.a
 xcbm2_lib = $(top_builddir)/src/cbm2/libcbm2.a
 
@@ -954,7 +956,7 @@ libvic20:
 libvicii:
 	(cd vicii && $(MAKE) libvicii.a)
 libviciidtv:
-	(cd vicii && $(MAKE) libviciidtv.a)
+	(cd viciidtv && $(MAKE) libviciidtv.a)
 libvideo:
 	(cd video && $(MAKE))
 libz:

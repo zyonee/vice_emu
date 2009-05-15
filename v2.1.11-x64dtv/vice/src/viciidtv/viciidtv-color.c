@@ -1,5 +1,5 @@
 /*
- * viciidtv-color.c - Colors for the C64 DTV (VIC-II) emulation.
+ * viciidtv-color.c - Colors for the VIC-II DTV emulation.
  *
  * Written by
  *  Daniel Kahlin <daniel@kahlin.net>
@@ -29,9 +29,9 @@
 
 #include "vice.h"
 
-#include "viciitypes.h"
-#include "vicii-color.h"
-#include "vicii-resources.h"
+#include "viciidtvtypes.h"
+#include "viciidtv-color.h"
+#include "viciidtv-resources.h"
 #include "video.h"
 
 
@@ -148,15 +148,16 @@ int vicii_color_update_palette(struct video_canvas_s *canvas)
     cl = 0;
     for (col = 0; col < 16; col++) {
         for (lum = 0; lum < 16; lum++) {
-	    dtv_colors_with_lum[cl].luminance = lm[lum];
-	    dtv_colors_with_lum[cl].angle     = an;
-	    dtv_colors_with_lum[cl].direction = (col==0)?0:1;
-	    dtv_colors_with_lum[cl].name      = dtv_color_names[col];
-	    cl++;
-	}
+            dtv_colors_with_lum[cl].luminance = lm[lum];
+            dtv_colors_with_lum[cl].angle     = an;
+            dtv_colors_with_lum[cl].direction = (col==0)?0:1;
+            dtv_colors_with_lum[cl].name      = dtv_color_names[col];
+            cl++;
+        }
         an-=DTV_PHASE_DECREMENT;
-	if (an < 0.0f)
-	  an+=360.0f;
+        if (an < 0.0f) {
+            an+=360.0f;
+        }
     }
 
     video_color_palette_internal(canvas, &dtv_palette);

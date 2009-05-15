@@ -1,9 +1,9 @@
 /*
- * vicii-mem.h - Memory interface for the MOS6569 (VIC-II) emulation.
+ * viciidtv-resources.h - Resources for the VIC-II DTV emulation.
  *
  * Written by
- *  Ettore Perazzoli <ettore@comm2000.it>
  *  Andreas Boose <viceteam@t-online.de>
+ *  Ettore Perazzoli <ettore@comm2000.it>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -25,17 +25,30 @@
  *
  */
 
-#ifndef VICE_VICII_MEM_H
-#define VICE_VICII_MEM_H
+#ifndef VICE_VICIIDTV_RESOURCES_H
+#define VICE_VICIIDTV_RESOURCES_H
 
-#include "types.h"
+/* VIC-II resources.  */
+struct vicii_resources_s
+{
+    /* VIC-II border mode, 0..2 */
+    int border_mode;
 
-extern void REGPARM2 vicii_store(WORD addr, BYTE value);
-extern BYTE REGPARM1 vicii_read(WORD addr);
-extern BYTE REGPARM1 vicii_peek(WORD addr);
-extern void REGPARM2 vicii_mem_vbank_store(WORD addr, BYTE value);
-extern void REGPARM2 vicii_mem_vbank_39xx_store(WORD addr, BYTE value);
-extern void REGPARM2 vicii_mem_vbank_3fxx_store(WORD addr, BYTE value);
+    /* Flag: Do we emulate the sprite-sprite collision register and IRQ?  */
+    int sprite_sprite_collisions_enabled;
+
+    /* Flag: Do we emulate the sprite-background collision register and
+       IRQ?  */
+    int sprite_background_collisions_enabled;
+
+    /* Flag: New or old luminances? */
+    int new_luminances;
+};
+typedef struct vicii_resources_s vicii_resources_t;
+
+extern vicii_resources_t vicii_resources;
+
+extern int vicii_resources_init(void);
 
 #endif
 

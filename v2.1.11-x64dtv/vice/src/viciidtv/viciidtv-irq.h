@@ -1,8 +1,7 @@
 /*
- * vicii-mem.h - Memory interface for the MOS6569 (VIC-II) emulation.
+ * viciidtv-irq.h - IRQ related functions for the VIC-II DTV emulation.
  *
  * Written by
- *  Ettore Perazzoli <ettore@comm2000.it>
  *  Andreas Boose <viceteam@t-online.de>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
@@ -25,17 +24,27 @@
  *
  */
 
-#ifndef VICE_VICII_MEM_H
-#define VICE_VICII_MEM_H
+#ifndef VICE_VICIIDTV_IRQ_H
+#define VICE_VICIIDTV_IRQ_H
 
 #include "types.h"
 
-extern void REGPARM2 vicii_store(WORD addr, BYTE value);
-extern BYTE REGPARM1 vicii_read(WORD addr);
-extern BYTE REGPARM1 vicii_peek(WORD addr);
-extern void REGPARM2 vicii_mem_vbank_store(WORD addr, BYTE value);
-extern void REGPARM2 vicii_mem_vbank_39xx_store(WORD addr, BYTE value);
-extern void REGPARM2 vicii_mem_vbank_3fxx_store(WORD addr, BYTE value);
+extern void vicii_irq_raster_set(CLOCK mclk);
+extern void vicii_irq_raster_clear(CLOCK mclk);
+extern void vicii_irq_sbcoll_set(void);
+extern void vicii_irq_sbcoll_clear(void);
+extern void vicii_irq_sscoll_set(void);
+extern void vicii_irq_sscoll_clear(void);
+extern void vicii_irq_lightpen_set(CLOCK mclk);
+extern void vicii_irq_lightpen_clear(CLOCK mclk);
+
+extern void vicii_irq_set_raster_line(unsigned int line);
+extern void vicii_irq_check_state(BYTE value, unsigned int high);
+extern void vicii_irq_set_line(void);
+extern void vicii_irq_next_frame(void);
+extern void vicii_irq_alarm_handler(CLOCK offset, void *data);
+
+extern void vicii_irq_init(void);
 
 #endif
 

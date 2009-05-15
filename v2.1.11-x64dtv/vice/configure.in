@@ -2800,6 +2800,7 @@ if false ; then
     mkdir -p vdrive
     mkdir -p vic20
     mkdir -p vicii
+    mkdir -p viciidtv
     mkdir -p video 
 
     if test x"$srcdir" != "x." ; then
@@ -2902,6 +2903,7 @@ AC_OUTPUT([Makefile
            src/vdrive/Makefile
            src/vic20/Makefile
            src/vicii/Makefile
+           src/viciidtv/Makefile
            src/video/Makefile
            src/version.h
            po/Makefile.in

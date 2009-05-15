@@ -1,9 +1,12 @@
 /*
- * vicii-mem.h - Memory interface for the MOS6569 (VIC-II) emulation.
+ * viciidtv-color.h - Colors for the VIC-II DTV emulation.
+ *
  *
  * Written by
- *  Ettore Perazzoli <ettore@comm2000.it>
- *  Andreas Boose <viceteam@t-online.de>
+ *  Daniel Kahlin <daniel@kahlin.net>
+ *
+ * Research about the luminances on the original C64 DTV by
+ *  Daniel Kahlin <daniel@kahlin.net>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -25,17 +28,12 @@
  *
  */
 
-#ifndef VICE_VICII_MEM_H
-#define VICE_VICII_MEM_H
+#ifndef VICE_VICIIDTV_COLOR_H
+#define VICE_VICIIDTV_COLOR_H
 
-#include "types.h"
+struct video_canvas_s;
 
-extern void REGPARM2 vicii_store(WORD addr, BYTE value);
-extern BYTE REGPARM1 vicii_read(WORD addr);
-extern BYTE REGPARM1 vicii_peek(WORD addr);
-extern void REGPARM2 vicii_mem_vbank_store(WORD addr, BYTE value);
-extern void REGPARM2 vicii_mem_vbank_39xx_store(WORD addr, BYTE value);
-extern void REGPARM2 vicii_mem_vbank_3fxx_store(WORD addr, BYTE value);
+extern int vicii_color_update_palette(struct video_canvas_s *canvas);
 
 #endif
 

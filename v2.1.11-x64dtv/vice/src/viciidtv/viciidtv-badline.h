@@ -1,8 +1,7 @@
 /*
- * vicii-mem.h - Memory interface for the MOS6569 (VIC-II) emulation.
+ * viciidtv-badline.h - Bad line handling for the VIC-II DTV emulation.
  *
  * Written by
- *  Ettore Perazzoli <ettore@comm2000.it>
  *  Andreas Boose <viceteam@t-online.de>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
@@ -25,17 +24,14 @@
  *
  */
 
-#ifndef VICE_VICII_MEM_H
-#define VICE_VICII_MEM_H
+#ifndef VICE_VICIIDTV_BADLINE_H
+#define VICE_VICIIDTV_BADLINE_H
 
 #include "types.h"
 
-extern void REGPARM2 vicii_store(WORD addr, BYTE value);
-extern BYTE REGPARM1 vicii_read(WORD addr);
-extern BYTE REGPARM1 vicii_peek(WORD addr);
-extern void REGPARM2 vicii_mem_vbank_store(WORD addr, BYTE value);
-extern void REGPARM2 vicii_mem_vbank_39xx_store(WORD addr, BYTE value);
-extern void REGPARM2 vicii_mem_vbank_3fxx_store(WORD addr, BYTE value);
+extern void vicii_badline_check_state(BYTE value, const int cycle,
+                                      const unsigned int line,
+                                      const int old_allow_bad_lines);
 
 #endif
 

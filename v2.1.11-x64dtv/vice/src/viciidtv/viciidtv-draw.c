@@ -1,10 +1,10 @@
 /*
- * viciidtv-draw.c - Rendering for the MOS6569 (VIC-II) emulation.
+ * viciidtv-draw.c - Rendering for the VIC-II DTV emulation.
  *
  * Written by
  *  Andreas Boose <viceteam@t-online.de>
  *  Ettore Perazzoli <ettore@comm2000.it>
- * 
+ *
  * DTV sections written by
  *  Hannu Nuotio <hannu.nuotio@tut.fi>
  *  Daniel Kahlin <daniel@kahlin.net>
@@ -43,8 +43,8 @@
 #include "raster-modes.h"
 #include "raster.h"
 #include "types.h"
-#include "vicii-draw.h"
-#include "viciitypes.h"
+#include "viciidtv-draw.h"
+#include "viciidtvtypes.h"
 #include "viewport.h"
 
 

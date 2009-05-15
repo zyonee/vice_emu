@@ -1,9 +1,13 @@
 /*
- * vicii-fetch.c - Phi2 data fetch for the MOS 6569 (VIC-II) emulation.
+ * viciidtv-fetch.c - Phi2 data fetch for the VIC-II DTV emulation.
  *
  * Written by
  *  Andreas Boose <viceteam@t-online.de>
  *  Ettore Perazzoli <ettore@comm2000.it>
+ *
+ * DTV sections written by
+ *  Hannu Nuotio <hannu.nuotio@tut.fi>
+ *  Daniel Kahlin <daniel@kahlin.net>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -31,7 +35,6 @@
 
 #include "alarm.h"
 #include "debug.h"
-#include "c64cart.h"
 #include "dma.h"
 #include "log.h"
 #include "maincpu.h"
@@ -46,10 +49,10 @@
 #include "raster-sprite.h"
 #include "raster.h"
 #include "types.h"
-#include "vicii-fetch.h"
-#include "vicii-irq.h"
-#include "vicii-sprites.h"
-#include "viciitypes.h"
+#include "viciidtv-fetch.h"
+#include "viciidtv-irq.h"
+#include "viciidtv-sprites.h"
+#include "viciidtvtypes.h"
 
 
 /* Emulate a matrix line fetch, `num' bytes starting from `offs'.  This takes
@@ -61,15 +64,21 @@ void vicii_fetch_matrix(int offs, int num, int num_0xff, int cycle)
 
     /*log_debug("OFF %02i NUM %02i NFF %02i",offs,num,num_0xff);*/
 
+    num_0xff = 0;
+
     if (num_0xff > 0) {
         if (num <= num_0xff) {
             memset(vicii.vbuf + offs, 0xff, num);
-            memset(vicii.cbuf + offs, vicii.ram_base_phi2[reg_pc] & 0xf, num);
+
+            if (!vicii.colorfetch_disable)
+                memset(vicii.cbuf + offs, vicii.ram_base_phi2[reg_pc] & 0xf, num);
             /* FIXME: Crunch table in Multiplexer part of Krestage */
             vicii.background_color_source = 0xff;
         } else {
             memset(vicii.vbuf + offs, 0xff, num_0xff);
-            memset(vicii.cbuf + offs, vicii.ram_base_phi2[reg_pc] & 0xf,
+
+            if (!vicii.colorfetch_disable)
+                memset(vicii.cbuf + offs, vicii.ram_base_phi2[reg_pc] & 0xf,
                        num_0xff);
         }
     }
@@ -84,12 +93,20 @@ void vicii_fetch_matrix(int offs, int num, int num_0xff, int cycle)
 
         if (c >= num) {
             memcpy(vicii.vbuf + offs, vicii.screen_base_phi2 + start_char, num);
-            memcpy(vicii.cbuf + offs, mem_color_ram_vicii + start_char, num);
+            if (!vicii.colorfetch_disable) {
+                memcpy(vicii.cbuf + offs, vicii.color_ram_ptr + start_char, num);
+            }
         } else {
             memcpy(vicii.vbuf + offs, vicii.screen_base_phi2 + start_char, c);
             memcpy(vicii.vbuf + offs + c, vicii.screen_base_phi2, num - c);
-            memcpy(vicii.cbuf + offs, mem_color_ram_vicii + start_char, c);
-            memcpy(vicii.cbuf + offs + c, mem_color_ram_vicii, num - c);
+
+            if (!vicii.colorfetch_disable) {
+                memcpy(vicii.cbuf + offs, vicii.color_ram_ptr + start_char, c);
+            }
+
+            if (!vicii.colorfetch_disable) {
+                memcpy(vicii.cbuf + offs + c, vicii.color_ram_ptr, num - c);
+            }
         }
         vicii.background_color_source = vicii.vbuf[VICII_SCREEN_TEXTCOLS
                                         - 1 /*- vicii.buf_offset*/];
@@ -142,11 +159,13 @@ inline static int do_matrix_fetch(CLOCK sub)
             vicii.ycounter_reset_checked = 1;
             vicii.memory_fetch_done = 2;
 
-            if (vicii.fastmode == 0) {
+            if (!vicii.badline_disable && !vicii.colorfetch_disable) {
                 dma_maincpu_steal_cycles(vicii.fetch_clk,
                                          VICII_SCREEN_TEXTCOLS + 3 - sub, sub);
+            } else if (!vicii.colorfetch_disable) {
+                /* Steal cycles from DMA/Blitter */
+                dtvclockneg += VICII_SCREEN_TEXTCOLS + 3;
             }
-
             vicii.bad_line = 1;
             return 1;
         }
@@ -369,6 +388,7 @@ inline static int handle_fetch_sprite(long offset, CLOCK sub,
     bank_phi1 = vicii.ram_base_phi1 + vicii.vbank_phi1;
     bank_phi2 = vicii.ram_base_phi2 + vicii.vbank_phi2;
     spr_base = vicii.screen_base_phi1 + 0x3f8 + sf->first;
+    spr_base += (vicii.regs[0x4d]<<16);
 
     /* Fetch sprite data.  */
     for (i = sf->first; i <= sf->last; i++, spr_base++) {
@@ -387,27 +407,20 @@ inline static int handle_fetch_sprite(long offset, CLOCK sub,
             my_memptr = sprite_status->sprites[i].memptr;
             dest = (BYTE *)(sprite_status->new_sprite_data + i);
 
-            if (cart_ultimax_phi1) {
-                if (*spr_base >= 0xc0)
-                    src_phi1 = (romh_banks + 0x1000 + (romh_bank << 13)
-                               + ((*spr_base - 0xc0) << 6));
-            } else {
-                if (((vicii.vbank_phi1 + (*spr_base << 6))
-                    & vicii.vaddr_chargen_mask_phi1)
-                    == vicii.vaddr_chargen_value_phi1)
-                    src_phi1 = mem_chargen_rom_ptr + ((*spr_base & 0x3f) << 6);
+            if (((vicii.vbank_phi1 + (*spr_base << 6))
+                & vicii.vaddr_chargen_mask_phi1)
+                == vicii.vaddr_chargen_value_phi1) {
+                src_phi1 = mem_chargen_rom_ptr + ((*spr_base & 0x3f) << 6);
             }
 
-            if (cart_ultimax_phi2) {
-                if (*spr_base >= 0xc0)
-                    src_phi2 = (romh_banks + 0x1000 + (romh_bank << 13)
-                               + ((*spr_base - 0xc0) << 6));
-            } else {
-                if (((vicii.vbank_phi2 + (*spr_base << 6))
-                    & vicii.vaddr_chargen_mask_phi2)
-                    == vicii.vaddr_chargen_value_phi2)
-                    src_phi2 = mem_chargen_rom_ptr + ((*spr_base & 0x3f) << 6);
+            if (((vicii.vbank_phi2 + (*spr_base << 6))
+                & vicii.vaddr_chargen_mask_phi2)
+                == vicii.vaddr_chargen_value_phi2) {
+                src_phi2 = mem_chargen_rom_ptr + ((*spr_base & 0x3f) << 6);
             }
+
+            src_phi1 += (vicii.regs[0x4d]<<16);
+            src_phi2 += (vicii.regs[0x4d]<<16);
 
             dest[0] = src_phi2[my_memptr];
             dest[1] = src_phi1[++my_memptr & 0x3f];
@@ -419,8 +432,11 @@ inline static int handle_fetch_sprite(long offset, CLOCK sub,
 
     /*log_debug("SF %i VBL %i SUB %i",sf->num,vicii.bad_line,sub);*/
 
-    if (vicii.fastmode == 0) {
+    if (!vicii.badline_disable) {
         dma_maincpu_steal_cycles(vicii.fetch_clk, num_cycles - sub, sub);
+    } else {
+        /* Steal cycles from DMA/Blitter */
+        dtvclockneg += num_cycles;
     }
 
     *write_offset = sub == 0 ? num_cycles : 0;

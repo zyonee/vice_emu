@@ -1,8 +1,8 @@
 /*
- * vicii-stubs.c - Blitter/DMA stubs for normal VIC-II
+ * viciidtv-timing.h - Timing related settings for the VIC-II DTV emulation.
  *
  * Written by
- *  Hannu Nuotio <hannu.nuotio@tut.fi>
+ *  Andreas Boose <viceteam@t-online.de>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -24,20 +24,12 @@
  *
  */
 
-#include "vice.h"
+#ifndef VICE_VICIIDTV_TIMING_H
+#define VICE_VICIIDTV_TIMING_H
 
-#include "c64dtvblitter.h"
-#include "c64dtvdma.h"
+struct machine_timing_s;
 
-int dtvclockneg = 0;
-int blitter_on_irq = 0;
-int dma_on_irq = 0;
+extern void vicii_timing_set(struct machine_timing_s *machine_timing,
+                             int border_mode);
 
-void c64dtvdma_trigger_dma(void)
-{
-}
-
-void c64dtvblitter_trigger_blitter(void)
-{
-}
-
+#endif

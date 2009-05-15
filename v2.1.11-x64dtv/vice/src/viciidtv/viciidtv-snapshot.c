@@ -1,12 +1,12 @@
 /*
- * vicii-snapshot.c - Snapshot functionality for the MOS 6569 (VIC-II)
+ * viciidtv-snapshot.c - Snapshot functionality for the VIC-II DTV
  * emulation.
  *
  * Written by
  *  Ettore Perazzoli <ettore@comm2000.it>
  *  Andreas Boose <viceteam@t-online.de>
  *
-  * DTV sections written by
+ * DTV sections written by
  *  Hannu Nuotio <hannu.nuotio@tut.fi>
  *  Daniel Kahlin <daniel@kahlin.net>
  *
@@ -48,12 +48,12 @@
 #include "raster-sprite.h"
 #include "snapshot.h"
 #include "types.h"
-#include "vicii-irq.h"
-#include "vicii-snapshot.h"
-#include "vicii-sprites.h"
+#include "viciidtv-irq.h"
+#include "viciidtv-snapshot.h"
+#include "viciidtv-sprites.h"
 #include "vicii.h"
-#include "viciitypes.h"
-#include "vicii-mem.h"
+#include "viciidtvtypes.h"
+#include "viciidtv-mem.h"
 
 
 /* Make sure all the VIC-II alarms are removed.  This just makes it easier to

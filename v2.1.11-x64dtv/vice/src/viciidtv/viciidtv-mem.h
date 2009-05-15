@@ -1,5 +1,5 @@
 /*
- * vicii-mem.h - Memory interface for the MOS6569 (VIC-II) emulation.
+ * viciidtv-mem.h - Memory interface for the VIC-II DTV emulation.
  *
  * Written by
  *  Ettore Perazzoli <ettore@comm2000.it>
@@ -25,8 +25,8 @@
  *
  */
 
-#ifndef VICE_VICII_MEM_H
-#define VICE_VICII_MEM_H
+#ifndef VICE_VICIIDTV_MEM_H
+#define VICE_VICIIDTV_MEM_H
 
 #include "types.h"
 
@@ -36,6 +36,10 @@ extern BYTE REGPARM1 vicii_peek(WORD addr);
 extern void REGPARM2 vicii_mem_vbank_store(WORD addr, BYTE value);
 extern void REGPARM2 vicii_mem_vbank_39xx_store(WORD addr, BYTE value);
 extern void REGPARM2 vicii_mem_vbank_3fxx_store(WORD addr, BYTE value);
+extern void REGPARM2 vicii_palette_store(WORD addr, BYTE value);
+extern BYTE REGPARM1 vicii_palette_read(WORD addr);
+extern int vicii_extended_regs(void);
+extern void viciidtv_update_colorram(void);
 
 #endif
 
