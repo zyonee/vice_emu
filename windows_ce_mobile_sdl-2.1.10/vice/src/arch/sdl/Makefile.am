@@ -270,6 +270,19 @@ EXTRA_DIST = \
 	win64-msvc/xplus4.vcproj \
 	win64-msvc/xvic.vcproj \
 	win64-msvc/zlib.vcproj \
+	wince-msvc/_vice.vcproj \
+	wince-msvc/arch.vcproj \
+	wince-msvc/base.vcproj \
+	wince-msvc/c128.vcproj \
+	wince-msvc/c1541.vcproj \
+	wince-msvc/c64.vcproj \
+	wince-msvc/c64c128.vcproj \
+	wince-msvc/c64c64dtv.vcproj \
+	wince-msvc/c64cart.vcproj \
+	wince-msvc/c64dtv.vcproj \
+	wince-msvc/c64dtvstubs.vcproj \
+	wince-msvc/c64exp.vcproj \
+	wince-msvc/cartconv.vcproj \
 	archdep_amiga.c \
 	archdep_amiga.h \
 	archdep_beos.c \
