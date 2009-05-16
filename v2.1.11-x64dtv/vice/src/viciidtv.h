@@ -1,8 +1,8 @@
 /*
- * c64rom.h
+ * viciidtv.h - A cycle-exact event-driven VIC-II DTV emulation.
  *
  * Written by
- *  Andreas Boose <viceteam@t-online.de>
+ *  Hannu Nuotio <hannu.nuotio@tut.fi>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -24,19 +24,20 @@
  *
  */
 
-#ifndef VICE_C64ROM_H
-#define VICE_C64ROM_H
+#ifndef VICE_VICIIDTV_H
+#define VICE_VICIIDTV_H
 
-#include "types.h"
+/* Memory access cycle 1:
+    Character fetch/Counter A */
+extern void viciidtv_cycle_1(void);
 
-extern int c64rom_load_kernal(const char *rom_name, BYTE *new_kernal);
-extern int c64rom_load_basic(const char *rom_name);
-extern int c64rom_load_chargen(const char *rom_name);
+/* Memory access cycle 2:
+    Color/sprite fetch/Blitter/DMA
+  Returns 1 if access was done (BA low) */
+extern int viciidtv_cycle_2(void);
 
-extern int c64rom_get_kernal_checksum(void);
-extern int c64rom_get_basic_checksum(void);
-
-extern int c64rom_cartkernal_active;
+/* Memory access cycle 3:
+    Graphic fetch/Counter B */
+extern void viciidtv_cycle_3(void);
 
 #endif
-

@@ -26,7 +26,7 @@
 
 #include "vice.h"
 
-#include "maincpu.h"
+#include "maindtvcpu.h"
 #include "types.h"
 #include "viciidtv-phi1.h"
 #include "viciidtvtypes.h"

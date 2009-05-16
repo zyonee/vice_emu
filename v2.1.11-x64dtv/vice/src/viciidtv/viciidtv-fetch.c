@@ -37,7 +37,7 @@
 #include "debug.h"
 #include "dma.h"
 #include "log.h"
-#include "maincpu.h"
+#include "maindtvcpu.h"
 
 #ifdef WATCOM_COMPILE
 #include "../mem.h"

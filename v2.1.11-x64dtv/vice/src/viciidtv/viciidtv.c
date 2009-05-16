@@ -57,7 +57,7 @@
 #include "lib.h"
 #include "log.h"
 #include "machine.h"
-#include "maincpu.h"
+#include "maindtvcpu.h"
 
 #ifdef WATCOM_COMPILE
 #include "../mem.h"

@@ -39,7 +39,7 @@
 #include "debug.h"
 #include "interrupt.h"
 #include "machine.h"
-#include "maincpu.h"
+#include "maindtvcpu.h"
 #include "mem.h"
 #include "monitor.h"
 #include "mos6510dtv.h"

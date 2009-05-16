@@ -15,6 +15,7 @@ libviciidtv_a_SOURCES = \
 	viciidtv-cmdline-options.h \
 	viciidtv-color.c \
 	viciidtv-color.h \
+	viciidtv-cycle.c \
 	viciidtv-draw.c \
 	viciidtv-draw.h \
 	viciidtv-fetch.c \

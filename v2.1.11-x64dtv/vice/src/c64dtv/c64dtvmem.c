@@ -32,20 +32,20 @@
 
 #include "vice.h"
 
+#include "alarm.h"
 #include "c64dtvmem.h"
 #include "c64dtvblitter.h"
 #include "c64dtvdma.h"
 #include "c64dtvflash.h"
 #include "cmdline.h"
+#include "hummeradc.h"
+#include "interrupt.h"
 #include "lib.h"
 #include "log.h"
-#include "util.h"
-#include "resources.h"
 #include "mos6510dtv.h"
-#include "interrupt.h"
-#include "alarm.h"
-#include "hummeradc.h"
 #include "ps2mouse.h"
+#include "resources.h"
+#include "util.h"
 
 /* TODO this is a hack */
 #define C64_RAM_SIZE 0x200000
@@ -69,13 +69,13 @@
 #include "c64memrom.h"
 #include "c64pla.h"
 #include "machine.h"
-#include "maincpu.h"
+#include "maindtvcpu.h"
 #include "mem.h"
 #include "monitor.h"
 #include "ram.h"
 #include "sid.h"
-#include "vicii-mem.h"
-#include "vicii-phi1.h"
+#include "viciidtv-mem.h"
+#include "viciidtv-phi1.h"
 #include "vicii.h"
 
 /* included by c64dtvmem.c */

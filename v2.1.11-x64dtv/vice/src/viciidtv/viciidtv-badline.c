@@ -32,7 +32,7 @@
 #include "vice.h"
 
 #include "dma.h"
-#include "maincpu.h"
+#include "maindtvcpu.h"
 #include "raster.h"
 #include "types.h"
 #include "viciidtv-badline.h"

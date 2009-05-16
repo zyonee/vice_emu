@@ -34,7 +34,7 @@
 #include "c64dtvblitter.h"
 #include "c64dtvdma.h"
 #include "interrupt.h"
-#include "maincpu.h"
+#include "maindtvcpu.h"
 #include "types.h"
 #include "viciidtv-irq.h"
 #include "viciidtvtypes.h"
