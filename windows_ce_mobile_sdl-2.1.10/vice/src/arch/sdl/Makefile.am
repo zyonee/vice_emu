@@ -273,6 +273,8 @@ EXTRA_DIST = \
 	wince-msvc/config.h \
 	wince-msvc/dirent.h \
 	wince-msvc/make-bindist.bat \
+	wince-msvc/siddefs.h \
+	wince-msvc/siddefs-fp.h \
 	wince-msvc/_vice.vcproj \
 	wince-msvc/arch.vcproj \
 	wince-msvc/base.vcproj \
@@ -303,6 +305,28 @@ EXTRA_DIST = \
 	wince-msvc/imagecontents.vcproj \
 	wince-msvc/monitor.vcproj \
 	wince-msvc/parallel.vcproj \
+	wince-msvc/pet.vcproj \
+	wince-msvc/petcat.vcproj \
+	wince-msvc/plus4.vcproj \
+	wince-msvc/plus4exp.vcproj \
+	wince-msvc/png.vcproj \
+	wince-msvc/printerdrv.vcproj \
+	wince-msvc/raster.vcproj \
+	wince-msvc/resid.vcproj \
+	wince-msvc/residdtv.vcproj \
+	wince-msvc/residfp.vcproj \
+	wince-msvc/rs232drv.vcproj \
+	wince-msvc/serial.vcproj \
+	wince-msvc/sid.vcproj \
+	wince-msvc/sounddrv.vcproj \
+	wince-msvc/tape.vcproj \
+	wince-msvc/tcbm.vcproj \
+	wince-msvc/vdc.vcproj \
+	wince-msvc/vdrive.vcproj \
+	wince-msvc/vic20.vcproj \
+	wince-msvc/vice.sln \
+	wince-msvc/vicii.vcproj \
+	wince-msvc/viciidtv.vcproj \
 	archdep_amiga.c \
 	archdep_amiga.h \
 	archdep_beos.c \

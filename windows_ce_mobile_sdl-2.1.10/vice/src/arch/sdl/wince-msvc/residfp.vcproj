@@ -1,0 +1,784 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="8.00"
+	Name="residfp"
+	ProjectGUID="{C3978CD2-3CEA-4B8C-AB42-34F6F859CC16}"
+	>
+	<Platforms>
+		<Platform
+			Name="Pocket PC 2003 (ARMV4)"
+		/>
+		<Platform
+			Name="Smartphone 2003 (ARMV4)"
+		/>
+	</Platforms>
+	<ToolFiles>
+	</ToolFiles>
+	<Configurations>
+		<Configuration
+			Name="Release|Pocket PC 2003 (ARMV4)"
+			OutputDirectory="Pocket PC 2003 (ARMV4)\$(ConfigurationName)"
+			IntermediateDirectory="Pocket PC 2003 (ARMV4)\$(ConfigurationName)"
+			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				TargetEnvironment="1"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				ExecutionBucket="7"
+				Optimization="2"
+				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories=".\"
+				PreprocessorDefinitions="NDEBUG;PACKAGE=\&quot;residfp\&quot;;VERSION=\&quot;0.7\&quot;;SIZEOF_INT=4;WIN32;_WINDOWS;_WIN32_WCE=$(CEVER);$(CePlatform);ARM;_ARM_;ARMV4;UNDER_CE=$(CEVER);UNICODE"
+				StringPooling="true"
+				RuntimeLibrary="2"
+				EnableFunctionLevelLinking="true"
+				PrecompiledHeaderFile=".\libs\residfp\Release/residfp.pch"
+				AssemblerListingLocation=".\libs\residfp\Release/"
+				ObjectFile=".\libs\residfp\Release/"
+				ProgramDataBaseFileName=".\libs\residfp\Release/"
+				WarningLevel="3"
+				SuppressStartupBanner="true"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile=".\libs\residfp\Release\residfp.lib"
+				SuppressStartupBanner="true"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+				SuppressStartupBanner="true"
+				OutputFile=".\libs\residfp\Release/residfp.bsc"
+			/>
+			<Tool
+				Name="VCCodeSignTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+			<DeploymentTool
+				ForceDirty="-1"
+				RemoteDirectory=""
+				RegisterOutput="0"
+				AdditionalFiles=""
+			/>
+			<DebuggerTool
+			/>
+		</Configuration>
+		<Configuration
+			Name="Debug|Pocket PC 2003 (ARMV4)"
+			OutputDirectory="Pocket PC 2003 (ARMV4)\$(ConfigurationName)"
+			IntermediateDirectory="Pocket PC 2003 (ARMV4)\$(ConfigurationName)"
+			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				TargetEnvironment="1"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				ExecutionBucket="7"
+				Optimization="0"
+				AdditionalIncludeDirectories=".\"
+				PreprocessorDefinitions="NDEBUG;PACKAGE=\&quot;residfp\&quot;;VERSION=\&quot;0.7\&quot;;SIZEOF_INT=4;_DEBUG;WIN32;_WINDOWS;_WIN32_WCE=$(CEVER);$(CePlatform);ARM;_ARM_;ARMV4;UNDER_CE=$(CEVER);UNICODE"
+				RuntimeLibrary="3"
+				PrecompiledHeaderFile=".\libs\residfp\Debug/residfp.pch"
+				AssemblerListingLocation=".\libs\residfp\Debug/"
+				ObjectFile=".\libs\residfp\Debug/"
+				ProgramDataBaseFileName=".\libs\residfp\Debug/"
+				WarningLevel="3"
+				DebugInformationFormat="1"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile=".\libs\residfp\Debug\residfp.lib"
+				SuppressStartupBanner="true"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+				SuppressStartupBanner="true"
+				OutputFile=".\libs\residfp\Debug/residfp.bsc"
+			/>
+			<Tool
+				Name="VCCodeSignTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+			<DeploymentTool
+				ForceDirty="-1"
+				RemoteDirectory=""
+				RegisterOutput="0"
+				AdditionalFiles=""
+			/>
+			<DebuggerTool
+			/>
+		</Configuration>
+		<Configuration
+			Name="Release|Smartphone 2003 (ARMV4)"
+			OutputDirectory="Smartphone 2003 (ARMV4)\$(ConfigurationName)"
+			IntermediateDirectory="Smartphone 2003 (ARMV4)\$(ConfigurationName)"
+			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				TargetEnvironment="1"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				ExecutionBucket="7"
+				Optimization="2"
+				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories=".\"
+				PreprocessorDefinitions="NDEBUG;PACKAGE=\&quot;residfp\&quot;;VERSION=\&quot;0.7\&quot;;SIZEOF_INT=4;WIN32;_WINDOWS;_WIN32_WCE=$(CEVER);$(CePlatform);ARM;_ARM_;ARMV4;UNDER_CE=$(CEVER);UNICODE"
+				StringPooling="true"
+				RuntimeLibrary="2"
+				EnableFunctionLevelLinking="true"
+				PrecompiledHeaderFile=".\libs\residfp\Release/residfp.pch"
+				AssemblerListingLocation=".\libs\residfp\Release/"
+				ObjectFile=".\libs\residfp\Release/"
+				ProgramDataBaseFileName=".\libs\residfp\Release/"
+				WarningLevel="3"
+				SuppressStartupBanner="true"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile=".\libs\residfp\Release\residfp.lib"
+				SuppressStartupBanner="true"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+				SuppressStartupBanner="true"
+				OutputFile=".\libs\residfp\Release/residfp.bsc"
+			/>
+			<Tool
+				Name="VCCodeSignTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+			<DeploymentTool
+				ForceDirty="-1"
+				RemoteDirectory=""
+				RegisterOutput="0"
+				AdditionalFiles=""
+			/>
+			<DebuggerTool
+			/>
+		</Configuration>
+		<Configuration
+			Name="Debug|Smartphone 2003 (ARMV4)"
+			OutputDirectory="Smartphone 2003 (ARMV4)\$(ConfigurationName)"
+			IntermediateDirectory="Smartphone 2003 (ARMV4)\$(ConfigurationName)"
+			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				TargetEnvironment="1"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				ExecutionBucket="7"
+				Optimization="0"
+				AdditionalIncludeDirectories=".\"
+				PreprocessorDefinitions="NDEBUG;PACKAGE=\&quot;residfp\&quot;;VERSION=\&quot;0.7\&quot;;SIZEOF_INT=4;_DEBUG;WIN32;_WINDOWS;_WIN32_WCE=$(CEVER);$(CePlatform);ARM;_ARM_;ARMV4;UNDER_CE=$(CEVER);UNICODE"
+				RuntimeLibrary="3"
+				PrecompiledHeaderFile=".\libs\residfp\Debug/residfp.pch"
+				AssemblerListingLocation=".\libs\residfp\Debug/"
+				ObjectFile=".\libs\residfp\Debug/"
+				ProgramDataBaseFileName=".\libs\residfp\Debug/"
+				WarningLevel="3"
+				DebugInformationFormat="1"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile=".\libs\residfp\Debug\residfp.lib"
+				SuppressStartupBanner="true"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+				SuppressStartupBanner="true"
+				OutputFile=".\libs\residfp\Debug/residfp.bsc"
+			/>
+			<Tool
+				Name="VCCodeSignTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+			<DeploymentTool
+				ForceDirty="-1"
+				RemoteDirectory=""
+				RegisterOutput="0"
+				AdditionalFiles=""
+			/>
+			<DebuggerTool
+			/>
+		</Configuration>
+	</Configurations>
+	<References>
+	</References>
+	<Files>
+		<File
+			RelativePath="..\..\..\resid-fp\convolve-sse.cc"
+			>
+			<FileConfiguration
+				Name="Release|Pocket PC 2003 (ARMV4)"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MD /W3 /EHsc /I &quot;.\\&quot; /D &quot;NDEBUG&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid-fp\Release/resid-fp.pch&quot;  /Fo&quot;libs\resid-fp\Release/&quot; /Fd&quot;libs\resid-fp\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid-fp\Release/$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug|Pocket PC 2003 (ARMV4)"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MDd /W3 /EHsc /Z7 /Od /I &quot;.\\&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D PACKAGE=\&quot;residfp\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /D &quot;_DEBUG&quot; /Fp&quot;libs\residfp\Debug/residfp.pch&quot;  /Fo&quot;libs\residfp\Debug/&quot; /Fd&quot;libs\residfp\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\residfp\Debug/$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|Smartphone 2003 (ARMV4)"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MD /W3 /EHsc /I &quot;.\\&quot; /D &quot;NDEBUG&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid-fp\Release/resid-fp.pch&quot;  /Fo&quot;libs\resid-fp\Release/&quot; /Fd&quot;libs\resid-fp\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid-fp\Release/$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug|Smartphone 2003 (ARMV4)"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MDd /W3 /EHsc /Z7 /Od /I &quot;.\\&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D PACKAGE=\&quot;residfp\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /D &quot;_DEBUG&quot; /Fp&quot;libs\residfp\Debug/residfp.pch&quot;  /Fo&quot;libs\residfp\Debug/&quot; /Fd&quot;libs\residfp\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\residfp\Debug/$(InputName).obj"
+				/>
+			</FileConfiguration>
+		</File>
+		<File
+			RelativePath="..\..\..\resid-fp\convolve.cc"
+			>
+			<FileConfiguration
+				Name="Release|Pocket PC 2003 (ARMV4)"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MD /W3 /EHsc /I &quot;.\\&quot; /D &quot;NDEBUG&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid-fp\Release/resid-fp.pch&quot;  /Fo&quot;libs\resid-fp\Release/&quot; /Fd&quot;libs\resid-fp\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid-fp\Release/$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug|Pocket PC 2003 (ARMV4)"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MDd /W3 /EHsc /Z7 /Od /I &quot;.\\&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D PACKAGE=\&quot;residfp\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /D &quot;_DEBUG&quot; /Fp&quot;libs\residfp\Debug/residfp.pch&quot;  /Fo&quot;libs\residfp\Debug/&quot; /Fd&quot;libs\residfp\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\residfp\Debug/$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|Smartphone 2003 (ARMV4)"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MD /W3 /EHsc /I &quot;.\\&quot; /D &quot;NDEBUG&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid-fp\Release/resid-fp.pch&quot;  /Fo&quot;libs\resid-fp\Release/&quot; /Fd&quot;libs\resid-fp\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid-fp\Release/$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug|Smartphone 2003 (ARMV4)"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MDd /W3 /EHsc /Z7 /Od /I &quot;.\\&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D PACKAGE=\&quot;residfp\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /D &quot;_DEBUG&quot; /Fp&quot;libs\residfp\Debug/residfp.pch&quot;  /Fo&quot;libs\residfp\Debug/&quot; /Fd&quot;libs\residfp\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\residfp\Debug/$(InputName).obj"
+				/>
+			</FileConfiguration>
+		</File>
+		<File
+			RelativePath="..\..\..\resid-fp\envelope.cc"
+			>
+			<FileConfiguration
+				Name="Release|Pocket PC 2003 (ARMV4)"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MD /W3 /EHsc /I &quot;.\\&quot; /D &quot;NDEBUG&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid-fp\Release/resid-fp.pch&quot;  /Fo&quot;libs\resid-fp\Release/&quot; /Fd&quot;libs\resid-fp\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid-fp\Release/$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug|Pocket PC 2003 (ARMV4)"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MDd /W3 /EHsc /Z7 /Od /I &quot;.\\&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D PACKAGE=\&quot;residfp\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /D &quot;_DEBUG&quot; /Fp&quot;libs\residfp\Debug/residfp.pch&quot;  /Fo&quot;libs\residfp\Debug/&quot; /Fd&quot;libs\residfp\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\residfp\Debug/$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|Smartphone 2003 (ARMV4)"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MD /W3 /EHsc /I &quot;.\\&quot; /D &quot;NDEBUG&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid-fp\Release/resid-fp.pch&quot;  /Fo&quot;libs\resid-fp\Release/&quot; /Fd&quot;libs\resid-fp\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid-fp\Release/$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug|Smartphone 2003 (ARMV4)"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MDd /W3 /EHsc /Z7 /Od /I &quot;.\\&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D PACKAGE=\&quot;residfp\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /D &quot;_DEBUG&quot; /Fp&quot;libs\residfp\Debug/residfp.pch&quot;  /Fo&quot;libs\residfp\Debug/&quot; /Fd&quot;libs\residfp\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\residfp\Debug/$(InputName).obj"
+				/>
+			</FileConfiguration>
+		</File>
+		<File
+			RelativePath="..\..\..\resid-fp\envelope.h"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\resid-fp\extfilt.cc"
+			>
+			<FileConfiguration
+				Name="Release|Pocket PC 2003 (ARMV4)"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MD /W3 /EHsc /I &quot;.\\&quot; /D &quot;NDEBUG&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid-fp\Release/resid-fp.pch&quot;  /Fo&quot;libs\resid-fp\Release/&quot; /Fd&quot;libs\resid-fp\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid-fp\Release/$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug|Pocket PC 2003 (ARMV4)"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MDd /W3 /EHsc /Z7 /Od /I &quot;.\\&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D PACKAGE=\&quot;residfp\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /D &quot;_DEBUG&quot; /Fp&quot;libs\residfp\Debug/residfp.pch&quot;  /Fo&quot;libs\residfp\Debug/&quot; /Fd&quot;libs\residfp\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\residfp\Debug/$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|Smartphone 2003 (ARMV4)"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MD /W3 /EHsc /I &quot;.\\&quot; /D &quot;NDEBUG&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid-fp\Release/resid-fp.pch&quot;  /Fo&quot;libs\resid-fp\Release/&quot; /Fd&quot;libs\resid-fp\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid-fp\Release/$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug|Smartphone 2003 (ARMV4)"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MDd /W3 /EHsc /Z7 /Od /I &quot;.\\&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D PACKAGE=\&quot;residfp\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /D &quot;_DEBUG&quot; /Fp&quot;libs\residfp\Debug/residfp.pch&quot;  /Fo&quot;libs\residfp\Debug/&quot; /Fd&quot;libs\residfp\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\residfp\Debug/$(InputName).obj"
+				/>
+			</FileConfiguration>
+		</File>
+		<File
+			RelativePath="..\..\..\resid-fp\extfilt.h"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\resid-fp\filter.cc"
+			>
+			<FileConfiguration
+				Name="Release|Pocket PC 2003 (ARMV4)"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MD /W3 /EHsc /I &quot;.\\&quot; /D &quot;NDEBUG&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid-fp\Release/resid-fp.pch&quot;  /Fo&quot;libs\resid-fp\Release/&quot; /Fd&quot;libs\resid-fp\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid-fp\Release/$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug|Pocket PC 2003 (ARMV4)"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MDd /W3 /EHsc /Z7 /Od /I &quot;.\\&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D PACKAGE=\&quot;residfp\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /D &quot;_DEBUG&quot; /Fp&quot;libs\residfp\Debug/residfp.pch&quot;  /Fo&quot;libs\residfp\Debug/&quot; /Fd&quot;libs\residfp\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\residfp\Debug/$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|Smartphone 2003 (ARMV4)"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MD /W3 /EHsc /I &quot;.\\&quot; /D &quot;NDEBUG&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid-fp\Release/resid-fp.pch&quot;  /Fo&quot;libs\resid-fp\Release/&quot; /Fd&quot;libs\resid-fp\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid-fp\Release/$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug|Smartphone 2003 (ARMV4)"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MDd /W3 /EHsc /Z7 /Od /I &quot;.\\&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D PACKAGE=\&quot;residfp\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /D &quot;_DEBUG&quot; /Fp&quot;libs\residfp\Debug/residfp.pch&quot;  /Fo&quot;libs\residfp\Debug/&quot; /Fd&quot;libs\residfp\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\residfp\Debug/$(InputName).obj"
+				/>
+			</FileConfiguration>
+		</File>
+		<File
+			RelativePath="..\..\..\resid-fp\filter.h"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\resid-fp\pot.cc"
+			>
+			<FileConfiguration
+				Name="Release|Pocket PC 2003 (ARMV4)"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MD /W3 /EHsc /I &quot;.\\&quot; /D &quot;NDEBUG&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid-fp\Release/resid-fp.pch&quot;  /Fo&quot;libs\resid-fp\Release/&quot; /Fd&quot;libs\resid-fp\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid-fp\Release/$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug|Pocket PC 2003 (ARMV4)"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MDd /W3 /EHsc /Z7 /Od /I &quot;.\\&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D PACKAGE=\&quot;residfp\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /D &quot;_DEBUG&quot; /Fp&quot;libs\residfp\Debug/residfp.pch&quot;  /Fo&quot;libs\residfp\Debug/&quot; /Fd&quot;libs\residfp\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\residfp\Debug/$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|Smartphone 2003 (ARMV4)"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MD /W3 /EHsc /I &quot;.\\&quot; /D &quot;NDEBUG&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid-fp\Release/resid-fp.pch&quot;  /Fo&quot;libs\resid-fp\Release/&quot; /Fd&quot;libs\resid-fp\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid-fp\Release/$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug|Smartphone 2003 (ARMV4)"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MDd /W3 /EHsc /Z7 /Od /I &quot;.\\&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D PACKAGE=\&quot;residfp\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /D &quot;_DEBUG&quot; /Fp&quot;libs\residfp\Debug/residfp.pch&quot;  /Fo&quot;libs\residfp\Debug/&quot; /Fd&quot;libs\residfp\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\residfp\Debug/$(InputName).obj"
+				/>
+			</FileConfiguration>
+		</File>
+		<File
+			RelativePath="..\..\..\resid-fp\pot.h"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\resid-fp\sid.cc"
+			>
+			<FileConfiguration
+				Name="Release|Pocket PC 2003 (ARMV4)"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MD /W3 /EHsc /I &quot;.\\&quot; /D &quot;NDEBUG&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid-fp\Release/resid-fp.pch&quot;  /Fo&quot;libs\resid-fp\Release/&quot; /Fd&quot;libs\resid-fp\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid-fp\Release/$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug|Pocket PC 2003 (ARMV4)"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MDd /W3 /EHsc /Z7 /Od /I &quot;.\\&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D PACKAGE=\&quot;residfp\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /D &quot;_DEBUG&quot; /Fp&quot;libs\residfp\Debug/residfp.pch&quot;  /Fo&quot;libs\residfp\Debug/&quot; /Fd&quot;libs\residfp\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\residfp\Debug/$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|Smartphone 2003 (ARMV4)"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MD /W3 /EHsc /I &quot;.\\&quot; /D &quot;NDEBUG&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid-fp\Release/resid-fp.pch&quot;  /Fo&quot;libs\resid-fp\Release/&quot; /Fd&quot;libs\resid-fp\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid-fp\Release/$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug|Smartphone 2003 (ARMV4)"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MDd /W3 /EHsc /Z7 /Od /I &quot;.\\&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D PACKAGE=\&quot;residfp\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /D &quot;_DEBUG&quot; /Fp&quot;libs\residfp\Debug/residfp.pch&quot;  /Fo&quot;libs\residfp\Debug/&quot; /Fd&quot;libs\residfp\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\residfp\Debug/$(InputName).obj"
+				/>
+			</FileConfiguration>
+		</File>
+		<File
+			RelativePath="..\..\..\resid-fp\sid.h"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\resid-fp\siddefs.h"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\resid-fp\version.cc"
+			>
+			<FileConfiguration
+				Name="Release|Pocket PC 2003 (ARMV4)"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MD /W3 /EHsc /I &quot;.\\&quot; /D &quot;NDEBUG&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid-fp\Release/resid-fp.pch&quot;  /Fo&quot;libs\resid-fp\Release/&quot; /Fd&quot;libs\resid-fp\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid-fp\Release/$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug|Pocket PC 2003 (ARMV4)"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MDd /W3 /EHsc /Z7 /Od /I &quot;.\\&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D PACKAGE=\&quot;residfp\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /D &quot;_DEBUG&quot; /Fp&quot;libs\residfp\Debug/residfp.pch&quot;  /Fo&quot;libs\residfp\Debug/&quot; /Fd&quot;libs\residfp\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\residfp\Debug/$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|Smartphone 2003 (ARMV4)"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MD /W3 /EHsc /I &quot;.\\&quot; /D &quot;NDEBUG&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid-fp\Release/resid-fp.pch&quot;  /Fo&quot;libs\resid-fp\Release/&quot; /Fd&quot;libs\resid-fp\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid-fp\Release/$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug|Smartphone 2003 (ARMV4)"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MDd /W3 /EHsc /Z7 /Od /I &quot;.\\&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D PACKAGE=\&quot;residfp\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /D &quot;_DEBUG&quot; /Fp&quot;libs\residfp\Debug/residfp.pch&quot;  /Fo&quot;libs\residfp\Debug/&quot; /Fd&quot;libs\residfp\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\residfp\Debug/$(InputName).obj"
+				/>
+			</FileConfiguration>
+		</File>
+		<File
+			RelativePath="..\..\..\resid-fp\voice.cc"
+			>
+			<FileConfiguration
+				Name="Release|Pocket PC 2003 (ARMV4)"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MD /W3 /EHsc /I &quot;.\\&quot; /D &quot;NDEBUG&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid-fp\Release/resid-fp.pch&quot;  /Fo&quot;libs\resid-fp\Release/&quot; /Fd&quot;libs\resid-fp\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid-fp\Release/$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug|Pocket PC 2003 (ARMV4)"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MDd /W3 /EHsc /Z7 /Od /I &quot;.\\&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D PACKAGE=\&quot;residfp\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /D &quot;_DEBUG&quot; /Fp&quot;libs\residfp\Debug/residfp.pch&quot;  /Fo&quot;libs\residfp\Debug/&quot; /Fd&quot;libs\residfp\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\residfp\Debug/$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|Smartphone 2003 (ARMV4)"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MD /W3 /EHsc /I &quot;.\\&quot; /D &quot;NDEBUG&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid-fp\Release/resid-fp.pch&quot;  /Fo&quot;libs\resid-fp\Release/&quot; /Fd&quot;libs\resid-fp\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid-fp\Release/$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug|Smartphone 2003 (ARMV4)"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MDd /W3 /EHsc /Z7 /Od /I &quot;.\\&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D PACKAGE=\&quot;residfp\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /D &quot;_DEBUG&quot; /Fp&quot;libs\residfp\Debug/residfp.pch&quot;  /Fo&quot;libs\residfp\Debug/&quot; /Fd&quot;libs\residfp\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\residfp\Debug/$(InputName).obj"
+				/>
+			</FileConfiguration>
+		</File>
+		<File
+			RelativePath="..\..\..\resid-fp\voice.h"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\resid-fp\wave.cc"
+			>
+			<FileConfiguration
+				Name="Release|Pocket PC 2003 (ARMV4)"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MD /W3 /EHsc /I &quot;.\\&quot; /D &quot;NDEBUG&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid-fp\Release/resid-fp.pch&quot;  /Fo&quot;libs\resid-fp\Release/&quot; /Fd&quot;libs\resid-fp\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid-fp\Release/$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug|Pocket PC 2003 (ARMV4)"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MDd /W3 /EHsc /Z7 /Od /I &quot;.\\&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D PACKAGE=\&quot;residfp\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /D &quot;_DEBUG&quot; /Fp&quot;libs\residfp\Debug/residfp.pch&quot;  /Fo&quot;libs\residfp\Debug/&quot; /Fd&quot;libs\residfp\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\residfp\Debug/$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|Smartphone 2003 (ARMV4)"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MD /W3 /EHsc /I &quot;.\\&quot; /D &quot;NDEBUG&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D PACKAGE=\&quot;resid\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\resid-fp\Release/resid-fp.pch&quot;  /Fo&quot;libs\resid-fp\Release/&quot; /Fd&quot;libs\resid-fp\Release/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\resid-fp\Release/$(InputName).obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug|Smartphone 2003 (ARMV4)"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="cl /nologo /MDd /W3 /EHsc /Z7 /Od /I &quot;.\\&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D PACKAGE=\&quot;residfp\&quot; /D VERSION=\&quot;0.7\&quot; /D SIZEOF_INT=4 /D &quot;_DEBUG&quot; /Fp&quot;libs\residfp\Debug/residfp.pch&quot;  /Fo&quot;libs\residfp\Debug/&quot; /Fd&quot;libs\residfp\Debug/&quot; /FD /TP /c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="libs\residfp\Debug/$(InputName).obj"
+				/>
+			</FileConfiguration>
+		</File>
+		<File
+			RelativePath="..\..\..\resid-fp\wave.h"
+			>
+		</File>
+	</Files>
+	<Globals>
+	</Globals>
+</VisualStudioProject>
