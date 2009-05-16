@@ -1,9 +1,13 @@
 /*
- * maincpu.c - Emulation of the main 6510 processor.
+ * maindtvcpu.c - Emulation of the DTV 6510 processor.
  *
  * Written by
  *  Ettore Perazzoli <ettore@comm2000.it>
  *  Andreas Boose <viceteam@t-online.de>
+ *
+ * DTV sections written by
+ *  M.Kiesel <mayne@users.sourceforge.net>
+ *  Hannu Nuotio <hannu.nuotio@tut.fi>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -38,7 +42,7 @@
 #include "maincpu.h"
 #include "mem.h"
 #include "monitor.h"
-#include "mos6510.h"
+#include "mos6510dtv.h"
 #include "snapshot.h"
 #include "traps.h"
 #include "types.h"
@@ -83,57 +87,6 @@
 #define LOAD_ZERO(addr) \
     zero_read((WORD)(addr))
 #endif
-
-#ifdef FEATURE_CPUMEMHISTORY
-/* HACK this is C64 specific */
-
-void REGPARM2 memmap_mem_store(WORD addr, BYTE value)
-{
-    if((addr >= 0xd000)&&(addr <= 0xdfff)) {
-        monitor_memmap_store(addr, MEMMAP_I_O_W);
-    } else {
-        monitor_memmap_store(addr, MEMMAP_RAM_W);
-    }
-    (*_mem_write_tab_ptr[(addr) >> 8])((WORD)(addr), (BYTE)(value));
-}
-
-BYTE REGPARM1 memmap_mem_read(WORD addr)
-{
-    switch(addr >> 12) {
-        case 0xa:
-        case 0xb:
-        case 0xe:
-        case 0xf:
-            memmap_state |= MEMMAP_STATE_IGNORE;
-            if(LOAD_ZERO(1) & (1 << ((addr>>14) & 1))) {
-                monitor_memmap_store(addr, (memmap_state&MEMMAP_STATE_OPCODE)?MEMMAP_ROM_X:(memmap_state&MEMMAP_STATE_INSTR)?0:MEMMAP_ROM_R);
-            } else {
-                monitor_memmap_store(addr, (memmap_state&MEMMAP_STATE_OPCODE)?MEMMAP_RAM_X:(memmap_state&MEMMAP_STATE_INSTR)?0:MEMMAP_RAM_R);
-            }
-            memmap_state &= ~(MEMMAP_STATE_IGNORE);
-            break;
-        case 0xd:
-            monitor_memmap_store(addr, MEMMAP_I_O_R);
-            break;
-        default:
-            monitor_memmap_store(addr, (memmap_state&MEMMAP_STATE_OPCODE)?MEMMAP_RAM_X:(memmap_state&MEMMAP_STATE_INSTR)?0:MEMMAP_RAM_R);
-            break;
-    }
-    memmap_state &= ~(MEMMAP_STATE_OPCODE);
-    return (*_mem_read_tab_ptr[(addr) >> 8])((WORD)(addr));
-}
-
-#ifndef STORE
-#define STORE(addr, value) \
-    memmap_mem_store(addr, value)
-#endif
-
-#ifndef LOAD
-#define LOAD(addr) \
-    memmap_mem_read(addr)
-#endif
-
-#endif /* FEATURE_CPUMEMHISTORY */
 
 #ifndef STORE
 #define STORE(addr, value) \
@@ -253,20 +206,16 @@ const CLOCK maincpu_opcode_write_cycles[] = {
 /* Public copy of the CPU registers.  As putting the registers into the
    function makes it faster, you have to generate a `TRAP' interrupt to have
    the values copied into this struct.  */
-mos6510_regs_t maincpu_regs;
+mos6510dtv_regs_t maincpu_regs;
 
 /* ------------------------------------------------------------------------- */
 
 monitor_interface_t *maincpu_monitor_interface_get(void)
 {
-    maincpu_monitor_interface->cpu_regs = &maincpu_regs;
-    maincpu_monitor_interface->dtv_cpu_regs = NULL;
+    maincpu_monitor_interface->cpu_regs = NULL;
+    maincpu_monitor_interface->dtv_cpu_regs = &maincpu_regs;
 
-#ifdef HAVE_Z80_REGS
-    maincpu_monitor_interface->z80_cpu_regs = &z80_regs;
-#else
     maincpu_monitor_interface->z80_cpu_regs = NULL;
-#endif
 
     maincpu_monitor_interface->int_status = maincpu_int_status;
 
@@ -389,11 +338,14 @@ unsigned int reg_pc;
 
 void maincpu_mainloop(void)
 {
-    /* Notice that using a struct for these would make it a lot slower (at
-       least, on gcc 2.7.2.x).  */
-    BYTE reg_a = 0;
-    BYTE reg_x = 0;
-    BYTE reg_y = 0;
+    int reg_a_read_idx = 0;
+    int reg_a_write_idx = 0;
+    int reg_x_idx = 2;
+    int reg_y_idx = 1;
+#define reg_a_write dtv_registers[reg_a_write_idx]
+#define reg_a_read dtv_registers[reg_a_read_idx]
+#define reg_x dtv_registers[reg_x_idx]
+#define reg_y dtv_registers[reg_y_idx]
     BYTE reg_p = 0;
     BYTE reg_sp = 0;
     BYTE flag_n = 0;
@@ -462,7 +414,7 @@ void maincpu_mainloop(void)
 
 #define GLOBAL_REGS maincpu_regs
 
-#include "6510core.c"
+#include "6510dtvcore.c"
 
         maincpu_int_status->num_dma_per_opcode = 0;
 #if 0
@@ -489,12 +441,30 @@ int maincpu_snapshot_write_module(snapshot_t *s)
 
     if (0
         || SMW_DW(m, maincpu_clk) < 0
-        || SMW_B(m, MOS6510_REGS_GET_A(&maincpu_regs)) < 0
-        || SMW_B(m, MOS6510_REGS_GET_X(&maincpu_regs)) < 0
-        || SMW_B(m, MOS6510_REGS_GET_Y(&maincpu_regs)) < 0
-        || SMW_B(m, MOS6510_REGS_GET_SP(&maincpu_regs)) < 0
-        || SMW_W(m, (WORD)MOS6510_REGS_GET_PC(&maincpu_regs)) < 0
-        || SMW_B(m, (BYTE)MOS6510_REGS_GET_STATUS(&maincpu_regs)) < 0
+        || SMW_B(m, MOS6510DTV_REGS_GET_A(&maincpu_regs)) < 0
+        || SMW_B(m, MOS6510DTV_REGS_GET_X(&maincpu_regs)) < 0
+        || SMW_B(m, MOS6510DTV_REGS_GET_Y(&maincpu_regs)) < 0
+        || SMW_B(m, MOS6510DTV_REGS_GET_SP(&maincpu_regs)) < 0
+        || SMW_W(m, (WORD)MOS6510DTV_REGS_GET_PC(&maincpu_regs)) < 0
+        || SMW_B(m, (BYTE)MOS6510DTV_REGS_GET_STATUS(&maincpu_regs)) < 0
+        || SMW_B(m, MOS6510DTV_REGS_GET_R3(&maincpu_regs)) < 0
+        || SMW_B(m, MOS6510DTV_REGS_GET_R4(&maincpu_regs)) < 0
+        || SMW_B(m, MOS6510DTV_REGS_GET_R5(&maincpu_regs)) < 0
+        || SMW_B(m, MOS6510DTV_REGS_GET_R6(&maincpu_regs)) < 0
+        || SMW_B(m, MOS6510DTV_REGS_GET_R7(&maincpu_regs)) < 0
+        || SMW_B(m, MOS6510DTV_REGS_GET_R8(&maincpu_regs)) < 0
+        || SMW_B(m, MOS6510DTV_REGS_GET_R9(&maincpu_regs)) < 0
+        || SMW_B(m, MOS6510DTV_REGS_GET_R10(&maincpu_regs)) < 0
+        || SMW_B(m, MOS6510DTV_REGS_GET_R11(&maincpu_regs)) < 0
+        || SMW_B(m, MOS6510DTV_REGS_GET_R12(&maincpu_regs)) < 0
+        || SMW_B(m, MOS6510DTV_REGS_GET_R13(&maincpu_regs)) < 0
+        || SMW_B(m, MOS6510DTV_REGS_GET_R14(&maincpu_regs)) < 0
+        || SMW_B(m, MOS6510DTV_REGS_GET_R15(&maincpu_regs)) < 0
+        || SMW_B(m, MOS6510DTV_REGS_GET_ACM(&maincpu_regs)) < 0
+        || SMW_B(m, MOS6510DTV_REGS_GET_YXM(&maincpu_regs)) < 0
+        || SMW_BA(m, burst_cache, 4) < 0
+        || SMW_W(m, burst_addr) < 0
+        || SMW_DW(m, dtvclockneg) < 0
         || SMW_DW(m, (DWORD)last_opcode_info) < 0)
         goto fail;
 
@@ -515,6 +485,7 @@ fail:
 int maincpu_snapshot_read_module(snapshot_t *s)
 {
     BYTE a, x, y, sp, status;
+    BYTE r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15, acm, yxm;
     WORD pc;
     BYTE major, minor;
     snapshot_module_t *m;
@@ -536,15 +507,48 @@ int maincpu_snapshot_read_module(snapshot_t *s)
         || SMR_B(m, &sp) < 0
         || SMR_W(m, &pc) < 0
         || SMR_B(m, &status) < 0
+        || SMR_B(m, &r3) < 0
+        || SMR_B(m, &r4) < 0
+        || SMR_B(m, &r5) < 0
+        || SMR_B(m, &r6) < 0
+        || SMR_B(m, &r7) < 0
+        || SMR_B(m, &r8) < 0
+        || SMR_B(m, &r9) < 0
+        || SMR_B(m, &r10) < 0
+        || SMR_B(m, &r11) < 0
+        || SMR_B(m, &r12) < 0
+        || SMR_B(m, &r13) < 0
+        || SMR_B(m, &r14) < 0
+        || SMR_B(m, &r15) < 0
+        || SMR_B(m, &acm) < 0
+        || SMR_B(m, &yxm) < 0
+        || SMR_BA(m, burst_cache, 4) < 0
+        || SMR_W(m, &burst_addr) < 0
+        || SMR_DW_INT(m, &dtvclockneg) < 0
         || SMR_DW_UINT(m, &last_opcode_info) < 0)
         goto fail;
 
-    MOS6510_REGS_SET_A(&maincpu_regs, a);
-    MOS6510_REGS_SET_X(&maincpu_regs, x);
-    MOS6510_REGS_SET_Y(&maincpu_regs, y);
-    MOS6510_REGS_SET_SP(&maincpu_regs, sp);
-    MOS6510_REGS_SET_PC(&maincpu_regs, pc);
-    MOS6510_REGS_SET_STATUS(&maincpu_regs, status);
+    MOS6510DTV_REGS_SET_A(&maincpu_regs, a);
+    MOS6510DTV_REGS_SET_X(&maincpu_regs, x);
+    MOS6510DTV_REGS_SET_Y(&maincpu_regs, y);
+    MOS6510DTV_REGS_SET_SP(&maincpu_regs, sp);
+    MOS6510DTV_REGS_SET_PC(&maincpu_regs, pc);
+    MOS6510DTV_REGS_SET_STATUS(&maincpu_regs, status);
+    MOS6510DTV_REGS_SET_R3(&maincpu_regs, r3);
+    MOS6510DTV_REGS_SET_R4(&maincpu_regs, r4);
+    MOS6510DTV_REGS_SET_R5(&maincpu_regs, r5);
+    MOS6510DTV_REGS_SET_R6(&maincpu_regs, r6);
+    MOS6510DTV_REGS_SET_R7(&maincpu_regs, r7);
+    MOS6510DTV_REGS_SET_R8(&maincpu_regs, r8);
+    MOS6510DTV_REGS_SET_R9(&maincpu_regs, r9);
+    MOS6510DTV_REGS_SET_R10(&maincpu_regs, r10);
+    MOS6510DTV_REGS_SET_R11(&maincpu_regs, r11);
+    MOS6510DTV_REGS_SET_R12(&maincpu_regs, r12);
+    MOS6510DTV_REGS_SET_R13(&maincpu_regs, r13);
+    MOS6510DTV_REGS_SET_R14(&maincpu_regs, r14);
+    MOS6510DTV_REGS_SET_R15(&maincpu_regs, r15);
+    MOS6510DTV_REGS_SET_ACM(&maincpu_regs, acm);
+    MOS6510DTV_REGS_SET_YXM(&maincpu_regs, yxm);
 
     if (interrupt_read_snapshot(maincpu_int_status, m) < 0)
         goto fail;

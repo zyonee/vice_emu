@@ -202,51 +202,6 @@ static const BYTE burst_status_tab[] = {
 #define NMI_CYCLES (7 - 2*(dtv_registers[9]&1))
 
 
-/* New opcodes */
-
-#define SAC(op) \
-    do { \
-        reg_a_write_idx = op >> 4; \
-        reg_a_read_idx = op & 0x0f; \
-        INC_PC(2); \
-    } while (0)
-
-#define SIR(op) \
-    do { \
-        reg_y_idx = op >> 4; \
-        reg_x_idx = op & 0x0f; \
-        INC_PC(2); \
-    } while (0)
-
-#define NOOP_ABS_Y()   \
-  do {                 \
-      LOAD_ABS_Y(p2);  \
-      CLK_ADD(CLK,1);  \
-      INC_PC(3);       \
-  } while (0)
-
-#define BRANCH(cond, value)                                  \
-  do {                                                       \
-      INC_PC(2);                                             \
-                                                             \
-      if (cond) {                                            \
-          unsigned int dest_addr;                            \
-                                                             \
-          burst_broken=1;                                    \
-          dest_addr = reg_pc + (signed char)(value);         \
-                                                             \
-          LOAD(reg_pc);                                      \
-          CLK_ADD(CLK,CLK_BRANCH2);                          \
-          if ((reg_pc ^ dest_addr) & 0xff00) {               \
-              LOAD((reg_pc & 0xff00) | (dest_addr & 0xff));  \
-              CLK_ADD(CLK,CLK_BRANCH2);                      \
-          } else {                                           \
-              OPCODE_DELAYS_INTERRUPT();                     \
-          }                                                  \
-          JUMP(dest_addr & 0xffff);                          \
-      }                                                      \
-  } while (0)
-
 /* Override optimizations in maincpu.c that directly access mem_ram[] */
 /* We need to channel everything through mem_read/mem_store to */
 /* let the DTV segment mapper (register 12-15) do its work */
@@ -469,5 +424,5 @@ static const BYTE burst_status_tab[] = {
 #endif /* !ALLOW_UNALIGNED_ACCESS */
 
 
-#include "../maincpu.c"
+#include "../maindtvcpu.c"
 

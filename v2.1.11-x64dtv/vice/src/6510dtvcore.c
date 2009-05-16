@@ -1,9 +1,13 @@
 /*
- * 6510core.c - MOS6510 emulation core.
+ * 6510dtvcore.c - DTV 6510 emulation core.
  *
  * Written by
  *  Ettore Perazzoli <ettore@comm2000.it>
  *  Andreas Boose <viceteam@t-online.de>
+ *
+ * DTV sections written by
+ *  M.Kiesel <mayne@users.sourceforge.net>
+ *  Hannu Nuotio <hannu.nuotio@tut.fi>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -25,41 +29,11 @@
  *
  */
 
-/* This file is included by CPU definition files */
-/* (maincpu.c, drivecpu.c, ...) */
+/* This file is included by DTV CPU definition file */
+/* (maindtvcpu.c) */
 
-#ifdef DRIVE_CPU
-#define CPU_STR "Drive CPU"
-#else
 #define CPU_STR "Main CPU"
-#endif
 
-#define reg_a_write reg_a
-#define reg_a_read  reg_a
-
-#define CLK_RTS 3
-#define CLK_RTI 4
-#define CLK_BRK 5
-#define CLK_ABS_I_STORE2 2
-#define CLK_STACK_PUSH 1
-#define CLK_STACK_PULL 2
-#define CLK_ABS_RMW2 3
-#define CLK_ABS_I_RMW2 3
-#define CLK_ZERO_I_STORE 2
-#define CLK_ZERO_I2 2
-#define CLK_ZERO_RMW 3
-#define CLK_ZERO_I_RMW 4
-#define CLK_IND_X_RMW 3
-#define CLK_IND_Y_RMW1 1
-#define CLK_IND_Y_RMW2 3
-#define CLK_BRANCH2 1
-#define CLK_INT_CYCLE 1
-#define CLK_JSR_INT_CYCLE 1
-#define CLK_IND_Y_W 2
-#define CLK_NOOP_ZERO_X 2
-
-#define IRQ_CYCLES      7
-#define NMI_CYCLES      7
 #define RESET_CYCLES    6
 
 /* ------------------------------------------------------------------------- */
@@ -73,42 +47,9 @@
 #endif
 
 /* ------------------------------------------------------------------------- */
-/* Backup for non-variable cycle CPUs.  */
-
-#ifndef CLK_ADD
-#define CLK_ADD(clock, amount) clock+=amount
-#endif
-
-#ifndef REWIND_FETCH_OPCODE
-#define REWIND_FETCH_OPCODE(clock) clock-=2
-#endif
-
-/* ------------------------------------------------------------------------- */
-/* Hook for additional delay.  */
-
-#ifndef CPU_DELAY_CLK
-#define CPU_DELAY_CLK
-#endif
-
-#ifndef CPU_REFRESH_CLK
-#define CPU_REFRESH_CLK
-#endif
-
-/* ------------------------------------------------------------------------- */
 
 #define LOCAL_SET_NZ(val)        (flag_z = flag_n = (val))
 
-#if defined DRIVE_CPU
-#define LOCAL_SET_OVERFLOW(val)               \
-    do {                                      \
-        if (!(val))                           \
-            drivecpu_byte_ready_egde_clear(); \
-        if (val)                              \
-            reg_p |= P_OVERFLOW;              \
-        else                                  \
-            reg_p &= ~P_OVERFLOW;             \
-    } while (0)
-#else
 #define LOCAL_SET_OVERFLOW(val)   \
     do {                          \
         if (val)                  \
@@ -116,7 +57,6 @@
         else                      \
             reg_p &= ~P_OVERFLOW; \
     } while (0)
-#endif
 
 #define LOCAL_SET_BREAK(val)   \
     do {                       \
@@ -200,47 +140,64 @@
 
 #endif
 
-#ifndef DRIVE_CPU
-
 /* Export the local version of the registers.  */
 #define EXPORT_REGISTERS()      \
   do {                          \
       GLOBAL_REGS.pc = reg_pc;  \
-      GLOBAL_REGS.a = reg_a_read;    \
-      GLOBAL_REGS.x = reg_x;    \
-      GLOBAL_REGS.y = reg_y;    \
+      GLOBAL_REGS.a = dtv_registers[0]; \
+      GLOBAL_REGS.x = dtv_registers[2]; \
+      GLOBAL_REGS.y = dtv_registers[1]; \
       GLOBAL_REGS.sp = reg_sp;  \
       GLOBAL_REGS.p = reg_p;    \
       GLOBAL_REGS.n = flag_n;   \
       GLOBAL_REGS.z = flag_z;   \
+      GLOBAL_REGS.r3 = dtv_registers[3]; \
+      GLOBAL_REGS.r4 = dtv_registers[4]; \
+      GLOBAL_REGS.r5 = dtv_registers[5]; \
+      GLOBAL_REGS.r6 = dtv_registers[6]; \
+      GLOBAL_REGS.r7 = dtv_registers[7]; \
+      GLOBAL_REGS.r8 = dtv_registers[8]; \
+      GLOBAL_REGS.r9 = dtv_registers[9]; \
+      GLOBAL_REGS.r10 = dtv_registers[10]; \
+      GLOBAL_REGS.r11 = dtv_registers[11]; \
+      GLOBAL_REGS.r12 = dtv_registers[12]; \
+      GLOBAL_REGS.r13 = dtv_registers[13]; \
+      GLOBAL_REGS.r14 = dtv_registers[14]; \
+      GLOBAL_REGS.r15 = dtv_registers[15]; \
+      GLOBAL_REGS.acm = (reg_a_write_idx << 4) | (reg_a_read_idx); \
+      GLOBAL_REGS.yxm = (reg_y_idx << 4) | (reg_x_idx); \
   } while (0)
 
 /* Import the public version of the registers.  */
 #define IMPORT_REGISTERS()      \
   do {                          \
-      reg_a_write /*TODO*/= GLOBAL_REGS.a;    \
-      reg_x = GLOBAL_REGS.x;    \
-      reg_y = GLOBAL_REGS.y;    \
+      dtv_registers[0] = GLOBAL_REGS.a; \
+      dtv_registers[2] = GLOBAL_REGS.x; \
+      dtv_registers[1] = GLOBAL_REGS.y; \
       reg_sp = GLOBAL_REGS.sp;  \
       reg_p = GLOBAL_REGS.p;    \
       flag_n = GLOBAL_REGS.n;   \
       flag_z = GLOBAL_REGS.z;   \
-      JUMP(GLOBAL_REGS.pc);     \
+      dtv_registers[3] = GLOBAL_REGS.r3; \
+      dtv_registers[4] = GLOBAL_REGS.r4; \
+      dtv_registers[5] = GLOBAL_REGS.r5; \
+      dtv_registers[6] = GLOBAL_REGS.r6; \
+      dtv_registers[7] = GLOBAL_REGS.r7; \
+      dtv_registers[8] = GLOBAL_REGS.r8; \
+      dtv_registers[9] = GLOBAL_REGS.r9; \
+      dtv_registers[10] = GLOBAL_REGS.r10; \
+      dtv_registers[11] = GLOBAL_REGS.r11; \
+      dtv_registers[12] = GLOBAL_REGS.r12; \
+      dtv_registers[13] = GLOBAL_REGS.r13; \
+      dtv_registers[14] = GLOBAL_REGS.r14; \
+      dtv_registers[15] = GLOBAL_REGS.r15; \
+      reg_a_write_idx = GLOBAL_REGS.acm >> 4; \
+      reg_a_read_idx = GLOBAL_REGS.acm & 0xf; \
+      reg_y_idx = GLOBAL_REGS.yxm >> 4; \
+      reg_x_idx = GLOBAL_REGS.yxm & 0xf; \
+      JUMP(GLOBAL_REGS.pc); \
   } while (0)
 
-#else  /* DRIVE_CPU */
-#define IMPORT_REGISTERS()
-#define EXPORT_REGISTERS()
-#endif /* !DRIVE_CPU */
-
-/* Stack operations. */
-
-#ifndef PUSH
-#define PUSH(val) ((PAGE_ONE)[(reg_sp--)] = ((BYTE)(val)))
-#endif
-#ifndef PULL
-#define PULL()    ((PAGE_ONE)[(++reg_sp)])
-#endif
 
 #ifdef DEBUG
 #define TRACE_NMI() \
@@ -616,23 +573,26 @@
       INC_PC(pc_inc);                 \
   } while (0)
 
-#define BRANCH(cond, value)                                        \
-  do {                                                             \
-      INC_PC(2);                                                   \
-                                                                   \
-      if (cond) {                                                  \
-          unsigned int dest_addr = reg_pc + (signed char)(value);  \
-                                                                   \
-          LOAD(reg_pc);                                            \
-          CLK_ADD(CLK,CLK_BRANCH2);                                \
-          if ((reg_pc ^ dest_addr) & 0xff00) {                     \
-              LOAD((reg_pc & 0xff00) | (dest_addr & 0xff));        \
-              CLK_ADD(CLK,CLK_BRANCH2);                            \
-          } else {                                                 \
-              OPCODE_DELAYS_INTERRUPT();                           \
-          }                                                        \
-          JUMP(dest_addr & 0xffff);                                \
-      }                                                            \
+#define BRANCH(cond, value)                                  \
+  do {                                                       \
+      INC_PC(2);                                             \
+                                                             \
+      if (cond) {                                            \
+          unsigned int dest_addr;                            \
+                                                             \
+          burst_broken=1;                                    \
+          dest_addr = reg_pc + (signed char)(value);         \
+                                                             \
+          LOAD(reg_pc);                                      \
+          CLK_ADD(CLK,CLK_BRANCH2);                          \
+          if ((reg_pc ^ dest_addr) & 0xff00) {               \
+              LOAD((reg_pc & 0xff00) | (dest_addr & 0xff));  \
+              CLK_ADD(CLK,CLK_BRANCH2);                      \
+          } else {                                           \
+              OPCODE_DELAYS_INTERRUPT();                     \
+          }                                                  \
+          JUMP(dest_addr & 0xffff);                          \
+      }                                                      \
   } while (0)
 
 /* The BRK opcode is also used to patch the ROM.  The function trap_handler()
@@ -983,6 +943,13 @@
       INC_PC(3);       \
   } while (0)
 
+#define NOOP_ABS_Y()   \
+  do {                 \
+      LOAD_ABS_Y(p2);  \
+      CLK_ADD(CLK,1);  \
+      INC_PC(3);       \
+  } while (0)
+
 #define NOP()  NOOP_IMM(1)
 
 #define PHA()         \
@@ -1180,6 +1147,13 @@
       JUMP(tmp);                  \
   } while (0)
 
+#define SAC(op) \
+    do { \
+        reg_a_write_idx = op >> 4; \
+        reg_a_read_idx = op & 0x0f; \
+        INC_PC(2); \
+    } while (0)
+
 #define SAX(addr, clk_inc1, clk_inc2, pc_inc)  \
   do {                                         \
       unsigned int tmp;                        \
@@ -1317,6 +1291,13 @@
       STORE_ABS_SH_Y(tmp, reg_a_read & reg_x & (((tmp + reg_y) >> 8) + 1), CLK_ABS_I_STORE2); \
       reg_sp = reg_a_read & reg_x;                                         \
   } while (0)
+
+#define SIR(op) \
+    do { \
+        reg_y_idx = op >> 4; \
+        reg_x_idx = op & 0x0f; \
+        INC_PC(2); \
+    } while (0)
 
 #define SLO(addr, clk_inc1, clk_inc2, pc_inc, load_func, store_func)  \
   do {                                                                \
@@ -1522,269 +1503,15 @@ static const BYTE fetch_tab[] = {
     /* $F0 */  0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1  /* $F0 */
 };
 
-#ifdef CPU_8502  /* 8502 specific opcode fetch */
-
-static const BYTE rewind_fetch_tab[] = {
-            /* 0  1  2  3  4  5  6  7  8  9  A  B  C  D  E  F */
-    /* $00 */  1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* $00 */
-    /* $10 */  0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* $10 */
-    /* $20 */  0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* $20 */
-    /* $30 */  0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* $30 */
-    /* $40 */  0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* $40 */
-    /* $50 */  0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* $50 */
-    /* $60 */  0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* $60 */
-    /* $70 */  0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* $70 */
-    /* $80 */  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* $80 */
-    /* $90 */  0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* $90 */
-    /* $A0 */  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* $A0 */
-    /* $B0 */  0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* $B0 */
-    /* $C0 */  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* $C0 */
-    /* $D0 */  0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* $D0 */
-    /* $E0 */  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* $E0 */
-    /* $F0 */  0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* $F0 */
-};
-
-#if !defined WORDS_BIGENDIAN && defined ALLOW_UNALIGNED_ACCESS
-
-#define opcode_t DWORD
-
-#define FETCH_OPCODE(o)                                                \
-    do {                                                               \
-        if (((int)reg_pc) < bank_limit) {                              \
-            o = (*((DWORD *)(bank_base + reg_pc)) & 0xffffff);         \
-            if (rewind_fetch_tab[o & 0xff])                            \
-            {                                                          \
-                opcode_cycle[0] = vicii_check_memory_refresh(CLK);     \
-                CLK_ADD(CLK,1);                                        \
-                opcode_cycle[1] = vicii_check_memory_refresh(CLK);     \
-                CLK_ADD(CLK,1);                                        \
-            }                                                          \
-            else                                                       \
-            {                                                          \
-                opcode_cycle[0] = 0;                                   \
-                opcode_cycle[1] = 0;                                   \
-                CLK_ADD(CLK,2);                                        \
-            }                                                          \
-            if (fetch_tab[o & 0xff]) {                                 \
-                 CLK_ADD(CLK,1);                                       \
-            }                                                          \
-        } else {                                                       \
-            maincpu_stretch = 0;                                       \
-            o = LOAD(reg_pc);                                          \
-            if (rewind_fetch_tab[o & 0xff])                            \
-            {                                                          \
-                opcode_cycle[0] = maincpu_stretch;                     \
-                if (opcode_cycle[0] == 0)                              \
-                    opcode_cycle[0] = vicii_check_memory_refresh(CLK); \
-                CLK_ADD(CLK,1);                                        \
-                maincpu_stretch = 0;                                   \
-                o |= LOAD(reg_pc + 1) << 8;                            \
-                opcode_cycle[1] = maincpu_stretch;                     \
-                if (opcode_cycle[1] == 0)                              \
-                    opcode_cycle[1] = vicii_check_memory_refresh(CLK); \
-               CLK_ADD(CLK,1);                                         \
-            }                                                          \
-            else                                                       \
-            {                                                          \
-                CLK_ADD(CLK,1);                                        \
-                o |= LOAD(reg_pc + 1) << 8;                            \
-                CLK_ADD(CLK,1);                                        \
-            }                                                          \
-            if (fetch_tab[o & 0xff]) {                                 \
-                 o |= (LOAD(reg_pc + 2) << 16);                        \
-                 CLK_ADD(CLK,1);                                       \
-            }                                                          \
-        }                                                              \
-    } while (0)
-
-#define p0 (opcode & 0xff)
-#define p1 ((opcode >> 8) & 0xff)
-#define p2 (opcode >> 8)
-
-#else /* WORDS_BIGENDIAN || !ALLOW_UNALIGNED_ACCESS */
-
-#define opcode_t          \
-    struct {              \
-        BYTE ins;         \
-        union {           \
-            BYTE op8[2];  \
-            WORD op16;    \
-        } op;             \
-    }
-
-#define FETCH_OPCODE(o)                                                \
-    do {                                                               \
-        if (((int)reg_pc) < bank_limit) {                              \
-            (o).ins = *(bank_base + reg_pc);                           \
-            (o).op.op16 = (*(bank_base + reg_pc + 1)                   \
-                          | (*(bank_base + reg_pc + 2) << 8));         \
-            if (rewind_fetch_tab[(o).ins])                             \
-            {                                                          \
-                opcode_cycle[0] = vicii_check_memory_refresh(CLK);     \
-                CLK_ADD(CLK,1);                                        \
-                opcode_cycle[1] = vicii_check_memory_refresh(CLK);     \
-                CLK_ADD(CLK,1);                                        \
-            }                                                          \
-            else                                                       \
-            {                                                          \
-                opcode_cycle[0] = 0;                                   \
-                opcode_cycle[1] = 0;                                   \
-                CLK_ADD(CLK,2);                                        \
-            }                                                          \
-            if (fetch_table[(o).ins)) {                                \
-                CLK_ADD(CLK,1);                                        \
-            }                                                          \
-        } else {                                                       \
-            maincpu_stretch = 0;                                       \
-            (o).ins = LOAD(reg_pc);                                    \
-            if (rewind_fetch_tab[(o).ins])                             \
-            {                                                          \
-                opcode_cycle[0] = maincpu_stretch;                     \
-                if (opcode_cycle[0] == 0)                              \
-                    opcode_cycle[0] = vicii_check_memory_refresh(CLK); \
-                CLK_ADD(CLK,1);                                        \
-                maincpu_stretch = 0;                                   \
-                (o).op.op16 = LOAD(reg_pc + 1);                        \
-                opcode_cycle[1] = maincpu_stretch;                     \
-                if (opcode_cycle[1] == 0)                              \
-                    opcode_cycle[1] = vicii_check_memory_refresh(CLK); \
-                CLK_ADD(CLK,1);                                        \
-            }                                                          \
-            else                                                       \
-            {                                                          \
-                CLK_ADD(CLK,1);                                        \
-                (o).op.op16 = LOAD(reg_pc + 1);                        \
-                CLK_ADD(CLK,1);                                        \
-            }                                                          \
-            if (fetch_tab[(o).ins]) {                                  \
-                 (o).op.op16 |= (LOAD(reg_pc + 2) << 8);               \
-                 CLK_ADD(CLK,1);                                       \
-            }                                                          \
-        }                                                              \
-    } while (0)
-
-#define p0 (opcode.ins)
-#define p2 (opcode.op.op16)
-
-#ifdef WORDS_BIGENDIAN
-#  define p1 (opcode.op.op8[1])
-#else
-#  define p1 (opcode.op.op8[0])
-#endif
-
-#endif /* !WORDS_BIGENDIAN */
-
-#else /* !CPU_8502 */
-
-#if !defined WORDS_BIGENDIAN && defined ALLOW_UNALIGNED_ACCESS
-
-#define opcode_t DWORD
-
-#define FETCH_OPCODE(o)                                         \
-    do {                                                        \
-        if (((int)reg_pc) < bank_limit) {                       \
-            o = (*((DWORD *)(bank_base + reg_pc)) & 0xffffff);  \
-            CLK_ADD(CLK,2);                                     \
-            if (fetch_tab[o & 0xff]) {                          \
-                CLK_ADD(CLK,1);                                 \
-            }                                                   \
-        } else {                                                \
-            o = LOAD(reg_pc);                                   \
-            CLK_ADD(CLK,1);                                     \
-            o |= LOAD(reg_pc + 1) << 8;                         \
-            CLK_ADD(CLK,1);                                     \
-            if (fetch_tab[o & 0xff]) {                          \
-                 o |= (LOAD(reg_pc + 2) << 16);                 \
-                 CLK_ADD(CLK,1);                                \
-            }                                                   \
-        }                                                       \
-    } while (0)
-
-#define p0 (opcode & 0xff)
-#define p1 ((opcode >> 8) & 0xff)
-#define p2 (opcode >> 8)
-
-#else /* WORDS_BIGENDIAN || !ALLOW_UNALIGNED_ACCESS */
-
-#define opcode_t          \
-    struct {              \
-        BYTE ins;         \
-        union {           \
-            BYTE op8[2];  \
-            WORD op16;    \
-        } op;             \
-    }
-
-#define FETCH_OPCODE(o)                                         \
-    do {                                                        \
-        if (((int)reg_pc) < bank_limit) {                       \
-            (o).ins = *(bank_base + reg_pc);                    \
-            (o).op.op16 = (*(bank_base + reg_pc + 1)            \
-                          | (*(bank_base + reg_pc + 2) << 8));  \
-            CLK_ADD(CLK,2);                                     \
-            if (fetch_tab[(o).ins]) {                           \
-                CLK_ADD(CLK,1);                                 \
-            }                                                   \
-        } else {                                                \
-            (o).ins = LOAD(reg_pc);                             \
-            CLK_ADD(CLK,1);                                     \
-            (o).op.op16 = LOAD(reg_pc + 1);                     \
-            CLK_ADD(CLK,1);                                     \
-            if (fetch_tab[(o).ins]) {                           \
-                 (o).op.op16 |= (LOAD(reg_pc + 2) << 8);        \
-                 CLK_ADD(CLK,1);                                \
-            }                                                   \
-        }                                                       \
-    } while (0)
-
-#define p0 (opcode.ins)
-#define p2 (opcode.op.op16)
-
-#ifdef WORDS_BIGENDIAN
-#  define p1 (opcode.op.op8[1])
-#else
-#  define p1 (opcode.op.op8[0])
-#endif
-
-#endif /* !WORDS_BIGENDIAN */
-#endif
-
-/*  SET_OPCODE for traps */
-#if !defined WORDS_BIGENDIAN && defined ALLOW_UNALIGNED_ACCESS
-#define SET_OPCODE(o) (opcode) = o;
-#else
-#if !defined WORDS_BIGENDIAN
-#define SET_OPCODE(o)                          \
-    do {                                       \
-        opcode.ins = (o) & 0xff;               \
-        opcode.op.op8[0] = ((o) >> 8) & 0xff;  \
-        opcode.op.op8[1] = ((o) >> 16) & 0xff; \
-    } while (0)
-#else
-#define SET_OPCODE(o)                          \
-    do {                                       \
-        opcode.ins = (o) & 0xff;               \
-        opcode.op.op8[1] = ((o) >> 8) & 0xff;  \
-        opcode.op.op8[0] = ((o) >> 16) & 0xff; \
-    } while (0)
-#endif
-
-#endif
 
 /* ------------------------------------------------------------------------ */
 
 /* Here, the CPU is emulated. */
 
 {
-    /* handle 8502 fast mode refresh cycles */
-    CPU_REFRESH_CLK
-
-    CPU_DELAY_CLK
-
 #ifndef CYCLE_EXACT_ALARM
     while (CLK >= alarm_context_next_pending_clk(ALARM_CONTEXT)) {
         alarm_context_dispatch(ALARM_CONTEXT, CLK);
-        CPU_DELAY_CLK
     }
 #endif
 
@@ -1797,11 +1524,9 @@ static const BYTE rewind_fetch_tab[] = {
             if (!(CPU_INT_STATUS->global_pending_int & IK_IRQ)
                 && CPU_INT_STATUS->global_pending_int & IK_IRQPEND)
                     CPU_INT_STATUS->global_pending_int &= ~IK_IRQPEND;
-            CPU_DELAY_CLK
 #ifndef CYCLE_EXACT_ALARM
             while (CLK >= alarm_context_next_pending_clk(ALARM_CONTEXT)) {
                 alarm_context_dispatch(ALARM_CONTEXT, CLK);
-                CPU_DELAY_CLK
             }
 #endif
         }
@@ -1811,28 +1536,16 @@ static const BYTE rewind_fetch_tab[] = {
         opcode_t opcode;
 #ifdef DEBUG
         CLOCK debug_clk;
-#ifdef DRIVE_CPU
-        debug_clk = CLK;
-#else
         debug_clk = maincpu_clk;
-#endif
 #endif
 
 #ifdef FEATURE_CPUMEMHISTORY
-#ifndef DRIVE_CPU
         memmap_state |= (MEMMAP_STATE_INSTR | MEMMAP_STATE_OPCODE);
-#endif
 #endif
 
         FETCH_OPCODE(opcode);
 
 #ifdef FEATURE_CPUMEMHISTORY
-#ifndef DRIVE_CPU
-        /* HACK to cope with FETCH_OPCODE optimization in x64 */
-        if (((int)reg_pc) < bank_limit) {
-            memmap_mem_read(reg_pc);
-        }
-
         if(p0 == 0x20) {
             monitor_cpuhistory_store(reg_pc, (BYTE)(p0), (BYTE)(p1), (BYTE)(LOAD(reg_pc+2)));
         } else {
@@ -1840,22 +1553,8 @@ static const BYTE rewind_fetch_tab[] = {
         }
         memmap_state &= ~(MEMMAP_STATE_INSTR | MEMMAP_STATE_OPCODE);
 #endif
-#endif
 
 #ifdef DEBUG
-#ifdef DRIVE_CPU
-        if (TRACEFLG) {
-            BYTE op = (BYTE)(p0);
-            BYTE lo = (BYTE)(p1);
-            BYTE hi = (BYTE)(p2 >> 8);
-
-            debug_drive((DWORD)(reg_pc), debug_clk,
-                        mon_disassemble_to_string(e_disk8_space,
-                                                  (WORD) reg_pc, op,
-                                                  lo, hi, 0, 1, "6502"), 
-                        reg_a_read, reg_x, reg_y, reg_sp);
-        }
-#else
         if (TRACEFLG) {
             BYTE op = (BYTE)(p0);
             BYTE lo = (BYTE)(p1);
@@ -1872,7 +1571,6 @@ static const BYTE rewind_fetch_tab[] = {
             monitor_startup_trap();
             debug.perform_break_into_monitor = 0;
         }
-#endif
 #endif
 
 trap_skipped:
@@ -1897,11 +1595,20 @@ trap_skipped:
           case 0xb2:            /* JAM */
           case 0xd2:            /* JAM */
           case 0xf2:            /* JAM */
-          case 0x12:            /* JAM */
-          case 0x32:            /* JAM */
-          case 0x42:            /* JAM */
             REWIND_FETCH_OPCODE(CLK);
             JAM();
+            break;
+
+          case 0x12:            /* BRA */
+            BRANCH(1, p1);
+            break;
+
+          case 0x32:            /* SAC */
+            SAC(p1);
+            break;
+
+          case 0x42:            /* SIR */
+            SIR(p1);
             break;
 
           case 0x03:            /* SLO ($nn,X) */
@@ -1927,10 +1634,6 @@ trap_skipped:
             break;
 
           case 0x08:            /* PHP */
-#ifdef DRIVE_CPU
-            if (drivecpu_byte_ready())
-                LOCAL_SET_OVERFLOW(1);
-#endif
             PHP();
             break;
 
@@ -2202,10 +1905,6 @@ trap_skipped:
             break;
 
           case 0x50:            /* BVC $nnnn */
-#ifdef DRIVE_CPU
-            if (drivecpu_byte_ready())
-                LOCAL_SET_OVERFLOW(1);
-#endif
             BRANCH(!LOCAL_OVERFLOW(), p1);
             break;
 
@@ -2310,10 +2009,6 @@ trap_skipped:
             break;
 
           case 0x70:            /* BVS $nnnn */
-#ifdef DRIVE_CPU
-            if (drivecpu_byte_ready())
-                LOCAL_SET_OVERFLOW(1);
-#endif
             BRANCH(LOCAL_OVERFLOW(), p1);
             break;
 
@@ -2462,7 +2157,7 @@ trap_skipped:
             break;
 
           case 0x9b:            /* SHS $nnnn,Y */
-            SHS_ABS_Y(p2);
+            NOOP_ABS_Y();
             break;
 
           case 0x9c:            /* SHY $nnnn,X */

@@ -274,11 +274,15 @@ midi_sources = \
 cpucore_sources = \
 	6510core.c
 
+cpudtvcore_sources = \
+	6510dtvcore.c
+
 maincpu_sources = \
 	maincpu.c
 
 EXTRA_DIST = \
 	6510core.c \
+	6510dtvcore.c \
 	ChangeLog \
 	ChangeLog.1 \
 	ChangeLog.2 \
@@ -290,6 +294,7 @@ EXTRA_DIST = \
 	fixpoint.c \
 	gentranslate_h.sh \
 	gentranslatetable.sh \
+	maindtvcpu.c \
 	piacore.c \
 	translate.txt
 
