@@ -270,6 +270,9 @@ EXTRA_DIST = \
 	win64-msvc/xplus4.vcproj \
 	win64-msvc/xvic.vcproj \
 	win64-msvc/zlib.vcproj \
+	wince-msvc/config.h \
+	wince-msvc/dirent.h \
+	wince-msvc/make-bindist.bat \
 	wince-msvc/_vice.vcproj \
 	wince-msvc/arch.vcproj \
 	wince-msvc/base.vcproj \
@@ -283,6 +286,23 @@ EXTRA_DIST = \
 	wince-msvc/c64dtvstubs.vcproj \
 	wince-msvc/c64exp.vcproj \
 	wince-msvc/cartconv.vcproj \
+	wince-msvc/cbm2.vcproj \
+	wince-msvc/core.vcproj \
+	wince-msvc/crtc.vcproj \
+	wince-msvc/diskimage.vcproj \
+	wince-msvc/drive.vcproj \
+	wince-msvc/fileio.vcproj \
+	wince-msvc/fsdevice.vcproj \
+	wince-msvc/gentranslate.vcproj \
+	wince-msvc/gfxoutputdrv.vcproj \
+	wince-msvc/iec.vcproj \
+	wince-msvc/iec128dcr.vcproj \
+	wince-msvc/iecbus.vcproj \
+	wince-msvc/iecieee.vcproj \
+	wince-msvc/ieee.vcproj \
+	wince-msvc/imagecontents.vcproj \
+	wince-msvc/monitor.vcproj \
+	wince-msvc/parallel.vcproj \
 	archdep_amiga.c \
 	archdep_amiga.h \
 	archdep_beos.c \
