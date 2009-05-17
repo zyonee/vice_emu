@@ -7,19 +7,19 @@
 	>
 	<Platforms>
 		<Platform
-			Name="x64"
+			Name="Pocket PC 2003 (ARMV4)"
 		/>
 		<Platform
-			Name="Itanium"
+			Name="Smartphone 2003 (ARMV4)"
 		/>
 	</Platforms>
 	<ToolFiles>
 	</ToolFiles>
 	<Configurations>
 		<Configuration
-			Name="Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			Name="Debug|Pocket PC 2003 (ARMV4)"
+			OutputDirectory="Pocket PC 2003 (ARMV4)\$(ConfigurationName)"
+			IntermediateDirectory="Pocket PC 2003 (ARMV4)\$(ConfigurationName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
 			UseOfMFC="0"
@@ -39,13 +39,14 @@
 			/>
 			<Tool
 				Name="VCMIDLTool"
-				TargetEnvironment="3"
+				TargetEnvironment="1"
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				ExecutionBucket="7"
 				Optimization="0"
 				AdditionalIncludeDirectories=".\,..\,..\..\..\,..\..\..\lib\zlib"
-				PreprocessorDefinitions="_DEBUG;DONT_USE_UNISTD_H;WIN32;_WINDOWS;_CRT_SECURE_NO_DEPRECATE"
+				PreprocessorDefinitions="_DEBUG;DONT_USE_UNISTD_H;_CRT_SECURE_NO_DEPRECATE;WIN32;_WINDOWS;_WIN32_WCE=$(CEVER);$(CePlatform);ARM;_ARM_;ARMV4;UNDER_CE=$(CEVER);UNICODE"
 				RuntimeLibrary="3"
 				PrecompiledHeaderFile=".\libs\zlib\Debug/zlib.pch"
 				AssemblerListingLocation=".\libs\zlib\Debug/"
@@ -82,16 +83,24 @@
 				OutputFile=".\libs\zlib\Debug/zlib.bsc"
 			/>
 			<Tool
-				Name="VCFxCopTool"
+				Name="VCCodeSignTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
 			/>
+			<DeploymentTool
+				ForceDirty="-1"
+				RemoteDirectory=""
+				RegisterOutput="0"
+				AdditionalFiles=""
+			/>
+			<DebuggerTool
+			/>
 		</Configuration>
 		<Configuration
-			Name="Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			Name="Release|Pocket PC 2003 (ARMV4)"
+			OutputDirectory="Pocket PC 2003 (ARMV4)\$(ConfigurationName)"
+			IntermediateDirectory="Pocket PC 2003 (ARMV4)\$(ConfigurationName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
 			UseOfMFC="0"
@@ -111,14 +120,15 @@
 			/>
 			<Tool
 				Name="VCMIDLTool"
-				TargetEnvironment="3"
+				TargetEnvironment="1"
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				ExecutionBucket="7"
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories=".\,..\,..\..\..\,..\..\..\lib\zlib"
-				PreprocessorDefinitions="NDEBUG;DONT_USE_UNISTD_H;WIN32;_WINDOWS;_CRT_SECURE_NO_DEPRECATE"
+				PreprocessorDefinitions="NDEBUG;DONT_USE_UNISTD_H;_CRT_SECURE_NO_DEPRECATE;WIN32;_WINDOWS;_WIN32_WCE=$(CEVER);$(CePlatform);ARM;_ARM_;ARMV4;UNDER_CE=$(CEVER);UNICODE"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -156,16 +166,24 @@
 				OutputFile=".\libs\zlib\Release/zlib.bsc"
 			/>
 			<Tool
-				Name="VCFxCopTool"
+				Name="VCCodeSignTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
 			/>
+			<DeploymentTool
+				ForceDirty="-1"
+				RemoteDirectory=""
+				RegisterOutput="0"
+				AdditionalFiles=""
+			/>
+			<DebuggerTool
+			/>
 		</Configuration>
 		<Configuration
-			Name="Debug|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			Name="Debug|Smartphone 2003 (ARMV4)"
+			OutputDirectory="Smartphone 2003 (ARMV4)\$(ConfigurationName)"
+			IntermediateDirectory="Smartphone 2003 (ARMV4)\$(ConfigurationName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
 			UseOfMFC="0"
@@ -185,13 +203,14 @@
 			/>
 			<Tool
 				Name="VCMIDLTool"
-				TargetEnvironment="2"
+				TargetEnvironment="1"
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				ExecutionBucket="7"
 				Optimization="0"
 				AdditionalIncludeDirectories=".\,..\,..\..\..\,..\..\..\lib\zlib"
-				PreprocessorDefinitions="_DEBUG;DONT_USE_UNISTD_H;WINIA64;WIN32;_WINDOWS;_CRT_SECURE_NO_DEPRECATE"
+				PreprocessorDefinitions="_DEBUG;DONT_USE_UNISTD_H;_CRT_SECURE_NO_DEPRECATE;WIN32;_WINDOWS;_WIN32_WCE=$(CEVER);$(CePlatform);ARM;_ARM_;ARMV4;UNDER_CE=$(CEVER);UNICODE"
 				RuntimeLibrary="3"
 				PrecompiledHeaderFile=".\libs\zlib\Debug/zlib.pch"
 				AssemblerListingLocation=".\libs\zlib\Debug/"
@@ -228,16 +247,24 @@
 				OutputFile=".\libs\zlib\Debug/zlib.bsc"
 			/>
 			<Tool
-				Name="VCFxCopTool"
+				Name="VCCodeSignTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
 			/>
+			<DeploymentTool
+				ForceDirty="-1"
+				RemoteDirectory=""
+				RegisterOutput="0"
+				AdditionalFiles=""
+			/>
+			<DebuggerTool
+			/>
 		</Configuration>
 		<Configuration
-			Name="Release|Itanium"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			Name="Release|Smartphone 2003 (ARMV4)"
+			OutputDirectory="Smartphone 2003 (ARMV4)\$(ConfigurationName)"
+			IntermediateDirectory="Smartphone 2003 (ARMV4)\$(ConfigurationName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
 			UseOfMFC="0"
@@ -257,14 +284,15 @@
 			/>
 			<Tool
 				Name="VCMIDLTool"
-				TargetEnvironment="2"
+				TargetEnvironment="1"
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				ExecutionBucket="7"
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories=".\,..\,..\..\..\,..\..\..\lib\zlib"
-				PreprocessorDefinitions="NDEBUG;DONT_USE_UNISTD_H;WINIA64;WIN32;_WINDOWS;_CRT_SECURE_NO_DEPRECATE"
+				PreprocessorDefinitions="NDEBUG;DONT_USE_UNISTD_H;_CRT_SECURE_NO_DEPRECATE;WIN32;_WINDOWS;_WIN32_WCE=$(CEVER);$(CePlatform);ARM;_ARM_;ARMV4;UNDER_CE=$(CEVER);UNICODE"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -302,10 +330,18 @@
 				OutputFile=".\libs\zlib\Release/zlib.bsc"
 			/>
 			<Tool
-				Name="VCFxCopTool"
+				Name="VCCodeSignTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+			/>
+			<DeploymentTool
+				ForceDirty="-1"
+				RemoteDirectory=""
+				RegisterOutput="0"
+				AdditionalFiles=""
+			/>
+			<DebuggerTool
 			/>
 		</Configuration>
 	</Configurations>
@@ -316,7 +352,7 @@
 			RelativePath="..\..\..\lib\zlib\adler32.c"
 			>
 			<FileConfiguration
-				Name="Debug|x64"
+				Name="Debug|Pocket PC 2003 (ARMV4)"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -325,7 +361,7 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Release|x64"
+				Name="Release|Pocket PC 2003 (ARMV4)"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -334,7 +370,7 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Debug|Itanium"
+				Name="Debug|Smartphone 2003 (ARMV4)"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -343,7 +379,7 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Release|Itanium"
+				Name="Release|Smartphone 2003 (ARMV4)"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -356,7 +392,7 @@
 			RelativePath="..\..\..\lib\zlib\compress.c"
 			>
 			<FileConfiguration
-				Name="Debug|x64"
+				Name="Debug|Pocket PC 2003 (ARMV4)"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -365,7 +401,7 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Release|x64"
+				Name="Release|Pocket PC 2003 (ARMV4)"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -374,7 +410,7 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Debug|Itanium"
+				Name="Debug|Smartphone 2003 (ARMV4)"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -383,7 +419,7 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Release|Itanium"
+				Name="Release|Smartphone 2003 (ARMV4)"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -396,7 +432,7 @@
 			RelativePath="..\..\..\lib\zlib\crc32.c"
 			>
 			<FileConfiguration
-				Name="Debug|x64"
+				Name="Debug|Pocket PC 2003 (ARMV4)"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -405,7 +441,7 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Release|x64"
+				Name="Release|Pocket PC 2003 (ARMV4)"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -414,7 +450,7 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Debug|Itanium"
+				Name="Debug|Smartphone 2003 (ARMV4)"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -423,7 +459,7 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Release|Itanium"
+				Name="Release|Smartphone 2003 (ARMV4)"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -436,7 +472,7 @@
 			RelativePath="..\..\..\lib\zlib\deflate.c"
 			>
 			<FileConfiguration
-				Name="Debug|x64"
+				Name="Debug|Pocket PC 2003 (ARMV4)"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -445,7 +481,7 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Release|x64"
+				Name="Release|Pocket PC 2003 (ARMV4)"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -454,7 +490,7 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Debug|Itanium"
+				Name="Debug|Smartphone 2003 (ARMV4)"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -463,7 +499,7 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Release|Itanium"
+				Name="Release|Smartphone 2003 (ARMV4)"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -476,7 +512,7 @@
 			RelativePath="..\..\..\lib\zlib\gzio.c"
 			>
 			<FileConfiguration
-				Name="Debug|x64"
+				Name="Debug|Pocket PC 2003 (ARMV4)"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -485,7 +521,7 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Release|x64"
+				Name="Release|Pocket PC 2003 (ARMV4)"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -494,7 +530,7 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Debug|Itanium"
+				Name="Debug|Smartphone 2003 (ARMV4)"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -503,7 +539,7 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Release|Itanium"
+				Name="Release|Smartphone 2003 (ARMV4)"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -516,7 +552,7 @@
 			RelativePath="..\..\..\lib\zlib\infback.c"
 			>
 			<FileConfiguration
-				Name="Debug|x64"
+				Name="Debug|Pocket PC 2003 (ARMV4)"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -525,7 +561,7 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Release|x64"
+				Name="Release|Pocket PC 2003 (ARMV4)"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -534,7 +570,7 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Debug|Itanium"
+				Name="Debug|Smartphone 2003 (ARMV4)"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -543,7 +579,7 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Release|Itanium"
+				Name="Release|Smartphone 2003 (ARMV4)"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -556,7 +592,7 @@
 			RelativePath="..\..\..\lib\zlib\inffast.c"
 			>
 			<FileConfiguration
-				Name="Debug|x64"
+				Name="Debug|Pocket PC 2003 (ARMV4)"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -565,7 +601,7 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Release|x64"
+				Name="Release|Pocket PC 2003 (ARMV4)"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -574,7 +610,7 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Debug|Itanium"
+				Name="Debug|Smartphone 2003 (ARMV4)"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -583,7 +619,7 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Release|Itanium"
+				Name="Release|Smartphone 2003 (ARMV4)"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -596,7 +632,7 @@
 			RelativePath="..\..\..\lib\zlib\inflate.c"
 			>
 			<FileConfiguration
-				Name="Debug|x64"
+				Name="Debug|Pocket PC 2003 (ARMV4)"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -605,7 +641,7 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Release|x64"
+				Name="Release|Pocket PC 2003 (ARMV4)"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -614,7 +650,7 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Debug|Itanium"
+				Name="Debug|Smartphone 2003 (ARMV4)"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -623,7 +659,7 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Release|Itanium"
+				Name="Release|Smartphone 2003 (ARMV4)"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -636,7 +672,7 @@
 			RelativePath="..\..\..\lib\zlib\inftrees.c"
 			>
 			<FileConfiguration
-				Name="Debug|x64"
+				Name="Debug|Pocket PC 2003 (ARMV4)"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -645,7 +681,7 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Release|x64"
+				Name="Release|Pocket PC 2003 (ARMV4)"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -654,7 +690,7 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Debug|Itanium"
+				Name="Debug|Smartphone 2003 (ARMV4)"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -663,7 +699,7 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Release|Itanium"
+				Name="Release|Smartphone 2003 (ARMV4)"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -676,7 +712,7 @@
 			RelativePath="..\..\..\lib\zlib\trees.c"
 			>
 			<FileConfiguration
-				Name="Debug|x64"
+				Name="Debug|Pocket PC 2003 (ARMV4)"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -685,7 +721,7 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Release|x64"
+				Name="Release|Pocket PC 2003 (ARMV4)"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -694,7 +730,7 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Debug|Itanium"
+				Name="Debug|Smartphone 2003 (ARMV4)"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -703,7 +739,7 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Release|Itanium"
+				Name="Release|Smartphone 2003 (ARMV4)"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -716,7 +752,7 @@
 			RelativePath="..\..\..\lib\zlib\uncompr.c"
 			>
 			<FileConfiguration
-				Name="Debug|x64"
+				Name="Debug|Pocket PC 2003 (ARMV4)"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -725,7 +761,7 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Release|x64"
+				Name="Release|Pocket PC 2003 (ARMV4)"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -734,7 +770,7 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Debug|Itanium"
+				Name="Debug|Smartphone 2003 (ARMV4)"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -743,7 +779,7 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Release|Itanium"
+				Name="Release|Smartphone 2003 (ARMV4)"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -756,7 +792,7 @@
 			RelativePath="..\..\..\lib\zlib\zutil.c"
 			>
 			<FileConfiguration
-				Name="Debug|x64"
+				Name="Debug|Pocket PC 2003 (ARMV4)"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -765,7 +801,7 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Release|x64"
+				Name="Release|Pocket PC 2003 (ARMV4)"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -774,7 +810,7 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Debug|Itanium"
+				Name="Debug|Smartphone 2003 (ARMV4)"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -783,7 +819,7 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Release|Itanium"
+				Name="Release|Smartphone 2003 (ARMV4)"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
