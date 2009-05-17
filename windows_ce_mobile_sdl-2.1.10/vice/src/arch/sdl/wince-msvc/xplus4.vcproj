@@ -176,7 +176,6 @@
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
 				IgnoreDefaultLibraryNames="$(CENoDefaultLib)"
-				IgnoreDefaultLibraryNames="msvcrt.lib"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\..\..\..\..\data/xplus4.pdb"
 				StackReserveSize="65536"
