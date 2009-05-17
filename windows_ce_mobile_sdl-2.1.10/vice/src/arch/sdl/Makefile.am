@@ -327,6 +327,15 @@ EXTRA_DIST = \
 	wince-msvc/vice.sln \
 	wince-msvc/vicii.vcproj \
 	wince-msvc/viciidtv.vcproj \
+	wince-msvc/video.vcproj \
+	wince-msvc/x128.vcproj \
+	wince-msvc/x64.vcproj \
+	wince-msvc/x64dtv.vcproj \
+	wince-msvc/xcbm2.vcproj \
+	wince-msvc/xpet.vcproj \
+	wince-msvc/xplus4.vcproj \
+	wince-msvc/xvic.vcproj \
+	wince-msvc/zlib.vcproj \
 	archdep_amiga.c \
 	archdep_amiga.h \
 	archdep_beos.c \
