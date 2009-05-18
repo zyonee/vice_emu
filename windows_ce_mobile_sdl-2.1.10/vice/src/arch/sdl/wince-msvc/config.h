@@ -35,7 +35,6 @@
 #define WIN32_COMPILE           1
 #define WINCE_COMPILE           1
 #define HAVE_SDLMAIN            1
-#define HAVE_HWSCALE            1
 
 #define HAS_LONGLONG_INTEGER    1
 #define HAS_UNLOCKRESOURCE      1
@@ -49,10 +48,8 @@
 #define HAVE_LIMITS_H           1
 #define HAVE_COMMCTRL_H         1
 #define HAVE_SHLOBJ_H           1
-#define HAVE_DIRECT_H           1
 #define HAVE_DIRENT_H           1
 #define HAVE_ERRNO_H            1
-#define HAVE_IO_H               1
 #define HAVE_PROCESS_H          1
 #define HAVE_SYS_TYPES_H        1
 #define HAVE_SYS_STAT_H         1
@@ -64,8 +61,6 @@
 #define HAVE_HTONL              1
 #define HAVE_HTONS              1
 #define HAVE_GETCWD             1
-
-#define __i386__                1
 
 #define inline                  _inline
 
@@ -87,5 +82,19 @@
 #define uint64_t_C(c)    (c ## u64)
 /* end: for FFMPEG: common.h */
 
+/* function replacement prototypes */
+
+#ifndef _FILE_DEFINED
+   typedef void FILE;
+#  define _FILE_DEFINED
 #endif
 
+extern void setbuf(FILE *stream, char *buffer);
+extern int access(const char *fname, int mode);
+extern int chdir(const char *dirname);
+extern char *getcwd(char *buf, int size);
+extern int isatty(int fd);
+extern int unlink(const char *fname);
+extern int rename(const char *oldname, const char *newname);
+
+#endif

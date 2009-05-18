@@ -272,9 +272,14 @@ EXTRA_DIST = \
 	win64-msvc/zlib.vcproj \
 	wince-msvc/config.h \
 	wince-msvc/dirent.h \
+	wince-msvc/errno.h \
+	wince-msvc/fcntl.h \
 	wince-msvc/make-bindist.bat \
 	wince-msvc/siddefs.h \
 	wince-msvc/siddefs-fp.h \
+	wince-msvc/sys/stat.h \
+	wince-msvc/sys/types.h \
+	wince-msvc/wincefuncs.c \
 	wince-msvc/_vice.vcproj \
 	wince-msvc/arch.vcproj \
 	wince-msvc/base.vcproj \
