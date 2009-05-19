@@ -97,13 +97,13 @@
 #define LOAD(addr) \
     (*_mem_read_tab_ptr[(addr) >> 8])((WORD)(addr))
 #endif
-
+/*
 #define LOAD_ADDR(addr) \
     ((LOAD((addr) + 1) << 8) | LOAD(addr))
 
 #define LOAD_ZERO_ADDR(addr) \
     ((LOAD_ZERO((addr) + 1) << 8) | LOAD_ZERO(addr))
-
+*/
 inline static BYTE *mem_read_base(int addr)
 {
     BYTE *p = _mem_read_base_tab_ptr[addr >> 8];
@@ -162,7 +162,9 @@ static void maincpu_generic_dma(void)
 /* ------------------------------------------------------------------------- */
 
 struct interrupt_cpu_status_s *maincpu_int_status = NULL;
+#ifndef CYCLE_EXACT_ALARM
 alarm_context_t *maincpu_alarm_context = NULL;
+#endif
 clk_guard_t *maincpu_clk_guard = NULL;
 monitor_interface_t *maincpu_monitor_interface = NULL;
 
