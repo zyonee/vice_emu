@@ -219,15 +219,15 @@
                 interrupt_ack_nmi(CPU_INT_STATUS);                    \
                 LOCAL_SET_BREAK(0);                                   \
                 PUSH(reg_pc >> 8);                                    \
-                CLK_ADD(CLK,1);                                       \
+                CLK_INC();                                            \
                 PUSH(reg_pc & 0xff);                                  \
-                CLK_ADD(CLK,1);                                       \
+                CLK_INC();                                            \
                 PUSH(LOCAL_STATUS());                                 \
-                CLK_ADD(CLK,1);                                       \
+                CLK_INC();                                            \
                 addr = LOAD(0xfffa);                                  \
-                CLK_ADD(CLK,1);                                       \
+                CLK_INC();                                            \
                 addr |= (LOAD(0xfffb) << 8);                          \
-                CLK_ADD(CLK,1);                                       \
+                CLK_INC();                                            \
                 LOCAL_SET_INTERRUPT(1);                               \
                 JUMP(addr);                                           \
                 SET_LAST_OPCODE(0);                                   \
@@ -243,15 +243,15 @@
                 interrupt_ack_irq(CPU_INT_STATUS);                    \
                 LOCAL_SET_BREAK(0);                                   \
                 PUSH(reg_pc >> 8);                                    \
-                CLK_ADD(CLK,1);                                       \
+                CLK_INC();                                            \
                 PUSH(reg_pc & 0xff);                                  \
-                CLK_ADD(CLK,1);                                       \
+                CLK_INC();                                            \
                 PUSH(LOCAL_STATUS());                                 \
-                CLK_ADD(CLK,1);                                       \
+                CLK_INC();                                            \
                 addr = LOAD(0xfffe);                                  \
-                CLK_ADD(CLK,1);                                       \
+                CLK_INC();                                            \
                 addr |= (LOAD(0xffff) << 8);                          \
-                CLK_ADD(CLK,1);                                       \
+                CLK_INC();                                            \
                 LOCAL_SET_INTERRUPT(1);                               \
                 JUMP(addr);                                           \
                 SET_LAST_OPCODE(0);                                   \
@@ -320,69 +320,69 @@
 
 #define GET_ABS(dest)        \
     dest = (BYTE)(LOAD(p2)); \
-    CLK_ADD(CLK,1);
+    CLK_INC();
 
 #define SET_ABS(value) \
     STORE(p2, value);  \
-    CLK_ADD(CLK,1);
+    CLK_INC();
 
 #define SET_ABS_RMW(old_value, new_value) \
     if (!SKIP_CYCLE) {                    \
         STORE(p2, old_value);             \
-        CLK_ADD(CLK,1);                   \
+        CLK_INC();                   \
     }                                     \
     STORE(p2, new_value);                 \
-    CLK_ADD(CLK,1);
+    CLK_INC();
 
 #define INT_ABS_I_R(reg_i)                                 \
     if (!SKIP_CYCLE && ((((p2) & 0xff) + reg_i) > 0xff)) { \
         LOAD((((p2) + reg_i) & 0xff) | ((p2) & 0xff00));   \
-        CLK_ADD(CLK,1);                                    \
+        CLK_INC();                                    \
     }
 
 #define INT_ABS_I_W(reg_i)                                 \
     if (!SKIP_CYCLE) {                                     \
         LOAD((((p2) + reg_i) & 0xff) | ((p2) & 0xff00));   \
-        CLK_ADD(CLK,1);                                    \
+        CLK_INC();                                    \
     }
 
 #define GET_ABS_X(dest)        \
     INT_ABS_I_R(reg_x)         \
     dest = LOAD((p2) + reg_x); \
-    CLK_ADD(CLK,1);
+    CLK_INC();
 
 #define GET_ABS_Y(dest)        \
     INT_ABS_I_R(reg_y)         \
     dest = LOAD((p2) + reg_y); \
-    CLK_ADD(CLK,1);
+    CLK_INC();
 
 #define GET_ABS_X_RMW(dest)    \
     INT_ABS_I_W(reg_x)         \
     dest = LOAD((p2) + reg_x); \
-    CLK_ADD(CLK,1);
+    CLK_INC();
 
 #define GET_ABS_Y_RMW(dest)    \
     INT_ABS_I_W(reg_y)         \
     dest = LOAD((p2) + reg_y); \
-    CLK_ADD(CLK,1);
+    CLK_INC();
 
 #define SET_ABS_X(value)       \
     INT_ABS_I_W(reg_x)         \
     STORE(p2 + reg_x, value);  \
-    CLK_ADD(CLK,1);
+    CLK_INC();
 
 #define SET_ABS_Y(value)       \
     INT_ABS_I_W(reg_y)         \
     STORE(p2 + reg_y, value);  \
-    CLK_ADD(CLK,1);
+    CLK_INC();
 
 #define SET_ABS_I_RMW(reg_i, old_value, new_value) \
     if (!SKIP_CYCLE) {                             \
         STORE(p2 + reg_i, old_value);              \
-        CLK_ADD(CLK,1);                            \
+        CLK_INC();                            \
     }                                              \
     STORE(p2 + reg_i, new_value);                  \
-    CLK_ADD(CLK,1);
+    CLK_INC();
 
 #define SET_ABS_X_RMW(old_value, new_value)    \
     SET_ABS_I_RMW(reg_x, old_value, new_value)
@@ -392,53 +392,53 @@
 
 #define GET_ZERO(dest)    \
     dest = LOAD_ZERO(p1); \
-    CLK_ADD(CLK,1);
+    CLK_INC();
 
 #define SET_ZERO(value)    \
     STORE_ZERO(p1, value); \
-    CLK_ADD(CLK,1);
+    CLK_INC();
 
 #define SET_ZERO_RMW(old_value, new_value) \
     if (!SKIP_CYCLE) {                     \
         STORE_ZERO(p1, old_value);         \
-        CLK_ADD(CLK,1);                    \
+        CLK_INC();                    \
     }                                      \
     STORE_ZERO(p1, new_value);             \
-    CLK_ADD(CLK,1);
+    CLK_INC();
 
 #define INT_ZERO_I      \
     if (!SKIP_CYCLE) {  \
         LOAD_ZERO(p1);  \
-        CLK_ADD(CLK,1); \
+        CLK_INC(); \
     }
 
 #define GET_ZERO_X(dest)          \
     INT_ZERO_I                    \
     dest = LOAD_ZERO(p1 + reg_x); \
-    CLK_ADD(CLK,1);
+    CLK_INC();
 
 #define GET_ZERO_Y(dest)          \
     INT_ZERO_I                    \
     dest = LOAD_ZERO(p1 + reg_y); \
-    CLK_ADD(CLK,1);
+    CLK_INC();
 
 #define SET_ZERO_X(value)          \
     INT_ZERO_I                     \
     STORE_ZERO(p1 + reg_x, value); \
-    CLK_ADD(CLK,1);
+    CLK_INC();
 
 #define SET_ZERO_Y(value)          \
     INT_ZERO_I                     \
     STORE_ZERO(p1 + reg_y, value); \
-    CLK_ADD(CLK,1);
+    CLK_INC();
 
 #define SET_ZERO_I_RMW(reg_i, old_value, new_value) \
     if (!SKIP_CYCLE) {                              \
         STORE_ZERO(p1 + reg_i, old_value);          \
-        CLK_ADD(CLK,1);                             \
+        CLK_INC();                             \
     }                                               \
     STORE_ZERO(p1 + reg_i, new_value);              \
-    CLK_ADD(CLK,1);
+    CLK_INC();
 
 #define SET_ZERO_X_RMW(old_value, new_value)    \
     SET_ZERO_I_RMW(reg_x, old_value, new_value)
@@ -448,74 +448,87 @@
 
 #define INT_IND_X                      \
     unsigned int tmpa, addr;           \
-    if (!SKIP_CYCLE) {                 \
-        LOAD_ZERO(p1);                 \
-        CLK_ADD(CLK,1);                \
-    }                                  \
+    LOAD_ZERO(p1);                     \
+    CLK_INC();                         \
     tmpa = (p1 + reg_x) & 0xff;        \
     addr = LOAD_ZERO(tmpa);            \
-    CLK_ADD(CLK,1);                    \
+    CLK_INC();                         \
     tmpa = (tmpa + 1) & 0xff;          \
     addr |= (LOAD_ZERO(tmpa) << 8);    \
-    CLK_ADD(CLK,1);
+    CLK_INC();
 
 #define GET_IND_X(dest) \
     INT_IND_X           \
     dest = LOAD(addr);  \
-    CLK_ADD(CLK,1);
+    CLK_INC();
 
 #define SET_IND_X(value) \
     INT_IND_X            \
     STORE(addr, value);  \
-    CLK_ADD(CLK,1);
+    CLK_INC();
 
 #define INT_IND_Y_R()                                        \
     unsigned int tmpa, addr;                                 \
     tmpa = LOAD_ZERO(p1);                                    \
-    CLK_ADD(CLK,1);                                          \
+    CLK_INC();                                               \
     tmpa |= (LOAD_ZERO(p1 + 1) << 8);                        \
-    CLK_ADD(CLK,1);                                          \
+    CLK_INC();                                               \
     if (!SKIP_CYCLE && ((((tmpa) & 0xff) + reg_y) > 0xff)) { \
         LOAD((tmpa & 0xff00) | ((tmpa + reg_y) & 0xff));     \
-        CLK_ADD(CLK,1);                                      \
+        CLK_INC();                                           \
     }                                                        \
     addr = (tmpa + reg_y) & 0xffff;                          \
 
 #define INT_IND_Y_W()                                    \
     unsigned int tmpa, addr;                             \
     tmpa = LOAD_ZERO(p1);                                \
-    CLK_ADD(CLK,1);                                      \
+    CLK_INC();                                           \
     tmpa |= (LOAD_ZERO(p1 + 1) << 8);                    \
-    CLK_ADD(CLK,1);                                      \
+    CLK_INC();                                           \
     if (!SKIP_CYCLE) {                                   \
         LOAD((tmpa & 0xff00) | ((tmpa + reg_y) & 0xff)); \
-        CLK_ADD(CLK,1);                                  \
+        CLK_INC();                                       \
     }                                                    \
     addr = (tmpa + reg_y) & 0xffff;
 
 #define GET_IND_Y(dest) \
     INT_IND_Y_R()       \
     dest = LOAD(addr);  \
-    CLK_ADD(CLK,1);
+    CLK_INC();
 
 #define GET_IND_Y_RMW(dest) \
     INT_IND_Y_W()           \
     dest = LOAD(addr);      \
-    CLK_ADD(CLK,1);
+    CLK_INC();
 
 #define SET_IND_Y(value) \
     INT_IND_Y_W()        \
     STORE(addr, value);  \
-    CLK_ADD(CLK,1);
+    CLK_INC();
 
 #define SET_IND_RMW(old_value, new_value) \
     if (!SKIP_CYCLE) {                    \
         STORE(addr, old_value);           \
-        CLK_ADD(CLK,1);                   \
+        CLK_INC();                        \
     }                                     \
     STORE(addr, new_value);               \
-    CLK_ADD(CLK,1);
+    CLK_INC();
 
+#define SET_ABS_SH_I(reg_and, reg_i)                     \
+  do {                                                   \
+      unsigned int tmp2, value;                          \
+                                                         \
+      value = reg_and & (((p2 + reg_i) >> 8) + 1);       \
+      if (!SKIP_CYCLE) {                                 \
+          LOAD(((p2 + reg_i) & 0xff) | ((p2) & 0xff00)); \
+          CLK_INC();                                     \
+      }                                                  \
+      tmp2 = p2 + reg_i;                                 \
+      if (((p2) & 0xff) + reg_i > 0xff)                  \
+          tmp2 = (tmp2 & 0xff) | ((value) << 8);         \
+      STORE(tmp2, (value));                              \
+      CLK_INC();                                         \
+  } while (0)
 
 #define INC_PC(value)   (reg_pc += (value))
 
@@ -675,10 +688,10 @@
                                                                 \
           if (!SKIP_CYCLE) {                                    \
               LOAD(reg_pc);                                     \
-              CLK_ADD(CLK,1);                                   \
+              CLK_INC();                                   \
               if ((reg_pc ^ dest_addr) & 0xff00) {              \
                   LOAD((reg_pc & 0xff00) | (dest_addr & 0xff)); \
-                  CLK_ADD(CLK,1);                               \
+                  CLK_INC();                               \
               } else {                                          \
                   OPCODE_DELAYS_INTERRUPT();                    \
               }                                                 \
@@ -701,16 +714,16 @@
           INC_PC(2);                                             \
           LOCAL_SET_BREAK(1);                                    \
           PUSH(reg_pc >> 8);                                     \
-          CLK_ADD(CLK,1);                                        \
+          CLK_INC();                                        \
           PUSH(reg_pc & 0xff);                                   \
-          CLK_ADD(CLK,1);                                        \
+          CLK_INC();                                        \
           PUSH(LOCAL_STATUS());                                  \
-          CLK_ADD(CLK,1);                                        \
+          CLK_INC();                                        \
           LOCAL_SET_INTERRUPT(1);                                \
           addr = LOAD(0xfffe);                                   \
-          CLK_ADD(CLK,1);                                        \
+          CLK_INC();                                        \
           addr |= (LOAD(0xffff) << 8);                           \
-          CLK_ADD(CLK,1);                                        \
+          CLK_INC();                                        \
           JUMP(addr);                                            \
       } else {                                                   \
           if (trap_result) {                                     \
@@ -848,9 +861,9 @@
   do {                                                              \
       WORD dest_addr;                                               \
       dest_addr = LOAD(p2);                                         \
-      CLK_ADD(CLK,1);                                               \
+      CLK_INC();                                               \
       dest_addr |= (LOAD((p2 & 0xff00) | ((p2 + 1) & 0xff)) << 8);  \
-      CLK_ADD(CLK,1);                                               \
+      CLK_INC();                                               \
       JUMP(dest_addr);                                              \
   } while (0)
 
@@ -859,15 +872,15 @@
       unsigned int tmp_addr;                  \
       if (!SKIP_CYCLE) {                      \
           STACK_PEEK();                       \
-          CLK_ADD(CLK,1);                     \
+          CLK_INC();                     \
       }                                       \
       INC_PC(2);                              \
       PUSH(((reg_pc) >> 8) & 0xff);           \
-      CLK_ADD(CLK,1);                         \
+      CLK_INC();                         \
       PUSH((reg_pc) & 0xff);                  \
-      CLK_ADD(CLK,1);                         \
+      CLK_INC();                         \
       tmp_addr = (p1 | (LOAD(reg_pc) << 8));  \
-      CLK_ADD(CLK,1);                         \
+      CLK_INC();                         \
       JUMP(tmp_addr);                         \
   } while (0)
 
@@ -942,14 +955,14 @@
 #define PHA()           \
   do {                  \
       PUSH(reg_a_read); \
-      CLK_ADD(CLK,1);   \
+      CLK_INC();   \
       INC_PC(1);        \
   } while (0)
 
 #define PHP()                          \
   do {                                 \
       PUSH(LOCAL_STATUS() | P_BREAK);  \
-      CLK_ADD(CLK,1);                  \
+      CLK_INC();                  \
       INC_PC(1);                       \
   } while (0)
 
@@ -957,10 +970,10 @@
   do {                          \
       if (!SKIP_CYCLE) {        \
           STACK_PEEK();         \
-          CLK_ADD(CLK,1);       \
+          CLK_INC();       \
       }                         \
       reg_a_write = PULL();     \
-      CLK_ADD(CLK,1);           \
+      CLK_INC();           \
       LOCAL_SET_NZ(reg_a_read); \
       INC_PC(1);                \
   } while (0)
@@ -970,10 +983,10 @@
       BYTE s;                                            \
       if (!SKIP_CYCLE) {                                 \
           STACK_PEEK();                                  \
-          CLK_ADD(CLK,1);                                \
+          CLK_INC();                                \
       }                                                  \
       s = PULL();                                        \
-      CLK_ADD(CLK,1);                                    \
+      CLK_INC();                                    \
       if (!(s & P_INTERRUPT) && LOCAL_INTERRUPT())       \
           OPCODE_ENABLES_IRQ();                          \
       else if ((s & P_INTERRUPT) && !LOCAL_INTERRUPT())  \
@@ -1063,29 +1076,31 @@
       WORD tmp;                     \
       if (!SKIP_CYCLE) {            \
           STACK_PEEK();             \
-          CLK_ADD(CLK,1);           \
+          CLK_INC();                \
       }                             \
       tmp = (WORD)PULL();           \
-      CLK_ADD(CLK,1);               \
+      CLK_INC();                    \
       LOCAL_SET_STATUS((BYTE)tmp);  \
       tmp = (WORD)PULL();           \
-      CLK_ADD(CLK,1);               \
+      CLK_INC();                    \
       tmp |= (WORD)PULL() << 8;     \
-      CLK_ADD(CLK,1);               \
+      CLK_INC();                    \
       JUMP(tmp);                    \
   } while (0)
 
 #define RTS()                     \
   do {                            \
       WORD tmp;                   \
-      tmp = PULL();               \
-      CLK_ADD(CLK,1);             \
-      tmp |= (PULL() << 8);       \
-      CLK_ADD(CLK,1);             \
       if (!SKIP_CYCLE) {          \
-          LOAD(tmp);              \
-          CLK_ADD(CLK,1);         \
+          STACK_PEEK();           \
+          CLK_INC();              \
       }                           \
+      tmp = PULL();               \
+      CLK_INC();                  \
+      tmp |= (PULL() << 8);       \
+      CLK_INC();                  \
+      LOAD(tmp);                  \
+      CLK_INC();                  \
       tmp++;                      \
       JUMP(tmp);                  \
   } while (0)
@@ -1160,59 +1175,31 @@
       INC_PC(1);                  \
   } while (0)
 
-#define SHA_ABS_Y(addr)                                                   \
-  do {                                                                    \
-      unsigned int tmp;                                                   \
-                                                                          \
-      tmp = (addr);                                                       \
-      INC_PC(3);                                                          \
-/*      STORE_ABS_SH_Y(tmp, reg_a_read & reg_x & (((tmp + reg_y) >> 8) + 1), CLK_ABS_I_STORE2); */  \
+#define SHA_IND_Y()                                    \
+  do {                                                 \
+      BYTE val;                                        \
+      INT_IND_Y_W();                                   \
+      val = reg_a_read & reg_x & ((tmpa >> 8) + 1);    \
+      if ((tmpa & 0xff) + reg_y > 0xff)                \
+          addr = ((tmpa + reg_y) & 0xff) | (val << 8); \
+      INC_PC(2);                                       \
+      STORE(addr, val);                                \
+      CLK_INC();                                       \
   } while (0)
 
-#define SHA_IND_Y(addr)                               \
-  do {                                                \
-      unsigned int tmp;                               \
-      BYTE val;                                       \
-                                                      \
-      CLK_ADD(CLK,2);                                 \
-      tmp = LOAD/*_ZERO_ADDR*/(addr);                     \
-      LOAD((tmp & 0xff00) | ((tmp + reg_y) & 0xff));  \
-      CLK_ADD(CLK,1 /*CLK_IND_Y_W*/);                       \
-      val = reg_a_read & reg_x & ((tmp >> 8) + 1);    \
-      if ((tmp & 0xff) + reg_y > 0xff)                \
-          tmp = ((tmp + reg_y) & 0xff) | (val << 8);  \
-      else                                            \
-          tmp += reg_y;                               \
-      INC_PC(2);                                      \
-      STORE(tmp, val);                                \
+#define SH_ABS_I(reg_and, reg_i)    \
+  do {                              \
+      SET_ABS_SH_I(reg_and, reg_i); \
+      INC_PC(3);                    \
   } while (0)
 
-#define SHX_ABS_Y(addr)                                            \
-  do {                                                             \
-      unsigned int tmp;                                            \
-                                                                   \
-      tmp = (addr);                                                \
-      INC_PC(3);                                                   \
-/*      STORE_ABS_SH_Y(tmp, reg_x & (((tmp + reg_y) >> 8) + 1), CLK_ABS_I_STORE2); */ \
+/*
+#define SHS_ABS_Y()                        \
+  do {                                     \
+      SH_ABS_I(reg_a_read & reg_x, reg_y); \
+      reg_sp = reg_a_read & reg_x;         \
   } while (0)
-
-#define SHY_ABS_X(addr)                                            \
-  do {                                                             \
-      unsigned int tmp;                                            \
-                                                                   \
-      tmp = (addr);                                                \
-      INC_PC(3);                                                   \
-/*      STORE_ABS_SH_X(tmp, reg_y & (((tmp + reg_x) >> 8) + 1), CLK_ABS_I_STORE2); */ \
-  } while (0)
-
-#define SHS_ABS_Y(addr)                                                    \
-  do {                                                                     \
-      int tmp = (addr);                                                    \
-                                                                           \
-      INC_PC(3);                                                           \
-/*      STORE_ABS_SH_Y(tmp, reg_a_read & reg_x & (((tmp + reg_y) >> 8) + 1), CLK_ABS_I_STORE2); */ \
-      reg_sp = reg_a_read & reg_x;                                         \
-  } while (0)
+*/
 
 #define SIR()                \
   do {                       \
@@ -1323,11 +1310,9 @@ static const BYTE fetch_tab[] = {
 /* Here, the CPU is emulated. */
 
 {
-#ifndef CYCLE_EXACT_ALARM
     while (CLK >= alarm_context_next_pending_clk(ALARM_CONTEXT)) {
         alarm_context_dispatch(ALARM_CONTEXT, CLK);
     }
-#endif
 
     {
         enum cpu_int pending_interrupt;
@@ -1338,11 +1323,9 @@ static const BYTE fetch_tab[] = {
             if (!(CPU_INT_STATUS->global_pending_int & IK_IRQ)
                 && CPU_INT_STATUS->global_pending_int & IK_IRQPEND)
                     CPU_INT_STATUS->global_pending_int &= ~IK_IRQPEND;
-#ifndef CYCLE_EXACT_ALARM
             while (CLK >= alarm_context_next_pending_clk(ALARM_CONTEXT)) {
                 alarm_context_dispatch(ALARM_CONTEXT, CLK);
             }
-#endif
         }
     }
 
@@ -1937,7 +1920,7 @@ trap_skipped:
             break;
 
           case 0x93:            /* SHA ($nn),Y */
-            SHA_IND_Y(p1);
+            SHA_IND_Y();
             break;
 
           case 0x94:            /* STY $nn,X */
@@ -1968,12 +1951,12 @@ trap_skipped:
             TXS();
             break;
 
-          case 0x9b:            /* NOP $nnnn,Y */
+          case 0x9b:            /* NOP (SHS) $nnnn,Y */
             NOOP(GET_ABS_Y, 3);
             break;
 
           case 0x9c:            /* SHY $nnnn,X */
-            SHY_ABS_X(p2);
+            SH_ABS_I(reg_y, reg_x);
             break;
 
           case 0x9d:            /* STA $nnnn,X */
@@ -1981,11 +1964,11 @@ trap_skipped:
             break;
 
           case 0x9e:            /* SHX $nnnn,Y */
-            SHX_ABS_Y(p2);
+            SH_ABS_I(reg_x, reg_y);
             break;
 
           case 0x9f:            /* SHA $nnnn,Y */
-            SHA_ABS_Y(p2);
+            SH_ABS_I(reg_a_read & reg_x, reg_y);
             break;
 
           case 0xa0:            /* LDY #$nn */

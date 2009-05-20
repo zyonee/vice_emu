@@ -68,12 +68,8 @@ BYTE dtvrewind;
 
 int dtvclockneg = 0;
 
-/* Experimental cycle exact alarm handling */
-/* #define CYCLE_EXACT_ALARM */
-
-#ifdef CYCLE_EXACT_ALARM
-alarm_context_t *maincpu_alarm_context = NULL;
-#endif
+/* Global clock counter.  */
+CLOCK maincpu_clk = 0L;
 
 #define REWIND_FETCH_OPCODE(clock) clock-=dtvrewind; dtvclockneg+=dtvrewind
 
@@ -84,46 +80,23 @@ alarm_context_t *maincpu_alarm_context = NULL;
 BYTE burst_status, burst_idx, burst_fetch, burst_broken;
 BYTE burst_cache[] = {0, 0, 0, 0};
 WORD burst_addr, burst_last_addr;
-int burst_diff, new_burst_diff;
 
 
-static void c64dtvcpu_clock_add(CLOCK *clock, int amount)
+static void c64dtvcpu_clock_inc(void)
 {
-/*
-    if (burst_diff && (amount > 0)) {
-        if (burst_diff >= amount) {
-            burst_diff -= amount;
-            return;
-        }
-        amount -= burst_diff;
-        burst_diff = 0;
-    }
-*/
-
-    if (amount >= 0) {
-        while (amount) {
-#ifdef CYCLE_EXACT_ALARM
-            while ((*clock) >= alarm_context_next_pending_clk(maincpu_alarm_context)) {
-                alarm_context_dispatch(maincpu_alarm_context, (*clock));
-            }
-#endif
-            (*clock)++;
-            --amount;
-            if (dtvclockneg == 0) {
-                if (blitter_active) {
-                    c64dtvblitter_perform_blitter();
-                } else if (dma_active) {
-                    c64dtvdma_perform_dma();
-                }
-            } else {
-                --dtvclockneg;
-            }
+    maincpu_clk++;
+    if (dtvclockneg == 0) {
+        if (blitter_active) {
+            c64dtvblitter_perform_blitter();
+        } else if (dma_active) {
+            c64dtvdma_perform_dma();
         }
     } else {
-        dtvclockneg -= amount;
-        *clock += amount;
+        --dtvclockneg;
     }
 }
+
+#define CLK_INC() c64dtvcpu_clock_inc()
 
 #define CLK_ADD(clock, amount) c64dtvcpu_clock_add(&clock, amount)
 
@@ -161,13 +134,13 @@ DWORD mem_burst_read(WORD addr)
 
 static const BYTE burst_status_tab[] = {
             /* 0     1     2     3     4     5     6     7     8     9     A     B     C     D     E     F */
-    /* $00 */  0110, 0121, 0100, 0121, 0121, 0121, 0121, 0121, 0110, 0021, 0210, 0021, 0132, 0132, 0132, 0132, /* $00 */
+    /* $00 */  0310, 0121, 0100, 0121, 0121, 0121, 0121, 0121, 0310, 0021, 0210, 0021, 0132, 0132, 0132, 0132, /* $00 */
     /* $10 */  0021, 0121, 0021, 0121, 0121, 0121, 0121, 0121, 0210, 0132, 0210, 0132, 0132, 0132, 0132, 0132, /* $10 */
-    /* $20 */  0021, 0121, 0100, 0121, 0121, 0121, 0121, 0121, 0110, 0021, 0210, 0021, 0132, 0132, 0132, 0132, /* $20 */
+    /* $20 */  0021, 0121, 0100, 0121, 0121, 0121, 0121, 0121, 0310, 0021, 0210, 0021, 0132, 0132, 0132, 0132, /* $20 */
     /* $30 */  0021, 0121, 0021, 0121, 0121, 0121, 0121, 0121, 0210, 0132, 0210, 0132, 0132, 0132, 0132, 0132, /* $30 */
-    /* $40 */  0110, 0121, 0021, 0121, 0121, 0121, 0121, 0121, 0110, 0021, 0210, 0021, 0132, 0132, 0132, 0132, /* $40 */
+    /* $40 */  0310, 0121, 0021, 0121, 0121, 0121, 0121, 0121, 0310, 0021, 0210, 0021, 0132, 0132, 0132, 0132, /* $40 */
     /* $50 */  0021, 0121, 0100, 0121, 0121, 0121, 0121, 0121, 0210, 0132, 0210, 0132, 0132, 0132, 0132, 0132, /* $50 */
-    /* $60 */  0110, 0121, 0100, 0121, 0121, 0121, 0121, 0121, 0110, 0021, 0210, 0021, 0132, 0132, 0132, 0132, /* $60 */
+    /* $60 */  0310, 0121, 0100, 0121, 0121, 0121, 0121, 0121, 0310, 0021, 0210, 0021, 0132, 0132, 0132, 0132, /* $60 */
     /* $70 */  0021, 0121, 0100, 0121, 0121, 0121, 0121, 0121, 0210, 0132, 0210, 0132, 0132, 0132, 0132, 0132, /* $70 */
     /* $80 */  0021, 0121, 0021, 0121, 0121, 0121, 0121, 0121, 0210, 0021, 0210, 0021, 0132, 0132, 0132, 0132, /* $80 */
     /* $90 */  0021, 0121, 0100, 0121, 0121, 0121, 0121, 0121, 0210, 0132, 0210, 0132, 0132, 0132, 0132, 0132, /* $90 */
@@ -276,13 +249,13 @@ static const BYTE burst_status_tab[] = {
             burst_addr = reg_pc & 0xfffc; \
             if ((burst_addr != burst_last_addr) || burst_broken) { \
                 *((DWORD *)burst_cache) = mem_burst_read(burst_addr); \
-                CLK_ADD(CLK,1); \
+                CLK_INC(); \
             } \
             burst_idx = reg_pc & 3; \
             o = burst_cache[burst_idx++]; \
             burst_status = burst_status_tab[o]; \
             burst_fetch = burst_status & 7; \
-            new_burst_diff = (burst_status >> 3) & 7; \
+            burst_broken = (burst_status >> 6)&1; \
             if (burst_fetch--) { \
                 if (burst_idx>3) { \
                     burst_addr += 4; \
@@ -290,7 +263,7 @@ static const BYTE burst_status_tab[] = {
                     burst_last_addr = burst_addr; \
                     burst_idx = 0; \
                     *((DWORD *)burst_cache) = mem_burst_read(burst_addr); \
-                    CLK_ADD(CLK,1); \
+                    CLK_INC(); \
                 } \
                 o |= (burst_cache[burst_idx++] << 8); \
                 if (burst_fetch--) { \
@@ -300,36 +273,23 @@ static const BYTE burst_status_tab[] = {
                         burst_last_addr = burst_addr; \
                         burst_idx = 0; \
                         *((DWORD *)burst_cache) = mem_burst_read(burst_addr); \
-                        CLK_ADD(CLK,1); \
+                        CLK_INC(); \
                     } \
                     o |= (burst_cache[burst_idx] << 16); \
                 } \
             } \
-            if ((burst_last_addr != burst_addr) || burst_broken) { \
-                /*burst_diff--; dtvrewind++;*/ \
-            } \
-            burst_broken = (burst_status >> 6)&1; \
-            burst_diff = 0; /*new_burst_diff;*/ \
-            /*CLK_ADD(CLK,1);*/                                     \
-            if (!(((burst_status_tab[o & 0xff]&0x80)) && SKIP_CYCLE)) { \
-                /*CLK_ADD(CLK,1); dtvrewind++*/;                    \
-            }                                                   \
-            if (fetch_tab[o & 0xff]) {                          \
-                /*CLK_ADD(CLK,1);*/                                 \
-            }                                                   \
         } else { \
             burst_broken = 1; \
-            burst_diff = 0; \
             o = LOAD(reg_pc);                                   \
-            CLK_ADD(CLK,1); dtvrewind++;                        \
+            CLK_INC(); dtvrewind++;                             \
             o |= LOAD(reg_pc + 1) << 8;                         \
             if (!(((burst_status_tab[o & 0xff]&0x80))           \
                && SKIP_CYCLE)) {                                \
-                CLK_ADD(CLK,1); dtvrewind++;                    \
+                CLK_INC(); dtvrewind++;                         \
             }                                                   \
             if (fetch_tab[o & 0xff]) {                          \
                  o |= (LOAD(reg_pc + 2) << 16);                 \
-                 CLK_ADD(CLK,1);                                \
+                 CLK_INC();                                     \
             }                                                   \
         } \
     } while(0)

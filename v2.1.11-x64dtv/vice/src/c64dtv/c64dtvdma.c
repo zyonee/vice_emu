@@ -39,7 +39,7 @@
 #include "log.h"
 #include "util.h"
 #include "resources.h"
-#include "maincpu.h"
+#include "maindtvcpu.h"
 #include "interrupt.h"
 #include "snapshot.h"
 #include "translate.h"
@@ -361,11 +361,9 @@ void c64dtv_dma_store(WORD addr, BYTE value)
 
 void c64dtvdma_perform_dma(void)
 {
-    /* set maincpu_rmw_flag to 0 during DMA */
-    int dma_maincpu_rmw = maincpu_rmw_flag;
-    maincpu_rmw_flag = 0;
+    maincpu_dma_flag = 1;
     perform_dma_cycle();
-    maincpu_rmw_flag = dma_maincpu_rmw;
+    maincpu_dma_flag = 0;
 
     if(dma_log_enabled && (dma_state == DMA_WRITE)) log_message(c64dtvdma_log, "%s from %x (%s) to %x (%s), %d to go", GET_REG8(0x1f)&0x02 ? "Swapped" : "Copied", dma_source_off, source_memtype == 0 ? "Flash" : "RAM", dma_dest_off, dest_memtype == 0 ? "Flash" : "RAM", dma_count - 1);
 

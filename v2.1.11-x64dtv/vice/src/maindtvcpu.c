@@ -162,20 +162,17 @@ static void maincpu_generic_dma(void)
 /* ------------------------------------------------------------------------- */
 
 struct interrupt_cpu_status_s *maincpu_int_status = NULL;
-#ifndef CYCLE_EXACT_ALARM
 alarm_context_t *maincpu_alarm_context = NULL;
-#endif
 clk_guard_t *maincpu_clk_guard = NULL;
 monitor_interface_t *maincpu_monitor_interface = NULL;
-
-/* Global clock counter.  */
-CLOCK maincpu_clk = 0L;
 
 /* This is flag is set to 1 each time a Read-Modify-Write instructions that
    accesses memory is executed.  We can emulate the RMW behaviour of the 6510
    this way.  VERY important notice: Always assign 1 for true, 0 for false!
    Some functions depend on this to do some optimization.  */
 int maincpu_rmw_flag = 0;
+
+int maincpu_dma_flag = 0;
 
 /* Information about the last executed opcode.  This is used to know the
    number of write cycles in the last executed opcode and to delay interrupts

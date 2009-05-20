@@ -37,9 +37,9 @@
 #include "interrupt.h"
 #include "lib.h"
 #include "log.h"
+#include "machine.h"
 #include "snapshot.h"
 #include "types.h"
-
 
 #define STORE_OFFSET 1
 #define READ_OFFSET 0
@@ -287,7 +287,11 @@ static void REGPARM3 ciacore_store_internal(cia_context_t *cia_context,
 
     addr &= 0xf;
 
-    rclk = *(cia_context->clk_ptr) - STORE_OFFSET;
+    rclk = *(cia_context->clk_ptr);
+
+    if (machine_class != VICE_MACHINE_C64DTV) {
+        rclk -= STORE_OFFSET;
+    }
 
 #ifdef CIA_TIMER_DEBUG
     if (cia_context->debugFlag)
