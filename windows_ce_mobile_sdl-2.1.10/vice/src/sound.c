@@ -1200,7 +1200,7 @@ void sound_init(unsigned int clock_rate, unsigned int ticks_per_frame)
 #ifdef USE_DXSOUND
     sound_init_dx_device();
 #endif
-#ifndef __XBOX__
+#if !defined(__XBOX__) && !defined(WINCE_COMPILE)
     sound_init_wmm_device();
 #endif
 #endif

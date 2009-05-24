@@ -264,7 +264,7 @@ static ui_menu_entry_t sound_output_driver_menu[] = {
       radio_SoundDeviceName_callback,
       (ui_callback_data_t)"uss" },
 #endif
-#ifdef WIN32
+#if defined(WIN32) && !defined(WINCE_COMPILE) && !defined(__XBOX__)
     { "WMM",
       MENU_ENTRY_RESOURCE_RADIO,
       radio_SoundDeviceName_callback,
