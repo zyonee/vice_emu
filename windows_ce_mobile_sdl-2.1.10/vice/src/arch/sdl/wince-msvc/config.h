@@ -96,5 +96,6 @@ extern int isatty(int fd);
 extern int unlink(const char *fname);
 extern int rename(const char *oldname, const char *newname);
 extern char *tmpnam(char *s);
+extern void xceabort(void);
 
 #endif

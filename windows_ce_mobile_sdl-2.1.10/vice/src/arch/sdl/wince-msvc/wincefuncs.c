@@ -31,6 +31,8 @@
 
 #include "lib.h"
 
+#define countof(array) (sizeof(array) / sizeof((array)[0]))
+
 /* Todo: make a system to keep track of the current
    directory. */
 
@@ -209,4 +211,44 @@ char *tmpnam(char *s)
   snprintf(s, 512, "/tmp.%lu.XXXXXX", tmpcount);
   tmpcount++;
   return (mktemp(s));
+}
+
+void rewind(FILE *f)
+{
+    fseek(f, 0L, SEEK_SET);
+}
+
+static void wincemsgbox(const char *fmt, ...)
+{
+  va_list ap;
+  char buf[512];
+  wchar_t widebuf[512];
+
+  va_start(ap, fmt);
+  vsprintf(buf, fmt, ap);
+  va_end(ap);
+
+  MultiByteToWideChar(CP_ACP, 0, buf, -1, widebuf, countof(widebuf));
+
+  MessageBoxW(NULL, widebuf, _T("Message"), MB_OK);
+}
+
+void abort(void)
+{
+  char buf[256];
+  wchar_t *lpNameNew = NULL;
+  DWORD dwRes;
+
+  lpNameNew = (wchar_t *)lib_malloc(256 * 2);
+  dwRes = GetModuleFileNameW(NULL, lpNameNew, 256);
+  if (dwRes != 0)
+  {
+      WideCharToMultiByte(CP_ACP, 0, lpNameNew, 256, bug, 256, NULL, NULL);
+  }
+  lib_free(lpNameNew);
+  wincemsgbox("%s - Abort", buf);
+
+  DebugBreak();
+
+  exit(1);
 }
