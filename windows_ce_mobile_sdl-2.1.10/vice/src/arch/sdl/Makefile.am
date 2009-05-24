@@ -351,6 +351,8 @@ EXTRA_DIST = \
 	archdep_unix.h \
 	archdep_win32.c \
 	archdep_win32.h \
+	archdep_wince.c \
+	archdep_wince.h \
 	archdep_xbox.c \
 	archdep_xbox.h \
 	make-bindist_amiga.sh \

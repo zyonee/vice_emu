@@ -119,3 +119,49 @@ int rename(const char *oldname, const char *newname)
     lib_free(wide_newname);
     return retval; 
 }
+
+int stat(const char *path, struct stat *stats)
+{
+    wchar_t *widepath;
+    int retval = -1;
+    size_t length;
+    HANDLE readHandle = NULL;
+    BOOL bRes = FALSE;
+    BY_HANDLE_FILE_INFORMATION fileInfo;
+
+    if (stats != NULL) {
+        memset(stats, 0, sizeof(struct stat));
+
+        if (path != NULL) {
+            length = strlen(path) + 1;
+            widepath = (wchar_t *)lib_malloc(lenght * 2);
+
+            MultiByteToWideChar(CP_ACP, 0, path, -1, widepath, length);
+            readHandle = CreateFileW(widepath, GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL,
+                                     OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+            if (readHandle != NULL) {
+                bRes = GetFileInformationByHandle(readHandle, &fileInfo);
+                CloseHandle(readHandle);
+                readHandle = NULL;
+
+                if (bRes != FALSE) {
+                    stats->st_size = (long)fileInfo.nFileSizeLow;
+                        
+                    stats->st_mode |= _S_IREAD;
+                    if ((FILE_ATTRIBUTE_READONLY & fileInfo.dwFileAttributes) == 0) {
+                        stats->st_mode |= _S_IWRITE;
+                    }
+                    if (FILE_ATTRIBUTE_DIRECTORY & fileInfo.dwFileAttributes) {
+                        stats->st_mode |= _S_IFDIR;
+                    } else {
+                        stats->st_mode |= _S_IFREG;
+                    }
+                }
+            } else {
+                errno = ENOENT;
+                return -1;
+            }
+        }
+    }
+    return 0;
+}

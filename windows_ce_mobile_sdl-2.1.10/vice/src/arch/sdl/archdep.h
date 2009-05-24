@@ -78,12 +78,16 @@ extern char *archdep_default_joymap_file_name(void);
 #include "archdep_unix.h"
 #endif
 
-#if defined(WIN32_COMPILE) && !defined(__XBOX__)
+#if defined(WIN32_COMPILE) && !defined(__XBOX__) && !defined(WINCE_COMPILE)
 #include "archdep_win32.h"
 #endif
 
 #ifdef __XBOX__
 #include "archdep_xbox.h"
+#endif
+
+#ifdef WINCE_COMPILE
+#include "archdep_wince.h"
 #endif
 
 #endif
