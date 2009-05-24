@@ -77,6 +77,7 @@
 #include "viciidtv-mem.h"
 #include "viciidtv-phi1.h"
 #include "vicii.h"
+#include "viciidtv.h"
 
 /* included by c64dtvmem.c */
 
@@ -619,8 +620,6 @@ void REGPARM2 mem_store(WORD addr, BYTE value)
             monitor_memmap_store(paddr, MEMMAP_I_O_W);
         }
 #endif
-        /* disable dummy write if skip cycle */
-        if(dtv_registers[9] & 1) maincpu_rmw_flag = 0;
         _mem_write_tab_ptr[paddr >> 8]((WORD)paddr, value);
     } else {
 #ifdef FEATURE_CPUMEMHISTORY
@@ -638,6 +637,11 @@ BYTE REGPARM1 mem_read(WORD addr)
 
     int paddr = addr_to_paddr(addr);
 /* if(addr != paddr) printf("Read from adress %x mapped to %x - %d %d %d %d\n", addr, paddr, dtv_registers[12], dtv_registers[13], dtv_registers[14], dtv_registers[15]); */ /* DEBUG */
+
+    if (maincpu_ba_low_flag && viciidtv_badline_enabled()) {
+        viciidtv_steal_cycles();
+    }
+
     if(access_rom(addr)) {
 #ifdef FEATURE_CPUMEMHISTORY
         monitor_memmap_store(paddr, (memmap_state&MEMMAP_STATE_OPCODE)?MEMMAP_ROM_X:(memmap_state&MEMMAP_STATE_INSTR)?0:MEMMAP_ROM_R);

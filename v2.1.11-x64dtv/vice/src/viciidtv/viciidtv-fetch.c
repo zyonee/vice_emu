@@ -160,11 +160,13 @@ inline static int do_matrix_fetch(CLOCK sub)
             vicii.memory_fetch_done = 2;
 
             if (!vicii.badline_disable && !vicii.colorfetch_disable) {
+/*
                 dma_maincpu_steal_cycles(vicii.fetch_clk,
                                          VICII_SCREEN_TEXTCOLS + 3 - sub, sub);
+*/
             } else if (!vicii.colorfetch_disable) {
                 /* Steal cycles from DMA/Blitter */
-                dtvclockneg += VICII_SCREEN_TEXTCOLS + 3;
+                /*dtvclockneg += VICII_SCREEN_TEXTCOLS + 3;*/
             }
             vicii.bad_line = 1;
             return 1;
@@ -433,10 +435,12 @@ inline static int handle_fetch_sprite(long offset, CLOCK sub,
     /*log_debug("SF %i VBL %i SUB %i",sf->num,vicii.bad_line,sub);*/
 
     if (!vicii.badline_disable) {
+/*
         dma_maincpu_steal_cycles(vicii.fetch_clk, num_cycles - sub, sub);
+*/
     } else {
         /* Steal cycles from DMA/Blitter */
-        dtvclockneg += num_cycles;
+        /*dtvclockneg += num_cycles;*/
     }
 
     *write_offset = sub == 0 ? num_cycles : 0;
@@ -461,18 +465,18 @@ inline static int handle_fetch_sprite(long offset, CLOCK sub,
     } else {
         vicii.fetch_clk = vicii.sprite_fetch_clk + next_cycle;
     }
-
+/*
     if (maincpu_clk >= vicii.draw_clk)
         vicii_raster_draw_alarm_handler(maincpu_clk - vicii.draw_clk, NULL);
-
+*/
     if (vicii.fetch_clk > maincpu_clk || offset == 0) {
         alarm_set(vicii.raster_fetch_alarm, vicii.fetch_clk);
         return 1;
     }
-
+/*
     if (maincpu_clk >= vicii.raster_irq_clk)
         vicii_irq_alarm_handler(maincpu_clk - vicii.raster_irq_clk, NULL);
-
+*/
     return 0;
 }
 

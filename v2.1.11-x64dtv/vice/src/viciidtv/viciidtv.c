@@ -149,10 +149,8 @@ static void vicii_set_geometry(void);
 
 static void clk_overflow_callback(CLOCK sub, void *unused_data)
 {
-    vicii.raster_irq_clk -= sub;
     vicii.last_emulate_line_clk -= sub;
     vicii.fetch_clk -= sub;
-    vicii.draw_clk -= sub;
     vicii.sprite_fetch_clk -= sub;
 }
 
@@ -175,57 +173,7 @@ void vicii_delay_oldclk(CLOCK num)
 
 inline void vicii_handle_pending_alarms(int num_write_cycles)
 {
-    if (num_write_cycles != 0) {
-        int f;
-
-        /* Cycles can be stolen only during the read accesses, so we serve
-           only the events that happened during them.  The last read access
-           happened at `clk - maincpu_write_cycles()' as all the opcodes
-           except BRK and JSR do all the write accesses at the very end.  BRK
-           cannot take us here and we would not be able to handle JSR
-           correctly anyway, so we don't care about them...  */
-
-        /* Go back to the time when the read accesses happened and serve VIC
-         events.  */
-        maincpu_clk -= num_write_cycles;
-
-        do {
-            f = 0;
-            if (maincpu_clk > vicii.fetch_clk) {
-                vicii_fetch_alarm_handler(0, NULL);
-                f = 1;
-            }
-            if (maincpu_clk >= vicii.draw_clk) {
-                vicii_raster_draw_alarm_handler((CLOCK)(maincpu_clk
-                                                - vicii.draw_clk), NULL);
-                f = 1;
-            }
-        }
-        while (f);
-
-        /* Go forward to the time when the last write access happens (that's
-           the one we care about, as the only instructions that do two write
-           accesses - except BRK and JSR - are the RMW ones, which store the
-           old value in the first write access, and then store the new one in
-           the second write access).  */
-        maincpu_clk += num_write_cycles;
-
-    } else {
-        int f;
-
-        do {
-            f = 0;
-            if (maincpu_clk >= vicii.fetch_clk) {
-                vicii_fetch_alarm_handler(0, NULL);
-                f = 1;
-            }
-            if (maincpu_clk >= vicii.draw_clk) {
-                vicii_raster_draw_alarm_handler(0, NULL);
-                f = 1;
-            }
-        }
-        while (f);
-    }
+    return;
 }
 
 void vicii_handle_pending_alarms_external(int num_write_cycles)
@@ -312,9 +260,6 @@ raster_t *vicii_init(unsigned int flag)
 
     vicii_fetch_init();
 
-    vicii.raster_draw_alarm = alarm_new(maincpu_alarm_context,
-                                        "VicIIRasterDraw",
-                                        vicii_raster_draw_alarm_handler, NULL);
     if (init_raster() < 0)
         return NULL;
 
@@ -324,6 +269,7 @@ raster_t *vicii_init(unsigned int flag)
     vicii_update_video_mode(0);
     vicii_update_memory_ptrs(0);
 
+    vicii.raster_cycle = 0;
     vicii_draw_init();
     vicii_sprites_init();
 
@@ -355,8 +301,8 @@ void vicii_reset(void)
 
     vicii.last_emulate_line_clk = 0;
 
-    vicii.draw_clk = vicii.draw_cycle;
-    alarm_set(vicii.raster_draw_alarm, vicii.draw_clk);
+    vicii.raster_line = 0;
+    vicii.raster_cycle = 6;
 
     vicii.fetch_clk = VICII_FETCH_CYCLE;
     alarm_set(vicii.raster_fetch_alarm, vicii.fetch_clk);
@@ -365,15 +311,11 @@ void vicii_reset(void)
     vicii.sprite_fetch_msk = 0;
     vicii.sprite_fetch_clk = CLOCK_MAX;
 
-    /* FIXME: I am not sure this is exact emulation.  */
     vicii.raster_irq_line = 0;
-    vicii.raster_irq_clk = 0;
+
+    /* FIXME: I am not sure this is exact emulation.  */
     vicii.regs[0x11] = 0;
     vicii.regs[0x12] = 0;
-
-    /* Setup the raster IRQ alarm.  The value is `1' instead of `0' because we
-       are at the first line, which has a +1 clock cycle delay in IRQs.  */
-    alarm_set(vicii.raster_irq_alarm, 1);
 
     vicii.force_display_state = 0;
 
@@ -493,7 +435,7 @@ void vicii_powerup(void)
 
     vicii.irq_status = 0;
     vicii.raster_irq_line = 0;
-    vicii.raster_irq_clk = 1;
+
     vicii.ram_base_phi1 = mem_ram;
     vicii.ram_base_phi2 = mem_ram;
 
@@ -541,9 +483,6 @@ static inline void vicii_set_vbanks(int vbank_p1, int vbank_p2)
     /* Also, we assume the bank has *really* changed, and do not do any
        special optimizations for the not-really-changed case.  */
     vicii_handle_pending_alarms(maincpu_rmw_flag + 1);
-    if (maincpu_clk >= vicii.draw_clk)
-        vicii_raster_draw_alarm_handler(maincpu_clk - vicii.draw_clk, NULL);
-
     vicii.vbank_phi1 = vbank_p1;
     vicii.vbank_phi2 = vbank_p2;
     vicii_update_memory_ptrs(VICII_RASTER_CYCLE(maincpu_clk));
@@ -717,7 +656,7 @@ void vicii_update_memory_ptrs(unsigned int cycle)
                                               + 0x3fff]);
     }
 
-    if (tmp <= 0 && maincpu_clk < vicii.draw_clk) {
+    if (tmp <= 0) {
         old_screen_ptr = vicii.screen_ptr = vicii.screen_base_phi2;
         old_bitmap_low_ptr = vicii.bitmap_low_ptr = bitmap_low_base;
         old_bitmap_high_ptr = vicii.bitmap_high_ptr = bitmap_high_base;
@@ -1186,10 +1125,6 @@ void vicii_raster_draw_alarm_handler(CLOCK offset, void *data)
     } else
         vicii.idle_data_location = IDLE_NONE;
 
-    /* Set the next draw event.  */
-    vicii.last_emulate_line_clk += vicii.cycles_per_line;
-    vicii.draw_clk = vicii.last_emulate_line_clk + vicii.draw_cycle;
-    alarm_set(vicii.raster_draw_alarm, vicii.draw_clk);
 }
 
 void vicii_set_canvas_refresh(int enable)

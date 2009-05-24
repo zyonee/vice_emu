@@ -96,10 +96,10 @@ inline static void line_becomes_bad(const int cycle)
 
         /* Take over the bus until the memory fetch is done.  */
         if (!vicii.badline_disable && !vicii.colorfetch_disable) {
-            dma_maincpu_steal_cycles(maincpu_clk, num_chars, 0);
+/*            dma_maincpu_steal_cycles(maincpu_clk, num_chars, 0);*/
         } else if (!vicii.colorfetch_disable) {
             /* Steal cycles from DMA/Blitter */
-            dtvclockneg += num_chars;
+            /*dtvclockneg += num_chars;*/
         }
 
         if (num_chars <= VICII_SCREEN_TEXTCOLS) {

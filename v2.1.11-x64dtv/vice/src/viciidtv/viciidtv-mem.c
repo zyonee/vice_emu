@@ -87,7 +87,7 @@ inline static void REGPARM2 vicii_local_store_vbank(WORD addr, BYTE value)
         CLOCK mclk;
 
         /* WARNING: Assumes `maincpu_rmw_flag' is 0 or 1.  */
-        mclk = maincpu_clk - maincpu_rmw_flag - 1;
+        mclk = maincpu_clk - maincpu_rmw_flag /*- 1*/;
         f = 0;
 
         if (mclk >= vicii.fetch_clk) {
@@ -108,14 +108,15 @@ inline static void REGPARM2 vicii_local_store_vbank(WORD addr, BYTE value)
             vicii_fetch_alarm_handler(maincpu_clk - vicii.fetch_clk, NULL);
             f = 1;
             /* WARNING: Assumes `maincpu_rmw_flag' is 0 or 1.  */
-            mclk = maincpu_clk - maincpu_rmw_flag - 1;
+            mclk = maincpu_clk - maincpu_rmw_flag /*- 1*/;
             vicii.store_clk = CLOCK_MAX;
         }
-
+/*
         if (mclk >= vicii.draw_clk) {
             vicii_raster_draw_alarm_handler(0, NULL);
             f = 1;
         }
+*/
     } while (f);
 
     vicii.ram_base_phi2[addr] = value;
@@ -303,7 +304,8 @@ inline static void d011_store(BYTE value)
     VICII_DEBUG_REGISTER(("$D011 tricks at cycle %d, line $%04X, "
                           "value $%02X", cycle, line, value));
 
-    vicii_irq_check_state(value, 1);
+    vicii.raster_irq_line &= 0xff;
+    vicii.raster_irq_line |= (value & 0x80) << 1;
 
     /* This is the funniest part... handle bad line tricks.  */
     old_allow_bad_lines = vicii.allow_bad_lines;
@@ -343,7 +345,8 @@ inline static void d012_store(BYTE value)
 
     vicii.regs[0x12] = value;
 
-    vicii_irq_check_state(value, 0);
+    vicii.raster_irq_line &= 0x100;
+    vicii.raster_irq_line |= value;
 
     VICII_DEBUG_REGISTER(("Raster interrupt line set to $%04X",
                          vicii.raster_irq_line));
@@ -571,26 +574,6 @@ inline static void d018_store(const BYTE value)
 
 inline static void d019_store(const BYTE value)
 {
-    /* Emulates Read-Modify-Write behaviour. */
-    if (maincpu_rmw_flag) {
-        vicii.irq_status &= ~((vicii.last_read & 0xf) | 0x80);
-        if (maincpu_clk - 1 > vicii.raster_irq_clk
-            && vicii.raster_irq_line < (unsigned int)vicii.screen_height) {
-                if (maincpu_clk - 2 == vicii.raster_irq_clk)
-                    vicii_irq_next_frame();
-                else
-                    vicii_irq_alarm_handler(0, NULL);
-        }
-    }
-
-    if ((value & 1) && maincpu_clk > vicii.raster_irq_clk
-        && vicii.raster_irq_line < (unsigned int)vicii.screen_height) {
-            if (maincpu_clk - 1 == vicii.raster_irq_clk)
-                vicii_irq_next_frame();
-            else
-                vicii_irq_alarm_handler(0, NULL);
-    }
-
     vicii.irq_status &= ~((value & 0xf) | 0x80);
     vicii_irq_set_line();
 
@@ -601,9 +584,7 @@ inline static void d01a_store(const BYTE value)
 {
     vicii.regs[0x1a] = value & 0xf;
 
-    vicii_irq_set_line();
-
-/*    VICII_DEBUG_REGISTER(("IRQ mask register: $%02X", vicii.regs[addr])); */
+    VICII_DEBUG_REGISTER(("IRQ mask register: $%02X", vicii.regs[0x1a]));
 }
 
 inline static void d01b_store(const BYTE value)
@@ -1042,26 +1023,12 @@ inline static void d040_store(const BYTE value)
 
 inline static void d044_store(const BYTE value)
 {
-    int offs;
-
     if (vicii.extended_enable) {
         vicii.regs[0x44] = value;
 
-        offs = value & 0x7f;
-        vicii.raster_irq_prevent = 0;
-        if (offs <= 64) {
-            if (vicii.cycles_per_line == 63 && offs > 53) {
-                if (offs == 54 || offs == 55) {
-                    vicii.raster_irq_prevent = 1;
-                }
-                offs -= 2;
-            }
-            vicii.raster_irq_offset = (offs+1) % vicii.cycles_per_line;
-        } else {
-            vicii.raster_irq_prevent = 1;
-        }
-        vicii_irq_set_raster_line(vicii.raster_irq_line);
+        vicii.raster_irq_offset = value & 0x7f;
     }
+
     VICII_DEBUG_REGISTER(("CPU cycle/IRQ trigger cycle: $%02x",value));
 }
 
@@ -1204,9 +1171,10 @@ void REGPARM2 vicii_store(WORD addr, BYTE value)
        updated and `current_line' is actually set to the current Y position of
        the raster.  Otherwise we might mix the changes for this line with the
        changes for the previous one.  */
+/*
     if (maincpu_clk >= vicii.draw_clk)
         vicii_raster_draw_alarm_handler(maincpu_clk - vicii.draw_clk, NULL);
-
+*/
     VICII_DEBUG_REGISTER(("WRITE $D0%02X at cycle %d of current_line $%04X",
                          addr, VICII_RASTER_CYCLE(maincpu_clk),
                          VICII_RASTER_Y(maincpu_clk)));
@@ -1471,7 +1439,7 @@ inline static unsigned int read_raster_y(void)
     if (raster_y == 0 && VICII_RASTER_CYCLE(maincpu_clk) == 0)
         raster_y = vicii.screen_height - 1;
 
-    return raster_y;
+    return vicii.raster_line; /*raster_y*/
 }
 
 inline static BYTE d01112_read(WORD addr)
@@ -1491,18 +1459,7 @@ inline static BYTE d01112_read(WORD addr)
 
 inline static BYTE d019_read(void)
 {
-    /* Manually set raster IRQ flag if the opcode reading $d019 has crossed
-       the line end and the raster IRQ alarm has not been executed yet. */
-    if (VICII_RASTER_Y(maincpu_clk) == vicii.raster_irq_line
-        && vicii.raster_irq_clk != CLOCK_MAX
-        && maincpu_clk >= vicii.raster_irq_clk) {
-        if (vicii.regs[0x1a] & 0x1)
-            vicii.last_read = vicii.irq_status | 0xf1;
-        else
-            vicii.last_read = vicii.irq_status | 0x71;
-    } else {
-        vicii.last_read = vicii.irq_status | 0x70;
-    }
+    vicii.last_read = vicii.irq_status | 0x70;
 
     return vicii.last_read | ((vicii.last_read&0xf) ? 0x80 : 0x00);
 }
@@ -1550,7 +1507,7 @@ inline static BYTE d01f_read(void)
 
 inline static BYTE d044_read(void)
 {
-    return VICIIDTV_RASTER_CYCLE(maincpu_clk) | 0x80;
+    return vicii.raster_cycle | 0x80;
 }
 
 /* Read a value from a VIC-II register.  */
@@ -1844,20 +1801,7 @@ BYTE REGPARM1 vicii_read(WORD addr)
 
 inline static BYTE d019_peek(void)
 {
-    /* Manually set raster IRQ flag if the opcode reading $d019 has crossed
-       the line end and the raster IRQ alarm has not been executed yet. */
-    if (VICII_RASTER_Y(maincpu_clk) == vicii.raster_irq_line
-        && vicii.raster_irq_clk != CLOCK_MAX
-        && maincpu_clk >= vicii.raster_irq_clk) {
-        if (vicii.regs[0x1a] & 0x1)
-            return vicii.irq_status | 0xf1;
-        else
-            return vicii.irq_status | ((vicii.irq_status & 0xf) ? 0xf1 : 0x71);
-    } else {
-        return vicii.irq_status | ((vicii.irq_status & 0xf) ? 0xf0 : 0x70);
-    }
-
-    return vicii.irq_status | ((vicii.irq_status & 0xf) ? 0x80 : 0x00);
+    return vicii.irq_status | ((vicii.irq_status & 0xf) ? 0xf0 : 0x70);
 }
 
 BYTE REGPARM1 vicii_peek(WORD addr)

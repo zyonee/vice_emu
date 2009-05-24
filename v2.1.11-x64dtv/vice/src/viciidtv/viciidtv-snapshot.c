@@ -64,10 +64,6 @@ void vicii_snapshot_prepare(void)
 {
     vicii.fetch_clk = CLOCK_MAX;
     alarm_unset(vicii.raster_fetch_alarm);
-    vicii.draw_clk = CLOCK_MAX;
-    alarm_unset(vicii.raster_draw_alarm);
-    vicii.raster_irq_clk = CLOCK_MAX;
-    alarm_unset(vicii.raster_irq_alarm);
 }
 
 
@@ -374,41 +370,6 @@ int vicii_snapshot_read_module(snapshot_t *s)
             goto fail;
     }
 
-    /* FIXME: Recalculate alarms and derived values.  */
-#if 1
-    if (vicii.raster_irq_prevent) {
-        vicii.raster_irq_clk = CLOCK_MAX;
-        alarm_unset(vicii.raster_irq_alarm);
-    } else
-    {
-        /* 
-            We cannot use vicii_irq_set_raster_line as this would delay
-            an alarm on line 0 for one frame
-        */
-        unsigned int line = vicii.regs[0x12] | ((vicii.regs[0x11] & 0x80) << 1);
-
-        if (line < (unsigned int)vicii.screen_height) {
-            vicii.raster_irq_clk = (VICII_LINE_START_CLK(maincpu_clk)
-                                    + VICII_RASTER_IRQ_DELAY - INTERRUPT_DELAY
-                                    + (vicii.cycles_per_line * line));
-            vicii.raster_irq_clk += vicii.raster_irq_offset;
-            /* Raster interrupts on line 0 are delayed by 1 cycle.  */
-            if (line == 0)
-                vicii.raster_irq_clk++;
-
-            alarm_set(vicii.raster_irq_alarm, vicii.raster_irq_clk);
-        } else {
-            vicii.raster_irq_clk = CLOCK_MAX;
-            alarm_unset(vicii.raster_irq_alarm);
-        }
-        vicii.raster_irq_line = line;
-    }
-
-#else
-    vicii_irq_set_raster_line(vicii.regs[0x12]
-                              | ((vicii.regs[0x11] & 0x80) << 1));
-#endif
-
     /* compatibility with older versions */
     vicii.ram_base_phi2 = vicii.ram_base_phi1;
     vicii.vbank_phi2 = vicii.vbank_phi1;
@@ -518,11 +479,6 @@ int vicii_snapshot_read_module(snapshot_t *s)
     vicii_update_video_mode(VICII_RASTER_CYCLE(maincpu_clk));
 
     vicii_store(0x3c, (BYTE)vicii.regs[0x3c]);
-
-    vicii.draw_clk = maincpu_clk + (vicii.draw_cycle
-                     - VICII_RASTER_CYCLE(maincpu_clk));
-    vicii.last_emulate_line_clk = vicii.draw_clk - vicii.cycles_per_line;
-    alarm_set(vicii.raster_draw_alarm, vicii.draw_clk);
 
     {
         DWORD dw;

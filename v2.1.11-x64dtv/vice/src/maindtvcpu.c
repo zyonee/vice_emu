@@ -173,6 +173,7 @@ monitor_interface_t *maincpu_monitor_interface = NULL;
 int maincpu_rmw_flag = 0;
 
 int maincpu_dma_flag = 0;
+int maincpu_ba_low_flag = 0;
 
 /* Information about the last executed opcode.  This is used to know the
    number of write cycles in the last executed opcode and to delay interrupts
@@ -463,7 +464,6 @@ int maincpu_snapshot_write_module(snapshot_t *s)
         || SMW_B(m, MOS6510DTV_REGS_GET_YXM(&maincpu_regs)) < 0
         || SMW_BA(m, burst_cache, 4) < 0
         || SMW_W(m, burst_addr) < 0
-        || SMW_DW(m, dtvclockneg) < 0
         || SMW_DW(m, (DWORD)last_opcode_info) < 0)
         goto fail;
 
@@ -523,7 +523,6 @@ int maincpu_snapshot_read_module(snapshot_t *s)
         || SMR_B(m, &yxm) < 0
         || SMR_BA(m, burst_cache, 4) < 0
         || SMR_W(m, &burst_addr) < 0
-        || SMR_DW_INT(m, &dtvclockneg) < 0
         || SMR_DW_UINT(m, &last_opcode_info) < 0)
         goto fail;
 

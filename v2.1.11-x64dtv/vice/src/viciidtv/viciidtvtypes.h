@@ -79,7 +79,7 @@ enum vicii_video_mode_s {
     VICII_8BPP_PIXEL_CELL_MODE,
     VICII_ILLEGAL_LINEAR_MODE,
     VICII_IDLE_MODE,           /* Special mode for idle state.  */
-    VICII_NUM_VMODES  /* valid for DTV only */
+    VICII_NUM_VMODES
 };
 typedef enum vicii_video_mode_s vicii_video_mode_t;
 
@@ -123,8 +123,8 @@ typedef enum vicii_video_mode_s vicii_video_mode_t;
 #define VICII_RASTER_X(cycle)      (((int)(cycle) - 17) * 8 + vicii.screen_leftborderwidth)
 
 /* Adjusted RASTER_X position to account for -2 pixel difference on some
-   C64DTV stores */
-#define VICIIDTV_RASTER_X_ADJ(cycle)     (VICII_RASTER_X(cycle) - 2)
+   C64DTV stores and the -6 pixel difference in DMA stores */
+#define VICIIDTV_RASTER_X_ADJ(cycle)     (VICII_RASTER_X(cycle) - (maincpu_dma_flag?6:2))
 
 /* Current vertical position of the raster.  Unlike `rasterline', which is
    only accurate if a pending drawing event has been served, this is
@@ -190,6 +190,12 @@ struct vicii_s {
 
     /* VIC-II registers.  */
     int regs[0x50];
+
+    /* Cycle # within the current line.  */
+    unsigned int raster_cycle;
+
+    /* Cycle # within the current line.  */
+    unsigned int raster_line;
 
     /* DTV Linear Counters */
     int counta;
@@ -327,8 +333,6 @@ struct vicii_s {
 
     /* VIC-II alarms.  */
     struct alarm_s *raster_fetch_alarm;
-    struct alarm_s *raster_draw_alarm;
-    struct alarm_s *raster_irq_alarm;
 
     /* What do we do when the `A_RASTERFETCH' event happens?  */
     vicii_fetch_idx_t fetch_idx;
@@ -341,12 +345,6 @@ struct vicii_s {
 
     /* Clock cycle for the next "raster fetch" alarm.  */
     CLOCK fetch_clk;
-
-    /* Clock cycle for the next "raster draw" alarm.  */
-    CLOCK draw_clk;
-
-    /* Clock value for raster compare IRQ.  */
-    CLOCK raster_irq_clk;
 
     /* FIXME: Bad name.  FIXME: Has to be initialized.  */
     CLOCK last_emulate_line_clk;
@@ -437,6 +435,7 @@ extern void vicii_delay_oldclk(CLOCK num);
 /* #define VICII_VMODE_DEBUG */
 /* #define VICII_RASTER_DEBUG */
 /* #define VICII_REGISTERS_DEBUG */
+#define VICII_CYCLE_DEBUG
 
 #ifdef VICII_VMODE_DEBUG
 #define VICII_DEBUG_VMODE(x) log_debug x
@@ -454,6 +453,12 @@ extern void vicii_delay_oldclk(CLOCK num);
 #define VICII_DEBUG_REGISTER(x) log_debug x
 #else
 #define VICII_DEBUG_REGISTER(x)
+#endif
+
+#ifdef VICII_CYCLE_DEBUG
+#define VICII_DEBUG_CYCLE(x) log_debug x
+#else
+#define VICII_DEBUG_CYCLE(x)
 #endif
 
 #endif

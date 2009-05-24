@@ -34,6 +34,7 @@
 #include "c64dtvblitter.h"
 #include "c64dtvdma.h"
 #include "monitor.h"
+#include "viciidtv.h"
 
 /* ------------------------------------------------------------------------- */
 
@@ -66,12 +67,10 @@
 BYTE dtv_registers[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 BYTE dtvrewind;
 
-int dtvclockneg = 0;
-
 /* Global clock counter.  */
 CLOCK maincpu_clk = 0L;
 
-#define REWIND_FETCH_OPCODE(clock) clock-=dtvrewind; dtvclockneg+=dtvrewind
+#define REWIND_FETCH_OPCODE(clock) clock-=dtvrewind;
 
 /* Burst mode implementation */
 
@@ -84,16 +83,21 @@ WORD burst_addr, burst_last_addr;
 
 static void c64dtvcpu_clock_inc(void)
 {
+    int ba_low;
+
     maincpu_clk++;
-    if (dtvclockneg == 0) {
+    viciidtv_cycle_1();
+    ba_low = viciidtv_cycle_2();
+
+    if (!ba_low) {
         if (blitter_active) {
             c64dtvblitter_perform_blitter();
         } else if (dma_active) {
             c64dtvdma_perform_dma();
         }
-    } else {
-        --dtvclockneg;
     }
+
+    viciidtv_cycle_3();
 }
 
 #define CLK_INC() c64dtvcpu_clock_inc()

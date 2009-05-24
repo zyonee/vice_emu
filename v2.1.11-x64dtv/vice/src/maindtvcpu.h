@@ -52,12 +52,11 @@ extern int maincpu_rmw_flag;
 
 extern CLOCK maincpu_clk;
 
-/* C64DTV negative clock counter for cycle exact operations,
-   Actual variable in c64dtv/c64dtvcpu.c */
-extern int dtvclockneg;
-
 /* Flag: 1 during DMA memory access */
 extern int maincpu_dma_flag;
+
+/* Flag: BA low */
+extern int maincpu_ba_low_flag;
 
 /* ------------------------------------------------------------------------- */
 

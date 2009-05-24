@@ -40,4 +40,10 @@ extern int viciidtv_cycle_2(void);
     Graphic fetch/Counter B */
 extern void viciidtv_cycle_3(void);
 
+/* Badline (emulation) enabled */
+extern int viciidtv_badline_enabled(void);
+
+/* Steal cycles from CPU  */
+extern void viciidtv_steal_cycles(void);
+
 #endif

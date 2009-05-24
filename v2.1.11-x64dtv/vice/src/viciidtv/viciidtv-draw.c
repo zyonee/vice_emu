@@ -1459,7 +1459,7 @@ static void draw_idle_cached(raster_cache_t *cache, unsigned int xs,
 static void draw_idle_foreground(unsigned int start_char,
                                  unsigned int end_char)
 {
-    _draw_idle(GFX_PTR(), start_char, end_char, vicii.raster.gfx_msk);
+    /*_draw_idle(GFX_PTR(), start_char, end_char, vicii.raster.gfx_msk);*/
 }
 
 /* 8BPP Chunky bitmap mode  */
