@@ -284,7 +284,6 @@ EXTRA_DIST = \
 	wince-msvc/arch.vcproj \
 	wince-msvc/base.vcproj \
 	wince-msvc/c128.vcproj \
-	wince-msvc/c1541.vcproj \
 	wince-msvc/c64.vcproj \
 	wince-msvc/c64c128.vcproj \
 	wince-msvc/c64c64dtv.vcproj \
@@ -292,7 +291,6 @@ EXTRA_DIST = \
 	wince-msvc/c64dtv.vcproj \
 	wince-msvc/c64dtvstubs.vcproj \
 	wince-msvc/c64exp.vcproj \
-	wince-msvc/cartconv.vcproj \
 	wince-msvc/cbm2.vcproj \
 	wince-msvc/core.vcproj \
 	wince-msvc/crtc.vcproj \
@@ -311,7 +309,6 @@ EXTRA_DIST = \
 	wince-msvc/monitor.vcproj \
 	wince-msvc/parallel.vcproj \
 	wince-msvc/pet.vcproj \
-	wince-msvc/petcat.vcproj \
 	wince-msvc/plus4.vcproj \
 	wince-msvc/plus4exp.vcproj \
 	wince-msvc/png.vcproj \
