@@ -68,13 +68,6 @@ void setbuf(FILE *stream, char *buffer)
 }
 }
 
-
-/* dummy for now till a stat system has been made */
-int access(const char *fname, int mode)
-{
-    return 0;
-}
-
 /* dummy for now till a better system has been made */
 int isatty(int fd)
 {
@@ -164,4 +157,56 @@ int stat(const char *path, struct stat *stats)
         }
     }
     return 0;
+}
+
+int access(const char *fname, int mode)
+{
+    struct stat st;
+
+    if (stat(fname, &st) < 0) {
+        return -1;
+    }
+    return 0;
+}
+
+int snprintf(char *buf, size_t count, const char *fmt, ...)
+{
+    va_list ap;
+    int n = 0;
+
+    va_start(ap, fmt);
+    n = _vsnprintf(buf, count, fmt, ap);
+    va_end(ap);
+    return n;
+}
+
+char *mktemp(char *template)
+{
+    int i;
+    struct stat st;
+    char *pt;
+
+    for (pt = template; *pt && *pt != 'X'; pt++);
+
+    for (i = 1; i < 9999; i++) {
+        sprintf(pt, "%05d", i);
+        if (stat(template, &st) < 0 && errno == ENOENT) {
+            return template;
+        }
+    }
+
+    return NULL;
+}
+
+unsigned long tmpcount = 0;
+
+char *tmpnam(char *s)
+{
+  static char buf[512];
+
+  if (s == NULL)
+    s = "tmp";
+  snprintf(s, 512, "/tmp.%lu.XXXXXX", tmpcount);
+  tmpcount++;
+  return (mktemp(s));
 }

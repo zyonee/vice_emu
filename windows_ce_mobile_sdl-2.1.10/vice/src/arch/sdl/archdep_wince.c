@@ -349,12 +349,7 @@ char *archdep_filename_parameter(const char *name)
 
 char *archdep_tmpnam(void)
 {
-    if (getenv("temp"))
-        return util_concat(getenv("temp"), tmpnam(NULL), NULL);
-    else if (getenv("tmp"))
-        return util_concat(getenv("tmp"), tmpnam(NULL), NULL);
-    else
-        return lib_stralloc(tmpnam(NULL));
+    return lib_stralloc(tmpnam(NULL));
 }
 
 FILE *archdep_mkstemp_fd(char **filename, const char *mode)
@@ -406,8 +401,9 @@ int archdep_mkdir(const char *pathname, int mode)
 
     MultiByteToWideChar(CP_ACP, 0, pathname, -1, widename, length);
 
-
     retval = CreateDirectoryW(pathname, NULL);
+    lib_free(widename);
+    return retval;
 }
 
 int archdep_stat(const char *file_name, unsigned int *len, unsigned int *isdir)

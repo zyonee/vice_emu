@@ -95,5 +95,6 @@ extern char *getcwd(char *buf, int size);
 extern int isatty(int fd);
 extern int unlink(const char *fname);
 extern int rename(const char *oldname, const char *newname);
+extern char *tmpnam(char *s);
 
 #endif
