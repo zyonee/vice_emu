@@ -29,7 +29,7 @@ enum host_cpu_feature {
 };
 
 #ifdef _MSC_VER
-#  ifndef _WIN64
+#  if !defined(_WIN64) && !defined(WINCE_COMPILE)
 #    define USE_ASM
 #  endif
 #else
