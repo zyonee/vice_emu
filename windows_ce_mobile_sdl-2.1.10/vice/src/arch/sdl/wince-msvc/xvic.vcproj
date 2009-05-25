@@ -74,7 +74,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/ALIGN:4096 /subsystem:$(CESubsystem) /MACHINE:ARM "
-				AdditionalDependencies="commctrl.lib coredll.lib aygshell.lib secchk.lib ccrtrtti.lib SDLmain.lib SDL.lib"
+				AdditionalDependencies="commctrl.lib coredll.lib aygshell.lib secchk.lib ccrtrtti.lib ws2.lib SDLmain.lib SDL.lib"
 				OutputFile=".\..\..\..\..\data/xvic.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
@@ -172,7 +172,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/ALIGN:4096 /subsystem:$(CESubsystem) /MACHINE:ARM "
-				AdditionalDependencies="commctrl.lib coredll.lib aygshell.lib secchk.lib ccrtrtti.lib SDLmain.lib SDL.lib"
+				AdditionalDependencies="commctrl.lib coredll.lib aygshell.lib secchk.lib ccrtrtti.lib ws2.lib SDLmain.lib SDL.lib"
 				OutputFile=".\..\..\..\..\data/xvic.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -267,7 +267,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/ALIGN:4096 /subsystem:$(CESubsystem) /MACHINE:ARM "
-				AdditionalDependencies="commctrl.lib coredll.lib aygshell.lib secchk.lib ccrtrtti.lib SDLmain.lib SDL.lib"
+				AdditionalDependencies="commctrl.lib coredll.lib aygshell.lib secchk.lib ccrtrtti.lib ws2.lib SDLmain.lib SDL.lib"
 				OutputFile=".\..\..\..\..\data/xvic.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
@@ -365,7 +365,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/ALIGN:4096 /subsystem:$(CESubsystem) /MACHINE:ARM "
-				AdditionalDependencies="commctrl.lib coredll.lib aygshell.lib secchk.lib ccrtrtti.lib SDLmain.lib SDL.lib"
+				AdditionalDependencies="commctrl.lib coredll.lib aygshell.lib secchk.lib ccrtrtti.lib ws2.lib SDLmain.lib SDL.lib"
 				OutputFile=".\..\..\..\..\data/xvic.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"

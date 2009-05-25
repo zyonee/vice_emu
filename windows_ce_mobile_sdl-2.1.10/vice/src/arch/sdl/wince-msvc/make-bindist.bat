@@ -8,10 +8,7 @@ if not exist ..\..\..\..\data\xcbm2.exe goto missingmsvc
 if not exist ..\..\..\..\data\xpet.exe goto missingmsvc
 if not exist ..\..\..\..\data\xplus4.exe goto missingmsvc
 if not exist ..\..\..\..\data\xvic.exe goto missingmsvc
-if not exist ..\..\..\..\data\c1541.exe goto missingmsvc
-if not exist ..\..\..\..\data\cartconv.exe goto missingmsvc
-if not exist ..\..\..\..\data\petcat.exe goto missingmsvc
-echo generating MSVC SDL WIN32 binary port distribution
+echo generating MSVC SDL WINCE binary port distribution
 if exist %VICEDIR% goto removedir
 mkdir %VICEDIR%
 copy ..\..\..\..\data\x64.exe %VICEDIR%
@@ -21,9 +18,6 @@ copy ..\..\..\..\data\xvic.exe %VICEDIR%
 copy ..\..\..\..\data\xpet.exe %VICEDIR%
 copy ..\..\..\..\data\xplus4.exe %VICEDIR%
 copy ..\..\..\..\data\xcbm2.exe %VICEDIR%
-copy ..\..\..\..\data\c1541.exe %VICEDIR%
-copy ..\..\..\..\data\petcat.exe %VICEDIR%
-copy ..\..\..\..\data\cartconv.exe %VICEDIR%
 mkdir %VICEDIR%\C128
 copy ..\..\..\..\data\C128\basic* %VICEDIR%\C128
 copy ..\..\..\..\data\C128\*.vpl %VICEDIR%\C128
@@ -94,7 +88,7 @@ copy ..\..\..\..\FEEDBACK %VICEDIR%
 copy ..\..\..\..\README %VICEDIR%
 copy ..\..\..\..\doc\cartconv.txt %VICEDIR%
 copy ..\..\..\..\ReadmeSDL.txt %VICEDIR%
-echo WIN32 port binary distribution directory generated as %VICEDIR%
+echo WINCE port binary distribution directory generated as %VICEDIR%
 goto end
 :missingmsvc
 echo executables are missing, please build the project first.

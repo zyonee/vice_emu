@@ -29,6 +29,7 @@
 #include <windows.h>
 #include <sys/stat.h>
 #include <errno.h>
+#include <time.h>
 
 #include "lib.h"
 
@@ -223,36 +224,150 @@ void rewind(FILE *f)
 
 static void wincemsgbox(const char *fmt, ...)
 {
-  va_list ap;
-  char buf[512];
-  wchar_t widebuf[512];
+    va_list ap;
+    char buf[512];
+    wchar_t widebuf[512];
 
-  va_start(ap, fmt);
-  vsprintf(buf, fmt, ap);
-  va_end(ap);
+    va_start(ap, fmt);
+    vsprintf(buf, fmt, ap);
+    va_end(ap);
 
-  MultiByteToWideChar(CP_ACP, 0, buf, -1, widebuf, countof(widebuf));
+    MultiByteToWideChar(CP_ACP, 0, buf, -1, widebuf, countof(widebuf));
 
-  MessageBoxW(NULL, widebuf, _T("Message"), MB_OK);
+    MessageBoxW(NULL, widebuf, _T("Message"), MB_OK);
 }
 
 void abort(void)
 {
-  char buf[256];
-  wchar_t *lpNameNew = NULL;
-  DWORD dwRes;
+    char buf[256];
+    wchar_t *progname = NULL;
+    DWORD retval;
 
-  lpNameNew = (wchar_t *)lib_malloc(256 * 2);
-  dwRes = GetModuleFileNameW(NULL, lpNameNew, 256);
-  if (dwRes != 0)
-  {
-      WideCharToMultiByte(CP_ACP, 0, lpNameNew, 256, buf, 256, NULL, 
-NULL);
-  }
-  lib_free(lpNameNew);
-  wincemsgbox("%s - Abort", buf);
+    progname = (wchar_t *)lib_malloc(256 * 2);
+    retval = GetModuleFileNameW(NULL, progname, 256);
+    if (retval != 0)
+    {
+        WideCharToMultiByte(CP_ACP, 0, progname, 256, buf, 256, NULL, NULL);
+    }
+    lib_free(progname);
+    wincemsgbox("Aborted %s", buf);
 
-  DebugBreak();
+    DebugBreak();
 
-  exit(1);
+    exit(1);
+}
+
+#define DELTA_EPOCH 116444736000000000LL
+#define fraction 10000000LL
+
+static long long ft_to_ll(const FILETIME *f)
+{
+    long long t;
+    t = (long long)f->dwHighDateTime << 32;
+    t |= f->dwLowDateTime;
+    return t;
+}
+
+static time_t ft_to_tt(const FILETIME* f)
+{
+    long long t;
+    t = ft_to_ll(f);
+    t -= DELTA_EPOCH;
+    return (time_t)(t / fraction);
+}
+
+static void ll_to_ft(long long t, FILETIME* f)
+{
+    f->dwHighDateTime = (DWORD)((t >> 32) & 0x00000000FFFFFFFF);
+    f->dwLowDateTime = (DWORD)(t & 0x00000000FFFFFFFF);
+}
+
+static void tt_to_ft(time_t t, FILETIME *f)
+{
+    long long time;
+
+    time = t;
+    time *= fraction;
+    time += DELTA_EPOCH;
+
+    ll_to_ft(time, f);
+}
+
+static void ft_from_yr(WORD year, FILETIME *f)
+{
+    SYSTEMTIME s = {0};
+
+    s.wYear = year;
+    s.wMonth = 1;
+    s.wDayOfWeek = 1;
+    s.wDay = 1;
+
+    SystemTimeToFileTime (&s, f);
+}
+
+static int yd_from_st(const SYSTEMTIME *s)
+{
+    long long t;
+    FILETIME f1, f2;
+
+    ft_from_yr(s->wYear, &f1);
+    SystemTimeToFileTime (s, &f2);
+
+    t = ft_to_ll(&f2) - ft_to_ll(&f1);
+
+    return ((t / fraction) / (60 * 60 * 24));
+}
+
+static void st_to_tm(SYSTEMTIME *s, struct tm *tm)
+{
+    tm->tm_year = s->wYear - 1900;
+    tm->tm_mon = s->wMonth- 1;
+    tm->tm_wday = s->wDayOfWeek;
+    tm->tm_mday = s->wDay;
+    tm->tm_yday = yd_from_st(s);
+    tm->tm_hour = s->wHour;
+    tm->tm_min = s->wMinute;
+    tm->tm_sec = s->wSecond;
+    tm->tm_isdst = 0;
+}
+
+time_t time(time_t *timer)
+{
+    SYSTEMTIME s;
+    FILETIME f;
+    time_t t;
+
+    if (timer == NULL) {
+        timer = &t;
+    }
+
+    GetSystemTime(&s);
+    SystemTimeToFileTime(&s, &f);
+    *timer = ft_to_tt(&f);
+
+    return *timer;
+}
+
+struct tm *localtime(const time_t *timer)
+{
+    SYSTEMTIME ss, ls, s;
+    FILETIME sf, lf, f;
+    long long t, diff;
+    struct tm tms;
+
+    GetSystemTime(&ss);
+    GetLocalTime(&ls);
+
+    SystemTimeToFileTime(&ss, &sf);
+    SystemTimeToFileTime(&ls, &lf);
+
+    diff = ft_to_ll(&sf) - ft_to_ll(&lf);
+
+    tt_to_ft(*timer, &f);
+    t = ft_to_ll(&f) - diff;
+    ll_to_ft(t, &f);
+    FileTimeToSystemTime(&f, &s);
+    st_to_tm(&s, &tms);
+
+  return &tms;
 }
