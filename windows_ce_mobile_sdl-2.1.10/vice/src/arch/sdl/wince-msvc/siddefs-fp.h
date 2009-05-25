@@ -55,11 +55,6 @@ const char* resid_version_string = VERSION;
 
 #define RESID_USE_SSE 0
 
-#define HAVE_LOGF
-#define HAVE_EXPF
-#define HAVE_LOGF_PROTOTYPE
-#define HAVE_EXPF_PROTOTYPE
-
 #define WINCE_COMPILE           1
 
 #endif // not VICE__SIDDEFS_FP_H__

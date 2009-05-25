@@ -28,15 +28,18 @@
 
 #include <windows.h>
 #include <sys/stat.h>
+#include <errno.h>
 
 #include "lib.h"
 
 #define countof(array) (sizeof(array) / sizeof((array)[0]))
 
+int errno;
+
 /* Todo: make a system to keep track of the current
    directory. */
 
-char *getcwd_current_dir="."
+char *getcwd_current_dir=".";
 
 char *getcwd(char *buf, int size)
 {
@@ -67,7 +70,7 @@ char *strerror(int errornum)
 
 /* dummy routine */
 void setbuf(FILE *stream, char *buffer)
-}
+{
 }
 
 /* dummy for now till a better system has been made */
@@ -94,8 +97,8 @@ int unlink(const char *filename)
 
 int rename(const char *oldname, const char *newname)
 {
-    wchar_t wide_oldname;
-    wchar_t wide_newname;
+    wchar_t *wide_oldname;
+    wchar_t *wide_newname;
     size_t len_old;
     size_t len_new;
     int retval;
@@ -129,7 +132,7 @@ int stat(const char *path, struct stat *stats)
 
         if (path != NULL) {
             length = strlen(path) + 1;
-            widepath = (wchar_t *)lib_malloc(lenght * 2);
+            widepath = (wchar_t *)lib_malloc(length * 2);
 
             MultiByteToWideChar(CP_ACP, 0, path, -1, widepath, length);
             readHandle = CreateFileW(widepath, GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL,
@@ -243,7 +246,8 @@ void abort(void)
   dwRes = GetModuleFileNameW(NULL, lpNameNew, 256);
   if (dwRes != 0)
   {
-      WideCharToMultiByte(CP_ACP, 0, lpNameNew, 256, bug, 256, NULL, NULL);
+      WideCharToMultiByte(CP_ACP, 0, lpNameNew, 256, buf, 256, NULL, 
+NULL);
   }
   lib_free(lpNameNew);
   wincemsgbox("%s - Abort", buf);

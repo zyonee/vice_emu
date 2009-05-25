@@ -19,6 +19,10 @@
 struct internal_state {int dummy;}; /* for buggy compilers */
 #endif
 
+#ifdef UNDER_CE
+#include <errno.h>
+#endif
+
 #ifndef Z_BUFSIZE
 #  ifdef MAXSEG_64K
 #    define Z_BUFSIZE 4096 /* minimize memory usage for 16-bit DOS */
