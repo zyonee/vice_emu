@@ -41,6 +41,7 @@
 #define VICII_SCREEN_TEXTCOLS              40
 #define VICII_SCREEN_TEXTLINES             25
 #define VICII_SCREEN_CHARHEIGHT            8
+#define VICII_SCREEN_TEXTCOLS_OVERSCAN     48
 
 #define VICII_40COL_START_PIXEL vicii.screen_leftborderwidth
 #define VICII_40COL_STOP_PIXEL  (vicii.screen_leftborderwidth + VICII_SCREEN_XPIX)
@@ -158,12 +159,13 @@ struct vicii_light_pen_s {
 };
 typedef struct vicii_light_pen_s vicii_light_pen_t;
 
-enum vicii_fetch_idx_s {
-    VICII_FETCH_MATRIX,
-    VICII_CHECK_SPRITE_DMA,
-    VICII_FETCH_SPRITE
+enum vicii_fetch_mode_s {
+    VICIIDTV_FETCH_NORMAL,
+    VICIIDTV_FETCH_LINEAR,
+    VICIIDTV_FETCH_CHUNKY,
+    VICIIDTV_FETCH_PIXEL_CELL
 };
-typedef enum vicii_fetch_idx_s vicii_fetch_idx_t;
+typedef enum vicii_fetch_mode_s vicii_fetch_mode_t;
 
 enum vicii_idle_data_location_s {
     IDLE_NONE,
@@ -194,7 +196,7 @@ struct vicii_s {
     /* Cycle # within the current line.  */
     unsigned int raster_cycle;
 
-    /* Cycle # within the current line.  */
+    /* Current line.  */
     unsigned int raster_line;
 
     /* DTV Linear Counters */
@@ -210,7 +212,6 @@ struct vicii_s {
 
     /* DTV raster IRQ */
     int raster_irq_offset;
-    int raster_irq_prevent;
 
     /* Interrupt register.  */
     int irq_status;             /* = 0; */
@@ -255,9 +256,15 @@ struct vicii_s {
     /* Offset to the vbuf/cbuf buffer */
     int buf_offset;
 
-    /* Screen memory buffers (chars and color).  */
-    BYTE vbuf[VICII_SCREEN_TEXTCOLS];
-    BYTE cbuf[VICII_SCREEN_TEXTCOLS];
+    /* Offset to the gbuf buffer */
+    int gbuf_offset;
+
+    /* Screen memory buffers (chars/LinearA and color).  */
+    BYTE vbuf[VICII_SCREEN_TEXTCOLS_OVERSCAN];
+    BYTE cbuf[VICII_SCREEN_TEXTCOLS_OVERSCAN];
+
+    /* Graphics buffer (bitmap/LinearB) */
+    BYTE gbuf[VICII_SCREEN_TEXTCOLS_OVERSCAN * 8];
 
     /* If this flag is set, bad lines (DMA's) can happen.  */
     int allow_bad_lines;
@@ -288,9 +295,6 @@ struct vicii_s {
 
     /* Internal memory counter (VC).  */
     int mem_counter;
-
-    /* Value to add to `mem_counter' after the graphics has been painted.  */
-    int mem_counter_inc;
 
     /* Flag: is the current line a `bad' line? */
     int bad_line;
@@ -331,26 +335,14 @@ struct vicii_s {
     /* All the VIC-II logging goes here.  */
     signed int log;
 
-    /* VIC-II alarms.  */
-    struct alarm_s *raster_fetch_alarm;
-
-    /* What do we do when the `A_RASTERFETCH' event happens?  */
-    vicii_fetch_idx_t fetch_idx;
+    /* Fetch mode */
+    vicii_fetch_mode_t fetch_mode;
 
     /* Number of sprite being DMA fetched.  */
     unsigned int sprite_fetch_idx;
 
     /* Mask for sprites being fetched at DMA.  */
     unsigned int sprite_fetch_msk;
-
-    /* Clock cycle for the next "raster fetch" alarm.  */
-    CLOCK fetch_clk;
-
-    /* FIXME: Bad name.  FIXME: Has to be initialized.  */
-    CLOCK last_emulate_line_clk;
-
-    /* Clock cycle for the next sprite fetch.  */
-    CLOCK sprite_fetch_clk;
 
     /* Geometry and timing parameters of the selected VIC-II emulation.  */
     unsigned int screen_height;
@@ -426,9 +418,6 @@ extern vicii_t vicii;
 extern void vicii_update_memory_ptrs(unsigned int cycle);
 extern void vicii_update_video_mode(unsigned int cycle);
 extern void vicii_raster_draw_alarm_handler(CLOCK offset, void *data);
-extern void vicii_handle_pending_alarms(int num_write_cycles);
-extern void vicii_delay_clk(void);
-extern void vicii_delay_oldclk(CLOCK num);
 
 /* Debugging options.  */
 

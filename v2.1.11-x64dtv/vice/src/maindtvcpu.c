@@ -173,7 +173,6 @@ monitor_interface_t *maincpu_monitor_interface = NULL;
 int maincpu_rmw_flag = 0;
 
 int maincpu_dma_flag = 0;
-int maincpu_ba_low_flag = 0;
 
 /* Information about the last executed opcode.  This is used to know the
    number of write cycles in the last executed opcode and to delay interrupts

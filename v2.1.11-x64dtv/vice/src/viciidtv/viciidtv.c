@@ -147,13 +147,6 @@ vicii_t vicii;
 
 static void vicii_set_geometry(void);
 
-static void clk_overflow_callback(CLOCK sub, void *unused_data)
-{
-    vicii.last_emulate_line_clk -= sub;
-    vicii.fetch_clk -= sub;
-    vicii.sprite_fetch_clk -= sub;
-}
-
 void vicii_change_timing(machine_timing_t *machine_timing, int border_mode)
 {
     vicii_timing_set(machine_timing, border_mode);
@@ -162,13 +155,6 @@ void vicii_change_timing(machine_timing_t *machine_timing, int border_mode)
         vicii_set_geometry();
         raster_mode_change();
     }
-}
-
-static CLOCK old_maincpu_clk = 0;
-
-void vicii_delay_oldclk(CLOCK num)
-{
-    old_maincpu_clk += num;
 }
 
 inline void vicii_handle_pending_alarms(int num_write_cycles)
@@ -256,10 +242,6 @@ raster_t *vicii_init(unsigned int flag)
 {
     vicii.log = log_open("VIC-II DTV");
 
-    vicii_irq_init();
-
-    vicii_fetch_init();
-
     if (init_raster() < 0)
         return NULL;
 
@@ -282,8 +264,6 @@ raster_t *vicii_init(unsigned int flag)
 
     vicii.initialized = 1;
 
-    clk_guard_add_callback(maincpu_clk_guard, clk_overflow_callback, NULL);
-
     return &vicii.raster;
 }
 
@@ -299,17 +279,11 @@ void vicii_reset(void)
 
     raster_reset(&vicii.raster);
 
-    vicii.last_emulate_line_clk = 0;
-
     vicii.raster_line = 0;
     vicii.raster_cycle = 6;
 
-    vicii.fetch_clk = VICII_FETCH_CYCLE;
-    alarm_set(vicii.raster_fetch_alarm, vicii.fetch_clk);
-    vicii.fetch_idx = VICII_FETCH_MATRIX;
     vicii.sprite_fetch_idx = 0;
     vicii.sprite_fetch_msk = 0;
-    vicii.sprite_fetch_clk = CLOCK_MAX;
 
     vicii.raster_irq_line = 0;
 
@@ -397,8 +371,7 @@ void vicii_reset(void)
     vicii.overscan = 0;
     vicii.color_ram_ptr = &mem_ram[0x01d800];
 
-    vicii.raster_irq_offset  = 0;
-    vicii.raster_irq_prevent = 0;
+    vicii.raster_irq_offset = 64;
 }
 
 void vicii_reset_registers(void)
@@ -446,13 +419,11 @@ void vicii_powerup(void)
 
     vicii.allow_bad_lines = 0;
     vicii.sprite_sprite_collisions = vicii.sprite_background_collisions = 0;
-    vicii.fetch_idx = VICII_FETCH_MATRIX;
     vicii.idle_state = 0;
     vicii.force_display_state = 0;
     vicii.memory_fetch_done = 0;
     vicii.memptr = 0;
     vicii.mem_counter = 0;
-    vicii.mem_counter_inc = 0;
     vicii.bad_line = 0;
     vicii.ycounter_reset_checked = 0;
     vicii.force_black_overscan_background_color = 0;
@@ -462,7 +433,6 @@ void vicii_powerup(void)
     /* vicii.vbank_ptr = ram; */
     vicii.idle_data = 0;
     vicii.idle_data_location = IDLE_NONE;
-    vicii.last_emulate_line_clk = 0;
 
     vicii_reset();
 
@@ -1046,11 +1016,12 @@ void vicii_raster_draw_alarm_handler(CLOCK offset, void *data)
     }
 
     if (in_visible_area) {
+/*
         if (!vicii.idle_state)
             vicii.mem_counter = (vicii.mem_counter
                                 + vicii.mem_counter_inc) & 0x3ff;
         vicii.mem_counter_inc = VICII_SCREEN_TEXTCOLS;
-
+*/
         if (!vicii.idle_state) {
             /* TODO should be done in cycle 57 */
             if ( !(VICII_MODULO_BUG(vicii.video_mode) && (vicii.raster.ycounter == 7)) ) {

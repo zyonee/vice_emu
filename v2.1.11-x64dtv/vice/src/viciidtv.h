@@ -28,13 +28,11 @@
 #define VICE_VICIIDTV_H
 
 /* Memory access cycle 1:
-    Character fetch/Counter A */
-extern void viciidtv_cycle_1(void);
-
-/* Memory access cycle 2:
+    Character fetch/Counter A
+   Memory access cycle 2:
     Color/sprite fetch/Blitter/DMA
   Returns 1 if access was done (BA low) */
-extern int viciidtv_cycle_2(void);
+extern int viciidtv_cycle_1_2(void);
 
 /* Memory access cycle 3:
     Graphic fetch/Counter B */

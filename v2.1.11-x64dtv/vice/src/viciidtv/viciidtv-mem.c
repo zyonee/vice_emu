@@ -81,44 +81,6 @@ static int unused_bits_in_registers[0x50] =
 /* Store a value in the video bank (it is assumed to be in RAM).  */
 inline static void REGPARM2 vicii_local_store_vbank(WORD addr, BYTE value)
 {
-    unsigned int f;
-
-    do {
-        CLOCK mclk;
-
-        /* WARNING: Assumes `maincpu_rmw_flag' is 0 or 1.  */
-        mclk = maincpu_clk - maincpu_rmw_flag /*- 1*/;
-        f = 0;
-
-        if (mclk >= vicii.fetch_clk) {
-            /* If the fetch starts here, the sprite fetch routine should
-               get the new value, not the old one.  */
-            if (mclk == vicii.fetch_clk)
-                vicii.ram_base_phi2[addr] = value;
-
-            /* The sprite DMA check can be followed by a real fetch.
-               Save the location to execute the store if a real
-               fetch actually happens.  */
-            if (vicii.fetch_idx == VICII_CHECK_SPRITE_DMA) {
-                vicii.store_clk = mclk;
-                vicii.store_value = value;
-                vicii.store_addr = addr;
-            }
-
-            vicii_fetch_alarm_handler(maincpu_clk - vicii.fetch_clk, NULL);
-            f = 1;
-            /* WARNING: Assumes `maincpu_rmw_flag' is 0 or 1.  */
-            mclk = maincpu_clk - maincpu_rmw_flag /*- 1*/;
-            vicii.store_clk = CLOCK_MAX;
-        }
-/*
-        if (mclk >= vicii.draw_clk) {
-            vicii_raster_draw_alarm_handler(0, NULL);
-            f = 1;
-        }
-*/
-    } while (f);
-
     vicii.ram_base_phi2[addr] = value;
 }
 
@@ -194,6 +156,7 @@ inline static void store_sprite_y_position(const WORD addr, BYTE value)
 
     cycle = VICII_RASTER_CYCLE(maincpu_clk);
 
+/*
     if (cycle == vicii.sprite_fetch_cycle + 1
         && value == (vicii.raster.current_line & 0xff)) {
         vicii.fetch_idx = VICII_CHECK_SPRITE_DMA;
@@ -201,6 +164,7 @@ inline static void store_sprite_y_position(const WORD addr, BYTE value)
                           + vicii.sprite_fetch_cycle + 1);
         alarm_set(vicii.raster_fetch_alarm, vicii.fetch_clk);
     }
+*/
 
     vicii.raster.sprite_status->sprites[addr >> 1].y = value;
     vicii.regs[addr] = value;
@@ -307,6 +271,9 @@ inline static void d011_store(BYTE value)
     vicii.raster_irq_line &= 0xff;
     vicii.raster_irq_line |= (value & 0x80) << 1;
 
+    VICII_DEBUG_REGISTER(("Raster interrupt line set to $%04X",
+                         vicii.raster_irq_line));
+
     /* This is the funniest part... handle bad line tricks.  */
     old_allow_bad_lines = vicii.allow_bad_lines;
 
@@ -365,6 +332,7 @@ inline static void d015_store(const BYTE value)
        1'.  In the average case, one DMA check is OK and there is no need to
        emulate both, but we have to kludge things a bit in case sprites are
        activated at cycle `VICII_SPRITE_FETCH_CYCLE + 1'.  */
+/*
     if (cycle == vicii.sprite_fetch_cycle + 1
         && ((value ^ vicii.regs[0x15]) & value) != 0) {
         vicii.fetch_idx = VICII_CHECK_SPRITE_DMA;
@@ -372,8 +340,9 @@ inline static void d015_store(const BYTE value)
                           + vicii.sprite_fetch_cycle + 1);
         alarm_set(vicii.raster_fetch_alarm, vicii.fetch_clk);
     }
-
+*/
     /* Sprites are turned on: force a DMA check.  */
+/*
     if (vicii.raster.sprite_status->visible_msk == 0
         && vicii.raster.sprite_status->dma_msk == 0
         && value != 0) {
@@ -396,7 +365,7 @@ inline static void d015_store(const BYTE value)
             }
         }
     }
-
+*/
     vicii.regs[0x15] = vicii.raster.sprite_status->visible_msk = value;
 }
 

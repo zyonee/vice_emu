@@ -133,7 +133,3 @@ void vicii_irq_alarm_handler(CLOCK offset, void *data)
     vicii_irq_raster_set(maincpu_clk);
 }
 
-void vicii_irq_init(void)
-{
-}
-

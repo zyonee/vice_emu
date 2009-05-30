@@ -62,8 +62,6 @@
    be.  */
 void vicii_snapshot_prepare(void)
 {
-    vicii.fetch_clk = CLOCK_MAX;
-    alarm_unset(vicii.raster_fetch_alarm);
 }
 
 
@@ -176,7 +174,6 @@ int vicii_snapshot_write_module(snapshot_t *s)
         || SMW_DW(m, (DWORD)vicii.high_color) < 0
         || SMW_DW(m, (DWORD)vicii.border_off) < 0
         || SMW_DW(m, (DWORD)vicii.raster_irq_offset) < 0
-        || SMW_DW(m, (DWORD)vicii.raster_irq_prevent) < 0
         || SMW_BA(m, vicii.dtvpalette, 256) < 0
         /* SbCollMask */
         || SMW_B(m, (BYTE)vicii.sprite_background_collisions) < 0
@@ -188,8 +185,6 @@ int vicii_snapshot_write_module(snapshot_t *s)
         || SMW_W(m, (WORD)vicii.vbank_phi1) < 0
         /* Vc */
         || SMW_W(m, (WORD)vicii.mem_counter) < 0
-        /* VcInc */
-        || SMW_B(m, (BYTE)vicii.mem_counter_inc) < 0
         /* VcBase */
         || SMW_W(m, (WORD)vicii.memptr) < 0
         /* VideoInt */
@@ -209,13 +204,6 @@ int vicii_snapshot_write_module(snapshot_t *s)
                 (BYTE)vicii.raster.sprite_status->sprites[i].exp_flag) < 0)
             goto fail;
     }
-
-    if (0
-        /* FetchEventTick */
-        || SMW_DW(m, vicii.fetch_clk - maincpu_clk) < 0
-        /* FetchEventType */
-        || SMW_B(m, (BYTE)vicii.fetch_idx) < 0)
-        goto fail;
 
   /* Added in version 1.1 of the snapshot module */
   /* using "ram_base-ram" is F***ing bullshit - what when external memory
@@ -335,7 +323,6 @@ int vicii_snapshot_read_module(snapshot_t *s)
         || SMR_DW_INT(m, (int *)&vicii.high_color) < 0
         || SMR_DW_INT(m, (int *)&vicii.border_off) < 0
         || SMR_DW_INT(m, &vicii.raster_irq_offset) < 0
-        || SMR_DW_INT(m, &vicii.raster_irq_prevent) < 0
         || SMR_BA(m, vicii.dtvpalette, 256) < 0
         /* SbCollMask */
         || SMR_B(m, &vicii.sprite_background_collisions) < 0
@@ -347,8 +334,6 @@ int vicii_snapshot_read_module(snapshot_t *s)
         || SMR_W_INT(m, &vicii.vbank_phi1) < 0
         /* Vc */
         || SMR_W_INT(m, &vicii.mem_counter) < 0
-        /* VcInc */
-        || SMR_B_INT(m, &vicii.mem_counter_inc) < 0
         /* VcBase */
         || SMR_W_INT(m, &vicii.memptr) < 0
         /* VideoInt */
@@ -405,23 +390,6 @@ int vicii_snapshot_read_module(snapshot_t *s)
     }
 
     vicii.sprite_fetch_msk = vicii.raster.sprite_status->new_dma_msk;
-    vicii.sprite_fetch_clk = VICII_LINE_START_CLK(maincpu_clk)
-                             + vicii.sprite_fetch_cycle
-                             - vicii.cycles_per_line;
-
-    /* calculate the sprite_fetch_idx */
-    {
-        const vicii_sprites_fetch_t *sf;
-
-        sf = vicii_sprites_fetch_table[vicii.sprite_fetch_msk];
-        i = 0;
-        while (sf[i].cycle >= 0 
-            && sf[i].cycle + vicii.sprite_fetch_cycle <= vicii.cycles_per_line)
-        {
-            i++;
-        }
-        vicii.sprite_fetch_idx = i;
-    }
 
     vicii.raster.xsmooth = vicii.regs[0x16] & 0x7;
     vicii.raster.sprite_xsmooth = vicii.regs[0x16] & 0x7;
@@ -479,22 +447,6 @@ int vicii_snapshot_read_module(snapshot_t *s)
     vicii_update_video_mode(VICII_RASTER_CYCLE(maincpu_clk));
 
     vicii_store(0x3c, (BYTE)vicii.regs[0x3c]);
-
-    {
-        DWORD dw;
-        BYTE b;
-
-        if (0
-            || SMR_DW(m, &dw) < 0  /* FetchEventTick */
-            || SMR_B(m, &b) < 0    /* FetchEventType */
-            )
-            goto fail;
-
-        vicii.fetch_clk = maincpu_clk + dw;
-        vicii.fetch_idx = b;
-
-        alarm_set(vicii.raster_fetch_alarm, vicii.fetch_clk);
-    }
 
     if (vicii.irq_status & 0x80)
         interrupt_restore_irq(maincpu_int_status, vicii.int_num, 1);

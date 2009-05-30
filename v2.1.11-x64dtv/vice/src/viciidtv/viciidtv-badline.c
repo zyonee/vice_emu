@@ -128,11 +128,11 @@ inline static void line_becomes_bad(const int cycle)
         }
 
         /* This is normally done at cycle `VICII_FETCH_CYCLE + 2'.  */
-        vicii.mem_counter = vicii.memptr;
-
+/*        vicii.mem_counter = vicii.memptr;*/
+/*
         if (vicii.idle_state && xpos > 0)
             vicii.buf_offset = xpos;
-
+*/
         /* As we are on a bad line, switch to display state.
            Display state becomes visible after one cycle delay.
            The following equation must be true:
@@ -141,13 +141,15 @@ inline static void line_becomes_bad(const int cycle)
         switch_to_display_state(cycle + 1);
 
         /* Force the DMA.  */
+/*
         if (num_chars > 0)
             vicii_fetch_matrix(pos, num_chars, num_0xff_fetches, cycle);
-
+*/
         /* Set the value by which `vicii.mem_counter' is incremented on
            this line.  */
+/*
         vicii.mem_counter_inc = inc;
-
+*/
         /* Remember we have done a DMA.  */
         vicii.memory_fetch_done = 2;
 
@@ -158,9 +160,10 @@ inline static void line_becomes_bad(const int cycle)
         vicii.bad_line = 1;
 
         /* If in idle state, counter is not incremented.  */
+/*
         if (vicii.idle_state)
             vicii.mem_counter_inc = 0;
-
+*/
         /* As we are on a bad line, switch to display state.  */
         switch_to_display_state(cycle + 1);
     } else {
@@ -177,6 +180,8 @@ void vicii_badline_check_state(BYTE value, const int cycle,
                                const int old_allow_bad_lines)
 {
     int was_bad_line, now_bad_line;
+
+    return;
 
     /* Check whether bad line state has changed.  */
     was_bad_line = (old_allow_bad_lines

@@ -30,9 +30,11 @@
 
 #include "types.h"
 
-extern void vicii_fetch_init(void);
-extern void vicii_fetch_alarm_handler(CLOCK offset, void *data);
-extern void vicii_fetch_matrix(int offs, int num, int num_0xff, int cycle);
+extern void viciidtv_fetch_start(void);
+extern void viciidtv_fetch_stop(void);
+extern void viciidtv_fetch_linear_a(void);
+extern int viciidtv_fetch_matrix(void);
+extern void viciidtv_fetch_graphics(void);
 
 #endif
 

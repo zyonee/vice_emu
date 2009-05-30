@@ -70,7 +70,10 @@ BYTE dtvrewind;
 /* Global clock counter.  */
 CLOCK maincpu_clk = 0L;
 
-#define REWIND_FETCH_OPCODE(clock) clock-=dtvrewind;
+#define REWIND_FETCH_OPCODE(clock) /*clock-=dtvrewind;*/
+
+/* Flag: BA low */
+int maincpu_ba_low_flag = 0;
 
 /* Burst mode implementation */
 
@@ -83,13 +86,10 @@ WORD burst_addr, burst_last_addr;
 
 static void c64dtvcpu_clock_inc(void)
 {
-    int ba_low;
-
     maincpu_clk++;
-    viciidtv_cycle_1();
-    ba_low = viciidtv_cycle_2();
+    maincpu_ba_low_flag = viciidtv_cycle_1_2();
 
-    if (!ba_low) {
+    if (!maincpu_ba_low_flag) {
         if (blitter_active) {
             c64dtvblitter_perform_blitter();
         } else if (dma_active) {
