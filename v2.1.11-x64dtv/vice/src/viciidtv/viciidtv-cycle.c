@@ -26,6 +26,8 @@
 
 #include "vice.h"
 
+#include "c64dtvdma.h"
+#include "c64dtvblitter.h"
 #include "log.h"
 #include "maindtvcpu.h"
 #include "types.h"
@@ -43,7 +45,7 @@ extern BYTE dtvrewind;
   Returns 1 if access on cycle 2 was done (BA low) */
 int viciidtv_cycle_1_2(void)
 {
-    static int drift_debug = 1;
+    static int drift_debug = 0;
     int ba_low = 0;
 
     /*VICII_DEBUG_CYCLE(("cycle 1: line %i, clk %i", vicii.raster_line, vicii.raster_cycle));*/
@@ -52,6 +54,44 @@ int viciidtv_cycle_1_2(void)
         if (vicii.raster_cycle != VICIIDTV_RASTER_CYCLE(maincpu_clk)) {
             VICII_DEBUG_CYCLE(("cycle 1: line %i, clk %i != old_clk %i, rewind %i", vicii.raster_line, vicii.raster_cycle, VICIIDTV_RASTER_CYCLE(maincpu_clk), dtvrewind));
             vicii.raster_cycle = VICIIDTV_RASTER_CYCLE(maincpu_clk);
+        }
+    }
+
+    /* Next cycle */
+    vicii.raster_cycle++;
+
+    /* Handle the "hole" on PAL systems at cycles 54-55 */
+    if ((vicii.raster_cycle == 54) && (vicii.cycles_per_line == 63)) {
+        vicii.raster_cycle = 56;
+    }
+
+    if (vicii.raster_cycle == 65) {
+        vicii.raster_cycle = 0;
+        vicii_raster_draw_alarm_handler(maincpu_clk, 0);
+    }
+
+    if (vicii.raster_cycle == 64) {
+        vicii.raster_line++;
+        if (vicii.raster_line == vicii.screen_height) {
+            vicii.raster_line = 0;
+        }
+    }
+
+    if (vicii.raster_line == vicii.raster_irq_line) {
+        if (vicii.raster_cycle == vicii.raster_irq_offset) {
+            vicii_irq_alarm_handler(maincpu_clk, 0);
+        }
+    }
+
+    /* Blitter/DMA on vblank */
+    if ((vicii.raster_line == (vicii.screen_height - 1)) && (vicii.raster_cycle == 10)) {
+        /* Scheduled Blitter */
+        if (blitter_on_irq & 0x40) {
+            c64dtvblitter_trigger_blitter();
+        }
+        /* Scheduled DMA */
+        if (dma_on_irq & 0x40) {
+            c64dtvdma_trigger_dma();
         }
     }
 
@@ -106,29 +146,6 @@ void viciidtv_cycle_3(void)
 
     if (vicii.raster_cycle == 53) {
         viciidtv_fetch_stop();
-    }
-
-    /* Next cycle */
-    vicii.raster_cycle++;
-
-    /* Handle the "hole" on PAL systems at cycles 54-55 */
-    if ((vicii.raster_cycle == 54) && (vicii.cycles_per_line == 63)) {
-        vicii.raster_cycle = 56;
-    }
-
-    if (vicii.raster_cycle == 65) {
-        vicii_raster_draw_alarm_handler(maincpu_clk, 0);
-        vicii.raster_cycle = 0;
-        vicii.raster_line++;
-        if (vicii.raster_line == vicii.screen_height) {
-            vicii.raster_line = 0;
-        }
-    }
-
-    if (vicii.raster_line == vicii.raster_irq_line) {
-        if (vicii.raster_cycle == vicii.raster_irq_offset) {
-            vicii_irq_alarm_handler(maincpu_clk, 0);
-        }
     }
 }
 

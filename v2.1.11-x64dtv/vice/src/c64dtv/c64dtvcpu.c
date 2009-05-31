@@ -299,7 +299,7 @@ static const BYTE burst_status_tab[] = {
     } while(0)
 
 #else /* !ALLOW_UNALIGNED_ACCESS */
-/* TODO broken */
+/* TODO optimize */
 #define FETCH_OPCODE(o) \
     do { \
         dtvrewind = 0; \
@@ -311,23 +311,24 @@ static const BYTE burst_status_tab[] = {
                 burst_cache[1] = LOAD(burst_addr+1); \
                 burst_cache[2] = LOAD(burst_addr+2); \
                 burst_cache[3] = LOAD(burst_addr+3); \
+                CLK_INC(); \
             } \
             burst_idx = reg_pc & 3; \
             (o).ins = burst_cache[burst_idx++]; \
             burst_status = burst_status_tab[(o).ins]; \
             burst_fetch = burst_status & 7; \
-            burst_diff = (burst_status >> 3) & 7; \
+            burst_broken = (burst_status >> 6)&1; \
             if(burst_fetch--) { \
                 if(burst_idx>3) { \
                     burst_addr += 4; \
                     burst_addr &= 0xfffc; \
                     burst_last_addr = burst_addr; \
-                    burst_diff--; \
                     burst_idx = 0; \
                     burst_cache[0] = LOAD(burst_addr+0); \
                     burst_cache[1] = LOAD(burst_addr+1); \
                     burst_cache[2] = LOAD(burst_addr+2); \
                     burst_cache[3] = LOAD(burst_addr+3); \
+                    CLK_INC(); \
                 } \
                 (o).op.op16 = burst_cache[burst_idx++]; \
                 if(burst_fetch--) { \
@@ -335,39 +336,28 @@ static const BYTE burst_status_tab[] = {
                         burst_addr += 4; \
                         burst_addr &= 0xfffc; \
                         burst_last_addr = burst_addr; \
-                        burst_diff--; \
                         burst_idx = 0; \
                         burst_cache[0] = LOAD(burst_addr+0); \
                         burst_cache[1] = LOAD(burst_addr+1); \
                         burst_cache[2] = LOAD(burst_addr+2); \
                         burst_cache[3] = LOAD(burst_addr+3); \
+                        CLK_INC(); \
                     } \
                     (o).op.op16 |= (burst_cache[burst_idx] << 8); \
                 } \
             } \
-            if ((burst_last_addr != burst_addr)||burst_broken) {burst_diff--; dtvrewind++;}\
-            burst_broken = (burst_status >> 6)&1; \
-            CLK_ADD(CLK,1);                                     \
-            if (!(((burst_status_tab[(o).ins]&0x80))            \
-               && SKIP_CYCLE)) {                                \
-                CLK_ADD(CLK,1); dtvrewind++;                    \
-            }                                                   \
-            if (fetch_tab[(o).ins]) {                           \
-                CLK_ADD(CLK,1);                                 \
-            }                                                   \
         } else { \
             burst_broken=1; \
-            burst_diff=0; \
             (o).ins = LOAD(reg_pc);                             \
-            CLK_ADD(CLK,1); dtvrewind++;                        \
+            CLK_INC(); dtvrewind++;                             \
             (o).op.op16 = LOAD(reg_pc + 1);                     \
             if (!(((burst_status_tab[(o).ins]&0x80))            \
                && SKIP_CYCLE)) {                                \
-                CLK_ADD(CLK,1); dtvrewind++;                    \
+                CLK_INC(); dtvrewind++;                         \
             }                                                   \
             if (fetch_tab[(o).ins]) {                           \
                  (o).op.op16 |= (LOAD(reg_pc + 2) << 8);        \
-                 CLK_ADD(CLK,1);                                \
+                 CLK_INC();                                     \
             }                                                   \
         } \
     } while(0)

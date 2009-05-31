@@ -954,15 +954,6 @@ void vicii_raster_draw_alarm_handler(CLOCK offset, void *data)
         /* Clear color buffer on line 0 */
         memset(vicii.cbuf, 0, sizeof(vicii.cbuf));
 
-        /* Scheduled Blitter */
-        if (blitter_on_irq & 0x40) {
-            c64dtvblitter_trigger_blitter();
-        }
-        /* Scheduled DMA */
-        if (dma_on_irq & 0x40) {
-            c64dtvdma_trigger_dma();
-        }
-
         /* HACK to make vcache display gfx in chunky & the rest */
         if ((vicii.video_mode >= VICII_8BPP_CHUNKY_MODE)&&
             (vicii.video_mode <= VICII_8BPP_PIXEL_CELL_MODE)) {
