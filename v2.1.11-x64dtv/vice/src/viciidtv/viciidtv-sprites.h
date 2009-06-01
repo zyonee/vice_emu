@@ -28,18 +28,6 @@
 #ifndef VICE_VICIIDTV_SPRITES_H
 #define VICE_VICIIDTV_SPRITES_H
 
-/* This defines the stolen sprite cycles for all the values of `dma_msk'.  */
-/* The table derives from what Christian Bauer <bauec002@physik.uni-mainz.de>
-   says in both the "VIC-Article" and Frodo's `VIC_SC.cpp' source file.  */
-
-struct vicii_sprites_fetch_s
-{
-    int cycle, num;
-    unsigned int first, last;
-};
-typedef struct vicii_sprites_fetch_s vicii_sprites_fetch_t;
-
-extern const vicii_sprites_fetch_t vicii_sprites_fetch_table[256][4];
 extern const int vicii_sprites_crunch_table[64];
 
 extern void vicii_sprites_init(void);

@@ -117,11 +117,11 @@ typedef enum vicii_video_mode_s vicii_video_mode_t;
 
 /* Current char being drawn by the raster.  < 0 or >= VICII_SCREEN_TEXTCOLS
    if outside the visible range.  */
-#define VICII_RASTER_CHAR(cycle)   ((int)(cycle) - 15)
+#define VICII_RASTER_CHAR(cycle)   ((int)(cycle) - 13)
 
 /* Current horizontal position (in pixels) of the raster.  < 0 or >=
    SCREEN_WIDTH if outside the visible range.  */
-#define VICII_RASTER_X(cycle)      (((int)(cycle) - 17) * 8 + vicii.screen_leftborderwidth)
+#define VICII_RASTER_X(cycle)      (((int)(cycle) - 15) * 8 + vicii.screen_leftborderwidth)
 
 /* Adjusted RASTER_X position to account for -2 pixel difference on some
    C64DTV stores and the -6 pixel difference in DMA stores */
@@ -338,11 +338,9 @@ struct vicii_s {
     /* Fetch mode */
     vicii_fetch_mode_t fetch_mode;
 
-    /* Number of sprite being DMA fetched.  */
-    unsigned int sprite_fetch_idx;
-
-    /* Mask for sprites being fetched at DMA.  */
-    unsigned int sprite_fetch_msk;
+    /* Fetch state */
+    int fetch_active;
+    int prefetch_cycles;
 
     /* Geometry and timing parameters of the selected VIC-II emulation.  */
     unsigned int screen_height;

@@ -30,7 +30,6 @@
 
 #include "vice.h"
 
-#include "alarm.h"
 #include "c64dtvblitter.h"
 #include "c64dtvdma.h"
 #include "interrupt.h"
@@ -121,15 +120,17 @@ void vicii_irq_check_state(BYTE value, unsigned int high)
    line counter matches the value stored in the raster line register.  */
 void vicii_irq_alarm_handler(CLOCK offset, void *data)
 {
-    /* Scheduled Blitter */
-    if (blitter_on_irq & 0x10) {
-        c64dtvblitter_trigger_blitter();
-    }
-    /* Scheduled DMA */
-    if (dma_on_irq & 0x10) {
-        c64dtvdma_trigger_dma();
-    }
+    if (!(vicii.irq_status & 0x1)) {
+        /* Scheduled Blitter */
+        if (blitter_on_irq & 0x10) {
+            c64dtvblitter_trigger_blitter();
+        }
+        /* Scheduled DMA */
+        if (dma_on_irq & 0x10) {
+            c64dtvdma_trigger_dma();
+        }
 
-    vicii_irq_raster_set(maincpu_clk);
+        vicii_irq_raster_set(maincpu_clk);
+    }
 }
 

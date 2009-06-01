@@ -100,36 +100,22 @@ int viciidtv_cycle_1_2(void)
         case 11: /* VICII_FETCH_CYCLE */
             viciidtv_fetch_start();
             break;
-        case 56: /* sprite 0 trigger */
-        case 58: /* sprite 1 trigger */
-        case 59: /* sprite 0 pointer */
-        case 60: /* sprite 0 data */
-        case 61: /* sprite 1 pointer */
-        case 62: /* sprite 1 data */
-        case 63: /* sprite 2 pointer */
-        case 64: /* sprite 2 data */
-        case 0: /* sprite 3 pointer */
-        case 1: /* sprite 3 data */
-        case 2: /* sprite 4 pointer */
-        case 3: /* sprite 4 data */
-        case 4: /* sprite 5 pointer */
-        case 5: /* sprite 5 data */
-        case 6: /* sprite 6 pointer */
-        case 7: /* sprite 6 data */
-        case 8: /* sprite 7 pointer */
-        case 9: /* sprite 7 data */
         default:
             break;
     }
 
-    if ((vicii.fetch_mode != VICIIDTV_FETCH_NORMAL)
-        && (!vicii.idle_state)) {
-        viciidtv_fetch_linear_a();
+    if (vicii.prefetch_cycles) {
+        ba_low = !vicii.colorfetch_disable;
+    } else if (vicii.fetch_active) {
+        if (vicii.fetch_mode != VICIIDTV_FETCH_NORMAL) {
+            viciidtv_fetch_linear_a();
+        }
+        if (vicii.bad_line) {
+            ba_low |= viciidtv_fetch_matrix();
+        }
     }
 
-    if (vicii.bad_line) {
-        ba_low |= viciidtv_fetch_matrix();
-    }
+    ba_low |= viciidtv_fetch_sprites(vicii.raster_cycle);
 
     return ba_low;
 }
@@ -138,9 +124,9 @@ int viciidtv_cycle_1_2(void)
     Graphic fetch/Counter B */
 void viciidtv_cycle_3(void)
 {
-    if ((!vicii.idle_state) 
-       && (vicii.raster_cycle >= 11)
-       && (vicii.raster_cycle <= 53)) {
+    if (vicii.prefetch_cycles) {
+        vicii.prefetch_cycles--;
+    } else if (vicii.fetch_active) {
         viciidtv_fetch_graphics();
     }
 

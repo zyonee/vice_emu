@@ -147,24 +147,10 @@ inline static void store_sprite_x_position_lsb(const WORD addr, BYTE value)
 
 inline static void store_sprite_y_position(const WORD addr, BYTE value)
 {
-    int cycle;
-
     VICII_DEBUG_REGISTER(("Sprite #%d Y position: $%02X", addr >> 1, value));
 
     if (vicii.regs[addr] == value)
         return;
-
-    cycle = VICII_RASTER_CYCLE(maincpu_clk);
-
-/*
-    if (cycle == vicii.sprite_fetch_cycle + 1
-        && value == (vicii.raster.current_line & 0xff)) {
-        vicii.fetch_idx = VICII_CHECK_SPRITE_DMA;
-        vicii.fetch_clk = (VICII_LINE_START_CLK(maincpu_clk)
-                          + vicii.sprite_fetch_cycle + 1);
-        alarm_set(vicii.raster_fetch_alarm, vicii.fetch_clk);
-    }
-*/
 
     vicii.raster.sprite_status->sprites[addr >> 1].y = value;
     vicii.regs[addr] = value;
@@ -321,51 +307,8 @@ inline static void d012_store(BYTE value)
 
 inline static void d015_store(const BYTE value)
 {
-    int cycle;
-
     VICII_DEBUG_REGISTER(("Sprite Enable register: $%02X", value));
 
-    cycle = VICII_RASTER_CYCLE(maincpu_clk);
-
-    /* On the real C64, sprite DMA is checked two times: first at
-       `VICII_SPRITE_FETCH_CYCLE', and then at `VICII_SPRITE_FETCH_CYCLE +
-       1'.  In the average case, one DMA check is OK and there is no need to
-       emulate both, but we have to kludge things a bit in case sprites are
-       activated at cycle `VICII_SPRITE_FETCH_CYCLE + 1'.  */
-/*
-    if (cycle == vicii.sprite_fetch_cycle + 1
-        && ((value ^ vicii.regs[0x15]) & value) != 0) {
-        vicii.fetch_idx = VICII_CHECK_SPRITE_DMA;
-        vicii.fetch_clk = (VICII_LINE_START_CLK(maincpu_clk)
-                          + vicii.sprite_fetch_cycle + 1);
-        alarm_set(vicii.raster_fetch_alarm, vicii.fetch_clk);
-    }
-*/
-    /* Sprites are turned on: force a DMA check.  */
-/*
-    if (vicii.raster.sprite_status->visible_msk == 0
-        && vicii.raster.sprite_status->dma_msk == 0
-        && value != 0) {
-        if ((vicii.fetch_idx == VICII_FETCH_MATRIX
-             && vicii.fetch_clk > maincpu_clk
-             && cycle > VICII_FETCH_CYCLE
-             && cycle <= vicii.sprite_fetch_cycle)
-            || vicii.raster.current_line < vicii.first_dma_line
-            || vicii.raster.current_line >= vicii.last_dma_line) {
-            CLOCK new_fetch_clk;
-
-            new_fetch_clk = (VICII_LINE_START_CLK(maincpu_clk)
-                            + vicii.sprite_fetch_cycle);
-            if (cycle > vicii.sprite_fetch_cycle)
-                new_fetch_clk += vicii.cycles_per_line;
-            if (new_fetch_clk < vicii.fetch_clk) {
-                vicii.fetch_idx = VICII_CHECK_SPRITE_DMA;
-                vicii.fetch_clk = new_fetch_clk;
-                alarm_set(vicii.raster_fetch_alarm, vicii.fetch_clk);
-            }
-        }
-    }
-*/
     vicii.regs[0x15] = vicii.raster.sprite_status->visible_msk = value;
 }
 

@@ -389,8 +389,6 @@ int vicii_snapshot_read_module(snapshot_t *s)
         }
     }
 
-    vicii.sprite_fetch_msk = vicii.raster.sprite_status->new_dma_msk;
-
     vicii.raster.xsmooth = vicii.regs[0x16] & 0x7;
     vicii.raster.sprite_xsmooth = vicii.regs[0x16] & 0x7;
     vicii.raster.ysmooth = vicii.regs[0x11] & 0x7;

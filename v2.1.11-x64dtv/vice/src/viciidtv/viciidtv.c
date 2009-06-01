@@ -282,9 +282,6 @@ void vicii_reset(void)
     vicii.raster_line = 0;
     vicii.raster_cycle = 6;
 
-    vicii.sprite_fetch_idx = 0;
-    vicii.sprite_fetch_msk = 0;
-
     vicii.raster_irq_line = 0;
 
     /* FIXME: I am not sure this is exact emulation.  */
@@ -1007,12 +1004,6 @@ void vicii_raster_draw_alarm_handler(CLOCK offset, void *data)
     }
 
     if (in_visible_area) {
-/*
-        if (!vicii.idle_state)
-            vicii.mem_counter = (vicii.mem_counter
-                                + vicii.mem_counter_inc) & 0x3ff;
-        vicii.mem_counter_inc = VICII_SCREEN_TEXTCOLS;
-*/
         if (!vicii.idle_state) {
             /* TODO should be done in cycle 57 */
             if ( !(VICII_MODULO_BUG(vicii.video_mode) && (vicii.raster.ycounter == 7)) ) {

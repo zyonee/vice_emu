@@ -35,6 +35,7 @@ extern void viciidtv_fetch_stop(void);
 extern void viciidtv_fetch_linear_a(void);
 extern int viciidtv_fetch_matrix(void);
 extern void viciidtv_fetch_graphics(void);
+extern int viciidtv_fetch_sprites(int cycle);
 
 #endif
 
