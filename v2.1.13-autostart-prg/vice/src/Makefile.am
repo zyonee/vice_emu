@@ -95,6 +95,7 @@ noinst_HEADERS = \
 	archapi.h \
 	attach.h \
 	autostart.h \
+	autostart-prg.h \
 	blockdev.h \
 	c128ui.h \
 	c64ui.h \
@@ -211,6 +212,7 @@ base_sources = \
 	alarm.c \
 	attach.c \
 	autostart.c \
+	autostart-prg.c \
 	charset.c \
 	clkguard.c \
 	clipboard.c \

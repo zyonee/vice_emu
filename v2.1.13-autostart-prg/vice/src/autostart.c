@@ -36,6 +36,7 @@
 
 #include "archdep.h"
 #include "autostart.h"
+#include "autostart-prg.h"
 #include "attach.h"
 #include "cmdline.h"
 #include "datasette.h"
@@ -219,7 +220,7 @@ static const resource_int_t resources_int[] = {
       &AutostartHandleTrueDriveEmulation, set_autostart_handle_tde, NULL },
     { "AutostartWarp", 1, RES_EVENT_NO, (resource_value_t)0,
       &AutostartWarp, set_autostart_warp, NULL },
-    { "AutostartPrgMode", 1, RES_EVENT_NO, (resource_value_t)0,
+    { "AutostartPrgMode", 0, RES_EVENT_NO, (resource_value_t)0,
       &AutostartPrgMode, set_autostart_prg_mode, NULL },
     { NULL }
 };
@@ -965,60 +966,57 @@ int autostart_disk(const char *file_name, const char *program_name,
 }
 
 /* Autostart PRG file `file_name'.  The PRG file can either be a raw CBM file
-   or a P00 file, and the FS-based drive emulation is set up so that its
-   directory becomes the current one on unit #8.  */
+   or a P00 file */
 int autostart_prg(const char *file_name, unsigned int runmode)
 {
-    char *directory;
-    char *file;
     fileio_info_t *finfo;
+    int result;
 
     if (network_connected())
         return -1;
     
+    /* open prg file */
     finfo = fileio_open(file_name, NULL, FILEIO_FORMAT_RAW | FILEIO_FORMAT_P00,
                         FILEIO_COMMAND_READ | FILEIO_COMMAND_FSNAME,
                         FILEIO_TYPE_PRG);
 
+    /* can't open file */
     if (finfo == NULL) {
         log_error(autostart_log, "Cannot open `%s'.", file_name);
         return -1;
     }
 
-    /* Extract the directory path to allow FS-based drive emulation to
-       work.  */
-    util_fname_split(file_name, &directory, &file);
-
-    if (archdep_path_is_relative(directory)) {
-        char *tmp;
-        archdep_expand_path(&tmp, directory);
-        lib_free(directory);
-        directory = tmp;
-
-        /* FIXME: We should actually eat `.'s and `..'s from `directory'
-           instead.  */
+    /* determine how to load file */
+    switch(AutostartPrgMode) {
+    case AUTOSTART_PRG_MODE_VFS:
+        log_message(autostart_log, "Loading PRG file `%s' with virtual FS on unit #8.", file_name);
+        result = autostart_prg_with_virtual_fs(file_name, finfo, autostart_log);
+        break;
+    case AUTOSTART_PRG_MODE_INJECT:
+        log_message(autostart_log, "Loading PRG file `%s' with direct RAM injection.", file_name);
+        result = autostart_prg_with_ram_injection(file_name, finfo, autostart_log);
+        break;
+    case AUTOSTART_PRG_MODE_DISK:
+        log_message(autostart_log, "Loading PRG file `%s' with temporary disk image.", file_name);
+        result = autostart_prg_with_disk_image(file_name, finfo, autostart_log);
+        break;
+    default:
+        log_error(autostart_log, "Invalid PRG autostart mode: %d", AutostartPrgMode);
+        result = -1;
+        break;
     }
 
-    /* Setup FS-based drive emulation.  */
-    fsdevice_set_directory(directory ? directory : ".", 8);
-    set_true_drive_emulation_mode(0);
-    orig_drive_true_emulation_state =0;
-    resources_set_int("VirtualDevices", 1);
-    resources_set_int("FSDevice8ConvertP00", 1);
-    file_system_detach_disk(8);
-    ui_update_menus();
-
     /* Now it's the same as autostarting a disk image.  */
-    reboot_for_autostart((char *)(finfo->name), AUTOSTART_HASDISK, runmode);
+    if(result >= 0) {
+        ui_update_menus();
 
-    lib_free(directory);
-    lib_free(file);
+        reboot_for_autostart((char *)finfo->name, AUTOSTART_HASDISK, runmode);
+    }
+
+    /* close prg file */
     fileio_close(finfo);
 
-    log_message(autostart_log, "Preparing to load PRG file `%s'.",
-                file_name);
-
-    return 0;
+    return result;
 }
 
 /* ------------------------------------------------------------------------- */
