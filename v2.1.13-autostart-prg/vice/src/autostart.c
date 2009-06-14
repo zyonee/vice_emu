@@ -137,6 +137,8 @@ static int AutostartHandleTrueDriveEmulation = 0;
 
 static int AutostartWarp = 0;
 
+static int AutostartPrgMode = AUTOSTART_PRG_MODE_VFS;
+
 static const char * const AutostartRunCommandsAvailable[] = { "RUN\r", "RUN:\r" };
 
 static const char * AutostartRunCommand = NULL;
@@ -198,6 +200,17 @@ static int set_autostart_warp(int val, void *param)
     return 0;
 }
 
+/*! \internal \brief set autostart prg mode */
+static int set_autostart_prg_mode(int val, void *param)
+{
+    AutostartPrgMode = val;
+    if((val < 0) || (val > AUTOSTART_PRG_MODE_LAST)) {
+        val = 0;
+    }
+    
+    return 0;
+}
+
 /*! \brief integer resources used by the REU module */
 static const resource_int_t resources_int[] = {
     { "AutostartRunWithColon", 0, RES_EVENT_NO, (resource_value_t)0,
@@ -206,6 +219,8 @@ static const resource_int_t resources_int[] = {
       &AutostartHandleTrueDriveEmulation, set_autostart_handle_tde, NULL },
     { "AutostartWarp", 1, RES_EVENT_NO, (resource_value_t)0,
       &AutostartWarp, set_autostart_warp, NULL },
+    { "AutostartPrgMode", 1, RES_EVENT_NO, (resource_value_t)0,
+      &AutostartPrgMode, set_autostart_prg_mode, NULL },
     { NULL }
 };
 
@@ -255,6 +270,11 @@ static const cmdline_option_t cmdline_options[] =
       USE_PARAM_STRING, USE_DESCRIPTION_STRING,
       IDCLS_UNUSED, IDCLS_UNUSED,
       NULL, T_("Disable warp mode during autostart") },
+    { "-autostartprgmode", SET_RESOURCE, 1,
+      NULL, NULL, "AutostartPrgMode", NULL,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_UNUSED, IDCLS_UNUSED,
+      NULL, T_("Set autostart mode for PRG files") },
     { NULL }
 };
 
