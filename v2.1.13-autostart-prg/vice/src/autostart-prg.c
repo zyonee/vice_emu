@@ -29,6 +29,8 @@
 #include "autostart-prg.h"
 #include "fsdevice.h"
 #include "lib.h"
+#include "machine.h"
+#include "mem.h"
 #include "resources.h"
 #include "util.h"
 
@@ -100,6 +102,20 @@ static void free_prg(autostart_prg_t *prg)
         lib_free(prg->data);
     }
     lib_free(prg);
+}
+
+static void simulate_c64_load(autostart_prg_t *prg)
+{
+   WORD end = prg->start_addr + prg->size;
+   BYTE endlo = (end & 0xff);
+   BYTE endhi = ((end >> 8) & 0xff);
+   int i;
+   static const WORD addr[] = { 0x2d, 0x2f, 0x31, 0xae };
+   
+   for(i=0; i< 4; i++) {
+       mem_store(addr[i]  , endlo);
+       mem_store(addr[i]+1, endhi);
+   }
 }
 
 /* ---------- main interface ---------- */
@@ -174,17 +190,37 @@ int autostart_prg_with_disk_image(const char *file_name,
 
 int autostart_prg_perform_injection(log_t log)
 {
-    if(inject_prg == NULL) {
+    int i;
+    autostart_prg_t *prg = inject_prg;
+    
+    if(prg == NULL) {
         log_error(log, "Nothing to inject!");
         return -1;
     }
     
-    log_message(log, "Injecting at $%04x (size $%04x)", 
-                inject_prg->start_addr,
-                inject_prg->size);
+    log_message(log, "Injecting program data at $%04x (size $%04x)", 
+                prg->start_addr,
+                prg->size);
                 
-    /* TBD: inject */
+    /* store data in emu memory */
+    for(i = 0; i < prg->size; i++) {
+        mem_store(prg->start_addr + i, prg->data[i]);
+    }
     
+    /* now simulate a basic load */
+    switch(machine_class) {
+    case VICE_MACHINE_C64:
+    case VICE_MACHINE_C64DTV:
+    case VICE_MACHINE_C128: /* TODO: check for C64 mode */
+        simulate_c64_load(prg);
+        break;
+    default:
+        log_error(log, "No BASIC load simulation for machine available!");
+        break;
+    }
+    
+    
+    /* clean up injected prog */
     free_prg(inject_prg);
     inject_prg = NULL;
             
