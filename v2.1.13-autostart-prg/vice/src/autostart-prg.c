@@ -32,6 +32,12 @@
 #include "resources.h"
 #include "util.h"
 
+/* ----- Globals ----- */
+
+/* program from last injection */
+static autostart_prg_t *inject_prg;
+
+
 static autostart_prg_t * load_prg(const char *file_name, fileio_info_t *finfo, log_t log)
 {
     WORD ptr;
@@ -98,6 +104,18 @@ static void free_prg(autostart_prg_t *prg)
 
 /* ---------- main interface ---------- */
 
+void autostart_prg_init(void)
+{
+    inject_prg = NULL;
+}
+
+void autostart_prg_shutdown(void)
+{
+    if(inject_prg != NULL) {
+        free_prg(inject_prg);
+    }
+}
+
 int autostart_prg_with_virtual_fs(const char *file_name,
                                   fileio_info_t *fh,
                                   log_t log)
@@ -136,18 +154,14 @@ int autostart_prg_with_ram_injection(const char *file_name,
                                      fileio_info_t *fh,
                                      log_t log)
 {
-    autostart_prg_t *prg;
+    /* clean up old injection */
+    if(inject_prg != NULL) {
+        free_prg(inject_prg);
+    }
     
     /* load program file into memory */
-    prg = load_prg(file_name, fh, log);
-    if(prg == NULL) {
-        return -1;
-    }
-
-    /* TBD -> inject prg into emu memory */
-
-    free_prg(prg);
-    return 0;
+    inject_prg = load_prg(file_name, fh, log);
+    return (inject_prg == NULL) ? -1 : 0;
 }
 
 int autostart_prg_with_disk_image(const char *file_name,
@@ -158,4 +172,22 @@ int autostart_prg_with_disk_image(const char *file_name,
     return -1;
 }
 
+int autostart_prg_perform_injection(log_t log)
+{
+    if(inject_prg == NULL) {
+        log_error(log, "Nothing to inject!");
+        return -1;
+    }
+    
+    log_message(log, "Injecting at $%04x (size $%04x)", 
+                inject_prg->start_addr,
+                inject_prg->size);
+                
+    /* TBD: inject */
+    
+    free_prg(inject_prg);
+    inject_prg = NULL;
+            
+    return 0;
+}
 

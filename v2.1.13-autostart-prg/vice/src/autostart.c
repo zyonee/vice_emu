@@ -86,6 +86,7 @@ static enum {
     AUTOSTART_WAITLOADREADY,
     AUTOSTART_WAITLOADING,
     AUTOSTART_WAITSEARCHINGFOR,
+    AUTOSTART_INJECT,
     AUTOSTART_DONE
 } autostartmode = AUTOSTART_NONE;
 
@@ -450,6 +451,8 @@ void autostart_reinit(CLOCK _min_cycles, int _handle_drive_true_emulation,
 int autostart_init(CLOCK min_cycles, int handle_drive_true_emulation,
                    int blnsw, int pnt, int pntr, int lnmx)
 {
+    autostart_prg_init();
+    
     autostart_reinit(min_cycles, handle_drive_true_emulation, blnsw, pnt,
                      pntr, lnmx);
 
@@ -742,6 +745,18 @@ static void advance_waitloadready(void)
     }
 }
 
+/* After a reset a PRG file has to be injected into RAM */
+static void advance_inject(void)
+{
+    if(autostart_prg_perform_injection(autostart_log) < 0) {
+        disable_warp_if_was_requested();
+        autostart_disable();        
+    } else {
+        /* wait for ready cursor and type RUN */
+        autostartmode = AUTOSTART_WAITLOADREADY;
+    }
+}
+
 /* Execute the actions for the current `autostartmode', advancing to the next
    mode if necessary.  */
 void autostart_advance(void)
@@ -787,6 +802,9 @@ void autostart_advance(void)
         break;
       case AUTOSTART_WAITSEARCHINGFOR:
         advance_waitsearchingfor();
+        break;
+      case AUTOSTART_INJECT:
+        advance_inject();
         break;
       default:
         return;
@@ -1010,7 +1028,10 @@ int autostart_prg(const char *file_name, unsigned int runmode)
     if(result >= 0) {
         ui_update_menus();
 
-        reboot_for_autostart((char *)finfo->name, AUTOSTART_HASDISK, runmode);
+        reboot_for_autostart((char *)finfo->name, 
+            (AutostartPrgMode == AUTOSTART_PRG_MODE_INJECT) 
+                ? AUTOSTART_INJECT : AUTOSTART_HASDISK, 
+            runmode);
     }
 
     /* close prg file */
@@ -1107,5 +1128,7 @@ void autostart_reset(void)
 void autostart_shutdown(void)
 {
     deallocate_program_name();
+
+    autostart_prg_shutdown();
 }
 
