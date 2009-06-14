@@ -104,20 +104,6 @@ static void free_prg(autostart_prg_t *prg)
     lib_free(prg);
 }
 
-static void simulate_c64_load(autostart_prg_t *prg)
-{
-   WORD end = prg->start_addr + prg->size;
-   BYTE endlo = (end & 0xff);
-   BYTE endhi = ((end >> 8) & 0xff);
-   int i;
-   static const WORD addr[] = { 0x2d, 0x2f, 0x31, 0xae };
-   
-   for(i=0; i< 4; i++) {
-       mem_store(addr[i]  , endlo);
-       mem_store(addr[i]+1, endhi);
-   }
-}
-
 /* ---------- main interface ---------- */
 
 void autostart_prg_init(void)
@@ -208,17 +194,8 @@ int autostart_prg_perform_injection(log_t log)
     }
     
     /* now simulate a basic load */
-    switch(machine_class) {
-    case VICE_MACHINE_C64:
-    case VICE_MACHINE_C64DTV:
-    case VICE_MACHINE_C128: /* TODO: check for C64 mode */
-        simulate_c64_load(prg);
-        break;
-    default:
-        log_error(log, "No BASIC load simulation for machine available!");
-        break;
-    }
-    
+    WORD end = prg->start_addr + prg->size;
+    mem_set_basic_text(prg->start_addr, end);
     
     /* clean up injected prog */
     free_prg(inject_prg);
