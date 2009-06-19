@@ -1,5 +1,5 @@
 /*
- * 6510dtvcore.c - DTV 6510 emulation core.
+ * 6510dtvcore.c - Cycle based 6510 emulation core.
  *
  * Written by
  *  Ettore Perazzoli <ettore@comm2000.it>
@@ -7,6 +7,9 @@
  *
  * DTV sections written by
  *  M.Kiesel <mayne@users.sourceforge.net>
+ *  Hannu Nuotio <hannu.nuotio@tut.fi>
+ *
+ * Cycle based rewrite by
  *  Hannu Nuotio <hannu.nuotio@tut.fi>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
@@ -29,10 +32,17 @@
  *
  */
 
-/* This file is included by DTV CPU definition file */
+/* This file is included by (some) CPU definition files */
 /* (maindtvcpu.c) */
 
 #define CPU_STR "Main CPU"
+
+#ifndef C64DTV
+/* The C64DTV can use different shadow registers for accu read/write. */
+/* For standard 6510, this is not the case. */
+#define reg_a_write reg_a
+#define reg_a_read  reg_a
+#endif
 
 /* ------------------------------------------------------------------------- */
 
@@ -128,6 +138,35 @@
 
 #endif
 
+#ifndef C64DTV
+/* Export the local version of the registers.  */
+#define EXPORT_REGISTERS()      \
+  do {                          \
+      GLOBAL_REGS.pc = reg_pc;  \
+      GLOBAL_REGS.a = reg_a_read;    \
+      GLOBAL_REGS.x = reg_x;    \
+      GLOBAL_REGS.y = reg_y;    \
+      GLOBAL_REGS.sp = reg_sp;  \
+      GLOBAL_REGS.p = reg_p;    \
+      GLOBAL_REGS.n = flag_n;   \
+      GLOBAL_REGS.z = flag_z;   \
+  } while (0)
+
+/* Import the public version of the registers.  */
+#define IMPORT_REGISTERS()      \
+  do {                          \
+      reg_a_write = GLOBAL_REGS.a; \
+      reg_x = GLOBAL_REGS.x;    \
+      reg_y = GLOBAL_REGS.y;    \
+      reg_sp = GLOBAL_REGS.sp;  \
+      reg_p = GLOBAL_REGS.p;    \
+      flag_n = GLOBAL_REGS.n;   \
+      flag_z = GLOBAL_REGS.z;   \
+      JUMP(GLOBAL_REGS.pc);     \
+  } while (0)
+
+#else  /* C64DTV */
+
 /* Export the local version of the registers.  */
 #define EXPORT_REGISTERS()      \
   do {                          \
@@ -186,6 +225,7 @@
       JUMP(GLOBAL_REGS.pc); \
   } while (0)
 
+#endif /* C64DTV */
 
 #ifdef DEBUG
 #define TRACE_NMI() \
@@ -1193,13 +1233,11 @@
       INC_PC(3);                    \
   } while (0)
 
-/*
 #define SHS_ABS_Y()                        \
   do {                                     \
       SH_ABS_I(reg_a_read & reg_x, reg_y); \
       reg_sp = reg_a_read & reg_x;         \
   } while (0)
-*/
 
 #define SIR()                \
   do {                       \
@@ -1392,10 +1430,16 @@ trap_skipped:
           case 0xb2:            /* JAM */
           case 0xd2:            /* JAM */
           case 0xf2:            /* JAM */
+#ifndef C64DTV
+          case 0x12:            /* JAM */
+          case 0x32:            /* JAM */
+          case 0x42:            /* JAM */
+#endif
             REWIND_FETCH_OPCODE(CLK);
             JAM();
             break;
 
+#ifdef C64DTV
           case 0x12:            /* BRA $nnnn */
             BRANCH(1);
             break;
@@ -1407,6 +1451,7 @@ trap_skipped:
           case 0x42:            /* SIR #$nn */
             SIR();
             break;
+#endif
 
           case 0x03:            /* SLO ($nn,X) */
             SLO(2, GET_IND_X, SET_IND_RMW);
@@ -1952,7 +1997,11 @@ trap_skipped:
             break;
 
           case 0x9b:            /* NOP (SHS) $nnnn,Y */
+#ifdef C64DTV
             NOOP(GET_ABS_Y, 3);
+#else
+            SHS_ABS_Y();
+#endif
             break;
 
           case 0x9c:            /* SHY $nnnn,X */
