@@ -24,6 +24,8 @@
  *
  */
 
+#include <string.h>
+
 #include "archdep.h"
 #include "attach.h"
 #include "autostart-prg.h"
@@ -33,6 +35,11 @@
 #include "mem.h"
 #include "resources.h"
 #include "util.h"
+
+#include "diskimage.h"
+#include "vdrive.h"
+#include "vdrive-iec.h"
+#include "vdrive-internal.h"
 
 /* ----- Globals ----- */
 
@@ -168,10 +175,100 @@ int autostart_prg_with_ram_injection(const char *file_name,
 
 int autostart_prg_with_disk_image(const char *file_name,
                                   fileio_info_t *fh,
-                                  log_t log)
+                                  log_t log,
+                                  const char *image_name)
 {
-    /* TBD */
-    return -1;
+    const int drive = 8;
+    const int secondary = 1;
+    autostart_prg_t *prg;
+    vdrive_t *vdrive;
+    int i;
+    int old_tde_state;
+    int file_name_size;
+    BYTE lo,hi;
+    
+    /* read prg file */ 
+    prg = load_prg(file_name, fh, log);
+    if(prg == NULL) {
+        return -1;
+    }
+
+    /* disable TDE */
+    resources_get_int("DriveTrueEmulation", &old_tde_state);
+    if(old_tde_state != 0)
+        resources_set_int("DriveTrueEmulation", 0);
+
+    /* create empty image */
+    if(vdrive_internal_create_format_disk_image(image_name, 
+        (char *)"AUTOSTART", DISK_IMAGE_TYPE_D64) <0 ) {
+        log_error(log, "Error creating autostart disk image: %s", image_name);
+        free_prg(prg);
+        return -1;
+    }
+    
+    /* attach disk image */
+    if (file_system_attach_disk(drive, image_name) < 0) {
+        log_error(log, "Could not attach disk image: %s", image_name);
+        free_prg(prg);
+        return -1;
+    }
+    
+    /* copy file to disk */
+    vdrive = file_system_get_vdrive((unsigned int)drive);
+    if (vdrive == NULL) {
+        free_prg(prg);
+        return -1;
+    }
+    
+    /* get file name size */
+    file_name_size = strlen((const char *)fh->name);
+    if(file_name_size > 16) {
+        file_name_size = 16;
+    }
+    
+    /* open file on disk */
+    if (vdrive_iec_open(vdrive, (const BYTE *)fh->name,
+        file_name_size, secondary, NULL) != SERIAL_OK) {
+        log_error(log, "Could not open file");
+        free_prg(prg);
+        return -1;
+    }
+    
+    /* write start address to file */
+    lo = (BYTE)(prg->start_addr & 0xff);
+    hi = (BYTE)((prg->start_addr >> 8) & 0xff);
+    if((vdrive_iec_write(vdrive, lo, secondary) != SERIAL_OK) ||
+       (vdrive_iec_write(vdrive, hi, secondary) != SERIAL_OK)) {
+        log_error(log, "Could not write file");
+        free_prg(prg);
+        return -1;
+    }
+
+    /* write PRG data to file */
+    for(i = 0; i < prg->size; i++) {
+        if(vdrive_iec_write(vdrive, prg->data[i], secondary) != SERIAL_OK) {
+            log_error(log, "Could not write file");
+            free_prg(prg);
+            return -1;
+        }
+    }
+
+    /* close file */
+    if (vdrive_iec_close(vdrive, secondary) != SERIAL_OK) {
+        log_error(log, "Could not close file");
+        free_prg(prg);
+        return -1;
+    }
+    
+    /* free prg file */
+    free_prg(prg);
+    
+    /* re-enable TDE */
+    if(old_tde_state != 0)
+        resources_set_int("DriveTrueEmulation", old_tde_state);
+    
+    /* ready */
+    return 0;
 }
 
 int autostart_prg_perform_injection(log_t log)

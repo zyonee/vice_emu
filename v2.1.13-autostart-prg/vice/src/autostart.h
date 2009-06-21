@@ -34,12 +34,8 @@
 #define AUTOSTART_MODE_RUN  0
 #define AUTOSTART_MODE_LOAD 1
 
-#define AUTOSTART_PRG_MODE_VFS      0
-#define AUTOSTART_PRG_MODE_INJECT   1
-#define AUTOSTART_PRG_MODE_DISK     2
-#define AUTOSTART_PRG_MODE_LAST     2
-
 extern int autostart_resources_init(void);
+extern void autostart_resources_shutdown(void);
 extern int autostart_cmdline_options_init(void);
 
 extern int autostart_init(CLOCK min_cycles, int handle_drive_true_emulation,

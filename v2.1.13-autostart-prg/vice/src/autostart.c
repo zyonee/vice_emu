@@ -141,6 +141,8 @@ static int AutostartWarp = 0;
 
 static int AutostartPrgMode = AUTOSTART_PRG_MODE_VFS;
 
+static char *AutostartPrgDiskImage = NULL;
+
 static const char * const AutostartRunCommandsAvailable[] = { "RUN\r", "RUN:\r" };
 
 static const char * AutostartRunCommand = NULL;
@@ -213,7 +215,24 @@ static int set_autostart_prg_mode(int val, void *param)
     return 0;
 }
 
-/*! \brief integer resources used by the REU module */
+/*! \internal \brief set disk image name of autostart prg mode */
+
+static int set_autostart_prg_disk_image(const char *val, void *param)
+{
+    if (util_string_set(&AutostartPrgDiskImage, val))
+        return 0;
+
+    return 0;
+}
+
+/*! \brief string resources used by autostart */
+static resource_string_t resources_string[] = {
+    { "AutostartPrgDiskImage", NULL, RES_EVENT_NO, NULL,
+      &AutostartPrgDiskImage, set_autostart_prg_disk_image, NULL },
+    { NULL }
+};
+
+/*! \brief integer resources used by autostart */
 static const resource_int_t resources_int[] = {
     { "AutostartRunWithColon", 0, RES_EVENT_NO, (resource_value_t)0,
       &AutostartRunWithColon, set_autostart_run_with_colon, NULL },
@@ -235,7 +254,17 @@ static const resource_int_t resources_int[] = {
 */
 int autostart_resources_init(void)
 {
+    resources_string[0].factory_value = "autostart.d64";
+
+    if (resources_register_string(resources_string) < 0)
+        return -1;
+
     return resources_register_int(resources_int);
+}
+
+void autostart_resources_shutdown(void)
+{
+    lib_free(AutostartPrgDiskImage);
 }
 
 /* ------------------------------------------------------------------------- */
@@ -277,6 +306,11 @@ static const cmdline_option_t cmdline_options[] =
       USE_PARAM_ID, USE_DESCRIPTION_ID,
       IDCLS_UNUSED, IDCLS_UNUSED,
       NULL, T_("Set autostart mode for PRG files") },
+    { "-autostartprgdiskimage", SET_RESOURCE, 1,
+      NULL, NULL, "AutostartPrgDiskImage", NULL,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_UNUSED, IDCLS_UNUSED,
+      NULL, T_("Set disk image for autostart of PRG files") },
     { NULL }
 };
 
@@ -989,7 +1023,9 @@ int autostart_prg(const char *file_name, unsigned int runmode)
 {
     fileio_info_t *finfo;
     int result;
-
+    const char *boot_file_name;
+    int mode;
+    
     if (network_connected())
         return -1;
     
@@ -1009,14 +1045,20 @@ int autostart_prg(const char *file_name, unsigned int runmode)
     case AUTOSTART_PRG_MODE_VFS:
         log_message(autostart_log, "Loading PRG file `%s' with virtual FS on unit #8.", file_name);
         result = autostart_prg_with_virtual_fs(file_name, finfo, autostart_log);
+        mode = AUTOSTART_HASDISK;
+        boot_file_name = (const char *)finfo->name;
         break;
     case AUTOSTART_PRG_MODE_INJECT:
         log_message(autostart_log, "Loading PRG file `%s' with direct RAM injection.", file_name);
         result = autostart_prg_with_ram_injection(file_name, finfo, autostart_log);
+        mode = AUTOSTART_INJECT;
+        boot_file_name = NULL;
         break;
     case AUTOSTART_PRG_MODE_DISK:
-        log_message(autostart_log, "Loading PRG file `%s' with temporary disk image.", file_name);
-        result = autostart_prg_with_disk_image(file_name, finfo, autostart_log);
+        log_message(autostart_log, "Loading PRG file `%s' with autostart disk image.", file_name);
+        result = autostart_prg_with_disk_image(file_name, finfo, autostart_log, AutostartPrgDiskImage);
+        mode = AUTOSTART_HASDISK;
+        boot_file_name = "*";
         break;
     default:
         log_error(autostart_log, "Invalid PRG autostart mode: %d", AutostartPrgMode);
@@ -1024,14 +1066,10 @@ int autostart_prg(const char *file_name, unsigned int runmode)
         break;
     }
 
-    /* Now it's the same as autostarting a disk image.  */
+    /* Now either proceed with disk image booting or prg injection after reset */
     if(result >= 0) {
         ui_update_menus();
-
-        reboot_for_autostart((char *)finfo->name, 
-            (AutostartPrgMode == AUTOSTART_PRG_MODE_INJECT) 
-                ? AUTOSTART_INJECT : AUTOSTART_HASDISK, 
-            runmode);
+        reboot_for_autostart(boot_file_name, mode, runmode);
     }
 
     /* close prg file */
