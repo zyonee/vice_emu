@@ -116,31 +116,51 @@ BYTE burst_broken;
 
 
 /* FETCH_OPCODE implementation(s) */
-/* TODO: bank_limit optimizations */
+/* FIXME: update last_read on "< bank_limit" case */
 #if defined ALLOW_UNALIGNED_ACCESS
 #define FETCH_OPCODE(o) \
     do { \
-        o = LOAD(reg_pc);                   \
-        CLK_INC();                          \
-        o |= LOAD(reg_pc + 1) << 8;         \
-        CLK_INC();                          \
-        if (fetch_tab[o & 0xff]) {          \
-             o |= (LOAD(reg_pc + 2) << 16); \
-             CLK_INC();                     \
-        }                                   \
+        if (((int)reg_pc) < bank_limit) {                       \
+            o = (*((DWORD *)(bank_base + reg_pc)) & 0xffffff);  \
+            CLK_INC();                                          \
+            CLK_INC();                                          \
+            if (fetch_tab[o & 0xff]) {                          \
+                CLK_INC();                                      \
+            }                                                   \
+        } else {                                                \
+            o = LOAD(reg_pc);                                   \
+            CLK_INC();                                          \
+            o |= LOAD(reg_pc + 1) << 8;                         \
+            CLK_INC();                                          \
+            if (fetch_tab[o & 0xff]) {                          \
+                o |= (LOAD(reg_pc + 2) << 16);                  \
+                CLK_INC();                                      \
+            }                                                   \
+        }                                                       \
     } while(0)
 
 #else /* !ALLOW_UNALIGNED_ACCESS */
 #define FETCH_OPCODE(o) \
     do { \
-        (o).ins = LOAD(reg_pc);                      \
-        CLK_INC();                                   \
-        (o).op.op16 = LOAD(reg_pc + 1);              \
-        CLK_INC();                                   \
-        if (fetch_tab[(o).ins]) {                    \
-             (o).op.op16 |= (LOAD(reg_pc + 2) << 8); \
-             CLK_INC();                              \
-        }                                            \
+        if (((int)reg_pc) < bank_limit) {                         \
+            (o).ins = *(bank_base + reg_pc);                      \
+            CLK_INC();                                            \
+            (o).op.op16 = *(bank_base + reg_pc + 1);              \
+            CLK_INC();                                            \
+            if (fetch_tab[(o).ins]) {                             \
+                (o).op.op16 |= (*(bank_base + reg_pc + 2) << 8);  \
+                CLK_INC();                                        \
+            }                                                     \
+        } else {                                                  \
+            (o).ins = LOAD(reg_pc);                               \
+            CLK_INC();                                            \
+            (o).op.op16 = LOAD(reg_pc + 1);                       \
+            CLK_INC();                                            \
+            if (fetch_tab[(o).ins]) {                             \
+                (o).op.op16 |= (LOAD(reg_pc + 2) << 8);           \
+                CLK_INC();                                        \
+            }                                                     \
+        }                                                         \
     } while(0)
 
 #endif /* !ALLOW_UNALIGNED_ACCESS */
