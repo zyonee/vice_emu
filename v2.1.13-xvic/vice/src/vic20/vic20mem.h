@@ -72,5 +72,10 @@ extern void mem_detach_cartridge(int type);
 
 extern int mem_patch_kernal(void);
 
+/* Last read data on V-bus (VD0-VD7) */
+extern BYTE vic20_v_bus_last_data;
+/* Last read data on V-bus (VD8-VD11) */
+extern BYTE vic20_v_bus_last_high;
+
 #endif
 
