@@ -700,6 +700,16 @@ long machine_get_cycles_per_second(void)
     return machine_timing.cycles_per_sec;
 }
 
+long machine_get_cycles_per_frame(void)
+{
+    return machine_timing.cycles_per_rfsh;
+}
+
+unsigned int machine_get_frame_cycle(void)
+{
+    return (unsigned int)((maincpu_clk) % (machine_timing.screen_lines * machine_timing.cycles_per_line));
+}
+
 void machine_get_line_cycle(unsigned int *line, unsigned int *cycle, int *half_cycle)
 {
     *line = (unsigned int)((maincpu_clk) / machine_timing.cycles_per_line
