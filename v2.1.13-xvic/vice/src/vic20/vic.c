@@ -35,9 +35,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "alarm.h"
 #include "archdep.h"
-#include "clkguard.h"
 #include "lib.h"
 #include "log.h"
 
@@ -142,7 +140,7 @@ static void vic_set_geometry(void)
 /* Notice: The screen origin X register has a 4-pixel granularity, so our
    write accesses are always aligned. */
 
-void vic_raster_draw_alarm_handler(CLOCK offset, void *data)
+void vic_raster_draw_handler(void)
 {
     static int pending_mem_offset;
     static int possible_mem_offset;
@@ -151,12 +149,14 @@ void vic_raster_draw_alarm_handler(CLOCK offset, void *data)
     /* remember if this line stays blank */
     blank_this_line = vic.raster.blank_this_line;
 
+#if 0   /* handled in vic_cycle */
     /* check if first visible line is reached */
     if (vic.area == 0 && !blank_this_line
         && vic.raster.current_line >= vic.raster.display_ystart)
     {
         vic.area = 1;
     }
+#endif
 
     /* check if row step is pending */
     if (vic.row_increase_line == (unsigned int)vic.raster.ycounter
@@ -228,6 +228,7 @@ void vic_raster_draw_alarm_handler(CLOCK offset, void *data)
         vic.memptr = 0;
         vic.area = 0;
 
+#if 0   /* handled in vic_cycle */
         if (vic.pending_ystart >= 0) {
             vic.raster.display_ystart = vic.pending_ystart;
             vic.raster.geometry->gfx_position.y = 
@@ -247,15 +248,11 @@ void vic_raster_draw_alarm_handler(CLOCK offset, void *data)
 
             vic.pending_text_lines = -1;
         }
+#endif
 
         vic.raster.blank = 0;
         vic.light_pen.triggered = 0;
     }
-
-    /* Set the next draw event.  */
-    vic.last_emulate_line_clk += vic.cycles_per_line;
-    vic.draw_clk = vic.last_emulate_line_clk + vic.cycles_per_line;
-    alarm_set(vic.raster_draw_alarm, vic.draw_clk);
 }
 
 static void update_pixel_tables(raster_t *raster)
@@ -308,23 +305,10 @@ static int init_raster(void)
 }
 
 
-static void clk_overflow_callback(CLOCK sub, void *data)
-{
-    if (vic.last_emulate_line_clk > (CLOCK)0) {
-        vic.last_emulate_line_clk -= sub;
-    }
-}
-
-
 /* Initialization. */
 raster_t *vic_init(void)
 {
     vic.log = log_open("VIC");
-
-    vic.raster_draw_alarm = alarm_new(maincpu_alarm_context, "VicIRasterDraw",
-                                      vic_raster_draw_alarm_handler, NULL);
-
-    clk_guard_add_callback(maincpu_clk_guard, clk_overflow_callback, NULL);
 
     vic_change_timing();
 
@@ -382,17 +366,14 @@ void vic_reset(void)
 
 /*    vic_set_geometry();*/
 
-    vic.last_emulate_line_clk = 0;
-    vic.draw_clk = vic.cycles_per_line;
-    alarm_set(vic.raster_draw_alarm, vic.draw_clk);
-
     vic.row_counter = 0;
     vic.memptr = 0;
     vic.pending_ystart = -1;
     vic.pending_text_lines = -1;
     vic.row_offset = -1;
     vic.area = 0;
-
+    vic.raster_line = 0;
+    vic.raster_cycle = 6; /* magic value from cpu_reset() (mainviccpu.c) */
 }
 
 /* Set the memory pointers according to the values stored in the VIC

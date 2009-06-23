@@ -53,11 +53,8 @@ void REGPARM2 vic_store(WORD addr, BYTE value)
     vic.regs[addr] = value;
     VIC_DEBUG_REGISTER (("VIC: write $90%02X, value = $%02X.", addr, value));
 
-    if (maincpu_clk >= vic.draw_clk) {
-        vic_raster_draw_alarm_handler(maincpu_clk - vic.draw_clk, NULL);
-    }
-
     switch (addr) {
+#if 0   /* handled in vic_cycle */
       case 0:                     /* $9000  Screen X Location. */
         /*
             VIC checks in cycle n for peek($9000)=n
@@ -102,7 +99,9 @@ void REGPARM2 vic_store(WORD addr, BYTE value)
             }
             return;
         }
+#endif
 
+#if 0   /* handled in vic_cycle */
       case 1:                     /* $9001  Screen Y Location. */
         /*
             VIC checks from cycle 1 of line r*2 to cycle 0 of line r*2+2
@@ -153,8 +152,10 @@ void REGPARM2 vic_store(WORD addr, BYTE value)
             }
             return;
         }
+#endif
 
       case 2:                     /* $9002  Columns Displayed. */
+#if 0   /* handled in vic_cycle */
         {
             int new_text_cols = MIN(value & 0x7f, (int)vic.max_text_cols);
 
@@ -188,7 +189,7 @@ void REGPARM2 vic_store(WORD addr, BYTE value)
                     new_text_cols);
             }
         }
-
+#endif
         vic_update_memory_ptrs();
 
         return;
@@ -201,6 +202,7 @@ void REGPARM2 vic_store(WORD addr, BYTE value)
 
             int new_char_height = (value & 0x1) ? 16 : 8;
 
+#if 0   /* handled in vic_cycle */
             if (VIC_RASTER_Y(maincpu_clk) == 0
                 && VIC_RASTER_CYCLE(maincpu_clk) <= 2) {
                 /* changes up to cycle 2 of rasterline 0 are visible in
@@ -215,7 +217,7 @@ void REGPARM2 vic_store(WORD addr, BYTE value)
                 /* later changes are visible in the next frame */
                 vic.pending_text_lines = new_text_lines;
             }
-
+#endif
 
             if (old_char_height != new_char_height) {
                 if (VIC_RASTER_CYCLE(maincpu_clk) >= 1) {

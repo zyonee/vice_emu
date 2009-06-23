@@ -36,7 +36,7 @@
 /* Global clock counter.  */
 CLOCK maincpu_clk = 0L;
 
-#define REWIND_FETCH_OPCODE(clock) clock-=2
+#define REWIND_FETCH_OPCODE(clock) /*clock-=2*/
 
 static void vic20cpu_clock_inc(void)
 {
