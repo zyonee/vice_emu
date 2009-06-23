@@ -116,6 +116,7 @@ static io_source_t io_source_table[] = {
     {IO_SOURCE_MIDI, "MIDI", IO_DETACH_RESOURCE, "MIDIEnable"},
     {IO_SOURCE_ISEPIC, "ISEPIC", IO_DETACH_RESOURCE, "Isepic"},
     {IO_SOURCE_SFX_SE, "SFX SOUND EXPANDER", IO_DETACH_RESOURCE, "SFXSoundExpander"},
+    {IO_SOURCE_SFX_SS, "SFX SOUND SAMPLER", IO_DETACH_RESOURCE, "SFXSoundSampler"},
     {-1,NULL,0,NULL}
 };
 
@@ -148,7 +149,7 @@ static int get_io_source_index(int id)
 }
 
 #define MAX_IO1_RETURNS 10
-#define MAX_IO2_RETURNS 13
+#define MAX_IO2_RETURNS 14
 
 #if MAX_IO1_RETURNS>MAX_IO2_RETURNS
 static int io_source_return[MAX_IO1_RETURNS];
@@ -466,6 +467,11 @@ BYTE REGPARM1 c64io2_read(WORD addr)
     }
     if (sfx_soundexpander_enabled && (addr & 16) == 0 && (addr & 8) == 8) {
         return_value = sfx_soundexpander_piano_read(addr);
+        io_source_check(io_source_counter);
+        io_source_counter++;
+    }
+    if (sfx_soundsampler_enabled) {
+        return_value = sfx_soundsampler_sound_read(addr);
         io_source_check(io_source_counter);
         io_source_counter++;
     }

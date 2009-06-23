@@ -52,6 +52,10 @@ int vsync_frame_counter;
 #include <limits.h>
 #endif
 
+#ifdef HAVE_AUDIOIN
+#include "audioin.h"
+#endif
+
 #include "clkguard.h"
 #include "cmdline.h"
 #include "debug.h"
@@ -241,6 +245,9 @@ void vsync_set_machine_parameter(double refresh_rate, long cycles)
     refresh_frequency = refresh_rate;
     cycles_per_sec = cycles;
     set_timer_speed(relative_speed);
+#ifdef HAVE_AUDIOIN
+    audio_in_refresh();
+#endif
 }
 
 double vsync_get_refresh_frequency(void)

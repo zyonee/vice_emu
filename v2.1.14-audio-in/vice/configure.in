@@ -1620,6 +1620,11 @@ if test x"$is_amiga" = "xyes" -a x"$enable_sdlui" != "xyes"; then
                    [SOUND_DRIVERS="$SOUND_DRIVERS soundahi.o"; break])
 fi
 
+AC_CHECK_HEADERS(portaudio.h,[have_paudio_header=yes],[have_paudio_header=no])
+if test x"$have_paudio_header" = "xyes"; then
+  AC_CHECK_LIB(portaudio, Pa_OpenStream,[LIBS="$LIBS -lportaudio"; AC_DEFINE(HAVE_AUDIOIN,,[Enable audio-in])],,)
+fi
+
 dnl --- Lame ---
 if test x"$enable_lame" != "xno" ; then
 

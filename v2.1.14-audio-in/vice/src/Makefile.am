@@ -94,6 +94,7 @@ noinst_HEADERS = \
 	alarm.h \
 	archapi.h \
 	attach.h \
+	audioin.h \
 	autostart.h \
 	blockdev.h \
 	c128ui.h \
@@ -210,6 +211,7 @@ noinst_HEADERS = \
 base_sources = \
 	alarm.c \
 	attach.c \
+	audioin.c \
 	autostart.c \
 	charset.c \
 	clkguard.c \

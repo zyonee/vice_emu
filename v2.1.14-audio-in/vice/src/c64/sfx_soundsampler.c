@@ -30,6 +30,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+#ifdef HAVE_AUDIOIN
+#include "audioin.h"
+#endif
+
 #include "c64io.h"
 #include "cmdline.h"
 #include "lib.h"
@@ -51,6 +55,17 @@ static int set_sfx_soundsampler_enabled(int val, void *param)
         ui_error(translate_text(IDGS_SFX_SS_NOT_WITH_RESID));
         return -1;
     }
+
+#ifdef HAVE_AUDIOIN
+    if (val == 1 && paudio_open == 0) {
+        audio_in_open_default_stream();
+    }
+
+    if (val == 0 && paudio_open == 1) {
+        audio_in_close_default_stream();
+    }
+#endif
+
     sfx_soundsampler_enabled = val;
     return 0;
 }
@@ -141,4 +156,19 @@ void REGPARM2 sfx_soundsampler_sound_store(WORD addr, BYTE value)
 {
     sfx_soundsampler_sound_data = value;
     sound_store((WORD)0x40, value, 0);
+}
+
+BYTE REGPARM1 sfx_soundsampler_sound_read(WORD addr)
+{
+    BYTE value;
+
+#ifdef HAVE_AUDIOIN
+    if (paudio_open == 1)
+    {
+        io_source = IO_SOURCE_SFX_SS;
+        value=(BYTE)audio_in_get_sample();
+    }
+#endif
+
+    return value;
 }
