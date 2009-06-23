@@ -73,9 +73,11 @@ static inline void vic_cycle_open_h(void)
     vic.raster.geometry->gfx_position.x = xstart;
     vic.raster.display_xstop = xstop;
 
-    vic.raster.blank_this_line = 0;
-    vic.fetch_state = VIC_FETCH_MATRIX;
-    vic.buf_offset = 0;
+    if (xstop != xstart) {
+        vic.raster.blank_this_line = 0;
+        vic.fetch_state = VIC_FETCH_MATRIX;
+        vic.buf_offset = 0;
+    }
 }
 
 /* Close horizontal flipflop */
@@ -91,6 +93,7 @@ static inline void vic_cycle_end_of_line(void)
     vic_raster_draw_handler();
     vic.raster_line++;
     vic.fetch_state = VIC_FETCH_IDLE;
+    vic.raster.blank_this_line = 1;
 }
 
 /* Handle end of frame */
@@ -110,7 +113,10 @@ static inline void vic_cycle_end_of_frame(void)
 /* Latch number of columns */
 static inline void vic_cycle_latch_columns(void)
 {
-    vic.text_cols = MIN(vic.regs[2] & 0x7f, (int)vic.max_text_cols);
+    int new_text_cols = MIN(vic.regs[2] & 0x7f, (int)vic.max_text_cols);
+    vic.text_cols = new_text_cols;
+    vic.raster.geometry->gfx_size.width = new_text_cols * 8 * VIC_PIXEL_WIDTH;
+    vic.raster.geometry->text_size.width = new_text_cols;
 }
 
 /* Latch number of rows */
@@ -136,7 +142,7 @@ void vic_cycle(void)
 
     if (vic.area == 1) {
         /* Check for horizontal flipflop */
-        if ((vic.regs[0] & 0x7f) == vic.raster_cycle) {
+        if (vic.fetch_state == VIC_FETCH_IDLE && (vic.regs[0] & 0x7f) == vic.raster_cycle) {
             vic_cycle_open_h();
         }
     }

@@ -189,6 +189,7 @@ void vic_raster_draw_handler(void)
     /* emulate the line */
     raster_line_emulate(&vic.raster);
 
+#if 0   /* handled in vic_cycle */
     /* xstart may have changed; recalculate xstop */
     vic.raster.display_xstop = vic.raster.display_xstart + vic.text_cols * 8
                                * VIC_PIXEL_WIDTH;
@@ -196,6 +197,7 @@ void vic_raster_draw_handler(void)
         vic.raster.display_xstop = (int)((vic.screen_width - 1)
                                    * VIC_PIXEL_WIDTH);
     }
+#endif
 
     /* increment ycounter and set offset for memptr */
     if (vic.area == 1) {
