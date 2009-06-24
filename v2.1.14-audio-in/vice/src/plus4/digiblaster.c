@@ -30,6 +30,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+#ifdef HAVE_AUDIOIN
+#include "audioin.h"
+#endif
+
 #include "cmdline.h"
 #include "digiblaster.h"
 #include "lib.h"
@@ -44,6 +48,16 @@ int digiblaster_enabled;
 
 static int set_digiblaster_enabled(int val, void *param)
 {
+#ifdef HAVE_AUDIOIN
+    if (val == 1 && paudio_open == 0) {
+        audio_in_open_default_stream();
+    }
+
+    if (val == 0 && paudio_open == 1) {
+        audio_in_close_default_stream();
+    }
+#endif
+
     digiblaster_enabled = val;
 
     return 0;
@@ -139,5 +153,12 @@ void REGPARM2 digiblaster_store(WORD addr, BYTE value)
 
 BYTE REGPARM1 digiblaster_read(WORD addr)
 {
-    return sound_read((WORD)(addr + 0x40), 0);
+    BYTE value;
+#ifdef HAVE_AUDIOIN
+    if (paudio_open == 1)
+    {
+        value=(BYTE)audio_in_get_sample();
+    }
+#endif
+    return value;
 }

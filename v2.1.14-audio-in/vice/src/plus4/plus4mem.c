@@ -418,6 +418,10 @@ static BYTE REGPARM1 fdxx_read(WORD addr)
         return sidcartjoy_read(addr);
     }
 
+    if (sidcart_enabled && digiblaster_enables && sidcart_sddress == 0 && addr == 0xfd5f) {
+        return digiblaster_read(addr);
+    }
+
     return 0;
 }
 
@@ -481,6 +485,10 @@ static BYTE REGPARM1 fexx_read(WORD addr)
         return sid_read(addr);
     }
 
+    if (sidcart_enabled && digiblaster_enables && sidcart_sddress == 1 && addr == 0xfe9f) {
+        return digiblaster_read(addr);
+    }
+
     return 0;
 }
 
@@ -498,7 +506,7 @@ static void REGPARM2 fexx_store(WORD addr, BYTE value)
         sid_store(addr, value);
         return;
     }
-    if (sidcart_enabled && digiblaster_enabled && sidcart_address==1 && addr == 0xfe9e) {
+    if (sidcart_enabled && digiblaster_enabled && sidcart_address == 1 && addr == 0xfe9e) {
         digiblaster_store(addr, value);
         return;
     }
