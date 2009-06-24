@@ -376,6 +376,7 @@ void vic_reset(void)
     vic.area = 0;
     vic.raster_line = 0;
     vic.raster_cycle = 6; /* magic value from cpu_reset() (mainviccpu.c) */
+    vic.fetch_state = VIC_FETCH_IDLE;
 }
 
 /* Set the memory pointers according to the values stored in the VIC
@@ -416,8 +417,8 @@ void vic_update_memory_ptrs(void)
     new_screen_ptr = mem_ram + (((vic.regs[0x2] & 0x80) << 2)
                      | ((vic.regs[0x5] & 0x70) << 6));
 
-    VIC_DEBUG_REGISTER(("Color memory at $%04X.", vic.color_ptr - ram));
-    VIC_DEBUG_REGISTER(("Screen memory at $%04X.", vic.screen_ptr - ram));
+    VIC_DEBUG_REGISTER(("Color memory at $%04X.", vic.color_ptr - mem_ram));
+    VIC_DEBUG_REGISTER(("Screen memory at $%04X.", vic.screen_ptr - mem_ram));
 
     if (new_chargen_ptr != old_chargen_ptr) {
         raster_changes_foreground_add_ptr(&vic.raster,

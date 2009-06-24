@@ -139,10 +139,14 @@ inline static void draw(BYTE *p, unsigned int xs, unsigned int xe,
     if (vic.mc_border_color != vic.old_mc_border_color ||
         vic.auxiliary_color != vic.old_auxiliary_color ||
         vic.reverse != vic.old_reverse) {
-
+/*
         b = *(vic.color_ptr + vic.memptr + xs);
         d = GET_CHAR_DATA(*(vic.screen_ptr + vic.memptr + xs),
                           vic.raster.ycounter);
+*/
+        b = vic.cbuf[xs];
+        d = vic.gbuf[xs];
+
         c[2] = VIC_PIXEL(b & 0x7);
 
         /* put the first pixel to handle border or auxiliary color
@@ -173,10 +177,17 @@ inline static void draw(BYTE *p, unsigned int xs, unsigned int xe,
     c[1] = VIC_PIXEL(vic.mc_border_color);
     c[3] = VIC_PIXEL(vic.auxiliary_color);
     for (i = xs; (int)i <= (int)xe; i++, p += 8 * VIC_PIXEL_WIDTH) {
+/*
         b = *(vic.color_ptr + vic.memptr + i);
+*/
+        b = vic.cbuf[i];
+
         c[2] = VIC_PIXEL(b & 0x7);
+/*
         d = GET_CHAR_DATA(*(vic.screen_ptr + vic.memptr + i),
                           vic.raster.ycounter);
+*/
+        d = vic.gbuf[i];
         dr = (vic.reverse & !(b & 0x8)) ? ~d : d;
         for (x = 0; x < 8; x++) {
             PUT_PIXEL(p, dr, c, b, x, transparent);

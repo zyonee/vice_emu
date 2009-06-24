@@ -31,9 +31,18 @@
 
 #include "vice.h"
 
+#ifdef WATCOM_COMPILE
+#include "../mem.h"
+#else
+#include "mem.h"
+#endif
+
 #include "raster.h"
+#include "types.h"
 #include "vic-cycle.h"
 #include "vic.h"
+#include "vic20mem.h"
+#include "vic20memrom.h"
 
 /* ------------------------------------------------------------------------- */
 
@@ -77,6 +86,8 @@ static inline void vic_cycle_open_h(void)
         vic.raster.blank_this_line = 0;
         vic.fetch_state = VIC_FETCH_MATRIX;
         vic.buf_offset = 0;
+    } else {
+        vic.fetch_state = VIC_FETCH_DONE;
     }
 }
 
@@ -129,6 +140,93 @@ static inline void vic_cycle_latch_rows(void)
 }
 
 /* ------------------------------------------------------------------------- */
+/* Fetch hendling */
+
+/* Perform actual fetch */
+/* TODO optimize */
+static inline BYTE vic_cycle_do_fetch(int addr, BYTE *color)
+{
+    BYTE b, c;
+    int color_addr = 0x9400 + (vic.regs[0x2] & 0x80 ? 0x200 : 0x0) + (addr & 0x1ff);
+
+    if ((addr & 0x9000) == 0x8000) {
+        /* chargen */
+        b = vic20memrom_chargen_rom[0x400 + (addr & 0xfff)];
+        c = mem_ram[color_addr];
+    } else if (addr >= 0x9400 && addr < 0x9800) {
+        /* color RAM */
+        b = mem_ram[addr];
+        c = b; /* FIXME is this correct? */
+    } else if ((addr < 0x0400) || ((addr >= 0x1000) && (addr < 0x2000))) {
+        /* RAM */
+        b = mem_ram[addr];
+        c = mem_ram[color_addr];
+    } else {
+        /* unconnected */
+        b = vic20_v_bus_last_data & (0xf0 | vic20_v_bus_last_high);
+        c = mem_ram[color_addr]; /* FIXME is this correct? */
+    }
+    *color = vic20_v_bus_last_high = c;
+    vic20_v_bus_last_data = b;
+
+    return b;
+}
+
+/* Make a "real" 16b address from the 14b VIC address */
+static inline int vic_cycle_fix_addr(int addr)
+{
+    int msb = ~((addr & 0x2000) << 2) & 0x8000;
+    return (addr & 0x1fff) | msb;
+}
+
+/* Fetch handler */
+static inline void vic_cycle_fetch(void)
+{
+    int addr;
+    BYTE b;
+
+    switch (vic.fetch_state) {
+        /* fetch has not started yet */
+        case VIC_FETCH_IDLE:
+        /* fetch done on current line */
+        case VIC_FETCH_DONE:
+        default:
+            /* TODO verify idle fetch address */
+            vic_cycle_do_fetch(0x001c, &b);
+            break;
+
+        /* fetch from screen/color memomy */
+        case VIC_FETCH_MATRIX:
+            addr = (((vic.regs[5] & 0xf0) << 6)
+                 | ((vic.regs[2] & 0x80) << 2))
+                 + ((vic.memptr + vic.buf_offset));
+
+            vic.vbuf[vic.buf_offset] = vic_cycle_do_fetch(vic_cycle_fix_addr(addr), &b);
+            vic.cbuf[vic.buf_offset] = b;
+
+            vic.fetch_state = VIC_FETCH_CHARGEN;
+            break;
+
+        /* fetch from chargen */
+        case VIC_FETCH_CHARGEN:
+            b = vic.vbuf[vic.buf_offset];
+            addr = ((vic.regs[5] & 0xf) << 10)
+                 + ((b * vic.char_height + ((vic.raster.ycounter - 1) & ((vic.char_height >> 1) | 7))));
+
+            vic.gbuf[vic.buf_offset] = vic_cycle_do_fetch(vic_cycle_fix_addr(addr), &b);
+
+            vic.buf_offset++;
+
+            if (vic.buf_offset >= vic.text_cols) {
+                vic_cycle_close_h();
+            } else {
+                vic.fetch_state = VIC_FETCH_MATRIX;
+            }
+            break;
+    }
+}
+
+/* ------------------------------------------------------------------------- */
 
 void vic_cycle(void)
 {
@@ -157,12 +255,8 @@ void vic_cycle(void)
         vic_cycle_latch_columns();
     }
 
-
-    /* TODO:
-        - handle VIC fetches (to a line buffer)
-        - update last read V-bus
-    */
-
+    /* Perform fetch */
+    vic_cycle_fetch();
 
     /* Next cycle */
     vic.raster_cycle++;

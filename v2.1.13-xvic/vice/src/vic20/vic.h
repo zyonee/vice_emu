@@ -120,7 +120,7 @@ enum vic_fetch_state_s {
     VIC_FETCH_IDLE,
     /* fetch from screen/color memomy */
     VIC_FETCH_MATRIX,
-    /* fetch form chargen */
+    /* fetch from chargen */
     VIC_FETCH_CHARGEN,
     /* fetch done on current line */
     VIC_FETCH_DONE
@@ -243,6 +243,7 @@ extern void vic_resize(void);
 /* Debugging options.  */
 /* #define VIC_RASTER_DEBUG */
 /* #define VIC_REGISTERS_DEBUG */
+/* #define VIC_CYCLE_DEBUG */
 
 #ifdef VIC_RASTER_DEBUG
 #define VIC_DEBUG_RASTER(x) log_debug x
@@ -254,6 +255,12 @@ extern void vic_resize(void);
 #define VIC_DEBUG_REGISTER(x) log_debug x
 #else
 #define VIC_DEBUG_REGISTER(x)
+#endif
+
+#ifdef VIC_CYCLE_DEBUG
+#define VIC_DEBUG_CYCLE(x) log_debug x
+#else
+#define VIC_DEBUG_CYCLE(x)
 #endif
 
 #endif
