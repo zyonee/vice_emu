@@ -154,10 +154,6 @@ struct vic_s
     int old_mc_border_color;
     int old_reverse;
 
-    BYTE *color_ptr;
-    BYTE *screen_ptr;
-    BYTE *chargen_ptr; /* = chargen_rom + 0x400; */
-
     unsigned int char_height;   /* changes immediately for memory fetch */
     unsigned int row_increase_line; /* may change next line for row count */
     unsigned int text_cols;     /* = 22 */
@@ -184,11 +180,11 @@ struct vic_s
     /* fetch state */
     vic_fetch_state_t fetch_state;
 
-    /* Offset to the vbuf/cbuf/gbuf buffers */
-    int buf_offset;
+    /* Screen memory buffer (1 char) */
+    BYTE vbuf;
 
-    /* Screen memory buffer (chars) */
-    BYTE vbuf[VIC_MAX_TEXT_COLS];
+    /* Offset to the cbuf/gbuf buffers */
+    int buf_offset;
 
     /* Color memory buffer */
     BYTE cbuf[VIC_MAX_TEXT_COLS];

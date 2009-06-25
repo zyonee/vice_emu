@@ -201,7 +201,7 @@ static inline void vic_cycle_fetch(void)
                  | ((vic.regs[2] & 0x80) << 2))
                  + ((vic.memptr + vic.buf_offset));
 
-            vic.vbuf[vic.buf_offset] = vic_cycle_do_fetch(vic_cycle_fix_addr(addr), &b);
+            vic.vbuf = vic_cycle_do_fetch(vic_cycle_fix_addr(addr), &b);
             vic.cbuf[vic.buf_offset] = b;
 
             vic.fetch_state = VIC_FETCH_CHARGEN;
@@ -209,7 +209,7 @@ static inline void vic_cycle_fetch(void)
 
         /* fetch from chargen */
         case VIC_FETCH_CHARGEN:
-            b = vic.vbuf[vic.buf_offset];
+            b = vic.vbuf;
             addr = ((vic.regs[5] & 0xf) << 10)
                  + ((b * vic.char_height + ((vic.raster.ycounter - 1) & ((vic.char_height >> 1) | 7))));
 

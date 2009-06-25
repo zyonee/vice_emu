@@ -325,10 +325,6 @@ raster_t *vic_init(void)
     vic.reverse = 0;
     vic.old_reverse = 0;
 
-    vic.color_ptr = mem_ram;
-    vic.screen_ptr = mem_ram;
-    vic.chargen_ptr = vic20memrom_chargen_rom;
-
     /* FIXME: Where do these values come from? */
     vic.light_pen.triggered = 0;
     vic.light_pen.x = 87;
@@ -383,71 +379,7 @@ void vic_reset(void)
    registers. */
 void vic_update_memory_ptrs(void)
 {
-    static BYTE *old_chargen_ptr = NULL;
-    static BYTE *old_color_ptr = NULL;
-    static BYTE *old_screen_ptr = NULL;
-
-    WORD char_addr;
-    int tmp;
-  
-    BYTE *new_chargen_ptr;
-    BYTE *new_color_ptr;
-    BYTE *new_screen_ptr;
-
-    tmp = vic.regs[0x5] & 0xf;
-    char_addr = (tmp & 0x8) ? 0x0000 : 0x8000;
-    char_addr += (tmp & 0x7) * 0x400;
-
-    if (char_addr >= 0x8000 && char_addr < 0x9000) {
-        new_chargen_ptr = vic20memrom_chargen_rom + (char_addr & 0xfff);
-        VIC_DEBUG_REGISTER(("Character memory at $%04X "
-                           "(character ROM + $%04X).",
-                           char_addr,
-                           char_addr & 0xfff));
-    } else {
-        if (char_addr == 0x1c00) {
-            new_chargen_ptr = vic20memrom_chargen_rom; /* handle wraparound */
-        } else {
-            new_chargen_ptr = mem_ram + char_addr;
-        }
-        VIC_DEBUG_REGISTER (("Character memory at $%04X.", char_addr));
-    }
-
-    new_color_ptr = mem_ram + 0x9400 + (vic.regs[0x2] & 0x80 ? 0x200 : 0x0);
-    new_screen_ptr = mem_ram + (((vic.regs[0x2] & 0x80) << 2)
-                     | ((vic.regs[0x5] & 0x70) << 6));
-
-    VIC_DEBUG_REGISTER(("Color memory at $%04X.", vic.color_ptr - mem_ram));
-    VIC_DEBUG_REGISTER(("Screen memory at $%04X.", vic.screen_ptr - mem_ram));
-
-#if 0
-    if (new_chargen_ptr != old_chargen_ptr) {
-        raster_changes_foreground_add_ptr(&vic.raster,
-                                          VIC_RASTER_CHAR(VIC_RASTER_CYCLE(maincpu_clk)
-                                          + 2),
-                                          (void*)&vic.chargen_ptr,
-                                          new_chargen_ptr);
-        old_chargen_ptr = new_chargen_ptr;
-    }
-
-    if (new_color_ptr != old_color_ptr) {
-        raster_changes_foreground_add_ptr(&vic.raster,
-                                          VIC_RASTER_CHAR(VIC_RASTER_CYCLE(maincpu_clk)
-                                          + 3),
-                                          (void*)&vic.color_ptr,
-                                          new_color_ptr);
-        old_color_ptr = new_color_ptr;
-    }
-
-    if (new_screen_ptr != old_screen_ptr) {
-        raster_changes_foreground_add_ptr(&vic.raster,
-                                          VIC_RASTER_CHAR(VIC_RASTER_CYCLE(maincpu_clk)
-                                          + 3),
-                                          (void*)&vic.screen_ptr,
-                                          new_screen_ptr);
-        old_screen_ptr = new_screen_ptr;
-    }
-#endif
+    /* handled in vic-cycle */
 }
 
 void vic_shutdown(void)
