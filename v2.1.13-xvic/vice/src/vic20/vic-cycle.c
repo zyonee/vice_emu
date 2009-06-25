@@ -151,7 +151,7 @@ static inline BYTE vic_cycle_do_fetch(int addr, BYTE *color)
 
     if ((addr & 0x9000) == 0x8000) {
         /* chargen */
-        b = vic20memrom_chargen_rom[0x400 + (addr & 0xfff)];
+        b = vic20memrom_chargen_rom[addr & 0xfff];
         c = mem_ram[color_addr];
     } else if (addr >= 0x9400 && addr < 0x9800) {
         /* color RAM */

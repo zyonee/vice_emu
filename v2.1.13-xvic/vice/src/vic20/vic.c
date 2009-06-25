@@ -327,7 +327,7 @@ raster_t *vic_init(void)
 
     vic.color_ptr = mem_ram;
     vic.screen_ptr = mem_ram;
-    vic.chargen_ptr = vic20memrom_chargen_rom + 0x400;
+    vic.chargen_ptr = vic20memrom_chargen_rom;
 
     /* FIXME: Where do these values come from? */
     vic.light_pen.triggered = 0;
@@ -399,7 +399,7 @@ void vic_update_memory_ptrs(void)
     char_addr += (tmp & 0x7) * 0x400;
 
     if (char_addr >= 0x8000 && char_addr < 0x9000) {
-        new_chargen_ptr = vic20memrom_chargen_rom + 0x400 + (char_addr & 0xfff);
+        new_chargen_ptr = vic20memrom_chargen_rom + (char_addr & 0xfff);
         VIC_DEBUG_REGISTER(("Character memory at $%04X "
                            "(character ROM + $%04X).",
                            char_addr,
@@ -420,6 +420,7 @@ void vic_update_memory_ptrs(void)
     VIC_DEBUG_REGISTER(("Color memory at $%04X.", vic.color_ptr - mem_ram));
     VIC_DEBUG_REGISTER(("Screen memory at $%04X.", vic.screen_ptr - mem_ram));
 
+#if 0
     if (new_chargen_ptr != old_chargen_ptr) {
         raster_changes_foreground_add_ptr(&vic.raster,
                                           VIC_RASTER_CHAR(VIC_RASTER_CYCLE(maincpu_clk)
@@ -446,6 +447,7 @@ void vic_update_memory_ptrs(void)
                                           new_screen_ptr);
         old_screen_ptr = new_screen_ptr;
     }
+#endif
 }
 
 void vic_shutdown(void)

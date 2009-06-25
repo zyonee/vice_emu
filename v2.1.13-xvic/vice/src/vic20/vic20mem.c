@@ -117,13 +117,6 @@ static void REGPARM1 v_bus_store(WORD addr)
     vic20_v_bus_last_data = vic20_cpu_last_data;
 }
 
-static void REGPARM2 store_wrap(WORD addr, BYTE value)
-{
-    vic20_cpu_last_data = value;
-    mem_ram[addr & (VIC20_RAM_SIZE - 1)] = value;
-    vic20memrom_chargen_rom[addr & 0x3ff] = value;
-}
-
 /* ------------------------------------------------------------------------- */
 
 BYTE REGPARM1 zero_read(WORD addr)
@@ -480,11 +473,8 @@ void mem_initialize_memory(void)
             NULL, 0);
 
     /* Setup more low RAM at $1000-$1FFF.  */
-    set_mem(0x10, 0x1b,
+    set_mem(0x10, 0x1f,
             ram_read_v_bus, ram_store_v_bus,
-            NULL, 0);
-    set_mem(0x1c, 0x1f,
-            ram_read_v_bus, store_wrap,
             NULL, 0);
 
     /* Setup RAM at $0400-$0FFF.  */
