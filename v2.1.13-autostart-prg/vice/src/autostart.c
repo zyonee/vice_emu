@@ -34,6 +34,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "archapi.h"
 #include "archdep.h"
 #include "autostart.h"
 #include "autostart-prg.h"
@@ -254,7 +255,7 @@ static const resource_int_t resources_int[] = {
 */
 int autostart_resources_init(void)
 {
-    resources_string[0].factory_value = "autostart.d64";
+    resources_string[0].factory_value = archdep_default_autstart_disk_image_file_name();
 
     if (resources_register_string(resources_string) < 0)
         return -1;
@@ -265,6 +266,7 @@ int autostart_resources_init(void)
 void autostart_resources_shutdown(void)
 {
     lib_free(AutostartPrgDiskImage);
+    lib_free(resources_string[0].factory_value);
 }
 
 /* ------------------------------------------------------------------------- */
