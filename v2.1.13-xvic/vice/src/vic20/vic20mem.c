@@ -427,8 +427,8 @@ static int vic20_mem_enable_rom_block(int num)
                 NULL, 0);
 
         return 0;
-    } else
-        return -1;
+    }
+    return -1;
 }
 
 int vic20_mem_enable_ram_block(int num)
@@ -438,13 +438,15 @@ int vic20_mem_enable_ram_block(int num)
                 ram_read_v_bus, ram_store_v_bus,
                 NULL, 0);
         return 0;
-    } else if (num > 0 && num != 4 && num <= 5) {
-        set_mem(num * 0x20, num * 0x20 + 0x1f,
-                ram_read, ram_store,
-                NULL, 0);
-        return 0;
-    } else
-        return -1;
+    } else {
+        if (num > 0 && num != 4 && num <= 5) {
+            set_mem(num * 0x20, num * 0x20 + 0x1f,
+                    ram_read, ram_store,
+                    NULL, 0);
+            return 0;
+        }
+    }
+    return -1;
 }
 
 int vic20_mem_disable_ram_block(int num)
@@ -454,13 +456,15 @@ int vic20_mem_disable_ram_block(int num)
                 read_unconnected_v_bus, store_dummy_v_bus,
                 NULL, 0);
         return 0;
-    } else if (num > 0 && num != 4 && num <= 5) {
-        set_mem(num * 0x20, num * 0x20 + 0x1f,
-                read_unconnected_c_bus, store_dummy_c_bus,
-                NULL, 0);
-        return 0;
-    } else
-        return -1;
+    } else {
+        if (num > 0 && num != 4 && num <= 5) {
+            set_mem(num * 0x20, num * 0x20 + 0x1f,
+                    read_unconnected_c_bus, store_dummy_c_bus,
+                    NULL, 0);
+            return 0;
+        }
+    }
+    return -1;
 }
 
 void mem_initialize_memory(void)
@@ -478,49 +482,54 @@ void mem_initialize_memory(void)
             NULL, 0);
 
     /* Setup RAM at $0400-$0FFF.  */
-    if (ram_block_0_enabled)
+    if (ram_block_0_enabled) {
         vic20_mem_enable_ram_block(0);
-    else
+    } else {
         vic20_mem_disable_ram_block(0);
+    }
 
     /* Setup RAM or cartridge ROM at $2000-$3FFF.  */
     if (mem_rom_blocks & (VIC_ROM_BLK1A | VIC_ROM_BLK1B)) {
         vic20_mem_enable_rom_block(1);
-    } else
-    if (ram_block_1_enabled) {
-        vic20_mem_enable_ram_block(1);
     } else {
-        vic20_mem_disable_ram_block(1);
+        if (ram_block_1_enabled) {
+            vic20_mem_enable_ram_block(1);
+        } else {
+            vic20_mem_disable_ram_block(1);
+        }
     }
 
     /* Setup RAM or cartridge ROM at $4000-$5FFF.  */
     if (mem_rom_blocks & (VIC_ROM_BLK2A | VIC_ROM_BLK2B)) {
         vic20_mem_enable_rom_block(2);
-    } else
-    if (ram_block_2_enabled) {
-        vic20_mem_enable_ram_block(2);
     } else {
-        vic20_mem_disable_ram_block(2);
+        if (ram_block_2_enabled) {
+            vic20_mem_enable_ram_block(2);
+        } else {
+            vic20_mem_disable_ram_block(2);
+        }
     }
 
     /* Setup RAM or cartridge ROM at $6000-$7FFF.  */
     if (mem_rom_blocks & (VIC_ROM_BLK3A | VIC_ROM_BLK3B)) {
         vic20_mem_enable_rom_block(3);
-    } else
-    if (ram_block_3_enabled) {
-        vic20_mem_enable_ram_block(3);
     } else {
-        vic20_mem_disable_ram_block(3);
+        if (ram_block_3_enabled) {
+            vic20_mem_enable_ram_block(3);
+        } else {
+            vic20_mem_disable_ram_block(3);
+        }
     }
 
     /* Setup RAM or cartridge ROM at $A000-$BFFF.  */
     if (mem_rom_blocks & (VIC_ROM_BLK5A | VIC_ROM_BLK5B)) {
         vic20_mem_enable_rom_block(5);
-    } else
-    if (ram_block_5_enabled) {
-        vic20_mem_enable_ram_block(5);
     } else {
-        vic20_mem_disable_ram_block(5);
+        if (ram_block_5_enabled) {
+            vic20_mem_enable_ram_block(5);
+        } else {
+            vic20_mem_disable_ram_block(5);
+        }
     }
 
     /* Setup character generator ROM at $8000-$8FFF. */
@@ -741,10 +750,12 @@ void mem_detach_cartridge(int type)
 
 void mem_get_basic_text(WORD *start, WORD *end)
 {
-    if (start != NULL)
+    if (start != NULL) {
         *start = mem_ram[0x2b] | (mem_ram[0x2c] << 8);
-    if (end != NULL)
+    }
+    if (end != NULL) {
         *end = mem_ram[0x2d] | (mem_ram[0x2e] << 8);
+    }
 }
 
 void mem_set_basic_text(WORD start, WORD end)
