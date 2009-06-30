@@ -141,6 +141,9 @@ void REGPARM2 megacart_mem_store(WORD addr, BYTE value)
 
 BYTE REGPARM1 megacart_mem_read(WORD addr)
 {
+    BYTE bank_low;
+    BYTE bank_high;
+
     if (addr >= 0x0400 && addr < 0x1000) {
         if (nvram_flop) {
             return cart_nvram[addr & 0x0fff];
@@ -149,11 +152,26 @@ BYTE REGPARM1 megacart_mem_read(WORD addr)
         }
     }
 
+    bank_low=0x7f;
+    bank_high=0x7f;
+    if (oe_flop) {
+        bank_low=bank_reg_low;
+        bank_high=bank_reg_high;
+    }
+
     if (addr >= 0x2000 && addr < 0x8000) {
-        return cart_rom[addr];
+        if ((bank_low & 0x80) == 0x00) {
+            return cart_rom_low[(addr & 0x1fff) | (bank_low * 0x2000)];
+        }
     }
     if (addr >= 0xa000 && addr < 0xc000) {
-        return cart_rom[addr];
+        if ((bank_high & 0x80) == 0x00) {
+            return cart_rom_high[(addr & 0x1fff) | (bank_high * 0x2000)];
+        } else {
+            if ((bank_low & 0x80) == 0x00) {
+                return cart_rom_low[(addr & 0x1fff) | (bank_low * 0x2000)];
+            }
+        }
     }
     return 0x00;
 }
