@@ -1,3 +1,5 @@
+SUBDIRS = cart
+
 INCLUDES = \
 	@ARCH_INCLUDES@ \
 	-I$(top_builddir)/src \
@@ -61,3 +63,8 @@ libvic20_a_SOURCES = \
 	vic20via1.c \
 	vic20via2.c \
 	vic20video.c
+
+.PHONY: libvic20cart
+
+libvic20cart:
+	(cd cart; $(MAKE))
