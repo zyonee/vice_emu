@@ -68,7 +68,7 @@ BYTE REGPARM1 megacart_io2_read(WORD addr)
 {
     BYTE value;
     if (nvram_flop) {
-        value=cart_nvram[addr & 0xfff];
+        value=cart_nvram[addr & 0x0fff];
     } else {
         value=addr>>8;
     }
@@ -78,7 +78,7 @@ BYTE REGPARM1 megacart_io2_read(WORD addr)
 void REGPARM2 megacart_io2_store(WORD addr, BYTE value)
 {
     if (nvram_flop) {
-        cart_nvram[addr & 0xfff]=value;
+        cart_nvram[addr & 0x0fff]=value;
     }
 }
 
@@ -87,7 +87,7 @@ BYTE REGPARM1 megacart_io3_read(WORD addr)
 {
     BYTE value;
     if (nvram_flop) {
-        value=cart_nvram[addr & 0xfff];
+        value=cart_nvram[addr & 0x0fff];
     } else {
         value=addr>>8;
     }
@@ -116,7 +116,6 @@ void REGPARM2 megacart_io3_store(WORD addr, BYTE value)
 
     if ((addr & 0x200) == 0x200) { /* $9e00 */
         /* peform reset */
-        oe_flop = !oe_flop;
         reset_mode=SOFTWARE_RESET;
         machine_trigger_reset(MACHINE_RESET_MODE_HARD);
     }
@@ -130,12 +129,35 @@ void REGPARM2 megacart_io3_store(WORD addr, BYTE value)
 
 void REGPARM2 megacart_mem_store(WORD addr, BYTE value)
 {
+    BYTE bank_low;
+    BYTE bank_high;
+    int ram_en_low;
+    int ram_en_high;
+    int ram_wp;
+
     if (nvram_flop && (addr >= 0x0400 && addr < 0x1000) ) {
         cart_nvram[addr & 0x0fff] = value;
     }
+
+    bank_low=0x7f;
+    bank_high=0x7f;
+    if (oe_flop) {
+        bank_low=bank_reg_low;
+        bank_high=bank_reg_high;
+    }
+    ram_en_low=(bank_low & 0x80) ? 1 : 0;
+    ram_en_high=(bank_high & 0x80) ? 1 : 0;
+    ram_wp=(bank_high & 0x02) ? 0 : 1;
+
     if (addr >= 0x2000 && addr < 0x8000) {
+        if (!ram_wp && (ram_en_low && ram_en_high) ) {
+            cart_ram[addr] = value;
+        }
     }
     if (addr >= 0xa000 && addr < 0xc000) {
+        if (!ram_wp && (ram_en_low && ram_en_high) ) {
+            cart_ram[addr & 0x1fff] = value;
+        }
     }
 }
 
@@ -143,6 +165,8 @@ BYTE REGPARM1 megacart_mem_read(WORD addr)
 {
     BYTE bank_low;
     BYTE bank_high;
+    int ram_en_low;
+    int ram_en_high;
 
     if (addr >= 0x0400 && addr < 0x1000) {
         if (nvram_flop) {
@@ -158,22 +182,32 @@ BYTE REGPARM1 megacart_mem_read(WORD addr)
         bank_low=bank_reg_low;
         bank_high=bank_reg_high;
     }
+    ram_en_low=(bank_low & 0x80) ? 1 : 0;
+    ram_en_high=(bank_high & 0x80) ? 1 : 0;
 
     if (addr >= 0x2000 && addr < 0x8000) {
-        if ((bank_low & 0x80) == 0x00) {
+        if (!ram_en_low) {
             return cart_rom_low[(addr & 0x1fff) | (bank_low * 0x2000)];
-        }
-    }
-    if (addr >= 0xa000 && addr < 0xc000) {
-        if ((bank_high & 0x80) == 0x00) {
-            return cart_rom_high[(addr & 0x1fff) | (bank_high * 0x2000)];
         } else {
-            if ((bank_low & 0x80) == 0x00) {
-                return cart_rom_low[(addr & 0x1fff) | (bank_low * 0x2000)];
+            if (ram_en_high) {
+                return cart_ram[addr];
+            } else {
+                return addr >> 8;
             }
         }
     }
-    return 0x00;
+    if (addr >= 0xa000 && addr < 0xc000) {
+        if (!ram_en_high) {
+            return cart_rom_high[(addr & 0x1fff) | (bank_high * 0x2000)];
+        } else {
+            if (!ram_en_low) {
+                return cart_rom_low[(addr & 0x1fff) | (bank_low * 0x2000)];
+            } else {
+                return cart_ram[addr & 0x1fff];
+            }
+        }
+    }
+    return 0x11;
 }
 
 
@@ -197,7 +231,9 @@ void megacart_init(void)
 
 void megacart_reset(void)
 {
-    if (reset_mode != SOFTWARE_RESET) {
+    if (reset_mode == SOFTWARE_RESET) {
+        oe_flop = !oe_flop;
+    } else {
         oe_flop=0;
     }
     reset_mode=BUTTON_RESET;
