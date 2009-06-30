@@ -8,4 +8,5 @@ noinst_LIBRARIES = libvic20cart.a
 
 libvic20cart_a_SOURCES = \
 	megacart.c \
-	megacart.h
+	megacart.h \
+	vic20cart.c
