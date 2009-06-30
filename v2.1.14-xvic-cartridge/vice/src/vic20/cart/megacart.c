@@ -117,7 +117,7 @@ void REGPARM2 megacart_io3_store(WORD addr, BYTE value)
     if ((addr & 0x200) == 0x200) { /* $9e00 */
         /* peform reset */
         reset_mode=SOFTWARE_RESET;
-        machine_trigger_reset(MACHINE_RESET_MODE_HARD);
+        machine_trigger_reset(MACHINE_RESET_MODE_SOFT);
     }
 }
 
