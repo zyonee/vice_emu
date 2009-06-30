@@ -150,8 +150,10 @@ BYTE REGPARM1 megacart_mem_read(WORD addr)
     }
 
     if (addr >= 0x2000 && addr < 0x8000) {
+        return cart_rom[addr];
     }
     if (addr >= 0xa000 && addr < 0xc000) {
+        return cart_rom[addr];
     }
     return 0x00;
 }
@@ -159,8 +161,20 @@ BYTE REGPARM1 megacart_mem_read(WORD addr)
 
 void megacart_init(void)
 {
+    int retval=0;
+
     reset_mode=BUTTON_RESET;
     oe_flop=0;
+    memset(cart_rom, 1, 0x200000);
+    memset(cart_nvram, 3, 0x2000);
+    memset(cart_ram, 2, 0x8000);
+
+    /* kludge: megacart.bin needs to be in the installation directory.
+       1 Mbyte low rom + 1 Mbyte high rom concatenated */
+    if ((retval = util_file_load("megacart.bin", cart_rom, (size_t)0x200000, UTIL_FILE_LOAD_RAW)) < 0) {
+    }
+    cart_rom_low=cart_rom;
+    cart_rom_high=cart_rom + 0x100000;
 }
 
 void megacart_reset(void)
