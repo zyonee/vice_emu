@@ -55,6 +55,7 @@ static BYTE *cart_rom_low;
 static BYTE *cart_rom_high;
 
 /* Cartridge States */
+static enum { BUTTON_RESET, SOFTWARE_RESET } reset_mode = BUTTON_RESET;
 static int oe_flop = 0;
 static int nvram_flop = 0;
 static BYTE bank_reg_low = 0;
@@ -67,7 +68,7 @@ BYTE REGPARM1 megacart_io2_read(WORD addr)
 {
     BYTE value;
     if (nvram_flop) {
-        value=cart_nvram[0xfff];
+        value=cart_nvram[addr & 0xfff];
     } else {
         value=addr>>8;
     }
@@ -77,7 +78,7 @@ BYTE REGPARM1 megacart_io2_read(WORD addr)
 void REGPARM2 megacart_io2_store(WORD addr, BYTE value)
 {
     if (nvram_flop) {
-        cart_nvram[0xfff]=value;
+        cart_nvram[addr & 0xfff]=value;
     }
 }
 
@@ -86,7 +87,7 @@ BYTE REGPARM1 megacart_io3_read(WORD addr)
 {
     BYTE value;
     if (nvram_flop) {
-        value=cart_nvram[0xfff];
+        value=cart_nvram[addr & 0xfff];
     } else {
         value=addr>>8;
     }
@@ -96,7 +97,7 @@ BYTE REGPARM1 megacart_io3_read(WORD addr)
 void REGPARM2 megacart_io3_store(WORD addr, BYTE value)
 {
     if (nvram_flop) {
-        cart_nvram[0xfff]=value;
+        cart_nvram[addr & 0xfff]=value;
     }
 
     if ((addr & 0x180) == 0x080) { /* $9c80 */
@@ -116,6 +117,7 @@ void REGPARM2 megacart_io3_store(WORD addr, BYTE value)
     if ((addr & 0x200) == 0x200) { /* $9e00 */
         /* peform reset */
         oe_flop = !oe_flop;
+        reset_mode=SOFTWARE_RESET;
         machine_trigger_reset(MACHINE_RESET_MODE_HARD);
     }
 }
@@ -157,11 +159,16 @@ BYTE REGPARM1 megacart_mem_read(WORD addr)
 
 void megacart_init(void)
 {
+    reset_mode=BUTTON_RESET;
     oe_flop=0;
 }
 
 void megacart_reset(void)
 {
+    if (reset_mode != SOFTWARE_RESET) {
+        oe_flop=0;
+    }
+    reset_mode=BUTTON_RESET;
 }
 
 /* ------------------------------------------------------------------------- */
