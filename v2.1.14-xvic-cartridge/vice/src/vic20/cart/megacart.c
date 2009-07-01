@@ -177,7 +177,7 @@ void REGPARM2 megacart_mem_store(WORD addr, BYTE value)
     /* determine flags from bank registers. */
     ram_low_en = (bank_low & 0x80) ? 1 : 0;
     ram_high_en = (bank_high & 0x80) ? 1 : 0;
-    ram_wp = (bank_high & 0x02) ? 0 : 1;
+    ram_wp = (bank_high & 0x40) ? 0 : 1;
 
     if (addr >= 0x2000 && addr < 0x8000) {
         if (!ram_wp && (ram_low_en && ram_high_en) ) {

@@ -1,5 +1,5 @@
 /*
- * cartridge.c - Cartridge emulation.
+ * vic20cart.c - VIC20 Cartridge emulation.
  *
  * Written by
  *  André Fachat <fachat@physik.tu-chemnitz.de>
