@@ -267,7 +267,6 @@ void megacart_reset(void)
     } else {
         oe_flop = 0;
     }
-    nvram_en_flop = 0;
     reset_mode = BUTTON_RESET;
 }
 
