@@ -202,10 +202,6 @@ static void REGPARM2 store_emuid(WORD addr, BYTE value)
 
 static BYTE REGPARM1 io3_read(WORD addr)
 {
-#if EXPERIMENTAL_MEGACART
-    vic20_cpu_last_data = megacart_io3_read(addr);
-    return vic20_cpu_last_data;
-#endif
     if (sidcart_enabled && sidcart_address==1 && addr>=0x9c00 && addr<=0x9c1f) {
         vic20_cpu_last_data = sid_read(addr);
         return vic20_cpu_last_data;
@@ -225,6 +221,11 @@ static BYTE REGPARM1 io3_read(WORD addr)
     }
 #endif
 
+#if EXPERIMENTAL_MEGACART
+    vic20_cpu_last_data = megacart_io3_read(addr);
+    return vic20_cpu_last_data;
+#endif
+
     vic20_cpu_last_data = 0xff;
     return 0xff;
 }
@@ -232,9 +233,6 @@ static BYTE REGPARM1 io3_read(WORD addr)
 static void REGPARM2 io3_store(WORD addr, BYTE value)
 {
     vic20_cpu_last_data = value;
-#if EXPERIMENTAL_MEGACART
-    megacart_io3_store(addr, value);
-#endif
 
     if (sidcart_enabled && sidcart_address==1 && addr>=0x9c00 && addr<=0x9c1f) {
         sid_store(addr,value);
@@ -243,12 +241,18 @@ static void REGPARM2 io3_store(WORD addr, BYTE value)
 
     if (emu_id_enabled && (addr & 0xff00) == 0x9f00) {
         store_emuid(addr, value);
+        return;
     }
 
 #ifdef HAVE_MIDI
     if (midi_enabled && (addr & 0xff00) == 0x9c00) {
         midi_store((WORD)(addr & 0xff), value);
+        return;
     }
+#endif
+
+#if EXPERIMENTAL_MEGACART
+    megacart_io3_store(addr, value);
 #endif
 
     return;
@@ -256,10 +260,6 @@ static void REGPARM2 io3_store(WORD addr, BYTE value)
 
 static BYTE REGPARM1 io2_read(WORD addr)
 {
-#if EXPERIMENTAL_MEGACART
-    vic20_cpu_last_data = megacart_io2_read(addr);
-    return vic20_cpu_last_data;
-#endif
     if (sidcart_enabled && sidcart_address==0 && addr>=0x9800 && addr<=0x981f) {
         vic20_cpu_last_data = sid_read(addr);
         return vic20_cpu_last_data;
@@ -274,6 +274,12 @@ static BYTE REGPARM1 io2_read(WORD addr)
             return vic20_cpu_last_data;
         }
     }
+
+#if EXPERIMENTAL_MEGACART
+    vic20_cpu_last_data = megacart_io2_read(addr);
+    return vic20_cpu_last_data;
+#endif
+
     vic20_cpu_last_data = 0xff;
     return 0xff;
 }
@@ -282,9 +288,6 @@ static void REGPARM2 io2_store(WORD addr, BYTE value)
 {
     vic20_cpu_last_data = value;
 
-#if EXPERIMENTAL_MEGACART
-    megacart_io2_store(addr, value);
-#endif
     if (sidcart_enabled && sidcart_address==0 && addr>=0x9800 && addr<=0x981f) {
         sid_store(addr,value);
         return;
@@ -296,7 +299,13 @@ static void REGPARM2 io2_store(WORD addr, BYTE value)
         } else {
             ieeevia1_store(addr, value);
         }
+        return;
     }
+
+#if EXPERIMENTAL_MEGACART
+    megacart_io2_store(addr, value);
+#endif
+
     return;
 }
 
@@ -429,6 +438,29 @@ int vic20_mem_disable_ram_block(int num)
 #if EXPERIMENTAL_MEGACART
 static void vic20_mem_enable_megacart_block(void)
 {
+#if 0
+    set_mem(0x04, 0x07,
+            cartridge_read_ram1, cartridge_store_ram1,
+            NULL, 0);
+    set_mem(0x08, 0x0b,
+            cartridge_read_ram2, cartridge_store_ram2,
+            NULL, 0);
+    set_mem(0x0c, 0x0f,
+            cartridge_read_ram3, cartridge_store_ram3,
+            NULL, 0);
+    set_mem(0x20, 0x3f,
+            cartridge_read_blk1, cartridge_store_blk1,
+            NULL, 0);
+    set_mem(0x40, 0x5f,
+            cartridge_read_blk2, cartridge_store_blk2,
+            NULL, 0);
+    set_mem(0x60, 0x7f,
+            cartridge_read_blk3, cartridge_store_blk3,
+            NULL, 0);
+    set_mem(0xa0, 0xbf,
+            cartridge_read_blk5, cartridge_store_blk5,
+            NULL, 0);
+#endif
     set_mem(0x04, 0x0f,
             megacart_mem_read, megacart_mem_store,
             NULL, 0);
@@ -438,6 +470,7 @@ static void vic20_mem_enable_megacart_block(void)
     set_mem(0xa0, 0xbf,
             megacart_mem_read, megacart_mem_store,
             NULL, 0);
+
 }
 #endif
 

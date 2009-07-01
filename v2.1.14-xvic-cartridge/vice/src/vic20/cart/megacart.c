@@ -246,6 +246,7 @@ void megacart_init(void)
 
     reset_mode = BUTTON_RESET;
     oe_flop = 0;
+    nvram_en_flop = 0;
 
     memset(cart_rom, 0, 0x200000);
     memset(cart_nvram, 0, 0x2000);
@@ -266,6 +267,7 @@ void megacart_reset(void)
     } else {
         oe_flop = 0;
     }
+    nvram_en_flop = 0;
     reset_mode = BUTTON_RESET;
 }
 
