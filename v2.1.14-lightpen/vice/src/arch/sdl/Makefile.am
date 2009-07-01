@@ -42,6 +42,8 @@ libarch_a_SOURCES = \
 	joy.h \
 	kbd.c \
 	kbd.h \
+	lightpendrv.c \
+	lightpendrv.h \
 	menu_c128cart.c \
 	menu_c128cart.h \
 	menu_c128hw.c \

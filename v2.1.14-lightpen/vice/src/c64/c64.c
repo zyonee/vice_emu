@@ -66,6 +66,7 @@
 #include "isepic.h"
 #include "kbdbuf.h"
 #include "keyboard.h"
+#include "lightpen.h"
 #include "log.h"
 #include "machine-drive.h"
 #include "machine-printer.h"
@@ -278,6 +279,7 @@ int machine_resources_init(void)
         || printer_resources_init() < 0
 #ifdef HAVE_MOUSE
         || mouse_resources_init() < 0
+        || lightpen_resources_init() < 0
 #endif
 #ifndef COMMON_KBD
         || kbd_resources_init() < 0
@@ -362,6 +364,7 @@ int machine_cmdline_options_init(void)
         || printer_cmdline_options_init() < 0
 #ifdef HAVE_MOUSE
         || mouse_cmdline_options_init() < 0
+        || lightpen_cmdline_options_init() < 0
 #endif
 #ifndef COMMON_KBD
         || kbd_cmdline_options_init() < 0
@@ -528,6 +531,10 @@ int machine_specific_init(void)
 #ifdef HAVE_MOUSE
         /* Initialize mouse support (if present).  */
         mouse_init();
+
+        /* Initialize lightpen support and register VICII callback */
+        lightpen_init();
+        lightpen_register_callback(vicii_lightpen_timing, 0);
 #endif
 
         c64iec_init();

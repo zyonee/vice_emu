@@ -647,6 +647,20 @@ void vicii_trigger_light_pen(CLOCK mclk)
     }
 }
 
+/* Calculate lightpen pulse time based on x/y */
+CLOCK vicii_lightpen_timing(int x, int y)
+{
+    CLOCK pulse_time = maincpu_clk;
+
+    pulse_time += (x / 8) + (y * vicii.cycles_per_line);
+    /* TODO border mode, offsets, range checks... */
+
+    /* FIXME this is a HACK, use joy1fire in lightpen.c instead */
+    vicii_trigger_light_pen(pulse_time);
+
+    return pulse_time;
+}
+
 /* Change the base of RAM seen by the VIC-II.  */
 static inline void vicii_set_ram_bases(BYTE *base_p1, BYTE *base_p2)
 {
