@@ -40,7 +40,11 @@ extern int lightpen_type;
 
 typedef CLOCK lightpen_timing_callback_t(int x, int y);
 typedef lightpen_timing_callback_t *lightpen_timing_callback_ptr_t;
-extern int lightpen_register_callback(lightpen_timing_callback_ptr_t timing_callback, int window);
+extern int lightpen_register_timing_callback(lightpen_timing_callback_ptr_t timing_callback, int window);
+
+typedef void lightpen_trigger_callback_t(CLOCK mclk);
+typedef lightpen_trigger_callback_t *lightpen_trigger_callback_ptr_t;
+extern int lightpen_register_trigger_callback(lightpen_trigger_callback_ptr_t trigger_callback);
 
 extern void lightpen_update(int window, int x, int y, int buttons);
 extern BYTE lightpen_read_button(void);

@@ -652,11 +652,11 @@ CLOCK vicii_lightpen_timing(int x, int y)
 {
     CLOCK pulse_time = maincpu_clk;
 
+    x += vicii.screen_leftborderwidth + 0x50;
+    y += vicii.first_displayed_line;
+
     pulse_time += (x / 8) + (y * vicii.cycles_per_line);
     /* TODO border mode, offsets, range checks... */
-
-    /* FIXME this is a HACK, use joy1fire in lightpen.c instead */
-    vicii_trigger_light_pen(pulse_time);
 
     return pulse_time;
 }

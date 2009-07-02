@@ -51,7 +51,8 @@ int lightpen_type;
 
 static int lightpen_buttons;
 
-static lightpen_timing_callback_ptr_t chip_callback[MAX_WINDOW_NUM + 1];
+static lightpen_timing_callback_ptr_t chip_timing_callback[MAX_WINDOW_NUM + 1];
+static lightpen_trigger_callback_ptr_t chip_trigger_callback;
 
 /* --------------------------------------------------------- */
 /* Resources & cmdline */
@@ -118,17 +119,23 @@ void lightpen_init(void)
     int i;
 
     for (i = 0; i < (MAX_WINDOW_NUM + 1); ++i) {
-        chip_callback[i] = NULL;
+        chip_timing_callback[i] = NULL;
     }
 }
 
-int lightpen_register_callback(lightpen_timing_callback_ptr_t timing_callback, int window)
+int lightpen_register_timing_callback(lightpen_timing_callback_ptr_t timing_callback, int window)
 {
     if ((window < 0) || (window > MAX_WINDOW_NUM)) {
         return -1;
     }
 
-    chip_callback[window] = timing_callback;
+    chip_timing_callback[window] = timing_callback;
+    return 0;
+}
+
+int lightpen_register_trigger_callback(lightpen_trigger_callback_ptr_t trigger_callback)
+{
+    chip_trigger_callback = trigger_callback;
     return 0;
 }
 
@@ -142,7 +149,7 @@ void lightpen_update(int window, int x, int y, int buttons)
         return;
     }
 
-    if ((!lightpen_enabled) || (chip_callback[window] == NULL)) {
+    if ((!lightpen_enabled) || (chip_timing_callback[window] == NULL) || (chip_trigger_callback == NULL)) {
         return;
     }
 
@@ -154,10 +161,10 @@ void lightpen_update(int window, int x, int y, int buttons)
         return;
     }
 
-    pulse_time = chip_callback[window](x, y);
+    pulse_time = chip_timing_callback[window](x, y);
 
     if (pulse_time > 0) {
-        /* pulse joy1fire */
+        chip_trigger_callback(pulse_time);
     }
 }
 

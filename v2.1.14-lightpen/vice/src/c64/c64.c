@@ -532,9 +532,10 @@ int machine_specific_init(void)
         /* Initialize mouse support (if present).  */
         mouse_init();
 
-        /* Initialize lightpen support and register VICII callback */
+        /* Initialize lightpen support and register VICII callbacks */
         lightpen_init();
-        lightpen_register_callback(vicii_lightpen_timing, 0);
+        lightpen_register_timing_callback(vicii_lightpen_timing, 0);
+        lightpen_register_trigger_callback(vicii_trigger_light_pen);
 #endif
 
         c64iec_init();
