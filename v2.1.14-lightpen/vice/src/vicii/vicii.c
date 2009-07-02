@@ -656,6 +656,9 @@ CLOCK vicii_lightpen_timing(int x, int y)
     y += vicii.first_displayed_line;
 
     pulse_time += (x / 8) + (y * vicii.cycles_per_line);
+
+    /* Remove frame alarm jitter */
+    pulse_time -= maincpu_clk - VICII_LINE_START_CLK(maincpu_clk);
     /* TODO border mode, offsets, range checks... */
 
     return pulse_time;
