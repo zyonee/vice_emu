@@ -225,7 +225,7 @@ static const cmdline_option_t cmdline_options[] =
     { "-cartmega", CALL_FUNCTION, 1,
       attach_megacart, NULL, NULL, NULL,
       USE_PARAM_ID, USE_DESCRIPTION_ID,
-      IDCLS_P_NAME, IDCLS_SPECIFY_EXT_ROM_B000_NAME, /* fix me! */
+      IDCLS_P_NAME, IDCLS_SPECIFY_MEGA_CART_ROM_NAME,
       NULL, NULL },
     { NULL }
 };
