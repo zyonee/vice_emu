@@ -652,14 +652,18 @@ CLOCK vicii_lightpen_timing(int x, int y)
 {
     CLOCK pulse_time = maincpu_clk;
 
-    x += vicii.screen_leftborderwidth + 0x50;
+    x += 0x98 - vicii.screen_leftborderwidth;
     y += vicii.first_displayed_line;
 
-    pulse_time += (x / 8) + (y * vicii.cycles_per_line);
-
-    /* Remove frame alarm jitter */
-    pulse_time -= maincpu_clk - VICII_LINE_START_CLK(maincpu_clk);
-    /* TODO border mode, offsets, range checks... */
+    /* Check if x would wrap to previous line */
+    if (x < 104) {
+        /* lightpen is off screen */
+        pulse_time = 0;
+    } else {
+        pulse_time += (x / 8) + (y * vicii.cycles_per_line);
+        /* Remove frame alarm jitter */
+        pulse_time -= maincpu_clk - VICII_LINE_START_CLK(maincpu_clk);
+    }
 
     return pulse_time;
 }
