@@ -30,6 +30,7 @@
 #include <stdlib.h>
 
 #include "cartridge.h"
+#include "lib.h"
 #include "machine.h"
 #include "maincpu.h"
 #include "megacart.h"
@@ -52,7 +53,8 @@
  *
  * (by reasoning around minimal decoding, may be different on actual HW)
  */
-static BYTE cart_ram[0x8000];
+#define CART_RAM_SIZE 0x8000
+static BYTE *cart_ram;
 
 /*
  * Cartridge NvRAM
@@ -64,7 +66,8 @@ static BYTE cart_ram[0x8000];
  *
  * (by reasoning around minimal decoding, may be different on actual HW)
  */
-static BYTE cart_nvram[0x2000];
+#define CART_NVRAM_SIZE 0x2000
+static BYTE *cart_nvram;
 
 /*
  * Cartridge ROM
@@ -75,7 +78,8 @@ static BYTE cart_nvram[0x2000];
  *   0x100000 - 0x1fffff  ->  High ROM: banks 0x00-0x7f
  *
  */
-static BYTE cart_rom[0x200000];
+#define CART_ROM_SIZE 0x200000
+static BYTE *cart_rom;
 
 /* Cartridge States */
 static enum { BUTTON_RESET, SOFTWARE_RESET } reset_mode = BUTTON_RESET;
@@ -247,22 +251,6 @@ void megacart_init(void)
     nvram_en_flop = 0;
 }
 
-void megacart_config_setup(BYTE *rawcart)
-{
-    int retval = 0;
-
-    memset(cart_rom, 0, 0x200000);
-    memset(cart_nvram, 0, 0x2000);
-    memset(cart_ram, 0, 0x8000);
-
-    /* kludge: megacart.bin needs to be in the installation directory.
-       1 Mbyte low rom + 1 Mbyte high rom concatenated */
-    if ((retval = util_file_load("megacart.bin", cart_rom, (size_t)0x200000, UTIL_FILE_LOAD_RAW)) < 0) {
-    }
-    cart_rom_low = cart_rom;
-    cart_rom_high = cart_rom + 0x100000;
-}
-
 void megacart_reset(void)
 {
     if (reset_mode == SOFTWARE_RESET) {
@@ -271,6 +259,31 @@ void megacart_reset(void)
         oe_flop = 0;
     }
     reset_mode = BUTTON_RESET;
+}
+
+void megacart_config_setup(BYTE *rawcart)
+{
+}
+
+int megacart_bin_attach(const char *filename)
+{
+    cart_nvram = lib_malloc(CART_NVRAM_SIZE);
+    cart_ram = lib_malloc(CART_RAM_SIZE);
+    cart_rom = lib_malloc(CART_ROM_SIZE);
+    if ( util_file_load(filename, cart_rom, (size_t)CART_ROM_SIZE, UTIL_FILE_LOAD_RAW) < 0 ) {
+        megacart_detach();
+        return -1;
+    }
+    cart_rom_low = cart_rom;
+    cart_rom_high = cart_rom + 0x100000;
+    return 0;
+}
+
+void megacart_detach(void)
+{
+    lib_free(cart_rom);
+    lib_free(cart_nvram);
+    lib_free(cart_ram);
 }
 
 /* ------------------------------------------------------------------------- */

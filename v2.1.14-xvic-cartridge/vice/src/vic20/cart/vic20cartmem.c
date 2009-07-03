@@ -211,8 +211,8 @@ void cartridge_reset(void)
 
 void cartridge_attach(int type, BYTE *rawcart)
 {
-
     mem_cartridge_type = type;
+#if 0
     switch (type) {
     case CARTRIDGE_MEGACART:
         megacart_config_setup(rawcart);
@@ -220,13 +220,14 @@ void cartridge_attach(int type, BYTE *rawcart)
     default:
         mem_cartridge_type = CARTRIDGE_NONE;
     }
+#endif
 }
 
 void cartridge_detach(int type)
 {
     switch (type) {
     case CARTRIDGE_MEGACART:
-        //        megacart_detach();
+        megacart_detach();
         break;
     }
     mem_cartridge_type = CARTRIDGE_NONE;
