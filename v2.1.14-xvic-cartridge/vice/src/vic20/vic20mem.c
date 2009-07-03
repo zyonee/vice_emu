@@ -36,7 +36,6 @@
 
 #include "cartridge.h"
 #include "cart/vic20cartmem.h"
-#include "cart/megacart.h"
 #include "emuid.h"
 #include "log.h"
 #include "machine.h"
@@ -436,27 +435,6 @@ int vic20_mem_disable_ram_block(int num)
     return -1;
 }
 
-#if EXPERIMENTAL_CARTRIDGE
-static void vic20_mem_enable_cartridge_block(void)
-{
-    set_mem(0x04, 0x0f,
-            cartridge_read_ram123, cartridge_store_ram123,
-            NULL, 0);
-    set_mem(0x20, 0x3f,
-            cartridge_read_blk1, cartridge_store_blk1,
-            NULL, 0);
-    set_mem(0x40, 0x5f,
-            cartridge_read_blk2, cartridge_store_blk2,
-            NULL, 0);
-    set_mem(0x60, 0x7f,
-            cartridge_read_blk3, cartridge_store_blk3,
-            NULL, 0);
-    set_mem(0xa0, 0xbf,
-            cartridge_read_blk5, cartridge_store_blk5,
-            NULL, 0);
-}
-#endif
-
 void mem_initialize_memory(void)
 {
     int i;
@@ -474,6 +452,27 @@ void mem_initialize_memory(void)
             ram_read, store_wrap,
             NULL, 0);
 
+#if EXPERIMENTAL_CARTRIDGE
+    if (mem_cartridge_type != CARTRIDGE_NONE) {
+        /* a cartridge is selected, map everything to cart/vic20cartmem.c */
+        set_mem(0x04, 0x0f,
+                cartridge_read_ram123, cartridge_store_ram123,
+                NULL, 0);
+        set_mem(0x20, 0x3f,
+                cartridge_read_blk1, cartridge_store_blk1,
+                NULL, 0);
+        set_mem(0x40, 0x5f,
+                cartridge_read_blk2, cartridge_store_blk2,
+                NULL, 0);
+        set_mem(0x60, 0x7f,
+                cartridge_read_blk3, cartridge_store_blk3,
+                NULL, 0);
+        set_mem(0xa0, 0xbf,
+                cartridge_read_blk5, cartridge_store_blk5,
+                NULL, 0);
+    } else {
+        /* no cartridge selected, map memory the old way */
+#endif
     /* Setup RAM at $0400-$0FFF.  */
     if (ram_block_0_enabled) {
         vic20_mem_enable_ram_block(0);
@@ -524,11 +523,9 @@ void mem_initialize_memory(void)
             vic20_mem_disable_ram_block(5);
         }
     }
-
 #if EXPERIMENTAL_CARTRIDGE
-    vic20_mem_enable_cartridge_block();
+    }
 #endif
-
     /* Setup character generator ROM at $8000-$8FFF. */
     set_mem(0x80, 0x8f,
             vic20memrom_chargen_read, store_dummy,

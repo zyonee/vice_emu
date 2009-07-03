@@ -60,6 +60,9 @@
 #include "vic20mem.h"
 #include "zfile.h"
 
+/* new cart system: Which cart to attach */
+int vic20cart_type = CARTRIDGE_NONE;
+
 /* Hm, if this gets more, I should introduce an array :-) */
 static char *cartridge_file_2 = NULL;
 static char *cartridge_file_4 = NULL;
@@ -187,6 +190,11 @@ static int attach_cart2(const char *param, void *extra_param)
     return cartridge_attach_image(CARTRIDGE_VIC20_16KB_2000, param);
 }
 
+static int attach_megacart(const char *param, void *extra_param)
+{
+    return cartridge_attach_image(CARTRIDGE_MEGACART, param);
+}
+
 static const cmdline_option_t cmdline_options[] =
 {
     { "-cart2", CALL_FUNCTION, 1,
@@ -214,6 +222,11 @@ static const cmdline_option_t cmdline_options[] =
       USE_PARAM_ID, USE_DESCRIPTION_ID,
       IDCLS_P_NAME, IDCLS_SPECIFY_EXT_ROM_B000_NAME,
       NULL, NULL },
+    { "-cartmega", CALL_FUNCTION, 1,
+      attach_megacart, NULL, NULL, NULL,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_P_NAME, IDCLS_SPECIFY_EXT_ROM_B000_NAME, /* fix me! */
+      NULL, NULL },
     { NULL }
 };
 
@@ -223,6 +236,19 @@ int cartridge_cmdline_options_init(void)
     mon_cart_cmd.cartridge_detach_image = cartridge_detach_image;
 
     return cmdline_register_options(cmdline_options);
+}
+
+/* ------------------------------------------------------------------------- */
+
+static int cartridge_attach_image_new(int type, const char *filename)
+{
+    cartridge_attach(type,0);
+    vic20cart_type=type;
+}
+
+static void cartridge_detach_image_new(void)
+{
+    cartridge_detach(vic20cart_type);
 }
 
 /* ------------------------------------------------------------------------- */
@@ -238,6 +264,11 @@ int cartridge_attach_image(int type, const char *filename)
     /* Attaching no cartridge always works.  */
     if (type == CARTRIDGE_NONE || filename==NULL || *filename == '\0')
         return 0;
+
+    if (type == CARTRIDGE_MEGACART) {
+        /* handle the new cart system */
+        return cartridge_attach_image_new(type, filename);
+   }
 
     log_message(LOG_DEFAULT, "Attached cartridge type %d, file=`%s'.",
                 type, filename);
@@ -356,6 +387,8 @@ void cartridge_detach_image(void)
     util_string_set(&cartfile6, NULL);
     util_string_set(&cartfileA, NULL);
     util_string_set(&cartfileB, NULL);
+
+    cartridge_detach_image_new();
 }
 
 void cartridge_set_default(void)

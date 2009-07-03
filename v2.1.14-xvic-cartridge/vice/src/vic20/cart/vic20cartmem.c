@@ -52,9 +52,7 @@
 
 /* ------------------------------------------------------------------------- */
 
-#define CARTRIDGE_MEGACART 0xff02
-
-int mem_cartridge_type = CARTRIDGE_MEGACART;
+int mem_cartridge_type = CARTRIDGE_NONE;
 
 /* ------------------------------------------------------------------------- */
 
@@ -217,7 +215,7 @@ void cartridge_attach(int type, BYTE *rawcart)
     mem_cartridge_type = type;
     switch (type) {
     case CARTRIDGE_MEGACART:
-        //        megacart_config_setup(rawcart);
+        megacart_config_setup(rawcart);
         break;
     default:
         mem_cartridge_type = CARTRIDGE_NONE;

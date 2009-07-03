@@ -40,7 +40,7 @@ extern void REGPARM2 megacart_mem_store(WORD addr, BYTE value);
 
 extern void megacart_init(void);
 extern void megacart_reset(void);
-// extern void megacart_config_setup(BYTE *rawcart);
+extern void megacart_config_setup(BYTE *rawcart);
 // extern int megacart_bin_attach(const char *filename, BYTE *rawcart);
 // extern int megacart_crt_attach(FILE *fd, BYTE *rawcart);
 // extern void megacart_detach(void);

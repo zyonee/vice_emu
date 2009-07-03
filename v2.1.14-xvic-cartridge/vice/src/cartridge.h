@@ -98,6 +98,9 @@ extern void cartridge_freeze(int type);
 #define CARTRIDGE_MODE_PRG                      1
 #define CARTRIDGE_MODE_ON                       2
 
+/* 
+ * VIC20 legacy cartridge system
+ */
 /* VIC20: &1 -> 0=4k, 1=8k; &16 -> 0= < 16k, 1= 16k 2nd half at $a000 */
 #define CARTRIDGE_VIC20_DETECT          0
 #define CARTRIDGE_VIC20_4KB_2000        2
@@ -113,5 +116,10 @@ extern void cartridge_freeze(int type);
 #define CARTRIDGE_VIC20_16KB_2000       19
 #define CARTRIDGE_VIC20_16KB_4000       25
 #define CARTRIDGE_VIC20_16KB_6000       21
+
+/* 
+ * VIC20 new cartridge system
+ */
+#define CARTRIDGE_MEGACART 0x0101
 
 #endif

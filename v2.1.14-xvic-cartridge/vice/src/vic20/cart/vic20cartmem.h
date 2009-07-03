@@ -29,6 +29,8 @@
 
 #include "types.h"
 
+extern int mem_cartridge_type;
+
 BYTE REGPARM1 cartridge_read_io2(WORD addr);
 void REGPARM2 cartridge_store_io2(WORD addr, BYTE value);
 BYTE REGPARM1 cartridge_read_io3(WORD addr);

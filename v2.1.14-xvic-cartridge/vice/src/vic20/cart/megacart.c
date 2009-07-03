@@ -242,11 +242,14 @@ BYTE REGPARM1 megacart_mem_read(WORD addr)
 
 void megacart_init(void)
 {
-    int retval = 0;
-
     reset_mode = BUTTON_RESET;
     oe_flop = 0;
     nvram_en_flop = 0;
+}
+
+void megacart_config_setup(BYTE *rawcart)
+{
+    int retval = 0;
 
     memset(cart_rom, 0, 0x200000);
     memset(cart_nvram, 0, 0x2000);
