@@ -242,13 +242,15 @@ int cartridge_cmdline_options_init(void)
 
 static int cartridge_attach_image_new(int type, const char *filename)
 {
+    int ret=0;
     vic20cart_type=type;
     switch (type) {
     case CARTRIDGE_MEGACART:
-        megacart_bin_attach(filename);
+        ret = megacart_bin_attach(filename);
     }
 
     cartridge_attach(type,NULL);
+    return ret;
 }
 
 static void cartridge_detach_image_new(void)
