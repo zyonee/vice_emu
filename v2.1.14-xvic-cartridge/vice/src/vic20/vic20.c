@@ -31,7 +31,7 @@
 
 #include "autostart.h"
 #include "cartridge.h"
-#include "cart/megacart.h"
+#include "cart/vic20cartmem.h"
 #include "clkguard.h"
 #include "cmdline.h"
 #include "datasette.h"
@@ -84,7 +84,7 @@
 #include "video.h"
 #include "vsync.h"
 
-#define EXPERIMENTAL_MEGACART 1
+#define EXPERIMENTAL_CARTRIDGE 1
 
 #ifdef HAVE_MOUSE
 #include "mouse.h"
@@ -412,9 +412,8 @@ int machine_specific_init(void)
 
     vic20iec_init();
 
-#if EXPERIMENTAL_MEGACART
-/*    cartridge_init(); */
-    megacart_init();
+#if EXPERIMENTAL_CARTRIDGE
+    cartridge_init();
 #endif
 #ifdef HAVE_MOUSE
     mouse_init();
@@ -461,9 +460,8 @@ void machine_specific_reset(void)
 
     printer_reset();
 
-#if EXPERIMENTAL_MEGACART
-/*    cartridge_reset(); */
-    megacart_reset();
+#if EXPERIMENTAL_CARTRIDGE
+    cartridge_reset();
 #endif
     drive_reset();
     datasette_reset();

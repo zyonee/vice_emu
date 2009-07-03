@@ -35,6 +35,7 @@
 #include <string.h>
 
 #include "cartridge.h"
+#include "cart/vic20cartmem.h"
 #include "cart/megacart.h"
 #include "emuid.h"
 #include "log.h"
@@ -62,7 +63,7 @@
 #include "vic20memrom.h"
 #include "vic20via.h"
 
-#define EXPERIMENTAL_MEGACART 1
+#define EXPERIMENTAL_CARTRIDGE 1
 
 static log_t vic20_mem_log = LOG_ERR;
 
@@ -221,8 +222,8 @@ static BYTE REGPARM1 io3_read(WORD addr)
     }
 #endif
 
-#if EXPERIMENTAL_MEGACART
-    vic20_cpu_last_data = megacart_io3_read(addr);
+#if EXPERIMENTAL_CARTRIDGE
+    vic20_cpu_last_data = cartridge_read_io3(addr);
     return vic20_cpu_last_data;
 #endif
 
@@ -251,8 +252,8 @@ static void REGPARM2 io3_store(WORD addr, BYTE value)
     }
 #endif
 
-#if EXPERIMENTAL_MEGACART
-    megacart_io3_store(addr, value);
+#if EXPERIMENTAL_CARTRIDGE
+    cartridge_store_io3(addr, value);
 #endif
 
     return;
@@ -275,8 +276,8 @@ static BYTE REGPARM1 io2_read(WORD addr)
         }
     }
 
-#if EXPERIMENTAL_MEGACART
-    vic20_cpu_last_data = megacart_io2_read(addr);
+#if EXPERIMENTAL_CARTRIDGE
+    vic20_cpu_last_data = cartridge_read_io2(addr);
     return vic20_cpu_last_data;
 #endif
 
@@ -302,8 +303,8 @@ static void REGPARM2 io2_store(WORD addr, BYTE value)
         return;
     }
 
-#if EXPERIMENTAL_MEGACART
-    megacart_io2_store(addr, value);
+#if EXPERIMENTAL_CARTRIDGE
+    cartridge_store_io2(addr, value);
 #endif
 
     return;
@@ -435,18 +436,11 @@ int vic20_mem_disable_ram_block(int num)
     return -1;
 }
 
-#if EXPERIMENTAL_MEGACART
-static void vic20_mem_enable_megacart_block(void)
+#if EXPERIMENTAL_CARTRIDGE
+static void vic20_mem_enable_cartridge_block(void)
 {
-#if 0
-    set_mem(0x04, 0x07,
-            cartridge_read_ram1, cartridge_store_ram1,
-            NULL, 0);
-    set_mem(0x08, 0x0b,
-            cartridge_read_ram2, cartridge_store_ram2,
-            NULL, 0);
-    set_mem(0x0c, 0x0f,
-            cartridge_read_ram3, cartridge_store_ram3,
+    set_mem(0x04, 0x0f,
+            cartridge_read_ram123, cartridge_store_ram123,
             NULL, 0);
     set_mem(0x20, 0x3f,
             cartridge_read_blk1, cartridge_store_blk1,
@@ -460,17 +454,6 @@ static void vic20_mem_enable_megacart_block(void)
     set_mem(0xa0, 0xbf,
             cartridge_read_blk5, cartridge_store_blk5,
             NULL, 0);
-#endif
-    set_mem(0x04, 0x0f,
-            megacart_mem_read, megacart_mem_store,
-            NULL, 0);
-    set_mem(0x20, 0x7f,
-            megacart_mem_read, megacart_mem_store,
-            NULL, 0);
-    set_mem(0xa0, 0xbf,
-            megacart_mem_read, megacart_mem_store,
-            NULL, 0);
-
 }
 #endif
 
@@ -542,8 +525,8 @@ void mem_initialize_memory(void)
         }
     }
 
-#if EXPERIMENTAL_MEGACART
-    vic20_mem_enable_megacart_block();
+#if EXPERIMENTAL_CARTRIDGE
+    vic20_mem_enable_cartridge_block();
 #endif
 
     /* Setup character generator ROM at $8000-$8FFF. */
