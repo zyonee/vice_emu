@@ -1,5 +1,5 @@
 /*
- * lightpendrv.h - Lightpen driver for SDL UI.
+ * menu_lightpen.h - Lightpen menu for SDL UI.
  *
  * Written by
  *  Hannu Nuotio <hannu.nuotio@tut.fi>
@@ -24,20 +24,13 @@
  *
  */
 
-#ifndef VICE_LIGHTPENDRV_H
-#define VICE_LIGHTPENDRV_H
+#ifndef VICE_MENU_LIGHTPEN_H
+#define VICE_MENU_LIGHTPEN_H
 
 #include "vice.h"
 #include "types.h"
+#include "uimenu.h"
 
-struct sdl_lightpen_adjust_s {
-    int offset_x, offset_y;
-    int max_x, max_y;
-    double scale_x, scale_y;
-};
-typedef struct sdl_lightpen_adjust_s sdl_lightpen_adjust_t;
-extern sdl_lightpen_adjust_t sdl_lightpen_adjust;
-
-extern void sdl_lightpen_update(void);
+extern const ui_menu_entry_t lightpen_menu[];
 
 #endif

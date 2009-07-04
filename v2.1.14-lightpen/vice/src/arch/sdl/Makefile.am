@@ -76,6 +76,8 @@ libarch_a_SOURCES = \
 	menu_help.h \
 	menu_joystick.c \
 	menu_joystick.h \
+	menu_lightpen.c \
+	menu_lightpen.h \
 	menu_midi.c \
 	menu_midi.h \
 	menu_mouse.c \

@@ -34,22 +34,22 @@
 #include "videoarch.h"
 
 /* ------------------------------------------------------------------ */
-/* static functions */
-
-
-/* ------------------------------------------------------------------ */
 /* External interface */
+
+sdl_lightpen_adjust_t sdl_lightpen_adjust;
 
 void sdl_lightpen_update(void)
 {
-    int x, y;
+    int x, y, on_screen;
     Uint8 buttons;
 
     if (!lightpen_enabled) {
         return;
     }
 
-    if (SDL_GetAppState() & SDL_APPMOUSEFOCUS) {
+    on_screen = SDL_GetAppState() & SDL_APPMOUSEFOCUS;
+
+    if (on_screen) {
         buttons = SDL_GetMouseState(&x, &y);
     } else {
         x = y = -1;
@@ -57,19 +57,28 @@ void sdl_lightpen_update(void)
     }
 
 #ifdef SDL_DEBUG
-fprintf(stderr,"%s: x = %i, y = %i, buttons = %02x\n",__func__, x, y, buttons);
+fprintf(stderr,"%s pre : x = %i, y = %i, buttons = %02x, on_screen = %i\n",__func__, x, y, buttons, on_screen);
 #endif
 
-    if (x >= 0) {
-        /* TODO hwscale, resized, ... */
-        if (sdl_active_canvas->videoconfig->doublesizex) {
-            x /= 2;
-        }
+    if (on_screen) {
+        x -= sdl_lightpen_adjust.offset_x;
+        y -= sdl_lightpen_adjust.offset_y;
 
-        if (sdl_active_canvas->videoconfig->doublesizey) {
-            y /= 2;
+        if ((x < 0) || (y < 0) || (x >= sdl_lightpen_adjust.max_x) || (y >= sdl_lightpen_adjust.max_y)) {
+            on_screen = 0;
+        } else {
+            x *= sdl_lightpen_adjust.scale_x;
+            y *= sdl_lightpen_adjust.scale_y;
         }
     }
+
+    if (!on_screen) {
+        x = y = -1;
+    }
+
+#ifdef SDL_DEBUG
+fprintf(stderr,"%s post: x = %i, y = %i\n",__func__, x, y);
+#endif
 
     lightpen_update(sdl_active_canvas_num, x, y, (int)buttons);
 }
