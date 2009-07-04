@@ -211,6 +211,8 @@ void cartridge_reset(void)
 
 void cartridge_attach(int type, BYTE *rawcart)
 {
+    int cartridge_reset;
+
     mem_cartridge_type = type;
 #if 0
     switch (type) {
@@ -221,16 +223,30 @@ void cartridge_attach(int type, BYTE *rawcart)
         mem_cartridge_type = CARTRIDGE_NONE;
     }
 #endif
+
+    resources_get_int("CartridgeReset", &cartridge_reset);
+
+    if (cartridge_reset != 0) {
+        /* "Turn off machine before inserting cartridge" */
+        machine_trigger_reset(MACHINE_RESET_MODE_HARD);
+    }
 }
 
 void cartridge_detach(int type)
 {
+    int cartridge_reset;
+
     switch (type) {
     case CARTRIDGE_MEGACART:
         megacart_detach();
         break;
     }
     mem_cartridge_type = CARTRIDGE_NONE;
+
+    if (cartridge_reset != 0) {
+        /* "Turn off machine before removing cartridge" */
+        machine_trigger_reset(MACHINE_RESET_MODE_HARD);
+    }
 }
 
 /* ------------------------------------------------------------------------- */

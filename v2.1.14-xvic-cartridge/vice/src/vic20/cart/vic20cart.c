@@ -3,6 +3,7 @@
  *
  * Written by
  *  André Fachat <fachat@physik.tu-chemnitz.de>
+ *  Daniel Kahlin <daniel@kahlin.net>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -59,6 +60,8 @@
 #include "util.h"
 #include "vic20mem.h"
 #include "zfile.h"
+
+static int vic20cartridge_reset;
 
 /* new cart system: Which cart to attach */
 int vic20cart_type = CARTRIDGE_NONE;
@@ -131,6 +134,13 @@ static int set_cartridge_file_B(const char *name, void *param)
     return cartridge_attach_image(CARTRIDGE_VIC20_4KB_B000, cartfileB);
 }
 
+static int set_cartridge_reset(int val, void *param)
+{
+    vic20cartridge_reset = val;
+
+    return 0;
+}
+
 static const resource_string_t resources_string[] =
 {
     { "CartridgeFile2000", "", RES_EVENT_STRICT, (resource_value_t)"",
@@ -146,9 +156,19 @@ static const resource_string_t resources_string[] =
     { NULL }
 };
 
+static const resource_int_t resources_int[] = {
+    { "CartridgeReset", 1, RES_EVENT_NO, NULL,
+      &vic20cartridge_reset, set_cartridge_reset, NULL },
+    { NULL }
+};
+
 int cartridge_resources_init(void)
 {
-    return resources_register_string(resources_string);
+    if ( resources_register_string(resources_string) < 0) {
+        return -1;
+    }
+
+    return resources_register_int(resources_int);
 }
 
 void cartridge_resources_shutdown(void)
@@ -197,6 +217,16 @@ static int attach_megacart(const char *param, void *extra_param)
 
 static const cmdline_option_t cmdline_options[] =
 {
+    { "-cartreset", SET_RESOURCE, 0,
+      NULL, NULL, "CartridgeReset", (void *)1,
+      USE_PARAM_STRING, USE_DESCRIPTION_ID,
+      IDCLS_UNUSED, IDCLS_CART_ATTACH_DETACH_RESET,
+      NULL, NULL },
+    { "+cartreset", SET_RESOURCE, 0,
+      NULL, NULL, "CartridgeReset", (void *)0,
+      USE_PARAM_STRING, USE_DESCRIPTION_ID,
+      IDCLS_UNUSED, IDCLS_CART_ATTACH_DETACH_NO_RESET,
+      NULL, NULL },
     { "-cart2", CALL_FUNCTION, 1,
       attach_cart2, NULL, NULL, NULL,
       USE_PARAM_ID, USE_DESCRIPTION_ID,
