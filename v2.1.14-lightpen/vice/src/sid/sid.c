@@ -118,8 +118,10 @@ static BYTE REGPARM2 sid_read_chip(WORD addr, int chipno)
         val = mouse_get_x();
     } else if (addr == 0x1a && _mouse_enabled && chipno == 0) {
         val = mouse_get_y();
+    } else if (addr == 0x19 && lightpen_enabled && chipno == 0) {
+        val = lightpen_read_button_x();
     } else if (addr == 0x1a && lightpen_enabled && chipno == 0) {
-        val = lightpen_read_button();
+        val = lightpen_read_button_y();
     } else
 #endif
     {

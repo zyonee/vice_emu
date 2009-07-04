@@ -35,8 +35,11 @@ extern void lightpen_init(void);
 
 extern int lightpen_enabled;
 extern int lightpen_type;
-#define LIGHTPEN_TYPE_PEN   0
-#define LIGHTPEN_TYPE_GUN   1
+#define LIGHTPEN_TYPE_PEN_U   0
+#define LIGHTPEN_TYPE_PEN_L   1
+#define LIGHTPEN_TYPE_GUN_Y   2
+#define LIGHTPEN_TYPE_GUN_L   3
+#define LIGHTPEN_TYPE_NUM     4
 
 typedef CLOCK lightpen_timing_callback_t(int x, int y);
 typedef lightpen_timing_callback_t *lightpen_timing_callback_ptr_t;
@@ -47,6 +50,7 @@ typedef lightpen_trigger_callback_t *lightpen_trigger_callback_ptr_t;
 extern int lightpen_register_trigger_callback(lightpen_trigger_callback_ptr_t trigger_callback);
 
 extern void lightpen_update(int window, int x, int y, int buttons);
-extern BYTE lightpen_read_button(void);
+extern BYTE lightpen_read_button_y(void);
+extern BYTE lightpen_read_button_x(void);
 
 #endif

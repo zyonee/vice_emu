@@ -50,9 +50,54 @@ int lightpen_type;
 /* static variables/functions */
 
 static int lightpen_buttons;
+static int lightpen_button_y;
+static int lightpen_button_x;
 
 static lightpen_timing_callback_ptr_t chip_timing_callback[MAX_WINDOW_NUM + 1];
 static lightpen_trigger_callback_ptr_t chip_trigger_callback;
+
+struct lp_type_s {
+    enum { PEN, GUN } type;
+    BYTE button1;
+    BYTE button2;
+};
+typedef struct lp_type_s lp_type_t;
+
+static const lp_type_t lp_type[LIGHTPEN_TYPE_NUM] = {
+    { PEN, 0x00, 0x01 },
+    { PEN, 0x00, 0x04 },
+    { GUN, 0x20, 0x00 },
+    { GUN, 0x04, 0x00 }
+};
+
+static inline void lightpen_check_button_mask(BYTE mask, int pressed)
+{
+    if (!mask) {
+        return;
+    }
+
+    if (pressed) {
+        joystick_set_value_or(1, mask);
+    } else {
+        joystick_set_value_and(1, (BYTE)~mask);
+    }
+}
+
+static inline void lightpen_update_buttons(int buttons)
+{
+    lightpen_buttons = buttons;
+
+    lightpen_button_y = ((((lp_type[lightpen_type].button1 & 0x20) == 0x20) && (buttons & 1))
+                      || (((lp_type[lightpen_type].button2 & 0x20) == 0x20) && (buttons & 2)))
+                      ? 1 : 0;
+
+    lightpen_button_x = ((((lp_type[lightpen_type].button1 & 0x40) == 0x40) && (buttons & 1))
+                      || (((lp_type[lightpen_type].button2 & 0x40) == 0x40) && (buttons & 2)))
+                      ? 1 : 0;
+
+    lightpen_check_button_mask(lp_type[lightpen_type].button1 & 0xf, buttons & 2);
+    lightpen_check_button_mask(lp_type[lightpen_type].button2 & 0xf, buttons & 4);
+}
 
 /* --------------------------------------------------------- */
 /* Resources & cmdline */
@@ -65,7 +110,7 @@ static int set_lightpen_enabled(int val, void *param)
 
 static int set_lightpen_type(int val, void *param)
 {
-    if (!((val >= LIGHTPEN_TYPE_PEN) && (val <= LIGHTPEN_TYPE_GUN))) {
+    if (!((val >= 0) && (val < LIGHTPEN_TYPE_NUM))) {
         return -1;
     }
 
@@ -77,7 +122,7 @@ static int set_lightpen_type(int val, void *param)
 static const resource_int_t resources_int[] = {
     { "Lightpen", 0, RES_EVENT_SAME, NULL,
       &lightpen_enabled, set_lightpen_enabled, NULL },
-    { "LightpenType", LIGHTPEN_TYPE_PEN, RES_EVENT_SAME, NULL,
+    { "LightpenType", LIGHTPEN_TYPE_PEN_U, RES_EVENT_SAME, NULL,
       &lightpen_type, set_lightpen_type, NULL },
     { NULL }
 };
@@ -102,7 +147,7 @@ static const cmdline_option_t cmdline_options[] = {
       NULL, NULL, "LightpenType", NULL,
       USE_PARAM_STRING, USE_DESCRIPTION_STRING,
       IDCLS_UNUSED, IDCLS_UNUSED,
-      T_("<type>"), T_("Set lightpen type (0 = pen, 1 = gun)") },
+      T_("<type>"), T_("Set lightpen type") },
     { NULL }
 };
 
@@ -143,8 +188,6 @@ void lightpen_update(int window, int x, int y, int buttons)
 {
     CLOCK pulse_time;
 
-    lightpen_buttons = buttons;
-
     if ((window < 0) || (window > MAX_WINDOW_NUM)) {
         return;
     }
@@ -153,11 +196,13 @@ void lightpen_update(int window, int x, int y, int buttons)
         return;
     }
 
+    lightpen_update_buttons(buttons);
+
     if ((x < 0) || (y < 0)) {
         return;
     }
 
-    if ((lightpen_type == LIGHTPEN_TYPE_PEN) && !(buttons & 1)) {
+    if ((lp_type[lightpen_type].type == PEN) && !(buttons & 1)) {
         return;
     }
 
@@ -168,9 +213,12 @@ void lightpen_update(int window, int x, int y, int buttons)
     }
 }
 
-BYTE lightpen_read_button(void)
+BYTE lightpen_read_button_y(void)
 {
-    return (lightpen_enabled
-        && (lightpen_type == LIGHTPEN_TYPE_GUN)
-        && (lightpen_buttons & 1)) ? 0x0 : 0xff;
+    return (lightpen_enabled && lightpen_button_y) ? 0x00 : 0xff;
+}
+
+BYTE lightpen_read_button_x(void)
+{
+    return (lightpen_enabled && lightpen_button_x) ? 0x00 : 0xff;
 }
