@@ -1,0 +1,44 @@
+vic20dir = $(VICEDIR)/VIC20
+
+roms = \
+	basic \
+	chargen \
+	kernal
+
+romsets = \
+	default.vrs
+
+palettes = \
+	default.vpl
+
+x11_keymaps = \
+	x11_pos.vkm \
+	x11_sym.vkm
+
+sdl_keymaps = \
+	sdl_sym.vkm
+
+extra_keymaps = \
+	amiga_sym.vkm \
+	amiga_pos.vkm \
+	beos_sym.vkm \
+	beos_pos.vkm \
+	dos_pos.vkm \
+	dos_sym.vkm \
+	os2.vkm \
+	ROdflt.vkm \
+	win_sym.vkm \
+	win_pos.vkm
+
+win32_shortcuts = \
+	win_shortcuts.vsc
+
+if SDL_COMPILE
+vic20_DATA = $(roms) $(romsets) $(palettes) $(sdl_keymaps)
+
+EXTRA_DIST = $(vic20_DATA) $(extra_keymaps) $(x11_keymaps) $(win32_shortcuts)
+else
+vic20_DATA = $(roms) $(romsets) $(palettes) $(x11_keymaps)
+
+EXTRA_DIST = $(vic20_DATA) $(extra_keymaps) $(sdl_keymaps) $(win32_shortcuts)
+endif
