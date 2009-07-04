@@ -95,7 +95,7 @@ static inline void lightpen_update_buttons(int buttons)
                       || (((lp_type[lightpen_type].button2 & 0x40) == 0x40) && (buttons & 2)))
                       ? 1 : 0;
 
-    lightpen_check_button_mask(lp_type[lightpen_type].button1 & 0xf, buttons & 2);
+    lightpen_check_button_mask(lp_type[lightpen_type].button1 & 0xf, buttons & 1);
     lightpen_check_button_mask(lp_type[lightpen_type].button2 & 0xf, buttons & 4);
 }
 
