@@ -194,6 +194,10 @@ SOURCE="..\..\lib.c"
 # End Source File
 # Begin Source File
 
+SOURCE="..\..\lightpen.c"
+# End Source File
+# Begin Source File
+
 SOURCE="..\..\log.c"
 # End Source File
 # Begin Source File
