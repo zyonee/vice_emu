@@ -30,6 +30,7 @@
 #include "types.h"
 
 extern int mem_cartridge_type;
+extern int mem_cart_blocks;
 
 BYTE REGPARM1 cartridge_read_io2(WORD addr);
 void REGPARM2 cartridge_store_io2(WORD addr, BYTE value);

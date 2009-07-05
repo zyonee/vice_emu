@@ -222,8 +222,10 @@ static BYTE REGPARM1 io3_read(WORD addr)
 #endif
 
 #if EXPERIMENTAL_CARTRIDGE
-    vic20_cpu_last_data = cartridge_read_io3(addr);
-    return vic20_cpu_last_data;
+    if (mem_cart_blocks & VIC_CART_IO3) {
+        vic20_cpu_last_data = cartridge_read_io3(addr);
+        return vic20_cpu_last_data;
+    }
 #endif
 
     vic20_cpu_last_data = 0xff;
@@ -252,7 +254,9 @@ static void REGPARM2 io3_store(WORD addr, BYTE value)
 #endif
 
 #if EXPERIMENTAL_CARTRIDGE
-    cartridge_store_io3(addr, value);
+    if (mem_cart_blocks & VIC_CART_IO3) {
+        cartridge_store_io3(addr, value);
+    }
 #endif
 
     return;
@@ -276,8 +280,10 @@ static BYTE REGPARM1 io2_read(WORD addr)
     }
 
 #if EXPERIMENTAL_CARTRIDGE
-    vic20_cpu_last_data = cartridge_read_io2(addr);
-    return vic20_cpu_last_data;
+    if (mem_cart_blocks & VIC_CART_IO2) {
+        vic20_cpu_last_data = cartridge_read_io2(addr);
+        return vic20_cpu_last_data;
+    }
 #endif
 
     vic20_cpu_last_data = 0xff;
@@ -303,7 +309,9 @@ static void REGPARM2 io2_store(WORD addr, BYTE value)
     }
 
 #if EXPERIMENTAL_CARTRIDGE
-    cartridge_store_io2(addr, value);
+    if (mem_cart_blocks & VIC_CART_IO2) {
+        cartridge_store_io2(addr, value);
+    }
 #endif
 
     return;
@@ -452,7 +460,7 @@ void mem_initialize_memory(void)
             ram_read, store_wrap,
             NULL, 0);
 
-#if EXPERIMENTAL_CARTRIDGE
+#if 0
     if (mem_cartridge_type != CARTRIDGE_NONE) {
         /* a cartridge is selected, map everything to cart/vic20cartmem.c */
         set_mem(0x04, 0x0f,
@@ -470,62 +478,96 @@ void mem_initialize_memory(void)
         set_mem(0xa0, 0xbf,
                 cartridge_read_blk5, cartridge_store_blk5,
                 NULL, 0);
-    } else {
-        /* no cartridge selected, map memory the old way */
-#endif
-    /* Setup RAM at $0400-$0FFF.  */
-    if (ram_block_0_enabled) {
-        vic20_mem_enable_ram_block(0);
-    } else {
-        vic20_mem_disable_ram_block(0);
-    }
-
-    /* Setup RAM or cartridge ROM at $2000-$3FFF.  */
-    if (mem_rom_blocks & (VIC_ROM_BLK1A | VIC_ROM_BLK1B)) {
-        vic20_mem_enable_rom_block(1);
-    } else {
-        if (ram_block_1_enabled) {
-            vic20_mem_enable_ram_block(1);
-        } else {
-            vic20_mem_disable_ram_block(1);
-        }
-    }
-
-    /* Setup RAM or cartridge ROM at $4000-$5FFF.  */
-    if (mem_rom_blocks & (VIC_ROM_BLK2A | VIC_ROM_BLK2B)) {
-        vic20_mem_enable_rom_block(2);
-    } else {
-        if (ram_block_2_enabled) {
-            vic20_mem_enable_ram_block(2);
-        } else {
-            vic20_mem_disable_ram_block(2);
-        }
-    }
-
-    /* Setup RAM or cartridge ROM at $6000-$7FFF.  */
-    if (mem_rom_blocks & (VIC_ROM_BLK3A | VIC_ROM_BLK3B)) {
-        vic20_mem_enable_rom_block(3);
-    } else {
-        if (ram_block_3_enabled) {
-            vic20_mem_enable_ram_block(3);
-        } else {
-            vic20_mem_disable_ram_block(3);
-        }
-    }
-
-    /* Setup RAM or cartridge ROM at $A000-$BFFF.  */
-    if (mem_rom_blocks & (VIC_ROM_BLK5A | VIC_ROM_BLK5B)) {
-        vic20_mem_enable_rom_block(5);
-    } else {
-        if (ram_block_5_enabled) {
-            vic20_mem_enable_ram_block(5);
-        } else {
-            vic20_mem_disable_ram_block(5);
-        }
-    }
-#if EXPERIMENTAL_CARTRIDGE
     }
 #endif
+
+
+    if (mem_cart_blocks & VIC_CART_RAM123) {
+        /* a cartridge is selected, map everything to cart/vic20cartmem.c */
+        set_mem(0x04, 0x0f,
+                cartridge_read_ram123, cartridge_store_ram123,
+                NULL, 0);
+    } else {
+        /* Setup RAM at $0400-$0FFF.  */
+        if (ram_block_0_enabled) {
+            vic20_mem_enable_ram_block(0);
+        } else {
+            vic20_mem_disable_ram_block(0);
+        }
+    }
+
+    if (mem_cart_blocks & VIC_CART_BLK1) {
+        /* a cartridge is selected, map everything to cart/vic20cartmem.c */
+        set_mem(0x20, 0x3f,
+                cartridge_read_blk1, cartridge_store_blk1,
+                NULL, 0);
+    } else {
+        /* Setup RAM or cartridge ROM at $2000-$3FFF.  */
+        if (mem_rom_blocks & (VIC_ROM_BLK1A | VIC_ROM_BLK1B)) {
+            vic20_mem_enable_rom_block(1);
+        } else {
+            if (ram_block_1_enabled) {
+                vic20_mem_enable_ram_block(1);
+            } else {
+                vic20_mem_disable_ram_block(1);
+            }
+        }
+    }
+
+    if (mem_cart_blocks & VIC_CART_BLK2) {
+        /* a cartridge is selected, map everything to cart/vic20cartmem.c */
+        set_mem(0x40, 0x5f,
+                cartridge_read_blk2, cartridge_store_blk2,
+                NULL, 0);
+    } else {
+        /* Setup RAM or cartridge ROM at $4000-$5FFF.  */
+        if (mem_rom_blocks & (VIC_ROM_BLK2A | VIC_ROM_BLK2B)) {
+            vic20_mem_enable_rom_block(2);
+        } else {
+            if (ram_block_2_enabled) {
+                vic20_mem_enable_ram_block(2);
+            } else {
+                vic20_mem_disable_ram_block(2);
+            }
+        }
+    }
+
+    if (mem_cart_blocks & VIC_CART_BLK3) {
+        /* a cartridge is selected, map everything to cart/vic20cartmem.c */
+        set_mem(0x60, 0x7f,
+                cartridge_read_blk3, cartridge_store_blk3,
+                NULL, 0);
+    } else {
+        /* Setup RAM or cartridge ROM at $6000-$7FFF.  */
+        if (mem_rom_blocks & (VIC_ROM_BLK3A | VIC_ROM_BLK3B)) {
+            vic20_mem_enable_rom_block(3);
+        } else {
+            if (ram_block_3_enabled) {
+                vic20_mem_enable_ram_block(3);
+            } else {
+                vic20_mem_disable_ram_block(3);
+            }
+        }
+    }
+
+    if (mem_cart_blocks & VIC_CART_BLK5) {
+        /* a cartridge is selected, map everything to cart/vic20cartmem.c */
+        set_mem(0xa0, 0xbf,
+                cartridge_read_blk5, cartridge_store_blk5,
+                NULL, 0);
+    } else {
+        /* Setup RAM or cartridge ROM at $A000-$BFFF.  */
+        if (mem_rom_blocks & (VIC_ROM_BLK5A | VIC_ROM_BLK5B)) {
+            vic20_mem_enable_rom_block(5);
+        } else {
+            if (ram_block_5_enabled) {
+                vic20_mem_enable_ram_block(5);
+            } else {
+                vic20_mem_disable_ram_block(5);
+            }
+        }
+    }
+
     /* Setup character generator ROM at $8000-$8FFF. */
     set_mem(0x80, 0x8f,
             vic20memrom_chargen_read, store_dummy,

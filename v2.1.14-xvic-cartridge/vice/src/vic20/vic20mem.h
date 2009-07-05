@@ -62,6 +62,15 @@
 
 extern BYTE mem_cartrom[0x10000];
 
+/* new cart system */
+#define VIC_CART_RAM123  (1<<0)
+#define VIC_CART_BLK1    (1<<1)
+#define VIC_CART_BLK2    (1<<2)
+#define VIC_CART_BLK3    (1<<3)
+#define VIC_CART_BLK5    (1<<4)
+#define VIC_CART_IO2     (1<<5)
+#define VIC_CART_IO3     (1<<6)
+
 extern int vic20_mem_init_resources(void);
 extern int vic20_mem_init_cmdline_options(void);
 extern int vic20_mem_disable_ram_block(int num);

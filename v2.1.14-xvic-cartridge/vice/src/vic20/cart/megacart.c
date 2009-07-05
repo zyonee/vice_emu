@@ -35,6 +35,8 @@
 #include "maincpu.h"
 #include "megacart.h"
 #include "mem.h"
+#include "vic20mem.h"
+#include "vic20cartmem.h"
 #include "monitor.h"
 #include "ram.h"
 #include "resources.h"
@@ -276,6 +278,12 @@ int megacart_bin_attach(const char *filename)
     }
     cart_rom_low = cart_rom;
     cart_rom_high = cart_rom + 0x100000;
+
+
+    mem_cart_blocks = VIC_CART_RAM123 |
+        VIC_CART_BLK1 | VIC_CART_BLK2 | VIC_CART_BLK3 | VIC_CART_BLK5 |
+        VIC_CART_IO2 | VIC_CART_IO3;
+    mem_initialize_memory();
     return 0;
 }
 

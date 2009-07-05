@@ -35,6 +35,8 @@
 #include "maincpu.h"
 #include "generic.h"
 #include "mem.h"
+#include "vic20mem.h"
+#include "vic20cartmem.h"
 #include "monitor.h"
 #include "ram.h"
 #include "resources.h"
@@ -126,6 +128,9 @@ int generic_bin_attach(const char *filename)
         generic_detach();
         return -1;
     }
+
+    mem_cart_blocks = VIC_CART_BLK5;
+    mem_initialize_memory();
     return 0;
 }
 
