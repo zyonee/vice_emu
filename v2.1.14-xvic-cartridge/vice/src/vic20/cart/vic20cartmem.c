@@ -100,7 +100,7 @@ BYTE REGPARM1 cartridge_read_ram123(WORD addr)
 {
     switch (mem_cartridge_type) {
     case CARTRIDGE_GENERIC:
-        return generic_mem_read(addr);
+        return generic_ram123_read(addr);
         break;
     case CARTRIDGE_MEGACART:
         return megacart_mem_read(addr);
@@ -113,7 +113,7 @@ void REGPARM2 cartridge_store_ram123(WORD addr, BYTE value)
 {
     switch (mem_cartridge_type) {
     case CARTRIDGE_GENERIC:
-        generic_mem_store(addr, value);
+        generic_ram123_store(addr, value);
         break;
     case CARTRIDGE_MEGACART:
         megacart_mem_store(addr, value);
@@ -125,7 +125,7 @@ BYTE REGPARM1 cartridge_read_blk1(WORD addr)
 {
     switch (mem_cartridge_type) {
     case CARTRIDGE_GENERIC:
-        return generic_mem_read(addr);
+        return generic_blk1_read(addr);
         break;
     case CARTRIDGE_MEGACART:
         return megacart_mem_read(addr);
@@ -138,7 +138,7 @@ void REGPARM2 cartridge_store_blk1(WORD addr, BYTE value)
 {
     switch (mem_cartridge_type) {
     case CARTRIDGE_GENERIC:
-        generic_mem_store(addr, value);
+        generic_blk1_store(addr, value);
         break;
     case CARTRIDGE_MEGACART:
         megacart_mem_store(addr, value);
@@ -150,7 +150,7 @@ BYTE REGPARM1 cartridge_read_blk2(WORD addr)
 {
     switch (mem_cartridge_type) {
     case CARTRIDGE_GENERIC:
-        return generic_mem_read(addr);
+        return generic_blk2_read(addr);
         break;
     case CARTRIDGE_MEGACART:
         return megacart_mem_read(addr);
@@ -163,7 +163,7 @@ void REGPARM2 cartridge_store_blk2(WORD addr, BYTE value)
 {
     switch (mem_cartridge_type) {
     case CARTRIDGE_GENERIC:
-        generic_mem_store(addr, value);
+        generic_blk2_store(addr, value);
         break;
     case CARTRIDGE_MEGACART:
         megacart_mem_store(addr, value);
@@ -175,7 +175,7 @@ BYTE REGPARM1 cartridge_read_blk3(WORD addr)
 {
     switch (mem_cartridge_type) {
     case CARTRIDGE_GENERIC:
-        return generic_mem_read(addr);
+        return generic_blk3_read(addr);
         break;
     case CARTRIDGE_MEGACART:
         return megacart_mem_read(addr);
@@ -188,7 +188,7 @@ void REGPARM2 cartridge_store_blk3(WORD addr, BYTE value)
 {
     switch (mem_cartridge_type) {
     case CARTRIDGE_GENERIC:
-        generic_mem_store(addr, value);
+        generic_blk3_store(addr, value);
         break;
     case CARTRIDGE_MEGACART:
         megacart_mem_store(addr, value);
@@ -200,7 +200,7 @@ BYTE REGPARM1 cartridge_read_blk5(WORD addr)
 {
     switch (mem_cartridge_type) {
     case CARTRIDGE_GENERIC:
-        return generic_mem_read(addr);
+        return generic_blk5_read(addr);
         break;
     case CARTRIDGE_MEGACART:
         return megacart_mem_read(addr);
@@ -213,7 +213,7 @@ void REGPARM2 cartridge_store_blk5(WORD addr, BYTE value)
 {
     switch (mem_cartridge_type) {
     case CARTRIDGE_GENERIC:
-        generic_mem_store(addr, value);
+        generic_blk5_store(addr, value);
         break;
     case CARTRIDGE_MEGACART:
         megacart_mem_store(addr, value);

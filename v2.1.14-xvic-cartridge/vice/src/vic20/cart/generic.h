@@ -31,12 +31,20 @@
 
 #include "types.h"
 
+extern BYTE REGPARM1 generic_ram123_read(WORD addr);
+extern void REGPARM2 generic_ram123_store(WORD addr, BYTE value);
+extern BYTE REGPARM1 generic_blk1_read(WORD addr);
+extern void REGPARM2 generic_blk1_store(WORD addr, BYTE value);
+extern BYTE REGPARM1 generic_blk2_read(WORD addr);
+extern void REGPARM2 generic_blk2_store(WORD addr, BYTE value);
+extern BYTE REGPARM1 generic_blk3_read(WORD addr);
+extern void REGPARM2 generic_blk3_store(WORD addr, BYTE value);
+extern BYTE REGPARM1 generic_blk5_read(WORD addr);
+extern void REGPARM2 generic_blk5_store(WORD addr, BYTE value);
 //extern BYTE REGPARM1 generic_io2_read(WORD addr);
 //extern void REGPARM2 generic_io2_store(WORD addr, BYTE value);
 //extern BYTE REGPARM1 generic_io3_read(WORD addr);
 //extern void REGPARM2 generic_io3_store(WORD addr, BYTE value);
-extern BYTE REGPARM1 generic_mem_read(WORD addr);
-extern void REGPARM2 generic_mem_store(WORD addr, BYTE value);
 
 extern void generic_init(void);
 extern void generic_reset(void);

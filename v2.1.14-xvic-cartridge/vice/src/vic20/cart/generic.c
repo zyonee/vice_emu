@@ -72,41 +72,85 @@ static BYTE *cart_ram;
 static BYTE *cart_rom;
 
 /* Cartridge States */
+int generic_ram_blocks = 0;
+int generic_rom_blocks = 0;
 
 /* ------------------------------------------------------------------------- */
 
-/* 
- * 0x0400-0x0fff
- * 0x2000-0x7fff
- * 0xa000-0xbfff
- */
-void REGPARM2 generic_mem_store(WORD addr, BYTE value)
+void REGPARM2 generic_ram123_store(WORD addr, BYTE value)
 {
-    if (addr >= 0x0400 && addr < 0x1000) {
+    if (generic_ram_blocks & VIC_CART_RAM123) {
         cart_ram[(addr & 0x0fff) | 0x8000] = value;
     }
-    if (addr >= 0x2000 && addr < 0x8000) {
+}
+
+BYTE REGPARM1 generic_ram123_read(WORD addr)
+{
+    if (generic_ram_blocks & VIC_CART_RAM123) {
+        return cart_ram[(addr & 0x0fff) | 0x8000];
+    }
+    return cart_rom[(addr & 0x0fff) | 0x8000];
+}
+
+void REGPARM2 generic_blk1_store(WORD addr, BYTE value)
+{
+    if (generic_ram_blocks & VIC_CART_BLK1) {
         cart_ram[addr] = value;
     }
-    if (addr >= 0xa000 && addr < 0xc000) {
+}
+
+BYTE REGPARM1 generic_blk1_read(WORD addr)
+{
+    if (generic_ram_blocks & VIC_CART_BLK1) {
+        return cart_ram[addr];
+    }
+    return cart_rom[addr];
+}
+
+void REGPARM2 generic_blk2_store(WORD addr, BYTE value)
+{
+    if (generic_ram_blocks & VIC_CART_BLK2) {
+        cart_ram[addr] = value;
+    }
+}
+
+BYTE REGPARM1 generic_blk2_read(WORD addr)
+{
+    if (generic_ram_blocks & VIC_CART_BLK2) {
+        return cart_ram[addr];
+    }
+    return cart_rom[addr];
+}
+
+void REGPARM2 generic_blk3_store(WORD addr, BYTE value)
+{
+    if (generic_ram_blocks & VIC_CART_BLK3) {
+        cart_ram[addr] = value;
+    }
+}
+
+BYTE REGPARM1 generic_blk3_read(WORD addr)
+{
+    if (generic_ram_blocks & VIC_CART_BLK3) {
+        return cart_ram[addr];
+    }
+    return cart_rom[addr];
+}
+
+void REGPARM2 generic_blk5_store(WORD addr, BYTE value)
+{
+    if (generic_ram_blocks & VIC_CART_BLK5) {
         cart_ram[addr & 0x1fff] = value;
     }
 }
 
-BYTE REGPARM1 generic_mem_read(WORD addr)
+BYTE REGPARM1 generic_blk5_read(WORD addr)
 {
-    if (addr >= 0x0400 && addr < 0x1000) {
-        return cart_rom[(addr & 0x0fff) | 0x8000];
+    if (generic_ram_blocks & VIC_CART_BLK5) {
+        return cart_ram[addr & 0x1fff];
     }
-    if (addr >= 0x2000 && addr < 0x8000) {
-        return cart_rom[addr];
-    }
-    if (addr >= 0xa000 && addr < 0xc000) {
-        return cart_rom[addr & 0x1fff];
-    }
-    return 0x00; /* should never happen */
+    return cart_rom[addr & 0x1fff];
 }
-
 
 void generic_init(void)
 {
@@ -129,7 +173,9 @@ int generic_bin_attach(const char *filename)
         return -1;
     }
 
-    mem_cart_blocks = VIC_CART_BLK5;
+    generic_ram_blocks = 0;
+    generic_rom_blocks = VIC_CART_BLK5;
+    mem_cart_blocks = generic_ram_blocks | generic_rom_blocks;
     mem_initialize_memory();
     return 0;
 }
