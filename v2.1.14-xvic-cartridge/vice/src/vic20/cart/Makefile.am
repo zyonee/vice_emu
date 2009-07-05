@@ -7,6 +7,8 @@ INCLUDES = \
 noinst_LIBRARIES = libvic20cart.a
 
 libvic20cart_a_SOURCES = \
+	generic.c \
+	generic.h \
 	megacart.c \
 	megacart.h \
 	vic20cart.c \

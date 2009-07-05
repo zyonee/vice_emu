@@ -120,6 +120,7 @@ extern void cartridge_freeze(int type);
 /* 
  * VIC20 new cartridge system
  */
+#define CARTRIDGE_GENERIC  0x0100
 #define CARTRIDGE_MEGACART 0x0101
 
 #endif

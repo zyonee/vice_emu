@@ -1080,6 +1080,9 @@ IDCLS_SPECIFY_EXT_ROM_A000_NAME
 IDCLS_SPECIFY_EXT_ROM_B000_NAME
 
 /* vic20/cart/vic20cart.c */
+IDCLS_SPECIFY_GENERIC_ROM_NAME
+
+/* vic20/cart/vic20cart.c */
 IDCLS_SPECIFY_MEGA_CART_ROM_NAME
 
 /* vicii/vicii-cmdline-options.c */

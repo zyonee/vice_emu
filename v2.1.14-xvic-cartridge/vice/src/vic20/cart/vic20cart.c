@@ -210,6 +210,11 @@ static int attach_cart2(const char *param, void *extra_param)
     return cartridge_attach_image(CARTRIDGE_VIC20_16KB_2000, param);
 }
 
+static int attach_generic(const char *param, void *extra_param)
+{
+    return cartridge_attach_image(CARTRIDGE_GENERIC, param);
+}
+
 static int attach_megacart(const char *param, void *extra_param)
 {
     return cartridge_attach_image(CARTRIDGE_MEGACART, param);
@@ -252,6 +257,11 @@ static const cmdline_option_t cmdline_options[] =
       USE_PARAM_ID, USE_DESCRIPTION_ID,
       IDCLS_P_NAME, IDCLS_SPECIFY_EXT_ROM_B000_NAME,
       NULL, NULL },
+    { "-cartgeneric", CALL_FUNCTION, 1,
+      attach_generic, NULL, NULL, NULL,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_P_NAME, IDCLS_SPECIFY_GENERIC_ROM_NAME,
+      NULL, NULL },
     { "-cartmega", CALL_FUNCTION, 1,
       attach_megacart, NULL, NULL, NULL,
       USE_PARAM_ID, USE_DESCRIPTION_ID,
@@ -275,8 +285,12 @@ static int cartridge_attach_image_new(int type, const char *filename)
     int ret=0;
     vic20cart_type=type;
     switch (type) {
+    case CARTRIDGE_GENERIC:
+        ret = generic_bin_attach(filename);
+        break;
     case CARTRIDGE_MEGACART:
         ret = megacart_bin_attach(filename);
+        break;
     }
 
     cartridge_attach(type,NULL);
@@ -302,7 +316,7 @@ int cartridge_attach_image(int type, const char *filename)
     if (type == CARTRIDGE_NONE || filename==NULL || *filename == '\0')
         return 0;
 
-    if (type == CARTRIDGE_MEGACART) {
+    if (type == CARTRIDGE_GENERIC || type == CARTRIDGE_MEGACART) {
         /* handle the new cart system */
         return cartridge_attach_image_new(type, filename);
    }

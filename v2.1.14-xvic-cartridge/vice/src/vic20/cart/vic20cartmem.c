@@ -31,6 +31,7 @@
 #include <string.h>
 
 #include "cartridge.h"
+#include "generic.h"
 #include "megacart.h"
 #include "log.h"
 #include "machine.h"
@@ -97,6 +98,9 @@ void REGPARM2 cartridge_store_io3(WORD addr, BYTE value)
 BYTE REGPARM1 cartridge_read_ram123(WORD addr)
 {
     switch (mem_cartridge_type) {
+    case CARTRIDGE_GENERIC:
+        return generic_mem_read(addr);
+        break;
     case CARTRIDGE_MEGACART:
         return megacart_mem_read(addr);
         break;
@@ -107,6 +111,9 @@ BYTE REGPARM1 cartridge_read_ram123(WORD addr)
 void REGPARM2 cartridge_store_ram123(WORD addr, BYTE value)
 {
     switch (mem_cartridge_type) {
+    case CARTRIDGE_GENERIC:
+        generic_mem_store(addr, value);
+        break;
     case CARTRIDGE_MEGACART:
         megacart_mem_store(addr, value);
         break;
@@ -116,6 +123,9 @@ void REGPARM2 cartridge_store_ram123(WORD addr, BYTE value)
 BYTE REGPARM1 cartridge_read_blk1(WORD addr)
 {
     switch (mem_cartridge_type) {
+    case CARTRIDGE_GENERIC:
+        return generic_mem_read(addr);
+        break;
     case CARTRIDGE_MEGACART:
         return megacart_mem_read(addr);
         break;
@@ -126,6 +136,9 @@ BYTE REGPARM1 cartridge_read_blk1(WORD addr)
 void REGPARM2 cartridge_store_blk1(WORD addr, BYTE value)
 {
     switch (mem_cartridge_type) {
+    case CARTRIDGE_GENERIC:
+        generic_mem_store(addr, value);
+        break;
     case CARTRIDGE_MEGACART:
         megacart_mem_store(addr, value);
         break;
@@ -135,6 +148,9 @@ void REGPARM2 cartridge_store_blk1(WORD addr, BYTE value)
 BYTE REGPARM1 cartridge_read_blk2(WORD addr)
 {
     switch (mem_cartridge_type) {
+    case CARTRIDGE_GENERIC:
+        return generic_mem_read(addr);
+        break;
     case CARTRIDGE_MEGACART:
         return megacart_mem_read(addr);
         break;
@@ -145,6 +161,9 @@ BYTE REGPARM1 cartridge_read_blk2(WORD addr)
 void REGPARM2 cartridge_store_blk2(WORD addr, BYTE value)
 {
     switch (mem_cartridge_type) {
+    case CARTRIDGE_GENERIC:
+        generic_mem_store(addr, value);
+        break;
     case CARTRIDGE_MEGACART:
         megacart_mem_store(addr, value);
         break;
@@ -154,6 +173,9 @@ void REGPARM2 cartridge_store_blk2(WORD addr, BYTE value)
 BYTE REGPARM1 cartridge_read_blk3(WORD addr)
 {
     switch (mem_cartridge_type) {
+    case CARTRIDGE_GENERIC:
+        return generic_mem_read(addr);
+        break;
     case CARTRIDGE_MEGACART:
         return megacart_mem_read(addr);
         break;
@@ -164,6 +186,9 @@ BYTE REGPARM1 cartridge_read_blk3(WORD addr)
 void REGPARM2 cartridge_store_blk3(WORD addr, BYTE value)
 {
     switch (mem_cartridge_type) {
+    case CARTRIDGE_GENERIC:
+        generic_mem_store(addr, value);
+        break;
     case CARTRIDGE_MEGACART:
         megacart_mem_store(addr, value);
         break;
@@ -173,6 +198,9 @@ void REGPARM2 cartridge_store_blk3(WORD addr, BYTE value)
 BYTE REGPARM1 cartridge_read_blk5(WORD addr)
 {
     switch (mem_cartridge_type) {
+    case CARTRIDGE_GENERIC:
+        return generic_mem_read(addr);
+        break;
     case CARTRIDGE_MEGACART:
         return megacart_mem_read(addr);
         break;
@@ -183,6 +211,9 @@ BYTE REGPARM1 cartridge_read_blk5(WORD addr)
 void REGPARM2 cartridge_store_blk5(WORD addr, BYTE value)
 {
     switch (mem_cartridge_type) {
+    case CARTRIDGE_GENERIC:
+        generic_mem_store(addr, value);
+        break;
     case CARTRIDGE_MEGACART:
         megacart_mem_store(addr, value);
         break;
@@ -194,6 +225,9 @@ void REGPARM2 cartridge_store_blk5(WORD addr, BYTE value)
 void cartridge_init(void)
 {
     switch (mem_cartridge_type) {
+    case CARTRIDGE_GENERIC:
+        generic_init();
+        break;
     case CARTRIDGE_MEGACART:
         megacart_init();
         break;
@@ -203,6 +237,9 @@ void cartridge_init(void)
 void cartridge_reset(void)
 {
     switch (mem_cartridge_type) {
+    case CARTRIDGE_GENERIC:
+        generic_reset();
+        break;
     case CARTRIDGE_MEGACART:
         megacart_reset();
         break;
@@ -216,6 +253,9 @@ void cartridge_attach(int type, BYTE *rawcart)
     mem_cartridge_type = type;
 #if 0
     switch (type) {
+    case CARTRIDGE_GENERIC:
+        generic_config_setup(rawcart);
+        break;
     case CARTRIDGE_MEGACART:
         megacart_config_setup(rawcart);
         break;
@@ -237,6 +277,9 @@ void cartridge_detach(int type)
     int cartridge_reset;
 
     switch (type) {
+    case CARTRIDGE_GENERIC:
+        generic_detach();
+        break;
     case CARTRIDGE_MEGACART:
         megacart_detach();
         break;

@@ -8407,6 +8407,20 @@ translate_t string_table[] = {
 #endif
 
 /* vic20/cart/vic20cart.c */
+/* en */ {IDCLS_SPECIFY_GENERIC_ROM_NAME,    N_("Specify generic extension ROM name")},
+#ifdef HAS_TRANSLATION
+/* da */ {IDCLS_SPECIFY_GENERIC_ROM_NAME_DA, ""},  /* fuzzy */
+/* de */ {IDCLS_SPECIFY_GENERIC_ROM_NAME_DE, ""},  /* fuzzy */
+/* fr */ {IDCLS_SPECIFY_GENERIC_ROM_NAME_FR, ""},  /* fuzzy */
+/* hu */ {IDCLS_SPECIFY_GENERIC_ROM_NAME_HU, ""},  /* fuzzy */
+/* it */ {IDCLS_SPECIFY_GENERIC_ROM_NAME_IT, ""},  /* fuzzy */
+/* nl */ {IDCLS_SPECIFY_GENERIC_ROM_NAME_NL, ""},  /* fuzzy */
+/* pl */ {IDCLS_SPECIFY_GENERIC_ROM_NAME_PL, ""},  /* fuzzy */
+/* sv */ {IDCLS_SPECIFY_GENERIC_ROM_NAME_SV, "Ange namn för generiskt utöknings-ROM"},
+/* tr */ {IDCLS_SPECIFY_GENERIC_ROM_NAME_TR, ""},  /* fuzzy */
+#endif
+
+/* vic20/cart/vic20cart.c */
 /* en */ {IDCLS_SPECIFY_MEGA_CART_ROM_NAME,    N_("Specify Mega-Cart extension ROM name")},
 #ifdef HAS_TRANSLATION
 /* da */ {IDCLS_SPECIFY_MEGA_CART_ROM_NAME_DA, ""},  /* fuzzy */
