@@ -40,6 +40,7 @@
 #define VIC20_BASIC_CHECKSUM            33073
 #define VIC20_KERNAL_CHECKSUM           38203
 
+/* this should go away */
 #define VIC_ROM_BLK1A   1
 #define VIC_ROM_BLK1B   2
 #define VIC_ROM_BLK2A   4
@@ -60,6 +61,7 @@
 #define VIC_BLK5 16
 #define VIC_BLK_ALL (VIC_BLK0 | VIC_BLK1 | VIC_BLK2 | VIC_BLK3 | VIC_BLK5)
 
+/* this should go away */
 extern BYTE mem_cartrom[0x10000];
 
 /* new cart system */
@@ -76,6 +78,7 @@ extern int vic20_mem_init_cmdline_options(void);
 extern int vic20_mem_disable_ram_block(int num);
 extern int vic20_mem_enable_ram_block(int num);
 
+/* this should go away */
 extern void mem_attach_cartridge(int type, BYTE *rawcart);
 extern void mem_detach_cartridge(int type);
 

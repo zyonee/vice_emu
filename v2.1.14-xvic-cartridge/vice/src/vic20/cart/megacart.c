@@ -157,8 +157,23 @@ void REGPARM2 megacart_io3_store(WORD addr, BYTE value)
 }
 
 
+void REGPARM2 megacart_ram123_store(WORD addr, BYTE value)
+{
+    if (nvram_en_flop) {
+        cart_nvram[addr & 0x0fff] = value;
+    }
+}
+
+BYTE REGPARM1 megacart_ram123_read(WORD addr)
+{
+    if (nvram_en_flop) {
+        return cart_nvram[addr & 0x0fff];
+    } else {
+        return addr >> 8;
+    }
+}
+
 /* 
- * 0x0400-0x0fff
  * 0x2000-0x7fff
  * 0xa000-0xbfff
  */
@@ -169,12 +184,6 @@ void REGPARM2 megacart_mem_store(WORD addr, BYTE value)
     int ram_low_en;
     int ram_high_en;
     int ram_wp;
-
-    if (addr >= 0x0400 && addr < 0x1000) {
-        if (nvram_en_flop) {
-            cart_nvram[addr & 0x0fff] = value;
-        }
-    }
 
     /* get bank registers */
     bank_low = (oe_flop) ? bank_low_reg : 0x7f;
@@ -203,14 +212,6 @@ BYTE REGPARM1 megacart_mem_read(WORD addr)
     BYTE bank_high;
     int ram_low_en;
     int ram_high_en;
-
-    if (addr >= 0x0400 && addr < 0x1000) {
-        if (nvram_en_flop) {
-            return cart_nvram[addr & 0x0fff];
-        } else {
-            return addr >> 8;
-        }
-    }
 
     /* get bank registers */
     bank_low = (oe_flop) ? bank_low_reg : 0x7f;

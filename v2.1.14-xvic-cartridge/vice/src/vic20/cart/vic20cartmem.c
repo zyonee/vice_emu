@@ -103,7 +103,7 @@ BYTE REGPARM1 cartridge_read_ram123(WORD addr)
         return generic_ram123_read(addr);
         break;
     case CARTRIDGE_MEGACART:
-        return megacart_mem_read(addr);
+        return megacart_ram123_read(addr);
         break;
     }
     return 0xff;
@@ -116,7 +116,7 @@ void REGPARM2 cartridge_store_ram123(WORD addr, BYTE value)
         generic_ram123_store(addr, value);
         break;
     case CARTRIDGE_MEGACART:
-        megacart_mem_store(addr, value);
+        megacart_ram123_store(addr, value);
         break;
     }
 }
