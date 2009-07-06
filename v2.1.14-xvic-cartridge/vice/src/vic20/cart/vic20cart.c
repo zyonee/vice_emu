@@ -280,153 +280,44 @@ int cartridge_cmdline_options_init(void)
 
 /* ------------------------------------------------------------------------- */
 
-static int cartridge_attach_image_new(int type, const char *filename)
+int cartridge_attach_image(int type, const char *filename)
 {
     int ret=0;
+
+    /* Attaching no cartridge always works.  */
+    if (type == CARTRIDGE_NONE || filename==NULL || *filename == '\0')
+        return 0;
+
+    log_message(LOG_DEFAULT, "Attached cartridge type %d, file=`%s'.",
+                type, filename);
+
     vic20cart_type=type;
     switch (type) {
+    case CARTRIDGE_VIC20_4KB_2000:
+    case CARTRIDGE_VIC20_8KB_2000:
+    case CARTRIDGE_VIC20_4KB_6000:
+    case CARTRIDGE_VIC20_8KB_6000:
+    case CARTRIDGE_VIC20_4KB_A000:
+    case CARTRIDGE_VIC20_8KB_A000:
+    case CARTRIDGE_VIC20_4KB_B000:
+    case CARTRIDGE_VIC20_8KB_4000:
+    case CARTRIDGE_VIC20_4KB_4000:
+    case CARTRIDGE_VIC20_16KB_2000:
+    case CARTRIDGE_VIC20_16KB_4000:
+    case CARTRIDGE_VIC20_16KB_6000:
     case CARTRIDGE_GENERIC:
-        ret = generic_bin_attach(filename);
+        ret = generic_bin_attach(type, filename);
+        type = CARTRIDGE_GENERIC;
         break;
     case CARTRIDGE_MEGACART:
         ret = megacart_bin_attach(filename);
         break;
     }
 
-    cartridge_attach(type,NULL);
+    if (ret == 0) {
+        cartridge_attach(type,NULL);
+    }
     return ret;
-}
-
-static void cartridge_detach_image_new(void)
-{
-    cartridge_detach(vic20cart_type);
-}
-
-/* ------------------------------------------------------------------------- */
-
-int cartridge_attach_image(int type, const char *filename)
-{
-    BYTE rawcart[0x4000];
-    FILE *fd;
-    int addr;
-    size_t n;
-    int type2 = CARTRIDGE_VIC20_DETECT;
-
-    /* Attaching no cartridge always works.  */
-    if (type == CARTRIDGE_NONE || filename==NULL || *filename == '\0')
-        return 0;
-
-    if (type == CARTRIDGE_GENERIC || type == CARTRIDGE_MEGACART) {
-        /* handle the new cart system */
-        return cartridge_attach_image_new(type, filename);
-   }
-
-    log_message(LOG_DEFAULT, "Attached cartridge type %d, file=`%s'.",
-                type, filename);
-
-    fd = zfile_fopen(filename, MODE_READ);
-    if (!fd)
-        return -1;
-
-    addr = fgetc(fd);
-    addr = (addr & 0xff) | ((fgetc(fd) << 8) & 0xff00);
-
-    if (addr == 0x6000 || addr == 0x7000) {
-        type2 = CARTRIDGE_VIC20_16KB_6000;
-    } else if (addr == 0xA000) {
-        type2 = CARTRIDGE_VIC20_8KB_A000;
-    } else if (addr == 0x2000 || addr == 0x3000) {
-        type2 = CARTRIDGE_VIC20_16KB_2000;
-    } else if (addr == 0xB000) {
-        type2 = CARTRIDGE_VIC20_4KB_B000;
-    } else if (addr == 0x4000 || addr == 0x5000) {
-        type2 = CARTRIDGE_VIC20_16KB_4000;
-    }
-    if (type2 == CARTRIDGE_VIC20_DETECT) {
-        /* rewind to the beginning of the file (no load address) */
-        fseek(fd, 0, SEEK_SET);
-    }
-    if (type == CARTRIDGE_VIC20_DETECT) {
-        type = type2;
-    }
-
-    memset(rawcart, 0xff, 0x4000);
-
-    switch (type) {
-      case CARTRIDGE_VIC20_16KB_4000:
-        if ((n = fread(rawcart, 0x1000, 4, fd)) < 1) {
-            zfile_fclose(fd);
-            return -1;
-        }
-        if (n < 4) {
-            type = CARTRIDGE_VIC20_8KB_4000;
-            if (n < 2) {
-                memcpy(rawcart + 0x1000, rawcart, 0x1000);
-            }
-        }
-        util_string_set(&cartfile4, filename);
-        break;
-      case CARTRIDGE_VIC20_16KB_2000:
-        if ((n = fread(rawcart, 0x1000, 4, fd)) < 1) {
-            zfile_fclose(fd);
-            return -1;
-        }
-        if (n < 4) {
-            type = CARTRIDGE_VIC20_8KB_2000;
-            if (n < 2) {
-                /* type = CARTRIDGE_VIC20_4KB_2000; */
-                memcpy(rawcart + 0x1000, rawcart, 0x1000);
-            }
-        }
-        util_string_set(&cartfile2, filename);
-        break;
-      case CARTRIDGE_VIC20_16KB_6000:
-        if ((n = fread(rawcart, 0x1000, 4, fd)) < 1) {
-            zfile_fclose(fd);
-            return -1;
-        }
-        if (n < 4) {
-            type = CARTRIDGE_VIC20_8KB_6000;
-            if (n < 2) {
-                /* type = CARTRIDGE_VIC20_4KB_6000; */
-                memcpy(rawcart + 0x1000, rawcart, 0x1000);
-            }
-        }
-        util_string_set(&cartfile6, filename);
-        break;
-      case CARTRIDGE_VIC20_8KB_A000:
-        if ((n = fread(rawcart, 0x1000, 2, fd)) < 1) {
-            zfile_fclose(fd);
-            return -1;
-        }
-        if (n < 2) {
-            if (cartfileB) {
-                type = CARTRIDGE_VIC20_4KB_A000;
-            } else {
-                memcpy(rawcart + 0x1000, rawcart, 0x1000);
-            }
-        }
-        util_string_set(&cartfileA, filename);
-        break;
-      case CARTRIDGE_VIC20_4KB_B000:
-        if ((n = fread(rawcart, 0x1000, 1, fd)) < 1) {
-            zfile_fclose(fd);
-            return -1;
-        }
-        util_string_set(&cartfileB, filename);
-        break;
-      default:
-        zfile_fclose(fd);
-        return -1;
-    }
-
-    zfile_fclose(fd);
-
-#if 0
-    mem_attach_cartridge(type, rawcart);
-#endif
-
-    return 0;
 }
 
 void cartridge_detach_image(void)
@@ -436,14 +327,14 @@ void cartridge_detach_image(void)
     mem_detach_cartridge(CARTRIDGE_VIC20_8KB_4000);
     mem_detach_cartridge(CARTRIDGE_VIC20_8KB_6000);
     mem_detach_cartridge(CARTRIDGE_VIC20_8KB_A000);
-#endif
     util_string_set(&cartfile2, NULL);
     util_string_set(&cartfile4, NULL);
     util_string_set(&cartfile6, NULL);
     util_string_set(&cartfileA, NULL);
     util_string_set(&cartfileB, NULL);
+#endif
 
-    cartridge_detach_image_new();
+    cartridge_detach(vic20cart_type);
 }
 
 void cartridge_set_default(void)

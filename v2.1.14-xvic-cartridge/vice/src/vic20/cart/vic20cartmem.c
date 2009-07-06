@@ -286,6 +286,8 @@ void cartridge_detach(int type)
         break;
     }
     mem_cartridge_type = CARTRIDGE_NONE;
+    mem_cart_blocks = 0;
+    mem_initialize_memory();
 
     if (cartridge_reset != 0) {
         /* "Turn off machine before removing cartridge" */

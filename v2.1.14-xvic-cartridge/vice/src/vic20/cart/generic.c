@@ -164,7 +164,7 @@ void generic_config_setup(BYTE *rawcart)
 {
 }
 
-int generic_bin_attach(const char *filename)
+int generic_bin_attach(int type, const char *filename)
 {
     cart_ram = lib_malloc(CART_RAM_SIZE);
     cart_rom = lib_malloc(CART_ROM_SIZE);

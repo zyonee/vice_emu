@@ -50,7 +50,7 @@ extern void generic_init(void);
 extern void generic_reset(void);
 
 extern void generic_config_setup(BYTE *rawcart);
-extern int generic_bin_attach(const char *filename);
+extern int generic_bin_attach(int type, const char *filename);
 // extern int generic_bin_attach(const char *filename, BYTE *rawcart);
 // extern int generic_crt_attach(FILE *fd, BYTE *rawcart);
 extern void generic_detach(void);
