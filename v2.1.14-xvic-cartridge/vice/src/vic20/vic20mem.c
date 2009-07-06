@@ -4,6 +4,7 @@
  * Written by
  *  Ettore Perazzoli <ettore@comm2000.it>
  *  André Fachat <fachat@physik.tu-chemnitz.de>
+ *  Daniel Kahlin <daniel@kahlin.net>
  *
  * Multiple memory configuration support originally by
  *  Alexander Lehmann <alex@mathematik.th-darmstadt.de>
@@ -73,11 +74,6 @@ unsigned int mem_old_reg_pc;
 
 /* The VIC20 memory. */
 BYTE mem_ram[VIC20_RAM_SIZE];
-
-#if 0
-BYTE mem_cartrom[0x10000];  /* [tlr] this should be removed and replaced
-                               by cart/generic.c */
-#endif
 
 /* Last data read/write by the cpu, this value lingers on the C(PU)-bus and
    gets used when the CPU reads from unconnected space on the C(PU)-bus */
@@ -582,145 +578,6 @@ void mem_powerup(void)
 {
     ram_init(mem_ram, 0x8000);
     memset(mem_ram + 0x8000, 0, 0x8000);
-}
-
-/* ------------------------------------------------------------------------- */
-
-
-/* [tlr] this should be replaced by cart/generic.c */
-void mem_attach_cartridge(int type, BYTE * rawcart)
-{
-#if 0
-    switch(type) {
-      case CARTRIDGE_VIC20_4KB_2000:
-        log_message(vic20_mem_log, "CART: attaching 4KB cartridge at $2000.");
-        memcpy(mem_cartrom + 0x2000, rawcart, 0x2000);
-        mem_rom_blocks |= VIC_ROM_BLK1A;
-        resources_set_int("RAMBlock1", 0);
-        break;
-      case CARTRIDGE_VIC20_8KB_2000:
-        log_message(vic20_mem_log, "CART: attaching 8KB cartridge at $2000.");
-        memcpy(mem_cartrom + 0x2000, rawcart, 0x2000);
-        mem_rom_blocks |= VIC_ROM_BLK1A | VIC_ROM_BLK1B;
-        resources_set_int("RAMBlock1", 0);
-        break;
-      case CARTRIDGE_VIC20_16KB_2000:
-        log_message(vic20_mem_log, "CART: attaching 16KB cartridge at $2000.");
-        memcpy(mem_cartrom + 0x2000, rawcart, 0x2000);
-        memcpy(mem_cartrom + 0xA000, rawcart + 0x2000, 0x2000);
-        mem_rom_blocks |= VIC_ROM_BLK1A | VIC_ROM_BLK1B
-                        | VIC_ROM_BLK5A | VIC_ROM_BLK5B;
-        resources_set_int("RAMBlock1", 0);
-        resources_set_int("RAMBlock5", 0);
-        break;
-
-      case CARTRIDGE_VIC20_4KB_4000:
-        log_message(vic20_mem_log, "CART: attaching 4KB cartridge at $4000.");
-        memcpy(mem_cartrom + 0x4000, rawcart, 0x2000);
-        mem_rom_blocks |= VIC_ROM_BLK2A;
-        resources_set_int("RAMBlock2", 0);
-        break;
-      case CARTRIDGE_VIC20_8KB_4000:
-        log_message(vic20_mem_log, "CART: attaching 8KB cartridge at $4000.");
-        memcpy(mem_cartrom + 0x4000, rawcart, 0x2000);
-        mem_rom_blocks |= VIC_ROM_BLK2A | VIC_ROM_BLK2B;
-        resources_set_int("RAMBlock2", 0);
-        break;
-      case CARTRIDGE_VIC20_16KB_4000:
-        log_message(vic20_mem_log, "CART: attaching 16KB cartridge at $4000.");
-        memcpy(mem_cartrom + 0x4000, rawcart, 0x2000);
-        memcpy(mem_cartrom + 0xA000, rawcart + 0x2000, 0x2000);
-        mem_rom_blocks |= VIC_ROM_BLK2A | VIC_ROM_BLK2B
-                        | VIC_ROM_BLK5A | VIC_ROM_BLK5B;
-        resources_set_int("RAMBlock2", 0);
-        resources_set_int("RAMBlock5", 0);
-        break;
-
-      case CARTRIDGE_VIC20_4KB_6000:
-        log_message(vic20_mem_log, "CART: attaching 4KB cartridge at $6000.");
-        memcpy(mem_cartrom + 0x6000, rawcart, 0x2000);
-        mem_rom_blocks |= VIC_ROM_BLK3A;
-        resources_set_int("RAMBlock3", 0);
-        break;
-      case CARTRIDGE_VIC20_8KB_6000:
-        log_message(vic20_mem_log, "CART: attaching 8KB cartridge at $6000.");
-        memcpy(mem_cartrom + 0x6000, rawcart, 0x2000);
-        mem_rom_blocks |= VIC_ROM_BLK3A | VIC_ROM_BLK3B;
-        resources_set_int("RAMBlock3", 0);
-        break;
-      case CARTRIDGE_VIC20_16KB_6000:
-        log_message(vic20_mem_log, "CART: attaching 16KB cartridge at $6000.");
-        memcpy(mem_cartrom + 0x6000, rawcart, 0x2000);
-        memcpy(mem_cartrom + 0xA000, rawcart + 0x2000, 0x2000);
-        mem_rom_blocks |= VIC_ROM_BLK3A | VIC_ROM_BLK3B
-                        | VIC_ROM_BLK5A | VIC_ROM_BLK5B;
-        resources_set_int("RAMBlock3", 0);
-        resources_set_int("RAMBlock5", 0);
-        break;
-
-      case CARTRIDGE_VIC20_4KB_A000:
-        log_message(vic20_mem_log, "CART: attaching 4KB cartridge at $A000.");
-        memcpy(mem_cartrom + 0xa000, rawcart, 0x1000);
-        mem_rom_blocks |= VIC_ROM_BLK5A;
-        resources_set_int("RAMBlock5", 0);
-        break;
-      case CARTRIDGE_VIC20_8KB_A000:
-        log_message(vic20_mem_log, "CART: attaching 8KB cartridge at $A000.");
-        memcpy(mem_cartrom + 0xA000, rawcart, 0x2000);
-        mem_rom_blocks |= VIC_ROM_BLK5A | VIC_ROM_BLK5B;
-        resources_set_int("RAMBlock5", 0);
-        break;
-
-      case CARTRIDGE_VIC20_4KB_B000:
-        log_message(vic20_mem_log, "CART: attaching 4KB cartridge at $B000.");
-        memcpy(mem_cartrom + 0xB000, rawcart, 0x1000);
-        mem_rom_blocks |= VIC_ROM_BLK5B;
-        resources_set_int("RAMBlock5", 0);
-        break;
-      default:
-        log_error(vic20_mem_log, "Unknown Cartridge Type!");
-        return;
-    }
-
-    mem_initialize_memory();
-    return;
-#endif
-}
-
-void mem_detach_cartridge(int type)
-{
-#if 0
-    switch(type) {
-      case CARTRIDGE_VIC20_16KB_2000:
-        mem_rom_blocks &= ~(VIC_ROM_BLK5A | VIC_ROM_BLK5B);
-      case CARTRIDGE_VIC20_8KB_2000:
-      case CARTRIDGE_VIC20_4KB_2000:
-        mem_rom_blocks &= ~(VIC_ROM_BLK1A | VIC_ROM_BLK1B);
-        break;
-      case CARTRIDGE_VIC20_16KB_4000:
-        mem_rom_blocks &= ~(VIC_ROM_BLK5A | VIC_ROM_BLK5B);
-      case CARTRIDGE_VIC20_8KB_4000:
-      case CARTRIDGE_VIC20_4KB_4000:
-        mem_rom_blocks &= ~(VIC_ROM_BLK2A | VIC_ROM_BLK2B);
-        break;
-      case CARTRIDGE_VIC20_16KB_6000:
-        mem_rom_blocks &= ~(VIC_ROM_BLK5A | VIC_ROM_BLK5B);
-      case CARTRIDGE_VIC20_8KB_6000:
-      case CARTRIDGE_VIC20_4KB_6000:
-        mem_rom_blocks &= ~(VIC_ROM_BLK3A | VIC_ROM_BLK3B);
-        break;
-      case CARTRIDGE_VIC20_8KB_A000:
-      case CARTRIDGE_VIC20_4KB_A000:
-      case CARTRIDGE_VIC20_4KB_B000:
-        mem_rom_blocks &= ~(VIC_ROM_BLK5A | VIC_ROM_BLK5B);
-        break;
-      default:
-        return;
-    }
-
-    mem_initialize_memory();
-    return;
-#endif
 }
 
 /* ------------------------------------------------------------------------- */

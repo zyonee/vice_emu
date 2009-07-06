@@ -422,17 +422,21 @@ int cartridge_attach_image(int type, const char *filename)
 
     zfile_fclose(fd);
 
+#if 0
     mem_attach_cartridge(type, rawcart);
+#endif
 
     return 0;
 }
 
 void cartridge_detach_image(void)
 {
+#if 0
     mem_detach_cartridge(CARTRIDGE_VIC20_8KB_2000);
     mem_detach_cartridge(CARTRIDGE_VIC20_8KB_4000);
     mem_detach_cartridge(CARTRIDGE_VIC20_8KB_6000);
     mem_detach_cartridge(CARTRIDGE_VIC20_8KB_A000);
+#endif
     util_string_set(&cartfile2, NULL);
     util_string_set(&cartfile4, NULL);
     util_string_set(&cartfile6, NULL);

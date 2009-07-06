@@ -3,6 +3,7 @@
  *
  * Written by
  *  Ettore Perazzoli <ettore@comm2000.it>
+ *  Daniel Kahlin <daniel@kahlin.net>
  *
  * Memory configuration handling by
  *  Alexander Lehmann <alex@mathematik.th-darmstadt.de>
@@ -40,19 +41,6 @@
 #define VIC20_BASIC_CHECKSUM            33073
 #define VIC20_KERNAL_CHECKSUM           38203
 
-/* this should go away */
-#define VIC_ROM_BLK1A   1
-#define VIC_ROM_BLK1B   2
-#define VIC_ROM_BLK2A   4
-#define VIC_ROM_BLK2B   8
-#define VIC_ROM_BLK3A   16
-#define VIC_ROM_BLK3B   32
-#define VIC_ROM_BLK5A   64
-#define VIC_ROM_BLK5B   128
-
-#define VIC_ROM_BLK0A   0
-#define VIC_ROM_BLK0B   0
-
 /* VIC20 memory-related resources.  */
 #define VIC_BLK0 1
 #define VIC_BLK1 2
@@ -60,9 +48,6 @@
 #define VIC_BLK3 8
 #define VIC_BLK5 16
 #define VIC_BLK_ALL (VIC_BLK0 | VIC_BLK1 | VIC_BLK2 | VIC_BLK3 | VIC_BLK5)
-
-/* this should go away */
-extern BYTE mem_cartrom[0x10000];
 
 /* new cart system */
 #define VIC_CART_RAM123  (1<<0)
