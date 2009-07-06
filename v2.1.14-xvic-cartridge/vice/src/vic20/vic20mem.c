@@ -74,8 +74,10 @@ unsigned int mem_old_reg_pc;
 /* The VIC20 memory. */
 BYTE mem_ram[VIC20_RAM_SIZE];
 
+#if 0
 BYTE mem_cartrom[0x10000];  /* [tlr] this should be removed and replaced
                                by cart/generic.c */
+#endif
 
 /* Last data read/write by the cpu, this value lingers on the C(PU)-bus and
    gets used when the CPU reads from unconnected space on the C(PU)-bus */
@@ -588,6 +590,7 @@ void mem_powerup(void)
 /* [tlr] this should be replaced by cart/generic.c */
 void mem_attach_cartridge(int type, BYTE * rawcart)
 {
+#if 0
     switch(type) {
       case CARTRIDGE_VIC20_4KB_2000:
         log_message(vic20_mem_log, "CART: attaching 4KB cartridge at $2000.");
@@ -681,10 +684,12 @@ void mem_attach_cartridge(int type, BYTE * rawcart)
 
     mem_initialize_memory();
     return;
+#endif
 }
 
 void mem_detach_cartridge(int type)
 {
+#if 0
     switch(type) {
       case CARTRIDGE_VIC20_16KB_2000:
         mem_rom_blocks &= ~(VIC_ROM_BLK5A | VIC_ROM_BLK5B);
@@ -715,6 +720,7 @@ void mem_detach_cartridge(int type)
 
     mem_initialize_memory();
     return;
+#endif
 }
 
 /* ------------------------------------------------------------------------- */
