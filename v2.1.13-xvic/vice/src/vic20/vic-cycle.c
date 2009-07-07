@@ -103,6 +103,23 @@ static inline void vic_cycle_end_of_line(void)
     vic.raster_cycle = 0;
     vic_raster_draw_handler();
     vic.raster_line++;
+
+    if (vic.area == 1) {
+        vic.raster.ycounter++;
+
+        /* check if row step is pending */
+        if (vic.row_increase_line == (unsigned int)vic.raster.ycounter
+            || 2 * vic.row_increase_line == (unsigned int)vic.raster.ycounter) {
+            vic.raster.ycounter = 0;
+            vic.memptr += vic.text_cols;
+
+            vic.row_counter++;
+            if (vic.row_counter == vic.text_lines) {
+                vic_cycle_close_v();
+            }
+        }
+    }
+
     vic.fetch_state = VIC_FETCH_IDLE;
     vic.raster.blank_this_line = 1;
 }
@@ -110,15 +127,17 @@ static inline void vic_cycle_end_of_line(void)
 /* Handle end of frame */
 static inline void vic_cycle_end_of_frame(void)
 {
-    /* Close h-flipflop on end of frame */
+    /* Close v-flipflop on end of frame */
     if (vic.area == 1) {
         vic_cycle_close_v();
+        vic.raster.display_ystop = vic.raster_line - 1;
     }
 
     vic.raster_line = 0;
     vic.area = 0;
     vic.raster.display_ystart = -1;
     vic.raster.display_ystop = -1;
+    vic.raster.ycounter = 0;
 }
 
 /* Latch number of columns */
@@ -211,7 +230,7 @@ static inline void vic_cycle_fetch(void)
         case VIC_FETCH_CHARGEN:
             b = vic.vbuf;
             addr = ((vic.regs[5] & 0xf) << 10)
-                 + ((b * vic.char_height + ((vic.raster.ycounter - 1) & ((vic.char_height >> 1) | 7))));
+                 + ((b * vic.char_height + (vic.raster.ycounter & ((vic.char_height >> 1) | 7))));
 
             vic.gbuf[vic.buf_offset] = vic_cycle_do_fetch(vic_cycle_fix_addr(addr), &b);
 

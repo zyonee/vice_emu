@@ -202,6 +202,9 @@ void REGPARM2 vic_store(WORD addr, BYTE value)
 
             int new_char_height = (value & 0x1) ? 16 : 8;
 
+            vic.row_increase_line = new_char_height;
+            vic.char_height = new_char_height;
+
 #if 0   /* handled in vic_cycle */
             if (VIC_RASTER_Y(maincpu_clk) == 0
                 && VIC_RASTER_CYCLE(maincpu_clk) <= 2) {
@@ -217,7 +220,6 @@ void REGPARM2 vic_store(WORD addr, BYTE value)
                 /* later changes are visible in the next frame */
                 vic.pending_text_lines = new_text_lines;
             }
-#endif
 
             if (old_char_height != new_char_height) {
                 if (VIC_RASTER_CYCLE(maincpu_clk) >= 1) {
@@ -244,6 +246,7 @@ void REGPARM2 vic_store(WORD addr, BYTE value)
 
                 old_char_height = new_char_height;
             }
+#endif
         }
 
       return;

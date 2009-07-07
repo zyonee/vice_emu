@@ -156,7 +156,6 @@ void vic_raster_draw_handler(void)
     {
         vic.area = 1;
     }
-#endif
 
     /* check if row step is pending */
     if (vic.row_increase_line == (unsigned int)vic.raster.ycounter
@@ -185,6 +184,7 @@ void vic_raster_draw_handler(void)
 
     /* max offset for next row */
     possible_mem_offset = vic.text_cols;
+#endif
     
     /* emulate the line */
     raster_line_emulate(&vic.raster);
@@ -197,7 +197,6 @@ void vic_raster_draw_handler(void)
         vic.raster.display_xstop = (int)((vic.screen_width - 1)
                                    * VIC_PIXEL_WIDTH);
     }
-#endif
 
     /* increment ycounter and set offset for memptr */
     if (vic.area == 1) {
@@ -218,6 +217,7 @@ void vic_raster_draw_handler(void)
             vic.area = 2;
         }
     }
+#endif
 
     /* handle start of frame */
     if (vic.raster.current_line == 0) {
