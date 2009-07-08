@@ -118,6 +118,8 @@ typedef struct vic_light_pen_s vic_light_pen_t;
 enum vic_fetch_state_s {
     /* fetch has not started yet */
     VIC_FETCH_IDLE,
+    /* fetch starting */
+    VIC_FETCH_START,
     /* fetch from screen/color memomy */
     VIC_FETCH_MATRIX,
     /* fetch from chargen */

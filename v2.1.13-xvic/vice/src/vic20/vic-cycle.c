@@ -84,8 +84,10 @@ static inline void vic_cycle_open_h(void)
 
     if (xstop != xstart) {
         vic.raster.blank_this_line = 0;
-        vic.fetch_state = VIC_FETCH_MATRIX;
-        vic.buf_offset = 0;
+        vic.fetch_state = VIC_FETCH_START;
+        /* buf_offset used as delay counter before first matrix fetch */
+        /* TODO why is this needed? */
+        vic.buf_offset = 3;
     } else {
         vic.fetch_state = VIC_FETCH_DONE;
     }
@@ -213,7 +215,13 @@ static inline void vic_cycle_fetch(void)
             /* TODO verify idle fetch address */
             vic_cycle_do_fetch(0x001c, &b);
             break;
-
+        /* fetch starting */
+        case VIC_FETCH_START:
+            if ((--vic.buf_offset) == 0) {
+                vic.fetch_state = VIC_FETCH_MATRIX;
+            }
+            /* TODO fetch from where? */
+            break;
         /* fetch from screen/color memomy */
         case VIC_FETCH_MATRIX:
             addr = (((vic.regs[5] & 0xf0) << 6)
@@ -259,7 +267,7 @@ void vic_cycle(void)
 
     if (vic.area == 1) {
         /* Check for horizontal flipflop */
-        if (vic.fetch_state == VIC_FETCH_IDLE && (vic.regs[0] & 0x7f) == vic.raster_cycle) {
+        if ((vic.fetch_state == VIC_FETCH_IDLE) && (vic.regs[0] & 0x7f) == vic.raster_cycle) {
             vic_cycle_open_h();
         }
     }
