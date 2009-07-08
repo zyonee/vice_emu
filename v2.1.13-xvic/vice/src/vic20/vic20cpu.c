@@ -38,13 +38,7 @@ CLOCK maincpu_clk = 0L;
 
 #define REWIND_FETCH_OPCODE(clock) /*clock-=2*/
 
-static void vic20cpu_clock_inc(void)
-{
-    maincpu_clk++;
-    vic_cycle();
-}
-
-#define CLK_INC() vic20cpu_clock_inc()
+#define CLK_INC() maincpu_clk++; vic_cycle()
 
 #define CLK_ADD(clock, amount) nosuchfunction(&clock, amount)
 
