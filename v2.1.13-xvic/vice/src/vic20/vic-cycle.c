@@ -46,20 +46,25 @@
 
 /* ------------------------------------------------------------------------- */
 
+/* Close vertical flipflop */
+static inline void vic_cycle_close_v(void)
+{
+    vic.area = 2;
+    vic.raster.display_ystop = vic.raster_line;
+}
+
 /* Open vertical flipflop */
 static inline void vic_cycle_open_v(void)
 {
     vic.area = 1;
     vic.raster.display_ystart = vic.raster_line;
     vic.raster.geometry->gfx_position.y = vic.raster_line - vic.first_displayed_line;
-    vic.raster.display_ystop = vic.screen_height - 1;
-}
 
-/* Close vertical flipflop */
-static inline void vic_cycle_close_v(void)
-{
-    vic.area = 2;
-    vic.raster.display_ystop = vic.raster_line;
+    if (vic.text_lines == 0) {
+        vic_cycle_close_v();
+    } else {
+        vic.raster.display_ystop = vic.screen_height - 1;
+    }
 }
 
 /* Open horizontal flipflop */
