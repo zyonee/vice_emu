@@ -56,7 +56,7 @@
  * (by reasoning around minimal decoding, may be different on actual HW)
  */
 #define CART_RAM_SIZE 0x8000
-static BYTE *cart_ram;
+static BYTE *cart_ram = NULL;
 
 /*
  * Cartridge NvRAM
@@ -69,7 +69,7 @@ static BYTE *cart_ram;
  * (by reasoning around minimal decoding, may be different on actual HW)
  */
 #define CART_NVRAM_SIZE 0x2000
-static BYTE *cart_nvram;
+static BYTE *cart_nvram = NULL;
 
 /*
  * Cartridge ROM
@@ -81,7 +81,7 @@ static BYTE *cart_nvram;
  *
  */
 #define CART_ROM_SIZE 0x200000
-static BYTE *cart_rom;
+static BYTE *cart_rom = NULL;
 
 /* Cartridge States */
 static enum { BUTTON_RESET, SOFTWARE_RESET } reset_mode = BUTTON_RESET;
@@ -270,9 +270,16 @@ void megacart_config_setup(BYTE *rawcart)
 
 int megacart_bin_attach(const char *filename)
 {
-    cart_nvram = lib_malloc(CART_NVRAM_SIZE);
-    cart_ram = lib_malloc(CART_RAM_SIZE);
-    cart_rom = lib_malloc(CART_ROM_SIZE);
+    if (!cart_ram) {
+        cart_ram = lib_malloc(CART_RAM_SIZE);
+    }
+    if (!cart_nvram) {
+        cart_nvram = lib_malloc(CART_NVRAM_SIZE);
+    }
+    if (!cart_rom) {
+        cart_rom = lib_malloc(CART_ROM_SIZE);
+    }
+
     if ( util_file_load(filename, cart_rom, (size_t)CART_ROM_SIZE, UTIL_FILE_LOAD_RAW) < 0 ) {
         megacart_detach();
         return -1;
@@ -289,9 +296,20 @@ int megacart_bin_attach(const char *filename)
 
 void megacart_detach(void)
 {
-    lib_free(cart_rom);
-    lib_free(cart_nvram);
-    lib_free(cart_ram);
+    mem_cart_blocks = 0;
+    mem_initialize_memory();
+    if (cart_ram) {
+        lib_free(cart_ram);
+        cart_ram = NULL;
+    }
+    if (cart_nvram) {
+        lib_free(cart_nvram);
+        cart_nvram = NULL;
+    }
+    if (cart_rom) {
+        lib_free(cart_rom);
+        cart_rom = NULL;
+    }
 }
 
 /* ------------------------------------------------------------------------- */

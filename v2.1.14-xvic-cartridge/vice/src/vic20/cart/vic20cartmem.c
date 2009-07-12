@@ -286,6 +286,8 @@ void cartridge_detach(int type)
         break;
     }
     mem_cartridge_type = CARTRIDGE_NONE;
+    /* this is probably redundant as it is also performed by the
+       local detach functions. */
     mem_cart_blocks = 0;
     mem_initialize_memory();
 

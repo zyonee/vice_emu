@@ -166,10 +166,10 @@ void generic_config_setup(BYTE *rawcart)
 
 int generic_bin_attach(int type, const char *filename)
 {
-    if (cart_ram == NULL) {
+    if (!cart_ram) {
         cart_ram = lib_malloc(CART_RAM_SIZE);
     }
-    if (cart_rom == NULL) {
+    if (!cart_rom) {
         cart_rom = lib_malloc(CART_ROM_SIZE);
     }
     if ( util_file_load(filename, cart_rom, (size_t)0x2000, UTIL_FILE_LOAD_RAW) < 0 ) {
@@ -188,10 +188,14 @@ void generic_detach(void)
 {
     mem_cart_blocks = 0;
     mem_initialize_memory();
-    lib_free(cart_rom);
-    lib_free(cart_ram);
-    cart_rom = NULL;
-    cart_ram = NULL;
+    if (cart_ram) {
+        lib_free(cart_ram);
+        cart_ram = NULL;
+    }
+    if (cart_rom) {
+        lib_free(cart_rom);
+        cart_rom = NULL;
+    }
 }
 
 /* ------------------------------------------------------------------------- */
