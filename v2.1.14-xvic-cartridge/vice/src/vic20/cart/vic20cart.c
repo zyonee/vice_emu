@@ -282,6 +282,7 @@ int cartridge_cmdline_options_init(void)
 
 int cartridge_attach_image(int type, const char *filename)
 {
+    int type_orig;
     int ret=0;
 
     /* Attaching no cartridge always works.  */
@@ -291,8 +292,9 @@ int cartridge_attach_image(int type, const char *filename)
     log_message(LOG_DEFAULT, "Attached cartridge type %d, file=`%s'.",
                 type, filename);
 
-    vic20cart_type=type;
-    switch (type) {
+    /* do not auto detach GENERIC types with specific layout. */
+    type_orig=type;
+    switch (type_orig) {
     case CARTRIDGE_VIC20_4KB_2000:
     case CARTRIDGE_VIC20_8KB_2000:
     case CARTRIDGE_VIC20_4KB_6000:
@@ -305,14 +307,20 @@ int cartridge_attach_image(int type, const char *filename)
     case CARTRIDGE_VIC20_16KB_2000:
     case CARTRIDGE_VIC20_16KB_4000:
     case CARTRIDGE_VIC20_16KB_6000:
+        type=CARTRIDGE_GENERIC;
+    default:
+        cartridge_detach_image();
+    }
+
+    switch (type) {
     case CARTRIDGE_GENERIC:
-        ret = generic_bin_attach(type, filename);
-        type = CARTRIDGE_GENERIC;
+        ret = generic_bin_attach(type_orig, filename);
         break;
     case CARTRIDGE_MEGACART:
         ret = megacart_bin_attach(filename);
         break;
     }
+    vic20cart_type=type;
 
     if (ret == 0) {
         cartridge_attach(type,NULL);
