@@ -47,6 +47,12 @@ static UI_MENU_CALLBACK(attach_cart_callback)
 
     if (activated) {
         switch (vice_ptr_to_int(param)) {
+            case CARTRIDGE_MEGACART:
+                title = "Select Mega-Cart image";
+                break;
+            case CARTRIDGE_VIC20_DETECT:
+                title = "Select cartridge image";
+                break;
             case CARTRIDGE_VIC20_16KB_2000:
             case CARTRIDGE_VIC20_16KB_4000:
             case CARTRIDGE_VIC20_16KB_6000:
@@ -88,6 +94,10 @@ static UI_MENU_CALLBACK(set_cart_default_callback)
 }
 
 const ui_menu_entry_t vic20cart_menu[] = {
+    { "Smart-attach cartridge image",
+      MENU_ENTRY_DIALOG,
+      attach_cart_callback,
+      (ui_callback_data_t)CARTRIDGE_VIC20_DETECT },
     { "Attach 4/8/16kB image at $2000",
       MENU_ENTRY_DIALOG,
       attach_cart_callback,
@@ -108,6 +118,10 @@ const ui_menu_entry_t vic20cart_menu[] = {
       MENU_ENTRY_DIALOG,
       attach_cart_callback,
       (ui_callback_data_t)CARTRIDGE_VIC20_4KB_B000 },
+    { "Attach Mega-Cart image",
+      MENU_ENTRY_DIALOG,
+      attach_cart_callback,
+      (ui_callback_data_t)CARTRIDGE_MEGACART },
     SDL_MENU_ITEM_SEPARATOR,
     { "Detach cartridge image",
       MENU_ENTRY_OTHER,
