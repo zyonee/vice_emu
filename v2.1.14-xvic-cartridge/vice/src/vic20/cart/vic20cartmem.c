@@ -291,6 +291,8 @@ void cartridge_detach(int type)
     mem_cart_blocks = 0;
     mem_initialize_memory();
 
+    resources_get_int("CartridgeReset", &cartridge_reset);
+
     if (cartridge_reset != 0) {
         /* "Turn off machine before removing cartridge" */
         machine_trigger_reset(MACHINE_RESET_MODE_HARD);

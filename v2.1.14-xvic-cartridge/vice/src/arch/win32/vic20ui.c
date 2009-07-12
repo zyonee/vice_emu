@@ -65,7 +65,8 @@ static const ui_menu_toggle_t vic20_ui_menu_toggles[] = {
     { "IEEE488", IDM_IEEE488 },
     { "Mouse", IDM_PADDLES },
     { "OEMJoy", IDM_TOGGLE_OEM_JOY },
-    { NULL, 0 }
+    { "CartridgeReset", IDM_TOGGLE_CART_RESET },
+     { NULL, 0 }
 };
 
 static const uirom_settings_t uirom_settings[] = {
@@ -287,6 +288,7 @@ ui_menu_translation_table_t vic20ui_menu_translation_table[] = {
     { IDM_CART_VIC20_8KB_A000, IDS_MI_CART_VIC20_8KB_A000 },
     { IDM_CART_VIC20_4KB_B000, IDS_MI_CART_VIC20_4KB_B000 },
     { IDM_CART_VIC20_MEGACART, IDS_MI_CART_VIC20_MEGACART },
+    { IDM_TOGGLE_CART_RESET, IDS_MI_TOGGLE_CART_RESET },
     { IDM_VIC_SETTINGS, IDS_MI_VIC_SETTINGS },
     { 0, 0 }
 };
