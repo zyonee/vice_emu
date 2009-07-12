@@ -56,7 +56,7 @@
  *
  */
 #define CART_RAM_SIZE 0x9000
-static BYTE *cart_ram;
+static BYTE *cart_ram = NULL;
 
 /*
  * Cartridge ROM
@@ -69,7 +69,7 @@ static BYTE *cart_ram;
  *
  */
 #define CART_ROM_SIZE 0x9000
-static BYTE *cart_rom;
+static BYTE *cart_rom = NULL;
 
 /* Cartridge States */
 int generic_ram_blocks = 0;
@@ -166,8 +166,12 @@ void generic_config_setup(BYTE *rawcart)
 
 int generic_bin_attach(int type, const char *filename)
 {
-    cart_ram = lib_malloc(CART_RAM_SIZE);
-    cart_rom = lib_malloc(CART_ROM_SIZE);
+    if (cart_ram == NULL) {
+        cart_ram = lib_malloc(CART_RAM_SIZE);
+    }
+    if (cart_rom == NULL) {
+        cart_rom = lib_malloc(CART_ROM_SIZE);
+    }
     if ( util_file_load(filename, cart_rom, (size_t)0x2000, UTIL_FILE_LOAD_RAW) < 0 ) {
         generic_detach();
         return -1;
@@ -182,8 +186,12 @@ int generic_bin_attach(int type, const char *filename)
 
 void generic_detach(void)
 {
+    mem_cart_blocks = 0;
+    mem_initialize_memory();
     lib_free(cart_rom);
     lib_free(cart_ram);
+    cart_rom = NULL;
+    cart_ram = NULL;
 }
 
 /* ------------------------------------------------------------------------- */

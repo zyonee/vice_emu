@@ -308,6 +308,7 @@ int cartridge_attach_image(int type, const char *filename)
     case CARTRIDGE_VIC20_16KB_4000:
     case CARTRIDGE_VIC20_16KB_6000:
         type=CARTRIDGE_GENERIC;
+        break;
     default:
         cartridge_detach_image();
     }
