@@ -298,18 +298,12 @@ void megacart_detach(void)
 {
     mem_cart_blocks = 0;
     mem_initialize_memory();
-    if (cart_ram) {
-        lib_free(cart_ram);
-        cart_ram = NULL;
-    }
-    if (cart_nvram) {
-        lib_free(cart_nvram);
-        cart_nvram = NULL;
-    }
-    if (cart_rom) {
-        lib_free(cart_rom);
-        cart_rom = NULL;
-    }
+    lib_free(cart_ram);
+    lib_free(cart_nvram);
+    lib_free(cart_rom);
+    cart_ram = NULL;
+    cart_nvram = NULL;
+    cart_rom = NULL;
 }
 
 /* ------------------------------------------------------------------------- */
