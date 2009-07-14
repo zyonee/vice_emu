@@ -2,8 +2,11 @@
  * vic20cart.c - VIC20 Cartridge emulation.
  *
  * Written by
- *  André Fachat <fachat@physik.tu-chemnitz.de>
  *  Daniel Kahlin <daniel@kahlin.net>
+ *
+ * Based on code by 
+ *  André Fachat <fachat@physik.tu-chemnitz.de>
+ *  Andreas Boose <viceteam@t-online.de>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -52,6 +55,7 @@
 #include "resources.h"
 #include "translate.h"
 #include "util.h"
+#include "vic20cart.h"
 #include "vic20mem.h"
 #include "zfile.h"
 
@@ -64,12 +68,29 @@ static int vic20cartridge_reset;
 static int vic20cart_type = CARTRIDGE_NONE;
 static char *cartfile = NULL;
 
+
+static int cartres_flags = 0;
+
+void reset_try_flags(void)
+{
+    cartres_flags = 0;
+}
+
+int try_cartridge_attach(int c)
+{
+    cartres_flags ^= c;
+    if (cartres_flags) {
+        return 0;
+    }
+    return cartridge_attach_image(vic20cart_type, cartfile);
+}
+
 static int set_cartridge_type(int val, void *param)
 {
     cartridge_type = val;
     vic20cart_type = cartridge_type;
 
-    return 0;
+    return try_cartridge_attach(TRY_RESOURCE_CARTTYPE);
 }
 
 static int set_cartridge_file(const char *name, void *param)
@@ -77,14 +98,14 @@ static int set_cartridge_file(const char *name, void *param)
     util_string_set(&cartridge_file, name);
     util_string_set(&cartfile, name);
 
-    return 0;
+    return try_cartridge_attach(TRY_RESOURCE_CARTNAME);
 }
 
 static int set_cartridge_reset(int val, void *param)
 {
     vic20cartridge_reset = val;
 
-    return 0;
+    return try_cartridge_attach(TRY_RESOURCE_CARTRESET);
 }
 
 static const resource_string_t resources_string[] = {
@@ -235,8 +256,9 @@ int cartridge_attach_image(int type, const char *filename)
         ret = megacart_bin_attach(filename);
         break;
     }
-    vic20cart_type=type;
 
+    vic20cart_type = type;
+    util_string_set(&cartfile, filename);
     if (ret == 0) {
         cartridge_attach(type,NULL);
     }
