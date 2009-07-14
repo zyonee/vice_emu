@@ -84,8 +84,6 @@
 #include "video.h"
 #include "vsync.h"
 
-#define EXPERIMENTAL_CARTRIDGE 1
-
 #ifdef HAVE_MOUSE
 #include "mouse.h"
 #endif
@@ -412,9 +410,8 @@ int machine_specific_init(void)
 
     vic20iec_init();
 
-#if EXPERIMENTAL_CARTRIDGE
     cartridge_init();
-#endif
+
 #ifdef HAVE_MOUSE
     mouse_init();
 #endif
@@ -460,9 +457,7 @@ void machine_specific_reset(void)
 
     printer_reset();
 
-#if EXPERIMENTAL_CARTRIDGE
     cartridge_reset();
-#endif
     drive_reset();
     datasette_reset();
 }

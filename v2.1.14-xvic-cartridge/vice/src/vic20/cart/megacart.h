@@ -45,8 +45,8 @@ extern void megacart_reset(void);
 
 extern void megacart_config_setup(BYTE *rawcart);
 extern int megacart_bin_attach(const char *filename);
-// extern int megacart_bin_attach(const char *filename, BYTE *rawcart);
-// extern int megacart_crt_attach(FILE *fd, BYTE *rawcart);
+/* extern int megacart_bin_attach(const char *filename, BYTE *rawcart); */
+/* extern int megacart_crt_attach(FILE *fd, BYTE *rawcart); */
 extern void megacart_detach(void);
 
 #endif

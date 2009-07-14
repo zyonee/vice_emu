@@ -41,18 +41,18 @@ extern BYTE REGPARM1 generic_blk3_read(WORD addr);
 extern void REGPARM2 generic_blk3_store(WORD addr, BYTE value);
 extern BYTE REGPARM1 generic_blk5_read(WORD addr);
 extern void REGPARM2 generic_blk5_store(WORD addr, BYTE value);
-//extern BYTE REGPARM1 generic_io2_read(WORD addr);
-//extern void REGPARM2 generic_io2_store(WORD addr, BYTE value);
-//extern BYTE REGPARM1 generic_io3_read(WORD addr);
-//extern void REGPARM2 generic_io3_store(WORD addr, BYTE value);
+/* extern BYTE REGPARM1 generic_io2_read(WORD addr); */
+/* extern void REGPARM2 generic_io2_store(WORD addr, BYTE value); */
+/* extern BYTE REGPARM1 generic_io3_read(WORD addr); */
+/* extern void REGPARM2 generic_io3_store(WORD addr, BYTE value); */
 
 extern void generic_init(void);
 extern void generic_reset(void);
 
 extern void generic_config_setup(BYTE *rawcart);
 extern int generic_bin_attach(int type, const char *filename);
-// extern int generic_bin_attach(const char *filename, BYTE *rawcart);
-// extern int generic_crt_attach(FILE *fd, BYTE *rawcart);
+/* extern int generic_bin_attach(const char *filename, BYTE *rawcart); */
+/* extern int generic_crt_attach(FILE *fd, BYTE *rawcart); */
 extern void generic_detach(void);
 
 extern int generic_resources_init(void);

@@ -275,6 +275,7 @@ void cartridge_set_default(void)
 {
     set_cartridge_type(vic20cart_type, NULL);
     set_cartridge_file((vic20cart_type == CARTRIDGE_NONE) ? "" : cartfile, NULL);
+    reset_try_flags();
 }
 
 const char *cartridge_get_file_name(WORD addr)
