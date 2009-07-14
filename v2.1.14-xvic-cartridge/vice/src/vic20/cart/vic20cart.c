@@ -268,6 +268,7 @@ int cartridge_attach_image(int type, const char *filename)
 void cartridge_detach_image(void)
 {
     cartridge_detach(vic20cart_type);
+    vic20cart_type = CARTRIDGE_NONE;
 }
 
 void cartridge_set_default(void)
