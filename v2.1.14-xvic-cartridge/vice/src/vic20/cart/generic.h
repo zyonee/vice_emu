@@ -58,6 +58,10 @@ extern void generic_detach(void);
 extern int generic_resources_init(void);
 extern void generic_resources_shutdown(void);
 
+/* special case handling need for multiple file generic carts */
+extern int generic_attach_from_resource(int type, const char *filename);
+extern void generic_set_default(void);
 extern const char *generic_get_file_name(WORD addr);
+
 
 #endif

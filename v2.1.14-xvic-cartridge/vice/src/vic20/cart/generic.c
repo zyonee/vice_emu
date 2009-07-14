@@ -40,9 +40,17 @@
 #include "resources.h"
 #include "types.h"
 #include "util.h"
+#include "vic20cart.h"
 #include "vic20cartmem.h"
 #include "vic20mem.h"
 #include "zfile.h"
+
+
+#define TRY_RESOURCE_CARTFILE2 (1<<8)
+#define TRY_RESOURCE_CARTFILE4 (1<<9)
+#define TRY_RESOURCE_CARTFILE6 (1<<10)
+#define TRY_RESOURCE_CARTFILEA (1<<11)
+#define TRY_RESOURCE_CARTFILEB (1<<12)
 
 /* ------------------------------------------------------------------------- */
 
@@ -327,6 +335,18 @@ static int attach_image(int type, const char *filename)
 
 /* ------------------------------------------------------------------------- */
 
+int generic_attach_from_resource(int type, const char *filename)
+{
+    if (filename==NULL || *filename == '\0') {
+        return cartridge_attach_image(CARTRIDGE_VIC20_16KB_2000, cartfile2)
+            || cartridge_attach_image(CARTRIDGE_VIC20_16KB_4000, cartfile4)
+            || cartridge_attach_image(CARTRIDGE_VIC20_16KB_6000, cartfile6)
+            || cartridge_attach_image(CARTRIDGE_VIC20_8KB_A000, cartfileA)
+            || cartridge_attach_image(CARTRIDGE_VIC20_4KB_B000, cartfileB);
+    }
+    return cartridge_attach_image(type, filename);
+}
+
 int generic_bin_attach(int type, const char *filename)
 {
     if (!cart_ram) {
@@ -377,57 +397,67 @@ void generic_detach(void)
 
 static int set_cartridge_file_2(const char *name, void *param)
 {
+#if 0
     if (cartridge_file_2 != NULL && name != NULL
         && strcmp(name, cartridge_file_2) == 0)
         return 0;
+#endif
 
     util_string_set(&cartridge_file_2, name);
     util_string_set(&cartfile2, name);
-    return cartridge_attach_image(CARTRIDGE_VIC20_16KB_2000, cartfile2);
+    return try_cartridge_attach(TRY_RESOURCE_CARTFILE2);
 }
 
 static int set_cartridge_file_4(const char *name, void *param)
 {
+#if 0
     if (cartridge_file_4 != NULL && name != NULL
         && strcmp(name, cartridge_file_4) == 0)
         return 0;
+#endif
 
     util_string_set(&cartridge_file_4, name);
     util_string_set(&cartfile4, name);
-    return cartridge_attach_image(CARTRIDGE_VIC20_16KB_4000, cartfile4);
+    return try_cartridge_attach(TRY_RESOURCE_CARTFILE4);
 }
 
 static int set_cartridge_file_6(const char *name, void *param)
 {
+#if 0
     if (cartridge_file_6 != NULL && name != NULL
         && strcmp(name, cartridge_file_6) == 0)
         return 0;
+#endif
 
     util_string_set(&cartridge_file_6, name);
     util_string_set(&cartfile6, name);
-    return cartridge_attach_image(CARTRIDGE_VIC20_16KB_6000, cartfile6);
+    return try_cartridge_attach(TRY_RESOURCE_CARTFILE6);
 }
 
 static int set_cartridge_file_A(const char *name, void *param)
 {
+#if 0
     if (cartridge_file_A != NULL && name != NULL
         && strcmp(name, cartridge_file_A) == 0)
         return 0;
+#endif
 
     util_string_set(&cartridge_file_A, name);
     util_string_set(&cartfileA, name);
-    return cartridge_attach_image(CARTRIDGE_VIC20_8KB_A000, cartfileA);
+    return try_cartridge_attach(TRY_RESOURCE_CARTFILEA);
 }
 
 static int set_cartridge_file_B(const char *name, void *param)
 {
+#if 0
     if (cartridge_file_B != NULL && name != NULL
         && strcmp(name, cartridge_file_B) == 0)
         return 0;
+#endif
 
     util_string_set(&cartridge_file_B, name);
     util_string_set(&cartfileB, name);
-    return cartridge_attach_image(CARTRIDGE_VIC20_4KB_B000, cartfileB);
+    return try_cartridge_attach(TRY_RESOURCE_CARTFILEB);
 }
 
 static const resource_string_t resources_string[] =
@@ -462,6 +492,15 @@ void generic_resources_shutdown(void)
     lib_free(cartfile6);
     lib_free(cartfileA);
     lib_free(cartfileB);
+}
+
+void generic_set_default(void)
+{
+    set_cartridge_file_2(cartfile2, NULL);
+    set_cartridge_file_4(cartfile4, NULL);
+    set_cartridge_file_6(cartfile6, NULL);
+    set_cartridge_file_A(cartfileA, NULL);
+    set_cartridge_file_B(cartfileB, NULL);
 }
 
 const char *generic_get_file_name(WORD addr)

@@ -68,8 +68,9 @@ static int vic20cartridge_reset;
 static int vic20cart_type = CARTRIDGE_NONE;
 static char *cartfile = NULL;
 
-
 static int cartres_flags = 0;
+
+static int cartridge_attach_from_resource(int type, const char *filename);
 
 void reset_try_flags(void)
 {
@@ -82,7 +83,8 @@ int try_cartridge_attach(int c)
     if (cartres_flags) {
         return 0;
     }
-    return cartridge_attach_image(vic20cart_type, cartfile);
+
+    return cartridge_attach_from_resource(vic20cart_type, cartfile);
 }
 
 static int set_cartridge_type(int val, void *param)
@@ -142,17 +144,19 @@ void cartridge_resources_shutdown(void)
     lib_free(cartfile);
 }
 
+static int detach_cartridge_cmdline(const char *param, void *extra_param)
+{
+    /*
+     * this is called by '+cart' and relies on that command line options
+     * are processed after the default cartridge gets attached via
+     * resources/.ini.
+     */
+    cartridge_detach_image();
+    return 0;
+}
+
 static int attach_cartridge_cmdline(const char *param, void *extra_param)
 {
-    if (!param) {
-        /*
-         * this is called by '+cart' or any '-cart* ""' and relies on that
-         * command line option are processed after the default cartridge
-         * gets attached via resources/.ini.
-         */
-        cartridge_detach_image();
-        return 0;
-    }
     return cartridge_attach_image(vice_ptr_to_int(extra_param), param);
 }
 
@@ -204,7 +208,7 @@ static const cmdline_option_t cmdline_options[] =
       IDCLS_P_NAME, IDCLS_SPECIFY_MEGA_CART_ROM_NAME,
       NULL, NULL },
     { "+cart", CALL_FUNCTION, 0,
-      attach_cartridge_cmdline, NULL, NULL, NULL,
+      detach_cartridge_cmdline, NULL, NULL, NULL,
       USE_PARAM_STRING, USE_DESCRIPTION_ID,
       IDCLS_UNUSED, IDCLS_DISABLE_CART,
       NULL, NULL },
@@ -220,6 +224,14 @@ int cartridge_cmdline_options_init(void)
 }
 
 /* ------------------------------------------------------------------------- */
+static int cartridge_attach_from_resource(int type, const char *filename)
+{
+    if (vic20cart_type == CARTRIDGE_VIC20_GENERIC) {
+        /* special case handling for the multiple file generic type */
+        return generic_attach_from_resource(vic20cart_type, cartfile);
+    }
+    return cartridge_attach_image(vic20cart_type, cartfile);
+}
 
 int cartridge_attach_image(int type, const char *filename)
 {
@@ -231,7 +243,7 @@ int cartridge_attach_image(int type, const char *filename)
         return 0;
 
     log_message(LOG_DEFAULT, "Attached cartridge type %d, file=`%s'.",
-                type, filename);
+          type, filename);
 
     type_orig=type;
     switch (type_orig) {
@@ -289,6 +301,10 @@ void cartridge_set_default(void)
 {
     set_cartridge_type(vic20cart_type, NULL);
     set_cartridge_file((vic20cart_type == CARTRIDGE_NONE) ? "" : cartfile, NULL);
+    if (vic20cart_type == CARTRIDGE_VIC20_GENERIC) {
+        /* special case handling for the multiple file generic type */
+        return generic_set_default();
+    }
     reset_try_flags();
 }
 
