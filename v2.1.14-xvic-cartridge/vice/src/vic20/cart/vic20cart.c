@@ -144,6 +144,15 @@ void cartridge_resources_shutdown(void)
 
 static int attach_cartridge_cmdline(const char *param, void *extra_param)
 {
+    if (!param) {
+        /*
+         * this is called by '+cart' or any '-cart* ""' and relies on that
+         * command line option are processed after the default cartridge
+         * gets attached via resources/.ini.
+         */
+        cartridge_detach_image();
+        return 0;
+    }
     return cartridge_attach_image(vice_ptr_to_int(extra_param), param);
 }
 
@@ -193,6 +202,11 @@ static const cmdline_option_t cmdline_options[] =
       attach_cartridge_cmdline, (void *)CARTRIDGE_VIC20_MEGACART, NULL, NULL,
       USE_PARAM_ID, USE_DESCRIPTION_ID,
       IDCLS_P_NAME, IDCLS_SPECIFY_MEGA_CART_ROM_NAME,
+      NULL, NULL },
+    { "+cart", CALL_FUNCTION, 0,
+      attach_cartridge_cmdline, NULL, NULL, NULL,
+      USE_PARAM_STRING, USE_DESCRIPTION_ID,
+      IDCLS_UNUSED, IDCLS_DISABLE_CART,
       NULL, NULL },
     { NULL }
 };
