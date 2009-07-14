@@ -27,15 +27,11 @@
 #include "vice.h"
 
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 #include "cartridge.h"
 #include "generic.h"
 #include "megacart.h"
-#include "log.h"
 #include "machine.h"
-#include "maincpu.h"
 
 #ifdef WATCOM_COMPILE
 #include "../mem.h"
@@ -43,13 +39,9 @@
 #include "mem.h"
 #endif
 
-#include "ram.h"
 #include "resources.h"
 #include "types.h"
-#include "uiapi.h"
-#include "vic20-resources.h"
-#include "vic20mem.h"
-#include "vic20memrom.h"
+#include "vic20cartmem.h"
 
 /* ------------------------------------------------------------------------- */
 

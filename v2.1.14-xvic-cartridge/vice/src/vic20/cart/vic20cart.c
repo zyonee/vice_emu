@@ -41,7 +41,6 @@
 #include <sys/types.h>
 #endif
 
-#include "archdep.h"
 #include "cartridge.h"
 #include "cmdline.h"
 #include "generic.h"
