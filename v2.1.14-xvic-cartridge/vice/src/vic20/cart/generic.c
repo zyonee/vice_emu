@@ -50,6 +50,23 @@
 
 /* ------------------------------------------------------------------------- */
 
+/* actual resources */
+static char *cartridge_file_2 = NULL;
+static char *cartridge_file_4 = NULL;
+static char *cartridge_file_6 = NULL;
+static char *cartridge_file_A = NULL;
+static char *cartridge_file_B = NULL;
+
+/* local shadow of some resources (e.g not yet set as default) */
+/* filenames of separate binaries. */
+static char *cartfile2 = NULL;
+static char *cartfile4 = NULL;
+static char *cartfile6 = NULL;
+static char *cartfileA = NULL;
+static char *cartfileB = NULL;
+
+/* ------------------------------------------------------------------------- */
+
 /*
  * Cartridge RAM
  *
@@ -80,19 +97,6 @@ static BYTE *cart_rom = NULL;
 int generic_ram_blocks = 0;
 int generic_rom_blocks = 0;
 
-/* Hm, if this gets more, I should introduce an array :-) */
-static char *cartridge_file_2 = NULL;
-static char *cartridge_file_4 = NULL;
-static char *cartridge_file_6 = NULL;
-static char *cartridge_file_A = NULL;
-static char *cartridge_file_B = NULL;
-
-/* filenames of separate binaries. */
-static char *cartfile2 = NULL;
-static char *cartfile4 = NULL;
-static char *cartfile6 = NULL;
-static char *cartfileA = NULL;
-static char *cartfileB = NULL;
 
 /* ------------------------------------------------------------------------- */
 
@@ -459,4 +463,23 @@ void generic_resources_shutdown(void)
     lib_free(cartfileA);
     lib_free(cartfileB);
 }
+
+const char *generic_get_file_name(WORD addr)
+{
+    switch (addr) {
+      case 0x2000:
+        return cartfile2;
+      case 0x4000:
+        return cartfile4;
+      case 0x6000:
+        return cartfile6;
+      case 0xa000:
+        return cartfileA;
+      case 0xb000:
+        return cartfileB;
+      default:
+        return NULL;
+    }
+}
+
 /* eof */

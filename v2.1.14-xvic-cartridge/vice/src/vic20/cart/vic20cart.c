@@ -56,12 +56,13 @@
 #include "vic20mem.h"
 #include "zfile.h"
 
+/* actual resources */
 static char *cartridge_file = NULL;
 static int cartridge_type;
 static int vic20cartridge_reset;
 
-/* new cart system: Which cart to attach */
-int vic20cart_type = CARTRIDGE_NONE;
+/* local shadow of some resources (e.g not yet set as default) */
+static int vic20cart_type = CARTRIDGE_NONE;
 static char *cartfile = NULL;
 
 static int set_cartridge_type(int val, void *param)
@@ -121,39 +122,9 @@ void cartridge_resources_shutdown(void)
     lib_free(cartfile);
 }
 
-static int attach_cartB(const char *param, void *extra_param)
+static int attach_cartridge_cmdline(const char *param, void *extra_param)
 {
-    return cartridge_attach_image(CARTRIDGE_VIC20_4KB_B000, param);
-}
-
-static int attach_cartA(const char *param, void *extra_param)
-{
-    return cartridge_attach_image(CARTRIDGE_VIC20_8KB_A000, param);
-}
-
-static int attach_cart6(const char *param, void *extra_param)
-{
-    return cartridge_attach_image(CARTRIDGE_VIC20_16KB_6000, param);
-}
-
-static int attach_cart4(const char *param, void *extra_param)
-{
-    return cartridge_attach_image(CARTRIDGE_VIC20_16KB_4000, param);
-}
-
-static int attach_cart2(const char *param, void *extra_param)
-{
-    return cartridge_attach_image(CARTRIDGE_VIC20_16KB_2000, param);
-}
-
-static int attach_generic(const char *param, void *extra_param)
-{
-    return cartridge_attach_image(CARTRIDGE_VIC20_GENERIC, param);
-}
-
-static int attach_megacart(const char *param, void *extra_param)
-{
-    return cartridge_attach_image(CARTRIDGE_VIC20_MEGACART, param);
+    return cartridge_attach_image(vice_ptr_to_int(extra_param), param);
 }
 
 static const cmdline_option_t cmdline_options[] =
@@ -169,37 +140,37 @@ static const cmdline_option_t cmdline_options[] =
       IDCLS_UNUSED, IDCLS_CART_ATTACH_DETACH_NO_RESET,
       NULL, NULL },
     { "-cart2", CALL_FUNCTION, 1,
-      attach_cart2, NULL, NULL, NULL,
+      attach_cartridge_cmdline, (void *)CARTRIDGE_VIC20_16KB_2000, NULL, NULL,
       USE_PARAM_ID, USE_DESCRIPTION_ID,
       IDCLS_P_NAME, IDCLS_SPECIFY_EXT_ROM_2000_NAME,
       NULL, NULL },
     { "-cart4", CALL_FUNCTION, 1,
-      attach_cart4, NULL, NULL, NULL,
+      attach_cartridge_cmdline, (void *)CARTRIDGE_VIC20_16KB_4000, NULL, NULL,
       USE_PARAM_ID, USE_DESCRIPTION_ID,
       IDCLS_P_NAME, IDCLS_SPECIFY_EXT_ROM_4000_NAME,
       NULL, NULL },
     { "-cart6", CALL_FUNCTION, 1,
-      attach_cart6, NULL, NULL, NULL,
+      attach_cartridge_cmdline, (void *)CARTRIDGE_VIC20_16KB_6000, NULL, NULL,
       USE_PARAM_ID, USE_DESCRIPTION_ID,
       IDCLS_P_NAME, IDCLS_SPECIFY_EXT_ROM_6000_NAME,
       NULL, NULL },
     { "-cartA", CALL_FUNCTION, 1,
-      attach_cartA, NULL, NULL, NULL,
+      attach_cartridge_cmdline, (void *)CARTRIDGE_VIC20_8KB_A000, NULL, NULL,
       USE_PARAM_ID, USE_DESCRIPTION_ID,
       IDCLS_P_NAME, IDCLS_SPECIFY_EXT_ROM_A000_NAME,
       NULL, NULL },
     { "-cartB", CALL_FUNCTION, 1,
-      attach_cartB, NULL, NULL, NULL,
+      attach_cartridge_cmdline, (void *)CARTRIDGE_VIC20_4KB_B000, NULL, NULL,
       USE_PARAM_ID, USE_DESCRIPTION_ID,
       IDCLS_P_NAME, IDCLS_SPECIFY_EXT_ROM_B000_NAME,
       NULL, NULL },
     { "-cartgeneric", CALL_FUNCTION, 1,
-      attach_generic, NULL, NULL, NULL,
+      attach_cartridge_cmdline, (void *)CARTRIDGE_VIC20_GENERIC, NULL, NULL,
       USE_PARAM_ID, USE_DESCRIPTION_ID,
       IDCLS_P_NAME, IDCLS_SPECIFY_GENERIC_ROM_NAME,
       NULL, NULL },
     { "-cartmega", CALL_FUNCTION, 1,
-      attach_megacart, NULL, NULL, NULL,
+      attach_cartridge_cmdline, (void *)CARTRIDGE_VIC20_MEGACART, NULL, NULL,
       USE_PARAM_ID, USE_DESCRIPTION_ID,
       IDCLS_P_NAME, IDCLS_SPECIFY_MEGA_CART_ROM_NAME,
       NULL, NULL },
@@ -280,32 +251,16 @@ void cartridge_detach_image(void)
 
 void cartridge_set_default(void)
 {
-#if 0
-    set_cartridge_file_2(cartfile2, NULL);
-    set_cartridge_file_4(cartfile4, NULL);
-    set_cartridge_file_6(cartfile6, NULL);
-    set_cartridge_file_A(cartfileA, NULL);
-    set_cartridge_file_B(cartfileB, NULL);
-#endif
+    set_cartridge_type(vic20cart_type, NULL);
+    set_cartridge_file((vic20cart_type == CARTRIDGE_NONE) ? "" : cartfile, NULL);
 }
 
 const char *cartridge_get_file_name(WORD addr)
 {
-#if 0
-    switch (addr) {
-      case 0x2000:
-        return cartfile2;
-      case 0x4000:
-        return cartfile4;
-      case 0x6000:
-        return cartfile6;
-      case 0xa000:
-        return cartfileA;
-      case 0xb000:
-        return cartfileB;
-      default:
-        return NULL;
+    if (vic20cart_type == CARTRIDGE_VIC20_GENERIC) {
+        /* special case handling for the multiple file generic type */
+        return generic_get_file_name(addr);
     }
-#endif
-    return NULL;
+
+    return cartfile;
 }

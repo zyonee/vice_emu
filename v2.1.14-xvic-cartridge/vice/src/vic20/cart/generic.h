@@ -58,4 +58,6 @@ extern void generic_detach(void);
 extern int generic_resources_init(void);
 extern void generic_resources_shutdown(void);
 
+extern const char *generic_file_name(WORD addr);
+
 #endif
