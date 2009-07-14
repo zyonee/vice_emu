@@ -4,6 +4,9 @@
  * Written by
  *  Daniel Kahlin <daniel@kahlin.net>
  *
+ * Original individual file code by
+ *  André Fachat <fachat@physik.tu-chemnitz.de>
+ *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
  *
@@ -29,6 +32,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "archdep.h"
 #include "cartridge.h"
 #include "lib.h"
 #include "machine.h"
@@ -42,6 +46,7 @@
 #include "resources.h"
 #include "types.h"
 #include "util.h"
+#include "zfile.h"
 
 /* ------------------------------------------------------------------------- */
 
@@ -74,6 +79,13 @@ static BYTE *cart_rom = NULL;
 /* Cartridge States */
 int generic_ram_blocks = 0;
 int generic_rom_blocks = 0;
+
+/* filenames of separate binaries. */
+static char *cartfile2 = NULL;
+static char *cartfile4 = NULL;
+static char *cartfile6 = NULL;
+static char *cartfileA = NULL;
+static char *cartfileB = NULL;
 
 /* ------------------------------------------------------------------------- */
 
@@ -152,6 +164,8 @@ BYTE REGPARM1 generic_blk5_read(WORD addr)
     return cart_rom[addr & 0x1fff];
 }
 
+/* ------------------------------------------------------------------------- */
+
 void generic_init(void)
 {
 }
@@ -164,6 +178,140 @@ void generic_config_setup(BYTE *rawcart)
 {
 }
 
+
+/* ------------------------------------------------------------------------- */
+
+static int attach_image(int type, const char *filename)
+{
+    BYTE rawcart[0x4000];
+    FILE *fd;
+    int addr;
+    size_t n;
+    int type2 = CARTRIDGE_VIC20_DETECT;
+
+    fd = zfile_fopen(filename, MODE_READ);
+    if (!fd)
+        return -1;
+
+    addr = fgetc(fd);
+    addr = (addr & 0xff) | ((fgetc(fd) << 8) & 0xff00);
+
+    if (addr == 0x6000 || addr == 0x7000) {
+        type2 = CARTRIDGE_VIC20_16KB_6000;
+    } else if (addr == 0xA000) {
+        type2 = CARTRIDGE_VIC20_8KB_A000;
+    } else if (addr == 0x2000 || addr == 0x3000) {
+        type2 = CARTRIDGE_VIC20_16KB_2000;
+    } else if (addr == 0xB000) {
+        type2 = CARTRIDGE_VIC20_4KB_B000;
+    } else if (addr == 0x4000 || addr == 0x5000) {
+        type2 = CARTRIDGE_VIC20_16KB_4000;
+    }
+    if (type2 == CARTRIDGE_VIC20_DETECT) {
+        /* rewind to the beginning of the file (no load address) */
+        fseek(fd, 0, SEEK_SET);
+    }
+    if (type == CARTRIDGE_VIC20_DETECT) {
+        type = type2;
+    }
+
+    memset(rawcart, 0xff, 0x4000);
+
+    switch (type) {
+      case CARTRIDGE_VIC20_16KB_4000:
+        if ((n = fread(rawcart, 0x1000, 4, fd)) < 1) {
+            zfile_fclose(fd);
+            return -1;
+        }
+        if (n < 4) {
+            type = CARTRIDGE_VIC20_8KB_4000;
+            if (n < 2) {
+                memcpy(rawcart + 0x1000, rawcart, 0x1000);
+            }
+        }
+        util_string_set(&cartfile4, filename);
+        break;
+      case CARTRIDGE_VIC20_16KB_2000:
+        if ((n = fread(rawcart, 0x1000, 4, fd)) < 1) {
+            zfile_fclose(fd);
+            return -1;
+        }
+        if (n < 4) {
+            type = CARTRIDGE_VIC20_8KB_2000;
+            if (n < 2) {
+                /* type = CARTRIDGE_VIC20_4KB_2000; */
+                memcpy(rawcart + 0x1000, rawcart, 0x1000);
+            }
+        }
+        util_string_set(&cartfile2, filename);
+        break;
+      case CARTRIDGE_VIC20_16KB_6000:
+        if ((n = fread(rawcart, 0x1000, 4, fd)) < 1) {
+            zfile_fclose(fd);
+            return -1;
+        }
+        if (n < 4) {
+            type = CARTRIDGE_VIC20_8KB_6000;
+            if (n < 2) {
+                /* type = CARTRIDGE_VIC20_4KB_6000; */
+                memcpy(rawcart + 0x1000, rawcart, 0x1000);
+            }
+        }
+        util_string_set(&cartfile6, filename);
+        break;
+      case CARTRIDGE_VIC20_8KB_A000:
+        if ((n = fread(rawcart, 0x1000, 2, fd)) < 1) {
+            zfile_fclose(fd);
+            return -1;
+        }
+        if (n < 2) {
+            if (cartfileB) {
+                type = CARTRIDGE_VIC20_4KB_A000;
+            } else {
+                memcpy(rawcart + 0x1000, rawcart, 0x1000);
+            }
+        }
+        util_string_set(&cartfileA, filename);
+        break;
+      case CARTRIDGE_VIC20_4KB_B000:
+        if ((n = fread(rawcart, 0x1000, 1, fd)) < 1) {
+            zfile_fclose(fd);
+            return -1;
+        }
+        util_string_set(&cartfileB, filename);
+        break;
+      default:
+        zfile_fclose(fd);
+        return -1;
+    }
+
+    zfile_fclose(fd);
+
+    /* attach cartridge data */
+    switch (type) {
+    case CARTRIDGE_VIC20_8KB_2000:
+        memcpy(cart_rom+0x2000, rawcart, 0x2000);
+        generic_rom_blocks |= VIC_CART_BLK1;
+        break;
+    case CARTRIDGE_VIC20_8KB_4000:
+        memcpy(cart_rom+0x4000, rawcart, 0x2000);
+        generic_rom_blocks |= VIC_CART_BLK2;
+        break;
+    case CARTRIDGE_VIC20_8KB_6000:
+        memcpy(cart_rom+0x6000, rawcart, 0x2000);
+        generic_rom_blocks |= VIC_CART_BLK3;
+        break;
+    case CARTRIDGE_VIC20_8KB_A000:
+        memcpy(cart_rom+0x0000, rawcart, 0x2000);
+        generic_rom_blocks |= VIC_CART_BLK5;
+        break;
+    }
+
+    return 0;
+}
+
+/* ------------------------------------------------------------------------- */
+
 int generic_bin_attach(int type, const char *filename)
 {
     if (!cart_ram) {
@@ -172,13 +320,12 @@ int generic_bin_attach(int type, const char *filename)
     if (!cart_rom) {
         cart_rom = lib_malloc(CART_ROM_SIZE);
     }
-    if ( util_file_load(filename, cart_rom, (size_t)0x2000, UTIL_FILE_LOAD_RAW) < 0 ) {
+
+    if ( attach_image(type, filename) < 0 ) {
         generic_detach();
         return -1;
     }
 
-    generic_ram_blocks = 0;
-    generic_rom_blocks = VIC_CART_BLK5;
     mem_cart_blocks = generic_ram_blocks | generic_rom_blocks;
     mem_initialize_memory();
     return 0;
@@ -186,12 +333,20 @@ int generic_bin_attach(int type, const char *filename)
 
 void generic_detach(void)
 {
+    generic_ram_blocks = 0;
+    generic_rom_blocks = 0;
     mem_cart_blocks = 0;
     mem_initialize_memory();
     lib_free(cart_ram);
     lib_free(cart_rom);
     cart_ram = NULL;
     cart_rom = NULL;
+
+    util_string_set(&cartfile2, NULL);
+    util_string_set(&cartfile4, NULL);
+    util_string_set(&cartfile6, NULL);
+    util_string_set(&cartfileA, NULL);
+    util_string_set(&cartfileB, NULL);
 }
 
 /* ------------------------------------------------------------------------- */
