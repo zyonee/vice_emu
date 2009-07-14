@@ -337,7 +337,11 @@ int generic_bin_attach(int type, const char *filename)
     }
 
     if (type == CARTRIDGE_VIC20_GENERIC) {
-        generic_detach();
+        /*
+         * The only difference between these two is that
+         * CARTRIDGE_VIC20_GENERIC detaches the previous cart.
+         * (in vic20cart.c)
+         */
         type = CARTRIDGE_VIC20_DETECT;
     }
 
