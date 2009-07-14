@@ -332,7 +332,7 @@ static void vic20_ui_specific(WPARAM wparam, HWND hwnd)
         break;
       case IDM_CART_VIC20_MEGACART:
         uicart_attach_special(hwnd, translate_text(IDS_SELECT_MEGACART),
-                              UILIB_FILTER_ALL, CARTRIDGE_MEGACART);
+                              UILIB_FILTER_ALL, CARTRIDGE_VIC20_MEGACART);
         break;
       case IDM_CART_SET_DEFAULT:
         cartridge_set_default();

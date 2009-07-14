@@ -56,11 +56,29 @@
 #include "vic20mem.h"
 #include "zfile.h"
 
+static char *cartridge_file = NULL;
+static int cartridge_type;
 static int vic20cartridge_reset;
 
 /* new cart system: Which cart to attach */
 int vic20cart_type = CARTRIDGE_NONE;
+static char *cartfile = NULL;
 
+static int set_cartridge_type(int val, void *param)
+{
+    cartridge_type = val;
+    vic20cart_type = cartridge_type;
+
+    return 0;
+}
+
+static int set_cartridge_file(const char *name, void *param)
+{
+    util_string_set(&cartridge_file, name);
+    util_string_set(&cartfile, name);
+
+    return 0;
+}
 
 static int set_cartridge_reset(int val, void *param)
 {
@@ -69,7 +87,15 @@ static int set_cartridge_reset(int val, void *param)
     return 0;
 }
 
+static const resource_string_t resources_string[] = {
+    { "CartridgeFile", "", RES_EVENT_NO, NULL,
+      &cartridge_file, set_cartridge_file, NULL },
+    { NULL }
+};
 static const resource_int_t resources_int[] = {
+    { "CartridgeType", CARTRIDGE_NONE,
+      RES_EVENT_STRICT, (resource_value_t)CARTRIDGE_NONE,
+      &cartridge_type, set_cartridge_type, NULL },
     { "CartridgeReset", 1, RES_EVENT_NO, NULL,
       &vic20cartridge_reset, set_cartridge_reset, NULL },
     { NULL }
@@ -80,6 +106,9 @@ int cartridge_resources_init(void)
     if ( resources_register_int(resources_int) < 0) {
         return -1;
     }
+    if ( resources_register_string(resources_string) < 0) {
+        return -1;
+    }
 
     return generic_resources_init();
 }
@@ -87,6 +116,9 @@ int cartridge_resources_init(void)
 void cartridge_resources_shutdown(void)
 {
     generic_resources_shutdown();
+
+    lib_free(cartridge_file);
+    lib_free(cartfile);
 }
 
 static int attach_cartB(const char *param, void *extra_param)
@@ -116,12 +148,12 @@ static int attach_cart2(const char *param, void *extra_param)
 
 static int attach_generic(const char *param, void *extra_param)
 {
-    return cartridge_attach_image(CARTRIDGE_GENERIC, param);
+    return cartridge_attach_image(CARTRIDGE_VIC20_GENERIC, param);
 }
 
 static int attach_megacart(const char *param, void *extra_param)
 {
-    return cartridge_attach_image(CARTRIDGE_MEGACART, param);
+    return cartridge_attach_image(CARTRIDGE_VIC20_MEGACART, param);
 }
 
 static const cmdline_option_t cmdline_options[] =
@@ -196,9 +228,9 @@ int cartridge_attach_image(int type, const char *filename)
     log_message(LOG_DEFAULT, "Attached cartridge type %d, file=`%s'.",
                 type, filename);
 
-    /* do not auto detach GENERIC types with specific layout. */
     type_orig=type;
     switch (type_orig) {
+    case CARTRIDGE_VIC20_DETECT:
     case CARTRIDGE_VIC20_4KB_2000:
     case CARTRIDGE_VIC20_8KB_2000:
     case CARTRIDGE_VIC20_4KB_6000:
@@ -211,17 +243,25 @@ int cartridge_attach_image(int type, const char *filename)
     case CARTRIDGE_VIC20_16KB_2000:
     case CARTRIDGE_VIC20_16KB_4000:
     case CARTRIDGE_VIC20_16KB_6000:
-        type=CARTRIDGE_GENERIC;
+        /* 
+         * For specific layouts only detach if we were something else than
+         * CARTRIDGE_VIC20_GENERIC before.
+         * This allows us to add images to a generic type.
+         */
+        if (vic20cart_type != CARTRIDGE_VIC20_GENERIC) {
+            cartridge_detach_image();
+        }
+        type=CARTRIDGE_VIC20_GENERIC;
         break;
     default:
         cartridge_detach_image();
     }
 
     switch (type) {
-    case CARTRIDGE_GENERIC:
+    case CARTRIDGE_VIC20_GENERIC:
         ret = generic_bin_attach(type_orig, filename);
         break;
-    case CARTRIDGE_MEGACART:
+    case CARTRIDGE_VIC20_MEGACART:
         ret = megacart_bin_attach(filename);
         break;
     }

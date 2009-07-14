@@ -336,7 +336,8 @@ int generic_bin_attach(int type, const char *filename)
         cart_rom = lib_malloc(CART_ROM_SIZE);
     }
 
-    if (type == CARTRIDGE_GENERIC) {
+    if (type == CARTRIDGE_VIC20_GENERIC) {
+        generic_detach();
         type = CARTRIDGE_VIC20_DETECT;
     }
 

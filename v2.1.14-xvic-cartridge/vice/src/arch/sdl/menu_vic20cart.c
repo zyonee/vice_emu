@@ -47,7 +47,7 @@ static UI_MENU_CALLBACK(attach_cart_callback)
 
     if (activated) {
         switch (vice_ptr_to_int(param)) {
-            case CARTRIDGE_MEGACART:
+            case CARTRIDGE_VIC20_MEGACART:
                 title = "Select Mega-Cart image";
                 break;
             case CARTRIDGE_VIC20_DETECT:
@@ -121,7 +121,7 @@ const ui_menu_entry_t vic20cart_menu[] = {
     { "Attach Mega-Cart image",
       MENU_ENTRY_DIALOG,
       attach_cart_callback,
-      (ui_callback_data_t)CARTRIDGE_MEGACART },
+      (ui_callback_data_t)CARTRIDGE_VIC20_MEGACART },
     SDL_MENU_ITEM_SEPARATOR,
     { "Detach cartridge image",
       MENU_ENTRY_OTHER,
