@@ -25,13 +25,6 @@
  *
  */
 
-/*
- * Those cartridge files are different from "normal" ROM images.
- * The VIC20 cartridges are saved with their start address before
- * the actual data.
- * This allows us to autodetect them etc.
- */
-
 #include "vice.h"
 
 #include <stdio.h>
@@ -68,73 +61,6 @@ static int vic20cartridge_reset;
 /* new cart system: Which cart to attach */
 int vic20cart_type = CARTRIDGE_NONE;
 
-/* Hm, if this gets more, I should introduce an array :-) */
-static char *cartridge_file_2 = NULL;
-static char *cartridge_file_4 = NULL;
-static char *cartridge_file_6 = NULL;
-static char *cartridge_file_A = NULL;
-static char *cartridge_file_B = NULL;
-
-static char *cartfile2 = NULL;
-static char *cartfile4 = NULL;
-static char *cartfile6 = NULL;
-static char *cartfileA = NULL;
-static char *cartfileB = NULL;
-
-static int set_cartridge_file_2(const char *name, void *param)
-{
-    if (cartridge_file_2 != NULL && name != NULL
-        && strcmp(name, cartridge_file_2) == 0)
-        return 0;
-
-    util_string_set(&cartridge_file_2, name);
-    util_string_set(&cartfile2, name);
-    return cartridge_attach_image(CARTRIDGE_VIC20_16KB_2000, cartfile2);
-}
-
-static int set_cartridge_file_4(const char *name, void *param)
-{
-    if (cartridge_file_4 != NULL && name != NULL
-        && strcmp(name, cartridge_file_4) == 0)
-        return 0;
-
-    util_string_set(&cartridge_file_4, name);
-    util_string_set(&cartfile4, name);
-    return cartridge_attach_image(CARTRIDGE_VIC20_16KB_4000, cartfile4);
-}
-
-static int set_cartridge_file_6(const char *name, void *param)
-{
-    if (cartridge_file_6 != NULL && name != NULL
-        && strcmp(name, cartridge_file_6) == 0)
-        return 0;
-
-    util_string_set(&cartridge_file_6, name);
-    util_string_set(&cartfile6, name);
-    return cartridge_attach_image(CARTRIDGE_VIC20_16KB_6000, cartfile6);
-}
-
-static int set_cartridge_file_A(const char *name, void *param)
-{
-    if (cartridge_file_A != NULL && name != NULL
-        && strcmp(name, cartridge_file_A) == 0)
-        return 0;
-
-    util_string_set(&cartridge_file_A, name);
-    util_string_set(&cartfileA, name);
-    return cartridge_attach_image(CARTRIDGE_VIC20_8KB_A000, cartfileA);
-}
-
-static int set_cartridge_file_B(const char *name, void *param)
-{
-    if (cartridge_file_B != NULL && name != NULL
-        && strcmp(name, cartridge_file_B) == 0)
-        return 0;
-
-    util_string_set(&cartridge_file_B, name);
-    util_string_set(&cartfileB, name);
-    return cartridge_attach_image(CARTRIDGE_VIC20_4KB_B000, cartfileB);
-}
 
 static int set_cartridge_reset(int val, void *param)
 {
@@ -142,21 +68,6 @@ static int set_cartridge_reset(int val, void *param)
 
     return 0;
 }
-
-static const resource_string_t resources_string[] =
-{
-    { "CartridgeFile2000", "", RES_EVENT_STRICT, (resource_value_t)"",
-      &cartridge_file_2, set_cartridge_file_2, NULL },
-    { "CartridgeFile4000", "", RES_EVENT_STRICT, (resource_value_t)"",
-      &cartridge_file_4, set_cartridge_file_4, NULL },
-    { "CartridgeFile6000", "", RES_EVENT_STRICT, (resource_value_t)"",
-      &cartridge_file_6, set_cartridge_file_6, NULL },
-    { "CartridgeFileA000", "", RES_EVENT_STRICT, (resource_value_t)"",
-      &cartridge_file_A, set_cartridge_file_A, NULL },
-    { "CartridgeFileB000", "", RES_EVENT_STRICT, (resource_value_t)"",
-      &cartridge_file_B, set_cartridge_file_B, NULL },
-    { NULL }
-};
 
 static const resource_int_t resources_int[] = {
     { "CartridgeReset", 1, RES_EVENT_NO, NULL,
@@ -166,25 +77,16 @@ static const resource_int_t resources_int[] = {
 
 int cartridge_resources_init(void)
 {
-    if ( resources_register_string(resources_string) < 0) {
+    if ( resources_register_int(resources_int) < 0) {
         return -1;
     }
 
-    return resources_register_int(resources_int);
+    return generic_resources_init();
 }
 
 void cartridge_resources_shutdown(void)
 {
-    lib_free(cartridge_file_2);
-    lib_free(cartridge_file_4);
-    lib_free(cartridge_file_6);
-    lib_free(cartridge_file_A);
-    lib_free(cartridge_file_B);
-    lib_free(cartfile2);
-    lib_free(cartfile4);
-    lib_free(cartfile6);
-    lib_free(cartfileA);
-    lib_free(cartfileB);
+    generic_resources_shutdown();
 }
 
 static int attach_cartB(const char *param, void *extra_param)
@@ -333,32 +235,23 @@ int cartridge_attach_image(int type, const char *filename)
 
 void cartridge_detach_image(void)
 {
-#if 0
-    mem_detach_cartridge(CARTRIDGE_VIC20_8KB_2000);
-    mem_detach_cartridge(CARTRIDGE_VIC20_8KB_4000);
-    mem_detach_cartridge(CARTRIDGE_VIC20_8KB_6000);
-    mem_detach_cartridge(CARTRIDGE_VIC20_8KB_A000);
-    util_string_set(&cartfile2, NULL);
-    util_string_set(&cartfile4, NULL);
-    util_string_set(&cartfile6, NULL);
-    util_string_set(&cartfileA, NULL);
-    util_string_set(&cartfileB, NULL);
-#endif
-
     cartridge_detach(vic20cart_type);
 }
 
 void cartridge_set_default(void)
 {
+#if 0
     set_cartridge_file_2(cartfile2, NULL);
     set_cartridge_file_4(cartfile4, NULL);
     set_cartridge_file_6(cartfile6, NULL);
     set_cartridge_file_A(cartfileA, NULL);
     set_cartridge_file_B(cartfileB, NULL);
+#endif
 }
 
 const char *cartridge_get_file_name(WORD addr)
 {
+#if 0
     switch (addr) {
       case 0x2000:
         return cartfile2;
@@ -373,4 +266,6 @@ const char *cartridge_get_file_name(WORD addr)
       default:
         return NULL;
     }
+#endif
+    return NULL;
 }

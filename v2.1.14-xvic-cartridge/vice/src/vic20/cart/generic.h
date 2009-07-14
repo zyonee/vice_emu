@@ -55,4 +55,7 @@ extern int generic_bin_attach(int type, const char *filename);
 // extern int generic_crt_attach(FILE *fd, BYTE *rawcart);
 extern void generic_detach(void);
 
+extern int generic_resources_init(void);
+extern void generic_resources_shutdown(void);
+
 #endif
