@@ -32,16 +32,13 @@
 #include "cartridge.h"
 #include "lib.h"
 #include "machine.h"
-#include "maincpu.h"
 #include "megacart.h"
 #include "mem.h"
-#include "vic20mem.h"
-#include "vic20cartmem.h"
-#include "monitor.h"
-#include "ram.h"
 #include "resources.h"
 #include "types.h"
 #include "util.h"
+#include "vic20cartmem.h"
+#include "vic20mem.h"
 
 /* ------------------------------------------------------------------------- */
 
