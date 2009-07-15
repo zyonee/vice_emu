@@ -236,6 +236,7 @@ static int cartridge_attach_from_resource(int type, const char *filename)
 int cartridge_attach_image(int type, const char *filename)
 {
     int type_orig;
+    int generic_multifile = 0;
     int ret=0;
 
     /* Attaching no cartridge always works.  */
@@ -268,6 +269,7 @@ int cartridge_attach_image(int type, const char *filename)
         if (vic20cart_type != CARTRIDGE_VIC20_GENERIC) {
             cartridge_detach_image();
         }
+        generic_multifile = 1;
         type=CARTRIDGE_VIC20_GENERIC;
         break;
     default:
@@ -284,7 +286,11 @@ int cartridge_attach_image(int type, const char *filename)
     }
 
     vic20cart_type = type;
-    util_string_set(&cartfile, filename);
+    if (generic_multifile) {
+        util_string_set(&cartfile, NULL);
+    } else {
+        util_string_set(&cartfile, filename);
+    }
     if (ret == 0) {
         cartridge_attach(type,NULL);
     }
@@ -301,10 +307,10 @@ void cartridge_set_default(void)
 {
     set_cartridge_type(vic20cart_type, NULL);
     set_cartridge_file((vic20cart_type == CARTRIDGE_NONE) ? "" : cartfile, NULL);
-    if (vic20cart_type == CARTRIDGE_VIC20_GENERIC) {
-        /* special case handling for the multiple file generic type */
-        return generic_set_default();
-    }
+    /* special case handling for the multiple file generic type */
+    generic_set_default();
+
+    /* reset the try flags (we've only called the set function once each) */
     reset_try_flags();
 }
 
