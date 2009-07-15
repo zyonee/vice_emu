@@ -29,6 +29,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "archdep.h"
 #include "cartridge.h"
 #include "lib.h"
 #include "machine.h"
@@ -39,6 +40,7 @@
 #include "util.h"
 #include "vic20cartmem.h"
 #include "vic20mem.h"
+#include "zfile.h"
 
 /* ------------------------------------------------------------------------- */
 
@@ -265,6 +267,27 @@ void megacart_config_setup(BYTE *rawcart)
 {
 }
 
+
+static int zfile_load(const char *filename, BYTE *dest, size_t size)
+{
+    FILE *fd;
+
+    fd = zfile_fopen(filename, MODE_READ);
+    if (!fd) {
+        return -1;
+    }
+    if (util_file_length(fd) != size) {
+        zfile_fclose(fd);
+        return -1;
+    }
+    if ( fread(cart_rom, size, 1, fd) < 1) {
+        zfile_fclose(fd);
+        return -1;
+    }
+    zfile_fclose(fd);
+    return 0;
+}
+
 int megacart_bin_attach(const char *filename)
 {
     if (!cart_ram) {
@@ -277,10 +300,11 @@ int megacart_bin_attach(const char *filename)
         cart_rom = lib_malloc(CART_ROM_SIZE);
     }
 
-    if ( util_file_load(filename, cart_rom, (size_t)CART_ROM_SIZE, UTIL_FILE_LOAD_RAW) < 0 ) {
+    if ( zfile_load(filename, cart_rom, (size_t)CART_ROM_SIZE) < 0 ) {
         megacart_detach();
         return -1;
     }
+
     cart_rom_low = cart_rom;
     cart_rom_high = cart_rom + 0x100000;
 
