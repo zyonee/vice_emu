@@ -397,12 +397,6 @@ void generic_detach(void)
 
 static int set_cartridge_file_2(const char *name, void *param)
 {
-#if 0
-    if (cartridge_file_2 != NULL && name != NULL
-        && strcmp(name, cartridge_file_2) == 0)
-        return 0;
-#endif
-
     util_string_set(&cartridge_file_2, name);
     util_string_set(&cartfile2, name);
     return try_cartridge_attach(TRY_RESOURCE_CARTFILE2);
@@ -410,12 +404,6 @@ static int set_cartridge_file_2(const char *name, void *param)
 
 static int set_cartridge_file_4(const char *name, void *param)
 {
-#if 0
-    if (cartridge_file_4 != NULL && name != NULL
-        && strcmp(name, cartridge_file_4) == 0)
-        return 0;
-#endif
-
     util_string_set(&cartridge_file_4, name);
     util_string_set(&cartfile4, name);
     return try_cartridge_attach(TRY_RESOURCE_CARTFILE4);
@@ -423,12 +411,6 @@ static int set_cartridge_file_4(const char *name, void *param)
 
 static int set_cartridge_file_6(const char *name, void *param)
 {
-#if 0
-    if (cartridge_file_6 != NULL && name != NULL
-        && strcmp(name, cartridge_file_6) == 0)
-        return 0;
-#endif
-
     util_string_set(&cartridge_file_6, name);
     util_string_set(&cartfile6, name);
     return try_cartridge_attach(TRY_RESOURCE_CARTFILE6);
@@ -436,12 +418,6 @@ static int set_cartridge_file_6(const char *name, void *param)
 
 static int set_cartridge_file_A(const char *name, void *param)
 {
-#if 0
-    if (cartridge_file_A != NULL && name != NULL
-        && strcmp(name, cartridge_file_A) == 0)
-        return 0;
-#endif
-
     util_string_set(&cartridge_file_A, name);
     util_string_set(&cartfileA, name);
     return try_cartridge_attach(TRY_RESOURCE_CARTFILEA);
@@ -449,12 +425,6 @@ static int set_cartridge_file_A(const char *name, void *param)
 
 static int set_cartridge_file_B(const char *name, void *param)
 {
-#if 0
-    if (cartridge_file_B != NULL && name != NULL
-        && strcmp(name, cartridge_file_B) == 0)
-        return 0;
-#endif
-
     util_string_set(&cartridge_file_B, name);
     util_string_set(&cartfileB, name);
     return try_cartridge_attach(TRY_RESOURCE_CARTFILEB);
