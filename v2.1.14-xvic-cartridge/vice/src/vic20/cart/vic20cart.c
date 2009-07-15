@@ -272,6 +272,14 @@ int cartridge_attach_image(int type, const char *filename)
         generic_multifile = 1;
         type=CARTRIDGE_VIC20_GENERIC;
         break;
+    case CARTRIDGE_VIC20_GENERIC:
+        /*
+         * this is because the only generic cart that is attachable
+         * will be attached as a auto detected multi file cart for now
+         * Remove when this changes.
+         */
+        generic_multifile = 1;
+        break;
     default:
         cartridge_detach_image();
     }
