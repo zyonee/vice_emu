@@ -44,6 +44,8 @@
 #define VIC_PAL_MAX_TEXT_COLS           32
 #define VIC_NTSC_MAX_TEXT_COLS          31
 
+#define VIC_MAX_TEXT_COLS               VIC_PAL_MAX_TEXT_COLS
+
 #define VIC_PAL_DISPLAY_WIDTH           224
 #define VIC_NTSC_DISPLAY_WIDTH          200
 
@@ -117,7 +119,20 @@ struct vic_light_pen_s {
 };
 typedef struct vic_light_pen_s vic_light_pen_t;
 
-struct alarm_s;
+enum vic_fetch_state_s {
+    /* fetch has not started yet */
+    VIC_FETCH_IDLE,
+    /* fetch starting */
+    VIC_FETCH_START,
+    /* fetch from screen/color memomy */
+    VIC_FETCH_MATRIX,
+    /* fetch from chargen */
+    VIC_FETCH_CHARGEN,
+    /* fetch done on current line */
+    VIC_FETCH_DONE
+};
+typedef enum vic_fetch_state_s vic_fetch_state_t;
+
 struct video_chip_cap_s;
 
 struct vic_s
@@ -130,9 +145,13 @@ struct vic_s
 
     struct palette_s *palette;
 
-    BYTE regs[64];
+    BYTE regs[0x10];
 
-    struct alarm_s *raster_draw_alarm;
+    /* Cycle # within the current line.  */
+    unsigned int raster_cycle;
+
+    /* Current line.  */
+    unsigned int raster_line;
 
     int auxiliary_color;
     int mc_border_color;
@@ -140,10 +159,6 @@ struct vic_s
     int old_auxiliary_color;
     int old_mc_border_color;
     int old_reverse;
-
-    BYTE *color_ptr;
-    BYTE *screen_ptr;
-    BYTE *chargen_ptr; /* = chargen_rom + 0x400; */
 
     unsigned int char_height;   /* changes immediately for memory fetch */
     unsigned int row_increase_line; /* may change next line for row count */
@@ -168,11 +183,20 @@ struct vic_s
     /* area in the frame: 0=upper border, 1=visible screen; 2=lower border */
     int area;
 
-    /* Clock cycle for the next "raster draw" alarm.  */
-    CLOCK draw_clk;
+    /* fetch state */
+    vic_fetch_state_t fetch_state;
 
-    /* FIXME: Bad name.  FIXME: Has to be initialized.  */
-    CLOCK last_emulate_line_clk;
+    /* Screen memory buffer (1 char) */
+    BYTE vbuf;
+
+    /* Offset to the cbuf/gbuf buffers */
+    int buf_offset;
+
+    /* Color memory buffer */
+    BYTE cbuf[VIC_MAX_TEXT_COLS];
+
+    /* Graphics buffer (chargen/bitmap) */
+    BYTE gbuf[VIC_MAX_TEXT_COLS];
 
     unsigned int cycles_per_line;
     unsigned int screen_height;
@@ -200,7 +224,7 @@ extern vic_t vic;
 extern struct raster_s *vic_init(void);
 extern struct video_canvas_s *vic_get_canvas(void);
 extern void vic_reset(void);
-extern void vic_raster_draw_alarm_handler(CLOCK offset, void *data);
+extern void vic_raster_draw_handler(void);
 
 extern int vic_resources_init(void);
 extern int vic_cmdline_options_init(void);
@@ -215,14 +239,14 @@ extern void vic_trigger_light_pen(CLOCK mclk);
 extern CLOCK vic_lightpen_timing(int x, int y);
 extern void vic_change_timing(void);
 
-/* Private function calls, used by the other VIC modules.  FIXME:
-   Prepend names with `_'?  */
+/* Private function calls, used by the other VIC modules. */
 extern void vic_update_memory_ptrs(void);
 extern void vic_resize(void);
 
 /* Debugging options.  */
 /* #define VIC_RASTER_DEBUG */
 /* #define VIC_REGISTERS_DEBUG */
+/* #define VIC_CYCLE_DEBUG */
 
 #ifdef VIC_RASTER_DEBUG
 #define VIC_DEBUG_RASTER(x) log_debug x
@@ -234,6 +258,12 @@ extern void vic_resize(void);
 #define VIC_DEBUG_REGISTER(x) log_debug x
 #else
 #define VIC_DEBUG_REGISTER(x)
+#endif
+
+#ifdef VIC_CYCLE_DEBUG
+#define VIC_DEBUG_CYCLE(x) log_debug x
+#else
+#define VIC_DEBUG_CYCLE(x)
 #endif
 
 #endif

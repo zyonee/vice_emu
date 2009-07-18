@@ -86,18 +86,15 @@ static int fill_cache(raster_cache_t *cache, unsigned int *xs,
         rr = 1;
     }
 
-    r = raster_cache_data_fill_text(cache->foreground_data,
-                                    vic.screen_ptr + vic.memptr,
-                                    vic.chargen_ptr,
-                                    vic.char_height,
-                                    vic.text_cols,
-                                    vic.raster.ycounter
-                                    & ((vic.char_height >> 1) | 7),
-                                    xs, xe,
-                                    rr);
+    r = raster_cache_data_fill(cache->foreground_data,
+                               vic.gbuf,
+                               vic.text_cols,
+                               1,
+                               xs, xe,
+                               rr);
 
     r |= raster_cache_data_fill(cache->color_data_1,
-                                vic.color_ptr + vic.memptr,
+                                vic.cbuf,
                                 vic.text_cols,
                                 1,
                                 xs, xe,
@@ -115,10 +112,6 @@ static int fill_cache(raster_cache_t *cache, unsigned int *xs,
     if (!t || drawing_table[(d)][(b)][(x)]) { \
         *((VIC_PIXEL *)(p) + (x)) = (c)[drawing_table[(d)][(b)][(x)]];  \
     }
-
-#define GET_CHAR_DATA(code, row) \
-    *(vic.chargen_ptr + ((code) * vic.char_height) \
-    + (row & ((vic.char_height >> 1) | 7)))
 
 inline static void draw(BYTE *p, unsigned int xs, unsigned int xe,
                         int transparent)
@@ -140,9 +133,9 @@ inline static void draw(BYTE *p, unsigned int xs, unsigned int xe,
         vic.auxiliary_color != vic.old_auxiliary_color ||
         vic.reverse != vic.old_reverse) {
 
-        b = *(vic.color_ptr + vic.memptr + xs);
-        d = GET_CHAR_DATA(*(vic.screen_ptr + vic.memptr + xs),
-                          vic.raster.ycounter);
+        b = vic.cbuf[xs];
+        d = vic.gbuf[xs];
+
         c[2] = VIC_PIXEL(b & 0x7);
 
         /* put the first pixel to handle border or auxiliary color
@@ -173,10 +166,9 @@ inline static void draw(BYTE *p, unsigned int xs, unsigned int xe,
     c[1] = VIC_PIXEL(vic.mc_border_color);
     c[3] = VIC_PIXEL(vic.auxiliary_color);
     for (i = xs; (int)i <= (int)xe; i++, p += 8 * VIC_PIXEL_WIDTH) {
-        b = *(vic.color_ptr + vic.memptr + i);
+        b = vic.cbuf[i];
         c[2] = VIC_PIXEL(b & 0x7);
-        d = GET_CHAR_DATA(*(vic.screen_ptr + vic.memptr + i),
-                          vic.raster.ycounter);
+        d = vic.gbuf[i];
         dr = (vic.reverse & !(b & 0x8)) ? ~d : d;
         for (x = 0; x < 8; x++) {
             PUT_PIXEL(p, dr, c, b, x, transparent);
