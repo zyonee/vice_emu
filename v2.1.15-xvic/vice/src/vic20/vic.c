@@ -136,82 +136,8 @@ static void vic_set_geometry(void)
 
 void vic_raster_draw_handler(void)
 {
-    static int pending_mem_offset;
-    static int possible_mem_offset;
-    int blank_this_line;
-
-    /* remember if this line stays blank */
-    blank_this_line = vic.raster.blank_this_line;
-
-#if 0   /* handled in vic_cycle */
-    /* check if first visible line is reached */
-    if (vic.area == 0 && !blank_this_line
-        && vic.raster.current_line >= vic.raster.display_ystart)
-    {
-        vic.area = 1;
-    }
-
-    /* check if row step is pending */
-    if (vic.row_increase_line == (unsigned int)vic.raster.ycounter
-        || 2 * vic.row_increase_line == (unsigned int)vic.raster.ycounter) {
-        vic.row_counter++;
-        
-        vic.raster.ycounter = 0;
-        
-        vic.raster.display_ystop = vic.raster.current_line 
-            + (vic.text_lines - vic.row_counter) * vic.char_height;
-
-        /* if XPOS is 0 VIC displays one more rasterline */
-        if (vic.raster.display_xstart == 0) {
-            vic.raster.display_ystop++;
-        }
-
-        pending_mem_offset = possible_mem_offset;
-    }
-
-    /*  update memptr */
-    if (vic.area == 1) {
-        vic.memptr += pending_mem_offset;
-    }
-    
-    pending_mem_offset = 0;
-
-    /* max offset for next row */
-    possible_mem_offset = vic.text_cols;
-#endif
-    
     /* emulate the line */
     raster_line_emulate(&vic.raster);
-
-#if 0   /* handled in vic_cycle */
-    /* xstart may have changed; recalculate xstop */
-    vic.raster.display_xstop = vic.raster.display_xstart + vic.text_cols * 8
-                               * VIC_PIXEL_WIDTH;
-    if (vic.raster.display_xstop >= (int)(vic.screen_width * VIC_PIXEL_WIDTH)) {
-        vic.raster.display_xstop = (int)((vic.screen_width - 1)
-                                   * VIC_PIXEL_WIDTH);
-    }
-
-    /* increment ycounter and set offset for memptr */
-    if (vic.area == 1) {
-        vic.raster.ycounter++;
-
-        if (vic.row_offset != 0
-            || (unsigned int)vic.raster.ycounter == vic.row_increase_line) {
-            pending_mem_offset = 
-                (vic.row_offset > 0 ? vic.row_offset : possible_mem_offset);
-            vic.row_offset = 0;
-
-            if (blank_this_line) {
-                possible_mem_offset = 0;
-            }
-        }
-
-        if (vic.raster.current_line >= vic.raster.display_ystop) {
-            vic.area = 2;
-        }
-    }
-#endif
 
     /* handle start of frame */
     if (vic.raster.current_line == 0) {
@@ -223,29 +149,6 @@ void vic_raster_draw_handler(void)
         vic.raster.ycounter = 0;
         vic.memptr = 0;
         vic.area = 0;
-
-#if 0   /* handled in vic_cycle */
-        if (vic.pending_ystart >= 0) {
-            vic.raster.display_ystart = vic.pending_ystart;
-            vic.raster.geometry->gfx_position.y = 
-                vic.pending_ystart - vic.first_displayed_line;
-            vic.raster.display_ystop = 
-                vic.raster.display_ystart + vic.text_lines * vic.char_height;
-
-            vic.pending_ystart = -1;
-        }
-
-        if (vic.pending_text_lines >= 0) {
-            vic.text_lines = vic.pending_text_lines;
-            vic.raster.display_ystop = 
-                (vic.raster.display_ystart + vic.text_lines * vic.char_height);
-            vic.raster.geometry->gfx_size.height = vic.pending_text_lines * 8;
-            vic.raster.geometry->text_size.height = vic.pending_text_lines;
-
-            vic.pending_text_lines = -1;
-        }
-#endif
-
         vic.raster.blank = 0;
         vic.light_pen.triggered = 0;
     }
@@ -334,12 +237,9 @@ raster_t *vic_init(void)
 
     vic_draw_init();
 
-    vic_update_memory_ptrs();
-
     vic.initialized = 1;
 
     resources_touch("VICDoubleSize");
-    /*vic_resize();*/
 
     return &vic.raster;
 }
@@ -360,20 +260,11 @@ void vic_reset(void)
 
     vic.row_counter = 0;
     vic.memptr = 0;
-    vic.pending_ystart = -1;
-    vic.pending_text_lines = -1;
     vic.row_offset = -1;
     vic.area = 0;
     vic.raster_line = 0;
     vic.raster_cycle = 6; /* magic value from cpu_reset() (mainviccpu.c) */
     vic.fetch_state = VIC_FETCH_IDLE;
-}
-
-/* Set the memory pointers according to the values stored in the VIC
-   registers. */
-void vic_update_memory_ptrs(void)
-{
-    /* handled in vic-cycle */
 }
 
 void vic_shutdown(void)

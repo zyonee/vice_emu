@@ -31,12 +31,7 @@
 
 #include "vice.h"
 
-#ifdef WATCOM_COMPILE
-#include "../mem.h"
-#else
 #include "mem.h"
-#endif
-
 #include "raster.h"
 #include "types.h"
 #include "vic-cycle.h"
@@ -173,7 +168,7 @@ static inline void vic_cycle_latch_rows(void)
 static inline BYTE vic_cycle_do_fetch(int addr, BYTE *color)
 {
     BYTE b, c;
-    int color_addr = 0x9400 + (vic.regs[0x2] & 0x80 ? 0x200 : 0x0) + (addr & 0x1ff);
+    int color_addr = 0x9400 + (addr & 0x3ff);
 
     if ((addr & 0x9000) == 0x8000) {
         /* chargen */
@@ -220,6 +215,7 @@ static inline void vic_cycle_fetch(void)
             /* TODO verify idle fetch address */
             vic_cycle_do_fetch(0x001c, &b);
             break;
+
         /* fetch starting */
         case VIC_FETCH_START:
             if ((--vic.buf_offset) == 0) {
@@ -227,6 +223,7 @@ static inline void vic_cycle_fetch(void)
             }
             /* TODO fetch from where? */
             break;
+
         /* fetch from screen/color memomy */
         case VIC_FETCH_MATRIX:
             addr = (((vic.regs[5] & 0xf0) << 6)

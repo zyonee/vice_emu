@@ -167,13 +167,6 @@ struct vic_s
 
     unsigned int memptr;
 
-    /* next frame with different ystart; -1 for no value pending */
-    int pending_ystart;
-
-    /* next frame with different number of text lines;
-       -1 for no value pending */
-    int pending_text_lines;
-
     /* counting the text lines in the current frame */
     int row_counter;
 
@@ -238,10 +231,6 @@ extern void vic_shutdown(void);
 extern void vic_trigger_light_pen(CLOCK mclk);
 extern CLOCK vic_lightpen_timing(int x, int y);
 extern void vic_change_timing(void);
-
-/* Private function calls, used by the other VIC modules. */
-extern void vic_update_memory_ptrs(void);
-extern void vic_resize(void);
 
 /* Debugging options.  */
 /* #define VIC_RASTER_DEBUG */
