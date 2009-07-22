@@ -67,6 +67,10 @@ static inline void vic_cycle_open_h(void)
 {
     int xstart, xstop;
 
+    vic.text_cols = vic.pending_text_cols;
+    vic.raster.geometry->gfx_size.width = vic.text_cols * 8 * VIC_PIXEL_WIDTH;
+    vic.raster.geometry->text_size.width = vic.text_cols;
+
     xstart = MIN((unsigned int)(vic.raster_cycle * 4), vic.screen_width);
     xstop = xstart + vic.text_cols * 8;
 
@@ -128,7 +132,6 @@ static inline void vic_cycle_end_of_line(void)
         vic.memptr_inc = 0;
     }
 
-
     vic.fetch_state = VIC_FETCH_IDLE;
     vic.raster.blank_this_line = 1;
 }
@@ -153,16 +156,13 @@ static inline void vic_cycle_end_of_frame(void)
 /* Latch number of columns */
 static inline void vic_cycle_latch_columns(void)
 {
-    int new_text_cols = MIN(vic.regs[2] & 0x7f, (int)vic.max_text_cols);
-    vic.text_cols = new_text_cols;
-    vic.raster.geometry->gfx_size.width = new_text_cols * 8 * VIC_PIXEL_WIDTH;
-    vic.raster.geometry->text_size.width = new_text_cols;
+    vic.pending_text_cols = MIN(vic.regs[2] & 0x7f, (int)vic.max_text_cols);
 }
 
 /* Latch number of rows */
 static inline void vic_cycle_latch_rows(void)
 {
-    int new_text_lines = MIN((vic.regs[3] & 0x7e) >> 1, (int)vic.max_text_cols);
+    int new_text_lines = (vic.regs[3] & 0x7e) >> 1;
     vic.text_lines = new_text_lines;
     vic.raster.geometry->gfx_size.height = new_text_lines * 8;
     vic.raster.geometry->text_size.height = new_text_lines;
@@ -307,6 +307,5 @@ void vic_cycle(void)
 
     /* Perform fetch */
     vic_cycle_fetch();
-
 }
 

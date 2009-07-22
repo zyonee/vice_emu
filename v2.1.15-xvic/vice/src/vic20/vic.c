@@ -230,7 +230,7 @@ raster_t *vic_init(void)
     /* FIXME */
     vic.char_height = 8;
     vic.row_increase_line = 8;
-    vic.text_cols = 22;
+    vic.pending_text_cols = 22;
     vic.text_lines = 23;
 
     vic_reset();

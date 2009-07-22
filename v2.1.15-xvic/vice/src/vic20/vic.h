@@ -164,6 +164,7 @@ struct vic_s
     unsigned int row_increase_line; /* may change next line for row count */
     unsigned int text_cols;     /* = 22 */
     unsigned int text_lines;    /* = 23 */
+    unsigned int pending_text_cols;
 
     unsigned int memptr;
 
