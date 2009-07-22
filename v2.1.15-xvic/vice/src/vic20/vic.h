@@ -167,11 +167,11 @@ struct vic_s
 
     unsigned int memptr;
 
+    /* offset for screen memory pointer */
+    unsigned int memptr_inc;
+
     /* counting the text lines in the current frame */
     int row_counter;
-
-    /* offset for screen memory pointer if char_height changes from 8 to 16  */
-    int row_offset;
 
     /* area in the frame: 0=upper border, 1=visible screen; 2=lower border */
     int area;

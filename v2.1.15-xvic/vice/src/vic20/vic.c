@@ -260,7 +260,7 @@ void vic_reset(void)
 
     vic.row_counter = 0;
     vic.memptr = 0;
-    vic.row_offset = -1;
+    vic.memptr_inc = 0;
     vic.area = 0;
     vic.raster_line = 0;
     vic.raster_cycle = 6; /* magic value from cpu_reset() (mainviccpu.c) */

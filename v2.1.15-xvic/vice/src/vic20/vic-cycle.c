@@ -87,10 +87,12 @@ static inline void vic_cycle_open_h(void)
         vic.fetch_state = VIC_FETCH_START;
         /* buf_offset used as delay counter before first matrix fetch */
         /* TODO why is this needed? */
-        vic.buf_offset = 3;
+        vic.buf_offset = 4;
     } else {
         vic.fetch_state = VIC_FETCH_DONE;
     }
+
+    vic.memptr_inc = 0;
 }
 
 /* Close horizontal flipflop */
@@ -106,21 +108,26 @@ static inline void vic_cycle_end_of_line(void)
     vic_raster_draw_handler();
     vic.raster_line++;
 
-    if (vic.area == 1) {
+    if ((vic.area == 1) && (vic.fetch_state != VIC_FETCH_IDLE)) {
         vic.raster.ycounter++;
 
         /* check if row step is pending */
         if (vic.row_increase_line == (unsigned int)vic.raster.ycounter
             || 2 * vic.row_increase_line == (unsigned int)vic.raster.ycounter) {
             vic.raster.ycounter = 0;
-            vic.memptr += vic.text_cols;
+
+            vic.memptr_inc = vic.text_cols;
 
             vic.row_counter++;
             if (vic.row_counter == vic.text_lines) {
                 vic_cycle_close_v();
             }
         }
+
+        vic.memptr += vic.memptr_inc;
+        vic.memptr_inc = 0;
     }
+
 
     vic.fetch_state = VIC_FETCH_IDLE;
     vic.raster.blank_this_line = 1;
@@ -140,6 +147,7 @@ static inline void vic_cycle_end_of_frame(void)
     vic.raster.display_ystart = -1;
     vic.raster.display_ystop = -1;
     vic.raster.ycounter = 0;
+    vic.memptr_inc = 0;
 }
 
 /* Latch number of columns */
@@ -246,6 +254,11 @@ static inline void vic_cycle_fetch(void)
 
             vic.buf_offset++;
 
+            if ((vic.raster.ycounter & (vic.char_height - 1)) == (vic.char_height - 1)) {
+                /* TODO should this be vic.memptr_inc++ instead? */
+                vic.memptr_inc = vic.buf_offset;
+            }
+
             if (vic.buf_offset >= vic.text_cols) {
                 vic_cycle_close_h();
             } else {
@@ -261,9 +274,17 @@ void vic_cycle(void)
 {
     if (vic.area == 0) {
         /* Check for vertical flipflop */
-        /* TODO 1 cycle too early? */
         if (vic.regs[1] == (vic.raster_line >> 1)) {
             vic_cycle_open_v();
+        }
+    }
+
+    /* Next cycle */
+    vic.raster_cycle++;
+    if (vic.raster_cycle == vic.cycles_per_line) {
+        vic_cycle_end_of_line();
+        if (vic.raster_line == vic.screen_height) {
+            vic_cycle_end_of_frame();
         }
     }
 
@@ -287,13 +308,5 @@ void vic_cycle(void)
     /* Perform fetch */
     vic_cycle_fetch();
 
-    /* Next cycle */
-    vic.raster_cycle++;
-    if (vic.raster_cycle == vic.cycles_per_line) {
-        vic_cycle_end_of_line();
-        if (vic.raster_line == vic.screen_height) {
-            vic_cycle_end_of_frame();
-        }
-    }
 }
 
