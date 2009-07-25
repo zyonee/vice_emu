@@ -31,20 +31,31 @@
 
 struct trace_action_s;
 
-typedef void (*trace_action_call_f)(struct trace_action_s *);
+typedef int (*trace_action_call_f)(struct trace_action_s *);
+
+struct trace_action_args_mem_dump_s
+{
+    WORD                   offset;
+    WORD                   size;
+    BYTE                   bank;
+    BYTE                   space;
+};
 
 struct trace_action_s 
 {
     struct trace_action_s *next;
     trace_action_call_f    call;
-    DWORD                  offset;
-    DWORD                  size;
-    BYTE                  *buffer;
+    union {
+        struct trace_action_args_mem_dump_s     mem_dump;
+    } args;
 };
 
 typedef struct trace_action_s trace_action_t;
 
-extern trace_action_t *trace_action_mem_dump(DWORD offset, DWORD size);
+extern trace_action_t *trace_action_mem_dump(WORD offset, WORD size, BYTE bank, BYTE space);
 extern void trace_action_free(trace_action_t *action);
+
+/* ----- Action IDs ----- */
+#define ACTION_ID_MEMDUMP       1
 
 #endif

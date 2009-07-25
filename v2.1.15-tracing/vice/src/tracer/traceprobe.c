@@ -25,6 +25,7 @@
 
 #include "traceprobe.h"
 #include "traceaction.h"
+#include "log.h"
 
 /* static definition of probes */
 trace_probe_t trace_probe_table[] = {
@@ -35,7 +36,12 @@ void trace_probe_fire(struct trace_probe_s *tp)
 {
     trace_action_t *action = tp->action;
     while(action != NULL) {
-        action->call(action);
+        /* call action. if the action failed then disable probe */
+        if(action->call(action) < 0) {
+            log_message(LOG_DEFAULT, "trace action in probe '%s' failed. disabling probe!", tp->name);
+            tp->enabled = 0;
+            break;
+        }
         action = action->next;
     }
 }

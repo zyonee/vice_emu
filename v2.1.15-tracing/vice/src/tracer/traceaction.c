@@ -44,27 +44,55 @@ static trace_action_t *action_create(void)
 
 void trace_action_free(trace_action_t *action)
 {
-    if(action->buffer != NULL) {
-        lib_free(action->buffer);
-    }
     lib_free(action);
 }
 
-static void do_mem_dump(trace_action_t *action)
+/* ----- Action: Mem Dump ----- 
+
+   message (6 bytes):
+       +0:      <word> offset
+       +2:      <word> size
+       +4:      <byte> bank
+       +5:      <byte> space
+       +6:      ... size bytes data ...
+
+*/
+
+#define MEMDUMP_HEADER_SIZE     6
+
+/* execute mem dump aciton */
+static int do_mem_dump(trace_action_t *action)
 {
-    DWORD offset = action->offset;
-    DWORD size   = action->size;
-    DWORD i;
-    
-    // fill buffer with dump
-    for(i=0;i<size;i++) {
-        action->buffer[i] = mon_get_mem_val_ex(e_comp_space, 0, offset+i);
+    WORD offset = action->args.mem_dump.offset;
+    WORD size   = action->args.mem_dump.size;
+    BYTE bank   = action->args.mem_dump.bank;
+    BYTE space  = action->args.mem_dump.space;
+    WORD i;
+
+    /* get data buffer for action */
+    BYTE *buffer = trace_server_request_buffer(ACTION_ID_MEMDUMP,size + MEMDUMP_HEADER_SIZE);
+    if(buffer == NULL) {
+        log_message(LOG_DEFAULT, "trace action: 'memory dump' too large!");
+        return -1;
     }
     
-    trace_server_transmit(action->buffer, action->size);
+    WORD *ptr = (WORD *)buffer;
+    ptr[0] = htons(offset);
+    ptr[1] = htons(size);
+    buffer[4] = bank;
+    buffer[5] = space;
+    buffer += MEMDUMP_HEADER_SIZE;
+    
+    /* fill in data */
+    for(i=0;i<size;i++) {
+        buffer[i] = mon_get_mem_val_ex(space, bank, offset+i);
+    }
+
+    return 0;
 }
 
-trace_action_t *trace_action_mem_dump(DWORD offset, DWORD size)
+/* create mem dump action */
+trace_action_t *trace_action_mem_dump(WORD offset, WORD size, BYTE bank, BYTE space)
 {
     trace_action_t *action = action_create();
     if(action == NULL) {
@@ -72,9 +100,10 @@ trace_action_t *trace_action_mem_dump(DWORD offset, DWORD size)
     }
     
     action->call = do_mem_dump;
-    action->offset = offset;
-    action->size = size;
-    action->buffer = (BYTE *)lib_malloc(size);
+    action->args.mem_dump.offset = offset;
+    action->args.mem_dump.size   = size;
+    action->args.mem_dump.bank   = bank;
+    action->args.mem_dump.space  = space;
     
     return action;
 }

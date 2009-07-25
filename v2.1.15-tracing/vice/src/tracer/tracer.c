@@ -52,7 +52,7 @@ static int tracer_init(void)
     log_message(LOG_DEFAULT, "tracer: init");
     
     // TEST: setup probes
-    trace_probe_table[TRACE_PROBE_VSYNC].action = trace_action_mem_dump(0,0xffff);
+    trace_probe_table[TRACE_PROBE_VSYNC].action = trace_action_mem_dump(0,0x2000,0,e_comp_space);
     trace_probe_table[TRACE_PROBE_VSYNC].enabled= 1;
     
     return 0;
@@ -66,9 +66,7 @@ static void tracer_quit(void)
 void tracer_worker(void)
 {
 #ifdef HAVE_NETWORK
-    if(trace_server_data_available()>0) {
-        
-    }
+    trace_server_worker();
 #endif
 }
 
