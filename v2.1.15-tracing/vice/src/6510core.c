@@ -1919,6 +1919,14 @@ static const BYTE rewind_fetch_tab[] = {
 #endif
 #endif
 
+
+#ifdef USE_TRACER
+#ifndef DRIVE_CPU
+        TRACE_PROBE_TRIGGER(TRACE_PROBE_MAIN_CPU, EXPORT_REGISTERS());
+#endif
+#endif
+
+
 #ifdef DEBUG
 #ifdef DRIVE_CPU
         if (TRACEFLG) {

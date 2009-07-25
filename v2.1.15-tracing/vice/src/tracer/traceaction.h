@@ -1,4 +1,4 @@
-/* traceaction.h - Trace Probe interface
+/* traceaction.h - Trace Action interface
  *
  * Written by
  *  Christian Vogelgsang <chris@vogelgsang.org>
@@ -35,10 +35,10 @@ typedef int (*trace_action_call_f)(struct trace_action_s *);
 
 struct trace_action_args_mem_dump_s
 {
-    WORD                   offset;
-    WORD                   size;
-    BYTE                   bank;
-    BYTE                   space;
+    WORD    start;
+    WORD    end;
+    BYTE    bank;
+    BYTE    space;
 };
 
 struct trace_action_s 
@@ -52,10 +52,16 @@ struct trace_action_s
 
 typedef struct trace_action_s trace_action_t;
 
-extern trace_action_t *trace_action_mem_dump(WORD offset, WORD size, BYTE bank, BYTE space);
+/* action table */
+extern trace_action_t *trace_action_mem_dump(WORD start, WORD end, BYTE bank, BYTE space);
+extern trace_action_t *trace_action_mem_map(WORD start, WORD end, BYTE bank);
+extern trace_action_t *trace_action_main_cpu_state(void);
+
 extern void trace_action_free(trace_action_t *action);
 
 /* ----- Action IDs ----- */
-#define ACTION_ID_MEMDUMP       1
+#define ACTION_ID_MEM_DUMP       1
+#define ACTION_ID_MEM_MAP        2
+#define ACTION_ID_CPU_STATE      3
 
 #endif

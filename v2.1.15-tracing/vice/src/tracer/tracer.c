@@ -52,9 +52,15 @@ static int tracer_init(void)
     log_message(LOG_DEFAULT, "tracer: init");
     
     // TEST: setup probes
-    trace_probe_table[TRACE_PROBE_VSYNC].action = trace_action_mem_dump(0,0x2000,0,e_comp_space);
-    trace_probe_table[TRACE_PROBE_VSYNC].enabled= 1;
-    
+#if 0
+    trace_probe_add_action(TRACE_PROBE_VSYNC, trace_action_mem_dump(0,0xffff,0,e_comp_space));
+    trace_probe_add_action(TRACE_PROBE_VSYNC, trace_action_mem_map(0,0xffff,0));
+    trace_probe_enable(TRACE_PROBE_VSYNC);
+#else
+    trace_probe_add_action(TRACE_PROBE_MAIN_CPU, trace_action_main_cpu_state());
+    trace_probe_enable(TRACE_PROBE_MAIN_CPU);
+#endif
+
     return 0;
 }
 

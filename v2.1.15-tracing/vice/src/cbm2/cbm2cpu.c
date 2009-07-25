@@ -30,6 +30,7 @@
 #include "cbm2.h"
 #include "mem.h"
 #include "types.h"
+#include "traceprobe.h"
 
 /* MACHINE_STUFF should define/undef
 

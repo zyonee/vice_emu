@@ -57,12 +57,13 @@ extern trace_probe_t trace_probe_table[];
 extern void trace_probe_fire(struct trace_probe_s *tp);
 
 /* trigger a probe in the code */
-#define TRACE_PROBE_TRIGGER(index)                              \
+#define TRACE_PROBE_TRIGGER(index, extra)                       \
 do {                                                            \
     trace_probe_t *probe = &trace_probe_table[index];           \
     if(probe->enabled) {                                        \
         if( (probe->predicate == NULL) ||                       \
             ( (*probe->predicate)(probe) ) ) {                  \
+               extra;                                           \
                trace_probe_fire(probe);                         \
         }                                                       \
     }                                                           \
@@ -71,11 +72,20 @@ do {                                                            \
 #else /* USE_TRACER */
 
 /* declare trace trigger empty if tracing is disabled */
-#define TRACE_PROBE_TRIGGER(index)          do {} while(0)
+#define TRACE_PROBE_TRIGGER(index, extra)          do {} while(0)
 
 #endif /* USE_TRACER */
 
+extern void trace_probe_add_action(int index, struct trace_action_s *action);
+extern void trace_probe_remove_all_actions(int index);
+extern void trace_probe_enable(int index);
+extern void trace_probe_disable(int index);
+extern void trace_probe_enable_all(void);
+extern void trace_probe_disable_all(void);
+
 /* ----- Trace Probe Indexes ----- */
 #define TRACE_PROBE_VSYNC       0
+#define TRACE_PROBE_MAIN_CPU    1
+#define TRACE_PROBE_NUM         2
 
 #endif

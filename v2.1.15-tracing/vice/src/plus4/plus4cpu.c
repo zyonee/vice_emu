@@ -29,6 +29,7 @@
 #include "mem.h"
 #include "tedtypes.h"
 #include "types.h"
+#include "traceprobe.h"
 
 #define CPU_DELAY_CLK ted_delay_clk();
 

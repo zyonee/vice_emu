@@ -33,6 +33,7 @@
 #include "vicii.h"
 #include "viciitypes.h"
 #include "z80.h"
+#include "traceprobe.h"
 
 /* ------------------------------------------------------------------------- */
 

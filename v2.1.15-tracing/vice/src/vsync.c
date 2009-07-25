@@ -322,7 +322,7 @@ int vsync_do_vsync(struct video_canvas_s *c, int been_skipped)
 #endif
 
     /* trigger the VSync trace probe */
-    TRACE_PROBE_TRIGGER(TRACE_PROBE_VSYNC);
+    TRACE_PROBE_TRIGGER(TRACE_PROBE_VSYNC,);
 
 #ifdef HAVE_NETWORK
     /* check if someone wants to connect remotely to the monitor */

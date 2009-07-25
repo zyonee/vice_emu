@@ -45,6 +45,7 @@
 #endif
 #include "snapshot.h"
 #include "traps.h"
+#include "traceprobe.h"
 #include "types.h"
 
 

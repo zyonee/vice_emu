@@ -35,6 +35,7 @@
 #include "c64dtvcpu.h"
 #include "c64dtvdma.h"
 #include "monitor.h"
+#include "traceprobe.h"
 
 /* ------------------------------------------------------------------------- */
 

@@ -84,7 +84,7 @@ extern CLOCK maincpu_clk;
 
 #define PACKET_HEADER_SIZE  8
 #define MESSAGE_HEADER_SIZE 12
-#define DEFAULT_BUFFER_SIZE (65536 + PACKET_HEADER_SIZE + MESSAGE_HEADER_SIZE)
+#define DEFAULT_BUFFER_SIZE (65 * 1024)
 #define DEFAULT_SEND_FLUSH  50
 
 static void free_buffer(void)

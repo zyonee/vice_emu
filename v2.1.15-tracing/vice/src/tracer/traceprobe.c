@@ -29,7 +29,8 @@
 
 /* static definition of probes */
 trace_probe_t trace_probe_table[] = {
-    TRACE_PROBE_DECLARE(VSync)
+    TRACE_PROBE_DECLARE(VSync),
+    TRACE_PROBE_DECLARE(MainCPU)
 };
 
 void trace_probe_fire(struct trace_probe_s *tp)
@@ -45,3 +46,63 @@ void trace_probe_fire(struct trace_probe_s *tp)
         action = action->next;
     }
 }
+
+void trace_probe_add_action(int index, struct trace_action_s *action)
+{
+    if(action == NULL) {
+        return;
+    }
+    
+    trace_probe_t *probe = &trace_probe_table[index];
+    action->next = probe->action;
+    probe->action = action;
+}
+
+void trace_probe_remove_all_actions(int index)
+{
+    trace_probe_t *probe = &trace_probe_table[index];
+    trace_action_t *action = probe->action;
+    while(action != NULL) {
+        trace_action_t *next_action = action->next;
+        trace_action_free(action);
+        action = next_action;
+    }
+    probe->action = NULL;
+}
+
+void trace_probe_enable(int index)
+{
+    trace_probe_t *probe = &trace_probe_table[index];
+    if(probe->action != NULL) {
+        probe->enabled = 1;
+    }
+}
+
+void trace_probe_disable(int index)
+{
+    trace_probe_t *probe = &trace_probe_table[index];
+    probe->enabled = 0;
+}
+
+void trace_probe_enable_all(void)
+{
+    int i;
+    
+    for(i=0;i<TRACE_PROBE_NUM;i++) {
+        trace_probe_t *probe = &trace_probe_table[i];
+        if(probe->action != NULL) {
+            probe->enabled = 1;
+        }
+    }
+}
+
+void trace_probe_disable_all(void)
+{
+    int i;
+    
+    for(i=0;i<TRACE_PROBE_NUM;i++) {
+        trace_probe_t *probe = &trace_probe_table[i];
+        probe->enabled = 0;
+    }
+}
+
