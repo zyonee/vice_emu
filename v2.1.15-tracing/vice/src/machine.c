@@ -268,6 +268,9 @@ void machine_shutdown(void)
 #ifdef HAVE_NETWORK
     monitor_network_resources_shutdown();
 #endif
+#ifdef USE_TRACER
+    tracer_resources_shutdown();
+#endif
     archdep_shutdown();
 
     lib_debug_check();

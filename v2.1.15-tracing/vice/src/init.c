@@ -148,6 +148,12 @@ int init_resources(void)
         return -1;
     }
 #endif
+#ifdef USE_TRACER
+    if( tracer_resources_init() < 0) {
+        init_resource_fail("tracer");
+        return -1;
+    }
+#endif
     return 0;
 }
 
@@ -241,6 +247,12 @@ int init_cmdline_options(void)
 #ifdef HAVE_NETWORK
     if (monitor_network_cmdline_options_init() < 0) {
         init_cmdline_options_fail("MONITOR_NETWORK");
+        return -1;
+    }
+#endif
+#ifdef USE_TRACER
+    if (tracer_cmdline_options_init() < 0) {
+        init_cmdline_options_fail("tracer");
         return -1;
     }
 #endif

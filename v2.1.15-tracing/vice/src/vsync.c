@@ -64,6 +64,8 @@ int vsync_frame_counter;
 #include "network.h"
 #include "resources.h"
 #include "sound.h"
+#include "tracer.h"
+#include "traceprobe.h"
 #include "translate.h"
 #include "types.h"
 #include "videoarch.h"
@@ -319,9 +321,15 @@ int vsync_do_vsync(struct video_canvas_s *c, int been_skipped)
     int refresh_div;
 #endif
 
+    /* trigger the VSync trace probe */
+    TRACE_PROBE_TRIGGER(TRACE_PROBE_VSYNC);
+
 #ifdef HAVE_NETWORK
     /* check if someone wants to connect remotely to the monitor */
     monitor_check_remote();
+#endif
+#ifdef USE_TRACER
+    TRACER_WORKER;
 #endif
 
     vsync_frame_counter++;

@@ -31,6 +31,7 @@ SUBDIRS = \
 	printerdrv \
 	rs232drv \
 	sid \
+	tracer \
 	monitor \
 	core \
 	c64 \
@@ -63,6 +64,7 @@ DIST_SUBDIRS = \
 	printerdrv \
 	rs232drv \
 	sid \
+	tracer \
 	monitor \
 	core \
 	c64 \
@@ -87,6 +89,7 @@ INCLUDES = \
 	-I$(top_srcdir)/src/c64 \
 	-I$(top_srcdir)/src/drive \
 	-I$(top_srcdir)/src/monitor \
+	-I$(top_srcdir)/src/tracer \
 	-I$(top_srcdir)/src/plus4 \
 	-I$(top_srcdir)/src/vic20 \
 	-I$(top_srcdir)/src/vdrive \
@@ -664,6 +667,7 @@ gfxoutputdrv_lib = $(top_builddir)/src/gfxoutputdrv/libgfxoutputdrv.a
 iecbus_lib = $(top_builddir)/src/iecbus/libiecbus.a
 imagecontents_lib = $(top_builddir)/src/imagecontents/libimagecontents.a
 monitor_lib = $(top_builddir)/src/monitor/libmonitor.a
+tracer_lib = $(top_builddir)/src/tracer/libtracer.a
 parallel_lib = $(top_builddir)/src/parallel/libparallel.a
 pet_lib = $(top_builddir)/src/pet/libpet.a
 plus4_lib = $(top_builddir)/src/plus4/libplus4.a
@@ -729,6 +733,7 @@ x64_libs =  \
 	$(vdrive_lib) \
 	$(sid_lib) \
 	$(monitor_lib) \
+	$(tracer_lib) \
 	$(driver_libs) \
 	$(vicii_lib) \
 	$(raster_lib) \
@@ -767,6 +772,7 @@ x64-all: \
 	libvideo \
 	libarch \
 	libmonitor \
+	libtracer \
 	libdiskimage \
 	libiecbus \
 	libserial \
@@ -792,6 +798,7 @@ x64dtv_libs =  \
 	$(vdrive_lib) \
 	$(sid_lib) \
 	$(monitor_lib) \
+	$(tracer_lib) \
 	$(driver_libs) \
 	$(viciidtv_lib) \
 	$(raster_lib) \
@@ -832,6 +839,7 @@ x64dtv-all: \
 	libvideo \
 	libarch \
 	libmonitor \
+	libtracer \
 	libdiskimage \
 	libiecbus \
 	libserial \
@@ -859,6 +867,7 @@ x128_libs =  \
 	$(vdrive_lib) \
 	$(sid_lib) \
 	$(monitor_lib) \
+	$(tracer_lib) \
 	$(driver_libs) \
 	$(vicii_lib) \
 	$(vdc_lib) \
@@ -897,6 +906,7 @@ x128-all: \
 	libraster \
 	libvideo \
 	libmonitor \
+	libtracer \
 	libdiskimage \
 	libiecbus \
 	libserial \
@@ -924,6 +934,7 @@ xvic_libs =  \
 	$(parallel_lib) \
 	$(vdrive_lib) \
 	$(monitor_lib) \
+	$(tracer_lib) \
 	$(driver_libs) \
 	$(raster_lib) \
 	$(sid_lib) \
@@ -955,6 +966,7 @@ xvic-all: \
 	libvideo \
 	libarch \
 	libmonitor \
+	libtracer \
 	libdiskimage \
 	libiecbus \
 	libserial \
@@ -978,6 +990,7 @@ xpet_libs =  \
 	$(parallel_lib) \
 	$(vdrive_lib) \
 	$(monitor_lib) \
+	$(tracer_lib) \
 	$(driver_libs) \
 	$(crtc_lib) \
 	$(raster_lib) \
@@ -1010,6 +1023,7 @@ xpet-all: \
 	libsid \
 	libarch \
 	libmonitor \
+	libtracer \
 	libdiskimage \
 	libserial \
 	libfsdevice \
@@ -1033,6 +1047,7 @@ xplus4_libs =  \
 	$(iecbus_lib) \
 	$(vdrive_lib) \
 	$(monitor_lib) \
+	$(tracer_lib) \
 	$(driver_libs) \
 	$(sid_lib) \
 	$(raster_lib) \
@@ -1064,6 +1079,7 @@ xplus4-all: \
 	libsid \
 	libarch \
 	libmonitor \
+	libtracer \
 	libdiskimage \
 	libiecbus \
 	libserial \
@@ -1086,6 +1102,7 @@ xcbm2_libs = \
 	$(parallel_lib) \
 	$(vdrive_lib) \
 	$(monitor_lib) \
+	$(tracer_lib) \
 	$(driver_libs) \
 	$(sid_lib) \
 	$(crtc_lib) \
@@ -1124,6 +1141,7 @@ xcbm2-all: \
 	libvicii \
 	libvideo \
 	libmonitor \
+	libtracer \
 	libdiskimage \
 	libserial \
 	libfsdevice \
@@ -1252,6 +1270,8 @@ libimagecontents:
 	(cd imagecontents && $(MAKE))
 libmonitor:
 	(cd monitor && $(MAKE) libmonitor.a)
+libtracer:
+	(cd tracer && $(MAKE) libtracer.a)
 libparallel:
 	(cd parallel && $(MAKE))
 libpet:
