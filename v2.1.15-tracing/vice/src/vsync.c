@@ -110,6 +110,14 @@ static int set_warp_mode(int val, void *param)
     sound_set_warp_mode(warp_mode_enabled);
     set_timer_speed(relative_speed);
 
+#ifdef USE_TRACER
+    if(val) {
+        trace_probe_suspend_all();
+    } else {
+        trace_probe_resume_all();
+    }
+#endif
+
     return 0;
 }
 

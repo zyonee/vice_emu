@@ -41,6 +41,7 @@ typedef int (*trace_predicate_f)(struct trace_probe_s *);
 struct trace_probe_s {
     const char *name;                           /*< name of probe */
     int enabled;                                /*< is probe currently enabled? */
+    int enabled_before_suspend;                 /*< store enabled flag for suspend */
     struct trace_action_s *action;              /*< first action at probe */
     trace_predicate_f *predicate;               /*< optional predicate */ 
 };
@@ -82,6 +83,8 @@ extern void trace_probe_enable(int index);
 extern void trace_probe_disable(int index);
 extern void trace_probe_enable_all(void);
 extern void trace_probe_disable_all(void);
+extern void trace_probe_suspend_all(void);
+extern void trace_probe_resume_all(void);
 
 /* ----- Trace Probe Indexes ----- */
 #define TRACE_PROBE_VSYNC       0

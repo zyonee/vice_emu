@@ -124,7 +124,7 @@ static void transmit_buffer(void)
     /* store size in packet at offset +4 */
     int size = buffer_pos;
     DWORD *ptr = (DWORD *)(buffer + 4);
-    *ptr = htonl(size);
+    *ptr = htonl(size - PACKET_HEADER_SIZE);
     
     /* send packet */
     trace_server_transmit((const char *)buffer, size);

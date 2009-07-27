@@ -106,3 +106,26 @@ void trace_probe_disable_all(void)
     }
 }
 
+void trace_probe_suspend_all(void)
+{
+    int i;
+    
+    for(i=0;i<TRACE_PROBE_NUM;i++) {
+        trace_probe_t *probe = &trace_probe_table[i];
+        probe->enabled_before_suspend = probe->enabled;
+        probe->enabled = 0;
+    }
+    
+}
+
+void trace_probe_resume_all(void)
+{
+    int i;
+    
+    for(i=0;i<TRACE_PROBE_NUM;i++) {
+        trace_probe_t *probe = &trace_probe_table[i];
+        probe->enabled = probe->enabled_before_suspend;
+    }    
+}
+
+
