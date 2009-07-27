@@ -121,7 +121,7 @@ void REGPARM2 vic_store(WORD addr, BYTE value)
                 /* old_mc_auxilary_color is used by vic-draw.c to handle the
                    one hires vic pixel lateness of change */
                 raster_changes_foreground_add_int(&vic.raster,
-                    VIC_RASTER_CHAR(VIC_RASTER_CYCLE(maincpu_clk+1)),
+                    VIC_RASTER_CHAR(VIC_RASTER_CYCLE(maincpu_clk)+1),
                     &vic.old_auxiliary_color,
                     new_aux_color);
 
@@ -150,7 +150,7 @@ void REGPARM2 vic_store(WORD addr, BYTE value)
 
             if (new_background_color != old_background_color) {
                 raster_changes_background_add_int(&vic.raster,
-                    VIC_RASTER_X(VIC_RASTER_CYCLE(maincpu_clk+1)) + VIC_PIXEL_WIDTH,
+                    VIC_RASTER_X(VIC_RASTER_CYCLE(maincpu_clk)+1) + VIC_PIXEL_WIDTH,
                     (int*)&vic.raster.background_color,
                     new_background_color);
 
@@ -159,14 +159,14 @@ void REGPARM2 vic_store(WORD addr, BYTE value)
 
             if (new_border_color != old_border_color) {
                 raster_changes_border_add_int(&vic.raster,
-                    VIC_RASTER_X(VIC_RASTER_CYCLE(maincpu_clk+1)) + VIC_PIXEL_WIDTH,
+                    VIC_RASTER_X(VIC_RASTER_CYCLE(maincpu_clk)+1) + VIC_PIXEL_WIDTH,
                     (int*)&vic.raster.border_color,
                     new_border_color);
 
                 /* we also need the border color in multicolor mode,
                    so we duplicate it */
                 raster_changes_foreground_add_int(&vic.raster,
-                    VIC_RASTER_CHAR(VIC_RASTER_CYCLE(maincpu_clk+1)),
+                    VIC_RASTER_CHAR(VIC_RASTER_CYCLE(maincpu_clk)+1),
                     &vic.mc_border_color,
                     new_border_color);
             }
@@ -174,7 +174,7 @@ void REGPARM2 vic_store(WORD addr, BYTE value)
             if (new_reverse != old_reverse) {
 
                 raster_changes_foreground_add_int(&vic.raster,
-                    VIC_RASTER_CHAR(VIC_RASTER_CYCLE(maincpu_clk+1)),
+                    VIC_RASTER_CHAR(VIC_RASTER_CYCLE(maincpu_clk)+1),
                     &vic.reverse,
                     new_reverse);
             }
@@ -184,7 +184,7 @@ void REGPARM2 vic_store(WORD addr, BYTE value)
                 /* old_mc_border_color is used by vic-draw.c to handle the
                    one hires vic pixel lateness of change */
                 raster_changes_foreground_add_int(&vic.raster,
-                    VIC_RASTER_CHAR(VIC_RASTER_CYCLE(maincpu_clk+2)),
+                    VIC_RASTER_CHAR(VIC_RASTER_CYCLE(maincpu_clk)+2),
                     &vic.old_mc_border_color,
                     new_border_color);
 
@@ -195,7 +195,7 @@ void REGPARM2 vic_store(WORD addr, BYTE value)
                 /* old_reverse is used by vic-draw.c to handle the
                    3 hires vic pixels lateness of change */
                 raster_changes_foreground_add_int(&vic.raster,
-                    VIC_RASTER_CHAR(VIC_RASTER_CYCLE(maincpu_clk+2)),
+                    VIC_RASTER_CHAR(VIC_RASTER_CYCLE(maincpu_clk)+2),
                     &vic.old_reverse,
                     new_reverse);
 
