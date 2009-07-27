@@ -202,14 +202,12 @@ static int get_std_text(raster_cache_t *cache, unsigned int *xs,
         rr = 1;
     }
 
-    r = raster_cache_data_fill_text(cache->foreground_data,
-                                    vicii.vbuf,
-                                    vicii.chargen_ptr,
-                                    8,
-                                    VICII_SCREEN_TEXTCOLS,
-                                    vicii.raster.ycounter,
-                                    xs, xe,
-                                    rr);
+    r = raster_cache_data_fill(cache->foreground_data,
+                               vicii.gbuf,
+                               VICII_SCREEN_TEXTCOLS,
+                               1,
+                               xs, xe,
+                               rr);
 
     r |= raster_cache_data_fill(cache->color_data_1,
                                 vicii.cbuf,
@@ -224,7 +222,7 @@ inline static void _draw_std_text(BYTE *p, unsigned int xs, unsigned int xe,
                                   BYTE *gfx_msk_ptr)
 {
     DWORD *table_ptr;
-    BYTE *char_ptr, *msk_ptr;
+    BYTE *msk_ptr;
     unsigned int i;
     BYTE cmask;
     BYTE fcolor;
@@ -232,11 +230,10 @@ inline static void _draw_std_text(BYTE *p, unsigned int xs, unsigned int xe,
     cmask = (vicii.high_color) ? 0xff : 0x0f;
 
     table_ptr = hr_table + (vicii.raster.background_color << 4);
-    char_ptr = vicii.chargen_ptr + vicii.raster.ycounter;
     msk_ptr = gfx_msk_ptr + GFX_MSK_LEFTBORDER_SIZE;
-    
+
     for (i = xs; i <= xe; i++) {
-        *(msk_ptr + i) = *(char_ptr + vicii.vbuf[i] * 8);
+        *(msk_ptr + i) = vicii.gbuf[i];
         fcolor = vicii.dtvpalette[vicii.cbuf[i] & cmask];
         bcolor = vicii.raster.background_color;
         *(p+i*8+0) = (*(msk_ptr + i) & 0x80) ? fcolor : bcolor;
@@ -271,14 +268,14 @@ inline static void _draw_std_text_cached(BYTE *p, unsigned int xs,
         *(msk_ptr + i) = foreground_data[i];
         fcolor = vicii.dtvpalette[color_data[i] & cmask];
         bcolor = vicii.raster.background_color;
-    	*(p+i*8+0) = (*(msk_ptr + i) & 0x80) ? fcolor : bcolor;
-    	*(p+i*8+1) = (*(msk_ptr + i) & 0x40) ? fcolor : bcolor;
-    	*(p+i*8+2) = (*(msk_ptr + i) & 0x20) ? fcolor : bcolor;
-    	*(p+i*8+3) = (*(msk_ptr + i) & 0x10) ? fcolor : bcolor;
-    	*(p+i*8+4) = (*(msk_ptr + i) & 0x08) ? fcolor : bcolor;
-    	*(p+i*8+5) = (*(msk_ptr + i) & 0x04) ? fcolor : bcolor;
-	    *(p+i*8+6) = (*(msk_ptr + i) & 0x02) ? fcolor : bcolor;
-    	*(p+i*8+7) = (*(msk_ptr + i) & 0x01) ? fcolor : bcolor;
+        *(p+i*8+0) = (*(msk_ptr + i) & 0x80) ? fcolor : bcolor;
+        *(p+i*8+1) = (*(msk_ptr + i) & 0x40) ? fcolor : bcolor;
+        *(p+i*8+2) = (*(msk_ptr + i) & 0x20) ? fcolor : bcolor;
+        *(p+i*8+3) = (*(msk_ptr + i) & 0x10) ? fcolor : bcolor;
+        *(p+i*8+4) = (*(msk_ptr + i) & 0x08) ? fcolor : bcolor;
+        *(p+i*8+5) = (*(msk_ptr + i) & 0x04) ? fcolor : bcolor;
+        *(p+i*8+6) = (*(msk_ptr + i) & 0x02) ? fcolor : bcolor;
+        *(p+i*8+7) = (*(msk_ptr + i) & 0x01) ? fcolor : bcolor;
     }
 }
 
@@ -375,27 +372,17 @@ static int get_hires_bitmap(raster_cache_t *cache, unsigned int *xs,
 inline static void _draw_hires_bitmap(BYTE *p, unsigned int xs,
                                       unsigned int xe, BYTE *gfx_msk_ptr)
 {
-    BYTE *bmptr_low, *bmptr_high, *msk_ptr;
+    BYTE *msk_ptr;
     BYTE bmval;
-    unsigned int i, j;
+    unsigned int i;
 
-    bmptr_low = vicii.bitmap_low_ptr;
-    bmptr_high = vicii.bitmap_high_ptr;
     msk_ptr = gfx_msk_ptr + GFX_MSK_LEFTBORDER_SIZE;
 
-    for (j = ((vicii.memptr << 3)
-        + vicii.raster.ycounter + xs * 8) & 0x1fff, i = xs;
-        i <= xe; i++, j = (j + 8) & 0x1fff) {
-
+    for (i = xs; i <= xe; i++) {
         BYTE fcolor;
         BYTE bcolor;
 
-        if (j & 0x1000)
-            bmval = bmptr_high[j & 0xfff];
-        else
-            bmval = bmptr_low[j];
-
-        *(msk_ptr + i) = bmval;
+        *(msk_ptr + i) = bmval = vicii.gbuf[i];
         fcolor = vicii.dtvpalette[(vicii.vbuf[i]>>4) & 0xf];
         bcolor = vicii.dtvpalette[vicii.vbuf[i] & 0xf];
         *(p+i*8+0) = (bmval & 0x80) ? fcolor : bcolor;
@@ -519,19 +506,17 @@ static int get_mc_text(raster_cache_t *cache, unsigned int *xs,
         || cache->chargen_ptr != vicii.chargen_ptr) {
         cache->background_data[0] = vicii.raster.background_color;
         cache->color_data_1[0] = vicii.ext_background_color[0];
-	        cache->color_data_1[1] = vicii.ext_background_color[1];
+        cache->color_data_1[1] = vicii.ext_background_color[1];
         cache->chargen_ptr = vicii.chargen_ptr;
         rr = 1;
     }
 
-    r = raster_cache_data_fill_text(cache->foreground_data,
-                                    vicii.vbuf,
-                                    vicii.chargen_ptr,
-                                    8,
-                                    VICII_SCREEN_TEXTCOLS,
-                                    vicii.raster.ycounter,
-                                    xs, xe,
-                                    rr);
+    r = raster_cache_data_fill(cache->foreground_data,
+                               vicii.gbuf,
+                               VICII_SCREEN_TEXTCOLS,
+                               1,
+                               xs, xe,
+                               rr);
     r |= raster_cache_data_fill(cache->color_data_3,
                                 vicii.cbuf,
                                 VICII_SCREEN_TEXTCOLS,
@@ -545,13 +530,12 @@ inline static void _draw_mc_text(BYTE *p, unsigned int xs, unsigned int xe,
                                  BYTE *gfx_msk_ptr)
 {
     BYTE c[12];
-    BYTE *char_ptr, *msk_ptr;
+    BYTE *msk_ptr;
     WORD *ptmp;
     unsigned int i;
     BYTE cmask;
     cmask = (vicii.high_color) ? 0xff : 0x0f;
 
-    char_ptr = vicii.chargen_ptr + vicii.raster.ycounter;
     msk_ptr = gfx_msk_ptr + GFX_MSK_LEFTBORDER_SIZE;
 
     c[1] = c[0] = vicii.raster.background_color;
@@ -564,8 +548,7 @@ inline static void _draw_mc_text(BYTE *p, unsigned int xs, unsigned int xe,
     for (i = xs; i <= xe; i++) {
         unsigned int d;
 
-        d = (*(char_ptr + vicii.vbuf[i] * 8))
-            | ((vicii.cbuf[i] & 0x8) << 5);
+        d = vicii.gbuf[i] | ((vicii.cbuf[i] & 0x8) << 5);
 
         *(msk_ptr + i) = mcmsktable[d];
         c[10] = c[9] = c[7] = c[6] = vicii.dtvpalette[vicii.cbuf[i] & cmask & 0xf7];
@@ -766,30 +749,23 @@ static int get_mc_bitmap(raster_cache_t *cache, unsigned int *xs,
 inline static void _draw_mc_bitmap(BYTE *p, unsigned int xs, unsigned int xe,
                                    BYTE *gfx_msk_ptr)
 {
-    BYTE *colptr, *bmptr_low, *bmptr_high, *msk_ptr, *ptmp;
+    BYTE *colptr, *msk_ptr, *ptmp;
     BYTE c[4];
-    unsigned int i, j;
+    unsigned int i;
     BYTE cmask;
     cmask = (vicii.high_color) ? 0xff : 0x0f;
 
     colptr = vicii.cbuf;
-    bmptr_low = vicii.bitmap_low_ptr;
-    bmptr_high = vicii.bitmap_high_ptr;
     msk_ptr = gfx_msk_ptr + GFX_MSK_LEFTBORDER_SIZE;
 
     c[0] = vicii.raster.background_color;
 
     ptmp = p + xs * 8;
 
-    for (j = ((vicii.memptr << 3) + vicii.raster.ycounter + xs * 8) & 0x1fff,
-        i = xs; i <= xe; i++, j = (j + 8) & 0x1fff) {
-
+    for (i = xs; i <= xe; i++) {
         unsigned int d;
 
-        if (j & 0x1000)
-            d = bmptr_high[j & 0xfff];
-        else
-            d = bmptr_low[j];
+        d = vicii.gbuf[i];
 
         *(msk_ptr + i) = mcmsktable[d | 0x100];
         c[1] = vicii.vbuf[i] >> 4;
@@ -964,12 +940,11 @@ static int get_ext_text(raster_cache_t *cache, unsigned int *xs,
 inline static void _draw_ext_text(BYTE *p, unsigned int xs, unsigned int xe,
                                   BYTE *gfx_msk_ptr)
 {
-    BYTE *char_ptr, *msk_ptr;
+    BYTE *msk_ptr;
     unsigned int i;
     BYTE cmask;
     cmask = (vicii.high_color) ? 0xff : 0x0f;
 
-    char_ptr = vicii.chargen_ptr + vicii.raster.ycounter;
     msk_ptr = gfx_msk_ptr + GFX_MSK_LEFTBORDER_SIZE;
 
     for (i = xs; i <= xe; i++) {
@@ -982,7 +957,7 @@ inline static void _draw_ext_text(BYTE *p, unsigned int xs, unsigned int xe,
 
         ptr = hr_table + (vicii.cbuf[i] << 8);
         bg_idx = vicii.vbuf[i] >> 6;
-        d = *(char_ptr + (vicii.vbuf[i] & 0x3f) * 8);
+        d = vicii.gbuf[i];
 
         fcolor = vicii.dtvpalette[vicii.cbuf[i] & cmask];
         bcolor = (bg_idx == 0) ? (BYTE)vicii.raster.background_color : vicii.ext_background_color[bg_idx - 1];
@@ -1143,8 +1118,7 @@ inline static void _draw_illegal_text(BYTE *p, unsigned int xs,
     for (i = xs; i <= xe; i++) {
         unsigned int d;
 
-        d = (*(char_ptr + (vicii.vbuf[i] & 0x3f) * 8))
-            | ((vicii.cbuf[i] & 0x8) << 5);
+        d = vicii.gbuf[i] | ((vicii.cbuf[i] & 0x8) << 5);
 
         *(msk_ptr + i) = mcmsktable[d];
     }
@@ -1235,26 +1209,15 @@ inline static void _draw_illegal_bitmap_mode1(BYTE *p, unsigned int xs,
                                               unsigned int xe,
                                               BYTE *gfx_msk_ptr)
 {
-    BYTE *bmptr_low, *bmptr_high, *msk_ptr;
-    BYTE bmval;
-    unsigned int i, j;
+    BYTE *msk_ptr;
+    unsigned int i;
 
-    bmptr_low = vicii.bitmap_low_ptr;
-    bmptr_high = vicii.bitmap_high_ptr;
     msk_ptr = gfx_msk_ptr + GFX_MSK_LEFTBORDER_SIZE;
 
     memset(p + 8 * xs, 0, (xe - xs + 1) * 8);
 
-    for (j = ((vicii.memptr << 3)
-        + vicii.raster.ycounter + xs * 8) & 0x1fff, i = xs;
-        i <= xe; i++, j = (j + 8) & 0x1fff) {
-
-        if (j & 0x1000)
-            bmval = bmptr_low[j & 0x9ff];
-        else
-            bmval = bmptr_high[j & 0x9ff];
-
-        *(msk_ptr + i) = bmval;
+    for (i = xs; i <= xe; i++) {
+        *(msk_ptr + i) = vicii.gbuf[i];
     }
 }
 
@@ -1329,25 +1292,15 @@ inline static void _draw_illegal_bitmap_mode2(BYTE *p, unsigned int xs,
                                               unsigned int xe,
                                               BYTE *gfx_msk_ptr)
 {
-    BYTE *bmptr_low, *bmptr_high, *msk_ptr;
-    BYTE bmval;
+    BYTE *msk_ptr;
     unsigned int i, j;
 
-    bmptr_low = vicii.bitmap_low_ptr;
-    bmptr_high = vicii.bitmap_high_ptr;
     msk_ptr = gfx_msk_ptr + GFX_MSK_LEFTBORDER_SIZE;
 
     memset(p + 8 * xs, 0, (xe - xs + 1) * 8);
 
-    for (j = ((vicii.memptr << 3)
-        + vicii.raster.ycounter + xs * 8) & 0x1fff, i = xs;
-        i <= xe; i++, j = (j + 8) & 0x1fff) {
-        if (j & 0x1000)
-            bmval = bmptr_high[j & 0x9ff];
-        else
-            bmval = bmptr_low[j & 0x9ff];
-
-        *(msk_ptr + i) = mcmsktable[bmval | 0x100];
+    for (i = xs; i <= xe; i++) {
+        *(msk_ptr + i) = mcmsktable[vicii.gbuf[i] | 0x100];
     }
 }
 

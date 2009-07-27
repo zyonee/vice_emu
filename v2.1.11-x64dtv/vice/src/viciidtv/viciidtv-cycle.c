@@ -126,7 +126,9 @@ void viciidtv_cycle_3(void)
 {
     if (vicii.prefetch_cycles) {
         vicii.prefetch_cycles--;
-    } else if (vicii.fetch_active) {
+    }
+
+    if ((!vicii.idle_state) && (vicii.raster_cycle >= 14) && (vicii.raster_cycle <= 53)) {
         viciidtv_fetch_graphics();
     }
 
