@@ -148,7 +148,7 @@ void vic_raster_draw_handler(void)
         vic.row_counter = 0;
         vic.raster.ycounter = 0;
         vic.memptr = 0;
-        vic.area = 0;
+        vic.area = VIC_AREA_IDLE;
         vic.raster.blank = 0;
         vic.light_pen.triggered = 0;
     }
@@ -261,7 +261,7 @@ void vic_reset(void)
     vic.row_counter = 0;
     vic.memptr = 0;
     vic.memptr_inc = 0;
-    vic.area = 0;
+    vic.area = VIC_AREA_IDLE;
     vic.raster_line = 0;
     vic.raster_cycle = 6; /* magic value from cpu_reset() (mainviccpu.c) */
     vic.fetch_state = VIC_FETCH_IDLE;

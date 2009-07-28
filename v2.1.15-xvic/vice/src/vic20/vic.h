@@ -133,6 +133,18 @@ enum vic_fetch_state_s {
 };
 typedef enum vic_fetch_state_s vic_fetch_state_t;
 
+enum vic_area_state_s {
+    /* v-flipflop has not opened yet (upper border) */
+    VIC_AREA_IDLE,
+    /* v-flipflop has just been opened, first line not reached yet */
+    VIC_AREA_PENDING,
+    /* normal display area */
+    VIC_AREA_DISPLAY,
+    /* v-flipflop has closed (lower border) */
+    VIC_AREA_DONE
+};
+typedef enum vic_area_state_s vic_area_state_t;
+
 struct video_chip_cap_s;
 
 struct vic_s
@@ -174,8 +186,8 @@ struct vic_s
     /* counting the text lines in the current frame */
     int row_counter;
 
-    /* area in the frame: 0=upper border, 1=visible screen; 2=lower border */
-    int area;
+    /* area in the frame */
+    vic_area_state_t area;
 
     /* fetch state */
     vic_fetch_state_t fetch_state;

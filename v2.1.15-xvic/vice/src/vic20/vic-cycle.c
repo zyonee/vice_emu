@@ -44,14 +44,14 @@
 /* Close vertical flipflop */
 static inline void vic_cycle_close_v(void)
 {
-    vic.area = 2;
+    vic.area = VIC_AREA_DONE;
     vic.raster.display_ystop = vic.raster_line;
 }
 
 /* Open vertical flipflop */
 static inline void vic_cycle_open_v(void)
 {
-    vic.area = 1;
+    vic.area = VIC_AREA_PENDING;
     vic.raster.display_ystart = vic.raster_line;
     vic.raster.geometry->gfx_position.y = vic.raster_line - vic.first_displayed_line;
 
@@ -86,7 +86,7 @@ static inline void vic_cycle_open_h(void)
     vic.raster.geometry->gfx_position.x = xstart;
     vic.raster.display_xstop = xstop;
 
-    if (xstop != xstart) {
+    if (vic.text_cols > 0) {
         vic.raster.blank_this_line = 0;
         vic.fetch_state = VIC_FETCH_START;
         /* buf_offset used as delay counter before first matrix fetch */
@@ -94,6 +94,10 @@ static inline void vic_cycle_open_h(void)
         vic.buf_offset = 4;
     } else {
         vic.fetch_state = VIC_FETCH_DONE;
+    }
+
+    if (vic.area == VIC_AREA_PENDING) {
+        vic.area = VIC_AREA_DISPLAY;
     }
 
     vic.memptr_inc = 0;
@@ -112,7 +116,7 @@ static inline void vic_cycle_end_of_line(void)
     vic_raster_draw_handler();
     vic.raster_line++;
 
-    if ((vic.area == 1) && (vic.fetch_state != VIC_FETCH_IDLE)) {
+    if (vic.area == VIC_AREA_DISPLAY) {
         vic.raster.ycounter++;
 
         /* check if row step is pending */
@@ -140,13 +144,13 @@ static inline void vic_cycle_end_of_line(void)
 static inline void vic_cycle_end_of_frame(void)
 {
     /* Close v-flipflop on end of frame */
-    if (vic.area == 1) {
+    if (vic.area != VIC_AREA_DONE) {
         vic_cycle_close_v();
         vic.raster.display_ystop = vic.raster_line - 1;
     }
 
     vic.raster_line = 0;
-    vic.area = 0;
+    vic.area = VIC_AREA_IDLE;
     vic.raster.display_ystart = -1;
     vic.raster.display_ystop = -1;
     vic.raster.ycounter = 0;
@@ -272,7 +276,7 @@ static inline void vic_cycle_fetch(void)
 
 void vic_cycle(void)
 {
-    if (vic.area == 0) {
+    if (vic.area == VIC_AREA_IDLE) {
         /* Check for vertical flipflop */
         if (vic.regs[1] == (vic.raster_line >> 1)) {
             vic_cycle_open_v();
@@ -288,7 +292,7 @@ void vic_cycle(void)
         }
     }
 
-    if (vic.area == 1) {
+    if ((vic.area == VIC_AREA_DISPLAY) || (vic.area == VIC_AREA_PENDING)) {
         /* Check for horizontal flipflop */
         if ((vic.fetch_state == VIC_FETCH_IDLE) && (vic.regs[0] & 0x7f) == vic.raster_cycle) {
             vic_cycle_open_h();
