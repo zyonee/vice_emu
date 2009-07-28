@@ -144,13 +144,6 @@ void vic_raster_draw_handler(void)
         raster_skip_frame(&vic.raster,
                           vsync_do_vsync(vic.raster.canvas,
                                          vic.raster.skip_frame));
-        vic.raster.blank_enabled = 1;
-        vic.row_counter = 0;
-        vic.raster.ycounter = 0;
-        vic.memptr = 0;
-        vic.area = VIC_AREA_IDLE;
-        vic.raster.blank = 0;
-        vic.light_pen.triggered = 0;
     }
 }
 

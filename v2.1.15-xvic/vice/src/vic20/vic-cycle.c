@@ -65,36 +65,18 @@ static inline void vic_cycle_open_v(void)
 /* Open horizontal flipflop */
 static inline void vic_cycle_open_h(void)
 {
-    int xstart, xstop;
-
-    vic.text_cols = vic.pending_text_cols;
-    vic.raster.geometry->gfx_size.width = vic.text_cols * 8 * VIC_PIXEL_WIDTH;
-    vic.raster.geometry->text_size.width = vic.text_cols;
+    int xstart;
 
     xstart = MIN((unsigned int)(vic.raster_cycle * 4), vic.screen_width);
-    xstop = xstart + vic.text_cols * 8;
-
-    if (xstop >= (int)vic.screen_width) {
-        xstop = vic.screen_width - 1;
-        /* FIXME: SCREEN-MIXUP not handled */
-    }
-
     xstart *= VIC_PIXEL_WIDTH;
-    xstop *= VIC_PIXEL_WIDTH;
 
     vic.raster.display_xstart = xstart;
     vic.raster.geometry->gfx_position.x = xstart;
-    vic.raster.display_xstop = xstop;
 
-    if (vic.text_cols > 0) {
-        vic.raster.blank_this_line = 0;
-        vic.fetch_state = VIC_FETCH_START;
-        /* buf_offset used as delay counter before first matrix fetch */
-        /* TODO why is this needed? */
-        vic.buf_offset = 4;
-    } else {
-        vic.fetch_state = VIC_FETCH_DONE;
-    }
+    vic.fetch_state = VIC_FETCH_START;
+    /* buf_offset used as delay counter before first matrix fetch */
+    /* TODO why is this needed? */
+    vic.buf_offset = 4;
 
     if (vic.area == VIC_AREA_PENDING) {
         vic.area = VIC_AREA_DISPLAY;
@@ -109,35 +91,43 @@ static inline void vic_cycle_close_h(void)
     vic.fetch_state = VIC_FETCH_DONE;
 }
 
+/* Start the actual fetch */
+static inline void vic_cycle_start_fetch(void)
+{
+    int xstop;
+
+    vic.text_cols = vic.pending_text_cols;
+    vic.raster.geometry->gfx_size.width = vic.text_cols * 8 * VIC_PIXEL_WIDTH;
+    vic.raster.geometry->text_size.width = vic.text_cols;
+
+    xstop = vic.raster.display_xstart / VIC_PIXEL_WIDTH + vic.text_cols * 8;
+
+    if (xstop >= (int)vic.screen_width) {
+        xstop = vic.screen_width - 1;
+        /* FIXME: SCREEN-MIXUP not handled */
+    }
+
+    xstop *= VIC_PIXEL_WIDTH;
+
+    vic.raster.display_xstop = xstop;
+
+    if (vic.text_cols > 0) {
+        vic.raster.blank_this_line = 0;
+        vic.fetch_state = VIC_FETCH_MATRIX;
+    } else {
+        vic_cycle_close_h();
+    }
+}
+
 /* Handle end of line */
 static inline void vic_cycle_end_of_line(void)
 {
     vic.raster_cycle = 0;
     vic_raster_draw_handler();
-    vic.raster_line++;
-
-    if (vic.area == VIC_AREA_DISPLAY) {
-        vic.raster.ycounter++;
-
-        /* check if row step is pending */
-        if (vic.row_increase_line == (unsigned int)vic.raster.ycounter
-            || 2 * vic.row_increase_line == (unsigned int)vic.raster.ycounter) {
-            vic.raster.ycounter = 0;
-
-            vic.memptr_inc = vic.text_cols;
-
-            vic.row_counter++;
-            if (vic.row_counter == vic.text_lines) {
-                vic_cycle_close_v();
-            }
-        }
-
-        vic.memptr += vic.memptr_inc;
-        vic.memptr_inc = 0;
-    }
 
     vic.fetch_state = VIC_FETCH_IDLE;
     vic.raster.blank_this_line = 1;
+    vic.raster_line++;
 }
 
 /* Handle end of frame */
@@ -149,11 +139,38 @@ static inline void vic_cycle_end_of_frame(void)
         vic.raster.display_ystop = vic.raster_line - 1;
     }
 
+    vic.raster.blank_enabled = 1;
+    vic.raster.blank = 0;
+    vic.row_counter = 0;
     vic.raster_line = 0;
     vic.area = VIC_AREA_IDLE;
     vic.raster.display_ystart = -1;
     vic.raster.display_ystop = -1;
     vic.raster.ycounter = 0;
+    vic.memptr = 0;
+    vic.memptr_inc = 0;
+    vic.light_pen.triggered = 0;
+}
+
+/* Handle memptr increase */
+static inline void vic_cycle_handle_memptr(void)
+{
+    vic.raster.ycounter++;
+
+    /* check if row step is pending */
+    if (vic.row_increase_line == (unsigned int)vic.raster.ycounter
+        || 2 * vic.row_increase_line == (unsigned int)vic.raster.ycounter) {
+        vic.raster.ycounter = 0;
+
+        vic.memptr_inc = vic.text_cols;
+
+        vic.row_counter++;
+        if (vic.row_counter == vic.text_lines) {
+            vic_cycle_close_v();
+        }
+    }
+
+    vic.memptr += vic.memptr_inc;
     vic.memptr_inc = 0;
 }
 
@@ -231,7 +248,7 @@ static inline void vic_cycle_fetch(void)
         /* fetch starting */
         case VIC_FETCH_START:
             if ((--vic.buf_offset) == 0) {
-                vic.fetch_state = VIC_FETCH_MATRIX;
+                vic_cycle_start_fetch();
             }
             /* TODO fetch from where? */
             break;
@@ -293,6 +310,11 @@ void vic_cycle(void)
     }
 
     if ((vic.area == VIC_AREA_DISPLAY) || (vic.area == VIC_AREA_PENDING)) {
+        /* Handle memptr */
+        if ((vic.area == VIC_AREA_DISPLAY) && (vic.raster_cycle == 1)) {
+            vic_cycle_handle_memptr();
+        }
+
         /* Check for horizontal flipflop */
         if ((vic.fetch_state == VIC_FETCH_IDLE) && (vic.regs[0] & 0x7f) == vic.raster_cycle) {
             vic_cycle_open_h();
