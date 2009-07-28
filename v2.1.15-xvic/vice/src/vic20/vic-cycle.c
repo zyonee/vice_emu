@@ -46,6 +46,11 @@ static inline void vic_cycle_close_v(void)
 {
     vic.area = VIC_AREA_DONE;
     vic.raster.display_ystop = vic.raster_line;
+
+    /* Display one more line if h-flipflop is already open (XPOS == 0) */
+    if (vic.fetch_state != VIC_FETCH_IDLE) {
+        vic.raster.display_ystop++;
+    }
 }
 
 /* Open vertical flipflop */
@@ -79,6 +84,8 @@ static inline void vic_cycle_open_h(void)
     vic.buf_offset = 4;
 
     if (vic.area == VIC_AREA_PENDING) {
+        vic.raster.display_ystart = vic.raster_line;
+        vic.raster.geometry->gfx_position.y = vic.raster_line - vic.first_displayed_line;
         vic.area = VIC_AREA_DISPLAY;
     }
 
@@ -125,6 +132,10 @@ static inline void vic_cycle_end_of_line(void)
     vic.raster_cycle = 0;
     vic_raster_draw_handler();
 
+    if (vic.area == VIC_AREA_DISPLAY) {
+        vic.raster.ycounter++;
+    }
+
     vic.fetch_state = VIC_FETCH_IDLE;
     vic.raster.blank_this_line = 1;
     vic.raster_line++;
@@ -155,8 +166,6 @@ static inline void vic_cycle_end_of_frame(void)
 /* Handle memptr increase */
 static inline void vic_cycle_handle_memptr(void)
 {
-    vic.raster.ycounter++;
-
     /* check if row step is pending */
     if (vic.row_increase_line == (unsigned int)vic.raster.ycounter
         || 2 * vic.row_increase_line == (unsigned int)vic.raster.ycounter) {
