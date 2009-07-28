@@ -319,14 +319,14 @@ void vic_cycle(void)
     }
 
     if ((vic.area == VIC_AREA_DISPLAY) || (vic.area == VIC_AREA_PENDING)) {
-        /* Handle memptr */
-        if ((vic.area == VIC_AREA_DISPLAY) && (vic.raster_cycle == 1)) {
-            vic_cycle_handle_memptr();
-        }
-
         /* Check for horizontal flipflop */
         if ((vic.fetch_state == VIC_FETCH_IDLE) && (vic.regs[0] & 0x7f) == vic.raster_cycle) {
             vic_cycle_open_h();
+        }
+
+        /* Handle memptr */
+        if ((vic.area == VIC_AREA_DISPLAY) && (vic.raster_cycle == 0)) {
+            vic_cycle_handle_memptr();
         }
     }
 
