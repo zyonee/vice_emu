@@ -90,6 +90,11 @@ static inline void vic_cycle_open_h(void)
     }
 
     vic.memptr_inc = 0;
+
+    /* Update text cols early. This is needed to handle
+       memptr updates properly when XPOS == 0 and COLS == 0
+       is used to avoid memptr increases. */
+    vic.text_cols = vic.pending_text_cols;
 }
 
 /* Close horizontal flipflop */
