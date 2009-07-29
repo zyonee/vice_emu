@@ -55,13 +55,13 @@ void REGPARM2 vic_store(WORD addr, BYTE value)
     VIC_DEBUG_REGISTER (("VIC: write $90%02X, value = $%02X.", addr, value));
 
     switch (addr) {
-#if 0   /* handled in vic_cycle */
+#if 0
+      /* handled in vic_cycle.c */
       case 0:                     /* $9000  Screen X Location. */
         /*
             VIC checks in cycle n for peek($9000)=n
             and in this case opens the horizontal flipflop
         */
-
       case 1:                     /* $9001  Screen Y Location. */
         /*
             VIC checks from cycle 1 of line r*2 to cycle 0 of line r*2+2
@@ -69,6 +69,14 @@ void REGPARM2 vic_store(WORD addr, BYTE value)
             flipflop
         */
       case 2:                     /* $9002  Columns Displayed. */
+      case 5:                     /* $9005  Video and char matrix base
+                                   address. */
+      /* read-only registers */
+      case 4:                     /* $9004  Raster line count -- read only. */
+      case 6:                     /* $9006. */
+      case 7:                     /* $9007  Light Pen X,Y. */
+      case 8:                     /* $9008. */
+      case 9:                     /* $9009  Paddle X,Y. */
 #endif
       default:
         return;
@@ -80,22 +88,6 @@ void REGPARM2 vic_store(WORD addr, BYTE value)
             vic.row_increase_line = new_char_height;
             vic.char_height = new_char_height;
         }
-        return;
-
-      case 4:                     /* $9004  Raster line count -- read only. */
-        return;
-
-      case 5:                     /* $9005  Video and char matrix base
-                                   address. */
-        return;
-
-      case 6:                     /* $9006. */
-      case 7:                     /* $9007  Light Pen X,Y. */
-        VIC_DEBUG_REGISTER(("(light pen register, read-only)."));
-        return;
-
-      case 8:                     /* $9008. */
-      case 9:                     /* $9009  Paddle X,Y. */
         return;
 
       case 10:                    /* $900A  Bass Enable and Frequency. */
