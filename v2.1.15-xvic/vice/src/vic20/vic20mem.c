@@ -77,8 +77,7 @@ BYTE mem_ram[VIC20_RAM_SIZE];
 
 /* Last data read/write by the cpu, this value lingers on the C(PU)-bus and
    gets used when the CPU reads from unconnected space on the C(PU)-bus */
-static BYTE vic20_cpu_last_data;
-
+BYTE vic20_cpu_last_data;
 /* Last read data on V-bus (VD0-VD7) */
 BYTE vic20_v_bus_last_data;
 /* Last read data on V-bus (VD8-VD11) */

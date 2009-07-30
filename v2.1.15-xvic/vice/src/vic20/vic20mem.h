@@ -69,6 +69,9 @@ extern void mem_detach_cartridge(int type);
 
 extern int mem_patch_kernal(void);
 
+/* Last data read/write by the cpu, this value lingers on the C(PU)-bus and 
+   gets used when the CPU reads from unconnected space on the C(PU)-bus */
+extern BYTE vic20_cpu_last_data;
 /* Last read data on V-bus (VD0-VD7) */
 extern BYTE vic20_v_bus_last_data;
 /* Last read data on V-bus (VD8-VD11) */
