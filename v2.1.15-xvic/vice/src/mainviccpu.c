@@ -86,12 +86,12 @@
 
 #ifdef FEATURE_CPUMEMHISTORY
 
-/* FIXME this is C64 specific */
-
 void REGPARM2 memmap_mem_store(unsigned int addr, unsigned int value)
 {
-    if((addr >= 0xd000)&&(addr <= 0xdfff)) {
+    if (((addr >= 0x9000)&&(addr <= 0x93ff)) || ((addr >= 0x9800)&&(addr <= 0x9fff))) {
         monitor_memmap_store(addr, MEMMAP_I_O_W);
+    } else if (((addr >= 0x8000)&&(addr <= 0x8fff)) || (addr >= 0xc000)) {
+        monitor_memmap_store(addr, MEMMAP_ROM_W);
     } else {
         monitor_memmap_store(addr, MEMMAP_RAM_W);
     }
@@ -100,25 +100,12 @@ void REGPARM2 memmap_mem_store(unsigned int addr, unsigned int value)
 
 BYTE REGPARM1 memmap_mem_read(unsigned int addr)
 {
-    switch(addr >> 12) {
-        case 0xa:
-        case 0xb:
-        case 0xe:
-        case 0xf:
-            memmap_state |= MEMMAP_STATE_IGNORE;
-            if(LOAD_ZERO(1) & (1 << ((addr>>14) & 1))) {
-                monitor_memmap_store(addr, (memmap_state&MEMMAP_STATE_OPCODE)?MEMMAP_ROM_X:(memmap_state&MEMMAP_STATE_INSTR)?0:MEMMAP_ROM_R);
-            } else {
-                monitor_memmap_store(addr, (memmap_state&MEMMAP_STATE_OPCODE)?MEMMAP_RAM_X:(memmap_state&MEMMAP_STATE_INSTR)?0:MEMMAP_RAM_R);
-            }
-            memmap_state &= ~(MEMMAP_STATE_IGNORE);
-            break;
-        case 0xd:
-            monitor_memmap_store(addr, MEMMAP_I_O_R);
-            break;
-        default:
-            monitor_memmap_store(addr, (memmap_state&MEMMAP_STATE_OPCODE)?MEMMAP_RAM_X:(memmap_state&MEMMAP_STATE_INSTR)?0:MEMMAP_RAM_R);
-            break;
+    if (((addr >= 0x9000)&&(addr <= 0x93ff)) || ((addr >= 0x9800)&&(addr <= 0x9fff))) {
+        monitor_memmap_store(addr, MEMMAP_I_O_R);
+    } else if (((addr >= 0x8000)&&(addr <= 0x8fff)) || (addr >= 0xc000)) {
+        monitor_memmap_store(addr, (memmap_state&MEMMAP_STATE_OPCODE)?MEMMAP_ROM_X:(memmap_state&MEMMAP_STATE_INSTR)?0:MEMMAP_ROM_R);
+    } else {
+        monitor_memmap_store(addr, (memmap_state&MEMMAP_STATE_OPCODE)?MEMMAP_RAM_X:(memmap_state&MEMMAP_STATE_INSTR)?0:MEMMAP_RAM_R);
     }
     memmap_state &= ~(MEMMAP_STATE_OPCODE);
     return (*_mem_read_tab_ptr[(addr) >> 8])((WORD)(addr));
