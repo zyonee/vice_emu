@@ -27,12 +27,24 @@
 #include "vice.h"
 
 #include <stdio.h>
+#include <string.h>
 
-#include "lib.h"
 #include "flash040.h"
+#include "lib.h"
+#include "log.h"
+#include "maincpu.h"
 #include "types.h"
 
 /* -------------------------------------------------------------------------- */
+
+/*#define FLASH_DEBUG_ENABLED*/
+
+#ifdef FLASH_DEBUG_ENABLED
+#define FLASH_DEBUG(x) log_debug x
+#else
+#define FLASH_DEBUG(x)
+#endif
+
 
 struct flash_types_s {
     BYTE manufacturer_ID;
@@ -51,18 +63,46 @@ static flash_types_t flash_types[FLASH040_TYPE_NUM] = {
 
 /* -------------------------------------------------------------------------- */
 
+inline static int flash_magic_1(flash040_context_t *flash040_context, unsigned int addr)
+{
+    return ((addr & flash_types[flash040_context->flash_type].magic_1_mask) == flash_types[flash040_context->flash_type].magic_1_addr);
+}
+
+inline static int flash_magic_2(flash040_context_t *flash040_context, unsigned int addr)
+{
+    return ((addr & flash_types[flash040_context->flash_type].magic_2_mask) == flash_types[flash040_context->flash_type].magic_2_addr);
+}
+
+inline static void flash_erase_sector(flash040_context_t *flash040_context, unsigned int addr)
+{
+    unsigned int sector_addr = addr & 0xf0000;
+
+    FLASH_DEBUG(("Erasing 0x%xXXXX", sector_addr >> 16));
+    memset(&(flash040_context->flash_data[sector_addr]), 0xff, 0x10000);
+}
+
+inline static void flash_erase_chip(flash040_context_t *flash040_context)
+{
+    FLASH_DEBUG(("Erasing chip"));
+    memset(flash040_context->flash_data, 0xff, flash040_context->flash_size);
+}
+
 static void REGPARM3 flash040core_store_internal(flash040_context_t *flash040_context,
                                                  unsigned int addr, BYTE byte)
 {
+#ifdef FLASH_DEBUG_ENABLED
+    flash040_state_t old_state = flash040_context->flash_state;
+#endif
+
     switch (flash040_context->flash_state) {
         case FLASH040_STATE_READ:
-            if (((addr & flash_types[flash040_context->flash_type].magic_1_mask) == flash_types[flash040_context->flash_type].magic_1_addr) && (byte == 0xaa)) {
+            if (flash_magic_1(flash040_context, addr) && (byte == 0xaa)) {
                 flash040_context->flash_state = FLASH040_STATE_MAGIC_1;
             }
             break;
 
         case FLASH040_STATE_MAGIC_1:
-            if (((addr & flash_types[flash040_context->flash_type].magic_2_mask) == flash_types[flash040_context->flash_type].magic_2_addr) && (byte == 0x55)) {
+            if (flash_magic_2(flash040_context, addr) && (byte == 0x55)) {
                 flash040_context->flash_state = FLASH040_STATE_MAGIC_2;
             } else {
                 flash040_context->flash_state = FLASH040_STATE_READ;
@@ -70,7 +110,7 @@ static void REGPARM3 flash040core_store_internal(flash040_context_t *flash040_co
             break;
 
         case FLASH040_STATE_MAGIC_2:
-            if ((addr & flash_types[flash040_context->flash_type].magic_1_mask) == flash_types[flash040_context->flash_type].magic_1_addr) {
+            if (flash_magic_1(flash040_context, addr)) {
                 switch (byte) {
                     case 0x90:
                         flash040_context->flash_state = FLASH040_STATE_AUTOSELECT;
@@ -91,12 +131,14 @@ static void REGPARM3 flash040core_store_internal(flash040_context_t *flash040_co
             break;
 
         case FLASH040_STATE_BYTE_PROGRAM:
+            /* TODO setup alarm to not have the operation complete instantly */
+            FLASH_DEBUG(("Programming 0x%05x with 0x%02x (%02x->%02x)", addr, byte, flash040_context->flash_data[addr], flash040_context->flash_data[addr] & byte));
             flash040_context->flash_data[addr] &= byte;
             flash040_context->flash_state = FLASH040_STATE_BYTE_PROGRAM_HAPPENING;
             break;
 
         case FLASH040_STATE_ERASE_MAGIC_1:
-            if (((addr & flash_types[flash040_context->flash_type].magic_1_mask) == flash_types[flash040_context->flash_type].magic_1_addr) && (byte == 0xaa)) {
+            if (flash_magic_1(flash040_context, addr) && (byte == 0xaa)) {
                 flash040_context->flash_state = FLASH040_STATE_ERASE_MAGIC_2;
             } else {
                 flash040_context->flash_state = FLASH040_STATE_READ;
@@ -104,7 +146,7 @@ static void REGPARM3 flash040core_store_internal(flash040_context_t *flash040_co
             break;
 
         case FLASH040_STATE_ERASE_MAGIC_2:
-            if (((addr & flash_types[flash040_context->flash_type].magic_2_mask) == flash_types[flash040_context->flash_type].magic_2_addr) && (byte == 0x55)) {
+            if (flash_magic_2(flash040_context, addr) && (byte == 0x55)) {
                 flash040_context->flash_state = FLASH040_STATE_ERASE_SELECT;
             } else {
                 flash040_context->flash_state = FLASH040_STATE_READ;
@@ -112,11 +154,27 @@ static void REGPARM3 flash040core_store_internal(flash040_context_t *flash040_co
             break;
 
         case FLASH040_STATE_ERASE_SELECT:
-            if (((addr & flash_types[flash040_context->flash_type].magic_1_mask) == flash_types[flash040_context->flash_type].magic_1_addr) && (byte == 0x10)) {
-                /* erase chip here */
+            if (flash_magic_1(flash040_context, addr) && (byte == 0x10)) {
+                /* TODO setup alarm to not have the operation complete instantly */
+                flash_erase_chip(flash040_context);
                 flash040_context->flash_state = FLASH040_STATE_CHIP_ERASE;
             } else if (byte == 0x30) {
-                /* erase sector here */
+                /* TODO setup alarm to not have the operation complete instantly */
+                flash_erase_sector(flash040_context, addr);
+                flash040_context->flash_state = FLASH040_STATE_SECTOR_ERASE;
+            } else {
+                flash040_context->flash_state = FLASH040_STATE_READ;
+            }
+            break;
+
+        case FLASH040_STATE_SECTOR_ERASE:
+            if (byte == 0xb0) {
+                flash040_context->flash_state = FLASH040_STATE_SECTOR_ERASE_SUSPEND;
+            }
+            break;
+
+        case FLASH040_STATE_SECTOR_ERASE_SUSPEND:
+            if (byte == 0x30) {
                 flash040_context->flash_state = FLASH040_STATE_SECTOR_ERASE;
             }
             break;
@@ -127,19 +185,23 @@ static void REGPARM3 flash040core_store_internal(flash040_context_t *flash040_co
             }
             break;
 
+        case FLASH040_STATE_BYTE_PROGRAM_HAPPENING:
+        case FLASH040_STATE_CHIP_ERASE:
         default:
             break;
     }
+
+    FLASH_DEBUG(("Write %02x to %05x, state %i->%i", byte, addr, (int)old_state, (int)flash040_context->flash_state));
 }
 
 /* -------------------------------------------------------------------------- */
 
 void REGPARM3 flash040core_store(flash040_context_t *flash040_context, unsigned int addr, BYTE byte)
 {
-    if (*(flash040_context->rmw_flag)) {
-        (*(flash040_context->clk_ptr))--;
+    if (maincpu_rmw_flag) {
+        maincpu_clk--;
         flash040core_store_internal(flash040_context, addr, flash040_context->last_read);
-        (*(flash040_context->clk_ptr))++;
+        maincpu_clk++;
     }
 
     flash040core_store_internal(flash040_context, addr, byte);
@@ -149,6 +211,9 @@ void REGPARM3 flash040core_store(flash040_context_t *flash040_context, unsigned 
 BYTE REGPARM2 flash040core_read(flash040_context_t *flash040_context, unsigned int addr)
 {
     BYTE value;
+#ifdef FLASH_DEBUG_ENABLED
+    flash040_state_t old_state = flash040_context->flash_state;
+#endif
 
     switch (flash040_context->flash_state) {
         case FLASH040_STATE_AUTOSELECT:
@@ -168,6 +233,12 @@ BYTE REGPARM2 flash040core_read(flash040_context_t *flash040_context, unsigned i
             }
             break;
 
+        case FLASH040_STATE_SECTOR_ERASE_SUSPEND:
+        case FLASH040_STATE_BYTE_PROGRAM_HAPPENING:
+        case FLASH040_STATE_CHIP_ERASE:
+        case FLASH040_STATE_SECTOR_ERASE:
+            /* TODO return write operation status. Until alarms are introduced, just fall through */
+
         default:
             flash040_context->flash_state = FLASH040_STATE_READ;
             /* fall through */
@@ -175,6 +246,12 @@ BYTE REGPARM2 flash040core_read(flash040_context_t *flash040_context, unsigned i
             value = flash040_context->flash_data[addr];
             break;
     }
+
+#ifdef FLASH_DEBUG_ENABLED
+    if (old_state != FLASH040_STATE_READ) {
+        FLASH_DEBUG(("Read %02x from %05x, state %i->%i", value, addr, (int)old_state, (int)flash040_context->flash_state));
+    }
+#endif
 
     flash040_context->last_read = value;
     return value;
@@ -187,19 +264,22 @@ BYTE REGPARM2 flash040core_peek(flash040_context_t *flash040_context, unsigned i
 
 void flash040core_reset(flash040_context_t *flash040_context)
 {
+    FLASH_DEBUG(("Reset"));
     flash040_context->flash_state = FLASH040_STATE_READ;
 }
-
 
 void flash040core_init(struct flash040_context_s *flash040_context,
                        flash040_type_t type, unsigned int size)
 {
+    FLASH_DEBUG(("Init"));
     flash040_context->flash_data = lib_malloc(size);
+    flash040_context->flash_size = size;
     flash040_context->flash_state = FLASH040_STATE_READ;
 }
 
 void flash040core_shutdown(flash040_context_t *flash040_context)
 {
+    FLASH_DEBUG(("Shutdown"));
     lib_free(flash040_context->flash_data);
     lib_free(flash040_context);
 }

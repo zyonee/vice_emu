@@ -60,8 +60,6 @@ typedef struct flash040_context_s {
     unsigned int flash_size;
 
     BYTE last_read;
-    CLOCK *clk_ptr;
-    int *rmw_flag;
 } flash040_context_t;
 
 extern void flash040core_init(struct flash040_context_s *flash040_context,
