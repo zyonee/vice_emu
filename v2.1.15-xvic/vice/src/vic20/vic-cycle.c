@@ -134,6 +134,8 @@ static inline void vic_cycle_start_fetch(void)
 /* Handle end of line */
 static inline void vic_cycle_end_of_line(void)
 {
+    vic.line_was_blank = vic.raster.blank_this_line;
+
     vic.raster_cycle = 0;
     vic_raster_draw_handler();
 
@@ -176,7 +178,7 @@ static inline void vic_cycle_handle_memptr(void)
         || 2 * vic.row_increase_line == (unsigned int)vic.raster.ycounter) {
         vic.raster.ycounter = 0;
 
-        vic.memptr_inc = vic.text_cols;
+        vic.memptr_inc = vic.line_was_blank ? 0 : vic.text_cols;
 
         vic.row_counter++;
         if (vic.row_counter == vic.text_lines) {
@@ -289,7 +291,7 @@ static inline void vic_cycle_fetch(void)
 
             vic.buf_offset++;
 
-            if ((vic.raster.ycounter & (vic.char_height - 1)) == (vic.char_height - 1)) {
+            if (vic.raster.ycounter == (vic.char_height - 1)) {
                 /* TODO should this be vic.memptr_inc++ instead? */
                 vic.memptr_inc = vic.buf_offset;
             }

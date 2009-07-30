@@ -177,6 +177,7 @@ struct vic_s
     unsigned int text_cols;     /* = 22 */
     unsigned int text_lines;    /* = 23 */
     unsigned int pending_text_cols;
+    unsigned int line_was_blank;
 
     unsigned int memptr;
 
