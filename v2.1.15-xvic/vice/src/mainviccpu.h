@@ -41,9 +41,6 @@ extern unsigned int last_opcode_info;
 #define OPINFO_NUMBER(opinfo)                   \
     ((opinfo) & OPINFO_NUMBER_MSK)
 
-/* The VIC-II emulation needs this ugly hack.  */
-extern unsigned int reg_pc;
-
 struct mos6510_regs_s;
 extern struct mos6510_regs_s maincpu_regs;
 

@@ -373,7 +373,7 @@
 #define SET_ABS_RMW(old_value, new_value) \
     if (!SKIP_CYCLE) {                    \
         STORE(p2, old_value);             \
-        CLK_INC();                   \
+        CLK_INC();                        \
     }                                     \
     STORE(p2, new_value);                 \
     CLK_INC();
@@ -381,13 +381,13 @@
 #define INT_ABS_I_R(reg_i)                                 \
     if (!SKIP_CYCLE && ((((p2) & 0xff) + reg_i) > 0xff)) { \
         LOAD((((p2) + reg_i) & 0xff) | ((p2) & 0xff00));   \
-        CLK_INC();                                    \
+        CLK_INC();                                         \
     }
 
 #define INT_ABS_I_W(reg_i)                                 \
     if (!SKIP_CYCLE) {                                     \
         LOAD((((p2) + reg_i) & 0xff) | ((p2) & 0xff00));   \
-        CLK_INC();                                    \
+        CLK_INC();                                         \
     }
 
 #define GET_ABS_X(dest)        \
@@ -423,7 +423,7 @@
 #define SET_ABS_I_RMW(reg_i, old_value, new_value) \
     if (!SKIP_CYCLE) {                             \
         STORE(p2 + reg_i, old_value);              \
-        CLK_INC();                            \
+        CLK_INC();                                 \
     }                                              \
     STORE(p2 + reg_i, new_value);                  \
     CLK_INC();
@@ -445,7 +445,7 @@
 #define SET_ZERO_RMW(old_value, new_value) \
     if (!SKIP_CYCLE) {                     \
         STORE_ZERO(p1, old_value);         \
-        CLK_INC();                    \
+        CLK_INC();                         \
     }                                      \
     STORE_ZERO(p1, new_value);             \
     CLK_INC();
@@ -453,7 +453,7 @@
 #define INT_ZERO_I      \
     if (!SKIP_CYCLE) {  \
         LOAD_ZERO(p1);  \
-        CLK_INC(); \
+        CLK_INC();      \
     }
 
 #define GET_ZERO_X(dest)          \
@@ -479,7 +479,7 @@
 #define SET_ZERO_I_RMW(reg_i, old_value, new_value) \
     if (!SKIP_CYCLE) {                              \
         STORE_ZERO(p1 + reg_i, old_value);          \
-        CLK_INC();                             \
+        CLK_INC();                                  \
     }                                               \
     STORE_ZERO(p1 + reg_i, new_value);              \
     CLK_INC();
@@ -720,6 +720,8 @@
       INC_PC(pc_inc);                      \
   } while (0)
 
+#ifdef C64DTV
+
 #define BRANCH(cond)                                            \
   do {                                                          \
       INC_PC(2);                                                \
@@ -732,10 +734,10 @@
                                                                 \
           if (!SKIP_CYCLE) {                                    \
               LOAD(reg_pc);                                     \
-              CLK_INC();                                   \
+              CLK_INC();                                        \
               if ((reg_pc ^ dest_addr) & 0xff00) {              \
                   LOAD((reg_pc & 0xff00) | (dest_addr & 0xff)); \
-                  CLK_INC();                               \
+                  CLK_INC();                                    \
               } else {                                          \
                   OPCODE_DELAYS_INTERRUPT();                    \
               }                                                 \
@@ -743,6 +745,31 @@
           JUMP(dest_addr & 0xffff);                             \
       }                                                         \
   } while (0)
+
+#else /* !C64DTV */
+
+#define BRANCH(cond)                                            \
+  do {                                                          \
+      INC_PC(2);                                                \
+                                                                \
+      if (cond) {                                               \
+          unsigned int dest_addr;                               \
+                                                                \
+          dest_addr = reg_pc + (signed char)(p1);               \
+                                                                \
+          LOAD(reg_pc);                                         \
+          CLK_INC();                                            \
+          if ((reg_pc ^ dest_addr) & 0xff00) {                  \
+              LOAD((reg_pc & 0xff00) | (dest_addr & 0xff));     \
+              CLK_INC();                                        \
+          } else {                                              \
+              OPCODE_DELAYS_INTERRUPT();                        \
+          }                                                     \
+          JUMP(dest_addr & 0xffff);                             \
+      }                                                         \
+  } while (0)
+
+#endif
 
 /* The BRK opcode is also used to patch the ROM.  The function trap_handler()
    returns nonzero if this is not a patch, but a `real' BRK instruction. */

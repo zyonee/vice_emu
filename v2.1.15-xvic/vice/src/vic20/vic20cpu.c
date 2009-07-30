@@ -42,9 +42,6 @@ CLOCK maincpu_clk = 0L;
 
 #define CLK_ADD(clock, amount) nosuchfunction(&clock, amount)
 
-/* HACK remove this */
-BYTE burst_broken;
-
 /* Skip cycle implementation */
 
 #define SKIP_CYCLE 0

@@ -214,10 +214,8 @@ alarm_context_t *maincpu_alarm_context = NULL;
 clk_guard_t *maincpu_clk_guard = NULL;
 monitor_interface_t *maincpu_monitor_interface = NULL;
 
-/* This is flag is set to 1 each time a Read-Modify-Write instructions that
-   accesses memory is executed.  We can emulate the RMW behaviour of the 6510
-   this way.  VERY important notice: Always assign 1 for true, 0 for false!
-   Some functions depend on this to do some optimization.  */
+/* This flag is an obsolete optimization. It's always 0 for the VIC-20 CPU,
+   but has to be kept for the common code. */
 int maincpu_rmw_flag = 0;
 
 /* Information about the last executed opcode.  This is used to know the

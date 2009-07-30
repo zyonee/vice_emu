@@ -209,7 +209,6 @@ static inline void vic_cycle_latch_rows(void)
 /* Fetch hendling */
 
 /* Perform actual fetch */
-/* TODO optimize */
 static inline BYTE vic_cycle_do_fetch(int addr, BYTE *color)
 {
     BYTE b, c;
@@ -219,14 +218,14 @@ static inline BYTE vic_cycle_do_fetch(int addr, BYTE *color)
         /* chargen */
         b = vic20memrom_chargen_rom[addr & 0xfff];
         c = mem_ram[color_addr];
-    } else if (addr >= 0x9400 && addr < 0x9800) {
-        /* color RAM */
-        b = mem_ram[addr];
-        c = b; /* FIXME is this correct? */
     } else if ((addr < 0x0400) || ((addr >= 0x1000) && (addr < 0x2000))) {
         /* RAM */
         b = mem_ram[addr];
         c = mem_ram[color_addr];
+    } else if (addr >= 0x9400 && addr < 0x9800) {
+        /* color RAM */
+        b = mem_ram[addr];
+        c = b; /* FIXME is this correct? */
     } else {
         /* unconnected */
         b = vic20_v_bus_last_data & (0xf0 | vic20_v_bus_last_high);
