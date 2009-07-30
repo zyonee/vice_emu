@@ -49,6 +49,7 @@
 struct flash_types_s {
     BYTE manufacturer_ID;
     BYTE device_ID;
+    unsigned int size;
     unsigned int magic_1_addr;
     unsigned int magic_2_addr;
     unsigned int magic_1_mask;
@@ -57,8 +58,8 @@ struct flash_types_s {
 typedef struct flash_types_s flash_types_t;
 
 static flash_types_t flash_types[FLASH040_TYPE_NUM] = {
-    { 0x01, 0xa4, 0x5555, 0x2aaa, 0x7fff, 0x7fff },
-    { 0x01, 0xa4, 0x555,  0x2aa,  0x7ff,  0x7ff  }
+    { 0x01, 0xa4, 0x80000, 0x5555, 0x2aaa, 0x7fff, 0x7fff },
+    { 0x01, 0xa4, 0x80000, 0x555,  0x2aa,  0x7ff,  0x7ff  }
 };
 
 /* -------------------------------------------------------------------------- */
@@ -84,7 +85,7 @@ inline static void flash_erase_sector(flash040_context_t *flash040_context, unsi
 inline static void flash_erase_chip(flash040_context_t *flash040_context)
 {
     FLASH_DEBUG(("Erasing chip"));
-    memset(flash040_context->flash_data, 0xff, flash040_context->flash_size);
+    memset(flash040_context->flash_data, 0xff, flash_types[flash040_context->flash_type].size);
 }
 
 static void REGPARM3 flash040core_store_internal(flash040_context_t *flash040_context,
@@ -269,11 +270,11 @@ void flash040core_reset(flash040_context_t *flash040_context)
 }
 
 void flash040core_init(struct flash040_context_s *flash040_context,
-                       flash040_type_t type, unsigned int size)
+                       flash040_type_t type)
 {
     FLASH_DEBUG(("Init"));
-    flash040_context->flash_data = lib_malloc(size);
-    flash040_context->flash_size = size;
+    flash040_context->flash_data = lib_malloc(flash_types[type].size);
+    flash040_context->flash_type = type;
     flash040_context->flash_state = FLASH040_STATE_READ;
 }
 
@@ -281,6 +282,5 @@ void flash040core_shutdown(flash040_context_t *flash040_context)
 {
     FLASH_DEBUG(("Shutdown"));
     lib_free(flash040_context->flash_data);
-    lib_free(flash040_context);
 }
 
