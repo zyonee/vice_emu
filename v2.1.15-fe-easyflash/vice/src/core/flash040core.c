@@ -281,6 +281,7 @@ void flash040core_init(struct flash040_context_s *flash040_context,
 void flash040core_shutdown(flash040_context_t *flash040_context)
 {
     FLASH_DEBUG(("Shutdown"));
-    lib_free(flash040_context->flash_data);
+    if (flash040_context->flash_data != NULL) {
+        lib_free(flash040_context->flash_data);
+    }
 }
-

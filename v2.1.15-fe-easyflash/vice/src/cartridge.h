@@ -92,6 +92,7 @@ extern void cartridge_freeze(int type);
    to become fc2 */
 #define CARTRIDGE_ACTION_REPLAY4     30
 #define CARTRIDGE_STARDOS            31
+#define CARTRIDGE_EASYFLASH          32
 
 /* Expert cartridge has three modes: */
 #define CARTRIDGE_MODE_OFF                      0
