@@ -8462,6 +8462,20 @@ translate_t string_table[] = {
 /* tr */ {IDCLS_SPECIFY_MEGA_CART_ROM_NAME_TR, ""},  /* fuzzy */
 #endif
 
+/* vic20/cart/vic20cart.c */
+/* en */ {IDCLS_SPECIFY_FINAL_EXPANSION_ROM_NAME,    N_("Specify Final Expansion extension ROM name")},
+#ifdef HAS_TRANSLATION
+/* da */ {IDCLS_SPECIFY_FINAL_EXPANSION_ROM_NAME_DA, ""},  /* fuzzy */
+/* de */ {IDCLS_SPECIFY_FINAL_EXPANSION_ROM_NAME_DE, ""},  /* fuzzy */
+/* fr */ {IDCLS_SPECIFY_FINAL_EXPANSION_ROM_NAME_FR, ""},  /* fuzzy */
+/* hu */ {IDCLS_SPECIFY_FINAL_EXPANSION_ROM_NAME_HU, ""},  /* fuzzy */
+/* it */ {IDCLS_SPECIFY_FINAL_EXPANSION_ROM_NAME_IT, ""},  /* fuzzy */
+/* nl */ {IDCLS_SPECIFY_FINAL_EXPANSION_ROM_NAME_NL, ""},  /* fuzzy */
+/* pl */ {IDCLS_SPECIFY_FINAL_EXPANSION_ROM_NAME_PL, ""},  /* fuzzy */
+/* sv */ {IDCLS_SPECIFY_FINAL_EXPANSION_ROM_NAME_SV, "Ange namn för Final Expansion-utöknings-ROM"},
+/* tr */ {IDCLS_SPECIFY_FINAL_EXPANSION_ROM_NAME_TR, ""},  /* fuzzy */
+#endif
+
 /* vicii/vicii-cmdline-options.c */
 /* en */ {IDCLS_SET_BORDER_MODE,    N_("Set VIC-II border display mode (0: normal, 1: full, 2: debug)")},
 #ifdef HAS_TRANSLATION

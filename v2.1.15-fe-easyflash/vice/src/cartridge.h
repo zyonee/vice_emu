@@ -105,6 +105,7 @@ extern void cartridge_freeze(int type);
 /* #define CARTRIDGE_NONE               -1 */
 #define CARTRIDGE_VIC20_GENERIC      1
 #define CARTRIDGE_VIC20_MEGACART     2
+#define CARTRIDGE_VIC20_FINAL_EXPANSION 3
 
 /* 
  * VIC20 Generic cartridges
