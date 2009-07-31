@@ -50,6 +50,9 @@ static UI_MENU_CALLBACK(attach_cart_callback)
             case CARTRIDGE_VIC20_MEGACART:
                 title = "Select Mega-Cart image";
                 break;
+            case CARTRIDGE_VIC20_FINAL_EXPANSION:
+                title = "Select Final Expansion image";
+                break;
             case CARTRIDGE_VIC20_DETECT:
             case CARTRIDGE_VIC20_GENERIC:
                 title = "Select cartridge image";
@@ -129,6 +132,10 @@ const ui_menu_entry_t vic20cart_menu[] = {
       MENU_ENTRY_DIALOG,
       attach_cart_callback,
       (ui_callback_data_t)CARTRIDGE_VIC20_MEGACART },
+    { "Attach Final Expansion image",
+      MENU_ENTRY_DIALOG,
+      attach_cart_callback,
+      (ui_callback_data_t)CARTRIDGE_VIC20_FINAL_EXPANSION },
     SDL_MENU_ITEM_SEPARATOR,
     { "Detach cartridge image",
       MENU_ENTRY_OTHER,
