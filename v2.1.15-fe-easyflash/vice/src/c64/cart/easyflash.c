@@ -97,16 +97,13 @@ void REGPARM2 easyflash_io1_store(WORD addr, BYTE value)
 {
     BYTE mem_mode;
 
-    switch (addr & 3) {
+    switch (addr & 2) {
         case 0:
-            /* $DE00 */
+            /* bank register */
             easyflash_register_00 = value & 0x3f; /* we only remember 6 bits */
             break;
-        case 1:
-            /* $DE01 - reserved for future use */
-            break;
         default:
-            /* $DE02/$DE03 */
+            /* mode register */
             easyflash_register_02 = value & 0x87; /* we only remember led, mode, exrom, game */
             mem_mode = easyflash_memconfig[(easyflash_jumper << 3) | (easyflash_register_02 & 0x07)];
             cartridge_config_changed(mem_mode, mem_mode, CMODE_READ);
