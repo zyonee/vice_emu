@@ -275,13 +275,12 @@ void flash040core_init(struct flash040_context_s *flash040_context,
     FLASH_DEBUG(("Init"));
     flash040_context->flash_data = lib_malloc(flash_types[type].size);
     flash040_context->flash_type = type;
+    memset(flash040_context->flash_data, 0xff, flash_types[type].size);
     flash040_context->flash_state = FLASH040_STATE_READ;
 }
 
 void flash040core_shutdown(flash040_context_t *flash040_context)
 {
     FLASH_DEBUG(("Shutdown"));
-    if (flash040_context->flash_data != NULL) {
-        lib_free(flash040_context->flash_data);
-    }
+    lib_free(flash040_context->flash_data);
 }

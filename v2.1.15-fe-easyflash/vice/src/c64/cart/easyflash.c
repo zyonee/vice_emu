@@ -2,7 +2,7 @@
  * easyflash.c - Cartridge handling of the easyflash cart.
  *
  * Written by
- *  Thomas Giesel <skoe@directbox.com>
+ *  ALeX Kazik <alx@kazik.de>
  *  Marco van den Heuvel <blackystardust68@yahoo.com>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
@@ -25,15 +25,6 @@
  *
  */
 
-#define EASYFLASH_DEBUG
-//#define EASYFLASH_EXTENDED_DEBUG
-//#define EASYFLASH_PRINTER_LEN 128
-//#define EASYFLASH_RAM
-//#define EASYFLASH_LED_USE
-//#define EASYFLASH_LED_POSITION 0
-//#define EASYFLASH_LED_OFF_COLOR 5
-//#define EASYFLASH_LED_ON_COLOR 2
-
 #include "vice.h"
 
 #include <stdio.h>
@@ -47,7 +38,6 @@
 #include "flash040.h"
 #include "lib.h"
 #include "log.h"
-#include "vicii-phi1.h"
 
 /* the 27F040B statemachine */
 static flash040_context_t *easyflash_state_low = NULL;
