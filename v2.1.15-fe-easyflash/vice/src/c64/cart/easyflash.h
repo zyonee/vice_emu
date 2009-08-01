@@ -28,7 +28,8 @@
 #ifndef VICE_EASYFLASH_H
 #define VICE_EASYFLASH_H
 
-extern BYTE easyflash_jumper;
+extern int easyflash_resources_init(void);
+extern int easyflash_cmdline_options_init(void);
 
 extern void REGPARM2 easyflash_io1_store(WORD addr, BYTE value);
 extern BYTE REGPARM1 easyflash_io2_read(WORD addr);

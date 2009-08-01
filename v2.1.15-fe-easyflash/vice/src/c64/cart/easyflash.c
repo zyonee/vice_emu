@@ -34,17 +34,22 @@
 #include "c64cartmem.h"
 #include "c64io.h"
 #include "c64mem.h"
+#include "cmdline.h"
 #include "easyflash.h"
 #include "flash040.h"
 #include "lib.h"
 #include "log.h"
+#include "resources.h"
 
 /* the 27F040B statemachine */
 static flash040_context_t *easyflash_state_low = NULL;
 static flash040_context_t *easyflash_state_high = NULL;
 
 /* the jumper */
-BYTE easyflash_jumper;
+static int easyflash_jumper;
+
+/* writing back to crt enabled */
+static int easyflash_crt_write;
 
 /* backup of the registers */
 static BYTE easyflash_register_00, easyflash_register_02;
@@ -82,6 +87,66 @@ static const BYTE easyflash_memconfig[] = {
 
 /* extra RAM */
 static BYTE easyflash_ram[256];
+
+/* ---------------------------------------------------------------------*/
+
+static int set_easyflash_jumper(int val, void *param)
+{
+    easyflash_jumper = val;
+    return 0;
+}
+
+static int set_easyflash_crt_write(int val, void *param)
+{
+    easyflash_jumper = val;
+    return 0;
+}
+
+static const resource_int_t resources_int[] = {
+    { "EasyFlashJumper", 0, RES_EVENT_STRICT, (resource_value_t)0,
+      &easyflash_jumper, set_easyflash_jumper, NULL },
+    { "EasyFlashWriteCRT", 0, RES_EVENT_NO, NULL,
+      &easyflash_crt_write, set_easyflash_crt_write, NULL },
+    { NULL }
+};
+
+int easyflash_resources_init(void)
+{
+    return resources_register_int(resources_int);
+}
+
+static const cmdline_option_t cmdline_options[] =
+{
+    { "-easyflashjumper", SET_RESOURCE, 0,
+      NULL, NULL, "EasyFlashJumper", (resource_value_t)1,
+      USE_PARAM_STRING, USE_DESCRIPTION_STRING,
+      IDCLS_UNUSED, IDCLS_UNUSED,
+      NULL, T_("Enable easyflash jumpper") },
+    { "+easyflashjumper", SET_RESOURCE, 0,
+      NULL, NULL, "EasyFlashJumper", (resource_value_t)0,
+      USE_PARAM_STRING, USE_DESCRIPTION_STRING,
+      IDCLS_UNUSED, IDCLS_UNUSED,
+      NULL, T_("Disable easyflash jumper") },
+    { "-easyflashcrtwrite", SET_RESOURCE, 0,
+      NULL, NULL, "EasyFlashWriteCRT", (resource_value_t)1,
+      USE_PARAM_STRING, USE_DESCRIPTION_STRING,
+      IDCLS_UNUSED, IDCLS_UNUSED,
+      NULL, T_("Enable writing to easyflash .crt image") },
+    { "+easyflashcrtwrite", SET_RESOURCE, 0,
+      NULL, NULL, "EasyFlashWriteCRT", (resource_value_t)0,
+      USE_PARAM_STRING, USE_DESCRIPTION_STRING,
+      IDCLS_UNUSED, IDCLS_UNUSED,
+      NULL, T_("Disable writing to easyflash .crt image") },
+    { NULL }
+};
+
+int easyflash_cmdline_options_init(void)
+{
+    return cmdline_register_options(cmdline_options);
+}
+
+
+/* ---------------------------------------------------------------------*/
 
 void REGPARM2 easyflash_io1_store(WORD addr, BYTE value)
 {
