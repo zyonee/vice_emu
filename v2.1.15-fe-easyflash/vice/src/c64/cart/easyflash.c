@@ -106,7 +106,7 @@ static int set_easyflash_crt_write(int val, void *param)
 static const resource_int_t resources_int[] = {
     { "EasyFlashJumper", 0, RES_EVENT_STRICT, (resource_value_t)0,
       &easyflash_jumper, set_easyflash_jumper, NULL },
-    { "EasyFlashWriteCRT", 0, RES_EVENT_NO, NULL,
+    { "EasyFlashWriteCRT", 0, RES_EVENT_STRICT, (resource_value_t)0,
       &easyflash_crt_write, set_easyflash_crt_write, NULL },
     { NULL }
 };
@@ -122,22 +122,22 @@ static const cmdline_option_t cmdline_options[] =
       NULL, NULL, "EasyFlashJumper", (resource_value_t)1,
       USE_PARAM_STRING, USE_DESCRIPTION_STRING,
       IDCLS_UNUSED, IDCLS_UNUSED,
-      NULL, T_("Enable easyflash jumpper") },
+      NULL, T_("Enable EasyFlash jumper") },
     { "+easyflashjumper", SET_RESOURCE, 0,
       NULL, NULL, "EasyFlashJumper", (resource_value_t)0,
       USE_PARAM_STRING, USE_DESCRIPTION_STRING,
       IDCLS_UNUSED, IDCLS_UNUSED,
-      NULL, T_("Disable easyflash jumper") },
+      NULL, T_("Disable EasyFlash jumper") },
     { "-easyflashcrtwrite", SET_RESOURCE, 0,
       NULL, NULL, "EasyFlashWriteCRT", (resource_value_t)1,
       USE_PARAM_STRING, USE_DESCRIPTION_STRING,
       IDCLS_UNUSED, IDCLS_UNUSED,
-      NULL, T_("Enable writing to easyflash .crt image") },
+      NULL, T_("Enable writing to EasyFlash .crt image") },
     { "+easyflashcrtwrite", SET_RESOURCE, 0,
       NULL, NULL, "EasyFlashWriteCRT", (resource_value_t)0,
       USE_PARAM_STRING, USE_DESCRIPTION_STRING,
       IDCLS_UNUSED, IDCLS_UNUSED,
-      NULL, T_("Disable writing to easyflash .crt image") },
+      NULL, T_("Disable writing to EasyFlash .crt image") },
     { NULL }
 };
 
