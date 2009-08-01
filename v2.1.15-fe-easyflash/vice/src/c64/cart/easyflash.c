@@ -220,14 +220,6 @@ int easyflash_crt_attach(FILE *fd, BYTE *rawcart, BYTE *header)
 {
     BYTE chipheader[0x10];
 
-    if (header[0x18] && (!header[0x19])) {
-        /* .crt is a ultimax (EXROM=1 and GAME=0) */
-        easyflash_jumper = 0;
-    } else {
-        /* .crt is no ultimax, say the jumper is in "off" mode */
-        easyflash_jumper = 1;
-    }
-
     while (1) {
         if (fread(chipheader, 0x10, 1, fd) < 1) {
             break;
