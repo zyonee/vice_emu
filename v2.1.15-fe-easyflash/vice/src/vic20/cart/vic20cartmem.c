@@ -229,7 +229,7 @@ BYTE REGPARM1 cartridge_read_blk5(WORD addr)
         return megacart_mem_read(addr);
         break;
     case CARTRIDGE_VIC20_FINAL_EXPANSION:
-        return finalexpansion_mem_read(addr);
+        return finalexpansion_blk5_read(addr);
         break;
     }
     return 0xff;
@@ -245,7 +245,7 @@ void REGPARM2 cartridge_store_blk5(WORD addr, BYTE value)
         megacart_mem_store(addr, value);
         break;
     case CARTRIDGE_VIC20_FINAL_EXPANSION:
-        finalexpansion_mem_store(addr, value);
+        finalexpansion_blk5_store(addr, value);
         break;
     }
 }

@@ -34,6 +34,7 @@
 #include "lib.h"
 #include "machine.h"
 #include "finalexpansion.h"
+#include "flash040.h"
 #include "mem.h"
 #include "resources.h"
 #include "types.h"
@@ -66,35 +67,98 @@ static BYTE *cart_ram = NULL;
  *
  */
 #define CART_ROM_SIZE 0x80000
-static BYTE *cart_rom = NULL;
 
 /* Cartridge States */
+static flash040_context_t flash_state;
 static enum { BUTTON_RESET, SOFTWARE_RESET } reset_mode = BUTTON_RESET;
+static BYTE register_a;
+static BYTE register_b;
+static BYTE lock_bit;
+
+
+/* ------------------------------------------------------------------------- */
+
+/* Register A ($9c02) */
+
+#define MODE_MASK        0xe0
+#define MODE_START       0x00  /* Start Modus         (000zzzzz) [Mod_ROM_A] */
+#define MODE_FLASH_WRITE 0x20  /* Flash-Schreib-Modus (001zzzzz) [Mod_Prog]  */
+#define MODE_FLASH_READ  0x40  /* Flash-Lese-Modus    (010zzzzz) [Mod_ROM]   */
+#define MODE_RAM         0x80  /* RAM Modus           (100zzzzz) [Mod_RAM]   */
+#define MODE_SUPER_RAM   0xa0  /* Super RAM Modus     (101zzzzz) [Mod_RAM2]  */
+
+
+/* Register B ($9c03) */
+#define REGB_BLK0_OFF    0x01
+#define REGB_BLK1_OFF    0x02
+#define REGB_BLK2_OFF    0x04
+#define REGB_BLK3_OFF    0x08
+#define REGB_BLK5_OFF    0x10
+#define REGB_INV_A13     0x20
+#define REGB_INV_A14     0x40
+#define REGB_REG_OFF     0x80
 
 /* ------------------------------------------------------------------------- */
 
 /* helper pointers */
 /* static BYTE *cart_rom_low; */
 
+
 /* ------------------------------------------------------------------------- */
 
 /* 0x9c00-0x9fff */
-BYTE REGPARM1 finalexpansion_io3_read(WORD addr)
+static int is_locked(void)
 {
+    if (register_b & REGB_REG_OFF) {
+        return 1;
+    }
+    if ((register_a & MODE_MASK) == MODE_START) {
+        return lock_bit;
+    }
+    return 0;
+}
+
+BYTE REGPARM1 finalexpansion_io3_read(WORD addr)
+{   
+    addr &= 0x03;
+    if (!is_locked()) {
+        switch (addr) {
+        case 0x02:
+            return register_a;
+        case 0x03:
+            return register_b;
+        }
+    }
     return addr >> 8;
 }
 
 void REGPARM2 finalexpansion_io3_store(WORD addr, BYTE value)
 {
+    addr &= 0x03;
+    if (!is_locked()) {
+        switch (addr) {
+        case 0x02:
+            register_a = value;
+        case 0x03:
+            register_b = value;
+        }
+    }
 }
 
+/* ------------------------------------------------------------------------- */
 
 void REGPARM2 finalexpansion_ram123_store(WORD addr, BYTE value)
 {
+    if ( !(register_b & REGB_BLK0_OFF) ) {
+
+    }
 }
 
 BYTE REGPARM1 finalexpansion_ram123_read(WORD addr)
 {
+    if ( !(register_b & REGB_BLK0_OFF) ) {
+
+    }
 }
 
 /* 
@@ -110,15 +174,91 @@ BYTE REGPARM1 finalexpansion_mem_read(WORD addr)
     return addr >> 8;
 }
 
+void REGPARM2 finalexpansion_blk5_store(WORD addr, BYTE value)
+{
+    int bank;
+
+    lock_bit = 0;
+
+    switch (register_a & MODE_MASK) {
+    case MODE_FLASH_WRITE:
+    case MODE_SUPER_RAM:
+        bank = register_a & 0x1f;
+        break;
+    default:
+        bank = 1;
+        break;
+    }
+
+    addr = ((addr & 0x1fff) | 0x6000) | (bank * 0x8000);
+
+    switch (register_a & MODE_MASK) {
+    case MODE_FLASH_WRITE:
+        flash040core_store(&flash_state, addr, value);
+        break;
+    case MODE_START:
+    case MODE_FLASH_READ:
+    case MODE_RAM:
+    case MODE_SUPER_RAM:
+        cart_ram[addr] = value;
+        break;
+    default:
+        break;
+    }
+}
+
+BYTE REGPARM1 finalexpansion_blk5_read(WORD addr)
+{
+    BYTE value;
+    int bank;
+
+    lock_bit = 1;
+
+    switch (register_a & MODE_MASK) {
+    case MODE_START:
+    case MODE_FLASH_READ:
+    case MODE_FLASH_WRITE:
+    case MODE_SUPER_RAM:
+        bank = register_a & 0x1f;
+        break;
+    default:
+        bank = 1;
+        break;
+    }
+
+    addr = ((addr & 0x1fff) | 0x6000) | (bank * 0x8000);
+
+    switch (register_a & MODE_MASK) {
+    case MODE_START:
+    case MODE_FLASH_READ:
+    case MODE_FLASH_WRITE:
+        value = flash040core_read(&flash_state, addr);
+        break;
+    case MODE_RAM:
+    case MODE_SUPER_RAM:
+        value = cart_ram[addr];
+        break;
+    default:
+        value = addr >> 8;
+        break;
+    }
+    return value;
+}
 
 void finalexpansion_init(void)
 {
     reset_mode = BUTTON_RESET;
+    register_a = 0x00;
+    register_b = 0x00;
+    lock_bit = 1;
 }
 
 void finalexpansion_reset(void)
 {
     reset_mode = BUTTON_RESET;
+    register_a = 0x00;
+    register_b = 0x00;
+    lock_bit = 1;
 }
 
 void finalexpansion_config_setup(BYTE *rawcart)
@@ -151,11 +291,10 @@ int finalexpansion_bin_attach(const char *filename)
     if (!cart_ram) {
         cart_ram = lib_malloc(CART_RAM_SIZE);
     }
-    if (!cart_rom) {
-        cart_rom = lib_malloc(CART_ROM_SIZE);
-    }
+    /* should probably guard this */
+    flash040core_init(&flash_state, FLASH040_TYPE_B);
 
-    if ( zfile_load(filename, cart_rom, (size_t)CART_ROM_SIZE) < 0 ) {
+    if ( zfile_load(filename, flash_state.flash_data, (size_t)CART_ROM_SIZE) < 0 ) {
         finalexpansion_detach();
         return -1;
     }
@@ -171,10 +310,9 @@ void finalexpansion_detach(void)
 {
     mem_cart_blocks = 0;
     mem_initialize_memory();
+    flash040core_shutdown(&flash_state);
     lib_free(cart_ram);
-    lib_free(cart_rom);
     cart_ram = NULL;
-    cart_rom = NULL;
 }
 
 /* ------------------------------------------------------------------------- */
