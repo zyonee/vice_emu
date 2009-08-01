@@ -95,6 +95,12 @@ static BYTE lock_bit;
 #define MODE_RAM         0x80  /* RAM Modus           (100zzzzz) [Mod_RAM]   */
 #define MODE_SUPER_RAM   0xa0  /* Super RAM Modus     (101zzzzz) [Mod_RAM2]  */
 
+/* in MODE_RAM */
+#define REGA_BLK0_RO     0x01
+#define REGA_BLK1_RO     0x02
+#define REGA_BLK2_RO     0x04
+#define REGA_BLK3_RO     0x08
+#define REGA_BLK5_RO     0x10
 
 /* Register B ($9c03) */
 #define REGB_BLK0_OFF    0x01
@@ -107,6 +113,10 @@ static BYTE lock_bit;
 #define REGB_REG_OFF     0x80
 
 /* ------------------------------------------------------------------------- */
+static int is_mode_ram(void)
+{
+    return ( (register_a & MODE_MASK) == MODE_RAM );
+}
 
 /* 0x9c00-0x9fff */
 static int is_locked(void)
@@ -287,8 +297,9 @@ static BYTE internal_read(WORD addr, int blk)
 void REGPARM2 finalexpansion_ram123_store(WORD addr, BYTE value)
 {
     if ( !(register_b & REGB_BLK0_OFF) ) {
-        /* should handle RO mode */
-        internal_store(addr, value, 0);
+        if ( !( is_mode_ram() && (register_a & REGA_BLK0_RO) ) ) {
+            internal_store(addr, value, 0);
+        }
     }
 }
 
@@ -307,8 +318,9 @@ BYTE REGPARM1 finalexpansion_ram123_read(WORD addr)
 void REGPARM2 finalexpansion_blk1_store(WORD addr, BYTE value)
 {
     if ( !(register_b & REGB_BLK1_OFF) ) {
-        /* should handle RO mode */
-        internal_store(addr, value, 1);
+        if ( !( is_mode_ram() && (register_a & REGA_BLK1_RO) ) ) {
+            internal_store(addr, value, 1);
+        }
     }
 }
 
@@ -327,8 +339,9 @@ BYTE REGPARM1 finalexpansion_blk1_read(WORD addr)
 void REGPARM2 finalexpansion_blk2_store(WORD addr, BYTE value)
 {
     if ( !(register_b & REGB_BLK2_OFF) ) {
-        /* should handle RO mode */
-        internal_store(addr, value, 2);
+        if ( !( is_mode_ram() && (register_a & REGA_BLK2_RO) ) ) {
+            internal_store(addr, value, 2);
+        }
     }
 }
 
@@ -347,8 +360,9 @@ BYTE REGPARM1 finalexpansion_blk2_read(WORD addr)
 void REGPARM2 finalexpansion_blk3_store(WORD addr, BYTE value)
 {
     if ( !(register_b & REGB_BLK3_OFF) ) {
-        /* should handle RO mode */
-        internal_store(addr, value, 3);
+        if ( !( is_mode_ram() && (register_a & REGA_BLK3_RO) ) ) {
+            internal_store(addr, value, 3);
+        }
     }
 }
 
@@ -369,8 +383,9 @@ void REGPARM2 finalexpansion_blk5_store(WORD addr, BYTE value)
     lock_bit = 0;
 
     if ( !(register_b & REGB_BLK5_OFF) ) {
-        /* should handle RO mode */
-        internal_store(addr, value, 5);
+        if ( !( is_mode_ram() && (register_a & REGA_BLK5_RO) ) ) {
+            internal_store(addr, value, 5);
+        }
     }
 }
 
