@@ -51,8 +51,11 @@
  *
  * Mapping
  *      RAM                 VIC20
- *   0x0000 - 0x1fff  ->  0xa000 - 0xbfff
- *   0x2000 - 0x7fff  ->  0x2000 - 0x7fff
+ *   0x00400 - 0x00fff  ->  0x0400 - 0x0fff
+ *   0x10000 - 0x11fff  ->  0x2000 - 0x3fff
+ *   0x12000 - 0x13fff  ->  0x4000 - 0x5fff
+ *   0x14000 - 0x15fff  ->  0x6000 - 0x7fff
+ *   0x16000 - 0x17fff  ->  0xa000 - 0xbfff
  *
  */
 #define CART_RAM_SIZE 0x80000
@@ -63,8 +66,10 @@ static BYTE *cart_ram = NULL;
  *
  * Mapping
  *      ROM
- *   0x000000 - 0x0fffff  ->  Low ROM: banks 0x00-0x7f
- *   0x100000 - 0x1fffff  ->  High ROM: banks 0x00-0x7f
+ *   0xN0000 - 0xN1fff  ->  0x2000 - 0x3fff
+ *   0xN2000 - 0xN3fff  ->  0x4000 - 0x5fff
+ *   0xN4000 - 0xN5fff  ->  0x6000 - 0x7fff
+ *   0xN6000 - 0xN7fff  ->  0xa000 - 0xbfff
  *
  */
 #define CART_ROM_SIZE 0x80000
@@ -100,12 +105,6 @@ static BYTE lock_bit;
 #define REGB_INV_A13     0x20
 #define REGB_INV_A14     0x40
 #define REGB_REG_OFF     0x80
-
-/* ------------------------------------------------------------------------- */
-
-/* helper pointers */
-/* static BYTE *cart_rom_low; */
-
 
 /* ------------------------------------------------------------------------- */
 
@@ -190,6 +189,9 @@ static unsigned int calc_addr(WORD addr, int bank, int blk)
     }
 
     faddr = (addr & 0x1fff) | (bank * 0x8000) | base;
+
+    faddr ^= (register_b & REGB_INV_A13) ? 0x2000 : 0;
+    faddr ^= (register_b & REGB_INV_A14) ? 0x4000 : 0;
 
     return faddr;
 }
