@@ -99,7 +99,7 @@ static int set_easyflash_jumper(int val, void *param)
 
 static int set_easyflash_crt_write(int val, void *param)
 {
-    easyflash_jumper = val;
+    easyflash_crt_write = val;
     return 0;
 }
 
