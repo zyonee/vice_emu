@@ -79,6 +79,8 @@ static BYTE lock_bit;
 /* ------------------------------------------------------------------------- */
 
 /* Register A ($9c02) */
+/* #define BANK_MASK        0x1f */
+#define BANK_MASK        0x0f
 
 #define MODE_MASK        0xe0
 #define MODE_START       0x00  /* Start Modus         (000zzzzz) [Mod_ROM_A] */
@@ -147,96 +149,114 @@ void REGPARM2 finalexpansion_io3_store(WORD addr, BYTE value)
 
 /* ------------------------------------------------------------------------- */
 
-void REGPARM2 finalexpansion_ram123_store(WORD addr, BYTE value)
+static unsigned int calc_addr(WORD addr, int bank, int blk)
 {
-    if ( !(register_b & REGB_BLK0_OFF) ) {
+    unsigned int faddr;
+    unsigned int base;
 
-    }
-}
-
-BYTE REGPARM1 finalexpansion_ram123_read(WORD addr)
-{
-    if ( !(register_b & REGB_BLK0_OFF) ) {
-
-    }
-}
-
-/* 
- * 0x2000-0x7fff
- * 0xa000-0xbfff
- */
-void REGPARM2 finalexpansion_mem_store(WORD addr, BYTE value)
-{
-}
-
-BYTE REGPARM1 finalexpansion_mem_read(WORD addr)
-{
-    return addr >> 8;
-}
-
-void REGPARM2 finalexpansion_blk5_store(WORD addr, BYTE value)
-{
-    int bank;
-
-    lock_bit = 0;
-
-    switch (register_a & MODE_MASK) {
-    case MODE_FLASH_WRITE:
-    case MODE_SUPER_RAM:
-        bank = register_a & 0x1f;
+    switch (blk) {
+    case 0:
+        base=0x0000;
+        break;
+    case 1:
+        base=0x0000;
+        break;
+    case 2:
+        base=0x2000;
+        break;
+    case 3:
+        base=0x4000;
+        break;
+    case 5:
+        base=0x6000;
         break;
     default:
-        bank = 1;
+        /* should never happen */
         break;
     }
 
-    addr = ((addr & 0x1fff) | 0x6000) | (bank * 0x8000);
+    faddr = (addr & 0x1fff) | (bank * 0x8000) | base;
+
+    return faddr;
+}
+
+static void internal_store(WORD addr, BYTE value, int blk)
+{
+    unsigned int faddr;
+    int bank;
+
+    if (blk == 0) {
+        bank = 0;
+    } else {
+        switch (register_a & MODE_MASK) {
+        case MODE_FLASH_WRITE:
+        case MODE_SUPER_RAM:
+            bank = register_a & BANK_MASK;
+            break;
+        default:
+            bank = 1;
+            break;
+        }
+    }
+
+    faddr = calc_addr(addr, bank, blk);
 
     switch (register_a & MODE_MASK) {
     case MODE_FLASH_WRITE:
-        flash040core_store(&flash_state, addr, value);
+        if (blk != 0) {
+            flash040core_store(&flash_state, faddr, value);
+        }
         break;
     case MODE_START:
     case MODE_FLASH_READ:
     case MODE_RAM:
     case MODE_SUPER_RAM:
-        cart_ram[addr] = value;
+        cart_ram[faddr] = value;
         break;
     default:
         break;
     }
 }
 
-BYTE REGPARM1 finalexpansion_blk5_read(WORD addr)
+static BYTE internal_read(WORD addr, int blk)
 {
     BYTE value;
+    unsigned int faddr;
     int bank;
 
-    lock_bit = 1;
-
-    switch (register_a & MODE_MASK) {
-    case MODE_START:
-    case MODE_FLASH_READ:
-    case MODE_FLASH_WRITE:
-    case MODE_SUPER_RAM:
-        bank = register_a & 0x1f;
-        break;
-    default:
-        bank = 1;
-        break;
+    if (blk == 0) {
+        bank = 0;
+    } else {
+        switch (register_a & MODE_MASK) {
+        case MODE_START:
+        case MODE_FLASH_READ:
+        case MODE_FLASH_WRITE:
+        case MODE_SUPER_RAM:
+            bank = register_a & BANK_MASK;
+            break;
+        default:
+            bank = 1;
+            break;
+        }
     }
 
-    addr = ((addr & 0x1fff) | 0x6000) | (bank * 0x8000);
+    faddr = calc_addr(addr, bank, blk);
 
     switch (register_a & MODE_MASK) {
     case MODE_START:
+        if (blk == 5) {
+            value = flash040core_read(&flash_state, faddr);
+        } else {
+            value = addr >> 8;
+        }
+        break;
     case MODE_FLASH_READ:
     case MODE_FLASH_WRITE:
-        value = flash040core_read(&flash_state, addr);
+        value = flash040core_read(&flash_state, faddr);
         break;
     case MODE_RAM:
     case MODE_SUPER_RAM:
-        value = cart_ram[addr];
+        value = cart_ram[faddr];
         break;
     default:
         value = addr >> 8;
@@ -244,6 +264,116 @@ BYTE REGPARM1 finalexpansion_blk5_read(WORD addr)
     }
     return value;
 }
+
+/* ------------------------------------------------------------------------- */
+
+/* 0x0400 - 0x0fff */
+void REGPARM2 finalexpansion_ram123_store(WORD addr, BYTE value)
+{
+    if ( !(register_b & REGB_BLK0_OFF) ) {
+        /* should handle RO mode */
+        internal_store(addr, value, 0);
+    }
+}
+
+BYTE REGPARM1 finalexpansion_ram123_read(WORD addr)
+{
+    BYTE value;
+    if ( !(register_b & REGB_BLK0_OFF) ) {
+        value = internal_read(addr, 0);
+    } else {
+        value = addr >> 8;
+    }
+    return value;
+}
+
+/* 0x2000-0x3fff */
+void REGPARM2 finalexpansion_blk1_store(WORD addr, BYTE value)
+{
+    if ( !(register_b & REGB_BLK1_OFF) ) {
+        /* should handle RO mode */
+        internal_store(addr, value, 1);
+    }
+}
+
+BYTE REGPARM1 finalexpansion_blk1_read(WORD addr)
+{
+    BYTE value;
+    if ( !(register_b & REGB_BLK1_OFF) ) {
+        value = internal_read(addr, 1);
+    } else {
+        value = addr >> 8;
+    }
+    return value;
+}
+
+/* 0x4000-0x5fff */
+void REGPARM2 finalexpansion_blk2_store(WORD addr, BYTE value)
+{
+    if ( !(register_b & REGB_BLK2_OFF) ) {
+        /* should handle RO mode */
+        internal_store(addr, value, 2);
+    }
+}
+
+BYTE REGPARM1 finalexpansion_blk2_read(WORD addr)
+{
+    BYTE value;
+    if ( !(register_b & REGB_BLK2_OFF) ) {
+        value = internal_read(addr, 2);
+    } else {
+        value = addr >> 8;
+    }
+    return value;
+}
+
+/* 0x6000-0x7fff */
+void REGPARM2 finalexpansion_blk3_store(WORD addr, BYTE value)
+{
+    if ( !(register_b & REGB_BLK3_OFF) ) {
+        /* should handle RO mode */
+        internal_store(addr, value, 3);
+    }
+}
+
+BYTE REGPARM1 finalexpansion_blk3_read(WORD addr)
+{
+    BYTE value;
+    if ( !(register_b & REGB_BLK3_OFF) ) {
+        value = internal_read(addr, 3);
+    } else {
+        value = addr >> 8;
+    }
+    return value;
+}
+
+/* 0xa000-0xbfff */
+void REGPARM2 finalexpansion_blk5_store(WORD addr, BYTE value)
+{
+    /* hmm, this doesn't work as expected */
+    /* lock_bit = 0; */
+
+    if ( !(register_b & REGB_BLK5_OFF) ) {
+        /* should handle RO mode */
+        internal_store(addr, value, 5);
+    }
+}
+
+BYTE REGPARM1 finalexpansion_blk5_read(WORD addr)
+{
+    BYTE value;
+
+    lock_bit = 1;
+
+    if ( !(register_b & REGB_BLK5_OFF) ) {
+        value = internal_read(addr, 5);
+    } else {
+        value = addr >> 8;
+    }
+    return value;
+}
+
+
 
 void finalexpansion_init(void)
 {
@@ -255,6 +385,7 @@ void finalexpansion_init(void)
 
 void finalexpansion_reset(void)
 {
+    flash040core_reset(&flash_state);
     reset_mode = BUTTON_RESET;
     register_a = 0x00;
     register_b = 0x00;

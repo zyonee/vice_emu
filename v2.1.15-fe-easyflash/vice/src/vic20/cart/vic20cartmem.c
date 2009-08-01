@@ -136,7 +136,7 @@ BYTE REGPARM1 cartridge_read_blk1(WORD addr)
         return megacart_mem_read(addr);
         break;
     case CARTRIDGE_VIC20_FINAL_EXPANSION:
-        return finalexpansion_mem_read(addr);
+        return finalexpansion_blk1_read(addr);
         break;
     }
     return 0xff;
@@ -152,7 +152,7 @@ void REGPARM2 cartridge_store_blk1(WORD addr, BYTE value)
         megacart_mem_store(addr, value);
         break;
     case CARTRIDGE_VIC20_FINAL_EXPANSION:
-        finalexpansion_mem_store(addr, value);
+        finalexpansion_blk1_store(addr, value);
         break;
     }
 }
@@ -167,7 +167,7 @@ BYTE REGPARM1 cartridge_read_blk2(WORD addr)
         return megacart_mem_read(addr);
         break;
     case CARTRIDGE_VIC20_FINAL_EXPANSION:
-        return finalexpansion_mem_read(addr);
+        return finalexpansion_blk2_read(addr);
         break;
     }
     return 0xff;
@@ -183,7 +183,7 @@ void REGPARM2 cartridge_store_blk2(WORD addr, BYTE value)
         megacart_mem_store(addr, value);
         break;
     case CARTRIDGE_VIC20_FINAL_EXPANSION:
-        finalexpansion_mem_store(addr, value);
+        finalexpansion_blk2_store(addr, value);
         break;
     }
 }
@@ -198,7 +198,7 @@ BYTE REGPARM1 cartridge_read_blk3(WORD addr)
         return megacart_mem_read(addr);
         break;
     case CARTRIDGE_VIC20_FINAL_EXPANSION:
-        return finalexpansion_mem_read(addr);
+        return finalexpansion_blk3_read(addr);
         break;
     }
     return 0xff;
@@ -214,7 +214,7 @@ void REGPARM2 cartridge_store_blk3(WORD addr, BYTE value)
         megacart_mem_store(addr, value);
         break;
     case CARTRIDGE_VIC20_FINAL_EXPANSION:
-        finalexpansion_mem_store(addr, value);
+        finalexpansion_blk3_store(addr, value);
         break;
     }
 }
