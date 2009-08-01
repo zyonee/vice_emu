@@ -35,6 +35,7 @@
 #include "machine.h"
 #include "finalexpansion.h"
 #include "flash040.h"
+#include "log.h"
 #include "mem.h"
 #include "resources.h"
 #include "types.h"
@@ -122,27 +123,40 @@ static int is_locked(void)
 
 BYTE REGPARM1 finalexpansion_io3_read(WORD addr)
 {   
+    BYTE value;
+
     addr &= 0x03;
+    log_message(LOG_DEFAULT, "Read reg%02x. (locked=%d)", addr, is_locked());
     if (!is_locked()) {
         switch (addr) {
         case 0x02:
-            return register_a;
+            value = register_a;
+            break;
         case 0x03:
-            return register_b;
+            value = register_b;
+            break;
+        default:
+            value = addr >> 8;
+            break;
         }
+    } else {
+        value = addr >> 8;
     }
-    return addr >> 8;
+    return value;
 }
 
 void REGPARM2 finalexpansion_io3_store(WORD addr, BYTE value)
 {
     addr &= 0x03;
+    log_message(LOG_DEFAULT, "Wrote reg%02x = %02x. (locked=%d)", addr, value, is_locked());
     if (!is_locked()) {
         switch (addr) {
         case 0x02:
             register_a = value;
+            break;
         case 0x03:
             register_b = value;
+            break;
         }
     }
 }
@@ -350,8 +364,7 @@ BYTE REGPARM1 finalexpansion_blk3_read(WORD addr)
 /* 0xa000-0xbfff */
 void REGPARM2 finalexpansion_blk5_store(WORD addr, BYTE value)
 {
-    /* hmm, this doesn't work as expected */
-    /* lock_bit = 0; */
+    lock_bit = 0;
 
     if ( !(register_b & REGB_BLK5_OFF) ) {
         /* should handle RO mode */
