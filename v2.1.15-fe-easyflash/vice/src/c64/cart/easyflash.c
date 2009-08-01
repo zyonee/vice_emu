@@ -40,6 +40,7 @@
 #include "lib.h"
 #include "log.h"
 #include "resources.h"
+#include "translate.h"
 
 /* the 27F040B statemachine */
 static flash040_context_t *easyflash_state_low = NULL;
