@@ -30,10 +30,12 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "archdep.h"
 #include "c64cart.h"
 #include "c64cartmem.h"
 #include "c64io.h"
 #include "c64mem.h"
+#include "cartridge.h"
 #include "cmdline.h"
 #include "easyflash.h"
 #include "flash040.h"
@@ -89,7 +91,26 @@ static const BYTE easyflash_memconfig[] = {
 /* extra RAM */
 static BYTE easyflash_ram[256];
 
+/* filename when attached */
+static char *easyflash_crt_filename = NULL;
+
+static const char CRT_HEADER[] = "C64 CARTRIDGE   ";
+static const char CHIP_HEADER[] = "CHIP";
+static const char STRING_EASYFLASH[] = "EasyFlash Cartridge";
+
 /* ---------------------------------------------------------------------*/
+
+static int easyflash_check_empty(BYTE *data)
+{
+    int i;
+
+    for (i = 0; i < 0x2000; i++) {
+        if (data[i] != 0xff) {
+            return 0;
+        }
+    }
+    return 1;
+}
 
 static int set_easyflash_jumper(int val, void *param)
 {
@@ -207,20 +228,21 @@ void easyflash_config_init(void)
 
 void easyflash_config_setup(BYTE *rawcart)
 {
-   easyflash_state_low = lib_malloc(sizeof(flash040_context_t));
-   easyflash_state_high = lib_malloc(sizeof(flash040_context_t));
+    easyflash_state_low = lib_malloc(sizeof(flash040_context_t));
+    easyflash_state_high = lib_malloc(sizeof(flash040_context_t));
 
-   flash040core_init(easyflash_state_low, FLASH040_TYPE_B);
-   memcpy(easyflash_state_low->flash_data, rawcart, 0x80000);
+    flash040core_init(easyflash_state_low, FLASH040_TYPE_B);
+    memcpy(easyflash_state_low->flash_data, rawcart, 0x80000);
 
-   flash040core_init(easyflash_state_high, FLASH040_TYPE_B);
-   memcpy(easyflash_state_high->flash_data, rawcart + 0x80000, 0x80000);
+    flash040core_init(easyflash_state_high, FLASH040_TYPE_B);
+    memcpy(easyflash_state_high->flash_data, rawcart + 0x80000, 0x80000);
 }
 
-int easyflash_crt_attach(FILE *fd, BYTE *rawcart, BYTE *header)
+int easyflash_crt_attach(FILE *fd, BYTE *rawcart, BYTE *header, const char *filename)
 {
     BYTE chipheader[0x10];
 
+    memset(rawcart, 0xff, 0x100000);
     while (1) {
         if (fread(chipheader, 0x10, 1, fd) < 1) {
             break;
@@ -232,13 +254,79 @@ int easyflash_crt_attach(FILE *fd, BYTE *rawcart, BYTE *header)
             return -1;
         }
     }
+    easyflash_crt_filename = lib_stralloc(filename);
+
     return 0;
 }
 
 void easyflash_detach(void)
 {
+    easyflash_save_crt();
     flash040core_shutdown(easyflash_state_low);
     flash040core_shutdown(easyflash_state_high);
     lib_free(easyflash_state_low);
     lib_free(easyflash_state_high);
+    lib_free(easyflash_crt_filename);
+    easyflash_crt_filename = NULL;
+}
+
+void easyflash_save_crt(void)
+{
+    FILE *fd;
+    BYTE header[0x40], chipheader[0x10];
+    BYTE *data;
+    int i;
+
+    if (easyflash_crt_write && easyflash_crt_filename != NULL) {
+        fd = fopen(easyflash_crt_filename, MODE_WRITE);
+
+        if (fd == NULL) {
+            return;
+        }
+
+        memset(header, 0x0, 0x40);
+        memset(chipheader, 0x0, 0x10);
+
+        strcpy((char *)header, CRT_HEADER);
+
+        header[0x13] = 0x40;
+        header[0x14] = 0x01;
+        header[0x17] = CARTRIDGE_EASYFLASH;
+        header[0x18] = 0x01;
+        strcpy((char *)&header[0x20], STRING_EASYFLASH);
+        if (fwrite(header, 1, 0x40, fd) != 0x40) {
+            fclose(fd);
+            return;
+        }
+
+        strcpy((char *)chipheader, CHIP_HEADER);
+        chipheader[0x06] = 0x20;
+        chipheader[0x07] = 0x10;
+        chipheader[0x09] = 0x02;
+        chipheader[0x0e] = 0x20;
+ 
+        for (i = 0; i < 128; i++) {
+            if (i > 63) {
+                data = easyflash_state_high->flash_data + ((i - 64) * 0x2000);
+            } else {
+                data = easyflash_state_low->flash_data + (i * 0x2000);
+            }
+
+            if (easyflash_check_empty(data) == 0) {
+                chipheader[0x0b] = (i > 63) ? i - 64 : i;
+                chipheader[0x0c] = (i > 63) ? 0xa0 : 0x80;
+
+                if (fwrite(chipheader, 1, 0x10, fd) != 0x10) {
+                    fclose(fd);
+                    return;
+                }
+
+                if (fwrite(data, 1, 0x2000, fd) != 0x2000) {
+                    fclose(fd);
+                    return;
+                }
+            }
+        }
+        fclose(fd);
+    }
 }

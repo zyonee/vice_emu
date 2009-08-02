@@ -192,7 +192,7 @@ int crt_attach(const char *filename, BYTE *rawcart)
         }
         break;
       case CARTRIDGE_EASYFLASH:
-        rc = easyflash_crt_attach(fd, rawcart, header);
+        rc = easyflash_crt_attach(fd, rawcart, header, filename);
         fclose(fd);
         if (rc < 0) {
             return -1;
