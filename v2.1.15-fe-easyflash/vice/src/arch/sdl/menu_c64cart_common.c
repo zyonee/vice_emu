@@ -171,7 +171,9 @@ UI_MENU_DEFINE_TOGGLE(EasyFlashWriteCRT)
 static UI_MENU_CALLBACK(easyflash_save_callback)
 {
     if (activated) {
-        easyflash_save_crt();
+        if(easyflash_save_crt() < 0) {
+            ui_error("Cannot save cartridge image.");
+        }
     }
     return NULL;
 }
