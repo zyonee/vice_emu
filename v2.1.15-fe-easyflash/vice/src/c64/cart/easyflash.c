@@ -261,7 +261,9 @@ int easyflash_crt_attach(FILE *fd, BYTE *rawcart, BYTE *header, const char *file
 
 void easyflash_detach(void)
 {
-    easyflash_save_crt();
+    if (easyflash_crt_write && easyflash_crt_filename != NULL) {
+        easyflash_save_crt();
+    }
     flash040core_shutdown(easyflash_state_low);
     flash040core_shutdown(easyflash_state_high);
     lib_free(easyflash_state_low);
@@ -270,63 +272,62 @@ void easyflash_detach(void)
     easyflash_crt_filename = NULL;
 }
 
-void easyflash_save_crt(void)
+int easyflash_save_crt(void)
 {
     FILE *fd;
     BYTE header[0x40], chipheader[0x10];
     BYTE *data;
     int i;
 
-    if (easyflash_crt_write && easyflash_crt_filename != NULL) {
-        fd = fopen(easyflash_crt_filename, MODE_WRITE);
+    fd = fopen(easyflash_crt_filename, MODE_WRITE);
 
-        if (fd == NULL) {
-            return;
-        }
-
-        memset(header, 0x0, 0x40);
-        memset(chipheader, 0x0, 0x10);
-
-        strcpy((char *)header, CRT_HEADER);
-
-        header[0x13] = 0x40;
-        header[0x14] = 0x01;
-        header[0x17] = CARTRIDGE_EASYFLASH;
-        header[0x18] = 0x01;
-        strcpy((char *)&header[0x20], STRING_EASYFLASH);
-        if (fwrite(header, 1, 0x40, fd) != 0x40) {
-            fclose(fd);
-            return;
-        }
-
-        strcpy((char *)chipheader, CHIP_HEADER);
-        chipheader[0x06] = 0x20;
-        chipheader[0x07] = 0x10;
-        chipheader[0x09] = 0x02;
-        chipheader[0x0e] = 0x20;
- 
-        for (i = 0; i < 128; i++) {
-            if (i > 63) {
-                data = easyflash_state_high->flash_data + ((i - 64) * 0x2000);
-            } else {
-                data = easyflash_state_low->flash_data + (i * 0x2000);
-            }
-
-            if (easyflash_check_empty(data) == 0) {
-                chipheader[0x0b] = (i > 63) ? i - 64 : i;
-                chipheader[0x0c] = (i > 63) ? 0xa0 : 0x80;
-
-                if (fwrite(chipheader, 1, 0x10, fd) != 0x10) {
-                    fclose(fd);
-                    return;
-                }
-
-                if (fwrite(data, 1, 0x2000, fd) != 0x2000) {
-                    fclose(fd);
-                    return;
-                }
-            }
-        }
-        fclose(fd);
+    if (fd == NULL) {
+        return -1;
     }
+
+    memset(header, 0x0, 0x40);
+    memset(chipheader, 0x0, 0x10);
+
+    strcpy((char *)header, CRT_HEADER);
+
+    header[0x13] = 0x40;
+    header[0x14] = 0x01;
+    header[0x17] = CARTRIDGE_EASYFLASH;
+    header[0x18] = 0x01;
+    strcpy((char *)&header[0x20], STRING_EASYFLASH);
+    if (fwrite(header, 1, 0x40, fd) != 0x40) {
+        fclose(fd);
+        return -1;
+    }
+
+    strcpy((char *)chipheader, CHIP_HEADER);
+    chipheader[0x06] = 0x20;
+    chipheader[0x07] = 0x10;
+    chipheader[0x09] = 0x02;
+    chipheader[0x0e] = 0x20;
+ 
+    for (i = 0; i < 128; i++) {
+        if (i > 63) {
+            data = easyflash_state_high->flash_data + ((i - 64) * 0x2000);
+        } else {
+            data = easyflash_state_low->flash_data + (i * 0x2000);
+        }
+
+        if (easyflash_check_empty(data) == 0) {
+            chipheader[0x0b] = (i > 63) ? i - 64 : i;
+            chipheader[0x0c] = (i > 63) ? 0xa0 : 0x80;
+
+            if (fwrite(chipheader, 1, 0x10, fd) != 0x10) {
+                fclose(fd);
+                return -1;
+            }
+
+            if (fwrite(data, 1, 0x2000, fd) != 0x2000) {
+                fclose(fd);
+                return -1;
+            }
+        }
+    }
+    fclose(fd);
+    return 0;
 }

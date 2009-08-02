@@ -44,6 +44,6 @@ extern void easyflash_config_init(void);
 extern void easyflash_config_setup(BYTE *rawcart);
 extern int easyflash_crt_attach(FILE *fd, BYTE *rawcart, BYTE *header, const char *filename);
 extern void easyflash_detach(void);
-extern void easyflash_save_crt(void);
+extern int easyflash_save_crt(void);
 
 #endif
