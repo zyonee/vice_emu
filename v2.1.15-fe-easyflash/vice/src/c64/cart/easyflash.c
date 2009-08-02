@@ -261,7 +261,7 @@ int easyflash_crt_attach(FILE *fd, BYTE *rawcart, BYTE *header, const char *file
 
 void easyflash_detach(void)
 {
-    if (easyflash_crt_write && easyflash_crt_filename != NULL) {
+    if (easyflash_crt_write) {
         easyflash_save_crt();
     }
     flash040core_shutdown(easyflash_state_low);
@@ -278,6 +278,10 @@ int easyflash_save_crt(void)
     BYTE header[0x40], chipheader[0x10];
     BYTE *data;
     int i;
+
+    if (easyflash_crt_filename == NULL) {
+        return -1;
+    }
 
     fd = fopen(easyflash_crt_filename, MODE_WRITE);
 
