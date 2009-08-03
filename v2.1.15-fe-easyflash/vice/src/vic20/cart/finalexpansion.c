@@ -211,13 +211,16 @@ static unsigned int calc_addr(WORD addr, int bank, WORD base)
 
 static void internal_store(WORD addr, BYTE value, int blk, WORD base)
 {
-    unsigned int faddr;
+    BYTE mode;
     int bank;
+    unsigned int faddr;
+
+    mode = register_a & REGA_MODE_MASK;
 
     if (blk == 0) {
         bank = 0;
     } else {
-        switch (register_a & REGA_MODE_MASK) {
+        switch (mode) {
         case MODE_FLASH_WRITE:
         case MODE_SUPER_RAM:
             bank = register_a & REGA_BANK_MASK;
@@ -230,7 +233,7 @@ static void internal_store(WORD addr, BYTE value, int blk, WORD base)
 
     faddr = calc_addr(addr, bank, base);
 
-    switch (register_a & REGA_MODE_MASK) {
+    switch (mode) {
     case MODE_FLASH_WRITE:
         if (blk != 0) {
             flash040core_store(&flash_state, faddr, value);
@@ -249,14 +252,17 @@ static void internal_store(WORD addr, BYTE value, int blk, WORD base)
 
 static BYTE internal_read(WORD addr, int blk, WORD base)
 {
-    BYTE value;
-    unsigned int faddr;
+    BYTE mode;
     int bank;
+    unsigned int faddr;
+    BYTE value;
+
+    mode = register_a & REGA_MODE_MASK;
 
     if (blk == 0) {
         bank = 0;
     } else {
-        switch (register_a & REGA_MODE_MASK) {
+        switch (mode) {
         case MODE_START:
         case MODE_FLASH_READ:
         case MODE_FLASH_WRITE:
@@ -271,7 +277,7 @@ static BYTE internal_read(WORD addr, int blk, WORD base)
 
     faddr = calc_addr(addr, bank, base);
 
-    switch (register_a & REGA_MODE_MASK) {
+    switch (mode) {
     case MODE_START:
         if (blk == 5) {
             value = flash040core_read(&flash_state, faddr);
