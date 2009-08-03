@@ -305,6 +305,7 @@ ui_popup_translation_table_t vic20ui_popup_translation_table[] = {
     { 2, IDS_MP_FLIP_LIST },
     { 2, IDS_MP_DATASETTE_CONTROL },
     { 2, IDS_MP_ATTACH_CARTRIDGE_IMAGE },
+    { 3, IDS_MP_ADD_TO_GENERIC },
     { 2, IDS_MP_RESET },
 #ifdef DEBUG
     { 2, IDS_MP_DEBUG },
