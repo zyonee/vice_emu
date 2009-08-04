@@ -426,6 +426,61 @@ intl_translate_t intl_string_table[] = {
 /* sv */ {IDMS_ATTACH_CART_IMAGE_SV, "Anslut insticksmodulfil..."},
 /* tr */ {IDMS_ATTACH_CART_IMAGE_TR, "Kartuþ imajý yerleþtir..."},
 
+/* en */ {IDMS_GENERIC_IMAGE,    "Generic image..."},
+/* da */ {IDMS_GENERIC_IMAGE_DA, ""},  /* fuzzy */
+/* de */ {IDMS_GENERIC_IMAGE_DE, ""},  /* fuzzy */
+/* fr */ {IDMS_GENERIC_IMAGE_FR, ""},  /* fuzzy */
+/* hu */ {IDMS_GENERIC_IMAGE_HU, ""},  /* fuzzy */
+/* it */ {IDMS_GENERIC_IMAGE_IT, ""},  /* fuzzy */
+/* nl */ {IDMS_GENERIC_IMAGE_NL, "Algemeen bestand..."},
+/* pl */ {IDMS_GENERIC_IMAGE_PL, ""},  /* fuzzy */
+/* sv */ {IDMS_GENERIC_IMAGE_SV, ""},  /* fuzzy */
+/* tr */ {IDMS_GENERIC_IMAGE_TR, ""},  /* fuzzy */
+
+/* en */ {IDMS_MEGA_CART_IMAGE,    "Mega-Cart image..."},
+/* da */ {IDMS_MEGA_CART_IMAGE_DA, ""},  /* fuzzy */
+/* de */ {IDMS_MEGA_CART_IMAGE_DE, ""},  /* fuzzy */
+/* fr */ {IDMS_MEGA_CART_IMAGE_FR, ""},  /* fuzzy */
+/* hu */ {IDMS_MEGA_CART_IMAGE_HU, ""},  /* fuzzy */
+/* it */ {IDMS_MEGA_CART_IMAGE_IT, ""},  /* fuzzy */
+/* nl */ {IDMS_MEGA_CART_IMAGE_NL, "Mega-Cart bestand..."},
+/* pl */ {IDMS_MEGA_CART_IMAGE_PL, ""},  /* fuzzy */
+/* sv */ {IDMS_MEGA_CART_IMAGE_SV, ""},  /* fuzzy */
+/* tr */ {IDMS_MEGA_CART_IMAGE_TR, ""},  /* fuzzy */
+
+/* en */ {IDMS_FINAL_EXPANSION_IMAGE,    "Final Expansion image..."},
+/* da */ {IDMS_FINAL_EXPANSION_IMAGE_DA, ""},  /* fuzzy */
+/* de */ {IDMS_FINAL_EXPANSION_IMAGE_DE, ""},  /* fuzzy */
+/* fr */ {IDMS_FINAL_EXPANSION_IMAGE_FR, ""},  /* fuzzy */
+/* hu */ {IDMS_FINAL_EXPANSION_IMAGE_HU, ""},  /* fuzzy */
+/* it */ {IDMS_FINAL_EXPANSION_IMAGE_IT, ""},  /* fuzzy */
+/* nl */ {IDMS_FINAL_EXPANSION_IMAGE_NL, "Final Expansion bestand..."},
+/* pl */ {IDMS_FINAL_EXPANSION_IMAGE_PL, ""},  /* fuzzy */
+/* sv */ {IDMS_FINAL_EXPANSION_IMAGE_SV, ""},  /* fuzzy */
+/* tr */ {IDMS_FINAL_EXPANSION_IMAGE_TR, ""},  /* fuzzy */
+
+/* en */ {IDMS_ADD_TO_GENERIC,    "Add to generic..."},
+/* da */ {IDMS_ADD_TO_GENERIC_DA, ""},  /* fuzzy */
+/* de */ {IDMS_ADD_TO_GENERIC_DE, ""},  /* fuzzy */
+/* fr */ {IDMS_ADD_TO_GENERIC_FR, ""},  /* fuzzy */
+/* hu */ {IDMS_ADD_TO_GENERIC_HU, ""},  /* fuzzy */
+/* it */ {IDMS_ADD_TO_GENERIC_IT, ""},  /* fuzzy */
+/* nl */ {IDMS_ADD_TO_GENERIC_NL, "Voeg toe aan algemeen..."},
+/* pl */ {IDMS_ADD_TO_GENERIC_PL, ""},  /* fuzzy */
+/* sv */ {IDMS_ADD_TO_GENERIC_SV, ""},  /* fuzzy */
+/* tr */ {IDMS_ADD_TO_GENERIC_TR, ""},  /* fuzzy */
+
+/* en */ {IDMS_SMART_ATTACH_IMAGE,    "Smart-attach image..."},
+/* da */ {IDMS_SMART_ATTACH_IMAGE_DA, ""},  /* fuzzy */
+/* de */ {IDMS_SMART_ATTACH_IMAGE_DE, ""},  /* fuzzy */
+/* fr */ {IDMS_SMART_ATTACH_IMAGE_FR, ""},  /* fuzzy */
+/* hu */ {IDMS_SMART_ATTACH_IMAGE_HU, ""},  /* fuzzy */
+/* it */ {IDMS_SMART_ATTACH_IMAGE_IT, ""},  /* fuzzy */
+/* nl */ {IDMS_SMART_ATTACH_IMAGE_NL, "Slimme koppeling van bestand..."},
+/* pl */ {IDMS_SMART_ATTACH_IMAGE_PL, ""},  /* fuzzy */
+/* sv */ {IDMS_SMART_ATTACH_IMAGE_SV, ""},  /* fuzzy */
+/* tr */ {IDMS_SMART_ATTACH_IMAGE_TR, ""},  /* fuzzy */
+
 /* en */ {IDMS_4_8_16KB_AT_2000,    "4/8/16KB image at $2000..."},
 /* da */ {IDMS_4_8_16KB_AT_2000_DA, "4/8/16KB-image på $2000..."},
 /* de */ {IDMS_4_8_16KB_AT_2000_DE, "4/8/16KB Modul Image bei $2000..."},
@@ -5479,6 +5534,50 @@ intl_translate_t intl_string_table[] = {
 /* pl */ {IDS_MMC64_SETTINGS_PL, ""},  /* fuzzy */
 /* sv */ {IDS_MMC64_SETTINGS_SV, "MMC64-inställningar"},
 /* tr */ {IDS_MMC64_SETTINGS_TR, "MMC64 ayarlarý"},
+
+/* en */ {IDS_SELECT_GENERIC,    "Select generic cartridge file"},
+/* da */ {IDS_SELECT_GENERIC_DA, ""},  /* fuzzy */
+/* de */ {IDS_SELECT_GENERIC_DE, ""},  /* fuzzy */
+/* fr */ {IDS_SELECT_GENERIC_FR, ""},  /* fuzzy */
+/* hu */ {IDS_SELECT_GENERIC_HU, ""},  /* fuzzy */
+/* it */ {IDS_SELECT_GENERIC_IT, ""},  /* fuzzy */
+/* nl */ {IDS_SELECT_GENERIC_NL, "Selecteer algemeen cartridge bestand"},
+/* pl */ {IDS_SELECT_GENERIC_PL, ""},  /* fuzzy */
+/* sv */ {IDS_SELECT_GENERIC_SV, ""},  /* fuzzy */
+/* tr */ {IDS_SELECT_GENERIC_TR, ""},  /* fuzzy */
+
+/* en */ {IDS_SELECT_MEGACART,    "Select Mega-Cart file"},
+/* da */ {IDS_SELECT_MEGACART_DA, ""},  /* fuzzy */
+/* de */ {IDS_SELECT_MEGACART_DE, ""},  /* fuzzy */
+/* fr */ {IDS_SELECT_MEGACART_FR, ""},  /* fuzzy */
+/* hu */ {IDS_SELECT_MEGACART_HU, ""},  /* fuzzy */
+/* it */ {IDS_SELECT_MEGACART_IT, ""},  /* fuzzy */
+/* nl */ {IDS_SELECT_MEGACART_NL, "Selecteer Mega-Cart bestand"},
+/* pl */ {IDS_SELECT_MEGACART_PL, ""},  /* fuzzy */
+/* sv */ {IDS_SELECT_MEGACART_SV, ""},  /* fuzzy */
+/* tr */ {IDS_SELECT_MEGACART_TR, ""},  /* fuzzy */
+
+/* en */ {IDS_SELECT_FINAL_EXPANSION,    "Select Final Expansion file"},
+/* da */ {IDS_SELECT_FINAL_EXPANSION_DA, ""},  /* fuzzy */
+/* de */ {IDS_SELECT_FINAL_EXPANSION_DE, ""},  /* fuzzy */
+/* fr */ {IDS_SELECT_FINAL_EXPANSION_FR, ""},  /* fuzzy */
+/* hu */ {IDS_SELECT_FINAL_EXPANSION_HU, ""},  /* fuzzy */
+/* it */ {IDS_SELECT_FINAL_EXPANSION_IT, ""},  /* fuzzy */
+/* nl */ {IDS_SELECT_FINAL_EXPANSION_NL, "Selecteer Final Expansion bestand"},
+/* pl */ {IDS_SELECT_FINAL_EXPANSION_PL, ""},  /* fuzzy */
+/* sv */ {IDS_SELECT_FINAL_EXPANSION_SV, ""},  /* fuzzy */
+/* tr */ {IDS_SELECT_FINAL_EXPANSION_TR, ""},  /* fuzzy */
+
+/* en */ {IDS_SELECT_CARTRIDGE_IMAGE,    "Select cartridge file"},
+/* da */ {IDS_SELECT_CARTRIDGE_IMAGE_DA, ""},  /* fuzzy */
+/* de */ {IDS_SELECT_CARTRIDGE_IMAGE_DE, ""},  /* fuzzy */
+/* fr */ {IDS_SELECT_CARTRIDGE_IMAGE_FR, ""},  /* fuzzy */
+/* hu */ {IDS_SELECT_CARTRIDGE_IMAGE_HU, ""},  /* fuzzy */
+/* it */ {IDS_SELECT_CARTRIDGE_IMAGE_IT, ""},  /* fuzzy */
+/* nl */ {IDS_SELECT_CARTRIDGE_IMAGE_NL, "Selecteer cartridge bestand"},
+/* pl */ {IDS_SELECT_CARTRIDGE_IMAGE_PL, ""},  /* fuzzy */
+/* sv */ {IDS_SELECT_CARTRIDGE_IMAGE_SV, ""},  /* fuzzy */
+/* tr */ {IDS_SELECT_CARTRIDGE_IMAGE_TR, ""},  /* fuzzy */
 
 /* en */ {IDS_SID_CART,    "SID Cart"},
 /* da */ {IDS_SID_CART_DA, "SID-cartridge"},
