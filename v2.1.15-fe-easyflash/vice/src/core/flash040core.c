@@ -238,13 +238,12 @@ BYTE REGPARM2 flash040core_read(flash040_context_t *flash040_context, unsigned i
         case FLASH040_STATE_BYTE_PROGRAM_HAPPENING:
         case FLASH040_STATE_CHIP_ERASE:
         case FLASH040_STATE_SECTOR_ERASE:
-            /* TODO return write operation status. Until alarms are introduced, just fall through */
+            /* TODO return write operation status. Until alarms are introduced, just reset the state and fall through */
+            flash040_context->flash_state = FLASH040_STATE_READ;
 
         default:
-            flash040_context->flash_state = FLASH040_STATE_READ;
+            /* The state doesn't reset if a read occurs during a command sequence */
             /* fall through */
-        case FLASH040_STATE_BYTE_PROGRAM:
-            /* The state doesn't reset if a read occurs before the last write of the sequence */
         case FLASH040_STATE_READ:
             value = flash040_context->flash_data[addr];
             break;
