@@ -595,8 +595,16 @@ BMenuBar *menu_create(int machine_class) {
 			extsubmenu->AddItem(new BMenuItem("$DFE0",
 				new BMessage(MENU_DIGIMAX_BASE_DFE0)));
 
-			menu->AddItem(new BMenuItem("SFX Sound Expander emulation",
+			menu->AddItem(submenu = new BMenu("SFX Sound Expander Options"));
+			submenu->AddItem(new BMenuItem("SFX Sound Expander emulation",
 				new BMessage(MENU_TOGGLE_SFX_SE)));
+			submenu->AddItem(extsubmenu = new BMenu("SFX Sound Expander YM chip"));
+			extsubmenu->SetRadioMode(true);
+			extsubmenu->AddItem(new BMenuItem("3526",
+				new BMessage(MENU_SFX_SE_3526)));
+			extsubmenu->AddItem(new BMenuItem("3812",
+				new BMessage(MENU_SFX_SE_3526)));
+
 			menu->AddItem(new BMenuItem("SFX Sound Sampler emulation",
 				new BMessage(MENU_TOGGLE_SFX_SS)));
 
