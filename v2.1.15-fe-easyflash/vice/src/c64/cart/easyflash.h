@@ -28,6 +28,8 @@
 #ifndef VICE_EASYFLASH_H
 #define VICE_EASYFLASH_H
 
+#include "types.h"
+
 extern int easyflash_resources_init(void);
 extern int easyflash_cmdline_options_init(void);
 
