@@ -181,16 +181,25 @@ BMenuBar *menu_create(int machine_class) {
 		}
 		if (machine_class == VICE_MACHINE_VIC20) {
 			menu->AddItem(submenu = new BMenu("Attach cartridge image"));
-			submenu->AddItem(new BMenuItem("4/8/16KB image at $2000",
-				new BMessage(MENU_CART_VIC20_16KB_2000)));
-			submenu->AddItem(new BMenuItem("4/8/16KB image at $4000",
-				new BMessage(MENU_CART_VIC20_16KB_4000)));
-			submenu->AddItem(new BMenuItem("4/8/16KB image at $6000",
-				new BMessage(MENU_CART_VIC20_16KB_6000)));
-			submenu->AddItem(new BMenuItem("4/8KB image at $A000",
-				new BMessage(MENU_CART_VIC20_8KB_A000)));
-			submenu->AddItem(new BMenuItem("4KB image at $B000",
-				new BMessage(MENU_CART_VIC20_4KB_B000)));
+			submenu->AddItem(new BMenuItem("Generic cartridge image",
+				new BMessage(MENU_CART_VIC20_GENERIC)));
+			submenu->AddItem(new BMenuItem("Mega-Cart image",
+				new BMessage(MENU_CART_VIC20_MEGACART)));
+			submenu->AddItem(new BMenuItem("Final Expansion image",
+				new BMessage(MENU_CART_VIC20_FINAL_EXPANSION)));
+			submenu->AddItem(extsubmenu = new BMenu("Add to generic"));
+				extsubmenu->AddItem(new BMenuItem("Smart Attach",
+					new BMessage(MENU_CART_VIC20_SMART_ATTACH)));
+				extsubmenu->AddItem(new BMenuItem("4/8/16KB image at $2000",
+					new BMessage(MENU_CART_VIC20_16KB_2000)));
+				extsubmenu->AddItem(new BMenuItem("4/8/16KB image at $4000",
+					new BMessage(MENU_CART_VIC20_16KB_4000)));
+				extsubmenu->AddItem(new BMenuItem("4/8/16KB image at $6000",
+					new BMessage(MENU_CART_VIC20_16KB_6000)));
+				extsubmenu->AddItem(new BMenuItem("4/8KB image at $A000",
+					new BMessage(MENU_CART_VIC20_8KB_A000)));
+				extsubmenu->AddItem(new BMenuItem("4KB image at $B000",
+					new BMessage(MENU_CART_VIC20_4KB_B000)));
 			menu->AddItem(new BMenuItem("Detach cartridge image", 
 				new BMessage(MENU_CART_DETACH)));
 			menu->AddSeparatorItem();
