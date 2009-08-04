@@ -509,6 +509,9 @@ BYTE REGPARM1 romh_read(WORD addr)
 void REGPARM2 romh_store(WORD addr, BYTE value)
 {
     switch (mem_cartridge_type) {
+      case CARTRIDGE_EASYFLASH:
+        easyflash_romh_store(addr, value);
+        break;
       case CARTRIDGE_MAGIC_FORMEL:
         magicformel_romh_store(addr, value);
         break;
