@@ -600,6 +600,14 @@ BMenuBar *menu_create(int machine_class) {
 			menu->AddItem(new BMenuItem("SFX Sound Sampler emulation",
 				new BMessage(MENU_TOGGLE_SFX_SS)));
 
+			menu->AddItem(submenu = new BMenu("EasyFlash Options"));
+			submenu->AddItem(new BMenuItem("Jumper",
+				new BMessage(MENU_TOGGLE_EASYFLASH_JUMPER)));
+			submenu->AddItem(new BMenuItem("Save to .crt file on detach",
+				new BMessage(MENU_TOGGLE_EASYFLASH_AUTOSAVE)));
+			submenu->AddItem(new BMenuItem("Save .crt file now",
+				new BMessage(MENU_EASYFLASH_SAVE_NOW)));
+
 			if (machine_class == VICE_MACHINE_C64) {
 				menu->AddItem(submenu = new BMenu("Double Quick Brown Box Options"));
 				submenu->AddItem(new BMenuItem("DQBB emulation",
