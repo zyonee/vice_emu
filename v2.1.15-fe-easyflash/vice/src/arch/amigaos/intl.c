@@ -2087,6 +2087,17 @@ intl_translate_t intl_string_table[] = {
 /* sv */ {IDMS_SFX_SE_SETTINGS_SV, ""},  /* fuzzy */
 /* tr */ {IDMS_SFX_SE_SETTINGS_TR, ""},  /* fuzzy */
 
+/* en */ {IDMS_EASYFLASH_SETTINGS,    "EasyFlash settings..."},
+/* da */ {IDMS_EASYFLASH_SETTINGS_DA, ""},  /* fuzzy */
+/* de */ {IDMS_EASYFLASH_SETTINGS_DE, ""},  /* fuzzy */
+/* fr */ {IDMS_EASYFLASH_SETTINGS_FR, ""},  /* fuzzy */
+/* hu */ {IDMS_EASYFLASH_SETTINGS_HU, ""},  /* fuzzy */
+/* it */ {IDMS_EASYFLASH_SETTINGS_IT, ""},  /* fuzzy */
+/* nl */ {IDMS_EASYFLASH_SETTINGS_NL, "EasyFlash instellingen..."},
+/* pl */ {IDMS_EASYFLASH_SETTINGS_PL, ""},  /* fuzzy */
+/* sv */ {IDMS_EASYFLASH_SETTINGS_SV, ""},  /* fuzzy */
+/* tr */ {IDMS_EASYFLASH_SETTINGS_TR, ""},  /* fuzzy */
+
 /* en */ {IDMS_ENABLE_SFX_SS,    "Enable SFX Sound Sampler"},
 /* da */ {IDMS_ENABLE_SFX_SS_DA, ""},  /* fuzzy */
 /* de */ {IDMS_ENABLE_SFX_SS_DE, ""},  /* fuzzy */
@@ -4161,6 +4172,17 @@ intl_translate_t intl_string_table[] = {
 /* pl */ {IDS_ISEPIC_SWITCH_PL, ""},  /* fuzzy */
 /* sv */ {IDS_ISEPIC_SWITCH_SV, "Isepic-omkopplare"},
 /* tr */ {IDS_ISEPIC_SWITCH_TR, "Isepic Anahtarý"},
+
+/* en */ {IDS_EASYFLASH_SETTINGS,    "EasyFlash Settings"},
+/* da */ {IDS_EASYFLASH_SETTINGS_DA, ""},  /* fuzzy */
+/* de */ {IDS_EASYFLASH_SETTINGS_DE, ""},  /* fuzzy */
+/* fr */ {IDS_EASYFLASH_SETTINGS_FR, ""},  /* fuzzy */
+/* hu */ {IDS_EASYFLASH_SETTINGS_HU, ""},  /* fuzzy */
+/* it */ {IDS_EASYFLASH_SETTINGS_IT, ""},  /* fuzzy */
+/* nl */ {IDS_EASYFLASH_SETTINGS_NL, "EasyFlash instellingen"},
+/* pl */ {IDS_EASYFLASH_SETTINGS_PL, ""},  /* fuzzy */
+/* sv */ {IDS_EASYFLASH_SETTINGS_SV, ""},  /* fuzzy */
+/* tr */ {IDS_EASYFLASH_SETTINGS_TR, ""},  /* fuzzy */
 
 /* en */ {IDS_CONFIG_FILENAME_SELECT,    "Select config file"},
 /* da */ {IDS_CONFIG_FILENAME_SELECT_DA, "Vælg konfigurationsfil"},
@@ -6513,6 +6535,50 @@ intl_translate_t intl_string_table[] = {
 /* pl */ {IDS_MOUSE_PADDLES_PL, ""},  /* fuzzy */
 /* sv */ {IDS_MOUSE_PADDLES_SV, "Paddel"},
 /* tr */ {IDS_MOUSE_PADDLES_TR, ""},  /* fuzzy */
+
+/* en */ {IDS_ERROR_SAVING_EASYFLASH_CRT,    "Error saving EasyFlash crt file"},
+/* da */ {IDS_ERROR_SAVING_EASYFLASH_CRT_DA, ""},  /* fuzzy */
+/* de */ {IDS_ERROR_SAVING_EASYFLASH_CRT_DE, ""},  /* fuzzy */
+/* fr */ {IDS_ERROR_SAVING_EASYFLASH_CRT_FR, ""},  /* fuzzy */
+/* hu */ {IDS_ERROR_SAVING_EASYFLASH_CRT_HU, ""},  /* fuzzy */
+/* it */ {IDS_ERROR_SAVING_EASYFLASH_CRT_IT, ""},  /* fuzzy */
+/* nl */ {IDS_ERROR_SAVING_EASYFLASH_CRT_NL, "Kan het EasyFlash crt bestand niet opslaan"},
+/* pl */ {IDS_ERROR_SAVING_EASYFLASH_CRT_PL, ""},  /* fuzzy */
+/* sv */ {IDS_ERROR_SAVING_EASYFLASH_CRT_SV, ""},  /* fuzzy */
+/* tr */ {IDS_ERROR_SAVING_EASYFLASH_CRT_TR, ""},  /* fuzzy */
+
+/* en */ {IDS_EASYFLASH_JUMPER,    "EasyFlash jumper"},
+/* da */ {IDS_EASYFLASH_JUMPER_DA, ""},  /* fuzzy */
+/* de */ {IDS_EASYFLASH_JUMPER_DE, ""},  /* fuzzy */
+/* fr */ {IDS_EASYFLASH_JUMPER_FR, ""},  /* fuzzy */
+/* hu */ {IDS_EASYFLASH_JUMPER_HU, ""},  /* fuzzy */
+/* it */ {IDS_EASYFLASH_JUMPER_IT, ""},  /* fuzzy */
+/* nl */ {IDS_EASYFLASH_JUMPER_NL, "EasyFlash jumper"},
+/* pl */ {IDS_EASYFLASH_JUMPER_PL, ""},  /* fuzzy */
+/* sv */ {IDS_EASYFLASH_JUMPER_SV, ""},  /* fuzzy */
+/* tr */ {IDS_EASYFLASH_JUMPER_TR, ""},  /* fuzzy */
+
+/* en */ {IDS_SAVE_EASYFLASH_CRT_ON_DETACH,    "Save to EasyFlash CRT file on detach"},
+/* da */ {IDS_SAVE_EASYFLASH_CRT_ON_DETACH_DA, ""},  /* fuzzy */
+/* de */ {IDS_SAVE_EASYFLASH_CRT_ON_DETACH_DE, ""},  /* fuzzy */
+/* fr */ {IDS_SAVE_EASYFLASH_CRT_ON_DETACH_FR, ""},  /* fuzzy */
+/* hu */ {IDS_SAVE_EASYFLASH_CRT_ON_DETACH_HU, ""},  /* fuzzy */
+/* it */ {IDS_SAVE_EASYFLASH_CRT_ON_DETACH_IT, ""},  /* fuzzy */
+/* nl */ {IDS_SAVE_EASYFLASH_CRT_ON_DETACH_NL, "Sla op naar het EasyFlash CRT bestand bij ontkoppelen"},
+/* pl */ {IDS_SAVE_EASYFLASH_CRT_ON_DETACH_PL, ""},  /* fuzzy */
+/* sv */ {IDS_SAVE_EASYFLASH_CRT_ON_DETACH_SV, ""},  /* fuzzy */
+/* tr */ {IDS_SAVE_EASYFLASH_CRT_ON_DETACH_TR, ""},  /* fuzzy */
+
+/* en */ {IDS_SAVE_EASYFLASH_CRT_NOW,    "Save to EasyFlash CRT now"},
+/* da */ {IDS_SAVE_EASYFLASH_CRT_NOW_DA, ""},  /* fuzzy */
+/* de */ {IDS_SAVE_EASYFLASH_CRT_NOW_DE, ""},  /* fuzzy */
+/* fr */ {IDS_SAVE_EASYFLASH_CRT_NOW_FR, ""},  /* fuzzy */
+/* hu */ {IDS_SAVE_EASYFLASH_CRT_NOW_HU, ""},  /* fuzzy */
+/* it */ {IDS_SAVE_EASYFLASH_CRT_NOW_IT, ""},  /* fuzzy */
+/* nl */ {IDS_SAVE_EASYFLASH_CRT_NOW_NL, "Sla nu op naar het EasyFlash CRT bestand"},
+/* pl */ {IDS_SAVE_EASYFLASH_CRT_NOW_PL, ""},  /* fuzzy */
+/* sv */ {IDS_SAVE_EASYFLASH_CRT_NOW_SV, ""},  /* fuzzy */
+/* tr */ {IDS_SAVE_EASYFLASH_CRT_NOW_TR, ""},  /* fuzzy */
 
 };
 

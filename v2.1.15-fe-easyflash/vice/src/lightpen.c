@@ -164,7 +164,7 @@ static const cmdline_option_t cmdline_options[] = {
     { "-lightpentype", SET_RESOURCE, 1,
       NULL, NULL, "LightpenType", NULL,
       USE_PARAM_ID, USE_DESCRIPTION_ID,
-      IDCLS_P_TYPE, IDCLS_SET_lIGHTPEN_TYPE,
+      IDCLS_P_TYPE, IDCLS_SET_LIGHTPEN_TYPE,
       NULL, NULL },
     { NULL }
 };

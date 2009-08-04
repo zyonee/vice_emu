@@ -10744,17 +10744,17 @@ translate_t string_table[] = {
 #endif
 
 /* lightpen.c */
-/* en */ {IDCLS_SET_lIGHTPEN_TYPE,    N_("Set lightpen type")},
+/* en */ {IDCLS_SET_LIGHTPEN_TYPE,    N_("Set lightpen type")},
 #ifdef HAS_TRANSLATION
-/* da */ {IDCLS_SET_lIGHTPEN_TYPE_DA, ""},  /* fuzzy */
-/* de */ {IDCLS_SET_lIGHTPEN_TYPE_DE, ""},  /* fuzzy */
-/* fr */ {IDCLS_SET_lIGHTPEN_TYPE_FR, ""},  /* fuzzy */
-/* hu */ {IDCLS_SET_lIGHTPEN_TYPE_HU, ""},  /* fuzzy */
-/* it */ {IDCLS_SET_lIGHTPEN_TYPE_IT, ""},  /* fuzzy */
-/* nl */ {IDCLS_SET_lIGHTPEN_TYPE_NL, "Geef de lichtpen soort op"},
-/* pl */ {IDCLS_SET_lIGHTPEN_TYPE_PL, ""},  /* fuzzy */
-/* sv */ {IDCLS_SET_lIGHTPEN_TYPE_SV, ""},  /* fuzzy */
-/* tr */ {IDCLS_SET_lIGHTPEN_TYPE_TR, ""},  /* fuzzy */
+/* da */ {IDCLS_SET_LIGHTPEN_TYPE_DA, ""},  /* fuzzy */
+/* de */ {IDCLS_SET_LIGHTPEN_TYPE_DE, ""},  /* fuzzy */
+/* fr */ {IDCLS_SET_LIGHTPEN_TYPE_FR, ""},  /* fuzzy */
+/* hu */ {IDCLS_SET_LIGHTPEN_TYPE_HU, ""},  /* fuzzy */
+/* it */ {IDCLS_SET_LIGHTPEN_TYPE_IT, ""},  /* fuzzy */
+/* nl */ {IDCLS_SET_LIGHTPEN_TYPE_NL, "Geef de lichtpen soort op"},
+/* pl */ {IDCLS_SET_LIGHTPEN_TYPE_PL, ""},  /* fuzzy */
+/* sv */ {IDCLS_SET_LIGHTPEN_TYPE_SV, ""},  /* fuzzy */
+/* tr */ {IDCLS_SET_LIGHTPEN_TYPE_TR, ""},  /* fuzzy */
 #endif
 
 /* c64/cart/easyflash.c */
