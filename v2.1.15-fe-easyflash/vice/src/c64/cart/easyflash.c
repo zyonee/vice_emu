@@ -41,6 +41,7 @@
 #include "flash040.h"
 #include "lib.h"
 #include "log.h"
+#include "mem.h"
 #include "resources.h"
 #include "translate.h"
 
@@ -208,6 +209,7 @@ BYTE REGPARM1 easyflash_roml_read(WORD addr)
 void REGPARM2 easyflash_roml_store(WORD addr, BYTE value)
 {
     flash040core_store(easyflash_state_low, (easyflash_register_00 * 0x2000) + (addr & 0x1fff), value);
+    ram_store(addr, value);
 }
 
 BYTE REGPARM1 easyflash_romh_read(WORD addr)
