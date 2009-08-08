@@ -143,7 +143,6 @@ static int is_mode_ram(void)
     return ( (register_a & REGA_MODE_MASK) == MODE_RAM );
 }
 
-/* 0x9c00-0x9fff */
 static int is_locked(void)
 {
     if (register_b & REGB_REG_OFF) {
@@ -155,6 +154,7 @@ static int is_locked(void)
     return 0;
 }
 
+/* read 0x9c00-0x9fff */
 BYTE REGPARM1 finalexpansion_io3_read(WORD addr)
 {   
     BYTE value;
@@ -179,6 +179,7 @@ BYTE REGPARM1 finalexpansion_io3_read(WORD addr)
     return value;
 }
 
+/* store 0x9c00-0x9fff */
 void REGPARM2 finalexpansion_io3_store(WORD addr, BYTE value)
 {
     addr &= 0x03;
@@ -302,7 +303,7 @@ static BYTE internal_read(WORD addr, int blk, WORD base)
 
 /* ------------------------------------------------------------------------- */
 
-/* 0x0400 - 0x0fff */
+/* store 0x0400 - 0x0fff */
 void REGPARM2 finalexpansion_ram123_store(WORD addr, BYTE value)
 {
     if ( !(register_b & REGB_BLK0_OFF) ) {
@@ -312,6 +313,7 @@ void REGPARM2 finalexpansion_ram123_store(WORD addr, BYTE value)
     }
 }
 
+/* read 0x0400 - 0x0fff */
 BYTE REGPARM1 finalexpansion_ram123_read(WORD addr)
 {
     BYTE value;
@@ -323,7 +325,7 @@ BYTE REGPARM1 finalexpansion_ram123_read(WORD addr)
     return value;
 }
 
-/* 0x2000-0x3fff */
+/* store 0x2000-0x3fff */
 void REGPARM2 finalexpansion_blk1_store(WORD addr, BYTE value)
 {
     if ( !(register_b & REGB_BLK1_OFF) ) {
@@ -333,6 +335,7 @@ void REGPARM2 finalexpansion_blk1_store(WORD addr, BYTE value)
     }
 }
 
+/* read 0x2000-0x3fff */
 BYTE REGPARM1 finalexpansion_blk1_read(WORD addr)
 {
     BYTE value;
@@ -344,7 +347,7 @@ BYTE REGPARM1 finalexpansion_blk1_read(WORD addr)
     return value;
 }
 
-/* 0x4000-0x5fff */
+/* store 0x4000-0x5fff */
 void REGPARM2 finalexpansion_blk2_store(WORD addr, BYTE value)
 {
     if ( !(register_b & REGB_BLK2_OFF) ) {
@@ -354,6 +357,7 @@ void REGPARM2 finalexpansion_blk2_store(WORD addr, BYTE value)
     }
 }
 
+/* read 0x4000-0x5fff */
 BYTE REGPARM1 finalexpansion_blk2_read(WORD addr)
 {
     BYTE value;
@@ -365,7 +369,7 @@ BYTE REGPARM1 finalexpansion_blk2_read(WORD addr)
     return value;
 }
 
-/* 0x6000-0x7fff */
+/* store 0x6000-0x7fff */
 void REGPARM2 finalexpansion_blk3_store(WORD addr, BYTE value)
 {
     if ( !(register_b & REGB_BLK3_OFF) ) {
@@ -375,6 +379,7 @@ void REGPARM2 finalexpansion_blk3_store(WORD addr, BYTE value)
     }
 }
 
+/* read 0x6000-0x7fff */
 BYTE REGPARM1 finalexpansion_blk3_read(WORD addr)
 {
     BYTE value;
@@ -386,7 +391,7 @@ BYTE REGPARM1 finalexpansion_blk3_read(WORD addr)
     return value;
 }
 
-/* 0xa000-0xbfff */
+/* store 0xa000-0xbfff */
 void REGPARM2 finalexpansion_blk5_store(WORD addr, BYTE value)
 {
     lock_bit = 0;
@@ -398,6 +403,7 @@ void REGPARM2 finalexpansion_blk5_store(WORD addr, BYTE value)
     }
 }
 
+/* read 0xa000-0xbfff */
 BYTE REGPARM1 finalexpansion_blk5_read(WORD addr)
 {
     BYTE value;
