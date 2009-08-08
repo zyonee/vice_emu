@@ -46,60 +46,6 @@ int mem_cart_blocks = 0;
 
 /* ------------------------------------------------------------------------- */
 
-BYTE REGPARM1 cartridge_read_io2(WORD addr)
-{
-    switch (mem_cartridge_type) {
-    case CARTRIDGE_VIC20_MEGACART:
-        vic20_cpu_last_data = megacart_io2_read(addr);
-        break;
-    default:
-        break;
-    }
-    vic20_mem_v_bus_read(addr);
-    return vic20_cpu_last_data;
-}
-
-void REGPARM2 cartridge_store_io2(WORD addr, BYTE value)
-{
-    vic20_cpu_last_data = value;
-    switch (mem_cartridge_type) {
-    case CARTRIDGE_VIC20_MEGACART:
-        megacart_io2_store(addr, value);
-        break;
-    }
-    vic20_mem_v_bus_store(addr);
-}
-
-BYTE REGPARM1 cartridge_read_io3(WORD addr)
-{
-    switch (mem_cartridge_type) {
-    case CARTRIDGE_VIC20_MEGACART:
-        vic20_cpu_last_data = megacart_io3_read(addr);
-        break;
-    case CARTRIDGE_VIC20_FINAL_EXPANSION:
-        vic20_cpu_last_data = finalexpansion_io3_read(addr);
-        break;
-    default:
-        break;
-    }
-    vic20_mem_v_bus_read(addr);
-    return vic20_cpu_last_data;
-}
-
-void REGPARM2 cartridge_store_io3(WORD addr, BYTE value)
-{
-    vic20_cpu_last_data = value;
-    switch (mem_cartridge_type) {
-    case CARTRIDGE_VIC20_MEGACART:
-        megacart_io3_store(addr, value);
-        break;
-    case CARTRIDGE_VIC20_FINAL_EXPANSION:
-        finalexpansion_io3_store(addr, value);
-        break;
-    }
-    vic20_mem_v_bus_store(addr);
-}
-
 BYTE REGPARM1 cartridge_read_ram123(WORD addr)
 {
     switch (mem_cartridge_type) {
@@ -263,6 +209,60 @@ void REGPARM2 cartridge_store_blk5(WORD addr, BYTE value)
         finalexpansion_blk5_store(addr, value);
         break;
     }
+}
+
+BYTE REGPARM1 cartridge_read_io2(WORD addr)
+{
+    switch (mem_cartridge_type) {
+    case CARTRIDGE_VIC20_MEGACART:
+        vic20_cpu_last_data = megacart_io2_read(addr);
+        break;
+    default:
+        break;
+    }
+    vic20_mem_v_bus_read(addr);
+    return vic20_cpu_last_data;
+}
+
+void REGPARM2 cartridge_store_io2(WORD addr, BYTE value)
+{
+    vic20_cpu_last_data = value;
+    switch (mem_cartridge_type) {
+    case CARTRIDGE_VIC20_MEGACART:
+        megacart_io2_store(addr, value);
+        break;
+    }
+    vic20_mem_v_bus_store(addr);
+}
+
+BYTE REGPARM1 cartridge_read_io3(WORD addr)
+{
+    switch (mem_cartridge_type) {
+    case CARTRIDGE_VIC20_MEGACART:
+        vic20_cpu_last_data = megacart_io3_read(addr);
+        break;
+    case CARTRIDGE_VIC20_FINAL_EXPANSION:
+        vic20_cpu_last_data = finalexpansion_io3_read(addr);
+        break;
+    default:
+        break;
+    }
+    vic20_mem_v_bus_read(addr);
+    return vic20_cpu_last_data;
+}
+
+void REGPARM2 cartridge_store_io3(WORD addr, BYTE value)
+{
+    vic20_cpu_last_data = value;
+    switch (mem_cartridge_type) {
+    case CARTRIDGE_VIC20_MEGACART:
+        megacart_io3_store(addr, value);
+        break;
+    case CARTRIDGE_VIC20_FINAL_EXPANSION:
+        finalexpansion_io3_store(addr, value);
+        break;
+    }
+    vic20_mem_v_bus_store(addr);
 }
 
 /* ------------------------------------------------------------------------- */
