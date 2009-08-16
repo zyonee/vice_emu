@@ -31,6 +31,7 @@
 
 #include "archdep.h"
 #include "cartridge.h"
+#include "cmdline.h"
 #include "lib.h"
 #include "machine.h"
 #include "finalexpansion.h"
@@ -38,6 +39,7 @@
 #include "log.h"
 #include "mem.h"
 #include "resources.h"
+#include "translate.h"
 #include "types.h"
 #include "util.h"
 #include "vic20cartmem.h"
@@ -106,6 +108,9 @@ static BYTE register_a;
 static BYTE register_b;
 static BYTE lock_bit;
 
+static int finalexpansion_writeback;
+static char *cartfile = NULL;   /* perhaps the one in vic20cart.c could
+                                   be used instead? */
 
 /* ------------------------------------------------------------------------- */
 
@@ -475,6 +480,7 @@ int finalexpansion_bin_attach(const char *filename)
     /* should probably guard this */
     flash040core_init(&flash_state, FLASH040_TYPE_B, cart_flash);
 
+    util_string_set(&cartfile, filename);
     if ( zfile_load(filename, flash_state.flash_data, (size_t)CART_ROM_SIZE) < 0 ) {
         finalexpansion_detach();
         return -1;
@@ -489,12 +495,67 @@ int finalexpansion_bin_attach(const char *filename)
 
 void finalexpansion_detach(void)
 {
+    /* try to write back cartridge contents if write back is enabled */
+    if (finalexpansion_writeback) {
+        FILE *fd;
+        fd = fopen(cartfile, "wb");
+        if (fd) {
+            fwrite(flash_state.flash_data, (size_t)CART_ROM_SIZE, 1, fd);
+            fclose(fd);
+        }
+    }
+
     mem_cart_blocks = 0;
     mem_initialize_memory();
     lib_free(flash_state.flash_data);
     flash040core_shutdown(&flash_state);
     lib_free(cart_ram);
     cart_ram = NULL;
+    lib_free(cartfile);
+    cartfile = NULL;
+}
+
+/* ------------------------------------------------------------------------- */
+
+static int set_finalexpansion_writeback(int val, void *param)
+{
+    finalexpansion_writeback = val;
+    return 0;
+}
+
+static const resource_int_t resources_int[] = {
+    { "FinalExpansionWriteBack", 0, RES_EVENT_STRICT, (resource_value_t)0,
+      &finalexpansion_writeback, set_finalexpansion_writeback, NULL },
+    { NULL }
+};
+
+int finalexpansion_resources_init(void)
+{
+    return resources_register_int(resources_int);
+}
+
+void finalexpansion_resources_shutdown(void)
+{
+}
+
+static const cmdline_option_t cmdline_options[] =
+{
+    { "-fewriteback", SET_RESOURCE, 0,
+      NULL, NULL, "FinalExpansionWriteBack", (resource_value_t)1,
+      USE_PARAM_STRING, USE_DESCRIPTION_ID,
+      IDCLS_UNUSED, IDCLS_ENABLE_FINALEXPANSION_WRITEBACK,
+      NULL, NULL },
+    { "+fewriteback", SET_RESOURCE, 0,
+      NULL, NULL, "FinalExpansionWriteBack", (resource_value_t)0,
+      USE_PARAM_STRING, USE_DESCRIPTION_ID,
+      IDCLS_UNUSED, IDCLS_DISABLE_FINALEXPANSION_WRITEBACK,
+      NULL, NULL },
+    { NULL }
+};
+
+int finalexpansion_cmdline_options_init(void)
+{
+    return cmdline_register_options(cmdline_options);
 }
 
 /* ------------------------------------------------------------------------- */
