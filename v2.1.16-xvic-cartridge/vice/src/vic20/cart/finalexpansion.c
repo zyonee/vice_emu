@@ -502,7 +502,12 @@ void finalexpansion_detach(void)
         if (fd) {
             fwrite(flash_state.flash_data, (size_t)CART_ROM_SIZE, 1, fd);
             fclose(fd);
-        }
+            log_message(LOG_DEFAULT, "Wrote back Final Expansion image `%s'.",
+                        cartfile);
+        } else {
+            log_message(LOG_DEFAULT, "Failed to write back Final Expansion image `%s'!",
+                        cartfile);
+        }            
     }
 
     mem_cart_blocks = 0;
