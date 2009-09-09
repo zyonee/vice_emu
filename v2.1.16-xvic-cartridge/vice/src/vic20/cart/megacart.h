@@ -51,4 +51,8 @@ extern int megacart_bin_attach(const char *filename);
 /* extern int megacart_crt_attach(FILE *fd, BYTE *rawcart); */
 extern void megacart_detach(void);
 
+extern int megacart_resources_init(void);
+extern void megacart_resources_shutdown(void);
+extern int megacart_cmdline_options_init(void);
+
 #endif

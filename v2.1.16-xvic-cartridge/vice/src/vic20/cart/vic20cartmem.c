@@ -269,17 +269,9 @@ void REGPARM2 cartridge_store_io3(WORD addr, BYTE value)
 
 void cartridge_init(void)
 {
-    switch (mem_cartridge_type) {
-    case CARTRIDGE_VIC20_GENERIC:
-        generic_init();
-        break;
-    case CARTRIDGE_VIC20_MEGACART:
-        megacart_init();
-        break;
-    case CARTRIDGE_VIC20_FINAL_EXPANSION:
-        finalexpansion_init();
-        break;
-    }
+    generic_init();
+    megacart_init();
+    finalexpansion_init();
 }
 
 void cartridge_reset(void)

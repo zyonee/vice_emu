@@ -30,12 +30,15 @@
 #include <stdlib.h>
 
 #include "archdep.h"
+#include "cmdline.h"
 #include "cartridge.h"
 #include "lib.h"
+#include "log.h"
 #include "machine.h"
 #include "megacart.h"
 #include "mem.h"
 #include "resources.h"
+#include "translate.h"
 #include "types.h"
 #include "util.h"
 #include "vic20cartmem.h"
@@ -88,6 +91,12 @@ static int oe_flop = 0;
 static int nvram_en_flop = 0;
 static BYTE bank_low_reg = 0;
 static BYTE bank_high_reg = 0;
+
+/* Resource variables */
+static char *nvram_filename = NULL;
+static int nvram_writeback = 0;
+
+static log_t megacart_log = LOG_ERR;
 
 /* ------------------------------------------------------------------------- */
 
@@ -279,6 +288,10 @@ void REGPARM2 megacart_io3_store(WORD addr, BYTE value)
 
 void megacart_init(void)
 {
+    if (megacart_log == LOG_ERR) {
+        megacart_log = log_open("Mega-Cart");
+    }
+
     reset_mode = BUTTON_RESET;
     oe_flop = 0;
     nvram_en_flop = 0;
@@ -319,6 +332,42 @@ static int zfile_load(const char *filename, BYTE *dest, size_t size)
     return 0;
 }
 
+static int try_nvram_load(const char *filename)
+{
+    if (cart_nvram && filename && *filename != '\0') {
+        if ( zfile_load(filename, cart_nvram, (size_t)CART_NVRAM_SIZE) < 0 ) {
+            log_message(megacart_log, "Failed to read NvRAM image `%s'!",
+                        filename);
+            return -1;
+        } else {
+            log_message(megacart_log, "Read NvRAM image `%s'.",
+                        filename);
+        }
+    }
+
+    return 0;
+}
+
+static int try_nvram_save(const char *filename)
+{
+    if (cart_nvram && filename && *filename != '\0') {
+        FILE *fd;
+        fd = fopen(filename, "wb");
+        if (fd) {
+            fwrite(cart_nvram, (size_t)CART_NVRAM_SIZE, 1, fd);
+            fclose(fd);
+            log_message(megacart_log, "Wrote back NvRAM image `%s'.",
+                        filename);
+        } else {
+            log_message(megacart_log, "Failed to write back NvRAM image `%s'!",
+                        filename);
+            return -1;
+        }
+    }
+
+    return 0;
+}
+
 int megacart_bin_attach(const char *filename)
 {
     if (!cart_ram) {
@@ -336,6 +385,8 @@ int megacart_bin_attach(const char *filename)
         return -1;
     }
 
+    try_nvram_load(nvram_filename);
+
     cart_rom_low = cart_rom;
     cart_rom_high = cart_rom + 0x100000;
 
@@ -348,6 +399,11 @@ int megacart_bin_attach(const char *filename)
 
 void megacart_detach(void)
 {
+    /* try to write back NvRAM contents if write back is enabled */
+    if (nvram_writeback) {
+        try_nvram_save(nvram_filename);
+    }
+
     mem_cart_blocks = 0;
     mem_initialize_memory();
     lib_free(cart_ram);
@@ -359,3 +415,77 @@ void megacart_detach(void)
 }
 
 /* ------------------------------------------------------------------------- */
+
+static int set_nvram_filename(const char *name, void *param)
+{
+    if (nvram_filename && name && strcmp(name, nvram_filename) == 0) {
+        return 0;
+    }
+
+    /* TODO if cart is active, should the old file be written back first? */
+    util_string_set(&nvram_filename, name);
+
+    try_nvram_load(nvram_filename);
+    return 0;
+}
+
+static const resource_string_t resources_string[] = {
+    { "MegaCartNvRAMfilename", "", RES_EVENT_NO, NULL,
+      &nvram_filename, set_nvram_filename, NULL },
+    { NULL }
+};
+
+static int set_nvram_writeback(int val, void *param)
+{
+    nvram_writeback = val;
+    return 0;
+}
+
+static const resource_int_t resources_int[] = {
+    { "MegaCartNvRAMWriteBack", 0, RES_EVENT_STRICT, (resource_value_t)0,
+      &nvram_writeback, set_nvram_writeback, NULL },
+    { NULL }
+};
+
+int megacart_resources_init(void)
+{
+    if (resources_register_string(resources_string) < 0) {
+        return -1;
+    }
+
+    return resources_register_int(resources_int);
+}
+
+void megacart_resources_shutdown(void)
+{
+    lib_free(nvram_filename);
+    nvram_filename = NULL;
+}
+
+static const cmdline_option_t cmdline_options[] =
+{
+    { "-mcnvramfile", SET_RESOURCE, 1,
+      NULL, NULL, "MegaCartNvRAMfilename", NULL,
+      USE_PARAM_ID, USE_DESCRIPTION_STRING,
+      IDCLS_P_NAME, IDCLS_UNUSED,
+      NULL, T_("Set Mega-Cart NvRAM filename") },
+    { "-mcnvramwriteback", SET_RESOURCE, 0,
+      NULL, NULL, "MegaCartNvRAMWriteBack", (resource_value_t)1,
+      USE_PARAM_STRING, USE_DESCRIPTION_STRING,
+      IDCLS_UNUSED, IDCLS_UNUSED,
+      NULL, T_("Enable Mega-Cart NvRAM writeback") },
+    { "+mcnvramwriteback", SET_RESOURCE, 0,
+      NULL, NULL, "MegaCartNvRAMWriteBack", (resource_value_t)0,
+      USE_PARAM_STRING, USE_DESCRIPTION_STRING,
+      IDCLS_UNUSED, IDCLS_UNUSED,
+      NULL, T_("Disable Mega-Cart NvRAM writeback") },
+    { NULL }
+};
+
+int megacart_cmdline_options_init(void)
+{
+    return cmdline_register_options(cmdline_options);
+}
+
+/* ------------------------------------------------------------------------- */
+

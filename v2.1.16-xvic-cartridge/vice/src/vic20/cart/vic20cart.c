@@ -130,11 +130,13 @@ int cartridge_resources_init(void)
     return resources_register_int(resources_int) < 0 ||
         resources_register_string(resources_string) < 0 ||
         generic_resources_init() < 0 ||
-        finalexpansion_resources_init() < 0;
+        finalexpansion_resources_init() < 0 ||
+        megacart_resources_init() < 0;
 }
 
 void cartridge_resources_shutdown(void)
 {
+    megacart_resources_shutdown();
     finalexpansion_resources_shutdown();
     generic_resources_shutdown();
 
@@ -224,7 +226,8 @@ int cartridge_cmdline_options_init(void)
     mon_cart_cmd.cartridge_detach_image = cartridge_detach_image;
 
     return cmdline_register_options(cmdline_options) < 0 ||
-        finalexpansion_cmdline_options_init() < 0;
+        finalexpansion_cmdline_options_init() < 0 ||
+        megacart_cmdline_options_init() < 0;
 }
 
 /* ------------------------------------------------------------------------- */

@@ -112,6 +112,8 @@ static int finalexpansion_writeback;
 static char *cartfile = NULL;   /* perhaps the one in vic20cart.c could
                                    be used instead? */
 
+static log_t fe_log = LOG_ERR;
+
 /* ------------------------------------------------------------------------- */
 
 /* Register A ($9c02) */
@@ -425,6 +427,10 @@ void REGPARM2 finalexpansion_io3_store(WORD addr, BYTE value)
 
 void finalexpansion_init(void)
 {
+    if (fe_log == LOG_ERR) {
+        fe_log = log_open("Final Expansion");
+    }
+
     register_a = 0x00;
     register_b = 0x00;
     lock_bit = 1;
@@ -502,12 +508,12 @@ void finalexpansion_detach(void)
         if (fd) {
             fwrite(flash_state.flash_data, (size_t)CART_ROM_SIZE, 1, fd);
             fclose(fd);
-            log_message(LOG_DEFAULT, "Wrote back Final Expansion image `%s'.",
+            log_message(fe_log, "Wrote back image `%s'.",
                         cartfile);
         } else {
-            log_message(LOG_DEFAULT, "Failed to write back Final Expansion image `%s'!",
+            log_message(fe_log, "Failed to write back image `%s'!",
                         cartfile);
-        }            
+        }
     }
 
     mem_cart_blocks = 0;
