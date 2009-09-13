@@ -422,7 +422,11 @@ static int set_nvram_filename(const char *name, void *param)
         return 0;
     }
 
-    /* TODO if cart is active, should the old file be written back first? */
+    /* try to write back NvRAM contents to the old file if write back is enabled */
+    if (nvram_writeback) {
+        try_nvram_save(nvram_filename);
+    }
+
     util_string_set(&nvram_filename, name);
 
     try_nvram_load(nvram_filename);
