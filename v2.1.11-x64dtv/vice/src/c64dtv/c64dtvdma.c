@@ -220,6 +220,7 @@ static inline void do_dma_write(int swap)
          */
         switch (offs_io & 0x0f00) {
         case 0x0000:  /* VIC-II */
+        case 0x0200:  /* Palette */
         case 0x0300:  /* DMA + blitter */
         case 0x0400:  /* SID */
         case 0x0500:  /* SID */
@@ -229,7 +230,6 @@ static inline void do_dma_write(int swap)
         case 0x0d00:  /* CIA */
             _mem_write_tab_ptr[offs_io >> 8]((WORD)offs_io, data);
             break;
-        case 0x0200:  /* Palette */
         case 0x0e00:  /* I/O #1 */
         case 0x0f00:  /* I/O #2 */
             break;
