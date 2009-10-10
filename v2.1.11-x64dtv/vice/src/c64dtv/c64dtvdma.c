@@ -121,6 +121,7 @@ static inline void do_dma_read(int swap)
 {
     BYTE data;
     int offs;
+    int offs_io;
     int memtype;
 
     if (!swap) {
@@ -131,6 +132,7 @@ static inline void do_dma_read(int swap)
         memtype=dest_memtype;
     }
     offs &= 0x1fffff;
+    offs_io = offs & 0xffff;
 
     switch (memtype) {
     case 0x00: /* ROM */
@@ -140,10 +142,11 @@ static inline void do_dma_read(int swap)
         data = mem_ram[offs]; 
         break;
     case 0x80: /* RAM+registers */
-        if ( (offs >= 0xd000) && (offs < 0xe000) )
-            data = _mem_read_tab_ptr[offs >> 8]((WORD)offs);
-        else
+        if ( (offs_io >= 0xd000) && (offs_io < 0xe000) ) {
+            data = _mem_read_tab_ptr[offs_io >> 8]((WORD)offs_io);
+        } else {
             data = mem_ram[offs]; 
+        }
         break;
     case 0xc0: /* unknown */
         data = 0;
@@ -165,6 +168,7 @@ static inline void do_dma_write(int swap)
 {
     BYTE data;
     int offs;
+    int offs_io;
     int memtype;
 
     if (!swap) {
@@ -177,6 +181,7 @@ static inline void do_dma_write(int swap)
         data = dma_data_swap;
     }
     offs &= 0x1fffff;
+    offs_io = offs & 0xffff;
 
     switch (memtype) {
     case 0x00: /* ROM */
@@ -186,10 +191,11 @@ static inline void do_dma_write(int swap)
         mem_ram[offs] = data;
         break;
     case 0x80: /* RAM+registers */
-        if ( (offs>=0xd000) && (offs<0xe000) )
-            _mem_write_tab_ptr[offs >> 8]((WORD)offs, data);
-        else 
+        if ( (offs_io >= 0xd000) && (offs_io < 0xe000) ) {
+            _mem_write_tab_ptr[offs_io >> 8]((WORD)offs_io, data);
+        } else {
             mem_ram[offs] = data;
+        }
         break;
     case 0xc0: /* unknown */
         break;
