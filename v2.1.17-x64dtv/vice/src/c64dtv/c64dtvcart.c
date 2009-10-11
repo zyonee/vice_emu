@@ -29,12 +29,6 @@
 #include "c64cart.h"
 #include "cartridge.h"
 
-int mem_cartridge_type = 0;
-unsigned int cart_ultimax_phi1 = 0;
-unsigned int cart_ultimax_phi2 = 0;
-int romh_bank = 0;
-BYTE romh_banks[1];
-
 int cartridge_save_image(const char *filename)
 {
     return 0;

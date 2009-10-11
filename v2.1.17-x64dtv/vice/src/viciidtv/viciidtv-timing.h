@@ -1,5 +1,5 @@
 /*
- * c64rom.h
+ * viciidtv-timing.h - Timing related settings for the VIC-II DTV emulation.
  *
  * Written by
  *  Andreas Boose <viceteam@t-online.de>
@@ -24,19 +24,12 @@
  *
  */
 
-#ifndef VICE_C64ROM_H
-#define VICE_C64ROM_H
+#ifndef VICE_VICIIDTV_TIMING_H
+#define VICE_VICIIDTV_TIMING_H
 
-#include "types.h"
+struct machine_timing_s;
 
-extern int c64rom_load_kernal(const char *rom_name, BYTE *new_kernal);
-extern int c64rom_load_basic(const char *rom_name);
-extern int c64rom_load_chargen(const char *rom_name);
-
-extern int c64rom_get_kernal_checksum(void);
-extern int c64rom_get_basic_checksum(void);
-
-extern int c64rom_cartkernal_active;
+extern void vicii_timing_set(struct machine_timing_s *machine_timing,
+                             int border_mode);
 
 #endif
-

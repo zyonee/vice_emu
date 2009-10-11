@@ -1,5 +1,5 @@
 /*
- * c64rom.h
+ * viciidtv-phi1.h - Memory interface for the VIC-II DTV emulation PHI1 support.
  *
  * Written by
  *  Andreas Boose <viceteam@t-online.de>
@@ -24,19 +24,13 @@
  *
  */
 
-#ifndef VICE_C64ROM_H
-#define VICE_C64ROM_H
+#ifndef VICE_VICIIDTV_PHI1_H
+#define VICE_VICIIDTV_PHI1_H
 
 #include "types.h"
 
-extern int c64rom_load_kernal(const char *rom_name, BYTE *new_kernal);
-extern int c64rom_load_basic(const char *rom_name);
-extern int c64rom_load_chargen(const char *rom_name);
-
-extern int c64rom_get_kernal_checksum(void);
-extern int c64rom_get_basic_checksum(void);
-
-extern int c64rom_cartkernal_active;
+extern BYTE vicii_read_phi1(void);
+extern BYTE vicii_read_phi1_lowlevel(void);
 
 #endif
 

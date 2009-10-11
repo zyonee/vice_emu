@@ -1,8 +1,9 @@
 /*
- * c64rom.h
+ * viciidtv-fetch.h - Phi2 data fetch for the VIC-II DTV emulation.
  *
  * Written by
  *  Andreas Boose <viceteam@t-online.de>
+ *  Ettore Perazzoli <ettore@comm2000.it>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -24,19 +25,17 @@
  *
  */
 
-#ifndef VICE_C64ROM_H
-#define VICE_C64ROM_H
+#ifndef VICE_VICIIDTV_FETCH_H
+#define VICE_VICIIDTV_FETCH_H
 
 #include "types.h"
 
-extern int c64rom_load_kernal(const char *rom_name, BYTE *new_kernal);
-extern int c64rom_load_basic(const char *rom_name);
-extern int c64rom_load_chargen(const char *rom_name);
-
-extern int c64rom_get_kernal_checksum(void);
-extern int c64rom_get_basic_checksum(void);
-
-extern int c64rom_cartkernal_active;
+extern void viciidtv_fetch_start(void);
+extern void viciidtv_fetch_stop(void);
+extern void viciidtv_fetch_linear_a(void);
+extern int viciidtv_fetch_matrix(void);
+extern void viciidtv_fetch_graphics(void);
+extern int viciidtv_fetch_sprites(int cycle);
 
 #endif
 

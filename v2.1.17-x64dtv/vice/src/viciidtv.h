@@ -1,5 +1,5 @@
 /*
- * vicii-stubs.c - Blitter/DMA stubs for normal VIC-II
+ * viciidtv.h - A cycle-exact event-driven VIC-II DTV emulation.
  *
  * Written by
  *  Hannu Nuotio <hannu.nuotio@tut.fi>
@@ -24,20 +24,24 @@
  *
  */
 
-#include "vice.h"
+#ifndef VICE_VICIIDTV_H
+#define VICE_VICIIDTV_H
 
-#include "c64dtvblitter.h"
-#include "c64dtvdma.h"
+/* Memory access cycle 1:
+    Character fetch/Counter A
+   Memory access cycle 2:
+    Color/sprite fetch/Blitter/DMA
+  Returns 1 if access was done (BA low) */
+extern int viciidtv_cycle_1_2(void);
 
-int dtvclockneg = 0;
-int blitter_on_irq = 0;
-int dma_on_irq = 0;
+/* Memory access cycle 3:
+    Graphic fetch/Counter B */
+extern void viciidtv_cycle_3(void);
 
-void c64dtvdma_trigger_dma(void)
-{
-}
+/* Badline (emulation) enabled */
+extern int viciidtv_badline_enabled(void);
 
-void c64dtvblitter_trigger_blitter(void)
-{
-}
+/* Steal cycles from CPU  */
+extern void viciidtv_steal_cycles(void);
 
+#endif

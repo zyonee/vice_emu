@@ -39,7 +39,7 @@
 #include "log.h"
 #include "util.h"
 #include "resources.h"
-#include "maincpu.h"
+#include "maindtvcpu.h"
 #include "interrupt.h"
 #include "snapshot.h"
 #include "translate.h"
@@ -122,6 +122,7 @@ static inline void do_dma_read(int swap)
 {
     BYTE data;
     int offs;
+    int offs_io;
     int memtype;
 
     if (!swap) {
@@ -132,6 +133,7 @@ static inline void do_dma_read(int swap)
         memtype=dest_memtype;
     }
     offs &= 0x1fffff;
+    offs_io = (offs & 0x0fff) | 0xd000;
 
     switch (memtype) {
     case 0x00: /* ROM */
@@ -141,10 +143,33 @@ static inline void do_dma_read(int swap)
         data = mem_ram[offs]; 
         break;
     case 0x80: /* RAM+registers */
-        if ( (offs >= 0xd000) && (offs < 0xe000) )
-            data = _mem_read_tab_ptr[offs >> 8]((WORD)offs);
-        else
+        /*
+         * note that this does not consider that $d03f shall
+         * be always 1 in the view of the DMA channel.
+         * it also doesn't consider $d100 properly
+         */
+        switch (offs_io & 0x0f00) {
+        case 0x0000:  /* VIC-II */
+        case 0x0300:  /* DMA + blitter */
+        case 0x0400:  /* SID */
+        case 0x0500:  /* SID */
+        case 0x0600:  /* SID */
+        case 0x0700:  /* SID */
+        case 0x0c00:  /* CIA */
+        case 0x0d00:  /* CIA */
+            data = _mem_read_tab_ptr[offs_io >> 8]((WORD)offs_io);
+            break;
+        case 0x0200:  /* Palette */
+        case 0x0e00:  /* I/O #1 */
+        case 0x0f00:  /* I/O #2 */
+            /* this seems to be some sort of internal fetch stuff
+               returning 0x00 for now */
+            data = 0x00;
+            break;
+        default:
             data = mem_ram[offs]; 
+            break;
+        }
         break;
     case 0xc0: /* unknown */
         data = 0;
@@ -166,6 +191,7 @@ static inline void do_dma_write(int swap)
 {
     BYTE data;
     int offs;
+    int offs_io;
     int memtype;
 
     if (!swap) {
@@ -178,6 +204,7 @@ static inline void do_dma_write(int swap)
         data = dma_data_swap;
     }
     offs &= 0x1fffff;
+    offs_io = (offs & 0x0fff) | 0xd000;
 
     switch (memtype) {
     case 0x00: /* ROM */
@@ -187,10 +214,30 @@ static inline void do_dma_write(int swap)
         mem_ram[offs] = data;
         break;
     case 0x80: /* RAM+registers */
-        if ( (offs>=0xd000) && (offs<0xe000) )
-            _mem_write_tab_ptr[offs >> 8]((WORD)offs, data);
-        else 
+        /*
+         * note that this does not consider that $d03f shall
+         * be always 1 in the view of the DMA channel.
+         * it also doesn't consider $d100 properly
+         */
+        switch (offs_io & 0x0f00) {
+        case 0x0000:  /* VIC-II */
+        case 0x0200:  /* Palette */
+        case 0x0300:  /* DMA + blitter */
+        case 0x0400:  /* SID */
+        case 0x0500:  /* SID */
+        case 0x0600:  /* SID */
+        case 0x0700:  /* SID */
+        case 0x0c00:  /* CIA */
+        case 0x0d00:  /* CIA */
+            _mem_write_tab_ptr[offs_io >> 8]((WORD)offs_io, data);
+            break;
+        case 0x0e00:  /* I/O #1 */
+        case 0x0f00:  /* I/O #2 */
+            break;
+        default:
             mem_ram[offs] = data;
+            break;
+        }
         break;
     case 0xc0: /* unknown */
         break;
@@ -372,11 +419,9 @@ void REGPARM2 c64dtv_dma_store(WORD addr, BYTE value)
 
 void c64dtvdma_perform_dma(void)
 {
-    /* set maincpu_rmw_flag to 0 during DMA */
-    int dma_maincpu_rmw = maincpu_rmw_flag;
-    maincpu_rmw_flag = 0;
+    maincpu_dma_flag = 1;
     perform_dma_cycle();
-    maincpu_rmw_flag = dma_maincpu_rmw;
+    maincpu_dma_flag = 0;
 
     if (dma_log_enabled && (dma_state == DMA_WRITE)) log_message(c64dtvdma_log, "%s from %x (%s) to %x (%s), %d to go", GET_REG8(0x1f)&0x02 ? "Swapped" : "Copied", dma_source_off, source_memtype == 0 ? "Flash" : "RAM", dma_dest_off, dest_memtype == 0 ? "Flash" : "RAM", dma_count - 1);
 

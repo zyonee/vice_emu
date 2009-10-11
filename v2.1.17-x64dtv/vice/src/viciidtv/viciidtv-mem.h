@@ -1,7 +1,8 @@
 /*
- * c64rom.h
+ * viciidtv-mem.h - Memory interface for the VIC-II DTV emulation.
  *
  * Written by
+ *  Ettore Perazzoli <ettore@comm2000.it>
  *  Andreas Boose <viceteam@t-online.de>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
@@ -24,19 +25,21 @@
  *
  */
 
-#ifndef VICE_C64ROM_H
-#define VICE_C64ROM_H
+#ifndef VICE_VICIIDTV_MEM_H
+#define VICE_VICIIDTV_MEM_H
 
 #include "types.h"
 
-extern int c64rom_load_kernal(const char *rom_name, BYTE *new_kernal);
-extern int c64rom_load_basic(const char *rom_name);
-extern int c64rom_load_chargen(const char *rom_name);
-
-extern int c64rom_get_kernal_checksum(void);
-extern int c64rom_get_basic_checksum(void);
-
-extern int c64rom_cartkernal_active;
+extern void REGPARM2 vicii_store(WORD addr, BYTE value);
+extern BYTE REGPARM1 vicii_read(WORD addr);
+extern BYTE REGPARM1 vicii_peek(WORD addr);
+extern void REGPARM2 vicii_mem_vbank_store(WORD addr, BYTE value);
+extern void REGPARM2 vicii_mem_vbank_39xx_store(WORD addr, BYTE value);
+extern void REGPARM2 vicii_mem_vbank_3fxx_store(WORD addr, BYTE value);
+extern void REGPARM2 vicii_palette_store(WORD addr, BYTE value);
+extern BYTE REGPARM1 vicii_palette_read(WORD addr);
+extern int vicii_extended_regs(void);
+extern void viciidtv_update_colorram(void);
 
 #endif
 

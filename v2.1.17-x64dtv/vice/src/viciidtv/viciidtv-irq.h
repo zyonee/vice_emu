@@ -1,5 +1,5 @@
 /*
- * c64rom.h
+ * viciidtv-irq.h - IRQ related functions for the VIC-II DTV emulation.
  *
  * Written by
  *  Andreas Boose <viceteam@t-online.de>
@@ -24,19 +24,25 @@
  *
  */
 
-#ifndef VICE_C64ROM_H
-#define VICE_C64ROM_H
+#ifndef VICE_VICIIDTV_IRQ_H
+#define VICE_VICIIDTV_IRQ_H
 
 #include "types.h"
 
-extern int c64rom_load_kernal(const char *rom_name, BYTE *new_kernal);
-extern int c64rom_load_basic(const char *rom_name);
-extern int c64rom_load_chargen(const char *rom_name);
+extern void vicii_irq_raster_set(CLOCK mclk);
+extern void vicii_irq_raster_clear(CLOCK mclk);
+extern void vicii_irq_sbcoll_set(void);
+extern void vicii_irq_sbcoll_clear(void);
+extern void vicii_irq_sscoll_set(void);
+extern void vicii_irq_sscoll_clear(void);
+extern void vicii_irq_lightpen_set(CLOCK mclk);
+extern void vicii_irq_lightpen_clear(CLOCK mclk);
 
-extern int c64rom_get_kernal_checksum(void);
-extern int c64rom_get_basic_checksum(void);
-
-extern int c64rom_cartkernal_active;
+extern void vicii_irq_set_raster_line(unsigned int line);
+extern void vicii_irq_check_state(BYTE value, unsigned int high);
+extern void vicii_irq_set_line(void);
+extern void vicii_irq_next_frame(void);
+extern void vicii_irq_alarm_handler(CLOCK offset, void *data);
 
 #endif
 

@@ -1,5 +1,5 @@
 /*
- * c64rom.h
+ * viciidtv-badline.h - Bad line handling for the VIC-II DTV emulation.
  *
  * Written by
  *  Andreas Boose <viceteam@t-online.de>
@@ -24,19 +24,14 @@
  *
  */
 
-#ifndef VICE_C64ROM_H
-#define VICE_C64ROM_H
+#ifndef VICE_VICIIDTV_BADLINE_H
+#define VICE_VICIIDTV_BADLINE_H
 
 #include "types.h"
 
-extern int c64rom_load_kernal(const char *rom_name, BYTE *new_kernal);
-extern int c64rom_load_basic(const char *rom_name);
-extern int c64rom_load_chargen(const char *rom_name);
-
-extern int c64rom_get_kernal_checksum(void);
-extern int c64rom_get_basic_checksum(void);
-
-extern int c64rom_cartkernal_active;
+extern void vicii_badline_check_state(BYTE value, const int cycle,
+                                      const unsigned int line,
+                                      const int old_allow_bad_lines);
 
 #endif
 

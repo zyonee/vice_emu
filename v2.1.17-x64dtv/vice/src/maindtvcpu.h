@@ -1,5 +1,5 @@
 /*
- * maincpu.h - Emulation of the main 6510 processor.
+ * maindtvcpu.h - Emulation of the DTV 6510 processor.
  *
  * Written by
  *  Ettore Perazzoli <ettore@comm2000.it>
@@ -25,8 +25,8 @@
  *
  */
 
-#ifndef VICE_MAINCPU_H
-#define VICE_MAINCPU_H
+#ifndef VICE_MAINDTVCPU_H
+#define VICE_MAINDTVCPU_H
 
 #include "types.h"
 
@@ -44,17 +44,19 @@ extern unsigned int last_opcode_info;
 /* The VIC-II emulation needs this ugly hack.  */
 extern unsigned int reg_pc;
 
-struct mos6510_regs_s;
-extern struct mos6510_regs_s maincpu_regs;
+struct mos6510dtv_regs_s;
+extern struct mos6510dtv_regs_s maincpu_regs;
 
+/* Always 0 */
 extern int maincpu_rmw_flag;
+
 extern CLOCK maincpu_clk;
 
-/* 8502 cycle stretch indicator */
-extern int maincpu_stretch;
+/* Flag: 1 during DMA memory access */
+extern int maincpu_dma_flag;
 
-/* 8502 memory refresh alarm */
-extern CLOCK c128cpu_memory_refresh_clk;
+/* Flag: BA low */
+extern int maincpu_ba_low_flag;
 
 /* ------------------------------------------------------------------------- */
 

@@ -1,7 +1,8 @@
 /*
- * c64rom.h
+ * viciidtv-sprites.h - Sprites for the VIC-II DTV emulation.
  *
  * Written by
+ *  Ettore Perazzoli <ettore@comm2000.it>
  *  Andreas Boose <viceteam@t-online.de>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
@@ -24,19 +25,19 @@
  *
  */
 
-#ifndef VICE_C64ROM_H
-#define VICE_C64ROM_H
+#ifndef VICE_VICIIDTV_SPRITES_H
+#define VICE_VICIIDTV_SPRITES_H
 
-#include "types.h"
+extern const int vicii_sprites_crunch_table[64];
 
-extern int c64rom_load_kernal(const char *rom_name, BYTE *new_kernal);
-extern int c64rom_load_basic(const char *rom_name);
-extern int c64rom_load_chargen(const char *rom_name);
-
-extern int c64rom_get_kernal_checksum(void);
-extern int c64rom_get_basic_checksum(void);
-
-extern int c64rom_cartkernal_active;
+extern void vicii_sprites_init(void);
+extern void vicii_sprites_shutdown(void);
+extern void vicii_sprites_set_x_position(unsigned int num,
+                                         int new_x, int raster_x);
+extern void vicii_sprites_reset_sprline(void);
+extern void vicii_sprites_init_sprline(void);
+extern void vicii_sprites_reset_xshift(void);
+extern int vicii_sprite_offset(void);
 
 #endif
 

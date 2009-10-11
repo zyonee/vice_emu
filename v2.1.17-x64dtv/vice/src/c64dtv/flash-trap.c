@@ -44,7 +44,7 @@
 #include "flash-trap.h"
 #include "lib.h"
 #include "log.h"
-#include "maincpu.h"
+#include "maindtvcpu.h"
 #include "mem.h"
 #include "mos6510dtv.h"
 #include "traps.h"

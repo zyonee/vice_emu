@@ -1,8 +1,12 @@
 /*
- * c64rom.h
+ * viciidtv-color.h - Colors for the VIC-II DTV emulation.
+ *
  *
  * Written by
- *  Andreas Boose <viceteam@t-online.de>
+ *  Daniel Kahlin <daniel@kahlin.net>
+ *
+ * Research about the luminances on the original C64 DTV by
+ *  Daniel Kahlin <daniel@kahlin.net>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -24,19 +28,12 @@
  *
  */
 
-#ifndef VICE_C64ROM_H
-#define VICE_C64ROM_H
+#ifndef VICE_VICIIDTV_COLOR_H
+#define VICE_VICIIDTV_COLOR_H
 
-#include "types.h"
+struct video_canvas_s;
 
-extern int c64rom_load_kernal(const char *rom_name, BYTE *new_kernal);
-extern int c64rom_load_basic(const char *rom_name);
-extern int c64rom_load_chargen(const char *rom_name);
-
-extern int c64rom_get_kernal_checksum(void);
-extern int c64rom_get_basic_checksum(void);
-
-extern int c64rom_cartkernal_active;
+extern int vicii_color_update_palette(struct video_canvas_s *canvas);
 
 #endif
 

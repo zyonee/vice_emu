@@ -1,9 +1,13 @@
 /*
- * viciitypes.h - A cycle-exact event-driven MOS6569 (VIC-II) emulation.
+ * viciidtvtypes.h - A cycle-exact event-driven VIC-II DTV emulation.
  *
  * Written by
  *  Ettore Perazzoli <ettore@comm2000.it>
  *  Andreas Boose <viceteam@t-online.de>
+ *
+ * DTV sections written by
+ *  Hannu Nuotio <hannu.nuotio@tut.fi>
+ *  Daniel Kahlin <daniel@kahlin.net>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -25,8 +29,8 @@
  *
  */
 
-#ifndef VICE_VICIITYPES_H
-#define VICE_VICIITYPES_H
+#ifndef VICE_VICIIDTVTYPES_H
+#define VICE_VICIIDTVTYPES_H
 
 #include "raster.h"
 #include "types.h"
@@ -37,18 +41,23 @@
 #define VICII_SCREEN_TEXTCOLS              40
 #define VICII_SCREEN_TEXTLINES             25
 #define VICII_SCREEN_CHARHEIGHT            8
+#define VICII_SCREEN_TEXTCOLS_OVERSCAN     48
 
 #define VICII_40COL_START_PIXEL vicii.screen_leftborderwidth
 #define VICII_40COL_STOP_PIXEL  (vicii.screen_leftborderwidth + VICII_SCREEN_XPIX)
-#define VICII_38COL_START_PIXEL (vicii.screen_leftborderwidth + 7)
-#define VICII_38COL_STOP_PIXEL  (vicii.screen_leftborderwidth + 311)
+/* these are one pixel 'off' on the DTV */
+#define VICII_38COL_START_PIXEL (vicii.screen_leftborderwidth + 7 + 1)
+#define VICII_38COL_STOP_PIXEL  (vicii.screen_leftborderwidth + 311 + 1)
 
 #define VICII_NUM_SPRITES      8
 #define VICII_MAX_SPRITE_WIDTH 56  /* expanded sprite in bug area */
-#define VICII_NUM_COLORS       16
+#define VICIIDTV_NUM_COLORS    256
 
 /* Available video modes.  The number is given by
    ((vicii.regs[0x11] & 0x60) | (vicii.regs[0x16] & 0x10)) >> 4.  */
+/* Also for DTV: 
+   | (vicii.regs[0x3c] & 0x04)<<1 | (vicii.regs[0x3c] & 0x01)<<3
+   + FRED/FRED2, CHUNKY/PIXEL/ILLEGAL_LINEAR separation */
 enum vicii_video_mode_s {
     VICII_NORMAL_TEXT_MODE,
     VICII_MULTICOLOR_TEXT_MODE,
@@ -58,6 +67,18 @@ enum vicii_video_mode_s {
     VICII_ILLEGAL_TEXT_MODE,
     VICII_ILLEGAL_BITMAP_MODE_1,
     VICII_ILLEGAL_BITMAP_MODE_2,
+/* DTV modes */
+    VICII_8BPP_NORMAL_TEXT_MODE,
+    VICII_8BPP_MULTICOLOR_TEXT_MODE,
+    VICII_8BPP_HIRES_BITMAP_MODE, /* TODO: doesn't exist */
+    VICII_8BPP_MULTICOLOR_BITMAP_MODE,
+    VICII_8BPP_EXTENDED_TEXT_MODE,
+    VICII_8BPP_CHUNKY_MODE,
+    VICII_8BPP_TWO_PLANE_BITMAP_MODE,
+    VICII_8BPP_FRED_MODE,
+    VICII_8BPP_FRED2_MODE,
+    VICII_8BPP_PIXEL_CELL_MODE,
+    VICII_ILLEGAL_LINEAR_MODE,
     VICII_IDLE_MODE,           /* Special mode for idle state.  */
     VICII_NUM_VMODES
 };
@@ -71,6 +92,16 @@ typedef enum vicii_video_mode_s vicii_video_mode_t;
 #define VICII_IS_TEXT_MODE(x)    ((x) == VICII_NORMAL_TEXT_MODE \
                                  || (x) == VICII_MULTICOLOR_TEXT_MODE \
                                  || (x) == VICII_EXTENDED_TEXT_MODE)
+
+/* The actual modes with modulo bug (possibly incomplete) */
+/*
+#define VICII_MODULO_BUG(x)      ((x) == VICII_8BPP_FRED_MODE \
+                                 || (x) == VICII_8BPP_FRED2_MODE \
+                                 || (x) == VICII_ILLEGAL_TEXT_MODE \
+                                 || (x) == VICII_8BPP_TWO_PLANE_BITMAP_MODE)
+*/
+/* Temporary list to keep all demos running correctly */
+#define VICII_MODULO_BUG(x)      ((x) == VICII_ILLEGAL_TEXT_MODE)
 
 /* These timings are taken from the ``VIC Article'' by Christian Bauer
    <bauec002@goofy.zdv.uni-mainz.de>.  Thanks Christian!
@@ -86,11 +117,15 @@ typedef enum vicii_video_mode_s vicii_video_mode_t;
 
 /* Current char being drawn by the raster.  < 0 or >= VICII_SCREEN_TEXTCOLS
    if outside the visible range.  */
-#define VICII_RASTER_CHAR(cycle)   ((int)(cycle) - 15)
+#define VICII_RASTER_CHAR(cycle)   ((int)(cycle) - 13)
 
 /* Current horizontal position (in pixels) of the raster.  < 0 or >=
    SCREEN_WIDTH if outside the visible range.  */
-#define VICII_RASTER_X(cycle)      (((int)(cycle) - 17) * 8 + vicii.screen_leftborderwidth)
+#define VICII_RASTER_X(cycle)      (((int)(cycle) - 15) * 8 + vicii.screen_leftborderwidth)
+
+/* Adjusted RASTER_X position to account for -2 pixel difference on some
+   C64DTV stores and the -6 pixel difference in DMA stores */
+#define VICIIDTV_RASTER_X_ADJ(cycle)     (VICII_RASTER_X(cycle) - (maincpu_dma_flag?6:2))
 
 /* Current vertical position of the raster.  Unlike `rasterline', which is
    only accurate if a pending drawing event has been served, this is
@@ -102,6 +137,9 @@ typedef enum vicii_video_mode_s vicii_video_mode_t;
 /* Cycle # within the current line.  */
 #define VICII_RASTER_CYCLE(clk)    ((unsigned int)((clk) \
                                    % vicii.cycles_per_line))
+/* DTV Cycle # within the current line.
+   Handles the "hole" on PAL systems at cycles 54-55 and the 1 cycle shift */
+#define VICIIDTV_RASTER_CYCLE(clk) ((unsigned int)( (((clk)-1) % vicii.cycles_per_line) + ((vicii.cycles_per_line == 63 && (((clk)-1) % vicii.cycles_per_line) > 53)?2:0)) )
 
 /* `clk' value for the beginning of the current line.  */
 #define VICII_LINE_START_CLK(clk)  (((clk) / vicii.cycles_per_line) \
@@ -117,16 +155,17 @@ typedef enum vicii_video_mode_s vicii_video_mode_t;
 
 struct vicii_light_pen_s {
     int triggered;
-    int x, y, x_extra_bits;
+    int x, y;
 };
 typedef struct vicii_light_pen_s vicii_light_pen_t;
 
-enum vicii_fetch_idx_s {
-    VICII_FETCH_MATRIX,
-    VICII_CHECK_SPRITE_DMA,
-    VICII_FETCH_SPRITE
+enum vicii_fetch_mode_s {
+    VICIIDTV_FETCH_NORMAL,
+    VICIIDTV_FETCH_LINEAR,
+    VICIIDTV_FETCH_CHUNKY,
+    VICIIDTV_FETCH_PIXEL_CELL
 };
-typedef enum vicii_fetch_idx_s vicii_fetch_idx_t;
+typedef enum vicii_fetch_mode_s vicii_fetch_mode_t;
 
 enum vicii_idle_data_location_s {
     IDLE_NONE,
@@ -152,7 +191,27 @@ struct vicii_s {
     raster_t raster;
 
     /* VIC-II registers.  */
-    int regs[64];
+    int regs[0x50];
+
+    /* Cycle # within the current line.  */
+    unsigned int raster_cycle;
+
+    /* Current line.  */
+    unsigned int raster_line;
+
+    /* DTV Linear Counters */
+    int counta;
+    int counta_mod;
+    int counta_step;
+    int countb;
+    int countb_mod;
+    int countb_step;
+
+    /* DTV Palette lookup */
+    BYTE dtvpalette[256];
+
+    /* DTV raster IRQ */
+    int raster_irq_offset;
 
     /* Interrupt register.  */
     int irq_status;             /* = 0; */
@@ -197,9 +256,15 @@ struct vicii_s {
     /* Offset to the vbuf/cbuf buffer */
     int buf_offset;
 
-    /* Screen memory buffers (chars and color).  */
-    BYTE vbuf[VICII_SCREEN_TEXTCOLS];
-    BYTE cbuf[VICII_SCREEN_TEXTCOLS];
+    /* Offset to the gbuf buffer */
+    int gbuf_offset;
+
+    /* Screen memory buffers (chars/LinearA and color).  */
+    BYTE vbuf[VICII_SCREEN_TEXTCOLS_OVERSCAN];
+    BYTE cbuf[VICII_SCREEN_TEXTCOLS_OVERSCAN];
+
+    /* Graphics buffer (bitmap/LinearB) */
+    BYTE gbuf[VICII_SCREEN_TEXTCOLS_OVERSCAN * 8];
 
     /* If this flag is set, bad lines (DMA's) can happen.  */
     int allow_bad_lines;
@@ -231,9 +296,6 @@ struct vicii_s {
     /* Internal memory counter (VC).  */
     int mem_counter;
 
-    /* Value to add to `mem_counter' after the graphics has been painted.  */
-    int mem_counter_inc;
-
     /* Flag: is the current line a `bad' line? */
     int bad_line;
 
@@ -256,11 +318,15 @@ struct vicii_s {
     int vbank_phi1;                     /* = 0; */
     int vbank_phi2;                     /* = 0; */
 
-    /* Pointer to the start of the video bank.  */
-    /* BYTE *vbank_ptr; - never used, only set */
-
     /* Data to display in idle state.  */
     int idle_data;
+
+    /* left border idle data */
+    int idle_data_l[4];
+    /* middle idle data */
+    int idle_data_m[4];
+    /* right border idle data */
+    int idle_data_r[4];
 
     /* Where do we currently fetch idle state from?  If `IDLE_NONE', we are
        not in idle state and thus do not need to update `idle_data'.  */
@@ -269,34 +335,12 @@ struct vicii_s {
     /* All the VIC-II logging goes here.  */
     signed int log;
 
-    /* VIC-II alarms.  */
-    struct alarm_s *raster_fetch_alarm;
-    struct alarm_s *raster_draw_alarm;
-    struct alarm_s *raster_irq_alarm;
+    /* Fetch mode */
+    vicii_fetch_mode_t fetch_mode;
 
-    /* What do we do when the `A_RASTERFETCH' event happens?  */
-    vicii_fetch_idx_t fetch_idx;
-
-    /* Number of sprite being DMA fetched.  */
-    unsigned int sprite_fetch_idx;
-
-    /* Mask for sprites being fetched at DMA.  */
-    unsigned int sprite_fetch_msk;
-
-    /* Clock cycle for the next "raster fetch" alarm.  */
-    CLOCK fetch_clk;
-
-    /* Clock cycle for the next "raster draw" alarm.  */
-    CLOCK draw_clk;
-
-    /* Clock value for raster compare IRQ.  */
-    CLOCK raster_irq_clk;
-
-    /* FIXME: Bad name.  FIXME: Has to be initialized.  */
-    CLOCK last_emulate_line_clk;
-
-    /* Clock cycle for the next sprite fetch.  */
-    CLOCK sprite_fetch_clk;
+    /* Fetch state */
+    int fetch_active;
+    int prefetch_cycles;
 
     /* Geometry and timing parameters of the selected VIC-II emulation.  */
     unsigned int screen_height;
@@ -332,15 +376,6 @@ struct vicii_s {
     unsigned int num_idle_3fff_old;
     idle_3fff_t *idle_3fff_old;
 
-    /* Flag: Enable VIC-IIe features.  */
-    unsigned int viciie;
-
-    /* VIC-IIe clock mode.  */
-    unsigned int fastmode;
-
-    /* C128 2mhz cycle counter */
-    int half_cycles;
-
     /* Last value read from VICII (used for RMW access).  */
     BYTE last_read;
 
@@ -348,6 +383,30 @@ struct vicii_s {
     struct video_chip_cap_s *video_chip_cap;
 
     unsigned int int_num;
+
+    /* Flag: DTV extended register enable */
+    unsigned int extended_enable;
+
+    /* Flag: DTV extended register lockout */
+    unsigned int extended_lockout;
+
+    /* Flag: DTV badline disable */
+    unsigned int badline_disable;
+
+    /* Flag: DTV colorfetch disable */
+    unsigned int colorfetch_disable;
+
+    /* Flag: DTV overscan */
+    unsigned int overscan;
+
+    /* Flag: DTV high color */
+    unsigned int high_color;
+
+    /* Flag: DTV border off */
+    unsigned int border_off;
+
+    /* Pointer to color ram */
+    BYTE *color_ram_ptr;
 };
 typedef struct vicii_s vicii_t;
 
@@ -357,15 +416,13 @@ extern vicii_t vicii;
 extern void vicii_update_memory_ptrs(unsigned int cycle);
 extern void vicii_update_video_mode(unsigned int cycle);
 extern void vicii_raster_draw_alarm_handler(CLOCK offset, void *data);
-extern void vicii_handle_pending_alarms(int num_write_cycles);
-extern void vicii_delay_clk(void);
-extern void vicii_delay_oldclk(CLOCK num);
 
 /* Debugging options.  */
 
 /* #define VICII_VMODE_DEBUG */
 /* #define VICII_RASTER_DEBUG */
 /* #define VICII_REGISTERS_DEBUG */
+#define VICII_CYCLE_DEBUG
 
 #ifdef VICII_VMODE_DEBUG
 #define VICII_DEBUG_VMODE(x) log_debug x
@@ -383,6 +440,12 @@ extern void vicii_delay_oldclk(CLOCK num);
 #define VICII_DEBUG_REGISTER(x) log_debug x
 #else
 #define VICII_DEBUG_REGISTER(x)
+#endif
+
+#ifdef VICII_CYCLE_DEBUG
+#define VICII_DEBUG_CYCLE(x) log_debug x
+#else
+#define VICII_DEBUG_CYCLE(x)
 #endif
 
 #endif

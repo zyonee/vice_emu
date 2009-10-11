@@ -1,7 +1,8 @@
 /*
- * c64rom.h
+ * viciidtv-draw.h - Rendering for the VIC-II DTV emulation.
  *
  * Written by
+ *  Ettore Perazzoli <ettore@comm2000.it>
  *  Andreas Boose <viceteam@t-online.de>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
@@ -24,19 +25,10 @@
  *
  */
 
-#ifndef VICE_C64ROM_H
-#define VICE_C64ROM_H
+#ifndef VICE_VICIIDTV_DRAW_H
+#define VICE_VICIIDTV_DRAW_H
 
-#include "types.h"
-
-extern int c64rom_load_kernal(const char *rom_name, BYTE *new_kernal);
-extern int c64rom_load_basic(const char *rom_name);
-extern int c64rom_load_chargen(const char *rom_name);
-
-extern int c64rom_get_kernal_checksum(void);
-extern int c64rom_get_basic_checksum(void);
-
-extern int c64rom_cartkernal_active;
+extern void vicii_draw_init(void);
 
 #endif
 

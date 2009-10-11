@@ -5,10 +5,6 @@
  *  Ettore Perazzoli <ettore@comm2000.it>
  *  Andreas Boose <viceteam@t-online.de>
  *
- * DTV sections written by
- *  M.Kiesel <mayne@users.sourceforge.net>
- *  Hannu Nuotio <hannu.nuotio@tut.fi>
- *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
  *
@@ -40,13 +36,9 @@
 
 #include "traps.h"
 
-#ifndef C64DTV
-/* The C64DTV can use different shadow registers for accu read/write. */
-/* For standard 6510, this is not the case. */
 #define reg_a_write reg_a
 #define reg_a_read  reg_a
 
-/* Opcode execution time may vary on the C64DTV. */
 #define CLK_RTS 3
 #define CLK_RTI 4
 #define CLK_BRK 5
@@ -70,7 +62,6 @@
 
 #define IRQ_CYCLES      7
 #define NMI_CYCLES      7
-#endif
 #define RESET_CYCLES    6
 
 /* ------------------------------------------------------------------------- */
@@ -213,7 +204,6 @@
 
 #ifndef DRIVE_CPU
 
-#ifndef C64DTV
 /* Export the local version of the registers.  */
 #define EXPORT_REGISTERS()      \
   do {                          \
@@ -239,67 +229,7 @@
       flag_z = GLOBAL_REGS.z;   \
       JUMP(GLOBAL_REGS.pc);     \
   } while (0)
-#else  /* C64DTV */
 
-/* Export the local version of the registers.  */
-#define EXPORT_REGISTERS()      \
-  do {                          \
-      GLOBAL_REGS.pc = reg_pc;  \
-      GLOBAL_REGS.a = dtv_registers[0]; \
-      GLOBAL_REGS.x = dtv_registers[2]; \
-      GLOBAL_REGS.y = dtv_registers[1]; \
-      GLOBAL_REGS.sp = reg_sp;  \
-      GLOBAL_REGS.p = reg_p;    \
-      GLOBAL_REGS.n = flag_n;   \
-      GLOBAL_REGS.z = flag_z;   \
-      GLOBAL_REGS.r3 = dtv_registers[3]; \
-      GLOBAL_REGS.r4 = dtv_registers[4]; \
-      GLOBAL_REGS.r5 = dtv_registers[5]; \
-      GLOBAL_REGS.r6 = dtv_registers[6]; \
-      GLOBAL_REGS.r7 = dtv_registers[7]; \
-      GLOBAL_REGS.r8 = dtv_registers[8]; \
-      GLOBAL_REGS.r9 = dtv_registers[9]; \
-      GLOBAL_REGS.r10 = dtv_registers[10]; \
-      GLOBAL_REGS.r11 = dtv_registers[11]; \
-      GLOBAL_REGS.r12 = dtv_registers[12]; \
-      GLOBAL_REGS.r13 = dtv_registers[13]; \
-      GLOBAL_REGS.r14 = dtv_registers[14]; \
-      GLOBAL_REGS.r15 = dtv_registers[15]; \
-      GLOBAL_REGS.acm = (reg_a_write_idx << 4) | (reg_a_read_idx); \
-      GLOBAL_REGS.yxm = (reg_y_idx << 4) | (reg_x_idx); \
-  } while (0)
-
-/* Import the public version of the registers.  */
-#define IMPORT_REGISTERS()      \
-  do {                          \
-      dtv_registers[0] = GLOBAL_REGS.a; \
-      dtv_registers[2] = GLOBAL_REGS.x; \
-      dtv_registers[1] = GLOBAL_REGS.y; \
-      reg_sp = GLOBAL_REGS.sp;  \
-      reg_p = GLOBAL_REGS.p;    \
-      flag_n = GLOBAL_REGS.n;   \
-      flag_z = GLOBAL_REGS.z;   \
-      dtv_registers[3] = GLOBAL_REGS.r3; \
-      dtv_registers[4] = GLOBAL_REGS.r4; \
-      dtv_registers[5] = GLOBAL_REGS.r5; \
-      dtv_registers[6] = GLOBAL_REGS.r6; \
-      dtv_registers[7] = GLOBAL_REGS.r7; \
-      dtv_registers[8] = GLOBAL_REGS.r8; \
-      dtv_registers[9] = GLOBAL_REGS.r9; \
-      dtv_registers[10] = GLOBAL_REGS.r10; \
-      dtv_registers[11] = GLOBAL_REGS.r11; \
-      dtv_registers[12] = GLOBAL_REGS.r12; \
-      dtv_registers[13] = GLOBAL_REGS.r13; \
-      dtv_registers[14] = GLOBAL_REGS.r14; \
-      dtv_registers[15] = GLOBAL_REGS.r15; \
-      reg_a_write_idx = GLOBAL_REGS.acm >> 4; \
-      reg_a_read_idx = GLOBAL_REGS.acm & 0xf; \
-      reg_y_idx = GLOBAL_REGS.yxm >> 4; \
-      reg_x_idx = GLOBAL_REGS.yxm & 0xf; \
-      JUMP(GLOBAL_REGS.pc); \
-  } while (0)
-
-#endif /* C64DTV */
 #else  /* DRIVE_CPU */
 #define IMPORT_REGISTERS()
 #define EXPORT_REGISTERS()
@@ -688,7 +618,6 @@
       INC_PC(pc_inc);                 \
   } while (0)
 
-#ifndef C64DTV
 #define BRANCH(cond, value)                                        \
   do {                                                             \
       INC_PC(2);                                                   \
@@ -707,7 +636,6 @@
           JUMP(dest_addr & 0xffff);                                \
       }                                                            \
   } while (0)
-#endif
 
 #define BRK()                                                    \
   do {                                                           \
@@ -1603,8 +1531,6 @@ static const BYTE fetch_tab[] = {
     /* $F0 */  0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1  /* $F0 */
 };
 
-#ifndef C64DTV  /* C64DTV opcode_t & fetch are defined in c64dtvcpu.c */
-
 #ifdef CPU_8502  /* 8502 specific opcode fetch */
 
 static const BYTE rewind_fetch_tab[] = {
@@ -1854,8 +1780,6 @@ static const BYTE rewind_fetch_tab[] = {
 
 #endif
 
-#endif /* !C64DTV */
-
 /* ------------------------------------------------------------------------ */
 
 /* Here, the CPU is emulated. */
@@ -1913,12 +1837,11 @@ static const BYTE rewind_fetch_tab[] = {
 
 #ifdef FEATURE_CPUMEMHISTORY
 #ifndef DRIVE_CPU
-#ifndef C64DTV
         /* HACK to cope with FETCH_OPCODE optimization in x64 */
         if (((int)reg_pc) < bank_limit) {
             memmap_mem_read(reg_pc);
         }
-#endif
+
         if (p0 == 0x20) {
             monitor_cpuhistory_store(reg_pc, p0, p1, LOAD(reg_pc+2));
         } else {
@@ -1987,29 +1910,12 @@ trap_skipped:
           case 0xb2:            /* JAM */
           case 0xd2:            /* JAM */
           case 0xf2:            /* JAM */
-#ifndef C64DTV
           case 0x12:            /* JAM */
           case 0x32:            /* JAM */
           case 0x42:            /* JAM */
-#endif
             REWIND_FETCH_OPCODE(CLK);
             JAM();
             break;
-
-#ifdef C64DTV
-          /* These opcodes are defined in c64/c64dtvcpu.c */
-          case 0x12:            /* BRA */
-            BRANCH(1, p1);
-            break;
-
-          case 0x32:            /* SAC */
-            SAC(p1);
-            break;
-
-          case 0x42:            /* SIR */
-            SIR(p1);
-            break;
-#endif
 
           case 0x03:            /* SLO ($nn,X) */
             SLO(LOAD_ZERO_ADDR(p1 + reg_x), 3, CLK_IND_X_RMW, 2, LOAD_ABS, STORE_ABS);
@@ -2569,11 +2475,7 @@ trap_skipped:
             break;
 
           case 0x9b:            /* SHS $nnnn,Y */
-#ifdef C64DTV
-            NOOP_ABS_Y();
-#else
             SHS_ABS_Y(p2);
-#endif
             break;
 
           case 0x9c:            /* SHY $nnnn,X */

@@ -1,12 +1,12 @@
 /*
- * vicii-snapshot.c - Snapshot functionality for the MOS 6569 (VIC-II)
+ * viciidtv-snapshot.c - Snapshot functionality for the VIC-II DTV
  * emulation.
  *
  * Written by
  *  Ettore Perazzoli <ettore@comm2000.it>
  *  Andreas Boose <viceteam@t-online.de>
  *
-  * DTV sections written by
+ * DTV sections written by
  *  Hannu Nuotio <hannu.nuotio@tut.fi>
  *  Daniel Kahlin <daniel@kahlin.net>
  *
@@ -37,17 +37,23 @@
 #include "alarm.h"
 #include "interrupt.h"
 #include "log.h"
+
+#ifdef WATCOM_COMPILE
+#include "../mem.h"
+#else
 #include "mem.h"
+#endif
+
 #include "raster-sprite-status.h"
 #include "raster-sprite.h"
 #include "snapshot.h"
 #include "types.h"
-#include "vicii-irq.h"
-#include "vicii-snapshot.h"
-#include "vicii-sprites.h"
+#include "viciidtv-irq.h"
+#include "viciidtv-snapshot.h"
+#include "viciidtv-sprites.h"
 #include "vicii.h"
-#include "viciitypes.h"
-#include "vicii-mem.h"
+#include "viciidtvtypes.h"
+#include "viciidtv-mem.h"
 
 
 /* Make sure all the VIC-II alarms are removed.  This just makes it easier to
@@ -56,12 +62,6 @@
    be.  */
 void vicii_snapshot_prepare(void)
 {
-    vicii.fetch_clk = CLOCK_MAX;
-    alarm_unset(vicii.raster_fetch_alarm);
-    vicii.draw_clk = CLOCK_MAX;
-    alarm_unset(vicii.raster_draw_alarm);
-    vicii.raster_irq_clk = CLOCK_MAX;
-    alarm_unset(vicii.raster_irq_alarm);
 }
 
 
@@ -174,7 +174,6 @@ int vicii_snapshot_write_module(snapshot_t *s)
         || SMW_DW(m, (DWORD)vicii.high_color) < 0
         || SMW_DW(m, (DWORD)vicii.border_off) < 0
         || SMW_DW(m, (DWORD)vicii.raster_irq_offset) < 0
-        || SMW_DW(m, (DWORD)vicii.raster_irq_prevent) < 0
         || SMW_BA(m, vicii.dtvpalette, 256) < 0
         /* SbCollMask */
         || SMW_B(m, (BYTE)vicii.sprite_background_collisions) < 0
@@ -186,8 +185,6 @@ int vicii_snapshot_write_module(snapshot_t *s)
         || SMW_W(m, (WORD)vicii.vbank_phi1) < 0
         /* Vc */
         || SMW_W(m, (WORD)vicii.mem_counter) < 0
-        /* VcInc */
-        || SMW_B(m, (BYTE)vicii.mem_counter_inc) < 0
         /* VcBase */
         || SMW_W(m, (WORD)vicii.memptr) < 0
         /* VideoInt */
@@ -207,13 +204,6 @@ int vicii_snapshot_write_module(snapshot_t *s)
                 (BYTE)vicii.raster.sprite_status->sprites[i].exp_flag) < 0)
             goto fail;
     }
-
-    if (0
-        /* FetchEventTick */
-        || SMW_DW(m, vicii.fetch_clk - maincpu_clk) < 0
-        /* FetchEventType */
-        || SMW_B(m, (BYTE)vicii.fetch_idx) < 0)
-        goto fail;
 
   /* Added in version 1.1 of the snapshot module */
   /* using "ram_base-ram" is F***ing bullshit - what when external memory
@@ -333,7 +323,6 @@ int vicii_snapshot_read_module(snapshot_t *s)
         || SMR_DW_INT(m, (int *)&vicii.high_color) < 0
         || SMR_DW_INT(m, (int *)&vicii.border_off) < 0
         || SMR_DW_INT(m, &vicii.raster_irq_offset) < 0
-        || SMR_DW_INT(m, &vicii.raster_irq_prevent) < 0
         || SMR_BA(m, vicii.dtvpalette, 256) < 0
         /* SbCollMask */
         || SMR_B(m, &vicii.sprite_background_collisions) < 0
@@ -345,8 +334,6 @@ int vicii_snapshot_read_module(snapshot_t *s)
         || SMR_W_INT(m, &vicii.vbank_phi1) < 0
         /* Vc */
         || SMR_W_INT(m, &vicii.mem_counter) < 0
-        /* VcInc */
-        || SMR_B_INT(m, &vicii.mem_counter_inc) < 0
         /* VcBase */
         || SMR_W_INT(m, &vicii.memptr) < 0
         /* VideoInt */
@@ -367,41 +354,6 @@ int vicii_snapshot_read_module(snapshot_t *s)
             )
             goto fail;
     }
-
-    /* FIXME: Recalculate alarms and derived values.  */
-#if 1
-    if (vicii.raster_irq_prevent) {
-        vicii.raster_irq_clk = CLOCK_MAX;
-        alarm_unset(vicii.raster_irq_alarm);
-    } else
-    {
-        /* 
-            We cannot use vicii_irq_set_raster_line as this would delay
-            an alarm on line 0 for one frame
-        */
-        unsigned int line = vicii.regs[0x12] | ((vicii.regs[0x11] & 0x80) << 1);
-
-        if (line < (unsigned int)vicii.screen_height) {
-            vicii.raster_irq_clk = (VICII_LINE_START_CLK(maincpu_clk)
-                                    + VICII_RASTER_IRQ_DELAY - INTERRUPT_DELAY
-                                    + (vicii.cycles_per_line * line));
-            vicii.raster_irq_clk += vicii.raster_irq_offset;
-            /* Raster interrupts on line 0 are delayed by 1 cycle.  */
-            if (line == 0)
-                vicii.raster_irq_clk++;
-
-            alarm_set(vicii.raster_irq_alarm, vicii.raster_irq_clk);
-        } else {
-            vicii.raster_irq_clk = CLOCK_MAX;
-            alarm_unset(vicii.raster_irq_alarm);
-        }
-        vicii.raster_irq_line = line;
-    }
-
-#else
-    vicii_irq_set_raster_line(vicii.regs[0x12]
-                              | ((vicii.regs[0x11] & 0x80) << 1));
-#endif
 
     /* compatibility with older versions */
     vicii.ram_base_phi2 = vicii.ram_base_phi1;
@@ -435,25 +387,6 @@ int vicii_snapshot_read_module(snapshot_t *s)
             sprite->dma_flag = (int)(vicii.raster.sprite_status->new_dma_msk
                                & msk);
         }
-    }
-
-    vicii.sprite_fetch_msk = vicii.raster.sprite_status->new_dma_msk;
-    vicii.sprite_fetch_clk = VICII_LINE_START_CLK(maincpu_clk)
-                             + vicii.sprite_fetch_cycle
-                             - vicii.cycles_per_line;
-
-    /* calculate the sprite_fetch_idx */
-    {
-        const vicii_sprites_fetch_t *sf;
-
-        sf = vicii_sprites_fetch_table[vicii.sprite_fetch_msk];
-        i = 0;
-        while (sf[i].cycle >= 0 
-            && sf[i].cycle + vicii.sprite_fetch_cycle <= vicii.cycles_per_line)
-        {
-            i++;
-        }
-        vicii.sprite_fetch_idx = i;
     }
 
     vicii.raster.xsmooth = vicii.regs[0x16] & 0x7;
@@ -512,27 +445,6 @@ int vicii_snapshot_read_module(snapshot_t *s)
     vicii_update_video_mode(VICII_RASTER_CYCLE(maincpu_clk));
 
     vicii_store(0x3c, (BYTE)vicii.regs[0x3c]);
-
-    vicii.draw_clk = maincpu_clk + (vicii.draw_cycle
-                     - VICII_RASTER_CYCLE(maincpu_clk));
-    vicii.last_emulate_line_clk = vicii.draw_clk - vicii.cycles_per_line;
-    alarm_set(vicii.raster_draw_alarm, vicii.draw_clk);
-
-    {
-        DWORD dw;
-        BYTE b;
-
-        if (0
-            || SMR_DW(m, &dw) < 0  /* FetchEventTick */
-            || SMR_B(m, &b) < 0    /* FetchEventType */
-            )
-            goto fail;
-
-        vicii.fetch_clk = maincpu_clk + dw;
-        vicii.fetch_idx = b;
-
-        alarm_set(vicii.raster_fetch_alarm, vicii.fetch_clk);
-    }
 
     if (vicii.irq_status & 0x80)
         interrupt_restore_irq(maincpu_int_status, vicii.int_num, 1);

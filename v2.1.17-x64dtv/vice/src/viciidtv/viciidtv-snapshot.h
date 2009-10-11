@@ -1,7 +1,9 @@
 /*
- * c64rom.h
+ * viciidtv-snapshot.c - Snapshot functionality for the MOS 6569 (VIC-II)
+ * emulation.
  *
  * Written by
+ *  Ettore Perazzoli <ettore@comm2000.it>
  *  Andreas Boose <viceteam@t-online.de>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
@@ -24,19 +26,13 @@
  *
  */
 
-#ifndef VICE_C64ROM_H
-#define VICE_C64ROM_H
+#ifndef VICE_VICIIDTV_SNAPSHOT_H
+#define VICE_VICIIDTV_SNAPSHOT_H
 
-#include "types.h"
+struct snapshot_s;
 
-extern int c64rom_load_kernal(const char *rom_name, BYTE *new_kernal);
-extern int c64rom_load_basic(const char *rom_name);
-extern int c64rom_load_chargen(const char *rom_name);
-
-extern int c64rom_get_kernal_checksum(void);
-extern int c64rom_get_basic_checksum(void);
-
-extern int c64rom_cartkernal_active;
+extern int vicii_snapshot_write_module(struct snapshot_s *s);
+extern int vicii_snapshot_read_module(struct snapshot_s *s);
 
 #endif
 

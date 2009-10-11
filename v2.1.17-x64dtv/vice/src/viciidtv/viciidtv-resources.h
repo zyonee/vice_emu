@@ -1,8 +1,9 @@
 /*
- * c64rom.h
+ * viciidtv-resources.h - Resources for the VIC-II DTV emulation.
  *
  * Written by
  *  Andreas Boose <viceteam@t-online.de>
+ *  Ettore Perazzoli <ettore@comm2000.it>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -24,19 +25,30 @@
  *
  */
 
-#ifndef VICE_C64ROM_H
-#define VICE_C64ROM_H
+#ifndef VICE_VICIIDTV_RESOURCES_H
+#define VICE_VICIIDTV_RESOURCES_H
 
-#include "types.h"
+/* VIC-II resources.  */
+struct vicii_resources_s
+{
+    /* VIC-II border mode, 0..2 */
+    int border_mode;
 
-extern int c64rom_load_kernal(const char *rom_name, BYTE *new_kernal);
-extern int c64rom_load_basic(const char *rom_name);
-extern int c64rom_load_chargen(const char *rom_name);
+    /* Flag: Do we emulate the sprite-sprite collision register and IRQ?  */
+    int sprite_sprite_collisions_enabled;
 
-extern int c64rom_get_kernal_checksum(void);
-extern int c64rom_get_basic_checksum(void);
+    /* Flag: Do we emulate the sprite-background collision register and
+       IRQ?  */
+    int sprite_background_collisions_enabled;
 
-extern int c64rom_cartkernal_active;
+    /* Flag: New or old luminances? */
+    int new_luminances;
+};
+typedef struct vicii_resources_s vicii_resources_t;
+
+extern vicii_resources_t vicii_resources;
+
+extern int vicii_resources_init(void);
 
 #endif
 
