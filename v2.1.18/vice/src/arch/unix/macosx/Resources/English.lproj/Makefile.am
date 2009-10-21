@@ -1,0 +1,35 @@
+EXTRA_DIST = \
+	x128.nib/designable.nib \
+	x128.nib/keyedobjects.nib \
+	x128-ResourceTree.plist \
+	x64.nib/designable.nib \
+	x64.nib/keyedobjects.nib \
+	x64-ResourceTree.plist \
+	x64dtv.nib/designable.nib \
+	x64dtv.nib/keyedobjects.nib \
+	x64dtv-ResourceTree.plist \
+	VICEInformation.nib/designable.nib \
+	VICEInformation.nib/keyedobjects.nib \
+	DriveSettings.nib/designable.nib \
+	DriveSettings.nib/keyedobjects.nib \
+	IECDriveSettings.nib/designable.nib \
+	IECDriveSettings.nib/keyedobjects.nib \
+	NetplayControl.nib/designable.nib \
+	NetplayControl.nib/keyedobjects.nib \
+	PrinterSettings.nib/designable.nib \
+	PrinterSettings.nib/keyedobjects.nib \
+	KeyboardSettings.nib/designable.nib \
+	KeyboardSettings.nib/keyedobjects.nib \
+	JoystickSettings.nib/designable.nib \
+	JoystickSettings.nib/keyedobjects.nib \
+	RecordMedia.nib/designable.nib \
+	RecordMedia.nib/keyedobjects.nib \
+	RecordHistory.nib/designable.nib \
+	RecordHistory.nib/keyedobjects.nib \
+	ResourceEditor.nib/designable.nib \
+	ResourceEditor.nib/keyedobjects.nib \
+	SoundSettings.nib/designable.nib \
+	SoundSettings.nib/keyedobjects.nib \
+	VideoSettings.nib/designable.nib \
+	VideoSettings.nib/keyedobjects.nib
+
