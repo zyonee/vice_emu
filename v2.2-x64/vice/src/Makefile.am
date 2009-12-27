@@ -25,6 +25,7 @@ SUBDIRS = \
 	video \
 	raster \
 	vicii \
+	viciinew \
 	vdc \
 	crtc \
 	gfxoutputdrv \
@@ -57,6 +58,7 @@ DIST_SUBDIRS = \
 	video \
 	raster \
 	vicii \
+	viciinew \
 	vdc \
 	crtc \
 	gfxoutputdrv \
@@ -157,6 +159,8 @@ noinst_HEADERS = \
 	machine-video.h \
 	machine.h \
 	main.h \
+	mainc64cpu.c \
+	mainc64cpu.h \
 	maincpu.h \
 	mainviccpu.c \
 	mainviccpu.h \
@@ -689,6 +693,7 @@ vic20_lib = $(top_builddir)/src/vic20/libvic20.a
 vic20cart_lib = $(top_builddir)/src/vic20/cart/libvic20cart.a
 vicii_lib = $(top_builddir)/src/vicii/libvicii.a
 viciidtv_lib = $(top_builddir)/src/vicii/libviciidtv.a
+viciinew_lib = $(top_builddir)/src/viciinew/libviciinew.a
 video_lib = $(top_builddir)/src/video/libvideo.a
 xcbm2_lib = $(top_builddir)/src/cbm2/libcbm2.a
 
@@ -739,13 +744,13 @@ x64_libs =  \
 	$(sid_lib) \
 	$(monitor_lib) \
 	$(driver_libs) \
-	$(vicii_lib) \
+	$(viciinew_lib) \
 	$(raster_lib) \
 	$(video_lib) \
 	$(common_libs) \
 	$(resid_libs)
 
-x64_SOURCES = $(base_sources) $(maincpu_sources) $(mouse_sources) $(midi_sources)
+x64_SOURCES = $(base_sources) $(mouse_sources) $(midi_sources)
 x64_LDADD = $(x64_libs) $(emu_extlibs) @TFE_LIBS@ @NETPLAY_LIBS@
 x64_DEPENDENCIES = $(x64_libs)
 x64_LDFLAGS = @x64_LDFLAGS@
@@ -772,7 +777,7 @@ x64-all: \
 	libgfxoutputdrv \
 	libprinterdrv \
 	librs232drv \
-	libvicii \
+	libviciinew \
 	libvideo \
 	libarch \
 	libmonitor \
@@ -1301,6 +1306,8 @@ libvicii:
 	(cd vicii && $(MAKE) libvicii.a)
 libviciidtv:
 	(cd vicii && $(MAKE) libviciidtv.a)
+libviciinew:
+	(cd viciinew && $(MAKE) libviciinew.a)
 libvideo:
 	(cd video && $(MAKE))
 libz:

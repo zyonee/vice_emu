@@ -289,7 +289,8 @@ static void REGPARM3 ciacore_store_internal(cia_context_t *cia_context,
 
     addr &= 0xf;
 
-    rclk = *(cia_context->clk_ptr) - STORE_OFFSET;
+    /* stores have a one-cycle offset if CLK++ happens before store */
+    rclk = *(cia_context->clk_ptr) - cia_context->write_offset;
 
 #ifdef CIA_TIMER_DEBUG
     if (cia_context->debugFlag)
@@ -1066,6 +1067,7 @@ void ciacore_setup_context(cia_context_t *cia_context)
     cia_context->read_clk = 0;
     cia_context->read_offset = 0;
     cia_context->last_read = 0;
+    cia_context->write_offset = 1;
 }
 
 void ciacore_init(cia_context_t *cia_context, alarm_context_t *alarm_context,

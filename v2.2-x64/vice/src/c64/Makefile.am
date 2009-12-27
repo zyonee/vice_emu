@@ -8,7 +8,7 @@ INCLUDES = \
 	-I$(top_srcdir)/src/drive \
 	-I$(top_srcdir)/src/sid \
 	-I$(top_srcdir)/src/tape \
-	-I$(top_srcdir)/src/vicii
+	-I$(top_srcdir)/src/viciinew
 
 noinst_LIBRARIES = libc64.a libc64c128.a libc64c64dtv.a
 
@@ -32,6 +32,7 @@ libc64_a_SOURCES = \
 	c64cia.h \
 	c64cia1.c \
 	c64cia2.c \
+	c64cpu.c \
 	c64datasette.c \
 	c64drive.c \
 	c64embedded.c \

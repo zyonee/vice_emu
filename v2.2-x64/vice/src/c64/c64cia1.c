@@ -247,6 +247,8 @@ void cia1_setup_context(machine_context_t *machine_context)
 
     ciacore_setup_context(cia);
 
+    cia->write_offset = 0;
+
     cia->debugFlag = 0;
     cia->irq_line = IK_IRQ;
     cia->myname = lib_msprintf("CIA1");
