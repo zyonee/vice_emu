@@ -186,7 +186,7 @@ inline static void store_sprite_y_position(const WORD addr, BYTE value)
         return;
 
     cycle = VICII_RASTER_CYCLE(maincpu_clk);
-
+#if 0
     if (cycle == vicii.sprite_fetch_cycle + 1
         && value == (vicii.raster.current_line & 0xff)) {
         vicii.fetch_idx = VICII_CHECK_SPRITE_DMA;
@@ -194,7 +194,7 @@ inline static void store_sprite_y_position(const WORD addr, BYTE value)
                           + vicii.sprite_fetch_cycle + 1);
         alarm_set(vicii.raster_fetch_alarm, vicii.fetch_clk);
     }
-
+#endif
     vicii.raster.sprite_status->sprites[addr >> 1].y = value;
     vicii.regs[addr] = value;
 }
@@ -297,7 +297,8 @@ inline static void d011_store(BYTE value)
     VICII_DEBUG_REGISTER(("$D011 tricks at cycle %d, line $%04X, "
                           "value $%02X", cycle, line, value));
 
-    vicii_irq_check_state(value, 1);
+    vicii.raster_irq_line &= 0xff;
+    vicii.raster_irq_line |= (value & 0x80) << 1;
 
     /* This is the funniest part... handle bad line tricks.  */
     old_allow_bad_lines = vicii.allow_bad_lines;
@@ -337,7 +338,8 @@ inline static void d012_store(BYTE value)
 
     vicii.regs[0x12] = value;
 
-    vicii_irq_check_state(value, 0);
+    vicii.raster_irq_line &= 0x100;
+    vicii.raster_irq_line |= value;
 
     VICII_DEBUG_REGISTER(("Raster interrupt line set to $%04X",
                          vicii.raster_irq_line));
@@ -350,7 +352,7 @@ inline static void d015_store(const BYTE value)
     VICII_DEBUG_REGISTER(("Sprite Enable register: $%02X", value));
 
     cycle = VICII_RASTER_CYCLE(maincpu_clk);
-
+#if 0
     /* On the real C64, sprite DMA is checked two times: first at
        `VICII_SPRITE_FETCH_CYCLE', and then at `VICII_SPRITE_FETCH_CYCLE +
        1'.  In the average case, one DMA check is OK and there is no need to
@@ -387,7 +389,7 @@ inline static void d015_store(const BYTE value)
             }
         }
     }
-
+#endif
     vicii.regs[0x15] = vicii.raster.sprite_status->visible_msk = value;
 }
 
@@ -878,12 +880,14 @@ void REGPARM2 vicii_store(WORD addr, BYTE value)
 
     vicii_handle_pending_alarms_external_write();
 
+#if 0
     /* This is necessary as we must be sure that the previous line has been
        updated and `current_line' is actually set to the current Y position of
        the raster.  Otherwise we might mix the changes for this line with the
        changes for the previous one.  */
     if (maincpu_clk >= vicii.draw_clk)
         vicii_raster_draw_alarm_handler(maincpu_clk - vicii.draw_clk, NULL);
+#endif
 
     VICII_DEBUG_REGISTER(("WRITE $D0%02X at cycle %d of current_line $%04X",
                          addr, VICII_RASTER_CYCLE(maincpu_clk),
@@ -1032,13 +1036,14 @@ inline static unsigned int read_raster_y(void)
 {
     int raster_y;
 
-    raster_y = VICII_RASTER_Y(maincpu_clk);
+    raster_y = vicii.raster_line;
 
     /* Line 0 is 62 cycles long, while line (SCREEN_HEIGHT - 1) is 64
        cycles long.  As a result, the counter is incremented one
        cycle later on line 0.  */
-    if (raster_y == 0 && VICII_RASTER_CYCLE(maincpu_clk) == 0)
+    if (raster_y == 0 && vicii.raster_cycle == 0) {
         raster_y = vicii.screen_height - 1;
+    }
 
     return raster_y;
 }
