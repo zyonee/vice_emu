@@ -912,8 +912,6 @@ void vicii_raster_draw_alarm_handler(CLOCK offset, void *data)
     }
 
     if (in_visible_area) {
-//        VICII_DEBUG_CYCLE(("draw: line %i, y %i", vicii.raster_line, vicii.raster.ycounter));
-
         /* `ycounter' makes the chip go to idle state when it reaches the
            maximum value.  */
         if (vicii.raster.ycounter == 7) {

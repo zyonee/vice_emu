@@ -210,55 +210,17 @@ inline static BYTE gfx_data_normal_text(unsigned int c)
 
 /*-----------------------------------------------------------------------*/
 
-void vicii_fetch_start(void)
+void vicii_fetch_matrix(void)
 {
-    raster_t *raster;
-    raster = &vicii.raster;
-
-    if ((vicii.raster_line & 7) == (unsigned int)raster->ysmooth
-        && vicii.allow_bad_lines
-        && vicii.raster_line >= vicii.first_dma_line
-        && vicii.raster_line <= vicii.last_dma_line) {
-
-        /*VICII_DEBUG_CYCLE(("fetch start: line %i, clk %i", vicii.raster_line, vicii.raster_cycle));*/
-
-        vicii.fetch_active = 1;
-
-        vicii.mem_counter = vicii.memptr;
-
-        raster->draw_idle_state = 0;
-        raster->ycounter = 0;
-        vicii.force_display_state = 1;
-
-        vicii.idle_state = 0;
-        vicii.idle_data_location = IDLE_NONE;
-        vicii.ycounter_reset_checked = 1;
-        vicii.memory_fetch_done = 2;
-        vicii.bad_line = 1;
-
-        vicii.prefetch_cycles = 3;
-        vicii.buf_offset = 0;
-        vicii.gbuf_offset = 0;
+    if (vicii.prefetch_cycles) {
+        vicii.vbuf[vicii.buf_offset] = 0xff;
+        vicii.cbuf[vicii.buf_offset] = vicii.ram_base_phi2[reg_pc] & 0xf;
+    } else {
+        vicii.vbuf[vicii.buf_offset] = vicii.screen_base_phi2[vicii.mem_counter];
+        vicii.cbuf[vicii.buf_offset] = mem_color_ram_vicii[vicii.mem_counter];
     }
-}
-
-void vicii_fetch_stop(void)
-{
-    vicii.fetch_active = 0;
-    vicii.bad_line = 0;
-    vicii.buf_offset = 0;
-    vicii.gbuf_offset = 0;
-}
-
-int vicii_fetch_matrix(void)
-{
-    vicii.vbuf[vicii.buf_offset] = vicii.screen_base_phi2[vicii.mem_counter];
-    vicii.cbuf[vicii.buf_offset] = mem_color_ram_vicii[vicii.mem_counter];
-
     vicii.mem_counter++;
     vicii.mem_counter &= 0x3ff;
-
-    return 1;
 }
 
 void vicii_fetch_graphics(void)

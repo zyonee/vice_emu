@@ -30,9 +30,7 @@
 
 #include "types.h"
 
-extern void vicii_fetch_start(void);
-extern void vicii_fetch_stop(void);
-extern int vicii_fetch_matrix(void);
+extern void vicii_fetch_matrix(void);
 extern void vicii_fetch_graphics(void);
 extern int vicii_fetch_sprites(int cycle);
 

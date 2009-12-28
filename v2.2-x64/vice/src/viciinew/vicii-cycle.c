@@ -35,20 +35,60 @@
 #include "vicii.h"
 #include "viciitypes.h"
 
+static inline void check_badline(void)
+{
+    raster_t *raster;
+    raster = &vicii.raster;
+
+    if ((vicii.raster_line & 7) == (unsigned int)raster->ysmooth
+        && vicii.allow_bad_lines
+        && vicii.raster_line >= vicii.first_dma_line
+        && vicii.raster_line <= vicii.last_dma_line) {
+
+        /*VICII_DEBUG_CYCLE(("fetch start: line %i, clk %i", vicii.raster_line, vicii.raster_cycle));*/
+    
+        vicii.fetch_active = 1;
+ 
+        vicii.mem_counter = vicii.memptr;
+ 
+        raster->draw_idle_state = 0;
+        vicii.force_display_state = 1;
+
+        vicii.idle_state = 0;
+        vicii.idle_data_location = IDLE_NONE;
+        vicii.ycounter_reset_checked = 1;
+        vicii.memory_fetch_done = 2;
+        vicii.bad_line = 1;
+                
+        vicii.prefetch_cycles = 3;
+    }
+}
+
 int vicii_cycle(void)
 {
     int ba_low = 0;
 
     /*VICII_DEBUG_CYCLE(("cycle: line %i, clk %i", vicii.raster_line, vicii.raster_cycle));*/
 
+    if (vicii.raster_cycle == 13) {
+        if (vicii.bad_line) {
+            vicii.raster.ycounter = 0;
+        }
+    }
+
     /* Graphics fetch */
-    if ((!vicii.idle_state) && (vicii.raster_cycle >= 14) && (vicii.raster_cycle <= 53)) {
+    if (!vicii.idle_state && (vicii.raster_cycle >= 14) && (vicii.raster_cycle <= 53)) {
         vicii_fetch_graphics();
     }
 
-    if (vicii.raster_cycle == 53) {
-        vicii_fetch_stop();
+    /* Stop fetch */
+    if ((!vicii.idle_state) && (vicii.raster_cycle == 53)) {
+        vicii.fetch_active = 0;
+        vicii.bad_line = 0;
+        vicii.buf_offset = 0;
+        vicii.gbuf_offset = 0;
     }
+
 
     /* Next cycle */
     vicii.raster_cycle++;
@@ -72,24 +112,23 @@ int vicii_cycle(void)
         if (vicii.raster_line == vicii.raster_irq_line) {
             vicii_irq_alarm_handler(maincpu_clk, 0);
         }
+        vicii.buf_offset = 0;
+        vicii.gbuf_offset = 0;
     }
 
-    switch (vicii.raster_cycle) {
-        case 11: /* VICII_FETCH_CYCLE */
-            vicii_fetch_start();
-            break;
-        default:
-            break;
+    if (!vicii.fetch_active && (vicii.raster_cycle >= 11) && (vicii.raster_cycle <= 53)) {
+        check_badline();
     }
 
     /* Matrix fetch */
     if (vicii.prefetch_cycles) {
         ba_low = 1;
         vicii.prefetch_cycles--;
-    } else if (vicii.fetch_active) {
-        if (vicii.bad_line) {
-            ba_low |= vicii_fetch_matrix();
-        }
+    }
+
+    if (vicii.fetch_active && (vicii.raster_cycle >= 14)) {
+        ba_low = 1;
+        vicii_fetch_matrix();
     }
 
     /* Sprite fetch */
