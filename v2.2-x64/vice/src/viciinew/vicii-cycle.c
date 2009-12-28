@@ -41,6 +41,15 @@ int vicii_cycle(void)
 
     /*VICII_DEBUG_CYCLE(("cycle: line %i, clk %i", vicii.raster_line, vicii.raster_cycle));*/
 
+    /* Graphics fetch */
+    if ((!vicii.idle_state) && (vicii.raster_cycle >= 14) && (vicii.raster_cycle <= 53)) {
+        vicii_fetch_graphics();
+    }
+
+    if (vicii.raster_cycle == 53) {
+        vicii_fetch_stop();
+    }
+
     /* Next cycle */
     vicii.raster_cycle++;
 
@@ -76,6 +85,7 @@ int vicii_cycle(void)
     /* Matrix fetch */
     if (vicii.prefetch_cycles) {
         ba_low = 1;
+        vicii.prefetch_cycles--;
     } else if (vicii.fetch_active) {
         if (vicii.bad_line) {
             ba_low |= vicii_fetch_matrix();
@@ -84,19 +94,6 @@ int vicii_cycle(void)
 
     /* Sprite fetch */
     ba_low |= vicii_fetch_sprites(vicii.raster_cycle);
-
-    /* Graphics fetch */
-    if (vicii.prefetch_cycles) {
-        vicii.prefetch_cycles--;
-    }
-
-    if ((!vicii.idle_state) && (vicii.raster_cycle >= 14) && (vicii.raster_cycle <= 53)) {
-        vicii_fetch_graphics();
-    }
-
-    if (vicii.raster_cycle == 53) {
-        vicii_fetch_stop();
-    }
 
     return ba_low;
 }

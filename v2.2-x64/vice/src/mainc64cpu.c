@@ -67,6 +67,13 @@
 
 /* ------------------------------------------------------------------------- */
 
+inline static void check_ba(void)
+{
+    if (maincpu_ba_low_flag) {
+        vicii_steal_cycles();
+    }
+}
+
 #ifdef FEATURE_CPUMEMHISTORY
 
 /* FIXME do proper ROM/RAM/IO tests */
@@ -83,9 +90,7 @@ void REGPARM2 memmap_mem_store(unsigned int addr, unsigned int value)
 
 BYTE REGPARM1 memmap_mem_read(unsigned int addr)
 {
-    if (maincpu_ba_low_flag) {
-        vicii_steal_cycles();
-    }
+    check_ba();
 
     switch(addr >> 12) {
         case 0xa:
@@ -135,9 +140,7 @@ BYTE REGPARM1 memmap_mem_read(unsigned int addr)
 
 inline static BYTE mem_read_check_ba(unsigned int addr)
 {
-    if (maincpu_ba_low_flag) {
-        vicii_steal_cycles();
-    }
+    check_ba();
     return (*_mem_read_tab_ptr[(addr) >> 8])((WORD)(addr));
 }
 

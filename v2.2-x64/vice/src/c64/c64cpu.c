@@ -114,10 +114,13 @@ int maincpu_ba_low_flag = 0;
 #define FETCH_OPCODE(o) \
     do { \
         if (((int)reg_pc) < bank_limit) {                       \
+            check_ba();                                         \
             o = (*((DWORD *)(bank_base + reg_pc)) & 0xffffff);  \
             CLK_INC();                                          \
+            check_ba();                                         \
             CLK_INC();                                          \
             if (fetch_tab[o & 0xff]) {                          \
+                check_ba();                                     \
                 CLK_INC();                                      \
             }                                                   \
         } else {                                                \
@@ -136,11 +139,14 @@ int maincpu_ba_low_flag = 0;
 #define FETCH_OPCODE(o) \
     do { \
         if (((int)reg_pc) < bank_limit) {                         \
+            check_ba();                                           \
             (o).ins = *(bank_base + reg_pc);                      \
             CLK_INC();                                            \
+            check_ba();                                           \
             (o).op.op16 = *(bank_base + reg_pc + 1);              \
             CLK_INC();                                            \
             if (fetch_tab[(o).ins]) {                             \
+                check_ba();                                       \
                 (o).op.op16 |= (*(bank_base + reg_pc + 2) << 8);  \
                 CLK_INC();                                        \
             }                                                     \
