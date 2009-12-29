@@ -1321,8 +1321,8 @@
 
 #define ST(value, set_func, pc_inc) \
   do {                              \
-      set_func(value);              \
       INC_PC(pc_inc);               \
+      set_func(value);              \
   } while (0)
 
 #define TAX()               \

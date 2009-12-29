@@ -120,14 +120,14 @@ int vicii_cycle(void)
     }
 
     /* Matrix fetch */
-    if (vicii.prefetch_cycles) {
-        ba_low = 1;
-        vicii.prefetch_cycles--;
-    }
-
     if (vicii.fetch_active && (vicii.raster_cycle >= 14)) {
         ba_low = 1;
         vicii_fetch_matrix();
+    }
+
+    if (vicii.prefetch_cycles) {
+        ba_low = 1;
+        vicii.prefetch_cycles--;
     }
 
     /* Sprite fetch */
