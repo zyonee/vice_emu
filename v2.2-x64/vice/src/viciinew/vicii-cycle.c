@@ -45,7 +45,7 @@ static inline void check_badline(void)
         && vicii.raster_line >= vicii.first_dma_line
         && vicii.raster_line <= vicii.last_dma_line) {
 
-        /*VICII_DEBUG_CYCLE(("fetch start: line %i, clk %i", vicii.raster_line, vicii.raster_cycle));*/
+        /*VICII_DEBUG_CYCLE(("fetch start: line %i, clk %i, memptr %04x, counter %04x, y %i", vicii.raster_line, vicii.raster_cycle, vicii.memptr, vicii.mem_counter, vicii.raster.ycounter));*/
     
         vicii.fetch_active = 1;
  
@@ -70,12 +70,6 @@ int vicii_cycle(void)
 
     /*VICII_DEBUG_CYCLE(("cycle: line %i, clk %i", vicii.raster_line, vicii.raster_cycle));*/
 
-    if (vicii.raster_cycle == 13) {
-        if (vicii.bad_line) {
-            vicii.raster.ycounter = 0;
-        }
-    }
-
     /* Graphics fetch */
     if (!vicii.idle_state && (vicii.raster_cycle >= 14) && (vicii.raster_cycle <= 53)) {
         vicii_fetch_graphics();
@@ -84,7 +78,6 @@ int vicii_cycle(void)
     /* Stop fetch */
     if ((!vicii.idle_state) && (vicii.raster_cycle == 53)) {
         vicii.fetch_active = 0;
-        vicii.bad_line = 0;
         vicii.buf_offset = 0;
         vicii.gbuf_offset = 0;
     }
@@ -118,6 +111,12 @@ int vicii_cycle(void)
 
     if (!vicii.fetch_active && (vicii.raster_cycle >= 11) && (vicii.raster_cycle <= 53)) {
         check_badline();
+    }
+
+    if (vicii.raster_cycle == 13) {
+        if (vicii.bad_line) {
+            vicii.raster.ycounter = 0;
+        }
     }
 
     /* Matrix fetch */
