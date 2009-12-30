@@ -357,6 +357,9 @@ struct vicii_s {
     /* Last value read from VICII (used for RMW access).  */
     BYTE last_read;
 
+    /* Last value read by VICII during phi1.  */
+    BYTE last_read_phi1;
+
     /* Video chip capabilities.  */
     struct video_chip_cap_s *video_chip_cap;
 

@@ -1,5 +1,5 @@
 /*
- * vicii-fetch.h - Phi2 data fetch for the VIC-II emulation.
+ * vicii-fetch.h - Phi1/Phi2 data fetch for the VIC-II emulation.
  *
  * Written by
  *  Andreas Boose <viceteam@t-online.de>
@@ -31,7 +31,11 @@
 #include "types.h"
 
 extern void vicii_fetch_matrix(void);
-extern void vicii_fetch_graphics(void);
+extern BYTE vicii_fetch_graphics(void);
+extern BYTE vicii_fetch_idle(void);
+extern BYTE vicii_fetch_refresh(unsigned int num);
+extern BYTE vicii_fetch_sprite_pointer(unsigned int i);
+extern BYTE vicii_fetch_sprite_dma_1(unsigned int num);
 extern int vicii_fetch_sprites(int cycle);
 
 #endif
