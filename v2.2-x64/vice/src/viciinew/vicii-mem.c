@@ -146,13 +146,14 @@ void REGPARM2 vicii_mem_vbank_3fxx_store(WORD addr, BYTE value)
                 VICII_RASTER_CHAR(VICII_RASTER_CYCLE(maincpu_clk)),
                 &vicii.idle_data,
                 value);
-
+/*
         if (vicii.raster.sprite_status->visible_msk != 0
             || vicii.raster.sprite_status->dma_msk != 0) {
             vicii.idle_3fff[vicii.num_idle_3fff].cycle = maincpu_clk;
             vicii.idle_3fff[vicii.num_idle_3fff].value = value;
             vicii.num_idle_3fff++;
         }
+*/
     }
 }
 
