@@ -99,13 +99,14 @@ static inline BYTE cycle_phi1_fetch(unsigned int cycle)
         case 11:
         case 12:
         case 13:
-            data = vicii_fetch_refresh(cycle - 9);
+            data = vicii_fetch_refresh();
             break;
 
         /* Idle */
         case 54:
         case 55:
         case 56:
+        case 57:
             data = vicii_fetch_idle();
             break;
 
@@ -114,7 +115,7 @@ static inline BYTE cycle_phi1_fetch(unsigned int cycle)
             if (!vicii.idle_state) {
                 data = vicii_fetch_graphics();
             } else {
-                data = vicii_fetch_idle();
+                data = vicii_fetch_idle_gfx();
             }
             break;
     }
@@ -157,6 +158,7 @@ int vicii_cycle(void)
         vicii.raster_line++;
         if (vicii.raster_line == vicii.screen_height) {
             vicii.raster_line = 0;
+            vicii.refresh_counter = 0xff;
         }
         if (vicii.raster_line == vicii.raster_irq_line) {
             vicii_irq_alarm_handler(maincpu_clk, 0);

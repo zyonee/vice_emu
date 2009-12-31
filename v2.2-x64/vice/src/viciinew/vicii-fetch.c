@@ -197,18 +197,23 @@ void vicii_fetch_matrix(void)
     vicii.mem_counter &= 0x3ff;
 }
 
-BYTE vicii_fetch_refresh(unsigned int num)
+BYTE vicii_fetch_refresh(void)
 {
-    BYTE offset;
-   
-    offset = 0xff - (vicii.raster_line * 5 + num);
-
-    return vicii.ram_base_phi1[vicii.vbank_phi1 + 0x3f00 + offset];
+    return vicii.ram_base_phi1[vicii.vbank_phi1 + 0x3f00 + vicii.refresh_counter--];
 }
 
 BYTE vicii_fetch_idle(void)
 {
     return vicii.ram_base_phi1[vicii.vbank_phi1 + 0x3fff];
+}
+
+BYTE vicii_fetch_idle_gfx(void)
+{
+    if (vicii.regs[0x11] & 0x40) {
+        return vicii.ram_base_phi1[vicii.vbank_phi1 + 0x39ff];
+    } else {
+        return vicii.ram_base_phi1[vicii.vbank_phi1 + 0x3fff];
+    }
 }
 
 BYTE vicii_fetch_graphics(void)

@@ -360,6 +360,9 @@ struct vicii_s {
     /* Last value read by VICII during phi1.  */
     BYTE last_read_phi1;
 
+    /* Counter used for DRAM refresh accesses.  */
+    BYTE refresh_counter;
+
     /* Video chip capabilities.  */
     struct video_chip_cap_s *video_chip_cap;
 
