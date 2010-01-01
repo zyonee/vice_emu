@@ -218,11 +218,10 @@ inline static void _draw_std_text(BYTE *p, unsigned int xs, unsigned int xe,
                                   BYTE *gfx_msk_ptr)
 {
     DWORD *table_ptr;
-    BYTE *char_ptr, *msk_ptr;
+    BYTE *msk_ptr;
     unsigned int i;
 
     table_ptr = hr_table + (vicii.raster.background_color << 4);
-    char_ptr = vicii.chargen_ptr + vicii.raster.ycounter;
     msk_ptr = gfx_msk_ptr + GFX_MSK_LEFTBORDER_SIZE;
 
     for (i = xs; i <= xe; i++) {
@@ -293,7 +292,7 @@ static void draw_std_text_foreground(unsigned int start_char,
     for (i = start_char; i <= end_char; i++, p += 8) {
         BYTE b, f;
 
-        b = char_ptr[vicii.vbuf[i - vicii.buf_offset] * 8];
+        b = vicii.gbuf[i];
         
         if (vicii.raster.last_video_mode == VICII_EXTENDED_TEXT_MODE)
             b = char_ptr[(vicii.vbuf[i - vicii.buf_offset] & 0x3f) * 8];
@@ -307,7 +306,7 @@ static void draw_std_text_foreground(unsigned int start_char,
                 b = vicii.bitmap_low_ptr[j];
         }
 
-        f = vicii.cbuf[i - vicii.buf_offset];
+        f = vicii.cbuf[i];
         
         if (vicii.raster.xsmooth_shift_left > 0) {
             b = (b >> vicii.raster.xsmooth_shift_left) 
@@ -326,20 +325,18 @@ static int get_hires_bitmap(raster_cache_t *cache, unsigned int *xs,
 {
     int r;
 
-    r = raster_cache_data_fill(cache->background_data,
+    r = raster_cache_data_fill(cache->foreground_data,
+                               vicii.gbuf,
+                               VICII_SCREEN_TEXTCOLS,
+                               1,
+                               xs, xe,
+                               rr);
+    r |= raster_cache_data_fill(cache->background_data,
                                vicii.vbuf,
                                VICII_SCREEN_TEXTCOLS,
                                1,
                                xs, xe,
                                rr);
-    r |= raster_cache_data_fill_1fff(cache->foreground_data,
-                                     vicii.bitmap_low_ptr,
-                                     vicii.bitmap_high_ptr,
-                                     vicii.memptr * 8 + vicii.raster.ycounter,
-                                     VICII_SCREEN_TEXTCOLS,
-                                     8,
-                                     xs, xe,
-                                     rr);
     return r;
 }
 
@@ -410,20 +407,24 @@ inline static void _draw_hires_bitmap_foreground(BYTE *p, unsigned int xs,
         + vicii.raster.ycounter + xs * 8) & 0x1fff, i = xs;
         i <= xe; i++, j = (j + 8) & 0x1fff) {
 
-        DWORD *ptr = hr_table + (vicii.vbuf[i - vicii.buf_offset] << 4);
+        DWORD *ptr = hr_table + (vicii.vbuf[i] << 4);
         int d;
 
         if (vicii.raster.last_video_mode == VICII_ILLEGAL_BITMAP_MODE_1)
             j &= 0x19ff;
 
+/*
         if (j & 0x1000)
             bmval = bmptr_high[j & 0xfff];
         else
             bmval = bmptr_low[j];
+*/
+
+        bmval = vicii.gbuf[i];
 
         if (vicii.raster.last_video_mode == VICII_NORMAL_TEXT_MODE) {
             BYTE *char_ptr = vicii.chargen_ptr + vicii.raster.ycounter;
-            bmval = char_ptr[vicii.vbuf[i - vicii.buf_offset] * 8];
+            bmval = char_ptr[vicii.vbuf[i] * 8];
         } 
 
         d = *(msk_ptr + i) = bmval;
@@ -619,7 +620,7 @@ static void draw_mc_text_foreground(unsigned int start_char,
             else
                 b = vicii.bitmap_low_ptr[j];
         } else {
-            b = *(char_ptr + vicii.vbuf[i - vicii.buf_offset] * 8);
+            b = vicii.gbuf[i];
         }
 
         if (c & 0x8) {
@@ -681,14 +682,13 @@ static int get_mc_bitmap(raster_cache_t *cache, unsigned int *xs,
                                 1,
                                 xs, xe,
                                 rr);
-    r |= raster_cache_data_fill_1fff(cache->foreground_data,
-                                     vicii.bitmap_low_ptr,
-                                     vicii.bitmap_high_ptr,
-                                     8 * vicii.memptr + vicii.raster.ycounter,
-                                     VICII_SCREEN_TEXTCOLS,
-                                     8,
-                                     xs, xe,
-                                     rr);
+    r |= raster_cache_data_fill(cache->foreground_data,
+                                vicii.gbuf,
+                                VICII_SCREEN_TEXTCOLS,
+                                1,
+                                xs, xe,
+                                rr);
+
     return r;
 }
 
@@ -794,17 +794,20 @@ static void draw_mc_bitmap_foreground(unsigned int start_char,
         BYTE b;
         BYTE orig_background = *p;
 
-        c1 = vicii.vbuf[i - vicii.buf_offset] >> 4;
-        c2 = vicii.vbuf[i - vicii.buf_offset] & 0xf;
-        c3 = vicii.cbuf[i - vicii.buf_offset];
+        c1 = vicii.vbuf[i] >> 4;
+        c2 = vicii.vbuf[i] & 0xf;
+        c3 = vicii.cbuf[i];
 
         if (vicii.raster.last_video_mode == VICII_ILLEGAL_BITMAP_MODE_2)
             j &= 0x19ff;
 
+/*
         if (j & 0x1000)
             b = bmptr_high[j & 0xfff];
         else
             b = bmptr_low[j];
+*/
+        b = vicii.gbuf[i];
 
         if (vicii.raster.last_video_mode == VICII_MULTICOLOR_TEXT_MODE
             || vicii.raster.last_video_mode == VICII_ILLEGAL_TEXT_MODE) {
