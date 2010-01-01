@@ -44,21 +44,22 @@ static inline void check_badline(void)
         && vicii.allow_bad_lines
         && vicii.raster_line >= vicii.first_dma_line
         && vicii.raster_line <= vicii.last_dma_line) {
+        vicii.bad_line = 1;
+        vicii.idle_state = 0;
+    } else {
+        vicii.bad_line = 0;
+    }
 
+    if (vicii.bad_line && !vicii.fetch_active && (vicii.raster_cycle >= 11) && (vicii.raster_cycle <= 53)) {
         /*VICII_DEBUG_CYCLE(("fetch start: line %i, clk %i, memptr %04x, counter %04x, y %i", vicii.raster_line, vicii.raster_cycle, vicii.memptr, vicii.mem_counter, vicii.raster.ycounter));*/
-    
         vicii.fetch_active = 1;
- 
-        vicii.mem_counter = vicii.memptr;
  
         raster->draw_idle_state = 0;
         vicii.force_display_state = 1;
-
-        vicii.idle_state = 0;
+        
         vicii.idle_data_location = IDLE_NONE;
         vicii.ycounter_reset_checked = 1;
         vicii.memory_fetch_done = 2;
-        vicii.bad_line = 1;
                 
         vicii.prefetch_cycles = 3;
     }
@@ -165,16 +166,30 @@ int vicii_cycle(void)
         }
         vicii.buf_offset = 0;
         vicii.gbuf_offset = 0;
+        vicii.bad_line = 0;
     }
 
-    if (!vicii.fetch_active && (vicii.raster_cycle >= 11) && (vicii.raster_cycle <= 53)) {
-        check_badline();
-    }
+    /* Check badline condition, trigger fetches */
+    check_badline();
 
     if (vicii.raster_cycle == 13) {
+        vicii.mem_counter = vicii.memptr;
         if (vicii.bad_line) {
             vicii.raster.ycounter = 0;
         }
+    }
+
+    if (vicii.raster_cycle == 57) {
+        /* `ycounter' makes the chip go to idle state when it reaches the 
+           maximum value.  */
+        if (vicii.raster.ycounter == 7) { 
+            vicii.idle_state = 1; 
+            vicii.memptr = vicii.mem_counter; 
+        } 
+        if (!vicii.idle_state || vicii.bad_line) { 
+            vicii.raster.ycounter = (vicii.raster.ycounter + 1) & 0x7; 
+            vicii.idle_state = 0; 
+        } 
     }
 
     /* Matrix fetch */

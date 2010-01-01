@@ -193,8 +193,6 @@ void vicii_fetch_matrix(void)
         vicii.vbuf[vicii.buf_offset] = vicii.screen_base_phi2[vicii.mem_counter];
         vicii.cbuf[vicii.buf_offset] = mem_color_ram_vicii[vicii.mem_counter];
     }
-    vicii.mem_counter++;
-    vicii.mem_counter &= 0x3ff;
 }
 
 BYTE vicii_fetch_refresh(void)
@@ -249,6 +247,9 @@ BYTE vicii_fetch_graphics(void)
     }
     vicii.gbuf[vicii.gbuf_offset++] = data;
     vicii.buf_offset++;
+
+    vicii.mem_counter++;
+    vicii.mem_counter &= 0x3ff;
 
     return data;
 }

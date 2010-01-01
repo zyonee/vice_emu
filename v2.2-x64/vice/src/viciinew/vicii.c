@@ -912,20 +912,6 @@ void vicii_raster_draw_alarm_handler(CLOCK offset, void *data)
     }
 
     if (in_visible_area) {
-        /* `ycounter' makes the chip go to idle state when it reaches the
-           maximum value.  */
-        if (vicii.raster.ycounter == 7) {
-            vicii.idle_state = 1;
-            vicii.memptr = vicii.mem_counter;
-        }
-        if (!vicii.idle_state || vicii.bad_line) {
-            vicii.raster.ycounter = (vicii.raster.ycounter + 1) & 0x7;
-            vicii.idle_state = 0;
-        }
-        if (vicii.force_display_state) {
-            vicii.idle_state = 0;
-            vicii.force_display_state = 0;
-        }
         vicii.raster.draw_idle_state = vicii.idle_state;
         vicii.bad_line = 0;
     }
