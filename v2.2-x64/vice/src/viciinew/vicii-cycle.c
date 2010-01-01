@@ -133,7 +133,7 @@ int vicii_cycle(void)
     vicii.last_read_phi1 = cycle_phi1_fetch(vicii.raster_cycle);
 
     /* Stop fetch */
-    if ((!vicii.idle_state) && (vicii.raster_cycle == 53)) {
+    if (vicii.raster_cycle == 53) {
         vicii.fetch_active = 0;
         vicii.buf_offset = 0;
         vicii.gbuf_offset = 0;

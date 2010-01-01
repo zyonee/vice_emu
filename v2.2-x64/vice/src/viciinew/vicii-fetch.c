@@ -209,11 +209,17 @@ BYTE vicii_fetch_idle(void)
 
 BYTE vicii_fetch_idle_gfx(void)
 {
+    BYTE data;
+
     if (vicii.regs[0x11] & 0x40) {
-        return vicii.ram_base_phi1[vicii.vbank_phi1 + 0x39ff];
+        data = vicii.ram_base_phi1[vicii.vbank_phi1 + 0x39ff];
     } else {
-        return vicii.ram_base_phi1[vicii.vbank_phi1 + 0x3fff];
+        data = vicii.ram_base_phi1[vicii.vbank_phi1 + 0x3fff];
     }
+    vicii.gbuf[vicii.gbuf_offset++] = data;
+    vicii.buf_offset++;
+
+    return data;
 }
 
 BYTE vicii_fetch_graphics(void)

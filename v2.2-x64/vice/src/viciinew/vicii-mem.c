@@ -71,10 +71,10 @@ static int unused_bits_in_registers[0x40] =
 };
 
 
+#if 0
 /* Store a value in the video bank (it is assumed to be in RAM).  */
 inline static void REGPARM2 vicii_local_store_vbank(WORD addr, BYTE value)
 {
-#if 0
     unsigned int f;
 
     do {
@@ -111,7 +111,6 @@ inline static void REGPARM2 vicii_local_store_vbank(WORD addr, BYTE value)
             f = 1;
         }
     } while (f);
-#endif
     vicii.ram_base_phi2[addr] = value;
 }
 
@@ -126,12 +125,14 @@ void REGPARM2 vicii_mem_vbank_39xx_store(WORD addr, BYTE value)
 {
     vicii_local_store_vbank(addr, value);
 
+/*
     if (vicii.idle_data_location == IDLE_39FF && (addr & 0x3fff) == 0x39ff)
         raster_changes_foreground_add_int
             (&vicii.raster,
             VICII_RASTER_CHAR(VICII_RASTER_CYCLE(maincpu_clk)),
             &vicii.idle_data,
             value);
+*/
 }
 
 /* As `store_vbank()', but for the $3F00...$3FFF address range.  */
@@ -139,6 +140,7 @@ void REGPARM2 vicii_mem_vbank_3fxx_store(WORD addr, BYTE value)
 {
     vicii_local_store_vbank(addr, value);
 
+/*
     if ((addr & 0x3fff) == 0x3fff) {
         if (vicii.idle_data_location == IDLE_3FFF)
             raster_changes_foreground_add_int
@@ -146,16 +148,18 @@ void REGPARM2 vicii_mem_vbank_3fxx_store(WORD addr, BYTE value)
                 VICII_RASTER_CHAR(VICII_RASTER_CYCLE(maincpu_clk)),
                 &vicii.idle_data,
                 value);
-/*
+
+
         if (vicii.raster.sprite_status->visible_msk != 0
             || vicii.raster.sprite_status->dma_msk != 0) {
             vicii.idle_3fff[vicii.num_idle_3fff].cycle = maincpu_clk;
             vicii.idle_3fff[vicii.num_idle_3fff].value = value;
             vicii.num_idle_3fff++;
         }
-*/
     }
+*/
 }
+#endif
 
 
 inline static void store_sprite_x_position_lsb(const WORD addr, BYTE value)

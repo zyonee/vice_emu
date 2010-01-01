@@ -1275,10 +1275,9 @@ inline static void _draw_idle(BYTE *p, unsigned int xs, unsigned int xe,
     BYTE d = 0;
     unsigned int i;
 
-    if (!vicii.raster.blank_enabled)
-        d = (BYTE)vicii.idle_data;
-
     msk_ptr = gfx_msk_ptr + GFX_MSK_LEFTBORDER_SIZE;
+
+    /* FIXME this is hideous and possibly broken */
 
     if (VICII_IS_TEXT_MODE(vicii.raster.video_mode)) {
         /* The foreground color is always black (0).  */
@@ -1286,14 +1285,18 @@ inline static void _draw_idle(BYTE *p, unsigned int xs, unsigned int xe,
         DWORD c1, c2;
 
         offs = vicii.raster.idle_background_color << 4;
-        c1 = *(hr_table + offs + (d >> 4));
-        c2 = *(hr_table + offs + (d & 0xf));
+        for (i = xs; i <= xe; i++) {
+            if (!vicii.raster.blank_enabled) {
+                d = vicii.gbuf[i];
+            }
+            *(msk_ptr + i) = d;
 
-        for (i = xs * 8; i <= xe * 8; i += 8) {
-            *((DWORD *)(p + i)) = c1;
-            *((DWORD *)(p + i + 4)) = c2;
+            c1 = *(hr_table + offs + (d >> 4));
+            c2 = *(hr_table + offs + (d & 0xf));
+
+            *((DWORD *)(p + i * 8)) = c1;
+            *((DWORD *)(p + i * 8 + 4)) = c2;
         }
-        memset(msk_ptr + xs, d, xe + 1 - xs);
     } else {
         if (vicii.raster.video_mode == VICII_MULTICOLOR_BITMAP_MODE) {
             /* FIXME: Could be optimized */
@@ -1308,6 +1311,9 @@ inline static void _draw_idle(BYTE *p, unsigned int xs, unsigned int xe,
             ptmp = p + xs * 8;
 
             for (i = xs; i <= xe; i++) {
+                if (!vicii.raster.blank_enabled) {
+                    d = vicii.gbuf[i];
+                }
                 *(msk_ptr + i) = mcmsktable[d | 0x100];
 
                 ptmp[1] = ptmp[0] = c[mc_table[0x100 + d]];
@@ -1319,10 +1325,19 @@ inline static void _draw_idle(BYTE *p, unsigned int xs, unsigned int xe,
         } else {
             memset(p + xs * 8, 0, (xe + 1 - xs) * 8);
             if (vicii.raster.video_mode == VICII_ILLEGAL_BITMAP_MODE_2) {
-                for (i = xs; i <= xe; i++)
+                for (i = xs; i <= xe; i++) {
+                    if (!vicii.raster.blank_enabled) {
+                        d = vicii.gbuf[i];
+                    }
                     *(msk_ptr + i) = mcmsktable[d | 0x100];
+                }
             } else {
-                memset(msk_ptr + xs, d, xe + 1 - xs);
+                for (i = xs; i <= xe; i++) {
+                    if (!vicii.raster.blank_enabled) {
+                        d = vicii.gbuf[i];
+                    }
+                    *(msk_ptr + i) = d;
+                }
             }
         }
     }
@@ -1349,15 +1364,17 @@ static void draw_idle_foreground(unsigned int start_char,
 
     p = GFX_PTR();
     msk_ptr = vicii.raster.gfx_msk + GFX_MSK_LEFTBORDER_SIZE;
-    if (!vicii.raster.blank_enabled)
-        d = (BYTE)vicii.idle_data;
-
-    if (vicii.raster.xsmooth_shift_left > 0) {
-        d = (d >> vicii.raster.xsmooth_shift_left) 
-            << vicii.raster.xsmooth_shift_left;
-    }
 
     for (i = start_char; i <= end_char; i++) {
+        if (!vicii.raster.blank_enabled) {
+            d = vicii.gbuf[i];
+        }
+
+        if (vicii.raster.xsmooth_shift_left > 0) {
+            d = (d >> vicii.raster.xsmooth_shift_left) 
+                << vicii.raster.xsmooth_shift_left;
+        }
+
         DRAW_STD_TEXT_BYTE(p + i * 8, d, 0);
         *(msk_ptr + i) = d;
     }
