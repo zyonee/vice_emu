@@ -8,8 +8,6 @@ INCLUDES = \
 noinst_LIBRARIES = libviciinew.a
 
 libviciinew_a_SOURCES = \
-	vicii-badline.c \
-	vicii-badline.h \
 	vicii-cmdline-options.c \
 	vicii-cmdline-options.h \
 	vicii-color.c \

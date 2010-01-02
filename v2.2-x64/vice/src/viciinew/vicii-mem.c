@@ -31,7 +31,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "alarm.h"
 #include "c64cia.h"
 #include "debug.h"
 #include "maincpu.h"
@@ -39,7 +38,6 @@
 #include "raster-sprite-status.h"
 #include "raster-sprite.h"
 #include "types.h"
-#include "vicii-badline.h"
 #include "vicii-fetch.h"
 #include "vicii-irq.h"
 #include "vicii-resources.h"
@@ -69,97 +67,6 @@ static int unused_bits_in_registers[0x40] =
     0xff /* $D038 */ , 0xff /* $D039 */ , 0xff /* $D03A */ , 0xff /* $D03B */ ,
     0xff /* $D03C */ , 0xff /* $D03D */ , 0xff /* $D03E */ , 0xff /* $D03F */
 };
-
-
-#if 0
-/* Store a value in the video bank (it is assumed to be in RAM).  */
-inline static void REGPARM2 vicii_local_store_vbank(WORD addr, BYTE value)
-{
-    unsigned int f;
-
-    do {
-        CLOCK mclk;
-
-        /* WARNING: Assumes `maincpu_rmw_flag' is 0 or 1.  */
-        mclk = maincpu_clk - maincpu_rmw_flag - 1;
-        f = 0;
-
-        if (mclk >= vicii.fetch_clk) {
-            /* If the fetch starts here, the sprite fetch routine should
-               get the new value, not the old one.  */
-            if (mclk == vicii.fetch_clk)
-                vicii.ram_base_phi2[addr] = value;
-
-            /* The sprite DMA check can be followed by a real fetch.
-               Save the location to execute the store if a real
-               fetch actually happens.  */
-            if (vicii.fetch_idx == VICII_CHECK_SPRITE_DMA) {
-                vicii.store_clk = mclk;
-                vicii.store_value = value;
-                vicii.store_addr = addr;
-            }
-
-            vicii_fetch_alarm_handler(maincpu_clk - vicii.fetch_clk, NULL);
-            f = 1;
-            /* WARNING: Assumes `maincpu_rmw_flag' is 0 or 1.  */
-            mclk = maincpu_clk - maincpu_rmw_flag - 1;
-            vicii.store_clk = CLOCK_MAX;
-        }
-
-        if (mclk >= vicii.draw_clk) {
-            vicii_raster_draw_alarm_handler(0, NULL);
-            f = 1;
-        }
-    } while (f);
-    vicii.ram_base_phi2[addr] = value;
-}
-
-/* Encapsulate inlined function for other modules */
-void REGPARM2 vicii_mem_vbank_store(WORD addr, BYTE value)
-{
-    vicii_local_store_vbank(addr, value);
-}
-
-/* As `store_vbank()', but for the $3900...$39FF address range.  */
-void REGPARM2 vicii_mem_vbank_39xx_store(WORD addr, BYTE value)
-{
-    vicii_local_store_vbank(addr, value);
-
-/*
-    if (vicii.idle_data_location == IDLE_39FF && (addr & 0x3fff) == 0x39ff)
-        raster_changes_foreground_add_int
-            (&vicii.raster,
-            VICII_RASTER_CHAR(VICII_RASTER_CYCLE(maincpu_clk)),
-            &vicii.idle_data,
-            value);
-*/
-}
-
-/* As `store_vbank()', but for the $3F00...$3FFF address range.  */
-void REGPARM2 vicii_mem_vbank_3fxx_store(WORD addr, BYTE value)
-{
-    vicii_local_store_vbank(addr, value);
-
-/*
-    if ((addr & 0x3fff) == 0x3fff) {
-        if (vicii.idle_data_location == IDLE_3FFF)
-            raster_changes_foreground_add_int
-                (&vicii.raster,
-                VICII_RASTER_CHAR(VICII_RASTER_CYCLE(maincpu_clk)),
-                &vicii.idle_data,
-                value);
-
-
-        if (vicii.raster.sprite_status->visible_msk != 0
-            || vicii.raster.sprite_status->dma_msk != 0) {
-            vicii.idle_3fff[vicii.num_idle_3fff].cycle = maincpu_clk;
-            vicii.idle_3fff[vicii.num_idle_3fff].value = value;
-            vicii.num_idle_3fff++;
-        }
-    }
-*/
-}
-#endif
 
 
 inline static void store_sprite_x_position_lsb(const WORD addr, BYTE value)
@@ -292,7 +199,7 @@ inline static void check_lower_upper_border(const BYTE value,
 
 inline static void d011_store(BYTE value)
 {
-    int cycle, old_allow_bad_lines;
+    int cycle;
     unsigned int line;
 
     cycle = VICII_RASTER_CYCLE(maincpu_clk);
@@ -304,22 +211,6 @@ inline static void d011_store(BYTE value)
 
     vicii.raster_irq_line &= 0xff;
     vicii.raster_irq_line |= (value & 0x80) << 1;
-
-    /* This is the funniest part... handle bad line tricks.  */
-    old_allow_bad_lines = vicii.allow_bad_lines;
-
-    if (line == vicii.first_dma_line && cycle == 0)
-        vicii.allow_bad_lines = (value & 0x10) ? 1 : 0;
-
-    if (VICII_RASTER_Y(maincpu_clk - 1) == vicii.first_dma_line
-        && (value & 0x10) != 0)
-        vicii.allow_bad_lines = 1;
-
-    if ((vicii.raster.ysmooth != (value & 7)
-        || vicii.allow_bad_lines != old_allow_bad_lines)
-        && line >= vicii.first_dma_line
-        && line <= vicii.last_dma_line)
-        vicii_badline_check_state(value, cycle, line, old_allow_bad_lines);
 
     vicii.raster.ysmooth = value & 0x7;
 
@@ -584,7 +475,7 @@ inline static void d01a_store(const BYTE value)
 
     vicii_irq_set_line();
 
-/*    VICII_DEBUG_REGISTER(("IRQ mask register: $%02X", vicii.regs[addr])); */
+    VICII_DEBUG_REGISTER(("IRQ mask register: $%02X", vicii.regs[0x1a]));
 }
 
 inline static void d01b_store(const BYTE value)
@@ -1070,19 +961,7 @@ inline static BYTE d01112_read(WORD addr)
 
 inline static BYTE d019_read(void)
 {
-    /* Manually set raster IRQ flag if the opcode reading $d019 has crossed
-       the line end and the raster IRQ alarm has not been executed yet. */
-    if (VICII_RASTER_Y(maincpu_clk) == vicii.raster_irq_line
-        && vicii.raster_irq_clk != CLOCK_MAX
-        && maincpu_clk >= vicii.raster_irq_clk) {
-        if (vicii.regs[0x1a] & 0x1)
-            vicii.last_read = vicii.irq_status | 0xf1;
-        else
-            vicii.last_read = vicii.irq_status | 0x71;
-    } else {
-        vicii.last_read = vicii.irq_status | 0x70;
-    }
-
+    vicii.last_read = vicii.irq_status | 0x70;
     return vicii.last_read;
 }
 
@@ -1304,25 +1183,12 @@ BYTE REGPARM1 vicii_read(WORD addr)
 
 inline static BYTE d019_peek(void)
 {
-    /* Manually set raster IRQ flag if the opcode reading $d019 has crossed
-       the line end and the raster IRQ alarm has not been executed yet. */
-    if (VICII_RASTER_Y(maincpu_clk) == vicii.raster_irq_line
-        && vicii.raster_irq_clk != CLOCK_MAX
-        && maincpu_clk >= vicii.raster_irq_clk) {
-        if (vicii.regs[0x1a] & 0x1)
-            return vicii.irq_status | 0xf1;
-        else
-            return vicii.irq_status | 0x71;
-    } else {
-        return vicii.irq_status | 0x70;
-    }
-
-    return vicii.irq_status;
+    return vicii.irq_status | 0x70;
 }
 
 BYTE REGPARM1 vicii_peek(WORD addr)
 {
-        addr &= 0x3f;
+    addr &= 0x3f;
 
     switch (addr) {
       case 0x11:              /* $D011: video mode, Y scroll, 24/25 line mode

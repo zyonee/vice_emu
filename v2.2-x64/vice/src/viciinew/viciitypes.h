@@ -120,27 +120,6 @@ struct vicii_light_pen_s {
 };
 typedef struct vicii_light_pen_s vicii_light_pen_t;
 
-enum vicii_fetch_idx_s {
-    VICII_FETCH_MATRIX,
-    VICII_CHECK_SPRITE_DMA,
-    VICII_FETCH_SPRITE
-};
-typedef enum vicii_fetch_idx_s vicii_fetch_idx_t;
-
-enum vicii_idle_data_location_s {
-    IDLE_NONE,
-    IDLE_3FFF,
-    IDLE_39FF
-};
-typedef enum vicii_idle_data_location_s vicii_idle_data_location_t;
-
-struct idle_3fff_s {
-    CLOCK cycle;
-    BYTE value;
-};
-typedef struct idle_3fff_s idle_3fff_t;
-
-struct alarm_s;
 struct video_chip_cap_s;
 
 struct vicii_s {
@@ -232,25 +211,14 @@ struct vicii_s {
        line? */
     int force_display_state;
 
-    /* This flag is set if a memory fetch has already happened on the current
-       line.  FIXME: Value of 2?...  */
-    int memory_fetch_done;
-
     /* Internal memory pointer (VCBASE).  */
     int memptr;
 
     /* Internal memory counter (VC).  */
     int mem_counter;
 
-    /* Value to add to `mem_counter' after the graphics has been painted.  */
-    int mem_counter_inc;
-
     /* Flag: is the current line a `bad' line? */
     int bad_line;
-
-    /* Flag: Check for raster.ycounter reset already done on this line?
-       (cycle 13) */
-    int ycounter_reset_checked;
 
     /* Flag: Does the currently selected video mode force the overscan
        background color to be black?  (This happens with the hires bitmap and
@@ -267,23 +235,6 @@ struct vicii_s {
     int vbank_phi1;                     /* = 0; */
     int vbank_phi2;                     /* = 0; */
 
-    /* Pointer to the start of the video bank.  */
-    /* BYTE *vbank_ptr; - never used, only set */
-
-    /* Data to display in idle state.  */
-    int idle_data;
-
-    /* left border idle data */
-    int idle_data_l[4];
-    /* middle idle data */
-    int idle_data_m[4];
-    /* right border idle data */
-    int idle_data_r[4];
-
-    /* Where do we currently fetch idle state from?  If `IDLE_NONE', we are
-       not in idle state and thus do not need to update `idle_data'.  */
-    vicii_idle_data_location_t idle_data_location;
-
     /* All the VIC-II logging goes here.  */
     signed int log;
 
@@ -291,34 +242,11 @@ struct vicii_s {
     int fetch_active;
     int prefetch_cycles;
 
-    /* VIC-II alarms.  */
-    struct alarm_s *raster_fetch_alarm;
-    struct alarm_s *raster_draw_alarm;
-    struct alarm_s *raster_irq_alarm;
-
-    /* What do we do when the `A_RASTERFETCH' event happens?  */
-    vicii_fetch_idx_t fetch_idx;
-
     /* Number of sprite being DMA fetched.  */
     unsigned int sprite_fetch_idx;
 
     /* Mask for sprites being fetched at DMA.  */
     unsigned int sprite_fetch_msk;
-
-    /* Clock cycle for the next "raster fetch" alarm.  */
-    CLOCK fetch_clk;
-
-    /* Clock cycle for the next "raster draw" alarm.  */
-    CLOCK draw_clk;
-
-    /* Clock value for raster compare IRQ.  */
-    CLOCK raster_irq_clk;
-
-    /* FIXME: Bad name.  FIXME: Has to be initialized.  */
-    CLOCK last_emulate_line_clk;
-
-    /* Clock cycle for the next sprite fetch.  */
-    CLOCK sprite_fetch_clk;
 
     /* Geometry and timing parameters of the selected VIC-II emulation.  */
     unsigned int screen_height;
@@ -342,17 +270,6 @@ struct vicii_s {
 
     /* Flag backgroundcolor in hires mode or extended text mode.  */
     int get_background_from_vbuf;
-
-    /* Value to store before DMA.  */
-    CLOCK store_clk;
-    WORD store_addr;
-    BYTE store_value;
-
-    /* Stores to 0x3fff idle location (used for idle sprite fetch).  */
-    unsigned int num_idle_3fff;
-    idle_3fff_t *idle_3fff;
-    unsigned int num_idle_3fff_old;
-    idle_3fff_t *idle_3fff_old;
 
     /* Last value read from VICII (used for RMW access).  */
     BYTE last_read;

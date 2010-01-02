@@ -102,8 +102,6 @@ int c64_snapshot_read(const char *name, int event_mode)
         goto fail;
     }
 
-    vicii_snapshot_prepare();
-
     if (maincpu_snapshot_read_module(s) < 0
         || c64_snapshot_read_module(s) < 0
         || ciacore_snapshot_read_module(machine_context.cia1, s) < 0

@@ -53,15 +53,10 @@ static inline void check_badline(void)
     if (vicii.bad_line && !vicii.fetch_active && (vicii.raster_cycle >= 11) && (vicii.raster_cycle <= 53)) {
         /*VICII_DEBUG_CYCLE(("fetch start: line %i, clk %i, memptr %04x, counter %04x, y %i", vicii.raster_line, vicii.raster_cycle, vicii.memptr, vicii.mem_counter, vicii.raster.ycounter));*/
         vicii.fetch_active = 1;
+        vicii.prefetch_cycles = 3;
  
         raster->draw_idle_state = 0;
         vicii.force_display_state = 1;
-        
-        vicii.idle_data_location = IDLE_NONE;
-        vicii.ycounter_reset_checked = 1;
-        vicii.memory_fetch_done = 2;
-                
-        vicii.prefetch_cycles = 3;
     }
 }
 
@@ -160,13 +155,24 @@ int vicii_cycle(void)
         if (vicii.raster_line == vicii.screen_height) {
             vicii.raster_line = 0;
             vicii.refresh_counter = 0xff;
+            vicii.allow_bad_lines = 0;
         }
-        if (vicii.raster_line == vicii.raster_irq_line) {
+        if ((vicii.raster_line == vicii.raster_irq_line) && (vicii.raster_line != 0)) {
             vicii_irq_alarm_handler(maincpu_clk, 0);
         }
         vicii.buf_offset = 0;
         vicii.gbuf_offset = 0;
         vicii.bad_line = 0;
+    }
+
+    /* IRQ on line 0 is delayed by 1 clock */
+    if ((vicii.raster_line == vicii.raster_irq_line) && (vicii.raster_line == 0) && (vicii.raster_cycle == 1)) {
+        vicii_irq_alarm_handler(maincpu_clk, 0);
+    }
+
+    /* Check DEN bit on first DMA line */
+    if ((vicii.raster_line == vicii.first_dma_line) && !vicii.allow_bad_lines) {
+        vicii.allow_bad_lines = (vicii.regs[0x11] & 0x10) ? 1 : 0; 
     }
 
     /* Check badline condition, trigger fetches */

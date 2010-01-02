@@ -1,5 +1,5 @@
 /*
- * vicii-fetch.c - Phi2 data fetch for the VIC-II emulation.
+ * vicii-fetch.c - Phi1/Phi2 data fetch for the VIC-II emulation.
  *
  * Written by
  *  Andreas Boose <viceteam@t-online.de>
@@ -29,7 +29,6 @@
 
 #include <string.h>
 
-#include "alarm.h"
 #include "debug.h"
 #include "dma.h"
 #include "log.h"

@@ -1255,11 +1255,11 @@ static int get_idle(raster_cache_t *cache, unsigned int *xs, unsigned int *xe,
                     int rr)
 {
     if (rr
-        || cache->foreground_data[0] != vicii.idle_data
+        /*|| cache->foreground_data[0] != vicii.idle_data*/
         || cache->color_data_1[0] != vicii.raster.background_color
         || cache->color_data_1[1] != vicii.raster.idle_background_color
         || cache->color_data_1[2] != vicii.raster.video_mode) {
-        cache->foreground_data[0] = (BYTE)vicii.idle_data;
+        /*cache->foreground_data[0] = (BYTE)vicii.idle_data;*/
         cache->color_data_1[0] = vicii.raster.background_color;
         cache->color_data_1[1] = vicii.raster.idle_background_color;
         cache->color_data_1[2] = vicii.raster.video_mode;
