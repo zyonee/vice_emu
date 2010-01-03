@@ -47,6 +47,9 @@
 #define VICII_MAX_SPRITE_WIDTH 56  /* expanded sprite in bug area */
 #define VICII_NUM_COLORS       16
 
+/* drawing constants. */
+#define VICII_DRAW_BUFFER_SIZE (65 * 8)
+
 /* Available video modes.  The number is given by
    ((vicii.regs[0x11] & 0x60) | (vicii.regs[0x16] & 0x10)) >> 4.  */
 enum vicii_video_mode_s {
@@ -195,7 +198,7 @@ struct vicii_s {
     int dbuf_offset;
 
     /* Draw buffer for a full line (one byte per pixel) */
-    BYTE dbuf[65 * 8];
+    BYTE dbuf[VICII_DRAW_BUFFER_SIZE];
 
     /* If this flag is set, bad lines (DMA's) can happen.  */
     int allow_bad_lines;
