@@ -16,6 +16,8 @@ libviciinew_a_SOURCES = \
 	vicii-cycle.h \
 	vicii-draw.c \
 	vicii-draw.h \
+	vicii-draw-cycle.c \
+	vicii-draw-cycle.h \
 	vicii-fetch.c \
 	vicii-fetch.h \
 	vicii-irq.c \

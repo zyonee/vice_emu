@@ -62,6 +62,7 @@
 #include "vicii-cmdline-options.h"
 #include "vicii-color.h"
 #include "vicii-draw.h"
+#include "vicii-draw-cycle.h"
 #include "vicii-fetch.h"
 #include "vicii-irq.h"
 #include "vicii-mem.h"
@@ -252,6 +253,7 @@ raster_t *vicii_init(unsigned int flag)
     vicii_update_memory_ptrs(0);
 
     vicii_draw_init();
+    vicii_draw_cycle_init();
     vicii_sprites_init();
 
     vicii.buf_offset = 0;

@@ -191,6 +191,9 @@ struct vicii_s {
     /* Graphics buffer (bitmap/LinearB) */
     BYTE gbuf[VICII_SCREEN_TEXTCOLS];
 
+    /* Draw buffer for a full line (one byte per pixel) */
+    BYTE dbuf[65 * 8];
+
     /* If this flag is set, bad lines (DMA's) can happen.  */
     int allow_bad_lines;
 

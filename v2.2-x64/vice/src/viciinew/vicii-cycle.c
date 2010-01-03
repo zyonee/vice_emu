@@ -30,6 +30,7 @@
 #include "mainc64cpu.h"
 #include "types.h"
 #include "vicii-cycle.h"
+#include "vicii-draw-cycle.h"
 #include "vicii-fetch.h"
 #include "vicii-irq.h"
 #include "vicii.h"
