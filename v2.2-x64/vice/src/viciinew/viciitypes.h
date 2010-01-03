@@ -191,6 +191,9 @@ struct vicii_s {
     /* Graphics buffer (bitmap/LinearB) */
     BYTE gbuf[VICII_SCREEN_TEXTCOLS];
 
+    /* Current rendering position into the draw buffer */
+    int dbuf_offset;
+
     /* Draw buffer for a full line (one byte per pixel) */
     BYTE dbuf[65 * 8];
 

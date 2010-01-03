@@ -843,10 +843,34 @@ static void init_drawing_tables(void)
 
 void vicii_draw_cycle(void)
 {
-    int c;
-    c = vicii.raster_cycle;
+    int cycle, i;
+    cycle = vicii.raster_cycle;
+    /* reset rendering on raster cycle 0 */
+    if (cycle == 0) {
+        vicii.dbuf_offset = 0;
+    }
+    i = vicii.dbuf_offset;
+    
 
-    vicii.dbuf[c]=c % 0x0f;
+    if (cycle >= 14 && cycle <= 53) {
+        DRAW_STD_TEXT_BYTE(&vicii.dbuf[i],
+                           vicii.vbuf[vicii.buf_offset],
+                           vicii.cbuf[vicii.buf_offset]);
+    } else {
+        /* border */
+        BYTE c = vicii.regs[0x20];
+        vicii.dbuf[i++]=c;
+        vicii.dbuf[i++]=c;
+        vicii.dbuf[i++]=c;
+        vicii.dbuf[i++]=c;
+        vicii.dbuf[i++]=c;
+        vicii.dbuf[i++]=c;
+        vicii.dbuf[i++]=c;
+        vicii.dbuf[i++]=c;
+    }
+
+    
+    vicii.dbuf_offset += 8;
 }
 
 
