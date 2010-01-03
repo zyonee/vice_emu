@@ -35,58 +35,54 @@
 #include "types.h"
 #include "vicii-draw-cycle.h"
 #include "viciitypes.h"
-#include "viewport.h"
 
 
-#define DRAW_STD_TEXT_BYTE(p, b, f)       \
-    do {                                  \
-        if ((b) & 0x80) *(p) = (f);       \
-        if ((b) & 0x40) *((p) + 1) = (f); \
-        if ((b) & 0x20) *((p) + 2) = (f); \
-        if ((b) & 0x10) *((p) + 3) = (f); \
-        if ((b) & 0x08) *((p) + 4) = (f); \
-        if ((b) & 0x04) *((p) + 5) = (f); \
-        if ((b) & 0x02) *((p) + 6) = (f); \
-        if ((b) & 0x01) *((p) + 7) = (f); \
-    } while (0)                           \
+static void draw_std_text_byte(BYTE *p, BYTE b, BYTE c)
+{
+    if (b & 0x80) *(p + 0) = c;
+    if (b & 0x40) *(p + 1) = c;
+    if (b & 0x20) *(p + 2) = c;
+    if (b & 0x10) *(p + 3) = c;
+    if (b & 0x08) *(p + 4) = c;
+    if (b & 0x04) *(p + 5) = c;
+    if (b & 0x02) *(p + 6) = c;
+    if (b & 0x01) *(p + 7) = c;
+}
 
+static void draw_mc_byte(BYTE *p, BYTE b, BYTE c1, BYTE c2, BYTE c3)
+{
+    if (b & 0x80) {
+        if (b & 0x40)
+            *p = *(p + 1) = c3;
+        else
+            *p = *(p + 1) = c2;
+    } else if (b & 0x40)
+        *p = *(p + 1) = c1;
 
-#define DRAW_MC_BYTE(p, b, f1, f2, f3)          \
-    do {                                        \
-        if ((b) & 0x80) {                       \
-            if ((b) & 0x40)                     \
-                *(p) = *((p) + 1) = (f3);       \
-            else                                \
-                *(p) = *((p) + 1) = (f2);       \
-        } else if ((b) & 0x40)                  \
-            *(p) = *((p) + 1) = (f1);           \
-                                                \
-        if ((b) & 0x20) {                       \
-            if ((b) & 0x10)                     \
-                *((p) + 2) = *((p) + 3) = (f3); \
-            else                                \
-                *((p) + 2) = *((p) + 3) = (f2); \
-        } else if ((b) & 0x10)                  \
-            *((p) + 2) = *((p) + 3) = (f1);     \
-                                                \
-        if ((b) & 0x08) {                       \
-            if ((b) & 0x04)                     \
-                *((p) + 4) = *((p) + 5) = (f3); \
-            else                                \
-                *((p) + 4) = *((p) + 5) = (f2); \
-        } else if ((b) & 0x04)                  \
-            *((p) + 4) = *((p) + 5) = (f1);     \
-                                                \
-        if ((b) & 0x02) {                       \
-            if ((b) & 0x01)                     \
-                *((p) + 6) = *((p) + 7) = (f3); \
-            else                                \
-                *((p) + 6) = *((p) + 7) = (f2); \
-        } else if ((b) & 0x01)                  \
-            *((p) + 6) = *((p) + 7) = (f1);     \
-    } while (0)
+    if (b & 0x20) {
+        if (b & 0x10)
+            *(p + 2) = *(p + 3) = c3;
+        else
+            *(p + 2) = *(p + 3) = c2;
+    } else if (b & 0x10)
+        *(p + 2) = *(p + 3) = c1;
 
+    if (b & 0x08) {
+        if (b & 0x04)
+            *(p + 4) = *(p + 5) = c3;
+        else
+            *(p + 4) = *(p + 5) = c2;
+    } else if (b & 0x04)
+        *(p + 4) = *(p + 5) = c1;
 
+    if (b & 0x02) {
+        if (b & 0x01)
+            *(p + 6) = *(p + 7) = c3;
+        else
+            *(p + 6) = *(p + 7) = c2;
+    } else if (b & 0x01)
+        *(p + 6) = *(p + 7) = c1;
+}
 
 void vicii_draw_cycle(void)
 {
@@ -120,35 +116,35 @@ void vicii_draw_cycle(void)
         switch (vicii.video_mode) {
 
         case VICII_NORMAL_TEXT_MODE:
-            DRAW_STD_TEXT_BYTE(&vicii.dbuf[i], 0xff, bg);
-            DRAW_STD_TEXT_BYTE(&vicii.dbuf[i], gbuf, cbuf);
+            draw_std_text_byte(&vicii.dbuf[i], 0xff, bg);
+            draw_std_text_byte(&vicii.dbuf[i], gbuf, cbuf);
             break;
 
         case VICII_MULTICOLOR_TEXT_MODE:
-            DRAW_STD_TEXT_BYTE(&vicii.dbuf[i], 0xff, bg);
+            draw_std_text_byte(&vicii.dbuf[i], 0xff, bg);
             c1 = vicii.ext_background_color[0];
             c2 = vicii.ext_background_color[1];
             c3 = cbuf & 0x07;
             if (cbuf & 0x08) {
-                DRAW_MC_BYTE(&vicii.dbuf[i], gbuf, c1, c2, c3);
+                draw_mc_byte(&vicii.dbuf[i], gbuf, c1, c2, c3);
             } else {
-                DRAW_STD_TEXT_BYTE(&vicii.dbuf[i], gbuf, c3);
+                draw_std_text_byte(&vicii.dbuf[i], gbuf, c3);
             }
             break;
 
         case VICII_HIRES_BITMAP_MODE:
             c1 = vbuf & 0x0f;
             c2 = vbuf >> 4;
-            DRAW_STD_TEXT_BYTE(&vicii.dbuf[i], 0xff, c1);
-            DRAW_STD_TEXT_BYTE(&vicii.dbuf[i], gbuf, c2);
+            draw_std_text_byte(&vicii.dbuf[i], 0xff, c1);
+            draw_std_text_byte(&vicii.dbuf[i], gbuf, c2);
             break;
 
         case VICII_MULTICOLOR_BITMAP_MODE:
             c1 = vbuf >> 4;
             c2 = vbuf & 0x0f;
             c3 = cbuf;
-            DRAW_STD_TEXT_BYTE(&vicii.dbuf[i], 0xff, bg);
-            DRAW_MC_BYTE(&vicii.dbuf[i], gbuf, c1, c2, c3);
+            draw_std_text_byte(&vicii.dbuf[i], 0xff, bg);
+            draw_mc_byte(&vicii.dbuf[i], gbuf, c1, c2, c3);
             break;
             
         case VICII_EXTENDED_TEXT_MODE:
@@ -157,33 +153,33 @@ void vicii_draw_cycle(void)
             c3 = vicii.ext_background_color[2];
             switch (vbuf & 0xc0) {
             case 0x00:
-                DRAW_STD_TEXT_BYTE(&vicii.dbuf[i], 0xff, bg);
+                draw_std_text_byte(&vicii.dbuf[i], 0xff, bg);
                 break;
             case 0x40:
-                DRAW_STD_TEXT_BYTE(&vicii.dbuf[i], 0xff, c1);
+                draw_std_text_byte(&vicii.dbuf[i], 0xff, c1);
                 break;
             case 0x80:
-                DRAW_STD_TEXT_BYTE(&vicii.dbuf[i], 0xff, c2);
+                draw_std_text_byte(&vicii.dbuf[i], 0xff, c2);
                 break;
             case 0xc0:
-                DRAW_STD_TEXT_BYTE(&vicii.dbuf[i], 0xff, c3);
+                draw_std_text_byte(&vicii.dbuf[i], 0xff, c3);
                 break;
             }
 
-            DRAW_STD_TEXT_BYTE(&vicii.dbuf[i], gbuf, cbuf);
+            draw_std_text_byte(&vicii.dbuf[i], gbuf, cbuf);
             break;
 
         case VICII_IDLE_MODE:
             /* this currently doesn't work as expected */
-            DRAW_STD_TEXT_BYTE(&vicii.dbuf[i], 0xff, bg);
-            DRAW_STD_TEXT_BYTE(&vicii.dbuf[i], gbuf, 0);         
+            draw_std_text_byte(&vicii.dbuf[i], 0xff, bg);
+            draw_std_text_byte(&vicii.dbuf[i], gbuf, 0);         
             break;
 
         }
     } else {
         /* border */
         BYTE c = vicii.regs[0x20];
-        DRAW_STD_TEXT_BYTE(&vicii.dbuf[i], 0xff, c+1);
+        draw_std_text_byte(&vicii.dbuf[i], 0xff, c+1);
     }
     
     vicii.dbuf_offset += 8;
