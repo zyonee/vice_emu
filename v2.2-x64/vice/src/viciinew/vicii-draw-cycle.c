@@ -862,11 +862,31 @@ void vicii_draw_cycle(void)
     
 
     if (cycle >= 14 && cycle <= 53) {
+        BYTE bg, c1, c2, c3;
+
+        bg = vicii.regs[0x21];
+        
         vbuf = vicii.vbuf[cycle - 14];
         cbuf = vicii.cbuf[cycle - 14];
-        BYTE bg = vicii.regs[0x21];
-        DRAW_STD_TEXT_BYTE(&vicii.dbuf[i], 0xff, bg);
-        DRAW_STD_TEXT_BYTE(&vicii.dbuf[i], gbuf, cbuf);
+
+        switch (vicii.video_mode) {
+        case VICII_NORMAL_TEXT_MODE:
+            DRAW_STD_TEXT_BYTE(&vicii.dbuf[i], 0xff, bg);
+            DRAW_STD_TEXT_BYTE(&vicii.dbuf[i], gbuf, cbuf);
+            break;
+        case VICII_MULTICOLOR_TEXT_MODE:
+            DRAW_STD_TEXT_BYTE(&vicii.dbuf[i], 0xff, bg);
+            c1 = vicii.ext_background_color[0];
+            c2 = vicii.ext_background_color[1];
+            c3 = cbuf & 0x07;
+            if (cbuf & 0x08) {
+                DRAW_MC_BYTE(&vicii.dbuf[i], gbuf, c1, c2, c3);
+            } else {
+                DRAW_STD_TEXT_BYTE(&vicii.dbuf[i], gbuf, c3);
+            }
+            break;
+            
+        }
     } else {
         /* border */
         BYTE c = vicii.regs[0x20];
