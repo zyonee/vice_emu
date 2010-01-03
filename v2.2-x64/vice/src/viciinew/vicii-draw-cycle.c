@@ -847,9 +847,9 @@ void vicii_draw_cycle(void)
     BYTE vbuf, cbuf, gbuf;
 
     cycle = vicii.raster_cycle;
-    cbuf = 0;
     vbuf = 0;
-    gbuf = vicii.gbuf[vicii.gbuf_offset-1];
+    cbuf = 0;
+    gbuf = 0;
 
     /* reset rendering on raster cycle 0 */
     if (cycle == 0) {
@@ -868,6 +868,7 @@ void vicii_draw_cycle(void)
         
         vbuf = vicii.vbuf[cycle - 14];
         cbuf = vicii.cbuf[cycle - 14];
+        gbuf = vicii.gbuf[cycle - 14];
 
         switch (vicii.video_mode) {
 
@@ -903,6 +904,28 @@ void vicii_draw_cycle(void)
             DRAW_MC_BYTE(&vicii.dbuf[i], gbuf, c1, c2, c3);
             break;
             
+        case VICII_EXTENDED_TEXT_MODE:
+            c1 = vicii.ext_background_color[0];
+            c2 = vicii.ext_background_color[1];
+            c3 = vicii.ext_background_color[2];
+            switch (vbuf & 0xc0) {
+            case 0x00:
+                DRAW_STD_TEXT_BYTE(&vicii.dbuf[i], 0xff, bg);
+                break;
+            case 0x40:
+                DRAW_STD_TEXT_BYTE(&vicii.dbuf[i], 0xff, c1);
+                break;
+            case 0x80:
+                DRAW_STD_TEXT_BYTE(&vicii.dbuf[i], 0xff, c2);
+                break;
+            case 0xc0:
+                DRAW_STD_TEXT_BYTE(&vicii.dbuf[i], 0xff, c3);
+                break;
+            }
+
+            DRAW_STD_TEXT_BYTE(&vicii.dbuf[i], gbuf, cbuf);
+            break;
+
         }
     } else {
         /* border */

@@ -1501,7 +1501,7 @@ static void setup_modes(void)
 #endif
 
     raster_modes_set(vicii.raster.modes, VICII_EXTENDED_TEXT_MODE,
-#if 0
+#if 1
                      get_dummy,
                      draw_dummy_cached,
                      draw_dummy,
