@@ -870,10 +870,12 @@ void vicii_draw_cycle(void)
         cbuf = vicii.cbuf[cycle - 14];
 
         switch (vicii.video_mode) {
+
         case VICII_NORMAL_TEXT_MODE:
             DRAW_STD_TEXT_BYTE(&vicii.dbuf[i], 0xff, bg);
             DRAW_STD_TEXT_BYTE(&vicii.dbuf[i], gbuf, cbuf);
             break;
+
         case VICII_MULTICOLOR_TEXT_MODE:
             DRAW_STD_TEXT_BYTE(&vicii.dbuf[i], 0xff, bg);
             c1 = vicii.ext_background_color[0];
@@ -884,6 +886,21 @@ void vicii_draw_cycle(void)
             } else {
                 DRAW_STD_TEXT_BYTE(&vicii.dbuf[i], gbuf, c3);
             }
+            break;
+
+        case VICII_HIRES_BITMAP_MODE:
+            c1 = vbuf & 0x0f;
+            c2 = vbuf >> 4;
+            DRAW_STD_TEXT_BYTE(&vicii.dbuf[i], 0xff, c1);
+            DRAW_STD_TEXT_BYTE(&vicii.dbuf[i], gbuf, c2);
+            break;
+
+        case VICII_MULTICOLOR_BITMAP_MODE:
+            c1 = vbuf >> 4;
+            c2 = vbuf & 0x0f;
+            c3 = cbuf;
+            DRAW_STD_TEXT_BYTE(&vicii.dbuf[i], 0xff, bg);
+            DRAW_MC_BYTE(&vicii.dbuf[i], gbuf, c1, c2, c3);
             break;
             
         }

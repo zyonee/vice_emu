@@ -1456,7 +1456,7 @@ static void setup_modes(void)
 #endif
 
     raster_modes_set(vicii.raster.modes, VICII_MULTICOLOR_TEXT_MODE,
-#if 0
+#if 1
                      get_dummy,
                      draw_dummy_cached,
                      draw_dummy,
@@ -1471,7 +1471,7 @@ static void setup_modes(void)
 #endif
 
     raster_modes_set(vicii.raster.modes, VICII_HIRES_BITMAP_MODE,
-#if 0
+#if 1
                      get_dummy,
                      draw_dummy_cached,
                      draw_dummy,
@@ -1486,7 +1486,7 @@ static void setup_modes(void)
 #endif
 
     raster_modes_set(vicii.raster.modes, VICII_MULTICOLOR_BITMAP_MODE,
-#if 0
+#if 1
                      get_dummy,
                      draw_dummy_cached,
                      draw_dummy,
