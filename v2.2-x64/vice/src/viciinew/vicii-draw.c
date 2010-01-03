@@ -1405,9 +1405,9 @@ inline static void _draw_dummy(BYTE *p, unsigned int xs, unsigned int xe,
     unsigned int i, j;
 
     msk_ptr = gfx_msk_ptr + GFX_MSK_LEFTBORDER_SIZE;
-    src = &(vicii.dbuf[15 * 8 + xs * 8]);
+    src = &(vicii.dbuf[14 * 8 + xs * 8]);
 
-    for (i = xs * 8; i <= xe * 8; ++i) {
+    for (i = xs * 8; i < (xe + 1) * 8; ++i) {
         *(msk_ptr + i) = 0;
         *((BYTE *)(p + i)) = *((BYTE *)(src + i));
     }
@@ -1435,9 +1435,9 @@ static void draw_dummy_foreground(unsigned int start_char,
     p = GFX_PTR();
     msk_ptr = vicii.raster.gfx_msk + GFX_MSK_LEFTBORDER_SIZE;
 
-    src = &(vicii.dbuf[15*8 + start_char * 8]);
+    src = &(vicii.dbuf[14 * 8 + start_char * 8]);
 
-    for (i = start_char * 8; i <= end_char * 8; ++i) {
+    for (i = start_char * 8; i < (end_char + 1) * 8; ++i) {
         *(msk_ptr + i) = 0;
         *((BYTE *)(p + i)) = *((BYTE *)(src + i));
     }

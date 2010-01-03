@@ -847,9 +847,9 @@ void vicii_draw_cycle(void)
     BYTE vbuf, cbuf, gbuf;
 
     cycle = vicii.raster_cycle;
-    vbuf = vicii.vbuf[vicii.buf_offset];
-    cbuf = vicii.cbuf[vicii.buf_offset];
-    gbuf = vicii.cbuf[vicii.gbuf_offset];
+    cbuf = 0;
+    vbuf = 0;
+    gbuf = vicii.gbuf[vicii.gbuf_offset-1];
 
     /* reset rendering on raster cycle 0 */
     if (cycle == 0) {
@@ -862,6 +862,8 @@ void vicii_draw_cycle(void)
     
 
     if (cycle >= 14 && cycle <= 53) {
+        vbuf = vicii.vbuf[cycle - 14];
+        cbuf = vicii.cbuf[cycle - 14];
         BYTE bg = vicii.regs[0x21];
         DRAW_STD_TEXT_BYTE(&vicii.dbuf[i], 0xff, bg);
         DRAW_STD_TEXT_BYTE(&vicii.dbuf[i], gbuf, cbuf);
