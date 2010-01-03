@@ -844,31 +844,32 @@ static void init_drawing_tables(void)
 void vicii_draw_cycle(void)
 {
     int cycle, i;
+    BYTE vbuf, cbuf, gbuf;
+
     cycle = vicii.raster_cycle;
+    vbuf = vicii.vbuf[vicii.buf_offset];
+    cbuf = vicii.cbuf[vicii.buf_offset];
+    gbuf = vicii.cbuf[vicii.gbuf_offset];
+
     /* reset rendering on raster cycle 0 */
     if (cycle == 0) {
         vicii.dbuf_offset = 0;
     }
     i = vicii.dbuf_offset;
+    /* guard */
+    if (i >= 65*8) 
+        return;
     
 
     if (cycle >= 14 && cycle <= 53) {
-        DRAW_STD_TEXT_BYTE(&vicii.dbuf[i],
-                           vicii.vbuf[vicii.buf_offset],
-                           vicii.cbuf[vicii.buf_offset]);
+        BYTE bg = vicii.regs[0x21];
+        DRAW_STD_TEXT_BYTE(&vicii.dbuf[i], 0xff, bg);
+        DRAW_STD_TEXT_BYTE(&vicii.dbuf[i], gbuf, cbuf);
     } else {
         /* border */
         BYTE c = vicii.regs[0x20];
-        vicii.dbuf[i++]=c;
-        vicii.dbuf[i++]=c;
-        vicii.dbuf[i++]=c;
-        vicii.dbuf[i++]=c;
-        vicii.dbuf[i++]=c;
-        vicii.dbuf[i++]=c;
-        vicii.dbuf[i++]=c;
-        vicii.dbuf[i++]=c;
+        DRAW_STD_TEXT_BYTE(&vicii.dbuf[i], 0xff, c+1);
     }
-
     
     vicii.dbuf_offset += 8;
 }
@@ -879,5 +880,6 @@ void vicii_draw_cycle_init(void)
     init_drawing_tables();
 
     memset(vicii.dbuf, 0, 65*8); /* this should really use a define */
+    vicii.dbuf_offset = 0;
 }
 

@@ -1405,12 +1405,11 @@ inline static void _draw_dummy(BYTE *p, unsigned int xs, unsigned int xe,
     unsigned int i, j;
 
     msk_ptr = gfx_msk_ptr + GFX_MSK_LEFTBORDER_SIZE;
-    src = &(vicii.dbuf[15 + xs]);
+    src = &(vicii.dbuf[15 * 8 + xs * 8]);
 
-    for (i = xs; i <= xe; ++i) {
+    for (i = xs * 8; i <= xe * 8; ++i) {
         *(msk_ptr + i) = 0;
-        *((DWORD *)(p + i * 8)) = *((DWORD *)(src + i * 8));
-        *((DWORD *)(p + i * 8 + 4)) = *((DWORD *)(src + i * 8 + 4));
+        *((BYTE *)(p + i)) = *((BYTE *)(src + i));
     }
 }
 
@@ -1436,12 +1435,11 @@ static void draw_dummy_foreground(unsigned int start_char,
     p = GFX_PTR();
     msk_ptr = vicii.raster.gfx_msk + GFX_MSK_LEFTBORDER_SIZE;
 
-    src = &(vicii.dbuf[15 + start_char]);
+    src = &(vicii.dbuf[15*8 + start_char * 8]);
 
-    for (i = start_char; i <= end_char; ++i) {
+    for (i = start_char * 8; i <= end_char * 8; ++i) {
         *(msk_ptr + i) = 0;
-        *((DWORD *)(p + i * 8)) = *((DWORD *)(src + i * 8));
-        *((DWORD *)(p + i * 8 + 4)) = *((DWORD *)(src + i * 8 + 4));
+        *((BYTE *)(p + i)) = *((BYTE *)(src + i));
     }
 }
 
