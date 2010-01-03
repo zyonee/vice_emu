@@ -1400,17 +1400,13 @@ static int get_dummy(raster_cache_t *cache, unsigned int *xs, unsigned int *xe,
 inline static void _draw_dummy(BYTE *p, unsigned int xs, unsigned int xe,
                                BYTE *gfx_msk_ptr)
 {
-    BYTE *msk_ptr;
     BYTE *src;
-    unsigned int i, j;
+    BYTE *dest;
 
-    msk_ptr = gfx_msk_ptr + GFX_MSK_LEFTBORDER_SIZE;
     src = &(vicii.dbuf[14 * 8 + xs * 8]);
+    dest = (p + xs * 8);
 
-    for (i = xs * 8; i < (xe + 1) * 8; ++i) {
-        *(msk_ptr + i) = 0;
-        *((BYTE *)(p + i)) = *((BYTE *)(src + i));
-    }
+    memcpy(dest, src, (xe - xs + 1) * 8);
 }
 
 static void draw_dummy(void)
@@ -1428,19 +1424,13 @@ static void draw_dummy_cached(raster_cache_t *cache, unsigned int xs,
 static void draw_dummy_foreground(unsigned int start_char,
                                   unsigned int end_char)
 {
-    BYTE *p, *msk_ptr;
     BYTE *src;
-    unsigned int i, j;
-
-    p = GFX_PTR();
-    msk_ptr = vicii.raster.gfx_msk + GFX_MSK_LEFTBORDER_SIZE;
+    BYTE *dest;
 
     src = &(vicii.dbuf[14 * 8 + start_char * 8]);
+    dest = (GFX_PTR() + start_char * 8);
 
-    for (i = start_char * 8; i < (end_char + 1) * 8; ++i) {
-        *(msk_ptr + i) = 0;
-        *((BYTE *)(p + i)) = *((BYTE *)(src + i));
-    }
+    memcpy(dest, src, (end_char - start_char + 1) * 8);
 }
 
 static void draw_dummy_background(unsigned int start_pixel,
@@ -1451,74 +1441,139 @@ static void draw_dummy_background(unsigned int start_pixel,
 static void setup_modes(void)
 {
     raster_modes_set(vicii.raster.modes, VICII_NORMAL_TEXT_MODE,
+#if 1
                      get_dummy,
                      draw_dummy_cached,
                      draw_dummy,
                      draw_dummy_background,
                      draw_dummy_foreground);
-/*
+#else
                      get_std_text,
                      draw_std_text_cached,
                      draw_std_text,
                      draw_std_background,
                      draw_std_text_foreground);
-*/
+#endif
 
     raster_modes_set(vicii.raster.modes, VICII_MULTICOLOR_TEXT_MODE,
+#if 0
+                     get_dummy,
+                     draw_dummy_cached,
+                     draw_dummy,
+                     draw_dummy_background,
+                     draw_dummy_foreground);
+#else
                      get_mc_text,
                      draw_mc_text_cached,
                      draw_mc_text,
                      draw_std_background,
                      draw_mc_text_foreground);
+#endif
 
     raster_modes_set(vicii.raster.modes, VICII_HIRES_BITMAP_MODE,
+#if 0
+                     get_dummy,
+                     draw_dummy_cached,
+                     draw_dummy,
+                     draw_dummy_background,
+                     draw_dummy_foreground);
+#else
                      get_hires_bitmap,
                      draw_hires_bitmap_cached,
                      draw_hires_bitmap,
                      draw_std_background,
                      draw_hires_bitmap_foreground);
+#endif
 
     raster_modes_set(vicii.raster.modes, VICII_MULTICOLOR_BITMAP_MODE,
+#if 0
+                     get_dummy,
+                     draw_dummy_cached,
+                     draw_dummy,
+                     draw_dummy_background,
+                     draw_dummy_foreground);
+#else
                      get_mc_bitmap,
                      draw_mc_bitmap_cached,
                      draw_mc_bitmap,
                      draw_std_background,
                      draw_mc_bitmap_foreground);
+#endif
 
     raster_modes_set(vicii.raster.modes, VICII_EXTENDED_TEXT_MODE,
+#if 0
+                     get_dummy,
+                     draw_dummy_cached,
+                     draw_dummy,
+                     draw_dummy_background,
+                     draw_dummy_foreground);
+#else
                      get_ext_text,
                      draw_ext_text_cached,
                      draw_ext_text,
                      draw_std_background,
                      draw_ext_text_foreground);
+#endif
 
     raster_modes_set(vicii.raster.modes, VICII_IDLE_MODE,
+#if 0
+                     get_dummy,
+                     draw_dummy_cached,
+                     draw_dummy,
+                     draw_dummy_background,
+                     draw_dummy_foreground);
+#else
                      get_idle,
                      draw_idle_cached,
                      draw_idle,
                      draw_idle_std_background,
                      draw_idle_foreground);
+#endif
 
     raster_modes_set(vicii.raster.modes, VICII_ILLEGAL_TEXT_MODE,
+#if 0
+                     get_dummy,
+                     draw_dummy_cached,
+                     draw_dummy,
+                     draw_dummy_background,
+                     draw_dummy_foreground);
+#else
                      get_illegal_text,
                      draw_illegal_text_cached,
                      draw_illegal_text,
                      draw_std_background,
                      draw_illegal_text_foreground);
+#endif
 
     raster_modes_set(vicii.raster.modes, VICII_ILLEGAL_BITMAP_MODE_1,
+#if 0
+                     get_dummy,
+                     draw_dummy_cached,
+                     draw_dummy,
+                     draw_dummy_background,
+                     draw_dummy_foreground);
+#else
                      get_illegal_bitmap_mode1,
                      draw_illegal_bitmap_mode1_cached,
                      draw_illegal_bitmap_mode1,
                      draw_std_background,
                      draw_illegal_bitmap_mode1_foreground);
+#endif
 
     raster_modes_set(vicii.raster.modes, VICII_ILLEGAL_BITMAP_MODE_2,
+#if 0
+                     get_dummy,
+                     draw_dummy_cached,
+                     draw_dummy,
+                     draw_dummy_background,
+                     draw_dummy_foreground);
+#else
                      get_illegal_bitmap_mode2,
                      draw_illegal_bitmap_mode2_cached,
                      draw_illegal_bitmap_mode2,
                      draw_std_background,
                      draw_illegal_bitmap_mode2_foreground);
+#endif
 }
 
 /* Initialize the drawing tables.  */
