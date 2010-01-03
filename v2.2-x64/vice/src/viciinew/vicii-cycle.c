@@ -129,6 +129,9 @@ int vicii_cycle(void)
     /* Phi1 fetch */
     vicii.last_read_phi1 = cycle_phi1_fetch(vicii.raster_cycle);
 
+    /* Draw one cycle of pixels */
+    vicii_draw_cycle();
+
     /* Stop fetch */
     if (vicii.raster_cycle == 53) {
         vicii.fetch_active = 0;

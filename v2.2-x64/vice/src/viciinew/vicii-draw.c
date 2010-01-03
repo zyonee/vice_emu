@@ -1383,14 +1383,88 @@ static void draw_idle_foreground(unsigned int start_char,
     }
 }
 
+/* Dummy mode for using cycle based drawing.  */
+
+static int get_dummy(raster_cache_t *cache, unsigned int *xs, unsigned int *xe,
+                     int rr)
+{
+    if (rr || 1) {
+        *xs = 0;
+        *xe = VICII_SCREEN_TEXTCOLS - 1;
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+inline static void _draw_dummy(BYTE *p, unsigned int xs, unsigned int xe,
+                               BYTE *gfx_msk_ptr)
+{
+    BYTE *msk_ptr;
+    BYTE *src;
+    unsigned int i, j;
+
+    msk_ptr = gfx_msk_ptr + GFX_MSK_LEFTBORDER_SIZE;
+    src = &(vicii.dbuf[15 + xs]);
+
+    for (i = xs; i <= xe; ++i) {
+        *(msk_ptr + i) = 0;
+        *((DWORD *)(p + i * 8)) = *((DWORD *)(src + i * 8));
+        *((DWORD *)(p + i * 8 + 4)) = *((DWORD *)(src + i * 8 + 4));
+    }
+}
+
+static void draw_dummy(void)
+{
+    ALIGN_DRAW_FUNC(_draw_dummy, 0, VICII_SCREEN_TEXTCOLS - 1,
+                    vicii.raster.gfx_msk);
+}
+
+static void draw_dummy_cached(raster_cache_t *cache, unsigned int xs,
+                              unsigned int xe)
+{
+    ALIGN_DRAW_FUNC(_draw_dummy, xs, xe, cache->gfx_msk);
+}
+
+static void draw_dummy_foreground(unsigned int start_char,
+                                  unsigned int end_char)
+{
+    BYTE *p, *msk_ptr;
+    BYTE *src;
+    unsigned int i, j;
+
+    p = GFX_PTR();
+    msk_ptr = vicii.raster.gfx_msk + GFX_MSK_LEFTBORDER_SIZE;
+
+    src = &(vicii.dbuf[15 + start_char]);
+
+    for (i = start_char; i <= end_char; ++i) {
+        *(msk_ptr + i) = 0;
+        *((DWORD *)(p + i * 8)) = *((DWORD *)(src + i * 8));
+        *((DWORD *)(p + i * 8 + 4)) = *((DWORD *)(src + i * 8 + 4));
+    }
+}
+
+static void draw_dummy_background(unsigned int start_pixel,
+                                  unsigned int end_pixel)
+{
+}
+
 static void setup_modes(void)
 {
     raster_modes_set(vicii.raster.modes, VICII_NORMAL_TEXT_MODE,
+                     get_dummy,
+                     draw_dummy_cached,
+                     draw_dummy,
+                     draw_dummy_background,
+                     draw_dummy_foreground);
+/*
                      get_std_text,
                      draw_std_text_cached,
                      draw_std_text,
                      draw_std_background,
                      draw_std_text_foreground);
+*/
 
     raster_modes_set(vicii.raster.modes, VICII_MULTICOLOR_TEXT_MODE,
                      get_mc_text,
