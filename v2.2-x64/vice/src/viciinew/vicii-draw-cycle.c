@@ -37,31 +37,31 @@ struct RingEntry {
     enum { BG_COLOR } type;
 };
 
-static int bp = 0;
-static struct RingEntry buffer[16];
+static int gfx_bp = 0;
+static struct RingEntry gfx_buffer[16];
 
 
-static void push_buffer(BYTE c)
+static void push_gfx_buffer(BYTE c, int offs)
 {
-    buffer[bp].color = c;
-    bp ++;
-    bp &= 0x0f;
+    gfx_buffer[(gfx_bp + offs) & 0x0f].color = c;
 }
 
 
 static void draw_border_byte(BYTE *p, BYTE c)
 {
     int i;
+    int bi = vicii.regs[0x16] & 0x07;
     for (i = 0; i < 8; i++) {
-        push_buffer(c);
+        push_gfx_buffer(c, bi+i);
     }
 }
 
 static void draw_foreground_hires_byte(BYTE *p, BYTE b, BYTE c0, BYTE c1)
 {
     int i;
+    int bi = vicii.regs[0x16] & 0x07;
     for (i = 0; i < 8; i++) {
-        push_buffer( (b & 0x80) ? c1 : c0 );
+        push_gfx_buffer( (b & 0x80) ? c1 : c0, bi+i );
         b <<= 1;
     }
 }
@@ -69,23 +69,24 @@ static void draw_foreground_hires_byte(BYTE *p, BYTE b, BYTE c0, BYTE c1)
 static void draw_foreground_mc_byte(BYTE *p, BYTE b, BYTE c0, BYTE c1, BYTE c2, BYTE c3)
 {
     int i;
+    int bi = vicii.regs[0x16] & 0x07;
     for (i = 0; i < 8; i += 2) {
         switch (b & 0xc0) {
         case 0x00:
-            push_buffer(c0);
-            push_buffer(c0);
+            push_gfx_buffer(c0, bi+i);
+            push_gfx_buffer(c0, bi+i+1);
             break;
         case 0x40:
-            push_buffer(c1);
-            push_buffer(c1);
+            push_gfx_buffer(c1, bi+i);
+            push_gfx_buffer(c1, bi+i+1);
             break;
         case 0x80:
-            push_buffer(c2);
-            push_buffer(c2);
+            push_gfx_buffer(c2, bi+i);
+            push_gfx_buffer(c2, bi+i+1);
             break;
         case 0xc0:
-            push_buffer(c3);
-            push_buffer(c3);
+            push_gfx_buffer(c3, bi+i);
+            push_gfx_buffer(c3, bi+i+1);
             break;
         }
 
@@ -97,14 +98,14 @@ static void draw_foreground_mc_byte(BYTE *p, BYTE b, BYTE c0, BYTE c1, BYTE c2, 
 static void render_byte(BYTE *p)
 {
     int i;
-    int bi = bp + 8 - (vicii.regs[0x16] & 0x07);
-    bi &= 0x0f;
+    int bg = vicii.regs[0x21];
+
     for (i = 0; i < 8; i++) {
-        p[i] = buffer[bi].color;
-        bi++;
-        bi &= 0x0f;
+        p[i] = gfx_buffer[gfx_bp].color;
+        gfx_buffer[gfx_bp].color = bg;
+        gfx_bp++;
+        gfx_bp &= 0x0f;
     }
-    
 }
 
 void vicii_draw_cycle(void)
@@ -120,9 +121,9 @@ void vicii_draw_cycle(void)
     /* reset rendering on raster cycle 0 */
     if (cycle == 0) {
         vicii.dbuf_offset = 0;
-        bp = 0;
+        gfx_bp = 0;
         for (i=0; i < 16; i++) {
-            buffer[i].color = 0;
+            gfx_buffer[i].color = 0;
         }
     }
     i = vicii.dbuf_offset;
@@ -198,10 +199,12 @@ void vicii_draw_cycle(void)
 
         }
     } else {
+#if 0
         /* we are outside the display area */
         BYTE c = vicii.regs[0x20];
         /* separate function? */
         draw_border_byte(&vicii.dbuf[i], c);
+#endif
     }
 
     render_byte(&vicii.dbuf[i]);
