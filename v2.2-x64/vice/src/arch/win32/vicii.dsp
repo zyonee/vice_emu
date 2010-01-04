@@ -37,8 +37,8 @@ RSC=rc.exe
 # PROP BASE Target_Dir ""
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 0
-# PROP Output_Dir "libs\vicii\Release"
-# PROP Intermediate_Dir "libs\vicii\Release"
+# PROP Output_Dir "libs\viciinew\Release"
+# PROP Intermediate_Dir "libs\viciinew\Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\c64" /I "..\..\c64dtv" /I "..\..\raster" /I "..\..\video" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
@@ -60,8 +60,8 @@ LIB32=link.exe -lib
 # PROP BASE Target_Dir ""
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 1
-# PROP Output_Dir "libs\vicii\Debug"
-# PROP Intermediate_Dir "libs\vicii\Debug"
+# PROP Output_Dir "libs\viciinew\Debug"
+# PROP Intermediate_Dir "libs\viciinew\Debug"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /Z7 /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\c64" /I "..\..\c64dtv" /I "..\..\raster" /I "..\..\video" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
@@ -82,63 +82,59 @@ LIB32=link.exe -lib
 # Name "vicii - Win32 Debug"
 # Begin Source File
 
-SOURCE="..\..\vicii\vicii-badline.c"
+SOURCE="..\..\viciinew\vicii-cmdline-options.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\vicii\vicii-clock-stretch.c"
+SOURCE="..\..\viciinew\vicii-color.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\vicii\vicii-cmdline-options.c"
+SOURCE="..\..\viciinew\vicii-cycle.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\vicii\vicii-color.c"
+SOURCE="..\..\viciinew\vicii-draw.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\vicii\vicii-draw.c"
+SOURCE="..\..\viciinew\vicii-draw-cycle.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\vicii\vicii-fetch.c"
+SOURCE="..\..\viciinew\vicii-fetch.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\vicii\vicii-irq.c"
+SOURCE="..\..\viciinew\vicii-irq.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\vicii\vicii-mem.c"
+SOURCE="..\..\viciinew\vicii-mem.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\vicii\vicii-phi1.c"
+SOURCE="..\..\viciinew\vicii-phi1.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\vicii\vicii-resources.c"
+SOURCE="..\..\viciinew\vicii-resources.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\vicii\vicii-snapshot.c"
+SOURCE="..\..\viciinew\vicii-snapshot.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\vicii\vicii-sprites.c"
+SOURCE="..\..\viciinew\vicii-sprites.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\vicii\vicii-stubs.c"
+SOURCE="..\..\viciinew\vicii-timing.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\vicii\vicii-timing.c"
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\vicii\vicii.c
+SOURCE=..\..\viciinew\vicii.c
 # End Source File
 # End Target
 # End Project
