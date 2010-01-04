@@ -771,6 +771,7 @@ static void draw_sprite_partial(BYTE *line_ptr, BYTE *gfx_msk_ptr,
                                 raster_sprite_status_t *sprite_status,
                                 int n, int sprite_offset)
 {
+#if 0
     BYTE *data_ptr = NULL;
 
     if (sprite_status->dma_msk & (1 << n)
@@ -816,12 +817,14 @@ static void draw_sprite_partial(BYTE *line_ptr, BYTE *gfx_msk_ptr,
                               lshift, sptr, sprite_status,
                               sprite_xs, sprite_xe);
     }
+#endif
 }
 
 
 static void draw_all_sprites_partial(BYTE *line_ptr, BYTE *gfx_msk_ptr,
                                      int xs, int xe)
 {
+#if 0
     raster_sprite_status_t *sprite_status;
     int sprite_offset;
     int sprite_xs, sprite_xe;
@@ -869,13 +872,16 @@ static void draw_all_sprites_partial(BYTE *line_ptr, BYTE *gfx_msk_ptr,
         vicii.sprite_background_collisions
             |= sprite_status->sprite_background_collisions;
     }
+#endif
 }
 
 static void draw_all_sprites(BYTE *line_ptr, BYTE *gfx_msk_ptr)
 {
+#if 0
     draw_all_sprites_partial(line_ptr, gfx_msk_ptr,
                     VICII_RASTER_X(0),
                     vicii.cycles_per_line * 8 + VICII_RASTER_X(0) - 1);
+#endif
 }
 
 static void update_cached_sprite_collisions(raster_cache_t *cache)
@@ -903,6 +909,7 @@ void vicii_sprites_init(void)
    vicii.raster X position is `raster_x'.  */
 void vicii_sprites_set_x_position(unsigned int num, int new_x, int raster_x)
 {
+#if 0
     raster_sprite_t *sprite;
     int x_offset;
     int last_pos;
@@ -995,6 +1002,7 @@ void vicii_sprites_set_x_position(unsigned int num, int new_x, int raster_x)
     }
     raster_changes_sprites_add_int(&vicii.raster,
         SPRITE_DISPLAY_IMMEDIATE_DATA_FETCHED(num), &sprite->x, new_x);
+#endif
 }
 
 void vicii_sprites_reset_xshift(void)
