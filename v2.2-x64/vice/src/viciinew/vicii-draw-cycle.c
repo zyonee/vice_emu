@@ -39,8 +39,8 @@
 
 /* gbuf shift register */
 BYTE gbuf_reg = 0;
-int gbuf_cnt = 0;
-BYTE gbuf_mc_reg = 0;
+BYTE gbuf_mc_flop = 0;
+BYTE gbuf_pixel_reg = 0;
 
 /* cbuf and vbuf registers */
 BYTE cbuf_reg = 0;
@@ -55,24 +55,26 @@ BYTE sbuf_expx_flop[8];
 BYTE sbuf_mc_flop[8];
 
 
-static void draw_sprites(int cycle, int i, int j)
+static void draw_sprites(int cycle, int i, int j, int pri)
 {
     int s;
-    BYTE c1, c2, c3;
+    BYTE c[4];
+    int rendered;
     int x;
     x = cycle*8 + i - 88;    /* this is plain wrong! */
 
-    c1 = vicii.regs[0x25];
-    c3 = vicii.regs[0x26];
+    c[1] = vicii.regs[0x25];
+    c[3] = vicii.regs[0x26];
 
+    rendered = 0;
     /* Brute force render sprites on top of graphics for now! */
-    for (s = 7; s >= 0; --s) {
-        int pri = vicii.regs[0x1b] & (1<<s);
+    for (s = 0; s < 8; s++) {
+        int spri = vicii.regs[0x1b] & (1<<s);
         int mc = vicii.regs[0x1c] & (1<<s);
         int expx = vicii.regs[0x1d] & (1<<s);
         int sprx = vicii.regs[0x00 + s*2];
         sprx |= (vicii.regs[0x10] & (1<<s)) ? 0x100 : 0;
-        c2 = vicii.regs[0x27 + s];
+        c[2] = vicii.regs[0x27 + s];
 
         /* fetch sprite data on position match */
         if (x == sprx) {
@@ -82,33 +84,34 @@ static void draw_sprites(int cycle, int i, int j)
             sbuf_reg[s] = ((data[s] >> 16) & 0x0000ff) | (data[s] & 0x00ff00) | ((data[s] << 16) & 0xff0000);
         }
 
-        /* render pixels if shift register still contains data */
-        if (sbuf_reg[s]) {
+        /* render pixels if shift register or pixel reg still contains data */
+        if ( sbuf_reg[s] || sbuf_pixel_reg[s] ) {
 
             if ( sbuf_expx_flop[s] == 0 ) {
                 if (mc) {
                     if (sbuf_mc_flop[s] == 0) {
+                        /* fetch 2 bits */
                         sbuf_pixel_reg[s] = (sbuf_reg[s] >> 22) & 0x03;
                     }
                     sbuf_mc_flop[s] = ~sbuf_mc_flop[s];
                 } else {
-                    /* 0 or 2 */
+                    /* fetch 1 bit and make it 0 or 2 */
                     sbuf_pixel_reg[s] = ( (sbuf_reg[s] >> 23) & 0x01 ) << 1;
                 }
             }
-            switch (sbuf_pixel_reg[s]) {
-            case 1:
-                vicii.dbuf[j] = c1;
-                break;
-            case 2:
-                vicii.dbuf[j] = c2;
-                break;
-            case 3:
-                vicii.dbuf[j] = c3;
-                break;
+
+            /*
+             * render pixels unless a higher priority sprite has already
+             * rendered pixels.
+             */
+            if (!rendered && sbuf_pixel_reg[s]) {
+                if ( !(pri && spri) ) {
+                    vicii.dbuf[j] = c[ sbuf_pixel_reg[s] ];
+                }
+                rendered = 1;
             }
 
-            /* shift the sprite buffer */
+            /* shift the sprite buffer and handle expansion flags */
             if (sbuf_expx_flop[s] == 0) {
                 sbuf_reg[s] <<= 1;
             }
@@ -128,7 +131,7 @@ void vicii_draw_cycle(void)
     /* reset rendering on raster cycle 0 */
     if (cycle == 0) {
         vicii.dbuf_offset = 0;
-        gbuf_cnt = 0;
+        gbuf_mc_flop = 0;
         gbuf_reg = 0;
         vbuf_reg = 0;
         cbuf_reg = 0;
@@ -152,111 +155,98 @@ void vicii_draw_cycle(void)
         /* render pixels */
         for (i = 0; i < 8; i++) {
             int j = i + offs;
-            BYTE c0, c1, c2, c3;
+            BYTE px;
+            BYTE c[4];
+            int pri;
 
             if (i == xs) {
                 /* latch values at time xs */
                 vbuf_reg = vicii.vbuf[cycle - 14];
                 cbuf_reg = vicii.cbuf[cycle - 14];
                 gbuf_reg = vicii.gbuf[cycle - 14]; /* this shouldn't be a buffer */
-                gbuf_cnt = 0;
+                gbuf_mc_flop = 0;
             }
 
            
+            c[0] = bg;
             switch (vicii.video_mode) {
 
             case VICII_NORMAL_TEXT_MODE:
-                c1 = cbuf_reg;
-                vicii.dbuf[j] = (gbuf_reg & 0x80) ? c1 : bg;
+                c[3] = cbuf_reg;
+
+                px = (gbuf_reg & 0x80) ? 3 : 0;
                 break;
+
             case VICII_MULTICOLOR_TEXT_MODE:
-                c1 = vicii.ext_background_color[0];
-                c2 = vicii.ext_background_color[1];
-                c3 = cbuf_reg & 0x07;
+                c[1] = vicii.ext_background_color[0];
+                c[2] = vicii.ext_background_color[1];
+                c[3] = cbuf_reg & 0x07;
                 if (cbuf_reg & 0x08) {
-                    if ( (gbuf_cnt & 1) == 0) {
-                        gbuf_mc_reg = gbuf_reg >> 6;
+                    /* mc pixels */
+                    if (gbuf_mc_flop == 0) {
+                        gbuf_pixel_reg = gbuf_reg >> 6;
                     }
-                    switch (gbuf_mc_reg) {
-                    case 0:
-                        vicii.dbuf[j] = bg;
-                        break;
-                    case 1:
-                        vicii.dbuf[j] = c1;
-                        break;
-                    case 2:
-                        vicii.dbuf[j] = c2;
-                        break;
-                    case 3:
-                        vicii.dbuf[j] = c3;
-                        break;
-                    }
+                    px = gbuf_pixel_reg;
                 } else {
-                    vicii.dbuf[j] = (gbuf_reg & 0x80) ? c3 : bg;
+                    /* hires pixels */
+                    px = (gbuf_reg & 0x80) ? 3 : 0;
                 }
                 break;
 
             case VICII_HIRES_BITMAP_MODE:
-                c0 = vbuf_reg & 0x0f;
-                c1 = vbuf_reg >> 4;
-                vicii.dbuf[j] = (gbuf_reg & 0x80) ? c1 : c0;
+                c[0] = vbuf_reg & 0x0f;
+                c[3] = vbuf_reg >> 4;
+                px = (gbuf_reg & 0x80) ? 3 : 0;
                 break;
 
             case VICII_MULTICOLOR_BITMAP_MODE:
-                c1 = vbuf_reg >> 4;
-                c2 = vbuf_reg & 0x0f;
-                c3 = cbuf_reg;
-                if ( (gbuf_cnt & 1) == 0) {
-                    gbuf_mc_reg = gbuf_reg >> 6;
+                c[1] = vbuf_reg >> 4;
+                c[2] = vbuf_reg & 0x0f;
+                c[3] = cbuf_reg;
+                if (gbuf_mc_flop == 0) {
+                    gbuf_pixel_reg = gbuf_reg >> 6;
                 }
-                switch (gbuf_mc_reg) {
-                case 0:
-                    vicii.dbuf[j] = bg;
-                    break;
-                case 1:
-                    vicii.dbuf[j] = c1;
-                    break;
-                case 2:
-                    vicii.dbuf[j] = c2;
-                    break;
-                case 3:
-                    vicii.dbuf[j] = c3;
-                    break;
-                }
+                px = gbuf_pixel_reg;
                 break;
             
             case VICII_EXTENDED_TEXT_MODE:
-                c1 = cbuf_reg;
+                c[3] = cbuf_reg;
 
                 switch (vbuf_reg & 0xc0) {
                 case 0x00:
-                    c0 = bg;
+                    c[0] = bg;
                     break;
                 case 0x40:
-                    c0 = vicii.ext_background_color[0];
+                    c[0] = vicii.ext_background_color[0];
                     break;
                 case 0x80:
-                    c0 = vicii.ext_background_color[1];
+                    c[0] = vicii.ext_background_color[1];
                     break;
                 case 0xc0:
-                    c0 = vicii.ext_background_color[2];
+                    c[0] = vicii.ext_background_color[2];
                     break;
                 }
-                vicii.dbuf[j] = (gbuf_reg & 0x80) ? c1 : c0;
+
+                px = (gbuf_reg & 0x80) ? 3 : 0;
                 break;
 
             case VICII_IDLE_MODE:
                 /* this currently doesn't work as expected */
-                vicii.dbuf[j] = (gbuf_reg & 0x80) ? 0 : bg;
+                c[3] = 0;
+
+                px = (gbuf_reg & 0x80) ? 3 : 0;
                 break;
 
             }
 
+            vicii.dbuf[j] = c[px];
+            pri = (px & 0x2);
+
             /* shift the graphics buffer */
             gbuf_reg <<= 1;
-            gbuf_cnt++;
+            gbuf_mc_flop = ~gbuf_mc_flop;
             
-            draw_sprites(cycle, i, j);
+            draw_sprites(cycle, i, j, pri);
 
         }
     } else {
