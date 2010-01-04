@@ -35,8 +35,8 @@ extern BYTE vicii_fetch_graphics(void);
 extern BYTE vicii_fetch_idle(void);
 extern BYTE vicii_fetch_idle_gfx(void);
 extern BYTE vicii_fetch_refresh(void);
-extern BYTE vicii_fetch_sprite_pointer(unsigned int i);
-extern BYTE vicii_fetch_sprite_dma_1(unsigned int num);
+extern BYTE vicii_fetch_sprite_pointer(void);
+extern BYTE vicii_fetch_sprite_dma_1(void);
 extern int vicii_fetch_sprites(int cycle);
 
 #endif

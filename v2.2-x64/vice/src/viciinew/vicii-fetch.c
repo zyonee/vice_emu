@@ -85,22 +85,26 @@ static BYTE *cached_src_phi1 = NULL;
 static BYTE *cached_src_phi2 = NULL;
 static int cached_sprite_memptr = 0;
 
-inline static int sprite_dma_cycle_0(int i)
+inline static int sprite_dma_cycle_0(void)
 {
-    if (check_sprite_dma(i)) {
+    if (check_sprite_dma(vicii.sprite_fetch_idx)) {
         cached_sprite_dest[0] = cached_src_phi1[cached_sprite_memptr];
         return 1;
     }
     return 0;
 }
 
-inline static int sprite_dma_cycle_2(int i)
+inline static int sprite_dma_cycle_2(void)
 {
-    if (check_sprite_dma(i)) {
+    int fetched = 0;
+
+    if (check_sprite_dma(vicii.sprite_fetch_idx)) {
         cached_sprite_dest[2] = cached_src_phi1[++cached_sprite_memptr & 0x3f];
-        return 1;
+        fetched = 1;
     }
-    return 0;
+    vicii.sprite_fetch_idx++;
+
+    return fetched;
 }
 
 inline static int trigger_sprite_dma(int i)
@@ -253,11 +257,13 @@ BYTE vicii_fetch_graphics(void)
     return data;
 }
 
-BYTE vicii_fetch_sprite_pointer(unsigned int i)
+BYTE vicii_fetch_sprite_pointer(void)
 {
     raster_sprite_status_t *sprite_status;
     BYTE *bank_phi1, *bank_phi2, *spr_base;
+    int i;
 
+    i = vicii.sprite_fetch_idx;
     sprite_status = vicii.raster.sprite_status;
     bank_phi1 = vicii.ram_base_phi1 + vicii.vbank_phi1;
     bank_phi2 = vicii.ram_base_phi2 + vicii.vbank_phi2;
@@ -286,9 +292,9 @@ BYTE vicii_fetch_sprite_pointer(unsigned int i)
     return *spr_base;
 }
 
-BYTE vicii_fetch_sprite_dma_1(unsigned int num)
+BYTE vicii_fetch_sprite_dma_1(void)
 {
-    if (check_sprite_dma(num)) {
+    if (check_sprite_dma(vicii.sprite_fetch_idx)) {
         return (cached_sprite_dest[1] = cached_src_phi1[++cached_sprite_memptr & 0x3f]);
     } else {
         return vicii_fetch_idle();
@@ -304,6 +310,7 @@ int vicii_fetch_sprites(int cycle)
             swap_sprite_data_buffers();
             vicii_sprites_reset_sprline();
             ba_low = trigger_sprite_dma(0);
+            vicii.sprite_fetch_idx = 0;
             break;
         case 57:
             ba_low = check_sprite_dma(0);
@@ -312,52 +319,52 @@ int vicii_fetch_sprites(int cycle)
             ba_low = trigger_sprite_dma(1) | check_sprite_dma(0);
             break;
         case 59: /* sprite 0 pointer */
-            ba_low = sprite_dma_cycle_0(0) | check_sprite_dma(1);
+            ba_low = sprite_dma_cycle_0() | check_sprite_dma(1);
             break;
         case 60: /* sprite 0 data / 2 trigger */
-            ba_low = sprite_dma_cycle_2(0) | trigger_sprite_dma(2) | check_sprite_dma(1);
+            ba_low = sprite_dma_cycle_2() | trigger_sprite_dma(2) | check_sprite_dma(1);
             break;
         case 61: /* sprite 1 pointer */
-            ba_low = sprite_dma_cycle_0(1) | check_sprite_dma(2);
+            ba_low = sprite_dma_cycle_0() | check_sprite_dma(2);
             break;
         case 62: /* sprite 1 data / 3 trigger */
-            ba_low = sprite_dma_cycle_2(1) | trigger_sprite_dma(3) | check_sprite_dma(2);
+            ba_low = sprite_dma_cycle_2() | trigger_sprite_dma(3) | check_sprite_dma(2);
             break;
         case 63: /* sprite 2 pointer */
-            ba_low = sprite_dma_cycle_0(2) | check_sprite_dma(3);
+            ba_low = sprite_dma_cycle_0() | check_sprite_dma(3);
             break;
         case 64: /* sprite 2 data / 4 trigger */
-            ba_low = sprite_dma_cycle_2(2) | trigger_sprite_dma(4) | check_sprite_dma(3);
+            ba_low = sprite_dma_cycle_2() | trigger_sprite_dma(4) | check_sprite_dma(3);
             break;
         case 0: /* sprite 3 pointer */
-            ba_low = sprite_dma_cycle_0(3) | check_sprite_dma(4);
+            ba_low = sprite_dma_cycle_0() | check_sprite_dma(4);
             break;
         case 1: /* sprite 3 data / 5 trigger*/
-            ba_low = sprite_dma_cycle_2(3) | trigger_sprite_dma(5) | check_sprite_dma(4);
+            ba_low = sprite_dma_cycle_2() | trigger_sprite_dma(5) | check_sprite_dma(4);
             break;
         case 2: /* sprite 4 pointer */
-            ba_low = sprite_dma_cycle_0(4) | check_sprite_dma(5);
+            ba_low = sprite_dma_cycle_0() | check_sprite_dma(5);
             break;
         case 3: /* sprite 4 data / 6 trigger */
-            ba_low = sprite_dma_cycle_2(4) | trigger_sprite_dma(6) | check_sprite_dma(5);
+            ba_low = sprite_dma_cycle_2() | trigger_sprite_dma(6) | check_sprite_dma(5);
             break;
         case 4: /* sprite 5 pointer */
-            ba_low = sprite_dma_cycle_0(5) | check_sprite_dma(6);
+            ba_low = sprite_dma_cycle_0() | check_sprite_dma(6);
             break;
         case 5: /* sprite 5 data / 7 trigger */
-            ba_low = sprite_dma_cycle_2(5) | trigger_sprite_dma(7) | check_sprite_dma(6);
+            ba_low = sprite_dma_cycle_2() | trigger_sprite_dma(7) | check_sprite_dma(6);
             break;
         case 6: /* sprite 6 pointer */
-            ba_low = sprite_dma_cycle_0(6) | check_sprite_dma(7);
+            ba_low = sprite_dma_cycle_0() | check_sprite_dma(7);
             break;
         case 7: /* sprite 6 data */
-            ba_low = sprite_dma_cycle_2(6) | check_sprite_dma(7);
+            ba_low = sprite_dma_cycle_2() | check_sprite_dma(7);
             break;
         case 8: /* sprite 7 pointer */
-            ba_low = sprite_dma_cycle_0(7);
+            ba_low = sprite_dma_cycle_0();
             break;
         case 9: /* sprite 7 data */
-            ba_low = sprite_dma_cycle_2(7);
+            ba_low = sprite_dma_cycle_2();
             break;
         default:
             break;

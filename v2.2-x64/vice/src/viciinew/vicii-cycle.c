@@ -75,7 +75,7 @@ static inline BYTE cycle_phi1_fetch(unsigned int cycle)
         case 3:
         case 5:
         case 7:
-            data = vicii_fetch_sprite_pointer((cycle >= 58) ? ((cycle - 58) >> 1) : (4 + (cycle >> 1)));
+            data = vicii_fetch_sprite_pointer();
             break;
 
         /* Sprite DMA */
@@ -87,7 +87,7 @@ static inline BYTE cycle_phi1_fetch(unsigned int cycle)
         case 4:
         case 6:
         case 8:
-            data = vicii_fetch_sprite_dma_1((cycle >= 59) ? ((cycle - 59) >> 1) : (3 + (cycle >> 1)));
+            data = vicii_fetch_sprite_dma_1();
             break;
 
         /* Refresh */
