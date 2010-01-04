@@ -4,10 +4,6 @@
  * Written by
  *  Daniel Kahlin <daniel@kahlin.net>
  *
- * Based on code written by
- *  Andreas Boose <viceteam@t-online.de>
- *  Ettore Perazzoli <ettore@comm2000.it>
- *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
  *
@@ -38,95 +34,38 @@
 
 static void draw_background_byte(BYTE *p, BYTE c)
 {
-    *(p + 0) = c;
-    *(p + 1) = c;
-    *(p + 2) = c;
-    *(p + 3) = c;
-    *(p + 4) = c;
-    *(p + 5) = c;
-    *(p + 6) = c;
-    *(p + 7) = c;
+    memset(p, c, 8);
 }
 
-static void draw_std_text_byte(BYTE *p, BYTE b, BYTE c)
+static void draw_foreground_hires_byte(BYTE *p, BYTE b, BYTE c)
 {
-    if (b & 0x80) {
-        *(p + 0) = c;
-    }
-    if (b & 0x40) {
-        *(p + 1) = c;
-    }
-    if (b & 0x20) {
-        *(p + 2) = c;
-    }
-    if (b & 0x10) {
-        *(p + 3) = c;
-    }
-    if (b & 0x08) {
-        *(p + 4) = c;
-    }
-    if (b & 0x04) {
-        *(p + 5) = c;
-    }
-    if (b & 0x02) {
-        *(p + 6) = c;
-    }
-    if (b & 0x01) {
-        *(p + 7) = c;
+    int i;
+    for (i = 0; i < 8; i++) {
+        if (b & 0x80) {
+            p[i] = c;
+        }
+        b <<= 1;
     }
 }
 
-static void draw_mc_byte(BYTE *p, BYTE b, BYTE c1, BYTE c2, BYTE c3)
+static void draw_foreground_mc_byte(BYTE *p, BYTE b, BYTE c1, BYTE c2, BYTE c3)
 {
-    switch (b & 0xc0) {
-    case 0x40:
-        *(p + 0) = *(p + 1) = c1;
-        break;
-    case 0x80:
-        *(p + 0) = *(p + 1) = c2;
-        break;
-    case 0xc0:
-        *(p + 0) = *(p + 1) = c3;
-        break;
+    int i;
+    for (i = 0; i < 8; i += 2) {
+        switch (b & 0xc0) {
+        case 0x40:
+            p[i] = p[i+1] = c1;
+            break;
+        case 0x80:
+            p[i] = p[i+1] = c2;
+            break;
+        case 0xc0:
+            p[i] = p[i+1] = c3;
+            break;
+        }
+
+        b <<= 2;
     }
-
-    switch (b & 0x30) {
-    case 0x10:
-        *(p + 2) = *(p + 3) = c1;
-        break;
-    case 0x20:
-        *(p + 2) = *(p + 3) = c2;
-        break;
-    case 0x30:
-        *(p + 2) = *(p + 3) = c3;
-        break;
-    }
-
-    switch (b & 0x0c) {
-    case 0x04:
-        *(p + 4) = *(p + 5) = c1;
-        break;
-    case 0x08:
-        *(p + 4) = *(p + 5) = c2;
-        break;
-    case 0x0c:
-        *(p + 4) = *(p + 5) = c3;
-        break;
-    }
-
-    switch (b & 0x03) {
-    case 0x01:
-        *(p + 6) = *(p + 7) = c1;
-        break;
-    case 0x02:
-        *(p + 6) = *(p + 7) = c2;
-        break;
-    case 0x03:
-        *(p + 6) = *(p + 7) = c3;
-        break;
-    }
-
-
 }
 
 void vicii_draw_cycle(void)
@@ -156,13 +95,13 @@ void vicii_draw_cycle(void)
         
         vbuf = vicii.vbuf[cycle - 14];
         cbuf = vicii.cbuf[cycle - 14];
-        gbuf = vicii.gbuf[cycle - 14];
+        gbuf = vicii.gbuf[cycle - 14]; /* this shouldn't be a buffer */
 
         switch (vicii.video_mode) {
 
         case VICII_NORMAL_TEXT_MODE:
             draw_background_byte(&vicii.dbuf[i], bg);
-            draw_std_text_byte(&vicii.dbuf[i], gbuf, cbuf);
+            draw_foreground_hires_byte(&vicii.dbuf[i], gbuf, cbuf);
             break;
 
         case VICII_MULTICOLOR_TEXT_MODE:
@@ -171,25 +110,25 @@ void vicii_draw_cycle(void)
             c2 = vicii.ext_background_color[1];
             c3 = cbuf & 0x07;
             if (cbuf & 0x08) {
-                draw_mc_byte(&vicii.dbuf[i], gbuf, c1, c2, c3);
+                draw_foreground_mc_byte(&vicii.dbuf[i], gbuf, c1, c2, c3);
             } else {
-                draw_std_text_byte(&vicii.dbuf[i], gbuf, c3);
+                draw_foreground_hires_byte(&vicii.dbuf[i], gbuf, c3);
             }
             break;
 
         case VICII_HIRES_BITMAP_MODE:
             c1 = vbuf & 0x0f;
             c2 = vbuf >> 4;
-            draw_std_text_byte(&vicii.dbuf[i], 0xff, c1);
-            draw_std_text_byte(&vicii.dbuf[i], gbuf, c2);
+            draw_foreground_hires_byte(&vicii.dbuf[i], 0xff, c1);
+            draw_foreground_hires_byte(&vicii.dbuf[i], gbuf, c2);
             break;
 
         case VICII_MULTICOLOR_BITMAP_MODE:
             c1 = vbuf >> 4;
             c2 = vbuf & 0x0f;
             c3 = cbuf;
-            draw_std_text_byte(&vicii.dbuf[i], 0xff, bg);
-            draw_mc_byte(&vicii.dbuf[i], gbuf, c1, c2, c3);
+            draw_background_byte(&vicii.dbuf[i], bg);
+            draw_foreground_mc_byte(&vicii.dbuf[i], gbuf, c1, c2, c3);
             break;
             
         case VICII_EXTENDED_TEXT_MODE:
@@ -211,13 +150,13 @@ void vicii_draw_cycle(void)
                 break;
             }
 
-            draw_std_text_byte(&vicii.dbuf[i], gbuf, cbuf);
+            draw_foreground_hires_byte(&vicii.dbuf[i], gbuf, cbuf);
             break;
 
         case VICII_IDLE_MODE:
             /* this currently doesn't work as expected */
             draw_background_byte(&vicii.dbuf[i], bg);
-            draw_std_text_byte(&vicii.dbuf[i], gbuf, 0);         
+            draw_foreground_hires_byte(&vicii.dbuf[i], gbuf, 0);         
             break;
 
         }
