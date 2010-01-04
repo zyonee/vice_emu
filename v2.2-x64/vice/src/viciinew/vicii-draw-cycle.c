@@ -32,45 +32,19 @@
 #include "vicii-draw-cycle.h"
 #include "viciitypes.h"
 
-/* graphics shift register */
-int gfx_cnt = 0;
-BYTE gfx_shiftreg = 0;
+/* gbuf shift register */
+BYTE gbuf_reg = 0;
+int gbuf_cnt = 0;
+BYTE last_mc_px = 0;
 
 /* cbuf and vbuf registers */
 BYTE cbuf_reg = 0;
 BYTE vbuf_reg = 0;
 
+/* sbuf shift registers */
+int sbuf_cnt[8];
+DWORD sbuf_shiftreg[32]; /* maybe use those directly present in vicii.* */
 
-
-#if 0
-static void draw_foreground_mc_byte(BYTE b, BYTE c0, BYTE c1, BYTE c2, BYTE c3)
-{
-    int i;
-    int xs = vicii.regs[0x16] & 0x07;
-    for (i = 0; i < 8; i += 2) {
-        switch (b & 0xc0) {
-        case 0x00:
-            push_gfx_buffer(c0, i+0+xs);
-            push_gfx_buffer(c0, i+1+xs);
-            break;
-        case 0x40:
-            push_gfx_buffer(c1, i+0+xs);
-            push_gfx_buffer(c1, i+1+xs);
-            break;
-        case 0x80:
-            push_gfx_buffer(c2, i+0+xs);
-            push_gfx_buffer(c2, i+1+xs);
-            break;
-        case 0xc0:
-            push_gfx_buffer(c3, i+0+xs);
-            push_gfx_buffer(c3, i+1+xs);
-            break;
-        }
-
-        b <<= 2;
-    }
-}
-#endif
 
 void vicii_draw_cycle(void)
 {
@@ -81,8 +55,8 @@ void vicii_draw_cycle(void)
     /* reset rendering on raster cycle 0 */
     if (cycle == 0) {
         vicii.dbuf_offset = 0;
-        gfx_cnt = 0;
-        gfx_shiftreg = 0;
+        gbuf_cnt = 0;
+        gbuf_reg = 0;
         vbuf_reg = 0;
         cbuf_reg = 0;
     }
@@ -93,7 +67,7 @@ void vicii_draw_cycle(void)
     
     /* are we within the display area? */
     if (cycle >= 14 && cycle <= 53) {
-        BYTE bg, c1, c2, c3;
+        BYTE bg;
         BYTE xs;
         bg = vicii.regs[0x21];
         xs = vicii.regs[0x16] & 0x07;
@@ -101,14 +75,14 @@ void vicii_draw_cycle(void)
         /* render pixels */
         for (i = 0; i < 8; i++) {
             int j = i + offs;
-            BYTE px;
+            BYTE c0, c1, c2, c3;
 
             if (i == xs) {
                 /* latch values at time xs */
                 vbuf_reg = vicii.vbuf[cycle - 14];
                 cbuf_reg = vicii.cbuf[cycle - 14];
-                gfx_shiftreg = vicii.gbuf[cycle - 14]; /* this shouldn't be a buffer */
-                gfx_cnt = 0;
+                gbuf_reg = vicii.gbuf[cycle - 14]; /* this shouldn't be a buffer */
+                gbuf_cnt = 0;
             }
 
            
@@ -116,17 +90,17 @@ void vicii_draw_cycle(void)
 
             case VICII_NORMAL_TEXT_MODE:
                 c1 = cbuf_reg;
-                vicii.dbuf[j] = (gfx_shiftreg & 0x80) ? c1 : bg;
+                vicii.dbuf[j] = (gbuf_reg & 0x80) ? c1 : bg;
                 break;
             case VICII_MULTICOLOR_TEXT_MODE:
                 c1 = vicii.ext_background_color[0];
                 c2 = vicii.ext_background_color[1];
                 c3 = cbuf_reg & 0x07;
                 if (cbuf_reg & 0x08) {
-                    if ( (gfx_cnt & 1) == 0) {
-                        px = gfx_shiftreg >> 6;
+                    if ( (gbuf_cnt & 1) == 0) {
+                        last_mc_px = gbuf_reg >> 6;
                     }
-                    switch (px) {
+                    switch (last_mc_px) {
                     case 0:
                         vicii.dbuf[j] = bg;
                         break;
@@ -141,45 +115,59 @@ void vicii_draw_cycle(void)
                         break;
                     }
                 } else {
-                    vicii.dbuf[j] = (gfx_shiftreg & 0x80) ? c3 : bg;
+                    vicii.dbuf[j] = (gbuf_reg & 0x80) ? c3 : bg;
                 }
                 break;
 
-#if 0
             case VICII_HIRES_BITMAP_MODE:
-                c1 = vbuf & 0x0f;
-                c2 = vbuf >> 4;
-                draw_foreground_hires_byte(gbuf, c1, c2);
+                c0 = vbuf_reg & 0x0f;
+                c1 = vbuf_reg >> 4;
+                vicii.dbuf[j] = (gbuf_reg & 0x80) ? c1 : c0;
                 break;
 
             case VICII_MULTICOLOR_BITMAP_MODE:
-                c1 = vbuf >> 4;
-                c2 = vbuf & 0x0f;
-                c3 = cbuf;
-                draw_foreground_mc_byte(gbuf, bg, c1, c2, c3);
+                c1 = vbuf_reg >> 4;
+                c2 = vbuf_reg & 0x0f;
+                c3 = cbuf_reg;
+                if ( (gbuf_cnt & 1) == 0) {
+                    last_mc_px = gbuf_reg >> 6;
+                }
+                switch (last_mc_px) {
+                case 0:
+                    vicii.dbuf[j] = bg;
+                    break;
+                case 1:
+                    vicii.dbuf[j] = c1;
+                    break;
+                case 2:
+                    vicii.dbuf[j] = c2;
+                    break;
+                case 3:
+                    vicii.dbuf[j] = c3;
+                    break;
+                }
                 break;
             
             case VICII_EXTENDED_TEXT_MODE:
-                c1 = vicii.ext_background_color[0];
-                c2 = vicii.ext_background_color[1];
-                c3 = vicii.ext_background_color[2];
-                switch (vbuf & 0xc0) {
+                c1 = cbuf_reg;
+
+                switch (vbuf_reg & 0xc0) {
                 case 0x00:
-                    draw_foreground_hires_byte(gbuf, bg, cbuf);
+                    c0 = bg;
                     break;
                 case 0x40:
-                    draw_foreground_hires_byte(gbuf, c1, cbuf);
+                    c0 = vicii.ext_background_color[0];
                     break;
                 case 0x80:
-                    draw_foreground_hires_byte(gbuf, c2, cbuf);
+                    c0 = vicii.ext_background_color[1];
                     break;
                 case 0xc0:
-                    draw_foreground_hires_byte(gbuf, c3, cbuf);
+                    c0 = vicii.ext_background_color[2];
                     break;
                 }
-
+                vicii.dbuf[j] = (gbuf_reg & 0x80) ? c1 : c0;
                 break;
-
+#if 0
             case VICII_IDLE_MODE:
                 /* this currently doesn't work as expected */
                 draw_foreground_hires_byte(gbuf, bg, 0);         
@@ -187,9 +175,9 @@ void vicii_draw_cycle(void)
 #endif
 
             }
-            /* shift */
-            gfx_shiftreg <<= 1;
-            gfx_cnt++;
+            /* shift the graphics buffer */
+            gbuf_reg <<= 1;
+            gbuf_cnt++;
         }
     } else {
 #if 0
