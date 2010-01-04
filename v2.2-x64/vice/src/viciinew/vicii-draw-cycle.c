@@ -101,6 +101,7 @@ void vicii_draw_cycle(void)
         /* render pixels */
         for (i = 0; i < 8; i++) {
             int j = i + offs;
+            BYTE px;
 
             if (i == xs) {
                 /* latch values at time xs */
@@ -117,18 +118,34 @@ void vicii_draw_cycle(void)
                 c1 = cbuf_reg;
                 vicii.dbuf[j] = (gfx_shiftreg & 0x80) ? c1 : bg;
                 break;
-#if 0
             case VICII_MULTICOLOR_TEXT_MODE:
                 c1 = vicii.ext_background_color[0];
                 c2 = vicii.ext_background_color[1];
-                c3 = cbuf & 0x07;
-                if (cbuf & 0x08) {
-                    draw_foreground_mc_byte(gbuf, bg, c1, c2, c3);
+                c3 = cbuf_reg & 0x07;
+                if (cbuf_reg & 0x08) {
+                    if ( (gfx_cnt & 1) == 0) {
+                        px = gfx_shiftreg >> 6;
+                    }
+                    switch (px) {
+                    case 0:
+                        vicii.dbuf[j] = bg;
+                        break;
+                    case 1:
+                        vicii.dbuf[j] = c1;
+                        break;
+                    case 2:
+                        vicii.dbuf[j] = c2;
+                        break;
+                    case 3:
+                        vicii.dbuf[j] = c3;
+                        break;
+                    }
                 } else {
-                    draw_foreground_hires_byte(gbuf, bg, c3);
+                    vicii.dbuf[j] = (gfx_shiftreg & 0x80) ? c3 : bg;
                 }
                 break;
 
+#if 0
             case VICII_HIRES_BITMAP_MODE:
                 c1 = vbuf & 0x0f;
                 c2 = vbuf >> 4;
