@@ -371,6 +371,9 @@ inline static void d016_store(const BYTE value)
     cycle = VICII_RASTER_CYCLE(maincpu_clk);
     xsmooth = value & 7;
 
+#if 0
+    /* fully disabled xscroll to be handled by vicii-draw-cycle instead
+       of raster  */
     if (xsmooth != (vicii.regs[0x16] & 7)) {
         if (xsmooth < (vicii.regs[0x16] & 7)) {
             if (cycle < 56)
@@ -403,6 +406,7 @@ inline static void d016_store(const BYTE value)
                                         &raster->sprite_xsmooth,
                                         xsmooth);
     }
+#endif
 
     /* Bit 4 (CSEL) selects 38/40 column mode.  */
     check_lateral_border(value, cycle, raster);
