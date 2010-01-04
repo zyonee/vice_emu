@@ -37,56 +37,58 @@ struct RingEntry {
     enum { BG_COLOR } type;
 };
 
+/* graphics shift register */
+#define GFX_SHIFTREG_MASK 15
 static int gfx_bp = 0;
 static struct RingEntry gfx_buffer[16];
 
 
 static void push_gfx_buffer(BYTE c, int offs)
 {
-    gfx_buffer[(gfx_bp + offs) & 0x0f].color = c;
+    gfx_buffer[(gfx_bp + offs) & GFX_SHIFTREG_MASK].color = c;
 }
 
 
-static void draw_border_byte(BYTE *p, BYTE c)
+static void draw_border_byte(BYTE c)
 {
     int i;
-    int bi = vicii.regs[0x16] & 0x07;
+    int xs = vicii.regs[0x16] & 0x07;
     for (i = 0; i < 8; i++) {
-        push_gfx_buffer(c, bi+i);
+        push_gfx_buffer(c, i + xs);
     }
 }
 
-static void draw_foreground_hires_byte(BYTE *p, BYTE b, BYTE c0, BYTE c1)
+static void draw_foreground_hires_byte(BYTE b, BYTE c0, BYTE c1)
 {
     int i;
-    int bi = vicii.regs[0x16] & 0x07;
+    int xs = vicii.regs[0x16] & 0x07;
     for (i = 0; i < 8; i++) {
-        push_gfx_buffer( (b & 0x80) ? c1 : c0, bi+i );
+        push_gfx_buffer( (b & 0x80) ? c1 : c0, i+xs );
         b <<= 1;
     }
 }
 
-static void draw_foreground_mc_byte(BYTE *p, BYTE b, BYTE c0, BYTE c1, BYTE c2, BYTE c3)
+static void draw_foreground_mc_byte(BYTE b, BYTE c0, BYTE c1, BYTE c2, BYTE c3)
 {
     int i;
-    int bi = vicii.regs[0x16] & 0x07;
+    int xs = vicii.regs[0x16] & 0x07;
     for (i = 0; i < 8; i += 2) {
         switch (b & 0xc0) {
         case 0x00:
-            push_gfx_buffer(c0, bi+i);
-            push_gfx_buffer(c0, bi+i+1);
+            push_gfx_buffer(c0, i+0+xs);
+            push_gfx_buffer(c0, i+1+xs);
             break;
         case 0x40:
-            push_gfx_buffer(c1, bi+i);
-            push_gfx_buffer(c1, bi+i+1);
+            push_gfx_buffer(c1, i+0+xs);
+            push_gfx_buffer(c1, i+1+xs);
             break;
         case 0x80:
-            push_gfx_buffer(c2, bi+i);
-            push_gfx_buffer(c2, bi+i+1);
+            push_gfx_buffer(c2, i+0+xs);
+            push_gfx_buffer(c2, i+1+xs);
             break;
         case 0xc0:
-            push_gfx_buffer(c3, bi+i);
-            push_gfx_buffer(c3, bi+i+1);
+            push_gfx_buffer(c3, i+0+xs);
+            push_gfx_buffer(c3, i+1+xs);
             break;
         }
 
@@ -95,7 +97,7 @@ static void draw_foreground_mc_byte(BYTE *p, BYTE b, BYTE c0, BYTE c1, BYTE c2, 
 }
 
 
-static void render_byte(BYTE *p)
+static void render_8pixels(BYTE *p)
 {
     int i;
     int bg = vicii.regs[0x21];
@@ -103,8 +105,7 @@ static void render_byte(BYTE *p)
     for (i = 0; i < 8; i++) {
         p[i] = gfx_buffer[gfx_bp].color;
         gfx_buffer[gfx_bp].color = bg;
-        gfx_bp++;
-        gfx_bp &= 0x0f;
+        gfx_bp = (gfx_bp + 1) & GFX_SHIFTREG_MASK;
     }
 }
 
@@ -144,7 +145,7 @@ void vicii_draw_cycle(void)
         switch (vicii.video_mode) {
 
         case VICII_NORMAL_TEXT_MODE:
-            draw_foreground_hires_byte(&vicii.dbuf[i], gbuf, bg, cbuf);
+            draw_foreground_hires_byte(gbuf, bg, cbuf);
             break;
 
         case VICII_MULTICOLOR_TEXT_MODE:
@@ -152,23 +153,23 @@ void vicii_draw_cycle(void)
             c2 = vicii.ext_background_color[1];
             c3 = cbuf & 0x07;
             if (cbuf & 0x08) {
-                draw_foreground_mc_byte(&vicii.dbuf[i], gbuf, bg, c1, c2, c3);
+                draw_foreground_mc_byte(gbuf, bg, c1, c2, c3);
             } else {
-                draw_foreground_hires_byte(&vicii.dbuf[i], gbuf, bg, c3);
+                draw_foreground_hires_byte(gbuf, bg, c3);
             }
             break;
 
         case VICII_HIRES_BITMAP_MODE:
             c1 = vbuf & 0x0f;
             c2 = vbuf >> 4;
-            draw_foreground_hires_byte(&vicii.dbuf[i], gbuf, c1, c2);
+            draw_foreground_hires_byte(gbuf, c1, c2);
             break;
 
         case VICII_MULTICOLOR_BITMAP_MODE:
             c1 = vbuf >> 4;
             c2 = vbuf & 0x0f;
             c3 = cbuf;
-            draw_foreground_mc_byte(&vicii.dbuf[i], gbuf, bg, c1, c2, c3);
+            draw_foreground_mc_byte(gbuf, bg, c1, c2, c3);
             break;
             
         case VICII_EXTENDED_TEXT_MODE:
@@ -177,16 +178,16 @@ void vicii_draw_cycle(void)
             c3 = vicii.ext_background_color[2];
             switch (vbuf & 0xc0) {
             case 0x00:
-                draw_foreground_hires_byte(&vicii.dbuf[i], gbuf, bg, cbuf);
+                draw_foreground_hires_byte(gbuf, bg, cbuf);
                 break;
             case 0x40:
-                draw_foreground_hires_byte(&vicii.dbuf[i], gbuf, c1, cbuf);
+                draw_foreground_hires_byte(gbuf, c1, cbuf);
                 break;
             case 0x80:
-                draw_foreground_hires_byte(&vicii.dbuf[i], gbuf, c2, cbuf);
+                draw_foreground_hires_byte(gbuf, c2, cbuf);
                 break;
             case 0xc0:
-                draw_foreground_hires_byte(&vicii.dbuf[i], gbuf, c3, cbuf);
+                draw_foreground_hires_byte(gbuf, c3, cbuf);
                 break;
             }
 
@@ -194,7 +195,7 @@ void vicii_draw_cycle(void)
 
         case VICII_IDLE_MODE:
             /* this currently doesn't work as expected */
-            draw_foreground_hires_byte(&vicii.dbuf[i], gbuf, bg, 0);         
+            draw_foreground_hires_byte(gbuf, bg, 0);         
             break;
 
         }
@@ -203,11 +204,11 @@ void vicii_draw_cycle(void)
         /* we are outside the display area */
         BYTE c = vicii.regs[0x20];
         /* separate function? */
-        draw_border_byte(&vicii.dbuf[i], c);
+        draw_border_byte(c);
 #endif
     }
 
-    render_byte(&vicii.dbuf[i]);
+    render_8pixels(&vicii.dbuf[i]);
     vicii.dbuf_offset += 8;
 }
 
