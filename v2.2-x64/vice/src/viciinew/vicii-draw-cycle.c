@@ -49,11 +49,75 @@ BYTE vbuf_reg = 0;
 /* sprites */
 
 /* sbuf shift registers */
-int sbuf_cnt[8];
 DWORD sbuf_reg[8]; /* maybe use those directly present in vicii.*? */
-BYTE sbuf_mc_reg[8];
-BYTE sbuf_exp_reg[8];
+BYTE sbuf_pixel_reg[8];
+BYTE sbuf_expx_flop[8];
+BYTE sbuf_mc_flop[8];
 
+
+static void draw_sprites(int cycle, int i, int j)
+{
+    int s;
+    BYTE c1, c2, c3;
+    int x;
+    x = cycle*8 + i - 88;    /* this is plain wrong! */
+
+    c1 = vicii.regs[0x25];
+    c3 = vicii.regs[0x26];
+
+    /* Brute force render sprites on top of graphics for now! */
+    for (s = 7; s >= 0; --s) {
+        int pri = vicii.regs[0x1b] & (1<<s);
+        int mc = vicii.regs[0x1c] & (1<<s);
+        int expx = vicii.regs[0x1d] & (1<<s);
+        int sprx = vicii.regs[0x00 + s*2];
+        sprx |= (vicii.regs[0x10] & (1<<s)) ? 0x100 : 0;
+        c2 = vicii.regs[0x27 + s];
+
+        /* fetch sprite data on position match */
+        if (x == sprx) {
+            DWORD *tmp;
+            raster_sprite_status_t *sprite_status = vicii.raster.sprite_status;
+            DWORD *data = sprite_status->new_sprite_data;
+            sbuf_reg[s] = ((data[s] >> 16) & 0x0000ff) | (data[s] & 0x00ff00) | ((data[s] << 16) & 0xff0000);
+        }
+
+        /* render pixels if shift register still contains data */
+        if (sbuf_reg[s]) {
+
+            if ( sbuf_expx_flop[s] == 0 ) {
+                if (mc) {
+                    if (sbuf_mc_flop[s] == 0) {
+                        sbuf_pixel_reg[s] = (sbuf_reg[s] >> 22) & 0x03;
+                    }
+                    sbuf_mc_flop[s] = ~sbuf_mc_flop[s];
+                } else {
+                    /* 0 or 2 */
+                    sbuf_pixel_reg[s] = ( (sbuf_reg[s] >> 23) & 0x01 ) << 1;
+                }
+            }
+            switch (sbuf_pixel_reg[s]) {
+            case 1:
+                vicii.dbuf[j] = c1;
+                break;
+            case 2:
+                vicii.dbuf[j] = c2;
+                break;
+            case 3:
+                vicii.dbuf[j] = c3;
+                break;
+            }
+
+            /* shift the sprite buffer */
+            if (sbuf_expx_flop[s] == 0) {
+                sbuf_reg[s] <<= 1;
+            }
+            if (expx) {
+                sbuf_expx_flop[s] = ~sbuf_expx_flop[s];
+            }
+        }
+    }
+}
 
 void vicii_draw_cycle(void)
 {
@@ -68,6 +132,11 @@ void vicii_draw_cycle(void)
         gbuf_reg = 0;
         vbuf_reg = 0;
         cbuf_reg = 0;
+
+        for (i=0; i < 8; i++) {
+            sbuf_expx_flop[i] = 0;
+            sbuf_mc_flop[i] = 0;
+        }
     }
     offs = vicii.dbuf_offset;
     /* guard */
@@ -183,35 +252,12 @@ void vicii_draw_cycle(void)
 
             }
 
-            /* Brute force render sprites on top of graphics for now! */
-            int s;
-            for (s = 0; s < 8; s++) {
-                /* fetch sprite data on position match */
-                int x = cycle*8 + i - 88;
-                int sprx = vicii.regs[0x00 + s*2];
-                sprx |= (vicii.regs[0x10] & (1<<s)) ? 0x100 : 0;
-                BYTE c1 = vicii.regs[0x27 + s];
-                if (x == sprx) {
-                    DWORD *tmp;
-                    raster_sprite_status_t *sprite_status = vicii.raster.sprite_status;
-                    DWORD *data = sprite_status->new_sprite_data;
-                    sbuf_reg[s] = ((data[s] >> 16) & 0x0000ff) | (data[s] & 0x00ff00) | ((data[s] << 16) & 0xff0000);
-                }
-                if (sbuf_reg[s]) {
-
-                    if (sbuf_reg[s] & 0x800000) {
-                        vicii.dbuf[j] = c1;
-                    }
-
-                    /* shift the sprite buffer */
-                    sbuf_reg[s] <<= 1;
-                    sbuf_cnt[s]++;
-                }
-            }
-
             /* shift the graphics buffer */
             gbuf_reg <<= 1;
             gbuf_cnt++;
+            
+            draw_sprites(cycle, i, j);
+
         }
     } else {
 #if 0
