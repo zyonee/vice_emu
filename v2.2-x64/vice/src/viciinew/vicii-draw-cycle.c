@@ -28,22 +28,31 @@
 
 #include <string.h>
 
+#include "raster-sprite-status.h"
+#include "raster-sprite.h"
+#include "raster.h"
 #include "types.h"
 #include "vicii-draw-cycle.h"
 #include "viciitypes.h"
 
+/* foreground/background graphics */
+
 /* gbuf shift register */
 BYTE gbuf_reg = 0;
 int gbuf_cnt = 0;
-BYTE last_mc_px = 0;
+BYTE gbuf_mc_reg = 0;
 
 /* cbuf and vbuf registers */
 BYTE cbuf_reg = 0;
 BYTE vbuf_reg = 0;
 
+/* sprites */
+
 /* sbuf shift registers */
 int sbuf_cnt[8];
-DWORD sbuf_shiftreg[32]; /* maybe use those directly present in vicii.* */
+DWORD sbuf_reg[8]; /* maybe use those directly present in vicii.*? */
+BYTE sbuf_mc_reg[8];
+BYTE sbuf_exp_reg[8];
 
 
 void vicii_draw_cycle(void)
@@ -67,8 +76,7 @@ void vicii_draw_cycle(void)
     
     /* are we within the display area? */
     if (cycle >= 14 && cycle <= 53) {
-        BYTE bg;
-        BYTE xs;
+        BYTE bg, xs;
         bg = vicii.regs[0x21];
         xs = vicii.regs[0x16] & 0x07;
 
@@ -98,9 +106,9 @@ void vicii_draw_cycle(void)
                 c3 = cbuf_reg & 0x07;
                 if (cbuf_reg & 0x08) {
                     if ( (gbuf_cnt & 1) == 0) {
-                        last_mc_px = gbuf_reg >> 6;
+                        gbuf_mc_reg = gbuf_reg >> 6;
                     }
-                    switch (last_mc_px) {
+                    switch (gbuf_mc_reg) {
                     case 0:
                         vicii.dbuf[j] = bg;
                         break;
@@ -130,9 +138,9 @@ void vicii_draw_cycle(void)
                 c2 = vbuf_reg & 0x0f;
                 c3 = cbuf_reg;
                 if ( (gbuf_cnt & 1) == 0) {
-                    last_mc_px = gbuf_reg >> 6;
+                    gbuf_mc_reg = gbuf_reg >> 6;
                 }
-                switch (last_mc_px) {
+                switch (gbuf_mc_reg) {
                 case 0:
                     vicii.dbuf[j] = bg;
                     break;
@@ -167,14 +175,40 @@ void vicii_draw_cycle(void)
                 }
                 vicii.dbuf[j] = (gbuf_reg & 0x80) ? c1 : c0;
                 break;
-#if 0
+
             case VICII_IDLE_MODE:
                 /* this currently doesn't work as expected */
-                draw_foreground_hires_byte(gbuf, bg, 0);         
+                vicii.dbuf[j] = (gbuf_reg & 0x80) ? 0 : bg;
                 break;
-#endif
 
             }
+
+            /* Brute force render sprites on top of graphics for now! */
+            int s;
+            for (s = 0; s < 8; s++) {
+                /* fetch sprite data on position match */
+                int x = cycle*8 + i - 88;
+                int sprx = vicii.regs[0x00 + s*2];
+                sprx |= (vicii.regs[0x10] & (1<<s)) ? 0x100 : 0;
+                BYTE c1 = vicii.regs[0x27 + s];
+                if (x == sprx) {
+                    DWORD *tmp;
+                    raster_sprite_status_t *sprite_status = vicii.raster.sprite_status;
+                    DWORD *data = sprite_status->new_sprite_data;
+                    sbuf_reg[s] = ((data[s] >> 16) & 0x0000ff) | (data[s] & 0x00ff00) | ((data[s] << 16) & 0xff0000);
+                }
+                if (sbuf_reg[s]) {
+
+                    if (sbuf_reg[s] & 0x800000) {
+                        vicii.dbuf[j] = c1;
+                    }
+
+                    /* shift the sprite buffer */
+                    sbuf_reg[s] <<= 1;
+                    sbuf_cnt[s]++;
+                }
+            }
+
             /* shift the graphics buffer */
             gbuf_reg <<= 1;
             gbuf_cnt++;
