@@ -513,9 +513,9 @@
     CLK_INC();
 
 #define SET_IND_X(value) \
-    INT_IND_X            \
+{   INT_IND_X            \
     STORE(addr, value);  \
-    CLK_INC();
+    CLK_INC(); }
 
 #define INT_IND_Y_R()                                        \
     unsigned int tmpa, addr;                                 \
@@ -552,9 +552,9 @@
     CLK_INC();
 
 #define SET_IND_Y(value) \
-    INT_IND_Y_W()        \
+{   INT_IND_Y_W()        \
     STORE(addr, value);  \
-    CLK_INC();
+    CLK_INC(); }
 
 #define SET_IND_RMW(old_value, new_value) \
     if (!SKIP_CYCLE) {                    \
