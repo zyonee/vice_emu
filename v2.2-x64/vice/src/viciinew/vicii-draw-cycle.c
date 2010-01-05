@@ -82,6 +82,9 @@ static void draw_sprites(int cycle, int i, int j, int pri)
             raster_sprite_status_t *sprite_status = vicii.raster.sprite_status;
             DWORD *data = sprite_status->new_sprite_data;
             sbuf_reg[s] = ((data[s] >> 16) & 0x0000ff) | (data[s] & 0x00ff00) | ((data[s] << 16) & 0xff0000);
+
+            sbuf_expx_flop[s] = 0;
+            sbuf_mc_flop[s] = 0;
         }
 
         /* render pixels if shift register or pixel reg still contains data */
@@ -135,11 +138,6 @@ void vicii_draw_cycle(void)
         gbuf_reg = 0;
         vbuf_reg = 0;
         cbuf_reg = 0;
-
-        for (i=0; i < 8; i++) {
-            sbuf_expx_flop[i] = 0;
-            sbuf_mc_flop[i] = 0;
-        }
     }
     offs = vicii.dbuf_offset;
     /* guard */
@@ -250,6 +248,12 @@ void vicii_draw_cycle(void)
 
         }
     } else {
+        /* render pixels */
+        for (i = 0; i < 8; i++) {
+            int j = i + offs;
+            draw_sprites(cycle, i, j, 0);
+        }
+
 #if 0
         /* we are outside the display area */
         BYTE c = vicii.regs[0x20];
