@@ -691,12 +691,15 @@ inline static void ext_background_store(WORD addr, BYTE value)
     VICII_DEBUG_REGISTER(("Background color #%d register: $%02X",
                           addr - 0x21, value));
 
+#if 0
     if (vicii.regs[addr] == value) {
         return;
     }
+#endif
 
     vicii.regs[addr] = value;
 
+#if 0
     char_num = VICII_RASTER_CHAR(VICII_RASTER_CYCLE(maincpu_clk));
 
     if (vicii.video_mode == VICII_EXTENDED_TEXT_MODE) {
@@ -710,6 +713,7 @@ inline static void ext_background_store(WORD addr, BYTE value)
                                       char_num - 1,
                                       &vicii.ext_background_color[addr - 0x22],
                                       value);
+#endif
 }
 
 inline static void d025_store(BYTE value)
@@ -720,6 +724,7 @@ inline static void d025_store(BYTE value)
 
     VICII_DEBUG_REGISTER(("Sprite multicolor register #0: $%02X", value));
 
+#if 0
     if (vicii.regs[0x25] == value) {
         return;
     }
@@ -730,6 +735,7 @@ inline static void d025_store(BYTE value)
         VICII_RASTER_X(VICII_RASTER_CYCLE(maincpu_clk)) + 1,
         (int *)&sprite_status->mc_sprite_color_1, 
         (int)value);
+#endif
 
     vicii.regs[0x25] = value;
 }
@@ -742,6 +748,7 @@ inline static void d026_store(BYTE value)
 
     VICII_DEBUG_REGISTER(("Sprite multicolor register #1: $%02X", value));
 
+#if 0
     if (vicii.regs[0x26] == value) {
         return;
     }
@@ -752,6 +759,7 @@ inline static void d026_store(BYTE value)
         VICII_RASTER_X(VICII_RASTER_CYCLE(maincpu_clk)) + 1,
         (int*)&sprite_status->mc_sprite_color_2, 
         (int)value);
+#endif
 
     vicii.regs[0x26] = value;
 }
@@ -766,6 +774,7 @@ inline static void sprite_color_store(WORD addr, BYTE value)
     VICII_DEBUG_REGISTER(("Sprite #%d color register: $%02X",
                          addr - 0x27, value));
 
+#if 0
     if (vicii.regs[addr] == value) {
         return;
     }
@@ -778,6 +787,7 @@ inline static void sprite_color_store(WORD addr, BYTE value)
         VICII_RASTER_X(VICII_RASTER_CYCLE(maincpu_clk)) + 1,
         (int *)&sprite->color, 
         value);
+#endif;
 
     vicii.regs[addr] = value;
 }
