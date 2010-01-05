@@ -140,12 +140,10 @@ inline static void check_lower_upper_border(const BYTE value,
 {
     if ((value ^ vicii.regs[0x11]) & 8) {
         if (value & 0x8) {
-#if 0
             /* 24 -> 25 row mode switch.  */
 
-            vicii.raster.display_ystart = vicii.row_25_start_line;
-            vicii.raster.display_ystop = vicii.row_25_stop_line;
-#endif
+            vicii.display_ystart = vicii.row_25_start_line;
+            vicii.display_ystop = vicii.row_25_stop_line;
 
             if (line == vicii.row_24_stop_line && cycle > 0) {
                 /* If on the first line of the 24-line border, we
@@ -161,7 +159,7 @@ inline static void check_lower_upper_border(const BYTE value,
                     vicii.raster.blank_enabled = 0;
                 }
 
-                if (line == vicii.raster.display_ystart && cycle > 0
+                if (line == vicii.display_ystart && cycle > 0
                     && vicii.raster.blank == 0) {
                     /* A 24 -> 25 switch somewhere on the first line of
                        the 25-row mode is enough to disable screen
@@ -172,12 +170,10 @@ inline static void check_lower_upper_border(const BYTE value,
             }
             VICII_DEBUG_REGISTER(("25 line mode enabled"));
         } else {
-#if 0
             /* 25 -> 24 row mode switch.  */
 
-            vicii.raster.display_ystart = vicii.row_24_start_line;
-            vicii.raster.display_ystop = vicii.row_24_stop_line;
-#endif
+            vicii.display_ystart = vicii.row_24_start_line;
+            vicii.display_ystop = vicii.row_24_stop_line;
 
             /* If on the last line of the 25-line border, we still see the
                24-line (upmost) border because the border flip flop has
@@ -195,7 +191,7 @@ inline static void check_lower_upper_border(const BYTE value,
     }
 
     /* Check if border is already disabled even if DEN will be cleared */
-    if (line == vicii.raster.display_ystart && cycle > 0 && !vicii.raster.blank)
+    if (line == vicii.display_ystart && cycle > 0 && !vicii.raster.blank)
     {
         vicii.raster.blank_off = 1;
     }
@@ -341,7 +337,7 @@ inline static void check_lateral_border(const BYTE value, int cycle,
             if (cycle == 56 && (vicii.regs[0x16] & 0x8)
                 && (raster->open_left_border 
                     || (!raster->blank_enabled 
-                        && raster->current_line != raster->display_ystop)))
+                        && raster->current_line != vicii.display_ystop)))
             {
                 raster->open_right_border = 1;
                 switch (vicii.get_background_from_vbuf) {

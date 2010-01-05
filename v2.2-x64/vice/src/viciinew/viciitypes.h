@@ -200,6 +200,10 @@ struct vicii_s {
     /* Draw buffer for a full line (one byte per pixel) */
     BYTE dbuf[VICII_DRAW_BUFFER_SIZE];
 
+    /* Flags related to top/bottom border (previously in raster) */
+    unsigned int display_ystart;
+    unsigned int display_ystop;
+
     /* If this flag is set, bad lines (DMA's) can happen.  */
     int allow_bad_lines;
 

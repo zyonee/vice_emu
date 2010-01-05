@@ -320,10 +320,8 @@ void vicii_reset(void)
     /* Remove all the IRQ sources.  */
     vicii.regs[0x1a] = 0;
 
-#if 0
-    vicii.raster.display_ystart = vicii.row_25_start_line;
-    vicii.raster.display_ystop = vicii.row_25_stop_line;
-#endif
+    vicii.display_ystart = vicii.row_25_start_line;
+    vicii.display_ystop = vicii.row_25_stop_line;
 
 }
 
@@ -374,10 +372,8 @@ void vicii_powerup(void)
     vicii_reset();
 
     vicii.raster.blank = 1;
-#if 0
-    vicii.raster.display_ystart = vicii.row_24_start_line;
-    vicii.raster.display_ystop = vicii.row_24_stop_line;
-#endif
+    vicii.display_ystart = vicii.row_24_start_line;
+    vicii.display_ystop = vicii.row_24_stop_line;
 
     vicii.raster.ysmooth = 0;
 }
