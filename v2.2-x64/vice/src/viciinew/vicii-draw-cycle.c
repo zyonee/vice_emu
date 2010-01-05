@@ -310,6 +310,8 @@ void vicii_draw_cycle(void)
         /* render pixels */
         for (i = 0; i < 8; i++) {
             int j = i + offs;
+            /* plot bg for now */
+            vicii.dbuf[j] = vicii.regs[0x21];
             draw_sprites(cycle, i, j, 0);
         }
 

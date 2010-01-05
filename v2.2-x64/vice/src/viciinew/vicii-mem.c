@@ -140,10 +140,12 @@ inline static void check_lower_upper_border(const BYTE value,
 {
     if ((value ^ vicii.regs[0x11]) & 8) {
         if (value & 0x8) {
+#if 0
             /* 24 -> 25 row mode switch.  */
 
             vicii.raster.display_ystart = vicii.row_25_start_line;
             vicii.raster.display_ystop = vicii.row_25_stop_line;
+#endif
 
             if (line == vicii.row_24_stop_line && cycle > 0) {
                 /* If on the first line of the 24-line border, we
@@ -170,10 +172,12 @@ inline static void check_lower_upper_border(const BYTE value,
             }
             VICII_DEBUG_REGISTER(("25 line mode enabled"));
         } else {
+#if 0
             /* 25 -> 24 row mode switch.  */
 
             vicii.raster.display_ystart = vicii.row_24_start_line;
             vicii.raster.display_ystop = vicii.row_24_stop_line;
+#endif
 
             /* If on the last line of the 25-line border, we still see the
                24-line (upmost) border because the border flip flop has
@@ -294,6 +298,7 @@ inline static void check_lateral_border(const BYTE value, int cycle,
 {
     if ((value & 0x8) != (vicii.regs[0x16] & 0x8)) {
         if (value & 0x8) {
+#if 0
             /* 40 column mode.  */
             if (cycle <= 17)
                 raster->display_xstart = VICII_40COL_START_PIXEL;
@@ -308,12 +313,14 @@ inline static void check_lateral_border(const BYTE value, int cycle,
                                                  &raster->display_xstop,
                                                  VICII_40COL_STOP_PIXEL);
             VICII_DEBUG_REGISTER(("40 column mode enabled"));
+#endif
 
             /* If CSEL changes from 0 to 1 at cycle 17, the border is
                not turned off and this line is blank.  */
             if (cycle == 17 && !(vicii.regs[0x16] & 0x8))
                 raster->blank_this_line = 1;
         } else {
+#if 0
             /* 38 column mode.  */
             if (cycle <= 17)
                 raster->display_xstart = VICII_38COL_START_PIXEL;
@@ -328,7 +335,7 @@ inline static void check_lateral_border(const BYTE value, int cycle,
                                                  &raster->display_xstop,
                                                  VICII_38COL_STOP_PIXEL);
             VICII_DEBUG_REGISTER(("38 column mode enabled"));
-
+#endif
             /* If CSEL changes from 1 to 0 at cycle 56, the lateral
                border is open.  */
             if (cycle == 56 && (vicii.regs[0x16] & 0x8)

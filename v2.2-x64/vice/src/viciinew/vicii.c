@@ -177,6 +177,20 @@ static void vicii_set_geometry(void)
     width = vicii.screen_leftborderwidth + VICII_SCREEN_XPIX + vicii.screen_rightborderwidth;
     height = vicii.last_displayed_line - vicii.first_displayed_line + 1;
 
+#if 1
+    raster_set_geometry(&vicii.raster,
+                        width, height, /* canvas dimensions */
+                        width, vicii.screen_height, /* screen dimensions */
+                        width, height, /* gfx dimensions */
+                        width/8, height/8, /* text dimensions */
+                        0, 0, /* gfx position */
+                        0, /* gfx area doesn't move */
+                        vicii.first_displayed_line,
+                        vicii.last_displayed_line,
+                        0, /* extra offscreen border left */
+                        0) /* extra offscreen border right */;
+
+#else
     raster_set_geometry(&vicii.raster,
                         width, height, /* canvas dimensions */
                         width, vicii.screen_height, /* screen dimensions */
@@ -189,6 +203,7 @@ static void vicii_set_geometry(void)
                         - VICII_RASTER_X(0), /* extra offscreen border left */
                         vicii.sprite_wrap_x - VICII_SCREEN_XPIX -
                         vicii.screen_leftborderwidth - vicii.screen_rightborderwidth + VICII_RASTER_X(0)) /* extra offscreen border right */;
+#endif
 #ifdef __MSDOS__
     video_ack_vga_mode();
 #endif
@@ -198,6 +213,7 @@ static void vicii_set_geometry(void)
 static int init_raster(void)
 {
     raster_t *raster;
+    unsigned int width, height;
 
     raster = &vicii.raster;
     video_color_set_canvas(raster->canvas);
@@ -223,10 +239,22 @@ static int init_raster(void)
         return -1;
     }
 
+
+#if 1
+    width = vicii.screen_leftborderwidth + VICII_SCREEN_XPIX + vicii.screen_rightborderwidth;
+    height = vicii.last_displayed_line - vicii.first_displayed_line + 1;
+
+    raster->display_ystart = 0;
+    raster->display_ystop = vicii.screen_height;
+    raster->display_xstart = 0;
+    raster->display_xstop = width;
+#else
     raster->display_ystart = vicii.row_25_start_line;
     raster->display_ystop = vicii.row_25_stop_line;
     raster->display_xstart = VICII_40COL_START_PIXEL;
     raster->display_xstop = VICII_40COL_STOP_PIXEL;
+#endif
+
 
     return 0;
 }
@@ -292,8 +320,11 @@ void vicii_reset(void)
     /* Remove all the IRQ sources.  */
     vicii.regs[0x1a] = 0;
 
+#if 0
     vicii.raster.display_ystart = vicii.row_25_start_line;
     vicii.raster.display_ystop = vicii.row_25_stop_line;
+#endif
+
 }
 
 void vicii_reset_registers(void)
@@ -343,8 +374,10 @@ void vicii_powerup(void)
     vicii_reset();
 
     vicii.raster.blank = 1;
+#if 0
     vicii.raster.display_ystart = vicii.row_24_start_line;
     vicii.raster.display_ystop = vicii.row_24_stop_line;
+#endif
 
     vicii.raster.ysmooth = 0;
 }

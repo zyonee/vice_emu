@@ -165,10 +165,16 @@ static BYTE *const aligned_line_buffer = (BYTE *)_aligned_line_buffer;
 #endif
 
 
+#if 1
+/* Pointer to the start of the graphics area on the frame buffer.  */
+#define GFX_PTR()  (vicii.raster.draw_buffer_ptr)
+
+#else
 /* Pointer to the start of the graphics area on the frame buffer.  */
 #define GFX_PTR()                 \
     (vicii.raster.draw_buffer_ptr \
     + (vicii.screen_leftborderwidth + vicii.raster.xsmooth))
+#endif
 
 #ifdef ALLOW_UNALIGNED_ACCESS
 #define ALIGN_DRAW_FUNC(name, xs, xe, gfx_msk_ptr) \
@@ -1403,7 +1409,7 @@ inline static void _draw_dummy(BYTE *p, unsigned int xs, unsigned int xe,
     BYTE *src;
     BYTE *dest;
 
-    src = &(vicii.dbuf[14 * 8 + xs * 8]);
+    src = &(vicii.dbuf[14*8 - vicii.screen_leftborderwidth + xs * 8]);
     dest = (p + xs * 8);
 
     memcpy(dest, src, (xe - xs + 1) * 8);
@@ -1411,7 +1417,7 @@ inline static void _draw_dummy(BYTE *p, unsigned int xs, unsigned int xe,
 
 static void draw_dummy(void)
 {
-    ALIGN_DRAW_FUNC(_draw_dummy, 0, VICII_SCREEN_TEXTCOLS - 1,
+    ALIGN_DRAW_FUNC(_draw_dummy, 0, (vicii.screen_leftborderwidth/8) + VICII_SCREEN_TEXTCOLS + (vicii.screen_rightborderwidth/8) - 1,
                     vicii.raster.gfx_msk);
 }
 
@@ -1427,7 +1433,7 @@ static void draw_dummy_foreground(unsigned int start_char,
     BYTE *src;
     BYTE *dest;
 
-    src = &(vicii.dbuf[14 * 8 + start_char * 8]);
+    src = &(vicii.dbuf[14*8 - vicii.screen_leftborderwidth + start_char * 8]);
     dest = (GFX_PTR() + start_char * 8);
 
     memcpy(dest, src, (end_char - start_char + 1) * 8);
