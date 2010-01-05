@@ -150,11 +150,11 @@ void vicii_draw_cycle(void)
     if (offs >= VICII_DRAW_BUFFER_SIZE) 
         return;
     
-    /* are we within the display area? */
-    if (cycle >= 14 && cycle <= 53) {
+    /* are we within the display area? (or the shift register not empty) */
+    if ( (cycle >= 14 && cycle <= 53) || gbuf_reg ) {
         BYTE bg, xs;
         bg = vicii.regs[0x21];
-        xs = vicii.regs[0x16];
+        xs = vicii.regs[0x16] & 0x07;
 
         /* render pixels */
         for (i = 0; i < 8; i++) {
