@@ -154,7 +154,7 @@ void vicii_draw_cycle(void)
     if (cycle >= 14 && cycle <= 53) {
         BYTE bg, xs;
         bg = vicii.regs[0x21];
-        xs = vicii.regs[0x16] & 0x07;
+        xs = vicii.regs[0x16];
 
         /* render pixels */
         for (i = 0; i < 8; i++) {

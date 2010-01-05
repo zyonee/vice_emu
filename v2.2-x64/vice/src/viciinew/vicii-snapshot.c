@@ -406,9 +406,9 @@ int vicii_snapshot_read_module(snapshot_t *s)
     }
 #endif
 
-    vicii.raster.xsmooth = vicii.regs[0x16] & 0x7;
-    vicii.raster.sprite_xsmooth = vicii.regs[0x16] & 0x7;
-    vicii.raster.ysmooth = vicii.regs[0x11] & 0x7;
+    //vicii.xsmooth = vicii.regs[0x16] & 0x7;
+    //vicii.raster.sprite_xsmooth = vicii.regs[0x16] & 0x7;
+    vicii.ysmooth = vicii.regs[0x11] & 0x7;
     vicii.raster.current_line = VICII_RASTER_Y(maincpu_clk); /* FIXME? */
 
     vicii.raster.sprite_status->visible_msk = vicii.regs[0x15];

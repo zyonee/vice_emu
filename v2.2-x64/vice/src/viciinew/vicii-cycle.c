@@ -41,7 +41,7 @@ static inline void check_badline(void)
     raster_t *raster;
     raster = &vicii.raster;
 
-    if ((vicii.raster_line & 7) == (unsigned int)raster->ysmooth
+    if ((vicii.raster_line & 7) == (unsigned int)vicii.ysmooth
         && vicii.allow_bad_lines
         && vicii.raster_line >= vicii.first_dma_line
         && vicii.raster_line <= vicii.last_dma_line) {

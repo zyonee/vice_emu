@@ -204,6 +204,9 @@ struct vicii_s {
     unsigned int display_ystart;
     unsigned int display_ystop;
 
+    /* parsed vicii register fields */
+    unsigned int ysmooth;
+
     /* If this flag is set, bad lines (DMA's) can happen.  */
     int allow_bad_lines;
 

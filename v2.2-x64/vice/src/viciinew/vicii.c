@@ -375,7 +375,7 @@ void vicii_powerup(void)
     vicii.display_ystart = vicii.row_24_start_line;
     vicii.display_ystop = vicii.row_24_stop_line;
 
-    vicii.raster.ysmooth = 0;
+    vicii.ysmooth = 0;
 }
 
 /* ---------------------------------------------------------------------*/

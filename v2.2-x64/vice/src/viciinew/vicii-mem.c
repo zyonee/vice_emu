@@ -212,7 +212,7 @@ inline static void d011_store(BYTE value)
     vicii.raster_irq_line &= 0xff;
     vicii.raster_irq_line |= (value & 0x80) << 1;
 
-    vicii.raster.ysmooth = value & 0x7;
+    vicii.ysmooth = value & 0x7;
 
     /* Check for 24 <-> 25 line mode switch.  */
     check_lower_upper_border(value, line, cycle);
