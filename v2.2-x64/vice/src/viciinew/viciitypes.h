@@ -123,6 +123,23 @@ struct vicii_light_pen_s {
 };
 typedef struct vicii_light_pen_s vicii_light_pen_t;
 
+struct vicii_sprite_s {
+    /* Sprite data to display */
+    DWORD data;
+    /* 6 bit counters */
+    BYTE mc;
+    BYTE mcbase;
+    /* 8 bit pointer */
+    BYTE pointer;
+    /* Expansion flop */
+    int exp_flop;
+    /* Flag: is the sprite displayed? */
+    int display;
+    /* Flag: is sprite DMA active? */
+    int dma;
+};
+typedef struct vicii_sprite_s vicii_sprite_t;
+
 struct video_chip_cap_s;
 
 struct vicii_s {
@@ -263,6 +280,9 @@ struct vicii_s {
 
     /* Mask for sprites being fetched at DMA.  */
     unsigned int sprite_fetch_msk;
+
+    /* State of sprites. */
+    vicii_sprite_t sprite[VICII_NUM_SPRITES];
 
     /* Geometry and timing parameters of the selected VIC-II emulation.  */
     unsigned int screen_height;

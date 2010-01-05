@@ -428,8 +428,9 @@ inline static void d017_store(const BYTE value)
 
     VICII_DEBUG_REGISTER(("Sprite Y Expand register: $%02X", value));
 
-    if (value == vicii.regs[0x17])
+    if (value == vicii.regs[0x17]) {
         return;
+    }
 
     cycle = VICII_RASTER_CYCLE(maincpu_clk);
     sprite_status = vicii.raster.sprite_status;
@@ -438,6 +439,10 @@ inline static void d017_store(const BYTE value)
         raster_sprite_t *sprite;
 
         sprite = sprite_status->sprites + i;
+
+        if (!(value & b)) {
+            vicii.sprite[i].exp_flop = 1;
+        }
 
         sprite->y_expanded = value & b ? 1 : 0;
 

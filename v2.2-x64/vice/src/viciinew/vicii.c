@@ -259,6 +259,21 @@ static int init_raster(void)
     return 0;
 }
 
+static void vicii_new_sprites_init(void)
+{
+    int i;
+
+    for (i = 0; i < VICII_NUM_SPRITES; i++) {
+        vicii.sprite[i].data = 0;
+        vicii.sprite[i].mc = 0;
+        vicii.sprite[i].mcbase = 0;
+        vicii.sprite[i].pointer = 0;
+        vicii.sprite[i].exp_flop = 1;
+        vicii.sprite[i].display = 0;
+        vicii.sprite[i].dma = 0;
+    }
+}
+
 /* Initialize the VIC-II emulation.  */
 raster_t *vicii_init(unsigned int flag)
 {
@@ -283,6 +298,7 @@ raster_t *vicii_init(unsigned int flag)
     vicii_draw_init();
     vicii_draw_cycle_init();
     vicii_sprites_init();
+    vicii_new_sprites_init();
 
     vicii.buf_offset = 0;
 

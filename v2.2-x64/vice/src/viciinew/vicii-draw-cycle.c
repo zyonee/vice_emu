@@ -83,11 +83,8 @@ static void draw_sprites(int cycle, int i, int j, int pri)
         c[2] = vicii.regs[0x27 + s];
 
         /* fetch sprite data on position match */
-        if (x == sprx) {
-            DWORD *tmp;
-            raster_sprite_status_t *sprite_status = vicii.raster.sprite_status;
-            DWORD *data = sprite_status->new_sprite_data;
-            sbuf_reg[s] = ((data[s] >> 16) & 0x0000ff) | (data[s] & 0x00ff00) | ((data[s] << 16) & 0xff0000);
+        if ((x == sprx) && vicii.sprite[s].display) {
+            sbuf_reg[s] = vicii.sprite[s].data;
 
             sbuf_expx_flop[s] = 0;
             sbuf_mc_flop[s] = 0;

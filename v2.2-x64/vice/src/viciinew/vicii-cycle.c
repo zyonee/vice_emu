@@ -66,8 +66,12 @@ static inline BYTE cycle_phi1_fetch(unsigned int cycle)
     BYTE data;
 
     switch (cycle) {
-        /* Sprite pointers */
+        /* Check sprite display */
         case 58:
+            vicii_fetch_check_sprite_display();
+            /* fall through */
+
+        /* Sprite pointers */
         case 60:
         case 62:
         case 64:
@@ -99,13 +103,27 @@ static inline BYTE cycle_phi1_fetch(unsigned int cycle)
             data = vicii_fetch_refresh();
             break;
 
+        /* Check sprite expansion flags */
+        case 56:
+            vicii_fetch_check_exp();
+            /* fall through */
+
+        /* Check sprite DMA */
+        case 57:
+            vicii_fetch_check_sprite_dma();
+            /* fall through */
+
         /* Idle */
         case 54:
         case 55:
-        case 56:
-        case 57:
             data = vicii_fetch_idle();
             break;
+
+        /* Update sprite mcbase */
+        case 14:
+        case 15:
+            vicii_fetch_sprite_exp_inc(16 - cycle);
+            /* fall through */
 
         /* Graphics fetch */
         default: /* 14 .. 53 */
