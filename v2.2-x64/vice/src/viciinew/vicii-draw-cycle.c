@@ -61,7 +61,13 @@ static void draw_sprites(int cycle, int i, int j, int pri)
     BYTE c[4];
     int rendered;
     int x;
-    x = cycle*8 + i - 88;    /* this is plain wrong! */
+
+    /* convert cycle to an x-position. */
+    if (cycle < 11) {
+        x = cycle * 8 + 0x1a0 + i;
+    } else {
+        x = (cycle - 11) * 8 + i;
+    }
 
     c[1] = vicii.regs[0x25];
     c[3] = vicii.regs[0x26];
