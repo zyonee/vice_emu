@@ -156,6 +156,7 @@ void vicii_draw_cycle(void)
             BYTE px;
             BYTE c[4];
             int pri;
+            int vmode;
 
             if (i == xs) {
                 /* latch values at time xs */
@@ -167,7 +168,19 @@ void vicii_draw_cycle(void)
 
            
             c[0] = bg;
-            switch (vicii.video_mode) {
+
+            /*
+             * force VICII_IDLE_MODE if we are in idle state
+             * Why is VICII_IDLE_MODE a real mode? Should be checked!
+             */
+            if (vicii.idle_state) {
+                vmode = VICII_IDLE_MODE;
+            } else {
+                vmode = vicii.video_mode;
+            }
+
+            /* setup colors and read pixels depending on video mode */
+            switch (vmode) {
 
             case VICII_NORMAL_TEXT_MODE:
                 c[3] = cbuf_reg;
@@ -235,8 +248,45 @@ void vicii_draw_cycle(void)
                 px = (gbuf_reg & 0x80) ? 3 : 0;
                 break;
 
+            case VICII_ILLEGAL_TEXT_MODE:
+                c[0] = 0;
+                c[1] = 0;
+                c[2] = 0;
+                c[3] = 0;
+                if (cbuf_reg & 0x08) {
+                    /* mc pixels */
+                    if (gbuf_mc_flop == 0) {
+                        gbuf_pixel_reg = gbuf_reg >> 6;
+                    }
+                    px = gbuf_pixel_reg;
+                } else {
+                    /* hires pixels */
+                    px = (gbuf_reg & 0x80) ? 3 : 0;
+                }
+                break;
+
+            case VICII_ILLEGAL_BITMAP_MODE_1:
+                c[0] = 0;
+                c[3] = 0;
+                px = (gbuf_reg & 0x80) ? 3 : 0;
+                break;
+
+            case VICII_ILLEGAL_BITMAP_MODE_2:
+                c[0] = 0;
+                c[1] = 0;
+                c[2] = 0;
+                c[3] = 0;
+
+                /* mc pixels */
+                if (gbuf_mc_flop == 0) {
+                    gbuf_pixel_reg = gbuf_reg >> 6;
+                }
+                px = gbuf_pixel_reg;
+                break;
+
             }
 
+            /* plot color from prepared array */
             vicii.dbuf[j] = c[px];
             pri = (px & 0x2);
 
@@ -248,18 +298,15 @@ void vicii_draw_cycle(void)
 
         }
     } else {
+
+        /* we are outside the display area */
+
         /* render pixels */
         for (i = 0; i < 8; i++) {
             int j = i + offs;
             draw_sprites(cycle, i, j, 0);
         }
 
-#if 0
-        /* we are outside the display area */
-        BYTE c = vicii.regs[0x20];
-        /* separate function? */
-        draw_border_byte(c);
-#endif
     }
 
     vicii.dbuf_offset += 8;
