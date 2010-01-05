@@ -635,16 +635,20 @@ inline static void d020_store(BYTE value)
 
     value &= 0x0f;
 
+#if 0
     if (vicii.regs[0x20] == value) {
         return;
     }
+#endif
 
     vicii.regs[0x20] = value;
 
+#if 0
     raster_changes_border_add_int(&vicii.raster,
         VICII_RASTER_X(VICII_RASTER_CYCLE(maincpu_clk)),
         (int *)&vicii.raster.border_color,
         value);
+#endif
 }
 
 inline static void d021_store(BYTE value)
@@ -655,6 +659,7 @@ inline static void d021_store(BYTE value)
 
     value &= 0x0f;
 
+#if 0
     if (vicii.regs[0x21] == value) {
         return;
     }
@@ -673,6 +678,7 @@ inline static void d021_store(BYTE value)
     raster_changes_background_add_int(&vicii.raster, x_pos,
                                       (int *)&vicii.raster.background_color,
                                       value);
+#endif
     vicii.regs[0x21] = value;
 }
 
