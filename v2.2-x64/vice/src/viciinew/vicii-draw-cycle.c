@@ -37,6 +37,16 @@
 
 /* foreground/background graphics */
 
+BYTE gbuf_pipe0_reg = 0;
+BYTE cbuf_pipe0_reg = 0;
+BYTE vbuf_pipe0_reg = 0;
+BYTE gbuf_pipe1_reg = 0;
+BYTE cbuf_pipe1_reg = 0;
+BYTE vbuf_pipe1_reg = 0;
+
+BYTE idle_pipe0_reg = 0;
+BYTE idle_pipe1_reg = 0;
+
 /* gbuf shift register */
 BYTE gbuf_reg = 0;
 BYTE gbuf_mc_flop = 0;
@@ -47,6 +57,8 @@ BYTE cbuf_reg = 0;
 BYTE vbuf_reg = 0;
 
 BYTE last_pixel_color = 0;
+
+BYTE idle_state = 0;
 
 /* sprites */
 
@@ -73,10 +85,10 @@ static DRAW_INLINE void draw_sprites(int cycle, int i, int j, int pri)
     }
 
     /* convert cycle to an x-position. */
-    if (cycle < 11) {
-        x = cycle * 8 + 0x1a0 + i;
+    if (cycle < 13) {
+        x = cycle * 8 + 0x190 + i;
     } else {
-        x = (cycle - 11) * 8 + i;
+        x = (cycle - 13) * 8 + i;
     }
 
     c[1] = vicii.regs[0x25];
@@ -170,7 +182,7 @@ void vicii_draw_cycle(void)
         return;
     
     /* are we within the display area? (or the shift register not empty) */
-    if ( (cycle >= 14 && cycle <= 53) || gbuf_reg ) {
+    if ( (cycle >= 14 && cycle <= 53) || gbuf_reg || gbuf_pipe0_reg || gbuf_pipe1_reg) {
         BYTE bg, xs;
         bg = vicii.regs[0x21];
         xs = vicii.regs[0x16] & 0x07;
@@ -185,10 +197,21 @@ void vicii_draw_cycle(void)
 
             if (i == xs) {
                 /* latch values at time xs */
-                vbuf_reg = vicii.vbuf[cycle - 14];
-                cbuf_reg = vicii.cbuf[cycle - 14];
-                gbuf_reg = vicii.gbuf;
+                vbuf_reg = vbuf_pipe1_reg;
+                cbuf_reg = cbuf_pipe1_reg;
+                gbuf_reg = gbuf_pipe1_reg;
                 gbuf_mc_flop = 0;
+                idle_state = idle_pipe1_reg;
+
+                /* shift and put the next data into the pipe. */
+                vbuf_pipe1_reg = vbuf_pipe0_reg;
+                cbuf_pipe1_reg = cbuf_pipe0_reg;
+                gbuf_pipe1_reg = gbuf_pipe0_reg;
+                idle_pipe1_reg = idle_pipe0_reg;
+                vbuf_pipe0_reg = vicii.vbuf[cycle - 14];
+                cbuf_pipe0_reg = vicii.cbuf[cycle - 14];
+                gbuf_pipe0_reg = vicii.gbuf;
+                idle_pipe0_reg = vicii.idle_state;
             }
 
            
@@ -198,7 +221,7 @@ void vicii_draw_cycle(void)
              * force VICII_IDLE_MODE if we are in idle state
              * Why is VICII_IDLE_MODE a real mode? Should be checked!
              */
-            if (vicii.idle_state) {
+            if (idle_state) {
                 vmode = VICII_IDLE_MODE;
             } else {
                 vmode = vicii.video_mode;
