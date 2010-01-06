@@ -469,6 +469,15 @@ inline static void d017_store(const BYTE value)
 
         /* (Enabling sprite Y-expansion never causes side effects.)  */
     }
+#else
+    int i;
+    BYTE b;
+
+    for (i = 0, b = 0x01; i < 8; b <<= 1, i++) {
+        if (!(value & b)) {
+            vicii.sprite[i].exp_flop = 1;
+        }
+    }
 #endif
     vicii.regs[0x17] = value;
 }
