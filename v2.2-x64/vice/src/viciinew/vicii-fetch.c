@@ -43,17 +43,6 @@
 
 /*-----------------------------------------------------------------------*/
 
-/* Enable DMA for sprite i.  */
-inline static void turn_sprite_dma_on(unsigned int i, int y_exp)
-{
-    vicii.sprite[i].dma = 1;
-    vicii.sprite[i].mcbase = 0;
-
-    if (y_exp) {
-        vicii.sprite[i].exp_flop = 0;
-    }
-}
-
 inline static int check_sprite_dma(int i)
 {
     return vicii.sprite[i].dma;
@@ -240,68 +229,6 @@ BYTE vicii_fetch_sprite_dma_1(void)
         return vicii_fetch_idle();
     }
 }
-
-void vicii_fetch_check_sprite_display(void)
-{
-    int i, b;
-
-    for (i = 0, b = 1; i < VICII_NUM_SPRITES; i++, b <<= 1) {
-        int y = vicii.regs[i*2 + 1];
-
-        vicii.sprite[i].mc = vicii.sprite[i].mcbase;
-
-        if ((y == (vicii.raster_line & 0xff)) && vicii.sprite[i].dma) {
-            vicii.sprite_display_bits |= b;
-        } else if (!vicii.sprite[i].dma) {
-            /* FIXME this is the wrong place to do this */
-            vicii.sprite_display_bits &= ~(1<<i);
-        }
-    }
-}
-
-void vicii_fetch_sprite_exp_inc(int increase)
-{
-    int i;
-
-    for (i = 0; i < VICII_NUM_SPRITES; i++) {
-        if (vicii.sprite[i].exp_flop) {
-            vicii.sprite[i].mcbase += increase;
-        }
-        if ((increase == 1) && (vicii.sprite[i].mcbase == 63)) {
-            vicii.sprite[i].dma = 0;
-        }
-    }
-}
-
-void vicii_fetch_check_exp(void)
-{
-    int i, b;
-    int y_exp = vicii.regs[0x17];
-
-    for (i = 0, b = 1; i < VICII_NUM_SPRITES; i++, b <<= 1) {
-        if (y_exp & b) {
-            vicii.sprite[i].exp_flop ^= 1;
-        }
-    }
-}
-
-void vicii_fetch_check_sprite_dma(void)
-{
-    int i, b;
-    int enable = vicii.regs[0x15];
-    int y_exp = vicii.regs[0x17];
-
-    for (i = 0, b = 1; i < VICII_NUM_SPRITES; i++, b <<= 1) {
-        int y = vicii.regs[i*2 + 1];
-
-        if ((enable & b) && (y == (vicii.raster_line & 0xff)) && !vicii.sprite[i].dma) {
-            turn_sprite_dma_on(i, y_exp & b);
-        }
-    }
-
-    vicii.sprite_fetch_idx = 0;
-}
-
 
 int vicii_fetch_sprites(int cycle)
 {

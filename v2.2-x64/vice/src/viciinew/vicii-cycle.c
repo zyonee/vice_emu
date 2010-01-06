@@ -4,6 +4,10 @@
  * Written by
  *  Hannu Nuotio <hannu.nuotio@tut.fi>
  *
+ * Based on code by
+ *  Ettore Perazzoli <ettore@comm2000.it>
+ *  Andreas Boose <viceteam@t-online.de>
+ *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
  *
@@ -61,6 +65,78 @@ static inline void check_badline(void)
     }
 }
 
+static inline void check_sprite_display(void)
+{
+    int i, b;
+    
+    for (i = 0, b = 1; i < VICII_NUM_SPRITES; i++, b <<= 1) {
+        int y = vicii.regs[i*2 + 1];
+
+        vicii.sprite[i].mc = vicii.sprite[i].mcbase;
+    
+        if ((y == (vicii.raster_line & 0xff)) && vicii.sprite[i].dma) {
+            vicii.sprite_display_bits |= b;
+        } else if (!vicii.sprite[i].dma) {
+            /* FIXME this is the wrong place to do this */
+            vicii.sprite_display_bits &= ~(1<<i);
+        }
+    }
+}
+            
+static inline void sprite_exp_inc(int increase)
+{
+    int i;
+     
+    for (i = 0; i < VICII_NUM_SPRITES; i++) {
+        if (vicii.sprite[i].exp_flop) {
+            vicii.sprite[i].mcbase += increase;
+        }
+        if ((increase == 1) && (vicii.sprite[i].mcbase == 63)) {
+            vicii.sprite[i].dma = 0;
+        }
+    }
+}
+ 
+static inline void check_exp(void)
+{
+    int i, b;
+    int y_exp = vicii.regs[0x17];
+    
+    for (i = 0, b = 1; i < VICII_NUM_SPRITES; i++, b <<= 1) {
+        if (y_exp & b) {
+            vicii.sprite[i].exp_flop ^= 1;
+        }
+    }
+}
+
+/* Enable DMA for sprite i.  */
+static inline void turn_sprite_dma_on(unsigned int i, int y_exp)
+{
+    vicii.sprite[i].dma = 1;
+    vicii.sprite[i].mcbase = 0;
+
+    if (y_exp) {
+        vicii.sprite[i].exp_flop = 0;
+    }
+}
+
+static inline void check_sprite_dma(void)
+{
+    int i, b;
+    int enable = vicii.regs[0x15];
+    int y_exp = vicii.regs[0x17];
+    
+    for (i = 0, b = 1; i < VICII_NUM_SPRITES; i++, b <<= 1) {
+        int y = vicii.regs[i*2 + 1];
+
+        if ((enable & b) && (y == (vicii.raster_line & 0xff)) && !vicii.sprite[i].dma) {
+            turn_sprite_dma_on(i, y_exp & b);
+        }
+    }
+    
+    vicii.sprite_fetch_idx = 0;
+}
+
 static inline BYTE cycle_phi1_fetch(unsigned int cycle)
 {
     BYTE data;
@@ -68,7 +144,7 @@ static inline BYTE cycle_phi1_fetch(unsigned int cycle)
     switch (cycle) {
         /* Check sprite display */
         case 58:
-            vicii_fetch_check_sprite_display();
+            check_sprite_display();
             /* fall through */
 
         /* Sprite pointers */
@@ -105,12 +181,12 @@ static inline BYTE cycle_phi1_fetch(unsigned int cycle)
 
         /* Check sprite expansion flags */
         case 56:
-            vicii_fetch_check_exp();
+            check_exp();
             /* fall through */
 
         /* Check sprite DMA */
         case 57:
-            vicii_fetch_check_sprite_dma();
+            check_sprite_dma();
             /* fall through */
 
         /* Idle */
@@ -125,7 +201,7 @@ static inline BYTE cycle_phi1_fetch(unsigned int cycle)
         /* Update sprite mcbase */
         case 14:
         case 15:
-            vicii_fetch_sprite_exp_inc(16 - cycle);
+            sprite_exp_inc(16 - cycle);
             /* fall through */
 
         /* Graphics fetch */
@@ -139,6 +215,34 @@ static inline BYTE cycle_phi1_fetch(unsigned int cycle)
     }
 
     return data;
+}
+
+static inline void vicii_cycle_end_of_frame(void)
+{
+    vicii.raster_line = 0;
+    vicii.refresh_counter = 0xff;
+    vicii.allow_bad_lines = 0;
+    vicii.memptr = 0;
+    vicii.mem_counter = 0;
+    vicii.light_pen.triggered = 0;
+}
+
+static inline void vicii_cycle_end_of_line(void)
+{
+    vicii.raster_cycle = 0;
+    vicii_raster_draw_alarm_handler(maincpu_clk, 0);
+    vicii.raster_line++;
+
+    if (vicii.raster_line == vicii.screen_height) {
+        vicii_cycle_end_of_frame();
+    }
+
+    if ((vicii.raster_line == vicii.raster_irq_line) && (vicii.raster_line != 0)) {
+        vicii_irq_alarm_handler(maincpu_clk, 0);
+    }
+
+    vicii.buf_offset = 0;
+    vicii.bad_line = 0;
 }
 
 int vicii_cycle(void)
@@ -173,19 +277,7 @@ int vicii_cycle(void)
 
     /* Handle end of line */
     if (vicii.raster_cycle == 65) {
-        vicii.raster_cycle = 0;
-        vicii_raster_draw_alarm_handler(maincpu_clk, 0);
-        vicii.raster_line++;
-        if (vicii.raster_line == vicii.screen_height) {
-            vicii.raster_line = 0;
-            vicii.refresh_counter = 0xff;
-            vicii.allow_bad_lines = 0;
-        }
-        if ((vicii.raster_line == vicii.raster_irq_line) && (vicii.raster_line != 0)) {
-            vicii_irq_alarm_handler(maincpu_clk, 0);
-        }
-        vicii.buf_offset = 0;
-        vicii.bad_line = 0;
+        vicii_cycle_end_of_line();
     }
 
     /* IRQ on line 0 is delayed by 1 clock */

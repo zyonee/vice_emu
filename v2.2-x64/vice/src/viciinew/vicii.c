@@ -791,16 +791,11 @@ void vicii_update_video_mode(unsigned int cycle)
 #endif
 }
 
-/* Redraw the current raster line.  This happens at cycle VICII_DRAW_CYCLE
+/* Redraw the current raster line.  This happens after the last cycle
    of each line.  */
 void vicii_raster_draw_alarm_handler(CLOCK offset, void *data)
 {
-    BYTE prev_sprite_sprite_collisions;
-    BYTE prev_sprite_background_collisions;
     int in_visible_area;
-
-    prev_sprite_sprite_collisions = vicii.sprite_sprite_collisions;
-    prev_sprite_background_collisions = vicii.sprite_background_collisions;
 
     in_visible_area = (vicii.raster.current_line
                       >= (unsigned int)vicii.first_displayed_line
@@ -813,26 +808,7 @@ void vicii_raster_draw_alarm_handler(CLOCK offset, void *data)
                           <= ((unsigned int)vicii.last_displayed_line - vicii.screen_height);
     }
 
-    vicii.raster.xsmooth_shift_left = 0;
-#if 0
-    vicii_sprites_reset_xshift();
-#endif
     raster_line_emulate(&vicii.raster);
-
-#if 0
-    if (vicii.raster.current_line >= 60 && vicii.raster.current_line <= 60) {
-        char buf[1000];
-        int j, i;
-        for (i = 0; i < 8; i++) {
-            memset(buf, 0, sizeof(buf));
-            for (j = 0; j < 40; j++)
-            sprintf(&buf[strlen(buf)], "%02x",
-                    vicii.raster.draw_buffer_ptr[vicii.raster.xsmooth
-                    + vicii.raster.geometry->gfx_position.x + i * 40 + j]);
-            log_debug(buf);
-        } 
-    }
-#endif
 
     if (vicii.raster.current_line == 0) {
         /* no vsync here for NTSC  */
@@ -841,10 +817,6 @@ void vicii_raster_draw_alarm_handler(CLOCK offset, void *data)
                               vsync_do_vsync(vicii.raster.canvas,
                               vicii.raster.skip_frame));
         }
-        vicii.memptr = 0;
-        vicii.mem_counter = 0;
-        vicii.light_pen.triggered = 0;
-        vicii.raster.blank_off = 0;
 
 #ifdef __MSDOS__
         if ((unsigned int)vicii.last_displayed_line < vicii.screen_height) {
@@ -875,34 +847,6 @@ void vicii_raster_draw_alarm_handler(CLOCK offset, void *data)
                                     vicii.raster.border_color);
 #endif
     }
-
-    if (in_visible_area) {
-        vicii.raster.draw_idle_state = vicii.idle_state;
-        vicii.bad_line = 0;
-    }
-
-    vicii.buf_offset = 0;
-
-    if (vicii.raster.current_line == vicii.first_dma_line) {
-        vicii.allow_bad_lines = !vicii.raster.blank;
-    }
-
-#if 0
-    /* As explained in Christian's article, only the first collision
-       (i.e. the first time the collision register becomes non-zero) actually
-       triggers an interrupt.  */
-    if (vicii_resources.sprite_sprite_collisions_enabled
-        && vicii.raster.sprite_status->sprite_sprite_collisions != 0
-        && !prev_sprite_sprite_collisions) {
-        vicii_irq_sscoll_set();
-    }
-
-    if (vicii_resources.sprite_background_collisions_enabled
-        && vicii.raster.sprite_status->sprite_background_collisions
-        && !prev_sprite_background_collisions) {
-        vicii_irq_sbcoll_set();
-    }
-#endif
 }
 
 void vicii_set_canvas_refresh(int enable)

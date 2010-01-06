@@ -38,10 +38,6 @@ extern BYTE vicii_fetch_refresh(void);
 extern BYTE vicii_fetch_sprite_pointer(void);
 extern BYTE vicii_fetch_sprite_dma_1(void);
 extern int vicii_fetch_sprites(int cycle);
-extern void vicii_fetch_check_sprite_display(void);
-extern void vicii_fetch_check_exp(void);
-extern void vicii_fetch_check_sprite_dma(void);
-extern void vicii_fetch_sprite_exp_inc(int increase);
 
 #endif
 
