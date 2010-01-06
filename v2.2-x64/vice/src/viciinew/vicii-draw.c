@@ -67,13 +67,16 @@ static BYTE *const aligned_line_buffer = (BYTE *)_aligned_line_buffer;
 
 
 /* Dummy mode for using cycle based drawing.  */
+#define FULL_WIDTH_CHARS ((vicii.screen_leftborderwidth/8) + VICII_SCREEN_TEXTCOLS + (vicii.screen_rightborderwidth/8))
+
+#define DBUF_OFFSET (14*8 - vicii.screen_leftborderwidth)
 
 static int get_dummy(raster_cache_t *cache, unsigned int *xs, unsigned int *xe,
                      int rr)
 {
     if (rr || 1) {
         *xs = 0;
-        *xe = VICII_SCREEN_TEXTCOLS - 1;
+        *xe = FULL_WIDTH_CHARS - 1;
         return 1;
     } else {
         return 0;
@@ -86,7 +89,7 @@ inline static void _draw_dummy(BYTE *p, unsigned int xs, unsigned int xe,
     BYTE *src;
     BYTE *dest;
 
-    src = &(vicii.dbuf[14*8 - vicii.screen_leftborderwidth + xs * 8]);
+    src = &(vicii.dbuf[DBUF_OFFSET + xs * 8]);
     dest = (p + xs * 8);
 
     memcpy(dest, src, (xe - xs + 1) * 8);
@@ -94,7 +97,7 @@ inline static void _draw_dummy(BYTE *p, unsigned int xs, unsigned int xe,
 
 static void draw_dummy(void)
 {
-    ALIGN_DRAW_FUNC(_draw_dummy, 0, (vicii.screen_leftborderwidth/8) + VICII_SCREEN_TEXTCOLS + (vicii.screen_rightborderwidth/8) - 1,
+    ALIGN_DRAW_FUNC(_draw_dummy, 0, FULL_WIDTH_CHARS - 1,
                     vicii.raster.gfx_msk);
 }
 
@@ -110,7 +113,7 @@ static void draw_dummy_foreground(unsigned int start_char,
     BYTE *src;
     BYTE *dest;
 
-    src = &(vicii.dbuf[14*8 - vicii.screen_leftborderwidth + start_char * 8]);
+    src = &(vicii.dbuf[DBUF_OFFSET + start_char * 8]);
     dest = (GFX_PTR() + start_char * 8);
 
     memcpy(dest, src, (end_char - start_char + 1) * 8);
