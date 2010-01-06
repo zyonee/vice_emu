@@ -704,6 +704,7 @@ inline static void ext_background_store(WORD addr, BYTE value)
 
     vicii.regs[addr] = value;
 
+#if 0
     char_num = VICII_RASTER_CHAR(VICII_RASTER_CYCLE(maincpu_clk));
 
     if (vicii.video_mode == VICII_EXTENDED_TEXT_MODE) {
@@ -717,6 +718,9 @@ inline static void ext_background_store(WORD addr, BYTE value)
                                       char_num - 1,
                                       &vicii.ext_background_color[addr - 0x22],
                                       value);
+#endif
+    vicii.ext_background_color[addr - 0x22] = value;
+
 }
 
 inline static void d025_store(BYTE value)

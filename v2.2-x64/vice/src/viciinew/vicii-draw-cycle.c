@@ -28,9 +28,6 @@
 
 #include <string.h>
 
-#include "raster-sprite-status.h"
-#include "raster-sprite.h"
-#include "raster.h"
 #include "types.h"
 #include "vicii-draw-cycle.h"
 #include "viciitypes.h"
@@ -83,7 +80,7 @@ static void draw_sprites(int cycle, int i, int j, int pri)
         c[2] = vicii.regs[0x27 + s];
 
         /* fetch sprite data on position match */
-        if ((x == sprx) && vicii.sprite[s].display) {
+        if ( vicii.sprite[s].display && (x == sprx) ) {
             sbuf_reg[s] = vicii.sprite[s].data;
 
             sbuf_expx_flop[s] = 0;
@@ -301,14 +298,15 @@ void vicii_draw_cycle(void)
 
         }
     } else {
-
         /* we are outside the display area */
+        BYTE bg;
+        bg = vicii.regs[0x21];
 
         /* render pixels */
         for (i = 0; i < 8; i++) {
             int j = i + offs;
             /* plot bg for now */
-            vicii.dbuf[j] = vicii.regs[0x21];
+            vicii.dbuf[j] = bg;
             draw_sprites(cycle, i, j, 0);
         }
 
