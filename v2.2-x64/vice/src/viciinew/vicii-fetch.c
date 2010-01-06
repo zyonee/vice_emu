@@ -254,7 +254,7 @@ void vicii_fetch_check_sprite_display(void)
         vicii.sprite[i].mc = vicii.sprite[i].mcbase;
 
         if ((y == (vicii.raster_line & 0xff)) && vicii.sprite[i].dma) {
-            vicii.sprite[i].display = 1;
+            vicii.sprite_display_bits |= b;
         }
     }
 }
@@ -268,8 +268,9 @@ void vicii_fetch_sprite_exp_inc(int increase)
             vicii.sprite[i].mcbase += increase;
         }
         if ((increase == 1) && (vicii.sprite[i].mcbase == 63)) {
-            vicii.sprite[i].display = 0;
             vicii.sprite[i].dma = 0;
+            /* FIXME this is the wrong place to do this */
+            vicii.sprite_display_bits &= ~(1<<i);
         }
     }
 }

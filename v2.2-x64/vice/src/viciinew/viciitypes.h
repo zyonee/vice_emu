@@ -278,6 +278,9 @@ struct vicii_s {
     /* Mask for sprites being fetched at DMA.  */
     unsigned int sprite_fetch_msk;
 
+    /* Mask for sprites being displayed.  */
+    unsigned int sprite_display_bits;
+
     /* State of sprites. */
     vicii_sprite_t sprite[VICII_NUM_SPRITES];
 

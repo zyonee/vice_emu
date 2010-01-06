@@ -59,6 +59,10 @@ static void draw_sprites(int cycle, int i, int j, int pri)
     int rendered;
     int x;
 
+    if (!vicii.sprite_display_bits) {
+        return;
+    }
+
     /* convert cycle to an x-position. */
     if (cycle < 11) {
         x = cycle * 8 + 0x1a0 + i;
@@ -76,11 +80,16 @@ static void draw_sprites(int cycle, int i, int j, int pri)
         int mc = vicii.regs[0x1c] & (1<<s);
         int expx = vicii.regs[0x1d] & (1<<s);
         int sprx = vicii.regs[0x00 + s*2];
+
+        if (!(vicii.sprite_display_bits & (1<<s))) {
+            continue;
+        }
+
         sprx |= (vicii.regs[0x10] & (1<<s)) ? 0x100 : 0;
         c[2] = vicii.regs[0x27 + s];
 
         /* fetch sprite data on position match */
-        if ( vicii.sprite[s].display && (x == sprx) ) {
+        if (x == sprx) {
             sbuf_reg[s] = vicii.sprite[s].data;
 
             sbuf_expx_flop[s] = 0;
