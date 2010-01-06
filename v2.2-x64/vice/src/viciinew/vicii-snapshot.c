@@ -39,7 +39,6 @@
 #include "types.h"
 #include "vicii-irq.h"
 #include "vicii-snapshot.h"
-#include "vicii-sprites.h"
 #include "vicii.h"
 #include "viciitypes.h"
 
@@ -146,7 +145,7 @@ int vicii_snapshot_write_module(snapshot_t *s)
         /* SbCollMask */
         || SMW_B(m, (BYTE)vicii.sprite_background_collisions) < 0
         /* SpriteDmaMask */
-        || SMW_B(m, (BYTE)vicii.raster.sprite_status->dma_msk) < 0
+        || SMW_B(m, 0 /*(BYTE)vicii.raster.sprite_status->dma_msk*/) < 0
         /* SsCollMask */
         || SMW_B(m, (BYTE)vicii.sprite_sprite_collisions) < 0
         /* VBank */
@@ -165,13 +164,13 @@ int vicii_snapshot_write_module(snapshot_t *s)
         if (0
             /* SpriteXMemPtr */
             || SMW_B(m,
-                (BYTE)vicii.raster.sprite_status->sprites[i].memptr) < 0
+                0 /*(BYTE)vicii.raster.sprite_status->sprites[i].memptr*/) < 0
             /* SpriteXMemPtrInc */
             || SMW_B(m,
-                (BYTE)vicii.raster.sprite_status->sprites[i].memptr_inc) < 0
+                0 /*(BYTE)vicii.raster.sprite_status->sprites[i].memptr_inc*/) < 0
             /* SpriteXExpFlipFlop */
             || SMW_B(m,
-                (BYTE)vicii.raster.sprite_status->sprites[i].exp_flag) < 0)
+                0 /*(BYTE)vicii.raster.sprite_status->sprites[i].exp_flag*/) < 0)
             goto fail;
     }
 
@@ -247,7 +246,7 @@ int vicii_snapshot_read_module(snapshot_t *s)
         /* MatrixBuf */
         || SMR_BA(m, vicii.vbuf, 40) < 0
         /* NewSpriteDmaMask */
-        || SMR_B(m, &vicii.raster.sprite_status->new_dma_msk) < 0)
+        || SMR_B(m, &i /*&vicii.raster.sprite_status->new_dma_msk*/) < 0)
         goto fail;
 
     mem_color_ram_from_snapshot(color_ram);
@@ -309,16 +308,18 @@ int vicii_snapshot_read_module(snapshot_t *s)
         goto fail;
 
     for (i = 0; i < 8; i++) {
+        int d;
+
         if (0
             /* SpriteXMemPtr */
             || SMR_B_INT(m,
-                &vicii.raster.sprite_status->sprites[i].memptr) < 0
+                &d /*&vicii.raster.sprite_status->sprites[i].memptr*/) < 0
             /* SpriteXMemPtrInc */
             || SMR_B_INT(m,
-                &vicii.raster.sprite_status->sprites[i].memptr_inc) < 0
+                &d /*&vicii.raster.sprite_status->sprites[i].memptr_inc*/) < 0
             /* SpriteXExpFlipFlop */
             || SMR_B_INT(m,
-                &vicii.raster.sprite_status->sprites[i].exp_flag) < 0
+                &d /*&vicii.raster.sprite_status->sprites[i].exp_flag*/) < 0
             )
             goto fail;
     }
@@ -360,6 +361,7 @@ int vicii_snapshot_read_module(snapshot_t *s)
 
     vicii_update_memory_ptrs(VICII_RASTER_CYCLE(maincpu_clk));
 
+#if 0
     /* Update sprite parameters.  We had better do this manually, or the
        VIC-II emulation could be quite upset.  */
     {
@@ -390,7 +392,6 @@ int vicii_snapshot_read_module(snapshot_t *s)
 
     vicii.sprite_fetch_msk = vicii.raster.sprite_status->new_dma_msk;
 
-#if 0
     /* calculate the sprite_fetch_idx */
     {
         const vicii_sprites_fetch_t *sf;
@@ -404,14 +405,16 @@ int vicii_snapshot_read_module(snapshot_t *s)
         }
         vicii.sprite_fetch_idx = i;
     }
-#endif
 
     //vicii.xsmooth = vicii.regs[0x16] & 0x7;
     //vicii.raster.sprite_xsmooth = vicii.regs[0x16] & 0x7;
+#endif
     vicii.ysmooth = vicii.regs[0x11] & 0x7;
     vicii.raster.current_line = VICII_RASTER_Y(maincpu_clk); /* FIXME? */
 
+#if 0
     vicii.raster.sprite_status->visible_msk = vicii.regs[0x15];
+#endif
 
     /* Update colors.  */
     vicii.raster.border_color = vicii.regs[0x20] & 0xf;
@@ -419,8 +422,10 @@ int vicii_snapshot_read_module(snapshot_t *s)
     vicii.ext_background_color[0] = vicii.regs[0x22] & 0xf;
     vicii.ext_background_color[1] = vicii.regs[0x23] & 0xf;
     vicii.ext_background_color[2] = vicii.regs[0x24] & 0xf;
+#if 0
     vicii.raster.sprite_status->mc_sprite_color_1 = vicii.regs[0x25] & 0xf;
     vicii.raster.sprite_status->mc_sprite_color_2 = vicii.regs[0x26] & 0xf;
+#endif
 
     vicii.raster.blank = !(vicii.regs[0x11] & 0x10);
 

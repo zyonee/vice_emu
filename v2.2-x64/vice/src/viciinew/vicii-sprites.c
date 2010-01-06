@@ -27,6 +27,7 @@
 
 #include "vice.h"
 
+#if 0
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>		/* memset() */
@@ -1039,3 +1040,4 @@ int vicii_sprite_offset(void)
 {
     return vicii.screen_leftborderwidth - 24;
 }
+#endif

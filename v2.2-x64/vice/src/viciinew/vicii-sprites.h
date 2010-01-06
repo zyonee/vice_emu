@@ -31,7 +31,7 @@
 /* This defines the stolen sprite cycles for all the values of `dma_msk'.  */
 /* The table derives from what Christian Bauer <bauec002@physik.uni-mainz.de>
    says in both the "VIC-Article" and Frodo's `VIC_SC.cpp' source file.  */
-
+#if 0
 struct vicii_sprites_fetch_s
 {
     int cycle, num;
@@ -50,6 +50,6 @@ extern void vicii_sprites_reset_sprline(void);
 extern void vicii_sprites_init_sprline(void);
 extern void vicii_sprites_reset_xshift(void);
 extern int vicii_sprite_offset(void);
-
+#endif
 #endif
 

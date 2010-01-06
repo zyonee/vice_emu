@@ -30,7 +30,6 @@
 #include "c64.h"
 #include "machine.h"
 #include "resources.h"
-#include "vicii-sprites.h"
 #include "vicii-timing.h"
 #include "vicii.h"
 #include "viciitypes.h"
@@ -223,6 +222,4 @@ void vicii_timing_set(machine_timing_t *machine_timing, int border_mode)
 
    vicii.raster.display_xstart = VICII_40COL_START_PIXEL;
     vicii.raster.display_xstop = VICII_40COL_STOP_PIXEL;
-
-    vicii_sprites_init_sprline();
 }

@@ -41,7 +41,6 @@
 #include "vicii-fetch.h"
 #include "vicii-irq.h"
 #include "vicii-resources.h"
-#include "vicii-sprites.h"
 #include "vicii-mem.h"
 #include "vicii.h"
 #include "viciitypes.h"
@@ -71,14 +70,16 @@ static int unused_bits_in_registers[0x40] =
 
 inline static void store_sprite_x_position_lsb(const WORD addr, BYTE value)
 {
+    vicii.regs[addr] = value;
+#if 0
     int n;
     int new_x;
 
-    if (value == vicii.regs[addr])
+    if (value == vicii.regs[addr]) {
         return;
+    }
 
     vicii.regs[addr] = value;
-
     n = addr >> 1;                /* Number of changed sprite.  */
 
     VICII_DEBUG_REGISTER(("Sprite #%d X position LSB: $%02X", n, value));
@@ -86,19 +87,22 @@ inline static void store_sprite_x_position_lsb(const WORD addr, BYTE value)
     new_x = (value | (vicii.regs[0x10] & (1 << n) ? 0x100 : 0));
     vicii_sprites_set_x_position(n, new_x,
         VICII_RASTER_X(VICII_RASTER_CYCLE(maincpu_clk)));
+#endif
 }
 
 inline static void store_sprite_y_position(const WORD addr, BYTE value)
 {
+    vicii.regs[addr] = value;
+#if 0
     int cycle;
 
     VICII_DEBUG_REGISTER(("Sprite #%d Y position: $%02X", addr >> 1, value));
 
-    if (vicii.regs[addr] == value)
+    if (vicii.regs[addr] == value) {
         return;
+    }
 
     cycle = VICII_RASTER_CYCLE(maincpu_clk);
-#if 0
     if (cycle == vicii.sprite_fetch_cycle + 1
         && value == (vicii.raster.current_line & 0xff)) {
         vicii.fetch_idx = VICII_CHECK_SPRITE_DMA;
@@ -106,13 +110,15 @@ inline static void store_sprite_y_position(const WORD addr, BYTE value)
                           + vicii.sprite_fetch_cycle + 1);
         alarm_set(vicii.raster_fetch_alarm, vicii.fetch_clk);
     }
-#endif
     vicii.raster.sprite_status->sprites[addr >> 1].y = value;
     vicii.regs[addr] = value;
+#endif
 }
 
 static inline void store_sprite_x_position_msb(const WORD addr, BYTE value)
 {
+    vicii.regs[addr] = value;
+#if 0
     int i;
     BYTE b;
     int raster_x;
@@ -133,6 +139,7 @@ static inline void store_sprite_x_position_msb(const WORD addr, BYTE value)
         new_x = (vicii.regs[2 * i] | (value & b ? 0x100 : 0));
         vicii_sprites_set_x_position(i, new_x, raster_x);
     }
+#endif
 }
 
 inline static void check_lower_upper_border(const BYTE value,
@@ -243,12 +250,14 @@ inline static void d012_store(BYTE value)
 
 inline static void d015_store(const BYTE value)
 {
+    vicii.regs[0x15] = value;
+
+#if 0
     int cycle;
 
     VICII_DEBUG_REGISTER(("Sprite Enable register: $%02X", value));
 
     cycle = VICII_RASTER_CYCLE(maincpu_clk);
-#if 0
     /* On the real C64, sprite DMA is checked two times: first at
        `VICII_SPRITE_FETCH_CYCLE', and then at `VICII_SPRITE_FETCH_CYCLE +
        1'.  In the average case, one DMA check is OK and there is no need to
@@ -285,8 +294,9 @@ inline static void d015_store(const BYTE value)
             }
         }
     }
-#endif
+
     vicii.regs[0x15] = vicii.raster.sprite_status->visible_msk = value;
+#endif
 }
 
 inline static void check_lateral_border(const BYTE value, int cycle,
@@ -421,6 +431,7 @@ inline static void d016_store(const BYTE value)
 
 inline static void d017_store(const BYTE value)
 {
+#if 0
     raster_sprite_status_t *sprite_status;
     int cycle;
     int i;
@@ -458,7 +469,7 @@ inline static void d017_store(const BYTE value)
 
         /* (Enabling sprite Y-expansion never causes side effects.)  */
     }
-
+#endif
     vicii.regs[0x17] = value;
 }
 
@@ -466,8 +477,9 @@ inline static void d018_store(const BYTE value)
 {
     VICII_DEBUG_REGISTER(("Memory register: $%02X", value));
 
-    if (vicii.regs[0x18] == value)
+    if (vicii.regs[0x18] == value) {
         return;
+    }
 
     vicii.regs[0x18] = value;
     vicii_update_memory_ptrs(VICII_RASTER_CYCLE(maincpu_clk));
@@ -492,6 +504,7 @@ inline static void d01a_store(const BYTE value)
 
 inline static void d01b_store(const BYTE value)
 {
+#if 0
     int i;
     BYTE b;
     int raster_x;
@@ -515,12 +528,13 @@ inline static void d01b_store(const BYTE value)
         else
             sprite->in_background = value & b ? 1 : 0;
     }
-
+#endif
     vicii.regs[0x1b] = value;
 }
 
 inline static void d01c_store(const BYTE value)
 {
+#if 0
     int i;
     BYTE b;
     int raster_x;
@@ -579,12 +593,13 @@ inline static void d01c_store(const BYTE value)
                 &sprite->multicolor, value & b ? 1 : 0);
         }
     }
-
+#endif
     vicii.regs[0x1c] = value;
 }
 
 inline static void d01d_store(const BYTE value)
 {
+#if 0
     int raster_x;
     int i;
     BYTE b;
@@ -625,7 +640,7 @@ inline static void d01d_store(const BYTE value)
             }
         }
     }
-
+#endif
     vicii.regs[0x1d] = value;
 }
 
@@ -804,9 +819,9 @@ void REGPARM2 vicii_store(WORD addr, BYTE value)
 {
     addr &= 0x3f;
 
+#if 0
     vicii_handle_pending_alarms_external_write();
 
-#if 0
     /* This is necessary as we must be sure that the previous line has been
        updated and `current_line' is actually set to the current Y position of
        the raster.  Otherwise we might mix the changes for this line with the
@@ -1049,8 +1064,10 @@ BYTE REGPARM1 vicii_read(WORD addr)
 {
     addr &= 0x3f;
 
+#if 0
     /* Serve all pending events.  */
     vicii_handle_pending_alarms(0);
+#endif
 
     VICII_DEBUG_REGISTER(("READ $D0%02X at cycle %d of current_line $%04X:",
                          addr, VICII_RASTER_CYCLE(maincpu_clk),
