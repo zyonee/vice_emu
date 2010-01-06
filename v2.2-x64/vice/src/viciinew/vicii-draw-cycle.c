@@ -77,6 +77,8 @@ static DRAW_INLINE void draw_sprites(int cycle, int i, int j, int pri)
     int s;
     BYTE c[4];
     int rendered;
+    BYTE collision_mask;
+    int collision_count;
     int x;
 
     /* do nothing if all sprites are disabled */
@@ -95,7 +97,8 @@ static DRAW_INLINE void draw_sprites(int cycle, int i, int j, int pri)
     c[3] = vicii.regs[0x26];
 
     rendered = 0;
-    /* Brute force render sprites on top of graphics for now! */
+    collision_mask = 0;
+    collision_count = 0;
     for (s = 0; s < 8; s++) {
 
         if ( vicii.sprite_display_bits & (1<<s) ) {
@@ -138,11 +141,15 @@ static DRAW_INLINE void draw_sprites(int cycle, int i, int j, int pri)
                      * render pixels unless a higher priority sprite has already
                      * rendered pixels.
                      */
-                    if (!rendered && sbuf_pixel_reg[s]) {
-                        if ( !(pri && spri) ) {
-                            vicii.dbuf[j] = c[ sbuf_pixel_reg[s] ];
+                    if (sbuf_pixel_reg[s]) {
+                        if (!rendered) {
+                            if ( !(pri && spri) ) {
+                                vicii.dbuf[j] = c[ sbuf_pixel_reg[s] ];
+                            }
+                            rendered = 1;
                         }
-                        rendered = 1;
+                        collision_mask |= (1 << s);
+                        collision_count++;
                     }
 
                     /* shift the sprite buffer and handle expansion flags */
@@ -157,6 +164,12 @@ static DRAW_INLINE void draw_sprites(int cycle, int i, int j, int pri)
                 }
             }
         }
+    }
+    if (collision_count > 1) {
+        vicii.sprite_sprite_collisions |= collision_mask;
+    }
+    if (pri) {
+        vicii.sprite_background_collisions |= collision_mask;
     }
 }
 
