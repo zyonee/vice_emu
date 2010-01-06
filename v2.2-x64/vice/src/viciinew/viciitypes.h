@@ -318,6 +318,9 @@ struct vicii_s {
     /* Vertical border flag */
     int vborder;
 
+    /* Main border flag (this is what controls rendering) */
+    int main_border;
+
     /* Counter used for DRAM refresh accesses.  */
     BYTE refresh_counter;
 

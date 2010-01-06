@@ -197,7 +197,7 @@ void vicii_draw_cycle(void)
     /* are we within the display area? (or the shift register not empty) */
     if ( (cycle >= 14 && cycle <= 53) || gbuf_reg || gbuf_pipe0_reg || gbuf_pipe1_reg) {
         BYTE bg, xs;
-        bg = vicii.regs[0x21];
+        bg = vicii.regs[0x21] + vicii.vborder + vicii.main_border;
         xs = vicii.regs[0x16] & 0x07;
 
         /* render pixels */
@@ -363,7 +363,7 @@ void vicii_draw_cycle(void)
     } else {
         /* we are outside the display area */
         BYTE bg;
-        bg = vicii.regs[0x21];
+        bg = vicii.regs[0x21] + vicii.vborder + vicii.main_border;
 
         /* render pixels */
         for (i = 0; i < 8; i++) {
