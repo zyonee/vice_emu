@@ -296,50 +296,11 @@ inline static void d016_store(const BYTE value)
 {
     raster_t *raster;
     int cycle;
-    BYTE xsmooth;
 
     VICII_DEBUG_REGISTER(("Control register: $%02X", value));
 
     raster = &vicii.raster;
     cycle = VICII_RASTER_CYCLE(maincpu_clk);
-    xsmooth = value & 7;
-
-#if 0
-    /* fully disabled xscroll to be handled by vicii-draw-cycle instead
-       of raster  */
-    if (xsmooth != (vicii.regs[0x16] & 7)) {
-        if (xsmooth < (vicii.regs[0x16] & 7)) {
-            if (cycle < 56)
-                raster_changes_foreground_add_int(raster,
-                             VICII_RASTER_CHAR(cycle) - 2,
-                             &raster->xsmooth_shift_left,
-                             (vicii.regs[0x16] & 7) - xsmooth);
-
-        } else {
-            raster_changes_background_add_int(raster,
-                                              VICII_RASTER_X(cycle),
-                                              &raster->xsmooth_shift_right,
-                                              xsmooth - (vicii.regs[0x16] & 7));
-            raster_changes_sprites_add_int(raster,
-                                           VICII_RASTER_X(cycle) + 8 
-                                                + (vicii.regs[0x16] & 7),
-                                           &raster->sprite_xsmooth_shift_right,
-                                           1);
-            raster_changes_sprites_add_int(raster,
-                                           VICII_RASTER_X(cycle) + 8 + xsmooth,
-                                           &raster->sprite_xsmooth_shift_right,
-                                           0);
-        }
-        raster_changes_foreground_add_int(raster,
-                                          VICII_RASTER_CHAR(cycle) - 1,
-                                          &raster->xsmooth,
-                                          xsmooth);
-        raster_changes_sprites_add_int(raster,
-                                        VICII_RASTER_X(cycle) + 8 + xsmooth,
-                                        &raster->sprite_xsmooth,
-                                        xsmooth);
-    }
-#endif
 
     /* Bit 4 (CSEL) selects 38/40 column mode.  */
     check_lateral_border(value, cycle, raster);
@@ -430,50 +391,16 @@ inline static void d020_store(BYTE value)
 
     value &= 0x0f;
 
-#if 0
-    if (vicii.regs[0x20] == value) {
-        return;
-    }
-#endif
-
     vicii.regs[0x20] = value;
 
-#if 0
-    raster_changes_border_add_int(&vicii.raster,
-        VICII_RASTER_X(VICII_RASTER_CYCLE(maincpu_clk)),
-        (int *)&vicii.raster.border_color,
-        value);
-#endif
 }
 
 inline static void d021_store(BYTE value)
 {
-    int x_pos;
-
     VICII_DEBUG_REGISTER(("Background #0 color register: $%02X", value));
 
     value &= 0x0f;
 
-#if 0
-    if (vicii.regs[0x21] == value) {
-        return;
-    }
-
-    x_pos = VICII_RASTER_X(VICII_RASTER_CYCLE(maincpu_clk));
-
-    if (!vicii.force_black_overscan_background_color) {
-        raster_changes_background_add_int(&vicii.raster, x_pos,
-                                          &vicii.raster.idle_background_color,
-                                          value);
-        raster_changes_background_add_int(&vicii.raster, x_pos,
-                                          &vicii.raster.xsmooth_color, 
-                                          value);
-    }
-
-    raster_changes_background_add_int(&vicii.raster, x_pos,
-                                      (int *)&vicii.raster.background_color,
-                                      value);
-#endif
     vicii.regs[0x21] = value;
 }
 
@@ -486,29 +413,7 @@ inline static void ext_background_store(WORD addr, BYTE value)
     VICII_DEBUG_REGISTER(("Background color #%d register: $%02X",
                           addr - 0x21, value));
 
-#if 0
-    if (vicii.regs[addr] == value) {
-        return;
-    }
-#endif
-
     vicii.regs[addr] = value;
-
-#if 0
-    char_num = VICII_RASTER_CHAR(VICII_RASTER_CYCLE(maincpu_clk));
-
-    if (vicii.video_mode == VICII_EXTENDED_TEXT_MODE) {
-        raster_changes_background_add_int(&vicii.raster,
-            VICII_RASTER_X(VICII_RASTER_CYCLE(maincpu_clk)),
-            &vicii.raster.xsmooth_color,
-            vicii.regs[0x21 + (vicii.background_color_source >> 6)]);
-    }
-
-    raster_changes_foreground_add_int(&vicii.raster,
-                                      char_num - 1,
-                                      &vicii.ext_background_color[addr - 0x22],
-                                      value);
-#endif
     vicii.ext_background_color[addr - 0x22] = value;
 
 }
