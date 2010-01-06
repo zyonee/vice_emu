@@ -72,7 +72,7 @@ BYTE sbuf_expx_flop[8];
 BYTE sbuf_mc_flop[8];
 
 
-static DRAW_INLINE void draw_sprites(int cycle, int i, int j, int pri)
+static DRAW_INLINE void draw_sprites(int xpos, int j, int pri)
 {
     int s;
     BYTE c[4];
@@ -84,13 +84,6 @@ static DRAW_INLINE void draw_sprites(int cycle, int i, int j, int pri)
     /* do nothing if all sprites are disabled */
     if (!vicii.sprite_display_bits) {
         return;
-    }
-
-    /* convert cycle to an x-position. */
-    if (cycle < 13) {
-        x = cycle * 8 + 0x190 + i;
-    } else {
-        x = (cycle - 13) * 8 + i;
     }
 
     c[1] = vicii.regs[0x25];
@@ -105,7 +98,7 @@ static DRAW_INLINE void draw_sprites(int cycle, int i, int j, int pri)
 
             /* fetch sprite data on position match */
             if ( sprite_pending_bits & (1 << s) ) {
-                if ( x == vicii.sprite[s].x ) {
+                if ( xpos == vicii.sprite[s].x ) {
                     sbuf_reg[s] = vicii.sprite[s].data;
 
                     sbuf_expx_flop[s] = 0;
@@ -176,8 +169,15 @@ static DRAW_INLINE void draw_sprites(int cycle, int i, int j, int pri)
 void vicii_draw_cycle(void)
 {
     int cycle, offs, i;
-
+    int xpos;
     cycle = vicii.raster_cycle;
+
+    /* convert cycle to an x-position. */
+    if (cycle < 13) {
+        xpos = cycle * 8 + 0x190;
+    } else {
+        xpos = (cycle - 13) * 8;
+    }
 
     /* reset rendering on raster cycle 0 */
     if (cycle == 0) {
@@ -357,7 +357,7 @@ void vicii_draw_cycle(void)
             gbuf_reg <<= 1;
             gbuf_mc_flop = ~gbuf_mc_flop;
             
-            draw_sprites(cycle, i, j, pri);
+            draw_sprites(xpos+i, j, pri);
 
         }
     } else {
@@ -370,7 +370,7 @@ void vicii_draw_cycle(void)
             int j = i + offs;
 
             vicii.dbuf[j] = bg;
-            draw_sprites(cycle, i, j, 0);
+            draw_sprites(xpos+i, j, 0);
         }
 
     }
