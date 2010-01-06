@@ -162,7 +162,7 @@ void vicii_draw_cycle(void)
                 /* latch values at time xs */
                 vbuf_reg = vicii.vbuf[cycle - 14];
                 cbuf_reg = vicii.cbuf[cycle - 14];
-                gbuf_reg = vicii.gbuf[cycle - 14]; /* this shouldn't be a buffer */
+                gbuf_reg = vicii.gbuf;
                 gbuf_mc_flop = 0;
             }
 

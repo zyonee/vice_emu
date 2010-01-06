@@ -201,15 +201,12 @@ struct vicii_s {
     /* Offset to the vbuf/cbuf buffer */
     int buf_offset;
 
-    /* Offset to the gbuf buffer */
-    int gbuf_offset;
-
     /* Screen memory buffers (chars and color).  */
     BYTE vbuf[VICII_SCREEN_TEXTCOLS];
     BYTE cbuf[VICII_SCREEN_TEXTCOLS];
 
     /* Graphics buffer (bitmap/LinearB) */
-    BYTE gbuf[VICII_SCREEN_TEXTCOLS];
+    BYTE gbuf;
 
     /* Current rendering position into the draw buffer */
     int dbuf_offset;

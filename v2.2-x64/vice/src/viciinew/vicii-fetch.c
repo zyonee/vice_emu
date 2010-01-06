@@ -171,7 +171,7 @@ BYTE vicii_fetch_idle_gfx(void)
     } else {
         data = vicii.ram_base_phi1[vicii.vbank_phi1 + 0x3fff];
     }
-    vicii.gbuf[vicii.gbuf_offset++] = data;
+    vicii.gbuf = data;
     vicii.buf_offset++;
 
     return data;
@@ -202,7 +202,7 @@ BYTE vicii_fetch_graphics(void)
             data = 0xff;
             break;
     }
-    vicii.gbuf[vicii.gbuf_offset++] = data;
+    vicii.gbuf = data;
     vicii.buf_offset++;
 
     vicii.mem_counter++;

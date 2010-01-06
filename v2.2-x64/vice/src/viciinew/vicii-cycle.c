@@ -117,6 +117,9 @@ static inline BYTE cycle_phi1_fetch(unsigned int cycle)
         case 54:
         case 55:
             data = vicii_fetch_idle();
+            vicii.gbuf = 0; /* is this really correct? It could be that 
+                               latching should just be disabled in
+                               vicii-draw-cycle instead. */
             break;
 
         /* Update sprite mcbase */
@@ -154,7 +157,6 @@ int vicii_cycle(void)
     if (vicii.raster_cycle == 53) {
         vicii.fetch_active = 0;
         vicii.buf_offset = 0;
-        vicii.gbuf_offset = 0;
     }
 
     /* Next cycle */
@@ -183,7 +185,6 @@ int vicii_cycle(void)
             vicii_irq_alarm_handler(maincpu_clk, 0);
         }
         vicii.buf_offset = 0;
-        vicii.gbuf_offset = 0;
         vicii.bad_line = 0;
     }
 
