@@ -70,10 +70,7 @@ static int unused_bits_in_registers[0x40] =
 
 inline static void store_sprite_x_position_lsb(const WORD addr, BYTE value)
 {
-    vicii.regs[addr] = value;
-#if 0
     int n;
-    int new_x;
 
     if (value == vicii.regs[addr]) {
         return;
@@ -84,62 +81,31 @@ inline static void store_sprite_x_position_lsb(const WORD addr, BYTE value)
 
     VICII_DEBUG_REGISTER(("Sprite #%d X position LSB: $%02X", n, value));
 
-    new_x = (value | (vicii.regs[0x10] & (1 << n) ? 0x100 : 0));
-    vicii_sprites_set_x_position(n, new_x,
-        VICII_RASTER_X(VICII_RASTER_CYCLE(maincpu_clk)));
-#endif
+    vicii.sprite[n].x = (value | (vicii.regs[0x10] & (1 << n) ? 0x100 : 0));
 }
 
 inline static void store_sprite_y_position(const WORD addr, BYTE value)
 {
     vicii.regs[addr] = value;
-#if 0
-    int cycle;
-
-    VICII_DEBUG_REGISTER(("Sprite #%d Y position: $%02X", addr >> 1, value));
-
-    if (vicii.regs[addr] == value) {
-        return;
-    }
-
-    cycle = VICII_RASTER_CYCLE(maincpu_clk);
-    if (cycle == vicii.sprite_fetch_cycle + 1
-        && value == (vicii.raster.current_line & 0xff)) {
-        vicii.fetch_idx = VICII_CHECK_SPRITE_DMA;
-        vicii.fetch_clk = (VICII_LINE_START_CLK(maincpu_clk)
-                          + vicii.sprite_fetch_cycle + 1);
-        alarm_set(vicii.raster_fetch_alarm, vicii.fetch_clk);
-    }
-    vicii.raster.sprite_status->sprites[addr >> 1].y = value;
-    vicii.regs[addr] = value;
-#endif
 }
 
 static inline void store_sprite_x_position_msb(const WORD addr, BYTE value)
 {
-    vicii.regs[addr] = value;
-#if 0
     int i;
     BYTE b;
-    int raster_x;
 
     VICII_DEBUG_REGISTER(("Sprite X position MSBs: $%02X", value));
 
-    if (value == vicii.regs[addr])
+    if (value == vicii.regs[addr]) {
         return;
-
-    raster_x = VICII_RASTER_X(VICII_RASTER_CYCLE(maincpu_clk));
+    }
 
     vicii.regs[addr] = value;
 
     /* Recalculate the sprite X coordinates.  */
     for (i = 0, b = 0x01; i < 8; b <<= 1, i++) {
-        int new_x;
-
-        new_x = (vicii.regs[2 * i] | (value & b ? 0x100 : 0));
-        vicii_sprites_set_x_position(i, new_x, raster_x);
+        vicii.sprite[i].x = (vicii.regs[2 * i] | (value & b ? 0x100 : 0));
     }
-#endif
 }
 
 inline static void check_lower_upper_border(const BYTE value,
@@ -251,52 +217,6 @@ inline static void d012_store(BYTE value)
 inline static void d015_store(const BYTE value)
 {
     vicii.regs[0x15] = value;
-
-#if 0
-    int cycle;
-
-    VICII_DEBUG_REGISTER(("Sprite Enable register: $%02X", value));
-
-    cycle = VICII_RASTER_CYCLE(maincpu_clk);
-    /* On the real C64, sprite DMA is checked two times: first at
-       `VICII_SPRITE_FETCH_CYCLE', and then at `VICII_SPRITE_FETCH_CYCLE +
-       1'.  In the average case, one DMA check is OK and there is no need to
-       emulate both, but we have to kludge things a bit in case sprites are
-       activated at cycle `VICII_SPRITE_FETCH_CYCLE + 1'.  */
-    if (cycle == vicii.sprite_fetch_cycle + 1
-        && ((value ^ vicii.regs[0x15]) & value) != 0) {
-        vicii.fetch_idx = VICII_CHECK_SPRITE_DMA;
-        vicii.fetch_clk = (VICII_LINE_START_CLK(maincpu_clk)
-                          + vicii.sprite_fetch_cycle + 1);
-        alarm_set(vicii.raster_fetch_alarm, vicii.fetch_clk);
-    }
-
-    /* Sprites are turned on: force a DMA check.  */
-    if (vicii.raster.sprite_status->visible_msk == 0
-        && vicii.raster.sprite_status->dma_msk == 0
-        && value != 0) {
-        if ((vicii.fetch_idx == VICII_FETCH_MATRIX
-             && vicii.fetch_clk > maincpu_clk
-             && cycle > VICII_FETCH_CYCLE
-             && cycle <= vicii.sprite_fetch_cycle)
-            || vicii.raster.current_line < vicii.first_dma_line
-            || vicii.raster.current_line >= vicii.last_dma_line) {
-            CLOCK new_fetch_clk;
-
-            new_fetch_clk = (VICII_LINE_START_CLK(maincpu_clk)
-                            + vicii.sprite_fetch_cycle);
-            if (cycle > vicii.sprite_fetch_cycle)
-                new_fetch_clk += vicii.cycles_per_line;
-            if (new_fetch_clk < vicii.fetch_clk) {
-                vicii.fetch_idx = VICII_CHECK_SPRITE_DMA;
-                vicii.fetch_clk = new_fetch_clk;
-                alarm_set(vicii.raster_fetch_alarm, vicii.fetch_clk);
-            }
-        }
-    }
-
-    vicii.regs[0x15] = vicii.raster.sprite_status->visible_msk = value;
-#endif
 }
 
 inline static void check_lateral_border(const BYTE value, int cycle,
@@ -431,54 +351,21 @@ inline static void d016_store(const BYTE value)
 
 inline static void d017_store(const BYTE value)
 {
-#if 0
-    raster_sprite_status_t *sprite_status;
-    int cycle;
     int i;
     BYTE b;
-
-    VICII_DEBUG_REGISTER(("Sprite Y Expand register: $%02X", value));
 
     if (value == vicii.regs[0x17]) {
         return;
     }
 
-    cycle = VICII_RASTER_CYCLE(maincpu_clk);
-    sprite_status = vicii.raster.sprite_status;
-
-    for (i = 0, b = 0x01; i < 8; b <<= 1, i++) {
-        raster_sprite_t *sprite;
-
-        sprite = sprite_status->sprites + i;
-
-        if (!(value & b)) {
-            vicii.sprite[i].exp_flop = 1;
-        }
-
-        sprite->y_expanded = value & b ? 1 : 0;
-
-        if (!sprite->y_expanded && !sprite->exp_flag) {
-            /* Sprite crunch!  */
-            if (cycle == 15)
-                sprite->memptr_inc
-                    = vicii_sprites_crunch_table[sprite->memptr];
-            else if (cycle < 15 || cycle >= vicii.sprite_fetch_cycle)
-                sprite->memptr_inc = 3;
-            sprite->exp_flag = 1;
-        }
-
-        /* (Enabling sprite Y-expansion never causes side effects.)  */
-    }
-#else
-    int i;
-    BYTE b;
+    VICII_DEBUG_REGISTER(("Sprite Y Expand register: $%02X", value));
 
     for (i = 0, b = 0x01; i < 8; b <<= 1, i++) {
         if (!(value & b)) {
             vicii.sprite[i].exp_flop = 1;
         }
     }
-#endif
+
     vicii.regs[0x17] = value;
 }
 
@@ -513,143 +400,22 @@ inline static void d01a_store(const BYTE value)
 
 inline static void d01b_store(const BYTE value)
 {
-#if 0
-    int i;
-    BYTE b;
-    int raster_x;
-
     VICII_DEBUG_REGISTER(("Sprite priority register: $%02X", value));
 
-    if (value == vicii.regs[0x1b])
-        return;
-
-    raster_x = VICII_RASTER_X(VICII_RASTER_CYCLE(maincpu_clk));
-
-    for (i = 0, b = 0x01; i < 8; b <<= 1, i++) {
-        raster_sprite_t *sprite;
-
-        sprite = vicii.raster.sprite_status->sprites + i;
-
-        if (sprite->x < raster_x)
-            raster_changes_next_line_add_int(&vicii.raster,
-                                             &sprite->in_background,
-                                             value & b ? 1 : 0);
-        else
-            sprite->in_background = value & b ? 1 : 0;
-    }
-#endif
     vicii.regs[0x1b] = value;
 }
 
 inline static void d01c_store(const BYTE value)
 {
-#if 0
-    int i;
-    BYTE b;
-    int raster_x;
-    int sprite_x;
-    int delayed_load, delayed_shift, delayed_pixel;
-    int x_exp;
-
     VICII_DEBUG_REGISTER(("Sprite Multicolor Enable register: $%02X", value));
 
-    if (value == vicii.regs[0x1c])
-        return;
-
-    raster_x = VICII_RASTER_X(VICII_RASTER_CYCLE(maincpu_clk));
-
-    for (i = 0, b = 0x01; i < 8; b <<= 1, i++) {
-        raster_sprite_t *sprite;
-
-        sprite = vicii.raster.sprite_status->sprites + i;
-
-        if ((vicii.regs[0x1c] & b) != (value & b)) {
-            /* Test for MC bug condition */
-            sprite_x = (vicii.regs[2 * i] | (vicii.regs[0x10] & b ? 0x100 : 0))
-                    + vicii.screen_leftborderwidth - 0x20;
-            x_exp = vicii.regs[0x1d] & b;
-            delayed_pixel = 6;
-
-            if (sprite_x < raster_x 
-                && sprite_x + (x_exp ? 48 : 24) >= raster_x)
-            {
-                if (value & b) {
-                    /* HIRES -> MC */
-                    if (x_exp) {
-                        delayed_load = sprite_x % 2;
-                        delayed_shift = ((sprite_x & 1) == ((sprite_x >> 1) & 1) ? 1 : 0);
-                    } else {
-                        delayed_shift = (sprite_x & 1);
-                        delayed_load = 0;
-                    }
-                    delayed_pixel = 6 - delayed_load;
-                } else {
-                    /* MC -> HIRES */
-                    delayed_shift = 0;
-                    delayed_load = 0;
-                    if (x_exp)
-                        delayed_pixel = (sprite_x & 1 ? 7 : 8 - (sprite_x & 2));
-                    else
-                        delayed_pixel = 6 + (sprite_x & 1);
-                }
-                raster_changes_sprites_add_int(&vicii.raster,
-                    raster_x + delayed_pixel,
-                    &sprite->mc_bug, delayed_shift << 1 | delayed_load);
-            }
-
-            raster_changes_sprites_add_int(&vicii.raster,
-                raster_x + delayed_pixel,
-                &sprite->multicolor, value & b ? 1 : 0);
-        }
-    }
-#endif
     vicii.regs[0x1c] = value;
 }
 
 inline static void d01d_store(const BYTE value)
 {
-#if 0
-    int raster_x;
-    int i;
-    BYTE b;
-
     VICII_DEBUG_REGISTER(("Sprite X Expand register: $%02X", value));
 
-    if (value == vicii.regs[0x1d])
-        return;
-
-    /* FIXME: The offset of 6 was calibrated with the GULP demo and CCS */
-    raster_x = VICII_RASTER_X(VICII_RASTER_CYCLE(maincpu_clk)) + 6;
-
-    for (i = 0, b = 0x01; i < 8; b <<= 1, i++) {
-        raster_sprite_t *sprite;
-
-        sprite = vicii.raster.sprite_status->sprites + i;
-
-        if ((value & b) != (vicii.regs[0x1d] & b)) {
-            raster_changes_sprites_add_int(&vicii.raster,
-                                           raster_x,
-                                           &sprite->x_expanded,
-                                           value & b ? 1 : 0);
-
-            /* We have to shift the sprite virtually for the drawing code */
-            if (raster_x > sprite->x) {
-                int actual_shift;
-                if (value & b)
-                    actual_shift = sprite->x - raster_x;
-                else
-                    actual_shift = (raster_x - sprite->x) / 2;
-
-                sprite->x_shift_sum += actual_shift;
-
-                raster_changes_sprites_add_int(&vicii.raster,
-                                               raster_x,
-                                               &sprite->x_shift,
-                                               sprite->x_shift_sum);
-            }
-        }
-    }
-#endif
     vicii.regs[0x1d] = value;
 }
 
@@ -749,76 +515,28 @@ inline static void ext_background_store(WORD addr, BYTE value)
 
 inline static void d025_store(BYTE value)
 {
-    raster_sprite_status_t *sprite_status;
-
     value &= 0xf;
 
     VICII_DEBUG_REGISTER(("Sprite multicolor register #0: $%02X", value));
-
-#if 0
-    if (vicii.regs[0x25] == value) {
-        return;
-    }
-
-    sprite_status = vicii.raster.sprite_status;
-
-    raster_changes_sprites_add_int(&vicii.raster,
-        VICII_RASTER_X(VICII_RASTER_CYCLE(maincpu_clk)) + 1,
-        (int *)&sprite_status->mc_sprite_color_1, 
-        (int)value);
-#endif
 
     vicii.regs[0x25] = value;
 }
 
 inline static void d026_store(BYTE value)
 {
-    raster_sprite_status_t *sprite_status;
-
     value &= 0xf;
 
     VICII_DEBUG_REGISTER(("Sprite multicolor register #1: $%02X", value));
-
-#if 0
-    if (vicii.regs[0x26] == value) {
-        return;
-    }
-
-    sprite_status = vicii.raster.sprite_status;
-
-    raster_changes_sprites_add_int(&vicii.raster,
-        VICII_RASTER_X(VICII_RASTER_CYCLE(maincpu_clk)) + 1,
-        (int*)&sprite_status->mc_sprite_color_2, 
-        (int)value);
-#endif
 
     vicii.regs[0x26] = value;
 }
 
 inline static void sprite_color_store(WORD addr, BYTE value)
 {
-    raster_sprite_t *sprite;
-    int n;
-
     value &= 0xf;
 
     VICII_DEBUG_REGISTER(("Sprite #%d color register: $%02X",
                          addr - 0x27, value));
-
-#if 0
-    if (vicii.regs[addr] == value) {
-        return;
-    }
-
-    n = addr - 0x27;
-
-    sprite = vicii.raster.sprite_status->sprites + n;
-
-    raster_changes_sprites_add_int(&vicii.raster,
-        VICII_RASTER_X(VICII_RASTER_CYCLE(maincpu_clk)) + 1,
-        (int *)&sprite->color, 
-        value);
-#endif;
 
     vicii.regs[addr] = value;
 }

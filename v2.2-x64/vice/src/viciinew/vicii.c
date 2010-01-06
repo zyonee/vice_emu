@@ -54,7 +54,6 @@
 #include "mem.h"
 #include "raster-line.h"
 #include "raster-modes.h"
-#include "raster-sprite-status.h"
 #include "raster-sprite.h"
 #include "resources.h"
 #include "screenshot.h"
@@ -144,13 +143,6 @@ void vicii_change_timing(machine_timing_t *machine_timing, int border_mode)
     }
 }
 
-static CLOCK old_maincpu_clk = 0;
-
-void vicii_delay_oldclk(CLOCK num)
-{
-    old_maincpu_clk += num;
-}
-
 inline void vicii_handle_pending_alarms(int num_write_cycles)
 {
     return;
@@ -158,15 +150,12 @@ inline void vicii_handle_pending_alarms(int num_write_cycles)
 
 void vicii_handle_pending_alarms_external(int num_write_cycles)
 {
-    if (vicii.initialized)
-        vicii_handle_pending_alarms(num_write_cycles);
+    return;
 }
 
 void vicii_handle_pending_alarms_external_write(void)
 {
-    /* WARNING: assumes `maincpu_rmw_flag' is 0 or 1.  */
-    if (vicii.initialized)
-        vicii_handle_pending_alarms(maincpu_rmw_flag + 1);
+    return;
 }
 
 static void vicii_set_geometry(void)
@@ -217,9 +206,6 @@ static int init_raster(void)
     raster = &vicii.raster;
     video_color_set_canvas(raster->canvas);
 
-#if 0
-    raster_sprite_status_new(raster, VICII_NUM_SPRITES, vicii_sprite_offset());
-#endif
     raster->sprite_status = NULL;
     raster_line_changes_init(raster);
 
@@ -271,8 +257,8 @@ static void vicii_new_sprites_init(void)
         vicii.sprite[i].mcbase = 0;
         vicii.sprite[i].pointer = 0;
         vicii.sprite[i].exp_flop = 1;
-        /*vicii.sprite[i].display = 0;*/
         vicii.sprite[i].dma = 0;
+        vicii.sprite[i].x = 0;
     }
 
     vicii.sprite_display_bits = 0;
@@ -355,9 +341,6 @@ void vicii_reset_registers(void)
     for (i = 0; i <= 0x3f; i++) {
         vicii_store(i, 0);
     }
-#if 0
-    raster_sprite_status_reset(vicii.raster.sprite_status, vicii_sprite_offset());
-#endif
 }
 
 /* This /should/ put the VIC-II in the same state as after a powerup, if
@@ -936,10 +919,6 @@ void vicii_set_canvas_refresh(int enable)
 
 void vicii_shutdown(void)
 {
-#if 0
-    vicii_sprites_shutdown();
-    raster_sprite_status_destroy(&vicii.raster);
-#endif
     raster_shutdown(&vicii.raster);
 }
 

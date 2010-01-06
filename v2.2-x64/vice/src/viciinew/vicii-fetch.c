@@ -34,13 +34,10 @@
 #include "log.h"
 #include "mainc64cpu.h"
 #include "mem.h"
-#include "raster-sprite-status.h"
-#include "raster-sprite.h"
 #include "raster.h"
 #include "types.h"
 #include "vicii-fetch.h"
 #include "vicii-irq.h"
-#include "vicii-sprites.h"
 #include "viciitypes.h"
 
 

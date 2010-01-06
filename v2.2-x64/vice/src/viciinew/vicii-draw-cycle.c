@@ -90,9 +90,7 @@ static DRAW_INLINE void draw_sprites(int cycle, int i, int j, int pri)
 
             /* fetch sprite data on position match */
             if ( sprite_pending_bits & (1 << s) ) {
-                int sprx = vicii.regs[0x00 + s*2];
-                sprx |= (vicii.regs[0x10] & (1<<s)) ? 0x100 : 0;
-                if ( x == sprx ) {
+                if ( x == vicii.sprite[s].x ) {
                     sbuf_reg[s] = vicii.sprite[s].data;
 
                     sbuf_expx_flop[s] = 0;

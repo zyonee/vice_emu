@@ -133,10 +133,10 @@ struct vicii_sprite_s {
     BYTE pointer;
     /* Expansion flop */
     int exp_flop;
-    /* Flag: is the sprite displayed? */
-    int display;
     /* Flag: is sprite DMA active? */
     int dma;
+    /* X coordinate */
+    int x;
 };
 typedef struct vicii_sprite_s vicii_sprite_t;
 

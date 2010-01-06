@@ -30,8 +30,6 @@ libviciinew_a_SOURCES = \
 	vicii-resources.h \
 	vicii-snapshot.c \
 	vicii-snapshot.h \
-	vicii-sprites.c \
-	vicii-sprites.h \
 	vicii-timing.c \
 	vicii-timing.h \
 	vicii.c \
