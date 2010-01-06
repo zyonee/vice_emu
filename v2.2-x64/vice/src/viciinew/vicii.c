@@ -682,6 +682,7 @@ void vicii_update_video_mode(unsigned int cycle)
     new_video_mode = ((vicii.regs[0x11] & 0x60)
                      | (vicii.regs[0x16] & 0x10)) >> 4;
 
+#if 0
     if (new_video_mode != vicii.video_mode) {
         switch (new_video_mode) {
           case VICII_ILLEGAL_TEXT_MODE:
@@ -739,9 +740,11 @@ void vicii_update_video_mode(unsigned int cycle)
             vicii.force_black_overscan_background_color = 0;
             break;
         }
-
         vicii.video_mode = new_video_mode;
     }
+#else
+    vicii.video_mode = new_video_mode;
+#endif
 
 #ifdef VICII_VMODE_DEBUG
     switch (new_video_mode) {
