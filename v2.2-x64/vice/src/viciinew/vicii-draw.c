@@ -110,7 +110,7 @@ static void draw_dummy_cached(raster_cache_t *cache, unsigned int xs,
 static void draw_dummy_foreground(unsigned int start_char,
                                   unsigned int end_char)
 {
-#if 0
+#if 1
     /* This is used on raster_changes, should not be needed anymore. */
     BYTE *src;
     BYTE *dest;
