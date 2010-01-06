@@ -32,6 +32,9 @@
 #include "vicii-draw-cycle.h"
 #include "viciitypes.h"
 
+/* disable for debugging */
+#define DRAW_INLINE inline
+
 /* foreground/background graphics */
 
 /* gbuf shift register */
@@ -43,7 +46,12 @@ BYTE gbuf_pixel_reg = 0;
 BYTE cbuf_reg = 0;
 BYTE vbuf_reg = 0;
 
+BYTE last_pixel_color = 0;
+
 /* sprites */
+
+BYTE sprite_pending_bits = 0;
+BYTE sprite_active_bits = 0;
 
 /* sbuf shift registers */
 DWORD sbuf_reg[8]; /* maybe use those directly present in vicii.*? */
@@ -52,13 +60,14 @@ BYTE sbuf_expx_flop[8];
 BYTE sbuf_mc_flop[8];
 
 
-static void draw_sprites(int cycle, int i, int j, int pri)
+static DRAW_INLINE void draw_sprites(int cycle, int i, int j, int pri)
 {
     int s;
     BYTE c[4];
     int rendered;
     int x;
 
+    /* do nothing if all sprites are disabled */
     if (!vicii.sprite_display_bits) {
         return;
     }
@@ -76,59 +85,66 @@ static void draw_sprites(int cycle, int i, int j, int pri)
     rendered = 0;
     /* Brute force render sprites on top of graphics for now! */
     for (s = 0; s < 8; s++) {
-        int spri = vicii.regs[0x1b] & (1<<s);
-        int mc = vicii.regs[0x1c] & (1<<s);
-        int expx = vicii.regs[0x1d] & (1<<s);
-        int sprx = vicii.regs[0x00 + s*2];
 
-        if (!(vicii.sprite_display_bits & (1<<s))) {
-            continue;
-        }
+        if ( vicii.sprite_display_bits & (1<<s) ) {
 
-        sprx |= (vicii.regs[0x10] & (1<<s)) ? 0x100 : 0;
-        c[2] = vicii.regs[0x27 + s];
+            /* fetch sprite data on position match */
+            if ( sprite_pending_bits & (1 << s) ) {
+                int sprx = vicii.regs[0x00 + s*2];
+                sprx |= (vicii.regs[0x10] & (1<<s)) ? 0x100 : 0;
+                if ( x == sprx ) {
+                    sbuf_reg[s] = vicii.sprite[s].data;
 
-        /* fetch sprite data on position match */
-        if (x == sprx) {
-            sbuf_reg[s] = vicii.sprite[s].data;
+                    sbuf_expx_flop[s] = 0;
+                    sbuf_mc_flop[s] = 0;
+                    sprite_active_bits |= (1 << s);
+                    sprite_pending_bits &= ~(1 << s);
+                }
+            }
 
-            sbuf_expx_flop[s] = 0;
-            sbuf_mc_flop[s] = 0;
-        }
+            if ( sprite_active_bits & (1 << s) ) {
+                int spri = vicii.regs[0x1b] & (1 << s);
+                int mc = vicii.regs[0x1c] & (1 << s);
+                int expx = vicii.regs[0x1d] & (1 << s);
+                c[2] = vicii.regs[0x27 + s];
 
-        /* render pixels if shift register or pixel reg still contains data */
-        if ( sbuf_reg[s] || sbuf_pixel_reg[s] ) {
-
-            if ( sbuf_expx_flop[s] == 0 ) {
-                if (mc) {
-                    if (sbuf_mc_flop[s] == 0) {
-                        /* fetch 2 bits */
-                        sbuf_pixel_reg[s] = (sbuf_reg[s] >> 22) & 0x03;
+                /* render pixels if shift register or pixel reg still contains data */
+                if ( sbuf_reg[s] || sbuf_pixel_reg[s] ) {
+                    
+                    if ( sbuf_expx_flop[s] == 0 ) {
+                        if (mc) {
+                            if (sbuf_mc_flop[s] == 0) {
+                                /* fetch 2 bits */
+                                sbuf_pixel_reg[s] = (sbuf_reg[s] >> 22) & 0x03;
+                            }
+                            sbuf_mc_flop[s] = ~sbuf_mc_flop[s];
+                        } else {
+                            /* fetch 1 bit and make it 0 or 2 */
+                            sbuf_pixel_reg[s] = ( (sbuf_reg[s] >> 23) & 0x01 ) << 1;
+                        }
                     }
-                    sbuf_mc_flop[s] = ~sbuf_mc_flop[s];
+
+                    /*
+                     * render pixels unless a higher priority sprite has already
+                     * rendered pixels.
+                     */
+                    if (!rendered && sbuf_pixel_reg[s]) {
+                        if ( !(pri && spri) ) {
+                            vicii.dbuf[j] = c[ sbuf_pixel_reg[s] ];
+                        }
+                        rendered = 1;
+                    }
+
+                    /* shift the sprite buffer and handle expansion flags */
+                    if (sbuf_expx_flop[s] == 0) {
+                        sbuf_reg[s] <<= 1;
+                    }
+                    if (expx) {
+                        sbuf_expx_flop[s] = ~sbuf_expx_flop[s];
+                    }
                 } else {
-                    /* fetch 1 bit and make it 0 or 2 */
-                    sbuf_pixel_reg[s] = ( (sbuf_reg[s] >> 23) & 0x01 ) << 1;
+                    sprite_active_bits &= ~(1 << s);
                 }
-            }
-
-            /*
-             * render pixels unless a higher priority sprite has already
-             * rendered pixels.
-             */
-            if (!rendered && sbuf_pixel_reg[s]) {
-                if ( !(pri && spri) ) {
-                    vicii.dbuf[j] = c[ sbuf_pixel_reg[s] ];
-                }
-                rendered = 1;
-            }
-
-            /* shift the sprite buffer and handle expansion flags */
-            if (sbuf_expx_flop[s] == 0) {
-                sbuf_reg[s] <<= 1;
-            }
-            if (expx) {
-                sbuf_expx_flop[s] = ~sbuf_expx_flop[s];
             }
         }
     }
@@ -147,6 +163,8 @@ void vicii_draw_cycle(void)
         gbuf_reg = 0;
         vbuf_reg = 0;
         cbuf_reg = 0;
+        sprite_pending_bits = 0xff;
+        sprite_active_bits = 0x00;
     }
     offs = vicii.dbuf_offset;
     /* guard */
@@ -296,8 +314,10 @@ void vicii_draw_cycle(void)
             }
 
             /* plot color from prepared array */
-            vicii.dbuf[j] = c[px];
+            last_pixel_color = c[px];
             pri = (px & 0x2);
+
+            vicii.dbuf[j] = last_pixel_color;
 
             /* shift the graphics buffer */
             gbuf_reg <<= 1;
@@ -314,7 +334,7 @@ void vicii_draw_cycle(void)
         /* render pixels */
         for (i = 0; i < 8; i++) {
             int j = i + offs;
-            /* plot bg for now */
+
             vicii.dbuf[j] = bg;
             draw_sprites(cycle, i, j, 0);
         }
