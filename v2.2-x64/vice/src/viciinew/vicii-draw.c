@@ -110,6 +110,8 @@ static void draw_dummy_cached(raster_cache_t *cache, unsigned int xs,
 static void draw_dummy_foreground(unsigned int start_char,
                                   unsigned int end_char)
 {
+#if 0
+    /* This is used on raster_changes, should not be needed anymore. */
     BYTE *src;
     BYTE *dest;
 
@@ -117,6 +119,7 @@ static void draw_dummy_foreground(unsigned int start_char,
     dest = (GFX_PTR() + start_char * 8);
 
     memcpy(dest, src, (end_char - start_char + 1) * 8);
+#endif
 }
 
 static void draw_dummy_background(unsigned int start_pixel,
@@ -126,63 +129,7 @@ static void draw_dummy_background(unsigned int start_pixel,
 
 static void setup_modes(void)
 {
-    raster_modes_set(vicii.raster.modes, VICII_NORMAL_TEXT_MODE,
-                     get_dummy,
-                     draw_dummy_cached,
-                     draw_dummy,
-                     draw_dummy_background,
-                     draw_dummy_foreground);
-
-    raster_modes_set(vicii.raster.modes, VICII_MULTICOLOR_TEXT_MODE,
-                     get_dummy,
-                     draw_dummy_cached,
-                     draw_dummy,
-                     draw_dummy_background,
-                     draw_dummy_foreground);
-
-    raster_modes_set(vicii.raster.modes, VICII_HIRES_BITMAP_MODE,
-                     get_dummy,
-                     draw_dummy_cached,
-                     draw_dummy,
-                     draw_dummy_background,
-                     draw_dummy_foreground);
-
-    raster_modes_set(vicii.raster.modes, VICII_MULTICOLOR_BITMAP_MODE,
-                     get_dummy,
-                     draw_dummy_cached,
-                     draw_dummy,
-                     draw_dummy_background,
-                     draw_dummy_foreground);
-
-    raster_modes_set(vicii.raster.modes, VICII_EXTENDED_TEXT_MODE,
-                     get_dummy,
-                     draw_dummy_cached,
-                     draw_dummy,
-                     draw_dummy_background,
-                     draw_dummy_foreground);
-
-    raster_modes_set(vicii.raster.modes, VICII_IDLE_MODE,
-                     get_dummy,
-                     draw_dummy_cached,
-                     draw_dummy,
-                     draw_dummy_background,
-                     draw_dummy_foreground);
-
-    raster_modes_set(vicii.raster.modes, VICII_ILLEGAL_TEXT_MODE,
-                     get_dummy,
-                     draw_dummy_cached,
-                     draw_dummy,
-                     draw_dummy_background,
-                     draw_dummy_foreground);
-
-    raster_modes_set(vicii.raster.modes, VICII_ILLEGAL_BITMAP_MODE_1,
-                     get_dummy,
-                     draw_dummy_cached,
-                     draw_dummy,
-                     draw_dummy_background,
-                     draw_dummy_foreground);
-
-    raster_modes_set(vicii.raster.modes, VICII_ILLEGAL_BITMAP_MODE_2,
+    raster_modes_set(vicii.raster.modes, VICII_DUMMY_MODE,
                      get_dummy,
                      draw_dummy_cached,
                      draw_dummy,

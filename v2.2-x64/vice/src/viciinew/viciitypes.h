@@ -66,6 +66,8 @@ enum vicii_video_mode_s {
 };
 typedef enum vicii_video_mode_s vicii_video_mode_t;
 
+#define VICII_DUMMY_MODE VICII_NORMAL_TEXT_MODE
+
 #define VICII_IS_ILLEGAL_MODE(x) ((x) >= VICII_ILLEGAL_TEXT_MODE \
                                  && (x) <= VICII_ILLEGAL_BITMAP_MODE_2)
 

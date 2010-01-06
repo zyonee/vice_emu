@@ -178,7 +178,7 @@ BYTE vicii_fetch_graphics(void)
 {
     BYTE data;
 
-    switch (vicii.raster.video_mode) {
+    switch (vicii.video_mode) {
         case VICII_NORMAL_TEXT_MODE:
         case VICII_MULTICOLOR_TEXT_MODE:
             data = gfx_data_normal_text(vicii.vbuf[vicii.buf_offset]);

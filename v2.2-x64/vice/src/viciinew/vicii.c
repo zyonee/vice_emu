@@ -209,9 +209,13 @@ static int init_raster(void)
     raster->sprite_status = NULL;
     raster_line_changes_init(raster);
 
-    if (raster_init(raster, VICII_NUM_VMODES) < 0)
+    /* We only use the dummy mode for "drawing" to raster.
+       Report only 1 video mode and set the idle mode to it. */
+    if (raster_init(raster, 1) < 0) {
         return -1;
-    raster_modes_set_idle_mode(raster->modes, VICII_IDLE_MODE);
+    }
+    raster_modes_set_idle_mode(raster->modes, VICII_DUMMY_MODE);
+
     resources_touch("VICIIVideoCache");
 
     vicii_set_geometry();
@@ -734,30 +738,6 @@ void vicii_update_video_mode(unsigned int cycle)
             vicii.get_background_from_vbuf = 0;
             vicii.force_black_overscan_background_color = 0;
             break;
-        }
-
-        {
-            int pos;
-
-            pos = VICII_RASTER_CHAR(cycle) - 1;
-
-            raster_changes_background_add_int(&vicii.raster,
-                                              VICII_RASTER_X(cycle),
-                                              &vicii.raster.video_mode,
-                                              new_video_mode);
-
-            raster_changes_foreground_add_int(&vicii.raster, pos,
-                                              &vicii.raster.last_video_mode,
-                                              vicii.video_mode);
-
-            raster_changes_foreground_add_int(&vicii.raster, pos,
-                                              &vicii.raster.video_mode,
-                                              new_video_mode);
-
-            raster_changes_foreground_add_int(&vicii.raster, pos + 2,
-                                              &vicii.raster.last_video_mode,
-                                              -1);
-
         }
 
         vicii.video_mode = new_video_mode;
