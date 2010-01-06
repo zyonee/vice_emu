@@ -585,6 +585,14 @@ void vicii_update_memory_ptrs(unsigned int cycle)
             bitmap_high_base = mem_chargen_rom_ptr;
     }
 
+#if 1
+    old_screen_ptr = vicii.screen_ptr = vicii.screen_base_phi2;
+    old_bitmap_low_ptr = vicii.bitmap_low_ptr = bitmap_low_base;
+    old_bitmap_high_ptr = vicii.bitmap_high_ptr = bitmap_high_base;
+    old_chargen_ptr = vicii.chargen_ptr = char_base;
+    old_vbank_p1 = vicii.vbank_phi1;
+    old_vbank_p2 = vicii.vbank_phi2;
+#else
     tmp = VICII_RASTER_CHAR(cycle);
 
     if (tmp <= 0 /*&& maincpu_clk < vicii.draw_clk*/) {
@@ -671,6 +679,8 @@ void vicii_update_memory_ptrs(unsigned int cycle)
             old_vbank_p2 = vicii.vbank_phi2;
         }
     }
+#endif
+
 }
 
 /* Set the video mode according to the values in registers $D011 and $D016 of
