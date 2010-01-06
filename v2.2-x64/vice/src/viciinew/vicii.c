@@ -332,6 +332,7 @@ void vicii_reset(void)
     vicii.display_ystart = vicii.row_25_start_line;
     vicii.display_ystop = vicii.row_25_stop_line;
 
+    vicii.vborder = 1;    
 }
 
 void vicii_reset_registers(void)

@@ -315,6 +315,9 @@ struct vicii_s {
     /* Last value read by VICII during phi1.  */
     BYTE last_read_phi1;
 
+    /* Vertical border flag */
+    int vborder;
+
     /* Counter used for DRAM refresh accesses.  */
     BYTE refresh_counter;
 

@@ -217,6 +217,17 @@ static inline BYTE cycle_phi1_fetch(unsigned int cycle)
     return data;
 }
 
+static inline void check_vborder(int line)
+{
+    int rsel = vicii.regs[0x11] & 0x08;
+
+    if ((line == (rsel ? 51 : 55)) && (vicii.regs[0x11] & 0x10)) {
+        vicii.vborder = 0;
+    } else if (line == (rsel ? 251 : 247)) {
+        vicii.vborder = 1;
+    }
+}
+
 static inline void vicii_cycle_end_of_frame(void)
 {
     vicii.raster_line = 0;
@@ -278,6 +289,11 @@ int vicii_cycle(void)
     /* Handle end of line */
     if (vicii.raster_cycle == 65) {
         vicii_cycle_end_of_line();
+    }
+
+    /* Check vertical border flag */
+    if (vicii.raster_cycle == 64) {
+        check_vborder(vicii.raster_line);
     }
 
     /* IRQ on line 0 is delayed by 1 clock */
