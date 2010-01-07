@@ -141,12 +141,8 @@ static inline BYTE cycle_phi1_fetch(unsigned int cycle)
     int n;
 
     switch (cycle) {
-        /* Check sprite display */
-        case 58:
-            check_sprite_display();
-            /* fall through */
-
         /* Sprite pointers */
+        case 58:
         case 60:
         case 62:
         case 64:
@@ -180,30 +176,16 @@ static inline BYTE cycle_phi1_fetch(unsigned int cycle)
             data = vicii_fetch_refresh();
             break;
 
-        /* Check sprite expansion flags */
-        case 56:
-            check_exp();
-            /* fall through */
-
-        /* Check sprite DMA */
-        case 57:
-            check_sprite_dma();
-            /* fall through */
-
         /* Idle */
         case 54:
         case 55:
+        case 56:
+        case 57:
             data = vicii_fetch_idle();
             vicii.gbuf = 0; /* is this really correct? It could be that 
                                latching should just be disabled in
                                vicii-draw-cycle instead. */
             break;
-
-        /* Update sprite mcbase */
-        case 14:
-        case 15:
-            sprite_exp_inc(16 - cycle);
-            /* fall through */
 
         /* Graphics fetch */
         default: /* 14 .. 53 */
@@ -284,6 +266,7 @@ int vicii_cycle(void)
     if (vicii.raster_cycle == 64) {
         check_vborder(vicii.raster_line);
     }
+
     /* Check horizontal border flag */
     check_hborder(vicii.raster_cycle);
 
@@ -321,6 +304,26 @@ int vicii_cycle(void)
     /* Check DEN bit on first DMA line */
     if ((vicii.raster_line == VICII_FIRST_DMA_LINE) && !vicii.allow_bad_lines) {
         vicii.allow_bad_lines = (vicii.regs[0x11] & 0x10) ? 1 : 0; 
+    }
+
+    /* Check sprite expansion flags */
+    if (vicii.raster_cycle == 56) {
+        check_exp();
+    }
+
+    /* Check sprite DMA */
+    if ((vicii.raster_cycle == 56) || (vicii.raster_cycle == 57)) {
+        check_sprite_dma();
+    }
+    
+    /* Check sprite display */
+    if (vicii.raster_cycle == 58) {
+        check_sprite_display();
+    }
+
+    /* Update sprite mcbase */
+    if ((vicii.raster_cycle == 14) || (vicii.raster_cycle == 15)) {
+        sprite_exp_inc(16 - vicii.raster_cycle);
     }
 
     /* Check badline condition, trigger fetches */
