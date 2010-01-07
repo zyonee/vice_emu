@@ -289,6 +289,7 @@ int vicii_cycle(void)
     if (vicii.raster_cycle == 53) {
         vicii.fetch_active = 0;
         vicii.buf_offset = 0;
+        vicii.prefetch_cycles = 0;
     }
 
     /* Next cycle */
