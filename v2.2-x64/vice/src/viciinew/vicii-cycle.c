@@ -47,8 +47,8 @@ static inline void check_badline(void)
 
     if ((vicii.raster_line & 7) == (unsigned int)vicii.ysmooth
         && vicii.allow_bad_lines
-        && vicii.raster_line >= vicii.first_dma_line
-        && vicii.raster_line <= vicii.last_dma_line) {
+        && vicii.raster_line >= VICII_FIRST_DMA_LINE
+        && vicii.raster_line <= VICII_LAST_DMA_LINE) {
         vicii.bad_line = 1;
         vicii.idle_state = 0;
     } else {
@@ -221,9 +221,9 @@ static inline void check_vborder(int line)
 {
     int rsel = vicii.regs[0x11] & 0x08;
 
-    if ((line == (rsel ? 51 : 55)) && (vicii.regs[0x11] & 0x10)) {
+    if ((line == (rsel ? VICII_25ROW_START_LINE : VICII_24ROW_START_LINE)) && (vicii.regs[0x11] & 0x10)) {
         vicii.vborder = 0;
-    } else if (line == (rsel ? 251 : 247)) {
+    } else if (line == (rsel ? VICII_25ROW_STOP_LINE : VICII_24ROW_STOP_LINE)) {
         vicii.vborder = 1;
     }
 }
@@ -232,12 +232,12 @@ static inline void check_hborder(int cycle)
 {
     int csel = vicii.regs[0x16] & 0x08;
 
-    if ( cycle == (csel ? 15 : 16) ) {
+    if ( cycle == (csel ? VICII_40COL_START_CYCLE : VICII_38COL_START_CYCLE) ) {
         check_vborder(vicii.raster_line);
         if (vicii.vborder == 0) {
             vicii.main_border = 0;
         }
-    } else if ( cycle == (csel ? 57 : 56) ) {
+    } else if ( cycle == (csel ? VICII_40COL_STOP_CYCLE : VICII_38COL_STOP_CYCLE) ) {
         vicii.main_border = 1;
     }
 }
@@ -318,7 +318,7 @@ int vicii_cycle(void)
     }
 
     /* Check DEN bit on first DMA line */
-    if ((vicii.raster_line == vicii.first_dma_line) && !vicii.allow_bad_lines) {
+    if ((vicii.raster_line == VICII_FIRST_DMA_LINE) && !vicii.allow_bad_lines) {
         vicii.allow_bad_lines = (vicii.regs[0x11] & 0x10) ? 1 : 0; 
     }
 

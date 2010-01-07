@@ -47,6 +47,21 @@
 #define VICII_MAX_SPRITE_WIDTH 56  /* expanded sprite in bug area */
 #define VICII_NUM_COLORS       16
 
+/* Common parameters for all video standards */
+#define VICII_25ROW_START_LINE    0x33
+#define VICII_25ROW_STOP_LINE     0xfb
+#define VICII_24ROW_START_LINE    0x37
+#define VICII_24ROW_STOP_LINE     0xf7
+
+#define VICII_40COL_START_CYCLE   15
+#define VICII_40COL_STOP_CYCLE    57
+#define VICII_38COL_START_CYCLE   16
+#define VICII_38COL_STOP_CYCLE    56
+
+/* Bad line range.  */
+#define VICII_FIRST_DMA_LINE      0x30
+#define VICII_LAST_DMA_LINE       0xf7
+
 /* drawing constants. */
 #define VICII_DRAW_BUFFER_SIZE (65 * 8)
 
@@ -293,9 +308,6 @@ struct vicii_s {
     int draw_cycle;
     int sprite_fetch_cycle;
     int sprite_wrap_x;
-
-    unsigned int first_dma_line;
-    unsigned int last_dma_line;
 
     /* Flag backgroundcolor in hires mode or extended text mode.  */
     int get_background_from_vbuf;

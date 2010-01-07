@@ -108,16 +108,6 @@
 #define VICII_NTSC_DRAW_CYCLE      VICII_NTSC_CYCLES_PER_LINE
 #define VICII_NTSCOLD_DRAW_CYCLE   VICII_NTSCOLD_CYCLES_PER_LINE
 
-/* Common parameters for all video standards */
-#define VICII_25ROW_START_LINE    0x33
-#define VICII_25ROW_STOP_LINE     0xfb
-#define VICII_24ROW_START_LINE    0x37
-#define VICII_24ROW_STOP_LINE     0xf7
-
-/* Bad line range.  */
-#define VICII_FIRST_DMA_LINE      0x30
-#define VICII_LAST_DMA_LINE       0xf7
-
 
 void vicii_timing_set(machine_timing_t *machine_timing, int border_mode)
 {
@@ -212,8 +202,5 @@ void vicii_timing_set(machine_timing_t *machine_timing, int border_mode)
         vicii.sprite_wrap_x = VICII_PAL_SPRITE_WRAP_X;
         break;
     }
-
-    vicii.first_dma_line = VICII_FIRST_DMA_LINE;
-    vicii.last_dma_line = VICII_LAST_DMA_LINE;
 
 }
