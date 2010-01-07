@@ -66,7 +66,9 @@ BYTE sprite_pending_bits = 0;
 BYTE sprite_active_bits = 0;
 
 /* sbuf shift registers */
+#if 0
 DWORD sbuf_reg[8]; /* maybe use those directly present in vicii.*? */
+#endif
 BYTE sbuf_pixel_reg[8];
 BYTE sbuf_expx_flop[8];
 BYTE sbuf_mc_flop[8];
@@ -100,11 +102,9 @@ static DRAW_INLINE void draw_sprites(int xpos, int j, int pri, int bp)
 
         if ( vicii.sprite_display_bits & (1<<s) ) {
 
-            /* fetch sprite data on position match */
+            /* start rendering on position match */
             if ( sprite_pending_bits & (1 << s) ) {
                 if ( xpos == vicii.sprite[s].x ) {
-                    sbuf_reg[s] = vicii.sprite[s].data;
-
                     sbuf_expx_flop[s] = 0;
                     sbuf_mc_flop[s] = 0;
                     sprite_active_bits |= (1 << s);
@@ -119,18 +119,18 @@ static DRAW_INLINE void draw_sprites(int xpos, int j, int pri, int bp)
                 c[2] = vicii.regs[0x27 + s];
 
                 /* render pixels if shift register or pixel reg still contains data */
-                if ( sbuf_reg[s] || sbuf_pixel_reg[s] ) {
+                if ( vicii.sprite[s].data || sbuf_pixel_reg[s] ) {
                     
                     if ( sbuf_expx_flop[s] == 0 ) {
                         if (mc) {
                             if (sbuf_mc_flop[s] == 0) {
                                 /* fetch 2 bits */
-                                sbuf_pixel_reg[s] = (sbuf_reg[s] >> 22) & 0x03;
+                                sbuf_pixel_reg[s] = (vicii.sprite[s].data >> 22) & 0x03;
                             }
                             sbuf_mc_flop[s] = ~sbuf_mc_flop[s];
                         } else {
                             /* fetch 1 bit and make it 0 or 2 */
-                            sbuf_pixel_reg[s] = ( (sbuf_reg[s] >> 23) & 0x01 ) << 1;
+                            sbuf_pixel_reg[s] = ( (vicii.sprite[s].data >> 23) & 0x01 ) << 1;
                         }
                     }
 
@@ -151,7 +151,7 @@ static DRAW_INLINE void draw_sprites(int xpos, int j, int pri, int bp)
 
                     /* shift the sprite buffer and handle expansion flags */
                     if (sbuf_expx_flop[s] == 0) {
-                        sbuf_reg[s] <<= 1;
+                        vicii.sprite[s].data <<= 1;
                     }
                     if (expx) {
                         sbuf_expx_flop[s] = ~sbuf_expx_flop[s];
@@ -190,10 +190,6 @@ void vicii_draw_cycle(void)
     /* reset rendering on raster cycle 0 */
     if (cycle == 0) {
         vicii.dbuf_offset = 0;
-        gbuf_mc_flop = 0;
-        gbuf_reg = 0;
-        vbuf_reg = 0;
-        cbuf_reg = 0;
         sprite_pending_bits = 0xff;
         sprite_active_bits = 0x00;
     }
@@ -201,7 +197,7 @@ void vicii_draw_cycle(void)
     /* guard */
     if (offs >= VICII_DRAW_BUFFER_SIZE) 
         return;
-    
+
     {
         BYTE bg, xs, rsel;
         bg = vicii.regs[0x21];
@@ -408,6 +404,7 @@ void vicii_draw_cycle(void)
     }
     idle_pipe0_reg = vicii.idle_state;
     main_border_pipe = vicii.main_border;
+
 }
 
 

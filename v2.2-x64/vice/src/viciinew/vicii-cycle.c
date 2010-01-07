@@ -273,6 +273,14 @@ int vicii_cycle(void)
     /* Draw one cycle of pixels */
     vicii_draw_cycle();
 
+    /* Trigger collision IRQs */
+    if (vicii.sprite_sprite_collisions) {
+        vicii_irq_sscoll_set();
+    }
+    if (vicii.sprite_background_collisions) {
+        vicii_irq_sbcoll_set();
+    }
+
     /* Stop fetch */
     if (vicii.raster_cycle == 53) {
         vicii.fetch_active = 0;
