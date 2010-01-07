@@ -71,6 +71,9 @@ BYTE sbuf_pixel_reg[8];
 BYTE sbuf_expx_flop[8];
 BYTE sbuf_mc_flop[8];
 
+/* border */
+int border_pipe = 0;
+
 
 static DRAW_INLINE void draw_sprites(int xpos, int j, int pri)
 {
@@ -197,7 +200,7 @@ void vicii_draw_cycle(void)
     /* are we within the display area? (or the shift register not empty) */
     if ( (cycle >= 14 && cycle <= 53) || gbuf_reg || gbuf_pipe0_reg || gbuf_pipe1_reg) {
         BYTE bg, xs;
-        bg = vicii.regs[0x21] + vicii.vborder + vicii.main_border;
+        bg = vicii.regs[0x21];
         xs = vicii.regs[0x16] & 0x07;
 
         /* render pixels */
@@ -358,12 +361,12 @@ void vicii_draw_cycle(void)
             gbuf_mc_flop = ~gbuf_mc_flop;
             
             draw_sprites(xpos+i, j, pri);
-
         }
+
     } else {
         /* we are outside the display area */
         BYTE bg;
-        bg = vicii.regs[0x21] + vicii.vborder + vicii.main_border;
+        bg = vicii.regs[0x21];
 
         /* render pixels */
         for (i = 0; i < 8; i++) {
@@ -374,6 +377,22 @@ void vicii_draw_cycle(void)
         }
 
     }
+
+    /* the border is just drawn on top of everything for now
+       and only 8/8 symmetric. */
+    if ( border_pipe ) {
+        BYTE br;
+        br = vicii.regs[0x20];
+
+        /* render pixels */
+        for (i = 0; i < 8; i++) {
+            int j = i + offs;
+
+            vicii.dbuf[j] = br;
+        }
+
+    }
+    border_pipe = vicii.main_border;
 
     vicii.dbuf_offset += 8;
 }

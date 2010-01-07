@@ -232,12 +232,12 @@ static inline void check_hborder(int cycle)
 {
     int csel = vicii.regs[0x16] & 0x08;
 
-    if ( cycle == (csel ? 16 : 17) ) {
+    if ( cycle == (csel ? 15 : 16) ) {
         check_vborder(vicii.raster_line);
         if (vicii.vborder == 0) {
             vicii.main_border = 0;
         }
-    } else if ( cycle == (csel ? 58 : 57) ) {
+    } else if ( cycle == (csel ? 57 : 56) ) {
         vicii.main_border = 1;
     }
 }
@@ -279,6 +279,13 @@ int vicii_cycle(void)
     /* Phi1 fetch */
     vicii.last_read_phi1 = cycle_phi1_fetch(vicii.raster_cycle);
 
+    /* Check vertical border flag */
+    if (vicii.raster_cycle == 64) {
+        check_vborder(vicii.raster_line);
+    }
+    /* Check horizontal border flag */
+    check_hborder(vicii.raster_cycle);
+
     /* Draw one cycle of pixels */
     vicii_draw_cycle();
 
@@ -304,12 +311,6 @@ int vicii_cycle(void)
     if (vicii.raster_cycle == 65) {
         vicii_cycle_end_of_line();
     }
-
-    /* Check vertical border flag */
-    if (vicii.raster_cycle == 64) {
-        check_vborder(vicii.raster_line);
-    }
-    check_hborder(vicii.raster_cycle);
 
     /* IRQ on line 0 is delayed by 1 clock */
     if ((vicii.raster_line == vicii.raster_irq_line) && (vicii.raster_line == 0) && (vicii.raster_cycle == 1)) {
