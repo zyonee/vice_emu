@@ -104,7 +104,7 @@ static DRAW_INLINE void draw_sprites(int xpos, int j, int pri, int bp)
 
             /* start rendering on position match */
             if ( sprite_pending_bits & (1 << s) ) {
-                if ( xpos == vicii.sprite[s].x ) {
+                if ( xpos == vicii.sprite[s].x +2 ) {
                     sbuf_expx_flop[s] = 0;
                     sbuf_mc_flop[s] = 0;
                     sprite_active_bits |= (1 << s);
@@ -192,7 +192,33 @@ void vicii_draw_cycle(void)
     /* reset rendering on raster cycle 0 */
     if (cycle == 0) {
         vicii.dbuf_offset = 0;
-        sprite_pending_bits = 0xff;
+    }
+
+    switch (cycle) {
+    case 58:
+        sprite_pending_bits |= (1<<0);
+        break;
+    case 60:
+        sprite_pending_bits |= (1<<1);
+        break;
+    case 62:
+        sprite_pending_bits |= (1<<2);
+        break;
+    case 64:
+        sprite_pending_bits |= (1<<3);
+        break;
+    case 1:
+        sprite_pending_bits |= (1<<4);
+        break;
+    case 3:
+        sprite_pending_bits |= (1<<5);
+        break;
+    case 5:
+        sprite_pending_bits |= (1<<6);
+        break;
+    case 7:
+        sprite_pending_bits |= (1<<7);
+        break;
     }
 
     offs = vicii.dbuf_offset;
