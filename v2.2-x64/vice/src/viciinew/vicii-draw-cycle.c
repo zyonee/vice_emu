@@ -72,7 +72,8 @@ BYTE sbuf_expx_flop[8];
 BYTE sbuf_mc_flop[8];
 
 /* border */
-int border_pipe = 0;
+BYTE bbuf_reg = 0;
+int main_border_pipe = 0;
 
 
 static DRAW_INLINE void draw_sprites(int xpos, int j, int pri)
@@ -197,40 +198,41 @@ void vicii_draw_cycle(void)
     if (offs >= VICII_DRAW_BUFFER_SIZE) 
         return;
     
-    /* are we within the display area? (or the shift register not empty) */
-    if ( (cycle >= 14 && cycle <= 53) || gbuf_reg || gbuf_pipe0_reg || gbuf_pipe1_reg) {
-        BYTE bg, xs;
+    {
+        BYTE bg, xs, rsel;
         bg = vicii.regs[0x21];
         xs = vicii.regs[0x16] & 0x07;
+        rsel = vicii.regs[0x16] & 0x8;
 
         /* render pixels */
         for (i = 0; i < 8; i++) {
             int j = i + offs;
             BYTE px;
+            BYTE bp;
             BYTE c[4];
             int pri;
             int vmode;
 
+           
+            /* are we within the display area? */
             if (i == xs) {
                 /* latch values at time xs */
                 vbuf_reg = vbuf_pipe1_reg;
                 cbuf_reg = cbuf_pipe1_reg;
                 gbuf_reg = gbuf_pipe1_reg;
                 gbuf_mc_flop = 0;
-                idle_state = idle_pipe1_reg;
-
-                /* shift and put the next data into the pipe. */
-                vbuf_pipe1_reg = vbuf_pipe0_reg;
-                cbuf_pipe1_reg = cbuf_pipe0_reg;
-                gbuf_pipe1_reg = gbuf_pipe0_reg;
-                idle_pipe1_reg = idle_pipe0_reg;
-                vbuf_pipe0_reg = vicii.vbuf[cycle - 14];
-                cbuf_pipe0_reg = vicii.cbuf[cycle - 14];
-                gbuf_pipe0_reg = vicii.gbuf;
-                idle_pipe0_reg = vicii.idle_state;
+            }
+           
+            if (rsel) {
+                if (i == 0 && main_border_pipe) {
+                    bbuf_reg = 0xff;
+                }
+            } else {
+                if (i == 7 && vicii.main_border) {
+                    bbuf_reg = 0xff;
+                }
             }
 
-           
             c[0] = bg;
 
             /*
@@ -353,6 +355,7 @@ void vicii_draw_cycle(void)
             /* plot color from prepared array */
             last_pixel_color = c[px];
             pri = (px & 0x2);
+            bp = (bbuf_reg & 0x80) ? 1 : 0;
 
             vicii.dbuf[j] = last_pixel_color;
 
@@ -360,41 +363,39 @@ void vicii_draw_cycle(void)
             gbuf_reg <<= 1;
             gbuf_mc_flop = ~gbuf_mc_flop;
             
+            /* shift the border buffer */
+            bbuf_reg <<= 1;
+
             draw_sprites(xpos+i, j, pri);
-        }
-
-    } else {
-        /* we are outside the display area */
-        BYTE bg;
-        bg = vicii.regs[0x21];
-
-        /* render pixels */
-        for (i = 0; i < 8; i++) {
-            int j = i + offs;
-
-            vicii.dbuf[j] = bg;
-            draw_sprites(xpos+i, j, 0);
+            if (bp) {
+                vicii.dbuf[j] = vicii.regs[0x20];
+            }
         }
 
     }
-
-    /* the border is just drawn on top of everything for now
-       and only 8/8 symmetric. */
-    if ( border_pipe ) {
-        BYTE br;
-        br = vicii.regs[0x20];
-
-        /* render pixels */
-        for (i = 0; i < 8; i++) {
-            int j = i + offs;
-
-            vicii.dbuf[j] = br;
-        }
-
-    }
-    border_pipe = vicii.main_border;
 
     vicii.dbuf_offset += 8;
+
+
+    idle_state = idle_pipe1_reg;
+
+    /* shift and put the next data into the pipe. */
+    vbuf_pipe1_reg = vbuf_pipe0_reg;
+    cbuf_pipe1_reg = cbuf_pipe0_reg;
+    gbuf_pipe1_reg = gbuf_pipe0_reg;
+    idle_pipe1_reg = idle_pipe0_reg;
+    /* are we within the display area? */
+    if ( (cycle >= 14 && cycle <= 53) ) {
+        vbuf_pipe0_reg = vicii.vbuf[cycle - 14];
+        cbuf_pipe0_reg = vicii.cbuf[cycle - 14];
+        gbuf_pipe0_reg = vicii.gbuf;
+    } else {
+        vbuf_pipe0_reg = 0;
+        cbuf_pipe0_reg = 0;
+        gbuf_pipe0_reg = 0;
+    }
+    idle_pipe0_reg = vicii.idle_state;
+    main_border_pipe = vicii.main_border;
 }
 
 
