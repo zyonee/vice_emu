@@ -183,8 +183,10 @@ void vicii_draw_cycle(void)
     /* convert cycle to an x-position. */
     if (cycle < 13) {
         xpos = cycle * 8 + 0x190;
-    } else {
+    } else if (cycle < 54) {
         xpos = (cycle - 13) * 8;
+    } else {
+        xpos = (cycle - 15) * 8;
     }
 
     /* reset rendering on raster cycle 0 */
