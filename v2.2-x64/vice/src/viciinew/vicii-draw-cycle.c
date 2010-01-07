@@ -44,8 +44,8 @@ BYTE gbuf_pipe1_reg = 0;
 BYTE cbuf_pipe1_reg = 0;
 BYTE vbuf_pipe1_reg = 0;
 
-BYTE idle_pipe0_reg = 0;
-BYTE idle_pipe1_reg = 0;
+BYTE xscroll_pipe = 0;
+BYTE vmode_pipe = 0;
 
 /* gbuf shift register */
 BYTE gbuf_reg = 0;
@@ -191,17 +191,16 @@ void vicii_draw_cycle(void)
     if (cycle == 0) {
         vicii.dbuf_offset = 0;
         sprite_pending_bits = 0xff;
-        sprite_active_bits = 0x00;
     }
+
     offs = vicii.dbuf_offset;
     /* guard */
     if (offs >= VICII_DRAW_BUFFER_SIZE) 
         return;
 
     {
-        BYTE bg, xs, rsel;
+        BYTE bg, rsel;
         bg = vicii.regs[0x21];
-        xs = vicii.regs[0x16] & 0x07;
         rsel = vicii.regs[0x16] & 0x8;
 
         /* render pixels */
@@ -211,11 +210,9 @@ void vicii_draw_cycle(void)
             BYTE bp;
             BYTE c[4];
             int pri;
-            int vmode;
-
            
             /* Load new gbuf/vbuf/cbuf values at offset == xscroll */
-            if (i == xs) {
+            if (i == xscroll_pipe) {
                 /* latch values at time xs */
                 vbuf_reg = vbuf_pipe1_reg;
                 cbuf_reg = cbuf_pipe1_reg;
@@ -238,18 +235,9 @@ void vicii_draw_cycle(void)
 
             c[0] = bg;
 
-            /*
-             * force VICII_IDLE_MODE if we are in idle state
-             * Why is VICII_IDLE_MODE a real mode? Should be checked!
-             */
-            if (idle_state) {
-                vmode = VICII_IDLE_MODE;
-            } else {
-                vmode = vicii.video_mode;
-            }
 
             /* setup colors and read pixels depending on video mode */
-            switch (vmode) {
+            switch (vmode_pipe) {
 
             case VICII_NORMAL_TEXT_MODE:
                 c[3] = cbuf_reg;
@@ -385,13 +373,11 @@ void vicii_draw_cycle(void)
     vicii.dbuf_offset += 8;
 
 
-    idle_state = idle_pipe1_reg;
-
     /* shift and put the next data into the pipe. */
     vbuf_pipe1_reg = vbuf_pipe0_reg;
     cbuf_pipe1_reg = cbuf_pipe0_reg;
     gbuf_pipe1_reg = gbuf_pipe0_reg;
-    idle_pipe1_reg = idle_pipe0_reg;
+
     /* are we within the display area? */
     if ( (cycle >= 14 && cycle <= 53) ) {
         vbuf_pipe0_reg = vicii.vbuf[cycle - 14];
@@ -402,8 +388,18 @@ void vicii_draw_cycle(void)
         cbuf_pipe0_reg = 0;
         gbuf_pipe0_reg = 0;
     }
-    idle_pipe0_reg = vicii.idle_state;
     main_border_pipe = vicii.main_border;
+
+    /*
+     * force VICII_IDLE_MODE if we are in idle state
+     * Why is VICII_IDLE_MODE a real mode? Should be checked!
+     */
+    if (vicii.idle_state) {
+        vmode_pipe = VICII_IDLE_MODE;
+    } else {
+        vmode_pipe = vicii.video_mode;
+    }
+    xscroll_pipe = vicii.regs[0x16] & 0x07;
 
 }
 
