@@ -108,70 +108,6 @@ static inline void store_sprite_x_position_msb(const WORD addr, BYTE value)
     }
 }
 
-#if 0
-inline static void check_lower_upper_border(const BYTE value,
-                                            unsigned int line, int cycle)
-{
-    if ((value ^ vicii.regs[0x11]) & 8) {
-        if (value & 0x8) {
-            /* 24 -> 25 row mode switch.  */
-
-            vicii.display_ystart = vicii.row_25_start_line;
-            vicii.display_ystop = vicii.row_25_stop_line;
-
-            if (line == vicii.row_24_stop_line && cycle > 0) {
-                /* If on the first line of the 24-line border, we
-                   still see the 25-line (lowmost) border because the
-                   border flip flop has already been turned on.  */
-                vicii.raster.blank_enabled = 1;
-            } else {
-                if (!vicii.raster.blank && line == vicii.row_24_start_line
-                    && cycle > 0) {
-                    /* A 24 -> 25 switch somewhere on the first line of
-                       the 24-row mode is enough to disable screen
-                       blanking.  */
-                    vicii.raster.blank_enabled = 0;
-                }
-
-                if (line == vicii.display_ystart && cycle > 0
-                    && vicii.raster.blank == 0) {
-                    /* A 24 -> 25 switch somewhere on the first line of
-                       the 25-row mode is enough to disable screen
-                       blanking even if blank bit is switched on in the
-                       same cycle (and set later in d011_store) */
-                    vicii.raster.blank_enabled = 0;
-                }
-            }
-            VICII_DEBUG_REGISTER(("25 line mode enabled"));
-        } else {
-            /* 25 -> 24 row mode switch.  */
-
-            vicii.display_ystart = vicii.row_24_start_line;
-            vicii.display_ystop = vicii.row_24_stop_line;
-
-            /* If on the last line of the 25-line border, we still see the
-               24-line (upmost) border because the border flip flop has
-               already been turned off.  */
-            if (!vicii.raster.blank && line == vicii.row_25_start_line
-                && cycle > 0) {
-                vicii.raster.blank_enabled = 0;
-            } else {
-                if (line == vicii.row_25_stop_line && cycle > 0)
-                    vicii.raster.blank_enabled = 1;
-            }
-
-            VICII_DEBUG_REGISTER(("24 line mode enabled"));
-        }
-    }
-
-    /* Check if border is already disabled even if DEN will be cleared */
-    if (line == vicii.display_ystart && cycle > 0 && !vicii.raster.blank)
-    {
-        vicii.raster.blank_off = 1;
-    }
-}
-#endif
-
 
 inline static void d011_store(BYTE value)
 {
@@ -189,13 +125,6 @@ inline static void d011_store(BYTE value)
     vicii.raster_irq_line |= (value & 0x80) << 1;
 
     vicii.ysmooth = value & 0x7;
-
-#if 0
-    /* Check for 24 <-> 25 line mode switch.  */
-    check_lower_upper_border(value, line, cycle);
-
-    vicii.raster.blank = !(value & 0x10); /* `DEN' bit.  */
-#endif
 
     vicii.regs[0x11] = value;
 
@@ -224,77 +153,6 @@ inline static void d015_store(const BYTE value)
     vicii.regs[0x15] = value;
 }
 
-#if 0
-inline static void check_lateral_border(const BYTE value, int cycle,
-                                        raster_t *raster)
-{
-    if ((value & 0x8) != (vicii.regs[0x16] & 0x8)) {
-        if (value & 0x8) {
-            /* 40 column mode.  */
-            if (cycle <= 17)
-                raster->display_xstart = VICII_40COL_START_PIXEL;
-            else
-                raster_changes_next_line_add_int(raster,
-                                                 &raster->display_xstart,
-                                                 VICII_40COL_START_PIXEL);
-            if (cycle <= 56)
-                raster->display_xstop = VICII_40COL_STOP_PIXEL;
-            else
-                raster_changes_next_line_add_int(raster,
-                                                 &raster->display_xstop,
-                                                 VICII_40COL_STOP_PIXEL);
-            VICII_DEBUG_REGISTER(("40 column mode enabled"));
-
-            /* If CSEL changes from 0 to 1 at cycle 17, the border is
-               not turned off and this line is blank.  */
-            if (cycle == 17 && !(vicii.regs[0x16] & 0x8))
-                raster->blank_this_line = 1;
-        } else {
-            /* 38 column mode.  */
-            if (cycle <= 17)
-                raster->display_xstart = VICII_38COL_START_PIXEL;
-            else
-                raster_changes_next_line_add_int(raster,
-                                                 &raster->display_xstart,
-                                                 VICII_38COL_START_PIXEL);
-            if (cycle <= 56)
-                raster->display_xstop = VICII_38COL_STOP_PIXEL;
-            else
-                raster_changes_next_line_add_int(raster,
-                                                 &raster->display_xstop,
-                                                 VICII_38COL_STOP_PIXEL);
-            VICII_DEBUG_REGISTER(("38 column mode enabled"));
-            /* If CSEL changes from 1 to 0 at cycle 56, the lateral
-               border is open.  */
-            if (cycle == 56 && (vicii.regs[0x16] & 0x8)
-                && (raster->open_left_border 
-                    || (!raster->blank_enabled 
-                        && raster->current_line != vicii.display_ystop)))
-            {
-                raster->open_right_border = 1;
-                switch (vicii.get_background_from_vbuf) {
-                  case VICII_HIRES_BITMAP_MODE:
-                    raster_changes_background_add_int(
-                        &vicii.raster,
-                        VICII_RASTER_X(56),
-                        &vicii.raster.xsmooth_color,
-                        vicii.background_color_source & 0x0f);
-                    break;
-                  case VICII_EXTENDED_TEXT_MODE:
-                    raster_changes_background_add_int(
-                        &vicii.raster,
-                        VICII_RASTER_X(56),
-                        &vicii.raster.xsmooth_color,
-                        vicii.regs[0x21 + (vicii.background_color_source
-                        >> 6)]);
-                    break;
-                }
-            }
-        }
-    }
-}
-#endif
-
 inline static void d016_store(const BYTE value)
 {
     raster_t *raster;
@@ -304,11 +162,6 @@ inline static void d016_store(const BYTE value)
 
     raster = &vicii.raster;
     cycle = VICII_RASTER_CYCLE(maincpu_clk);
-
-#if 0
-    /* Bit 4 (CSEL) selects 38/40 column mode.  */
-    check_lateral_border(value, cycle, raster);
-#endif
 
     vicii.regs[0x16] = value;
 

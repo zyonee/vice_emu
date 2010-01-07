@@ -215,11 +215,5 @@ void vicii_timing_set(machine_timing_t *machine_timing, int border_mode)
 
     vicii.first_dma_line = VICII_FIRST_DMA_LINE;
     vicii.last_dma_line = VICII_LAST_DMA_LINE;
-    vicii.row_25_start_line = VICII_25ROW_START_LINE;
-    vicii.row_25_stop_line = VICII_25ROW_STOP_LINE;
-    vicii.row_24_start_line = VICII_24ROW_START_LINE;
-    vicii.row_24_stop_line = VICII_24ROW_STOP_LINE;
 
-   vicii.raster.display_xstart = VICII_40COL_START_PIXEL;
-    vicii.raster.display_xstop = VICII_40COL_STOP_PIXEL;
 }

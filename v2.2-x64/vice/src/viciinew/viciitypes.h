@@ -216,10 +216,6 @@ struct vicii_s {
     /* Draw buffer for a full line (one byte per pixel) */
     BYTE dbuf[VICII_DRAW_BUFFER_SIZE];
 
-    /* Flags related to top/bottom border (previously in raster) */
-    unsigned int display_ystart;
-    unsigned int display_ystop;
-
     /* parsed vicii register fields */
     unsigned int ysmooth;
 
@@ -290,11 +286,6 @@ struct vicii_s {
     unsigned int screen_height;
     int first_displayed_line;
     int last_displayed_line;
-
-    unsigned int row_25_start_line;
-    unsigned int row_25_stop_line;
-    unsigned int row_24_start_line;
-    unsigned int row_24_stop_line;
 
     int screen_leftborderwidth;
     int screen_rightborderwidth;
