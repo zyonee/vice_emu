@@ -285,9 +285,6 @@ struct vicii_s {
     int fetch_active;
     int prefetch_cycles;
 
-    /* Number of sprite being DMA fetched.  */
-    unsigned int sprite_fetch_idx;
-
     /* Mask for sprites being fetched at DMA.  */
     unsigned int sprite_fetch_msk;
 

@@ -289,7 +289,6 @@ void vicii_reset(void)
     vicii.raster_line = 0;
     vicii.raster_cycle = 6;
 
-    vicii.sprite_fetch_idx = 0;
     vicii.sprite_fetch_msk = 0;
 
     /* FIXME: I am not sure this is exact emulation.  */

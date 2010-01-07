@@ -133,13 +133,12 @@ static inline void check_sprite_dma(void)
             turn_sprite_dma_on(i, y_exp & b);
         }
     }
-    
-    vicii.sprite_fetch_idx = 0;
 }
 
 static inline BYTE cycle_phi1_fetch(unsigned int cycle)
 {
     BYTE data;
+    int n;
 
     switch (cycle) {
         /* Check sprite display */
@@ -155,7 +154,8 @@ static inline BYTE cycle_phi1_fetch(unsigned int cycle)
         case 3:
         case 5:
         case 7:
-            data = vicii_fetch_sprite_pointer();
+            n = cycle >= 58 ? (cycle - 58) >> 1 : (cycle >> 1) + 4;
+            data = vicii_fetch_sprite_pointer(n);
             break;
 
         /* Sprite DMA */
@@ -167,7 +167,8 @@ static inline BYTE cycle_phi1_fetch(unsigned int cycle)
         case 4:
         case 6:
         case 8:
-            data = vicii_fetch_sprite_dma_1();
+            n = cycle >= 59 ? (cycle - 59) >> 1 : (cycle >> 1) + 3;
+            data = vicii_fetch_sprite_dma_1(n);
             break;
 
         /* Refresh */
