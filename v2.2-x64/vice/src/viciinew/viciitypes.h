@@ -38,11 +38,6 @@
 #define VICII_SCREEN_TEXTLINES             25
 #define VICII_SCREEN_CHARHEIGHT            8
 
-#define VICII_40COL_START_PIXEL vicii.screen_leftborderwidth
-#define VICII_40COL_STOP_PIXEL  (vicii.screen_leftborderwidth + VICII_SCREEN_XPIX)
-#define VICII_38COL_START_PIXEL (vicii.screen_leftborderwidth + 7)
-#define VICII_38COL_STOP_PIXEL  (vicii.screen_leftborderwidth + 311)
-
 #define VICII_NUM_SPRITES      8
 #define VICII_MAX_SPRITE_WIDTH 56  /* expanded sprite in bug area */
 #define VICII_NUM_COLORS       16

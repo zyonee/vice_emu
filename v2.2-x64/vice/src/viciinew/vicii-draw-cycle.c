@@ -76,7 +76,7 @@ BYTE bbuf_reg = 0;
 int main_border_pipe = 0;
 
 
-static DRAW_INLINE void draw_sprites(int xpos, int j, int pri)
+static DRAW_INLINE void draw_sprites(int xpos, int j, int pri, int bp)
 {
     int s;
     BYTE c[4];
@@ -162,11 +162,15 @@ static DRAW_INLINE void draw_sprites(int xpos, int j, int pri)
             }
         }
     }
-    if (collision_count > 1) {
-        vicii.sprite_sprite_collisions |= collision_mask;
-    }
-    if (pri) {
-        vicii.sprite_background_collisions |= collision_mask;
+    
+    if (!bp) {
+        /* only flag collisions when not in the border area */
+        if (collision_count > 1) {
+            vicii.sprite_sprite_collisions |= collision_mask;
+        }
+        if (pri) {
+            vicii.sprite_background_collisions |= collision_mask;
+        }
     }
 }
 
@@ -214,7 +218,7 @@ void vicii_draw_cycle(void)
             int vmode;
 
            
-            /* are we within the display area? */
+            /* Load new gbuf/vbuf/cbuf values at offset == xscroll */
             if (i == xs) {
                 /* latch values at time xs */
                 vbuf_reg = vbuf_pipe1_reg;
@@ -223,6 +227,7 @@ void vicii_draw_cycle(void)
                 gbuf_mc_flop = 0;
             }
            
+            /* Load new border mask depending on rsel and xscroll */
             if (rsel) {
                 if (i == 0 && main_border_pipe) {
                     bbuf_reg = 0xff;
@@ -232,6 +237,8 @@ void vicii_draw_cycle(void)
                     bbuf_reg = 0xff;
                 }
             }
+
+
 
             c[0] = bg;
 
@@ -308,7 +315,6 @@ void vicii_draw_cycle(void)
                 break;
 
             case VICII_IDLE_MODE:
-                /* this currently doesn't work as expected */
                 c[3] = 0;
 
                 px = (gbuf_reg & 0x80) ? 3 : 0;
@@ -352,21 +358,27 @@ void vicii_draw_cycle(void)
 
             }
 
-            /* plot color from prepared array */
+            /* Determine pixel color and priority */
             last_pixel_color = c[px];
             pri = (px & 0x2);
-            bp = (bbuf_reg & 0x80) ? 1 : 0;
-
-            vicii.dbuf[j] = last_pixel_color;
 
             /* shift the graphics buffer */
             gbuf_reg <<= 1;
             gbuf_mc_flop = ~gbuf_mc_flop;
             
+            /* Determine border state */
+            bp = (bbuf_reg & 0x80) ? 1 : 0;
+
             /* shift the border buffer */
             bbuf_reg <<= 1;
 
-            draw_sprites(xpos+i, j, pri);
+            /* draw pixel */
+            vicii.dbuf[j] = last_pixel_color;
+
+            /* process sprites */
+            draw_sprites(xpos+i, j, pri, bp);
+
+            /* draw border on top */
             if (bp) {
                 vicii.dbuf[j] = vicii.regs[0x20];
             }

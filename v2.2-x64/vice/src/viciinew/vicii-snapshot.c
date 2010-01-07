@@ -424,23 +424,6 @@ int vicii_snapshot_read_module(snapshot_t *s)
         vicii.force_black_overscan_background_color = 0;
     }
 
-#if 0
-    if (vicii.regs[0x11] & 0x8) {
-        vicii.raster.display_ystart = vicii.row_25_start_line;
-        vicii.raster.display_ystop = vicii.row_25_stop_line;
-    } else {
-        vicii.raster.display_ystart = vicii.row_24_start_line;
-        vicii.raster.display_ystop = vicii.row_24_stop_line;
-    }
-
-    if (vicii.regs[0x16] & 0x8) {
-        vicii.raster.display_xstart = VICII_40COL_START_PIXEL;
-        vicii.raster.display_xstop = VICII_40COL_STOP_PIXEL;
-    } else {
-        vicii.raster.display_xstart = VICII_38COL_START_PIXEL;
-        vicii.raster.display_xstop = VICII_38COL_STOP_PIXEL;
-    }
-#endif
 
     /* `vicii.raster.draw_idle_state', `vicii.raster.open_right_border' and
        `vicii.raster.open_left_border' should be needed, but they would only
