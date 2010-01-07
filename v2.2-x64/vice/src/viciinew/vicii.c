@@ -477,11 +477,6 @@ void vicii_update_memory_ptrs_external(void)
 /* Set the memory pointers according to the values in the registers.  */
 void vicii_update_memory_ptrs(unsigned int cycle)
 {
-    /* FIXME: This is *horrible*!  */
-    static BYTE *old_screen_ptr, *old_bitmap_low_ptr, *old_bitmap_high_ptr;
-    static BYTE *old_chargen_ptr;
-    static int old_vbank_p1 = -1;
-    static int old_vbank_p2 = -1;
     WORD screen_addr;             /* Screen start address.  */
     BYTE *char_base;              /* Pointer to character memory.  */
     BYTE *bitmap_low_base;        /* Pointer to bitmap memory (low part).  */
@@ -558,102 +553,11 @@ void vicii_update_memory_ptrs(unsigned int cycle)
             bitmap_high_base = mem_chargen_rom_ptr;
     }
 
-#if 1
-    old_screen_ptr = vicii.screen_ptr = vicii.screen_base_phi2;
-    old_bitmap_low_ptr = vicii.bitmap_low_ptr = bitmap_low_base;
-    old_bitmap_high_ptr = vicii.bitmap_high_ptr = bitmap_high_base;
-    old_chargen_ptr = vicii.chargen_ptr = char_base;
-    old_vbank_p1 = vicii.vbank_phi1;
-    old_vbank_p2 = vicii.vbank_phi2;
-#else
-    tmp = VICII_RASTER_CHAR(cycle);
-
-    if (tmp <= 0 /*&& maincpu_clk < vicii.draw_clk*/) {
-        old_screen_ptr = vicii.screen_ptr = vicii.screen_base_phi2;
-        old_bitmap_low_ptr = vicii.bitmap_low_ptr = bitmap_low_base;
-        old_bitmap_high_ptr = vicii.bitmap_high_ptr = bitmap_high_base;
-        old_chargen_ptr = vicii.chargen_ptr = char_base;
-        old_vbank_p1 = vicii.vbank_phi1;
-        old_vbank_p2 = vicii.vbank_phi2;
-        /* vicii.vbank_ptr = vicii.ram_base + vicii.vbank; */
-    } else if (tmp < VICII_SCREEN_TEXTCOLS) {
-        if (vicii.screen_base_phi2 != old_screen_ptr) {
-            raster_changes_foreground_add_ptr(&vicii.raster, tmp,
-                                              (void *)&vicii.screen_ptr,
-                                              (void *)vicii.screen_base_phi2);
-            old_screen_ptr = vicii.screen_base_phi2;
-        }
-
-        if (bitmap_low_base != old_bitmap_low_ptr) {
-            raster_changes_foreground_add_ptr(&vicii.raster,
-                                              tmp,
-                                              (void *)&vicii.bitmap_low_ptr,
-                                              (void *)(bitmap_low_base));
-            old_bitmap_low_ptr = bitmap_low_base;
-        }
-
-        if (bitmap_high_base != old_bitmap_high_ptr) {
-            raster_changes_foreground_add_ptr(&vicii.raster,
-                                              tmp,
-                                              (void *)&vicii.bitmap_high_ptr,
-                                              (void *)(bitmap_high_base));
-            old_bitmap_high_ptr = bitmap_high_base;
-        }
-
-        if (char_base != old_chargen_ptr) {
-            raster_changes_foreground_add_ptr(&vicii.raster,
-                                              tmp,
-                                              (void *)&vicii.chargen_ptr,
-                                              (void *)char_base);
-            old_chargen_ptr = char_base;
-        }
-
-        if (vicii.vbank_phi1 != old_vbank_p1) {
-            old_vbank_p1 = vicii.vbank_phi1;
-        }
-
-        if (vicii.vbank_phi2 != old_vbank_p2) {
-            old_vbank_p2 = vicii.vbank_phi2;
-        }
-    } else {
-        if (vicii.screen_base_phi2 != old_screen_ptr) {
-            raster_changes_next_line_add_ptr(&vicii.raster,
-                                             (void *)&vicii.screen_ptr,
-                                             (void *)vicii.screen_base_phi2);
-            old_screen_ptr = vicii.screen_base_phi2;
-        }
-
-        if (bitmap_low_base != old_bitmap_low_ptr) {
-            raster_changes_next_line_add_ptr(&vicii.raster,
-                                             (void *)&vicii.bitmap_low_ptr,
-                                             (void *)(bitmap_low_base));
-            old_bitmap_low_ptr = bitmap_low_base;
-        }
-
-        if (bitmap_high_base != old_bitmap_high_ptr) {
-            raster_changes_next_line_add_ptr(&vicii.raster,
-                                             (void *)&vicii.bitmap_high_ptr,
-                                             (void *)(bitmap_high_base));
-            old_bitmap_high_ptr = bitmap_high_base;
-        }
-
-        if (char_base != old_chargen_ptr) {
-            raster_changes_next_line_add_ptr(&vicii.raster,
-                                             (void *)&vicii.chargen_ptr,
-                                             (void *)char_base);
-            old_chargen_ptr = char_base;
-        }
-
-        if (vicii.vbank_phi1 != old_vbank_p1) {
-            old_vbank_p1 = vicii.vbank_phi1;
-        }
-
-        if (vicii.vbank_phi2 != old_vbank_p2) {
-            old_vbank_p2 = vicii.vbank_phi2;
-        }
-    }
-#endif
-
+    /* update pointers */
+    vicii.screen_ptr = vicii.screen_base_phi2;
+    vicii.bitmap_low_ptr = bitmap_low_base;
+    vicii.bitmap_high_ptr = bitmap_high_base;
+    vicii.chargen_ptr = char_base;
 }
 
 /* Set the video mode according to the values in registers $D011 and $D016 of
@@ -665,69 +569,7 @@ void vicii_update_video_mode(unsigned int cycle)
     new_video_mode = ((vicii.regs[0x11] & 0x60)
                      | (vicii.regs[0x16] & 0x10)) >> 4;
 
-#if 0
-    if (new_video_mode != vicii.video_mode) {
-        switch (new_video_mode) {
-          case VICII_ILLEGAL_TEXT_MODE:
-          case VICII_ILLEGAL_BITMAP_MODE_1:
-          case VICII_ILLEGAL_BITMAP_MODE_2:
-            /* Force the overscan color to black.  */
-            raster_changes_background_add_int
-                (&vicii.raster, VICII_RASTER_X(cycle),
-                &vicii.raster.idle_background_color, 0);
-            raster_changes_background_add_int
-                (&vicii.raster,
-                VICII_RASTER_X(VICII_RASTER_CYCLE(maincpu_clk)),
-                &vicii.raster.xsmooth_color, 0);
-            vicii.get_background_from_vbuf = 0;
-            vicii.force_black_overscan_background_color = 1;
-            break;
-          case VICII_HIRES_BITMAP_MODE:
-            raster_changes_background_add_int
-                (&vicii.raster, VICII_RASTER_X(cycle),
-                &vicii.raster.idle_background_color, 0);
-            raster_changes_background_add_int
-                (&vicii.raster,
-                VICII_RASTER_X(VICII_RASTER_CYCLE(maincpu_clk)),
-                &vicii.raster.xsmooth_color,
-                vicii.background_color_source & 0x0f);
-            vicii.get_background_from_vbuf = VICII_HIRES_BITMAP_MODE;
-            vicii.force_black_overscan_background_color = 1;
-            break;
-          case VICII_EXTENDED_TEXT_MODE:
-            raster_changes_background_add_int
-                (&vicii.raster, VICII_RASTER_X(cycle),
-                &vicii.raster.idle_background_color,
-                vicii.regs[0x21]);
-            raster_changes_background_add_int
-                (&vicii.raster,
-                VICII_RASTER_X(VICII_RASTER_CYCLE(maincpu_clk)),
-                &vicii.raster.xsmooth_color,
-                vicii.regs[0x21 + (vicii.background_color_source >> 6)]);
-            vicii.get_background_from_vbuf = VICII_EXTENDED_TEXT_MODE;
-            vicii.force_black_overscan_background_color = 0;
-            break;
-          default:
-            /* The overscan background color is given by the background
-               color register.  */
-            raster_changes_background_add_int
-                (&vicii.raster, VICII_RASTER_X(cycle),
-                &vicii.raster.idle_background_color,
-                vicii.regs[0x21]);
-            raster_changes_background_add_int
-                (&vicii.raster,
-                VICII_RASTER_X(VICII_RASTER_CYCLE(maincpu_clk)),
-                &vicii.raster.xsmooth_color,
-                vicii.regs[0x21]);
-            vicii.get_background_from_vbuf = 0;
-            vicii.force_black_overscan_background_color = 0;
-            break;
-        }
-        vicii.video_mode = new_video_mode;
-    }
-#else
     vicii.video_mode = new_video_mode;
-#endif
 
 #ifdef VICII_VMODE_DEBUG
     switch (new_video_mode) {
