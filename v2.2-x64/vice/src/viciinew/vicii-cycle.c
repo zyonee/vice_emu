@@ -256,6 +256,7 @@ static inline void vicii_cycle_end_of_line(void)
 int vicii_cycle(void)
 {
     int ba_low = 0;
+    int can_sprite_sprite, can_sprite_background;
 
     /*VICII_DEBUG_CYCLE(("cycle: line %i, clk %i", vicii.raster_line, vicii.raster_cycle));*/
 
@@ -270,14 +271,17 @@ int vicii_cycle(void)
     /* Check horizontal border flag */
     check_hborder(vicii.raster_cycle);
 
+    can_sprite_sprite = (vicii.sprite_sprite_collisions == 0);
+    can_sprite_background = (vicii.sprite_background_collisions == 0);
+
     /* Draw one cycle of pixels */
     vicii_draw_cycle();
 
     /* Trigger collision IRQs */
-    if (vicii.sprite_sprite_collisions) {
+    if (can_sprite_sprite && vicii.sprite_sprite_collisions) {
         vicii_irq_sscoll_set();
     }
-    if (vicii.sprite_background_collisions) {
+    if (can_sprite_background && vicii.sprite_background_collisions) {
         vicii_irq_sbcoll_set();
     }
 

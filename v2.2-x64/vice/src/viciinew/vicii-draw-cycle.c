@@ -104,7 +104,7 @@ static DRAW_INLINE void draw_sprites(int xpos, int j, int pri, int bp)
 
             /* start rendering on position match */
             if ( sprite_pending_bits & (1 << s) ) {
-                if ( xpos == vicii.sprite[s].x +2 ) {
+                if ( xpos == vicii.sprite[s].x ) {
                     sbuf_expx_flop[s] = 0;
                     sbuf_mc_flop[s] = 0;
                     sprite_active_bits |= (1 << s);
@@ -194,6 +194,7 @@ void vicii_draw_cycle(void)
         vicii.dbuf_offset = 0;
     }
 
+    /* this is replicated a bit from vicii-cycle.c */
     switch (cycle) {
     case 58:
         sprite_pending_bits |= (1<<0);
