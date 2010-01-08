@@ -136,6 +136,12 @@ BYTE REGPARM1 memmap_mem_read(unsigned int addr)
     memmap_mem_read((addr) & 0xff)
 #endif
 
+/* Route stack operations through memmap */
+
+#define PUSH(val) memmap_mem_store((0x100 + (reg_sp--)), (BYTE)(val))
+#define PULL()    memmap_mem_read(0x100 + (++reg_sp))
+#define STACK_PEEK()  memmap_mem_read(0x100 + (++reg_sp))
+
 #endif /* FEATURE_CPUMEMHISTORY */
 
 inline static BYTE mem_read_check_ba(unsigned int addr)
@@ -162,6 +168,20 @@ inline static BYTE mem_read_check_ba(unsigned int addr)
 #ifndef LOAD_ZERO
 #define LOAD_ZERO(addr) \
     mem_read_check_ba((addr) & 0xff)
+#endif
+
+/* Route stack operations through read/write handlers */
+
+#ifndef PUSH
+#define PUSH(val) (*_mem_write_tab_ptr[0x01])((WORD)(0x100 + (reg_sp--)), (BYTE)(val))
+#endif
+
+#ifndef PULL
+#define PULL()    mem_read_check_ba(0x100 + (++reg_sp))
+#endif
+
+#ifndef STACK_PEEK
+#define STACK_PEEK()  mem_read_check_ba(0x100 + reg_sp)
 #endif
 
 inline static BYTE *mem_read_base(int addr)

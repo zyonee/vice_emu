@@ -49,12 +49,6 @@ int maincpu_ba_low_flag = 0;
 
 #define SKIP_CYCLE 0
 
-/* Route stack operations through read/write handlers */
-
-#define PUSH(val) (*_mem_write_tab_ptr[0x01])((WORD)(0x100 + (reg_sp--)), (BYTE)(val))
-#define PULL()    (*_mem_read_tab_ptr[0x01])((WORD)(0x100 + (++reg_sp)))
-#define STACK_PEEK()  (*_mem_read_tab_ptr[0x01])((WORD)(0x100 + reg_sp))
-
 /* opcode_t etc */
 
 #if defined ALLOW_UNALIGNED_ACCESS
