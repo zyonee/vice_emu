@@ -46,6 +46,7 @@ BYTE vbuf_pipe1_reg = 0;
 
 BYTE xscroll_pipe = 0;
 BYTE vmode_pipe = 0;
+BYTE idle_state_pipe = 0;
 
 /* gbuf shift register */
 BYTE gbuf_reg = 0;
@@ -57,8 +58,6 @@ BYTE cbuf_reg = 0;
 BYTE vbuf_reg = 0;
 
 BYTE last_pixel_color = 0;
-
-BYTE idle_state = 0;
 
 /* sprites */
 int sprite_x_pipe[8];
@@ -226,9 +225,10 @@ void vicii_draw_cycle(void)
         return;
 
     {
-        BYTE bg, rsel;
+        int vmode;
+        BYTE bg, csel;
         bg = vicii.regs[0x21];
-        rsel = vicii.regs[0x16] & 0x8;
+        csel = vicii.regs[0x16] & 0x8;
 
         /* render pixels */
         for (i = 0; i < 8; i++) {
@@ -247,8 +247,8 @@ void vicii_draw_cycle(void)
                 gbuf_mc_flop = 0;
             }
            
-            /* Load new border mask depending on rsel and xscroll */
-            if (rsel) {
+            /* Load new border mask depending on csel and xscroll */
+            if (csel) {
                 if (i == 0 && main_border_pipe) {
                     bbuf_reg = 0xff;
                 }
@@ -261,9 +261,15 @@ void vicii_draw_cycle(void)
 
             c[0] = bg;
 
+            if (idle_state_pipe) {
+                vmode = VICII_IDLE_MODE;
+            } else {
+                vmode = vmode_pipe;
+            }
+            vmode = vmode_pipe;
 
             /* setup colors and read pixels depending on video mode */
-            switch (vmode_pipe) {
+            switch (vmode) {
 
             case VICII_NORMAL_TEXT_MODE:
                 c[3] = cbuf_reg;
@@ -404,27 +410,25 @@ void vicii_draw_cycle(void)
     cbuf_pipe1_reg = cbuf_pipe0_reg;
     gbuf_pipe1_reg = gbuf_pipe0_reg;
 
-    /* are we within the display area? */
     if ( (cycle >= 14 && cycle <= 53) ) {
-        vbuf_pipe0_reg = vicii.vbuf[cycle - 14];
-        cbuf_pipe0_reg = vicii.cbuf[cycle - 14];
         gbuf_pipe0_reg = vicii.gbuf;
     } else {
-        vbuf_pipe0_reg = 0;
-        cbuf_pipe0_reg = 0;
         gbuf_pipe0_reg = 0;
     }
+
+    if (cycle == 0 && vicii.idle_state) {
+        vbuf_pipe0_reg = 0;
+        cbuf_pipe0_reg = 0;
+    }
+    if ( (cycle >= 14 && cycle <= 53) && !vicii.idle_state ) {
+        vbuf_pipe0_reg = vicii.vbuf[cycle - 14];
+        cbuf_pipe0_reg = vicii.cbuf[cycle - 14];
+    }
+
     main_border_pipe = vicii.main_border;
 
-    /*
-     * force VICII_IDLE_MODE if we are in idle state
-     * Why is VICII_IDLE_MODE a real mode? Should be checked!
-     */
-    if (vicii.idle_state) {
-        vmode_pipe = VICII_IDLE_MODE;
-    } else {
-        vmode_pipe = vicii.video_mode;
-    }
+    idle_state_pipe = vicii.idle_state;
+    vmode_pipe = vicii.video_mode;
     xscroll_pipe = vicii.regs[0x16] & 0x07;
 
     /* sprites */

@@ -187,9 +187,6 @@ static inline BYTE cycle_phi1_fetch(unsigned int cycle)
         case 56:
         case 57:
             data = vicii_fetch_idle();
-            vicii.gbuf = 0; /* is this really correct? It could be that 
-                               latching should just be disabled in
-                               vicii-draw-cycle instead. */
             break;
 
         /* Graphics fetch */
