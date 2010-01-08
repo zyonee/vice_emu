@@ -241,6 +241,12 @@ static inline void vicii_cycle_end_of_line(void)
 {
     vicii.raster_cycle = 0;
     vicii_raster_draw_alarm_handler(maincpu_clk, 0);
+
+    /* Check DEN bit on first cycle of the line following the first DMA line  */
+    if ((vicii.raster_line == VICII_FIRST_DMA_LINE) && !vicii.allow_bad_lines && (vicii.regs[0x11] & 0x10)) {
+        vicii.allow_bad_lines = 1; 
+    }
+
     vicii.raster_line++;
 
     if (vicii.raster_line == vicii.screen_height) {
@@ -264,11 +270,6 @@ int vicii_cycle(void)
 
     /* Phi1 fetch */
     vicii.last_read_phi1 = cycle_phi1_fetch(vicii.raster_cycle);
-
-    /* Check vertical border flag */
-    if (vicii.raster_cycle == 64) {
-        check_vborder(vicii.raster_line);
-    }
 
     /* Check horizontal border flag */
     check_hborder(vicii.raster_cycle);
@@ -319,6 +320,11 @@ int vicii_cycle(void)
     /* Check DEN bit on first DMA line */
     if ((vicii.raster_line == VICII_FIRST_DMA_LINE) && !vicii.allow_bad_lines) {
         vicii.allow_bad_lines = (vicii.regs[0x11] & 0x10) ? 1 : 0; 
+    }
+
+    /* Check vertical border flag */
+    if (vicii.raster_cycle == 0) {
+        check_vborder(vicii.raster_line);
     }
 
     /* Check sprite expansion flags */
