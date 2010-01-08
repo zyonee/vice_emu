@@ -272,8 +272,6 @@ inline static void ext_background_store(WORD addr, BYTE value)
                           addr - 0x21, value));
 
     vicii.regs[addr] = value;
-    vicii.ext_background_color[addr - 0x22] = value;
-
 }
 
 inline static void d025_store(BYTE value)

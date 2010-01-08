@@ -57,8 +57,6 @@ BYTE gbuf_pixel_reg = 0;
 BYTE cbuf_reg = 0;
 BYTE vbuf_reg = 0;
 
-BYTE last_pixel_color = 0;
-
 /* sprites */
 int sprite_x_pipe[8];
 
@@ -76,7 +74,10 @@ int border_state = 0;
 int main_border_pipe = 0;
 
 
-static DRAW_INLINE void draw_sprites(int xpos, int j, int pri, int bp)
+/* intermediate pixel result */
+static BYTE current_pixel = 0;
+
+static DRAW_INLINE void draw_sprites(int xpos, int pri, int bp)
 {
     int s;
     BYTE c[4];
@@ -140,7 +141,7 @@ static DRAW_INLINE void draw_sprites(int xpos, int j, int pri, int bp)
                     if (sbuf_pixel_reg[s]) {
                         if (!rendered) {
                             if ( !(pri && spri) ) {
-                                vicii.dbuf[j] = c[ sbuf_pixel_reg[s] ];
+                                current_pixel = c[ sbuf_pixel_reg[s] ];
                             }
                             rendered = 1;
                         }
@@ -233,11 +234,9 @@ void vicii_draw_cycle(void)
 
         /* render pixels */
         for (i = 0; i < 8; i++) {
-            int j = i + offs;
             BYTE px;
-            BYTE bp;
             BYTE c[4];
-            int pri;
+            int priority;
            
             /* Load new gbuf/vbuf/cbuf values at offset == xscroll */
             if (i == xscroll_pipe) {
@@ -272,8 +271,8 @@ void vicii_draw_cycle(void)
                 break;
 
             case VICII_MULTICOLOR_TEXT_MODE:
-                c[1] = vicii.ext_background_color[0];
-                c[2] = vicii.ext_background_color[1];
+                c[1] = vicii.regs[0x22];
+                c[2] = vicii.regs[0x23];
                 c[3] = cbuf_reg & 0x07;
                 if (cbuf_reg & 0x08) {
                     /* mc pixels */
@@ -304,22 +303,8 @@ void vicii_draw_cycle(void)
                 break;
             
             case VICII_EXTENDED_TEXT_MODE:
+                c[0] = vicii.regs[0x21 + (vbuf_reg >> 6)];
                 c[3] = cbuf_reg;
-
-                switch (vbuf_reg & 0xc0) {
-                case 0x00:
-                    c[0] = bg;
-                    break;
-                case 0x40:
-                    c[0] = vicii.ext_background_color[0];
-                    break;
-                case 0x80:
-                    c[0] = vicii.ext_background_color[1];
-                    break;
-                case 0xc0:
-                    c[0] = vicii.ext_background_color[2];
-                    break;
-                }
 
                 px = (gbuf_reg & 0x80) ? 3 : 0;
                 break;
@@ -363,23 +348,24 @@ void vicii_draw_cycle(void)
             }
 
             /* Determine pixel color and priority */
-            last_pixel_color = c[px];
-            pri = (px & 0x2);
+            current_pixel = c[px];
+            priority = (px & 0x2);
 
             /* shift the graphics buffer */
             gbuf_reg <<= 1;
             gbuf_mc_flop = ~gbuf_mc_flop;
             
-            /* draw pixel */
-            vicii.dbuf[j] = last_pixel_color;
-
             /* process sprites */
-            draw_sprites(xpos+i, j, pri, border_state);
+            draw_sprites(xpos + i, priority, border_state);
 
-            /* draw border on top */
+            /* add border on top */
             if (border_state) {
-                vicii.dbuf[j] = vicii.regs[0x20];
+                current_pixel = vicii.regs[0x20];
             }
+
+            /* draw pixel to buffer */
+            vicii.dbuf[offs + i] = current_pixel;
+
         }
 
     }

@@ -235,9 +235,6 @@ struct vicii_s {
     BYTE sprite_sprite_collisions;
     BYTE sprite_background_collisions;
 
-    /* Extended background colors (1, 2 and 3).  */
-    int ext_background_color[3];
-
     /* Current video mode.  */
     int video_mode;
 

@@ -402,17 +402,18 @@ int vicii_snapshot_read_module(snapshot_t *s)
     vicii.raster.sprite_status->visible_msk = vicii.regs[0x15];
 #endif
 
+#if 0
     /* Update colors.  */
     vicii.raster.border_color = vicii.regs[0x20] & 0xf;
     vicii.raster.background_color = vicii.regs[0x21] & 0xf;
     vicii.ext_background_color[0] = vicii.regs[0x22] & 0xf;
     vicii.ext_background_color[1] = vicii.regs[0x23] & 0xf;
     vicii.ext_background_color[2] = vicii.regs[0x24] & 0xf;
-#if 0
     vicii.raster.sprite_status->mc_sprite_color_1 = vicii.regs[0x25] & 0xf;
     vicii.raster.sprite_status->mc_sprite_color_2 = vicii.regs[0x26] & 0xf;
 #endif
 
+#if 0
     vicii.raster.blank = !(vicii.regs[0x11] & 0x10);
 
     if (VICII_IS_ILLEGAL_MODE(vicii.raster.video_mode)) {
@@ -423,7 +424,7 @@ int vicii_snapshot_read_module(snapshot_t *s)
             = vicii.raster.background_color;
         vicii.force_black_overscan_background_color = 0;
     }
-
+#endif
 
     /* `vicii.raster.draw_idle_state', `vicii.raster.open_right_border' and
        `vicii.raster.open_left_border' should be needed, but they would only
