@@ -123,6 +123,16 @@ SOURCE=..\..\c64\c64cia2.c
 # Begin Source File
 
 SOURCE=..\..\c64\c64cpu.c
+
+!IF  "$(CFG)" == "c64 - Win32 Release"
+
+# ADD CPP /Ot /Oa /Ow /Oi /Op /Oy
+# SUBTRACT CPP /Os
+
+!ELSEIF  "$(CFG)" == "c64 - Win32 Debug"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 

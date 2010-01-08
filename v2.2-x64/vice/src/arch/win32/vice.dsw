@@ -816,6 +816,21 @@ Package=<4>
 
 ##############################################################################
 
+Project: "viciinew"=".\viciinew.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name base
+    End Project Dependency
+}}}
+
+##############################################################################
+
 Project: "viciidtv"=".\viciidtv.dsp" - Package Owner=<4>
 
 Package=<5>
@@ -1032,7 +1047,7 @@ Package=<4>
     Project_Dep_Name sounddrv
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name vicii
+    Project_Dep_Name viciinew
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name raster
