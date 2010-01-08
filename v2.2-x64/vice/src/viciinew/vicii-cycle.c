@@ -42,9 +42,6 @@
 
 static inline void check_badline(void)
 {
-    raster_t *raster;
-    raster = &vicii.raster;
-
     if ((vicii.raster_line & 7) == (unsigned int)vicii.ysmooth
         && vicii.allow_bad_lines
         && vicii.raster_line >= VICII_FIRST_DMA_LINE
@@ -56,14 +53,14 @@ static inline void check_badline(void)
     }
 
     if (vicii.bad_line && !vicii.fetch_active && (vicii.raster_cycle >= 11) && (vicii.raster_cycle <= 53)) {
-        /*VICII_DEBUG_CYCLE(("fetch start: line %i, clk %i, memptr %04x, counter %04x, y %i", vicii.raster_line, vicii.raster_cycle, vicii.memptr, vicii.mem_counter, vicii.raster.ycounter));*/
+        /*VICII_DEBUG_CYCLE(("fetch start: line %i, clk %i, memptr %04x, counter %04x, y %i", vicii.raster_line, vicii.raster_cycle, vicii.memptr, vicii.mem_counter, vicii.ycounter));*/
         vicii.fetch_active = 1;
         vicii.prefetch_cycles = 3;
  
         vicii.force_display_state = 1;
     } else if (vicii.fetch_active && !vicii.bad_line) {
         /* FIXME this is not a clean way, try to get rid of fetch_active */
-        /*VICII_DEBUG_CYCLE(("fetch cancel: line %i, clk %i, memptr %04x, counter %04x, y %i", vicii.raster_line, vicii.raster_cycle, vicii.memptr, vicii.mem_counter, vicii.raster.ycounter));*/
+        /*VICII_DEBUG_CYCLE(("fetch cancel: line %i, clk %i, memptr %04x, counter %04x, y %i", vicii.raster_line, vicii.raster_cycle, vicii.memptr, vicii.mem_counter, vicii.ycounter));*/
         vicii.fetch_active = 0;
         vicii.prefetch_cycles = 0;
     }
@@ -352,19 +349,19 @@ int vicii_cycle(void)
     if (vicii.raster_cycle == 13) {
         vicii.mem_counter = vicii.memptr;
         if (vicii.bad_line) {
-            vicii.raster.ycounter = 0;
+            vicii.ycounter = 0;
         }
     }
 
     if (vicii.raster_cycle == 57) {
         /* `ycounter' makes the chip go to idle state when it reaches the 
            maximum value.  */
-        if (vicii.raster.ycounter == 7) { 
+        if (vicii.ycounter == 7) { 
             vicii.idle_state = 1; 
             vicii.memptr = vicii.mem_counter; 
         } 
         if (!vicii.idle_state || vicii.bad_line) { 
-            vicii.raster.ycounter = (vicii.raster.ycounter + 1) & 0x7; 
+            vicii.ycounter = (vicii.ycounter + 1) & 0x7; 
             vicii.idle_state = 0; 
         } 
     }

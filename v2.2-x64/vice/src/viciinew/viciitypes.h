@@ -254,6 +254,9 @@ struct vicii_s {
     /* Internal memory counter (VC).  */
     int mem_counter;
 
+    /* Internal row counter (RC).  */
+    int ycounter;
+
     /* Flag: is the current line a `bad' line? */
     int bad_line;
 

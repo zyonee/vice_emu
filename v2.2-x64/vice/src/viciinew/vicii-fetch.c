@@ -34,7 +34,6 @@
 #include "log.h"
 #include "mainc64cpu.h"
 #include "mem.h"
-#include "raster.h"
 #include "types.h"
 #include "vicii-fetch.h"
 #include "vicii-irq.h"
@@ -87,7 +86,7 @@ inline static BYTE gfx_data_illegal_bitmap(unsigned int num)
 {
     unsigned int j;
 
-    j = ((vicii.memptr << 3) + vicii.raster.ycounter + num * 8);
+    j = ((vicii.memptr << 3) + vicii.ycounter + num * 8);
 
     if (j & 0x1000) {
         return vicii.bitmap_high_ptr[j & 0x9ff];
@@ -100,7 +99,7 @@ inline static BYTE gfx_data_hires_bitmap(unsigned int num)
 {
     unsigned int j;
 
-    j = ((vicii.memptr << 3) + vicii.raster.ycounter + num * 8);
+    j = ((vicii.memptr << 3) + vicii.ycounter + num * 8);
 
     if (j & 0x1000) {
         return vicii.bitmap_high_ptr[j & 0xfff];
@@ -111,12 +110,12 @@ inline static BYTE gfx_data_hires_bitmap(unsigned int num)
 
 inline static BYTE gfx_data_extended_text(unsigned int c)
 {
-    return vicii.chargen_ptr[(c & 0x3f) * 8 + vicii.raster.ycounter];
+    return vicii.chargen_ptr[(c & 0x3f) * 8 + vicii.ycounter];
 }
 
 inline static BYTE gfx_data_normal_text(unsigned int c)
 {
-    return vicii.chargen_ptr[c * 8 + vicii.raster.ycounter];
+    return vicii.chargen_ptr[c * 8 + vicii.ycounter];
 }
 
 /*-----------------------------------------------------------------------*/
