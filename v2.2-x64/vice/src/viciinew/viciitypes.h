@@ -71,7 +71,6 @@ enum vicii_video_mode_s {
     VICII_ILLEGAL_TEXT_MODE,
     VICII_ILLEGAL_BITMAP_MODE_1,
     VICII_ILLEGAL_BITMAP_MODE_2,
-    VICII_IDLE_MODE,           /* Special mode for idle state.  */
     VICII_NUM_VMODES
 };
 typedef enum vicii_video_mode_s vicii_video_mode_t;

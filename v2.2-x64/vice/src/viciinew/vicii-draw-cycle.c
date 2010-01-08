@@ -227,7 +227,6 @@ void vicii_draw_cycle(void)
         return;
 
     {
-        int vmode;
         BYTE bg, csel;
         bg = vicii.regs[0x21];
         csel = vicii.regs[0x16] & 0x8;
@@ -263,10 +262,8 @@ void vicii_draw_cycle(void)
 
             c[0] = bg;
 
-            vmode = vmode_pipe;
-
             /* setup colors and read pixels depending on video mode */
-            switch (vmode) {
+            switch (vmode_pipe) {
 
             case VICII_NORMAL_TEXT_MODE:
                 c[3] = cbuf_reg;
@@ -324,12 +321,6 @@ void vicii_draw_cycle(void)
                     break;
                 }
 
-                px = (gbuf_reg & 0x80) ? 3 : 0;
-                break;
-
-            case VICII_IDLE_MODE:
-                c[3] = 5;
-                c[0] = 13;
                 px = (gbuf_reg & 0x80) ? 3 : 0;
                 break;
 
@@ -401,16 +392,21 @@ void vicii_draw_cycle(void)
     cbuf_pipe1_reg = cbuf_pipe0_reg;
     gbuf_pipe1_reg = gbuf_pipe0_reg;
 
+    /* this makes sure gbuf is 0 outside the visible area
+       I should probably be done somewhere around the fetch instead */
     if ( (cycle >= 14 && cycle <= 53) ) {
         gbuf_pipe0_reg = vicii.gbuf;
     } else {
         gbuf_pipe0_reg = 0;
     }
 
+    /* Clear the vbuf and cbuf registers on cycle 0 if we are in the
+       idle state. */
     if (cycle == 0 && vicii.idle_state) {
         vbuf_pipe0_reg = 0;
         cbuf_pipe0_reg = 0;
     }
+    /* Only update vbuf and cbuf registers in the display state. */
     if ( (cycle >= 14 && cycle <= 53) && !vicii.idle_state ) {
         vbuf_pipe0_reg = vicii.vbuf[cycle - 14];
         cbuf_pipe0_reg = vicii.cbuf[cycle - 14];

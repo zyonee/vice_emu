@@ -60,7 +60,6 @@ static inline void check_badline(void)
         vicii.fetch_active = 1;
         vicii.prefetch_cycles = 3;
  
-        raster->draw_idle_state = 0;
         vicii.force_display_state = 1;
     } else if (vicii.fetch_active && !vicii.bad_line) {
         /* FIXME this is not a clean way, try to get rid of fetch_active */
