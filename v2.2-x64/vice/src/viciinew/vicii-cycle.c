@@ -62,6 +62,11 @@ static inline void check_badline(void)
  
         raster->draw_idle_state = 0;
         vicii.force_display_state = 1;
+    } else if (vicii.fetch_active && !vicii.bad_line) {
+        /* FIXME this is not a clean way, try to get rid of fetch_active */
+        /*VICII_DEBUG_CYCLE(("fetch cancel: line %i, clk %i, memptr %04x, counter %04x, y %i", vicii.raster_line, vicii.raster_cycle, vicii.memptr, vicii.mem_counter, vicii.raster.ycounter));*/
+        vicii.fetch_active = 0;
+        vicii.prefetch_cycles = 0;
     }
 }
 
