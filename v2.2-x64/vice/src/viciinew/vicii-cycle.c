@@ -42,10 +42,8 @@
 
 static inline void check_badline(void)
 {
-    if ((vicii.raster_line & 7) == (unsigned int)vicii.ysmooth
-        && vicii.allow_bad_lines
-        && vicii.raster_line >= VICII_FIRST_DMA_LINE
-        && vicii.raster_line <= VICII_LAST_DMA_LINE) {
+    /* Check badline condition (line range and "allow bad lines" handled outside */
+    if ((vicii.raster_line & 7) == vicii.ysmooth) {
         vicii.bad_line = 1;
         vicii.idle_state = 0;
     } else {
@@ -53,14 +51,13 @@ static inline void check_badline(void)
     }
 
     if (vicii.bad_line && !vicii.fetch_active && (vicii.raster_cycle >= 11) && (vicii.raster_cycle <= 53)) {
-        /*VICII_DEBUG_CYCLE(("fetch start: line %i, clk %i, memptr %04x, counter %04x, y %i", vicii.raster_line, vicii.raster_cycle, vicii.memptr, vicii.mem_counter, vicii.ycounter));*/
+        /* Start a fetch */
         vicii.fetch_active = 1;
+        /* Hold BA low for 3 cycles before actual fetch */
         vicii.prefetch_cycles = 3;
- 
-        vicii.force_display_state = 1;
     } else if (vicii.fetch_active && !vicii.bad_line) {
+        /* Cancel a fetch */
         /* FIXME this is not a clean way, try to get rid of fetch_active */
-        /*VICII_DEBUG_CYCLE(("fetch cancel: line %i, clk %i, memptr %04x, counter %04x, y %i", vicii.raster_line, vicii.raster_cycle, vicii.memptr, vicii.mem_counter, vicii.ycounter));*/
         vicii.fetch_active = 0;
         vicii.prefetch_cycles = 0;
     }
@@ -243,6 +240,11 @@ static inline void vicii_cycle_end_of_line(void)
         vicii.allow_bad_lines = 1; 
     }
 
+    /* Disallow bad lines after the last possible one has passed */
+    if (vicii.raster_line == VICII_LAST_DMA_LINE) {
+        vicii.allow_bad_lines = 0;
+    }
+
     vicii.raster_line++;
 
     if (vicii.raster_line == vicii.screen_height) {
@@ -344,7 +346,9 @@ int vicii_cycle(void)
     }
 
     /* Check badline condition, trigger fetches */
-    check_badline();
+    if (vicii.allow_bad_lines) {
+        check_badline();
+    }
 
     if (vicii.raster_cycle == 13) {
         vicii.mem_counter = vicii.memptr;

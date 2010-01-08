@@ -296,8 +296,6 @@ void vicii_reset(void)
     vicii.regs[0x11] = 0;
     vicii.regs[0x12] = 0;
 
-    vicii.force_display_state = 0;
-
     vicii.light_pen.triggered = 0;
     vicii.light_pen.x = vicii.light_pen.y = vicii.light_pen.x_extra_bits = 0;
 
@@ -341,7 +339,6 @@ void vicii_powerup(void)
     vicii.allow_bad_lines = 0;
     vicii.sprite_sprite_collisions = vicii.sprite_background_collisions = 0;
     vicii.idle_state = 0;
-    vicii.force_display_state = 0;
     vicii.memptr = 0;
     vicii.mem_counter = 0;
     vicii.bad_line = 0;

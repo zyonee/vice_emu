@@ -241,10 +241,6 @@ struct vicii_s {
     /* Flag: are we in idle state? */
     int idle_state;
 
-    /* Flag: should we force display (i.e. non-idle) state for the following
-       line? */
-    int force_display_state;
-
     /* Internal memory pointer (VCBASE).  */
     int memptr;
 
