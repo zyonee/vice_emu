@@ -61,14 +61,12 @@ BYTE last_pixel_color = 0;
 BYTE idle_state = 0;
 
 /* sprites */
+int sprite_x_pipe[8];
 
 BYTE sprite_pending_bits = 0;
 BYTE sprite_active_bits = 0;
 
 /* sbuf shift registers */
-#if 0
-DWORD sbuf_reg[8]; /* maybe use those directly present in vicii.*? */
-#endif
 BYTE sbuf_pixel_reg[8];
 BYTE sbuf_expx_flop[8];
 BYTE sbuf_mc_flop[8];
@@ -104,7 +102,7 @@ static DRAW_INLINE void draw_sprites(int xpos, int j, int pri, int bp)
 
             /* start rendering on position match */
             if ( sprite_pending_bits & (1 << s) ) {
-                if ( xpos == vicii.sprite[s].x ) {
+                if ( xpos == sprite_x_pipe[s] ) {
                     sbuf_expx_flop[s] = 0;
                     sbuf_mc_flop[s] = 0;
                     sprite_active_bits |= (1 << s);
@@ -176,7 +174,7 @@ static DRAW_INLINE void draw_sprites(int xpos, int j, int pri, int bp)
 
 void vicii_draw_cycle(void)
 {
-    int cycle, offs, i;
+    int cycle, offs, i, s;
     int xpos;
     cycle = vicii.raster_cycle;
 
@@ -259,7 +257,6 @@ void vicii_draw_cycle(void)
                     bbuf_reg = 0xff;
                 }
             }
-
 
 
             c[0] = bg;
@@ -430,6 +427,10 @@ void vicii_draw_cycle(void)
     }
     xscroll_pipe = vicii.regs[0x16] & 0x07;
 
+    /* sprites */
+    for (s=0; s<8; s++) {
+        sprite_x_pipe[s] = vicii.sprite[s].x;
+    }
 }
 
 
