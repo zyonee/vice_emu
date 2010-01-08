@@ -72,7 +72,7 @@ BYTE sbuf_expx_flop[8];
 BYTE sbuf_mc_flop[8];
 
 /* border */
-BYTE bbuf_reg = 0;
+int border_state = 0;
 int main_border_pipe = 0;
 
 
@@ -251,23 +251,18 @@ void vicii_draw_cycle(void)
            
             /* Load new border mask depending on csel and xscroll */
             if (csel) {
-                if (i == 0 && main_border_pipe) {
-                    bbuf_reg = 0xff;
+                if (i == 0) {
+                    border_state = main_border_pipe;
                 }
             } else {
-                if (i == 7 && vicii.main_border) {
-                    bbuf_reg = 0xff;
+                if (i == 7) {
+                    border_state = vicii.main_border;
                 }
             }
 
 
             c[0] = bg;
 
-            if (idle_state_pipe) {
-                vmode = VICII_IDLE_MODE;
-            } else {
-                vmode = vmode_pipe;
-            }
             vmode = vmode_pipe;
 
             /* setup colors and read pixels depending on video mode */
@@ -333,8 +328,8 @@ void vicii_draw_cycle(void)
                 break;
 
             case VICII_IDLE_MODE:
-                c[3] = 0;
-
+                c[3] = 5;
+                c[0] = 13;
                 px = (gbuf_reg & 0x80) ? 3 : 0;
                 break;
 
@@ -384,20 +379,14 @@ void vicii_draw_cycle(void)
             gbuf_reg <<= 1;
             gbuf_mc_flop = ~gbuf_mc_flop;
             
-            /* Determine border state */
-            bp = (bbuf_reg & 0x80) ? 1 : 0;
-
-            /* shift the border buffer */
-            bbuf_reg <<= 1;
-
             /* draw pixel */
             vicii.dbuf[j] = last_pixel_color;
 
             /* process sprites */
-            draw_sprites(xpos+i, j, pri, bp);
+            draw_sprites(xpos+i, j, pri, border_state);
 
             /* draw border on top */
-            if (bp) {
+            if (border_state) {
                 vicii.dbuf[j] = vicii.regs[0x20];
             }
         }
