@@ -260,7 +260,9 @@
                 }                                                     \
                 interrupt_ack_nmi(CPU_INT_STATUS);                    \
                 if (!SKIP_CYCLE) {                                    \
+                    LOAD(reg_pc);                                     \
                     CLK_INC();                                        \
+                    LOAD(reg_pc);                                     \
                     CLK_INC();                                        \
                 }                                                     \
                 LOCAL_SET_BREAK(0);                                   \
@@ -288,7 +290,9 @@
                 }                                                     \
                 interrupt_ack_irq(CPU_INT_STATUS);                    \
                 if (!SKIP_CYCLE) {                                    \
+                    LOAD(reg_pc);                                     \
                     CLK_INC();                                        \
+                    LOAD(reg_pc);                                     \
                     CLK_INC();                                        \
                 }                                                     \
                 LOCAL_SET_BREAK(0);                                   \
