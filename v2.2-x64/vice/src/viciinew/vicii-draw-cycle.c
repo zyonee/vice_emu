@@ -163,14 +163,13 @@ static DRAW_INLINE void draw_sprites(int xpos, int pri, int bp)
         }
     }
     
-    if (!bp) {
-        /* only flag collisions when not in the border area */
-        if (collision_count > 1) {
-            vicii.sprite_sprite_collisions |= collision_mask;
-        }
-        if (pri) {
+    if (collision_count > 1) {
+        vicii.sprite_sprite_collisions |= collision_mask;
+    }
+
+    if (!vicii.vborder && pri) {
+        /* only flag collisions when not in the vborder area */
             vicii.sprite_background_collisions |= collision_mask;
-        }
     }
 }
 
