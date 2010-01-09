@@ -129,7 +129,6 @@ static DRAW_INLINE void draw_sprites(int xpos, int pixel_pri)
                     if ( sbuf_expx_flop[s] == 0 ) {
                         if (sprite_mc_bits & (1 << s)) {
                             if (sbuf_mc_flop[s] == 0) {
-                            } else {
                                 /* fetch 2 bits */
                                 sbuf_pixel_reg[s] = (sbuf_reg[s] >> 22) & 0x03;
                             }
@@ -223,7 +222,7 @@ static DRAW_INLINE void update_sprite_flags4(int cycle)
     }
 }
 
-static DRAW_INLINE void update_sprite_flags7(int cycle)
+static DRAW_INLINE void update_sprite_flags6(int cycle)
 {
     sprite_mc_bits = vicii.regs[0x1c];
     sprite_expx_bits = vicii.regs[0x1d];
@@ -279,8 +278,8 @@ void vicii_draw_cycle(void)
             if (i == 4) {
                 update_sprite_flags4(cycle);
             }
-            if (i == 7) {
-                update_sprite_flags7(cycle);
+            if (i == 6) {
+                update_sprite_flags6(cycle);
             }
 
             if (i == 0) {
