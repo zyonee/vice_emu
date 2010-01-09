@@ -170,17 +170,38 @@ inline static void d016_store(const BYTE value)
 
 inline static void d017_store(const BYTE value)
 {
-    int i;
-    BYTE b;
+    int i, cycle;
+    BYTE b, mcbase, tmp;
 
     if (value == vicii.regs[0x17]) {
         return;
     }
 
+    cycle = VICII_RASTER_CYCLE(maincpu_clk);
+
     VICII_DEBUG_REGISTER(("Sprite Y Expand register: $%02X", value));
 
     for (i = 0, b = 0x01; i < 8; b <<= 1, i++) {
         if (!(value & b)) {
+            /* sprite crunch */
+            if (vicii.regs[0x17] & b && vicii.sprite[i].exp_flop && cycle == 15) {
+                mcbase = vicii.sprite[i].mcbase;
+                if (mcbase != 0x3f && (mcbase & 0x0f) > 0x0c) {
+                    if ((mcbase & 0x30) == 0x30) {
+                        mcbase &= ~0x20;
+                    }
+                    mcbase |= 0x10;
+                    mcbase &= ~0x08;
+                }
+                tmp = mcbase & 3;
+                if (tmp == 1) {
+                    tmp = 2;
+                }
+                mcbase |= tmp << 1;
+                mcbase = mcbase - 4 & 0x3f;
+                vicii.sprite[i].mcbase = mcbase;
+            }
+
             vicii.sprite[i].exp_flop = 1;
         }
     }
