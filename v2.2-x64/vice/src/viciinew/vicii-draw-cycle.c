@@ -59,6 +59,7 @@ BYTE vbuf_reg = 0;
 
 /* sprites */
 int sprite_x_pipe[8];
+int sprite_x_pipe0[8];
 BYTE sprite_mc_bits = 0;
 BYTE sprite_expx_bits = 0;
 
@@ -123,9 +124,12 @@ static DRAW_INLINE void draw_sprites(int xpos, int pixel_pri)
                 /* render pixels if shift register or pixel reg still contains data */
                 if ( sbuf_reg[s] || sbuf_pixel_reg[s] ) {
                     
+
+                    
                     if ( sbuf_expx_flop[s] == 0 ) {
                         if (sprite_mc_bits & (1 << s)) {
                             if (sbuf_mc_flop[s] == 0) {
+                            } else {
                                 /* fetch 2 bits */
                                 sbuf_pixel_reg[s] = (sbuf_reg[s] >> 22) & 0x03;
                             }
@@ -135,6 +139,7 @@ static DRAW_INLINE void draw_sprites(int xpos, int pixel_pri)
                             sbuf_pixel_reg[s] = ( (sbuf_reg[s] >> 23) & 0x01 ) << 1;
                         }
                     }
+
 
                     /*
                      * render pixels unless a higher priority sprite has already
@@ -178,7 +183,7 @@ static DRAW_INLINE void draw_sprites(int xpos, int pixel_pri)
 }
 
 
-static DRAW_INLINE void update_sprite_flags(int cycle)
+static DRAW_INLINE void update_sprite_flags4(int cycle)
 {
     sprite_halt_bits = 0;
     /* this is replicated a bit from vicii-cycle.c */
@@ -216,9 +221,23 @@ static DRAW_INLINE void update_sprite_flags(int cycle)
         sprite_pending_bits |= (1<<7);
         break;
     }
+}
+
+static DRAW_INLINE void update_sprite_flags7(int cycle)
+{
     sprite_mc_bits = vicii.regs[0x1c];
     sprite_expx_bits = vicii.regs[0x1d];
 }
+
+static DRAW_INLINE void update_sprite_flags0(int cycle)
+{
+    int s;
+    for (s=0; s<8; s++) {
+        sprite_x_pipe[s] = sprite_x_pipe0[s];
+        sprite_x_pipe0[s] = vicii.sprite[s].x;
+    }
+}
+
 
 void vicii_draw_cycle(void)
 {
@@ -257,8 +276,15 @@ void vicii_draw_cycle(void)
             int pixel_pri;
            
             /* pipe sprite related changes 2 pixels late */
-            if (i == 2) {
-                update_sprite_flags(cycle);
+            if (i == 4) {
+                update_sprite_flags4(cycle);
+            }
+            if (i == 7) {
+                update_sprite_flags7(cycle);
+            }
+
+            if (i == 0) {
+                update_sprite_flags0(cycle);
             }
 
             /* Load new gbuf/vbuf/cbuf values at offset == xscroll */
@@ -425,10 +451,6 @@ void vicii_draw_cycle(void)
     idle_state_pipe = vicii.idle_state;
     vmode_pipe = vicii.video_mode;
     xscroll_pipe = vicii.regs[0x16] & 0x07;
-
-    for (s=0; s<8; s++) {
-        sprite_x_pipe[s] = vicii.sprite[s].x;
-    }
 
 }
 
