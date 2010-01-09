@@ -59,9 +59,12 @@ BYTE vbuf_reg = 0;
 
 /* sprites */
 int sprite_x_pipe[8];
+BYTE sprite_mc_bits = 0;
+BYTE sprite_expx_bits = 0;
 
 BYTE sprite_pending_bits = 0;
 BYTE sprite_active_bits = 0;
+BYTE sprite_halt_bits = 0;
 
 /* sbuf shift registers */
 DWORD sbuf_reg[8];
@@ -77,7 +80,7 @@ int main_border_pipe = 0;
 /* intermediate pixel result */
 static BYTE current_pixel = 0;
 
-static DRAW_INLINE void draw_sprites(int xpos, int pri, int bp)
+static DRAW_INLINE void draw_sprites(int xpos, int pixel_pri)
 {
     int s;
     BYTE c[4];
@@ -94,12 +97,13 @@ static DRAW_INLINE void draw_sprites(int xpos, int pri, int bp)
     c[1] = vicii.regs[0x25];
     c[3] = vicii.regs[0x26];
 
+
     rendered = 0;
     collision_mask = 0;
     collision_count = 0;
     for (s = 0; s < 8; s++) {
 
-        if ( vicii.sprite_display_bits & (1<<s) ) {
+       if ( vicii.sprite_display_bits & (1<<s) ) {
 
             /* start rendering on position match */
             if ( sprite_pending_bits & (1 << s) ) {
@@ -114,15 +118,13 @@ static DRAW_INLINE void draw_sprites(int xpos, int pri, int bp)
 
             if ( sprite_active_bits & (1 << s) ) {
                 int spri = vicii.regs[0x1b] & (1 << s);
-                int mc = vicii.regs[0x1c] & (1 << s);
-                int expx = vicii.regs[0x1d] & (1 << s);
                 c[2] = vicii.regs[0x27 + s];
 
                 /* render pixels if shift register or pixel reg still contains data */
                 if ( sbuf_reg[s] || sbuf_pixel_reg[s] ) {
                     
                     if ( sbuf_expx_flop[s] == 0 ) {
-                        if (mc) {
+                        if (sprite_mc_bits & (1 << s)) {
                             if (sbuf_mc_flop[s] == 0) {
                                 /* fetch 2 bits */
                                 sbuf_pixel_reg[s] = (sbuf_reg[s] >> 22) & 0x03;
@@ -140,7 +142,7 @@ static DRAW_INLINE void draw_sprites(int xpos, int pri, int bp)
                      */
                     if (sbuf_pixel_reg[s]) {
                         if (!rendered) {
-                            if ( !(pri && spri) ) {
+                            if ( !(pixel_pri && spri) ) {
                                 current_pixel = c[ sbuf_pixel_reg[s] ];
                             }
                             rendered = 1;
@@ -149,12 +151,14 @@ static DRAW_INLINE void draw_sprites(int xpos, int pri, int bp)
                         collision_count++;
                     }
 
-                    /* shift the sprite buffer and handle expansion flags */
-                    if (sbuf_expx_flop[s] == 0) {
-                        sbuf_reg[s] <<= 1;
-                    }
-                    if (expx) {
-                        sbuf_expx_flop[s] = ~sbuf_expx_flop[s];
+                    if ( !(sprite_halt_bits & (1 << s)) ) {
+                        /* shift the sprite buffer and handle expansion flags */
+                        if (sbuf_expx_flop[s] == 0) {
+                            sbuf_reg[s] <<= 1;
+                        }
+                        if (sprite_expx_bits & (1<<s)) {
+                            sbuf_expx_flop[s] = ~sbuf_expx_flop[s];
+                        }
                     }
                 } else {
                     sprite_active_bits &= ~(1 << s);
@@ -167,10 +171,53 @@ static DRAW_INLINE void draw_sprites(int xpos, int pri, int bp)
         vicii.sprite_sprite_collisions |= collision_mask;
     }
 
-    if (!vicii.vborder && pri) {
+    if (!vicii.vborder && pixel_pri) {
         /* only flag collisions when not in the vborder area */
             vicii.sprite_background_collisions |= collision_mask;
     }
+}
+
+
+static DRAW_INLINE void update_sprite_flags(int cycle)
+{
+    sprite_halt_bits = 0;
+    /* this is replicated a bit from vicii-cycle.c */
+    switch (cycle) {
+    case 59:
+        sprite_halt_bits = (1<<0);
+        sprite_pending_bits |= (1<<0);
+        break;
+    case 61:
+        sprite_halt_bits = (1<<1);
+        sprite_pending_bits |= (1<<1);
+        break;
+    case 63:
+        sprite_halt_bits = (1<<2);
+        sprite_pending_bits |= (1<<2);
+        break;
+    case 0:
+        sprite_halt_bits = (1<<3);
+        sprite_pending_bits |= (1<<3);
+        break;
+    case 2:
+        sprite_halt_bits = (1<<4);
+        sprite_pending_bits |= (1<<4);
+        break;
+    case 4:
+        sprite_halt_bits = (1<<5);
+        sprite_pending_bits |= (1<<5);
+        break;
+    case 6:
+        sprite_halt_bits = (1<<6);
+        sprite_pending_bits |= (1<<6);
+        break;
+    case 8:
+        sprite_halt_bits = (1<<7);
+        sprite_pending_bits |= (1<<7);
+        break;
+    }
+    sprite_mc_bits = vicii.regs[0x1c];
+    sprite_expx_bits = vicii.regs[0x1d];
 }
 
 void vicii_draw_cycle(void)
@@ -193,34 +240,6 @@ void vicii_draw_cycle(void)
         vicii.dbuf_offset = 0;
     }
 
-    /* this is replicated a bit from vicii-cycle.c */
-    switch (cycle) {
-    case 58:
-        sprite_pending_bits |= (1<<0);
-        break;
-    case 60:
-        sprite_pending_bits |= (1<<1);
-        break;
-    case 62:
-        sprite_pending_bits |= (1<<2);
-        break;
-    case 64:
-        sprite_pending_bits |= (1<<3);
-        break;
-    case 1:
-        sprite_pending_bits |= (1<<4);
-        break;
-    case 3:
-        sprite_pending_bits |= (1<<5);
-        break;
-    case 5:
-        sprite_pending_bits |= (1<<6);
-        break;
-    case 7:
-        sprite_pending_bits |= (1<<7);
-        break;
-    }
-
     offs = vicii.dbuf_offset;
     /* guard */
     if (offs >= VICII_DRAW_BUFFER_SIZE) 
@@ -235,8 +254,13 @@ void vicii_draw_cycle(void)
         for (i = 0; i < 8; i++) {
             BYTE px;
             BYTE c[4];
-            int priority;
+            int pixel_pri;
            
+            /* pipe sprite related changes 2 pixels late */
+            if (i == 2) {
+                update_sprite_flags(cycle);
+            }
+
             /* Load new gbuf/vbuf/cbuf values at offset == xscroll */
             if (i == xscroll_pipe) {
                 /* latch values at time xs */
@@ -348,14 +372,14 @@ void vicii_draw_cycle(void)
 
             /* Determine pixel color and priority */
             current_pixel = c[px];
-            priority = (px & 0x2);
+            pixel_pri = (px & 0x2);
 
             /* shift the graphics buffer */
             gbuf_reg <<= 1;
             gbuf_mc_flop = ~gbuf_mc_flop;
             
             /* process sprites */
-            draw_sprites(xpos + i, priority, border_state);
+            draw_sprites(xpos + i, pixel_pri);
 
             /* add border on top */
             if (border_state) {
@@ -385,17 +409,16 @@ void vicii_draw_cycle(void)
         gbuf_pipe0_reg = 0;
     }
 
-    /* Clear the vbuf and cbuf registers on cycle 0 if we are in the
-       idle state. */
-    if (cycle == 0 && vicii.idle_state) {
-        vbuf_pipe0_reg = 0;
-        cbuf_pipe0_reg = 0;
-    }
     /* Only update vbuf and cbuf registers in the display state. */
-    if ( (cycle >= 14 && cycle <= 53) && !vicii.idle_state ) {
-        vbuf_pipe0_reg = vicii.vbuf[cycle - 14];
-        cbuf_pipe0_reg = vicii.cbuf[cycle - 14];
-    }
+    if ( cycle >= 14 && cycle <= 53 ) {
+        if (!vicii.idle_state) {
+            vbuf_pipe0_reg = vicii.vbuf[cycle - 14];
+            cbuf_pipe0_reg = vicii.cbuf[cycle - 14];
+        } else {
+            vbuf_pipe0_reg = 0;
+            cbuf_pipe0_reg = 0;
+        }
+    } 
 
     main_border_pipe = vicii.main_border;
 
@@ -403,10 +426,10 @@ void vicii_draw_cycle(void)
     vmode_pipe = vicii.video_mode;
     xscroll_pipe = vicii.regs[0x16] & 0x07;
 
-    /* sprites */
     for (s=0; s<8; s++) {
         sprite_x_pipe[s] = vicii.sprite[s].x;
     }
+
 }
 
 
