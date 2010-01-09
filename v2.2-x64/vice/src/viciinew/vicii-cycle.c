@@ -374,8 +374,9 @@ int vicii_cycle(void)
     /* Matrix fetch */
     if (vicii.fetch_active && (vicii.raster_cycle >= 14)) {
 #ifdef DEBUG
-        if (debug.maincpu_traceflg)
+        if (debug.maincpu_traceflg) {
             log_debug("DMA at cycle %d", vicii.raster_cycle);
+        }
 #endif
         ba_low = 1;
         vicii_fetch_matrix();
