@@ -224,8 +224,20 @@ static DRAW_INLINE void update_sprite_flags4(int cycle)
 
 static DRAW_INLINE void update_sprite_flags6(int cycle)
 {
-    sprite_mc_bits = vicii.regs[0x1c];
     sprite_expx_bits = vicii.regs[0x1d];
+}
+
+static DRAW_INLINE void update_sprite_flags7(int cycle)
+{
+    int s;
+    BYTE toggled;
+    toggled = vicii.regs[0x1c] ^ sprite_mc_bits;
+    for (s=0; s < 8; s++) {
+        if (toggled & (1 << s)) {
+            sbuf_mc_flop[s] = ~0;
+        }
+    }
+    sprite_mc_bits = vicii.regs[0x1c];
 }
 
 static DRAW_INLINE void update_sprite_flags0(int cycle)
@@ -280,6 +292,9 @@ void vicii_draw_cycle(void)
             }
             if (i == 6) {
                 update_sprite_flags6(cycle);
+            }
+            if (i == 7) {
+                update_sprite_flags7(cycle);
             }
 
             if (i == 0) {
