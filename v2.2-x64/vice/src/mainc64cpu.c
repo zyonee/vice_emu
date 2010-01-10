@@ -31,6 +31,11 @@
 
 #include "6510core.h"
 #include "alarm.h"
+
+#ifdef FEATURE_CPUMEMHISTORY
+#include "c64pla.h"
+#endif
+
 #include "clkguard.h"
 #include "debug.h"
 #include "interrupt.h"
@@ -98,7 +103,7 @@ BYTE REGPARM1 memmap_mem_read(unsigned int addr)
         case 0xe:
         case 0xf:
             memmap_state |= MEMMAP_STATE_IGNORE;
-            if (LOAD_ZERO(1) & (1 << ((addr>>14) & 1))) {
+            if (pport.data_read & (1 << ((addr>>14) & 1))) {
                 monitor_memmap_store(addr, (memmap_state&MEMMAP_STATE_OPCODE)?MEMMAP_ROM_X:(memmap_state&MEMMAP_STATE_INSTR)?0:MEMMAP_ROM_R);
             } else {
                 monitor_memmap_store(addr, (memmap_state&MEMMAP_STATE_OPCODE)?MEMMAP_RAM_X:(memmap_state&MEMMAP_STATE_INSTR)?0:MEMMAP_RAM_R);
@@ -140,7 +145,7 @@ BYTE REGPARM1 memmap_mem_read(unsigned int addr)
 
 #define PUSH(val) memmap_mem_store((0x100 + (reg_sp--)), (BYTE)(val))
 #define PULL()    memmap_mem_read(0x100 + (++reg_sp))
-#define STACK_PEEK()  memmap_mem_read(0x100 + (++reg_sp))
+#define STACK_PEEK()  memmap_mem_read(0x100 + reg_sp)
 
 #endif /* FEATURE_CPUMEMHISTORY */
 
