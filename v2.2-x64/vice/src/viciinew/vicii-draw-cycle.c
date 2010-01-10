@@ -60,6 +60,7 @@ BYTE vbuf_reg = 0;
 /* sprites */
 int sprite_x_pipe[8];
 int sprite_x_pipe0[8];
+BYTE sprite_pri_bits = 0;
 BYTE sprite_mc_bits = 0;
 BYTE sprite_expx_bits = 0;
 
@@ -118,7 +119,7 @@ static DRAW_INLINE void draw_sprites(int xpos, int pixel_pri)
             }
 
             if ( sprite_active_bits & (1 << s) ) {
-                int spri = vicii.regs[0x1b] & (1 << s);
+                int spri = sprite_pri_bits & (1 << s);
                 c[2] = vicii.regs[0x27 + s];
 
                 /* render pixels if shift register or pixel reg still contains data */
@@ -278,6 +279,7 @@ static DRAW_INLINE void update_sprite_pending(int cycle)
 
 static DRAW_INLINE void update_sprite_flags6(int cycle)
 {
+    sprite_pri_bits = vicii.regs[0x1b];
     sprite_expx_bits = vicii.regs[0x1d];
 }
 
