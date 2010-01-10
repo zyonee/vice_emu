@@ -104,7 +104,7 @@ static DRAW_INLINE void draw_sprites(int xpos, int pixel_pri)
     collision_count = 0;
     for (s = 0; s < 8; s++) {
 
-       if ( vicii.sprite_display_bits & (1<<s) ) {
+       if ( vicii.sprite_display_bits & (1 << s) ) {
 
             /* start rendering on position match */
             if ( sprite_pending_bits & (1 << s) ) {
@@ -182,41 +182,95 @@ static DRAW_INLINE void draw_sprites(int xpos, int pixel_pri)
 }
 
 
-static DRAW_INLINE void update_sprite_flags4(int cycle)
+static DRAW_INLINE void update_sprite_halt2(int cycle)
 {
     sprite_halt_bits = 0;
     /* this is replicated a bit from vicii-cycle.c */
     switch (cycle) {
     case 59:
         sprite_halt_bits = (1<<0);
-        sprite_pending_bits |= (1<<0);
         break;
     case 61:
         sprite_halt_bits = (1<<1);
-        sprite_pending_bits |= (1<<1);
         break;
     case 63:
         sprite_halt_bits = (1<<2);
-        sprite_pending_bits |= (1<<2);
         break;
     case 0:
         sprite_halt_bits = (1<<3);
-        sprite_pending_bits |= (1<<3);
         break;
     case 2:
         sprite_halt_bits = (1<<4);
-        sprite_pending_bits |= (1<<4);
         break;
     case 4:
         sprite_halt_bits = (1<<5);
-        sprite_pending_bits |= (1<<5);
         break;
     case 6:
         sprite_halt_bits = (1<<6);
-        sprite_pending_bits |= (1<<6);
         break;
     case 8:
         sprite_halt_bits = (1<<7);
+        break;
+    }
+}
+
+static DRAW_INLINE void update_sprite_active2(int cycle)
+{
+    /* this is replicated a bit from vicii-cycle.c */
+    switch (cycle) {
+    case 60:
+        sprite_active_bits &= ~(1<<0);
+        break;
+    case 62:
+        sprite_active_bits &= ~(1<<1);
+        break;
+    case 64:
+        sprite_active_bits &= ~(1<<2);
+        break;
+    case 1:
+        sprite_active_bits &= ~(1<<3);
+        break;
+    case 3:
+        sprite_active_bits &= ~(1<<4);
+        break;
+    case 5:
+        sprite_active_bits &= ~(1<<5);
+        break;
+    case 7:
+        sprite_active_bits &= ~(1<<6);
+        break;
+    case 9:
+        sprite_active_bits &= ~(1<<7);
+        break;
+    }
+}
+
+static DRAW_INLINE void update_sprite_pending(int cycle)
+{
+    /* this is replicated a bit from vicii-cycle.c */
+    switch (cycle) {
+    case 60:
+        sprite_pending_bits |= (1<<0);
+        break;
+    case 62:
+        sprite_pending_bits |= (1<<1);
+        break;
+    case 64:
+        sprite_pending_bits |= (1<<2);
+        break;
+    case 1:
+        sprite_pending_bits |= (1<<3);
+        break;
+    case 3:
+        sprite_pending_bits |= (1<<4);
+        break;
+    case 5:
+        sprite_pending_bits |= (1<<5);
+        break;
+    case 7:
+        sprite_pending_bits |= (1<<6);
+        break;
+    case 9:
         sprite_pending_bits |= (1<<7);
         break;
     }
@@ -287,14 +341,19 @@ void vicii_draw_cycle(void)
             int pixel_pri;
            
             /* pipe sprite related changes 2 pixels late */
-            if (i == 4) {
-                update_sprite_flags4(cycle);
+            if (i == 2) {
+                update_sprite_halt2(cycle);
+                update_sprite_active2(cycle);
+            }
+            if (i == 3) {
+                sprite_pending_bits &= ~sprite_halt_bits;
             }
             if (i == 6) {
                 update_sprite_flags6(cycle);
             }
             if (i == 7) {
                 update_sprite_flags7(cycle);
+                update_sprite_pending(cycle);
             }
 
             if (i == 0) {
