@@ -88,7 +88,12 @@ static inline void sprite_exp_inc(int increase)
      
     for (i = 0; i < VICII_NUM_SPRITES; i++) {
         if (vicii.sprite[i].exp_flop) {
-            vicii.sprite[i].mcbase += increase;
+            vicii.sprite[i].mcbase = (vicii.sprite[i].mcbase + increase) & 0x3f;
+#ifdef DEBUG
+            if (debug.maincpu_traceflg) {
+                log_debug("sprite_exp_inc. exp_flop=1, New mcbase for sprite %d: %d",i, vicii.sprite[i].mcbase);
+            }
+#endif
         }
         if ((increase == 1) && (vicii.sprite[i].mcbase == 63)) {
             vicii.sprite[i].dma = 0;
@@ -116,6 +121,8 @@ static inline void turn_sprite_dma_on(unsigned int i, int y_exp)
 
     if (y_exp) {
         vicii.sprite[i].exp_flop = 0;
+    } else {
+        vicii.sprite[i].exp_flop = 1;
     }
 }
 
