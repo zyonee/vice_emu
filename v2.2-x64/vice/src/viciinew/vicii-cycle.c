@@ -245,7 +245,7 @@ static inline void vicii_cycle_end_of_line(void)
 
     /* Check DEN bit on first cycle of the line following the first DMA line  */
     if ((vicii.raster_line == VICII_FIRST_DMA_LINE) && !vicii.allow_bad_lines && (vicii.regs[0x11] & 0x10)) {
-        vicii.allow_bad_lines = 1; 
+        vicii.allow_bad_lines = 1;
     }
 
     /* Disallow bad lines after the last possible one has passed */
@@ -365,17 +365,17 @@ int vicii_cycle(void)
         }
     }
 
-    if (vicii.raster_cycle == 57) {
+    if (vicii.raster_cycle == 58) {
         /* `ycounter' makes the chip go to idle state when it reaches the 
            maximum value.  */
-        if (vicii.ycounter == 7) { 
-            vicii.idle_state = 1; 
-            vicii.memptr = vicii.mem_counter; 
-        } 
-        if (!vicii.idle_state || vicii.bad_line) { 
-            vicii.ycounter = (vicii.ycounter + 1) & 0x7; 
-            vicii.idle_state = 0; 
-        } 
+        if (vicii.ycounter == 7) {
+            vicii.idle_state = 1;
+            vicii.memptr = vicii.mem_counter;
+        }
+        if (!vicii.idle_state || vicii.bad_line) {
+            vicii.ycounter = (vicii.ycounter + 1) & 0x7;
+            vicii.idle_state = 0;
+        }
     }
 
     /* Matrix fetch */
