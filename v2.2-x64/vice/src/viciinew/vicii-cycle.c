@@ -67,12 +67,12 @@ static inline void check_badline(void)
 static inline void check_sprite_display(void)
 {
     int i, b;
-    
+
     for (i = 0, b = 1; i < VICII_NUM_SPRITES; i++, b <<= 1) {
         int y = vicii.regs[i*2 + 1];
 
         vicii.sprite[i].mc = vicii.sprite[i].mcbase;
-    
+
         if ((y == (vicii.raster_line & 0xff)) && vicii.sprite[i].dma) {
             vicii.sprite_display_bits |= b;
         } else if (!vicii.sprite[i].dma) {
@@ -81,33 +81,33 @@ static inline void check_sprite_display(void)
         }
     }
 }
-            
-static inline void sprite_exp_inc(int increase)
+
+static inline void sprite_mcbase_update(void)
 {
     int i;
-     
+
     for (i = 0; i < VICII_NUM_SPRITES; i++) {
         if (vicii.sprite[i].exp_flop) {
-            vicii.sprite[i].mcbase = (vicii.sprite[i].mcbase + increase) & 0x3f;
+            vicii.sprite[i].mcbase = vicii.sprite[i].mc;
 #ifdef DEBUG
             if (debug.maincpu_traceflg) {
                 log_debug("sprite_exp_inc. exp_flop=1, New mcbase for sprite %d: %d",i, vicii.sprite[i].mcbase);
             }
 #endif
-        }
-        if ((increase == 1) && (vicii.sprite[i].mcbase == 63)) {
-            vicii.sprite[i].dma = 0;
+            if (vicii.sprite[i].mcbase == 63) {
+                vicii.sprite[i].dma = 0;
+            }
         }
     }
 }
- 
+
 static inline void check_exp(void)
 {
     int i, b;
     int y_exp = vicii.regs[0x17];
-    
+
     for (i = 0, b = 1; i < VICII_NUM_SPRITES; i++, b <<= 1) {
-        if (y_exp & b) {
+        if (vicii.sprite[i].dma && (y_exp & b)) {
             vicii.sprite[i].exp_flop ^= 1;
         }
     }
@@ -131,7 +131,7 @@ static inline void check_sprite_dma(void)
     int i, b;
     int enable = vicii.regs[0x15];
     int y_exp = vicii.regs[0x17];
-    
+
     for (i = 0, b = 1; i < VICII_NUM_SPRITES; i++, b <<= 1) {
         int y = vicii.regs[i*2 + 1];
 
@@ -342,15 +342,15 @@ int vicii_cycle(void)
     if ((vicii.raster_cycle == 56) || (vicii.raster_cycle == 57)) {
         check_sprite_dma();
     }
-    
+
     /* Check sprite display */
     if (vicii.raster_cycle == 58) {
         check_sprite_display();
     }
 
     /* Update sprite mcbase */
-    if ((vicii.raster_cycle == 14) || (vicii.raster_cycle == 15)) {
-        sprite_exp_inc(16 - vicii.raster_cycle);
+    if (vicii.raster_cycle == 15) {
+        sprite_mcbase_update();
     }
 
     /* Check badline condition, trigger fetches */
