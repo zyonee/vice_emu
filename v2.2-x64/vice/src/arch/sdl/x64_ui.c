@@ -49,8 +49,10 @@
 #include "menu_tape.h"
 #include "menu_tfe.h"
 #include "menu_video.h"
+#include "resources.h"
 #include "ui.h"
 #include "uimenu.h"
+#include "vicii.h"
 #include "vkbd.h"
 
 static const ui_menu_entry_t x64_main_menu[] = {
@@ -141,13 +143,36 @@ static const ui_menu_entry_t x64_main_menu[] = {
     { NULL }
 };
 
+void c64ui_set_menu_params(int index, menu_draw_t *menu_draw)
+{
+    int bordermode;
+
+    resources_get_int("VICIIBorderMode", &bordermode);
+
+    switch (bordermode) {
+        case VICII_NORMAL_BORDERS:
+            menu_draw->extra_x = 32;
+            break;
+        case VICII_FULL_BORDERS:
+            menu_draw->extra_x = 48;
+            break;
+        case VICII_DEBUG_BORDERS:
+            menu_draw->extra_x = 132;
+            break;
+        default:
+            break;
+    }
+
+    menu_draw->extra_y = 51;
+}
+
 int c64ui_init(void)
 {
 #ifdef SDL_DEBUG
     fprintf(stderr, "%s\n", __func__);
 #endif
 
-    sdl_ui_set_menu_params = NULL;
+    sdl_ui_set_menu_params = c64ui_set_menu_params;
 
     sdl_ui_set_main_menu(x64_main_menu);
     sdl_ui_set_menu_font(mem_chargen_rom + 0x800, 8, 8);
