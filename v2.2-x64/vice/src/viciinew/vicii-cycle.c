@@ -365,7 +365,7 @@ int vicii_cycle(void)
         }
     }
 
-    if (vicii.raster_cycle == 58) {
+    if (vicii.raster_cycle == 59) {
         /* `ycounter' makes the chip go to idle state when it reaches the 
            maximum value.  */
         if (vicii.ycounter == 7) {
