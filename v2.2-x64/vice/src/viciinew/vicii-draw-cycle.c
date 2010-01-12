@@ -44,7 +44,8 @@ BYTE gbuf_pipe1_reg = 0;
 BYTE cbuf_pipe1_reg = 0;
 BYTE vbuf_pipe1_reg = 0;
 
-BYTE xscroll_pipe = 0;
+BYTE xscroll_pipe0 = 0;
+BYTE xscroll_pipe1 = 0;
 BYTE vmode_pipe = 0;
 BYTE idle_state_pipe = 0;
 
@@ -363,7 +364,7 @@ void vicii_draw_cycle(void)
             }
 
             /* Load new gbuf/vbuf/cbuf values at offset == xscroll */
-            if (i == xscroll_pipe) {
+            if (i == xscroll_pipe1) {
                 /* latch values at time xs */
                 vbuf_reg = vbuf_pipe1_reg;
                 cbuf_reg = cbuf_pipe1_reg;
@@ -503,7 +504,7 @@ void vicii_draw_cycle(void)
     gbuf_pipe1_reg = gbuf_pipe0_reg;
 
     /* this makes sure gbuf is 0 outside the visible area
-       I should probably be done somewhere around the fetch instead */
+       It should probably be done somewhere around the fetch instead */
     if ( (cycle >= 14 && cycle <= 53) ) {
         gbuf_pipe0_reg = vicii.gbuf;
     } else {
@@ -525,7 +526,8 @@ void vicii_draw_cycle(void)
 
     idle_state_pipe = vicii.idle_state;
     vmode_pipe = vicii.video_mode;
-    xscroll_pipe = vicii.regs[0x16] & 0x07;
+    xscroll_pipe1 = xscroll_pipe0;
+    xscroll_pipe0 = vicii.regs[0x16] & 0x07;
 
 }
 
