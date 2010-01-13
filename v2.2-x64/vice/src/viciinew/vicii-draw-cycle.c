@@ -364,7 +364,7 @@ void vicii_draw_cycle(void)
             }
 
             /* Load new gbuf/vbuf/cbuf values at offset == xscroll */
-            if (i == xscroll_pipe1) {
+            if (i == xscroll_pipe1 && vicii.vborder == 0) {
                 /* latch values at time xs */
                 vbuf_reg = vbuf_pipe1_reg;
                 cbuf_reg = cbuf_pipe1_reg;
