@@ -176,10 +176,8 @@ static DRAW_INLINE void draw_sprites(int xpos, int pixel_pri)
     if (collision_count > 1) {
         vicii.sprite_sprite_collisions |= collision_mask;
     }
-
-    if (!vicii.vborder && pixel_pri) {
-        /* only flag collisions when not in the vborder area */
-            vicii.sprite_background_collisions |= collision_mask;
+    if (pixel_pri) {
+        vicii.sprite_background_collisions |= collision_mask;
     }
 }
 
@@ -364,7 +362,7 @@ void vicii_draw_cycle(void)
             }
 
             /* Load new gbuf/vbuf/cbuf values at offset == xscroll */
-            if (i == xscroll_pipe1 && vicii.vborder == 0) {
+            if (i == xscroll_pipe1) {
                 /* latch values at time xs */
                 vbuf_reg = vbuf_pipe1_reg;
                 cbuf_reg = cbuf_pipe1_reg;
@@ -505,14 +503,14 @@ void vicii_draw_cycle(void)
 
     /* this makes sure gbuf is 0 outside the visible area
        It should probably be done somewhere around the fetch instead */
-    if ( (cycle >= 14 && cycle <= 53) ) {
+    if ( (cycle >= 14 && cycle <= 53) && vicii.vborder == 0) {
         gbuf_pipe0_reg = vicii.gbuf;
     } else {
         gbuf_pipe0_reg = 0;
     }
 
     /* Only update vbuf and cbuf registers in the display state. */
-    if ( cycle >= 14 && cycle <= 53 ) {
+    if ( (cycle >= 14 && cycle <= 53) && vicii.vborder == 0 ) {
         if (!vicii.idle_state) {
             vbuf_pipe0_reg = vicii.vbuf[cycle - 14];
             cbuf_pipe0_reg = vicii.cbuf[cycle - 14];
