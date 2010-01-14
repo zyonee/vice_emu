@@ -44,10 +44,8 @@ BYTE gbuf_pipe1_reg = 0;
 BYTE cbuf_pipe1_reg = 0;
 BYTE vbuf_pipe1_reg = 0;
 
-BYTE xscroll_pipe0 = 0;
-BYTE xscroll_pipe1 = 0;
+BYTE xscroll_pipe = 0;
 BYTE vmode_pipe = 0;
-BYTE idle_state_pipe = 0;
 
 /* gbuf shift register */
 BYTE gbuf_reg = 0;
@@ -362,7 +360,7 @@ void vicii_draw_cycle(void)
             }
 
             /* Load new gbuf/vbuf/cbuf values at offset == xscroll */
-            if (i == xscroll_pipe1) {
+            if (i == xscroll_pipe) {
                 /* latch values at time xs */
                 vbuf_reg = vbuf_pipe1_reg;
                 cbuf_reg = cbuf_pipe1_reg;
@@ -522,10 +520,8 @@ void vicii_draw_cycle(void)
 
     main_border_pipe = vicii.main_border;
 
-    idle_state_pipe = vicii.idle_state;
     vmode_pipe = vicii.video_mode;
-    xscroll_pipe1 = xscroll_pipe0;
-    xscroll_pipe0 = vicii.regs[0x16] & 0x07;
+    xscroll_pipe = vicii.regs[0x16] & 0x07;
 
 }
 
