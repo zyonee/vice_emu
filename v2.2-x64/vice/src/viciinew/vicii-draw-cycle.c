@@ -503,6 +503,7 @@ void vicii_draw_cycle(void)
        It should probably be done somewhere around the fetch instead */
     if ( (cycle >= 14 && cycle <= 53) && vicii.vborder == 0) {
         gbuf_pipe0_reg = vicii.gbuf;
+        xscroll_pipe = vicii.regs[0x16] & 0x07;
     } else {
         gbuf_pipe0_reg = 0;
     }
@@ -521,7 +522,6 @@ void vicii_draw_cycle(void)
     main_border_pipe = vicii.main_border;
 
     vmode_pipe = vicii.video_mode;
-    xscroll_pipe = vicii.regs[0x16] & 0x07;
 
 }
 
