@@ -29,6 +29,7 @@
 
 #include <string.h>
 
+#include "c64cart.h"
 #include "debug.h"
 #include "dma.h"
 #include "log.h"
@@ -42,6 +43,40 @@
 
 /*-----------------------------------------------------------------------*/
 
+inline static BYTE fetch_phi1(int addr)
+{
+    BYTE *p;
+
+    addr = ((addr + vicii.vbank_phi1) & vicii.vaddr_mask_phi1) | vicii.vaddr_offset_phi1;
+
+    if ((cart_ultimax_phi1 != 0) && ((addr & 0x3fff) >= 0x3000)) {
+        p = romh_banks + (romh_bank << 13) + (addr & 0xfff) + 0x1000;
+    } else if ((addr & vicii.vaddr_chargen_mask_phi1) == vicii.vaddr_chargen_value_phi1) {
+        p = mem_chargen_rom_ptr + (addr & 0xc00);
+    } else {
+        p = vicii.ram_base_phi1 + addr;
+    }
+
+    return *p;
+}
+
+inline static BYTE fetch_phi2(int addr)
+{
+    BYTE *p;
+
+    addr = ((addr + vicii.vbank_phi2) & vicii.vaddr_mask_phi2) | vicii.vaddr_offset_phi2;
+
+    if ((cart_ultimax_phi2 != 0) && ((addr & 0x3fff) >= 0x3000)) {
+        p = romh_banks + (romh_bank << 13) + (addr & 0xfff) + 0x1000;
+    } else if ((addr & vicii.vaddr_chargen_mask_phi2) == vicii.vaddr_chargen_value_phi2) {
+        p = mem_chargen_rom_ptr + (addr & 0xc00);
+    } else {
+        p = vicii.ram_base_phi2 + addr;
+    }
+
+    return *p;
+}
+
 inline static int check_sprite_dma(int i)
 {
     return vicii.sprite[i].dma;
@@ -53,7 +88,7 @@ inline static int sprite_dma_cycle_0(int i)
     int ba_low = 0;
 
     if (check_sprite_dma(i)) {
-        sprdata = vicii.ram_base_phi2[vicii.vbank_phi2 + (vicii.sprite[i].pointer << 6) + vicii.sprite[i].mc];
+        sprdata = fetch_phi2((vicii.sprite[i].pointer << 6) + vicii.sprite[i].mc);
 
         vicii.sprite[i].mc++;
         vicii.sprite[i].mc &= 0x3f;
@@ -78,7 +113,7 @@ inline static int sprite_dma_cycle_2(int i)
     int ba_low = 0;
 
     if (check_sprite_dma(i)) {
-        sprdata = vicii.ram_base_phi2[vicii.vbank_phi2 + (vicii.sprite[i].pointer << 6) + vicii.sprite[i].mc];
+        sprdata = fetch_phi2((vicii.sprite[i].pointer << 6) + vicii.sprite[i].mc);
 
         vicii.sprite[i].mc++;
         vicii.sprite[i].mc &= 0x3f;
@@ -150,12 +185,12 @@ void vicii_fetch_matrix(void)
 
 BYTE vicii_fetch_refresh(void)
 {
-    return vicii.ram_base_phi1[vicii.vbank_phi1 + 0x3f00 + vicii.refresh_counter--];
+    return fetch_phi1(0x3f00 + vicii.refresh_counter--);
 }
 
 BYTE vicii_fetch_idle(void)
 {
-    return vicii.ram_base_phi1[vicii.vbank_phi1 + 0x3fff];
+    return fetch_phi1(0x3fff);
 }
 
 BYTE vicii_fetch_idle_gfx(void)
@@ -163,9 +198,9 @@ BYTE vicii_fetch_idle_gfx(void)
     BYTE data;
 
     if (vicii.regs[0x11] & 0x40) {
-        data = vicii.ram_base_phi1[vicii.vbank_phi1 + 0x39ff];
+        data = fetch_phi1(0x39ff);
     } else {
-        data = vicii.ram_base_phi1[vicii.vbank_phi1 + 0x3fff];
+        data = fetch_phi1(0x3fff);
     }
     vicii.gbuf = data;
     vicii.buf_offset++;
@@ -209,9 +244,9 @@ BYTE vicii_fetch_graphics(void)
 
 BYTE vicii_fetch_sprite_pointer(int i)
 {
-    BYTE *spr_base = vicii.screen_base_phi1 + 0x3f8 + i;
-    vicii.sprite[i].pointer = *spr_base;
-    return *spr_base;
+    vicii.sprite[i].pointer = vicii.screen_base_phi1[0x3f8 + i];
+
+    return vicii.sprite[i].pointer;
 }
 
 BYTE vicii_fetch_sprite_dma_1(int i)
@@ -219,7 +254,7 @@ BYTE vicii_fetch_sprite_dma_1(int i)
     BYTE sprdata;
 
     if (check_sprite_dma(i)) {
-        sprdata = vicii.ram_base_phi1[vicii.vbank_phi1 + (vicii.sprite[i].pointer << 6) + vicii.sprite[i].mc];
+        sprdata = fetch_phi1((vicii.sprite[i].pointer << 6) + vicii.sprite[i].mc);
 
         vicii.sprite[i].mc++;
         vicii.sprite[i].mc &= 0x3f;
