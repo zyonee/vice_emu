@@ -132,7 +132,7 @@ static DRAW_INLINE void draw_sprites(int xpos, int pixel_pri)
                                 /* fetch 2 bits */
                                 sbuf_pixel_reg[s] = (sbuf_reg[s] >> 22) & 0x03;
                             }
-                            sbuf_mc_flop[s] = ~sbuf_mc_flop[s];
+                            sbuf_mc_flop[s] ^= 1;
                         } else {
                             /* fetch 1 bit and make it 0 or 2 */
                             sbuf_pixel_reg[s] = ( (sbuf_reg[s] >> 23) & 0x01 ) << 1;
@@ -161,7 +161,7 @@ static DRAW_INLINE void draw_sprites(int xpos, int pixel_pri)
                             sbuf_reg[s] <<= 1;
                         }
                         if (sprite_expx_bits & (1<<s)) {
-                            sbuf_expx_flop[s] = ~sbuf_expx_flop[s];
+                            sbuf_expx_flop[s] ^= 1;
                         }
                     }
                 } else {
@@ -287,7 +287,7 @@ static DRAW_INLINE void update_sprite_flags7(int cycle)
     toggled = vicii.regs[0x1c] ^ sprite_mc_bits;
     for (s=0; s < 8; s++) {
         if (toggled & (1 << s)) {
-            sbuf_mc_flop[s] = ~0;
+            sbuf_mc_flop[s] = 1;
         }
     }
     sprite_mc_bits = vicii.regs[0x1c];
@@ -474,7 +474,7 @@ void vicii_draw_cycle(void)
 
             /* shift the graphics buffer */
             gbuf_reg <<= 1;
-            gbuf_mc_flop = ~gbuf_mc_flop;
+            gbuf_mc_flop ^= 1;
             
             /* process sprites */
             draw_sprites(xpos + i, pixel_pri);
