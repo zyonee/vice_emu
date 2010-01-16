@@ -203,7 +203,6 @@ BYTE vicii_fetch_idle_gfx(void)
         data = fetch_phi1(0x3fff);
     }
     vicii.gbuf = data;
-    //vicii.buf_offset++;
 
     return data;
 }

@@ -263,7 +263,6 @@ static inline void vicii_cycle_end_of_line(void)
         vicii_irq_alarm_handler(maincpu_clk, 0);
     }
 
-    vicii.buf_offset = 0;
     vicii.bad_line = 0;
 }
 
@@ -297,7 +296,6 @@ int vicii_cycle(void)
     /* Stop fetch */
     if (vicii.raster_cycle == 53) {
         vicii.fetch_active = 0;
-        vicii.buf_offset = 0;
         vicii.prefetch_cycles = 0;
     }
 
@@ -360,6 +358,7 @@ int vicii_cycle(void)
 
     if (vicii.raster_cycle == 13) {
         vicii.mem_counter = vicii.memptr;
+        vicii.buf_offset = 0;
         if (vicii.bad_line) {
             vicii.ycounter = 0;
         }
