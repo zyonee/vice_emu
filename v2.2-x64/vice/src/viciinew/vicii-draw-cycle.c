@@ -185,28 +185,28 @@ static DRAW_INLINE void update_sprite_halt2(int cycle)
     sprite_halt_bits = 0;
     /* this is replicated a bit from vicii-cycle.c */
     switch (cycle) {
-    case 59:
+    case VICII_PAL_CYCLE(58):
         sprite_halt_bits = (1<<0);
         break;
-    case 61:
+    case VICII_PAL_CYCLE(60):
         sprite_halt_bits = (1<<1);
         break;
-    case 63:
+    case VICII_PAL_CYCLE(62):
         sprite_halt_bits = (1<<2);
         break;
-    case 0:
+    case VICII_PAL_CYCLE(1):
         sprite_halt_bits = (1<<3);
         break;
-    case 2:
+    case VICII_PAL_CYCLE(3):
         sprite_halt_bits = (1<<4);
         break;
-    case 4:
+    case VICII_PAL_CYCLE(5):
         sprite_halt_bits = (1<<5);
         break;
-    case 6:
+    case VICII_PAL_CYCLE(7):
         sprite_halt_bits = (1<<6);
         break;
-    case 8:
+    case VICII_PAL_CYCLE(9):
         sprite_halt_bits = (1<<7);
         break;
     }
@@ -216,28 +216,28 @@ static DRAW_INLINE void update_sprite_active2(int cycle)
 {
     /* this is replicated a bit from vicii-cycle.c */
     switch (cycle) {
-    case 60:
+    case VICII_PAL_CYCLE(59):
         sprite_active_bits &= ~(1<<0);
         break;
-    case 62:
+    case VICII_PAL_CYCLE(61):
         sprite_active_bits &= ~(1<<1);
         break;
-    case 64:
+    case VICII_PAL_CYCLE(63):
         sprite_active_bits &= ~(1<<2);
         break;
-    case 1:
+    case VICII_PAL_CYCLE(2):
         sprite_active_bits &= ~(1<<3);
         break;
-    case 3:
+    case VICII_PAL_CYCLE(4):
         sprite_active_bits &= ~(1<<4);
         break;
-    case 5:
+    case VICII_PAL_CYCLE(6):
         sprite_active_bits &= ~(1<<5);
         break;
-    case 7:
+    case VICII_PAL_CYCLE(8):
         sprite_active_bits &= ~(1<<6);
         break;
-    case 9:
+    case VICII_PAL_CYCLE(10):
         sprite_active_bits &= ~(1<<7);
         break;
     }
@@ -247,28 +247,28 @@ static DRAW_INLINE void update_sprite_pending(int cycle)
 {
     /* this is replicated a bit from vicii-cycle.c */
     switch (cycle) {
-    case 60:
+    case VICII_PAL_CYCLE(59):
         sprite_pending_bits |= (1<<0);
         break;
-    case 62:
+    case VICII_PAL_CYCLE(61):
         sprite_pending_bits |= (1<<1);
         break;
-    case 64:
+    case VICII_PAL_CYCLE(63):
         sprite_pending_bits |= (1<<2);
         break;
-    case 1:
+    case VICII_PAL_CYCLE(2):
         sprite_pending_bits |= (1<<3);
         break;
-    case 3:
+    case VICII_PAL_CYCLE(4):
         sprite_pending_bits |= (1<<4);
         break;
-    case 5:
+    case VICII_PAL_CYCLE(6):
         sprite_pending_bits |= (1<<5);
         break;
-    case 7:
+    case VICII_PAL_CYCLE(8):
         sprite_pending_bits |= (1<<6);
         break;
-    case 9:
+    case VICII_PAL_CYCLE(10):
         sprite_pending_bits |= (1<<7);
         break;
     }
@@ -501,7 +501,7 @@ void vicii_draw_cycle(void)
 
     /* this makes sure gbuf is 0 outside the visible area
        It should probably be done somewhere around the fetch instead */
-    if ( (cycle >= 14 && cycle <= 53) && vicii.vborder == 0) {
+    if ( (cycle >= VICII_PAL_CYCLE(15) && cycle <= VICII_PAL_CYCLE(54)) && vicii.vborder == 0) {
         gbuf_pipe0_reg = vicii.gbuf;
         xscroll_pipe = vicii.regs[0x16] & 0x07;
     } else {
@@ -509,10 +509,10 @@ void vicii_draw_cycle(void)
     }
 
     /* Only update vbuf and cbuf registers in the display state. */
-    if ( (cycle >= 14 && cycle <= 53) && vicii.vborder == 0 ) {
+    if ( (cycle >= VICII_PAL_CYCLE(15) && cycle <= VICII_PAL_CYCLE(54)) && vicii.vborder == 0 ) {
         if (!vicii.idle_state) {
-            vbuf_pipe0_reg = vicii.vbuf[cycle - 14];
-            cbuf_pipe0_reg = vicii.cbuf[cycle - 14];
+            vbuf_pipe0_reg = vicii.vbuf[cycle - VICII_PAL_CYCLE(15)];
+            cbuf_pipe0_reg = vicii.cbuf[cycle - VICII_PAL_CYCLE(15)];
         } else {
             vbuf_pipe0_reg = 0;
             cbuf_pipe0_reg = 0;

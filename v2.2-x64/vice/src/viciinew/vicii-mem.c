@@ -184,7 +184,7 @@ inline static void d017_store(const BYTE value)
     for (i = 0, b = 0x01; i < 8; b <<= 1, i++) {
         if (!(value & b)) {
             /* sprite crunch */
-            if ((vicii.regs[0x17] & b) && (cycle == 14)) {
+            if ((vicii.regs[0x17] & b) && (cycle == VICII_PAL_CYCLE(15))) {
                 BYTE mc = vicii.sprite[i].mc;
                 BYTE mcbase = vicii.sprite[i].mcbase;
 
@@ -489,7 +489,7 @@ inline static unsigned int read_raster_y(void)
     /* Line 0 is 62 cycles long, while line (SCREEN_HEIGHT - 1) is 64
        cycles long.  As a result, the counter is incremented one
        cycle later on line 0.  */
-    if (raster_y == 0 && vicii.raster_cycle == 0) {
+    if (raster_y == 0 && vicii.raster_cycle == VICII_PAL_CYCLE(1)) {
         raster_y = vicii.screen_height - 1;
     }
 

@@ -272,65 +272,65 @@ int vicii_fetch_sprites(int cycle)
     int ba_low = 0;
 
     switch (cycle) {
-        case 56:
-            ba_low = check_sprite_dma(0);
-            break;
-        case 57:
-            ba_low = check_sprite_dma(0);
-            break;
-        case 58:
-            ba_low = check_sprite_dma(0) | check_sprite_dma(1);
-            break;
-        case 59:
-            ba_low = sprite_dma_cycle_0(0) | check_sprite_dma(1);
-            break;
-        case 60:
-            ba_low = sprite_dma_cycle_2(0) | check_sprite_dma(1) | check_sprite_dma(2);
-            break;
-        case 61:
-            ba_low = sprite_dma_cycle_0(1) | check_sprite_dma(2);
-            break;
-        case 62:
-            ba_low = sprite_dma_cycle_2(1) | check_sprite_dma(2) | check_sprite_dma(3);
-            break;
-        case 63:
+    case VICII_PAL_CYCLE(55):
+        ba_low = check_sprite_dma(0);
+        break;
+    case VICII_PAL_CYCLE(56):
+        ba_low = check_sprite_dma(0);
+        break;
+    case VICII_PAL_CYCLE(57):
+        ba_low = check_sprite_dma(0) | check_sprite_dma(1);
+        break;
+    case VICII_PAL_CYCLE(58):
+        ba_low = sprite_dma_cycle_0(0) | check_sprite_dma(1);
+        break;
+    case VICII_PAL_CYCLE(59):
+        ba_low = sprite_dma_cycle_2(0) | check_sprite_dma(1) | check_sprite_dma(2);
+        break;
+    case VICII_PAL_CYCLE(60):
+        ba_low = sprite_dma_cycle_0(1) | check_sprite_dma(2);
+        break;
+    case VICII_PAL_CYCLE(61):
+        ba_low = sprite_dma_cycle_2(1) | check_sprite_dma(2) | check_sprite_dma(3);
+        break;
+    case VICII_PAL_CYCLE(62):
             ba_low = sprite_dma_cycle_0(2) | check_sprite_dma(3);
             break;
-        case 64:
+    case VICII_PAL_CYCLE(63):
             ba_low = sprite_dma_cycle_2(2) | check_sprite_dma(3) | check_sprite_dma(4);
             break;
-        case 0:
-            ba_low = sprite_dma_cycle_0(3) | check_sprite_dma(4);
-            break;
-        case 1:
-            ba_low = sprite_dma_cycle_2(3) | check_sprite_dma(4) | check_sprite_dma(5);
-            break;
-        case 2:
-            ba_low = sprite_dma_cycle_0(4) | check_sprite_dma(5);
-            break;
-        case 3:
-            ba_low = sprite_dma_cycle_2(4) | check_sprite_dma(5) | check_sprite_dma(6);
-            break;
-        case 4:
-            ba_low = sprite_dma_cycle_0(5) | check_sprite_dma(6);
-            break;
-        case 5:
-            ba_low = sprite_dma_cycle_2(5) | check_sprite_dma(6) | check_sprite_dma(7);
-            break;
-        case 6:
-            ba_low = sprite_dma_cycle_0(6) | check_sprite_dma(7);
-            break;
-        case 7:
-            ba_low = sprite_dma_cycle_2(6) | check_sprite_dma(7);
-            break;
-        case 8:
-            ba_low = sprite_dma_cycle_0(7);
-            break;
-        case 9:
-            ba_low = sprite_dma_cycle_2(7);
-            break;
-        default:
-            break;
+    case VICII_PAL_CYCLE(1):
+        ba_low = sprite_dma_cycle_0(3) | check_sprite_dma(4);
+        break;
+    case VICII_PAL_CYCLE(2):
+        ba_low = sprite_dma_cycle_2(3) | check_sprite_dma(4) | check_sprite_dma(5);
+        break;
+    case VICII_PAL_CYCLE(3):
+        ba_low = sprite_dma_cycle_0(4) | check_sprite_dma(5);
+        break;
+    case VICII_PAL_CYCLE(4):
+        ba_low = sprite_dma_cycle_2(4) | check_sprite_dma(5) | check_sprite_dma(6);
+        break;
+    case VICII_PAL_CYCLE(5):
+        ba_low = sprite_dma_cycle_0(5) | check_sprite_dma(6);
+        break;
+    case VICII_PAL_CYCLE(6):
+        ba_low = sprite_dma_cycle_2(5) | check_sprite_dma(6) | check_sprite_dma(7);
+        break;
+    case VICII_PAL_CYCLE(7):
+        ba_low = sprite_dma_cycle_0(6) | check_sprite_dma(7);
+        break;
+    case VICII_PAL_CYCLE(8):
+        ba_low = sprite_dma_cycle_2(6) | check_sprite_dma(7);
+        break;
+    case VICII_PAL_CYCLE(9):
+        ba_low = sprite_dma_cycle_0(7);
+        break;
+    case VICII_PAL_CYCLE(10):
+        ba_low = sprite_dma_cycle_2(7);
+        break;
+    default:
+        break;
     }
 
     return ba_low;

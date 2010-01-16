@@ -39,7 +39,6 @@
 #define VICII_SCREEN_CHARHEIGHT            8
 
 #define VICII_NUM_SPRITES      8
-#define VICII_MAX_SPRITE_WIDTH 56  /* expanded sprite in bug area */
 #define VICII_NUM_COLORS       16
 
 /* Common parameters for all video standards */
@@ -86,12 +85,10 @@ typedef enum vicii_video_mode_s vicii_video_mode_t;
                                  || (x) == VICII_MULTICOLOR_TEXT_MODE \
                                  || (x) == VICII_EXTENDED_TEXT_MODE)
 
-/* These timings are taken from the ``VIC Article'' by Christian Bauer
-   <bauec002@goofy.zdv.uni-mainz.de>.  Thanks Christian!
-   Note: we measure cycles from 0 to 62, not from 1 to 63 as he does.  */
 
-/* Cycle # at which the VIC takes the bus in a bad line (BA goes low).  */
-#define VICII_FETCH_CYCLE          11
+/* This macro translated PAL cycles 1 to 63 into our internal 
+   representation, i.e 0-64 with a hole at 54 depending on video standard */
+#define VICII_PAL_CYCLE(c) ( (c) + ( ((c) >= 55) ? 2 : 0 ) - 1)
 
 /* Delay for the raster line interrupt.  This is not due to the VIC-II, since
    it triggers the IRQ line at the beginning of the line, but to the 6510
