@@ -231,8 +231,8 @@ static inline void vicii_cycle_end_of_frame(void)
     vicii.raster_line = 0;
     vicii.refresh_counter = 0xff;
     vicii.allow_bad_lines = 0;
-    vicii.memptr = 0;
-    vicii.mem_counter = 0;
+    vicii.vcbase = 0;
+    vicii.vc = 0;
     vicii.light_pen.triggered = 0;
 }
 
@@ -355,22 +355,22 @@ int vicii_cycle(void)
     }
 
     if (vicii.raster_cycle == 13) {
-        vicii.mem_counter = vicii.memptr;
-        vicii.buf_offset = 0;
+        vicii.vc = vicii.vcbase;
+        vicii.vmli = 0;
         if (vicii.bad_line) {
-            vicii.ycounter = 0;
+            vicii.rc = 0;
         }
     }
 
     if (vicii.raster_cycle == 59) {
-        /* `ycounter' makes the chip go to idle state when it reaches the 
+        /* `rc' makes the chip go to idle state when it reaches the 
            maximum value.  */
-        if (vicii.ycounter == 7) {
+        if (vicii.rc == 7) {
             vicii.idle_state = 1;
-            vicii.memptr = vicii.mem_counter;
+            vicii.vcbase = vicii.vc;
         }
         if (!vicii.idle_state || vicii.bad_line) {
-            vicii.ycounter = (vicii.ycounter + 1) & 0x7;
+            vicii.rc = (vicii.rc + 1) & 0x7;
             vicii.idle_state = 0;
         }
     }

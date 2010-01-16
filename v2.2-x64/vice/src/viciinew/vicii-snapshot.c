@@ -151,21 +151,21 @@ int vicii_snapshot_write_module(snapshot_t *s)
         /* VBank */
         || SMW_W(m, (WORD)vicii.vbank_phi1) < 0
         /* Vc */
-        || SMW_W(m, (WORD)vicii.mem_counter) < 0
+        || SMW_W(m, (WORD)vicii.vc) < 0
         /* VcInc */
-        || SMW_B(m, (BYTE)vicii.mem_counter/*_inc*/) < 0
+        || SMW_B(m, (BYTE)vicii.vc/*_inc*/) < 0
         /* VcBase */
-        || SMW_W(m, (WORD)vicii.memptr) < 0
+        || SMW_W(m, (WORD)vicii.vcbase) < 0
         /* VideoInt */
         || SMW_B(m, (BYTE)vicii.irq_status) < 0)
         goto fail;
 
     for (i = 0; i < 8; i++) {
         if (0
-            /* SpriteXMemPtr */
+            /* SpriteXMemptr */
             || SMW_B(m,
                 0 /*(BYTE)vicii.raster.sprite_status->sprites[i].memptr*/) < 0
-            /* SpriteXMemPtrInc */
+            /* SpriteXVcbaseInc */
             || SMW_B(m,
                 0 /*(BYTE)vicii.raster.sprite_status->sprites[i].memptr_inc*/) < 0
             /* SpriteXExpFlipFlop */
@@ -298,11 +298,11 @@ int vicii_snapshot_read_module(snapshot_t *s)
         /* VBank */
         || SMR_W_INT(m, &vicii.vbank_phi1) < 0
         /* Vc */
-        || SMR_W_INT(m, &vicii.mem_counter) < 0
+        || SMR_W_INT(m, &vicii.vc) < 0
         /* VcInc */
-        || SMR_B_INT(m, &vicii.mem_counter/*_inc*/) < 0
+        || SMR_B_INT(m, &vicii.vc/*_inc*/) < 0
         /* VcBase */
-        || SMR_W_INT(m, &vicii.memptr) < 0
+        || SMR_W_INT(m, &vicii.vcbase) < 0
         /* VideoInt */
         || SMR_B_INT(m, &vicii.irq_status) < 0)
         goto fail;

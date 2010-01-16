@@ -138,7 +138,7 @@ inline static BYTE gfx_data_illegal_bitmap(unsigned int num)
 {
     unsigned int j;
 
-    j = ((vicii.memptr << 3) + vicii.ycounter + num * 8);
+    j = ((vicii.vcbase << 3) + vicii.rc + num * 8);
 
     if (j & 0x1000) {
         return vicii.bitmap_high_ptr[j & 0x9ff];
@@ -151,7 +151,7 @@ inline static BYTE gfx_data_hires_bitmap(unsigned int num)
 {
     unsigned int j;
 
-    j = ((vicii.memptr << 3) + vicii.ycounter + num * 8);
+    j = ((vicii.vcbase << 3) + vicii.rc + num * 8);
 
     if (j & 0x1000) {
         return vicii.bitmap_high_ptr[j & 0xfff];
@@ -162,12 +162,12 @@ inline static BYTE gfx_data_hires_bitmap(unsigned int num)
 
 inline static BYTE gfx_data_extended_text(unsigned int c)
 {
-    return vicii.chargen_ptr[(c & 0x3f) * 8 + vicii.ycounter];
+    return vicii.chargen_ptr[(c & 0x3f) * 8 + vicii.rc];
 }
 
 inline static BYTE gfx_data_normal_text(unsigned int c)
 {
-    return vicii.chargen_ptr[c * 8 + vicii.ycounter];
+    return vicii.chargen_ptr[c * 8 + vicii.rc];
 }
 
 /*-----------------------------------------------------------------------*/
@@ -175,11 +175,11 @@ inline static BYTE gfx_data_normal_text(unsigned int c)
 void vicii_fetch_matrix(void)
 {
     if (vicii.prefetch_cycles) {
-        vicii.vbuf[vicii.buf_offset] = 0xff;
-        vicii.cbuf[vicii.buf_offset] = vicii.ram_base_phi2[reg_pc] & 0xf;
+        vicii.vbuf[vicii.vmli] = 0xff;
+        vicii.cbuf[vicii.vmli] = vicii.ram_base_phi2[reg_pc] & 0xf;
     } else {
-        vicii.vbuf[vicii.buf_offset] = vicii.screen_base_phi2[vicii.mem_counter];
-        vicii.cbuf[vicii.buf_offset] = mem_color_ram_vicii[vicii.mem_counter];
+        vicii.vbuf[vicii.vmli] = vicii.screen_base_phi2[vicii.vc];
+        vicii.cbuf[vicii.vmli] = mem_color_ram_vicii[vicii.vc];
     }
 }
 
@@ -214,29 +214,29 @@ BYTE vicii_fetch_graphics(void)
     switch (vicii.video_mode) {
         case VICII_NORMAL_TEXT_MODE:
         case VICII_MULTICOLOR_TEXT_MODE:
-            data = gfx_data_normal_text(vicii.vbuf[vicii.buf_offset]);
+            data = gfx_data_normal_text(vicii.vbuf[vicii.vmli]);
             break;
         case VICII_HIRES_BITMAP_MODE:
         case VICII_MULTICOLOR_BITMAP_MODE:
-            data = gfx_data_hires_bitmap(vicii.buf_offset);
+            data = gfx_data_hires_bitmap(vicii.vmli);
             break;
         case VICII_EXTENDED_TEXT_MODE:
         case VICII_ILLEGAL_TEXT_MODE:
-            data = gfx_data_extended_text(vicii.vbuf[vicii.buf_offset]);
+            data = gfx_data_extended_text(vicii.vbuf[vicii.vmli]);
             break;
         case VICII_ILLEGAL_BITMAP_MODE_1:
         case VICII_ILLEGAL_BITMAP_MODE_2:
-            data = gfx_data_illegal_bitmap(vicii.buf_offset);
+            data = gfx_data_illegal_bitmap(vicii.vmli);
             break;
         default:
             data = 0xff;
             break;
     }
     vicii.gbuf = data;
-    vicii.buf_offset++;
+    vicii.vmli++;
 
-    vicii.mem_counter++;
-    vicii.mem_counter &= 0x3ff;
+    vicii.vc++;
+    vicii.vc &= 0x3ff;
 
     return data;
 }

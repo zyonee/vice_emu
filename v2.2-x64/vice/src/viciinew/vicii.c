@@ -269,7 +269,7 @@ raster_t *vicii_init(unsigned int flag)
     vicii_draw_cycle_init();
     vicii_new_sprites_init();
 
-    vicii.buf_offset = 0;
+    vicii.vmli = 0;
 
     vicii.initialized = 1;
 
@@ -339,8 +339,8 @@ void vicii_powerup(void)
     vicii.allow_bad_lines = 0;
     vicii.sprite_sprite_collisions = vicii.sprite_background_collisions = 0;
     vicii.idle_state = 0;
-    vicii.memptr = 0;
-    vicii.mem_counter = 0;
+    vicii.vcbase = 0;
+    vicii.vc = 0;
     vicii.bad_line = 0;
     vicii.force_black_overscan_background_color = 0;
     vicii.light_pen.x = vicii.light_pen.y = vicii.light_pen.x_extra_bits = vicii.light_pen.triggered = 0;

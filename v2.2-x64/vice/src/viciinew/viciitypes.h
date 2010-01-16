@@ -209,9 +209,6 @@ struct vicii_s {
     BYTE *screen_base_phi1;
     BYTE *screen_base_phi2;
 
-    /* Offset to the vbuf/cbuf buffer (VMLI) */
-    int buf_offset;
-
     /* Screen memory buffers (chars and color).  */
     BYTE vbuf[VICII_SCREEN_TEXTCOLS];
     BYTE cbuf[VICII_SCREEN_TEXTCOLS];
@@ -242,13 +239,16 @@ struct vicii_s {
     int idle_state;
 
     /* Internal memory pointer (VCBASE).  */
-    int memptr;
+    int vcbase;
 
     /* Internal memory counter (VC).  */
-    int mem_counter;
+    int vc;
 
     /* Internal row counter (RC).  */
-    int ycounter;
+    int rc;
+
+    /* Offset to the vbuf/cbuf buffer (VMLI) */
+    int vmli;
 
     /* Flag: is the current line a `bad' line? */
     int bad_line;
