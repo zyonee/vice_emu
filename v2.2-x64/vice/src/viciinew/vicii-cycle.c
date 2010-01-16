@@ -69,13 +69,11 @@ static inline void check_sprite_display(void)
     int i, b;
 
     for (i = 0, b = 1; i < VICII_NUM_SPRITES; i++, b <<= 1) {
-        int y = vicii.regs[i*2 + 1];
-
         vicii.sprite[i].mc = vicii.sprite[i].mcbase;
 
-        if ((y == (vicii.raster_line & 0xff)) && vicii.sprite[i].dma) {
+        if (vicii.sprite[i].dma) {
             vicii.sprite_display_bits |= b;
-        } else if (!vicii.sprite[i].dma) {
+        } else {
             /* FIXME this is the wrong place to do this */
             vicii.sprite_display_bits &= ~(1<<i);
         }
