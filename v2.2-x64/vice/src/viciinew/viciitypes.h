@@ -209,7 +209,7 @@ struct vicii_s {
     BYTE *screen_base_phi1;
     BYTE *screen_base_phi2;
 
-    /* Offset to the vbuf/cbuf buffer */
+    /* Offset to the vbuf/cbuf buffer (VMLI) */
     int buf_offset;
 
     /* Screen memory buffers (chars and color).  */
