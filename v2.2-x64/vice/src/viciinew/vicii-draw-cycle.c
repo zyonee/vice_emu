@@ -58,7 +58,6 @@ BYTE vbuf_reg = 0;
 
 /* sprites */
 int sprite_x_pipe[8];
-int sprite_x_pipe0[8];
 BYTE sprite_pri_bits = 0;
 BYTE sprite_mc_bits = 0;
 BYTE sprite_expx_bits = 0;
@@ -299,8 +298,7 @@ static DRAW_INLINE void update_sprite_xpos(int cycle)
 {
     int s;
     for (s=0; s<8; s++) {
-        sprite_x_pipe[s] = sprite_x_pipe0[s];
-        sprite_x_pipe0[s] = vicii.sprite[s].x;
+        sprite_x_pipe[s] = vicii.sprite[s].x;
     }
 }
 
@@ -353,10 +351,6 @@ void vicii_draw_cycle(void)
         if (i == 7) {
             update_sprite_mc_bits(cycle);
             update_sprite_pending(cycle);
-        }
-
-        if (i == 0) {
-            update_sprite_xpos(cycle);
         }
 
         /* Load new gbuf/vbuf/cbuf values at offset == xscroll */
@@ -509,6 +503,7 @@ void vicii_draw_cycle(void)
 
     vmode_pipe = vicii.video_mode;
 
+    update_sprite_xpos(cycle);
 }
 
 
