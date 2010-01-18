@@ -108,6 +108,23 @@ static inline void store_sprite_x_position_msb(const WORD addr, BYTE value)
     }
 }
 
+inline static void update_raster_line(void)
+{
+    int new_line;
+    int old_line = vicii.raster_irq_line;
+
+    new_line = vicii.regs[0x12];
+    new_line |= (vicii.regs[0x11] & 0x80) << 1;
+
+    vicii.raster_irq_line = new_line;
+
+    if ((new_line != old_line) && (new_line == vicii.raster_line)) {
+        vicii_irq_alarm_handler(maincpu_clk, 0);
+    }
+
+    VICII_DEBUG_REGISTER(("Raster interrupt line set to $%04X",
+                         vicii.raster_irq_line));
+}
 
 inline static void d011_store(BYTE value)
 {
@@ -121,12 +138,11 @@ inline static void d011_store(BYTE value)
     VICII_DEBUG_REGISTER(("$D011 tricks at cycle %d, line $%04X, "
                           "value $%02X", cycle, line, value));
 
-    vicii.raster_irq_line &= 0xff;
-    vicii.raster_irq_line |= (value & 0x80) << 1;
-
     vicii.ysmooth = value & 0x7;
 
     vicii.regs[0x11] = value;
+
+    update_raster_line();
 
     /* FIXME: save time.  */
     vicii_update_video_mode(cycle);
@@ -136,16 +152,13 @@ inline static void d012_store(BYTE value)
 {
     VICII_DEBUG_REGISTER(("Raster compare register: $%02X", value));
 
-    if (value == vicii.regs[0x12])
+    if (value == vicii.regs[0x12]) {
         return;
+    }
 
     vicii.regs[0x12] = value;
 
-    vicii.raster_irq_line &= 0x100;
-    vicii.raster_irq_line |= value;
-
-    VICII_DEBUG_REGISTER(("Raster interrupt line set to $%04X",
-                         vicii.raster_irq_line));
+    update_raster_line();
 }
 
 inline static void d015_store(const BYTE value)
@@ -283,8 +296,6 @@ inline static void d021_store(BYTE value)
 
 inline static void ext_background_store(WORD addr, BYTE value)
 {
-    int char_num;
-
     value &= 0x0f;
 
     VICII_DEBUG_REGISTER(("Background color #%d register: $%02X",
@@ -325,17 +336,6 @@ inline static void sprite_color_store(WORD addr, BYTE value)
 void REGPARM2 vicii_store(WORD addr, BYTE value)
 {
     addr &= 0x3f;
-
-#if 0
-    vicii_handle_pending_alarms_external_write();
-
-    /* This is necessary as we must be sure that the previous line has been
-       updated and `current_line' is actually set to the current Y position of
-       the raster.  Otherwise we might mix the changes for this line with the
-       changes for the previous one.  */
-    if (maincpu_clk >= vicii.draw_clk)
-        vicii_raster_draw_alarm_handler(maincpu_clk - vicii.draw_clk, NULL);
-#endif
 
     VICII_DEBUG_REGISTER(("WRITE $D0%02X at cycle %d of current_line $%04X",
                          addr, VICII_RASTER_CYCLE(maincpu_clk),
