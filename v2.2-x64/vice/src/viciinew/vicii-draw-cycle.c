@@ -69,8 +69,8 @@ BYTE sprite_halt_bits = 0;
 /* sbuf shift registers */
 DWORD sbuf_reg[8];
 BYTE sbuf_pixel_reg[8];
-BYTE sbuf_expx_flop[8];
-BYTE sbuf_mc_flop[8];
+BYTE sbuf_expx_flops;
+BYTE sbuf_mc_flops;
 
 /* border */
 int border_state = 0;
@@ -94,36 +94,36 @@ static DRAW_INLINE void draw_sprites(int xpos, int pixel_pri)
     active_sprite = -1;
     collision_mask = 0;
     for (s = 0; s < 8; s++) {
+        int m = 1 << s;
 
         /* start rendering on position match */
-        if ( sprite_pending_bits & (1 << s) ) {
+        if ( sprite_pending_bits & m ) {
             if ( xpos == sprite_x_pipe[s] ) {
                 sbuf_reg[s] = vicii.sprite[s].data;
-                sbuf_expx_flop[s] = 0;
-                sbuf_mc_flop[s] = 0;
-                sprite_active_bits |= (1 << s);
-                sprite_pending_bits &= ~(1 << s);
+                sbuf_expx_flops |= m;
+                sbuf_mc_flops |= m;
+                sprite_active_bits |= m;
+                sprite_pending_bits &= ~m;
             }
         }
 
-        if ( sprite_active_bits & (1 << s) ) {
+        if ( sprite_active_bits & m ) {
             /* render pixels if shift register or pixel reg still contains data */
             if ( sbuf_reg[s] || sbuf_pixel_reg[s] ) {
               
                   
-                if ( sbuf_expx_flop[s] == 0 ) {
-                    if (sprite_mc_bits & (1 << s)) {
-                        if (sbuf_mc_flop[s] == 0) {
+                if ( sbuf_expx_flops & m ) {
+                    if (sprite_mc_bits & m) {
+                        if ( sbuf_mc_flops & m ) {
                             /* fetch 2 bits */
                             sbuf_pixel_reg[s] = (sbuf_reg[s] >> 22) & 0x03;
                         }
-                        sbuf_mc_flop[s] ^= 1;
+                        sbuf_mc_flops ^= m;
                     } else {
                         /* fetch 1 bit and make it 0 or 2 */
                         sbuf_pixel_reg[s] = ( (sbuf_reg[s] >> 23) & 0x01 ) << 1;
                     }
                 }
-
 
                 /*
                  * set collision mask bits and determine the highest
@@ -133,20 +133,20 @@ static DRAW_INLINE void draw_sprites(int xpos, int pixel_pri)
                     if (active_sprite == -1) {
                         active_sprite = s;
                     }
-                    collision_mask |= (1 << s);
+                    collision_mask |= m;
                 }
 
-                if ( !(sprite_halt_bits & (1 << s)) ) {
+                if ( !(sprite_halt_bits & m) ) {
                     /* shift the sprite buffer and handle expansion flags */
-                    if (sbuf_expx_flop[s] == 0) {
+                    if ( sbuf_expx_flops & m ) {
                         sbuf_reg[s] <<= 1;
                     }
-                    if (sprite_expx_bits & (1 << s)) {
-                        sbuf_expx_flop[s] ^= 1;
+                    if (sprite_expx_bits & m) {
+                        sbuf_expx_flops ^= m;
                     }
                 }
             } else {
-                sprite_active_bits &= ~(1 << s);
+                sprite_active_bits &= ~m;
             }
         }
     }
@@ -283,14 +283,9 @@ static DRAW_INLINE void update_sprite_exp_pri(int cycle)
 
 static DRAW_INLINE void update_sprite_mc_bits(int cycle)
 {
-    int s;
     BYTE toggled;
     toggled = vicii.regs[0x1c] ^ sprite_mc_bits;
-    for (s=0; s < 8; s++) {
-        if (toggled & (1 << s)) {
-            sbuf_mc_flop[s] = 1;
-        }
-    }
+    sbuf_mc_flops &= ~toggled;
     sprite_mc_bits = vicii.regs[0x1c];
 }
 
@@ -359,7 +354,7 @@ void vicii_draw_cycle(void)
             vbuf_reg = vbuf_pipe1_reg;
             cbuf_reg = cbuf_pipe1_reg;
             gbuf_reg = gbuf_pipe1_reg;
-            gbuf_mc_flop = 0;
+            gbuf_mc_flop = 1;
         }
            
         /* Load new border mask depending on csel and xscroll */
@@ -430,7 +425,7 @@ void vicii_draw_cycle(void)
         case VICII_ILLEGAL_TEXT_MODE:      /* ECM=1 BMM=0 MCM=1 */
             if (cbuf_reg & 0x08) {
                 /* mc pixels */
-                if (gbuf_mc_flop == 0) {
+                if (gbuf_mc_flop) {
                     gbuf_pixel_reg = gbuf_reg >> 6;
                 }
                 px = gbuf_pixel_reg;
@@ -443,7 +438,7 @@ void vicii_draw_cycle(void)
         case VICII_MULTICOLOR_BITMAP_MODE: /* ECM=0 BMM=1 MCM=1 */
         case VICII_ILLEGAL_BITMAP_MODE_2:  /* ECM=1 BMM=1 MCM=1 */
             /* mc pixels */
-            if (gbuf_mc_flop == 0) {
+            if (gbuf_mc_flop) {
                 gbuf_pixel_reg = gbuf_reg >> 6;
             }
             px = gbuf_pixel_reg;
