@@ -88,7 +88,7 @@ static DRAW_INLINE void draw_sprites(int xpos, int pixel_pri)
     BYTE collision_mask;
 
     /* do nothing if all sprites are disabled */
-    if (!(vicii.sprite_display_bits || sprite_active_bits)) {
+    if ( !(sprite_pending_bits || sprite_active_bits) ) {
         return;
     }
 
@@ -96,17 +96,14 @@ static DRAW_INLINE void draw_sprites(int xpos, int pixel_pri)
     collision_mask = 0;
     for (s = 0; s < 8; s++) {
 
-        if ( vicii.sprite_display_bits & (1 << s) ) {
-
-            /* start rendering on position match */
-            if ( sprite_pending_bits & (1 << s) ) {
-                if ( xpos == sprite_x_pipe[s] ) {
-                    sbuf_reg[s] = vicii.sprite[s].data;
-                    sbuf_expx_flop[s] = 0;
-                    sbuf_mc_flop[s] = 0;
-                    sprite_active_bits |= (1 << s);
-                    sprite_pending_bits &= ~(1 << s);
-                }
+        /* start rendering on position match */
+        if ( sprite_pending_bits & (1 << s) ) {
+            if ( xpos == sprite_x_pipe[s] ) {
+                sbuf_reg[s] = vicii.sprite[s].data;
+                sbuf_expx_flop[s] = 0;
+                sbuf_mc_flop[s] = 0;
+                sprite_active_bits |= (1 << s);
+                sprite_pending_bits &= ~(1 << s);
             }
         }
 
@@ -253,28 +250,28 @@ static DRAW_INLINE void update_sprite_pending(int cycle)
     /* this is replicated a bit from vicii-cycle.c */
     switch (cycle) {
     case VICII_PAL_CYCLE(59):
-        sprite_pending_bits |= (1<<0);
+        sprite_pending_bits |= vicii.sprite_display_bits & (1<<0);
         break;
     case VICII_PAL_CYCLE(61):
-        sprite_pending_bits |= (1<<1);
+        sprite_pending_bits |= vicii.sprite_display_bits & (1<<1);
         break;
     case VICII_PAL_CYCLE(63):
-        sprite_pending_bits |= (1<<2);
+        sprite_pending_bits |= vicii.sprite_display_bits & (1<<2);
         break;
     case VICII_PAL_CYCLE(2):
-        sprite_pending_bits |= (1<<3);
+        sprite_pending_bits |= vicii.sprite_display_bits & (1<<3);
         break;
     case VICII_PAL_CYCLE(4):
-        sprite_pending_bits |= (1<<4);
+        sprite_pending_bits |= vicii.sprite_display_bits & (1<<4);
         break;
     case VICII_PAL_CYCLE(6):
-        sprite_pending_bits |= (1<<5);
+        sprite_pending_bits |= vicii.sprite_display_bits & (1<<5);
         break;
     case VICII_PAL_CYCLE(8):
-        sprite_pending_bits |= (1<<6);
+        sprite_pending_bits |= vicii.sprite_display_bits & (1<<6);
         break;
     case VICII_PAL_CYCLE(10):
-        sprite_pending_bits |= (1<<7);
+        sprite_pending_bits |= vicii.sprite_display_bits & (1<<7);
         break;
     }
 }
