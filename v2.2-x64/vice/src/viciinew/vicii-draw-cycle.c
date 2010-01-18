@@ -84,24 +84,16 @@ static BYTE current_pixel = 0;
 static DRAW_INLINE void draw_sprites(int xpos, int pixel_pri)
 {
     int s;
-    BYTE c[4];
-    int rendered;
+    int active_sprite;
     BYTE collision_mask;
-    int collision_count;
-    int x;
 
     /* do nothing if all sprites are disabled */
     if (!vicii.sprite_display_bits) {
         return;
     }
 
-    c[1] = vicii.regs[0x25];
-    c[3] = vicii.regs[0x26];
-
-
-    rendered = 0;
+    active_sprite = -1;
     collision_mask = 0;
-    collision_count = 0;
     for (s = 0; s < 8; s++) {
 
        if ( vicii.sprite_display_bits & (1 << s) ) {
@@ -118,14 +110,10 @@ static DRAW_INLINE void draw_sprites(int xpos, int pixel_pri)
             }
 
             if ( sprite_active_bits & (1 << s) ) {
-                int spri = sprite_pri_bits & (1 << s);
-                c[2] = vicii.regs[0x27 + s];
-
                 /* render pixels if shift register or pixel reg still contains data */
                 if ( sbuf_reg[s] || sbuf_pixel_reg[s] ) {
-                    
-
-                    
+              
+                  
                     if ( sbuf_expx_flop[s] == 0 ) {
                         if (sprite_mc_bits & (1 << s)) {
                             if (sbuf_mc_flop[s] == 0) {
@@ -141,18 +129,14 @@ static DRAW_INLINE void draw_sprites(int xpos, int pixel_pri)
 
 
                     /*
-                     * render pixels unless a higher priority sprite has already
-                     * rendered pixels.
+                     * set collision mask bits and determine the highest
+                     * priority sprite number that has a pixel.
                      */
                     if (sbuf_pixel_reg[s]) {
-                        if (!rendered) {
-                            if ( !(pixel_pri && spri) ) {
-                                current_pixel = c[ sbuf_pixel_reg[s] ];
-                            }
-                            rendered = 1;
+                        if (active_sprite == -1) {
+                            active_sprite = s;
                         }
                         collision_mask |= (1 << s);
-                        collision_count++;
                     }
 
                     if ( !(sprite_halt_bits & (1 << s)) ) {
@@ -170,8 +154,29 @@ static DRAW_INLINE void draw_sprites(int xpos, int pixel_pri)
             }
         }
     }
+
+    if (active_sprite != -1) {
+        int s = active_sprite;
+        int spri = sprite_pri_bits & (1 << s);
+        if ( !(pixel_pri && spri) ) {
+            switch (sbuf_pixel_reg[s]) {
+            case 1:
+                current_pixel = vicii.regs[0x25];
+                break;
+            case 2:
+                current_pixel = vicii.regs[0x27 + s];
+                break;
+            case 3:
+                current_pixel = vicii.regs[0x26];
+                break;
+            default:
+                break;
+            }
+        }
+    }
     
-    if (collision_count > 1) {
+    /* if 2 or more bits are set, trigger collisions */
+    if ( collision_mask & (collision_mask-1) ) {
         vicii.sprite_sprite_collisions |= collision_mask;
     }
     if (pixel_pri) {
