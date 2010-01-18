@@ -88,7 +88,7 @@ static DRAW_INLINE void draw_sprites(int xpos, int pixel_pri)
     BYTE collision_mask;
 
     /* do nothing if all sprites are disabled */
-    if (!vicii.sprite_display_bits) {
+    if (!(vicii.sprite_display_bits || sprite_active_bits)) {
         return;
     }
 
@@ -96,7 +96,7 @@ static DRAW_INLINE void draw_sprites(int xpos, int pixel_pri)
     collision_mask = 0;
     for (s = 0; s < 8; s++) {
 
-       if ( vicii.sprite_display_bits & (1 << s) ) {
+        if ( vicii.sprite_display_bits & (1 << s) ) {
 
             /* start rendering on position match */
             if ( sprite_pending_bits & (1 << s) ) {
@@ -108,49 +108,49 @@ static DRAW_INLINE void draw_sprites(int xpos, int pixel_pri)
                     sprite_pending_bits &= ~(1 << s);
                 }
             }
+        }
 
-            if ( sprite_active_bits & (1 << s) ) {
-                /* render pixels if shift register or pixel reg still contains data */
-                if ( sbuf_reg[s] || sbuf_pixel_reg[s] ) {
+        if ( sprite_active_bits & (1 << s) ) {
+            /* render pixels if shift register or pixel reg still contains data */
+            if ( sbuf_reg[s] || sbuf_pixel_reg[s] ) {
               
                   
-                    if ( sbuf_expx_flop[s] == 0 ) {
-                        if (sprite_mc_bits & (1 << s)) {
-                            if (sbuf_mc_flop[s] == 0) {
-                                /* fetch 2 bits */
-                                sbuf_pixel_reg[s] = (sbuf_reg[s] >> 22) & 0x03;
-                            }
-                            sbuf_mc_flop[s] ^= 1;
-                        } else {
-                            /* fetch 1 bit and make it 0 or 2 */
-                            sbuf_pixel_reg[s] = ( (sbuf_reg[s] >> 23) & 0x01 ) << 1;
+                if ( sbuf_expx_flop[s] == 0 ) {
+                    if (sprite_mc_bits & (1 << s)) {
+                        if (sbuf_mc_flop[s] == 0) {
+                            /* fetch 2 bits */
+                            sbuf_pixel_reg[s] = (sbuf_reg[s] >> 22) & 0x03;
                         }
+                        sbuf_mc_flop[s] ^= 1;
+                    } else {
+                        /* fetch 1 bit and make it 0 or 2 */
+                        sbuf_pixel_reg[s] = ( (sbuf_reg[s] >> 23) & 0x01 ) << 1;
                     }
-
-
-                    /*
-                     * set collision mask bits and determine the highest
-                     * priority sprite number that has a pixel.
-                     */
-                    if (sbuf_pixel_reg[s]) {
-                        if (active_sprite == -1) {
-                            active_sprite = s;
-                        }
-                        collision_mask |= (1 << s);
-                    }
-
-                    if ( !(sprite_halt_bits & (1 << s)) ) {
-                        /* shift the sprite buffer and handle expansion flags */
-                        if (sbuf_expx_flop[s] == 0) {
-                            sbuf_reg[s] <<= 1;
-                        }
-                        if (sprite_expx_bits & (1<<s)) {
-                            sbuf_expx_flop[s] ^= 1;
-                        }
-                    }
-                } else {
-                    sprite_active_bits &= ~(1 << s);
                 }
+
+
+                /*
+                 * set collision mask bits and determine the highest
+                 * priority sprite number that has a pixel.
+                 */
+                if (sbuf_pixel_reg[s]) {
+                    if (active_sprite == -1) {
+                        active_sprite = s;
+                    }
+                    collision_mask |= (1 << s);
+                }
+
+                if ( !(sprite_halt_bits & (1 << s)) ) {
+                    /* shift the sprite buffer and handle expansion flags */
+                    if (sbuf_expx_flop[s] == 0) {
+                        sbuf_reg[s] <<= 1;
+                    }
+                    if (sprite_expx_bits & (1 << s)) {
+                        sbuf_expx_flop[s] ^= 1;
+                    }
+                }
+            } else {
+                sprite_active_bits &= ~(1 << s);
             }
         }
     }
