@@ -206,6 +206,19 @@ static DRAW_INLINE void update_sprite_xpos(int cycle)
 }
 
 
+enum lookup_t {
+    COL_BLACK    = 0,
+    COL_VBUF_L   = 1,
+    COL_VBUF_H   = 2,
+    COL_CBUF     = 3,
+    COL_CBUF_MC  = 4,
+    COL_D02X_EXT = 5,
+    COL_D021     = 0x21,
+    COL_D022     = 0x22,
+    COL_D023     = 0x23,
+    COL_D024     = 0x24
+};
+
 void vicii_draw_cycle(void)
 {
     int cycle, offs, i, s;
@@ -237,7 +250,8 @@ void vicii_draw_cycle(void)
     /* render pixels */
     for (i = 0; i < 8; i++) {
         BYTE px;
-        BYTE c[4];
+        enum lookup_t c[4];
+        int cc;
         int pixel_pri;
            
         /* pipe sprite related changes 2 pixels late */
@@ -280,43 +294,42 @@ void vicii_draw_cycle(void)
 
         /* setup colors depending on video mode */
         switch (vmode_pipe) {
-
         case VICII_NORMAL_TEXT_MODE:       /* ECM=0 BMM=0 MCM=0 */
-            c[0] = vicii.regs[0x21];
-            c[3] = cbuf_reg;
+            c[0] = COL_D021;
+            c[3] = COL_CBUF;
             break;
 
         case VICII_MULTICOLOR_TEXT_MODE:   /* ECM=0 BMM=0 MCM=1 */
-            c[0] = vicii.regs[0x21];
-            c[1] = vicii.regs[0x22];
-            c[2] = vicii.regs[0x23];
-            c[3] = cbuf_reg & 0x07;
+            c[0] = COL_D021;
+            c[2] = COL_D022;
+            c[1] = COL_D023;
+            c[3] = COL_CBUF_MC;
             break;
 
         case VICII_HIRES_BITMAP_MODE:      /* ECM=0 BMM=1 MCM=0 */
-            c[0] = vbuf_reg & 0x0f;
-            c[3] = vbuf_reg >> 4;
+            c[0] = COL_VBUF_L;
+            c[3] = COL_VBUF_H;
             break;
 
         case VICII_MULTICOLOR_BITMAP_MODE: /* ECM=0 BMM=1 MCM=1 */
-            c[0] = vicii.regs[0x21];
-            c[1] = vbuf_reg >> 4;
-            c[2] = vbuf_reg & 0x0f;
-            c[3] = cbuf_reg;
+            c[0] = COL_D021;
+            c[1] = COL_VBUF_H;
+            c[2] = COL_VBUF_L;
+            c[3] = COL_CBUF;
             break;
             
         case VICII_EXTENDED_TEXT_MODE:     /* ECM=1 BMM=0 MCM=0 */
-            c[0] = vicii.regs[0x21 + (vbuf_reg >> 6)];
-            c[3] = cbuf_reg;
+            c[0] = COL_D02X_EXT;
+            c[3] = COL_CBUF;
             break;
 
         case VICII_ILLEGAL_TEXT_MODE:      /* ECM=1 BMM=0 MCM=1 */
         case VICII_ILLEGAL_BITMAP_MODE_1:  /* ECM=1 BMM=1 MCM=0 */
         case VICII_ILLEGAL_BITMAP_MODE_2:  /* ECM=1 BMM=1 MCM=1 */
-            c[0] = 0;
-            c[1] = 0;
-            c[2] = 0;
-            c[3] = 0;
+            c[0] = COL_BLACK;
+            c[1] = COL_BLACK;
+            c[2] = COL_BLACK;
+            c[3] = COL_BLACK;
             break;
         }
 
@@ -355,14 +368,42 @@ void vicii_draw_cycle(void)
         }
 
         /* Determine pixel color and priority */
-        current_pixel = c[px];
         pixel_pri = (px & 0x2);
+        cc = c[px];
 
         /* shift the graphics buffer */
         gbuf_reg <<= 1;
         gbuf_mc_flop ^= 1;
 
-        /* process sprites */
+        /* lookup colors and render pixel */
+        switch (cc) {
+        case COL_BLACK:
+            current_pixel = 0;
+            break;
+        case COL_VBUF_L:
+            current_pixel = vbuf_reg & 0x0f;
+            break;
+        case COL_VBUF_H:
+            current_pixel = vbuf_reg >> 4;
+            break;
+        case COL_CBUF:
+            current_pixel = cbuf_reg;
+            break;
+        case COL_CBUF_MC:
+            current_pixel = cbuf_reg & 0x07;
+            break;
+        case COL_D02X_EXT:
+            current_pixel = vicii.regs[0x21 + (vbuf_reg >> 6)];
+            break;
+        case COL_D021:
+        case COL_D022:
+        case COL_D023:
+        case COL_D024:
+            current_pixel = vicii.regs[cc];
+            break;
+        }
+
+        /* process and render sprites */
         draw_sprites(xpos + i, pixel_pri);
 
         /* add border on top */
