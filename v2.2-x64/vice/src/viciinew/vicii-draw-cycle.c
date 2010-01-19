@@ -73,9 +73,8 @@ BYTE sbuf_expx_flops;
 BYTE sbuf_mc_flops;
 
 /* border */
-int border_state = 0;
-int main_border_pipe = 0;
-
+static int border_state = 0;
+static int main_border_pipe = 0;
 
 /* intermediate pixel result */
 static BYTE current_pixel = 0;
@@ -115,7 +114,7 @@ static DRAW_INLINE void draw_sprites(int xpos, int pixel_pri)
     /* check for active sprites */
     active_sprite = -1;
     collision_mask = 0;
-    for (s = 0; s < 8; s++) {
+    for (s = 7; s >= 0; --s) {
         int m = 1 << s;
 
         if ( sprite_active_bits & m ) {
@@ -141,9 +140,7 @@ static DRAW_INLINE void draw_sprites(int xpos, int pixel_pri)
                  * priority sprite number that has a pixel.
                  */
                 if (sbuf_pixel_reg[s]) {
-                    if (active_sprite == -1) {
-                        active_sprite = s;
-                    }
+                    active_sprite = s;
                     collision_mask |= m;
                 }
 
@@ -162,7 +159,7 @@ static DRAW_INLINE void draw_sprites(int xpos, int pixel_pri)
         }
     }
 
-    if (active_sprite != -1) {
+    if (collision_mask) {
         int s = active_sprite;
         int spri = sprite_pri_bits & (1 << s);
         if ( !(pixel_pri && spri) ) {
@@ -191,26 +188,6 @@ static DRAW_INLINE void draw_sprites(int xpos, int pixel_pri)
     }
 }
 
-
-static DRAW_INLINE void update_sprite_halt(int cycle)
-{
-    sprite_halt_bits = vicii.sprite_dma_cycle_0;
-}
-
-static DRAW_INLINE void update_sprite_active(int cycle)
-{
-    sprite_active_bits &= ~vicii.sprite_dma_cycle_2;
-}
-
-static DRAW_INLINE void update_sprite_pending(int cycle)
-{
-    sprite_pending_bits |= vicii.sprite_display_bits & vicii.sprite_dma_cycle_2;}
-
-static DRAW_INLINE void update_sprite_exp_pri(int cycle)
-{
-    sprite_pri_bits = vicii.regs[0x1b];
-    sprite_expx_bits = vicii.regs[0x1d];
-}
 
 static DRAW_INLINE void update_sprite_mc_bits(int cycle)
 {
@@ -265,18 +242,19 @@ void vicii_draw_cycle(void)
            
         /* pipe sprite related changes 2 pixels late */
         if (i == 2) {
-            update_sprite_halt(cycle);
-            update_sprite_active(cycle);
+            sprite_halt_bits = vicii.sprite_dma_cycle_0;
+            sprite_active_bits &= ~vicii.sprite_dma_cycle_2;
         }
         if (i == 3) {
             sprite_pending_bits &= ~sprite_halt_bits;
         }
         if (i == 6) {
-            update_sprite_exp_pri(cycle);
+            sprite_pri_bits = vicii.regs[0x1b];
+            sprite_expx_bits = vicii.regs[0x1d];
         }
         if (i == 7) {
             update_sprite_mc_bits(cycle);
-            update_sprite_pending(cycle);
+            sprite_pending_bits |= vicii.sprite_display_bits & vicii.sprite_dma_cycle_2;
         }
 
         /* Load new gbuf/vbuf/cbuf values at offset == xscroll */
