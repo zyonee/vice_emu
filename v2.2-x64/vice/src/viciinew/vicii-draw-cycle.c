@@ -301,8 +301,8 @@ void vicii_draw_cycle(void)
 
         case VICII_MULTICOLOR_TEXT_MODE:   /* ECM=0 BMM=0 MCM=1 */
             c[0] = COL_D021;
-            c[2] = COL_D022;
-            c[1] = COL_D023;
+            c[1] = COL_D022;
+            c[2] = COL_D023;
             c[3] = COL_CBUF_MC;
             break;
 
