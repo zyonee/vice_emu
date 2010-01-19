@@ -272,7 +272,7 @@ struct vicii_s {
     int fetch_active;
     int prefetch_cycles;
 
-    /* Mask for sprites being fetched at DMA.  */
+    /* Mask for sprites being fetched at DMA. (this is obsolete) */
     unsigned int sprite_fetch_msk;
 
     /* Mask for sprites being displayed.  */
@@ -280,6 +280,10 @@ struct vicii_s {
 
     /* State of sprites. */
     vicii_sprite_t sprite[VICII_NUM_SPRITES];
+
+    /* Bit masks to indicate sprite fetch cycles */
+    BYTE sprite_dma_cycle_0;
+    BYTE sprite_dma_cycle_2;
 
     /* Geometry and timing parameters of the selected VIC-II emulation.  */
     unsigned int screen_height;
@@ -290,7 +294,7 @@ struct vicii_s {
     int screen_rightborderwidth;
     int cycles_per_line;
     int draw_cycle;
-    int sprite_fetch_cycle;
+    int sprite_fetch_cycle;  /* obsolete */
     int sprite_wrap_x;
 
     /* Flag backgroundcolor in hires mode or extended text mode.  */

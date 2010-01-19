@@ -98,6 +98,7 @@ inline static int sprite_dma_cycle_0(int i)
             log_debug("SDMA0 in cycle %i", vicii.raster_cycle);
         }
 #endif
+        vicii.sprite_dma_cycle_0 = (1 << i);
         ba_low = 1;
     }
 
@@ -123,6 +124,7 @@ inline static int sprite_dma_cycle_2(int i)
             log_debug("SDMA2 in cycle %i", vicii.raster_cycle);
         }
 #endif
+        vicii.sprite_dma_cycle_2 = (1 << i);
         ba_low = 1;
     }
 
@@ -271,6 +273,9 @@ int vicii_fetch_sprites(int cycle)
 {
     int ba_low = 0;
 
+    vicii.sprite_dma_cycle_0 = 0;
+    vicii.sprite_dma_cycle_2 = 0;
+
     switch (cycle) {
     case VICII_PAL_CYCLE(55):
         ba_low = check_sprite_dma(0);
@@ -294,11 +299,11 @@ int vicii_fetch_sprites(int cycle)
         ba_low = sprite_dma_cycle_2(1) | check_sprite_dma(2) | check_sprite_dma(3);
         break;
     case VICII_PAL_CYCLE(62):
-            ba_low = sprite_dma_cycle_0(2) | check_sprite_dma(3);
-            break;
+        ba_low = sprite_dma_cycle_0(2) | check_sprite_dma(3);
+        break;
     case VICII_PAL_CYCLE(63):
-            ba_low = sprite_dma_cycle_2(2) | check_sprite_dma(3) | check_sprite_dma(4);
-            break;
+        ba_low = sprite_dma_cycle_2(2) | check_sprite_dma(3) | check_sprite_dma(4);
+        break;
     case VICII_PAL_CYCLE(1):
         ba_low = sprite_dma_cycle_0(3) | check_sprite_dma(4);
         break;

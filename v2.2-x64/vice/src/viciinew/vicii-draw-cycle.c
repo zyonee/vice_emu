@@ -194,97 +194,17 @@ static DRAW_INLINE void draw_sprites(int xpos, int pixel_pri)
 
 static DRAW_INLINE void update_sprite_halt(int cycle)
 {
-    sprite_halt_bits = 0;
-    /* this is replicated a bit from vicii-cycle.c */
-    switch (cycle) {
-    case VICII_PAL_CYCLE(58):
-        sprite_halt_bits = (1<<0);
-        break;
-    case VICII_PAL_CYCLE(60):
-        sprite_halt_bits = (1<<1);
-        break;
-    case VICII_PAL_CYCLE(62):
-        sprite_halt_bits = (1<<2);
-        break;
-    case VICII_PAL_CYCLE(1):
-        sprite_halt_bits = (1<<3);
-        break;
-    case VICII_PAL_CYCLE(3):
-        sprite_halt_bits = (1<<4);
-        break;
-    case VICII_PAL_CYCLE(5):
-        sprite_halt_bits = (1<<5);
-        break;
-    case VICII_PAL_CYCLE(7):
-        sprite_halt_bits = (1<<6);
-        break;
-    case VICII_PAL_CYCLE(9):
-        sprite_halt_bits = (1<<7);
-        break;
-    }
+    sprite_halt_bits = vicii.sprite_dma_cycle_0;
 }
 
 static DRAW_INLINE void update_sprite_active(int cycle)
 {
-    /* this is replicated a bit from vicii-cycle.c */
-    switch (cycle) {
-    case VICII_PAL_CYCLE(59):
-        sprite_active_bits &= ~(1<<0);
-        break;
-    case VICII_PAL_CYCLE(61):
-        sprite_active_bits &= ~(1<<1);
-        break;
-    case VICII_PAL_CYCLE(63):
-        sprite_active_bits &= ~(1<<2);
-        break;
-    case VICII_PAL_CYCLE(2):
-        sprite_active_bits &= ~(1<<3);
-        break;
-    case VICII_PAL_CYCLE(4):
-        sprite_active_bits &= ~(1<<4);
-        break;
-    case VICII_PAL_CYCLE(6):
-        sprite_active_bits &= ~(1<<5);
-        break;
-    case VICII_PAL_CYCLE(8):
-        sprite_active_bits &= ~(1<<6);
-        break;
-    case VICII_PAL_CYCLE(10):
-        sprite_active_bits &= ~(1<<7);
-        break;
-    }
+    sprite_active_bits &= ~vicii.sprite_dma_cycle_2;
 }
 
 static DRAW_INLINE void update_sprite_pending(int cycle)
 {
-    /* this is replicated a bit from vicii-cycle.c */
-    switch (cycle) {
-    case VICII_PAL_CYCLE(59):
-        sprite_pending_bits |= vicii.sprite_display_bits & (1<<0);
-        break;
-    case VICII_PAL_CYCLE(61):
-        sprite_pending_bits |= vicii.sprite_display_bits & (1<<1);
-        break;
-    case VICII_PAL_CYCLE(63):
-        sprite_pending_bits |= vicii.sprite_display_bits & (1<<2);
-        break;
-    case VICII_PAL_CYCLE(2):
-        sprite_pending_bits |= vicii.sprite_display_bits & (1<<3);
-        break;
-    case VICII_PAL_CYCLE(4):
-        sprite_pending_bits |= vicii.sprite_display_bits & (1<<4);
-        break;
-    case VICII_PAL_CYCLE(6):
-        sprite_pending_bits |= vicii.sprite_display_bits & (1<<5);
-        break;
-    case VICII_PAL_CYCLE(8):
-        sprite_pending_bits |= vicii.sprite_display_bits & (1<<6);
-        break;
-    case VICII_PAL_CYCLE(10):
-        sprite_pending_bits |= vicii.sprite_display_bits & (1<<7);
-        break;
-    }
-}
+    sprite_pending_bits |= vicii.sprite_display_bits & vicii.sprite_dma_cycle_2;}
 
 static DRAW_INLINE void update_sprite_exp_pri(int cycle)
 {
