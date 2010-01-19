@@ -25,19 +25,6 @@
  *
  */
 
-/* TODO: - speed optimizations;
-   - faster sprites and registers.  */
-
-/*
-   Current (most important) known limitations:
-
-   - sprite colors (and other attributes) cannot change in the middle of the
-   raster line;
-
-   Probably something else which I have not figured out yet...
-
- */
-
 #include "vice.h"
 
 #include <stdio.h>

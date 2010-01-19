@@ -91,8 +91,7 @@ static DRAW_INLINE void draw_sprites(int xpos, int pixel_pri)
         return;
     }
 
-    active_sprite = -1;
-    collision_mask = 0;
+    /* check for pending */
     for (s = 0; s < 8; s++) {
         int m = 1 << s;
 
@@ -106,6 +105,18 @@ static DRAW_INLINE void draw_sprites(int xpos, int pixel_pri)
                 sprite_pending_bits &= ~m;
             }
         }
+    }
+
+    /* do nothing if all sprites are inactive */
+    if ( !sprite_active_bits ) {
+        return;
+    }
+
+    /* check for active sprites */
+    active_sprite = -1;
+    collision_mask = 0;
+    for (s = 0; s < 8; s++) {
+        int m = 1 << s;
 
         if ( sprite_active_bits & m ) {
             /* render pixels if shift register or pixel reg still contains data */
