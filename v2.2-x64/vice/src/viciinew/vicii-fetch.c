@@ -98,12 +98,13 @@ inline static int sprite_dma_cycle_0(int i)
             log_debug("SDMA0 in cycle %i", vicii.raster_cycle);
         }
 #endif
-        vicii.sprite_dma_cycle_0 = (1 << i);
         ba_low = 1;
     }
 
     vicii.sprite[i].data &= 0x00ffff;
     vicii.sprite[i].data |= sprdata << 16;
+
+    vicii.sprite_dma_cycle_0 = (1 << i);
 
     return ba_low;
 }
@@ -124,12 +125,13 @@ inline static int sprite_dma_cycle_2(int i)
             log_debug("SDMA2 in cycle %i", vicii.raster_cycle);
         }
 #endif
-        vicii.sprite_dma_cycle_2 = (1 << i);
         ba_low = 1;
     }
 
     vicii.sprite[i].data &= 0xffff00;
     vicii.sprite[i].data |= sprdata;
+
+    vicii.sprite_dma_cycle_2 = (1 << i);
 
     return ba_low;
 }
