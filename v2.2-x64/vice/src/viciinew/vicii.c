@@ -381,6 +381,7 @@ void vicii_set_phi2_vbank(int num_vbank)
 /* Trigger the light pen.  */
 void vicii_trigger_light_pen(CLOCK mclk)
 {
+    /* FIXME get rid of VICII_* */
     if (!vicii.light_pen.triggered) {
         vicii.light_pen.triggered = 1;
         vicii.light_pen.x = VICII_RASTER_X(mclk % vicii.cycles_per_line)
@@ -390,8 +391,8 @@ void vicii_trigger_light_pen(CLOCK mclk)
             vicii.light_pen.x = vicii.sprite_wrap_x + vicii.light_pen.x;
         }
 
-        /* FIXME: why `+2'? */
-        vicii.light_pen.x = vicii.light_pen.x / 2 + 2 + vicii.light_pen.x_extra_bits;
+        /* +4 tuned to get "Wall" in Crest Avandgarde working */
+        vicii.light_pen.x = vicii.light_pen.x / 2 + 4 + vicii.light_pen.x_extra_bits;
         vicii.light_pen.x_extra_bits = 0;
         vicii.light_pen.y = VICII_RASTER_Y(mclk);
 
