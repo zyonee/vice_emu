@@ -203,7 +203,7 @@ inline static void d017_store(const BYTE value)
 
                 /* 0x2a = 0b101010
                    0x15 = 0b010101 */
-                vicii.sprite[i].mc = (mc == 0x3f) ? 0x3f : ((0x2a & (mcbase & mc)) | (0x15 & (mcbase | mc)));
+                vicii.sprite[i].mc = (0x2a & (mcbase & mc)) | (0x15 & (mcbase | mc));
 
                 /* mcbase is set from mc on the following vicii_cycle() call */
             }
