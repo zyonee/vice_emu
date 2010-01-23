@@ -32,6 +32,7 @@
 
 #include "debug.h"
 #include "c64mem.h"
+#include "machine.h"
 #include "menu_c64cart.h"
 #include "menu_c64hw.h"
 #include "menu_common.h"
@@ -143,7 +144,7 @@ static const ui_menu_entry_t x64_main_menu[] = {
     { NULL }
 };
 
-void c64ui_set_menu_params(int index, menu_draw_t *menu_draw)
+void c64scui_set_menu_params(int index, menu_draw_t *menu_draw)
 {
     int bordermode;
 
@@ -172,7 +173,11 @@ int c64ui_init(void)
     fprintf(stderr, "%s\n", __func__);
 #endif
 
-    sdl_ui_set_menu_params = c64ui_set_menu_params;
+    if (machine_class == VICE_MACHINE_C64SC) {
+        sdl_ui_set_menu_params = c64scui_set_menu_params;
+    } else {
+        sdl_ui_set_menu_params = NULL;
+    }
 
     sdl_ui_set_main_menu(x64_main_menu);
     sdl_ui_set_menu_font(mem_chargen_rom + 0x800, 8, 8);
