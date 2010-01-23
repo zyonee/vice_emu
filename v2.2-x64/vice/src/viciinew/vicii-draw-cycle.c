@@ -265,8 +265,8 @@ void vicii_draw_cycle(void)
         if (i == 3) {
             sprite_halted_bits |= vicii.sprite_dma_cycle_0;
         }
-        if (i == 4) {
-            sprite_pending_bits = vicii.sprite_display_bits;
+        if (cycle == VICII_PAL_CYCLE(58) && i == 4) {
+            sprite_pending_bits |= vicii.sprite_display_bits;
         }
         if (i == 6) {
             sprite_pri_bits = vicii.regs[0x1b];
