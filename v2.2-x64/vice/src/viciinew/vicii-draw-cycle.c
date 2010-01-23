@@ -58,6 +58,7 @@ BYTE vbuf_reg = 0;
 
 /* sprites */
 int sprite_x_pipe[8];
+DWORD sprite_data_pipe[8];
 BYTE sprite_pri_bits = 0;
 BYTE sprite_mc_bits = 0;
 BYTE sprite_expx_bits = 0;
@@ -65,6 +66,7 @@ BYTE sprite_expx_bits = 0;
 BYTE sprite_pending_bits = 0;
 BYTE sprite_active_bits = 0;
 BYTE sprite_halt_bits = 0;
+BYTE sprite_halted_bits = 0;
 
 /* sbuf shift registers */
 DWORD sbuf_reg[8];
@@ -95,9 +97,9 @@ static DRAW_INLINE void draw_sprites(int xpos, int pixel_pri)
         int m = 1 << s;
 
         /* start rendering on position match */
-        if ( sprite_pending_bits & m ) {
+        if ( (sprite_pending_bits & m) && !(sprite_halted_bits & m) ) {
             if ( xpos == sprite_x_pipe[s] ) {
-                sbuf_reg[s] = vicii.sprite[s].data;
+                sbuf_reg[s] = sprite_data_pipe[s];
                 sbuf_expx_flops |= m;
                 sbuf_mc_flops |= m;
                 sprite_active_bits |= m;
@@ -202,6 +204,7 @@ static DRAW_INLINE void update_sprite_xpos(int cycle)
     int s;
     for (s=0; s<8; s++) {
         sprite_x_pipe[s] = vicii.sprite[s].x;
+        sprite_data_pipe[s] = vicii.sprite[s].data;
     }
 }
 
@@ -256,11 +259,14 @@ void vicii_draw_cycle(void)
            
         /* pipe sprite related changes 2 pixels late */
         if (i == 2) {
-            sprite_halt_bits = vicii.sprite_dma_cycle_0;
+            sprite_halt_bits |= vicii.sprite_dma_cycle_0;
             sprite_active_bits &= ~vicii.sprite_dma_cycle_2;
         }
         if (i == 3) {
-            sprite_pending_bits &= ~sprite_halt_bits;
+            sprite_halted_bits |= vicii.sprite_dma_cycle_0;
+        }
+        if (i == 4) {
+            sprite_pending_bits = vicii.sprite_display_bits;
         }
         if (i == 6) {
             sprite_pri_bits = vicii.regs[0x1b];
@@ -268,7 +274,8 @@ void vicii_draw_cycle(void)
         }
         if (i == 7) {
             update_sprite_mc_bits(cycle);
-            sprite_pending_bits |= vicii.sprite_display_bits & vicii.sprite_dma_cycle_2;
+            sprite_halt_bits &= ~vicii.sprite_dma_cycle_2;
+            sprite_halted_bits &= ~vicii.sprite_dma_cycle_2;
         }
 
         /* Load new gbuf/vbuf/cbuf values at offset == xscroll */
