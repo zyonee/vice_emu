@@ -224,7 +224,7 @@ enum lookup_t {
 
 void vicii_draw_cycle(void)
 {
-    int cycle, offs, i, s;
+    int cycle, offs, i;
     int xpos;
     BYTE csel;
     cycle = vicii.raster_cycle;
@@ -371,6 +371,9 @@ void vicii_draw_cycle(void)
                 gbuf_pixel_reg = gbuf_reg >> 6;
             }
             px = gbuf_pixel_reg;
+            break;
+        default:
+            px = 0;
             break;
         }
 
