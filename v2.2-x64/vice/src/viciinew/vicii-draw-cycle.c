@@ -251,7 +251,7 @@ void vicii_draw_cycle(void)
 
     /* render pixels */
     for (i = 0; i < 8; i++) {
-        BYTE px;
+        BYTE px = 0;
         enum lookup_t c[4];
         int cc;
         int pixel_pri;
@@ -327,8 +327,8 @@ void vicii_draw_cycle(void)
             c[3] = COL_CBUF;
             break;
 
-        default:                           /* undefined modes are all
-                                              black */
+        default:
+            /* undefined modes are all black */
             c[0] = COL_BLACK;
             c[1] = COL_BLACK;
             c[2] = COL_BLACK;
@@ -363,9 +363,6 @@ void vicii_draw_cycle(void)
                 gbuf_pixel_reg = gbuf_reg >> 6;
             }
             px = gbuf_pixel_reg;
-            break;
-        default:
-            px = 0;
             break;
         }
 
