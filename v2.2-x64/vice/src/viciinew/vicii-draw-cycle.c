@@ -66,7 +66,6 @@ BYTE sprite_expx_bits = 0;
 BYTE sprite_pending_bits = 0;
 BYTE sprite_active_bits = 0;
 BYTE sprite_halt_bits = 0;
-BYTE sprite_halted_bits = 0;
 
 /* sbuf shift registers */
 DWORD sbuf_reg[8];
@@ -97,7 +96,7 @@ static DRAW_INLINE void draw_sprites(int xpos, int pixel_pri)
         int m = 1 << s;
 
         /* start rendering on position match */
-        if ( (sprite_pending_bits & m) && !(sprite_halted_bits & m) ) {
+        if ( (sprite_pending_bits & m) && !(sprite_halt_bits & m) ) {
             if ( xpos == sprite_x_pipe[s] ) {
                 sbuf_reg[s] = sprite_data_pipe[s];
                 sbuf_expx_flops |= m;
@@ -122,18 +121,27 @@ static DRAW_INLINE void draw_sprites(int xpos, int pixel_pri)
         if ( sprite_active_bits & m ) {
             /* render pixels if shift register or pixel reg still contains data */
             if ( sbuf_reg[s] || sbuf_pixel_reg[s] ) {
-              
-                  
-                if ( sbuf_expx_flops & m ) {
-                    if (sprite_mc_bits & m) {
-                        if ( sbuf_mc_flops & m ) {
-                            /* fetch 2 bits */
-                            sbuf_pixel_reg[s] = (sbuf_reg[s] >> 22) & 0x03;
+                     
+                if ( !(sprite_halt_bits & m) ) {
+                    if ( sbuf_expx_flops & m ) {
+                        if (sprite_mc_bits & m) {
+                            if ( sbuf_mc_flops & m ) {
+                                /* fetch 2 bits */
+                                sbuf_pixel_reg[s] = (sbuf_reg[s] >> 22) & 0x03;
+                            }
+                            sbuf_mc_flops ^= m;
+                        } else {
+                            /* fetch 1 bit and make it 0 or 2 */
+                            sbuf_pixel_reg[s] = ( (sbuf_reg[s] >> 23) & 0x01 ) << 1;
                         }
-                        sbuf_mc_flops ^= m;
-                    } else {
-                        /* fetch 1 bit and make it 0 or 2 */
-                        sbuf_pixel_reg[s] = ( (sbuf_reg[s] >> 23) & 0x01 ) << 1;
+                    }
+
+                    /* shift the sprite buffer and handle expansion flags */
+                    if ( sbuf_expx_flops & m ) {
+                        sbuf_reg[s] <<= 1;
+                    }
+                    if (sprite_expx_bits & m) {
+                        sbuf_expx_flops ^= m;
                     }
                 }
 
@@ -146,15 +154,6 @@ static DRAW_INLINE void draw_sprites(int xpos, int pixel_pri)
                     collision_mask |= m;
                 }
 
-                if ( !(sprite_halt_bits & m) ) {
-                    /* shift the sprite buffer and handle expansion flags */
-                    if ( sbuf_expx_flops & m ) {
-                        sbuf_reg[s] <<= 1;
-                    }
-                    if (sprite_expx_bits & m) {
-                        sbuf_expx_flops ^= m;
-                    }
-                }
             } else {
                 sprite_active_bits &= ~m;
             }
@@ -259,11 +258,10 @@ void vicii_draw_cycle(void)
            
         /* pipe sprite related changes 2 pixels late */
         if (i == 2) {
-            sprite_halt_bits |= vicii.sprite_dma_cycle_0;
             sprite_active_bits &= ~vicii.sprite_dma_cycle_2;
         }
         if (i == 3) {
-            sprite_halted_bits |= vicii.sprite_dma_cycle_0;
+            sprite_halt_bits |= vicii.sprite_dma_cycle_0;
         }
         if (cycle == VICII_PAL_CYCLE(58) && i == 4) {
             sprite_pending_bits |= vicii.sprite_display_bits;
@@ -275,7 +273,6 @@ void vicii_draw_cycle(void)
         if (i == 7) {
             update_sprite_mc_bits(cycle);
             sprite_halt_bits &= ~vicii.sprite_dma_cycle_2;
-            sprite_halted_bits &= ~vicii.sprite_dma_cycle_2;
         }
 
         /* Load new gbuf/vbuf/cbuf values at offset == xscroll */
