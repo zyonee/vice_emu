@@ -655,6 +655,7 @@ vic20_default_vpl.h: $(EMBEDDED_DEPENDS)
 
 c128_lib = $(top_builddir)/src/c128/libc128.a
 c64_lib = $(top_builddir)/src/c64/libc64.a
+c64sc_lib = $(top_builddir)/src/c64/libc64sc.a
 c64dtv_lib = $(top_builddir)/src/c64dtv/libc64dtv.a
 c64dtvstubs_lib = $(top_builddir)/src/c64dtv/libc64dtvstubs.a
 c64c128_lib = $(top_builddir)/src/c64/libc64c128.a
@@ -724,7 +725,7 @@ else
 c64dtv_bin =
 endif
 
-bin_PROGRAMS = x64 x128 $(x64dtv_bin) xvic xpet xplus4 xcbm2 c1541 petcat cartconv
+bin_PROGRAMS = x64 x64sc x128 $(x64dtv_bin) xvic xpet xplus4 xcbm2 c1541 petcat cartconv
 
 EXTRA_PROGRAMS =
 
@@ -744,13 +745,13 @@ x64_libs =  \
 	$(sid_lib) \
 	$(monitor_lib) \
 	$(driver_libs) \
-	$(viciinew_lib) \
+	$(vicii_lib) \
 	$(raster_lib) \
 	$(video_lib) \
 	$(common_libs) \
 	$(resid_libs)
 
-x64_SOURCES = $(base_sources) $(mouse_sources) $(midi_sources)
+x64_SOURCES = $(base_sources) $(maincpu_sources) $(mouse_sources) $(midi_sources)
 x64_LDADD = $(x64_libs) $(emu_extlibs) @TFE_LIBS@ @NETPLAY_LIBS@
 x64_DEPENDENCIES = $(x64_libs)
 x64_LDFLAGS = @x64_LDFLAGS@
@@ -790,6 +791,69 @@ x64-all: \
 	libfileio \
 	libcore \
 	x64$(EXEEXT)
+
+# x64sc
+x64sc_libs =  \
+	@X64_WINRES@ \
+	$(c64sc_lib) \
+	$(c64cart_lib) \
+	$(driveiec_lib) \
+	$(driveiecieee_lib) \
+	$(driveiecc64exp_lib) \
+	$(driveieee_lib) \
+	$(drive_lib) \
+	$(iecbus_lib) \
+	$(parallel_lib) \
+	$(vdrive_lib) \
+	$(sid_lib) \
+	$(monitor_lib) \
+	$(driver_libs) \
+	$(viciinew_lib) \
+	$(raster_lib) \
+	$(video_lib) \
+	$(common_libs) \
+	$(resid_libs)
+
+x64sc_SOURCES = $(base_sources) $(mouse_sources) $(midi_sources)
+x64sc_LDADD = $(x64sc_libs) $(emu_extlibs) @TFE_LIBS@ @NETPLAY_LIBS@
+x64sc_DEPENDENCIES = $(x64sc_libs)
+x64sc_LDFLAGS = @x64_LDFLAGS@
+
+.PHONY: x64sc-all
+x64sc-all: \
+	$(BUILT_SOURCES) \
+	@RESID_DEP@ \
+	@RESID_FP_DEP@ \
+	@VICE_LIBPNG_DEP@ \
+	@VICE_ZLIB_DEP@ \
+	libc64sc \
+	libc64cart \
+	libdriveiec \
+	libdriveiecieee \
+	libdriveiecc64exp \
+	libdriveieee \
+	libdrive \
+	libparallel \
+	libvdrive \
+	libraster \
+	libsid \
+	libsounddrv \
+	libgfxoutputdrv \
+	libprinterdrv \
+	librs232drv \
+	libviciinew \
+	libvideo \
+	libarch \
+	libmonitor \
+	libdiskimage \
+	libiecbus \
+	libserial \
+	libfsdevice \
+	libtape \
+	libimagecontents \
+	libfileio \
+	libcore \
+	x64sc$(EXEEXT)
 
 # x64dtv
 x64dtv_libs =  \
@@ -1208,9 +1272,9 @@ cartconv_LDADD = @INTLLIBS@
 
 # Special targets to build libraries in subdirectories.
 
-.PHONY: libc64 libc128 libc64dtv libc64dtvstubs libvic20 libpet libplus4 libcbm2 libdrive libvdrive
+.PHONY: libc64 libc64sc libc128 libc64dtv libc64dtvstubs libvic20 libpet libplus4 libcbm2 libdrive libvdrive
 	libprinterdrv librs232drv libgfxoutputdrv libsounddrv libdiskimage
-	libfsdevice libtape libarch libvicii libviciidtv libvdc libsid libcrtc libvideo
+	libfsdevice libtape libarch libvicii libviciinew libviciidtv libvdc libsid libcrtc libvideo
 	libserial libparallel libcore libiecbus libfileio @RESID_DEP@ @RESID_DTV_DEP@ @RESID_FP_DEP@
 	@VICE_LIBPNG_DEP@ @VICE_ZLIB_DEP@
 
@@ -1220,6 +1284,8 @@ libc128:
 	(cd c128 && $(MAKE))
 libc64:
 	(cd c64 && $(MAKE) libc64.a)
+libc64sc:
+	(cd c64 && $(MAKE) libc64sc.a)
 libc64c128:
 	(cd c64 && $(MAKE) libc64c128.a)
 libc64c64dtv:

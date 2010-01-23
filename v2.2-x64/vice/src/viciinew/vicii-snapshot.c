@@ -42,6 +42,11 @@
 #include "vicii.h"
 #include "viciitypes.h"
 
+/* Dummy function called by c64-snapshot.c */
+void vicii_snapshot_prepare(void)
+{
+}
+
 
 /*
 

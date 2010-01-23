@@ -68,6 +68,28 @@ static int unused_bits_in_registers[0x40] =
 };
 
 
+/* FIXME plus60k/256k needs these for now */
+inline static void REGPARM2 vicii_local_store_vbank(WORD addr, BYTE value)
+{
+    vicii.ram_base_phi2[addr] = value;
+}
+
+void REGPARM2 vicii_mem_vbank_store(WORD addr, BYTE value)
+{
+    vicii_local_store_vbank(addr, value);
+}
+
+void REGPARM2 vicii_mem_vbank_39xx_store(WORD addr, BYTE value)
+{
+    vicii_local_store_vbank(addr, value);
+}
+
+void REGPARM2 vicii_mem_vbank_3fxx_store(WORD addr, BYTE value)
+{
+    vicii_local_store_vbank(addr, value);
+}
+
+
 inline static void store_sprite_x_position_lsb(const WORD addr, BYTE value)
 {
     int n;

@@ -1,5 +1,5 @@
 /*
- * c64mem.c -- C64 memory handling.
+ * c64memsc.c -- C64 memory handling for x64sc.
  *
  * Written by
  *  Andreas Boose <viceteam@t-online.de>
@@ -67,7 +67,7 @@
 #endif
 
 /* Machine class (moved from c64.c to distinguish between x64 and x64sc) */
-int machine_class = VICE_MACHINE_C64;
+int machine_class = VICE_MACHINE_C64SC;
 
 /* C64 memory-related resources.  */
 
@@ -220,12 +220,7 @@ void mem_pla_config_changed(void)
 BYTE REGPARM1 zero_read(WORD addr)
 {
     addr &= 0xff;
-#ifdef FEATURE_CPUMEMHISTORY
-    if (!(memmap_state & MEMMAP_STATE_IGNORE)) {
-        monitor_memmap_store(addr, (memmap_state & MEMMAP_STATE_OPCODE) ? MEMMAP_RAM_X : (memmap_state & MEMMAP_STATE_INSTR) ? 0 : MEMMAP_RAM_R);
-        memmap_state &= ~(MEMMAP_STATE_OPCODE);
-    }
-#endif
+
     switch ((BYTE)addr) {
         case 0:
             return pport.dir_read;
@@ -251,9 +246,7 @@ BYTE REGPARM1 zero_read(WORD addr)
 void REGPARM2 zero_store(WORD addr, BYTE value)
 {
     addr &= 0xff;
-#ifdef FEATURE_CPUMEMHISTORY
-    monitor_memmap_store(addr, MEMMAP_RAM_W);
-#endif
+
     switch ((BYTE)addr) {
         case 0:
             if (vbank == 0) {
@@ -263,12 +256,12 @@ void REGPARM2 zero_store(WORD addr, BYTE value)
                     if (plus256k_enabled) {
                         plus256k_ram_low_store((WORD)0, vicii_read_phi1_lowlevel());
                     } else {
-                        vicii_mem_vbank_store((WORD)0, vicii_read_phi1_lowlevel());
+                        mem_ram[0] = vicii_read_phi1_lowlevel();
                     }
                 }
             } else {
                 mem_ram[0] = vicii_read_phi1_lowlevel();
-                machine_handle_pending_alarms(maincpu_rmw_flag + 1);
+                machine_handle_pending_alarms(1);
             }
             if (pport.data_set_bit7 && ((value & 0x80) == 0) && pport.data_falloff_bit7 == 0) {
                 pport.data_falloff_bit7 = 1;
@@ -297,12 +290,12 @@ void REGPARM2 zero_store(WORD addr, BYTE value)
                     if (plus256k_enabled) {
                         plus256k_ram_low_store((WORD)1, vicii_read_phi1_lowlevel());
                     } else {
-                        vicii_mem_vbank_store((WORD)1, vicii_read_phi1_lowlevel());
+                        mem_ram[1] = vicii_read_phi1_lowlevel();
                     }
                 }
             } else {
                 mem_ram[1] = vicii_read_phi1_lowlevel();
-                machine_handle_pending_alarms(maincpu_rmw_flag + 1);
+                machine_handle_pending_alarms(1);
             }
             if ((pport.dir & 0x80) && (value & 0x80)) {
                 pport.data_set_bit7 = 1;
@@ -324,7 +317,7 @@ void REGPARM2 zero_store(WORD addr, BYTE value)
                     if (plus256k_enabled) {
                         plus256k_ram_low_store(addr, value);
                     } else {
-                        vicii_mem_vbank_store(addr, value);
+                        mem_ram[addr] = value;
                     }
                 }
             } else {
@@ -357,11 +350,7 @@ void REGPARM2 ram_store(WORD addr, BYTE value)
 
 void REGPARM2 ram_hi_store(WORD addr, BYTE value)
 {
-    if (vbank == 3) {
-        vicii_mem_vbank_3fxx_store(addr, value);
-    } else {
-        mem_ram[addr] = value;
-    }
+    mem_ram[addr] = value;
 
     if (addr == 0xff00) {
         reu_dma(-1);
@@ -428,6 +417,7 @@ BYTE REGPARM1 colorram_read(WORD addr)
 
 static int check_256k_ram_write(int k, int i, int j)
 {
+    /* FIXME get rid of vicii_mem_vbank_* dependancy */ 
     if (mem_write_tab[k][i][j] == vicii_mem_vbank_39xx_store || mem_write_tab[k][i][j] == vicii_mem_vbank_3fxx_store ||
         mem_write_tab[k][i][j] == vicii_mem_vbank_store || mem_write_tab[k][i][j] == ram_hi_store || mem_write_tab[k][i][j] == ram_store) {
         return 1;
@@ -535,6 +525,7 @@ static void plus60k_init_config(void)
         for (i = 0; i < NUM_CONFIGS; i++) {
             for (j = 0x10; j <= 0xff; j++) {
                 for (k = 0; k < NUM_VBANKS; k++) {
+                    /* FIXME get rid of vicii_mem_vbank_* dependancy */ 
                     if (mem_write_tab[k][i][j] == vicii_mem_vbank_39xx_store) {
                         mem_write_tab[k][i][j] = plus60k_vicii_mem_vbank_39xx_store;
                     }
@@ -655,6 +646,7 @@ void mem_initialize_memory(void)
         for (j = 1; j <= 0xfe; j++) {
             mem_read_tab[i][j] = ram_read;
             mem_read_base_tab[i][j] = mem_ram + (j << 8);
+            /* FIXME get rid of vicii_mem_vbank_* dependancy (kept around until plus60k & 256k are fixed) */
             for (k = 0; k < NUM_VBANKS; k++) {
                 if ((j & 0xc0) == (k << 6)) {
                     switch (j & 0x3f) {

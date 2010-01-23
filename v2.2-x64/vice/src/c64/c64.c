@@ -129,8 +129,9 @@ char *machine_keymap_file_list[NUM_KEYBOARD_MAPPINGS] = {
 };
 
 const char machine_name[] = "C64";
+/* Moved to c64mem.c/c64memsc.c
 int machine_class = VICE_MACHINE_C64;
-
+*/
 static void machine_vsync_hook(void);
 
 /* ------------------------------------------------------------------------- */

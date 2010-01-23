@@ -318,17 +318,17 @@ static void REGPARM2 plus60k_memory_store(WORD addr, BYTE value)
 
 static void REGPARM2 vicii_mem_vbank_store_wrapper(WORD addr, BYTE value)
 {
-    /* FIXME vicii_mem_vbank_store(addr,value);*/
+    vicii_mem_vbank_store(addr,value);
 }
 
 static void REGPARM2 vicii_mem_vbank_39xx_store_wrapper(WORD addr, BYTE value)
 {
-    /* FIXME vicii_mem_vbank_39xx_store(addr,value);*/
+    vicii_mem_vbank_39xx_store(addr,value);
 }
 
 static void REGPARM2 vicii_mem_vbank_3fxx_store_wrapper(WORD addr, BYTE value)
 {
-    /* FIXME vicii_mem_vbank_3fxx_store(addr,value);*/
+    vicii_mem_vbank_3fxx_store(addr,value);
 }
 
 static void REGPARM2 ram_hi_store_wrapper(WORD addr, BYTE value)

@@ -38,6 +38,7 @@
 #include "keyboard.h"
 #include "lib.h"
 #include "log.h"
+#include "machine.h"
 #include "maincpu.h"
 #include "types.h"
 #include "vicii.h"
@@ -247,7 +248,9 @@ void cia1_setup_context(machine_context_t *machine_context)
 
     ciacore_setup_context(cia);
 
-    cia->write_offset = 0;
+    if (machine_class == VICE_MACHINE_C64SC) {
+        cia->write_offset = 0;
+    }
 
     cia->debugFlag = 0;
     cia->irq_line = IK_IRQ;
