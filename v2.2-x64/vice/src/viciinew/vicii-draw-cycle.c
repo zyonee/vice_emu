@@ -327,9 +327,8 @@ void vicii_draw_cycle(void)
             c[3] = COL_CBUF;
             break;
 
-        case VICII_ILLEGAL_TEXT_MODE:      /* ECM=1 BMM=0 MCM=1 */
-        case VICII_ILLEGAL_BITMAP_MODE_1:  /* ECM=1 BMM=1 MCM=0 */
-        case VICII_ILLEGAL_BITMAP_MODE_2:  /* ECM=1 BMM=1 MCM=1 */
+        default:                           /* undefined modes are all
+                                              black */
             c[0] = COL_BLACK;
             c[1] = COL_BLACK;
             c[2] = COL_BLACK;
@@ -337,18 +336,15 @@ void vicii_draw_cycle(void)
             break;
         }
 
-        /* read pixels depending on video mode */
-        switch (vmode_pipe) {
+        /* read pixels depending on video mode (mask out the ECM bit) */
+        switch (vmode_pipe & 0x03) {
 
-        case VICII_NORMAL_TEXT_MODE:       /* ECM=0 BMM=0 MCM=0 */
-        case VICII_EXTENDED_TEXT_MODE:     /* ECM=1 BMM=0 MCM=0 */
-        case VICII_HIRES_BITMAP_MODE:      /* ECM=0 BMM=1 MCM=0 */
-        case VICII_ILLEGAL_BITMAP_MODE_1:  /* ECM=1 BMM=1 MCM=0 */
+        case VICII_NORMAL_TEXT_MODE:       /* ECM=x BMM=0 MCM=0 */
+        case VICII_HIRES_BITMAP_MODE:      /* ECM=x BMM=1 MCM=0 */
             px = (gbuf_reg & 0x80) ? 3 : 0;
             break;
 
-        case VICII_MULTICOLOR_TEXT_MODE:   /* ECM=0 BMM=0 MCM=1 */
-        case VICII_ILLEGAL_TEXT_MODE:      /* ECM=1 BMM=0 MCM=1 */
+        case VICII_MULTICOLOR_TEXT_MODE:   /* ECM=x BMM=0 MCM=1 */
             if (cbuf_reg & 0x08) {
                 /* mc pixels */
                 if (gbuf_mc_flop) {
@@ -361,8 +357,7 @@ void vicii_draw_cycle(void)
             }
             break;
 
-        case VICII_MULTICOLOR_BITMAP_MODE: /* ECM=0 BMM=1 MCM=1 */
-        case VICII_ILLEGAL_BITMAP_MODE_2:  /* ECM=1 BMM=1 MCM=1 */
+        case VICII_MULTICOLOR_BITMAP_MODE: /* ECM=x BMM=1 MCM=1 */
             /* mc pixels */
             if (gbuf_mc_flop) {
                 gbuf_pixel_reg = gbuf_reg >> 6;
