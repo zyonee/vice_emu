@@ -136,9 +136,9 @@ int vicii_snapshot_write_module(snapshot_t *s)
         /* RamBase */
         || SMW_DW(m, (DWORD)(vicii.ram_base_phi1 - mem_ram)) < 0
         /* RasterCycle */
-        || SMW_B(m, (BYTE)(VICII_RASTER_CYCLE(maincpu_clk))) < 0
+        || SMW_B(m, (BYTE)(0 /*VICII_RASTER_CYCLE(maincpu_clk)*/)) < 0
         /* RasterLine */
-        || SMW_W(m, (WORD)(VICII_RASTER_Y(maincpu_clk))) < 0)
+        || SMW_W(m, (WORD)vicii.raster_line) < 0)
         goto fail;
 
     for (i = 0; i < 0x40; i++)
@@ -251,7 +251,7 @@ int vicii_snapshot_read_module(snapshot_t *s)
         /* MatrixBuf */
         || SMR_BA(m, vicii.vbuf, 40) < 0
         /* NewSpriteDmaMask */
-        || SMR_B(m, &i /*&vicii.raster.sprite_status->new_dma_msk*/) < 0)
+        || SMR_B(m, &major_version /*&vicii.raster.sprite_status->new_dma_msk*/) < 0)
         goto fail;
 
     mem_color_ram_from_snapshot(color_ram);
@@ -274,10 +274,11 @@ int vicii_snapshot_read_module(snapshot_t *s)
             || SMR_W(m, &RasterLine) < 0)
             goto fail;
 
-        if (RasterCycle != (BYTE)VICII_RASTER_CYCLE(maincpu_clk)) {
+#if 0
+        if (RasterCycle != 0 /*(BYTE)VICII_RASTER_CYCLE(maincpu_clk)*/) {
             log_error(vicii.log,
                       "Not matching raster cycle (%d) in snapshot; should be %d.",
-                      RasterCycle, VICII_RASTER_CYCLE(maincpu_clk));
+                      RasterCycle, 0 /*VICII_RASTER_CYCLE(maincpu_clk)*/);
             goto fail;
         }
 
@@ -287,6 +288,7 @@ int vicii_snapshot_read_module(snapshot_t *s)
                       RasterLine, VICII_RASTER_Y(maincpu_clk));
             goto fail;
         }
+#endif
     }
 
     for (i = 0; i < 0x40; i++)
@@ -364,7 +366,7 @@ int vicii_snapshot_read_module(snapshot_t *s)
     vicii.ram_base_phi2 = vicii.ram_base_phi1;
     vicii.vbank_phi2 = vicii.vbank_phi1;
 
-    vicii_update_memory_ptrs(VICII_RASTER_CYCLE(maincpu_clk));
+    vicii_update_memory_ptrs();
 
 #if 0
     /* Update sprite parameters.  We had better do this manually, or the
@@ -439,7 +441,7 @@ int vicii_snapshot_read_module(snapshot_t *s)
     /* FIXME: `vicii.ycounter_reset_checked'?  */
     /* FIXME: `vicii.force_display_state'?  */
 
-    vicii_update_video_mode(VICII_RASTER_CYCLE(maincpu_clk));
+    vicii_update_video_mode();
 
     {
         DWORD dw;
@@ -466,7 +468,7 @@ int vicii_snapshot_read_module(snapshot_t *s)
             goto fail;
         vicii.ram_base_phi2 = mem_ram + RamBase;
 
-        vicii_update_memory_ptrs(VICII_RASTER_CYCLE(maincpu_clk));
+        vicii_update_memory_ptrs();
     }
 
     raster_force_repaint(&vicii.raster);

@@ -92,21 +92,9 @@
 #define VICII_NTSC_CYCLES_PER_LINE     C64_NTSC_CYCLES_PER_LINE
 #define VICII_NTSCOLD_CYCLES_PER_LINE  C64_NTSCOLD_CYCLES_PER_LINE
 
-/* Cycle # at which sprite DMA is set.  */
-#define VICII_PAL_SPRITE_FETCH_CYCLE       54
-#define VICII_NTSC_SPRITE_FETCH_CYCLE      55
-#define VICII_NTSCOLD_SPRITE_FETCH_CYCLE   54
-
 #define VICII_PAL_SPRITE_WRAP_X     504
 #define VICII_NTSC_SPRITE_WRAP_X    520
 #define VICII_NTSCOLD_SPRITE_WRAP_X 512
-
-/* Cycle # at which the current raster line is re-drawn.  It is set to
-   `VICII_CYCLES_PER_LINE', so this actually happens at the very beginning
-   (i.e. cycle 0) of the next line.  */
-#define VICII_PAL_DRAW_CYCLE       VICII_PAL_CYCLES_PER_LINE
-#define VICII_NTSC_DRAW_CYCLE      VICII_NTSC_CYCLES_PER_LINE
-#define VICII_NTSCOLD_DRAW_CYCLE   VICII_NTSCOLD_CYCLES_PER_LINE
 
 
 void vicii_timing_set(machine_timing_t *machine_timing, int border_mode)
@@ -140,8 +128,6 @@ void vicii_timing_set(machine_timing_t *machine_timing, int border_mode)
             break;
         }
         vicii.cycles_per_line = VICII_NTSC_CYCLES_PER_LINE;
-        vicii.draw_cycle = VICII_NTSC_DRAW_CYCLE;
-        vicii.sprite_fetch_cycle = VICII_NTSC_SPRITE_FETCH_CYCLE;
         vicii.sprite_wrap_x = VICII_NTSC_SPRITE_WRAP_X;
         break;
       case MACHINE_SYNC_NTSCOLD:
@@ -168,8 +154,6 @@ void vicii_timing_set(machine_timing_t *machine_timing, int border_mode)
             break;
         }
         vicii.cycles_per_line = VICII_NTSCOLD_CYCLES_PER_LINE;
-        vicii.draw_cycle = VICII_NTSCOLD_DRAW_CYCLE;
-        vicii.sprite_fetch_cycle = VICII_NTSCOLD_SPRITE_FETCH_CYCLE;
         vicii.sprite_wrap_x = VICII_NTSCOLD_SPRITE_WRAP_X;
         break;
       case MACHINE_SYNC_PAL:
@@ -197,8 +181,6 @@ void vicii_timing_set(machine_timing_t *machine_timing, int border_mode)
             break;
         }
         vicii.cycles_per_line = VICII_PAL_CYCLES_PER_LINE;
-        vicii.draw_cycle = VICII_PAL_DRAW_CYCLE;
-        vicii.sprite_fetch_cycle = VICII_PAL_SPRITE_FETCH_CYCLE;
         vicii.sprite_wrap_x = VICII_PAL_SPRITE_WRAP_X;
         break;
     }

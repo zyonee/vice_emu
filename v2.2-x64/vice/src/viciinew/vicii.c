@@ -130,11 +130,6 @@ void vicii_change_timing(machine_timing_t *machine_timing, int border_mode)
     }
 }
 
-inline void vicii_handle_pending_alarms(int num_write_cycles)
-{
-    return;
-}
-
 void vicii_handle_pending_alarms_external(int num_write_cycles)
 {
     return;
@@ -249,8 +244,8 @@ raster_t *vicii_init(unsigned int flag)
     vicii_powerup();
 
     vicii.video_mode = -1;
-    vicii_update_video_mode(0);
-    vicii_update_memory_ptrs(0);
+    vicii_update_video_mode();
+    vicii_update_memory_ptrs();
 
     vicii_draw_init();
     vicii_draw_cycle_init();
@@ -275,8 +270,6 @@ void vicii_reset(void)
 
     vicii.raster_line = 0;
     vicii.raster_cycle = 6;
-
-    vicii.sprite_fetch_msk = 0;
 
     /* FIXME: I am not sure this is exact emulation.  */
     vicii.raster_irq_line = 0;
@@ -329,7 +322,6 @@ void vicii_powerup(void)
     vicii.vcbase = 0;
     vicii.vc = 0;
     vicii.bad_line = 0;
-    vicii.force_black_overscan_background_color = 0;
     vicii.light_pen.x = vicii.light_pen.y = vicii.light_pen.x_extra_bits = vicii.light_pen.triggered = 0;
     vicii.vbank_phi1 = 0;
     vicii.vbank_phi2 = 0;
@@ -346,15 +338,9 @@ void vicii_powerup(void)
 /* This hook is called whenever video bank must be changed.  */
 static inline void vicii_set_vbanks(int vbank_p1, int vbank_p2)
 {
-    /* Warning: assumes it's called within a memory write access.
-       FIXME: Change name?  */
-    /* Also, we assume the bank has *really* changed, and do not do any
-       special optimizations for the not-really-changed case.  */
-    vicii_handle_pending_alarms(maincpu_rmw_flag + 1);
-
     vicii.vbank_phi1 = vbank_p1;
     vicii.vbank_phi2 = vbank_p2;
-    vicii_update_memory_ptrs(VICII_RASTER_CYCLE(maincpu_clk));
+    vicii_update_memory_ptrs();
 }
 
 /* Phi1 and Phi2 accesses */
@@ -427,12 +413,9 @@ CLOCK vicii_lightpen_timing(int x, int y)
 /* Change the base of RAM seen by the VIC-II.  */
 static inline void vicii_set_ram_bases(BYTE *base_p1, BYTE *base_p2)
 {
-    /* WARNING: assumes `maincpu_rmw_flag' is 0 or 1.  */
-    vicii_handle_pending_alarms(maincpu_rmw_flag + 1);
-
     vicii.ram_base_phi1 = base_p1;
     vicii.ram_base_phi2 = base_p2;
-    vicii_update_memory_ptrs(VICII_RASTER_CYCLE(maincpu_clk));
+    vicii_update_memory_ptrs();
 }
 
 void vicii_set_ram_base(BYTE *base)
@@ -454,12 +437,12 @@ void vicii_set_phi2_ram_base(BYTE *base)
 void vicii_update_memory_ptrs_external(void)
 {
     if (vicii.initialized > 0) {
-        vicii_update_memory_ptrs(VICII_RASTER_CYCLE(maincpu_clk));
+        vicii_update_memory_ptrs();
     }
 }
 
 /* Set the memory pointers according to the values in the registers.  */
-void vicii_update_memory_ptrs(unsigned int cycle)
+void vicii_update_memory_ptrs(void)
 {
     WORD screen_addr;             /* Screen start address.  */
     BYTE *char_base;              /* Pointer to character memory.  */
@@ -546,7 +529,7 @@ void vicii_update_memory_ptrs(unsigned int cycle)
 
 /* Set the video mode according to the values in registers $D011 and $D016 of
    the VIC-II chip.  */
-void vicii_update_video_mode(unsigned int cycle)
+void vicii_update_video_mode(void)
 {
     int new_video_mode;
 
@@ -592,7 +575,7 @@ void vicii_update_video_mode(unsigned int cycle)
 
 /* Redraw the current raster line.  This happens after the last cycle
    of each line.  */
-void vicii_raster_draw_alarm_handler(CLOCK offset, void *data)
+void vicii_raster_draw_handler(void)
 {
     int in_visible_area;
 

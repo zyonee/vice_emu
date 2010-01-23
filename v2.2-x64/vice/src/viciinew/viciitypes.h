@@ -250,14 +250,6 @@ struct vicii_s {
     /* Flag: is the current line a `bad' line? */
     int bad_line;
 
-    /* Flag: Does the currently selected video mode force the overscan
-       background color to be black?  (This happens with the hires bitmap and
-       illegal modes.)  */
-    int force_black_overscan_background_color;
-
-    /* Background color source */
-    int background_color_source;
-
     /* Light pen.  */
     vicii_light_pen_t light_pen;
 
@@ -271,9 +263,6 @@ struct vicii_s {
     /* Fetch state */
     int fetch_active;
     int prefetch_cycles;
-
-    /* Mask for sprites being fetched at DMA. (this is obsolete) */
-    unsigned int sprite_fetch_msk;
 
     /* Mask for sprites being displayed.  */
     unsigned int sprite_display_bits;
@@ -293,15 +282,7 @@ struct vicii_s {
     int screen_leftborderwidth;
     int screen_rightborderwidth;
     int cycles_per_line;
-    int draw_cycle;
-    int sprite_fetch_cycle;  /* obsolete */
     int sprite_wrap_x;
-
-    /* Flag backgroundcolor in hires mode or extended text mode.  */
-    int get_background_from_vbuf;
-
-    /* Last value read from VICII (used for RMW access).  */
-    BYTE last_read;
 
     /* Last value read by VICII during phi1.  */
     BYTE last_read_phi1;
@@ -319,21 +300,15 @@ struct vicii_s {
     struct video_chip_cap_s *video_chip_cap;
 
     unsigned int int_num;
-
-    /* Pointer to color ram */
-    BYTE *color_ram_ptr;
 };
 typedef struct vicii_s vicii_t;
 
 extern vicii_t vicii;
 
 /* Private function calls, used by the other VIC-II modules.  */
-extern void vicii_update_memory_ptrs(unsigned int cycle);
-extern void vicii_update_video_mode(unsigned int cycle);
-extern void vicii_raster_draw_alarm_handler(CLOCK offset, void *data);
-extern void vicii_handle_pending_alarms(int num_write_cycles);
-extern void vicii_delay_clk(void);
-extern void vicii_delay_oldclk(CLOCK num);
+extern void vicii_update_memory_ptrs(void);
+extern void vicii_update_video_mode(void);
+extern void vicii_raster_draw_handler(void);
 
 /* Debugging options.  */
 

@@ -262,7 +262,7 @@ static inline void vicii_cycle_end_of_frame(void)
 static inline void vicii_cycle_end_of_line(void)
 {
     vicii.raster_cycle = 0;
-    vicii_raster_draw_alarm_handler(maincpu_clk, 0);
+    vicii_raster_draw_handler();
 
     /* Check DEN bit on first cycle of the line following the first DMA line  */
     if ((vicii.raster_line == VICII_FIRST_DMA_LINE) && !vicii.allow_bad_lines && (vicii.regs[0x11] & 0x10)) {
@@ -281,7 +281,7 @@ static inline void vicii_cycle_end_of_line(void)
     }
 
     if ((vicii.raster_line == vicii.raster_irq_line) && (vicii.raster_line != 0)) {
-        vicii_irq_alarm_handler(maincpu_clk, 0);
+        vicii_irq_raster_trigger();
     }
 
     vicii.bad_line = 0;
@@ -346,7 +346,7 @@ int vicii_cycle(void)
 
     /* IRQ on line 0 is delayed by 1 clock */
     if ((vicii.raster_line == vicii.raster_irq_line) && (vicii.raster_line == 0) && (vicii.raster_cycle == VICII_PAL_CYCLE(2))) {
-        vicii_irq_alarm_handler(maincpu_clk, 0);
+        vicii_irq_raster_trigger();
     }
 
     /* Check DEN bit on first DMA line */

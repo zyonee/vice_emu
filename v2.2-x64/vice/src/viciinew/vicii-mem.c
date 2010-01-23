@@ -141,7 +141,7 @@ inline static void update_raster_line(void)
     vicii.raster_irq_line = new_line;
 
     if ((new_line != old_line) && (new_line == vicii.raster_line)) {
-        vicii_irq_alarm_handler(maincpu_clk, 0);
+        vicii_irq_raster_trigger();
     }
 
     VICII_DEBUG_REGISTER(("Raster interrupt line set to $%04X",
@@ -153,8 +153,8 @@ inline static void d011_store(BYTE value)
     int cycle;
     unsigned int line;
 
-    cycle = VICII_RASTER_CYCLE(maincpu_clk);
-    line = VICII_RASTER_Y(maincpu_clk);
+    cycle = vicii.raster_cycle;
+    line = vicii.raster_line;
 
     VICII_DEBUG_REGISTER(("Control register: $%02X", value));
     VICII_DEBUG_REGISTER(("$D011 tricks at cycle %d, line $%04X, "
@@ -167,7 +167,7 @@ inline static void d011_store(BYTE value)
     update_raster_line();
 
     /* FIXME: save time.  */
-    vicii_update_video_mode(cycle);
+    vicii_update_video_mode();
 }
 
 inline static void d012_store(BYTE value)
@@ -190,17 +190,11 @@ inline static void d015_store(const BYTE value)
 
 inline static void d016_store(const BYTE value)
 {
-    raster_t *raster;
-    int cycle;
-
     VICII_DEBUG_REGISTER(("Control register: $%02X", value));
-
-    raster = &vicii.raster;
-    cycle = VICII_RASTER_CYCLE(maincpu_clk);
 
     vicii.regs[0x16] = value;
 
-    vicii_update_video_mode(cycle);
+    vicii_update_video_mode();
 }
 
 inline static void d017_store(const BYTE value)
@@ -251,7 +245,7 @@ inline static void d018_store(const BYTE value)
     }
 
     vicii.regs[0x18] = value;
-    vicii_update_memory_ptrs(VICII_RASTER_CYCLE(maincpu_clk));
+    vicii_update_memory_ptrs();
 }
 
 inline static void d019_store(const BYTE value)
@@ -360,8 +354,7 @@ void REGPARM2 vicii_store(WORD addr, BYTE value)
     addr &= 0x3f;
 
     VICII_DEBUG_REGISTER(("WRITE $D0%02X at cycle %d of current_line $%04X",
-                         addr, VICII_RASTER_CYCLE(maincpu_clk),
-                         VICII_RASTER_Y(maincpu_clk)));
+                         addr, vicii.raster_cycle, vicii.raster_line));
 
     switch (addr) {
       case 0x0:                   /* $D000: Sprite #0 X position LSB */
@@ -524,19 +517,17 @@ inline static BYTE d01112_read(WORD addr)
 
     VICII_DEBUG_REGISTER(("Raster Line register %svalue = $%04X",
                          (addr == 0x11 ? "(highest bit) " : ""), tmp));
-    if (addr == 0x11)
-        vicii.last_read = (vicii.regs[addr] & 0x7f) | ((tmp & 0x100) >> 1);
-    else
-        vicii.last_read = tmp & 0xff;
-
-    return vicii.last_read;
+    if (addr == 0x11) {
+        return (vicii.regs[addr] & 0x7f) | ((tmp & 0x100) >> 1);
+    } else {
+        return tmp & 0xff;
+    }
 }
 
 
 inline static BYTE d019_read(void)
 {
-    vicii.last_read = vicii.irq_status | 0x70;
-    return vicii.last_read;
+    return vicii.irq_status | 0x70;
 }
 
 inline static BYTE d01e_read(void)
@@ -593,14 +584,8 @@ BYTE REGPARM1 vicii_read(WORD addr)
 {
     addr &= 0x3f;
 
-#if 0
-    /* Serve all pending events.  */
-    vicii_handle_pending_alarms(0);
-#endif
-
     VICII_DEBUG_REGISTER(("READ $D0%02X at cycle %d of current_line $%04X:",
-                         addr, VICII_RASTER_CYCLE(maincpu_clk),
-                         VICII_RASTER_Y(maincpu_clk)));
+                         addr, vicii.raster_cycle, vicii.raster_line));
 
     /* Note: we use hardcoded values instead of `unused_bits_in_registers[]'
        here because this is a little bit faster.  */

@@ -113,7 +113,7 @@ void vicii_irq_check_state(BYTE value, unsigned int high)
 
 /* If necessary, emulate a raster compare IRQ. This is called when the raster
    line counter matches the value stored in the raster line register.  */
-void vicii_irq_alarm_handler(CLOCK offset, void *data)
+void vicii_irq_raster_trigger(void)
 {
     if (!(vicii.irq_status & 0x1)) {
         vicii_irq_raster_set(maincpu_clk);
