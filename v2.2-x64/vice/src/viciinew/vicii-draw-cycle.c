@@ -93,7 +93,7 @@ static DRAW_INLINE void draw_sprites(int xpos, BYTE pixel_pri)
 
     /* check for pending */
     for (s = 0; s < 8; s++) {
-        int m = 1 << s;
+        BYTE m = 1 << s;
 
         /* start rendering on position match */
         if ( (sprite_pending_bits & m) && !(sprite_halt_bits & m) ) {
@@ -116,7 +116,7 @@ static DRAW_INLINE void draw_sprites(int xpos, BYTE pixel_pri)
     active_sprite = -1;
     collision_mask = 0;
     for (s = 7; s >= 0; --s) {
-        int m = 1 << s;
+        BYTE m = 1 << s;
 
         if ( sprite_active_bits & m ) {
             /* render pixels if shift register or pixel reg still contains data */
