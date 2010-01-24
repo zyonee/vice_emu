@@ -80,7 +80,7 @@ static int main_border_pipe = 0;
 /* intermediate pixel result */
 static BYTE current_pixel = 0;
 
-static DRAW_INLINE void draw_sprites(int xpos, int pixel_pri)
+static DRAW_INLINE void draw_sprites(int xpos, BYTE pixel_pri)
 {
     int s;
     int active_sprite;
@@ -162,7 +162,7 @@ static DRAW_INLINE void draw_sprites(int xpos, int pixel_pri)
 
     if (collision_mask) {
         int s = active_sprite;
-        int spri = sprite_pri_bits & (1 << s);
+        BYTE spri = sprite_pri_bits & (1 << s);
         if ( !(pixel_pri && spri) ) {
             switch (sbuf_pixel_reg[s]) {
             case 1:
@@ -221,6 +221,17 @@ enum lookup_t {
     COL_D024     = 0x24
 };
 
+static const BYTE colors[] = {
+    COL_D021,   COL_BLACK,  COL_BLACK,  COL_CBUF,   /* ECM=0 BMM=0 MCM=0 */
+    COL_D021,   COL_D022,   COL_D023,   COL_CBUF_MC,/* ECM=0 BMM=0 MCM=1 */
+    COL_VBUF_L, COL_BLACK,  COL_BLACK,  COL_VBUF_H, /* ECM=0 BMM=1 MCM=0 */
+    COL_D021,   COL_VBUF_H, COL_VBUF_L, COL_CBUF,   /* ECM=0 BMM=1 MCM=1 */
+    COL_D02X_EXT, COL_BLACK, COL_BLACK, COL_CBUF,   /* ECM=1 BMM=0 MCM=0 */
+    COL_BLACK,  COL_BLACK,  COL_BLACK,  COL_BLACK,  /* ECM=1 BMM=0 MCM=1 */
+    COL_BLACK,  COL_BLACK,  COL_BLACK,  COL_BLACK,  /* ECM=1 BMM=1 MCM=0 */
+    COL_BLACK,  COL_BLACK,  COL_BLACK,  COL_BLACK   /* ECM=1 BMM=1 MCM=1 */
+};
+
 void vicii_draw_cycle(void)
 {
     int cycle, offs, i;
@@ -252,9 +263,8 @@ void vicii_draw_cycle(void)
     /* render pixels */
     for (i = 0; i < 8; i++) {
         BYTE px = 0;
-        enum lookup_t c[4];
-        int cc;
-        int pixel_pri;
+        BYTE cc;
+        BYTE pixel_pri;
 
         /* pipe sprite related changes 2 pixels late */
         if (i == 2) {
@@ -295,53 +305,12 @@ void vicii_draw_cycle(void)
             }
         }
 
-
-        /* setup colors depending on video mode */
-        switch (vmode_pipe) {
-        case VICII_NORMAL_TEXT_MODE:       /* ECM=0 BMM=0 MCM=0 */
-            c[0] = COL_D021;
-            c[3] = COL_CBUF;
-            break;
-
-        case VICII_MULTICOLOR_TEXT_MODE:   /* ECM=0 BMM=0 MCM=1 */
-            c[0] = COL_D021;
-            c[1] = COL_D022;
-            c[2] = COL_D023;
-            c[3] = COL_CBUF_MC;
-            break;
-
-        case VICII_HIRES_BITMAP_MODE:      /* ECM=0 BMM=1 MCM=0 */
-            c[0] = COL_VBUF_L;
-            c[3] = COL_VBUF_H;
-            break;
-
-        case VICII_MULTICOLOR_BITMAP_MODE: /* ECM=0 BMM=1 MCM=1 */
-            c[0] = COL_D021;
-            c[1] = COL_VBUF_H;
-            c[2] = COL_VBUF_L;
-            c[3] = COL_CBUF;
-            break;
-            
-        case VICII_EXTENDED_TEXT_MODE:     /* ECM=1 BMM=0 MCM=0 */
-            c[0] = COL_D02X_EXT;
-            c[3] = COL_CBUF;
-            break;
-
-        default:
-            /* undefined modes are all black */
-            c[0] = COL_BLACK;
-            c[1] = COL_BLACK;
-            c[2] = COL_BLACK;
-            c[3] = COL_BLACK;
-            break;
-        }
-
         /* 
          * read pixels depending on video mode
          * mc pixels if MCM=1 and BMM=1, or MCM=1 and cbuf bit 3 = 1
          */
-        if ( (vmode_pipe & 0x01) &&
-             ((vmode_pipe & 0x02) || (cbuf_reg & 0x08)) ) {
+        if ( (vmode_pipe & 0x04) &&
+             ((vmode_pipe & 0x08) || (cbuf_reg & 0x08)) ) {
             /* mc pixels */
             if (gbuf_mc_flop) {
                 gbuf_pixel_reg = gbuf_reg >> 6;
@@ -354,7 +323,7 @@ void vicii_draw_cycle(void)
 
         /* Determine pixel color and priority */
         pixel_pri = (px & 0x2);
-        cc = c[px];
+        cc = colors[vmode_pipe | px];
 
         /* shift the graphics buffer */
         gbuf_reg <<= 1;
@@ -431,7 +400,7 @@ void vicii_draw_cycle(void)
 
     main_border_pipe = vicii.main_border;
 
-    vmode_pipe = vicii.video_mode;
+    vmode_pipe = vicii.video_mode << 2;
 
     update_sprite_xpos_and_data();
 }
