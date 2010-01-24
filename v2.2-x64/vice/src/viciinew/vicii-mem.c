@@ -353,6 +353,8 @@ void REGPARM2 vicii_store(WORD addr, BYTE value)
 {
     addr &= 0x3f;
 
+    vicii.last_bus_phi2 = value;
+
     VICII_DEBUG_REGISTER(("WRITE $D0%02X at cycle %d of current_line $%04X",
                          addr, vicii.raster_cycle, vicii.raster_line));
 
@@ -582,6 +584,7 @@ inline static BYTE d01f_read(void)
 /* Read a value from a VIC-II register.  */
 BYTE REGPARM1 vicii_read(WORD addr)
 {
+    BYTE value;
     addr &= 0x3f;
 
     VICII_DEBUG_REGISTER(("READ $D0%02X at cycle %d of current_line $%04X:",
@@ -600,7 +603,8 @@ BYTE REGPARM1 vicii_read(WORD addr)
       case 0xe:                   /* $D00e: Sprite #7 X position LSB */
         VICII_DEBUG_REGISTER(("Sprite #%d X position LSB: $%02X",
                              addr >> 1, vicii.regs[addr]));
-        return vicii.regs[addr];
+        value = vicii.regs[addr];
+        break;
 
       case 0x1:                   /* $D001: Sprite #0 Y position */
       case 0x3:                   /* $D003: Sprite #1 Y position */
@@ -612,86 +616,96 @@ BYTE REGPARM1 vicii_read(WORD addr)
       case 0xf:                   /* $D00F: Sprite #7 Y position */
         VICII_DEBUG_REGISTER(("Sprite #%d Y position: $%02X",
                              addr >> 1, vicii.regs[addr]));
-        return vicii.regs[addr];
+        value = vicii.regs[addr];
+        break;
 
       case 0x10:                  /* $D010: Sprite X position MSB */
         VICII_DEBUG_REGISTER(("Sprite X position MSB: $%02X",
                              vicii.regs[addr]));
-        return vicii.regs[addr];
+        value = vicii.regs[addr];
+        break;
 
       case 0x11:                /* $D011: video mode, Y scroll, 24/25 line mode
                                    and raster MSB */
       case 0x12:                /* $D012: Raster line compare */
-        return d01112_read(addr);
+        value = d01112_read(addr);
+        break;
 
       case 0x13:                  /* $D013: Light Pen X */
         VICII_DEBUG_REGISTER(("Light pen X: %d", vicii.light_pen.x));
-        return vicii.light_pen.x;
+        value = vicii.light_pen.x;
+        break;
 
       case 0x14:                  /* $D014: Light Pen Y */
         VICII_DEBUG_REGISTER(("Light pen Y: %d", vicii.light_pen.y));
-        return vicii.light_pen.y;
+        value = vicii.light_pen.y;
+        break;
 
       case 0x15:                  /* $D015: Sprite Enable */
         VICII_DEBUG_REGISTER(("Sprite Enable register: $%02X",
                              vicii.regs[addr]));
-        return vicii.regs[addr];
+        value = vicii.regs[addr];
+        break;
 
       case 0x16:                  /* $D016 */
         VICII_DEBUG_REGISTER(("$D016 Control register read: $%02X",
                              vicii.regs[addr]));
-        return vicii.regs[addr] | 0xc0;
+        value = vicii.regs[addr] | 0xc0;
+        break;
 
       case 0x17:                  /* $D017: Sprite Y-expand */
         VICII_DEBUG_REGISTER(("Sprite Y Expand register: $%02X",
                              vicii.regs[addr]));
-        return vicii.regs[addr];
+        value = vicii.regs[addr];
+        break;
 
       case 0x18:                /* $D018: Video and char matrix base address */
         VICII_DEBUG_REGISTER(("Video memory address register: $%02X",
                              vicii.regs[addr]));
-        return vicii.regs[addr] | 0x1;
+        value = vicii.regs[addr] | 0x1;
+        break;
 
       case 0x19:                  /* $D019: IRQ flag register */
-        {
-            BYTE tmp;
-
-            tmp = d019_read();
-            VICII_DEBUG_REGISTER(("Interrupt register: $%02X", tmp));
-
-            return tmp;
-        }
+        value = d019_read();
+        VICII_DEBUG_REGISTER(("Interrupt register: $%02X", value));
+        break;
 
       case 0x1a:                  /* $D01A: IRQ mask register  */
-        VICII_DEBUG_REGISTER(("Mask register: $%02X",
-                             vicii.regs[addr] | 0xf0));
-        return vicii.regs[addr] | 0xf0;
+        value = vicii.regs[addr] | 0xf0;
+        VICII_DEBUG_REGISTER(("Mask register: $%02X", value));
+        break;
 
       case 0x1b:                  /* $D01B: Sprite priority */
         VICII_DEBUG_REGISTER(("Sprite Priority register: $%02X",
                              vicii.regs[addr]));
-        return vicii.regs[addr];
+        value = vicii.regs[addr];
+        break;
 
       case 0x1c:                  /* $D01C: Sprite Multicolor select */
         VICII_DEBUG_REGISTER(("Sprite Multicolor Enable register: $%02X",
                              vicii.regs[addr]));
-        return vicii.regs[addr];
+        value = vicii.regs[addr];
+        break;
 
       case 0x1d:                  /* $D01D: Sprite X-expand */
         VICII_DEBUG_REGISTER(("Sprite X Expand register: $%02X",
                              vicii.regs[addr]));
-        return vicii.regs[addr];
+        value = vicii.regs[addr];
+        break;
 
       case 0x1e:                  /* $D01E: Sprite-sprite collision */
-        return d01e_read();
+        value = d01e_read();
+        break;
 
       case 0x1f:                  /* $D01F: Sprite-background collision */
-        return d01f_read();
+        value = d01f_read();
+        break;
 
       case 0x20:                  /* $D020: Border color */
         VICII_DEBUG_REGISTER(("Border Color register: $%02X",
                              vicii.regs[addr]));
-        return (vicii.regs[addr] | 0xf0);
+        value = vicii.regs[addr] | 0xf0;
+        break;
 
       case 0x21:                  /* $D021: Background #0 color */
       case 0x22:                  /* $D022: Background #1 color */
@@ -699,13 +713,15 @@ BYTE REGPARM1 vicii_read(WORD addr)
       case 0x24:                  /* $D024: Background #3 color */
         VICII_DEBUG_REGISTER(("Background Color #%d register: $%02X",
                              addr - 0x21, vicii.regs[addr]));
-        return (vicii.regs[addr] | 0xf0);
+        value = vicii.regs[addr] | 0xf0;
+        break;
 
       case 0x25:                  /* $D025: Sprite multicolor register #0 */
       case 0x26:                  /* $D026: Sprite multicolor register #1 */
         VICII_DEBUG_REGISTER(("Multicolor register #%d: $%02X",
                              addr - 0x22, vicii.regs[addr]));
-        return vicii.regs[addr] | 0xf0;
+        value = vicii.regs[addr] | 0xf0;
+        break;
 
       case 0x27:                  /* $D027: Sprite #0 color */
       case 0x28:                  /* $D028: Sprite #1 color */
@@ -717,7 +733,8 @@ BYTE REGPARM1 vicii_read(WORD addr)
       case 0x2e:                  /* $D02E: Sprite #7 color */
         VICII_DEBUG_REGISTER(("Sprite #%d color: $%02X",
                              addr - 0x22, vicii.regs[addr]));
-        return vicii.regs[addr] | 0xf0;
+        value = vicii.regs[addr] | 0xf0;
+        break;
 
       case 0x2f:                  /* $D02F: Unused */
       case 0x30:                  /* $D030: Unused */
@@ -737,9 +754,12 @@ BYTE REGPARM1 vicii_read(WORD addr)
       case 0x3e:                  /* $D03E: Unused */
       case 0x3f:                  /* $D03F: Unused */
       default:
-        return 0xff;
+        value = 0xff;
+        break;
     }
-    return 0xff;  /* make compiler happy */
+
+            vicii.last_bus_phi2 = value;
+    return value;
 }
 
 inline static BYTE d019_peek(void)

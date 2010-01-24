@@ -301,9 +301,15 @@ static inline void next_vicii_cycle(void)
 int vicii_cycle(void)
 {
     int ba_low = 0;
+    int sprite_ba_low = 0;
     int can_sprite_sprite, can_sprite_background;
 
     /*VICII_DEBUG_CYCLE(("cycle: line %i, clk %i", vicii.raster_line, vicii.raster_cycle));*/
+
+    /* perform phi2 idle fetch after the cpu has executed */
+    if (!vicii.last_sprite_ba_low) {
+        vicii_fetch_sprites(vicii.raster_cycle);
+    }
 
     /* Phi1 fetch */
     vicii.last_read_phi1 = cycle_phi1_fetch(vicii.raster_cycle);
@@ -418,7 +424,12 @@ int vicii_cycle(void)
     }
 
     /* Sprite Phi2 fetch */
-    ba_low |= vicii_fetch_sprites(vicii.raster_cycle);
+    sprite_ba_low = vicii_fetch_sprites(vicii.raster_cycle);
+    ba_low |= sprite_ba_low;
+    vicii.last_sprite_ba_low = sprite_ba_low;
+
+    /* clear internal bus (may get set by a VIC-II read or write) */
+    vicii.last_bus_phi2 = 0xff;
 
     return ba_low;
 }

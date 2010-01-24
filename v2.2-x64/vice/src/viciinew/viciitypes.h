@@ -287,6 +287,12 @@ struct vicii_s {
     /* Last value read by VICII during phi1.  */
     BYTE last_read_phi1;
 
+    /* Last value on the internal VICII bus during phi2.  */
+    BYTE last_bus_phi2;
+
+    /* flag to indicate that last sprite fetch was not in idle */
+    int last_sprite_ba_low;
+
     /* Vertical border flag */
     int vborder;
 

@@ -84,7 +84,7 @@ inline static int check_sprite_dma(int i)
 
 inline static int sprite_dma_cycle_0(int i)
 {
-    BYTE sprdata = 0xff;
+    BYTE sprdata = vicii.last_bus_phi2;
     int ba_low = 0;
 
     if (check_sprite_dma(i)) {
@@ -111,7 +111,7 @@ inline static int sprite_dma_cycle_0(int i)
 
 inline static int sprite_dma_cycle_2(int i)
 {
-    BYTE sprdata = 0xff;
+    BYTE sprdata = vicii.last_bus_phi2;
     int ba_low = 0;
 
     if (check_sprite_dma(i)) {

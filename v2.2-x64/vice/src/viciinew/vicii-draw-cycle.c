@@ -190,7 +190,7 @@ static DRAW_INLINE void draw_sprites(int xpos, int pixel_pri)
 }
 
 
-static DRAW_INLINE void update_sprite_mc_bits(int cycle)
+static DRAW_INLINE void update_sprite_mc_bits(void)
 {
     BYTE toggled;
     toggled = vicii.regs[0x1c] ^ sprite_mc_bits;
@@ -198,7 +198,7 @@ static DRAW_INLINE void update_sprite_mc_bits(int cycle)
     sprite_mc_bits = vicii.regs[0x1c];
 }
 
-static DRAW_INLINE void update_sprite_xpos(int cycle)
+static DRAW_INLINE void update_sprite_xpos_and_data(void)
 {
     int s;
     for (s=0; s<8; s++) {
@@ -271,7 +271,7 @@ void vicii_draw_cycle(void)
             sprite_expx_bits = vicii.regs[0x1d];
         }
         if (i == 7) {
-            update_sprite_mc_bits(cycle);
+            update_sprite_mc_bits();
             sprite_halt_bits &= ~vicii.sprite_dma_cycle_2;
         }
 
@@ -447,7 +447,7 @@ void vicii_draw_cycle(void)
 
     vmode_pipe = vicii.video_mode;
 
-    update_sprite_xpos(cycle);
+    update_sprite_xpos_and_data();
 }
 
 
