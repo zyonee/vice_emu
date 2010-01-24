@@ -243,8 +243,6 @@
 
 /* Perform the interrupts in `int_kind'.  If we have both NMI and IRQ,
    execute NMI.  */
-/* FIXME: Dummy LOAD() cycles are missing!  */
-/* FIXME: Improper BRK handling!  */
 /* FIXME: LOCAL_STATUS() should check byte ready first.  */
 #define DO_INTERRUPT(int_kind)                                        \
     do {                                                              \
@@ -781,29 +779,46 @@
 
 #endif
 
-/* The BRK opcode is also used to patch the ROM.  The function trap_handler()
-   returns nonzero if this is not a patch, but a `real' BRK instruction. */
+inline void BRK(void)
+{
+    WORD addr;
+    /* Interrupt vector to use. Assume regular BRK. */
+    WORD handler_vector = 0xfffe;
 
-#define BRK()                                                    \
-  do {                                                           \
-      WORD addr;                                                 \
-      EXPORT_REGISTERS();                                        \
-      TRACE_BRK();                                               \
-      INC_PC(2);                                                 \
-      LOCAL_SET_BREAK(1);                                        \
-      PUSH(reg_pc >> 8);                                         \
-      CLK_INC();                                                 \
-      PUSH(reg_pc & 0xff);                                       \
-      CLK_INC();                                                 \
-      PUSH(LOCAL_STATUS());                                      \
-      CLK_INC();                                                 \
-      LOCAL_SET_INTERRUPT(1);                                    \
-      addr = LOAD(0xfffe);                                       \
-      CLK_INC();                                                 \
-      addr |= (LOAD(0xffff) << 8);                               \
-      CLK_INC();                                                 \
-      JUMP(addr);                                                \
-  } while (0)
+    EXPORT_REGISTERS();
+    TRACE_BRK();
+    INC_PC(2);
+    LOCAL_SET_BREAK(1);
+    PUSH(reg_pc >> 8);
+    CLK_INC();
+    PUSH(reg_pc & 0xff);
+    CLK_INC();
+    PUSH(LOCAL_STATUS());
+    CLK_INC();
+
+    /* Process alarms up to this point to get nmi_clk updated. */
+    while (CLK >= alarm_context_next_pending_clk(ALARM_CONTEXT)) {
+        alarm_context_dispatch(ALARM_CONTEXT, CLK);
+    }
+
+    /* If an NMI would occur at this cycle... */
+    if ((CPU_INT_STATUS->global_pending_int & IK_NMI) && (CLK >= (CPU_INT_STATUS->nmi_clk + INTERRUPT_DELAY))) {
+        /* Transform the BRK into an NMI. */
+        handler_vector = 0xfffa;
+        TRACE_NMI();
+        if (monitor_mask[CALLER] & (MI_STEP)) {
+            monitor_check_icount_interrupt();
+        }
+        interrupt_ack_nmi(CPU_INT_STATUS);
+    }
+
+    LOCAL_SET_INTERRUPT(1);
+    addr = LOAD(handler_vector);
+    CLK_INC();
+    addr |= (LOAD(handler_vector + 1) << 8);
+    CLK_INC();
+    JUMP(addr);
+}
 
 /* The JAM (0x02) opcode is also used to patch the ROM.  The function trap_handler()
    returns nonzero if this is not a patch, but a `real' JAM instruction. */

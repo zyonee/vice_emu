@@ -356,11 +356,18 @@ inline static int interrupt_check_nmi_delay(interrupt_cpu_status_t *cs,
 
     /* Branch instructions delay IRQs and NMI by one cycle if branch
        is taken with no page boundary crossing.  */
-    if (OPINFO_DELAYS_INTERRUPT(*cs->last_opcode_info_ptr))
+    if (OPINFO_DELAYS_INTERRUPT(*cs->last_opcode_info_ptr)) {
         nmi_clk++;
+    }
 
-    if (cpu_clk >= nmi_clk)
+    /* BRK (0x00) delays the NMI by one opcode.  */
+    if (OPINFO_NUMBER(*cs->last_opcode_info_ptr) == 0x00) {
+        return 0;
+    }
+
+    if (cpu_clk >= nmi_clk) {
         return 1;
+    }
 
     return 0;
 }
@@ -375,8 +382,9 @@ inline static int interrupt_check_irq_delay(interrupt_cpu_status_t *cs,
 
     /* Branch instructions delay IRQs and NMI by one cycle if branch
        is taken with no page boundary crossing.  */
-    if (OPINFO_DELAYS_INTERRUPT(*cs->last_opcode_info_ptr))
+    if (OPINFO_DELAYS_INTERRUPT(*cs->last_opcode_info_ptr)) {
         irq_clk++;
+    }
 
     /* If an opcode changes the I flag from 1 to 0, the 6510 needs
        one more opcode before it triggers the IRQ routine.  */
