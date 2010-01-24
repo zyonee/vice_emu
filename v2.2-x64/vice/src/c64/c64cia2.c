@@ -143,7 +143,7 @@ static void store_ciapa(cia_context_t *cia_context, CLOCK rclk, BYTE byte)
                 mem_set_vbank(new_vbank);
             }
         }
-        (*iecbus_callback_write)((BYTE)tmp, maincpu_clk);
+        (*iecbus_callback_write)((BYTE)tmp, maincpu_clk + !(cia_context->write_offset));
         printer_userport_write_strobe(tmp & 0x04);
     }
 }
