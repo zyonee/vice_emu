@@ -255,7 +255,7 @@ void vicii_draw_cycle(void)
         enum lookup_t c[4];
         int cc;
         int pixel_pri;
-           
+
         /* pipe sprite related changes 2 pixels late */
         if (i == 2) {
             sprite_active_bits &= ~vicii.sprite_dma_cycle_2;
@@ -263,7 +263,7 @@ void vicii_draw_cycle(void)
         if (i == 3) {
             sprite_halt_bits |= vicii.sprite_dma_cycle_0;
         }
-        if (cycle == VICII_PAL_CYCLE(58) && i == 4) {
+        if (i == 4 && cycle == VICII_PAL_CYCLE(58)) {
             sprite_pending_bits = vicii.sprite_display_bits;
         }
         if (i == 6) {
@@ -336,35 +336,21 @@ void vicii_draw_cycle(void)
             break;
         }
 
-        /* read pixels depending on video mode (mask out the ECM bit) */
-        switch (vmode_pipe & 0x03) {
-
-        case VICII_NORMAL_TEXT_MODE:       /* ECM=x BMM=0 MCM=0 */
-        case VICII_HIRES_BITMAP_MODE:      /* ECM=x BMM=1 MCM=0 */
-            px = (gbuf_reg & 0x80) ? 3 : 0;
-            break;
-
-        case VICII_MULTICOLOR_TEXT_MODE:   /* ECM=x BMM=0 MCM=1 */
-            if (cbuf_reg & 0x08) {
-                /* mc pixels */
-                if (gbuf_mc_flop) {
-                    gbuf_pixel_reg = gbuf_reg >> 6;
-                }
-                px = gbuf_pixel_reg;
-            } else {
-                /* hires pixels */
-                px = (gbuf_reg & 0x80) ? 3 : 0;
-            }
-            break;
-
-        case VICII_MULTICOLOR_BITMAP_MODE: /* ECM=x BMM=1 MCM=1 */
+        /* 
+         * read pixels depending on video mode
+         * mc pixels if MCM=1 and BMM=1, or MCM=1 and cbuf bit 3 = 1
+         */
+        if ( (vmode_pipe & 0x01) &&
+             ((vmode_pipe & 0x02) || (cbuf_reg & 0x08)) ) {
             /* mc pixels */
             if (gbuf_mc_flop) {
                 gbuf_pixel_reg = gbuf_reg >> 6;
             }
-            px = gbuf_pixel_reg;
-            break;
+        } else {
+            /* hires pixels */
+            gbuf_pixel_reg = (gbuf_reg & 0x80) ? 3 : 0;
         }
+        px = gbuf_pixel_reg;
 
         /* Determine pixel color and priority */
         pixel_pri = (px & 0x2);
