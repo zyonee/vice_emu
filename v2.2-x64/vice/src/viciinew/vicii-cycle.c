@@ -88,11 +88,6 @@ static inline void sprite_mcbase_update(void)
     for (i = 0; i < VICII_NUM_SPRITES; i++) {
         if (vicii.sprite[i].exp_flop) {
             vicii.sprite[i].mcbase = vicii.sprite[i].mc;
-#ifdef DEBUG
-            if (debug.maincpu_traceflg) {
-                log_debug("sprite_exp_inc. exp_flop=1, New mcbase for sprite %d: %d",i, vicii.sprite[i].mcbase);
-            }
-#endif
             if (vicii.sprite[i].mcbase == 63) {
                 vicii.sprite[i].dma = 0;
             }
