@@ -269,7 +269,7 @@ void REGPARM2 zero_store(WORD addr, BYTE value)
             }
             if (pport.data_set_bit6 && ((value & 0x40) == 0) && pport.data_falloff_bit6 == 0) {
                 pport.data_falloff_bit6 = 1;
-                pport.data_set_clk_bit6 = maincpu_clk + C64_CPU_DATA_PORT_FALL_OFF_CYCLES;
+                pport.data_set_clk_bit6 = maincpu_clk + C64_CPU_DATA_PORT_FALL_OFF_CYCLES + 20;
             }
             if (pport.data_set_bit7 && (value & 0x80) && pport.data_falloff_bit7) {
                 pport.data_falloff_bit7 = 0;
