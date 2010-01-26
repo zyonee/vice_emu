@@ -256,7 +256,6 @@ static inline void vicii_cycle_end_of_frame(void)
 
 static inline void vicii_cycle_end_of_line(void)
 {
-    vicii.raster_cycle = 0;
     vicii_raster_draw_handler();
 
     /* Check DEN bit on first cycle of the line following the first DMA line  */
@@ -296,6 +295,10 @@ static inline void next_vicii_cycle(void)
     if ((vicii.raster_cycle == 54) && (vicii.cycles_per_line == 64)) {
         vicii.raster_cycle += 1;
     }
+
+    if (vicii.raster_cycle == 65) {
+        vicii.raster_cycle = 0;
+    }
 }
 
 int vicii_cycle(void)
@@ -310,6 +313,18 @@ int vicii_cycle(void)
     if (!vicii.last_sprite_ba_low) {
         vicii_fetch_sprites(vicii.raster_cycle);
     }
+
+    /*
+     *
+     * End of Phi2
+     *
+     ******/
+
+    /******
+     *
+     * Start of Phi1
+     *
+     */
 
     /* Phi1 fetch */
     vicii.last_read_phi1 = cycle_phi1_fetch(vicii.raster_cycle);
@@ -337,11 +352,23 @@ int vicii_cycle(void)
         vicii.prefetch_cycles = 0;
     }
 
+    /*
+     *
+     * End of Phi1
+     *
+     ******/
+
     /* Next cycle */
     next_vicii_cycle();
 
-    /* Handle end of line */
-    if (vicii.raster_cycle == 65) {
+    /******
+     *
+     * Start of Phi2
+     *
+     */
+
+    /* Handle end of line/start of new line */
+    if (vicii.raster_cycle == VICII_PAL_CYCLE(1)) {
         vicii_cycle_end_of_line();
     }
 
