@@ -80,14 +80,12 @@ static int main_border_pipe = 0;
 /* intermediate pixel result */
 static BYTE current_pixel = 0;
 
-static DRAW_INLINE void draw_sprites(int xpos, BYTE pixel_pri)
+static DRAW_INLINE void trigger_sprites(int xpos)
 {
     int s;
-    int active_sprite;
-    BYTE collision_mask;
 
-    /* do nothing if all sprites are disabled */
-    if ( !(sprite_pending_bits || sprite_active_bits) ) {
+    /* do nothing if no sprites are pending */
+    if ( !sprite_pending_bits ) {
         return;
     }
 
@@ -106,6 +104,14 @@ static DRAW_INLINE void draw_sprites(int xpos, BYTE pixel_pri)
             }
         }
     }
+}
+
+static DRAW_INLINE void draw_sprites(BYTE pixel_pri)
+{
+    int s;
+    int active_sprite;
+    BYTE collision_mask;
+
 
     /* do nothing if all sprites are inactive */
     if ( !sprite_active_bits ) {
@@ -247,7 +253,7 @@ static const BYTE colors[] = {
 #define IS_VISIBLE(x)  ( (x) & 0x8000 )
 #define GET_VISIBLE(x) ( ((x) >> 9) & 0x3f )
 
-static unsigned int xpos_tab[] = {
+static unsigned int flag_tab[] = {
     XPOS(0x190) | DMA_CYCLE_0(3), /*  1 */
     XPOS(0x198) | DMA_CYCLE_2(3), /*  2 */
     XPOS(0x1a0) | DMA_CYCLE_0(4), /*  3 */
@@ -319,8 +325,9 @@ static unsigned int xpos_tab[] = {
 void vicii_draw_cycle(void)
 {
     int cycle, offs, i;
-    int xpos;
     BYTE csel;
+    unsigned int flags;
+    int xpos;
     int spr_en;
     int vis_en;
     int li;
@@ -328,13 +335,14 @@ void vicii_draw_cycle(void)
     BYTE dma_cycle_2;
 
     cycle = vicii.raster_cycle;
-    /* convert cycle to an x-position. */
-    xpos = GET_XPOS(xpos_tab[cycle]);
-    spr_en = IS_SPR_EN(xpos_tab[cycle]);
-    vis_en = IS_VISIBLE(xpos_tab[cycle]);
-    li = GET_VISIBLE(xpos_tab[cycle]);
-    dma_cycle_0 = GET_DMA_CYCLE_0(xpos_tab[cycle]);
-    dma_cycle_2 = GET_DMA_CYCLE_2(xpos_tab[cycle]);
+    flags = flag_tab[cycle];
+
+    xpos = GET_XPOS(flags);
+    spr_en = IS_SPR_EN(flags);
+    vis_en = IS_VISIBLE(flags);
+    li = GET_VISIBLE(flags);
+    dma_cycle_0 = GET_DMA_CYCLE_0(flags);
+    dma_cycle_2 = GET_DMA_CYCLE_2(flags);
 
     /* reset rendering on raster cycle 0 */
     if (cycle == 0) {
@@ -447,7 +455,8 @@ void vicii_draw_cycle(void)
         }
 
         /* process and render sprites */
-        draw_sprites(xpos + i, pixel_pri);
+        trigger_sprites(xpos + i);
+        draw_sprites(pixel_pri);
 
         /* add border on top */
         if (border_state) {
@@ -458,7 +467,6 @@ void vicii_draw_cycle(void)
         vicii.dbuf[offs + i] = current_pixel;
 
     }
-
     vicii.dbuf_offset += 8;
 
 
