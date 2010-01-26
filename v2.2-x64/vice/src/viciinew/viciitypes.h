@@ -270,10 +270,6 @@ struct vicii_s {
     /* State of sprites. */
     vicii_sprite_t sprite[VICII_NUM_SPRITES];
 
-    /* Bit masks to indicate sprite fetch cycles */
-    BYTE sprite_dma_cycle_0;
-    BYTE sprite_dma_cycle_2;
-
     /* Geometry and timing parameters of the selected VIC-II emulation.  */
     unsigned int screen_height;
     int first_displayed_line;

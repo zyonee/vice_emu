@@ -104,8 +104,6 @@ inline static int sprite_dma_cycle_0(int i)
     vicii.sprite[i].data &= 0x00ffff;
     vicii.sprite[i].data |= sprdata << 16;
 
-    vicii.sprite_dma_cycle_0 = (1 << i);
-
     return ba_low;
 }
 
@@ -130,8 +128,6 @@ inline static int sprite_dma_cycle_2(int i)
 
     vicii.sprite[i].data &= 0xffff00;
     vicii.sprite[i].data |= sprdata;
-
-    vicii.sprite_dma_cycle_2 = (1 << i);
 
     return ba_low;
 }
@@ -274,9 +270,6 @@ BYTE vicii_fetch_sprite_dma_1(int i)
 int vicii_fetch_sprites(int cycle)
 {
     int ba_low = 0;
-
-    vicii.sprite_dma_cycle_0 = 0;
-    vicii.sprite_dma_cycle_2 = 0;
 
     switch (cycle) {
     case VICII_PAL_CYCLE(55):

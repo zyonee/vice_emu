@@ -232,21 +232,109 @@ static const BYTE colors[] = {
     COL_NONE,   COL_NONE,   COL_NONE,   COL_NONE    /* ECM=1 BMM=1 MCM=1 */
 };
 
+#define XPOS(x)            ( (x) & 0x1f8 )
+#define GET_XPOS(x)        ( (x) & 0x1f8 )
+
+#define DMA_CYCLE_0(x)     ( ((1 << (x)) << 16))
+#define DMA_CYCLE_2(x)     ( ((1 << (x)) << 24))
+#define GET_DMA_CYCLE_0(x) ( ((x) >> 16) & 0xff )
+#define GET_DMA_CYCLE_2(x) ( ((x) >> 24) & 0xff )
+
+#define SPR_EN         (1)
+#define IS_SPR_EN(x)   ( (x) & 1)
+
+#define VISIBLE(x)     ( 0x8000 | ((x) << 9) )
+#define IS_VISIBLE(x)  ( (x) & 0x8000 )
+#define GET_VISIBLE(x) ( ((x) >> 9) & 0x3f )
+
+static unsigned int xpos_tab[] = {
+    XPOS(0x190) | DMA_CYCLE_0(3), /*  1 */
+    XPOS(0x198) | DMA_CYCLE_2(3), /*  2 */
+    XPOS(0x1a0) | DMA_CYCLE_0(4), /*  3 */
+    XPOS(0x1a8) | DMA_CYCLE_2(4), /*  4 */
+    XPOS(0x1b0) | DMA_CYCLE_0(5), /*  5 */
+    XPOS(0x1b8) | DMA_CYCLE_2(5), /*  6 */
+    XPOS(0x1c0) | DMA_CYCLE_0(6), /*  7 */
+    XPOS(0x1c8) | DMA_CYCLE_2(6), /*  8 */
+    XPOS(0x1d0) | DMA_CYCLE_0(7), /*  9 */
+    XPOS(0x1d8) | DMA_CYCLE_2(7), /* 10 */
+    XPOS(0x1e0),  /* 11 */
+    XPOS(0x1e8),  /* 12 */
+    XPOS(0x1f0),  /* 13 */
+    XPOS(0x000),  /* 14 */
+    XPOS(0x008) | VISIBLE(0),  /* 15 */
+    XPOS(0x010) | VISIBLE(1),  /* 16 */
+    XPOS(0x018) | VISIBLE(2),  /* 17 */
+    XPOS(0x020) | VISIBLE(3),  /* 18 */
+    XPOS(0x028) | VISIBLE(4),  /* 19 */
+    XPOS(0x030) | VISIBLE(5),  /* 20 */
+    XPOS(0x038) | VISIBLE(6),  /* 21 */
+    XPOS(0x040) | VISIBLE(7),  /* 22 */
+    XPOS(0x048) | VISIBLE(8),  /* 23 */
+    XPOS(0x050) | VISIBLE(9),  /* 24 */
+    XPOS(0x058) | VISIBLE(10), /* 25 */
+    XPOS(0x060) | VISIBLE(11), /* 26 */
+    XPOS(0x068) | VISIBLE(12), /* 27 */
+    XPOS(0x070) | VISIBLE(13), /* 28 */
+    XPOS(0x078) | VISIBLE(14), /* 29 */
+    XPOS(0x080) | VISIBLE(15), /* 30 */
+    XPOS(0x088) | VISIBLE(16), /* 31 */
+    XPOS(0x090) | VISIBLE(17), /* 32 */
+    XPOS(0x098) | VISIBLE(18), /* 33 */
+    XPOS(0x0a0) | VISIBLE(19), /* 34 */
+    XPOS(0x0a8) | VISIBLE(20), /* 35 */
+    XPOS(0x0b0) | VISIBLE(21), /* 36 */
+    XPOS(0x0b8) | VISIBLE(22), /* 37 */
+    XPOS(0x0c0) | VISIBLE(23), /* 38 */
+    XPOS(0x0c8) | VISIBLE(24), /* 39 */
+    XPOS(0x0d0) | VISIBLE(25), /* 40 */
+    XPOS(0x0d8) | VISIBLE(26), /* 41 */
+    XPOS(0x0e0) | VISIBLE(27), /* 42 */
+    XPOS(0x0e8) | VISIBLE(28), /* 43 */
+    XPOS(0x0f0) | VISIBLE(29), /* 44 */
+    XPOS(0x0f8) | VISIBLE(30), /* 45 */
+    XPOS(0x100) | VISIBLE(31), /* 46 */
+    XPOS(0x108) | VISIBLE(32), /* 47 */
+    XPOS(0x110) | VISIBLE(33), /* 48 */
+    XPOS(0x118) | VISIBLE(34), /* 49 */
+    XPOS(0x120) | VISIBLE(35), /* 50 */
+    XPOS(0x128) | VISIBLE(36), /* 51 */
+    XPOS(0x130) | VISIBLE(37), /* 52 */
+    XPOS(0x138) | VISIBLE(38), /* 53 */
+    XPOS(0x140) | VISIBLE(39), /* 54 */
+    XPOS(0x000),
+    XPOS(0x000),
+    XPOS(0x148),  /* 55 */
+    XPOS(0x150),  /* 56 */
+    XPOS(0x158),  /* 57 */
+    XPOS(0x160) | DMA_CYCLE_0(0) | SPR_EN, /* 58 */
+    XPOS(0x168) | DMA_CYCLE_2(0), /* 59 */
+    XPOS(0x170) | DMA_CYCLE_0(1), /* 60 */
+    XPOS(0x178) | DMA_CYCLE_2(1), /* 61 */
+    XPOS(0x180) | DMA_CYCLE_0(2), /* 62 */
+    XPOS(0x188) | DMA_CYCLE_2(2)  /* 63 */
+};
+
+
 void vicii_draw_cycle(void)
 {
     int cycle, offs, i;
     int xpos;
     BYTE csel;
-    cycle = vicii.raster_cycle;
+    int spr_en;
+    int vis_en;
+    int li;
+    BYTE dma_cycle_0;
+    BYTE dma_cycle_2;
 
+    cycle = vicii.raster_cycle;
     /* convert cycle to an x-position. */
-    if (cycle < 13) {
-        xpos = cycle * 8 + 0x190;
-    } else if (cycle < 54) {
-        xpos = (cycle - 13) * 8;
-    } else {
-        xpos = (cycle - 15) * 8;
-    }
+    xpos = GET_XPOS(xpos_tab[cycle]);
+    spr_en = IS_SPR_EN(xpos_tab[cycle]);
+    vis_en = IS_VISIBLE(xpos_tab[cycle]);
+    li = GET_VISIBLE(xpos_tab[cycle]);
+    dma_cycle_0 = GET_DMA_CYCLE_0(xpos_tab[cycle]);
+    dma_cycle_2 = GET_DMA_CYCLE_2(xpos_tab[cycle]);
 
     /* reset rendering on raster cycle 0 */
     if (cycle == 0) {
@@ -254,6 +342,7 @@ void vicii_draw_cycle(void)
     }
 
     offs = vicii.dbuf_offset;
+
     /* guard */
     if (offs >= VICII_DRAW_BUFFER_SIZE) 
         return;
@@ -268,12 +357,12 @@ void vicii_draw_cycle(void)
 
         /* pipe sprite related changes various amounts of pixels late */
         if (i == 2) {
-            sprite_active_bits &= ~vicii.sprite_dma_cycle_2;
+            sprite_active_bits &= ~dma_cycle_2;
         }
         if (i == 3) {
-            sprite_halt_bits |= vicii.sprite_dma_cycle_0;
+            sprite_halt_bits |= dma_cycle_0;
         }
-        if (i == 4 && cycle == VICII_PAL_CYCLE(58)) {
+        if (spr_en && i == 4) {
             sprite_pending_bits = vicii.sprite_display_bits;
         }
         if (i == 6) {
@@ -282,7 +371,7 @@ void vicii_draw_cycle(void)
         }
         if (i == 7) {
             update_sprite_mc_bits();
-            sprite_halt_bits &= ~vicii.sprite_dma_cycle_2;
+            sprite_halt_bits &= ~dma_cycle_2;
         }
 
         /* Load new gbuf/vbuf/cbuf values at offset == xscroll */
@@ -380,7 +469,7 @@ void vicii_draw_cycle(void)
 
     /* this makes sure gbuf is 0 outside the visible area
        It should probably be done somewhere around the fetch instead */
-    if ( (cycle >= VICII_PAL_CYCLE(15) && cycle <= VICII_PAL_CYCLE(54)) && vicii.vborder == 0) {
+    if ( vis_en && vicii.vborder == 0) {
         gbuf_pipe0_reg = vicii.gbuf;
         xscroll_pipe = vicii.regs[0x16] & 0x07;
     } else {
@@ -388,10 +477,10 @@ void vicii_draw_cycle(void)
     }
 
     /* Only update vbuf and cbuf registers in the display state. */
-    if ( (cycle >= VICII_PAL_CYCLE(15) && cycle <= VICII_PAL_CYCLE(54)) && vicii.vborder == 0 ) {
+    if ( vis_en && vicii.vborder == 0 ) {
         if (!vicii.idle_state) {
-            vbuf_pipe0_reg = vicii.vbuf[cycle - VICII_PAL_CYCLE(15)];
-            cbuf_pipe0_reg = vicii.cbuf[cycle - VICII_PAL_CYCLE(15)];
+            vbuf_pipe0_reg = vicii.vbuf[li];
+            cbuf_pipe0_reg = vicii.cbuf[li];
         } else {
             vbuf_pipe0_reg = 0;
             cbuf_pipe0_reg = 0;
