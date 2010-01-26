@@ -209,7 +209,7 @@ static DRAW_INLINE void update_sprite_xpos_and_data(void)
 
 
 enum lookup_t {
-    COL_BLACK    = 0,
+    COL_NONE     = 0,
     COL_VBUF_L   = 1,
     COL_VBUF_H   = 2,
     COL_CBUF     = 3,
@@ -222,14 +222,14 @@ enum lookup_t {
 };
 
 static const BYTE colors[] = {
-    COL_D021,   COL_BLACK,  COL_BLACK,  COL_CBUF,   /* ECM=0 BMM=0 MCM=0 */
+    COL_D021,   COL_NONE,   COL_NONE,   COL_CBUF,   /* ECM=0 BMM=0 MCM=0 */
     COL_D021,   COL_D022,   COL_D023,   COL_CBUF_MC,/* ECM=0 BMM=0 MCM=1 */
-    COL_VBUF_L, COL_BLACK,  COL_BLACK,  COL_VBUF_H, /* ECM=0 BMM=1 MCM=0 */
+    COL_VBUF_L, COL_NONE,   COL_NONE,   COL_VBUF_H, /* ECM=0 BMM=1 MCM=0 */
     COL_D021,   COL_VBUF_H, COL_VBUF_L, COL_CBUF,   /* ECM=0 BMM=1 MCM=1 */
-    COL_D02X_EXT, COL_BLACK, COL_BLACK, COL_CBUF,   /* ECM=1 BMM=0 MCM=0 */
-    COL_BLACK,  COL_BLACK,  COL_BLACK,  COL_BLACK,  /* ECM=1 BMM=0 MCM=1 */
-    COL_BLACK,  COL_BLACK,  COL_BLACK,  COL_BLACK,  /* ECM=1 BMM=1 MCM=0 */
-    COL_BLACK,  COL_BLACK,  COL_BLACK,  COL_BLACK   /* ECM=1 BMM=1 MCM=1 */
+    COL_D02X_EXT, COL_NONE,  COL_NONE,  COL_CBUF,   /* ECM=1 BMM=0 MCM=0 */
+    COL_NONE,   COL_NONE,   COL_NONE,   COL_NONE,   /* ECM=1 BMM=0 MCM=1 */
+    COL_NONE,   COL_NONE,   COL_NONE,   COL_NONE,   /* ECM=1 BMM=1 MCM=0 */
+    COL_NONE,   COL_NONE,   COL_NONE,   COL_NONE    /* ECM=1 BMM=1 MCM=1 */
 };
 
 void vicii_draw_cycle(void)
@@ -266,7 +266,7 @@ void vicii_draw_cycle(void)
         BYTE cc;
         BYTE pixel_pri;
 
-        /* pipe sprite related changes 2 pixels late */
+        /* pipe sprite related changes various amounts of pixels late */
         if (i == 2) {
             sprite_active_bits &= ~vicii.sprite_dma_cycle_2;
         }
@@ -294,7 +294,7 @@ void vicii_draw_cycle(void)
             gbuf_mc_flop = 1;
         }
            
-        /* Load new border mask depending on csel and xscroll */
+        /* Set new border state depending on csel and current pixel */
         if (csel) {
             if (i == 0) {
                 border_state = main_border_pipe;
@@ -331,7 +331,7 @@ void vicii_draw_cycle(void)
 
         /* lookup colors and render pixel */
         switch (cc) {
-        case COL_BLACK:
+        case COL_NONE:
             current_pixel = 0;
             break;
         case COL_VBUF_L:
