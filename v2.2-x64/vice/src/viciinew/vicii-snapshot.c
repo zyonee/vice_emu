@@ -441,7 +441,9 @@ int vicii_snapshot_read_module(snapshot_t *s)
     /* FIXME: `vicii.ycounter_reset_checked'?  */
     /* FIXME: `vicii.force_display_state'?  */
 
+    /*
     vicii_update_video_mode();
+    */
 
     {
         DWORD dw;

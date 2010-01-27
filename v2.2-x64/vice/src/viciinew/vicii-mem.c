@@ -165,9 +165,6 @@ inline static void d011_store(BYTE value)
     vicii.regs[0x11] = value;
 
     update_raster_line();
-
-    /* FIXME: save time.  */
-    vicii_update_video_mode();
 }
 
 inline static void d012_store(BYTE value)
@@ -193,8 +190,6 @@ inline static void d016_store(const BYTE value)
     VICII_DEBUG_REGISTER(("Control register: $%02X", value));
 
     vicii.regs[0x16] = value;
-
-    vicii_update_video_mode();
 }
 
 inline static void d017_store(const BYTE value)

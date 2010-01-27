@@ -497,7 +497,7 @@ void vicii_draw_cycle(void)
 
     main_border_pipe = vicii.main_border;
 
-    vmode_pipe = vicii.video_mode << 2;
+    vmode_pipe = ( (vicii.regs[0x11] & 0x60) | (vicii.regs[0x16] & 0x10) ) >> 2;
 
     update_sprite_xpos_and_data();
 }

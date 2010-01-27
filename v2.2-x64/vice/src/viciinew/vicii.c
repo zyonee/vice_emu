@@ -243,8 +243,6 @@ raster_t *vicii_init(unsigned int flag)
 
     vicii_powerup();
 
-    vicii.video_mode = -1;
-    vicii_update_video_mode();
     vicii_update_memory_ptrs();
 
     vicii_draw_init();
@@ -525,52 +523,6 @@ void vicii_update_memory_ptrs(void)
     vicii.bitmap_low_ptr = bitmap_low_base;
     vicii.bitmap_high_ptr = bitmap_high_base;
     vicii.chargen_ptr = char_base;
-}
-
-/* Set the video mode according to the values in registers $D011 and $D016 of
-   the VIC-II chip.  */
-void vicii_update_video_mode(void)
-{
-    int new_video_mode;
-
-    new_video_mode = ((vicii.regs[0x11] & 0x60)
-                     | (vicii.regs[0x16] & 0x10)) >> 4;
-
-    vicii.video_mode = new_video_mode;
-
-#ifdef VICII_VMODE_DEBUG
-    switch (new_video_mode) {
-      case VICII_NORMAL_TEXT_MODE:
-        VICII_DEBUG_VMODE(("Standard Text"));
-        break;
-      case VICII_MULTICOLOR_TEXT_MODE:
-        VICII_DEBUG_VMODE(("Multicolor Text"));
-        break;
-      case VICII_HIRES_BITMAP_MODE:
-        VICII_DEBUG_VMODE(("Hires Bitmap"));
-        break;
-      case VICII_MULTICOLOR_BITMAP_MODE:
-        VICII_DEBUG_VMODE(("Multicolor Bitmap"));
-        break;
-      case VICII_EXTENDED_TEXT_MODE:
-        VICII_DEBUG_VMODE(("Extended Text"));
-        break;
-      case VICII_ILLEGAL_TEXT_MODE:
-        VICII_DEBUG_VMODE(("Illegal Text"));
-        break;
-      case VICII_ILLEGAL_BITMAP_MODE_1:
-        VICII_DEBUG_VMODE(("Invalid Bitmap"));
-        break;
-      case VICII_ILLEGAL_BITMAP_MODE_2:
-        VICII_DEBUG_VMODE(("Invalid Bitmap"));
-        break;
-      default:                    /* cannot happen */
-        VICII_DEBUG_VMODE(("???"));
-    }
-
-    VICII_DEBUG_VMODE(("Mode enabled at line $%04X, cycle %d.",
-                       VICII_RASTER_Y(maincpu_clk), cycle));
-#endif
 }
 
 /* Redraw the current raster line.  This happens after the last cycle

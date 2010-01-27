@@ -59,32 +59,8 @@
 /* drawing constants. */
 #define VICII_DRAW_BUFFER_SIZE (65 * 8)
 
-/* Available video modes.  The number is given by
-   ((vicii.regs[0x11] & 0x60) | (vicii.regs[0x16] & 0x10)) >> 4.  */
-enum vicii_video_mode_s {
-    VICII_NORMAL_TEXT_MODE,
-    VICII_MULTICOLOR_TEXT_MODE,
-    VICII_HIRES_BITMAP_MODE,
-    VICII_MULTICOLOR_BITMAP_MODE,
-    VICII_EXTENDED_TEXT_MODE,
-    VICII_ILLEGAL_TEXT_MODE,
-    VICII_ILLEGAL_BITMAP_MODE_1,
-    VICII_ILLEGAL_BITMAP_MODE_2,
-    VICII_NUM_VMODES
-};
-typedef enum vicii_video_mode_s vicii_video_mode_t;
-
-#define VICII_DUMMY_MODE VICII_NORMAL_TEXT_MODE
-
-#define VICII_IS_ILLEGAL_MODE(x) ((x) >= VICII_ILLEGAL_TEXT_MODE \
-                                 && (x) <= VICII_ILLEGAL_BITMAP_MODE_2)
-
-#define VICII_IS_BITMAP_MODE(x)  ((x) & 0x02)
-
-#define VICII_IS_TEXT_MODE(x)    ((x) == VICII_NORMAL_TEXT_MODE \
-                                 || (x) == VICII_MULTICOLOR_TEXT_MODE \
-                                 || (x) == VICII_EXTENDED_TEXT_MODE)
-
+/* just a dummy for the vicii-draw.c wrapper */
+#define VICII_DUMMY_MODE (0)
 
 /* This macro translated PAL cycles 1 to 63 into our internal 
    representation, i.e 0-64 with a hole at 54 depending on video standard */
@@ -229,9 +205,6 @@ struct vicii_s {
     BYTE sprite_sprite_collisions;
     BYTE sprite_background_collisions;
 
-    /* Current video mode.  */
-    int video_mode;
-
     /* Flag: are we in idle state? */
     int idle_state;
 
@@ -309,7 +282,6 @@ extern vicii_t vicii;
 
 /* Private function calls, used by the other VIC-II modules.  */
 extern void vicii_update_memory_ptrs(void);
-extern void vicii_update_video_mode(void);
 extern void vicii_raster_draw_handler(void);
 
 /* Debugging options.  */
