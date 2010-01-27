@@ -66,14 +66,7 @@
    representation, i.e 0-64 with a hole at 54 depending on video standard */
 #define VICII_PAL_CYCLE(c) ( (c) + ( ((c) >= 55) ? 2 : 0 ) - 1)
 
-/* Delay for the raster line interrupt.  This is not due to the VIC-II, since
-   it triggers the IRQ line at the beginning of the line, but to the 6510
-   that needs at least 2 cycles to detect it.  */
-#define VICII_RASTER_IRQ_DELAY     2
 
-/* Current char being drawn by the raster.  < 0 or >= VICII_SCREEN_TEXTCOLS
-   if outside the visible range.  */
-#define VICII_RASTER_CHAR(cycle)   ((int)(cycle) - 15)
 
 /* Current horizontal position (in pixels) of the raster.  < 0 or >=
    SCREEN_WIDTH if outside the visible range.  */
@@ -86,17 +79,9 @@
                                    / vicii.cycles_per_line) \
                                    % vicii.screen_height)
 
-/* Cycle # within the current line.  */
-#define VICII_RASTER_CYCLE(clk)    ((unsigned int)(((clk) + 1) \
-                                   % vicii.cycles_per_line))
 /* `clk' value for the beginning of the current line.  */
 #define VICII_LINE_START_CLK(clk)  (((clk) / vicii.cycles_per_line) \
                                    * vicii.cycles_per_line)
-
-/* # of the previous and next raster line.  Handles wrap over.  */
-#define VICII_PREVIOUS_LINE(line)  (((line) > 0) \
-                                   ? (line) - 1 : vicii.screen_height - 1)
-#define VICII_NEXT_LINE(line)      (((line) + 1) % vicii.screen_height)
 
 /* VIC-II structures.  This is meant to be used by VIC-II modules
    *exclusively*!  */
