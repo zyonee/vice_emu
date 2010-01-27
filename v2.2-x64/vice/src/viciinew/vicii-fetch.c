@@ -211,21 +211,17 @@ BYTE vicii_fetch_graphics(void)
 {
     BYTE data;
 
-    switch (vicii.video_mode) {
-    case VICII_NORMAL_TEXT_MODE:           /* ECM=0 BMM=0 MCM=0 */
-    case VICII_MULTICOLOR_TEXT_MODE:       /* ECM=0 BMM=0 MCM=1 */
+    switch (vicii.regs[0x11] & 0x60) {
+    case 0x00:                             /* ECM=0 BMM=0 MCM=x */
         data = gfx_data_normal_text(vicii.vbuf[vicii.vmli]);
         break;
-    case VICII_HIRES_BITMAP_MODE:          /* ECM=0 BMM=1 MCM=0 */
-    case VICII_MULTICOLOR_BITMAP_MODE:     /* ECM=0 BMM=1 MCM=1 */
+    case 0x20:                             /* ECM=0 BMM=1 MCM=x */
         data = gfx_data_hires_bitmap(vicii.vmli);
         break;
-    case VICII_EXTENDED_TEXT_MODE:         /* ECM=1 BMM=0 MCM=0 */
-    case VICII_ILLEGAL_TEXT_MODE:          /* ECM=1 BMM=0 MCM=1 */
+    case 0x40:                             /* ECM=1 BMM=0 MCM=x */
         data = gfx_data_extended_text(vicii.vbuf[vicii.vmli]);
         break;
-    case VICII_ILLEGAL_BITMAP_MODE_1:      /* ECM=1 BMM=1 MCM=0 */
-    case VICII_ILLEGAL_BITMAP_MODE_2:      /* ECM=1 BMM=1 MCM=1 */
+    case 0x60:                             /* ECM=1 BMM=1 MCM=x */
         data = gfx_data_illegal_bitmap(vicii.vmli);
         break;
     default:
