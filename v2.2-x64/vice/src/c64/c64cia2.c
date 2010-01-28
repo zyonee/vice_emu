@@ -31,6 +31,7 @@
 
 #include <stdio.h>
 
+#include "c64-resources.h"
 #include "c64.h"
 #include "c64_256k.h"
 #include "c64mem.h"
@@ -79,6 +80,13 @@ static void cia_set_int_clk(cia_context_t *cia_context, int value, CLOCK clk)
 static void cia_restore_int(cia_context_t *cia_context, int value)
 {
     interrupt_restore_nmi(maincpu_int_status, cia_context->int_num, value);
+}
+
+void cia2_update_model(void)
+{
+    if (machine_context.cia2) {
+        machine_context.cia2->model = cia_model;
+    }
 }
 
 #define MYCIA CIA2
@@ -299,6 +307,8 @@ void cia2_setup_context(machine_context_t *machine_context)
     if (machine_class == VICE_MACHINE_C64SC) {
         cia->write_offset = 0;
     }
+
+    cia->model = cia_model;
 
     cia->debugFlag = 0;
     cia->irq_line = IK_NMI;

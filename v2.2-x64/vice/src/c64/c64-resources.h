@@ -33,5 +33,6 @@ extern void c64_resources_shutdown(void);
 extern int emu_id_enabled;
 extern int acia_de_enabled;
 extern char *kernal_revision;
+extern int cia_model;
 
 #endif

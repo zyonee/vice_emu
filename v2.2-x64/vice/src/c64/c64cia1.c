@@ -30,6 +30,7 @@
 
 #include <stdio.h>
 
+#include "c64-resources.h"
 #include "c64.h"
 #include "c64cia.h"
 #include "cia.h"
@@ -64,6 +65,13 @@ BYTE REGPARM1 cia1_read(WORD addr)
 BYTE REGPARM1 cia1_peek(WORD addr)
 {
     return ciacore_peek(machine_context.cia1, addr);
+}
+
+void cia1_update_model(void)
+{
+    if (machine_context.cia1) {
+        machine_context.cia1->model = cia_model;
+    }
 }
 
 static void cia_set_int_clk(cia_context_t *cia_context, int value, CLOCK clk)
@@ -251,6 +259,8 @@ void cia1_setup_context(machine_context_t *machine_context)
     if (machine_class == VICE_MACHINE_C64SC) {
         cia->write_offset = 0;
     }
+
+    cia->model = cia_model;
 
     cia->debugFlag = 0;
     cia->irq_line = IK_IRQ;

@@ -122,6 +122,10 @@ int acia_d7_enabled;
 #endif
 #endif
 
+/* Flag: Emulate new CIA (6526A)? */
+/* FIXME not switchable yet */
+int cia_model = 0;
+
 static int set_c128_full_banks(int val, void *param)
 {
     c128_full_banks = val;

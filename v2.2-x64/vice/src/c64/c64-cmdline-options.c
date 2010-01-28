@@ -114,6 +114,11 @@ static const cmdline_option_t cmdline_options[] = {
       IDCLS_P_NAME, IDCLS_SPECIFY_POS_KEYMAP_FILE_NAME,
       NULL, NULL },
 #endif
+    { "-ciamodel", SET_RESOURCE, 1,
+      NULL, NULL, "CIAModel", NULL,
+      USE_PARAM_STRING, USE_DESCRIPTION_STRING,
+      IDCLS_UNUSED, IDCLS_UNUSED,
+      "<model>", "Set CIA model (0 = old 6526, 1 = new 6526A)" },
     { NULL }
 };
 
