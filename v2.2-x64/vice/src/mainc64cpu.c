@@ -370,8 +370,14 @@ void maincpu_reset(void)
 inline static int interrupt_check_nmi_delay(interrupt_cpu_status_t *cs,
                                             CLOCK cpu_clk)
 {
-#if 1
     unsigned int delay_cycles = INTERRUPT_DELAY;
+
+    /* BRK (0x00) delays the NMI by one opcode.  */
+    /* TODO DO_INTERRUPT sets last opcode to 0: can NMI occur right after IRQ? */
+    if (OPINFO_NUMBER(*cs->last_opcode_info_ptr) == 0x00) {
+        return 0;
+    }
+
     /* Branch instructions delay IRQs and NMI by one cycle if branch
        is taken with no page boundary crossing.  */
     if (OPINFO_DELAYS_INTERRUPT(*cs->last_opcode_info_ptr)) {
@@ -381,29 +387,8 @@ inline static int interrupt_check_nmi_delay(interrupt_cpu_status_t *cs,
     if (cs->nmi_delay_cycles >= delay_cycles) {
         return 1;
     }
-    
-    return 0;
-
-#else
-    CLOCK nmi_clk = cs->nmi_clk + INTERRUPT_DELAY;
-
-    /* Branch instructions delay IRQs and NMI by one cycle if branch
-       is taken with no page boundary crossing.  */
-    if (OPINFO_DELAYS_INTERRUPT(*cs->last_opcode_info_ptr)) {
-        nmi_clk++;
-    }
-
-    /* BRK (0x00) delays the NMI by one opcode.  */
-    if (OPINFO_NUMBER(*cs->last_opcode_info_ptr) == 0x00) {
-        return 0;
-    }
-
-    if (cpu_clk >= nmi_clk) {
-        return 1;
-    }
 
     return 0;
-#endif
 }
 
 /* Return nonzero if a pending IRQ should be dispatched now.  This takes
@@ -412,8 +397,8 @@ inline static int interrupt_check_nmi_delay(interrupt_cpu_status_t *cs,
 inline static int interrupt_check_irq_delay(interrupt_cpu_status_t *cs,
                                             CLOCK cpu_clk)
 {
-#if 1
     unsigned int delay_cycles = INTERRUPT_DELAY;
+
     /* Branch instructions delay IRQs and NMI by one cycle if branch
        is taken with no page boundary crossing.  */
     if (OPINFO_DELAYS_INTERRUPT(*cs->last_opcode_info_ptr)) {
@@ -427,30 +412,8 @@ inline static int interrupt_check_irq_delay(interrupt_cpu_status_t *cs,
             cs->global_pending_int |= IK_IRQPEND;
         }
     }
-  
+
     return 0;
-
-#else
-
-    CLOCK irq_clk = cs->irq_clk + INTERRUPT_DELAY;
-
-    /* Branch instructions delay IRQs and NMI by one cycle if branch
-       is taken with no page boundary crossing.  */
-    if (OPINFO_DELAYS_INTERRUPT(*cs->last_opcode_info_ptr)) {
-        irq_clk++;
-    }
-
-    /* If an opcode changes the I flag from 1 to 0, the 6510 needs
-       one more opcode before it triggers the IRQ routine.  */
-    if (cpu_clk >= irq_clk) {
-        if (!OPINFO_ENABLES_IRQ(*cs->last_opcode_info_ptr)) {
-            return 1;
-        } else {
-            cs->global_pending_int |= IK_IRQPEND;
-        }
-    }
-    return 0;
-#endif
 }
 
 /* ------------------------------------------------------------------------- */
