@@ -95,7 +95,7 @@ inline static int sprite_dma_cycle_0(int i)
 
 #ifdef DEBUG
         if (debug.maincpu_traceflg && vicii.sprite[i].dma) {
-            log_debug("SDMA0 in cycle %i", vicii.raster_cycle);
+            log_debug("SDMA0 in cycle %i   %d", vicii.raster_cycle, maincpu_clk);
         }
 #endif
         ba_low = 1;
@@ -120,7 +120,7 @@ inline static int sprite_dma_cycle_2(int i)
 
 #ifdef DEBUG
         if (debug.maincpu_traceflg && vicii.sprite[i].dma) {
-            log_debug("SDMA2 in cycle %i", vicii.raster_cycle);
+            log_debug("SDMA2 in cycle %i   %d", vicii.raster_cycle, maincpu_clk);
         }
 #endif
         ba_low = 1;

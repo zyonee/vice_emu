@@ -71,6 +71,24 @@
     } while (0)
 
 /* ------------------------------------------------------------------------- */
+CLOCK debug_clk;
+
+inline static void interrupt_delay(void)
+{
+    while (maincpu_clk >= alarm_context_next_pending_clk(maincpu_alarm_context)) {
+        alarm_context_dispatch(maincpu_alarm_context, maincpu_clk);
+    }
+
+    debug_clk = maincpu_clk-1;
+    if (maincpu_int_status->irq_clk <= maincpu_clk) 
+    {
+        maincpu_int_status->irq_delay_cycles++;
+    }
+    if (maincpu_int_status->nmi_clk <= maincpu_clk) 
+    {
+        maincpu_int_status->nmi_delay_cycles++;
+    }
+}
 
 inline static void check_ba(void)
 {
@@ -352,6 +370,21 @@ void maincpu_reset(void)
 inline static int interrupt_check_nmi_delay(interrupt_cpu_status_t *cs,
                                             CLOCK cpu_clk)
 {
+#if 1
+    unsigned int delay_cycles = INTERRUPT_DELAY;
+    /* Branch instructions delay IRQs and NMI by one cycle if branch
+       is taken with no page boundary crossing.  */
+    if (OPINFO_DELAYS_INTERRUPT(*cs->last_opcode_info_ptr)) {
+        delay_cycles++;
+    }
+
+    if (cs->nmi_delay_cycles >= delay_cycles) {
+        return 1;
+    }
+    
+    return 0;
+
+#else
     CLOCK nmi_clk = cs->nmi_clk + INTERRUPT_DELAY;
 
     /* Branch instructions delay IRQs and NMI by one cycle if branch
@@ -370,6 +403,7 @@ inline static int interrupt_check_nmi_delay(interrupt_cpu_status_t *cs,
     }
 
     return 0;
+#endif
 }
 
 /* Return nonzero if a pending IRQ should be dispatched now.  This takes
@@ -378,6 +412,26 @@ inline static int interrupt_check_nmi_delay(interrupt_cpu_status_t *cs,
 inline static int interrupt_check_irq_delay(interrupt_cpu_status_t *cs,
                                             CLOCK cpu_clk)
 {
+#if 1
+    unsigned int delay_cycles = INTERRUPT_DELAY;
+    /* Branch instructions delay IRQs and NMI by one cycle if branch
+       is taken with no page boundary crossing.  */
+    if (OPINFO_DELAYS_INTERRUPT(*cs->last_opcode_info_ptr)) {
+        delay_cycles++;
+    }
+
+    if (cs->irq_delay_cycles >= delay_cycles) {
+        if (!OPINFO_ENABLES_IRQ(*cs->last_opcode_info_ptr)) {
+            return 1;
+        } else {
+            cs->global_pending_int |= IK_IRQPEND;
+        }
+    }
+  
+    return 0;
+
+#else
+
     CLOCK irq_clk = cs->irq_clk + INTERRUPT_DELAY;
 
     /* Branch instructions delay IRQs and NMI by one cycle if branch
@@ -396,6 +450,7 @@ inline static int interrupt_check_irq_delay(interrupt_cpu_status_t *cs,
         }
     }
     return 0;
+#endif
 }
 
 /* ------------------------------------------------------------------------- */

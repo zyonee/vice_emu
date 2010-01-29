@@ -30,7 +30,9 @@
 
 #include "vice.h"
 
+#include "alarm.h"
 #include "debug.h"
+#include "interrupt.h"
 #include "log.h"
 #include "mainc64cpu.h"
 #include "types.h"
@@ -438,7 +440,7 @@ int vicii_cycle(void)
     if (vicii.fetch_active && (vicii.raster_cycle >= VICII_PAL_CYCLE(15)) ) {
 #ifdef DEBUG
         if (debug.maincpu_traceflg) {
-            log_debug("DMA at cycle %d", vicii.raster_cycle);
+            log_debug("DMA at cycle %d   %d", vicii.raster_cycle, maincpu_clk);
         }
 #endif
         ba_low = 1;
@@ -465,6 +467,7 @@ int vicii_cycle(void)
 void vicii_steal_cycles(void)
 {
     int ba_low;
+    interrupt_cpu_status_t *cs = maincpu_int_status;
 
     maincpu_ba_low_flag = 0;
 
@@ -474,4 +477,15 @@ void vicii_steal_cycles(void)
         maincpu_clk++;
         ba_low = vicii_cycle();
     } while (ba_low);
+    
+    while (maincpu_clk >= alarm_context_next_pending_clk(maincpu_alarm_context)) {
+        alarm_context_dispatch(maincpu_alarm_context, maincpu_clk);
+    }
+
+    if (cs->irq_delay_cycles == 0 && cs->irq_clk < maincpu_clk) {
+        cs->irq_delay_cycles++;
+    }
+    if (cs->nmi_delay_cycles == 0 && cs->nmi_clk < maincpu_clk) {
+        cs->nmi_delay_cycles++;
+    }
 }
