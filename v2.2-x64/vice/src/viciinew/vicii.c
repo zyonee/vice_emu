@@ -268,6 +268,8 @@ void vicii_reset(void)
 
     vicii.raster_line = 0;
     vicii.raster_cycle = 6;
+    vicii.start_of_frame = 0;
+    vicii.raster_irq_triggered = 0;
 
     /* FIXME: I am not sure this is exact emulation.  */
     vicii.raster_irq_line = 0;
@@ -325,8 +327,6 @@ void vicii_powerup(void)
     vicii.vbank_phi2 = 0;
 
     vicii_reset();
-
-    vicii.raster.blank = 1;
 
     vicii.ysmooth = 0;
 }

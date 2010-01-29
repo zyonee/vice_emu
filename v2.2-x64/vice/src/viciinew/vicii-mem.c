@@ -132,17 +132,12 @@ static inline void store_sprite_x_position_msb(const WORD addr, BYTE value)
 
 inline static void update_raster_line(void)
 {
-    int new_line;
-    int old_line = vicii.raster_irq_line;
+    unsigned int new_line;
 
-    new_line = vicii.regs[0x12];
+    new_line =  vicii.regs[0x12];
     new_line |= (vicii.regs[0x11] & 0x80) << 1;
 
     vicii.raster_irq_line = new_line;
-
-    if ((new_line != old_line) && (new_line == vicii.raster_line)) {
-        vicii_irq_raster_trigger();
-    }
 
     VICII_DEBUG_REGISTER(("Raster interrupt line set to $%04X",
                          vicii.raster_irq_line));
@@ -497,13 +492,6 @@ inline static unsigned int read_raster_y(void)
     int raster_y;
 
     raster_y = vicii.raster_line;
-
-    /* Line 0 is 62 cycles long, while line (SCREEN_HEIGHT - 1) is 64
-       cycles long.  As a result, the counter is incremented one
-       cycle later on line 0.  */
-    if (raster_y == 0 && vicii.raster_cycle == VICII_PAL_CYCLE(1)) {
-        raster_y = vicii.screen_height - 1;
-    }
 
     return raster_y;
 }

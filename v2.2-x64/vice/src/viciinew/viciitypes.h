@@ -127,11 +127,17 @@ struct vicii_s {
     /* Current line.  */
     unsigned int raster_line;
 
+    /* Start of frame flag.  */
+    int start_of_frame;
+
     /* Interrupt register.  */
     int irq_status;             /* = 0; */
 
     /* Line for raster compare IRQ.  */
     unsigned int raster_irq_line;
+
+    /* Flag for raster compare edge detect.  */
+    int raster_irq_triggered;
 
     /* Pointer to the base of RAM seen by the VIC-II.  */
     /* address is base of 64k bank. vbank adds 0/16k/32k/48k to get actual

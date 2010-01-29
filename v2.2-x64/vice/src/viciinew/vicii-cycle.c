@@ -246,8 +246,9 @@ static inline void check_hborder(int cycle)
     }
 }
 
-static inline void vicii_cycle_end_of_frame(void)
+static inline void vicii_cycle_start_of_frame(void)
 {
+    vicii.start_of_frame = 0;
     vicii.raster_line = 0;
     vicii.refresh_counter = 0xff;
     vicii.allow_bad_lines = 0;
@@ -259,7 +260,13 @@ static inline void vicii_cycle_end_of_frame(void)
 static inline void vicii_cycle_end_of_line(void)
 {
     vicii_raster_draw_handler();
+    if (vicii.raster_line == vicii.screen_height-1) {
+        vicii.start_of_frame = 1;
+    }
+}
 
+static inline void vicii_cycle_start_of_line(void)
+{
     /* Check DEN bit on first cycle of the line following the first DMA line  */
     if ((vicii.raster_line == VICII_FIRST_DMA_LINE) && !vicii.allow_bad_lines && (vicii.regs[0x11] & 0x10)) {
         vicii.allow_bad_lines = 1;
@@ -268,16 +275,6 @@ static inline void vicii_cycle_end_of_line(void)
     /* Disallow bad lines after the last possible one has passed */
     if (vicii.raster_line == VICII_LAST_DMA_LINE) {
         vicii.allow_bad_lines = 0;
-    }
-
-    vicii.raster_line++;
-
-    if (vicii.raster_line == vicii.screen_height) {
-        vicii_cycle_end_of_frame();
-    }
-
-    if ((vicii.raster_line == vicii.raster_irq_line) && (vicii.raster_line != 0)) {
-        vicii_irq_raster_trigger();
     }
 
     vicii.bad_line = 0;
@@ -372,11 +369,30 @@ int vicii_cycle(void)
     /* Handle end of line/start of new line */
     if (vicii.raster_cycle == VICII_PAL_CYCLE(1)) {
         vicii_cycle_end_of_line();
+        vicii_cycle_start_of_line();
     }
 
-    /* IRQ on line 0 is delayed by 1 clock */
-    if ((vicii.raster_line == vicii.raster_irq_line) && (vicii.raster_line == 0) && (vicii.raster_cycle == VICII_PAL_CYCLE(2))) {
-        vicii_irq_raster_trigger();
+    if (vicii.start_of_frame) {
+        if (vicii.raster_cycle == VICII_PAL_CYCLE(2)) {
+            vicii_cycle_start_of_frame();
+        }
+    } else {
+        if (vicii.raster_cycle == VICII_PAL_CYCLE(1)) {
+            vicii.raster_line++;
+        }
+    }
+
+    /*
+     * Trigger a raster IRQ if the raster comparison goes from
+     * non-match to match.
+     */
+    if ((vicii.raster_line == vicii.raster_irq_line)) {
+        if (!vicii.raster_irq_triggered) {
+            vicii_irq_raster_trigger();
+            vicii.raster_irq_triggered = 1;
+        }
+    } else {
+        vicii.raster_irq_triggered = 0;
     }
 
     /* Check DEN bit on first DMA line */
