@@ -30,6 +30,7 @@
 
 #include "vice.h"
 
+#include "6510core.h"
 #include "alarm.h"
 #include "debug.h"
 #include "interrupt.h"
@@ -493,9 +494,22 @@ void vicii_steal_cycles(void)
         maincpu_clk++;
         ba_low = vicii_cycle();
     } while (ba_low);
-    
+
     while (maincpu_clk >= alarm_context_next_pending_clk(maincpu_alarm_context)) {
         alarm_context_dispatch(maincpu_alarm_context, maincpu_clk);
+    }
+
+    /* SEI */
+    if (OPINFO_NUMBER(*cs->last_opcode_info_ptr) == 0x78) {
+        /* do not update interrupt delay counters */
+        return;
+    }
+
+    /* CLI */
+    if (OPINFO_NUMBER(*cs->last_opcode_info_ptr) == 0x58) {
+        /* this is a hacky way of signaling CLI() that it
+           shouldn't delay the interrupt */
+        OPINFO_SET_ENABLES_IRQ(*cs->last_opcode_info_ptr, 1);
     }
 
     if (cs->irq_delay_cycles == 0 && cs->irq_clk < maincpu_clk) {

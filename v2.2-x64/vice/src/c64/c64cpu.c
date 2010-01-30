@@ -49,6 +49,11 @@ int maincpu_ba_low_flag = 0;
 
 #define SKIP_CYCLE 0
 
+/* Opcode info updated in FETCH_OPCODE.
+   Needed for CLI/SEI detection in vicii_steal_cycles. */
+#define OPCODE_UPDATE_IN_FETCH
+
+
 /* opcode_t etc */
 
 #if defined ALLOW_UNALIGNED_ACCESS
@@ -110,6 +115,7 @@ int maincpu_ba_low_flag = 0;
         if (((int)reg_pc) < bank_limit) {                       \
             check_ba();                                         \
             o = (*((DWORD *)(bank_base + reg_pc)) & 0xffffff);  \
+            SET_LAST_OPCODE(p0);                                \
             CLK_INC();                                          \
             check_ba();                                         \
             CLK_INC();                                          \
@@ -119,6 +125,7 @@ int maincpu_ba_low_flag = 0;
             }                                                   \
         } else {                                                \
             o = LOAD(reg_pc);                                   \
+            SET_LAST_OPCODE(p0);                                \
             CLK_INC();                                          \
             o |= LOAD(reg_pc + 1) << 8;                         \
             CLK_INC();                                          \
@@ -135,6 +142,7 @@ int maincpu_ba_low_flag = 0;
         if (((int)reg_pc) < bank_limit) {                         \
             check_ba();                                           \
             (o).ins = *(bank_base + reg_pc);                      \
+            SET_LAST_OPCODE(p0);                                  \
             CLK_INC();                                            \
             check_ba();                                           \
             (o).op.op16 = *(bank_base + reg_pc + 1);              \
@@ -146,6 +154,7 @@ int maincpu_ba_low_flag = 0;
             }                                                     \
         } else {                                                  \
             (o).ins = LOAD(reg_pc);                               \
+            SET_LAST_OPCODE(p0);                                  \
             CLK_INC();                                            \
             (o).op.op16 = LOAD(reg_pc + 1);                       \
             CLK_INC();                                            \

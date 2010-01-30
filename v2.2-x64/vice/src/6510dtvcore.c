@@ -855,6 +855,25 @@
       LOCAL_SET_DECIMAL(0);  \
   } while (0)
 
+#ifdef OPCODE_UPDATE_IN_FETCH
+
+#define CLI()                                           \
+  do {                                                  \
+      INC_PC(1);                                        \
+      /* Set by viciinew to signal steal during CLI */  \
+      if (!OPINFO_ENABLES_IRQ(LAST_OPCODE_INFO)) {      \
+          if (LOCAL_INTERRUPT()) {                      \
+              OPCODE_ENABLES_IRQ();                     \
+          }                                             \
+      } else {                                          \
+          /* Remove the signal and the related delay */ \
+          LAST_OPCODE_INFO &= ~OPINFO_ENABLES_IRQ_MSK;  \
+      }                                                 \
+      LOCAL_SET_INTERRUPT(0);                           \
+  } while (0)
+
+#else /* !OPCODE_UPDATE_IN_FETCH */
+
 #define CLI()                    \
   do {                           \
       INC_PC(1);                 \
@@ -862,6 +881,8 @@
           OPCODE_ENABLES_IRQ();  \
       LOCAL_SET_INTERRUPT(0);    \
   } while (0)
+
+#endif
 
 #define CLV()                 \
   do {                        \
@@ -1472,7 +1493,9 @@ static const BYTE fetch_tab[] = {
 #endif
 
 trap_skipped:
+#ifndef OPCODE_UPDATE_IN_FETCH
         SET_LAST_OPCODE(p0);
+#endif
 
         switch (p0) {
 
