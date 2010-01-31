@@ -91,16 +91,16 @@ void vicii_irq_sscoll_clear(void)
     vicii_irq_set_line();
 }
 
-void vicii_irq_lightpen_set(CLOCK mclk)
+void vicii_irq_lightpen_set(void)
 {
     vicii.irq_status |= 0x8;
-    vicii_irq_set_line_clk(mclk);
+    vicii_irq_set_line();
 }
 
-void vicii_irq_lightpen_clear(CLOCK mclk)
+void vicii_irq_lightpen_clear(void)
 {
     vicii.irq_status &= 0xf7;
-    vicii_irq_set_line_clk(mclk);
+    vicii_irq_set_line();
 }
 
 void vicii_irq_set_raster_line(unsigned int line)

@@ -365,28 +365,24 @@ void vicii_set_phi2_vbank(int num_vbank)
 /* Trigger the light pen.  */
 void vicii_trigger_light_pen(CLOCK mclk)
 {
-    /* FIXME get rid of VICII_* */
     if (!vicii.light_pen.triggered) {
         vicii.light_pen.triggered = 1;
-        vicii.light_pen.x = VICII_RASTER_X(mclk % vicii.cycles_per_line)
-                                - vicii.screen_leftborderwidth + 0x20;
-
-        if (vicii.light_pen.x < 0) {
-            vicii.light_pen.x = vicii.sprite_wrap_x + vicii.light_pen.x;
-        }
-
-        /* +4 tuned to get "Wall" in Crest Avandgarde working */
-        vicii.light_pen.x = vicii.light_pen.x / 2 + 4 + vicii.light_pen.x_extra_bits;
+        /* this is rather broken. the +8 is to compensate for us being
+           called one cycle too late + and xpos update order problem.
+           This leads to several problems.
+           The latency needs to be fixed elsewhere. */
+        vicii.light_pen.x = vicii.raster_xpos/2 + 8 + 2;
         vicii.light_pen.x_extra_bits = 0;
-        vicii.light_pen.y = VICII_RASTER_Y(mclk);
+        vicii.light_pen.y = vicii.raster_line;
 
-        vicii_irq_lightpen_set(mclk);
+        vicii_irq_lightpen_set();
     }
 }
 
 /* Calculate lightpen pulse time based on x/y */
 CLOCK vicii_lightpen_timing(int x, int y)
 {
+#if 0
     CLOCK pulse_time = maincpu_clk;
 
     x += 0x80 - vicii.screen_leftborderwidth;
@@ -406,6 +402,9 @@ CLOCK vicii_lightpen_timing(int x, int y)
     }
 
     return pulse_time;
+#else
+    return 0;
+#endif
 }
 
 /* Change the base of RAM seen by the VIC-II.  */

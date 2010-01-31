@@ -35,8 +35,8 @@ extern void vicii_irq_sbcoll_set(void);
 extern void vicii_irq_sbcoll_clear(void);
 extern void vicii_irq_sscoll_set(void);
 extern void vicii_irq_sscoll_clear(void);
-extern void vicii_irq_lightpen_set(CLOCK mclk);
-extern void vicii_irq_lightpen_clear(CLOCK mclk);
+extern void vicii_irq_lightpen_set(void);
+extern void vicii_irq_lightpen_clear(void);
 
 extern void vicii_irq_set_raster_line(unsigned int line);
 extern void vicii_irq_check_state(BYTE value, unsigned int high);

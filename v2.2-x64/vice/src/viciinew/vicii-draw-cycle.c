@@ -344,6 +344,10 @@ void vicii_draw_cycle(void)
     dma_cycle_0 = GET_DMA_CYCLE_0(flags);
     dma_cycle_2 = GET_DMA_CYCLE_2(flags);
 
+    /* this should go into vicii-cycle.c once we move the table to a sane
+       place */
+    vicii.raster_xpos = xpos;
+
     /* reset rendering on raster cycle 0 */
     if (cycle == 0) {
         vicii.dbuf_offset = 0;

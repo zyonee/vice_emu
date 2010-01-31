@@ -67,22 +67,6 @@
 #define VICII_PAL_CYCLE(c) ( (c) + ( ((c) >= 55) ? 2 : 0 ) - 1)
 
 
-
-/* Current horizontal position (in pixels) of the raster.  < 0 or >=
-   SCREEN_WIDTH if outside the visible range.  */
-#define VICII_RASTER_X(cycle)      (((int)(cycle) - 17) * 8 + vicii.screen_leftborderwidth)
-
-/* Current vertical position of the raster.  Unlike `rasterline', which is
-   only accurate if a pending drawing event has been served, this is
-   guarranteed to be always correct.  It is a bit slow, though.  */
-#define VICII_RASTER_Y(clk)        ((unsigned int)((clk) \
-                                   / vicii.cycles_per_line) \
-                                   % vicii.screen_height)
-
-/* `clk' value for the beginning of the current line.  */
-#define VICII_LINE_START_CLK(clk)  (((clk) / vicii.cycles_per_line) \
-                                   * vicii.cycles_per_line)
-
 /* VIC-II structures.  This is meant to be used by VIC-II modules
    *exclusively*!  */
 
@@ -123,6 +107,9 @@ struct vicii_s {
 
     /* Cycle # within the current line.  */
     unsigned int raster_cycle;
+
+    /* xpos within the current line.  */
+    unsigned int raster_xpos;
                                    
     /* Current line.  */
     unsigned int raster_line;
@@ -242,7 +229,6 @@ struct vicii_s {
     int screen_leftborderwidth;
     int screen_rightborderwidth;
     int cycles_per_line;
-    int sprite_wrap_x;
 
     /* Last value read by VICII during phi1.  */
     BYTE last_read_phi1;

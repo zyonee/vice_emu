@@ -92,10 +92,6 @@
 #define VICII_NTSC_CYCLES_PER_LINE     C64_NTSC_CYCLES_PER_LINE
 #define VICII_NTSCOLD_CYCLES_PER_LINE  C64_NTSCOLD_CYCLES_PER_LINE
 
-#define VICII_PAL_SPRITE_WRAP_X     504
-#define VICII_NTSC_SPRITE_WRAP_X    520
-#define VICII_NTSCOLD_SPRITE_WRAP_X 512
-
 
 void vicii_timing_set(machine_timing_t *machine_timing, int border_mode)
 {
@@ -128,7 +124,6 @@ void vicii_timing_set(machine_timing_t *machine_timing, int border_mode)
             break;
         }
         vicii.cycles_per_line = VICII_NTSC_CYCLES_PER_LINE;
-        vicii.sprite_wrap_x = VICII_NTSC_SPRITE_WRAP_X;
         break;
       case MACHINE_SYNC_NTSCOLD:
         vicii.screen_height = VICII_NTSCOLD_SCREEN_HEIGHT;
@@ -154,7 +149,6 @@ void vicii_timing_set(machine_timing_t *machine_timing, int border_mode)
             break;
         }
         vicii.cycles_per_line = VICII_NTSCOLD_CYCLES_PER_LINE;
-        vicii.sprite_wrap_x = VICII_NTSCOLD_SPRITE_WRAP_X;
         break;
       case MACHINE_SYNC_PAL:
       default:
@@ -181,7 +175,6 @@ void vicii_timing_set(machine_timing_t *machine_timing, int border_mode)
             break;
         }
         vicii.cycles_per_line = VICII_PAL_CYCLES_PER_LINE;
-        vicii.sprite_wrap_x = VICII_PAL_SPRITE_WRAP_X;
         break;
     }
 
