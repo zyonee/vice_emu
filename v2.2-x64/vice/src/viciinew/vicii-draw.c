@@ -69,7 +69,7 @@ static BYTE *const aligned_line_buffer = (BYTE *)_aligned_line_buffer;
 /* Dummy mode for using cycle based drawing.  */
 #define FULL_WIDTH_CHARS ((vicii.screen_leftborderwidth/8) + VICII_SCREEN_TEXTCOLS + (vicii.screen_rightborderwidth/8))
 
-#define DBUF_OFFSET (16*8 - vicii.screen_leftborderwidth)
+#define DBUF_OFFSET (17*8 - vicii.screen_leftborderwidth)
 
 static int get_dummy(raster_cache_t *cache, unsigned int *xs, unsigned int *xe,
                      int rr)

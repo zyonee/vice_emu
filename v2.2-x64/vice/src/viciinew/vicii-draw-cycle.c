@@ -35,6 +35,29 @@
 /* disable for debugging */
 #define DRAW_INLINE inline
 
+/* colors */
+#define COL_NONE     0x10
+#define COL_VBUF_L   0x11
+#define COL_VBUF_H   0x12
+#define COL_CBUF     0x13
+#define COL_CBUF_MC  0x14
+#define COL_D02X_EXT 0x15
+#define COL_D020     0x20
+#define COL_D021     0x21
+#define COL_D022     0x22
+#define COL_D023     0x23
+#define COL_D024     0x24
+#define COL_D025     0x25 
+#define COL_D026     0x26
+#define COL_D027     0x27
+#define COL_D028     0x28
+#define COL_D029     0x29
+#define COL_D02A     0x2a
+#define COL_D02B     0x2b
+#define COL_D02C     0x2c
+#define COL_D02D     0x2d
+#define COL_D02E     0x2e
+
 /* foreground/background graphics */
 
 BYTE gbuf_pipe0_reg = 0;
@@ -79,6 +102,13 @@ static int main_border_pipe = 0;
 
 /* intermediate pixel result */
 static BYTE current_pixel = 0;
+
+/* pixel buffer */
+static BYTE pixel_buffer[8];
+static int pixel_index = 0;
+
+/* delayed registers */
+static BYTE cregs[0x2e];
 
 static DRAW_INLINE void trigger_sprites(int xpos)
 {
@@ -172,13 +202,13 @@ static DRAW_INLINE void draw_sprites(BYTE pixel_pri)
         if ( !(pixel_pri && spri) ) {
             switch (sbuf_pixel_reg[s]) {
             case 1:
-                current_pixel = vicii.regs[0x25];
+                current_pixel = COL_D025;
                 break;
             case 2:
-                current_pixel = vicii.regs[0x27 + s];
+                current_pixel = COL_D027 + s;
                 break;
             case 3:
-                current_pixel = vicii.regs[0x26];
+                current_pixel = COL_D026;
                 break;
             default:
                 break;
@@ -213,19 +243,13 @@ static DRAW_INLINE void update_sprite_xpos_and_data(void)
     }
 }
 
-
-enum lookup_t {
-    COL_NONE     = 0,
-    COL_VBUF_L   = 1,
-    COL_VBUF_H   = 2,
-    COL_CBUF     = 3,
-    COL_CBUF_MC  = 4,
-    COL_D02X_EXT = 5,
-    COL_D021     = 0x21,
-    COL_D022     = 0x22,
-    COL_D023     = 0x23,
-    COL_D024     = 0x24
-};
+static DRAW_INLINE void update_cregs(void)
+{
+    int i;
+    for (i=0x20; i<=0x2e; i++) {
+        cregs[i] = vicii.regs[i];
+    }
+}
 
 static const BYTE colors[] = {
     COL_D021,   COL_NONE,   COL_NONE,   COL_CBUF,   /* ECM=0 BMM=0 MCM=0 */
@@ -366,6 +390,7 @@ void vicii_draw_cycle(void)
         BYTE px = 0;
         BYTE cc;
         BYTE pixel_pri;
+        BYTE pix;
 
         /* pipe sprite related changes various amounts of pixels late */
         if (i == 2) {
@@ -448,27 +473,34 @@ void vicii_draw_cycle(void)
             current_pixel = cbuf_reg & 0x07;
             break;
         case COL_D02X_EXT:
-            current_pixel = vicii.regs[0x21 + (vbuf_reg >> 6)];
+            current_pixel = COL_D021 + (vbuf_reg >> 6);
             break;
-        case COL_D021:
-        case COL_D022:
-        case COL_D023:
-        case COL_D024:
-            current_pixel = vicii.regs[cc];
+        default:
+            current_pixel = cc;
             break;
         }
 
         /* process and render sprites */
         trigger_sprites(xpos + i);
+
         draw_sprites(pixel_pri);
 
         /* add border on top */
         if (border_state) {
-            current_pixel = vicii.regs[0x20];
+            current_pixel = COL_D020;
         }
 
+        pix = pixel_buffer[(pixel_index-7) & 0x07];
+        /* resolve any unresolved colors */
+        if (pix & 0xf0) {
+            pix = cregs[pix];
+        }
+        pixel_buffer[(pixel_index-7) & 0x07] = pix;
         /* draw pixel to buffer */
-        vicii.dbuf[offs + i] = current_pixel;
+        vicii.dbuf[offs + i] = pixel_buffer[pixel_index];
+
+        pixel_buffer[pixel_index] = current_pixel;
+        pixel_index = (pixel_index + 1) & 0x07;
 
     }
     vicii.dbuf_offset += 8;
@@ -503,6 +535,7 @@ void vicii_draw_cycle(void)
 
     vmode_pipe = ( (vicii.regs[0x11] & 0x60) | (vicii.regs[0x16] & 0x10) ) >> 2;
 
+    update_cregs();
     update_sprite_xpos_and_data();
 }
 
