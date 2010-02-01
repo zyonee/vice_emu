@@ -71,7 +71,9 @@
     } while (0)
 
 /* ------------------------------------------------------------------------- */
+#ifdef DEBUG
 CLOCK debug_clk;
+#endif
 
 inline static void interrupt_delay(void)
 {
@@ -79,7 +81,6 @@ inline static void interrupt_delay(void)
         alarm_context_dispatch(maincpu_alarm_context, maincpu_clk);
     }
 
-    debug_clk = maincpu_clk-1;
     if (maincpu_int_status->irq_clk <= maincpu_clk) 
     {
         maincpu_int_status->irq_delay_cycles++;
@@ -93,7 +94,15 @@ inline static void interrupt_delay(void)
 inline static void check_ba(void)
 {
     if (maincpu_ba_low_flag) {
+#ifdef DEBUG
+        CLOCK old_maincpu_clk = maincpu_clk;
+#endif
         vicii_steal_cycles();
+#ifdef DEBUG
+        if (debug_clk == old_maincpu_clk) {
+            debug_clk = maincpu_clk;
+        }
+#endif
     }
 }
 

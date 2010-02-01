@@ -1458,7 +1458,7 @@ static const BYTE fetch_tab[] = {
         opcode_t opcode;
 #ifdef DEBUG
         //CLOCK debug_clk;
-        //debug_clk = maincpu_clk;
+        debug_clk = maincpu_clk;
 #endif
 
 #ifdef FEATURE_CPUMEMHISTORY
