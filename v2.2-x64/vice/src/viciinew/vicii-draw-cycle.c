@@ -105,7 +105,7 @@ static BYTE current_pixel = 0;
 
 /* pixel buffer */
 static BYTE pixel_buffer[8];
-static int pixel_index = 0;
+static unsigned int pixel_index = 0;
 
 /* delayed registers */
 static BYTE cregs[0x2e];
@@ -391,6 +391,7 @@ void vicii_draw_cycle(void)
         BYTE cc;
         BYTE pixel_pri;
         BYTE pix;
+        unsigned int next_index;
 
         /* pipe sprite related changes various amounts of pixels late */
         if (i == 2) {
@@ -490,27 +491,18 @@ void vicii_draw_cycle(void)
             current_pixel = COL_D020;
         }
 
-#if 1
-        pix = pixel_buffer[(pixel_index-7) & 0x07];
+        next_index = (pixel_index + 1) & 0x07;
+        pix = pixel_buffer[next_index];
         /* resolve any unresolved colors */
         if (pix & 0xf0) {
             pix = cregs[pix];
         }
-        pixel_buffer[(pixel_index-7) & 0x07] = pix;
+        pixel_buffer[next_index] = pix;
         /* draw pixel to buffer */
         vicii.dbuf[offs + i] = pixel_buffer[pixel_index];
 
         pixel_buffer[pixel_index] = current_pixel;
-        pixel_index = (pixel_index + 1) & 0x07;
-#else
-        pix = current_pixel;
-        /* resolve any unresolved colors */
-        if (pix & 0xf0) {
-            pix = cregs[pix];
-        }
-        /* draw pixel to buffer */
-        vicii.dbuf[offs + i] = pix;
-#endif
+        pixel_index = next_index;
 
     }
     vicii.dbuf_offset += 8;
