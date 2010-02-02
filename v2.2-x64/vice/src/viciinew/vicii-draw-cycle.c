@@ -490,6 +490,7 @@ void vicii_draw_cycle(void)
             current_pixel = COL_D020;
         }
 
+#if 1
         pix = pixel_buffer[(pixel_index-7) & 0x07];
         /* resolve any unresolved colors */
         if (pix & 0xf0) {
@@ -501,6 +502,15 @@ void vicii_draw_cycle(void)
 
         pixel_buffer[pixel_index] = current_pixel;
         pixel_index = (pixel_index + 1) & 0x07;
+#else
+        pix = current_pixel;
+        /* resolve any unresolved colors */
+        if (pix & 0xf0) {
+            pix = cregs[pix];
+        }
+        /* draw pixel to buffer */
+        vicii.dbuf[offs + i] = pix;
+#endif
 
     }
     vicii.dbuf_offset += 8;
@@ -542,7 +552,12 @@ void vicii_draw_cycle(void)
 
 void vicii_draw_cycle_init(void)
 {
+    /* initialize the draw buffer */
     memset(vicii.dbuf, 0, VICII_DRAW_BUFFER_SIZE);
     vicii.dbuf_offset = 0;
+
+    /* initialize the pixel ring buffer. */
+    memset(pixel_buffer, 0, sizeof(pixel_buffer));
+    pixel_index = 0;
 }
 
