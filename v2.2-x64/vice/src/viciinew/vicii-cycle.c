@@ -138,6 +138,18 @@ static inline void check_sprite_dma(void)
     }
 }
 
+static inline int check_sprite0_dma(void)
+{
+    int enable = vicii.regs[0x15];
+    int y = vicii.regs[0x01];
+
+    if ((enable & 1) && (y == (vicii.raster_line & 0xff))) {
+        return 1;
+    }
+
+    return 0;
+}
+
 static inline BYTE cycle_phi1_fetch(unsigned int cycle)
 {
     BYTE data;
@@ -407,13 +419,9 @@ int vicii_cycle(void)
     }
 
     /* Check sprite expansion flags */
-    if (vicii.raster_cycle == VICII_PAL_CYCLE(55) ) {
-        check_exp();
-    }
-
     /* Check sprite DMA */
-    if (vicii.raster_cycle == VICII_PAL_CYCLE(55)
-        || vicii.raster_cycle == VICII_PAL_CYCLE(56)) {
+    if (vicii.raster_cycle == VICII_PAL_CYCLE(56)) {
+        check_exp();
         check_sprite_dma();
     }
 
@@ -471,6 +479,12 @@ int vicii_cycle(void)
 
     /* Sprite Phi2 fetch */
     sprite_ba_low = vicii_fetch_sprites(vicii.raster_cycle);
+
+    /* HACK possibly steal cycle 55 on the first line on sprite 0 */
+    if (vicii.raster_cycle == VICII_PAL_CYCLE(55)) {
+        sprite_ba_low |= check_sprite0_dma();
+    }
+
     ba_low |= sprite_ba_low;
     vicii.last_sprite_ba_low = sprite_ba_low;
 
