@@ -108,7 +108,7 @@ static BYTE pixel_buffer[8];
 static unsigned int pixel_index = 0;
 
 /* delayed registers */
-static BYTE cregs[0x2e];
+static BYTE cregs[0x2f];
 
 static DRAW_INLINE void trigger_sprites(int xpos)
 {
