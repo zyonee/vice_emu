@@ -47,10 +47,10 @@
 #define VICII_24ROW_START_LINE    0x37
 #define VICII_24ROW_STOP_LINE     0xf7
 
-#define VICII_40COL_START_CYCLE   15
-#define VICII_40COL_STOP_CYCLE    57
-#define VICII_38COL_START_CYCLE   16
-#define VICII_38COL_STOP_CYCLE    56
+#define VICII_40COL_START_CYCLE   16
+#define VICII_40COL_STOP_CYCLE    58
+#define VICII_38COL_START_CYCLE   17
+#define VICII_38COL_STOP_CYCLE    57
 
 /* Bad line range.  */
 #define VICII_FIRST_DMA_LINE      0x30
@@ -63,8 +63,8 @@
 #define VICII_DUMMY_MODE (0)
 
 /* This macro translated PAL cycles 1 to 63 into our internal 
-   representation, i.e 0-64 with a hole at 54 depending on video standard */
-#define VICII_PAL_CYCLE(c) ( (c) + ( ((c) >= 55) ? 2 : 0 ) - 1)
+   representation, i.e 0-64 with a hole at 55 depending on video standard */
+#define VICII_PAL_CYCLE(c) ( (c) + ( ((c) >= 56) ? 2 : 0 ) - 1)
 
 
 /* VIC-II structures.  This is meant to be used by VIC-II modules

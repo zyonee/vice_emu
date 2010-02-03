@@ -278,71 +278,71 @@ static const BYTE colors[] = {
 #define GET_VISIBLE(x) ( ((x) >> 9) & 0x3f )
 
 static unsigned int flag_tab[] = {
-    XPOS(0x190) | DMA_CYCLE_0(3), /*  1 */
-    XPOS(0x198) | DMA_CYCLE_2(3), /*  2 */
-    XPOS(0x1a0) | DMA_CYCLE_0(4), /*  3 */
-    XPOS(0x1a8) | DMA_CYCLE_2(4), /*  4 */
-    XPOS(0x1b0) | DMA_CYCLE_0(5), /*  5 */
-    XPOS(0x1b8) | DMA_CYCLE_2(5), /*  6 */
-    XPOS(0x1c0) | DMA_CYCLE_0(6), /*  7 */
-    XPOS(0x1c8) | DMA_CYCLE_2(6), /*  8 */
-    XPOS(0x1d0) | DMA_CYCLE_0(7), /*  9 */
-    XPOS(0x1d8) | DMA_CYCLE_2(7), /* 10 */
-    XPOS(0x1e0),  /* 11 */
-    XPOS(0x1e8),  /* 12 */
-    XPOS(0x1f0),  /* 13 */
-    XPOS(0x000),  /* 14 */
-    XPOS(0x008) | VISIBLE(0),  /* 15 */
-    XPOS(0x010) | VISIBLE(1),  /* 16 */
-    XPOS(0x018) | VISIBLE(2),  /* 17 */
-    XPOS(0x020) | VISIBLE(3),  /* 18 */
-    XPOS(0x028) | VISIBLE(4),  /* 19 */
-    XPOS(0x030) | VISIBLE(5),  /* 20 */
-    XPOS(0x038) | VISIBLE(6),  /* 21 */
-    XPOS(0x040) | VISIBLE(7),  /* 22 */
-    XPOS(0x048) | VISIBLE(8),  /* 23 */
-    XPOS(0x050) | VISIBLE(9),  /* 24 */
-    XPOS(0x058) | VISIBLE(10), /* 25 */
-    XPOS(0x060) | VISIBLE(11), /* 26 */
-    XPOS(0x068) | VISIBLE(12), /* 27 */
-    XPOS(0x070) | VISIBLE(13), /* 28 */
-    XPOS(0x078) | VISIBLE(14), /* 29 */
-    XPOS(0x080) | VISIBLE(15), /* 30 */
-    XPOS(0x088) | VISIBLE(16), /* 31 */
-    XPOS(0x090) | VISIBLE(17), /* 32 */
-    XPOS(0x098) | VISIBLE(18), /* 33 */
-    XPOS(0x0a0) | VISIBLE(19), /* 34 */
-    XPOS(0x0a8) | VISIBLE(20), /* 35 */
-    XPOS(0x0b0) | VISIBLE(21), /* 36 */
-    XPOS(0x0b8) | VISIBLE(22), /* 37 */
-    XPOS(0x0c0) | VISIBLE(23), /* 38 */
-    XPOS(0x0c8) | VISIBLE(24), /* 39 */
-    XPOS(0x0d0) | VISIBLE(25), /* 40 */
-    XPOS(0x0d8) | VISIBLE(26), /* 41 */
-    XPOS(0x0e0) | VISIBLE(27), /* 42 */
-    XPOS(0x0e8) | VISIBLE(28), /* 43 */
-    XPOS(0x0f0) | VISIBLE(29), /* 44 */
-    XPOS(0x0f8) | VISIBLE(30), /* 45 */
-    XPOS(0x100) | VISIBLE(31), /* 46 */
-    XPOS(0x108) | VISIBLE(32), /* 47 */
-    XPOS(0x110) | VISIBLE(33), /* 48 */
-    XPOS(0x118) | VISIBLE(34), /* 49 */
-    XPOS(0x120) | VISIBLE(35), /* 50 */
-    XPOS(0x128) | VISIBLE(36), /* 51 */
-    XPOS(0x130) | VISIBLE(37), /* 52 */
-    XPOS(0x138) | VISIBLE(38), /* 53 */
-    XPOS(0x140) | VISIBLE(39), /* 54 */
+    XPOS(0x188) | DMA_CYCLE_2(2), /*  1 */
+    XPOS(0x190) | DMA_CYCLE_0(3), /*  2 */
+    XPOS(0x198) | DMA_CYCLE_2(3), /*  3 */
+    XPOS(0x1a0) | DMA_CYCLE_0(4), /*  4 */
+    XPOS(0x1a8) | DMA_CYCLE_2(4), /*  5 */
+    XPOS(0x1b0) | DMA_CYCLE_0(5), /*  6 */
+    XPOS(0x1b8) | DMA_CYCLE_2(5), /*  7 */
+    XPOS(0x1c0) | DMA_CYCLE_0(6), /*  8 */
+    XPOS(0x1c8) | DMA_CYCLE_2(6), /*  9 */
+    XPOS(0x1d0) | DMA_CYCLE_0(7), /* 10 */
+    XPOS(0x1d8) | DMA_CYCLE_2(7), /* 11 */
+    XPOS(0x1e0),  /* 12 */
+    XPOS(0x1e8),  /* 13 */
+    XPOS(0x1f0),  /* 14 */
+    XPOS(0x000),  /* 15 */
+    XPOS(0x008) | VISIBLE(0),  /* 16 */
+    XPOS(0x010) | VISIBLE(1),  /* 17 */
+    XPOS(0x018) | VISIBLE(2),  /* 18 */
+    XPOS(0x020) | VISIBLE(3),  /* 19 */
+    XPOS(0x028) | VISIBLE(4),  /* 20 */
+    XPOS(0x030) | VISIBLE(5),  /* 21 */
+    XPOS(0x038) | VISIBLE(6),  /* 22 */
+    XPOS(0x040) | VISIBLE(7),  /* 23 */
+    XPOS(0x048) | VISIBLE(8),  /* 24 */
+    XPOS(0x050) | VISIBLE(9),  /* 25 */
+    XPOS(0x058) | VISIBLE(10), /* 26 */
+    XPOS(0x060) | VISIBLE(11), /* 27 */
+    XPOS(0x068) | VISIBLE(12), /* 28 */
+    XPOS(0x070) | VISIBLE(13), /* 29 */
+    XPOS(0x078) | VISIBLE(14), /* 30 */
+    XPOS(0x080) | VISIBLE(15), /* 31 */
+    XPOS(0x088) | VISIBLE(16), /* 32 */
+    XPOS(0x090) | VISIBLE(17), /* 33 */
+    XPOS(0x098) | VISIBLE(18), /* 34 */
+    XPOS(0x0a0) | VISIBLE(19), /* 35 */
+    XPOS(0x0a8) | VISIBLE(20), /* 36 */
+    XPOS(0x0b0) | VISIBLE(21), /* 37 */
+    XPOS(0x0b8) | VISIBLE(22), /* 38 */
+    XPOS(0x0c0) | VISIBLE(23), /* 39 */
+    XPOS(0x0c8) | VISIBLE(24), /* 40 */
+    XPOS(0x0d0) | VISIBLE(25), /* 41 */
+    XPOS(0x0d8) | VISIBLE(26), /* 42 */
+    XPOS(0x0e0) | VISIBLE(27), /* 43 */
+    XPOS(0x0e8) | VISIBLE(28), /* 44 */
+    XPOS(0x0f0) | VISIBLE(29), /* 45 */
+    XPOS(0x0f8) | VISIBLE(30), /* 46 */
+    XPOS(0x100) | VISIBLE(31), /* 47 */
+    XPOS(0x108) | VISIBLE(32), /* 48 */
+    XPOS(0x110) | VISIBLE(33), /* 49 */
+    XPOS(0x118) | VISIBLE(34), /* 50 */
+    XPOS(0x120) | VISIBLE(35), /* 51 */
+    XPOS(0x128) | VISIBLE(36), /* 52 */
+    XPOS(0x130) | VISIBLE(37), /* 53 */
+    XPOS(0x138) | VISIBLE(38), /* 54 */
+    XPOS(0x140) | VISIBLE(39), /* 55 */
     XPOS(0x000),
     XPOS(0x000),
-    XPOS(0x148),  /* 55 */
-    XPOS(0x150),  /* 56 */
-    XPOS(0x158),  /* 57 */
-    XPOS(0x160) | DMA_CYCLE_0(0) | SPR_EN, /* 58 */
-    XPOS(0x168) | DMA_CYCLE_2(0), /* 59 */
-    XPOS(0x170) | DMA_CYCLE_0(1), /* 60 */
-    XPOS(0x178) | DMA_CYCLE_2(1), /* 61 */
-    XPOS(0x180) | DMA_CYCLE_0(2), /* 62 */
-    XPOS(0x188) | DMA_CYCLE_2(2)  /* 63 */
+    XPOS(0x148),  /* 56 */
+    XPOS(0x150),  /* 57 */
+    XPOS(0x158),  /* 58 */
+    XPOS(0x160) | DMA_CYCLE_0(0) | SPR_EN, /* 59 */
+    XPOS(0x168) | DMA_CYCLE_2(0), /* 60 */
+    XPOS(0x170) | DMA_CYCLE_0(1), /* 61 */
+    XPOS(0x178) | DMA_CYCLE_2(1), /* 62 */
+    XPOS(0x180) | DMA_CYCLE_0(2)  /* 63 */
 };
 
 
@@ -373,7 +373,7 @@ void vicii_draw_cycle(void)
     vicii.raster_xpos = xpos;
 
     /* reset rendering on raster cycle 0 */
-    if (cycle == 0) {
+    if (cycle == 1) {
         vicii.dbuf_offset = 0;
     }
 

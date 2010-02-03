@@ -154,7 +154,7 @@ static inline BYTE cycle_phi1_fetch(unsigned int cycle)
 {
     BYTE data;
 
-    if (cycle >= VICII_PAL_CYCLE(15) && cycle <= VICII_PAL_CYCLE(54)) {
+    if (cycle >= VICII_PAL_CYCLE(16) && cycle <= VICII_PAL_CYCLE(55)) {
         if (!vicii.idle_state) {
             data = vicii_fetch_graphics();
         } else {
@@ -165,63 +165,63 @@ static inline BYTE cycle_phi1_fetch(unsigned int cycle)
  
     switch (cycle) {
         /* Sprite pointers */
-    case VICII_PAL_CYCLE(57):
+    case VICII_PAL_CYCLE(58):
         data = vicii_fetch_sprite_pointer(0);
         break;
-    case VICII_PAL_CYCLE(59):
+    case VICII_PAL_CYCLE(60):
         data = vicii_fetch_sprite_pointer(1);
         break;
-    case VICII_PAL_CYCLE(61):
+    case VICII_PAL_CYCLE(62):
         data = vicii_fetch_sprite_pointer(2);
         break;
-    case VICII_PAL_CYCLE(63):
+    case VICII_PAL_CYCLE(1):
         data = vicii_fetch_sprite_pointer(3);
         break;
-    case VICII_PAL_CYCLE(2):
+    case VICII_PAL_CYCLE(3):
         data = vicii_fetch_sprite_pointer(4);
         break;
-    case VICII_PAL_CYCLE(4):
+    case VICII_PAL_CYCLE(5):
         data = vicii_fetch_sprite_pointer(5);
         break;
-    case VICII_PAL_CYCLE(6):
+    case VICII_PAL_CYCLE(7):
         data = vicii_fetch_sprite_pointer(6);
         break;
-    case VICII_PAL_CYCLE(8):
+    case VICII_PAL_CYCLE(9):
         data = vicii_fetch_sprite_pointer(7);
         break;
 
         /* Sprite DMA */
-    case VICII_PAL_CYCLE(58):
+    case VICII_PAL_CYCLE(59):
         data = vicii_fetch_sprite_dma_1(0);
         break;
-    case VICII_PAL_CYCLE(60):
+    case VICII_PAL_CYCLE(61):
         data = vicii_fetch_sprite_dma_1(1);
         break;
-    case VICII_PAL_CYCLE(62):
+    case VICII_PAL_CYCLE(63):
         data = vicii_fetch_sprite_dma_1(2);
         break;
-    case VICII_PAL_CYCLE(1):
+    case VICII_PAL_CYCLE(2):
         data = vicii_fetch_sprite_dma_1(3);
         break;
-    case VICII_PAL_CYCLE(3):
+    case VICII_PAL_CYCLE(4):
         data = vicii_fetch_sprite_dma_1(4);
         break;
-    case VICII_PAL_CYCLE(5):
+    case VICII_PAL_CYCLE(6):
         data = vicii_fetch_sprite_dma_1(5);
         break;
-    case VICII_PAL_CYCLE(7):
+    case VICII_PAL_CYCLE(8):
         data = vicii_fetch_sprite_dma_1(6);
         break;
-    case VICII_PAL_CYCLE(9):
+    case VICII_PAL_CYCLE(10):
         data = vicii_fetch_sprite_dma_1(7);
         break;
 
         /* Refresh */
-    case VICII_PAL_CYCLE(10):
     case VICII_PAL_CYCLE(11):
     case VICII_PAL_CYCLE(12):
     case VICII_PAL_CYCLE(13):
     case VICII_PAL_CYCLE(14):
+    case VICII_PAL_CYCLE(15):
         data = vicii_fetch_refresh();
         break;
 
@@ -299,12 +299,12 @@ static inline void next_vicii_cycle(void)
     /* Next cycle */
     vicii.raster_cycle++;
 
-    /* Handle the "hole" on PAL systems at cycles 55-56 */
-    if ((vicii.raster_cycle == 54) && (vicii.cycles_per_line == 63)) {
+    /* Handle the "hole" on PAL systems at cycles 56-57 */
+    if ((vicii.raster_cycle == 55) && (vicii.cycles_per_line == 63)) {
         vicii.raster_cycle += 2;
     }
-    /* Handle the "hole" on NTSC-old systems at cycle 55 */
-    if ((vicii.raster_cycle == 54) && (vicii.cycles_per_line == 64)) {
+    /* Handle the "hole" on NTSC-old systems at cycle 56 */
+    if ((vicii.raster_cycle == 55) && (vicii.cycles_per_line == 64)) {
         vicii.raster_cycle += 1;
     }
 
@@ -331,6 +331,9 @@ int vicii_cycle(void)
      * End of Phi2
      *
      ******/
+
+    /* Next cycle */
+    next_vicii_cycle();
 
     /******
      *
@@ -359,7 +362,7 @@ int vicii_cycle(void)
     }
 
     /* Stop fetch */
-    if (vicii.raster_cycle == VICII_PAL_CYCLE(54)) {
+    if (vicii.raster_cycle == VICII_PAL_CYCLE(55)) {
         vicii.fetch_active = 0;
         vicii.prefetch_cycles = 0;
     }
@@ -369,9 +372,6 @@ int vicii_cycle(void)
      * End of Phi1
      *
      ******/
-
-    /* Next cycle */
-    next_vicii_cycle();
 
     /******
      *
