@@ -43,6 +43,9 @@ struct vicii_resources_s
 
     /* Flag: New or old luminances? */
     int new_luminances;
+
+    /* VIC-II model */
+    int model;
 };
 typedef struct vicii_resources_s vicii_resources_t;
 

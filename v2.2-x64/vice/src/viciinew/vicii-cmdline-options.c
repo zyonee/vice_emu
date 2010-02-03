@@ -134,6 +134,11 @@ static const cmdline_option_t cmdline_options[] =
       USE_PARAM_STRING, USE_DESCRIPTION_ID,
       IDCLS_UNUSED, IDCLS_SET_ODDLINES_OFFSET,
       "<0-2000>", NULL },
+    { "-VICIImodel", SET_RESOURCE, 1,
+      NULL, NULL, "VICIIModel", NULL,
+      USE_PARAM_STRING, USE_DESCRIPTION_STRING,
+      IDCLS_UNUSED, IDCLS_UNUSED,
+      T_("<model>"), T_("Set VIC-II model (0 = FIXME, 1...)") },
     { NULL }
 };
 

@@ -78,6 +78,19 @@ static int set_new_luminances(int val, void *param)
     return vicii_color_update_palette(vicii.raster.canvas);
 }
 
+static int set_model(int val, void *param)
+{
+    if ((val < 0) || (val >= VICII_MODEL_NUM)) {
+        return -1;
+    }
+
+    vicii_resources.model = val;
+
+    /* TODO NTSC/PAL switch, luminance switch, maybe vicii_update_model... */
+
+    return 0;
+}
+
 static const resource_int_t resources_int[] =
 {
     { "VICIIBorderMode", VICII_NORMAL_BORDERS, RES_EVENT_SAME, NULL,
@@ -92,6 +105,9 @@ static const resource_int_t resources_int[] =
     { "VICIINewLuminances", 1, RES_EVENT_NO, NULL,
       &vicii_resources.new_luminances,
       set_new_luminances, NULL },
+    { "VICIIModel", 0, RES_EVENT_NO, NULL,
+      &vicii_resources.model,
+      set_model, NULL },
     { NULL }
 };
 

@@ -118,7 +118,7 @@ static const cmdline_option_t cmdline_options[] = {
       NULL, NULL, "CIAModel", NULL,
       USE_PARAM_STRING, USE_DESCRIPTION_STRING,
       IDCLS_UNUSED, IDCLS_UNUSED,
-      "<model>", "Set CIA model (0 = old 6526, 1 = new 6526A)" },
+      T_("<model>"), T_("Set CIA model (0 = old 6526, 1 = new 6526A)") },
     { NULL }
 };
 
