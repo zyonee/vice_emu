@@ -134,6 +134,12 @@ static inline void check_sprite_dma(void)
 
         if ((enable & b) && (y == (vicii.raster_line & 0xff)) && !vicii.sprite[i].dma) {
             turn_sprite_dma_on(i, y_exp & b);
+
+            /* special case for sprite 0 DMA being enabled one cycle later */
+            if ((i == 0) && !vicii.prefetch_cycles && vicii.sprite[i].dma) {
+                /* signal vicii_fetch_sprites that sprite 0 DMA was enabled "too late" */
+                vicii.prefetch_cycles = 4;
+            }
         }
     }
 }
@@ -144,6 +150,8 @@ static inline int check_sprite0_dma(void)
     int y = vicii.regs[0x01];
 
     if ((enable & 1) && (y == (vicii.raster_line & 0xff))) {
+        /* signal check_sprite_dma that sprite 0 DMA was enabled */
+        vicii.prefetch_cycles = 1;
         return 1;
     }
 

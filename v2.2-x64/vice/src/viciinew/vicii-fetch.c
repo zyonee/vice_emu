@@ -132,6 +132,25 @@ inline static int sprite_dma_cycle_2(int i)
     return ba_low;
 }
 
+inline static int sprite0_bugged_dma_cycle_0(void)
+{
+    BYTE sprdata = vicii.last_bus_phi2;
+
+    vicii.sprite[0].mc++;
+    vicii.sprite[0].mc &= 0x3f;
+
+#ifdef DEBUG
+    if (debug.maincpu_traceflg && vicii.sprite[0].dma) {
+        log_debug("SDMA0!in cycle %i   %d", vicii.raster_cycle, maincpu_clk);
+    }
+#endif
+
+    vicii.sprite[0].data &= 0x00ffff;
+    vicii.sprite[0].data |= sprdata << 16;
+
+    return 1;
+}
+
 /*-----------------------------------------------------------------------*/
 
 inline static BYTE gfx_data_illegal_bitmap(unsigned int num)
@@ -277,9 +296,16 @@ int vicii_fetch_sprites(int cycle)
     case VICII_PAL_CYCLE(57):
         ba_low = check_sprite_dma(0) | check_sprite_dma(1);
         break;
+
     case VICII_PAL_CYCLE(58):
-        ba_low = sprite_dma_cycle_0(0) | check_sprite_dma(1);
+        /* use last_bus_phi2 as sprite 0 first byte if the sprite was enabled 1 cycle too late */
+        if (vicii.prefetch_cycles) {
+            ba_low = sprite0_bugged_dma_cycle_0();
+        } else {
+            ba_low = sprite_dma_cycle_0(0) | check_sprite_dma(1);
+        }
         break;
+
     case VICII_PAL_CYCLE(59):
         ba_low = sprite_dma_cycle_2(0) | check_sprite_dma(1) | check_sprite_dma(2);
         break;
