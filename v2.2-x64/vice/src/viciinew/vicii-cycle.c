@@ -70,15 +70,17 @@ static inline void check_badline(void)
 static inline void check_sprite_display(void)
 {
     int i, b;
+    int enable = vicii.regs[0x15];
 
     for (i = 0, b = 1; i < VICII_NUM_SPRITES; i++, b <<= 1) {
         int y = vicii.regs[i*2 + 1]; 	 
         vicii.sprite[i].mc = vicii.sprite[i].mcbase;
 
-        if ((y == (vicii.raster_line & 0xff)) && vicii.sprite[i].dma) {
-            vicii.sprite_display_bits |= b;
-        } else if (!vicii.sprite[i].dma) {
-            /* FIXME this is the wrong place to do this */
+        if (vicii.sprite[i].dma) {
+            if ( (enable & b) && (y == (vicii.raster_line & 0xff)) ) {
+                    vicii.sprite_display_bits |= b;
+            }
+        } else {
             vicii.sprite_display_bits &= ~b;
         }
     }
@@ -115,12 +117,7 @@ static inline void turn_sprite_dma_on(unsigned int i, int y_exp)
 {
     vicii.sprite[i].dma = 1;
     vicii.sprite[i].mcbase = 0;
-
-    if (y_exp) {
-        vicii.sprite[i].exp_flop = 0;
-    } else {
-        vicii.sprite[i].exp_flop = 1;
-    }
+    vicii.sprite[i].exp_flop = 1;
 }
 
 static inline void check_sprite_dma(void)
@@ -136,18 +133,6 @@ static inline void check_sprite_dma(void)
             turn_sprite_dma_on(i, y_exp & b);
         }
     }
-}
-
-static inline int check_sprite0_dma(void)
-{
-    int enable = vicii.regs[0x15];
-    int y = vicii.regs[0x01];
-
-    if ((enable & 1) && (y == (vicii.raster_line & 0xff))) {
-        return 1;
-    }
-
-    return 0;
 }
 
 static inline BYTE cycle_phi1_fetch(unsigned int cycle)
@@ -409,11 +394,14 @@ int vicii_cycle(void)
         check_vborder(vicii.raster_line);
     }
 
-    /* Check sprite expansion flags */
     /* Check sprite DMA */
+    if (vicii.raster_cycle == VICII_PAL_CYCLE(55)
+        || vicii.raster_cycle == VICII_PAL_CYCLE(56) ) {
+        check_sprite_dma();
+    }
+    /* Check sprite expansion flags */
     if (vicii.raster_cycle == VICII_PAL_CYCLE(56)) {
         check_exp();
-        check_sprite_dma();
     }
 
     /* Check sprite display */
@@ -470,12 +458,6 @@ int vicii_cycle(void)
 
     /* Sprite Phi2 fetch */
     sprite_ba_low = vicii_fetch_sprites(vicii.raster_cycle);
-
-    /* HACK possibly steal cycle 55 on the first line on sprite 0 */
-    if (vicii.raster_cycle == VICII_PAL_CYCLE(55)) {
-        sprite_ba_low |= check_sprite0_dma();
-    }
-
     ba_low |= sprite_ba_low;
     vicii.last_sprite_ba_low = sprite_ba_low;
 
