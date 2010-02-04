@@ -163,6 +163,11 @@ static void vicii_set_geometry(void)
     video_ack_vga_mode();
 #endif
 
+    vicii.raster.display_ystart = 0;
+    vicii.raster.display_ystop = vicii.screen_height;
+    vicii.raster.display_xstart = 0;
+    vicii.raster.display_xstop = width;
+
 }
 
 static int init_raster(void)
@@ -197,14 +202,6 @@ static int init_raster(void)
     if (raster_realize(raster) < 0) {
         return -1;
     }
-
-
-    width = vicii.screen_leftborderwidth + VICII_SCREEN_XPIX + vicii.screen_rightborderwidth;
-
-    raster->display_ystart = 0;
-    raster->display_ystop = vicii.screen_height;
-    raster->display_xstart = 0;
-    raster->display_xstop = width;
 
     return 0;
 }
