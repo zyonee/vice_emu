@@ -41,16 +41,20 @@
 #define VICII_NUM_SPRITES      8
 #define VICII_NUM_COLORS       16
 
+/* This macro translated PAL cycles 1 to 63 into our internal 
+   representation, i.e 0-63. */
+#define VICII_PAL_CYCLE(c) ( (c) - 1)
+
 /* Common parameters for all video standards */
 #define VICII_25ROW_START_LINE    0x33
 #define VICII_25ROW_STOP_LINE     0xfb
 #define VICII_24ROW_START_LINE    0x37
 #define VICII_24ROW_STOP_LINE     0xf7
 
-#define VICII_40COL_START_CYCLE   16
-#define VICII_40COL_STOP_CYCLE    58
-#define VICII_38COL_START_CYCLE   17
-#define VICII_38COL_STOP_CYCLE    57
+#define VICII_40COL_START_CYCLE   VICII_PAL_CYCLE(17)
+#define VICII_40COL_STOP_CYCLE    VICII_PAL_CYCLE(57)
+#define VICII_38COL_START_CYCLE   VICII_PAL_CYCLE(18)
+#define VICII_38COL_STOP_CYCLE    VICII_PAL_CYCLE(56)
 
 /* Bad line range.  */
 #define VICII_FIRST_DMA_LINE      0x30
@@ -61,10 +65,6 @@
 
 /* just a dummy for the vicii-draw.c wrapper */
 #define VICII_DUMMY_MODE (0)
-
-/* This macro translated PAL cycles 1 to 63 into our internal 
-   representation, i.e 0-64 with a hole at 55 depending on video standard */
-#define VICII_PAL_CYCLE(c) ( (c) + ( ((c) >= 56) ? 2 : 0 ) - 1)
 
 
 /* VIC-II structures.  This is meant to be used by VIC-II modules

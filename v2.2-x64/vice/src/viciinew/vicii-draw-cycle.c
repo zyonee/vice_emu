@@ -333,8 +333,6 @@ static unsigned int flag_tab[] = {
     XPOS(0x130) | VISIBLE(37), /* 53 */
     XPOS(0x138) | VISIBLE(38), /* 54 */
     XPOS(0x140) | VISIBLE(39), /* 55 */
-    XPOS(0x000),
-    XPOS(0x000),
     XPOS(0x148),  /* 56 */
     XPOS(0x150),  /* 57 */
     XPOS(0x158),  /* 58 */
