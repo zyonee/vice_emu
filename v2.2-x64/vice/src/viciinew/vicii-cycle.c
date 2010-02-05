@@ -136,11 +136,12 @@ static inline void check_sprite_dma(void)
     }
 }
 
-static inline BYTE cycle_phi1_fetch(unsigned int cycle)
+static inline BYTE cycle_phi1_fetch(unsigned int cycle_flags)
 {
     BYTE data;
+    int s;
 
-    if (cycle >= VICII_PAL_CYCLE(16) && cycle <= VICII_PAL_CYCLE(55)) {
+    if (is_fetch_g(cycle_flags)) {
         if (!vicii.idle_state) {
             data = vicii_fetch_graphics();
         } else {
@@ -149,73 +150,23 @@ static inline BYTE cycle_phi1_fetch(unsigned int cycle)
         return data;
     }
  
-    switch (cycle) {
-        /* Sprite pointers */
-    case VICII_PAL_CYCLE(58):
-        data = vicii_fetch_sprite_pointer(0);
-        break;
-    case VICII_PAL_CYCLE(60):
-        data = vicii_fetch_sprite_pointer(1);
-        break;
-    case VICII_PAL_CYCLE(62):
-        data = vicii_fetch_sprite_pointer(2);
-        break;
-    case VICII_PAL_CYCLE(1):
-        data = vicii_fetch_sprite_pointer(3);
-        break;
-    case VICII_PAL_CYCLE(3):
-        data = vicii_fetch_sprite_pointer(4);
-        break;
-    case VICII_PAL_CYCLE(5):
-        data = vicii_fetch_sprite_pointer(5);
-        break;
-    case VICII_PAL_CYCLE(7):
-        data = vicii_fetch_sprite_pointer(6);
-        break;
-    case VICII_PAL_CYCLE(9):
-        data = vicii_fetch_sprite_pointer(7);
-        break;
-
-        /* Sprite DMA */
-    case VICII_PAL_CYCLE(59):
-        data = vicii_fetch_sprite_dma_1(0);
-        break;
-    case VICII_PAL_CYCLE(61):
-        data = vicii_fetch_sprite_dma_1(1);
-        break;
-    case VICII_PAL_CYCLE(63):
-        data = vicii_fetch_sprite_dma_1(2);
-        break;
-    case VICII_PAL_CYCLE(2):
-        data = vicii_fetch_sprite_dma_1(3);
-        break;
-    case VICII_PAL_CYCLE(4):
-        data = vicii_fetch_sprite_dma_1(4);
-        break;
-    case VICII_PAL_CYCLE(6):
-        data = vicii_fetch_sprite_dma_1(5);
-        break;
-    case VICII_PAL_CYCLE(8):
-        data = vicii_fetch_sprite_dma_1(6);
-        break;
-    case VICII_PAL_CYCLE(10):
-        data = vicii_fetch_sprite_dma_1(7);
-        break;
-
-        /* Refresh */
-    case VICII_PAL_CYCLE(11):
-    case VICII_PAL_CYCLE(12):
-    case VICII_PAL_CYCLE(13):
-    case VICII_PAL_CYCLE(14):
-    case VICII_PAL_CYCLE(15):
-        data = vicii_fetch_refresh();
-        break;
-
-        /* Idle */
-    default:
-        data = vicii_fetch_idle();
-        break;
+    if (is_sprite_ptr_dma0(cycle_flags)) {
+        s = get_sprite_num(cycle_flags);
+        data = vicii_fetch_sprite_pointer(s);
+        return data;
     }
+    if (is_sprite_dma1_dma2(cycle_flags)) {
+        s = get_sprite_num(cycle_flags);
+        data = vicii_fetch_sprite_dma_1(s);
+        return data;
+    }
+
+    if (is_refresh(cycle_flags)) {
+        data = vicii_fetch_refresh();
+        return data;
+    }
+
+    data = vicii_fetch_idle();
 
     return data;
 }
@@ -317,7 +268,7 @@ int vicii_cycle(void)
      */
 
     /* Phi1 fetch */
-    vicii.last_read_phi1 = cycle_phi1_fetch(vicii.raster_cycle);
+    vicii.last_read_phi1 = cycle_phi1_fetch(vicii.cycle_flags);
 
     /* Check horizontal border flag */
     check_hborder(vicii.raster_cycle);

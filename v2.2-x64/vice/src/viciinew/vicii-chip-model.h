@@ -36,17 +36,27 @@ static inline BYTE get_sprite_ba_mask(unsigned int flags)
 
 static inline int is_sprite_ptr_dma0(unsigned int flags)
 {
-    return flags & 0x1000;
+    return (flags & 0x3000) == 0x1000;
 }
 
 static inline int is_sprite_dma1_dma2(unsigned int flags)
 {
-    return flags & 0x2000;
+    return (flags & 0x3000) == 0x2000;
 }
 
 static inline int get_sprite_num(unsigned int flags)
 {
     return (flags & 0x0e00) >> 9;
+}
+
+static inline int is_refresh(unsigned int flags)
+{
+    return (flags & 0x3800) == 0x3000;
+}
+
+static inline int is_fetch_g(unsigned int flags)
+{
+    return (flags & 0x3800) == 0x3800;
 }
 
 #endif

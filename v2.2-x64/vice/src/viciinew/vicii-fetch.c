@@ -259,26 +259,28 @@ BYTE vicii_fetch_sprite_dma_1(int i)
 int vicii_check_sprite_ba(unsigned int cycle_flags)
 {
     int i;
-    int ba_low = 0;
 
     for (i=0; i < 8; i++) {
         if (vicii.sprite[i].dma
             && (get_sprite_ba_mask(cycle_flags) & (1 << i))) {
-            ba_low = 1;
+
+            return 1;
         }
     }
-    return ba_low;
+    return 0;
 }
 
 void vicii_fetch_sprites(unsigned int cycle_flags)
 {
-    int s = get_sprite_num(cycle_flags);
+    int s;
 
     if (is_sprite_ptr_dma0(cycle_flags)) {
+        s = get_sprite_num(cycle_flags);
         sprite_dma_cycle_0(s);
     }
 
     if (is_sprite_dma1_dma2(cycle_flags)) {
+        s = get_sprite_num(cycle_flags);
         sprite_dma_cycle_2(s);
     }
 }
