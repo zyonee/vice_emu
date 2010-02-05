@@ -108,6 +108,9 @@ struct vicii_s {
     /* Cycle # within the current line.  */
     unsigned int raster_cycle;
 
+    /* Cycle flags for the cycle table */
+    unsigned int cycle_flags;
+
     /* xpos within the current line.  */
     unsigned int raster_xpos;
                                    
@@ -230,14 +233,14 @@ struct vicii_s {
     int screen_rightborderwidth;
     int cycles_per_line;
 
+    /* cycle table (set by vicii-chip-model). */
+    unsigned int cycle_table[65];
+
     /* Last value read by VICII during phi1.  */
     BYTE last_read_phi1;
 
     /* Last value on the internal VICII bus during phi2.  */
     BYTE last_bus_phi2;
-
-    /* flag to indicate that last sprite fetch was not in idle */
-    int last_sprite_ba_low;
 
     /* Vertical border flag */
     int vborder;

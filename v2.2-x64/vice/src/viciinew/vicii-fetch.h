@@ -37,6 +37,7 @@ extern BYTE vicii_fetch_idle_gfx(void);
 extern BYTE vicii_fetch_refresh(void);
 extern BYTE vicii_fetch_sprite_pointer(int sprite);
 extern BYTE vicii_fetch_sprite_dma_1(int sprite);
+extern int vicii_check_sprite_ba(int cycle);
 extern int vicii_fetch_sprites(int cycle);
 
 #endif

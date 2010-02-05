@@ -36,6 +36,7 @@
 #include "mainc64cpu.h"
 #include "mem.h"
 #include "types.h"
+#include "vicii-chip-model.h"
 #include "vicii-fetch.h"
 #include "vicii-irq.h"
 #include "viciitypes.h"
@@ -261,6 +262,20 @@ BYTE vicii_fetch_sprite_dma_1(int i)
     vicii.sprite[i].data |= sprdata << 8;
 
     return sprdata;
+}
+
+int vicii_check_sprite_ba(int cycle)
+{
+    int i;
+    int ba_low = 0;
+
+    for (i=0; i < 8; i++) {
+        if (vicii.sprite[i].dma
+            && (get_sprite_ba_mask(vicii.cycle_flags) & (1 << i))) {
+            ba_low = 1;
+        }
+    }
+    return ba_low;
 }
 
 int vicii_fetch_sprites(int cycle)

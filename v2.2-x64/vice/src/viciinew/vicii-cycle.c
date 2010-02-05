@@ -37,6 +37,7 @@
 #include "log.h"
 #include "mainc64cpu.h"
 #include "types.h"
+#include "vicii-chip-model.h"
 #include "vicii-cycle.h"
 #include "vicii-draw-cycle.h"
 #include "vicii-fetch.h"
@@ -298,9 +299,7 @@ int vicii_cycle(void)
     /*VICII_DEBUG_CYCLE(("cycle: line %i, clk %i", vicii.raster_line, vicii.raster_cycle));*/
 
     /* perform phi2 idle fetch after the cpu has executed */
-    if (!vicii.last_sprite_ba_low) {
-        vicii_fetch_sprites(vicii.raster_cycle);
-    }
+    vicii_fetch_sprites(vicii.raster_cycle);
 
     /*
      *
@@ -310,6 +309,7 @@ int vicii_cycle(void)
 
     /* Next cycle */
     next_vicii_cycle();
+    vicii.cycle_flags = vicii.cycle_table[vicii.raster_cycle];
 
     /******
      *
@@ -456,10 +456,8 @@ int vicii_cycle(void)
         vicii.prefetch_cycles--;
     }
 
-    /* Sprite Phi2 fetch */
-    sprite_ba_low = vicii_fetch_sprites(vicii.raster_cycle);
-    ba_low |= sprite_ba_low;
-    vicii.last_sprite_ba_low = sprite_ba_low;
+    /* Check BA for Sprite Phi2 fetch */
+    ba_low |= vicii_check_sprite_ba(vicii.raster_cycle);
 
     /* clear internal bus (may get set by a VIC-II read or write) */
     vicii.last_bus_phi2 = 0xff;

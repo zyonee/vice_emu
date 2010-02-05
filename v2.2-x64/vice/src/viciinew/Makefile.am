@@ -8,6 +8,8 @@ INCLUDES = \
 noinst_LIBRARIES = libviciinew.a
 
 libviciinew_a_SOURCES = \
+	vicii-chip-model.c \
+	vicii-chip-model.h \
 	vicii-cmdline-options.c \
 	vicii-cmdline-options.h \
 	vicii-color.c \

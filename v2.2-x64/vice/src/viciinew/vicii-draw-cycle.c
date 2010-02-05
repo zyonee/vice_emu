@@ -29,6 +29,7 @@
 #include <string.h>
 
 #include "types.h"
+#include "vicii-chip-model.h"
 #include "vicii-draw-cycle.h"
 #include "viciitypes.h"
 

@@ -45,6 +45,7 @@
 #include "resources.h"
 #include "screenshot.h"
 #include "types.h"
+#include "vicii-chip-model.h"
 #include "vicii-cmdline-options.h"
 #include "vicii-color.h"
 #include "vicii-draw.h"
@@ -232,6 +233,8 @@ raster_t *vicii_init(unsigned int flag)
 
     vicii.log = log_open("VIC-II");
 
+    vicii_chip_model_init();
+
     vicii_irq_init();
 
     if (init_raster() < 0) {
@@ -265,6 +268,8 @@ void vicii_reset(void)
 
     vicii.raster_line = 0;
     vicii.raster_cycle = 6;
+    /* this should probably be updated through some function */
+    vicii.cycle_flags = 0;
     vicii.start_of_frame = 0;
     vicii.raster_irq_triggered = 0;
 
