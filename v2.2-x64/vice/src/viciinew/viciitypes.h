@@ -215,7 +215,6 @@ struct vicii_s {
     signed int log;
 
     /* Fetch state */
-    int fetch_active;
     int prefetch_cycles;
 
     /* Mask for sprites being displayed.  */

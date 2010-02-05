@@ -3,6 +3,7 @@
  *
  * Written by
  *  Hannu Nuotio <hannu.nuotio@tut.fi>
+ *  Daniel Kahlin <daniel@kahlin.net>
  *
  * Based on code by
  *  Ettore Perazzoli <ettore@comm2000.it>
@@ -55,14 +56,6 @@ static inline void check_badline(void)
         vicii.bad_line = 0;
     }
 
-    if (vicii.bad_line && !vicii.fetch_active && (vicii.raster_cycle >= VICII_PAL_CYCLE(12)) && (vicii.raster_cycle <=  VICII_PAL_CYCLE(54))) {
-        /* Start a fetch */
-        vicii.fetch_active = 1;
-    } else if (vicii.fetch_active && !vicii.bad_line) {
-        /* Cancel a fetch */
-        /* FIXME this is not a clean way, try to get rid of fetch_active */
-        vicii.fetch_active = 0;
-    }
 }
 
 static inline void check_sprite_display(void)
@@ -285,11 +278,6 @@ int vicii_cycle(void)
         vicii_irq_sbcoll_set();
     }
 
-    /* Stop fetch */
-    if (vicii.raster_cycle == VICII_PAL_CYCLE(55)) {
-        vicii.fetch_active = 0;
-    }
-
     /*
      *
      * End of Phi1
@@ -387,8 +375,8 @@ int vicii_cycle(void)
         }
     }
 
-    /* Check BA for matrix fetch */
-    if (vicii.fetch_active) {
+    /* Check BA for matrix fetch */ 
+    if (vicii.bad_line && is_fetch_ba(vicii.cycle_flags)) {
         ba_low = 1;
     }
 
@@ -410,7 +398,7 @@ int vicii_cycle(void)
 
 
     /* Matrix fetch */
-    if (vicii.fetch_active && may_fetch_c(vicii.cycle_flags) ) {
+     if (vicii.bad_line && may_fetch_c(vicii.cycle_flags) ) {
 #ifdef DEBUG
         if (debug.maincpu_traceflg) {
             log_debug("DMA at cycle %d   %d", vicii.raster_cycle, maincpu_clk);

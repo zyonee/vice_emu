@@ -34,7 +34,7 @@ static inline BYTE get_sprite_ba_mask(unsigned int flags)
     return flags & 0xff;
 }
 
-static inline BYTE is_fetch_ba(unsigned int flags)
+static inline int is_fetch_ba(unsigned int flags)
 {
     return flags & 0x100;
 }

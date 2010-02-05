@@ -2,6 +2,10 @@
  * vicii-fetch.c - Phi1/Phi2 data fetch for the VIC-II emulation.
  *
  * Written by
+ *  Hannu Nuotio <hannu.nuotio@tut.fi>
+ *  Daniel Kahlin <daniel@kahlin.net>
+ *
+ * Based on code by
  *  Andreas Boose <viceteam@t-online.de>
  *  Ettore Perazzoli <ettore@comm2000.it>
  *
@@ -88,9 +92,7 @@ inline static void sprite_dma_cycle_0(int i)
     BYTE sprdata = vicii.last_bus_phi2;
 
     if (check_sprite_dma(i)) {
-        if (vicii.prefetch_cycles) {
-            sprdata = 0xff;
-        } else {
+        if (!vicii.prefetch_cycles) {
             sprdata = fetch_phi2((vicii.sprite[i].pointer << 6) + vicii.sprite[i].mc);
         }
 
@@ -113,9 +115,7 @@ inline static void sprite_dma_cycle_2(int i)
     BYTE sprdata = vicii.last_bus_phi2;
 
     if (check_sprite_dma(i)) {
-        if (vicii.prefetch_cycles) {
-            sprdata = 0xff;
-        } else {
+        if (!vicii.prefetch_cycles) {
             sprdata = fetch_phi2((vicii.sprite[i].pointer << 6) + vicii.sprite[i].mc);
         }
 
