@@ -83,10 +83,9 @@ inline static int check_sprite_dma(int i)
     return vicii.sprite[i].dma;
 }
 
-inline static int sprite_dma_cycle_0(int i)
+inline static void sprite_dma_cycle_0(int i)
 {
     BYTE sprdata = vicii.last_bus_phi2;
-    int ba_low = 0;
 
     if (check_sprite_dma(i)) {
         sprdata = fetch_phi2((vicii.sprite[i].pointer << 6) + vicii.sprite[i].mc);
@@ -99,19 +98,15 @@ inline static int sprite_dma_cycle_0(int i)
             log_debug("SDMA0 in cycle %i   %d", vicii.raster_cycle, maincpu_clk);
         }
 #endif
-        ba_low = 1;
     }
 
     vicii.sprite[i].data &= 0x00ffff;
     vicii.sprite[i].data |= sprdata << 16;
-
-    return ba_low;
 }
 
-inline static int sprite_dma_cycle_2(int i)
+inline static void sprite_dma_cycle_2(int i)
 {
     BYTE sprdata = vicii.last_bus_phi2;
-    int ba_low = 0;
 
     if (check_sprite_dma(i)) {
         sprdata = fetch_phi2((vicii.sprite[i].pointer << 6) + vicii.sprite[i].mc);
@@ -124,13 +119,10 @@ inline static int sprite_dma_cycle_2(int i)
             log_debug("SDMA2 in cycle %i   %d", vicii.raster_cycle, maincpu_clk);
         }
 #endif
-        ba_low = 1;
     }
 
     vicii.sprite[i].data &= 0xffff00;
     vicii.sprite[i].data |= sprdata;
-
-    return ba_low;
 }
 
 /*-----------------------------------------------------------------------*/
@@ -264,85 +256,29 @@ BYTE vicii_fetch_sprite_dma_1(int i)
     return sprdata;
 }
 
-int vicii_check_sprite_ba(int cycle)
+int vicii_check_sprite_ba(unsigned int cycle_flags)
 {
     int i;
     int ba_low = 0;
 
     for (i=0; i < 8; i++) {
         if (vicii.sprite[i].dma
-            && (get_sprite_ba_mask(vicii.cycle_flags) & (1 << i))) {
+            && (get_sprite_ba_mask(cycle_flags) & (1 << i))) {
             ba_low = 1;
         }
     }
     return ba_low;
 }
 
-int vicii_fetch_sprites(int cycle)
+void vicii_fetch_sprites(unsigned int cycle_flags)
 {
-    int ba_low = 0;
+    int s = get_sprite_num(cycle_flags);
 
-    switch (cycle) {
-    case VICII_PAL_CYCLE(55):
-        ba_low = check_sprite_dma(0);
-        break;
-    case VICII_PAL_CYCLE(56):
-        ba_low = check_sprite_dma(0);
-        break;
-    case VICII_PAL_CYCLE(57):
-        ba_low = check_sprite_dma(0) | check_sprite_dma(1);
-        break;
-    case VICII_PAL_CYCLE(58):
-        ba_low = sprite_dma_cycle_0(0) | check_sprite_dma(1);
-        break;
-    case VICII_PAL_CYCLE(59):
-        ba_low = sprite_dma_cycle_2(0) | check_sprite_dma(1) | check_sprite_dma(2);
-        break;
-    case VICII_PAL_CYCLE(60):
-        ba_low = sprite_dma_cycle_0(1) | check_sprite_dma(2);
-        break;
-    case VICII_PAL_CYCLE(61):
-        ba_low = sprite_dma_cycle_2(1) | check_sprite_dma(2) | check_sprite_dma(3);
-        break;
-    case VICII_PAL_CYCLE(62):
-        ba_low = sprite_dma_cycle_0(2) | check_sprite_dma(3);
-        break;
-    case VICII_PAL_CYCLE(63):
-        ba_low = sprite_dma_cycle_2(2) | check_sprite_dma(3) | check_sprite_dma(4);
-        break;
-    case VICII_PAL_CYCLE(1):
-        ba_low = sprite_dma_cycle_0(3) | check_sprite_dma(4);
-        break;
-    case VICII_PAL_CYCLE(2):
-        ba_low = sprite_dma_cycle_2(3) | check_sprite_dma(4) | check_sprite_dma(5);
-        break;
-    case VICII_PAL_CYCLE(3):
-        ba_low = sprite_dma_cycle_0(4) | check_sprite_dma(5);
-        break;
-    case VICII_PAL_CYCLE(4):
-        ba_low = sprite_dma_cycle_2(4) | check_sprite_dma(5) | check_sprite_dma(6);
-        break;
-    case VICII_PAL_CYCLE(5):
-        ba_low = sprite_dma_cycle_0(5) | check_sprite_dma(6);
-        break;
-    case VICII_PAL_CYCLE(6):
-        ba_low = sprite_dma_cycle_2(5) | check_sprite_dma(6) | check_sprite_dma(7);
-        break;
-    case VICII_PAL_CYCLE(7):
-        ba_low = sprite_dma_cycle_0(6) | check_sprite_dma(7);
-        break;
-    case VICII_PAL_CYCLE(8):
-        ba_low = sprite_dma_cycle_2(6) | check_sprite_dma(7);
-        break;
-    case VICII_PAL_CYCLE(9):
-        ba_low = sprite_dma_cycle_0(7);
-        break;
-    case VICII_PAL_CYCLE(10):
-        ba_low = sprite_dma_cycle_2(7);
-        break;
-    default:
-        break;
+    if (is_sprite_ptr_dma0(cycle_flags)) {
+        sprite_dma_cycle_0(s);
     }
 
-    return ba_low;
+    if (is_sprite_dma1_dma2(cycle_flags)) {
+        sprite_dma_cycle_2(s);
+    }
 }

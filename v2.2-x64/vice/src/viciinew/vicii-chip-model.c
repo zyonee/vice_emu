@@ -287,7 +287,13 @@ void vicii_chip_model_set(struct ViciiChipModel *cm)
         /* Both Phi1 and Phi2 collected, generate table */
         if (phi == 1) {
             unsigned int entry = 0;
-            entry = ba;
+            entry = ba & 0x1ff;
+            if ((fetch_phi[0] & 0xf00) == 0x100) {
+                entry |= 0x1000 | ((fetch_phi[0] & 0x7) << 9);
+            }
+            if ((fetch_phi[0] & 0xf00) == 0x300) {
+                entry |= 0x2000 | ((fetch_phi[0] & 0x7) << 9);
+            }
 
             vicii.cycle_table[cycle-1] =  entry;
         }
