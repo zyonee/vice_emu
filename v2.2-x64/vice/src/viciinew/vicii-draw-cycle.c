@@ -111,6 +111,8 @@ static unsigned int pixel_index = 0;
 /* delayed registers */
 static BYTE cregs[0x2f];
 
+static unsigned int cycle_flags_pipe;
+
 static DRAW_INLINE void trigger_sprites(int xpos)
 {
     int s;
@@ -349,13 +351,13 @@ void vicii_draw_cycle(void)
 {
     int cycle, offs, i;
     BYTE csel;
-    unsigned int flags;
+    unsigned int flags = 0;
     int xpos;
     int spr_en;
     int vis_en;
     int li;
-    BYTE dma_cycle_0;
-    BYTE dma_cycle_2;
+    BYTE dma_cycle_0 = 0;
+    BYTE dma_cycle_2 = 0;
 
     cycle = vicii.raster_cycle;
     flags = flag_tab[cycle];
@@ -364,8 +366,13 @@ void vicii_draw_cycle(void)
     spr_en = IS_SPR_EN(flags);
     vis_en = IS_VISIBLE(flags);
     li = GET_VISIBLE(flags);
-    dma_cycle_0 = GET_DMA_CYCLE_0(flags);
-    dma_cycle_2 = GET_DMA_CYCLE_2(flags);
+
+    if (is_sprite_ptr_dma0(cycle_flags_pipe)) {
+        dma_cycle_0 = 1 << get_sprite_num(cycle_flags_pipe);
+    }
+    if (is_sprite_dma1_dma2(cycle_flags_pipe)) {
+        dma_cycle_2 = 1 << get_sprite_num(cycle_flags_pipe);
+    }
 
     /* this should go into vicii-cycle.c once we move the table to a sane
        place */
@@ -391,6 +398,7 @@ void vicii_draw_cycle(void)
         BYTE pixel_pri;
         BYTE pix;
         unsigned int next_index;
+        unsigned int lookup_index;
 
         /* pipe sprite related changes various amounts of pixels late */
         if (i == 2) {
@@ -491,12 +499,13 @@ void vicii_draw_cycle(void)
         }
 
         next_index = (pixel_index + 1) & 0x07;
-        pix = pixel_buffer[next_index];
+        lookup_index = (pixel_index + vicii.color_latency) & 0x07;
+        pix = pixel_buffer[lookup_index];
         /* resolve any unresolved colors */
         if (pix & 0xf0) {
             pix = cregs[pix];
         }
-        pixel_buffer[next_index] = pix;
+        pixel_buffer[lookup_index] = pix;
         /* draw pixel to buffer */
         vicii.dbuf[offs + i] = pixel_buffer[pixel_index];
 
@@ -538,6 +547,8 @@ void vicii_draw_cycle(void)
 
     update_cregs();
     update_sprite_xpos_and_data();
+
+    cycle_flags_pipe = vicii.cycle_flags;
 }
 
 
@@ -550,5 +561,7 @@ void vicii_draw_cycle_init(void)
     /* initialize the pixel ring buffer. */
     memset(pixel_buffer, 0, sizeof(pixel_buffer));
     pixel_index = 0;
+
+    cycle_flags_pipe = 0;
 }
 

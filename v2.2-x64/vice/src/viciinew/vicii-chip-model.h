@@ -29,6 +29,13 @@
 
 extern void vicii_chip_model_init(void);
 
+#define SPRITE_BA_MASK_M  0xff
+#define SPRITE_BA_MASK_B  0
+#define FETCH_BA_M        0x100
+#define FETCH_BA_B        8
+#define XPOS_M            0x6e
+#define XPOS_B            16
+
 static inline BYTE get_sprite_ba_mask(unsigned int flags)
 {
     return flags & 0xff;

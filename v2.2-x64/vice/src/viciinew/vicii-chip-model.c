@@ -29,6 +29,7 @@
 #include "log.h"
 #include "types.h"
 #include "vicii-chip-model.h"
+#include "vicii-resources.h"
 #include "viciitypes.h"
 
 
@@ -219,12 +220,21 @@ struct ViciiChipModel {
     char *name;
     int cycles_per_line;
     struct ViciiCycle *cycle_tab;
+    int color_latency;
 };
 
 struct ViciiChipModel chip_model_mos6569r3 = {
     "MOS6569R3",
     63,
-    cycle_tab_pal
+    cycle_tab_pal,
+    1
+};
+
+struct ViciiChipModel chip_model_mos8565 = {
+    "MO86565",
+    63,
+    cycle_tab_pal,
+    0
 };
 
 
@@ -239,9 +249,17 @@ void vicii_chip_model_set(struct ViciiChipModel *cm)
 
     struct ViciiCycle *ct = cm->cycle_tab;
 
+    vicii.cycles_per_line = cm->cycles_per_line;
+    vicii.color_latency   = cm->color_latency;
+
+
     log_message(vicii.log,
                 "Initializing chip model \"%s\" (%d cycles per line).",
                 cm->name, cm->cycles_per_line);
+    log_message(vicii.log,
+                "                   BA    ");
+    log_message(vicii.log,
+                " cycle  xpos vi M76543210");
 
     for (i=0; i < (cm->cycles_per_line * 2); i++) {
         int phi = (ct[i].cycle & 0x80) ? 1 : 0;
@@ -321,6 +339,18 @@ void vicii_chip_model_set(struct ViciiChipModel *cm)
 
 void vicii_chip_model_init(void)
 {
-    vicii_chip_model_set(&chip_model_mos6569r3);
+
+    /* this is ugly, move somewhere more correct */
+    switch (vicii_resources.model) {
+    case 0:
+        vicii_chip_model_set(&chip_model_mos6569r3);
+        break;
+    case 1:
+        vicii_chip_model_set(&chip_model_mos8565);
+        break;
+    default:
+        vicii_chip_model_set(&chip_model_mos6569r3);
+        break;
+    }
 }
 

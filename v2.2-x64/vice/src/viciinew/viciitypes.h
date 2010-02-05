@@ -231,6 +231,7 @@ struct vicii_s {
     int screen_leftborderwidth;
     int screen_rightborderwidth;
     int cycles_per_line;
+    int color_latency;
 
     /* cycle table (set by vicii-chip-model). */
     unsigned int cycle_table[65];
