@@ -237,11 +237,6 @@ static inline void next_vicii_cycle(void)
     if (vicii.raster_cycle == vicii.cycles_per_line) {
         vicii.raster_cycle = 0;
     }
-
-    /* count down prefetch cycles */
-    if (vicii.prefetch_cycles) {
-        vicii.prefetch_cycles--;
-    }
 }
 
 int vicii_cycle(void)
@@ -402,8 +397,15 @@ int vicii_cycle(void)
 
     /* if ba_low transitioning from non-active to active, always count
        3 cycles before allowing any Phi2 accesses. */
-    if (!ba_low) {
-        vicii.prefetch_cycles = 3;
+    if (ba_low) {
+        /* count down prefetch cycles */
+        if (vicii.prefetch_cycles) {
+            vicii.prefetch_cycles--;
+        }
+    } else {
+        /* this needs to be +1 because it gets decremented already in the
+           first ba cycle */
+        vicii.prefetch_cycles = 3+1;
     }
 
 
