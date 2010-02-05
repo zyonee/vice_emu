@@ -58,13 +58,10 @@ static inline void check_badline(void)
     if (vicii.bad_line && !vicii.fetch_active && (vicii.raster_cycle >= VICII_PAL_CYCLE(12)) && (vicii.raster_cycle <=  VICII_PAL_CYCLE(54))) {
         /* Start a fetch */
         vicii.fetch_active = 1;
-        /* Hold BA low for 3 cycles before actual fetch */
-        vicii.prefetch_cycles = 3;
     } else if (vicii.fetch_active && !vicii.bad_line) {
         /* Cancel a fetch */
         /* FIXME this is not a clean way, try to get rid of fetch_active */
         vicii.fetch_active = 0;
-        vicii.prefetch_cycles = 0;
     }
 }
 
@@ -236,8 +233,14 @@ static inline void next_vicii_cycle(void)
     /* Next cycle */
     vicii.raster_cycle++;
 
-    if (vicii.raster_cycle == 63) {
+    /* Handle wrapping */
+    if (vicii.raster_cycle == vicii.cycles_per_line) {
         vicii.raster_cycle = 0;
+    }
+
+    /* count down prefetch cycles */
+    if (vicii.prefetch_cycles) {
+        vicii.prefetch_cycles--;
     }
 }
 
@@ -290,7 +293,6 @@ int vicii_cycle(void)
     /* Stop fetch */
     if (vicii.raster_cycle == VICII_PAL_CYCLE(55)) {
         vicii.fetch_active = 0;
-        vicii.prefetch_cycles = 0;
     }
 
     /*
@@ -390,24 +392,30 @@ int vicii_cycle(void)
         }
     }
 
+    /* Check BA for matrix fetch */
+    if (vicii.fetch_active) {
+        ba_low = 1;
+    }
+
+    /* Check BA for Sprite Phi2 fetch */
+    ba_low |= vicii_check_sprite_ba(vicii.cycle_flags);
+
+    /* if ba_low transitioning from non-active to active, always count
+       3 cycles before allowing any Phi2 accesses. */
+    if (!ba_low) {
+        vicii.prefetch_cycles = 3;
+    }
+
+
     /* Matrix fetch */
-    if (vicii.fetch_active && (vicii.raster_cycle >= VICII_PAL_CYCLE(15)) ) {
+    if (vicii.fetch_active && may_fetch_c(vicii.cycle_flags) ) {
 #ifdef DEBUG
         if (debug.maincpu_traceflg) {
             log_debug("DMA at cycle %d   %d", vicii.raster_cycle, maincpu_clk);
         }
 #endif
-        ba_low = 1;
         vicii_fetch_matrix();
     }
-
-    if (vicii.prefetch_cycles) {
-        ba_low = 1;
-        vicii.prefetch_cycles--;
-    }
-
-    /* Check BA for Sprite Phi2 fetch */
-    ba_low |= vicii_check_sprite_ba(vicii.cycle_flags);
 
     /* clear internal bus (may get set by a VIC-II read or write) */
     vicii.last_bus_phi2 = 0xff;

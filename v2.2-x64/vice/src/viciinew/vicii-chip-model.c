@@ -290,11 +290,11 @@ void vicii_chip_model_set(struct ViciiChipModel *cm)
             entry = ba & 0x1ff;
             switch (fetch_phi[0] & 0xf00) {
             case 0x100:
-                /* sprite ptr + dma1 */
+                /* sprite ptr + dma0 */
                 entry |= 0x1000 | ((fetch_phi[0] & 0x7) << 9);
                 break;
             case 0x300:
-                /* sprite dma2 + dma3 */
+                /* sprite dma1 + dma2 */
                 entry |= 0x2000 | ((fetch_phi[0] & 0x7) << 9);
                 break;
             case Refresh:
@@ -305,6 +305,9 @@ void vicii_chip_model_set(struct ViciiChipModel *cm)
                 /* refresh */
                 entry |= 0x3800;
                 break;
+            }
+            if ( (fetch_phi[1] & 0xf00) == FetchC ) {
+                entry |= 0x4000;
             }
 
             vicii.cycle_table[cycle-1] =  entry;

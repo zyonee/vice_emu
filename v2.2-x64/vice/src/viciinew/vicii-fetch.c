@@ -88,7 +88,11 @@ inline static void sprite_dma_cycle_0(int i)
     BYTE sprdata = vicii.last_bus_phi2;
 
     if (check_sprite_dma(i)) {
-        sprdata = fetch_phi2((vicii.sprite[i].pointer << 6) + vicii.sprite[i].mc);
+        if (vicii.prefetch_cycles) {
+            sprdata = 0xff;
+        } else {
+            sprdata = fetch_phi2((vicii.sprite[i].pointer << 6) + vicii.sprite[i].mc);
+        }
 
         vicii.sprite[i].mc++;
         vicii.sprite[i].mc &= 0x3f;
@@ -109,7 +113,11 @@ inline static void sprite_dma_cycle_2(int i)
     BYTE sprdata = vicii.last_bus_phi2;
 
     if (check_sprite_dma(i)) {
-        sprdata = fetch_phi2((vicii.sprite[i].pointer << 6) + vicii.sprite[i].mc);
+        if (vicii.prefetch_cycles) {
+            sprdata = 0xff;
+        } else {
+            sprdata = fetch_phi2((vicii.sprite[i].pointer << 6) + vicii.sprite[i].mc);
+        }
 
         vicii.sprite[i].mc++;
         vicii.sprite[i].mc &= 0x3f;
