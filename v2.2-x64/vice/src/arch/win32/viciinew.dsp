@@ -82,6 +82,10 @@ LIB32=link.exe -lib
 # Name "viciinew - Win32 Debug"
 # Begin Source File
 
+SOURCE="..\..\viciinew\vicii-chip-model.c"
+# End Source File
+# Begin Source File
+
 SOURCE="..\..\viciinew\vicii-cmdline-options.c"
 # End Source File
 # Begin Source File
