@@ -248,10 +248,14 @@ static DRAW_INLINE void update_sprite_xpos_and_data(void)
 
 static DRAW_INLINE void update_cregs(void)
 {
+#if 1
+    memcpy(&cregs[0x20], &vicii.regs[0x20], 0x0f);
+#else
     int i;
     for (i=0x20; i<=0x2e; i++) {
         cregs[i] = vicii.regs[i];
     }
+#endif
 }
 
 static const BYTE colors[] = {

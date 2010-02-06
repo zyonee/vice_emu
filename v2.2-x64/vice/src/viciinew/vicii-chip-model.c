@@ -231,7 +231,7 @@ struct ViciiChipModel chip_model_mos6569r3 = {
 };
 
 struct ViciiChipModel chip_model_mos8565 = {
-    "MO86565",
+    "MOS8565",
     63,
     cycle_tab_pal,
     0
@@ -343,13 +343,14 @@ void vicii_chip_model_init(void)
     /* this is ugly, move somewhere more correct */
     switch (vicii_resources.model) {
     case 0:
+    case 6569:
+    case 65693:
+    default:
         vicii_chip_model_set(&chip_model_mos6569r3);
         break;
     case 1:
+    case 8565:
         vicii_chip_model_set(&chip_model_mos8565);
-        break;
-    default:
-        vicii_chip_model_set(&chip_model_mos6569r3);
         break;
     }
 }

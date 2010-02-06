@@ -103,7 +103,7 @@ struct vicii_s {
     raster_t raster;
 
     /* VIC-II registers.  */
-    int regs[0x40];
+    BYTE regs[0x40];
 
     /* Cycle # within the current line.  */
     unsigned int raster_cycle;
@@ -230,6 +230,8 @@ struct vicii_s {
 
     int screen_leftborderwidth;
     int screen_rightborderwidth;
+
+    /* parameters (set by vicii-chip-model). */
     int cycles_per_line;
     int color_latency;
 
