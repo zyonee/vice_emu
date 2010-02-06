@@ -224,12 +224,26 @@ static DRAW_INLINE void draw_graphics8(int vis_en, int li)
 
 
 
-static DRAW_INLINE void trigger_sprites(int xpos)
+static DRAW_INLINE BYTE get_trigger_candidates(int xpos)
+{
+    int s;
+    BYTE candidate_bits = 0;
+
+    /* check for partial xpos match */
+    for (s = 0; s < 8; s++) {
+        if ( (xpos & 0x1f8) == (sprite_x_pipe[s] & 0x1f8) ) {
+            candidate_bits |= 1 << s;
+        }
+    }
+    return candidate_bits;
+}
+
+static DRAW_INLINE void trigger_sprites(int xpos, BYTE candidate_bits)
 {
     int s;
 
-    /* do nothing if no sprites are pending */
-    if ( !sprite_pending_bits ) {
+    /* do nothing if no sprites are candidates or pending */
+    if ( !candidate_bits || !sprite_pending_bits  ) {
         return;
     }
 
@@ -238,7 +252,7 @@ static DRAW_INLINE void trigger_sprites(int xpos)
         BYTE m = 1 << s;
 
         /* start rendering on position match */
-        if ( (sprite_pending_bits & m) && !(sprite_halt_bits & m) ) {
+        if ( (candidate_bits & m) && (sprite_pending_bits & m) && !(sprite_halt_bits & m) ) {
             if ( xpos == sprite_x_pipe[s] ) {
                 sbuf_reg[s] = sprite_data_pipe[s];
                 sbuf_expx_flops |= m;
@@ -362,6 +376,7 @@ static DRAW_INLINE void update_sprite_xpos_and_data(void)
 
 static DRAW_INLINE void draw_sprites8(int xpos, unsigned int cycle_flags, int spr_en)
 {
+    BYTE candidate_bits;
     BYTE dma_cycle_0 = 0;
     BYTE dma_cycle_2 = 0;
 
@@ -371,40 +386,41 @@ static DRAW_INLINE void draw_sprites8(int xpos, unsigned int cycle_flags, int sp
     if (is_sprite_dma1_dma2(cycle_flags_pipe)) {
         dma_cycle_2 = 1 << get_sprite_num(cycle_flags);
     }
+    candidate_bits = get_trigger_candidates(xpos);
 
     /* process and render sprites */
     /* pixel 0 */
-    trigger_sprites(xpos + 0);
+    trigger_sprites(xpos + 0, candidate_bits);
     draw_sprites(0);
     /* pixel 1 */
-    trigger_sprites(xpos + 1);
+    trigger_sprites(xpos + 1, candidate_bits);
     draw_sprites(1);
     /* pixel 2 */
     sprite_active_bits &= ~dma_cycle_2;
-    trigger_sprites(xpos + 2);
+    trigger_sprites(xpos + 2, candidate_bits);
     draw_sprites(2);
     /* pixel 3 */
     sprite_halt_bits |= dma_cycle_0;
-    trigger_sprites(xpos + 3);
+    trigger_sprites(xpos + 3, candidate_bits);
     draw_sprites(3);
     /* pixel 4 */
     if (spr_en) {
         sprite_pending_bits = vicii.sprite_display_bits;
     }
-    trigger_sprites(xpos + 4);
+    trigger_sprites(xpos + 4, candidate_bits);
     draw_sprites(4);
     /* pixel 5 */
-    trigger_sprites(xpos + 5);
+    trigger_sprites(xpos + 5, candidate_bits);
     draw_sprites(5);
     /* pixel 6 */
     sprite_pri_bits = vicii.regs[0x1b];
     sprite_expx_bits = vicii.regs[0x1d];
-    trigger_sprites(xpos + 6);
+    trigger_sprites(xpos + 6, candidate_bits);
     draw_sprites(6);
     /* pixel 7 */
     update_sprite_mc_bits();
     sprite_halt_bits &= ~dma_cycle_2;
-    trigger_sprites(xpos + 7);
+    trigger_sprites(xpos + 7, candidate_bits);
     draw_sprites(7);
 
     /* pipe remaining data */

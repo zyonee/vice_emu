@@ -266,8 +266,6 @@ BYTE vicii_fetch_sprite_dma_1(int i)
 
 int vicii_check_sprite_ba(unsigned int cycle_flags)
 {
-    int i;
-
     if (vicii.sprite_dma & get_sprite_ba_mask(cycle_flags)) {
         return 1;
     }
