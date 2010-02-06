@@ -217,11 +217,11 @@ static void vicii_new_sprites_init(void)
         vicii.sprite[i].mcbase = 0;
         vicii.sprite[i].pointer = 0;
         vicii.sprite[i].exp_flop = 1;
-        vicii.sprite[i].dma = 0;
         vicii.sprite[i].x = 0;
     }
 
     vicii.sprite_display_bits = 0;
+    vicii.sprite_dma = 0;
 }
 
 /* Initialize the VIC-II emulation.  */

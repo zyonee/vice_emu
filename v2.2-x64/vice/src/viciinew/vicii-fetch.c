@@ -84,7 +84,7 @@ inline static BYTE fetch_phi2(int addr)
 
 inline static int check_sprite_dma(int i)
 {
-    return vicii.sprite[i].dma;
+    return vicii.sprite_dma & (1 << i);
 }
 
 inline static void sprite_dma_cycle_0(int i)
@@ -100,7 +100,7 @@ inline static void sprite_dma_cycle_0(int i)
         vicii.sprite[i].mc &= 0x3f;
 
 #ifdef DEBUG
-        if (debug.maincpu_traceflg && vicii.sprite[i].dma) {
+        if (debug.maincpu_traceflg && (vicii.sprite_dma & (1 << i)) ) {
             log_debug("SDMA0 in cycle %i   %d", vicii.raster_cycle, maincpu_clk);
         }
 #endif
@@ -123,7 +123,7 @@ inline static void sprite_dma_cycle_2(int i)
         vicii.sprite[i].mc &= 0x3f;
 
 #ifdef DEBUG
-        if (debug.maincpu_traceflg && vicii.sprite[i].dma) {
+        if (debug.maincpu_traceflg && (vicii.sprite_dma & (1 << i)) ) {
             log_debug("SDMA2 in cycle %i   %d", vicii.raster_cycle, maincpu_clk);
         }
 #endif
@@ -268,12 +268,8 @@ int vicii_check_sprite_ba(unsigned int cycle_flags)
 {
     int i;
 
-    for (i=0; i < 8; i++) {
-        if (vicii.sprite[i].dma
-            && (get_sprite_ba_mask(cycle_flags) & (1 << i))) {
-
-            return 1;
-        }
+    if (vicii.sprite_dma & get_sprite_ba_mask(cycle_flags)) {
+        return 1;
     }
     return 0;
 }

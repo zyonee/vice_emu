@@ -86,8 +86,6 @@ struct vicii_sprite_s {
     BYTE pointer;
     /* Expansion flop */
     int exp_flop;
-    /* Flag: is sprite DMA active? */
-    int dma;
     /* X coordinate */
     int x;
 };
@@ -220,8 +218,12 @@ struct vicii_s {
     /* Mask for sprites being displayed.  */
     unsigned int sprite_display_bits;
 
+    /* Flag: is sprite DMA active? */
+    BYTE sprite_dma;
+
     /* State of sprites. */
     vicii_sprite_t sprite[VICII_NUM_SPRITES];
+
 
     /* Geometry and timing parameters of the selected VIC-II emulation.  */
     unsigned int screen_height;

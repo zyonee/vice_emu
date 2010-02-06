@@ -67,7 +67,7 @@ static inline void check_sprite_display(void)
         int y = vicii.regs[i*2 + 1]; 	 
         vicii.sprite[i].mc = vicii.sprite[i].mcbase;
 
-        if (vicii.sprite[i].dma) {
+        if (vicii.sprite_dma & b) {
             if ( (enable & b) && (y == (vicii.raster_line & 0xff)) ) {
                     vicii.sprite_display_bits |= b;
             }
@@ -85,7 +85,7 @@ static inline void sprite_mcbase_update(void)
         if (vicii.sprite[i].exp_flop) {
             vicii.sprite[i].mcbase = vicii.sprite[i].mc;
             if (vicii.sprite[i].mcbase == 63) {
-                vicii.sprite[i].dma = 0;
+                vicii.sprite_dma &= ~(1 << i);
             }
         }
     }
@@ -97,7 +97,7 @@ static inline void check_exp(void)
     int y_exp = vicii.regs[0x17];
 
     for (i = 0, b = 1; i < VICII_NUM_SPRITES; i++, b <<= 1) {
-        if (vicii.sprite[i].dma && (y_exp & b)) {
+        if ((vicii.sprite_dma & b) && (y_exp & b)) {
             vicii.sprite[i].exp_flop ^= 1;
         }
     }
@@ -106,7 +106,7 @@ static inline void check_exp(void)
 /* Enable DMA for sprite i.  */
 static inline void turn_sprite_dma_on(unsigned int i, int y_exp)
 {
-    vicii.sprite[i].dma = 1;
+    vicii.sprite_dma |= 1 << i;
     vicii.sprite[i].mcbase = 0;
     vicii.sprite[i].exp_flop = 1;
 }
@@ -120,7 +120,7 @@ static inline void check_sprite_dma(void)
     for (i = 0, b = 1; i < VICII_NUM_SPRITES; i++, b <<= 1) {
         int y = vicii.regs[i*2 + 1];
 
-        if ((enable & b) && (y == (vicii.raster_line & 0xff)) && !vicii.sprite[i].dma) {
+        if ((enable & b) && (y == (vicii.raster_line & 0xff)) && !(vicii.sprite_dma & b) ) {
             turn_sprite_dma_on(i, y_exp & b);
         }
     }
