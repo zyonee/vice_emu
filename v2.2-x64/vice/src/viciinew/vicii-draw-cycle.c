@@ -105,7 +105,6 @@ static BYTE render_buffer[8];
 static BYTE pri_buffer[8];
 
 static BYTE pixel_buffer[8];
-static unsigned int pixel_index = 0;
 
 /* color resolution registers */
 static BYTE cregs[0x2f];
@@ -190,6 +189,7 @@ static DRAW_INLINE void draw_graphics8(int vis_en, int li)
         default:
             break;
         }
+
         render_buffer[i] = cc;
         pri_buffer[i] = pixel_pri;
     }
@@ -362,7 +362,6 @@ static DRAW_INLINE void update_sprite_xpos_and_data(void)
 
 static DRAW_INLINE void draw_sprites8(int xpos, unsigned int cycle_flags, int spr_en)
 {
-    int i;
     BYTE dma_cycle_0 = 0;
     BYTE dma_cycle_2 = 0;
 
@@ -373,31 +372,42 @@ static DRAW_INLINE void draw_sprites8(int xpos, unsigned int cycle_flags, int sp
         dma_cycle_2 = 1 << get_sprite_num(cycle_flags);
     }
 
-    for (i = 0; i < 8; i++) {
-        /* pipe sprite related changes various amounts of pixels late */
-        if (i == 2) {
-            sprite_active_bits &= ~dma_cycle_2;
-        }
-        if (i == 3) {
-            sprite_halt_bits |= dma_cycle_0;
-        }
-        if (spr_en && i == 4) {
-            sprite_pending_bits = vicii.sprite_display_bits;
-        }
-        if (i == 6) {
-            sprite_pri_bits = vicii.regs[0x1b];
-            sprite_expx_bits = vicii.regs[0x1d];
-        }
-        if (i == 7) {
-            update_sprite_mc_bits();
-            sprite_halt_bits &= ~dma_cycle_2;
-        }
-
-        /* process and render sprites */
-        trigger_sprites(xpos + i);
-
-        draw_sprites(i);
+    /* process and render sprites */
+    /* pixel 0 */
+    trigger_sprites(xpos + 0);
+    draw_sprites(0);
+    /* pixel 1 */
+    trigger_sprites(xpos + 1);
+    draw_sprites(1);
+    /* pixel 2 */
+    sprite_active_bits &= ~dma_cycle_2;
+    trigger_sprites(xpos + 2);
+    draw_sprites(2);
+    /* pixel 3 */
+    sprite_halt_bits |= dma_cycle_0;
+    trigger_sprites(xpos + 3);
+    draw_sprites(3);
+    /* pixel 4 */
+    if (spr_en) {
+        sprite_pending_bits = vicii.sprite_display_bits;
     }
+    trigger_sprites(xpos + 4);
+    draw_sprites(4);
+    /* pixel 5 */
+    trigger_sprites(xpos + 5);
+    draw_sprites(5);
+    /* pixel 6 */
+    sprite_pri_bits = vicii.regs[0x1b];
+    sprite_expx_bits = vicii.regs[0x1d];
+    trigger_sprites(xpos + 6);
+    draw_sprites(6);
+    /* pixel 7 */
+    update_sprite_mc_bits();
+    sprite_halt_bits &= ~dma_cycle_2;
+    trigger_sprites(xpos + 7);
+    draw_sprites(7);
+
+    /* pipe remaining data */
     update_sprite_xpos_and_data();
 
 }
@@ -439,20 +449,17 @@ static DRAW_INLINE void draw_colors8(void)
     if (offs > VICII_DRAW_BUFFER_SIZE-8)
         return;
 
-
     for (i = 0; i < 8; i++) {
-        unsigned int lookup_index;
+        int lookup_index;
 
         /* resolve any unresolved colors */
-        lookup_index = (pixel_index + vicii.color_latency) & 0x07;
+        lookup_index = (i + vicii.color_latency) & 0x07;
         pixel_buffer[lookup_index] = cregs[pixel_buffer[lookup_index]];
 
         /* draw pixel to buffer */
-        vicii.dbuf[offs + i] = pixel_buffer[pixel_index];
+        vicii.dbuf[offs + i] = pixel_buffer[i];
 
-        pixel_buffer[pixel_index] = render_buffer[i] & 0x7f;
-        pixel_index = (pixel_index + 1) & 0x07;
-
+        pixel_buffer[i] = render_buffer[i];
     }
     vicii.dbuf_offset += 8;
 
@@ -590,7 +597,6 @@ void vicii_draw_cycle_init(void)
 
     /* initialize the pixel ring buffer. */
     memset(pixel_buffer, 0, sizeof(pixel_buffer));
-    pixel_index = 0;
 
     /* clear cregs and fill 0x00-0x0f with 1:1 mapping */
     memset(cregs, 0, sizeof(cregs));
@@ -602,4 +608,3 @@ void vicii_draw_cycle_init(void)
 
 
 }
-
