@@ -99,12 +99,11 @@ BYTE sbuf_mc_flops;
 
 /* border */
 static int border_state = 0;
-static int main_border_pipe = 0;
-
-/* intermediate pixel result */
-static BYTE current_pixel = 0;
 
 /* pixel buffer */
+static BYTE render_buffer[8];
+static BYTE pri_buffer[8];
+
 static BYTE pixel_buffer[8];
 static unsigned int pixel_index = 0;
 
@@ -139,12 +138,11 @@ static DRAW_INLINE void trigger_sprites(int xpos)
     }
 }
 
-static DRAW_INLINE void draw_sprites(BYTE pixel_pri)
+static DRAW_INLINE void draw_sprites(int i)
 {
     int s;
     int active_sprite;
     BYTE collision_mask;
-
 
     /* do nothing if all sprites are inactive */
     if ( !sprite_active_bits ) {
@@ -200,31 +198,33 @@ static DRAW_INLINE void draw_sprites(BYTE pixel_pri)
     }
 
     if (collision_mask) {
+        BYTE pixel_pri = pri_buffer[i];
         int s = active_sprite;
         BYTE spri = sprite_pri_bits & (1 << s);
         if ( !(pixel_pri && spri) ) {
             switch (sbuf_pixel_reg[s]) {
             case 1:
-                current_pixel = COL_D025;
+                render_buffer[i] = COL_D025;
                 break;
             case 2:
-                current_pixel = COL_D027 + s;
+                render_buffer[i] = COL_D027 + s;
                 break;
             case 3:
-                current_pixel = COL_D026;
+                render_buffer[i] = COL_D026;
                 break;
             default:
                 break;
             }
+        }
+        /* if there was a foreground pixel, trigger collision */
+        if (pixel_pri) {
+            vicii.sprite_background_collisions |= collision_mask;
         }
     }
     
     /* if 2 or more bits are set, trigger collisions */
     if ( collision_mask & (collision_mask-1) ) {
         vicii.sprite_sprite_collisions |= collision_mask;
-    }
-    if (pixel_pri) {
-        vicii.sprite_background_collisions |= collision_mask;
     }
 }
 
@@ -248,14 +248,7 @@ static DRAW_INLINE void update_sprite_xpos_and_data(void)
 
 static DRAW_INLINE void update_cregs(void)
 {
-#if 1
     memcpy(&cregs[0x20], &vicii.regs[0x20], 0x0f);
-#else
-    int i;
-    for (i=0x20; i<=0x2e; i++) {
-        cregs[i] = vicii.regs[i];
-    }
-#endif
 }
 
 static const BYTE colors[] = {
@@ -393,14 +386,11 @@ void vicii_draw_cycle(void)
     if (offs >= VICII_DRAW_BUFFER_SIZE) 
         return;
 
-    csel = vicii.regs[0x16] & 0x8;
-
     /* render pixels */
     for (i = 0; i < 8; i++) {
         BYTE px = 0;
         BYTE cc;
         BYTE pixel_pri;
-        unsigned int lookup_index;
 
         /* Load new gbuf/vbuf/cbuf values at offset == xscroll */
         if (i == xscroll_pipe) {
@@ -410,7 +400,7 @@ void vicii_draw_cycle(void)
             gbuf_reg = gbuf_pipe1_reg;
             gbuf_mc_flop = 1;
         }
-           
+
         /* 
          * read pixels depending on video mode
          * mc pixels if MCM=1 and BMM=1, or MCM=1 and cbuf bit 3 = 1
@@ -427,92 +417,40 @@ void vicii_draw_cycle(void)
         }
         px = gbuf_pixel_reg;
 
-        /* Determine pixel color and priority */
-        pixel_pri = (px & 0x2);
-        cc = colors[vmode_pipe | px];
-
         /* shift the graphics buffer */
         gbuf_reg <<= 1;
         gbuf_mc_flop ^= 1;
 
+        /* Determine pixel color and priority */
+        pixel_pri = (px & 0x2);
+        cc = colors[vmode_pipe | px];
+
         /* lookup colors and render pixel */
         switch (cc) {
         case COL_NONE:
-            current_pixel = 0;
+            cc = 0;
             break;
         case COL_VBUF_L:
-            current_pixel = vbuf_reg & 0x0f;
+            cc = vbuf_reg & 0x0f;
             break;
         case COL_VBUF_H:
-            current_pixel = vbuf_reg >> 4;
+            cc = vbuf_reg >> 4;
             break;
         case COL_CBUF:
-            current_pixel = cbuf_reg;
+            cc = cbuf_reg;
             break;
         case COL_CBUF_MC:
-            current_pixel = cbuf_reg & 0x07;
+            cc = cbuf_reg & 0x07;
             break;
         case COL_D02X_EXT:
-            current_pixel = COL_D021 + (vbuf_reg >> 6);
+            cc = COL_D021 + (vbuf_reg >> 6);
             break;
         default:
-            current_pixel = cc;
             break;
         }
-
-        /* pipe sprite related changes various amounts of pixels late */
-        if (i == 2) {
-            sprite_active_bits &= ~dma_cycle_2;
-        }
-        if (i == 3) {
-            sprite_halt_bits |= dma_cycle_0;
-        }
-        if (spr_en && i == 4) {
-            sprite_pending_bits = vicii.sprite_display_bits;
-        }
-        if (i == 6) {
-            sprite_pri_bits = vicii.regs[0x1b];
-            sprite_expx_bits = vicii.regs[0x1d];
-        }
-        if (i == 7) {
-            update_sprite_mc_bits();
-            sprite_halt_bits &= ~dma_cycle_2;
-        }
-
-        /* process and render sprites */
-        trigger_sprites(xpos + i);
-
-        draw_sprites(pixel_pri);
-
-        /* Set new border state depending on csel and current pixel */
-        if (csel) {
-            if (i == 0) {
-                border_state = main_border_pipe;
-            }
-        } else {
-            if (i == 7) {
-                border_state = vicii.main_border;
-            }
-        }
-
-        /* add border on top */
-        if (border_state) {
-            current_pixel = COL_D020;
-        }
-
-        /* resolve any unresolved colors */
-        lookup_index = (pixel_index + vicii.color_latency) & 0x07;
-        pixel_buffer[lookup_index] = cregs[pixel_buffer[lookup_index]];
-
-        /* draw pixel to buffer */
-        vicii.dbuf[offs + i] = pixel_buffer[pixel_index];
-
-        pixel_buffer[pixel_index] = current_pixel;
-        pixel_index = (pixel_index + 1) & 0x07;
-
+        render_buffer[i] = cc;
+        pri_buffer[i] = pixel_pri;
     }
-    vicii.dbuf_offset += 8;
-
 
     /* shift and put the next data into the pipe. */
     vbuf_pipe1_reg = vbuf_pipe0_reg;
@@ -539,12 +477,92 @@ void vicii_draw_cycle(void)
         }
     } 
 
-    main_border_pipe = vicii.main_border;
-
     vmode_pipe = ( (vicii.regs[0x11] & 0x60) | (vicii.regs[0x16] & 0x10) ) >> 2;
 
-    update_cregs();
+
+
+    for (i = 0; i < 8; i++) {
+        /* pipe sprite related changes various amounts of pixels late */
+        if (i == 2) {
+            sprite_active_bits &= ~dma_cycle_2;
+        }
+        if (i == 3) {
+            sprite_halt_bits |= dma_cycle_0;
+        }
+        if (spr_en && i == 4) {
+            sprite_pending_bits = vicii.sprite_display_bits;
+        }
+        if (i == 6) {
+            sprite_pri_bits = vicii.regs[0x1b];
+            sprite_expx_bits = vicii.regs[0x1d];
+        }
+        if (i == 7) {
+            update_sprite_mc_bits();
+            sprite_halt_bits &= ~dma_cycle_2;
+        }
+
+        /* process and render sprites */
+        trigger_sprites(xpos + i);
+
+        draw_sprites(i);
+    }
     update_sprite_xpos_and_data();
+
+
+    csel = vicii.regs[0x16] & 0x8;
+    if (csel) {
+        if (border_state) {
+            memset(render_buffer, COL_D020, 8);
+        }
+        border_state = vicii.main_border;
+    } else {
+        if (border_state) {
+            memset(render_buffer, COL_D020, 7);
+        }
+        border_state = vicii.main_border;
+        if (border_state) {
+            render_buffer[7] = COL_D020;
+        }
+    }
+
+#if 0
+    for (i = 0; i < 8; i++) {
+        /* Set new border state depending on csel and current pixel */
+        if (csel) {
+            if (i == 0) {
+                border_state = main_border_pipe;
+            }
+        } else {
+            if (i == 7) {
+                border_state = vicii.main_border;
+            }
+        }
+
+        /* add border on top */
+        if (border_state) {
+            render_buffer[i] = COL_D020;
+        }
+    }
+    main_border_pipe = vicii.main_border;
+#endif
+
+    for (i = 0; i < 8; i++) {
+        unsigned int lookup_index;
+
+        /* resolve any unresolved colors */
+        lookup_index = (pixel_index + vicii.color_latency) & 0x07;
+        pixel_buffer[lookup_index] = cregs[pixel_buffer[lookup_index]];
+
+        /* draw pixel to buffer */
+        vicii.dbuf[offs + i] = pixel_buffer[pixel_index];
+
+        pixel_buffer[pixel_index] = render_buffer[i] & 0x7f;
+        pixel_index = (pixel_index + 1) & 0x07;
+
+    }
+    vicii.dbuf_offset += 8;
+    update_cregs();
+
 
     cycle_flags_pipe = vicii.cycle_flags;
 }
@@ -562,10 +580,14 @@ void vicii_draw_cycle_init(void)
     memset(pixel_buffer, 0, sizeof(pixel_buffer));
     pixel_index = 0;
 
-    cycle_flags_pipe = 0;
-
+    /* clear cregs and fill 0x00-0x0f with 1:1 mapping */
+    memset(cregs, 0, sizeof(cregs));
     for (i=0; i < 0x10; i++) {
         cregs[i] = i;
     }
+
+    cycle_flags_pipe = 0;
+
+
 }
 
