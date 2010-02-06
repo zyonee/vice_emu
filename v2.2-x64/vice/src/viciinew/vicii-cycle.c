@@ -177,7 +177,6 @@ static inline void check_hborder(int cycle)
     int csel = vicii.regs[0x16] & 0x08;
 
     if ( cycle == (csel ? VICII_40COL_START_CYCLE : VICII_38COL_START_CYCLE) ) {
-        check_vborder(vicii.raster_line);
         if (vicii.vborder == 0) {
             vicii.main_border = 0;
         }
@@ -325,9 +324,7 @@ int vicii_cycle(void)
     }
 
     /* Check vertical border flag */
-    if (vicii.raster_cycle == VICII_PAL_CYCLE(1)) {
-        check_vborder(vicii.raster_line);
-    }
+    check_vborder(vicii.raster_line);
 
     /* Check sprite DMA */
     if (vicii.raster_cycle == VICII_PAL_CYCLE(55)
