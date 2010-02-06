@@ -400,28 +400,7 @@ void vicii_draw_cycle(void)
         BYTE px = 0;
         BYTE cc;
         BYTE pixel_pri;
-        BYTE pix;
-        unsigned int next_index;
         unsigned int lookup_index;
-
-        /* pipe sprite related changes various amounts of pixels late */
-        if (i == 2) {
-            sprite_active_bits &= ~dma_cycle_2;
-        }
-        if (i == 3) {
-            sprite_halt_bits |= dma_cycle_0;
-        }
-        if (spr_en && i == 4) {
-            sprite_pending_bits = vicii.sprite_display_bits;
-        }
-        if (i == 6) {
-            sprite_pri_bits = vicii.regs[0x1b];
-            sprite_expx_bits = vicii.regs[0x1d];
-        }
-        if (i == 7) {
-            update_sprite_mc_bits();
-            sprite_halt_bits &= ~dma_cycle_2;
-        }
 
         /* Load new gbuf/vbuf/cbuf values at offset == xscroll */
         if (i == xscroll_pipe) {
@@ -432,17 +411,6 @@ void vicii_draw_cycle(void)
             gbuf_mc_flop = 1;
         }
            
-        /* Set new border state depending on csel and current pixel */
-        if (csel) {
-            if (i == 0) {
-                border_state = main_border_pipe;
-            }
-        } else {
-            if (i == 7) {
-                border_state = vicii.main_border;
-            }
-        }
-
         /* 
          * read pixels depending on video mode
          * mc pixels if MCM=1 and BMM=1, or MCM=1 and cbuf bit 3 = 1
@@ -492,29 +460,55 @@ void vicii_draw_cycle(void)
             break;
         }
 
+        /* pipe sprite related changes various amounts of pixels late */
+        if (i == 2) {
+            sprite_active_bits &= ~dma_cycle_2;
+        }
+        if (i == 3) {
+            sprite_halt_bits |= dma_cycle_0;
+        }
+        if (spr_en && i == 4) {
+            sprite_pending_bits = vicii.sprite_display_bits;
+        }
+        if (i == 6) {
+            sprite_pri_bits = vicii.regs[0x1b];
+            sprite_expx_bits = vicii.regs[0x1d];
+        }
+        if (i == 7) {
+            update_sprite_mc_bits();
+            sprite_halt_bits &= ~dma_cycle_2;
+        }
+
         /* process and render sprites */
         trigger_sprites(xpos + i);
 
         draw_sprites(pixel_pri);
+
+        /* Set new border state depending on csel and current pixel */
+        if (csel) {
+            if (i == 0) {
+                border_state = main_border_pipe;
+            }
+        } else {
+            if (i == 7) {
+                border_state = vicii.main_border;
+            }
+        }
 
         /* add border on top */
         if (border_state) {
             current_pixel = COL_D020;
         }
 
-        next_index = (pixel_index + 1) & 0x07;
-        lookup_index = (pixel_index + vicii.color_latency) & 0x07;
-        pix = pixel_buffer[lookup_index];
         /* resolve any unresolved colors */
-        if (pix & 0xf0) {
-            pix = cregs[pix];
-        }
-        pixel_buffer[lookup_index] = pix;
+        lookup_index = (pixel_index + vicii.color_latency) & 0x07;
+        pixel_buffer[lookup_index] = cregs[pixel_buffer[lookup_index]];
+
         /* draw pixel to buffer */
         vicii.dbuf[offs + i] = pixel_buffer[pixel_index];
 
         pixel_buffer[pixel_index] = current_pixel;
-        pixel_index = next_index;
+        pixel_index = (pixel_index + 1) & 0x07;
 
     }
     vicii.dbuf_offset += 8;
@@ -558,6 +552,8 @@ void vicii_draw_cycle(void)
 
 void vicii_draw_cycle_init(void)
 {
+    int i;
+
     /* initialize the draw buffer */
     memset(vicii.dbuf, 0, VICII_DRAW_BUFFER_SIZE);
     vicii.dbuf_offset = 0;
@@ -567,5 +563,9 @@ void vicii_draw_cycle_init(void)
     pixel_index = 0;
 
     cycle_flags_pipe = 0;
+
+    for (i=0; i < 0x10; i++) {
+        cregs[i] = i;
+    }
 }
 
