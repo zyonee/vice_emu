@@ -197,8 +197,14 @@ BYTE vicii_fetch_idle(void)
 BYTE vicii_fetch_idle_gfx(void)
 {
     BYTE data;
+    BYTE reg11;
+    if (vicii.color_latency) {
+        reg11 = vicii.regs[0x11];
+    } else {
+        reg11 = vicii.reg11_delay;
+    }
 
-    if (vicii.reg11_delay & 0x40) {
+    if (reg11 & 0x40) {
         data = fetch_phi1(0x39ff);
     } else {
         data = fetch_phi1(0x3fff);
@@ -211,8 +217,14 @@ BYTE vicii_fetch_idle_gfx(void)
 BYTE vicii_fetch_graphics(void)
 {
     BYTE data;
+    BYTE reg11;
+    if (vicii.color_latency) {
+        reg11 = vicii.regs[0x11];
+    } else {
+        reg11 = vicii.reg11_delay;
+    }
 
-    switch (vicii.reg11_delay & 0x60) {
+    switch (reg11 & 0x60) {
     case 0x00:                             /* ECM=0 BMM=0 MCM=x */
         data = gfx_data_normal_text(vicii.vbuf[vicii.vmli]);
         break;
