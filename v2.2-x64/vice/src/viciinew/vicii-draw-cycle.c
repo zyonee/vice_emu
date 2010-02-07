@@ -355,12 +355,26 @@ static DRAW_INLINE void draw_sprites(int i)
 }
 
 
-static DRAW_INLINE void update_sprite_mc_bits(void)
+static DRAW_INLINE void update_sprite_mc_bits_6569(void)
 {
-    BYTE toggled;
-    toggled = vicii.regs[0x1c] ^ sprite_mc_bits;
-    sbuf_mc_flops &= ~toggled;
-    sprite_mc_bits = vicii.regs[0x1c];
+    if (vicii.color_latency) {
+        BYTE next_mc_bits = vicii.regs[0x1c];
+        BYTE toggled = next_mc_bits ^ sprite_mc_bits;
+
+        sbuf_mc_flops &= ~toggled;
+        sprite_mc_bits = next_mc_bits;
+    }
+}
+
+static DRAW_INLINE void update_sprite_mc_bits_8565(void)
+{
+    if (!vicii.color_latency) {
+        BYTE next_mc_bits = vicii.regs[0x1c];
+        BYTE toggled = next_mc_bits ^ sprite_mc_bits;
+
+        sbuf_mc_flops ^= toggled & (~sbuf_expx_flops);
+        sprite_mc_bits = next_mc_bits;
+    }
 }
 
 static DRAW_INLINE void update_sprite_xpos_and_data(void)
@@ -413,12 +427,13 @@ static DRAW_INLINE void draw_sprites8(int xpos, unsigned int cycle_flags, int sp
     trigger_sprites(xpos + 5, candidate_bits);
     draw_sprites(5);
     /* pixel 6 */
+    update_sprite_mc_bits_8565();
     sprite_pri_bits = vicii.regs[0x1b];
     sprite_expx_bits = vicii.regs[0x1d];
     trigger_sprites(xpos + 6, candidate_bits);
     draw_sprites(6);
     /* pixel 7 */
-    update_sprite_mc_bits();
+    update_sprite_mc_bits_6569();
     sprite_halt_bits &= ~dma_cycle_2;
     trigger_sprites(xpos + 7, candidate_bits);
     draw_sprites(7);
