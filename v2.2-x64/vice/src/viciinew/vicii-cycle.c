@@ -407,6 +407,9 @@ int vicii_cycle(void)
     /* clear internal bus (may get set by a VIC-II read or write) */
     vicii.last_bus_phi2 = 0xff;
 
+    /* delay video mode for fetches by one cycle */
+    vicii.reg11_delay = vicii.regs[0x11];
+
     return ba_low;
 }
 

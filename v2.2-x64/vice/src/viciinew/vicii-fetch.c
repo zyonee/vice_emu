@@ -198,7 +198,7 @@ BYTE vicii_fetch_idle_gfx(void)
 {
     BYTE data;
 
-    if (vicii.regs[0x11] & 0x40) {
+    if (vicii.reg11_delay & 0x40) {
         data = fetch_phi1(0x39ff);
     } else {
         data = fetch_phi1(0x3fff);
@@ -212,7 +212,7 @@ BYTE vicii_fetch_graphics(void)
 {
     BYTE data;
 
-    switch (vicii.regs[0x11] & 0x60) {
+    switch (vicii.reg11_delay & 0x60) {
     case 0x00:                             /* ECM=0 BMM=0 MCM=x */
         data = gfx_data_normal_text(vicii.vbuf[vicii.vmli]);
         break;

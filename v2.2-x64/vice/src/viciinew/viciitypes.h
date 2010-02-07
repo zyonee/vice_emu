@@ -212,6 +212,9 @@ struct vicii_s {
     /* All the VIC-II logging goes here.  */
     signed int log;
 
+    /* Delayed mode selection */
+    BYTE reg11_delay;
+
     /* Fetch state */
     int prefetch_cycles;
 
@@ -223,7 +226,6 @@ struct vicii_s {
 
     /* State of sprites. */
     vicii_sprite_t sprite[VICII_NUM_SPRITES];
-
 
     /* Geometry and timing parameters of the selected VIC-II emulation.  */
     unsigned int screen_height;
