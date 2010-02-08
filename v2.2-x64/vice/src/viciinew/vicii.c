@@ -174,7 +174,6 @@ static void vicii_set_geometry(void)
 static int init_raster(void)
 {
     raster_t *raster;
-    unsigned int width;
 
     raster = &vicii.raster;
     video_color_set_canvas(raster->canvas);
@@ -278,13 +277,14 @@ void vicii_reset(void)
     vicii.regs[0x11] = 0;
     vicii.regs[0x12] = 0;
 
+    vicii.light_pen.state = 0;
     vicii.light_pen.triggered = 0;
     vicii.light_pen.x = vicii.light_pen.y = vicii.light_pen.x_extra_bits = 0;
 
     /* Remove all the IRQ sources.  */
     vicii.regs[0x1a] = 0;
 
-    vicii.vborder = 1;    
+    vicii.vborder = 1;
     vicii.main_border = 1;
 }
 
@@ -324,6 +324,7 @@ void vicii_powerup(void)
     vicii.vcbase = 0;
     vicii.vc = 0;
     vicii.bad_line = 0;
+    vicii.light_pen.state = 0;
     vicii.light_pen.x = vicii.light_pen.y = vicii.light_pen.x_extra_bits = vicii.light_pen.triggered = 0;
     vicii.vbank_phi1 = 0;
     vicii.vbank_phi2 = 0;
@@ -364,21 +365,63 @@ void vicii_set_phi2_vbank(int num_vbank)
 
 /* ---------------------------------------------------------------------*/
 
+/* Set light pen input state.  */
+void vicii_set_light_pen(CLOCK mclk, int state)
+{
+    if (state) {
+        vicii_trigger_light_pen(mclk);
+    }
+    vicii.light_pen.state = state;
+}
+
 /* Trigger the light pen.  */
 void vicii_trigger_light_pen(CLOCK mclk)
 {
-    if (!vicii.light_pen.triggered) {
-        vicii.light_pen.triggered = 1;
-        /* this is rather broken. the +8 is to compensate for us being
-           called one cycle too late + and xpos update order problem.
-           This leads to several problems.
-           The latency needs to be fixed elsewhere. */
-        vicii.light_pen.x = vicii.raster_xpos/2 + 8 + 2;
-        vicii.light_pen.x_extra_bits = 0;
-        vicii.light_pen.y = vicii.raster_line;
+    int x, y;
 
-        vicii_irq_lightpen_set();
+    if (vicii.light_pen.triggered) {
+        return;
     }
+
+    /* this is rather ugly. the +8 is to compensate for us being
+       called one cycle too late + and xpos update order problem.
+       This leads to several problems.
+       The latency needs to be fixed elsewhere. */
+
+    vicii.light_pen.triggered = 1;
+
+    x = vicii.raster_xpos/2 + 8;
+    y = vicii.raster_line;
+
+    /* don't trigger on the last line */
+    if (y == (vicii.screen_height - 1)) {
+        return;
+    }
+
+    /* due to the +8, handle y update on line change */
+    if (x == 0xc8) {
+        y++;
+    }
+
+    /* due to the +8, handle x wrapping */
+    if (x > 0xf8) {
+        x -= 0xfc;
+    }
+
+    /* add offset depending on chip model (FIXME use proper variable) */
+    x += (vicii.color_latency ? 2 : 1);
+
+    /* HACK signaled retrigger from vicii_cycle */
+    if (mclk == 0) {
+        x = 0xd1;
+    }
+
+    vicii.light_pen.x = x;
+    vicii.light_pen.y = y;
+
+    vicii.light_pen.x_extra_bits = 0;
+
+    vicii_irq_lightpen_set();
 }
 
 /* Calculate lightpen pulse time based on x/y */

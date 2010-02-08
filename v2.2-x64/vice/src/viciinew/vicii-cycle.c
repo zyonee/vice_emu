@@ -194,6 +194,12 @@ static inline void vicii_cycle_start_of_frame(void)
     vicii.vcbase = 0;
     vicii.vc = 0;
     vicii.light_pen.triggered = 0;
+
+    /* Retrigger light pen if line is still held low */
+    if (vicii.light_pen.state) {
+        /* HACK use 0 as special "retrigger" signal */
+        vicii_trigger_light_pen(0);
+    }
 }
 
 static inline void vicii_cycle_end_of_line(void)

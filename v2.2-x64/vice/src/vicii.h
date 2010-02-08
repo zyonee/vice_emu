@@ -68,6 +68,7 @@ extern struct raster_s *vicii_init(unsigned int flag);
 extern struct video_canvas_s *vicii_get_canvas(void);
 
 extern void vicii_reset(void);
+extern void vicii_set_light_pen(CLOCK mclk, int state);
 extern void vicii_trigger_light_pen(CLOCK mclk);
 extern CLOCK vicii_lightpen_timing(int x, int y);
 extern void vicii_set_vbank(int new_vbank);
