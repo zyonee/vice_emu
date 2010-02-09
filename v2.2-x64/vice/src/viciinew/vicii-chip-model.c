@@ -237,7 +237,6 @@ struct ViciiChipModel chip_model_mos8565 = {
     0
 };
 
-
 void vicii_chip_model_set(struct ViciiChipModel *cm)
 {
     int i;
@@ -308,24 +307,31 @@ void vicii_chip_model_set(struct ViciiChipModel *cm)
             entry = ba & 0x1ff;
             switch (fetch_phi[0] & 0xf00) {
             case 0x100:
-                /* sprite ptr + dma0 */
+                /* Sprite Ptr (Phi1) + DMA0 (Phi2) */
                 entry |= 0x1000 | ((fetch_phi[0] & 0x7) << 9);
                 break;
             case 0x300:
-                /* sprite dma1 + dma2 */
+                /* Sprite DMA1 (Phi1) + DMA2 (Phi2) */
                 entry |= 0x2000 | ((fetch_phi[0] & 0x7) << 9);
                 break;
             case Refresh:
-                /* refresh */
+                /* Refresh (Phi1) */
                 entry |= 0x3000;
                 break;
             case FetchG:
-                /* refresh */
+                /* FetchG (Phi1) */
                 entry |= 0x3800;
                 break;
             }
+            /* FetchC (Phi2) */
             if ( (fetch_phi[1] & 0xf00) == FetchC ) {
                 entry |= 0x4000;
+                entry |= VISIBLE_M;
+            }
+            entry |= ( (xpos_phi[0] >> 3) << XPOS_B) & XPOS_M;
+
+            if (flags_phi[0] & ChkSprDisp) {
+                entry |= CHECK_SPR_DISP_M;
             }
 
             vicii.cycle_table[cycle-1] =  entry;
@@ -335,7 +341,6 @@ void vicii_chip_model_set(struct ViciiChipModel *cm)
 
 
 }
-
 
 void vicii_chip_model_init(void)
 {

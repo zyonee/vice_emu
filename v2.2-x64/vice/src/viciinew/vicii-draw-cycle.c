@@ -80,6 +80,9 @@ BYTE gbuf_pixel_reg = 0;
 BYTE cbuf_reg = 0;
 BYTE vbuf_reg = 0;
 
+BYTE dmli = 0;
+
+
 /* sprites */
 int sprite_x_pipe[8];
 DWORD sprite_data_pipe[8];
@@ -123,7 +126,7 @@ static const BYTE colors[] = {
     COL_NONE,   COL_NONE,   COL_NONE,   COL_NONE    /* ECM=1 BMM=1 MCM=1 */
 };
 
-static DRAW_INLINE void draw_graphics8(int vis_en, int li)
+static DRAW_INLINE void draw_graphics8(int vis_en)
 {
     int i;
 
@@ -211,13 +214,20 @@ static DRAW_INLINE void draw_graphics8(int vis_en, int li)
     /* Only update vbuf and cbuf registers in the display state. */
     if ( vis_en && vicii.vborder == 0 ) {
         if (!vicii.idle_state) {
-            vbuf_pipe0_reg = vicii.vbuf[li];
-            cbuf_pipe0_reg = vicii.cbuf[li];
+            vbuf_pipe0_reg = vicii.vbuf[dmli];
+            cbuf_pipe0_reg = vicii.cbuf[dmli];
         } else {
             vbuf_pipe0_reg = 0;
             cbuf_pipe0_reg = 0;
         }
     } 
+
+    /* update display index in the visible region */
+    if (vis_en) {
+        dmli++;
+    } else {
+        dmli = 0;
+    }
 
     vmode_pipe = ( (vicii.regs[0x11] & 0x60) | (vicii.regs[0x16] & 0x10) ) >> 2;
 }
@@ -587,15 +597,25 @@ void vicii_draw_cycle(void)
     int xpos;
     int spr_en;
     int vis_en;
-    int li;
 
     cycle = vicii.raster_cycle;
+    xpos = cycle_get_xpos(cycle_flags_pipe);
+    vis_en = cycle_is_visible(cycle_flags_pipe);
+    spr_en = cycle_is_check_spr_disp(cycle_flags_pipe);
+
+#if 0
     flags = flag_tab[cycle];
 
-    xpos = GET_XPOS(flags);
-    spr_en = IS_SPR_EN(flags);
-    vis_en = IS_VISIBLE(flags);
-    li = GET_VISIBLE(flags);
+    if (xpos !=  GET_XPOS(flags)) {
+        vicii.regs[0x21] = 0xff;
+    }
+    if (vis_en != IS_VISIBLE(flags)) {
+        vicii.regs[0x21] = 0xff;
+    }
+    if (spr_en != IS_SPR_EN(flags)) {
+        vicii.regs[0x21] = 0xff;
+    }
+#endif
 
     /* this should go into vicii-cycle.c once we move the table to a sane
        place */
@@ -606,7 +626,7 @@ void vicii_draw_cycle(void)
         vicii.dbuf_offset = 0;
     }
 
-    draw_graphics8(vis_en, li);
+    draw_graphics8(vis_en);
 
     draw_sprites8(xpos, cycle_flags_pipe, spr_en);
 
