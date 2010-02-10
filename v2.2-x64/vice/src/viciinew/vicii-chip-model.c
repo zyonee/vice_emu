@@ -56,6 +56,8 @@ struct ViciiCycle {
 #define GetVis(x)     ((x) & 0x7f)
 
 /* Fetch */
+#define FetchType_M   0xf00
+#define FetchSprNum_M 0x007
 #define SprPtr(x)     (0x100 | (x))
 #define SprDma0(x)    (0x200 | (x))
 #define SprDma1(x)    (0x300 | (x))
@@ -68,6 +70,7 @@ struct ViciiCycle {
 
 /* BA */
 #define BaFetch       0x100
+#define BaSpr_M       0xff
 #define BaSpr1(x)     (0x000 | (1 << (x)))
 #define BaSpr2(x,y)   (0x000 | (1 << (x)) | (1 << (y)))
 #define BaSpr3(x,y,z) (0x000 | (1 << (x)) | (1 << (y)) | (1 << (z)))
@@ -304,30 +307,39 @@ void vicii_chip_model_set(struct ViciiChipModel *cm)
         /* Both Phi1 and Phi2 collected, generate table */
         if (phi == 1) {
             unsigned int entry = 0;
-            entry = ba & 0x1ff;
-            switch (fetch_phi[0] & 0xf00) {
-            case 0x100:
+
+            entry |= (ba_phi[0] & BaSpr_M) << SPRITE_BA_MASK_B;
+            entry |= (ba_phi[0] & BaFetch) ? FETCH_BA_M : 0;
+
+            switch (fetch_phi[0] & FetchType_M) {
+            case SprPtr(0):
                 /* Sprite Ptr (Phi1) + DMA0 (Phi2) */
-                entry |= 0x1000 | ((fetch_phi[0] & 0x7) << 9);
+                entry |= PHI1_SPR_PTR;
+                entry |= (fetch_phi[0] & FetchSprNum_M) << PHI1_SPR_NUM_B;
                 break;
-            case 0x300:
+            case SprDma1(0):
                 /* Sprite DMA1 (Phi1) + DMA2 (Phi2) */
-                entry |= 0x2000 | ((fetch_phi[0] & 0x7) << 9);
+                entry |= PHI1_SPR_DMA1;
+                entry |= (fetch_phi[0] & FetchSprNum_M) << PHI1_SPR_NUM_B;
                 break;
             case Refresh:
                 /* Refresh (Phi1) */
-                entry |= 0x3000;
+                entry |= PHI1_REFRESH;
                 break;
             case FetchG:
                 /* FetchG (Phi1) */
-                entry |= 0x3800;
+                entry |= PHI1_FETCH_G;
+                break;
+            default:
+                entry |= PHI1_IDLE;
                 break;
             }
             /* FetchC (Phi2) */
-            if ( (fetch_phi[1] & 0xf00) == FetchC ) {
-                entry |= 0x4000;
+            if ( (fetch_phi[1] & FetchType_M) == FetchC ) {
+                entry |= PHI2_FETCH_C_M;
                 entry |= VISIBLE_M;
             }
+            /* extract xpos */
             entry |= ( (xpos_phi[0] >> 3) << XPOS_B) & XPOS_M;
 
             if (flags_phi[0] & ChkSprDisp) {

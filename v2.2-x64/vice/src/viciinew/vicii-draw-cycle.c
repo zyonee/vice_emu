@@ -404,11 +404,11 @@ static DRAW_INLINE void draw_sprites8(int xpos, unsigned int cycle_flags, int sp
     BYTE dma_cycle_0 = 0;
     BYTE dma_cycle_2 = 0;
 
-    if (is_sprite_ptr_dma0(cycle_flags)) {
-        dma_cycle_0 = 1 << get_sprite_num(cycle_flags);
+    if (cycle_is_sprite_ptr_dma0(cycle_flags)) {
+        dma_cycle_0 = 1 << cycle_get_sprite_num(cycle_flags);
     }
-    if (is_sprite_dma1_dma2(cycle_flags_pipe)) {
-        dma_cycle_2 = 1 << get_sprite_num(cycle_flags);
+    if (cycle_is_sprite_dma1_dma2(cycle_flags_pipe)) {
+        dma_cycle_2 = 1 << cycle_get_sprite_num(cycle_flags);
     }
     candidate_bits = get_trigger_candidates(xpos);
 

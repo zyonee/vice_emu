@@ -131,7 +131,7 @@ static inline BYTE cycle_phi1_fetch(unsigned int cycle_flags)
     BYTE data;
     int s;
 
-    if (is_fetch_g(cycle_flags)) {
+    if (cycle_is_fetch_g(cycle_flags)) {
         if (!vicii.idle_state) {
             data = vicii_fetch_graphics();
         } else {
@@ -140,18 +140,18 @@ static inline BYTE cycle_phi1_fetch(unsigned int cycle_flags)
         return data;
     }
  
-    if (is_sprite_ptr_dma0(cycle_flags)) {
-        s = get_sprite_num(cycle_flags);
+    if (cycle_is_sprite_ptr_dma0(cycle_flags)) {
+        s = cycle_get_sprite_num(cycle_flags);
         data = vicii_fetch_sprite_pointer(s);
         return data;
     }
-    if (is_sprite_dma1_dma2(cycle_flags)) {
-        s = get_sprite_num(cycle_flags);
+    if (cycle_is_sprite_dma1_dma2(cycle_flags)) {
+        s = cycle_get_sprite_num(cycle_flags);
         data = vicii_fetch_sprite_dma_1(s);
         return data;
     }
 
-    if (is_refresh(cycle_flags)) {
+    if (cycle_is_refresh(cycle_flags)) {
         data = vicii_fetch_refresh();
         return data;
     }
@@ -379,7 +379,7 @@ int vicii_cycle(void)
     }
 
     /* Check BA for matrix fetch */ 
-    if (vicii.bad_line && is_fetch_ba(vicii.cycle_flags)) {
+    if (vicii.bad_line && cycle_is_fetch_ba(vicii.cycle_flags)) {
         ba_low = 1;
     }
 
@@ -401,7 +401,7 @@ int vicii_cycle(void)
 
 
     /* Matrix fetch */
-     if (vicii.bad_line && may_fetch_c(vicii.cycle_flags) ) {
+     if (vicii.bad_line && cycle_may_fetch_c(vicii.cycle_flags) ) {
 #ifdef DEBUG
         if (debug.maincpu_traceflg) {
             log_debug("DMA at cycle %d   %d", vicii.raster_cycle, maincpu_clk);

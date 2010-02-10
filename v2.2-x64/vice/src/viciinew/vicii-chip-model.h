@@ -73,57 +73,73 @@ extern void vicii_chip_model_init(void);
 
 
 #define CHECK_SPR_DISP_M  0x01000000
+
+#define VISIBLE_M         0x00400000
+
 #define XPOS_M            0x003f0000
 #define XPOS_B            16
-#define VISIBLE_M         0x00008000
+
+#define PHI2_FETCH_C_M    0x00008000
+
+#define PHI1_SPR_NUM_M    0x00007000
+#define PHI1_SPR_NUM_B    12
+
+#define PHI1_TYPE_M       0x00000e00
+#define PHI1_TYPE_B       9
+#define PHI1_IDLE         0x00000000
+#define PHI1_REFRESH      0x00000200
+#define PHI1_FETCH_G      0x00000400
+#define PHI1_SPR_PTR      0x00000600
+#define PHI1_SPR_DMA1     0x00000800
+
 #define FETCH_BA_M        0x00000100
 #define FETCH_BA_B        8
 #define SPRITE_BA_MASK_M  0x000000ff
 #define SPRITE_BA_MASK_B  0
 
-static inline BYTE get_sprite_ba_mask(unsigned int flags)
+static inline BYTE cycle_get_sprite_ba_mask(unsigned int flags)
 {
     return (flags & SPRITE_BA_MASK_M) >> SPRITE_BA_MASK_B;
 }
 
-static inline int is_fetch_ba(unsigned int flags)
+static inline int cycle_is_fetch_ba(unsigned int flags)
 {
-    return flags & FETCH_BA_M;
+    return (flags & FETCH_BA_M) ? 1 : 0;
 }
 
-static inline int is_sprite_ptr_dma0(unsigned int flags)
+static inline int cycle_is_sprite_ptr_dma0(unsigned int flags)
 {
-    return (flags & 0x3000) == 0x1000;
+    return (flags & PHI1_TYPE_M) == PHI1_SPR_PTR;
 }
 
-static inline int is_sprite_dma1_dma2(unsigned int flags)
+static inline int cycle_is_sprite_dma1_dma2(unsigned int flags)
 {
-    return (flags & 0x3000) == 0x2000;
+    return (flags & PHI1_TYPE_M) == PHI1_SPR_DMA1;
 }
 
-static inline int get_sprite_num(unsigned int flags)
+static inline int cycle_get_sprite_num(unsigned int flags)
 {
-    return (flags & 0x0e00) >> 9;
+    return (flags & PHI1_SPR_NUM_M) >> PHI1_SPR_NUM_B;
 }
 
-static inline int is_refresh(unsigned int flags)
+static inline int cycle_is_refresh(unsigned int flags)
 {
-    return (flags & 0x3800) == 0x3000;
+    return (flags & PHI1_TYPE_M) == PHI1_REFRESH;
 }
 
-static inline int is_fetch_g(unsigned int flags)
+static inline int cycle_is_fetch_g(unsigned int flags)
 {
-    return (flags & 0x3800) == 0x3800;
+    return (flags & PHI1_TYPE_M) == PHI1_FETCH_G;
 }
 
-static inline int may_fetch_c(unsigned int flags)
+static inline int cycle_may_fetch_c(unsigned int flags)
 {
-    return (flags & 0x4000);
+    return (flags & PHI2_FETCH_C_M) ? 1 : 0;
 }
 
 static inline int cycle_is_visible(unsigned int flags)
 {
-    return (flags & VISIBLE_M);
+    return (flags & VISIBLE_M) ? 1 : 0;
 }
 
 static inline int cycle_get_xpos(unsigned int flags)
