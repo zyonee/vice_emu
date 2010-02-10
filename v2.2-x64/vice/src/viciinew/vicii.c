@@ -285,6 +285,7 @@ void vicii_reset(void)
     vicii.regs[0x1a] = 0;
 
     vicii.vborder = 1;
+    vicii.set_vborder = 1;
     vicii.main_border = 1;
 }
 

@@ -252,6 +252,9 @@ struct vicii_s {
     /* Vertical border flag */
     int vborder;
 
+    /* latched set of Vertical border flag */
+    int set_vborder;
+
     /* Main border flag (this is what controls rendering) */
     int main_border;
 
