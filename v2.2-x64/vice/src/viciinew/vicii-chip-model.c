@@ -306,6 +306,8 @@ void vicii_chip_model_set(struct ViciiChipModel *cm)
 
         /* Both Phi1 and Phi2 collected, generate table */
         if (phi == 1) {
+            unsigned int flags = flags_phi[0] | flags_phi[1];
+
             unsigned int entry = 0;
 
             entry |= (ba_phi[0] & BaSpr_M) << SPRITE_BA_MASK_B;
@@ -342,7 +344,7 @@ void vicii_chip_model_set(struct ViciiChipModel *cm)
             /* extract xpos */
             entry |= ( (xpos_phi[0] >> 3) << XPOS_B) & XPOS_M;
 
-            if (flags_phi[0] & ChkSprDisp) {
+            if (flags & ChkSprDisp) {
                 entry |= CHECK_SPR_DISP_M;
             }
 

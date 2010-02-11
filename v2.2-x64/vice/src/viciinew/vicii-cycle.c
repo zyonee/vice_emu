@@ -328,32 +328,46 @@ int vicii_cycle(void)
         vicii.raster_irq_triggered = 0;
     }
 
-    /* Check DEN bit on first DMA line */
-    if ((vicii.raster_line == VICII_FIRST_DMA_LINE) && !vicii.allow_bad_lines) {
-        vicii.allow_bad_lines = (vicii.regs[0x11] & 0x10) ? 1 : 0; 
-    }
-
     /* Check vertical border flag */
     check_vborder(vicii.raster_line);
 
-    /* Check sprite DMA */
+
+    /******
+     *
+     * Sprite logic
+     *
+     */
+
+    /* Update sprite mcbase (Cycle 16 on PAL) */
+    if (vicii.raster_cycle == VICII_PAL_CYCLE(16)) {
+        sprite_mcbase_update();
+    }
+
+    /* Check sprite DMA (Cycles 55 & 56 on PAL) */
     if (vicii.raster_cycle == VICII_PAL_CYCLE(55)
         || vicii.raster_cycle == VICII_PAL_CYCLE(56) ) {
         check_sprite_dma();
     }
-    /* Check sprite expansion flags */
+
+    /* Check sprite expansion flags (Cycle 56 on PAL) */
     if (vicii.raster_cycle == VICII_PAL_CYCLE(56)) {
         check_exp();
     }
 
-    /* Check sprite display */
+    /* Check sprite display (Cycle 58 on PAL) */
     if (vicii.raster_cycle == VICII_PAL_CYCLE(58)) {
         check_sprite_display();
     }
 
-    /* Update sprite mcbase */
-    if (vicii.raster_cycle == VICII_PAL_CYCLE(16)) {
-        sprite_mcbase_update();
+    /******
+     *
+     * Graphics logic
+     *
+     */
+
+    /* Check DEN bit on first DMA line */
+    if ((vicii.raster_line == VICII_FIRST_DMA_LINE) && !vicii.allow_bad_lines) {
+        vicii.allow_bad_lines = (vicii.regs[0x11] & 0x10) ? 1 : 0; 
     }
 
     /* Check badline condition, trigger fetches */
@@ -361,6 +375,7 @@ int vicii_cycle(void)
         check_badline();
     }
 
+    /* Update VC (Cycle 14 on PAL) */
     if (vicii.raster_cycle == VICII_PAL_CYCLE(14)) {
         vicii.vc = vicii.vcbase;
         vicii.vmli = 0;
@@ -369,6 +384,7 @@ int vicii_cycle(void)
         }
     }
 
+    /* Update RC (Cycle 58 on PAL) */
     if (vicii.raster_cycle == VICII_PAL_CYCLE(58)) {
         /* `rc' makes the chip go to idle state when it reaches the 
            maximum value.  */
@@ -381,6 +397,12 @@ int vicii_cycle(void)
             vicii.idle_state = 0;
         }
     }
+
+    /******
+     *
+     * BA logic
+     *
+     */
 
     /* Check BA for matrix fetch */ 
     if (vicii.bad_line && cycle_is_fetch_ba(vicii.cycle_flags)) {
