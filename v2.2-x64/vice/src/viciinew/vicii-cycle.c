@@ -178,6 +178,7 @@ static inline void check_hborder(int cycle)
     int csel = vicii.regs[0x16] & 0x08;
 
     if ( cycle == (csel ? VICII_40COL_START_CYCLE : VICII_38COL_START_CYCLE) ) {
+        check_vborder(vicii.raster_line);
         /* vborder is already 0 when set_vborder is 0 */
         vicii.vborder = vicii.set_vborder;
         if (vicii.vborder == 0) {
@@ -269,9 +270,6 @@ int vicii_cycle(void)
     /* Phi1 fetch */
     vicii.last_read_phi1 = cycle_phi1_fetch(vicii.cycle_flags);
 
-    /* Check vertical border flag */
-    check_vborder(vicii.raster_line);
-
     /* Check horizontal border flag */
     check_hborder(vicii.raster_cycle);
 
@@ -334,6 +332,9 @@ int vicii_cycle(void)
     if ((vicii.raster_line == VICII_FIRST_DMA_LINE) && !vicii.allow_bad_lines) {
         vicii.allow_bad_lines = (vicii.regs[0x11] & 0x10) ? 1 : 0; 
     }
+
+    /* Check vertical border flag */
+    check_vborder(vicii.raster_line);
 
     /* Check sprite DMA */
     if (vicii.raster_cycle == VICII_PAL_CYCLE(55)
