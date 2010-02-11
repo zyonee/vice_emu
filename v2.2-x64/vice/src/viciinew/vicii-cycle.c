@@ -173,18 +173,19 @@ static inline void check_vborder(int line)
     }
 }
 
-static inline void check_hborder(int cycle)
+static inline void check_hborder(unsigned int cycle_flags)
 {
     int csel = vicii.regs[0x16] & 0x08;
 
-    if ( cycle == (csel ? VICII_40COL_START_CYCLE : VICII_38COL_START_CYCLE) ) {
+    if ( cycle_is_check_border_l(cycle_flags, csel) ) {
         check_vborder(vicii.raster_line);
         /* vborder is already 0 when set_vborder is 0 */
         vicii.vborder = vicii.set_vborder;
         if (vicii.vborder == 0) {
             vicii.main_border = 0;
         }
-    } else if ( cycle == (csel ? VICII_40COL_STOP_CYCLE : VICII_38COL_STOP_CYCLE) ) {
+    } 
+    if ( cycle_is_check_border_r(cycle_flags, csel) ) {
         vicii.main_border = 1;
     }
 }
@@ -271,7 +272,7 @@ int vicii_cycle(void)
     vicii.last_read_phi1 = cycle_phi1_fetch(vicii.cycle_flags);
 
     /* Check horizontal border flag */
-    check_hborder(vicii.raster_cycle);
+    check_hborder(vicii.cycle_flags);
 
     can_sprite_sprite = (vicii.sprite_sprite_collisions == 0);
     can_sprite_background = (vicii.sprite_background_collisions == 0);

@@ -72,6 +72,11 @@ extern void vicii_chip_model_init(void);
  */
 
 
+#define CHECK_BRD_M       0xe0000000
+#define CHECK_BRD_L       0x80000000
+#define CHECK_BRD_R       0x40000000
+#define CHECK_BRD_CSEL    0x20000000
+
 #define CHECK_SPR_DISP_M  0x01000000
 
 #define VISIBLE_M         0x00400000
@@ -152,5 +157,20 @@ static inline int cycle_is_check_spr_disp(unsigned int flags)
     return (flags & CHECK_SPR_DISP_M) ? 1 : 0;
 }
 
+static inline int cycle_is_check_border_l(unsigned int flags, int csel)
+{
+    if (flags & CHECK_BRD_L) {
+        return (flags & CHECK_BRD_CSEL) ? csel : !csel;
+    }
+    return 0;
+}
+
+static inline int cycle_is_check_border_r(unsigned int flags, int csel)
+{
+    if (flags & CHECK_BRD_R) {
+        return (flags & CHECK_BRD_CSEL) ? csel : !csel;
+    }
+    return 0;
+}
 #endif
 

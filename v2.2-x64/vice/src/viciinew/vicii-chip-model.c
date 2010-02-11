@@ -120,13 +120,13 @@ static struct ViciiCycle cycle_tab_pal[] = {
 { Phi1(14), 0x004, None,    Refresh,    BaFetch,       None         },
 { Phi2(14), 0x008, None,    None,       BaFetch,       UpdateVc     },
 { Phi1(15), 0x00c, None,    Refresh,    BaFetch,       None         },
-{ Phi2(15), 0x010, None,    FetchC,     BaFetch,       ChkBrdL1|ChkSprCrunch },
+{ Phi2(15), 0x010, None,    FetchC,     BaFetch,       ChkSprCrunch },
 { Phi1(16), 0x014, None,    FetchG,     BaFetch,       None         },
-{ Phi2(16), 0x018, Vis(0),  FetchC,     BaFetch,       ChkBrdL0|UpdateMcBase },
-{ Phi1(17), 0x01c, Vis(0),  FetchG,     BaFetch,       None },
-{ Phi2(17), 0x020, Vis(1),  FetchC,     BaFetch,       None },
+{ Phi2(16), 0x018, Vis(0),  FetchC,     BaFetch,       UpdateMcBase },
+{ Phi1(17), 0x01c, Vis(0),  FetchG,     BaFetch,       None         },
+{ Phi2(17), 0x020, Vis(1),  FetchC,     BaFetch,       ChkBrdL1     },
 { Phi1(18), 0x024, Vis(1),  FetchG,     BaFetch,       None },
-{ Phi2(18), 0x028, Vis(2),  FetchC,     BaFetch,       None },
+{ Phi2(18), 0x028, Vis(2),  FetchC,     BaFetch,       ChkBrdL0     },
 { Phi1(19), 0x02c, Vis(2),  FetchG,     BaFetch,       None },
 { Phi2(19), 0x030, Vis(3),  FetchC,     BaFetch,       None },
 { Phi1(20), 0x034, Vis(3),  FetchG,     BaFetch,       None },
@@ -346,6 +346,20 @@ void vicii_chip_model_set(struct ViciiChipModel *cm)
 
             if (flags & ChkSprDisp) {
                 entry |= CHECK_SPR_DISP_M;
+            }
+
+            /* Border */
+            if (flags & ChkBrdL0) {
+                entry |= CHECK_BRD_L;
+            }
+            if (flags & ChkBrdL1) {
+                entry |= CHECK_BRD_L | CHECK_BRD_CSEL;
+            }
+            if (flags & ChkBrdR0) {
+                entry |= CHECK_BRD_R;
+            }
+            if (flags & ChkBrdR1) {
+                entry |= CHECK_BRD_R | CHECK_BRD_CSEL;
             }
 
             vicii.cycle_table[cycle-1] =  entry;
