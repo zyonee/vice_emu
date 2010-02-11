@@ -177,6 +177,7 @@ static inline void check_hborder(unsigned int cycle_flags)
 {
     int csel = vicii.regs[0x16] & 0x08;
 
+    /* Left border ends at cycles 17 (csel=1) or 18 (csel=0) on PAL. */
     if ( cycle_is_check_border_l(cycle_flags, csel) ) {
         check_vborder(vicii.raster_line);
         /* vborder is already 0 when set_vborder is 0 */
@@ -185,6 +186,7 @@ static inline void check_hborder(unsigned int cycle_flags)
             vicii.main_border = 0;
         }
     } 
+    /* Right border starts at cycles 56 (csel=0) or 57 (csel=1) on PAL. */
     if ( cycle_is_check_border_r(cycle_flags, csel) ) {
         vicii.main_border = 1;
     }
