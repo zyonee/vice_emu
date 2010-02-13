@@ -390,12 +390,19 @@ static DRAW_INLINE void update_sprite_mc_bits_8565(void)
     }
 }
 
-static DRAW_INLINE void update_sprite_xpos_and_data(void)
+static DRAW_INLINE void update_sprite_data(void)
+{
+    int s;
+    for (s=0; s<8; s++) {
+        sprite_data_pipe[s] = vicii.sprite[s].data;
+    }
+}
+
+static DRAW_INLINE void update_sprite_xpos(void)
 {
     int s;
     for (s=0; s<8; s++) {
         sprite_x_pipe[s] = vicii.sprite[s].x;
-        sprite_data_pipe[s] = vicii.sprite[s].data;
     }
 }
 
@@ -442,6 +449,7 @@ static DRAW_INLINE void draw_sprites8(unsigned int cycle_flags)
     if (spr_en) {
         sprite_pending_bits = vicii.sprite_display_bits;
     }
+    update_sprite_data();
     trigger_sprites(xpos + 4, candidate_bits);
     draw_sprites(4);
     /* pixel 5 */
@@ -459,8 +467,8 @@ static DRAW_INLINE void draw_sprites8(unsigned int cycle_flags)
     trigger_sprites(xpos + 7, candidate_bits);
     draw_sprites(7);
 
-    /* pipe remaining data */
-    update_sprite_xpos_and_data();
+    /* pipe xpos */
+    update_sprite_xpos();
 
 }
 
