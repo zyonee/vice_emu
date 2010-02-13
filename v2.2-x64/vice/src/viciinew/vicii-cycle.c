@@ -467,12 +467,6 @@ void vicii_steal_cycles(void)
         alarm_context_dispatch(maincpu_alarm_context, maincpu_clk);
     }
 
-    /* SEI */
-    if (OPINFO_NUMBER(*cs->last_opcode_info_ptr) == 0x78) {
-        /* do not update interrupt delay counters */
-        return;
-    }
-
     /* CLI */
     if (OPINFO_NUMBER(*cs->last_opcode_info_ptr) == 0x58) {
         /* this is a hacky way of signaling CLI() that it
@@ -480,9 +474,13 @@ void vicii_steal_cycles(void)
         OPINFO_SET_ENABLES_IRQ(*cs->last_opcode_info_ptr, 1);
     }
 
-    if (cs->irq_delay_cycles == 0 && cs->irq_clk < maincpu_clk) {
-        cs->irq_delay_cycles++;
+    /* SEI: do not update interrupt delay counters */
+    if (OPINFO_NUMBER(*cs->last_opcode_info_ptr) != 0x78) {
+        if (cs->irq_delay_cycles == 0 && cs->irq_clk < maincpu_clk) {
+            cs->irq_delay_cycles++;
+        }
     }
+
     if (cs->nmi_delay_cycles == 0 && cs->nmi_clk < maincpu_clk) {
         cs->nmi_delay_cycles++;
     }
