@@ -56,6 +56,9 @@
 */
 
 /* ------------------------------------------------------------------------- */
+#ifdef DEBUG
+CLOCK debug_clk;
+#endif
 
 #define NEED_REG_PC
 
@@ -71,9 +74,6 @@
     } while (0)
 
 /* ------------------------------------------------------------------------- */
-#ifdef DEBUG
-CLOCK debug_clk;
-#endif
 
 inline static void interrupt_delay(void)
 {
