@@ -215,11 +215,6 @@ inline static void d017_store(const BYTE value)
             }
 
             vicii.sprite[i].exp_flop = 1;
-#ifdef DEBUG
-            if (debug.maincpu_traceflg) {
-                log_debug("D017_store. exp_flop=1, New mcbase for sprite %d: %d",i, vicii.sprite[i].mc);
-            }
-#endif
         }
     }
 
