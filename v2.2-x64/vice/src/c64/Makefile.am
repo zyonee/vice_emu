@@ -39,6 +39,8 @@ libc64_a_SOURCES = \
 	c64export.h \
 	c64fastiec.c \
 	c64fastiec.h \
+	c64gluelogic.c \
+	c64gluelogic.h \
 	c64iec.c \
 	c64iec.h \
 	c64io.c \
@@ -132,6 +134,8 @@ libc64sc_a_SOURCES = \
 	c64export.h \
 	c64fastiec.c \
 	c64fastiec.h \
+	c64gluelogic.c \
+	c64gluelogic.h \
 	c64iec.c \
 	c64iec.h \
 	c64io.c \
@@ -228,6 +232,8 @@ libc64c128_a_SOURCES = \
 	c64datasette.c \
 	c64export.c \
 	c64export.h \
+	c64gluelogic.c \
+	c64gluelogic.h \
 	c64iec.c \
 	c64iec.h \
 	c64io.c \

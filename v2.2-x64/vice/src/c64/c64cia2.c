@@ -33,10 +33,10 @@
 
 #include "c64-resources.h"
 #include "c64.h"
-#include "c64_256k.h"
 #include "c64mem.h"
 #include "c64iec.h"
 #include "c64cia.h"
+#include "c64gluelogic.h"
 #include "c64parallel.h"
 #include "cia.h"
 #include "digimax.h"
@@ -108,11 +108,7 @@ static void do_reset_cia(cia_context_t *cia_context)
 #endif
 
     vbank = 0;
-    if (c64_256k_enabled) {
-        c64_256k_cia_set_vbank(vbank);
-    } else {
-        mem_set_vbank(vbank);
-    }
+    c64_glue_set_vbank(vbank, 0);
 }
 
 static void pre_store(void)
@@ -145,11 +141,7 @@ static void store_ciapa(cia_context_t *cia_context, CLOCK rclk, BYTE byte)
         new_vbank = tmp & 3;
         if (new_vbank != vbank) {
             vbank = new_vbank;
-            if (c64_256k_enabled) {
-                c64_256k_cia_set_vbank(new_vbank);
-            } else {
-                mem_set_vbank(new_vbank);
-            }
+            c64_glue_set_vbank(new_vbank, 0);
         }
         (*iecbus_callback_write)((BYTE)tmp, maincpu_clk + !(cia_context->write_offset));
         printer_userport_write_strobe(tmp & 0x04);
@@ -164,11 +156,8 @@ static void undump_ciapa(cia_context_t *cia_context, CLOCK rclk, BYTE byte)
     }
 #endif
     vbank = (byte ^ 3) & 3;
-    if (c64_256k_enabled) {
-        c64_256k_cia_set_vbank(vbank);
-    } else {
-        mem_set_vbank(vbank);
-    }
+    c64_glue_set_vbank(vbank, 0);
+
     iecbus_cpu_undump((BYTE)(byte ^ 0xff));
 }
 
