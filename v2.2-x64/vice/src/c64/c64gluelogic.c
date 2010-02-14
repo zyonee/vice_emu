@@ -63,15 +63,22 @@ static void glue_alarm_handler(CLOCK offset, void *data)
 void c64_glue_set_vbank(int vbank, int ddr_flag)
 {
     int new_vbank = vbank;
+    int update_now = 1;
 
     if (glue_logic_type == 1) {
         if (((old_vbank ^ vbank) == 3) && ((vbank & (vbank - 1)) == 0)) {
             new_vbank = 3;
             alarm_set(glue_alarm, maincpu_clk + 1);
+        } else if (ddr_flag && (vbank < old_vbank)) {
+            /* this is not quite accurate; the results flicker in some cases */
+            update_now = 0;
+            alarm_set(glue_alarm, maincpu_clk + 1);
         }
     }
 
-    perform_vbank_switch(new_vbank);
+    if (update_now) {
+        perform_vbank_switch(new_vbank);
+    }
 
     old_vbank = vbank;
 }

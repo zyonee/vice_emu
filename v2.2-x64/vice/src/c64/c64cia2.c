@@ -56,8 +56,17 @@
 #include "rsuser.h"
 #endif
 
+/* Flag for recording port A DDR changes (for c64gluelogic) */
+static int pa_ddr_change = 0;
+
 void REGPARM2 cia2_store(WORD addr, BYTE data)
 {
+    if (((addr & 0xf) == CIA_DDRA) && (machine_context.cia2->c_cia[CIA_DDRA] != data)) {
+        pa_ddr_change = 1;
+    } else {
+        pa_ddr_change = 0;
+    }
+
     digimax_userport_store(addr, data);
     ciacore_store(machine_context.cia2, addr, data);
 }
@@ -141,7 +150,7 @@ static void store_ciapa(cia_context_t *cia_context, CLOCK rclk, BYTE byte)
         new_vbank = tmp & 3;
         if (new_vbank != vbank) {
             vbank = new_vbank;
-            c64_glue_set_vbank(new_vbank, 0);
+            c64_glue_set_vbank(new_vbank, pa_ddr_change);
         }
         (*iecbus_callback_write)((BYTE)tmp, maincpu_clk + !(cia_context->write_offset));
         printer_userport_write_strobe(tmp & 0x04);
