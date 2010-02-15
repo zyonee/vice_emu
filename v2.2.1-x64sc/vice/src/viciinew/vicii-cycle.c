@@ -161,17 +161,25 @@ static inline BYTE cycle_phi1_fetch(unsigned int cycle_flags)
     return data;
 }
 
-static inline void check_vborder(int line)
+static inline void check_vborder_top(int line)
 {
     int rsel = vicii.regs[0x11] & 0x08;
 
     if ((line == (rsel ? VICII_25ROW_START_LINE : VICII_24ROW_START_LINE)) && (vicii.regs[0x11] & 0x10)) {
         vicii.vborder = 0;
         vicii.set_vborder = 0;
-    } else if (line == (rsel ? VICII_25ROW_STOP_LINE : VICII_24ROW_STOP_LINE)) {
+    }
+}
+
+static inline void check_vborder_bottom(int line) 
+{ 
+    int rsel = vicii.regs[0x11] & 0x08;
+
+    if (line == (rsel ? VICII_25ROW_STOP_LINE : VICII_24ROW_STOP_LINE)) {
         vicii.set_vborder = 1;
     }
-    if ( vicii.raster_cycle == VICII_PAL_CYCLE(16) ) {
+    if ( (vicii.raster_cycle == VICII_PAL_CYCLE(16)) 
+         || (vicii.raster_cycle == VICII_PAL_CYCLE(17)) ) {
         /* vborder is already 0 when set_vborder is 0 */
         vicii.vborder = vicii.set_vborder;
     }
@@ -275,7 +283,7 @@ int vicii_cycle(void)
     vicii.last_read_phi1 = cycle_phi1_fetch(vicii.cycle_flags);
 
     /* Check vertical border flag */
-    check_vborder(vicii.raster_line);
+    check_vborder_bottom(vicii.raster_line);
 
     /* Check horizontal border flag */
     check_hborder(vicii.cycle_flags);
@@ -334,6 +342,9 @@ int vicii_cycle(void)
     } else {
         vicii.raster_irq_triggered = 0;
     }
+
+    /* Check vertical border flag */
+    check_vborder_top(vicii.raster_line);
 
     /******
      *
