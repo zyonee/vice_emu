@@ -171,6 +171,10 @@ static inline void check_vborder(int line)
     } else if (line == (rsel ? VICII_25ROW_STOP_LINE : VICII_24ROW_STOP_LINE)) {
         vicii.set_vborder = 1;
     }
+    if ( vicii.raster_cycle == VICII_PAL_CYCLE(16) ) {
+        /* vborder is already 0 when set_vborder is 0 */
+        vicii.vborder = vicii.set_vborder;
+    }
 }
 
 static inline void check_hborder(unsigned int cycle_flags)
@@ -179,9 +183,6 @@ static inline void check_hborder(unsigned int cycle_flags)
 
     /* Left border ends at cycles 17 (csel=1) or 18 (csel=0) on PAL. */
     if ( cycle_is_check_border_l(cycle_flags, csel) ) {
-        check_vborder(vicii.raster_line);
-        /* vborder is already 0 when set_vborder is 0 */
-        vicii.vborder = vicii.set_vborder;
         if (vicii.vborder == 0) {
             vicii.main_border = 0;
         }
@@ -273,6 +274,9 @@ int vicii_cycle(void)
     /* Phi1 fetch */
     vicii.last_read_phi1 = cycle_phi1_fetch(vicii.cycle_flags);
 
+    /* Check vertical border flag */
+    check_vborder(vicii.raster_line);
+
     /* Check horizontal border flag */
     check_hborder(vicii.cycle_flags);
 
@@ -330,10 +334,6 @@ int vicii_cycle(void)
     } else {
         vicii.raster_irq_triggered = 0;
     }
-
-    /* Check vertical border flag */
-    check_vborder(vicii.raster_line);
-
 
     /******
      *
