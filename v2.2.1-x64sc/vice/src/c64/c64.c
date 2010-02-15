@@ -43,6 +43,7 @@
 #include "c64cia.h"
 #include "c64export.h"
 #include "c64fastiec.h"
+#include "c64gluelogic.h"
 #include "c64iec.h"
 #include "c64keyboard.h"
 #include "c64mem.h"
@@ -129,8 +130,9 @@ char *machine_keymap_file_list[NUM_KEYBOARD_MAPPINGS] = {
 };
 
 const char machine_name[] = "C64";
+/* Moved to c64mem.c/c64memsc.c
 int machine_class = VICE_MACHINE_C64;
-
+*/
 static void machine_vsync_hook(void);
 
 /* ------------------------------------------------------------------------- */
@@ -220,6 +222,7 @@ int machine_resources_init(void)
 #ifdef HAVE_MIDI
         || c64_midi_resources_init() < 0
 #endif
+        || c64_glue_resources_init() < 0
         || cartridge_resources_init() < 0) {
         return -1;
     }
@@ -306,6 +309,7 @@ int machine_cmdline_options_init(void)
 #ifdef HAVE_MIDI
         || c64_midi_cmdline_options_init() < 0
 #endif
+        || c64_glue_cmdline_options_init() < 0
         || cartridge_cmdline_options_init() < 0) {
         return -1;
     }
@@ -432,6 +436,9 @@ int machine_specific_init(void)
             c64ui_init();
         }
     }
+
+    /* Initialize glue logic.  */
+    c64_glue_init();
 
     if (!vsid_mode) {
         /* Initialize the REU.  */
