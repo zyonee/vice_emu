@@ -135,35 +135,17 @@ inline static void sprite_dma_cycle_2(int i)
 
 /*-----------------------------------------------------------------------*/
 
-inline static BYTE gfx_data_illegal_bitmap(unsigned int num)
-{
-    unsigned int j;
-
-    j = ((vicii.vcbase << 3) + vicii.rc + num * 8);
-
-    if (j & 0x1000) {
-        return vicii.bitmap_high_ptr[j & 0x9ff];
-    } else {
-        return vicii.bitmap_low_ptr[j & 0x9ff];
-    }
-}
-
 inline static BYTE gfx_data_hires_bitmap(unsigned int num)
 {
     unsigned int j;
 
-    j = ((vicii.vcbase << 3) + vicii.rc + num * 8);
+    j = (num << 3) | vicii.rc;
 
     if (j & 0x1000) {
         return vicii.bitmap_high_ptr[j & 0xfff];
     } else {
         return vicii.bitmap_low_ptr[j & 0xfff];
     }
-}
-
-inline static BYTE gfx_data_extended_text(unsigned int c)
-{
-    return vicii.chargen_ptr[(c & 0x3f) * 8 + vicii.rc];
 }
 
 inline static BYTE gfx_data_normal_text(unsigned int c)
@@ -218,24 +200,38 @@ BYTE vicii_fetch_graphics(void)
 {
     BYTE data;
     BYTE reg11;
+    unsigned int offs;
     if (vicii.color_latency) {
         reg11 = vicii.regs[0x11];
     } else {
         reg11 = vicii.reg11_delay;
     }
 
+    if ( (reg11 ^ vicii.reg11_delay) & 0x20) {
+        /* ECM=x BMM=1->0 MCM=x */
+        offs = vicii.vc & 0x1f | (vicii.vbuf[vicii.vmli] & 0xe0);
+    } else {
+        if (vicii.reg11_delay & 0x20) {
+            /* ECM=x BMM=1 MCM=x */
+            offs = vicii.vc;
+        } else {
+            /* ECM=x BMM=0 MCM=x */
+            offs = vicii.vbuf[vicii.vmli];
+        }
+    }
+
     switch (reg11 & 0x60) {
     case 0x00:                             /* ECM=0 BMM=0 MCM=x */
-        data = gfx_data_normal_text(vicii.vbuf[vicii.vmli]);
+        data = gfx_data_normal_text(offs);
         break;
     case 0x20:                             /* ECM=0 BMM=1 MCM=x */
-        data = gfx_data_hires_bitmap(vicii.vmli);
+        data = gfx_data_hires_bitmap(offs);
         break;
     case 0x40:                             /* ECM=1 BMM=0 MCM=x */
-        data = gfx_data_extended_text(vicii.vbuf[vicii.vmli]);
+        data = gfx_data_normal_text(offs & (0x01ff >> 3) );
         break;
     case 0x60:                             /* ECM=1 BMM=1 MCM=x */
-        data = gfx_data_illegal_bitmap(vicii.vmli);
+        data = gfx_data_hires_bitmap(offs & (0x19ff >> 3) );
         break;
     default:
         data = 0xff;
