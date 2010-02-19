@@ -209,7 +209,7 @@ BYTE vicii_fetch_graphics(void)
 
     if ( (reg11 ^ vicii.reg11_delay) & 0x20) {
         /* ECM=x BMM=1->0 MCM=x */
-        offs = vicii.vc & 0x1f | (vicii.vbuf[vicii.vmli] & 0xe0);
+        offs = (vicii.vc & 0x1f) | (vicii.vbuf[vicii.vmli] & 0xe0);
     } else {
         if (vicii.reg11_delay & 0x20) {
             /* ECM=x BMM=1 MCM=x */
