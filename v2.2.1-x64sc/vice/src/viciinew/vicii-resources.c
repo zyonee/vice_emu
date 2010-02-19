@@ -78,13 +78,52 @@ static int set_new_luminances(int val, void *param)
     return vicii_color_update_palette(vicii.raster.canvas);
 }
 
+struct vicii_model_match_s {
+    int num;
+    int model;
+};
+
+static struct vicii_model_match_s vicii_model_match[] = {
+    /* PAL, 63 cycle, 9 luma, "old" */
+    { 0, VICII_MODEL_6569 },
+    { 6569, VICII_MODEL_6569 },
+    { 65693, VICII_MODEL_6569 },
+
+    /* PAL, 63 cycle, 9 luma, "new" */
+    { 1, VICII_MODEL_8565 },
+    { 8565, VICII_MODEL_8565 },
+
+    /* PAL, 63 cycle, 5 luma, "old" */
+    { 65691, VICII_MODEL_6569R1 },
+
+    /* NTSC, 65 cycle, 9 luma, "old" */
+    { 6567, VICII_MODEL_6567 },
+
+    /* NTSC, 65 cycle, 9 luma, "new" */
+    { 8562, VICII_MODEL_8562 },
+
+    /* NTSC, 64 cycle, ? luma, "old" */
+    { 656756, VICII_MODEL_6567R56A },
+
+    { -1, -1 }
+};
+
 static int set_model(int val, void *param)
 {
-    if ((val < 0) || (val >= VICII_MODEL_NUM)) {
+    int i = 0;
+    int model, num;
+
+    do {
+        num = vicii_model_match[i].num;
+        model = vicii_model_match[i].model;
+        i++;
+    } while ((val != num) && (model >= 0));
+
+    if (model < 0) {
         return -1;
     }
 
-    vicii_resources.model = val;
+    vicii_resources.model = model;
 
     /* TODO NTSC/PAL switch, luminance switch, maybe vicii_update_model... */
 

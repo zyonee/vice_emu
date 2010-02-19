@@ -28,6 +28,7 @@
 
 #include "log.h"
 #include "types.h"
+#include "vicii.h"
 #include "vicii-chip-model.h"
 #include "vicii-resources.h"
 #include "viciitypes.h"
@@ -375,14 +376,11 @@ void vicii_chip_model_init(void)
 
     /* this is ugly, move somewhere more correct */
     switch (vicii_resources.model) {
-    case 0:
-    case 6569:
-    case 65693:
+    case VICII_MODEL_6569:
     default:
         vicii_chip_model_set(&chip_model_mos6569r3);
         break;
-    case 1:
-    case 8565:
+    case VICII_MODEL_8565:
         vicii_chip_model_set(&chip_model_mos8565);
         break;
     }
