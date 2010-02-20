@@ -251,16 +251,16 @@ void REGPARM2 zero_store(WORD addr, BYTE value)
         case 0:
             if (vbank == 0) {
                 if (c64_256k_enabled) {
-                    c64_256k_ram_segment0_store((WORD)0, vicii_read_phi1_lowlevel());
+                    c64_256k_ram_segment0_store((WORD)0, vicii_read_phi1());
                 } else {
                     if (plus256k_enabled) {
-                        plus256k_ram_low_store((WORD)0, vicii_read_phi1_lowlevel());
+                        plus256k_ram_low_store((WORD)0, vicii_read_phi1());
                     } else {
-                        mem_ram[0] = vicii_read_phi1_lowlevel();
+                        mem_ram[0] = vicii_read_phi1();
                     }
                 }
             } else {
-                mem_ram[0] = vicii_read_phi1_lowlevel();
+                mem_ram[0] = vicii_read_phi1();
                 machine_handle_pending_alarms(1);
             }
             if (pport.data_set_bit7 && ((value & 0x80) == 0) && pport.data_falloff_bit7 == 0) {
@@ -285,16 +285,16 @@ void REGPARM2 zero_store(WORD addr, BYTE value)
         case 1:
             if (vbank == 0) {
                 if (c64_256k_enabled) {
-                    c64_256k_ram_segment0_store((WORD)1, vicii_read_phi1_lowlevel());
+                    c64_256k_ram_segment0_store((WORD)1, vicii_read_phi1());
                 } else {
                     if (plus256k_enabled) {
-                        plus256k_ram_low_store((WORD)1, vicii_read_phi1_lowlevel());
+                        plus256k_ram_low_store((WORD)1, vicii_read_phi1());
                     } else {
-                        mem_ram[1] = vicii_read_phi1_lowlevel();
+                        mem_ram[1] = vicii_read_phi1();
                     }
                 }
             } else {
-                mem_ram[1] = vicii_read_phi1_lowlevel();
+                mem_ram[1] = vicii_read_phi1();
                 machine_handle_pending_alarms(1);
             }
             if ((pport.dir & 0x80) && (value & 0x80)) {
