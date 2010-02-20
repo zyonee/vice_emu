@@ -265,13 +265,17 @@ static DRAW_INLINE void trigger_sprites(int xpos, BYTE candidate_bits)
         BYTE m = 1 << s;
 
         /* start rendering on position match */
-        if ( (candidate_bits & m) && (sprite_pending_bits & m) && !(sprite_halt_bits & m) ) {
+        if ( (candidate_bits & m) && (sprite_pending_bits & m) && !(sprite_active_bits & m) && !(sprite_halt_bits & m) ) {
             if ( xpos == sprite_x_pipe[s] ) {
                 sbuf_reg[s] = sprite_data_pipe[s];
+                /* ugly but works */
+                sprite_data_pipe[s] = 0;
+                vicii.sprite[s].data = 0;
+
                 sbuf_expx_flops |= m;
                 sbuf_mc_flops |= m;
                 sprite_active_bits |= m;
-                sprite_pending_bits &= ~m;
+                /* sprite_pending_bits &= ~m; */
             }
         }
     }

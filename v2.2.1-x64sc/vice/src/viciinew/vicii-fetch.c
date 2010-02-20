@@ -180,6 +180,7 @@ BYTE vicii_fetch_idle_gfx(void)
 {
     BYTE data;
     BYTE reg11;
+
     if (vicii.color_latency) {
         reg11 = vicii.regs[0x11];
     } else {
