@@ -85,7 +85,6 @@ BYTE dmli = 0;
 
 /* sprites */
 int sprite_x_pipe[8];
-DWORD sprite_data_pipe[8];
 BYTE sprite_pri_bits = 0;
 BYTE sprite_mc_bits = 0;
 BYTE sprite_expx_bits = 0;
@@ -267,11 +266,6 @@ static DRAW_INLINE void trigger_sprites(int xpos, BYTE candidate_bits)
         /* start rendering on position match */
         if ( (candidate_bits & m) && (sprite_pending_bits & m) && !(sprite_active_bits & m) && !(sprite_halt_bits & m) ) {
             if ( xpos == sprite_x_pipe[s] ) {
-                sbuf_reg[s] = sprite_data_pipe[s];
-                /* ugly but works */
-                sprite_data_pipe[s] = 0;
-                vicii.sprite[s].data = 0;
-
                 sbuf_expx_flops |= m;
                 sbuf_mc_flops |= m;
                 sprite_active_bits |= m;
@@ -394,11 +388,11 @@ static DRAW_INLINE void update_sprite_mc_bits_8565(void)
     }
 }
 
-static DRAW_INLINE void update_sprite_data(void)
+static DRAW_INLINE void update_sprite_data(unsigned int cycle_flags)
 {
-    int s;
-    for (s=0; s<8; s++) {
-        sprite_data_pipe[s] = vicii.sprite[s].data;
+    if (cycle_is_sprite_dma1_dma2(cycle_flags)) {
+        int s = cycle_get_sprite_num(cycle_flags);
+        sbuf_reg[s] = vicii.sprite[s].data;
     }
 }
 
@@ -429,7 +423,7 @@ static DRAW_INLINE void draw_sprites8(unsigned int cycle_flags)
     if (cycle_is_sprite_ptr_dma0(cycle_flags)) {
         dma_cycle_0 = 1 << cycle_get_sprite_num(cycle_flags);
     }
-    if (cycle_is_sprite_dma1_dma2(cycle_flags_pipe)) {
+    if (cycle_is_sprite_dma1_dma2(cycle_flags)) {
         dma_cycle_2 = 1 << cycle_get_sprite_num(cycle_flags);
     }
     candidate_bits = get_trigger_candidates(xpos);
@@ -453,7 +447,7 @@ static DRAW_INLINE void draw_sprites8(unsigned int cycle_flags)
     if (spr_en) {
         sprite_pending_bits = vicii.sprite_display_bits;
     }
-    update_sprite_data();
+    update_sprite_data(cycle_flags);
     trigger_sprites(xpos + 4, candidate_bits);
     draw_sprites(4);
     /* pixel 5 */
