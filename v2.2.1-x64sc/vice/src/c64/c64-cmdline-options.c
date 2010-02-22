@@ -28,11 +28,23 @@
 #include "vice.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "c64-cmdline-options.h"
+#include "c64-resources.h"
 #include "cmdline.h"
 #include "machine.h"
 #include "translate.h"
+
+int set_cia_model(const char *value, void *extra_param)
+{
+    int model;
+
+    model = atoi(value);
+    c64_resources_update_cia_models(model);
+
+    return 0;
+}
 
 static const cmdline_option_t cmdline_options[] = {
     { "-pal", SET_RESOURCE, 0,
@@ -114,11 +126,21 @@ static const cmdline_option_t cmdline_options[] = {
       IDCLS_P_NAME, IDCLS_SPECIFY_POS_KEYMAP_FILE_NAME,
       NULL, NULL },
 #endif
-    { "-ciamodel", SET_RESOURCE, 1,
-      NULL, NULL, "CIAModel", NULL,
+    { "-ciamodel", CALL_FUNCTION, 1,
+      set_cia_model, NULL, NULL, NULL,
       USE_PARAM_STRING, USE_DESCRIPTION_STRING,
       IDCLS_UNUSED, IDCLS_UNUSED,
-      T_("<model>"), T_("Set CIA model (0 = old 6526, 1 = new 6526A)") },
+      T_("<model>"), T_("Set both CIA models (0 = old 6526, 1 = new 6526A)") },
+    { "-cia1model", SET_RESOURCE, 1,
+      NULL, NULL, "CIA1Model", NULL,
+      USE_PARAM_STRING, USE_DESCRIPTION_STRING,
+      IDCLS_UNUSED, IDCLS_UNUSED,
+      T_("<model>"), T_("Set CIA 1 model (0 = old 6526, 1 = new 6526A)") },
+    { "-cia2model", SET_RESOURCE, 1,
+      NULL, NULL, "CIA2Model", NULL,
+      USE_PARAM_STRING, USE_DESCRIPTION_STRING,
+      IDCLS_UNUSED, IDCLS_UNUSED,
+      T_("<model>"), T_("Set CIA 2 model (0 = old 6526, 1 = new 6526A)") },
     { NULL }
 };
 

@@ -94,7 +94,7 @@ static void cia_restore_int(cia_context_t *cia_context, int value)
 void cia2_update_model(void)
 {
     if (machine_context.cia2) {
-        machine_context.cia2->model = cia_model;
+        machine_context.cia2->model = cia2_model;
     }
 }
 
@@ -306,7 +306,7 @@ void cia2_setup_context(machine_context_t *machine_context)
         cia->write_offset = 0;
     }
 
-    cia->model = cia_model;
+    cia->model = cia2_model;
 
     cia->debugFlag = 0;
     cia->irq_line = IK_NMI;

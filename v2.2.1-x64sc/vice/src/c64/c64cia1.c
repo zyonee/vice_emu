@@ -70,7 +70,7 @@ BYTE REGPARM1 cia1_peek(WORD addr)
 void cia1_update_model(void)
 {
     if (machine_context.cia1) {
-        machine_context.cia1->model = cia_model;
+        machine_context.cia1->model = cia1_model;
     }
 }
 
@@ -274,7 +274,7 @@ void cia1_setup_context(machine_context_t *machine_context)
         cia->write_offset = 0;
     }
 
-    cia->model = cia_model;
+    cia->model = cia1_model;
 
     cia->debugFlag = 0;
     cia->irq_line = IK_IRQ;
