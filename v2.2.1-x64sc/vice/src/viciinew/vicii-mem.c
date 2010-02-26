@@ -524,7 +524,7 @@ inline static BYTE d01e_read(void)
     }
 
     vicii.regs[0x1e] = vicii.sprite_sprite_collisions;
-    vicii.sprite_sprite_collisions = 0;
+    vicii.clear_collisions = 0x1e;
     VICII_DEBUG_REGISTER(("Sprite-sprite collision mask: $%02X",
                          vicii.regs[0x1e]));
 
@@ -545,7 +545,7 @@ inline static BYTE d01f_read(void)
     }
 
     vicii.regs[0x1f] = vicii.sprite_background_collisions;
-    vicii.sprite_background_collisions = 0;
+    vicii.clear_collisions = 0x1f;
     VICII_DEBUG_REGISTER(("Sprite-background collision mask: $%02X",
                           vicii.regs[0x1f]));
 

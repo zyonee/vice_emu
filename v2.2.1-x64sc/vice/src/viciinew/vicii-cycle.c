@@ -288,6 +288,20 @@ int vicii_cycle(void)
     /* Draw one cycle of pixels */
     vicii_draw_cycle();
 
+    /* clear any collision registers as initiated by $d01e or $d01f reads */
+    switch (vicii.clear_collisions) {
+    case 0x1e:
+        vicii.sprite_sprite_collisions = 0;
+        vicii.clear_collisions = 0;
+        break;
+    case 0x1f:
+        vicii.sprite_background_collisions = 0;
+        vicii.clear_collisions = 0;
+        break;
+    default:
+        break;
+    }
+
     /* Trigger collision IRQs */
     if (can_sprite_sprite && vicii.sprite_sprite_collisions) {
         vicii_irq_sscoll_set();

@@ -180,6 +180,9 @@ struct vicii_s {
     BYTE sprite_sprite_collisions;
     BYTE sprite_background_collisions;
 
+    /* flag to signal collision clearing */
+    BYTE clear_collisions;
+
     /* Flag: are we in idle state? */
     int idle_state;
 

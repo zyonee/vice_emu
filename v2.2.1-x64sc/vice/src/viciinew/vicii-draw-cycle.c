@@ -269,7 +269,6 @@ static DRAW_INLINE void trigger_sprites(int xpos, BYTE candidate_bits)
                 sbuf_expx_flops |= m;
                 sbuf_mc_flops |= m;
                 sprite_active_bits |= m;
-                /* sprite_pending_bits &= ~m; */
             }
         }
     }

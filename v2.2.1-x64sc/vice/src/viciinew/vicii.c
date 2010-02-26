@@ -326,6 +326,7 @@ void vicii_powerup(void)
 
     vicii.allow_bad_lines = 0;
     vicii.sprite_sprite_collisions = vicii.sprite_background_collisions = 0;
+    vicii.clear_collisions = 0x00;
     vicii.idle_state = 0;
     vicii.vcbase = 0;
     vicii.vc = 0;
