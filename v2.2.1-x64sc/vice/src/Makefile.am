@@ -783,7 +783,7 @@ x64-all: \
 	libgfxoutputdrv \
 	libprinterdrv \
 	librs232drv \
-	libviciinew \
+	libvicii \
 	libvideo \
 	libarch \
 	libmonitor \
