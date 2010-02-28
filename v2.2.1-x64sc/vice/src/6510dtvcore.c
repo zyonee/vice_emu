@@ -649,11 +649,22 @@
       INC_PC(pc_inc);                           \
   } while (0)
 
-#define ANE()                                                 \
-  do {                                                        \
-      reg_a_write = (BYTE)((reg_a_read | 0xee) & reg_x & p1); \
-      LOCAL_SET_NZ(reg_a_read);                               \
-      INC_PC(2);                                              \
+#define ANE()                                                     \
+  do {                                                            \
+      /* Set by viciinew to signal steal after first fetch */     \
+      if (OPINFO_ENABLES_IRQ(LAST_OPCODE_INFO)) {                 \
+          /* Remove the signal */                                 \
+          LAST_OPCODE_INFO &= ~OPINFO_ENABLES_IRQ_MSK;            \
+          /* TODO emulate the different behaviour */              \
+          reg_a_write = (BYTE)((reg_a_read | 0xee) & reg_x & p1); \
+      } else {                                                    \
+          reg_a_write = (BYTE)((reg_a_read | 0xee) & reg_x & p1); \
+      }                                                           \
+      LOCAL_SET_NZ(reg_a_read);                                   \
+      INC_PC(2);                                                  \
+      /* Pretend to be NOP #$nn to not trigger the special case   \
+         when cycles are stolen after the second fetch */         \
+      SET_LAST_OPCODE(0x80);                                      \
   } while (0)
 
 /* The fanciest opcode ever... ARR! */

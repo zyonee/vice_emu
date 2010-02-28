@@ -505,6 +505,13 @@ void vicii_steal_cycles(void)
         }
     }
 
+    /* ANE */
+    if (OPINFO_NUMBER(*cs->last_opcode_info_ptr) == 0x8b) {
+        /* this is a hacky way of signaling ANE() that
+           cycles were stolen after the first fetch */
+        OPINFO_SET_ENABLES_IRQ(*cs->last_opcode_info_ptr, 1);
+    }
+
     if (cs->nmi_delay_cycles == 0 && cs->nmi_clk < maincpu_clk) {
         cs->nmi_delay_cycles++;
     }
