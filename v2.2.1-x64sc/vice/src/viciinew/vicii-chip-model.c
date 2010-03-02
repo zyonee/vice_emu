@@ -225,19 +225,30 @@ struct ViciiChipModel {
     int cycles_per_line;
     struct ViciiCycle *cycle_tab;
     int color_latency;
+    int lightpen_old_irq_mode;
+};
+
+struct ViciiChipModel chip_model_mos6569r1 = {
+    "MOS6569R1",
+    63,
+    cycle_tab_pal,
+    1,
+    1
 };
 
 struct ViciiChipModel chip_model_mos6569r3 = {
     "MOS6569R3",
     63,
     cycle_tab_pal,
-    1
+    1,
+    0
 };
 
 struct ViciiChipModel chip_model_mos8565 = {
     "MOS8565",
     63,
     cycle_tab_pal,
+    0,
     0
 };
 
@@ -252,8 +263,9 @@ void vicii_chip_model_set(struct ViciiChipModel *cm)
 
     struct ViciiCycle *ct = cm->cycle_tab;
 
-    vicii.cycles_per_line = cm->cycles_per_line;
-    vicii.color_latency   = cm->color_latency;
+    vicii.cycles_per_line   = cm->cycles_per_line;
+    vicii.color_latency     = cm->color_latency;
+    vicii.lightpen_old_irq_mode = cm->lightpen_old_irq_mode;
 
 
     log_message(vicii.log,
@@ -374,14 +386,19 @@ void vicii_chip_model_set(struct ViciiChipModel *cm)
 void vicii_chip_model_init(void)
 {
 
-    /* this is ugly, move somewhere more correct */
     switch (vicii_resources.model) {
+    case VICII_MODEL_6569R1:
+        vicii_chip_model_set(&chip_model_mos6569r1);
+        break;
     case VICII_MODEL_6569:
-    default:
         vicii_chip_model_set(&chip_model_mos6569r3);
         break;
     case VICII_MODEL_8565:
         vicii_chip_model_set(&chip_model_mos8565);
+        break;
+    default:
+        /* should never happen */
+        vicii_chip_model_set(&chip_model_mos6569r3);
         break;
     }
 }

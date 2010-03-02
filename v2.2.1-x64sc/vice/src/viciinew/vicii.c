@@ -385,8 +385,6 @@ void vicii_set_light_pen(CLOCK mclk, int state)
 void vicii_trigger_light_pen(CLOCK mclk)
 {
     int x, y;
-    /* FIXME replace with a similar variable elsewhere */
-    int model_r1 = 0;
 
     if (vicii.light_pen.triggered) {
         return;
@@ -426,7 +424,7 @@ void vicii_trigger_light_pen(CLOCK mclk)
 
         /* On 6569R1 the interrupt is triggered only when the line is low
            on the first cycle of the frame. */
-        if (model_r1) {
+        if (vicii.lightpen_old_irq_mode) {
             vicii_irq_lightpen_set();
         }
     }
@@ -436,7 +434,7 @@ void vicii_trigger_light_pen(CLOCK mclk)
 
     vicii.light_pen.x_extra_bits = 0;
 
-    if (!model_r1) {
+    if (!vicii.lightpen_old_irq_mode) {
         vicii_irq_lightpen_set();
     }
 }

@@ -237,6 +237,7 @@ struct vicii_s {
     /* parameters (set by vicii-chip-model). */
     int cycles_per_line;
     int color_latency;
+    int lightpen_old_irq_mode;
 
     /* cycle table (set by vicii-chip-model). */
     unsigned int cycle_table[65];
