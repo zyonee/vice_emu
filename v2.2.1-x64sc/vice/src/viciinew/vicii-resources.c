@@ -85,24 +85,28 @@ struct vicii_model_match_s {
 
 static struct vicii_model_match_s vicii_model_match[] = {
     /* PAL, 63 cycle, 9 luma, "old" */
-    { 0, VICII_MODEL_6569 },
+    { VICII_MODEL_6569, VICII_MODEL_6569 },
     { 6569, VICII_MODEL_6569 },
     { 65693, VICII_MODEL_6569 },
 
     /* PAL, 63 cycle, 9 luma, "new" */
-    { 1, VICII_MODEL_8565 },
+    { VICII_MODEL_8565, VICII_MODEL_8565 },
     { 8565, VICII_MODEL_8565 },
 
     /* PAL, 63 cycle, 5 luma, "old" */
+    { VICII_MODEL_6569R1, VICII_MODEL_6569R1 },
     { 65691, VICII_MODEL_6569R1 },
 
     /* NTSC, 65 cycle, 9 luma, "old" */
+    { VICII_MODEL_6567, VICII_MODEL_6567 },
     { 6567, VICII_MODEL_6567 },
 
     /* NTSC, 65 cycle, 9 luma, "new" */
+    { VICII_MODEL_8562, VICII_MODEL_8562 },
     { 8562, VICII_MODEL_8562 },
 
     /* NTSC, 64 cycle, ? luma, "old" */
+    { VICII_MODEL_6567R56A, VICII_MODEL_6567R56A },
     { 656756, VICII_MODEL_6567R56A },
 
     { -1, -1 }
