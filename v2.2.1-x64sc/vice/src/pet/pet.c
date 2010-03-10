@@ -582,3 +582,8 @@ int machine_addr_in_ram(unsigned int addr)
 {
     return addr < 0xb000;
 }
+
+const char *machine_get_name(void)
+{
+    return machine_name;
+}

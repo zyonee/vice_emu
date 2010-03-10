@@ -181,7 +181,14 @@ int main_program(int argc, char **argv)
         resources_set_int("SoundSpeedAdjustment", 2);
         resources_set_int("SoundBufferSize", 1000);
         resources_set_int("SoundSuspendTime", 0);
-    } else {
+    }
+#ifndef USE_SDLUI
+    /* FIXME: vsid can now it's own config [VSID], so this should go away.
+       AFAIK only SDL UI has the "Save resources" menu item and has been
+       tested to work, hence this ugly ifndef. */
+    else
+#endif
+    {
         int retval;
 
         retval = resources_load(NULL);

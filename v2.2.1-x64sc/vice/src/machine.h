@@ -174,5 +174,8 @@ extern BYTE machine_tape_type_default(void);
 /* Check if address is in RAM (for autostart) */
 extern int machine_addr_in_ram(unsigned int addr);
 
+/* Get "real" name for machine. May differ from machine_name.  */
+extern const char *machine_get_name(void);
+
 #endif
 
