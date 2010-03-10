@@ -29,6 +29,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "c64model.h"
 #include "c64-cmdline-options.h"
@@ -47,11 +48,48 @@ int set_cia_model(const char *value, void *extra_param)
     return 0;
 }
 
-static int set_c64_model(const char *value, void *extra_param)
-{
+struct model_s {
+    const char *name;
     int model;
+};
 
-    model = atoi(value);
+static struct model_s model_match[] = {
+    { "c64", C64MODEL_C64_PAL },
+    { "breadbox", C64MODEL_C64_PAL },
+    { "pal", C64MODEL_C64_PAL },
+    { "c64c", C64MODEL_C64C_PAL },
+    { "c64new", C64MODEL_C64C_PAL },
+    { "newpal", C64MODEL_C64C_PAL },
+    { "c64old", C64MODEL_C64_OLD_PAL },
+    { "oldpal", C64MODEL_C64_OLD_PAL },
+    { "ntsc", C64MODEL_C64_NTSC },
+    { "c64ntsc", C64MODEL_C64_NTSC },
+    { "c64cntsc", C64MODEL_C64C_NTSC },
+    { "c64newntsc", C64MODEL_C64C_NTSC },
+    { "c64oldntsc", C64MODEL_C64_OLD_NTSC },
+    { NULL, C64MODEL_UNKNOWN }
+};
+
+static int set_c64_model(const char *param, void *extra_param)
+{
+    int model = C64MODEL_UNKNOWN;
+    int i = 0;
+
+    if (!param) {
+        return -1;
+    }
+
+    do {
+        if (strcmp(model_match[i].name, param) == 0) {
+            model = model_match[i].model;
+        }
+        i++;
+    } while ((model == C64MODEL_UNKNOWN) && (model_match[i].name != NULL));
+
+    if (model == C64MODEL_UNKNOWN) {
+        return -1;
+    }
+
     c64model_set(model);
 
     return 0;
@@ -156,7 +194,7 @@ static const cmdline_option_t cmdline_options[] = {
       set_c64_model, NULL, NULL, NULL,
       USE_PARAM_STRING, USE_DESCRIPTION_STRING,
       IDCLS_UNUSED, IDCLS_UNUSED,
-      T_("<model>"), T_("Set C64 models (0 = TODO ...)") },
+      T_("<model>"), T_("Set C64 model (c64/c64c/c64old/c64ntsc/c64cntsc/c64oldntsc)") },
     { NULL }
 };
 
