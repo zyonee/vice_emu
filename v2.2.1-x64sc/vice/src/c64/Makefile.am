@@ -57,6 +57,8 @@ libc64_a_SOURCES = \
 	c64memrom.h \
 	c64memsnapshot.c \
 	c64memsnapshot.h \
+	c64model.c \
+	c64model.h \
 	c64parallel.c \
 	c64parallel.h \
 	c64pla.c \
@@ -152,6 +154,8 @@ libc64sc_a_SOURCES = \
 	c64memrom.h \
 	c64memsnapshot.c \
 	c64memsnapshot.h \
+	c64model.c \
+	c64model.h \
 	c64parallel.c \
 	c64parallel.h \
 	c64pla.c \

@@ -30,6 +30,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "c64model.h"
 #include "c64-cmdline-options.h"
 #include "c64-resources.h"
 #include "cmdline.h"
@@ -42,6 +43,16 @@ int set_cia_model(const char *value, void *extra_param)
 
     model = atoi(value);
     c64_resources_update_cia_models(model);
+
+    return 0;
+}
+
+static int set_c64_model(const char *value, void *extra_param)
+{
+    int model;
+
+    model = atoi(value);
+    c64model_set(model);
 
     return 0;
 }
@@ -141,6 +152,11 @@ static const cmdline_option_t cmdline_options[] = {
       USE_PARAM_STRING, USE_DESCRIPTION_STRING,
       IDCLS_UNUSED, IDCLS_UNUSED,
       T_("<model>"), T_("Set CIA 2 model (0 = old 6526, 1 = new 6526A)") },
+    { "-model", CALL_FUNCTION, 1,
+      set_c64_model, NULL, NULL, NULL,
+      USE_PARAM_STRING, USE_DESCRIPTION_STRING,
+      IDCLS_UNUSED, IDCLS_UNUSED,
+      T_("<model>"), T_("Set C64 models (0 = TODO ...)") },
     { NULL }
 };
 

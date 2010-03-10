@@ -1,8 +1,8 @@
 /*
- * menu_c64hw.h - C64 HW menu for SDL UI.
+ * c64model.h - C64 model detection and setting.
  *
  * Written by
- *  Marco van den Heuvel <blackystardust68@yahoo.com>
+ *  Hannu Nuotio <hannu.nuotio@tut.fi>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -24,14 +24,22 @@
  *
  */
 
-#ifndef VICE_MENU_C64HW_H
-#define VICE_MENU_C64HW_H
+#ifndef VICE_C64MODEL_H
+#define VICE_C64MODEL_H
 
-#include "vice.h"
 #include "types.h"
-#include "uimenu.h"
 
-extern const ui_menu_entry_t c64_hardware_menu[];
-extern const ui_menu_entry_t c64sc_hardware_menu[];
+#define C64MODEL_C64_PAL     0
+#define C64MODEL_C64C_PAL    1
+#define C64MODEL_C64_OLD_PAL 2
+
+#define C64MODEL_C64_NTSC     3
+#define C64MODEL_C64C_NTSC    4
+#define C64MODEL_C64_OLD_NTSC 5
+
+#define C64MODEL_UNKNOWN 99
+
+extern int c64model_get(void);
+extern void c64model_set(int model);
 
 #endif

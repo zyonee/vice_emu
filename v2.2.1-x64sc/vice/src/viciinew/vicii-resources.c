@@ -34,6 +34,7 @@
 #include "machine.h"
 #include "raster-resources.h"
 #include "resources.h"
+#include "vicii-chip-model.h"
 #include "vicii-color.h"
 #include "vicii-resources.h"
 #include "vicii-timing.h"
@@ -115,7 +116,7 @@ static struct vicii_model_match_s vicii_model_match[] = {
 static int set_model(int val, void *param)
 {
     int i = 0;
-    int model, num;
+    int model, num, old;
 
     do {
         num = vicii_model_match[i].num;
@@ -127,9 +128,13 @@ static int set_model(int val, void *param)
         return -1;
     }
 
+    old = vicii_resources.model;
     vicii_resources.model = model;
 
-    /* TODO NTSC/PAL switch, luminance switch, maybe vicii_update_model... */
+    /* TODO NTSC/PAL switch, luminance switch... */
+    if (model != old) {
+        vicii_chip_model_init();
+    }
 
     return 0;
 }

@@ -144,6 +144,94 @@ static const ui_menu_entry_t x64_main_menu[] = {
     { NULL }
 };
 
+static const ui_menu_entry_t x64sc_main_menu[] = {
+    { "Autostart image",
+      MENU_ENTRY_DIALOG,
+      autostart_callback,
+      NULL },
+    { "Drive",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)drive_menu },
+    { "Tape",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)tape_menu },
+    { "Cartridge",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)c64cart_menu },
+    { "Machine settings",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)c64sc_hardware_menu },
+    { "Video settings",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)c64_video_menu },
+    { "Sound settings",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)sound_output_menu },
+    { "Snapshot",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)snapshot_menu },
+    { "Screenshot",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)screenshot_menu },
+    { "Speed settings",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)speed_menu },
+    { "Reset",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)reset_menu },
+#ifdef HAVE_NETWORK
+    { "Network",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)network_menu },
+#endif
+    { "Pause",
+      MENU_ENTRY_OTHER,
+      pause_callback,
+      NULL },
+    { "Monitor",
+      MENU_ENTRY_OTHER,
+      monitor_callback,
+      NULL },
+    { "Virtual keyboard",
+      MENU_ENTRY_OTHER,
+      vkbd_callback,
+      NULL },
+    { "Statusbar",
+      MENU_ENTRY_OTHER,
+      statusbar_callback,
+      NULL },
+#ifdef DEBUG
+    { "Debug",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)debug_menu },
+#endif
+    { "Help",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)help_menu },
+    { "Settings management",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)settings_manager_menu },
+    { "Quit emulator",
+      MENU_ENTRY_OTHER,
+      quit_callback,
+      NULL },
+    { NULL }
+};
+
 void c64scui_set_menu_params(int index, menu_draw_t *menu_draw)
 {
     int bordermode;
@@ -175,11 +263,12 @@ int c64ui_init(void)
 
     if (machine_class == VICE_MACHINE_C64SC) {
         sdl_ui_set_menu_params = c64scui_set_menu_params;
+        sdl_ui_set_main_menu(x64sc_main_menu);
     } else {
         sdl_ui_set_menu_params = NULL;
+        sdl_ui_set_main_menu(x64_main_menu);
     }
 
-    sdl_ui_set_main_menu(x64_main_menu);
     sdl_ui_set_menu_font(mem_chargen_rom + 0x800, 8, 8);
     sdl_vkbd_set_vkbd(&vkbd_c64);
 
