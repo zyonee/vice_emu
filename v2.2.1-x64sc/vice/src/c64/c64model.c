@@ -145,6 +145,11 @@ int c64model_get(void)
 void c64model_set(int model)
 {
     int old_model;
+    int old_engine;
+    int old_sid_model;
+    int old_type;
+    int new_sid_model;
+    int new_type;
 
     old_model = c64model_get();
 
@@ -157,9 +162,18 @@ void c64model_set(int model)
     resources_set_int("CIA2Model", c64models[model].cia);
     resources_set_int("GlueLogic", c64models[model].glue);
 
-    /* TODO let viciinew handle these */
-    resources_set_int("MachineVideoStandard", c64models[model].video);
-    resources_set_int("VICIINewLuminances", c64models[model].luma);
+    /* Only change the SID model if the model changes from 6581 to 8580
+       or ReSID-fp wasn't used. This allows to switch between "pal"/"oldpal"
+       without changing the specific SID model. ReSID-fp is enforced, since
+       x64sc aims for accuracy. */
+    resources_get_int("SidEngine", &old_engine);
+    resources_get_int("SidModel", &old_sid_model);
+    new_sid_model = c64models[model].sid;
 
-    sid_set_engine_model(SID_ENGINE_RESID_FP, c64models[model].sid);
+    old_type = is_new_sid(old_sid_model);
+    new_type = is_new_sid(new_sid_model);
+
+    if ((old_engine != SID_ENGINE_RESID_FP) || (old_type != new_type)) {
+        sid_set_engine_model(SID_ENGINE_RESID_FP, new_sid_model);
+    }
 }

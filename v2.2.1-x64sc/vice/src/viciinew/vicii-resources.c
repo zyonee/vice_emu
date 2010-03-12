@@ -79,61 +79,46 @@ static int set_new_luminances(int val, void *param)
     return vicii_color_update_palette(vicii.raster.canvas);
 }
 
-struct vicii_model_match_s {
-    int num;
-    int model;
+struct vicii_model_info_s {
+    int video;
+    int luma;
 };
 
-static struct vicii_model_match_s vicii_model_match[] = {
-    /* PAL, 63 cycle, 9 luma, "old" */
-    { VICII_MODEL_6569, VICII_MODEL_6569 },
-    { 6569, VICII_MODEL_6569 },
-    { 65693, VICII_MODEL_6569 },
+static struct vicii_model_info_s vicii_info[] = {
+    /* VICII_MODEL_6569: PAL, 63 cycle, 9 luma, "old" */
+    { MACHINE_SYNC_PAL, 1 },
 
-    /* PAL, 63 cycle, 9 luma, "new" */
-    { VICII_MODEL_8565, VICII_MODEL_8565 },
-    { 8565, VICII_MODEL_8565 },
+    /* VICII_MODEL_8565: PAL, 63 cycle, 9 luma, "new" */
+    { MACHINE_SYNC_PAL, 1 },
 
-    /* PAL, 63 cycle, 5 luma, "old" */
-    { VICII_MODEL_6569R1, VICII_MODEL_6569R1 },
-    { 65691, VICII_MODEL_6569R1 },
+    /* VICII_MODEL_6569R1: PAL, 63 cycle, 5 luma, "old" */
+    { MACHINE_SYNC_PAL, 0 },
 
-    /* NTSC, 65 cycle, 9 luma, "old" */
-    { VICII_MODEL_6567, VICII_MODEL_6567 },
-    { 6567, VICII_MODEL_6567 },
+    /* VICII_MODEL_6567: NTSC, 65 cycle, 9 luma, "old" */
+    { MACHINE_SYNC_NTSC, 1 },
 
-    /* NTSC, 65 cycle, 9 luma, "new" */
-    { VICII_MODEL_8562, VICII_MODEL_8562 },
-    { 8562, VICII_MODEL_8562 },
+    /* VICII_MODEL_8562: NTSC, 65 cycle, 9 luma, "new" */
+    { MACHINE_SYNC_NTSC, 1 },
 
-    /* NTSC, 64 cycle, ? luma, "old" */
-    { VICII_MODEL_6567R56A, VICII_MODEL_6567R56A },
-    { 656756, VICII_MODEL_6567R56A },
-
-    { -1, -1 }
+    /* VICII_MODEL_6567R56A: NTSC, 64 cycle, 5? luma, "old" */
+    { MACHINE_SYNC_NTSCOLD, 0 }
 };
 
-static int set_model(int val, void *param)
+static int set_model(int model, void *param)
 {
-    int i = 0;
-    int model, num, old;
+    int old;
 
-    do {
-        num = vicii_model_match[i].num;
-        model = vicii_model_match[i].model;
-        i++;
-    } while ((val != num) && (model >= 0));
-
-    if (model < 0) {
+    if ((model < 0) || (model >= VICII_MODEL_NUM)) {
         return -1;
     }
 
     old = vicii_resources.model;
     vicii_resources.model = model;
 
-    /* TODO NTSC/PAL switch, luminance switch... */
     if (model != old) {
         vicii_chip_model_init();
+        resources_set_int("MachineVideoStandard", vicii_info[model].video);
+        set_new_luminances(vicii_info[model].luma, NULL);
     }
 
     return 0;

@@ -59,6 +59,7 @@ struct snapshot_s;
 #define VICII_MODEL_8562    4
 /* NTSC, 64 cycle, ? luma, "old" */
 #define VICII_MODEL_6567R56A 5
+#define VICII_MODEL_NUM 6
 
 extern int vicii_resources_init(void);
 extern int vicii_cmdline_options_init(void);

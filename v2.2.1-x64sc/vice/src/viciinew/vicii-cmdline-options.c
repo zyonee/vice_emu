@@ -46,8 +46,9 @@
 int border_set_func(const char *value, void *extra_param)
 {
    int video;
-    resources_get_int("MachineVideoStandard", &video);
-   
+
+   resources_get_int("MachineVideoStandard", &video);
+
    if (strcmp(value, "1") == 0 || strcmp(value, "full") == 0) {
        vicii_resources.border_mode = VICII_FULL_BORDERS;
    } else if (strcmp(value, "2") == 0 || strcmp(value, "debug") == 0) {
@@ -59,6 +60,63 @@ int border_set_func(const char *value, void *extra_param)
    machine_change_timing(video ^ VICII_BORDER_MODE(vicii_resources.border_mode));
 
    return 0;
+}
+
+struct model_s {
+    const char *name;
+    int model;
+};
+
+static struct model_s model_match[] = {
+    /* PAL, 63 cycle, 9 luma, "old" */
+    { "6569", VICII_MODEL_6569 },
+    { "6569r3", VICII_MODEL_6569 },
+    { "pal", VICII_MODEL_6569 },
+
+    /* PAL, 63 cycle, 9 luma, "new" */
+    { "8565", VICII_MODEL_8565 },
+    { "newpal", VICII_MODEL_8565 },
+
+    /* PAL, 63 cycle, 5 luma, "old" */
+    { "6569r1", VICII_MODEL_6569R1 },
+    { "oldpal", VICII_MODEL_6569R1 },
+
+    /* NTSC, 65 cycle, 9 luma, "old" */
+    { "6567", VICII_MODEL_6567 },
+    { "ntsc", VICII_MODEL_6567 },
+
+    /* NTSC, 65 cycle, 9 luma, "new" */
+    { "8562", VICII_MODEL_8562 },
+    { "newntsc", VICII_MODEL_8562 },
+
+    /* NTSC, 64 cycle, ? luma, "old" */
+    { "6567r56a", VICII_MODEL_6567R56A },
+    { "oldntsc", VICII_MODEL_6567R56A },
+
+    { NULL, -1 }
+};
+
+static int set_vicii_model(const char *param, void *extra_param)
+{
+    int model = -1;
+    int i = 0;
+
+    if (!param) {
+        return -1;
+    }
+
+    do {
+        if (strcmp(model_match[i].name, param) == 0) {
+            model = model_match[i].model;
+        }
+        i++;
+    } while ((model == -1) && (model_match[i].name != NULL));
+
+    if (model == -1) {
+        return -1;
+    }
+
+    return resources_set_int("VICIIModel", model);
 }
 
 /* VIC-II command-line options.  */
@@ -134,11 +192,11 @@ static const cmdline_option_t cmdline_options[] =
       USE_PARAM_STRING, USE_DESCRIPTION_ID,
       IDCLS_UNUSED, IDCLS_SET_ODDLINES_OFFSET,
       "<0-2000>", NULL },
-    { "-VICIImodel", SET_RESOURCE, 1,
-      NULL, NULL, "VICIIModel", NULL,
+    { "-VICIImodel", CALL_FUNCTION, 1,
+      set_vicii_model, NULL, NULL, NULL,
       USE_PARAM_STRING, USE_DESCRIPTION_STRING,
       IDCLS_UNUSED, IDCLS_UNUSED,
-      T_("<model>"), T_("Set VIC-II model (0 = FIXME, 1...)") },
+      T_("<model>"), T_("Set VIC-II model (6569/6569r1/8565/6567/8562/6567r56a)") },
     { NULL }
 };
 
