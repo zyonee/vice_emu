@@ -1,5 +1,5 @@
 /*
- * x64_ui.c - Implementation of the C64-specific part of the UI.
+ * x64sc_ui.c - Implementation of the C64SC-specific part of the UI.
  *
  * Written by
  *  Hannu Nuotio <hannu.nuotio@tut.fi>
@@ -33,7 +33,7 @@
 #include "debug.h"
 #include "c64mem.h"
 #include "menu_c64cart.h"
-#include "menu_c64hw.h"
+#include "menu_c64schw.h"
 #include "menu_common.h"
 #include "menu_debug.h"
 #include "menu_drive.h"
@@ -49,11 +49,13 @@
 #include "menu_tape.h"
 #include "menu_tfe.h"
 #include "menu_video.h"
+#include "resources.h"
 #include "ui.h"
 #include "uimenu.h"
+#include "vicii.h"
 #include "vkbd.h"
 
-static const ui_menu_entry_t x64_main_menu[] = {
+static const ui_menu_entry_t x64sc_main_menu[] = {
     { "Autostart image",
       MENU_ENTRY_DIALOG,
       autostart_callback,
@@ -73,11 +75,11 @@ static const ui_menu_entry_t x64_main_menu[] = {
     { "Machine settings",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
-      (ui_callback_data_t)c64_hardware_menu },
+      (ui_callback_data_t)c64sc_hardware_menu },
     { "Video settings",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
-      (ui_callback_data_t)c64_video_menu },
+      (ui_callback_data_t)c64sc_video_menu },
     { "Sound settings",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
@@ -141,22 +143,45 @@ static const ui_menu_entry_t x64_main_menu[] = {
     { NULL }
 };
 
-int c64ui_init(void)
+void c64scui_set_menu_params(int index, menu_draw_t *menu_draw)
+{
+    int bordermode;
+
+    resources_get_int("VICIIBorderMode", &bordermode);
+
+    switch (bordermode) {
+        case VICII_NORMAL_BORDERS:
+            menu_draw->extra_x = 32;
+            break;
+        case VICII_FULL_BORDERS:
+            menu_draw->extra_x = 48;
+            break;
+        case VICII_DEBUG_BORDERS:
+            menu_draw->extra_x = 132;
+            break;
+        default:
+            break;
+    }
+
+    menu_draw->extra_y = 51;
+}
+
+int c64scui_init(void)
 {
 #ifdef SDL_DEBUG
     fprintf(stderr, "%s\n", __func__);
 #endif
 
-    sdl_ui_set_menu_params = NULL;
+    sdl_ui_set_menu_params = c64scui_set_menu_params;
 
-    sdl_ui_set_main_menu(x64_main_menu);
+    sdl_ui_set_main_menu(x64sc_main_menu);
     sdl_ui_set_menu_font(mem_chargen_rom + 0x800, 8, 8);
     sdl_vkbd_set_vkbd(&vkbd_c64);
 
     return 0;
 }
 
-void c64ui_shutdown(void)
+void c64scui_shutdown(void)
 {
 #ifdef HAVE_MIDI
     sdl_menu_midi_in_free();

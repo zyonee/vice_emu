@@ -429,9 +429,10 @@ int machine_specific_init(void)
 
     /* Initialize the C64-specific part of the UI.  */
     if (!console_mode) {
-
         if (vsid_mode) {
             vsid_ui_init();
+        } else if (machine_class == VICE_MACHINE_C64SC) {
+            c64scui_init();
         } else {
             c64ui_init();
         }

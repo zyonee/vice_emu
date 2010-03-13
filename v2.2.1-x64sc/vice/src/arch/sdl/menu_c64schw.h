@@ -1,5 +1,5 @@
 /*
- * menu_c64hw.h - C64 HW menu for SDL UI.
+ * menu_c64schw.h - C64SC HW menu for SDL UI.
  *
  * Written by
  *  Marco van den Heuvel <blackystardust68@yahoo.com>
@@ -24,13 +24,13 @@
  *
  */
 
-#ifndef VICE_MENU_C64HW_H
-#define VICE_MENU_C64HW_H
+#ifndef VICE_MENU_C64SCHW_H
+#define VICE_MENU_C64SCHW_H
 
 #include "vice.h"
 #include "types.h"
 #include "uimenu.h"
 
-extern const ui_menu_entry_t c64_hardware_menu[];
+extern const ui_menu_entry_t c64sc_hardware_menu[];
 
 #endif
