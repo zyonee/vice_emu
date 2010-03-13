@@ -182,9 +182,9 @@ int main_program(int argc, char **argv)
         resources_set_int("SoundBufferSize", 1000);
         resources_set_int("SoundSuspendTime", 0);
     }
-#ifndef USE_SDLUI
+#if !defined(USE_SDLUI) && !defined(USE_GNOMEUI)
     /* FIXME: vsid can now it's own config [VSID], so this should go away.
-       AFAIK only SDL UI has the "Save resources" menu item and has been
+       Only SDL & GTK+ UIs have the "Save resources" menu item and have been
        tested to work, hence this ugly ifndef. */
     else
 #endif
@@ -193,7 +193,10 @@ int main_program(int argc, char **argv)
 
         retval = resources_load(NULL);
 
-        if (retval < 0) {
+        /* Do not reset to defaults on vsid mode. This would override
+           the settings made above when the config file is not available,
+           leading to crashes due to incompatible Drive8Type. */
+        if ((retval < 0) && !vsid_mode) {
             /* The resource file might contain errors, and thus certain
                resources might have been initialized anyway.  */
             if (resources_set_defaults() < 0) {

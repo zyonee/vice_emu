@@ -1,5 +1,5 @@
 /*
- * c64ui.c - Implementation of the C64-specific part of the UI.
+ * c64scui.c - Implementation of the C64SC-specific part of the UI.
  *
  * Written by
  *  Ettore Perazzoli <ettore@comm2000.it>
@@ -31,6 +31,7 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "c64model.h"
 #include "debug.h"
 #include "icon.h"
 #include "machine.h"
@@ -73,16 +74,91 @@
 #include "uitfe.h"
 #include "uivicii.h"
 #include "vsync.h"
+#include "vicii.h"
 
-UI_MENU_DEFINE_RADIO(MachineVideoStandard)
+static UI_CALLBACK(noop_video_standard)
+{
+    return;
+}
 
 static ui_menu_entry_t set_video_standard_c64_submenu[] = {
-    { N_("*PAL-G"), (ui_callback_t)radio_MachineVideoStandard,
-      (ui_callback_data_t)MACHINE_SYNC_PAL, NULL },
-    { N_("*NTSC-M"), (ui_callback_t)radio_MachineVideoStandard,
-      (ui_callback_data_t)MACHINE_SYNC_NTSC, NULL },
-    { N_("*Old NTSC-M"), (ui_callback_t)radio_MachineVideoStandard,
-      (ui_callback_data_t)MACHINE_SYNC_NTSCOLD, NULL },
+    /* PAL/NTSC switching is handled via VICII (or C64) model */
+    { N_("Switch using C64 or VIC-II model"), (ui_callback_t)noop_video_standard,
+      (ui_callback_data_t)0, NULL },
+    { NULL }
+};
+
+/* ------------------------------------------------------------------------- */
+
+static UI_CALLBACK(radio_c64model)
+{
+    int model, selected;
+
+    selected = vice_ptr_to_int(UI_MENU_CB_PARAM);
+
+    if (!CHECK_MENUS) {
+        c64model_set(selected);
+        ui_update_menus();
+    } else {
+        model = c64model_get();
+
+        if (selected == model) {
+            ui_menu_set_tick(w, 1);
+        } else {
+            ui_menu_set_tick(w, 0);
+        }
+    }
+}
+
+static ui_menu_entry_t set_c64_model_submenu[] = {
+    { "*C64 PAL", (ui_callback_t)radio_c64model,
+      (ui_callback_data_t)C64MODEL_C64_PAL, NULL },
+    { "*C64C PAL", (ui_callback_t)radio_c64model,
+      (ui_callback_data_t)C64MODEL_C64C_PAL, NULL },
+    { "*C64 old PAL", (ui_callback_t)radio_c64model,
+      (ui_callback_data_t)C64MODEL_C64_OLD_PAL, NULL },
+    { "*C64 NTSC", (ui_callback_t)radio_c64model,
+      (ui_callback_data_t)C64MODEL_C64_NTSC, NULL },
+    { "*C64C NTSC", (ui_callback_t)radio_c64model,
+      (ui_callback_data_t)C64MODEL_C64C_NTSC, NULL },
+    { "*C64 old NTSC", (ui_callback_t)radio_c64model,
+      (ui_callback_data_t)C64MODEL_C64_OLD_NTSC, NULL },
+    { NULL }
+};
+
+UI_MENU_DEFINE_RADIO(VICIIModel)
+
+static ui_menu_entry_t set_vicii_model_submenu[] = {
+    { "*6569 (PAL)", (ui_callback_t)radio_VICIIModel,
+      (ui_callback_data_t)VICII_MODEL_6569, NULL },
+    { "*8565 (PAL)", (ui_callback_t)radio_VICIIModel,
+      (ui_callback_data_t)VICII_MODEL_8565, NULL },
+    { "*6569R1 (old PAL)", (ui_callback_t)radio_VICIIModel,
+      (ui_callback_data_t)VICII_MODEL_6569R1, NULL },
+    { "*6567 (NTSC)", (ui_callback_t)radio_VICIIModel,
+      (ui_callback_data_t)VICII_MODEL_6567, NULL },
+    { "*8562 (NTSC)", (ui_callback_t)radio_VICIIModel,
+      (ui_callback_data_t)VICII_MODEL_8562, NULL },
+    { "*6567R56A (old NTSC)", (ui_callback_t)radio_VICIIModel,
+      (ui_callback_data_t)VICII_MODEL_6567R56A, NULL },
+    { NULL }
+};
+
+UI_MENU_DEFINE_TOGGLE(CIA1Model)
+UI_MENU_DEFINE_TOGGLE(CIA2Model)
+UI_MENU_DEFINE_TOGGLE(GlueLogic)
+
+static ui_menu_entry_t c64_model_submenu[] = {
+    { N_("C64 model"),
+      NULL, NULL, set_c64_model_submenu },
+    { N_("VIC-II model"),
+      NULL, NULL, set_vicii_model_submenu },
+    { N_("*New CIA 1"),
+      (ui_callback_t)toggle_CIA1Model, NULL, NULL },
+    { N_("*New CIA 2"),
+      (ui_callback_t)toggle_CIA2Model, NULL, NULL },
+    { N_("*ASIC Glue Logic"),
+      (ui_callback_t)toggle_GlueLogic, NULL, NULL },
     { NULL }
 };
 
@@ -379,6 +455,8 @@ static ui_menu_entry_t ui_screenshot_commands_menu[] = {
 /* ------------------------------------------------------------------------- */
 
 static ui_menu_entry_t c64_menu[] = {
+    { N_("Model settings"),
+      NULL, NULL, c64_model_submenu },
     { N_("ROM settings"),
       NULL, NULL, c64_romset_submenu },
     { N_("VIC-II settings"),
@@ -554,7 +632,7 @@ static void c64ui_dynamic_menu_shutdown(void)
     uisound_menu_shutdown();
 }
 
-int c64ui_init(void)
+int c64scui_init(void)
 {
     memcpy(set_video_standard_submenu, set_video_standard_c64_submenu, sizeof(set_video_standard_c64_submenu));
 
@@ -572,7 +650,7 @@ int c64ui_init(void)
     return 0;
 }
 
-void c64ui_shutdown(void)
+void c64scui_shutdown(void)
 {
     c64ui_dynamic_menu_shutdown();
 }
