@@ -647,3 +647,9 @@ const char *machine_get_name(void)
 {
     return (machine_class == VICE_MACHINE_CBM6x0) ? machine_name : "CBM-II-5x0";
 }
+
+#ifdef USE_SDLUI
+/* Kludges for vsid & linking issues */
+const char **csidmodel = NULL;
+void psid_init_driver(void) {}
+#endif

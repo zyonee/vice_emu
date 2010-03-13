@@ -160,6 +160,7 @@ libarch_a_SOURCES = \
 	vkbd.c \
 	vkbd.h \
 	vsidui.c \
+	vsidui_sdl.h \
 	vsyncarch.c \
 	x128_ui.c \
 	x64_ui.c \

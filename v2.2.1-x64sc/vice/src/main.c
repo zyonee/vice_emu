@@ -94,7 +94,7 @@ int main_program(int argc, char **argv)
             video_disabled_mode = 1;
         } else
 #endif
-        if (strcmp(argv[i], "-vsid") == 0) {
+        if ((strcmp(argv[i], "-vsid") == 0) && (machine_class == VICE_MACHINE_C64)) {
             vsid_mode = 1;
 #ifndef USE_SDLUI
             video_disabled_mode = 1;
