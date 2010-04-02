@@ -31,6 +31,7 @@
 
 #define IO_DETACH_CART     0
 #define IO_DETACH_RESOURCE 1
+#define IO_SOURCE_MMCREPLAY          29
 
 #define CPU_LINES_C64_256K 1
 #define CPU_LINES_PLUS60K  2
