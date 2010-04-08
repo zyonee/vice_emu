@@ -62,8 +62,6 @@ libc64cart_a_SOURCES = \
 	mmcreplay.h \
 	ocean.c \
 	ocean.h \
-	par-flashrom.c \
-	par-flashrom.h \
 	retroreplay.c \
 	retroreplay.h \
 	rexep256.c \

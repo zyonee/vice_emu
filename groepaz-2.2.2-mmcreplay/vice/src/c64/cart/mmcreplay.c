@@ -36,12 +36,12 @@
 #include "c64mem.h"
 #include "c64pla.h"
 #include "cmdline.h"
+#include "flash040.h"
 #include "lib.h"
 #include "log.h"
 #include "machine.h"
 #include "maincpu.h"
 #include "mmcreplay.h"
-#include "par-flashrom.h"
 #include "reu.h"
 #include "resources.h"
 #include "ser-eeprom.h"
@@ -123,6 +123,9 @@ Clockport to connect additional hardware
 Freezer functionality (Action Replay / Retro Replay compatible)
 Reset button
 */
+
+/* the 29F040 statemachine */
+static flash040_context_t *flashrom_state = NULL;
 
 static unsigned int active_mode_phi1 = 0;
 static unsigned int active_mode_phi2 = 0;
@@ -1302,8 +1305,7 @@ BYTE REGPARM1 mmcreplay_io1_read(WORD addr)
                   roml_banks[(addr & 0x1fff) + (io1_bank << 13)], io1_bank,
                   (addr & 0x1fff)));
 #endif
-            return flashrom_read((io1_ram_bank << 13) + 0x1e00 +
-                                 (addr & 0xff));
+            return flash040core_read(flashrom_state, (io1_ram_bank << 13) + 0x1e00 + (addr & 0xff));
         } else {
 #ifdef LOG_READ_IO1_DISABLED
             LOG(("MMCREPLAY: DISABLED IO1 RD %04x %02x (%02x:%04x)", addr,
@@ -1330,8 +1332,7 @@ BYTE REGPARM1 mmcreplay_io1_read(WORD addr)
                   roml_banks[(addr & 0x1fff) + (io1_bank << 13)], io1_bank,
                   (addr & 0x1fff)));
 #endif
-            return flashrom_read((io1_ram_bank << 13) + 0x1e00 +
-                                 (addr & 0xff));
+            return flash040core_read(flashrom_state, (io1_ram_bank << 13) + 0x1e00 + (addr & 0xff));
         } else {
 #ifdef LOG_READ_IO1_DISABLED
             LOG(("MMCREPLAY: DISABLED IO1 RD %04x %02x (%02x:%04x)", addr,
@@ -1452,8 +1453,7 @@ void REGPARM2 mmcreplay_io1_store(WORD addr, BYTE value)
                 LOG(("store DISABLED RAM IO1 %04x %02x (%02x:%04x)", addr,
                       value, io1_ram_bank, (addr & 0x1fff)));
 #endif
-                flashrom_write((io1_ram_bank << 13) + 0x1e00 + (addr & 0xff),
-                                value);
+                flash040core_store(flashrom_state, (io1_ram_bank << 13) + 0x1e00 + (addr & 0xff), value);
             }
         } else {
 #ifdef LOG_WRITE_IO1_DISABLED
@@ -1475,8 +1475,7 @@ void REGPARM2 mmcreplay_io1_store(WORD addr, BYTE value)
                 LOG(("store DISABLED RAM IO1 %04x %02x (%02x:%04x)", addr,
                       value, io1_ram_bank, (addr & 0x1fff)));
 #endif
-                flashrom_write((io1_ram_bank << 13) + 0x1e00 + (addr & 0xff),
-                                value);
+                flash040core_store(flashrom_state, (io1_ram_bank << 13) + 0x1e00 + (addr & 0xff), value);
             }
         } else {
 #ifdef LOG_WRITE_IO1_DISABLED
@@ -1640,7 +1639,7 @@ BYTE REGPARM1 mmcreplay_io2_read(WORD addr)
               roml_banks[(addr & 0x1fff) + (io2_bank << 13)], io2_bank,
               (addr & 0x1fff)));
 #endif
-        return flashrom_read((io2_ram_bank << 13) + 0x1f00 + (addr & 0xff));
+        return flash040core_read(flashrom_state, (io2_ram_bank << 13) + 0x1f00 + (addr & 0xff));
     } else {
 #ifdef LOG_READ_IO2_DISABLED
         LOG(("MMCREPLAY: DISABLED IO2 RD %04x %02x (%02x:%04x)", addr,
@@ -1813,8 +1812,7 @@ void REGPARM2 mmcreplay_io2_store(WORD addr, BYTE value)
             LOG(("MMCREPLAY: ROM IO2 ST %04x %02x (%02x:%04x)",
                   addr, value, io2_ram_bank, (addr & 0x1fff)));
 #endif
-            flashrom_write((io2_ram_bank << 13) + 0x1f00 + (addr & 0xff),
-                            value);
+            flash040core_store(flashrom_state, (io2_ram_bank << 13) + 0x1f00 + (addr & 0xff), value);
         }
     } else {
 #ifdef LOG_WRITE_IO2_DISABLED
@@ -1891,10 +1889,10 @@ BYTE REGPARM1 mmcreplay_roml_read(WORD addr)
             if (enable_raml) {
                 return export_ram0[(addr & 0x1fff) + (raml_bank << 13)];
             }
-            return flashrom_read((addr & 0x1fff) + (roml_bank << 13));
+            return flash040core_read(flashrom_state, (addr & 0x1fff) + (roml_bank << 13));
 
         } else if (enable_rescue_mode) {
-            return flashrom_read((addr & 0x1fff) + (roml_bank << 13));
+            return flash040core_read(flashrom_state, (addr & 0x1fff) + (roml_bank << 13));
         }
 
         return mem_read_without_ultimax(addr);
@@ -1903,7 +1901,7 @@ BYTE REGPARM1 mmcreplay_roml_read(WORD addr)
     if (enable_raml) {
         return export_ram0[(addr & 0x1fff) + (raml_bank << 13)];
     }
-    return flashrom_read((addr & 0x1fff) + (roml_bank << 13));
+    return flash040core_read(flashrom_state, (addr & 0x1fff) + (roml_bank << 13));
 
 }
 
@@ -1929,11 +1927,11 @@ void REGPARM2 mmcreplay_roml_store(WORD addr, BYTE value)
             if (enable_raml) {
                 export_ram0[(addr & 0x1fff) + (raml_bank << 13)] = value;
             } else {
-                flashrom_write((addr & 0x1fff) + (roml_bank << 13), value);
+                flash040core_store(flashrom_state, (addr & 0x1fff) + (roml_bank << 13), value);
             }
         } else {
             if (enable_rescue_mode) {
-                flashrom_write ((addr & 0x1fff) + (roml_bank << 13), value);
+                flash040core_store(flashrom_state, (addr & 0x1fff) + (roml_bank << 13), value);
             }
             mem_store_without_ultimax(addr, value);
         }
@@ -1941,7 +1939,7 @@ void REGPARM2 mmcreplay_roml_store(WORD addr, BYTE value)
         if (enable_raml) {
             export_ram0[(addr & 0x1fff) + (raml_bank << 13)] = value;
         } else {
-            flashrom_write((addr & 0x1fff) + (roml_bank << 13), value);
+            flash040core_store(flashrom_state, (addr & 0x1fff) + (roml_bank << 13), value);
         }
     }
 }
@@ -1964,7 +1962,7 @@ BYTE REGPARM1 mmcreplay_a000_bfff_read(WORD addr)
                 if (enable_ramA000) {
                     return export_ram0[(addr & 0x1fff) + (ramA000_bank << 13)];
                 }
-                return flashrom_read((addr & 0x1fff) + (romA000_bank << 13));
+                return flash040core_read(flashrom_state, (addr & 0x1fff) + (romA000_bank << 13));
             }
         }
         return mem_read_without_ultimax(addr);
@@ -2057,7 +2055,7 @@ BYTE REGPARM1 mmcreplay_romh_read(WORD addr)
             }
         } else {
             LOG (("MMCREPLAY: ROMH RD %04x %02x (%02x:%04x)", addr,
-                  romh_banks[(addr & 0x1fff) + (romh_bank << 13)], romh_bank,
+                  roml_banks[(addr & 0x1fff) + (romh_bank << 13)], romh_bank,
                   (addr & 0x1fff)));
             logbank_read = (addr & 0xe000);
         }
@@ -2070,7 +2068,7 @@ BYTE REGPARM1 mmcreplay_romh_read(WORD addr)
                 return export_ram0[(addr & 0x1fff) + (ramh_bank << 13)];
             }
 
-            return flashrom_read((addr & 0x1fff) + (romh_bank << 13));
+            return flash040core_read(flashrom_state, (addr & 0x1fff) + (romh_bank << 13));
         }
 
         return mem_read_without_ultimax(addr);
@@ -2080,7 +2078,7 @@ BYTE REGPARM1 mmcreplay_romh_read(WORD addr)
         return export_ram0[(addr & 0x1fff) + (ramh_bank << 13)];
     }
 
-    return flashrom_read((addr & 0x1fff) + (romh_bank << 13));
+    return flash040core_read(flashrom_state, (addr & 0x1fff) + (romh_bank << 13));
 
 }
 
@@ -2337,7 +2335,7 @@ void mmcreplay_freeze(void)
 #endif
     /* FIXME: OR 0x20 ? enable ram in freeze mode ? */
     mmcreplay_update_mapper(CMODE_READ, 0);
-    flashrom_init();
+    flash040core_reset(flashrom_state);
 }
 
 /*
@@ -2381,7 +2379,7 @@ void mmcreplay_reset(void)
     }
 
     mmcreplay_update_mapper(CMODE_READ, 0);
-    flashrom_init();
+    flash040core_reset(flashrom_state);
 }
 
 
@@ -2413,18 +2411,19 @@ void mmcreplay_config_init(void)
     mmcreplay_set_stdcfg();
     mmcreplay_update_mapper(CMODE_WRITE, 0);
 
-    flashrom_init();
+    flash040core_reset(flashrom_state);
 }
 
-void mmcreplay_config_setup(BYTE * rawcart)
+void mmcreplay_config_setup(BYTE *rawcart)
 {
     memcpy(roml_banks, rawcart, MMCREPLAY_FLASHROM_SIZE);
-    memcpy(romh_banks, rawcart, MMCREPLAY_FLASHROM_SIZE);
+
+    flashrom_state = lib_malloc(sizeof(flash040_context_t));
+    flash040core_init(flashrom_state, FLASH040_TYPE_NORMAL, roml_banks);
+    memcpy(flashrom_state->flash_data, rawcart, MMCREPLAY_FLASHROM_SIZE);
 
     mmcreplay_set_stdcfg();
     mmcreplay_update_mapper(CMODE_READ, 0);
-
-    flashrom_init();
 }
 
 /* ------------------------------------------------------------------------- */
@@ -2445,7 +2444,6 @@ static int mmcreplay_common_attach(void)
 
     mmcr_enabled = 1;
 
-    flashrom_init();
     mmc_open_card_image(mmcr_card_filename, mmcr_card_rw);
     eeprom_open_image(mmcr_eeprom_filename, mmcr_eeprom_rw);
 
@@ -2478,6 +2476,8 @@ int mmcreplay_bin_attach(const char *filename, BYTE *rawcart)
 
 void mmcreplay_detach(void)
 {
+    flash040core_shutdown(flashrom_state);
+    lib_free(flashrom_state);
     mmc_close_card_image();
     eeprom_close_image(mmcr_eeprom_rw);
     c64export_remove(&export_res);
