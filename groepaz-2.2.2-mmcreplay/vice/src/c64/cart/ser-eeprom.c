@@ -35,12 +35,12 @@
 #include "types.h"
 #include "util.h"
 
-#define DEBUG
-/*#define LOG_READ_BYTES*/ /* log read bytes */
-/*#define LOG_WRITE_BYTES*/ /* log write bytes */
-/*#define LOG_COMMANDS*/ /* log eeprom commands */
+/* #define EEPROMDEBUG */
+/* #define LOG_READ_BYTES */ /* log read bytes */
+/* #define LOG_WRITE_BYTES */ /* log write bytes */
+/* #define LOG_COMMANDS */ /* log eeprom commands */
 
-#ifdef DEBUG
+#ifdef EEPROMDEBUG
 #define LOG(_x_) log_debug _x_
 #else
 #define LOG(_x_)
@@ -50,13 +50,13 @@
 static FILE *eeprom_image_file = NULL;
 
 
-#define EEPROM_IDLE		0
-#define EEPROM_RESET		1
-#define EEPROM_INSEQ		2
-#define EEPROM_INCA0		3
-#define EEPROM_INCA0_DATA	4
-#define EEPROM_INCA1		5
-#define EEPROM_INCA1_DATA	6
+#define EEPROM_IDLE         0
+#define EEPROM_RESET        1
+#define EEPROM_INSEQ        2
+#define EEPROM_INCA0        3
+#define EEPROM_INCA0_DATA   4
+#define EEPROM_INCA1        5
+#define EEPROM_INCA1_DATA   6
 static unsigned int eeprom_mode = EEPROM_IDLE;
 
 static BYTE eeprom_data[MMCREPLAY_EEPROM_SIZE];
@@ -215,7 +215,7 @@ int eeprom_execute_command(int eeprom_mode)
                           eeprom_cmdbuf[0], eeprom_cmdbuf[1], eeprom_cmdbuf[2],
                           eeprom_cmdbuf[2]));
 #endif
-                    eeprom_data[(eeprom_readpos >> 3) & 0xff] = eeprom_cmdbuf[2];       /*FIXME: wraparound at 0x100 ?! */
+                    eeprom_data[(eeprom_readpos >> 3) & 0xff] = eeprom_cmdbuf[2]; /* FIXME: wraparound at 0x100 ?! */
                     break;
             }
             break;
@@ -230,7 +230,7 @@ int eeprom_execute_command(int eeprom_mode)
                           eeprom_cmdbuf[1]));
 #endif
                     eeprom_mode = EEPROM_INCA1_DATA;
-                    eeprom_readpos = ((eeprom_cmdbuf[1]) & 0x03ff) << 3;        // ?
+                    eeprom_readpos = ((eeprom_cmdbuf[1]) & 0x03ff) << 3;
                     break;
                 default:
                     if (eeprom_mode != EEPROM_INCA1_DATA) {

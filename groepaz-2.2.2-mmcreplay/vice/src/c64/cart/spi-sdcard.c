@@ -121,6 +121,7 @@ static void mmc_read_buffer_set(BYTE * data, int size)
 /*LOG(("MMC mmc_read_buffer_set %04x:%02x",mmc_read_buffer_writeptr,size));*/
     while (size) {
         BYTE value;
+
         value = *data++;
         mmc_read_buffer[mmc_read_buffer_writeptr] = value;
 /*LOG(("MMC read byte set %04x:%02x",mmc_read_buffer_writeptr,value));*/
@@ -137,14 +138,14 @@ static BYTE mmc_read_buffer_getbyte(void)
     if (mmc_read_buffer_readptr != mmc_read_buffer_writeptr) {
         value = mmc_read_buffer[mmc_read_buffer_readptr];
 #ifdef DEBUG_MMC
-        LOG (("MMC read byte get %04x:%02x", mmc_read_buffer_readptr, value));
+        LOG(("MMC read byte get %04x:%02x", mmc_read_buffer_readptr, value));
 #endif
         mmc_read_buffer_readptr++;
         mmc_read_buffer_readptr &= 0xfff;
         /*FIXME*/
     } else  {
 #ifdef DEBUG_MMC
-        LOG (("MMC stall read byte get"));
+        LOG(("MMC stall read byte get"));
 #endif
     }
 /*LOG(("MMC mmc_read_buffer_getbyte %04x:%02x",mmc_read_buffer_readptr,value));*/
@@ -180,14 +181,14 @@ BYTE spi_mmc_card_inserted(void)
 BYTE spi_mmc_set_card_inserted(BYTE value)
 {
     BYTE oldvalue = spi_mmc_card_inserted();
-    mmcreplay_card_inserted=value;
+    mmcreplay_card_inserted = value;
     return oldvalue;
 }
 
 BYTE mmc_set_card_type(BYTE value)
 {
     BYTE oldvalue = mmc_card_type;
-    mmc_card_type=value;
+    mmc_card_type = value;
     return oldvalue;
 }
 
@@ -584,7 +585,7 @@ static void mmcreplay_execute_cmd(void)
                         (mmcreplay_cmd_buffer[4] * 0x10000) +
                         (mmcreplay_cmd_buffer[3] * 0x1000000) +
                         (mmcreplay_cmd_buffer[2] * 0x100000000); /* FIXME: is this correct ? */
-                    mmc_current_address_pointer <<=1;
+                    mmc_current_address_pointer <<= 1;
                 } else {
                     /* MMC/SD */
                     mmc_current_address_pointer =
@@ -666,7 +667,7 @@ static void mmcreplay_execute_cmd(void)
             break;
         case 0x7a:             /* CMD58 ? */
 #ifdef DEBUG_MMC
-            log_debug ("CMD58 ? received");
+            log_debug("CMD58 ? received");
 #endif
             if (mmc_card_type == CARD_TYPE_SDHC) {
                 /* SDHC */
