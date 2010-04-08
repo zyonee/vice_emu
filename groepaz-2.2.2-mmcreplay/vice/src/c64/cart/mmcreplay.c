@@ -2627,6 +2627,16 @@ static const cmdline_option_t cmdline_options[] = {
       USE_PARAM_STRING, USE_DESCRIPTION_STRING,
       IDCLS_UNUSED, IDCLS_UNUSED,
       NULL, T_("Disable writes to MMC Replay EEPROM image") },
+    { "-mmcrrescue", SET_RESOURCE, 0,
+      NULL, NULL, "MMCRRescueMode", (resource_value_t)1,
+      USE_PARAM_STRING, USE_DESCRIPTION_STRING,
+      IDCLS_UNUSED, IDCLS_UNUSED,
+      NULL, T_("Enable MMC Replay rescue mode") },
+    { "+mmcrrescue", SET_RESOURCE, 0,
+      NULL, NULL, "MMCRRescueMode", (resource_value_t)0,
+      USE_PARAM_STRING, USE_DESCRIPTION_STRING,
+      IDCLS_UNUSED, IDCLS_UNUSED,
+      NULL, T_("Disable MMC Replay rescue mode") },
     { NULL }
 };
 
