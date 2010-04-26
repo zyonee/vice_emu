@@ -1,8 +1,9 @@
 /*
- * c64dtvcart.c - C64 cartridge emulation stubs.
+ * viciidtv-fetch.h - Phi2 data fetch for the VIC-II DTV emulation.
  *
  * Written by
- *  Daniel Kahlin <daniel@kahlin.net>
+ *  Andreas Boose <viceteam@t-online.de>
+ *  Ettore Perazzoli <ettore@comm2000.it>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -24,56 +25,17 @@
  *
  */
 
-#include "vice.h"
+#ifndef VICE_VICIIDTV_FETCH_H
+#define VICE_VICIIDTV_FETCH_H
 
-#include "c64cart.h"
-#include "cartridge.h"
+#include "types.h"
 
-int cartridge_save_image(const char *filename)
-{
-    return 0;
-}
+extern void viciidtv_fetch_start(void);
+extern void viciidtv_fetch_stop(void);
+extern void viciidtv_fetch_linear_a(void);
+extern int viciidtv_fetch_matrix(void);
+extern void viciidtv_fetch_graphics(void);
+extern int viciidtv_fetch_sprites(int cycle);
 
-int cartridge_resources_init(void)
-{
-    return 0;
-}
-
-void cartridge_resources_shutdown(void)
-{
-}
-
-int cartridge_cmdline_options_init(void)
-{
-    return 0;
-}
-
-int cartridge_attach_image(int type, const char *filename)
-{
-    return 0;
-}
-
-void cartridge_detach_image(void)
-{
-}
-
-void cartridge_set_default(void)
-{
-}
-void cartridge_init(void)
-{
-}
-
-void cartridge_trigger_freeze(void)
-{
-}
-
-void cartridge_trigger_freeze_nmi_only(void)
-{
-}
-
-const char *cartridge_get_file_name(WORD addr_ignored)
-{
-    return 0; /* NULL */
-}
+#endif
 

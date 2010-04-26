@@ -7,7 +7,7 @@ INCLUDES = \
 	-I$(top_srcdir)/src/drive \
 	-I$(top_srcdir)/src/sid \
 	-I$(top_srcdir)/src/tape \
-	-I$(top_srcdir)/src/vicii \
+	-I$(top_srcdir)/src/viciidtv \
 	-I$(top_srcdir)/src/c64
 
 noinst_LIBRARIES = libc64dtv.a libc64dtvstubs.a

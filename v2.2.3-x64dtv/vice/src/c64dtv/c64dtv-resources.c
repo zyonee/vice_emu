@@ -30,9 +30,7 @@
 #include <string.h>
 
 #include "c64dtv-resources.h"
-#include "c64cart.h"
 #include "c64rom.h"
-#include "cartridge.h"
 #include "hummeradc.h"
 #include "ps2mouse.h"
 #include "kbd.h"
@@ -40,11 +38,8 @@
 #include "lib.h"
 #include "machine.h"
 #include "resources.h"
-#include "reu.h"
-#include "georam.h"
-#include "sid-resources.h"
 #include "util.h"
-#include "vicii-resources.h"
+#include "viciidtv-resources.h"
 #include "vicii.h"
 
 

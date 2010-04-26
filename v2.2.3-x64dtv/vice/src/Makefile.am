@@ -25,6 +25,7 @@ SUBDIRS = \
 	video \
 	raster \
 	vicii \
+	viciidtv \
 	viciinew \
 	vdc \
 	crtc \
@@ -59,6 +60,7 @@ DIST_SUBDIRS = \
 	video \
 	raster \
 	vicii \
+	viciidtv \
 	viciinew \
 	vdc \
 	crtc \
@@ -161,10 +163,9 @@ noinst_HEADERS = \
 	machine-video.h \
 	machine.h \
 	main.h \
-	mainc64cpu.c \
 	mainc64cpu.h \
 	maincpu.h \
-	mainviccpu.c \
+	maindtvcpu.h \
 	mainviccpu.h \
 	mc6821.h \
 	mem.h \
@@ -218,6 +219,7 @@ noinst_HEADERS = \
 	vice_sdl.h \
 	vicesocket.h \
 	vicii.h \
+	viciidtv.h \
 	video.h \
 	viewport.h \
 	vsidui.h \
@@ -317,6 +319,9 @@ EXTRA_DIST = \
 	fixpoint.c \
 	gentranslate_h.sh \
 	gentranslatetable.sh \
+	mainc64cpu.c \
+	maindtvcpu.c \
+	mainviccpu.c \
 	od2c.sh \
 	palette2c.sh \
 	piacore.c \
@@ -698,7 +703,7 @@ vdrive_lib = $(top_builddir)/src/vdrive/libvdrive.a
 vic20_lib = $(top_builddir)/src/vic20/libvic20.a
 vic20cart_lib = $(top_builddir)/src/vic20/cart/libvic20cart.a
 vicii_lib = $(top_builddir)/src/vicii/libvicii.a
-viciidtv_lib = $(top_builddir)/src/vicii/libviciidtv.a
+viciidtv_lib = $(top_builddir)/src/viciidtv/libviciidtv.a
 viciinew_lib = $(top_builddir)/src/viciinew/libviciinew.a
 video_lib = $(top_builddir)/src/video/libvideo.a
 xcbm2_lib = $(top_builddir)/src/cbm2/libcbm2.a
@@ -1390,7 +1395,7 @@ libvic20cart:
 libvicii:
 	(cd vicii && $(MAKE) libvicii.a)
 libviciidtv:
-	(cd vicii && $(MAKE) libviciidtv.a)
+	(cd viciidtv && $(MAKE) libviciidtv.a)
 libviciinew:
 	(cd viciinew && $(MAKE) libviciinew.a)
 libvideo:

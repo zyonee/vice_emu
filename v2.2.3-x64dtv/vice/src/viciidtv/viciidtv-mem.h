@@ -1,8 +1,9 @@
 /*
- * c64dtvcart.c - C64 cartridge emulation stubs.
+ * viciidtv-mem.h - Memory interface for the VIC-II DTV emulation.
  *
  * Written by
- *  Daniel Kahlin <daniel@kahlin.net>
+ *  Ettore Perazzoli <ettore@comm2000.it>
+ *  Andreas Boose <viceteam@t-online.de>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -24,56 +25,21 @@
  *
  */
 
-#include "vice.h"
+#ifndef VICE_VICIIDTV_MEM_H
+#define VICE_VICIIDTV_MEM_H
 
-#include "c64cart.h"
-#include "cartridge.h"
+#include "types.h"
 
-int cartridge_save_image(const char *filename)
-{
-    return 0;
-}
+extern void REGPARM2 vicii_store(WORD addr, BYTE value);
+extern BYTE REGPARM1 vicii_read(WORD addr);
+extern BYTE REGPARM1 vicii_peek(WORD addr);
+extern void REGPARM2 vicii_mem_vbank_store(WORD addr, BYTE value);
+extern void REGPARM2 vicii_mem_vbank_39xx_store(WORD addr, BYTE value);
+extern void REGPARM2 vicii_mem_vbank_3fxx_store(WORD addr, BYTE value);
+extern void REGPARM2 vicii_palette_store(WORD addr, BYTE value);
+extern BYTE REGPARM1 vicii_palette_read(WORD addr);
+extern int vicii_extended_regs(void);
+extern void viciidtv_update_colorram(void);
 
-int cartridge_resources_init(void)
-{
-    return 0;
-}
-
-void cartridge_resources_shutdown(void)
-{
-}
-
-int cartridge_cmdline_options_init(void)
-{
-    return 0;
-}
-
-int cartridge_attach_image(int type, const char *filename)
-{
-    return 0;
-}
-
-void cartridge_detach_image(void)
-{
-}
-
-void cartridge_set_default(void)
-{
-}
-void cartridge_init(void)
-{
-}
-
-void cartridge_trigger_freeze(void)
-{
-}
-
-void cartridge_trigger_freeze_nmi_only(void)
-{
-}
-
-const char *cartridge_get_file_name(WORD addr_ignored)
-{
-    return 0; /* NULL */
-}
+#endif
 

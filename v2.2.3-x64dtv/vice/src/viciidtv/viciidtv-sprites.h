@@ -1,8 +1,9 @@
 /*
- * c64dtvcart.c - C64 cartridge emulation stubs.
+ * viciidtv-sprites.h - Sprites for the VIC-II DTV emulation.
  *
  * Written by
- *  Daniel Kahlin <daniel@kahlin.net>
+ *  Ettore Perazzoli <ettore@comm2000.it>
+ *  Andreas Boose <viceteam@t-online.de>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -24,56 +25,19 @@
  *
  */
 
-#include "vice.h"
+#ifndef VICE_VICIIDTV_SPRITES_H
+#define VICE_VICIIDTV_SPRITES_H
 
-#include "c64cart.h"
-#include "cartridge.h"
+extern const int vicii_sprites_crunch_table[64];
 
-int cartridge_save_image(const char *filename)
-{
-    return 0;
-}
+extern void vicii_sprites_init(void);
+extern void vicii_sprites_shutdown(void);
+extern void vicii_sprites_set_x_position(unsigned int num,
+                                         int new_x, int raster_x);
+extern void vicii_sprites_reset_sprline(void);
+extern void vicii_sprites_init_sprline(void);
+extern void vicii_sprites_reset_xshift(void);
+extern int vicii_sprite_offset(void);
 
-int cartridge_resources_init(void)
-{
-    return 0;
-}
-
-void cartridge_resources_shutdown(void)
-{
-}
-
-int cartridge_cmdline_options_init(void)
-{
-    return 0;
-}
-
-int cartridge_attach_image(int type, const char *filename)
-{
-    return 0;
-}
-
-void cartridge_detach_image(void)
-{
-}
-
-void cartridge_set_default(void)
-{
-}
-void cartridge_init(void)
-{
-}
-
-void cartridge_trigger_freeze(void)
-{
-}
-
-void cartridge_trigger_freeze_nmi_only(void)
-{
-}
-
-const char *cartridge_get_file_name(WORD addr_ignored)
-{
-    return 0; /* NULL */
-}
+#endif
 

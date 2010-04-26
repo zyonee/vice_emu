@@ -36,7 +36,7 @@
 #include "c64dtvmeminit.h"
 #include "c64memrom.h"
 #include "sid.h"
-#include "vicii-mem.h"
+#include "viciidtv-mem.h"
 
 
 /* IO is enabled at memory configs 5, 6, 7 */

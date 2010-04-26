@@ -27,6 +27,8 @@
 #ifndef VICE_C64ROM_H
 #define VICE_C64ROM_H
 
+#include "types.h"
+
 extern int c64rom_load_kernal(const char *rom_name, BYTE *new_kernal);
 extern int c64rom_load_basic(const char *rom_name);
 extern int c64rom_load_chargen(const char *rom_name);

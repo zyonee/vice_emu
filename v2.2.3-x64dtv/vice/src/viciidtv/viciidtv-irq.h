@@ -1,8 +1,8 @@
 /*
- * c64dtvcart.c - C64 cartridge emulation stubs.
+ * viciidtv-irq.h - IRQ related functions for the VIC-II DTV emulation.
  *
  * Written by
- *  Daniel Kahlin <daniel@kahlin.net>
+ *  Andreas Boose <viceteam@t-online.de>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -24,56 +24,25 @@
  *
  */
 
-#include "vice.h"
+#ifndef VICE_VICIIDTV_IRQ_H
+#define VICE_VICIIDTV_IRQ_H
 
-#include "c64cart.h"
-#include "cartridge.h"
+#include "types.h"
 
-int cartridge_save_image(const char *filename)
-{
-    return 0;
-}
+extern void vicii_irq_raster_set(CLOCK mclk);
+extern void vicii_irq_raster_clear(CLOCK mclk);
+extern void vicii_irq_sbcoll_set(void);
+extern void vicii_irq_sbcoll_clear(void);
+extern void vicii_irq_sscoll_set(void);
+extern void vicii_irq_sscoll_clear(void);
+extern void vicii_irq_lightpen_set(CLOCK mclk);
+extern void vicii_irq_lightpen_clear(CLOCK mclk);
 
-int cartridge_resources_init(void)
-{
-    return 0;
-}
+extern void vicii_irq_set_raster_line(unsigned int line);
+extern void vicii_irq_check_state(BYTE value, unsigned int high);
+extern void vicii_irq_set_line(void);
+extern void vicii_irq_next_frame(void);
+extern void vicii_irq_alarm_handler(CLOCK offset, void *data);
 
-void cartridge_resources_shutdown(void)
-{
-}
-
-int cartridge_cmdline_options_init(void)
-{
-    return 0;
-}
-
-int cartridge_attach_image(int type, const char *filename)
-{
-    return 0;
-}
-
-void cartridge_detach_image(void)
-{
-}
-
-void cartridge_set_default(void)
-{
-}
-void cartridge_init(void)
-{
-}
-
-void cartridge_trigger_freeze(void)
-{
-}
-
-void cartridge_trigger_freeze_nmi_only(void)
-{
-}
-
-const char *cartridge_get_file_name(WORD addr_ignored)
-{
-    return 0; /* NULL */
-}
+#endif
 

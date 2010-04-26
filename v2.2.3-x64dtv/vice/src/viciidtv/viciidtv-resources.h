@@ -1,8 +1,9 @@
 /*
- * c64dtvcart.c - C64 cartridge emulation stubs.
+ * viciidtv-resources.h - Resources for the VIC-II DTV emulation.
  *
  * Written by
- *  Daniel Kahlin <daniel@kahlin.net>
+ *  Andreas Boose <viceteam@t-online.de>
+ *  Ettore Perazzoli <ettore@comm2000.it>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -24,56 +25,30 @@
  *
  */
 
-#include "vice.h"
+#ifndef VICE_VICIIDTV_RESOURCES_H
+#define VICE_VICIIDTV_RESOURCES_H
 
-#include "c64cart.h"
-#include "cartridge.h"
+/* VIC-II resources.  */
+struct vicii_resources_s
+{
+    /* VIC-II border mode, 0..2 */
+    int border_mode;
 
-int cartridge_save_image(const char *filename)
-{
-    return 0;
-}
+    /* Flag: Do we emulate the sprite-sprite collision register and IRQ?  */
+    int sprite_sprite_collisions_enabled;
 
-int cartridge_resources_init(void)
-{
-    return 0;
-}
+    /* Flag: Do we emulate the sprite-background collision register and
+       IRQ?  */
+    int sprite_background_collisions_enabled;
 
-void cartridge_resources_shutdown(void)
-{
-}
+    /* Flag: New or old luminances? */
+    int new_luminances;
+};
+typedef struct vicii_resources_s vicii_resources_t;
 
-int cartridge_cmdline_options_init(void)
-{
-    return 0;
-}
+extern vicii_resources_t vicii_resources;
 
-int cartridge_attach_image(int type, const char *filename)
-{
-    return 0;
-}
+extern int vicii_resources_init(void);
 
-void cartridge_detach_image(void)
-{
-}
-
-void cartridge_set_default(void)
-{
-}
-void cartridge_init(void)
-{
-}
-
-void cartridge_trigger_freeze(void)
-{
-}
-
-void cartridge_trigger_freeze_nmi_only(void)
-{
-}
-
-const char *cartridge_get_file_name(WORD addr_ignored)
-{
-    return 0; /* NULL */
-}
+#endif
 

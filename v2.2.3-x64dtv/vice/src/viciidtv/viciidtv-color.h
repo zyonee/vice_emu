@@ -1,7 +1,11 @@
 /*
- * c64dtvcart.c - C64 cartridge emulation stubs.
+ * viciidtv-color.h - Colors for the VIC-II DTV emulation.
+ *
  *
  * Written by
+ *  Daniel Kahlin <daniel@kahlin.net>
+ *
+ * Research about the luminances on the original C64 DTV by
  *  Daniel Kahlin <daniel@kahlin.net>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
@@ -24,56 +28,12 @@
  *
  */
 
-#include "vice.h"
+#ifndef VICE_VICIIDTV_COLOR_H
+#define VICE_VICIIDTV_COLOR_H
 
-#include "c64cart.h"
-#include "cartridge.h"
+struct video_canvas_s;
 
-int cartridge_save_image(const char *filename)
-{
-    return 0;
-}
+extern int vicii_color_update_palette(struct video_canvas_s *canvas);
 
-int cartridge_resources_init(void)
-{
-    return 0;
-}
-
-void cartridge_resources_shutdown(void)
-{
-}
-
-int cartridge_cmdline_options_init(void)
-{
-    return 0;
-}
-
-int cartridge_attach_image(int type, const char *filename)
-{
-    return 0;
-}
-
-void cartridge_detach_image(void)
-{
-}
-
-void cartridge_set_default(void)
-{
-}
-void cartridge_init(void)
-{
-}
-
-void cartridge_trigger_freeze(void)
-{
-}
-
-void cartridge_trigger_freeze_nmi_only(void)
-{
-}
-
-const char *cartridge_get_file_name(WORD addr_ignored)
-{
-    return 0; /* NULL */
-}
+#endif
 
