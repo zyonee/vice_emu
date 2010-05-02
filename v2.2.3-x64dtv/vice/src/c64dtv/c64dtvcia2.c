@@ -58,7 +58,7 @@
 
 void REGPARM2 cia2_store(WORD addr, BYTE data)
 {
-    if ((addr&0x1f) == 1) {
+    if ((addr & 0x1f) == 1) {
         if (extra_joystick_enable && extra_joystick_type == EXTRA_JOYSTICK_CGA) {
             extra_joystick_cga_store(data);
         }
@@ -76,7 +76,7 @@ void REGPARM2 cia2_store(WORD addr, BYTE data)
 BYTE REGPARM1 cia2_read(WORD addr)
 {
     BYTE retval = 0xff;
-    if ((addr&0x1f) == 1) {
+    if ((addr & 0x1f) == 1) {
         if (extra_joystick_enable) {
             switch (extra_joystick_type) {
                 case EXTRA_JOYSTICK_CGA:
@@ -103,7 +103,7 @@ BYTE REGPARM1 cia2_read(WORD addr)
     }
 
     /* disable TOD & serial */
-    if (((addr&0xf)>=8)&&((addr&0xf)<=0xc)) {
+    if (((addr & 0xf) >= 8) && ((addr & 0xf) <= 0xc)) {
         return 0xff;
     }
 

@@ -66,8 +66,10 @@ int c64dtv_snapshot_write(const char *name, int save_roms, int save_disks,
 
     s = snapshot_create(name, ((BYTE)(SNAP_MAJOR)), ((BYTE)(SNAP_MINOR)),
                         machine_name);
-    if (s == NULL)
+
+    if (s == NULL) {
         return -1;
+    }
 
     sound_snapshot_prepare();
 
@@ -102,8 +104,10 @@ int c64dtv_snapshot_read(const char *name, int event_mode)
     BYTE minor, major;
 
     s = snapshot_open(name, &major, &minor, machine_name);
-    if (s == NULL)
+
+    if (s == NULL) {
         return -1;
+    }
 
     if (major != SNAP_MAJOR || minor != SNAP_MINOR) {
         log_error(LOG_DEFAULT,
@@ -136,8 +140,9 @@ int c64dtv_snapshot_read(const char *name, int event_mode)
     return 0;
 
 fail:
-    if (s != NULL)
+    if (s != NULL) {
         snapshot_close(s);
+    }
 
     machine_trigger_reset(MACHINE_RESET_MODE_SOFT);
 

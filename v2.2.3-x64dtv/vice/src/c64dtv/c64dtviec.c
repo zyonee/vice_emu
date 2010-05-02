@@ -51,8 +51,9 @@ void iec_update_ports(void)
     unsigned int unit;
 
     iecbus.cpu_port = iecbus.cpu_bus;
-    for (unit = 4; unit < 8 + DRIVE_NUM; unit++)
+    for (unit = 4; unit < 8 + DRIVE_NUM; unit++) {
         iecbus.cpu_port &= iecbus.drv_bus[unit];
+    }
 
     iecbus.drv_port = (((iecbus.cpu_port >> 4) & 0x4)
                       | (iecbus.cpu_port >> 7)
@@ -91,5 +92,5 @@ int iec_available_busses(void)
 
 void c64iec_init(void)
 {
-  iecbus_update_ports = iec_update_ports;
+    iecbus_update_ports = iec_update_ports;
 }

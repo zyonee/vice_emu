@@ -83,8 +83,9 @@ void c64dtvmeminit(unsigned int base)
             mem_read_tab_set(base + j, 0xdf, c64io2_read);
             mem_set_write_hook(base + j, 0xdf, c64io2_store);
 
-            for (i = 0xd0; i <= 0xdf; i++)
+            for (i = 0xd0; i <= 0xdf; i++) {
                 mem_read_base_set(base + j, i, NULL);
+            }
         }
     }
 

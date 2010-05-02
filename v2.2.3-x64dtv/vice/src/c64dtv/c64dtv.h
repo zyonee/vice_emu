@@ -45,9 +45,6 @@
 #define C64_NTSC_RFSH_PER_SEC    (1.0 / ((double)C64_NTSC_CYCLES_PER_RFSH \
                                         / (double)C64_NTSC_CYCLES_PER_SEC))
 
-/* $01 bits 6 and 7 fall-off cycles (1->0), average is about 350 msec */
-#define C64_CPU_DATA_PORT_FALL_OFF_CYCLES 350000
-
 struct cia_context_s;
 struct printer_context_s;
 

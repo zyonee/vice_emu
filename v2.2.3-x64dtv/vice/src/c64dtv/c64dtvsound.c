@@ -83,7 +83,7 @@ int sound_machine_calculate_samples(sound_t *psid, SWORD *pbuf, int nr,
 {
     int temp;
 
-    temp=sid_sound_machine_calculate_samples(psid, pbuf, nr, interleave, delta_t);
+    temp = sid_sound_machine_calculate_samples(psid, pbuf, nr, interleave, delta_t);
     return temp;
 }
 

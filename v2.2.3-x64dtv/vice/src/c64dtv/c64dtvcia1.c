@@ -59,7 +59,7 @@ void REGPARM2 cia1_store(WORD addr, BYTE data)
 BYTE REGPARM1 cia1_read(WORD addr)
 {
     /* disable TOD & serial */
-    if (((addr&0xf)>=8)&&((addr&0xf)<=0xc)) {
+    if (((addr & 0xf) >= 8) && ((addr & 0xf) <= 0xc)) {
         return 0xff;
     }
 
@@ -118,10 +118,12 @@ static void do_reset_cia(cia_context_t *cia_context)
 static void store_ciapa(cia_context_t *cia_context, CLOCK rclk, BYTE b)
 {
     unsigned int i, m;
- 
+
+    /* FIXME no lightpen in DTV */
     for (m = 0x1, i = 0; i < 8; m <<= 1, i++) {
-        if ((keyarr[i] & 0x10) && (!(b & m)))
+        if ((keyarr[i] & 0x10) && (!(b & m))) {
             vicii_trigger_light_pen(maincpu_clk);
+        }
     }
 }
 
@@ -132,9 +134,11 @@ static void undump_ciapa(cia_context_t *cia_context, CLOCK rclk, BYTE b)
 
 static void store_ciapb(cia_context_t *cia_context, CLOCK rclk, BYTE byte)
 {
+    /* FIXME no lightpen in DTV */
     /* Falling edge triggers light pen.  */
-    if ((byte ^ 0x10) & cia_context->old_pb & 0x10)
+    if ((byte ^ 0x10) & cia_context->old_pb & 0x10) {
         vicii_trigger_light_pen(rclk);
+    }
 }
 
 static void undump_ciapb(cia_context_t *cia_context, CLOCK rclk, BYTE byte)
@@ -151,9 +155,11 @@ static BYTE read_ciapa(cia_context_t *cia_context)
 
     msk = cia_context->old_pb & ~joystick_value[1];
 
-    for (m = 0x1, i = 0; i < 8; m <<= 1, i++)
-        if (!(msk & m))
+    for (m = 0x1, i = 0; i < 8; m <<= 1, i++) {
+        if (!(msk & m)) {
             val &= ~rev_keyarr[i];
+        }
+    }
 
     byte = (val & (cia_context->c_cia[CIA_PRA]
            | ~(cia_context->c_cia[CIA_DDRA]))) & ~joystick_value[2];
@@ -171,9 +177,11 @@ static BYTE read_ciapb(cia_context_t *cia_context)
 
     msk = cia_context->old_pa & ~joystick_value[2];
 
-    for (m = 0x1, i = 0; i < 8; m <<= 1, i++)
-        if (!(msk & m))
+    for (m = 0x1, i = 0; i < 8; m <<= 1, i++) {
+        if (!(msk & m)) {
             val &= ~keyarr[i];
+        }
+    }
 
     if (c64dtv_hummer_adc_enabled && (!(msk & 1))) {
         val &= ~(joystick_value[3] & 3);
