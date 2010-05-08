@@ -35,21 +35,20 @@
 
 #include "c64.h"
 #include "c64cia.h"
+#include "c64dtv-resources.h"
 #include "cia.h"
+#include "hummeradc.h"
 #include "interrupt.h"
 #include "keyboard.h"
 #include "lib.h"
 #include "log.h"
 #include "maincpu.h"
 #include "types.h"
-#include "vicii.h"
 
 #ifdef HAVE_RS232
 #include "rsuser.h"
 #endif
 
-#include "c64dtv-resources.h"
-#include "hummeradc.h"
 
 void REGPARM2 cia1_store(WORD addr, BYTE data)
 {
@@ -97,17 +96,14 @@ static void pulse_ciapc(cia_context_t *cia_context, CLOCK rclk)
 
 static void pre_store(void)
 {
-    vicii_handle_pending_alarms_external_write();
 }
 
 static void pre_read(void)
 {
-    vicii_handle_pending_alarms_external(0);
 }
 
 static void pre_peek(void)
 {
-    vicii_handle_pending_alarms_external(0);
 }
 
 static void do_reset_cia(cia_context_t *cia_context)
@@ -117,14 +113,6 @@ static void do_reset_cia(cia_context_t *cia_context)
 
 static void store_ciapa(cia_context_t *cia_context, CLOCK rclk, BYTE b)
 {
-    unsigned int i, m;
-
-    /* FIXME no lightpen in DTV */
-    for (m = 0x1, i = 0; i < 8; m <<= 1, i++) {
-        if ((keyarr[i] & 0x10) && (!(b & m))) {
-            vicii_trigger_light_pen(maincpu_clk);
-        }
-    }
 }
 
 static void undump_ciapa(cia_context_t *cia_context, CLOCK rclk, BYTE b)
@@ -134,11 +122,6 @@ static void undump_ciapa(cia_context_t *cia_context, CLOCK rclk, BYTE b)
 
 static void store_ciapb(cia_context_t *cia_context, CLOCK rclk, BYTE byte)
 {
-    /* FIXME no lightpen in DTV */
-    /* Falling edge triggers light pen.  */
-    if ((byte ^ 0x10) & cia_context->old_pb & 0x10) {
-        vicii_trigger_light_pen(rclk);
-    }
 }
 
 static void undump_ciapb(cia_context_t *cia_context, CLOCK rclk, BYTE byte)

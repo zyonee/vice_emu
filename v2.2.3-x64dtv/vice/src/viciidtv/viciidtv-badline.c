@@ -47,7 +47,6 @@ inline static void switch_to_display_state(const int cycle)
     raster_changes_background_add_int(&vicii.raster, VICII_RASTER_X(cycle),
                                       &vicii.raster.draw_idle_state, 0);
     vicii.idle_state = 0;
-    vicii.idle_data_location = IDLE_NONE;
 }
 
 inline static void line_becomes_good(const int cycle)

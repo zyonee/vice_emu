@@ -242,8 +242,9 @@ raster_t *vicii_init(unsigned int flag)
 {
     vicii.log = log_open("VIC-II DTV");
 
-    if (init_raster() < 0)
+    if (init_raster() < 0) {
         return NULL;
+    }
 
     vicii_powerup();
 
@@ -254,11 +255,6 @@ raster_t *vicii_init(unsigned int flag)
     vicii.raster_cycle = 0;
     vicii_draw_init();
     vicii_sprites_init();
-
-    vicii.num_idle_3fff = 0;
-    vicii.num_idle_3fff_old = 0;
-    vicii.idle_3fff = (idle_3fff_t *)lib_malloc(sizeof(idle_3fff_t) * 64);
-    vicii.idle_3fff_old = (idle_3fff_t *)lib_malloc(sizeof(idle_3fff_t) * 64);
 
     vicii.buf_offset = 0;
 
@@ -289,9 +285,6 @@ void vicii_reset(void)
     vicii.regs[0x12] = 0;
 
     vicii.force_display_state = 0;
-
-    vicii.light_pen.triggered = 0;
-    vicii.light_pen.x = vicii.light_pen.y = 0;
 
     /* Remove all the IRQ sources.  */
     vicii.regs[0x1a] = 0;
@@ -424,12 +417,10 @@ void vicii_powerup(void)
     vicii.bad_line = 0;
     vicii.ycounter_reset_checked = 0;
     vicii.force_black_overscan_background_color = 0;
-    vicii.light_pen.x = vicii.light_pen.y = vicii.light_pen.triggered = 0;
     vicii.vbank_phi1 = 0;
     vicii.vbank_phi2 = 0;
     /* vicii.vbank_ptr = ram; */
     vicii.idle_data = 0;
-    vicii.idle_data_location = IDLE_NONE;
 
     vicii_reset();
 
@@ -475,25 +466,6 @@ void vicii_set_phi2_vbank(int num_vbank)
 }
 
 /* ---------------------------------------------------------------------*/
-
-/* Trigger the light pen.  */
-void vicii_trigger_light_pen(CLOCK mclk)
-{
-    if (!vicii.light_pen.triggered) {
-        vicii.light_pen.triggered = 1;
-        vicii.light_pen.x = VICII_RASTER_X(mclk % vicii.cycles_per_line)
-                                - vicii.screen_leftborderwidth + 0x20;
-
-        if (vicii.light_pen.x < 0)
-            vicii.light_pen.x = vicii.sprite_wrap_x + vicii.light_pen.x;
-
-        /* FIXME: why `+2'? */
-        vicii.light_pen.x = vicii.light_pen.x / 2 + 2;
-        vicii.light_pen.y = VICII_RASTER_Y(mclk);
-
-        vicii_irq_lightpen_set(mclk);
-    }
-}
 
 /* Change the base of RAM seen by the VIC-II.  */
 static inline void vicii_set_ram_bases(BYTE *base_p1, BYTE *base_p2)
@@ -606,22 +578,6 @@ void vicii_update_memory_ptrs(unsigned int cycle)
     }
 
     tmp = VICII_RASTER_CHAR(cycle);
-
-    if (vicii.idle_data_location != IDLE_NONE &&
-        old_vbank_p2 != vicii.vbank_phi2) {
-        if (vicii.idle_data_location == IDLE_39FF)
-            raster_changes_foreground_add_int(&vicii.raster,
-                                              VICII_RASTER_CHAR(cycle),
-                                              &vicii.idle_data,
-                                              vicii.ram_base_phi2[vicii.vbank_phi2
-                                              + 0x39ff]);
-        else
-            raster_changes_foreground_add_int(&vicii.raster,
-                                              VICII_RASTER_CHAR(cycle),
-                                              &vicii.idle_data,
-                                              vicii.ram_base_phi2[vicii.vbank_phi2
-                                              + 0x3fff]);
-    }
 
     if (tmp <= 0) {
         old_screen_ptr = vicii.screen_ptr = vicii.screen_base_phi2;
@@ -820,17 +776,6 @@ void vicii_update_video_mode(unsigned int cycle)
                                               &vicii.raster.video_mode,
                                               new_video_mode);
 
-            if (vicii.idle_data_location != IDLE_NONE) {
-                if (vicii.regs[0x11] & 0x40)
-                    raster_changes_foreground_add_int
-                    (&vicii.raster, pos + 1, (void *)&vicii.idle_data,
-                    vicii.ram_base_phi2[vicii.vbank_phi2 + 0x39ff]);
-                else
-                    raster_changes_foreground_add_int
-                    (&vicii.raster, pos + 1, (void *)&vicii.idle_data,
-                    vicii.ram_base_phi2[vicii.vbank_phi2 + 0x3fff]);
-            }
-
             raster_changes_foreground_add_int(&vicii.raster, pos + 2,
                                               &vicii.raster.last_video_mode,
                                               -1);
@@ -945,7 +890,6 @@ void vicii_raster_draw_alarm_handler(CLOCK offset, void *data)
         }
         vicii.memptr = 0;
         vicii.mem_counter = 0;
-        vicii.light_pen.triggered = 0;
         vicii.raster.blank_off = 0;
 
         /* Clear color buffer on line 0 */
@@ -1066,18 +1010,6 @@ void vicii_raster_draw_alarm_handler(CLOCK offset, void *data)
         && !prev_sprite_background_collisions) {
         vicii_irq_sbcoll_set();
     }
-
-    if (vicii.idle_state) {
-        if (vicii.regs[0x11] & 0x40) {
-            vicii.idle_data_location = IDLE_39FF;
-            vicii.idle_data = vicii.ram_base_phi2[vicii.vbank_phi2 + 0x39ff];
-        } else {
-            vicii.idle_data_location = IDLE_3FFF;
-            vicii.idle_data = vicii.ram_base_phi2[vicii.vbank_phi2 + 0x3fff];
-        }
-    } else
-        vicii.idle_data_location = IDLE_NONE;
-
 }
 
 void vicii_set_canvas_refresh(int enable)
@@ -1087,8 +1019,6 @@ void vicii_set_canvas_refresh(int enable)
 
 void vicii_shutdown(void)
 {
-    lib_free(vicii.idle_3fff);
-    lib_free(vicii.idle_3fff_old);
     vicii_sprites_shutdown();
     raster_sprite_status_destroy(&vicii.raster);
     raster_shutdown(&vicii.raster);

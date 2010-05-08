@@ -735,7 +735,7 @@ static inline void calculate_idle_sprite_data(BYTE *data, unsigned int n)
 
     data[0] = 0xff;
     data[2] = 0xff;
-
+/*
     if (vicii.num_idle_3fff > 0) {
         idle_cycle = (57 + n * 2) % vicii.cycles_per_line;
         for (i = vicii.num_idle_3fff; i != 0; i--) {
@@ -759,7 +759,7 @@ static inline void calculate_idle_sprite_data(BYTE *data, unsigned int n)
             }
         }
     }
-
+*/
     data[1] = vicii.ram_base_phi2[vicii.vbank_phi2 + 0x3fff];
 }
 

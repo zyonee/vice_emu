@@ -136,11 +136,11 @@ int vicii_snapshot_write_module(snapshot_t *s)
         /* IdleState */
         || SMW_B(m, (BYTE)vicii.idle_state) < 0
         /* LPTrigger */
-        || SMW_B(m, (BYTE)vicii.light_pen.triggered) < 0
+        || SMW_B(m, 0 /*(BYTE)vicii.light_pen.triggered*/) < 0
         /* LPX */
-        || SMW_B(m, (BYTE)vicii.light_pen.x) < 0
+        || SMW_B(m, 0 /*(BYTE)vicii.light_pen.x*/) < 0
         /* LPY */
-        || SMW_B(m, (BYTE)vicii.light_pen.y) < 0
+        || SMW_B(m, 0 /*(BYTE)vicii.light_pen.y*/) < 0
         /* MatrixBuf */
         || SMW_BA(m, vicii.vbuf, 40) < 0
         /* NewSpriteDmaMask */
@@ -259,11 +259,11 @@ int vicii_snapshot_read_module(snapshot_t *s)
         /* IdleState */
         || SMR_B_INT(m, &vicii.idle_state) < 0
         /* LPTrigger */
-        || SMR_B_INT(m, &vicii.light_pen.triggered) < 0
+        || SMR_B_INT(m, &i /*vicii.light_pen.triggered*/) < 0
         /* LPX */
-        || SMR_B_INT(m, &vicii.light_pen.x) < 0
+        || SMR_B_INT(m, &i /*vicii.light_pen.x*/) < 0
         /* LPY */
-        || SMR_B_INT(m, &vicii.light_pen.y) < 0
+        || SMR_B_INT(m, &i /*vicii.light_pen.y*/) < 0
         /* MatrixBuf */
         || SMR_BA(m, vicii.vbuf, 40) < 0
         /* NewSpriteDmaMask */

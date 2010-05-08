@@ -153,12 +153,6 @@ typedef enum vicii_video_mode_s vicii_video_mode_t;
 /* VIC-II structures.  This is meant to be used by VIC-II modules
    *exclusively*!  */
 
-struct vicii_light_pen_s {
-    int triggered;
-    int x, y;
-};
-typedef struct vicii_light_pen_s vicii_light_pen_t;
-
 enum vicii_fetch_mode_s {
     VICIIDTV_FETCH_NORMAL,
     VICIIDTV_FETCH_LINEAR,
@@ -166,19 +160,6 @@ enum vicii_fetch_mode_s {
     VICIIDTV_FETCH_PIXEL_CELL
 };
 typedef enum vicii_fetch_mode_s vicii_fetch_mode_t;
-
-enum vicii_idle_data_location_s {
-    IDLE_NONE,
-    IDLE_3FFF,
-    IDLE_39FF
-};
-typedef enum vicii_idle_data_location_s vicii_idle_data_location_t;
-
-struct idle_3fff_s {
-    CLOCK cycle;
-    BYTE value;
-};
-typedef struct idle_3fff_s idle_3fff_t;
 
 struct alarm_s;
 struct video_chip_cap_s;
@@ -311,9 +292,6 @@ struct vicii_s {
     /* Background color source */
     int background_color_source;
 
-    /* Light pen.  */
-    vicii_light_pen_t light_pen;
-
     /* Start of the memory bank seen by the VIC-II.  */
     int vbank_phi1;                     /* = 0; */
     int vbank_phi2;                     /* = 0; */
@@ -327,10 +305,6 @@ struct vicii_s {
     int idle_data_m[4];
     /* right border idle data */
     int idle_data_r[4];
-
-    /* Where do we currently fetch idle state from?  If `IDLE_NONE', we are
-       not in idle state and thus do not need to update `idle_data'.  */
-    vicii_idle_data_location_t idle_data_location;
 
     /* All the VIC-II logging goes here.  */
     signed int log;
@@ -369,12 +343,6 @@ struct vicii_s {
     CLOCK store_clk;
     WORD store_addr;
     BYTE store_value;
-
-    /* Stores to 0x3fff idle location (used for idle sprite fetch).  */
-    unsigned int num_idle_3fff;
-    idle_3fff_t *idle_3fff;
-    unsigned int num_idle_3fff_old;
-    idle_3fff_t *idle_3fff_old;
 
     /* Last value read from VICII (used for RMW access).  */
     BYTE last_read;

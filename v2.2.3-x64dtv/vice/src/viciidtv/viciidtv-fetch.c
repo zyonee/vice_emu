@@ -249,7 +249,6 @@ void viciidtv_fetch_start(void)
         raster->ycounter = 0;
 
         vicii.idle_state = 0;
-        vicii.idle_data_location = IDLE_NONE;
         vicii.ycounter_reset_checked = 1;
         vicii.memory_fetch_done = 2;
         vicii.bad_line = 1;

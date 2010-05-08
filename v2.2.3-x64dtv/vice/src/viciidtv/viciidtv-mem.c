@@ -77,55 +77,6 @@ static int unused_bits_in_registers[0x50] =
     0x00 /* $D04C */ , 0xc0 /* $D04D */ , 0x00 /* $D04E */ , 0xf0 /* $D04F */
 };
 
-
-/* Store a value in the video bank (it is assumed to be in RAM).  */
-inline static void REGPARM2 vicii_local_store_vbank(WORD addr, BYTE value)
-{
-    vicii.ram_base_phi2[addr] = value;
-}
-
-/* Encapsulate inlined function for other modules */
-void REGPARM2 vicii_mem_vbank_store(WORD addr, BYTE value)
-{
-    vicii_local_store_vbank(addr, value);
-}
-
-/* As `store_vbank()', but for the $3900...$39FF address range.  */
-void REGPARM2 vicii_mem_vbank_39xx_store(WORD addr, BYTE value)
-{
-    vicii_local_store_vbank(addr, value);
-
-    if (vicii.idle_data_location == IDLE_39FF && (addr & 0x3fff) == 0x39ff)
-        raster_changes_foreground_add_int
-            (&vicii.raster,
-            VICII_RASTER_CHAR(VICII_RASTER_CYCLE(maincpu_clk)),
-            &vicii.idle_data,
-            value);
-}
-
-/* As `store_vbank()', but for the $3F00...$3FFF address range.  */
-void REGPARM2 vicii_mem_vbank_3fxx_store(WORD addr, BYTE value)
-{
-    vicii_local_store_vbank(addr, value);
-
-    if ((addr & 0x3fff) == 0x3fff) {
-        if (vicii.idle_data_location == IDLE_3FFF)
-            raster_changes_foreground_add_int
-                (&vicii.raster,
-                VICII_RASTER_CHAR(VICII_RASTER_CYCLE(maincpu_clk)),
-                &vicii.idle_data,
-                value);
-
-        if (vicii.raster.sprite_status->visible_msk != 0
-            || vicii.raster.sprite_status->dma_msk != 0) {
-            vicii.idle_3fff[vicii.num_idle_3fff].cycle = maincpu_clk;
-            vicii.idle_3fff[vicii.num_idle_3fff].value = value;
-            vicii.num_idle_3fff++;
-        }
-    }
-}
-
-
 inline static void store_sprite_x_position_lsb(const WORD addr, BYTE value)
 {
     int n;
@@ -1476,12 +1427,12 @@ BYTE REGPARM1 vicii_read(WORD addr)
         return d01112_read(addr);
 
       case 0x13:                  /* $D013: Light Pen X */
-        VICII_DEBUG_REGISTER(("Light pen X: %d", vicii.light_pen.x));
-        return vicii.light_pen.x;
+        VICII_DEBUG_REGISTER(("Light pen X"));
+        return 0;
 
       case 0x14:                  /* $D014: Light Pen Y */
-        VICII_DEBUG_REGISTER(("Light pen Y: %d", vicii.light_pen.y));
-        return vicii.light_pen.y;
+        VICII_DEBUG_REGISTER(("Light pen Y"));
+        return 0;
 
       case 0x15:                  /* $D015: Sprite Enable */
         VICII_DEBUG_REGISTER(("Sprite Enable register: $%02X",
@@ -1727,9 +1678,8 @@ BYTE REGPARM1 vicii_peek(WORD addr)
       case 0x12:              /* $D012: Raster line LSB */
         return read_raster_y() & 0xff;
       case 0x13:              /* $D013: Light Pen X */
-        return vicii.light_pen.x;
       case 0x14:              /* $D014: Light Pen Y */
-        return vicii.light_pen.y;
+        return 0;
       case 0x19:
         return d019_peek();
       case 0x1e:              /* $D01E: Sprite-sprite collision */
