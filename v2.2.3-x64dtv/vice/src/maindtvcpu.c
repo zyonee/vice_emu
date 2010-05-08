@@ -78,38 +78,13 @@
 
 /* ------------------------------------------------------------------------- */
 
-#ifndef STORE_ZERO
-#define STORE_ZERO(addr, value) \
-    zero_store((WORD)(addr), (BYTE)(value))
-#endif
-
-#ifndef LOAD_ZERO
-#define LOAD_ZERO(addr) \
-    zero_read((WORD)(addr))
-#endif
-
-#ifndef STORE
-#define STORE(addr, value) \
-    (*_mem_write_tab_ptr[(addr) >> 8])((WORD)(addr), (BYTE)(value))
-#endif
-
-#ifndef LOAD
-#define LOAD(addr) \
-    (*_mem_read_tab_ptr[(addr) >> 8])((WORD)(addr))
-#endif
-/*
-#define LOAD_ADDR(addr) \
-    ((LOAD((addr) + 1) << 8) | LOAD(addr))
-
-#define LOAD_ZERO_ADDR(addr) \
-    ((LOAD_ZERO((addr) + 1) << 8) | LOAD_ZERO(addr))
-*/
 inline static BYTE *mem_read_base(int addr)
 {
     BYTE *p = _mem_read_base_tab_ptr[addr >> 8];
 
-    if (p == NULL)
+    if (p == NULL) {
         return p;
+    }
 
     return p - (addr & 0xff00);
 }
@@ -118,25 +93,6 @@ inline static int mem_read_limit(int addr)
 {
     return mem_read_limit_tab_ptr[addr >> 8];
 }
-
-/* Those may be overridden by the machine stuff.  Probably we want them in
-   the .def files, but if most of the machines do not use, we might keep it
-   here and only override it where needed.  */
-#ifndef PAGE_ZERO
-#define PAGE_ZERO mem_ram
-#endif
-
-#ifndef PAGE_ONE
-#define PAGE_ONE (mem_ram + 0x100)
-#endif
-
-#ifndef STORE_IND
-#define STORE_IND(addr, value) STORE((addr),(value))
-#endif
-
-#ifndef LOAD_IND
-#define LOAD_IND(addr) LOAD((addr))
-#endif
 
 #ifndef DMA_FUNC
 static void maincpu_generic_dma(void)

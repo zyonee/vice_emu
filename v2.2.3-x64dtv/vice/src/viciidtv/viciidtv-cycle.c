@@ -36,8 +36,6 @@
 #include "viciidtv.h"
 #include "viciidtvtypes.h"
 
-extern BYTE dtvrewind;
-
 /* Memory access cycle 1:
     Character fetch/Counter A
    Memory access cycle 2:
@@ -45,17 +43,9 @@ extern BYTE dtvrewind;
   Returns 1 if access on cycle 2 was done (BA low) */
 int viciidtv_cycle_1_2(void)
 {
-    static int drift_debug = 0;
     int ba_low = 0;
 
     /*VICII_DEBUG_CYCLE(("cycle 1: line %i, clk %i", vicii.raster_line, vicii.raster_cycle));*/
-
-    if (drift_debug) {
-        if (vicii.raster_cycle != VICIIDTV_RASTER_CYCLE(maincpu_clk)) {
-            VICII_DEBUG_CYCLE(("cycle 1: line %i, clk %i != old_clk %i, rewind %i", vicii.raster_line, vicii.raster_cycle, VICIIDTV_RASTER_CYCLE(maincpu_clk), dtvrewind));
-            vicii.raster_cycle = VICIIDTV_RASTER_CYCLE(maincpu_clk);
-        }
-    }
 
     /* Next cycle */
     vicii.raster_cycle++;
@@ -147,8 +137,6 @@ int viciidtv_badline_enabled(void)
 void viciidtv_steal_cycles(void)
 {
     int ba_low;
-
-    maincpu_ba_low_flag = 0;
 
     /*VICII_DEBUG_CYCLE(("steal cycles: line %i, clk %i", vicii.raster_line, vicii.raster_cycle));*/
 

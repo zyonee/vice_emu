@@ -643,10 +643,6 @@ BYTE REGPARM1 mem_read(WORD addr)
 
     int paddr = addr_to_paddr(addr);
 
-    if (maincpu_ba_low_flag && viciidtv_badline_enabled()) {
-        viciidtv_steal_cycles();
-    }
-
     if(access_rom(addr)) {
 #ifdef FEATURE_CPUMEMHISTORY
         monitor_memmap_store(paddr, (memmap_state&MEMMAP_STATE_OPCODE)?MEMMAP_ROM_X:(memmap_state&MEMMAP_STATE_INSTR)?0:MEMMAP_ROM_R);

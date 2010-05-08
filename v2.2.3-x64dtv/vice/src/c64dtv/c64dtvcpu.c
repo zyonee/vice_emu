@@ -66,7 +66,6 @@
 #define C64_RAM_SIZE 0x200000
 
 BYTE dtv_registers[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-BYTE dtvrewind;
 
 /* Global clock counter.  */
 CLOCK maincpu_clk = 0L;
@@ -105,11 +104,33 @@ static void c64dtvcpu_clock_inc(void)
 
 #define CLK_ADD(clock, amount) c64dtvcpu_clock_add(&clock, amount)
 
+inline static void maincpu_steal_cycles(void)
+{
+    viciidtv_steal_cycles();
+}
+
+inline static void check_ba(void)
+{
+    if (maincpu_ba_low_flag && viciidtv_badline_enabled()) {
+        maincpu_steal_cycles();
+        maincpu_ba_low_flag = 0;
+    }
+}
+
+inline static BYTE mem_read_check_ba(unsigned int addr)
+{
+    check_ba();
+    return mem_read((WORD)(addr));
+}
+
+
 /* This is an optimization making x64dtv consume less host cycles in burst mode. */
-DWORD mem_burst_read(WORD addr)
+static DWORD mem_burst_read(WORD addr)
 {
     read_func_ptr_t mrtf;
     int paddr = ((((int) dtv_registers[12 + (addr >> 14)]) << 14) + (addr & 0x3fff)) & (C64_RAM_SIZE - 1);
+
+    check_ba();
 
     if (paddr <= 0xffff) {
         mrtf = _mem_read_tab_ptr[paddr >> 8];
@@ -163,7 +184,6 @@ static const BYTE burst_status_tab[] = {
 #define SKIP_CYCLE (dtv_registers[9]&1)
 
 
-/* Override optimizations in maincpu.c that directly access mem_ram[] */
 /* We need to channel everything through mem_read/mem_store to */
 /* let the DTV segment mapper (register 12-15) do its work */
 
@@ -171,7 +191,7 @@ static const BYTE burst_status_tab[] = {
     mem_store((WORD)(addr), (BYTE)(value))
 
 #define LOAD(addr) \
-    mem_read((WORD)(addr))
+    mem_read_check_ba((WORD)(addr))
 
 /* Route zero page operations through register 10 (zeropage mapper) */
 
@@ -248,7 +268,6 @@ static const BYTE burst_status_tab[] = {
 #if defined ALLOW_UNALIGNED_ACCESS
 #define FETCH_OPCODE(o) \
     do { \
-        dtvrewind = 0; \
         if (BURST_MODE && (((dtv_registers[8] >> ((reg_pc >> 13)&6)) & 0x03) == 0x01)) { \
             burst_last_addr = burst_addr; \
             burst_addr = reg_pc & 0xfffc; \
@@ -286,11 +305,11 @@ static const BYTE burst_status_tab[] = {
         } else { \
             burst_broken = 1; \
             o = LOAD(reg_pc);                                   \
-            CLK_INC(); dtvrewind++;                             \
+            CLK_INC();                                          \
             o |= LOAD(reg_pc + 1) << 8;                         \
             if (!(((burst_status_tab[o & 0xff]&0x80))           \
                && SKIP_CYCLE)) {                                \
-                CLK_INC(); dtvrewind++;                         \
+                CLK_INC();                                      \
             }                                                   \
             if (fetch_tab[o & 0xff]) {                          \
                  o |= (LOAD(reg_pc + 2) << 16);                 \
@@ -303,7 +322,6 @@ static const BYTE burst_status_tab[] = {
 /* TODO optimize */
 #define FETCH_OPCODE(o) \
     do { \
-        dtvrewind = 0; \
         if ((dtv_registers[9]&2)&&(((dtv_registers[8] >> ((reg_pc >> 13)&6)) & 0x03) == 0x01)) { \
             burst_last_addr = burst_addr; \
             burst_addr = reg_pc & 0xfffc; \
@@ -350,11 +368,11 @@ static const BYTE burst_status_tab[] = {
         } else { \
             burst_broken=1; \
             (o).ins = LOAD(reg_pc);                             \
-            CLK_INC(); dtvrewind++;                             \
+            CLK_INC();                                          \
             (o).op.op16 = LOAD(reg_pc + 1);                     \
             if (!(((burst_status_tab[(o).ins]&0x80))            \
                && SKIP_CYCLE)) {                                \
-                CLK_INC(); dtvrewind++;                         \
+                CLK_INC();                                      \
             }                                                   \
             if (fetch_tab[(o).ins]) {                           \
                  (o).op.op16 |= (LOAD(reg_pc + 2) << 8);        \
