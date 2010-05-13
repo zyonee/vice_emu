@@ -9,8 +9,6 @@ INCLUDES = \
 noinst_LIBRARIES = libviciidtv.a
 
 libviciidtv_a_SOURCES = \
-	viciidtv-badline.c \
-	viciidtv-badline.h \
 	viciidtv-cmdline-options.c \
 	viciidtv-cmdline-options.h \
 	viciidtv-color.c \
@@ -30,8 +28,6 @@ libviciidtv_a_SOURCES = \
 	viciidtv-resources.h \
 	viciidtv-snapshot.c \
 	viciidtv-snapshot.h \
-	viciidtv-sprites.c \
-	viciidtv-sprites.h \
 	viciidtv-timing.c \
 	viciidtv-timing.h \
 	viciidtv.c \

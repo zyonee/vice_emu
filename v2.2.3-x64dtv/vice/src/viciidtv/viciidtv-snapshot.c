@@ -50,7 +50,6 @@
 #include "types.h"
 #include "viciidtv-irq.h"
 #include "viciidtv-snapshot.h"
-#include "viciidtv-sprites.h"
 #include "vicii.h"
 #include "viciidtvtypes.h"
 #include "viciidtv-mem.h"
@@ -184,9 +183,9 @@ int vicii_snapshot_write_module(snapshot_t *s)
         /* VBank */
         || SMW_W(m, (WORD)vicii.vbank_phi1) < 0
         /* Vc */
-        || SMW_W(m, (WORD)vicii.mem_counter) < 0
+        || SMW_W(m, 0 /*(WORD)vicii.mem_counter*/) < 0
         /* VcBase */
-        || SMW_W(m, (WORD)vicii.memptr) < 0
+        || SMW_W(m, 0 /*(WORD)vicii.memptr*/) < 0
         /* VideoInt */
         || SMW_B(m, (BYTE)vicii.irq_status) < 0)
         goto fail;
@@ -333,9 +332,9 @@ int vicii_snapshot_read_module(snapshot_t *s)
         /* VBank */
         || SMR_W_INT(m, &vicii.vbank_phi1) < 0
         /* Vc */
-        || SMR_W_INT(m, &vicii.mem_counter) < 0
+        || SMR_W_INT(m, &i /*vicii.mem_counter*/) < 0
         /* VcBase */
-        || SMR_W_INT(m, &vicii.memptr) < 0
+        || SMR_W_INT(m, &i /*vicii.memptr*/) < 0
         /* VideoInt */
         || SMR_B_INT(m, &vicii.irq_status) < 0)
         goto fail;
@@ -361,6 +360,7 @@ int vicii_snapshot_read_module(snapshot_t *s)
 
     vicii_update_memory_ptrs(VICII_RASTER_CYCLE(maincpu_clk));
 
+#if 0
     /* Update sprite parameters.  We had better do this manually, or the
        VIC-II emulation could be quite upset.  */
     {
@@ -388,6 +388,7 @@ int vicii_snapshot_read_module(snapshot_t *s)
                                & msk);
         }
     }
+#endif
 
     vicii.raster.xsmooth = vicii.regs[0x16] & 0x7;
     vicii.raster.sprite_xsmooth = vicii.regs[0x16] & 0x7;
@@ -415,7 +416,7 @@ int vicii_snapshot_read_module(snapshot_t *s)
             = vicii.raster.background_color;
         vicii.force_black_overscan_background_color = 0;
     }
-
+/*
     if (vicii.regs[0x11] & 0x8) {
         vicii.raster.display_ystart = vicii.row_25_start_line;
         vicii.raster.display_ystop = vicii.row_25_stop_line;
@@ -431,7 +432,7 @@ int vicii_snapshot_read_module(snapshot_t *s)
         vicii.raster.display_xstart = VICII_38COL_START_PIXEL;
         vicii.raster.display_xstop = VICII_38COL_STOP_PIXEL;
     }
-
+*/
     /* `vicii.raster.draw_idle_state', `vicii.raster.open_right_border' and
        `vicii.raster.open_left_border' should be needed, but they would only
        affect the current vicii.raster line, and would not cause any

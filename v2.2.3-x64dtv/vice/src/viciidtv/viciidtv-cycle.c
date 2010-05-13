@@ -36,6 +36,44 @@
 #include "viciidtv.h"
 #include "viciidtvtypes.h"
 
+static inline void check_badline(void)
+{
+    /* Check badline condition (line range and "allow bad lines" handled outside */
+    if ((vicii.raster_line & 7) == vicii.ysmooth) {
+        vicii.bad_line = 1;
+        vicii.idle_state = 0;
+    } else {
+        vicii.bad_line = 0;
+    }
+}
+
+static inline void viciidtv_cycle_end_of_line(void)
+{
+    vicii.raster_line++;
+    if (vicii.raster_line == vicii.screen_height) {
+        vicii.raster_line = 0;
+    }
+}
+
+static inline void viciidtv_cycle_start_of_line(void)
+{
+    vicii_raster_draw_handler();
+
+    vicii.raster_cycle = 0;
+
+    /* Check DEN bit on first cycle of the line following the first DMA line  */
+    if ((vicii.raster_line == VICII_FIRST_DMA_LINE) && !vicii.allow_bad_lines && (vicii.regs[0x11] & 0x10)) {
+        vicii.allow_bad_lines = 1;
+    }
+
+    /* Disallow bad lines after the last possible one has passed */
+    if (vicii.raster_line == VICII_LAST_DMA_LINE) {
+        vicii.allow_bad_lines = 0;
+    }
+
+    vicii.bad_line = 0;
+}
+
 /* Memory access cycle 1:
     Character fetch/Counter A
    Memory access cycle 2:
@@ -56,20 +94,16 @@ int viciidtv_cycle_1_2(void)
     }
 
     if (vicii.raster_cycle == 65) {
-        vicii.raster_cycle = 0;
-        vicii_raster_draw_alarm_handler(maincpu_clk, 0);
+        viciidtv_cycle_start_of_line();
     }
 
     if (vicii.raster_cycle == 64) {
-        vicii.raster_line++;
-        if (vicii.raster_line == vicii.screen_height) {
-            vicii.raster_line = 0;
-        }
+        viciidtv_cycle_end_of_line();
     }
 
     if (vicii.raster_line == vicii.raster_irq_line) {
         if (vicii.raster_cycle == vicii.raster_irq_offset) {
-            vicii_irq_alarm_handler(maincpu_clk, 0);
+            vicii_irq_raster_trigger();
         }
     }
 
@@ -85,18 +119,50 @@ int viciidtv_cycle_1_2(void)
         }
     }
 
-    switch (vicii.raster_cycle) {
-        /*case 8:*/ /* VICII_FETCH_CYCLE (overscan) */
-        case 11: /* VICII_FETCH_CYCLE */
-            viciidtv_fetch_start();
-            break;
-        default:
-            break;
+    /******
+     *
+     * Graphics logic
+     *
+     */
+
+    /* Check DEN bit on first DMA line */
+    if ((vicii.raster_line == VICII_FIRST_DMA_LINE) && !vicii.allow_bad_lines) {
+        vicii.allow_bad_lines = (vicii.regs[0x11] & 0x10) ? 1 : 0;
+    }
+
+    /* Check badline condition, trigger fetches */
+    if (vicii.allow_bad_lines) {
+        check_badline();
+    }
+
+    /* Update VC (Cycle 14? on PAL) */
+    if (vicii.raster_cycle == 13) {
+        vicii.vc = vicii.vcbase;
+        vicii.vmli = 0;
+        if (vicii.bad_line) {
+            vicii.rc = 0;
+        }
+    }
+
+    /* Update RC (Cycle 58? on PAL) */
+    if (vicii.raster_cycle == 58) {
+        /* `rc' makes the chip go to idle state when it reaches the
+           maximum value.  */
+        if (vicii.rc == 7) {
+            vicii.idle_state = 1;
+            vicii.vcbase = vicii.vc;
+        }
+        if (!vicii.idle_state || vicii.bad_line) {
+            vicii.rc = (vicii.rc + 1) & 0x7;
+            vicii.idle_state = 0;
+        }
     }
 
     if (vicii.prefetch_cycles) {
         ba_low = !vicii.colorfetch_disable;
-    } else if (vicii.fetch_active) {
+    }
+
+    if ((vicii.raster_cycle >= 14) && (vicii.raster_cycle <= 53)) {
         if (vicii.fetch_mode != VICIIDTV_FETCH_NORMAL) {
             viciidtv_fetch_linear_a();
         }
@@ -120,10 +186,6 @@ void viciidtv_cycle_3(void)
 
     if ((!vicii.idle_state) && (vicii.raster_cycle >= 14) && (vicii.raster_cycle <= 53)) {
         viciidtv_fetch_graphics();
-    }
-
-    if (vicii.raster_cycle == 53) {
-        viciidtv_fetch_stop();
     }
 }
 

@@ -53,6 +53,16 @@
 #define VICII_MAX_SPRITE_WIDTH 56  /* expanded sprite in bug area */
 #define VICIIDTV_NUM_COLORS    256
 
+/* Bad line range.  */
+#define VICII_FIRST_DMA_LINE      0x30
+#define VICII_LAST_DMA_LINE       0xf7
+
+/* drawing constants. */
+#define VICII_DRAW_BUFFER_SIZE (65 * 8)
+
+/* just a dummy for the vicii-draw.c wrapper */
+#define VICII_DUMMY_MODE (0)
+
 /* Available video modes.  The number is given by
    ((vicii.regs[0x11] & 0x60) | (vicii.regs[0x16] & 0x10)) >> 4.  */
 /* Also for DTV: 
@@ -161,7 +171,21 @@ enum vicii_fetch_mode_s {
 };
 typedef enum vicii_fetch_mode_s vicii_fetch_mode_t;
 
-struct alarm_s;
+struct vicii_sprite_s {
+    /* Sprite data to display */
+    DWORD data;
+    /* 6 bit counters */
+    BYTE mc;
+    BYTE mcbase;
+    /* 8 bit pointer */
+    BYTE pointer;
+    /* Expansion flop */
+    int exp_flop;
+    /* X coordinate */
+    int x;
+};
+typedef struct vicii_sprite_s vicii_sprite_t;
+
 struct video_chip_cap_s;
 
 struct vicii_s {
@@ -247,6 +271,15 @@ struct vicii_s {
     /* Graphics buffer (bitmap/LinearB) */
     BYTE gbuf[VICII_SCREEN_TEXTCOLS_OVERSCAN * 8];
 
+    /* Current rendering position into the draw buffer */
+    int dbuf_offset;
+
+    /* Draw buffer for a full line (one byte per pixel) */
+    BYTE dbuf[VICII_DRAW_BUFFER_SIZE];
+
+    /* parsed vicii register fields */
+    unsigned int ysmooth;
+
     /* If this flag is set, bad lines (DMA's) can happen.  */
     int allow_bad_lines;
 
@@ -272,10 +305,16 @@ struct vicii_s {
     int memory_fetch_done;
 
     /* Internal memory pointer (VCBASE).  */
-    int memptr;
+    int vcbase;
 
     /* Internal memory counter (VC).  */
-    int mem_counter;
+    int vc;
+
+    /* Internal row counter (RC).  */
+    int rc;
+
+    /* Offset to the vbuf/cbuf buffer (VMLI) */
+    int vmli;
 
     /* Flag: is the current line a `bad' line? */
     int bad_line;
@@ -316,22 +355,21 @@ struct vicii_s {
     int fetch_active;
     int prefetch_cycles;
 
+    /* Flag: is sprite DMA active? */
+    BYTE sprite_dma;
+
+    /* State of sprites. */
+    vicii_sprite_t sprite[VICII_NUM_SPRITES];
+
     /* Geometry and timing parameters of the selected VIC-II emulation.  */
     unsigned int screen_height;
     int first_displayed_line;
     int last_displayed_line;
 
-    unsigned int row_25_start_line;
-    unsigned int row_25_stop_line;
-    unsigned int row_24_start_line;
-    unsigned int row_24_stop_line;
-
     int screen_leftborderwidth;
     int screen_rightborderwidth;
+
     int cycles_per_line;
-    int draw_cycle;
-    int sprite_fetch_cycle;
-    int sprite_wrap_x;
 
     unsigned int first_dma_line;
     unsigned int last_dma_line;
@@ -383,7 +421,7 @@ extern vicii_t vicii;
 /* Private function calls, used by the other VIC-II modules.  */
 extern void vicii_update_memory_ptrs(unsigned int cycle);
 extern void vicii_update_video_mode(unsigned int cycle);
-extern void vicii_raster_draw_alarm_handler(CLOCK offset, void *data);
+extern void vicii_raster_draw_handler(void);
 
 /* Debugging options.  */
 

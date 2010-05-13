@@ -30,7 +30,6 @@
 #include "c64dtv.h"
 #include "machine.h"
 #include "resources.h"
-#include "viciidtv-sprites.h"
 #include "viciidtv-timing.h"
 #include "vicii.h"
 #include "viciidtvtypes.h"
@@ -77,30 +76,6 @@
 #define VICII_PAL_CYCLES_PER_LINE      C64_PAL_CYCLES_PER_LINE
 #define VICII_NTSC_CYCLES_PER_LINE     C64_NTSC_CYCLES_PER_LINE
 
-/* Cycle # at which sprite DMA is set.  */
-#define VICII_PAL_SPRITE_FETCH_CYCLE       54
-#define VICII_NTSC_SPRITE_FETCH_CYCLE      55
-
-#define VICII_PAL_SPRITE_WRAP_X     504
-#define VICII_NTSC_SPRITE_WRAP_X    520
-
-/* Cycle # at which the current raster line is re-drawn.  It is set to
-   `VICII_CYCLES_PER_LINE', so this actually happens at the very beginning
-   (i.e. cycle 0) of the next line.  */
-#define VICII_PAL_DRAW_CYCLE       VICII_PAL_CYCLES_PER_LINE
-#define VICII_NTSC_DRAW_CYCLE      VICII_NTSC_CYCLES_PER_LINE
-
-/* Common parameters for all video standards */
-#define VICII_25ROW_START_LINE    0x33
-#define VICII_25ROW_STOP_LINE     0xfb
-#define VICII_24ROW_START_LINE    0x37
-#define VICII_24ROW_STOP_LINE     0xf7
-
-/* Bad line range.  */
-#define VICII_FIRST_DMA_LINE      0x30
-#define VICII_LAST_DMA_LINE       0xf7
-
-
 void vicii_timing_set(machine_timing_t *machine_timing, int border_mode)
 {
     int mode;
@@ -132,9 +107,6 @@ void vicii_timing_set(machine_timing_t *machine_timing, int border_mode)
             break;
         }
         vicii.cycles_per_line = VICII_NTSC_CYCLES_PER_LINE;
-        vicii.draw_cycle = VICII_NTSC_DRAW_CYCLE;
-        vicii.sprite_fetch_cycle = VICII_NTSC_SPRITE_FETCH_CYCLE;
-        vicii.sprite_wrap_x = VICII_NTSC_SPRITE_WRAP_X;
         break;
       case MACHINE_SYNC_PAL:
       default:
@@ -161,21 +133,6 @@ void vicii_timing_set(machine_timing_t *machine_timing, int border_mode)
             break;
         }
         vicii.cycles_per_line = VICII_PAL_CYCLES_PER_LINE;
-        vicii.draw_cycle = VICII_PAL_DRAW_CYCLE;
-        vicii.sprite_fetch_cycle = VICII_PAL_SPRITE_FETCH_CYCLE;
-        vicii.sprite_wrap_x = VICII_PAL_SPRITE_WRAP_X;
         break;
     }
-
-    vicii.first_dma_line = VICII_FIRST_DMA_LINE;
-    vicii.last_dma_line = VICII_LAST_DMA_LINE;
-    vicii.row_25_start_line = VICII_25ROW_START_LINE;
-    vicii.row_25_stop_line = VICII_25ROW_STOP_LINE;
-    vicii.row_24_start_line = VICII_24ROW_START_LINE;
-    vicii.row_24_stop_line = VICII_24ROW_STOP_LINE;
-
-    vicii.raster.display_xstart = VICII_40COL_START_PIXEL;
-    vicii.raster.display_xstop = VICII_40COL_STOP_PIXEL;
-
-    vicii_sprites_init_sprline();
 }

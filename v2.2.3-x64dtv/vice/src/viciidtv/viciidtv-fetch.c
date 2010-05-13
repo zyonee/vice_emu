@@ -38,57 +38,29 @@
 #include "dma.h"
 #include "log.h"
 #include "maindtvcpu.h"
-
-#ifdef WATCOM_COMPILE
-#include "../mem.h"
-#else
 #include "mem.h"
-#endif
-
 #include "raster-sprite-status.h"
 #include "raster-sprite.h"
 #include "raster.h"
 #include "types.h"
 #include "viciidtv-fetch.h"
 #include "viciidtv-irq.h"
-#include "viciidtv-sprites.h"
 #include "viciidtvtypes.h"
 
 
 /*-----------------------------------------------------------------------*/
 
-inline static void swap_sprite_data_buffers(void)
-{
-    DWORD *tmp;
-    raster_sprite_status_t *sprite_status;
-
-    /* Swap sprite data buffers.  */
-    sprite_status = vicii.raster.sprite_status;
-    tmp = sprite_status->sprite_data;
-    sprite_status->sprite_data = sprite_status->new_sprite_data;
-    sprite_status->new_sprite_data = tmp;
-    sprite_status->new_dma_msk = sprite_status->dma_msk;
-}
-
 /* Enable DMA for sprite `num'.  */
-inline static void turn_sprite_dma_on(unsigned int num)
+inline static void turn_sprite_dma_on(unsigned int i)
 {
-    raster_sprite_status_t *sprite_status;
-    raster_sprite_t *sprite;
-
-    sprite_status = vicii.raster.sprite_status;
-    sprite = sprite_status->sprites + num;
-
-    sprite_status->new_dma_msk |= 1 << num;
-    sprite->dma_flag = 1;
-    sprite->memptr = 0;
-    sprite->exp_flag = sprite->y_expanded ? 0 : 1;
-    sprite->memptr_inc = sprite->exp_flag ? 3 : 0;
+    vicii.sprite_dma |= 1 << i;
+    vicii.sprite[i].mcbase = 0;
+    vicii.sprite[i].exp_flop = 1;
 }
 
 inline static int check_sprite_dma(int i)
 {
-    return vicii.raster.sprite_status->sprites[i].dma_flag;
+    return vicii.sprite_dma & (1 << i);
 }
 
 inline static int sprite_dma_cycle_1(int i)
@@ -193,24 +165,11 @@ inline static int trigger_sprite_dma(int i)
 
 /*-----------------------------------------------------------------------*/
 
-inline static BYTE gfx_data_illegal_bitmap(unsigned int num)
-{
-    unsigned int j;
-
-    j = ((vicii.memptr << 3) + vicii.raster.ycounter + num * 8);
-
-    if (j & 0x1000) {
-        return vicii.bitmap_high_ptr[j & 0x9ff];
-    } else {
-        return vicii.bitmap_low_ptr[j & 0x9ff];
-    }
-}
-
 inline static BYTE gfx_data_hires_bitmap(unsigned int num)
 {
     unsigned int j;
 
-    j = ((vicii.memptr << 3) + vicii.raster.ycounter + num * 8);
+    j = (num << 3) | vicii.rc;
 
     if (j & 0x1000) {
         return vicii.bitmap_high_ptr[j & 0xfff];
@@ -219,53 +178,12 @@ inline static BYTE gfx_data_hires_bitmap(unsigned int num)
     }
 }
 
-inline static BYTE gfx_data_extended_text(unsigned int c)
-{
-    return vicii.chargen_ptr[(c & 0x3f) * 8 + vicii.raster.ycounter];
-}
-
 inline static BYTE gfx_data_normal_text(unsigned int c)
 {
-    return vicii.chargen_ptr[c * 8 + vicii.raster.ycounter];
+    return vicii.chargen_ptr[c * 8 + vicii.rc];
 }
 
 /*-----------------------------------------------------------------------*/
-
-void viciidtv_fetch_start(void)
-{
-    raster_t *raster;
-    raster = &vicii.raster;
-
-    vicii.fetch_active = 1;
-
-    if ((vicii.raster_line & 7) == (unsigned int)raster->ysmooth
-        && vicii.allow_bad_lines
-        && vicii.raster_line >= vicii.first_dma_line
-        && vicii.raster_line <= vicii.last_dma_line) {
-
-        vicii.mem_counter = vicii.memptr;
-
-        raster->draw_idle_state = 0;
-        raster->ycounter = 0;
-
-        vicii.idle_state = 0;
-        vicii.ycounter_reset_checked = 1;
-        vicii.memory_fetch_done = 2;
-        vicii.bad_line = 1;
-
-        vicii.prefetch_cycles = 3;
-        vicii.buf_offset = 0;
-        vicii.gbuf_offset = 0;
-    }
-}
-
-void viciidtv_fetch_stop(void)
-{
-    vicii.fetch_active = 0;
-    vicii.bad_line = 0;
-    vicii.buf_offset = 0;
-    vicii.gbuf_offset = 0;
-}
 
 void viciidtv_fetch_linear_a(void)
 {
@@ -281,18 +199,15 @@ int viciidtv_fetch_matrix(void)
             break;
 
         case VICIIDTV_FETCH_NORMAL:
-            vicii.vbuf[vicii.buf_offset] = vicii.screen_base_phi2[vicii.mem_counter];
+            vicii.vbuf[vicii.vmli] = vicii.screen_base_phi2[vicii.vc];
             /* fall through */
         case VICIIDTV_FETCH_LINEAR:
             if (!vicii.colorfetch_disable) {
-                vicii.cbuf[vicii.buf_offset] = vicii.color_ram_ptr[vicii.mem_counter];
+                vicii.cbuf[vicii.vmli] = vicii.color_ram_ptr[vicii.vc];
                 ba_low = 1;
             }
             break;
     }
-
-    vicii.mem_counter++;
-    vicii.mem_counter &= 0x3ff;
 
     return ba_low;
 }
@@ -307,27 +222,27 @@ void viciidtv_fetch_graphics(void)
 
         case VICIIDTV_FETCH_NORMAL:
             {
-                switch (vicii.raster.video_mode) {
+                switch (vicii.video_mode) {
                     case VICII_NORMAL_TEXT_MODE:
                     case VICII_MULTICOLOR_TEXT_MODE:
                     case VICII_8BPP_NORMAL_TEXT_MODE:
                     case VICII_8BPP_MULTICOLOR_TEXT_MODE:
-                        vicii.gbuf[vicii.gbuf_offset] = gfx_data_normal_text(vicii.vbuf[vicii.buf_offset]);
+                        vicii.gbuf[vicii.gbuf_offset] = gfx_data_normal_text(vicii.vbuf[vicii.vmli]);
                         break;
                     case VICII_HIRES_BITMAP_MODE:
                     case VICII_MULTICOLOR_BITMAP_MODE:
                     case VICII_8BPP_HIRES_BITMAP_MODE:
                     case VICII_8BPP_MULTICOLOR_BITMAP_MODE:
-                        vicii.gbuf[vicii.gbuf_offset] = gfx_data_hires_bitmap(vicii.buf_offset);
+                        vicii.gbuf[vicii.gbuf_offset] = gfx_data_hires_bitmap(vicii.vc);
                         break;
                     case VICII_EXTENDED_TEXT_MODE:
                     case VICII_ILLEGAL_TEXT_MODE:
                     case VICII_8BPP_EXTENDED_TEXT_MODE:
-                        vicii.gbuf[vicii.gbuf_offset] = gfx_data_extended_text(vicii.vbuf[vicii.buf_offset]);
+                        vicii.gbuf[vicii.gbuf_offset] = gfx_data_normal_text(vicii.vbuf[vicii.vmli] & (0x01ff >> 3));
                         break;
                     case VICII_ILLEGAL_BITMAP_MODE_1:
                     case VICII_ILLEGAL_BITMAP_MODE_2:
-                        vicii.gbuf[vicii.gbuf_offset] = gfx_data_illegal_bitmap(vicii.buf_offset);
+                        vicii.gbuf[vicii.gbuf_offset] = gfx_data_hires_bitmap(vicii.vc & (0x19ff >> 3));
                         break;
                     default:
                         break;
@@ -340,7 +255,10 @@ void viciidtv_fetch_graphics(void)
             break;
     }
 
-    vicii.buf_offset++;
+    vicii.vmli++;
+
+    vicii.vc++;
+    vicii.vc &= 0x3ff;
 }
 
 int viciidtv_fetch_sprites(int cycle)
@@ -349,8 +267,6 @@ int viciidtv_fetch_sprites(int cycle)
 
     switch (cycle) {
         case 56: /* sprite 0 trigger */
-            swap_sprite_data_buffers();
-            vicii_sprites_reset_sprline();
             ba_low = trigger_sprite_dma(0);
             break;
         case 57:

@@ -185,19 +185,23 @@ static void vicii_set_geometry(void)
     raster_set_geometry(&vicii.raster,
                         width, height, /* canvas dimensions */
                         width, vicii.screen_height, /* screen dimensions */
-                        VICII_SCREEN_XPIX, VICII_SCREEN_YPIX, /* gfx dimensions */
-                        VICII_SCREEN_TEXTCOLS, VICII_SCREEN_TEXTLINES, /* text dimensions */
-                        vicii.screen_leftborderwidth, vicii.row_25_start_line, /* gfx position */
-                        1, /* gfx area can move on DTV */
+                        width, height, /* gfx dimensions */
+                        width/8, height/8, /* text dimensions */
+                        0, 0, /* gfx position */
+                        0, /* gfx area doesn't move */
                         vicii.first_displayed_line,
                         vicii.last_displayed_line,
-                        - VICII_RASTER_X(0), /* extra offscreen border left */
-                        vicii.sprite_wrap_x - VICII_SCREEN_XPIX -
-                        vicii.screen_leftborderwidth - vicii.screen_rightborderwidth + VICII_RASTER_X(0)) /* extra offscreen border right */;
+                        0, /* extra offscreen border left */
+                        0) /* extra offscreen border right */;
+
 #ifdef __MSDOS__
     video_ack_vga_mode();
 #endif
 
+    vicii.raster.display_ystart = 0;
+    vicii.raster.display_ystop = vicii.screen_height;
+    vicii.raster.display_xstart = 0;
+    vicii.raster.display_xstop = width;
 }
 
 static int init_raster(void)
@@ -207,12 +211,16 @@ static int init_raster(void)
     raster = &vicii.raster;
     video_color_set_canvas(raster->canvas);
 
-    raster_sprite_status_new(raster, VICII_NUM_SPRITES, vicii_sprite_offset());
-    raster_line_changes_sprite_init(raster);
+    raster->sprite_status = NULL;
+    raster_line_changes_init(raster);
 
-    if (raster_init(raster, VICII_NUM_VMODES) < 0)
+    /* We only use the dummy mode for "drawing" to raster.
+       Report only 1 video mode and set the idle mode to it. */
+    if (raster_init(raster, 1) < 0) {
         return -1;
-    raster_modes_set_idle_mode(raster->modes, VICII_IDLE_MODE);
+    }
+    raster_modes_set_idle_mode(raster->modes, VICII_DUMMY_MODE);
+
     resources_touch("VICIIVideoCache");
 
     vicii_set_geometry();
@@ -224,17 +232,28 @@ static int init_raster(void)
 
     raster_set_title(raster, machine_name);
 
-    if (raster_realize(raster) < 0)
+    if (raster_realize(raster) < 0) {
         return -1;
-
-    raster->display_ystart = vicii.row_25_start_line;
-    raster->display_ystop = vicii.row_25_stop_line;
-    raster->display_xstart = VICII_40COL_START_PIXEL;
-    raster->display_xstop = VICII_40COL_STOP_PIXEL;
-
-    raster->can_disable_border = 1;
+    }
 
     return 0;
+}
+
+static void vicii_sprites_init(void)
+{
+    int i;
+
+    for (i = 0; i < VICII_NUM_SPRITES; i++) {
+        vicii.sprite[i].data = 0;
+        vicii.sprite[i].mc = 0;
+        vicii.sprite[i].mcbase = 0;
+        vicii.sprite[i].pointer = 0;
+        vicii.sprite[i].exp_flop = 1;
+        vicii.sprite[i].x = 0;
+    }
+
+    vicii.sprite_display_bits = 0;
+    vicii.sprite_dma = 0;
 }
 
 /* Initialize the VIC-II emulation.  */
@@ -289,9 +308,6 @@ void vicii_reset(void)
     /* Remove all the IRQ sources.  */
     vicii.regs[0x1a] = 0;
 
-    vicii.raster.display_ystart = vicii.row_25_start_line;
-    vicii.raster.display_ystop = vicii.row_25_stop_line;
-
     vicii.store_clk = CLOCK_MAX;
 
     vicii.counta = 0;
@@ -301,26 +317,26 @@ void vicii_reset(void)
     vicii.countb_mod = 0;
     vicii.countb_step = 0;
 
-    for(i = 0; i < 256; i++) {
+    for (i = 0; i < 256; i++) {
         vicii.dtvpalette[i] = i;
     }
 
-    vicii.dtvpalette[0]=0;
-    vicii.dtvpalette[1]=0x0f;
-    vicii.dtvpalette[2]=0x36;
-    vicii.dtvpalette[3]=0xbe;
-    vicii.dtvpalette[4]=0x58;
-    vicii.dtvpalette[5]=0xdb;
-    vicii.dtvpalette[6]=0x86;
-    vicii.dtvpalette[7]=0xff;
-    vicii.dtvpalette[8]=0x29;
-    vicii.dtvpalette[9]=0x26;
-    vicii.dtvpalette[10]=0x3b;
-    vicii.dtvpalette[11]=0x05;
-    vicii.dtvpalette[12]=0x07;
-    vicii.dtvpalette[13]=0xdf;
-    vicii.dtvpalette[14]=0x9a;
-    vicii.dtvpalette[15]=0x0a;
+    vicii.dtvpalette[0] = 0;
+    vicii.dtvpalette[1] = 0x0f;
+    vicii.dtvpalette[2] = 0x36;
+    vicii.dtvpalette[3] = 0xbe;
+    vicii.dtvpalette[4] = 0x58;
+    vicii.dtvpalette[5] = 0xdb;
+    vicii.dtvpalette[6] = 0x86;
+    vicii.dtvpalette[7] = 0xff;
+    vicii.dtvpalette[8] = 0x29;
+    vicii.dtvpalette[9] = 0x26;
+    vicii.dtvpalette[10] = 0x3b;
+    vicii.dtvpalette[11] = 0x05;
+    vicii.dtvpalette[12] = 0x07;
+    vicii.dtvpalette[13] = 0xdf;
+    vicii.dtvpalette[14] = 0x9a;
+    vicii.dtvpalette[15] = 0x0a;
 
     /* clear colors so that standard colors can be written without
        having extended_enable=1 */
@@ -368,8 +384,9 @@ void vicii_reset_registers(void)
 {
     WORD i;
 
-    if (!vicii.initialized)
+    if (!vicii.initialized) {
         return;
+    }
 
     vicii.extended_enable = 1;
     vicii.extended_lockout = 0;
@@ -378,15 +395,13 @@ void vicii_reset_registers(void)
         vicii_store(i, 0);
     }
 
-    vicii_store(0x36,0x76);
+    vicii_store(0x36, 0x76);
 
     for (i = 0x40; i <= 0x4f; i++) {
         vicii_store(i, 0);
     }
 
     vicii_store(0x3f, 0);
-
-    raster_sprite_status_reset(vicii.raster.sprite_status, vicii_sprite_offset());
 }
 
 /* This /should/ put the VIC-II in the same state as after a powerup, if
@@ -419,7 +434,6 @@ void vicii_powerup(void)
     vicii.force_black_overscan_background_color = 0;
     vicii.vbank_phi1 = 0;
     vicii.vbank_phi2 = 0;
-    /* vicii.vbank_ptr = ram; */
     vicii.idle_data = 0;
 
     vicii_reset();
@@ -853,9 +867,9 @@ void vicii_update_video_mode(unsigned int cycle)
 #endif
 }
 
-/* Redraw the current raster line.  This happens at cycle VICII_DRAW_CYCLE
+/* Redraw the current raster line.  This happens after the last cycle
    of each line.  */
-void vicii_raster_draw_alarm_handler(CLOCK offset, void *data)
+void vicii_raster_draw_handler(void)
 {
     BYTE prev_sprite_sprite_collisions;
     BYTE prev_sprite_background_collisions;
