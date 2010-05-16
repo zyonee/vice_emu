@@ -76,7 +76,6 @@
 #include "ram.h"
 #include "sid.h"
 #include "viciidtv-mem.h"
-#include "viciidtv-phi1.h"
 #include "vicii.h"
 #include "viciidtv.h"
 

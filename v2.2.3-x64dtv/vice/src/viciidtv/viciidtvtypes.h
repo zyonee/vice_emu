@@ -319,18 +319,6 @@ struct vicii_s {
     /* Flag: is the current line a `bad' line? */
     int bad_line;
 
-    /* Flag: Check for raster.ycounter reset already done on this line?
-       (cycle 13) */
-    int ycounter_reset_checked;
-
-    /* Flag: Does the currently selected video mode force the overscan
-       background color to be black?  (This happens with the hires bitmap and
-       illegal modes.)  */
-    int force_black_overscan_background_color;
-
-    /* Background color source */
-    int background_color_source;
-
     /* Start of the memory bank seen by the VIC-II.  */
     int vbank_phi1;                     /* = 0; */
     int vbank_phi2;                     /* = 0; */
@@ -355,6 +343,9 @@ struct vicii_s {
     int fetch_active;
     int prefetch_cycles;
 
+    /* Mask for sprites being displayed.  */
+    unsigned int sprite_display_bits;
+
     /* Flag: is sprite DMA active? */
     BYTE sprite_dma;
 
@@ -373,14 +364,6 @@ struct vicii_s {
 
     unsigned int first_dma_line;
     unsigned int last_dma_line;
-
-    /* Flag backgroundcolor in hires mode or extended text mode.  */
-    int get_background_from_vbuf;
-
-    /* Value to store before DMA.  */
-    CLOCK store_clk;
-    WORD store_addr;
-    BYTE store_value;
 
     /* Last value read from VICII (used for RMW access).  */
     BYTE last_read;
@@ -419,8 +402,8 @@ typedef struct vicii_s vicii_t;
 extern vicii_t vicii;
 
 /* Private function calls, used by the other VIC-II modules.  */
-extern void vicii_update_memory_ptrs(unsigned int cycle);
-extern void vicii_update_video_mode(unsigned int cycle);
+extern void vicii_update_memory_ptrs(void);
+extern void vicii_update_video_mode(void);
 extern void vicii_raster_draw_handler(void);
 
 /* Debugging options.  */

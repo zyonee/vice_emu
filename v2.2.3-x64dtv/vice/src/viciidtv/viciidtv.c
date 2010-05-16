@@ -48,26 +48,16 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "alarm.h"
 #include "c64dtv.h"
 #include "c64dtvblitter.h"
 #include "c64dtvdma.h"
-#include "clkguard.h"
-#include "dma.h"
 #include "lib.h"
 #include "log.h"
 #include "machine.h"
 #include "maindtvcpu.h"
-
-#ifdef WATCOM_COMPILE
-#include "../mem.h"
-#else
 #include "mem.h"
-#endif
-
 #include "raster-line.h"
 #include "raster-modes.h"
-#include "raster-sprite-status.h"
 #include "raster-sprite.h"
 #include "resources.h"
 #include "screenshot.h"
@@ -78,7 +68,6 @@
 #include "viciidtv-fetch.h"
 #include "viciidtv-irq.h"
 #include "viciidtv-mem.h"
-#include "viciidtv-sprites.h"
 #include "viciidtv-resources.h"
 #include "viciidtv-timing.h"
 #include "vicii.h"
@@ -268,8 +257,8 @@ raster_t *vicii_init(unsigned int flag)
     vicii_powerup();
 
     vicii.video_mode = -1;
-    vicii_update_video_mode(0);
-    vicii_update_memory_ptrs(0);
+    vicii_update_video_mode();
+    vicii_update_memory_ptrs();
 
     vicii.raster_cycle = 0;
     vicii_draw_init();
@@ -307,8 +296,6 @@ void vicii_reset(void)
 
     /* Remove all the IRQ sources.  */
     vicii.regs[0x1a] = 0;
-
-    vicii.store_clk = CLOCK_MAX;
 
     vicii.counta = 0;
     vicii.counta_mod = 0;
@@ -425,24 +412,13 @@ void vicii_powerup(void)
     vicii.allow_bad_lines = 0;
     vicii.sprite_sprite_collisions = vicii.sprite_background_collisions = 0;
     vicii.idle_state = 0;
-    vicii.force_display_state = 0;
-    vicii.memory_fetch_done = 0;
-    vicii.memptr = 0;
-    vicii.mem_counter = 0;
     vicii.bad_line = 0;
-    vicii.ycounter_reset_checked = 0;
-    vicii.force_black_overscan_background_color = 0;
     vicii.vbank_phi1 = 0;
     vicii.vbank_phi2 = 0;
-    vicii.idle_data = 0;
 
     vicii_reset();
 
-    vicii.raster.blank = 1;
-    vicii.raster.display_ystart = vicii.row_24_start_line;
-    vicii.raster.display_ystop = vicii.row_24_stop_line;
-
-    vicii.raster.ysmooth = 0;
+    vicii.ysmooth = 0;
 }
 
 /* ---------------------------------------------------------------------*/
@@ -450,14 +426,9 @@ void vicii_powerup(void)
 /* This hook is called whenever video bank must be changed.  */
 static inline void vicii_set_vbanks(int vbank_p1, int vbank_p2)
 {
-    /* Warning: assumes it's called within a memory write access.
-       FIXME: Change name?  */
-    /* Also, we assume the bank has *really* changed, and do not do any
-       special optimizations for the not-really-changed case.  */
-    vicii_handle_pending_alarms(maincpu_rmw_flag + 1);
     vicii.vbank_phi1 = vbank_p1;
     vicii.vbank_phi2 = vbank_p2;
-    vicii_update_memory_ptrs(VICII_RASTER_CYCLE(maincpu_clk));
+    vicii_update_memory_ptrs();
 }
 
 /* Phi1 and Phi2 accesses */
@@ -484,12 +455,9 @@ void vicii_set_phi2_vbank(int num_vbank)
 /* Change the base of RAM seen by the VIC-II.  */
 static inline void vicii_set_ram_bases(BYTE *base_p1, BYTE *base_p2)
 {
-    /* WARNING: assumes `maincpu_rmw_flag' is 0 or 1.  */
-    vicii_handle_pending_alarms(maincpu_rmw_flag + 1);
-
     vicii.ram_base_phi1 = base_p1;
     vicii.ram_base_phi2 = base_p2;
-    vicii_update_memory_ptrs(VICII_RASTER_CYCLE(maincpu_clk));
+    vicii_update_memory_ptrs();
 }
 
 void vicii_set_ram_base(BYTE *base)
@@ -510,18 +478,14 @@ void vicii_set_phi2_ram_base(BYTE *base)
 
 void vicii_update_memory_ptrs_external(void)
 {
-    if (vicii.initialized > 0)
-        vicii_update_memory_ptrs(VICII_RASTER_CYCLE(maincpu_clk));
+    if (vicii.initialized > 0) {
+        vicii_update_memory_ptrs();
+    }
 }
 
 /* Set the memory pointers according to the values in the registers.  */
-void vicii_update_memory_ptrs(unsigned int cycle)
+void vicii_update_memory_ptrs(void)
 {
-    /* FIXME: This is *horrible*!  */
-    static BYTE *old_screen_ptr, *old_bitmap_low_ptr, *old_bitmap_high_ptr;
-    static BYTE *old_chargen_ptr;
-    static int old_vbank_p1 = -1;
-    static int old_vbank_p2 = -1;
     WORD screen_addr;             /* Screen start address.  */
     BYTE *char_base;              /* Pointer to character memory.  */
     BYTE *bitmap_low_base;        /* Pointer to bitmap memory (low part).  */
@@ -581,123 +545,41 @@ void vicii_update_memory_ptrs(unsigned int cycle)
         /* TODO other modes */
         case VICII_8BPP_PIXEL_CELL_MODE:
         case VICII_ILLEGAL_LINEAR_MODE:
-            vicii.screen_base_phi2 = vicii.ram_base_phi2 + (vicii.regs[0x45]<<16) + (vicii.regs[0x3b]<<8) + vicii.regs[0x3a];
+            vicii.screen_base_phi2 = vicii.ram_base_phi2 + (vicii.regs[0x45] << 16) + (vicii.regs[0x3b] << 8) + vicii.regs[0x3a];
             break;
         default:
-            vicii.screen_base_phi2 += (vicii.regs[0x45]<<16);
-            char_base += (vicii.regs[0x3d]<<16);
-            bitmap_low_base += (vicii.regs[0x3d]<<16);
-            bitmap_high_base += (vicii.regs[0x3d]<<16);
+            vicii.screen_base_phi2 += (vicii.regs[0x45] << 16);
+            char_base += (vicii.regs[0x3d] << 16);
+            bitmap_low_base += (vicii.regs[0x3d] << 16);
+            bitmap_high_base += (vicii.regs[0x3d] << 16);
             break;
     }
 
-    tmp = VICII_RASTER_CHAR(cycle);
-
-    if (tmp <= 0) {
-        old_screen_ptr = vicii.screen_ptr = vicii.screen_base_phi2;
-        old_bitmap_low_ptr = vicii.bitmap_low_ptr = bitmap_low_base;
-        old_bitmap_high_ptr = vicii.bitmap_high_ptr = bitmap_high_base;
-        old_chargen_ptr = vicii.chargen_ptr = char_base;
-        old_vbank_p1 = vicii.vbank_phi1;
-        old_vbank_p2 = vicii.vbank_phi2;
-        /* vicii.vbank_ptr = vicii.ram_base + vicii.vbank; */
-    } else if (tmp < VICII_SCREEN_TEXTCOLS) {
-        if (vicii.screen_base_phi2 != old_screen_ptr) {
-            raster_changes_foreground_add_ptr(&vicii.raster, tmp,
-                                              (void *)&vicii.screen_ptr,
-                                              (void *)vicii.screen_base_phi2);
-            old_screen_ptr = vicii.screen_base_phi2;
-        }
-
-        if (bitmap_low_base != old_bitmap_low_ptr) {
-            raster_changes_foreground_add_ptr(&vicii.raster,
-                                              tmp,
-                                              (void *)&vicii.bitmap_low_ptr,
-                                              (void *)(bitmap_low_base));
-            old_bitmap_low_ptr = bitmap_low_base;
-        }
-
-        if (bitmap_high_base != old_bitmap_high_ptr) {
-            raster_changes_foreground_add_ptr(&vicii.raster,
-                                              tmp,
-                                              (void *)&vicii.bitmap_high_ptr,
-                                              (void *)(bitmap_high_base));
-            old_bitmap_high_ptr = bitmap_high_base;
-        }
-
-        if (char_base != old_chargen_ptr) {
-            raster_changes_foreground_add_ptr(&vicii.raster,
-                                              tmp,
-                                              (void *)&vicii.chargen_ptr,
-                                              (void *)char_base);
-            old_chargen_ptr = char_base;
-        }
-
-        if (vicii.vbank_phi1 != old_vbank_p1) {
-            old_vbank_p1 = vicii.vbank_phi1;
-        }
-
-        if (vicii.vbank_phi2 != old_vbank_p2) {
-            old_vbank_p2 = vicii.vbank_phi2;
-        }
-    } else {
-        if (vicii.screen_base_phi2 != old_screen_ptr) {
-            raster_changes_next_line_add_ptr(&vicii.raster,
-                                             (void *)&vicii.screen_ptr,
-                                             (void *)vicii.screen_base_phi2);
-            old_screen_ptr = vicii.screen_base_phi2;
-        }
-
-        if (bitmap_low_base != old_bitmap_low_ptr) {
-            raster_changes_next_line_add_ptr(&vicii.raster,
-                                             (void *)&vicii.bitmap_low_ptr,
-                                             (void *)(bitmap_low_base));
-            old_bitmap_low_ptr = bitmap_low_base;
-        }
-
-        if (bitmap_high_base != old_bitmap_high_ptr) {
-            raster_changes_next_line_add_ptr(&vicii.raster,
-                                             (void *)&vicii.bitmap_high_ptr,
-                                             (void *)(bitmap_high_base));
-            old_bitmap_high_ptr = bitmap_high_base;
-        }
-
-        if (char_base != old_chargen_ptr) {
-            raster_changes_next_line_add_ptr(&vicii.raster,
-                                             (void *)&vicii.chargen_ptr,
-                                             (void *)char_base);
-            old_chargen_ptr = char_base;
-        }
-
-        if (vicii.vbank_phi1 != old_vbank_p1) {
-            old_vbank_p1 = vicii.vbank_phi1;
-        }
-
-        if (vicii.vbank_phi2 != old_vbank_p2) {
-            old_vbank_p2 = vicii.vbank_phi2;
-        }
-    }
+    vicii.screen_ptr = vicii.screen_base_phi2;
+    vicii.bitmap_low_ptr = bitmap_low_base;
+    vicii.bitmap_high_ptr = bitmap_high_base;
+    vicii.chargen_ptr = char_base;
 }
 
 /* Set the video mode according to the values in registers $D011 and $D016 of
    the VIC-II chip.  */
-void vicii_update_video_mode(unsigned int cycle)
+void vicii_update_video_mode(void)
 {
     int new_video_mode;
 
     new_video_mode = ((vicii.regs[0x11] & 0x60)
                      | (vicii.regs[0x16] & 0x10)) >> 4;
 
-    new_video_mode |= (((vicii.regs[0x3c] & 0x04)<<1)
-                     | ((vicii.regs[0x3c] & 0x01)<<3));
+    new_video_mode |= (((vicii.regs[0x3c] & 0x04) << 1)
+                     | ((vicii.regs[0x3c] & 0x01) << 3));
 
     if (((new_video_mode) == VICII_8BPP_FRED_MODE)
-       && ((vicii.regs[0x3c] & 0x04)==0)) {
+       && ((vicii.regs[0x3c] & 0x04) == 0)) {
          new_video_mode = VICII_8BPP_FRED2_MODE;
     }
 
     if (((new_video_mode) == VICII_8BPP_CHUNKY_MODE)
-       && ((vicii.regs[0x3c] & 0x10)==0)) {
+       && ((vicii.regs[0x3c] & 0x10) == 0)) {
         if (vicii.regs[0x3c] & 0x04) {
             new_video_mode = VICII_8BPP_PIXEL_CELL_MODE;
         } else {
@@ -705,99 +587,9 @@ void vicii_update_video_mode(unsigned int cycle)
         }
     }
 
-    /* HACK to make vcache display gfx in chunky & the rest */
-    if ((new_video_mode >= VICII_8BPP_CHUNKY_MODE)&&
-        (new_video_mode <= VICII_8BPP_PIXEL_CELL_MODE)) {
-            vicii.raster.dont_cache = 1;
-    }
-
     viciidtv_update_colorram();
 
-    if (new_video_mode != vicii.video_mode) {
-        switch (new_video_mode) {
-          case VICII_ILLEGAL_TEXT_MODE:
-          case VICII_ILLEGAL_BITMAP_MODE_1:
-          case VICII_ILLEGAL_BITMAP_MODE_2:
-          case VICII_ILLEGAL_LINEAR_MODE:
-            /* Force the overscan color to black.  */
-            raster_changes_background_add_int
-                (&vicii.raster, VICII_RASTER_X(cycle),
-                &vicii.raster.idle_background_color, 0);
-            raster_changes_background_add_int
-                (&vicii.raster,
-                VICII_RASTER_X(VICII_RASTER_CYCLE(maincpu_clk)),
-                &vicii.raster.xsmooth_color, 0);
-            vicii.get_background_from_vbuf = 0;
-            vicii.force_black_overscan_background_color = 1;
-            break;
-          case VICII_HIRES_BITMAP_MODE:
-            raster_changes_background_add_int
-                (&vicii.raster, VICII_RASTER_X(cycle),
-                &vicii.raster.idle_background_color, 0);
-            raster_changes_background_add_int
-                (&vicii.raster,
-                VICII_RASTER_X(VICII_RASTER_CYCLE(maincpu_clk)),
-                &vicii.raster.xsmooth_color,
-                vicii.background_color_source & 0x0f);
-            vicii.get_background_from_vbuf = VICII_HIRES_BITMAP_MODE;
-            vicii.force_black_overscan_background_color = 1;
-            break;
-          case VICII_EXTENDED_TEXT_MODE:
-            raster_changes_background_add_int
-                (&vicii.raster, VICII_RASTER_X(cycle),
-                &vicii.raster.idle_background_color,
-                vicii.dtvpalette[vicii.regs[0x21]]);
-            raster_changes_background_add_int
-                (&vicii.raster,
-                VICII_RASTER_X(VICII_RASTER_CYCLE(maincpu_clk)),
-                &vicii.raster.xsmooth_color,
-                vicii.dtvpalette[vicii.regs[0x21 + (vicii.background_color_source >> 6)]]);
-            vicii.get_background_from_vbuf = VICII_EXTENDED_TEXT_MODE;
-            vicii.force_black_overscan_background_color = 0;
-            break;
-          default:
-            /* The overscan background color is given by the background
-               color register.  */
-            raster_changes_background_add_int
-                (&vicii.raster, VICII_RASTER_X(cycle),
-                &vicii.raster.idle_background_color,
-                vicii.dtvpalette[vicii.regs[0x21]]);
-            raster_changes_background_add_int
-                (&vicii.raster,
-                VICII_RASTER_X(VICII_RASTER_CYCLE(maincpu_clk)),
-                &vicii.raster.xsmooth_color,
-                vicii.dtvpalette[vicii.regs[0x21]]);
-            vicii.get_background_from_vbuf = 0;
-            vicii.force_black_overscan_background_color = 0;
-            break;
-        }
-
-        {
-            int pos;
-
-            pos = VICII_RASTER_CHAR(cycle) - 1;
-
-            raster_changes_background_add_int(&vicii.raster,
-                                              VICII_RASTER_X(cycle),
-                                              &vicii.raster.video_mode,
-                                              new_video_mode);
-
-            raster_changes_foreground_add_int(&vicii.raster, pos,
-                                              &vicii.raster.last_video_mode,
-                                              vicii.video_mode);
-
-            raster_changes_foreground_add_int(&vicii.raster, pos,
-                                              &vicii.raster.video_mode,
-                                              new_video_mode);
-
-            raster_changes_foreground_add_int(&vicii.raster, pos + 2,
-                                              &vicii.raster.last_video_mode,
-                                              -1);
-
-        }
-
-        vicii.video_mode = new_video_mode;
-    }
+    vicii.video_mode = new_video_mode;
 
 #ifdef VICII_VMODE_DEBUG
     switch (new_video_mode) {
@@ -863,7 +655,7 @@ void vicii_update_video_mode(unsigned int cycle)
     }
 
     VICII_DEBUG_VMODE(("Mode enabled at line $%04X, cycle %d.",
-                       VICII_RASTER_Y(maincpu_clk), cycle));
+                       vicii.raster_line, vicii.raster_cycle));
 #endif
 }
 
@@ -871,12 +663,7 @@ void vicii_update_video_mode(unsigned int cycle)
    of each line.  */
 void vicii_raster_draw_handler(void)
 {
-    BYTE prev_sprite_sprite_collisions;
-    BYTE prev_sprite_background_collisions;
     int in_visible_area;
-
-    prev_sprite_sprite_collisions = vicii.sprite_sprite_collisions;
-    prev_sprite_background_collisions = vicii.sprite_background_collisions;
 
     in_visible_area = (vicii.raster.current_line
                       >= (unsigned int)vicii.first_displayed_line
@@ -889,10 +676,6 @@ void vicii_raster_draw_handler(void)
                           <= ((unsigned int)vicii.last_displayed_line - vicii.screen_height);
     }
 
-    vicii.raster.xsmooth_shift_left = 0;
-
-    vicii_sprites_reset_xshift();
-
     raster_line_emulate(&vicii.raster);
 
     if (vicii.raster.current_line == 0) {
@@ -901,23 +684,6 @@ void vicii_raster_draw_handler(void)
             raster_skip_frame(&vicii.raster,
                               vsync_do_vsync(vicii.raster.canvas,
                               vicii.raster.skip_frame));
-        }
-        vicii.memptr = 0;
-        vicii.mem_counter = 0;
-        vicii.raster.blank_off = 0;
-
-        /* Clear color buffer on line 0 */
-        memset(vicii.cbuf, 0, sizeof(vicii.cbuf));
-
-        /* HACK to make vcache display gfx in chunky & the rest */
-        if ((vicii.video_mode >= VICII_8BPP_CHUNKY_MODE)&&
-            (vicii.video_mode <= VICII_8BPP_PIXEL_CELL_MODE)) {
-                vicii.raster.dont_cache = 1;
-        }
-
-        /* HACK to fix greetings in 2008 */
-        if(vicii.video_mode == VICII_8BPP_PIXEL_CELL_MODE) {
-            vicii_update_memory_ptrs(VICII_RASTER_CYCLE(maincpu_clk));
         }
 
 #ifdef __MSDOS__
@@ -949,81 +715,6 @@ void vicii_raster_draw_handler(void)
                                     vicii.raster.border_color);
 #endif
     }
-
-    if ( (!vicii.overscan && vicii.raster.current_line == 48)
-       || (vicii.overscan && vicii.raster.current_line == 10) ) {
-        vicii.counta = vicii.regs[0x3a]
-                     + (vicii.regs[0x3b]<<8)
-                     + (vicii.regs[0x45]<<16);
-
-        vicii.countb = vicii.regs[0x49]
-                     + (vicii.regs[0x4a]<<8)
-                     + (vicii.regs[0x4b]<<16);
-    }
-
-    if (in_visible_area) {
-        if (!vicii.idle_state) {
-            /* TODO should be done in cycle 57 */
-            if ( !(VICII_MODULO_BUG(vicii.video_mode) && (vicii.raster.ycounter == 7)) ) {
-                vicii.counta += vicii.counta_mod;
-                vicii.countb += vicii.countb_mod;
-            }
-
-            /* TODO hack */
-            if (!vicii.overscan) { 
-                vicii.counta += vicii.counta_step*40;
-                vicii.countb += vicii.countb_step*40;
-            } else {
-                /* faked overscan */
-                vicii.counta += vicii.counta_step*48;
-                vicii.countb += vicii.countb_step*48;
-            }
-
-            /* HACK to fix greetings in 2008 */
-            if((vicii.video_mode == VICII_8BPP_PIXEL_CELL_MODE)&&(vicii.raster.ycounter == 7)) {
-                vicii.screen_base_phi2 += vicii.counta_mod;
-            }
-        }
-
-        /* `ycounter' makes the chip go to idle state when it reaches the
-           maximum value.  */
-        if (vicii.raster.ycounter == 7) {
-            vicii.idle_state = 1;
-            vicii.memptr = vicii.mem_counter;
-        }
-        if (!vicii.idle_state || vicii.bad_line) {
-            vicii.raster.ycounter = (vicii.raster.ycounter + 1) & 0x7;
-            vicii.idle_state = 0;
-        }
-        if (vicii.force_display_state) {
-            vicii.idle_state = 0;
-            vicii.force_display_state = 0;
-        }
-        vicii.raster.draw_idle_state = vicii.idle_state;
-        vicii.bad_line = 0;
-    }
-
-    vicii.ycounter_reset_checked = 0;
-    vicii.memory_fetch_done = 0;
-    vicii.buf_offset = 0;
-
-    if (vicii.raster.current_line == vicii.first_dma_line)
-        vicii.allow_bad_lines = !vicii.raster.blank;
-
-    /* As explained in Christian's article, only the first collision
-       (i.e. the first time the collision register becomes non-zero) actually
-       triggers an interrupt.  */
-    if (vicii_resources.sprite_sprite_collisions_enabled
-        && vicii.raster.sprite_status->sprite_sprite_collisions != 0
-        && !prev_sprite_sprite_collisions) {
-        vicii_irq_sscoll_set();
-    }
-
-    if (vicii_resources.sprite_background_collisions_enabled
-        && vicii.raster.sprite_status->sprite_background_collisions
-        && !prev_sprite_background_collisions) {
-        vicii_irq_sbcoll_set();
-    }
 }
 
 void vicii_set_canvas_refresh(int enable)
@@ -1033,8 +724,6 @@ void vicii_set_canvas_refresh(int enable)
 
 void vicii_shutdown(void)
 {
-    vicii_sprites_shutdown();
-    raster_sprite_status_destroy(&vicii.raster);
     raster_shutdown(&vicii.raster);
 }
 

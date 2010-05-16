@@ -358,7 +358,7 @@ int vicii_snapshot_read_module(snapshot_t *s)
     vicii.ram_base_phi2 = vicii.ram_base_phi1;
     vicii.vbank_phi2 = vicii.vbank_phi1;
 
-    vicii_update_memory_ptrs(VICII_RASTER_CYCLE(maincpu_clk));
+    vicii_update_memory_ptrs();
 
 #if 0
     /* Update sprite parameters.  We had better do this manually, or the
@@ -408,6 +408,7 @@ int vicii_snapshot_read_module(snapshot_t *s)
 
     vicii.raster.blank = !(vicii.regs[0x11] & 0x10);
 
+/*
     if (VICII_IS_ILLEGAL_MODE(vicii.raster.video_mode)) {
         vicii.raster.idle_background_color = 0;
         vicii.force_black_overscan_background_color = 1;
@@ -416,7 +417,7 @@ int vicii_snapshot_read_module(snapshot_t *s)
             = vicii.raster.background_color;
         vicii.force_black_overscan_background_color = 0;
     }
-/*
+
     if (vicii.regs[0x11] & 0x8) {
         vicii.raster.display_ystart = vicii.row_25_start_line;
         vicii.raster.display_ystop = vicii.row_25_stop_line;
@@ -441,9 +442,9 @@ int vicii_snapshot_read_module(snapshot_t *s)
     /* FIXME: `vicii.ycounter_reset_checked'?  */
     /* FIXME: `vicii.force_display_state'?  */
 
-    vicii.memory_fetch_done = 0; /* FIXME? */
+    /*vicii.memory_fetch_done = 0;  FIXME? */
 
-    vicii_update_video_mode(VICII_RASTER_CYCLE(maincpu_clk));
+    vicii_update_video_mode();
 
     vicii_store(0x3c, (BYTE)vicii.regs[0x3c]);
 
@@ -461,7 +462,7 @@ int vicii_snapshot_read_module(snapshot_t *s)
             goto fail;
         vicii.ram_base_phi2 = mem_ram + RamBase;
 
-        vicii_update_memory_ptrs(VICII_RASTER_CYCLE(maincpu_clk));
+        vicii_update_memory_ptrs();
     }
 
     raster_force_repaint(&vicii.raster);

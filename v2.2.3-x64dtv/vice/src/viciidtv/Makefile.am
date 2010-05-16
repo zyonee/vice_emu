@@ -22,8 +22,6 @@ libviciidtv_a_SOURCES = \
 	viciidtv-irq.h \
 	viciidtv-mem.c \
 	viciidtv-mem.h \
-	viciidtv-phi1.c \
-	viciidtv-phi1.h \
 	viciidtv-resources.c \
 	viciidtv-resources.h \
 	viciidtv-snapshot.c \
