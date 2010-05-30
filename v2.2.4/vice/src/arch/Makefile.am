@@ -1,0 +1,57 @@
+if SDL_COMPILE
+
+SUBDIRS = sdl
+
+else
+
+if UNIX_COMPILE
+
+SUBDIRS = unix
+
+endif
+
+if WIN32_COMPILE
+
+SUBDIRS = win32 win64
+
+endif
+
+if MSDOS_COMPILE
+
+SUBDIRS = msdos
+
+endif
+
+if RISCOS_COMPILE
+
+SUBDIRS = riscos
+
+endif
+
+if OS2_COMPILE
+
+SUBDIRS = os2
+
+endif
+
+if BEOS_COMPILE
+
+SUBDIRS = beos
+
+endif
+
+if AMIGA_COMPILE
+
+SUBDIRS = amigaos
+
+endif
+endif
+
+noinst_HEADERS = \
+	platform.h \
+	platform_aix_version.h \
+	platform_cpu_type.h \
+	platform_freebsd_version.h \
+	platform_netbsd_version.h \
+	platform_openbsd_version.h \
+	platform_qnx6_version.h
