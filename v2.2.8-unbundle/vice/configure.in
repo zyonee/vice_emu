@@ -3141,8 +3141,6 @@ if false ; then
     mkdir -p iecbus
     mkdir -p imagecontents
     mkdir -p lib
-    mkdir -p lib/lpng
-    mkdir -p lib/zlib
     mkdir -p monitor
     mkdir -p parallel
     mkdir -p pet
