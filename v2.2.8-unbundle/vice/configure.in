@@ -2161,8 +2161,6 @@ dnl Configure graphics output drivers
 old_LIBS="$LIBS"
 GFXOUTPUT_LIBS=
 
-dnl following check removed:
-dnl if test x"$is_beos" != "xyes" -a x"$is_beos_x11" != "xyes"; then
 if test x"$with_png" != "xno" ; then
   dnl Check for the PNG library.
   AC_CHECK_HEADER(png.h,,)
