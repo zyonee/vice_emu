@@ -1,5 +1,11 @@
 ------------------------------------------------------------------------------
 
+2011-02-25  Marco van den Heuvel <blackystardust68@yahoo.com>
+
+	* src/keyboard.c, src/c64/cart/c64cart.c, src/arch/amigaos/vic20ui.c,
+	src/arch/sdl/make-bindist_syllable.sh, src/arch/sdl/make-bindist_qnx6.sh,
+	src/cartconv.c, README, doc/html/index.html: Last minute fixes.
+
 2011-02-19  Marco van den Heuvel <blackystardust68@yahoo.com>
 
 	* configure.in, ChangeLog, src/version.h,
