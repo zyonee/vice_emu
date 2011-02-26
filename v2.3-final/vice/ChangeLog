@@ -2,6 +2,10 @@
 
 2011-02-26  Marco van den Heuvel <blackystardust68@yahoo.com>
 
+	* doc/html/index.html: Added links to the fedora rpm's.
+
+2011-02-26  Marco van den Heuvel <blackystardust68@yahoo.com>
+
 	* vice-gtk.spec.in: Updated by Dag Lem.
 
 2011-02-25  Marco van den Heuvel <blackystardust68@yahoo.com>
