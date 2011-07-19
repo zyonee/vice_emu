@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="9.00"
 	Name="c128"
 	ProjectGUID="{C9FF7B71-E77F-4D77-8C68-E5D497ADB361}"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform
@@ -118,7 +119,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\win32\msvc,..\win32,..\..\,..\..\drive,..\..\tape,..\..\c64,..\..\c64\cart,..\..\sid,..\..\vicii,..\..\raster,..\..\vdc,..\..\monitor"
+				AdditionalIncludeDirectories="..\win32\msvc;..\win32;..\..\;..\..\drive;..\..\tape;..\..\c64;..\..\c64\cart;..\..\sid;..\..\vicii;..\..\raster;..\..\vdc;..\..\monitor;..\..\userport"
 				PreprocessorDefinitions="WIN32;IDE_COMPILE;_DEBUG;_WINDOWS"
 				RuntimeLibrary="1"
 				PrecompiledHeaderFile=".\libs\c128\Debug/c128.pch"

@@ -31,9 +31,9 @@
 #ifndef VICE_VIC_COLOR_H
 #define VICE_VIC_COLOR_H
 
-struct video_canvas_s;
+struct raster_s;
 
-extern int vic_color_update_palette(struct video_canvas_s *canvas);
+extern int vic_color_update_palette(struct raster_s *raster);
 
 #endif
 

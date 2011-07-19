@@ -62,6 +62,7 @@
 #include "mouse.h"
 #include "mousedrv.h"
 #include "network.h"
+#include "raster.h"
 #include "res.h"
 #include "resources.h"
 #include "system.h"
@@ -528,7 +529,7 @@ void ui_set_render_window(video_canvas_t *canvas, int fullscreen)
 }
 
 /*  Create a Window for the emulation.  */
-void ui_open_canvas_window(video_canvas_t *canvas)
+void ui_open_canvas_window(video_canvas_t *canvas, float pixel_aspect_ratio)
 {
     HWND hwnd;
     int xpos, ypos;
@@ -562,7 +563,7 @@ void ui_open_canvas_window(video_canvas_t *canvas)
     statusbar_create(hwnd);
     canvas->hwnd = hwnd;
 
-    ui_resize_canvas_window(canvas);
+    ui_resize_canvas_window(canvas, pixel_aspect_ratio);
 
     menu = LoadMenu(winmain_instance, MAKEINTRESOURCE(emu_menu));
     ui_translate_menu_items(menu, menu_translation_table);
@@ -625,7 +626,7 @@ void ui_handle_aspect_ratio(int window_index, WPARAM wparam, LPARAM lparam)
     int dy = window_padding_y[window_index];
     double size_x_desired = rc->right - rc->left - dx;
     double size_y_desired = rc->bottom - rc->top - dy;
-    video_canvas_t *canvas;
+    raster_t *raster;
 
     resources_get_int("KeepAspectRatio", &keep_aspect_ratio);
 
@@ -633,15 +634,15 @@ void ui_handle_aspect_ratio(int window_index, WPARAM wparam, LPARAM lparam)
         return;
     }
 
-    canvas = video_canvas_for_hwnd(window);
+    raster = video_canvas_for_hwnd(window);
 
     resources_get_int("TrueAspectRatio", &true_aspect_ratio);
     if (true_aspect_ratio) {
-        aspect_ratio = (int)(canvas->geometry->pixel_aspect_ratio * 1000);
+        aspect_ratio = (int)(raster->geometry->pixel_aspect_ratio * 1000);
     } else {
         resources_get_int("AspectRatio", &aspect_ratio);
     }
-    canvas_aspect_ratio = aspect_ratio / 1000.0 * canvas->width / canvas->height;
+    canvas_aspect_ratio = aspect_ratio / 1000.0 * raster->canvas->width / raster->canvas->height;
 
     switch (wparam) {
         case WMSZ_TOP:
@@ -686,7 +687,7 @@ void ui_handle_aspect_ratio(int window_index, WPARAM wparam, LPARAM lparam)
 }
 
 /* Resize `w' so that the client rectangle is of the requested size.  */
-void ui_resize_canvas_window(video_canvas_t *canvas)
+void ui_resize_canvas_window(video_canvas_t *canvas, float pixel_aspect_ratio)
 {
     RECT wrect;
     int window_index;
@@ -694,25 +695,29 @@ void ui_resize_canvas_window(video_canvas_t *canvas)
     HWND w, cw;
     unsigned int width, height;
     DWORD adjust_style;
+#ifdef HAVE_D3D9_H
     int aspect_ratio, true_aspect_ratio, keep_aspect_ratio;
+#endif
 
     w = canvas->hwnd;
     cw = canvas->client_hwnd;
     width = canvas->width;
     height = canvas->height;
 
+#ifdef HAVE_D3D9_H
     if (video_dx9_enabled()) {
         resources_get_int("KeepAspectRatio", &keep_aspect_ratio);
         if (keep_aspect_ratio) {
             resources_get_int("TrueAspectRatio", &true_aspect_ratio);
             if (true_aspect_ratio) {
-                aspect_ratio = (int)(canvas->geometry->pixel_aspect_ratio * 1000);
+                aspect_ratio = (int)(pixel_aspect_ratio * 1000);
             } else {
                 resources_get_int("AspectRatio", &aspect_ratio);
             }
             width = (int)((double)width * aspect_ratio / 1000.0 + 0.5);
         }
     }
+#endif
 
 /*  TODO:
     We should store the windowplacement when the window is
@@ -1869,7 +1874,7 @@ static LRESULT CALLBACK window_proc(HWND window, UINT msg, WPARAM wparam, LPARAM
             if (window_index<number_of_windows) {
                 statusbar_handle_WMSIZE(msg, wparam, lparam, window_index);
             }
-            ui_resize_render_window(video_canvas_for_hwnd(window));
+            ui_resize_render_window(video_canvas_for_hwnd(window)->canvas);
             return 0;
         case WM_SIZING:
             ui_handle_aspect_ratio(window_index, wparam, lparam);

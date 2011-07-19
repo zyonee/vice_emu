@@ -33,7 +33,7 @@
 
 struct video_canvas_s;
 
-extern int vicii_color_update_palette(struct video_canvas_s *canvas);
+extern int vicii_color_update_palette(struct raster_s *raster);
 
 #endif
 

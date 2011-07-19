@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="9.00"
 	Name="c64dtv"
 	ProjectGUID="{DD31B3F3-0739-4F3F-B6C0-AED7A5772B74}"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform
@@ -44,7 +45,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\win32\msvc,..\win32,..\..\,..\..\drive,..\..\tape,..\..\sid,..\..\vicii,..\..\c64,..\..\raster"
+				AdditionalIncludeDirectories="..\win32\msvc;..\win32;..\..\;..\..\drive;..\..\tape;..\..\sid;..\..\vicii;..\..\c64;..\..\raster;..\..\userport"
 				PreprocessorDefinitions="WIN32;IDE_COMPILE;_DEBUG;_WINDOWS"
 				RuntimeLibrary="1"
 				PrecompiledHeaderFile=".\libs\c64dtv\Debug/c64dtv.pch"
@@ -911,6 +912,10 @@
 					PreprocessorDefinitions=""
 				/>
 			</FileConfiguration>
+		</File>
+		<File
+			RelativePath="..\..\c64dtv\c64dtvmodel.c"
+			>
 		</File>
 		<File
 			RelativePath="..\..\c64dtv\c64dtvpla.c"

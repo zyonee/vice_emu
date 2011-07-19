@@ -55,8 +55,8 @@ static video_cbm_palette_t crtc_palette =
     CRTC_PHASE
 };
 
-int crtc_color_update_palette(struct video_canvas_s *canvas)
+int crtc_color_update_palette(raster_t *raster)
 {
-    video_color_palette_internal(canvas, &crtc_palette);
-    return video_color_update_palette(canvas);
+    video_color_palette_internal(raster, &crtc_palette);
+    return video_color_update_palette(raster);
 }

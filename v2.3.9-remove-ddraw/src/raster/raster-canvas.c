@@ -34,7 +34,6 @@
 #include "raster-canvas.h"
 #include "raster.h"
 #include "video.h"
-#include "videoarch.h"
 #include "viewport.h"
 
 
@@ -46,7 +45,7 @@ inline static void refresh_canvas(raster_t *raster)
     int w, h;
 
     update_area = raster->update_area;
-    viewport = raster->canvas->viewport;
+    viewport = raster->viewport;
 
 #if (!defined(GP2X) || defined(GP2X_SDL)) && (!defined(WIZ) || defined(WIZ_SDL))
     if (update_area->is_null)
@@ -90,16 +89,16 @@ inline static void refresh_canvas(raster_t *raster)
         h += yy;
         yy = 0;
     }
-    x += raster->canvas->geometry->extra_offscreen_border_left;
+    x += raster->geometry->extra_offscreen_border_left;
 
     xx += viewport->x_offset;
     yy += viewport->y_offset;
 
-    if ((int)(raster->canvas->draw_buffer->canvas_height) >= yy
-        && (int)(raster->canvas->draw_buffer->canvas_width) >= xx)
-        video_canvas_refresh(raster->canvas, x, y, xx, yy,
-            MIN(w, (int)(raster->canvas->draw_buffer->canvas_width - xx)),
-            MIN(h, (int)(raster->canvas->draw_buffer->canvas_height - yy)));
+    if ((int)(raster->draw_buffer->canvas_height) >= yy
+        && (int)(raster->draw_buffer->canvas_width) >= xx)
+        video_canvas_refresh(raster, x, y, xx, yy,
+            MIN(w, (int)(raster->draw_buffer->canvas_width - xx)),
+            MIN(h, (int)(raster->draw_buffer->canvas_height - yy)));
 
     update_area->is_null = 1;
 }
@@ -112,11 +111,22 @@ void raster_canvas_handle_end_of_frame(raster_t *raster)
     if (raster->skip_frame)
         return;
 
-    if (!raster->canvas->viewport->update_canvas)
+    if (!raster->viewport->update_canvas)
         return;
 
-    if (raster->dont_cache)
-        video_canvas_refresh_all(raster->canvas);
+    if (raster->dont_cache) {
+        if (!video_disabled_mode)
+            video_canvas_refresh(raster,
+              raster->viewport->first_x
+              + raster->geometry->extra_offscreen_border_left,
+              raster->viewport->first_line,
+              raster->viewport->x_offset,
+              raster->viewport->y_offset,
+              MIN(raster->draw_buffer->canvas_width,
+              raster->geometry->screen_size.width - raster->viewport->first_x),
+              MIN(raster->draw_buffer->canvas_height,
+              raster->viewport->last_line - raster->viewport->first_line + 1));
+    }
     else
         refresh_canvas(raster);
 }

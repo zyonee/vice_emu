@@ -27,9 +27,9 @@
 #ifndef VICE_VDC_COLOR_H
 #define VICE_VDC_COLOR_H
 
-struct video_canvas_s;
+struct raster_s;
 
-extern int vdc_color_update_palette(struct video_canvas_s *canvas);
+extern int vdc_color_update_palette(struct raster_s *raster);
 
 #endif
 

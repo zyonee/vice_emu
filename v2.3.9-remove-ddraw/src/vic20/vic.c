@@ -60,7 +60,7 @@
 #include "vic20-resources.h"
 #include "vic20mem.h"
 #include "vic20memrom.h"
-#include "videoarch.h"
+#include "video.h"
 #include "viewport.h"
 #include "vsync.h"
 
@@ -209,7 +209,7 @@ static int init_raster(void)
     raster_t *raster;
 
     raster = &vic.raster;
-    video_color_set_canvas(raster->canvas);
+    video_color_set_canvas(raster);
 
     raster->sprite_status = NULL;
     raster_line_changes_init(raster);
@@ -225,7 +225,7 @@ static int init_raster(void)
 
     vic_set_geometry();
 
-    vic_color_update_palette(raster->canvas);
+    vic_color_update_palette(raster);
 
     raster_set_title(raster, machine_name);
 

@@ -31,8 +31,8 @@
 
 #include "resources.h"
 #include "video.h"
-#include "video-canvas.h"
 #include "video-resources.h"
+#include "video-color.h"
 
 static int set_color_saturation(int val, void *param)
 {

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="9.00"
 	Name="vic20"
 	ProjectGUID="{CCB53DD3-BE68-48D1-87D5-D482958B3293}"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform
@@ -44,7 +45,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\win32\msvc,..\win32,..\..\,..\..\drive,..\..\vic20,..\..\vic20\cart,..\..\tape,..\..\raster,..\..\monitor,..\..\sid"
+				AdditionalIncludeDirectories="..\win32\msvc;..\win32;..\..\;..\..\drive;..\..\vic20;..\..\vic20\cart;..\..\tape;..\..\raster;..\..\monitor;..\..\sid;..\..\userport"
 				PreprocessorDefinitions="WIN32;IDE_COMPILE;_DEBUG;_WINDOWS"
 				RuntimeLibrary="1"
 				PrecompiledHeaderFile=".\libs\vic20\Debug/vic20.pch"

@@ -38,12 +38,18 @@
 #include "ui.h"
 #include "uiapi.h"
 #include "video.h"
+#include "video-dx9.h"
+#include "video-gdi.h"
 #include "videoarch.h"
+
 #include "viewport.h"
+#include "raster.h"
 
 static int video_number_of_canvases;
-static video_canvas_t *video_canvases[2];
+static raster_t *video_canvases[2];
+#ifdef HAVE_D3D9_H
 static int dx9_available;
+#endif
 
 /* ------------------------------------------------------------------------ */
 /* Video-related resources.  */
@@ -55,19 +61,21 @@ int dx9_disable;
 
 static int set_dx_primary_surface_rendering(int val, void *param)
 {
-    int i;
-
     dx_primary_surface_rendering = val;
 
+#ifdef HAVE_D3D9_H
     if (video_dx9_enabled()) {
+        int i;
         for (i = 0; i < video_number_of_canvases; i++) {
-            video_canvas_reset_dx9(video_canvases[i]);
+            video_canvas_reset_dx9(video_canvases[i]->canvas);
         }
     }
+#endif
 
     return 0;
 }
 
+#ifdef HAVE_D3D9_H
 static int set_dx9_disable(int val, void *param)
 {
     int i;
@@ -83,12 +91,12 @@ static int set_dx9_disable(int val, void *param)
 
     if (old_dx9_disable != val) {
         for (i = 0; i < video_number_of_canvases; i++) {       
-            old_width[i] = video_canvases[i]->width;
-            old_height[i] = video_canvases[i]->height;
+            old_width[i] = video_canvases[i]->canvas->width;
+            old_height[i] = video_canvases[i]->canvas->height;
             if (old_dx9_disable) {
                 /* Anything to do here?? */
             } else {
-                video_device_release_dx9(video_canvases[i]);
+                video_device_release_dx9(video_canvases[i]->canvas);
             }
         }
 
@@ -97,12 +105,12 @@ static int set_dx9_disable(int val, void *param)
 
         for (i = 0; i < old_num_of_canvases; i++) {
             if (old_dx9_disable) {
-                video_canvas_create_dx9(video_canvases[i], &old_width[i], &old_height[i]);
+                video_canvas_create_dx9(video_canvases[i]->canvas, &old_width[i], &old_height[i]);
             } else {
-                video_canvas_create_ddraw(video_canvases[i], &old_width[i], &old_height[i]);
+                video_canvas_create_ddraw(video_canvases[i], video_canvases[i]->palette, &old_width[i], &old_height[i]);
             }
-            ui_canvas_child_window(video_canvases[i], old_dx9_disable);
-            ui_resize_canvas_window(video_canvases[i]);
+            ui_canvas_child_window(video_canvases[i]->canvas, old_dx9_disable);
+            ui_resize_canvas_window(video_canvases[i]->canvas, video_canvases[i]->geometry->pixel_aspect_ratio);
         }
         
         fullscreen_getmodes();
@@ -110,6 +118,7 @@ static int set_dx9_disable(int val, void *param)
 
     return 0;
 }
+#endif
 
 static const resource_int_t resources_int[] = {
     { "DXPrimarySurfaceRendering", 0, RES_EVENT_NO, NULL,
@@ -166,20 +175,24 @@ int video_init(void)
 
 void video_shutdown(void)
 {
+#ifdef HAVE_D3D9_H
     video_shutdown_dx9();
+#endif
 }
 
-void video_arch_canvas_init(struct video_canvas_s *canvas)
+void video_arch_canvas_init(video_canvas_t **canvas)
 {
-    if (video_setup_dx9() < 0) {
-        dx9_available = 0;
-    } else {
+    *canvas = lib_calloc(1, sizeof(video_canvas_t));
+#ifdef HAVE_D3D9_H
+    if (video_setup_dx9() >= 0) {
         dx9_available = 1;
+    } else {
+        dx9_available = 0;
     }
-
-    canvas->video_draw_buffer_callback = NULL;
+#endif
 }
 
+#ifdef HAVE_D3D9_H
 int video_dx9_enabled(void)
 {
     return (dx9_available && !dx9_disable);
@@ -189,15 +202,16 @@ int video_dx9_available(void)
 {
     return dx9_available;
 }
+#endif
 
 /* ------------------------------------------------------------------------ */
 
-video_canvas_t *video_canvas_for_hwnd(HWND hwnd)
+raster_t *video_canvas_for_hwnd(HWND hwnd)
 {
     int i;
 
     for (i = 0; i < video_number_of_canvases; i++) {
-        if (video_canvases[i]->hwnd == hwnd) {
+        if (video_canvases[i]->canvas->hwnd == hwnd) {
             return video_canvases[i];
         }
     }
@@ -210,7 +224,7 @@ int video_canvas_nr_for_hwnd(HWND hwnd)
     int i;
 
     for (i = 0; i < video_number_of_canvases; i++) {
-        if (video_canvases[i]->hwnd == hwnd) {
+        if (video_canvases[i]->canvas->hwnd == hwnd) {
             return i;
         }
     }
@@ -218,50 +232,60 @@ int video_canvas_nr_for_hwnd(HWND hwnd)
     return 0;
 }
 
-void video_canvas_add(video_canvas_t *canvas)
+void video_canvas_add(raster_t *raster)
 {
-    video_canvases[video_number_of_canvases++] = canvas;
+    video_canvases[video_number_of_canvases++] = raster;
 }
 
-video_canvas_t *video_canvas_create(video_canvas_t *canvas, unsigned int *width, unsigned int *height, int mapped)
+video_canvas_t *video_canvas_create(raster_t *raster, unsigned int *width, unsigned int *height, int mapped, const char *title, int doublesizex, int doublesizey, palette_t *palette)
 {
-    video_canvas_t *canvas_temp;
+    int enable =
+#ifdef HAVE_D3D9_H
+        video_dx9_enabled()
+#else
+        0
+#endif
+    ;
 
     fullscreen_transition = 1;
 
-    canvas->title = lib_stralloc(canvas->viewport->title);
-    canvas->width = *width;
-    canvas->height = *height;
+    raster->canvas->title = lib_stralloc(title);
+    raster->canvas->width = *width;
+    raster->canvas->height = *height;
 
-    if (canvas->videoconfig->doublesizex) {
-        canvas->width *= 2;
+    if (doublesizex) {
+        raster->canvas->width *= 2;
     }
 
-    if (canvas->videoconfig->doublesizey) {
-        canvas->height *= 2;
+    if (doublesizey) {
+        raster->canvas->height *= 2;
     }
 
-    ui_open_canvas_window(canvas);
-    ui_canvas_child_window(canvas, video_dx9_enabled());
+    ui_open_canvas_window(raster->canvas, raster->geometry->pixel_aspect_ratio);
+    ui_canvas_child_window(raster->canvas, enable);
 
+#ifdef HAVE_D3D9_H
     if (video_dx9_enabled()) {
-        canvas_temp = video_canvas_create_dx9(canvas, width, height);
+        video_canvas_t *canvas_temp = video_canvas_create_dx9(raster->canvas, width, height);
         if (canvas_temp == NULL) {
             log_debug("video: Falling back to DirectDraw canvas!");
             dx9_available = 0;
-            ui_canvas_child_window(canvas, 0);
+            ui_canvas_child_window(raster->canvas, 0);
         } else {
             return canvas_temp;
         }
     }
-    return video_canvas_create_ddraw(canvas, width, height);
+#endif
+    return video_canvas_create_gdi(raster, palette, width, height);
 }
 
 void video_canvas_destroy(video_canvas_t *canvas)
 {
+#ifdef HAVE_D3D9_H
     if (video_dx9_enabled()) {
         video_device_release_dx9(canvas);
     }
+#endif
 
     if (canvas != NULL) {
         if (canvas->hwnd !=0) {
@@ -272,19 +296,20 @@ void video_canvas_destroy(video_canvas_t *canvas)
     }
 }
 
-int video_canvas_set_palette(video_canvas_t *canvas, palette_t *p)
+int video_canvas_set_palette(video_canvas_t *canvas, palette_t *p, video_render_color_tables_t *color_tables)
 {
-    canvas->palette = p;
+#ifdef HAVE_D3D9_H
     if (canvas->depth == 8) {
-        video_canvas_set_palette_ddraw_8bit(canvas);
+        video_canvas_set_palette_ddraw_8bit(canvas, p);
     }
 
     video_set_palette(canvas);
-    video_set_physical_colors(canvas);
+#endif
+    video_set_physical_colors(canvas, p, color_tables);
     return 0;
 }
 
-int video_set_physical_colors(video_canvas_t *c)
+int video_set_physical_colors(video_canvas_t *c, palette_t *palette, video_render_color_tables_t *color_tables)
 {
     unsigned int i;
     int rshift;
@@ -297,22 +322,18 @@ int video_set_physical_colors(video_canvas_t *c)
     DWORD gmask;
     DWORD bmask;
 
-    if (video_dx9_enabled()) {
-        /* Use hard coded D3DFMT_X8R8G8B8 format, driver does conversion */
-        rshift = 16;
-        rmask = 0xff;
-        rbits = 0;
+    /* Use hard coded D3DFMT_X8R8G8B8 format, driver does conversion */
+    rshift = 16;
+    rmask = 0xff;
+    rbits = 0;
 
-        gshift = 8;
-        gmask = 0xff;
-        gbits = 0;
+    gshift = 8;
+    gmask = 0xff;
+    gbits = 0;
 
-        bshift = 0;
-        bmask = 0xff;
-        bbits = 0;
-    } else {
-        video_set_physical_colors_get_format_ddraw(c, &rshift, &rbits, &rmask, &gshift, &gbits, &gmask, &bshift, &bbits, &bmask);
-    }
+    bshift = 0;
+    bmask = 0xff;
+    bbits = 0;
 
     if (c->depth > 8) {
         for (i = 0; i < 256; i++) {
@@ -321,23 +342,26 @@ int video_set_physical_colors(video_canvas_t *c)
         video_render_initraw();
     }
 
-    for (i = 0; i < c->palette->num_entries; i++) {
+    for (i = 0; i < palette->num_entries; i++) {
         DWORD p;
 
+#ifdef HAVE_D3D9_H
         if (c->depth == 8 /*&& !dx9_enabled*/) {
-            p = video_get_color_from_palette_ddraw(c, i);
-        } else {
-            p = (((c->palette->entries[i].red&(rmask << rbits)) >> rbits) << rshift) +
-                (((c->palette->entries[i].green&(gmask << gbits)) >> gbits) << gshift) +
-                (((c->palette->entries[i].blue&(bmask << bbits)) >> bbits) << bshift);
+            p = video_get_color_from_palette_ddraw(c, &palette->entries[i]);
+        } else
+#endif
+        {
+            p = (((palette->entries[i].red&(rmask << rbits)) >> rbits) << rshift) +
+                (((palette->entries[i].green&(gmask << gbits)) >> gbits) << gshift) +
+                (((palette->entries[i].blue&(bmask << bbits)) >> bbits) << bshift);
         }
-        video_render_setphysicalcolor(c->videoconfig, i, p, c->depth);
+        video_render_setphysicalcolor(color_tables, i, p, c->depth);
     }
     return 0;
 }
 
 /* Change the size of `s' to `width' * `height' pixels.  */
-void video_canvas_resize(video_canvas_t *canvas, unsigned int width, unsigned int height)
+void video_canvas_resize(video_canvas_t *canvas, unsigned int width, unsigned int height, int doublesizex, int doublesizey, float pixel_aspect_ratio)
 {
     int device;
     int fullscreen_width;
@@ -345,11 +369,11 @@ void video_canvas_resize(video_canvas_t *canvas, unsigned int width, unsigned in
     int bitdepth;
     int refreshrate;
 
-    if (canvas->videoconfig->doublesizex) {
+    if (doublesizex) {
         width *= 2;
     }
 
-    if (canvas->videoconfig->doublesizey) {
+    if (doublesizey) {
         height *= 2;
     }
 
@@ -360,31 +384,53 @@ void video_canvas_resize(video_canvas_t *canvas, unsigned int width, unsigned in
     } else {
         canvas->client_width = width;
         canvas->client_height = height;
-        ui_resize_canvas_window(canvas);
+        ui_resize_canvas_window(canvas, pixel_aspect_ratio);
     }
 
+#ifdef HAVE_D3D9_H
     if (video_dx9_enabled()) {
         video_canvas_reset_dx9(canvas);
+    }
+#endif
+    canvas->bmp_info.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+    canvas->bmp_info.bmiHeader.biWidth = width;
+    canvas->bmp_info.bmiHeader.biHeight = -(LONG)height;
+    canvas->bmp_info.bmiHeader.biPlanes = 1;
+    canvas->bmp_info.bmiHeader.biBitCount = 24;
+    canvas->bmp_info.bmiHeader.biCompression = BI_RGB;
+    canvas->bmp_info.bmiHeader.biSizeImage = 3 * width * height;
+    canvas->pixels = lib_malloc(canvas->bmp_info.bmiHeader.biSizeImage);
+#ifdef HAVE_D3D9_H
+    if(!video_dx9_enabled())
+#endif
+    {
+        canvas->depth = 24;
     }
 }
 
 
 /* Raster code has updated display */
-void video_canvas_refresh(video_canvas_t *canvas, unsigned int xs, unsigned int ys, unsigned int xi, unsigned int yi, unsigned int w, unsigned int h)
+void video_canvas_refresh(raster_t *raster, unsigned int xs, unsigned int ys, unsigned int xi, unsigned int yi, unsigned int w, unsigned int h)
 {
+#ifdef HAVE_D3D9_H
     if (video_dx9_enabled()) {
-        video_canvas_refresh_dx9(canvas, xs, ys, xi, yi, w, h);
-    } else {
-        video_canvas_refresh_ddraw(canvas, xs, ys, xi, yi, w, h);
+        video_canvas_refresh_dx9(raster->canvas, xs, ys, xi, yi, w, h);
+    } else
+#endif
+    {
+        video_canvas_refresh_gdi(raster, xs, ys, xi, yi, w, h);
     }
 }
 
 /* Window got a WM_PAINT and needs a refresh */
 void video_canvas_update(HWND hwnd, HDC hdc, int xclient, int yclient, int w, int h)
 {
+#ifdef HAVE_D3D9_H
     if (video_dx9_enabled()) {
         video_canvas_update_dx9(hwnd, hdc, xclient, yclient, w, h);
-    } else {
-        video_canvas_update_ddraw(hwnd, hdc, xclient, yclient, w, h);
+    } else
+#endif
+    {
+        video_canvas_update_gdi(hwnd, hdc, xclient, yclient, w, h);
     }
 }

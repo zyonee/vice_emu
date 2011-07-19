@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="9.00"
 	Name="video"
 	ProjectGUID="{7B9D283C-1BED-4FD8-BE86-13599332CBDC}"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform
@@ -553,6 +554,10 @@
 			</FileConfiguration>
 		</File>
 		<File
+			RelativePath="..\..\video\render2x2crt.c"
+			>
+		</File>
+		<File
 			RelativePath="..\..\video\render2x2ntsc.c"
 			>
 			<FileConfiguration
@@ -633,6 +638,14 @@
 			</FileConfiguration>
 		</File>
 		<File
+			RelativePath="..\..\video\render2x4.c"
+			>
+		</File>
+		<File
+			RelativePath="..\..\video\render2x4crt.c"
+			>
+		</File>
+		<File
 			RelativePath="..\..\video\renderscale2x.c"
 			>
 			<FileConfiguration
@@ -674,46 +687,6 @@
 		</File>
 		<File
 			RelativePath="..\..\video\renderyuv.c"
-			>
-			<FileConfiguration
-				Name="Release|x64"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-					AdditionalIncludeDirectories=""
-					PreprocessorDefinitions=""
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Debug|x64"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-					AdditionalIncludeDirectories=""
-					PreprocessorDefinitions=""
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Itanium"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-					AdditionalIncludeDirectories=""
-					PreprocessorDefinitions=""
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Debug|Itanium"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-					AdditionalIncludeDirectories=""
-					PreprocessorDefinitions=""
-				/>
-			</FileConfiguration>
-		</File>
-		<File
-			RelativePath="..\..\video\video-canvas.c"
 			>
 			<FileConfiguration
 				Name="Release|x64"

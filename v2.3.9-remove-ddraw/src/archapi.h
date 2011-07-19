@@ -100,4 +100,7 @@ extern void archdep_network_shutdown(void);
 /* Free everything on exit.  */
 extern void archdep_shutdown(void);
 
+/* Sysyem time */
+long archdep_centiseconds(void);
+
 #endif

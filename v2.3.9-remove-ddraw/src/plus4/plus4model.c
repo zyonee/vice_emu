@@ -26,8 +26,6 @@
 
 #include "vice.h"
 
-#include <strings.h>
-
 #include "plus4-resources.h"
 #include "plus4cart.h"
 #include "plus4mem.h"

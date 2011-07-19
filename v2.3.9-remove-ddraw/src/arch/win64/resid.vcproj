@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="9.00"
 	Name="resid"
 	ProjectGUID="{7CF3660F-5A8D-4EEC-A2B3-9E34FAF267E6}"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform

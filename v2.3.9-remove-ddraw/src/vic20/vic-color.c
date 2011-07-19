@@ -79,9 +79,9 @@ static video_cbm_palette_t vic_palette=
     VIC_PHASE
 };
 
-int vic_color_update_palette(struct video_canvas_s *canvas)
+int vic_color_update_palette(raster_t *raster)
 {
-    video_color_palette_internal(canvas, &vic_palette);
-    return video_color_update_palette(canvas);
+    video_color_palette_internal(raster, &vic_palette);
+    return video_color_update_palette(raster);
 }
 

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="9.00"
 	Name="crtc"
 	ProjectGUID="{BA3E0077-B745-4502-9C7B-371988CA4FEC}"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform

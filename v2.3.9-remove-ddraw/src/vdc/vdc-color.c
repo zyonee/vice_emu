@@ -88,9 +88,9 @@ static video_cbm_palette_t vdc_palette =
     VDC_PHASE
 };
 
-int vdc_color_update_palette(struct video_canvas_s *canvas)
+int vdc_color_update_palette(raster_t *raster)
 {
-    video_color_palette_internal(canvas, &vdc_palette);
-    return video_color_update_palette(canvas);
+    video_color_palette_internal(raster, &vdc_palette);
+    return video_color_update_palette(raster);
 }
 

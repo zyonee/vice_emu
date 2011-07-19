@@ -36,6 +36,15 @@
 #include "util.h"
 #include "videoarch.h"
 
+int fullscreen_active;
+int fullscreen_transition = 0;
+static float fullscreen_refreshrate_buffer = -1.0f;
+
+void fullscrn_invalidate_refreshrate(void)
+{
+   	fullscreen_refreshrate_buffer = -1.0f;
+}
+
 #ifdef HAVE_D3D9_H
 #include <d3d9.h>
 

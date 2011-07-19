@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="9.00"
 	Name="iec128dcr"
 	ProjectGUID="{7244426E-2549-43BB-AE6F-79F70FC9F1B3}"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform

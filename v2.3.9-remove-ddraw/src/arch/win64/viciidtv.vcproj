@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="9.00"
 	Name="viciidtv"
 	ProjectGUID="{E6DF2112-7CD6-46D2-91E0-6490702EED7F}"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform

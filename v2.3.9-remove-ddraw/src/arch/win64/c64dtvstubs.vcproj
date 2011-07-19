@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="9.00"
 	Name="c64dtvstubs"
 	ProjectGUID="{7C7CE1C9-DFC9-4684-BDBF-9624124614A3}"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform

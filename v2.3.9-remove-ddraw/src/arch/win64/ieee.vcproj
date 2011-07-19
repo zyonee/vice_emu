@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="9.00"
 	Name="ieee"
 	ProjectGUID="{BC6490D8-F308-4F2B-9034-90D5D5DE5CA5}"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform

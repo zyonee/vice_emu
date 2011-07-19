@@ -133,7 +133,7 @@ static video_cbm_palette_t dtv_palette =
 #define DTV_STARTING_PHASE  180.0f
 #define DTV_PHASE_DECREMENT 22.5f
 
-int vicii_color_update_palette(struct video_canvas_s *canvas)
+int vicii_color_update_palette(raster_t *raster)
 {
     int lum, col, cl;
     float *lm;
@@ -159,7 +159,7 @@ int vicii_color_update_palette(struct video_canvas_s *canvas)
 	  an+=360.0f;
     }
 
-    video_color_palette_internal(canvas, &dtv_palette);
-    return video_color_update_palette(canvas);
+    video_color_palette_internal(raster, &dtv_palette);
+    return video_color_update_palette(raster);
 }
 

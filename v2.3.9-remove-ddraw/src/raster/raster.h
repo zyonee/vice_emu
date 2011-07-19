@@ -62,10 +62,18 @@ struct raster_changes_all_s;
 struct raster_modes_s;
 struct raster_resource_chip_s;
 struct raster_sprite_status_s;
+struct palette_s;
+struct video_draw_buffer_callback_s;
 
 struct raster_s {
+    unsigned int created;
+    unsigned int initialized;
     struct viewport_s *viewport;
     struct geometry_s *geometry;
+    struct video_render_config_s *videoconfig;
+    struct draw_buffer_s *draw_buffer;
+    struct palette_s *palette;
+    struct video_draw_buffer_callback_s *video_draw_buffer_callback;
 
     struct raster_modes_s *modes;
 

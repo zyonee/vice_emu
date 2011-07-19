@@ -254,35 +254,38 @@ static HRESULT video_canvas_prepare_for_update(video_canvas_t *canvas)
 }
 
 
-int video_canvas_refresh_dx9(video_canvas_t *canvas, unsigned int xs, unsigned int ys, unsigned int xi, unsigned int yi, unsigned int w, unsigned int h)
+int video_canvas_refresh_dx9(raster_t *raster, unsigned int xs, unsigned int ys, unsigned int xi, unsigned int yi, unsigned int w, unsigned int h)
 {
     HRESULT stretchresult;
     LPDIRECT3DSURFACE9 d3dbackbuffer = NULL;
     D3DLOCKED_RECT lockedrect;
 
-    if (canvas->videoconfig->doublesizex) {
+    if (raster->videoconfig->doublesizex) {
         xi *= 2;
         w *= 2;
     }
 
-    if (canvas->videoconfig->doublesizey) {
+    if (raster->videoconfig->doublesizey) {
         yi *= 2;
         h *= 2;
     }
     
-    if (S_OK != video_canvas_prepare_for_update(canvas)) {
+    if (S_OK != video_canvas_prepare_for_update(raster->canvas)) {
         return -1;
     }
 
-    if (S_OK != IDirect3DDevice9_Clear(canvas->d3ddev, 0, NULL, D3DCLEAR_TARGET, 0, 0, 0) ||
-        S_OK != IDirect3DDevice9_BeginScene(canvas->d3ddev) ||
-        S_OK != IDirect3DDevice9_GetBackBuffer(canvas->d3ddev, 0, 0, D3DBACKBUFFER_TYPE_MONO, &d3dbackbuffer) ||
-        S_OK != IDirect3DSurface9_LockRect(canvas->d3dsurface, &lockedrect, NULL, 0)) {
+    if (S_OK != IDirect3DDevice9_Clear(raster->canvas->d3ddev, 0, NULL, D3DCLEAR_TARGET, 0, 0, 0) ||
+        S_OK != IDirect3DDevice9_BeginScene(raster->canvas->d3ddev) ||
+        S_OK != IDirect3DDevice9_GetBackBuffer(raster->canvas->d3ddev, 0, 0, D3DBACKBUFFER_TYPE_MONO, &d3dbackbuffer) ||
+        S_OK != IDirect3DSurface9_LockRect(raster->canvas->d3dsurface, &lockedrect, NULL, 0)) {
         log_debug("video_dx9: Failed to prepare for rendering!");
         return -1;
     }
 
-    video_canvas_render(canvas, lockedrect.pBits, w, h, xs, ys, xi, yi, lockedrect.Pitch, 32);
+    video_render_main(raster->videoconfig, raster->draw_buffer->draw_buffer,
+      lockedrect.pBits, w, h, xs, ys, xi, yi,
+      raster->draw_buffer->draw_buffer_width, lockedrect.Pitch, 32,
+      raster->viewport);
 
     if (S_OK != IDirect3DSurface9_UnlockRect(canvas->d3dsurface)) {
         log_debug("video_dx9: Failed to unlock surface!");
@@ -334,40 +337,80 @@ void video_canvas_update_dx9(HWND hwnd, HDC hdc, int xclient, int yclient, int w
     video_canvas_refresh_all(canvas);
 }
 
-#else
-
-/* some dummies for compilation without DirectX9 header */
-
-void video_shutdown_dx9(void)
+void video_canvas_set_palette_ddraw_8bit(video_canvas_t *canvas, const palette_t *palette)
 {
+  PALETTEENTRY ape[256];
+  HRESULT result;
+
+  init_palette(palette, ape);
+
+  result = IDirectDraw2_CreatePalette(canvas->dd_object2, DDPCAPS_8BIT, ape, &canvas->dd_palette, NULL);
 }
 
-int video_setup_dx9(void)
+/* Set the palettes for canvas `c'.  */
+int video_set_palette(video_canvas_t *c)
 {
+  if (c->depth == 8) {
+    HRESULT result;
+
+    /* FIXME: Surface lost errors?  */
+    result = IDirectDrawSurface_SetPalette(c->primary_surface, c->dd_palette);
+    if (result == DDERR_SURFACELOST) {
+      IDirectDrawSurface_Restore(c->primary_surface);
+      result = IDirectDrawSurface_SetPalette(c->primary_surface, c->dd_palette);
+    }
+    if (result != DD_OK) {
+      ui_error("Cannot set palette on primary DirectDraw surface:\n%s", dd_error(result));
+      return -1;
+    }
+  }
+  return 0;
+}
+
+DWORD video_get_color_from_palette_ddraw(video_canvas_t *c, palette_entry_t *i)
+{
+  HDC hdc;
+  DDSURFACEDESC ddsd;
+  HRESULT result;
+  COLORREF oldcolor;
+  DWORD p;
+
+  result = IDirectDrawSurface_GetDC(c->primary_surface, &hdc);
+  if (result == DDERR_SURFACELOST) {
+    IDirectDrawSurface_Restore(c->primary_surface);
+    result = IDirectDrawSurface_GetDC(c->primary_surface, &hdc);
+  }
+  if (result != DD_OK) {
+    ui_error("Cannot get DC on DirectDraw surface while allocating colors:\n%s", dd_error(result));
     return -1;
-}
+  }
+  oldcolor = GetPixel(hdc, 0, 0);
+  SetPixel(hdc, 0, 0, PALETTERGB(i->red, i->green, i->blue));
+  IDirectDrawSurface_ReleaseDC(c->primary_surface, hdc);
 
-video_canvas_t *video_canvas_create_dx9(video_canvas_t *canvas, unsigned int *width, unsigned int *height)
-{
-    return NULL;
-}
-
-void video_device_release_dx9(video_canvas_t *canvas)
-{
-}
-
-HRESULT video_canvas_reset_dx9(video_canvas_t *canvas)
-{
+  ddsd.dwSize = sizeof(ddsd);
+  while ((result = IDirectDrawSurface_Lock(c->primary_surface, NULL, &ddsd, 0, NULL)) == DDERR_WASSTILLDRAWING) {
+  }
+  if (result == DDERR_SURFACELOST) {
+    IDirectDrawSurface_Restore(c->primary_surface);
+    result = IDirectDrawSurface_Lock(c->primary_surface, NULL, &ddsd, 0, NULL);
+  }
+  if (result != DD_OK) {
+    ui_error("Cannot lock temporary surface:\n%s", dd_error(result));
     return -1;
-}
+  }
 
-int video_canvas_refresh_dx9(video_canvas_t *canvas, unsigned int xs, unsigned int ys, unsigned int xi, unsigned int yi, unsigned int w, unsigned int h)
-{
-    return -1;
-}
+  p = *(DWORD *)ddsd.lpSurface;
 
-void video_canvas_update_dx9(HWND hwnd, HDC hdc, int xclient, int yclient, int w, int h)
-{
+  if (IDirectDrawSurface_Unlock(c->primary_surface, NULL) == DDERR_SURFACELOST) {
+    IDirectDrawSurface_Restore(c->primary_surface);
+    IDirectDrawSurface_Unlock(c->primary_surface, NULL);
+  }
+  IDirectDrawSurface_GetDC(c->primary_surface, &hdc);
+  SetPixel(hdc, 0, 0, oldcolor);
+  IDirectDrawSurface_ReleaseDC(c->primary_surface, hdc); 
+
+  return p;
 }
 
 #endif

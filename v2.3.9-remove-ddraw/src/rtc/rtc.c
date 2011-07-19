@@ -27,7 +27,11 @@
 #include "vice.h"
 
 #include <time.h>
+#ifdef HAVE_GETTIMEOFDAY
 #include <sys/time.h>
+#else
+#include "archapi.h"
+#endif
 
 #include "rtc.h"
 
@@ -46,15 +50,16 @@ inline static int bcd_to_int(int bcd)
 /* get 1/100 seconds from clock */
 BYTE rtc_get_centisecond(int bcd)
 {
+    long centiseconds;
 #ifdef HAVE_GETTIMEOFDAY
     struct timeval t;
 
     gettimeofday(&t, NULL);
-    return (BYTE)((bcd) ? int_to_bcd(t.tv_usec / 10000) : t.tv_usec / 10000);
+    centiseconds = t.tv_usec / 10000;
 #else
-    /* FIXME: arch-dependent implementation will need to be made */
-    #error not implemented
+    centiseconds = archdep_centiseconds();
 #endif
+    return (BYTE)((bcd) ? int_to_bcd(centiseconds) : centiseconds);
 }
 
 /* get seconds from time value

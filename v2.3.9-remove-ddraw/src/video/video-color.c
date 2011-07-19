@@ -34,11 +34,10 @@
 #include "machine.h"
 #include "palette.h"
 #include "resources.h"
-#include "video-canvas.h"
 #include "video-color.h"
 #include "video-resources.h"
 #include "video.h"
-#include "videoarch.h"
+#include "raster.h"
 
 DWORD gamma_red[256 * 3];
 DWORD gamma_grn[256 * 3];
@@ -132,11 +131,11 @@ static void video_ycbcr_palette_free(video_ycbcr_palette_t *p)
 
 /* variables needed for generating and activating a palette */
 
-struct video_canvas_s *video_current_canvas = NULL;
+raster_t *video_current_canvas = NULL;
 
-void video_color_set_canvas(struct video_canvas_s *canvas)
+void video_color_set_canvas(raster_t *raster)
 {
-    video_current_canvas = canvas;
+    video_current_canvas = raster;
 }
 
 /* conversion of VIC/VIC-II/TED colors to YCbCr */
@@ -545,22 +544,22 @@ static palette_t *video_load_palette(const video_cbm_palette_t *p,
 }
 
 /* Calculate or load a palette, depending on configuration.  */
-int video_color_update_palette(struct video_canvas_s *canvas)
+int video_color_update_palette(raster_t *raster)
 {
     palette_t *palette;
     video_ycbcr_palette_t *ycbcr;
 
-    if (canvas == NULL) {
+    if (raster == NULL) {
         return 0;
     }
 
-    if (canvas->videoconfig->cbm_palette == NULL) {
+    if (raster->videoconfig->cbm_palette == NULL) {
         return 0;
     }
 
-    if (canvas->videoconfig->external_palette) {
-        palette = video_load_palette(canvas->videoconfig->cbm_palette,
-                                     canvas->videoconfig->external_palette_name);
+    if (raster->videoconfig->external_palette) {
+        palette = video_load_palette(raster->videoconfig->cbm_palette,
+                                     raster->videoconfig->external_palette_name);
 
         if (!palette) {
             return -1;
@@ -569,35 +568,59 @@ int video_color_update_palette(struct video_canvas_s *canvas)
         video_calc_gammatable();
         ycbcr = video_ycbcr_palette_create(palette->num_entries);
         video_palette_to_ycbcr(palette, ycbcr);
-        video_calc_ycbcrtable(ycbcr, &canvas->videoconfig->color_tables);
+        video_calc_ycbcrtable(ycbcr, &raster->videoconfig->color_tables);
         if (video_resources.delayloop_emulation) {
             palette_free(palette);
             palette = video_calc_palette(ycbcr);
         }
     } else {
         video_calc_gammatable();
-        ycbcr = video_ycbcr_palette_create(canvas->videoconfig->cbm_palette->num_entries);
-        video_cbm_palette_to_ycbcr(canvas->videoconfig->cbm_palette, ycbcr);
-        video_calc_ycbcrtable(ycbcr, &canvas->videoconfig->color_tables);
+        ycbcr = video_ycbcr_palette_create(raster->videoconfig->cbm_palette->num_entries);
+        video_cbm_palette_to_ycbcr(raster->videoconfig->cbm_palette, ycbcr);
+        video_calc_ycbcrtable(ycbcr, &raster->videoconfig->color_tables);
         palette = video_calc_palette(ycbcr);
         /* additional table for odd lines */
-        video_cbm_palette_to_ycbcr_oddlines(canvas->videoconfig->cbm_palette, ycbcr);
-        video_calc_ycbcrtable_oddlines(ycbcr, &canvas->videoconfig->color_tables);
+        video_cbm_palette_to_ycbcr_oddlines(raster->videoconfig->cbm_palette, ycbcr);
+        video_calc_ycbcrtable_oddlines(ycbcr, &raster->videoconfig->color_tables);
     }
 
     video_ycbcr_palette_free(ycbcr);
 
     if (palette != NULL) {
-        return video_canvas_palette_set(canvas, palette);
+        struct palette_s *old_palette = raster->palette;
+
+        if (!raster->created || video_canvas_set_palette(raster->canvas, palette, &raster->videoconfig->color_tables) >= 0)
+            raster->palette = palette;
+        else
+            return -1;
+
+        if (old_palette != NULL) {
+           video_color_palette_free(old_palette);
+        }
+
+        if (raster->created && !video_disabled_mode) {
+            video_canvas_refresh(raster,
+              raster->viewport->first_x
+              + raster->geometry->extra_offscreen_border_left,
+              raster->viewport->first_line,
+              raster->viewport->x_offset,
+              raster->viewport->y_offset,
+              MIN(raster->draw_buffer->canvas_width,
+              raster->geometry->screen_size.width - raster->viewport->first_x),
+              MIN(raster->draw_buffer->canvas_height,
+              raster->viewport->last_line - raster->viewport->first_line + 1));
+        }
+
+        return 0;
     }
 
     return -1;
 }
 
-void video_color_palette_internal(struct video_canvas_s *canvas,
+void video_color_palette_internal(raster_t *raster,
                                   struct video_cbm_palette_s *cbm_palette)
 {
-    canvas->videoconfig->cbm_palette = cbm_palette;
+    raster->videoconfig->cbm_palette = cbm_palette;
 }
 
 void video_color_palette_free(struct palette_s *palette)

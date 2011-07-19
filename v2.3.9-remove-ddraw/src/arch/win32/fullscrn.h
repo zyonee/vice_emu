@@ -61,19 +61,13 @@ extern void ResumeFullscreenMode(HWND hwnd);
 extern void SuspendFullscreenModeKeep(HWND hwnd);
 extern void ResumeFullscreenModeKeep(HWND hwnd);
 extern void SwitchFullscreenMode(HWND hwnd);
+#ifdef HAVE_D3D9_H
 extern void SwitchToFullscreenMode(HWND hwnd);
+#endif
 extern INT_PTR CALLBACK dialog_fullscreen_proc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 extern void fullscrn_invalidate_refreshrate(void);
 extern void fullscreen_getmodes(void);
 extern void fullscreen_setup_finished(void);
-
-/* DDraw functions */
-extern void SwitchToFullscreenModeDDraw(HWND hwnd);
-extern void SwitchToWindowedModeDDraw(HWND hwnd);
-extern void fullscreen_getmodes_ddraw(void);
-extern void fullscreen_use_devices_ddraw(DirectDrawDeviceList **devices,
-                                       DirectDrawModeList **modes);
-extern void fullscreen_get_current_display_ddraw(int *bitdepth, int *width, int *height, int *refreshrate);
 
 /* DX9 functions */
 extern void SwitchToFullscreenModeDx9(HWND hwnd);

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="9.00"
 	Name="vicii"
 	ProjectGUID="{C99ABD62-30E6-4AEE-82D6-1B5069021C42}"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform

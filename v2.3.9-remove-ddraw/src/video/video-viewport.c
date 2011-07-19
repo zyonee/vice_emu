@@ -29,22 +29,14 @@
 #include "lib.h"
 #include "machine.h"
 #include "video.h"
-#include "videoarch.h"
+#include "raster.h"
 #include "viewport.h"
 
 #ifndef MIN
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
 #endif
 
-void video_viewport_get(video_canvas_t *canvas, viewport_t **viewport,
-                        geometry_t **geometry)
-{
-    *viewport = canvas->viewport;
-    *geometry = canvas->geometry;
-    return;
-}
-
-void video_viewport_resize(video_canvas_t *canvas)
+void video_viewport_resize(raster_t *raster)
 {
     geometry_t *geometry;
     viewport_t *viewport;
@@ -54,18 +46,18 @@ void video_viewport_resize(video_canvas_t *canvas)
     unsigned int gfx_height;
     unsigned width, height;
 
-    if (canvas->initialized == 0)
+    if (raster->initialized == 0)
         return;
 
-    geometry = canvas->geometry;
-    viewport = canvas->viewport;
+    geometry = raster->geometry;
+    viewport = raster->viewport;
 
     screen_size = &geometry->screen_size;
     gfx_size = &geometry->gfx_size;
     gfx_position = &geometry->gfx_position;
 
-    width = canvas->draw_buffer->canvas_width;
-    height = canvas->draw_buffer->canvas_height;
+    width = raster->draw_buffer->canvas_width;
+    height = raster->draw_buffer->canvas_height;
 
     if (width >= screen_size->width) {
         viewport->x_offset = (width - screen_size->width) / 2;
@@ -119,18 +111,22 @@ void video_viewport_resize(video_canvas_t *canvas)
     }
 
     if (!video_disabled_mode) {
-        video_canvas_resize(canvas, width, height);
+        video_canvas_resize(raster->canvas, width, height, raster->videoconfig->doublesizex, raster->videoconfig->doublesizey, raster->geometry->pixel_aspect_ratio);
+        video_canvas_refresh(raster,
+          viewport->first_x
+          + geometry->extra_offscreen_border_left,
+          viewport->first_line,
+          viewport->x_offset,
+          viewport->y_offset,
+          MIN(raster->draw_buffer->canvas_width,
+          geometry->screen_size.width - viewport->first_x),
+          MIN(raster->draw_buffer->canvas_height,
+          viewport->last_line - viewport->first_line + 1));
     }
-
-    video_canvas_refresh_all(canvas);
 }
 
-void video_viewport_title_set(video_canvas_t *canvas, const char *title)
+void video_viewport_title_set(viewport_t *viewport, const char *title)
 {
-    viewport_t *viewport;
-
-    viewport = canvas->viewport;
-
     lib_free(viewport->title);
     viewport->title = lib_stralloc(title);
 }

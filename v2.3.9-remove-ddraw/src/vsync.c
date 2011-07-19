@@ -66,8 +66,10 @@ int vsync_frame_counter;
 #include "sound.h"
 #include "translate.h"
 #include "types.h"
+#if 0
 #if (defined(WIN32) || defined (HAVE_OPENGL_SYNC)) && !defined(USE_SDLUI)
 #include "videoarch.h"
+#endif
 #endif
 #include "vsync.h"
 #include "vsyncapi.h"
@@ -335,9 +337,11 @@ int vsync_do_vsync(struct video_canvas_s *c, int been_skipped)
     signed long delay;
     long frame_ticks_remainder, frame_ticks_integer, compval;
 
+#if 0
 #if (defined(WIN32) || defined(HAVE_OPENGL_SYNC)) && !defined(USE_SDLUI)
     float refresh_cmp;
     int refresh_div;
+#endif
 #endif
 
 #ifdef HAVE_NETWORK
@@ -433,6 +437,7 @@ int vsync_do_vsync(struct video_canvas_s *c, int been_skipped)
 
     /* This is the time between the start of the next frame and now. */
     delay = (signed long)(now - next_frame_start);
+#if 0
 #if (defined(WIN32) || defined(HAVE_OPENGL_SYNC)) && !defined(USE_SDLUI)
     refresh_cmp = (float)(c->refreshrate / refresh_frequency);
     refresh_div = (int)(refresh_cmp + 0.5f);
@@ -447,6 +452,7 @@ int vsync_do_vsync(struct video_canvas_s *c, int been_skipped)
         skipped_redraw = 0;
     } else {
 #endif
+#endif
     /*
      * We sleep until the start of the next frame, if:
      *  - warp_mode is disabled
@@ -459,8 +465,10 @@ int vsync_do_vsync(struct video_canvas_s *c, int been_skipped)
     if (!warp_mode_enabled && timer_speed && delay < 0) {
         vsyncarch_sleep(-delay);
     }
+#if 0
 #if (defined(WIN32) || defined(HAVE_OPENGL_SYNC)) && !defined(USE_SDLUI)
     vsyncarch_prepare_vbl();
+#endif
 #endif
     /*
      * Check whether we should skip the next frame or not.
@@ -495,8 +503,10 @@ int vsync_do_vsync(struct video_canvas_s *c, int been_skipped)
         skip_next_frame = 0;
         skipped_redraw = 0;
     }
+#if 0
 #if (defined(WIN32) || defined(HAVE_OPENGL_SYNC)) && !defined(USE_SDLUI)
 	}
+#endif
 #endif
 
     /*
@@ -555,6 +565,7 @@ int vsync_do_vsync(struct video_canvas_s *c, int been_skipped)
     return skip_next_frame;
 }
 
+#if 0
 #if (defined(WIN32) || defined (HAVE_OPENGL_SYNC)) && !defined(USE_SDLUI)
 
 static unsigned long last = 0;
@@ -598,6 +609,7 @@ void vsyncarch_prepare_vbl(void)
 }
 
 #endif /* WIN32 || HAVE_OPENGL_SYNC */
+#endif
 
 #endif
 

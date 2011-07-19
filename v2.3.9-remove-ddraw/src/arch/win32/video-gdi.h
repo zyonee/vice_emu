@@ -27,6 +27,13 @@
 #ifndef VICE_VIDEO_DDRAW_H
 #define VICE_VIDEO_DDRAW_H
 
-extern void init_palette(const palette_t *p, PALETTEENTRY *ape);
+/* DDraw functions */
+struct raster_s;
+struct palette_s;
+struct video_canvas_s;
+
+extern struct video_canvas_s *video_canvas_create_gdi(struct raster_s *raster, struct palette_s *palette, unsigned int *width, unsigned int *height);
+extern void video_canvas_refresh_gdi(struct raster_s *raster, unsigned int xs, unsigned int ys, unsigned int xi, unsigned int yi, unsigned int w, unsigned int h);
+extern void video_canvas_update_gdi(HWND hwnd, HDC hdc, int xclient, int yclient, int w, int h);
 
 #endif

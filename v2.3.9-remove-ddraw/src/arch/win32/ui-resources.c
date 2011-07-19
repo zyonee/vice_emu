@@ -31,6 +31,7 @@
 
 #include "cmdline.h"
 #include "lib.h"
+#include "raster.h"
 #include "res.h"
 #include "resources.h"
 #include "translate.h"
@@ -188,13 +189,13 @@ static int set_alwaysontop(int val, void *param)
 
 void resize_every_canvas(void)
 {
-    video_canvas_t *canvas;
+    raster_t *raster;
     int window_index;
 
     for (window_index = 0; window_index < number_of_windows; window_index++) {
-        canvas = video_canvas_for_hwnd(window_handles[window_index]);
-        if (canvas != NULL) {
-            ui_resize_canvas_window(canvas);
+        raster = video_canvas_for_hwnd(window_handles[window_index]);
+        if (raster != NULL) {
+            ui_resize_canvas_window(raster->canvas, raster->geometry->pixel_aspect_ratio);
         }
     }
 }

@@ -105,7 +105,7 @@ static video_cbm_palette_t ted_palette =
     TED_PHASE
 };
 
-int ted_color_update_palette(struct video_canvas_s *canvas)
+int ted_color_update_palette(raster_t *raster)
 {
     int col,lum,cl;
     float tedlum;
@@ -127,7 +127,7 @@ int ted_color_update_palette(struct video_canvas_s *canvas)
         }
     }
 
-    video_color_palette_internal(canvas, &ted_palette);
-    return video_color_update_palette(canvas);
+    video_color_palette_internal(raster, &ted_palette);
+    return video_color_update_palette(raster);
 }
 

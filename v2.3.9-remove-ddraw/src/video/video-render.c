@@ -81,7 +81,7 @@ void video_render_initconfig(video_render_config_t *config)
     }
 }
 
-void video_render_setphysicalcolor(video_render_config_t *config, int index,
+void video_render_setphysicalcolor(video_render_color_tables_t *color_tables, int index,
                                    DWORD color, int depth)
 {
     /* duplicated colours are used by the double size 8/16 bpp renderers. */
@@ -95,7 +95,7 @@ void video_render_setphysicalcolor(video_render_config_t *config, int index,
         color = color | (color << 16);
         break;
     }
-    config->color_tables.physical_colors[index] = color;
+    color_tables->physical_colors[index] = color;
 }
 
 static int rendermode_error = -1;
@@ -115,6 +115,13 @@ void video_render_main(video_render_config_t *config, BYTE *src, BYTE *trg,
     if (width <= 0) {
         return; /* some render routines don't like invalid width */
     }
+
+#ifdef VIDEO_SCALE_SOURCE
+    if (config->doublesizex)
+        xs /= 2;
+    if (config->doublesizey)
+        ys /= 2;
+#endif
 
     rendermode = config->rendermode;
     colortab = &config->color_tables;

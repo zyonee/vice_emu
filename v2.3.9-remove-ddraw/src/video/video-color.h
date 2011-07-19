@@ -30,6 +30,7 @@
 #include "types.h"
 
 struct palette_s;
+struct raster_s;
 
 /* shared gamma table for renderers */
 extern DWORD gamma_red[256 * 3];
@@ -45,6 +46,8 @@ extern DWORD gamma_blu_fac[256 * 3 * 2];
 extern DWORD alpha;
 
 extern void video_color_palette_free(struct palette_s *palette);
+
+extern struct raster_s *video_current_canvas;
 
 #endif
 

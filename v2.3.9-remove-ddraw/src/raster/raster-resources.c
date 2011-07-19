@@ -100,15 +100,21 @@ int raster_resources_chip_init(const char *chipname, raster_t *raster,
         resources_chip[i].param = (void *)raster_resource_chip;
     }
 
-    raster->canvas = video_canvas_init();
+    raster->videoconfig = lib_calloc(1, sizeof(video_render_config_t));
 
+    raster->draw_buffer = lib_calloc(1, sizeof(draw_buffer_t));
+    raster->viewport = lib_calloc(1, sizeof(viewport_t));
+    raster->geometry = lib_calloc(1, sizeof(geometry_t));
+
+    video_arch_canvas_init(&raster->canvas);
+    
     if (resources_register_int(resources_chip) < 0)
         return -1;
 
     for (i = 0; rname_chip[i] != NULL; i++)
         lib_free((char *)(resources_chip[i].name));
 
-    if (video_resources_chip_init(chipname, &raster->canvas, video_chip_cap)
+    if (video_resources_chip_init(chipname, raster, video_chip_cap)
         < 0)
         return -1;
 
@@ -117,8 +123,13 @@ int raster_resources_chip_init(const char *chipname, raster_t *raster,
 
 void raster_resources_chip_shutdown(raster_t *raster)
 {
-    video_resources_chip_shutdown(raster->canvas);
+    video_resources_chip_shutdown(raster);
     lib_free(raster->raster_resource_chip);
-    video_canvas_shutdown(raster->canvas);
+    lib_free(raster->videoconfig);
+    lib_free(raster->draw_buffer);
+    video_viewport_title_free(raster->viewport);
+    lib_free(raster->viewport);
+    lib_free(raster->geometry);
+    lib_free(raster->canvas);
 }
 

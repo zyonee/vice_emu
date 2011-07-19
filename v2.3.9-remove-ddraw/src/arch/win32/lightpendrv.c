@@ -31,6 +31,7 @@
 
 #include "lightpen.h"
 #include "lightpendrv.h"
+#include "raster.h"
 #include "statusbar.h"
 #include "ui.h"
 #include "videoarch.h"
@@ -44,8 +45,8 @@ void win32_lightpen_update(void)
     int x, y, on_screen;
     int buttons;
     RECT rcClient;
-    video_canvas_t *lp_canvas;
-    int dx, dy, cx, cy, dx9;
+    raster_t *raster;
+    int dx, dy, cx, cy;
 
     if (!lightpen_enabled) {
         return;
@@ -64,13 +65,12 @@ void win32_lightpen_update(void)
         buttons = 0;
     }
 
-    lp_canvas = video_canvas_for_hwnd(ui_active_window);
+    raster = video_canvas_for_hwnd(ui_active_window);
     GetClientRect(ui_active_window, &rcClient);
-    dx = lp_canvas->width;
-    dy = lp_canvas->height;
+    dx = raster->canvas->width;
+    dy = raster->canvas->height;
     cx = rcClient.right;
     cy = rcClient.bottom;
-    dx9 = video_dx9_enabled();
 
     /* check if coordinates are off-window/screen */
     if (x > cx || y > (cy - statusbar_get_status_height())) {
@@ -82,25 +82,25 @@ void win32_lightpen_update(void)
 #endif
 
     if (on_screen) {
-        /* no dx9 */
-        if (!dx9) {
-            x -= (int)((cx - dx) / 2);
-            y -= (int)((cy - (dy + statusbar_get_status_height())) / 2);
-        }
-
-        /* dx9 */
-        if (dx9) {
+#ifdef HAVE_D3D9_H
+        if (video_dx9_enabled()) {
             x = (int)(x * dx / cx);
             y = (int)(y * dy / (cy - statusbar_get_status_height()));
         }
+        else
+#endif
+        {
+          x -= (int)((cx - dx) / 2);
+          y -= (int)((cy - (dy + statusbar_get_status_height())) / 2);
+        }
 
         /* double x size */
-        if (lp_canvas->videoconfig->doublesizex) {
+        if (raster->videoconfig->doublesizex) {
             x /= 2;
         }
 
         /* double y size */
-        if (lp_canvas->videoconfig->doublesizey) {
+        if (raster->videoconfig->doublesizey) {
             y /= 2;
         }
     }

@@ -397,7 +397,7 @@ raster_t *crtc_init(void)
     raster_modes_set_idle_mode(raster->modes, CRTC_IDLE_MODE);
     resources_touch("CrtcVideoCache");
 
-    if (crtc_color_update_palette(raster->canvas) < 0) {
+    if (crtc_color_update_palette(raster) < 0) {
         log_error(crtc.log, "Cannot load palette.");
         return NULL;
     }

@@ -174,7 +174,7 @@ static int init_raster(void)
 
     vdc_set_geometry();
 
-    if (vdc_color_update_palette(vdc.raster.canvas) < 0) {
+    if (vdc_color_update_palette(&vdc.raster) < 0) {
         log_error(vdc.log, "Cannot load palette.");
         return -1;
     }

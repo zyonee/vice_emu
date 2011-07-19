@@ -717,9 +717,12 @@ void ui_video_settings_dialog(HWND hwnd, int chip_type1, int chip_type2)
     psp[4].lParam = (LPARAM)chip_param;
 
 #ifdef _ANONYMOUS_UNION
+#ifdef HAVE_D3D9_H
     if (video_dx9_enabled()) {
         psp[0].pszTemplate = MAKEINTRESOURCE(IDD_FULLSCREEN_SETTINGS_DX9_DIALOG);
-    } else {
+    } else
+#endif
+    {
         psp[0].pszTemplate = MAKEINTRESOURCE(IDD_FULLSCREEN_SETTINGS_DIALOG);
     }
     psp[1].pszTemplate = MAKEINTRESOURCE(IDD_VIDEO_PALETTE_DIALOG);
@@ -727,9 +730,12 @@ void ui_video_settings_dialog(HWND hwnd, int chip_type1, int chip_type2)
     psp[3].pszTemplate = MAKEINTRESOURCE(IDD_VIDEO_COLORS_DIALOG);
     psp[4].pszTemplate = MAKEINTRESOURCE(IDD_RENDER_FILTER_DIALOG);
 #else
+#ifdef HAVE_D3D9_H
     if (video_dx9_enabled()) {
         psp[0].DUMMYUNIONNAME.pszTemplate = MAKEINTRESOURCE(IDD_FULLSCREEN_SETTINGS_DX9_DIALOG);
-    } else {
+    } else
+#endif
+    {
         psp[0].DUMMYUNIONNAME.pszTemplate = MAKEINTRESOURCE(IDD_FULLSCREEN_SETTINGS_DIALOG);
     }
     psp[1].DUMMYUNIONNAME.pszTemplate = MAKEINTRESOURCE(IDD_VIDEO_PALETTE_DIALOG);

@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="9.00"
 	Name="arch"
 	ProjectGUID="{4A354313-5B3D-4540-AE89-FDFD0D33A4E7}"
+	RootNamespace="arch"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform
@@ -45,7 +47,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="..\win32\msvc,..\win32,..\..\,..\..\drive,..\..\vdrive,..\..\c64,..\..\c64\cart,..\..\c64dtv,..\..\c128,..\..\vic20,..\..\pet,..\..\cbm2,..\..\raster,..\..\monitor,..\..\lib\libffmpeg,..\..\plus4,..\..\rs232drv,..\..\sid,..\..\imagecontents,..\win32\msvc\wpcap"
+				AdditionalIncludeDirectories="..\win32;..\win32\msvc;..\win32\msvc\wpcap;..\..;..\..\c64;..\..\c64\cart;..\..\c64dtv;..\..\c128;..\..\cbm2;..\..\drive;..\..\imagecontents;..\..\lib\libffmpeg;..\..\monitor;..\..\raster;..\..\pet;..\..\plus4;..\..\rs232drv;..\..\sid;..\..\video;..\..\vdrive;..\..\vic20"
 				PreprocessorDefinitions="WIN32;IDE_COMPILE;NDEBUG;_WINDOWS"
 				StringPooling="true"
 				RuntimeLibrary="0"
@@ -118,7 +120,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\win32\msvc,..\win32,..\..\,..\..\drive,..\..\vdrive,..\..\c64,..\..\c64\cart,..\..\c64dtv,..\..\c128,..\..\vic20,..\..\pet,..\..\cbm2,..\..\raster,..\..\monitor,..\..\lib\libffmpeg,..\..\plus4,..\..\rs232drv,..\..\sid,..\..\imagecontents,..\win32\msvc\wpcap"
+				AdditionalIncludeDirectories="..\win32;..\win32\msvc;..\win32\msvc\wpcap;..\..\;..\..\drive;..\..\c64;..\..\c64\cart;..\..\c64dtv;..\..\c128;..\..\cbm2;..\..\imagecontents;..\..\raster;..\..\monitor;..\..\lib\libffmpeg;..\..\pet;..\..\plus4;..\..\rs232drv;..\..\sid;..\..\vdrive;..\..\vic20;..\..\video;..\..\userport"
 				PreprocessorDefinitions="WIN32;IDE_COMPILE;_DEBUG;_WINDOWS"
 				RuntimeLibrary="1"
 				PrecompiledHeaderFile=".\libs\arch\Debug/arch.pch"
@@ -593,6 +595,10 @@
 			</FileConfiguration>
 		</File>
 		<File
+			RelativePath="..\win32\centiseconds.c"
+			>
+		</File>
+		<File
 			RelativePath="..\win32\console.c"
 			>
 			<FileConfiguration
@@ -714,46 +720,6 @@
 		</File>
 		<File
 			RelativePath="..\win32\dynlib.c"
-			>
-			<FileConfiguration
-				Name="Release|x64"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-					AdditionalIncludeDirectories=""
-					PreprocessorDefinitions=""
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Debug|x64"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-					AdditionalIncludeDirectories=""
-					PreprocessorDefinitions=""
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Itanium"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-					AdditionalIncludeDirectories=""
-					PreprocessorDefinitions=""
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Debug|Itanium"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-					AdditionalIncludeDirectories=""
-					PreprocessorDefinitions=""
-				/>
-			</FileConfiguration>
-		</File>
-		<File
-			RelativePath="..\win32\fullscrn-ddraw.c"
 			>
 			<FileConfiguration
 				Name="Release|x64"
@@ -1397,54 +1363,6 @@
 					CommandLine="..\..\..\data\genwinres ..\win32\res.h ..\win32\menuid.h ..\win32\stringid.h ..\win32\res.txt ..\win32\resdialogs.txt ..\win32\resmenu.txt ..\win32\resstrings.txt&#x0D;&#x0A;"
 					AdditionalDependencies="..\win32\res.txt;..\win32\resdialogs.txt;..\win32\resmenu.txt;..\win32\resstrings.txt;"
 					Outputs="$(InputDir)..\win32\res.h"
-				/>
-			</FileConfiguration>
-		</File>
-		<File
-			RelativePath="win64_id.bat"
-			>
-			<FileConfiguration
-				Name="Release|x64"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					Description="Generating win64_id.bat"
-					CommandLine="copy win64_x64.bat win64_id.bat&#x0D;&#x0A;"
-					AdditionalDependencies="win64_x64.bat;"
-					Outputs="$(InputDir)win64_id.bat"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Debug|x64"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					Description="Generating win64_id.bat"
-					CommandLine="copy win64_x64.bat win64_id.bat&#x0D;&#x0A;"
-					AdditionalDependencies="win64_x64.bat;"
-					Outputs="$(InputDir)win64_id.bat"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Itanium"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					Description="Generating win64_id.bat"
-					CommandLine="copy win64_ia64.bat win64_id.bat&#x0D;&#x0A;"
-					AdditionalDependencies="win64_ia64.bat;"
-					Outputs="$(InputDir)win64_id.bat"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Debug|Itanium"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					Description="Generating win64_id.bat"
-					CommandLine="copy win64_ia64.bat win64_id.bat&#x0D;&#x0A;"
-					AdditionalDependencies="win64_ia64.bat;"
-					Outputs="$(InputDir)win64_id.bat"
 				/>
 			</FileConfiguration>
 		</File>
@@ -4529,7 +4447,7 @@
 			</FileConfiguration>
 		</File>
 		<File
-			RelativePath="..\win32\video-ddraw.c"
+			RelativePath="..\win32\video-dx9.c"
 			>
 			<FileConfiguration
 				Name="Release|x64"
@@ -4569,44 +4487,8 @@
 			</FileConfiguration>
 		</File>
 		<File
-			RelativePath="..\win32\video-dx9.c"
+			RelativePath="..\win32\video-gdi.c"
 			>
-			<FileConfiguration
-				Name="Release|x64"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-					AdditionalIncludeDirectories=""
-					PreprocessorDefinitions=""
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Debug|x64"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-					AdditionalIncludeDirectories=""
-					PreprocessorDefinitions=""
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Itanium"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-					AdditionalIncludeDirectories=""
-					PreprocessorDefinitions=""
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Debug|Itanium"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-					AdditionalIncludeDirectories=""
-					PreprocessorDefinitions=""
-				/>
-			</FileConfiguration>
 		</File>
 		<File
 			RelativePath="..\win32\video.c"
@@ -4725,6 +4607,54 @@
 					Name="VCCLCompilerTool"
 					AdditionalIncludeDirectories=""
 					PreprocessorDefinitions=""
+				/>
+			</FileConfiguration>
+		</File>
+		<File
+			RelativePath="win64_id.bat"
+			>
+			<FileConfiguration
+				Name="Release|x64"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Generating win64_id.bat"
+					CommandLine="copy win64_x64.bat win64_id.bat&#x0D;&#x0A;"
+					AdditionalDependencies="win64_x64.bat;"
+					Outputs="$(InputDir)win64_id.bat"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug|x64"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Generating win64_id.bat"
+					CommandLine="copy win64_x64.bat win64_id.bat&#x0D;&#x0A;"
+					AdditionalDependencies="win64_x64.bat;"
+					Outputs="$(InputDir)win64_id.bat"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|Itanium"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Generating win64_id.bat"
+					CommandLine="copy win64_ia64.bat win64_id.bat&#x0D;&#x0A;"
+					AdditionalDependencies="win64_ia64.bat;"
+					Outputs="$(InputDir)win64_id.bat"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug|Itanium"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Generating win64_id.bat"
+					CommandLine="copy win64_ia64.bat win64_id.bat&#x0D;&#x0A;"
+					AdditionalDependencies="win64_ia64.bat;"
+					Outputs="$(InputDir)win64_id.bat"
 				/>
 			</FileConfiguration>
 		</File>

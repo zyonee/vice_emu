@@ -62,7 +62,6 @@
 #include "tedtypes.h"
 #include "types.h"
 #include "vsync.h"
-#include "videoarch.h"
 #include "video.h"
 
 
@@ -308,7 +307,7 @@ static int init_raster(void)
     raster_t *raster;
 
     raster = &ted.raster;
-    video_color_set_canvas(raster->canvas);
+    video_color_set_canvas(raster);
 
     raster->sprite_status = NULL;
     raster_line_changes_init(raster);
@@ -321,7 +320,7 @@ static int init_raster(void)
 
     ted_set_geometry();
 
-    if (ted_color_update_palette(raster->canvas) < 0) {
+    if (ted_color_update_palette(raster) < 0) {
         log_error(ted.log, "Cannot load palette.");
         return -1;
     }

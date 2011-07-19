@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="9.00"
 	Name="diskimage"
 	ProjectGUID="{00327921-E1FA-41E1-8FB5-2F0E0EF94C78}"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform

@@ -59,7 +59,6 @@
 #include "viciitypes.h"
 #include "vsync.h"
 #include "video.h"
-#include "videoarch.h"
 #include "viewport.h"
 
 
@@ -217,7 +216,7 @@ static int init_raster(void)
     raster_t *raster;
 
     raster = &vicii.raster;
-    video_color_set_canvas(raster->canvas);
+    video_color_set_canvas(raster);
 
     raster->sprite_status = NULL;
     raster_line_changes_init(raster);
@@ -233,7 +232,7 @@ static int init_raster(void)
 
     vicii_set_geometry();
 
-    if (vicii_color_update_palette(raster->canvas) < 0) {
+    if (vicii_color_update_palette(raster) < 0) {
         log_error(vicii.log, "Cannot load palette.");
         return -1;
     }

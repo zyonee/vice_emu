@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="9.00"
 	Name="iecbus"
 	ProjectGUID="{0B4147B5-8047-40D7-9E74-2D40685C0872}"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform

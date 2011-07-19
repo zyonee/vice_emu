@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="9.00"
 	Name="c64cart"
 	ProjectGUID="{03B352EB-A39A-4AB2-B7C3-42415FAD8A86}"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform
@@ -556,7 +557,7 @@
 			RelativePath="..\..\c64\cart\c64-midi.c"
 			>
 			<FileConfiguration
-				Name="Debug|x64"
+				Name="Release|x64"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -565,7 +566,7 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Release|x64"
+				Name="Debug|x64"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -1551,6 +1552,10 @@
 					PreprocessorDefinitions=""
 				/>
 			</FileConfiguration>
+		</File>
+		<File
+			RelativePath="..\..\c64\cart\kingsoft.c"
+			>
 		</File>
 		<File
 			RelativePath="..\..\c64\cart\mach5.c"

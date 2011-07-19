@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="9.00"
 	Name="cbm2"
 	ProjectGUID="{CF450AB1-DF6F-4780-B08A-6C90CBAC0E4A}"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform
@@ -44,7 +45,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\win32\msvc,..\win32,..\..\,..\..\drive,..\..\tape,..\..\sid,..\..\crtc,..\..\vicii,..\..\raster,..\..\monitor"
+				AdditionalIncludeDirectories="..\win32\msvc;..\win32;..\..\;..\..\drive;..\..\tape;..\..\sid;..\..\crtc;..\..\vicii;..\..\raster;..\..\monitor;..\..\userport"
 				PreprocessorDefinitions="WIN32;IDE_COMPILE;_DEBUG;_WINDOWS"
 				RuntimeLibrary="1"
 				PrecompiledHeaderFile=".\libs\cbm2\Debug/cbm2.pch"

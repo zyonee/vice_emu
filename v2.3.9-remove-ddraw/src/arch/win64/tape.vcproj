@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="9.00"
 	Name="tape"
 	ProjectGUID="{6CA8C6D2-157C-43D8-9368-5E9C52ABC048}"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="9.00"
 	Name="base"
 	ProjectGUID="{167AF82A-A87D-4174-A597-3EDA33E9EC07}"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform
@@ -118,7 +119,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\win32\msvc,..\win32,..\..\,..\..\drive,..\..\monitor,..\..\vdrive,..\..\rs232drv,..\..\imagecontents"
+				AdditionalIncludeDirectories="..\win32\msvc;..\win32;..\..\;..\..\drive;..\..\monitor;..\..\vdrive;..\..\rs232drv;..\..\imagecontents;..\..\userport"
 				PreprocessorDefinitions="DONT_USE_UNISTD_H;WIN32;IDE_COMPILE;_DEBUG;_WINDOWS"
 				RuntimeLibrary="1"
 				PrecompiledHeaderFile=".\libs\base\Debug/base.pch"
@@ -393,7 +394,7 @@
 			</FileConfiguration>
 		</File>
 		<File
-			RelativePath="..\..\autostart.c"
+			RelativePath="..\..\autostart-prg.c"
 			>
 			<FileConfiguration
 				Name="Release|x64"
@@ -433,7 +434,7 @@
 			</FileConfiguration>
 		</File>
 		<File
-			RelativePath="..\..\autostart-prg.c"
+			RelativePath="..\..\autostart.c"
 			>
 			<FileConfiguration
 				Name="Release|x64"
