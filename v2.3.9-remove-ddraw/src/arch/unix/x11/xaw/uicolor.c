@@ -36,6 +36,7 @@
 #include "lib.h"
 #include "log.h"
 #include "palette.h"
+#include "raster.h"
 #include "types.h"
 #include "uicolor.h"
 #include "video.h"
@@ -84,15 +85,15 @@ static int uicolor_alloc_system_colors(void)
 
 /*-----------------------------------------------------------------------*/
 
-int uicolor_alloc_colors(video_canvas_t *c)
+int uicolor_alloc_colors(raster_t *raster)
 {
-    if (uicolor_alloc_system_colors() < 0 || color_alloc_colors(c, c->palette, NULL) < 0) {
+    if (uicolor_alloc_system_colors() < 0 || color_alloc_colors(raster, raster->palette, NULL) < 0) {
         Display *display = x11ui_get_display_ptr();
         if (colormap == DefaultColormap(display, screen)) {
             log_warning(LOG_DEFAULT, "Automatically using a private colormap.");
             colormap = XCreateColormap(display, RootWindow(display, screen), visual, AllocNone);
             XtVaSetValues(_ui_top_level, XtNcolormap, colormap, NULL);
-            return color_alloc_colors(c, c->palette, NULL);
+            return color_alloc_colors(raster->canvas, raster->palette, NULL);
         }
     }
     return 0;
@@ -154,7 +155,7 @@ void uicolor_convert_color_table(unsigned int colnr, BYTE *data, long color_pixe
         return;
     }
 
-    video_convert_color_table(colnr, data, color_pixel, (video_canvas_t *)c);
+    video_convert_color_table(colnr, data, color_pixel, (raster_t *)c);
 }
 
 void uicolor_init_video_colors()

@@ -34,8 +34,6 @@ libvideo_a_SOURCES = \
 	render2x4crt.h \
 	renderyuv.c \
 	renderyuv.h \
-	video-canvas.c \
-	video-canvas.h \
 	video-cmdline-options.c \
 	video-color.c \
 	video-color.h \

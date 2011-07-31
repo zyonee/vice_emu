@@ -52,6 +52,7 @@ struct video_cbm_palette_s;
 struct viewport_s;
 struct geometry_s;
 struct palette_s;
+struct raster_s;
 
 struct canvas_refresh_s
 {
@@ -176,9 +177,7 @@ extern void video_shutdown(void);
 
 extern struct video_canvas_s *video_canvas_create(struct raster_s *raster,
                                  unsigned int *width, unsigned int *height,
-                                 int mapped, const char *title,
-                                 int doublesizex, int doublesizey,
-                                 struct palette_s *palette);
+                                 int mapped);
 extern void video_arch_canvas_init(struct video_canvas_s **canvas);
 extern void video_canvas_refresh(struct raster_s *raster,
                                  unsigned int xs, unsigned int ys,
@@ -191,10 +190,8 @@ extern int video_canvas_set_palette(struct video_canvas_s *canvas,
 extern void video_canvas_destroy(struct video_canvas_s *canvas);
 extern void video_canvas_map(struct video_canvas_s *canvas);
 extern void video_canvas_unmap(struct video_canvas_s *canvas);
-extern void video_canvas_resize(struct video_canvas_s *canvas,
-                                unsigned int width, unsigned int height,
-                                int doublesizex, int doublesizey,
-                                float pixel_aspect_ratio);
+extern void video_canvas_resize(struct raster_s *raster,
+                                unsigned int width, unsigned int height);
 extern void video_viewport_resize(struct raster_s *raster);
 extern void video_viewport_title_set(struct viewport_s *viewport,
                                      const char *title);

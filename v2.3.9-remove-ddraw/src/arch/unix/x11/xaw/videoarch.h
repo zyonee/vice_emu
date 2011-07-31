@@ -66,11 +66,6 @@ struct video_canvas_s {
     unsigned int created;
     unsigned int width, height;
     ui_window_t emuwindow;
-    struct video_render_config_s *videoconfig;
-    struct draw_buffer_s *draw_buffer;
-    struct viewport_s *viewport;
-    struct geometry_s *geometry;
-    struct palette_s *palette;
     Window drawable;
     Colormap colormap;
     XImage *x_image;
@@ -102,7 +97,7 @@ extern int _video_use_xsync;
 
 /* ------------------------------------------------------------------------- */
 
-extern void video_convert_color_table(unsigned int i, BYTE *data, long col, video_canvas_t *c);
+extern void video_convert_color_table(unsigned int i, BYTE *data, long col, struct raster_s *raster);
 
 extern void uicolor_init_video_colors(void);
 

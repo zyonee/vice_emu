@@ -26,10 +26,12 @@
 #ifndef VICE_UI_XAW_LIGHTPENDRV_H
 #define VICE_UI_XAW_LIGHTPENDRV_H
 
+struct raster_s;
+
 extern void xaw_init_lightpen(Display *disp);
 extern void xaw_lightpen_setbutton(int b, int s);
 extern void xaw_lightpen_update_xy(int x, int y);
 extern void x11_lightpen_update(void);
-extern void xaw_lightpen_update_canvas(struct video_canvas_s *p, int enter);
+extern void xaw_lightpen_update_canvas(struct raster_s *p, int enter);
 
 #endif /* VICE_UI_XAW_LIGHTPENDRV_H */

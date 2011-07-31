@@ -30,7 +30,10 @@
 #ifdef HAVE_MOUSE
 #include <stdio.h>
 #include <X11/cursorfont.h>
+#include <X11/Xlib.h>
 #include "lightpen.h"
+#include "lightpendrv.h"
+#include "raster.h"
 #include "ui.h"
 #include "uiarch.h"
 #include "videoarch.h"
@@ -40,7 +43,7 @@ static Cursor cursor;
 static Display *display;
 static int buttons;
 static int saved_x, saved_y;
-static video_canvas_t *c;
+static raster_t *c;
 
 void xaw_init_lightpen(Display *disp) {
     display = disp;
@@ -92,7 +95,7 @@ void x11_lightpen_update(void)
         draw_buffer_t *draw_buffer = c->draw_buffer;
         viewport_t *viewport = c->viewport;
 
-        XDefineCursor(display, XtWindow(c->emuwindow), cursor);
+        XDefineCursor(display, XtWindow(c->canvas->emuwindow), cursor);
 
         /*
          * This information is gleaned from viewport.h,
@@ -155,8 +158,8 @@ void x11_lightpen_update(void)
             offy = viewport->y_offset - viewport->first_line
                                       + geom->first_displayed_line;
 
-            scalex = (float)c->width  / draw_buffer->canvas_width;
-            scaley = (float)c->height / draw_buffer->canvas_height;
+            scalex = (float)c->canvas->width  / draw_buffer->canvas_width;
+            scaley = (float)c->canvas->height / draw_buffer->canvas_height;
 
             x = (saved_x / scalex) - offx;
             y = (saved_y / scaley) - offy;
@@ -174,10 +177,10 @@ void x11_lightpen_update(void)
             y = -1;
         }
 
-        lightpen_update(c->app_shell, x, y, buttons);
+        lightpen_update(c->canvas->app_shell, x, y, buttons);
     } else {
-        if (c->emuwindow) {
-            Window w = XtWindow(c->emuwindow);
+        if (c->canvas->emuwindow) {
+            Window w = XtWindow(c->canvas->emuwindow);
             if (w) {
                 XUndefineCursor(display, w);
             }
@@ -186,11 +189,11 @@ void x11_lightpen_update(void)
     }
 }
 
-void xaw_lightpen_update_canvas(struct video_canvas_s *p, int enter) 
+void xaw_lightpen_update_canvas(raster_t *p, int enter) 
 {
 #if LP_DEBUG
-    fprintf(stderr,"xaw_lightpen_update_canvas: video_canvas_t %p %d shell=%d emuwindow=%p\n",
-                p, enter, p ? p->app_shell : -1, p ? p->emuwindow : NULL);
+    fprintf(stderr,"xaw_lightpen_update_canvas: raster_t %p %d shell=%d emuwindow=%p\n",
+                p, enter, p ? p->canvas->app_shell : -1, p ? p->canvas->emuwindow : NULL);
 #endif
     c = enter ? p : NULL;
 }

@@ -78,6 +78,7 @@
 #include "mouse.h"
 #include "mousedrv.h"
 #include "psid.h"
+#include "raster.h"
 #include "resources.h"
 #include "types.h"
 #include "ui.h"
@@ -115,7 +116,7 @@ static log_t ui_log = LOG_ERR;
 extern log_t vsid_log;
 
 Cursor blankCursor;
-static video_canvas_t *ui_cached_video_canvas;
+static raster_t *ui_cached_video_canvas;
 static Widget last_visited_canvas;
 
 static void ui_display_drive_current_image2(void);
@@ -244,7 +245,8 @@ static int mouse_warped = 0;
 
 static void mouse_handler_canvas(Widget w, XtPointer client_data, XEvent *report, Boolean *ctd)
 {
-    video_canvas_t *canvas = (video_canvas_t *)client_data;
+    raster_t *raster = (raster_t *)client_data;
+    video_canvas_t *canvas = raster->canvas;
     app_shell_type *appshell;
 
     /* HACK avoid segfaults on vsid */
@@ -252,7 +254,7 @@ static void mouse_handler_canvas(Widget w, XtPointer client_data, XEvent *report
         return;
     }
 
-    canvas = ui_cached_video_canvas; /* FIXME */
+    raster = ui_cached_video_canvas; /* FIXME */
     appshell = &app_shells[canvas->app_shell];
 
     switch(report->type) {
@@ -281,13 +283,13 @@ static void mouse_handler_canvas(Widget w, XtPointer client_data, XEvent *report
                     ptrx = (int)report->xmotion.x;
                     ptry = (int)report->xmotion.y;
 
-                    w = canvas->geometry->screen_size.width;
-                    h = canvas->geometry->screen_size.height;
+                    w = raster->geometry->screen_size.width;
+                    h = raster->geometry->screen_size.height;
 
-                    if (canvas->videoconfig->doublesizex) {
+                    if (raster->videoconfig->doublesizex) {
                         w <<= 1;
                     }
-                    if (canvas->videoconfig->doublesizey) {
+                    if (raster->videoconfig->doublesizey) {
                         h <<= 1;
                     }
 #if 0
@@ -796,7 +798,7 @@ Window x11ui_get_X11_window()
 }
 
 /* Create a shell with a canvas widget in it.  */
-int ui_open_canvas_window(video_canvas_t *c, const char *title, int width, int height, int no_autorepeat)
+int ui_open_canvas_window(raster_t *c, const char *title, int width, int height, int no_autorepeat)
 {
     /* Note: this is correct because we never destroy CanvasWindows.  */
     Widget shell, speed_label, statustext_label;
@@ -857,11 +859,11 @@ int ui_open_canvas_window(video_canvas_t *c, const char *title, int width, int h
 
     /* XVideo must be refreshed when the shell window is moved. */
     if (!vsid_mode) {
-        XtAddEventHandler(shell, StructureNotifyMask, False, (XtEventHandler)exposure_callback_shell, (XtPointer)c);
+        XtAddEventHandler(shell, StructureNotifyMask, False, (XtEventHandler)exposure_callback_shell, (XtPointer)c->canvas);
 
         XtAddEventHandler(canvas, ExposureMask | StructureNotifyMask, False, (XtEventHandler)exposure_callback_canvas, (XtPointer)c);
     }
-    XtAddEventHandler(canvas, PointerMotionMask | ButtonPressMask | ButtonReleaseMask, False, (XtEventHandler)mouse_handler_canvas, canvas);
+    XtAddEventHandler(canvas, PointerMotionMask | ButtonPressMask | ButtonReleaseMask, False, (XtEventHandler)mouse_handler_canvas, (XtPointer)c);
 
 
     /* Create the status bar on the bottom.  */
@@ -1074,8 +1076,8 @@ int ui_open_canvas_window(video_canvas_t *c, const char *title, int width, int h
     ui_enable_drive_status(enabled_drives, drive_active_led);
 
     initBlankCursor(canvas);
-    c->app_shell = num_app_shells - 1;
-    c->emuwindow = canvas;
+    c->canvas->app_shell = num_app_shells - 1;
+    c->canvas->emuwindow = canvas;
 
     if (!vsid_mode) {
         xaw_init_lightpen(display);
@@ -2464,11 +2466,11 @@ static Widget build_confirm_dialog(Widget parent, ui_button_t *button_return, Wi
 
 UI_CALLBACK(enter_window_callback_shell)
 {
-    video_canvas_t *video_canvas = (video_canvas_t *)client_data;
+    raster_t *video_canvas = (raster_t *)client_data;
 
     last_visited_app_shell = w;
     if (!vsid_mode) {
-        last_visited_canvas = video_canvas->emuwindow;   /* keep global up to date */
+        last_visited_canvas = video_canvas->canvas->emuwindow;   /* keep global up to date */
         ui_cached_video_canvas = video_canvas;
         xaw_lightpen_update_canvas(video_canvas, TRUE);
     }
@@ -2488,27 +2490,47 @@ UI_CALLBACK(exposure_callback_shell)
 
 UI_CALLBACK(exposure_callback_canvas)
 {
-    video_canvas_t *canvas = (video_canvas_t *)client_data;
+    raster_t *raster = (raster_t *)client_data;
 
-    if (!canvas) {
+    if (!raster) {
         return;
     }
 
 #ifdef HAVE_XVIDEO
     /* No resize for XVideo. */
-    if (canvas->videoconfig->hwscale && canvas->xv_image) {
-        video_canvas_refresh_all(canvas);
-    }
-    else
+    if (!raster->videoconfig->hwscale || !raster->canvas->xv_image)
 #endif
     {
         Dimension width, height;
 
         XtVaGetValues(w, XtNwidth, (XtPointer)&width, XtNheight, (XtPointer)&height, NULL);
-        video_canvas_redraw_size(canvas, (unsigned int)width, (unsigned int)height);
+        if (raster->videoconfig->doublesizex) {
+            width /= (raster->videoconfig->doublesizex + 1);
+        }
+        if (raster->videoconfig->doublesizey) {
+            height /= (raster->videoconfig->doublesizey + 1);
+        }
+
+        if (width != raster->draw_buffer->canvas_width
+            || height != raster->draw_buffer->canvas_height) {
+            raster->draw_buffer->canvas_width = width;
+            raster->draw_buffer->canvas_height = height;
+            video_viewport_resize(raster);
+        }
+    }
+    if (!video_disabled_mode) {
+        video_canvas_refresh(raster,
+                 raster->viewport->first_x
+                 + raster->geometry->extra_offscreen_border_left,
+                 raster->viewport->first_line,
+                 raster->viewport->x_offset,
+                 raster->viewport->y_offset,
+                 MIN(raster->draw_buffer->canvas_width,
+                     raster->geometry->screen_size.width - raster->viewport->first_x),
+                 MIN(raster->draw_buffer->canvas_height,
+                     raster->viewport->last_line - raster->viewport->first_line + 1));
     }
 }
-
 
 /* FIXME: this does not handle multiple application shells. */
 static void close_action(Widget w, XEvent *event, String *params, Cardinal *num_params)

@@ -85,6 +85,8 @@ enum ui_keysym_s {
 };
 typedef enum ui_keysym_s ui_keysym_t;
 
+struct raster_s;
+
 #define UI_CALLBACK(name) void name(Widget w, ui_callback_data_t client_data, ui_callback_data_t call_data)
 
 /* fill callback variables */
@@ -97,7 +99,7 @@ extern Visual *visual;
 /* ------------------------------------------------------------------------- */
 /* Prototypes */
 
-extern int ui_open_canvas_window(struct video_canvas_s *c, const char *title, int width, int height, int no_autorepeat);
+extern int ui_open_canvas_window(struct raster_s *c, const char *title, int width, int height, int no_autorepeat);
 extern void ui_set_drive8_menu(Widget w);
 extern void ui_set_drive9_menu(Widget w);
 extern Widget ui_create_shell(Widget parent, const char *name, WidgetClass class);

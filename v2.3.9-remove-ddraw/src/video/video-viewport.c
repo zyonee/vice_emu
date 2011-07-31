@@ -111,7 +111,7 @@ void video_viewport_resize(raster_t *raster)
     }
 
     if (!video_disabled_mode) {
-        video_canvas_resize(raster->canvas, width, height, raster->videoconfig->doublesizex, raster->videoconfig->doublesizey, raster->geometry->pixel_aspect_ratio);
+        video_canvas_resize(raster, width, height);
         video_canvas_refresh(raster,
           viewport->first_x
           + geometry->extra_offscreen_border_left,

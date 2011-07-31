@@ -72,6 +72,7 @@
 #include "lib.h"
 #include "log.h"
 #include "machine.h"
+#include "raster.h"
 #include "resources.h"
 #include "translate.h"
 #include "types.h"
@@ -79,6 +80,7 @@
 #include "uicolor.h"
 #include "util.h"
 #include "video.h"
+#include "video-render.h"
 #include "videoarch.h"
 #include "viewport.h"
 #include "x11ui.h"
@@ -304,10 +306,9 @@ int video_init_cmdline_options(void)
 /* ------------------------------------------------------------------------- */
 
 #if !defined(__NETBSD__)
-static GC _video_gc;
-#else
-GC _video_gc;
+static
 #endif
+GC _video_gc;
 
 static void (*_refresh_func)() = NULL;
 
@@ -316,23 +317,23 @@ int use_mitshm = 0;
 
 /* ------------------------------------------------------------------------- */
 
-void video_convert_color_table(unsigned int i, BYTE *data, long col, video_canvas_t *canvas)
+void video_convert_color_table(unsigned int i, BYTE *data, long col, raster_t *raster)
 {
 #ifdef HAVE_XVIDEO
-    if (canvas->videoconfig->hwscale && canvas->xv_image) {
+    if (raster->videoconfig->hwscale && raster->canvas->xv_image) {
         return;
     }
 #endif
 
-    switch (canvas->x_image->bits_per_pixel) {
+    switch (raster->canvas->x_image->bits_per_pixel) {
         case 8:
-            video_render_setphysicalcolor(canvas->videoconfig, i, (DWORD)(*data), 8);
+            video_render_setphysicalcolor(&raster->videoconfig->color_tables, i, (DWORD)(*data), 8);
             break;
         case 16:
         case 24:
         case 32:
         default:
-            video_render_setphysicalcolor(canvas->videoconfig, i, (DWORD)(col), canvas->x_image->bits_per_pixel);
+            video_render_setphysicalcolor(&raster->videoconfig->color_tables, i, (DWORD)(col), raster->canvas->x_image->bits_per_pixel);
             break;
     }
 }
@@ -450,13 +451,14 @@ static void video_arch_frame_buffer_free(video_canvas_t *canvas)
 
 /* ------------------------------------------------------------------------- */
 
-void video_arch_canvas_init(struct video_canvas_s *canvas)
+void video_arch_canvas_init(video_canvas_t **canvas)
 {
-    canvas->video_draw_buffer_callback = NULL;
+    *canvas = lib_calloc(1, sizeof(video_canvas_t));
+    (*canvas)->video_draw_buffer_callback = NULL;
 
 #ifdef HAVE_FULLSCREEN
-    canvas->fullscreenconfig = lib_calloc(1, sizeof(fullscreenconfig_t));
-    fullscreen_init_alloc_hooks(canvas);
+    (*canvas)->fullscreenconfig = lib_calloc(1, sizeof(fullscreenconfig_t));
+    fullscreen_init_alloc_hooks(*canvas);
 #endif
 }
 
@@ -698,22 +700,22 @@ static void ui_finish_canvas(video_canvas_t *c)
     c->drawable = XtWindow(c->emuwindow);
 }
 
-video_canvas_t *video_canvas_create(video_canvas_t *canvas, unsigned int *width, unsigned int *height, int mapped)
+video_canvas_t *video_canvas_create(raster_t *raster, unsigned int *width, unsigned int *height, int mapped)
 {
     int res;
     unsigned int new_width, new_height;
     XGCValues gc_values;
 
-    canvas->depth = x11ui_get_display_depth();
+    raster->canvas->depth = x11ui_get_display_depth();
 
     new_width = *width;
     new_height = *height;
 
-    if (canvas->videoconfig->doublesizex) {
+    if (raster->videoconfig->doublesizex) {
         new_width *= 2;
     }
 
-    if (canvas->videoconfig->doublesizey) {
+    if (raster->videoconfig->doublesizey) {
         new_height *= 2;
     }
 
@@ -732,11 +734,11 @@ video_canvas_t *video_canvas_create(video_canvas_t *canvas, unsigned int *width,
     resources_set_int("HwScalePossible", 0);
 #endif
 
-    if (video_arch_frame_buffer_alloc(canvas, new_width, new_height) < 0) {
+    if (video_arch_frame_buffer_alloc(raster->canvas, new_width, new_height) < 0) {
         return NULL;
     }
 
-    res = ui_open_canvas_window(canvas, canvas->viewport->title, new_width, new_height, 1);
+    res = ui_open_canvas_window(raster, raster->viewport->title, new_width, new_height, 1);
     if (res < 0) {
         return NULL;
     }
@@ -745,24 +747,24 @@ video_canvas_t *video_canvas_create(video_canvas_t *canvas, unsigned int *width,
         _video_gc = video_get_gc(&gc_values);
     }
 
-    canvas->width = new_width;
-    canvas->height = new_height;
+    raster->canvas->width = new_width;
+    raster->canvas->height = new_height;
 
-    ui_finish_canvas(canvas);
+    ui_finish_canvas(raster->canvas);
 
-    if (canvas->depth > 8) {
+    if (raster->canvas->depth > 8) {
         uicolor_init_video_colors();
     }
 
 #ifdef HAVE_XVIDEO
-    init_xv_settings(canvas);
+    init_xv_settings(raster->canvas);
 #endif
 
 #ifdef HAVE_OPENGL_SYNC
-    openGL_sync_init(canvas);
+    openGL_sync_init(raster->canvas);
 #endif
 
-    return canvas;
+    return raster->canvas;
 }
 
 void video_canvas_destroy(video_canvas_t *canvas)
@@ -775,7 +777,8 @@ void video_canvas_destroy(video_canvas_t *canvas)
 #endif
 }
 
-int video_canvas_set_palette(video_canvas_t *c, struct palette_s *palette)
+int video_canvas_set_palette(video_canvas_t *c, struct palette_s *palette,
+                             video_render_color_tables_t *color_tables)
 {
 #ifdef HAVE_XVIDEO
     /* Apply color settings to XVideo. */
@@ -804,46 +807,69 @@ int video_canvas_set_palette(video_canvas_t *c, struct palette_s *palette)
     }
 #endif
 
-    c->palette = palette;
-
     return uicolor_set_palette(c, palette);
 }
 
 /* Change the size of the canvas. */
-void video_canvas_resize(video_canvas_t *canvas, unsigned int width, unsigned int height)
+void video_canvas_resize(raster_t *raster, unsigned int width, unsigned int height)
 {
     if (console_mode || vsid_mode) {
         return;
     }
 
 #ifdef HAVE_XVIDEO
-    if (canvas->videoconfig->hwscale) {
-        struct geometry_s *geometry = canvas->geometry;
+    if (raster->videoconfig->hwscale) {
+        struct geometry_s *geometry = raster->geometry;
         width = geometry->gfx_size.width + geometry->gfx_position.x * 2;
         height = geometry->last_displayed_line - geometry->first_displayed_line + 1;
     }
 #endif
-    if (canvas->videoconfig->doublesizex) {
+    if (raster->videoconfig->doublesizex) {
         width *= 2;
     }
 
-    if (canvas->videoconfig->doublesizey) {
+    if (raster->videoconfig->doublesizey) {
         height *= 2;
     }
 
-    video_arch_frame_buffer_free(canvas);
-    video_arch_frame_buffer_alloc(canvas, width, height);
+    video_arch_frame_buffer_free(raster->canvas);
+    video_arch_frame_buffer_alloc(raster->canvas, width, height);
 
-    x11ui_resize_canvas_window(canvas->emuwindow, width, height, canvas->videoconfig->hwscale);
-    canvas->width = width;
-    canvas->height = height;
+    x11ui_resize_canvas_window(raster->canvas->emuwindow, width, height, raster->videoconfig->hwscale);
+    raster->canvas->width = width;
+    raster->canvas->height = height;
 
-    video_canvas_redraw_size(canvas, width, height);
+    if (raster->videoconfig->doublesizex) {
+        width /= (raster->videoconfig->doublesizex + 1);
+    }
+    if (raster->videoconfig->doublesizey) {
+        height /= (raster->videoconfig->doublesizey + 1);
+    }
 
-    ui_finish_canvas(canvas);
+    if (width != raster->draw_buffer->canvas_width
+        || height != raster->draw_buffer->canvas_height) {
+        raster->draw_buffer->canvas_width = width;
+        raster->draw_buffer->canvas_height = height;
+        video_viewport_resize(raster);
+    }
+
+    if (!video_disabled_mode) {
+        video_canvas_refresh(raster,
+                 raster->viewport->first_x
+                 + raster->geometry->extra_offscreen_border_left,
+                 raster->viewport->first_line,
+                 raster->viewport->x_offset,
+                 raster->viewport->y_offset,
+                 MIN(raster->draw_buffer->canvas_width,
+                     raster->geometry->screen_size.width - raster->viewport->first_x),
+                 MIN(raster->draw_buffer->canvas_height,
+                     raster->viewport->last_line - raster->viewport->first_line + 1));
+    }
+
+    ui_finish_canvas(raster->canvas);
 
 #ifdef HAVE_XVIDEO
-    init_xv_settings(canvas);
+    init_xv_settings(raster->canvas);
 #endif
 }
 
@@ -857,16 +883,20 @@ static void video_refresh_func(void (*rfunc)(void))
 /* ------------------------------------------------------------------------- */
 
 /* Refresh a canvas.  */
-void video_canvas_refresh(video_canvas_t *canvas, unsigned int xs, unsigned int ys, unsigned int xi, unsigned int yi, unsigned int w, unsigned int h)
+void video_canvas_refresh(raster_t *raster, unsigned int xs, unsigned int ys, unsigned int xi, unsigned int yi, unsigned int w, unsigned int h)
 {
     Display *display;
+    int resizedx = xi;
+    int resizedy = yi;
+    int renderx;
+    int rendery;
 
     if (console_mode || vsid_mode) {
         return;
     }
 
 #ifdef HAVE_XVIDEO
-    if (canvas->videoconfig->hwscale && canvas->xv_image) {
+    if (raster->videoconfig->hwscale && raster->canvas->xv_image) {
         int doublesize = canvas->videoconfig->doublesizex && canvas->videoconfig->doublesizey;
 
 #if defined(__QNX__) || defined(MINIX_SUPPORT)
@@ -883,15 +913,15 @@ void video_canvas_refresh(video_canvas_t *canvas, unsigned int xs, unsigned int 
         display = x11ui_get_display_ptr();
 
         render_yuv_image(doublesize,
-                         canvas->viewport,
+                         raster->viewport,
                          video_resources.delayloop_emulation,
                          video_resources.pal_blur * 64 / 1000,
                          video_resources.pal_scanlineshade * 1024 / 1000,
-                         canvas->xv_format,
-                         &canvas->yuv_image,
-                         canvas->draw_buffer->draw_buffer,
-                         canvas->draw_buffer->draw_buffer_width,
-                         canvas->videoconfig,
+                         raster->canvas->xv_format,
+                         &raster->canvas->yuv_image,
+                         raster->draw_buffer->draw_buffer,
+                         raster->draw_buffer->draw_buffer_width,
+                         raster->videoconfig,
                          xs, ys, w, h,
                          xi, yi);
 
@@ -903,23 +933,23 @@ void video_canvas_refresh(video_canvas_t *canvas, unsigned int xs, unsigned int 
         canvas_height = canvas->height;
 
         if (trueaspect) {
-            local_aspect_ratio = canvas->geometry->pixel_aspect_ratio;
+            local_aspect_ratio = raster->geometry->pixel_aspect_ratio;
         } else if (keepaspect) {
             local_aspect_ratio = aspect_ratio;
         } else {
             local_aspect_ratio = 0.0;
         }
 
-        if (!doublesize && canvas->videoconfig->doublesizey) {
+        if (!doublesize && raster->videoconfig->doublesizey) {
             canvas_height /= 2;
             local_aspect_ratio /= 2;
         }
 
-        XGetGeometry(display, canvas->drawable, &root, &x, &y, &canvas->xv_geometry.w, &canvas->xv_geometry.h, &border_width, &depth);
+        XGetGeometry(display, raster->canvas->drawable, &root, &x, &y, &canvas->xv_geometry.w, &canvas->xv_geometry.h, &border_width, &depth);
 
         /* Xv does subpixel scaling. Since coordinates are in integers we
            refresh the entire image to get it right. */
-        display_yuv_image(display, canvas->xv_port, canvas->drawable, _video_gc, canvas->xv_image, shminfo, 0, 0, canvas->width, canvas_height, &canvas->xv_geometry, local_aspect_ratio);
+        display_yuv_image(display, raster->canvas->xv_port, raster->canvas->drawable, _video_gc, canvas->xv_image, shminfo, 0, 0, raster->canvas->width, canvas_height, &raster->canvas->xv_geometry, local_aspect_ratio);
 
         if (_video_use_xsync) {
             XSync(display, False);
@@ -929,38 +959,51 @@ void video_canvas_refresh(video_canvas_t *canvas, unsigned int xs, unsigned int 
     }
 #endif
 
-    if (canvas->videoconfig->doublesizex) {
-        xi *= 2;
+    if (raster->videoconfig->doublesizex) {
+        resizedx *= 2;
         w *= 2;
     }
 
-    if (canvas->videoconfig->doublesizey) {
-        yi *= 2;
+    if (raster->videoconfig->doublesizey) {
+        resizedy *= 2;
         h *= 2;
     }
 
 #ifdef HAVE_FULLSCREEN
-    if (canvas->video_fullscreen_refresh_func) {
-        canvas->video_fullscreen_refresh_func(canvas, xs, ys, xi, yi, w, h);
+    if (raster->canvas->video_fullscreen_refresh_func) {
+        raster->canvas->video_fullscreen_refresh_func(raster->canvas, xs, ys, resizedx, resizedy, w, h);
         return;
     }
 #endif
 
-    if (xi + w > canvas->width || yi + h > canvas->height) {
-        log_debug("Attempt to draw outside canvas!\nXI%i YI%i W%i H%i CW%i CH%i\n", xi, yi, w, h, canvas->width, canvas->height);
+#ifdef VIDEO_SCALE_SOURCE
+    renderx = xi;
+    rendery = yi;
+#else
+    renderx = resizedx;
+    rendery = resizedy;
+#endif
+
+    if (resizedx + w > raster->canvas->width || resizedy + h > raster->canvas->height) {
+        log_debug("Attempt to draw outside canvas!\nXI%i YI%i W%i H%i CW%i CH%i\n", resizedx, resizedy, w, h, raster->canvas->width, raster->canvas->height);
         return; /* this makes `-fullscreen -80col' work
                    XXX fix me some day */
     }
 
     if ((int)xs >= 0) {
         /* some render routines don't like negative xs */
-	video_canvas_render(canvas, (BYTE *)canvas->x_image->data, w, h, xs, ys, xi, yi, canvas->x_image->bytes_per_line, canvas->x_image->bits_per_pixel);
+        video_render_main(raster->videoconfig, raster->draw_buffer->draw_buffer,
+                      (BYTE *)raster->canvas->x_image->data, w, h, xs, ys, renderx, rendery,
+                      raster->draw_buffer->draw_buffer_width,
+                      raster->canvas->x_image->bytes_per_line,
+                      raster->canvas->x_image->bits_per_pixel,
+                      raster->viewport);
     }
 
     /* This could be optimized away.  */
     display = x11ui_get_display_ptr();
 
-    _refresh_func(display, canvas->drawable, _video_gc, canvas->x_image, xi, yi, xi, yi, w, h, False, NULL, canvas);
+    _refresh_func(display, raster->canvas->drawable,_video_gc, raster->canvas->x_image, resizedx, resizedy, resizedx, resizedy, w, h, False, NULL, raster->canvas);
 
     if (_video_use_xsync) {
         XSync(display, False);

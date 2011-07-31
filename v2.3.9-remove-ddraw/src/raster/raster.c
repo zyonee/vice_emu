@@ -159,11 +159,7 @@ static int realize_canvas(raster_t *raster)
     if (!video_disabled_mode) {
         new_canvas = video_canvas_create(raster,
                      &raster->draw_buffer->canvas_width,
-                     &raster->draw_buffer->canvas_height, 1,
-                     raster->viewport->title,
-                     raster->videoconfig->doublesizex,
-                     raster->videoconfig->doublesizey,
-                     raster->palette);
+                     &raster->draw_buffer->canvas_height, 1);
 
         if (new_canvas == NULL)
             return -1;
@@ -199,12 +195,9 @@ static int perform_mode_change(raster_t *raster)
 
     /* FIXME: `video_viewport_resize()' already calls
        `video_canvas_resize()'. */
-    video_canvas_resize(raster->canvas,
+    video_canvas_resize(raster,
                         raster->draw_buffer->canvas_width,
-                        raster->draw_buffer->canvas_height,
-                        raster->videoconfig->doublesizex,
-                        raster->videoconfig->doublesizey,
-                        raster->geometry->pixel_aspect_ratio);
+                        raster->draw_buffer->canvas_height);
     video_viewport_resize(raster);
 
     return 0;

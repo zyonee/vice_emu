@@ -6,6 +6,8 @@ INCLUDES = \
 	-I$(top_srcdir)/src \
 	-I$(top_srcdir)/src/arch \
 	-I$(top_srcdir)/src/drive \
+	-I$(top_srcdir)/src/raster \
+	-I$(top_srcdir)/src/video \
 	-I$(top_srcdir)/src/vdrive \
 	-I$(top_srcdir)/src/c64 \
 	-I$(top_srcdir)/src/c64dtv \
