@@ -237,7 +237,7 @@ void video_canvas_add(raster_t *raster)
     video_canvases[video_number_of_canvases++] = raster;
 }
 
-video_canvas_t *video_canvas_create(raster_t *raster, unsigned int *width, unsigned int *height, int mapped, const char *title, int doublesizex, int doublesizey, palette_t *palette)
+video_canvas_t *video_canvas_create(raster_t *raster, unsigned int *width, unsigned int *height, int mapped)
 {
     int enable =
 #ifdef HAVE_D3D9_H
@@ -249,15 +249,15 @@ video_canvas_t *video_canvas_create(raster_t *raster, unsigned int *width, unsig
 
     fullscreen_transition = 1;
 
-    raster->canvas->title = lib_stralloc(title);
+    raster->canvas->title = lib_stralloc(raster->viewport->title);
     raster->canvas->width = *width;
     raster->canvas->height = *height;
 
-    if (doublesizex) {
+    if (raster->videoconfig->doublesizex) {
         raster->canvas->width *= 2;
     }
 
-    if (doublesizey) {
+    if (raster->videoconfig->doublesizey) {
         raster->canvas->height *= 2;
     }
 
@@ -276,7 +276,7 @@ video_canvas_t *video_canvas_create(raster_t *raster, unsigned int *width, unsig
         }
     }
 #endif
-    return video_canvas_create_gdi(raster, palette, width, height);
+    return video_canvas_create_gdi(raster, width, height);
 }
 
 void video_canvas_destroy(video_canvas_t *canvas)
@@ -361,7 +361,7 @@ int video_set_physical_colors(video_canvas_t *c, palette_t *palette, video_rende
 }
 
 /* Change the size of `s' to `width' * `height' pixels.  */
-void video_canvas_resize(video_canvas_t *canvas, unsigned int width, unsigned int height, int doublesizex, int doublesizey, float pixel_aspect_ratio)
+void video_canvas_resize(raster_t *raster, unsigned int width, unsigned int height)
 {
     int device;
     int fullscreen_width;
@@ -369,22 +369,22 @@ void video_canvas_resize(video_canvas_t *canvas, unsigned int width, unsigned in
     int bitdepth;
     int refreshrate;
 
-    if (doublesizex) {
+    if (raster->videoconfig->doublesizex) {
         width *= 2;
     }
 
-    if (doublesizey) {
+    if (raster->videoconfig->doublesizey) {
         height *= 2;
     }
 
-    canvas->width = width;
-    canvas->height = height;
+    raster->canvas->width = width;
+    raster->canvas->height = height;
     if (IsFullscreenEnabled()) {
         GetCurrentModeParameters(&device, &fullscreen_width, &fullscreen_height, &bitdepth, &refreshrate);
     } else {
-        canvas->client_width = width;
-        canvas->client_height = height;
-        ui_resize_canvas_window(canvas, pixel_aspect_ratio);
+        raster->canvas->client_width = width;
+        raster->canvas->client_height = height;
+        ui_resize_canvas_window(raster->canvas, raster->geometry->pixel_aspect_ratio);
     }
 
 #ifdef HAVE_D3D9_H
@@ -392,19 +392,19 @@ void video_canvas_resize(video_canvas_t *canvas, unsigned int width, unsigned in
         video_canvas_reset_dx9(canvas);
     }
 #endif
-    canvas->bmp_info.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
-    canvas->bmp_info.bmiHeader.biWidth = width;
-    canvas->bmp_info.bmiHeader.biHeight = -(LONG)height;
-    canvas->bmp_info.bmiHeader.biPlanes = 1;
-    canvas->bmp_info.bmiHeader.biBitCount = 24;
-    canvas->bmp_info.bmiHeader.biCompression = BI_RGB;
-    canvas->bmp_info.bmiHeader.biSizeImage = 3 * width * height;
-    canvas->pixels = lib_malloc(canvas->bmp_info.bmiHeader.biSizeImage);
+    raster->canvas->bmp_info.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+    raster->canvas->bmp_info.bmiHeader.biWidth = width;
+    raster->canvas->bmp_info.bmiHeader.biHeight = -(LONG)height;
+    raster->canvas->bmp_info.bmiHeader.biPlanes = 1;
+    raster->canvas->bmp_info.bmiHeader.biBitCount = 24;
+    raster->canvas->bmp_info.bmiHeader.biCompression = BI_RGB;
+    raster->canvas->bmp_info.bmiHeader.biSizeImage = 3 * width * height;
+    raster->canvas->pixels = lib_malloc(raster->canvas->bmp_info.bmiHeader.biSizeImage);
 #ifdef HAVE_D3D9_H
     if(!video_dx9_enabled())
 #endif
     {
-        canvas->depth = 24;
+        raster->canvas->depth = 24;
     }
 }
 

@@ -328,7 +328,7 @@ void crtc_set_screen_options(int num_cols, int rasterlines)
     resources_touch("CrtcDoubleSize");
 
     if (crtc.raster.canvas != NULL) {
-        video_viewport_resize(crtc.raster.canvas);
+        video_viewport_resize(&crtc.raster);
     }
 }
 
