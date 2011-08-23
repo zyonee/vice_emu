@@ -297,7 +297,8 @@ midi_sources = \
 	midi.c
 
 cpucore_sources = \
-	6510core.c
+	6510core.c \
+	65C02core.c
 
 cpudtvcore_sources = \
 	6510dtvcore.c
@@ -308,6 +309,7 @@ maincpu_sources = \
 EXTRA_DIST = \
 	6510core.c \
 	6510dtvcore.c \
+	65C02core.c \
 	ChangeLog \
 	ChangeLog.1 \
 	ChangeLog.2 \
