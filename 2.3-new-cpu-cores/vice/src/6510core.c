@@ -1320,12 +1320,12 @@ be found that works for both.
 #define SBC(value, clk_inc, pc_inc)                                             \
   do {                                                                          \
       WORD src, tmp;                                                            \
+      unsigned int tmp_a;                                                       \
                                                                                 \
       src = (WORD)(value);                                                      \
       CLK_ADD(CLK, (clk_inc));                                                  \
       tmp = reg_a_read - src - ((LOCAL_CARRY()) ? 0 : 1);                       \
-      if (reg_p & P_DECIMAL) {                                                  \
-          unsigned int tmp_a;                                                   \
+      if (LOCAL_DECIMAL()) {                                                    \
           tmp_a = (reg_a_read & 0xf) - (src & 0xf) - ((LOCAL_CARRY()) ? 0 : 1); \
           if (tmp_a & 0x10) {                                                   \
               tmp_a = ((tmp_a - 6) & 0xf)                                       \
@@ -1340,13 +1340,13 @@ be found that works for both.
           LOCAL_SET_NZ(tmp & 0xff);                                             \
           LOCAL_SET_OVERFLOW(((reg_a_read ^ tmp) & 0x80)                        \
                              && ((reg_a_read ^ src) & 0x80));                   \
-          reg_a_write = (BYTE) tmp_a;                                           \
+          reg_a_write = (BYTE)tmp_a;                                            \
       } else {                                                                  \
           LOCAL_SET_NZ(tmp & 0xff);                                             \
           LOCAL_SET_CARRY(tmp < 0x100);                                         \
           LOCAL_SET_OVERFLOW(((reg_a_read ^ tmp) & 0x80)                        \
                              && ((reg_a_read ^ src) & 0x80));                   \
-          reg_a_write = (BYTE) tmp;                                             \
+          reg_a_write = (BYTE)tmp;                                              \
       }                                                                         \
       INC_PC(pc_inc);                                                           \
     }                                                                           \
