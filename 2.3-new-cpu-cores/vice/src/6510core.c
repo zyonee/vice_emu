@@ -570,7 +570,7 @@
       CLK_ADD(CLK, (clk_inc));                                                     \
                                                                                    \
       if (LOCAL_DECIMAL()) {                                                       \
-          tmp = (reg_a_read & 0xf) + (tmp_value & 0xf) + (reg_p & 0x1);            \
+          tmp = (reg_a_read & 0xf) + (tmp_value & 0xf) + LOCAL_CARRY();            \
           if (tmp > 0x9) {                                                         \
               tmp += 0x6;                                                          \
           }                                                                        \
@@ -579,7 +579,7 @@
           } else {                                                                 \
               tmp = (tmp & 0xf) + (reg_a_read & 0xf0) + (tmp_value & 0xf0) + 0x10; \
           }                                                                        \
-          LOCAL_SET_ZERO(!((reg_a_read + tmp_value + (reg_p & 0x1)) & 0xff));      \
+          LOCAL_SET_ZERO(!((reg_a_read + tmp_value + LOCAL_CARRY()) & 0xff));      \
           LOCAL_SET_SIGN(tmp & 0x80);                                              \
           LOCAL_SET_OVERFLOW(((reg_a_read ^ tmp) & 0x80)                           \
                               && !((reg_a_read ^ tmp_value) & 0x80));              \
@@ -588,7 +588,7 @@
           }                                                                        \
           LOCAL_SET_CARRY((tmp & 0xff0) > 0xf0);                                   \
       } else {                                                                     \
-          tmp = tmp_value + reg_a_read + (reg_p & P_CARRY);                        \
+          tmp = tmp_value + reg_a_read + LOCAL_CARRY();                            \
           LOCAL_SET_NZ(tmp & 0xff);                                                \
           LOCAL_SET_OVERFLOW(!((reg_a_read ^ tmp_value) & 0x80)                    \
                               && ((reg_a_read ^ tmp) & 0x80));                     \
