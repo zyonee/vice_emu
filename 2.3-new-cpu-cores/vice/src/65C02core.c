@@ -1,13 +1,8 @@
 /*
- * 6510core.c - MOS6510 emulation core.
+ * 65C02core.c - 65C02/65SC02 emulation core.
  *
  * Written by
- *  Ettore Perazzoli <ettore@comm2000.it>
- *  Andreas Boose <viceteam@t-online.de>
- *
- * DTV sections written by
- *  M.Kiesel <mayne@users.sourceforge.net>
- *  Hannu Nuotio <hannu.nuotio@tut.fi>
+ *  Marco van den Heuvel <blackystardust68@yahoo.com>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -29,24 +24,12 @@
  *
  */
 
-/* This file is included by CPU definition files */
-/* (maincpu.c, drivecpu.c, ...) */
+/* This file is currently not included by any CPU definition files */
 
-#ifdef DRIVE_CPU
-#define CPU_STR "Drive CPU"
-#else
-#define CPU_STR "Main CPU"
-#endif
+#define CPU_STR "65(S)C02 CPU"
 
 #include "traps.h"
 
-#ifndef C64DTV
-/* The C64DTV can use different shadow registers for accu read/write. */
-/* For standard 6510, this is not the case. */
-#define reg_a_write reg_a
-#define reg_a_read  reg_a
-
-/* Opcode execution time may vary on the C64DTV. */
 #define CLK_RTS 3
 #define CLK_RTI 4
 #define CLK_BRK 5
@@ -70,7 +53,6 @@
 
 #define IRQ_CYCLES      7
 #define NMI_CYCLES      7
-#endif
 #define RESET_CYCLES    6
 
 /* ------------------------------------------------------------------------- */
@@ -109,17 +91,6 @@
 
 #define LOCAL_SET_NZ(val)        (flag_z = flag_n = (val))
 
-#if defined DRIVE_CPU
-#define LOCAL_SET_OVERFLOW(val)               \
-    do {                                      \
-        if (!(val))                           \
-            drivecpu_byte_ready_egde_clear(); \
-        if (val)                              \
-            reg_p |= P_OVERFLOW;              \
-        else                                  \
-            reg_p &= ~P_OVERFLOW;             \
-    } while (0)
-#else
 #define LOCAL_SET_OVERFLOW(val)   \
     do {                          \
         if (val)                  \
@@ -127,7 +98,6 @@
         else                      \
             reg_p &= ~P_OVERFLOW; \
     } while (0)
-#endif
 
 #define LOCAL_SET_BREAK(val)   \
     do {                       \
@@ -217,99 +187,31 @@
 #error "please define LAST_OPCODE_ADDR"
 #endif
 
-#ifndef DRIVE_CPU
-
-#ifndef C64DTV
 /* Export the local version of the registers.  */
-#define EXPORT_REGISTERS()        \
-  do {                            \
-      GLOBAL_REGS.pc = reg_pc;    \
-      GLOBAL_REGS.a = reg_a_read; \
-      GLOBAL_REGS.x = reg_x;      \
-      GLOBAL_REGS.y = reg_y;      \
-      GLOBAL_REGS.sp = reg_sp;    \
-      GLOBAL_REGS.p = reg_p;      \
-      GLOBAL_REGS.n = flag_n;     \
-      GLOBAL_REGS.z = flag_z;     \
+#define EXPORT_REGISTERS()     \
+  do {                         \
+      GLOBAL_REGS.pc = reg_pc; \
+      GLOBAL_REGS.a = reg_a;   \
+      GLOBAL_REGS.x = reg_x;   \
+      GLOBAL_REGS.y = reg_y;   \
+      GLOBAL_REGS.sp = reg_sp; \
+      GLOBAL_REGS.p = reg_p;   \
+      GLOBAL_REGS.n = flag_n;  \
+      GLOBAL_REGS.z = flag_z;  \
   } while (0)
 
 /* Import the public version of the registers.  */
-#define IMPORT_REGISTERS()                    \
-  do {                                        \
-      reg_a_write /*TODO*/= GLOBAL_REGS.a;    \
-      reg_x = GLOBAL_REGS.x;                  \
-      reg_y = GLOBAL_REGS.y;                  \
-      reg_sp = GLOBAL_REGS.sp;                \
-      reg_p = GLOBAL_REGS.p;                  \
-      flag_n = GLOBAL_REGS.n;                 \
-      flag_z = GLOBAL_REGS.z;                 \
-      JUMP(GLOBAL_REGS.pc);                   \
+#define IMPORT_REGISTERS()     \
+  do {                         \
+      reg_a = GLOBAL_REGS.a;   \
+      reg_x = GLOBAL_REGS.x;   \
+      reg_y = GLOBAL_REGS.y;   \
+      reg_sp = GLOBAL_REGS.sp; \
+      reg_p = GLOBAL_REGS.p;   \
+      flag_n = GLOBAL_REGS.n;  \
+      flag_z = GLOBAL_REGS.z;  \
+      JUMP(GLOBAL_REGS.pc);    \
   } while (0)
-#else  /* C64DTV */
-
-/* Export the local version of the registers.  */
-#define EXPORT_REGISTERS()                                         \
-  do {                                                             \
-      GLOBAL_REGS.pc = reg_pc;                                     \
-      GLOBAL_REGS.a = dtv_registers[0];                            \
-      GLOBAL_REGS.x = dtv_registers[2];                            \
-      GLOBAL_REGS.y = dtv_registers[1];                            \
-      GLOBAL_REGS.sp = reg_sp;                                     \
-      GLOBAL_REGS.p = reg_p;                                       \
-      GLOBAL_REGS.n = flag_n;                                      \
-      GLOBAL_REGS.z = flag_z;                                      \
-      GLOBAL_REGS.r3 = dtv_registers[3];                           \
-      GLOBAL_REGS.r4 = dtv_registers[4];                           \
-      GLOBAL_REGS.r5 = dtv_registers[5];                           \
-      GLOBAL_REGS.r6 = dtv_registers[6];                           \
-      GLOBAL_REGS.r7 = dtv_registers[7];                           \
-      GLOBAL_REGS.r8 = dtv_registers[8];                           \
-      GLOBAL_REGS.r9 = dtv_registers[9];                           \
-      GLOBAL_REGS.r10 = dtv_registers[10];                         \
-      GLOBAL_REGS.r11 = dtv_registers[11];                         \
-      GLOBAL_REGS.r12 = dtv_registers[12];                         \
-      GLOBAL_REGS.r13 = dtv_registers[13];                         \
-      GLOBAL_REGS.r14 = dtv_registers[14];                         \
-      GLOBAL_REGS.r15 = dtv_registers[15];                         \
-      GLOBAL_REGS.acm = (reg_a_write_idx << 4) | (reg_a_read_idx); \
-      GLOBAL_REGS.yxm = (reg_y_idx << 4) | (reg_x_idx);            \
-  } while (0)
-
-/* Import the public version of the registers.  */
-#define IMPORT_REGISTERS()                    \
-  do {                                        \
-      dtv_registers[0] = GLOBAL_REGS.a;       \
-      dtv_registers[2] = GLOBAL_REGS.x;       \
-      dtv_registers[1] = GLOBAL_REGS.y;       \
-      reg_sp = GLOBAL_REGS.sp;                \
-      reg_p = GLOBAL_REGS.p;                  \
-      flag_n = GLOBAL_REGS.n;                 \
-      flag_z = GLOBAL_REGS.z;                 \
-      dtv_registers[3] = GLOBAL_REGS.r3;      \
-      dtv_registers[4] = GLOBAL_REGS.r4;      \
-      dtv_registers[5] = GLOBAL_REGS.r5;      \
-      dtv_registers[6] = GLOBAL_REGS.r6;      \
-      dtv_registers[7] = GLOBAL_REGS.r7;      \
-      dtv_registers[8] = GLOBAL_REGS.r8;      \
-      dtv_registers[9] = GLOBAL_REGS.r9;      \
-      dtv_registers[10] = GLOBAL_REGS.r10;    \
-      dtv_registers[11] = GLOBAL_REGS.r11;    \
-      dtv_registers[12] = GLOBAL_REGS.r12;    \
-      dtv_registers[13] = GLOBAL_REGS.r13;    \
-      dtv_registers[14] = GLOBAL_REGS.r14;    \
-      dtv_registers[15] = GLOBAL_REGS.r15;    \
-      reg_a_write_idx = GLOBAL_REGS.acm >> 4; \
-      reg_a_read_idx = GLOBAL_REGS.acm & 0xf; \
-      reg_y_idx = GLOBAL_REGS.yxm >> 4;       \
-      reg_x_idx = GLOBAL_REGS.yxm & 0xf;      \
-      JUMP(GLOBAL_REGS.pc);                   \
-  } while (0)
-
-#endif /* C64DTV */
-#else  /* DRIVE_CPU */
-#define IMPORT_REGISTERS()
-#define EXPORT_REGISTERS()
-#endif /* !DRIVE_CPU */
 
 /* Stack operations. */
 
@@ -561,57 +463,57 @@
      machines (eg. the C128) might depend on this.
 */
 
-#define ADC(value, clk_inc, pc_inc)                                                \
-  do {                                                                             \
-      unsigned int tmp_value;                                                      \
-      unsigned int tmp;                                                            \
-                                                                                   \
-      tmp_value = (value);                                                         \
-      CLK_ADD(CLK, (clk_inc));                                                     \
-                                                                                   \
-      if (LOCAL_DECIMAL()) {                                                       \
-          tmp = (reg_a_read & 0xf) + (tmp_value & 0xf) + (reg_p & 0x1);            \
-          if (tmp > 0x9) {                                                         \
-              tmp += 0x6;                                                          \
-          }                                                                        \
-          if (tmp <= 0x0f) {                                                       \
-              tmp = (tmp & 0xf) + (reg_a_read & 0xf0) + (tmp_value & 0xf0);        \
-          } else {                                                                 \
-              tmp = (tmp & 0xf) + (reg_a_read & 0xf0) + (tmp_value & 0xf0) + 0x10; \
-          }                                                                        \
-          LOCAL_SET_ZERO(!((reg_a_read + tmp_value + (reg_p & 0x1)) & 0xff));      \
-          LOCAL_SET_SIGN(tmp & 0x80);                                              \
-          LOCAL_SET_OVERFLOW(((reg_a_read ^ tmp) & 0x80)                           \
-                              && !((reg_a_read ^ tmp_value) & 0x80));              \
-          if ((tmp & 0x1f0) > 0x90) {                                              \
-              tmp += 0x60;                                                         \
-          }                                                                        \
-          LOCAL_SET_CARRY((tmp & 0xff0) > 0xf0);                                   \
-      } else {                                                                     \
-          tmp = tmp_value + reg_a_read + (reg_p & P_CARRY);                        \
-          LOCAL_SET_NZ(tmp & 0xff);                                                \
-          LOCAL_SET_OVERFLOW(!((reg_a_read ^ tmp_value) & 0x80)                    \
-                              && ((reg_a_read ^ tmp) & 0x80));                     \
-          LOCAL_SET_CARRY(tmp > 0xff);                                             \
-      }                                                                            \
-      reg_a_write = tmp;                                                           \
-      INC_PC(pc_inc);                                                              \
+#define ADC(value, clk_inc, pc_inc)                                           \
+  do {                                                                        \
+      unsigned int tmp_value;                                                 \
+      unsigned int tmp;                                                       \
+                                                                              \
+      tmp_value = (value);                                                    \
+      CLK_ADD(CLK, (clk_inc));                                                \
+                                                                              \
+      if (LOCAL_DECIMAL()) {                                                  \
+          tmp = (reg_a & 0xf) + (tmp_value & 0xf) + LOCAL_CARRY();            \
+          if (tmp > 0x9) {                                                    \
+              tmp += 0x6;                                                     \
+          }                                                                   \
+          if (tmp <= 0x0f) {                                                  \
+              tmp = (tmp & 0xf) + (reg_a & 0xf0) + (tmp_value & 0xf0);        \
+          } else {                                                            \
+              tmp = (tmp & 0xf) + (reg_a & 0xf0) + (tmp_value & 0xf0) + 0x10; \
+          }                                                                   \
+          LOCAL_SET_ZERO(!((reg_a + tmp_value + LOCAL_CARRY()) & 0xff));      \
+          LOCAL_SET_SIGN(tmp & 0x80);                                         \
+          LOCAL_SET_OVERFLOW(((reg_a ^ tmp) & 0x80)                           \
+                              && !((reg_a ^ tmp_value) & 0x80));              \
+          if ((tmp & 0x1f0) > 0x90) {                                         \
+              tmp += 0x60;                                                    \
+          }                                                                   \
+          LOCAL_SET_CARRY((tmp & 0xff0) > 0xf0);                              \
+      } else {                                                                \
+          tmp = tmp_value + reg_a + LOCAL_CARRY();                            \
+          LOCAL_SET_NZ(tmp & 0xff);                                           \
+          LOCAL_SET_OVERFLOW(!((reg_a ^ tmp_value) & 0x80)                    \
+                              && ((reg_a ^ tmp) & 0x80));                     \
+          LOCAL_SET_CARRY(tmp > 0xff);                                        \
+      }                                                                       \
+      reg_a = tmp;                                                            \
+      INC_PC(pc_inc);                                                         \
   } while (0)
 
-#define ANC(value, pc_inc)                        \
-  do {                                            \
-      reg_a_write = (BYTE)(reg_a_read & (value)); \
-      LOCAL_SET_NZ(reg_a_read);                   \
-      LOCAL_SET_CARRY(LOCAL_SIGN());              \
-      INC_PC(pc_inc);                             \
+#define ANC(value, pc_inc)             \
+  do {                                 \
+      reg_a = (BYTE)(reg_a & (value)); \
+      LOCAL_SET_NZ(reg_a);             \
+      LOCAL_SET_CARRY(LOCAL_SIGN());   \
+      INC_PC(pc_inc);                  \
   } while (0)
 
-#define AND(value, clk_inc, pc_inc)               \
-  do {                                            \
-      reg_a_write = (BYTE)(reg_a_read & (value)); \
-      LOCAL_SET_NZ(reg_a_read);                   \
-      CLK_ADD(CLK, (clk_inc));                    \
-      INC_PC(pc_inc);                             \
+#define AND(value, clk_inc, pc_inc)    \
+  do {                                 \
+      reg_a = (BYTE)(reg_a & (value)); \
+      LOCAL_SET_NZ(reg_a);             \
+      CLK_ADD(CLK, (clk_inc));         \
+      INC_PC(pc_inc);                  \
   } while (0)
 
 /*
@@ -632,11 +534,11 @@ CONST value, it probably has to be made configureable somehow if no value can
 be found that works for both.
 */
 
-#define ANE(value, pc_inc)                                           \
-  do {                                                               \
-      reg_a_write = ((reg_a_read | 0xff) & reg_x & ((BYTE)(value))); \
-      LOCAL_SET_NZ(reg_a_read);                                      \
-      INC_PC(pc_inc);                                                \
+#define ANE(value, pc_inc)                                \
+  do {                                                    \
+      reg_a = ((reg_a | 0xff) & reg_x & ((BYTE)(value))); \
+      LOCAL_SET_NZ(reg_a);                                \
+      INC_PC(pc_inc);                                     \
   } while (0)
 
 /* The fanciest opcode ever... ARR! */
@@ -645,10 +547,10 @@ be found that works for both.
       unsigned int tmp;                                           \
       int tmp_2;                                                  \
                                                                   \
-      tmp = reg_a_read & (value);                                 \
+      tmp = reg_a & (value);                                      \
       if (LOCAL_DECIMAL()) {                                      \
           tmp_2 = tmp;                                            \
-          tmp_2 |= (reg_p & P_CARRY) << 8;                        \
+          tmp_2 |= LOCAL_CARRY() << 8;                            \
           tmp_2 >>= 1;                                            \
           LOCAL_SET_SIGN(LOCAL_CARRY());                          \
           LOCAL_SET_ZERO(!tmp_2);                                 \
@@ -662,14 +564,14 @@ be found that works for both.
           } else {                                                \
               LOCAL_SET_CARRY(0);                                 \
           }                                                       \
-          reg_a_write = tmp_2;                                    \
+          reg_a = tmp_2;                                          \
       } else {                                                    \
-          tmp |= (reg_p & P_CARRY) << 8;                          \
+          tmp |= LOCAL_CARRY() << 8;                              \
           tmp >>= 1;                                              \
           LOCAL_SET_NZ(tmp);                                      \
           LOCAL_SET_CARRY(tmp & 0x40);                            \
           LOCAL_SET_OVERFLOW((tmp & 0x40) ^ ((tmp & 0x20) << 1)); \
-          reg_a_write = tmp;                                      \
+          reg_a = tmp;                                            \
       }                                                           \
       INC_PC(pc_inc);                                             \
   } while (0)
@@ -689,38 +591,37 @@ be found that works for both.
       RMW_FLAG = 0;                                       \
   } while (0)
 
-#define ASL_A()                           \
-  do {                                    \
-      LOCAL_SET_CARRY(reg_a_read & 0x80); \
-      reg_a_write = reg_a_read << 1;      \
-      LOCAL_SET_NZ(reg_a_read);           \
-      INC_PC(1);                          \
+#define ASL_A()                      \
+  do {                               \
+      LOCAL_SET_CARRY(reg_a & 0x80); \
+      reg_a = reg_a << 1;            \
+      LOCAL_SET_NZ(reg_a);           \
+      INC_PC(1);                     \
   } while (0)
 
 #define ASR(value, pc_inc)         \
   do {                             \
       unsigned int tmp;            \
                                    \
-      tmp = reg_a_read & (value);  \
+      tmp = reg_a & (value);       \
       LOCAL_SET_CARRY(tmp & 0x01); \
-      reg_a_write = tmp >> 1;      \
-      LOCAL_SET_NZ(reg_a_read);    \
+      reg_a = tmp >> 1;            \
+      LOCAL_SET_NZ(reg_a);         \
       INC_PC(pc_inc);              \
   } while (0)
 
-#define BIT(value, pc_inc)                 \
-  do {                                     \
-      unsigned int tmp;                    \
-                                           \
-      tmp = (value);                       \
-      CLK_ADD(CLK, 1);                     \
-      LOCAL_SET_SIGN(tmp & 0x80);          \
-      LOCAL_SET_OVERFLOW(tmp & 0x40);      \
-      LOCAL_SET_ZERO(!(tmp & reg_a_read)); \
-      INC_PC(pc_inc);                      \
+#define BIT(value, pc_inc)            \
+  do {                                \
+      unsigned int tmp;               \
+                                      \
+      tmp = (value);                  \
+      CLK_ADD(CLK, 1);                \
+      LOCAL_SET_SIGN(tmp & 0x80);     \
+      LOCAL_SET_OVERFLOW(tmp & 0x40); \
+      LOCAL_SET_ZERO(!(tmp & reg_a)); \
+      INC_PC(pc_inc);                 \
   } while (0)
 
-#ifndef C64DTV
 #define BRANCH(cond, value)                                 \
   do {                                                      \
       unsigned int dest_addr = 0;                           \
@@ -740,7 +641,6 @@ be found that works for both.
           JUMP(dest_addr & 0xffff);                         \
       }                                                     \
   } while (0)
-#endif
 
 #define BRK()                  \
   do {                         \
@@ -787,7 +687,7 @@ be found that works for both.
   do {                              \
       unsigned int tmp;             \
                                     \
-      tmp = reg_a_read - (value);   \
+      tmp = reg_a - (value);        \
       LOCAL_SET_CARRY(tmp < 0x100); \
       LOCAL_SET_NZ(tmp & 0xff);     \
       CLK_ADD(CLK, (clk_inc));      \
@@ -824,8 +724,8 @@ be found that works for both.
       CLK_ADD(CLK, (clk_inc1));                                      \
       tmp = load_func(tmp_addr);                                     \
       tmp = (tmp - 1) & 0xff;                                        \
-      LOCAL_SET_CARRY(reg_a_read >= tmp);                            \
-      LOCAL_SET_NZ((reg_a_read - tmp));                              \
+      LOCAL_SET_CARRY(reg_a >= tmp);                                 \
+      LOCAL_SET_NZ((reg_a - tmp));                                   \
       RMW_FLAG = 1;                                                  \
       INC_PC(pc_inc);                                                \
       store_func(tmp_addr, tmp, (clk_inc2));                         \
@@ -843,8 +743,8 @@ be found that works for both.
       tmp_addr += reg_y;                                       \
       tmp = LOAD(tmp_addr);                                    \
       tmp = (tmp - 1) & 0xff;                                  \
-      LOCAL_SET_CARRY(reg_a_read >= tmp);                      \
-      LOCAL_SET_NZ((reg_a_read - tmp));                        \
+      LOCAL_SET_CARRY(reg_a >= tmp);                           \
+      LOCAL_SET_NZ((reg_a - tmp));                             \
       RMW_FLAG = 1;                                            \
       INC_PC(2);                                               \
       STORE_ABS(tmp_addr, tmp, CLK_IND_Y_RMW2);                \
@@ -879,12 +779,12 @@ be found that works for both.
       INC_PC(1);           \
   } while (0)
 
-#define EOR(value, clk_inc, pc_inc)               \
-  do {                                            \
-      reg_a_write = (BYTE)(reg_a_read ^ (value)); \
-      LOCAL_SET_NZ(reg_a_read);                   \
-      CLK_ADD(CLK, (clk_inc));                    \
-      INC_PC(pc_inc);                             \
+#define EOR(value, clk_inc, pc_inc)    \
+  do {                                 \
+      reg_a = (BYTE)(reg_a ^ (value)); \
+      LOCAL_SET_NZ(reg_a);             \
+      CLK_ADD(CLK, (clk_inc));         \
+      INC_PC(pc_inc);                  \
   } while (0)
 
 #define INC(addr, clk_inc, pc_inc, load_func, store_func) \
@@ -999,27 +899,27 @@ be found that works for both.
       JUMP(tmp_addr);                        \
   } while (0)
 
-#define LAS(value, clk_inc, pc_inc)                    \
-  do {                                                 \
-      reg_a_write = reg_x = reg_sp = reg_sp & (value); \
-      LOCAL_SET_NZ(reg_a_read);                        \
-      CLK_ADD(CLK, (clk_inc));                         \
-      INC_PC(pc_inc);                                  \
+#define LAS(value, clk_inc, pc_inc)              \
+  do {                                           \
+      reg_a = reg_x = reg_sp = reg_sp & (value); \
+      LOCAL_SET_NZ(reg_a);                       \
+      CLK_ADD(CLK, (clk_inc));                   \
+      INC_PC(pc_inc);                            \
   } while (0)
 
-#define LAX(value, clk_inc, pc_inc)  \
-  do {                               \
-      reg_a_write = reg_x = (value); \
-      LOCAL_SET_NZ(reg_a_read);      \
-      CLK_ADD(CLK, (clk_inc));       \
-      INC_PC(pc_inc);                \
+#define LAX(value, clk_inc, pc_inc) \
+  do {                              \
+      reg_a = reg_x = (value);      \
+      LOCAL_SET_NZ(reg_a);          \
+      CLK_ADD(CLK, (clk_inc));      \
+      INC_PC(pc_inc);               \
   } while (0)
 
 #define LDA(value, clk_inc, pc_inc) \
   do {                              \
-      reg_a_write = (BYTE)(value);  \
+      reg_a = (BYTE)(value);        \
       CLK_ADD(CLK, (clk_inc));      \
-      LOCAL_SET_NZ(reg_a_read);     \
+      LOCAL_SET_NZ(reg_a);          \
       INC_PC(pc_inc);               \
   } while (0)
 
@@ -1054,29 +954,29 @@ be found that works for both.
       RMW_FLAG = 0;                                       \
   } while (0)
 
-#define LSR_A()                           \
-  do {                                    \
-      LOCAL_SET_CARRY(reg_a_read & 0x01); \
-      reg_a_write = reg_a_read >> 1;      \
-      LOCAL_SET_NZ(reg_a_read);           \
-      INC_PC(1);                          \
+#define LSR_A()                      \
+  do {                               \
+      LOCAL_SET_CARRY(reg_a & 0x01); \
+      reg_a = reg_a >> 1;            \
+      LOCAL_SET_NZ(reg_a);           \
+      INC_PC(1);                     \
   } while (0)
 
 /* Note: this is not always exact, as this opcode can be quite unstable!
    Moreover, the behavior is different from the one described in 64doc. */
-#define LXA(value, pc_inc)                                           \
-  do {                                                               \
-      reg_a_write = reg_x = ((reg_a_read | 0xee) & ((BYTE)(value))); \
-      LOCAL_SET_NZ(reg_a_read);                                      \
-      INC_PC(pc_inc);                                                \
+#define LXA(value, pc_inc)                                \
+  do {                                                    \
+      reg_a = reg_x = ((reg_a | 0xee) & ((BYTE)(value))); \
+      LOCAL_SET_NZ(reg_a);                                \
+      INC_PC(pc_inc);                                     \
   } while (0)
 
-#define ORA(value, clk_inc, pc_inc)               \
-  do {                                            \
-      reg_a_write = (BYTE)(reg_a_read | (value)); \
-      LOCAL_SET_NZ(reg_a_write);                  \
-      CLK_ADD(CLK, (clk_inc));                    \
-      INC_PC(pc_inc);                             \
+#define ORA(value, clk_inc, pc_inc)    \
+  do {                                 \
+      reg_a = (BYTE)(reg_a | (value)); \
+      LOCAL_SET_NZ(reg_a);             \
+      CLK_ADD(CLK, (clk_inc));         \
+      INC_PC(pc_inc);                  \
   } while (0)
 
 #define NOOP(clk_inc, pc_inc) \
@@ -1103,7 +1003,7 @@ be found that works for both.
 #define PHA()                       \
   do {                              \
       CLK_ADD(CLK, CLK_STACK_PUSH); \
-      PUSH(reg_a_read);             \
+      PUSH(reg_a);                  \
       INC_PC(1);                    \
   } while (0)
 
@@ -1117,12 +1017,11 @@ be found that works for both.
 #define PLA()                       \
   do {                              \
       CLK_ADD(CLK, CLK_STACK_PULL); \
-      reg_a_write = PULL();         \
-      LOCAL_SET_NZ(reg_a_read);     \
+      reg_a = PULL();               \
+      LOCAL_SET_NZ(reg_a);          \
       INC_PC(1);                    \
   } while (0)
 
-/* FIXME: Rotate disk before executing LOCAL_SET_STATUS().  */
 #define PLP()                                               \
   do {                                                      \
       BYTE s = PULL();                                      \
@@ -1145,8 +1044,8 @@ be found that works for both.
       CLK_ADD(CLK, (clk_inc1));                                      \
       tmp = ((load_func(tmp_addr) << 1) | LOCAL_CARRY());            \
       LOCAL_SET_CARRY(tmp & 0x100);                                  \
-      reg_a_write = reg_a_read & tmp;                                \
-      LOCAL_SET_NZ(reg_a_read);                                      \
+      reg_a = reg_a & tmp;                                           \
+      LOCAL_SET_NZ(reg_a);                                           \
       RMW_FLAG = 1;                                                  \
       INC_PC(pc_inc);                                                \
       store_func(tmp_addr, tmp, clk_inc2);                           \
@@ -1164,8 +1063,8 @@ be found that works for both.
       tmp_addr += reg_y;                                       \
       tmp = ((LOAD(tmp_addr) << 1) | LOCAL_CARRY());           \
       LOCAL_SET_CARRY(tmp & 0x100);                            \
-      reg_a_write = reg_a_read & tmp;                          \
-      LOCAL_SET_NZ(reg_a_read);                                \
+      reg_a = reg_a & tmp;                                     \
+      LOCAL_SET_NZ(reg_a);                                     \
       RMW_FLAG = 1;                                            \
       INC_PC(2);                                               \
       STORE_ABS(tmp_addr, tmp, CLK_IND_Y_RMW2);                \
@@ -1187,14 +1086,14 @@ be found that works for both.
       RMW_FLAG = 0;                                       \
   } while (0)
 
-#define ROL_A()                           \
-  do {                                    \
-      unsigned int tmp = reg_a_read << 1; \
-                                          \
-      reg_a_write = tmp | LOCAL_CARRY();  \
-      LOCAL_SET_CARRY(tmp & 0x100);       \
-      LOCAL_SET_NZ(reg_a_read);           \
-      INC_PC(1);                          \
+#define ROL_A()                      \
+  do {                               \
+      unsigned int tmp = reg_a << 1; \
+                                     \
+      reg_a = tmp | LOCAL_CARRY();   \
+      LOCAL_SET_CARRY(tmp & 0x100);  \
+      LOCAL_SET_NZ(reg_a);           \
+      INC_PC(1);                     \
   } while (0)
 
 #define ROR(addr, clk_inc, pc_inc, load_func, store_func) \
@@ -1215,14 +1114,14 @@ be found that works for both.
       RMW_FLAG = 0;                                       \
   } while (0)
 
-#define ROR_A()                                       \
-  do {                                                \
-      BYTE tmp = reg_a_read;                          \
-                                                      \
-      reg_a_write = (reg_a_read >> 1) | (reg_p << 7); \
-      LOCAL_SET_CARRY(tmp & 0x01);                    \
-      LOCAL_SET_NZ(reg_a_read);                       \
-      INC_PC(1);                                      \
+#define ROR_A()                            \
+  do {                                     \
+      BYTE tmp = reg_a;                    \
+                                           \
+      reg_a = (reg_a >> 1) | (reg_p << 7); \
+      LOCAL_SET_CARRY(tmp & 0x01);         \
+      LOCAL_SET_NZ(reg_a);                 \
+      INC_PC(1);                           \
   } while (0)
 
 #define RRA(addr, clk_inc1, clk_inc2, pc_inc, load_func, store_func) \
@@ -1273,7 +1172,6 @@ be found that works for both.
    from 1 to 0 because the value of I is set 3 cycles before the end of the
    opcode, and thus the 6510 has enough time to call the interrupt routine as
    soon as the opcode ends, if necessary.  */
-/* FIXME: Rotate disk before executing LOCAL_SET_STATUS().  */
 #define RTI()                      \
   do {                             \
       WORD tmp;                    \
@@ -1307,61 +1205,61 @@ be found that works for both.
       tmp = (addr);                           \
       CLK_ADD(CLK, (clk_inc2));               \
       INC_PC(pc_inc);                         \
-      STORE(tmp, reg_a_read & reg_x);         \
+      STORE(tmp, reg_a & reg_x);              \
   } while (0)
 
-#define SAX_ZERO(addr, clk_inc, pc_inc)       \
-  do {                                        \
-      CLK_ADD(CLK, (clk_inc));                \
-      STORE_ZERO((addr), reg_a_read & reg_x); \
-      INC_PC(pc_inc);                         \
+#define SAX_ZERO(addr, clk_inc, pc_inc)  \
+  do {                                   \
+      CLK_ADD(CLK, (clk_inc));           \
+      STORE_ZERO((addr), reg_a & reg_x); \
+      INC_PC(pc_inc);                    \
   } while (0)
 
-#define SBC(value, clk_inc, pc_inc)                                             \
-  do {                                                                          \
-      WORD src, tmp;                                                            \
-                                                                                \
-      src = (WORD)(value);                                                      \
-      CLK_ADD(CLK, (clk_inc));                                                  \
-      tmp = reg_a_read - src - ((LOCAL_CARRY()) ? 0 : 1);                       \
-      if (reg_p & P_DECIMAL) {                                                  \
-          unsigned int tmp_a;                                                   \
-          tmp_a = (reg_a_read & 0xf) - (src & 0xf) - ((LOCAL_CARRY()) ? 0 : 1); \
-          if (tmp_a & 0x10) {                                                   \
-              tmp_a = ((tmp_a - 6) & 0xf)                                       \
-                       | ((reg_a_read & 0xf0) - (src & 0xf0) - 0x10);           \
-          } else {                                                              \
-              tmp_a = (tmp_a & 0xf) | ((reg_a_read & 0xf0) - (src & 0xf0));     \
-          }                                                                     \
-          if (tmp_a & 0x100) {                                                  \
-              tmp_a -= 0x60;                                                    \
-          }                                                                     \
-          LOCAL_SET_CARRY(tmp < 0x100);                                         \
-          LOCAL_SET_NZ(tmp & 0xff);                                             \
-          LOCAL_SET_OVERFLOW(((reg_a_read ^ tmp) & 0x80)                        \
-                             && ((reg_a_read ^ src) & 0x80));                   \
-          reg_a_write = (BYTE) tmp_a;                                           \
-      } else {                                                                  \
-          LOCAL_SET_NZ(tmp & 0xff);                                             \
-          LOCAL_SET_CARRY(tmp < 0x100);                                         \
-          LOCAL_SET_OVERFLOW(((reg_a_read ^ tmp) & 0x80)                        \
-                             && ((reg_a_read ^ src) & 0x80));                   \
-          reg_a_write = (BYTE) tmp;                                             \
-      }                                                                         \
-      INC_PC(pc_inc);                                                           \
-    }                                                                           \
+#define SBC(value, clk_inc, pc_inc)                                        \
+  do {                                                                     \
+      WORD src, tmp;                                                       \
+      unsigned int tmp_a;                                                  \
+                                                                           \
+      src = (WORD)(value);                                                 \
+      CLK_ADD(CLK, (clk_inc));                                             \
+      tmp = reg_a - src - ((LOCAL_CARRY()) ? 0 : 1);                       \
+      if (LOCAL_DECIMAL()) {                                               \
+          tmp_a = (reg_a & 0xf) - (src & 0xf) - ((LOCAL_CARRY()) ? 0 : 1); \
+          if (tmp_a & 0x10) {                                              \
+              tmp_a = ((tmp_a - 6) & 0xf)                                  \
+                       | ((reg_a & 0xf0) - (src & 0xf0) - 0x10);           \
+          } else {                                                         \
+              tmp_a = (tmp_a & 0xf) | ((reg_a & 0xf0) - (src & 0xf0));     \
+          }                                                                \
+          if (tmp_a & 0x100) {                                             \
+              tmp_a -= 0x60;                                               \
+          }                                                                \
+          LOCAL_SET_CARRY(tmp < 0x100);                                    \
+          LOCAL_SET_NZ(tmp & 0xff);                                        \
+          LOCAL_SET_OVERFLOW(((reg_a ^ tmp) & 0x80)                        \
+                             && ((reg_a ^ src) & 0x80));                   \
+          reg_a = (BYTE)tmp_a;                                             \
+      } else {                                                             \
+          LOCAL_SET_NZ(tmp & 0xff);                                        \
+          LOCAL_SET_CARRY(tmp < 0x100);                                    \
+          LOCAL_SET_OVERFLOW(((reg_a ^ tmp) & 0x80)                        \
+                             && ((reg_a ^ src) & 0x80));                   \
+          reg_a = (BYTE)tmp;                                               \
+      }                                                                    \
+      INC_PC(pc_inc);                                                      \
+    }                                                                      \
   while (0)
 
-#define SBX(value, pc_inc)              \
-  do {                                  \
-      unsigned int tmp;                 \
-                                        \
-      tmp = (value);                    \
-      INC_PC(pc_inc);                   \
-      tmp = (reg_a_read & reg_x) - tmp; \
-      LOCAL_SET_CARRY(tmp < 0x100);     \
-      reg_x = tmp & 0xff;               \
-      LOCAL_SET_NZ(reg_x);              \
+#define SBX(value, pc_inc)          \
+  do {                              \
+      unsigned int tmp;             \
+                                    \
+      tmp = (value);                \
+      INC_PC(pc_inc);               \
+      tmp = (reg_a & reg_x) - tmp;  \
+      LOCAL_SET_CARRY(tmp < 0x100); \
+      reg_x = tmp & 0xff;           \
+      LOCAL_SET_NZ(reg_x);          \
   } while (0)
 
 #undef SEC    /* defined in time.h on SunOS. */
@@ -1386,13 +1284,13 @@ be found that works for both.
       INC_PC(1);                 \
   } while (0)
 
-#define SHA_ABS_Y(addr)                                                             \
-  do {                                                                              \
-      unsigned int tmp;                                                             \
-                                                                                    \
-      tmp = (addr);                                                                 \
-      INC_PC(3);                                                                    \
-      STORE_ABS_SH_Y(tmp, reg_a_read & reg_x & ((tmp >> 8) + 1), CLK_ABS_I_STORE2); \
+#define SHA_ABS_Y(addr)                                                        \
+  do {                                                                         \
+      unsigned int tmp;                                                        \
+                                                                               \
+      tmp = (addr);                                                            \
+      INC_PC(3);                                                               \
+      STORE_ABS_SH_Y(tmp, reg_a & reg_x & ((tmp >> 8) + 1), CLK_ABS_I_STORE2); \
   } while (0)
 
 #define SHA_IND_Y(addr)                              \
@@ -1404,7 +1302,7 @@ be found that works for both.
       tmp = LOAD_ZERO_ADDR(addr);                    \
       LOAD((tmp & 0xff00) | ((tmp + reg_y) & 0xff)); \
       CLK_ADD(CLK, CLK_IND_Y_W);                     \
-      val = reg_a_read & reg_x & ((tmp >> 8) + 1);   \
+      val = reg_a & reg_x & ((tmp >> 8) + 1);        \
       if ((tmp & 0xff) + reg_y > 0xff) {             \
           tmp = ((tmp + reg_y) & 0xff) | (val << 8); \
       } else {                                       \
@@ -1432,13 +1330,13 @@ be found that works for both.
       STORE_ABS_SH_X(tmp, reg_y & ((tmp >> 8) + 1), CLK_ABS_I_STORE2); \
   } while (0)
 
-#define SHS_ABS_Y(addr)                                                             \
-  do {                                                                              \
-      int tmp = (addr);                                                             \
-                                                                                    \
-      INC_PC(3);                                                                    \
-      STORE_ABS_SH_Y(tmp, reg_a_read & reg_x & ((tmp >> 8) + 1), CLK_ABS_I_STORE2); \
-      reg_sp = reg_a_read & reg_x;                                                  \
+#define SHS_ABS_Y(addr)                                                        \
+  do {                                                                         \
+      int tmp = (addr);                                                        \
+                                                                               \
+      INC_PC(3);                                                               \
+      STORE_ABS_SH_Y(tmp, reg_a & reg_x & ((tmp >> 8) + 1), CLK_ABS_I_STORE2); \
+      reg_sp = reg_a & reg_x;                                                  \
   } while (0)
 
 #define SLO(addr, clk_inc1, clk_inc2, pc_inc, load_func, store_func) \
@@ -1451,8 +1349,8 @@ be found that works for both.
       tmp_value = load_func(tmp_addr);                               \
       LOCAL_SET_CARRY(tmp_value & 0x80);                             \
       tmp_value <<= 1;                                               \
-      reg_a_write = reg_a_read | tmp_value;                          \
-      LOCAL_SET_NZ(reg_a_read);                                      \
+      reg_a = reg_a | tmp_value;                                     \
+      LOCAL_SET_NZ(reg_a);                                           \
       RMW_FLAG = 1;                                                  \
       INC_PC(pc_inc);                                                \
       store_func(tmp_addr, tmp_value, clk_inc2);                     \
@@ -1472,8 +1370,8 @@ be found that works for both.
       tmp_value = LOAD(tmp_addr);                              \
       LOCAL_SET_CARRY(tmp_value & 0x80);                       \
       tmp_value <<= 1;                                         \
-      reg_a_write = reg_a_read | tmp_value;                    \
-      LOCAL_SET_NZ(reg_a_read);                                \
+      reg_a = reg_a | tmp_value;                               \
+      LOCAL_SET_NZ(reg_a);                                     \
       RMW_FLAG = 1;                                            \
       INC_PC(2);                                               \
       STORE_ABS(tmp_addr, tmp_value, CLK_IND_Y_RMW2);          \
@@ -1490,8 +1388,8 @@ be found that works for both.
       tmp = load_func(tmp_addr);                                     \
       LOCAL_SET_CARRY(tmp & 0x01);                                   \
       tmp >>= 1;                                                     \
-      reg_a_write = reg_a_read ^ tmp;                                \
-      LOCAL_SET_NZ(reg_a_read);                                      \
+      reg_a = reg_a ^ tmp;                                           \
+      LOCAL_SET_NZ(reg_a);                                           \
       RMW_FLAG = 1;                                                  \
       INC_PC(pc_inc);                                                \
       store_func(tmp_addr, tmp, clk_inc2);                           \
@@ -1510,8 +1408,8 @@ be found that works for both.
       tmp = LOAD(tmp_addr);                                    \
       LOCAL_SET_CARRY(tmp & 0x01);                             \
       tmp >>= 1;                                               \
-      reg_a_write = reg_a_read ^ tmp;                          \
-      LOCAL_SET_NZ(reg_a_read);                                \
+      reg_a = reg_a ^ tmp;                                     \
+      LOCAL_SET_NZ(reg_a);                                     \
       RMW_FLAG = 1;                                            \
       INC_PC(2);                                               \
       STORE_ABS(tmp_addr, tmp, CLK_IND_Y_RMW2);                \
@@ -1525,13 +1423,13 @@ be found that works for both.
       CLK_ADD(CLK, (clk_inc1));                           \
       tmp = (addr);                                       \
       INC_PC(pc_inc);                                     \
-      store_func(tmp, reg_a_read, clk_inc2);              \
+      store_func(tmp, reg_a, clk_inc2);                   \
   } while (0)
 
 #define STA_ZERO(addr, clk_inc, pc_inc) \
   do {                                  \
       CLK_ADD(CLK, (clk_inc));          \
-      STORE_ZERO((addr), reg_a_read);   \
+      STORE_ZERO((addr), reg_a);        \
       INC_PC(pc_inc);                   \
   } while (0)
 
@@ -1544,7 +1442,7 @@ be found that works for both.
       LOAD_IND((tmp & 0xff00) | ((tmp + reg_y) & 0xff)); \
       CLK_ADD(CLK, CLK_IND_Y_W);                         \
       INC_PC(2);                                         \
-      STORE_IND(tmp + reg_y, reg_a_read);                \
+      STORE_IND(tmp + reg_y, reg_a);                     \
   } while (0)
 
 #define STX(addr, clk_inc, pc_inc) \
@@ -1581,18 +1479,18 @@ be found that works for both.
       INC_PC(pc_inc);                   \
   } while (0)
 
-#define TAX()                   \
-  do {                          \
-      reg_x = reg_a_read;       \
-      LOCAL_SET_NZ(reg_a_read); \
-      INC_PC(1);                \
+#define TAX()              \
+  do {                     \
+      reg_x = reg_a;       \
+      LOCAL_SET_NZ(reg_a); \
+      INC_PC(1);           \
   } while (0)
 
-#define TAY()                   \
-  do {                          \
-      reg_y = reg_a_read;       \
-      LOCAL_SET_NZ(reg_a_read); \
-      INC_PC(1);                \
+#define TAY()              \
+  do {                     \
+      reg_y = reg_a;       \
+      LOCAL_SET_NZ(reg_a); \
+      INC_PC(1);           \
   } while (0)
 
 #define TSX()               \
@@ -1602,11 +1500,11 @@ be found that works for both.
       INC_PC(1);            \
   } while (0)
 
-#define TXA()                   \
-  do {                          \
-      reg_a_write = reg_x;      \
-      LOCAL_SET_NZ(reg_a_read); \
-      INC_PC(1);                \
+#define TXA()              \
+  do {                     \
+      reg_a = reg_x;       \
+      LOCAL_SET_NZ(reg_a); \
+      INC_PC(1);           \
   } while (0)
 
 #define TXS()         \
@@ -1615,11 +1513,11 @@ be found that works for both.
       INC_PC(1);      \
   } while (0)
 
-#define TYA()                   \
-  do {                          \
-      reg_a_write = reg_y;      \
-      LOCAL_SET_NZ(reg_a_read); \
-      INC_PC(1);                \
+#define TYA()              \
+  do {                     \
+      reg_a = reg_y;       \
+      LOCAL_SET_NZ(reg_a); \
+      INC_PC(1);           \
   } while (0)
 
 
@@ -1645,153 +1543,6 @@ static const BYTE fetch_tab[] = {
     /* $F0 */  0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1  /* $F0 */
 };
 
-#ifndef C64DTV  /* C64DTV opcode_t & fetch are defined in c64dtvcpu.c */
-
-#ifdef CPU_8502  /* 8502 specific opcode fetch */
-
-static const BYTE rewind_fetch_tab[] = {
-            /* 0  1  2  3  4  5  6  7  8  9  A  B  C  D  E  F */
-    /* $00 */  1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* $00 */
-    /* $10 */  0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* $10 */
-    /* $20 */  0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* $20 */
-    /* $30 */  0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* $30 */
-    /* $40 */  0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* $40 */
-    /* $50 */  0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* $50 */
-    /* $60 */  0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* $60 */
-    /* $70 */  0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* $70 */
-    /* $80 */  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* $80 */
-    /* $90 */  0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* $90 */
-    /* $A0 */  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* $A0 */
-    /* $B0 */  0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* $B0 */
-    /* $C0 */  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* $C0 */
-    /* $D0 */  0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* $D0 */
-    /* $E0 */  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* $E0 */
-    /* $F0 */  0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* $F0 */
-};
-
-#if !defined WORDS_BIGENDIAN && defined ALLOW_UNALIGNED_ACCESS
-
-#define opcode_t DWORD
-
-#define FETCH_OPCODE(o)                                                \
-    do {                                                               \
-        if (((int)reg_pc) < bank_limit) {                              \
-            o = (*((DWORD *)(bank_base + reg_pc)) & 0xffffff);         \
-            if (rewind_fetch_tab[o & 0xff]) {                          \
-                opcode_cycle[0] = vicii_check_memory_refresh(CLK);     \
-                CLK_ADD(CLK, 1);                                       \
-                opcode_cycle[1] = vicii_check_memory_refresh(CLK);     \
-                CLK_ADD(CLK, 1);                                       \
-            } else {                                                   \
-                opcode_cycle[0] = 0;                                   \
-                opcode_cycle[1] = 0;                                   \
-                CLK_ADD(CLK, 2);                                       \
-            }                                                          \
-            if (fetch_tab[o & 0xff]) {                                 \
-                 CLK_ADD(CLK, 1);                                      \
-            }                                                          \
-        } else {                                                       \
-            maincpu_stretch = 0;                                       \
-            o = LOAD(reg_pc);                                          \
-            if (rewind_fetch_tab[o & 0xff]) {                          \
-                opcode_cycle[0] = maincpu_stretch;                     \
-                if (opcode_cycle[0] == 0) {                            \
-                    opcode_cycle[0] = vicii_check_memory_refresh(CLK); \
-                }                                                      \
-                CLK_ADD(CLK, 1);                                       \
-                maincpu_stretch = 0;                                   \
-                o |= LOAD(reg_pc + 1) << 8;                            \
-                opcode_cycle[1] = maincpu_stretch;                     \
-                if (opcode_cycle[1] == 0) {                            \
-                    opcode_cycle[1] = vicii_check_memory_refresh(CLK); \
-                }                                                      \
-                CLK_ADD(CLK, 1);                                       \
-            } else {                                                   \
-                CLK_ADD(CLK, 1);                                       \
-                o |= LOAD(reg_pc + 1) << 8;                            \
-                CLK_ADD(CLK, 1);                                       \
-            }                                                          \
-            if (fetch_tab[o & 0xff]) {                                 \
-                 o |= (LOAD(reg_pc + 2) << 16);                        \
-                 CLK_ADD(CLK, 1);                                      \
-            }                                                          \
-        }                                                              \
-    } while (0)
-
-#define p0 (opcode & 0xff)
-#define p1 ((opcode >> 8) & 0xff)
-#define p2 (opcode >> 8)
-
-#else /* WORDS_BIGENDIAN || !ALLOW_UNALIGNED_ACCESS */
-
-#define opcode_t         \
-    struct {             \
-        BYTE ins;        \
-        union {          \
-            BYTE op8[2]; \
-            WORD op16;   \
-        } op;            \
-    }
-
-#define FETCH_OPCODE(o)                                                \
-    do {                                                               \
-        if (((int)reg_pc) < bank_limit) {                              \
-            (o).ins = *(bank_base + reg_pc);                           \
-            (o).op.op16 = (*(bank_base + reg_pc + 1)                   \
-                          | (*(bank_base + reg_pc + 2) << 8));         \
-            if (rewind_fetch_tab[(o).ins]) {                           \
-                opcode_cycle[0] = vicii_check_memory_refresh(CLK);     \
-                CLK_ADD(CLK, 1);                                       \
-                opcode_cycle[1] = vicii_check_memory_refresh(CLK);     \
-                CLK_ADD(CLK, 1);                                       \
-            } else {                                                   \
-                opcode_cycle[0] = 0;                                   \
-                opcode_cycle[1] = 0;                                   \
-                CLK_ADD(CLK, 2);                                       \
-            }                                                          \
-            if (fetch_table[(o).ins)) {                                \
-                CLK_ADD(CLK, 1);                                       \
-            }                                                          \
-        } else {                                                       \
-            maincpu_stretch = 0;                                       \
-            (o).ins = LOAD(reg_pc);                                    \
-            if (rewind_fetch_tab[(o).ins]) {                           \
-                opcode_cycle[0] = maincpu_stretch;                     \
-                if (opcode_cycle[0] == 0) {                            \
-                    opcode_cycle[0] = vicii_check_memory_refresh(CLK); \
-                }                                                      \
-                CLK_ADD(CLK, 1);                                       \
-                maincpu_stretch = 0;                                   \
-                (o).op.op16 = LOAD(reg_pc + 1);                        \
-                opcode_cycle[1] = maincpu_stretch;                     \
-                if (opcode_cycle[1] == 0) {                            \
-                    opcode_cycle[1] = vicii_check_memory_refresh(CLK); \
-                }                                                      \
-                CLK_ADD(CLK, 1);                                       \
-            } else {                                                   \
-                CLK_ADD(CLK, 1);                                       \
-                (o).op.op16 = LOAD(reg_pc + 1);                        \
-                CLK_ADD(CLK, 1);                                       \
-            }                                                          \
-            if (fetch_tab[(o).ins]) {                                  \
-                 (o).op.op16 |= (LOAD(reg_pc + 2) << 8);               \
-                 CLK_ADD(CLK, 1);                                      \
-            }                                                          \
-        }                                                              \
-    } while (0)
-
-#define p0 (opcode.ins)
-#define p2 (opcode.op.op16)
-
-#ifdef WORDS_BIGENDIAN
-#  define p1 (opcode.op.op8[1])
-#else
-#  define p1 (opcode.op.op8[0])
-#endif
-
-#endif /* !WORDS_BIGENDIAN */
-
-#else /* !CPU_8502 */
 
 #if !defined WORDS_BIGENDIAN && defined ALLOW_UNALIGNED_ACCESS
 
@@ -1864,7 +1615,6 @@ static const BYTE rewind_fetch_tab[] = {
 #endif
 
 #endif /* !WORDS_BIGENDIAN */
-#endif
 
 /*  SET_OPCODE for traps */
 #if !defined WORDS_BIGENDIAN && defined ALLOW_UNALIGNED_ACCESS
@@ -1885,19 +1635,13 @@ static const BYTE rewind_fetch_tab[] = {
         opcode.op.op8[0] = ((o) >> 16) & 0xff; \
     } while (0)
 #endif
-
 #endif
-
-#endif /* !C64DTV */
 
 /* ------------------------------------------------------------------------ */
 
 /* Here, the CPU is emulated. */
 
 {
-    /* handle 8502 fast mode refresh cycles */
-    CPU_REFRESH_CLK
-
     CPU_DELAY_CLK
 
 #ifndef CYCLE_EXACT_ALARM
@@ -1936,52 +1680,29 @@ static const BYTE rewind_fetch_tab[] = {
         opcode_t opcode;
 #ifdef DEBUG
         CLOCK debug_clk;
-#ifdef DRIVE_CPU
-        debug_clk = CLK;
-#else
         debug_clk = maincpu_clk;
-#endif
 #endif
 
 #ifdef FEATURE_CPUMEMHISTORY
-#ifndef DRIVE_CPU
         memmap_state |= (MEMMAP_STATE_INSTR | MEMMAP_STATE_OPCODE);
-#endif
 #endif
         SET_LAST_ADDR(reg_pc);
         FETCH_OPCODE(opcode);
 
 #ifdef FEATURE_CPUMEMHISTORY
-#ifndef DRIVE_CPU
-#ifndef C64DTV
         /* HACK to cope with FETCH_OPCODE optimization in x64 */
         if (((int)reg_pc) < bank_limit) {
             memmap_mem_read(reg_pc);
         }
-#endif
         if (p0 == 0x20) {
-            monitor_cpuhistory_store(reg_pc, p0, p1, LOAD(reg_pc+2), reg_a_read, reg_x, reg_y, reg_sp, LOCAL_STATUS());
+            monitor_cpuhistory_store(reg_pc, p0, p1, LOAD(reg_pc+2), reg_a, reg_x, reg_y, reg_sp, LOCAL_STATUS());
         } else {
-            monitor_cpuhistory_store(reg_pc, p0, p1, p2 >> 8, reg_a_read, reg_x, reg_y, reg_sp, LOCAL_STATUS());
+            monitor_cpuhistory_store(reg_pc, p0, p1, p2 >> 8, reg_a, reg_x, reg_y, reg_sp, LOCAL_STATUS());
         }
         memmap_state &= ~(MEMMAP_STATE_INSTR | MEMMAP_STATE_OPCODE);
 #endif
-#endif
 
 #ifdef DEBUG
-#ifdef DRIVE_CPU
-        if (TRACEFLG) {
-            BYTE op = (BYTE)(p0);
-            BYTE lo = (BYTE)(p1);
-            BYTE hi = (BYTE)(p2 >> 8);
-
-            debug_drive((DWORD)(reg_pc), debug_clk,
-                        mon_disassemble_to_string(e_disk8_space,
-                                                  reg_pc, op,
-                                                  lo, hi, 0, 1, "6502"), 
-                        reg_a_read, reg_x, reg_y, reg_sp, drv->mynumber + 8);
-        }
-#else
         if (TRACEFLG) {
             BYTE op = (BYTE)(p0);
             BYTE lo = (BYTE)(p1);
@@ -1995,14 +1716,13 @@ static const BYTE rewind_fetch_tab[] = {
                           mon_disassemble_to_string(e_comp_space,
                                                     reg_pc, op,
                                                     lo, hi, 0, 1, "6502"),
-                          reg_a_read, reg_x, reg_y, reg_sp);
+                          reg_a, reg_x, reg_y, reg_sp);
         }
         if (debug.perform_break_into_monitor)
         {
             monitor_startup_trap();
             debug.perform_break_into_monitor = 0;
         }
-#endif
 #endif
 
 trap_skipped:
@@ -2031,29 +1751,12 @@ trap_skipped:
           case 0xb2:            /* JAM */
           case 0xd2:            /* JAM */
           case 0xf2:            /* JAM */
-#ifndef C64DTV
           case 0x12:            /* JAM */
           case 0x32:            /* JAM */
           case 0x42:            /* JAM */
-#endif
             REWIND_FETCH_OPCODE(CLK);
             JAM();
             break;
-
-#ifdef C64DTV
-          /* These opcodes are defined in c64/c64dtvcpu.c */
-          case 0x12:            /* BRA */
-            BRANCH(1, p1);
-            break;
-
-          case 0x32:            /* SAC */
-            SAC(p1);
-            break;
-
-          case 0x42:            /* SIR */
-            SIR(p1);
-            break;
-#endif
 
           case 0x03:            /* SLO ($nn,X) */
             SLO(LOAD_ZERO_ADDR(p1 + reg_x), 3, CLK_IND_X_RMW, 2, LOAD_ABS, STORE_ABS);
@@ -2078,10 +1781,6 @@ trap_skipped:
             break;
 
           case 0x08:            /* PHP */
-#ifdef DRIVE_CPU
-            if (drivecpu_byte_ready())
-                LOCAL_SET_OVERFLOW(1);
-#endif
             PHP();
             break;
 
@@ -2353,10 +2052,6 @@ trap_skipped:
             break;
 
           case 0x50:            /* BVC $nnnn */
-#ifdef DRIVE_CPU
-            if (drivecpu_byte_ready())
-                LOCAL_SET_OVERFLOW(1);
-#endif
             BRANCH(!LOCAL_OVERFLOW(), p1);
             break;
 
@@ -2461,10 +2156,6 @@ trap_skipped:
             break;
 
           case 0x70:            /* BVS $nnnn */
-#ifdef DRIVE_CPU
-            if (drivecpu_byte_ready())
-                LOCAL_SET_OVERFLOW(1);
-#endif
             BRANCH(LOCAL_OVERFLOW(), p1);
             break;
 
@@ -2613,11 +2304,7 @@ trap_skipped:
             break;
 
           case 0x9b:            /* SHS $nnnn,Y */
-#ifdef C64DTV
-            NOOP_ABS_Y();
-#else
             SHS_ABS_Y(p2);
-#endif
             break;
 
           case 0x9c:            /* SHY $nnnn,X */
@@ -2978,4 +2665,3 @@ trap_skipped:
         }
     }
 }
-
