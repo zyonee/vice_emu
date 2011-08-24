@@ -648,7 +648,7 @@ be found that works for both.
       tmp = reg_a_read & (value);                                 \
       if (LOCAL_DECIMAL()) {                                      \
           tmp_2 = tmp;                                            \
-          tmp_2 |= (reg_p & P_CARRY) << 8;                        \
+          tmp_2 |= LOCAL_CARRY() << 8;                            \
           tmp_2 >>= 1;                                            \
           LOCAL_SET_SIGN(LOCAL_CARRY());                          \
           LOCAL_SET_ZERO(!tmp_2);                                 \
@@ -664,7 +664,7 @@ be found that works for both.
           }                                                       \
           reg_a_write = tmp_2;                                    \
       } else {                                                    \
-          tmp |= (reg_p & P_CARRY) << 8;                          \
+          tmp |= LOCAL_CARRY() << 8;                              \
           tmp >>= 1;                                              \
           LOCAL_SET_NZ(tmp);                                      \
           LOCAL_SET_CARRY(tmp & 0x40);                            \
