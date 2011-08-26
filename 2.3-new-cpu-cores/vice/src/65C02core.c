@@ -784,6 +784,16 @@
       JUMP(dest_addr);                        \
   } while (0)
 
+#define JMP_IND_X()                                   \
+  do {                                                \
+      WORD dest_addr;                                 \
+      dest_addr = LOAD((p2 + reg_x) & 0xffff);        \
+      CLK_ADD(CLK, 1);                                \
+      dest_addr |= (LOAD((p2 + reg_x + 1) & 0xffff)); \
+      CLK_ADD(CLK, 1);                                \
+      JUMP(dest_addr);                                \
+  } while (0)
+
 #define JSR()                                \
   do {                                       \
       unsigned int tmp_addr;                 \
@@ -1703,10 +1713,6 @@ trap_skipped:
             TRB(p2, CLK_ABS_RMW2, 3, LOAD_ABS, STORE_ABS);
             break;
 
-          case 0x7c:            /* NOOP $nnnn,X */
-            NOOP_ABS_X();
-            break;
-
           case 0x1d:            /* ORA $nnnn,X */
             ORA(LOAD_ABS_X(p2), 1, 3);
             break;
@@ -2013,6 +2019,10 @@ trap_skipped:
 
           case 0x7a:            /* PLY */
             PLY();
+            break;
+
+          case 0x7c:            /* JMP ($nnnn,X) */
+            JMP_IND_X();
             break;
 
           case 0x7d:            /* ADC $nnnn,X */
