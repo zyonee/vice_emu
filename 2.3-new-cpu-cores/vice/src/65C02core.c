@@ -468,42 +468,38 @@
      machines (eg. the C128) might depend on this.
 */
 
-#define ADC(value, clk_inc, pc_inc)                                           \
-  do {                                                                        \
-      unsigned int tmp_value;                                                 \
-      unsigned int tmp;                                                       \
-                                                                              \
-      tmp_value = (value);                                                    \
-      CLK_ADD(CLK, (clk_inc));                                                \
-                                                                              \
-      if (LOCAL_DECIMAL()) {                                                  \
-          tmp = (reg_a & 0xf) + (tmp_value & 0xf) + LOCAL_CARRY();            \
-          if (tmp > 0x9) {                                                    \
-              tmp += 0x6;                                                     \
-          }                                                                   \
-          if (tmp <= 0x0f) {                                                  \
-              tmp = (tmp & 0xf) + (reg_a & 0xf0) + (tmp_value & 0xf0);        \
-          } else {                                                            \
-              tmp = (tmp & 0xf) + (reg_a & 0xf0) + (tmp_value & 0xf0) + 0x10; \
-          }                                                                   \
-          LOCAL_SET_ZERO(!((reg_a + tmp_value + LOCAL_CARRY()) & 0xff));      \
-          LOCAL_SET_SIGN(tmp & 0x80);                                         \
-          LOCAL_SET_OVERFLOW(((reg_a ^ tmp) & 0x80)                           \
-                              && !((reg_a ^ tmp_value) & 0x80));              \
-          if ((tmp & 0x1f0) > 0x90) {                                         \
-              tmp += 0x60;                                                    \
-          }                                                                   \
-          LOCAL_SET_CARRY((tmp & 0xff0) > 0xf0);                              \
-      } else {                                                                \
-          tmp = tmp_value + reg_a + LOCAL_CARRY();                            \
-          LOCAL_SET_NZ(tmp & 0xff);                                           \
-          LOCAL_SET_OVERFLOW(!((reg_a ^ tmp_value) & 0x80)                    \
-                              && ((reg_a ^ tmp) & 0x80));                     \
-          LOCAL_SET_CARRY(tmp > 0xff);                                        \
-      }                                                                       \
-      reg_a = tmp;                                                            \
-      INC_PC(pc_inc);                                                         \
+#define ADC(value, clk_inc, pc_inc)                            \
+  do {                                                         \
+      unsigned int tmp_value;                                  \
+      unsigned int tmp;                                        \
+                                                               \
+      tmp_value = (value);                                     \
+      CLK_ADD(CLK, (clk_inc));                                 \
+                                                               \
+      if (LOCAL_DECIMAL()) {                                   \
+          tmp = reg_a - (tmp_value & 0xf) + LOCAL_CARRY() - 1; \
+          if ((tmp & 0xf) > (reg_a & 0xf)) {                   \
+              tmp -= 6;                                        \
+          }                                                    \
+          tmp -= (tmp_value & 0xf0);                           \
+          if ((tmp & 0xf0) > (reg_a & 0xf0)) {                 \
+              tmp -= 60;                                       \
+          }                                                    \
+          LOCAL_SET_OVERFLOW(!(tmp > reg_a));                  \
+          LOCAL_SET_CARRY(!(tmp > reg_a));                     \
+          LOCAL_SET_NZ(tmp & 0xff);                            \
+          CLK_ADD(CLK, 1);                                     \
+      } else {                                                 \
+          tmp = tmp_value + reg_a + LOCAL_CARRY();             \
+          LOCAL_SET_NZ(tmp & 0xff);                            \
+          LOCAL_SET_OVERFLOW(!((reg_a ^ tmp_value) & 0x80)     \
+                              && ((reg_a ^tmp) & 0x80));       \
+          LOCAL_SET_CARRY(tmp > 0xff);                         \
+      }                                                        \
+      reg_a = tmp;                                             \
+      INC_PC(pc_inc);                                          \
   } while (0)
+
 
 #define AND(value, clk_inc, pc_inc)    \
   do {                                 \
@@ -1081,40 +1077,35 @@
       INC_PC(pc_inc);                    \
   } while (0)
 
-#define SBC(value, clk_inc, pc_inc)                                        \
-  do {                                                                     \
-      WORD src, tmp;                                                       \
-      unsigned int tmp_a;                                                  \
-                                                                           \
-      src = (WORD)(value);                                                 \
-      CLK_ADD(CLK, (clk_inc));                                             \
-      tmp = reg_a - src - ((LOCAL_CARRY()) ? 0 : 1);                       \
-      if (LOCAL_DECIMAL()) {                                               \
-          tmp_a = (reg_a & 0xf) - (src & 0xf) - ((LOCAL_CARRY()) ? 0 : 1); \
-          if (tmp_a & 0x10) {                                              \
-              tmp_a = ((tmp_a - 6) & 0xf)                                  \
-                       | ((reg_a & 0xf0) - (src & 0xf0) - 0x10);           \
-          } else {                                                         \
-              tmp_a = (tmp_a & 0xf) | ((reg_a & 0xf0) - (src & 0xf0));     \
-          }                                                                \
-          if (tmp_a & 0x100) {                                             \
-              tmp_a -= 0x60;                                               \
-          }                                                                \
-          LOCAL_SET_CARRY(tmp < 0x100);                                    \
-          LOCAL_SET_NZ(tmp & 0xff);                                        \
-          LOCAL_SET_OVERFLOW(((reg_a ^ tmp) & 0x80)                        \
-                             && ((reg_a ^ src) & 0x80));                   \
-          reg_a = (BYTE)tmp_a;                                             \
-      } else {                                                             \
-          LOCAL_SET_NZ(tmp & 0xff);                                        \
-          LOCAL_SET_CARRY(tmp < 0x100);                                    \
-          LOCAL_SET_OVERFLOW(((reg_a ^ tmp) & 0x80)                        \
-                             && ((reg_a ^ src) & 0x80));                   \
-          reg_a = (BYTE)tmp;                                               \
-      }                                                                    \
-      INC_PC(pc_inc);                                                      \
-    }                                                                      \
-  while (0)
+#define SBC(value, clk_inc, pc_inc)                      \
+  do {                                                   \
+      WORD src, tmp;                                     \
+                                                         \
+      src = (WORD)(value);                               \
+      CLK_ADD(CLK, (clk_inc));                           \
+      if (LOCAL_DECIMAL()) {                             \
+          tmp = reg_a - (src & 0xf) + LOCAL_CARRY() - 1; \
+          if ((tmp & 0xf) > (reg_a & 0xf)) {             \
+              tmp -= 6;                                  \
+          }                                              \
+          tmp -= (src & 0xf0);                           \
+          if ((tmp & 0xf0) > (reg_a & 0xf0)) {           \
+              tmp -= 0x60;                               \
+          }                                              \
+          LOCAL_SET_OVERFLOW(!(tmp > reg_a));            \
+          LOCAL_SET_CARRY(!(tmp > reg_a));               \
+          LOCAL_SET_NZ(tmp & 0xff);                      \
+          CLK_ADD(CLK, 1);                               \
+      } else {                                           \
+          tmp = reg_a - src - ((LOCAL_CARRY()) ? 0 : 1); \
+          LOCAL_SET_NZ(tmp & 0xff);                      \
+          LOCAL_SET_CARRY(tmp < 0x100);                  \
+          LOCAL_SET_OVERFLOW(((reg_a ^ tmp) & 0x80)      \
+                             && ((reg_a ^ src) & 0x80)); \
+      }                                                  \
+      reg_a = tmp;                                       \
+      INC_PC(pc_inc);                                    \
+  } while (0)
 
 #define SBX(value, pc_inc)          \
   do {                              \
