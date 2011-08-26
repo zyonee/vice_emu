@@ -895,6 +895,20 @@
       INC_PC(1);                      \
   } while (0)
 
+#define PHX()                       \
+  do {                              \
+      CLK_ADD(CLK, CLK_STACK_PUSH); \
+      PUSH(reg_x);                  \
+      INC_PC(1);                    \
+  } while (0)
+
+#define PHY()                       \
+  do {                              \
+      CLK_ADD(CLK, CLK_STACK_PUSH); \
+      PUSH(reg_y);                  \
+      INC_PC(1);                    \
+  } while (0)
+
 #define PLA()                       \
   do {                              \
       CLK_ADD(CLK, CLK_STACK_PULL); \
@@ -915,6 +929,22 @@
       CLK_ADD(CLK, CLK_STACK_PULL);                         \
       LOCAL_SET_STATUS(s);                                  \
       INC_PC(1);                                            \
+  } while (0)
+
+#define PLX()                       \
+  do {                              \
+      CLK_ADD(CLK, CLK_STACK_PULL); \
+      reg_x = PULL();               \
+      LOCAL_SET_NZ(reg_x);          \
+      INC_PC(1);                    \
+  } while (0)
+
+#define PLY()                       \
+  do {                              \
+      CLK_ADD(CLK, CLK_STACK_PULL); \
+      reg_y = PULL();               \
+      LOCAL_SET_NZ(reg_y);          \
+      INC_PC(1);                    \
   } while (0)
 
 #define RLA(addr, clk_inc1, clk_inc2, pc_inc, load_func, store_func) \
@@ -1668,13 +1698,6 @@ trap_skipped:
             INA();
             break;
 
-          case 0x5a:            /* NOOP */
-          case 0x7a:            /* NOOP */
-          case 0xda:            /* NOOP */
-          case 0xfa:            /* NOOP */
-            NOOP_IMM(1);
-            break;
-
           case 0x1c:            /* NOOP $nnnn,X */
           case 0x3c:            /* NOOP $nnnn,X */
           case 0x7c:            /* NOOP $nnnn,X */
@@ -1865,6 +1888,10 @@ trap_skipped:
             EOR(LOAD_ABS_Y(p2), 1, 3);
             break;
 
+          case 0x5a:            /* PHY */
+            PHY();
+            break;
+
           case 0x5d:            /* EOR $nnnn,X */
             EOR(LOAD_ABS_X(p2), 1, 3);
             break;
@@ -1951,6 +1978,10 @@ trap_skipped:
 
           case 0x79:            /* ADC $nnnn,Y */
             ADC(LOAD_ABS_Y(p2), 1, 3);
+            break;
+
+          case 0x7a:            /* PLY */
+            PLY();
             break;
 
           case 0x7d:            /* ADC $nnnn,X */
@@ -2258,6 +2289,10 @@ trap_skipped:
             CMP(LOAD_ABS_Y(p2), 1, 3);
             break;
 
+          case 0xda:            /* PHX */
+            PHX();
+            break;
+
           case 0xdb:            /* DCP $nnnn,Y */
             DCP(p2, 0, CLK_ABS_I_RMW2, 3, LOAD_ABS_Y_RMW, STORE_ABS_Y_RMW);
             break;
@@ -2352,6 +2387,10 @@ trap_skipped:
 
           case 0xf9:            /* SBC $nnnn,Y */
             SBC(LOAD_ABS_Y(p2), 1, 3);
+            break;
+
+          case 0xfa:            /* PLX */
+            PLX();
             break;
 
           case 0xfd:            /* SBC $nnnn,X */
