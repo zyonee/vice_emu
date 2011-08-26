@@ -2027,8 +2027,8 @@ trap_skipped:
             RRA(p2, 0, CLK_ABS_I_RMW2, 3, LOAD_ABS_X_RMW, STORE_ABS_X_RMW);
             break;
 
-          case 0x80:            /* NOOP #$nn */
-            NOOP_IMM(2);
+          case 0x80:            /* BRA $nnnn */
+            BRANCH(1, p1);
             break;
 
           case 0x81:            /* STA ($nn,X) */
