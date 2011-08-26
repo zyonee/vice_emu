@@ -694,22 +694,6 @@
       INC_PC(pc_inc);               \
   } while (0)
 
-#define DCP(addr, clk_inc1, clk_inc2, pc_inc, load_func, store_func) \
-  do {                                                               \
-      unsigned int tmp, tmp_addr;                                    \
-                                                                     \
-      tmp_addr = (addr);                                             \
-      CLK_ADD(CLK, (clk_inc1));                                      \
-      tmp = load_func(tmp_addr);                                     \
-      tmp = (tmp - 1) & 0xff;                                        \
-      LOCAL_SET_CARRY(reg_a >= tmp);                                 \
-      LOCAL_SET_NZ((reg_a - tmp));                                   \
-      RMW_FLAG = 1;                                                  \
-      INC_PC(pc_inc);                                                \
-      store_func(tmp_addr, tmp, (clk_inc2));                         \
-      RMW_FLAG = 0;                                                  \
-  } while (0)
-
 #define DEA()              \
   do {                     \
       reg_a--;             \
@@ -1302,6 +1286,15 @@
       INC_PC(1);           \
   } while (0)
 
+#define WAI()                          \
+  do {                                 \
+      if (cpu_type == CPUWDC6502) {    \
+          WDC_WAI();                   \
+      } else {                         \
+          REWIND_FETCH_OPCODE(CLK, 2); \
+          NOOP_IMM(1);                 \
+      }                                \
+  } while (0)
 
 /* ------------------------------------------------------------------------- */
 
@@ -2254,8 +2247,8 @@ trap_skipped:
             DEX();
             break;
 
-          case 0xcb:            /* STP (WDC65C02) / single byte, single cycle NOP (R65C02/65SC02) */
-            STP();
+          case 0xcb:            /* WAI (WDC65C02) / single byte, single cycle NOP (R65C02/65SC02) */
+            WAI();
             break;
 
           case 0xcc:            /* CPY $nnnn */
@@ -2310,8 +2303,8 @@ trap_skipped:
             PHX();
             break;
 
-          case 0xdb:            /* DCP $nnnn,Y */
-            DCP(p2, 0, CLK_ABS_I_RMW2, 3, LOAD_ABS_Y_RMW, STORE_ABS_Y_RMW);
+          case 0xdb:            /* STP (WDC65C02) / single byte, single cycle NOP (R65C02/65SC02) */
+            STP();
             break;
 
           case 0xdd:            /* CMP $nnnn,X */
