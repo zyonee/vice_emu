@@ -1163,24 +1163,6 @@
       STORE_ABS_SH_Y(tmp, reg_a & reg_x & ((tmp >> 8) + 1), CLK_ABS_I_STORE2); \
   } while (0)
 
-#define SHX_ABS_Y(addr)                                                \
-  do {                                                                 \
-      unsigned int tmp;                                                \
-                                                                       \
-      tmp = (addr);                                                    \
-      INC_PC(3);                                                       \
-      STORE_ABS_SH_Y(tmp, reg_x & ((tmp >> 8) + 1), CLK_ABS_I_STORE2); \
-  } while (0)
-
-#define SHY_ABS_X(addr)                                                \
-  do {                                                                 \
-      unsigned int tmp;                                                \
-                                                                       \
-      tmp = (addr);                                                    \
-      INC_PC(3);                                                       \
-      STORE_ABS_SH_X(tmp, reg_y & ((tmp >> 8) + 1), CLK_ABS_I_STORE2); \
-  } while (0)
-
 #define SLO(addr, clk_inc1, clk_inc2, pc_inc, load_func, store_func) \
   do {                                                               \
       BYTE tmp_value;                                                \
@@ -1277,6 +1259,23 @@
   do {                                  \
       CLK_ADD(CLK, (clk_inc));          \
       STORE_ZERO((addr), reg_y);        \
+      INC_PC(pc_inc);                   \
+  } while (0)
+
+#define STZ(addr, clk_inc1, clk_inc2, pc_inc, store_func) \
+  do {                                                    \
+      unsigned int tmp;                                   \
+                                                          \
+      CLK_ADD(CLK, (clk_inc1));                           \
+      tmp = (addr);                                       \
+      INC_PC(pc_inc);                                     \
+      store_func(tmp, 0, clk_inc2);                       \
+  } while (0)
+
+#define STZ_ZERO(addr, clk_inc, pc_inc) \
+  do {                                  \
+      CLK_ADD(CLK, (clk_inc));          \
+      STORE_ZERO((addr), 0);            \
       INC_PC(pc_inc);                   \
   } while (0)
 
@@ -1618,7 +1617,6 @@ trap_skipped:
             break;
 
           case 0x04:            /* NOOP $nn */
-          case 0x64:            /* NOOP $nn */
             NOOP(1, 2);
             break;
 
@@ -1671,7 +1669,6 @@ trap_skipped:
             break;
 
           case 0x14:            /* NOOP $nn,X */
-          case 0x74:            /* NOOP $nn,X */
             NOOP(CLK_NOOP_ZERO_X, 2);
             break;
 
@@ -1920,6 +1917,10 @@ trap_skipped:
             ADC(LOAD_IND_X(p1), 1, 2);
             break;
 
+          case 0x64:            /* STZ $nn */
+            STZ_ZERO(p1, 1, 2);
+            break;
+
           case 0x65:            /* ADC $nn */
             ADC(LOAD_ZERO(p1), 1, 2);
             break;
@@ -1966,6 +1967,10 @@ trap_skipped:
 
           case 0x71:            /* ADC ($nn),Y */
             ADC(LOAD_IND_Y(p1), 1, 2);
+            break;
+
+          case 0x74:            /* STZ $nn,X */
+            STZ_ZERO(p1 + reg_x, CLK_ZERO_I_STORE, 2);
             break;
 
           case 0x75:            /* ADC $nn,X */
@@ -2092,16 +2097,16 @@ trap_skipped:
             TXS();
             break;
 
-          case 0x9c:            /* SHY $nnnn,X */
-            SHY_ABS_X(p2);
-            break;
+          case 0x9c:            /* STZ $nnnn */
+            STZ(p2, 0, 1, 3, STORE_ABS);
+            break;                         
 
           case 0x9d:            /* STA $nnnn,X */
             STA(p2, 0, CLK_ABS_I_STORE2, 3, STORE_ABS_X);
             break;
 
-          case 0x9e:            /* SHX $nnnn,Y */
-            SHX_ABS_Y(p2);
+          case 0x9e:            /* STZ $nnnn,X */
+            STZ(p2, 0, CLK_ABS_I_STORE2, 3, STORE_ABS_X);
             break;
 
           case 0x9f:            /* SHA $nnnn,Y */
