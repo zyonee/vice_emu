@@ -1006,20 +1006,19 @@
       INC_PC(1);                    \
   } while (0)
 
-#define RLA(addr, clk_inc1, clk_inc2, pc_inc, load_func, store_func) \
-  do {                                                               \
-      unsigned int tmp, tmp_addr;                                    \
-                                                                     \
-      tmp_addr = (addr);                                             \
-      CLK_ADD(CLK, (clk_inc1));                                      \
-      tmp = ((load_func(tmp_addr) << 1) | LOCAL_CARRY());            \
-      LOCAL_SET_CARRY(tmp & 0x100);                                  \
-      reg_a = reg_a & tmp;                                           \
-      LOCAL_SET_NZ(reg_a);                                           \
-      RMW_FLAG = 1;                                                  \
-      INC_PC(pc_inc);                                                \
-      store_func(tmp_addr, tmp, clk_inc2);                           \
-      RMW_FLAG = 0;                                                  \
+#define RMB(addr, bit)                             \
+  do {                                             \
+      unsigned int tmp, tmp_addr;                  \
+                                                   \
+      if (cpu_type == CPU65SC02) {                 \
+          REWIND_FETCH_OPCODE(CLK, 1);             \
+          NOOP_IMM(1);                             \
+      } else {                                     \
+          tmp_addr = (addr);                       \
+          tmp = LOAD_ZERO(tmp_addr) & ~(1 << bit); \
+          INC_PC(2);                               \
+          STORE_ABS(tmp_addr, tmp, 3);             \
+      }                                            \
   } while (0)
 
 #define ROL(addr, clk_inc, pc_inc, load_func, store_func) \
@@ -1073,26 +1072,6 @@
       LOCAL_SET_CARRY(tmp & 0x01);         \
       LOCAL_SET_NZ(reg_a);                 \
       INC_PC(1);                           \
-  } while (0)
-
-#define RRA(addr, clk_inc1, clk_inc2, pc_inc, load_func, store_func) \
-  do {                                                               \
-      BYTE src;                                                      \
-      unsigned int my_temp, tmp_addr;                                \
-                                                                     \
-      CLK_ADD(CLK, (clk_inc1));                                      \
-      tmp_addr = (addr);                                             \
-      src = load_func(tmp_addr);                                     \
-      my_temp = src >> 1;                                            \
-      if (LOCAL_CARRY()) {                                           \
-          my_temp |= 0x80;                                           \
-      }                                                              \
-      LOCAL_SET_CARRY(src & 0x1);                                    \
-      RMW_FLAG = 1;                                                  \
-      INC_PC(pc_inc);                                                \
-      ADC(my_temp, 0, 0);                                            \
-      store_func(tmp_addr, my_temp, clk_inc2);                       \
-      RMW_FLAG = 0;                                                  \
   } while (0)
 
 /* RTI does must not use `OPCODE_ENABLES_IRQ()' even if the I flag changes
@@ -1204,42 +1183,6 @@
       }                          \
       LOCAL_SET_INTERRUPT(1);    \
       INC_PC(1);                 \
-  } while (0)
-
-#define SLO(addr, clk_inc1, clk_inc2, pc_inc, load_func, store_func) \
-  do {                                                               \
-      BYTE tmp_value;                                                \
-      int tmp_addr;                                                  \
-                                                                     \
-      CLK_ADD(CLK, (clk_inc1));                                      \
-      tmp_addr = (addr);                                             \
-      tmp_value = load_func(tmp_addr);                               \
-      LOCAL_SET_CARRY(tmp_value & 0x80);                             \
-      tmp_value <<= 1;                                               \
-      reg_a = reg_a | tmp_value;                                     \
-      LOCAL_SET_NZ(reg_a);                                           \
-      RMW_FLAG = 1;                                                  \
-      INC_PC(pc_inc);                                                \
-      store_func(tmp_addr, tmp_value, clk_inc2);                     \
-      RMW_FLAG = 0;                                                  \
-  } while (0)
-
-#define SRE(addr, clk_inc1, clk_inc2, pc_inc, load_func, store_func) \
-  do {                                                               \
-      BYTE tmp;                                                      \
-      unsigned int tmp_addr;                                         \
-                                                                     \
-      CLK_ADD(CLK, (clk_inc1));                                      \
-      tmp_addr = (addr);                                             \
-      tmp = load_func(tmp_addr);                                     \
-      LOCAL_SET_CARRY(tmp & 0x01);                                   \
-      tmp >>= 1;                                                     \
-      reg_a = reg_a ^ tmp;                                           \
-      LOCAL_SET_NZ(reg_a);                                           \
-      RMW_FLAG = 1;                                                  \
-      INC_PC(pc_inc);                                                \
-      store_func(tmp_addr, tmp, clk_inc2);                           \
-      RMW_FLAG = 0;                                                  \
   } while (0)
 
 #define STA(addr, clk_inc1, clk_inc2, pc_inc, store_func) \
@@ -1683,8 +1626,8 @@ trap_skipped:
             ASL(p1, CLK_ZERO_RMW, 2, LOAD_ZERO, STORE_ABS);
             break;
 
-          case 0x07:            /* SLO $nn */
-            SLO(p1, 0, CLK_ZERO_RMW, 2, LOAD_ZERO, STORE_ABS);
+          case 0x07:            /* RMB0 $nn (65C02) / single byte, single cycle NOP (65SC02) */
+            RMB(p1, 0);
             break;
 
           case 0x08:            /* PHP */
@@ -1739,8 +1682,8 @@ trap_skipped:
             ASL((p1 + reg_x) & 0xff, CLK_ZERO_I_RMW, 2, LOAD_ZERO, STORE_ABS);
             break;
 
-          case 0x17:            /* SLO $nn,X */
-            SLO((p1 + reg_x) & 0xff, 0, CLK_ZERO_I_RMW, 2, LOAD_ZERO, STORE_ABS);
+          case 0x17:            /* RMB1 $nn (65C02) / single byte, single cycle NOP (65SC02) */
+            RMB(p1, 1);
             break;
 
           case 0x18:            /* CLC */
@@ -1791,8 +1734,8 @@ trap_skipped:
             ROL(p1, CLK_ZERO_RMW, 2, LOAD_ZERO, STORE_ABS);
             break;
 
-          case 0x27:            /* RLA $nn */
-            RLA(p1, 0, CLK_ZERO_RMW, 2, LOAD_ZERO, STORE_ABS);
+          case 0x27:            /* RMB2 $nn (65C02) / single byte, single cycle NOP (65SC02) */
+            RMB(p1, 2);
             break;
 
           case 0x28:            /* PLP */
@@ -1847,8 +1790,8 @@ trap_skipped:
             ROL((p1 + reg_x) & 0xff, CLK_ZERO_I_RMW, 2, LOAD_ZERO, STORE_ABS);
             break;
 
-          case 0x37:            /* RLA $nn,X */
-            RLA((p1 + reg_x) & 0xff, 0, CLK_ZERO_I_RMW, 2, LOAD_ZERO, STORE_ABS);
+          case 0x37:            /* RMB3 $nn (65C02) / single byte, single cycle NOP (65SC02) */
+            RMB(p1, 3);
             break;
 
           case 0x38:            /* SEC */
@@ -1895,8 +1838,8 @@ trap_skipped:
             LSR(p1, CLK_ZERO_RMW, 2, LOAD_ZERO, STORE_ABS);
             break;
 
-          case 0x47:            /* SRE $nn */
-            SRE(p1, 0, CLK_ZERO_RMW, 2, LOAD_ZERO, STORE_ABS);
+          case 0x47:            /* RMB4 $nn (65C02) / single byte, single cycle NOP (65SC02) */
+            RMB(p1, 4);
             break;
 
           case 0x48:            /* PHA */
@@ -1947,8 +1890,8 @@ trap_skipped:
             LSR((p1 + reg_x) & 0xff, CLK_ZERO_I_RMW, 2, LOAD_ZERO, STORE_ABS);
             break;
 
-          case 0x57:            /* SRE $nn,X */
-            SRE((p1 + reg_x) & 0xff, 0, CLK_ZERO_I_RMW, 2, LOAD_ZERO, STORE_ABS);
+          case 0x57:            /* RMB5 $nn (65C02) / single byte, single cycle NOP (65SC02) */
+            RMB(p1, 5);
             break;
 
           case 0x58:            /* CLI */
@@ -1995,8 +1938,8 @@ trap_skipped:
             ROR(p1, CLK_ZERO_RMW, 2, LOAD_ZERO, STORE_ABS);
             break;
 
-          case 0x67:            /* RRA $nn */
-            RRA(p1, 0, CLK_ZERO_RMW, 2, LOAD_ZERO, STORE_ABS);
+          case 0x67:            /* RMB6 $nn (65C02) / single byte, single cycle NOP (65SC02) */
+            RMB(p1, 6);
             break;
 
           case 0x68:            /* PLA */
@@ -2051,8 +1994,8 @@ trap_skipped:
             ROR((p1 + reg_x) & 0xff, CLK_ZERO_I_RMW, 2, LOAD_ZERO, STORE_ABS);
             break;
 
-          case 0x77:            /* RRA $nn,X */
-            RRA((p1 + reg_x) & 0xff, 0, CLK_ZERO_I_RMW, 2, LOAD_ZERO, STORE_ABS);
+          case 0x77:            /* RMB7 $nn (65C02) / single byte, single cycle NOP (65SC02) */
+            RMB(p1, 7);
             break;
 
           case 0x78:            /* SEI */
