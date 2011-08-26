@@ -1518,6 +1518,34 @@ trap_skipped:
             NOOP_IMM(1);
             break;
 
+          case 0x22:            /* NOP #$nn */
+          case 0x42:            /* NOP #$nn */
+          case 0x62:            /* NOP #$nn */
+          case 0x82:            /* NOP #$nn */
+          case 0xc2:            /* NOP #$nn */
+          case 0xe2:            /* NOP #$nn */
+            NOOP_IMM(2);
+            break;
+
+          case 0x44:            /* NOP $nn */
+            NOOP(1, 2);
+            break;
+
+          case 0x54:            /* NOP $nn,X */
+          case 0xd4:            /* NOP $nn,X */
+          case 0xf4:            /* NOP $nn,X */
+            NOOP(2, 2);
+            break;
+
+          case 0xdc:            /* NOP $nnnn,X */
+          case 0xfc:            /* NOP $nnnn,X */
+            NOOP_ABS_X();
+            break;
+
+          case 0x5c:            /* NOP ??? (FIXME) */
+            NOOP(5, 3);
+            break;
+
           case 0x00:            /* BRK */
             BRK();
             break;
@@ -1531,9 +1559,7 @@ trap_skipped:
             JAM_02();
             break;
 
-          case 0x22:            /* JAM */
           case 0x52:            /* JAM */
-          case 0x62:            /* JAM */
           case 0x72:            /* JAM */
           case 0x92:            /* JAM */
           case 0xb2:            /* JAM */
@@ -1541,13 +1567,11 @@ trap_skipped:
           case 0xf2:            /* JAM */
           case 0x12:            /* JAM */
           case 0x32:            /* JAM */
-          case 0x42:            /* JAM */
             REWIND_FETCH_OPCODE(CLK);
             JAM();
             break;
 
           case 0x04:            /* NOOP $nn */
-          case 0x44:            /* NOOP $nn */
           case 0x64:            /* NOOP $nn */
             NOOP(1, 2);
             break;
@@ -1602,10 +1626,7 @@ trap_skipped:
 
           case 0x14:            /* NOOP $nn,X */
           case 0x34:            /* NOOP $nn,X */
-          case 0x54:            /* NOOP $nn,X */
           case 0x74:            /* NOOP $nn,X */
-          case 0xd4:            /* NOOP $nn,X */
-          case 0xf4:            /* NOOP $nn,X */
             NOOP(CLK_NOOP_ZERO_X, 2);
             break;
 
@@ -1640,10 +1661,7 @@ trap_skipped:
 
           case 0x1c:            /* NOOP $nnnn,X */
           case 0x3c:            /* NOOP $nnnn,X */
-          case 0x5c:            /* NOOP $nnnn,X */
           case 0x7c:            /* NOOP $nnnn,X */
-          case 0xdc:            /* NOOP $nnnn,X */
-          case 0xfc:            /* NOOP $nnnn,X */
             NOOP_ABS_X();
             break;
 
@@ -1928,10 +1946,7 @@ trap_skipped:
             break;
 
           case 0x80:            /* NOOP #$nn */
-          case 0x82:            /* NOOP #$nn */
           case 0x89:            /* NOOP #$nn */
-          case 0xc2:            /* NOOP #$nn */
-          case 0xe2:            /* NOOP #$nn */
             NOOP_IMM(2);
             break;
 
