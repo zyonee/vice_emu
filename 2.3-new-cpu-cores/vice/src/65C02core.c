@@ -867,13 +867,6 @@
 
 #define NOOP_IMM(pc_inc) INC_PC(pc_inc)
 
-#define NOOP_ABS()     \
-  do {                 \
-      LOAD(p2);        \
-      CLK_ADD(CLK, 1); \
-      INC_PC(3);       \
-  } while (0)
-
 #define NOOP_ABS_X()   \
   do {                 \
       LOAD_ABS_X(p2);  \
@@ -1293,6 +1286,30 @@
       INC_PC(1);           \
   } while (0)
 
+#define TRB(addr, clk_inc, pc_inc, load_func, store_func) \
+  do {                                                    \
+      unsigned int tmp_value, tmp_addr;                   \
+                                                          \
+      tmp_addr = (addr);                                  \
+      tmp_value = load_func(tmp_addr);                    \
+      LOCAL_SET_ZERO(!(tmp_value & reg_a));               \
+      tmp_value &= (~reg_a);                              \
+      INC_PC(pc_inc);                                     \
+      store_func(tmp_addr, tmp_value, clk_inc);           \
+  } while (0)
+
+#define TSB(addr, clk_inc, pc_inc, load_func, store_func) \
+  do {                                                    \
+      unsigned int tmp_value, tmp_addr;                   \
+                                                          \
+      tmp_addr = (addr);                                  \
+      tmp_value = load_func(tmp_addr);                    \
+      LOCAL_SET_ZERO(!(tmp_value & reg_a));               \
+      tmp_value |= reg_a;                                 \
+      INC_PC(pc_inc);                                     \
+      store_func(tmp_addr, tmp_value, clk_inc);           \
+  } while (0)
+
 #define TSX()               \
   do {                      \
       reg_x = reg_sp;       \
@@ -1616,8 +1633,8 @@ trap_skipped:
             JAM();
             break;
 
-          case 0x04:            /* NOOP $nn */
-            NOOP(1, 2);
+          case 0x04:            /* TSB $nn */
+            TSB(p1, CLK_ZERO_RMW, 2, LOAD_ZERO, STORE_ABS);
             break;
 
           case 0x05:            /* ORA $nn */
@@ -1644,8 +1661,8 @@ trap_skipped:
             ASL_A();
             break;
 
-          case 0x0c:            /* NOOP $nnnn */
-            NOOP_ABS();
+          case 0x0c:            /* TSB $nnnn */
+            TSB(p2, CLK_ABS_RMW2, 3, LOAD_ABS, STORE_ABS);
             break;
 
           case 0x0d:            /* ORA $nnnn */
@@ -1668,8 +1685,8 @@ trap_skipped:
             ORA(LOAD_IND_Y(p1), 1, 2);
             break;
 
-          case 0x14:            /* NOOP $nn,X */
-            NOOP(CLK_NOOP_ZERO_X, 2);
+          case 0x14:            /* TRB $nn */
+            TRB(p1, CLK_ZERO_RMW, 2, LOAD_ZERO, STORE_ABS);
             break;
 
           case 0x15:            /* ORA $nn,X */
@@ -1696,7 +1713,10 @@ trap_skipped:
             INA();
             break;
 
-          case 0x1c:            /* NOOP $nnnn,X */
+          case 0x1c:            /* TRB $nnnn */
+            TRB(p2, CLK_ABS_RMW2, 3, LOAD_ABS, STORE_ABS);
+            break;
+
           case 0x7c:            /* NOOP $nnnn,X */
             NOOP_ABS_X();
             break;
