@@ -653,6 +653,13 @@
       RMW_FLAG = 0;                                                  \
   } while (0)
 
+#define DEA()              \
+  do {                     \
+      reg_a--;             \
+      LOCAL_SET_NZ(reg_a); \
+      INC_PC(1);           \
+  } while (0)
+
 #define DEC(addr, clk_inc, pc_inc, load_func, store_func) \
   do {                                                    \
       unsigned int tmp, tmp_addr;                         \
@@ -687,6 +694,13 @@
       LOCAL_SET_NZ(reg_a);             \
       CLK_ADD(CLK, (clk_inc));         \
       INC_PC(pc_inc);                  \
+  } while (0)
+
+#define INA()              \
+  do {                     \
+      reg_a++;             \
+      LOCAL_SET_NZ(reg_a); \
+      INC_PC(1);           \
   } while (0)
 
 #define INC(addr, clk_inc, pc_inc, load_func, store_func) \
@@ -1650,8 +1664,10 @@ trap_skipped:
             ORA(LOAD_ABS_Y(p2), 1, 3);
             break;
 
-          case 0x1a:            /* NOOP */
-          case 0x3a:            /* NOOP */
+          case 0x1a:            /* INA */
+            INA();
+            break;
+
           case 0x5a:            /* NOOP */
           case 0x7a:            /* NOOP */
           case 0xda:            /* NOOP */
@@ -1755,6 +1771,10 @@ trap_skipped:
 
           case 0x39:            /* AND $nnnn,Y */
             AND(LOAD_ABS_Y(p2), 1, 3);
+            break;
+
+          case 0x3a:            /* DEA */
+            DEA();
             break;
 
           case 0x3d:            /* AND $nnnn,X */
