@@ -570,6 +570,7 @@
       TRACE_BRK();             \
       INC_PC(2);               \
       LOCAL_SET_BREAK(1);      \
+      LOCAL_SET_DECIMAL(0);    \
       PUSH(reg_pc >> 8);       \
       PUSH(reg_pc & 0xff);     \
       PUSH(LOCAL_STATUS());    \
@@ -757,7 +758,7 @@
           NOOP_IMM(2);                                          \
       } else {                                                  \
           if (trap_result) {                                    \
-             REWIND_FETCH_OPCODE(CLK, 1);                       \
+             REWIND_FETCH_OPCODE(CLK, 2);                       \
              SET_OPCODE(trap_result);                           \
              IMPORT_REGISTERS();                                \
              goto trap_skipped;                                 \
