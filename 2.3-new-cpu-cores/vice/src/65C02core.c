@@ -361,6 +361,9 @@
     CLK_ADD(CLK, CLK_INT_CYCLE),                         \
     LOAD((addr) + reg_y))
 
+#define LOAD_INDIRECT(addr) \
+   (CLK_ADD(CLK, 2), LOAD(LOAD_ZERO_ADDR((addr)))
+
 #define LOAD_IND_X(addr) \
    (CLK_ADD(CLK, 3), LOAD(LOAD_ZERO_ADDR((addr) + reg_x)))
 
@@ -1621,18 +1624,6 @@ trap_skipped:
             NOP_02();
             break;
 
-          case 0x52:            /* JAM */
-          case 0x72:            /* JAM */
-          case 0x92:            /* JAM */
-          case 0xb2:            /* JAM */
-          case 0xd2:            /* JAM */
-          case 0xf2:            /* JAM */
-          case 0x12:            /* JAM */
-          case 0x32:            /* JAM */
-            REWIND_FETCH_OPCODE(CLK, 2);
-            JAM();
-            break;
-
           case 0x04:            /* TSB $nn */
             TSB(p1, CLK_ZERO_RMW, 2, LOAD_ZERO, STORE_ABS);
             break;
@@ -1683,6 +1674,10 @@ trap_skipped:
 
           case 0x11:            /* ORA ($nn),Y */
             ORA(LOAD_IND_Y(p1), 1, 2);
+            break;
+
+          case 0x12:            /* ORA ($nn) */
+            ORA(LOAD_INDIRECT(p1), 1, 2);
             break;
 
           case 0x14:            /* TRB $nn */
@@ -1793,6 +1788,10 @@ trap_skipped:
             AND(LOAD_IND_Y(p1), 1, 2);
             break;
 
+          case 0x32:            /* AND ($nn) */
+            AND(LOAD_INDIRECT(p1), 1, 2);
+            break;
+
           case 0x34:            /* BIT $nn,X */
             BIT(LOAD_ZERO_X(p1), CLK_ZERO_I2, 2);
             break;
@@ -1893,6 +1892,10 @@ trap_skipped:
             EOR(LOAD_IND_Y(p1), 1, 2);
             break;
 
+          case 0x52:            /* EOR ($nn) */                                                                                   
+            EOR(LOAD_INDIRECT(p1), 1, 2);                                                                                              
+            break;
+
           case 0x55:            /* EOR $nn,X */
             EOR(LOAD_ZERO_X(p1), CLK_ZERO_I2, 2);
             break;
@@ -1987,6 +1990,10 @@ trap_skipped:
 
           case 0x71:            /* ADC ($nn),Y */
             ADC(LOAD_IND_Y(p1), 1, 2);
+            break;
+
+          case 0x72:            /* ADC ($nn) */
+            ADC(LOAD_INDIRECT(p1), 1, 2);
             break;
 
           case 0x74:            /* STZ $nn,X */
@@ -2087,6 +2094,10 @@ trap_skipped:
 
           case 0x91:            /* STA ($nn),Y */
             STA_IND_Y(p1);
+            break;
+
+          case 0x92:            /* STA ($nn) */
+            STA(LOAD_ZERO_ADDR(p1), 2, 1, 2, STORE_ABS);
             break;
 
           case 0x94:            /* STY $nn,X */
@@ -2197,6 +2208,10 @@ trap_skipped:
             LDA(LOAD_IND_Y_BANK(p1), 1, 2);
             break;
 
+          case 0xb2:            /* LDA ($nn) */
+            LDA(LOAD_INDIRECT(p1), 1, 2);
+            break;
+
           case 0xb4:            /* LDY $nn,X */
             LDY(LOAD_ZERO_X(p1), CLK_ZERO_I2, 2);
             break;
@@ -2305,6 +2320,10 @@ trap_skipped:
             CMP(LOAD_IND_Y(p1), 1, 2);
             break;
 
+          case 0xd2:            /* CMP ($nn) */
+            CMP(LOAD_INDIRECT(p1), 1, 2);
+            break;
+
           case 0xd5:            /* CMP $nn,X */
             CMP(LOAD_ZERO_X(p1), CLK_ZERO_I2, 2);
             break;
@@ -2403,6 +2422,10 @@ trap_skipped:
 
           case 0xf1:            /* SBC ($nn),Y */
             SBC(LOAD_IND_Y(p1), 1, 2);
+            break;
+
+          case 0xf2:            /* SBC ($nn) */
+            SBC(LOAD_INDIRECT(p1), 1, 2);
             break;
 
           case 0xf5:            /* SBC $nn,X */
