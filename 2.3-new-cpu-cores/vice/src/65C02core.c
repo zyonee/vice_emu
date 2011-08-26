@@ -1712,7 +1712,7 @@ trap_skipped:
             break;
 
           case 0x1e:            /* ASL $nnnn,X */
-            ASL(p2, CLK_ABS_I_RMW2, 3, LOAD_ABS_X_RMW, STORE_ABS_X_RMW);
+            ASL(p2, CLK_ABS_I_RMW2, 3, LOAD_ABS_X, STORE_ABS_X_RMW);
             break;
 
           case 0x1f:            /* SLO $nnnn,X */
@@ -1820,7 +1820,7 @@ trap_skipped:
             break;
 
           case 0x3e:            /* ROL $nnnn,X */
-            ROL(p2, CLK_ABS_I_RMW2, 3, LOAD_ABS_X_RMW, STORE_ABS_X_RMW);
+            ROL(p2, CLK_ABS_I_RMW2, 3, LOAD_ABS_X, STORE_ABS_X_RMW);
             break;
 
           case 0x3f:            /* RLA $nnnn,X */
@@ -1916,7 +1916,7 @@ trap_skipped:
             break;
 
           case 0x5e:            /* LSR $nnnn,X */
-            LSR(p2, CLK_ABS_I_RMW2, 3, LOAD_ABS_X_RMW, STORE_ABS_X_RMW);
+            LSR(p2, CLK_ABS_I_RMW2, 3, LOAD_ABS_X, STORE_ABS_X_RMW);
             break;
 
           case 0x5f:            /* SRE $nnnn,X */
@@ -2020,7 +2020,7 @@ trap_skipped:
             break;
 
           case 0x7e:            /* ROR $nnnn,X */
-            ROR(p2, CLK_ABS_I_RMW2, 3, LOAD_ABS_X_RMW, STORE_ABS_X_RMW);
+            ROR(p2, CLK_ABS_I_RMW2, 3, LOAD_ABS_X, STORE_ABS_X_RMW);
             break;
 
           case 0x7f:            /* RRA $nnnn,X */
