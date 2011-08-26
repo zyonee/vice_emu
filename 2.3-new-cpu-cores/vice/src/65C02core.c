@@ -787,23 +787,8 @@
       INC_PC(1);           \
   } while (0)
 
-#define ISB(addr, clk_inc1, clk_inc2, pc_inc, load_func, store_func) \
-  do {                                                               \
-      BYTE my_src;                                                   \
-      int my_addr = (addr);                                          \
-                                                                     \
-      CLK_ADD(CLK, (clk_inc1));                                      \
-      my_src = load_func(my_addr);                                   \
-      my_src = (my_src + 1) & 0xff;                                  \
-      SBC(my_src, 0, 0);                                             \
-      RMW_FLAG = 1;                                                  \
-      INC_PC(pc_inc);                                                \
-      store_func(my_addr, my_src, clk_inc2);                         \
-      RMW_FLAG = 0;                                                  \
-  } while (0)
-
-/* The 0x02 JAM opcode is also used to patch the ROM.  The function trap_handler()
-   returns nonzero if this is not a patch, but a `real' JAM instruction. */
+/* The 0x02 NOP opcode is also used to patch the ROM.  The function trap_handler()
+   returns nonzero if this is not a patch, but a `real' NOP instruction. */
 
 #define NOP_02()                                                \
   do {                                                          \
@@ -861,14 +846,6 @@
       tmp_addr = (p1 | (LOAD(reg_pc) << 8)); \
       CLK_ADD(CLK, CLK_JSR_INT_CYCLE);       \
       JUMP(tmp_addr);                        \
-  } while (0)
-
-#define LAX(value, clk_inc, pc_inc) \
-  do {                              \
-      reg_a = reg_x = (value);      \
-      LOCAL_SET_NZ(reg_a);          \
-      CLK_ADD(CLK, (clk_inc));      \
-      INC_PC(pc_inc);               \
   } while (0)
 
 #define LDA(value, clk_inc, pc_inc) \
@@ -1103,24 +1080,6 @@
       JUMP(tmp);                   \
   } while (0)
 
-#define SAX(addr, clk_inc1, clk_inc2, pc_inc) \
-  do {                                        \
-      unsigned int tmp;                       \
-                                              \
-      CLK_ADD(CLK, (clk_inc1));               \
-      tmp = (addr);                           \
-      CLK_ADD(CLK, (clk_inc2));               \
-      INC_PC(pc_inc);                         \
-      STORE(tmp, reg_a & reg_x);              \
-  } while (0)
-
-#define SAX_ZERO(addr, clk_inc, pc_inc)  \
-  do {                                   \
-      CLK_ADD(CLK, (clk_inc));           \
-      STORE_ZERO((addr), reg_a & reg_x); \
-      INC_PC(pc_inc);                    \
-  } while (0)
-
 #define SBC(value, clk_inc, pc_inc)                      \
   do {                                                   \
       WORD src, tmp;                                     \
@@ -1183,6 +1142,21 @@
       }                          \
       LOCAL_SET_INTERRUPT(1);    \
       INC_PC(1);                 \
+  } while (0)
+
+#define SMB(addr, bit)                            \
+  do {                                            \
+      unsigned tmp, tmp_addr;                     \
+                                                  \
+      if (cpu_type == CPU65SC02) {                \
+          REWIND_FETCH_OPCODE(CLK, 1);            \
+          NOOP_IMM(1);                            \
+      } else {                                    \
+          tmp_addr = (addr);                      \
+          tmp = LOAD_ZERO(tmp_addr) | (1 << bit); \
+          INC_PC(2);                              \
+          STORE_ABS(tmp_addr, tmp, 3);            \
+      }
   } while (0)
 
 #define STA(addr, clk_inc1, clk_inc2, pc_inc, store_func) \
@@ -2046,8 +2020,8 @@ trap_skipped:
             STX_ZERO(p1, 1, 2);
             break;
 
-          case 0x87:            /* SAX $nn */
-            SAX_ZERO(p1, 1, 2);
+          case 0x87:            /* SMB0 $nn (65C02) / single byte, single cycle NOP (65SC02) */
+            SMB(p1, 0);
             break;
 
           case 0x88:            /* DEY */
@@ -2102,8 +2076,8 @@ trap_skipped:
             STX_ZERO(p1 + reg_y, CLK_ZERO_I_STORE, 2);
             break;
 
-          case 0x97:            /* SAX $nn,Y */
-            SAX((p1 + reg_y) & 0xff, 0, CLK_ZERO_I_STORE, 2);
+          case 0x97:            /* SMB1 $nn (65C02) / single byte, single cycle NOP (65SC02) */
+            SMB(p1, 1);
             break;
 
           case 0x98:            /* TYA */
@@ -2158,8 +2132,8 @@ trap_skipped:
             LDX(LOAD_ZERO(p1), 1, 2);
             break;
 
-          case 0xa7:            /* LAX $nn */
-            LAX(LOAD_ZERO(p1), 1, 2);
+          case 0xa7:            /* SMB2 $nn (65C02) / single byte, single cycle NOP (65SC02) *
+            SMB(p1, 2);
             break;
 
           case 0xa8:            /* TAY */
@@ -2214,8 +2188,8 @@ trap_skipped:
             LDX(LOAD_ZERO_Y(p1), CLK_ZERO_I2, 2);
             break;
 
-          case 0xb7:            /* LAX $nn,Y */
-            LAX(LOAD_ZERO_Y(p1), CLK_ZERO_I2, 2);
+          case 0xb7:            /* SMB3 $nn (65C02) / single byte, single cycle NOP (65SC02) */
+            SMB(p1, 3);
             break;
 
           case 0xb8:            /* CLV */
@@ -2266,8 +2240,8 @@ trap_skipped:
             DEC(p1, CLK_ZERO_RMW, 2, LOAD_ZERO, STORE_ABS);
             break;
 
-          case 0xc7:            /* DCP $nn */
-            DCP(p1, 0, CLK_ZERO_RMW, 2, LOAD_ZERO, STORE_ABS);
+          case 0xc7:            /* SMB4 $nn (65C02) / single byte, single cycle NOP (65SC02) */
+            SMB(p1, 4);
             break;
 
           case 0xc8:            /* INY */
@@ -2322,8 +2296,8 @@ trap_skipped:
             DEC((p1 + reg_x) & 0xff, CLK_ZERO_I_RMW, 2, LOAD_ABS, STORE_ABS);
             break;
 
-          case 0xd7:            /* DCP $nn,X */
-            DCP((p1 + reg_x) & 0xff, 0, CLK_ZERO_I_RMW, 2, LOAD_ABS, STORE_ABS);
+          case 0xd7:            /* SMB5 $nn (65C02) / single byte, single cycle NOP (65SC02) */
+            SMB(p1, 5);
             break;
 
           case 0xd8:            /* CLD */
@@ -2374,8 +2348,8 @@ trap_skipped:
             INC(p1, CLK_ZERO_RMW, 2, LOAD_ZERO, STORE_ABS);
             break;
 
-          case 0xe7:            /* ISB $nn */
-            ISB(p1, 0, CLK_ZERO_RMW, 2, LOAD_ZERO, STORE_ABS);
+          case 0xe7:            /* SMB6 $nn (65C02) / single byte, single cycle NOP (65SC02) */
+            SMB(p1, 6);
             break;
 
           case 0xe8:            /* INX */
@@ -2426,8 +2400,8 @@ trap_skipped:
             INC((p1 + reg_x) & 0xff, CLK_ZERO_I_RMW, 2, LOAD_ZERO, STORE_ABS);
             break;
 
-          case 0xf7:            /* ISB $nn,X */
-            ISB((p1 + reg_x) & 0xff, 0, CLK_ZERO_I_RMW, 2, LOAD_ZERO, STORE_ABS);
+          case 0xf7:            /* SMB7 $nn (65C02) / single byte, single cycle NOP (65SC02) */
+            SMB(p1, 7);
             break;
 
           case 0xf8:            /* SED */
