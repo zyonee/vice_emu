@@ -73,7 +73,7 @@
 #endif
 
 #ifndef REWIND_FETCH_OPCODE
-#define REWIND_FETCH_OPCODE(clock) clock -= 2
+#define REWIND_FETCH_OPCODE(clock, amount) clock -= amount
 #endif
 
 /* ------------------------------------------------------------------------- */
@@ -748,17 +748,16 @@
 /* The 0x02 JAM opcode is also used to patch the ROM.  The function trap_handler()
    returns nonzero if this is not a patch, but a `real' JAM instruction. */
 
-#define JAM_02()                                                \
+#define NOP_02()                                                \
   do {                                                          \
       DWORD trap_result;                                        \
       EXPORT_REGISTERS();                                       \
       if (!ROM_TRAP_ALLOWED()                                   \
           || (trap_result = ROM_TRAP_HANDLER()) == (DWORD)-1) { \
-          REWIND_FETCH_OPCODE(CLK);                             \
-          JAM();                                                \
+          NOOP_IMM(2);                                          \
       } else {                                                  \
           if (trap_result) {                                    \
-             REWIND_FETCH_OPCODE(CLK);                          \
+             REWIND_FETCH_OPCODE(CLK, 1);                       \
              SET_OPCODE(trap_result);                           \
              IMPORT_REGISTERS();                                \
              goto trap_skipped;                                 \
@@ -1598,9 +1597,9 @@ trap_skipped:
             ORA(LOAD_IND_X(p1), 1, 2);
             break;
 
-          case 0x02:            /* JAM - also used for traps */
+          case 0x02:            /* NOP #$nn - also used for traps */
             STATIC_ASSERT(TRAP_OPCODE == 0x02);
-            JAM_02();
+            NOP_02();
             break;
 
           case 0x52:            /* JAM */
@@ -1611,7 +1610,7 @@ trap_skipped:
           case 0xf2:            /* JAM */
           case 0x12:            /* JAM */
           case 0x32:            /* JAM */
-            REWIND_FETCH_OPCODE(CLK);
+            REWIND_FETCH_OPCODE(CLK, 2);
             JAM();
             break;
 
