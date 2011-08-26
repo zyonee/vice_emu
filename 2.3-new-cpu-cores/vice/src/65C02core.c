@@ -560,6 +560,33 @@
       }                                                         \
   } while (0)
       
+#define BBS(bit, addr, value)                                   \
+  do {                                                          \
+      unsigned int tmp, tmp_addr;                               \
+      unsigned int dest_addr;                                   \
+                                                                \
+      if (cpu_type == CPU65SC02) {                              \
+          REWIND_FETCH_OPCODE(CLK, 2);                          \
+          NOOP_IMM(1);                                          \
+      } else {                                                  \
+          tmp_addr = (addr);                                    \
+          tmp = LOAD_ZERO(tmp_addr) & (1 << bit);               \
+          INC_PC(3);                                            \
+          CLK_ADD(CLK, 2);                                      \
+                                                                \
+          if (tmp) {                                            \
+              dest_addr = reg_pc + (signed char)(value);        \
+              LOAD(reg_pc);                                     \
+              if ((reg_pc ^ dest_addr) & 0xff00) {              \
+                  LOAD((reg_pc & 0xff00) | (dest_addr & 0xff)); \
+              } else {                                          \
+                  OPCODE_DELAYS_INTERRUPT();                    \
+              }                                                 \
+              JUMP(dest_addr & 0xffff);                         \
+          }                                                     \
+      }                                                         \
+  } while (0)
+
 #define BIT(value, clk_inc, pc_inc)   \
   do {                                \
       unsigned int tmp;               \
@@ -1177,15 +1204,6 @@
       }                          \
       LOCAL_SET_INTERRUPT(1);    \
       INC_PC(1);                 \
-  } while (0)
-
-#define SHA_ABS_Y(addr)                                                        \
-  do {                                                                         \
-      unsigned int tmp;                                                        \
-                                                                               \
-      tmp = (addr);                                                            \
-      INC_PC(3);                                                               \
-      STORE_ABS_SH_Y(tmp, reg_a & reg_x & ((tmp >> 8) + 1), CLK_ABS_I_STORE2); \
   } while (0)
 
 #define SLO(addr, clk_inc1, clk_inc2, pc_inc, load_func, store_func) \
@@ -2113,8 +2131,8 @@ trap_skipped:
             STX(p2, 1, 3);
             break;
 
-          case 0x8f:            /* SAX $nnnn */
-            SAX(p2, 0, 1, 3);
+          case 0x8f:            /* BBS0 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
+            BBS(0, p1, p2 >> 8);
             break;
 
           case 0x90:            /* BCC $nnnn */
@@ -2169,8 +2187,8 @@ trap_skipped:
             STZ(p2, 0, CLK_ABS_I_STORE2, 3, STORE_ABS_X);
             break;
 
-          case 0x9f:            /* SHA $nnnn,Y */
-            SHA_ABS_Y(p2);
+          case 0x9f:            /* BBS1 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
+            BBS(1, p1, p2 >> 8);
             break;
 
           case 0xa0:            /* LDY #$nn */
@@ -2225,8 +2243,8 @@ trap_skipped:
             LDX(LOAD(p2), 1, 3);
             break;
 
-          case 0xaf:            /* LAX $nnnn */
-            LAX(LOAD(p2), 1, 3);
+          case 0xaf:            /* BBS2 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
+            BBS(2, p1, p2 >> 8);
             break;
 
           case 0xb0:            /* BCS $nnnn */
@@ -2281,8 +2299,8 @@ trap_skipped:
             LDX(LOAD_ABS_Y(p2), 1, 3);
             break;
 
-          case 0xbf:            /* LAX $nnnn,Y */
-            LAX(LOAD_ABS_Y(p2), 1, 3);
+          case 0xbf:            /* BBS3 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
+            BBS(3, p1, p2 >> 8);
             break;
 
           case 0xc0:            /* CPY #$nn */
@@ -2337,8 +2355,8 @@ trap_skipped:
             DEC(p2, CLK_ABS_RMW2, 3, LOAD_ABS, STORE_ABS);
             break;
 
-          case 0xcf:            /* DCP $nnnn */
-            DCP(p2, 0, CLK_ABS_RMW2, 3, LOAD_ABS, STORE_ABS);
+          case 0xcf:            /* BBS4 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
+            BBS(4, p1, p2 >> 8);
             break;
 
           case 0xd0:            /* BNE $nnnn */
@@ -2389,8 +2407,8 @@ trap_skipped:
             DEC(p2, CLK_ABS_I_RMW2, 3, LOAD_ABS_X_RMW, STORE_ABS_X_RMW);
             break;
 
-          case 0xdf:            /* DCP $nnnn,X */
-            DCP(p2, 0, CLK_ABS_I_RMW2, 3, LOAD_ABS_X_RMW, STORE_ABS_X_RMW);
+          case 0xdf:            /* BBS5 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
+            BBS(5, p1, p2 >> 8);
             break;
 
           case 0xe0:            /* CPX #$nn */
@@ -2441,8 +2459,8 @@ trap_skipped:
             INC(p2, CLK_ABS_RMW2, 3, LOAD_ABS, STORE_ABS);
             break;
 
-          case 0xef:            /* ISB $nnnn */
-            ISB(p2, 0, CLK_ABS_RMW2, 3, LOAD_ABS, STORE_ABS);
+          case 0xef:            /* BBS6 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
+            BBS(6, p1, p2 >> 8);
             break;
 
           case 0xf0:            /* BEQ $nnnn */
@@ -2489,8 +2507,8 @@ trap_skipped:
             INC(p2, CLK_ABS_I_RMW2, 3, LOAD_ABS_X_RMW, STORE_ABS_X_RMW);
             break;
 
-          case 0xff:            /* ISB $nnnn,X */
-            ISB(p2, 0, CLK_ABS_I_RMW2, 3, LOAD_ABS_X_RMW, STORE_ABS_X_RMW);
+          case 0xff:            /* BBS7 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
+            BBS(7, p1, p2 >> 8);
             break;
         }
     }
