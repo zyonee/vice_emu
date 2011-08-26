@@ -1110,18 +1110,6 @@
       INC_PC(pc_inc);                                    \
   } while (0)
 
-#define SBX(value, pc_inc)          \
-  do {                              \
-      unsigned int tmp;             \
-                                    \
-      tmp = (value);                \
-      INC_PC(pc_inc);               \
-      tmp = (reg_a & reg_x) - tmp;  \
-      LOCAL_SET_CARRY(tmp < 0x100); \
-      reg_x = tmp & 0xff;           \
-      LOCAL_SET_NZ(reg_x);          \
-  } while (0)
-
 #undef SEC    /* defined in time.h on SunOS. */
 #define SEC()             \
   do {                    \
@@ -1186,6 +1174,16 @@
       CLK_ADD(CLK, CLK_IND_Y_W);                         \
       INC_PC(2);                                         \
       STORE_IND(tmp + reg_y, reg_a);                     \
+  } while (0)
+
+#define STP()                          \
+  do {                                 \
+      if (cpu_type == CPUWDC65C02) {   \
+          WDC_STOP();                  \
+      } else {                         \
+          REWIND_FETCH_OPCODE(CLK, 2); \
+          NOOP_IMM(1);                 \
+      }                                \
   } while (0)
 
 #define STX(addr, clk_inc, pc_inc) \
@@ -2256,8 +2254,8 @@ trap_skipped:
             DEX();
             break;
 
-          case 0xcb:            /* SBX #$nn */
-            SBX(p1, 2);
+          case 0xcb:            /* STP (WDC65C02) / single byte, single cycle NOP (R65C02/65SC02) */
+            STP();
             break;
 
           case 0xcc:            /* CPY $nnnn */
