@@ -533,12 +533,12 @@
       INC_PC(1);                     \
   } while (0)
 
-#define BIT(value, pc_inc)            \
+#define BIT(value, clk_inc, pc_inc)   \
   do {                                \
       unsigned int tmp;               \
                                       \
       tmp = (value);                  \
-      CLK_ADD(CLK, 1);                \
+      CLK_ADD(CLK, clk_inc);          \
       LOCAL_SET_SIGN(tmp & 0x80);     \
       LOCAL_SET_OVERFLOW(tmp & 0x40); \
       LOCAL_SET_ZERO(!(tmp & reg_a)); \
@@ -1671,7 +1671,6 @@ trap_skipped:
             break;
 
           case 0x14:            /* NOOP $nn,X */
-          case 0x34:            /* NOOP $nn,X */
           case 0x74:            /* NOOP $nn,X */
             NOOP(CLK_NOOP_ZERO_X, 2);
             break;
@@ -1701,7 +1700,6 @@ trap_skipped:
             break;
 
           case 0x1c:            /* NOOP $nnnn,X */
-          case 0x3c:            /* NOOP $nnnn,X */
           case 0x7c:            /* NOOP $nnnn,X */
             NOOP_ABS_X();
             break;
@@ -1727,7 +1725,7 @@ trap_skipped:
             break;
 
           case 0x24:            /* BIT $nn */
-            BIT(LOAD_ZERO(p1), 2);
+            BIT(LOAD_ZERO(p1), 1, 2);
             break;
 
           case 0x25:            /* AND $nn */
@@ -1755,7 +1753,7 @@ trap_skipped:
             break;
 
           case 0x2c:            /* BIT $nnnn */
-            BIT(LOAD(p2), 3);
+            BIT(LOAD(p2), 1, 3);
             break;
 
           case 0x2d:            /* AND $nnnn */
@@ -1776,6 +1774,10 @@ trap_skipped:
 
           case 0x31:            /* AND ($nn),Y */
             AND(LOAD_IND_Y(p1), 1, 2);
+            break;
+
+          case 0x34:            /* BIT $nn,X */
+            BIT(LOAD_ZERO_X(p1), CLK_ZERO_I2, 2);
             break;
 
           case 0x35:            /* AND $nn,X */
@@ -1800,6 +1802,10 @@ trap_skipped:
 
           case 0x3a:            /* DEA */
             DEA();
+            break;
+
+          case 0x3c:            /* BIT $nnnn,X */
+            BIT(LOAD_ABS_X(p2), 1, 3);
             break;
 
           case 0x3d:            /* AND $nnnn,X */
@@ -1999,7 +2005,6 @@ trap_skipped:
             break;
 
           case 0x80:            /* NOOP #$nn */
-          case 0x89:            /* NOOP #$nn */
             NOOP_IMM(2);
             break;
 
@@ -2025,6 +2030,10 @@ trap_skipped:
 
           case 0x88:            /* DEY */
             DEY();
+            break;
+
+          case 0x89:            /* BIT #$nn */
+            BIT(p1, 0, 2);
             break;
 
           case 0x8a:            /* TXA */
