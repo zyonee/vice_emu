@@ -405,23 +405,10 @@
 
 #define STORE_ABS_X_RMW(addr, value, inc) \
   do {                                    \
+      LOAD((adr) + reg_x);                \
       CLK_ADD(CLK, (inc));                \
       STORE((addr) + reg_x, (value));     \
   } while (0)                             \
-
-#define STORE_ABS_SH_X(addr, value, inc)                   \
-  do {                                                     \
-      unsigned int tmp2;                                   \
-                                                           \
-      CLK_ADD(CLK, (inc)-2);                               \
-      LOAD((((addr) + reg_x) & 0xff) | ((addr) & 0xff00)); \
-      CLK_ADD(CLK, 2);                                     \
-      tmp2 = (addr) + reg_x;                               \
-      if (((addr) & 0xff) + reg_x > 0xff) {                \
-          tmp2 = (tmp2 & 0xff) | ((value) << 8);           \
-      }                                                    \
-      STORE(tmp2, (value));                                \
-  } while (0)
 
 #define STORE_ABS_Y(addr, value, inc)                      \
   do {                                                     \
@@ -433,6 +420,7 @@
 
 #define STORE_ABS_Y_RMW(addr, value, inc) \
   do {                                    \
+      LOAD((addr) + reg_y, (value));      \
       CLK_ADD(CLK, (inc));                \
       STORE((addr) + reg_y, (value));     \
   } while (0)
@@ -518,10 +506,8 @@
       LOCAL_SET_CARRY(tmp_value & 0x80);                  \
       tmp_value = (tmp_value << 1) & 0xff;                \
       LOCAL_SET_NZ(tmp_value);                            \
-      RMW_FLAG = 1;                                       \
       INC_PC(pc_inc);                                     \
       store_func(tmp_addr, tmp_value, clk_inc);           \
-      RMW_FLAG = 0;                                       \
   } while (0)
 
 #define ASL_A()                      \
@@ -709,10 +695,8 @@
       tmp = load_func(tmp_addr);                          \
       tmp = (tmp - 1) & 0xff;                             \
       LOCAL_SET_NZ(tmp);                                  \
-      RMW_FLAG = 1;                                       \
       INC_PC(pc_inc);                                     \
       store_func(tmp_addr, tmp, (clk_inc));               \
-      RMW_FLAG = 0;                                       \
   } while (0)
 
 #define DEX()              \
@@ -751,10 +735,8 @@
       tmp_addr = (addr);                                  \
       tmp = (load_func(tmp_addr) + 1) & 0xff;             \
       LOCAL_SET_NZ(tmp);                                  \
-      RMW_FLAG = 1;                                       \
       INC_PC(pc_inc);                                     \
       store_func(tmp_addr, tmp, (clk_inc));               \
-      RMW_FLAG = 0;                                       \
   } while (0)
 
 #define INX()              \
@@ -865,10 +847,8 @@
       LOCAL_SET_CARRY(tmp & 0x01);                        \
       tmp >>= 1;                                          \
       LOCAL_SET_NZ(tmp);                                  \
-      RMW_FLAG = 1;                                       \
       INC_PC(pc_inc);                                     \
       store_func(tmp_addr, tmp, clk_inc);                 \
-      RMW_FLAG = 0;                                       \
   } while (0)
 
 #define LSR_A()                      \
@@ -991,10 +971,8 @@
       tmp = (tmp << 1) | LOCAL_CARRY();                   \
       LOCAL_SET_CARRY(tmp & 0x100);                       \
       LOCAL_SET_NZ(tmp & 0xff);                           \
-      RMW_FLAG = 1;                                       \
       INC_PC(pc_inc);                                     \
       store_func(tmp_addr, tmp, clk_inc);                 \
-      RMW_FLAG = 0;                                       \
   } while (0)
 
 #define ROL_A()                      \
@@ -1019,10 +997,8 @@
       LOCAL_SET_CARRY(src & 0x01);                        \
       src >>= 1;                                          \
       LOCAL_SET_NZ(src);                                  \
-      RMW_FLAG = 1;                                       \
       INC_PC(pc_inc);                                     \
       store_func(tmp_addr, src, (clk_inc));               \
-      RMW_FLAG = 0;                                       \
   } while (0)
 
 #define ROR_A()                            \
