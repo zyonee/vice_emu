@@ -26,6 +26,20 @@
 
 /* This file is currently not included by any CPU definition files */
 
+/* any CPU definition file that includes this file needs to do the following:
+ *
+ * - define all registers used.
+ * - define the cpu being emulated in a var 'cpu_type' (CPU_WDC65C02, CPU_R65C02, CPU_65SC02).
+ * - define a function to handle the WDC65C02 STP opcode (WDC_STP(void)).
+ * - define a function to handle the WDC65C02 WAI opcode (WDC_WAI(void)).
+ *
+ */
+
+/* still to check and possibly fix:
+ *
+ * - BRK doesn't get interrupted by an IRQ/NMI on the 65(S)C02.
+ */
+
 #define CPU_STR "65(S)C02 CPU"
 
 #include "traps.h"
