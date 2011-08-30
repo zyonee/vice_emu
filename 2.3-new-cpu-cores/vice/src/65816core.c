@@ -375,108 +375,117 @@
 /* Addressing modes.  For convenience, page boundary crossing cycles and
    ``idle'' memory reads are handled here as well. */
 
-#define LOAD_ABS(addr) \
-   LOAD(addr)
+LOAD_DBR(addr) \
+    LOAD_LONG(addr | (reg_dbr * 0x10000))
 
-#define LOAD_ABS_X(addr)             \
-   ((((addr) & 0xff) + reg_x) > 0xff \
-    ? (LOAD(reg_pc + 2),             \
-       CLK_ADD(CLK, CLK_INT_CYCLE),  \
-       LOAD((addr) + reg_x))         \
-    : LOAD((addr) + reg_x))
+#define LOAD_BANK0(addr) \
+    LOAD_LONG(addr & 0xffff)
 
-#define LOAD_ABS_X_RMW(addr)     \
-   (LOAD(reg_pc + 2),            \
-    CLK_ADD(CLK, CLK_INT_CYCLE), \
-    LOAD((addr) + reg_x))
+#define LOAD_DIRECT_PAGE8(addr) \
+    LOAD_BANK0(addr + reg_dpr)
 
-#define LOAD_ABS_Y(addr)             \
-   ((((addr) & 0xff) + reg_y) > 0xff \
-    ? (LOAD(reg_pc + 2),             \
-       CLK_ADD(CLK, CLK_INT_CYCLE),  \
-       LOAD((addr) + reg_y))         \
-    : LOAD((addr) + reg_y))
+#define LOAD_DIRECT_PAGE16(addr) \
+    (LOAD_DIRECT_PAGE8(addr) << 8) | LOAD_DIRECT_PAGE8(addr + 1)
 
-#define LOAD_ABS_Y_RMW(addr)     \
-   (LOAD(reg_pc + 2),            \
-    CLK_ADD(CLK, CLK_INT_CYCLE), \
-    LOAD((addr) + reg_y))
+#define LOAD_DIRECT_PAGE24(addr) \
+    (LOAD_DIRECT_PAGE8(addr) << 16) | LOAD_DIRECT_PAGE16(addr + 1)
 
-#define LOAD_INDIRECT(addr) \
-   (CLK_ADD(CLK, 2), LOAD(LOAD_ZERO_ADDR((addr)))
+#define LOAD_DIRECT_PAGE(addr, bits8) \
+    ((bits8)                          \
+    ? LOAD_DIRECT_PAGE8(addr)         \
+    : LOAD_DIRECT_PAGE16(addr))
 
-#define LOAD_IND_X(addr) \
-   (CLK_ADD(CLK, 3), LOAD(LOAD_ZERO_ADDR((addr) + reg_x)))
+#define LOAD_DIRECT_PAGE_X(addr, bits8)  \
+    ((bits8)                             \
+    ? LOAD_BANK0(addr + reg_dpr + reg_x) \
+    : (LOAD_BANK0(addr + reg_dpr + reg_x) << 8) | LOAD_BANK0(addr + reg_dpr + reg_x + 1))
 
-#define LOAD_IND_Y(addr)                                              \
-   (CLK_ADD(CLK, 2), ((LOAD_ZERO_ADDR((addr)) & 0xff) + reg_y) > 0xff \
-    ? (LOAD(reg_pc + 1),                                              \
-       CLK_ADD(CLK, CLK_INT_CYCLE),                                   \
-       LOAD(LOAD_ZERO_ADDR((addr)) + reg_y))                          \
-    : LOAD(LOAD_ZERO_ADDR((addr)) + reg_y))
+#define LOAD_DIRECT_PAGE_Y(addr, bits8)  \
+    ((bits8)                             \
+    ? LOAD_BANK0(addr + reg_dpr + reg_y) \
+    : (LOAD_BANK0(addr + reg_dpr + reg_y) << 8) | LOAD_BANK0(addr + reg_dpr + reg_y + 1))
 
-#define LOAD_ZERO_X(addr) \
-   (LOAD_ZERO((addr) + reg_x))
+#define LOAD_INDIRECT(addr, bits8)         \
+    (CLK_ADD(CLK, 3), ((bits8)             \
+    ? LOAD_BANK0(LOAD_DIRECT_PAGE16(addr)) \
+    : (LOAD_BANK0(LOAD_DIRECT_PAGE16(addr)) << 8) | LOAD_BANK0(LOAD_DIRECT_PAGE16(addr) + 1)))
 
-#define LOAD_ZERO_Y(addr) \
-   (LOAD_ZERO((addr) + reg_y))
+#define LOAD_INDIRECT_X(addr, bits8)               \
+    (CLK_ADD(CLK, 3), ((bits8)                     \
+    ? LOAD_BANK0(LOAD_DIRECT_PAGE16(addr + reg_x)) \
+    : (LOAD_BANK0(LOAD_DIRECT_PAGE16(addr + reg_x)) << 8) | LOAD_BANK0(LOAD_DIRECT_PAGE16(addr + reg_x) + 1)))
 
-#define LOAD_IND_Y_BANK(addr)                                         \
-   (CLK_ADD(CLK, 2), ((LOAD_ZERO_ADDR((addr)) & 0xff) + reg_y) > 0xff \
-    ? (LOAD(reg_pc + 1),                                              \
-       CLK_ADD(CLK, CLK_INT_CYCLE),                                   \
-       LOAD_IND(LOAD_ZERO_ADDR((addr)) + reg_y))                      \
-    : LOAD_IND(LOAD_ZERO_ADDR((addr)) + reg_y))
+#define LOAD_INDIRECT_Y(addr, bits8)              \
+    (CLK_ADD(CLK, 3), ((bits8)                    \
+    ? LOAD_LONG(LOAD_DIRECT_PAGE16(addr) + reg_y) \
+    : (LOAD_LONG(LOAD_DIRECT_PAGE16(addr) + reg_y) << 8) | LOAD_LONG(LOAD_DIRECT_PAGE16(addr) + reg_y + 1)))
 
-#define STORE_ABS(addr, value, inc) \
-  do {                              \
-      CLK_ADD(CLK, (inc));          \
-      STORE((addr), (value));       \
-  } while (0)
+#define LOAD_INDIRECT_LONG(addr, bits8)   \
+    (CLK_ADD(CLK, 4), ((bits8)            \
+    ? LOAD_LONG(LOAD_DIRECT_PAGE24(addr)) \
+    : (LOAD_LONG(LOAD_DIRECT_PAGE24(addr)) << 8) | LOAD_LONG(LOAD_DIRECT_PAGE24(addr) + 1)))
 
-#define STORE_ABS_X(addr, value, inc)                      \
-  do {                                                     \
-      CLK_ADD(CLK, (inc)-2);                               \
-      LOAD((((addr) + reg_x) & 0xff) | ((addr) & 0xff00)); \
-      CLK_ADD(CLK, 2);                                     \
-      STORE((addr) + reg_x, (value));                      \
-  } while (0)
+#define LOAD_INDIRECT_LONG_Y(addr, bits8)         \
+    (CLK_ADD(CLK, 4), ((bits8)                    \
+    ? LOAD_LONG(LOAD_DIRECT_PAGE24(addr) + reg_y) \
+    : (LOAD_LONG(LOAD_DIRECT_PAGE24(addr) + reg_y) << 8) | LOAD_LONG(LOAD_DIRECT_PAGE24(addr) + reg_y + 1)))
 
-#define STORE_ABS_X_RMW(addr, value, inc) \
-  do {                                    \
-      LOAD((adr) + reg_x);                \
-      CLK_ADD(CLK, (inc));                \
-      STORE((addr) + reg_x, (value));     \
-  } while (0)                             \
+#define LOAD_ABD(addr, bits8) \
+    ((bits8)                  \
+    ? LOAD_DBR(addr)          \
+    : (LOAD_DBR(addr) << 8) | LOAD_DBR(addr + 1))
 
-#define STORE_ABS_Y(addr, value, inc)                      \
-  do {                                                     \
-      CLK_ADD(CLK, (inc)-2);                               \
-      LOAD((((addr) + reg_y) & 0xff) | ((addr) & 0xff00)); \
-      CLK_ADD(CLK, 2);                                     \
-      STORE((addr) + reg_y, (value));                      \
-  } while (0)
+#define LOAD_ABS_X(addr, bits8)                                         \
+    ((bits8)                                                            \
+    ? (((((addr) & 0xff) + reg_x) > 0xff)                               \
+        ? (LOAD((reg_pbr * 0x10000) + reg_pc + 2),                      \
+            CLK_ADD(CLK, CLK_INT_CYCLE),                                \
+            LOAD_DBR(addr + reg_x))                                     \
+        : LOAD_DBR(addr + reg_x))                                       \
+    : (((((addr) & 0xff) + reg_x) > 0xff)                               \
+        ? (LOAD((reg_pbr * 0x10000) + reg_pc + 2),                      \
+            CLK_ADD(CLK, CLK_INT_CYCLE),                                \
+            (LOAD_DBR(addr + reg_x) << 8) | LOAD_DBR(addr + reg_x + 1)) \
+        : (LOAD_DBR(addr + reg_x) << 8) | LOAD_DBR(addr + reg_x + 1)))
 
-#define STORE_ABS_Y_RMW(addr, value, inc) \
-  do {                                    \
-      LOAD((addr) + reg_y, (value));      \
-      CLK_ADD(CLK, (inc));                \
-      STORE((addr) + reg_y, (value));     \
-  } while (0)
+#define LOAD_ABS_Y(addr, bits8)                                         \
+    ((bits8)                                                            \
+    ? (((((addr) & 0xff) + reg_y) > 0xff)                               \
+        ? (LOAD((reg_pbr * 0x10000) + reg_pc + 2),                      \
+            CLK_ADD(CLK, CLK_INT_CYCLE),                                \
+            LOAD_DBR(addr + reg_y))                                     \
+        : LOAD_DBR(addr + reg_y))                                       \
+    : (((((addr) & 0xff) + reg_y) > 0xff)                               \
+        ? (LOAD((reg_pbr * 0x10000) + reg_pc + 2),                      \
+            CLK_ADD(CLK, CLK_INT_CYCLE),                                \
+            (LOAD_DBR(addr + reg_y) << 8) | LOAD_DBR(addr + reg_y + 1)) \
+        : (LOAD_DBR(addr + reg_y) << 8) | LOAD_DBR(addr + reg_y + 1)))
 
-#define STORE_ABS_SH_Y(addr, value, inc)                   \
-  do {                                                     \
-      unsigned int tmp2;                                   \
-                                                           \
-      CLK_ADD(CLK, (inc)-2);                               \
-      LOAD((((addr) + reg_y) & 0xff) | ((addr) & 0xff00)); \
-      CLK_ADD(CLK, 2);                                     \
-      tmp2 = (addr) + reg_y;                               \
-      if (((addr) & 0xff) + reg_y > 0xff) {                \
-          tmp2 = (tmp2 & 0xff) | ((value) << 8);           \
-      }                                                    \
-      STORE(tmp2, (value));                                \
-  } while (0)
+#define LOAD_ABS_LONG(addr, bits8) \
+    ((bits8)                       \
+    ? LOAD_LONG(addr)              \
+    : (LOAD_LONG(addr) << 8) | LOAD_LONG(addr + 1))
+
+#define LOAD_ABS_LONG_X(addr, bits8) \
+    ((bits8)                         \
+    ? LOAD_LONG(addr + reg_x)        \
+    : (LOAD_LONG(addr + reg_x) << 8) | LOAD_LONG(addr + reg_x + 1))
+
+#define LOAD_STACK_REL8(addr) \
+    LOAD_BANK0(addr + reg_sp)
+
+#define LOAD_STACK_REL16(addr) \
+    (LOAD_BANK0(addr + reg_sp) << 8) | LOAD_BANK0(addr + reg_sp + 1)
+
+#define LOAD_STACK_REL(addr, bits8) \
+    ((bits8)                        \
+    ? LOAD_STACK_REL8(addr)         \
+    : LOAD_STACK_REL16(addr))
+
+#define LOAD_STACK_REL_Y(addr, bits8)          \
+    ((bits8)                                   \
+    ? LOAD_DBR(LOAD_STACK_REL16(addr) + reg_y) \
+    : (LOAD_DBR(LOAD_STACK_REL16(addr) + reg_y) << 8) | LOAD_DBR(LOAD_STACK_REL16(addr) + reg_y + 1))
 
 #define INC_PC(value)   (reg_pc += (value))
 
