@@ -28,13 +28,14 @@
 
 /* any CPU definition file that includes this file needs to do the following:
  *
- * - define reg_a as 16bit.
- * - define reg_x as 16bit.
- * - define reg_y as 16bit.
+ * - define reg_a as 16bit (8bit on 6502/65C02).
+ * - define reg_x as 16bit (8bit on 6502/65C02).
+ * - define reg_y as 16bit (8bit on 6502/65C02).
  * - define reg_pbr (Program Bank Register) as 8bit.
  * - define reg_dbr (Data Bank Register) as 8bit.
  * - define reg_dpr (Direct Page Register) as 16bit.
  * - define reg_emul (65C02 Emulation) as int.
+ * - define reg_sp as 16bit (8bit on 6502/65C02).
  * - define a function to handle the STP opcode (STP_65816(void)).
  * - define a function to handle the WAI opcode (WAI_65816(void)).
  * - define a function to handle the COP opcode (COP_65816(BYTE value)).
@@ -256,10 +257,10 @@
 /* Stack operations. */
 
 #ifndef PUSH
-#define PUSH(val) ((PAGE_ONE)[(reg_sp--)] = ((BYTE)(val)))
+#define PUSH(val) STORE(reg_sp--, (BYTE)(val))
 #endif
 #ifndef PULL
-#define PULL()    ((PAGE_ONE)[(++reg_sp)])
+#define PULL()    LOAD(++reg_sp)
 #endif
 
 #ifdef DEBUG
