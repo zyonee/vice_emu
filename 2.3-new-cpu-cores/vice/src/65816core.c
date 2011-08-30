@@ -1,5 +1,5 @@
 /*
- * 65C02core.c - 65C02/65SC02 emulation core.
+ * 65816core.c - 65816/65802 emulation core.
  *
  * Written by
  *  Marco van den Heuvel <blackystardust68@yahoo.com>
@@ -28,19 +28,19 @@
 
 /* any CPU definition file that includes this file needs to do the following:
  *
- * - define all registers used.
- * - define the cpu being emulated in a var 'cpu_type' (CPU_WDC65C02, CPU_R65C02, CPU_65SC02).
- * - define a function to handle the WDC65C02 STP opcode (WDC_STP(void)).
- * - define a function to handle the WDC65C02 WAI opcode (WDC_WAI(void)).
- *
+ * - define reg_a as 16bit.
+ * - define reg_x as 16bit.
+ * - define reg_y as 16bit.
+ * - define reg_pbr (Program Bank Register) as 8bit.
+ * - define reg_dbr (Data Bank Register) as 8bit.
+ * - define reg_dpr (Direct Page Register) as 16bit.
+ * - define reg_emul (65C02 Emulation) as int.
+ * - define a function to handle the STP opcode (STP_65816(void)).
+ * - define a function to handle the WAI opcode (WAI_65816(void)).
+ * - define a function to handle the COP opcode (COP_65816(BYTE value)).
  */
 
-/* still to check and possibly fix:
- *
- * - BRK doesn't get interrupted by an IRQ/NMI on the 65(S)C02.
- */
-
-#define CPU_STR "65(S)C02 CPU"
+#define CPU_STR "65816/65802 CPU"
 
 #include "traps.h"
 
@@ -103,7 +103,19 @@
 
 /* ------------------------------------------------------------------------- */
 
-#define LOCAL_SET_NZ(val)        (flag_z = flag_n = (val))
+#define LOCAL_SET_NZ(val, bits8)         \
+    do {                                 \
+        if (reg_emul) {                  \
+            (flag_z = flag_n = (val));   \
+        } else {                         \
+            if (!bits8) {                \
+                flag_z = (val) ? 1 : 0;  \
+                flag_n = (val >> 8);     \
+            } else {                     \
+                flag_z = flag_n = (val); \
+            }                            \
+        }                                \
+    }
 
 #define LOCAL_SET_OVERFLOW(val)   \
     do {                          \
@@ -160,6 +172,20 @@
 #define LOCAL_ZERO()             (!flag_z)
 #define LOCAL_STATUS()           (reg_p | (flag_n & 0x80) | P_UNUSED    \
                                   | (LOCAL_ZERO() ? P_ZERO : 0))
+
+#define LOCAL_65816_M()          ((reg_emul) ? (reg_p & P_65816_M))
+#define LOCAL_65816_X()          ((reg_emul) ? (reg_p & P_65816_X))
+
+#define LOCAL_65816_STATUS()     (reg_p | (flag_n & 0x80) | (LOCAL_ZERO() ? P_ZERO : 0)
+
+/* determine the bitsizes,
+   0 = 8bit A and 8bit X/Y
+   1 = 8bit A and 16bit X/Y
+   2 = 16bit A and 8bit X/Y
+   3 = 16bit A and 16bit X/Y
+ */
+#define LOCAL_REGISTER_SIZES() \
+    (LOCAL_65816_M() ? (LOCAL_65816_X() ? 0 : 1) : (LOCAL_65816_X() ? 2 : 3))
 
 #ifdef LAST_OPCODE_INFO
 
@@ -1287,54 +1313,66 @@
 /* ------------------------------------------------------------------------- */
 
 /* These tables have a different meaning than for the 6502, it represents
-   the amount of extra fetches to the opcode fetch.
+   the amount of extra fetches to the 2 opcode fetches in bits 2-0.
+   bit 3 is used to indicate possible 16bit A immediate (m=0)
+   bit 4 is used to indicate possible 16bit X/Y immediate (x=0)
  */
  static const BYTE fetch_tab[] = {
             /* 0  1  2  3  4  5  6  7  8  9  A  B  C  D  E  F */
-    /* $00 */  1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 2, 2, 2, 2, /* $00 */
-    /* $10 */  1, 1, 1, 0, 1, 1, 1, 1, 1, 2, 1, 0, 2, 2, 2, 2, /* $10 */
-    /* $20 */  2, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 2, 2, 2, 2, /* $20 */
-    /* $30 */  1, 1, 1, 0, 1, 1, 1, 1, 1, 2, 1, 0, 2, 2, 2, 2, /* $30 */
-    /* $40 */  1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 2, 2, 2, 2, /* $40 */
-    /* $50 */  1, 1, 1, 0, 1, 1, 1, 1, 1, 2, 1, 0, 2, 2, 2, 2, /* $50 */
-    /* $60 */  1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 2, 2, 2, 2, /* $60 */
-    /* $70 */  1, 1, 1, 0, 1, 1, 1, 1, 1, 2, 1, 0, 2, 2, 2, 2, /* $70 */
-    /* $80 */  1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 2, 2, 2, 2, /* $80 */
-    /* $90 */  1, 1, 1, 0, 1, 1, 1, 1, 1, 2, 1, 0, 2, 2, 2, 2, /* $90 */ 
-    /* $A0 */  1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 2, 2, 2, 2, /* $A0 */
-    /* $B0 */  1, 1, 1, 0, 1, 1, 1, 1, 1, 2, 1, 0, 2, 2, 2, 2, /* $B0 */
-    /* $C0 */  1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, /* $C0 */
-    /* $D0 */  1, 1, 1, 0, 1, 1, 1, 1, 1, 2, 1, 2, 2, 2, 2, 2, /* $D0 */
-    /* $E0 */  1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 2, 2, 2, 2, /* $E0 */
-    /* $F0 */  1, 1, 1, 0, 1, 1, 1, 1, 1, 2, 1, 0, 2, 2, 2, 2  /* $F0 */
+    /* $00 */  0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 1, 1, 1, 2, /* $00 */
+    /* $10 */  0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 2, /* $10 */
+    /* $20 */  1, 0, 2, 0, 0, 0, 0, 0, 0, 4, 0, 0, 1, 1, 1, 2, /* $20 */
+    /* $30 */  0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 2, /* $30 */
+    /* $40 */  0, 0, 0, 0, 1, 0, 0, 0, 0, 4, 0, 0, 1, 1, 1, 2, /* $40 */
+    /* $50 */  0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 2, 1, 1, 2, /* $50 */
+    /* $60 */  0, 0, 1, 0, 0, 0, 0, 0, 0, 4, 0, 0, 1, 1, 1, 2, /* $60 */
+    /* $70 */  0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 2, /* $70 */
+    /* $80 */  0, 0, 1, 0, 0, 0, 0, 0, 0, 4, 0, 0, 1, 1, 1, 2, /* $80 */
+    /* $90 */  0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 2, /* $90 */
+    /* $A0 */  8, 0, 8, 0, 0, 0, 0, 0, 0, 4, 0, 0, 1, 1, 1, 2, /* $A0 */
+    /* $B0 */  0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 2, /* $B0 */
+    /* $C0 */  8, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 1, 1, 1, 2, /* $C0 */
+    /* $D0 */  0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 2, /* $D0 */
+    /* $E0 */  8, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 1, 1, 1, 2, /* $E0 */
+    /* $F0 */  0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 2  /* $F0 */
 };
+
+#define FETCH_M16(opcode) (!LOCAL_65816_M() && (fetch_tab[opcode & 0xff] & 4))
+#define FETCH_X16(opcode) (!LOCAL_65816_X() && (fetch_tab[opcode & 0xff] & 8))
+#define FETCH_16(opcode) (FETCH_M16(opcode) || FETCH_X16(opcode))
 
 #if !defined WORDS_BIGENDIAN && defined ALLOW_UNALIGNED_ACCESS
 
 #define opcode_t DWORD
 
-#define FETCH_OPCODE(o)                                        \
-    do {                                                       \
-        if (((int)reg_pc) < bank_limit) {                      \
-            o = (*((DWORD *)(bank_base + reg_pc)) & 0xffffff); \
-            CLK_ADD(CLK, 1);                                   \
-            if (fetch_tab[o & 0xff]) {                         \
-                CLK_ADD(CLK, fetch_tab[o & 0xff]);             \
-            }                                                  \
-        } else {                                               \
-            o = LOAD(reg_pc);                                  \
-            CLK_ADD(CLK, 1);                                   \
-            if (fetch_tab[o & 0xff]) {                         \
-                o |= LOAD(reg_pc + 1) << 8;                    \
-                o |= (LOAD(reg_pc + 2) << 16);                 \
-                CLK_ADD(CLK, fetch_tab[o & 0xff]);             \
-            }                                                  \
-        }                                                      \
+#define FETCH_OPCODE(o)                                                     \
+    do {                                                                    \
+        if (((int)reg_pc) < bank_limit) {                                   \
+            o = (*((DWORD *)(bank_base + (reg_pbr * 0x10000) + reg_pc)));   \
+            CLK_ADD(CLK, 2);                                                \
+            if (fetch_tab[o & 0xff]) {                                      \
+                CLK_ADD(CLK, fetch_tab[o & 0xff] & 3);                      \
+            }                                                               \
+        } else {                                                            \
+            o = LOAD((reg_pbr * 0x10000) + reg_pc);                         \
+            CLK_ADD(CLK, 1);                                                \
+            o |= (LOAD((reg_pbr * 0x10000) + reg_pc + 1) << 8);             \
+            CLK_ADD(CLK, 1);                                                \
+            if ((fetch_tab[o & 0xff] & 3) || FETCH16(opcode)) {             \
+                o |= (LOAD((reg_pbr * 0x10000) + reg_pc + 2) << 16);        \
+                CLK_ADD(CLK, 1);                                            \
+            }                                                               \
+            if (fetch_tab[o & 0xff] & 2) {                                  \
+                o |= LOAD((reg_pbr * 0x10000) + reg_pc + 3) << 24);         \
+                CLK_ADD(CLK, 1);                                            \
+            }                                                               \
+        }                                                                   \
     } while (0)
 
 #define p0 (opcode & 0xff)
 #define p1 ((opcode >> 8) & 0xff)
-#define p2 (opcode >> 8)
+#define p2 ((opcode >> 8) & 0xffff)
+#define p3 (opcode >> 8)
 
 #else /* WORDS_BIGENDIAN || !ALLOW_UNALIGNED_ACCESS */
 
@@ -1345,26 +1383,33 @@
             BYTE op8[2]; \
             WORD op16;   \
         } op;            \
+        BYTE extra_op;   \
     }
 
-#define FETCH_OPCODE(o)                                        \
-    do {                                                       \
-        if (((int)reg_pc) < bank_limit) {                      \
-            (o).ins = *(bank_base + reg_pc);                   \
-            (o).op.op16 = (*(bank_base + reg_pc + 1)           \
-                          | (*(bank_base + reg_pc + 2) << 8)); \
-            CLK_ADD(CLK, 1);                                   \
-            if (fetch_tab[(o).ins]) {                          \
-                CLK_ADD(CLK, fetch_tab[(o).ins]);              \
-            }                                                  \
-        } else {                                               \
-            (o).ins = LOAD(reg_pc);                            \
-            CLK_ADD(CLK, 1);                                   \
-            if (fetch_tab[(o).ins]) {                          \
-                (o).op.op16 = LOAD(reg_pc + 1);                \
-                 (o).op.op16 |= (LOAD(reg_pc + 2) << 8);       \
-                 CLK_ADD(CLK, fetch_tab[(o).ins]);             \
-            }                                                  \
+#define FETCH_OPCODE(o)                                                              \
+    do {                                                                             \
+        if (((int)reg_pc) < bank_limit) {                                            \
+            (o).ins = *(bank_base + (reg_pbr * 0x10000) + reg_pc);                   \
+            (o).op.op16 = (*(bank_base + (reg_pbr * 0x10000) + reg_pc + 1)           \
+                          | (*(bank_base + (reg_pbr * 0x10000) + reg_pc + 2) << 8)); \
+            (o).extra_op = *(bank_base + (reg_pbr * 0x10000) + reg_pc + 3);          \
+            CLK_ADD(CLK, 2);                                                         \
+            if (fetch_tab[(o).ins]) {                                                \
+                CLK_ADD(CLK, fetch_tab[(o).ins] & 3);                                \
+            }                                                                        \
+        } else {                                                                     \
+            (o).ins = LOAD((reg_pbr * 0x10000) + reg_pc);                            \
+            CLK_ADD(CLK, 1);                                                         \
+            (o).op.op16 = LOAD((reg_pbr * 0x10000) + reg_pc + 1);                    \
+            CLK_ADD(CLK, 1);                                                         \
+            if ((fetch_tab[(o).ins] & 3) || (FETCH16((o).ins)) {                     \
+                (o).op.op16 |= (LOAD((reg_pbr * 0x10000) + reg_pc + 2) << 8);        \
+                CLK_ADD(CLK, 1);                                                     \
+            }                                                                        \
+            if (fetch_tab[(o).ins] & 2) {                                            \
+                (o).extra_op = LOAD((reg_pbr * 0x10000) + reg_pc + 3);               \
+                CLK_ADD(CLK, 1);                                                     \
+            }
         }                                                      \
     } while (0)
 
@@ -1376,6 +1421,8 @@
 #else
 #  define p1 (opcode.op.op8[0])
 #endif
+
+#define p3 (opcode.op.op16) | (opcode.extra_op << 24)
 
 #endif /* !WORDS_BIGENDIAN */
 
