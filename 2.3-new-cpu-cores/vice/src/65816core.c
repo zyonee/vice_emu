@@ -924,12 +924,16 @@ LOAD_DBR(addr) \
       store_func(tmp_addr, tmp, clk_inc);                 \
   } while (0)
 
-#define LSR_A()                      \
-  do {                               \
-      LOCAL_SET_CARRY(reg_a & 0x01); \
-      reg_a = reg_a >> 1;            \
-      LOCAL_SET_NZ(reg_a);           \
-      INC_PC(1);                     \
+#define LSR_A()                                    \
+  do {                                             \
+      LOCAL_SET_CARRY(reg_a & 1);                  \
+      if (LOCAL_65816_M()) {                       \
+          reg_a = (reg_a & 0xff00) | (reg_a >> 1); \
+      } else {                                     \
+          reg_a = reg_a >> 1;                      \
+      }                                            \
+      LOCAL_SET_NZ(reg_a, LOCAL_65816_M());        \
+      INC_PC(1);                                   \
   } while (0)
 
 #define ORA(value, clk_inc, pc_inc)    \
