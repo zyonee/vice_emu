@@ -674,19 +674,32 @@ LOAD_DBR(addr) \
       }                                                     \
   } while (0)
 
-#define BRK()                  \
-  do {                         \
-      EXPORT_REGISTERS();      \
-      CLK_ADD(CLK, CLK_BRK);   \
-      TRACE_BRK();             \
-      INC_PC(2);               \
-      LOCAL_SET_BREAK(1);      \
-      PUSH(reg_pc >> 8);       \
-      PUSH(reg_pc & 0xff);     \
-      PUSH(LOCAL_STATUS());    \
-      LOCAL_SET_DECIMAL(0);    \
-      LOCAL_SET_INTERRUPT(1);  \
-      JUMP(LOAD_ADDR(0xfffe)); \
+#define BRK()                         \
+  do {                                \
+      EXPORT_REGISTERS();             \
+      CLK_ADD(CLK, CLK_BRK);          \
+      TRACE_BRK();                    \
+      INC_PC(2);                      \
+      if (reg_emul) {                 \
+          LOCAL_SET_BREAK(1);         \
+      } else {                        \
+          CLK_ADD(CLK, 1);            \
+          PUSH(reg_pbr);              \
+      }                               \
+      PUSH(reg_pc >> 8);              \
+      PUSH(reg_pc & 0xff);            \
+      if (reg_emul) {                 \
+          PUSH(LOCAL_STATUS());       \
+      } else {                        \
+          PUSH(LOCAL_65816_STATUS()); \
+      }                               \
+      LOCAL_SET_DECIMAL(0);           \
+      LOCAL_SET_INTERRUPT(1);         \
+      if (reg_emul) {                 \
+          JUMP(LOAD_BANK0(0xfffe));   \
+      } else {                        \
+          JUMP(LOAD_BANK0(0xffe6));   \
+      }                               \
   } while (0)
 
 #define CLC()             \
