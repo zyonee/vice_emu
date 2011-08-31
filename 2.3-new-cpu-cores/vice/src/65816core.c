@@ -1048,14 +1048,20 @@ LOAD_DBR(addr) \
       store_func(tmp_addr, tmp, clk_inc);                 \
   } while (0)
 
-#define ROL_A()                      \
-  do {                               \
-      unsigned int tmp = reg_a << 1; \
-                                     \
-      reg_a = tmp | LOCAL_CARRY();   \
-      LOCAL_SET_CARRY(tmp & 0x100);  \
-      LOCAL_SET_NZ(reg_a);           \
-      INC_PC(1);                     \
+#define ROL_A()                                                      \
+  do {                                                               \
+      unsigned int tmp = reg_a << 1;                                 \
+                                                                     \
+      reg_a = tmp | LOCAL_CARRY();                                   \
+      if (LOCAL_65816_M()) {                                         \
+          reg_a = (reg_a & 0xff00) | ((tmp | LOCAL_CARRY()) & 0xff); \
+          LOCAL_SET_CARRY(tmp & 0x100);                              \
+      } else {                                                       \
+          reg_a = tmp | LOCAL_CARRY();                               \
+          LOCAL_SET_CARRY(tmp & 0x10000);                            \
+      }                                                              \
+      LOCAL_SET_NZ(reg_a, LOCAL_65816_M());                          \
+      INC_PC(1);                                                     \
   } while (0)
 
 #define ROR(addr, clk_inc, pc_inc, load_func, store_func) \
@@ -1074,14 +1080,18 @@ LOAD_DBR(addr) \
       store_func(tmp_addr, src, (clk_inc));               \
   } while (0)
 
-#define ROR_A()                            \
-  do {                                     \
-      BYTE tmp = reg_a;                    \
-                                           \
-      reg_a = (reg_a >> 1) | (reg_p << 7); \
-      LOCAL_SET_CARRY(tmp & 0x01);         \
-      LOCAL_SET_NZ(reg_a);                 \
-      INC_PC(1);                           \
+#define ROR_A()                                                                      \
+  do {                                                                               \
+      BYTE tmp = reg_a;                                                              \
+                                                                                     \
+      if (LOCAL_65816_M()) {                                                         \
+          reg_a = (reg_a & 0xff00) | (((reg_a >> 1) | (LOCAL_CARRY() << 7)) & 0xff); \
+      } else {                                                                       \
+          reg_a = (reg_a >> 1) | (LOCAL_CARRY() << 15);                              \
+      }                                                                              \
+      LOCAL_SET_CARRY(tmp & 1);                                                      \
+      LOCAL_SET_NZ(reg_a, LOCAL_65816_M());                                          \
+      INC_PC(1);                                                                     \
   } while (0)
 
 /* RTI does must not use `OPCODE_ENABLES_IRQ()' even if the I flag changes
