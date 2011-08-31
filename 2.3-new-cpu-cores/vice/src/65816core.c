@@ -992,6 +992,15 @@ LOAD_DBR(addr) \
       INC_PC(1);                    \
   } while (0)
 
+#define PHD()                       \
+  do {                              \
+      CLK_ADD(CLK, CLK_STACK_PUSH); \
+      PUSH(reg_dpr >> 8);           \
+      CLK_ADD(CLK, CLK_STACK_PUSH); \
+      PUSH(reg_dpr & 0xff);         \
+      INC_PC(1);                    \
+  } while (0)
+
 #define PHK()                       \
   do {                              \
       CLK_ADD(CLK, CLK_STACK_PUSH); \
@@ -1037,6 +1046,14 @@ LOAD_DBR(addr) \
       CLK_ADD(CLK, CLK_STACK_PULL); \
       reg_a = PULL();               \
       LOCAL_SET_NZ(reg_a);          \
+      INC_PC(1);                    \
+  } while (0)
+
+#define PLB()                       \
+  do {                              \
+      CLK_ADD(CLK, CLK_STACK_PULL); \
+      reg_dbr = PULL();             \
+      LOCAL_SET_NZ(reg_dbr, 1);     \
       INC_PC(1);                    \
   } while (0)
 
@@ -1719,7 +1736,6 @@ trap_skipped:
         switch (p0) {
 
           case 0x03:            /* 1 byte, 1 cycle NOP */
-          case 0x0b:            /* 1 byte, 1 cycle NOP */
           case 0x13:            /* 1 byte, 1 cycle NOP */
           case 0x23:            /* 1 byte, 1 cycle NOP */
           case 0x2b:            /* 1 byte, 1 cycle NOP */
@@ -1732,7 +1748,6 @@ trap_skipped:
           case 0x83:            /* 1 byte, 1 cycle NOP */
           case 0x93:            /* 1 byte, 1 cycle NOP */
           case 0xa3:            /* 1 byte, 1 cycle NOP */
-          case 0xab:            /* 1 byte, 1 cycle NOP */
           case 0xb3:            /* 1 byte, 1 cycle NOP */
           case 0xc3:            /* 1 byte, 1 cycle NOP */
           case 0xd3:            /* 1 byte, 1 cycle NOP */
@@ -1808,6 +1823,10 @@ trap_skipped:
 
           case 0x0a:            /* ASL A */
             ASL_A();
+            break;
+
+          case 0x0b:            /* PHD */
+            PHD();
             break;
 
           case 0x0c:            /* TSB $nnnn */
@@ -2368,6 +2387,10 @@ trap_skipped:
 
           case 0xaa:            /* TAX */
             TAX();
+            break;
+
+          case 0xab:            /* PLB */
+            PLB();
             break;
 
           case 0xac:            /* LDY $nnnn */
