@@ -1196,16 +1196,20 @@ LOAD_DBR(addr) \
       LOCAL_SET_STATUS((BYTE)tmp); \
       tmp = (WORD)PULL();          \
       tmp |= (WORD)PULL() << 8;    \
+      if (!reg_emul) {             \
+          CLK_ADD(CLK, 1);         \
+          reg_pbr = PULL();        \
+      }                            \
       JUMP(tmp);                   \
   } while (0)
 
-#define RTL()                      \                                                                                                
-  do {                             \                                                                                                
-      WORD tmp;                    \                                                                                                
+#define RTL()                      \
+  do {                             \
+      WORD tmp;                    \
                                    \
-      CLK_ADD(CLK, CLK_RTS);       \                                                                                                
-      tmp = PULL();                \                                                                                                
-      tmp = tmp | (PULL() << 8);   \                                                                                                
+      CLK_ADD(CLK, CLK_RTS);       \
+      tmp = PULL();                \
+      tmp = tmp | (PULL() << 8);   \
       LOAD(tmp);                   \
       CLK_ADD(CLK, CLK_INT_CYCLE); \
       tmp++;                       \
