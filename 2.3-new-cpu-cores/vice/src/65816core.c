@@ -1306,6 +1306,13 @@ LOAD_DBR(addr) \
       INC_PC(1);                            \
   } while (0)
 
+#define TCD()                   \
+  do {                          \
+      reg_dpr = reg_a;          \
+      LOCAL_SET_NZ(reg_dpr, 1); \
+      INC_PC(1);                \
+  } while (0)
+
 #define TCS()                                          \
   do {                                                 \
       if (reg_emul) {                                  \
@@ -1315,6 +1322,13 @@ LOAD_DBR(addr) \
       }                                                \
       LOCAL_SET_NZ(reg_sp, 0);                         \
       INC_PC(1);                                       \
+  } while (0)
+
+#define TDC()                 \
+  do {                        \
+      reg_a = reg_dpr;        \
+      LOCAL_SET_NZ(reg_a, 1); \
+      INC_PC(1);              \
   } while (0)
 
 #define TRB(addr, clk_inc, pc_inc, load_func, store_func) \
@@ -1655,11 +1669,9 @@ trap_skipped:
           case 0x43:            /* 1 byte, 1 cycle NOP */
           case 0x4b:            /* 1 byte, 1 cycle NOP */
           case 0x53:            /* 1 byte, 1 cycle NOP */
-          case 0x5b:            /* 1 byte, 1 cycle NOP */
           case 0x63:            /* 1 byte, 1 cycle NOP */
           case 0x6b:            /* 1 byte, 1 cycle NOP */
           case 0x73:            /* 1 byte, 1 cycle NOP */
-          case 0x7b:            /* 1 byte, 1 cycle NOP */
           case 0x83:            /* 1 byte, 1 cycle NOP */
           case 0x8b:            /* 1 byte, 1 cycle NOP */
           case 0x93:            /* 1 byte, 1 cycle NOP */
@@ -2016,6 +2028,10 @@ trap_skipped:
             PHY();
             break;
 
+          case 0x5b:            /* TCD */
+            TCD();
+            break;
+
           case 0x5d:            /* EOR $nnnn,X */
             EOR(LOAD_ABS_X(p2), 1, 3);
             break;
@@ -2118,6 +2134,10 @@ trap_skipped:
 
           case 0x7a:            /* PLY */
             PLY();
+            break;
+
+          case 0x7b:            /* TDC */
+            TDC();
             break;
 
           case 0x7c:            /* JMP ($nnnn,X) */
