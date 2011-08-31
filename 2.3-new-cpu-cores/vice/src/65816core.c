@@ -981,11 +981,29 @@ LOAD_DBR(addr) \
       INC_PC(1);                    \
   } while (0)
 
-#define PHP()                         \
-  do {                                \
-      CLK_ADD(CLK, CLK_STACK_PUSH);   \
-      PUSH(LOCAL_STATUS() | P_BREAK); \
-      INC_PC(1);                      \
+#define PHB()                       \
+  do {                              \
+      CLK_ADD(CLK, CLK_STACK_PUSH); \
+      PUSH(reg_dbr);                \
+      INC_PC(1);                    \
+  } while (0)
+
+#define PHK()                       \
+  do {                              \
+      CLK_ADD(CLK, CLK_STACK_PUSH); \
+      PUSH(reg_pbr);                \
+      INC_PC(1);                    \
+  } while (0)
+
+#define PHP()                             \
+  do {                                    \
+      CLK_ADD(CLK, CLK_STACK_PUSH);       \
+      if (reg_emul) {                     \
+          PUSH(LOCAL_STATUS() | P_BREAK); \
+      } else {                            \
+          PUSH(LOCAL_65816_STATUS());     \
+      }                                   \
+      INC_PC(1);                          \
   } while (0)
 
 #define PHX()                       \
@@ -1239,14 +1257,10 @@ LOAD_DBR(addr) \
       STORE_IND(tmp + reg_y, reg_a);                     \
   } while (0)
 
-#define STP()                          \
-  do {                                 \
-      if (cpu_type == CPUWDC65C02) {   \
-          WDC_STOP();                  \
-      } else {                         \
-          REWIND_FETCH_OPCODE(CLK, 2); \
-          NOOP_IMM(1);                 \
-      }                                \
+#define STP()          \
+  do {                 \
+      CLK_ADD(CLK, 1); \
+      STP_65816();     \
   } while (0)
 
 #define STX(addr, clk_inc, pc_inc) \
@@ -1436,14 +1450,17 @@ LOAD_DBR(addr) \
       INC_PC(1);                            \
   } while (0)
 
-#define WAI()                          \
-  do {                                 \
-      if (cpu_type == CPUWDC6502) {    \
-          WDC_WAI();                   \
-      } else {                         \
-          REWIND_FETCH_OPCODE(CLK, 2); \
-          NOOP_IMM(1);                 \
-      }                                \
+#define WAI()          \
+  do {                 \
+      CLK_ADD(CLK, 1); \
+      WAI_65816();     \
+  } while (0)
+
+#define XBA()                                                  \
+  do {                                                         \
+      CLK_ADD(CLK, 1);                                         \
+      reg_a = ((reg_a & 0xff00) >> 8) | ((reg_a & 0xff) << 8); \
+      INC_PC(1);                                               \
   } while (0)
 
 #define XCE()                                   \
@@ -1696,13 +1713,11 @@ trap_skipped:
           case 0x2b:            /* 1 byte, 1 cycle NOP */
           case 0x33:            /* 1 byte, 1 cycle NOP */
           case 0x43:            /* 1 byte, 1 cycle NOP */
-          case 0x4b:            /* 1 byte, 1 cycle NOP */
           case 0x53:            /* 1 byte, 1 cycle NOP */
           case 0x63:            /* 1 byte, 1 cycle NOP */
           case 0x6b:            /* 1 byte, 1 cycle NOP */
           case 0x73:            /* 1 byte, 1 cycle NOP */
           case 0x83:            /* 1 byte, 1 cycle NOP */
-          case 0x8b:            /* 1 byte, 1 cycle NOP */
           case 0x93:            /* 1 byte, 1 cycle NOP */
           case 0xa3:            /* 1 byte, 1 cycle NOP */
           case 0xab:            /* 1 byte, 1 cycle NOP */
@@ -1710,7 +1725,6 @@ trap_skipped:
           case 0xc3:            /* 1 byte, 1 cycle NOP */
           case 0xd3:            /* 1 byte, 1 cycle NOP */
           case 0xe3:            /* 1 byte, 1 cycle NOP */
-          case 0xeb:            /* 1 byte, 1 cycle NOP */
           case 0xf3:            /* 1 byte, 1 cycle NOP */
             NOOP_IMM(1);
             break;
@@ -2004,6 +2018,10 @@ trap_skipped:
             LSR_A();
             break;
 
+          case 0x4b:            /* PHK */
+            PHK();
+            break;
+
           case 0x4c:            /* JMP $nnnn */
             JMP(p2);
             break;
@@ -2218,6 +2236,10 @@ trap_skipped:
 
           case 0x8a:            /* TXA */
             TXA();
+            break;
+
+          case 0x8b:            /* PHB */
+            PHB();
             break;
 
           case 0x8c:            /* STY $nnnn */
@@ -2448,7 +2470,7 @@ trap_skipped:
             DEX();
             break;
 
-          case 0xcb:            /* WAI (WDC65C02) / single byte, single cycle NOP (R65C02/65SC02) */
+          case 0xcb:            /* WAI */
             WAI();
             break;
 
@@ -2504,7 +2526,7 @@ trap_skipped:
             PHX();
             break;
 
-          case 0xdb:            /* STP (WDC65C02) / single byte, single cycle NOP (R65C02/65SC02) */
+          case 0xdb:            /* STP (WDC65C02) */
             STP();
             break;
 
@@ -2554,6 +2576,10 @@ trap_skipped:
 
           case 0xea:            /* NOP */
             NOP();
+            break;
+
+          case 0xeb:            /* XBA */
+            XBA();
             break;
 
           case 0xec:            /* CPX $nnnn */
