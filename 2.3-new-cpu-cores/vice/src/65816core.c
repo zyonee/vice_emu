@@ -1348,11 +1348,15 @@ LOAD_DBR(addr) \
       INC_PC(1);            \
   } while (0)
 
-#define TXA()              \
-  do {                     \
-      reg_a = reg_x;       \
-      LOCAL_SET_NZ(reg_a); \
-      INC_PC(1);           \
+#define TXA()                                        \
+  do {                                               \
+      if (LOCAL_REGISTER_SIZES() >= 2) {             \
+          reg_a = reg_x;                             \
+      } else {                                       \
+          reg_a = (reg_a & 0xff00) | (reg_x & 0xff); \
+      }                                              \
+      LOCAL_SET_NZ(reg_a, LOCAL_65816_M());          \
+      INC_PC(1);                                     \
   } while (0)
 
 #define TXS()         \
@@ -1361,11 +1365,15 @@ LOAD_DBR(addr) \
       INC_PC(1);      \
   } while (0)
 
-#define TYA()              \
-  do {                     \
-      reg_a = reg_y;       \
-      LOCAL_SET_NZ(reg_a); \
-      INC_PC(1);           \
+#define TYA()                                        \
+  do {                                               \
+      if (LOCAL_REGISTER_SIZES() >= 2) {             \
+          reg_a = reg_y;                             \
+      } else {                                       \
+          reg_a = (reg_a & 0xff00) | (reg_y & 0xff); \
+      }                                              \
+      LOCAL_SET_NZ(reg_a, LOCAL_65816_M());          \
+      INC_PC(1);                                     \
   } while (0)
 
 #define WAI()                          \
