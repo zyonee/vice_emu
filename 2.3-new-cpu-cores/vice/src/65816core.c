@@ -1349,11 +1349,15 @@ LOAD_DBR(addr) \
   } while (0)
 
 
-#define TSX()               \
-  do {                      \
-      reg_x = reg_sp;       \
-      LOCAL_SET_NZ(reg_sp); \
-      INC_PC(1);            \
+#define TSX()                               \
+  do {                                      \
+      if (LOCAL_65816_X()) {                \
+          reg_x = reg_sp & 0xff;            \
+      } else {                              \
+          reg_x = reg_sp;                   \
+      }                                     \
+      LOCAL_SET_NZ(reg_x, LOCAL_65816_X()); \
+      INC_PC(1);                            \
   } while (0)
 
 #define TXA()                                        \
@@ -1367,10 +1371,14 @@ LOAD_DBR(addr) \
       INC_PC(1);                                     \
   } while (0)
 
-#define TXS()         \
-  do {                \
-      reg_sp = reg_x; \
-      INC_PC(1);      \
+#define TXS()                                 \
+  do {                                        \
+      if (LOCAL_65816_X()) {                  \
+          reg_sp = (reg_sp & 0xff00) | reg_x; \
+      } else {                                \
+          reg_sp = reg_x;                     \
+      }                                       \
+      INC_PC(1);                              \
   } while (0)
 
 #define TXY()                               \
