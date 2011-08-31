@@ -733,11 +733,15 @@ LOAD_DBR(addr) \
       INC_PC(pc_inc);               \
   } while (0)
 
-#define DEA()              \
-  do {                     \
-      reg_a--;             \
-      LOCAL_SET_NZ(reg_a); \
-      INC_PC(1);           \
+#define DEA()                                              \
+  do {                                                     \
+      if (LOCAL_65816_M()) {                               \
+          reg_a = (reg_a & 0xff00) | ((reg_a - 1) & 0xff); \
+      } else {                                             \
+          reg_a--;                                         \
+      }                                                    \
+      LOCAL_SET_NZ(reg_a, LOCAL_65816_M());                \
+      INC_PC(1);                                           \
   } while (0)
 
 #define DEC(addr, clk_inc, pc_inc, load_func, store_func) \
@@ -752,18 +756,24 @@ LOAD_DBR(addr) \
       store_func(tmp_addr, tmp, (clk_inc));               \
   } while (0)
 
-#define DEX()              \
-  do {                     \
-      reg_x--;             \
-      LOCAL_SET_NZ(reg_x); \
-      INC_PC(1);           \
+#define DEX()                               \
+  do {                                      \
+      reg_x--;                              \
+      if (LOCAL_65816_X()) {                \
+          reg_x &= 0xff;                    \
+      }                                     \
+      LOCAL_SET_NZ(reg_x, LOCAL_65816_X()); \
+      INC_PC(1);                            \
   } while (0)
 
-#define DEY()              \
-  do {                     \
-      reg_y--;             \
-      LOCAL_SET_NZ(reg_y); \
-      INC_PC(1);           \
+#define DEY()                               \
+  do {                                      \
+      reg_y--;                              \
+      if (LOCAL_65816_X()) {                \
+          reg_y &= 0xff;                    \
+      }                                     \
+      LOCAL_SET_NZ(reg_y, LOCAL_65816_X()); \
+      INC_PC(1);                            \
   } while (0)
 
 #define EOR(value, clk_inc, pc_inc)    \
