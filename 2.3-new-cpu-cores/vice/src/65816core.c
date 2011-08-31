@@ -158,6 +158,22 @@
             reg_p &= ~P_CARRY; \
     } while (0)
 
+#define LOCAL_SET_65816_M(val)   \
+    do {                         \
+        if (val)                 \
+            reg_p |= P_65816_M;  \
+        else                     \
+            reg_p &= ~P_65816_M; \
+    } while (0)
+
+#define LOCAL_SET_65816_X(val)   \
+    do {                         \
+        if (val)                 \
+            reg_p |= P_65816_X;  \
+        else                     \
+            reg_p &= ~P_65816_X; \
+    } while (0)
+
 #define LOCAL_SET_SIGN(val)      (flag_n = (val) ? 0x80 : 0)
 #define LOCAL_SET_ZERO(val)      (flag_z = !(val))
 #define LOCAL_SET_STATUS(val)    (reg_p = ((val) & ~(P_ZERO | P_SIGN)), \
@@ -1430,13 +1446,26 @@ LOAD_DBR(addr) \
       }                                \
   } while (0)
 
-/* ------------------------------------------------------------------------- */
+#define XCE()                                   \
+  do {                                          \
+      if (LOCAL_CARRY() != reg_emul) {          \
+          if (LOCAL_CARRY()) {                  \
+              reg_emul = 1;                     \
+              LOCAL_SET_CARRY(0);               \
+              LOCAL_SET_BREAK(0);               \
+              reg_x &= 0xff;                    \
+              reg_y &= 0xff;                    \
+              reg_sp = 0x100 | (reg_sp & 0xff); \
+          } else {                              \
+              reg_emul = 0;                     \
+              LOCAL_SET_CARRY(1);               \
+              LOCAL_SET_65816_M(1);             \
+              LOCAL_SET_65816_X(1);             \
+          }                                     \
+      }                                         \
+      INC_PC(1);                                \
+  } while (0)
 
-/* These tables have a different meaning than for the 6502, it represents
-   the amount of extra fetches to the 2 opcode fetches in bits 2-0.
-   bit 3 is used to indicate possible 16bit A immediate (m=0)
-   bit 4 is used to indicate possible 16bit X/Y immediate (x=0)
- */
  static const BYTE fetch_tab[] = {
             /* 0  1  2  3  4  5  6  7  8  9  A  B  C  D  E  F */
     /* $00 */  0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 1, 1, 1, 2, /* $00 */
@@ -1683,7 +1712,6 @@ trap_skipped:
           case 0xe3:            /* 1 byte, 1 cycle NOP */
           case 0xeb:            /* 1 byte, 1 cycle NOP */
           case 0xf3:            /* 1 byte, 1 cycle NOP */
-          case 0xfb:            /* 1 byte, 1 cycle NOP */
             NOOP_IMM(1);
             break;
 
@@ -2578,6 +2606,10 @@ trap_skipped:
 
           case 0xfa:            /* PLX */
             PLX();
+            break;
+
+          case 0xfb:            /* XCE */
+            XCE();
             break;
 
           case 0xfd:            /* SBC $nnnn,X */
