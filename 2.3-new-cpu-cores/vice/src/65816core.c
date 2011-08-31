@@ -558,12 +558,17 @@ LOAD_DBR(addr) \
       store_func(tmp_addr, tmp_value, clk_inc);           \
   } while (0)
 
-#define ASL_A()                      \
-  do {                               \
-      LOCAL_SET_CARRY(reg_a & 0x80); \
-      reg_a = reg_a << 1;            \
-      LOCAL_SET_NZ(reg_a);           \
-      INC_PC(1);                     \
+#define ASL_A()                                             \
+  do {                                                      \
+      if (LOCAL_65816_M()) {                                \
+          LOCAL_SET_CARRY(reg_a & 0x80);                    \
+          reg_a = (reg_a & 0xff00) | ((reg_a << 1) & 0xff); \
+      } else {                                              \
+          LOCAL_SET_CARRY(reg_a & 0x8000);                  \
+          reg_a <<= reg_a;                                  \
+      }                                                     \
+      LOCAL_SET_NZ(reg_a, LOCAL_65816_M());                 \
+      INC_PC(1);                                            \
   } while (0)
 
 /* FIXME: cpu_type needs to be declared in the file that includes this file */
