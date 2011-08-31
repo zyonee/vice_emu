@@ -1061,6 +1061,16 @@ LOAD_DBR(addr) \
       INC_PC(1);                    \
   } while (0)
 
+#define PLD()                       \
+  do {                              \
+      CLK_ADD(CLK, CLK_STACK_PULL); \
+      reg_dpr = PULL();             \
+      CLK_ADD(CLK, 1);              \
+      reg_dpr |= (PULL() << 8);     \
+      LOCAL_SET_NZ(reg_dpr, 0);     \
+      INC_PC(1);                    \
+  } while (0)
+
 #define PLP()                                               \
   do {                                                      \
       BYTE s = PULL();                                      \
@@ -1750,7 +1760,6 @@ trap_skipped:
           case 0x03:            /* 1 byte, 1 cycle NOP */
           case 0x13:            /* 1 byte, 1 cycle NOP */
           case 0x23:            /* 1 byte, 1 cycle NOP */
-          case 0x2b:            /* 1 byte, 1 cycle NOP */
           case 0x33:            /* 1 byte, 1 cycle NOP */
           case 0x43:            /* 1 byte, 1 cycle NOP */
           case 0x53:            /* 1 byte, 1 cycle NOP */
@@ -1951,6 +1960,10 @@ trap_skipped:
 
           case 0x2a:            /* ROL A */
             ROL_A();
+            break;
+
+          case 0x2b:            /* PLD */
+            PLD();
             break;
 
           case 0x2c:            /* BIT $nnnn */
