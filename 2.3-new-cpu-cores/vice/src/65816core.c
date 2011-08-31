@@ -1298,6 +1298,17 @@ LOAD_DBR(addr) \
       INC_PC(1);           \
   } while (0)
 
+#define TCS()                                          \
+  do {                                                 \
+      if (reg_emul) {                                  \
+          reg_sp = (reg_sp & 0xff00) | (reg_a & 0xff); \
+      } else {                                         \
+          reg_sp = reg_a;                              \
+      }                                                \
+      LOCAL_SET_NZ(reg_sp, 0);                         \
+      INC_PC(1);                                       \
+  } while (0)
+
 #define TRB(addr, clk_inc, pc_inc, load_func, store_func) \
   do {                                                    \
       unsigned int tmp_value, tmp_addr;                   \
@@ -1321,6 +1332,14 @@ LOAD_DBR(addr) \
       INC_PC(pc_inc);                                     \
       store_func(tmp_addr, tmp_value, clk_inc);           \
   } while (0)
+
+#define TSC()                 \
+  do {                        \
+      reg_a = reg_sp;         \
+      LOCAL_SET_NZ(reg_a, 0); \
+      INC_PC(1);              \
+  } while (0)
+
 
 #define TSX()               \
   do {                      \
@@ -1592,11 +1611,9 @@ trap_skipped:
           case 0x03:            /* 1 byte, 1 cycle NOP */
           case 0x0b:            /* 1 byte, 1 cycle NOP */
           case 0x13:            /* 1 byte, 1 cycle NOP */
-          case 0x1b:            /* 1 byte, 1 cycle NOP */
           case 0x23:            /* 1 byte, 1 cycle NOP */
           case 0x2b:            /* 1 byte, 1 cycle NOP */
           case 0x33:            /* 1 byte, 1 cycle NOP */
-          case 0x3b:            /* 1 byte, 1 cycle NOP */
           case 0x43:            /* 1 byte, 1 cycle NOP */
           case 0x4b:            /* 1 byte, 1 cycle NOP */
           case 0x53:            /* 1 byte, 1 cycle NOP */
@@ -1747,6 +1764,10 @@ trap_skipped:
             INA();
             break;
 
+          case 0x1b:            /* TCS */
+            TCS();
+            break;
+
           case 0x1c:            /* TRB $nnnn */
             TRB(p2, CLK_ABS_RMW2, 3, LOAD_ABS, STORE_ABS);
             break;
@@ -1853,6 +1874,10 @@ trap_skipped:
 
           case 0x3a:            /* DEA */
             DEA();
+            break;
+
+          case 0x3b:            /* TSC */
+            TSC();
             break;
 
           case 0x3c:            /* BIT $nnnn,X */
