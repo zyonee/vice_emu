@@ -1373,6 +1373,13 @@ LOAD_DBR(addr) \
       INC_PC(1);      \
   } while (0)
 
+#define TXY()                               \
+  do {                                      \
+      reg_y = reg_x;                        \
+      LOCAL_SET_NZ(reg_y, LOCAL_65816_X()); \
+      INC_PC(1);                            \
+  } while (0)
+
 #define TYA()                                        \
   do {                                               \
       if (LOCAL_REGISTER_SIZES() >= 2) {             \
@@ -1382,6 +1389,13 @@ LOAD_DBR(addr) \
       }                                              \
       LOCAL_SET_NZ(reg_a, LOCAL_65816_M());          \
       INC_PC(1);                                     \
+  } while (0)
+
+#define TYX()                               \
+  do {                                      \
+      reg_x = reg_y;                        \
+      LOCAL_SET_NZ(reg_y, LOCAL_65816_X()); \
+      INC_PC(1);                            \
   } while (0)
 
 #define WAI()                          \
@@ -1641,11 +1655,9 @@ trap_skipped:
           case 0x83:            /* 1 byte, 1 cycle NOP */
           case 0x8b:            /* 1 byte, 1 cycle NOP */
           case 0x93:            /* 1 byte, 1 cycle NOP */
-          case 0x9b:            /* 1 byte, 1 cycle NOP */
           case 0xa3:            /* 1 byte, 1 cycle NOP */
           case 0xab:            /* 1 byte, 1 cycle NOP */
           case 0xb3:            /* 1 byte, 1 cycle NOP */
-          case 0xbb:            /* 1 byte, 1 cycle NOP */
           case 0xc3:            /* 1 byte, 1 cycle NOP */
           case 0xd3:            /* 1 byte, 1 cycle NOP */
           case 0xe3:            /* 1 byte, 1 cycle NOP */
@@ -2208,6 +2220,10 @@ trap_skipped:
             TXS();
             break;
 
+          case 0x9b:            /* TXY */
+            TXY();
+            break;
+
           case 0x9c:            /* STZ $nnnn */
             STZ(p2, 0, 1, 3, STORE_ABS);
             break;                         
@@ -2318,6 +2334,10 @@ trap_skipped:
 
           case 0xba:            /* TSX */
             TSX();
+            break;
+
+          case 0xbb:            /* TYX */
+            TYX();
             break;
 
           case 0xbc:            /* LDY $nnnn,X */
