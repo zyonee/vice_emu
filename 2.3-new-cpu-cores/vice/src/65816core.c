@@ -1041,12 +1041,16 @@ LOAD_DBR(addr) \
       INC_PC(1);                        \
   } while (0)
 
-#define PLA()                       \
-  do {                              \
-      CLK_ADD(CLK, CLK_STACK_PULL); \
-      reg_a = PULL();               \
-      LOCAL_SET_NZ(reg_a);          \
-      INC_PC(1);                    \
+#define PLA()                                     \
+  do {                                            \
+      CLK_ADD(CLK, CLK_STACK_PULL);               \
+      reg_a = (reg_a & 0xff00) | PULL();          \
+      if (!LOCAL_65816_M()) {                     \
+          CLK_ADD(CLK, 1);                        \
+          reg_a = (reg_a & 0xff) | (PULL() << 8); \
+      }                                           \
+      LOCAL_SET_NZ(reg_a, LOCAL_65816_M());       \
+      INC_PC(1);                                  \
   } while (0)
 
 #define PLB()                       \
@@ -1071,20 +1075,28 @@ LOAD_DBR(addr) \
       INC_PC(1);                                            \
   } while (0)
 
-#define PLX()                       \
-  do {                              \
-      CLK_ADD(CLK, CLK_STACK_PULL); \
-      reg_x = PULL();               \
-      LOCAL_SET_NZ(reg_x);          \
-      INC_PC(1);                    \
+#define PLX()                               \
+  do {                                      \
+      CLK_ADD(CLK, CLK_STACK_PULL);         \
+      reg_x = PULL();                       \
+      if (!LOCAL_65816_X()) {               \
+          CLK_ADD(CLK, 1);                  \
+          reg_x |= (PULL() << 8);           \
+      }                                     \
+      LOCAL_SET_NZ(reg_x, LOCAL_65816_X()); \
+      INC_PC(1);                            \
   } while (0)
 
-#define PLY()                       \
-  do {                              \
-      CLK_ADD(CLK, CLK_STACK_PULL); \
-      reg_y = PULL();               \
-      LOCAL_SET_NZ(reg_y);          \
-      INC_PC(1);                    \
+#define PLY()                               \
+  do {                                      \
+      CLK_ADD(CLK, CLK_STACK_PULL);         \
+      reg_y = PULL();                       \
+      if (!LOCAL_65816_X()) {               \
+          CLK_ADD(CLK, 1);                  \
+          reg_Y |= (PULL() << 8);           \
+      }                                     \
+      LOCAL_SET_NZ(reg_y, LOCAL_65816_X()); \
+      INC_PC(1);                            \
   } while (0)
 
 #define RMB(addr, bit)                             \
