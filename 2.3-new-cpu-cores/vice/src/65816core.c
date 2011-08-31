@@ -974,11 +974,15 @@ LOAD_DBR(addr) \
 
 #define NOP()  NOOP_IMM(1)
 
-#define PHA()                       \
-  do {                              \
-      CLK_ADD(CLK, CLK_STACK_PUSH); \
-      PUSH(reg_a);                  \
-      INC_PC(1);                    \
+#define PHA()                           \
+  do {                                  \
+      if (!LOCAL_65816_M()) {           \
+          CLK_ADD(CLK, CLK_STACK_PUSH); \
+          PUSH(reg_a >> 0xff);          \
+      }                                 \
+      CLK_ADD(CLK, CLK_STACK_PUSH);     \
+      PUSH(reg_a & 0xff);               \
+      INC_PC(1);                        \
   } while (0)
 
 #define PHB()                       \
@@ -1006,18 +1010,26 @@ LOAD_DBR(addr) \
       INC_PC(1);                          \
   } while (0)
 
-#define PHX()                       \
-  do {                              \
-      CLK_ADD(CLK, CLK_STACK_PUSH); \
-      PUSH(reg_x);                  \
-      INC_PC(1);                    \
+#define PHX()                           \
+  do {                                  \
+      if (!LOCAL_65816_X()) {           \
+          CLK_ADD(CLK, CLK_STACK_PUSH); \
+          PUSH(reg_x >> 8);             \
+      }                                 \
+      CLK_ADD(CLK, CLK_STACK_PUSH);     \
+      PUSH(reg_x & 0xff);               \
+      INC_PC(1);                        \
   } while (0)
 
-#define PHY()                       \
-  do {                              \
-      CLK_ADD(CLK, CLK_STACK_PUSH); \
-      PUSH(reg_y);                  \
-      INC_PC(1);                    \
+#define PHY()                           \
+  do {                                  \
+      if (!LOCAL_65816_X()) {           \
+          CLK_ADD(CLK, CLK_STACK_PUSH); \
+          PUSH(reg_y >> 8);             \
+      }                                 \
+      CLK_ADD(CLK, CLK_STACK_PUSH);     \
+      PUSH(reg_y & 0xff);               \
+      INC_PC(1);                        \
   } while (0)
 
 #define PLA()                       \
