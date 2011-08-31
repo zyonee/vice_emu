@@ -1284,18 +1284,26 @@ LOAD_DBR(addr) \
       INC_PC(pc_inc);                   \
   } while (0)
 
-#define TAX()              \
-  do {                     \
-      reg_x = reg_a;       \
-      LOCAL_SET_NZ(reg_a); \
-      INC_PC(1);           \
+#define TAX()                               \
+  do {                                      \
+      if (LOCAL_REGISTER_SIZES() & 1) {     \
+          reg_x = reg_a;                    \
+      } else {                              \
+          reg_x = reg_a & 0xff;             \
+      }                                     \
+      LOCAL_SET_NZ(reg_x, LOCAL_65816_X()); \
+      INC_PC(1);                            \
   } while (0)
 
-#define TAY()              \
-  do {                     \
-      reg_y = reg_a;       \
-      LOCAL_SET_NZ(reg_a); \
-      INC_PC(1);           \
+#define TAY()                               \
+  do {                                      \
+      if (LOCAL_REGISTER_SIZES() & 1) {     \
+          reg_y = reg_a;                    \
+      } else {                              \
+          reg_y = reg_a & 0xff;             \
+      }                                     \
+      LOCAL_SET_NZ(reg_y, LOCAL_65816_X()); \
+      INC_PC(1);                            \
   } while (0)
 
 #define TCS()                                          \
