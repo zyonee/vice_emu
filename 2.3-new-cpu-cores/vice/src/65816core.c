@@ -1199,6 +1199,20 @@ LOAD_DBR(addr) \
       JUMP(tmp);                   \
   } while (0)
 
+#define RTL()                      \                                                                                                
+  do {                             \                                                                                                
+      WORD tmp;                    \                                                                                                
+                                   \
+      CLK_ADD(CLK, CLK_RTS);       \                                                                                                
+      tmp = PULL();                \                                                                                                
+      tmp = tmp | (PULL() << 8);   \                                                                                                
+      LOAD(tmp);                   \
+      CLK_ADD(CLK, CLK_INT_CYCLE); \
+      tmp++;                       \
+      reg_pbr = PULL();            \
+      JUMP(tmp);                   \
+  } while (0)
+
 #define RTS()                      \
   do {                             \
       WORD tmp;                    \
@@ -1764,7 +1778,6 @@ trap_skipped:
           case 0x43:            /* 1 byte, 1 cycle NOP */
           case 0x53:            /* 1 byte, 1 cycle NOP */
           case 0x63:            /* 1 byte, 1 cycle NOP */
-          case 0x6b:            /* 1 byte, 1 cycle NOP */
           case 0x73:            /* 1 byte, 1 cycle NOP */
           case 0x83:            /* 1 byte, 1 cycle NOP */
           case 0x93:            /* 1 byte, 1 cycle NOP */
@@ -2180,6 +2193,10 @@ trap_skipped:
 
           case 0x6a:            /* ROR A */
             ROR_A();
+            break;
+
+          case 0x6b:            /* RTL */
+            RTL();
             break;
 
           case 0x6c:            /* JMP ($nnnn) */
