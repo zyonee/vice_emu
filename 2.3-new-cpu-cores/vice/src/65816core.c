@@ -806,15 +806,20 @@ LOAD_DBR(addr) \
       INC_PC(pc_inc);               \
   } while (0)
 
-#define CPY(value, clk_inc, pc_inc) \
-  do {                              \
-      unsigned int tmp;             \
-                                    \
-      tmp = reg_y - (value);        \
-      LOCAL_SET_CARRY(tmp < 0x100); \
-      LOCAL_SET_NZ(tmp & 0xff);     \
-      CLK_ADD(CLK, (clk_inc));      \
-      INC_PC(pc_inc);               \
+#define CPY(value, clk_inc, pc_inc)        \
+  do {                                     \
+      unsigned int tmp;                    \
+                                           \
+      tmp = reg_y - value;                 \
+      if (LOCAL_65816_X()) {               \
+          LOCAL_SET_CARRY(tmp < 0x100);    \
+          LOCAL_SET_NZ((tmp & 0xff), 1);   \
+      } else {                             \
+          LOCAL_SET_CARRY(tmp < 0x10000);  \
+          LOCAL_SET_NZ((tmp & 0xffff), 0); \
+      }                                    \
+      CLK_ADD(CLK, (clk_inc));             \
+      INC_PC(pc_inc);                      \
   } while (0)
 
 #define DEA()                                              \
@@ -2626,7 +2631,7 @@ trap_skipped:
             break;
 
           case 0xc0:            /* CPY #$nn */
-            CPY(p1, 0, 2);
+            CPY((LOCAL_65816_X()) ? p1 : p2, 0, 2);
             break;
 
           case 0xc1:            /* CMP ($nn,X) */
@@ -2634,7 +2639,7 @@ trap_skipped:
             break;
 
           case 0xc4:            /* CPY $nn */
-            CPY(LOAD_ZERO(p1), 1, 2);
+            CPY(LOAD_DIRECT_PAGE(p1, LOCAL_65816_X()), 1, 2);
             break;
 
           case 0xc5:            /* CMP $nn */
@@ -2666,7 +2671,7 @@ trap_skipped:
             break;
 
           case 0xcc:            /* CPY $nnnn */
-            CPY(LOAD(p2), 1, 3);
+            CPY(LOAD_ABS(p2, LOCAL_65816_X()), 1, 3);
             break;
 
           case 0xcd:            /* CMP $nnnn */
