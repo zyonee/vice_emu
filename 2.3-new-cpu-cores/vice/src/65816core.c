@@ -975,12 +975,16 @@ LOAD_DBR(addr) \
       JUMP(tmp_addr);                        \
   } while (0)
 
-#define LDA(value, clk_inc, pc_inc) \
-  do {                              \
-      reg_a = (BYTE)(value);        \
-      CLK_ADD(CLK, (clk_inc));      \
-      LOCAL_SET_NZ(reg_a);          \
-      INC_PC(pc_inc);               \
+#define LDA(value, clk_inc, pc_inc)                  \
+  do {                                               \
+      if (LOCAL_65816_M()) {                         \
+          reg_a = (reg_a & 0xff00) | (value & 0xff); \
+      } else {                                       \
+          reg_a = value;                             \
+      }                                              \
+      CLK_ADD(CLK, (clk_inc));                       \
+      LOCAL_SET_NZ(reg_a, LOCAL_65816_M());          \
+      INC_PC(pc_inc);                                \
   } while (0)
 
 #define LDX(value, clk_inc, pc_inc)         \
@@ -1853,8 +1857,6 @@ trap_skipped:
 
           case 0x83:            /* 1 byte, 1 cycle NOP */
           case 0x93:            /* 1 byte, 1 cycle NOP */
-          case 0xa3:            /* 1 byte, 1 cycle NOP */
-          case 0xb3:            /* 1 byte, 1 cycle NOP */
           case 0xc3:            /* 1 byte, 1 cycle NOP */
           case 0xd3:            /* 1 byte, 1 cycle NOP */
           case 0xe3:            /* 1 byte, 1 cycle NOP */
@@ -2500,11 +2502,15 @@ trap_skipped:
             break;
 
           case 0xa1:            /* LDA ($nn,X) */
-            LDA(LOAD_IND_X(p1), 1, 2);
+            LDA(LOAD_INDIRECT_X(p1, LOCAL_65816_M()), 1, 2);
             break;
 
           case 0xa2:            /* LDX #$nn */
             LDX((LOCAL_65816_X()) ? p1 : p2, 0, 2);
+            break;
+
+          case 0xa3:            /* LDA $nn,S */
+            LDA(LOAD_STACK_REL(p1, LOCAL_65816_M()), 2, 2);
             break;
 
           case 0xa4:            /* LDY $nn */
@@ -2512,15 +2518,15 @@ trap_skipped:
             break;
 
           case 0xa5:            /* LDA $nn */
-            LDA(LOAD_ZERO(p1), 1, 2);
+            LDA(LOAD_DIRECT_PAGE(p1, LOCAL_65816_M()), 1, 2);
             break;
 
           case 0xa6:            /* LDX $nn */
             LDX(LOAD_DIRECT_PAGE(p1, LOCAL_65816_X()), 1, 2);
             break;
 
-          case 0xa7:            /* SMB2 $nn (65C02) / single byte, single cycle NOP (65SC02) *
-            SMB(p1, 2);
+          case 0xa7:            /* LDA [$nn] */
+            LDA(LOAD_INDIRECT_LONG(p1, LOCAL_65816_M()), 0, 2);
             break;
 
           case 0xa8:            /* TAY */
@@ -2528,7 +2534,7 @@ trap_skipped:
             break;
 
           case 0xa9:            /* LDA #$nn */
-            LDA(p1, 0, 2);
+            LDA((LOCAL_65816_M()) ? p1 : p2, 0, 2);
             break;
 
           case 0xaa:            /* TAX */
@@ -2544,15 +2550,15 @@ trap_skipped:
             break;
 
           case 0xad:            /* LDA $nnnn */
-            LDA(LOAD(p2), 1, 3);
+            LDA(LOAD_ABS(p2, LOCAL_65816_M()), 1, 3);
             break;
 
           case 0xae:            /* LDX $nnnn */
             LDX(LOAD_ABS(p2, LOCAL_65816_X()), 1, 3);
             break;
 
-          case 0xaf:            /* BBS2 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
-            BBS(2, p1, p2 >> 8);
+          case 0xaf:            /* LDA $nnnnnn */
+            LDA(LOAD_ABS_LONG(p3, LOCAL_65816_M()), 1, 4);
             break;
 
           case 0xb0:            /* BCS $nnnn */
@@ -2560,11 +2566,15 @@ trap_skipped:
             break;
 
           case 0xb1:            /* LDA ($nn),Y */
-            LDA(LOAD_IND_Y_BANK(p1), 1, 2);
+            LDA(LOAD_INDIRECT_Y(p1, LOCAL_65816_M()), 0, 2);
             break;
 
           case 0xb2:            /* LDA ($nn) */
-            LDA(LOAD_INDIRECT(p1), 1, 2);
+            LDA(LOAD_INDIRECT(p1, LOCAL_65816_M()), 0, 2);
+            break;
+
+          case 0xb3:            /* LDA ($nn,S),Y */
+            LDA(LOAD_STACK_REL_Y(p1, LOCAL_65816_M()), 5, 2);
             break;
 
           case 0xb4:            /* LDY $nn,X */
@@ -2572,15 +2582,15 @@ trap_skipped:
             break;
 
           case 0xb5:            /* LDA $nn,X */
-            LDA(LOAD_ZERO_X(p1), CLK_ZERO_I2, 2);
+            LDA(LOAD_DIRECT_PAGE_X(p1, LOCAL_65816_M()), CLK_ZERO_I2, 2);
             break;
 
           case 0xb6:            /* LDX $nn,Y */
             LDX(LOAD_DIRECT_PAGE_Y(p1, LOCAL_65816_X()), CLK_ZERO_I2, 2);
             break;
 
-          case 0xb7:            /* SMB3 $nn (65C02) / single byte, single cycle NOP (65SC02) */
-            SMB(p1, 3);
+          case 0xb7:            /* LDA [$nn],Y */
+            LDA(LOAD_INDIRECT_LONG_Y(p1, LOCAL_65816_M()), 0, 2);
             break;
 
           case 0xb8:            /* CLV */
@@ -2588,7 +2598,7 @@ trap_skipped:
             break;
 
           case 0xb9:            /* LDA $nnnn,Y */
-            LDA(LOAD_ABS_Y(p2), 1, 3);
+            LDA(LOAD_ABS_Y(p2, LOCAL_65816_M()), 1, 3);
             break;
 
           case 0xba:            /* TSX */
@@ -2604,15 +2614,15 @@ trap_skipped:
             break;
 
           case 0xbd:            /* LDA $nnnn,X */
-            LDA(LOAD_ABS_X(p2), 1, 3);
+            LDA(LOAD_ABS_X(p2, LOCAL_65816_M()), 1, 3);
             break;
 
           case 0xbe:            /* LDX $nnnn,Y */
             LDX(LOAD_ABS_Y(p2, LOCAL_65816_X()), 1, 3);
             break;
 
-          case 0xbf:            /* BBS3 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
-            BBS(3, p1, p2 >> 8);
+          case 0xbf:            /* LDA $nnnnnn,X */
+            LDA(LOAD_ABS_LONG_X(p3, LOCAL_65816_M()), 1, 4);
             break;
 
           case 0xc0:            /* CPY #$nn */
