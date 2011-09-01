@@ -2111,7 +2111,7 @@ trap_skipped:
             LDX(LOAD_ZERO(p1), 1, 2);
             break;
 
-          case 0xa7:            /* SMB2 $nn (65C02) / single byte, single cycle NOP (65SC02) *
+          case 0xa7:            /* SMB2 $nn (65C02) / single byte, single cycle NOP (65SC02) */
             SMB(p1, 2);
             break;
 
