@@ -522,38 +522,67 @@ LOAD_DBR(addr) \
      machines (eg. the C128) might depend on this.
 */
 
-#define ADC(value, clk_inc, pc_inc)                            \
-  do {                                                         \
-      unsigned int tmp_value;                                  \
-      unsigned int tmp;                                        \
-                                                               \
-      tmp_value = (value);                                     \
-      CLK_ADD(CLK, (clk_inc));                                 \
-                                                               \
-      if (LOCAL_DECIMAL()) {                                   \
-          tmp = reg_a - (tmp_value & 0xf) + LOCAL_CARRY() - 1; \
-          if ((tmp & 0xf) > (reg_a & 0xf)) {                   \
-              tmp -= 6;                                        \
-          }                                                    \
-          tmp -= (tmp_value & 0xf0);                           \
-          if ((tmp & 0xf0) > (reg_a & 0xf0)) {                 \
-              tmp -= 60;                                       \
-          }                                                    \
-          LOCAL_SET_OVERFLOW(!(tmp > reg_a));                  \
-          LOCAL_SET_CARRY(!(tmp > reg_a));                     \
-          LOCAL_SET_NZ(tmp & 0xff);                            \
-          CLK_ADD(CLK, 1);                                     \
-      } else {                                                 \
-          tmp = tmp_value + reg_a + LOCAL_CARRY();             \
-          LOCAL_SET_NZ(tmp & 0xff);                            \
-          LOCAL_SET_OVERFLOW(!((reg_a ^ tmp_value) & 0x80)     \
-                              && ((reg_a ^tmp) & 0x80));       \
-          LOCAL_SET_CARRY(tmp > 0xff);                         \
-      }                                                        \
-      reg_a = tmp;                                             \
-      INC_PC(pc_inc);                                          \
+#define ADC(value, clk_inc, pc_inc)                                                                  \
+  do {                                                                                               \
+      unsigned int tmp_value;                                                                        \
+      unsigned int tmp;                                                                              \
+                                                                                                     \
+      tmp_value = (value);                                                                           \
+      CLK_ADD(CLK, (clk_inc));                                                                       \
+                                                                                                     \
+      if (LOCAL_65816_M()) {                                                                         \
+          if (LOCAL_DECIMAL()) {                                                                     \
+              tmp = (reg_a & 0xff) - (tmp_value & 0xf) + LOCAL_CARRY() - 1;                          \
+              if ((tmp & 0xf) > (reg_a & 0xf)) {                                                     \
+                  tmp -= 6;                                                                          \
+              }                                                                                      \
+              tmp -= (tmp_value & 0xf0);                                                             \
+              if ((tmp & 0xf0) > (reg_a & 0xf0)) {                                                   \
+                  tmp -= 60;                                                                         \
+              }                                                                                      \
+              LOCAL_SET_OVERFLOW(!(tmp > (reg_a & 0xff)));                                           \
+              LOCAL_SET_CARRY(!(tmp > (reg_a & 0xff));                                               \
+              LOCAL_SET_NZ(tmp & 0xff);                                                              \
+              CLK_ADD(CLK, 1);                                                                       \
+          } else {                                                                                   \
+              tmp = tmp_value + (reg_a & 0xff) + LOCAL_CARRY();                                      \
+              LOCAL_SET_NZ(tmp & 0xff);                                                              \
+              LOCAL_SET_OVERFLOW(!(((reg_a & 0xff) ^ tmp_value) & 0x80)                              \
+                                  && (((reg_a & 0xff) ^ tmp) & 0x80));                               \
+              LOCAL_SET_CARRY(tmp > 0xff);                                                           \
+          }                                                                                          \
+          reg_a = (reg_a & 0xff00) | (tmp & 0xff);                                                   \
+      } else {                                                                                       \
+          if (!LOCAL_DECIMAL()) {                                                                    \
+              tmp = reg_a + tmp_value + LOCAL_CARRY();                                               \
+          } else {                                                                                   \
+              tmp = (reg_a & 0xf) + (tmp_value & 0xf) + LOCAL_CARRY;                                 \
+              if (tmp > 9) {                                                                         \
+                  tmp += 6;                                                                          \
+              }                                                                                      \
+              LOCAL_SET_CARRY(tmp > 0xf);                                                            \
+              tmp = (reg_a & 0xf0) + (tmp_value & 0xf0) + (LOCAL_CARRY() << 5) + (tmp & 0xf);        \
+              if (tmp > 0x9f) {                                                                      \
+                  tmp += 0x60;                                                                       \
+              }                                                                                      \
+              LOCAL_SET_CARRY(tmp > 0xff);                                                           \
+              tmp = (reg_a & 0xf00) + (tmp_value & 0xf00) + (LOCAL_CARRY() << 8) + (tmp & 0xff);     \
+              if (tmp > 0x9ff) {                                                                     \
+                  tmp += 0x600;                                                                      \
+              }                                                                                      \
+              LOCAL_SET_CARRY(tmp > 0xfff);                                                          \
+              tmp = (reg_a & 0xf000) + (tmp_value & 0xf000) + (LOCAL_CARRY() << 12) + (tmp & 0xfff); \
+          }                                                                                          \
+          LOCAL_SET_OVERFLOW((~(reg_a ^ tmp_value) & (reg_a ^ tmp) & 0x8000) >> 8);                  \
+          if (LOCAL_DECIMAL() && (tmp > 0x9fff)) {                                                   \
+              tmp += 0x6000;                                                                         \
+          }                                                                                          \
+          LOCAL_SET_CARRY(result > 0xffff);                                                          \
+          LOCAL_SET_NZ(tmp & 0xffff, 0);                                                             \
+          reg_a = tmp & 0xffff;                                                                      \
+      }                                                                                              \
+      INC_PC(pc_inc);                                                                                \
   } while (0)
-
 
 #define AND(value, clk_inc, pc_inc)                            \
   do {                                                         \
@@ -1802,8 +1831,6 @@ trap_skipped:
 
         switch (p0) {
 
-          case 0x63:            /* 1 byte, 1 cycle NOP */
-          case 0x73:            /* 1 byte, 1 cycle NOP */
           case 0x83:            /* 1 byte, 1 cycle NOP */
           case 0x93:            /* 1 byte, 1 cycle NOP */
           case 0xa3:            /* 1 byte, 1 cycle NOP */
@@ -2213,7 +2240,11 @@ trap_skipped:
             break;
 
           case 0x61:            /* ADC ($nn,X) */
-            ADC(LOAD_IND_X(p1), 1, 2);
+            ADC(LOAD_INDIRECT_X(p1, LOCAL_65816_M()), 1, 2);
+            break;
+
+          case 0x63:            /* ADC $nn,S */
+            ADC(LOAD_STACK_REL(p1, LOCAL_65816_M()), 2, 2);
             break;
 
           case 0x64:            /* STZ $nn */
@@ -2221,15 +2252,15 @@ trap_skipped:
             break;
 
           case 0x65:            /* ADC $nn */
-            ADC(LOAD_ZERO(p1), 1, 2);
+            ADC(LOAD_DIRECT_PAGE(p1, LOCAL_65816_M()), 1, 2);
             break;
 
           case 0x66:            /* ROR $nn */
             ROR(p1, CLK_ZERO_RMW, 2, LOAD_ZERO, STORE_ABS);
             break;
 
-          case 0x67:            /* RMB6 $nn (65C02) / single byte, single cycle NOP (65SC02) */
-            RMB(p1, 6);
+          case 0x67:            /* ADC [$nn] */
+            ADC(LOAD_INDIRECT_LONG(p1, LOCAL_65816_M()), 0, 2);
             break;
 
           case 0x68:            /* PLA */
@@ -2237,7 +2268,7 @@ trap_skipped:
             break;
 
           case 0x69:            /* ADC #$nn */
-            ADC(p1, 0, 2);
+            ADC((LOCAL_65816_M()) ? p1 : p2, 0, 2);
             break;
 
           case 0x6a:            /* ROR A */
@@ -2253,15 +2284,15 @@ trap_skipped:
             break;
 
           case 0x6d:            /* ADC $nnnn */
-            ADC(LOAD(p2), 1, 3);
+            ADC(LOAD_ABS(p2, LOCAL_65816_M()), 1, 3);
             break;
 
           case 0x6e:            /* ROR $nnnn */
             ROR(p2, CLK_ABS_RMW2, 3, LOAD_ABS, STORE_ABS);
             break;
 
-          case 0x6f:            /* BBR6 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
-            BBR(6, p1, p2 >> 8);
+          case 0x6f:            /* ADC $nnnnnn */
+            ADC(LOAD_ABS_LONG(p3, LOCAL_65816_M()), 1, 4);
             break;
 
           case 0x70:            /* BVS $nnnn */
@@ -2269,11 +2300,15 @@ trap_skipped:
             break;
 
           case 0x71:            /* ADC ($nn),Y */
-            ADC(LOAD_IND_Y(p1), 1, 2);
+            ADC(LOAD_INDIRECT_Y(p1, LOCAL_65816_M()), 0, 2);
             break;
 
           case 0x72:            /* ADC ($nn) */
-            ADC(LOAD_INDIRECT(p1), 1, 2);
+            ADC(LOAD_INDIRECT(p1, LOCAL_65816_M()), 0, 2);
+            break;
+
+          case 0x73:            /* ADC ($nn,S),Y */
+            ADC(LOAD_STACK_REL_Y(p1, LOCAL_65816_M()), 5, 2);
             break;
 
           case 0x74:            /* STZ $nn,X */
@@ -2281,15 +2316,15 @@ trap_skipped:
             break;
 
           case 0x75:            /* ADC $nn,X */
-            ADC(LOAD_ZERO_X(p1), CLK_ZERO_I2, 2);
+            ADC(LOAD_DIRECT_PAGE_X(p1, LOCAL_65816_M()), CLK_ZERO_I2, 2);
             break;
 
           case 0x76:            /* ROR $nn,X */
             ROR((p1 + reg_x) & 0xff, CLK_ZERO_I_RMW, 2, LOAD_ZERO, STORE_ABS);
             break;
 
-          case 0x77:            /* RMB7 $nn (65C02) / single byte, single cycle NOP (65SC02) */
-            RMB(p1, 7);
+          case 0x77:            /* ADC [$nn],Y */
+            ADC(LOAD_INDIRECT_LONG_Y(p1, LOCAL_65816_M()), 0, 2);
             break;
 
           case 0x78:            /* SEI */
@@ -2297,7 +2332,7 @@ trap_skipped:
             break;
 
           case 0x79:            /* ADC $nnnn,Y */
-            ADC(LOAD_ABS_Y(p2), 1, 3);
+            ADC(LOAD_ABS_Y(p2, LOCAL_65816_M()), 1, 3);
             break;
 
           case 0x7a:            /* PLY */
@@ -2313,15 +2348,15 @@ trap_skipped:
             break;
 
           case 0x7d:            /* ADC $nnnn,X */
-            ADC(LOAD_ABS_X(p2), 1, 3);
+            ADC(LOAD_ABS_X(p2, LOCAL_65816_M()), 1, 3);
             break;
 
           case 0x7e:            /* ROR $nnnn,X */
             ROR(p2, CLK_ABS_I_RMW2, 3, LOAD_ABS_X, STORE_ABS_X_RMW);
             break;
 
-          case 0x7f:            /* BBR7 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
-            BBR(7, p1, p2 >> 8);
+          case 0x7f:            /* ADC $nnnnnn,X */
+            ADC(LOAD_ABS_LONG_X(p3, LOCAL_65816_M()), 1, 4);
             break;
 
           case 0x80:            /* BRA $nnnn */
