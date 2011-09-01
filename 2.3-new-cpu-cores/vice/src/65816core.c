@@ -406,50 +406,52 @@ LOAD_DBR(addr) \
 #define LOAD_DIRECT_PAGE24(addr) \
     (LOAD_DIRECT_PAGE8(addr) << 16) | LOAD_DIRECT_PAGE16(addr + 1)
 
-#define LOAD_DIRECT_PAGE(addr, bits8) \
-    ((bits8)                          \
-    ? LOAD_DIRECT_PAGE8(addr)         \
-    : LOAD_DIRECT_PAGE16(addr))
+#define LOAD_DIRECT_PAGE(addr, bits8)                          \
+    (((reg_dpr) ? CLK_ADD(CLK, 1) : CLK_ADD(CLK, 0)), ((bits8) \
+    ? LOAD_DIRECT_PAGE8(addr)                                  \
+    : (CLK_ADD(CLK, 1), LOAD_DIRECT_PAGE16(addr))))
 
-#define LOAD_DIRECT_PAGE_X(addr, bits8)  \
-    ((bits8)                             \
-    ? LOAD_BANK0(addr + reg_dpr + reg_x) \
-    : (LOAD_BANK0(addr + reg_dpr + reg_x) << 8) | LOAD_BANK0(addr + reg_dpr + reg_x + 1))
+#define LOAD_DIRECT_PAGE_X(addr, bits8)                        \
+    (((reg_dpr) ? CLK_ADD(CLK, 1) : CLK_ADD(CLK, 0)), ((bits8) \
+    ? LOAD_BANK0(addr + reg_dpr + reg_x)                       \
+    : (CLK_ADD(CLK, 1), LOAD_BANK0(addr + reg_dpr + reg_x) << 8) | LOAD_BANK0(addr + reg_dpr + reg_x + 1)))
 
-#define LOAD_DIRECT_PAGE_Y(addr, bits8)  \
-    ((bits8)                             \
-    ? LOAD_BANK0(addr + reg_dpr + reg_y) \
-    : (LOAD_BANK0(addr + reg_dpr + reg_y) << 8) | LOAD_BANK0(addr + reg_dpr + reg_y + 1))
+#define LOAD_DIRECT_PAGE_Y(addr, bits8)                        \
+    (((reg_dpr) ? CLK_ADD(CLK, 1) : CLK_ADD(CLK, 0)), ((bits8) \
+    ? LOAD_BANK0(addr + reg_dpr + reg_y)                       \
+    : (CLK_ADD(CLK, 1), LOAD_BANK0(addr + reg_dpr + reg_y) << 8) | LOAD_BANK0(addr + reg_dpr + reg_y + 1)))
 
-#define LOAD_INDIRECT(addr, bits8)         \
-    (CLK_ADD(CLK, 3), ((bits8)             \
-    ? LOAD_BANK0(LOAD_DIRECT_PAGE16(addr)) \
-    : (LOAD_BANK0(LOAD_DIRECT_PAGE16(addr)) << 8) | LOAD_BANK0(LOAD_DIRECT_PAGE16(addr) + 1)))
+#define LOAD_INDIRECT(addr, bits8)                                              \
+    (((reg_dpr) ? CLK_ADD(CLK, 1) : CLK_ADD(CLK, 0)), CLK_ADD(CLK, 3), ((bits8) \
+    ? LOAD_BANK0(LOAD_DIRECT_PAGE16(addr))                                      \
+    : (CLK_ADD(CLK, 1), LOAD_BANK0(LOAD_DIRECT_PAGE16(addr)) << 8) | LOAD_BANK0(LOAD_DIRECT_PAGE16(addr) + 1)))
 
-#define LOAD_INDIRECT_X(addr, bits8)               \
-    (CLK_ADD(CLK, 3), ((bits8)                     \
-    ? LOAD_BANK0(LOAD_DIRECT_PAGE16(addr + reg_x)) \
-    : (LOAD_BANK0(LOAD_DIRECT_PAGE16(addr + reg_x)) << 8) | LOAD_BANK0(LOAD_DIRECT_PAGE16(addr + reg_x) + 1)))
+#define LOAD_INDIRECT_X(addr, bits8)                                            \
+    (((reg_dpr) ? CLK_ADD(CLK, 1) : CLK_ADD(CLK, 0)), CLK_ADD(CLK, 3), ((bits8) \
+    ? LOAD_BANK0(LOAD_DIRECT_PAGE16(addr + reg_x))                              \
+    : (CLK_ADD(CLK, 1), LOAD_BANK0(LOAD_DIRECT_PAGE16(addr + reg_x)) << 8) | LOAD_BANK0(LOAD_DIRECT_PAGE16(addr + reg_x) + 1)))
 
-#define LOAD_INDIRECT_Y(addr, bits8)              \
-    (CLK_ADD(CLK, 3), ((bits8)                    \
-    ? LOAD_LONG(LOAD_DIRECT_PAGE16(addr) + reg_y) \
-    : (LOAD_LONG(LOAD_DIRECT_PAGE16(addr) + reg_y) << 8) | LOAD_LONG(LOAD_DIRECT_PAGE16(addr) + reg_y + 1)))
+#define LOAD_INDIRECT_Y(addr, bits8)                                                            \
+    (((reg_dpr) ? CLK_ADD(CLK, 1) : CLK_ADD(CLK, 0)),                                           \
+    ((((LOAD_DIRECT_PAGE16(addr) & 0xff) + reg_y) > 0xff) ? CLK_ADD(CLK, 1) : CLK_ADD(CLK, 0)), \
+    CLK_ADD(CLK, 3), ((bits8)                                                                   \
+    ? LOAD_LONG(LOAD_DIRECT_PAGE16(addr) + reg_y)                                               \
+    : (CLK_ADD(CLK, 1), LOAD_LONG(LOAD_DIRECT_PAGE16(addr) + reg_y) << 8) | LOAD_LONG(LOAD_DIRECT_PAGE16(addr) + reg_y + 1)))
 
-#define LOAD_INDIRECT_LONG(addr, bits8)   \
-    (CLK_ADD(CLK, 4), ((bits8)            \
-    ? LOAD_LONG(LOAD_DIRECT_PAGE24(addr)) \
-    : (LOAD_LONG(LOAD_DIRECT_PAGE24(addr)) << 8) | LOAD_LONG(LOAD_DIRECT_PAGE24(addr) + 1)))
+#define LOAD_INDIRECT_LONG(addr, bits8)                                         \
+    (((reg_dpr) ? CLK_ADD(CLK, 1) : CLK_ADD(CLK, 0)), CLK_ADD(CLK, 4), ((bits8) \
+    ? LOAD_LONG(LOAD_DIRECT_PAGE24(addr))                                       \
+    : (CLK_ADD(CLK, 1), LOAD_LONG(LOAD_DIRECT_PAGE24(addr)) << 8) | LOAD_LONG(LOAD_DIRECT_PAGE24(addr) + 1)))
 
-#define LOAD_INDIRECT_LONG_Y(addr, bits8)         \
-    (CLK_ADD(CLK, 4), ((bits8)                    \
-    ? LOAD_LONG(LOAD_DIRECT_PAGE24(addr) + reg_y) \
-    : (LOAD_LONG(LOAD_DIRECT_PAGE24(addr) + reg_y) << 8) | LOAD_LONG(LOAD_DIRECT_PAGE24(addr) + reg_y + 1)))
+#define LOAD_INDIRECT_LONG_Y(addr, bits8)                                       \
+    (((reg_dpr) ? CLK_ADD(CLK, 1) : CLK_ADD(CLK, 0)), CLK_ADD(CLK, 4), ((bits8) \
+    ? LOAD_LONG(LOAD_DIRECT_PAGE24(addr) + reg_y)                               \
+    : (CLK_ADD(CLK, 1), LOAD_LONG(LOAD_DIRECT_PAGE24(addr) + reg_y) << 8) | LOAD_LONG(LOAD_DIRECT_PAGE24(addr) + reg_y + 1)))
 
-#define LOAD_ABD(addr, bits8) \
+#define LOAD_ABS(addr, bits8) \
     ((bits8)                  \
     ? LOAD_DBR(addr)          \
-    : (LOAD_DBR(addr) << 8) | LOAD_DBR(addr + 1))
+    : (CLK_ADD(CLK, 1), LOAD_DBR(addr) << 8) | LOAD_DBR(addr + 1))
 
 #define LOAD_ABS_X(addr, bits8)                                         \
     ((bits8)                                                            \
@@ -462,7 +464,7 @@ LOAD_DBR(addr) \
         ? (LOAD((reg_pbr * 0x10000) + reg_pc + 2),                      \
             CLK_ADD(CLK, CLK_INT_CYCLE),                                \
             (LOAD_DBR(addr + reg_x) << 8) | LOAD_DBR(addr + reg_x + 1)) \
-        : (LOAD_DBR(addr + reg_x) << 8) | LOAD_DBR(addr + reg_x + 1)))
+        : (CLK_ADD(CLK, 1), LOAD_DBR(addr + reg_x) << 8) | LOAD_DBR(addr + reg_x + 1)))
 
 #define LOAD_ABS_Y(addr, bits8)                                         \
     ((bits8)                                                            \
@@ -475,17 +477,17 @@ LOAD_DBR(addr) \
         ? (LOAD((reg_pbr * 0x10000) + reg_pc + 2),                      \
             CLK_ADD(CLK, CLK_INT_CYCLE),                                \
             (LOAD_DBR(addr + reg_y) << 8) | LOAD_DBR(addr + reg_y + 1)) \
-        : (LOAD_DBR(addr + reg_y) << 8) | LOAD_DBR(addr + reg_y + 1)))
+        : (CLK_ADD(CLK, 1), LOAD_DBR(addr + reg_y) << 8) | LOAD_DBR(addr + reg_y + 1)))
 
 #define LOAD_ABS_LONG(addr, bits8) \
     ((bits8)                       \
     ? LOAD_LONG(addr)              \
-    : (LOAD_LONG(addr) << 8) | LOAD_LONG(addr + 1))
+    : (CLK_ADD(CLK, 1), LOAD_LONG(addr) << 8) | LOAD_LONG(addr + 1))
 
 #define LOAD_ABS_LONG_X(addr, bits8) \
     ((bits8)                         \
     ? LOAD_LONG(addr + reg_x)        \
-    : (LOAD_LONG(addr + reg_x) << 8) | LOAD_LONG(addr + reg_x + 1))
+    : (CLK_ADD(CLK, 1), LOAD_LONG(addr + reg_x) << 8) | LOAD_LONG(addr + reg_x + 1))
 
 #define LOAD_STACK_REL8(addr) \
     LOAD_BANK0(addr + reg_sp)
@@ -496,12 +498,12 @@ LOAD_DBR(addr) \
 #define LOAD_STACK_REL(addr, bits8) \
     ((bits8)                        \
     ? LOAD_STACK_REL8(addr)         \
-    : LOAD_STACK_REL16(addr))
+    : (CLK_ADD(CLK, 1), LOAD_STACK_REL16(addr)))
 
 #define LOAD_STACK_REL_Y(addr, bits8)          \
     ((bits8)                                   \
     ? LOAD_DBR(LOAD_STACK_REL16(addr) + reg_y) \
-    : (LOAD_DBR(LOAD_STACK_REL16(addr) + reg_y) << 8) | LOAD_DBR(LOAD_STACK_REL16(addr) + reg_y + 1))
+    : (CLK_ADD(CLK, 1), (LOAD_DBR(LOAD_STACK_REL16(addr) + reg_y) << 8) | LOAD_DBR(LOAD_STACK_REL16(addr) + reg_y + 1)))
 
 #define INC_PC(value)   (reg_pc += (value))
 
@@ -965,12 +967,16 @@ LOAD_DBR(addr) \
       INC_PC(1);                                   \
   } while (0)
 
-#define ORA(value, clk_inc, pc_inc)    \
-  do {                                 \
-      reg_a = (BYTE)(reg_a | (value)); \
-      LOCAL_SET_NZ(reg_a);             \
-      CLK_ADD(CLK, (clk_inc));         \
-      INC_PC(pc_inc);                  \
+#define ORA(value, clk_inc, pc_inc)                            \
+  do {                                                         \
+      if (LOCAL_65816_M()) {                                   \
+          reg_a = (reg_a & 0xff00) | ((reg_a | value) & 0xff); \
+      } else {                                                 \
+          reg_a |= value;                                      \
+      }                                                        \
+      LOCAL_SET_NZ(reg_a, LOCAL_65816_M());                    \
+      CLK_ADD(CLK, (clk_inc));                                 \
+      INC_PC(pc_inc);                                          \
   } while (0)
 
 #define NOOP(clk_inc, pc_inc) \
@@ -1788,8 +1794,6 @@ trap_skipped:
 
         switch (p0) {
 
-          case 0x03:            /* 1 byte, 1 cycle NOP */
-          case 0x13:            /* 1 byte, 1 cycle NOP */
           case 0x23:            /* 1 byte, 1 cycle NOP */
           case 0x33:            /* 1 byte, 1 cycle NOP */
           case 0x43:            /* 1 byte, 1 cycle NOP */
@@ -1840,7 +1844,7 @@ trap_skipped:
             break;
 
           case 0x01:            /* ORA ($nn,X) */
-            ORA(LOAD_IND_X(p1), 1, 2);
+            ORA(LOAD_INDIRECT_X(p1, LOCAL_65816_M()), 1, 2);
             break;
 
           case 0x02:            /* NOP #$nn - also used for traps */
@@ -1848,20 +1852,24 @@ trap_skipped:
             NOP_02();
             break;
 
+          case 0x03:            /* ORA $nn,S */
+            ORA(LOAD_STACK_REL(p1, LOCAL_65816_M()), 2, 2);
+            break;
+
           case 0x04:            /* TSB $nn */
             TSB(p1, CLK_ZERO_RMW, 2, LOAD_ZERO, STORE_ABS);
             break;
 
           case 0x05:            /* ORA $nn */
-            ORA(LOAD_ZERO(p1), 1, 2);
+            ORA(LOAD_DIRECT_PAGE(p1, LOCAL_65816_M()), 1, 2);
             break;
 
           case 0x06:            /* ASL $nn */
             ASL(p1, CLK_ZERO_RMW, 2, LOAD_ZERO, STORE_ABS);
             break;
 
-          case 0x07:            /* RMB0 $nn (65C02) / single byte, single cycle NOP (65SC02) */
-            RMB(p1, 0);
+          case 0x07:            /* ORA [$nn] */
+            ORA(LOAD_INDIRECT_LONG(p1, LOCAL_65816_M(), 0, 2);
             break;
 
           case 0x08:            /* PHP */
@@ -1869,7 +1877,7 @@ trap_skipped:
             break;
 
           case 0x09:            /* ORA #$nn */
-            ORA(p1, 0, 2);
+            ORA((LOCAL_65816_M()) ? p1 : p2, 0, 2);
             break;
 
           case 0x0a:            /* ASL A */
@@ -1885,15 +1893,15 @@ trap_skipped:
             break;
 
           case 0x0d:            /* ORA $nnnn */
-            ORA(LOAD(p2), 1, 3);
+            ORA(LOAD_ABS(p2, LOCAL_65816_M()), 1, 3);
             break;
 
           case 0x0e:            /* ASL $nnnn */
             ASL(p2, CLK_ABS_RMW2, 3, LOAD_ABS, STORE_ABS);
             break;
 
-          case 0x0f:            /* BBR0 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
-            BBR(0, p1, p2 >> 8);
+          case 0x0f:            /* ORA $nnnnnn */
+            ORA(LOAD_ABS_LONG(p3, LOCAL_65816_M()), 1, 4);
             break;
 
           case 0x10:            /* BPL $nnnn */
@@ -1901,11 +1909,15 @@ trap_skipped:
             break;
 
           case 0x11:            /* ORA ($nn),Y */
-            ORA(LOAD_IND_Y(p1), 1, 2);
+            ORA(LOAD_INDIRECT_Y(p1, LOCAL_65816_M()), 0, 2);
             break;
 
           case 0x12:            /* ORA ($nn) */
-            ORA(LOAD_INDIRECT(p1), 1, 2);
+            ORA(LOAD_INDIRECT(p1, LOCAL_65816_M()), 0, 2);
+            break;
+
+          case 0x13:            /* ORA ($nn,S),Y */
+            ORA(LOAD_STACK_REL_Y(p1, LOCAL_65816_M()), 5, 2);
             break;
 
           case 0x14:            /* TRB $nn */
@@ -1913,15 +1925,15 @@ trap_skipped:
             break;
 
           case 0x15:            /* ORA $nn,X */
-            ORA(LOAD_ZERO_X(p1), CLK_ZERO_I2, 2);
+            ORA(LOAD_DIRECT_PAGE_X(p1, LOCAL_65816_M()), CLK_ZERO_I2, 2);
             break;
 
           case 0x16:            /* ASL $nn,X */
             ASL((p1 + reg_x) & 0xff, CLK_ZERO_I_RMW, 2, LOAD_ZERO, STORE_ABS);
             break;
 
-          case 0x17:            /* RMB1 $nn (65C02) / single byte, single cycle NOP (65SC02) */
-            RMB(p1, 1);
+          case 0x17:            /* ORA [$nn],Y */
+            ORA(LOAD_INDIRECT_LONG_Y(p1, LOCAL_65816_M()), 0, 2);
             break;
 
           case 0x18:            /* CLC */
@@ -1929,7 +1941,7 @@ trap_skipped:
             break;
 
           case 0x19:            /* ORA $nnnn,Y */
-            ORA(LOAD_ABS_Y(p2), 1, 3);
+            ORA(LOAD_ABS_Y(p2, LOCAL_65816_M()), 1, 3);
             break;
 
           case 0x1a:            /* INA */
@@ -1945,15 +1957,15 @@ trap_skipped:
             break;
 
           case 0x1d:            /* ORA $nnnn,X */
-            ORA(LOAD_ABS_X(p2), 1, 3);
+            ORA(LOAD_ABS_X(p2, LOCAL_65816_M()), 1, 3);
             break;
 
           case 0x1e:            /* ASL $nnnn,X */
             ASL(p2, CLK_ABS_I_RMW2, 3, LOAD_ABS_X, STORE_ABS_X_RMW);
             break;
 
-          case 0x1f:            /* BBR1 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
-            BBR(1, p1, p2 >> 8);
+          case 0x1f:            /* ORA $nnnnnn,X */
+            ORA(LOAD_ABS_LONG_X(p3, LOCAL_65816_M()), 1, 4);
             break;
 
           case 0x20:            /* JSR $nnnn */
