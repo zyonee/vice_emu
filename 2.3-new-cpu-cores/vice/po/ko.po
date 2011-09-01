@@ -4327,15 +4327,15 @@ msgstr ""
 
 #: src/arch/unix/x11/xaw/uiedisk.c:182
 msgid "Couldn't create disk image"
-msgstr ""
+msgstr "디스크 이미지를 생성하지 못하였습니다"
 
 #: src/arch/unix/x11/xaw/uiedisk.c:299
 msgid "Disk format:"
-msgstr ""
+msgstr "디스크 포멧:"
 
 #: src/arch/unix/x11/xaw/uiscreenshot.c:279
 msgid "Screen Snapshot"
-msgstr ""
+msgstr "스크린 스냅샷"
 
 #: src/arch/unix/x11/xaw/x11ui.c:998
 msgid "recording"
@@ -4348,23 +4348,23 @@ msgstr "%d: 트랙 %.1f"
 
 #: src/arch/unix/x11/xaw/x11video.c:191 src/arch/unix/x11/xaw/x11video.c:284
 msgid "Aspect ratio"
-msgstr ""
+msgstr "애스펙트 비율"
 
 #: src/arch/unix/x11/xaw/x11video.c:193
 msgid "Custom aspect ratio"
-msgstr ""
+msgstr "커스텀 애스펙트 비율"
 
 #: src/arch/unix/x11/xaw/x11video.c:258
 msgid "Call `XSync()' after updating the emulation window"
-msgstr ""
+msgstr "에뮬레이터 윈도우를 업데이트한후 'XSync()' 를 부르세요"
 
 #: src/arch/unix/x11/xaw/x11video.c:263
 msgid "Do not call `XSync()' after updating the emulation window"
-msgstr ""
+msgstr "에뮬레이터 윈도우를 업데이트한후 'XSync()' 를  부르지 마세요"
 
 #: src/arch/unix/x11/xaw/x11video.c:268
 msgid "Use shared memory"
-msgstr ""
+msgstr "공유된 메모리를 사용하세요"
 
 #: src/arch/unix/x11/xaw/x11video.c:273
 msgid "Never use shared memory (slower)"
@@ -4376,116 +4376,116 @@ msgstr "4글자 코드"
 
 #: src/arch/unix/x11/xaw/x11video.c:279
 msgid "Request YUV FOURCC format"
-msgstr ""
+msgstr "YUV FOURCC 포멧을 요청하세요"
 
 #: src/arch/unix/x11/xaw/x11video.c:284
 msgid "Set aspect ratio (0.5 - 2.0)"
-msgstr ""
+msgstr "애스펙트 비율을 (0.5 - 0.2) 으로 설정하세요"
 
 #: src/arch/unix/x11/xaw/x11video.c:289 src/arch/unix/macosx/cocoa/video.m:172
 msgid "Enable true aspect ratio"
-msgstr ""
+msgstr "트루 애스펙트 비율을 사용가능케 하세요"
 
 #: src/arch/unix/x11/xaw/x11video.c:294 src/arch/unix/macosx/cocoa/video.m:177
 msgid "Disable true aspect ratio"
-msgstr ""
+msgstr "트루 애스펙트 비율을 사용가능하지 않게 하세요"
 
 #: src/arch/unix/x11/xaw/x11video.c:368
 #, c-format
 msgid "MITSHM extensions version %d.%d detected."
-msgstr ""
+msgstr "MITSHM 확장 버젼 %d.%d 가 확인됬습니다"
 
 #: src/arch/unix/x11/xaw/x11video.c:639
 msgid "MITSHM initialization succeed.\n"
-msgstr ""
+msgstr "MITSHM 초가화 되었습니다.\n"
 
 #: src/arch/unix/macosx/joy.c:304
 msgid "Set HID A device"
-msgstr ""
+msgstr "HID A 디바이스를 설정하세요"
 
 #: src/arch/unix/macosx/joy.c:309
 msgid "Set X Axis for HID A device"
-msgstr ""
+msgstr "X Axis 를 HID A 디바이스에 설정하세요"
 
 #: src/arch/unix/macosx/joy.c:314
 msgid "Set Y Axis for HID A device"
-msgstr ""
+msgstr "Y Axis 를 HID A 디바이스에 설정하세요"
 
 #: src/arch/unix/macosx/joy.c:319
 msgid "Set Buttons for HID A device"
-msgstr ""
+msgstr "버튼을 HID A 디바이스에 설정하세요"
 
 #: src/arch/unix/macosx/joy.c:324
 msgid "Set Auto Fire Buttons for HID A device"
-msgstr ""
+msgstr "오토 파이어 버튼을 HID A 디바이스에 설정하세요"
 
 #: src/arch/unix/macosx/joy.c:329
 msgid "Set X Axis Threshold in Percent of HID A device"
-msgstr ""
+msgstr "X Axis 한계점을 HID A 디바이스 의 퍼센트로 설정하세요"
 
 #: src/arch/unix/macosx/joy.c:334
 msgid "Set Y Axis Threshold in Percent of HID A device"
-msgstr ""
+msgstr "Y Axis 한계점을 HID A 디바이스 의 퍼센트로 설정하세요"
 
 #: src/arch/unix/macosx/joy.c:339
 msgid "Set HID B device"
-msgstr ""
+msgstr "HID B 디바이스를 설정하세요"
 
 #: src/arch/unix/macosx/joy.c:344
 msgid "Set X Axis for HID B device"
-msgstr ""
+msgstr "X Axis 를 HID B 디바이스에 설정하세요"
 
 #: src/arch/unix/macosx/joy.c:349
 msgid "Set Y Axis for HID B device"
-msgstr ""
+msgstr "Y Axis 를 HID B 디바이스에 설정하세요"
 
 #: src/arch/unix/macosx/joy.c:354
 msgid "Set Buttons for HID B device"
-msgstr ""
+msgstr "버튼을 HID B 디바이스에 설정하세요"
 
 #: src/arch/unix/macosx/joy.c:359
 msgid "Set Auto Fire Buttons for HID B device"
-msgstr ""
+msgstr "오토 파이어 버튼을 HID B 디바이스에 설정하세요"
 
 #: src/arch/unix/macosx/joy.c:364
 msgid "Set X Axis Threshold in Percent of HID B device"
-msgstr ""
+msgstr "X Axis 한계점을 HID B 디바이스 의 퍼센트로 설정하세요"
 
 #: src/arch/unix/macosx/joy.c:369
 msgid "Set Y Axis Threshold in Percent of HID B device"
-msgstr ""
+msgstr "Y Axis 한계점을 HID B 디바이스 의 퍼센트로 설정하세요"
 
 #: src/arch/unix/macosx/joy.c:374
 msgid "Set Hat Switch for Joystick of HID A device"
-msgstr ""
+msgstr "햇 스위치 를 HID A 디바이스 조이스틱에 설정하세요"
 
 #: src/arch/unix/macosx/joy.c:379
 msgid "Set Hat Switch for Joystick of HID B device"
-msgstr ""
+msgstr "햇 스위치 를 HID B 디바이스 조이스틱에 설정하세요"
 
 #: src/arch/unix/macosx/mididrv.c:120
 msgid "Name of MIDI Client"
-msgstr ""
+msgstr "미디 클라이언트 이름"
 
 #: src/arch/unix/macosx/mididrv.c:125
 msgid "Name of MIDI-In Port"
-msgstr ""
+msgstr "미디 인 포트 이름"
 
 #: src/arch/unix/macosx/mididrv.c:130
 msgid "Name of MIDI-Out Port"
-msgstr ""
+msgstr "미디 아웃 포트 이름"
 
 #: src/arch/unix/macosx/cocoa/mousedrv.m:74
 msgid "Set scaling factor for mouse movement along X"
-msgstr ""
+msgstr "계수 인자 를 마우스 움직임 X 에 설정하세요"
 
 #: src/arch/unix/macosx/cocoa/mousedrv.m:79
 msgid "Set scaling factor for mouse movement along Y"
-msgstr ""
+msgstr "계수 인자 를 마우스 움직임 Y 에 설정하세요"
 
 #: src/arch/unix/macosx/cocoa/video.m:152
 msgid "Enable draw synchronization to vertical blank"
-msgstr ""
+msgstr "수직으로 빈곳에 드로우 도이화를 하세요"
 
 #: src/arch/unix/macosx/cocoa/video.m:157
 msgid "Set number of buffers used for sync draw (0=use default)"
@@ -4494,7 +4494,7 @@ msgstr ""
 #: src/arch/unix/macosx/cocoa/video.m:162
 #: src/arch/unix/macosx/cocoa/video.m:167
 msgid "Enable flicker fixing in sync draw"
-msgstr ""
+msgstr "드로우 동기화에 플릭커 픽싱을 사용합니다"
 
 #: src/arch/win32/res.rc.po.c:104 src/arch/win32/res.rc.po.c:1378
 msgid "View"
@@ -4515,7 +4515,7 @@ msgstr "VICE"
 
 #: src/arch/win32/res.rc.po.c:180
 msgid "Versatile Commodore Emulator"
-msgstr ""
+msgstr "버사타일 코모도올 에뮬레이터"
 
 #: src/arch/win32/res.rc.po.c:181
 msgid "Version 0.0"
@@ -4581,11 +4581,11 @@ msgstr " "
 
 #: src/arch/win32/res.rc.po.c:963 src/arch/amigaos/intl_text.c.po.c:3498
 msgid "VICE Question"
-msgstr ""
+msgstr "VICE 질문"
 
 #: src/arch/win32/res.rc.po.c:964
 msgid "Your ffmpeg dll version doesn't match."
-msgstr ""
+msgstr "ffmpeg dll 버전이 일치하지 않습니다"
 
 #: src/arch/win32/res.rc.po.c:965
 #, c-format
@@ -4594,15 +4594,15 @@ msgstr ""
 
 #: src/arch/win32/res.rc.po.c:967 src/arch/amigaos/intl_text.c.po.c:3066
 msgid "Cannot load settings."
-msgstr ""
+msgstr "셋팅을 불러올수 없습니다."
 
 #: src/arch/win32/res.rc.po.c:968 src/arch/amigaos/intl_text.c.po.c:2970
 msgid "Default settings restored."
-msgstr ""
+msgstr "디폴트 셋팅 이 회복되었습니다."
 
 #: src/arch/win32/res.rc.po.c:969 src/arch/amigaos/intl_text.c.po.c:3126
 msgid "Cannot attach specified file"
-msgstr ""
+msgstr "명시하신 파일을 붙이지 못했습니다"
 
 #: src/arch/win32/res.rc.po.c:970
 #, c-format
@@ -4614,25 +4614,25 @@ msgstr ""
 
 #: src/arch/win32/res.rc.po.c:971
 msgid "VICE CPU JAM"
-msgstr ""
+msgstr "VICE CPU JAM"
 
 #: src/arch/win32/res.rc.po.c:972 src/arch/amigaos/intl_text.c.po.c:3510
 msgid "Extend image to 40-track format?"
-msgstr ""
+msgstr "이미지를 40-트랙포멧으로 확장 합니다?"
 
 #: src/arch/win32/res.rc.po.c:973
 #, c-format
 msgid "Detached device %s"
-msgstr ""
+msgstr "디바이스 %s 를 때어냅니다"
 
 #: src/arch/win32/res.rc.po.c:974
 #, c-format
 msgid "Attached %s to device#%s"
-msgstr ""
+msgstr "%s 를 디바이스 #%s 에 붙이세요"
 
 #: src/arch/win32/res.rc.po.c:975 src/arch/amigaos/intl_text.c.po.c:3534
 msgid "Detached tape"
-msgstr ""
+msgstr "떄어낸 테입"
 
 #: src/arch/win32/res.rc.po.c:976
 msgid "History recorded with unknown release"
@@ -4641,11 +4641,11 @@ msgstr ""
 #: src/arch/win32/res.rc.po.c:977
 #, c-format
 msgid "History recorded with VICE-%s"
-msgstr ""
+msgstr "히스토리가 VICE-%s 으로 저장되었습니다"
 
 #: src/arch/win32/res.rc.po.c:978
 msgid "paused"
-msgstr ""
+msgstr "일지정지됨"
 
 #: src/arch/win32/res.rc.po.c:979
 msgid "frame #"
@@ -4660,7 +4660,7 @@ msgid ""
 "Do you really want to exit?\n"
 "\n"
 "All the data present in the emulated RAM will be lost."
-msgstr ""
+msgstr "정말 나가시겠습니까?\n\n에뮬레이트된 모든 RAM 파일이 없어질겄입니다."
 
 #: src/arch/win32/res.rc.po.c:982
 msgid ""
@@ -4675,16 +4675,16 @@ msgstr ""
 
 #: src/arch/win32/res.rc.po.c:983
 msgid "TFE/RR-Net support"
-msgstr ""
+msgstr "TFE/RR-Net 써포트"
 
 #: src/arch/win32/res.rc.po.c:984 src/arch/amigaos/intl_text.c.po.c:3114
 msgid "Cannot autostart specified file."
-msgstr ""
+msgstr "명시된 파일을 자동 실행 할수없습니다."
 
 #: src/arch/win32/res.rc.po.c:985 src/arch/amigaos/intl_text.c.po.c:3546
 #, c-format
 msgid "Attached tape %s"
-msgstr ""
+msgstr "붙여진 테이프 %s"
 
 #: src/arch/win32/res.rc.po.c:987 src/arch/amigaos/intl_text.c.po.c:2958
 msgid "Settings loaded successfully."
