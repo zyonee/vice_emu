@@ -784,15 +784,21 @@ LOAD_DBR(addr) \
       LOCAL_SET_OVERFLOW(0); \
   } while (0)
 
-#define CMP(value, clk_inc, pc_inc) \
-  do {                              \
-      unsigned int tmp;             \
-                                    \
-      tmp = reg_a - (value);        \
-      LOCAL_SET_CARRY(tmp < 0x100); \
-      LOCAL_SET_NZ(tmp & 0xff);     \
-      CLK_ADD(CLK, (clk_inc));      \
-      INC_PC(pc_inc);               \
+#define CMP(value, clk_inc, pc_inc)       \
+  do {                                    \
+      unsigned int tmp;                   \
+                                          \
+      if (LOCAL_65816_M()) {              \
+          tmp = (reg_a & 0xff) - value;   \
+          LOCAL_SET_CARRY(tmp < 0x100);   \
+          LOCAL_SET_NZ(tmp & 0xff, 1);    \
+      } else {                            \
+          tmp = reg_a - value;            \
+          LOCAL_SET_CARRY(tmp < 0x10000); \
+          LOCAL_SET_NZ(tmp & 0xffff, 0);  \
+      }                                   \
+      CLK_ADD(CLK, (clk_inc));            \
+      INC_PC(pc_inc);                     \
   } while (0)
 
 #define CPX(value, clk_inc, pc_inc) \
@@ -1862,8 +1868,6 @@ trap_skipped:
 
           case 0x83:            /* 1 byte, 1 cycle NOP */
           case 0x93:            /* 1 byte, 1 cycle NOP */
-          case 0xc3:            /* 1 byte, 1 cycle NOP */
-          case 0xd3:            /* 1 byte, 1 cycle NOP */
           case 0xe3:            /* 1 byte, 1 cycle NOP */
           case 0xf3:            /* 1 byte, 1 cycle NOP */
             NOOP_IMM(1);
@@ -2635,7 +2639,11 @@ trap_skipped:
             break;
 
           case 0xc1:            /* CMP ($nn,X) */
-            CMP(LOAD_IND_X(p1), 1, 2);
+            CMP(LOAD_INDIRECT_X(p1, LOCAL_65816_M()), 1, 2);
+            break;
+
+          case 0xc3:            /* CMP $nn,S */
+            CMP(LOAD_STACK_REL(p1, LOCAL_65816_M()), 2, 2);
             break;
 
           case 0xc4:            /* CPY $nn */
@@ -2643,15 +2651,15 @@ trap_skipped:
             break;
 
           case 0xc5:            /* CMP $nn */
-            CMP(LOAD_ZERO(p1), 1, 2);
+            CMP(LOAD_DIRECT_PAGE(p1, LOCAL_65816_M()), 1, 2);
             break;
 
           case 0xc6:            /* DEC $nn */
             DEC(p1, CLK_ZERO_RMW, 2, LOAD_ZERO, STORE_ABS);
             break;
 
-          case 0xc7:            /* SMB4 $nn (65C02) / single byte, single cycle NOP (65SC02) */
-            SMB(p1, 4);
+          case 0xc7:            /* CMP [$nn] */
+            CMP(LOAD_INDIRECT_LONG(p1, LOCAL_65816_M()), 0, 2);
             break;
 
           case 0xc8:            /* INY */
@@ -2659,7 +2667,7 @@ trap_skipped:
             break;
 
           case 0xc9:            /* CMP #$nn */
-            CMP(p1, 0, 2);
+            CMP((LOCAL_65816_M()) ? p1 : p2, 0, 2);
             break;
 
           case 0xca:            /* DEX */
@@ -2675,15 +2683,15 @@ trap_skipped:
             break;
 
           case 0xcd:            /* CMP $nnnn */
-            CMP(LOAD(p2), 1, 3);
+            CMP(LOAD_ABS(p2, LOCAL_65816_M()), 1, 3);
             break;
 
           case 0xce:            /* DEC $nnnn */
             DEC(p2, CLK_ABS_RMW2, 3, LOAD_ABS, STORE_ABS);
             break;
 
-          case 0xcf:            /* BBS4 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
-            BBS(4, p1, p2 >> 8);
+          case 0xcf:            /* CMP $nnnnnn */
+            CMP(LOAD_ABS_LONG(p3), 1, 4);
             break;
 
           case 0xd0:            /* BNE $nnnn */
@@ -2691,23 +2699,27 @@ trap_skipped:
             break;
 
           case 0xd1:            /* CMP ($nn),Y */
-            CMP(LOAD_IND_Y(p1), 1, 2);
+            CMP(LOAD_IND_IRECTY(p1, LOCAL_65816_M()), 0, 2);
             break;
 
           case 0xd2:            /* CMP ($nn) */
-            CMP(LOAD_INDIRECT(p1), 1, 2);
+            CMP(LOAD_INDIRECT(p1, LOCAL_65816_M()), 0, 2);
+            break;
+
+          case 0xd3:            /* CMP ($nn,S),Y */
+            CMP(LOAD_STACK_REL_Y(p1, LOCAL_65816_M()), 5, 2);
             break;
 
           case 0xd5:            /* CMP $nn,X */
-            CMP(LOAD_ZERO_X(p1), CLK_ZERO_I2, 2);
+            CMP(LOAD_DIRECT_PAGE_X(p1, LOCAL_65816_M()), CLK_ZERO_I2, 2);
             break;
 
           case 0xd6:            /* DEC $nn,X */
             DEC((p1 + reg_x) & 0xff, CLK_ZERO_I_RMW, 2, LOAD_ABS, STORE_ABS);
             break;
 
-          case 0xd7:            /* SMB5 $nn (65C02) / single byte, single cycle NOP (65SC02) */
-            SMB(p1, 5);
+          case 0xd7:            /* CMP [$nn],Y */
+            CMP(LOAD_INDIRECT_LONG_Y(p1, LOCAL_65816_M()), 0, 2);
             break;
 
           case 0xd8:            /* CLD */
@@ -2715,7 +2727,7 @@ trap_skipped:
             break;
 
           case 0xd9:            /* CMP $nnnn,Y */
-            CMP(LOAD_ABS_Y(p2), 1, 3);
+            CMP(LOAD_ABS_Y(p2, LOCAL_65816_M()), 1, 3);
             break;
 
           case 0xda:            /* PHX */
@@ -2727,15 +2739,15 @@ trap_skipped:
             break;
 
           case 0xdd:            /* CMP $nnnn,X */
-            CMP(LOAD_ABS_X(p2), 1, 3);
+            CMP(LOAD_ABS_X(p2, LOCAL_65816_M()), 1, 3);
             break;
 
           case 0xde:            /* DEC $nnnn,X */
             DEC(p2, CLK_ABS_I_RMW2, 3, LOAD_ABS_X_RMW, STORE_ABS_X_RMW);
             break;
 
-          case 0xdf:            /* BBS5 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
-            BBS(5, p1, p2 >> 8);
+          case 0xdf:            /* CMP $nnnnnn,X */
+            CMP(LOAD_ABS_LONG_X(p3, LOCAL_65816_M()), 1, 4);
             break;
 
           case 0xe0:            /* CPX #$nn */
