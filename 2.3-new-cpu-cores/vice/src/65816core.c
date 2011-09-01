@@ -677,6 +677,20 @@ LOAD_DBR(addr) \
       }                                                         \
   } while (0)
 
+#define BIT_IMM(value, clk_inc, pc_inc)            \
+  do {                                             \
+      unsigned int tmp;                            \
+                                                   \
+      tmp = (value);                               \
+      CLK_ADD(CLK, clk_inc);                       \
+      if (LOCAL_65816_M()) {                       \
+          LOCAL_SET_ZERO(!(tmp & (reg_a & 0xff))); \
+      } else {                                     \
+          LOCAL_SET_ZERO(!(tmp & reg_a));          \
+      }                                            \
+      INC_PC(pc_inc);                              \
+  } while (0)
+
 #define BIT(value, clk_inc, pc_inc)                \
   do {                                             \
       unsigned int tmp;                            \
@@ -977,12 +991,12 @@ LOAD_DBR(addr) \
       INC_PC(pc_inc);               \
   } while (0)
 
-#define LDY(value, clk_inc, pc_inc) \
-  do {                              \
-      reg_y = (BYTE)(value);        \
-      LOCAL_SET_NZ(reg_y);          \
-      CLK_ADD(CLK, (clk_inc));      \
-      INC_PC(pc_inc);               \
+#define LDY(value, clk_inc, pc_inc)         \
+  do {                                      \
+      reg_y = value;                        \
+      LOCAL_SET_NZ(reg_y, LOCAL_65816_X()); \
+      CLK_ADD(CLK, (clk_inc));              \
+      INC_PC(pc_inc);                       \
   } while (0)
 
 #define LSR(addr, clk_inc, pc_inc, load_func, store_func) \
@@ -2394,7 +2408,7 @@ trap_skipped:
             break;
 
           case 0x89:            /* BIT #$nn */
-            BIT((LOCAL_65816_M()) ? p1 : p2, 0, 2);
+            BIT_IMM((LOCAL_65816_M()) ? p1 : p2, 0, 2);
             break;
 
           case 0x8a:            /* TXA */
@@ -2482,7 +2496,7 @@ trap_skipped:
             break;
 
           case 0xa0:            /* LDY #$nn */
-            LDY(p1, 0, 2);
+            LDY((LOCAL_65816_X()) ? p1 : p2, 0, 2);
             break;
 
           case 0xa1:            /* LDA ($nn,X) */
@@ -2494,7 +2508,7 @@ trap_skipped:
             break;
 
           case 0xa4:            /* LDY $nn */
-            LDY(LOAD_ZERO(p1), 1, 2);
+            LDY(LOAD_DIRECT_PAGE(p1, LOCAL_65816_X()), 1, 2);
             break;
 
           case 0xa5:            /* LDA $nn */
@@ -2526,7 +2540,7 @@ trap_skipped:
             break;
 
           case 0xac:            /* LDY $nnnn */
-            LDY(LOAD(p2), 1, 3);
+            LDY(LOAD_ABS(p2, LOCAL_65816_X()), 1, 3);
             break;
 
           case 0xad:            /* LDA $nnnn */
@@ -2554,7 +2568,7 @@ trap_skipped:
             break;
 
           case 0xb4:            /* LDY $nn,X */
-            LDY(LOAD_ZERO_X(p1), CLK_ZERO_I2, 2);
+            LDY(LOAD_DIRECT_PAGE_X(p1, LOCAL_65816_X()), CLK_ZERO_I2, 2);
             break;
 
           case 0xb5:            /* LDA $nn,X */
@@ -2586,7 +2600,7 @@ trap_skipped:
             break;
 
           case 0xbc:            /* LDY $nnnn,X */
-            LDY(LOAD_ABS_X(p2), 1, 3);
+            LDY(LOAD_ABS_X(p2, LOCAL_65816_X()), 1, 3);
             break;
 
           case 0xbd:            /* LDA $nnnn,X */
