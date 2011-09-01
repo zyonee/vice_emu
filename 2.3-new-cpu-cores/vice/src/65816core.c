@@ -983,12 +983,12 @@ LOAD_DBR(addr) \
       INC_PC(pc_inc);               \
   } while (0)
 
-#define LDX(value, clk_inc, pc_inc) \
-  do {                              \
-      reg_x = (BYTE)(value);        \
-      LOCAL_SET_NZ(reg_x);          \
-      CLK_ADD(CLK, (clk_inc));      \
-      INC_PC(pc_inc);               \
+#define LDX(value, clk_inc, pc_inc)         \
+  do {                                      \
+      reg_x = value;                        \
+      LOCAL_SET_NZ(reg_x, LOCAL_65816_X()); \
+      CLK_ADD(CLK, (clk_inc));              \
+      INC_PC(pc_inc);                       \
   } while (0)
 
 #define LDY(value, clk_inc, pc_inc)         \
@@ -2504,7 +2504,7 @@ trap_skipped:
             break;
 
           case 0xa2:            /* LDX #$nn */
-            LDX(p1, 0, 2);
+            LDX((LOCAL_65816_X()) ? p1 : p2, 0, 2);
             break;
 
           case 0xa4:            /* LDY $nn */
@@ -2516,7 +2516,7 @@ trap_skipped:
             break;
 
           case 0xa6:            /* LDX $nn */
-            LDX(LOAD_ZERO(p1), 1, 2);
+            LDX(LOAD_DIRECT_PAGE(p1, LOCAL_65816_X()), 1, 2);
             break;
 
           case 0xa7:            /* SMB2 $nn (65C02) / single byte, single cycle NOP (65SC02) *
@@ -2548,7 +2548,7 @@ trap_skipped:
             break;
 
           case 0xae:            /* LDX $nnnn */
-            LDX(LOAD(p2), 1, 3);
+            LDX(LOAD_ABS(p2, LOCAL_65816_X()), 1, 3);
             break;
 
           case 0xaf:            /* BBS2 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
@@ -2576,7 +2576,7 @@ trap_skipped:
             break;
 
           case 0xb6:            /* LDX $nn,Y */
-            LDX(LOAD_ZERO_Y(p1), CLK_ZERO_I2, 2);
+            LDX(LOAD_DIRECT_PAGE_Y(p1, LOCAL_65816_X()), CLK_ZERO_I2, 2);
             break;
 
           case 0xb7:            /* SMB3 $nn (65C02) / single byte, single cycle NOP (65SC02) */
@@ -2608,7 +2608,7 @@ trap_skipped:
             break;
 
           case 0xbe:            /* LDX $nnnn,Y */
-            LDX(LOAD_ABS_Y(p2), 1, 3);
+            LDX(LOAD_ABS_Y(p2, LOCAL_65816_X()), 1, 3);
             break;
 
           case 0xbf:            /* BBS3 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
