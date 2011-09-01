@@ -811,12 +811,16 @@ LOAD_DBR(addr) \
       INC_PC(1);                            \
   } while (0)
 
-#define EOR(value, clk_inc, pc_inc)    \
-  do {                                 \
-      reg_a = (BYTE)(reg_a ^ (value)); \
-      LOCAL_SET_NZ(reg_a);             \
-      CLK_ADD(CLK, (clk_inc));         \
-      INC_PC(pc_inc);                  \
+#define EOR(value, clk_inc, pc_inc)                            \
+  do {                                                         \
+      if (LOCAL_65816_M()) {                                   \
+          reg_a = (reg_a & 0xff00) | ((reg_a ^ value) & 0xff); \
+      } else {                                                 \
+          reg_a = reg_a ^ value;                               \
+      }                                                        \
+      LOCAL_SET_NZ(reg_a, LOCAL_65816_M());                    \
+      CLK_ADD(CLK, (clk_inc));                                 \
+      INC_PC(pc_inc);                                          \
   } while (0)
 
 #define INA()                                              \
@@ -1798,8 +1802,6 @@ trap_skipped:
 
         switch (p0) {
 
-          case 0x43:            /* 1 byte, 1 cycle NOP */
-          case 0x53:            /* 1 byte, 1 cycle NOP */
           case 0x63:            /* 1 byte, 1 cycle NOP */
           case 0x73:            /* 1 byte, 1 cycle NOP */
           case 0x83:            /* 1 byte, 1 cycle NOP */
@@ -2003,7 +2005,7 @@ trap_skipped:
             break;
 
           case 0x29:            /* AND #$nn */
-            AND(p1, 0, 2);
+            AND((LOCAL_65816_M()) ? p1 : p2, 0, 2);
             break;
 
           case 0x2a:            /* ROL A */
@@ -2099,19 +2101,23 @@ trap_skipped:
             break;
 
           case 0x41:            /* EOR ($nn,X) */
-            EOR(LOAD_IND_X(p1), 1, 2);
+            EOR(LOAD_INDIRECT_X(p1, LOCAL_65816_M()), 1, 2);
+            break;
+
+          case 0x43:            /* EOR $nn,S */
+            EOR(LOAD_STACK_REL(p1, LOCAL_65816_M()), 2, 2);
             break;
 
           case 0x45:            /* EOR $nn */
-            EOR(LOAD_ZERO(p1), 1, 2);
+            EOR(LOAD_DIRECT_PAGE(p1, LOCAL_65816_M()), 1, 2);
             break;
 
           case 0x46:            /* LSR $nn */
             LSR(p1, CLK_ZERO_RMW, 2, LOAD_ZERO, STORE_ABS);
             break;
 
-          case 0x47:            /* RMB4 $nn (65C02) / single byte, single cycle NOP (65SC02) */
-            RMB(p1, 4);
+          case 0x47:            /* EOR [$nn] */
+            EOR(LOAD_INDIRECT_LONG(p1, LOCAL_65816_M()), 0, 2);
             break;
 
           case 0x48:            /* PHA */
@@ -2119,7 +2125,7 @@ trap_skipped:
             break;
 
           case 0x49:            /* EOR #$nn */
-            EOR(p1, 0, 2);
+            EOR((LOCAL_65816_M()) ? p1 : p2, 0, 2);
             break;
 
           case 0x4a:            /* LSR A */
@@ -2135,15 +2141,15 @@ trap_skipped:
             break;
 
           case 0x4d:            /* EOR $nnnn */
-            EOR(LOAD(p2), 1, 3);
+            EOR(LOAD_ABS(p2, LOCAL_65816_M()), 1, 3);
             break;
 
           case 0x4e:            /* LSR $nnnn */
             LSR(p2, CLK_ABS_RMW2, 3, LOAD_ABS, STORE_ABS);
             break;
 
-          case 0x4f:            /* BBR4 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
-            BBR(4, p1, p2 >> 8);
+          case 0x4f:            /* EOR $nnnnnn */
+            EOR(LOAD_ABS_LONG(p3), 1, 4);
             break;
 
           case 0x50:            /* BVC $nnnn */
@@ -2151,23 +2157,27 @@ trap_skipped:
             break;
 
           case 0x51:            /* EOR ($nn),Y */
-            EOR(LOAD_IND_Y(p1), 1, 2);
+            EOR(LOAD_INDIRECT_Y(p1, LOCAL_65816_M()), 0, 2);
             break;
 
           case 0x52:            /* EOR ($nn) */                                                                                   
-            EOR(LOAD_INDIRECT(p1), 1, 2);                                                                                              
+            EOR(LOAD_INDIRECT(p1, LOCAL_65816_M()), 0, 2);                                                                                              
+            break;
+
+          case 0x53:            /* EOR ($nn,S),Y */
+            EOR(LOAD_STACK_REL_Y(p1, LOCAL_65816_M()), 5, 2);
             break;
 
           case 0x55:            /* EOR $nn,X */
-            EOR(LOAD_ZERO_X(p1), CLK_ZERO_I2, 2);
+            EOR(LOAD_DIRECT_PAGE_X(p1, LOCAL_65816_M()), CLK_ZERO_I2, 2);
             break;
 
           case 0x56:            /* LSR $nn,X */
             LSR((p1 + reg_x) & 0xff, CLK_ZERO_I_RMW, 2, LOAD_ZERO, STORE_ABS);
             break;
 
-          case 0x57:            /* RMB5 $nn (65C02) / single byte, single cycle NOP (65SC02) */
-            RMB(p1, 5);
+          case 0x57:            /* EOR [$nn],Y */
+            EOR(LOAD_INDIRECT_LONG_Y(p1, LOCAL_65816_M()), 0, 2);
             break;
 
           case 0x58:            /* CLI */
@@ -2175,7 +2185,7 @@ trap_skipped:
             break;
 
           case 0x59:            /* EOR $nnnn,Y */
-            EOR(LOAD_ABS_Y(p2), 1, 3);
+            EOR(LOAD_ABS_Y(p2, LOCAL_65816_M()), 1, 3);
             break;
 
           case 0x5a:            /* PHY */
@@ -2187,15 +2197,15 @@ trap_skipped:
             break;
 
           case 0x5d:            /* EOR $nnnn,X */
-            EOR(LOAD_ABS_X(p2), 1, 3);
+            EOR(LOAD_ABS_X(p2, LOCAL_65816_M()), 1, 3);
             break;
 
           case 0x5e:            /* LSR $nnnn,X */
             LSR(p2, CLK_ABS_I_RMW2, 3, LOAD_ABS_X, STORE_ABS_X_RMW);
             break;
 
-          case 0x5f:            /* BBR5 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
-            BBR(5, p1, p2 >> 8);
+          case 0x5f:            /* EOR $nnnnnn,X */
+            EOR(LOAD_ABS_LONG_X(p3, LOCAL_65816_M()), 1, 4);
             break;
 
           case 0x60:            /* RTS */
