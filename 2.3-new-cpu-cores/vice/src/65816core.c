@@ -555,12 +555,16 @@ LOAD_DBR(addr) \
   } while (0)
 
 
-#define AND(value, clk_inc, pc_inc)    \
-  do {                                 \
-      reg_a = (BYTE)(reg_a & (value)); \
-      LOCAL_SET_NZ(reg_a);             \
-      CLK_ADD(CLK, (clk_inc));         \
-      INC_PC(pc_inc);                  \
+#define AND(value, clk_inc, pc_inc)                            \
+  do {                                                         \
+      if (LOCAL_65816_M()) {                                   \
+          reg_a = (reg_a & 0xff00) | ((reg_a & value) & 0xff); \
+      } else {                                                 \
+          reg_a &= value;                                      \
+      }                                                        \
+      LOCAL_SET_NZ(reg_a, LOCAL_65816_M());                    \
+      CLK_ADD(CLK, (clk_inc));                                 \
+      INC_PC(pc_inc);                                          \
   } while (0)
 
 #define ASL(addr, clk_inc, pc_inc, load_func, store_func) \
@@ -1794,8 +1798,6 @@ trap_skipped:
 
         switch (p0) {
 
-          case 0x23:            /* 1 byte, 1 cycle NOP */
-          case 0x33:            /* 1 byte, 1 cycle NOP */
           case 0x43:            /* 1 byte, 1 cycle NOP */
           case 0x53:            /* 1 byte, 1 cycle NOP */
           case 0x63:            /* 1 byte, 1 cycle NOP */
@@ -1973,7 +1975,11 @@ trap_skipped:
             break;
 
           case 0x21:            /* AND ($nn,X) */
-            AND(LOAD_IND_X(p1), 1, 2);
+            AND(LOAD_INDIRECT_X(p1, LOCAL_65816_M()), 1, 2);
+            break;
+
+          case 0x23:            /* AND $..,S */
+            AND(LOAD_STACK_REL(p1, LOCAL_65816_M()), 2, 2);
             break;
 
           case 0x24:            /* BIT $nn */
@@ -1981,15 +1987,15 @@ trap_skipped:
             break;
 
           case 0x25:            /* AND $nn */
-            AND(LOAD_ZERO(p1), 1, 2);
+            AND(LOAD_DIRECT_PAGE(p1, LOCAL_65816_M()), 1, 2);
             break;
 
           case 0x26:            /* ROL $nn */
             ROL(p1, CLK_ZERO_RMW, 2, LOAD_ZERO, STORE_ABS);
             break;
 
-          case 0x27:            /* RMB2 $nn (65C02) / single byte, single cycle NOP (65SC02) */
-            RMB(p1, 2);
+          case 0x27:            /* AND [$nn] */
+            AND(LOAD_INDIRECT_LONG(p1, LOCAL_65816_M()), 0, 2);
             break;
 
           case 0x28:            /* PLP */
@@ -2013,15 +2019,15 @@ trap_skipped:
             break;
 
           case 0x2d:            /* AND $nnnn */
-            AND(LOAD(p2), 1, 3);
+            AND(LOAD_ABS(p2, LOCAL_65816_M()), 1, 3);
             break;
 
           case 0x2e:            /* ROL $nnnn */
             ROL(p2, CLK_ABS_RMW2, 3, LOAD_ABS, STORE_ABS);
             break;
 
-          case 0x2f:            /* BBR2 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
-            BBR(2, p1, p2 >> 8);
+          case 0x2f:            /* AND $nnnnnn */
+            AND(LOAD_ABS_LONG(p3, LOCAL_65816_M()), 1, 4);
             break;
 
           case 0x30:            /* BMI $nnnn */
@@ -2029,11 +2035,15 @@ trap_skipped:
             break;
 
           case 0x31:            /* AND ($nn),Y */
-            AND(LOAD_IND_Y(p1), 1, 2);
+            AND(LOAD_INDIRECT_Y(p1, LOCAL_65816_M()), 0, 2);
             break;
 
           case 0x32:            /* AND ($nn) */
-            AND(LOAD_INDIRECT(p1), 1, 2);
+            AND(LOAD_INDIRECT(p1, LOCAL_65816_M()), 0, 2);
+            break;
+
+          case 0x33:            /* AND ($nn,S),Y */
+            AND(LOAD_STACK_REL_Y(p1, LOCAL_65816_M(), 5, 2);
             break;
 
           case 0x34:            /* BIT $nn,X */
@@ -2041,15 +2051,15 @@ trap_skipped:
             break;
 
           case 0x35:            /* AND $nn,X */
-            AND(LOAD_ZERO_X(p1), CLK_ZERO_I2, 2);
+            AND(LOAD_DIRECT_PAGE_X(p1, LOCAL_65816_M()), CLK_ZERO_I2, 2);
             break;
 
           case 0x36:            /* ROL $nn,X */
             ROL((p1 + reg_x) & 0xff, CLK_ZERO_I_RMW, 2, LOAD_ZERO, STORE_ABS);
             break;
 
-          case 0x37:            /* RMB3 $nn (65C02) / single byte, single cycle NOP (65SC02) */
-            RMB(p1, 3);
+          case 0x37:            /* AND [$nn],Y */
+            AND(LOAD_INDIRECT_LONG_Y(p1, LOCAL_65816_M()), 0, 2);
             break;
 
           case 0x38:            /* SEC */
@@ -2057,7 +2067,7 @@ trap_skipped:
             break;
 
           case 0x39:            /* AND $nnnn,Y */
-            AND(LOAD_ABS_Y(p2), 1, 3);
+            AND(LOAD_ABS_Y(p2, LOCAL_65816_M()), 1, 3);
             break;
 
           case 0x3a:            /* DEA */
@@ -2073,15 +2083,15 @@ trap_skipped:
             break;
 
           case 0x3d:            /* AND $nnnn,X */
-            AND(LOAD_ABS_X(p2), 1, 3);
+            AND(LOAD_ABS_X(p2, LOCAL_65816_M()), 1, 3);
             break;
 
           case 0x3e:            /* ROL $nnnn,X */
             ROL(p2, CLK_ABS_I_RMW2, 3, LOAD_ABS_X, STORE_ABS_X_RMW);
             break;
 
-          case 0x3f:            /* BBR3 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
-            BBR(3, p1, p2 >> 8);
+          case 0x3f:            /* AND $nnnnnn,X */
+            AND(LOAD_ABS_LONG_X(p3, LOCAL_65816_M()), 1, 4);
             break;
 
           case 0x40:            /* RTI */
