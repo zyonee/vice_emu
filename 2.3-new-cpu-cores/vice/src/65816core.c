@@ -1205,6 +1205,38 @@ LOAD_DBR(addr) \
       INC_PC(1);                            \
   } while (0)
 
+#define REP(mask, v)                    \
+  do {                                  \
+      if (mask & 0x80) {                \
+          LOCAL_SET_SIGN(v);            \
+      }                                 \
+      if (mask & 0x40) {                \
+          LOCAL_SET_OVERFLOW(v);        \
+      }                                 \
+      if ((mask & 0x20) && !reg_emul) { \
+          LOCAL_SET_65816_M(v);         \
+      }                                 \
+      if ((mask & 0x10) && !reg_emul) { \
+          LOCAL_SET_65816_X(v);         \
+      }                                 \
+      if (mask & 0x08) {                \
+          LOCAL_SET_DECIMAL(v);         \
+      }                                 \
+      if (mask & 0x04) {                \
+          LOCAL_SET_INTERRUPT(v);       \
+      }                                 \
+      if (mask & 0x02) {                \
+          LOCAL_SET_ZERO(v);            \
+      }                                 \
+      if (mask & 0x01) {                \
+          LOCAL_SET_CARRY(v);           \
+      }                                 \
+      CLK_ADD(CLK, 1);                  \
+      INC_PC(1);                        \
+  } while (0)
+
+#define REP(mask) REPSEP(mask, 0)
+
 #define RMB(addr, bit)                             \
   do {                                             \
       unsigned int tmp, tmp_addr;                  \
@@ -1377,6 +1409,8 @@ LOAD_DBR(addr) \
       LOCAL_SET_INTERRUPT(1);    \
       INC_PC(1);                 \
   } while (0)
+
+#define SEP(mask) REPSEP(mask, 1)
 
 #define SMB(addr, bit)                            \
   do {                                            \
@@ -1882,8 +1916,6 @@ trap_skipped:
           case 0x42:            /* NOP #$nn */
           case 0x62:            /* NOP #$nn */
           case 0x82:            /* NOP #$nn */
-          case 0xc2:            /* NOP #$nn */
-          case 0xe2:            /* NOP #$nn */
             NOOP_IMM(2);
             break;
 
@@ -2647,6 +2679,10 @@ trap_skipped:
             CMP(LOAD_INDIRECT_X(p1, LOCAL_65816_M()), 1, 2);
             break;
 
+          case 0xc2:            /* REP #$nn */
+            REP(p1);
+            break;
+
           case 0xc3:            /* CMP $nn,S */
             CMP(LOAD_STACK_REL(p1, LOCAL_65816_M()), 2, 2);
             break;
@@ -2761,6 +2797,10 @@ trap_skipped:
 
           case 0xe1:            /* SBC ($nn,X) */
             SBC(LOAD_IND_X(p1), 1, 2);
+            break;
+
+          case 0xe2:            /* SEP #$nn */
+            SEP(p1);
             break;
 
           case 0xe4:            /* CPX $nn */
