@@ -957,24 +957,43 @@ LOAD_DBR(addr) \
       JUMP(addr); \
   } while (0)
 
-#define JMP_IND()                             \
-  do {                                        \
-      WORD dest_addr;                         \
-      dest_addr = LOAD(p2);                   \
-      CLK_ADD(CLK, 1);                        \
-      dest_addr |= (LOAD((p2 + 1) & 0xffff)); \
-      CLK_ADD(CLK, 1);                        \
-      JUMP(dest_addr);                        \
+#define JMP_IND()                                  \
+  do {                                             \
+      WORD dest_addr;                              \
+      dest_addr = LOAD(p2);                        \
+      CLK_ADD(CLK, 1);                             \
+      dest_addr |= (LOAD((p2 + 1) & 0xffff) << 8); \
+      CLK_ADD(CLK, 1);                             \
+      JUMP(dest_addr);                             \
   } while (0)
 
-#define JMP_IND_X()                                   \
-  do {                                                \
-      WORD dest_addr;                                 \
-      dest_addr = LOAD((p2 + reg_x) & 0xffff);        \
-      CLK_ADD(CLK, 1);                                \
-      dest_addr |= (LOAD((p2 + reg_x + 1) & 0xffff)); \
-      CLK_ADD(CLK, 1);                                \
-      JUMP(dest_addr);                                \
+#define JMP_IND_LONG()                             \
+  do {                                             \
+      WORD dest_addr;                              \
+      dest_addr = LOAD(p2);                        \
+      CLK_ADD(CLK, 1);                             \
+      dest_addr |= (LOAD((p2 + 1) & 0xffff) << 8); \
+      CLK_ADD(CLK, 1);                             \
+      reg_pbr = LOAD((p2 + 2) & 0xffff);           \
+      CLK_ADD(CLK, 1);                             \
+      JUMP(dest_addr);                             \
+  } while (0)
+
+#define JMP_IND_X()                                        \
+  do {                                                     \
+      WORD dest_addr;                                      \
+      CLK_ADD(CLK, 1);                                     \
+      dest_addr = LOAD((p2 + reg_x) & 0xffff);             \
+      CLK_ADD(CLK, 1);                                     \
+      dest_addr |= (LOAD((p2 + reg_x + 1) & 0xffff) << 8); \
+      CLK_ADD(CLK, 1);                                     \
+      JUMP(dest_addr);                                     \
+  } while (0)
+
+#define JMP_LONG(addr)      \
+  do {                      \
+      reg_pbr = addr >> 16; \
+      JUMP(addr & 0xffff);  \
   } while (0)
 
 #define JSR()                                \
@@ -1929,13 +1948,8 @@ trap_skipped:
             NOOP(2, 2);
             break;
 
-          case 0xdc:            /* NOP $nnnn,X */
           case 0xfc:            /* NOP $nnnn,X */
             NOOP_ABS_X();
-            break;
-
-          case 0x5c:            /* NOP ??? (FIXME) */
-            NOOP(5, 3);
             break;
 
           case 0x00:            /* BRK */
@@ -2289,6 +2303,10 @@ trap_skipped:
 
           case 0x5b:            /* TCD */
             TCD();
+            break;
+
+          case 0x5c:            /* JMP $nnnnnn */
+            JMP_LONG(p3);
             break;
 
           case 0x5d:            /* EOR $nnnn,X */
@@ -2777,6 +2795,10 @@ trap_skipped:
 
           case 0xdb:            /* STP (WDC65C02) */
             STP();
+            break;
+
+          case 0xdc:            /* JMP [$nnnn] */
+            JMP_IND_LONG();
             break;
 
           case 0xdd:            /* CMP $nnnn,X */
