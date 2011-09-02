@@ -709,24 +709,37 @@ LOAD_DBR(addr) \
       INC_PC(pc_inc);                              \
   } while (0)
 
-#define BRANCH(cond, value)                                 \
-  do {                                                      \
-      unsigned int dest_addr = 0;                           \
-      INC_PC(2);                                            \
-                                                            \
-      if (cond) {                                           \
-          dest_addr = reg_pc + (signed char)(value);        \
-                                                            \
-          LOAD(reg_pc);                                     \
-          CLK_ADD(CLK, CLK_BRANCH2);                        \
-          if ((reg_pc ^ dest_addr) & 0xff00) {              \
-              LOAD((reg_pc & 0xff00) | (dest_addr & 0xff)); \
-              CLK_ADD(CLK, CLK_BRANCH2);                    \
-          } else {                                          \
-              OPCODE_DELAYS_INTERRUPT();                    \
-          }                                                 \
-          JUMP(dest_addr & 0xffff);                         \
-      }                                                     \
+#define BRANCH(cond, value)                                  \
+  do {                                                       \
+      unsigned int dest_addr = 0;                            \
+      INC_PC(2);                                             \
+                                                             \
+      if (cond) {                                            \
+          dest_addr = reg_pc + (signed char)(value);         \
+                                                             \
+          LOAD(reg_pc);                                      \
+          CLK_ADD(CLK, CLK_BRANCH2);                         \
+          if (((reg_pc ^ dest_addr) & 0xff00) && reg_emul) { \
+              LOAD((reg_pc & 0xff00) | (dest_addr & 0xff));  \
+              CLK_ADD(CLK, CLK_BRANCH2);                     \
+          } else {                                           \
+              OPCODE_DELAYS_INTERRUPT();                     \
+          }                                                  \
+          JUMP(dest_addr & 0xffff);                          \
+      }                                                      \
+  } while (0)
+
+#define BRANCH_LONG(value)                        \                                                                      
+  do {                                            \                                                                      
+      unsigned int dest_addr = 0;                 \                                                                      
+      INC_PC(3);                                  \
+                                                  \
+      dest_addr = reg_pc + (signed short)(value); \
+                                                  \
+      LOAD(reg_pc);                               \
+      CLK_ADD(CLK, CLK_BRANCH2);                  \
+      OPCODE_DELAYS_INTERRUPT();                  \
+      JUMP(dest_addr & 0xffff);                   \
   } while (0)
 
 #define BRK()                         \
@@ -2451,6 +2464,10 @@ trap_skipped:
 
           case 0x81:            /* STA ($nn,X) */
             STA(LOAD_ZERO_ADDR(p1 + reg_x), 3, 1, 2, STORE_ABS);
+            break;
+
+          case 0x82:            /* BRL $nnnn */
+            BRANCH_LONG(p2);
             break;
 
           case 0x84:            /* STY $nn */
