@@ -792,24 +792,24 @@
       JUMP(addr); \
   } while (0)
 
-#define JMP_IND()                             \
-  do {                                        \
-      WORD dest_addr;                         \
-      dest_addr = LOAD(p2);                   \
-      CLK_ADD(CLK, 1);                        \
-      dest_addr |= (LOAD((p2 + 1) & 0xffff)); \
-      CLK_ADD(CLK, 1);                        \
-      JUMP(dest_addr);                        \
+#define JMP_IND()                                  \
+  do {                                             \
+      WORD dest_addr;                              \
+      dest_addr = LOAD(p2);                        \
+      CLK_ADD(CLK, 1);                             \
+      dest_addr |= (LOAD((p2 + 1) & 0xffff) << 8); \
+      CLK_ADD(CLK, 1);                             \
+      JUMP(dest_addr);                             \
   } while (0)
 
-#define JMP_IND_X()                                   \
-  do {                                                \
-      WORD dest_addr;                                 \
-      dest_addr = LOAD((p2 + reg_x) & 0xffff);        \
-      CLK_ADD(CLK, 1);                                \
-      dest_addr |= (LOAD((p2 + reg_x + 1) & 0xffff)); \
-      CLK_ADD(CLK, 1);                                \
-      JUMP(dest_addr);                                \
+#define JMP_IND_X()                                        \
+  do {                                                     \
+      WORD dest_addr;                                      \
+      dest_addr = LOAD((p2 + reg_x) & 0xffff);             \
+      CLK_ADD(CLK, 1);                                     \
+      dest_addr |= (LOAD((p2 + reg_x + 1) & 0xffff) << 8); \
+      CLK_ADD(CLK, 1);                                     \
+      JUMP(dest_addr);                                     \
   } while (0)
 
 #define JSR()                                \
