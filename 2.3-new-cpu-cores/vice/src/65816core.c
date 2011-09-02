@@ -1102,13 +1102,25 @@ LOAD_DBR(addr) \
 
 #define NOP()  NOOP_IMM(1)
 
+#define PEA(value)        \
+  do {                    \
+      CLK_ADD(CLK, 1);    \
+      PUSH(value >> 8);   \
+      CLK_ADD(CLK, 1);    \
+      PUSH(value & 0xff); \
+      INC_PC(3);          \
+  } while (0)
+
 #define PEI(value)         \
   do {                     \
       if (reg_dpr) {       \
           CLK_ADD(CLK, 1); \
       }                    \
+      CLK_ADD(CLK, 1);     \
       PUSH(value >> 8);    \
+      CLK_ADD(CLK, 1);     \
       PUSH(value & 0xff);  \
+      INC_PC(2);           \
   } while (0)
 
 #define PHA()                           \
@@ -1965,7 +1977,6 @@ trap_skipped:
             break;
 
           case 0x54:            /* NOP $nn,X */
-          case 0xf4:            /* NOP $nn,X */
             NOOP(2, 2);
             break;
 
@@ -2912,6 +2923,10 @@ trap_skipped:
 
           case 0xf2:            /* SBC ($nn) */
             SBC(LOAD_INDIRECT(p1), 1, 2);
+            break;
+
+          case 0xf4:            /* PEA $nnnn */
+            PEA(p2);
             break;
 
           case 0xf5:            /* SBC $nn,X */
