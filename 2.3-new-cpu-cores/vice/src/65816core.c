@@ -1123,6 +1123,18 @@ LOAD_DBR(addr) \
       INC_PC(2);           \
   } while (0)
 
+#define PER(value)                                \
+  do {                                            \
+      WORD dest_addr = 0;                         \
+                                                  \
+      dest_addr = reg_pc + (signed short)(value); \
+      CLK_ADD(CLK, 2);                            \
+      PUSH(dest_addr >> 8);                       \
+      CLK_ADD(CLK, 1);                            \
+      PUSH(dest_addr & 0xff);                     \
+      INC_PC(3);                                  \
+  } while (0)
+
 #define PHA()                           \
   do {                                  \
       if (!LOCAL_65816_M()) {           \
@@ -1967,7 +1979,6 @@ trap_skipped:
 
           case 0x22:            /* NOP #$nn */
           case 0x42:            /* NOP #$nn */
-          case 0x62:            /* NOP #$nn */
           case 0x82:            /* NOP #$nn */
             NOOP_IMM(2);
             break;
@@ -2359,6 +2370,10 @@ trap_skipped:
 
           case 0x61:            /* ADC ($nn,X) */
             ADC(LOAD_INDIRECT_X(p1, LOCAL_65816_M()), 1, 2);
+            break;
+
+          case 0x62:            /* PER $nnnn */
+            PER(p2);
             break;
 
           case 0x63:            /* ADC $nn,S */
