@@ -391,8 +391,8 @@
 /* Addressing modes.  For convenience, page boundary crossing cycles and
    ``idle'' memory reads are handled here as well. */
 
-LOAD_DBR(addr) \
-    LOAD_LONG(addr | (reg_dbr * 0x10000))
+#define LOAD_DBR(addr) \
+    LOAD_LONG(addr + (reg_dbr * 0x10000))
 
 #define LOAD_BANK0(addr) \
     LOAD_LONG(addr & 0xffff)
@@ -401,10 +401,10 @@ LOAD_DBR(addr) \
     LOAD_BANK0(addr + reg_dpr)
 
 #define LOAD_DIRECT_PAGE16(addr) \
-    (LOAD_DIRECT_PAGE8(addr) << 8) | LOAD_DIRECT_PAGE8(addr + 1)
+    (LOAD_DIRECT_PAGE8(addr) | (LOAD_DIRECT_PAGE8(addr + 1) << 8))
 
 #define LOAD_DIRECT_PAGE24(addr) \
-    (LOAD_DIRECT_PAGE8(addr) << 16) | LOAD_DIRECT_PAGE16(addr + 1)
+    (LOAD_DIRECT_PAGE8(addr) | (LOAD_DIRECT_PAGE16(addr + 1) << 8))
 
 #define LOAD_DIRECT_PAGE(addr, bits8)                          \
     (((reg_dpr) ? CLK_ADD(CLK, 1) : CLK_ADD(CLK, 0)), ((bits8) \
@@ -414,86 +414,86 @@ LOAD_DBR(addr) \
 #define LOAD_DIRECT_PAGE_X(addr, bits8)                        \
     (((reg_dpr) ? CLK_ADD(CLK, 1) : CLK_ADD(CLK, 0)), ((bits8) \
     ? LOAD_BANK0(addr + reg_dpr + reg_x)                       \
-    : (CLK_ADD(CLK, 1), LOAD_BANK0(addr + reg_dpr + reg_x) << 8) | LOAD_BANK0(addr + reg_dpr + reg_x + 1)))
+    : (CLK_ADD(CLK, 1), (LOAD_BANK0(addr + reg_dpr + reg_x) | (LOAD_BANK0(addr + reg_dpr + reg_x + 1) << 8)))))
 
 #define LOAD_DIRECT_PAGE_Y(addr, bits8)                        \
     (((reg_dpr) ? CLK_ADD(CLK, 1) : CLK_ADD(CLK, 0)), ((bits8) \
     ? LOAD_BANK0(addr + reg_dpr + reg_y)                       \
-    : (CLK_ADD(CLK, 1), LOAD_BANK0(addr + reg_dpr + reg_y) << 8) | LOAD_BANK0(addr + reg_dpr + reg_y + 1)))
+    : (CLK_ADD(CLK, 1), (LOAD_BANK0(addr + reg_dpr + reg_y) | (LOAD_BANK0(addr + reg_dpr + reg_y + 1) << 8 )))))
 
 #define LOAD_INDIRECT(addr, bits8)                                              \
     (((reg_dpr) ? CLK_ADD(CLK, 1) : CLK_ADD(CLK, 0)), CLK_ADD(CLK, 3), ((bits8) \
-    ? LOAD_BANK0(LOAD_DIRECT_PAGE16(addr))                                      \
-    : (CLK_ADD(CLK, 1), LOAD_BANK0(LOAD_DIRECT_PAGE16(addr)) << 8) | LOAD_BANK0(LOAD_DIRECT_PAGE16(addr) + 1)))
+    ? LOAD_DBR(LOAD_DIRECT_PAGE16(addr))                                        \
+    : (CLK_ADD(CLK, 1), (LOAD_DBR(LOAD_DIRECT_PAGE16(addr)) | (LOAD_DBR(LOAD_DIRECT_PAGE16(addr) + 1) << 8)))))
 
 #define LOAD_INDIRECT_X(addr, bits8)                                            \
     (((reg_dpr) ? CLK_ADD(CLK, 1) : CLK_ADD(CLK, 0)), CLK_ADD(CLK, 3), ((bits8) \
-    ? LOAD_BANK0(LOAD_DIRECT_PAGE16(addr + reg_x))                              \
-    : (CLK_ADD(CLK, 1), LOAD_BANK0(LOAD_DIRECT_PAGE16(addr + reg_x)) << 8) | LOAD_BANK0(LOAD_DIRECT_PAGE16(addr + reg_x) + 1)))
+    ? LOAD_DBR(LOAD_DIRECT_PAGE16(addr + reg_x))                                \
+    : (CLK_ADD(CLK, 1), (LOAD_DBR(LOAD_DIRECT_PAGE16(addr + reg_x)) | (LOAD_DBR(LOAD_DIRECT_PAGE16(addr + reg_x) + 1) << 8)))))
 
 #define LOAD_INDIRECT_Y(addr, bits8)                                                            \
     (((reg_dpr) ? CLK_ADD(CLK, 1) : CLK_ADD(CLK, 0)),                                           \
     ((((LOAD_DIRECT_PAGE16(addr) & 0xff) + reg_y) > 0xff) ? CLK_ADD(CLK, 1) : CLK_ADD(CLK, 0)), \
     CLK_ADD(CLK, 3), ((bits8)                                                                   \
-    ? LOAD_LONG(LOAD_DIRECT_PAGE16(addr) + reg_y)                                               \
-    : (CLK_ADD(CLK, 1), LOAD_LONG(LOAD_DIRECT_PAGE16(addr) + reg_y) << 8) | LOAD_LONG(LOAD_DIRECT_PAGE16(addr) + reg_y + 1)))
+    ? LOAD_LONG((reg_dbr * 0x10000) + LOAD_DIRECT_PAGE16(addr) + reg_y)                         \
+    : (CLK_ADD(CLK, 1), (LOAD_LONG((reg_dbr * 0x10000) + LOAD_DIRECT_PAGE16(addr) + reg_y) | (LOAD_LONG((reg_dbr * 0x10000) + LOAD_DIRECT_PAGE16(addr) + reg_y + 1) << 8)))))
 
 #define LOAD_INDIRECT_LONG(addr, bits8)                                         \
     (((reg_dpr) ? CLK_ADD(CLK, 1) : CLK_ADD(CLK, 0)), CLK_ADD(CLK, 4), ((bits8) \
     ? LOAD_LONG(LOAD_DIRECT_PAGE24(addr))                                       \
-    : (CLK_ADD(CLK, 1), LOAD_LONG(LOAD_DIRECT_PAGE24(addr)) << 8) | LOAD_LONG(LOAD_DIRECT_PAGE24(addr) + 1)))
+    : (CLK_ADD(CLK, 1), (LOAD_LONG(LOAD_DIRECT_PAGE24(addr)) | (LOAD_LONG(LOAD_DIRECT_PAGE24(addr) + 1) << 8)))))
 
 #define LOAD_INDIRECT_LONG_Y(addr, bits8)                                       \
     (((reg_dpr) ? CLK_ADD(CLK, 1) : CLK_ADD(CLK, 0)), CLK_ADD(CLK, 4), ((bits8) \
     ? LOAD_LONG(LOAD_DIRECT_PAGE24(addr) + reg_y)                               \
-    : (CLK_ADD(CLK, 1), LOAD_LONG(LOAD_DIRECT_PAGE24(addr) + reg_y) << 8) | LOAD_LONG(LOAD_DIRECT_PAGE24(addr) + reg_y + 1)))
+    : (CLK_ADD(CLK, 1), (LOAD_LONG(LOAD_DIRECT_PAGE24(addr) + reg_y) | (LOAD_LONG(LOAD_DIRECT_PAGE24(addr) + reg_y + 1) << 8)))))
 
 #define LOAD_ABS(addr, bits8) \
     ((bits8)                  \
     ? LOAD_DBR(addr)          \
-    : (CLK_ADD(CLK, 1), LOAD_DBR(addr) << 8) | LOAD_DBR(addr + 1))
+    : (CLK_ADD(CLK, 1), (LOAD_DBR(addr) | (LOAD_DBR((addr + 1) & 0xffff) << 8))))
 
-#define LOAD_ABS_X(addr, bits8)                                         \
-    ((bits8)                                                            \
-    ? (((((addr) & 0xff) + reg_x) > 0xff)                               \
-        ? (LOAD((reg_pbr * 0x10000) + reg_pc + 2),                      \
-            CLK_ADD(CLK, CLK_INT_CYCLE),                                \
-            LOAD_DBR(addr + reg_x))                                     \
-        : LOAD_DBR(addr + reg_x))                                       \
-    : (((((addr) & 0xff) + reg_x) > 0xff)                               \
-        ? (LOAD((reg_pbr * 0x10000) + reg_pc + 2),                      \
-            CLK_ADD(CLK, CLK_INT_CYCLE),                                \
-            (LOAD_DBR(addr + reg_x) << 8) | LOAD_DBR(addr + reg_x + 1)) \
-        : (CLK_ADD(CLK, 1), LOAD_DBR(addr + reg_x) << 8) | LOAD_DBR(addr + reg_x + 1)))
+#define LOAD_ABS_X(addr, bits8)                                           \
+    ((bits8)                                                              \
+    ? (((((addr) & 0xff) + reg_x) > 0xff)                                 \
+        ? (LOAD((reg_pbr * 0x10000) + reg_pc + 2),                        \
+            CLK_ADD(CLK, CLK_INT_CYCLE),                                  \
+            LOAD_DBR(addr + reg_x))                                       \
+        : LOAD_DBR(addr + reg_x))                                         \
+    : (((((addr) & 0xff) + reg_x) > 0xff)                                 \
+        ? (LOAD((reg_pbr * 0x10000) + reg_pc + 2),                        \
+            CLK_ADD(CLK, CLK_INT_CYCLE),                                  \
+            (LOAD_DBR(addr + reg_x) | (LOAD_DBR(addr + reg_x + 1) << 8))) \
+        : (CLK_ADD(CLK, 1), (LOAD_DBR(addr + reg_x) | (LOAD_DBR(addr + reg_x + 1) << 8)))))
 
-#define LOAD_ABS_Y(addr, bits8)                                         \
-    ((bits8)                                                            \
-    ? (((((addr) & 0xff) + reg_y) > 0xff)                               \
-        ? (LOAD((reg_pbr * 0x10000) + reg_pc + 2),                      \
-            CLK_ADD(CLK, CLK_INT_CYCLE),                                \
-            LOAD_DBR(addr + reg_y))                                     \
-        : LOAD_DBR(addr + reg_y))                                       \
-    : (((((addr) & 0xff) + reg_y) > 0xff)                               \
-        ? (LOAD((reg_pbr * 0x10000) + reg_pc + 2),                      \
-            CLK_ADD(CLK, CLK_INT_CYCLE),                                \
-            (LOAD_DBR(addr + reg_y) << 8) | LOAD_DBR(addr + reg_y + 1)) \
-        : (CLK_ADD(CLK, 1), LOAD_DBR(addr + reg_y) << 8) | LOAD_DBR(addr + reg_y + 1)))
+#define LOAD_ABS_Y(addr, bits8)                                           \
+    ((bits8)                                                              \
+    ? (((((addr) & 0xff) + reg_y) > 0xff)                                 \
+        ? (LOAD((reg_pbr * 0x10000) + reg_pc + 2),                        \
+            CLK_ADD(CLK, CLK_INT_CYCLE),                                  \
+            LOAD_DBR(addr + reg_y))                                       \
+        : LOAD_DBR(addr + reg_y))                                         \
+    : (((((addr) & 0xff) + reg_y) > 0xff)                                 \
+        ? (LOAD((reg_pbr * 0x10000) + reg_pc + 2),                        \
+            CLK_ADD(CLK, CLK_INT_CYCLE),                                  \
+            (LOAD_DBR(addr + reg_y) | (LOAD_DBR(addr + reg_y + 1) << 8))) \
+        : (CLK_ADD(CLK, 1), (LOAD_DBR(addr + reg_y) | (LOAD_DBR(addr + reg_y + 1) << 8)))))
 
 #define LOAD_ABS_LONG(addr, bits8) \
     ((bits8)                       \
     ? LOAD_LONG(addr)              \
-    : (CLK_ADD(CLK, 1), LOAD_LONG(addr) << 8) | LOAD_LONG(addr + 1))
+    : (CLK_ADD(CLK, 1), (LOAD_LONG(addr) | (LOAD_LONG(addr + 1) << 8)))))
 
 #define LOAD_ABS_LONG_X(addr, bits8) \
     ((bits8)                         \
     ? LOAD_LONG(addr + reg_x)        \
-    : (CLK_ADD(CLK, 1), LOAD_LONG(addr + reg_x) << 8) | LOAD_LONG(addr + reg_x + 1))
+    : (CLK_ADD(CLK, 1), (LOAD_LONG(addr + reg_x) | (LOAD_LONG(addr + reg_x + 1) << 8))))
 
 #define LOAD_STACK_REL8(addr) \
     LOAD_BANK0(addr + reg_sp)
 
 #define LOAD_STACK_REL16(addr) \
-    (LOAD_BANK0(addr + reg_sp) << 8) | LOAD_BANK0(addr + reg_sp + 1)
+    LOAD_BANK0(addr + reg_sp) | (LOAD_BANK0(addr + reg_sp + 1) << 8)
 
 #define LOAD_STACK_REL(addr, bits8) \
     ((bits8)                        \
@@ -502,8 +502,274 @@ LOAD_DBR(addr) \
 
 #define LOAD_STACK_REL_Y(addr, bits8)          \
     ((bits8)                                   \
-    ? LOAD_DBR(LOAD_STACK_REL16(addr) + reg_y) \
-    : (CLK_ADD(CLK, 1), (LOAD_DBR(LOAD_STACK_REL16(addr) + reg_y) << 8) | LOAD_DBR(LOAD_STACK_REL16(addr) + reg_y + 1)))
+    ? LOAD_LONG((reg_dbr * 0x10000) + LOAD_STACK_REL16(addr) + reg_y) \
+    : (CLK_ADD(CLK, 1), (LOAD_LONG((reg_dbr * 0x10000) + LOAD_STACK_REL16(addr) + reg_y) | (LOAD_LONG((reg_dbr * 0x10000) + LOAD_STACK_REL16(addr) + reg_y + 1) << 8))))
+
+#define STORE_DBR(addr, value)                  \
+  do {                                          \
+      CLK_ADD(CLK, 1);                          \
+      STORE((reg_dbr * 0x10000) + addr, value); \
+  } while (0)
+
+#define STORE_LONG(addr, value) \
+  do {                          \
+      CLK_ADD(CLK, 1);          \
+      STORE(addr, value);       \
+  } while (0)
+
+#define STORE_BANK0(addr, value)   \
+  do {                             \
+      CLK_ADD(CLK, 1);             \
+      STORE(addr & 0xffff, value); \
+  } while (0)
+
+#define STORE_DIRECT_PAGE(addr, value, bits8) \
+  do {                                        \
+      unsigned int dst = (addr);              \
+                                              \
+      if (reg_dpr) {                          \
+          CLK_ADD(CLK, 1);                    \
+          LOAD_BANK0(dst);                    \
+          dst = (dst + reg_dpr) & 0xffff;     \
+      }                                       \
+      STORE_BANK0(dst, value & 0xff);         \
+      if (!bits8) {                           \
+          STORE_BANK0(dst + 1, value >> 8);   \
+      }                                       \
+  } while (0)
+
+#define STORE_DIRECT_PAGE_X(addr, value, bits8) \
+  do {                                          \
+      unsigned int dst = (addr);                \
+                                                \
+      if (reg_dpr) {                            \
+          CLK_ADD(CLK, 1);                      \
+          LOAD_BANK0(dst);                      \
+          dst = (dst + reg_dpr) & 0xffff;       \
+      }                                         \
+      CLK_ADD(CLK, 1);                          \
+      LOAD_BANK0(dst);                          \
+      dst = (dst + reg_x) & 0xffff;             \
+      STORE_BANK0(dst, value & 0xff);           \
+      if (!bits8) {                             \
+          STORE_BANK0(dst + 1, value >> 8);     \
+      }                                         \
+  } while (0)
+
+#define STORE_DIRECT_PAGE_Y(addr, value, bits8) \
+  do {                                          \
+      unsigned int dst = (addr);                \
+                                                \
+      if (reg_dpr) {                            \
+          CLK_ADD(CLK, 1);                      \
+          LOAD_BANK0(dst);                      \
+          dst = (dst + reg_dpr) & 0xffff;       \
+      }                                         \
+      CLK_ADD(CLK, 1);                          \
+      LOAD_BANK0(dst);                          \
+      dst = (dst + reg_y) & 0xffff;             \
+      STORE_BANK0(dst, value & 0xff);           \
+      if (!bits8) {                             \
+          STORE_BANK0(dst + 1, value >> 8);     \
+      }                                         \
+  } while (0)
+
+#define STORE_INDIRECT(addr, value, bits8) \
+  do {                                     \
+      unsigned int dst = (addr);           \
+      unsigned int ea;                     \
+                                           \
+      if (reg_dpr) {                       \
+          CLK_ADD(CLK, 1);                 \
+          LOAD_BANK0(dst);                 \
+          dst = (dst + reg_dpr) & 0xffff;  \
+      }                                    \
+      CLK_ADD(CLK, 1);                     \
+      ea = LOAD_BANK0(dst);                \
+      CLK_ADD(CLK, 1);                     \
+      ea |= (LOAD_BANK0(dst + 1) << 8);    \
+      STORE_DBR(ea, value & 0xff);         \
+      if (!bits8) {                        \
+          STORE_DBR(ea + 1, value >> 8);   \
+      }                                    \
+  } while (0)
+
+#define STORE_INDIRECT_X(addr, value, bits8) \
+  do {                                       \
+      unsigned int dst = (addr);             \
+      unsigned int ea;                       \
+                                             \
+      if (reg_dpr) {                         \
+          CLK_ADD(CLK, 1);                   \
+          LOAD_BANK0(dst);                   \
+          dst = (dst + reg_dpr) & 0xffff;    \
+      }                                      \
+      CLK_ADD(CLK, 1);                       \
+      LOAD_BANK0(dst);                       \
+      dst = (dst + x) & 0xffff;              \
+      CLK_ADD(CLK, 1);                       \
+      ea = LOAD_BANK0(dst);                  \
+      CLK_ADD(CLK, 1);                       \
+      ea |= (LOAD_BANK0(dst + 1) << 8);      \
+      STORE_DBR(ea, value & 0xff);           \
+      if (!bits8) {                          \
+          STORE_DBR(ea + 1, value >> 8);     \
+      }                                      \
+  } while (0)
+
+#define STORE_INDIRECT_Y(addr, value, bits8)                    \
+  do {                                                          \
+      unsigned int dst = (addr);                                \
+      unsigned int ea;                                          \
+                                                                \
+      if (reg_dpr) {                                            \
+          CLK_ADD(CLK, 1);                                      \
+          LOAD_BANK0(dst, 1);                                   \
+          dst = (dst + reg_dpr) & 0xffff;                       \
+      }                                                         \
+      CLK_ADD(CLK, 1);                                          \
+      ea = LOAD_BANK0(dst);                                     \
+      CLK_ADD(CLK, 1);                                          \
+      ea |= (LOAD_BANK0(dst + 1) << 8);                         \
+      CLK_ADD(CLK, 1);                                          \
+      LOAD_LONG((reg_pbr * 0x10000) + ea, 1);                   \
+      ea += reg_y;                                              \
+      STORE_LONG((reg_pbr * 0x10000) + ea, value & 0xff);       \
+      if (!bits8) {                                             \
+          STORE_LONG((reg_pbr * 0x10000) + ea + 1, value >> 8); \
+      }                                                         \
+  } while (0);
+
+#define STORE_INDIRECT_LONG(addr, value, bits8) \
+  do {                                          \
+      unsigned int dst = (addr);                \
+      unsigned int ea;                          \
+                                                \
+      if (reg_dpr) {                            \
+          CLK_ADD(CLK, 1);                      \
+          LOAD_BANK0(dst);                      \
+          dst = (dst + reg_dpr) & 0xffff;       \
+      }                                         \
+      CLK_ADD(CLK, 1);                          \
+      ea = LOAD_BANK0(dst);                     \
+      CLK_ADD(CLK, 1);                          \
+      ea |= (LOAD_BANK0(dst + 1) << 8);         \
+      CLK_ADD(CLK, 1);                          \
+      ea |= (LOAD_BANK0(dst + 2) << 16);        \
+      STORE_LONG(ea, value & 0xff);             \
+      if (!bits8) {                             \
+          STORE_LONG(ea + 1, value >> 8);       \
+      }                                         \
+  } while (0)
+
+#define STORE_INDIRECT_LONG_Y(addr, value, bits8) \
+  do {                                            \
+      unsigned int dst = (addr);                  \
+      unsigned int ea;                            \
+                                                  \
+      if (reg_dpr) {                              \
+          CLK_ADD(CLK, 1);                        \
+          LOAD_BANK0(dst, 1);                     \
+          dst = (dst + reg_dpr) & 0xffff;         \
+      }                                           \
+      CLK_ADD(CLK, 1);                            \
+      ea = LOAD_BANK0(dst);                       \
+      CLK_ADD(CLK, 1);                            \
+      ea |= (LOAD_BANK0(dst + 1) << 8);           \
+      CLK_ADD(CLK, 1);                            \
+      ea |= (LOAD_BANK0(dst + 2) << 16);          \
+      ea += reg_y;                                \
+      STORE_LONG(ea, value & 0xff);               \
+      if (!bits8) {                               \
+          STORE_LONG(ea + 1, value >> 8);         \
+      }                                           \
+  } while (0)
+
+#define STORE_ABS(addr, value, bits8)                 \
+  do {                                                \
+      STORE_DBR(addr, value & 0xff);                  \
+      if (!bits8) {                                   \
+          STORE_DBR((addr + 1) & 0xffff, value >> 8); \
+      }                                               \
+  } while (0)
+
+#define STORE_ABS_X(addr, value, bits8)   \
+  do {                                    \
+      unsigned int dst = (addr);          \
+                                          \
+      CLK_ADD(CLK, 1);                    \
+      LOAD_DBR(dst);                      \
+      dst += reg_x;                       \
+      STORE_DBR(dst, value & 0xff);       \
+      if (!bits8) {                       \
+          STORE_DBR(dst + 1, value >> 8); \
+      }                                   \
+  } while (0)
+
+#define STORE_ABS_Y(addr, value, bits8)   \
+  do {                                    \
+      unsigned int dst = (addr);          \
+                                          \
+      CLK_ADD(CLK, 1);                    \
+      LOAD_DBR(dst);                      \
+      dst += reg_y;                       \
+      STORE_DBR(dst, value & 0xff);       \
+      if (!bits8) {                       \
+          STORE_DBR(dst + 1, value >> 8); \
+      }                                   \
+  } while (0)
+
+#define STORE_ABS_LONG(addr, value, bits8) \
+  do {                                     \
+      STORE_LONG(dst, value & 0xff);       \
+      if (!bits8) {                        \
+          STORE_LONG(dst + 1, value >> 8); \
+      }                                    \
+  } while (0)
+
+#define STORE_ABS_LONG_X(addr, value, bits8)        \
+  do {                                              \
+      dst += reg_x;                                 \
+      STORE_LONG(addr + reg_x, value & 0xff);       \
+      if (!bits8) {                                 \
+          STORE_LONG(addr + reg_x + 1, value >> 8); \
+      }                                             \
+  } while (0)
+
+#define STORE_STACK_REL(addr, value, bits8) \
+  do {                                      \
+      unsigned int dst = (addr);            \
+      unsigned int ea;                      \
+                                            \
+      CLK_ADD(CLK, 1);                      \
+      LOAD_BANK0(dst);                      \
+      dst = (dst + reg_sp) & 0xffff;        \
+      STORE_BANK0(dst, value & 0xff);       \
+      if (!bits8) {                         \
+          STORE_BANK0(dst + 1, value >> 8); \
+      }                                     \
+  } while (0)
+
+#define STORE_STACK_REL_Y(addr, value, bits8)                   \
+  do {                                                          \
+      unsigned int dst = (addr);                                \
+      unsigned int ea;                                          \
+                                                                \
+      CLK_ADD(CLK, 1);                                          \
+      LOAD_BANK0(dst);                                          \
+      dst = (dst + reg_sp) & 0xffff;                            \
+      CLK_ADD(CLK, 1);                                          \
+      ea = LOAD_BANK0(dst);                                     \
+      CLK_ADD(CLK, 1);                                          \
+      ea |= (LOAD_BANK0(dst + 1) << 8);                         \
+      CLK_ADD(CLK, 1);                                          \
+      LOAD_LONG((reg_dbr * 0x10000) + ea);                      \
+      ea += reg_y;                                              \
+      STORE_LONG((reg_dbr * 0x10000) + ea, value & 0xff);       \
+      if (!bits8) {                                             \
+          STORE_LONG((reg_dbr * 0x10000) + ea + 1, value >> 8); \
+      }                                                         \
+  } while (0)
 
 #define INC_PC(value)   (reg_pc += (value))
 
@@ -620,61 +886,6 @@ LOAD_DBR(addr) \
       }                                                     \
       LOCAL_SET_NZ(reg_a, LOCAL_65816_M());                 \
       INC_PC(1);                                            \
-  } while (0)
-
-/* FIXME: cpu_type needs to be declared in the file that includes this file */
-#define BBR(bit, addr, value)                                   \
-  do {                                                          \
-      unsigned int tmp, tmp_addr;                               \
-      unsigned int dest_addr;                                   \
-                                                                \
-      if (cpu_type == CPU65SC02) {                              \
-          REWIND_FETCH_OPCODE(CLK, 2);                          \
-          NOOP_IMM(1);                                          \
-      } else {                                                  \
-          tmp_addr = (addr);                                    \
-          tmp = LOAD_ZERO(tmp_addr) & (1 << bit);               \
-          INC_PC(3);                                            \
-          CLK_ADD(CLK, 2);                                      \
-                                                                \
-          if (!tmp) {                                           \
-              dest_addr = reg_pc + (signed char)(value);        \
-              LOAD(reg_pc);                                     \
-              if (reg_pc ^ dest_addr) & 0xff00) {               \
-                  LOAD((reg_pc & 0xff00) | (dest_addr & 0xff)); \
-              } else {                                          \
-                  OPCODE_DELAYS_INTERRUPT();                    \
-              }                                                 \
-              JUMP(dest_addr & 0xffff);                         \
-          }                                                     \
-      }                                                         \
-  } while (0)
-      
-#define BBS(bit, addr, value)                                   \
-  do {                                                          \
-      unsigned int tmp, tmp_addr;                               \
-      unsigned int dest_addr;                                   \
-                                                                \
-      if (cpu_type == CPU65SC02) {                              \
-          REWIND_FETCH_OPCODE(CLK, 2);                          \
-          NOOP_IMM(1);                                          \
-      } else {                                                  \
-          tmp_addr = (addr);                                    \
-          tmp = LOAD_ZERO(tmp_addr) & (1 << bit);               \
-          INC_PC(3);                                            \
-          CLK_ADD(CLK, 2);                                      \
-                                                                \
-          if (tmp) {                                            \
-              dest_addr = reg_pc + (signed char)(value);        \
-              LOAD(reg_pc);                                     \
-              if ((reg_pc ^ dest_addr) & 0xff00) {              \
-                  LOAD((reg_pc & 0xff00) | (dest_addr & 0xff)); \
-              } else {                                          \
-                  OPCODE_DELAYS_INTERRUPT();                    \
-              }                                                 \
-              JUMP(dest_addr & 0xffff);                         \
-          }                                                     \
-      }                                                         \
   } while (0)
 
 #define BIT_IMM(value, clk_inc, pc_inc)            \
@@ -970,37 +1181,37 @@ LOAD_DBR(addr) \
       JUMP(addr); \
   } while (0)
 
-#define JMP_IND()                                  \
-  do {                                             \
-      WORD dest_addr;                              \
-      dest_addr = LOAD(p2);                        \
-      CLK_ADD(CLK, 1);                             \
-      dest_addr |= (LOAD((p2 + 1) & 0xffff) << 8); \
-      CLK_ADD(CLK, 1);                             \
-      JUMP(dest_addr);                             \
+#define JMP_IND()                                      \
+  do {                                                 \
+      WORD dest_addr;                                  \
+      dest_addr = LOAD_PBR(p2);                        \
+      CLK_ADD(CLK, 1);                                 \
+      dest_addr |= (LOAD_PBR((p2 + 1) & 0xffff) << 8); \
+      CLK_ADD(CLK, 1);                                 \
+      JUMP(dest_addr);                                 \
   } while (0)
 
-#define JMP_IND_LONG()                             \
-  do {                                             \
-      WORD dest_addr;                              \
-      dest_addr = LOAD(p2);                        \
-      CLK_ADD(CLK, 1);                             \
-      dest_addr |= (LOAD((p2 + 1) & 0xffff) << 8); \
-      CLK_ADD(CLK, 1);                             \
-      reg_pbr = LOAD((p2 + 2) & 0xffff);           \
-      CLK_ADD(CLK, 1);                             \
-      JUMP(dest_addr);                             \
+#define JMP_IND_LONG()                                   \
+  do {                                                   \
+      WORD dest_addr;                                    \
+      dest_addr = LOAD_BANK0(p2);                        \
+      CLK_ADD(CLK, 1);                                   \
+      dest_addr |= (LOAD_BANK0((p2 + 1) & 0xffff) << 8); \
+      CLK_ADD(CLK, 1);                                   \
+      reg_pbr = LOAD_BANK0((p2 + 2) & 0xffff);           \
+      CLK_ADD(CLK, 1);                                   \
+      JUMP(dest_addr);                                   \
   } while (0)
 
-#define JMP_IND_X()                                        \
-  do {                                                     \
-      WORD dest_addr;                                      \
-      CLK_ADD(CLK, 1);                                     \
-      dest_addr = LOAD((p2 + reg_x) & 0xffff);             \
-      CLK_ADD(CLK, 1);                                     \
-      dest_addr |= (LOAD((p2 + reg_x + 1) & 0xffff) << 8); \
-      CLK_ADD(CLK, 1);                                     \
-      JUMP(dest_addr);                                     \
+#define JMP_IND_X()                                            \
+  do {                                                         \
+      WORD dest_addr;                                          \
+      CLK_ADD(CLK, 1);                                         \
+      dest_addr = LOAD_PBR((p2 + reg_x) & 0xffff);             \
+      CLK_ADD(CLK, 1);                                         \
+      dest_addr |= (LOAD_PBR((p2 + reg_x + 1) & 0xffff) << 8); \
+      CLK_ADD(CLK, 1);                                         \
+      JUMP(dest_addr);                                         \
   } while (0)
 
 #define JMP_LONG(addr)      \
@@ -1302,21 +1513,6 @@ LOAD_DBR(addr) \
 
 #define REP(mask) REPSEP(mask, 0)
 
-#define RMB(addr, bit)                             \
-  do {                                             \
-      unsigned int tmp, tmp_addr;                  \
-                                                   \
-      if (cpu_type == CPU65SC02) {                 \
-          REWIND_FETCH_OPCODE(CLK, 1);             \
-          NOOP_IMM(1);                             \
-      } else {                                     \
-          tmp_addr = (addr);                       \
-          tmp = LOAD_ZERO(tmp_addr) & ~(1 << bit); \
-          INC_PC(2);                               \
-          STORE_ABS(tmp_addr, tmp, 3);             \
-      }                                            \
-  } while (0)
-
 #define ROL(addr, clk_inc, pc_inc, load_func, store_func) \
   do {                                                    \
       unsigned int tmp, tmp_addr;                         \
@@ -1477,36 +1673,14 @@ LOAD_DBR(addr) \
 
 #define SEP(mask) REPSEP(mask, 1)
 
-#define SMB(addr, bit)                            \
-  do {                                            \
-      unsigned tmp, tmp_addr;                     \
-                                                  \
-      if (cpu_type == CPU65SC02) {                \
-          REWIND_FETCH_OPCODE(CLK, 1);            \
-          NOOP_IMM(1);                            \
-      } else {                                    \
-          tmp_addr = (addr);                      \
-          tmp = LOAD_ZERO(tmp_addr) | (1 << bit); \
-          INC_PC(2);                              \
-          STORE_ABS(tmp_addr, tmp, 3);            \
-      }
-  } while (0)
-
-#define STA(addr, clk_inc1, clk_inc2, pc_inc, store_func) \
-  do {                                                    \
-      unsigned int tmp;                                   \
-                                                          \
-      CLK_ADD(CLK, (clk_inc1));                           \
-      tmp = (addr);                                       \
-      INC_PC(pc_inc);                                     \
-      store_func(tmp, reg_a, clk_inc2);                   \
-  } while (0)
-
-#define STA_ZERO(addr, clk_inc, pc_inc) \
-  do {                                  \
-      CLK_ADD(CLK, (clk_inc));          \
-      STORE_ZERO((addr), reg_a);        \
-      INC_PC(pc_inc);                   \
+#define STA(addr, pc_inc, store_func)          \
+  do {                                         \
+      unsigned int tmp;                        \
+                                               \
+      CLK_ADD(CLK, (clk_inc));                 \
+      tmp = (addr);                            \
+      INC_PC(pc_inc);                          \
+      store_func(tmp, reg_a, LOCAL_65816_M()); \
   } while (0)
 
 #define STA_IND_Y(addr)                                  \
@@ -1970,8 +2144,6 @@ trap_skipped:
 
         switch (p0) {
 
-          case 0x83:            /* 1 byte, 1 cycle NOP */
-          case 0x93:            /* 1 byte, 1 cycle NOP */
           case 0xe3:            /* 1 byte, 1 cycle NOP */
           case 0xf3:            /* 1 byte, 1 cycle NOP */
             NOOP_IMM(1);
@@ -2497,11 +2669,15 @@ trap_skipped:
             break;
 
           case 0x81:            /* STA ($nn,X) */
-            STA(LOAD_ZERO_ADDR(p1 + reg_x), 3, 1, 2, STORE_ABS);
+            STA(p1, 2, STORE_INDIRECT_X);
             break;
 
           case 0x82:            /* BRL $nnnn */
             BRANCH_LONG(p2);
+            break;
+
+          case 0x83:            /* STA $nn,S */
+            STA(p1, 2, STORE_STACK_REL);
             break;
 
           case 0x84:            /* STY $nn */
@@ -2509,15 +2685,15 @@ trap_skipped:
             break;
 
           case 0x85:            /* STA $nn */
-            STA_ZERO(p1, 1, 2);
+            STA(p1, 2, STORE_DIRECT_PAGE);
             break;
 
           case 0x86:            /* STX $nn */
             STX_ZERO(p1, 1, 2);
             break;
 
-          case 0x87:            /* SMB0 $nn (65C02) / single byte, single cycle NOP (65SC02) */
-            SMB(p1, 0);
+          case 0x87:            /* STA [$nn] */
+            STA(p1, 2, STORE_INDIRECT_LONG);
             break;
 
           case 0x88:            /* DEY */
@@ -2541,15 +2717,15 @@ trap_skipped:
             break;
 
           case 0x8d:            /* STA $nnnn */
-            STA(p2, 0, 1, 3, STORE_ABS);
+            STA(p2, 3, STORE_ABS);
             break;
 
           case 0x8e:            /* STX $nnnn */
             STX(p2, 1, 3);
             break;
 
-          case 0x8f:            /* BBS0 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
-            BBS(0, p1, p2 >> 8);
+          case 0x8f:            /* STA $nnnnnn */
+            STA(p3, 4, STORE_ABS_LONG);
             break;
 
           case 0x90:            /* BCC $nnnn */
@@ -2557,11 +2733,15 @@ trap_skipped:
             break;
 
           case 0x91:            /* STA ($nn),Y */
-            STA_IND_Y(p1);
+            STA(p1, 2, STORE_INDIRECT_Y);
             break;
 
           case 0x92:            /* STA ($nn) */
-            STA(LOAD_ZERO_ADDR(p1), 2, 1, 2, STORE_ABS);
+            STA(p1, 2, STORE_INDIRECT);
+            break;
+
+          case 0x93:            /* STA ($nn,S),Y */
+            STA(p1, 2, STORE_STACK_REL_Y);
             break;
 
           case 0x94:            /* STY $nn,X */
@@ -2569,15 +2749,15 @@ trap_skipped:
             break;
 
           case 0x95:            /* STA $nn,X */
-            STA_ZERO(p1 + reg_x, CLK_ZERO_I_STORE, 2);
+            STA(p1, 2, STORE_DIRECT_PAGE_X);
             break;
 
           case 0x96:            /* STX $nn,Y */
             STX_ZERO(p1 + reg_y, CLK_ZERO_I_STORE, 2);
             break;
 
-          case 0x97:            /* SMB1 $nn (65C02) / single byte, single cycle NOP (65SC02) */
-            SMB(p1, 1);
+          case 0x97:            /* STA [$nn],Y */
+            STA(p1, 2, STORE_INDIRECT_LONG_Y);
             break;
 
           case 0x98:            /* TYA */
@@ -2585,7 +2765,7 @@ trap_skipped:
             break;
 
           case 0x99:            /* STA $nnnn,Y */
-            STA(p2, 0, CLK_ABS_I_STORE2, 3, STORE_ABS_Y);
+            STA(p2, 3, STORE_ABS_Y);
             break;
 
           case 0x9a:            /* TXS */
@@ -2601,15 +2781,15 @@ trap_skipped:
             break;                         
 
           case 0x9d:            /* STA $nnnn,X */
-            STA(p2, 0, CLK_ABS_I_STORE2, 3, STORE_ABS_X);
+            STA(p2, 3, STORE_ABS_X);
             break;
 
           case 0x9e:            /* STZ $nnnn,X */
             STZ(p2, 0, CLK_ABS_I_STORE2, 3, STORE_ABS_X);
             break;
 
-          case 0x9f:            /* BBS1 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
-            BBS(1, p1, p2 >> 8);
+          case 0x9f:            /* STA $nnnnnn,X */
+            STA(p3, 4, STORE_ABS_LONG_X);
             break;
 
           case 0xa0:            /* LDY #$nn */
