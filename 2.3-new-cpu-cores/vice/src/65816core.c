@@ -2205,7 +2205,7 @@ trap_skipped:
             break;
 
           case 0x06:            /* ASL $nn */
-            ASL(p1, CLK_ZERO_RMW, 2, LOAD_ZERO, STORE_ABS);
+            ASL(p1, 2, 2, LOAD_DIRECT_PAGE, STORE_ABS);
             break;
 
           case 0x07:            /* ORA [$nn] */
@@ -2237,7 +2237,7 @@ trap_skipped:
             break;
 
           case 0x0e:            /* ASL $nnnn */
-            ASL(p2, CLK_ABS_RMW2, 3, LOAD_ABS, STORE_ABS);
+            ASL(p2, 2, 3, LOAD_ABS, STORE_ABS);
             break;
 
           case 0x0f:            /* ORA $nnnnnn */
@@ -2269,7 +2269,7 @@ trap_skipped:
             break;
 
           case 0x16:            /* ASL $nn,X */
-            ASL((p1 + reg_x) & 0xff, CLK_ZERO_I_RMW, 2, LOAD_ZERO, STORE_ABS);
+            ASL((p1 + reg_x) & 0xff, 3, 2, LOAD_DIRECT_PAGE, STORE_ABS);
             break;
 
           case 0x17:            /* ORA [$nn],Y */
@@ -2301,7 +2301,7 @@ trap_skipped:
             break;
 
           case 0x1e:            /* ASL $nnnn,X */
-            ASL(p2, CLK_ABS_I_RMW2, 3, LOAD_ABS_X, STORE_ABS_X_RMW);
+            ASL(p2, 2, 3, LOAD_ABS_X, STORE_ABS_X);
             break;
 
           case 0x1f:            /* ORA $nnnnnn,X */
@@ -3153,7 +3153,7 @@ trap_skipped:
             break;
 
           case 0xf6:            /* INC $nn,X */
-            INC((p1 + reg_x) & 0xff, 3, 2, LOAD_DIRECT_PAGE_X, STORE_ABS);
+            INC((p1 + reg_x) & 0xff, 3, 2, LOAD_DIRECT_PAGE, STORE_ABS);
             break;
 
           case 0xf7:            /* SBC [$nn],Y */
