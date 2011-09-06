@@ -1688,21 +1688,13 @@
       STP_65816();     \
   } while (0)
 
-#define STX(addr, clk_inc, pc_inc) \
-  do {                             \
-      unsigned int tmp;            \
-                                   \
-      tmp = (addr);                \
-      CLK_ADD(CLK, (clk_inc));     \
-      INC_PC(pc_inc);              \
-      STORE(tmp, reg_x);           \
-  } while (0)
-
-#define STX_ZERO(addr, clk_inc, pc_inc) \
-  do {                                  \
-      CLK_ADD(CLK, (clk_inc));          \
-      STORE_ZERO((addr), reg_x);        \
-      INC_PC(pc_inc);                   \
+#define STX(addr, pc_inc, store_func)          \
+  do {                                         \
+      unsigned int tmp;                        \
+                                               \
+      tmp = (addr);                            \
+      INC_PC(pc_inc);                          \
+      store_func(tmp, reg_x, LOCAL_65816_X()); \
   } while (0)
 
 #define STY(addr, pc_inc, store_func)          \
@@ -2660,7 +2652,7 @@ trap_skipped:
             break;
 
           case 0x86:            /* STX $nn */
-            STX_ZERO(p1, 1, 2);
+            STX(p1, 2, STORE_DIRECT_PAGE);
             break;
 
           case 0x87:            /* STA [$nn] */
@@ -2692,7 +2684,7 @@ trap_skipped:
             break;
 
           case 0x8e:            /* STX $nnnn */
-            STX(p2, 1, 3);
+            STX(p2, 3, STORE_ABS);
             break;
 
           case 0x8f:            /* STA $nnnnnn */
@@ -2724,7 +2716,7 @@ trap_skipped:
             break;
 
           case 0x96:            /* STX $nn,Y */
-            STX_ZERO(p1 + reg_y, CLK_ZERO_I_STORE, 2);
+            STX(p1, 2, STORE_DIRECT_PAGE_Y);
             break;
 
           case 0x97:            /* STA [$nn],Y */
