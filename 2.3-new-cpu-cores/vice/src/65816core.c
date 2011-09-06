@@ -809,7 +809,6 @@
               LOCAL_SET_OVERFLOW(!(tmp > (reg_a & 0xff)));                                           \
               LOCAL_SET_CARRY(!(tmp > (reg_a & 0xff));                                               \
               LOCAL_SET_NZ(tmp & 0xff);                                                              \
-              CLK_ADD(CLK, 1);                                                                       \
           } else {                                                                                   \
               tmp = tmp_value + (reg_a & 0xff) + LOCAL_CARRY();                                      \
               LOCAL_SET_NZ(tmp & 0xff);                                                              \
@@ -1619,34 +1618,64 @@
       JUMP(tmp);                   \
   } while (0)
 
-#define SBC(value, clk_inc, pc_inc)                      \
-  do {                                                   \
-      WORD src, tmp;                                     \
-                                                         \
-      src = (WORD)(value);                               \
-      CLK_ADD(CLK, (clk_inc));                           \
-      if (LOCAL_DECIMAL()) {                             \
-          tmp = reg_a - (src & 0xf) + LOCAL_CARRY() - 1; \
-          if ((tmp & 0xf) > (reg_a & 0xf)) {             \
-              tmp -= 6;                                  \
-          }                                              \
-          tmp -= (src & 0xf0);                           \
-          if ((tmp & 0xf0) > (reg_a & 0xf0)) {           \
-              tmp -= 0x60;                               \
-          }                                              \
-          LOCAL_SET_OVERFLOW(!(tmp > reg_a));            \
-          LOCAL_SET_CARRY(!(tmp > reg_a));               \
-          LOCAL_SET_NZ(tmp & 0xff);                      \
-          CLK_ADD(CLK, 1);                               \
-      } else {                                           \
-          tmp = reg_a - src - ((LOCAL_CARRY()) ? 0 : 1); \
-          LOCAL_SET_NZ(tmp & 0xff);                      \
-          LOCAL_SET_CARRY(tmp < 0x100);                  \
-          LOCAL_SET_OVERFLOW(((reg_a ^ tmp) & 0x80)      \
-                             && ((reg_a ^ src) & 0x80)); \
-      }                                                  \
-      reg_a = tmp;                                       \
-      INC_PC(pc_inc);                                    \
+#define SBC(value, clk_inc, pc_inc)                                                            \
+  do {                                                                                         \
+      WORD src, tmp;                                                                           \
+                                                                                               \
+      src = (WORD)(value);                                                                     \
+      CLK_ADD(CLK, (clk_inc));                                                                 \
+      if (LOCAL_65816_M()) {                                                                   \
+          if (LOCAL_DECIMAL()) {                                                               \
+              tmp = (reg_a & 0xff) - (src & 0xf) + LOCAL_CARRY() - 1;                          \
+              if ((tmp & 0xf) > (reg_a & 0xf)) {                                               \
+                  tmp -= 6;                                                                    \
+              }                                                                                \
+              tmp -= (src & 0xf0);                                                             \
+              if ((tmp & 0xf0) > (reg_a & 0xf0)) {                                             \
+                  tmp -= 0x60;                                                                 \
+              }                                                                                \
+              LOCAL_SET_OVERFLOW(!(tmp > (reg_a & 0xff)));                                     \
+              LOCAL_SET_CARRY(!(tmp > (reg_a & 0xff)));                                        \
+              LOCAL_SET_NZ(tmp & 0xff);                                                        \
+          } else {                                                                             \
+              tmp = (reg_a & 0xff) - src - ((LOCAL_CARRY()) ? 0 : 1);                          \
+              LOCAL_SET_NZ(tmp & 0xff);                                                        \
+              LOCAL_SET_CARRY(tmp < 0x100);                                                    \
+              LOCAL_SET_OVERFLOW((((reg_a & 0xff) ^ tmp) & 0x80)                               \
+                                    && (((reg_a & 0xff) ^ src) & 0x80));                       \
+          }                                                                                    \
+          reg_a = tmp & 0xff;                                                                  \
+      } else {                                                                                 \
+          src ^= 0xffff;                                                                       \
+          if (!LOCAL_DECIMAL()) {                                                              \
+              tmp = reg_a + src + LOCAL_CARRY();                                               \
+          } else {                                                                             \
+              tmp = (reg_a & 0xf) + (src & 0xf) + LOCAL_CARRY();                               \
+              if (tmp <= 0xf) {                                                                \
+                  tmp -= 6;                                                                    \
+              }                                                                                \
+              LOCAL_SET_CARRY(tmp > 0xf);                                                      \
+              tmp = (reg_a & 0xf0) + (src ^ 0xf0) + (LOCAL_CARRY() << 4) + (tmp & 0xf);        \
+              if (tmp <= 0xff) {                                                               \
+                  tmp -= 0x60;                                                                 \
+              }                                                                                \
+              LOCAL_SET_CARRY(tmp > 0xff);                                                     \
+              tmp = (reg_a & 0xf00) + (src & 0xf00) + (LOCAL_CARRY() << 8) + (tmp & 0xff);     \
+              if (tmp <= 0xfff) {                                                              \
+                  tmp -= 0x600;                                                                \
+              }                                                                                \
+              LOCAL_SET_CARRY(tmp > 0xfff);                                                    \
+              tmp = (reg_a & 0xf000) + (src & 0xf000) + (LOCAL_CARRY() << 12) + (tmp & 0xfff); \
+          }                                                                                    \
+          LOCAL_SET_OVERFLOW((~(reg_a ^ src) & (reg_a ^ tmp) & 0x8000) >> 8);                  \
+          if (LOCAL_DECIMAL() && tmp <= 0xffff) {                                              \
+              tmp -= 0x6000;                                                                   \
+          }                                                                                    \
+          LOCAL_SET_CARRY((tmp > 0xffff) ? 1 : 0);                                             \
+          LOCAL_SET_NZ(tmp, LOCAL_65816_M());                                                  \
+          reg_a = tmp & 0xffff;                                                                \
+      }                                                                                        \
+      INC_PC(pc_inc);                                                                          \
   } while (0)
 
 #undef SEC    /* defined in time.h on SunOS. */
@@ -2107,11 +2136,6 @@ trap_skipped:
 
         switch (p0) {
 
-          case 0xe3:            /* 1 byte, 1 cycle NOP */
-          case 0xf3:            /* 1 byte, 1 cycle NOP */
-            NOOP_IMM(1);
-            break;
-
           case 0x22:            /* NOP #$nn */
           case 0x42:            /* NOP #$nn */
           case 0x82:            /* NOP #$nn */
@@ -2448,7 +2472,7 @@ trap_skipped:
             break;
 
           case 0x52:            /* EOR ($nn) */                                                                                   
-            EOR(LOAD_INDIRECT(p1, LOCAL_65816_M()), 0, 2);                                                                                              
+            EOR(LOAD_INDIRECT(p1, LOCAL_65816_M()), 0, 2);
             break;
 
           case 0x53:            /* EOR ($nn,S),Y */
@@ -3016,11 +3040,15 @@ trap_skipped:
             break;
 
           case 0xe1:            /* SBC ($nn,X) */
-            SBC(LOAD_IND_X(p1), 1, 2);
+            SBC(LOAD_INDIRECT_X(p1, LOCAL_65816_M()), 1, 2);
             break;
 
           case 0xe2:            /* SEP #$nn */
             SEP(p1);
+            break;
+
+          case 0xe3:            /* SBC $nn,S */
+            SBC(LOAD_STACK_REL(p1, LOCAL_65816_M()), 2, 2);
             break;
 
           case 0xe4:            /* CPX $nn */
@@ -3028,15 +3056,15 @@ trap_skipped:
             break;
 
           case 0xe5:            /* SBC $nn */
-            SBC(LOAD_ZERO(p1), 1, 2);
+            SBC(LOAD_DIRECT_PAGE(p1, LOCAL_65816_M()), 1, 2);
             break;
 
           case 0xe6:            /* INC $nn */
             INC(p1, CLK_ZERO_RMW, 2, LOAD_ZERO, STORE_ABS);
             break;
 
-          case 0xe7:            /* SMB6 $nn (65C02) / single byte, single cycle NOP (65SC02) */
-            SMB(p1, 6);
+          case 0xe7:            /* SBC [$nn] */
+            SBC(LOAD_INDIRECT_LONG(p1, LOCAL_65816_M()), 0, 2);
             break;
 
           case 0xe8:            /* INX */
@@ -3044,7 +3072,7 @@ trap_skipped:
             break;
 
           case 0xe9:            /* SBC #$nn */
-            SBC(p1, 0, 2);
+            SBC((LOCAL_65816_M()) ? p1 : p2, 0, 2);
             break;
 
           case 0xea:            /* NOP */
@@ -3060,15 +3088,15 @@ trap_skipped:
             break;
 
           case 0xed:            /* SBC $nnnn */
-            SBC(LOAD(p2), 1, 3);
+            SBC(LOAD_ABS(p2, LOCAL_65816_M()), 1, 3);
             break;
 
           case 0xee:            /* INC $nnnn */
             INC(p2, CLK_ABS_RMW2, 3, LOAD_ABS, STORE_ABS);
             break;
 
-          case 0xef:            /* BBS6 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
-            BBS(6, p1, p2 >> 8);
+          case 0xef:            /* SBC $nnnnnn */
+            SBC(LOAD_ABS_LONG(p3, LOCAL_65816_M()), 1, 4);
             break;
 
           case 0xf0:            /* BEQ $nnnn */
@@ -3076,11 +3104,15 @@ trap_skipped:
             break;
 
           case 0xf1:            /* SBC ($nn),Y */
-            SBC(LOAD_IND_Y(p1), 1, 2);
+            SBC(LOAD_INDIRECT_Y(p1, LOCAL_65816_M()), 0, 2);
             break;
 
           case 0xf2:            /* SBC ($nn) */
-            SBC(LOAD_INDIRECT(p1), 1, 2);
+            SBC(LOAD_INDIRECT(p1, LOCAL_65816_M()), 0, 2);
+            break;
+
+          case 0xf3:            /* SBC ($nn,S),Y */
+            SBC(LOAD_STACK_REL_Y(p1, LOCAL_65816_M()), 5, 2);
             break;
 
           case 0xf4:            /* PEA $nnnn */
@@ -3088,15 +3120,15 @@ trap_skipped:
             break;
 
           case 0xf5:            /* SBC $nn,X */
-            SBC(LOAD_ZERO_X(p1), CLK_ZERO_I2, 2);
+            SBC(LOAD_DIRECT_PAGE_X(p1), CLK_ZERO_I2, 2);
             break;
 
           case 0xf6:            /* INC $nn,X */
             INC((p1 + reg_x) & 0xff, CLK_ZERO_I_RMW, 2, LOAD_ZERO, STORE_ABS);
             break;
 
-          case 0xf7:            /* SMB7 $nn (65C02) / single byte, single cycle NOP (65SC02) */
-            SMB(p1, 7);
+          case 0xf7:            /* SBC [$nn],Y */
+            SBC(LOAD_INDIRECT_LONG_Y(p1, LOCAL_65816_M()), 0, 2);
             break;
 
           case 0xf8:            /* SED */
@@ -3104,7 +3136,7 @@ trap_skipped:
             break;
 
           case 0xf9:            /* SBC $nnnn,Y */
-            SBC(LOAD_ABS_Y(p2), 1, 3);
+            SBC(LOAD_ABS_Y(p2, LOCAL_65816_M()), 1, 3);
             break;
 
           case 0xfa:            /* PLX */
@@ -3116,15 +3148,15 @@ trap_skipped:
             break;
 
           case 0xfd:            /* SBC $nnnn,X */
-            SBC(LOAD_ABS_X(p2), 1, 3);
+            SBC(LOAD_ABS_X(p2, LOCAL_65816_M()), 1, 3);
             break;
 
           case 0xfe:            /* INC $nnnn,X */
             INC(p2, CLK_ABS_I_RMW2, 3, LOAD_ABS_X_RMW, STORE_ABS_X_RMW);
             break;
 
-          case 0xff:            /* BBS7 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
-            BBS(7, p1, p2 >> 8);
+          case 0xff:            /* SBC $nnnnnn,X */
+            SBC(LOAD_ABS_LONG_X(p1, LOCAL_65816_M()), 1, 4);
             break;
         }
     }
