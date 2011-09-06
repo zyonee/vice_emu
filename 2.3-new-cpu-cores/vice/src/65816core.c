@@ -1130,7 +1130,8 @@
       tmp = (load_func(tmp_addr) + 1) & 0xff;             \
       LOCAL_SET_NZ(tmp);                                  \
       INC_PC(pc_inc);                                     \
-      store_func(tmp_addr, tmp, (clk_inc));               \
+      CLK_ADD(CLK, clk_inc);                              \
+      store_func(tmp_addr, tmp, LOCAL_65816_M());         \
   } while (0)
 
 #define INX()                               \
@@ -1832,10 +1833,16 @@
                                                           \
       tmp_addr = (addr);                                  \
       tmp_value = load_func(tmp_addr);                    \
-      LOCAL_SET_ZERO(!(tmp_value & reg_a));               \
-      tmp_value |= reg_a;                                 \
+      if (LOCAL_65816_M()) {                              \
+          LOCAL_SET_ZERO(!(tmp_value & (reg_a & 0xff));   \
+          tmp_value |= (reg_a & 0xff);                    \
+      } else {                                            \
+          LOCAL_SET_ZERO(!(tmp_value & reg_a));           \
+          tmp_value |= reg_a;                             \
+      }                                                   \
       INC_PC(pc_inc);                                     \
-      store_func(tmp_addr, tmp_value, clk_inc);           \
+      CLK_ADD(CLK, clk_inc);                              \
+      store_func(tmp_addr, tmp_value, LOCAL_65816_M());   \
   } while (0)
 
 #define TSC()                 \
@@ -2190,7 +2197,7 @@ trap_skipped:
             break;
 
           case 0x04:            /* TSB $nn */
-            TSB(p1, CLK_ZERO_RMW, 2, LOAD_ZERO, STORE_ABS);
+            TSB(p1, 2, 2, LOAD_DIRECT_PAGE, STORE_ABS);
             break;
 
           case 0x05:            /* ORA $nn */
@@ -2222,7 +2229,7 @@ trap_skipped:
             break;
 
           case 0x0c:            /* TSB $nnnn */
-            TSB(p2, CLK_ABS_RMW2, 3, LOAD_ABS, STORE_ABS);
+            TSB(p2, 2, 3, LOAD_ABS, STORE_ABS);
             break;
 
           case 0x0d:            /* ORA $nnnn */
