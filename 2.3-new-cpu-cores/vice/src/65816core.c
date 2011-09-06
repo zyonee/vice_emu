@@ -1735,21 +1735,14 @@
       INC_PC(pc_inc);                   \
   } while (0)
 
-#define STZ(addr, clk_inc1, clk_inc2, pc_inc, store_func) \
-  do {                                                    \
-      unsigned int tmp;                                   \
-                                                          \
-      CLK_ADD(CLK, (clk_inc1));                           \
-      tmp = (addr);                                       \
-      INC_PC(pc_inc);                                     \
-      store_func(tmp, 0, clk_inc2);                       \
-  } while (0)
-
-#define STZ_ZERO(addr, clk_inc, pc_inc) \
-  do {                                  \
-      CLK_ADD(CLK, (clk_inc));          \
-      STORE_ZERO((addr), 0);            \
-      INC_PC(pc_inc);                   \
+#define STZ(addr, pc_inc, store_func)      \                                                                                    
+  do {                                     \                                                                                    
+      unsigned int tmp;                    \                                                                                    
+                                           \                                                                                    
+      CLK_ADD(CLK, (clk_inc));             \                                                                                    
+      tmp = (addr);                        \                                                                                    
+      INC_PC(pc_inc);                      \                                                                                    
+      store_func(tmp, 0, LOCAL_65816_M()); \                                                                                    
   } while (0)
 
 #define TAX()                               \
@@ -2553,7 +2546,7 @@ trap_skipped:
             break;
 
           case 0x64:            /* STZ $nn */
-            STZ_ZERO(p1, 1, 2);
+            STZ(p1, 2, STORE_DIRECT_PAGE);
             break;
 
           case 0x65:            /* ADC $nn */
@@ -2617,7 +2610,7 @@ trap_skipped:
             break;
 
           case 0x74:            /* STZ $nn,X */
-            STZ_ZERO(p1 + reg_x, CLK_ZERO_I_STORE, 2);
+            STZ(p1, 2, STORE_DIRECT_PAGE_X);
             break;
 
           case 0x75:            /* ADC $nn,X */
@@ -2777,7 +2770,7 @@ trap_skipped:
             break;
 
           case 0x9c:            /* STZ $nnnn */
-            STZ(p2, 0, 1, 3, STORE_ABS);
+            STZ(p2, 3, STORE_ABS);
             break;                         
 
           case 0x9d:            /* STA $nnnn,X */
@@ -2785,7 +2778,7 @@ trap_skipped:
             break;
 
           case 0x9e:            /* STZ $nnnn,X */
-            STZ(p2, 0, CLK_ABS_I_STORE2, 3, STORE_ABS_X);
+            STZ(p2, 3, STORE_ABS_X);
             break;
 
           case 0x9f:            /* STA $nnnnnn,X */
