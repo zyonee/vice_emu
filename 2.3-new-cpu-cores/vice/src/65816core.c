@@ -1677,22 +1677,9 @@
   do {                                         \
       unsigned int tmp;                        \
                                                \
-      CLK_ADD(CLK, (clk_inc));                 \
       tmp = (addr);                            \
       INC_PC(pc_inc);                          \
       store_func(tmp, reg_a, LOCAL_65816_M()); \
-  } while (0)
-
-#define STA_IND_Y(addr)                                  \
-  do {                                                   \
-      unsigned int tmp;                                  \
-                                                         \
-      CLK_ADD(CLK, 2);                                   \
-      tmp = LOAD_ZERO_ADDR(addr);                        \
-      LOAD_IND((tmp & 0xff00) | ((tmp + reg_y) & 0xff)); \
-      CLK_ADD(CLK, CLK_IND_Y_W);                         \
-      INC_PC(2);                                         \
-      STORE_IND(tmp + reg_y, reg_a);                     \
   } while (0)
 
 #define STP()          \
@@ -1718,31 +1705,22 @@
       INC_PC(pc_inc);                   \
   } while (0)
 
-#define STY(addr, clk_inc, pc_inc) \
-  do {                             \
-      unsigned int tmp;            \
-                                   \
-      tmp = (addr);                \
-      CLK_ADD(CLK, (clk_inc));     \
-      INC_PC(pc_inc);              \
-      STORE(tmp, reg_y);           \
+#define STY(addr, pc_inc, store_func)          \
+  do {                                         \
+      unsigned int tmp;                        \
+                                               \
+      tmp = (addr);                            \
+      INC_PC(pc_inc);                          \
+      store_func(tmp, reg_y, LOCAL_65816_X()); \
   } while (0)
 
-#define STY_ZERO(addr, clk_inc, pc_inc) \
-  do {                                  \
-      CLK_ADD(CLK, (clk_inc));          \
-      STORE_ZERO((addr), reg_y);        \
-      INC_PC(pc_inc);                   \
-  } while (0)
-
-#define STZ(addr, pc_inc, store_func)      \                                                                                    
-  do {                                     \                                                                                    
-      unsigned int tmp;                    \                                                                                    
-                                           \                                                                                    
-      CLK_ADD(CLK, (clk_inc));             \                                                                                    
-      tmp = (addr);                        \                                                                                    
-      INC_PC(pc_inc);                      \                                                                                    
-      store_func(tmp, 0, LOCAL_65816_M()); \                                                                                    
+#define STZ(addr, pc_inc, store_func)      \
+  do {                                     \
+      unsigned int tmp;                    \
+                                           \
+      tmp = (addr);                        \
+      INC_PC(pc_inc);                      \
+      store_func(tmp, 0, LOCAL_65816_M()); \
   } while (0)
 
 #define TAX()                               \
@@ -2674,7 +2652,7 @@ trap_skipped:
             break;
 
           case 0x84:            /* STY $nn */
-            STY_ZERO(p1, 1, 2);
+            STY(p1, 2, STORE_DIRECT_PAGE);
             break;
 
           case 0x85:            /* STA $nn */
@@ -2706,7 +2684,7 @@ trap_skipped:
             break;
 
           case 0x8c:            /* STY $nnnn */
-            STY(p2, 1, 3);
+            STY(p2, 3, STORE_ABS);
             break;
 
           case 0x8d:            /* STA $nnnn */
@@ -2738,7 +2716,7 @@ trap_skipped:
             break;
 
           case 0x94:            /* STY $nn,X */
-            STY_ZERO(p1 + reg_x, CLK_ZERO_I_STORE, 2);
+            STY(p1, 2, STORE_DIRECT_PAGE_X);
             break;
 
           case 0x95:            /* STA $nn,X */
