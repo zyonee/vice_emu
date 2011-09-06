@@ -2261,7 +2261,7 @@ trap_skipped:
             break;
 
           case 0x14:            /* TRB $nn */
-            TRB(p1, CLK_ZERO_RMW, 2, LOAD_ZERO, STORE_ABS);
+            TRB(p1, 2, 2, LOAD_DIRECT_PAGE, STORE_ABS);
             break;
 
           case 0x15:            /* ORA $nn,X */
@@ -2293,7 +2293,7 @@ trap_skipped:
             break;
 
           case 0x1c:            /* TRB $nnnn */
-            TRB(p2, CLK_ABS_RMW2, 3, LOAD_ABS, STORE_ABS);
+            TRB(p2, 2, 3, LOAD_ABS, STORE_ABS);
             break;
 
           case 0x1d:            /* ORA $nnnn,X */
