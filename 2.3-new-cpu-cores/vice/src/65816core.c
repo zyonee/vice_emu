@@ -1223,7 +1223,6 @@
   do {                                       \
       unsigned int tmp_addr;                 \
                                              \
-      CLK_ADD(CLK, 1);                       \
       INC_PC(2);                             \
       CLK_ADD(CLK, 2);                       \
       PUSH(((reg_pc) >> 8) & 0xff);          \
@@ -1231,6 +1230,37 @@
       tmp_addr = (p1 | (LOAD(reg_pc) << 8)); \
       CLK_ADD(CLK, CLK_JSR_INT_CYCLE);       \
       JUMP(tmp_addr);                        \
+  } while (0)
+
+#define JSR_IND_X()                               \
+  do {                                            \
+      unsigned int tmp_addr;                      \
+                                                  \
+      INC_PC(2)                                   \
+      CLK_ADD(CLK, 2);                            \
+      PUSH(((reg_pc) >> 8) & 0xff);               \
+      PUSH((reg_pc) & 0xff);                      \
+      CLK_ADD(CLK, 1);                            \
+      tmp_addr = LOAD(p2);                        \
+      CLK_ADD(CLK, 1);                            \
+      tmp_addr |= (LOAD((p2 + 1) & 0xffff) << 8); \
+      CLK_ADD(CLK, 1);                            \
+      JUMP(tmp_addr);                             \
+  } while (0)
+
+#define JSR_LONG()                     \
+  do {                                 \
+      unsigned int tmp_addr;           \
+                                       \
+      INC_PC(3);                       \
+      CLK_ADD(CLK, 3);                 \
+      PUSH(reg_pbr);                   \
+      PUSH(((reg_pc) >> 8) & 0xff);    \
+      PUSH((reg_pc) & 0xff);           \
+      tmp_addr = p2;                   \
+      CLK_ADD(CLK, CLK_JSR_INT_CYCLE); \
+      reg_pbr = (p3 >> 16);            \
+      JUMP(tmp_addr);                  \
   } while (0)
 
 #define LDA(value, clk_inc, pc_inc)                  \
@@ -1302,13 +1332,6 @@
     (CLK_ADD(CLK, (clk_inc)), INC_PC(pc_inc))
 
 #define NOOP_IMM(pc_inc) INC_PC(pc_inc)
-
-#define NOOP_ABS_X()   \
-  do {                 \
-      LOAD_ABS_X(p2);  \
-      CLK_ADD(CLK, 1); \
-      INC_PC(3);       \
-  } while (0)
 
 #define NOP()  NOOP_IMM(1)
 
@@ -2136,7 +2159,6 @@ trap_skipped:
 
         switch (p0) {
 
-          case 0x22:            /* NOP #$nn */
           case 0x42:            /* NOP #$nn */
           case 0x82:            /* NOP #$nn */
             NOOP_IMM(2);
@@ -2148,10 +2170,6 @@ trap_skipped:
 
           case 0x54:            /* NOP $nn,X */
             NOOP(2, 2);
-            break;
-
-          case 0xfc:            /* NOP $nnnn,X */
-            NOOP_ABS_X();
             break;
 
           case 0x00:            /* BRK */
@@ -2291,7 +2309,11 @@ trap_skipped:
             AND(LOAD_INDIRECT_X(p1, LOCAL_65816_M()), 1, 2);
             break;
 
-          case 0x23:            /* AND $..,S */
+          case 0x22:            /* JSR $nnnnnn */
+            JSR_LONG();
+            break;
+
+          case 0x23:            /* AND $nn,S */
             AND(LOAD_STACK_REL(p1, LOCAL_65816_M()), 2, 2);
             break;
 
@@ -3145,6 +3167,10 @@ trap_skipped:
 
           case 0xfb:            /* XCE */
             XCE();
+            break;
+
+          case 0xfc:            /* JSR ($nnnn,X) */
+            JSR_IND_X();
             break;
 
           case 0xfd:            /* SBC $nnnn,X */
