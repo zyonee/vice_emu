@@ -3082,7 +3082,7 @@ trap_skipped:
             break;
 
           case 0xe6:            /* INC $nn */
-            INC(p1, CLK_ZERO_RMW, 2, LOAD_ZERO, STORE_ABS);
+            INC(p1, 2, 2, LOAD_DIRECT_PAGE, STORE_ABS);
             break;
 
           case 0xe7:            /* SBC [$nn] */
@@ -3114,7 +3114,7 @@ trap_skipped:
             break;
 
           case 0xee:            /* INC $nnnn */
-            INC(p2, CLK_ABS_RMW2, 3, LOAD_ABS, STORE_ABS);
+            INC(p2, 2, 3, LOAD_ABS, STORE_ABS);
             break;
 
           case 0xef:            /* SBC $nnnnnn */
@@ -3146,7 +3146,7 @@ trap_skipped:
             break;
 
           case 0xf6:            /* INC $nn,X */
-            INC((p1 + reg_x) & 0xff, CLK_ZERO_I_RMW, 2, LOAD_ZERO, STORE_ABS);
+            INC((p1 + reg_x) & 0xff, 3, 2, LOAD_DIRECT_PAGE_X, STORE_ABS);
             break;
 
           case 0xf7:            /* SBC [$nn],Y */
@@ -3178,7 +3178,7 @@ trap_skipped:
             break;
 
           case 0xfe:            /* INC $nnnn,X */
-            INC(p2, CLK_ABS_I_RMW2, 3, LOAD_ABS_X_RMW, STORE_ABS_X_RMW);
+            INC(p2, 2, 3, LOAD_ABS_X, STORE_ABS_X);
             break;
 
           case 0xff:            /* SBC $nnnnnn,X */
