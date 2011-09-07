@@ -1587,13 +1587,18 @@
       tmp_addr = (addr);                                  \
       src = load_func(tmp_addr);                          \
       if (LOCAL_CARRY()) {                                \
-          src |= 0x100;                                   \
+          if (LOCAL_65816_M()) {                          \
+              src |= 0x100;                               \
+          } else {                                        \
+              src |= 0x10000;                             \
+          }                                               \
       }                                                   \
-      LOCAL_SET_CARRY(src & 0x01);                        \
+      LOCAL_SET_CARRY(src & 1);                           \
       src >>= 1;                                          \
       LOCAL_SET_NZ(src);                                  \
       INC_PC(pc_inc);                                     \
-      store_func(tmp_addr, src, (clk_inc));               \
+      CLK_ADD(CLK, clk_inc);                              \
+      store_func(tmp_addr, src, LOCAL_65816_M());         \
   } while (0)
 
 #define ROR_A()                                                                      \
@@ -2598,7 +2603,7 @@ trap_skipped:
             break;
 
           case 0x66:            /* ROR $nn */
-            ROR(p1, CLK_ZERO_RMW, 2, LOAD_ZERO, STORE_ABS);
+            ROR(p1, 2, 2, LOAD_DIRECT_PAGE, STORE_ABS_DPR);
             break;
 
           case 0x67:            /* ADC [$nn] */
@@ -2630,7 +2635,7 @@ trap_skipped:
             break;
 
           case 0x6e:            /* ROR $nnnn */
-            ROR(p2, CLK_ABS_RMW2, 3, LOAD_ABS, STORE_ABS);
+            ROR(p2, 2, 3, LOAD_ABS, STORE_ABS);
             break;
 
           case 0x6f:            /* ADC $nnnnnn */
@@ -2662,7 +2667,7 @@ trap_skipped:
             break;
 
           case 0x76:            /* ROR $nn,X */
-            ROR((p1 + reg_x) & 0xff, CLK_ZERO_I_RMW, 2, LOAD_ZERO, STORE_ABS);
+            ROR(p1 + reg_x, 3, 2, LOAD_DIRECT_PAGE, STORE_ABS_DPR);
             break;
 
           case 0x77:            /* ADC [$nn],Y */
@@ -2694,7 +2699,7 @@ trap_skipped:
             break;
 
           case 0x7e:            /* ROR $nnnn,X */
-            ROR(p2, CLK_ABS_I_RMW2, 3, LOAD_ABS_X, STORE_ABS_X_RMW);
+            ROR(p2, 2, 3, LOAD_ABS_X, STORE_ABS_X_RRW);
             break;
 
           case 0x7f:            /* ADC $nnnnnn,X */
