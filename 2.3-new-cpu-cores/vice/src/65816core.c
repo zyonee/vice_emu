@@ -2237,8 +2237,7 @@ trap_skipped:
 
         switch (p0) {
 
-          case 0x42:            /* NOP #$nn */
-          case 0x82:            /* NOP #$nn */
+          case 0x42:            /* WDM, but emulated as a NOP #$nn */
             NOOP_IMM(2);
             break;
 
