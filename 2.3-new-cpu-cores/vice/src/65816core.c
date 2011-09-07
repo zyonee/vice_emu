@@ -1166,16 +1166,16 @@
       INC_PC(1);                            \
   } while (0)
 
-/* The 0x02 NOP opcode is also used to patch the ROM.  The function trap_handler()
+/* The 0x02 COP opcode is also used to patch the ROM.  The function trap_handler()
    returns nonzero if this is not a patch, but a `real' NOP instruction. */
 
-#define NOP_02()                                                \
+#define COP_02()                                                \
   do {                                                          \
       DWORD trap_result;                                        \
       EXPORT_REGISTERS();                                       \
       if (!ROM_TRAP_ALLOWED()                                   \
           || (trap_result = ROM_TRAP_HANDLER()) == (DWORD)-1) { \
-          NOOP_IMM(2);                                          \
+          COP_65816(p1);                                        \
       } else {                                                  \
           if (trap_result) {                                    \
              REWIND_FETCH_OPCODE(CLK, 2);                       \
@@ -2252,7 +2252,7 @@ trap_skipped:
 
           case 0x02:            /* NOP #$nn - also used for traps */
             STATIC_ASSERT(TRAP_OPCODE == 0x02);
-            NOP_02();
+            COP_02();
             break;
 
           case 0x03:            /* ORA $nn,S */
