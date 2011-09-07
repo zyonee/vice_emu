@@ -872,7 +872,7 @@
       unsigned int tmp_value, tmp_addr;                   \
                                                           \
       tmp_addr = (addr);                                  \
-      tmp_value = load_func(tmp_addr);                    \
+      tmp_value = load_func(tmp_addr, LOCAL_65816_M());   \
       LOCAL_SET_CARRY(tmp_value & 0x80);                  \
       tmp_value = (tmp_value << 1) & 0xff;                \
       LOCAL_SET_NZ(tmp_value);                            \
@@ -1079,11 +1079,16 @@
       unsigned int tmp, tmp_addr;                         \
                                                           \
       tmp_addr = (addr);                                  \
-      tmp = load_func(tmp_addr);                          \
-      tmp = (tmp - 1) & 0xff;                             \
-      LOCAL_SET_NZ(tmp);                                  \
+      tmp = load_func(tmp_addr, LOCAL_65816_M());         \
+      if (LOCAL_65816_M()) {                              \
+          tmp = (tmp - 1) & 0xff;                         \
+      } else {                                            \
+          tmp = (tmp - 1) & 0xffff;                       \
+      }                                                   \
+      LOCAL_SET_NZ(tmp, LOCAL_65816_M());                 \
       INC_PC(pc_inc);                                     \
-      store_func(tmp_addr, tmp, (clk_inc));               \
+      CLK_ADD(CLK, clk_inc);                              \
+      store_func(tmp_addr, tmp, LOCAL_65816_M());         \
   } while (0)
 
 #define DEX()                               \
@@ -1129,16 +1134,16 @@
       INC_PC(1);                                           \
   } while (0)
 
-#define INC(addr, clk_inc, pc_inc, load_func, store_func) \
-  do {                                                    \
-      unsigned int tmp, tmp_addr;                         \
-                                                          \
-      tmp_addr = (addr);                                  \
-      tmp = (load_func(tmp_addr) + 1) & 0xff;             \
-      LOCAL_SET_NZ(tmp);                                  \
-      INC_PC(pc_inc);                                     \
-      CLK_ADD(CLK, clk_inc);                              \
-      store_func(tmp_addr, tmp, LOCAL_65816_M());         \
+#define INC(addr, clk_inc, pc_inc, load_func, store_func)      \
+  do {                                                         \
+      unsigned int tmp, tmp_addr;                              \
+                                                               \
+      tmp_addr = (addr);                                       \
+      tmp = (load_func(tmp_addr, LOCAL_65816_M()) + 1) & 0xff; \
+      LOCAL_SET_NZ(tmp);                                       \
+      INC_PC(pc_inc);                                          \
+      CLK_ADD(CLK, clk_inc);                                   \
+      store_func(tmp_addr, tmp, LOCAL_65816_M());              \
   } while (0)
 
 #define INX()                               \
@@ -1304,7 +1309,7 @@
       unsigned int tmp, tmp_addr;                         \
                                                           \
       tmp_addr = (addr);                                  \
-      tmp = load_func(tmp_addr);                          \
+      tmp = load_func(tmp_addr, LOCAL_65816_M());         \
       LOCAL_SET_CARRY(tmp & 1);                           \
       tmp >>= 1;                                          \
       LOCAL_SET_NZ(tmp, LOCAL_65816_M());                 \
@@ -1549,7 +1554,7 @@
       unsigned int tmp, tmp_addr;                         \
                                                           \
       tmp_addr = (addr);                                  \
-      tmp = load_func(tmp_addr);                          \
+      tmp = load_func(tmp_addr, LOCAL_65816_M());         \
       tmp = (tmp << 1) | LOCAL_CARRY();                   \
       if (LOCAL_65816_M()) {                              \
           LOCAL_SET_CARRY(tmp & 0x100);                   \
@@ -1585,7 +1590,7 @@
       unsigned int src, tmp_addr;                         \
                                                           \
       tmp_addr = (addr);                                  \
-      src = load_func(tmp_addr);                          \
+      src = load_func(tmp_addr, LOCAL_65816_M());         \
       if (LOCAL_CARRY()) {                                \
           if (LOCAL_65816_M()) {                          \
               src |= 0x100;                               \
@@ -1840,7 +1845,7 @@
       unsigned int tmp_value, tmp_addr;                   \
                                                           \
       tmp_addr = (addr);                                  \
-      tmp_value = load_func(tmp_addr);                    \
+      tmp_value = load_func(tmp_addr, LOCAL_65816_M());   \
       if (LOCAL_65816_M()) {                              \
           LOCAL_SET_ZERO(!(tmp_value & (reg_a & 0xff));   \
           tmp_value &= (~(reg_a & 0xff));                 \
@@ -1858,7 +1863,7 @@
       unsigned int tmp_value, tmp_addr;                   \
                                                           \
       tmp_addr = (addr);                                  \
-      tmp_value = load_func(tmp_addr);                    \
+      tmp_value = load_func(tmp_addr, LOCAL_65816_M());   \
       if (LOCAL_65816_M()) {                              \
           LOCAL_SET_ZERO(!(tmp_value & (reg_a & 0xff));   \
           tmp_value |= (reg_a & 0xff);                    \
@@ -2987,7 +2992,7 @@ trap_skipped:
             break;
 
           case 0xc6:            /* DEC $nn */
-            DEC(p1, CLK_ZERO_RMW, 2, LOAD_ZERO, STORE_ABS);
+            DEC(p1, 2, 2, LOAD_ZERO, STORE_ABS_DPR);
             break;
 
           case 0xc7:            /* CMP [$nn] */
@@ -3019,7 +3024,7 @@ trap_skipped:
             break;
 
           case 0xce:            /* DEC $nnnn */
-            DEC(p2, CLK_ABS_RMW2, 3, LOAD_ABS, STORE_ABS);
+            DEC(p2, 2, 3, LOAD_ABS, STORE_ABS);
             break;
 
           case 0xcf:            /* CMP $nnnnnn */
@@ -3051,7 +3056,7 @@ trap_skipped:
             break;
 
           case 0xd6:            /* DEC $nn,X */
-            DEC((p1 + reg_x) & 0xff, CLK_ZERO_I_RMW, 2, LOAD_ABS, STORE_ABS);
+            DEC(p1 + reg_x, 3, 2, LOAD_DIRECT_PAGE, STORE_ABS_DPR);
             break;
 
           case 0xd7:            /* CMP [$nn],Y */
@@ -3083,7 +3088,7 @@ trap_skipped:
             break;
 
           case 0xde:            /* DEC $nnnn,X */
-            DEC(p2, CLK_ABS_I_RMW2, 3, LOAD_ABS_X_RMW, STORE_ABS_X_RMW);
+            DEC(p2, 2, 3, LOAD_ABS_X, STORE_ABS_X_RRW);
             break;
 
           case 0xdf:            /* CMP $nnnnnn,X */
