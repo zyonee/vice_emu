@@ -1330,6 +1330,46 @@
       INC_PC(1);                                   \
   } while (0)
 
+#define MVN(src, dst)                               \
+  do {                                              \
+      unsigned int tmp;                             \
+                                                    \
+      while (reg_a != 0xffff) {                     \
+          tmp = LOAD_LONG((src * 0x10000) | reg_x); \
+          STORE_LONG((dst * 0x10000) | reg_y, tmp); \
+          if (LOCAL_65816_X()) {                    \
+              reg_x = (reg_x + 1) & 0xff;           \
+              reg_y = (reg_y + 1) & 0xff;           \
+          } else {                                  \
+              reg_x++;                              \
+              reg_y++;                              \
+          }                                         \
+          reg_a--;                                  \
+          CLK_ADD(CLK, 7);                          \
+      }                                             \
+      PC_INC(3);                                    \
+  } while (0)
+
+#define MVP(src, dst)                               \
+  do {                                              \
+      unsigned int tmp;                             \
+                                                    \
+      while (reg_a != 0xffff) {                     \
+          tmp = LOAD_LONG((src * 0x10000) | reg_x); \
+          STORE_LONG((dst * 0x10000) | reg_y, tmp); \
+          if (LOCAL_65816_X()) {                    \
+              reg_x = (reg_x - 1) & 0xff;           \
+              reg_y = (reg_y - 1) & 0xff;           \
+          } else {                                  \
+              reg_x--;                              \
+              reg_y--;                              \
+          }                                         \
+          reg_a--;                                  \
+          CLK_ADD(CLK, 7);                          \
+      }                                             \
+      PC_INC(3);                                    \
+  } while (0)
+
 #define ORA(value, clk_inc, pc_inc)                            \
   do {                                                         \
       if (LOCAL_65816_M()) {                                   \
@@ -2202,14 +2242,6 @@ trap_skipped:
             NOOP_IMM(2);
             break;
 
-          case 0x44:            /* NOP $nn */
-            NOOP(1, 2);
-            break;
-
-          case 0x54:            /* NOP $nn,X */
-            NOOP(2, 2);
-            break;
-
           case 0x00:            /* BRK */
             BRK();
             break;
@@ -2479,6 +2511,10 @@ trap_skipped:
             EOR(LOAD_STACK_REL(p1, LOCAL_65816_M()), 2, 2);
             break;
 
+          case 0x44:            /* MVP $nn,$nn */
+            MVP(p1, (p2 >> 8));
+            break;
+
           case 0x45:            /* EOR $nn */
             EOR(LOAD_DIRECT_PAGE(p1, LOCAL_65816_M()), 1, 2);
             break;
@@ -2537,6 +2573,10 @@ trap_skipped:
 
           case 0x53:            /* EOR ($nn,S),Y */
             EOR(LOAD_STACK_REL_Y(p1, LOCAL_65816_M()), 5, 2);
+            break;
+
+          case 0x54:            /* MVN $nn,$nn */
+            MVN(p1, (p2 >> 8));
             break;
 
           case 0x55:            /* EOR $nn,X */
