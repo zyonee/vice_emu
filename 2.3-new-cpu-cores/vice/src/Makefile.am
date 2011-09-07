@@ -299,6 +299,7 @@ midi_sources = \
 cpucore_sources = \
 	6510core.c \
 	65C02core.c \
+	65CE02core.c \
 	65816core.c \
 	6809core.c \
 	8088core.c
@@ -313,6 +314,7 @@ EXTRA_DIST = \
 	6510core.c \
 	6510dtvcore.c \
 	65C02core.c \
+	65CE02core.c \
 	65816core.c \
 	6809core.c \
 	8088core.c \
