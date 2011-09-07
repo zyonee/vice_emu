@@ -693,6 +693,9 @@
       }                                               \
   } while (0)
 
+#define STORE_ABS_DPR(addr, value, bits8) \
+  STORE_ABS((addr + reg_dpr) & 0xffff, value, bits8)
+
 #define STORE_ABS_X(addr, value, bits8)   \
   do {                                    \
       unsigned int dst = (addr);          \
@@ -871,7 +874,8 @@
       tmp_value = (tmp_value << 1) & 0xff;                \
       LOCAL_SET_NZ(tmp_value);                            \
       INC_PC(pc_inc);                                     \
-      store_func(tmp_addr, tmp_value, clk_inc);           \
+      CLK_ADD(CLK, clk_inc);                              \
+      store_func(tmp_addr, tmp_value, LOCAL_65816_M());   \
   } while (0)
 
 #define ASL_A()                                             \
@@ -1543,10 +1547,17 @@
       tmp_addr = (addr);                                  \
       tmp = load_func(tmp_addr);                          \
       tmp = (tmp << 1) | LOCAL_CARRY();                   \
-      LOCAL_SET_CARRY(tmp & 0x100);                       \
-      LOCAL_SET_NZ(tmp & 0xff);                           \
+      if (LOCAL_65816_M()) {                              \
+          LOCAL_SET_CARRY(tmp & 0x100);                   \
+          tmp &= 0xff;                                    \
+      } else {                                            \
+          LOCAL_SET_CARRY(tmp & 0x10000);                 \
+          tmp &= 0xffff;                                  \
+      }                                                   \
+      LOCAL_SET_NZ(tmp, LOCAL_65816_M());                 \
       INC_PC(pc_inc);                                     \
-      store_func(tmp_addr, tmp, clk_inc);                 \
+      CLK_ADD(CLK, clk_inc);                              \
+      store_func(tmp_addr, tmp, LOCAL_65816_M());         \
   } while (0)
 
 #define ROL_A()                                                      \
@@ -1821,10 +1832,16 @@
                                                           \
       tmp_addr = (addr);                                  \
       tmp_value = load_func(tmp_addr);                    \
-      LOCAL_SET_ZERO(!(tmp_value & reg_a));               \
-      tmp_value &= (~reg_a);                              \
+      if (LOCAL_65816_M()) {                              \
+          LOCAL_SET_ZERO(!(tmp_value & (reg_a & 0xff));   \
+          tmp_value &= (~(reg_a & 0xff));                 \
+      } else {                                            \
+          LOCAL_SET_ZERO(!(tmp_value & reg_a));           \
+          tmp_value &= (~reg_a);                          \
+      }                                                   \
       INC_PC(pc_inc);                                     \
-      store_func(tmp_addr, tmp_value, clk_inc);           \
+      CLK_ADD(CLK, clk_inc);                              \
+      store_func(tmp_addr, tmp_value, LOCAL_65816_M());   \
   } while (0)
 
 #define TSB(addr, clk_inc, pc_inc, load_func, store_func) \
@@ -2197,7 +2214,7 @@ trap_skipped:
             break;
 
           case 0x04:            /* TSB $nn */
-            TSB(p1, 2, 2, LOAD_DIRECT_PAGE, STORE_ABS);
+            TSB(p1, 2, 2, LOAD_DIRECT_PAGE, STORE_ABS_DPR);
             break;
 
           case 0x05:            /* ORA $nn */
@@ -2205,7 +2222,7 @@ trap_skipped:
             break;
 
           case 0x06:            /* ASL $nn */
-            ASL(p1, 2, 2, LOAD_DIRECT_PAGE, STORE_ABS);
+            ASL(p1, 2, 2, LOAD_DIRECT_PAGE, STORE_ABS_DPR);
             break;
 
           case 0x07:            /* ORA [$nn] */
@@ -2229,7 +2246,7 @@ trap_skipped:
             break;
 
           case 0x0c:            /* TSB $nnnn */
-            TSB(p2, 2, 3, LOAD_ABS, STORE_ABS);
+            TSB(p2, 2, 3, p2, LOAD_ABS, STORE_ABS);
             break;
 
           case 0x0d:            /* ORA $nnnn */
@@ -2269,7 +2286,7 @@ trap_skipped:
             break;
 
           case 0x16:            /* ASL $nn,X */
-            ASL((p1 + reg_x) & 0xff, 3, 2, LOAD_DIRECT_PAGE, STORE_ABS);
+            ASL(p1 + reg_x, 3, 2, LOAD_DIRECT_PAGE, STORE_ABS_DPR);
             break;
 
           case 0x17:            /* ORA [$nn],Y */
@@ -2333,7 +2350,7 @@ trap_skipped:
             break;
 
           case 0x26:            /* ROL $nn */
-            ROL(p1, CLK_ZERO_RMW, 2, LOAD_ZERO, STORE_ABS);
+            ROL(p1, 2, 2, LOAD_DIRECT_PAGE, STORE_ABS_DPR);
             break;
 
           case 0x27:            /* AND [$nn] */
@@ -2365,7 +2382,7 @@ trap_skipped:
             break;
 
           case 0x2e:            /* ROL $nnnn */
-            ROL(p2, CLK_ABS_RMW2, 3, LOAD_ABS, STORE_ABS);
+            ROL(p2, 2, 3, LOAD_ABS, STORE_ABS);
             break;
 
           case 0x2f:            /* AND $nnnnnn */
@@ -2397,7 +2414,7 @@ trap_skipped:
             break;
 
           case 0x36:            /* ROL $nn,X */
-            ROL((p1 + reg_x) & 0xff, CLK_ZERO_I_RMW, 2, LOAD_ZERO, STORE_ABS);
+            ROL(p1 + reg_x, 3, 2, LOAD_DIRECT_PAGE, STORE_ABS_DPR);
             break;
 
           case 0x37:            /* AND [$nn],Y */
@@ -2429,7 +2446,7 @@ trap_skipped:
             break;
 
           case 0x3e:            /* ROL $nnnn,X */
-            ROL(p2, CLK_ABS_I_RMW2, 3, LOAD_ABS_X, STORE_ABS_X_RMW);
+            ROL(p2, 2, 3, LOAD_ABS_X, STORE_ABS_X);
             break;
 
           case 0x3f:            /* AND $nnnnnn,X */
@@ -3089,7 +3106,7 @@ trap_skipped:
             break;
 
           case 0xe6:            /* INC $nn */
-            INC(p1, 2, 2, LOAD_DIRECT_PAGE, STORE_ABS);
+            INC(p1, 2, 2, LOAD_DIRECT_PAGE, STORE_ABS_DPR);
             break;
 
           case 0xe7:            /* SBC [$nn] */
@@ -3153,7 +3170,7 @@ trap_skipped:
             break;
 
           case 0xf6:            /* INC $nn,X */
-            INC((p1 + reg_x) & 0xff, 3, 2, LOAD_DIRECT_PAGE, STORE_ABS);
+            INC(p1 + reg_x, 3, 2, LOAD_DIRECT_PAGE, STORE_ABS_DPR);
             break;
 
           case 0xf7:            /* SBC [$nn],Y */
