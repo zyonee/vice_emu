@@ -696,6 +696,9 @@
 #define STORE_ABS_DPR(addr, value, bits8) \
   STORE_ABS((addr + reg_dpr) & 0xffff, value, bits8)
 
+#define STORE_ABS_X_RRW(addr, value, bits8) \
+  STORE_ABS((addr + reg_x) & 0xffff, value, bits8)
+
 #define STORE_ABS_X(addr, value, bits8)   \
   do {                                    \
       unsigned int dst = (addr);          \
@@ -1302,11 +1305,12 @@
                                                           \
       tmp_addr = (addr);                                  \
       tmp = load_func(tmp_addr);                          \
-      LOCAL_SET_CARRY(tmp & 0x01);                        \
+      LOCAL_SET_CARRY(tmp & 1);                           \
       tmp >>= 1;                                          \
-      LOCAL_SET_NZ(tmp);                                  \
+      LOCAL_SET_NZ(tmp, LOCAL_65816_M());                 \
       INC_PC(pc_inc);                                     \
-      store_func(tmp_addr, tmp, clk_inc);                 \
+      CLK_ADD(CLK, clk_inc);                              \
+      store_func(tmp_addr, tmp, LOCAL_65816_M());         \
   } while (0)
 
 #define LSR_A()                                    \
@@ -2318,7 +2322,7 @@ trap_skipped:
             break;
 
           case 0x1e:            /* ASL $nnnn,X */
-            ASL(p2, 2, 3, LOAD_ABS_X, STORE_ABS_X);
+            ASL(p2, 2, 3, LOAD_ABS_X, STORE_ABS_X_RRW);
             break;
 
           case 0x1f:            /* ORA $nnnnnn,X */
@@ -2446,7 +2450,7 @@ trap_skipped:
             break;
 
           case 0x3e:            /* ROL $nnnn,X */
-            ROL(p2, 2, 3, LOAD_ABS_X, STORE_ABS_X);
+            ROL(p2, 2, 3, LOAD_ABS_X, STORE_ABS_X_RRW);
             break;
 
           case 0x3f:            /* AND $nnnnnn,X */
@@ -2470,7 +2474,7 @@ trap_skipped:
             break;
 
           case 0x46:            /* LSR $nn */
-            LSR(p1, CLK_ZERO_RMW, 2, LOAD_ZERO, STORE_ABS);
+            LSR(p1, 2, 2, LOAD_DIRECT_PAGE, STORE_ABS_DPR);
             break;
 
           case 0x47:            /* EOR [$nn] */
@@ -2502,7 +2506,7 @@ trap_skipped:
             break;
 
           case 0x4e:            /* LSR $nnnn */
-            LSR(p2, CLK_ABS_RMW2, 3, LOAD_ABS, STORE_ABS);
+            LSR(p2, 2, 3, LOAD_ABS, STORE_ABS);
             break;
 
           case 0x4f:            /* EOR $nnnnnn */
@@ -2530,7 +2534,7 @@ trap_skipped:
             break;
 
           case 0x56:            /* LSR $nn,X */
-            LSR((p1 + reg_x) & 0xff, CLK_ZERO_I_RMW, 2, LOAD_ZERO, STORE_ABS);
+            LSR(p1 + reg_x, 3, 2, LOAD_DIRECT_PAGE, STORE_ABS_DPR);
             break;
 
           case 0x57:            /* EOR [$nn],Y */
@@ -2562,7 +2566,7 @@ trap_skipped:
             break;
 
           case 0x5e:            /* LSR $nnnn,X */
-            LSR(p2, CLK_ABS_I_RMW2, 3, LOAD_ABS_X, STORE_ABS_X_RMW);
+            LSR(p2, 2, 3, LOAD_ABS_X, STORE_ABS_X_RRW);
             break;
 
           case 0x5f:            /* EOR $nnnnnn,X */
@@ -3202,7 +3206,7 @@ trap_skipped:
             break;
 
           case 0xfe:            /* INC $nnnn,X */
-            INC(p2, 2, 3, LOAD_ABS_X, STORE_ABS_X);
+            INC(p2, 2, 3, LOAD_ABS_X, STORE_ABS_X_RRW);
             break;
 
           case 0xff:            /* SBC $nnnnnn,X */
