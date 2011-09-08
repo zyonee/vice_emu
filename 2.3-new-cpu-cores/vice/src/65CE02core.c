@@ -30,6 +30,8 @@
  *
  * - define all registers used.
  * - define reg_sp as 16bit (8bit on 6502/65(S)C02).
+ * - define reg_z as 8bit.
+ * - define reg_bp as 8bit.
  *
  */
 
@@ -1234,6 +1236,13 @@
       INC_PC(pc_inc);                   \
   } while (0)
 
+#define TAB()              \
+  do {                     \
+      reg_bp = reg_a;      \
+      LOCAL_SET_BZ(reg_a); \
+      INC_PC(1);           \
+  } while (0)
+
 #define TAX()              \
   do {                     \
       reg_x = reg_a;       \
@@ -1252,6 +1261,13 @@
   do {                     \
       reg_z = reg_a;       \
       LOCAL_SET_NZ(reg_z); \
+      INC_PC(1);           \
+  } while (0)
+
+#define TBA()              \
+  do {                     \
+      reg_a = reg_bp;      \
+      LOCAL_SET_NZ(reg_a); \
       INC_PC(1);           \
   } while (0)
 
@@ -1551,10 +1567,8 @@ trap_skipped:
           case 0x33:            /* 1 byte, 1 cycle NOP */
           case 0x43:            /* 1 byte, 1 cycle NOP */
           case 0x53:            /* 1 byte, 1 cycle NOP */
-          case 0x5b:            /* 1 byte, 1 cycle NOP */
           case 0x63:            /* 1 byte, 1 cycle NOP */
           case 0x73:            /* 1 byte, 1 cycle NOP */
-          case 0x7b:            /* 1 byte, 1 cycle NOP */
           case 0x83:            /* 1 byte, 1 cycle NOP */
           case 0x8b:            /* 1 byte, 1 cycle NOP */
           case 0x93:            /* 1 byte, 1 cycle NOP */
@@ -1925,6 +1939,10 @@ trap_skipped:
             PHY();
             break;
 
+          case 0x5b:            /* TAB */
+            TAB();
+            break;
+
           case 0x5d:            /* EOR $nnnn,X */
             EOR(LOAD_ABS_X(p2), 1, 3);
             break;
@@ -2031,6 +2049,10 @@ trap_skipped:
 
           case 0x7a:            /* PLY */
             PLY();
+            break;
+
+          case 0x7b:            /* TBA */
+            TBA();
             break;
 
           case 0x7c:            /* JMP ($nnnn,X) */
