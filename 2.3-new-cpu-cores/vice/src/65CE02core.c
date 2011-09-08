@@ -29,6 +29,7 @@
 /* any CPU definition file that includes this file needs to do the following:
  *
  * - define all registers used.
+ * - define reg_sp as 16bit (8bit on 6502/65(S)C02).
  *
  */
 
@@ -121,6 +122,14 @@
             reg_p &= ~P_CARRY; \
     } while (0)
 
+#define LOCAL_SET_STACK_EXTEND(val)   \
+    do {                              \
+        if (val)                      \
+            reg_p |= P_STACK_EXTEND;  \
+        else                          \
+            reg_p &= ~P_STACK_EXTEND; \
+    } while (0)
+
 #define LOCAL_SET_SIGN(val)      (flag_n = (val) ? 0x80 : 0)
 #define LOCAL_SET_ZERO(val)      (flag_z = !(val))
 #define LOCAL_SET_STATUS(val)    (reg_p = ((val) & ~(P_ZERO | P_SIGN)), \
@@ -132,6 +141,7 @@
 #define LOCAL_DECIMAL()          (reg_p & P_DECIMAL)
 #define LOCAL_INTERRUPT()        (reg_p & P_INTERRUPT)
 #define LOCAL_CARRY()            (reg_p & P_CARRY)
+#define LOCAL_STACK_EXTEND()     (reg_p & P_STACK_EXTEND)
 #define LOCAL_SIGN()             (flag_n & 0x80)
 #define LOCAL_ZERO()             (!flag_z)
 #define LOCAL_STATUS()           (reg_p | (flag_n & 0x80) | P_UNUSED    \
@@ -206,10 +216,26 @@
 /* Stack operations. */
 
 #ifndef PUSH
-#define PUSH(val) ((PAGE_ONE)[(reg_sp--)] = ((BYTE)(val)))
+#define PUSH(val)                                             \
+  do {                                                        \
+      STORE(reg_sp, val);                                     \
+      if (LOCAL_STACK_EXTEND()) {                             \
+          reg_sp = (reg_sp & 0xff00) | ((reg_sp - 1) & 0xff); \
+      } else {                                                \
+          reg_sp--;                                           \
+      }                                                       \
+  while (0)
 #endif
 #ifndef PULL
-#define PULL()    ((PAGE_ONE)[(++reg_sp)])
+#define PULL(var)                                             \
+  do {                                                        \
+      if (LOCAL_STACK_EXTEND()) {                             \
+          reg_sp = (reg_sp & 0xff00) | ((reg_sp + 1) & 0xff); \
+      } else {                                                \
+          reg_sp++;                                           \
+      }                                                       \
+      var = LOAD(reg_sp);                                     \
+  } while (0)
 #endif
 
 #ifdef DEBUG
@@ -1232,11 +1258,18 @@
       store_func(tmp_addr, tmp_value, clk_inc);           \
   } while (0)
 
-#define TSX()               \
-  do {                      \
-      reg_x = reg_sp;       \
-      LOCAL_SET_NZ(reg_sp); \
-      INC_PC(1);            \
+#define TSX()                \
+  do {                       \
+      reg_x = reg_sp & 0xff; \
+      LOCAL_SET_NZ(reg_x);   \
+      INC_PC(1);             \
+  } while (0)
+
+#define TSY()              \
+  do {                     \
+      reg_y = reg_sp >> 8; \
+      LOCAL_SET_NZ(reg_y); \
+      INC_PC(1);           \
   } while (0)
 
 #define TXA()              \
@@ -1248,7 +1281,7 @@
 
 #define TXS()         \
   do {                \
-      reg_sp = reg_x; \
+      reg_sp = (reg_sp & 0xff00) | reg_x; \
       INC_PC(1);      \
   } while (0)
 
@@ -1257,6 +1290,12 @@
       reg_a = reg_y;       \
       LOCAL_SET_NZ(reg_a); \
       INC_PC(1);           \
+  } while (0)
+
+#define TYS()                                \
+  do {                                       \
+      reg_s = (reg_s & 0xff) | (reg_y >> 8); \
+      INC_PC(1);                             \
   } while (0)
 
 #define WAI()                          \
@@ -1479,11 +1518,9 @@ trap_skipped:
         switch (p0) {
 
           case 0x03:            /* 1 byte, 1 cycle NOP */
-          case 0x0b:            /* 1 byte, 1 cycle NOP */
           case 0x13:            /* 1 byte, 1 cycle NOP */
           case 0x1b:            /* 1 byte, 1 cycle NOP */
           case 0x23:            /* 1 byte, 1 cycle NOP */
-          case 0x2b:            /* 1 byte, 1 cycle NOP */
           case 0x33:            /* 1 byte, 1 cycle NOP */
           case 0x3b:            /* 1 byte, 1 cycle NOP */
           case 0x43:            /* 1 byte, 1 cycle NOP */
@@ -1578,6 +1615,10 @@ trap_skipped:
 
           case 0x0a:            /* ASL A */
             ASL_A();
+            break;
+
+          case 0x0b:            /* TSY */
+            TSY();
             break;
 
           case 0x0c:            /* TSB $nnnn */
@@ -1686,6 +1727,10 @@ trap_skipped:
 
           case 0x2a:            /* ROL A */
             ROL_A();
+            break;
+
+          case 0x2b:            /* TYS */
+            TYS();
             break;
 
           case 0x2c:            /* BIT $nnnn */
