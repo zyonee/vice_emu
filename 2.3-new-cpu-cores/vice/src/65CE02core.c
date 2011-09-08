@@ -534,6 +534,15 @@
       INC_PC(1);                     \
   } while (0)
 
+#define ASR_A()                              \
+  do {                                       \
+      LOCAL_SET_CARRY(reg_a & 1);            \
+      reg_a = (reg_a & 0x80) | (reg_a >> 1); \
+      LOCAL_SET_NZ(reg_a);                   \
+      INC_PC(1);                             \
+      CLK_ADD(CLK, 1);                       \
+  } while (0)
+
 /* FIXME: cpu_type needs to be declared in the file that includes this file */
 #define BBR(bit, addr, value)                                   \
   do {                                                          \
@@ -655,6 +664,13 @@
   do {                      \
       INC_PC(1);            \
       LOCAL_SET_DECIMAL(0); \
+  } while (0)
+
+#define CLE()                    \
+  do {                           \
+      INC_PC(1);                 \
+      CLK_ADD(CLK, 1);           \
+      LOCAL_SET_STACK_EXTEND(0); \
   } while (0)
 
 #define CLI()                   \
@@ -792,19 +808,19 @@
       INC_PC(1);           \
   } while (0)
 
-/* The 0x02 NOP opcode is also used to patch the ROM.  The function trap_handler()
-   returns nonzero if this is not a patch, but a `real' NOP instruction. */
+/* The 0x02 CLE opcode is also used to patch the ROM.  The function trap_handler()
+   returns nonzero if this is not a patch, but a `real' CLE instruction. */
 
-#define NOP_02()                                                \
+#define CLE_02()                                                \
   do {                                                          \
       DWORD trap_result;                                        \
       EXPORT_REGISTERS();                                       \
       if (!ROM_TRAP_ALLOWED()                                   \
           || (trap_result = ROM_TRAP_HANDLER()) == (DWORD)-1) { \
-          NOOP_IMM(2);                                          \
+          CLE();                                                \
       } else {                                                  \
           if (trap_result) {                                    \
-             REWIND_FETCH_OPCODE(CLK, 2);                       \
+             REWIND_FETCH_OPCODE(CLK, 1);                       \
              SET_OPCODE(trap_result);                           \
              IMPORT_REGISTERS();                                \
              goto trap_skipped;                                 \
@@ -896,6 +912,14 @@
       reg_a = reg_a >> 1;            \
       LOCAL_SET_NZ(reg_a);           \
       INC_PC(1);                     \
+  } while (0)
+
+#define NEG()              \
+  do {                     \
+      reg_a = ~reg_a + 1;  \
+      LOCAL_SET_NZ(reg_a); \
+      INC_PC(1);           \
+      CLK_ADD(CLK, 1);     \
   } while (0)
 
 #define ORA(value, clk_inc, pc_inc)    \
@@ -1122,12 +1146,20 @@
       INC_PC(1);            \
   } while (0)
 
+#define SEE()                    \
+  do {                           \
+      LOCAL_SET_STACK_EXTEND(1); \
+      INC_PC(1);                 \
+      CLK_ADD(CLK, 1);           \
+  } while (0)
+
 #define SEI()                    \
   do {                           \
       if (!LOCAL_INTERRUPT()) {  \
           OPCODE_DISABLES_IRQ(); \
       }                          \
       LOCAL_SET_INTERRUPT(1);    \
+      CLK_ADD(CLK, 1);           \
       INC_PC(1);                 \
   } while (0)
 
@@ -1561,11 +1593,9 @@ trap_skipped:
 
         switch (p0) {
 
-          case 0x03:            /* 1 byte, 1 cycle NOP */
           case 0x13:            /* 1 byte, 1 cycle NOP */
           case 0x23:            /* 1 byte, 1 cycle NOP */
           case 0x33:            /* 1 byte, 1 cycle NOP */
-          case 0x43:            /* 1 byte, 1 cycle NOP */
           case 0x53:            /* 1 byte, 1 cycle NOP */
           case 0x63:            /* 1 byte, 1 cycle NOP */
           case 0x73:            /* 1 byte, 1 cycle NOP */
@@ -1587,7 +1617,6 @@ trap_skipped:
             break;
 
           case 0x22:            /* NOP #$nn */
-          case 0x42:            /* NOP #$nn */
           case 0x62:            /* NOP #$nn */
           case 0x82:            /* NOP #$nn */
           case 0xc2:            /* NOP #$nn */
@@ -1622,9 +1651,13 @@ trap_skipped:
             ORA(LOAD_IND_X(p1), 1, 2);
             break;
 
-          case 0x02:            /* NOP #$nn - also used for traps */
+          case 0x02:            /* CLE - also used for traps */
             STATIC_ASSERT(TRAP_OPCODE == 0x02);
-            NOP_02();
+            CLE_02();
+            break;
+
+          case 0x03:            /* SEE */
+            SEE();
             break;
 
           case 0x04:            /* TSB $nn */
@@ -1857,6 +1890,14 @@ trap_skipped:
 
           case 0x41:            /* EOR ($nn,X) */
             EOR(LOAD_IND_X(p1), 1, 2);
+            break;
+
+          case 0x42:            /* NEG */
+            NEG();
+            break;
+
+          case 0x43:            /* ASR */
+            ASR_A();
             break;
 
           case 0x45:            /* EOR $nn */
