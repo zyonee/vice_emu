@@ -1,5 +1,5 @@
 /*
- * 65C02core.c - 65C02/65SC02 emulation core.
+ * 65CE02core.c - 65CE02 emulation core.
  *
  * Written by
  *  Marco van den Heuvel <blackystardust68@yahoo.com>
@@ -29,41 +29,17 @@
 /* any CPU definition file that includes this file needs to do the following:
  *
  * - define all registers used.
- * - define the cpu being emulated in a var 'cpu_type' (CPU_WDC65C02, CPU_R65C02, CPU_65SC02).
- * - define a function to handle the WDC65C02 STP opcode (WDC_STP(void)).
- * - define a function to handle the WDC65C02 WAI opcode (WDC_WAI(void)).
  *
  */
 
 /* still to check and possibly fix:
  *
- * - BRK doesn't get interrupted by an IRQ/NMI on the 65(S)C02.
+ * - BRK doesn't get interrupted by an IRQ/NMI on the 65CE02.
  */
 
-#define CPU_STR "65(S)C02 CPU"
+#define CPU_STR "65CE02 CPU"
 
 #include "traps.h"
-
-#define CLK_RTS 3
-#define CLK_RTI 4
-#define CLK_BRK 5
-#define CLK_ABS_I_STORE2 2
-#define CLK_STACK_PUSH 1
-#define CLK_STACK_PULL 2
-#define CLK_ABS_RMW2 3
-#define CLK_ABS_I_RMW2 3
-#define CLK_ZERO_I_STORE 2
-#define CLK_ZERO_I2 2
-#define CLK_ZERO_RMW 3
-#define CLK_ZERO_I_RMW 4
-#define CLK_IND_X_RMW 3
-#define CLK_IND_Y_RMW1 1
-#define CLK_IND_Y_RMW2 3
-#define CLK_BRANCH2 1
-#define CLK_INT_CYCLE 1
-#define CLK_JSR_INT_CYCLE 1
-#define CLK_IND_Y_W 2
-#define CLK_NOOP_ZERO_X 2
 
 #define IRQ_CYCLES      7
 #define NMI_CYCLES      7
@@ -1300,22 +1276,22 @@
  */
  static const BYTE fetch_tab[] = {
             /* 0  1  2  3  4  5  6  7  8  9  A  B  C  D  E  F */
-    /* $00 */  1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 2, 2, 2, 2, /* $00 */
-    /* $10 */  1, 1, 1, 0, 1, 1, 1, 1, 1, 2, 1, 0, 2, 2, 2, 2, /* $10 */
-    /* $20 */  2, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 2, 2, 2, 2, /* $20 */
-    /* $30 */  1, 1, 1, 0, 1, 1, 1, 1, 1, 2, 1, 0, 2, 2, 2, 2, /* $30 */
-    /* $40 */  1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 2, 2, 2, 2, /* $40 */
-    /* $50 */  1, 1, 1, 0, 1, 1, 1, 1, 1, 2, 1, 0, 2, 2, 2, 2, /* $50 */
-    /* $60 */  1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 2, 2, 2, 2, /* $60 */
-    /* $70 */  1, 1, 1, 0, 1, 1, 1, 1, 1, 2, 1, 0, 2, 2, 2, 2, /* $70 */
-    /* $80 */  1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 2, 2, 2, 2, /* $80 */
-    /* $90 */  1, 1, 1, 0, 1, 1, 1, 1, 1, 2, 1, 0, 2, 2, 2, 2, /* $90 */ 
-    /* $A0 */  1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 2, 2, 2, 2, /* $A0 */
-    /* $B0 */  1, 1, 1, 0, 1, 1, 1, 1, 1, 2, 1, 0, 2, 2, 2, 2, /* $B0 */
-    /* $C0 */  1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, /* $C0 */
-    /* $D0 */  1, 1, 1, 0, 1, 1, 1, 1, 1, 2, 1, 2, 2, 2, 2, 2, /* $D0 */
-    /* $E0 */  1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 2, 2, 2, 2, /* $E0 */
-    /* $F0 */  1, 1, 1, 0, 1, 1, 1, 1, 1, 2, 1, 0, 2, 2, 2, 2  /* $F0 */
+    /* $00 */  1, 1, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0, 2, 2, 2, 2, /* $00 */
+    /* $10 */  1, 1, 1, 2, 1, 1, 1, 1, 0, 2, 0, 0, 2, 2, 2, 2, /* $10 */
+    /* $20 */  2, 1, 2, 2, 1, 1, 1, 1, 0, 1, 0, 0, 2, 2, 2, 2, /* $20 */
+    /* $30 */  1, 1, 1, 2, 1, 1, 1, 1, 0, 2, 0, 0, 2, 2, 2, 2, /* $30 */
+    /* $40 */  0, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 2, 2, 2, 2, /* $40 */
+    /* $50 */  1, 1, 1, 2, 1, 1, 1, 1, 0, 2, 1, 0, 2, 2, 2, 2, /* $50 */
+    /* $60 */  0, 1, 1, 2, 1, 1, 1, 1, 0, 1, 0, 0, 2, 2, 2, 2, /* $60 */
+    /* $70 */  1, 1, 1, 2, 1, 1, 1, 1, 0, 2, 0, 0, 2, 2, 2, 2, /* $70 */
+    /* $80 */  1, 1, 1, 2, 1, 1, 1, 1, 0, 1, 0, 2, 2, 2, 2, 2, /* $80 */
+    /* $90 */  1, 1, 1, 2, 1, 1, 1, 1, 0, 2, 0, 2, 2, 2, 2, 2, /* $90 */ 
+    /* $A0 */  1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 2, 2, 2, 2, 2, /* $A0 */
+    /* $B0 */  1, 1, 1, 2, 1, 1, 1, 1, 0, 2, 0, 2, 2, 2, 2, 2, /* $B0 */
+    /* $C0 */  1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 2, 2, 2, 2, 2, /* $C0 */
+    /* $D0 */  1, 1, 1, 2, 1, 1, 1, 1, 0, 2, 0, 0, 2, 2, 2, 2, /* $D0 */
+    /* $E0 */  1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 2, 2, 2, 2, 2, /* $E0 */
+    /* $F0 */  1, 1, 1, 2, 2, 1, 1, 1, 0, 2, 0, 0, 2, 2, 2, 2  /* $F0 */
 };
 
 #if !defined WORDS_BIGENDIAN && defined ALLOW_UNALIGNED_ACCESS
