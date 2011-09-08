@@ -1248,6 +1248,13 @@
       INC_PC(1);           \
   } while (0)
 
+#define TAZ()              \
+  do {                     \
+      reg_z = reg_a;       \
+      LOCAL_SET_NZ(reg_z); \
+      INC_PC(1);           \
+  } while (0)
+
 #define TRB(addr, clk_inc, pc_inc, load_func, store_func) \
   do {                                                    \
       unsigned int tmp_value, tmp_addr;                   \
@@ -1310,6 +1317,13 @@
   do {                                       \
       reg_s = (reg_s & 0xff) | (reg_y >> 8); \
       INC_PC(1);                             \
+  } while (0)
+
+#define TZA()              \
+  do {                     \
+      reg_a = reg_z;       \
+      LOCAL_SET_NZ(reg_a); \
+      INC_PC(1);           \
   } while (0)
 
 #define WAI()                          \
@@ -1536,11 +1550,9 @@ trap_skipped:
           case 0x23:            /* 1 byte, 1 cycle NOP */
           case 0x33:            /* 1 byte, 1 cycle NOP */
           case 0x43:            /* 1 byte, 1 cycle NOP */
-          case 0x4b:            /* 1 byte, 1 cycle NOP */
           case 0x53:            /* 1 byte, 1 cycle NOP */
           case 0x5b:            /* 1 byte, 1 cycle NOP */
           case 0x63:            /* 1 byte, 1 cycle NOP */
-          case 0x6b:            /* 1 byte, 1 cycle NOP */
           case 0x73:            /* 1 byte, 1 cycle NOP */
           case 0x7b:            /* 1 byte, 1 cycle NOP */
           case 0x83:            /* 1 byte, 1 cycle NOP */
@@ -1857,6 +1869,10 @@ trap_skipped:
             LSR_A();
             break;
 
+          case 0x4b:            /* TAZ */
+            TAZ();
+            break;
+
           case 0x4c:            /* JMP $nnnn */
             JMP(p2);
             break;
@@ -1955,6 +1971,10 @@ trap_skipped:
 
           case 0x6a:            /* ROR A */
             ROR_A();
+            break;
+
+          case 0x6b:            /* TZA */
+            TZA();
             break;
 
           case 0x6c:            /* JMP ($nnnn) */
