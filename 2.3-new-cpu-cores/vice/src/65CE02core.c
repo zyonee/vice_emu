@@ -736,6 +736,13 @@
       INC_PC(1);           \
   } while (0)
 
+#define DEZ()              \
+  do {                     \
+      reg_z--;             \
+      LOCAL_SET_NZ(reg_z); \
+      INC_PC(1);           \
+  } while (0)
+
 #define EOR(value, clk_inc, pc_inc)    \
   do {                                 \
       reg_a = (BYTE)(reg_a ^ (value)); \
@@ -773,6 +780,13 @@
   do {                     \
       reg_y++;             \
       LOCAL_SET_NZ(reg_y); \
+      INC_PC(1);           \
+  } while (0)
+
+#define INZ()              \
+  do {                     \
+      reg_z++;             \
+      LOCAL_SET_NZ(reg_z); \
       INC_PC(1);           \
   } while (0)
 
@@ -1519,10 +1533,8 @@ trap_skipped:
 
           case 0x03:            /* 1 byte, 1 cycle NOP */
           case 0x13:            /* 1 byte, 1 cycle NOP */
-          case 0x1b:            /* 1 byte, 1 cycle NOP */
           case 0x23:            /* 1 byte, 1 cycle NOP */
           case 0x33:            /* 1 byte, 1 cycle NOP */
-          case 0x3b:            /* 1 byte, 1 cycle NOP */
           case 0x43:            /* 1 byte, 1 cycle NOP */
           case 0x4b:            /* 1 byte, 1 cycle NOP */
           case 0x53:            /* 1 byte, 1 cycle NOP */
@@ -1677,6 +1689,10 @@ trap_skipped:
             INA();
             break;
 
+          case 0x1b:            /* INZ */
+            INZ();
+            break;
+
           case 0x1c:            /* TRB $nnnn */
             TRB(p2, CLK_ABS_RMW2, 3, LOAD_ABS, STORE_ABS);
             break;
@@ -1787,6 +1803,10 @@ trap_skipped:
 
           case 0x3a:            /* DEA */
             DEA();
+            break;
+
+          case 0x3b:            /* DEZ */
+            DEZ();
             break;
 
           case 0x3c:            /* BIT $nnnn,X */
