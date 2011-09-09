@@ -642,7 +642,7 @@
 #define BRK()                  \
   do {                         \
       EXPORT_REGISTERS();      \
-      CLK_ADD(CLK, CLK_BRK);   \
+      CLK_ADD(CLK, 5);         \
       TRACE_BRK();             \
       INC_PC(2);               \
       LOCAL_SET_BREAK(1);      \
@@ -1105,6 +1105,25 @@
       PULL(tmp2);                  \
       tmp |= (tmp2 << 8);          \
       JUMP(tmp);                   \
+  } while (0)
+
+#define RTN(value)                                                \
+  do {                                                            \
+      WORD tmp, tmp2;                                             \
+                                                                  \
+      CLK_ADD(CLK, 4);                                            \
+      PULL(tmp);                                                  \
+      PULL(tmp2);                                                 \
+      tmp = tmp | (tmp2 << 8);                                    \
+      LOAD(tmp);                                                  \
+      CLK_ADD(CLK, 1);                                            \
+      tmp++;                                                      \
+      JUMP(tmp);                                                  \
+      if (LOCAL_STACK_EXTEND()) {                                 \
+          reg_sp = (reg_sp & 0xff00) | ((reg_sp + value) & 0xff); \
+      } else {                                                    \
+          reg_sp += value;                                        \
+      }                                                           \
   } while (0)
 
 #define RTS()                  \
@@ -1624,7 +1643,6 @@ trap_skipped:
             break;
 
           case 0x22:            /* NOP #$nn */
-          case 0x62:            /* NOP #$nn */
           case 0x82:            /* NOP #$nn */
           case 0xc2:            /* NOP #$nn */
           case 0xe2:            /* NOP #$nn */
@@ -2009,6 +2027,10 @@ trap_skipped:
 
           case 0x61:            /* ADC ($nn,X) */
             ADC(LOAD_IND_X(p1), 1, 2);
+            break;
+
+          case 0x62:            /* RTN #$nn */
+            RTN(p1);
             break;
 
           case 0x64:            /* STZ $nn */
