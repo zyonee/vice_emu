@@ -2236,7 +2236,7 @@ trap_skipped:
             break;
 
           case 0xa4:            /* LDY $nn */
-            LDY(LOAD_ZERO(p1), 1, 2);
+            LDY(LOAD_BP(p1), 1, 2);
             break;
 
           case 0xa5:            /* LDA $nn */
@@ -2292,7 +2292,7 @@ trap_skipped:
             break;
 
           case 0xb4:            /* LDY $nn,X */
-            LDY(LOAD_ZERO_X(p1), CLK_ZERO_I2, 2);
+            LDY(LOAD_BP_X(p1), 1, 2);
             break;
 
           case 0xb5:            /* LDA $nn,X */
