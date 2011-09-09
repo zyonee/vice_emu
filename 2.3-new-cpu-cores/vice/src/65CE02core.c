@@ -1898,7 +1898,7 @@ trap_skipped:
             break;
 
           case 0x41:            /* EOR ($nn,X) */
-            EOR(LOAD_IND_X(p1), 1, 2);
+            EOR(LOAD_IND_X(p1), 0, 2);
             break;
 
           case 0x42:            /* NEG */
@@ -1910,7 +1910,7 @@ trap_skipped:
             break;
 
           case 0x45:            /* EOR $nn */
-            EOR(LOAD_ZERO(p1), 1, 2);
+            EOR(LOAD_BP(p1), 1, 2);
             break;
 
           case 0x46:            /* LSR $nn */
@@ -1958,15 +1958,15 @@ trap_skipped:
             break;
 
           case 0x51:            /* EOR ($nn),Y */
-            EOR(LOAD_IND_Y(p1), 1, 2);
+            EOR(LOAD_IND_Y(p1), 0, 2);
             break;
 
-          case 0x52:            /* EOR ($nn) */                                                                                   
-            EOR(LOAD_INDIRECT(p1), 1, 2);                                                                                              
+          case 0x52:            /* EOR ($nn),Z */                                                                                   
+            EOR(LOAD_IND_Z(p1), 0, 2);
             break;
 
           case 0x55:            /* EOR $nn,X */
-            EOR(LOAD_ZERO_X(p1), CLK_ZERO_I2, 2);
+            EOR(LOAD_ZERO_X(p1), 1, 2);
             break;
 
           case 0x56:            /* LSR $nn,X */
