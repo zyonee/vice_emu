@@ -867,6 +867,14 @@
       INC_PC(pc_inc);               \
   } while (0)
 
+#define LDZ(value, clk_inc, pc_inc) \
+  do {                              \
+      reg_z = (BYTE)(value);        \
+      LOCAL_SET_NZ(reg_z);          \
+      CLK_ADD(CLK, (clk_inc));      \
+      INC_PC(pc_inc);               \
+  } while (0)
+
 #define LSR(addr, clk_inc, pc_inc, load_func, store_func) \
   do {                                                    \
       unsigned int tmp, tmp_addr;                         \
@@ -1604,10 +1612,7 @@ trap_skipped:
           case 0x8b:            /* 1 byte, 1 cycle NOP */
           case 0x93:            /* 1 byte, 1 cycle NOP */
           case 0x9b:            /* 1 byte, 1 cycle NOP */
-          case 0xa3:            /* 1 byte, 1 cycle NOP */
-          case 0xab:            /* 1 byte, 1 cycle NOP */
           case 0xb3:            /* 1 byte, 1 cycle NOP */
-          case 0xbb:            /* 1 byte, 1 cycle NOP */
           case 0xc3:            /* 1 byte, 1 cycle NOP */
           case 0xd3:            /* 1 byte, 1 cycle NOP */
           case 0xe3:            /* 1 byte, 1 cycle NOP */
@@ -2235,6 +2240,10 @@ trap_skipped:
             LDX(p1, 0, 2);
             break;
 
+          case 0xa3:            /* LDZ #$nn */
+            LDZ(p1, 0, 2);
+            break;
+
           case 0xa4:            /* LDY $nn */
             LDY(LOAD_BP(p1), 1, 2);
             break;
@@ -2261,6 +2270,10 @@ trap_skipped:
 
           case 0xaa:            /* TAX */
             TAX();
+            break;
+
+          case 0xab:            /* LDZ $nnnn */
+            LDZ(LOAD(p2), 1, 3);
             break;
 
           case 0xac:            /* LDY $nnnn */
@@ -2317,6 +2330,10 @@ trap_skipped:
 
           case 0xba:            /* TSX */
             TSX();
+            break;
+
+          case 0xbb:            /* LDZ $nnnn,X */
+            LDZ(LOAD_ABS_X(p2), 1, 3);
             break;
 
           case 0xbc:            /* LDY $nnnn,X */
