@@ -2370,7 +2370,7 @@ trap_skipped:
             break;
 
           case 0xc1:            /* CMP ($nn,X) */
-            CMP(LOAD_IND_X(p1), 1, 2);
+            CMP(LOAD_IND_X(p1), 0, 2);
             break;
 
           case 0xc2:            /* CPZ #$nn */
@@ -2382,7 +2382,7 @@ trap_skipped:
             break;
 
           case 0xc5:            /* CMP $nn */
-            CMP(LOAD_ZERO(p1), 1, 2);
+            CMP(LOAD_BP(p1), 1, 2);
             break;
 
           case 0xc6:            /* DEC $nn */
@@ -2430,11 +2430,11 @@ trap_skipped:
             break;
 
           case 0xd1:            /* CMP ($nn),Y */
-            CMP(LOAD_IND_Y(p1), 1, 2);
+            CMP(LOAD_IND_Y(p1), 0, 2);
             break;
 
-          case 0xd2:            /* CMP ($nn) */
-            CMP(LOAD_INDIRECT(p1), 1, 2);
+          case 0xd2:            /* CMP ($nn),Z */
+            CMP(LOAD_IND_Z(p1), 0, 2);
             break;
 
           case 0xd4:            /* CPZ $nn */
@@ -2442,7 +2442,7 @@ trap_skipped:
             break;
 
           case 0xd5:            /* CMP $nn,X */
-            CMP(LOAD_ZERO_X(p1), CLK_ZERO_I2, 2);
+            CMP(LOAD_BP_X(p1), 1, 2);
             break;
 
           case 0xd6:            /* DEC $nn,X */
