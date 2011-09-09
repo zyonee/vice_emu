@@ -701,6 +701,17 @@
       INC_PC(pc_inc);               \
   } while (0)
 
+#define CPZ(value, clk_inc, pc_inc) \
+  do {                              \
+      unsigned int tmp;             \
+                                    \
+      tmp = reg_z - (value);        \
+      LOCAL_SET_CARRY(tmp < 0x100); \
+      LOCAL_SET_NZ(tmp & 0xff);     \
+      CLK_ADD(CLK, (clk_inc));      \
+      INC_PC(pc_inc);               \
+  } while (0)
+
 #define DEA()              \
   do {                     \
       reg_a--;             \
@@ -1629,7 +1640,6 @@ trap_skipped:
 
           case 0x22:            /* NOP #$nn */
           case 0x82:            /* NOP #$nn */
-          case 0xc2:            /* NOP #$nn */
             NOOP_IMM(2);
             break;
 
@@ -1638,12 +1648,10 @@ trap_skipped:
             break;
 
           case 0x54:            /* NOP $nn,X */
-          case 0xd4:            /* NOP $nn,X */
           case 0xf4:            /* NOP $nn,X */
             NOOP(2, 2);
             break;
 
-          case 0xdc:            /* NOP $nnnn,X */
           case 0xfc:            /* NOP $nnnn,X */
             NOOP_ABS_X();
             break;
@@ -2365,6 +2373,10 @@ trap_skipped:
             CMP(LOAD_IND_X(p1), 1, 2);
             break;
 
+          case 0xc2:            /* CPZ #$nn */
+            CPZ(p1, 0, 2);
+            break;
+
           case 0xc4:            /* CPY $nn */
             CPY(LOAD_BP(p1), 1, 2);
             break;
@@ -2425,6 +2437,10 @@ trap_skipped:
             CMP(LOAD_INDIRECT(p1), 1, 2);
             break;
 
+          case 0xd4:            /* CPZ $nn */
+            CPZ(LOAD_BP(p1), 1, 2);
+            break;
+
           case 0xd5:            /* CMP $nn,X */
             CMP(LOAD_ZERO_X(p1), CLK_ZERO_I2, 2);
             break;
@@ -2449,8 +2465,12 @@ trap_skipped:
             PHX();
             break;
 
-          case 0xdb:            /* PHZ STP */
+          case 0xdb:            /* PHZ */
             PHZ();
+            break;
+
+          case 0xdc:            /* CPZ $nnnn */
+            CPZ(LOAD(p2), 1, 3);
             break;
 
           case 0xdd:            /* CMP $nnnn,X */
