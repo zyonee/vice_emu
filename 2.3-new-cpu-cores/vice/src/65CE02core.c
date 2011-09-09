@@ -1157,7 +1157,6 @@
           LOCAL_SET_OVERFLOW(!(tmp > reg_a));            \
           LOCAL_SET_CARRY(!(tmp > reg_a));               \
           LOCAL_SET_NZ(tmp & 0xff);                      \
-          CLK_ADD(CLK, 1);                               \
       } else {                                           \
           tmp = reg_a - src - ((LOCAL_CARRY()) ? 0 : 1); \
           LOCAL_SET_NZ(tmp & 0xff);                      \
@@ -2490,7 +2489,7 @@ trap_skipped:
             break;
 
           case 0xe1:            /* SBC ($nn,X) */
-            SBC(LOAD_IND_X(p1), 1, 2);
+            SBC(LOAD_IND_X(p1), 0, 2);
             break;
 
           case 0xe2:            /* LDA ($nn,S),Y */
@@ -2546,15 +2545,15 @@ trap_skipped:
             break;
 
           case 0xf1:            /* SBC ($nn),Y */
-            SBC(LOAD_IND_Y(p1), 1, 2);
+            SBC(LOAD_IND_Y(p1), 0, 2);
             break;
 
-          case 0xf2:            /* SBC ($nn) */
-            SBC(LOAD_INDIRECT(p1), 1, 2);
+          case 0xf2:            /* SBC ($nn),Z */
+            SBC(LOAD_IND_Z(p1), 0, 2);
             break;
 
           case 0xf5:            /* SBC $nn,X */
-            SBC(LOAD_ZERO_X(p1), CLK_ZERO_I2, 2);
+            SBC(LOAD_BP_X(p1), 1, 2);
             break;
 
           case 0xf6:            /* INC $nn,X */
