@@ -2244,7 +2244,7 @@ trap_skipped:
             break;
 
           case 0xa6:            /* LDX $nn */
-            LDX(LOAD_ZERO(p1), 1, 2);
+            LDX(LOAD_BP(p1), 1, 2);
             break;
 
           case 0xa7:            /* SMB2 $nn (65C02) / single byte, single cycle NOP (65SC02) */
@@ -2300,7 +2300,7 @@ trap_skipped:
             break;
 
           case 0xb6:            /* LDX $nn,Y */
-            LDX(LOAD_ZERO_Y(p1), CLK_ZERO_I2, 2);
+            LDX(LOAD_BP_Y(p1), 2, 2);
             break;
 
           case 0xb7:            /* SMB3 $nn (65C02) / single byte, single cycle NOP (65SC02) */
