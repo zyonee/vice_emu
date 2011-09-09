@@ -620,6 +620,19 @@
       }                                                     \
   } while (0)
 
+#define BSR(value)                                    \
+  do {                                                \
+      unsigned int dest_addr = 0;                     \
+                                                      \
+      INC_PC(2);                                      \
+      dest_addr = reg_pc + 1 + (signed short)(value); \
+      dest_addr &= 0xffff;                            \
+      CLK_ADD(CLK, 2);                                \
+      PUSH(((reg_pc) >> 8) & 0xff);                   \
+      PUSH((reg_pc) & 0xff);                          \
+      JUMP(dest_addr);                                \
+  } while (0)
+
 #define BRK()                  \
   do {                         \
       EXPORT_REGISTERS();      \
@@ -1653,8 +1666,6 @@ trap_skipped:
 
         switch (p0) {
 
-          case 0x23:            /* 1 byte, 1 cycle NOP */
-          case 0x63:            /* 1 byte, 1 cycle NOP */
           case 0x8b:            /* 1 byte, 1 cycle NOP */
           case 0x9b:            /* 1 byte, 1 cycle NOP */
           case 0xc3:            /* 1 byte, 1 cycle NOP */
@@ -1818,6 +1829,10 @@ trap_skipped:
 
           case 0x22:            /* JSR ($nnnn) */
             JSR_IND();
+            break;
+
+          case 0x23:            /* JSR ($nnnn,X) */
+            JSR_IND_X();
             break;
 
           case 0x24:            /* BIT $nn */
@@ -2058,6 +2073,10 @@ trap_skipped:
 
           case 0x62:            /* RTN #$nn */
             RTN(p1);
+            break;
+
+          case 0x63:            /* BSR $nnnn */
+            BSR(p2);
             break;
 
           case 0x64:            /* STZ $nn */
