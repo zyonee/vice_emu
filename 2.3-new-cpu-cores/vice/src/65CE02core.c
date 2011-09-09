@@ -1106,17 +1106,18 @@
       JUMP(tmp);                   \
   } while (0)
 
-#define RTS()                      \
-  do {                             \
-      WORD tmp;                    \
-                                   \
-      CLK_ADD(CLK, CLK_RTS);       \
-      tmp = PULL();                \
-      tmp = tmp | (PULL() << 8);   \
-      LOAD(tmp);                   \
-      CLK_ADD(CLK, CLK_INT_CYCLE); \
-      tmp++;                       \
-      JUMP(tmp);                   \
+#define RTS()                  \
+  do {                         \
+      WORD tmp, tmp2;          \
+                               \
+      CLK_ADD(CLK, 2);         \
+      PULL(tmp);               \
+      PULL(tmp2);              \
+      tmp = tmp | (tmp2 << 8); \
+      LOAD(tmp);               \
+      CLK_ADD(CLK, 1);         \
+      tmp++;                   \
+      JUMP(tmp);               \
   } while (0)
 
 #define SBC(value, clk_inc, pc_inc)                      \
