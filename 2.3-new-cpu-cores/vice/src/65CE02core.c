@@ -593,15 +593,6 @@
       INC_PC(pc_inc);                 \
   } while (0)
 
-#define BIT_IMM(value, pc_inc)        \
-  do {                                \
-      unsigned int tmp;               \
-                                      \
-      tmp = (value);                  \
-      LOCAL_SET_ZERO(!(tmp & reg_a)); \
-      INC_PC(pc_inc);                 \
-  } while (0)
-
 #define BRANCH(cond, value)                                 \
   do {                                                      \
       unsigned int dest_addr = 0;                           \
@@ -1785,7 +1776,7 @@ trap_skipped:
             break;
 
           case 0x24:            /* BIT $nn */
-            BIT(LOAD_ZERO(p1), 1, 2);
+            BIT(LOAD_BP(p1), 2, 2);
             break;
 
           case 0x25:            /* AND $nn */
@@ -1817,7 +1808,7 @@ trap_skipped:
             break;
 
           case 0x2c:            /* BIT $nnnn */
-            BIT(LOAD(p2), 1, 3);
+            BIT(LOAD(p2), 2, 3);
             break;
 
           case 0x2d:            /* AND $nnnn */
@@ -1845,7 +1836,7 @@ trap_skipped:
             break;
 
           case 0x34:            /* BIT $nn,X */
-            BIT(LOAD_ZERO_X(p1), CLK_ZERO_I2, 2);
+            BIT(LOAD_BP_X(p1), 2, 2);
             break;
 
           case 0x35:            /* AND $nn,X */
@@ -2153,7 +2144,7 @@ trap_skipped:
             break;
 
           case 0x89:            /* BIT #$nn */
-            BIT_IMM(p1, 2);
+            BIT(p1, 0, 2);
             break;
 
           case 0x8a:            /* TXA */
