@@ -944,70 +944,86 @@
 
 #define NOP()  NOOP_IMM(1)
 
-#define PHA()                       \
-  do {                              \
-      CLK_ADD(CLK, CLK_STACK_PUSH); \
-      PUSH(reg_a);                  \
-      INC_PC(1);                    \
+#define PHA()          \
+  do {                 \
+      CLK_ADD(CLK, 2); \
+      PUSH(reg_a);     \
+      INC_PC(1);       \
   } while (0)
 
 #define PHP()                         \
   do {                                \
-      CLK_ADD(CLK, CLK_STACK_PUSH);   \
+      CLK_ADD(CLK, 2);                \
       PUSH(LOCAL_STATUS() | P_BREAK); \
       INC_PC(1);                      \
   } while (0)
 
-#define PHX()                       \
-  do {                              \
-      CLK_ADD(CLK, CLK_STACK_PUSH); \
-      PUSH(reg_x);                  \
-      INC_PC(1);                    \
+#define PHX()          \
+  do {                 \
+      CLK_ADD(CLK, 2); \
+      PUSH(reg_x);     \
+      INC_PC(1);       \
   } while (0)
 
-#define PHY()                       \
-  do {                              \
-      CLK_ADD(CLK, CLK_STACK_PUSH); \
-      PUSH(reg_y);                  \
-      INC_PC(1);                    \
+#define PHY()          \
+  do {                 \
+      CLK_ADD(CLK, 2); \
+      PUSH(reg_y);     \
+      INC_PC(1);       \
   } while (0)
 
-#define PLA()                       \
-  do {                              \
-      CLK_ADD(CLK, CLK_STACK_PULL); \
-      reg_a = PULL();               \
-      LOCAL_SET_NZ(reg_a);          \
-      INC_PC(1);                    \
+#define PHZ()          \
+  do {                 \
+      CLK_ADD(CLK, 2); \
+      PUSH(reg_z);     \
+      INC_PC(1);       \
+  } while (0)
+
+#define PLA()              \
+  do {                     \
+      CLK_ADD(CLK, 2);     \
+      PULL(reg_a);         \
+      LOCAL_SET_NZ(reg_a); \
+      INC_PC(1);           \
   } while (0)
 
 #define PLP()                                               \
   do {                                                      \
-      BYTE s = PULL();                                      \
+      BYTE s;                                               \
                                                             \
+      PULL(s);                                              \
       if (!(s & P_INTERRUPT) && LOCAL_INTERRUPT()) {        \
           OPCODE_ENABLES_IRQ();                             \
       } else if ((s & P_INTERRUPT) && !LOCAL_INTERRUPT()) { \
           OPCODE_DISABLES_IRQ();                            \
       }                                                     \
-      CLK_ADD(CLK, CLK_STACK_PULL);                         \
+      CLK_ADD(CLK, 2);                                      \
       LOCAL_SET_STATUS(s);                                  \
       INC_PC(1);                                            \
   } while (0)
 
-#define PLX()                       \
-  do {                              \
-      CLK_ADD(CLK, CLK_STACK_PULL); \
-      reg_x = PULL();               \
-      LOCAL_SET_NZ(reg_x);          \
-      INC_PC(1);                    \
+#define PLX()              \
+  do {                     \
+      CLK_ADD(CLK, 2);     \
+      PULL(reg_x);         \
+      LOCAL_SET_NZ(reg_x); \
+      INC_PC(1);           \
   } while (0)
 
-#define PLY()                       \
-  do {                              \
-      CLK_ADD(CLK, CLK_STACK_PULL); \
-      reg_y = PULL();               \
-      LOCAL_SET_NZ(reg_y);          \
-      INC_PC(1);                    \
+#define PLY()              \
+  do {                     \
+      CLK_ADD(CLK, 2);     \
+      PULL(reg_y);         \
+      LOCAL_SET_NZ(reg_y); \
+      INC_PC(1);           \
+  } while (0)
+
+#define PLZ()              \
+  do {                     \
+      CLK_ADD(CLK, 2);     \
+      PULL(reg_z);         \
+      LOCAL_SET_NZ(reg_z); \
+      INC_PC(1);           \
   } while (0)
 
 #define RMB(addr, bit)                             \
@@ -1205,16 +1221,6 @@
       CLK_ADD(CLK, CLK_IND_Y_W);                         \
       INC_PC(2);                                         \
       STORE_IND(tmp + reg_y, reg_a);                     \
-  } while (0)
-
-#define STP()                          \
-  do {                                 \
-      if (cpu_type == CPUWDC65C02) {   \
-          WDC_STOP();                  \
-      } else {                         \
-          REWIND_FETCH_OPCODE(CLK, 2); \
-          NOOP_IMM(1);                 \
-      }                                \
   } while (0)
 
 #define STX(addr, clk_inc, pc_inc) \
@@ -1612,7 +1618,6 @@ trap_skipped:
           case 0xe3:            /* 1 byte, 1 cycle NOP */
           case 0xeb:            /* 1 byte, 1 cycle NOP */
           case 0xf3:            /* 1 byte, 1 cycle NOP */
-          case 0xfb:            /* 1 byte, 1 cycle NOP */
             NOOP_IMM(1);
             break;
 
@@ -2424,8 +2429,8 @@ trap_skipped:
             PHX();
             break;
 
-          case 0xdb:            /* STP (WDC65C02) / single byte, single cycle NOP (R65C02/65SC02) */
-            STP();
+          case 0xdb:            /* PHZ STP */
+            PHZ();
             break;
 
           case 0xdd:            /* CMP $nnnn,X */
@@ -2526,6 +2531,10 @@ trap_skipped:
 
           case 0xfa:            /* PLX */
             PLX();
+            break;
+
+          case 0xfb:            /* PLZ */
+            PLZ();
             break;
 
           case 0xfd:            /* SBC $nnnn,X */
