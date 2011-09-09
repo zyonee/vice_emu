@@ -1245,20 +1245,20 @@
       JUMP(tmp_addr);                        \
   } while (0)
 
-#define JSR_IND_X()                               \
-  do {                                            \
-      unsigned int tmp_addr;                      \
-                                                  \
-      INC_PC(2)                                   \
-      CLK_ADD(CLK, 2);                            \
-      PUSH(((reg_pc) >> 8) & 0xff);               \
-      PUSH((reg_pc) & 0xff);                      \
-      CLK_ADD(CLK, 1);                            \
-      tmp_addr = LOAD(p2);                        \
-      CLK_ADD(CLK, 1);                            \
-      tmp_addr |= (LOAD((p2 + 1) & 0xffff) << 8); \
-      CLK_ADD(CLK, 1);                            \
-      JUMP(tmp_addr);                             \
+#define JSR_IND_X()                                       \
+  do {                                                    \
+      unsigned int tmp_addr;                              \
+                                                          \
+      INC_PC(2)                                           \
+      CLK_ADD(CLK, 2);                                    \
+      PUSH(((reg_pc) >> 8) & 0xff);                       \
+      PUSH((reg_pc) & 0xff);                              \
+      CLK_ADD(CLK, 1);                                    \
+      tmp_addr = LOAD((p2 + reg_x) & 0xffff);             \
+      CLK_ADD(CLK, 1);                                    \
+      tmp_addr |= (LOAD((p2 + reg_x + 1) & 0xffff) << 8); \
+      CLK_ADD(CLK, 1);                                    \
+      JUMP(tmp_addr);                                     \
   } while (0)
 
 #define JSR_LONG()                     \
