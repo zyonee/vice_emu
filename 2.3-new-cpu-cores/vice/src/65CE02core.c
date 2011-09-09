@@ -1096,13 +1096,14 @@
    soon as the opcode ends, if necessary.  */
 #define RTI()                      \
   do {                             \
-      WORD tmp;                    \
+      WORD tmp, tmp2;              \
                                    \
-      CLK_ADD(CLK, CLK_RTI);       \
-      tmp = (WORD)PULL();          \
+      CLK_ADD(CLK, 4);             \
+      PULL(tmp);                   \
       LOCAL_SET_STATUS((BYTE)tmp); \
-      tmp = (WORD)PULL();          \
-      tmp |= (WORD)PULL() << 8;    \
+      PULL(tmp);                   \
+      PULL(tmp2);                  \
+      tmp |= (tmp2 << 8);          \
       JUMP(tmp);                   \
   } while (0)
 
