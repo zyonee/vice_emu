@@ -853,12 +853,44 @@
                                              \
       CLK_ADD(CLK, 1);                       \
       INC_PC(2);                             \
-      CLK_ADD(CLK, 2);                       \
+      CLK_ADD(CLK, 1);                       \
       PUSH(((reg_pc) >> 8) & 0xff);          \
       PUSH((reg_pc) & 0xff);                 \
       tmp_addr = (p1 | (LOAD(reg_pc) << 8)); \
       CLK_ADD(CLK, CLK_JSR_INT_CYCLE);       \
       JUMP(tmp_addr);                        \
+  } while (0)
+
+#define JSR_IND()                                 \
+  do {                                            \
+      unsigned int tmp_addr;                      \
+                                                  \
+      INC_PC(2);                                  \
+      CLK_ADD(CLK, 1);                            \
+      PUSH(((reg_pc) >> 8) & 0xff);               \
+      PUSH((reg_pc) & 0xff);                      \
+      CLK_ADD(CLK, 1);                            \
+      tmp_addr = LOAD(p2);                        \
+      CLK_ADD(CLK, 1);                            \
+      tmp_addr |= (LOAD((p2 + 1) & 0xffff) << 8); \
+      CLK_ADD(CLK, 1);                            \
+      JUMP(tmp_addr);                             \
+  } while (0)
+
+#define JSR_IND_X()                                       \
+  do {                                                    \
+      unsigned int tmp_addr;                              \
+                                                          \
+      INC_PC(2);                                          \
+      CLK_ADD(CLK, 1);                                    \
+      PUSH(((reg_pc) >> 8) & 0xff);                       \
+      PUSH((reg_pc) & 0xff);                              \
+      CLK_ADD(CLK, 1);                                    \
+      tmp_addr = LOAD((p2 + reg_x) & 0xffff);             \
+      CLK_ADD(CLK, 1);                                    \
+      tmp_addr |= (LOAD((p2 + reg_x + 1) & 0xffff) << 8); \
+      CLK_ADD(CLK, 1);                                    \
+      JUMP(tmp_addr);                                     \
   } while (0)
 
 #define LDA(value, clk_inc, pc_inc) \
@@ -1631,7 +1663,6 @@ trap_skipped:
             NOOP_IMM(1);
             break;
 
-          case 0x22:            /* NOP #$nn */
           case 0x82:            /* NOP #$nn */
             NOOP_IMM(2);
             break;
@@ -1783,6 +1814,10 @@ trap_skipped:
 
           case 0x21:            /* AND ($nn,X) */
             AND(LOAD_IND_X(p1), 0, 2);
+            break;
+
+          case 0x22:            /* JSR ($nnnn) */
+            JSR_IND();
             break;
 
           case 0x24:            /* BIT $nn */
