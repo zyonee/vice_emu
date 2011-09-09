@@ -606,6 +606,20 @@
       }                                                     \
   } while (0)
 
+#define BRANCH_LONG(cond, value)                            \                                                                       
+  do {                                                      \                                                                       
+      unsigned int dest_addr = 0;                           \                                                                       
+      INC_PC(3);                                            \                                                                       
+                                                            \
+      if (cond) {                                           \
+          dest_addr = reg_pc + (signed short)(value);       \
+                                                            \
+          LOAD(reg_pc);                                     \
+          OPCODE_DELAYS_INTERRUPT();                        \
+          JUMP(dest_addr & 0xffff);                         \
+      }                                                     \
+  } while (0)
+
 #define BRK()                  \
   do {                         \
       EXPORT_REGISTERS();      \
@@ -1607,22 +1621,13 @@ trap_skipped:
 
         switch (p0) {
 
-          case 0x13:            /* 1 byte, 1 cycle NOP */
           case 0x23:            /* 1 byte, 1 cycle NOP */
-          case 0x33:            /* 1 byte, 1 cycle NOP */
-          case 0x53:            /* 1 byte, 1 cycle NOP */
           case 0x63:            /* 1 byte, 1 cycle NOP */
-          case 0x73:            /* 1 byte, 1 cycle NOP */
-          case 0x83:            /* 1 byte, 1 cycle NOP */
           case 0x8b:            /* 1 byte, 1 cycle NOP */
-          case 0x93:            /* 1 byte, 1 cycle NOP */
           case 0x9b:            /* 1 byte, 1 cycle NOP */
-          case 0xb3:            /* 1 byte, 1 cycle NOP */
           case 0xc3:            /* 1 byte, 1 cycle NOP */
-          case 0xd3:            /* 1 byte, 1 cycle NOP */
           case 0xe3:            /* 1 byte, 1 cycle NOP */
           case 0xeb:            /* 1 byte, 1 cycle NOP */
-          case 0xf3:            /* 1 byte, 1 cycle NOP */
             NOOP_IMM(1);
             break;
 
@@ -1718,6 +1723,10 @@ trap_skipped:
 
           case 0x12:            /* ORA ($nn),Z */
             ORA(LOAD_IND_Z(p1), 0, 2);
+            break;
+
+          case 0x13:            /* LBPL $nnnn */
+            BRANCH_LONG(!LOCAL_SIGN(), p2);
             break;
 
           case 0x14:            /* TRB $nn */
@@ -1834,6 +1843,10 @@ trap_skipped:
 
           case 0x32:            /* AND ($nn),Z */
             AND(LOAD_IND_Z(p1), 0, 2);
+            break;
+
+          case 0x33:            /* LBMI $nnnn */
+            BRANCH_LONG(LOCAL_SIGN(), p2);
             break;
 
           case 0x34:            /* BIT $nn,X */
@@ -1956,6 +1969,10 @@ trap_skipped:
             EOR(LOAD_IND_Z(p1), 0, 2);
             break;
 
+          case 0x53:            /* LBVC $nnnn */
+            BRANCH_LONG(!LOCAL_OVERFLOW(), p2);
+            break;
+
           case 0x55:            /* EOR $nn,X */
             EOR(LOAD_ZERO_X(p1), 1, 2);
             break;
@@ -2068,6 +2085,10 @@ trap_skipped:
             ADC(LOAD_IND_Z(p1), 0, 2);
             break;
 
+          case 0x73:            /* LBVS $nnnn */
+            BRANCH_LONG(LOCAL_OVERFLOW(), p2);
+            break;
+
           case 0x74:            /* STZ $nn,X */
             STZ_ZERO(p1 + reg_x, CLK_ZERO_I_STORE, 2);
             break;
@@ -2124,6 +2145,10 @@ trap_skipped:
             STA(LOAD_ZERO_ADDR(p1 + reg_x), 3, 1, 2, STORE_ABS);
             break;
 
+          case 0x83:            /* LBRA $nnnn */
+            BRANCH_LONG(1, p2);
+            break;
+
           case 0x84:            /* STY $nn */
             STY_ZERO(p1, 1, 2);
             break;
@@ -2178,6 +2203,10 @@ trap_skipped:
 
           case 0x92:            /* STA ($nn) */
             STA(LOAD_ZERO_ADDR(p1), 2, 1, 2, STORE_ABS);
+            break;
+
+          case 0x93:            /* LBCC $nnnn */
+            BRANCH_LONG(!LOCAL_CARRY(), p2);
             break;
 
           case 0x94:            /* STY $nn,X */
@@ -2300,6 +2329,10 @@ trap_skipped:
             LDA(LOAD_IND_Z(p1), 0, 2);
             break;
 
+          case 0xb3:            /* LBCS $nnnn */
+            BRANCH_LONG(LOCAL_CARRY(), p2);
+            break;
+
           case 0xb4:            /* LDY $nn,X */
             LDY(LOAD_BP_X(p1), 1, 2);
             break;
@@ -2420,6 +2453,10 @@ trap_skipped:
             CMP(LOAD_IND_Z(p1), 0, 2);
             break;
 
+          case 0xd3:            /* LBNE $nnnn */
+            BRANCH_LONG(!LOCAL_ZERO(), p2);
+            break;
+
           case 0xd4:            /* CPZ $nn */
             CPZ(LOAD_BP(p1), 1, 2);
             break;
@@ -2534,6 +2571,10 @@ trap_skipped:
 
           case 0xf2:            /* SBC ($nn),Z */
             SBC(LOAD_IND_Z(p1), 0, 2);
+            break;
+
+          case 0xf3:            /* LBEQ $nnnn */
+            BRANCH_LONG(LOCAL_ZERO(), p2);
             break;
 
           case 0xf4:            /* PHW #$nnnn */
