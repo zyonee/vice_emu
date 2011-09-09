@@ -2366,7 +2366,7 @@ trap_skipped:
             break;
 
           case 0xc4:            /* CPY $nn */
-            CPY(LOAD_ZERO(p1), 1, 2);
+            CPY(LOAD_BP(p1), 1, 2);
             break;
 
           case 0xc5:            /* CMP $nn */
