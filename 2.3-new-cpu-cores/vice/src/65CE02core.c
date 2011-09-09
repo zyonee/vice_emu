@@ -532,59 +532,48 @@
       CLK_ADD(CLK, 1);                       \
   } while (0)
 
-/* FIXME: cpu_type needs to be declared in the file that includes this file */
-#define BBR(bit, addr, value)                                   \
-  do {                                                          \
-      unsigned int tmp, tmp_addr;                               \
-      unsigned int dest_addr;                                   \
-                                                                \
-      if (cpu_type == CPU65SC02) {                              \
-          REWIND_FETCH_OPCODE(CLK, 2);                          \
-          NOOP_IMM(1);                                          \
-      } else {                                                  \
-          tmp_addr = (addr);                                    \
-          tmp = LOAD_ZERO(tmp_addr) & (1 << bit);               \
-          INC_PC(3);                                            \
-          CLK_ADD(CLK, 2);                                      \
-                                                                \
-          if (!tmp) {                                           \
-              dest_addr = reg_pc + (signed char)(value);        \
-              LOAD(reg_pc);                                     \
-              if (reg_pc ^ dest_addr) & 0xff00) {               \
-                  LOAD((reg_pc & 0xff00) | (dest_addr & 0xff)); \
-              } else {                                          \
-                  OPCODE_DELAYS_INTERRUPT();                    \
-              }                                                 \
-              JUMP(dest_addr & 0xffff);                         \
-          }                                                     \
-      }                                                         \
+#define BBR(bit, addr, value)                               \
+  do {                                                      \
+      unsigned int tmp, tmp_addr;                           \
+      unsigned int dest_addr;                               \
+                                                            \
+      tmp_addr = (addr);                                    \
+      tmp = LOAD_BP(tmp_addr) & (1 << bit);                 \
+      INC_PC(3);                                            \
+      CLK_ADD(CLK, 1);                                      \
+                                                            \
+      if (!tmp) {                                           \
+          dest_addr = reg_pc + (signed char)(value);        \
+          LOAD(reg_pc);                                     \
+          if (reg_pc ^ dest_addr) & 0xff00) {               \
+              LOAD((reg_pc & 0xff00) | (dest_addr & 0xff)); \
+          } else {                                          \
+              OPCODE_DELAYS_INTERRUPT();                    \
+          }                                                 \
+          JUMP(dest_addr & 0xffff);                         \
+      }                                                     \
   } while (0)
       
-#define BBS(bit, addr, value)                                   \
-  do {                                                          \
-      unsigned int tmp, tmp_addr;                               \
-      unsigned int dest_addr;                                   \
-                                                                \
-      if (cpu_type == CPU65SC02) {                              \
-          REWIND_FETCH_OPCODE(CLK, 2);                          \
-          NOOP_IMM(1);                                          \
-      } else {                                                  \
-          tmp_addr = (addr);                                    \
-          tmp = LOAD_ZERO(tmp_addr) & (1 << bit);               \
-          INC_PC(3);                                            \
-          CLK_ADD(CLK, 2);                                      \
-                                                                \
-          if (tmp) {                                            \
-              dest_addr = reg_pc + (signed char)(value);        \
-              LOAD(reg_pc);                                     \
-              if ((reg_pc ^ dest_addr) & 0xff00) {              \
-                  LOAD((reg_pc & 0xff00) | (dest_addr & 0xff)); \
-              } else {                                          \
-                  OPCODE_DELAYS_INTERRUPT();                    \
-              }                                                 \
-              JUMP(dest_addr & 0xffff);                         \
-          }                                                     \
-      }                                                         \
+#define BBS(bit, addr, value)                               \
+  do {                                                      \
+      unsigned int tmp, tmp_addr;                           \
+      unsigned int dest_addr;                               \
+                                                            \
+      tmp_addr = (addr);                                    \
+      tmp = LOAD_BP(tmp_addr) & (1 << bit);                 \
+      INC_PC(3);                                            \
+      CLK_ADD(CLK, 1);                                      \
+                                                            \
+      if (tmp) {                                            \
+          dest_addr = reg_pc + (signed char)(value);        \
+          LOAD(reg_pc);                                     \
+          if ((reg_pc ^ dest_addr) & 0xff00) {              \
+              LOAD((reg_pc & 0xff00) | (dest_addr & 0xff)); \
+          } else {                                          \
+              OPCODE_DELAYS_INTERRUPT();                    \
+          }                                                 \
+          JUMP(dest_addr & 0xffff);                         \
+      }                                                     \
   } while (0)
 
 #define BIT(value, clk_inc, pc_inc)   \
@@ -608,10 +597,8 @@
           dest_addr = reg_pc + (signed char)(value);        \
                                                             \
           LOAD(reg_pc);                                     \
-          CLK_ADD(CLK, CLK_BRANCH2);                        \
           if ((reg_pc ^ dest_addr) & 0xff00) {              \
               LOAD((reg_pc & 0xff00) | (dest_addr & 0xff)); \
-              CLK_ADD(CLK, CLK_BRANCH2);                    \
           } else {                                          \
               OPCODE_DELAYS_INTERRUPT();                    \
           }                                                 \
