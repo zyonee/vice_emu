@@ -1782,7 +1782,7 @@ trap_skipped:
             break;
 
           case 0x21:            /* AND ($nn,X) */
-            AND(LOAD_IND_X(p1), 1, 2);
+            AND(LOAD_IND_X(p1), 0, 2);
             break;
 
           case 0x24:            /* BIT $nn */
@@ -1790,7 +1790,7 @@ trap_skipped:
             break;
 
           case 0x25:            /* AND $nn */
-            AND(LOAD_ZERO(p1), 1, 2);
+            AND(LOAD_BP(p1), 1, 2);
             break;
 
           case 0x26:            /* ROL $nn */
@@ -1838,11 +1838,11 @@ trap_skipped:
             break;
 
           case 0x31:            /* AND ($nn),Y */
-            AND(LOAD_IND_Y(p1), 1, 2);
+            AND(LOAD_IND_Y(p1), 0, 2);
             break;
 
-          case 0x32:            /* AND ($nn) */
-            AND(LOAD_INDIRECT(p1), 1, 2);
+          case 0x32:            /* AND ($nn),Z */
+            AND(LOAD_IND_Z(p1), 0, 2);
             break;
 
           case 0x34:            /* BIT $nn,X */
@@ -1850,7 +1850,7 @@ trap_skipped:
             break;
 
           case 0x35:            /* AND $nn,X */
-            AND(LOAD_ZERO_X(p1), CLK_ZERO_I2, 2);
+            AND(LOAD_BP_X(p1), 1, 2);
             break;
 
           case 0x36:            /* ROL $nn,X */
