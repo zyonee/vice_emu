@@ -2502,7 +2502,7 @@ trap_skipped:
             break;
 
           case 0xe5:            /* SBC $nn */
-            SBC(LOAD_ZERO(p1), 1, 2);
+            SBC(LOAD_BP(p1), 1, 2);
             break;
 
           case 0xe6:            /* INC $nn */
