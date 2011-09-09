@@ -378,10 +378,16 @@
    (CLK_ADD(CLK, 3), LOAD(LOAD_BP(((addr) + reg_x) & 0xff) | LOAD_BP(((addr) + reg_x + 1) & 0xff)))
 
 #define LOAD_IND_Y(addr) \
-   (CLK_ADD(CLK, 3), LOAD((LOAD_BP((addr)) + reg_y) | (LOAD_BP(((addr) + 1) & 0xff) + reg_y)))
+   (CLK_ADD(CLK, 3), LOAD((LOAD_BP((addr)) | (LOAD_BP(((addr) + 1) & 0xff))) + reg_y))
 
 #define LOAD_IND_Z(addr) \
-   (CLK_ADD(CLK, 3), LOAD((LOAD_BP((addr)) + reg_z) | (LOAD_BP(((addr) + 1) & 0xff) + reg_z)))
+   (CLK_ADD(CLK, 3), LOAD((LOAD_BP((addr)) | (LOAD_BP(((addr) + 1) & 0xff))) + reg_z)))
+
+#define LOAD_STACK_REL_16(addr) \
+   LOAD(addr + reg_sp) | (LOAD(addr + reg_sp + 1) << 8)
+
+#define LOAD_STACK_REL_Y(addr) \
+   LOAD(LOAD_STACK_REL16(addr) + reg_y)
 
 #define LOAD_BP_X(addr) \
    (LOAD_BP(((addr) + reg_x) & 0xff))
@@ -1624,7 +1630,6 @@ trap_skipped:
           case 0x22:            /* NOP #$nn */
           case 0x82:            /* NOP #$nn */
           case 0xc2:            /* NOP #$nn */
-          case 0xe2:            /* NOP #$nn */
             NOOP_IMM(2);
             break;
 
@@ -2233,7 +2238,7 @@ trap_skipped:
             break;
 
           case 0xa1:            /* LDA ($nn,X) */
-            LDA(LOAD_IND_X(p1), 1, 2);
+            LDA(LOAD_IND_X(p1), 0, 2);
             break;
 
           case 0xa2:            /* LDX #$nn */
@@ -2249,7 +2254,7 @@ trap_skipped:
             break;
 
           case 0xa5:            /* LDA $nn */
-            LDA(LOAD_ZERO(p1), 1, 2);
+            LDA(LOAD_BP(p1), 1, 2);
             break;
 
           case 0xa6:            /* LDX $nn */
@@ -2297,11 +2302,11 @@ trap_skipped:
             break;
 
           case 0xb1:            /* LDA ($nn),Y */
-            LDA(LOAD_IND_Y_BANK(p1), 1, 2);
+            LDA(LOAD_IND_Y(p1), 0, 2);
             break;
 
-          case 0xb2:            /* LDA ($nn) */
-            LDA(LOAD_INDIRECT(p1), 1, 2);
+          case 0xb2:            /* LDA ($nn),Z */
+            LDA(LOAD_IND_Z(p1), 0, 2);
             break;
 
           case 0xb4:            /* LDY $nn,X */
@@ -2309,7 +2314,7 @@ trap_skipped:
             break;
 
           case 0xb5:            /* LDA $nn,X */
-            LDA(LOAD_ZERO_X(p1), CLK_ZERO_I2, 2);
+            LDA(LOAD_BP_X(p1), 1, 2);
             break;
 
           case 0xb6:            /* LDX $nn,Y */
@@ -2466,6 +2471,10 @@ trap_skipped:
 
           case 0xe1:            /* SBC ($nn,X) */
             SBC(LOAD_IND_X(p1), 1, 2);
+            break;
+
+          case 0xe2:            /* LDA ($nn,S),Y */
+            LDA(LOAD_STACK_REL_Y(p1), 4, 2);
             break;
 
           case 0xe4:            /* CPX $nn */
