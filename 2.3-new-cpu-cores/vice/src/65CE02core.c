@@ -934,13 +934,6 @@
 
 #define NOOP_IMM(pc_inc) INC_PC(pc_inc)
 
-#define NOOP_ABS_X()   \
-  do {                 \
-      LOAD_ABS_X(p2);  \
-      CLK_ADD(CLK, 1); \
-      INC_PC(3);       \
-  } while (0)
-
 #define NOP()  NOOP_IMM(1)
 
 #define PHA()          \
@@ -955,6 +948,15 @@
       CLK_ADD(CLK, 2);                \
       PUSH(LOCAL_STATUS() | P_BREAK); \
       INC_PC(1);                      \
+  } while (0)
+
+
+#define PHW(value, clk_inc)  \
+  do {                       \
+      CLK_ADD(CLK, clk_inc); \
+      PUSH(value & 0xff);    \
+      PUSH(value >> 8);      \
+      INC_PC(3);             \
   } while (0)
 
 #define PHX()          \
@@ -1647,12 +1649,7 @@ trap_skipped:
             break;
 
           case 0x54:            /* NOP $nn,X */
-          case 0xf4:            /* NOP $nn,X */
             NOOP(2, 2);
-            break;
-
-          case 0xfc:            /* NOP $nnnn,X */
-            NOOP_ABS_X();
             break;
 
           case 0x5c:            /* NOP ??? (FIXME) */
@@ -2552,6 +2549,10 @@ trap_skipped:
             SBC(LOAD_IND_Z(p1), 0, 2);
             break;
 
+          case 0xf4:            /* PHW #$nnnn */
+            PHW(p2, 2);
+            break;
+
           case 0xf5:            /* SBC $nn,X */
             SBC(LOAD_BP_X(p1), 1, 2);
             break;
@@ -2578,6 +2579,10 @@ trap_skipped:
 
           case 0xfb:            /* PLZ */
             PLZ();
+            break;
+
+          case 0xfc:            /* PHW $nnnn */
+            PHW(LOAD(p2) | (LOAD(p2 + 1) << 8), 4);
             break;
 
           case 0xfd:            /* SBC $nnnn,X */
