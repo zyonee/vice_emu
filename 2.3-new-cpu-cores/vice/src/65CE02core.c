@@ -476,7 +476,6 @@
           LOCAL_SET_OVERFLOW(!(tmp > reg_a));                  \
           LOCAL_SET_CARRY(!(tmp > reg_a));                     \
           LOCAL_SET_NZ(tmp & 0xff);                            \
-          CLK_ADD(CLK, 1);                                     \
       } else {                                                 \
           tmp = tmp_value + reg_a + LOCAL_CARRY();             \
           LOCAL_SET_NZ(tmp & 0xff);                            \
@@ -2010,7 +2009,7 @@ trap_skipped:
             break;
 
           case 0x61:            /* ADC ($nn,X) */
-            ADC(LOAD_IND_X(p1), 1, 2);
+            ADC(LOAD_IND_X(p1), 0, 2);
             break;
 
           case 0x62:            /* RTN #$nn */
@@ -2022,7 +2021,7 @@ trap_skipped:
             break;
 
           case 0x65:            /* ADC $nn */
-            ADC(LOAD_ZERO(p1), 1, 2);
+            ADC(LOAD_BP(p1), 1, 2);
             break;
 
           case 0x66:            /* ROR $nn */
@@ -2070,11 +2069,11 @@ trap_skipped:
             break;
 
           case 0x71:            /* ADC ($nn),Y */
-            ADC(LOAD_IND_Y(p1), 1, 2);
+            ADC(LOAD_IND_Y(p1), 0, 2);
             break;
 
-          case 0x72:            /* ADC ($nn) */
-            ADC(LOAD_INDIRECT(p1), 1, 2);
+          case 0x72:            /* ADC ($nn),Z */
+            ADC(LOAD_IND_Z(p1), 0, 2);
             break;
 
           case 0x74:            /* STZ $nn,X */
@@ -2082,7 +2081,7 @@ trap_skipped:
             break;
 
           case 0x75:            /* ADC $nn,X */
-            ADC(LOAD_ZERO_X(p1), CLK_ZERO_I2, 2);
+            ADC(LOAD_BP_X(p1), 1, 2);
             break;
 
           case 0x76:            /* ROR $nn,X */
