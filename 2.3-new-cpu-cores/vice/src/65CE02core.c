@@ -529,17 +529,18 @@
       INC_PC(pc_inc);                  \
   } while (0)
 
-#define ASL(addr, clk_inc, pc_inc, load_func, store_func) \
-  do {                                                    \
-      unsigned int tmp_value, tmp_addr;                   \
-                                                          \
-      tmp_addr = (addr);                                  \
-      tmp_value = load_func(tmp_addr);                    \
-      LOCAL_SET_CARRY(tmp_value & 0x80);                  \
-      tmp_value = (tmp_value << 1) & 0xff;                \
-      LOCAL_SET_NZ(tmp_value);                            \
-      INC_PC(pc_inc);                                     \
-      store_func(tmp_addr, tmp_value, clk_inc);           \
+#define ASL(addr, pc_inc, load_func, store_func) \
+  do {                                           \
+      unsigned int tmp_value, tmp_addr;          \
+                                                 \
+      tmp_addr = (addr);                         \
+      CLK_ADD(CLK, 1);                           \
+      tmp_value = load_func(tmp_addr);           \
+      LOCAL_SET_CARRY(tmp_value & 0x80);         \
+      tmp_value = (tmp_value << 1) & 0xff;       \
+      LOCAL_SET_NZ(tmp_value);                   \
+      INC_PC(pc_inc);                            \
+      store_func(tmp_addr, tmp_value);           \
   } while (0)
 
 #define ASL_A()                      \
@@ -1686,7 +1687,7 @@ trap_skipped:
             break;
 
           case 0x06:            /* ASL $nn */
-            ASL(p1, CLK_ZERO_RMW, 2, LOAD_ZERO, STORE_ABS);
+            ASL(p1, 2, LOAD_BP, STORE_BP);
             break;
 
           case 0x07:            /* RMB0 $nn (65C02) / single byte, single cycle NOP (65SC02) */
@@ -1718,7 +1719,7 @@ trap_skipped:
             break;
 
           case 0x0e:            /* ASL $nnnn */
-            ASL(p2, CLK_ABS_RMW2, 3, LOAD_ABS, STORE_ABS);
+            ASL(p2, 3, LOAD_ABS, STORE_ABS);
             break;
 
           case 0x0f:            /* BBR0 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
@@ -1750,7 +1751,7 @@ trap_skipped:
             break;
 
           case 0x16:            /* ASL $nn,X */
-            ASL((p1 + reg_x) & 0xff, CLK_ZERO_I_RMW, 2, LOAD_ZERO, STORE_ABS);
+            ASL((p1 + reg_x) & 0xff, 2, LOAD_BP, STORE_BP);
             break;
 
           case 0x17:            /* RMB1 $nn (65C02) / single byte, single cycle NOP (65SC02) */
@@ -1782,7 +1783,7 @@ trap_skipped:
             break;
 
           case 0x1e:            /* ASL $nnnn,X */
-            ASL(p2, CLK_ABS_I_RMW2, 3, LOAD_ABS_X, STORE_ABS_X_RMW);
+            ASL(p2 + reg_x, 3, LOAD_ABS, STORE_ABS);
             break;
 
           case 0x1f:            /* BBR1 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
