@@ -790,6 +790,7 @@
       } else {                                  \
           LOCAL_SET_NZ(tmp >> 8);               \
       }                                         \
+      PC_INC(2);                                \
       STORE_BP(addr, tmp & 0xff);               \
       STORE_BP((addr + 1) & 0xff, tmp >> 8);    \
   } while (0)
@@ -856,6 +857,7 @@
       } else {                                  \
           LOCAL_SET_NZ(tmp >> 8);               \
       }                                         \
+      PC_INC(2);                                \
       STORE_BP(addr, tmp & 0xff);               \
       STORE_BP((addr + 1) & 0xff, tmp >> 8);    \
   } while (0)
@@ -1202,6 +1204,35 @@
       LOCAL_SET_CARRY(tmp & 1);            \
       LOCAL_SET_NZ(reg_a);                 \
       INC_PC(1);                           \
+  } while (0)
+
+/* This opcode is confusing, according to the datasheet it takes 6 cycles, however:
+   fetch opcode (1), fetch low addr (2), fetch high addr (3),
+   fetch low data (4), fetch high data (5),
+   store low data (6), store high data (7), hmmmmm :O
+
+   because of this the opcode is emulated as having 7! cycles.
+ */
+#define ROW(addr)                       \
+  do {                                  \
+      unsigned int tmp;                 \
+                                        \
+      tmp_addr = (addr);                \
+      CLK_ADD(CLK, 1);                  \
+      tmp = LOAD(addr);                 \
+      CLK_ADD(CLK, 1);                  \
+      tmp |= (LOAD(addr + 1) << 8);     \
+      tmp = (tmp << 1) | LOCAL_CARRY(); \
+      LOCAL_SET_CARRY(tmp & 0x10000);   \
+      tmp &= 0xffff;                    \
+      if (tmp) {                        \
+          LOCAL_SET_NZ((tmp >> 8) | 1); \
+      } else {                          \
+          LOCAL_SET_NZ(tmp >> 8);       \
+      }                                 \
+      INC_PC(3);                        \
+      STORE_ABS(addr, tmp & 0xff);      \
+      STORE_ABS(addr + 1, tmp >> 8);    \
   } while (0)
 
 /* RTI does must not use `OPCODE_ENABLES_IRQ()' even if the I flag changes
@@ -1686,10 +1717,6 @@ trap_skipped:
         SET_LAST_OPCODE(p0);
 
         switch (p0) {
-
-          case 0xeb:            /* 1 byte, 1 cycle NOP */
-            NOOP_IMM(1);
-            break;
 
           case 0x00:            /* BRK */
             BRK();
@@ -2630,6 +2657,10 @@ trap_skipped:
 
           case 0xea:            /* NOP */
             NOP();
+            break;
+
+          case 0xeb:            /* ROW $nnnn */
+            ROW(p2);
             break;
 
           case 0xec:            /* CPX $nnnn */
