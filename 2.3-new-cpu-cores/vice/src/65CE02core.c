@@ -32,7 +32,7 @@
  * - define reg_sp as 16bit (8bit on 6502/65(S)C02).
  * - define reg_z as 8bit.
  * - define reg_bp as 8bit.
- *
+ * - define AUG_65CE02(BYTE v1, BYTE v2, BYTE v3) to handle the AUG() opcode.
  */
 
 /* still to check and possibly fix:
@@ -548,6 +548,18 @@
       LOCAL_SET_NZ(reg_a);                   \
       INC_PC(1);                             \
       CLK_ADD(CLK, 1);                       \
+  } while (0)
+
+#define AUG()                 \
+  do {                        \
+      BYTE v1, v2, v3;        \
+                              \
+      v1 = p1;                \
+      v2 = p2 >> 8;           \
+      CLK_ADD(CLK, 1);        \
+      v3 = LOAD(reg_pc + 3);  \
+      PC_INC(4);              \
+      AUG_65CE02(v1, v2, v3); \
   } while (0)
 
 #define BBR(bit, addr, value)                               \
@@ -1679,10 +1691,6 @@ trap_skipped:
             NOOP_IMM(1);
             break;
 
-          case 0x5c:            /* NOP ??? (FIXME) */
-            NOOP(5, 3);
-            break;
-
           case 0x00:            /* BRK */
             BRK();
             break;
@@ -2050,6 +2058,10 @@ trap_skipped:
 
           case 0x5b:            /* TAB */
             TAB();
+            break;
+
+          case 0x5c:            /* AUG #$nnnnnn */
+            AUG();
             break;
 
           case 0x5d:            /* EOR $nnnn,X */
