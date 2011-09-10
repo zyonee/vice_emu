@@ -1112,17 +1112,18 @@
       STORE_BP(tmp_addr, tmp);                \
   } while (0)
 
-#define ROL(addr, clk_inc, pc_inc, load_func, store_func) \
-  do {                                                    \
-      unsigned int tmp, tmp_addr;                         \
-                                                          \
-      tmp_addr = (addr);                                  \
-      tmp = load_func(tmp_addr);                          \
-      tmp = (tmp << 1) | LOCAL_CARRY();                   \
-      LOCAL_SET_CARRY(tmp & 0x100);                       \
-      LOCAL_SET_NZ(tmp & 0xff);                           \
-      INC_PC(pc_inc);                                     \
-      store_func(tmp_addr, tmp, clk_inc);                 \
+#define ROL(addr, pc_inc, load_func, store_func) \
+  do {                                           \
+      unsigned int tmp, tmp_addr;                \
+                                                 \
+      tmp_addr = (addr);                         \
+      CLK_ADD(CLK, 1);                           \
+      tmp = load_func(tmp_addr);                 \
+      tmp = (tmp << 1) | LOCAL_CARRY();          \
+      LOCAL_SET_CARRY(tmp & 0x100);              \
+      LOCAL_SET_NZ(tmp & 0xff);                  \
+      INC_PC(pc_inc);                            \
+      store_func(tmp_addr, tmp);                 \
   } while (0)
 
 #define ROL_A()                      \
@@ -1816,7 +1817,7 @@ trap_skipped:
             break;
 
           case 0x26:            /* ROL $nn */
-            ROL(p1, CLK_ZERO_RMW, 2, LOAD_ZERO, STORE_ABS);
+            ROL(p1, 2, LOAD_BP, STORE_BP);
             break;
 
           case 0x27:            /* RMB2 $nn (65C02) / single byte, single cycle NOP (65SC02) */
@@ -1848,7 +1849,7 @@ trap_skipped:
             break;
 
           case 0x2e:            /* ROL $nnnn */
-            ROL(p2, CLK_ABS_RMW2, 3, LOAD_ABS, STORE_ABS);
+            ROL(p2, 3, LOAD_ABS, STORE_ABS);
             break;
 
           case 0x2f:            /* BBR2 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
@@ -1880,7 +1881,7 @@ trap_skipped:
             break;
 
           case 0x36:            /* ROL $nn,X */
-            ROL((p1 + reg_x) & 0xff, CLK_ZERO_I_RMW, 2, LOAD_ZERO, STORE_ABS);
+            ROL((p1 + reg_x) & 0xff, 2, LOAD_BP, STORE_BP);
             break;
 
           case 0x37:            /* RMB3 $nn (65C02) / single byte, single cycle NOP (65SC02) */
@@ -1912,7 +1913,7 @@ trap_skipped:
             break;
 
           case 0x3e:            /* ROL $nnnn,X */
-            ROL(p2, CLK_ABS_I_RMW2, 3, LOAD_ABS_X, STORE_ABS_X_RMW);
+            ROL(p2 + reg_x, 3, LOAD_ABS, STORE_ABS);
             break;
 
           case 0x3f:            /* BBR3 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
