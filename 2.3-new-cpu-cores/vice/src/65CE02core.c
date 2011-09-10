@@ -551,6 +551,20 @@
       INC_PC(1);                     \
   } while (0)
 
+#define ASR(addr, pc_inc, load_func, store_func)         \
+  do {                                                   \
+      unsigned int tmp_value, tmp_addr;                  \
+                                                         \
+      tmp_addr = (addr);                                 \
+      CLK_ADD(CLK, 1);                                   \
+      tmp_value = load_func(tmp_addr);                   \
+      LOCAL_SET_CARRY(tmp_value & 1);                    \
+      tmp_value = (tmp_value & 0x80) | (tmp_value >> 1); \
+      LOCAL_SET_NZ(tmp_value);                           \
+      INC_PC(pc_inc);                                    \
+      store_func(tmp_addr, tmp_value);                   \
+  } while (0)
+
 #define ASR_A()                              \
   do {                                       \
       LOCAL_SET_CARRY(reg_a & 1);            \
@@ -1651,14 +1665,6 @@ trap_skipped:
             NOOP_IMM(1);
             break;
 
-          case 0x44:            /* NOP $nn */
-            NOOP(1, 2);
-            break;
-
-          case 0x54:            /* NOP $nn,X */
-            NOOP(2, 2);
-            break;
-
           case 0x5c:            /* NOP ??? (FIXME) */
             NOOP(5, 3);
             break;
@@ -1936,6 +1942,10 @@ trap_skipped:
             ASR_A();
             break;
 
+          case 0x44:            /* ASR $nn */
+            ASR(p1, 2, LOAD_BP, STORE_BP);
+            break;
+
           case 0x45:            /* EOR $nn */
             EOR(LOAD_BP(p1), 1, 2);
             break;
@@ -1994,6 +2004,10 @@ trap_skipped:
 
           case 0x53:            /* LBVC $nnnn */
             BRANCH_LONG(!LOCAL_OVERFLOW(), p2);
+            break;
+
+          case 0x54:            /* ASR $nn,X */
+            ASR((p1 + reg_x) & 0xff, 2, LOAD_BP, STORE_BP);
             break;
 
           case 0x55:            /* EOR $nn,X */
