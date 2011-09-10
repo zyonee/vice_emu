@@ -395,18 +395,10 @@
 #define LOAD_BP_Y(addr) \
    (LOAD_BP(((addr) + reg_y) & 0xff))
 
-#define STORE_ABS(addr, value, inc) \
-  do {                              \
-      CLK_ADD(CLK, (inc));          \
-      STORE((addr), (value));       \
-  } while (0)
-
-#define STORE_ABS_X(addr, value, inc)                      \
-  do {                                                     \
-      CLK_ADD(CLK, (inc)-2);                               \
-      LOAD((((addr) + reg_x) & 0xff) | ((addr) & 0xff00)); \
-      CLK_ADD(CLK, 2);                                     \
-      STORE((addr) + reg_x, (value));                      \
+#define STORE_ABS(addr, value) \
+  do {                         \
+      CLK_ADD(CLK, 1);         \
+      STORE((addr), (value));  \
   } while (0)
 
 #define STORE_ABS_X_RMW(addr, value, inc) \
@@ -416,14 +408,6 @@
       STORE((addr) + reg_x, (value));     \
   } while (0)                             \
 
-#define STORE_ABS_Y(addr, value, inc)                      \
-  do {                                                     \
-      CLK_ADD(CLK, (inc)-2);                               \
-      LOAD((((addr) + reg_y) & 0xff) | ((addr) & 0xff00)); \
-      CLK_ADD(CLK, 2);                                     \
-      STORE((addr) + reg_y, (value));                      \
-  } while (0)
-
 #define STORE_ABS_Y_RMW(addr, value, inc) \
   do {                                    \
       LOAD((addr) + reg_y, (value));      \
@@ -431,18 +415,61 @@
       STORE((addr) + reg_y, (value));     \
   } while (0)
 
-#define STORE_ABS_SH_Y(addr, value, inc)                   \
-  do {                                                     \
-      unsigned int tmp2;                                   \
-                                                           \
-      CLK_ADD(CLK, (inc)-2);                               \
-      LOAD((((addr) + reg_y) & 0xff) | ((addr) & 0xff00)); \
-      CLK_ADD(CLK, 2);                                     \
-      tmp2 = (addr) + reg_y;                               \
-      if (((addr) & 0xff) + reg_y > 0xff) {                \
-          tmp2 = (tmp2 & 0xff) | ((value) << 8);           \
-      }                                                    \
-      STORE(tmp2, (value));                                \
+#define STORE_BP(addr, value)                        \
+  do {                                               \
+      CLK_ADD(CLK, 1);                               \
+      STORE((addr & 0xff) | (reg_bp << 8), (value)); \
+  while (0)
+
+#define STORE_IND_X(addr, value)                       \
+  do {                                                 \
+      unsigned int ea;                                 \
+                                                       \
+      CLK_ADD(CLK, 1);                                 \
+      ea = LOAD_BP((addr + reg_x) & 0xff);             \
+      CLK_ADD(CLK, 1);                                 \
+      ea |= (LOAD_BP((addr + 1 + reg_x) & 0xff) << 8); \
+      CLK_ADD(CLK, 1);                                 \
+      STORE(ea, value);                                \
+  } while (0)
+
+#define STORE_IND_Y(addr, value)               \
+  do {                                         \
+      unsigned int ea;                         \
+                                               \
+      CLK_ADD(CLK, 1);                         \
+      ea = LOAD_BP(addr);                      \
+      CLK_ADD(CLK, 1);                         \
+      ea |= (LOAD_BP((addr + 1) & 0xff) << 8); \
+      ea = ((ea + reg_y) & 0xffff);            \
+      CLK_ADD(CLK, 1);                         \
+      STORE(ea, value);                        \
+  } while (0)
+
+#define STORE_IND_Z(addr, value)               \
+  do {                                         \
+      unsigned int ea;                         \
+                                               \
+      CLK_ADD(CLK, 1);                         \
+      ea = LOAD_BP(addr);                      \
+      CLK_ADD(CLK, 1);                         \
+      ea |= (LOAD_BP((addr + 1) & 0xff) << 8); \
+      ea = ((ea + reg_z) & 0xffff);            \
+      CLK_ADD(CLK, 1);                         \
+      STORE(ea, value);                        \
+  } while (0)
+
+#define STORE_STACK_REL_Y(addr, value)      \
+  do {                                      \
+      unsigned int ea;                      \
+                                            \
+      CLK_ADD(CLK, 1);                      \
+      ea = LOAD(addr + reg_sp);             \
+      CLK_ADD(CLK, 1);                      \
+      ea |= (LOAD(addr + 1 + reg_sp) << 8); \
+      CLK_ADD(CLK, 2);                      \
+      ea = (ea + reg_y) & 0xffff;           \
+      STORE(ea, value);                     \
   } while (0)
 
 #define INC_PC(value)   (reg_pc += (value))
@@ -1261,84 +1288,40 @@
       }
   } while (0)
 
-#define STA(addr, clk_inc1, clk_inc2, pc_inc, store_func) \
-  do {                                                    \
-      unsigned int tmp;                                   \
-                                                          \
-      CLK_ADD(CLK, (clk_inc1));                           \
-      tmp = (addr);                                       \
-      INC_PC(pc_inc);                                     \
-      store_func(tmp, reg_a, clk_inc2);                   \
+#define STA(addr, pc_inc, store_func) \
+  do {                                \
+      unsigned int tmp;               \
+                                      \
+      tmp = (addr);                   \
+      INC_PC(pc_inc);                 \
+      store_func(tmp, reg_a);         \
   } while (0)
 
-#define STA_ZERO(addr, clk_inc, pc_inc) \
-  do {                                  \
-      CLK_ADD(CLK, (clk_inc));          \
-      STORE_ZERO((addr), reg_a);        \
-      INC_PC(pc_inc);                   \
+#define STX(addr, pc_inc, store_func) \
+  do {                                \
+      unsigned int tmp;               \
+                                      \
+      tmp = (addr);                   \
+      INC_PC(pc_inc);                 \
+      store_func(tmp, reg_x);         \
   } while (0)
 
-#define STA_IND_Y(addr)                                  \
-  do {                                                   \
-      unsigned int tmp;                                  \
-                                                         \
-      CLK_ADD(CLK, 2);                                   \
-      tmp = LOAD_ZERO_ADDR(addr);                        \
-      LOAD_IND((tmp & 0xff00) | ((tmp + reg_y) & 0xff)); \
-      CLK_ADD(CLK, CLK_IND_Y_W);                         \
-      INC_PC(2);                                         \
-      STORE_IND(tmp + reg_y, reg_a);                     \
+#define STY(addr, pc_inc, store_func) \
+  do {                                \
+      unsigned int tmp;               \
+                                      \
+      tmp = (addr);                   \
+      INC_PC(pc_inc);                 \
+      store_func(tmp, reg_y);         \
   } while (0)
 
-#define STX(addr, clk_inc, pc_inc) \
-  do {                             \
-      unsigned int tmp;            \
-                                   \
-      tmp = (addr);                \
-      CLK_ADD(CLK, (clk_inc));     \
-      INC_PC(pc_inc);              \
-      STORE(tmp, reg_x);           \
-  } while (0)
-
-#define STX_ZERO(addr, clk_inc, pc_inc) \
-  do {                                  \
-      CLK_ADD(CLK, (clk_inc));          \
-      STORE_ZERO((addr), reg_x);        \
-      INC_PC(pc_inc);                   \
-  } while (0)
-
-#define STY(addr, clk_inc, pc_inc) \
-  do {                             \
-      unsigned int tmp;            \
-                                   \
-      tmp = (addr);                \
-      CLK_ADD(CLK, (clk_inc));     \
-      INC_PC(pc_inc);              \
-      STORE(tmp, reg_y);           \
-  } while (0)
-
-#define STY_ZERO(addr, clk_inc, pc_inc) \
-  do {                                  \
-      CLK_ADD(CLK, (clk_inc));          \
-      STORE_ZERO((addr), reg_y);        \
-      INC_PC(pc_inc);                   \
-  } while (0)
-
-#define STZ(addr, clk_inc1, clk_inc2, pc_inc, store_func) \
-  do {                                                    \
-      unsigned int tmp;                                   \
-                                                          \
-      CLK_ADD(CLK, (clk_inc1));                           \
-      tmp = (addr);                                       \
-      INC_PC(pc_inc);                                     \
-      store_func(tmp, 0, clk_inc2);                       \
-  } while (0)
-
-#define STZ_ZERO(addr, clk_inc, pc_inc) \
-  do {                                  \
-      CLK_ADD(CLK, (clk_inc));          \
-      STORE_ZERO((addr), 0);            \
-      INC_PC(pc_inc);                   \
+#define STZ(addr, pc_inc, store_func) \
+  do {                                \
+      unsigned int tmp;               \
+                                      \
+      tmp = (addr);                   \
+      INC_PC(pc_inc);                 \
+      store_func(tmp, reg_z);         \
   } while (0)
 
 #define TAB()              \
@@ -1666,16 +1649,10 @@ trap_skipped:
 
         switch (p0) {
 
-          case 0x8b:            /* 1 byte, 1 cycle NOP */
-          case 0x9b:            /* 1 byte, 1 cycle NOP */
           case 0xc3:            /* 1 byte, 1 cycle NOP */
           case 0xe3:            /* 1 byte, 1 cycle NOP */
           case 0xeb:            /* 1 byte, 1 cycle NOP */
             NOOP_IMM(1);
-            break;
-
-          case 0x82:            /* NOP #$nn */
-            NOOP_IMM(2);
             break;
 
           case 0x44:            /* NOP $nn */
@@ -2080,7 +2057,7 @@ trap_skipped:
             break;
 
           case 0x64:            /* STZ $nn */
-            STZ_ZERO(p1, 1, 2);
+            STZ(p1, 2, STORE_BP);
             break;
 
           case 0x65:            /* ADC $nn */
@@ -2144,7 +2121,7 @@ trap_skipped:
             break;
 
           case 0x74:            /* STZ $nn,X */
-            STZ_ZERO(p1 + reg_x, CLK_ZERO_I_STORE, 2);
+            STZ(p1 + reg_x, 2, STORE_BP);
             break;
 
           case 0x75:            /* ADC $nn,X */
@@ -2196,7 +2173,11 @@ trap_skipped:
             break;
 
           case 0x81:            /* STA ($nn,X) */
-            STA(LOAD_ZERO_ADDR(p1 + reg_x), 3, 1, 2, STORE_ABS);
+            STA(p1, 2, STORE_IND_X);
+            break;
+
+          case 0x82:            /* STA ($nn,S),Y */
+            STA(p1, 2, STORE_STACK_REL_Y);
             break;
 
           case 0x83:            /* LBRA $nnnn */
@@ -2204,15 +2185,15 @@ trap_skipped:
             break;
 
           case 0x84:            /* STY $nn */
-            STY_ZERO(p1, 1, 2);
+            STY(p1, 2, STORE_BP);
             break;
 
           case 0x85:            /* STA $nn */
-            STA_ZERO(p1, 1, 2);
+            STA(p1, 2, STORE_BP);
             break;
 
           case 0x86:            /* STX $nn */
-            STX_ZERO(p1, 1, 2);
+            STX(p1, 2, STORE_BP);
             break;
 
           case 0x87:            /* SMB0 $nn (65C02) / single byte, single cycle NOP (65SC02) */
@@ -2231,16 +2212,20 @@ trap_skipped:
             TXA();
             break;
 
+          case 0x8b:            /* STY $nnnn,X */
+            STY(p2 + reg_x, 3, STORE_ABS);
+            break;
+
           case 0x8c:            /* STY $nnnn */
-            STY(p2, 1, 3);
+            STY(p2, 3, STORE_ABS);
             break;
 
           case 0x8d:            /* STA $nnnn */
-            STA(p2, 0, 1, 3, STORE_ABS);
+            STA(p2, 3, STORE_ABS);
             break;
 
           case 0x8e:            /* STX $nnnn */
-            STX(p2, 1, 3);
+            STX(p2, 3, STORE_ABS);
             break;
 
           case 0x8f:            /* BBS0 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
@@ -2252,11 +2237,11 @@ trap_skipped:
             break;
 
           case 0x91:            /* STA ($nn),Y */
-            STA_IND_Y(p1);
+            STA(p1, 2, STORE_IND_Y);
             break;
 
-          case 0x92:            /* STA ($nn) */
-            STA(LOAD_ZERO_ADDR(p1), 2, 1, 2, STORE_ABS);
+          case 0x92:            /* STA ($nn),Z */
+            STA(p1, 2, STORE_IND_Z);
             break;
 
           case 0x93:            /* LBCC $nnnn */
@@ -2264,15 +2249,15 @@ trap_skipped:
             break;
 
           case 0x94:            /* STY $nn,X */
-            STY_ZERO(p1 + reg_x, CLK_ZERO_I_STORE, 2);
+            STY(p1 + reg_x, 2, STORE_BP);
             break;
 
           case 0x95:            /* STA $nn,X */
-            STA_ZERO(p1 + reg_x, CLK_ZERO_I_STORE, 2);
+            STA(p1 + reg_x, 2, STORE_BP);
             break;
 
           case 0x96:            /* STX $nn,Y */
-            STX_ZERO(p1 + reg_y, CLK_ZERO_I_STORE, 2);
+            STX(p1 + reg_y, 2, STORE_BP);
             break;
 
           case 0x97:            /* SMB1 $nn (65C02) / single byte, single cycle NOP (65SC02) */
@@ -2284,23 +2269,27 @@ trap_skipped:
             break;
 
           case 0x99:            /* STA $nnnn,Y */
-            STA(p2, 0, CLK_ABS_I_STORE2, 3, STORE_ABS_Y);
+            STA(p2 + reg_y, 3, STORE_ABS);
             break;
 
           case 0x9a:            /* TXS */
             TXS();
             break;
 
+          case 0x9b:            /* STX $nnnn,Y */
+            STX(p2 + reg_y, 3, STORE_ABS);
+            break;
+
           case 0x9c:            /* STZ $nnnn */
-            STZ(p2, 0, 1, 3, STORE_ABS);
+            STZ(p2, 3, STORE_ABS);
             break;                         
 
           case 0x9d:            /* STA $nnnn,X */
-            STA(p2, 0, CLK_ABS_I_STORE2, 3, STORE_ABS_X);
+            STA(p2 + reg_x, 3, STORE_ABS);
             break;
 
           case 0x9e:            /* STZ $nnnn,X */
-            STZ(p2, 0, CLK_ABS_I_STORE2, 3, STORE_ABS_X);
+            STZ(p2 + reg_z, 3, STORE_ABS);
             break;
 
           case 0x9f:            /* BBS1 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
