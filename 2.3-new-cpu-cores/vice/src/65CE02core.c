@@ -1151,20 +1151,21 @@
       INC_PC(1);                     \
   } while (0)
 
-#define ROR(addr, clk_inc, pc_inc, load_func, store_func) \
-  do {                                                    \
-      unsigned int src, tmp_addr;                         \
-                                                          \
-      tmp_addr = (addr);                                  \
-      src = load_func(tmp_addr);                          \
-      if (LOCAL_CARRY()) {                                \
-          src |= 0x100;                                   \
-      }                                                   \
-      LOCAL_SET_CARRY(src & 1);                           \
-      src >>= 1;                                          \
-      LOCAL_SET_NZ(src);                                  \
-      INC_PC(pc_inc);                                     \
-      store_func(tmp_addr, src, (clk_inc));               \
+#define ROR(addr, pc_inc, load_func, store_func) \
+  do {                                           \
+      unsigned int src, tmp_addr;                \
+                                                 \
+      tmp_addr = (addr);                         \
+      CLK_ADD(CLK, 1);                           \
+      src = load_func(tmp_addr);                 \
+      if (LOCAL_CARRY()) {                       \
+          src |= 0x100;                          \
+      }                                          \
+      LOCAL_SET_CARRY(src & 1);                  \
+      src >>= 1;                                 \
+      LOCAL_SET_NZ(src);                         \
+      INC_PC(pc_inc);                            \
+      store_func(tmp_addr, src);                 \
   } while (0)
 
 #define ROR_A()                            \
@@ -2076,7 +2077,7 @@ trap_skipped:
             break;
 
           case 0x66:            /* ROR $nn */
-            ROR(p1, CLK_ZERO_RMW, 2, LOAD_ZERO, STORE_ABS);
+            ROR(p1, 2, LOAD_BP, STORE_BP);
             break;
 
           case 0x67:            /* RMB6 $nn (65C02) / single byte, single cycle NOP (65SC02) */
@@ -2108,7 +2109,7 @@ trap_skipped:
             break;
 
           case 0x6e:            /* ROR $nnnn */
-            ROR(p2, CLK_ABS_RMW2, 3, LOAD_ABS, STORE_ABS);
+            ROR(p2, 3, LOAD_ABS, STORE_ABS);
             break;
 
           case 0x6f:            /* BBR6 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
@@ -2140,7 +2141,7 @@ trap_skipped:
             break;
 
           case 0x76:            /* ROR $nn,X */
-            ROR((p1 + reg_x) & 0xff, CLK_ZERO_I_RMW, 2, LOAD_ZERO, STORE_ABS);
+            ROR((p1 + reg_x) & 0xff, 2, LOAD_BP, STORE_BP);
             break;
 
           case 0x77:            /* RMB7 $nn (65C02) / single byte, single cycle NOP (65SC02) */
@@ -2172,7 +2173,7 @@ trap_skipped:
             break;
 
           case 0x7e:            /* ROR $nnnn,X */
-            ROR(p2, CLK_ABS_I_RMW2, 3, LOAD_ABS_X, STORE_ABS_X_RMW);
+            ROR(p2 + reg_x, 3, LOAD_ABS, STORE_ABS);
             break;
 
           case 0x7f:            /* BBR7 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
