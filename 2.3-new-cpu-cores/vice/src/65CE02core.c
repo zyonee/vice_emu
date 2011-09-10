@@ -1363,16 +1363,17 @@
       store_func(tmp_addr, tmp_value, clk_inc);           \
   } while (0)
 
-#define TSB(addr, clk_inc, pc_inc, load_func, store_func) \
-  do {                                                    \
-      unsigned int tmp_value, tmp_addr;                   \
-                                                          \
-      tmp_addr = (addr);                                  \
-      tmp_value = load_func(tmp_addr);                    \
-      LOCAL_SET_ZERO(!(tmp_value & reg_a));               \
-      tmp_value |= reg_a;                                 \
-      INC_PC(pc_inc);                                     \
-      store_func(tmp_addr, tmp_value, clk_inc);           \
+#define TSB(addr, pc_inc, load_func, store_func) \
+  do {                                           \
+      unsigned int tmp_value, tmp_addr;          \
+                                                 \
+      tmp_addr = (addr);                         \
+      CLK_ADD(CLK, 1);                           \
+      tmp_value = load_func(tmp_addr);           \
+      LOCAL_SET_ZERO(!(tmp_value & reg_a));      \
+      tmp_value |= reg_a;                        \
+      INC_PC(pc_inc);                            \
+      store_func(tmp_addr, tmp_value);           \
   } while (0)
 
 #define TSX()                \
@@ -1677,7 +1678,7 @@ trap_skipped:
             break;
 
           case 0x04:            /* TSB $nn */
-            TSB(p1, CLK_ZERO_RMW, 2, LOAD_ZERO, STORE_ABS);
+            TSB(p1, 2, LOAD_BP, STORE_BP);
             break;
 
           case 0x05:            /* ORA $nn */
@@ -1709,7 +1710,7 @@ trap_skipped:
             break;
 
           case 0x0c:            /* TSB $nnnn */
-            TSB(p2, CLK_ABS_RMW2, 3, LOAD_ABS, STORE_ABS);
+            TSB(p2, 3, LOAD_ABS, STORE_ABS);
             break;
 
           case 0x0d:            /* ORA $nnnn */
