@@ -358,18 +358,8 @@
 #define LOAD_ABS_X(addr) \
    (LOAD((addr) + reg_x))
 
-#define LOAD_ABS_X_RMW(addr)     \
-   (LOAD(reg_pc + 2),            \
-    CLK_ADD(CLK, CLK_INT_CYCLE), \
-    LOAD((addr) + reg_x))
-
 #define LOAD_ABS_Y(addr) \
    (LOAD((addr) + reg_y))
-
-#define LOAD_ABS_Y_RMW(addr)     \
-   (LOAD(reg_pc + 2),            \
-    CLK_ADD(CLK, CLK_INT_CYCLE), \
-    LOAD((addr) + reg_y))
 
 #define LOAD_BP(addr) \
   (LOAD(addr | (reg_bp << 8)))
@@ -399,20 +389,6 @@
   do {                         \
       CLK_ADD(CLK, 1);         \
       STORE((addr), (value));  \
-  } while (0)
-
-#define STORE_ABS_X_RMW(addr, value, inc) \
-  do {                                    \
-      LOAD((adr) + reg_x);                \
-      CLK_ADD(CLK, (inc));                \
-      STORE((addr) + reg_x, (value));     \
-  } while (0)                             \
-
-#define STORE_ABS_Y_RMW(addr, value, inc) \
-  do {                                    \
-      LOAD((addr) + reg_y, (value));      \
-      CLK_ADD(CLK, (inc));                \
-      STORE((addr) + reg_y, (value));     \
   } while (0)
 
 #define STORE_BP(addr, value)                        \
@@ -786,6 +762,19 @@
       LOCAL_SET_NZ(tmp);                         \
       INC_PC(pc_inc);                            \
       store_func(tmp_addr, tmp);                 \
+  } while (0)
+
+#define DEW(addr)                               \
+  do {                                          \
+      WORD tmp;                                 \
+                                                \
+      CLK_ADD(CLK, 1);                          \
+      tmp = LOAD_BP(addr);                      \
+      CLK_ADD(CLK, 1);                          \
+      tmp |= (LOAD_BP((addr + 1) & 0xff) << 8); \
+      tmp--;                                    \
+      STORE_BP(addr, tmp & 0xff);               \
+      STORE_BP((addr + 1) & 0xff, tmp >> 8);    \
   } while (0)
 
 #define DEX()              \
@@ -1663,7 +1652,6 @@ trap_skipped:
 
         switch (p0) {
 
-          case 0xc3:            /* 1 byte, 1 cycle NOP */
           case 0xe3:            /* 1 byte, 1 cycle NOP */
           case 0xeb:            /* 1 byte, 1 cycle NOP */
             NOOP_IMM(1);
@@ -2448,6 +2436,10 @@ trap_skipped:
 
           case 0xc2:            /* CPZ #$nn */
             CPZ(p1, 0, 2);
+            break;
+
+          case 0xc3:            /* DEW $.. */
+            DEW(p1);
             break;
 
           case 0xc4:            /* CPY $nn */
