@@ -824,15 +824,16 @@
       INC_PC(1);           \
   } while (0)
 
-#define INC(addr, clk_inc, pc_inc, load_func, store_func) \
-  do {                                                    \
-      unsigned int tmp, tmp_addr;                         \
-                                                          \
-      tmp_addr = (addr);                                  \
-      tmp = (load_func(tmp_addr) + 1) & 0xff;             \
-      LOCAL_SET_NZ(tmp);                                  \
-      INC_PC(pc_inc);                                     \
-      store_func(tmp_addr, tmp, (clk_inc));               \
+#define INC(addr, pc_inc, load_func, store_func) \
+  do {                                           \
+      unsigned int tmp, tmp_addr;                \
+                                                 \
+      tmp_addr = (addr);                         \
+      CLK_ADD(CLK, 1);                           \
+      tmp = (load_func(tmp_addr) + 1) & 0xff;    \
+      LOCAL_SET_NZ(tmp);                         \
+      INC_PC(pc_inc);                            \
+      store_func(tmp_addr, tmp);                 \
   } while (0)
 
 #define INX()              \
@@ -2582,7 +2583,7 @@ trap_skipped:
             break;
 
           case 0xe6:            /* INC $nn */
-            INC(p1, CLK_ZERO_RMW, 2, LOAD_ZERO, STORE_ABS);
+            INC(p1, 2, LOAD_BP, STORE_BP);
             break;
 
           case 0xe7:            /* SMB6 $nn (65C02) / single byte, single cycle NOP (65SC02) */
@@ -2610,7 +2611,7 @@ trap_skipped:
             break;
 
           case 0xee:            /* INC $nnnn */
-            INC(p2, CLK_ABS_RMW2, 3, LOAD_ABS, STORE_ABS);
+            INC(p2, 3, LOAD_ABS, STORE_ABS);
             break;
 
           case 0xef:            /* BBS6 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
@@ -2642,7 +2643,7 @@ trap_skipped:
             break;
 
           case 0xf6:            /* INC $nn,X */
-            INC((p1 + reg_x) & 0xff, CLK_ZERO_I_RMW, 2, LOAD_ZERO, STORE_ABS);
+            INC((p1 + reg_x) & 0xff, 2, LOAD_BP, STORE_BP);
             break;
 
           case 0xf7:            /* SMB7 $nn (65C02) / single byte, single cycle NOP (65SC02) */
@@ -2674,7 +2675,7 @@ trap_skipped:
             break;
 
           case 0xfe:            /* INC $nnnn,X */
-            INC(p2, CLK_ABS_I_RMW2, 3, LOAD_ABS_X_RMW, STORE_ABS_X_RMW);
+            INC(p2 + reg_x, 3, LOAD_ABS, STORE_ABS);
             break;
 
           case 0xff:            /* BBS7 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
