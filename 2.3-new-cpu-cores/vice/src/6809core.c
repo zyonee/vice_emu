@@ -26,59 +26,9 @@
 
 /* This file is currently no included by any CPU definition files */
 
-#ifdef DRIVE_CPU
-#define CPU_STR "Drive CPU"
-#else
-#define CPU_STR "Main CPU"
-#endif
+#define CPU_STR "6809/6309 CPU"
 
 #include "traps.h"
-
-#ifndef C64DTV
-/* The C64DTV can use different shadow registers for accu read/write. */
-/* For standard 6510, this is not the case. */
-#define reg_a_write reg_a
-#define reg_a_read  reg_a
-
-/* Opcode execution time may vary on the C64DTV. */
-#define CLK_RTS 3
-#define CLK_RTI 4
-#define CLK_BRK 5
-#define CLK_ABS_I_STORE2 2
-#define CLK_STACK_PUSH 1
-#define CLK_STACK_PULL 2
-#define CLK_ABS_RMW2 3
-#define CLK_ABS_I_RMW2 3
-#define CLK_ZERO_I_STORE 2
-#define CLK_ZERO_I2 2
-#define CLK_ZERO_RMW 3
-#define CLK_ZERO_I_RMW 4
-#define CLK_IND_X_RMW 3
-#define CLK_IND_Y_RMW1 1
-#define CLK_IND_Y_RMW2 3
-#define CLK_BRANCH2 1
-#define CLK_INT_CYCLE 1
-#define CLK_JSR_INT_CYCLE 1
-#define CLK_IND_Y_W 2
-#define CLK_NOOP_ZERO_X 2
-
-#define IRQ_CYCLES      7
-#define NMI_CYCLES      7
-#endif
-#define RESET_CYCLES    6
-
-/* ------------------------------------------------------------------------- */
-/* Backup for non-6509 CPUs.  */
-
-#ifndef LOAD_IND
-#define LOAD_IND(a)     LOAD(a)
-#endif
-#ifndef STORE_IND
-#define STORE_IND(a,b)  STORE(a,b)
-#endif
-
-/* ------------------------------------------------------------------------- */
-/* Backup for non-variable cycle CPUs.  */
 
 #ifndef CLK_ADD
 #define CLK_ADD(clock, amount) clock += amount
@@ -101,75 +51,99 @@
 
 /* ------------------------------------------------------------------------- */
 
-#define LOCAL_SET_NZ(val)        (flag_z = flag_n = (val))
+/* 6809/6309 reg_p -> EFHINZVC
+ *
+ * E = Entire flag, all registers have been saved to the stack
+ * F = Fast IRQ flag
+ * H = Half carry flag
+ * I = IRQ flag
+ * N = Negative flag
+ * Z = Zero flag
+ * V = oVerflow flag
+ * C = Carry flag
+ */
 
-#if defined DRIVE_CPU
-#define LOCAL_SET_OVERFLOW(val)               \
-    do {                                      \
-        if (!(val))                           \
-            drivecpu_byte_ready_egde_clear(); \
-        if (val)                              \
-            reg_p |= P_OVERFLOW;              \
-        else                                  \
-            reg_p &= ~P_OVERFLOW;             \
-    } while (0)
-#else
-#define LOCAL_SET_OVERFLOW(val)   \
-    do {                          \
-        if (val)                  \
-            reg_p |= P_OVERFLOW;  \
-        else                      \
-            reg_p &= ~P_OVERFLOW; \
-    } while (0)
-#endif
+#define LOCAL_SET_ENTIRE(val) \
+  do {                        \
+      if (val) {              \
+          reg_p |= P_ENTIRE;  \
+      } else {                \
+          reg_p &= ~P_ENTIRE; \
+      }                       \
+  } while (0)
 
-#define LOCAL_SET_BREAK(val)   \
-    do {                       \
-        if (val)               \
-            reg_p |= P_BREAK;  \
-        else                   \
-            reg_p &= ~P_BREAK; \
-    } while (0)
+#define LOCAL_SET_FIRQ(val) \
+  do {                      \
+      if (val) {            \
+          reg_p |= P_FIRQ;  \
+      } else {              \
+          reg_p &= ~P_FIRQ; \
+      }                     \
+  } while (0)
 
-#define LOCAL_SET_DECIMAL(val)   \
-    do {                         \
-        if (val)                 \
-            reg_p |= P_DECIMAL;  \
-        else                     \
-            reg_p &= ~P_DECIMAL; \
-    } while (0)
+#define LOCAL_SET_HALF_CARRY(val) \
+  do {                            \
+      if (val) {                  \
+          reg_p |= P_HALF_CARRY;  \
+      } else {                    \
+          reg_p &= ~P_HALF_CARRY; \
+      }                           \
+  } while (0)
 
-#define LOCAL_SET_INTERRUPT(val)   \
-    do {                           \
-        if (val)                   \
-            reg_p |= P_INTERRUPT;  \
-        else                       \
-            reg_p &= ~P_INTERRUPT; \
-    } while (0)
+#define LOCAL_SET_IRQ(val) \
+  do {                     \
+      if (val) {           \
+          reg_p |= P_IRQ;  \
+      } else {             \
+          reg_p &= ~P_IRQ; \
+      }                    \
+  } while (0)
 
-#define LOCAL_SET_CARRY(val)   \
-    do {                       \
-        if (val)               \
-            reg_p |= P_CARRY;  \
-        else                   \
-            reg_p &= ~P_CARRY; \
-    } while (0)
+#define LOCAL_SET_NEGATIVE(val) \
+  do {                          \
+      if (val) {                \
+          reg_p |= P_NEGATIVE;  \
+      } else {                  \
+          reg_p &= ~P_NEGATIVE; \
+      }                         \
+  } while (0)
 
-#define LOCAL_SET_SIGN(val)      (flag_n = (val) ? 0x80 : 0)
-#define LOCAL_SET_ZERO(val)      (flag_z = !(val))
-#define LOCAL_SET_STATUS(val)    (reg_p = ((val) & ~(P_ZERO | P_SIGN)), \
-                                  LOCAL_SET_ZERO((val) & P_ZERO),       \
-                                  flag_n = (val))
+#define LOCAL_SET_ZERO(val) \
+  do {                      \
+      if (val) {            \
+          reg_p |= P_ZERO;  \
+      } else {              \
+          reg_p &= ~P_ZERO; \
+      }                     \
+  } while (0)
 
-#define LOCAL_OVERFLOW()         (reg_p & P_OVERFLOW)
-#define LOCAL_BREAK()            (reg_p & P_BREAK)
-#define LOCAL_DECIMAL()          (reg_p & P_DECIMAL)
-#define LOCAL_INTERRUPT()        (reg_p & P_INTERRUPT)
-#define LOCAL_CARRY()            (reg_p & P_CARRY)
-#define LOCAL_SIGN()             (flag_n & 0x80)
-#define LOCAL_ZERO()             (!flag_z)
-#define LOCAL_STATUS()           (reg_p | (flag_n & 0x80) | P_UNUSED    \
-                                  | (LOCAL_ZERO() ? P_ZERO : 0))
+#define LOCAL_SET_OVERFLOW(val) \
+  do {                          \
+      if (val) {                \
+          reg_p |= P_OVERFLOW;  \
+      } else {                  \
+          reg_p &= ~P_OVERFLOW; \
+      }                         \
+  } while (0)
+
+#define LOCAL_SET_CARRY(val) \
+  do {                       \
+      if (val) {             \
+          reg_p |= P_CARRY;  \
+      } else {               \
+          reg_p &= ~P_CARRY; \
+      }                      \
+  } while (0)
+
+#define LOCAL_ENTIRE()       (reg_p & P_ENTIRE)
+#define LOCAL_FIRQ()         (reg_p & P_FIRQ)
+#define LOCAL_HALF_CARRY()   (reg_p & P_HALF_CARRY)
+#define LOCAL_IRQ()          (reg_p & P_IRQ)
+#define LOCAL_NEGATIVE()     (reg_p & P_NEGATIVE)
+#define LOCAL_ZERO()         (reg_p & P_ZERO)
+#define LOCAL_OVERFLOW()     (reg_p & P_OVERFLOW)
+#define LOCAL_CARRY()        (reg_p & P_CARRY)
+
 
 #ifdef LAST_OPCODE_INFO
 
