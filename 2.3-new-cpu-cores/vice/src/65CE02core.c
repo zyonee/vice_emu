@@ -1100,19 +1100,15 @@
       INC_PC(1);           \
   } while (0)
 
-#define RMB(addr, bit)                             \
-  do {                                             \
-      unsigned int tmp, tmp_addr;                  \
-                                                   \
-      if (cpu_type == CPU65SC02) {                 \
-          REWIND_FETCH_OPCODE(CLK, 1);             \
-          NOOP_IMM(1);                             \
-      } else {                                     \
-          tmp_addr = (addr);                       \
-          tmp = LOAD_ZERO(tmp_addr) & ~(1 << bit); \
-          INC_PC(2);                               \
-          STORE_ABS(tmp_addr, tmp, 3);             \
-      }                                            \
+#define RMB(addr, bit)                        \
+  do {                                        \
+      unsigned int tmp, tmp_addr;             \
+                                              \
+      tmp_addr = (addr);                      \
+      CLK_ADD(CLK, 1);                        \
+      tmp = LOAD_BP(tmp_addr) & ~(1 << bit);  \
+      INC_PC(2);                              \
+      STORE_BP(tmp_addr, tmp);                \
   } while (0)
 
 #define ROL(addr, clk_inc, pc_inc, load_func, store_func) \
@@ -1273,19 +1269,15 @@
       INC_PC(1);                 \
   } while (0)
 
-#define SMB(addr, bit)                            \
-  do {                                            \
-      unsigned tmp, tmp_addr;                     \
-                                                  \
-      if (cpu_type == CPU65SC02) {                \
-          REWIND_FETCH_OPCODE(CLK, 1);            \
-          NOOP_IMM(1);                            \
-      } else {                                    \
-          tmp_addr = (addr);                      \
-          tmp = LOAD_ZERO(tmp_addr) | (1 << bit); \
-          INC_PC(2);                              \
-          STORE_ABS(tmp_addr, tmp, 3);            \
-      }
+#define SMB(addr, bit)                      \
+  do {                                      \
+      unsigned tmp, tmp_addr;               \
+                                            \
+      tmp_addr = (addr);                    \
+      CLK_ADD(CLK, 1);                      \
+      tmp = LOAD_BP(tmp_addr) | (1 << bit); \
+      INC_PC(2);                            \
+      STORE_BP(tmp_addr, tmp);              \
   } while (0)
 
 #define STA(addr, pc_inc, store_func) \
