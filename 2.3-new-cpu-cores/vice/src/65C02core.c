@@ -437,20 +437,6 @@
       STORE((addr) + reg_y, (value));     \
   } while (0)
 
-#define STORE_ABS_SH_Y(addr, value, inc)                   \
-  do {                                                     \
-      unsigned int tmp2;                                   \
-                                                           \
-      CLK_ADD(CLK, (inc)-2);                               \
-      LOAD((((addr) + reg_y) & 0xff) | ((addr) & 0xff00)); \
-      CLK_ADD(CLK, 2);                                     \
-      tmp2 = (addr) + reg_y;                               \
-      if (((addr) & 0xff) + reg_y > 0xff) {                \
-          tmp2 = (tmp2 & 0xff) | ((value) << 8);           \
-      }                                                    \
-      STORE(tmp2, (value));                                \
-  } while (0)
-
 #define INC_PC(value)   (reg_pc += (value))
 
 /* ------------------------------------------------------------------------- */
