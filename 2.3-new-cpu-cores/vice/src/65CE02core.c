@@ -550,6 +550,26 @@
       CLK_ADD(CLK, 1);                       \
   } while (0)
 
+#define ASW(addr)                              \
+  do {                                         \
+      unsigned int tmp_value;                  \
+                                               \
+      CLK_ADD(CLK, 1);                         \
+      tmp_value = LOAD(addr);                  \
+      CLK_ADD(CLK, 1);                         \
+      tmp_value |= (LOAD(addr + 1) << 8);      \
+      LOCAL_SET_CARRY(tmp_value & 0x8000);     \
+      tmp_value = (tmp_value << 1) & 0xffff;   \
+      if (tmp_value) {                         \
+          LOCAL_SET_NZ((tmp_value >> 8) | 1);  \
+      } else {                                 \
+          LOCAL_SET_NZ(tmp_value >> 8);        \
+      }                                        \
+      INC_PC(3);                               \
+      STORE_ABS(tmp_addr, tmp_value & 0xff);   \
+      STORE_ABS(tmp_addr + 1, tmp_value >> 8); \
+  } while (0)
+
 #define AUG()                 \
   do {                        \
       BYTE v1, v2, v3;        \
@@ -1217,7 +1237,6 @@
   do {                                  \
       unsigned int tmp;                 \
                                         \
-      tmp_addr = (addr);                \
       CLK_ADD(CLK, 1);                  \
       tmp = LOAD(addr);                 \
       CLK_ADD(CLK, 1);                  \
@@ -1497,16 +1516,6 @@
       reg_a = reg_z;       \
       LOCAL_SET_NZ(reg_a); \
       INC_PC(1);           \
-  } while (0)
-
-#define WAI()                          \
-  do {                                 \
-      if (cpu_type == CPUWDC6502) {    \
-          WDC_WAI();                   \
-      } else {                         \
-          REWIND_FETCH_OPCODE(CLK, 2); \
-          NOOP_IMM(1);                 \
-      }                                \
   } while (0)
 
 /* ------------------------------------------------------------------------- */
@@ -2531,8 +2540,8 @@ trap_skipped:
             DEX();
             break;
 
-          case 0xcb:            /* WAI (WDC65C02) / single byte, single cycle NOP (R65C02/65SC02) */
-            WAI();
+          case 0xcb:            /* ASW $nnnn */
+            ASW(p2);
             break;
 
           case 0xcc:            /* CPY $nnnn */
