@@ -773,6 +773,11 @@
       CLK_ADD(CLK, 1);                          \
       tmp |= (LOAD_BP((addr + 1) & 0xff) << 8); \
       tmp--;                                    \
+      if (tmp) {                                \
+          LOCAL_SET_NZ((tmp >> 8) | 1);         \
+      } else {                                  \
+          LOCAL_SET_NZ(tmp >> 8);               \
+      }                                         \
       STORE_BP(addr, tmp & 0xff);               \
       STORE_BP((addr + 1) & 0xff, tmp >> 8);    \
   } while (0)
@@ -823,6 +828,24 @@
       LOCAL_SET_NZ(tmp);                         \
       INC_PC(pc_inc);                            \
       store_func(tmp_addr, tmp);                 \
+  } while (0)
+
+#define INW(addr)                               \
+  do {                                          \
+      WORD tmp;                                 \
+                                                \
+      CLK_ADD(CLK, 1);                          \
+      tmp = LOAD_BP(addr);                      \
+      CLK_ADD(CLK, 1);                          \
+      tmp |= (LOAD_BP((addr + 1) & 0xff) << 8); \
+      tmp++;                                    \
+      if (tmp) {                                \
+          LOCAL_SET_NZ((tmp >> 8) | 1);         \
+      } else {                                  \
+          LOCAL_SET_NZ(tmp >> 8);               \
+      }                                         \
+      STORE_BP(addr, tmp & 0xff);               \
+      STORE_BP((addr + 1) & 0xff, tmp >> 8);    \
   } while (0)
 
 #define INX()              \
@@ -1652,7 +1675,6 @@ trap_skipped:
 
         switch (p0) {
 
-          case 0xe3:            /* 1 byte, 1 cycle NOP */
           case 0xeb:            /* 1 byte, 1 cycle NOP */
             NOOP_IMM(1);
             break;
@@ -2564,6 +2586,10 @@ trap_skipped:
 
           case 0xe2:            /* LDA ($nn,S),Y */
             LDA(LOAD_STACK_REL_Y(p1), 4, 2);
+            break;
+
+          case 0xe3:            /* INW $nn */
+            INW(p1);
             break;
 
           case 0xe4:            /* CPX $nn */
