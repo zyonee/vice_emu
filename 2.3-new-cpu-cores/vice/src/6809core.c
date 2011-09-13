@@ -51,6 +51,56 @@
 
 /* ------------------------------------------------------------------------- */
 
+/* 6309 reg_md -> DI----FE
+ *
+ * D = Division by zero trap
+ * I = Illigal instruction trap
+ * F = Fast IRQ behaves like normal IRQ
+ * E = Execution mode (0 = 6809 emulation mode, 1 = 6309 native mode)
+ */
+
+#define LOCAL_SET_MD_D(val) \
+  do {                      \
+      if (val) {            \
+          reg_md |= MD_D;   \
+      } else {              \
+          reg_md &= ~MD_D;  \
+      }                     \
+  } while (0)
+
+#define LOCAL_SET_MD_I(val) \
+  do {                      \
+      if (val) {            \
+          reg_md |= MD_I;   \
+      } else {              \
+          reg_md &= ~MD_I;  \
+      }                     \
+  } while (0)
+
+#define LOCAL_SET_MD_F(val) \
+  do {                      \
+      if (val) {            \
+          reg_md |= MD_F;   \
+      } else {              \
+          reg_md &= ~MD_F;  \
+      }                     \
+  } while (0)
+
+#define LOCAL_SET_MD_E(val) \
+  do {                      \
+      if (val) {            \
+          reg_md |= MD_E;   \
+      } else {              \
+          reg_md &= ~MD_E;  \
+      }                     \
+  } while (0)
+
+#define LOCAL_MD_D()       (reg_md & MD_D)
+#define LOCAL_MD_I()       (reg_md & MD_I)
+#define LOCAL_MD_F()       (reg_md & MD_F)
+#define LOCAL_MD_E()       (reg_md & MD_E)
+
+
 /* 6809/6309 reg_p -> EFHINZVC
  *
  * E = Entire flag, all registers have been saved to the stack
