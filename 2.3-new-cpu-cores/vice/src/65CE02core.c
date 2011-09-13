@@ -28,9 +28,13 @@
 
 /* any CPU definition file that includes this file needs to do the following:
  *
- * - define all registers used.
- * - define reg_sp as 16bit (8bit on 6502/65(S)C02).
+ * - define reg_a as 8bit.
+ * - define reg_x as 8bit.
+ * - define reg_y as 8bit.
  * - define reg_z as 8bit.
+ * - define reg_pc as 16bit.                                                                                                        
+ * - define reg_p as 8bit
+ * - define reg_sp as 16bit (8bit on 6502/65(S)C02).
  * - define reg_bp as 8bit.
  * - define AUG_65CE02(BYTE v1, BYTE v2, BYTE v3) to handle the AUG() opcode.
  */

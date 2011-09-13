@@ -28,7 +28,12 @@
 
 /* any CPU definition file that includes this file needs to do the following:
  *
- * - define all registers used.
+ * - define reg_a as 8bit.
+ * - define reg_x as 8bit.
+ * - define reg_y as 8bit.
+ * - define reg_pc as 16bit.
+ * - define reg_sp as 8bit.
+ * - define reg_p as 8bit
  * - define the cpu being emulated in a var 'cpu_type' (CPU_WDC65C02, CPU_R65C02, CPU_65SC02).
  * - define a function to handle the WDC65C02 STP opcode (WDC_STP(void)).
  * - define a function to handle the WDC65C02 WAI opcode (WDC_WAI(void)).

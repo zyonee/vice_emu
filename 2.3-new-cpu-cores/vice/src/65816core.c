@@ -36,6 +36,8 @@
  * - define reg_dpr (Direct Page Register) as 16bit.
  * - define reg_emul (65C02 Emulation) as int.
  * - define reg_sp as 16bit (8bit on 6502/65C02).
+ * - define reg_p as 8bit.
+ * - define reg_pc as 16bit.
  * - define a function to handle the STP opcode (STP_65816(void)).
  * - define a function to handle the WAI opcode (WAI_65816(void)).
  * - define a function to handle the COP opcode (COP_65816(BYTE value)).
