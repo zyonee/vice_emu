@@ -200,6 +200,8 @@
       GLOBAL_REGS.a = reg_a;   \
       GLOBAL_REGS.x = reg_x;   \
       GLOBAL_REGS.y = reg_y;   \
+      GLOBAL_REGS.z = reg_z;   \
+      GLOBAL_REGS.bp = reg_bp; \
       GLOBAL_REGS.sp = reg_sp; \
       GLOBAL_REGS.p = reg_p;   \
       GLOBAL_REGS.n = flag_n;  \
@@ -212,6 +214,8 @@
       reg_a = GLOBAL_REGS.a;   \
       reg_x = GLOBAL_REGS.x;   \
       reg_y = GLOBAL_REGS.y;   \
+      reg_z = GLOBAL_REGS.z;   \
+      reg_bp = GLOBAL_REGS.bp; \
       reg_sp = GLOBAL_REGS.sp; \
       reg_p = GLOBAL_REGS.p;   \
       flag_n = GLOBAL_REGS.n;  \
