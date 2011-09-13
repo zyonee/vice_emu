@@ -226,29 +226,37 @@
 #endif
 
 /* Export the local version of the registers.  */
-#define EXPORT_REGISTERS()     \
-  do {                         \
-      GLOBAL_REGS.pc = reg_pc; \
-      GLOBAL_REGS.a = reg_a;   \
-      GLOBAL_REGS.x = reg_x;   \
-      GLOBAL_REGS.y = reg_y;   \
-      GLOBAL_REGS.sp = reg_sp; \
-      GLOBAL_REGS.p = reg_p;   \
-      GLOBAL_REGS.n = flag_n;  \
-      GLOBAL_REGS.z = flag_z;  \
+#define EXPORT_REGISTERS()         \
+  do {                             \
+      GLOBAL_REGS.pc = reg_pc;     \
+      GLOBAL_REGS.a = reg_a;       \
+      GLOBAL_REGS.x = reg_x;       \
+      GLOBAL_REGS.y = reg_y;       \
+      GLOBAL_REGS.emul = reg_emul; \
+      GLOBAL_REGS.dpr = reg_dpr;   \
+      GLOBAL_REGS.pbr = reg_pbr;   \
+      GLOBAL_REGS.dbr = reg_dbr;   \
+      GLOBAL_REGS.sp = reg_sp;     \
+      GLOBAL_REGS.p = reg_p;       \
+      GLOBAL_REGS.n = flag_n;      \
+      GLOBAL_REGS.z = flag_z;      \
   } while (0)
 
 /* Import the public version of the registers.  */
-#define IMPORT_REGISTERS()     \
-  do {                         \
-      reg_a = GLOBAL_REGS.a;   \
-      reg_x = GLOBAL_REGS.x;   \
-      reg_y = GLOBAL_REGS.y;   \
-      reg_sp = GLOBAL_REGS.sp; \
-      reg_p = GLOBAL_REGS.p;   \
-      flag_n = GLOBAL_REGS.n;  \
-      flag_z = GLOBAL_REGS.z;  \
-      JUMP(GLOBAL_REGS.pc);    \
+#define IMPORT_REGISTERS()         \
+  do {                             \
+      reg_a = GLOBAL_REGS.a;       \
+      reg_x = GLOBAL_REGS.x;       \
+      reg_y = GLOBAL_REGS.y;       \
+      reg_emul = GLOBAL_REGS.emul; \
+      reg_dpr = GLOBAL_REGS.dpr;   \
+      reg_pbr = GLOBAL_REGS.pbr;   \
+      reg_dbr = GLOBAL_REGS.dbr;   \
+      reg_sp = GLOBAL_REGS.sp;     \
+      reg_p = GLOBAL_REGS.p;       \
+      flag_n = GLOBAL_REGS.n;      \
+      flag_z = GLOBAL_REGS.z;      \
+      JUMP(GLOBAL_REGS.pc);        \
   } while (0)
 
 /* Stack operations. */
