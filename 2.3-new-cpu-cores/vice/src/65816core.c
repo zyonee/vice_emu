@@ -45,27 +45,6 @@
 
 #include "traps.h"
 
-#define CLK_RTS 3
-#define CLK_RTI 4
-#define CLK_BRK 5
-#define CLK_ABS_I_STORE2 2
-#define CLK_STACK_PUSH 1
-#define CLK_STACK_PULL 2
-#define CLK_ABS_RMW2 3
-#define CLK_ABS_I_RMW2 3
-#define CLK_ZERO_I_STORE 2
-#define CLK_ZERO_I2 2
-#define CLK_ZERO_RMW 3
-#define CLK_ZERO_I_RMW 4
-#define CLK_IND_X_RMW 3
-#define CLK_IND_Y_RMW1 1
-#define CLK_IND_Y_RMW2 3
-#define CLK_BRANCH2 1
-#define CLK_INT_CYCLE 1
-#define CLK_JSR_INT_CYCLE 1
-#define CLK_IND_Y_W 2
-#define CLK_NOOP_ZERO_X 2
-
 #define IRQ_CYCLES      7
 #define NMI_CYCLES      7
 #define RESET_CYCLES    6
@@ -457,12 +436,12 @@
     ((bits8)                                                              \
     ? (((((addr) & 0xff) + reg_x) > 0xff)                                 \
         ? (LOAD((reg_pbr * 0x10000) + reg_pc + 2),                        \
-            CLK_ADD(CLK, CLK_INT_CYCLE),                                  \
+            CLK_ADD(CLK, 1),                                              \
             LOAD_DBR(addr + reg_x))                                       \
         : LOAD_DBR(addr + reg_x))                                         \
     : (((((addr) & 0xff) + reg_x) > 0xff)                                 \
         ? (LOAD((reg_pbr * 0x10000) + reg_pc + 2),                        \
-            CLK_ADD(CLK, CLK_INT_CYCLE),                                  \
+            CLK_ADD(CLK, 1),                                              \
             (LOAD_DBR(addr + reg_x) | (LOAD_DBR(addr + reg_x + 1) << 8))) \
         : (CLK_ADD(CLK, 1), (LOAD_DBR(addr + reg_x) | (LOAD_DBR(addr + reg_x + 1) << 8)))))
 
@@ -470,12 +449,12 @@
     ((bits8)                                                              \
     ? (((((addr) & 0xff) + reg_y) > 0xff)                                 \
         ? (LOAD((reg_pbr * 0x10000) + reg_pc + 2),                        \
-            CLK_ADD(CLK, CLK_INT_CYCLE),                                  \
+            CLK_ADD(CLK, 1),                                              \
             LOAD_DBR(addr + reg_y))                                       \
         : LOAD_DBR(addr + reg_y))                                         \
     : (((((addr) & 0xff) + reg_y) > 0xff)                                 \
         ? (LOAD((reg_pbr * 0x10000) + reg_pc + 2),                        \
-            CLK_ADD(CLK, CLK_INT_CYCLE),                                  \
+            CLK_ADD(CLK, 1),                                              \
             (LOAD_DBR(addr + reg_y) | (LOAD_DBR(addr + reg_y + 1) << 8))) \
         : (CLK_ADD(CLK, 1), (LOAD_DBR(addr + reg_y) | (LOAD_DBR(addr + reg_y + 1) << 8)))))
 
@@ -935,10 +914,10 @@
           dest_addr = reg_pc + (signed char)(value);         \
                                                              \
           LOAD(reg_pc);                                      \
-          CLK_ADD(CLK, CLK_BRANCH2);                         \
+          CLK_ADD(CLK, 1);                                   \
           if (((reg_pc ^ dest_addr) & 0xff00) && reg_emul) { \
               LOAD((reg_pc & 0xff00) | (dest_addr & 0xff));  \
-              CLK_ADD(CLK, CLK_BRANCH2);                     \
+              CLK_ADD(CLK, 1);                               \
           } else {                                           \
               OPCODE_DELAYS_INTERRUPT();                     \
           }                                                  \
@@ -954,7 +933,7 @@
       dest_addr = reg_pc + (signed short)(value); \
                                                   \
       LOAD(reg_pc);                               \
-      CLK_ADD(CLK, CLK_BRANCH2);                  \
+      CLK_ADD(CLK, 1);                            \
       OPCODE_DELAYS_INTERRUPT();                  \
       JUMP(dest_addr & 0xffff);                   \
   } while (0)
@@ -962,7 +941,7 @@
 #define BRK()                         \
   do {                                \
       EXPORT_REGISTERS();             \
-      CLK_ADD(CLK, CLK_BRK);          \
+      CLK_ADD(CLK, 5);                \
       TRACE_BRK();                    \
       INC_PC(2);                      \
       if (reg_emul) {                 \
@@ -1241,7 +1220,7 @@
       PUSH(((reg_pc) >> 8) & 0xff);          \
       PUSH((reg_pc) & 0xff);                 \
       tmp_addr = (p1 | (LOAD(reg_pc) << 8)); \
-      CLK_ADD(CLK, CLK_JSR_INT_CYCLE);       \
+      CLK_ADD(CLK, 1);                       \
       JUMP(tmp_addr);                        \
   } while (0)
 
@@ -1271,7 +1250,7 @@
       PUSH(((reg_pc) >> 8) & 0xff);    \
       PUSH((reg_pc) & 0xff);           \
       tmp_addr = p2;                   \
-      CLK_ADD(CLK, CLK_JSR_INT_CYCLE); \
+      CLK_ADD(CLK, 1);                 \
       reg_pbr = (p3 >> 16);            \
       JUMP(tmp_addr);                  \
   } while (0)
@@ -1422,43 +1401,43 @@
       INC_PC(3);                                  \
   } while (0)
 
-#define PHA()                           \
-  do {                                  \
-      if (!LOCAL_65816_M()) {           \
-          CLK_ADD(CLK, CLK_STACK_PUSH); \
-          PUSH(reg_a >> 0xff);          \
-      }                                 \
-      CLK_ADD(CLK, CLK_STACK_PUSH);     \
-      PUSH(reg_a & 0xff);               \
-      INC_PC(1);                        \
+#define PHA()                  \
+  do {                         \
+      if (!LOCAL_65816_M()) {  \
+          CLK_ADD(CLK, 1);     \
+          PUSH(reg_a >> 0xff); \
+      }                        \
+      CLK_ADD(CLK, 1);         \
+      PUSH(reg_a & 0xff);      \
+      INC_PC(1);               \
   } while (0)
 
-#define PHB()                       \
-  do {                              \
-      CLK_ADD(CLK, CLK_STACK_PUSH); \
-      PUSH(reg_dbr);                \
-      INC_PC(1);                    \
+#define PHB()          \
+  do {                 \
+      CLK_ADD(CLK, 1); \
+      PUSH(reg_dbr);   \
+      INC_PC(1);       \
   } while (0)
 
-#define PHD()                       \
-  do {                              \
-      CLK_ADD(CLK, CLK_STACK_PUSH); \
-      PUSH(reg_dpr >> 8);           \
-      CLK_ADD(CLK, CLK_STACK_PUSH); \
-      PUSH(reg_dpr & 0xff);         \
-      INC_PC(1);                    \
+#define PHD()               \
+  do {                      \
+      CLK_ADD(CLK, 1);      \
+      PUSH(reg_dpr >> 8);   \
+      CLK_ADD(CLK, 1);      \
+      PUSH(reg_dpr & 0xff); \
+      INC_PC(1);            \
   } while (0)
 
-#define PHK()                       \
-  do {                              \
-      CLK_ADD(CLK, CLK_STACK_PUSH); \
-      PUSH(reg_pbr);                \
-      INC_PC(1);                    \
+#define PHK()          \
+  do {                 \
+      CLK_ADD(CLK, 1); \
+      PUSH(reg_pbr);   \
+      INC_PC(1);       \
   } while (0)
 
 #define PHP()                             \
   do {                                    \
-      CLK_ADD(CLK, CLK_STACK_PUSH);       \
+      CLK_ADD(CLK, 1);                    \
       if (reg_emul) {                     \
           PUSH(LOCAL_STATUS() | P_BREAK); \
       } else {                            \
@@ -1467,31 +1446,31 @@
       INC_PC(1);                          \
   } while (0)
 
-#define PHX()                           \
-  do {                                  \
-      if (!LOCAL_65816_X()) {           \
-          CLK_ADD(CLK, CLK_STACK_PUSH); \
-          PUSH(reg_x >> 8);             \
-      }                                 \
-      CLK_ADD(CLK, CLK_STACK_PUSH);     \
-      PUSH(reg_x & 0xff);               \
-      INC_PC(1);                        \
+#define PHX()                 \
+  do {                        \
+      if (!LOCAL_65816_X()) { \
+          CLK_ADD(CLK, 1);    \
+          PUSH(reg_x >> 8);   \
+      }                       \
+      CLK_ADD(CLK, 1);        \
+      PUSH(reg_x & 0xff);     \
+      INC_PC(1);              \
   } while (0)
 
-#define PHY()                           \
-  do {                                  \
-      if (!LOCAL_65816_X()) {           \
-          CLK_ADD(CLK, CLK_STACK_PUSH); \
-          PUSH(reg_y >> 8);             \
-      }                                 \
-      CLK_ADD(CLK, CLK_STACK_PUSH);     \
-      PUSH(reg_y & 0xff);               \
-      INC_PC(1);                        \
+#define PHY()                 \
+  do {                        \
+      if (!LOCAL_65816_X()) { \
+          CLK_ADD(CLK, 1);    \
+          PUSH(reg_y >> 8);   \
+      }                       \
+      CLK_ADD(CLK, 1);        \
+      PUSH(reg_y & 0xff);     \
+      INC_PC(1);              \
   } while (0)
 
 #define PLA()                                     \
   do {                                            \
-      CLK_ADD(CLK, CLK_STACK_PULL);               \
+      CLK_ADD(CLK, 2);                            \
       reg_a = (reg_a & 0xff00) | PULL();          \
       if (!LOCAL_65816_M()) {                     \
           CLK_ADD(CLK, 1);                        \
@@ -1501,22 +1480,22 @@
       INC_PC(1);                                  \
   } while (0)
 
-#define PLB()                       \
-  do {                              \
-      CLK_ADD(CLK, CLK_STACK_PULL); \
-      reg_dbr = PULL();             \
-      LOCAL_SET_NZ(reg_dbr, 1);     \
-      INC_PC(1);                    \
+#define PLB()                   \
+  do {                          \
+      CLK_ADD(CLK, 2);          \
+      reg_dbr = PULL();         \
+      LOCAL_SET_NZ(reg_dbr, 1); \
+      INC_PC(1);                \
   } while (0)
 
-#define PLD()                       \
-  do {                              \
-      CLK_ADD(CLK, CLK_STACK_PULL); \
-      reg_dpr = PULL();             \
-      CLK_ADD(CLK, 1);              \
-      reg_dpr |= (PULL() << 8);     \
-      LOCAL_SET_NZ(reg_dpr, 0);     \
-      INC_PC(1);                    \
+#define PLD()                   \
+  do {                          \
+      CLK_ADD(CLK, 2);          \
+      reg_dpr = PULL();         \
+      CLK_ADD(CLK, 1);          \
+      reg_dpr |= (PULL() << 8); \
+      LOCAL_SET_NZ(reg_dpr, 0); \
+      INC_PC(1);                \
   } while (0)
 
 #define PLP()                                               \
@@ -1528,14 +1507,14 @@
       } else if ((s & P_INTERRUPT) && !LOCAL_INTERRUPT()) { \
           OPCODE_DISABLES_IRQ();                            \
       }                                                     \
-      CLK_ADD(CLK, CLK_STACK_PULL);                         \
+      CLK_ADD(CLK, 2);                                      \
       LOCAL_SET_STATUS(s);                                  \
       INC_PC(1);                                            \
   } while (0)
 
 #define PLX()                               \
   do {                                      \
-      CLK_ADD(CLK, CLK_STACK_PULL);         \
+      CLK_ADD(CLK, 2);                      \
       reg_x = PULL();                       \
       if (!LOCAL_65816_X()) {               \
           CLK_ADD(CLK, 1);                  \
@@ -1547,7 +1526,7 @@
 
 #define PLY()                               \
   do {                                      \
-      CLK_ADD(CLK, CLK_STACK_PULL);         \
+      CLK_ADD(CLK, 2);                      \
       reg_y = PULL();                       \
       if (!LOCAL_65816_X()) {               \
           CLK_ADD(CLK, 1);                  \
@@ -1668,7 +1647,7 @@
   do {                             \
       WORD tmp;                    \
                                    \
-      CLK_ADD(CLK, CLK_RTI);       \
+      CLK_ADD(CLK, 4);             \
       tmp = (WORD)PULL();          \
       LOCAL_SET_STATUS((BYTE)tmp); \
       tmp = (WORD)PULL();          \
@@ -1680,31 +1659,31 @@
       JUMP(tmp);                   \
   } while (0)
 
-#define RTL()                      \
-  do {                             \
-      WORD tmp;                    \
-                                   \
-      CLK_ADD(CLK, CLK_RTS);       \
-      tmp = PULL();                \
-      tmp = tmp | (PULL() << 8);   \
-      LOAD(tmp);                   \
-      CLK_ADD(CLK, CLK_INT_CYCLE); \
-      tmp++;                       \
-      reg_pbr = PULL();            \
-      JUMP(tmp);                   \
+#define RTL()                    \
+  do {                           \
+      WORD tmp;                  \
+                                 \
+      CLK_ADD(CLK, 3);           \
+      tmp = PULL();              \
+      tmp = tmp | (PULL() << 8); \
+      LOAD(tmp);                 \
+      CLK_ADD(CLK, 1);           \
+      tmp++;                     \
+      reg_pbr = PULL();          \
+      JUMP(tmp);                 \
   } while (0)
 
-#define RTS()                      \
-  do {                             \
-      WORD tmp;                    \
-                                   \
-      CLK_ADD(CLK, CLK_RTS);       \
-      tmp = PULL();                \
-      tmp = tmp | (PULL() << 8);   \
-      LOAD(tmp);                   \
-      CLK_ADD(CLK, CLK_INT_CYCLE); \
-      tmp++;                       \
-      JUMP(tmp);                   \
+#define RTS()                    \
+  do {                           \
+      WORD tmp;                  \
+                                 \
+      CLK_ADD(CLK, 3);           \
+      tmp = PULL();              \
+      tmp = tmp | (PULL() << 8); \
+      LOAD(tmp);                 \
+      CLK_ADD(CLK, 1);           \
+      tmp++;                     \
+      JUMP(tmp);                 \
   } while (0)
 
 #define SBC(value, clk_inc, pc_inc)                                                            \
@@ -2327,7 +2306,7 @@ trap_skipped:
             break;
 
           case 0x15:            /* ORA $nn,X */
-            ORA(LOAD_DIRECT_PAGE_X(p1, LOCAL_65816_M()), CLK_ZERO_I2, 2);
+            ORA(LOAD_DIRECT_PAGE_X(p1, LOCAL_65816_M()), 2, 2);
             break;
 
           case 0x16:            /* ASL $nn,X */
@@ -2451,11 +2430,11 @@ trap_skipped:
             break;
 
           case 0x34:            /* BIT $nn,X */
-            BIT(LOAD_DIRECT_PAGE_X(p1, LOCAL_65816_M()), CLK_ZERO_I2, 2);
+            BIT(LOAD_DIRECT_PAGE_X(p1, LOCAL_65816_M()), 2, 2);
             break;
 
           case 0x35:            /* AND $nn,X */
-            AND(LOAD_DIRECT_PAGE_X(p1, LOCAL_65816_M()), CLK_ZERO_I2, 2);
+            AND(LOAD_DIRECT_PAGE_X(p1, LOCAL_65816_M()), 2, 2);
             break;
 
           case 0x36:            /* ROL $nn,X */
@@ -2579,7 +2558,7 @@ trap_skipped:
             break;
 
           case 0x55:            /* EOR $nn,X */
-            EOR(LOAD_DIRECT_PAGE_X(p1, LOCAL_65816_M()), CLK_ZERO_I2, 2);
+            EOR(LOAD_DIRECT_PAGE_X(p1, LOCAL_65816_M()), 2, 2);
             break;
 
           case 0x56:            /* LSR $nn,X */
@@ -2707,7 +2686,7 @@ trap_skipped:
             break;
 
           case 0x75:            /* ADC $nn,X */
-            ADC(LOAD_DIRECT_PAGE_X(p1, LOCAL_65816_M()), CLK_ZERO_I2, 2);
+            ADC(LOAD_DIRECT_PAGE_X(p1, LOCAL_65816_M()), 2, 2);
             break;
 
           case 0x76:            /* ROR $nn,X */
@@ -2959,15 +2938,15 @@ trap_skipped:
             break;
 
           case 0xb4:            /* LDY $nn,X */
-            LDY(LOAD_DIRECT_PAGE_X(p1, LOCAL_65816_X()), CLK_ZERO_I2, 2);
+            LDY(LOAD_DIRECT_PAGE_X(p1, LOCAL_65816_X()), 2, 2);
             break;
 
           case 0xb5:            /* LDA $nn,X */
-            LDA(LOAD_DIRECT_PAGE_X(p1, LOCAL_65816_M()), CLK_ZERO_I2, 2);
+            LDA(LOAD_DIRECT_PAGE_X(p1, LOCAL_65816_M()), 2, 2);
             break;
 
           case 0xb6:            /* LDX $nn,Y */
-            LDX(LOAD_DIRECT_PAGE_Y(p1, LOCAL_65816_X()), CLK_ZERO_I2, 2);
+            LDX(LOAD_DIRECT_PAGE_Y(p1, LOCAL_65816_X()), 2, 2);
             break;
 
           case 0xb7:            /* LDA [$nn],Y */
@@ -3091,7 +3070,7 @@ trap_skipped:
             break;
 
           case 0xd5:            /* CMP $nn,X */
-            CMP(LOAD_DIRECT_PAGE_X(p1, LOCAL_65816_M()), CLK_ZERO_I2, 2);
+            CMP(LOAD_DIRECT_PAGE_X(p1, LOCAL_65816_M()), 2, 2);
             break;
 
           case 0xd6:            /* DEC $nn,X */
@@ -3219,7 +3198,7 @@ trap_skipped:
             break;
 
           case 0xf5:            /* SBC $nn,X */
-            SBC(LOAD_DIRECT_PAGE_X(p1), CLK_ZERO_I2, 2);
+            SBC(LOAD_DIRECT_PAGE_X(p1), 2, 2);
             break;
 
           case 0xf6:            /* INC $nn,X */
