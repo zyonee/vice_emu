@@ -294,23 +294,17 @@
 
 /* Stack operations. */
 
-#ifndef PUSH
-#define PUSH(val) ((PAGE_ONE)[(reg_sp--)] = ((BYTE)(val)))
+#ifndef PUSHS
+#define PUSHS(val) STORE(reg_ssp--, (BYTE)(val))
 #endif
-#ifndef PULL
-#define PULL()    ((PAGE_ONE)[(++reg_sp)])
+#ifndef PUSHU
+#define PUSHU(val) STORE(reg_usp--, (BYTE)(val))
 #endif
-
-#ifdef DEBUG
-#define TRACE_NMI() \
-    do { if (TRACEFLG) debug_nmi(CPU_INT_STATUS, CLK); } while (0)
-#define TRACE_IRQ() \
-    do { if (TRACEFLG) debug_irq(CPU_INT_STATUS, CLK); } while (0)
-#define TRACE_BRK() do { if (TRACEFLG) debug_text("*** BRK"); } while (0)
-#else
-#define TRACE_NMI()
-#define TRACE_IRQ()
-#define TRACE_BRK()
+#ifndef PULLS
+#define PULLS()    LOAD(++reg_ssp)
+#endif
+#ifndef PULLU
+#define PULLU()    LOAD(++reg_usp)
 #endif
 
 /* Perform the interrupts in `int_kind'.  If we have both NMI and IRQ,
