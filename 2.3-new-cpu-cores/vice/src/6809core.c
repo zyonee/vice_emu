@@ -24,6 +24,27 @@
  *
  */
 
+/* any CPU definition file that includes this file needs to do the following:
+ *
+ * - define reg_a as 8bit (6809/6309).
+ * - define reg_b as 8bit (6809/6309).
+ * - define reg_e as 8bit (6309).
+ * - define reg_f as 8bit (6309).
+ * - define reg_x as 16bit (6809/6309).
+ * - define reg_y as 16bit (6809/6309).
+ * - define reg_v as 16bit (6309).
+ * - define reg_usp (User Stack Pointer) as 16bit (6809/6309).
+ * - define reg_ssp (System Stack Pointer) as 16bit (6809/6309).
+ * - define reg_dpr (Direct Page Register) as 8bit (6809/6309).
+ *
+ * Notes:
+ * reg_d is reg_a and reg_b combined (6809/6309).
+ * reg_w is reg_e and reg_f combined (6309).
+ * reg_q is reg_d and reg_w combined (6309).
+ * reg_z is always 0 (6309).
+ */
+
+
 /* This file is currently no included by any CPU definition files */
 
 #define CPU_STR "6809/6309 CPU"
@@ -235,99 +256,41 @@
 #error "please define LAST_OPCODE_ADDR"
 #endif
 
-#ifndef DRIVE_CPU
-
-#ifndef C64DTV
 /* Export the local version of the registers.  */
-#define EXPORT_REGISTERS()        \
-  do {                            \
-      GLOBAL_REGS.pc = reg_pc;    \
-      GLOBAL_REGS.a = reg_a_read; \
-      GLOBAL_REGS.x = reg_x;      \
-      GLOBAL_REGS.y = reg_y;      \
-      GLOBAL_REGS.sp = reg_sp;    \
-      GLOBAL_REGS.p = reg_p;      \
-      GLOBAL_REGS.n = flag_n;     \
-      GLOBAL_REGS.z = flag_z;     \
+#define EXPORT_REGISTERS()       \
+  do {                           \
+      GLOBAL_REGS.pc = reg_pc;   \
+      GLOBAL_REGS.a = reg_a;     \
+      GLOBAL_REGS.b = reg_b;     \
+      GLOBAL_REGS.e = reg_e;     \
+      GLOBAL_REGS.f = reg_f;     \
+      GLOBAL_REGS.x = reg_x;     \
+      GLOVAL_REGS.y = reg_y;     \
+      GLOBAL_REGS.p = reg_p;     \
+      GLOBAL_REGS.md = reg_md;   \
+      GLOBAL_REGS.v = reg_v;     \
+      GLOBAL_REGS.ssp = reg_ssp; \
+      GLOBAL_REGS.usp = reg_usp; \
+      GLOBAL_REGS.dpr = reg_dpr; \
   } while (0)
 
 /* Import the public version of the registers.  */
-#define IMPORT_REGISTERS()                    \
-  do {                                        \
-      reg_a_write /*TODO*/= GLOBAL_REGS.a;    \
-      reg_x = GLOBAL_REGS.x;                  \
-      reg_y = GLOBAL_REGS.y;                  \
-      reg_sp = GLOBAL_REGS.sp;                \
-      reg_p = GLOBAL_REGS.p;                  \
-      flag_n = GLOBAL_REGS.n;                 \
-      flag_z = GLOBAL_REGS.z;                 \
-      JUMP(GLOBAL_REGS.pc);                   \
+#define IMPORT_REGISTERS()       \
+  do {                           \
+      reg_a = GLOBAL_REGS.a;     \
+      reg_b = GLOBAL_REGS.b;     \
+      reg_e = GLOBAL_REGS.e;     \
+      reg_f = GLOBAL_REGS.f;     \
+      reg_x = GLOBAL_REGS.x;     \
+      reg_y = GLOBAL_REGS.y;     \
+      reg_p = GLOBAL_REGS.p;     \
+      reg_md = GLOBAL_REGS.md;   \
+      reg_v = GLOBAL_REGS.v;     \
+      reg_ssp = GLOBAL_REGS.ssp; \
+      reg_usp = GLOBAL_REGS.usp; \
+      reg_dpr = GLOBAL_REGS.dpr; \
+      JUMP(GLOBAL_REGS.pc);      \
   } while (0)
-#else  /* C64DTV */
-
-/* Export the local version of the registers.  */
-#define EXPORT_REGISTERS()                                         \
-  do {                                                             \
-      GLOBAL_REGS.pc = reg_pc;                                     \
-      GLOBAL_REGS.a = dtv_registers[0];                            \
-      GLOBAL_REGS.x = dtv_registers[2];                            \
-      GLOBAL_REGS.y = dtv_registers[1];                            \
-      GLOBAL_REGS.sp = reg_sp;                                     \
-      GLOBAL_REGS.p = reg_p;                                       \
-      GLOBAL_REGS.n = flag_n;                                      \
-      GLOBAL_REGS.z = flag_z;                                      \
-      GLOBAL_REGS.r3 = dtv_registers[3];                           \
-      GLOBAL_REGS.r4 = dtv_registers[4];                           \
-      GLOBAL_REGS.r5 = dtv_registers[5];                           \
-      GLOBAL_REGS.r6 = dtv_registers[6];                           \
-      GLOBAL_REGS.r7 = dtv_registers[7];                           \
-      GLOBAL_REGS.r8 = dtv_registers[8];                           \
-      GLOBAL_REGS.r9 = dtv_registers[9];                           \
-      GLOBAL_REGS.r10 = dtv_registers[10];                         \
-      GLOBAL_REGS.r11 = dtv_registers[11];                         \
-      GLOBAL_REGS.r12 = dtv_registers[12];                         \
-      GLOBAL_REGS.r13 = dtv_registers[13];                         \
-      GLOBAL_REGS.r14 = dtv_registers[14];                         \
-      GLOBAL_REGS.r15 = dtv_registers[15];                         \
-      GLOBAL_REGS.acm = (reg_a_write_idx << 4) | (reg_a_read_idx); \
-      GLOBAL_REGS.yxm = (reg_y_idx << 4) | (reg_x_idx);            \
-  } while (0)
-
-/* Import the public version of the registers.  */
-#define IMPORT_REGISTERS()                    \
-  do {                                        \
-      dtv_registers[0] = GLOBAL_REGS.a;       \
-      dtv_registers[2] = GLOBAL_REGS.x;       \
-      dtv_registers[1] = GLOBAL_REGS.y;       \
-      reg_sp = GLOBAL_REGS.sp;                \
-      reg_p = GLOBAL_REGS.p;                  \
-      flag_n = GLOBAL_REGS.n;                 \
-      flag_z = GLOBAL_REGS.z;                 \
-      dtv_registers[3] = GLOBAL_REGS.r3;      \
-      dtv_registers[4] = GLOBAL_REGS.r4;      \
-      dtv_registers[5] = GLOBAL_REGS.r5;      \
-      dtv_registers[6] = GLOBAL_REGS.r6;      \
-      dtv_registers[7] = GLOBAL_REGS.r7;      \
-      dtv_registers[8] = GLOBAL_REGS.r8;      \
-      dtv_registers[9] = GLOBAL_REGS.r9;      \
-      dtv_registers[10] = GLOBAL_REGS.r10;    \
-      dtv_registers[11] = GLOBAL_REGS.r11;    \
-      dtv_registers[12] = GLOBAL_REGS.r12;    \
-      dtv_registers[13] = GLOBAL_REGS.r13;    \
-      dtv_registers[14] = GLOBAL_REGS.r14;    \
-      dtv_registers[15] = GLOBAL_REGS.r15;    \
-      reg_a_write_idx = GLOBAL_REGS.acm >> 4; \
-      reg_a_read_idx = GLOBAL_REGS.acm & 0xf; \
-      reg_y_idx = GLOBAL_REGS.yxm >> 4;       \
-      reg_x_idx = GLOBAL_REGS.yxm & 0xf;      \
-      JUMP(GLOBAL_REGS.pc);                   \
-  } while (0)
-
-#endif /* C64DTV */
-#else  /* DRIVE_CPU */
-#define IMPORT_REGISTERS()
-#define EXPORT_REGISTERS()
-#endif /* !DRIVE_CPU */
 
 /* Stack operations. */
 
