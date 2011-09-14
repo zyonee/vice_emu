@@ -402,139 +402,238 @@
 
 /* ------------------------------------------------------------------------- */
 
-/* Addressing modes.  For convenience, page boundary crossing cycles and
-   ``idle'' memory reads are handled here as well. */
-
-#define LOAD_ABS(addr) \
-   LOAD(addr)
-
-#define LOAD_ABS_X(addr)                                    \
-   ((((addr) & 0xff) + reg_x) > 0xff                        \
-    ? (LOAD(((addr) & 0xff00) | (((addr) + reg_x) & 0xff)), \
-       CLK_ADD(CLK, CLK_INT_CYCLE),                         \
-       LOAD((addr) + reg_x))                                \
-    : LOAD((addr) + reg_x))
-
-#define LOAD_ABS_X_RMW(addr)                             \
-   (LOAD(((addr) & 0xff00) | (((addr) + reg_x) & 0xff)), \
-    CLK_ADD(CLK, CLK_INT_CYCLE),                         \
-    LOAD((addr) + reg_x))
-
-#define LOAD_ABS_Y(addr)                                    \
-   ((((addr) & 0xff) + reg_y) > 0xff                        \
-    ? (LOAD(((addr) & 0xff00) | (((addr) + reg_y) & 0xff)), \
-       CLK_ADD(CLK, CLK_INT_CYCLE),                         \
-       LOAD((addr) + reg_y))                                \
-    : LOAD((addr) + reg_y))
-
-#define LOAD_ABS_Y_RMW(addr)                             \
-   (LOAD(((addr) & 0xff00) | (((addr) + reg_y) & 0xff)), \
-    CLK_ADD(CLK, CLK_INT_CYCLE),                         \
-    LOAD((addr) + reg_y))
-
-#define LOAD_IND_X(addr) \
-   (CLK_ADD(CLK, 3), LOAD(LOAD_ZERO_ADDR((addr) + reg_x)))
-
-#define LOAD_IND_Y(addr)                                              \
-   (CLK_ADD(CLK, 2), ((LOAD_ZERO_ADDR((addr)) & 0xff) + reg_y) > 0xff \
-    ? (LOAD((LOAD_ZERO_ADDR((addr)) & 0xff00)                         \
-            | ((LOAD_ZERO_ADDR((addr)) + reg_y) & 0xff)),             \
-       CLK_ADD(CLK, CLK_INT_CYCLE),                                   \
-       LOAD(LOAD_ZERO_ADDR((addr)) + reg_y))                          \
-    : LOAD(LOAD_ZERO_ADDR((addr)) + reg_y))
-
-#define LOAD_ZERO_X(addr) \
-   (LOAD_ZERO((addr) + reg_x))
-
-#define LOAD_ZERO_Y(addr) \
-   (LOAD_ZERO((addr) + reg_y))
-
-#define LOAD_IND_Y_BANK(addr)                                         \
-   (CLK_ADD(CLK, 2), ((LOAD_ZERO_ADDR((addr)) & 0xff) + reg_y) > 0xff \
-    ? (LOAD_IND((LOAD_ZERO_ADDR((addr)) & 0xff00)                     \
-            | ((LOAD_ZERO_ADDR((addr)) + reg_y) & 0xff)),             \
-       CLK_ADD(CLK, CLK_INT_CYCLE),                                   \
-       LOAD_IND(LOAD_ZERO_ADDR((addr)) + reg_y))                      \
-    : LOAD_IND(LOAD_ZERO_ADDR((addr)) + reg_y))
-
-#define STORE_ABS(addr, value, inc) \
-  do {                              \
-      CLK_ADD(CLK, (inc));          \
-      STORE((addr), (value));       \
-  } while (0)
-
-#define STORE_ABS_X(addr, value, inc)                      \
-  do {                                                     \
-      CLK_ADD(CLK, (inc)-2);                               \
-      LOAD((((addr) + reg_x) & 0xff) | ((addr) & 0xff00)); \
-      CLK_ADD(CLK, 2);                                     \
-      STORE((addr) + reg_x, (value));                      \
-  } while (0)
-
-#define STORE_ABS_X_RMW(addr, value, inc) \
-  do {                                    \
-      CLK_ADD(CLK, (inc));                \
-      STORE((addr) + reg_x, (value));     \
-  } while (0)                             \
-
-#define STORE_ABS_SH_X(addr, value, inc)                   \
-  do {                                                     \
-      unsigned int tmp2;                                   \
-                                                           \
-      CLK_ADD(CLK, (inc)-2);                               \
-      LOAD((((addr) + reg_x) & 0xff) | ((addr) & 0xff00)); \
-      CLK_ADD(CLK, 2);                                     \
-      tmp2 = (addr) + reg_x;                               \
-      if (((addr) & 0xff) + reg_x > 0xff) {                \
-          tmp2 = (tmp2 & 0xff) | ((value) << 8);           \
-      }                                                    \
-      STORE(tmp2, (value));                                \
-  } while (0)
-
-#define STORE_ABS_Y(addr, value, inc)                      \
-  do {                                                     \
-      CLK_ADD(CLK, (inc)-2);                               \
-      LOAD((((addr) + reg_y) & 0xff) | ((addr) & 0xff00)); \
-      CLK_ADD(CLK, 2);                                     \
-      STORE((addr) + reg_y, (value));                      \
-  } while (0)
-
-#define STORE_ABS_Y_RMW(addr, value, inc) \
-  do {                                    \
-      CLK_ADD(CLK, (inc));                \
-      STORE((addr) + reg_y, (value));     \
-  } while (0)
-
-#define STORE_ABS_SH_Y(addr, value, inc)                   \
-  do {                                                     \
-      unsigned int tmp2;                                   \
-                                                           \
-      CLK_ADD(CLK, (inc)-2);                               \
-      LOAD((((addr) + reg_y) & 0xff) | ((addr) & 0xff00)); \
-      CLK_ADD(CLK, 2);                                     \
-      tmp2 = (addr) + reg_y;                               \
-      if (((addr) & 0xff) + reg_y > 0xff) {                \
-          tmp2 = (tmp2 & 0xff) | ((value) << 8);           \
-      }                                                    \
-      STORE(tmp2, (value));                                \
-  } while (0)
+/* Addressing modes.  Memory reads are handled here as well. */
 
 #define INC_PC(value)   (reg_pc += (value))
+
+#define PB_REG2VAR(pb, var)       \
+  do {                            \
+      switch ((pb & 0x60) >> 5) { \
+          case 0:                 \
+          default:                \
+              var = reg_x;        \
+              break;              \
+          case 1:                 \
+              var = reg_y;        \
+              break;              \
+          case 2:                 \
+              var = reg_usp;      \
+              break;              \
+          case 3:                 \
+              var = reg_ssp;      \
+              break;              \
+      }                           \
+  } while (0)
+
+#define PB_REGADD(pb, amount)     \
+  do {                            \
+      switch ((pb & 0x60) >> 5) { \
+          case 0:                 \
+          default:                \
+              reg_x += amount;    \
+              break;              \
+          case 1:                 \
+              reg_y += amount;    \
+              break;              \
+          case 2:                 \
+              reg_usp += amount;  \
+              break;              \
+          case 3:                 \
+              reg_ssp += amount;  \
+              break;              \
+      }                           \
+  } while (0)
+
+/* ------------------------------------------------------------------------- */
+
+#define LOAD_ABS(addr) \
+   (CLK_ADD(CLK, 1), LOAD(addr))
+
+/* instead of doing this one as a macro I'm doing this one as a function, less bloating */
+static WORD GET_IND_MA(void)
+{
+    WORD ma = 0;
+
+    if (!(p1 & 0x80)) {
+        /* n,R (5bit offset) */
+        PB_REG2VAR(p1, ma);
+        ma += (p1 & 0x1f);
+    } else {
+        PC_INC(1);       /* postbyte fetch */
+        PB_REG2VAR(p1, ma);
+        switch (p1 & 0x1f) {
+            case 0:      /* ,R+ */
+                PB_REGADD(p1, 1);
+                break;
+            case 1:      /* ,R++ */
+                PB_REGADD(p1, 2);
+                break;
+            case 2:      /* ,R- */
+                PB_REGADD(p1, -1);
+                break;
+            case 3:      /* ,R-- */
+                PB_REGADD(p1, -2);
+                break;
+            case 4:      /* ,R */
+                break;
+            case 5:      /* B,R */
+                ma += (signed char)reg_b;
+                break;
+            case 6:      /* A,R */
+                ma += (signed char)reg_a;
+                break;
+            case 7:      /* E,R */   /* FIXME: fix for 6809, 6309 only mode */
+                ma += (signed char)reg_e;
+                break;
+            case 8:      /* n,R (8bit offset) */
+                ma += p2;
+                PC_INC(1);
+                break;
+            case 9:      /* n,R (16bit offset) */
+                ma += ((p2 << 8) | p3);
+                PC_INC(2);
+                break;
+            case 10:     /* F,R */   /* FIXME: fix for 6809, 6309 only mode */
+                ma += (signed char)reg_f;
+                break;
+            case 11:     /* D,R */
+                ma += (signed short)((reg_a << 8) | reg_b);
+                break;
+            case 12:     /* n,PC (8bit offset) */   /* FIXME: check if pc offset is correct */
+                PC_INC(1);
+                ma = reg_pc + (signed char)p2;
+                break;
+            case 13:     /* n,PC (16bit offset) */   /* FIXME: check of pc offset is correct */
+                PC_INC(2);
+                ma = reg_pc + (signed short)((p2 << 8) | p3);
+                break;
+            case 14:     /* W,R */   /* FIXME: fix for 6809, 6309 only mode */
+                ma += (signed short)((reg_e << 8) | reg_f);
+                break;
+            case 15:   /* FIXME: fix for 6809, 6309 only modes */
+                switch ((p1 & 0x60) >> 5) {
+                    case 0:     /* ,W */
+                        ma = (reg_e << 8) | reg_f;
+                        break;
+                    case 1:     /* n,W (16bit offset) */
+                        ma = ((reg_e << 8) | reg_f) + (signed short)((p2 << 8) | p3);
+                        PC_INC(2);
+                        break;
+                    case 2:     /* ,W++ */
+                        ma = (reg_e << 8) | reg_f;
+                        if (reg_f == 0xfe || reg_f == 0xff) {
+                            reg_e++;
+                        }
+                        reg_f += 2;
+                        break;
+                    case 3:     /* ,W-- */
+                        ma = (reg_e << 8) | reg_f;
+                        if (reg_f == 1 || reg_f == 0) {
+                            reg_e--;
+                        }
+                        reg_f -= 2;
+                        break;
+                }
+                break;
+            case 16:     /* FIXME: fix for 6809, 6309 only modes */
+                switch ((p1 & 0x60) >> 5) {
+                    case 0:     /* [,W] */
+                        ma = LOAD((reg_e << 8) | reg_f) << 8;
+                        ma |= LOAD(((reg_e << 8) | reg_f) + 1);
+                        break;
+                    case 1:     /* [n,W] (16bit offset) */
+                        ma = LOAD(((reg_e << 8) | reg_f) + (signed short)((p2 << 8) | p3)) << 8;
+                        ma |= LOAD(((reg_e << 8) | reg_f) + 1 + (signed short)((p2 << 8) | p3));
+                        PC_INC(2);
+                        break;
+                    case 2:     /* [,W++] */
+                        ma = LOAD((reg_e << 8) | reg_f) << 8;
+                        ma |= LOAD(((reg_e << 8) | reg_f) + 1);
+                        if (reg_f == 0xfe || reg_f == 0xff) {
+                            reg_e++;
+                        }
+                        reg_f += 2;
+                        break;
+                    case 3:     /* [,W--] */
+                        ma = LOAD((reg_e << 8) | reg_f) << 8;
+                        ma |= LOAD(((reg_e << 8) | reg_f) + 1);
+                        if (reg_f == 1 || reg_f == 0) {
+                            reg_e--;
+                        }
+                        reg_f -= 2;
+                        break;
+                }
+                break;
+            case 17:     /* [,R++] */
+                ma = (LOAD(ma) << 8) | LOAD(ma + 1);
+                PB_REGADD(p1, 2);
+                break;
+            case 18:     /* FIXME: unknown */
+                break;
+            case 19:     /* [,R--] */
+                ma = (LOAD(ma) << 8) | LOAD(ma + 1);
+                PB_REGADD(p1, -2);
+                break;
+            case 20:     /* [,R] */
+                ma = (LOAD(ma) << 8) | LOAD(ma + 1);
+                break;
+            case 21:     /* [B,R] */
+                ma += (signed char)reg_b;
+                ma = (LOAD(ma) << 8) | LOAD(ma + 1);
+                break;
+            case 22:     /* [A,R] */
+                ma += (signed char)reg_a;
+                ma = (LOAD(ma) << 8) | LOAD(ma + 1);
+                break;
+            case 23:     /* [E,R] */   /* FIXME: fix for 6809, 6309 only mode */
+                ma += (signed char)reg_e;
+                ma = (LOAD(ma) << 8) | LOAD(ma + 1);
+                break;
+            case 24:     /* [n,R] (8bit offset) */
+                ma += p2;
+                ma = (LOAD(ma) << 8) | LOAD(ma + 1);
+                PC_INC(1);
+                break;
+            case 25:     /* [n,R] (16bit offset) */
+                ma += ((p2 << 8) | p3);
+                ma = (LOAD(ma) << 8) | LOAD(ma + 1);
+                PC_INC(2);
+                break;
+            case 26:     /* [F,R] */   /* FIXME: fix for 6809, 6309 only mode */
+                ma += (signed char)reg_f;
+                ma = (LOAD(ma) << 8) | LOAD(ma + 1);
+                break;
+            case 27:     /* [D,R] */
+                ma += (signed short)((reg_a << 8) | reg_b);
+                ma = (LOAD(ma) << 8) | LOAD(ma + 1);
+                break;
+            case 28:     /* [n,PC] (8bit offset) */   /* FIXME: check if pc offset is correct */
+                PC_INC(1);
+                ma = reg_pc + (signed char)p2;
+                ma = (LOAD(ma) << 8) | LOAD(ma + 1);
+                break;
+            case 29:     /* [n,PC] (16bit offset) */   /* FIXME: check if pc offset is correct */
+                PC_INC(2);
+                ma = reg_pc + (signed short)((p2 << 8) | p3);
+                ma = (LOAD(ma) << 8) | LOAD(ma + 1);
+                break;
+            case 30:     /* [W,R] */   /* FIXME: fix for 6809, 6309 only mode */
+                ma += (signed short)((reg_e << 8) | reg_f);
+                ma = (LOAD(ma) << 8) | LOAD(ma + 1);
+                break;
+            case 31:     /* [n] (16bit extended indirect) */
+                ma = LOAD((p2 << 8) | p3) << 8;
+                ma |= LOAD(((p2 << 8) | p3) + 1);
+                PC_INC(2);
+                break;
+        }
+    }
+    return ma;
+}
 
 /* ------------------------------------------------------------------------- */
 
 /* Opcodes.  */
-
-/*
-   A couple of caveats about PC:
-
-   - the VIC-II emulation requires PC to be incremented before the first
-     write access (this is not (very) important when writing to the zero
-     page);
-
-   - `p0', `p1' and `p2' can only be used *before* incrementing PC: some
-     machines (eg. the C128) might depend on this.
-*/
 
 #define ADC(value, clk_inc, pc_inc)                                                \
   do {                                                                             \
