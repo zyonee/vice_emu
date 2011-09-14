@@ -940,13 +940,6 @@ be found that works for both.
       RMW_FLAG = 0;                                       \
   } while (0)
 
-#define DEX()              \
-  do {                     \
-      reg_x--;             \
-      LOCAL_SET_NZ(reg_x); \
-      INC_PC(1);           \
-  } while (0)
-
 #define DEY()              \
   do {                     \
       reg_y--;             \
@@ -1181,12 +1174,16 @@ be found that works for both.
       STORE(ma, val);  \
   } while (0)
 
-#define ORA(value, clk_inc, pc_inc)               \
-  do {                                            \
-      reg_a_write = (BYTE)(reg_a_read | (value)); \
-      LOCAL_SET_NZ(reg_a_write);                  \
-      CLK_ADD(CLK, (clk_inc));                    \
-      INC_PC(pc_inc);                             \
+#define OR(RR, bits8, m)                  \
+  do {                                    \
+      RR |= m;                            \
+      LOCAL_SET_OVERFLOW(0);              \
+      LOCAL_SET_ZERO(!RR);                \
+      if (bits8) {                        \
+          LOCAL_SET_NEGATIVE(BT(RR, 7));  \
+      } else {                            \
+          LOCAL_SET_NEGATIVE(BT(RR, 15)); \
+      }                                   \
   } while (0)
 
 #define NOOP(clk_inc, pc_inc) \
@@ -1207,8 +1204,6 @@ be found that works for both.
       CLK_ADD(CLK, 1); \
       INC_PC(3);       \
   } while (0)
-
-#define NOP()  NOOP_IMM(1)
 
 #define PHA()                       \
   do {                              \
@@ -1661,38 +1656,11 @@ be found that works for both.
       INC_PC(pc_inc);                   \
   } while (0)
 
-#define TAX()                   \
-  do {                          \
-      reg_x = reg_a_read;       \
-      LOCAL_SET_NZ(reg_a_read); \
-      INC_PC(1);                \
-  } while (0)
-
 #define TAY()                   \
   do {                          \
       reg_y = reg_a_read;       \
       LOCAL_SET_NZ(reg_a_read); \
       INC_PC(1);                \
-  } while (0)
-
-#define TSX()               \
-  do {                      \
-      reg_x = reg_sp;       \
-      LOCAL_SET_NZ(reg_sp); \
-      INC_PC(1);            \
-  } while (0)
-
-#define TXA()                   \
-  do {                          \
-      reg_a_write = reg_x;      \
-      LOCAL_SET_NZ(reg_a_read); \
-      INC_PC(1);                \
-  } while (0)
-
-#define TXS()         \
-  do {                \
-      reg_sp = reg_x; \
-      INC_PC(1);      \
   } while (0)
 
 #define TYA()                   \
@@ -1898,12 +1866,13 @@ trap_skipped:
             ORA(LOAD_ABS_Y(p2), 1, 3);
             break;
 
-          case 0x1a:            /* NOOP */
+          case 0x001a:            /* ORCC immediate */
+            OR(reg_p, 1, p1);
+            break;
+
           case 0x3a:            /* NOOP */
           case 0x5a:            /* NOOP */
           case 0x7a:            /* NOOP */
-          case 0xda:            /* NOOP */
-          case 0xfa:            /* NOOP */
             NOOP_IMM(1);
             break;
 
@@ -2284,8 +2253,8 @@ trap_skipped:
             DEY();
             break;
 
-          case 0x8a:            /* TXA */
-            TXA();
+          case 0x008a:            /* ORA immediate */
+            OR(reg_a, 1, p1);
             break;
 
           case 0x8b:            /* ANE #$nn */
@@ -2344,8 +2313,8 @@ trap_skipped:
             STA(p2, 0, CLK_ABS_I_STORE2, 3, STORE_ABS_Y);
             break;
 
-          case 0x9a:            /* TXS */
-            TXS();
+          case 0x009a:            /* ORA direct */
+            OR(reg_a, 1, LOAD(p1 | (reg_dpr << 8)));
             break;
 
           case 0x9b:            /* SHS $nnnn,Y */
@@ -2412,8 +2381,8 @@ trap_skipped:
             LDA(p1, 0, 2);
             break;
 
-          case 0xaa:            /* TAX */
-            TAX();
+          case 0x00aa:            /* ORA indexed */
+            OR(reg_a, 1, LOAD(GET_IND_MA()));
             break;
 
           case 0xab:            /* LXA #$nn */
@@ -2472,8 +2441,8 @@ trap_skipped:
             LDA(LOAD_ABS_Y(p2), 1, 3);
             break;
 
-          case 0xba:            /* TSX */
-            TSX();
+          case 0x00ba:            /* ORA extended */
+            OR(reg_a, 1, LOAD((p1 << 8) | p2));
             break;
 
           case 0xbb:            /* LAS $nnnn,Y */
@@ -2532,8 +2501,8 @@ trap_skipped:
             CMP(p1, 0, 2);
             break;
 
-          case 0xca:            /* DEX */
-            DEX();
+          case 0x00ca:            /* ORB immediate */
+            OR(reg_b, 1, p1);
             break;
 
           case 0xcb:            /* SBX #$nn */
@@ -2588,6 +2557,10 @@ trap_skipped:
             CMP(LOAD_ABS_Y(p2), 1, 3);
             break;
 
+          case 0x00da:          /* ORB direct */
+            OR(reg_b, 1, LOAD(p1 | (reg_dpr << 8)));
+            break;
+
           case 0xdb:            /* DCP $nnnn,Y */
             DCP(p2, 0, CLK_ABS_I_RMW2, 3, LOAD_ABS_Y_RMW, STORE_ABS_Y_RMW);
             break;
@@ -2640,8 +2613,8 @@ trap_skipped:
             SBC(p1, 0, 2);
             break;
 
-          case 0xea:            /* NOP */
-            NOP();
+          case 0x00ea:            /* ORB indexed */
+            OR(reg_b, 1, LOAD(GET_IND_MA()));
             break;
 
           case 0xeb:            /* USBC #$nn (same as SBC) */
@@ -2696,6 +2669,10 @@ trap_skipped:
             SBC(LOAD_ABS_Y(p2), 1, 3);
             break;
 
+          case 0x00fa:          /* ORB extended */
+            OR(reg_b, 1, LOAD((p1 << 8) | p2));
+            break;
+
           case 0xfb:            /* ISB $nnnn,Y */
             ISB(p2, 0, CLK_ABS_I_RMW2, 3, LOAD_ABS_Y_RMW, STORE_ABS_Y_RMW);
             break;
@@ -2714,6 +2691,22 @@ trap_skipped:
 
           case 0x1040:          /* NEGD */   /* FIXME: fix for 6809, 6309 only opcode */
             NEG_REG(reg_d, 0);
+            break;
+
+          case 0x108a:          /* ORD immediate */   /* FIXME: fix for 6809, 6309 only opcode */
+            OR(reg_d, 0, (p1 << 8) | p2);
+            break;
+
+          case 0x109a:          /* ORD direct */   /* FIXME: fix for 6809, 6309 only opcode */
+            OR(reg_d, 0, (LOAD(p1 | (reg_dpr << 8)) << 8) | LOAD((p1 | (reg_dpr << 8)) + 1));
+            break;
+
+          case 0x10aa:          /* ORD indexed */   /* FIXME: fix for 6809, 6309 only opcode */
+            OR(reg_d, 0, (LOAD(GET_IND_MA()) << 8) | LOAD(GET_IND_MA() + 1));
+            break;
+
+          case 0x10ba:          /* ORD extended */   /* FIXME: fix for 6809, 6309 only opcode */
+            OR(reg_d, 0, (LOAD((p1 << 8) | p2) << 8) | LOAD((p1 << 8) + p2 + 1));
             break;
         }
     }
