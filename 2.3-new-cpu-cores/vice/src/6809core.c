@@ -42,8 +42,31 @@
  * reg_w is reg_e and reg_f combined (6309).
  * reg_q is reg_d and reg_w combined (6309).
  * reg_z is always 0 (6309).
+ *
+ * the way to define the a, b, d, e, f, w and q regs is:
+ * union regs {
+ *     DWORD reg_l;
+ *     WORD reg_s[2];
+ *     BYTE reg_c[4];
+ * } regs6309;
+ *
+ * #define reg_q regs6309_reg_l
+ * #ifndef WORDS_BIGENDIAN
+ * #define reg_w regs6309.reg_s[0]
+ * #define reg_d regs6309.reg_s[1]
+ * #define reg_f regs6309.reg_c[0]
+ * #define reg_e regs6309.reg_c[1]
+ * #define reg_b regs6309.reg_c[2]
+ * #define reg_a regs6309.reg_c[3]
+ * #else
+ * #define reg_w regs6309.reg_s[1]
+ * #define reg_d regs6309.reg_s[0]
+ * #define reg_f regs6309.reg_c[3]
+ * #define reg_e regs6309.reg_c[2]
+ * #define reg_b regs6309.reg_c[1]
+ * #define reg_a regs6309.reg_c[0]
+ * #endif
  */
-
 
 /* This file is currently no included by any CPU definition files */
 
@@ -497,7 +520,7 @@ static WORD GET_IND_MA(void)
                 ma += (signed char)reg_f;
                 break;
             case 11:     /* D,R */
-                ma += (signed short)((reg_a << 8) | reg_b);
+                ma += (signed short)reg_d;
                 break;
             case 12:     /* n,PC (8bit offset) */   /* FIXME: check if pc offset is correct */
                 PC_INC(1);
@@ -513,54 +536,42 @@ static WORD GET_IND_MA(void)
             case 15:   /* FIXME: fix for 6809, 6309 only modes */
                 switch ((p1 & 0x60) >> 5) {
                     case 0:     /* ,W */
-                        ma = (reg_e << 8) | reg_f;
+                        ma = reg_w;
                         break;
                     case 1:     /* n,W (16bit offset) */
-                        ma = ((reg_e << 8) | reg_f) + (signed short)((p2 << 8) | p3);
+                        ma = reg_w + (signed short)((p2 << 8) | p3);
                         PC_INC(2);
                         break;
                     case 2:     /* ,W++ */
-                        ma = (reg_e << 8) | reg_f;
-                        if (reg_f == 0xfe || reg_f == 0xff) {
-                            reg_e++;
-                        }
-                        reg_f += 2;
+                        ma = reg_w;
+                        reg_w += 2;
                         break;
                     case 3:     /* ,W-- */
-                        ma = (reg_e << 8) | reg_f;
-                        if (reg_f == 1 || reg_f == 0) {
-                            reg_e--;
-                        }
-                        reg_f -= 2;
+                        ma = reg_w;
+                        reg_w -= 2;
                         break;
                 }
                 break;
             case 16:     /* FIXME: fix for 6809, 6309 only modes */
                 switch ((p1 & 0x60) >> 5) {
                     case 0:     /* [,W] */
-                        ma = LOAD((reg_e << 8) | reg_f) << 8;
-                        ma |= LOAD(((reg_e << 8) | reg_f) + 1);
+                        ma = LOAD(reg_w) << 8;
+                        ma |= LOAD(reg_w + 1);
                         break;
                     case 1:     /* [n,W] (16bit offset) */
-                        ma = LOAD(((reg_e << 8) | reg_f) + (signed short)((p2 << 8) | p3)) << 8;
-                        ma |= LOAD(((reg_e << 8) | reg_f) + 1 + (signed short)((p2 << 8) | p3));
+                        ma = LOAD(reg_w + (signed short)((p2 << 8) | p3)) << 8;
+                        ma |= LOAD(reg_w + 1 + (signed short)((p2 << 8) | p3));
                         PC_INC(2);
                         break;
                     case 2:     /* [,W++] */
-                        ma = LOAD((reg_e << 8) | reg_f) << 8;
-                        ma |= LOAD(((reg_e << 8) | reg_f) + 1);
-                        if (reg_f == 0xfe || reg_f == 0xff) {
-                            reg_e++;
-                        }
-                        reg_f += 2;
+                        ma = LOAD(reg_w) << 8;
+                        ma |= LOAD(reg_w + 1);
+                        reg_w += 2;
                         break;
                     case 3:     /* [,W--] */
-                        ma = LOAD((reg_e << 8) | reg_f) << 8;
-                        ma |= LOAD(((reg_e << 8) | reg_f) + 1);
-                        if (reg_f == 1 || reg_f == 0) {
-                            reg_e--;
-                        }
-                        reg_f -= 2;
+                        ma = LOAD(reg_w) << 8;
+                        ma |= LOAD(reg_w + 1);
+                        reg_w -= 2;
                         break;
                 }
                 break;
@@ -604,7 +615,7 @@ static WORD GET_IND_MA(void)
                 ma = (LOAD(ma) << 8) | LOAD(ma + 1);
                 break;
             case 27:     /* [D,R] */
-                ma += (signed short)((reg_a << 8) | reg_b);
+                ma += (signed short)reg_d;
                 ma = (LOAD(ma) << 8) | LOAD(ma + 1);
                 break;
             case 28:     /* [n,PC] (8bit offset) */   /* FIXME: check if pc offset is correct */
