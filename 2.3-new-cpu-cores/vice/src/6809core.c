@@ -1146,6 +1146,13 @@ be found that works for both.
       INC_PC(pc_inc);                                                \
   } while (0)
 
+#define MUL()                        \
+  do {                               \
+      reg_d = reg_a * reg_b;         \
+      LOCAL_SET_CARRY(BT(reg_b, 7)); \
+      LOCAL_SET_ZERO(!reg_d);        \
+  } while (0)
+
 #define NEG_REG(RR, bits8)                  \
   do {                                      \
       unsigned int tmp;                     \
@@ -2021,8 +2028,8 @@ trap_skipped:
             RLA(p2, 0, CLK_ABS_I_RMW2, 3, LOAD_ABS_Y_RMW, STORE_ABS_Y_RMW);
             break;
 
-          case 0x3d:            /* AND $nnnn,X */
-            AND(LOAD_ABS_X(p2), 1, 3);
+          case 0x003d:            /* MUL */
+            MUL();
             break;
 
           case 0x3e:            /* ROL $nnnn,X */
