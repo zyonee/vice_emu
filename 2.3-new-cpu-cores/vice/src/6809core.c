@@ -644,6 +644,10 @@ static WORD GET_IND_MA(void)
 
 /* ------------------------------------------------------------------------- */
 
+#define BT(val, bit) (val & (1 < bit)) ? 1 : 0
+
+/* ------------------------------------------------------------------------- */
+
 /* Opcodes.  */
 
 #define ADC(value, clk_inc, pc_inc)                                                \
@@ -826,20 +830,6 @@ be found that works for both.
       }                                                     \
   } while (0)
 #endif
-
-#define BRK()                  \
-  do {                         \
-      EXPORT_REGISTERS();      \
-      CLK_ADD(CLK, CLK_BRK);   \
-      TRACE_BRK();             \
-      INC_PC(2);               \
-      LOCAL_SET_BREAK(1);      \
-      PUSH(reg_pc >> 8);       \
-      PUSH(reg_pc & 0xff);     \
-      PUSH(LOCAL_STATUS());    \
-      LOCAL_SET_INTERRUPT(1);  \
-      JUMP(LOAD_ADDR(0xfffe)); \
-  } while (0)
 
 #define CLC()             \
   do {                    \
@@ -1156,6 +1146,34 @@ be found that works for both.
       INC_PC(pc_inc);                                                \
   } while (0)
 
+#define NEG_REG(RR, bits8)                  \
+  do {                                      \
+      unsigned int tmp;                     \
+                                            \
+      if (bits8) {                          \
+          LOCAL_SET_OVERFLOW(RR == 0x80);   \
+          tmp = ((~RR) & 0xff) + 1;         \
+          RR = tmp & 0xff;                  \
+          LOCAL_SET_NEGATIVE(BT(RR, 7));    \
+      } else {                              \
+          LOCAL_SET_OVERFLOW(RR == 0x8000); \
+          tmp = ((~RR) & 0xffff) + 1;       \
+          RR = tmp & 0xffff;                \
+          LOCAL_SET_NEGATIVE(BT(RR, 15));   \
+      }                                     \
+      LOCAL_SET_ZERO(!RR);                  \
+      LOCAL_SET_CARRY(RR);                  \
+  } while (0)
+
+#define NEG(ma)        \
+  do {                 \
+      BYTE val;        \
+                       \
+      val = LOAD(ma);  \
+      NEG_REG(val, 1); \
+      STORE(ma, val);  \
+  } while (0)
+
 #define ORA(value, clk_inc, pc_inc)               \
   do {                                            \
       reg_a_write = (BYTE)(reg_a_read | (value)); \
@@ -1352,36 +1370,6 @@ be found that works for both.
       ADC(my_temp, 0, 0);                                            \
       STORE_ABS(my_tmp_addr, my_temp, CLK_IND_Y_RMW2);               \
       RMW_FLAG = 0;                                                  \
-  } while (0)
-
-/* RTI does must not use `OPCODE_ENABLES_IRQ()' even if the I flag changes
-   from 1 to 0 because the value of I is set 3 cycles before the end of the
-   opcode, and thus the 6510 has enough time to call the interrupt routine as
-   soon as the opcode ends, if necessary.  */
-/* FIXME: Rotate disk before executing LOCAL_SET_STATUS().  */
-#define RTI()                      \
-  do {                             \
-      WORD tmp;                    \
-                                   \
-      CLK_ADD(CLK, CLK_RTI);       \
-      tmp = (WORD)PULL();          \
-      LOCAL_SET_STATUS((BYTE)tmp); \
-      tmp = (WORD)PULL();          \
-      tmp |= (WORD)PULL() << 8;    \
-      JUMP(tmp);                   \
-  } while (0)
-
-#define RTS()                      \
-  do {                             \
-      WORD tmp;                    \
-                                   \
-      CLK_ADD(CLK, CLK_RTS);       \
-      tmp = PULL();                \
-      tmp = tmp | (PULL() << 8);   \
-      LOAD(tmp);                   \
-      CLK_ADD(CLK, CLK_INT_CYCLE); \
-      tmp++;                       \
-      JUMP(tmp);                   \
   } while (0)
 
 #define SAX(addr, clk_inc1, clk_inc2, pc_inc) \
@@ -1779,8 +1767,8 @@ be found that works for both.
 trap_skipped:
         switch ((page << 8) | p0) {
 
-          case 0x00:            /* BRK */
-            BRK();
+          case 0x0000:            /* NEG direct */
+            NEG(p1 | (reg_dpr << 8));
             break;
 
           case 0x01:            /* ORA ($nn,X) */
@@ -2045,8 +2033,8 @@ trap_skipped:
             RLA(p2, 0, CLK_ABS_I_RMW2, 3, LOAD_ABS_X_RMW, STORE_ABS_X_RMW);
             break;
 
-          case 0x40:            /* RTI */
-            RTI();
+          case 0x0040:            /* NEGA */
+            NEG_REG(reg_a, 1);
             break;
 
           case 0x41:            /* EOR ($nn,X) */
@@ -2101,12 +2089,8 @@ trap_skipped:
             SRE(p2, 0, CLK_ABS_RMW2, 3, LOAD_ABS, STORE_ABS);
             break;
 
-          case 0x50:            /* BVC $nnnn */
-#ifdef DRIVE_CPU
-            if (drivecpu_byte_ready())
-                LOCAL_SET_OVERFLOW(1);
-#endif
-            BRANCH(!LOCAL_OVERFLOW(), p1);
+          case 0x0050:            /* NEGB */
+            NEG_REG(reg_b, 1);
             break;
 
           case 0x51:            /* EOR ($nn),Y */
@@ -2153,8 +2137,8 @@ trap_skipped:
             SRE(p2, 0, CLK_ABS_I_RMW2, 3, LOAD_ABS_X_RMW, STORE_ABS_X_RMW);
             break;
 
-          case 0x60:            /* RTS */
-            RTS();
+          case 0x0060:            /* NEG indexed */
+            NEG(GET_IND_MA());
             break;
 
           case 0x61:            /* ADC ($nn,X) */
@@ -2209,12 +2193,8 @@ trap_skipped:
             RRA(p2, 0, CLK_ABS_RMW2, 3, LOAD_ABS, STORE_ABS);
             break;
 
-          case 0x70:            /* BVS $nnnn */
-#ifdef DRIVE_CPU
-            if (drivecpu_byte_ready())
-                LOCAL_SET_OVERFLOW(1);
-#endif
-            BRANCH(LOCAL_OVERFLOW(), p1);
+          case 0x0070:            /* NEG extended */
+            NEG((p1 << 8) | p2);
             break;
 
           case 0x71:            /* ADC ($nn),Y */
@@ -2723,6 +2703,10 @@ trap_skipped:
 
           case 0xff:            /* ISB $nnnn,X */
             ISB(p2, 0, CLK_ABS_I_RMW2, 3, LOAD_ABS_X_RMW, STORE_ABS_X_RMW);
+            break;
+
+          case 0x1040:          /* NEGD */   /* FIXME: fix for 6809, 6309 only opcode */
+            NEG_REG(reg_d, 0);
             break;
         }
     }
