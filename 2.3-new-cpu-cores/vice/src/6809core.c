@@ -815,6 +815,26 @@ static DWORD LOAD_IND32(void)
       STORE(ma, val);  \
   } while (0)
 
+#define ROR_REG(RR, bits)                   \
+  do {                                      \
+      unsigned int tmp;                     \
+                                            \
+      tmp = LOCAL_CARRY();                  \
+      RR >>= 1;                             \
+      RR |= (tmp << (bits - 1));            \
+      LOCAL_SET_NEGATIVE(BT(RR, bits - 1)); \
+      LOCAL_SET_ZERO(!RR);                  \
+  } while (0)
+
+#define ROR(ma)        \
+  do {                 \
+      BYTE val;        \
+                       \
+      val = LOAD(ma);  \
+      ROR_REG(val, 8); \
+      STORE(ma, val);  \
+  } while (0)
+
 /* ------------------------------------------------------------------------- */
 
 #define FETCH_OPCODE(o, page)                                                                                      \
@@ -923,8 +943,8 @@ trap_skipped:
             ORA(LOAD_ZERO(p1), 1, 2);
             break;
 
-          case 0x06:            /* ASL $nn */
-            ASL(p1, CLK_ZERO_RMW, 2, LOAD_ZERO, STORE_ABS);
+          case 0x0006:          /* ROR direct */
+            ROR((reg_dpr << 8) | p1);
             break;
 
           case 0x07:            /* SLO $nn */
@@ -1167,8 +1187,8 @@ trap_skipped:
             EOR(LOAD_ZERO(p1), 1, 2);
             break;
 
-          case 0x46:            /* LSR $nn */
-            LSR(p1, CLK_ZERO_RMW, 2, LOAD_ZERO, STORE_ABS);
+          case 0x0046:          /* RORA */
+            ROR_REG(reg_a, 8);
             break;
 
           case 0x47:            /* SRE $nn */
@@ -1227,8 +1247,8 @@ trap_skipped:
             EOR(LOAD_ZERO_X(p1), CLK_ZERO_I2, 2);
             break;
 
-          case 0x56:            /* LSR $nn,X */
-            LSR((p1 + reg_x) & 0xff, CLK_ZERO_I_RMW, 2, LOAD_ZERO, STORE_ABS);
+          case 0x0056:          /* RORB */
+            ROR_REG(reg_b, 8);
             break;
 
           case 0x57:            /* SRE $nn,X */
@@ -1279,8 +1299,8 @@ trap_skipped:
             ADC(LOAD_ZERO(p1), 1, 2);
             break;
 
-          case 0x66:            /* ROR $nn */
-            ROR(p1, CLK_ZERO_RMW, 2, LOAD_ZERO, STORE_ABS);
+          case 0x0066:          /* ROR indexed */
+            ROR(GET_IND_MA());
             break;
 
           case 0x67:            /* RRA $nn */
@@ -1339,8 +1359,8 @@ trap_skipped:
             ADC(LOAD_ZERO_X(p1), CLK_ZERO_I2, 2);
             break;
 
-          case 0x76:            /* ROR $nn,X */
-            ROR((p1 + reg_x) & 0xff, CLK_ZERO_I_RMW, 2, LOAD_ZERO, STORE_ABS);
+          case 0x0076:            /* ROR extended */
+            ROR((p1 << 8) | p2);
             break;
 
           case 0x77:            /* RRA $nn,X */
@@ -1859,12 +1879,20 @@ trap_skipped:
             LSR_REG(reg_d);
             break;
 
+          case 0x1046:          /* RORD */   /* FIXME: fix for 6809, 6309 only opcode */
+            ROR_REG(reg_d, 16);
+            break;
+
           case 0x1049:          /* ROLD */   /* FIXME: fix for 6809, 6309 only opcode */
             ROL_REG(reg_d, 16);
             break;
 
           case 0x1054:          /* LSRW */   /* FIXME: fix for 6809, 6309 only opcode */
             LSR_REG(reg_w);
+            break;
+
+          case 0x1056:          /* RORW */   /* FIXME: fix for 6809, 6309 only opcode */
+            ROR_REG(reg_w, 16);
             break;
 
           case 0x1059:          /* ROLW */   /* FIXME: fix for 6809, 6309 only opcode */
