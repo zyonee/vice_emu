@@ -835,6 +835,16 @@ static DWORD LOAD_IND32(void)
       STORE(ma, val);  \
   } while (0)
 
+#define TST_REG(RR, bits)                   \
+  do {                                      \
+      LOCAL_SET_OVERFLOW(0);                \
+      LOCAL_SET_NEGATIVE(BT(RR, bits - 1)); \
+      LOCAL_SET_ZERO(!RR);                  \
+  while (0)
+
+#define TST(ma) \
+  (TST_REG(LOAD(ma), 8))
+
 /* ------------------------------------------------------------------------- */
 
 #define FETCH_OPCODE(o, page)                                                                                      \
@@ -975,8 +985,8 @@ trap_skipped:
             NOOP_ABS();
             break;
 
-          case 0x0d:            /* ORA $nnnn */
-            ORA(LOAD(p2), 1, 3);
+          case 0x000d:          /* TST direct */
+            TST((reg_dpr << 8) | p1);
             break;
 
           case 0x0e:            /* ASL $nnnn */
@@ -1215,8 +1225,8 @@ trap_skipped:
             JMP(p2);
             break;
 
-          case 0x4d:            /* EOR $nnnn */
-            EOR(LOAD(p2), 1, 3);
+          case 0x004d:          /* TSTA */
+            TST_REG(reg_a, 8);
             break;
 
           case 0x4e:            /* LSR $nnnn */
@@ -1267,8 +1277,8 @@ trap_skipped:
             SRE(p2, 0, CLK_ABS_I_RMW2, 3, LOAD_ABS_Y_RMW, STORE_ABS_Y_RMW);
             break;
 
-          case 0x5d:            /* EOR $nnnn,X */
-            EOR(LOAD_ABS_X(p2), 1, 3);
+          case 0x005d:          /* TSTB */
+            TST_REG(reg_b, 8);
             break;
 
           case 0x5e:            /* LSR $nnnn,X */
@@ -1327,8 +1337,8 @@ trap_skipped:
             JMP_IND();
             break;
 
-          case 0x6d:            /* ADC $nnnn */
-            ADC(LOAD(p2), 1, 3);
+          case 0x006d:          /* TST indexed */
+            TST(GET_IND_MA());
             break;
 
           case 0x6e:            /* ROR $nnnn */
@@ -1379,8 +1389,8 @@ trap_skipped:
             RRA(p2, 0, CLK_ABS_I_RMW2, 3, LOAD_ABS_Y_RMW, STORE_ABS_Y_RMW);
             break;
 
-          case 0x7d:            /* ADC $nnnn,X */
-            ADC(LOAD_ABS_X(p2), 1, 3);
+          case 0x007d:          /* TST extended */
+            TST((p1 << 8) | p2);
             break;
 
           case 0x7e:            /* ROR $nnnn,X */
@@ -1887,6 +1897,10 @@ trap_skipped:
             ROL_REG(reg_d, 16);
             break;
 
+          case 0x104d:          /* TSTD */   /* FIXME: fix for 6809, 6309 only opcode */
+            TST_REG(reg_d, 16);
+            break;
+
           case 0x1054:          /* LSRW */   /* FIXME: fix for 6809, 6309 only opcode */
             LSR_REG(reg_w);
             break;
@@ -1897,6 +1911,10 @@ trap_skipped:
 
           case 0x1059:          /* ROLW */   /* FIXME: fix for 6809, 6309 only opcode */
             ROL_REG(reg_w, 16);
+            break;
+
+          case 0x105d:          /* TSTW */   /* FIXME: fix for 6809, 6309 only opcode */
+            TST_REG(reg_w, 16);
             break;
 
           case 0x1086:          /* LDW immediate */   /* FIXME: fix for 6809, 6309 only opcode */
@@ -1977,6 +1995,14 @@ trap_skipped:
 
           case 0x113d:          /* LDMD immediate */   /* FIXME: fix for 6809, 6309 only opcode */
             LD(reg_md, 8, p1);
+            break;
+
+          case 0x114d:          /* TSTE */   /* FIXME: fix for 6809, 6309 only opcode */
+            TST_REG(reg_e, 8);
+            break;
+
+          case 0x115d:          /* TSTF */   /* FIXME: fix for 6809, 6309 only opcode */
+            TST_REG(reg_f, 8);
             break;
 
           case 0x1186:          /* LDE immediate */   /* FIXME: fix for 6809, 6309 only opcode */
