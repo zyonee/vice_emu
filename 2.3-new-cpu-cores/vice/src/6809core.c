@@ -793,6 +793,28 @@ static DWORD LOAD_IND32(void)
 
 #define NOOP_IMM(pc_inc) INC_PC(pc_inc)
 
+#define ROL_REG(RR, bits)                                      \
+  do {                                                         \
+      unsigned int tmp;                                        \
+                                                               \
+      tmp = LOCAL_CARRY();                                     \
+      LOCAL_SET_OVERFLOW(BT(RR, bits - 1) ^ BT(RR, bits - 2)); \
+      LOCAL_SET_CARRY(BT(RR, bits - 1));                       \
+      RR <<= 1;                                                \
+      RR |= tmp;                                               \
+      LOCAL_SET_NEGATIVE(BT(RR, bits - 1));                    \
+      LOCAL_SET_ZERO(!RR);                                     \
+  } while (0)
+
+#define ROL(ma)        \
+  do {                 \
+      BYTE val;        \
+                       \
+      val = LOAD(ma);  \
+      ROL_REG(val, 8); \
+      STORE(ma, val);  \
+  } while (0)
+
 /* ------------------------------------------------------------------------- */
 
 #define FETCH_OPCODE(o, page)                                                                                      \
@@ -917,8 +939,8 @@ trap_skipped:
             PHP();
             break;
 
-          case 0x09:            /* ORA #$nn */
-            ORA(p1, 0, 2);
+          case 0x0009:          /* ROL direct */
+            ROL((reg_dpr << 8) | p1);
             break;
 
           case 0x0a:            /* ASL A */
@@ -1157,8 +1179,8 @@ trap_skipped:
             PHA();
             break;
 
-          case 0x49:            /* EOR #$nn */
-            EOR(p1, 0, 2);
+          case 0x0049:          /* ROLA */
+            ROL_REG(reg_a, 8);
             break;
 
           case 0x4a:            /* LSR A */
@@ -1217,8 +1239,8 @@ trap_skipped:
             CLI();
             break;
 
-          case 0x59:            /* EOR $nnnn,Y */
-            EOR(LOAD_ABS_Y(p2), 1, 3);
+          case 0x0059:          /* ROLB */
+            ROL_REG(reg_b, 8);
             break;
 
           case 0x5b:            /* SRE $nnnn,Y */
@@ -1269,8 +1291,8 @@ trap_skipped:
             PLA();
             break;
 
-          case 0x69:            /* ADC #$nn */
-            ADC(p1, 0, 2);
+          case 0x0069:            /* ROL indexed */
+            ROL(GET_IND_MA());
             break;
 
           case 0x6a:            /* ROR A */
@@ -1329,8 +1351,8 @@ trap_skipped:
             SEI();
             break;
 
-          case 0x79:            /* ADC $nnnn,Y */
-            ADC(LOAD_ABS_Y(p2), 1, 3);
+          case 0x0079:          /* ROL extended */
+            ROL((p1 << 8) | p2);
             break;
 
           case 0x7b:            /* RRA $nnnn,Y */
@@ -1837,8 +1859,16 @@ trap_skipped:
             LSR_REG(reg_d);
             break;
 
+          case 0x1049:          /* ROLD */   /* FIXME: fix for 6809, 6309 only opcode */
+            ROL_REG(reg_d, 16);
+            break;
+
           case 0x1054:          /* LSRW */   /* FIXME: fix for 6809, 6309 only opcode */
             LSR_REG(reg_w);
+            break;
+
+          case 0x1059:          /* ROLW */   /* FIXME: fix for 6809, 6309 only opcode */
+            ROL_REG(reg_w, 16);
             break;
 
           case 0x1086:          /* LDW immediate */   /* FIXME: fix for 6809, 6309 only opcode */
