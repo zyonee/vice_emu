@@ -793,6 +793,158 @@ static DWORD LOAD_IND32(void)
 
 #define NOOP_IMM(pc_inc) INC_PC(pc_inc)
 
+#define PSHS(m)                  \
+  do {                           \
+      if (m & 0x80) {            \
+          PUSHS(reg_pc & 0xff);  \
+          PUSHS(reg_pc >> 8);    \
+      }                          \
+      if (m & 0x40) {            \
+          PUSHS(reg_usp & 0xff); \
+          PUSHS(reg_usp >> 8);   \
+      }                          \
+      if (m & 0x20) {            \
+          PUSHS(reg_y & 0xff);   \
+          PUSHS(reg_y >> 8);     \
+      }                          \
+      if (m & 0x10) {            \
+          PUSHS(reg_x & 0xff);   \
+          PUSHS(reg_x >> 8);     \
+      }                          \
+      if (m & 8) {               \
+          PUSHS(reg_dpr);        \
+      }                          \
+      if (m & 4) {               \
+          PUSHS(reg_b);          \
+      }                          \
+      if (m & 2) {               \
+          PUSHS(reg_a);          \
+      }                          \
+      if (m & 1) {               \
+          PUSHS(reg_p);          \
+      }                          \
+  } while (0)
+
+#define PSHSW()     \
+  do {              \
+      PUSHS(reg_f); \
+      PUSHS(reg_e); \
+  } while (0)
+
+#define PSHU(m)                  \
+  do {                           \
+      if (m & 0x80) {            \
+          PUSHU(reg_pc & 0xff);  \
+          PUSHU(reg_pc >> 8);    \
+      }                          \
+      if (m & 0x40) {            \
+          PUSHU(reg_ssp & 0xff); \
+          PUSHU(reg_ssp >> 8);   \
+      }                          \
+      if (m & 0x20) {            \
+          PUSHU(reg_y & 0xff);   \
+          PUSHU(reg_y >> 8);     \
+      }                          \
+      if (m & 0x10) {            \
+          PUSHU(reg_x & 0xff);   \
+          PUSHU(reg_x >> 8);     \
+      }                          \
+      if (m & 8) {               \
+          PUSHU(reg_dpr);        \
+      }                          \
+      if (m & 4) {               \
+          PUSHU(reg_b);          \
+      }                          \
+      if (m & 2) {               \
+          PUSHU(reg_a);          \
+      }                          \
+      if (m & 1) {               \
+          PUSHU(reg_p);          \
+      }                          \
+  } while (0)
+
+#define PSHUW()     \
+  do {              \
+      PUSHU(reg_f); \
+      PUSHU(reg_e); \
+  } while (0)
+
+#define PULS(m)                   \
+  do {                            \
+      if (m & 1) {                \
+          reg_p = PULLS();        \
+      }                           \
+      if (m & 2) {                \
+          reg_a = PULLS();        \
+      }                           \
+      if (m & 4) {                \
+          reg_b = PULLS();        \
+      }                           \
+      if (m & 8) {                \
+          reg_dpr = PULLS();      \
+      }                           \
+      if (m & 0x10) {             \
+          reg_x = PULLS() << 8;   \
+          reg_x |= PULLS();       \
+      }                           \
+      if (m & 0x20) {             \
+          reg_y = PULLS() << 8;   \
+          reg_y |= PULLS();       \
+      }                           \
+      if (m & 0x40) {             \
+          reg_usp = PULLS() << 8; \
+          reg_usp |= PULLS();     \
+      }                           \
+      if (m & 0x80) {             \
+          reg_pc = PULLS() << 8;  \
+          reg_pc |= PULLS();      \
+      }                           \
+  } while (0)
+
+#define PULSW()        \
+  do {                 \
+      reg_e = PULLS(); \
+      reg_f = PULLS(); \
+  } while (0)
+
+#define PULU(m)                   \
+  do {                            \
+      if (m & 1) {                \
+          reg_p = PULLU();        \
+      }                           \
+      if (m & 2) {                \
+          reg_a = PULLU();        \
+      }                           \
+      if (m & 4) {                \
+          reg_b = PULLU();        \
+      }                           \
+      if (m & 8) {                \
+          reg_dpr = PULLU();      \
+      }                           \
+      if (m & 0x10) {             \
+          reg_x = PULLU() << 8;   \
+          reg_x |= PULLU();       \
+      }                           \
+      if (m & 0x20) {             \
+          reg_y = PULLU() << 8;   \
+          reg_y |= PULLU();       \
+      }                           \
+      if (m & 0x40) {             \
+          reg_ssp = PULLU() << 8; \
+          reg_ssp |= PULLU();     \
+      }                           \
+      if (m & 0x80) {             \
+          reg_pc = PULLU() << 8;  \
+          reg_pc |= PULLU();      \
+      }                           \
+  } while (0)
+
+#define PULUW()        \
+  do {                 \
+      reg_e = PULLU(); \
+      reg_f = PULLU(); \
+  } while (0)
+
 #define ROL_REG(RR, bits)                                      \
   do {                                                         \
       unsigned int tmp;                                        \
@@ -1030,7 +1182,6 @@ trap_skipped:
             break;
 
           case 0x14:            /* NOOP $nn,X */
-          case 0x34:            /* NOOP $nn,X */
           case 0xd4:            /* NOOP $nn,X */
           case 0xf4:            /* NOOP $nn,X */
             NOOP(CLK_NOOP_ZERO_X, 2);
@@ -1161,16 +1312,20 @@ trap_skipped:
             RLA_IND_Y(p1);
             break;
 
-          case 0x35:            /* AND $nn,X */
-            AND(LOAD_ZERO_X(p1), CLK_ZERO_I2, 2);
+          case 0x0034:          /* PSHS immediate */
+            PSHS(p1);
             break;
 
-          case 0x36:            /* ROL $nn,X */
-            ROL((p1 + reg_x) & 0xff, CLK_ZERO_I_RMW, 2, LOAD_ZERO, STORE_ABS);
+          case 0x0035:          /* PULS immediate */
+            PULS(p1);
             break;
 
-          case 0x37:            /* RLA $nn,X */
-            RLA((p1 + reg_x) & 0xff, 0, CLK_ZERO_I_RMW, 2, LOAD_ZERO, STORE_ABS);
+          case 0x0036:          /* PSHU immediate */
+            PSHU(p1);
+            break;
+
+          case 0x0037:          /* PULU immeditate */
+            PULU(p1);
             break;
 
           case 0x38:            /* SEC */
@@ -1923,6 +2078,22 @@ trap_skipped:
 
           case 0xff:            /* ISB $nnnn,X */
             ISB(p2, 0, CLK_ABS_I_RMW2, 3, LOAD_ABS_X_RMW, STORE_ABS_X_RMW);
+            break;
+
+          case 0x1038:          /* PSHSW */   /* FIXME: fix for 6809, 6309 only opcode */
+            PSHSW();
+            break;
+
+          case 0x1039:          /* PULSW */   /* FIXME: fix for 6809, 6309 only opcode */
+            PULSW();
+            break;
+
+          case 0x103a:          /* PSHUW */   /* FIXME: fix for 6809, 6309 only opcode */
+            PSHUW();
+            break;
+
+          case 0x103b:          /* PULUW */   /* FIXME: fix for 6809, 6309 only opcode */
+            PULUW();
             break;
 
           case 0x1040:          /* NEGD */   /* FIXME: fix for 6809, 6309 only opcode */
