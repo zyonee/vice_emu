@@ -183,9 +183,7 @@ extern void video_canvas_refresh(struct raster_s *raster,
                                  unsigned int xs, unsigned int ys,
                                  unsigned int xi, unsigned int yi,
                                  unsigned int w, unsigned int h);
-extern int video_canvas_set_palette(struct video_canvas_s *canvas,
-                                    struct palette_s *palette,
-                                    struct video_render_color_tables_s *color_tables);
+extern int video_canvas_set_palette(struct raster_s *raster);
 /* This will go away.  */
 extern void video_canvas_destroy(struct video_canvas_s *canvas);
 extern void video_canvas_map(struct video_canvas_s *canvas);

@@ -589,7 +589,7 @@ int video_color_update_palette(raster_t *raster)
     if (palette != NULL) {
         struct palette_s *old_palette = raster->palette;
 
-        if (!raster->created || video_canvas_set_palette(raster->canvas, palette, &raster->videoconfig->color_tables) >= 0)
+        if (!raster->created || video_canvas_set_palette(raster) >= 0)
             raster->palette = palette;
         else
             return -1;

@@ -1,8 +1,8 @@
 /*
- * lightpendrv.h - Gtk+ 
+ * uipalcontrol.h - UI controls for PAL
  *
  * Written by
- *  pottendo <pottendo@gmx.net>
+ *  Fabrizio Gennari <fabrizio.ge@tiscali.it>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -23,14 +23,10 @@
  *  02111-1307  USA.
  *
  */
-#ifndef __lightpendrv_h__
-#define __lightpendrv_h__
+
+#include <gtk/gtk.h>
 
 struct raster_s;
 
-extern void gtk_init_lightpen(void);
-extern void gtk_lightpen_setbutton(int b, int s);
-extern void x11_lightpen_update(void);
-extern void gtk_lightpen_update_canvas(struct raster_s *p, int enter);
+GtkWidget *build_pal_ctrl_widget(struct raster_s *raster);
 
-#endif /* __lightpendrv_h__ */

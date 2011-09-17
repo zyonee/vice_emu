@@ -38,6 +38,7 @@
 #include "lib.h"
 #include "log.h"
 #include "palette.h"
+#include "raster.h"
 #include "types.h"
 #include "uicolor.h"
 #include "video.h"
@@ -53,7 +54,7 @@ void uicolor_init_video_colors();
 
 /*-----------------------------------------------------------------------*/
 
-int uicolor_alloc_colors(video_canvas_t *c)
+int uicolor_alloc_colors(raster_t *c)
 {
     int i;
 
@@ -116,14 +117,14 @@ unsigned int endian_swap(unsigned int color, unsigned int bpp, unsigned int swap
     return color;
 }
 
-int uicolor_set_palette(struct video_canvas_s *c, const palette_t *palette)
+int uicolor_set_palette(raster_t *raster)
 {
     unsigned int i, rs, gs, bs, rb, gb, bb, bpp, swap;
 
     /* Hwscaled colours are expected in GL_RGB order. 24 bpp renderers are
      * special, they always seem to expect color order to be logically ABGR,
      * which they write out in RGB memory order. (Glorious, eh?) */
-    if (c->videoconfig->hwscale) {
+    if (raster->videoconfig->hwscale) {
         bpp = 24;
         rb = 8;
         gb = 8;
@@ -133,7 +134,7 @@ int uicolor_set_palette(struct video_canvas_s *c, const palette_t *palette)
         bs = 16;
         swap = 0;
     } else {
-        GdkVisual *vis = c->gdk_image->visual;
+        GdkVisual *vis = raster->canvas->gdk_image->visual;
 
         bpp = vis->depth;
         rb = vis->red_prec;
@@ -155,13 +156,13 @@ int uicolor_set_palette(struct video_canvas_s *c, const palette_t *palette)
          * code must be specially written for it. */
     }
 
-    for (i = 0; i < palette->num_entries; i++) {
-        palette_entry_t color = palette->entries[i];
+    for (i = 0; i < raster->palette->num_entries; i++) {
+        palette_entry_t color = raster->palette->entries[i];
         /* scale 256 color palette for Gdk terms, then shift to precision,
          * then move component where it needs to be. */
         DWORD color_pixel = endian_swap(color.red << 8 >> (16 - rb) << rs | color.green << 8 >> (16 - gb) << gs | color.blue  << 8 >> (16 - bb) << bs, bpp, swap);
 
-        video_render_setphysicalcolor(c->videoconfig, i, color_pixel, bpp);
+        video_render_setphysicalcolor(&raster->videoconfig->color_tables, i, color_pixel, bpp);
     }
     
     for (i = 0; i < 256; i ++) {

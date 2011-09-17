@@ -4,6 +4,8 @@ INCLUDES = \
 	-I$(top_srcdir)/src \
 	-I$(top_srcdir)/src/arch \
 	-I$(top_srcdir)/src/imagecontents \
+	-I$(top_srcdir)/src/raster \
+	-I$(top_srcdir)/src/video \
 	-I$(top_srcdir)/src/arch/unix/gui \
 	-I$(top_srcdir)/src/arch/unix/x11
 

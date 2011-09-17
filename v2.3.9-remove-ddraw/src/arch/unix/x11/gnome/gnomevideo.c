@@ -33,10 +33,12 @@
 
 #include "fullscreenarch.h"
 #include "log.h"
+#include "raster.h"
 #include "resources.h"
 #include "types.h"
 #include "videoarch.h"
 #include "video.h"
+#include "video-render.h"
 #include "machine.h"
 #include "lib.h"
 
@@ -104,36 +106,37 @@ int video_init_cmdline_options(void)
     return 0;
 }
 
-void video_arch_canvas_init(struct video_canvas_s *canvas)
+void video_arch_canvas_init(video_canvas_t **canvas)
 {
-    canvas->video_draw_buffer_callback = NULL;
+    *canvas = malloc(sizeof(video_canvas_t));
+    (*canvas)->video_draw_buffer_callback = NULL;
 
 #ifdef HAVE_FULLSCREEN
-    canvas->fullscreenconfig = lib_calloc(1, sizeof(fullscreenconfig_t));
-    fullscreen_init_alloc_hooks(canvas);
+    (*canvas)->fullscreenconfig = lib_calloc(1, sizeof(fullscreenconfig_t));
+    fullscreen_init_alloc_hooks(*canvas);
 #endif
 }
 
 
-video_canvas_t *video_canvas_create(video_canvas_t *canvas, unsigned int *width, unsigned int *height, int mapped)
+video_canvas_t *video_canvas_create(raster_t *raster, unsigned int *width, unsigned int *height, int mapped)
 {
     int res;
 
-    canvas->gdk_image = NULL;
+    raster->canvas->gdk_image = NULL;
 #ifdef HAVE_HWSCALE
-    canvas->hwscale_image = NULL;
+    raster->canvas->hwscale_image = NULL;
 #endif
 
-    res = ui_open_canvas_window(canvas, canvas->viewport->title, *width, *height, 1);
+    res = ui_open_canvas_window(raster->canvas, raster->viewport->title, *width, *height, 1);
     if (res < 0) {
         return NULL;
     }
 
 #ifdef HAVE_OPENGL_SYNC
-    openGL_sync_init(canvas);
+    openGL_sync_init(raster->canvas);
 #endif
 
-    return canvas;
+    return raster->canvas;
 }
 
 void video_canvas_destroy(video_canvas_t *canvas)
@@ -154,44 +157,43 @@ void video_canvas_destroy(video_canvas_t *canvas)
 }
 
 /* set it, update if we know the endianness required by the image */
-int video_canvas_set_palette(video_canvas_t *canvas, struct palette_s *palette)
+int video_canvas_set_palette(raster_t *raster)
 {
-    canvas->palette = palette;
-    return uicolor_set_palette(canvas, canvas->palette);
+    return uicolor_set_palette(raster);
 }
 
 /* Change the size of the canvas. */
-void video_canvas_resize(video_canvas_t *canvas, unsigned int width, unsigned int height)
+void video_canvas_resize(raster_t *raster, unsigned int width, unsigned int height)
 {
     if (console_mode || vsid_mode) {
         return;
     }
 
-    if (canvas->videoconfig->doublesizex) {
-        width *= (canvas->videoconfig->doublesizex + 1);
+    if (raster->videoconfig->doublesizex) {
+        width *= (raster->videoconfig->doublesizex + 1);
     }
 
-    if (canvas->videoconfig->doublesizey) {
-        height *= (canvas->videoconfig->doublesizey + 1);
+    if (raster->videoconfig->doublesizey) {
+        height *= (raster->videoconfig->doublesizey + 1);
     }
 
-    if (canvas->gdk_image != NULL) {
-        g_object_unref(canvas->gdk_image);
+    if (raster->canvas->gdk_image != NULL) {
+        g_object_unref(raster->canvas->gdk_image);
     }
-    canvas->gdk_image = gdk_image_new(GDK_IMAGE_FASTEST, gtk_widget_get_visual(canvas->emuwindow), width, height);
+    raster->canvas->gdk_image = gdk_image_new(GDK_IMAGE_FASTEST, gtk_widget_get_visual(raster->canvas->emuwindow), width, height);
 
 #ifdef HAVE_HWSCALE
-    lib_free(canvas->hwscale_image);
-    canvas->hwscale_image = lib_malloc(canvas->gdk_image->width * canvas->gdk_image->height * 4);
+    lib_free(raster->canvas->hwscale_image);
+    raster->canvas->hwscale_image = lib_malloc(canvas->gdk_image->width * canvas->gdk_image->height * 4);
 #endif
 
-    if (video_canvas_set_palette(canvas, canvas->palette) < 0) {
+    if (video_canvas_set_palette(raster) < 0) {
         log_debug("Setting palette for this mode failed. (Try 16/24/32 bpp.)");
         exit(-1);
     }
 
-    ui_resize_canvas_window(canvas, width, height);
-    video_canvas_redraw_size(canvas, width, height);
+    ui_resize_canvas_window(raster->canvas, width, height);
+    raster_redraw_size(raster, width, height);
 }
 
 /* Make the canvas visible. */
@@ -207,7 +209,7 @@ void video_canvas_unmap(video_canvas_t *s)
 }
 
 /* Refresh a canvas.  */
-void video_canvas_refresh(video_canvas_t *canvas, unsigned int xs, unsigned int ys, unsigned int xi, unsigned int yi, unsigned int w, unsigned int h)
+void video_canvas_refresh(raster_t *raster, unsigned int xs, unsigned int ys, unsigned int xi, unsigned int yi, unsigned int w, unsigned int h)
 {
 #if 0
     log_debug("XS%i YS%i XI%i YI%i W%i H%i PS%i", xs, ys, xi, yi, w, h, canvas->draw_buffer->draw_buffer_width);
@@ -217,38 +219,54 @@ void video_canvas_refresh(video_canvas_t *canvas, unsigned int xs, unsigned int 
         return;
     }
 
-    if (canvas->videoconfig->doublesizex) {
-        xi *= (canvas->videoconfig->doublesizex + 1);
-        w *= (canvas->videoconfig->doublesizex + 1);
+    if (raster->videoconfig->doublesizex) {
+        xi *= (raster->videoconfig->doublesizex + 1);
+        w *= (raster->videoconfig->doublesizex + 1);
     }
 
-    if (canvas->videoconfig->doublesizey) {
-        yi *= (canvas->videoconfig->doublesizey + 1);
-        h *= (canvas->videoconfig->doublesizey + 1);
+    if (raster->videoconfig->doublesizey) {
+        yi *= (raster->videoconfig->doublesizey + 1);
+        h *= (raster->videoconfig->doublesizey + 1);
     }
 
 #ifdef HAVE_FULLSCREEN
-    if (canvas->video_fullscreen_refresh_func) {
-        canvas->video_fullscreen_refresh_func(canvas, xs, ys, xi, yi, w, h);
+    if (raster->canvas->video_fullscreen_refresh_func) {
+        raster->canvas->video_fullscreen_refresh_func(raster->canvas, xs, ys, xi, yi, w, h);
         return;
     }
 #endif
 
-    if (xi + w > canvas->gdk_image->width || yi + h > canvas->gdk_image->height) {
+    if (xi + w > raster->canvas->gdk_image->width || yi + h > raster->canvas->gdk_image->height) {
 #ifdef DEBUG	
-        log_debug("Attempt to draw outside canvas!\nXI%i YI%i W%i H%i CW%i CH%i\n", xi, yi, w, h, canvas->gdk_image->width, canvas->gdk_image->height);
+        log_debug("Attempt to draw outside canvas!\nXI%i YI%i W%i H%i CW%i CH%i\n", xi, yi, w, h, raster->canvas->gdk_image->width, raster->canvas->gdk_image->height);
 #endif
 	return;
     }
 
+#ifdef VIDEO_SCALE_SOURCE
+    if (canvas->videoconfig->doublesizex) {
+        xs /= (canvas->videoconfig->doublesizex + 1);
+    }
+    if (canvas->videoconfig->doublesizey) {
+        ys /= (canvas->videoconfig->doublesizey + 1);
+    }
+#endif
 #ifdef HAVE_HWSCALE
-    if (canvas->videoconfig->hwscale) {
-        video_canvas_render(canvas, canvas->hwscale_image, w, h, xs, ys, xi, yi, canvas->gdk_image->width * 4, 32);
-        gtk_widget_queue_draw(canvas->emuwindow);
+    if (raster->videoconfig->hwscale) {
+        video_render_main(raster->canvas->videoconfig, raster->draw_buffer->draw_buffer,
+                      raster->canvas->hwscale_image, w, h, xs, ys, xi, yi,
+                      raster->draw_buffer->draw_buffer_width, canvas->gdk_image->width * 4, 32,
+                      raster->viewport);
+
+video_canvas_render(raster->canvas, raster->canvas->hwscale_image, w, h, xs, ys, xi, yi, canvas->gdk_image->width * 4, 32);
+        gtk_widget_queue_draw(raster->canvas->emuwindow);
     } else
 #endif
     {
-        video_canvas_render(canvas, canvas->gdk_image->mem, w, h, xs, ys, xi, yi, canvas->gdk_image->bpl, canvas->gdk_image->bits_per_pixel);
-        gtk_widget_queue_draw_area(canvas->emuwindow, xi, yi, w, h);
+        video_render_main(raster->videoconfig, raster->draw_buffer->draw_buffer,
+                      raster->canvas->gdk_image->mem, w, h, xs, ys, xi, yi,
+                      raster->draw_buffer->draw_buffer_width, raster->canvas->gdk_image->bpl,
+                      raster->canvas->gdk_image->bits_per_pixel, raster->viewport);
+        gtk_widget_queue_draw_area(raster->canvas->emuwindow, xi, yi, w, h);
     }
 }

@@ -79,6 +79,8 @@ enum ui_keysym_s {
 };
 typedef enum ui_keysym_s ui_keysym_t;
 
+struct raster_s;
+
 #define UI_CALLBACK(name) void name(GtkWidget *w, ui_callback_data_t event_data)
 
 #define CHECK_MENUS      (((ui_menu_cb_obj*)event_data)->status != CB_NORMAL)
@@ -87,8 +89,8 @@ typedef enum ui_keysym_s ui_keysym_t;
 extern GtkWidget *_ui_top_level;
 extern GdkVisual *visual;
 
-extern int ui_open_canvas_window(struct video_canvas_s *c, const char *title, int width, int heigth, int no_autorepeat);
-extern void ui_resize_canvas_window(struct video_canvas_s *c, int height, int width);
+extern int ui_open_canvas_window(struct raster_s *c, const char *title, int width, int heigth, int no_autorepeat);
+extern void ui_resize_canvas_window(struct raster_s *c, int height, int width);
 extern GtkWidget *ui_create_transient_shell(GtkWidget *parent, const char *name);
 extern void ui_popdown(GtkWidget *w);
 extern void ui_popup(GtkWidget *w, const char *title, gboolean wait_popdown);

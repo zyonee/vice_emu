@@ -86,6 +86,7 @@
 #include "mouse.h"
 #include "mousedrv.h"
 #include "keyboard.h"
+#include "raster.h"
 #include "resources.h"
 #include "types.h"
 #include "uiapi.h"
@@ -94,6 +95,7 @@
 #include "uisettings.h"
 #include "uicommands.h"
 #include "uifileentry.h"
+#include "uipalcontrol.h"
 #include "uilib.h"
 #include "util.h"
 #include "version.h"
@@ -168,7 +170,7 @@ static GtkWidget *image_preview_list, *auto_start_button, *last_file_selection;
 static char *fixedfontname="CBM 10";
 static PangoFontDescription *fixed_font_desc;
 static int have_cbm_font = 0;
-static video_canvas_t *ui_cached_video_canvas;
+static raster_t *ui_cached_video_canvas;
 static int statustext_display_time = 0;
 static int popped_up_count = 0;
 
@@ -259,7 +261,6 @@ static gboolean update_menu_cb(GtkWidget *w, GdkEvent *event,gpointer data);
 static gboolean speed_popup_cb(GtkWidget *w, GdkEvent *event, gpointer data);
 
 static GtkWidget* rebuild_contents_menu(int unit, const char *image_name);
-extern GtkWidget* build_pal_ctrl_widget(video_canvas_t *canvas);
 
 /* ------------------------------------------------------------------------- */
 
@@ -412,10 +413,10 @@ static gint mouse_warped = 0;
 
 static gfloat get_aspect(video_canvas_t *canvas);
 
-void mouse_handler(GtkWidget *w, GdkEvent *event, gpointer data)
+static void mouse_handler(GtkWidget *w, GdkEvent *event, gpointer data)
 {
-    video_canvas_t *canvas = (video_canvas_t *)data;
-    app_shell_type *appshell = &app_shells[canvas->app_shell];
+    raster_t *raster = (raster_t *)data;
+    app_shell_type *appshell = &app_shells[raster->canvas->app_shell];
 
     if (event->type == GDK_BUTTON_PRESS) {
         GdkEventButton *bevent = (GdkEventButton*)event;
@@ -461,17 +462,17 @@ void mouse_handler(GtkWidget *w, GdkEvent *event, gpointer data)
                 ptry = (int)mevent->y;
                 ptry += appshell->topmenu->allocation.height;
 
-                w = canvas->geometry->screen_size.width;
-                h = canvas->geometry->screen_size.height;
+                w = raster->geometry->screen_size.width;
+                h = raster->geometry->screen_size.height;
 
-                if (canvas->videoconfig->doublesizex) {
-                    w *= (canvas->videoconfig->doublesizex + 1);
+                if (raster->videoconfig->doublesizex) {
+                    w *= (raster->videoconfig->doublesizex + 1);
                 }
-                if (canvas->videoconfig->doublesizey) {
-                    h *= (canvas->videoconfig->doublesizey + 1);
+                if (raster->videoconfig->doublesizey) {
+                    h *= (raster->videoconfig->doublesizey + 1);
                 }
 
-                taspect = get_aspect(canvas);
+                taspect = get_aspect(raster->canvas);
                 if (taspect > 0.0f) {
                     w = ((float)w) * taspect;
                 }
@@ -489,7 +490,7 @@ void mouse_handler(GtkWidget *w, GdkEvent *event, gpointer data)
 
                 if (ptry < (appshell->topmenu->allocation.height + MOUSE_WRAP_MARGIN)) {
 #ifdef HAVE_FULLSCREEN
-                    if (canvas->fullscreenconfig->enable) {
+                    if (raster->canvas->fullscreenconfig->enable) {
                         mouse_lasteventy = h - ((MOUSE_WRAP_MARGIN + 10) *2); /* FIXME */
                     } else {
 #endif
@@ -519,7 +520,7 @@ void mouse_handler(GtkWidget *w, GdkEvent *event, gpointer data)
             }
         }
 #ifdef HAVE_FULLSCREEN
-        fullscreen_mouse_moved(canvas, (int)mevent->x, (int)mevent->y, 0);
+        fullscreen_mouse_moved(raster->canvas, (int)mevent->x, (int)mevent->y, 0);
 #endif
    }
 }
@@ -944,14 +945,14 @@ int x11ui_get_screen(void)
 
 gboolean kbd_event_handler(GtkWidget *w, GdkEvent *report,gpointer gp);
 
-static void build_screen_canvas_widget(video_canvas_t *c)
+static void build_screen_canvas_widget(raster_t *c)
 {
     GtkWidget *new_canvas = gtk_drawing_area_new();
 
     /* if the eventbox already has a child, get rid of it, we are resizing */
-    GtkWidget *kid = gtk_bin_get_child(GTK_BIN(c->pane));
+    GtkWidget *kid = gtk_bin_get_child(GTK_BIN(c->canvas->pane));
     if (kid != NULL) {
-        gtk_container_remove(GTK_CONTAINER(c->pane), kid);
+        gtk_container_remove(GTK_CONTAINER(c->canvas->pane), kid);
     }
 
 #ifdef HAVE_HWSCALE
@@ -973,23 +974,23 @@ static void build_screen_canvas_widget(video_canvas_t *c)
     gtk_widget_set_events(new_canvas, 0);
     /* XVideo must be refreshed when the application window is moved. */
     g_signal_connect(G_OBJECT(new_canvas), "configure-event", G_CALLBACK(configure_callback_canvas), (void*)c);
-    g_signal_connect(G_OBJECT(new_canvas), "expose-event", G_CALLBACK(exposure_callback_canvas), (void*)c);
-    g_signal_connect(G_OBJECT(new_canvas), "enter-notify-event", G_CALLBACK(enter_window_callback), (void *)c);
-    g_signal_connect(G_OBJECT(new_canvas), "leave-notify-event", G_CALLBACK(leave_window_callback), (void *)c);
-    g_signal_connect(G_OBJECT(new_canvas), "focus-out-event", G_CALLBACK(leave_window_callback), (void *)c);
+    g_signal_connect(G_OBJECT(new_canvas), "expose-event", G_CALLBACK(exposure_callback_canvas), (void*)c->canvas);
+    g_signal_connect(G_OBJECT(new_canvas), "enter-notify-event", G_CALLBACK(enter_window_callback), (void *)c->canvas);
+    g_signal_connect(G_OBJECT(new_canvas), "leave-notify-event", G_CALLBACK(leave_window_callback), (void *)c->canvas);
+    g_signal_connect(G_OBJECT(new_canvas), "focus-out-event", G_CALLBACK(leave_window_callback), (void *)c->canvas);
     g_signal_connect(G_OBJECT(new_canvas), "map-event", G_CALLBACK(map_callback), NULL);
     g_signal_connect(G_OBJECT(new_canvas), "button-press-event", G_CALLBACK(mouse_handler), (void *) c);
     g_signal_connect(G_OBJECT(new_canvas), "button-release-event", G_CALLBACK(mouse_handler), (void *) c);
     g_signal_connect(G_OBJECT(new_canvas), "motion-notify-event", G_CALLBACK(mouse_handler), (void *) c);
-    g_signal_connect(G_OBJECT(new_canvas), "key-press-event", G_CALLBACK(kbd_event_handler), (void *) c);
-    g_signal_connect(G_OBJECT(new_canvas), "key-release-event", G_CALLBACK(kbd_event_handler), (void *) c);
-    g_signal_connect(G_OBJECT(new_canvas), "focus-in-event", G_CALLBACK(enter_window_callback), (void *) c);
+    g_signal_connect(G_OBJECT(new_canvas), "key-press-event", G_CALLBACK(kbd_event_handler), (void *) c->canvas);
+    g_signal_connect(G_OBJECT(new_canvas), "key-release-event", G_CALLBACK(kbd_event_handler), (void *) c->canvas);
+    g_signal_connect(G_OBJECT(new_canvas), "focus-in-event", G_CALLBACK(enter_window_callback), (void *) c->canvas);
 
     if (c->videoconfig->hwscale) {
         /* For hwscale, it's a feature that new_canvas must bloat to 100% size
          * of the containing GtkEventWindow. Unfortunately, for the other
          * path, it's a PITA. */
-        gtk_container_add(GTK_CONTAINER(c->pane), new_canvas);
+        gtk_container_add(GTK_CONTAINER(c->canvas->pane), new_canvas);
     } else {
         /* Believe it or not, but to get a gtkdrawingarea of fixed dimensions
          * with a black background within our layout vbox requires this:
@@ -1001,7 +1002,7 @@ static void build_screen_canvas_widget(video_canvas_t *c)
          * x11ui_fullscreen about how "nice" that is to get to work. */
         GtkWidget *canvascontainer1 = gtk_hbox_new(FALSE, 0);
         gtk_widget_show(canvascontainer1);
-        gtk_container_add(GTK_CONTAINER(c->pane), canvascontainer1);
+        gtk_container_add(GTK_CONTAINER(c->canvas->pane), canvascontainer1);
         GtkWidget *canvascontainer2 = gtk_vbox_new(FALSE, 0);
         gtk_widget_show(canvascontainer2);
         gtk_box_pack_start(GTK_BOX(canvascontainer1), canvascontainer2, TRUE, FALSE, 0);
@@ -1011,7 +1012,7 @@ static void build_screen_canvas_widget(video_canvas_t *c)
     gtk_widget_show(new_canvas);
     GTK_WIDGET_SET_FLAGS(new_canvas, GTK_CAN_FOCUS);
     gtk_widget_grab_focus(new_canvas);
-    c->emuwindow = new_canvas;
+    c->canvas->emuwindow = new_canvas;
 
     gtk_widget_add_events(new_canvas,
                           GDK_LEAVE_NOTIFY_MASK |
@@ -1027,7 +1028,7 @@ static void build_screen_canvas_widget(video_canvas_t *c)
 }
 
 /* Create a shell with a canvas widget in it.  */
-int ui_open_canvas_window(video_canvas_t *c, const char *title, int w, int h, int no_autorepeat)
+int ui_open_canvas_window(raster_t *c, const char *title, int w, int h, int no_autorepeat)
 {
     GtkWidget *new_window, *topmenu, *panelcontainer, *sb, *pal_ctrl_widget = NULL;
     GtkAccelGroup* accel;
@@ -1060,19 +1061,19 @@ int ui_open_canvas_window(video_canvas_t *c, const char *title, int w, int h, in
     g_signal_connect(G_OBJECT(topmenu), "button-press-event", G_CALLBACK(update_menu_cb), NULL);
     gtk_box_pack_start(GTK_BOX(panelcontainer), topmenu, FALSE, TRUE, 0);
 
-    c->pane = gtk_event_box_new();
-    gtk_widget_modify_bg(c->pane, GTK_STATE_NORMAL, &black);
-    gtk_box_pack_start(GTK_BOX(panelcontainer), c->pane, TRUE, TRUE, 0);
-    gtk_widget_show(c->pane);
+    c->canvas->pane = gtk_event_box_new();
+    gtk_widget_modify_bg(c->canvas->pane, GTK_STATE_NORMAL, &black);
+    gtk_box_pack_start(GTK_BOX(panelcontainer), c->canvas->pane, TRUE, TRUE, 0);
+    gtk_widget_show(c->canvas->pane);
 
     gtk_widget_show(new_window);
     if (vsid_mode) {
         GtkWidget *new_canvas = build_vsid_ctrl_widget();
-        gtk_container_add(GTK_CONTAINER(c->pane), new_canvas);
+        gtk_container_add(GTK_CONTAINER(c->canvas->pane), new_canvas);
         gtk_widget_show(new_canvas);
     } else {
         build_screen_canvas_widget(c);
-        c->app_shell = num_app_shells - 1;
+        c->canvas->app_shell = num_app_shells - 1;
     }
 
     sb = ui_create_status_bar(panelcontainer);
@@ -1151,7 +1152,7 @@ int ui_open_canvas_window(video_canvas_t *c, const char *title, int w, int h, in
     initBlankCursor();
     gtk_init_lightpen();
 
-    c->offx = c->geometry->screen_size.width - w;
+    c->canvas->offx = c->geometry->screen_size.width - w;
     ui_cached_video_canvas = c;
 
     gtk_widget_add_events(new_window,
@@ -1767,11 +1768,11 @@ static gfloat get_aspect(video_canvas_t *canvas)
     return 0.0f;
 }
 
-static void setup_aspect(video_canvas_t *canvas)
+static void setup_aspect(raster_t *raster)
 {
     gfloat aspect, taspect;
     int w, h, winw, winh;
-    app_shell_type *appshell = &app_shells[canvas->app_shell];
+    app_shell_type *appshell = &app_shells[raster->canvas->app_shell];
     GtkWidget *win;
     GtkWidget *topmenu;
     GtkWidget *sb;
@@ -1793,13 +1794,13 @@ static void setup_aspect(video_canvas_t *canvas)
     }
 
     /* get size of drawing buffer */
-    w = canvas->draw_buffer->canvas_width;
-    h = canvas->draw_buffer->canvas_height;
-    if (canvas->videoconfig->doublesizex) {
-        w *= (canvas->videoconfig->doublesizex + 1);
+    w = raster->draw_buffer->canvas_width;
+    h = raster->draw_buffer->canvas_height;
+    if (raster->videoconfig->doublesizex) {
+        w *= (raster->videoconfig->doublesizex + 1);
     }
-    if (canvas->videoconfig->doublesizey) {
-        h *= (canvas->videoconfig->doublesizey + 1);
+    if (raster->videoconfig->doublesizey) {
+        h *= (raster->videoconfig->doublesizey + 1);
     }
     /* calculate unscaled size of window */
     winw = w;
@@ -1824,17 +1825,17 @@ static void setup_aspect(video_canvas_t *canvas)
     appshell->geo.max_aspect = 1.0f;
 
 #ifdef HAVE_FULLSCREEN
-    if (canvas->fullscreenconfig->enable) {
+    if (raster->canvas->fullscreenconfig->enable) {
         /* TODO */
     } else {
 #endif
-        taspect = get_aspect(canvas);
+        taspect = get_aspect(raster->canvas);
         if (taspect > 0.0f) {
             aspect = ((float)winw * taspect) / ((float)winh);
             appshell->geo.min_aspect = aspect;
             appshell->geo.max_aspect = aspect;
             appshell->geo.min_width = (int)((float)winw * taspect);
-            if (canvas->videoconfig->hwscale) {
+            if (raster->videoconfig->hwscale) {
                 appshell->geo.max_width = 0;
                 appshell->geo.max_height = 0;
             }
@@ -1845,7 +1846,7 @@ static void setup_aspect(video_canvas_t *canvas)
 }
 
 /* Resize one window. */
-void ui_resize_canvas_window(video_canvas_t *canvas, int width, int height)
+void ui_resize_canvas_window(raster_t *raster, int width, int height)
 {
     gint window_width, window_height;
     app_shell_type *appshell;
@@ -1857,23 +1858,23 @@ void ui_resize_canvas_window(video_canvas_t *canvas, int width, int height)
     DBG(("ui_resize_canvas_window (width: %d height: %d  winw: %d winh: %d hwscale:%d)", width, height, window_width, window_height,canvas->videoconfig->hwscale));
 
     def = 0;
-    if (!canvas->videoconfig->hwscale || (window_width < WINDOW_MINW) || (window_height < WINDOW_MINH)) {
+    if (!raster->videoconfig->hwscale || (window_width < WINDOW_MINW) || (window_height < WINDOW_MINH)) {
         def = 1;
         window_width = width;
         window_height = height;
     }
 
-    appshell = &app_shells[canvas->app_shell];
+    appshell = &app_shells[raster->canvas->app_shell];
 
-    build_screen_canvas_widget(canvas);
-    if (! canvas->videoconfig->hwscale) {
-        gtk_widget_set_size_request(canvas->emuwindow, window_width, window_height);
+    build_screen_canvas_widget(raster);
+    if (!raster->videoconfig->hwscale) {
+        gtk_widget_set_size_request(raster->canvas->emuwindow, window_width, window_height);
     }
 
     if (def) {
         /* maintain aspect ratio */
-        setup_aspect(canvas);
-        toggle_aspect(canvas);
+        setup_aspect(raster);
+        toggle_aspect(raster->canvas);
         /* set initial (properly scaled) window size */
         window_width = appshell->geo.min_width;
         window_height = appshell->geo.min_height;
@@ -2497,8 +2498,8 @@ void ui_unblock_shells(void)
        which is evil UI design, imho; unfortunately I don't know a "better" way :( - pottendo */
     keyboard_key_clear();
     if (ui_cached_video_canvas) {
-	gdk_pointer_grab(ui_cached_video_canvas->emuwindow->window, 1, 0, 
-			 ui_cached_video_canvas->emuwindow->window, 
+	gdk_pointer_grab(ui_cached_video_canvas->canvas->emuwindow->window, 1, 0, 
+			 ui_cached_video_canvas->canvas->emuwindow->window, 
 			 blankCursor, GDK_CURRENT_TIME);
 	gdk_pointer_ungrab(GDK_CURRENT_TIME);
 	ui_check_mouse_cursor();
@@ -2746,7 +2747,7 @@ gboolean configure_callback_app(GtkWidget *w, GdkEventConfigure *e, gpointer cli
 
 gboolean configure_callback_canvas(GtkWidget *w, GdkEventConfigure *e, gpointer client_data)
 {
-    video_canvas_t *c = (video_canvas_t *) client_data;
+    raster_t *c = (raster_t *) client_data;
 
     if ((e->width < WINDOW_MINW) || (e->height < WINDOW_MINH)) {
         /* DBG(("configure_callback_canvas skipped")); */
@@ -2781,7 +2782,7 @@ gboolean configure_callback_canvas(GtkWidget *w, GdkEventConfigure *e, gpointer 
 
     /* maintain aspect ratio */
     setup_aspect(c);
-    toggle_aspect(c);
+    toggle_aspect(c->canvas);
     return 0;
 }
 

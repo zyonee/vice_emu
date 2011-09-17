@@ -28,12 +28,14 @@
 #include <stdio.h>
 
 #include "machine.h"
+#include "raster.h"
 #include "ui.h"
+#include "uipalcontrol.h"
 #include "video.h"
 #include "resources.h"
 #include "videoarch.h"
 
-static video_canvas_t *cached_canvas;
+static raster_t *cached_canvas;
 
 typedef struct pal_res_s {
     char *label;        /* Label of Adjustmentbar */
@@ -79,10 +81,10 @@ static void pal_ctrl_reset (GtkWidget *w, gpointer data)
         }
     }      
 
-    video_canvas_refresh_all(cached_canvas);
+    raster_refresh_all(cached_canvas);
 }
 
-GtkWidget *build_pal_ctrl_widget(video_canvas_t *canvas)
+GtkWidget *build_pal_ctrl_widget(raster_t *canvas)
 {
     GtkWidget *b, *hb;
     GtkObject *adj;

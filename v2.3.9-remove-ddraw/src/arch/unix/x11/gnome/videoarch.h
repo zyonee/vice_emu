@@ -46,11 +46,6 @@ struct video_canvas_s {
     unsigned int created;
     GtkWidget *emuwindow, *pane;
     GdkImage *gdk_image;
-    struct video_render_config_s *videoconfig;
-    struct draw_buffer_s *draw_buffer;
-    struct viewport_s *viewport;
-    struct geometry_s *geometry;
-    struct palette_s *palette;
     float refreshrate; /* currently displayed refresh rate */
 
     struct video_draw_buffer_callback_s *video_draw_buffer_callback;

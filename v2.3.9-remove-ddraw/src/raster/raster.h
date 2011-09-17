@@ -201,6 +201,9 @@ extern void raster_shutdown(raster_t *raster);
 extern raster_t *raster_new(unsigned int num_modes, unsigned int num_sprites);
 extern void raster_reset(raster_t *raster);
 extern int raster_realize(raster_t *raster);
+void raster_refresh_all(raster_t *raster);
+void raster_redraw_size(raster_t *raster, unsigned int width,
+                              unsigned int height);
 extern void raster_canvas_init(raster_t *raster);
 extern void raster_set_geometry(raster_t *raster,
                                 unsigned int canvas_width,

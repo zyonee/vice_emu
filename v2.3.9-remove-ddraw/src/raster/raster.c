@@ -187,8 +187,7 @@ static int perform_mode_change(raster_t *raster)
 {
     if (!video_disabled_mode
         && raster->canvas && raster->palette != NULL) {
-        if (video_canvas_set_palette(raster->canvas,
-            raster->palette, &raster->videoconfig->color_tables) < 0)
+        if (video_canvas_set_palette(raster) < 0)
             return -1;
     }
     raster_force_repaint(raster);
@@ -442,6 +441,39 @@ int raster_realize(raster_t *raster)
     }
 
     return 0;
+}
+
+void raster_refresh_all(raster_t *raster)
+{
+    video_canvas_refresh(raster,
+                 raster->viewport->first_x
+                 + raster->geometry->extra_offscreen_border_left,
+                 raster->viewport->first_line,
+                 raster->viewport->x_offset,
+                 raster->viewport->y_offset,
+                 MIN(raster->draw_buffer->canvas_width,
+                     raster->geometry->screen_size.width - raster->viewport->first_x),
+                 MIN(raster->draw_buffer->canvas_height,
+                     raster->viewport->last_line - raster->viewport->first_line + 1));
+}
+
+void raster_redraw_size(raster_t *raster, unsigned int width,
+                              unsigned int height)
+{
+    if (raster->videoconfig->doublesizex) {
+        width /= (raster->videoconfig->doublesizex + 1);
+    }
+    if (raster->videoconfig->doublesizey) {
+        height /= (raster->videoconfig->doublesizey + 1);
+    }
+
+    if (width != raster->draw_buffer->canvas_width
+        || height != raster->draw_buffer->canvas_height) {
+        raster->draw_buffer->canvas_width = width;
+        raster->draw_buffer->canvas_height = height;
+        video_viewport_resize(raster);
+    }
+    raster_refresh_all(raster);
 }
 
 static void raster_destroy_raster(raster_t *raster)
