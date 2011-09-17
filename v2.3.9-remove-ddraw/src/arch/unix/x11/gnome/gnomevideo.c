@@ -127,7 +127,7 @@ video_canvas_t *video_canvas_create(raster_t *raster, unsigned int *width, unsig
     raster->canvas->hwscale_image = NULL;
 #endif
 
-    res = ui_open_canvas_window(raster->canvas, raster->viewport->title, *width, *height, 1);
+    res = ui_open_canvas_window(raster, raster->viewport->title, *width, *height, 1);
     if (res < 0) {
         return NULL;
     }
@@ -192,7 +192,7 @@ void video_canvas_resize(raster_t *raster, unsigned int width, unsigned int heig
         exit(-1);
     }
 
-    ui_resize_canvas_window(raster->canvas, width, height);
+    ui_resize_canvas_window(raster, width, height);
     raster_redraw_size(raster, width, height);
 }
 

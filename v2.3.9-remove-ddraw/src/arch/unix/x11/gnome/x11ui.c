@@ -975,7 +975,7 @@ static void build_screen_canvas_widget(raster_t *c)
     /* XVideo must be refreshed when the application window is moved. */
     g_signal_connect(G_OBJECT(new_canvas), "configure-event", G_CALLBACK(configure_callback_canvas), (void*)c);
     g_signal_connect(G_OBJECT(new_canvas), "expose-event", G_CALLBACK(exposure_callback_canvas), (void*)c->canvas);
-    g_signal_connect(G_OBJECT(new_canvas), "enter-notify-event", G_CALLBACK(enter_window_callback), (void *)c->canvas);
+    g_signal_connect(G_OBJECT(new_canvas), "enter-notify-event", G_CALLBACK(enter_window_callback), (void *)c);
     g_signal_connect(G_OBJECT(new_canvas), "leave-notify-event", G_CALLBACK(leave_window_callback), (void *)c->canvas);
     g_signal_connect(G_OBJECT(new_canvas), "focus-out-event", G_CALLBACK(leave_window_callback), (void *)c->canvas);
     g_signal_connect(G_OBJECT(new_canvas), "map-event", G_CALLBACK(map_callback), NULL);
@@ -984,7 +984,7 @@ static void build_screen_canvas_widget(raster_t *c)
     g_signal_connect(G_OBJECT(new_canvas), "motion-notify-event", G_CALLBACK(mouse_handler), (void *) c);
     g_signal_connect(G_OBJECT(new_canvas), "key-press-event", G_CALLBACK(kbd_event_handler), (void *) c->canvas);
     g_signal_connect(G_OBJECT(new_canvas), "key-release-event", G_CALLBACK(kbd_event_handler), (void *) c->canvas);
-    g_signal_connect(G_OBJECT(new_canvas), "focus-in-event", G_CALLBACK(enter_window_callback), (void *) c->canvas);
+    g_signal_connect(G_OBJECT(new_canvas), "focus-in-event", G_CALLBACK(enter_window_callback), (void *) c);
 
     if (c->videoconfig->hwscale) {
         /* For hwscale, it's a feature that new_canvas must bloat to 100% size
@@ -2699,7 +2699,7 @@ gboolean enter_window_callback(GtkWidget *w, GdkEvent *e, gpointer p)
     keyboard_key_clear();
 
 #ifdef HAVE_FULLSCREEN
-    fullscreen_mouse_moved((struct video_canvas_s *)p, 0, 0, 2);
+    fullscreen_mouse_moved(((raster_t *)p)->canvas, 0, 0, 2);
 #endif
 
     return 0;
