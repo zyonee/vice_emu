@@ -2013,12 +2013,24 @@ trap_skipped:
             LD(reg_e, 8, LOAD_DIRECT8(p1));
             break;
 
+          case 0x1197:          /* STE direct */   /* FIXME: fix for 6809, 6309 only opcode */
+            ST(reg_e, 8, (reg_dpr << 8) | p1);
+            break;
+
           case 0x11a6:          /* LDE indexed */   /* FIXME: fix for 6809, 6309 only opcode */
             LD(reg_e, 8, LOAD_IND8());
             break;
 
+          case 0x11a7:          /* STE indexed */   /* FIXME: fix for 6809, 6309 only opcode */
+            ST(reg_e, 8, GET_IND_MA());
+            break;
+
           case 0x11b6:          /* LDE extended */   /* FIXME: fix for 6809, 6309 only opcode */
             LD(reg_e, 8, LOAD_EXT8((p1 << 8) | p2));
+            break;
+
+          case 0x11b7:          /* STE extended */   /* FIXME: fix for 6809, 6309 only opcode */
+            ST(reg_e, 8, (p1 << 8) | p2);
             break;
 
           case 0x11c6:          /* LDF immediate */   /* FIXME: fix for 6809, 6309 only opcode */
@@ -2029,12 +2041,24 @@ trap_skipped:
             LD(reg_f, 8, LOAD_DIRECT8(p1));
             break;
 
+          case 0x11d7:          /* STF direct */   /* FIXME: fix for 6809, 6309 only opcode */
+            ST(reg_f, 8, (reg_dpr << 8) | p1);
+            break;
+
           case 0x11e6:          /* LDF indexed */   /* FIXME: fix for 6809, 6309 only opcode */
             LD(reg_f, 8, LOAD_IND8());
             break;
 
+          case 0x11e7:          /* STF indexed */   /* FIXME: fix for 6809, 6309 only opcode */
+            ST(reg_f, 8, GET_IND_MA());
+            break;
+
           case 0x11f6:          /* LDF extended */   /* FIXME: fix for 6809, 6309 only opcode */
             LD(reg_f, 8, LOAD_EXT8((p1 << 8) | p2));
+            break;
+
+          case 0x11f7:          /* STF extended */   /* FIXME: fix for 6809, 6309 only opcode */
+            ST(reg_f, 8, (p1 << 8) | p2);
             break;
         }
     }
