@@ -835,6 +835,23 @@ static DWORD LOAD_IND32(void)
       STORE(ma, val);  \
   } while (0)
 
+#define SUB(RR, CC, m, bits)                                             \
+  do {                                                                   \
+      unsigned int tmp;                                                  \
+                                                                         \
+      tmp = RR - m - CC;                                                 \
+      if (bits == 8) {                                                   \
+          LOCAL_SET_HALF_CARRY((tmp & 0xf) < (m & 0xf));                 \
+          LOCAL_SET_OVERFLOW(BT((BYTE)(RR ^ m ^ tmp ^ (tmp >> 1)), 7));  \
+      } else {                                                           \
+          LOCAL_SET_OVERFLOW(BT((WORD)(RR ^ m ^ tmp ^ (tmp >> 1)), 15)); \
+      }                                                                  \
+      LOCAL_SET_CARRY(BT(tmp, bits));                                    \
+      LOCAL_SET_NEGATIVE(BT(tmp, bits - 1));                             \
+      LOCAL_SET_ZERO(!tmp);                                              \
+      RR = tmp & (bits == 8) ? 0xff : 0xffff;                            \
+  } while (0)
+
 #define TST_REG(RR, bits)                   \
   do {                                      \
       LOCAL_SET_OVERFLOW(0);                \
@@ -1401,7 +1418,6 @@ trap_skipped:
             RRA(p2, 0, CLK_ABS_I_RMW2, 3, LOAD_ABS_X_RMW, STORE_ABS_X_RMW);
             break;
 
-          case 0x80:            /* NOOP #$nn */
           case 0x82:            /* NOOP #$nn */
           case 0x89:            /* NOOP #$nn */
           case 0xc2:            /* NOOP #$nn */
@@ -1409,12 +1425,16 @@ trap_skipped:
             NOOP_IMM(2);
             break;
 
+          case 0x0080:          /* SUBA immediate */
+            SUB(reg_a, 0, p1, 8);
+            break;
+
           case 0x81:            /* STA ($nn,X) */
             STA(LOAD_ZERO_ADDR(p1 + reg_x), 3, 1, 2, STORE_ABS);
             break;
 
-          case 0x83:            /* SAX ($nn,X) */
-            SAX(LOAD_ZERO_ADDR(p1 + reg_x), 3, 1, 2);
+          case 0x0083:          /* SUBD immediate */
+            SUB(reg_d, 0, (p1 << 8) | p2, 16);
             break;
 
           case 0x84:            /* STY $nn */
@@ -1461,16 +1481,16 @@ trap_skipped:
             SAX(p2, 0, 1, 3);
             break;
 
-          case 0x90:            /* BCC $nnnn */
-            BRANCH(!LOCAL_CARRY(), p1);
+          case 0x0090:          /* SUBA direct */
+            SUB(reg_a, 0, LOAD_DIRECT8(p1), 8);
             break;
 
           case 0x91:            /* STA ($nn),Y */
             STA_IND_Y(p1);
             break;
 
-          case 0x93:            /* SHA ($nn),Y */
-            SHA_IND_Y(p1);
+          case 0x0093:          /* SUBD direct */
+            SUB(reg_d, 0, LOAD_DIRECT16(p1), 16);
             break;
 
           case 0x94:            /* STY $nn,X */
@@ -1502,11 +1522,7 @@ trap_skipped:
             break;
 
           case 0x9b:            /* SHS $nnnn,Y */
-#ifdef C64DTV
-            NOOP_ABS_Y();
-#else
             SHS_ABS_Y(p2);
-#endif
             break;
 
           case 0x9c:            /* SHY $nnnn,X */
@@ -1525,8 +1541,8 @@ trap_skipped:
             SHA_ABS_Y(p2);
             break;
 
-          case 0xa0:            /* LDY #$nn */
-            LDY(p1, 0, 2);
+          case 0x00a0:          /* SUBA indexed */
+            SUB(reg_a, 0, LOAD_IND8(), 8);
             break;
 
           case 0xa1:            /* LDA ($nn,X) */
@@ -1537,8 +1553,8 @@ trap_skipped:
             LDX(p1, 0, 2);
             break;
 
-          case 0xa3:            /* LAX ($nn,X) */
-            LAX(LOAD_IND_X(p1), 1, 2);
+          case 0x00a3:          /* SUBD indexed */
+            SUB(reg_d, 0, LOAD_IND16(), 16);
             break;
 
           case 0xa4:            /* LDY $nn */
@@ -1589,16 +1605,16 @@ trap_skipped:
             LAX(LOAD(p2), 1, 3);
             break;
 
-          case 0xb0:            /* BCS $nnnn */
-            BRANCH(LOCAL_CARRY(), p1);
+          case 0x00b0:            /* SUBA extended */
+            SUB(reg_a, 0, LOAD_EXT8((p1 << 8) | p2), 8);
             break;
 
           case 0xb1:            /* LDA ($nn),Y */
             LDA(LOAD_IND_Y_BANK(p1), 1, 2);
             break;
 
-          case 0xb3:            /* LAX ($nn),Y */
-            LAX(LOAD_IND_Y(p1), 1, 2);
+          case 0x00b3:            /* SUBD extended */
+            SUB(reg_d, 0, LOAD_EXT16((p1 << 8) | p2), 16);
             break;
 
           case 0xb4:            /* LDY $nn,X */
@@ -1649,8 +1665,8 @@ trap_skipped:
             LAX(LOAD_ABS_Y(p2), 1, 3);
             break;
 
-          case 0xc0:            /* CPY #$nn */
-            CPY(p1, 0, 2);
+          case 0x00c0:          /* SUBB immediate */
+            SUB(reg_b, 0, p1, 8);
             break;
 
           case 0xc1:            /* CMP ($nn,X) */
@@ -1709,8 +1725,8 @@ trap_skipped:
             DCP(p2, 0, CLK_ABS_RMW2, 3, LOAD_ABS, STORE_ABS);
             break;
 
-          case 0xd0:            /* BNE $nnnn */
-            BRANCH(!LOCAL_ZERO(), p1);
+          case 0x00d0:          /* SUBB direct */
+            SUB(reg_b, 0, LOAD_DIRECT8(p1), 8);
             break;
 
           case 0xd1:            /* CMP ($nn),Y */
@@ -1765,8 +1781,8 @@ trap_skipped:
             DCP(p2, 0, CLK_ABS_I_RMW2, 3, LOAD_ABS_X_RMW, STORE_ABS_X_RMW);
             break;
 
-          case 0xe0:            /* CPX #$nn */
-            CPX(p1, 0, 2);
+          case 0x00e0:          /* SUBB indexed */
+            SUB(reg_b, 0, LOAD_IND8(), 8);
             break;
 
           case 0xe1:            /* SBC ($nn,X) */
@@ -1825,8 +1841,8 @@ trap_skipped:
             ISB(p2, 0, CLK_ABS_RMW2, 3, LOAD_ABS, STORE_ABS);
             break;
 
-          case 0xf0:            /* BEQ $nnnn */
-            BRANCH(LOCAL_ZERO(), p1);
+          case 0x00f0:          /* SUBB extended */
+            SUB(reg_b, 0, LOAD_EXT8((p1 << 8) | p2), 8);
             break;
 
           case 0xf1:            /* SBC ($nn),Y */
@@ -1917,6 +1933,10 @@ trap_skipped:
             TST_REG(reg_w, 16);
             break;
 
+          case 0x1080:          /* SUBW immediate */   /* FIXME: fix for 6809, 6309 only opcode */
+            SUB(reg_w, 0, (p1 << 8) | p2, 16);
+            break;
+
           case 0x1086:          /* LDW immediate */   /* FIXME: fix for 6809, 6309 only opcode */
             LD(reg_w, 16, (p1 << 8) | p2);
             break;
@@ -1927,6 +1947,10 @@ trap_skipped:
 
           case 0x108e:          /* LDY immediate */
             LD(reg_y, 16, (p1 << 8) | p2);
+            break;
+
+          case 0x1090:          /* SUBW direct */   /* FIXME: fix for 6809, 6309 only opcode */
+            SUB(reg_w, 0, LOAD_DIRECT16(p1), 16);
             break;
 
           case 0x1096:          /* LDW direct */   /* FIXME: fix for 6809, 6309 only opcode */
@@ -1941,6 +1965,10 @@ trap_skipped:
             LD(reg_y, 16, LOAD_DIRECT16(p1));
             break;
 
+          case 0x10a0:          /* SUBW indexed */   /* FIXME: fix for 6809, 6309 only opcode */
+            SUB(reg_w, 0, LOAD_IND16(), 16);
+            break;
+
           case 0x10a6:          /* LDW indexed */   /* FIXME: fix for 6809, 6309 only opcode */
             LD(reg_w, 16, LOAD_IND16());
             break;
@@ -1951,6 +1979,10 @@ trap_skipped:
 
           case 0x10ae:          /* LDY indexed */
             LD(reg_y, 16, LOAD_IND16());
+            break;
+
+          case 0x10b0:          /* SUBW extended */   /* FIXME: fix for 6809, 6309 only opcode */
+            SUB(reg_w, 0, LOAD_EXT16((p1 << 8) | p2), 16);
             break;
 
           case 0x10b6:          /* LDW extended */   /* FIXME: fix for 6809, 6309 only opcode */
@@ -2005,8 +2037,16 @@ trap_skipped:
             TST_REG(reg_f, 8);
             break;
 
+          case 0x1180:          /* SUBE immediate */   /* FIXME: fix for 6809, 6309 only opcode */
+            SUB(reg_e, 0, p1, 8);
+            break;
+
           case 0x1186:          /* LDE immediate */   /* FIXME: fix for 6809, 6309 only opcode */
             LD(reg_e, 8, p1);
+            break;
+
+          case 0x1190:          /* SUBE direct */   /* FIXME: fix for 6809, 6309 only opcode */
+            SUB(reg_e, 0, LOAD_DIRECT8(p1), 8);
             break;
 
           case 0x1196:          /* LDE direct */   /* FIXME: fix for 6809, 6309 only opcode */
@@ -2017,12 +2057,20 @@ trap_skipped:
             ST(reg_e, 8, (reg_dpr << 8) | p1);
             break;
 
+          case 0x11a0:          /* SUBE indexed */   /* FIXME: fix for 6809, 6309 only opcode */
+            SUB(reg_e, 0, LOAD_IND8(), 8);
+            break;
+
           case 0x11a6:          /* LDE indexed */   /* FIXME: fix for 6809, 6309 only opcode */
             LD(reg_e, 8, LOAD_IND8());
             break;
 
           case 0x11a7:          /* STE indexed */   /* FIXME: fix for 6809, 6309 only opcode */
             ST(reg_e, 8, GET_IND_MA());
+            break;
+
+          case 0x11b0:          /* SUBE extended */   /* FIXME: fix for 6809, 6309 only opcode */
+            SUB(reg_e, 0, LOAD_EXT8((p1 << 8) | p2), 8);
             break;
 
           case 0x11b6:          /* LDE extended */   /* FIXME: fix for 6809, 6309 only opcode */
@@ -2033,8 +2081,16 @@ trap_skipped:
             ST(reg_e, 8, (p1 << 8) | p2);
             break;
 
+          case 0x11c0:          /* SUBF immediate */   /* FIXME: fix for 6809, 6309 only opcode */
+            SUB(reg_f, 0, p1, 8);
+            break;
+
           case 0x11c6:          /* LDF immediate */   /* FIXME: fix for 6809, 6309 only opcode */
             LD(reg_f, 8, p1);
+            break;
+
+          case 0x11d0:          /* SUBF direct */   /* FIXME: fix for 6809, 6309 only opcode */
+            SUB(reg_f, 0, LOAD_DIRECT8(p1), 8);
             break;
 
           case 0x11d6:          /* LDF direct */   /* FIXME: fix for 6809, 6309 only opcode */
@@ -2045,12 +2101,20 @@ trap_skipped:
             ST(reg_f, 8, (reg_dpr << 8) | p1);
             break;
 
+          case 0x11e0:          /* SUBF indexed */   /* FIXME: fix for 6809, 6309 only opcode */
+            SUB(reg_f, 0, LOAD_IND8(), 8);
+            break;
+
           case 0x11e6:          /* LDF indexed */   /* FIXME: fix for 6809, 6309 only opcode */
             LD(reg_f, 8, LOAD_IND8());
             break;
 
           case 0x11e7:          /* STF indexed */   /* FIXME: fix for 6809, 6309 only opcode */
             ST(reg_f, 8, GET_IND_MA());
+            break;
+
+          case 0x11f0:          /* SUBF extended */   /* FIXME: fix for 6809, 6309 only opcode */
+            SUB(reg_f, 0, LOAD_EXT8((p1 << 8) | p2), 8);
             break;
 
           case 0x11f6:          /* LDF extended */   /* FIXME: fix for 6809, 6309 only opcode */
