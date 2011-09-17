@@ -691,9 +691,153 @@ static DWORD LOAD_IND32(void)
 
 #define BT(val, bit) (val & (1 < bit)) ? 1 : 0
 
+#define MAKE16(r0, r1, mixed)  \
+  do {                         \
+      if (mixed) {             \
+          r0 = r1 | (r1 << 8); \
+      } else {                 \
+          r0 = r1;             \
+      }                        \
+  } while (0)
+
+#define MAKE8(r0, r1, mixed, pr) \
+  do {                           \
+      if (mixed) {               \
+          if (pr) {              \
+              r0 = r1 >> 8;      \
+          } else {               \
+              r0 = r1 & 0xff;    \
+          }                      \
+      } else {                   \
+          r0 = r1;               \
+      }                          \
+  } while (0)
+
+
+/* FIXME: the following 2 macros need to be fixed for 6809 */
+
+#define REG2VAR(rnr, var, mixed)           \
+  do {                                     \
+      switch (rnr) {                       \
+          case 0:                          \
+              var = reg_d;                 \
+              break;                       \
+          case 1:                          \
+              var = reg_x;                 \
+              break;                       \
+          case 2:                          \
+              var = reg_y;                 \
+              break;                       \
+          case 3:                          \
+              var = reg_usp;               \
+              break;                       \
+          case 4:                          \
+              var = reg_ssp;               \
+              break;                       \
+          case 5:                          \
+              var = reg_pc;                \
+              break;                       \
+          case 6:                          \
+              var = reg_w;                 \
+              break;                       \
+          case 7:                          \
+              var = reg_v;                 \
+              break;                       \
+          case 8:                          \
+              MAKE16(var, reg_a, mixed);   \
+              break;                       \
+          case 9:                          \
+              MAKE16(var, reg_b, mixed);   \
+              break;                       \
+          case 10:                         \
+              MAKE16(var, reg_p, mixed);   \
+              break;                       \
+          case 11:                         \
+              MAKE16(var, reg_dpr, mixed); \
+              break;                       \
+          case 12:                         \
+          case 13:                         \
+              var = 0;                     \
+              break;                       \
+          case 14:                         \
+              MAKE16(var, reg_e, mixed);   \
+              break;                       \
+          case 15:                         \
+              MAKE16(var, reg_f, mixed);   \
+              break;                       \
+      }                                    \
+  } while (0)
+
+#define VAR2REG(rnr, var, mixed)             \
+  do {                                       \
+      switch (rnr) {                         \
+          case 0:                            \
+              reg_d = var;                   \
+              break;                         \
+          case 1:                            \
+              reg_x = var;                   \
+              break;                         \
+          case 2:                            \
+              reg_y = var;                   \
+              break;                         \
+          case 3:                            \
+              reg_usp = var;                 \
+              break;                         \
+          case 4:                            \
+              reg_ssp = var;                 \
+              break;                         \
+          case 5:                            \
+              reg_pc = var;                  \
+              break;                         \
+          case 6:                            \
+              reg_w = var;                   \
+              break;                         \
+          case 7:                            \
+              reg_v = var;                   \
+              break;                         \
+          case 8:                            \
+              MAKE8(reg_a, var, mixed, 1);   \
+              break;                         \
+          case 9:                            \
+              MAKE8(reg_b, var, mixed, 0);   \
+              break;                         \
+          case 10:                           \
+              MAKE8(reg_p, var, mixed, 0);   \
+              break;                         \
+          case 11:                           \
+              MAKE8(reg_dpr, var, mixed, 1); \
+              break;                         \
+          case 12:                           \
+          case 13:                           \
+              break;                         \
+          case 14:                           \
+              MAKE8(reg_e, var, mixed, 1);   \
+              break;                         \
+          case 15:                           \
+              MAKE8(reg_f, var, mixed, 0);   \
+              break;                         \
+      }                                      \
+  } while (0)
+
 /* ------------------------------------------------------------------------- */
 
 /* Opcodes.  */
+
+#define EXG(rnr)                           \
+  do {                                     \
+      int mixed;                           \
+      WORD tmp1, tmp2;                     \
+                                           \
+      if (((rnr >> 4) & 8) != (rnr & 8)) { \
+          mixed = 1;                       \
+      } else {                             \
+          mixed = 0;                       \
+      }                                    \
+      REG2VAR((rnr >> 4), tmp1, mixed);    \
+      REG2VAR((rnr & 0xf), tmp2, mixed);   \
+      VAR2REG((rnr >> 4), tmp2, mixed);    \
+      VAR2REG((rnr & 0xf), tmp1, mixed);   \
+  } while (0)
 
 /* The 0x02 JAM opcode is also used to patch the ROM.  The function trap_handler()
    returns nonzero if this is not a patch, but a `real' JAM instruction. */
@@ -1017,6 +1161,20 @@ static DWORD LOAD_IND32(void)
       RR = tmp & (bits == 8) ? 0xff : 0xffff;                            \
   } while (0)
 
+#define TFR(rnr)                           \
+  do {                                     \
+      int mixed;                           \
+      WORD tmp;                            \
+                                           \
+      if (((rnr >> 4) & 8) != (rnr & 8)) { \
+          mixed = 1;                       \
+      } else {                             \
+          mixed = 0;                       \
+      }                                    \
+      REG2VAR((rnr >> 4), tmp, mixed);     \
+      VAR2REG((rnr & 0xf), tmp, mixed);    \
+  } while (0)
+
 #define TST_REG(RR, bits)                   \
   do {                                      \
       LOCAL_SET_OVERFLOW(0);                \
@@ -1238,12 +1396,12 @@ trap_skipped:
             SEX();
             break;
 
-          case 0x1e:            /* ASL $nnnn,X */
-            ASL(p2, CLK_ABS_I_RMW2, 3, LOAD_ABS_X_RMW, STORE_ABS_X_RMW);
+          case 0x001e:          /* EXG registers */
+            EXG(p1);
             break;
 
-          case 0x1f:            /* SLO $nnnn,X */
-            SLO(p2, 0, CLK_ABS_I_RMW2, 3, LOAD_ABS_X_RMW, STORE_ABS_X_RMW);
+          case 0x001f:          /* TFR registers */
+            TFR(p1);
             break;
 
           case 0x20:            /* JSR $nnnn */
