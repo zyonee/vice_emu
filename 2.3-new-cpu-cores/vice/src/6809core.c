@@ -987,6 +987,12 @@ static DWORD LOAD_IND32(void)
       STORE(ma, val);  \
   } while (0)
 
+#define RTS()                \
+  do {                       \
+      reg_pc = PULLS() << 8; \
+      reg_pc |= PULLS();     \
+  } while (0)
+
 #define SEX()                              \
   do {                                     \
       LOCAL_SET_NEGATIVE(BT(reg_b, 7));    \
@@ -1332,8 +1338,8 @@ trap_skipped:
             SEC();
             break;
 
-          case 0x39:            /* AND $nnnn,Y */
-            AND(LOAD_ABS_Y(p2), 1, 3);
+          case 0x0039:          /* RTS */
+            RTS();
             break;
 
           case 0x3b:            /* RLA $nnnn,Y */
