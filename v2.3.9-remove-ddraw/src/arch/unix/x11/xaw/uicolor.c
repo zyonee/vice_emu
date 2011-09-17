@@ -99,9 +99,9 @@ int uicolor_alloc_colors(raster_t *raster)
     return 0;
 }
 
-int uicolor_set_palette(struct video_canvas_s *c, const palette_t *palette)
+int uicolor_set_palette(raster_t *raster)
 {
-    return color_alloc_colors(c, palette, NULL);
+    return color_alloc_colors(raster->canvas, raster->palette, NULL);
 }
 
 /*-----------------------------------------------------------------------*/

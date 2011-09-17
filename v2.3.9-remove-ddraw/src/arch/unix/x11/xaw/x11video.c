@@ -777,12 +777,11 @@ void video_canvas_destroy(video_canvas_t *canvas)
 #endif
 }
 
-int video_canvas_set_palette(video_canvas_t *c, struct palette_s *palette,
-                             video_render_color_tables_t *color_tables)
+int video_canvas_set_palette(raster_t *raster)
 {
 #ifdef HAVE_XVIDEO
     /* Apply color settings to XVideo. */
-    if (c->videoconfig->hwscale && c->xv_image) {
+    if (raster->videoconfig->hwscale && c->xv_image) {
         int i;
 
         Display *dpy = x11ui_get_display_ptr();
@@ -807,7 +806,7 @@ int video_canvas_set_palette(video_canvas_t *c, struct palette_s *palette,
     }
 #endif
 
-    return uicolor_set_palette(c, palette);
+    return uicolor_set_palette(raster);
 }
 
 /* Change the size of the canvas. */
