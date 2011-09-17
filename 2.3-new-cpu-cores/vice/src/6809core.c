@@ -835,6 +835,13 @@ static DWORD LOAD_IND32(void)
       STORE(ma, val);  \
   } while (0)
 
+#define SEX()                              \
+  do {                                     \
+      LOCAL_SET_NEGATIVE(BT(reg_b, 7));    \
+      reg_a = LOCAL_NEGATIVE() ? 0xff : 0; \
+      LOCAL_SET_ZERO(!reg_a);              \
+  } while (0)
+
 #define SUB(RR, CC, m, bits)                                             \
   do {                                                                   \
       unsigned int tmp;                                                  \
@@ -1070,8 +1077,8 @@ trap_skipped:
             NOOP_ABS_X();
             break;
 
-          case 0x1d:            /* ORA $nnnn,X */
-            ORA(LOAD_ABS_X(p2), 1, 3);
+          case 0x001d:          /* SEX (Sign EXtend, not the other thing ;) */
+            SEX();
             break;
 
           case 0x1e:            /* ASL $nnnn,X */
