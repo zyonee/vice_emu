@@ -36,6 +36,7 @@
  * - define reg_usp (User Stack Pointer) as 16bit (6809/6309).
  * - define reg_ssp (System Stack Pointer) as 16bit (6809/6309).
  * - define reg_dpr (Direct Page Register) as 8bit (6809/6309).
+ * - define a function to handle the SYNC6809() call.
  *
  * Notes:
  * reg_d is reg_a and reg_b combined (6809/6309).
@@ -2033,6 +2034,12 @@ define BTM_VAR2REG(rnr, var) \
       }                               \
   } while (0)
 
+#define SYNC()    \
+  do {            \
+      PC_INC(1);  \
+      SYNC6809(); \
+  while (0)
+
 #define TFR(rnr)                           \
   do {                                     \
       int mixed;                           \
@@ -2222,8 +2229,8 @@ trap_skipped:
             NOP(1);
             break;
 
-          case 0x13:            /* SLO ($nn),Y */
-            SLO_IND_Y(p1);
+          case 0x0013:          /* SYNC */
+            SYNC();
             break;
 
           case 0x14:            /* NOOP $nn,X */
