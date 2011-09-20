@@ -29,9 +29,13 @@
 #include "fullscrn.h"
 #include "lib.h"
 #include "log.h"
+#include "palette.h"
+#include "raster.h"
 #include "resources.h"
 #include "ui.h"
 #include "video.h"
+#include "video-dx9.h"
+#include "video-render.h"
 #include "videoarch.h"
 #include "viewport.h"
 
@@ -71,22 +75,22 @@ void video_shutdown_dx9(void)
     }
 }
 
-int video_device_create_dx9(video_canvas_t *canvas, int fullscreen)
+int video_device_create_dx9(raster_t *raster, int fullscreen)
 {
     int device = D3DADAPTER_DEFAULT;
 
-    ZeroMemory(&canvas->d3dpp, sizeof(canvas->d3dpp));
-    canvas->d3dpp.BackBufferFormat = D3DFMT_X8R8G8B8;
-    canvas->d3dpp.BackBufferCount = 1;
-    canvas->d3dpp.MultiSampleType = D3DMULTISAMPLE_NONE;
-    canvas->d3dpp.SwapEffect = D3DSWAPEFFECT_FLIP;
-    canvas->d3dpp.Flags = 0;
-    canvas->d3dpp.EnableAutoDepthStencil = FALSE;
-    canvas->d3dpp.FullScreen_RefreshRateInHz = D3DPRESENT_RATE_DEFAULT;
+    ZeroMemory(&raster->canvas->d3dpp, sizeof(raster->canvas->d3dpp));
+    raster->canvas->d3dpp.BackBufferFormat = D3DFMT_X8R8G8B8;
+    raster->canvas->d3dpp.BackBufferCount = 1;
+    raster->canvas->d3dpp.MultiSampleType = D3DMULTISAMPLE_NONE;
+    raster->canvas->d3dpp.SwapEffect = D3DSWAPEFFECT_FLIP;
+    raster->canvas->d3dpp.Flags = 0;
+    raster->canvas->d3dpp.EnableAutoDepthStencil = FALSE;
+    raster->canvas->d3dpp.FullScreen_RefreshRateInHz = D3DPRESENT_RATE_DEFAULT;
     if (dx_primary_surface_rendering) {
-        canvas->d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;
+        raster->canvas->d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;
     } else {
-        canvas->d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_DEFAULT;
+        raster->canvas->d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_DEFAULT;
     }
 
     if (fullscreen) {
@@ -99,49 +103,49 @@ int video_device_create_dx9(video_canvas_t *canvas, int fullscreen)
 
         resources_get_int("KeepAspectRatio", &keep_aspect_ratio);
         if (keep_aspect_ratio == 0) {
-            canvas->dest_rect_ptr = NULL;
+            raster->canvas->dest_rect_ptr = NULL;
         } else {
-            canvas->dest_rect_ptr = &canvas->dest_rect;
+            raster->canvas->dest_rect_ptr = &raster->canvas->dest_rect;
             resources_get_int("TrueAspectRatio", &true_aspect_ratio);
             if (true_aspect_ratio) {
-                aspect_ratio = (int)(canvas->geometry->pixel_aspect_ratio * 1000);
+                aspect_ratio = (int)(raster->geometry->pixel_aspect_ratio * 1000);
             } else {
                 resources_get_int("AspectRatio", &aspect_ratio);
             }
-            canvas_aspect_ratio = aspect_ratio / 1000.0 * canvas->width / canvas->height;
+            canvas_aspect_ratio = aspect_ratio / 1000.0 * raster->canvas->width / raster->canvas->height;
             canvas_aspect_ratio = aspect_ratio / 1000.0 
-                                    * canvas->width / canvas->height;
+                                    * raster->canvas->width / raster->canvas->height;
             if (canvas_aspect_ratio < (double) width / height) {
                 shrinked_width = (int)(height * canvas_aspect_ratio);
-                canvas->dest_rect.top = 0;
-                canvas->dest_rect.bottom = height - 1;
-                canvas->dest_rect.left = (width - shrinked_width) / 2;
-                canvas->dest_rect.right = canvas->dest_rect.left + shrinked_width - 1;
+                raster->canvas->dest_rect.top = 0;
+                raster->canvas->dest_rect.bottom = height - 1;
+                raster->canvas->dest_rect.left = (width - shrinked_width) / 2;
+                raster->canvas->dest_rect.right = raster->canvas->dest_rect.left + shrinked_width - 1;
             } else {
                 shrinked_height = (int)(width / canvas_aspect_ratio);
-                canvas->dest_rect.left = 0;
-                canvas->dest_rect.right = width - 1;
-                canvas->dest_rect.top = (height - shrinked_height) / 2;
-                canvas->dest_rect.bottom = canvas->dest_rect.top + shrinked_height - 1;
+                raster->canvas->dest_rect.left = 0;
+                raster->canvas->dest_rect.right = width - 1;
+                raster->canvas->dest_rect.top = (height - shrinked_height) / 2;
+                raster->canvas->dest_rect.bottom = raster->canvas->dest_rect.top + shrinked_height - 1;
             }
         }
-        canvas->d3dpp.Windowed = FALSE;
-        canvas->d3dpp.BackBufferWidth = width;
-        canvas->d3dpp.BackBufferHeight = height;
+        raster->canvas->d3dpp.Windowed = FALSE;
+        raster->canvas->d3dpp.BackBufferWidth = width;
+        raster->canvas->d3dpp.BackBufferHeight = height;
     } else {
-        canvas->dest_rect_ptr = NULL;
-        canvas->d3dpp.Windowed = TRUE;
-        canvas->d3dpp.BackBufferWidth = canvas->width;
-        canvas->d3dpp.BackBufferHeight = canvas->height;
+        raster->canvas->dest_rect_ptr = NULL;
+        raster->canvas->d3dpp.Windowed = TRUE;
+        raster->canvas->d3dpp.BackBufferWidth = raster->canvas->width;
+        raster->canvas->d3dpp.BackBufferHeight = raster->canvas->height;
     }
 
-    if (S_OK != IDirect3D9_CreateDevice(d3d, device, D3DDEVTYPE_HAL, canvas->render_hwnd, D3DCREATE_SOFTWARE_VERTEXPROCESSING, &canvas->d3dpp, &canvas->d3ddev)) {
+    if (S_OK != IDirect3D9_CreateDevice(d3d, device, D3DDEVTYPE_HAL, raster->canvas->render_hwnd, D3DCREATE_SOFTWARE_VERTEXPROCESSING, &raster->canvas->d3dpp, &raster->canvas->d3ddev)) {
         log_debug("video_dx9: Failed to create the DirectX9 device!");
         return -1;
     }
 
 
-    if (S_OK != IDirect3DDevice9_CreateOffscreenPlainSurface(canvas->d3ddev, canvas->width, canvas->height, D3DFMT_X8R8G8B8, D3DPOOL_DEFAULT, &canvas->d3dsurface, NULL)) {
+    if (S_OK != IDirect3DDevice9_CreateOffscreenPlainSurface(raster->canvas->d3ddev, raster->canvas->width, raster->canvas->height, D3DFMT_X8R8G8B8, D3DPOOL_DEFAULT, &raster->canvas->d3dsurface, NULL)) {
         log_debug("video_dx9: Failed to create the offscreen surface!");
         return -1;
     }
@@ -151,23 +155,23 @@ int video_device_create_dx9(video_canvas_t *canvas, int fullscreen)
     return 0;
 }
 
-video_canvas_t *video_canvas_create_dx9(video_canvas_t *canvas, unsigned int *width, unsigned int *height)
+video_canvas_t *video_canvas_create_dx9(raster_t *raster, unsigned int *width, unsigned int *height)
 {
-    ui_make_resizable(canvas, 1);
+    ui_make_resizable(raster->canvas, 1);
 
-    canvas->depth = 32;
+    raster->canvas->depth = 32;
 
-    if  (video_device_create_dx9(canvas, 0) != 0) {
+    if  (video_device_create_dx9(raster, 0) != 0) {
         return NULL;
     }
 
-    if (video_set_physical_colors(canvas) < 0) {
+    if (video_set_physical_colors(raster->canvas, raster->palette, &raster->videoconfig->color_tables) < 0) {
         return NULL;
     }
 
-    video_canvas_add(canvas);
+    video_canvas_add(raster);
 
-    return canvas;
+    return raster->canvas;
 }
 
 void video_device_release_dx9(video_canvas_t *canvas)
@@ -287,13 +291,13 @@ int video_canvas_refresh_dx9(raster_t *raster, unsigned int xs, unsigned int ys,
       raster->draw_buffer->draw_buffer_width, lockedrect.Pitch, 32,
       raster->viewport);
 
-    if (S_OK != IDirect3DSurface9_UnlockRect(canvas->d3dsurface)) {
+    if (S_OK != IDirect3DSurface9_UnlockRect(raster->canvas->d3dsurface)) {
         log_debug("video_dx9: Failed to unlock surface!");
         return -1;
     }
 
     do {
-        stretchresult = IDirect3DDevice9_StretchRect(canvas->d3ddev, canvas->d3dsurface, NULL, d3dbackbuffer, canvas->dest_rect_ptr, d3dpreffilter);
+        stretchresult = IDirect3DDevice9_StretchRect(raster->canvas->d3ddev, raster->canvas->d3dsurface, NULL, d3dbackbuffer, raster->canvas->dest_rect_ptr, d3dpreffilter);
 
         if (d3dpreffilter == D3DTEXF_NONE) {
             break;
@@ -311,13 +315,13 @@ int video_canvas_refresh_dx9(raster_t *raster, unsigned int xs, unsigned int ys,
     }
 
     if (S_OK != IDirect3DSurface9_Release(d3dbackbuffer) 
-        || S_OK != IDirect3DDevice9_EndScene(canvas->d3ddev))
+        || S_OK != IDirect3DDevice9_EndScene(raster->canvas->d3ddev))
     {
         log_debug("video_dx9: EndScene failed!");
         return -1;
     }
 
-    if (S_OK != IDirect3DDevice9_Present(canvas->d3ddev, NULL, NULL, NULL, NULL)) {
+    if (S_OK != IDirect3DDevice9_Present(raster->canvas->d3ddev, NULL, NULL, NULL, NULL)) {
         log_debug("video_dx9: Refresh failed to present the scene!");
         return -1;
     }
@@ -326,91 +330,13 @@ int video_canvas_refresh_dx9(raster_t *raster, unsigned int xs, unsigned int ys,
 
 void video_canvas_update_dx9(HWND hwnd, HDC hdc, int xclient, int yclient, int w, int h)
 {
-    video_canvas_t *canvas;
-
-    canvas = video_canvas_for_hwnd(hwnd);
-    if (canvas == NULL) {
+    raster_t *raster = video_canvas_for_hwnd(hwnd);
+    if (raster == NULL) {
         return;
     }
     
     /* Just refresh the whole canvas */
-    video_canvas_refresh_all(canvas);
-}
-
-void video_canvas_set_palette_ddraw_8bit(video_canvas_t *canvas, const palette_t *palette)
-{
-  PALETTEENTRY ape[256];
-  HRESULT result;
-
-  init_palette(palette, ape);
-
-  result = IDirectDraw2_CreatePalette(canvas->dd_object2, DDPCAPS_8BIT, ape, &canvas->dd_palette, NULL);
-}
-
-/* Set the palettes for canvas `c'.  */
-int video_set_palette(video_canvas_t *c)
-{
-  if (c->depth == 8) {
-    HRESULT result;
-
-    /* FIXME: Surface lost errors?  */
-    result = IDirectDrawSurface_SetPalette(c->primary_surface, c->dd_palette);
-    if (result == DDERR_SURFACELOST) {
-      IDirectDrawSurface_Restore(c->primary_surface);
-      result = IDirectDrawSurface_SetPalette(c->primary_surface, c->dd_palette);
-    }
-    if (result != DD_OK) {
-      ui_error("Cannot set palette on primary DirectDraw surface:\n%s", dd_error(result));
-      return -1;
-    }
-  }
-  return 0;
-}
-
-DWORD video_get_color_from_palette_ddraw(video_canvas_t *c, palette_entry_t *i)
-{
-  HDC hdc;
-  DDSURFACEDESC ddsd;
-  HRESULT result;
-  COLORREF oldcolor;
-  DWORD p;
-
-  result = IDirectDrawSurface_GetDC(c->primary_surface, &hdc);
-  if (result == DDERR_SURFACELOST) {
-    IDirectDrawSurface_Restore(c->primary_surface);
-    result = IDirectDrawSurface_GetDC(c->primary_surface, &hdc);
-  }
-  if (result != DD_OK) {
-    ui_error("Cannot get DC on DirectDraw surface while allocating colors:\n%s", dd_error(result));
-    return -1;
-  }
-  oldcolor = GetPixel(hdc, 0, 0);
-  SetPixel(hdc, 0, 0, PALETTERGB(i->red, i->green, i->blue));
-  IDirectDrawSurface_ReleaseDC(c->primary_surface, hdc);
-
-  ddsd.dwSize = sizeof(ddsd);
-  while ((result = IDirectDrawSurface_Lock(c->primary_surface, NULL, &ddsd, 0, NULL)) == DDERR_WASSTILLDRAWING) {
-  }
-  if (result == DDERR_SURFACELOST) {
-    IDirectDrawSurface_Restore(c->primary_surface);
-    result = IDirectDrawSurface_Lock(c->primary_surface, NULL, &ddsd, 0, NULL);
-  }
-  if (result != DD_OK) {
-    ui_error("Cannot lock temporary surface:\n%s", dd_error(result));
-    return -1;
-  }
-
-  p = *(DWORD *)ddsd.lpSurface;
-
-  if (IDirectDrawSurface_Unlock(c->primary_surface, NULL) == DDERR_SURFACELOST) {
-    IDirectDrawSurface_Restore(c->primary_surface);
-    IDirectDrawSurface_Unlock(c->primary_surface, NULL);
-  }
-  IDirectDrawSurface_GetDC(c->primary_surface, &hdc);
-  SetPixel(hdc, 0, 0, oldcolor);
-  IDirectDrawSurface_ReleaseDC(c->primary_surface, hdc); 
-
-  return p;
+    raster_refresh_all(raster);
 }
 
 #endif

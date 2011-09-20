@@ -105,9 +105,9 @@ static int set_dx9_disable(int val, void *param)
 
         for (i = 0; i < old_num_of_canvases; i++) {
             if (old_dx9_disable) {
-                video_canvas_create_dx9(video_canvases[i]->canvas, &old_width[i], &old_height[i]);
+                video_canvas_create_dx9(video_canvases[i], &old_width[i], &old_height[i]);
             } else {
-                video_canvas_create_ddraw(video_canvases[i], video_canvases[i]->palette, &old_width[i], &old_height[i]);
+                video_canvas_create_gdi(video_canvases[i], &old_width[i], &old_height[i]);
             }
             ui_canvas_child_window(video_canvases[i]->canvas, old_dx9_disable);
             ui_resize_canvas_window(video_canvases[i]->canvas, video_canvases[i]->geometry->pixel_aspect_ratio);
@@ -266,13 +266,13 @@ video_canvas_t *video_canvas_create(raster_t *raster, unsigned int *width, unsig
 
 #ifdef HAVE_D3D9_H
     if (video_dx9_enabled()) {
-        video_canvas_t *canvas_temp = video_canvas_create_dx9(raster->canvas, width, height);
-        if (canvas_temp == NULL) {
+        video_canvas_t *canvas_temp = video_canvas_create_dx9(raster, width, height);
+        if (canvas_temp == 0) {
             log_debug("video: Falling back to DirectDraw canvas!");
             dx9_available = 0;
             ui_canvas_child_window(raster->canvas, 0);
         } else {
-            return canvas_temp;
+            return raster->canvas;
         }
     }
 #endif
@@ -296,16 +296,9 @@ void video_canvas_destroy(video_canvas_t *canvas)
     }
 }
 
-int video_canvas_set_palette(video_canvas_t *canvas, palette_t *p, video_render_color_tables_t *color_tables)
+int video_canvas_set_palette(raster_t *raster)
 {
-#ifdef HAVE_D3D9_H
-    if (canvas->depth == 8) {
-        video_canvas_set_palette_ddraw_8bit(canvas, p);
-    }
-
-    video_set_palette(canvas);
-#endif
-    video_set_physical_colors(canvas, p, color_tables);
+    video_set_physical_colors(raster->canvas, raster->palette, &raster->videoconfig->color_tables);
     return 0;
 }
 
@@ -343,18 +336,9 @@ int video_set_physical_colors(video_canvas_t *c, palette_t *palette, video_rende
     }
 
     for (i = 0; i < palette->num_entries; i++) {
-        DWORD p;
-
-#ifdef HAVE_D3D9_H
-        if (c->depth == 8 /*&& !dx9_enabled*/) {
-            p = video_get_color_from_palette_ddraw(c, &palette->entries[i]);
-        } else
-#endif
-        {
-            p = (((palette->entries[i].red&(rmask << rbits)) >> rbits) << rshift) +
-                (((palette->entries[i].green&(gmask << gbits)) >> gbits) << gshift) +
-                (((palette->entries[i].blue&(bmask << bbits)) >> bbits) << bshift);
-        }
+        DWORD p = (((palette->entries[i].red&(rmask << rbits)) >> rbits) << rshift) +
+                  (((palette->entries[i].green&(gmask << gbits)) >> gbits) << gshift) +
+                  (((palette->entries[i].blue&(bmask << bbits)) >> bbits) << bshift);
         video_render_setphysicalcolor(color_tables, i, p, c->depth);
     }
     return 0;
@@ -389,7 +373,7 @@ void video_canvas_resize(raster_t *raster, unsigned int width, unsigned int heig
 
 #ifdef HAVE_D3D9_H
     if (video_dx9_enabled()) {
-        video_canvas_reset_dx9(canvas);
+        video_canvas_reset_dx9(raster->canvas);
     }
 #endif
     raster->canvas->bmp_info.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
@@ -414,7 +398,7 @@ void video_canvas_refresh(raster_t *raster, unsigned int xs, unsigned int ys, un
 {
 #ifdef HAVE_D3D9_H
     if (video_dx9_enabled()) {
-        video_canvas_refresh_dx9(raster->canvas, xs, ys, xi, yi, w, h);
+        video_canvas_refresh_dx9(raster, xs, ys, xi, yi, w, h);
     } else
 #endif
     {

@@ -75,6 +75,8 @@
 
 #define USE_DXSOUND             1*/
 
+#define HAVE_D3D9_H 1
+
 #define __i386__                1
 
 #define inline                  _inline

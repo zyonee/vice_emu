@@ -55,14 +55,6 @@ typedef struct video_canvas_s {
     HWND render_hwnd;
     HWND client_hwnd;
 #ifdef HAVE_D3D9_H
-    LPDIRECTDRAW dd_object;
-    LPDIRECTDRAW2 dd_object2;
-    LPDIRECTDRAWSURFACE render_surface;
-    LPDIRECTDRAWSURFACE primary_surface;
-    LPDIRECTDRAWSURFACE back_surface;
-    LPDIRECTDRAWSURFACE temporary_surface;
-    LPDIRECTDRAWCLIPPER clipper;
-    LPDIRECTDRAWPALETTE dd_palette;
     LPDIRECT3DDEVICE9 d3ddev;
     LPDIRECT3DSURFACE9 d3dsurface;
     D3DPRESENT_PARAMETERS d3dpp;

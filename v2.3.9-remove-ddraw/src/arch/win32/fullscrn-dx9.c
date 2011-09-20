@@ -31,6 +31,7 @@
 #include "fullscrn.h"
 #include "lib.h"
 #include "log.h"
+#include "raster.h"
 #include "statusbar.h"
 #include "ui.h"
 #include "util.h"
@@ -46,7 +47,7 @@ void fullscrn_invalidate_refreshrate(void)
 }
 
 #ifdef HAVE_D3D9_H
-#include <d3d9.h>
+#include "video-dx9.h"
 
 static HMENU old_menu;
 static RECT old_rect;
@@ -122,13 +123,13 @@ void fullscreen_use_devices_dx9(DirectDrawDeviceList **devices,
 
 void SwitchToFullscreenModeDx9(HWND hwnd)
 {
-    video_canvas_t *c;
+    raster_t *raster;
 
     fullscreen_transition = 1;
 
-    c = video_canvas_for_hwnd(hwnd);
+    raster = video_canvas_for_hwnd(hwnd);
 
-    video_device_release_dx9(c);
+    video_device_release_dx9(raster->canvas);
 
     statusbar_destroy(hwnd);
 
@@ -140,9 +141,9 @@ void SwitchToFullscreenModeDx9(HWND hwnd)
     SetMenu(hwnd, NULL);
     ShowCursor(FALSE);
 
-    ui_set_render_window(c, 1);
-    video_device_create_dx9(c, 1);
-    video_canvas_refresh_all(c);
+    ui_set_render_window(raster->canvas, 1);
+    video_device_create_dx9(raster, 1);
+    raster_refresh_all(raster);
 
     fullscreen_active = 1;
     fullscreen_transition = 0;
@@ -150,17 +151,17 @@ void SwitchToFullscreenModeDx9(HWND hwnd)
 
 void SwitchToWindowedModeDx9(HWND hwnd)
 {
-    video_canvas_t *c;
+    raster_t *raster;
 
     fullscreen_transition = 1;
 
-    c = video_canvas_for_hwnd(hwnd);
+    raster = video_canvas_for_hwnd(hwnd);
 
-    video_device_release_dx9(c);
+    video_device_release_dx9(raster->canvas);
 
     /* Create statusbar here to get correct dimensions for client window */
     statusbar_create(hwnd);
-    ui_set_render_window(c, 0);
+    ui_set_render_window(raster->canvas, 0);
 
     LockWindowUpdate(hwnd);
     SetWindowLong(hwnd, GWL_STYLE, old_style);
@@ -171,11 +172,11 @@ void SwitchToWindowedModeDx9(HWND hwnd)
     ShowCursor(TRUE);
     LockWindowUpdate(NULL);
 
-    video_device_create_dx9(c, 0);
-    video_canvas_refresh_all(c);
+    video_device_create_dx9(raster, 0);
+    raster_refresh_all(raster);
 
     fullscreen_transition = 0;
-    c->refreshrate = old_refreshrate;
+    raster->canvas->refreshrate = old_refreshrate;
 }
 
 void fullscreen_get_current_display_dx9(int *bitdepth, int *width, int *height, int *refreshrate)

@@ -201,8 +201,6 @@ static void SwitchToWindowedMode(HWND hwnd)
 
     if (video_dx9_enabled()) {
         SwitchToWindowedModeDx9(hwnd);
-    } else {
-        SwitchToWindowedModeDDraw(hwnd);
     }
     resources_get_int("AlwaysOnTop", &alwaysontop);
     ui_set_alwaysontop(alwaysontop);
@@ -622,6 +620,8 @@ static void init_fullscreen_dialog(HWND hwnd)
     int xend;
     int distance;
     int size;
+    double fval;
+    TCHAR newval[64];
     raster_t *raster;
     int enable =
 #ifdef HAVE_D3D9_H
@@ -774,6 +774,8 @@ INT_PTR CALLBACK dialog_fullscreen_proc(HWND hwnd, UINT msg, WPARAM wparam, LPAR
     int index;
     int value;
     int command;
+    TCHAR s[100];
+    float tf;
 
     switch (msg) {
         case WM_NOTIFY:

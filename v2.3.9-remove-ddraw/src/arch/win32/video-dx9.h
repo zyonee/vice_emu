@@ -28,19 +28,22 @@
 
 #ifdef HAVE_D3D9_H
 
+#include <d3d9.h>
+
+struct raster_s;
+struct video_canvas_s;
+
 /* DX9 functions */
 extern int video_setup_dx9(void);
 extern void video_shutdown_dx9(void);
-extern int video_device_create_dx9(video_canvas_t *canvas, int fullscreen);
-extern video_canvas_t *video_canvas_create_dx9(video_canvas_t *canvas, unsigned int *width, unsigned int *height);
-extern void video_device_release_dx9(video_canvas_t *canvas);
-extern HRESULT video_canvas_reset_dx9(video_canvas_t *canvas);
-extern int video_canvas_refresh_dx9(video_canvas_t *canvas, unsigned int xs, unsigned int ys, unsigned int xi, unsigned int yi, unsigned int w, unsigned int h);
+extern int video_device_create_dx9(struct raster_s *raster, int fullscreen);
+extern struct video_canvas_s *video_canvas_create_dx9(struct raster_s *raster, unsigned int *width, unsigned int *height);
+extern void video_device_release_dx9(struct video_canvas_s *canvas);
+extern HRESULT video_canvas_reset_dx9(struct video_canvas_s *canvas);
+extern int video_canvas_refresh_dx9(struct raster_s *raster, unsigned int xs, unsigned int ys, unsigned int xi, unsigned int yi, unsigned int w, unsigned int h);
 extern void video_canvas_update_dx9(HWND hwnd, HDC hdc, int xclient, int yclient, int w, int h);
 
-extern void video_canvas_set_palette_ddraw_8bit(video_canvas_t *canvas, const palette_t *palette);
-extern DWORD video_get_color_from_palette_ddraw(video_canvas_t *c, struct palette_entry_s *i);
-extern int video_set_palette(video_canvas_t *c);
+extern int video_set_palette(struct video_canvas_s *c);
 
 extern LPDIRECT3D9 d3d;
 
