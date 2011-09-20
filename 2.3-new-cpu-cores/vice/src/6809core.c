@@ -1672,6 +1672,9 @@ define BTM_VAR2REG(rnr, var) \
       PC_INC(pc_inc);                                   \
   } while (0)
 
+#define NOP(pc_inc) \
+  (PC_INC(pc_inc))
+
 #define NEG(ma, pc_inc)        \
   do {                         \
       BYTE val;                \
@@ -1702,11 +1705,6 @@ define BTM_VAR2REG(rnr, var) \
       LOCAL_SET_NEGATIVE(BT(RR, bits - 1)); \
       PC_INC(pc_inc);                       \
   } while (0)
-
-#define NOOP(clk_inc, pc_inc) \
-    (CLK_ADD(CLK, (clk_inc)), INC_PC(pc_inc))
-
-#define NOOP_IMM(pc_inc) INC_PC(pc_inc)
 
 #define PSHS(m)                  \
   do {                           \
@@ -2218,6 +2216,10 @@ trap_skipped:
 
           case 0x000f:          /* CLR direct */
             CLR((reg_dpr << 8) | p1, 2);
+            break;
+
+          case 0x0012:          /* NOP */
+            NOP(1);
             break;
 
           case 0x13:            /* SLO ($nn),Y */
