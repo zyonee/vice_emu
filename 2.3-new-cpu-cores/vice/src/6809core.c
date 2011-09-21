@@ -1105,6 +1105,7 @@ define BTM_VAR2REG(rnr, var) \
           STORE(r1++, val); \
           reg_w--;          \
       }                     \
+      PC_INC(3);            \
   } while (0)
 
 #define TFMMM_REG(r0, r1)   \
@@ -1116,6 +1117,7 @@ define BTM_VAR2REG(rnr, var) \
           STORE(r1--, val); \
           reg_w--;          \
       }                     \
+      PC_INC(3);            \
   } while (0)
 
 #define TFMPC_REG(r0, r1)   \
@@ -1127,6 +1129,7 @@ define BTM_VAR2REG(rnr, var) \
           STORE(r1, val);   \
           reg_w--;          \
       }                     \
+      PC_INC(3);            \
   } while (0)
 
 #define TFMCP_REG(r0, r1)   \
@@ -1136,6 +1139,7 @@ define BTM_VAR2REG(rnr, var) \
       while (reg_w) {       \
           STORE(r1++, val); \
       }                     \
+      PC_INC(3);            \
   } while (0)
 
 #define TFM_WRAP(rnr, func)                    \
@@ -1166,7 +1170,7 @@ define BTM_VAR2REG(rnr, var) \
       PC_INC(1);      \
   } while (0)
 
-#define ADD(RR, m, CC, bits)                       \
+#define ADD(RR, m, CC, bits, pc_inc)               \
   do {                                             \
       unsigned int tmp;                            \
                                                    \
@@ -1183,6 +1187,7 @@ define BTM_VAR2REG(rnr, var) \
       LOCAL_SET_NEGATIVE(BT(tmp, bits - 1));       \
       LOCAL_SET_ZERO(!tmp);                        \
       RR = tmp & (bits == 8) ? 0xff : 0xffff;      \
+      PC_INC(pc_inc);                              \
   } while (0)
 
 #define AIM(m, ma, pc_inc)            \
@@ -1264,6 +1269,7 @@ define BTM_VAR2REG(rnr, var) \
       LOCAL_SET_NEGATIVE(BT(tmp, 7));              \
       LOCAL_SET_ZERO(!tmp);                        \
       STORE(ma, tmp);                              \
+      PC_INC(4);                                   \
   } while (0)
 
 #define BEOR(rnr, ma)                              \
@@ -1286,6 +1292,7 @@ define BTM_VAR2REG(rnr, var) \
       LOCAL_SET_NEGATIVE(BT(tmp, 7));              \
       LOCAL_SET_ZERO(!tmp);                        \
       STORE(ma, tmp);                              \
+      PC_INC(4);                                   \
   } while (0)
 
 #define BIAND(rnr, ma)                             \
@@ -1308,6 +1315,7 @@ define BTM_VAR2REG(rnr, var) \
       LOCAL_SET_NEGATIVE(BT(tmp, 7));              \
       LOCAL_SET_ZERO(!tmp);                        \
       STORE(ma, tmp);                              \
+      PC_INC(4);                                   \
   } while (0)
 
 #define BIEOR(rnr, ma)                             \
@@ -1330,6 +1338,7 @@ define BTM_VAR2REG(rnr, var) \
       LOCAL_SET_NEGATIVE(BT(tmp, 7));              \
       LOCAL_SET_ZERO(!tmp);                        \
       STORE(ma, tmp);                              \
+      PC_INC(4);                                   \
   } while (0)
 
 #define BIOR(rnr, ma)                              \
@@ -1352,9 +1361,10 @@ define BTM_VAR2REG(rnr, var) \
       LOCAL_SET_NEGATIVE(BT(tmp, 7));              \
       LOCAL_SET_ZERO(!tmp);                        \
       STORE(ma, tmp);                              \
+      PC_INC(4);                                   \
   } while (0)
 
-#define BIT(RR, bits, m)                     \
+#define BIT(RR, bits, m, pc_inc)             \
   do {                                       \
       unsigned int tmp;                      \
                                              \
@@ -1362,6 +1372,7 @@ define BTM_VAR2REG(rnr, var) \
       LOCAL_SET_NEGATIVE(BT(tmp, bits - 1)); \
       LOCAL_SET_ZERO(!tmp);                  \
       LOCAL_SET_OVERFLOW(0);                 \
+      PC_INC(pc_inc);                        \
   } while (0)
 
 #define BOR(rnr, ma)                               \
@@ -1384,6 +1395,7 @@ define BTM_VAR2REG(rnr, var) \
       LOCAL_SET_NEGATIVE(BT(tmp, 7));              \
       LOCAL_SET_ZERO(!tmp);                        \
       STORE(ma, tmp);                              \
+      PC_INC(4);                                   \
   } while (0)
 
 #define BRANCH(cond, value, pc_inc)                  \
@@ -1453,7 +1465,7 @@ define BTM_VAR2REG(rnr, var) \
       STORE(ma, val);          \
   } while (0)
 
-#define CMP(RR, bits, m)                                                 \
+#define CMP(RR, bits, m, pc_inc)                                         \
   do {                                                                   \
       unsigned int tmp;                                                  \
                                                                          \
@@ -1467,6 +1479,7 @@ define BTM_VAR2REG(rnr, var) \
       LOCAL_SET_CARRY(BT(tmp, bits));                                    \
       LOCAL_SET_NEGATIVE(BT(tmp, bits - 1));                             \
       LOCAL_SET_ZERO(!tmp);                                              \
+      PC_INC(pc_inc);                                                    \
   } while (0)
 
 #define DAA()                                                       \
@@ -1512,6 +1525,66 @@ define BTM_VAR2REG(rnr, var) \
       STORE(ma, val);          \
   } while (0)
 
+#define DIVD(m, pc_inc)                            \
+  do {                                             \
+      SWORD val, bak;                              \
+                                                   \
+      if (m) {                                     \
+          bak = reg_d;                             \
+          val = (SWORD)reg_d / (signed char)m;     \
+          reg_a = (SWORD)reg_d % (signed char)m;   \
+          reg_b = val & 0xff;                      \
+          LOCAL_SET_NEGATIVE(BT(reg_b, 7));        \
+          LOCAL_SET_ZERO(!reg_b);                  \
+          LOCAL_SET_CARRY(BT(reg_b, 0));           \
+          if ((SWORD)reg_d < 0) {                  \
+              LOCAL_SET_NEGATIVE(1);               \
+          }                                        \
+          LOCAL_SET_OVERFLOW(0);                   \
+          if ((val > 127) || (v < -128)) {         \
+              LOCAL_SET_OVERFLOW(1);               \
+              if ((v > 255) || (v < -256)) {       \
+                  LOCAL_SET_NEGATIVE(BT(bak, 15)); \
+                  LOCAL_SET_ZERO(!bak);            \
+                  reg_d = abs(bak);                \
+              }                                    \
+          }                                        \
+      } else {                                     \
+          DIV_0_TRAP();                            \
+      }                                            \
+      PC_INC(pc_inc);                              \
+  } while (0)
+
+#define DIVQ(m, pc_inc)                            \
+  do {                                             \
+      SDWORD val, bak;                             \
+                                                   \
+      if (m) {                                     \
+          bak = reg_q;                             \
+          val = (SDWORD)reg_q / (SWORD)m;          \
+          reg_d = (SDWORD)reg_d % (SWORD)m;        \
+          reg_w = val & 0xffff;                    \
+          LOCAL_SET_NEGATIVE(BT(reg_w, 15));       \
+          LOCAL_SET_ZERO(!reg_w);                  \
+          LOCAL_SET_CARRY(BT(reg_w, 0));           \
+          if ((SDWORD)reg_q < 0) {                 \
+              LOCAL_SET_NEGATIVE(1);               \
+          }                                        \
+          LOCAL_SET_OVERFLOW(0);                   \
+          if ((val > 32768) || (v < -32767)) {     \
+              LOCAL_SET_OVERFLOW(1);               \
+              if ((v > 65536) || (v < -65535)) {   \
+                  LOCAL_SET_NEGATIVE(BT(bak, 31)); \
+                  LOCAL_SET_ZERO(!bak);            \
+                  reg_q = abs(bak);                \
+              }                                    \
+          }                                        \
+      } else {                                     \
+          DIV_0_TRAP();                            \
+      }                                            \
+      PC_INC(pc_inc);                              \
+  } while (0)
+
 #define EIM(m, ma, pc_inc)            \
   do {                                \
       BYTE tmp;                       \
@@ -1542,12 +1615,13 @@ define BTM_VAR2REG(rnr, var) \
       PC_INC(2);                           \
   } while (0)
 
-#define EOR(RR, bits, m)                    \
+#define EOR(RR, bits, m, clk_inc)           \
   do {                                      \
       RR ^= m;                              \
       LOCAL_SET_OVERFLOW(0);                \
       LOCAL_SET_NEGATIVE(BT(RR, bits - 1)); \
       LOCAL_SET_ZERO(!RR);                  \
+      CLK_INC(clk_inc);                     \
   } while (0)
 
 #define INC_REG(RR, bits, pc_inc)           \
@@ -1601,22 +1675,24 @@ define BTM_VAR2REG(rnr, var) \
       reg_pc = ma; \
   } while (0)
 
-#define JSR(ma)             \
+#define JSR(ma, pc_inc)     \
   do {                      \
+      PC_INC(pc_inc);       \
       PUSHS(reg_pc & 0xff); \
       PUSHS(reg_pc >> 8);   \
       reg_pc = ma;          \
   } while (0)
 
-#define LD(RR, bits, m)                     \
+#define LD(RR, bits, m, pc_inc)             \
   do {                                      \
       RR = m;                               \
       LOCAL_SET_OVERFLOW(0);                \
       LOCAL_SET_ZERO(!RR);                  \
       LOCAL_SET_NEGATIVE(BT(RR, bits - 1)); \
+      PC_INC(pc_inc);                       \
   } while (0)
 
-#define LDBT(rnr, ma)                            \
+#define LDBT(rnr, ma, clk_inc)                   \
   do {                                           \
       BYTE rr;                                   \
       BYTE tmp;                                  \
@@ -1631,7 +1707,14 @@ define BTM_VAR2REG(rnr, var) \
       LOCAL_SET_OVERFLOW(0);                     \
       LOCAL_SET_NEGATIVE(BT(rr, 7));             \
       LOCAL_SET_ZERO(!rr);                       \
-      BTM_VAR2REG(rnr, rr);
+      BTM_VAR2REG(rnr, rr);                      \
+      CLK_INC(clk_inc);                          \
+  } while (0)
+
+#define LEA(RR, ma)        \
+  do {                     \
+      RR = ma;             \
+      LOCAL_SET_ZERO(!RR); \
   } while (0)
 
 #define LSR_REG(RR, pc_inc)       \
@@ -1658,6 +1741,15 @@ define BTM_VAR2REG(rnr, var) \
       LOCAL_SET_CARRY(BT(reg_b, 7)); \
       LOCAL_SET_ZERO(!reg_d);        \
       PC_INC(1);                     \
+  } while (0)
+
+#define MULD(m, pc_inc)                  \
+  do {                                   \
+      reg_q = reg_d * m;                 \
+      LOCAL_SET_OVERFLOW(0);             \
+      LOCAL_SET_CARRY(0);                \
+      LOCAL_SET_NEGATIVE(BT(reg_d, 15)); \
+      LOCAL_SET_ZERO(!reg_d);            \
   } while (0)
 
 #define NEG_REG(RR, bits, pc_inc)                       \
@@ -1709,6 +1801,7 @@ define BTM_VAR2REG(rnr, var) \
 
 #define PSHS(m)                  \
   do {                           \
+      PC_INC(2);                 \
       if (m & 0x80) {            \
           PUSHS(reg_pc & 0xff);  \
           PUSHS(reg_pc >> 8);    \
@@ -1737,17 +1830,18 @@ define BTM_VAR2REG(rnr, var) \
       if (m & 1) {               \
           PUSHS(reg_p);          \
       }                          \
-      PC_INC(2);                 \
   } while (0)
 
 #define PSHSW()     \
   do {              \
       PUSHS(reg_f); \
       PUSHS(reg_e); \
+      PC_INC(2);    \
   } while (0)
 
 #define PSHU(m)                  \
   do {                           \
+      PC_INC(2);                 \
       if (m & 0x80) {            \
           PUSHU(reg_pc & 0xff);  \
           PUSHU(reg_pc >> 8);    \
@@ -1776,13 +1870,13 @@ define BTM_VAR2REG(rnr, var) \
       if (m & 1) {               \
           PUSHU(reg_p);          \
       }                          \
-      PC_INC(2);                 \
   } while (0)
 
 #define PSHUW()     \
   do {              \
       PUSHU(reg_f); \
       PUSHU(reg_e); \
+      PC_INC(2);    \
   } while (0)
 
 #define PULS(m)                   \
@@ -1814,14 +1908,16 @@ define BTM_VAR2REG(rnr, var) \
       if (m & 0x80) {             \
           reg_pc = PULLS() << 8;  \
           reg_pc |= PULLS();      \
+      } else {                    \
+          PC_INC(2);              \
       }                           \
-      PC_INC(2);                  \
   } while (0)
 
 #define PULSW()        \
   do {                 \
       reg_e = PULLS(); \
       reg_f = PULLS(); \
+      PC_INC(2);       \
   } while (0)
 
 #define PULU(m)                   \
@@ -1853,14 +1949,16 @@ define BTM_VAR2REG(rnr, var) \
       if (m & 0x80) {             \
           reg_pc = PULLU() << 8;  \
           reg_pc |= PULLU();      \
+      } else {                    \
+          PC_INC(2);              \
       }                           \
-      PC_INC(2);                  \
   } while (0)
 
 #define PULUW()        \
   do {                 \
       reg_e = PULLU(); \
       reg_f = PULLU(); \
+      PC_INC(2);       \
   } while (0)
 
 #define ROL_REG(RR, bits, pc_inc)                              \
@@ -1943,7 +2041,15 @@ define BTM_VAR2REG(rnr, var) \
       PC_INC(1);                           \
   } while (0)
 
-#define ST(RR, bits, ma)                    \
+#define SEXW()                              \
+  do {                                      \
+      LOCAL_SET_NEGATIVE(BT(reg_w, 15));    \
+     reg_d = LOCAL_NEGATIVE() ? 0xffff : 0; \
+      LOCAL_SET_ZERO(!reg_d);               \
+      PC_INC(1);                            \
+  } while (0)
+
+#define ST(RR, bits, ma, pc_inc)            \
   do {                                      \
       LOCAL_SET_OVERFLOW(0);                \
       LOCAL_SET_NEGATIVE(BT(RR, bits - 1)); \
@@ -1961,9 +2067,10 @@ define BTM_VAR2REG(rnr, var) \
           STORE(ma + 2, (RR >> 8) & 0xff);  \
           STORE(ma + 3, RR & 0xff);         \
       }                                     \
+      PC_INC(pc_inc);                       \
   } while (0)
 
-#define STBT(rnr, ma)                              \
+#define STBT(rnr, ma, clk_inc)                     \
   do {                                             \
       BYTE rr;                                     \
       BYTE tmp;                                    \
@@ -1979,6 +2086,7 @@ define BTM_VAR2REG(rnr, var) \
       LOCAL_SET_NEGATIVE(BT(tmp, 7));              \
       LOCAL_SET_ZERO(!tmp);                        \
       STORE(ma, tmp);                              \
+      CLK_INC(clk_inc);                            \
   } while (0)
 
 #define SUB(RR, CC, m, bits, pc_inc)                                     \
@@ -1999,8 +2107,9 @@ define BTM_VAR2REG(rnr, var) \
       PC_INC(pc_inc);                                                    \
   } while (0)
 
-#define SWI_REG(nr)                   \
+#define SWI_REG(nr, pc_inc)           \
   do {                                \
+      PC_INC(pc_inc);                 \
       LOCAL_SET_ENTIRE(1);            \
       PUSHS(reg_pc & 0xff);           \
       PUSHS(reg_pc >> 8);             \
@@ -2077,26 +2186,26 @@ define BTM_VAR2REG(rnr, var) \
 
 /* ------------------------------------------------------------------------- */
 
-#define ADCR_WRAP(r0, r1, bits) \
-  (ADD(r1, r0, LOCAL_CARRY(), bits))
+#define ADCR_WRAP(r0, r1, bits, pc_inc) \
+  (ADD(r1, r0, LOCAL_CARRY(), bits, pc_inc))
 
-#define ADDR_WRAP(r0, r1, bits) \
-  (ADD(r1, r0, 0, bits))
+#define ADDR_WRAP(r0, r1, bits, pc_inc) \
+  (ADD(r1, r0, 0, bits, pc_inc))
 
 #define ANDR_WRAP(r0, r1, bits, pc_inc) \
   (AND(r1, r0, bits, pc_inc))
 
-#define CMPR_WRAP(r0, r1, bits) \
-  (CMP(r1, bits, r0))
+#define CMPR_WRAP(r0, r1, bits, pc_inc) \
+  (CMP(r1, bits, r0, pc_inc))
 
-#define EORR_WRAP(r0, r1, bits) \
-  (EOR(r1, bits, r0))
+#define EORR_WRAP(r0, r1, bits, pc_inc) \
+  (EOR(r1, bits, r0, pc_inc))
 
 #define ORR_WRAP(r0, r1, bits, pc_inc) \
   (OR(r1, bits, r0, pc_inc))
 
-#define SBCR_WRAP(r0, r1, bits) \
-  (SUB(r1, LOCAL_CARRY(), r0, bits))
+#define SBCR_WRAP(r0, r1, bits, pc_inc) \
+  (SUB(r1, LOCAL_CARRY(), r0, bits, pc_inc))
 
 #define SUBR_WRAP(r0, r1, bits, pc_inc) \
   (SUB(r1, 0, r0, bits, pc_inc))
@@ -2233,8 +2342,8 @@ trap_skipped:
             SYNC();
             break;
 
-          case 0x14:            /* NOOP $nn,X */
-            NOOP(CLK_NOOP_ZERO_X, 2);
+          case 0x0014:          /* SEXW */   /* FIXME: fix for 6809, 6309 only opcode */
+            SEXW();
             break;
 
           case 0x0016:          /* LBRA offset */
@@ -2333,16 +2442,20 @@ trap_skipped:
             BRANCH(LOCAL_ZERO() | (LOCAL_NEGATIVE() ^ LOCAL_OVERFLOW()), p1, 2);
             break;
 
-          case 0x30:            /* BMI $nnnn */
-            BRANCH(LOCAL_SIGN(), p1);
+          case 0x0030:          /* LEAX indexed */
+            LEA(reg_x, GET_IND_MA(p1, p2, p3));
             break;
 
-          case 0x31:            /* AND ($nn),Y */
-            AND(LOAD_IND_Y(p1), 1, 2);
+          case 0x0031:          /* LEAY indexed */
+            LEA(reg_y, GET_IND_MA(p1, p2, p3));
             break;
 
-          case 0x33:            /* RLA ($nn),Y */
-            RLA_IND_Y(p1);
+          case 0x0032:          /* LEAS indexed */
+            LEA(reg_ssp, GET_IND_MA(p1, p2, p3));
+            break;
+
+          case 0x0033:          /* LEAU indexed */
+            LEA(reg_usp, GET_IND_MA(p1, p2, p3));
             break;
 
           case 0x0034:          /* PSHS immediate */
@@ -2378,7 +2491,7 @@ trap_skipped:
             break;
 
           case 0x003f:          /* SWI */
-            SWI(1);
+            SWI_REG(1, 1);
             break;
 
           case 0x0040:          /* NEGA */
@@ -2602,11 +2715,11 @@ trap_skipped:
             break;
 
           case 0x0081:          /* CMPA immediate */
-            CMP(reg_a, 8, p1);
+            CMP(reg_a, 8, p1, 2);
             break;
 
           case 0x0082:          /* SBCA immediate */
-            SUB(reg_a, LOCAL_CARRY(), p1, 8);
+            SUB(reg_a, LOCAL_CARRY(), p1, 8, 2);
             break;
 
           case 0x0083:          /* SUBD immediate */
@@ -2618,19 +2731,19 @@ trap_skipped:
             break;
 
           case 0x0085:          /* BITA immediate */
-            BIT(reg_a, 8, p1);
+            BIT(reg_a, 8, p1, 2);
             break;
 
           case 0x0086:            /* LDA immediate */
-            LD(reg_a, 8, p1);
+            LD(reg_a, 8, p1, 2);
             break;
 
           case 0x0088:          /* EORA immediate */
-            EOR(reg_a, 8, p1);
+            EOR(reg_a, 8, p1, 2);
             break;
 
           case 0x0089:          /* ADCA immediate */
-            ADD(reg_a, p1, LOCAL_CARRY(), 8);
+            ADD(reg_a, p1, LOCAL_CARRY(), 8, 2);
             break;
 
           case 0x008a:          /* ORA immediate */
@@ -2638,11 +2751,11 @@ trap_skipped:
             break;
 
           case 0x008b:          /* ADDA immediate */
-            ADD(reg_a, p1, 0, 8);
+            ADD(reg_a, p1, 0, 8, 2);
             break;
 
           case 0x008c:          /* CMPX immediate */
-            CMP(reg_x, 16, (p1 << 8) | p2);
+            CMP(reg_x, 16, (p1 << 8) | p2, 3);
             break;
 
           case 0x008d:          /* BSR offset */
@@ -2650,7 +2763,7 @@ trap_skipped:
             break;
 
           case 0x008e:            /* LDX immediate */
-            LD(reg_x, 16, (p1 << 8) | p2);
+            LD(reg_x, 16, (p1 << 8) | p2, 3);
             break;
 
           case 0x0090:          /* SUBA direct */
@@ -2658,11 +2771,11 @@ trap_skipped:
             break;
 
           case 0x0091:          /* CMPA direct */
-            CMP(reg_a, 8, LOAD_DIRECT8(p1));
+            CMP(reg_a, 8, LOAD_DIRECT8(p1), 2);
             break;
 
           case 0x0092:          /* SBCA direct */
-            SUB(reg_a, LOCAL_CARRY(), LOAD_DIRECT8(p1), 8);
+            SUB(reg_a, LOCAL_CARRY(), LOAD_DIRECT8(p1), 8, 2);
             break;
 
           case 0x0093:          /* SUBD direct */
@@ -2674,23 +2787,23 @@ trap_skipped:
             break;
 
           case 0x0095:          /* BITA direct */
-            BIT(reg_a, 8, LOAD_DIRECT8(p1));
+            BIT(reg_a, 8, LOAD_DIRECT8(p1), 2);
             break;
 
-          case 0x0096:            /* LDA direct */
-            LD(reg_a, 8, LOAD_DIRECT8(p1));
+          case 0x0096:          /* LDA direct */
+            LD(reg_a, 8, LOAD_DIRECT8(p1), 2);
             break;
 
-          case 0x97:            /* SAX $nn,Y */
-            SAX((p1 + reg_y) & 0xff, 0, CLK_ZERO_I_STORE, 2);
+          case 0x0097:          /* STA direct */
+            ST(reg_a, 8, (reg_dpr << 8) | p2, 2);
             break;
 
           case 0x0098:          /* EORA direct */
-            EOR(reg_a, 8, LOAD_DIRECT8(p1));
+            EOR(reg_a, 8, LOAD_DIRECT8(p1), 2);
             break;
 
           case 0x0099:          /* ADCA direct */
-            ADD(reg_a, LOAD_DIRECT8(p1), LOCAL_CARRY(), 8);
+            ADD(reg_a, LOAD_DIRECT8(p1), LOCAL_CARRY(), 8, 2);
             break;
 
           case 0x009a:          /* ORA direct */
@@ -2698,23 +2811,23 @@ trap_skipped:
             break;
 
           case 0x009b:          /* ADDA direct */
-            ADD(reg_a, LOAD_DIRECT8(p1), 0, 8);
+            ADD(reg_a, LOAD_DIRECT8(p1), 0, 8, 2);
             break;
 
           case 0x009c:          /* CMPX direct */
-            CMP(reg_x, 16, LOAD_DIRECT16(p1));
+            CMP(reg_x, 16, LOAD_DIRECT16(p1), 2);
             break;
 
           case 0x009d:          /* JSR direct */
-            JSR((reg_dpr << 8) | p1);
+            JSR((reg_dpr << 8) | p1, 2);
             break;
 
-          case 0x009e:            /* LDX direct */
-            LD(reg_x, 16, LOAD_DIRECT16(p1));
+          case 0x009e:          /* LDX direct */
+            LD(reg_x, 16, LOAD_DIRECT16(p1), 2);
             break;
 
-          case 0x9f:            /* SHA $nnnn,Y */
-            SHA_ABS_Y(p2);
+          case 0x009f:          /* STX direct */
+            ST(reg_x, 16, (reg_dpr << 8) | p1, 2);
             break;
 
           case 0x00a0:          /* SUBA indexed */
@@ -2722,7 +2835,7 @@ trap_skipped:
             break;
 
           case 0x00a1:          /* CMPA indexed */
-            CMP(reg_a, 8, LOAD_IND8());
+            CMP(reg_a, 8, LOAD_IND8(), 2);
             break;
 
           case 0x00a2:          /* SBCA indexed */
@@ -2730,7 +2843,7 @@ trap_skipped:
             break;
 
           case 0x00a3:          /* SUBD indexed */
-            SUB(reg_d, 0, LOAD_IND16(), 16);
+            SUB(reg_d, 0, LOAD_IND16(), 16, 2);
             break;
 
           case 0x00a4:          /* ANDA indexed */
@@ -2738,23 +2851,23 @@ trap_skipped:
             break;
 
           case 0x00a5:          /* BITA indexed */
-            BIT(reg_a, 8, LOAD_IND8());
+            BIT(reg_a, 8, LOAD_IND8(), 2);
             break;
 
-          case 0x00a6:            /* LDA indexed */
-            LD(reg_a, 8, LOAD_IND8());
+          case 0x00a6:          /* LDA indexed */
+            LD(reg_a, 8, LOAD_IND8(), 2);
             break;
 
-          case 0xa7:            /* LAX $nn */
-            LAX(LOAD_ZERO(p1), 1, 2);
+          case 0x00a7:          /* STA indexed */
+            ST(reg_a, 8, GET_IND_MA(p1, p2, p3), 2);
             break;
 
           case 0x00a8:          /* EORA indexed */
-            EOR(reg_a, 8, LOAD_IND8());
+            EOR(reg_a, 8, LOAD_IND8(), 2);
             break;
 
           case 0x00a9:          /* ADCA indexed */
-            ADD(reg_a, LOAD_IND8(), LOCAL_CARRY(), 8);
+            ADD(reg_a, LOAD_IND8(), LOCAL_CARRY(), 8, 2);
             break;
 
           case 0x00aa:          /* ORA indexed */
@@ -2762,23 +2875,23 @@ trap_skipped:
             break;
 
           case 0x00ab:          /* ADDA indexed */
-            ADD(reg_a, LOAD_IND8(), 0, 8);
+            ADD(reg_a, LOAD_IND8(), 0, 8, 2);
             break;
 
           case 0x00ac:          /* CMPX indexed */
-            CMP(reg_x, 16, LOAD_IND16());
+            CMP(reg_x, 16, LOAD_IND16(), 2);
             break;
 
           case 0x00ad:          /* JSR indexed */
-            JSR(GET_IND_MA(p1, p2, p3));
+            JSR(GET_IND_MA(p1, p2, p3), 2);
             break;
 
           case 0x00ae:            /* LDX indexed */
-            LD(reg_x, 16, LOAD_IND16());
+            LD(reg_x, 16, LOAD_IND16(), 2);
             break;
 
-          case 0xaf:            /* LAX $nnnn */
-            LAX(LOAD(p2), 1, 3);
+          case 0x00af:          /* STX indexed */
+            ST(reg_x, 16, GET_IND_MA(p1, p2, p3), 2);
             break;
 
           case 0x00b0:            /* SUBA extended */
@@ -2786,11 +2899,11 @@ trap_skipped:
             break;
 
           case 0x00b1:          /* CMPA extended */
-            CMP(reg_a, 8, LOAD_EXT8());
+            CMP(reg_a, 8, LOAD_EXT8(), 3);
             break;
 
           case 0x00b2:          /* SBCA extended */
-            SUB(reg_a, LOCAL_CARRY(), LOAD_EXT8(), 8);
+            SUB(reg_a, LOCAL_CARRY(), LOAD_EXT8(), 8, 3);
             break;
 
           case 0x00b3:          /* SUBD extended */
@@ -2802,23 +2915,23 @@ trap_skipped:
             break;
 
           case 0x00b5:          /* BITA extended */
-            BIT(reg_a, 8, LOAD_EXT8());
+            BIT(reg_a, 8, LOAD_EXT8(), 3);
             break;
 
           case 0x00b6:            /* LDA extended */
-            LD(reg_a, 8, LOAD_EXT8());
+            LD(reg_a, 8, LOAD_EXT8(), 3);
             break;
 
-          case 0xb7:            /* LAX $nn,Y */
-            LAX(LOAD_ZERO_Y(p1), CLK_ZERO_I2, 2);
+          case 0x00b7:          /* STA extended */
+            ST(reg_a, 8, (p1 << 8) | p2, 3);
             break;
 
           case 0x00b8:          /* EORA extended */
-            EOR(reg_a, 8, LOAD_EXT8());
+            EOR(reg_a, 8, LOAD_EXT8(), 3);
             break;
 
           case 0x00b9:          /* ADCA extended */
-            ADD(reg_a, LOAD_EXT8(), LOCAL_CARRY(), 8);
+            ADD(reg_a, LOAD_EXT8(), LOCAL_CARRY(), 8, 3);
             break;
 
           case 0x00ba:          /* ORA extended */
@@ -2826,23 +2939,23 @@ trap_skipped:
             break;
 
           case 0x00bb:          /* ADDA extended */
-            ADD(reg_a, LOAD_EXT8(), 0, 8);
+            ADD(reg_a, LOAD_EXT8(), 0, 8, 3);
             break;
 
           case 0x00bc:          /* CMPX extended */
-            CMP(reg_x, 16, LOAD_EXT16());
+            CMP(reg_x, 16, LOAD_EXT16(), 3);
             break;
 
           case 0x00bd:          /* JSR extended */
-            JSR((p1 << 8) | p2);
+            JSR((p1 << 8) | p2, 3);
             break;
 
-          case 0x00be:            /* LDX extended */
-            LD(reg_x, 16, LOAD_EXT16());
+          case 0x00be:          /* LDX extended */
+            LD(reg_x, 16, LOAD_EXT16(), 3);
             break;
 
-          case 0xbf:            /* LAX $nnnn,Y */
-            LAX(LOAD_ABS_Y(p2), 1, 3);
+          case 0x00bf:          /* STX extended */
+            ST(reg_x, 16, (p1 << 8) | p2, 3);
             break;
 
           case 0x00c0:          /* SUBB immediate */
@@ -2850,15 +2963,15 @@ trap_skipped:
             break;
 
           case 0x00c1:          /* CMPB immediate */
-            CMP(reg_b, 8, p1);
+            CMP(reg_b, 8, p1, 2);
             break;
 
           case 0x00c2:          /* SBCB immediate */
-            SUB(reg_b, LOCAL_CARRY(), p1, 8);
+            SUB(reg_b, LOCAL_CARRY(), p1, 8, 2);
             break;
 
           case 0x00c3:          /* ADDD immediate */
-            ADD(reg_d, (p1 << 8) | p2, 0, 16);
+            ADD(reg_d, (p1 << 8) | p2, 0, 16, 3);
             break;
 
           case 0x00c4:          /* ANDB immediate */
@@ -2866,19 +2979,19 @@ trap_skipped:
             break;
 
           case 0x00c5:          /* BITB immediate */
-            BIT(reg_b, 8, p1);
+            BIT(reg_b, 8, p1, 2);
             break;
 
           case 0x00c6:            /* LDB immediate */
-            LD(reg_b, 8, p1);
+            LD(reg_b, 8, p1, 2);
             break;
 
           case 0x00c8:          /* EORB immediate */
-            EOR(reg_b, 8, p1);
+            EOR(reg_b, 8, p1, 2);
             break;
 
           case 0x00c9:          /* ADCB immediate */
-            ADD(reg_b, p1, LOCAL_CARRY(), 8);
+            ADD(reg_b, p1, LOCAL_CARRY(), 8, 2);
             break;
 
           case 0x00ca:          /* ORB immediate */
@@ -2886,19 +2999,19 @@ trap_skipped:
             break;
 
           case 0x00cb:          /* ADDB immediate */
-            ADD(reg_b, p1, 0, 8);
+            ADD(reg_b, p1, 0, 8, 2);
             break;
 
           case 0x00cc:            /* LDD immediate */
-            LD(reg_d, 16, (p1 << 8) | p2);
+            LD(reg_d, 16, (p1 << 8) | p2, 3);
             break;
 
           case 0x00cd:            /* LDQ immediate */   /* FIXME: fix for 6809, 6309 only opcode */
-            LD(reg_q, 32, (p1 << 24) | (p2 << 16) | (p3 << 8) | p4);
+            LD(reg_q, 32, (p1 << 24) | (p2 << 16) | (p3 << 8) | p4, 5);
             break;
 
           case 0x00ce:            /* LDU immediate */
-            LD(reg_usp, 16, (p1 << 8) | p2);
+            LD(reg_usp, 16, (p1 << 8) | p2, 3);
             break;
 
           case 0x00d0:          /* SUBB direct */
@@ -2906,15 +3019,15 @@ trap_skipped:
             break;
 
           case 0x00d1:          /* CMPB direct */
-            CMP(reg_b, 8, LOAD_DIRECT8(p1));
+            CMP(reg_b, 8, LOAD_DIRECT8(p1), 2);
             break;
 
           case 0x00d2:          /* SBCB direct */
-            SUB(reg_b, LOCAL_CARRY(), LOAD_DIRECT8(p1), 8);
+            SUB(reg_b, LOCAL_CARRY(), LOAD_DIRECT8(p1), 8, 2);
             break;
 
           case 0x00d3:          /* ADDD direct */
-            ADD(reg_d, LOAD_DIRECT16(p1), 0, 16);
+            ADD(reg_d, LOAD_DIRECT16(p1), 0, 16, 2);
             break;
 
           case 0x00d4:          /* ANDB direct */
@@ -2922,23 +3035,23 @@ trap_skipped:
             break;
 
           case 0x00d5:          /* BITB direct */
-            BIT(reg_b, 8, LOAD_DIRECT8(p1));
+            BIT(reg_b, 8, LOAD_DIRECT8(p1), 2);
             break;
 
           case 0x00d6:            /* LDB direct */
-            LD(reg_b, 8, LOAD_DIRECT8(p1));
+            LD(reg_b, 8, LOAD_DIRECT8(p1), 2);
             break;
 
-          case 0xd7:            /* DCP $nn,X */
-            DCP((p1 + reg_x) & 0xff, 0, CLK_ZERO_I_RMW, 2, LOAD_ABS, STORE_ABS);
+          case 0x00d7:          /* STB direct */
+            ST(reg_b, 8, (reg_pbr << 8) | p1, 2);
             break;
 
           case 0x00d8:          /* EORB direct */
-            EOR(reg_b, 8, LOAD_DIRECT8(p1));
+            EOR(reg_b, 8, LOAD_DIRECT8(p1), 2);
             break;
 
           case 0x00d9:          /* ADCB direct */
-            ADD(reg_b, LOAD_DIRECT8(p1), LOCAL_CARRY(), 8);
+            ADD(reg_b, LOAD_DIRECT8(p1), LOCAL_CARRY(), 8, 2);
             break;
 
           case 0x00da:          /* ORB direct */
@@ -2946,23 +3059,23 @@ trap_skipped:
             break;
 
           case 0x00db:          /* ADDB direct */
-            ADD(reg_b, LOAD_DIRECT8(p1), 0, 8);
+            ADD(reg_b, LOAD_DIRECT8(p1), 0, 8, 2);
             break;
 
           case 0x00dc:          /* LDD direct */
-            LD(reg_d, 16, LOAD_DIRECT16(p1));
+            LD(reg_d, 16, LOAD_DIRECT16(p1), 2);
             break;
 
-          case 0xdd:            /* CMP $nnnn,X */
-            CMP(LOAD_ABS_X(p2), 1, 3);
+          case 0x00dd:          /* STD direct */
+            ST(reg_d, 16, (reg_dpr << 8) | p1, 2);
             break;
 
-          case 0x00de:            /* LDU direct */
-            LD(reg_u, 16, LOAD_DIRECT16(p1));
+          case 0x00de:          /* LDU direct */
+            LD(reg_usp, 16, LOAD_DIRECT16(p1), 2);
             break;
 
-          case 0xdf:            /* DCP $nnnn,X */
-            DCP(p2, 0, CLK_ABS_I_RMW2, 3, LOAD_ABS_X_RMW, STORE_ABS_X_RMW);
+          case 0x00df:          /* STU direct */
+            ST(reg_usp, 16, (reg_dpr << 8) | p1, 2);
             break;
 
           case 0x00e0:          /* SUBB indexed */
@@ -2970,15 +3083,15 @@ trap_skipped:
             break;
 
           case 0x00e1:          /* CMPB indexed */
-            CMP(reg_b, 8, LOAD_IND8());
+            CMP(reg_b, 8, LOAD_IND8(), 2);
             break;
 
           case 0x00e2:          /* SBCB indexed */
-            SUB(reg_b, LOCAL_CARRY(), LOAD_IND8(), 8);
+            SUB(reg_b, LOCAL_CARRY(), LOAD_IND8(), 8, 2);
             break;
 
           case 0x00e3:          /* ADDD indexed */
-            ADD(reg_d, LOAD_IND16(), 0, 16);
+            ADD(reg_d, LOAD_IND16(), 0, 16, 2);
             break;
 
           case 0x00e4:          /* ANDB indexed */
@@ -2986,23 +3099,23 @@ trap_skipped:
             break;
 
           case 0x00e5:          /* BITB indexed */
-            BIT(reg_b, 8, LOAD_IND8());
+            BIT(reg_b, 8, LOAD_IND8(), 2);
             break;
 
-          case 0x00e6:            /* LDB indexed */
-            LD(reg_b, 8, LOAD_IND8());
+          case 0x00e6:          /* LDB indexed */
+            LD(reg_b, 8, LOAD_IND8(), 2);
             break;
 
-          case 0xe7:            /* ISB $nn */
-            ISB(p1, 0, CLK_ZERO_RMW, 2, LOAD_ZERO, STORE_ABS);
+          case 0x00e7:          /* STB indexed */
+            ST(reg_b, 8, GET_IND_MA(p1, p2, p3), 2);
             break;
 
           case 0x00e8:          /* EORB indexed */
-            EOR(reg_b, 8, LOAD_IND8());
+            EOR(reg_b, 8, LOAD_IND8(), 2);
             break;
 
           case 0x00e9:          /* ADCB indexed */
-            ADD(reg_b, LOAD_IND8(), LOCAL_CARRY(), 8);
+            ADD(reg_b, LOAD_IND8(), LOCAL_CARRY(), 8, 2);
             break;
 
           case 0x00ea:          /* ORB indexed */
@@ -3010,23 +3123,23 @@ trap_skipped:
             break;
 
           case 0x00eb:          /* ADDB indexed */
-            ADD(reg_b, LOAD_IND8(), 0, 8);
+            ADD(reg_b, LOAD_IND8(), 0, 8, 2);
             break;
 
-          case 0x00ec:            /* LDD indexed */
-            LD(reg_d, 16, LOAD_IND16());
+          case 0x00ec:          /* LDD indexed */
+            LD(reg_d, 16, LOAD_IND16(), 2);
             break;
 
-          case 0xed:            /* SBC $nnnn */
-            SBC(LOAD(p2), 1, 3);
+          case 0x00ed:          /* STD indexed */
+            ST(reg_d, 16, GET_IND_MA(p1, p2, p3), 2);
             break;
 
-          case 0x00ee:            /* LDU indexed */
-            LDU(reg_usp, 16, LOAD_IND16());
+          case 0x00ee:          /* LDU indexed */
+            LD(reg_usp, 16, LOAD_IND16(), 2);
             break;
 
-          case 0xef:            /* ISB $nnnn */
-            ISB(p2, 0, CLK_ABS_RMW2, 3, LOAD_ABS, STORE_ABS);
+          case 0x00ef:          /* STU indexed */
+            ST(reg_usp, 16, GET_IND_MA(p1, p2, p3), 2);
             break;
 
           case 0x00f0:          /* SUBB extended */
@@ -3034,15 +3147,15 @@ trap_skipped:
             break;
 
           case 0x00f1:          /* CMPB extended */
-            CMP(reg_b, 8, LOAD_EXT8());
+            CMP(reg_b, 8, LOAD_EXT8(), 3);
             break;
 
           case 0x00f2:          /* SBCB extended */
-            SUB(reg_b, LOCAL_CARRY(), LOAD_EXT8(), 8);
+            SUB(reg_b, LOCAL_CARRY(), LOAD_EXT8(), 8, 3);
             break;
 
           case 0x00f3:          /* ADDD extended */
-            ADD(reg_d, LOAD_EXT16(), 0, 16);
+            ADD(reg_d, LOAD_EXT16(), 0, 16, 3);
             break;
 
           case 0x00f4:          /* ANDB extended */
@@ -3050,23 +3163,23 @@ trap_skipped:
             break;
 
           case 0x00f5:          /* BITB extended */
-            BIT(reg_b, 8, LOAD_EXT8());
+            BIT(reg_b, 8, LOAD_EXT8(), 3);
             break;
 
           case 0x00f6:          /* LDB extended */
-            LD(reg_b, 8, LOAD_EXT8());
+            LD(reg_b, 8, LOAD_EXT8(), 3);
             break;
 
-          case 0xf7:            /* ISB $nn,X */
-            ISB((p1 + reg_x) & 0xff, 0, CLK_ZERO_I_RMW, 2, LOAD_ZERO, STORE_ABS);
+          case 0x00f7:          /* STB extended */
+            ST(reg_b, 8, (p1 << 8) | p2, 3);
             break;
 
           case 0x00f8:          /* EORB extended */
-            EOR(reg_b, 8, LOAD_EXT8());
+            EOR(reg_b, 8, LOAD_EXT8(), 3);
             break;
 
           case 0x00f9:          /* ADCB extended */
-            ADD(reg_b, LOAD_EXT8(), LOCAL_CARRY(), 8);
+            ADD(reg_b, LOAD_EXT8(), LOCAL_CARRY(), 8, 3);
             break;
 
           case 0x00fa:          /* ORB extended */
@@ -3074,23 +3187,23 @@ trap_skipped:
             break;
 
           case 0x00fb:          /* ADDB extended */
-            ADD(reg_b, LOAD_EXT8(), 0, 8);
+            ADD(reg_b, LOAD_EXT8(), 0, 8, 3);
             break;
 
           case 0x00fc:          /* LDD extended */
-            LD(reg_d, 16, LOAD_EXT16());
+            LD(reg_d, 16, LOAD_EXT16(), 3);
             break;
 
-          case 0xfd:            /* SBC $nnnn,X */
-            SBC(LOAD_ABS_X(p2), 1, 3);
+          case 0x00fd:          /* STD extended */
+            ST(reg_d, 16, (p1 << 8) | p2, 3);
             break;
 
           case 0x00fe:          /* LDU extended */
-            LD(reg_usp, 16, LOAD_EXT16());
+            LD(reg_usp, 16, LOAD_EXT16(), 3);
             break;
 
-          case 0xff:            /* ISB $nnnn,X */
-            ISB(p2, 0, CLK_ABS_I_RMW2, 3, LOAD_ABS_X_RMW, STORE_ABS_X_RMW);
+          case 0x00ff:          /* STU extended */
+            ST(reg_usp, 16, (p1 << 8) | p2, 3);
             break;
 
           case 0x1021:          /* LBRN offset */
@@ -3154,11 +3267,11 @@ trap_skipped:
             break;
 
           case 0x1030:          /* ADDR registers */   /* FIXME: fix for 6809, 6309 only opcode */
-            R_WRAP(p1, ADDR_WRAP);
+            R_WRAP(p1, ADDR_WRAP, 3);
             break;
 
           case 0x1031:          /* ADCR registers */   /* FIXME: fix for 6809, 6309 only opcode */
-            R_WRAP(p1, ADCR_WRAP);
+            R_WRAP(p1, ADCR_WRAP, 3);
             break;
 
           case 0x1032:          /* SUBR registers */   /* FIXME: fix for 6809, 6309 only opcode */
@@ -3166,7 +3279,7 @@ trap_skipped:
             break;
 
           case 0x1033:          /* SBCR registers */   /* FIXME: fix for 6809, 6309 only opcode */
-            R_WRAP(p1, SBCR_WRAP);
+            R_WRAP(p1, SBCR_WRAP, 3);
             break;
 
           case 0x1034:          /* ANDR registers */   /* FIXME: fix for 6809, 6309 only opcode */
@@ -3178,11 +3291,11 @@ trap_skipped:
             break;
 
           case 0x1036:          /* EORR registers */   /* FIXME: fix for 6809, 6309 only opcode */
-            R_WRAP(p1, EORR_WRAP);
+            R_WRAP(p1, EORR_WRAP, 3);
             break;
 
           case 0x1037:          /* CMPR registers */   /* FIXME: fix for 6809, 6309 only opcode */
-            R_WRAP(p1, CMPR_WRAP);
+            R_WRAP(p1, CMPR_WRAP, 3);
             break;
 
           case 0x1038:          /* PSHSW */   /* FIXME: fix for 6809, 6309 only opcode */
@@ -3202,7 +3315,7 @@ trap_skipped:
             break;
 
           case 0x103f:          /* SWI2 */
-            SWI(2);
+            SWI_REG(2, 2);
             break;
 
           case 0x1040:          /* NEGD */   /* FIXME: fix for 6809, 6309 only opcode */
@@ -3286,15 +3399,15 @@ trap_skipped:
             break;
 
           case 0x1081:          /* CMPW immediate */   /* FIXME: fix for 6809, 6309 only opcode */
-            CMP(reg_w, 16, (p1 << 8) | p2);
+            CMP(reg_w, 16, (p1 << 8) | p2, 4);
             break;
 
           case 0x1082:          /* SBCD immediate */   /* FIXME: fix for 6809, 6309 only opcode */
-            SUB(reg_d, LOCAL_CARRY(), (p1 << 8) | p2, 16);
+            SUB(reg_d, LOCAL_CARRY(), (p1 << 8) | p2, 16, 4);
             break;
 
           case 0x1083:          /* CMPD immediate */
-            CMP(reg_d, 16, (p1 << 8) | p2);
+            CMP(reg_d, 16, (p1 << 8) | p2, 4);
             break;
 
           case 0x1084:          /* ANDD immediate */   /* FIXME: fix for 6809, 6309 only opcode */
@@ -3302,19 +3415,19 @@ trap_skipped:
             break;
 
           case 0x1085:          /* BITD immediate */   /* FIXME: fix for 6809, 6309 only opcode */
-            BIT(reg_d, 16, (p1 << 8) | p2);
+            BIT(reg_d, 16, (p1 << 8) | p2, 4);
             break;
 
           case 0x1086:          /* LDW immediate */   /* FIXME: fix for 6809, 6309 only opcode */
-            LD(reg_w, 16, (p1 << 8) | p2);
+            LD(reg_w, 16, (p1 << 8) | p2, 4);
             break;
 
           case 0x1088:          /* EORD immediate */   /* FIXME: fix for 6809,6309 only opcode */
-            EOR(reg_d, 16, (p1 << 8) | p2);
+            EOR(reg_d, 16, (p1 << 8) | p2, 4);
             break;
 
           case 0x1089:          /* ADCD immediate */   /* FIXME: fix for 6809, 6309 only opcode */
-            ADD(reg_d, (p1 << 8) | p2, LOCAL_CARRY(), 16);
+            ADD(reg_d, (p1 << 8) | p2, LOCAL_CARRY(), 16, 4);
             break;
 
           case 0x108a:          /* ORD immediate */   /* FIXME: fix for 6809, 6309 only opcode */
@@ -3322,15 +3435,15 @@ trap_skipped:
             break;
 
           case 0x108b:          /* ADDW immediate */   /* FIXME: fix for 6809, 6309 only opcode */
-            ADD(reg_w, (p1 << 8) | p2, 0, 16);
+            ADD(reg_w, (p1 << 8) | p2, 0, 16, 4);
             break;
 
           case 0x108c:          /* CMPY immediate */
-            CMP(reg_y, 16, (p1 << 8) | p2);
+            CMP(reg_y, 16, (p1 << 8) | p2, 4);
             break;
 
           case 0x108e:          /* LDY immediate */
-            LD(reg_y, 16, (p1 << 8) | p2);
+            LD(reg_y, 16, (p1 << 8) | p2, 4);
             break;
 
           case 0x1090:          /* SUBW direct */   /* FIXME: fix for 6809, 6309 only opcode */
@@ -3338,15 +3451,15 @@ trap_skipped:
             break;
 
           case 0x1091:          /* CMPW direct */   /* FIXME: fix for 6809, 6309 only opcode */
-            CMP(reg_w, 16, LOAD_DIRECT16(p1));
+            CMP(reg_w, 16, LOAD_DIRECT16(p1), 3);
             break;
 
           case 0x1092:          /* SBCD direct */   /* FIXME: fix for 6809, 6309 only opcode */
-            SUB(reg_d, LOCAL_CARRY(), LOAD_DIRECT16(p1), 16);
+            SUB(reg_d, LOCAL_CARRY(), LOAD_DIRECT16(p1), 16, 3);
             break;
 
           case 0x1093:          /* CMPD direct */
-            CMP(reg_d, 16, LOAD_DIRECT16(p1));
+            CMP(reg_d, 16, LOAD_DIRECT16(p1), 3);
             break;
 
           case 0x1094:          /* ANDD direct */   /* FIXME: fix for 6809, 6309 only opcode */
@@ -3354,19 +3467,23 @@ trap_skipped:
             break;
 
           case 0x1095:          /* BITD direct */   /* FIXME: fix for 6809, 6309 only opcode */
-            BIT(reg_d, 16, LOAD_DIRECT16(p1));
+            BIT(reg_d, 16, LOAD_DIRECT16(p1), 3);
             break;
 
           case 0x1096:          /* LDW direct */   /* FIXME: fix for 6809, 6309 only opcode */
-            LD(reg_w, 16, LOAD_DIRECT16(p1));
+            LD(reg_w, 16, LOAD_DIRECT16(p1), 3);
+            break;
+
+          case 0x1097:          /* STW direct */   /* FIXME: fix for 6809, 6309 only opcode */
+            ST(reg_w, 16, (reg_dpr << 8) | p1, 3);
             break;
 
           case 0x1098:          /* EORD direct */   /* FIXME: fix for 6809, 6309 only opcode */
-            EOR(reg_d, 16, LOAD_DIRECT16(p1));
+            EOR(reg_d, 16, LOAD_DIRECT16(p1), 3);
             break;
 
           case 0x1099:          /* ADCD direct */   /* FIXME: fix for 6809, 6309 only opcode */
-            ADD(reg_d, LOAD_DIRECT16(p1), LOCAL_CARRY(), 16);
+            ADD(reg_d, LOAD_DIRECT16(p1), LOCAL_CARRY(), 16, 3);
             break;
 
           case 0x109a:          /* ORD direct */   /* FIXME: fix for 6809, 6309 only opcode */
@@ -3374,15 +3491,19 @@ trap_skipped:
             break;
 
           case 0x109b:          /* ADDW direct */   /* FIXME: fix for 6809, 6309 only opcode */
-            ADD(reg_w, LOAD_DIRECT16(p1), 0, 16);
+            ADD(reg_w, LOAD_DIRECT16(p1), 0, 16, 3);
             break;
 
           case 0x109c:          /* CMPY direct */
-            CMP(reg_y, 16, LOAD_DIRECT16(p1));
+            CMP(reg_y, 16, LOAD_DIRECT16(p1), 3);
             break;
 
           case 0x109e:          /* LDY direct */
-            LD(reg_y, 16, LOAD_DIRECT16(p1));
+            LD(reg_y, 16, LOAD_DIRECT16(p1), 3);
+            break;
+
+          case 0x109f:          /* STY direct */
+            ST(reg_y, 16, (reg_dpr << 8) | p1, 3);
             break;
 
           case 0x10a0:          /* SUBW indexed */   /* FIXME: fix for 6809, 6309 only opcode */
@@ -3390,15 +3511,15 @@ trap_skipped:
             break;
 
           case 0x10a1:          /* CMPW indexed */   /* FIXME: fix for 6809, 6309 only opcode */
-            CMP(reg_w, 16, LOAD_IND16());
+            CMP(reg_w, 16, LOAD_IND16(), 3);
             break;
 
           case 0x10a2:          /* SBCD indexed */   /* FIXME: fix for 6809, 6309 only opcode */
-            SUB(reg_d, LOCAL_CARRY(), LOAD_IND16(), 16);
+            SUB(reg_d, LOCAL_CARRY(), LOAD_IND16(), 16, 3);
             break;
 
           case 0x10a3:          /* CMPD indexed */
-            CMP(reg_d, 16, LOAD_IND16());
+            CMP(reg_d, 16, LOAD_IND16(), 3);
             break;
 
           case 0x10a4:          /* ANDD indexed */   /* FIXME: fix for 6809, 6309 only opcode */
@@ -3406,19 +3527,23 @@ trap_skipped:
             break;
 
           case 0x10a5:          /* BITD indexed */   /* FIXME: fix for 6809, 6309 only opcode */
-            BIT(reg_d, 16, LOAD_IND16());
+            BIT(reg_d, 16, LOAD_IND16(), 3);
             break;
 
           case 0x10a6:          /* LDW indexed */   /* FIXME: fix for 6809, 6309 only opcode */
-            LD(reg_w, 16, LOAD_IND16());
+            LD(reg_w, 16, LOAD_IND16(), 3);
+            break;
+
+          case 0x10a7:          /* STW indexed */   /* FIXME: fix for 6809, 6309 only opcode */
+            ST(reg_w, 16, GET_IND_MA(p1, p2, p3), 3);
             break;
 
           case 0x10a8:          /* EORD indexed */   /* FIXME: fix for 6809, 6309 only opcode */
-            EOR(reg_d, 16, LOAD_IND16());
+            EOR(reg_d, 16, LOAD_IND16(), 3);
             break;
 
           case 0x10a9:          /* ADCD indexed */   /* FIXME: fix for 6809, 6309 only opcode */
-            ADD(reg_d, LOAD_IND16(), LOCAL_CARRY(), 16);
+            ADD(reg_d, LOAD_IND16(), LOCAL_CARRY(), 16, 3);
             break;
 
           case 0x10aa:          /* ORD indexed */   /* FIXME: fix for 6809, 6309 only opcode */
@@ -3426,15 +3551,19 @@ trap_skipped:
             break;
 
           case 0x10ab:          /* ADDW indexed */   /* FIXME: fix for 6809, 6309 only opcode */
-            ADD(reg_w, LOAD_IND16(), 0, 16);
+            ADD(reg_w, LOAD_IND16(), 0, 16, 3);
             break;
 
           case 0x10ac:          /* CMPY indexed */
-            CMP(reg_y, 16, LOAD_IND16());
+            CMP(reg_y, 16, LOAD_IND16(), 3);
             break;
 
           case 0x10ae:          /* LDY indexed */
-            LD(reg_y, 16, LOAD_IND16());
+            LD(reg_y, 16, LOAD_IND16(), 3);
+            break;
+
+          case 0x10af:          /* STY indexed */
+            ST(reg_y, 16, GET_IND_MA(p1, p2, p3), 3);
             break;
 
           case 0x10b0:          /* SUBW extended */   /* FIXME: fix for 6809, 6309 only opcode */
@@ -3442,15 +3571,15 @@ trap_skipped:
             break;
 
           case 0x10b1:          /* CMPW extended */   /* FIXME: fix for 6809, 6309 only opcode */
-            CMP(reg_w, 16, LOAD_EXT16());
+            CMP(reg_w, 16, LOAD_EXT16(), 4);
             break;
 
           case 0x10b2:          /* SBCD extended */   /* FIXME: fix for 6809, 6309 only opcode */
-            SUB(reg_d, LOCAL_CARRY(), LOAD_EXT16(), 16);
+            SUB(reg_d, LOCAL_CARRY(), LOAD_EXT16(), 16, 4);
             break;
 
           case 0x10b3:          /* CMPD extended */
-            CMP(reg_d, 16, LOAD_EXT16());
+            CMP(reg_d, 16, LOAD_EXT16(), 4);
             break;
 
           case 0x10b4:          /* ANDD extended */   /* FIXME: fix for 6809, 6309 only opcode */
@@ -3458,19 +3587,23 @@ trap_skipped:
             break;
 
           case 0x10b5:          /* BITD extended */   /* FIXME: fix for 6809, 6309 only opcode */
-            BIT(reg_d, 16, LOAD_EXT16());
+            BIT(reg_d, 16, LOAD_EXT16(), 4);
             break;
 
           case 0x10b6:          /* LDW extended */   /* FIXME: fix for 6809, 6309 only opcode */
-            LD(reg_w, 16, LOAD_EXT16());
+            LD(reg_w, 16, LOAD_EXT16(), 4);
+            break;
+
+          case 0x10b7:          /* STW extended */   /* FIXME: fix for 6809, 6309 only opcode */
+            ST(reg_w, 16, (p1 << 8) | p2, 4);
             break;
 
           case 0x10b8:          /* EORD extended */   /* FIXME: fix for 6809, 6309 only opcode */
-            EOR(reg_d, 16, LOAD_EXT16());
+            EOR(reg_d, 16, LOAD_EXT16(), 4);
             break;
 
           case 0x10b9:          /* ADCD extended */   /* FIXME: fix for 6809, 6309 only opcode */
-            ADD(reg_d, LOAD_EXT16(), LOCAL_CARRY(), 16);
+            ADD(reg_d, LOAD_EXT16(), LOCAL_CARRY(), 16, 4);
             break;
 
           case 0x10ba:          /* ORD extended */   /* FIXME: fix for 6809, 6309 only opcode */
@@ -3478,43 +3611,71 @@ trap_skipped:
             break;
 
           case 0x10bb:          /* ADDW extended */   /* FIXME: fix for 6809, 6309 only opcode */
-            ADD(reg_w, LOAD_EXT16(), 0, 16);
+            ADD(reg_w, LOAD_EXT16(), 0, 16, 4);
             break;
 
           case 0x10bc:          /* CMPY extended */
-            CMP(reg_y, 16, LOAD_EXT16());
+            CMP(reg_y, 16, LOAD_EXT16(), 4);
             break;
 
           case 0x10be:          /* LDY extended */
-            LD(reg_y, 16, LOAD_EXT16());
+            LD(reg_y, 16, LOAD_EXT16(), 4);
+            break;
+
+          case 0x10bf:          /* STY extended */
+            ST(reg_y, 16, (p1 << 8) | p2, 4);
             break;
 
           case 0x10ce:          /* LDS immediate */
-            LD(reg_ssp, 16, (p1 << 8) | p2);
+            LD(reg_ssp, 16, (p1 << 8) | p2, 4);
             break;
 
           case 0x10dc:          /* LDQ direct */   /* FIXME: fix for 6809, 6309 only opcode */
-            LD(reg_q, 32, LOAD_DIRECT32(p1));
+            LD(reg_q, 32, LOAD_DIRECT32(p1), 3);
+            break;
+
+          case 0x10dd:          /* STQ direct */   /* FIXME: fix for 6809, 6309 only opcode */
+            ST(reg_q, 32, (reg_dpr << 8) | p1, 3);
             break;
 
           case 0x10de:          /* LDS direct */
-            LD(reg_ssp, 16, LOAD_DIRECT16(p1));
+            LD(reg_ssp, 16, LOAD_DIRECT16(p1), 3);
+            break;
+
+          case 0x10df:          /* STS direct */
+            ST(reg_ssp, 16, (reg_dpr << 8) | p1, 3);
             break;
 
           case 0x10ec:          /* LDQ indexed */   /* FIXME: fix for 6809, 6309 only opcode */
-            LD(reg_q, 32, LOAD_IND32());
+            LD(reg_q, 32, LOAD_IND32(), 3);
+            break;
+
+          case 0x10ed:          /* STQ indexed */
+            ST(reg_q, 32, GET_IND_MA(p1, p2, p3), 3);
             break;
 
           case 0x10ee:          /* LDS indexed */
-            LD(reg_ssp, 16, LOAD_IND16());
+            LD(reg_ssp, 16, LOAD_IND16(), 3);
+            break;
+
+          case 0x10ef:          /* STS indexed */
+            ST(reg_ssp, 16, GET_IND_MA(p1, p2, p3), 3);
             break;
 
           case 0x10fc:          /* LDQ extended */   /* FIXME: fix for 6809, 6309 only opcode */
-            LD(reg_q, 32, LOAD_EXT32());
+            LD(reg_q, 32, LOAD_EXT32(), 4);
+            break;
+
+          case 0x10fd:          /* STQ extended */   /* FIXME: fix for 6809, 6309 only opcode */
+            ST(reg_q, 32, (p1 << 8) | p2, 4);
             break;
 
           case 0x10fe:          /* LDS extended */
-            LD(reg_ssp, 16, LOAD_EXT16());
+            LD(reg_ssp, 16, LOAD_EXT16(), 4);
+            break;
+
+          case 0x10ff:          /* STS extended */
+            ST(reg_ssp, 16, (p1 << 8) | p2, 4);
             break;
 
           case 0x1130:          /* BAND B-direct */   /* FIXME: fix for 6809, 6309 only opcode */
@@ -3542,7 +3703,7 @@ trap_skipped:
             break;
 
           case 0x1136:          /* LDBT B-direct */   /* FIXME: fix for 6809, 6309 only opcode */
-            LDBT(p1, (reg_dpr << 8) | p2);
+            LDBT(p1, (reg_dpr << 8) | p2, 4);
             break;
 
           case 0x1137:          /* STBT B-direct */   /* FIXME: fix for 6809, 6309 only opcode */
@@ -3566,15 +3727,15 @@ trap_skipped:
             break;
 
           case 0x113c:          /* BITMD immediate */   /* FIXME: fix for 6809, 6309 only opcode */
-            BIT(reg_md, 8, p1);
+            BIT(reg_md, 8, p1, 3);
             break;
 
           case 0x113d:          /* LDMD immediate */   /* FIXME: fix for 6809, 6309 only opcode */
-            LD(reg_md, 8, p1);
+            LD(reg_md, 8, p1, 5);
             break;
 
           case 0x113f:          /* SWI3 */
-            SWI(3)
+            SWI_REG(3, 2)
 
           case 0x1143:          /* COME */   /* FIXME: fix for 6809, 6309 only opcode */
             COM_REG(reg_e, 8, 2);
@@ -3621,23 +3782,35 @@ trap_skipped:
             break;
 
           case 0x1181:          /* CMPE immediate */   /* FIXME: fix for 6809, 6309 only opcode */
-            CMP(reg_e, 8, p1);
+            CMP(reg_e, 8, p1, 3);
             break;
 
           case 0x1183:          /* CMPU immediate */
-            CMP(reg_usp, 16, (p1 << 8) | p2);
+            CMP(reg_usp, 16, (p1 << 8) | p2, 4);
             break;
 
           case 0x1186:          /* LDE immediate */   /* FIXME: fix for 6809, 6309 only opcode */
-            LD(reg_e, 8, p1);
+            LD(reg_e, 8, p1, 3);
             break;
 
           case 0x118b:          /* ADDE immediate */   /* FIXME: fix for 6809, 6309 only opcode */
-            ADD(reg_e, p1, 0, 8);
+            ADD(reg_e, p1, 0, 8, 3);
             break;
 
           case 0x118c:          /* CMPS immediate */
-            CMP(reg_ssp, 16, (p1 << 8) | p2);
+            CMP(reg_ssp, 16, (p1 << 8) | p2, 4);
+            break;
+
+          case 0x118d:          /* DIVD immediate */   /* FIXME: fix for 6809, 6309 only opcode */
+            DIVD(p1, 3);
+            break;
+
+          case 0x118e:          /* DIVQ immediate */   /* FIXME: fix for 6809, 6309 only opcode */
+            DIVQ((p1 << 8) | p2, 4);
+            break;
+
+          case 0x118f:          /* MULD immediate */   /* FIXME: fix for 6809, 6309 only opcode */
+            MULD((p1 << 8) | p2, 4);
             break;
 
           case 0x1190:          /* SUBE direct */   /* FIXME: fix for 6809, 6309 only opcode */
@@ -3645,27 +3818,39 @@ trap_skipped:
             break;
 
           case 0x1191:          /* CMPE direct */   /* FIXME: fix for 6809, 6309 only opcode */
-            CMP(reg_e, 8, LOAD_DIRECT8(p1));
+            CMP(reg_e, 8, LOAD_DIRECT8(p1), 3);
             break;
 
           case 0x1193:          /* CMPU direct */
-            CMP(reg_usp, 16, LOAD_DIRECT16(p1));
+            CMP(reg_usp, 16, LOAD_DIRECT16(p1), 3);
             break;
 
           case 0x1196:          /* LDE direct */   /* FIXME: fix for 6809, 6309 only opcode */
-            LD(reg_e, 8, LOAD_DIRECT8(p1));
+            LD(reg_e, 8, LOAD_DIRECT8(p1), 3);
             break;
 
           case 0x1197:          /* STE direct */   /* FIXME: fix for 6809, 6309 only opcode */
-            ST(reg_e, 8, (reg_dpr << 8) | p1);
+            ST(reg_e, 8, (reg_dpr << 8) | p1, 3);
             break;
 
           case 0x119b:          /* ADDE direct */   /* FIXME: fix for 6809, 6309 only opcode */
-            ADD(reg_e, LOAD_DIRECT8(p1), 0, 8);
+            ADD(reg_e, LOAD_DIRECT8(p1), 0, 8, 3);
             break;
 
           case 0x119c:          /* CMPS direct */
-            CMP(reg_ssp, 16, LOAD_DIRECT16(p1));
+            CMP(reg_ssp, 16, LOAD_DIRECT16(p1), 3);
+            break;
+
+          case 0x119d:          /* DIVD direct */
+            DIVD(LOAD_DIRECT8(p1), 3);
+            break;
+
+          case 0x119e:          /* DIVQ direct */   /* FIXME: fix for 6809, 6309 only opcode */
+            DIVQ(LOAD_DIRECT16(p1), 3);
+            break;
+
+          case 0x119f:          /* MULD direct */   /* FIXME: fix for 6809, 6309 only opcode */
+            MULD(LOAD_DIRECT16(p1), 3);
             break;
 
           case 0x11a0:          /* SUBE indexed */   /* FIXME: fix for 6809, 6309 only opcode */
@@ -3673,27 +3858,39 @@ trap_skipped:
             break;
 
           case 0x11a1:          /* CMPE indexed */   /* FIXME: fix for 6809, 6309 only opcode */
-            CMP(reg_e, 8, LOAD_IND8());
+            CMP(reg_e, 8, LOAD_IND8(), 3);
             break;
 
           case 0x11a3:          /* CMPU indexed */
-            CMP(reg_usp, 16, LOAD_IND16());
+            CMP(reg_usp, 16, LOAD_IND16(), 3);
             break;
 
           case 0x11a6:          /* LDE indexed */   /* FIXME: fix for 6809, 6309 only opcode */
-            LD(reg_e, 8, LOAD_IND8());
+            LD(reg_e, 8, LOAD_IND8(), 3);
             break;
 
           case 0x11a7:          /* STE indexed */   /* FIXME: fix for 6809, 6309 only opcode */
-            ST(reg_e, 8, GET_IND_MA(p1, p2, p3));
+            ST(reg_e, 8, GET_IND_MA(p1, p2, p3), 3);
             break;
 
           case 0x11ab:          /* ADDE indexed */   /* FIXME: fix for 6809, 6309 only opcode */
-            ADD(reg_e, LOAD_IND8(), 0, 8);
+            ADD(reg_e, LOAD_IND8(), 0, 8, 3);
             break;
 
           case 0x11ac:          /* CMPS indexed */
-            CMP(reg_ssp, 16, LOAD_IND16());
+            CMP(reg_ssp, 16, LOAD_IND16(), 3);
+            break;
+
+          case 0x11ad:          /* DIVD indexed */   /* FIXME: fix for 6809, 6309 only opcode */
+            DIVD(LOAD_IND8(), 3);
+            break;
+
+          case 0x11ae:          /* DIVQ indexed */   /* FIXME: fix for 6809, 6309 only opcode */
+            DIVQ(LOAD_IND16(), 3);
+            break;
+
+          case 0x11af:          /* MULD indexed */   /* FIXME: fix for 6809, 6309 only opcode */
+            MULD(LOAD_IND16(), 3);
             break;
 
           case 0x11b0:          /* SUBE extended */   /* FIXME: fix for 6809, 6309 only opcode */
@@ -3701,27 +3898,39 @@ trap_skipped:
             break;
 
           case 0x11b1:          /* CMPE extended */   /* FIXME: fix for 6809, 6309 only opcode */
-            CMP(reg_e, 8, LOAD_EXT8());
+            CMP(reg_e, 8, LOAD_EXT8(), 4);
             break;
 
           case 0x11b3:          /* CMPU extended */
-            CMP(reg_usp, 16, LOAD_EXT16());
+            CMP(reg_usp, 16, LOAD_EXT16(), 4);
             break;
 
           case 0x11b6:          /* LDE extended */   /* FIXME: fix for 6809, 6309 only opcode */
-            LD(reg_e, 8, LOAD_EXT8());
+            LD(reg_e, 8, LOAD_EXT8(), 4);
             break;
 
           case 0x11b7:          /* STE extended */   /* FIXME: fix for 6809, 6309 only opcode */
-            ST(reg_e, 8, (p1 << 8) | p2);
+            ST(reg_e, 8, (p1 << 8) | p2, 4);
             break;
 
           case 0x11bb:          /* ADDE extended */
-            ADD(reg_e, LOAD_EXT8(), 0, 8);
+            ADD(reg_e, LOAD_EXT8(), 0, 8, 4);
             break;
 
           case 0x11bc:          /* CMPS extended */
-            CMP(reg_ssp, 16, LOAD_EXT16());
+            CMP(reg_ssp, 16, LOAD_EXT16(), 4);
+            break;
+
+          case 0x11bd:          /* DIVD extended */   /* FIXME: fix for 6809, 6309 only opcode */
+            DIVD(LOAD_EXT8(), 4);
+            break;
+
+          case 0x11be:          /* DIVQ extended */   /* FIXME: fix for 6809, 6309 only opcode */
+            DIVQ(LOAD_EXT16(), 4);
+            break;
+
+          case 0x11bf:          /* MULD extended */   /* FIXME: fix for 6809, 6309 only opcode */
+            MULD(LOAD_EXT16(), 4);
             break;
 
           case 0x11c0:          /* SUBF immediate */   /* FIXME: fix for 6809, 6309 only opcode */
@@ -3729,15 +3938,15 @@ trap_skipped:
             break;
 
           case 0x11c1:          /* CMPF immediate */   /* FIXME: fix for 6809, 6309 only opcode */
-            CMP(reg_f, 8, p1);
+            CMP(reg_f, 8, p1, 3);
             break;
 
           case 0x11c6:          /* LDF immediate */   /* FIXME: fix for 6809, 6309 only opcode */
-            LD(reg_f, 8, p1);
+            LD(reg_f, 8, p1, 3);
             break;
 
           case 0x11cb:          /* ADDF immediate */   /* FIXME: fix for 6809, 6309 only opcode */
-            ADD(reg_f, p1, 0, 8);
+            ADD(reg_f, p1, 0, 8, 3);
             break;
 
           case 0x11d0:          /* SUBF direct */   /* FIXME: fix for 6809, 6309 only opcode */
@@ -3745,19 +3954,19 @@ trap_skipped:
             break;
 
           case 0x11d1:          /* CMPF direct */   /* FIXME: fix for 6809, 6309 only opcode */
-            CMP(reg_f, 8, LOAD_DIRECT8(p1));
+            CMP(reg_f, 8, LOAD_DIRECT8(p1), 3);
             break;
 
           case 0x11d6:          /* LDF direct */   /* FIXME: fix for 6809, 6309 only opcode */
-            LD(reg_f, 8, LOAD_DIRECT8(p1));
+            LD(reg_f, 8, LOAD_DIRECT8(p1), 3);
             break;
 
           case 0x11d7:          /* STF direct */   /* FIXME: fix for 6809, 6309 only opcode */
-            ST(reg_f, 8, (reg_dpr << 8) | p1);
+            ST(reg_f, 8, (reg_dpr << 8) | p1, 3);
             break;
 
           case 0x11db:          /* ADDF direct */   /* FIXME: fix for 6809, 6309 only opcode */
-            ADD(reg_f, LOAD_DIRECT8(p1), 0, 8);
+            ADD(reg_f, LOAD_DIRECT8(p1), 0, 8, 3);
             break;
 
           case 0x11e0:          /* SUBF indexed */   /* FIXME: fix for 6809, 6309 only opcode */
@@ -3765,19 +3974,19 @@ trap_skipped:
             break;
 
           case 0x11e1:          /* CMPF indexed */   /* FIXME: fix for 6809, 6309 only opcode */
-            CMP(reg_f, 8, LOAD_IND8());
+            CMP(reg_f, 8, LOAD_IND8(), 3);
             break;
 
           case 0x11e6:          /* LDF indexed */   /* FIXME: fix for 6809, 6309 only opcode */
-            LD(reg_f, 8, LOAD_IND8());
+            LD(reg_f, 8, LOAD_IND8(), 3);
             break;
 
           case 0x11e7:          /* STF indexed */   /* FIXME: fix for 6809, 6309 only opcode */
-            ST(reg_f, 8, GET_IND_MA(p1, p2, p3));
+            ST(reg_f, 8, GET_IND_MA(p1, p2, p3), 3);
             break;
 
           case 0x11eb:          /* ADDF indexed */   /* FIXME: fix for 6809, 6309 only opcode */
-            ADD(reg_f, LOAD_IND8(), 0, 8);
+            ADD(reg_f, LOAD_IND8(), 0, 8, 3);
             break;
 
           case 0x11f0:          /* SUBF extended */   /* FIXME: fix for 6809, 6309 only opcode */
@@ -3785,7 +3994,7 @@ trap_skipped:
             break;
 
           case 0x11f1:          /* CMPF extended */   /* FIXME: fix for 6809, 6309 only opcode */
-            CMP(reg_f, 8, LOAD_EXT8());
+            CMP(reg_f, 8, LOAD_EXT8(), 4);
             break;
 
           case 0x11f6:          /* LDF extended */   /* FIXME: fix for 6809, 6309 only opcode */
@@ -3793,11 +4002,11 @@ trap_skipped:
             break;
 
           case 0x11f7:          /* STF extended */   /* FIXME: fix for 6809, 6309 only opcode */
-            ST(reg_f, 8, (p1 << 8) | p2);
+            ST(reg_f, 8, (p1 << 8) | p2, 4);
             break;
 
           case 0x11fb:          /* ADDF extended */   /* FIXME: fix for 6809, 6309 only opcode */
-            ADD(reg_f, LOAD_EXT8(), 0, 8);
+            ADD(reg_f, LOAD_EXT8(), 0, 8, 4);
             break;
         }
     }
