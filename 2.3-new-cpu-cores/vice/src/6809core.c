@@ -38,6 +38,7 @@
  * - define reg_dpr (Direct Page Register) as 8bit (6809/6309).
  * - define a function to handle the SYNC6809() call.
  * - define a function to handle the CWAI6809() call.
+ * - define cpu_type as either 6809 or 6309.
  *
  * Notes:
  * reg_d is reg_a and reg_b combined (6809/6309).
@@ -76,9 +77,14 @@
 
 #include "traps.h"
 
-#ifndef CLK_ADD
-#define CLK_ADD(clock, amount) clock += amount
-#endif
+#define CLK_ADD(clock, nr6809, nr6309)        \
+  do {                                        \
+      if (cpu_type == 6309 && LOCAL_MD_E()) { \
+          clock += nr6309;                    \
+      } else {                                \
+          clock += nr6809;                    \
+      }                                       \
+  } while (0)
 
 #ifndef REWIND_FETCH_OPCODE
 #define REWIND_FETCH_OPCODE(clock) clock -= 2
@@ -521,161 +527,212 @@ static WORD GET_IND_MA(BYTE b1, BYTE b2, BYTE b3)
         /* n,R (5bit offset) */
         PB_REG2VAR(b1, ma);
         ma += (b1 & 0x1f);
+        CLK_ADD(CLK, 1, 1);
     } else {
         PC_INC(1);       /* postbyte fetch */
         PB_REG2VAR(b1, ma);
         switch (b1 & 0x1f) {
             case 0:      /* ,R+ */
                 PB_REGADD(b1, 1);
+                CLK_ADD(CLK, 2, 1);
                 break;
             case 1:      /* ,R++ */
                 PB_REGADD(b1, 2);
+                CLK_ADD(CLK, 3, 2);
                 break;
             case 2:      /* ,R- */
                 PB_REGADD(b1, -1);
+                CLK_ADD(CLK, 2, 1);
                 break;
             case 3:      /* ,R-- */
                 PB_REGADD(b1, -2);
+                CLK_ADD(CLK, 3, 2);
                 break;
             case 4:      /* ,R */
                 break;
             case 5:      /* B,R */
                 ma += (signed char)reg_b;
+                CLK_ADD(CLK, 1, 1);
                 break;
             case 6:      /* A,R */
                 ma += (signed char)reg_a;
+                CLK_ADD(CLK, 1, 1);
                 break;
-            case 7:      /* E,R */   /* FIXME: fix for 6809, 6309 only mode */
-                ma += (signed char)reg_e;
+            case 7:      /* E,R */
+                if (cpu_type == 6309) {
+                    ma += (signed char)reg_e;
+                    CLK_ADD(CLK, 1, 1);
+                }
                 break;
             case 8:      /* n,R (8bit offset) */
                 ma += b2;
                 PC_INC(1);
+                CLK_ADD(CLK, 1, 1);
                 break;
             case 9:      /* n,R (16bit offset) */
                 ma += ((b2 << 8) | b3);
                 PC_INC(2);
+                CLK_ADD(CLK, 4, 3);
                 break;
-            case 10:     /* F,R */   /* FIXME: fix for 6809, 6309 only mode */
-                ma += (signed char)reg_f;
+            case 10:     /* F,R */
+                if (cpu_type == 6309) {
+                    ma += (signed char)reg_f;
+                    CLK_ADD(CLK, 1, 1);
+                }
                 break;
             case 11:     /* D,R */
                 ma += (signed short)reg_d;
+                CLK_ADD(CLK, 4, 2);
                 break;
             case 12:     /* n,PC (8bit offset) */   /* FIXME: check if pc offset is correct */
                 PC_INC(1);
                 ma = reg_pc + (signed char)b2;
+                CLK_ADD(CLK, 1, 1);
                 break;
-            case 13:     /* n,PC (16bit offset) */   /* FIXME: check of pc offset is correct */
+            case 13:     /* n,PC (16bit offset) */   /* FIXME: check if pc offset is correct */
                 PC_INC(2);
                 ma = reg_pc + (signed short)((b2 << 8) | b3);
+                CLK_ADD(CLK, 5, 3);
                 break;
-            case 14:     /* W,R */   /* FIXME: fix for 6809, 6309 only mode */
-                ma += (signed short)((reg_e << 8) | reg_f);
-                break;
-            case 15:   /* FIXME: fix for 6809, 6309 only modes */
-                switch ((b1 & 0x60) >> 5) {
-                    case 0:     /* ,W */
-                        ma = reg_w;
-                        break;
-                    case 1:     /* n,W (16bit offset) */
-                        ma = reg_w + (signed short)((b2 << 8) | b3);
-                        PC_INC(2);
-                        break;
-                    case 2:     /* ,W++ */
-                        ma = reg_w;
-                        reg_w += 2;
-                        break;
-                    case 3:     /* ,W-- */
-                        ma = reg_w;
-                        reg_w -= 2;
-                        break;
+            case 14:     /* W,R */
+                if (cpu_type == 6309) {
+                    ma += (signed short)((reg_e << 8) | reg_f);
+                    CLK_ADD(CLK, 4, 1);
                 }
                 break;
-            case 16:     /* FIXME: fix for 6809, 6309 only modes */
-                switch ((p1 & 0x60) >> 5) {
-                    case 0:     /* [,W] */
-                        ma = LOAD(reg_w) << 8;
-                        ma |= LOAD(reg_w + 1);
-                        break;
-                    case 1:     /* [n,W] (16bit offset) */
-                        ma = LOAD(reg_w + (signed short)((b2 << 8) | b3)) << 8;
-                        ma |= LOAD(reg_w + 1 + (signed short)((b2 << 8) | b3));
-                        PC_INC(2);
-                        break;
-                    case 2:     /* [,W++] */
-                        ma = LOAD(reg_w) << 8;
-                        ma |= LOAD(reg_w + 1);
-                        reg_w += 2;
-                        break;
-                    case 3:     /* [,W--] */
-                        ma = LOAD(reg_w) << 8;
-                        ma |= LOAD(reg_w + 1);
-                        reg_w -= 2;
-                        break;
+            case 15:
+                if (cpu_type == 6309) {
+                    switch ((b1 & 0x60) >> 5) {
+                        case 0:     /* ,W */
+                            ma = reg_w;
+                            break;
+                        case 1:     /* n,W (16bit offset) */
+                            ma = reg_w + (signed short)((b2 << 8) | b3);
+                            PC_INC(2);
+                            CLK_ADD(CLK, 5, 2);
+                            break;
+                        case 2:     /* ,W++ */
+                            ma = reg_w;
+                            reg_w += 2;
+                            CLK_ADD(CLK, 3, 1);
+                            break;
+                        case 3:     /* ,W-- */
+                            ma = reg_w;
+                            reg_w -= 2;
+                            CLK_ADD(CLK, 3, 1);
+                            break;
+                    }
+                }
+                break;
+            case 16:
+                if (cpu_type == 6309) {
+                    switch ((p1 & 0x60) >> 5) {
+                        case 0:     /* [,W] */
+                            ma = LOAD(reg_w) << 8;
+                            ma |= LOAD(reg_w + 1);
+                            break;
+                        case 1:     /* [n,W] (16bit offset) */
+                            ma = LOAD(reg_w + (signed short)((b2 << 8) | b3)) << 8;
+                            ma |= LOAD(reg_w + 1 + (signed short)((b2 << 8) | b3));
+                            PC_INC(2);
+                            CLK_ADD(CLK, 5, 5);
+                            break;
+                        case 2:     /* [,W++] */
+                            ma = LOAD(reg_w) << 8;
+                            ma |= LOAD(reg_w + 1);
+                            reg_w += 2;
+                            CLK_ADD(CLK, 3, 3);
+                            break;
+                        case 3:     /* [,W--] */
+                            ma = LOAD(reg_w) << 8;
+                            ma |= LOAD(reg_w + 1);
+                            reg_w -= 2;
+                            CLK_ADD(CLK, 3, 3);
+                            break;
+                    }
                 }
                 break;
             case 17:     /* [,R++] */
                 ma = (LOAD(ma) << 8) | LOAD(ma + 1);
                 PB_REGADD(b1, 2);
+                CLK_ADD(CLK, 6, 6);
                 break;
-            case 18:     /* FIXME: unknown */
+            case 18:
                 break;
             case 19:     /* [,R--] */
                 ma = (LOAD(ma) << 8) | LOAD(ma + 1);
                 PB_REGADD(b1, -2);
+                CLK_ADD(CLK, 6, 6);
                 break;
             case 20:     /* [,R] */
                 ma = (LOAD(ma) << 8) | LOAD(ma + 1);
+                CLK_ADD(CLK, 3, 3);
                 break;
             case 21:     /* [B,R] */
                 ma += (signed char)reg_b;
                 ma = (LOAD(ma) << 8) | LOAD(ma + 1);
+                CLK_ADD(CLK, 4, 4);
                 break;
             case 22:     /* [A,R] */
                 ma += (signed char)reg_a;
                 ma = (LOAD(ma) << 8) | LOAD(ma + 1);
+                CLK_ADD(CLK, 4, 4);
                 break;
-            case 23:     /* [E,R] */   /* FIXME: fix for 6809, 6309 only mode */
-                ma += (signed char)reg_e;
-                ma = (LOAD(ma) << 8) | LOAD(ma + 1);
+            case 23:     /* [E,R] */
+                if (cpu_type == 6309) {
+                    ma += (signed char)reg_e;
+                    ma = (LOAD(ma) << 8) | LOAD(ma + 1);
+                    CLK_ADD(CLK, 1, 1);
+                }
                 break;
             case 24:     /* [n,R] (8bit offset) */
                 ma += b2;
                 ma = (LOAD(ma) << 8) | LOAD(ma + 1);
                 PC_INC(1);
+                CLK_ADD(CLK, 4, 4);
                 break;
             case 25:     /* [n,R] (16bit offset) */
                 ma += ((b2 << 8) | b3);
                 ma = (LOAD(ma) << 8) | LOAD(ma + 1);
                 PC_INC(2);
+                CLK_ADD(CLK, 7, 7);
                 break;
-            case 26:     /* [F,R] */   /* FIXME: fix for 6809, 6309 only mode */
-                ma += (signed char)reg_f;
-                ma = (LOAD(ma) << 8) | LOAD(ma + 1);
+            case 26:     /* [F,R] */
+                if (cpu_type == 6309) {
+                    ma += (signed char)reg_f;
+                    ma = (LOAD(ma) << 8) | LOAD(ma + 1);
+                    CLK_ADD(CLK, 1, 1);
+                }
                 break;
             case 27:     /* [D,R] */
                 ma += (signed short)reg_d;
                 ma = (LOAD(ma) << 8) | LOAD(ma + 1);
+                CLK_ADD(CLK, 4, 4);
                 break;
             case 28:     /* [n,PC] (8bit offset) */   /* FIXME: check if pc offset is correct */
                 PC_INC(1);
                 ma = reg_pc + (signed char)b2;
                 ma = (LOAD(ma) << 8) | LOAD(ma + 1);
+                CLK_ADD(CLK, 4, 4);
                 break;
             case 29:     /* [n,PC] (16bit offset) */   /* FIXME: check if pc offset is correct */
                 PC_INC(2);
                 ma = reg_pc + (signed short)((b2 << 8) | b3);
                 ma = (LOAD(ma) << 8) | LOAD(ma + 1);
+                CLK_ADD(CLK, 8, 8);
                 break;
-            case 30:     /* [W,R] */   /* FIXME: fix for 6809, 6309 only mode */
-                ma += (signed short)((reg_e << 8) | reg_f);
-                ma = (LOAD(ma) << 8) | LOAD(ma + 1);
+            case 30:     /* [W,R] */
+                if (cpu_type == 6309) {
+                    ma += (signed short)((reg_e << 8) | reg_f);
+                    ma = (LOAD(ma) << 8) | LOAD(ma + 1);
+                    CLK_ADD(CLK, 4, 4);
+                }
                 break;
             case 31:     /* [n] (16bit extended indirect) */
                 ma = LOAD((b2 << 8) | b3) << 8;
                 ma |= LOAD(((b2 << 8) | b3) + 1);
                 PC_INC(2);
+                CLK_INC(CLK, 5, 5);
                 break;
         }
     }
