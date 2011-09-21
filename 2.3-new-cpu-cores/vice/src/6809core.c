@@ -37,6 +37,7 @@
  * - define reg_ssp (System Stack Pointer) as 16bit (6809/6309).
  * - define reg_dpr (Direct Page Register) as 8bit (6809/6309).
  * - define a function to handle the SYNC6809() call.
+ * - define a function to handle the CWAI6809() call.
  *
  * Notes:
  * reg_d is reg_a and reg_b combined (6809/6309).
@@ -1482,6 +1483,30 @@ define BTM_VAR2REG(rnr, var) \
       PC_INC(pc_inc);                                                    \
   } while (0)
 
+#define CWAI(m)              \
+  do {                       \
+      PC_INC(2);             \
+      reg_p &= m;            \
+      LOCAL_SET_ENTIRE(1);   \
+      PUSHS(reg_pc & 0xff);  \
+      PUSHS(reg_pc >> 8);    \
+      PUSHS(reg_usp & 0xff); \
+      PUSHS(reg_usp >> 8);   \
+      PUSHS(reg_y & 0xff);   \
+      PUSHS(reg_y >> 8);     \
+      PUSHS(reg_X & 0xff);   \
+      PUSHS(reg_x >> 8);     \
+      PUSHS(reg_dpr);        \
+      if (!reg_emul) {       \
+          PUSHS(reg_f);      \
+          PUSHS(reg_e);      \
+      }                      \
+      PUSHS(reg_b);          \
+      PUSHS(reg_a);          \
+      PUSHS(reg_p);          \
+      CWAI6809();            \
+  } while (0)
+
 #define DAA()                                                       \
   do {                                                              \
       unsigned int c, lsn, msn, tmp;                                \
@@ -2486,7 +2511,11 @@ trap_skipped:
             RTI();
             break;
 
-          case 0x003d:            /* MUL */
+          case 0x003c:          /* CWAI immediate */
+            CWAI(p1);
+            break;
+
+          case 0x003d:          /* MUL */
             MUL();
             break;
 
