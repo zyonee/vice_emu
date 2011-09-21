@@ -1497,7 +1497,7 @@ define BTM_VAR2REG(rnr, var) \
       PUSHS(reg_X & 0xff);   \
       PUSHS(reg_x >> 8);     \
       PUSHS(reg_dpr);        \
-      if (!reg_emul) {       \
+      if (LOCAL_MD_E()) {    \
           PUSHS(reg_f);      \
           PUSHS(reg_e);      \
       }                      \
@@ -2036,7 +2036,7 @@ define BTM_VAR2REG(rnr, var) \
       if (LOCAL_ENTIRE()) {       \
           reg_a = PULLS();        \
           reg_b = PULLS();        \
-          if (!reg_emul) {        \
+          if (LOCAL_MD_E()) {     \
               reg_e = PULLS();    \
               reg_f = PULLS();    \
           }                       \
@@ -2145,7 +2145,7 @@ define BTM_VAR2REG(rnr, var) \
       PUSHS(reg_x & 0xff);            \
       PUSHS(reg_x >> 8);              \
       PUSHS(reg_dpr);                 \
-      if (!reg_emul) {                \
+      if (LOCAL_MD_E()) {             \
           PUSHS(reg_f);               \
           PUSHS(reg_e);               \
       }                               \
