@@ -1222,55 +1222,59 @@ define BTM_VAR2REG(rnr, var) \
 
 /* Opcodes.  */
 
-#defime ABX()         \
-  do {                \
-      reg_a += reg_b; \
-      PC_INC(1);      \
+#defime ABX()             \
+  do {                    \
+      reg_a += reg_b;     \
+      PC_INC(1);          \
+      CLK_ADD(CLK, 3, 1); \
   } while (0)
 
-#define ADD(RR, m, CC, bits, pc_inc)               \
+#define ADD(RR, m, CC, bits, pc_inc, clk6809, clk6309) \
+  do {                                                 \
+      unsigned int tmp;                                \
+                                                       \
+      if (bits == 8) {                                 \
+          tmp = (RR & 0xf) + (m & 0xf) + CC;           \
+          LOCAL_SET_HALF_CARRY(BT(tmp, 4));            \
+          tmp = (RR & 0x7f) + (m & 0x7f) + CC;         \
+      } else {                                         \
+          tmp = (RR & 0x7fff) + (m & 0x7fff) + CC;     \
+      }                                                \
+      LOCAL_SET_OVERFLOW(BT(tmp, bits - 1));           \
+      tmp = RR + m + CC;                               \
+      LOCAL_SET_CARRY(BT(tmp, bits));                  \
+      LOCAL_SET_NEGATIVE(BT(tmp, bits - 1));           \
+      LOCAL_SET_ZERO(!tmp);                            \
+      RR = tmp & (bits == 8) ? 0xff : 0xffff;          \
+      PC_INC(pc_inc);                                  \
+      CLK_ADD(CLK, clk6809, clk6309);                  \
+  } while (0)
+
+#define AIM(m, ma, pc_inc, clk6809, clk6309) \
+  do {                                       \
+      BYTE tmp;                              \
+                                             \
+      tmp = LOAD(ma);                        \
+      tmp &= m;                              \
+      LOCAL_SET_OVERFLOW(0);                 \
+      LOCAL_SET_NEGATIVE(BT(tmp, 7));        \
+      LOCAL_SET_ZERO(!tmp);                  \
+      STORE(ma, tmp);                        \
+      PC_INC(pc_inc);                        \
+      CLK_ADD(CLK, clk6809, clk6309);        \
+  } while (0)
+
+#define AND(RR, m, bits, pc_inc, clk6809, clk6309) \
   do {                                             \
-      unsigned int tmp;                            \
-                                                   \
-      if (bits == 8) {                             \
-          tmp = (RR & 0xf) + (m & 0xf) + CC;       \
-          LOCAL_SET_HALF_CARRY(BT(tmp, 4));        \
-          tmp = (RR & 0x7f) + (m & 0x7f) + CC;     \
-      } else {                                     \
-          tmp = (RR & 0x7fff) + (m & 0x7fff) + CC; \
-      }                                            \
-      LOCAL_SET_OVERFLOW(BT(tmp, bits - 1));       \
-      tmp = RR + m + CC;                           \
-      LOCAL_SET_CARRY(BT(tmp, bits));              \
-      LOCAL_SET_NEGATIVE(BT(tmp, bits - 1));       \
-      LOCAL_SET_ZERO(!tmp);                        \
-      RR = tmp & (bits == 8) ? 0xff : 0xffff;      \
+      RR &= m;                                     \
+      LOCAL_SET_NEGATIVE(BT(RR, bits - 1));        \
+      LOCAL_SET_ZERO(!RR);                         \
+      LOCAL_SET_OVERFLOW(0);                       \
       PC_INC(pc_inc);                              \
+      CLK_ADD(CLK, clk6809, clk6309);              \
   } while (0)
 
-#define AIM(m, ma, pc_inc)            \
-  do {                                \
-      BYTE tmp;                       \
-                                      \
-      tmp = LOAD(ma);                 \
-      tmp &= m;                       \
-      LOCAL_SET_OVERFLOW(0);          \
-      LOCAL_SET_NEGATIVE(BT(tmp, 7)); \
-      LOCAL_SET_ZERO(!tmp);           \
-      STORE(ma, tmp);                 \
-      PC_INC(pc_inc);                 \
-  } while (0)
-
-#define AND(RR, m, bits, pc_inc)            \
-  do {                                      \
-      RR &= m;                              \
-      LOCAL_SET_NEGATIVE(BT(RR, bits - 1)); \
-      LOCAL_SET_ZERO(!RR);                  \
-      LOCAL_SET_OVERFLOW(0);                \
-      PC_INC(pc_inc);                       \
-  } while (0)
-
-#define ASL_REG(RR, bits, pc_inc)                              \
+#define ASL_REG(RR, bits, pc_inc, clk6809, clk6309)            \
   do {                                                         \
       LOCAL_SET_CARRY(BT(RR, bits - 1));                       \
       LOCAL_SET_OVERFLOW(BT(RR, bits - 1) ^ BT(RR, bits - 2)); \
@@ -1278,33 +1282,35 @@ define BTM_VAR2REG(rnr, var) \
       LOCAL_SET_NEGATIVE(BT(RR, bits - 1));                    \
       LOCAL_SET_ZERO(!RR);                                     \
       PC_INC(pc_inc);                                          \
+      CLK_ADD(CLK, clk6809, clk6309);                          \
   } while (0)
 
-#define ASL(ma, pc_inc)        \
-  do {                         \
-      BYTE val;                \
-                               \
-      tmp = LOAD(ma);          \
-      ASL_REG(val, 8, pc_inc); \
-      STORE(ma, val);          \
+#define ASL(ma, pc_inc, clk6809, clk6309)        \
+  do {                                           \
+      BYTE val;                                  \
+                                                 \
+      tmp = LOAD(ma);                            \
+      ASL_REG(val, 8, pc_inc, clk6809, clk6309); \
+      STORE(ma, val);                            \
   } while (0)
 
-#define ASR_REG(RR, bits, pc_inc)                            \
+#define ASR_REG(RR, bits, pc_inc, clk6809, clk6309)          \
   do {                                                       \
       LOCAL_SET_CARRY(BT(RR, 0));                            \
       RR = (RR & ((bits == 8) ? 0x80 : 0x8000)) | (RR >> 1); \
       LOCAL_SET_NEGATIVE(BT(RR, bits - 1));                  \
       LOCAL_SET_ZERO(!RR);                                   \
       PC_INC(pc_inc);                                        \
+      CLK_ADD(CLK, clk6809, clk6309);                        \
   } while (0)
 
-#define ASR(ma, pc_inc)        \
-  do {                         \
-      BYTE val;                \
-                               \
-      val = LOAD(ma);          \
-      ASR_REG(val, 8, pc_inc); \
-      STORE(ma, val);          \
+#define ASR(ma, pc_inc, clk6809, clk6309)        \
+  do {                                           \
+      BYTE val;                                  \
+                                                 \
+      val = LOAD(ma);                            \
+      ASR_REG(val, 8, pc_inc, clk6809, clk6309); \
+      STORE(ma, val);                            \
   } while (0)
 
 #define BAND(rnr, ma)                              \
@@ -1328,6 +1334,7 @@ define BTM_VAR2REG(rnr, var) \
       LOCAL_SET_ZERO(!tmp);                        \
       STORE(ma, tmp);                              \
       PC_INC(4);                                   \
+      CLK_ADD(CLK, 7, 6);                          \
   } while (0)
 
 #define BEOR(rnr, ma)                              \
@@ -1351,6 +1358,7 @@ define BTM_VAR2REG(rnr, var) \
       LOCAL_SET_ZERO(!tmp);                        \
       STORE(ma, tmp);                              \
       PC_INC(4);                                   \
+      CLK_ADD(CLK, 7, 6);                          \
   } while (0)
 
 #define BIAND(rnr, ma)                             \
@@ -1374,6 +1382,7 @@ define BTM_VAR2REG(rnr, var) \
       LOCAL_SET_ZERO(!tmp);                        \
       STORE(ma, tmp);                              \
       PC_INC(4);                                   \
+      CLK_ADD(CLK, 7, 6);                          \
   } while (0)
 
 #define BIEOR(rnr, ma)                             \
@@ -1397,6 +1406,7 @@ define BTM_VAR2REG(rnr, var) \
       LOCAL_SET_ZERO(!tmp);                        \
       STORE(ma, tmp);                              \
       PC_INC(4);                                   \
+      CLK_ADD(CLK, 7, 6);                          \
   } while (0)
 
 #define BIOR(rnr, ma)                              \
@@ -1420,17 +1430,19 @@ define BTM_VAR2REG(rnr, var) \
       LOCAL_SET_ZERO(!tmp);                        \
       STORE(ma, tmp);                              \
       PC_INC(4);                                   \
+      CLK_ADD(CLK, 7, 6);                          \
   } while (0)
 
-#define BIT(RR, bits, m, pc_inc)             \
-  do {                                       \
-      unsigned int tmp;                      \
-                                             \
-      tmp = RR & m;                          \
-      LOCAL_SET_NEGATIVE(BT(tmp, bits - 1)); \
-      LOCAL_SET_ZERO(!tmp);                  \
-      LOCAL_SET_OVERFLOW(0);                 \
-      PC_INC(pc_inc);                        \
+#define BIT(RR, bits, m, pc_inc, clk6809, clk6309) \
+  do {                                             \
+      unsigned int tmp;                            \
+                                                   \
+      tmp = RR & m;                                \
+      LOCAL_SET_NEGATIVE(BT(tmp, bits - 1));       \
+      LOCAL_SET_ZERO(!tmp);                        \
+      LOCAL_SET_OVERFLOW(0);                       \
+      PC_INC(pc_inc);                              \
+      CLK_ADD(CLK, clk6809, clk6309);              \
   } while (0)
 
 #define BOR(rnr, ma)                               \
@@ -1454,76 +1466,82 @@ define BTM_VAR2REG(rnr, var) \
       LOCAL_SET_ZERO(!tmp);                        \
       STORE(ma, tmp);                              \
       PC_INC(4);                                   \
+      CLK_ADD(CLK, 7, 6);                          \
   } while (0)
 
-#define BRANCH(cond, value, pc_inc)                  \
-  do {                                               \
-      unsigned int dest_addr = 0;                    \
-                                                     \
-      PC_INC(pc_inc);                                \
-      if (cond) {                                    \
-          dest_addr = reg_pc + (signed char)(value); \
-          reg_pc = dest_addr & 0xffff;               \
-      }                                              \
-  } while (0)
-
-#define BRANCH_LONG(cond, value, pc_inc)              \
+#define BRANCH(cond, value, pc_inc, clk6809, clk6309) \
   do {                                                \
       unsigned int dest_addr = 0;                     \
                                                       \
       PC_INC(pc_inc);                                 \
       if (cond) {                                     \
-          dest_addr = reg_pc + (signed short)(value); \
+          dest_addr = reg_pc + (signed char)(value);  \
           reg_pc = dest_addr & 0xffff;                \
       }                                               \
+      CLK_ADD(CLK, clk6809, clk6309);                 \
+  } while (0)
+
+#define BRANCH_LONG(cond, value, pc_inc, clk6809, clk6309) \
+  do {                                                     \
+      unsigned int dest_addr = 0;                          \
+                                                           \
+      PC_INC(pc_inc);                                      \
+      if (cond) {                                          \
+          dest_addr = reg_pc + (signed short)(value);      \
+          reg_pc = dest_addr & 0xffff;                     \
+      }                                                    \
+      CLK_ADD(CLK, clk6809, clk6309);                      \
   } while (0)
 
 #define BSR()                     \
   do {                            \
       PUSHS((reg_pc + 2) & 0xff); \
       PUSHS((reg_pc + 2) >> 8);   \
-      BRANCH(1, p1, 2);           \
+      BRANCH(1, p1, 2, 7, 6);     \
   } while (0)
 
-#define LBSR()                           \
-  do {                                   \
-      PUSHS((reg_pc + 3) & 0xff);        \
-      PUSHS((reg_pc + 3) >> 8);          \
-      BRANCH_LONG(1, (p1 << 8) | p2, 3); \
+#define LBSR()                                 \
+  do {                                         \
+      PUSHS((reg_pc + 3) & 0xff);              \
+      PUSHS((reg_pc + 3) >> 8);                \
+      BRANCH_LONG(1, (p1 << 8) | p2, 3, 9, 7); \
   } while (0)
 
-#define CLR_REG(RR, pc_inc) \
-  do {                      \
-      RR = 0;               \
-      PC_INC(pc_inc);       \
+#define CLR_REG(RR, pc_inc, clk6809, clk6309) \
+  do {                                        \
+      RR = 0;                                 \
+      PC_INC(pc_inc);                         \
+      CLK_ADD(CLK, clk6809, clk6309);         \
   } while (0)
 
-#define CLR(ma, pc_inc) \
-  do {                  \
-      STORE(ma, 0);     \
-      PC_INC(pc_inc);   \
+#define CLR(ma, pc_inc, clk6809, clk6309) \
+  do {                                    \
+      STORE(ma, 0);                       \
+      PC_INC(pc_inc);                     \
+      CLK_ADD(CLK, clk6809, clk6309);     \
   } while (0)
 
-#define COM_REG(RR, bits, pc_inc)           \
-  do {                                      \
-      RR = ~RR;                             \
-      LOCAL_SET_CARRY(1);                   \
-      LOCAL_SET_OVERFLOW(0);                \
-      LOCAL_SET_NEGATIVE(BT(RR, bits - 1)); \
-      LOCAL_SET_ZERO(!RR);                  \
-      PC_INC(pc_inc);                       \
+#define COM_REG(RR, bits, pc_inc, clk6809, clk6309) \
+  do {                                              \
+      RR = ~RR;                                     \
+      LOCAL_SET_CARRY(1);                           \
+      LOCAL_SET_OVERFLOW(0);                        \
+      LOCAL_SET_NEGATIVE(BT(RR, bits - 1));         \
+      LOCAL_SET_ZERO(!RR);                          \
+      PC_INC(pc_inc);                               \
+      CLK_ADD(CLK, clk6809, clk6309);               \
   } while (0)
 
-#define COM(ma, pc_inc)        \
-  do {                         \
-      BYTE val;                \
-                               \
-      val = LOAD(ma);          \
-      COM_REG(val, 8, pc_inc); \
-      STORE(ma, val);          \
+#define COM(ma, pc_inc, clk6809, clk6309)        \
+  do {                                           \
+      BYTE val;                                  \
+                                                 \
+      val = LOAD(ma);                            \
+      COM_REG(val, 8, pc_inc, clk6809, clk6309); \
+      STORE(ma, val);                            \
   } while (0)
 
-#define CMP(RR, bits, m, pc_inc)                                         \
+#define CMP(RR, bits, m, pc_inc, clk6809, clk6309)                       \
   do {                                                                   \
       unsigned int tmp;                                                  \
                                                                          \
@@ -1538,6 +1556,7 @@ define BTM_VAR2REG(rnr, var) \
       LOCAL_SET_NEGATIVE(BT(tmp, bits - 1));                             \
       LOCAL_SET_ZERO(!tmp);                                              \
       PC_INC(pc_inc);                                                    \
+      CLK_ADD(CLK, clk6809, clk6309);                                    \
   } while (0)
 
 #define CWAI(m)              \
@@ -1561,6 +1580,7 @@ define BTM_VAR2REG(rnr, var) \
       PUSHS(reg_b);          \
       PUSHS(reg_a);          \
       PUSHS(reg_p);          \
+      CLK_ADD(CLK, 22, 20);  \
       CWAI6809();            \
   } while (0)
 
@@ -1583,31 +1603,33 @@ define BTM_VAR2REG(rnr, var) \
       LOCAL_SET_NEGATIVE(BT(reg_a, 7));                             \
       LOCAL_SET_ZERO(!reg_a);                                       \
       PC_INC(1);                                                    \
+      CLK_ADD(CLK, 2, 1);                                           \
   } while (0)
 
-#define DEC_REG(RR, bits, pc_inc)           \
-  do {                                      \
-      if (bits == 8) {                      \
-          LOCAL_SET_OVERFLOW(RR == 0x80);   \
-      } else {                              \
-          LOCAL_SET_OVERFLOW(RR == 0x8000); \
-      }                                     \
-      RR--;                                 \
-      LOCAL_SET_NEGATIVE(BT(RR, bits - 1)); \
-      LOCAL_SET_ZERO(!RR);                  \
-      PC_INC(pc_inc);                       \
+#define DEC_REG(RR, bits, pc_inc, clk6809, clk6309) \
+  do {                                              \
+      if (bits == 8) {                              \
+          LOCAL_SET_OVERFLOW(RR == 0x80);           \
+      } else {                                      \
+          LOCAL_SET_OVERFLOW(RR == 0x8000);         \
+      }                                             \
+      RR--;                                         \
+      LOCAL_SET_NEGATIVE(BT(RR, bits - 1));         \
+      LOCAL_SET_ZERO(!RR);                          \
+      PC_INC(pc_inc);                               \
+      CLK_ADD(CLK, clk6809, clk6309);               \
   } while (0)
 
-#define DEC(ma, pc_inc)        \
-  do {                         \
-      BYTE val;                \
-                               \
-      val = LOAD(ma);          \
-      DEC_REG(val, 8, pc_inc); \
-      STORE(ma, val);          \
+#define DEC(ma, pc_inc, clk6809, clk6309)        \
+  do {                                           \
+      BYTE val;                                  \
+                                                 \
+      val = LOAD(ma);                            \
+      DEC_REG(val, 8, pc_inc, clk6809, clk6309); \
+      STORE(ma, val);                            \
   } while (0)
 
-#define DIVD(m, pc_inc)                            \
+#define DIVD(m, pc_inc, clk6809, clk6309)          \
   do {                                             \
       SWORD val, bak;                              \
                                                    \
@@ -1635,9 +1657,10 @@ define BTM_VAR2REG(rnr, var) \
           DIV_0_TRAP();                            \
       }                                            \
       PC_INC(pc_inc);                              \
+      CLK_ADD(CLK, clk6809, clk6309);              \
   } while (0)
 
-#define DIVQ(m, pc_inc)                            \
+#define DIVQ(m, pc_inc, clk6809, clk6309)          \
   do {                                             \
       SDWORD val, bak;                             \
                                                    \
@@ -1665,19 +1688,21 @@ define BTM_VAR2REG(rnr, var) \
           DIV_0_TRAP();                            \
       }                                            \
       PC_INC(pc_inc);                              \
+      CLK_ADD(CLK, clk6809, clk6309);              \
   } while (0)
 
-#define EIM(m, ma, pc_inc)            \
-  do {                                \
-      BYTE tmp;                       \
-                                      \
-      tmp = LOAD(ma);                 \
-      tmp ^= m;                       \
-      LOCAL_SET_OVERFLOW(0);          \
-      LOCAL_SET_NEGATIVE(BT(tmp, 7)); \
-      LOCAL_SET_ZERO(!tmp);           \
-      STORE(ma, tmp);                 \
-      PC_INC(pc_inc);                 \
+#define EIM(m, ma, pc_inc, clk6809, clk6309) \
+  do {                                       \
+      BYTE tmp;                              \
+                                             \
+      tmp = LOAD(ma);                        \
+      tmp ^= m;                              \
+      LOCAL_SET_OVERFLOW(0);                 \
+      LOCAL_SET_NEGATIVE(BT(tmp, 7));        \
+      LOCAL_SET_ZERO(!tmp);                  \
+      STORE(ma, tmp);                        \
+      PC_INC(pc_inc);                        \
+      CLK_ADD(CLK, clk6809, clk6309);        \
   } while (0)
 
 #define EXG(rnr)                           \
@@ -1695,37 +1720,40 @@ define BTM_VAR2REG(rnr, var) \
       VAR2REG((rnr >> 4), tmp2, mixed);    \
       VAR2REG((rnr & 0xf), tmp1, mixed);   \
       PC_INC(2);                           \
+      CLK_ADD(CLK, 8, 5);                  \
   } while (0)
 
-#define EOR(RR, bits, m, clk_inc)           \
-  do {                                      \
-      RR ^= m;                              \
-      LOCAL_SET_OVERFLOW(0);                \
-      LOCAL_SET_NEGATIVE(BT(RR, bits - 1)); \
-      LOCAL_SET_ZERO(!RR);                  \
-      CLK_INC(clk_inc);                     \
+#define EOR(RR, bits, m, clk_inc, clk6809, clk6309) \
+  do {                                              \
+      RR ^= m;                                      \
+      LOCAL_SET_OVERFLOW(0);                        \
+      LOCAL_SET_NEGATIVE(BT(RR, bits - 1));         \
+      LOCAL_SET_ZERO(!RR);                          \
+      PC_INC(clk_inc);                              \
+      CLK_ADD(CLK, clk6809, clk6309);               \
   } while (0)
 
-#define INC_REG(RR, bits, pc_inc)           \
-  do {                                      \
-      if (bits == 8) {                      \
-          LOCAL_SET_OVERFLOW(RR == 0x7f);   \
-      } else {                              \
-          LOCAL_SET_OVERFLOW(RR == 0x7fff); \
-      }                                     \
-      RR += 1;                              \
-      LOCAL_SET_NEGATIVE(BT(RR, bits - 1)); \
-      LOCAL_SET_ZERO(!RR);                  \
-      PC_INC(pc_inc);                       \
+#define INC_REG(RR, bits, pc_inc, clk6809, clk6309) \
+  do {                                              \
+      if (bits == 8) {                              \
+          LOCAL_SET_OVERFLOW(RR == 0x7f);           \
+      } else {                                      \
+          LOCAL_SET_OVERFLOW(RR == 0x7fff);         \
+      }                                             \
+      RR += 1;                                      \
+      LOCAL_SET_NEGATIVE(BT(RR, bits - 1));         \
+      LOCAL_SET_ZERO(!RR);                          \
+      PC_INC(pc_inc);                               \
+      CLK_ADD(CLK, clk6809, clk6309);               \
   } while (0)
 
-#define INC(ma, pc_inc)        \
-  do {                         \
-      BYTE val;                \
-                               \
-      val = LOAD(ma);          \
-      INC_REG(val, 8, pc_inc); \
-      STORE(ma, val);          \
+#define INC(ma, pc_inc, clk6809, clk6309)        \
+  do {                                           \
+      BYTE val;                                  \
+                                                 \
+      val = LOAD(ma);                            \
+      INC_REG(val, 8, pc_inc, clk6809, clk6309); \
+      STORE(ma, val);                            \
   } while (0)
 
 
@@ -1752,29 +1780,32 @@ define BTM_VAR2REG(rnr, var) \
       }                                                         \
   } while (0)
   
-#define JMP(ma)    \
-  do {             \
-      reg_pc = ma; \
+#define JMP(ma, clk6809, clk6309)     \
+  do {                                \
+      reg_pc = ma;                    \
+      CLK_ADD(CLK, clk6809, clk6309); \
   } while (0)
 
-#define JSR(ma, pc_inc)     \
-  do {                      \
-      PC_INC(pc_inc);       \
-      PUSHS(reg_pc & 0xff); \
-      PUSHS(reg_pc >> 8);   \
-      reg_pc = ma;          \
+#define JSR(ma, pc_inc, clk6809, clk6309) \
+  do {                                    \
+      PC_INC(pc_inc);                     \
+      PUSHS(reg_pc & 0xff);               \
+      PUSHS(reg_pc >> 8);                 \
+      reg_pc = ma;                        \
+      CLK_ADD(CLK, clk6809, clk6309);     \
   } while (0)
 
-#define LD(RR, bits, m, pc_inc)             \
-  do {                                      \
-      RR = m;                               \
-      LOCAL_SET_OVERFLOW(0);                \
-      LOCAL_SET_ZERO(!RR);                  \
-      LOCAL_SET_NEGATIVE(BT(RR, bits - 1)); \
-      PC_INC(pc_inc);                       \
+#define LD(RR, bits, m, pc_inc, clk6809, clk6309) \
+  do {                                            \
+      RR = m;                                     \
+      LOCAL_SET_OVERFLOW(0);                      \
+      LOCAL_SET_ZERO(!RR);                        \
+      LOCAL_SET_NEGATIVE(BT(RR, bits - 1));       \
+      PC_INC(pc_inc);                             \
+      CLK_ADD(CLK, clk6809, clk6309);             \
   } while (0)
 
-#define LDBT(rnr, ma, clk_inc)                   \
+#define LDBT(rnr, ma)                            \
   do {                                           \
       BYTE rr;                                   \
       BYTE tmp;                                  \
@@ -1790,31 +1821,35 @@ define BTM_VAR2REG(rnr, var) \
       LOCAL_SET_NEGATIVE(BT(rr, 7));             \
       LOCAL_SET_ZERO(!rr);                       \
       BTM_VAR2REG(rnr, rr);                      \
-      CLK_INC(clk_inc);                          \
+      PC_INC(4);                                 \
+      CLK_ADD(CLK, 7, 6);                        \
   } while (0)
 
-#define LEA(RR, ma)        \
-  do {                     \
-      RR = ma;             \
-      LOCAL_SET_ZERO(!RR); \
-  } while (0)
-
-#define LSR_REG(RR, pc_inc)       \
-  do {                            \
-      LOCAL_SET_CARRY(BT(RR, 0)); \
-      RR >>= 1;                   \
-      LOCAL_SET_NEGATIVE(0);      \
-      LOCAL_SET_ZERO(!RR);        \
-      PC_INC(pc_inc);             \
-  } while (0)
-
-#define LSR(ma, pc_inc)     \
+#define LEA(RR, ma)         \
   do {                      \
-      BYTE val;             \
-                            \
-      val = LOAD(ma);       \
-      LSR_REG(val, pc_inc); \
-      STORE(ma, val);       \
+      RR = ma;              \
+      LOCAL_SET_ZERO(!RR);  \
+      PC_INC(2);            \
+      CLK_ADD(CLK, 4, 4);   \
+  } while (0)
+
+#define LSR_REG(RR, pc_inc, clk6809, clk6309) \
+  do {                                        \
+      LOCAL_SET_CARRY(BT(RR, 0));             \
+      RR >>= 1;                               \
+      LOCAL_SET_NEGATIVE(0);                  \
+      LOCAL_SET_ZERO(!RR);                    \
+      PC_INC(pc_inc);                         \
+      CLK_ADD(CLK, clk6809, clk6309);         \
+  } while (0)
+
+#define LSR(ma, pc_inc, clk6809, clk6309)     \
+  do {                                        \
+      BYTE val;                               \
+                                              \
+      val = LOAD(ma);                         \
+      LSR_REG(val, pc_inc, clk6809, clk6309); \
+      STORE(ma, val);                         \
   } while (0)
 
 #define MUL()                        \
@@ -1823,18 +1858,21 @@ define BTM_VAR2REG(rnr, var) \
       LOCAL_SET_CARRY(BT(reg_b, 7)); \
       LOCAL_SET_ZERO(!reg_d);        \
       PC_INC(1);                     \
+      CLK_ADD(CLK, 11, 10);          \
   } while (0)
 
-#define MULD(m, pc_inc)                  \
-  do {                                   \
-      reg_q = reg_d * m;                 \
-      LOCAL_SET_OVERFLOW(0);             \
-      LOCAL_SET_CARRY(0);                \
-      LOCAL_SET_NEGATIVE(BT(reg_d, 15)); \
-      LOCAL_SET_ZERO(!reg_d);            \
+#define MULD(m, pc_inc, clk6809, clk6309) \
+  do {                                    \
+      reg_q = reg_d * m;                  \
+      LOCAL_SET_OVERFLOW(0);              \
+      LOCAL_SET_CARRY(0);                 \
+      LOCAL_SET_NEGATIVE(BT(reg_d, 15));  \
+      LOCAL_SET_ZERO(!reg_d);             \
+      PC_INC(pc_inc);                     \
+      CLK_ADD(CLK, clk6809, clk6309);     \
   } while (0)
 
-#define NEG_REG(RR, bits, pc_inc)                       \
+#define NEG_REG(RR, bits, pc_inc, clk6809, clk6309)     \
   do {                                                  \
       unsigned int tmp;                                 \
                                                         \
@@ -1845,40 +1883,46 @@ define BTM_VAR2REG(rnr, var) \
       LOCAL_SET_ZERO(!RR);                              \
       LOCAL_SET_CARRY(RR);                              \
       PC_INC(pc_inc);                                   \
+      CLK_INC(CLK, clk6809, clk6309);                   \
   } while (0)
 
-#define NOP(pc_inc) \
-  (PC_INC(pc_inc))
-
-#define NEG(ma, pc_inc)        \
-  do {                         \
-      BYTE val;                \
-                               \
-      val = LOAD(ma);          \
-      NEG_REG(val, 8, pc_inc); \
-      STORE(ma, val);          \
+#define NEG(ma, pc_inc, clk6809, clk6309)        \
+  do {                                           \
+      BYTE val;                                  \
+                                                 \
+      val = LOAD(ma);                            \
+      NEG_REG(val, 8, pc_inc, clk6809, clk6309); \
+      STORE(ma, val);                            \
   } while (0)
 
-#define OIM(m, ma, pc_inc)            \
-  do {                                \
-      BYTE tmp;                       \
-                                      \
-      tmp = LOAD(ma);                 \
-      tmp |= m;                       \
-      LOCAL_SET_OVERFLOW(0);          \
-      LOCAL_SET_NEGATIVE(BT(tmp, 7)); \
-      LOCAL_SET_ZERO(!tmp);           \
-      STORE(ma, tmp);                 \
-      PC_INC(pc_inc);                 \
+#define NOP()             \
+  do {                    \
+      PC_INC(1);          \
+      CLK_ADD(CLK, 2, 1); \
   } while (0)
 
-#define OR(RR, bits, m, pc_inc)             \
-  do {                                      \
-      RR |= m;                              \
-      LOCAL_SET_OVERFLOW(0);                \
-      LOCAL_SET_ZERO(!RR);                  \
-      LOCAL_SET_NEGATIVE(BT(RR, bits - 1)); \
-      PC_INC(pc_inc);                       \
+#define OIM(m, ma, pc_inc, clk6809, clk6309) \
+  do {                                       \
+      BYTE tmp;                              \
+                                             \
+      tmp = LOAD(ma);                        \
+      tmp |= m;                              \
+      LOCAL_SET_OVERFLOW(0);                 \
+      LOCAL_SET_NEGATIVE(BT(tmp, 7));        \
+      LOCAL_SET_ZERO(!tmp);                  \
+      STORE(ma, tmp);                        \
+      PC_INC(pc_inc);                        \
+      CLK_ADD(CLK, clk6809, clk6309);        \
+  } while (0)
+
+#define OR(RR, bits, m, pc_inc, clk6809, clk6309) \
+  do {                                            \
+      RR |= m;                                    \
+      LOCAL_SET_OVERFLOW(0);                      \
+      LOCAL_SET_ZERO(!RR);                        \
+      LOCAL_SET_NEGATIVE(BT(RR, bits - 1));       \
+      PC_INC(pc_inc);                             \
+      CLK_ADD(CLK, clk6809, clk6309);             \
   } while (0)
 
 #define PSHS(m)                  \
@@ -1914,11 +1958,12 @@ define BTM_VAR2REG(rnr, var) \
       }                          \
   } while (0)
 
-#define PSHSW()     \
-  do {              \
-      PUSHS(reg_f); \
-      PUSHS(reg_e); \
-      PC_INC(2);    \
+#define PSHSW()           \
+  do {                    \
+      PUSHS(reg_f);       \
+      PUSHS(reg_e);       \
+      PC_INC(2);          \
+      CLK_ADD(CLK, 6, 6); \
   } while (0)
 
 #define PSHU(m)                  \
@@ -1954,11 +1999,12 @@ define BTM_VAR2REG(rnr, var) \
       }                          \
   } while (0)
 
-#define PSHUW()     \
-  do {              \
-      PUSHU(reg_f); \
-      PUSHU(reg_e); \
-      PC_INC(2);    \
+#define PSHUW()           \
+  do {                    \
+      PUSHU(reg_f);       \
+      PUSHU(reg_e);       \
+      PC_INC(2);          \
+      CLK_ADD(CLK, 6, 6); \
   } while (0)
 
 #define PULS(m)                   \
@@ -1995,11 +2041,12 @@ define BTM_VAR2REG(rnr, var) \
       }                           \
   } while (0)
 
-#define PULSW()        \
-  do {                 \
-      reg_e = PULLS(); \
-      reg_f = PULLS(); \
-      PC_INC(2);       \
+#define PULSW()           \
+  do {                    \
+      reg_e = PULLS();    \
+      reg_f = PULLS();    \
+      PC_INC(2);          \
+      CLK_ADD(CLK, 6, 6); \
   } while (0)
 
 #define PULU(m)                   \
@@ -2036,11 +2083,12 @@ define BTM_VAR2REG(rnr, var) \
       }                           \
   } while (0)
 
-#define PULUW()        \
-  do {                 \
-      reg_e = PULLU(); \
-      reg_f = PULLU(); \
-      PC_INC(2);       \
+#define PULUW()           \
+  do {                    \
+      reg_e = PULLU();    \
+      reg_f = PULLU();    \
+      PC_INC(2);          \
+      CLK_ADD(CLK, 6, 6); \
   } while (0)
 
 #define ROL_REG(RR, bits, pc_inc)                              \
@@ -2352,7 +2400,7 @@ trap_skipped:
         switch ((page << 8) | p0) {
 
           case 0x0000:          /* NEG direct */
-            NEG(p1 | (reg_dpr << 8), 2);
+            NEG(p1 | (reg_dpr << 8), 2, 6, 5);
             break;
 
           case 0x0001:          /* OIM IM-direct */   /* FIXME: fix for 6809, 6309 only opcode */
@@ -2417,7 +2465,7 @@ trap_skipped:
             break;
 
           case 0x0012:          /* NOP */
-            NOP(1);
+            NOP();
             break;
 
           case 0x0013:          /* SYNC */
@@ -2581,7 +2629,7 @@ trap_skipped:
             break;
 
           case 0x0040:          /* NEGA */
-            NEG_REG(reg_a, 8, 1);
+            NEG_REG(reg_a, 8, 1, 2, 1);
             break;
 
           case 0x0043:          /* COMA */
@@ -2625,7 +2673,7 @@ trap_skipped:
             break;
 
           case 0x0050:          /* NEGB */
-            NEG_REG(reg_b, 8, 1);
+            NEG_REG(reg_b, 8, 1, 1, 1);
             break;
 
           case 0x0053:          /* COMB */
@@ -2669,7 +2717,7 @@ trap_skipped:
             break;
 
           case 0x0060:            /* NEG indexed */
-            NEG(GET_IND_MA(p1, p2, p3), 2);
+            NEG(GET_IND_MA(p1, p2, p3), 2, 6, 6);
             break;
 
           case 0x0061:          /* OIM IM-indexed */   /* FIXME: fix for 6809, 6309 only opcode */
@@ -2733,7 +2781,7 @@ trap_skipped:
             break;
 
           case 0x0070:          /* NEG extended */
-            NEG((p1 << 8) | p2, 3);
+            NEG((p1 << 8) | p2, 3, 7, 6);
             break;
 
           case 0x0071:          /* OIM IM-extended */   /* FIXME: fix for 6809, 6309 only opcode */
@@ -3405,7 +3453,7 @@ trap_skipped:
             break;
 
           case 0x1040:          /* NEGD */   /* FIXME: fix for 6809, 6309 only opcode */
-            NEG_REG(reg_d, 16, 2);
+            NEG_REG(reg_d, 16, 2, 3, 2);
             break;
 
           case 0x1043:          /* COMD */   /* FIXME: fix for 6809, 6309 only opcode */
@@ -3789,7 +3837,7 @@ trap_skipped:
             break;
 
           case 0x1136:          /* LDBT B-direct */   /* FIXME: fix for 6809, 6309 only opcode */
-            LDBT(p1, (reg_dpr << 8) | p2, 4);
+            LDBT(p1, (reg_dpr << 8) | p2);
             break;
 
           case 0x1137:          /* STBT B-direct */   /* FIXME: fix for 6809, 6309 only opcode */
