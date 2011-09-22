@@ -1154,50 +1154,58 @@ define BTM_VAR2REG(rnr, var) \
       }                            \
   } while (0)
 
-#define TFMPP_REG(r0, r1)   \
-  do {                      \
-      BYTE val;             \
-                            \
-      while (reg_w) {       \
-          val = LOAD(r0++); \
-          STORE(r1++, val); \
-          reg_w--;          \
-      }                     \
-      PC_INC(3);            \
+#define TFMPP_REG(r0, r1)     \
+  do {                        \
+      BYTE val;               \
+                              \
+      while (reg_w) {         \
+          val = LOAD(r0++);   \
+          STORE(r1++, val);   \
+          reg_w--;            \
+          CLK_ADD(CLK, 3, 3); \
+      }                       \
+      PC_INC(3);              \
+      CLK_ADD(CLK, 6, 6);     \
   } while (0)
 
-#define TFMMM_REG(r0, r1)   \
-  do {                      \
-      BYTE val;             \
-                            \
-      while (reg_w) {       \
-          val = LOAD(r0--); \
-          STORE(r1--, val); \
-          reg_w--;          \
-      }                     \
-      PC_INC(3);            \
+#define TFMMM_REG(r0, r1)     \
+  do {                        \
+      BYTE val;               \
+                              \
+      while (reg_w) {         \
+          val = LOAD(r0--);   \
+          STORE(r1--, val);   \
+          reg_w--;            \
+          CLK_ADD(CLK, 3, 3); \
+      }                       \
+      PC_INC(3);              \
+      CLK_ADD(CLK, 6, 6);     \
   } while (0)
 
-#define TFMPC_REG(r0, r1)   \
-  do {                      \
-      BYTE val;             \
-                            \
-      while (reg_w) {       \
-          val = LOAD(r0++); \
-          STORE(r1, val);   \
-          reg_w--;          \
-      }                     \
-      PC_INC(3);            \
+#define TFMPC_REG(r0, r1)     \
+  do {                        \
+      BYTE val;               \
+                              \
+      while (reg_w) {         \
+          val = LOAD(r0++);   \
+          STORE(r1, val);     \
+          reg_w--;            \
+          CLK_ADD(CLK, 3, 3); \
+      }                       \
+      PC_INC(3);              \
+      CLK_ADD(CLK, 6, 6);     \
   } while (0)
 
-#define TFMCP_REG(r0, r1)   \
-  do {                      \
-      BYTE val = LOAD(r0);  \
-                            \
-      while (reg_w) {       \
-          STORE(r1++, val); \
-      }                     \
-      PC_INC(3);            \
+#define TFMCP_REG(r0, r1)     \
+  do {                        \
+      BYTE val = LOAD(r0);    \
+                              \
+      while (reg_w) {         \
+          STORE(r1++, val);   \
+          CLK_ADD(CLK, 3, 3); \
+      }                       \
+      PC_INC(3);              \
+      CLK_ADD(CLK, 6, 6);     \
   } while (0)
 
 #define TFM_WRAP(rnr, func)                    \
@@ -1489,6 +1497,7 @@ define BTM_VAR2REG(rnr, var) \
       if (cond) {                                          \
           dest_addr = reg_pc + (signed short)(value);      \
           reg_pc = dest_addr & 0xffff;                     \
+          CLK_ADD(CLK, 1, 1);                              \
       }                                                    \
       CLK_ADD(CLK, clk6809, clk6309);                      \
   } while (0)
@@ -1504,7 +1513,7 @@ define BTM_VAR2REG(rnr, var) \
   do {                                         \
       PUSHS((reg_pc + 3) & 0xff);              \
       PUSHS((reg_pc + 3) >> 8);                \
-      BRANCH_LONG(1, (p1 << 8) | p2, 3, 9, 7); \
+      BRANCH_LONG(1, (p1 << 8) | p2, 3, 8, 6); \
   } while (0)
 
 #define CLR_REG(RR, pc_inc, clk6809, clk6309) \
@@ -1766,8 +1775,15 @@ define BTM_VAR2REG(rnr, var) \
       EXPORT_REGISTERS();                                       \
       if (!ROM_TRAP_ALLOWED()                                   \
           || (trap_result = ROM_TRAP_HANDLER()) == (DWORD)-1) { \
-          REWIND_FETCH_OPCODE(CLK);                             \
-          AIM(p1, (reg_dpr << 8) | p2, 3);                      \
+          if (cpu_type == 6309) {                               \
+              AIM(p1, (reg_dpr << 8) | p2, 3, 6, 5);            \
+          } else {                                              \
+              if (LOCAL_CARRY()) {                              \
+                  COM((reg_dpr << 8) | p1, 2, 6, 5);            \
+              } else {                                          \
+                  NEG(p1 | (reg_dpr << 8), 2, 6, 5);            \
+              }                                                 \
+          }                                                     \
       } else {                                                  \
           if (trap_result) {                                    \
              REWIND_FETCH_OPCODE(CLK);                          \
@@ -1931,31 +1947,40 @@ define BTM_VAR2REG(rnr, var) \
       if (m & 0x80) {            \
           PUSHS(reg_pc & 0xff);  \
           PUSHS(reg_pc >> 8);    \
+          CLK_ADD(CLK, 2, 2);    \
       }                          \
       if (m & 0x40) {            \
           PUSHS(reg_usp & 0xff); \
           PUSHS(reg_usp >> 8);   \
+          CLK_ADD(CLK, 2, 2);    \
       }                          \
       if (m & 0x20) {            \
           PUSHS(reg_y & 0xff);   \
           PUSHS(reg_y >> 8);     \
+          CLK_ADD(CLK, 2, 2);    \
       }                          \
       if (m & 0x10) {            \
           PUSHS(reg_x & 0xff);   \
           PUSHS(reg_x >> 8);     \
+          CLK_ADD(CLK, 2, 2);    \
       }                          \
       if (m & 8) {               \
           PUSHS(reg_dpr);        \
+          CLK_ADD(CLK, 1, 1);    \
       }                          \
       if (m & 4) {               \
           PUSHS(reg_b);          \
+          CLK_ADD(CLK, 1, 1);    \
       }                          \
       if (m & 2) {               \
           PUSHS(reg_a);          \
+          CLK_ADD(CLK, 1, 1);    \
       }                          \
       if (m & 1) {               \
           PUSHS(reg_p);          \
+          CLK_ADD(CLK, 1, 1);    \
       }                          \
+      CLK_ADD(CLK, 5, 4);        \
   } while (0)
 
 #define PSHSW()           \
@@ -1972,31 +1997,40 @@ define BTM_VAR2REG(rnr, var) \
       if (m & 0x80) {            \
           PUSHU(reg_pc & 0xff);  \
           PUSHU(reg_pc >> 8);    \
+          CLK_ADD(CLK, 2, 2);    \
       }                          \
       if (m & 0x40) {            \
           PUSHU(reg_ssp & 0xff); \
           PUSHU(reg_ssp >> 8);   \
+          CLK_ADD(CLK, 2, 2);    \
       }                          \
       if (m & 0x20) {            \
           PUSHU(reg_y & 0xff);   \
           PUSHU(reg_y >> 8);     \
+          CLK_ADD(CLK, 2, 2);    \
       }                          \
       if (m & 0x10) {            \
           PUSHU(reg_x & 0xff);   \
           PUSHU(reg_x >> 8);     \
+          CLK_ADD(CLK, 2, 2);    \
       }                          \
       if (m & 8) {               \
           PUSHU(reg_dpr);        \
+          CLK_ADD(CLK, 1, 1);    \
       }                          \
       if (m & 4) {               \
           PUSHU(reg_b);          \
+          CLK_ADD(CLK, 1, 1);    \
       }                          \
       if (m & 2) {               \
           PUSHU(reg_a);          \
+          CLK_ADD(CLK, 1, 1);    \
       }                          \
       if (m & 1) {               \
           PUSHU(reg_p);          \
+          CLK_ADD(CLK, 1, 1);    \
       }                          \
+      CLK_ADD(CLK, 5, 4);        \
   } while (0)
 
 #define PSHUW()           \
@@ -2011,34 +2045,43 @@ define BTM_VAR2REG(rnr, var) \
   do {                            \
       if (m & 1) {                \
           reg_p = PULLS();        \
+          CLK_ADD(CLK, 1, 1);     \
       }                           \
       if (m & 2) {                \
           reg_a = PULLS();        \
+          CLK_ADD(CLK, 1, 1);     \
       }                           \
       if (m & 4) {                \
           reg_b = PULLS();        \
+          CLK_ADD(CLK, 1, 1);     \
       }                           \
       if (m & 8) {                \
           reg_dpr = PULLS();      \
+          CLK_ADD(CLK, 1, 1);     \
       }                           \
       if (m & 0x10) {             \
           reg_x = PULLS() << 8;   \
           reg_x |= PULLS();       \
+          CLK_ADD(CLK, 2, 2);     \
       }                           \
       if (m & 0x20) {             \
           reg_y = PULLS() << 8;   \
           reg_y |= PULLS();       \
+          CLK_ADD(CLK, 2, 2);     \
       }                           \
       if (m & 0x40) {             \
           reg_usp = PULLS() << 8; \
           reg_usp |= PULLS();     \
+          CLK_ADD(CLK, 2, 2);     \
       }                           \
       if (m & 0x80) {             \
           reg_pc = PULLS() << 8;  \
           reg_pc |= PULLS();      \
+          CLK_ADD(CLK, 2, 2);     \
       } else {                    \
           PC_INC(2);              \
       }                           \
+      CLK_ADD(CLK, 5, 4);         \
   } while (0)
 
 #define PULSW()           \
@@ -2053,34 +2096,43 @@ define BTM_VAR2REG(rnr, var) \
   do {                            \
       if (m & 1) {                \
           reg_p = PULLU();        \
+          CLK_ADD(CLK, 1, 1);     \
       }                           \
       if (m & 2) {                \
           reg_a = PULLU();        \
+          CLK_ADD(CLK, 1, 1);     \
       }                           \
       if (m & 4) {                \
           reg_b = PULLU();        \
+          CLK_ADD(CLK, 1, 1);     \
       }                           \
       if (m & 8) {                \
           reg_dpr = PULLU();      \
+          CLK_ADD(CLK, 1, 1);     \
       }                           \
       if (m & 0x10) {             \
           reg_x = PULLU() << 8;   \
           reg_x |= PULLU();       \
+          CLK_ADD(CLK, 2, 2);     \
       }                           \
       if (m & 0x20) {             \
           reg_y = PULLU() << 8;   \
           reg_y |= PULLU();       \
+          CLK_ADD(CLK, 2, 2);     \
       }                           \
       if (m & 0x40) {             \
           reg_ssp = PULLU() << 8; \
           reg_ssp |= PULLU();     \
+          CLK_ADD(CLK, 2, 2);     \
       }                           \
       if (m & 0x80) {             \
           reg_pc = PULLU() << 8;  \
           reg_pc |= PULLU();      \
+          CLK_ADD(CLK, 2, 2);     \
       } else {                    \
           PC_INC(2);              \
       }                           \
+      CLK_ADD(CLK, 5, 4);         \
   } while (0)
 
 #define PULUW()           \
@@ -2091,7 +2143,7 @@ define BTM_VAR2REG(rnr, var) \
       CLK_ADD(CLK, 6, 6); \
   } while (0)
 
-#define ROL_REG(RR, bits, pc_inc)                              \
+#define ROL_REG(RR, bits, pc_inc, clk6809, clk6309)            \
   do {                                                         \
       unsigned int tmp;                                        \
                                                                \
@@ -2103,36 +2155,38 @@ define BTM_VAR2REG(rnr, var) \
       LOCAL_SET_NEGATIVE(BT(RR, bits - 1));                    \
       LOCAL_SET_ZERO(!RR);                                     \
       PC_INC(pc_inc);                                          \
+      CLK_ADD(CLK, clk6809, clk6309);                          \
   } while (0)
 
-#define ROL(ma, pc_inc)        \
-  do {                         \
-      BYTE val;                \
-                               \
-      val = LOAD(ma);          \
-      ROL_REG(val, 8, pc_inc); \
-      STORE(ma, val);          \
+#define ROL(ma, pc_inc, clk6809, clk6309)        \
+  do {                                           \
+      BYTE val;                                  \
+                                                 \
+      val = LOAD(ma);                            \
+      ROL_REG(val, 8, pc_inc, clk6809, clk6309); \
+      STORE(ma, val);                            \
   } while (0)
 
-#define ROR_REG(RR, bits, pc_inc)           \
-  do {                                      \
-      unsigned int tmp;                     \
-                                            \
-      tmp = LOCAL_CARRY();                  \
-      RR >>= 1;                             \
-      RR |= (tmp << (bits - 1));            \
-      LOCAL_SET_NEGATIVE(BT(RR, bits - 1)); \
-      LOCAL_SET_ZERO(!RR);                  \
-      PC_INC(pc_inc);                       \
+#define ROR_REG(RR, bits, pc_inc, clk6809, clk6309) \
+  do {                                              \
+      unsigned int tmp;                             \
+                                                    \
+      tmp = LOCAL_CARRY();                          \
+      RR >>= 1;                                     \
+      RR |= (tmp << (bits - 1));                    \
+      LOCAL_SET_NEGATIVE(BT(RR, bits - 1));         \
+      LOCAL_SET_ZERO(!RR);                          \
+      PC_INC(pc_inc);                               \
+      CLK_ADD(CLK, clk6809, clk6309);               \
   } while (0)
 
-#define ROR(ma, pc_inc)        \
-  do {                         \
-      BYTE val;                \
-                               \
-      val = LOAD(ma);          \
-      ROR_REG(val, 8, pc_inc); \
-      STORE(ma, val);          \
+#define ROR(ma, pc_inc, clk6809, clk6309)        \
+  do {                                           \
+      BYTE val;                                  \
+                                                 \
+      val = LOAD(ma);                            \
+      ROR_REG(val, 8, pc_inc, clk6809, clk6309); \
+      STORE(ma, val);                            \
   } while (0)
 
 #define RTI()                     \
@@ -2144,6 +2198,7 @@ define BTM_VAR2REG(rnr, var) \
           if (LOCAL_MD_E()) {     \
               reg_e = PULLS();    \
               reg_f = PULLS();    \
+              CLK_ADD(CLK, 2, 2); \
           }                       \
           reg_dpr = PULLS();      \
           reg_x = PULLS() << 8;   \
@@ -2152,15 +2207,18 @@ define BTM_VAR2REG(rnr, var) \
           reg_y |= PULLS();       \
           reg_usp = PULLS() << 8; \
           reg_usp |= PULLS();     \
+          CLK_ADD(CLK, 9, 9);     \
       }                           \
       reg_pc = PULLS() << 8;      \
       reg_pc |= PULLS();          \
+      CLK_ADD(CLK, 6, 6);         \
   } while (0)
 
 #define RTS()                \
   do {                       \
       reg_pc = PULLS() << 8; \
       reg_pc |= PULLS();     \
+      CLK_ADD(CLK, 5, 1);    \
   } while (0)
 
 #define SEX()                              \
@@ -2169,38 +2227,41 @@ define BTM_VAR2REG(rnr, var) \
       reg_a = LOCAL_NEGATIVE() ? 0xff : 0; \
       LOCAL_SET_ZERO(!reg_a);              \
       PC_INC(1);                           \
+      CLK_ADD(CLK, 2, 1);                  \
   } while (0)
 
-#define SEXW()                              \
-  do {                                      \
-      LOCAL_SET_NEGATIVE(BT(reg_w, 15));    \
-     reg_d = LOCAL_NEGATIVE() ? 0xffff : 0; \
-      LOCAL_SET_ZERO(!reg_d);               \
-      PC_INC(1);                            \
+#define SEXW()                               \
+  do {                                       \
+      LOCAL_SET_NEGATIVE(BT(reg_w, 15));     \
+      reg_d = LOCAL_NEGATIVE() ? 0xffff : 0; \
+      LOCAL_SET_ZERO(!reg_d);                \
+      PC_INC(1);                             \
+      CLK_ADD(CLK, 4, 4);                    \
   } while (0)
 
-#define ST(RR, bits, ma, pc_inc)            \
-  do {                                      \
-      LOCAL_SET_OVERFLOW(0);                \
-      LOCAL_SET_NEGATIVE(BT(RR, bits - 1)); \
-      LOCAL_SET_ZERO(!RR);                  \
-      if (bits == 8) {                      \
-          STORE(ma, RR);                    \
-      }                                     \
-      if (bits == 16) {                     \
-          STORE(ma, RR >> 8);               \
-          STORE(ma + 1, RR & 0xff);         \
-      }                                     \
-      if (bits == 32) {                     \
-          STORE(ma, RR >> 24);              \
-          STORE(ma + 1, (RR >> 16) & 0xff); \
-          STORE(ma + 2, (RR >> 8) & 0xff);  \
-          STORE(ma + 3, RR & 0xff);         \
-      }                                     \
-      PC_INC(pc_inc);                       \
+#define ST(RR, bits, ma, pc_inc, clk6809, clk6309) \
+  do {                                             \
+      LOCAL_SET_OVERFLOW(0);                       \
+      LOCAL_SET_NEGATIVE(BT(RR, bits - 1));        \
+      LOCAL_SET_ZERO(!RR);                         \
+      if (bits == 8) {                             \
+          STORE(ma, RR);                           \
+      }                                            \
+      if (bits == 16) {                            \
+          STORE(ma, RR >> 8);                      \
+          STORE(ma + 1, RR & 0xff);                \
+      }                                            \
+      if (bits == 32) {                            \
+          STORE(ma, RR >> 24);                     \
+          STORE(ma + 1, (RR >> 16) & 0xff);        \
+          STORE(ma + 2, (RR >> 8) & 0xff);         \
+          STORE(ma + 3, RR & 0xff);                \
+      }                                            \
+      PC_INC(pc_inc);                              \
+      CLK_ADD(CLK, clk6809, clk6309);              \
   } while (0)
 
-#define STBT(rnr, ma, clk_inc)                     \
+#define STBT(rnr, ma)                              \
   do {                                             \
       BYTE rr;                                     \
       BYTE tmp;                                    \
@@ -2216,10 +2277,11 @@ define BTM_VAR2REG(rnr, var) \
       LOCAL_SET_NEGATIVE(BT(tmp, 7));              \
       LOCAL_SET_ZERO(!tmp);                        \
       STORE(ma, tmp);                              \
-      CLK_INC(clk_inc);                            \
+      CLK_INC(4);                                  \
+      CLK_ADD(CLK, 8, 7);                          \
   } while (0)
 
-#define SUB(RR, CC, m, bits, pc_inc)                                     \
+#define SUB(RR, CC, m, bits, pc_inc, clk6809, clk6309)                   \
   do {                                                                   \
       unsigned int tmp;                                                  \
                                                                          \
@@ -2235,6 +2297,7 @@ define BTM_VAR2REG(rnr, var) \
       LOCAL_SET_ZERO(!tmp);                                              \
       RR = tmp & (bits == 8) ? 0xff : 0xffff;                            \
       PC_INC(pc_inc);                                                    \
+      CLK_ADD(CLK, clk6809, clk6309);                                    \
   } while (0)
 
 #define SWI_REG(nr, pc_inc)           \
@@ -2257,26 +2320,37 @@ define BTM_VAR2REG(rnr, var) \
       PUSHS(reg_b);                   \
       PUSHS(reg_a);                   \
       PUSHS(reg_p);                   \
+      if (nr == 0) {                  \
+          LOCAL_SET_FIRQ(1);          \
+          LOCAL_SET_IRQ(1);           \
+          reg_pc = LOAD(0xfffe) << 8; \
+          reg_pc |= LOAD(0xffff);;    \
+          CLK_ADD(CLK, 19, 21);       \
+      }
       if (nr == 1) {                  \
           LOCAL_SET_FIRQ(1);          \
           LOCAL_SET_IRQ(1);           \
           reg_pc = LOAD(0xfffa) << 8; \
           reg_pc |= LOAD(0xfffb);     \
+          CLK_ADD(CLK, 19, 21);       \
       }                               \
       if (nr == 2) {                  \
           reg_pc = LOAD(0xfff4) << 8; \
           reg_pc |= LOAD(0xfff5);     \
+          CLK_ADD(CLK, 20, 22);       \
       }                               \
       if (nr == 3) {                  \
           reg_pc = LOAD(0xfff2) << 8; \
           reg_pc |= LOAD(0xfff3);     \
+          CLK_ADD(CLK, 20, 22);       \
       }                               \
   } while (0)
 
-#define SYNC()    \
-  do {            \
-      PC_INC(1);  \
-      SYNC6809(); \
+#define SYNC()            \
+  do {                    \
+      PC_INC(1);          \
+      CLK_ADD(CLK, 2, 1); \
+      SYNC6809();         \
   while (0)
 
 #define TFR(rnr)                           \
@@ -2292,53 +2366,56 @@ define BTM_VAR2REG(rnr, var) \
       REG2VAR((rnr >> 4), tmp, mixed);     \
       VAR2REG((rnr & 0xf), tmp, mixed);    \
       PC_INC(2);                           \
+      CLK_ADD(CLK, 6, 4);                  \
   } while (0)
 
-#define TIM(m, ma, pc_inc)          \
-  do {                              \
-      LOCAL_SET_OVERFLOW(0);        \
-      LOCAL_SET_NEGATIVE(BT(m, 7)); \
-      LOCAL_SET_ZERO(!m);           \
-      STORE(ma, m);                 \
-      PC_INC(pc_inc);               \
+#define TIM(m, ma, pc_inc, clk6809, clk6309) \
+  do {                                       \
+      LOCAL_SET_OVERFLOW(0);                 \
+      LOCAL_SET_NEGATIVE(BT(m, 7));          \
+      LOCAL_SET_ZERO(!m);                    \
+      STORE(ma, m);                          \
+      PC_INC(pc_inc);                        \
+      CLK_ADD(CLK, clk6809, clk6309);        \
   } while (0)
 
-#define TST_REG(RR, bits, pc_inc)           \
-  do {                                      \
-      LOCAL_SET_OVERFLOW(0);                \
-      LOCAL_SET_NEGATIVE(BT(RR, bits - 1)); \
-      LOCAL_SET_ZERO(!RR);                  \
-      PC_INC(pc_inc);                       \
+#define TST_REG(RR, bits, pc_inc, clk6809, clk6309) \
+  do {                                              \
+      LOCAL_SET_OVERFLOW(0);                        \
+      LOCAL_SET_NEGATIVE(BT(RR, bits - 1));         \
+      LOCAL_SET_ZERO(!RR);                          \
+      PC_INC(pc_inc);                               \
+      CLK_ADD(CLK, clk6809, clk6309);               \
   while (0)
 
-#define TST(ma, pc_inc) \
-  (TST_REG(LOAD(ma), 8), pc_inc)
+#define TST(ma, pc_inc, clk6809, clk6309) \
+  (TST_REG(LOAD(ma), 8), pc_inc, clk6809, clk6309)
 
 /* ------------------------------------------------------------------------- */
 
-#define ADCR_WRAP(r0, r1, bits, pc_inc) \
-  (ADD(r1, r0, LOCAL_CARRY(), bits, pc_inc))
+#define ADCR_WRAP(r0, r1, bits, pc_inc, clk6809, clk6309) \
+  (ADD(r1, r0, LOCAL_CARRY(), bits, pc_inc, clk6809, clk6309))
 
-#define ADDR_WRAP(r0, r1, bits, pc_inc) \
-  (ADD(r1, r0, 0, bits, pc_inc))
+#define ADDR_WRAP(r0, r1, bits, pc_inc, clk6809, clk6309) \
+  (ADD(r1, r0, 0, bits, pc_inc, clk6809, clk6309))
 
-#define ANDR_WRAP(r0, r1, bits, pc_inc) \
-  (AND(r1, r0, bits, pc_inc))
+#define ANDR_WRAP(r0, r1, bits, pc_inc, clk6809, clk6309) \
+  (AND(r1, r0, bits, pc_inc, clk6809, clk6309))
 
-#define CMPR_WRAP(r0, r1, bits, pc_inc) \
-  (CMP(r1, bits, r0, pc_inc))
+#define CMPR_WRAP(r0, r1, bits, pc_inc, clk6809, clk6309) \
+  (CMP(r1, bits, r0, pc_inc, clk6809, clk6309))
 
-#define EORR_WRAP(r0, r1, bits, pc_inc) \
-  (EOR(r1, bits, r0, pc_inc))
+#define EORR_WRAP(r0, r1, bits, pc_inc, clk6809, clk6309) \
+  (EOR(r1, bits, r0, pc_inc, clk6809, clk6309))
 
-#define ORR_WRAP(r0, r1, bits, pc_inc) \
-  (OR(r1, bits, r0, pc_inc))
+#define ORR_WRAP(r0, r1, bits, pc_inc, clk6809, clk6309) \
+  (OR(r1, bits, r0, pc_inc, clk6809, clk6309))
 
-#define SBCR_WRAP(r0, r1, bits, pc_inc) \
-  (SUB(r1, LOCAL_CARRY(), r0, bits, pc_inc))
+#define SBCR_WRAP(r0, r1, bits, pc_inc, clk6809, clk6309) \
+  (SUB(r1, LOCAL_CARRY(), r0, bits, pc_inc, clk6809, clk6309))
 
-#define SUBR_WRAP(r0, r1, bits, pc_inc) \
-  (SUB(r1, 0, r0, bits, pc_inc))
+#define SUBR_WRAP(r0, r1, bits, pc_inc, clk6809, clk6309) \
+  (SUB(r1, 0, r0, bits, pc_inc, clk6809, clk6309))
 
 #define TFMPP(rnr) \
    (TFM_WRAP(rnr, TFMPP_REG))
@@ -2399,69 +2476,122 @@ define BTM_VAR2REG(rnr, var) \
 trap_skipped:
         switch ((page << 8) | p0) {
 
+/* Illegal opcodes 1st. */
+          case 0x0015:          /* unknown */   /* FIXME: fix for 6809, unknown operation */
+          case 0x0018:          /* unknown */   /* FIXME: fix for 6809, unknown operation */
+          case 0x001b:          /* unknown */   /* FIXME: fix for 6809, unknown operation */
+            ILLEGAL_OPCODE_TRAP();
+            break;
+
+          case 0x0038:          /* CWAI immediate on 6809 ??? */
+            if (cpu_type == 6809) {
+                CWAI(p1);
+            } else {
+                ILLEGAL_OPCODE_TRAP();
+            }
+            break;
+
+          case 0x003e:          /* like SWI but using reset vector on 6809 */
+            if (cpu_type == 6809) {
+                SWI_REG(0);
+            } else {
+                ILLEGAL_OPCODE_TRAP();
+            }
+            break;
+
+          case 0x0041:          /* NEGA on 6809*/
+            if (cpu_type == 6809) {
+                NEG_REG(reg_a, 8, 1, 2, 1);
+            } else {
+                ILLEGAL_OPCODE_TRAP();
+            }
+            break;
+
+          case 0x0042:          /* COMA on 6809 */
+            if (cpu_type == 6809) {
+                COM_REG(reg_a, 8, 1, 2, 1);
+            } else {
+                ILLEGAL_OPCODE_TRAP();
+            }
+            break;
+
+
+/* Now the legal opcodes. */
           case 0x0000:          /* NEG direct */
             NEG(p1 | (reg_dpr << 8), 2, 6, 5);
             break;
 
-          case 0x0001:          /* OIM IM-direct */   /* FIXME: fix for 6809, 6309 only opcode */
-            OIM(p1, (reg_dpr << 8) | p2, 3);
+          case 0x0001:          /* OIM IM-direct */
+            if (cpu_type == 6309) {
+                OIM(p1, (reg_dpr << 8) | p2, 3, 6, 5);
+            } else {
+                NEG(p1 | (reg_dpr << 8), 2, 6, 5);
+            }
             break;
 
-          case 0x0002:          /* AIM IM-direct, also used for traps, FIXME: fix for 6809, 6309 only opcode */
+          case 0x0002:          /* AIM IM-direct, also used for traps */
             STATIC_ASSERT(TRAP_OPCODE == 0x02);
             AIM_02();
             break;
 
           case 0x0003:          /* COM direct */
-            COM((reg_dpr << 8) | p1, 2);
+            COM((reg_dpr << 8) | p1, 2, 6, 5);
             break;
 
           case 0x0004:          /* LSR direct */
-            LSR((reg_dpr << 8) | p1, 2);
+            LSR((reg_dpr << 8) | p1, 2, 6, 5);
             break;
 
-          case 0x0005:          /* EIM IM-direct */   /* FIXME: fix for 6809, 6309 only opcode */
-            EIM(p1, (reg_dpr << 8) | p2, 3);
+          case 0x0005:          /* EIM IM-direct */
+            if (cpu_type == 6309) {
+                EIM(p1, (reg_dpr << 8) | p2, 3, 6, 5);
+            } else {
+                LSR((reg_dpr << 8) | p1, 2, 6, 5);
+            }
             break;
 
           case 0x0006:          /* ROR direct */
-            ROR((reg_dpr << 8) | p1, 2);
+            ROR((reg_dpr << 8) | p1, 2, 6, 5);
             break;
 
           case 0x0007:          /* ASR direct */
-            ASR((reg_dpr << 8) | p1, 2);
+            ASR((reg_dpr << 8) | p1, 2, 6, 5);
             break;
 
           case 0x0008:          /* ASL/LSL direct */
-            ASL((reg_dpr << 8) | p1, 2);
+            ASL((reg_dpr << 8) | p1, 2, 6, 5);
             break;
 
           case 0x0009:          /* ROL direct */
-            ROL((reg_dpr << 8) | p1, 2);
+            ROL((reg_dpr << 8) | p1, 2, 6, 5);
             break;
 
           case 0x000a:          /* DEC direct */
-            DEC((reg_dpr << 8) | p1, 2);
+            DEC((reg_dpr << 8) | p1, 2, 6, 5);
             break;
 
-          case 0x000b:          /* TIM IM-direct */   /* FIXME: fix for 6809, 6309 only opcode */
-            TIM(p1, (reg_dpr << 8) | p2, 3);
+          case 0x000b:          /* TIM IM-direct */
+            if (cpu_type == 6309) {
+                TIM(p1, (reg_dpr << 8) | p2, 3, 6, 6);
+            } else {
+                DEC((reg_dpr << 8) | p1, 2, 6, 5);
+            }
             break;
 
           case 0x000c:          /* INC direct */
-            INC((reg_dpr << 8) | p1, 2);
+            INC((reg_dpr << 8) | p1, 2, 6, 5);
             break;
 
           case 0x000d:          /* TST direct */
-            TST((reg_dpr << 8) | p1, 2);
+            TST((reg_dpr << 8) | p1, 2, 6, 4);
             break;
 
           case 0x000e:          /* JMP direct */
-            JMP((reg_dpr << 8) | p1);
+            JMP((reg_dpr << 8) | p1, 3, 2);
             break;
 
           case 0x000f:          /* CLR direct */
-            CLR((reg_dpr << 8) | p1, 2);
+            CLR((reg_dpr << 8) | p1, 2, 6, 5);
             break;
 
           case 0x0012:          /* NOP */
@@ -2473,11 +2603,13 @@ trap_skipped:
             break;
 
           case 0x0014:          /* SEXW */   /* FIXME: fix for 6809, 6309 only opcode */
-            SEXW();
+            if (cpu_type == 6309) {
+                SEXW();
+            }
             break;
 
           case 0x0016:          /* LBRA offset */
-            BRANCH_LONG(1, (p1 << 8) | p2, 3);
+            BRANCH_LONG(1, (p1 << 8) | p2, 3, 5, 4);
             break;
 
           case 0x0017:          /* LBSR offset */
@@ -2489,11 +2621,11 @@ trap_skipped:
             break;
 
           case 0x001a:          /* ORCC immediate */
-            OR(reg_p, 8, p1, 2);
+            OR(reg_p, 8, p1, 2, 3, 2);
             break;
 
           case 0x001c:          /* ANDCC immediate */
-            AND(reg_p, p1, 8, 2);
+            AND(reg_p, p1, 8, 2, 3, 3);
             break;
 
           case 0x001d:          /* SEX (Sign EXtend, not the other thing ;) */
@@ -2509,67 +2641,67 @@ trap_skipped:
             break;
 
           case 0x0020:          /* BRA offset */
-            BRANCH(1, p1, 2);
+            BRANCH(1, p1, 2, 3, 2);
             break;
 
           case 0x0021:          /* BRN offset */
-            BRANCH(0, p1, 2);
+            BRANCH(0, p1, 2, 3, 2);
             break;
 
           case 0x0022:          /* BHI offset */
-            BRANCH(!(LOCAL_CARRY() | LOCAL_ZERO()), p1, 2);
+            BRANCH(!(LOCAL_CARRY() | LOCAL_ZERO()), p1, 2, 3, 2);
             break;
 
           case 0x0023:          /* BLS offset */
-            BRANCH(LOCAL_CARRY() | LOCAL_ZERO(), p1, 2);
+            BRANCH(LOCAL_CARRY() | LOCAL_ZERO(), p1, 2, 3, 2);
             break;
 
           case 0x0024:          /* BHS/BCC offset */
-            BRANCH(!LOCAL_CARRY(), p1, 2);
+            BRANCH(!LOCAL_CARRY(), p1, 2, 3, 2);
             break;
 
           case 0x0025:          /* BLO/BCS offset */
-            BRANCH(LOCAL_CARRY(), p1, 2);
+            BRANCH(LOCAL_CARRY(), p1, 2, 3, 2);
             break;
 
           case 0x0026:          /* BNE offset */
-            BRANCH(!LOCAL_ZERO(), p1, 2);
+            BRANCH(!LOCAL_ZERO(), p1, 2, 3, 2);
             break;
 
           case 0x0027:          /* BEQ offset */
-            BRANCH(LOCAL_ZERO(), p1, 2);
+            BRANCH(LOCAL_ZERO(), p1, 2, 3, 2);
             break;
 
           case 0x0028:          /* BVC offset */
-            BRANCH(!LOCAL_OVERFLOW(), p1, 2);
+            BRANCH(!LOCAL_OVERFLOW(), p1, 2, 3, 2);
             break;
 
           case 0x0029:          /* BVS offset */
-            BRANCH(LOCAL_OVERFLOW(), p1, 2);
+            BRANCH(LOCAL_OVERFLOW(), p1, 2, 3, 2);
             break;
 
           case 0x002a:          /* BPL offset */
-            BRANCH(!LOCAL_NEGATIVE(), p1, 2);
+            BRANCH(!LOCAL_NEGATIVE(), p1, 2, 3, 2);
             break;
 
           case 0x002b:          /* BMI offset */
-            BRANCH(LOCAL_NEGATIVE(), p1, 2);
+            BRANCH(LOCAL_NEGATIVE(), p1, 2, 3, 2);
             break;
 
           case 0x002c:          /* BGE offset */
-            BRANCH(!(LOCAL_NEGATIVE() ^ LOCAL_OVERFLOW()), p1, 2);
+            BRANCH(!(LOCAL_NEGATIVE() ^ LOCAL_OVERFLOW()), p1, 2, 3, 2);
             break;
 
           case 0x002d:          /* BLT offset */
-            BRANCH(LOCAL_NEGATIVE() ^ LOCAL_OVERFLOW(), p1, 2);
+            BRANCH(LOCAL_NEGATIVE() ^ LOCAL_OVERFLOW(), p1, 2, 3, 2);
             break;
 
           case 0x002e:          /* BGT offset */
-            BRANCH((!LOCAL_ZERO() & !(LOCAL_NEGATIVE() ^ LOCAL_OVERFLOW())), p1, 2);
+            BRANCH((!LOCAL_ZERO() & !(LOCAL_NEGATIVE() ^ LOCAL_OVERFLOW())), p1, 2, 3, 2);
             break;
 
           case 0x002f:          /* BLE offset */
-            BRANCH(LOCAL_ZERO() | (LOCAL_NEGATIVE() ^ LOCAL_OVERFLOW()), p1, 2);
+            BRANCH(LOCAL_ZERO() | (LOCAL_NEGATIVE() ^ LOCAL_OVERFLOW()), p1, 2, 3, 2);
             break;
 
           case 0x0030:          /* LEAX indexed */
@@ -2633,7 +2765,7 @@ trap_skipped:
             break;
 
           case 0x0043:          /* COMA */
-            COM_REG(reg_a, 8, 1);
+            COM_REG(reg_a, 8, 1, 2, 1);
             break;
 
           case 0x0044:          /* LSRA */
