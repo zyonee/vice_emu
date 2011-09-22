@@ -2476,6 +2476,7 @@ define BTM_VAR2REG(rnr, var) \
 trap_skipped:
         switch ((page << 8) | p0) {
 
+#ifdef EMULATE_6809_ILLEGAL_OPCODES
 /* Illegal opcodes 1st. */
           case 0x0015:          /* unknown */   /* FIXME: fix for 6809, unknown operation */
           case 0x0018:          /* unknown */   /* FIXME: fix for 6809, unknown operation */
@@ -2515,6 +2516,65 @@ trap_skipped:
             }
             break;
 
+          case 0x0045:          /* LSRA on 6809 */
+            if (cpu_type == 6809) {
+                LSR_REG(reg_a, 1, 2, 1);
+            } else {
+                ILLEGAL_OPCODE_TRAP();
+            }
+            break;
+
+          case 0x004b:          /* DECA on 6809 */
+            if (cpu_type == 6809) {
+                DEC_REG(reg_a, 8, 1, 2, 1);
+            } else {
+                ILLEGAL_OPCODE_TRAP();
+            }
+            break;
+
+          case 0x004e:          /* CLRA on 6809 */
+            if (cpu_type == 6809) {
+                CLR_REG(reg_a, 1, 2, 1);
+            } else {
+                ILLEGAL_OPCODE_TRAP();
+            }
+            break;
+
+          case 0x0051:          /* NEGB on 6809*/
+            if (cpu_type == 6809) {
+                NEG_REG(reg_b, 8, 1, 2, 1);
+            } else {
+                ILLEGAL_OPCODE_TRAP();
+            }
+            break;
+
+          case 0x0052:          /* COMB on 6809 */
+            if (cpu_type == 6309) {
+                COM_REG(reg_b, 8, 1, 2, 1);
+            } else {
+                ILLEGAL_OPCODE_TRAP();
+            }
+            break;
+
+          case 0x0055:          /* LSRB on 6809 */
+            if (cpu_type == 6309) {
+                LSR_REG(reg_b, 1, 2, 1);
+            } else {
+                ILLEGAL_OPCODE_TRAP();
+            }
+            break;
+
+          case 0x005b:          /* DECB on 6809 */
+            if (cpu_type == 6809) {
+                DEC_REG(reg_b, 8, 1, 2, 1);
+            } else {
+                ILLEGAL_OPCODE_TRAP();
+            }
+            break;
+#else
+          default:
+            ILLEGAL_OPCODE_TRAP();
+#endif
 
 /* Now the legal opcodes. */
           case 0x0000:          /* NEG direct */
@@ -2769,79 +2829,79 @@ trap_skipped:
             break;
 
           case 0x0044:          /* LSRA */
-            LSR_REG(reg_a, 1);
+            LSR_REG(reg_a, 1, 2, 1);
             break;
 
           case 0x0046:          /* RORA */
-            ROR_REG(reg_a, 8, 1);
+            ROR_REG(reg_a, 8, 1, 2, 1);
             break;
 
           case 0x0047:          /* ASRA */
-            ASR_REG(reg_a, 8, 1);
+            ASR_REG(reg_a, 8, 1, 2, 1);
             break;
 
           case 0x0048:          /* ASLA/LSLA */
-            ASL_REG(reg_a, 8, 1);
+            ASL_REG(reg_a, 8, 1, 2, 1);
             break;
 
           case 0x0049:          /* ROLA */
-            ROL_REG(reg_a, 8, 1);
+            ROL_REG(reg_a, 8, 1, 2, 1);
             break;
 
           case 0x004a:          /* DECA */
-            DEC_REG(reg_a, 8, 1);
+            DEC_REG(reg_a, 8, 1, 2, 1);
             break;
 
           case 0x004c:          /* INCA */
-            INC_REG(reg_a, 8, 1);
+            INC_REG(reg_a, 8, 1, 2, 1);
             break;
 
           case 0x004d:          /* TSTA */
-            TST_REG(reg_a, 8, 1);
+            TST_REG(reg_a, 8, 1, 2, 1);
             break;
 
           case 0x004f:          /* CLRA */
-            CLR_REG(reg_a, 1);
+            CLR_REG(reg_a, 1, 2, 1);
             break;
 
           case 0x0050:          /* NEGB */
-            NEG_REG(reg_b, 8, 1, 1, 1);
+            NEG_REG(reg_b, 8, 1, 2, 1);
             break;
 
           case 0x0053:          /* COMB */
-            COM_REG(reg_b, 8, 1);
+            COM_REG(reg_b, 8, 1, 2, 1);
             break;
 
           case 0x0054:          /* LSRB */
-            LSR_REG(reg_b, 1);
+            LSR_REG(reg_b, 1, 2, 1);
             break;
 
           case 0x0056:          /* RORB */
-            ROR_REG(reg_b, 8, 1);
+            ROR_REG(reg_b, 8, 1, 2, 1);
             break;
 
           case 0x0057:          /* ASRB */
-            ASR_REG(reg_b, 8, 1);
+            ASR_REG(reg_b, 8, 1, 2, 1);
             break;
 
           case 0x0058:          /* ASLB/LSLB */
-            ASL_REG(reg_b, 8, 1);
+            ASL_REG(reg_b, 8, 1, 2, 1);
             break;
 
           case 0x0059:          /* ROLB */
-            ROL_REG(reg_b, 8, 1);
+            ROL_REG(reg_b, 8, 1, 2, 1);
             break;
 
           case 0x005a:          /* DECB */
-            DEC_REG(reg_b, 8, 1);
+            DEC_REG(reg_b, 8, 1, 2, 1);
             break;
 
           case 0x005c:          /* INCB */
-            INC_REG(reg_b, 8, 1);
+            INC_REG(reg_b, 8, 1, 2, 1);
             break;
 
           case 0x005d:          /* TSTB */
-            TST_REG(reg_b, 8, 1);
+            TST_REG(reg_b, 8, 1, 2, 1);
             break;
 
           case 0x005f:          /* CLRB */
