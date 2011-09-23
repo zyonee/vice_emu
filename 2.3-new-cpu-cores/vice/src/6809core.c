@@ -1509,24 +1509,25 @@ define BTM_VAR2REG(rnr, var) \
       BRANCH(1, p1, 2, 7, 6);     \
   } while (0)
 
-#define LBSR()                                 \
-  do {                                         \
-      PUSHS((reg_pc + 3) & 0xff);              \
-      PUSHS((reg_pc + 3) >> 8);                \
-      BRANCH_LONG(1, (p1 << 8) | p2, 3, 8, 6); \
+#define LBSR()                                           \
+  do {                                                   \
+      PC_INC(ec);                                        \
+      PUSHS((reg_pc + 3) & 0xff);                        \
+      PUSHS((reg_pc + 3) >> 8);                          \
+      BRANCH_LONG(1, (p1 << 8) | p2, 3, 8 + ec, 6 + ec); \
   } while (0)
 
-#define CCRS()                     \
-  do {                             \
-      int tmp_c, tmp_h;            \
-                                   \
-      tmp_c = LOCAL_OVERFLOW();    \
-      tmp_h = LOCAL_IRQ();         \
-      reg_p = 0;                   \
-      LOCAL_SET_CARRY(tmp_c);      \
-      LOCAL_SET_HALF_CARRY(tmp_h); \
-      PC_INC(1);                   \
-      CLK_ADD(CLK, 3, 3);          \
+#define CCRS()                      \
+  do {                              \
+      int tmp_c, tmp_h;             \
+                                    \
+      tmp_c = LOCAL_OVERFLOW();     \
+      tmp_h = LOCAL_IRQ();          \
+      reg_p = 0;                    \
+      LOCAL_SET_CARRY(tmp_c);       \
+      LOCAL_SET_HALF_CARRY(tmp_h);  \
+      PC_INC(1 + ec);               \
+      CLK_ADD(CLK, 3 + ec, 3 + ec); \
   } while (0)
 
 #define CLR_REG(RR, pc_inc, clk6809, clk6309) \
@@ -1624,8 +1625,8 @@ define BTM_VAR2REG(rnr, var) \
       reg_a = tmp & 0xff;                                           \
       LOCAL_SET_NEGATIVE(BT(reg_a, 7));                             \
       LOCAL_SET_ZERO(!reg_a);                                       \
-      PC_INC(1);                                                    \
-      CLK_ADD(CLK, 2, 1);                                           \
+      PC_INC(1 + ec);                                               \
+      CLK_ADD(CLK, 2 + ec, 1 + ec);                                 \
   } while (0)
 
 #define DEC_REG(RR, bits, pc_inc, clk6809, clk6309) \
@@ -1741,8 +1742,8 @@ define BTM_VAR2REG(rnr, var) \
       REG2VAR((rnr & 0xf), tmp2, mixed);   \
       VAR2REG((rnr >> 4), tmp2, mixed);    \
       VAR2REG((rnr & 0xf), tmp1, mixed);   \
-      PC_INC(2);                           \
-      CLK_ADD(CLK, 8, 5);                  \
+      PC_INC(2 + ec);                      \
+      CLK_ADD(CLK, 8 + ec, 5 + ec);        \
   } while (0)
 
 #define EOR(RR, bits, m, clk_inc, clk6809, clk6309) \
@@ -2245,8 +2246,8 @@ define BTM_VAR2REG(rnr, var) \
       LOCAL_SET_NEGATIVE(BT(reg_b, 7));    \
       reg_a = LOCAL_NEGATIVE() ? 0xff : 0; \
       LOCAL_SET_ZERO(!reg_a);              \
-      PC_INC(1);                           \
-      CLK_ADD(CLK, 2, 1);                  \
+      PC_INC(1 + ec);                      \
+      CLK_ADD(CLK, 2 + ec, 1 + ec);        \
   } while (0)
 
 #define SEXW()                               \
@@ -2378,11 +2379,11 @@ define BTM_VAR2REG(rnr, var) \
       }                               \
   } while (0)
 
-#define SYNC()            \
-  do {                    \
-      PC_INC(1);          \
-      CLK_ADD(CLK, 2, 1); \
-      SYNC6809();         \
+#define SYNC()                      \
+  do {                              \
+      PC_INC(1 + ec);               \
+      CLK_ADD(CLK, 2 + ec, 1 + ec); \
+      SYNC6809();                   \
   while (0)
 
 #define TFR(rnr)                           \
@@ -2397,8 +2398,8 @@ define BTM_VAR2REG(rnr, var) \
       }                                    \
       REG2VAR((rnr >> 4), tmp, mixed);     \
       VAR2REG((rnr & 0xf), tmp, mixed);    \
-      PC_INC(2);                           \
-      CLK_ADD(CLK, 6, 4);                  \
+      PC_INC(2 + ec);                      \
+      CLK_ADD(CLK, 6 + ec, 4 + ec);        \
   } while (0)
 
 #define TIM(m, ma, pc_inc, clk6809, clk6309) \
@@ -2616,11 +2617,13 @@ trap_skipped:
           case 0x80012:         /* NOP */
           case 0x8001b:         /* NOP (6809 illegal) */
           case 0x81012:         /* NOP (6809 illegal) */
+          case 0x8101b:         /* NOP (6809 illegal) */
             NOP();
             break;
 
           case 0x30013:         /* SYNC */
           case 0x80013:         /* SYNC */
+          case 0x81013:         /* SYNC (6809 illegal) */
             SYNC();
             break;
 
@@ -2631,50 +2634,62 @@ trap_skipped:
           case 0x80014:         /* HCF (6809 illegal) */
           case 0x80015:         /* HCF (6809 illegal) */
           case 0x800cd:         /* HCF (6809 illegal) */
+          case 0x81014:         /* HCF (6809 illegal) */
+          case 0x81015:         /* HCF (6809 illegal) */
             HCF();
             break;
 
           case 0x30016:         /* LBRA offset */
           case 0x80016:         /* LBRA offset */
-            BRANCH_LONG(1, (p1 << 8) | p2, 3, 5, 4);
+          case 0x81016:         /* LBRA offset (6809 illegal) */
+          case 0x81020:         /* LBRA offset (6809 illegal) */
+            BRANCH_LONG(1, (p1 << 8) | p2, 3 + ec, 5 + ec, 4 + ec);
             break;
 
           case 0x30017:         /* LBSR offset */
           case 0x80017:         /* LBSR offset */
+          case 0x81017:         /* LBSR offset (6809 illegal) */
             LBSR();
             break;
 
           case 0x80018:         /* CCRS (6809 illegal) */
+          case 0x81018:         /* CCRS (6809 illegal) */
             CCRS();
             break;
 
           case 0x30019:         /* DAA */
           case 0x80019:         /* DAA */
+          case 0x81019:         /* DAA (6809 illegal) */
             DAA();
             break;
 
           case 0x3001a:         /* ORCC immediate */
           case 0x8001a:         /* ORCC immediate */
-            OR(reg_p, 8, p1, 2, 3, 2);
+          case 0x8101a:         /* ORCC immediate (6809 illegal) */
+            OR(reg_p, 8, p1, 2 + ec, 3 + ec, 2 + ec);
             break;
 
           case 0x3001c:         /* ANDCC immediate */
           case 0x8001c:         /* ANDCC immediate */
-            AND(reg_p, p1, 8, 2, 3, 3);
+          case 0x8101c:         /* ANDCC immediate (6809 illegal) */
+            AND(reg_p, p1, 8, 2 + ec, 3 + ec, 3 + ec);
             break;
 
           case 0x3001d:         /* SEX (Sign EXtend, not the other thing ;) */
           case 0x8001d:         /* SEX */
+          case 0x8101d:         /* SEX (6809 illegal) */
             SEX();
             break;
 
           case 0x3001e:         /* EXG registers */
           case 0x8001e:         /* EXG registers */
+          case 0x8101e:         /* EXG registers */
             EXG(p1);
             break;
 
           case 0x3001f:         /* TFR registers */
           case 0x8001f:         /* TFR registers */
+          case 0x8101f:         /* TFR registers (6809 illegal) */
             TFR(p1);
             break;
 
@@ -3779,64 +3794,79 @@ trap_skipped:
             ST(reg_usp, 16, (p1 << 8) | p2, 3, 6, 5);
             break;
 
-          case 0x1021:          /* LBRN offset */
-            BRANCH_LONG(0, (p1 << 8) | p2, 4);
+          case 0x31021:         /* LBRN offset */
+          case 0x81021:         /* LBRN offset */
+            BRANCH_LONG(0, (p1 << 8) | p2, 4, 5, 5);
             break;
 
-          case 0x1022:          /* LBHI offset */
-            BRANCH_LONG(!(LOCAL_CARRY() | LOCAL_ZERO()), (p1 << 8) | p2, 4);
+          case 0x31022:         /* LBHI offset */
+          case 0x81022:         /* LBHI offset */
+            BRANCH_LONG(!(LOCAL_CARRY() | LOCAL_ZERO()), (p1 << 8) | p2, 4, 5, 5);
             break;
 
-          case 0x1023:          /* LBLS offset */
-            BRANCH_LONG(LOCAL_CARRY() | LOCAL_ZERO(), (p1 << 8) | p2, 4);
+          case 0x31023:         /* LBLS offset */
+          case 0x81023:         /* LBLS offset */
+            BRANCH_LONG(LOCAL_CARRY() | LOCAL_ZERO(), (p1 << 8) | p2, 4, 5, 5);
             break;
 
-          case 0x1024:          /* LBHS/LBCC offset */
-            BRANCH_LONG(!LOCAL_CARRY(), (p1 << 8) | p2, 4);
+          case 0x31024:         /* LBHS/LBCC offset */
+          case 0x81024:         /* LBHS/LBCC offset */
+            BRANCH_LONG(!LOCAL_CARRY(), (p1 << 8) | p2, 4, 5, 5);
             break;
 
-          case 0x1025:          /* LBCS/LBLO offset */
-            BRANCH_LONG(LOCAL_CARRY(), (p1 << 8) | p2, 4);
+          case 0x31025:         /* LBCS/LBLO offset */
+          case 0x81025:         /* LBCS/LBLO offset */
+            BRANCH_LONG(LOCAL_CARRY(), (p1 << 8) | p2, 4, 5, 5);
             break;
 
-          case 0x1026:          /* LBNE offset */
-            BRANCH_LONG(!LOCAL_ZERO(), (p1 << 8) | p2, 4);
+          case 0x31026:         /* LBNE offset */
+          case 0x81026:         /* LBNE offset */
+            BRANCH_LONG(!LOCAL_ZERO(), (p1 << 8) | p2, 4, 5, 5);
             break;
 
-          case 0x1027:          /* LBEQ offset */
-            BRANCH_LONG(LOCAL_ZERO(), (p1 << 8) | p2, 4);
+          case 0x31027:         /* LBEQ offset */
+          case 0x81027:         /* LBEQ offset */
+            BRANCH_LONG(LOCAL_ZERO(), (p1 << 8) | p2, 4, 5, 5);
             break;
 
-          case 0x1028:          /* LBVC offset */
-            BRANCH_LONG(!LOCAL_OVERFLOW(), (p1 << 8) | p2, 4);
+          case 0x31028:         /* LBVC offset */
+          case 0x81028:         /* LBVC offset */
+            BRANCH_LONG(!LOCAL_OVERFLOW(), (p1 << 8) | p2, 4, 5, 5);
             break;
 
-          case 0x1029:          /* LBVS offset */
-            BRANCH_LONG(LOCAL_OVERFLOW(), (p1 << 8) | p2, 4);
+          case 0x31029:         /* LBVS offset */
+          case 0x81029:         /* LBVS offset */
+            BRANCH_LONG(LOCAL_OVERFLOW(), (p1 << 8) | p2, 4, 5, 5);
             break;
 
-          case 0x102a:          /* LBPL offset */
-            BRANCH_LONG(!LOCAL_NEGATIVE(), (p1 << 8) | p2, 4);
+          case 0x3102a:         /* LBPL offset */
+          case 0x8102a:         /* LBPL offset */
+            BRANCH_LONG(!LOCAL_NEGATIVE(), (p1 << 8) | p2, 4, 5, 5);
             break;
 
-          case 0x102b:          /* LBMI offset */
-            BRANCH_LONG(LOCAL_NEGATIVE(), (p1 << 8) | p2, 4);
+          case 0x3102b:         /* LBMI offset */
+          case 0x8102b:         /* LBMI offset */
+            BRANCH_LONG(LOCAL_NEGATIVE(), (p1 << 8) | p2, 4, 5, 5);
             break;
 
-          case 0x102c:          /* LBGE offset */
-            BRANCH_LONG(!(LOCAL_NEGATIVE() ^ LOCAL_OVERFLOW()), (p1 << 8) | p2, 4);
+          case 0x3102c:         /* LBGE offset */
+          case 0x8102c:         /* LBGE offset */
+            BRANCH_LONG(!(LOCAL_NEGATIVE() ^ LOCAL_OVERFLOW()), (p1 << 8) | p2, 4, 5, 5);
             break;
 
-          case 0x102d:          /* LBLT offset */
-            BRANCH_LONG(LOCAL_NEGATIVE() ^ LOCAL_OVERFLOW(), (p1 << 8) | p2, 4);
+          case 0x3102d:         /* LBLT offset */
+          case 0x8102d:         /* LBLT offset */
+            BRANCH_LONG(LOCAL_NEGATIVE() ^ LOCAL_OVERFLOW(), (p1 << 8) | p2, 4, 5, 5);
             break;
 
-          case 0x102e:          /* LBGT offset */
-            BRANCH_LONG((!LOCAL_ZERO() & !(LOCAL_NEGATIVE() ^ LOCAL_OVERFLOW())), (p1 << 8) | p2, 4);
+          case 0x3102e:         /* LBGT offset */
+          case 0x8102e:         /* LBGT offset */
+            BRANCH_LONG((!LOCAL_ZERO() & !(LOCAL_NEGATIVE() ^ LOCAL_OVERFLOW())), (p1 << 8) | p2, 4, 5, 5);
             break;
 
-          case 0x102f:          /* LBLE offset */
-            BRANCH_LONG(LOCAL_ZERO() | (LOCAL_NEGATIVE ^ LOCAL_OVERFLOW()), (p1 << 8) | p2, 4);
+          case 0x3102f:         /* LBLE offset */
+          case 0x8102f:         /* LBLE offset */
+            BRANCH_LONG(LOCAL_ZERO() | (LOCAL_NEGATIVE ^ LOCAL_OVERFLOW()), (p1 << 8) | p2, 4, 5, 5);
             break;
 
           case 0x1030:          /* ADDR registers */   /* FIXME: fix for 6809, 6309 only opcode */
