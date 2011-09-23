@@ -1781,32 +1781,31 @@ define BTM_VAR2REG(rnr, var) \
 
 /* The 0x02 AIM opcode is also used to patch the ROM.  The function trap_handler()
    returns nonzero if this is not a patch, but a `real' AIM instruction. */
-
-#define AIM_02()                                                \
-  do {                                                          \
-      DWORD trap_result;                                        \
-      EXPORT_REGISTERS();                                       \
-      if (!ROM_TRAP_ALLOWED()                                   \
-          || (trap_result = ROM_TRAP_HANDLER()) == (DWORD)-1) { \
-          if (cpu_type == 6309) {                               \
-              AIM(p1, (reg_dpr << 8) | p2, 3, 6, 5);            \
-          } else {                                              \
-              if (LOCAL_CARRY()) {                              \
-                  COM((reg_dpr << 8) | p1, 2, 6, 5);            \
-              } else {                                          \
-                  NEG(p1 | (reg_dpr << 8), 2, 6, 5);            \
-              }                                                 \
-          }                                                     \
-      } else {                                                  \
-          if (trap_result) {                                    \
-             REWIND_FETCH_OPCODE(CLK);                          \
-             SET_OPCODE(trap_result);                           \
-             IMPORT_REGISTERS();                                \
-             goto trap_skipped;                                 \
-          } else {                                              \
-             IMPORT_REGISTERS();                                \
-          }                                                     \
-      }                                                         \
+#define AIM_02()                                                    \
+  do {                                                              \
+      DWORD trap_result;                                            \
+      EXPORT_REGISTERS();                                           \
+      if (!ROM_TRAP_ALLOWED()                                       \
+          || (trap_result = ROM_TRAP_HANDLER()) == (DWORD)-1) {     \
+          if (cpu_type == 6309) {                                   \
+              AIM(p1, (reg_dpr << 8) | p2, 3, 6, 5);                \
+          } else {                                                  \
+              if (LOCAL_CARRY()) {                                  \
+                  COM((reg_dpr << 8) | p1, 2 + ec, 6 + ec, 5 + ec); \
+              } else {                                              \
+                  NEG(p1 | (reg_dpr << 8), 2 + ec, 6 + ec, 5 + ec); \
+              }                                                     \
+          }                                                         \
+      } else {                                                      \
+          if (trap_result) {                                        \
+             REWIND_FETCH_OPCODE(CLK);                              \
+             SET_OPCODE(trap_result);                               \
+             IMPORT_REGISTERS();                                    \
+             goto trap_skipped;                                     \
+          } else {                                                  \
+             IMPORT_REGISTERS();                                    \
+          }                                                         \
+      }                                                             \
   } while (0)
   
 #define JMP(ma, clk6809, clk6309)     \
@@ -1924,10 +1923,10 @@ define BTM_VAR2REG(rnr, var) \
       STORE(ma, val);                            \
   } while (0)
 
-#define NOP()             \
-  do {                    \
-      PC_INC(1);          \
-      CLK_ADD(CLK, 2, 1); \
+#define NOP()                       \
+  do {                              \
+      PC_INC(1 + ec);               \
+      CLK_ADD(CLK, 2 + ec, 1 + ec); \
   } while (0)
 
 #define OIM(m, ma, pc_inc, clk6809, clk6309) \
@@ -2503,9 +2502,12 @@ define BTM_VAR2REG(rnr, var) \
 
     {
         opcode_t opcode;
+        int ec;
+
         SET_LAST_ADDR(reg_pc);
         FETCH_OPCODE(opcode, page);
 
+        ec = (page) ? 1 : 0;
 trap_skipped:
         switch ((page << 8) | p0 | (cpu_type == 6809) ? 0x80000 : 0x30000) {
 
@@ -2516,7 +2518,9 @@ trap_skipped:
           case 0x30000:         /* NEG direct */
           case 0x80000:         /* NEG direct */
           case 0x80001:         /* NEG direct (illegal 6809) */
-            NEG(p1 | (reg_dpr << 8), 2, 6, 5);
+          case 0x81000:         /* NEG direct (illegal 6809) */
+          case 0x81001:         /* NEG direct (illegal 6809) */
+            NEG(p1 | (reg_dpr << 8), 2 + ec, 6 + ec, 5 + ec);
             break;
 
           case 0x30001:         /* OIM IM-direct */
@@ -2524,20 +2528,24 @@ trap_skipped:
             break;
 
           case 0x30002:         /* AIM IM-direct, also used for traps */
-          case 0x80002:         /* NEG/COM direct, also used for traps */
+          case 0x80002:         /* NEG/COM direct (6809 illegal) */
+          case 0x81002:         /* NEG/COM direct (6809 illegal) */
             STATIC_ASSERT(TRAP_OPCODE == 0x02);
             AIM_02();
             break;
 
           case 0x30003:         /* COM direct */
           case 0x80003:         /* COM direct */
-            COM((reg_dpr << 8) | p1, 2, 6, 5);
+          case 0x81003:         /* COM direct (6809 illegal) */
+            COM((reg_dpr << 8) | p1, 2 + ec, 6 + ec, 5 + ec);
             break;
 
           case 0x30004:         /* LSR direct */
           case 0x80004:         /* LSR direct */
           case 0x80005:         /* LSR direct (6809 illegal) */
-            LSR((reg_dpr << 8) | p1, 2, 6, 5);
+          case 0x81004:         /* LSR direct (6809 illegal) */
+          case 0x81005:         /* LSR direct (6809 illegal) */
+            LSR((reg_dpr << 8) | p1, 2 + ec, 6 + ec, 5 + ec);
             break;
 
           case 0x30005:         /* EIM IM-direct */
@@ -2546,28 +2554,34 @@ trap_skipped:
 
           case 0x30006:         /* ROR direct */
           case 0x80006:         /* ROR direct */
-            ROR((reg_dpr << 8) | p1, 2, 6, 5);
+          case 0x81006:         /* ROR direct (6809 illegal) */
+            ROR((reg_dpr << 8) | p1, 2 + ec, 6 + ec, 5 + ec);
             break;
 
           case 0x30007:         /* ASR direct */
           case 0x80007:         /* ASR direct */
-            ASR((reg_dpr << 8) | p1, 2, 6, 5);
+          case 0x81007:         /* ASR direct (6809 illegal) */
+            ASR((reg_dpr << 8) | p1, 2 + ec, 6 + ec, 5 + ec);
             break;
 
           case 0x30008:         /* ASL/LSL direct */
           case 0x80008:         /* ASL/LSL direct */
-            ASL((reg_dpr << 8) | p1, 2, 6, 5);
+          case 0x81008:         /* ASL/LSL direct (6809 illegal) */
+            ASL((reg_dpr << 8) | p1, 2 + ec, 6 + ec, 5 + ec);
             break;
 
           case 0x30009:         /* ROL direct */
           case 0x80009:         /* ROL direct */
-            ROL((reg_dpr << 8) | p1, 2, 6, 5);
+          case 0x81009:         /* ROL direct (6809 illegal) */
+            ROL((reg_dpr << 8) | p1, 2 + ec, 6 + ec, 5 + ec);
             break;
 
           case 0x3000a:         /* DEC direct */
           case 0x8000a:         /* DEC direct */
           case 0x8000b:         /* DEC direct (6809 illegal) */
-            DEC((reg_dpr << 8) | p1, 2, 6, 5);
+          case 0x8100a:         /* DEC direct (6809 illegal) */
+          case 0x8100b:         /* DEC direct (6809 illegal) */
+            DEC((reg_dpr << 8) | p1, 2 + ec, 6 + ec, 5 + ec);
             break;
 
           case 0x3000b:         /* TIM IM-direct */
@@ -2576,27 +2590,32 @@ trap_skipped:
 
           case 0x3000c:         /* INC direct */
           case 0x8000c:         /* INC direct */
-            INC((reg_dpr << 8) | p1, 2, 6, 5);
+          case 0x8100c:         /* INC direct (6809 illegal) */
+            INC((reg_dpr << 8) | p1, 2 + ce, 6 + ce, 5 + ce);
             break;
 
           case 0x3000d:         /* TST direct */
           case 0x8000d:         /* TST direct */
-            TST((reg_dpr << 8) | p1, 2, 6, 4);
+          case 0x8100d:         /* TST direct */
+            TST((reg_dpr << 8) | p1, 2 + ec, 6 + ec, 4 + ec);
             break;
 
           case 0x3000e:         /* JMP direct */
           case 0x8000e:         /* JMP direct */
-            JMP((reg_dpr << 8) | p1, 3, 2);
+          case 0x8100e:         /* JMP direct (6809 illegal) */
+            JMP((reg_dpr << 8) | p1, 3 + ec, 2 + ec);
             break;
 
           case 0x3000f:         /* CLR direct */
           case 0x8000f:         /* CLR direct */
-            CLR((reg_dpr << 8) | p1, 2, 6, 5);
+          case 0x8100f:         /* CLR direct (6809 illegal) */
+            CLR((reg_dpr << 8) | p1, 2 + ec, 6 + ec, 5 + ec);
             break;
 
           case 0x30012:         /* NOP */
           case 0x80012:         /* NOP */
           case 0x8001b:         /* NOP (6809 illegal) */
+          case 0x81012:         /* NOP (6809 illegal) */
             NOP();
             break;
 
@@ -2611,6 +2630,7 @@ trap_skipped:
 
           case 0x80014:         /* HCF (6809 illegal) */
           case 0x80015:         /* HCF (6809 illegal) */
+          case 0x800cd:         /* HCF (6809 illegal) */
             HCF();
             break;
 
@@ -3163,6 +3183,7 @@ trap_skipped:
             break;
 
           case 0x80087:         /* SCC immediate (6809 illegal) */
+          case 0x800c7:         /* SCC immediate (6809 illegal) */
             SCC();
             break;
 
@@ -3295,372 +3316,467 @@ trap_skipped:
             CMP(reg_a, 8, LOAD_IND8(), 2, 4, 4);
             break;
 
-          case 0x00a2:          /* SBCA indexed */
-            SUB(reg_a, LOCAL_CARRY(), LOAD_IND8(), 8, 2);
+          case 0x300a2:         /* SBCA indexed */
+          case 0x800a2:         /* SBCA indexed */
+            SUB(reg_a, LOCAL_CARRY(), LOAD_IND8(), 8, 2, 4, 4);
             break;
 
-          case 0x00a3:          /* SUBD indexed */
-            SUB(reg_d, 0, LOAD_IND16(), 16, 2);
+          case 0x300a3:         /* SUBD indexed */
+          case 0x800a3:         /* SUBD indexed */
+            SUB(reg_d, 0, LOAD_IND16(), 16, 2, 6, 5);
             break;
 
-          case 0x00a4:          /* ANDA indexed */
-            AND(reg_a, LOAD_IND8(), 8, 2);
+          case 0x300a4:         /* ANDA indexed */
+          case 0x800a4:         /* ANDA indexed */
+            AND(reg_a, LOAD_IND8(), 8, 2, 4, 4);
             break;
 
-          case 0x00a5:          /* BITA indexed */
-            BIT(reg_a, 8, LOAD_IND8(), 2);
+          case 0x300a5:         /* BITA indexed */
+          case 0x800a5:         /* BITA indexed */
+            BIT(reg_a, 8, LOAD_IND8(), 2, 4, 4);
             break;
 
-          case 0x00a6:          /* LDA indexed */
-            LD(reg_a, 8, LOAD_IND8(), 2);
+          case 0x300a6:         /* LDA indexed */
+          case 0x800a6:         /* LDA indexed */
+            LD(reg_a, 8, LOAD_IND8(), 2, 4, 4);
             break;
 
-          case 0x00a7:          /* STA indexed */
-            ST(reg_a, 8, GET_IND_MA(p1, p2, p3), 2);
+          case 0x300a7:         /* STA indexed */
+          case 0x800a7:         /* STA indexed */
+            ST(reg_a, 8, GET_IND_MA(p1, p2, p3), 2, 4, 4);
             break;
 
-          case 0x00a8:          /* EORA indexed */
-            EOR(reg_a, 8, LOAD_IND8(), 2);
+          case 0x300a8:         /* EORA indexed */
+          case 0x800a8:         /* EORA indexed */
+            EOR(reg_a, 8, LOAD_IND8(), 2, 4, 4);
             break;
 
-          case 0x00a9:          /* ADCA indexed */
-            ADD(reg_a, LOAD_IND8(), LOCAL_CARRY(), 8, 2);
+          case 0x300a9:         /* ADCA indexed */
+          case 0x800a9:         /* ADCA indexed */
+            ADD(reg_a, LOAD_IND8(), LOCAL_CARRY(), 8, 2, 4, 4);
             break;
 
-          case 0x00aa:          /* ORA indexed */
-            OR(reg_a, 8, LOAD_IND8(), 2);
+          case 0x300aa:         /* ORA indexed */
+          case 0x800aa:         /* ORA indexed */
+            OR(reg_a, 8, LOAD_IND8(), 2, 4, 4);
             break;
 
-          case 0x00ab:          /* ADDA indexed */
-            ADD(reg_a, LOAD_IND8(), 0, 8, 2);
+          case 0x300ab:         /* ADDA indexed */
+          case 0x800ab:         /* ADDA indexed */
+            ADD(reg_a, LOAD_IND8(), 0, 8, 2, 4, 4);
             break;
 
-          case 0x00ac:          /* CMPX indexed */
-            CMP(reg_x, 16, LOAD_IND16(), 2);
+          case 0x300ac:         /* CMPX indexed */
+          case 0x800ac:         /* CMPX indexed */
+            CMP(reg_x, 16, LOAD_IND16(), 2, 6, 5);
             break;
 
-          case 0x00ad:          /* JSR indexed */
-            JSR(GET_IND_MA(p1, p2, p3), 2);
+          case 0x300ad:         /* JSR indexed */
+          case 0x800ad:         /* JSR indexed */
+            JSR(GET_IND_MA(p1, p2, p3), 2, 7, 6);
             break;
 
-          case 0x00ae:            /* LDX indexed */
-            LD(reg_x, 16, LOAD_IND16(), 2);
+          case 0x300ae:         /* LDX indexed */
+          case 0x800ae:         /* LDX indexed */
+            LD(reg_x, 16, LOAD_IND16(), 2, 5, 5);
             break;
 
-          case 0x00af:          /* STX indexed */
-            ST(reg_x, 16, GET_IND_MA(p1, p2, p3), 2);
+          case 0x300af:         /* STX indexed */
+          case 0x800af:         /* STX indexed */
+            ST(reg_x, 16, GET_IND_MA(p1, p2, p3), 2, 5, 5);
             break;
 
-          case 0x00b0:            /* SUBA extended */
-            SUB(reg_a, 0, LOAD_EXT8(), 8, 3);
+          case 0x300b0:         /* SUBA extended */
+          case 0x800b0:         /* SUBA extended */
+            SUB(reg_a, 0, LOAD_EXT8(), 8, 3, 5, 4);
             break;
 
-          case 0x00b1:          /* CMPA extended */
-            CMP(reg_a, 8, LOAD_EXT8(), 3);
+          case 0x300b1:         /* CMPA extended */
+          case 0x800b1:         /* CMPA extended */
+            CMP(reg_a, 8, LOAD_EXT8(), 3, 5, 4);
             break;
 
-          case 0x00b2:          /* SBCA extended */
-            SUB(reg_a, LOCAL_CARRY(), LOAD_EXT8(), 8, 3);
+          case 0x300b2:         /* SBCA extended */
+          case 0x800b2:         /* SBCA extended */
+            SUB(reg_a, LOCAL_CARRY(), LOAD_EXT8(), 8, 3, 5, 4);
             break;
 
-          case 0x00b3:          /* SUBD extended */
-            SUB(reg_d, 0, LOAD_EXT16(), 16, 3);
+          case 0x300b3:         /* SUBD extended */
+          case 0x800b3:         /* SUBD extended */
+            SUB(reg_d, 0, LOAD_EXT16(), 16, 3, 7, 5);
             break;
 
-          case 0x00b4:          /* ANDA extended */
-            AND(reg_a, LOAD_EXT8(), 8, 3);
+          case 0x300b4:         /* ANDA extended */
+          case 0x800b4:         /* ANDA extended */
+            AND(reg_a, LOAD_EXT8(), 8, 3, 5, 4);
             break;
 
-          case 0x00b5:          /* BITA extended */
-            BIT(reg_a, 8, LOAD_EXT8(), 3);
+          case 0x300b5:         /* BITA extended */
+          case 0x800b5:         /* BITA extended */
+            BIT(reg_a, 8, LOAD_EXT8(), 3, 5, 4);
             break;
 
-          case 0x00b6:            /* LDA extended */
-            LD(reg_a, 8, LOAD_EXT8(), 3);
+          case 0x300b6:         /* LDA extended */
+          case 0x800b6:         /* LDA extended */
+            LD(reg_a, 8, LOAD_EXT8(), 3, 5, 4);
             break;
 
-          case 0x00b7:          /* STA extended */
-            ST(reg_a, 8, (p1 << 8) | p2, 3);
+          case 0x300b7:         /* STA extended */
+          case 0x800b7:         /* STA extended */
+            ST(reg_a, 8, (p1 << 8) | p2, 3, 5, 4);
             break;
 
-          case 0x00b8:          /* EORA extended */
-            EOR(reg_a, 8, LOAD_EXT8(), 3);
+          case 0x300b8:         /* EORA extended */
+          case 0x800b8:         /* EORA extended */
+            EOR(reg_a, 8, LOAD_EXT8(), 3, 5, 4);
             break;
 
-          case 0x00b9:          /* ADCA extended */
-            ADD(reg_a, LOAD_EXT8(), LOCAL_CARRY(), 8, 3);
+          case 0x300b9:         /* ADCA extended */
+          case 0x800b9:         /* ADCA extended */
+            ADD(reg_a, LOAD_EXT8(), LOCAL_CARRY(), 8, 3, 5, 4);
             break;
 
-          case 0x00ba:          /* ORA extended */
-            OR(reg_a, 8, LOAD_EXT8(), 3);
+          case 0x300ba:         /* ORA extended */
+          case 0x800ba:         /* ORA extended */
+            OR(reg_a, 8, LOAD_EXT8(), 3, 5, 4);
             break;
 
-          case 0x00bb:          /* ADDA extended */
-            ADD(reg_a, LOAD_EXT8(), 0, 8, 3);
+          case 0x300bb:         /* ADDA extended */
+          case 0x800bb:         /* ADDA extended */
+            ADD(reg_a, LOAD_EXT8(), 0, 8, 3, 5, 4);
             break;
 
-          case 0x00bc:          /* CMPX extended */
-            CMP(reg_x, 16, LOAD_EXT16(), 3);
+          case 0x300bc:         /* CMPX extended */
+          case 0x800bc:         /* CMPX extended */
+            CMP(reg_x, 16, LOAD_EXT16(), 3, 7, 5);
             break;
 
-          case 0x00bd:          /* JSR extended */
-            JSR((p1 << 8) | p2, 3);
+          case 0x300bd:         /* JSR extended */
+          case 0x800bd:         /* JSR extended */
+            JSR((p1 << 8) | p2, 3, 8, 7);
             break;
 
-          case 0x00be:          /* LDX extended */
-            LD(reg_x, 16, LOAD_EXT16(), 3);
+          case 0x300be:         /* LDX extended */
+          case 0x800be:         /* LDX extended */
+            LD(reg_x, 16, LOAD_EXT16(), 3, 6, 5);
             break;
 
-          case 0x00bf:          /* STX extended */
-            ST(reg_x, 16, (p1 << 8) | p2, 3);
+          case 0x300bf:         /* STX extended */
+          case 0x800bf:         /* STX extended */
+            ST(reg_x, 16, (p1 << 8) | p2, 3, 6, 5);
             break;
 
-          case 0x00c0:          /* SUBB immediate */
-            SUB(reg_b, 0, p1, 8, 2);
+          case 0x300c0:         /* SUBB immediate */
+          case 0x800c0:         /* SUBB immediate */
+            SUB(reg_b, 0, p1, 8, 2, 2, 2);
             break;
 
-          case 0x00c1:          /* CMPB immediate */
-            CMP(reg_b, 8, p1, 2);
+          case 0x300c1:         /* CMPB immediate */
+          case 0x800c1:         /* CMPB immediate */
+            CMP(reg_b, 8, p1, 2, 2, 2);
             break;
 
-          case 0x00c2:          /* SBCB immediate */
-            SUB(reg_b, LOCAL_CARRY(), p1, 8, 2);
+          case 0x300c2:         /* SBCB immediate */
+          case 0x800c2:         /* SBCB immediate */
+            SUB(reg_b, LOCAL_CARRY(), p1, 8, 2, 2, 2);
             break;
 
-          case 0x00c3:          /* ADDD immediate */
-            ADD(reg_d, (p1 << 8) | p2, 0, 16, 3);
+          case 0x300c3:         /* ADDD immediate */
+          case 0x800c3:         /* ADDD immediate */
+            ADD(reg_d, (p1 << 8) | p2, 0, 16, 3, 4, 3);
             break;
 
-          case 0x00c4:          /* ANDB immediate */
-            AND(reg_b, p1, 8, 2);
+          case 0x300c4:         /* ANDB immediate */
+          case 0x800c4:         /* ANDB immediate */
+            AND(reg_b, p1, 8, 2, 2, 2);
             break;
 
-          case 0x00c5:          /* BITB immediate */
-            BIT(reg_b, 8, p1, 2);
+          case 0x300c5:         /* BITB immediate */
+          case 0x800c5:         /* BITB immediate */
+            BIT(reg_b, 8, p1, 2, 2, 2);
             break;
 
-          case 0x00c6:            /* LDB immediate */
-            LD(reg_b, 8, p1, 2);
+          case 0x300c6:         /* LDB immediate */
+          case 0x800c6:         /* LDB immediate */
+            LD(reg_b, 8, p1, 2, 2, 2);
             break;
 
-          case 0x00c8:          /* EORB immediate */
-            EOR(reg_b, 8, p1, 2);
+          case 0x300c8:         /* EORB immediate */
+          case 0x800c8:         /* EORB immediate */
+            EOR(reg_b, 8, p1, 2, 2, 2);
             break;
 
-          case 0x00c9:          /* ADCB immediate */
-            ADD(reg_b, p1, LOCAL_CARRY(), 8, 2);
+          case 0x300c9:         /* ADCB immediate */
+          case 0x800c9:         /* ADCB immediate */
+            ADD(reg_b, p1, LOCAL_CARRY(), 8, 2, 2, 2);
             break;
 
-          case 0x00ca:          /* ORB immediate */
-            OR(reg_b, 8, p1, 2);
+          case 0x300ca:         /* ORB immediate */
+          case 0x800ca:         /* ORB immediate */
+            OR(reg_b, 8, p1, 2, 2, 2);
             break;
 
-          case 0x00cb:          /* ADDB immediate */
-            ADD(reg_b, p1, 0, 8, 2);
+          case 0x300cb:         /* ADDB immediate */
+          case 0x800cb:         /* ADDB immediate */
+            ADD(reg_b, p1, 0, 8, 2, 2, 2);
             break;
 
-          case 0x00cc:            /* LDD immediate */
-            LD(reg_d, 16, (p1 << 8) | p2, 3);
+          case 0x300cc:         /* LDD immediate */
+          case 0x800cc:         /* LDD immediate */
+            LD(reg_d, 16, (p1 << 8) | p2, 3, 3, 3);
             break;
 
-          case 0x00cd:            /* LDQ immediate */   /* FIXME: fix for 6809, 6309 only opcode */
-            LD(reg_q, 32, (p1 << 24) | (p2 << 16) | (p3 << 8) | p4, 5);
+          case 0x300cd:         /* LDQ immediate */
+            LD(reg_q, 32, (p1 << 24) | (p2 << 16) | (p3 << 8) | p4, 5, 5, 5);
             break;
 
-          case 0x00ce:            /* LDU immediate */
-            LD(reg_usp, 16, (p1 << 8) | p2, 3);
+          case 0x300ce:         /* LDU immediate */
+          case 0x800ce:         /* LDU immediate */
+            LD(reg_usp, 16, (p1 << 8) | p2, 3, 3, 3);
             break;
 
-          case 0x00d0:          /* SUBB direct */
-            SUB(reg_b, 0, LOAD_DIRECT8(p1), 8, 2);
+          case 0x800cf:         /* STU immediate (6809 illegal) */
+            STI(reg_u);
             break;
 
-          case 0x00d1:          /* CMPB direct */
-            CMP(reg_b, 8, LOAD_DIRECT8(p1), 2);
+          case 0x300d0:         /* SUBB direct */
+          case 0x800d0:         /* SUBB direct */
+            SUB(reg_b, 0, LOAD_DIRECT8(p1), 8, 2, 4, 3);
             break;
 
-          case 0x00d2:          /* SBCB direct */
-            SUB(reg_b, LOCAL_CARRY(), LOAD_DIRECT8(p1), 8, 2);
+          case 0x300d1:         /* CMPB direct */
+          case 0x800d1:         /* CMPB direct */
+            CMP(reg_b, 8, LOAD_DIRECT8(p1), 2, 4, 3);
             break;
 
-          case 0x00d3:          /* ADDD direct */
-            ADD(reg_d, LOAD_DIRECT16(p1), 0, 16, 2);
+          case 0x300d2:         /* SBCB direct */
+          case 0x800d2:         /* SBCB direct */
+            SUB(reg_b, LOCAL_CARRY(), LOAD_DIRECT8(p1), 8, 2, 4, 3);
             break;
 
-          case 0x00d4:          /* ANDB direct */
-            AND(reg_b, LOAD_DIRECT8(p1), 8, 2);
+          case 0x300d3:         /* ADDD direct */
+          case 0x800d3:         /* ADDD direct */
+            ADD(reg_d, LOAD_DIRECT16(p1), 0, 16, 2, 6, 4);
             break;
 
-          case 0x00d5:          /* BITB direct */
-            BIT(reg_b, 8, LOAD_DIRECT8(p1), 2);
+          case 0x300d4:         /* ANDB direct */
+          case 0x800d4:         /* ANDB direct */
+            AND(reg_b, LOAD_DIRECT8(p1), 8, 2, 4, 3);
             break;
 
-          case 0x00d6:            /* LDB direct */
-            LD(reg_b, 8, LOAD_DIRECT8(p1), 2);
+          case 0x300d5:         /* BITB direct */
+          case 0x800d5:         /* BITB direct */
+            BIT(reg_b, 8, LOAD_DIRECT8(p1), 2, 4, 3);
             break;
 
-          case 0x00d7:          /* STB direct */
-            ST(reg_b, 8, (reg_pbr << 8) | p1, 2);
+          case 0x300d6:         /* LDB direct */
+          case 0x800d6:         /* LDB direct */
+            LD(reg_b, 8, LOAD_DIRECT8(p1), 2, 4, 3);
             break;
 
-          case 0x00d8:          /* EORB direct */
-            EOR(reg_b, 8, LOAD_DIRECT8(p1), 2);
+          case 0x300d7:         /* STB direct */
+          case 0x800d7:         /* STB direct */
+            ST(reg_b, 8, (reg_pbr << 8) | p1, 2, 4, 3);
             break;
 
-          case 0x00d9:          /* ADCB direct */
-            ADD(reg_b, LOAD_DIRECT8(p1), LOCAL_CARRY(), 8, 2);
+          case 0x300d8:         /* EORB direct */
+          case 0x800d8:         /* EORB direct */
+            EOR(reg_b, 8, LOAD_DIRECT8(p1), 2, 4, 3);
             break;
 
-          case 0x00da:          /* ORB direct */
-            OR(reg_b, 8, LOAD_DIRECT8(p1), 2);
+          case 0x300d9:         /* ADCB direct */
+          case 0x800d9:         /* ADCB direct */
+            ADD(reg_b, LOAD_DIRECT8(p1), LOCAL_CARRY(), 8, 2, 4, 3);
             break;
 
-          case 0x00db:          /* ADDB direct */
-            ADD(reg_b, LOAD_DIRECT8(p1), 0, 8, 2);
+          case 0x300da:         /* ORB direct */
+          case 0x800da:         /* ORB direct */0
+            OR(reg_b, 8, LOAD_DIRECT8(p1), 2, 4, 3);
             break;
 
-          case 0x00dc:          /* LDD direct */
-            LD(reg_d, 16, LOAD_DIRECT16(p1), 2);
+          case 0x300db:         /* ADDB direct */
+          case 0x800db:         /* ADDB direct */
+            ADD(reg_b, LOAD_DIRECT8(p1), 0, 8, 2, 4, 3);
             break;
 
-          case 0x00dd:          /* STD direct */
-            ST(reg_d, 16, (reg_dpr << 8) | p1, 2);
+          case 0x300dc:         /* LDD direct */
+          case 0x800dc:         /* LDD direct */
+            LD(reg_d, 16, LOAD_DIRECT16(p1), 2, 5, 4);
             break;
 
-          case 0x00de:          /* LDU direct */
-            LD(reg_usp, 16, LOAD_DIRECT16(p1), 2);
+          case 0x300dd:         /* STD direct */
+          case 0x800dd:         /* STD direct */
+            ST(reg_d, 16, (reg_dpr << 8) | p1, 2, 5, 4);
             break;
 
-          case 0x00df:          /* STU direct */
-            ST(reg_usp, 16, (reg_dpr << 8) | p1, 2);
+          case 0x300de:         /* LDU direct */
+          case 0x800de:         /* LDU direct */
+            LD(reg_usp, 16, LOAD_DIRECT16(p1), 2, 5, 4);
             break;
 
-          case 0x00e0:          /* SUBB indexed */
-            SUB(reg_b, 0, LOAD_IND8(), 8, 2);
+          case 0x300df:         /* STU direct */
+          case 0x800df:         /* STU direct */
+            ST(reg_usp, 16, (reg_dpr << 8) | p1, 2, 5, 4);
             break;
 
-          case 0x00e1:          /* CMPB indexed */
-            CMP(reg_b, 8, LOAD_IND8(), 2);
+          case 0x300e0:         /* SUBB indexed */
+          case 0x800e0:         /* SUBB indexed */
+            SUB(reg_b, 0, LOAD_IND8(), 8, 2, 4, 4);
             break;
 
-          case 0x00e2:          /* SBCB indexed */
-            SUB(reg_b, LOCAL_CARRY(), LOAD_IND8(), 8, 2);
+          case 0x300e1:         /* CMPB indexed */
+          case 0x800e1:         /* CMPB indexed */
+            CMP(reg_b, 8, LOAD_IND8(), 2, 4, 4);
             break;
 
-          case 0x00e3:          /* ADDD indexed */
-            ADD(reg_d, LOAD_IND16(), 0, 16, 2);
+          case 0x300e2:         /* SBCB indexed */
+          case 0x800e2:         /* SBCB indexed */
+            SUB(reg_b, LOCAL_CARRY(), LOAD_IND8(), 8, 2, 4, 4);
             break;
 
-          case 0x00e4:          /* ANDB indexed */
-            AND(reg_b, LOAD_IND8(), 8, 2);
+          case 0x300e3:         /* ADDD indexed */
+          case 0x800e3:         /* ADDD indexed */
+            ADD(reg_d, LOAD_IND16(), 0, 16, 2, 6, 5);
             break;
 
-          case 0x00e5:          /* BITB indexed */
-            BIT(reg_b, 8, LOAD_IND8(), 2);
+          case 0x300e4:         /* ANDB indexed */
+          case 0x800e4:         /* ANDB indexed */
+            AND(reg_b, LOAD_IND8(), 8, 2, 4, 4);
             break;
 
-          case 0x00e6:          /* LDB indexed */
-            LD(reg_b, 8, LOAD_IND8(), 2);
+          case 0x300e5:         /* BITB indexed */
+          case 0x800e5:         /* BITB indexed */
+            BIT(reg_b, 8, LOAD_IND8(), 2, 4, 4);
             break;
 
-          case 0x00e7:          /* STB indexed */
-            ST(reg_b, 8, GET_IND_MA(p1, p2, p3), 2);
+          case 0x300e6:         /* LDB indexed */
+          case 0x800e6:         /* LDB indexed */
+            LD(reg_b, 8, LOAD_IND8(), 2, 4, 4);
             break;
 
-          case 0x00e8:          /* EORB indexed */
-            EOR(reg_b, 8, LOAD_IND8(), 2);
+          case 0x300e7:         /* STB indexed */
+          case 0x800e7:         /* STB indexed */
+            ST(reg_b, 8, GET_IND_MA(p1, p2, p3), 2, 4, 4);
             break;
 
-          case 0x00e9:          /* ADCB indexed */
-            ADD(reg_b, LOAD_IND8(), LOCAL_CARRY(), 8, 2);
+          case 0x300e8:         /* EORB indexed */
+          case 0x800e8:         /* EORB indexed */
+            EOR(reg_b, 8, LOAD_IND8(), 2, 4, 4);
             break;
 
-          case 0x00ea:          /* ORB indexed */
-            OR(reg_b, 8, LOAD_IND8(), 2);
+          case 0x300e9:         /* ADCB indexed */
+          case 0x800e9:         /* ADCB indexed */
+            ADD(reg_b, LOAD_IND8(), LOCAL_CARRY(), 8, 2, 4, 4);
             break;
 
-          case 0x00eb:          /* ADDB indexed */
-            ADD(reg_b, LOAD_IND8(), 0, 8, 2);
+          case 0x300ea:         /* ORB indexed */
+          case 0x800ea:         /* ORB indexed */
+            OR(reg_b, 8, LOAD_IND8(), 2, 4, 4);
             break;
 
-          case 0x00ec:          /* LDD indexed */
-            LD(reg_d, 16, LOAD_IND16(), 2);
+          case 0x300eb:         /* ADDB indexed */
+          case 0x800eb:         /* ADDB indexed */
+            ADD(reg_b, LOAD_IND8(), 0, 8, 2, 4, 4);
             break;
 
-          case 0x00ed:          /* STD indexed */
-            ST(reg_d, 16, GET_IND_MA(p1, p2, p3), 2);
+          case 0x300ec:         /* LDD indexed */
+          case 0x800ec:         /* LDD indexed */
+            LD(reg_d, 16, LOAD_IND16(), 2, 5, 5);
             break;
 
-          case 0x00ee:          /* LDU indexed */
-            LD(reg_usp, 16, LOAD_IND16(), 2);
+          case 0x300ed:         /* STD indexed */
+          case 0x800ed:         /* STD indexed */
+            ST(reg_d, 16, GET_IND_MA(p1, p2, p3), 2, 5, 5);
             break;
 
-          case 0x00ef:          /* STU indexed */
-            ST(reg_usp, 16, GET_IND_MA(p1, p2, p3), 2);
+          case 0x300ee:         /* LDU indexed */
+          case 0x800ee:         /* LDU indexed */
+            LD(reg_usp, 16, LOAD_IND16(), 2, 5, 5);
             break;
 
-          case 0x00f0:          /* SUBB extended */
-            SUB(reg_b, 0, LOAD_EXT8(), 8, 3);
+          case 0x300ef:         /* STU indexed */
+          case 0x800ef:         /* STU indexed */
+            ST(reg_usp, 16, GET_IND_MA(p1, p2, p3), 2, 5, 5);
             break;
 
-          case 0x00f1:          /* CMPB extended */
-            CMP(reg_b, 8, LOAD_EXT8(), 3);
+          case 0x300f0:         /* SUBB extended */
+          case 0x800f0:         /* SUBB extended */
+            SUB(reg_b, 0, LOAD_EXT8(), 8, 3, 5, 4);
             break;
 
-          case 0x00f2:          /* SBCB extended */
-            SUB(reg_b, LOCAL_CARRY(), LOAD_EXT8(), 8, 3);
+          case 0x300f1:         /* CMPB extended */
+          case 0x800f1:         /* CMPB extended */
+            CMP(reg_b, 8, LOAD_EXT8(), 3, 5, 4);
             break;
 
-          case 0x00f3:          /* ADDD extended */
-            ADD(reg_d, LOAD_EXT16(), 0, 16, 3);
+          case 0x300f2:         /* SBCB extended */
+          case 0x800f2:         /* SBCB extended */
+            SUB(reg_b, LOCAL_CARRY(), LOAD_EXT8(), 8, 3, 5, 4);
             break;
 
-          case 0x00f4:          /* ANDB extended */
-            AND(reg_b, LOAD_EXT8(), 8, 3);
+          case 0x300f3:         /* ADDD extended */
+          case 0x800f3:         /* ADDD extended */
+            ADD(reg_d, LOAD_EXT16(), 0, 16, 3, 7, 5);
             break;
 
-          case 0x00f5:          /* BITB extended */
-            BIT(reg_b, 8, LOAD_EXT8(), 3);
+          case 0x300f4:         /* ANDB extended */
+          case 0x800f4:         /* ANDB extended */
+            AND(reg_b, LOAD_EXT8(), 8, 3, 5, 4);
             break;
 
-          case 0x00f6:          /* LDB extended */
-            LD(reg_b, 8, LOAD_EXT8(), 3);
+          case 0x300f5:         /* BITB extended */
+          case 0x800f5:         /* BITB extended */
+            BIT(reg_b, 8, LOAD_EXT8(), 3, 5, 4);
             break;
 
-          case 0x00f7:          /* STB extended */
-            ST(reg_b, 8, (p1 << 8) | p2, 3);
+          case 0x300f6:         /* LDB extended */
+          case 0x800f6:         /* LDB extended */
+            LD(reg_b, 8, LOAD_EXT8(), 3, 5, 4);
             break;
 
-          case 0x00f8:          /* EORB extended */
-            EOR(reg_b, 8, LOAD_EXT8(), 3);
+          case 0x300f7:         /* STB extended */
+          case 0x800f7:         /* STB extended */
+            ST(reg_b, 8, (p1 << 8) | p2, 3, 5, 4);
             break;
 
-          case 0x00f9:          /* ADCB extended */
-            ADD(reg_b, LOAD_EXT8(), LOCAL_CARRY(), 8, 3);
+          case 0x300f8:         /* EORB extended */
+          case 0x800f8:         /* EORB extended */
+            EOR(reg_b, 8, LOAD_EXT8(), 3, 5, 4);
             break;
 
-          case 0x00fa:          /* ORB extended */
-            OR(reg_b, 8, LOAD_EXT8(), 3);
+          case 0x300f9:         /* ADCB extended */
+          case 0x800f9:         /* ADCB extended */
+            ADD(reg_b, LOAD_EXT8(), LOCAL_CARRY(), 8, 3, 5, 4);
             break;
 
-          case 0x00fb:          /* ADDB extended */
-            ADD(reg_b, LOAD_EXT8(), 0, 8, 3);
+          case 0x300fa:         /* ORB extended */
+          case 0x800fa:         /* ORB extended */
+            OR(reg_b, 8, LOAD_EXT8(), 3, 5, 4);
             break;
 
-          case 0x00fc:          /* LDD extended */
-            LD(reg_d, 16, LOAD_EXT16(), 3);
+          case 0x300fb:         /* ADDB extended */
+          case 0x800fb:         /* ADDB extended */
+            ADD(reg_b, LOAD_EXT8(), 0, 8, 3, 5, 4);
             break;
 
-          case 0x00fd:          /* STD extended */
-            ST(reg_d, 16, (p1 << 8) | p2, 3);
+          case 0x300fc:         /* LDD extended */
+          case 0x800fc:         /* LDD extended */
+            LD(reg_d, 16, LOAD_EXT16(), 3, 6, 5);
             break;
 
-          case 0x00fe:          /* LDU extended */
-            LD(reg_usp, 16, LOAD_EXT16(), 3);
+          case 0x300fd:         /* STD extended */
+          case 0x800fd:         /* STD extended */
+            ST(reg_d, 16, (p1 << 8) | p2, 3, 6, 5);
             break;
 
-          case 0x00ff:          /* STU extended */
-            ST(reg_usp, 16, (p1 << 8) | p2, 3);
+          case 0x300fe:         /* LDU extended */
+          case 0x800fe:         /* LDU extended */
+            LD(reg_usp, 16, LOAD_EXT16(), 3, 6, 5);
+            break;
+
+          case 0x300ff:         /* STU extended */
+          case 0x800ff:         /* STU extended */
+            ST(reg_usp, 16, (p1 << 8) | p2, 3, 6, 5);
             break;
 
           case 0x1021:          /* LBRN offset */
