@@ -1516,6 +1516,19 @@ define BTM_VAR2REG(rnr, var) \
       BRANCH_LONG(1, (p1 << 8) | p2, 3, 8, 6); \
   } while (0)
 
+#define CCRS()                     \
+  do {                             \
+      int tmp_c, tmp_h;            \
+                                   \
+      tmp_c = LOCAL_OVERFLOW();    \
+      tmp_h = LOCAL_IRQ();         \
+      reg_p = 0;                   \
+      LOCAL_SET_CARRY(tmp_c);      \
+      LOCAL_SET_HALF_CARRY(tmp_h); \
+      PC_INC(1);                   \
+      CLK_ADD(CLK, 3, 3);          \
+  } while (0)
+
 #define CLR_REG(RR, pc_inc, clk6809, clk6309) \
   do {                                        \
       RR = 0;                                 \
@@ -2221,6 +2234,13 @@ define BTM_VAR2REG(rnr, var) \
       CLK_ADD(CLK, 5, 1);    \
   } while (0)
 
+#define SCC()                \
+  do {                       \
+      LOCAL_SET_NEGATIVE(1); \
+      LOCAL_SET_ZERO(0);     \
+      LOCAL_SET_OVERFLOW(0); \
+  } while (0)
+
 #define SEX()                              \
   do {                                     \
       LOCAL_SET_NEGATIVE(BT(reg_b, 7));    \
@@ -2281,6 +2301,17 @@ define BTM_VAR2REG(rnr, var) \
       CLK_ADD(CLK, 8, 7);                          \
   } while (0)
 
+#define STI(RR)                 \
+  do {                          \
+      INC_PC(2);                \
+      STORE(reg_pc, RR & 0xff); \
+      LOCAL_SET_NEGATIVE(1);    \
+      LOCAL_SET_ZERO(0);        \
+      LOCAL_SET_OVERFLOW(0);    \
+      INC_PC(1);                \
+      CLK_ADD(CLK, 3, 3);       \
+  } while (0)
+
 #define SUB(RR, CC, m, bits, pc_inc, clk6809, clk6309)                   \
   do {                                                                   \
       unsigned int tmp;                                                  \
@@ -2303,7 +2334,9 @@ define BTM_VAR2REG(rnr, var) \
 #define SWI_REG(nr, pc_inc)           \
   do {                                \
       PC_INC(pc_inc);                 \
-      LOCAL_SET_ENTIRE(1);            \
+      if (nr) {                       \
+          LOCAL_SET_ENTIRE(1);        \
+      }                               \
       PUSHS(reg_pc & 0xff);           \
       PUSHS(reg_pc >> 8);             \
       PUSHS(reg_usp & 0xff);          \
@@ -2474,694 +2507,792 @@ define BTM_VAR2REG(rnr, var) \
         FETCH_OPCODE(opcode, page);
 
 trap_skipped:
-        switch ((page << 8) | p0) {
+        switch ((page << 8) | p0 | (cpu_type == 6809) ? 0x80000 : 0x30000) {
 
-#ifdef EMULATE_6809_ILLEGAL_OPCODES
-/* Illegal opcodes 1st. */
-          case 0x0015:          /* unknown */   /* FIXME: fix for 6809, unknown operation */
-          case 0x0018:          /* unknown */   /* FIXME: fix for 6809, unknown operation */
-          case 0x001b:          /* unknown */   /* FIXME: fix for 6809, unknown operation */
-            ILLEGAL_OPCODE_TRAP();
-            break;
-
-          case 0x0038:          /* CWAI immediate on 6809 ??? */
-            if (cpu_type == 6809) {
-                CWAI(p1);
-            } else {
-                ILLEGAL_OPCODE_TRAP();
-            }
-            break;
-
-          case 0x003e:          /* like SWI but using reset vector on 6809 */
-            if (cpu_type == 6809) {
-                SWI_REG(0);
-            } else {
-                ILLEGAL_OPCODE_TRAP();
-            }
-            break;
-
-          case 0x0041:          /* NEGA on 6809*/
-            if (cpu_type == 6809) {
-                NEG_REG(reg_a, 8, 1, 2, 1);
-            } else {
-                ILLEGAL_OPCODE_TRAP();
-            }
-            break;
-
-          case 0x0042:          /* COMA on 6809 */
-            if (cpu_type == 6809) {
-                COM_REG(reg_a, 8, 1, 2, 1);
-            } else {
-                ILLEGAL_OPCODE_TRAP();
-            }
-            break;
-
-          case 0x0045:          /* LSRA on 6809 */
-            if (cpu_type == 6809) {
-                LSR_REG(reg_a, 1, 2, 1);
-            } else {
-                ILLEGAL_OPCODE_TRAP();
-            }
-            break;
-
-          case 0x004b:          /* DECA on 6809 */
-            if (cpu_type == 6809) {
-                DEC_REG(reg_a, 8, 1, 2, 1);
-            } else {
-                ILLEGAL_OPCODE_TRAP();
-            }
-            break;
-
-          case 0x004e:          /* CLRA on 6809 */
-            if (cpu_type == 6809) {
-                CLR_REG(reg_a, 1, 2, 1);
-            } else {
-                ILLEGAL_OPCODE_TRAP();
-            }
-            break;
-
-          case 0x0051:          /* NEGB on 6809*/
-            if (cpu_type == 6809) {
-                NEG_REG(reg_b, 8, 1, 2, 1);
-            } else {
-                ILLEGAL_OPCODE_TRAP();
-            }
-            break;
-
-          case 0x0052:          /* COMB on 6809 */
-            if (cpu_type == 6309) {
-                COM_REG(reg_b, 8, 1, 2, 1);
-            } else {
-                ILLEGAL_OPCODE_TRAP();
-            }
-            break;
-
-          case 0x0055:          /* LSRB on 6809 */
-            if (cpu_type == 6309) {
-                LSR_REG(reg_b, 1, 2, 1);
-            } else {
-                ILLEGAL_OPCODE_TRAP();
-            }
-            break;
-
-          case 0x005b:          /* DECB on 6809 */
-            if (cpu_type == 6809) {
-                DEC_REG(reg_b, 8, 1, 2, 1);
-            } else {
-                ILLEGAL_OPCODE_TRAP();
-            }
-            break;
-#else
           default:
             ILLEGAL_OPCODE_TRAP();
-#endif
+            break
 
-/* Now the legal opcodes. */
-          case 0x0000:          /* NEG direct */
+          case 0x30000:         /* NEG direct */
+          case 0x80000:         /* NEG direct */
+          case 0x80001:         /* NEG direct (illegal 6809) */
             NEG(p1 | (reg_dpr << 8), 2, 6, 5);
             break;
 
-          case 0x0001:          /* OIM IM-direct */
-            if (cpu_type == 6309) {
-                OIM(p1, (reg_dpr << 8) | p2, 3, 6, 5);
-            } else {
-                NEG(p1 | (reg_dpr << 8), 2, 6, 5);
-            }
+          case 0x30001:         /* OIM IM-direct */
+            OIM(p1, (reg_dpr << 8) | p2, 3, 6, 5);
             break;
 
-          case 0x0002:          /* AIM IM-direct, also used for traps */
+          case 0x30002:         /* AIM IM-direct, also used for traps */
+          case 0x80002:         /* NEG/COM direct, also used for traps */
             STATIC_ASSERT(TRAP_OPCODE == 0x02);
             AIM_02();
             break;
 
-          case 0x0003:          /* COM direct */
+          case 0x30003:         /* COM direct */
+          case 0x80003:         /* COM direct */
             COM((reg_dpr << 8) | p1, 2, 6, 5);
             break;
 
-          case 0x0004:          /* LSR direct */
+          case 0x30004:         /* LSR direct */
+          case 0x80004:         /* LSR direct */
+          case 0x80005:         /* LSR direct (6809 illegal) */
             LSR((reg_dpr << 8) | p1, 2, 6, 5);
             break;
 
-          case 0x0005:          /* EIM IM-direct */
-            if (cpu_type == 6309) {
-                EIM(p1, (reg_dpr << 8) | p2, 3, 6, 5);
-            } else {
-                LSR((reg_dpr << 8) | p1, 2, 6, 5);
-            }
+          case 0x30005:         /* EIM IM-direct */
+            EIM(p1, (reg_dpr << 8) | p2, 3, 6, 5);
             break;
 
-          case 0x0006:          /* ROR direct */
+          case 0x30006:         /* ROR direct */
+          case 0x80006:         /* ROR direct */
             ROR((reg_dpr << 8) | p1, 2, 6, 5);
             break;
 
-          case 0x0007:          /* ASR direct */
+          case 0x30007:         /* ASR direct */
+          case 0x80007:         /* ASR direct */
             ASR((reg_dpr << 8) | p1, 2, 6, 5);
             break;
 
-          case 0x0008:          /* ASL/LSL direct */
+          case 0x30008:         /* ASL/LSL direct */
+          case 0x80008:         /* ASL/LSL direct */
             ASL((reg_dpr << 8) | p1, 2, 6, 5);
             break;
 
-          case 0x0009:          /* ROL direct */
+          case 0x30009:         /* ROL direct */
+          case 0x80009:         /* ROL direct */
             ROL((reg_dpr << 8) | p1, 2, 6, 5);
             break;
 
-          case 0x000a:          /* DEC direct */
+          case 0x3000a:         /* DEC direct */
+          case 0x8000a:         /* DEC direct */
+          case 0x8000b:         /* DEC direct (6809 illegal) */
             DEC((reg_dpr << 8) | p1, 2, 6, 5);
             break;
 
-          case 0x000b:          /* TIM IM-direct */
-            if (cpu_type == 6309) {
-                TIM(p1, (reg_dpr << 8) | p2, 3, 6, 6);
-            } else {
-                DEC((reg_dpr << 8) | p1, 2, 6, 5);
-            }
+          case 0x3000b:         /* TIM IM-direct */
+            TIM(p1, (reg_dpr << 8) | p2, 3, 6, 6);
             break;
 
-          case 0x000c:          /* INC direct */
+          case 0x3000c:         /* INC direct */
+          case 0x8000c:         /* INC direct */
             INC((reg_dpr << 8) | p1, 2, 6, 5);
             break;
 
-          case 0x000d:          /* TST direct */
+          case 0x3000d:         /* TST direct */
+          case 0x8000d:         /* TST direct */
             TST((reg_dpr << 8) | p1, 2, 6, 4);
             break;
 
-          case 0x000e:          /* JMP direct */
+          case 0x3000e:         /* JMP direct */
+          case 0x8000e:         /* JMP direct */
             JMP((reg_dpr << 8) | p1, 3, 2);
             break;
 
-          case 0x000f:          /* CLR direct */
+          case 0x3000f:         /* CLR direct */
+          case 0x8000f:         /* CLR direct */
             CLR((reg_dpr << 8) | p1, 2, 6, 5);
             break;
 
-          case 0x0012:          /* NOP */
+          case 0x30012:         /* NOP */
+          case 0x80012:         /* NOP */
+          case 0x8001b:         /* NOP (6809 illegal) */
             NOP();
             break;
 
-          case 0x0013:          /* SYNC */
+          case 0x30013:         /* SYNC */
+          case 0x80013:         /* SYNC */
             SYNC();
             break;
 
-          case 0x0014:          /* SEXW */   /* FIXME: fix for 6809, 6309 only opcode */
-            if (cpu_type == 6309) {
-                SEXW();
-            }
+          case 0x30014:         /* SEXW */
+            SEXW();
+            break
+
+          case 0x80014:         /* HCF (6809 illegal) */
+          case 0x80015:         /* HCF (6809 illegal) */
+            HCF();
             break;
 
-          case 0x0016:          /* LBRA offset */
+          case 0x30016:         /* LBRA offset */
+          case 0x80016:         /* LBRA offset */
             BRANCH_LONG(1, (p1 << 8) | p2, 3, 5, 4);
             break;
 
-          case 0x0017:          /* LBSR offset */
+          case 0x30017:         /* LBSR offset */
+          case 0x80017:         /* LBSR offset */
             LBSR();
             break;
 
-          case 0x0019:          /* DAA */
+          case 0x80018:         /* CCRS (6809 illegal) */
+            CCRS();
+            break;
+
+          case 0x30019:         /* DAA */
+          case 0x80019:         /* DAA */
             DAA();
             break;
 
-          case 0x001a:          /* ORCC immediate */
+          case 0x3001a:         /* ORCC immediate */
+          case 0x8001a:         /* ORCC immediate */
             OR(reg_p, 8, p1, 2, 3, 2);
             break;
 
-          case 0x001c:          /* ANDCC immediate */
+          case 0x3001c:         /* ANDCC immediate */
+          case 0x8001c:         /* ANDCC immediate */
             AND(reg_p, p1, 8, 2, 3, 3);
             break;
 
-          case 0x001d:          /* SEX (Sign EXtend, not the other thing ;) */
+          case 0x3001d:         /* SEX (Sign EXtend, not the other thing ;) */
+          case 0x8001d:         /* SEX */
             SEX();
             break;
 
-          case 0x001e:          /* EXG registers */
+          case 0x3001e:         /* EXG registers */
+          case 0x8001e:         /* EXG registers */
             EXG(p1);
             break;
 
-          case 0x001f:          /* TFR registers */
+          case 0x3001f:         /* TFR registers */
+          case 0x8001f:         /* TFR registers */
             TFR(p1);
             break;
 
-          case 0x0020:          /* BRA offset */
+          case 0x30020:         /* BRA offset */
+          case 0x80020:         /* BRA offset */
             BRANCH(1, p1, 2, 3, 2);
             break;
 
-          case 0x0021:          /* BRN offset */
+          case 0x30021:         /* BRN offset */
+          case 0x80021:         /* BRN offset */
             BRANCH(0, p1, 2, 3, 2);
             break;
 
-          case 0x0022:          /* BHI offset */
+          case 0x30022:         /* BHI offset */
+          case 0x80022:         /* BHI offset */
             BRANCH(!(LOCAL_CARRY() | LOCAL_ZERO()), p1, 2, 3, 2);
             break;
 
-          case 0x0023:          /* BLS offset */
+          case 0x30023:         /* BLS offset */
+          case 0x80023:         /* BLS offset */
             BRANCH(LOCAL_CARRY() | LOCAL_ZERO(), p1, 2, 3, 2);
             break;
 
-          case 0x0024:          /* BHS/BCC offset */
+          case 0x30024:         /* BHS/BCC offset */
+          case 0x80024:         /* BHS/BCC offset */
             BRANCH(!LOCAL_CARRY(), p1, 2, 3, 2);
             break;
 
-          case 0x0025:          /* BLO/BCS offset */
+          case 0x30025:         /* BLO/BCS offset */
+          case 0x80025:         /* BLO/BCS offset */
             BRANCH(LOCAL_CARRY(), p1, 2, 3, 2);
             break;
 
-          case 0x0026:          /* BNE offset */
+          case 0x30026:         /* BNE offset */
+          case 0x80026:         /* BNE offset */
             BRANCH(!LOCAL_ZERO(), p1, 2, 3, 2);
             break;
 
-          case 0x0027:          /* BEQ offset */
+          case 0x30027:         /* BEQ offset */
+          case 0x80027:         /* BEQ offset */
             BRANCH(LOCAL_ZERO(), p1, 2, 3, 2);
             break;
 
-          case 0x0028:          /* BVC offset */
+          case 0x30028:         /* BVC offset */
+          case 0x80028:         /* BVC offset */
             BRANCH(!LOCAL_OVERFLOW(), p1, 2, 3, 2);
             break;
 
-          case 0x0029:          /* BVS offset */
+          case 0x30029:         /* BVS offset */
+          case 0x80029:         /* BVS offset */
             BRANCH(LOCAL_OVERFLOW(), p1, 2, 3, 2);
             break;
 
-          case 0x002a:          /* BPL offset */
+          case 0x3002a:         /* BPL offset */
+          case 0x8002a:         /* BPL offset */
             BRANCH(!LOCAL_NEGATIVE(), p1, 2, 3, 2);
             break;
 
-          case 0x002b:          /* BMI offset */
+          case 0x3002b:         /* BMI offset */
+          case 0x8002b:         /* BMI offset */
             BRANCH(LOCAL_NEGATIVE(), p1, 2, 3, 2);
             break;
 
-          case 0x002c:          /* BGE offset */
+          case 0x3002c:         /* BGE offset */
+          case 0x8002c:         /* BGE offset */
             BRANCH(!(LOCAL_NEGATIVE() ^ LOCAL_OVERFLOW()), p1, 2, 3, 2);
             break;
 
-          case 0x002d:          /* BLT offset */
+          case 0x3002d:         /* BLT offset */
+          case 0x8002d:         /* BLT offset */
             BRANCH(LOCAL_NEGATIVE() ^ LOCAL_OVERFLOW(), p1, 2, 3, 2);
             break;
 
-          case 0x002e:          /* BGT offset */
+          case 0x3002e:         /* BGT offset */
+          case 0x8002e:         /* BGT offset */
             BRANCH((!LOCAL_ZERO() & !(LOCAL_NEGATIVE() ^ LOCAL_OVERFLOW())), p1, 2, 3, 2);
             break;
 
-          case 0x002f:          /* BLE offset */
+          case 0x3002f:         /* BLE offset */
+          case 0x8002f:         /* BLE offset */
             BRANCH(LOCAL_ZERO() | (LOCAL_NEGATIVE() ^ LOCAL_OVERFLOW()), p1, 2, 3, 2);
             break;
 
-          case 0x0030:          /* LEAX indexed */
+          case 0x30030:         /* LEAX indexed */
+          case 0x80030:         /* LEAX indexed */
             LEA(reg_x, GET_IND_MA(p1, p2, p3));
             break;
 
-          case 0x0031:          /* LEAY indexed */
+          case 0x30031:         /* LEAY indexed */
+          case 0x80031:         /* LEAY indexed */
             LEA(reg_y, GET_IND_MA(p1, p2, p3));
             break;
 
-          case 0x0032:          /* LEAS indexed */
+          case 0x30032:         /* LEAS indexed */
+          case 0x80032:         /* LEAS indexed */
             LEA(reg_ssp, GET_IND_MA(p1, p2, p3));
             break;
 
-          case 0x0033:          /* LEAU indexed */
+          case 0x30033:         /* LEAU indexed */
+          case 0x80033:         /* LEAU indexed */
             LEA(reg_usp, GET_IND_MA(p1, p2, p3));
             break;
 
-          case 0x0034:          /* PSHS immediate */
+          case 0x30034:         /* PSHS immediate */
+          case 0x80034:         /* PSHS immediate */
             PSHS(p1);
             break;
 
-          case 0x0035:          /* PULS immediate */
+          case 0x30035:         /* PULS immediate */
+          case 0x80035:         /* PULS immediate */
             PULS(p1);
             break;
 
-          case 0x0036:          /* PSHU immediate */
+          case 0x30036:         /* PSHU immediate */
+          case 0x80036:         /* PSHU immediate */
             PSHU(p1);
             break;
 
-          case 0x0037:          /* PULU immeditate */
+          case 0x30037:         /* PULU immediate */
+          case 0x80037:         /* PULU immediate */
             PULU(p1);
             break;
 
-          case 0x0039:          /* RTS */
+          case 0x80038:         /* ANDCC immediate (+1 cycle) (6809 illegal) */
+            AND(reg_p, p1, 8, 2, 4, 4);
+            break;
+
+          case 0x30039:         /* RTS */
+          case 0x80039:         /* RTS */
             RTS();
             break;
 
-          case 0x003a:          /* ABX */
+          case 0x3003a:         /* ABX */
+          case 0x8003a:         /* ABX */
             ABX();
             break;
 
-          case 0x003b:          /* RTI */
+          case 0x3003b:         /* RTI */
+          case 0x8003b:         /* RTI */
             RTI();
             break;
 
-          case 0x003c:          /* CWAI immediate */
+          case 0x3003c:         /* CWAI immediate */
+          case 0x8003c:         /* CWAI immediate */
             CWAI(p1);
             break;
 
-          case 0x003d:          /* MUL */
+          case 0x3003d:         /* MUL */
+          case 0x8003d:         /* MUL */
             MUL();
             break;
 
-          case 0x003f:          /* SWI */
+          case 0x8003e:         /* like SWI but using reset vector (6809 illegal) */
+            SWI_REG(0, 1);
+            break;
+
+          case 0x3003f:         /* SWI */
+          case 0x8003f:         /* SWI */
             SWI_REG(1, 1);
             break;
 
-          case 0x0040:          /* NEGA */
+          case 0x30040:         /* NEGA */
+          case 0x80040:         /* NEGA */
             NEG_REG(reg_a, 8, 1, 2, 1);
             break;
 
-          case 0x0043:          /* COMA */
+          case 0x80041:         /* NEGA (6809 illegal) */
+            NEG_REG(reg_a, 8, 1, 2, 1);
+            break;
+
+          case 0x80042:          /* NEGA / COMA (6809 illegal)
+            if (!LOCAL_CARRY()) {
+                NEG_REG(reg_a, 8, 1, 2, 1);
+            } else {
+                COM_REG(reg_a, 8, 1, 2, 1);
+            }
+            break;
+
+          case 0x30043:         /* COMA */
+          case 0x80043:         /* COMA */
             COM_REG(reg_a, 8, 1, 2, 1);
             break;
 
-          case 0x0044:          /* LSRA */
+          case 0x30044:         /* LSRA */
+          case 0x80044:         /* LSRA */
+          case 0x80045:         /* LSRA (6809 illegal) */
             LSR_REG(reg_a, 1, 2, 1);
             break;
 
-          case 0x0046:          /* RORA */
+          case 0x30046:         /* RORA */
+          case 0x80046:         /* RORA */
             ROR_REG(reg_a, 8, 1, 2, 1);
             break;
 
-          case 0x0047:          /* ASRA */
+          case 0x30047:         /* ASRA */
+          case 0x80047:         /* ASRA */
             ASR_REG(reg_a, 8, 1, 2, 1);
             break;
 
-          case 0x0048:          /* ASLA/LSLA */
+          case 0x30048:         /* ASLA/LSLA */
+          case 0x80048:         /* ASLA/LSLA */
             ASL_REG(reg_a, 8, 1, 2, 1);
             break;
 
-          case 0x0049:          /* ROLA */
+          case 0x30049:         /* ROLA */
+          case 0x80049:         /* ROLA */
             ROL_REG(reg_a, 8, 1, 2, 1);
             break;
 
-          case 0x004a:          /* DECA */
+          case 0x3004a:         /* DECA */
+          case 0x8004a:         /* DECA */
+          case 0x8004b:         /* DECA (6809 illegal) */
             DEC_REG(reg_a, 8, 1, 2, 1);
             break;
 
-          case 0x004c:          /* INCA */
+          case 0x3004c:         /* INCA */
+          case 0x8004c:         /* INCA */
             INC_REG(reg_a, 8, 1, 2, 1);
             break;
 
-          case 0x004d:          /* TSTA */
+          case 0x3004d:         /* TSTA */
+          case 0x8004d:         /* TSTA */
             TST_REG(reg_a, 8, 1, 2, 1);
             break;
 
-          case 0x004f:          /* CLRA */
+          case 0x3004f:         /* CLRA */
+          case 0x8004f:         /* CLRA */
+          case 0x8004e:         /* CLRA (6809 illegal) */
             CLR_REG(reg_a, 1, 2, 1);
             break;
 
-          case 0x0050:          /* NEGB */
+          case 0x30050:         /* NEGB */
+          case 0x80050:         /* NEGB */
+          case 0x80051:         /* NEGB (6809 illegal) */
             NEG_REG(reg_b, 8, 1, 2, 1);
             break;
 
-          case 0x0053:          /* COMB */
+        case 0x80052:          /* NEGB / COMB (6809 illegal) */
+            if (!LOCAL_CARRY()) {
+                NEG_REG(reg_b, 8, 1, 2, 1);
+            } else {
+                COM_REG(reg_b, 8, 1, 2, 1);
+            }
+            break;
+
+          case 0x30053:         /* COMB */
+          case 0x80053:         /* COMB */
             COM_REG(reg_b, 8, 1, 2, 1);
             break;
 
-          case 0x0054:          /* LSRB */
+          case 0x30054:         /* LSRB */
+          case 0x80054:         /* LSRB */
+          case 0x80055:         /* LSRB (6809 illegal) */
             LSR_REG(reg_b, 1, 2, 1);
             break;
 
-          case 0x0056:          /* RORB */
+          case 0x30056:         /* RORB */
+          case 0x80056:         /* RORB */
             ROR_REG(reg_b, 8, 1, 2, 1);
             break;
 
-          case 0x0057:          /* ASRB */
+          case 0x30057:         /* ASRB */
+          case 0x80057:         /* ASRB */
             ASR_REG(reg_b, 8, 1, 2, 1);
             break;
 
-          case 0x0058:          /* ASLB/LSLB */
+          case 0x30058:         /* ASLB/LSLB */
+          case 0x80058:         /* ASLB/LSLB */
             ASL_REG(reg_b, 8, 1, 2, 1);
             break;
 
-          case 0x0059:          /* ROLB */
+          case 0x30059:         /* ROLB */
+          case 0x80059:         /* ROLB */
             ROL_REG(reg_b, 8, 1, 2, 1);
             break;
 
-          case 0x005a:          /* DECB */
+          case 0x3005a:         /* DECB */
+          case 0x8005a:         /* DECB */
+          case 0x8005b:         /* DECB (6809 illegal) */
             DEC_REG(reg_b, 8, 1, 2, 1);
             break;
 
-          case 0x005c:          /* INCB */
+          case 0x3005c:         /* INCB */
+          case 0x8005c:         /* INCB */
             INC_REG(reg_b, 8, 1, 2, 1);
             break;
 
-          case 0x005d:          /* TSTB */
+          case 0x3005d:         /* TSTB */
+          case 0x8005d:         /* TSTB */
             TST_REG(reg_b, 8, 1, 2, 1);
             break;
 
-          case 0x005f:          /* CLRB */
-            CLR_REG(reg_b, 1);
+          case 0x3005f:         /* CLRB */
+          case 0x8005f:         /* CLRB */
+          case 0x8005e:         /* CLRB (6809 illegal) */
+            CLR_REG(reg_b, 1, 2, 1);
             break;
 
-          case 0x0060:            /* NEG indexed */
+          case 0x30060:         /* NEG indexed */
+          case 0x80060:         /* NEG indexed */
+          case 0x80061:         /* NEG indexed (6809 illegal) */
             NEG(GET_IND_MA(p1, p2, p3), 2, 6, 6);
             break;
 
-          case 0x0061:          /* OIM IM-indexed */   /* FIXME: fix for 6809, 6309 only opcode */
-            OIM(p1, GET_IND_MA(p2, p3, p4), 3);
+          case 0x30061:         /* OIM IM-indexed */
+            OIM(p1, GET_IND_MA(p2, p3, p4), 3, 6, 6);
             break;
 
-          case 0x0062:          /* AIM IM-indexed */   /* FIXME: fix for 6809, 6309 only opcode */
+          case 0x30062:         /* AIM IM-indexed */
             AIM(p1, GET_IND_MA(p2, p3, p4), 3);
             break;
 
-          case 0x0063:          /* COM indexed */
-            COM(GET_IND_MA(p1, p2, p3), 2);
+          case 0x80062:         /* NEG indexed / COM indexed (6809 illegal) */
+            if (!LOCAL_CARRY()) {
+                NEG(GET_IND_MA(p1, p2, p3), 2, 6, 6);
+            } else {
+                COM(GET_IND_MA(p1, p2, p3), 2, 6, 6);
+            }
+            break;                
+
+          case 0x30063:         /* COM indexed */
+          case 0x80063:         /* COM indexed */
+            COM(GET_IND_MA(p1, p2, p3), 2, 6, 6);
             break;
 
-          case 0x0064:          /* LSR indexed */
-            LSR(GET_IND_MA(p1, p2, p3), 2);
+          case 0x30064:         /* LSR indexed */
+          case 0x80064:         /* LSR indexed */
+          case 0x80065:         /* LSR indexed (6809 illegal) */
+            LSR(GET_IND_MA(p1, p2, p3), 2, 6, 6);
             break;
 
-          case 0x0065:          /* EIM IM-indexed */   /* FIXME: fix for 6809, 6309 only opcode */
-            EIM(p1, GET_IND_MA(p2, p3, p4), 3);
+          case 0x30065:         /* EIM IM-indexed */
+            EIM(p1, GET_IND_MA(p2, p3, p4), 3, 7, 7);
             break;
 
-          case 0x0066:          /* ROR indexed */
-            ROR(GET_IND_MA(p1, p2, p3), 2);
+          case 0x30066:         /* ROR indexed */
+          case 0x80066:         /* ROR indexed */
+            ROR(GET_IND_MA(p1, p2, p3), 2, 6, 6);
             break;
 
-          case 0x0067:          /* ASR indexed */
-            ASR(GET_IND_MA(p1, p2, p3), 2);
+          case 0x30067:         /* ASR indexed */
+          case 0x80067:         /* ASR indexed */
+            ASR(GET_IND_MA(p1, p2, p3), 2, 6, 6);
             break;
 
-          case 0x0068:          /* ASL/LSL indexed */
-            ASL(GET_IND_MA(p1, p2, p3), 2);
+          case 0x30068:         /* ASL/LSL indexed */
+          case 0x80068:         /* ASL/LSL indexed */
+            ASL(GET_IND_MA(p1, p2, p3), 2, 6, 6);
             break;
 
-          case 0x0069:            /* ROL indexed */
-            ROL(GET_IND_MA(p1, p2, p3), 2);
+          case 0x30069:         /* ROL indexed */
+          case 0x80069:         /* ROL indexed */
+            ROL(GET_IND_MA(p1, p2, p3), 2, 6, 6);
             break;
 
-          case 0x006a:          /* DEC indexed */
-            DEC(GET_IND_MA(p1, p2, p3), 2);
+          case 0x3006a:         /* DEC indexed */
+          case 0x8006a:         /* DEC indexed */
+          case 0x8006b:         /* DEC indexed (6809 illegal) */
+            DEC(GET_IND_MA(p1, p2, p3), 2, 6, 6);
             break;
 
-          case 0x006b:          /* TIM IM-indexed */   /* FIXME: fix for 6809, 6309 only opcode */
-            TIM(p1, GET_IND_MA(p2, p3, p4), 3);
+          case 0x3006b:         /* TIM IM-indexed */
+            TIM(p1, GET_IND_MA(p2, p3, p4), 3, 7, 7);
             break;
 
-          case 0x006c:          /* INC indexed */
-            INC(GET_IND_MA(p1, p2, p3), 2);
+          case 0x3006c:         /* INC indexed */
+          case 0x8006c:         /* INC indexed */
+            INC(GET_IND_MA(p1, p2, p3), 2, 6, 6);
             break;
 
-          case 0x006d:          /* TST indexed */
-            TST(GET_IND_MA(p1, p2, p3), 2);
+          case 0x3006d:         /* TST indexed */
+          case 0x8006d:         /* TST indexed */
+            TST(GET_IND_MA(p1, p2, p3), 2, 6, 5);
             break;
 
-          case 0x006e:          /* JMP indexed */
-            JMP(GET_IND_MA(p1, p2, p3));
+          case 0x3006e:         /* JMP indexed */
+          case 0x8006e:         /* JMP indexed */
+            JMP(GET_IND_MA(p1, p2, p3), 3, 3);
             break;
 
-          case 0x006f:          /* CLR indexed */
-            CLR(GET_IND_MA(p1, p2, p3), 2);
+          case 0x3006f:         /* CLR indexed */
+          case 0x8006f:         /* CLR indexed */
+            CLR(GET_IND_MA(p1, p2, p3), 2, 6, 6);
             break;
 
-          case 0x0070:          /* NEG extended */
+          case 0x30070:         /* NEG extended */
+          case 0x80070:         /* NEG extended */
+          case 0x80071:         /* NEG extended (6809 illegal) */
             NEG((p1 << 8) | p2, 3, 7, 6);
             break;
 
-          case 0x0071:          /* OIM IM-extended */   /* FIXME: fix for 6809, 6309 only opcode */
-            OIM(p1, (p2 << 8) | p3, 4);
+          case 0x30071:         /* OIM IM-extended */
+            OIM(p1, (p2 << 8) | p3, 4, 7, 7);
             break;
 
-          case 0x0072:          /* AIM IM-extended */   /* FIXME: fix for 6809, 6309 only opcode */
+          case 0x30072:         /* AIM IM-extended */
             AIM(p1, (p2 << 8) | p3, 4);
             break;
 
-          case 0x0073:          /* COM extended */
-            COM((p1 << 8) | p2, 3);
+          case 0x80073:         /* NEG extended / COM extended (6809 illegal) */
+            if (!LOCAL_CARRY()) {
+                NEG((p1 << 8) | p2, 3, 7, 6);
+            } else {
+                COM((p1 << 8) | p2, 3, 7, 6);
+            }
             break;
 
-          case 0x0074:          /* LSR extended */
-            LSR((p1 << 8) | p2, 3);
+          case 0x30073:         /* COM extended */
+          case 0x80073:         /* COM extended */
+            COM((p1 << 8) | p2, 3, 7, 6);
             break;
 
-          case 0x0075:          /* EIM IM-extended */   /* FIXME: fix for 6809, 6309 only opcode */
-            EIM(p1, (p2 << 8) | p3, 4);
+          case 0x30074:         /* LSR extended */
+          case 0x80074:         /* LSR extended */
+          case 0x80075:         /* LSR extended (6809 illegal) */
+            LSR((p1 << 8) | p2, 3, 7, 6);
             break;
 
-          case 0x0076:          /* ROR extended */
-            ROR((p1 << 8) | p2, 3);
+          case 0x30075:         /* EIM IM-extended */
+            EIM(p1, (p2 << 8) | p3, 4, 7, 7);
             break;
 
-          case 0x0077:          /* ASR extended */
-            ASR((p1 << 8) | p2, 3);
+          case 0x30076:         /* ROR extended */
+          case 0x80076:         /* ROR extended */
+            ROR((p1 << 8) | p2, 3, 7, 6);
             break;
 
-          case 0x0078:          /* ASL extended */
-            ASL((p1 << 8) | p2, 3);
+          case 0x30077:         /* ASR extended */
+          case 0x80077:         /* ASR extended */
+            ASR((p1 << 8) | p2, 3, 7, 6);
             break;
 
-          case 0x0079:          /* ROL extended */
-            ROL((p1 << 8) | p2, 3);
+          case 0x30078:         /* ASL extended */
+          case 0x80078:         /* ASL extended */
+            ASL((p1 << 8) | p2, 3, 7, 6);
             break;
 
-          case 0x007a:          /* DEC extended */
-            DEC((p1 << 8) | p2, 3);
+          case 0x30079:         /* ROL extended */
+          case 0x80079:         /* ROL extended */
+            ROL((p1 << 8) | p2, 3, 7, 6);
             break;
 
-          case 0x007b:          /* TIM IM-extended */   /* FIXME: fix for 6809, 6309 only opcode */
-            TIM(p1, (p2 << 8) | p3, 4);
+          case 0x3007a:         /* DEC extended */
+          case 0x8007a:         /* DEC extended */
+          case 0x8007b:         /* DEC extended (6809 illegal) */
+            DEC((p1 << 8) | p2, 3, 7, 6);
             break;
 
-          case 0x007c:          /* INC extended */
-            INC((p1 << 8) | p2, 3);
+          case 0x3007b:         /* TIM IM-extended */
+            TIM(p1, (p2 << 8) | p3, 4, 7, 7);
             break;
 
-          case 0x007d:          /* TST extended */
-            TST((p1 << 8) | p2, 3);
+          case 0x3007c:         /* INC extended */
+          case 0x8007c:         /* INC extended */
+            INC((p1 << 8) | p2, 3, 7, 6);
             break;
 
-          case 0x007e:          /* JMP extended */
-            JMP((p1 << 8) | p2);
+          case 0x3007d:         /* TST extended */
+          case 0x8007d:         /* TST extended */
+            TST((p1 << 8) | p2, 3, 7, 5);
             break;
 
-          case 0x007f:          /* CLR extended */
-            CLR((p1 << 8) | p2, 3);
+          case 0x3007e:         /* JMP extended */
+          case 0x8007e:         /* JMP extended */
+            JMP((p1 << 8) | p2, 4, 3);
             break;
 
-          case 0x0080:          /* SUBA immediate */
-            SUB(reg_a, 0, p1, 8, 2);
+          case 0x3007f:         /* CLR extended */
+          case 0x8007f:         /* CLR extended */
+            CLR((p1 << 8) | p2, 3, 7, 6);
             break;
 
-          case 0x0081:          /* CMPA immediate */
-            CMP(reg_a, 8, p1, 2);
+          case 0x30080:         /* SUBA immediate */
+          case 0x80080:         /* SUBA immediate */
+            SUB(reg_a, 0, p1, 8, 2, 2, 2);
             break;
 
-          case 0x0082:          /* SBCA immediate */
-            SUB(reg_a, LOCAL_CARRY(), p1, 8, 2);
+          case 0x30081:         /* CMPA immediate */
+          case 0x80081:         /* CMPA immediate */
+            CMP(reg_a, 8, p1, 2, 2, 2);
             break;
 
-          case 0x0083:          /* SUBD immediate */
-            SUB(reg_d, 0, (p1 << 8) | p2, 16, 3);
+          case 0x30082:         /* SBCA immediate */
+          case 0x80082:         /* SBCA immediate */
+            SUB(reg_a, LOCAL_CARRY(), p1, 8, 2, 2, 2);
             break;
 
-          case 0x0084:          /* ANDA immediate */
-            AND(reg_a, p1, 8, 2);
+          case 0x30083:         /* SUBD immediate */
+          case 0x80083:         /* SUBD immediate */
+            SUB(reg_d, 0, (p1 << 8) | p2, 16, 3, 4, 3);
             break;
 
-          case 0x0085:          /* BITA immediate */
-            BIT(reg_a, 8, p1, 2);
+          case 0x30084:         /* ANDA immediate */
+          case 0x80084:         /* ANDA immediate */
+            AND(reg_a, p1, 8, 2, 2, 2);
             break;
 
-          case 0x0086:            /* LDA immediate */
-            LD(reg_a, 8, p1, 2);
+          case 0x30085:         /* BITA immediate */
+          case 0x80085:         /* BITA immediate */
+            BIT(reg_a, 8, p1, 2, 2, 2);
             break;
 
-          case 0x0088:          /* EORA immediate */
-            EOR(reg_a, 8, p1, 2);
+          case 0x30086:         /* LDA immediate */
+          case 0x80086:         /* LDA immediate */
+            LD(reg_a, 8, p1, 2, 2, 2);
             break;
 
-          case 0x0089:          /* ADCA immediate */
-            ADD(reg_a, p1, LOCAL_CARRY(), 8, 2);
+          case 0x80087:         /* SCC immediate (6809 illegal) */
+            SCC();
             break;
 
-          case 0x008a:          /* ORA immediate */
-            OR(reg_a, 8, p1, 2);
+          case 0x30088:         /* EORA immediate */
+          case 0x80088:         /* EORA immediate */
+            EOR(reg_a, 8, p1, 2, 2, 2);
             break;
 
-          case 0x008b:          /* ADDA immediate */
-            ADD(reg_a, p1, 0, 8, 2);
+          case 0x30089:         /* ADCA immediate */
+          case 0x80089:         /* ADCA immediate */
+            ADD(reg_a, p1, LOCAL_CARRY(), 8, 2, 2, 2);
             break;
 
-          case 0x008c:          /* CMPX immediate */
-            CMP(reg_x, 16, (p1 << 8) | p2, 3);
+          case 0x3008a:         /* ORA immediate */
+          case 0x8008a:         /* ORA immediate */
+            OR(reg_a, 8, p1, 2, 2, 2);
             break;
 
-          case 0x008d:          /* BSR offset */
+          case 0x3008b:         /* ADDA immediate */
+          case 0x8008b:         /* ADDA immediate */
+            ADD(reg_a, p1, 0, 8, 2, 2, 2);
+            break;
+
+          case 0x3008c:         /* CMPX immediate */
+          case 0x8008c:         /* CMPX immediate */
+            CMP(reg_x, 16, (p1 << 8) | p2, 3, 4, 3);
+            break;
+
+          case 0x3008d:         /* BSR offset */
+          case 0x8008d:         /* BSR offset */
             BSR();
             break;
 
-          case 0x008e:            /* LDX immediate */
-            LD(reg_x, 16, (p1 << 8) | p2, 3);
+          case 0x3008e:         /* LDX immediate */
+          case 0x8008e:         /* LDX immediate */
+            LD(reg_x, 16, (p1 << 8) | p2, 3, 3, 3);
             break;
 
-          case 0x0090:          /* SUBA direct */
-            SUB(reg_a, 0, LOAD_DIRECT8(p1), 8, 2);
+          case 0x8008f:         /* STX immediate (6809 illegal) */
+            STI(reg_x);
             break;
 
-          case 0x0091:          /* CMPA direct */
-            CMP(reg_a, 8, LOAD_DIRECT8(p1), 2);
+          case 0x30090:         /* SUBA direct */
+          case 0x80090:         /* SUBA direct */
+            SUB(reg_a, 0, LOAD_DIRECT8(p1), 8, 2, 4, 3);
             break;
 
-          case 0x0092:          /* SBCA direct */
-            SUB(reg_a, LOCAL_CARRY(), LOAD_DIRECT8(p1), 8, 2);
+          case 0x30091:         /* CMPA direct */
+          case 0x80091:         /* CMPA direct */
+            CMP(reg_a, 8, LOAD_DIRECT8(p1), 2, 4, 3);
             break;
 
-          case 0x0093:          /* SUBD direct */
-            SUB(reg_d, 0, LOAD_DIRECT16(p1), 16, 2);
+          case 0x30092:         /* SBCA direct */
+          case 0x80092:         /* SBCA direct */
+            SUB(reg_a, LOCAL_CARRY(), LOAD_DIRECT8(p1), 8, 2, 4, 3);
             break;
 
-          case 0x0094:          /* ANDA direct */
-            AND(reg_a, LOAD_DIRECT8(p1), 8, 2);
+          case 0x30093:         /* SUBD direct */
+          case 0x80093:         /* SUBD direct */
+            SUB(reg_d, 0, LOAD_DIRECT16(p1), 16, 2, 6, 4);
             break;
 
-          case 0x0095:          /* BITA direct */
-            BIT(reg_a, 8, LOAD_DIRECT8(p1), 2);
+          case 0x30094:         /* ANDA direct */
+          case 0x80094:         /* ANDA direct */
+            AND(reg_a, LOAD_DIRECT8(p1), 8, 2, 4, 3);
             break;
 
-          case 0x0096:          /* LDA direct */
-            LD(reg_a, 8, LOAD_DIRECT8(p1), 2);
+          case 0x30095:         /* BITA direct */
+          case 0x80095:         /* BITA direct */
+            BIT(reg_a, 8, LOAD_DIRECT8(p1), 2, 4, 3);
             break;
 
-          case 0x0097:          /* STA direct */
-            ST(reg_a, 8, (reg_dpr << 8) | p2, 2);
+          case 0x30096:         /* LDA direct */
+          case 0x80096:         /* LDA direct */
+            LD(reg_a, 8, LOAD_DIRECT8(p1), 2, 4, 3);
             break;
 
-          case 0x0098:          /* EORA direct */
-            EOR(reg_a, 8, LOAD_DIRECT8(p1), 2);
+          case 0x30097:         /* STA direct */
+          case 0x80097:         /* STA direct */
+            ST(reg_a, 8, (reg_dpr << 8) | p2, 2, 4, 3);
             break;
 
-          case 0x0099:          /* ADCA direct */
-            ADD(reg_a, LOAD_DIRECT8(p1), LOCAL_CARRY(), 8, 2);
+          case 0x30098:         /* EORA direct */
+          case 0x80098:         /* EORA direct */
+            EOR(reg_a, 8, LOAD_DIRECT8(p1), 2, 4, 3);
             break;
 
-          case 0x009a:          /* ORA direct */
-            OR(reg_a, 8, LOAD_DIRECT8(p1), 2);
+          case 0x30099:         /* ADCA direct */
+          case 0x80099:         /* ADCA direct */
+            ADD(reg_a, LOAD_DIRECT8(p1), LOCAL_CARRY(), 8, 2, 4, 3);
             break;
 
-          case 0x009b:          /* ADDA direct */
-            ADD(reg_a, LOAD_DIRECT8(p1), 0, 8, 2);
+          case 0x3009a:         /* ORA direct */
+          case 0x8009a:         /* ORA direct */
+            OR(reg_a, 8, LOAD_DIRECT8(p1), 2), 4, 3;
             break;
 
-          case 0x009c:          /* CMPX direct */
-            CMP(reg_x, 16, LOAD_DIRECT16(p1), 2);
+          case 0x3009b:         /* ADDA direct */
+          case 0x8009b:         /* ADDA direct */
+            ADD(reg_a, LOAD_DIRECT8(p1), 0, 8, 2, 4, 3);
             break;
 
-          case 0x009d:          /* JSR direct */
-            JSR((reg_dpr << 8) | p1, 2);
+          case 0x3009c:         /* CMPX direct */
+          case 0x8009c:         /* CMPX direct */
+            CMP(reg_x, 16, LOAD_DIRECT16(p1), 2, 6, 4);
             break;
 
-          case 0x009e:          /* LDX direct */
-            LD(reg_x, 16, LOAD_DIRECT16(p1), 2);
+          case 0x3009d:         /* JSR direct */
+          case 0x8009d:         /* JSR direct */
+            JSR((reg_dpr << 8) | p1, 2, 7, 6);
             break;
 
-          case 0x009f:          /* STX direct */
-            ST(reg_x, 16, (reg_dpr << 8) | p1, 2);
+          case 0x3009e:         /* LDX direct */
+          case 0x8009e:         /* LDX direct */
+            LD(reg_x, 16, LOAD_DIRECT16(p1), 2, 5, 4);
             break;
 
-          case 0x00a0:          /* SUBA indexed */
-            SUB(reg_a, 0, LOAD_IND8(), 8, 2);
+          case 0x3009f:         /* STX direct */
+          case 0x8009f:         /* STX direct */
+            ST(reg_x, 16, (reg_dpr << 8) | p1, 2, 5, 4);
             break;
 
-          case 0x00a1:          /* CMPA indexed */
-            CMP(reg_a, 8, LOAD_IND8(), 2);
+          case 0x300a0:         /* SUBA indexed */
+          case 0x800a0:         /* SUBA indexed */
+            SUB(reg_a, 0, LOAD_IND8(), 8, 2, 4, 4);
+            break;
+
+          case 0x300a1:         /* CMPA indexed */
+          case 0x800a1:         /* CMPA indexed */
+            CMP(reg_a, 8, LOAD_IND8(), 2, 4, 4);
             break;
 
           case 0x00a2:          /* SBCA indexed */
