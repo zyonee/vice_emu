@@ -1854,12 +1854,12 @@ define BTM_VAR2REG(rnr, var) \
       CLK_ADD(CLK, 7, 6);                        \
   } while (0)
 
-#define LEA(RR, ma)         \
-  do {                      \
-      RR = ma;              \
-      LOCAL_SET_ZERO(!RR);  \
-      PC_INC(2);            \
-      CLK_ADD(CLK, 4, 4);   \
+#define LEA(RR, ma)                 \
+  do {                              \
+      RR = ma;                      \
+      LOCAL_SET_ZERO(!RR);          \
+      PC_INC(2 + ec);               \
+      CLK_ADD(CLK, 4 + ec, 4 + ec); \
   } while (0)
 
 #define LSR_REG(RR, pc_inc, clk6809, clk6309) \
@@ -1954,46 +1954,46 @@ define BTM_VAR2REG(rnr, var) \
       CLK_ADD(CLK, clk6809, clk6309);             \
   } while (0)
 
-#define PSHS(m)                  \
-  do {                           \
-      PC_INC(2);                 \
-      if (m & 0x80) {            \
-          PUSHS(reg_pc & 0xff);  \
-          PUSHS(reg_pc >> 8);    \
-          CLK_ADD(CLK, 2, 2);    \
-      }                          \
-      if (m & 0x40) {            \
-          PUSHS(reg_usp & 0xff); \
-          PUSHS(reg_usp >> 8);   \
-          CLK_ADD(CLK, 2, 2);    \
-      }                          \
-      if (m & 0x20) {            \
-          PUSHS(reg_y & 0xff);   \
-          PUSHS(reg_y >> 8);     \
-          CLK_ADD(CLK, 2, 2);    \
-      }                          \
-      if (m & 0x10) {            \
-          PUSHS(reg_x & 0xff);   \
-          PUSHS(reg_x >> 8);     \
-          CLK_ADD(CLK, 2, 2);    \
-      }                          \
-      if (m & 8) {               \
-          PUSHS(reg_dpr);        \
-          CLK_ADD(CLK, 1, 1);    \
-      }                          \
-      if (m & 4) {               \
-          PUSHS(reg_b);          \
-          CLK_ADD(CLK, 1, 1);    \
-      }                          \
-      if (m & 2) {               \
-          PUSHS(reg_a);          \
-          CLK_ADD(CLK, 1, 1);    \
-      }                          \
-      if (m & 1) {               \
-          PUSHS(reg_p);          \
-          CLK_ADD(CLK, 1, 1);    \
-      }                          \
-      CLK_ADD(CLK, 5, 4);        \
+#define PSHS(m)                     \
+  do {                              \
+      PC_INC(2 + ec);               \
+      if (m & 0x80) {               \
+          PUSHS(reg_pc & 0xff);     \
+          PUSHS(reg_pc >> 8);       \
+          CLK_ADD(CLK, 2, 2);       \
+      }                             \
+      if (m & 0x40) {               \
+          PUSHS(reg_usp & 0xff);    \
+          PUSHS(reg_usp >> 8);      \
+          CLK_ADD(CLK, 2, 2);       \
+      }                             \
+      if (m & 0x20) {               \
+          PUSHS(reg_y & 0xff);      \
+          PUSHS(reg_y >> 8);        \
+          CLK_ADD(CLK, 2, 2);       \
+      }                             \
+      if (m & 0x10) {               \
+          PUSHS(reg_x & 0xff);      \
+          PUSHS(reg_x >> 8);        \
+          CLK_ADD(CLK, 2, 2);       \
+      }                             \
+      if (m & 8) {                  \
+          PUSHS(reg_dpr);           \
+          CLK_ADD(CLK, 1, 1);       \
+      }                             \
+      if (m & 4) {                  \
+          PUSHS(reg_b);             \
+          CLK_ADD(CLK, 1, 1);       \
+      }                             \
+      if (m & 2) {                  \
+          PUSHS(reg_a);             \
+          CLK_ADD(CLK, 1, 1);       \
+      }                             \
+      if (m & 1) {                  \
+          PUSHS(reg_p);             \
+          CLK_ADD(CLK, 1, 1);       \
+      }                             \
+      CLK_ADD(CLK, 5 + ec, 4 + ec); \
   } while (0)
 
 #define PSHSW()           \
@@ -2004,46 +2004,46 @@ define BTM_VAR2REG(rnr, var) \
       CLK_ADD(CLK, 6, 6); \
   } while (0)
 
-#define PSHU(m)                  \
-  do {                           \
-      PC_INC(2);                 \
-      if (m & 0x80) {            \
-          PUSHU(reg_pc & 0xff);  \
-          PUSHU(reg_pc >> 8);    \
-          CLK_ADD(CLK, 2, 2);    \
-      }                          \
-      if (m & 0x40) {            \
-          PUSHU(reg_ssp & 0xff); \
-          PUSHU(reg_ssp >> 8);   \
-          CLK_ADD(CLK, 2, 2);    \
-      }                          \
-      if (m & 0x20) {            \
-          PUSHU(reg_y & 0xff);   \
-          PUSHU(reg_y >> 8);     \
-          CLK_ADD(CLK, 2, 2);    \
-      }                          \
-      if (m & 0x10) {            \
-          PUSHU(reg_x & 0xff);   \
-          PUSHU(reg_x >> 8);     \
-          CLK_ADD(CLK, 2, 2);    \
-      }                          \
-      if (m & 8) {               \
-          PUSHU(reg_dpr);        \
-          CLK_ADD(CLK, 1, 1);    \
-      }                          \
-      if (m & 4) {               \
-          PUSHU(reg_b);          \
-          CLK_ADD(CLK, 1, 1);    \
-      }                          \
-      if (m & 2) {               \
-          PUSHU(reg_a);          \
-          CLK_ADD(CLK, 1, 1);    \
-      }                          \
-      if (m & 1) {               \
-          PUSHU(reg_p);          \
-          CLK_ADD(CLK, 1, 1);    \
-      }                          \
-      CLK_ADD(CLK, 5, 4);        \
+#define PSHU(m)                     \
+  do {                              \
+      PC_INC(2 + ec);               \
+      if (m & 0x80) {               \
+          PUSHU(reg_pc & 0xff);     \
+          PUSHU(reg_pc >> 8);       \
+          CLK_ADD(CLK, 2, 2);       \
+      }                             \
+      if (m & 0x40) {               \
+          PUSHU(reg_ssp & 0xff);    \
+          PUSHU(reg_ssp >> 8);      \
+          CLK_ADD(CLK, 2, 2);       \
+      }                             \
+      if (m & 0x20) {               \
+          PUSHU(reg_y & 0xff);      \
+          PUSHU(reg_y >> 8);        \
+          CLK_ADD(CLK, 2, 2);       \
+      }                             \
+      if (m & 0x10) {               \
+          PUSHU(reg_x & 0xff);      \
+          PUSHU(reg_x >> 8);        \
+          CLK_ADD(CLK, 2, 2);       \
+      }                             \
+      if (m & 8) {                  \
+          PUSHU(reg_dpr);           \
+          CLK_ADD(CLK, 1, 1);       \
+      }                             \
+      if (m & 4) {                  \
+          PUSHU(reg_b);             \
+          CLK_ADD(CLK, 1, 1);       \
+      }                             \
+      if (m & 2) {                  \
+          PUSHU(reg_a);             \
+          CLK_ADD(CLK, 1, 1);       \
+      }                             \
+      if (m & 1) {                  \
+          PUSHU(reg_p);             \
+          CLK_ADD(CLK, 1, 1);       \
+      }                             \
+      CLK_ADD(CLK, 5 + ec, 4 + ec); \
   } while (0)
 
 #define PSHUW()           \
@@ -2054,47 +2054,47 @@ define BTM_VAR2REG(rnr, var) \
       CLK_ADD(CLK, 6, 6); \
   } while (0)
 
-#define PULS(m)                   \
-  do {                            \
-      if (m & 1) {                \
-          reg_p = PULLS();        \
-          CLK_ADD(CLK, 1, 1);     \
-      }                           \
-      if (m & 2) {                \
-          reg_a = PULLS();        \
-          CLK_ADD(CLK, 1, 1);     \
-      }                           \
-      if (m & 4) {                \
-          reg_b = PULLS();        \
-          CLK_ADD(CLK, 1, 1);     \
-      }                           \
-      if (m & 8) {                \
-          reg_dpr = PULLS();      \
-          CLK_ADD(CLK, 1, 1);     \
-      }                           \
-      if (m & 0x10) {             \
-          reg_x = PULLS() << 8;   \
-          reg_x |= PULLS();       \
-          CLK_ADD(CLK, 2, 2);     \
-      }                           \
-      if (m & 0x20) {             \
-          reg_y = PULLS() << 8;   \
-          reg_y |= PULLS();       \
-          CLK_ADD(CLK, 2, 2);     \
-      }                           \
-      if (m & 0x40) {             \
-          reg_usp = PULLS() << 8; \
-          reg_usp |= PULLS();     \
-          CLK_ADD(CLK, 2, 2);     \
-      }                           \
-      if (m & 0x80) {             \
-          reg_pc = PULLS() << 8;  \
-          reg_pc |= PULLS();      \
-          CLK_ADD(CLK, 2, 2);     \
-      } else {                    \
-          PC_INC(2);              \
-      }                           \
-      CLK_ADD(CLK, 5, 4);         \
+#define PULS(m)                     \
+  do {                              \
+      if (m & 1) {                  \
+          reg_p = PULLS();          \
+          CLK_ADD(CLK, 1, 1);       \
+      }                             \
+      if (m & 2) {                  \
+          reg_a = PULLS();          \
+          CLK_ADD(CLK, 1, 1);       \
+      }                             \
+      if (m & 4) {                  \
+          reg_b = PULLS();          \
+          CLK_ADD(CLK, 1, 1);       \
+      }                             \
+      if (m & 8) {                  \
+          reg_dpr = PULLS();        \
+          CLK_ADD(CLK, 1, 1);       \
+      }                             \
+      if (m & 0x10) {               \
+          reg_x = PULLS() << 8;     \
+          reg_x |= PULLS();         \
+          CLK_ADD(CLK, 2, 2);       \
+      }                             \
+      if (m & 0x20) {               \
+          reg_y = PULLS() << 8;     \
+          reg_y |= PULLS();         \
+          CLK_ADD(CLK, 2, 2);       \
+      }                             \
+      if (m & 0x40) {               \
+          reg_usp = PULLS() << 8;   \
+          reg_usp |= PULLS();       \
+          CLK_ADD(CLK, 2, 2);       \
+      }                             \
+      if (m & 0x80) {               \
+          reg_pc = PULLS() << 8;    \
+          reg_pc |= PULLS();        \
+          CLK_ADD(CLK, 2, 2);       \
+      } else {                      \
+          PC_INC(2 + ec);           \
+      }                             \
+      CLK_ADD(CLK, 5 + ce, 4 + ce); \
   } while (0)
 
 #define PULSW()           \
@@ -2775,36 +2775,43 @@ trap_skipped:
 
           case 0x30030:         /* LEAX indexed */
           case 0x80030:         /* LEAX indexed */
+          case 0x81030:         /* LEAX indexed (6809 illegal) */
             LEA(reg_x, GET_IND_MA(p1, p2, p3));
             break;
 
           case 0x30031:         /* LEAY indexed */
           case 0x80031:         /* LEAY indexed */
+          case 0x81031:         /* LEAY indexed (6809 illegal) */
             LEA(reg_y, GET_IND_MA(p1, p2, p3));
             break;
 
           case 0x30032:         /* LEAS indexed */
           case 0x80032:         /* LEAS indexed */
+          case 0x81032:         /* LEAS indexed (6809 illegal) */
             LEA(reg_ssp, GET_IND_MA(p1, p2, p3));
             break;
 
           case 0x30033:         /* LEAU indexed */
           case 0x80033:         /* LEAU indexed */
+          case 0x81033:         /* LEAU indexed (6809 illegal) */
             LEA(reg_usp, GET_IND_MA(p1, p2, p3));
             break;
 
           case 0x30034:         /* PSHS immediate */
           case 0x80034:         /* PSHS immediate */
+          case 0x81034:         /* PSHS immediate (6809 illegal) */
             PSHS(p1);
             break;
 
           case 0x30035:         /* PULS immediate */
           case 0x80035:         /* PULS immediate */
+          case 0x81035:         /* PULS immediate (6809 illegal) */
             PULS(p1);
             break;
 
           case 0x30036:         /* PSHU immediate */
           case 0x80036:         /* PSHU immediate */
+          case 0x81036:         /* PSHU immediate (6809 illegal) */
             PSHU(p1);
             break;
 
@@ -3869,32 +3876,32 @@ trap_skipped:
             BRANCH_LONG(LOCAL_ZERO() | (LOCAL_NEGATIVE ^ LOCAL_OVERFLOW()), (p1 << 8) | p2, 4, 5, 5);
             break;
 
-          case 0x1030:          /* ADDR registers */   /* FIXME: fix for 6809, 6309 only opcode */
-            R_WRAP(p1, ADDR_WRAP, 3);
+          case 0x31030:         /* ADDR registers */
+            R_WRAP(p1, ADDR_WRAP, 3, 4, 4);
             break;
 
-          case 0x1031:          /* ADCR registers */   /* FIXME: fix for 6809, 6309 only opcode */
-            R_WRAP(p1, ADCR_WRAP, 3);
+          case 0x31031:         /* ADCR registers */
+            R_WRAP(p1, ADCR_WRAP, 3, 4, 4);
             break;
 
-          case 0x1032:          /* SUBR registers */   /* FIXME: fix for 6809, 6309 only opcode */
-            R_WRAP(p1, SUBR_WRAP, 3);
+          case 0x31032:         /* SUBR registers */
+            R_WRAP(p1, SUBR_WRAP, 3, 4, 4);
             break;
 
-          case 0x1033:          /* SBCR registers */   /* FIXME: fix for 6809, 6309 only opcode */
-            R_WRAP(p1, SBCR_WRAP, 3);
+          case 0x31033:         /* SBCR registers */
+            R_WRAP(p1, SBCR_WRAP, 3, 4, 4);
             break;
 
-          case 0x1034:          /* ANDR registers */   /* FIXME: fix for 6809, 6309 only opcode */
-            R_WRAP(p1, ANDR_WRAP, 3);
+          case 0x31034:         /* ANDR registers */
+            R_WRAP(p1, ANDR_WRAP, 3, 4, 4);
             break;
 
-          case 0x1035:          /* ORR registers */   /* FIXME: fix for 6809, 6309 only opcode */
-            R_WRAP(p1, ORR_WRAP, 3);
+          case 0x31035:         /* ORR registers */
+            R_WRAP(p1, ORR_WRAP, 3, 4, 4);
             break;
 
-          case 0x1036:          /* EORR registers */   /* FIXME: fix for 6809, 6309 only opcode */
-            R_WRAP(p1, EORR_WRAP, 3);
+          case 0x31036:         /* EORR registers */
+            R_WRAP(p1, EORR_WRAP, 3, 4, 4);
             break;
 
           case 0x1037:          /* CMPR registers */   /* FIXME: fix for 6809, 6309 only opcode */
