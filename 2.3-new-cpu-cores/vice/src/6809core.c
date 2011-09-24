@@ -3519,17 +3519,20 @@ trap_skipped:
 
           case 0x300b0:         /* SUBA extended */
           case 0x800b0:         /* SUBA extended */
-            SUB(reg_a, 0, LOAD_EXT8(), 8, 3, 5, 4);
+          case 0x810b0:         /* SUBA extended (6809 illegal) */
+            SUB(reg_a, 0, LOAD_EXT8(), 8, 3 + ec, 5 + ec, 4 + ec);
             break;
 
           case 0x300b1:         /* CMPA extended */
           case 0x800b1:         /* CMPA extended */
-            CMP(reg_a, 8, LOAD_EXT8(), 3, 5, 4);
+          case 0x810b1:         /* CMPA extended (6809 illegal) */
+            CMP(reg_a, 8, LOAD_EXT8(), 3 + ec, 5 + ec, 4 + ec);
             break;
 
           case 0x300b2:         /* SBCA extended */
           case 0x800b2:         /* SBCA extended */
-            SUB(reg_a, LOCAL_CARRY(), LOAD_EXT8(), 8, 3, 5, 4);
+          case 0x810b2:         /* SBCA extended (6809 illegal) */
+            SUB(reg_a, LOCAL_CARRY(), LOAD_EXT8(), 8, 3 + ec, 5 + ec, 4 + ec);
             break;
 
           case 0x300b3:         /* SUBD extended */
@@ -3539,42 +3542,50 @@ trap_skipped:
 
           case 0x300b4:         /* ANDA extended */
           case 0x800b4:         /* ANDA extended */
-            AND(reg_a, LOAD_EXT8(), 8, 3, 5, 4);
+          case 0x810b4:         /* ANDA extended (6809 illegal) */
+            AND(reg_a, LOAD_EXT8(), 8, 3 + ec, 5 + ec, 4 + ec);
             break;
 
           case 0x300b5:         /* BITA extended */
           case 0x800b5:         /* BITA extended */
-            BIT(reg_a, 8, LOAD_EXT8(), 3, 5, 4);
+          case 0x810b5:         /* BITA extended */
+            BIT(reg_a, 8, LOAD_EXT8(), 3 + ec, 5 + ec, 4 + ec);
             break;
 
           case 0x300b6:         /* LDA extended */
           case 0x800b6:         /* LDA extended */
-            LD(reg_a, 8, LOAD_EXT8(), 3, 5, 4);
+          case 0x810b6:         /* LDA extended (6809 illegal) */
+            LD(reg_a, 8, LOAD_EXT8(), 3 + ec, 5 + ec, 4 + ec);
             break;
 
           case 0x300b7:         /* STA extended */
           case 0x800b7:         /* STA extended */
-            ST(reg_a, 8, (p1 << 8) | p2, 3, 5, 4);
+          case 0x810b7:         /* STA extended (6809 illegal) */
+            ST(reg_a, 8, (p1 << 8) | p2, 3 + ec, 5 + ec, 4 + ec);
             break;
 
           case 0x300b8:         /* EORA extended */
           case 0x800b8:         /* EORA extended */
-            EOR(reg_a, 8, LOAD_EXT8(), 3, 5, 4);
+          case 0x810b8:         /* EORA extended (6809 illegal) */
+            EOR(reg_a, 8, LOAD_EXT8(), 3 + ec, 5 + ec, 4 + ec);
             break;
 
           case 0x300b9:         /* ADCA extended */
           case 0x800b9:         /* ADCA extended */
-            ADD(reg_a, LOAD_EXT8(), LOCAL_CARRY(), 8, 3, 5, 4);
+          case 0x810b9:         /* ADCA extended (6809 illegal) */
+            ADD(reg_a, LOAD_EXT8(), LOCAL_CARRY(), 8, 3 + ec, 5 + ec, 4 + ec);
             break;
 
           case 0x300ba:         /* ORA extended */
           case 0x800ba:         /* ORA extended */
-            OR(reg_a, 8, LOAD_EXT8(), 3, 5, 4);
+          case 0x810ba:         /* ORA extended (6809 illegal) */
+            OR(reg_a, 8, LOAD_EXT8(), 3 + ec, 5 + ec, 4 + ec);
             break;
 
           case 0x300bb:         /* ADDA extended */
           case 0x800bb:         /* ADDA extended */
-            ADD(reg_a, LOAD_EXT8(), 0, 8, 3, 5, 4);
+          case 0x810bb:         /* ADDA extended (6809 illegal) */
+            ADD(reg_a, LOAD_EXT8(), 0, 8, 3 + ec, 5 + ec, 4 + ec);
             break;
 
           case 0x300bc:         /* CMPX extended */
@@ -3584,7 +3595,8 @@ trap_skipped:
 
           case 0x300bd:         /* JSR extended */
           case 0x800bd:         /* JSR extended */
-            JSR((p1 << 8) | p2, 3, 8, 7);
+          case 0x810bd:         /* JSR extended (6809 illegal) */
+            JSR((p1 << 8) | p2, 3 + ec, 8 + ec, 7 + ec);
             break;
 
           case 0x300be:         /* LDX extended */
@@ -4296,64 +4308,68 @@ trap_skipped:
             ST(reg_y, 16, GET_IND_MA(p1, p2, p3), 3, 6, 6);
             break;
 
-          case 0x10b0:          /* SUBW extended */   /* FIXME: fix for 6809, 6309 only opcode */
-            SUB(reg_w, 0, LOAD_EXT16(), 16, 4);
+          case 0x310b0:         /* SUBW extended */
+            SUB(reg_w, 0, LOAD_EXT16(), 16, 4, 8, 6);
             break;
 
-          case 0x10b1:          /* CMPW extended */   /* FIXME: fix for 6809, 6309 only opcode */
-            CMP(reg_w, 16, LOAD_EXT16(), 4);
+          case 0x310b1:         /* CMPW extended */
+            CMP(reg_w, 16, LOAD_EXT16(), 4, 8, 6);
             break;
 
-          case 0x10b2:          /* SBCD extended */   /* FIXME: fix for 6809, 6309 only opcode */
-            SUB(reg_d, LOCAL_CARRY(), LOAD_EXT16(), 16, 4);
+          case 0x310b2:         /* SBCD extended */
+            SUB(reg_d, LOCAL_CARRY(), LOAD_EXT16(), 16, 4, 8, 6);
             break;
 
-          case 0x10b3:          /* CMPD extended */
-            CMP(reg_d, 16, LOAD_EXT16(), 4);
+          case 0x310b3:         /* CMPD extended */
+          case 0x810b3:         /* CMPD extended */
+            CMP(reg_d, 16, LOAD_EXT16(), 4, 8, 6);
             break;
 
-          case 0x10b4:          /* ANDD extended */   /* FIXME: fix for 6809, 6309 only opcode */
-            AND(reg_d, LOAD_EXT16(), 16, 4);
+          case 0x310b4:         /* ANDD extended */
+            AND(reg_d, LOAD_EXT16(), 16, 4, 8, 6);
             break;
 
-          case 0x10b5:          /* BITD extended */   /* FIXME: fix for 6809, 6309 only opcode */
-            BIT(reg_d, 16, LOAD_EXT16(), 4);
+          case 0x310b5:         /* BITD extended */
+            BIT(reg_d, 16, LOAD_EXT16(), 4, 8, 6);
             break;
 
-          case 0x10b6:          /* LDW extended */   /* FIXME: fix for 6809, 6309 only opcode */
-            LD(reg_w, 16, LOAD_EXT16(), 4);
+          case 0x310b6:         /* LDW extended */
+            LD(reg_w, 16, LOAD_EXT16(), 4, 7, 6);
             break;
 
-          case 0x10b7:          /* STW extended */   /* FIXME: fix for 6809, 6309 only opcode */
-            ST(reg_w, 16, (p1 << 8) | p2, 4);
+          case 0x310b7:         /* STW extended */
+            ST(reg_w, 16, (p1 << 8) | p2, 4, 7, 6);
             break;
 
-          case 0x10b8:          /* EORD extended */   /* FIXME: fix for 6809, 6309 only opcode */
-            EOR(reg_d, 16, LOAD_EXT16(), 4);
+          case 0x310b8:         /* EORD extended */
+            EOR(reg_d, 16, LOAD_EXT16(), 4, 8, 6);
             break;
 
-          case 0x10b9:          /* ADCD extended */   /* FIXME: fix for 6809, 6309 only opcode */
-            ADD(reg_d, LOAD_EXT16(), LOCAL_CARRY(), 16, 4);
+          case 0x310b9:         /* ADCD extended */
+            ADD(reg_d, LOAD_EXT16(), LOCAL_CARRY(), 16, 4, 8, 6);
             break;
 
-          case 0x10ba:          /* ORD extended */   /* FIXME: fix for 6809, 6309 only opcode */
-            OR(reg_d, 16, LOAD_EXT16(), 4);
+          case 0x310ba:         /* ORD extended */
+            OR(reg_d, 16, LOAD_EXT16(), 4, 8, 6);
             break;
 
-          case 0x10bb:          /* ADDW extended */   /* FIXME: fix for 6809, 6309 only opcode */
-            ADD(reg_w, LOAD_EXT16(), 0, 16, 4);
+          case 0x310bb:         /* ADDW extended */
+            ADD(reg_w, LOAD_EXT16(), 0, 16, 4, 8, 6);
             break;
 
-          case 0x10bc:          /* CMPY extended */
-            CMP(reg_y, 16, LOAD_EXT16(), 4);
+          case 0x310bc:         /* CMPY extended */
+          case 0x810bc:         /* CMPY extended */
+            CMP(reg_y, 16, LOAD_EXT16(), 4, 8, 6);
             break;
 
-          case 0x10be:          /* LDY extended */
-            LD(reg_y, 16, LOAD_EXT16(), 4);
+          case 0x310be:         /* LDY extended */
+          case 0x810be:         /* LDY extended */
+            LD(reg_y, 16, LOAD_EXT16(), 4, 7, 6);
             break;
 
-          case 0x10bf:          /* STY extended */
-            ST(reg_y, 16, (p1 << 8) | p2, 4);
+          case 0x310bf:         /* STY extended */
+          case 0x810bf:         /* STY extended */
+            ST(reg_y, 16, (p1 << 8) | p2, 4, 7, 6);
             break;
 
           case 0x10ce:          /* LDS immediate */
