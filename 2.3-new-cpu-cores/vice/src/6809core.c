@@ -1502,11 +1502,12 @@ define BTM_VAR2REG(rnr, var) \
       CLK_ADD(CLK, clk6809, clk6309);                      \
   } while (0)
 
-#define BSR()                     \
-  do {                            \
-      PUSHS((reg_pc + 2) & 0xff); \
-      PUSHS((reg_pc + 2) >> 8);   \
-      BRANCH(1, p1, 2, 7, 6);     \
+#define BSR()                           \
+  do {                                  \
+      PC_INC(ec);                       \
+      PUSHS((reg_pc + 2) & 0xff);       \
+      PUSHS((reg_pc + 2) >> 8);         \
+      BRANCH(1, p1, 2, 7 + ec, 6 + ec); \
   } while (0)
 
 #define LBSR()                                           \
@@ -2234,11 +2235,13 @@ define BTM_VAR2REG(rnr, var) \
       CLK_ADD(CLK, 5 + ec, 1 + ec); \
   } while (0)
 
-#define SCC()                \
-  do {                       \
-      LOCAL_SET_NEGATIVE(1); \
-      LOCAL_SET_ZERO(0);     \
-      LOCAL_SET_OVERFLOW(0); \
+#define SCC()                       \
+  do {                              \
+      LOCAL_SET_NEGATIVE(1);        \
+      LOCAL_SET_ZERO(0);            \
+      LOCAL_SET_OVERFLOW(0);        \
+      PC_INC(2 + ec);               \
+      CLK_ADD(CLK, 2 + ec, 2 + ec); \
   } while (0)
 
 #define SEX()                              \
@@ -2301,15 +2304,15 @@ define BTM_VAR2REG(rnr, var) \
       CLK_ADD(CLK, 8, 7);                          \
   } while (0)
 
-#define STI(RR)                 \
-  do {                          \
-      INC_PC(2);                \
-      STORE(reg_pc, RR & 0xff); \
-      LOCAL_SET_NEGATIVE(1);    \
-      LOCAL_SET_ZERO(0);        \
-      LOCAL_SET_OVERFLOW(0);    \
-      INC_PC(1);                \
-      CLK_ADD(CLK, 3, 3);       \
+#define STI(RR)                     \
+  do {                              \
+      INC_PC(2 + ec);               \
+      STORE(reg_pc, RR & 0xff);     \
+      LOCAL_SET_NEGATIVE(1);        \
+      LOCAL_SET_ZERO(0);            \
+      LOCAL_SET_OVERFLOW(0);        \
+      INC_PC(1);                    \
+      CLK_ADD(CLK, 3 + ec, 3 + ec); \
   } while (0)
 
 #define SUB(RR, CC, m, bits, pc_inc, clk6809, clk6309)                   \
@@ -3240,17 +3243,20 @@ trap_skipped:
 
           case 0x30080:         /* SUBA immediate */
           case 0x80080:         /* SUBA immediate */
-            SUB(reg_a, 0, p1, 8, 2, 2, 2);
+          case 0x81080:         /* SUBA immediate (6809 illegal) */
+            SUB(reg_a, 0, p1, 8, 2 + ec, 2 + ec, 2 + ec);
             break;
 
           case 0x30081:         /* CMPA immediate */
           case 0x80081:         /* CMPA immediate */
-            CMP(reg_a, 8, p1, 2, 2, 2);
+          case 0x81081:         /* CMPA immediate (6809 illegal) */
+            CMP(reg_a, 8, p1, 2 + ec, 2 + ec, 2 + ec);
             break;
 
           case 0x30082:         /* SBCA immediate */
           case 0x80082:         /* SBCA immediate */
-            SUB(reg_a, LOCAL_CARRY(), p1, 8, 2, 2, 2);
+          case 0x81082:         /* SBCA immediate */
+            SUB(reg_a, LOCAL_CARRY(), p1, 8, 2 + ec, 2 + ec, 2 + ec);
             break;
 
           case 0x30083:         /* SUBD immediate */
@@ -3260,42 +3266,50 @@ trap_skipped:
 
           case 0x30084:         /* ANDA immediate */
           case 0x80084:         /* ANDA immediate */
-            AND(reg_a, p1, 8, 2, 2, 2);
+          case 0x81084:         /* ANDA immediate (6809 illegal) */
+            AND(reg_a, p1, 8, 2 + ec, 2 + ec, 2 + ec);
             break;
 
           case 0x30085:         /* BITA immediate */
           case 0x80085:         /* BITA immediate */
-            BIT(reg_a, 8, p1, 2, 2, 2);
+          case 0x81085:         /* BITA immediate (6809 illegal) */
+            BIT(reg_a, 8, p1, 2 + ec, 2 + ec, 2 + ec);
             break;
 
           case 0x30086:         /* LDA immediate */
           case 0x80086:         /* LDA immediate */
-            LD(reg_a, 8, p1, 2, 2, 2);
+          case 0x81086:         /* LDA immediate (6809 illegal) */
+            LD(reg_a, 8, p1, 2 + ec, 2 + ec, 2 + ec);
             break;
 
           case 0x80087:         /* SCC immediate (6809 illegal) */
           case 0x800c7:         /* SCC immediate (6809 illegal) */
+          case 0x810c7:         /* SCC immediate (6809 illegal) */
             SCC();
             break;
 
           case 0x30088:         /* EORA immediate */
           case 0x80088:         /* EORA immediate */
-            EOR(reg_a, 8, p1, 2, 2, 2);
+          case 0x81088:         /* EORA immediate (6809 illegal) */
+            EOR(reg_a, 8, p1, 2 + ec, 2 + ec, 2 + ec);
             break;
 
           case 0x30089:         /* ADCA immediate */
           case 0x80089:         /* ADCA immediate */
-            ADD(reg_a, p1, LOCAL_CARRY(), 8, 2, 2, 2);
+          case 0x81089:         /* ADCA immediate (6809 illegal) */
+            ADD(reg_a, p1, LOCAL_CARRY(), 8, 2 + ec, 2 + ec, 2 + ec);
             break;
 
           case 0x3008a:         /* ORA immediate */
           case 0x8008a:         /* ORA immediate */
-            OR(reg_a, 8, p1, 2, 2, 2);
+          case 0x8108a:         /* ORA immediate (6809 illegal) */
+            OR(reg_a, 8, p1, 2 + ec, 2 + ec, 2 + ec);
             break;
 
           case 0x3008b:         /* ADDA immediate */
           case 0x8008b:         /* ADDA immediate */
-            ADD(reg_a, p1, 0, 8, 2, 2, 2);
+          case 0x8108b:         /* ADDA immediate (6809 illegal) */
+            ADD(reg_a, p1, 0, 8, 2 + ec, 2 + ec, 2 + ec);
             break;
 
           case 0x3008c:         /* CMPX immediate */
@@ -3305,6 +3319,7 @@ trap_skipped:
 
           case 0x3008d:         /* BSR offset */
           case 0x8008d:         /* BSR offset */
+          case 0x8108d:         /* BSR offset (6809 illegal) */
             BSR();
             break;
 
@@ -3314,6 +3329,7 @@ trap_skipped:
             break;
 
           case 0x8008f:         /* STX immediate (6809 illegal) */
+          case 0x8108f:         /* STX immediate (6809 illegal) */
             STI(reg_x);
             break;
 
@@ -4073,56 +4089,59 @@ trap_skipped:
             CLR_REG(reg_w, 2, 3, 2);
             break;
 
-          case 0x1080:          /* SUBW immediate */   /* FIXME: fix for 6809, 6309 only opcode */
-            SUB(reg_w, 0, (p1 << 8) | p2, 16, 4);
+          case 0x31080:         /* SUBW immediate */
+            SUB(reg_w, 0, (p1 << 8) | p2, 16, 4, 5, 4);
             break;
 
-          case 0x1081:          /* CMPW immediate */   /* FIXME: fix for 6809, 6309 only opcode */
-            CMP(reg_w, 16, (p1 << 8) | p2, 4);
+          case 0x31081:         /* CMPW immediate */
+            CMP(reg_w, 16, (p1 << 8) | p2, 4, 5, 4);
             break;
 
-          case 0x1082:          /* SBCD immediate */   /* FIXME: fix for 6809, 6309 only opcode */
-            SUB(reg_d, LOCAL_CARRY(), (p1 << 8) | p2, 16, 4);
+          case 0x31082:         /* SBCD immediate */
+            SUB(reg_d, LOCAL_CARRY(), (p1 << 8) | p2, 16, 4, 5, 4);
             break;
 
-          case 0x1083:          /* CMPD immediate */
-            CMP(reg_d, 16, (p1 << 8) | p2, 4);
+          case 0x31083:         /* CMPD immediate */
+          case 0x81083:         /* CMPD immediate */
+            CMP(reg_d, 16, (p1 << 8) | p2, 4, 5, 4);
             break;
 
-          case 0x1084:          /* ANDD immediate */   /* FIXME: fix for 6809, 6309 only opcode */
-            AND(reg_d, (p1 << 8) | p2, 16, 4);
+          case 0x31084:         /* ANDD immediate */
+            AND(reg_d, (p1 << 8) | p2, 16, 4, 5, 4);
             break;
 
-          case 0x1085:          /* BITD immediate */   /* FIXME: fix for 6809, 6309 only opcode */
-            BIT(reg_d, 16, (p1 << 8) | p2, 4);
+          case 0x31085:         /* BITD immediate */
+            BIT(reg_d, 16, (p1 << 8) | p2, 4, 5, 4);
             break;
 
-          case 0x1086:          /* LDW immediate */   /* FIXME: fix for 6809, 6309 only opcode */
-            LD(reg_w, 16, (p1 << 8) | p2, 4);
+          case 0x31086:         /* LDW immediate */
+            LD(reg_w, 16, (p1 << 8) | p2, 4, 5, 4);
             break;
 
-          case 0x1088:          /* EORD immediate */   /* FIXME: fix for 6809,6309 only opcode */
-            EOR(reg_d, 16, (p1 << 8) | p2, 4);
+          case 0x31088:         /* EORD immediate */
+            EOR(reg_d, 16, (p1 << 8) | p2, 4, 5, 4);
             break;
 
-          case 0x1089:          /* ADCD immediate */   /* FIXME: fix for 6809, 6309 only opcode */
-            ADD(reg_d, (p1 << 8) | p2, LOCAL_CARRY(), 16, 4);
+          case 0x31089:         /* ADCD immediate */
+            ADD(reg_d, (p1 << 8) | p2, LOCAL_CARRY(), 16, 4, 5, 4);
             break;
 
-          case 0x108a:          /* ORD immediate */   /* FIXME: fix for 6809, 6309 only opcode */
-            OR(reg_d, 16, (p1 << 8) | p2, 4);
+          case 0x3108a:         /* ORD immediate */
+            OR(reg_d, 16, (p1 << 8) | p2, 4, 5, 4);
             break;
 
-          case 0x108b:          /* ADDW immediate */   /* FIXME: fix for 6809, 6309 only opcode */
-            ADD(reg_w, (p1 << 8) | p2, 0, 16, 4);
+          case 0x3108b:         /* ADDW immediate */
+            ADD(reg_w, (p1 << 8) | p2, 0, 16, 4, 5, 4);
             break;
 
-          case 0x108c:          /* CMPY immediate */
-            CMP(reg_y, 16, (p1 << 8) | p2, 4);
+          case 0x3108c:         /* CMPY immediate */
+          case 0x8108c:         /* CMPY immediate */
+            CMP(reg_y, 16, (p1 << 8) | p2, 4, 5, 4);
             break;
 
-          case 0x108e:          /* LDY immediate */
-            LD(reg_y, 16, (p1 << 8) | p2, 4);
+          case 0x3108e:         /* LDY immediate */
+          case 0x8108e:         /* LDY immediate */
+            LD(reg_y, 16, (p1 << 8) | p2, 4, 5, 4);
             break;
 
           case 0x1090:          /* SUBW direct */   /* FIXME: fix for 6809, 6309 only opcode */
