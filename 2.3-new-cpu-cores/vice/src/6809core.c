@@ -2952,68 +2952,84 @@ trap_skipped:
           case 0x30050:         /* NEGB */
           case 0x80050:         /* NEGB */
           case 0x80051:         /* NEGB (6809 illegal) */
-            NEG_REG(reg_b, 8, 1, 2, 1);
+          case 0x81050:         /* NEGB (6809 illegal) */
+          case 0x81051:         /* NEGB (6809 illegal) */
+            NEG_REG(reg_b, 8, 1 + ec, 2 + ec, 1 + ec);
             break;
 
         case 0x80052:          /* NEGB / COMB (6809 illegal) */
+        case 0x81052:          /* NEGB / COMB (6809 illegal) */
             if (!LOCAL_CARRY()) {
-                NEG_REG(reg_b, 8, 1, 2, 1);
+                NEG_REG(reg_b, 8, 1 + ec, 2 + ec, 1 + ec);
             } else {
-                COM_REG(reg_b, 8, 1, 2, 1);
+                COM_REG(reg_b, 8, 1 + ec, 2 + ec, 1 + ec);
             }
             break;
 
           case 0x30053:         /* COMB */
           case 0x80053:         /* COMB */
-            COM_REG(reg_b, 8, 1, 2, 1);
+          case 0x81053:         /* COMB (6809 illegal) */
+            COM_REG(reg_b, 8, 1 + ec, 2 + ec, 1 + ec);
             break;
 
           case 0x30054:         /* LSRB */
           case 0x80054:         /* LSRB */
           case 0x80055:         /* LSRB (6809 illegal) */
-            LSR_REG(reg_b, 1, 2, 1);
+          case 0x81054:         /* LSRB (6809 illegal) */
+          case 0x81055:         /* LSRB (6809 illegal) */
+            LSR_REG(reg_b, 1 + ec, 2 + ec, 1 + ec);
             break;
 
           case 0x30056:         /* RORB */
           case 0x80056:         /* RORB */
-            ROR_REG(reg_b, 8, 1, 2, 1);
+          case 0x81056:         /* RORB (6809 illegal) */
+            ROR_REG(reg_b, 8, 1 + ec, 2 + ec, 1 + ec);
             break;
 
           case 0x30057:         /* ASRB */
           case 0x80057:         /* ASRB */
-            ASR_REG(reg_b, 8, 1, 2, 1);
+          case 0x81057:         /* ASRB (6809 illegal) */
+            ASR_REG(reg_b, 8, 1 + ec, 2 + ec, 1 + ec);
             break;
 
           case 0x30058:         /* ASLB/LSLB */
           case 0x80058:         /* ASLB/LSLB */
-            ASL_REG(reg_b, 8, 1, 2, 1);
+          case 0x81058:         /* ASLB/LSLB (6809 illegal) */
+            ASL_REG(reg_b, 8, 1 + ec, 2 + ec, 1 + ec);
             break;
 
           case 0x30059:         /* ROLB */
           case 0x80059:         /* ROLB */
-            ROL_REG(reg_b, 8, 1, 2, 1);
+          case 0x81059:         /* ROLB (6809 illegal) */
+            ROL_REG(reg_b, 8, 1 + ec, 2 + ec, 1 + ec);
             break;
 
           case 0x3005a:         /* DECB */
           case 0x8005a:         /* DECB */
           case 0x8005b:         /* DECB (6809 illegal) */
-            DEC_REG(reg_b, 8, 1, 2, 1);
+          case 0x8105a:         /* DECB (6809 illegal) */
+          case 0x8105b:         /* DECB (6809 illegal) */
+            DEC_REG(reg_b, 8, 1 + ec, 2 + ec, 1 + ec);
             break;
 
           case 0x3005c:         /* INCB */
           case 0x8005c:         /* INCB */
-            INC_REG(reg_b, 8, 1, 2, 1);
+          case 0x8105c:         /* INCB (6809 illegal) */
+            INC_REG(reg_b, 8, 1 + ec, 2 + ec, 1 + ec);
             break;
 
           case 0x3005d:         /* TSTB */
           case 0x8005d:         /* TSTB */
-            TST_REG(reg_b, 8, 1, 2, 1);
+          case 0x8105d:         /* TSTB (6809 illegal) */
+            TST_REG(reg_b, 8, 1 + ec, 2 + ec, 1 + ec);
             break;
 
           case 0x3005f:         /* CLRB */
           case 0x8005f:         /* CLRB */
           case 0x8005e:         /* CLRB (6809 illegal) */
-            CLR_REG(reg_b, 1, 2, 1);
+          case 0x8105e:         /* CLRB (6809 illegal) */
+          case 0x8105f:         /* CLRB (6809 illegal) */
+            CLR_REG(reg_b, 1 + ec, 2 + ec, 1 + ec);
             break;
 
           case 0x30060:         /* NEG indexed */
@@ -3993,36 +4009,36 @@ trap_skipped:
             CLR_REG(reg_d, 2, 3, 2);
             break;
 
-          case 0x1053:          /* COMW */   /* FIXME: fix for 6809, 6309 only opcode */
-            COM_REG(reg_w, 16, 2);
+          case 0x31053:         /* COMW */
+            COM_REG(reg_w, 16, 2, 3, 2);
             break;
 
-          case 0x1054:          /* LSRW */   /* FIXME: fix for 6809, 6309 only opcode */
-            LSR_REG(reg_w, 2);
+          case 0x31054:         /* LSRW */
+            LSR_REG(reg_w, 2, 3, 2);
             break;
 
-          case 0x1056:          /* RORW */   /* FIXME: fix for 6809, 6309 only opcode */
-            ROR_REG(reg_w, 16, 2);
+          case 0x31056:         /* RORW */
+            ROR_REG(reg_w, 16, 2, 3, 2);
             break;
 
-          case 0x1059:          /* ROLW */   /* FIXME: fix for 6809, 6309 only opcode */
-            ROL_REG(reg_w, 16, 2);
+          case 0x31059:         /* ROLW */
+            ROL_REG(reg_w, 16, 2, 3, 2);
             break;
 
-          case 0x105a:          /* DECW */   /* FIXME: fix for 6809, 6309 only opcode */
-            DEC_REG(reg_w, 16, 2);
+          case 0x3105a:         /* DECW */
+            DEC_REG(reg_w, 16, 2, 3, 2);
             break;
 
-          case 0x105c:          /* INCW */   /* FIXME: fix for 6809, 6309 only opcode */
-            INC_REG(reg_w, 16, 2);
+          case 0x3105c:         /* INCW */
+            INC_REG(reg_w, 16, 2, 3, 2);
             break;
 
-          case 0x105d:          /* TSTW */   /* FIXME: fix for 6809, 6309 only opcode */
-            TST_REG(reg_w, 16, 2);
+          case 0x3105d:         /* TSTW */
+            TST_REG(reg_w, 16, 2, 3, 2);
             break;
 
-          case 0x105f:          /* CLRW */   /* FIXME: fix for 6809, 6309 only opcode */
-            CLR_REG(reg_w, 2);
+          case 0x3105f:         /* CLRW */
+            CLR_REG(reg_w, 2, 3, 2);
             break;
 
           case 0x1080:          /* SUBW immediate */   /* FIXME: fix for 6809, 6309 only opcode */
