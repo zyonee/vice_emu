@@ -3335,17 +3335,20 @@ trap_skipped:
 
           case 0x30090:         /* SUBA direct */
           case 0x80090:         /* SUBA direct */
-            SUB(reg_a, 0, LOAD_DIRECT8(p1), 8, 2, 4, 3);
+          case 0x81090:         /* SUBA direct (6809 illegal) */
+            SUB(reg_a, 0, LOAD_DIRECT8(p1), 8, 2 + ec, 4 + ec, 3 + ec);
             break;
 
           case 0x30091:         /* CMPA direct */
           case 0x80091:         /* CMPA direct */
-            CMP(reg_a, 8, LOAD_DIRECT8(p1), 2, 4, 3);
+          case 0x81091:         /* CMPA direct (6809 illegal) */
+            CMP(reg_a, 8, LOAD_DIRECT8(p1), 2 + ec, 4 + ec, 3 + ec);
             break;
 
           case 0x30092:         /* SBCA direct */
           case 0x80092:         /* SBCA direct */
-            SUB(reg_a, LOCAL_CARRY(), LOAD_DIRECT8(p1), 8, 2, 4, 3);
+          case 0x81092:         /* SBCA direct (6809 illegal) */
+            SUB(reg_a, LOCAL_CARRY(), LOAD_DIRECT8(p1), 8, 2 + ec, 4 + ec, 3 + ec);
             break;
 
           case 0x30093:         /* SUBD direct */
@@ -3355,42 +3358,50 @@ trap_skipped:
 
           case 0x30094:         /* ANDA direct */
           case 0x80094:         /* ANDA direct */
-            AND(reg_a, LOAD_DIRECT8(p1), 8, 2, 4, 3);
+          case 0x81094:         /* ANDA direct (6809 illegal) */
+            AND(reg_a, LOAD_DIRECT8(p1), 8, 2 + ec, 4 + ec, 3 + ec);
             break;
 
           case 0x30095:         /* BITA direct */
           case 0x80095:         /* BITA direct */
-            BIT(reg_a, 8, LOAD_DIRECT8(p1), 2, 4, 3);
+          case 0x81095:         /* BITA direct (6809 illegal) */
+            BIT(reg_a, 8, LOAD_DIRECT8(p1), 2 + ec, 4 + ec, 3 + ec);
             break;
 
           case 0x30096:         /* LDA direct */
           case 0x80096:         /* LDA direct */
-            LD(reg_a, 8, LOAD_DIRECT8(p1), 2, 4, 3);
+          case 0x81096:         /* LDA direct (6809 illegal) */
+            LD(reg_a, 8, LOAD_DIRECT8(p1), 2 + ec, 4 + ec, 3 + ec);
             break;
 
           case 0x30097:         /* STA direct */
           case 0x80097:         /* STA direct */
-            ST(reg_a, 8, (reg_dpr << 8) | p2, 2, 4, 3);
+          case 0x81097:         /* STA direct (6809 illegal) */
+            ST(reg_a, 8, (reg_dpr << 8) | p2, 2 + ec, 4 + ec, 3 + ec);
             break;
 
           case 0x30098:         /* EORA direct */
           case 0x80098:         /* EORA direct */
-            EOR(reg_a, 8, LOAD_DIRECT8(p1), 2, 4, 3);
+          case 0x81098:         /* EORA direct (6809 illegal) */
+            EOR(reg_a, 8, LOAD_DIRECT8(p1), 2 + ec, 4 + ec, 3 + ec);
             break;
 
           case 0x30099:         /* ADCA direct */
           case 0x80099:         /* ADCA direct */
-            ADD(reg_a, LOAD_DIRECT8(p1), LOCAL_CARRY(), 8, 2, 4, 3);
+          case 0x81099:         /* ADCA direct (6809 illegal) */
+            ADD(reg_a, LOAD_DIRECT8(p1), LOCAL_CARRY(), 8, 2 + ec, 4 + ec, 3 + ec);
             break;
 
           case 0x3009a:         /* ORA direct */
           case 0x8009a:         /* ORA direct */
-            OR(reg_a, 8, LOAD_DIRECT8(p1), 2), 4, 3;
+          case 0x8109a:         /* ORA direct (6809 illegal) */
+            OR(reg_a, 8, LOAD_DIRECT8(p1), 2 + ec, 4 + ec, 3 + ec);
             break;
 
           case 0x3009b:         /* ADDA direct */
           case 0x8009b:         /* ADDA direct */
-            ADD(reg_a, LOAD_DIRECT8(p1), 0, 8, 2, 4, 3);
+          case 0x8109b:         /* ADDA direct */
+            ADD(reg_a, LOAD_DIRECT8(p1), 0, 8, 2 + ec, 4 + ec, 3 + ec);
             break;
 
           case 0x3009c:         /* CMPX direct */
@@ -3400,7 +3411,8 @@ trap_skipped:
 
           case 0x3009d:         /* JSR direct */
           case 0x8009d:         /* JSR direct */
-            JSR((reg_dpr << 8) | p1, 2, 7, 6);
+          case 0x8109d:         /* JSR direct (6809 illegal) */
+            JSR((reg_dpr << 8) | p1, 2 + ec, 7 + ec, 6 + ec);
             break;
 
           case 0x3009e:         /* LDX direct */
@@ -4144,64 +4156,68 @@ trap_skipped:
             LD(reg_y, 16, (p1 << 8) | p2, 4, 5, 4);
             break;
 
-          case 0x1090:          /* SUBW direct */   /* FIXME: fix for 6809, 6309 only opcode */
-            SUB(reg_w, 0, LOAD_DIRECT16(p1), 16, 3);
+          case 0x31090:         /* SUBW direct */
+            SUB(reg_w, 0, LOAD_DIRECT16(p1), 16, 3, 7, 5);
             break;
 
-          case 0x1091:          /* CMPW direct */   /* FIXME: fix for 6809, 6309 only opcode */
-            CMP(reg_w, 16, LOAD_DIRECT16(p1), 3);
+          case 0x31091:         /* CMPW direct */
+            CMP(reg_w, 16, LOAD_DIRECT16(p1), 3, 7, 5);
             break;
 
-          case 0x1092:          /* SBCD direct */   /* FIXME: fix for 6809, 6309 only opcode */
-            SUB(reg_d, LOCAL_CARRY(), LOAD_DIRECT16(p1), 16, 3);
+          case 0x31092:         /* SBCD direct */
+            SUB(reg_d, LOCAL_CARRY(), LOAD_DIRECT16(p1), 16, 3, 7, 5);
             break;
 
-          case 0x1093:          /* CMPD direct */
-            CMP(reg_d, 16, LOAD_DIRECT16(p1), 3);
+          case 0x31093:         /* CMPD direct */
+          case 0x81093:         /* CMPD direct */
+            CMP(reg_d, 16, LOAD_DIRECT16(p1), 3, 7, 5);
             break;
 
-          case 0x1094:          /* ANDD direct */   /* FIXME: fix for 6809, 6309 only opcode */
-            AND(reg_d, LOAD_DIRECT_16(p1), 16, 3);
+          case 0x31094:         /* ANDD direct */
+            AND(reg_d, LOAD_DIRECT_16(p1), 16, 3, 7, 5);
             break;
 
-          case 0x1095:          /* BITD direct */   /* FIXME: fix for 6809, 6309 only opcode */
-            BIT(reg_d, 16, LOAD_DIRECT16(p1), 3);
+          case 0x31095:         /* BITD direct */
+            BIT(reg_d, 16, LOAD_DIRECT16(p1), 3, 7, 5);
             break;
 
-          case 0x1096:          /* LDW direct */   /* FIXME: fix for 6809, 6309 only opcode */
-            LD(reg_w, 16, LOAD_DIRECT16(p1), 3);
+          case 0x31096:         /* LDW direct */
+            LD(reg_w, 16, LOAD_DIRECT16(p1), 3, 6, 5);
             break;
 
-          case 0x1097:          /* STW direct */   /* FIXME: fix for 6809, 6309 only opcode */
-            ST(reg_w, 16, (reg_dpr << 8) | p1, 3);
+          case 0x31097:         /* STW direct */
+            ST(reg_w, 16, (reg_dpr << 8) | p1, 3, 6, 5);
             break;
 
-          case 0x1098:          /* EORD direct */   /* FIXME: fix for 6809, 6309 only opcode */
-            EOR(reg_d, 16, LOAD_DIRECT16(p1), 3);
+          case 0x31098:         /* EORD direct */
+            EOR(reg_d, 16, LOAD_DIRECT16(p1), 3, 7, 5);
             break;
 
-          case 0x1099:          /* ADCD direct */   /* FIXME: fix for 6809, 6309 only opcode */
-            ADD(reg_d, LOAD_DIRECT16(p1), LOCAL_CARRY(), 16, 3);
+          case 0x31099:         /* ADCD direct */
+            ADD(reg_d, LOAD_DIRECT16(p1), LOCAL_CARRY(), 16, 3, 7, 5);
             break;
 
-          case 0x109a:          /* ORD direct */   /* FIXME: fix for 6809, 6309 only opcode */
-            OR(reg_d, 16, LOAD_DIRECT16(p1), 3);
+          case 0x3109a:         /* ORD direct */
+            OR(reg_d, 16, LOAD_DIRECT16(p1), 3, 7, 5);
             break;
 
-          case 0x109b:          /* ADDW direct */   /* FIXME: fix for 6809, 6309 only opcode */
-            ADD(reg_w, LOAD_DIRECT16(p1), 0, 16, 3);
+          case 0x3109b:         /* ADDW direct */
+            ADD(reg_w, LOAD_DIRECT16(p1), 0, 16, 3, 7, 5);
             break;
 
-          case 0x109c:          /* CMPY direct */
-            CMP(reg_y, 16, LOAD_DIRECT16(p1), 3);
+          case 0x3109c:         /* CMPY direct */
+          case 0x8109c:         /* CMPY direct */
+            CMP(reg_y, 16, LOAD_DIRECT16(p1), 3, 7, 5);
             break;
 
-          case 0x109e:          /* LDY direct */
-            LD(reg_y, 16, LOAD_DIRECT16(p1), 3);
+          case 0x3109e:         /* LDY direct */
+          case 0x8109e:         /* LDY direct */
+            LD(reg_y, 16, LOAD_DIRECT16(p1), 3, 6, 5);
             break;
 
-          case 0x109f:          /* STY direct */
-            ST(reg_y, 16, (reg_dpr << 8) | p1, 3);
+          case 0x3109f:         /* STY direct */
+          case 0x8109f:         /* STY direct */
+            ST(reg_y, 16, (reg_dpr << 8) | p1, 3, 6, 5);
             break;
 
           case 0x10a0:          /* SUBW indexed */   /* FIXME: fix for 6809, 6309 only opcode */
