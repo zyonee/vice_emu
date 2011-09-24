@@ -3035,7 +3035,9 @@ trap_skipped:
           case 0x30060:         /* NEG indexed */
           case 0x80060:         /* NEG indexed */
           case 0x80061:         /* NEG indexed (6809 illegal) */
-            NEG(GET_IND_MA(p1, p2, p3), 2, 6, 6);
+          case 0x81060:         /* NEG indexed (6809 illegal) */
+          case 0x81061:         /* NEG indexed (6809 illegal) */
+            NEG(GET_IND_MA(p1, p2, p3), 2 + ec, 6 + ec, 6 + ec);
             break;
 
           case 0x30061:         /* OIM IM-indexed */
@@ -3047,22 +3049,26 @@ trap_skipped:
             break;
 
           case 0x80062:         /* NEG indexed / COM indexed (6809 illegal) */
+          case 0x81062:         /* NEG indexed / COM indexed (6809 illegal) */
             if (!LOCAL_CARRY()) {
-                NEG(GET_IND_MA(p1, p2, p3), 2, 6, 6);
+                NEG(GET_IND_MA(p1, p2, p3), 2 + ec, 6 + ec, 6 + ec);
             } else {
-                COM(GET_IND_MA(p1, p2, p3), 2, 6, 6);
+                COM(GET_IND_MA(p1, p2, p3), 2 + ec, 6 + ec, 6 + ec);
             }
             break;                
 
           case 0x30063:         /* COM indexed */
           case 0x80063:         /* COM indexed */
-            COM(GET_IND_MA(p1, p2, p3), 2, 6, 6);
+          case 0x81063:         /* COM indexed */
+            COM(GET_IND_MA(p1, p2, p3), 2 + ec, 6 + ec, 6 + ec);
             break;
 
           case 0x30064:         /* LSR indexed */
           case 0x80064:         /* LSR indexed */
           case 0x80065:         /* LSR indexed (6809 illegal) */
-            LSR(GET_IND_MA(p1, p2, p3), 2, 6, 6);
+          case 0x81064:         /* LSR indexed (6809 illegal) */
+          case 0x81065:         /* LSR indexed (6809 illegal) */
+            LSR(GET_IND_MA(p1, p2, p3), 2 + ec, 6 + ec, 6 + ec);
             break;
 
           case 0x30065:         /* EIM IM-indexed */
@@ -3071,28 +3077,34 @@ trap_skipped:
 
           case 0x30066:         /* ROR indexed */
           case 0x80066:         /* ROR indexed */
-            ROR(GET_IND_MA(p1, p2, p3), 2, 6, 6);
+          case 0x81066:         /* ROR indexed (6809 illegal) */
+            ROR(GET_IND_MA(p1, p2, p3), 2 + ec, 6 + ec, 6 + ec);
             break;
 
           case 0x30067:         /* ASR indexed */
           case 0x80067:         /* ASR indexed */
-            ASR(GET_IND_MA(p1, p2, p3), 2, 6, 6);
+          case 0x81067:         /* ASR indexed (6809 illegal) */
+            ASR(GET_IND_MA(p1, p2, p3), 2 + ec, 6 + ec, 6 + ec);
             break;
 
           case 0x30068:         /* ASL/LSL indexed */
           case 0x80068:         /* ASL/LSL indexed */
-            ASL(GET_IND_MA(p1, p2, p3), 2, 6, 6);
+          case 0x81068:         /* ASL/LSL indexed (6809 illegal) */
+            ASL(GET_IND_MA(p1, p2, p3), 2 + ec, 6 + ec, 6 + ec);
             break;
 
           case 0x30069:         /* ROL indexed */
           case 0x80069:         /* ROL indexed */
-            ROL(GET_IND_MA(p1, p2, p3), 2, 6, 6);
+          case 0x81069:         /* ROL indexed (6809 illegal) */
+            ROL(GET_IND_MA(p1, p2, p3), 2 + ec, 6 + ec, 6 + ec);
             break;
 
           case 0x3006a:         /* DEC indexed */
           case 0x8006a:         /* DEC indexed */
           case 0x8006b:         /* DEC indexed (6809 illegal) */
-            DEC(GET_IND_MA(p1, p2, p3), 2, 6, 6);
+          case 0x8106a:         /* DEC indexed (6809 illegal) */
+          case 0x8106b:         /* DEC indexed (6809 illegal) */
+            DEC(GET_IND_MA(p1, p2, p3), 2 + ec, 6 + ec, 6 + ec);
             break;
 
           case 0x3006b:         /* TIM IM-indexed */
@@ -3101,22 +3113,26 @@ trap_skipped:
 
           case 0x3006c:         /* INC indexed */
           case 0x8006c:         /* INC indexed */
-            INC(GET_IND_MA(p1, p2, p3), 2, 6, 6);
+          case 0x8106c:         /* INC indexed (6809 illegal) */
+            INC(GET_IND_MA(p1, p2, p3), 2 + ec, 6 + ec, 6 + ec);
             break;
 
           case 0x3006d:         /* TST indexed */
           case 0x8006d:         /* TST indexed */
-            TST(GET_IND_MA(p1, p2, p3), 2, 6, 5);
+          case 0x8106d:         /* TST indexed (6809 illegal) */
+            TST(GET_IND_MA(p1, p2, p3), 2 + ec, 6 + ec, 5 + ec);
             break;
 
           case 0x3006e:         /* JMP indexed */
           case 0x8006e:         /* JMP indexed */
-            JMP(GET_IND_MA(p1, p2, p3), 3, 3);
+          case 0x8106e:         /* JMP indexed (6809 illegal) */
+            JMP(GET_IND_MA(p1, p2, p3), 3 + ec, 3 + ec);
             break;
 
           case 0x3006f:         /* CLR indexed */
           case 0x8006f:         /* CLR indexed */
-            CLR(GET_IND_MA(p1, p2, p3), 2, 6, 6);
+          case 0x8106f:         /* CLR indexed (6809 illegal) */
+            CLR(GET_IND_MA(p1, p2, p3), 2 + ec, 6 + ec, 6 + ec);
             break;
 
           case 0x30070:         /* NEG extended */
