@@ -3427,17 +3427,20 @@ trap_skipped:
 
           case 0x300a0:         /* SUBA indexed */
           case 0x800a0:         /* SUBA indexed */
-            SUB(reg_a, 0, LOAD_IND8(), 8, 2, 4, 4);
+          case 0x810a0:         /* SUBA indexed (6809 illegal) */
+            SUB(reg_a, 0, LOAD_IND8(), 8, 2 + ec, 4 + ec, 4 + ec);
             break;
 
           case 0x300a1:         /* CMPA indexed */
           case 0x800a1:         /* CMPA indexed */
-            CMP(reg_a, 8, LOAD_IND8(), 2, 4, 4);
+          case 0x810a1:         /* CMPA indexed */
+            CMP(reg_a, 8, LOAD_IND8(), 2 + ec, 4 + ec, 4 + ec);
             break;
 
           case 0x300a2:         /* SBCA indexed */
           case 0x800a2:         /* SBCA indexed */
-            SUB(reg_a, LOCAL_CARRY(), LOAD_IND8(), 8, 2, 4, 4);
+          case 0x810a2:         /* SBCA indexed (6809 illegal) */
+            SUB(reg_a, LOCAL_CARRY(), LOAD_IND8(), 8, 2 + ec, 4 + ec, 4 + ec);
             break;
 
           case 0x300a3:         /* SUBD indexed */
@@ -3447,42 +3450,50 @@ trap_skipped:
 
           case 0x300a4:         /* ANDA indexed */
           case 0x800a4:         /* ANDA indexed */
-            AND(reg_a, LOAD_IND8(), 8, 2, 4, 4);
+          case 0x810a4:         /* ANDA indexed (6809 illegal) */
+            AND(reg_a, LOAD_IND8(), 8, 2 + ec, 4 + ec, 4 + ec);
             break;
 
           case 0x300a5:         /* BITA indexed */
           case 0x800a5:         /* BITA indexed */
-            BIT(reg_a, 8, LOAD_IND8(), 2, 4, 4);
+          case 0x810a5:         /* BITA indexed (6809 illegal) */
+            BIT(reg_a, 8, LOAD_IND8(), 2 + ec, 4 + ec, 4 + ec);
             break;
 
           case 0x300a6:         /* LDA indexed */
           case 0x800a6:         /* LDA indexed */
-            LD(reg_a, 8, LOAD_IND8(), 2, 4, 4);
+          case 0x810a6:         /* LDA indexed (6809 illegal) */
+            LD(reg_a, 8, LOAD_IND8(), 2 + ec, 4 + ec, 4 + ec);
             break;
 
           case 0x300a7:         /* STA indexed */
           case 0x800a7:         /* STA indexed */
-            ST(reg_a, 8, GET_IND_MA(p1, p2, p3), 2, 4, 4);
+          case 0x810a7:         /* STA indexed (6809 illegal) */
+            ST(reg_a, 8, GET_IND_MA(p1, p2, p3), 2 + ec, 4 + ec, 4 + ec);
             break;
 
           case 0x300a8:         /* EORA indexed */
           case 0x800a8:         /* EORA indexed */
-            EOR(reg_a, 8, LOAD_IND8(), 2, 4, 4);
+          case 0x810a8:         /* EORA indexed (6809 illegal) */
+            EOR(reg_a, 8, LOAD_IND8(), 2 + ec, 4 + ec, 4 + ec);
             break;
 
           case 0x300a9:         /* ADCA indexed */
           case 0x800a9:         /* ADCA indexed */
-            ADD(reg_a, LOAD_IND8(), LOCAL_CARRY(), 8, 2, 4, 4);
+          case 0x810a9:         /* ADCA indexed (6809 illegal) */
+            ADD(reg_a, LOAD_IND8(), LOCAL_CARRY(), 8, 2 + ec, 4 + ec, 4 + ec);
             break;
 
           case 0x300aa:         /* ORA indexed */
           case 0x800aa:         /* ORA indexed */
-            OR(reg_a, 8, LOAD_IND8(), 2, 4, 4);
+          case 0x810aa:         /* ORA indexed (6809 illegal) */
+            OR(reg_a, 8, LOAD_IND8(), 2 + ec, 4 + ec, 4 + ec);
             break;
 
           case 0x300ab:         /* ADDA indexed */
           case 0x800ab:         /* ADDA indexed */
-            ADD(reg_a, LOAD_IND8(), 0, 8, 2, 4, 4);
+          case 0x810ab:         /* ADDA indexed (6809 illegal) */
+            ADD(reg_a, LOAD_IND8(), 0, 8, 2 + ec, 4 + ec, 4 + ec);
             break;
 
           case 0x300ac:         /* CMPX indexed */
@@ -3492,7 +3503,8 @@ trap_skipped:
 
           case 0x300ad:         /* JSR indexed */
           case 0x800ad:         /* JSR indexed */
-            JSR(GET_IND_MA(p1, p2, p3), 2, 7, 6);
+          case 0x810ad:         /* JSR indexed (6809 illegal) */
+            JSR(GET_IND_MA(p1, p2, p3), 2 + ec, 7 + ec, 6 + ec);
             break;
 
           case 0x300ae:         /* LDX indexed */
@@ -4220,64 +4232,68 @@ trap_skipped:
             ST(reg_y, 16, (reg_dpr << 8) | p1, 3, 6, 5);
             break;
 
-          case 0x10a0:          /* SUBW indexed */   /* FIXME: fix for 6809, 6309 only opcode */
-            SUB(reg_w, 0, LOAD_IND16(), 16, 3);
+          case 0x310a0:         /* SUBW indexed */
+            SUB(reg_w, 0, LOAD_IND16(), 16, 3, 7, 6);
             break;
 
-          case 0x10a1:          /* CMPW indexed */   /* FIXME: fix for 6809, 6309 only opcode */
-            CMP(reg_w, 16, LOAD_IND16(), 3);
+          case 0x310a1:         /* CMPW indexed */
+            CMP(reg_w, 16, LOAD_IND16(), 3, 7, 6);
             break;
 
-          case 0x10a2:          /* SBCD indexed */   /* FIXME: fix for 6809, 6309 only opcode */
-            SUB(reg_d, LOCAL_CARRY(), LOAD_IND16(), 16, 3);
+          case 0x310a2:         /* SBCD indexed */
+            SUB(reg_d, LOCAL_CARRY(), LOAD_IND16(), 16, 3, 7, 6);
             break;
 
-          case 0x10a3:          /* CMPD indexed */
-            CMP(reg_d, 16, LOAD_IND16(), 3);
+          case 0x310a3:         /* CMPD indexed */
+          case 0x810a3:         /* CMPD indexed */
+            CMP(reg_d, 16, LOAD_IND16(), 3, 7, 6);
             break;
 
-          case 0x10a4:          /* ANDD indexed */   /* FIXME: fix for 6809, 6309 only opcode */
-            AND(reg_d, LOAD_IND16(), 16, 3);
+          case 0x310a4:         /* ANDD indexed */
+            AND(reg_d, LOAD_IND16(), 16, 3, 7, 6);
             break;
 
-          case 0x10a5:          /* BITD indexed */   /* FIXME: fix for 6809, 6309 only opcode */
-            BIT(reg_d, 16, LOAD_IND16(), 3);
+          case 0x310a5:         /* BITD indexed */
+            BIT(reg_d, 16, LOAD_IND16(), 3, 7, 6);
             break;
 
-          case 0x10a6:          /* LDW indexed */   /* FIXME: fix for 6809, 6309 only opcode */
-            LD(reg_w, 16, LOAD_IND16(), 3);
+          case 0x310a6:         /* LDW indexed */
+            LD(reg_w, 16, LOAD_IND16(), 3, 6, 6);
             break;
 
-          case 0x10a7:          /* STW indexed */   /* FIXME: fix for 6809, 6309 only opcode */
-            ST(reg_w, 16, GET_IND_MA(p1, p2, p3), 3);
+          case 0x310a7:         /* STW indexed */
+            ST(reg_w, 16, GET_IND_MA(p1, p2, p3), 3, 6, 6);
             break;
 
-          case 0x10a8:          /* EORD indexed */   /* FIXME: fix for 6809, 6309 only opcode */
-            EOR(reg_d, 16, LOAD_IND16(), 3);
+          case 0x310a8:         /* EORD indexed */
+            EOR(reg_d, 16, LOAD_IND16(), 3, 7, 6);
             break;
 
-          case 0x10a9:          /* ADCD indexed */   /* FIXME: fix for 6809, 6309 only opcode */
-            ADD(reg_d, LOAD_IND16(), LOCAL_CARRY(), 16, 3);
+          case 0x310a9:         /* ADCD indexed */
+            ADD(reg_d, LOAD_IND16(), LOCAL_CARRY(), 16, 3, 7, 6);
             break;
 
-          case 0x10aa:          /* ORD indexed */   /* FIXME: fix for 6809, 6309 only opcode */
-            OR(reg_d, 16, LOAD_IND16(), 3);
+          case 0x310aa:         /* ORD indexed */
+            OR(reg_d, 16, LOAD_IND16(), 3, 7, 6);
             break;
 
-          case 0x10ab:          /* ADDW indexed */   /* FIXME: fix for 6809, 6309 only opcode */
-            ADD(reg_w, LOAD_IND16(), 0, 16, 3);
+          case 0x310ab:         /* ADDW indexed */
+            ADD(reg_w, LOAD_IND16(), 0, 16, 3, 7, 6);
             break;
 
-          case 0x10ac:          /* CMPY indexed */
-            CMP(reg_y, 16, LOAD_IND16(), 3);
+          case 0x310ac:         /* CMPY indexed */
+          case 0x810ac:         /* CMPY indexed */
+            CMP(reg_y, 16, LOAD_IND16(), 3, 7, 6);
             break;
 
-          case 0x10ae:          /* LDY indexed */
-            LD(reg_y, 16, LOAD_IND16(), 3);
+          case 0x310ae:         /* LDY indexed */
+          case 0x810ae:         /* LDY indexed */
+            LD(reg_y, 16, LOAD_IND16(), 3, 6, 6);
             break;
 
-          case 0x10af:          /* STY indexed */
-            ST(reg_y, 16, GET_IND_MA(p1, p2, p3), 3);
+          case 0x310af:         /* STY indexed */
+          case 0x810af:         /* STY indexed */
+            ST(reg_y, 16, GET_IND_MA(p1, p2, p3), 3, 6, 6);
             break;
 
           case 0x10b0:          /* SUBW extended */   /* FIXME: fix for 6809, 6309 only opcode */
