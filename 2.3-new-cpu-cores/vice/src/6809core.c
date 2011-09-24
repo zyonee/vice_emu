@@ -3138,7 +3138,9 @@ trap_skipped:
           case 0x30070:         /* NEG extended */
           case 0x80070:         /* NEG extended */
           case 0x80071:         /* NEG extended (6809 illegal) */
-            NEG((p1 << 8) | p2, 3, 7, 6);
+          case 0x81070:         /* NEG extended (6809 illegal) */
+          case 0x81071:         /* NEG extended (6809 illegal) */
+            NEG((p1 << 8) | p2, 3 + ec, 7 + ec, 6 + ec);
             break;
 
           case 0x30071:         /* OIM IM-extended */
@@ -3149,23 +3151,27 @@ trap_skipped:
             AIM(p1, (p2 << 8) | p3, 4);
             break;
 
-          case 0x80073:         /* NEG extended / COM extended (6809 illegal) */
+          case 0x80072:         /* NEG extended / COM extended (6809 illegal) */
+          case 0x81072:         /* NEG extended / COM extended (6809 illegal) */
             if (!LOCAL_CARRY()) {
-                NEG((p1 << 8) | p2, 3, 7, 6);
+                NEG((p1 << 8) | p2, 3 + ec, 7 + ec, 6 + ec);
             } else {
-                COM((p1 << 8) | p2, 3, 7, 6);
+                COM((p1 << 8) | p2, 3 + ec, 7 + ec, 6 + ec);
             }
             break;
 
           case 0x30073:         /* COM extended */
           case 0x80073:         /* COM extended */
-            COM((p1 << 8) | p2, 3, 7, 6);
+          case 0x81073:         /* COM extended (6809 illegal) */
+            COM((p1 << 8) | p2, 3 + ec, 7 + ec, 6 + ec);
             break;
 
           case 0x30074:         /* LSR extended */
           case 0x80074:         /* LSR extended */
           case 0x80075:         /* LSR extended (6809 illegal) */
-            LSR((p1 << 8) | p2, 3, 7, 6);
+          case 0x81074:         /* LSR extended (6809 illegal) */
+          case 0x81075:         /* LSR extended (6809 illegal) */
+            LSR((p1 << 8) | p2, 3 + ec, 7 + ec, 6 + ec);
             break;
 
           case 0x30075:         /* EIM IM-extended */
@@ -3174,28 +3180,34 @@ trap_skipped:
 
           case 0x30076:         /* ROR extended */
           case 0x80076:         /* ROR extended */
-            ROR((p1 << 8) | p2, 3, 7, 6);
+          case 0x81076:         /* ROR extended (6809 illegal) */
+            ROR((p1 << 8) | p2, 3 + ec, 7 + ec, 6 + ec);
             break;
 
           case 0x30077:         /* ASR extended */
           case 0x80077:         /* ASR extended */
-            ASR((p1 << 8) | p2, 3, 7, 6);
+          case 0x81077:         /* ASR extended (6809 illegal) */
+            ASR((p1 << 8) | p2, 3 + ec, 7 + ec, 6 + ec);
             break;
 
           case 0x30078:         /* ASL extended */
           case 0x80078:         /* ASL extended */
-            ASL((p1 << 8) | p2, 3, 7, 6);
+          case 0x81078:         /* ASL extended (6809 illegal) */
+            ASL((p1 << 8) | p2, 3 + ec, 7 + ec, 6 + ec);
             break;
 
           case 0x30079:         /* ROL extended */
           case 0x80079:         /* ROL extended */
-            ROL((p1 << 8) | p2, 3, 7, 6);
+          case 0x81079:         /* ROL extended (6809 illegal) */
+            ROL((p1 << 8) | p2, 3 + ec, 7 + ec, 6 + ec);
             break;
 
           case 0x3007a:         /* DEC extended */
           case 0x8007a:         /* DEC extended */
           case 0x8007b:         /* DEC extended (6809 illegal) */
-            DEC((p1 << 8) | p2, 3, 7, 6);
+          case 0x8107a:         /* DEC extended (6809 illegal) */
+          case 0x8107b:         /* DEC extended (6809 illegal) */
+            DEC((p1 << 8) | p2, 3 + ec, 7 + ec, 6 + ec);
             break;
 
           case 0x3007b:         /* TIM IM-extended */
@@ -3204,22 +3216,26 @@ trap_skipped:
 
           case 0x3007c:         /* INC extended */
           case 0x8007c:         /* INC extended */
-            INC((p1 << 8) | p2, 3, 7, 6);
+          case 0x8107c:         /* INC extended (6809 illegal) */
+            INC((p1 << 8) | p2, 3 + ec, 7 + ec, 6 + ec);
             break;
 
           case 0x3007d:         /* TST extended */
           case 0x8007d:         /* TST extended */
-            TST((p1 << 8) | p2, 3, 7, 5);
+          case 0x8107d:         /* TST extended (6809 illegal) */
+            TST((p1 << 8) | p2, 3 + ec, 7 + ec, 5 + ec);
             break;
 
           case 0x3007e:         /* JMP extended */
           case 0x8007e:         /* JMP extended */
-            JMP((p1 << 8) | p2, 4, 3);
+          case 0x8107e:         /* JMP extended (6809 illegal) */
+            JMP((p1 << 8) | p2, 4 + ec, 3 + ec);
             break;
 
           case 0x3007f:         /* CLR extended */
           case 0x8007f:         /* CLR extended */
-            CLR((p1 << 8) | p2, 3, 7, 6);
+          case 0x8107f:         /* CLR extended (6809 illegal */
+            CLR((p1 << 8) | p2, 3 + ec, 7 + ec, 6 + ec);
             break;
 
           case 0x30080:         /* SUBA immediate */
