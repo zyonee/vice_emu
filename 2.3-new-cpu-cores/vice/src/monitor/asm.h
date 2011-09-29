@@ -79,8 +79,7 @@ enum asm_addr_mode {
     ASM_ADDR_MODE_REG_IND_IY,
     ASM_ADDR_MODE_REG_IND_SP,
     ASM_ADDR_MODE_INDIRECT,
-    ASM_ADDR_MODE_65C02_NOP_LONG,
-    ASM_ADDR_MODE_INDIRECT_ABS_X
+    ASM_ADDR_MODE_ABS_INDIRECT_X
 };
 typedef enum asm_addr_mode asm_addr_mode_t;
 

@@ -155,6 +155,14 @@ const char *mon_disassemble_to_string_internal(MEMSPACE memspace, unsigned int a
             sprintf(buffp, " (%s)", addr_name);
         break;
 
+      case ASM_ADDR_MODE_ABS_INDIRECT_X:
+        ival |= (WORD)((p2 & 0xff) << 8);
+        if (!(addr_name = mon_symbol_table_lookup_name(e_comp_space, ival)))
+            sprintf(buffp, (hex_mode ? " ($%04X,X)" : " (%5d,X)"), ival);
+        else
+            sprintf(buffp, " (%s,X)", addr_name);
+        break;
+
       case ASM_ADDR_MODE_INDIRECT_X:
         if (!(addr_name = mon_symbol_table_lookup_name(e_comp_space, ival)))
             sprintf(buffp, (hex_mode ? " ($%02X,X)" : " (%3d,X)"), ival);
@@ -167,6 +175,13 @@ const char *mon_disassemble_to_string_internal(MEMSPACE memspace, unsigned int a
             sprintf(buffp, (hex_mode ? " ($%02X),Y" : " (%3d),Y"), ival);
         else
             sprintf(buffp, " (%s),Y", addr_name);
+        break;
+
+      case ASM_ADDR_MODE_INDIRECT:
+        if (!(addr_name = mon_symbol_table_lookup_name(e_comp_space, ival)))
+            sprintf(buffp, (hex_mode ? " ($%02X)" : " (%3d)"), ival);
+        else
+            sprintf(buffp, " (%s)", addr_name);
         break;
 
       case ASM_ADDR_MODE_RELATIVE:

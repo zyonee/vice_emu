@@ -998,10 +998,10 @@ static const yytype_uint16 yyrline[] =
      690,   692,   696,   702,   710,   711,   714,   715,   718,   719,
      722,   723,   724,   727,   728,   731,   732,   733,   734,   737,
      738,   739,   742,   743,   744,   745,   746,   749,   750,   751,
-     754,   764,   765,   768,   772,   777,   782,   787,   789,   791,
-     793,   794,   795,   796,   797,   798,   799,   801,   803,   805,
-     807,   808,   809,   810,   811,   812,   813,   814,   815,   816,
-     817,   818,   819,   820,   821,   822,   823,   824,   825
+     754,   764,   765,   768,   772,   777,   782,   787,   792,   797,
+     799,   800,   801,   802,   803,   804,   805,   807,   809,   811,
+     813,   814,   815,   816,   817,   818,   819,   820,   821,   822,
+     823,   824,   825,   826,   827,   828,   829,   830,   831
 };
 #endif
 
@@ -4128,231 +4128,239 @@ yyreduce:
   case 247:
 
 /* Line 1464 of yacc.c  */
-#line 788 "mon_parse.y"
-    { (yyval.i) = join_ints(ASM_ADDR_MODE_ABS_INDIRECT,(yyvsp[(2) - (3)].i)); }
+#line 787 "mon_parse.y"
+    { if ((yyvsp[(2) - (3)].i) < 0x100)
+                               (yyval.i) = join_ints(ASM_ADDR_MODE_INDIRECT,(yyvsp[(2) - (3)].i));
+                             else
+                               (yyval.i) = join_ints(ASM_ADDR_MODE_ABS_INDIRECT,(yyvsp[(2) - (3)].i));
+                           }
     break;
 
   case 248:
 
 /* Line 1464 of yacc.c  */
-#line 790 "mon_parse.y"
-    { (yyval.i) = join_ints(ASM_ADDR_MODE_INDIRECT_X,(yyvsp[(2) - (5)].i)); }
+#line 792 "mon_parse.y"
+    { if ((yyvsp[(2) - (5)].i) < 0x100)
+                                           (yyval.i) = join_ints(ASM_ADDR_MODE_INDIRECT_X,(yyvsp[(2) - (5)].i));
+                                         else
+                                           (yyval.i) = join_ints(ASM_ADDR_MODE_ABS_INDIRECT_X,(yyvsp[(2) - (5)].i));
+                                       }
     break;
 
   case 249:
 
 /* Line 1464 of yacc.c  */
-#line 792 "mon_parse.y"
+#line 798 "mon_parse.y"
     { (yyval.i) = join_ints(ASM_ADDR_MODE_INDIRECT_Y,(yyvsp[(2) - (5)].i)); }
     break;
 
   case 250:
 
 /* Line 1464 of yacc.c  */
-#line 793 "mon_parse.y"
+#line 799 "mon_parse.y"
     { (yyval.i) = join_ints(ASM_ADDR_MODE_REG_IND_BC,0); }
     break;
 
   case 251:
 
 /* Line 1464 of yacc.c  */
-#line 794 "mon_parse.y"
+#line 800 "mon_parse.y"
     { (yyval.i) = join_ints(ASM_ADDR_MODE_REG_IND_DE,0); }
     break;
 
   case 252:
 
 /* Line 1464 of yacc.c  */
-#line 795 "mon_parse.y"
+#line 801 "mon_parse.y"
     { (yyval.i) = join_ints(ASM_ADDR_MODE_REG_IND_HL,0); }
     break;
 
   case 253:
 
 /* Line 1464 of yacc.c  */
-#line 796 "mon_parse.y"
+#line 802 "mon_parse.y"
     { (yyval.i) = join_ints(ASM_ADDR_MODE_REG_IND_IX,0); }
     break;
 
   case 254:
 
 /* Line 1464 of yacc.c  */
-#line 797 "mon_parse.y"
+#line 803 "mon_parse.y"
     { (yyval.i) = join_ints(ASM_ADDR_MODE_REG_IND_IY,0); }
     break;
 
   case 255:
 
 /* Line 1464 of yacc.c  */
-#line 798 "mon_parse.y"
+#line 804 "mon_parse.y"
     { (yyval.i) = join_ints(ASM_ADDR_MODE_REG_IND_SP,0); }
     break;
 
   case 256:
 
 /* Line 1464 of yacc.c  */
-#line 800 "mon_parse.y"
+#line 806 "mon_parse.y"
     { (yyval.i) = join_ints(ASM_ADDR_MODE_ABSOLUTE_A,(yyvsp[(2) - (5)].i)); }
     break;
 
   case 257:
 
 /* Line 1464 of yacc.c  */
-#line 802 "mon_parse.y"
+#line 808 "mon_parse.y"
     { (yyval.i) = join_ints(ASM_ADDR_MODE_ABSOLUTE_HL,(yyvsp[(2) - (5)].i)); }
     break;
 
   case 258:
 
 /* Line 1464 of yacc.c  */
-#line 804 "mon_parse.y"
+#line 810 "mon_parse.y"
     { (yyval.i) = join_ints(ASM_ADDR_MODE_ABSOLUTE_IX,(yyvsp[(2) - (5)].i)); }
     break;
 
   case 259:
 
 /* Line 1464 of yacc.c  */
-#line 806 "mon_parse.y"
+#line 812 "mon_parse.y"
     { (yyval.i) = join_ints(ASM_ADDR_MODE_ABSOLUTE_IY,(yyvsp[(2) - (5)].i)); }
     break;
 
   case 260:
 
 /* Line 1464 of yacc.c  */
-#line 807 "mon_parse.y"
+#line 813 "mon_parse.y"
     { (yyval.i) = join_ints(ASM_ADDR_MODE_IMPLIED,0); }
     break;
 
   case 261:
 
 /* Line 1464 of yacc.c  */
-#line 808 "mon_parse.y"
+#line 814 "mon_parse.y"
     { (yyval.i) = join_ints(ASM_ADDR_MODE_ACCUMULATOR,0); }
     break;
 
   case 262:
 
 /* Line 1464 of yacc.c  */
-#line 809 "mon_parse.y"
+#line 815 "mon_parse.y"
     { (yyval.i) = join_ints(ASM_ADDR_MODE_REG_B,0); }
     break;
 
   case 263:
 
 /* Line 1464 of yacc.c  */
-#line 810 "mon_parse.y"
+#line 816 "mon_parse.y"
     { (yyval.i) = join_ints(ASM_ADDR_MODE_REG_C,0); }
     break;
 
   case 264:
 
 /* Line 1464 of yacc.c  */
-#line 811 "mon_parse.y"
+#line 817 "mon_parse.y"
     { (yyval.i) = join_ints(ASM_ADDR_MODE_REG_D,0); }
     break;
 
   case 265:
 
 /* Line 1464 of yacc.c  */
-#line 812 "mon_parse.y"
+#line 818 "mon_parse.y"
     { (yyval.i) = join_ints(ASM_ADDR_MODE_REG_E,0); }
     break;
 
   case 266:
 
 /* Line 1464 of yacc.c  */
-#line 813 "mon_parse.y"
+#line 819 "mon_parse.y"
     { (yyval.i) = join_ints(ASM_ADDR_MODE_REG_H,0); }
     break;
 
   case 267:
 
 /* Line 1464 of yacc.c  */
-#line 814 "mon_parse.y"
+#line 820 "mon_parse.y"
     { (yyval.i) = join_ints(ASM_ADDR_MODE_REG_IXH,0); }
     break;
 
   case 268:
 
 /* Line 1464 of yacc.c  */
-#line 815 "mon_parse.y"
+#line 821 "mon_parse.y"
     { (yyval.i) = join_ints(ASM_ADDR_MODE_REG_IYH,0); }
     break;
 
   case 269:
 
 /* Line 1464 of yacc.c  */
-#line 816 "mon_parse.y"
+#line 822 "mon_parse.y"
     { (yyval.i) = join_ints(ASM_ADDR_MODE_REG_L,0); }
     break;
 
   case 270:
 
 /* Line 1464 of yacc.c  */
-#line 817 "mon_parse.y"
+#line 823 "mon_parse.y"
     { (yyval.i) = join_ints(ASM_ADDR_MODE_REG_IXL,0); }
     break;
 
   case 271:
 
 /* Line 1464 of yacc.c  */
-#line 818 "mon_parse.y"
+#line 824 "mon_parse.y"
     { (yyval.i) = join_ints(ASM_ADDR_MODE_REG_IYL,0); }
     break;
 
   case 272:
 
 /* Line 1464 of yacc.c  */
-#line 819 "mon_parse.y"
+#line 825 "mon_parse.y"
     { (yyval.i) = join_ints(ASM_ADDR_MODE_REG_AF,0); }
     break;
 
   case 273:
 
 /* Line 1464 of yacc.c  */
-#line 820 "mon_parse.y"
+#line 826 "mon_parse.y"
     { (yyval.i) = join_ints(ASM_ADDR_MODE_REG_BC,0); }
     break;
 
   case 274:
 
 /* Line 1464 of yacc.c  */
-#line 821 "mon_parse.y"
+#line 827 "mon_parse.y"
     { (yyval.i) = join_ints(ASM_ADDR_MODE_REG_DE,0); }
     break;
 
   case 275:
 
 /* Line 1464 of yacc.c  */
-#line 822 "mon_parse.y"
+#line 828 "mon_parse.y"
     { (yyval.i) = join_ints(ASM_ADDR_MODE_REG_HL,0); }
     break;
 
   case 276:
 
 /* Line 1464 of yacc.c  */
-#line 823 "mon_parse.y"
+#line 829 "mon_parse.y"
     { (yyval.i) = join_ints(ASM_ADDR_MODE_REG_IX,0); }
     break;
 
   case 277:
 
 /* Line 1464 of yacc.c  */
-#line 824 "mon_parse.y"
+#line 830 "mon_parse.y"
     { (yyval.i) = join_ints(ASM_ADDR_MODE_REG_IY,0); }
     break;
 
   case 278:
 
 /* Line 1464 of yacc.c  */
-#line 825 "mon_parse.y"
+#line 831 "mon_parse.y"
     { (yyval.i) = join_ints(ASM_ADDR_MODE_REG_SP,0); }
     break;
 
 
 
 /* Line 1464 of yacc.c  */
-#line 4356 "mon_parse.c"
+#line 4364 "mon_parse.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -4564,7 +4572,7 @@ yyreturn:
 
 
 /* Line 1684 of yacc.c  */
-#line 829 "mon_parse.y"
+#line 835 "mon_parse.y"
 
 
 void parse_and_execute_line(char *input)

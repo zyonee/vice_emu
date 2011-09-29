@@ -76,8 +76,7 @@ static const int addr_mode_size[] = {
     0, /* ASM_ADDR_MODE_REG_IND_IY */
     0, /* ASM_ADDR_MODE_REG_IND_SP */
     2, /* ASM_ADDR_MODE_INDIRECT */
-    8, /* ASM_ADDR_MODE_65C02_NOP_LONG */
-    3  /* ASM_ADDR_MODE_INDIRECT_ABS_X */
+    3  /* ASM_ADDR_MODE_ABS_INDIRECT_X */
 };
 
 static const asm_opcode_info_t opcode_list[] = {
@@ -178,7 +177,7 @@ static const asm_opcode_info_t opcode_list[] = {
     /* 59 */ { "EOR",   ASM_ADDR_MODE_ABSOLUTE_Y },
     /* 5a */ { "PHY",   ASM_ADDR_MODE_IMPLIED },
     /* 5b */ { "NOOP",  ASM_ADDR_MODE_IMPLIED },
-    /* 5c */ { "NOOP",  ASM_ADDR_MODE_65C02_NOP_LONG },
+    /* 5c */ { "NOOP8", ASM_ADDR_MODE_ABSOLUTE_X },
     /* 5d */ { "EOR",   ASM_ADDR_MODE_ABSOLUTE_X },
     /* 5e */ { "LSR",   ASM_ADDR_MODE_ABSOLUTE_X },
     /* 5f */ { "NOOP",  ASM_ADDR_MODE_IMPLIED },
@@ -212,7 +211,7 @@ static const asm_opcode_info_t opcode_list[] = {
     /* 79 */ { "ADC",   ASM_ADDR_MODE_ABSOLUTE_Y },
     /* 7a */ { "PLY",   ASM_ADDR_MODE_IMPLIED },
     /* 7b */ { "NOOP",  ASM_ADDR_MODE_IMPLIED },
-    /* 7c */ { "JMP",   ASM_ADDR_MODE_INDIRECT_ABS_X },
+    /* 7c */ { "JMP",   ASM_ADDR_MODE_ABS_INDIRECT_X },
     /* 7d */ { "ADC",   ASM_ADDR_MODE_ABSOLUTE_X },
     /* 7e */ { "ROR",   ASM_ADDR_MODE_ABSOLUTE_X },
     /* 7f */ { "NOOP",  ASM_ADDR_MODE_IMPLIED },
@@ -305,7 +304,7 @@ static const asm_opcode_info_t opcode_list[] = {
     /* d0 */ { "BNE",   ASM_ADDR_MODE_RELATIVE },
     /* d1 */ { "CMP",   ASM_ADDR_MODE_INDIRECT_Y },
     /* d2 */ { "CMP",   ASM_ADDR_MODE_INDIRECT },
-    /* d3 */ { "DCP",   ASM_ADDR_MODE_INDIRECT_Y },
+    /* d3 */ { "NOOP",  ASM_ADDR_MODE_IMPLIED },
     /* d4 */ { "NOOP",  ASM_ADDR_MODE_ZERO_PAGE_X },
     /* d5 */ { "CMP",   ASM_ADDR_MODE_ZERO_PAGE_X },
     /* d6 */ { "DEC",   ASM_ADDR_MODE_ZERO_PAGE_X },

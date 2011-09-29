@@ -784,10 +784,16 @@ asm_operand_mode: ARG_IMMEDIATE number { if ($2 > 0xff)
                           else
                             $$ = join_ints(ASM_ADDR_MODE_ABSOLUTE_Y,$1);
                         }
-  | L_PAREN number R_PAREN
-    { $$ = join_ints(ASM_ADDR_MODE_ABS_INDIRECT,$2); }
-  | L_PAREN number COMMA REG_X R_PAREN
-    { $$ = join_ints(ASM_ADDR_MODE_INDIRECT_X,$2); }
+  | L_PAREN number R_PAREN { if ($2 < 0x100)
+                               $$ = join_ints(ASM_ADDR_MODE_INDIRECT,$2);
+                             else
+                               $$ = join_ints(ASM_ADDR_MODE_ABS_INDIRECT,$2);
+                           }
+  | L_PAREN number COMMA REG_X R_PAREN { if ($2 < 0x100)
+                                           $$ = join_ints(ASM_ADDR_MODE_INDIRECT_X,$2);
+                                         else
+                                           $$ = join_ints(ASM_ADDR_MODE_ABS_INDIRECT_X,$2);
+                                       }
   | L_PAREN number R_PAREN COMMA REG_Y
     { $$ = join_ints(ASM_ADDR_MODE_INDIRECT_Y,$2); }
   | L_PAREN REG_BC R_PAREN { $$ = join_ints(ASM_ADDR_MODE_REG_IND_BC,0); }
