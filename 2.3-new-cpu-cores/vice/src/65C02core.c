@@ -45,7 +45,9 @@
  * - BRK doesn't get interrupted by an IRQ/NMI on the 65(S)C02.
  */
 
+#ifndef CPU_STR
 #define CPU_STR "65(S)C02 CPU"
+#endif
 
 #include "traps.h"
 
@@ -381,7 +383,7 @@
     LOAD((addr) + reg_y))
 
 #define LOAD_INDIRECT(addr) \
-   (CLK_ADD(CLK, CYCLES_2), LOAD(LOAD_ZERO_ADDR((addr)))
+   (CLK_ADD(CLK, CYCLES_2), LOAD(LOAD_ZERO_ADDR((addr))))
 
 #define LOAD_IND_X(addr) \
    (CLK_ADD(CLK, CYCLES_3), LOAD(LOAD_ZERO_ADDR((addr) + reg_x)))
@@ -422,10 +424,10 @@
 
 #define STORE_ABS_X_RMW(addr, value, inc) \
   do {                                    \
-      LOAD((adr) + reg_x);                \
+      LOAD((addr) + reg_x);               \
       CLK_ADD(CLK, (inc));                \
       STORE((addr) + reg_x, (value));     \
-  } while (0)                             \
+  } while (0)
 
 #define STORE_ABS_Y(addr, value, inc)                      \
   do {                                                     \
@@ -527,7 +529,7 @@
       unsigned int tmp, tmp_addr;                               \
       unsigned int dest_addr;                                   \
                                                                 \
-      if (cpu_type == CPU65SC02) {                              \
+      if (cpu_type == CPU_65SC02) {                             \
           REWIND_FETCH_OPCODE(CLK, 2);                          \
           NOOP_IMM(SIZE_1);                                     \
       } else {                                                  \
@@ -539,7 +541,7 @@
           if (!tmp) {                                           \
               dest_addr = reg_pc + (signed char)(value);        \
               LOAD(reg_pc);                                     \
-              if (reg_pc ^ dest_addr) & 0xff00) {               \
+              if ((reg_pc ^ dest_addr) & 0xff00) {              \
                   LOAD((reg_pc & 0xff00) | (dest_addr & 0xff)); \
               } else {                                          \
                   OPCODE_DELAYS_INTERRUPT();                    \
@@ -554,7 +556,7 @@
       unsigned int tmp, tmp_addr;                               \
       unsigned int dest_addr;                                   \
                                                                 \
-      if (cpu_type == CPU65SC02) {                              \
+      if (cpu_type == CPU_65SC02) {                             \
           REWIND_FETCH_OPCODE(CLK, 2);                          \
           NOOP_IMM(SIZE_1);                                     \
       } else {                                                  \
@@ -963,7 +965,7 @@
   do {                                             \
       unsigned int tmp, tmp_addr;                  \
                                                    \
-      if (cpu_type == CPU65SC02) {                 \
+      if (cpu_type == CPU_65SC02) {                \
           REWIND_FETCH_OPCODE(CLK, 1);             \
           NOOP_IMM(SIZE_1);                        \
       } else {                                     \
@@ -1086,7 +1088,7 @@
 #define SEC()             \
   do {                    \
       LOCAL_SET_CARRY(1); \
-      INC_PC(SIZE_1)      \
+      INC_PC(SIZE_1);     \
   } while (0)
 
 #define SED()               \
@@ -1108,7 +1110,7 @@
   do {                                            \
       unsigned tmp, tmp_addr;                     \
                                                   \
-      if (cpu_type == CPU65SC02) {                \
+      if (cpu_type == CPU_65SC02) {               \
           REWIND_FETCH_OPCODE(CLK, 1);            \
           NOOP_IMM(SIZE_1);                       \
       } else {                                    \
@@ -1116,7 +1118,7 @@
           tmp = LOAD_ZERO(tmp_addr) | (1 << bit); \
           INC_PC(SIZE_2);                         \
           STORE_ABS(tmp_addr, tmp, 3);            \
-      }
+      }                                           \
   } while (0)
 
 #define STA(addr, clk_inc1, clk_inc2, pc_inc, store_func) \
@@ -1150,8 +1152,8 @@
 
 #define STP()                          \
   do {                                 \
-      if (cpu_type == CPUWDC65C02) {   \
-          WDC_STOP();                  \
+      if (cpu_type == CPU_WDC65C02) {  \
+          WDC_STP();                   \
       } else {                         \
           REWIND_FETCH_OPCODE(CLK, 2); \
           NOOP_IMM(SIZE_1);            \
@@ -1275,7 +1277,7 @@
 
 #define WAI()                          \
   do {                                 \
-      if (cpu_type == CPUWDC6502) {    \
+      if (cpu_type == CPU_WDC65C02) {  \
           WDC_WAI();                   \
       } else {                         \
           REWIND_FETCH_OPCODE(CLK, 2); \
@@ -1477,7 +1479,7 @@
             debug_maincpu((DWORD)(reg_pc), debug_clk,
                           mon_disassemble_to_string(e_comp_space,
                                                     reg_pc, op,
-                                                    lo, hi, 0, 1, "6502"),
+                                                    lo, hi, 0, 1, "65(SC)02"),
                           reg_a, reg_x, reg_y, reg_sp);
         }
         if (debug.perform_break_into_monitor)
@@ -2043,7 +2045,7 @@ trap_skipped:
 
           case 0x9c:            /* STZ $nnnn */
             STZ(p2, CYCLES_1, SIZE_3, STORE_ABS);
-            break;                         
+            break;
 
           case 0x9d:            /* STA $nnnn,X */
             STA(p2, CYCLES_0, CYCLES_2, SIZE_3, STORE_ABS_X);

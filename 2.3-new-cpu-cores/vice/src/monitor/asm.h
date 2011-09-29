@@ -77,7 +77,10 @@ enum asm_addr_mode {
     ASM_ADDR_MODE_REG_IND_HL,
     ASM_ADDR_MODE_REG_IND_IX,
     ASM_ADDR_MODE_REG_IND_IY,
-    ASM_ADDR_MODE_REG_IND_SP
+    ASM_ADDR_MODE_REG_IND_SP,
+    ASM_ADDR_MODE_INDIRECT,
+    ASM_ADDR_MODE_65C02_NOP_LONG,
+    ASM_ADDR_MODE_INDIRECT_ABS_X
 };
 typedef enum asm_addr_mode asm_addr_mode_t;
 
@@ -90,4 +93,3 @@ typedef struct asm_opcode_info_s asm_opcode_info_t;
 struct monitor_cpu_type_s;
 
 #endif
-

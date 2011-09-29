@@ -220,20 +220,44 @@ void machine_handle_pending_alarms(int num_write_cycles)
 {
 }
 
+#define USE_65SC02
+
 static void pet_monitor_init(void)
 {
     unsigned int dnr;
+#ifdef USE_65SC02
+    monitor_cpu_type_t asm65SC02, asm6502;
+#else
     monitor_cpu_type_t asm6502;
+#endif
+
     monitor_interface_t *drive_interface_init[DRIVE_NUM];
+
+#ifdef USE_65SC02
+    monitor_cpu_type_t *asmarray[3];
+#else
     monitor_cpu_type_t *asmarray[2];
+#endif
 
-    asmarray[0]=&asm6502;
-    asmarray[1]=NULL;
+#ifdef USE_65SC02
+    asmarray[0] = &asm65SC02;
+    asmarray[1] = &asm6502;
+    asmarray[2] = NULL;
+#else
+    asmarray[0] = &asm6502;
+    asmarray[1] = NULL;
+#endif
 
+#ifdef USE_65SC02
+    asm65SC02_init(&asm65SC02);
     asm6502_init(&asm6502);
+#else
+    asm6502_init(&asm6502);
+#endif
 
-    for (dnr = 0; dnr < DRIVE_NUM; dnr++)
+    for (dnr = 0; dnr < DRIVE_NUM; dnr++) {
         drive_interface_init[dnr] = drivecpu_monitor_interface_get(dnr);
+    }
 
     /* Initialize the monitor.  */
     monitor_init(maincpu_monitor_interface_get(), drive_interface_init,

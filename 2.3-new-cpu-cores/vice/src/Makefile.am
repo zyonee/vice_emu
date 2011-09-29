@@ -160,6 +160,7 @@ noinst_HEADERS = \
 	machine-video.h \
 	machine.h \
 	main.h \
+	main65SC02cpu.h \
 	mainc64cpu.c \
 	mainc64cpu.h \
 	maincpu.h \
@@ -171,6 +172,7 @@ noinst_HEADERS = \
 	monitor.h \
 	mos6510.h \
 	mos6510dtv.h \
+	mos65SC02.h \
 	mouse.h \
 	network.h \
 	opencbm.h \
@@ -310,7 +312,14 @@ cpudtvcore_sources = \
 maincpu_sources = \
 	maincpu.c
 
+main65SC02cpu_sources = \
+	main65SC02cpu.c
+
+extra_cpu_stuff = \
+	$(main65SC02cpu_sources)
+
 EXTRA_DIST = \
+	$(extra_cpu_stuff) \
 	6510core.c \
 	6510dtvcore.c \
 	65C02core.c \
@@ -1244,7 +1253,7 @@ xpet_libs =  \
 	$(common_libs) \
 	$(resid_libs)
 
-xpet_SOURCES = $(base_sources) $(maincpu_sources) $(mouse_sources)
+xpet_SOURCES = $(base_sources) $(main65SC02cpu_sources) $(mouse_sources)
 xpet_LDADD = $(xpet_libs) $(emu_extlibs) @TFE_LIBS@ @NETPLAY_LIBS@
 xpet_DEPENDENCIES = $(xpet_libs) 
 xpet_LDFLAGS = @xpet_LDFLAGS@

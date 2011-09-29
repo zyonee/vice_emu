@@ -279,6 +279,9 @@ void monitor_print_cpu_types_supported(MEMSPACE mem)
             case CPU_Z80:
                 mon_out(" Z80");
                 break;
+            case CPU_65SC02:
+                mon_out("  65SC02");
+                break;
             default:
                 mon_out(" unknown(%d)",ptr->monitor_cpu_type_p->cpu_type);
                 break;
@@ -1105,6 +1108,9 @@ static void find_supported_monitor_cpu_types(supported_cpu_type_list_t **list_pt
     if (mon_interface->cpu_regs) {
         add_monitor_cpu_type_supported(list_ptr, find_monitor_cpu_type(CPU_6502));
     }
+    if (mon_interface->cpu_65SC02_regs) {
+        add_monitor_cpu_type_supported(list_ptr, find_monitor_cpu_type(CPU_65SC02));
+    }
 }
 
 /* *** MISC COMMANDS *** */
@@ -1157,9 +1163,10 @@ void monitor_init(monitor_interface_t *maincpu_interface_init,
         i++;
     }
 
-    for (i=0;i<NUM_MEMSPACES;i++) {
-        monitor_cpu_type_supported[i]=NULL;
+    for (i = 0; i < NUM_MEMSPACES; i++) {
+        monitor_cpu_type_supported[i] = NULL;
     }
+
     /* We should really be told what CPUs are supported by each memspace, but that will
      * require a bunch of changes, so for now we detect it based on the available registers. */
     find_supported_monitor_cpu_types(&monitor_cpu_type_supported[e_comp_space], maincpu_interface_init);
@@ -1170,14 +1177,14 @@ void monitor_init(monitor_interface_t *maincpu_interface_init,
     }
 
     /* Build array of pointers to monitor_cpu_type structs */
-    monitor_cpu_for_memspace[e_comp_space]=
+    monitor_cpu_for_memspace[e_comp_space] =
         monitor_cpu_type_supported[e_comp_space]->monitor_cpu_type_p;
     for (dnr = 0; dnr < DRIVE_NUM; dnr++) {
-        monitor_cpu_for_memspace[monitor_diskspace_mem(dnr)]=
+        monitor_cpu_for_memspace[monitor_diskspace_mem(dnr)] =
             monitor_cpu_type_supported[monitor_diskspace_mem(dnr)]->monitor_cpu_type_p;
     }
     /* Safety precaution */
-    monitor_cpu_for_memspace[e_default_space]=monitor_cpu_for_memspace[e_comp_space];
+    monitor_cpu_for_memspace[e_default_space] = monitor_cpu_for_memspace[e_comp_space];
         
     watch_load_occurred = FALSE;
     watch_store_occurred = FALSE;
@@ -1188,8 +1195,9 @@ void monitor_init(monitor_interface_t *maincpu_interface_init,
         watch_store_count[i] = 0;
         monitor_mask[i] = MI_NONE;
         monitor_labels[i].name_list = NULL;
-        for (j = 0; j < HASH_ARRAY_SIZE; j++)
+        for (j = 0; j < HASH_ARRAY_SIZE; j++) {
             monitor_labels[i].addr_hash_table[j] = NULL;
+        }
     }
 
     caller_space = e_comp_space;
@@ -1198,8 +1206,9 @@ void monitor_init(monitor_interface_t *maincpu_interface_init,
 
     mon_interfaces[e_comp_space] = maincpu_interface_init;
 
-    for (dnr = 0; dnr < DRIVE_NUM; dnr++)
+    for (dnr = 0; dnr < DRIVE_NUM; dnr++) {
         mon_interfaces[monitor_diskspace_mem(dnr)] = drive_interface_init[dnr];
+    }
 
     mon_memmap_init();
 #ifdef FEATURE_CPUMEMHISTORY
@@ -1207,8 +1216,9 @@ void monitor_init(monitor_interface_t *maincpu_interface_init,
     mon_memmap_make_palette();
 #endif
 
-    if (mon_init_break != -1)
+    if (mon_init_break != -1) {
         mon_breakpoint_add_checkpoint((WORD)mon_init_break, BAD_ADDR, TRUE, e_exec, FALSE);
+    }
 
     if (playback > 0) {
         playback_commands(playback);
@@ -2219,10 +2229,11 @@ static void monitor_open(void)
 
         mon_interfaces[caller_space]->get_line_cycle(&line, &cycle, &half_cycle);
 
-        if (half_cycle==-1)
-          mon_out(" %03i %03i\n", line, cycle);
-        else
-          mon_out(" %03i %03i %i\n", line, cycle, half_cycle);
+        if (half_cycle==-1) {
+            mon_out(" %03i %03i\n", line, cycle);
+        } else {
+            mon_out(" %03i %03i %i\n", line, cycle, half_cycle);
+        }
     } else {
         mon_out("\n");
     }
