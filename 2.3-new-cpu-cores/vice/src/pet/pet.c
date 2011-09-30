@@ -225,15 +225,15 @@ void machine_handle_pending_alarms(int num_write_cycles)
 static void pet_monitor_init(void)
 {
     unsigned int dnr;
+
 #ifdef USE_65SC02
-    monitor_cpu_type_t asm65SC02, asm6502;
-#else
+    monitor_cpu_type_t asm65SC02;
+#endif
+
 #ifdef USE_R65C02
-    monitor_cpu_type_t asmR65C02, asm6502;
-#else
+    monitor_cpu_type_t asmR65C02;
+#endif
     monitor_cpu_type_t asm6502;
-#endif
-#endif
 
     monitor_interface_t *drive_interface_init[DRIVE_NUM];
 
@@ -260,15 +260,13 @@ static void pet_monitor_init(void)
 
 #ifdef USE_65SC02
     asm65SC02_init(&asm65SC02);
-    asm6502_init(&asm6502);
-#else
+#endif
+
 #ifdef USE_R65C02
     asmR65C02_init(&asmR65C02);
-    asm6502_init(&asm6502);
-#else
-    asm6502_init(&asm6502);
 #endif
-#endif
+
+    asm6502_init(&asm6502);
 
     for (dnr = 0; dnr < DRIVE_NUM; dnr++) {
         drive_interface_init[dnr] = drivecpu_monitor_interface_get(dnr);
