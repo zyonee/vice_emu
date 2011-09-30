@@ -220,7 +220,7 @@ void machine_handle_pending_alarms(int num_write_cycles)
 {
 }
 
-#define USE_65SC02
+#define USE_R65C02
 
 static void pet_monitor_init(void)
 {
@@ -228,12 +228,16 @@ static void pet_monitor_init(void)
 #ifdef USE_65SC02
     monitor_cpu_type_t asm65SC02, asm6502;
 #else
+#ifdef USE_R65C02
+    monitor_cpu_type_t asmR65C02, asm6502;
+#else
     monitor_cpu_type_t asm6502;
+#endif
 #endif
 
     monitor_interface_t *drive_interface_init[DRIVE_NUM];
 
-#ifdef USE_65SC02
+#if defined(USE_65SC02) || defined(USE_R65C02)
     monitor_cpu_type_t *asmarray[3];
 #else
     monitor_cpu_type_t *asmarray[2];
@@ -244,15 +248,26 @@ static void pet_monitor_init(void)
     asmarray[1] = &asm6502;
     asmarray[2] = NULL;
 #else
+#ifdef USE_R65C02
+    asmarray[0] = &asmR65C02;
+    asmarray[1] = &asm6502;
+    asmarray[2] = NULL;
+#else
     asmarray[0] = &asm6502;
     asmarray[1] = NULL;
+#endif
 #endif
 
 #ifdef USE_65SC02
     asm65SC02_init(&asm65SC02);
     asm6502_init(&asm6502);
 #else
+#ifdef USE_R65C02
+    asmR65C02_init(&asmR65C02);
     asm6502_init(&asm6502);
+#else
+    asm6502_init(&asm6502);
+#endif
 #endif
 
     for (dnr = 0; dnr < DRIVE_NUM; dnr++) {

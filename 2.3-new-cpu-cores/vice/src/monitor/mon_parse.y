@@ -784,6 +784,12 @@ asm_operand_mode: ARG_IMMEDIATE number { if ($2 > 0xff)
                           else
                             $$ = join_ints(ASM_ADDR_MODE_ABSOLUTE_Y,$1);
                         }
+  | ARG_IMMEDIATE number COMMA number COMMA number { if ($2 < 8)
+                                                         $$ = join_ints((ASM_ADDR_MODE_ZERO_PAGE_BIT0_RELATIVE + $2) | $4 << 8,$6);
+                                                   }
+  | ARG_IMMEDIATE number COMMA number { if ($2 < 8)
+                                                         $$ = join_ints(ASM_ADDR_MODE_ZERO_PAGE_BIT0 + $2,$4);
+                                      }
   | L_PAREN number R_PAREN { if ($2 < 0x100)
                                $$ = join_ints(ASM_ADDR_MODE_INDIRECT,$2);
                              else

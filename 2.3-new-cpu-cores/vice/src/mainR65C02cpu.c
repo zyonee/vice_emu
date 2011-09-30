@@ -1,5 +1,5 @@
 /*
- * main65SC02cpu.c - Emulation of the main (drop in replacement) 65SC02 processor.
+ * mainR65C02cpu.c - Emulation of the main (drop in replacement) R65C02 processor.
  *
  * Written by
  *  Marco van den Heuvel <blackystardust68@yahoo.com>
@@ -34,10 +34,10 @@
 #include "debug.h"
 #include "interrupt.h"
 #include "machine.h"
-#include "main65SC02cpu.h"
+#include "mainR65C02cpu.h"
 #include "mem.h"
 #include "monitor.h"
-#include "mos65SC02.h"
+#include "R65C02.h"
 #include "snapshot.h"
 #include "traps.h"
 #include "types.h"
@@ -167,7 +167,7 @@ monitor_interface_t *maincpu_monitor_interface = NULL;
 CLOCK maincpu_clk = 0L;
 
 /* FIXME: This flag is unused and needs to be removed, there is no RMW on
-   the 65SC02, they have become RRW instead and need to be emulated as
+   the R65C02, they have become RRW instead and need to be emulated as
    such. */
 int maincpu_rmw_flag = 0;
 
@@ -180,39 +180,40 @@ unsigned int last_opcode_info;
 /* Address of the last executed opcode. This is used by watchpoints. */
 unsigned int last_opcode_addr;
 
-/* Number of write cycles for each 65SC02 opcode.  */
+/* Number of write cycles for each R65C02 opcode.  */
 const CLOCK maincpu_opcode_write_cycles[] = {
             /* 0  1  2  3  4  5  6  7  8  9  A  B  C  D  E  F */
-    /* $00 */  3, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, /* $00 */
-    /* $10 */  0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, /* $10 */
-    /* $20 */  2, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, /* $20 */
-    /* $30 */  0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, /* $30 */
-    /* $40 */  0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, /* $40 */
-    /* $50 */  0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, /* $50 */
-    /* $60 */  0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, /* $60 */
-    /* $70 */  0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, /* $70 */
-    /* $80 */  0, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, /* $80 */
-    /* $90 */  0, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, /* $90 */
-    /* $A0 */  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* $A0 */
-    /* $B0 */  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* $B0 */
-    /* $C0 */  0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, /* $C0 */
-    /* $D0 */  0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, /* $D0 */
-    /* $E0 */  0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, /* $E0 */
-    /* $F0 */  0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0  /* $F0 */
+    /* $00 */  3, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0, /* $00 */
+    /* $10 */  0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, /* $10 */
+    /* $20 */  2, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, /* $20 */
+    /* $30 */  0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, /* $30 */
+    /* $40 */  0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, /* $40 */
+    /* $50 */  0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, /* $50 */
+    /* $60 */  0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, /* $60 */
+    /* $70 */  0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, /* $70 */
+    /* $80 */  0, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, /* $80 */
+    /* $90 */  0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0, /* $90 */
+    /* $A0 */  0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, /* $A0 */
+    /* $B0 */  0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, /* $B0 */
+    /* $C0 */  0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, /* $C0 */
+    /* $D0 */  0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, /* $D0 */
+    /* $E0 */  0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, /* $E0 */
+    /* $F0 */  0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0  /* $F0 */
             /* 0  1  2  3  4  5  6  7  8  9  A  B  C  D  E  F */
 };
 
 /* Public copy of the CPU registers.  As putting the registers into the
    function makes it faster, you have to generate a `TRAP' interrupt to have
    the values copied into this struct.  */
-mos65SC02_regs_t maincpu_regs;
+R65C02_regs_t maincpu_regs;
 
 /* ------------------------------------------------------------------------- */
 
 monitor_interface_t *maincpu_monitor_interface_get(void)
 {
     maincpu_monitor_interface->cpu_regs = NULL;
-    maincpu_monitor_interface->cpu_65SC02_regs = &maincpu_regs;
+    maincpu_monitor_interface->cpu_65SC02_regs = NULL;
+    maincpu_monitor_interface->cpu_R65C02_regs = &maincpu_regs;
     maincpu_monitor_interface->dtv_cpu_regs = NULL;
     maincpu_monitor_interface->z80_cpu_regs = NULL;
 
@@ -287,7 +288,7 @@ void maincpu_reset(void)
 /* ------------------------------------------------------------------------- */
 
 /* Return nonzero if a pending NMI should be dispatched now.  This takes
-   account for the internal delays of the 65SC02, but does not actually check
+   account for the internal delays of the R65C02, but does not actually check
    the status of the NMI line.  */
 inline static int interrupt_check_nmi_delay(interrupt_cpu_status_t *cs,
                                             CLOCK cpu_clk)
@@ -308,7 +309,7 @@ inline static int interrupt_check_nmi_delay(interrupt_cpu_status_t *cs,
 }
 
 /* Return nonzero if a pending IRQ should be dispatched now.  This takes
-   account for the internal delays of the 65SC02, but does not actually check
+   account for the internal delays of the R65C02, but does not actually check
    the status of the IRQ line.  */
 inline static int interrupt_check_irq_delay(interrupt_cpu_status_t *cs,
                                             CLOCK cpu_clk)
@@ -343,7 +344,7 @@ unsigned int reg_pc;
 #define CPU_R65C02     1
 #define CPU_65SC02     2
 
-#define CPU_STR "65SC02 CPU"
+#define CPU_STR "R65C02 CPU"
 
 void maincpu_mainloop(void)
 {
@@ -360,7 +361,7 @@ void maincpu_mainloop(void)
     unsigned int reg_pc;
 #endif
 
-    int cpu_type = CPU_65SC02;
+    int cpu_type = CPU_R65C02;
 
     BYTE *bank_base;
     int bank_limit;
@@ -393,7 +394,7 @@ void maincpu_mainloop(void)
 #define ROM_TRAP_HANDLER() \
    traps_handler()
 
-/* WDC_STP() and WDC_WAI() are not used on the 65SC02. */
+/* WDC_STP() and WDC_WAI() are not used on the R65C02. */
 #define WDC_STP()
 #define WDC_WAI()
 
@@ -415,7 +416,7 @@ void maincpu_mainloop(void)
 
 /* ------------------------------------------------------------------------- */
 
-static char snap_module_name[] = "MAIN65SC02CPU";
+static char snap_module_name[] = "MAINR65C02CPU";
 #define SNAP_MAJOR 1
 #define SNAP_MINOR 1
 
@@ -430,12 +431,12 @@ int maincpu_snapshot_write_module(snapshot_t *s)
 
     if (0
         || SMW_DW(m, maincpu_clk) < 0
-        || SMW_B(m, MOS65SC02_REGS_GET_A(&maincpu_regs)) < 0
-        || SMW_B(m, MOS65SC02_REGS_GET_X(&maincpu_regs)) < 0
-        || SMW_B(m, MOS65SC02_REGS_GET_Y(&maincpu_regs)) < 0
-        || SMW_B(m, MOS65SC02_REGS_GET_SP(&maincpu_regs)) < 0
-        || SMW_W(m, (WORD)MOS65SC02_REGS_GET_PC(&maincpu_regs)) < 0
-        || SMW_B(m, (BYTE)MOS65SC02_REGS_GET_STATUS(&maincpu_regs)) < 0
+        || SMW_B(m, R65C02_REGS_GET_A(&maincpu_regs)) < 0
+        || SMW_B(m, R65C02_REGS_GET_X(&maincpu_regs)) < 0
+        || SMW_B(m, R65C02_REGS_GET_Y(&maincpu_regs)) < 0
+        || SMW_B(m, R65C02_REGS_GET_SP(&maincpu_regs)) < 0
+        || SMW_W(m, (WORD)R65C02_REGS_GET_PC(&maincpu_regs)) < 0
+        || SMW_B(m, (BYTE)R65C02_REGS_GET_STATUS(&maincpu_regs)) < 0
         || SMW_DW(m, (DWORD)last_opcode_info) < 0)
         goto fail;
 
@@ -484,12 +485,12 @@ int maincpu_snapshot_read_module(snapshot_t *s)
         || SMR_DW_UINT(m, &last_opcode_info) < 0)
         goto fail;
 
-    MOS65SC02_REGS_SET_A(&maincpu_regs, a);
-    MOS65SC02_REGS_SET_X(&maincpu_regs, x);
-    MOS65SC02_REGS_SET_Y(&maincpu_regs, y);
-    MOS65SC02_REGS_SET_SP(&maincpu_regs, sp);
-    MOS65SC02_REGS_SET_PC(&maincpu_regs, pc);
-    MOS65SC02_REGS_SET_STATUS(&maincpu_regs, status);
+    R65C02_REGS_SET_A(&maincpu_regs, a);
+    R65C02_REGS_SET_X(&maincpu_regs, x);
+    R65C02_REGS_SET_Y(&maincpu_regs, y);
+    R65C02_REGS_SET_SP(&maincpu_regs, sp);
+    R65C02_REGS_SET_PC(&maincpu_regs, pc);
+    R65C02_REGS_SET_STATUS(&maincpu_regs, status);
 
     if (interrupt_read_snapshot(maincpu_int_status, m) < 0) {
         goto fail;

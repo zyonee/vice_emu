@@ -164,6 +164,7 @@ noinst_HEADERS = \
 	mainc64cpu.c \
 	mainc64cpu.h \
 	maincpu.h \
+	mainR65C02cpu.h \
 	mainviccpu.c \
 	mc6821.h \
 	mem.h \
@@ -185,6 +186,7 @@ noinst_HEADERS = \
 	plus4ui.h \
 	printer.h \
 	ps2mouse.h \
+	R65C02.h \
 	ram.h \
 	rawfile.h \
 	rawnet.h \
@@ -315,8 +317,12 @@ maincpu_sources = \
 main65SC02cpu_sources = \
 	main65SC02cpu.c
 
+mainR65C02cpu_sources = \
+	mainR65C02cpu.c
+
 extra_cpu_stuff = \
-	$(main65SC02cpu_sources)
+	$(main65SC02cpu_sources) \
+	$(mainR65C02cpu_sources)
 
 EXTRA_DIST = \
 	$(extra_cpu_stuff) \
@@ -1253,7 +1259,7 @@ xpet_libs =  \
 	$(common_libs) \
 	$(resid_libs)
 
-xpet_SOURCES = $(base_sources) $(main65SC02cpu_sources) $(mouse_sources)
+xpet_SOURCES = $(base_sources) $(mainR65C02cpu_sources) $(mouse_sources)
 xpet_LDADD = $(xpet_libs) $(emu_extlibs) @TFE_LIBS@ @NETPLAY_LIBS@
 xpet_DEPENDENCIES = $(xpet_libs) 
 xpet_LDFLAGS = @xpet_LDFLAGS@

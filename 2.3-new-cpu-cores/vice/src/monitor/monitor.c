@@ -249,16 +249,18 @@ int find_cpu_type_from_string(const char *cpu_string)
 monitor_cpu_type_t* monitor_find_cpu_for_memspace(MEMSPACE mem, CPU_TYPE_t cpu)
 {
     supported_cpu_type_list_t *ptr;
-    if (mem==e_default_space)
-        mem=default_memspace;
-    ptr=monitor_cpu_type_supported[mem];
+
+    if (mem == e_default_space) {
+        mem = default_memspace;
+    }
+    ptr = monitor_cpu_type_supported[mem];
     while (ptr) {
         if (ptr->monitor_cpu_type_p) {
-            if (ptr->monitor_cpu_type_p->cpu_type==cpu) {
+            if (ptr->monitor_cpu_type_p->cpu_type == cpu) {
                 return ptr->monitor_cpu_type_p;
             }
         }
-        ptr=ptr->next;
+        ptr = ptr->next;
     }
     return NULL;
 }
@@ -266,7 +268,8 @@ monitor_cpu_type_t* monitor_find_cpu_for_memspace(MEMSPACE mem, CPU_TYPE_t cpu)
 void monitor_print_cpu_types_supported(MEMSPACE mem)
 {
     supported_cpu_type_list_t *ptr;
-    ptr=monitor_cpu_type_supported[mem];
+
+    ptr = monitor_cpu_type_supported[mem];
     while (ptr) {
         if (ptr->monitor_cpu_type_p) {
             switch (ptr->monitor_cpu_type_p->cpu_type) {
@@ -280,14 +283,17 @@ void monitor_print_cpu_types_supported(MEMSPACE mem)
                 mon_out(" Z80");
                 break;
             case CPU_65SC02:
-                mon_out("  65SC02");
+                mon_out(" 65SC02");
+                break;
+            case CPU_R65C02:
+                mon_out(" R65C02");
                 break;
             default:
                 mon_out(" unknown(%d)",ptr->monitor_cpu_type_p->cpu_type);
                 break;
             }
         }
-        ptr=ptr->next;
+        ptr = ptr->next;
     }
     mon_out("\n");
 }
@@ -315,8 +321,9 @@ bool mon_inc_addr_location(MON_ADDR *a, unsigned inc)
 
 void mon_evaluate_default_addr(MON_ADDR *a)
 {
-    if (addr_memspace(*a) == e_default_space)
+    if (addr_memspace(*a) == e_default_space) {
         set_addr_memspace(a, default_memspace);
+    }
 }
 
 bool mon_is_in_range(MON_ADDR start_addr, MON_ADDR end_addr, unsigned loc)
@@ -325,21 +332,24 @@ bool mon_is_in_range(MON_ADDR start_addr, MON_ADDR end_addr, unsigned loc)
 
     start = addr_location(start_addr);
 
-    if (!mon_is_valid_addr(end_addr))
+    if (!mon_is_valid_addr(end_addr)) {
         return (loc == start);
+    }
 
     end = addr_location(end_addr);
 
-    if (end < start)
+    if (end < start) {
         return ((loc >= start) || (loc <= end));
+    }
 
     return ((loc >= start) && (loc<=end));
 }
 
 static bool is_valid_addr_range(MON_ADDR start_addr, MON_ADDR end_addr)
 {
-    if (addr_memspace(start_addr) == e_invalid_space)
+    if (addr_memspace(start_addr) == e_invalid_space) {
         return FALSE;
+    }
 
     if ((addr_memspace(start_addr) != addr_memspace(end_addr)) &&
          ((addr_memspace(start_addr) != e_default_space) ||
@@ -372,8 +382,9 @@ long mon_evaluate_address_range(MON_ADDR *start_addr, MON_ADDR *end_addr,
     long len = default_len;
 
     /* Check if we DEFINITELY need a range. */
-    if (!is_valid_addr_range(*start_addr, *end_addr) && must_be_range)
+    if (!is_valid_addr_range(*start_addr, *end_addr) && must_be_range) {
         return -1;
+    }
 
     if (is_valid_addr_range(*start_addr, *end_addr)) {
         MEMSPACE mem1, mem2;
@@ -413,10 +424,11 @@ long mon_evaluate_address_range(MON_ADDR *start_addr, MON_ADDR *end_addr,
 
         len = get_range_len(*start_addr, *end_addr);
     } else {
-        if (!mon_is_valid_addr(*start_addr))
+        if (!mon_is_valid_addr(*start_addr)) {
             *start_addr = dot_addr[(int)default_memspace];
-        else
+        } else {
             mon_evaluate_default_addr(start_addr);
+        }
 
         if (!mon_is_valid_addr(*end_addr)) {
             *end_addr = *start_addr;
@@ -440,8 +452,9 @@ mon_reg_list_t *mon_register_list_get(int mem)
 
 bool check_drive_emu_level_ok(int drive_num)
 {
-    if (drive_num < 8 || drive_num > 11)
+    if (drive_num < 8 || drive_num > 11) {
         return FALSE;
+    }
 
     if (mon_interfaces[monitor_diskspace_mem(drive_num - 8)] == NULL) {
         mon_out("True drive emulation not supported for this machine.\n");
@@ -474,8 +487,9 @@ void monitor_cpu_type_set(const char *cpu_type)
 
 void mon_bank(MEMSPACE mem, const char *bankname)
 {
-    if (mem == e_default_space)
+    if (mem == e_default_space) {
         mem = default_memspace;
+    }
 
     if (!mon_interfaces[mem]->mem_bank_list) {
         mon_out("Banks not available in this memspace\n");
@@ -1110,6 +1124,9 @@ static void find_supported_monitor_cpu_types(supported_cpu_type_list_t **list_pt
     }
     if (mon_interface->cpu_65SC02_regs) {
         add_monitor_cpu_type_supported(list_ptr, find_monitor_cpu_type(CPU_65SC02));
+    }
+    if (mon_interface->cpu_R65C02_regs) {
+        add_monitor_cpu_type_supported(list_ptr, find_monitor_cpu_type(CPU_R65C02));
     }
 }
 
