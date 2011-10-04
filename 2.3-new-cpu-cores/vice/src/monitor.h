@@ -57,6 +57,8 @@ enum CPU_TYPE_s {
     CPU_65SC02,
     CPU_R65C02,
     CPU_WDC65C02,
+    CPU_65CE02,
+    CPU_65816,
     CPU_Z80,
     CPU_6502DTV
 };
@@ -93,6 +95,12 @@ struct monitor_interface_s {
 
     /* Pointer to the registers of the WDC65C02 CPU. */
     struct WDC65C02_regs_s *cpu_WDC65C02_regs;
+
+    /* Pointer to the registers of the 65CE02 CPU. */
+    struct mos65CE02_regs_s *cpu_65CE02_regs;
+
+    /* Pointer to the registers of the 65816/65802 CPU. */
+    struct WDC65816_regs_s *cpu_65816_regs;
 
     /* Pointer to the registers of the Z80 CPU.  */
     struct z80_regs_s *z80_cpu_regs;
@@ -191,6 +199,8 @@ extern void asm6502_init(struct monitor_cpu_type_s *monitor_cpu_type);
 extern void asm65SC02_init(struct monitor_cpu_type_s *monitor_cpu_type);
 extern void asmR65C02_init(struct monitor_cpu_type_s *monitor_cpu_type);
 extern void asmWDC65C02_init(struct monitor_cpu_type_s *monitor_cpu_type);
+extern void asm65CE02_init(struct monitor_cpu_type_s *monitor_cpu_type);
+extern void asm65816_init(struct monitor_cpu_type_s *monitor_cpu_type);
 extern void asm6502dtv_init(struct monitor_cpu_type_s *monitor_cpu_type);
 extern void asmz80_init(struct monitor_cpu_type_s *monitor_cpu_type);
 

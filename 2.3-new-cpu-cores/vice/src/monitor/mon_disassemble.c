@@ -102,6 +102,10 @@ const char *mon_disassemble_to_string_internal(MEMSPACE memspace, unsigned int a
         sprintf(buffp, (hex_mode ? " #$%02X" : " %3d"), ival);
         break;
 
+      case ASM_ADDR_MODE_IMMEDIATE_24:
+        sprintf(buffp, (hex_mode ? " #$%06X" : " %8d"), p1 | (p2 << 8) | (p3 << 16));
+        break;
+
       case ASM_ADDR_MODE_ZERO_PAGE:
         sprintf(buffp, (hex_mode ? " $%02X" : " %3d"), ival);
         break;
@@ -220,11 +224,27 @@ const char *mon_disassemble_to_string_internal(MEMSPACE memspace, unsigned int a
         }
         break;
 
+      case ASM_ADDR_MODE_INDIRECT_Z:
+        if (!(addr_name = mon_symbol_table_lookup_name(e_comp_space, ival))) {
+            sprintf(buffp, (hex_mode ? " ($%02X),Z" : " (%3d),Z"), ival);
+        } else {
+            sprintf(buffp, " (%s),Z", addr_name);
+        }
+        break;
+
       case ASM_ADDR_MODE_INDIRECT:
         if (!(addr_name = mon_symbol_table_lookup_name(e_comp_space, ival))) {
             sprintf(buffp, (hex_mode ? " ($%02X)" : " (%3d)"), ival);
         } else {
             sprintf(buffp, " (%s)", addr_name);
+        }
+        break;
+
+      case ASM_ADDR_MODE_STACK_RELATIVE_Y:
+        if (!(addr_name = mon_symbol_table_lookup_name(e_comp_space, ival))) {
+            sprintf(buffp, (hex_mode ? " ($%02X,S),Y" : " (%3d,S),Y"), ival);
+        } else {
+            sprintf(buffp, " (%s,S),Y", addr_name);
         }
         break;
 
@@ -234,6 +254,20 @@ const char *mon_disassemble_to_string_internal(MEMSPACE memspace, unsigned int a
         }
         ival += addr;
         ival += 2;
+        if (!(addr_name = mon_symbol_table_lookup_name(e_comp_space, ival))) {
+            sprintf(buffp, (hex_mode ? " $%04X" : " %5d"), ival);
+        } else {
+            sprintf(buffp, " %s", addr_name);
+        }
+        break;
+
+      case ASM_ADDR_MODE_RELATIVE_LONG:
+        ival |= (p2 & 0xff) << 8;
+        if (0x8000 & ival) {
+            ival -= 65536;
+        }
+        ival += addr;
+        ival += 3;
         if (!(addr_name = mon_symbol_table_lookup_name(e_comp_space, ival))) {
             sprintf(buffp, (hex_mode ? " $%04X" : " %5d"), ival);
         } else {

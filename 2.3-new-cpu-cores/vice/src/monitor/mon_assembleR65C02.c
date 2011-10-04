@@ -61,7 +61,7 @@ static int mon_assemble_instr(const char *opcode_name, unsigned int operand)
         if (!strcasecmp(opinfo->mnemonic, opcode_name)) {
 
             /* Special case: ZERO PAGE BITx RELATIVE mode needs special handling. */
-            if (operand_mode == operand_mode
+            if (opinfo->addr_mode == operand_mode
                 && operand_mode >= ASM_ADDR_MODE_ZERO_PAGE_BIT0_RELATIVE
                 && operand_mode <= ASM_ADDR_MODE_ZERO_PAGE_BIT7_RELATIVE) {
                 branch_offset = operand_value - loc - 3;
@@ -69,7 +69,7 @@ static int mon_assemble_instr(const char *opcode_name, unsigned int operand)
                     mon_out("Branch offset too large.\n");
                     return -1;
                 }
-                operand_value = (operand_extra_value && 0xff) | ((branch_offset & 0xff) << 8);
+                operand_value = (operand_extra_value & 0xff) | ((branch_offset & 0xff) << 8);
                 opcode = i;
                 found = TRUE;
                 break;

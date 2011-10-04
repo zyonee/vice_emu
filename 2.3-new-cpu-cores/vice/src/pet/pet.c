@@ -220,7 +220,7 @@ void machine_handle_pending_alarms(int num_write_cycles)
 {
 }
 
-#define USE_WDC65C02
+#define USE_65802
 
 static void pet_monitor_init(void)
 {
@@ -238,11 +238,19 @@ static void pet_monitor_init(void)
     monitor_cpu_type_t asmWDC65C02;
 #endif
 
+#ifdef USE_65CE02
+    monitor_cpu_type_t asm65CE02;
+#endif
+
+#ifdef USE_65802
+    monitor_cpu_type_t asm65802;
+#endif
+
     monitor_cpu_type_t asm6502;
 
     monitor_interface_t *drive_interface_init[DRIVE_NUM];
 
-#if defined(USE_65SC02) || defined(USE_R65C02) || defined(USE_WDC65C02)
+#if defined(USE_65SC02) || defined(USE_R65C02) || defined(USE_WDC65C02) || defined(USE_65CE02) || defined(USE_65802)
     monitor_cpu_type_t *asmarray[3];
 #else
     monitor_cpu_type_t *asmarray[2];
@@ -263,8 +271,20 @@ static void pet_monitor_init(void)
     asmarray[1] = &asm6502;
     asmarray[2] = NULL;
 #else
+#ifdef USE_65CE02
+    asmarray[0] = &asm65CE02;
+    asmarray[1] = &asm6502;
+    asmarray[2] = NULL;
+#else
+#ifdef USE_65802
+    asmarray[0] = &asm65802;
+    asmarray[1] = &asm6502;
+    asmarray[2] = NULL;
+#else
     asmarray[0] = &asm6502;
     asmarray[1] = NULL;
+#endif
+#endif
 #endif
 #endif
 #endif
@@ -279,6 +299,14 @@ static void pet_monitor_init(void)
 
 #ifdef USE_WDC65C02
     asmWDC65C02_init(&asmWDC65C02);
+#endif
+
+#ifdef USE_65CE02
+    asm65CE02_init(&asm65CE02);
+#endif
+
+#ifdef USE_65802
+    asm65816_init(&asm65802);
 #endif
 
     asm6502_init(&asm6502);

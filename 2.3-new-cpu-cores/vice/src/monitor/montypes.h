@@ -45,10 +45,17 @@ typedef int bool;
 
 enum t_reg_id {
    e_A,
+   e_B,
    e_X,
    e_Y,
+   e_Z,
    e_PC,
    e_SP,
+   e_BP,
+   e_DPR,
+   e_PBR,
+   e_DBR,
+   e_EMUL,
    e_FLAGS,
    e_AF,
    e_BC,

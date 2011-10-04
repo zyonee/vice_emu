@@ -291,6 +291,12 @@ void monitor_print_cpu_types_supported(MEMSPACE mem)
             case CPU_WDC65C02:
                 mon_out(" WDC65C02");
                 break;
+            case CPU_65CE02:
+                mon_out(" 65CE02");
+                break;
+            case CPU_65816:
+                mon_out(" 65816/65802");
+                break;
             default:
                 mon_out(" unknown(%d)",ptr->monitor_cpu_type_p->cpu_type);
                 break;
@@ -1133,6 +1139,12 @@ static void find_supported_monitor_cpu_types(supported_cpu_type_list_t **list_pt
     }
     if (mon_interface->cpu_WDC65C02_regs) {
         add_monitor_cpu_type_supported(list_ptr, find_monitor_cpu_type(CPU_WDC65C02));
+    }
+    if (mon_interface->cpu_65CE02_regs) {
+        add_monitor_cpu_type_supported(list_ptr, find_monitor_cpu_type(CPU_65CE02));
+    }
+    if (mon_interface->cpu_65816_regs) {
+        add_monitor_cpu_type_supported(list_ptr, find_monitor_cpu_type(CPU_65816));
     }
 }
 

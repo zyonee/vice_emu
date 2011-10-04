@@ -1,5 +1,5 @@
 /*
- * mon_assembleWDC65C02.c - The VICE built-in monitor, WDC65C02 assembler module.
+ * mon_assemble65CE02.c - The VICE built-in monitor, 65CE02 assembler module.
  *
  * Written by
  *  Marco van den Heuvel <blackystardust68@yahoo.com>
@@ -96,12 +96,23 @@ static int mon_assemble_instr(const char *opcode_name, unsigned int operand)
                 || operand_mode == ASM_ADDR_MODE_ABSOLUTE)
                 && opinfo->addr_mode == ASM_ADDR_MODE_RELATIVE) {
                 branch_offset = operand_value - loc - 2;
-                if (branch_offset > 127 || branch_offset < -128) {
-                    mon_out("Branch offset too large.\n");
-                    return -1;
+                if (branch_offset <= 127 && branch_offset >= -128) {
+                    operand_value = (branch_offset & 0xff);
+                    operand_mode = ASM_ADDR_MODE_RELATIVE;
+                    opcode = i;
+                    found = TRUE;
+                    break;
                 }
-                operand_value = (branch_offset & 0xff);
-                operand_mode = ASM_ADDR_MODE_RELATIVE;
+            }
+
+            /* Special case: RELATIVE LONG mode looks like ZERO_PAGE or
+               ABSOLUTE modes.  */
+            if ((operand_mode == ASM_ADDR_MODE_ZERO_PAGE
+                || operand_mode == ASM_ADDR_MODE_ABSOLUTE)
+                && opinfo->addr_mode == ASM_ADDR_MODE_RELATIVE_LONG) {
+                branch_offset = operand_value - loc - 3;
+                operand_value = branch_offset;
+                operand_mode = ASM_ADDR_MODE_RELATIVE_LONG;
                 opcode = i;
                 found = TRUE;
                 break;
@@ -163,6 +174,10 @@ static int mon_assemble_instr(const char *opcode_name, unsigned int operand)
         mon_set_mem_val(mem, (WORD)(loc + 2),
                         (BYTE)((operand_value >> 8) & 0xff));
     }
+    if (len >= 4) {
+        mon_set_mem_val(mem, (WORD)(loc + 3),
+                        (BYTE)(operand_extra_value & 0xff));
+    }
 
     if (len >= 0) {
         mon_inc_addr_location(&asm_mode_addr, len);
@@ -173,7 +188,7 @@ static int mon_assemble_instr(const char *opcode_name, unsigned int operand)
     return len;
 }
 
-void mon_assembleWDC65C02_init(monitor_cpu_type_t *monitor_cpu_type)
+void mon_assemble65CE02_init(monitor_cpu_type_t *monitor_cpu_type)
 {
     monitor_cpu_type->mon_assemble_instr = mon_assemble_instr;
 }

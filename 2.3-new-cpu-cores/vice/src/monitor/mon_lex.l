@@ -334,27 +334,34 @@ if		{ BEGIN (COND_MODE); return IF; }
 <ROL>[^ \t\n][^\n]*          { yylval.str = lib_stralloc(yytext); return R_O_L; }
 
 <REG_ASGN>{
-        a   { yylval.i = e_A; return MON_REGISTER; }
-        x   { yylval.i = e_X; return MON_REGISTER; }
-        y   { yylval.i = e_Y; return MON_REGISTER; }
-        pc  { yylval.i = e_PC; return MON_REGISTER; }
-        sp  { yylval.i = e_SP; return MON_REGISTER; }
-        fl  { yylval.i = e_FLAGS; return MON_REGISTER; }
-        r3  { yylval.i = e_R3; return MON_REGISTER; }
-        r4  { yylval.i = e_R4; return MON_REGISTER; }
-        r5  { yylval.i = e_R5; return MON_REGISTER; }
-        r6  { yylval.i = e_R6; return MON_REGISTER; }
-        r7  { yylval.i = e_R7; return MON_REGISTER; }
-        r8  { yylval.i = e_R8; return MON_REGISTER; }
-        r9  { yylval.i = e_R9; return MON_REGISTER; }
-        r10 { yylval.i = e_R10; return MON_REGISTER; }
-        r11 { yylval.i = e_R11; return MON_REGISTER; }
-        r12 { yylval.i = e_R12; return MON_REGISTER; }
-        r13 { yylval.i = e_R13; return MON_REGISTER; }
-        r14 { yylval.i = e_R14; return MON_REGISTER; }
-        r15 { yylval.i = e_R15; return MON_REGISTER; }
-        acm { yylval.i = e_ACM; return MON_REGISTER; }
-        yxm { yylval.i = e_YXM; return MON_REGISTER; }
+        a    { yylval.i = e_A; return MON_REGISTER; }
+        b    { yylval.i = e_B; return MON_REGISTER; }
+        x    { yylval.i = e_X; return MON_REGISTER; }
+        y    { yylval.i = e_Y; return MON_REGISTER; }
+        z    { yylval.i = e_Z; return MON_REGISTER; }
+        pc   { yylval.i = e_PC; return MON_REGISTER; }
+        sp   { yylval.i = e_SP; return MON_REGISTER; }
+        bp   { yylval.i = e_BP; return MON_REGISTER; }
+        dpr  { yylval.i = e_DPR; return MON_REGISTER; }
+        pbr  { yylval.i = e_PBR; return MON_REGISTER; }
+        dbr  { yylval.i = e_DBR; return MON_REGISTER; }
+        emul { yylval.i = e_EMUL; return MON_REGISTER; }
+        fl   { yylval.i = e_FLAGS; return MON_REGISTER; }
+        r3   { yylval.i = e_R3; return MON_REGISTER; }
+        r4   { yylval.i = e_R4; return MON_REGISTER; }
+        r5   { yylval.i = e_R5; return MON_REGISTER; }
+        r6   { yylval.i = e_R6; return MON_REGISTER; }
+        r7   { yylval.i = e_R7; return MON_REGISTER; }
+        r8   { yylval.i = e_R8; return MON_REGISTER; }
+        r9   { yylval.i = e_R9; return MON_REGISTER; }
+        r10  { yylval.i = e_R10; return MON_REGISTER; }
+        r11  { yylval.i = e_R11; return MON_REGISTER; }
+        r12  { yylval.i = e_R12; return MON_REGISTER; }
+        r13  { yylval.i = e_R13; return MON_REGISTER; }
+        r14  { yylval.i = e_R14; return MON_REGISTER; }
+        r15  { yylval.i = e_R15; return MON_REGISTER; }
+        acm  { yylval.i = e_ACM; return MON_REGISTER; }
+        yxm  { yylval.i = e_YXM; return MON_REGISTER; }
 }
 
 <COND_MODE>{
@@ -368,10 +375,17 @@ if		{ BEGIN (COND_MODE); return IF; }
 	\|\|		{ yylval.i = e_OR;  return COMPARE_OP; }
 
 	\.A 		{ yylval.i = e_A; return MON_REGISTER; }
+        \.B             { yylval.i = e_B; return MON_REGISTER; }
 	\.X 		{ yylval.i = e_X; return MON_REGISTER; }
 	\.Y 		{ yylval.i = e_Y; return MON_REGISTER; }
+        \.Z             { yylval.i = e_Z; return MON_REGISTER; }
 	\.PC 		{ yylval.i = e_PC; return MON_REGISTER; }
 	\.SP		{ yylval.i = e_SP; return MON_REGISTER; }
+        \.BP            { yylval.i = e_BP; return MON_REGISTER; }
+        \.DPR           { yylval.i = e_DPR; return MON_REGISTER; }
+        \.PBR           { yylval.i = e_PBR; return MON_REGISTER; }
+        \.DBR           { yylval.i = e_DBR; return MON_REGISTER; }
+        \.EMUL          { yylval.i = e_EMUL; return MON_REGISTER; }
         \.R3            { yylval.i = e_R3; return MON_REGISTER; }
         \.R4            { yylval.i = e_R4; return MON_REGISTER; }
         \.R5            { yylval.i = e_R5; return MON_REGISTER; }
@@ -430,8 +444,10 @@ if		{ BEGIN (COND_MODE); return IF; }
 <ASM_MODE>e|E           { return REG_E; }
 <ASM_MODE>h|H           { return REG_H; }
 <ASM_MODE>l|L           { return REG_L; }
+<ASM_MODE>s|S           { return REG_S; }
 <ASM_MODE>x|X           { return REG_X; }
 <ASM_MODE>y|Y           { return REG_Y; }
+<ASM_MODE>z|Z           { return REG_Z; }
 
 <ASM_MODE>\(            { dont_match_reg_a = 1; return L_PAREN; }
 <ASM_MODE>\)            { dont_match_reg_a = 0; return R_PAREN; }

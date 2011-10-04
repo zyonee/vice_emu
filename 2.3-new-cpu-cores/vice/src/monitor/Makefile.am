@@ -17,12 +17,16 @@ noinst_HEADERS = \
 libmonitor_a_SOURCES = \
 	asm6502.c \
 	asm6502dtv.c \
+	asm65816.c \
+	asm65CE02.c \
 	asm65SC02.c \
 	asmR65C02.c \
 	asmWDC65C02.c \
 	asmz80.c \
 	asm.h \
 	mon_assemble6502.c \
+	mon_assemble65816.c \
+	mon_assemble65CE02.c \
 	mon_assemble65SC02.c \
 	mon_assembleR65C02.c \
 	mon_assembleWDC65C02.c \
@@ -42,6 +46,8 @@ libmonitor_a_SOURCES = \
 	mon_memory.h \
 	mon_register6502.c \
 	mon_register6502dtv.c \
+	mon_register65816.c \
+	mon_register65CE02.c \
 	mon_register65SC02.c \
 	mon_registerR65C02.c \
 	mon_registerWDC65C02.c \

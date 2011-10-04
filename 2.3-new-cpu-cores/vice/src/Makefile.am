@@ -160,6 +160,8 @@ noinst_HEADERS = \
 	machine-video.h \
 	machine.h \
 	main.h \
+	main65816cpu.h \
+	main65CE02cpu.h \
 	main65SC02cpu.h \
 	mainc64cpu.c \
 	mainc64cpu.h \
@@ -174,6 +176,7 @@ noinst_HEADERS = \
 	monitor.h \
 	mos6510.h \
 	mos6510dtv.h \
+	mos65CE02.h \
 	mos65SC02.h \
 	mouse.h \
 	network.h \
@@ -232,6 +235,7 @@ noinst_HEADERS = \
 	vsidui.h \
 	vsync.h \
 	vsyncapi.h \
+	WDC65816.h \
 	WDC65C02.h \
 	z80regs.h \
 	zfile.h \
@@ -325,10 +329,18 @@ mainR65C02cpu_sources = \
 mainWDC65C02cpu_sources = \
 	mainWDC65C02cpu.c
 
+main65CE02cpu_sources = \
+	main65CE02cpu.c
+
+main65816cpu_sources = \
+	main65816cpu.c
+
 extra_cpu_stuff = \
 	$(main65SC02cpu_sources) \
 	$(mainR65C02cpu_sources) \
-	$(mainWDC65C02cpu_source)
+	$(mainWDC65C02cpu_sources) \
+	$(main65CE02cpu_sources) \
+	$(main65816cpu_sources)
 
 EXTRA_DIST = \
 	$(extra_cpu_stuff) \
@@ -1265,7 +1277,7 @@ xpet_libs =  \
 	$(common_libs) \
 	$(resid_libs)
 
-xpet_SOURCES = $(base_sources) $(mainWDC65C02cpu_sources) $(mouse_sources)
+xpet_SOURCES = $(base_sources) $(main65816cpu_sources) $(mouse_sources)
 xpet_LDADD = $(xpet_libs) $(emu_extlibs) @TFE_LIBS@ @NETPLAY_LIBS@
 xpet_DEPENDENCIES = $(xpet_libs) 
 xpet_LDFLAGS = @xpet_LDFLAGS@

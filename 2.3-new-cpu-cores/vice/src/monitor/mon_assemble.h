@@ -30,7 +30,10 @@
 struct monitor_cpu_type_s;
 
 void mon_assemble6502_init(struct monitor_cpu_type_s *monitor_cpu_type);
+void mon_assemble65CE02_init(struct monitor_cpu_type_s *monitor_cpu_type);
 void mon_assemble65SC02_init(struct monitor_cpu_type_s *monitor_cpu_type);
+void mon_assembleR65C02_init(struct monitor_cpu_type_s *monitor_cpu_type);
+void mon_assembleWDC65C02_init(struct monitor_cpu_type_s *monitor_cpu_type);
 void mon_assemblez80_init(struct monitor_cpu_type_s *monitor_cpu_type);
 
 #endif

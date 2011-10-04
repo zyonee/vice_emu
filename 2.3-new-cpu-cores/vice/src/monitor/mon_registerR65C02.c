@@ -84,7 +84,7 @@ static void mon_register_set_val(int mem, int reg_id, WORD val)
         }
     }
 
-    reg_ptr = mon_interfaces[mem]->cpu_65SC02_regs;
+    reg_ptr = mon_interfaces[mem]->cpu_R65C02_regs;
 
     switch(reg_id) {
       case e_A:
