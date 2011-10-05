@@ -415,9 +415,10 @@ void maincpu_mainloop(void)
 /* LOAD_LONG() on 65802 is same as LOAD() with address space limited to 64KB */
 #define LOAD_LONG(addr) LOAD((addr) & 0xffff)
 
-/* WDC_STP() and WDC_WAI() are not used on the 65SC02. */
-#define WDC_STP()
-#define WDC_WAI()
+/* FIXME: define the following missing functions. */
+#define STP_65816()
+#define WAI_65816()
+#define COP_65816(x)
 
 #define CALLER e_comp_space
 
@@ -437,7 +438,7 @@ void maincpu_mainloop(void)
 
 /* ------------------------------------------------------------------------- */
 
-static char snap_module_name[] = "MAIN65SC02CPU";
+static char snap_module_name[] = "MAIN6565802CPU";
 #define SNAP_MAJOR 1
 #define SNAP_MINOR 1
 
@@ -452,12 +453,17 @@ int maincpu_snapshot_write_module(snapshot_t *s)
 
     if (0
         || SMW_DW(m, maincpu_clk) < 0
-        || SMW_B(m, MOS65SC02_REGS_GET_A(&maincpu_regs)) < 0
-        || SMW_B(m, MOS65SC02_REGS_GET_X(&maincpu_regs)) < 0
-        || SMW_B(m, MOS65SC02_REGS_GET_Y(&maincpu_regs)) < 0
-        || SMW_B(m, MOS65SC02_REGS_GET_SP(&maincpu_regs)) < 0
-        || SMW_W(m, (WORD)MOS65SC02_REGS_GET_PC(&maincpu_regs)) < 0
-        || SMW_B(m, (BYTE)MOS65SC02_REGS_GET_STATUS(&maincpu_regs)) < 0
+        || SMW_B(m, (BYTE)WDC65816_REGS_GET_A(&maincpu_regs)) < 0
+        || SMW_B(m, (BYTE)WDC65816_REGS_GET_B(&maincpu_regs)) < 0
+        || SMW_W(m, (WORD)WDC65816_REGS_GET_X(&maincpu_regs)) < 0
+        || SMW_W(m, (WORD)WDC65816_REGS_GET_Y(&maincpu_regs)) < 0
+        || SMW_W(m, (WORD)WDC65816_REGS_GET_SP(&maincpu_regs)) < 0
+        || SMW_W(m, (WORD)WDC65816_REGS_GET_DPR(&maincpu_regs)) < 0
+        || SMW_B(m, (BYTE)WDC65816_REGS_GET_PBR(&maincpu_regs)) < 0
+        || SMW_B(m, (BYTE)WDC65816_REGS_GET_DBR(&maincpu_regs)) < 0
+        || SMW_B(m, (BYTE)WDC65816_REGS_GET_EMUL(&maincpu_regs)) < 0
+        || SMW_W(m, (WORD)WDC65816_REGS_GET_PC(&maincpu_regs)) < 0
+        || SMW_B(m, (BYTE)WDC65816_REGS_GET_STATUS(&maincpu_regs)) < 0
         || SMW_DW(m, (DWORD)last_opcode_info) < 0)
         goto fail;
 
@@ -480,8 +486,8 @@ fail:
 
 int maincpu_snapshot_read_module(snapshot_t *s)
 {
-    BYTE a, x, y, sp, status;
-    WORD pc;
+    BYTE a, b, pbr, dbr, emul, status;
+    WORD x, y, sp, pc, dpr;
     BYTE major, minor;
     snapshot_module_t *m;
 
@@ -498,20 +504,30 @@ int maincpu_snapshot_read_module(snapshot_t *s)
     if (0
         || SMR_DW(m, &maincpu_clk) < 0
         || SMR_B(m, &a) < 0
-        || SMR_B(m, &x) < 0
-        || SMR_B(m, &y) < 0
-        || SMR_B(m, &sp) < 0
+        || SMR_B(m, &b) < 0
+        || SMR_W(m, &x) < 0
+        || SMR_W(m, &y) < 0
+        || SMR_W(m, &sp) < 0
+        || SMR_W(m, &dpr) < 0
+        || SMR_B(m, &pbr) < 0
+        || SMR_B(m, &dbr) < 0
+        || SMR_B(m, &emul) < 0
         || SMR_W(m, &pc) < 0
         || SMR_B(m, &status) < 0
         || SMR_DW_UINT(m, &last_opcode_info) < 0)
         goto fail;
 
-    MOS65SC02_REGS_SET_A(&maincpu_regs, a);
-    MOS65SC02_REGS_SET_X(&maincpu_regs, x);
-    MOS65SC02_REGS_SET_Y(&maincpu_regs, y);
-    MOS65SC02_REGS_SET_SP(&maincpu_regs, sp);
-    MOS65SC02_REGS_SET_PC(&maincpu_regs, pc);
-    MOS65SC02_REGS_SET_STATUS(&maincpu_regs, status);
+    WDC65816_REGS_SET_A(&maincpu_regs, a);
+    WDC65816_REGS_SET_B(&maincpu_regs, b);
+    WDC65816_REGS_SET_X(&maincpu_regs, x);
+    WDC65816_REGS_SET_Y(&maincpu_regs, y);
+    WDC65816_REGS_SET_SP(&maincpu_regs, sp);
+    WDC65816_REGS_SET_DPR(&maincpu_regs, dpr);
+    WDC65816_REGS_SET_PBR(&maincpu_regs, pbr);
+    WDC65816_REGS_SET_DBR(&maincpu_regs, dbr);
+    WDC65816_REGS_SET_EMUL(&maincpu_regs, emul);
+    WDC65816_REGS_SET_PC(&maincpu_regs, pc);
+    WDC65816_REGS_SET_STATUS(&maincpu_regs, status);
 
     if (interrupt_read_snapshot(maincpu_int_status, m) < 0) {
         goto fail;

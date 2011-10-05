@@ -404,6 +404,8 @@ if		{ BEGIN (COND_MODE); return IF; }
 
 	\(		{ return L_PAREN; }
 	\)		{ return R_PAREN; }
+        \[              { return L_BRACK; }
+        \]              { return R_BRACK; }
 }
 
 <ASM_MODE>[a-zA-Z][a-zA-Z]\ [a-zA-Z]\,[a-zA-Z] {
@@ -451,6 +453,8 @@ if		{ BEGIN (COND_MODE); return IF; }
 
 <ASM_MODE>\(            { dont_match_reg_a = 1; return L_PAREN; }
 <ASM_MODE>\)            { dont_match_reg_a = 0; return R_PAREN; }
+<ASM_MODE>\[            { dont_match_reg_a = 1; return L_BRACK; }
+<ASM_MODE>\]            { dont_match_reg_a = 0; return R_BRACK; }
 <ASM_MODE>#             { dont_match_reg_a = 1; return ARG_IMMEDIATE; }
 <ASM_MODE>:             { dont_match_reg_a = 0; return INST_SEP; }
 

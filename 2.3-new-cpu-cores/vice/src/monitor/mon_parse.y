@@ -158,7 +158,8 @@ extern int cur_len, last_len;
 %token CMD_COMMENT CMD_LIST
 %token CMD_EXPORT CMD_AUTOSTART CMD_AUTOLOAD
 %token<str> CMD_LABEL_ASGN
-%token<i> L_PAREN R_PAREN ARG_IMMEDIATE REG_A REG_S REG_X REG_Y REG_Z COMMA INST_SEP
+%token<i> L_PAREN R_PAREN ARG_IMMEDIATE REG_A REG_S REG_X REG_Y REG_Z COMMA
+%token<i> L_BRACK R_BRACK INST_SEP
 %token<i> REG_B REG_C REG_D REG_E REG_H REG_L
 %token<i> REG_AF REG_BC REG_DE REG_HL REG_IX REG_IY REG_SP
 %token<i> REG_IXH REG_IXL REG_IYH REG_IYL
@@ -774,10 +775,13 @@ asm_operand_mode: ARG_IMMEDIATE number {
                           $$ = join_ints(ASM_ADDR_MODE_IMMEDIATE,$2);
                         }
                                        }
-  | number { if ($1 < 0x100)
+  | number { if ($1 >= 0x10000) {
+               $$ = join_ints((ASM_ADDR_MODE_ABSOLUTE_LONG) | (($1 >> 16) << 8),($1 & 0xffff));
+             } else if ($1 < 0x100) {
                $$ = join_ints(ASM_ADDR_MODE_ZERO_PAGE,$1);
-             else
+             } else {
                $$ = join_ints(ASM_ADDR_MODE_ABSOLUTE,$1);
+             }
            }
   | number COMMA REG_X  { if ($1 < 0x100)
                             $$ = join_ints(ASM_ADDR_MODE_ZERO_PAGE_X,$1);
@@ -789,6 +793,7 @@ asm_operand_mode: ARG_IMMEDIATE number {
                           else
                             $$ = join_ints(ASM_ADDR_MODE_ABSOLUTE_Y,$1);
                         }
+  | number COMMA REG_S  { $$ = join_ints(ASM_ADDR_MODE_STACK_RELATIVE, $1); }
   | ARG_IMMEDIATE number COMMA number COMMA number { if ($2 < 8)
                                                          $$ = join_ints((ASM_ADDR_MODE_ZERO_PAGE_BIT0_RELATIVE + $2) | ($4 << 8),$6);
                                                    }
@@ -799,6 +804,11 @@ asm_operand_mode: ARG_IMMEDIATE number {
                                $$ = join_ints(ASM_ADDR_MODE_INDIRECT,$2);
                              else
                                $$ = join_ints(ASM_ADDR_MODE_ABS_INDIRECT,$2);
+                           }
+  | L_BRACK number R_BRACK { if ($2 < 0x100)
+                               $$ = join_ints(ASM_ADDR_MODE_INDIRECT_LONG,$2);
+                             else
+                               $$ = join_ints(ASM_ADDR_MODE_ABS_IND_LONG,$2);
                            }
   | L_PAREN number COMMA REG_X R_PAREN { if ($2 < 0x100)
                                            $$ = join_ints(ASM_ADDR_MODE_INDIRECT_X,$2);
@@ -811,6 +821,8 @@ asm_operand_mode: ARG_IMMEDIATE number {
     { $$ = join_ints(ASM_ADDR_MODE_INDIRECT_Z,$2); }
   | L_PAREN number COMMA REG_S R_PAREN COMMA REG_Y
     { $$ = join_ints(ASM_ADDR_MODE_STACK_RELATIVE_Y,$2); }
+  | L_BRACK number R_BRACK COMMA REG_Y
+    { $$ = join_ints(ASM_ADDR_MODE_INDIRECT_LONG_Y,$2); }
   | L_PAREN REG_BC R_PAREN { $$ = join_ints(ASM_ADDR_MODE_REG_IND_BC,0); }
   | L_PAREN REG_DE R_PAREN { $$ = join_ints(ASM_ADDR_MODE_REG_IND_DE,0); }
   | L_PAREN REG_HL R_PAREN { $$ = join_ints(ASM_ADDR_MODE_REG_IND_HL,0); }

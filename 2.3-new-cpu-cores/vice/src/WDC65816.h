@@ -197,8 +197,8 @@ typedef struct WDC65816_regs_s {
     ((regs)->n & 0x80)
 #define WDC65816_REGS_GET_ZERO(regs) \
     (!(regs)->z)
-#define WDC65C02_REGS_GET_STATUS(regs) \
+#define WDC65816_REGS_GET_STATUS(regs) \
     ((regs)->p | ((regs)->n & 0x80) \
-     | (WDC65C02_REGS_GET_ZERO(regs) ? P_ZERO : 0))
+     | (WDC65816_REGS_GET_ZERO(regs) ? P_ZERO : 0))
 
 #endif

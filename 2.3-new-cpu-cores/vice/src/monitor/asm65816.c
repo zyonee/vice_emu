@@ -79,7 +79,7 @@ static const int addr_mode_size[] = {
     0, /* ASM_ADDR_MODE_REG_IND_IY */
     0, /* ASM_ADDR_MODE_REG_IND_SP */
     2, /* ASM_ADDR_MODE_INDIRECT */
-    0, /* ASM_ADDR_MODE_ABS_INDIRECT_X */
+    3, /* ASM_ADDR_MODE_ABS_INDIRECT_X */
     0, /* ASM_ADDR_MODE_ZERO_PAGE_BIT0_RELATIVE */
     0, /* ASM_ADDR_MODE_ZERO_PAGE_BIT1_RELATIVE */
     0, /* ASM_ADDR_MODE_ZERO_PAGE_BIT2_RELATIVE */
@@ -164,7 +164,7 @@ static const asm_opcode_info_t opcode_list[] = {
     /* 30 */ { "BMI",   ASM_ADDR_MODE_RELATIVE },
     /* 31 */ { "AND",   ASM_ADDR_MODE_INDIRECT_Y },
     /* 32 */ { "AND",   ASM_ADDR_MODE_INDIRECT },
-    /* 33 */ { "BMI",   ASM_ADDR_MODE_RELATIVE_LONG },
+    /* 33 */ { "AND",   ASM_ADDR_MODE_STACK_RELATIVE_Y },
     /* 34 */ { "BIT",   ASM_ADDR_MODE_ZERO_PAGE_X },
     /* 35 */ { "AND",   ASM_ADDR_MODE_ZERO_PAGE_X },
     /* 36 */ { "ROL",   ASM_ADDR_MODE_ZERO_PAGE_X },

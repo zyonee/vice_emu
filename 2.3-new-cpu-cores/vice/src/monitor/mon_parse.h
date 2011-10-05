@@ -154,39 +154,41 @@
      REG_Y = 371,
      REG_Z = 372,
      COMMA = 373,
-     INST_SEP = 374,
-     REG_B = 375,
-     REG_C = 376,
-     REG_D = 377,
-     REG_E = 378,
-     REG_H = 379,
-     REG_L = 380,
-     REG_AF = 381,
-     REG_BC = 382,
-     REG_DE = 383,
-     REG_HL = 384,
-     REG_IX = 385,
-     REG_IY = 386,
-     REG_SP = 387,
-     REG_IXH = 388,
-     REG_IXL = 389,
-     REG_IYH = 390,
-     REG_IYL = 391,
-     STRING = 392,
-     FILENAME = 393,
-     R_O_L = 394,
-     OPCODE = 395,
-     LABEL = 396,
-     BANKNAME = 397,
-     CPUTYPE = 398,
-     MON_REGISTER = 399,
-     COMPARE_OP = 400,
-     RADIX_TYPE = 401,
-     INPUT_SPEC = 402,
-     CMD_CHECKPT_ON = 403,
-     CMD_CHECKPT_OFF = 404,
-     TOGGLE = 405,
-     MASK = 406
+     L_BRACK = 374,
+     R_BRACK = 375,
+     INST_SEP = 376,
+     REG_B = 377,
+     REG_C = 378,
+     REG_D = 379,
+     REG_E = 380,
+     REG_H = 381,
+     REG_L = 382,
+     REG_AF = 383,
+     REG_BC = 384,
+     REG_DE = 385,
+     REG_HL = 386,
+     REG_IX = 387,
+     REG_IY = 388,
+     REG_SP = 389,
+     REG_IXH = 390,
+     REG_IXL = 391,
+     REG_IYH = 392,
+     REG_IYL = 393,
+     STRING = 394,
+     FILENAME = 395,
+     R_O_L = 396,
+     OPCODE = 397,
+     LABEL = 398,
+     BANKNAME = 399,
+     CPUTYPE = 400,
+     MON_REGISTER = 401,
+     COMPARE_OP = 402,
+     RADIX_TYPE = 403,
+     INPUT_SPEC = 404,
+     CMD_CHECKPT_ON = 405,
+     CMD_CHECKPT_OFF = 406,
+     TOGGLE = 407,
+     MASK = 408
    };
 #endif
 /* Tokens.  */
@@ -306,39 +308,41 @@
 #define REG_Y 371
 #define REG_Z 372
 #define COMMA 373
-#define INST_SEP 374
-#define REG_B 375
-#define REG_C 376
-#define REG_D 377
-#define REG_E 378
-#define REG_H 379
-#define REG_L 380
-#define REG_AF 381
-#define REG_BC 382
-#define REG_DE 383
-#define REG_HL 384
-#define REG_IX 385
-#define REG_IY 386
-#define REG_SP 387
-#define REG_IXH 388
-#define REG_IXL 389
-#define REG_IYH 390
-#define REG_IYL 391
-#define STRING 392
-#define FILENAME 393
-#define R_O_L 394
-#define OPCODE 395
-#define LABEL 396
-#define BANKNAME 397
-#define CPUTYPE 398
-#define MON_REGISTER 399
-#define COMPARE_OP 400
-#define RADIX_TYPE 401
-#define INPUT_SPEC 402
-#define CMD_CHECKPT_ON 403
-#define CMD_CHECKPT_OFF 404
-#define TOGGLE 405
-#define MASK 406
+#define L_BRACK 374
+#define R_BRACK 375
+#define INST_SEP 376
+#define REG_B 377
+#define REG_C 378
+#define REG_D 379
+#define REG_E 380
+#define REG_H 381
+#define REG_L 382
+#define REG_AF 383
+#define REG_BC 384
+#define REG_DE 385
+#define REG_HL 386
+#define REG_IX 387
+#define REG_IY 388
+#define REG_SP 389
+#define REG_IXH 390
+#define REG_IXL 391
+#define REG_IYH 392
+#define REG_IYL 393
+#define STRING 394
+#define FILENAME 395
+#define R_O_L 396
+#define OPCODE 397
+#define LABEL 398
+#define BANKNAME 399
+#define CPUTYPE 400
+#define MON_REGISTER 401
+#define COMPARE_OP 402
+#define RADIX_TYPE 403
+#define INPUT_SPEC 404
+#define CMD_CHECKPT_ON 405
+#define CMD_CHECKPT_OFF 406
+#define TOGGLE 407
+#define MASK 408
 
 
 
@@ -363,7 +367,7 @@ typedef union YYSTYPE
 
 
 /* Line 1685 of yacc.c  */
-#line 367 "mon_parse.h"
+#line 371 "mon_parse.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

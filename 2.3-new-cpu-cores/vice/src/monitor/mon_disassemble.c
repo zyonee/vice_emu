@@ -172,6 +172,29 @@ const char *mon_disassemble_to_string_internal(MEMSPACE memspace, unsigned int a
         }
         break;
 
+      case ASM_ADDR_MODE_ABSOLUTE_LONG:
+        ival |= (WORD)((p2 & 0xff) << 8);
+        if ((addr_name = mon_symbol_table_lookup_name(e_comp_space, ival))) {
+           sprintf(buffp, " %s", addr_name);
+        } else {
+            if ((addr_name = mon_symbol_table_lookup_name(e_comp_space,
+                (WORD)(ival - 1)))) {
+                sprintf(buffp, " %s+1", addr_name);
+            } else {
+                sprintf(buffp, (hex_mode ? " $%06X" : " %7d"), ival | ((p3 & 0xff) << 16));
+            }
+        }
+        break;
+
+      case ASM_ADDR_MODE_ABSOLUTE_LONG_X:
+        ival |= (WORD)((p2 & 0xff) << 8);
+        if (!(addr_name = mon_symbol_table_lookup_name(e_comp_space, ival))) {
+            sprintf(buffp, (hex_mode ? " $%06X,X" : " %7d,X"), ival | ((p3 & 0xff) << 16));
+        } else {
+            sprintf(buffp, " %s,X", addr_name);
+        }
+        break;
+
       case ASM_ADDR_MODE_ABSOLUTE_X:
         ival |= (WORD)((p2 & 0xff) << 8);
         if (!(addr_name = mon_symbol_table_lookup_name(e_comp_space, ival))) {
@@ -196,6 +219,15 @@ const char *mon_disassemble_to_string_internal(MEMSPACE memspace, unsigned int a
             sprintf(buffp, (hex_mode ? " ($%04X)" : " (%5d)"), ival);
         } else {
             sprintf(buffp, " (%s)", addr_name);
+        }
+        break;
+
+      case ASM_ADDR_MODE_ABS_IND_LONG:
+        ival |= (WORD)((p2 & 0xff) << 8);
+        if (!(addr_name = mon_symbol_table_lookup_name(e_comp_space, ival))) {
+            sprintf(buffp, (hex_mode ? " [$%04X]" : " [%5d]"), ival);
+        } else {
+            sprintf(buffp, " [%s]", addr_name);
         }
         break;
 
@@ -240,12 +272,32 @@ const char *mon_disassemble_to_string_internal(MEMSPACE memspace, unsigned int a
         }
         break;
 
-      case ASM_ADDR_MODE_STACK_RELATIVE_Y:
+      case ASM_ADDR_MODE_INDIRECT_LONG:
         if (!(addr_name = mon_symbol_table_lookup_name(e_comp_space, ival))) {
-            sprintf(buffp, (hex_mode ? " ($%02X,S),Y" : " (%3d,S),Y"), ival);
+            sprintf(buffp, (hex_mode ? " [$%02X]" : " [%3d]"), ival);
         } else {
-            sprintf(buffp, " (%s,S),Y", addr_name);
+            sprintf(buffp, " [%s]", addr_name);
         }
+        break;
+
+      case ASM_ADDR_MODE_INDIRECT_LONG_Y:
+        if (!(addr_name = mon_symbol_table_lookup_name(e_comp_space, ival))) {
+            sprintf(buffp, (hex_mode ? " [$%02X],Y" : " [%3d],Y"), ival);
+        } else {
+            sprintf(buffp, " [%s],Y", addr_name);
+        }
+        break;
+
+      case ASM_ADDR_MODE_STACK_RELATIVE:
+        sprintf(buffp, (hex_mode ? " $%02X,S" : " %3d,S"), ival);
+        break;
+
+      case ASM_ADDR_MODE_STACK_RELATIVE_Y:
+        sprintf(buffp, (hex_mode ? " ($%02X,S),Y" : " (%3d,S),Y"), ival);
+        break;
+
+      case ASM_ADDR_MODE_MOVE:
+        sprintf(buffp, (hex_mode ? " $%02X,$%02X" : " %3d,%3d"), ival, p2 & 0xff);
         break;
 
       case ASM_ADDR_MODE_RELATIVE:
