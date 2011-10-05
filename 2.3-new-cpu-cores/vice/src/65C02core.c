@@ -482,7 +482,7 @@
           }                                                                \
           LOCAL_SET_CARRY(tmp2 & 0xff00);                                  \
           tmp = (tmp & 0xf) + (tmp2 & 0xf0);                               \
-          LOCAL_SET_NZ(tmp, 1);                                            \
+          LOCAL_SET_NZ(tmp);                                               \
           CLK_ADD(CLK, CYCLES_1);                                          \
       } else {                                                             \
           tmp = tmp_value + reg_a + LOCAL_CARRY();                         \
