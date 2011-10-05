@@ -930,24 +930,26 @@
 #define ADC(load_func, addr, clk_inc, pc_inc)                                                        \
   do {                                                                                               \
       unsigned int tmp_value;                                                                        \
-      unsigned int tmp;                                                                              \
+      unsigned int tmp, tmp2;                                                                        \
                                                                                                      \
       load_func(tmp_value, addr, LOCAL_65816_M());                                                   \
       CLK_ADD(CLK, (clk_inc));                                                                       \
                                                                                                      \
       if (LOCAL_65816_M()) {                                                                         \
           if (LOCAL_DECIMAL()) {                                                                     \
-              tmp = reg_a - (tmp_value & 0xf) + LOCAL_CARRY() - 1;                                   \
-              if ((tmp & 0xf) > (reg_a & 0xf)) {                                                     \
-                  tmp -= 6;                                                                          \
+              tmp = (reg_a & 0xf) + (tmp_value & 0xf) + LOCAL_CARRY();                               \
+              tmp2 = (reg_a & 0xf0) + (tmp_value & 0xf0);                                            \
+              if (tmp > 9) {                                                                         \
+                  tmp2 += 0x10;                                                                      \
+                  tmp += 6;                                                                          \
               }                                                                                      \
-              tmp -= (tmp_value & 0xf0);                                                             \
-              if ((tmp & 0xf0) > (reg_a & 0xf0)) {                                                   \
-                  tmp -= 60;                                                                         \
+              LOCAL_SET_OVERFLOW(~(reg_a ^ tmp_value) & (reg_a ^ tmp) & 0x80);                       \
+              if (tmp2 > 0x90) {                                                                     \
+                  tmp2 += 0x60;                                                                      \
               }                                                                                      \
-              LOCAL_SET_OVERFLOW(!(tmp > reg_a));                                                    \
-              LOCAL_SET_CARRY(!(tmp > reg_a));                                                       \
-              LOCAL_SET_NZ(tmp & 0xff, 1);                                                           \
+              LOCAL_SET_CARRY(tmp2 & 0xff00);                                                        \
+              tmp = (tmp & 0xf) + (tmp2 & 0xf0);                                                     \
+              LOCAL_SET_NZ(tmp, 1);                                                                  \
           } else {                                                                                   \
               tmp = tmp_value + reg_a + LOCAL_CARRY();                                               \
               LOCAL_SET_NZ(tmp & 0xff, 1);                                                           \
@@ -955,7 +957,7 @@
                                   && ((reg_a ^ tmp) & 0x80));                                        \
               LOCAL_SET_CARRY(tmp > 0xff);                                                           \
           }                                                                                          \
-          reg_a = (reg_a & 0xff00) | (tmp & 0xff);                                                   \
+          reg_a = tmp & 0xff;                                                                        \
       } else {                                                                                       \
           if (!LOCAL_DECIMAL()) {                                                                    \
               tmp = reg_c + tmp_value + LOCAL_CARRY();                                               \
@@ -981,7 +983,7 @@
           if (LOCAL_DECIMAL() && (tmp > 0x9fff)) {                                                   \
               tmp += 0x6000;                                                                         \
           }                                                                                          \
-          LOCAL_SET_CARRY(tmp > 0xffff);                                                          \
+          LOCAL_SET_CARRY(tmp > 0xffff);                                                             \
           LOCAL_SET_NZ(tmp & 0xffff, 0);                                                             \
           reg_c = tmp & 0xffff;                                                                      \
       }                                                                                              \
@@ -1745,7 +1747,7 @@
           LOCAL_SET_CARRY(v);           \
       }                                 \
       CLK_ADD(CLK, CYCLES_1);           \
-      INC_PC(SIZE_1);                   \
+      INC_PC(SIZE_2);                   \
   } while (0)
 
 #define REP(mask) REPSEP(mask, 0)
