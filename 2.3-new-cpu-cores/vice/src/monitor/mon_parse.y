@@ -783,10 +783,13 @@ asm_operand_mode: ARG_IMMEDIATE number {
                $$ = join_ints(ASM_ADDR_MODE_ABSOLUTE,$1);
              }
            }
-  | number COMMA REG_X  { if ($1 < 0x100)
+  | number COMMA REG_X  { if ($1 >= 0x10000) {
+                            $$ = join_ints((ASM_ADDR_MODE_ABSOLUTE_LONG_X) | (($1 >> 16) << 8),($1 & 0xffff));
+                          } else if ($1 < 0x100) {
                             $$ = join_ints(ASM_ADDR_MODE_ZERO_PAGE_X,$1);
-                          else
+                          } else {
                             $$ = join_ints(ASM_ADDR_MODE_ABSOLUTE_X,$1);
+                          }
                         }
   | number COMMA REG_Y  { if ($1 < 0x100)
                             $$ = join_ints(ASM_ADDR_MODE_ZERO_PAGE_Y,$1);
@@ -800,6 +803,7 @@ asm_operand_mode: ARG_IMMEDIATE number {
   | ARG_IMMEDIATE number COMMA number { if ($2 < 8)
                                                          $$ = join_ints(ASM_ADDR_MODE_ZERO_PAGE_BIT0 + $2,$4);
                                       }
+  | number COMMA number { $$ = join_ints(ASM_ADDR_MODE_MOVE, ($3 << 8) | $1); }
   | L_PAREN number R_PAREN { if ($2 < 0x100)
                                $$ = join_ints(ASM_ADDR_MODE_INDIRECT,$2);
                              else
