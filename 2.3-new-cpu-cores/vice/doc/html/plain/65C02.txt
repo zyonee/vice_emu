@@ -1,0 +1,7 @@
+This document is inteded for the following purposes:
+
+- to list and explain the differences between the NMOS 6502 and the CMOS 65C02.
+- to list and explain the differences between the 65SC02, the R65C02 and the
+  WDC65C02.
+- to keep track and document which parts have been emulated and tested in the
+  65C02core.c file.
