@@ -43,23 +43,6 @@
 /* Logging goes here.  */
 static log_t driveimage_log = LOG_DEFAULT;
 
-static int setID(disk_image_t *image)
-{
-    BYTE buffer[256];
-    int rc;
-
-    if (!image)
-        return -1;
-
-    rc = disk_image_read_sector(image, buffer, 18, 0);
-    if (rc >= 0) {
-        image->diskID[0] = buffer[0xa2];
-        image->diskID[1] = buffer[0xa3];
-    }
-
-    return rc;
-}
-
 static int drive_check_image_format(unsigned int format, unsigned int dnr)
 {
     drive_t *drive;
@@ -287,12 +270,6 @@ int drive_image_attach(disk_image_t *image, unsigned int unit)
     }
 
     drive->image = image;
-
-    if (drive->image->type != DISK_IMAGE_TYPE_G64) {
-        if (setID(drive->image) < 0) {
-            return -1;
-        }
-    }
 
     drive_image_read(drive);
 
