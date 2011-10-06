@@ -5,3 +5,370 @@ This document is inteded for the following purposes:
   WDC65C02.
 - to keep track and document which parts have been emulated and tested in the
   65C02core.c file.
+
+
+The 65(S)C02 is in many ways like the 6502, but it has additional
+instructions, has additional addressing modes and fixes most (if not all) of
+the 'quirks' of the 6502. All of the (legal/documented) 6502 opcodes are
+also available in the 65(S)C02, and some of the previously illegal/undocumented
+opcodes are now new opcodes. Any 'unused' opcodes have been replaced with NOP's
+of different lengths and cycles.
+
+Below is a list of opcodes that remained unchanged (no additional cycles or
+changes in behaviour) from the 6502:
+
+opcode	mnemonic
+------	--------
+01	ORA ($nn,X)
+05	ORA $nn
+08	PHP
+09	ORA #$nn
+0a	ASL A
+0d	ORA $nnnn
+10	BPL $nnnn
+11	ORA ($nn),Y
+15	ORA $nn,X
+18	CLC
+19	ORA $nnnn,Y
+1c	TRB $nnnn
+1d	ORA $nnnn,X
+20	JSR $nnnn
+21	AND ($nn,X)
+24	BIT $nn
+25	AND $nn
+28	PLP
+29	AND #$nn
+2a	ROL A
+2c	BIT $nnnn
+2d	AND $nnnn
+30	BMI $nnnn
+31	AND ($nn),Y
+35	AND $nn,X
+38	SEC
+39	AND $nnnn,Y
+3d	AND $nnnn,X
+40	RTI
+41	EOR ($nn,X)
+45	EOR $nn
+48	PHA
+49	EOR #$nn
+4a	LSR A
+4c	JMP $nnnn
+4d	EOR $nnnn
+50	BVC $nnnn
+51	EOR ($nn),Y
+55	EOR $nn,X
+58	CLI
+59	EOR $nnnn,Y
+5d	EOR $nnnn,X
+60	RTS
+68	PLA
+6a	ROR A
+70	BVS $nnnn
+78	SEI
+81	STA ($nn,X)
+84	STY $nn
+85	STA $nn
+86	STX $nn
+88	DEY
+8a	TXA
+8c	STY $nnnn
+8d	STA $nnnn
+8e	STX $nnnn
+90	BCC $nnnn
+91	STA ($nn),Y
+94	STY $nn,X
+95	STA $nn,X
+96	STX $nn,Y
+98	TYA
+99	STA $nnnn,Y
+9a	TXS
+9d	STA $nnnn,X
+a0	LDY #$nn
+a1	LDA ($nn,X)
+a2	LDX #$nn
+a4	LDY $nn
+a5	LDA $nn
+a6	LDX $nn
+a8	TAY
+a9	LDA #$nn
+aa	TAX
+ac	LDY $nnnn
+ad	LDA $nnnn
+ae	LDX $nnnn
+b0	BCS $nnnn
+b1	LDA ($nn),Y
+b4	LDY $nn,X
+b5	LDA $nn,X
+b6	LDX $nn,Y
+b8	CLV
+b9	LDA $nnnn,Y
+ba	TSX
+bc	LDY $nnnn,X
+bd	LDA $nnnn,X
+be	LDX $nnnn,Y
+c0	CPY #$nn
+c1	CMP ($nn,X)
+c4	CPY $nn
+c5	CMP $nn
+c8	INY
+c9	CMP #$nn
+ca	DEX
+cc	CPY $nnnn
+cd	CMP $nnnn
+d0	BNE $nnnn
+d1	CMP ($nn),Y
+d5	CMP $nn,X
+d8	CLD
+d9	CMP $nnnn,Y
+dd	CMP $nnnn,X
+e0	CPX #$nn
+e4	CPX $nn
+e8	INX
+ea	NOP
+ec	CPX $nnnn
+f0	BEQ $nnnn
+f8	SED
+
+
+The normal NOP is 1 byte and uses 2 cycles, with the 65(S)C02 a new kind of
+NOP has been introduced, it is 1 byte long and uses 1 cycle, below are the
+opcodes that are defined as this single NOP:
+
+opcode	mnemonic	bytes	cycles
+------	--------	-----	------
+03	NOOP		1	1
+0b	NOOP		1	1
+13	NOOP		1	1
+1b	NOOP		1	1
+23	NOOP		1	1
+2b	NOOP		1	1
+33	NOOP		1	1
+3b	NOOP		1	1
+43	NOOP		1	1
+4b	NOOP		1	1
+53	NOOP		1	1
+5b	NOOP		1	1
+63	NOOP		1	1
+6b	NOOP		1	1
+73	NOOP		1	1
+7b	NOOP		1	1
+83	NOOP		1	1
+8b	NOOP		1	1
+93	NOOP		1	1
+9b	NOOP		1	1
+a3	NOOP		1	1
+ab	NOOP		1	1
+b3	NOOP		1	1
+bb	NOOP		1	1
+c3	NOOP		1	1
+d3	NOOP		1	1
+e3	NOOP		1	1
+eb	NOOP		1	1
+f3	NOOP		1	1
+fb	NOOP		1	1
+
+
+The other unused opcodes are defined as >1 byte and >1 cycle NOPs, they are
+listed below with their 'suspected' addressing modes:
+
+opcode	mnemonic	bytes	cycles	comments
+------	--------	-----	------	--------
+02	NOOP #$nn	2	2
+22	NOOP #$nn	2	2
+42	NOOP #$nn	2	2
+44	NOOP $nn	2	2
+54	NOOP $nn,X	2	4
+5c	NOOP ???	3	8
+62	NOOP #$nn	2	2
+c2	NOOP #$nn	2	2
+d4	NOOP $nn,X	2	4
+dc	NOOP $nnnn,X	3	4
+e2	NOOP #$nn	2	2
+f4	NOOP $nn,X	2	4
+fc	NOOP $nnnn,X	3	4
+
+Note that the 3 bytes/8 cycles NOP can't really be explained with a normal
+addressing mode.
+
+
+The 65C02 has some extra instructions for stack manipulating with a register
+other than the accumulator, these instructions are listed below:
+
+opcode	mnemonic	bytes	cycles	comments
+------	--------	-----	------	--------
+5a	PHY		1	3	push the Y register onto the stack
+7a	PLY		1	4	pull the Y register from the stack
+da	PHX		1	3	push the X register onto the stack
+fa	PLX		1	4	pull the X register from the stack
+
+
+The INC and DEC instructions have been extended to be used on the accumulator,
+in the same way that INX/INY and DEX/DEY work, the opcodes are listed below:
+
+opcode	mnemonic	bytes	cycles	comments
+------	--------	-----	------	--------
+1a	INC A		1	2	increment accumulator
+3a	DEC A		1	2	decrement accumulator
+
+
+A new instruction to store the value '0' (much like has been introduced, it
+works in much the same way as STA/STX/STY, the opcodes are listed below:
+
+opcode	mnemonic	bytes	cycles
+------	--------	-----	------
+64	STZ $nn		2	3
+74	STZ $nn,X	2	4
+9c	STZ $nnnn	3	4
+9e	STZ $nnnn,X	3	5
+
+
+In binary mode (when the D flag is 0) ADC and SBC behave exactly the same as
+on the 6502. In decimal mode (when the D flag is 1), the N, V, and Z flag
+results are valid (in addition to the accumulator and C flag result) on the
+65C02, on the 6502, only the accumulator and C flag results were valid.
+The Z flag is set when the accumulator is zero, and cleared when the
+accumulator is any other value (including when the accumulator is not a valid
+BCD number). The N flag indicates whether bit 7 of the result is set or clear.
+
+The opcodes of the 'fixed' instructions are below:
+
+opcode	mnemonic	bytes	cycles	comments
+------	--------	-----	------	--------
+61	ADC ($nn,X)	2	6(/7)	+1 decimal mode
+65	ADC $nn		2	3(/4)	+1 decimal mode
+69	ADC #$nn	2	2(/3)	+1 decimal mode
+6d	ADC $nnnn	3	4(/5)	+1 decimal mode
+71	ADC ($nn),Y	2	5(/6/7)	+1 decimal mode, +1 page crossing
+72	ADC ($nn)	2	5(/6)	+1 decimal mode
+75	ADC $nn,X	2	4(/5)	+1 decimal mode
+79	ADC $nnnn,Y	3	4(/5/6)	+1 decimal mode, +1 page crossing
+7d	ADC $nnnn,X	3	4(/5/6)	+1 decimal mode, +1 page crossing
+e1	SBC ($nn,X)	2	6(/7)	+1 decimal mode
+e5	SBC $nn		2	3(/4)	+1 decimal mode
+e9	SBC #$nn	2	2(/3)	+1 decimal mode
+ed	SBC $nnnn	3	4(/5)	+1 decimal mode
+f1	SBC ($nn),Y	2	5(/6/7)	+1 decimal mode, +1 page crossing
+f2	SBC ($nn)	2	5(/6)	+1 decimal mode
+f5	SBC $nn,X	2	4(/5)	+1 decimal mode
+f9	SBC $nnnn,Y	3	4(/5/6)	+1 decimal mode, +1 page crossing
+fd	SBC $nnnn,X	3	4(/5/6)	+1 decimal mode, +1 page crossing
+
+
+left to explain:
+
+opcode	mnemonic	bytes	cycles	comments
+------	--------	-----	------	--------
+00	BRK		2	7	behaviour is different from 6502
+04	TSB $nn		2	5
+06	ASL $nn		2	5
+07	RMB0 $nn	2	5	on WDC65C02 and R65C02
+07	NOOP		1	1	on 65SC02
+0c	TSB $nnnn	3	6
+0e	ASL $nnnn	3	6
+0f	BBR0 $nn,$nnnn	3	5	on WDC65C02 and R65C02
+0f	NOOP		1	1	on 65SC02
+12	ORA ($nn)	2	5
+14	TRB $nn		2	5
+16	ASL $nn,X	2	6
+17	RMB1 $nn	2	5	on WDC65C02 and R65C02
+17	NOOP		1	1	on 65SC02
+1e	ASL $nnnn,X	3	6/7	extra cycle is for page boundry crossing
+1f	BBR1 $nn,$nnnn	3	5	on WDC65C02 and R65C02
+1f	NOOP		1	1	on 65SC02
+26	ROL $nn		2	5
+27	RMB2 $nn	2	5	on WDC65C02 and R65C02
+27	NOOP		1	1	on 65SC02
+2e	ROL $nnnn	3	6
+2f	BBR2 $nn,$nnnn	3	5	on WDC65C02 and R65C02
+2f	NOOP		1	1	on 65SC02
+32	AND ($nn)	2	5
+34	BIT $nn,X	2	4
+36	ROL $nn,X	2	6
+37	RMB3 $nn	2	5	on WDC65C02 and R65C02
+37	NOOP		1	1	on 65SC02
+3c	BIT $nnnn,X	3	4/5	extra cycles is for crossing page boundry
+3e	ROL $nnnn,X	3	6/7	extra cycle is for boundry crossing
+3f	BBR3 $nn,$nnnn	3	5	on WDC65C02 and R65C02
+3f	NOOP		1	1	on 65SC02
+46	LSR $nn		2	5
+47	RMB4 $nn	2	5	on WDC65C02 and R65C02
+47	NOOP		1	1	on 65SC02
+4e	LSR $nnnn	3	6
+4f	BBR4 $nn,$nnnn	3	5	on WDC65C02 and R65C02
+4f	NOOP		1	1	on 65SC02
+52	EOR ($nn)	2	5
+56	LSR $nn,X	2	6
+57	RMB5 $nn	2	5	on WDC65C02 and R65C02
+57	NOOP		1	1	on 65SC02
+5e	LSR $nnnn,X	3	6/7	extra cycle is for boundry crossing
+5f	BBR5 $nn,$nnnn	3	5	on WDC65C02 and R65C02
+5f	NOOP		1	1	on 65SC02
+66	ROR $nn		2	5
+67	RMB6 $nn	2	5	on WDC65C02 and R65C02
+67	NOOP		1	1	on 65SC02
+6c	JMP ($nnnn)	3	6/7	extra cycle is for page boundry crossing
+6e	ROR $nnnn	3	6
+6f	BBR6 $nn,$nnnn	3	5	on WDC65C02 and R65C02
+6f	NOOP		1	1	on 65SC02
+76	ROR $nn,X	2	6
+77	RMB7 $nn	2	5	on WDC65C02 and R65C02
+77	NOOP		1	1	on 65SC02
+7c	JMP ($nnnn,X)	3	6/7	extra cycle is for page boundry crossing
+7e	ROR $nnnn,X	3	6/7	extra cycle is for boundry crossing
+7f	BBR7 $nn,$nnnn	3	5	on WDC65C02 and R65C02
+7f	NOOP		1	1	on 65SC02
+80	BRA $nnnn	2	3/4	extra cycle is for crossing page boundry
+82	NOP #$nn	2	2
+87	SMB0 $nn	2	5	on WDC65C02 and R65C02
+87	NOOP		1	1	on 65SC02
+89	BIT #$nn	2	2
+8f	BBS0 $nn,$nnnn	3	5	on WDC65C02 and R65C02
+8f	NOOP		1	1	on 65SC02
+92	STA ($nn)	2	5
+97	SMB1 $nn	2	5	on WDC65C02 and R65C02
+97	NOOP		1	1	on 65SC02
+9f	BBS1 $nn,$nnnn	3	5	on WDC65C02 and R65C02
+9f	NOOP		1	1	on 65SC02
+a7	SMB2 $nn	2	5	on WDC65C02 and R65C02
+a7	NOOP		1	1	on 65SC02
+af	BBS2 $nn,$nnnn	3	5	on WDC65C02 and R65C02
+af	NOOP		1	1	on 65SC02
+b2	LDA ($nn)	2	5
+b7	SMB3 $nn	2	5	on WDC65C02 and R65C02
+b7	NOOP		1	1	on 65SC02
+bf	BBS3 $nn,$nnnn	3	5	on WDC65C02 and R65C02
+bf	NOOP		1	1	on 65SC02
+c6	DEC $nn		2	5
+c7	SMB4 $nn	2	5	on WDC65C02 and R65C02
+c7	NOOP		1	1	on 65SC02
+cb	WAI		1	3	on WDC65C02
+cb	NOOP		1	1	on R65C02 and 65SC02
+ce	DEC $nnnn	3	6
+cf	BBS4 $nn,$nnnn	3	5	on WDC65C02 and R65C02
+cf	NOOP		1	1	on 65SC02
+d2	CMP ($nn)	2	5
+d6	DEC $nn,X	2	6
+d7	SMB5 $nn	2	5	on WDC65C02 and R65C02
+d7	NOOP		1	1	on 65SC02
+db	STP		1	3	on WDC65C02
+db	NOOP		1	1	on R65C02 and 65SC02
+de	DEC $nnnn,X	3	7
+df	BBS5 $nn,$nnnn	3	5	on WDC65C02 and R65C02
+df	NOOP		1	1	on 65SC02
+e6	INC $nn		2	5
+e7	SMB6 $nn	2	5	on WDC65C02 and R65C02
+e7	NOOP		1	1	on 65SC02
+ee	INC $nnnn	3	6
+ef	BBS6 $nn,$nnnn	3	5	on WDC65C02 and R65C02
+ef	NOOP		1	1	on 65SC02
+f6	INC $nn,X	2	6
+f7	SMB7 $nn	2	5	on WDC65C02 and R65C02
+f7	NOOP		1	1	on 65SC02
+fe	INC $nnnn,X	3	7
+ff	BBS7 $nn,$nnnn	3	5	on WDC65C02 and R65C02
+ff	NOOP		1	1	on 65SC02
+
+
+References used for this document:
+http://www.6502.org/tutorials/65c02opcodes.html
