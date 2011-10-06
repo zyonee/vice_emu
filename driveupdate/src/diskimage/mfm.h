@@ -1,8 +1,8 @@
 /*
- * fsimage-check.h
+ * mfm.h - MFM handling.
  *
  * Written by
- *  Andreas Boose <viceteam@t-online.de>
+ *  Kajtar Zsolt <soci@c64.rulez.org>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -24,13 +24,17 @@
  *
  */
 
-#ifndef VICE_FSIMAGE_CHECK_H
-#define VICE_FSIMAGE_CHECK_H
+#ifndef VICE_MFM_H
+#define VICE_MFM_H
 
-struct disk_image_s;
+#include "types.h"
+typedef struct mfm_header_s {
+    BYTE track, head, sector, sector_size;
+} mfm_header_t;
 
-extern int fsimage_check_sector(struct disk_image_s *image, unsigned int track,
-                                unsigned int sector);
-
+extern void mfm_convert_sector_to_MFM(BYTE *buffer, WORD *raw, mfm_header_t header,
+                                      unsigned int gap2);
+extern int mfm_read_sector(WORD *raw, unsigned int size, BYTE *data,
+                           mfm_header_t header);
 #endif
 

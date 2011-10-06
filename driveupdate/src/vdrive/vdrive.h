@@ -130,7 +130,6 @@ typedef struct vdrive_s {
     unsigned int Header_Sector;
     unsigned int Dir_Track;    /* First directory sector location */
     unsigned int Dir_Sector;
-    unsigned int num_tracks;
 
     unsigned int bam_size;
     BYTE *bam;

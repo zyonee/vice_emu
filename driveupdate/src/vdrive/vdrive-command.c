@@ -748,7 +748,7 @@ int vdrive_command_validate(vdrive_t *vdrive)
 
     vdrive_bam_clear_all(vdrive->image_format, vdrive->bam);
 
-    for (t = 1; t <= vdrive->num_tracks; t++) {
+    for (t = 1; t <= vdrive->image->ltracks; t++) {
         int max_sector;
         max_sector = vdrive_get_max_sectors(vdrive, t);
         for (s = 0; s < (unsigned int)max_sector; s++)
@@ -833,11 +833,6 @@ int vdrive_command_format(vdrive_t *vdrive, const char *disk_name)
 
     if (vdrive->image->read_only || VDRIVE_IMAGE_FORMAT_4000_TEST)
         return CBMDOS_IPE_WRITE_PROTECT_ON;
-
-    if (vdrive->image->device == DISK_IMAGE_DEVICE_FS) {
-        if (disk_image_fsimage_fd_get(vdrive->image) == NULL)
-            return CBMDOS_IPE_NOT_READY;
-    }
 
     comma = memchr(disk_name, ',', strlen(disk_name));
 

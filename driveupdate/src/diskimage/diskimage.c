@@ -3,6 +3,7 @@
  *
  * Written by
  *  Andreas Boose <viceteam@t-online.de>
+ *  Kajtar Zsolt <soci@c64.rulez.org>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -32,9 +33,6 @@
 
 #include "diskconstants.h"
 #include "diskimage.h"
-#include "fsimage-check.h"
-#include "fsimage-create.h"
-#include "fsimage-gcr.h"
 #include "fsimage.h"
 #include "lib.h"
 #include "log.h"
@@ -42,113 +40,100 @@
 #include "realimage.h"
 #include "types.h"
 
-
 static log_t disk_image_log = LOG_DEFAULT;
-
 
 /*-----------------------------------------------------------------------*/
 /* Disk constants.  */
 
-static const unsigned int speed_map_1541[42] =
-    { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-      3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 1, 1,
-      1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0 };
-
-static const unsigned int speed_map_1571[70] =
-    { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-      3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 1, 1,
-      1, 1, 1, 1, 0, 0, 0, 0, 0,
-      3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-      3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 1, 1,
-      1, 1, 1, 1, 0, 0, 0, 0, 0 };
+static const unsigned int raw_track_size_1541[4] = { 6250, 6666, 7142, 7692 };
+static const unsigned int gaps_between_sectors_1541[4] = { 9, 12, 17, 8 };
+static const int sectors_1541[4] = { 17, 18, 19, 21 };
+static const char sectors_2040[4] = { 17, 18, 20, 21 };
+static const char sectors_8050[4] = { 23, 25, 27, 29 };
 
 unsigned int disk_image_speed_map_1541(unsigned int track)
 {
-    return speed_map_1541[track];
+    return (track < 25) ? ((track < 18) ? 3 : 2) : ((track < 31) ? 1: 0);
 }
 
-unsigned int disk_image_speed_map_1571(unsigned int track)
+static unsigned int disk_image_speed_map_8050(unsigned int track)
 {
-    return speed_map_1571[track];
+    return (track < 54) ? ((track < 40) ? 3 : 2) : ((track < 65) ? 1: 0);
+}
+
+unsigned int disk_image_raw_track_size_1541(unsigned int track)
+{
+    return raw_track_size_1541[disk_image_speed_map_1541(track)];
+}
+
+unsigned int disk_image_gap_size_1541(unsigned int track)
+{
+    return gaps_between_sectors_1541[disk_image_speed_map_1541(track)];
 }
 
 /*-----------------------------------------------------------------------*/
 /* Check for track out of bounds.  */
 
-static const char sector_map_d64[43] =
-    { 0,
-      21, 21, 21, 21, 21, 21, 21, 21, 21, 21, /*  1 - 10 */
-      21, 21, 21, 21, 21, 21, 21, 19, 19, 19, /* 11 - 20 */
-      19, 19, 19, 19, 18, 18, 18, 18, 18, 18, /* 21 - 30 */
-      17, 17, 17, 17, 17,                     /* 31 - 35 */
-      17, 17, 17, 17, 17, 17, 17 };           /* 36 - 42 */
-
-static const char sector_map_d67[36] =
-    { 0,
-      21, 21, 21, 21, 21, 21, 21, 21, 21, 21, /*  1 - 10 */
-      21, 21, 21, 21, 21, 21, 21, 20, 20, 20, /* 11 - 20 */
-      20, 20, 20, 20, 18, 18, 18, 18, 18, 18, /* 21 - 30 */
-      17, 17, 17, 17, 17 };                   /* 31 - 35 */
-
-static const char sector_map_d71[71] =
-    { 0,
-      21, 21, 21, 21, 21, 21, 21, 21, 21, 21, /*  1 - 10 */
-      21, 21, 21, 21, 21, 21, 21, 19, 19, 19, /* 11 - 20 */
-      19, 19, 19, 19, 18, 18, 18, 18, 18, 18, /* 21 - 30 */
-      17, 17, 17, 17, 17,                     /* 31 - 35 */
-      21, 21, 21, 21, 21, 21, 21, 21, 21, 21, /* 36 - 45 */
-      21, 21, 21, 21, 21, 21, 21, 19, 19, 19, /* 46 - 55 */
-      19, 19, 19, 19, 18, 18, 18, 18, 18, 18, /* 56 - 65 */
-      17, 17, 17, 17, 17 };                   /* 66 - 70 */
-
-static const char sector_map_d80[78] =
-    { 0,
-      29, 29, 29, 29, 29, 29, 29, 29, 29, 29, /*  1 - 10 */
-      29, 29, 29, 29, 29, 29, 29, 29, 29, 29, /* 11 - 20 */
-      29, 29, 29, 29, 29, 29, 29, 29, 29, 29, /* 21 - 30 */
-      29, 29, 29, 29, 29, 29, 29, 29, 29, 27, /* 31 - 40 */
-      27, 27, 27, 27, 27, 27, 27, 27, 27, 27, /* 41 - 50 */
-      27, 27, 27, 25, 25, 25, 25, 25, 25, 25, /* 51 - 60 */
-      25, 25, 25, 25, 23, 23, 23, 23, 23, 23, /* 61 - 70 */
-      23, 23, 23, 23, 23, 23, 23 };           /* 71 - 77 */
-
-
-unsigned int disk_image_sector_per_track(unsigned int format,
+unsigned int disk_image_sector_per_track(disk_image_t *image,
                                          unsigned int track)
 {
-    switch (format) {
-      case DISK_IMAGE_TYPE_D64:
-      case DISK_IMAGE_TYPE_X64:
-        if (track >= sizeof(sector_map_d64)) {
-            log_message(disk_image_log, "Track %i exceeds sector map.", track);
-            return 0;
-        }
-        return sector_map_d64[track];
-      case DISK_IMAGE_TYPE_D67:
-        if (track >= sizeof(sector_map_d67)) {
-            log_message(disk_image_log, "Track %i exceeds sector map.", track);
-            return 0;
-        }
-        return sector_map_d67[track];
-      case DISK_IMAGE_TYPE_D71:
-        if (track >= sizeof(sector_map_d71)) {
-            log_message(disk_image_log, "Track %i exceeds sector map.", track);
-            return 0;
-        }
-        return sector_map_d71[track];
-      case DISK_IMAGE_TYPE_D80:
-      case DISK_IMAGE_TYPE_D82:
-        if (track >= sizeof(sector_map_d80)) {
-            log_message(disk_image_log, "Track %i exceeds sector map.", track);
-            return 0;
-        }
-        return sector_map_d80[track];
-      default:
-        log_message(disk_image_log,
+    if (track > 0) {
+        switch (image->type) {
+        case DISK_IMAGE_TYPE_D64:
+        case DISK_IMAGE_TYPE_X64:
+        case DISK_IMAGE_TYPE_G64:
+            if (track > MAX_TRACKS_1541) {
+                break;
+            }
+            return sectors_1541[disk_image_speed_map_1541(track)];
+        case DISK_IMAGE_TYPE_D67:
+            if (track > MAX_TRACKS_2040) {
+                break;
+            }
+            return sectors_2040[disk_image_speed_map_1541(track)];
+        case DISK_IMAGE_TYPE_D71:
+            if (track > MAX_TRACKS_1571) {
+                break;
+            }
+            return sectors_1541[disk_image_speed_map_1541((track > 35) ? (track - 35) : track)];
+        case DISK_IMAGE_TYPE_D80:
+            if (track > MAX_TRACKS_8050) {
+                break;
+            }
+            return sectors_8050[disk_image_speed_map_8050(track)];
+        case DISK_IMAGE_TYPE_D82:
+            if (track > MAX_TRACKS_8250) {
+                break;
+            }
+            return sectors_8050[disk_image_speed_map_8050((track > 77) ? (track - 77) : track)];
+        case DISK_IMAGE_TYPE_D81:
+            if (track > NUM_TRACKS_1581) {
+                break;
+            }
+            return 40;
+        case DISK_IMAGE_TYPE_D1M:
+            if (track > NUM_TRACKS_1000) {
+                break;
+            }
+            return (track == NUM_TRACKS_1000) ? 128 : 256;
+        case DISK_IMAGE_TYPE_D2M:
+            if (track > NUM_TRACKS_2000) {
+                break;
+            }
+            return 256;
+        case DISK_IMAGE_TYPE_D4M:
+            if (track > NUM_TRACKS_4000) {
+                break;
+            }
+            return 256;
+        default:
+            log_message(disk_image_log,
                     "Unknown disk type %i.  Cannot calculate sectors per track",
-                    format);
+                    image->type);
+            return 0;
+        }
     }
+    log_message(disk_image_log, "Track %i exceeds sector map.", track);
     return 0;
 }
 
@@ -157,50 +142,35 @@ unsigned int disk_image_sector_per_track(unsigned int format,
 int disk_image_check_sector(disk_image_t *image, unsigned int track,
                             unsigned int sector)
 {
-    if (image->device == DISK_IMAGE_DEVICE_FS)
-        return fsimage_check_sector(image, track, sector);
+    int sectors, i;
 
-    return 0;
+    if (track < 1)
+        return -1;
+
+    if (sector >= disk_image_sector_per_track(image, track))
+        return -1;
+
+    sectors = sector;
+    for (i = 1; i < track; i++) {
+        sectors += disk_image_sector_per_track(image, i);
+    }
+    return sectors;
 }
 
 /*-----------------------------------------------------------------------*/
 
-static const char *disk_image_type(disk_image_t *image)
-{
-    switch(image->type) {
-        case DISK_IMAGE_TYPE_D80: return "D80";
-        case DISK_IMAGE_TYPE_D82: return "D82";
-        case DISK_IMAGE_TYPE_D64: return "D64";
-        case DISK_IMAGE_TYPE_D67: return "D67";
-        case DISK_IMAGE_TYPE_G64: return "G64";
-        case DISK_IMAGE_TYPE_X64: return "X64";
-        case DISK_IMAGE_TYPE_D71: return "D71";
-        case DISK_IMAGE_TYPE_D81: return "D81";
-        case DISK_IMAGE_TYPE_D1M: return "D1M";
-        case DISK_IMAGE_TYPE_D2M: return "D2M";
-        case DISK_IMAGE_TYPE_D4M: return "D4M";
-        default: return NULL;
-    }
-}
-
 void disk_image_attach_log(disk_image_t *image, signed int lognum,
                            unsigned int unit)
 {
-    const char *type = disk_image_type(image);
-
-    if (type == NULL) {
-        return;
-    }
-
     switch (image->device) {
-      case DISK_IMAGE_DEVICE_FS:
+    case DISK_IMAGE_DEVICE_FS:
         log_verbose("Unit %d: %s disk image attached: %s.",
-                    unit, type, fsimage_name_get(image));
+                    unit, image->type_name, fsimage_name_get(image));
         break;
 #ifdef HAVE_RAWDRIVE
-      case DISK_IMAGE_DEVICE_RAW:
+    case DISK_IMAGE_DEVICE_RAW:
         log_verbose("Unit %d: %s disk attached (drive: %s).",
-                    unit, type, rawimage_name_get(image));
+                    unit, image->type_name, rawimage_name_get(image));
         break;
 #endif
     }
@@ -209,21 +179,15 @@ void disk_image_attach_log(disk_image_t *image, signed int lognum,
 void disk_image_detach_log(disk_image_t *image, signed int lognum,
                            unsigned int unit)
 {
-    const char *type = disk_image_type(image);
-
-    if (type == NULL) {
-        return;
-    }
-
     switch (image->device) {
-      case DISK_IMAGE_DEVICE_FS:
+    case DISK_IMAGE_DEVICE_FS:
         log_verbose("Unit %d: %s disk image detached: %s.",
-                    unit, type, fsimage_name_get(image));
+                    unit, image->type_name, fsimage_name_get(image));
         break;
 #ifdef HAVE_RAWDRIVE
-      case DISK_IMAGE_DEVICE_RAW:
+    case DISK_IMAGE_DEVICE_RAW:
         log_verbose("Unit %d: %s disk detached (drive: %s).",
-                    unit, type, rawimage_name_get(image));
+                    unit, image->type_name, rawimage_name_get(image));
         break;
 #endif
     }
@@ -238,11 +202,6 @@ void disk_image_fsimage_name_set(disk_image_t *image, char *name)
 char *disk_image_fsimage_name_get(disk_image_t *image)
 {
     return fsimage_name_get(image);
-}
-
-void *disk_image_fsimage_fd_get(disk_image_t *image)
-{
-    return fsimage_fd_get(image);
 }
 
 int disk_image_fsimage_create(const char *name, unsigned int type)
@@ -271,11 +230,11 @@ void disk_image_rawimage_driver_name_set(disk_image_t *image)
 void disk_image_name_set(disk_image_t *image, char *name)
 {
     switch (image->device) {
-      case DISK_IMAGE_DEVICE_FS:
+    case DISK_IMAGE_DEVICE_FS:
         fsimage_name_set(image, name);
         break;
 #ifdef HAVE_RAWDRIVE
-      case DISK_IMAGE_DEVICE_RAW:
+    case DISK_IMAGE_DEVICE_RAW:
         rawimage_name_set(image, name);
         break;
 #endif
@@ -285,7 +244,7 @@ void disk_image_name_set(disk_image_t *image, char *name)
 char *disk_image_name_get(disk_image_t *image)
 {
     switch (image->device) {
-      case DISK_IMAGE_DEVICE_FS:
+    case DISK_IMAGE_DEVICE_FS:
         return fsimage_name_get(image);
         break;
     }
@@ -310,44 +269,44 @@ void disk_image_destroy(disk_image_t *image)
 void disk_image_media_create(disk_image_t *image)
 {
     switch (image->device) {
-      case DISK_IMAGE_DEVICE_FS:
+    case DISK_IMAGE_DEVICE_FS:
         fsimage_media_create(image);
         break;
 #ifdef HAVE_OPENCBM
-      case DISK_IMAGE_DEVICE_REAL:
+    case DISK_IMAGE_DEVICE_REAL:
         realimage_media_create(image);
         break;
 #endif
 #ifdef HAVE_RAWDRIVE
-      case DISK_IMAGE_DEVICE_RAW:
+    case DISK_IMAGE_DEVICE_RAW:
         rawimage_media_create(image);
         break;
 #endif
-      default:
+    default:
         log_error(disk_image_log, "Unknown image device %i.", image->device);
     }
 }
 
 void disk_image_media_destroy(disk_image_t *image)
 {
-	if (image == NULL)
-		return;
+    if (image == NULL)
+        return;
 
     switch (image->device) {
-      case DISK_IMAGE_DEVICE_FS:
+    case DISK_IMAGE_DEVICE_FS:
         fsimage_media_destroy(image);
         break;
 #ifdef HAVE_OPENCBM
-      case DISK_IMAGE_DEVICE_REAL:
+    case DISK_IMAGE_DEVICE_REAL:
         realimage_media_destroy(image);
         break;
 #endif
 #ifdef HAVE_RAWDRIVE
-      case DISK_IMAGE_DEVICE_RAW:
+    case DISK_IMAGE_DEVICE_RAW:
         rawimage_media_destroy(image);
         break;
 #endif
-      default:
+    default:
         log_error(disk_image_log, "Unknown image device %i.", image->device);
     }
 }
@@ -359,20 +318,20 @@ int disk_image_open(disk_image_t *image)
     int rc = 0;
 
     switch (image->device) {
-      case DISK_IMAGE_DEVICE_FS:
+    case DISK_IMAGE_DEVICE_FS:
         rc = fsimage_open(image);
         break;
 #ifdef HAVE_OPENCBM
-      case DISK_IMAGE_DEVICE_REAL:
+    case DISK_IMAGE_DEVICE_REAL:
         rc = realimage_open(image);
         break;
 #endif
 #ifdef HAVE_RAWDRIVE
-      case DISK_IMAGE_DEVICE_RAW:
+    case DISK_IMAGE_DEVICE_RAW:
         rc = rawimage_open(image);
         break;
 #endif
-      default:
+    default:
         log_error(disk_image_log, "Unknown image device %i.", image->device);
         rc = -1;
     }
@@ -383,28 +342,27 @@ int disk_image_open(disk_image_t *image)
 
 int disk_image_close(disk_image_t *image)
 {
-    int rc = 0;
+    int rc = -1;
 
-	if (image == NULL)
-		return 0;
+    if (image == NULL)
+        return 0;
 
     switch (image->device) {
-      case DISK_IMAGE_DEVICE_FS:
+    case DISK_IMAGE_DEVICE_FS:
         rc = fsimage_close(image);
         break;
 #ifdef HAVE_OPENCBM
-      case DISK_IMAGE_DEVICE_REAL:
+    case DISK_IMAGE_DEVICE_REAL:
         rc = realimage_close(image);
         break;
 #endif
 #ifdef HAVE_RAWDRIVE
-      case DISK_IMAGE_DEVICE_RAW:
+    case DISK_IMAGE_DEVICE_RAW:
         rc = rawimage_close(image);
         break;
 #endif
-      default:
+    default:
         log_error(disk_image_log, "Unknown image device %i.", image->device);
-        rc = -1;
     }
 
     return rc;
@@ -415,25 +373,24 @@ int disk_image_close(disk_image_t *image)
 int disk_image_read_sector(disk_image_t *image, BYTE *buf, unsigned int track,
                            unsigned int sector)
 {
-    int rc = 0;
+    int rc = -1;
 
     switch (image->device) {
-      case DISK_IMAGE_DEVICE_FS:
+    case DISK_IMAGE_DEVICE_FS:
         rc = fsimage_read_sector(image, buf, track, sector);
         break;
 #ifdef HAVE_OPENCBM
-      case DISK_IMAGE_DEVICE_REAL:
+    case DISK_IMAGE_DEVICE_REAL:
         rc = realimage_read_sector(image, buf, track, sector);
         break;
 #endif
 #ifdef HAVE_RAWDRIVE
-      case DISK_IMAGE_DEVICE_RAW:
+    case DISK_IMAGE_DEVICE_RAW:
         rc = rawimage_read_sector(image, buf, track, sector);
         break;
 #endif
-      default:
+    default:
         log_error(disk_image_log, "Unknown image device %i.", image->device); 
-        rc = -1;
     }
 
     return rc;
@@ -442,25 +399,24 @@ int disk_image_read_sector(disk_image_t *image, BYTE *buf, unsigned int track,
 int disk_image_write_sector(disk_image_t *image, BYTE *buf, unsigned int track,
                             unsigned int sector)
 {
-    int rc = 0;
+    int rc = -1;
 
     switch (image->device) {
-      case DISK_IMAGE_DEVICE_FS:
+    case DISK_IMAGE_DEVICE_FS:
         rc = fsimage_write_sector(image, buf, track, sector);
         break;
 #ifdef HAVE_OPENCBM
-      case DISK_IMAGE_DEVICE_REAL:
+    case DISK_IMAGE_DEVICE_REAL:
         rc = realimage_write_sector(image, buf, track, sector);
         break;
 #endif
 #ifdef HAVE_RAWDRIVE
-      case DISK_IMAGE_DEVICE_RAW:
+    case DISK_IMAGE_DEVICE_RAW:
         rc = rawimage_write_sector(image, buf, track, sector);
         break;
 #endif
-      default:
+    default:
         log_error(disk_image_log, "Unknow image device %i.", image->device);
-        rc = -1;
     }
 
     return rc;
@@ -468,23 +424,36 @@ int disk_image_write_sector(disk_image_t *image, BYTE *buf, unsigned int track,
 
 /*-----------------------------------------------------------------------*/
 
-int disk_image_read_track(disk_image_t *image, unsigned int track,
-                          BYTE *gcr_data, int *gcr_track_size)
+int disk_image_read_track(disk_image_t *image, int track, int head,
+                          BYTE *gcr_speed_zone, BYTE *gcr_data,
+                          int *gcr_track_size)
 {
-    return fsimage_gcr_read_track(image, track, gcr_data, gcr_track_size);
+    int rc = -1;
+
+    switch (image->device) {
+    case DISK_IMAGE_DEVICE_FS:
+        rc = fsimage_read_track(image, track, head, gcr_speed_zone, gcr_data, gcr_track_size);
+        break;
+    default:
+        log_error(disk_image_log, "Unknown image device %i.", image->device); 
+    }
+    return rc;
 }
 
-int disk_image_write_track(disk_image_t *image, unsigned int track,
+int disk_image_write_track(disk_image_t *image, int track, int head,
                            int gcr_track_size, BYTE *gcr_speed_zone,
                            BYTE *gcr_track_start_ptr)
 {
-    return fsimage_gcr_write_track(image, track, gcr_track_size, gcr_speed_zone,
-                                   gcr_track_start_ptr);
-}
+    int rc = -1;
 
-int disk_image_read_gcr_image(disk_image_t *image)
-{
-    return fsimage_read_gcr_image(image);
+    switch (image->device) {
+    case DISK_IMAGE_DEVICE_FS:
+        rc = fsimage_write_track(image, track, head, gcr_speed_zone, gcr_track_start_ptr, gcr_track_size);
+        break;
+    default:
+        log_error(disk_image_log, "Unknown image device %i.", image->device); 
+    }
+    return rc;
 }
 
 /*-----------------------------------------------------------------------*/
@@ -493,7 +462,6 @@ int disk_image_read_gcr_image(disk_image_t *image)
 void disk_image_init(void)
 {
     disk_image_log = log_open("Disk Access");
-    fsimage_create_init();
     fsimage_init();
 #ifdef HAVE_OPENCBM
     realimage_init();

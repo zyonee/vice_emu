@@ -34,6 +34,9 @@
  * disk geometry.
  */
 
+/* Number of bytes in one raw track.  */
+#define NUM_MAX_BYTES_TRACK 7928
+
 #define NUM_TRACKS_1541        35
 #define NUM_BLOCKS_1541        683      /* 664 free */
 #define EXT_TRACKS_1541        40
@@ -107,22 +110,19 @@
 #define DIR_SECTOR_8250        1
 
 #define NUM_TRACKS_1000        13
-#define NUM_BLOCKS_1000        3240
-#define NUM_SYS_SECTORS_1000   168      /* on system partition track */
+#define NUM_BLOCKS_1000        3200
 #define MAX_TRACKS_1000        13
-#define MAX_BLOCKS_1000        3240
+#define MAX_BLOCKS_1000        3200
 
-#define NUM_TRACKS_2000        26
-#define NUM_BLOCKS_2000        6480
-#define NUM_SYS_SECTORS_2000   80       /* on system partition track */
-#define MAX_TRACKS_2000        26
-#define MAX_BLOCKS_2000        6480
+#define NUM_TRACKS_2000        25
+#define NUM_BLOCKS_2000        6400
+#define MAX_TRACKS_2000        25
+#define MAX_BLOCKS_2000        6400
 
-#define NUM_TRACKS_4000        51
-#define NUM_BLOCKS_4000        12960
-#define NUM_SYS_SECTORS_4000   160      /* on system partition track */
-#define MAX_TRACKS_4000        51
-#define MAX_BLOCKS_4000        12960
+#define NUM_TRACKS_4000        50
+#define NUM_BLOCKS_4000        12800
+#define MAX_TRACKS_4000        50
+#define MAX_BLOCKS_4000        12800
 
 #define DIR_TRACK_4000         1
 #define DIR_SECTOR_4000        34

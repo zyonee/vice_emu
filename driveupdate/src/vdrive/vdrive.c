@@ -189,7 +189,7 @@ int vdrive_calculate_disk_half(vdrive_t *vdrive)
       case VDRIVE_IMAGE_FORMAT_8250:
         return 39;
       case VDRIVE_IMAGE_FORMAT_4000:
-        return vdrive->num_tracks - 1;
+        return vdrive->image->ltracks - 1;
       default:
         log_error(vdrive_log,
                   "Unknown disk type %i.  Cannot calculate disk half.", vdrive->image_format);
@@ -199,33 +199,7 @@ int vdrive_calculate_disk_half(vdrive_t *vdrive)
 
 int vdrive_get_max_sectors(vdrive_t *vdrive, unsigned int track)
 {
-    switch (vdrive->image_format) {
-      case VDRIVE_IMAGE_FORMAT_1541:
-        return disk_image_sector_per_track(DISK_IMAGE_TYPE_D64, track);
-      case VDRIVE_IMAGE_FORMAT_2040:
-        return disk_image_sector_per_track(DISK_IMAGE_TYPE_D67, track);
-      case VDRIVE_IMAGE_FORMAT_1571:
-        return disk_image_sector_per_track(DISK_IMAGE_TYPE_D71, track);
-      case VDRIVE_IMAGE_FORMAT_8050:
-        return disk_image_sector_per_track(DISK_IMAGE_TYPE_D80, track);
-      case VDRIVE_IMAGE_FORMAT_1581:
-        return 40;
-      case VDRIVE_IMAGE_FORMAT_8250:
-        if (track <= NUM_TRACKS_8250 / 2) {
-            return disk_image_sector_per_track(DISK_IMAGE_TYPE_D80, track);
-        } else {
-            return disk_image_sector_per_track(DISK_IMAGE_TYPE_D80, track
-                                               - (NUM_TRACKS_8250 / 2));
-        }
-      case VDRIVE_IMAGE_FORMAT_4000:
-        return 256;
-      default:
-        log_message(vdrive_log,
-                    "Unknown disk type %i.  Cannot calculate max sectors",
-                    vdrive->image_format);
-
-    }
-    return -1;
+    return disk_image_sector_per_track(vdrive->image, track);
 }
 
 /* ------------------------------------------------------------------------- */
@@ -258,49 +232,40 @@ int vdrive_attach_image(disk_image_t *image, unsigned int unit,
     switch(image->type) {
       case DISK_IMAGE_TYPE_D64:
         vdrive->image_format = VDRIVE_IMAGE_FORMAT_1541;
-        vdrive->num_tracks  = image->tracks;
         vdrive->bam_size = 0x100;
         break;
       case DISK_IMAGE_TYPE_D67:
         vdrive->image_format = VDRIVE_IMAGE_FORMAT_2040;
-        vdrive->num_tracks  = image->tracks;
         vdrive->bam_size = 0x100;
         break;
       case DISK_IMAGE_TYPE_D71:
         vdrive->image_format = VDRIVE_IMAGE_FORMAT_1571;
-        vdrive->num_tracks  = image->tracks;
         vdrive->bam_size = 0x200;
         break;
       case DISK_IMAGE_TYPE_D81:
         vdrive->image_format = VDRIVE_IMAGE_FORMAT_1581;
-        vdrive->num_tracks  = image->tracks;
         vdrive->bam_size = 0x300;
         break;
       case DISK_IMAGE_TYPE_D80:
         vdrive->image_format = VDRIVE_IMAGE_FORMAT_8050;
-        vdrive->num_tracks  = image->tracks;
         vdrive->bam_size = 0x500;
         break;
       case DISK_IMAGE_TYPE_D82:
         vdrive->image_format = VDRIVE_IMAGE_FORMAT_8250;
-        vdrive->num_tracks = image->tracks;
         vdrive->bam_size = 0x500;
         break;
       case DISK_IMAGE_TYPE_G64:
         vdrive->image_format = VDRIVE_IMAGE_FORMAT_1541;
-        vdrive->num_tracks = 35;
         vdrive->bam_size = 0x100;
         break;
       case DISK_IMAGE_TYPE_X64:
         vdrive->image_format = VDRIVE_IMAGE_FORMAT_1541;
-        vdrive->num_tracks = image->tracks;
         vdrive->bam_size = 0x100;
         break;
       case DISK_IMAGE_TYPE_D1M:
       case DISK_IMAGE_TYPE_D2M:
       case DISK_IMAGE_TYPE_D4M:
         vdrive->image_format = VDRIVE_IMAGE_FORMAT_4000;
-        vdrive->num_tracks = image->tracks - 1;
         vdrive->bam_size = 0x2100;
         break;
       default:

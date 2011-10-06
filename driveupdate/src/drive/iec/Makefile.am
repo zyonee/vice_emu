@@ -14,8 +14,6 @@ libdriveiec_a_SOURCES = \
 	cia1571d.c \
 	cia1581d.c \
 	ciad.h \
-	glue1571.c \
-	glue1571.h \
 	iec-cmdline-options.c \
 	iec-cmdline-options.h \
 	iec-resources.c \

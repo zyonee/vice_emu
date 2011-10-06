@@ -31,8 +31,10 @@ struct disk_image_s;
 struct drive_s;
 
 extern void drive_image_init(void);
-extern void drive_image_init_track_size_d64(struct drive_s *drive);
 
+extern void drive_destroy_cache(struct drive_s *drive);
+extern void drive_image_read(struct drive_s *drive);
+extern void drive_image_writeback(struct drive_s *drive, int free);
 extern int drive_image_attach(struct disk_image_s *image, unsigned int unit);
 extern int drive_image_detach(struct disk_image_s *image, unsigned int unit);
 

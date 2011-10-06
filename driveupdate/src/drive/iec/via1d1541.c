@@ -36,7 +36,6 @@
 #include "drivecpu.h"
 #include "drivesync.h"
 #include "drivetypes.h"
-#include "glue1571.h"
 #include "iecbus.h"
 #include "iecdrive.h"
 #include "interrupt.h"
@@ -114,7 +113,7 @@ static void undump_pra(via_context_t *via_context, BYTE byte)
         || via1p->drive->type == DRIVE_TYPE_1571
         || via1p->drive->type == DRIVE_TYPE_1571CR) {
         drivesync_set_1571(byte & 0x20, drive_context);
-        glue1571_side_set((byte >> 2) & 1, via1p->drive);
+        drive_side_set((byte >> 2) & 1, via1p->drive);
     } else
 
     if (via1p->drive->parallel_cable == DRIVE_PC_STANDARD
@@ -138,7 +137,7 @@ static void store_pra(via_context_t *via_context, BYTE byte, BYTE oldpa_value,
         if ((oldpa_value ^ byte) & 0x20)
             drivesync_set_1571(byte & 0x20, drive_context);
         if ((oldpa_value ^ byte) & 0x04)
-            glue1571_side_set((byte >> 2) & 1, via1p->drive);
+            drive_side_set((byte >> 2) & 1, via1p->drive);
         if ((oldpa_value ^ byte) & 0x02)
             iec_fast_drive_direction(byte & 2, via1p->number);
     } else {

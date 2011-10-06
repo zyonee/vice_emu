@@ -64,9 +64,8 @@
 
 struct fsimage_s;
 struct rawimage_s;
-struct gcr_s;
 
-struct disk_image_s {
+typedef struct disk_image_s {
     union media_u {
         struct fsimage_s *fsimage;
         struct rawimage_s *rawimage;
@@ -74,10 +73,14 @@ struct disk_image_s {
     unsigned int read_only;
     unsigned int device;
     unsigned int type;
-    unsigned int tracks;
-    struct gcr_s *gcr;
-};
-typedef struct disk_image_s disk_image_t;
+    char *type_name;
+    unsigned int ltracks; /* logical tracks */
+    unsigned int loffset; /* logical offset in sectors */
+    unsigned int lblocks; /* number of logical blocks */
+    unsigned int ptracks; /* including "half" tracks */
+    unsigned int sides;   /* 1 or 2 */
+    BYTE diskID[2];       /* Disk ID for flat images */
+} disk_image_t;
 
 extern void disk_image_init(void);
 extern int disk_image_resources_init(void);
@@ -86,7 +89,6 @@ extern void disk_image_resources_shutdown(void);
 
 extern void disk_image_fsimage_name_set(disk_image_t *image, char *name);
 extern char *disk_image_fsimage_name_get(disk_image_t *image);
-extern void *disk_image_fsimage_fd_get(disk_image_t *image);
 extern int disk_image_fsimage_create(const char *name, unsigned int type);
 
 extern void disk_image_rawimage_name_set(disk_image_t *image, char *name);
@@ -110,18 +112,19 @@ extern int disk_image_write_sector(disk_image_t *image, BYTE *buf,
                                    unsigned int track, unsigned int sector);
 extern int disk_image_check_sector(disk_image_t *image, unsigned int track,
                                    unsigned int sector);
-extern unsigned int disk_image_sector_per_track(unsigned int format,
+extern unsigned int disk_image_sector_per_track(struct disk_image_s *image,
                                                 unsigned int track);
-extern int disk_image_read_gcr_image(disk_image_t *image);
-extern int disk_image_read_track(disk_image_t *image, unsigned int track,
-                                 BYTE *gcr_data, int *gcr_track_size);
-extern int disk_image_write_track(disk_image_t *image, unsigned int track,
+extern int disk_image_read_track(disk_image_t *image, int track, int head,
+                                 BYTE *gcr_speed_zone, BYTE *gcr_data,
+                                 int *gcr_track_size);
+extern int disk_image_write_track(disk_image_t *image, int track, int head,
                                   int gcr_track_size,
                                   BYTE *gcr_speed_zone,
                                   BYTE *gcr_track_start_ptr);
 
 extern unsigned int disk_image_speed_map_1541(unsigned int track);
-extern unsigned int disk_image_speed_map_1571(unsigned int track);
+extern unsigned int disk_image_raw_track_size_1541(unsigned int track);
+extern unsigned int disk_image_gap_size_1541(unsigned int track);
 
 extern void disk_image_attach_log(disk_image_t *image, signed int lognum,
                                   unsigned int unit);

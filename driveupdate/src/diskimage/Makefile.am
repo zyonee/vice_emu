@@ -13,16 +13,18 @@ EXTRA_libdiskimage_a_SOURCES = \
 
 libdiskimage_a_SOURCES = \
 	diskimage.c \
-	fsimage-check.c \
-	fsimage-check.h \
-	fsimage-create.c \
-	fsimage-create.h \
 	fsimage-gcr.c \
 	fsimage-gcr.h \
+	fsimage-flat.c \
+	fsimage-flat.h \
 	fsimage-probe.c \
 	fsimage-probe.h \
 	fsimage.c \
 	fsimage.h \
+	gcr.c \
+	gcr.h \
+	mfm.c \
+	mfm.h \
 	x64.h
 
 if HAVE_RAWDRIVE

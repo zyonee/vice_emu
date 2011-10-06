@@ -108,43 +108,56 @@ void gcr_convert_sector_to_GCR(BYTE *buffer, BYTE *ptr, unsigned int track,
                                BYTE error_code)
 {
     int i;
-    BYTE buf[4], header_id1;
+    BYTE buf[4], chksum;
 
-    header_id1 = (error_code == 29) ? diskID1 ^ 0xff : diskID1;
+    if (error_code == 29)
+        diskID1 ^= 0xff;
 
     memset(ptr, 0xff, 5);       /* Sync */
     ptr += 5;
 
+    chksum = (error_code == 27) ? 0xff : 0x00;
+    chksum ^= sector ^ track ^ diskID2 ^ diskID1;
     buf[0] = (error_code == 20) ? 0xff : 0x08;
-    buf[1] = sector ^ track ^ diskID2 ^ header_id1;
+    buf[1] = chksum;
     buf[2] = sector;
     buf[3] = track;
-
-    if (error_code == 27)
-        buf[1] ^= 0xff;
-
     gcr_convert_4bytes_to_GCR(buf, ptr);
     ptr += 5;
 
     buf[0] = diskID2;
-    buf[1] = header_id1;
+    buf[1] = diskID1;
     buf[2] = buf[3] = 0x0f;
     gcr_convert_4bytes_to_GCR(buf, ptr);
     ptr += 5;
 
-    ptr += 9;
+    ptr += 9;                   /* Gap */
 
     memset(ptr, 0xff, 5);       /* Sync */
     ptr += 5;
 
-    for (i = 0; i < 65; i++) {
+    chksum = (error_code == 23) ? 0xff : 0x00;
+    buf[0] = (error_code == 22) ? 0xff : 0x07;
+    memcpy(buf + 1, buffer, 3);
+    chksum ^= buffer[0] ^ buffer[1] ^ buffer[2];
+    gcr_convert_4bytes_to_GCR(buf, ptr);
+    buffer += 3;
+    ptr += 5;
+
+    for (i = 0; i < 63; i++) {
+        chksum ^= buffer[0] ^ buffer[1] ^ buffer[2] ^ buffer[3];
         gcr_convert_4bytes_to_GCR(buffer, ptr);
         buffer += 4;
         ptr += 5;
     }
+
+    buf[0] = buffer[0];
+    buf[1] = chksum ^ buffer[0];
+    buf[2] = buf[3] = 0;
+    gcr_convert_4bytes_to_GCR(buf, ptr);
 }
 
-void gcr_convert_GCR_to_sector(BYTE *buffer, BYTE *ptr,
+static void gcr_convert_GCR_to_sector(BYTE *buffer, BYTE *ptr,
                                BYTE *GCR_track_start_ptr,
                                unsigned int GCR_current_track_size)
 {
@@ -188,7 +201,7 @@ void gcr_convert_GCR_to_sector(BYTE *buffer, BYTE *ptr,
     }
 }
 
-BYTE *gcr_find_sector_header(unsigned int track, unsigned int sector,
+static BYTE *gcr_find_sector_header(unsigned int track, unsigned int sector,
                              BYTE *gcr_track_start_ptr,
                              unsigned int gcr_current_track_size)
 {
@@ -255,7 +268,7 @@ BYTE *gcr_find_sector_header(unsigned int track, unsigned int sector,
     return NULL;
 }
 
-BYTE *gcr_find_sector_data(BYTE *offset,
+static BYTE *gcr_find_sector_data(BYTE *offset,
                            BYTE *gcr_track_start_ptr,
                            unsigned int gcr_current_track_size)
 {
@@ -279,51 +292,46 @@ BYTE *gcr_find_sector_data(BYTE *offset,
     return offset;
 }
 
-int gcr_read_sector(BYTE *gcr_track_start_ptr,
-                    unsigned int gcr_current_track_size, BYTE *readdata,
+int gcr_read_sector(BYTE *raw, unsigned int size, BYTE *data,
                     unsigned int track, unsigned int sector)
 {
     BYTE buffer[260], *offset;
 
-    offset = gcr_find_sector_header(track, sector,
-                                    gcr_track_start_ptr,
-                                    gcr_current_track_size);
+    offset = gcr_find_sector_header(track, sector, raw, size);
     if (offset == NULL)
         return -1;
 
-    offset = gcr_find_sector_data(offset, gcr_track_start_ptr,
-                                  gcr_current_track_size);
+    offset = gcr_find_sector_data(offset, raw, size);
     if (offset == NULL)
-        return -1;
+        return -2;
 
-    gcr_convert_GCR_to_sector(buffer, offset, gcr_track_start_ptr,
-                              gcr_current_track_size);
+    gcr_convert_GCR_to_sector(buffer, offset, raw, size);
+
     if (buffer[0] != 0x7)
-        return -1;
+        return -3;
 
-    memcpy(readdata, &buffer[1], 256);
+    memcpy(data, buffer + 1, 256);
+
     return 0;
 }
 
-int gcr_write_sector(BYTE *gcr_track_start_ptr,
-                     unsigned int gcr_current_track_size, BYTE *writedata,
+int gcr_write_sector(BYTE *raw, unsigned int size, BYTE *data,
                      unsigned int track, unsigned int sector)
 {
     BYTE buffer[260], gcr_buffer[325], *offset, *buf, *gcr_data;
     BYTE chksum;
     int i;
 
-    offset = gcr_find_sector_header(track, sector,
-                                    gcr_track_start_ptr,
-                                    gcr_current_track_size);
+    offset = gcr_find_sector_header(track, sector, raw, size);
     if (offset == NULL)
         return -1;
-    offset = gcr_find_sector_data(offset, gcr_track_start_ptr,
-                                  gcr_current_track_size);
+
+    offset = gcr_find_sector_data(offset, raw, size);
     if (offset == NULL)
-        return -1;
+        return -2;
+
     buffer[0] = 0x7;
-    memcpy(&buffer[1], writedata, 256);
+    memcpy(buffer + 1, data, 256);
     chksum = buffer[1];
     for (i = 2; i < 257; i++)
         chksum ^= buffer[i];
@@ -342,20 +350,8 @@ int gcr_write_sector(BYTE *gcr_track_start_ptr,
     for (i = 0; i < 325; i++) {
         *offset = gcr_buffer[i];
         offset++;
-        if (offset == gcr_track_start_ptr + gcr_current_track_size)
-            offset = gcr_track_start_ptr;
+        if (offset == raw + size)
+            offset = raw;
     }
     return 0;
 }
-
-gcr_t *gcr_create_image(void)
-{
-    return (gcr_t *)lib_calloc(1, sizeof(gcr_t));
-}
-
-void gcr_destroy_image(gcr_t *gcr)
-{
-    lib_free(gcr);
-    return;
-}
-

@@ -137,7 +137,6 @@ noinst_HEADERS = \
 	flash040.h \
 	fliplist.h \
 	fullscreen.h \
-	gcr.h \
 	gfxoutput.h \
 	hardsid.h \
 	iecbus.h \
@@ -252,7 +251,6 @@ base_sources = \
 	event.c \
 	findpath.c \
 	fliplist.c \
-	gcr.c \
 	info.c \
 	init.c \
 	initcmdline.c \
@@ -1475,7 +1473,6 @@ c1541_SOURCES = \
 	cbmdos.c \
 	charset.c \
 	findpath.c \
-	gcr.c \
 	cbmimage.c \
 	info.c \
 	ioutil.c \

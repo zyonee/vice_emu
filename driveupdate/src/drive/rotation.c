@@ -136,22 +136,22 @@ inline static void write_next_bit(drive_t *dptr, int value)
     int byte_offset = off >> 3;
     int bit = (~off) & 7;
 
-    /* if no image is attached, writes do nothing */
-    if (dptr->GCR_image_loaded == 0) {
+    if (!dptr->raw) {
         return;
     }
 
     off++;
-    if (off >= (dptr->GCR_current_track_size << 3)) {
+    if (off >= (dptr->raw->size << 3)) {
         off = 0;
     }
     dptr->GCR_head_offset = off;
 
     if (value) {
-        dptr->GCR_track_start_ptr[byte_offset] |= 1 << bit;
+        dptr->raw->data[byte_offset] |= 1 << bit;
     } else {
-        dptr->GCR_track_start_ptr[byte_offset] &= ~(1 << bit);
+        dptr->raw->data[byte_offset] &= ~(1 << bit);
     }
+    dptr->raw->dirty = 1;
 }
 
 inline static int read_next_bit(drive_t *dptr)
@@ -160,18 +160,17 @@ inline static int read_next_bit(drive_t *dptr)
     int byte_offset = off >> 3;
     int bit = (~off) & 7;
 
-    /* if no image is attached, read 0 */
-    if (dptr->GCR_image_loaded == 0) {
+    if (!dptr->raw) {
         return 0;
     }
 
     off++;
-    if (off >= (dptr->GCR_current_track_size << 3)) {
+    if (off >= (dptr->raw->size << 3)) {
         off = 0;
     }
     dptr->GCR_head_offset = off;
 
-    return (dptr->GCR_track_start_ptr[byte_offset] >> bit) & 1;
+    return (dptr->raw->data[byte_offset] >> bit) & 1;
 }
 
 inline static SDWORD RANDOM_nextInt(rotation_t *rptr) {
@@ -309,8 +308,7 @@ void rotation_rotate_disk(drive_t *dptr)
             if ((rptr->last_read_data & 0xf) == 0) {
                 rptr->last_read_data |= 1;
             }
-                
-            dptr->GCR_dirty_track = 1;
+
             write_next_bit(dptr, rptr->last_write_data & 0x80);
             rptr->last_write_data <<= 1;
 

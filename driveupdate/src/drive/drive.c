@@ -55,7 +55,6 @@
 #include "drivesync.h"
 #include "driverom.h"
 #include "drivetypes.h"
-#include "gcr.h"
 #include "iecbus.h"
 #include "iecdrive.h"
 #include "lib.h"
@@ -82,7 +81,7 @@ int rom_loaded = 0;
 
 static int drive_led_color[DRIVE_NUM];
 
-static void drive_extend_disk_image(drive_t *drive);
+static void drive_set_half_track(int num, drive_t *dptr);
 
 /* ------------------------------------------------------------------------- */
 
@@ -115,7 +114,6 @@ void drive_set_last_read(unsigned int track, unsigned int sector, BYTE *buffer,
 
     drive = drv->drive;
 
-    drive_gcr_data_writeback(drive);
     drive_set_half_track(track * 2, drive);
 
     if (drive->type == DRIVE_TYPE_1541
@@ -193,20 +191,17 @@ int drive_init(void)
 
     for (dnr = 0; dnr < DRIVE_NUM; dnr++) {
         drive = drive_context[dnr]->drive;
-        drive->gcr = gcr_create_image();
+        drive->raw = NULL;
+        memset(drive->raw_cache, 0, sizeof(drive->raw_cache));
         drive->byte_ready_level = 1;
         drive->byte_ready_edge = 1;
-        drive->GCR_dirty_track = 0;
         drive->GCR_write_value = 0x55;
-        drive->GCR_track_start_ptr = drive->gcr->data;
-        drive->GCR_current_track_size = 0;
         drive->attach_clk = (CLOCK)0;
         drive->detach_clk = (CLOCK)0;
         drive->attach_detach_clk = (CLOCK)0;
         drive->old_led_status = 0;
         drive->old_half_track = 0;
         drive->side = 0;
-        drive->GCR_image_loaded = 0;
         drive->read_only = 0;
         drive->clock_frequency = 1;
         drive->led_last_change_clk = *(drive->clk);
@@ -214,7 +209,6 @@ int drive_init(void)
         drive->led_active_ticks = 0;
 
         rotation_reset(drive);
-        drive_image_init_track_size_d64(drive);
 
         /* Position the R/W head on the directory track.  */
         drive_set_half_track(36, drive);
@@ -238,7 +232,6 @@ int drive_init(void)
         if (drive->enable)
             drive_enable(drive_context[dnr]);
     }
-
     return 0;
 }
 
@@ -248,7 +241,7 @@ void drive_shutdown(void)
 
     for (dnr = 0; dnr < DRIVE_NUM; dnr++) {
         drivecpu_shutdown(drive_context[dnr]);
-        gcr_destroy_image(drive_context[dnr]->drive->gcr);
+        drive_destroy_cache(drive_context[dnr]->drive);
         ds1216e_destroy(drive_context[dnr]->drive->ds1216);
     }
 
@@ -379,11 +372,9 @@ int drive_enable(drive_context_t *drv)
 void drive_disable(drive_context_t *drv)
 {
     int i, drive_true_emulation = 0;
-    unsigned int dnr;
     drive_t *drive;
     unsigned int enabled_drives = 0;
 
-    dnr = drv->mynumber;
     drive = drv->drive;
 
     /* This must come first, because this might be called before the true
@@ -396,7 +387,7 @@ void drive_disable(drive_context_t *drv)
         drivecpu_sleep(drv);
         machine_drive_port_default(drv);
 
-        drive_gcr_data_writeback(drive);
+        drive_image_writeback(drive, 0);
     }
 
     /* Make sure the UI is updated.  */
@@ -447,38 +438,50 @@ void drive_reset(void)
     }
 }
 
-void drive_current_track_size_set(drive_t *dptr)
-{
-    dptr->GCR_current_track_size =
-        dptr->gcr->track_size[dptr->current_half_track / 2 - 1];
-}
-
 /* Move the head to half track `num'.  */
-void drive_set_half_track(int num, drive_t *dptr)
+static void drive_set_half_track(int num, drive_t *dptr)
 {
-    if ((dptr->type == DRIVE_TYPE_1541 || dptr->type == DRIVE_TYPE_1541II
-        || dptr->type == DRIVE_TYPE_1551 || dptr->type == DRIVE_TYPE_1570
-        || dptr->type == DRIVE_TYPE_2031) && num > 84)
-        num = 84;
-    if ((dptr->type == DRIVE_TYPE_1571 || dptr->type == DRIVE_TYPE_1571CR)
-        && num > 140)
-        num = 140;
-    if (num < 2)
+    drive_image_writeback(dptr, dptr->current_half_track != num);
+
+    switch (dptr->type) {
+    case DRIVE_TYPE_1541:
+    case DRIVE_TYPE_1541II:
+    case DRIVE_TYPE_1551:
+    case DRIVE_TYPE_1570:
+    case DRIVE_TYPE_2031:
+        if (num > 84) {
+            num = 84;
+        }
+        break;
+    case DRIVE_TYPE_1571:
+    case DRIVE_TYPE_1571CR:
+        if (num > 70) {
+            num = 70;
+        }
+        break;
+    }
+    if (num < 2) {
         num = 2;
+    }
 
     dptr->current_half_track = num;
-    dptr->GCR_track_start_ptr = (dptr->gcr->data
-                                + ((dptr->current_half_track / 2 - 1)
-                                * NUM_MAX_BYTES_TRACK));
+    drive_image_read(dptr);
+    if (dptr->raw) {
+        dptr->GCR_head_offset = dptr->GCR_head_offset % dptr->raw->size;
+    }
+}
 
-    if (dptr->GCR_current_track_size != 0)
-        dptr->GCR_head_offset = (dptr->GCR_head_offset
-            * dptr->gcr->track_size[dptr->current_half_track / 2 - 1])
-            / dptr->GCR_current_track_size;
-    else
-        dptr->GCR_head_offset = 0;
+void drive_side_set(unsigned int side, struct drive_s *drive)
+{
+    unsigned int num;
 
-    drive_current_track_size_set(dptr);
+    if (drive->side == side) {
+        return;
+    }
+
+    drive_image_writeback(drive, 1);
+    drive->side = side;
+    drive_set_half_track(drive->current_half_track, drive);
 }
 
 /*-------------------------------------------------------------------------- */
@@ -487,129 +490,7 @@ void drive_set_half_track(int num, drive_t *dptr)
    for `step' are `+1' and `-1'.  */
 void drive_move_head(int step, drive_t *drive)
 {
-    drive_gcr_data_writeback(drive);
-    if (drive->type == DRIVE_TYPE_1571
-        || drive->type == DRIVE_TYPE_1571CR) {
-        if (drive->current_half_track + step == 71)
-            return;
-    }
     drive_set_half_track(drive->current_half_track + step, drive);
-}
-
-/* Hack... otherwise you get internal compiler errors when optimizing on
-    gcc2.7.2 on RISC OS */
-static void gcr_data_writeback2(BYTE *buffer, BYTE *offset, unsigned int track,
-                                unsigned int sector, drive_t *drive)
-{
-    int rc;
-
-    gcr_convert_GCR_to_sector(buffer, offset,
-                              drive->GCR_track_start_ptr,
-                              drive->GCR_current_track_size);
-    if (buffer[0] != 0x7) {
-        log_error(drive->log,
-                  "Could not find data block id of T:%d S:%d.",
-                  track, sector);
-    } else {
-        rc = disk_image_write_sector(drive->image, buffer + 1, track, sector);
-        if (rc < 0)
-            log_error(drive->log,
-                      "Could not update T:%d S:%d.", track, sector);
-    }
-}
-
-void drive_gcr_data_writeback(drive_t *drive)
-{
-    int extend;
-    unsigned int track, sector, max_sector = 0;
-    BYTE buffer[260], *offset;
-
-    if (drive->image == NULL)
-        return;
-
-    track = drive->current_half_track / 2;
-
-    if (!(drive->GCR_dirty_track))
-        return;
-
-    if (drive->image->type == DISK_IMAGE_TYPE_G64) {
-        BYTE *gcr_track_start_ptr;
-        unsigned int gcr_current_track_size;
-
-        gcr_current_track_size = drive->gcr->track_size[track - 1];
-
-        gcr_track_start_ptr = drive->gcr->data
-                              + ((track - 1) * NUM_MAX_BYTES_TRACK);
-
-        disk_image_write_track(drive->image, track,
-                               gcr_current_track_size,
-                               drive->gcr->speed_zone,
-                               gcr_track_start_ptr);
-        drive->GCR_dirty_track = 0;
-        return;
-    }
-
-    if (drive->image->type == DISK_IMAGE_TYPE_D64
-        || drive->image->type == DISK_IMAGE_TYPE_X64) {
-        if (track > EXT_TRACKS_1541)
-            return;
-        max_sector = disk_image_sector_per_track(DISK_IMAGE_TYPE_D64, track);
-        if (track > drive->image->tracks) {
-            switch (drive->extend_image_policy) {
-              case DRIVE_EXTEND_NEVER:
-                drive->ask_extend_disk_image = 1;
-                return;
-              case DRIVE_EXTEND_ASK:
-                if (drive->ask_extend_disk_image == 1) {
-                    extend = ui_extend_image_dialog();
-                    if (extend == 0) {
-                        drive->ask_extend_disk_image = 0;
-                        return;
-                    } else {
-                        drive_extend_disk_image(drive);
-                    }
-                } else {
-                    return;
-                }
-                break;
-              case DRIVE_EXTEND_ACCESS:
-                drive->ask_extend_disk_image = 1;
-                drive_extend_disk_image(drive);
-                break;
-            }
-        }
-    }
-
-    if (drive->image->type == DISK_IMAGE_TYPE_D71) {
-        if (track > MAX_TRACKS_1571)
-            return;
-        max_sector = disk_image_sector_per_track(DISK_IMAGE_TYPE_D71, track);
-    }
-
-    drive->GCR_dirty_track = 0;
-
-    for (sector = 0; sector < max_sector; sector++) {
-
-        offset = gcr_find_sector_header(track, sector,
-                                        drive->GCR_track_start_ptr,
-                                        drive->GCR_current_track_size);
-        if (offset == NULL) {
-            log_error(drive->log,
-                      "Could not find header of T:%d S:%d.",
-                      track, sector);
-        } else {
-            offset = gcr_find_sector_data(offset,
-                                          drive->GCR_track_start_ptr,
-                                          drive->GCR_current_track_size);
-            if (offset == NULL) {
-                log_error(drive->log,
-                          "Could not find data sync of T:%d S:%d.",
-                          track, sector);
-            } else {
-                gcr_data_writeback2(buffer, offset, track, sector, drive);
-            }
-        }
-    }
 }
 
 void drive_gcr_data_writeback_all(void)
@@ -619,28 +500,7 @@ void drive_gcr_data_writeback_all(void)
 
     for (i = 0; i < DRIVE_NUM; i++) {
         drive = drive_context[i]->drive;
-        drive_gcr_data_writeback(drive);
-    }
-}
-
-static void drive_extend_disk_image(drive_t *drive)
-{
-    int rc;
-    unsigned int track, sector;
-    BYTE buffer[256];
-
-    drive->image->tracks = EXT_TRACKS_1541;
-    memset(buffer, 0, 256);
-    for (track = NUM_TRACKS_1541 + 1; track <= EXT_TRACKS_1541; track++) {
-        for (sector = 0;
-             sector < disk_image_sector_per_track(DISK_IMAGE_TYPE_D64, track);
-             sector++) {
-             rc = disk_image_write_sector(drive->image, buffer, track,
-                                          sector);
-             if (rc < 0)
-                 log_error(drive->log,
-                           "Could not update T:%d S:%d.", track, sector);
-        }
+        drive_image_writeback(drive, 0);
     }
 }
 

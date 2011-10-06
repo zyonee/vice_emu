@@ -1,8 +1,8 @@
 /*
- * fsimage-gcr.h
+ * fsimage-flat.h
  *
  * Written by
- *  Andreas Boose <viceteam@t-online.de>
+ *  Kajtar Zsolt <soci@c64.rulez.org>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -24,28 +24,28 @@
  *
  */
 
-#ifndef VICE_FSIMAGE_GCR_H
-#define VICE_FSIMAGE_GCR_H
+#ifndef VICE_FSIMAGE_FLAT_H
+#define VICE_FSIMAGE_FLAT_H
 
 #include "types.h"
 
 struct disk_image_s;
 
-extern void fsimage_gcr_init(void);
+extern void fsimage_flat_init(void);
 
-extern int fsimage_gcr_read_sector(struct disk_image_s *image, BYTE *buf,
+extern int fsimage_flat_read_sector(struct disk_image_s *image, BYTE *buf,
                                    unsigned int track, unsigned int sector);
-extern int fsimage_gcr_write_sector(struct disk_image_s *image, BYTE *buf,
+extern int fsimage_flat_write_sector(struct disk_image_s *image, BYTE *buf,
                                     unsigned int track, unsigned int sector);
-extern int fsimage_gcr_read_track(struct disk_image_s *image,
+extern int fsimage_flat_read_track(struct disk_image_s *image,
                                   unsigned int track, unsigned int head,
                                   BYTE *gcr_speed_zone, BYTE *gcr_data,
-                                  int *gcr_track_size);
-extern int fsimage_gcr_write_track(struct disk_image_s *image,
+                                  int *track_size);
+extern int fsimage_flat_write_track(struct disk_image_s *image,
                                    unsigned int track, unsigned int head,
-                                   int gcr_track_size,
+                                   int track_size,
                                    BYTE *gcr_speed_zone,
                                    BYTE *gcr_track_start_ptr);
-extern int fsimage_gcr_create(struct disk_image_s *image, unsigned int type);
+extern int fsimage_flat_create(struct disk_image_s *image, unsigned int type);
 #endif
 

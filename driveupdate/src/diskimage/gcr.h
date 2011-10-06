@@ -1,8 +1,9 @@
 /*
- * fsimage-create.h - Create a disk image.
+ * grc.h - GCR handling.
  *
  * Written by
  *  Andreas Boose <viceteam@t-online.de>
+ *  Daniel Sladic <sladic@eecg.toronto.edu>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -24,12 +25,20 @@
  *
  */
 
-#ifndef VICE_FSIMAGE_CREATE_H
-#define VICE_FSIMAGE_CREATE_H
+#ifndef VICE_GCR_H
+#define VICE_GCR_H
 
-extern void fsimage_create_init(void);
+#include "types.h"
 
-extern int fsimage_create(const char *name, unsigned int type);
+#define SECTOR_GCR_SIZE_WITH_HEADER 354
 
+extern void gcr_convert_sector_to_GCR(BYTE *buffer, BYTE *ptr,
+                                      unsigned int track, unsigned int sector,
+                                      BYTE diskID1, BYTE diskID2,
+                                      BYTE error_code);
+extern int gcr_read_sector(BYTE *raw, unsigned int size, BYTE *data,
+                           unsigned int track, unsigned int sector);
+extern int gcr_write_sector(BYTE *raw, unsigned int size, BYTE *data,
+                            unsigned int track, unsigned int sector);
 #endif
 

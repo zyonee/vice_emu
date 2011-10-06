@@ -40,35 +40,53 @@
 #include "util.h"
 #include "x64.h"
 
-#define IS_D67_LEN(x) ((x) == D67_FILE_SIZE)
-#define IS_D71_LEN(x) (((x) == D71_FILE_SIZE) || ((x) == D71_FILE_SIZE_E))
-#define IS_D81_LEN(x) (((x) == D81_FILE_SIZE) || ((x) == D81_FILE_SIZE_E))
-#define IS_D80_LEN(x) ((x) == D80_FILE_SIZE)
-#define IS_D82_LEN(x) ((x) == D82_FILE_SIZE)
-#define IS_D1M_LEN(x) (((x) == D1M_FILE_SIZE) || ((x) == D1M_FILE_SIZE_E))
-#define IS_D2M_LEN(x) (((x) == D2M_FILE_SIZE) || ((x) == D2M_FILE_SIZE_E))
-#define IS_D4M_LEN(x) (((x) == D4M_FILE_SIZE) || ((x) == D4M_FILE_SIZE_E))
-
 static log_t disk_image_probe_log = LOG_ERR;
 
-static void disk_image_check_log(disk_image_t *image, const char *type)
+static int disk_image_check_general(disk_image_t *image, int size1, int size2, int id)
 {
+    int i;
+    BYTE block[256];
     fsimage_t *fsimage;
+    int checkimage_errorinfo;
+    size_t len;
 
     fsimage = image->media.fsimage;
 
-    log_verbose("%s disk image recognised: %s, %d tracks%s",
-                type, fsimage->name, image->tracks,
-                image->read_only ? " (read only)." : ".");
-}
-
-static int disk_image_check_min_block(unsigned int blk, unsigned int length)
-{
-    if (blk < length) {
-        log_error(disk_image_probe_log, "Cannot read block %d.", blk);
-        return -1;
+    len = util_file_length(fsimage->fd);
+    if (len == size1) {
+	checkimage_errorinfo = 0;
+	fsimage_error_info_destroy(fsimage);
+    } else if (len == size2) {
+	checkimage_errorinfo = 1;
+        fsimage_error_info_create(fsimage);
+    } else {
+	return 0;
     }
-    return 0;
+
+    rewind(fsimage->fd);
+    size1 /= 256;
+
+    for (i = 0; i < size1; i++) {
+	if (fread(block, 1, 256, fsimage->fd) != 256) {
+	    return 0;
+	}
+	if (i == id) {
+	    image->diskID[0] = block[0xa2];
+	    image->diskID[1] = block[0xa3];
+	}
+    }
+
+    if (checkimage_errorinfo
+	&& fread(fsimage->error_info, 1, size1, fsimage->fd)
+            < size1) {
+	return 0;
+    }
+
+    if (fgetc(fsimage->fd) != EOF) {
+	log_error(disk_image_probe_log, "Disk image too large.");
+	return 0;
+    }
+    return 1;
 }
 
 
@@ -78,9 +96,10 @@ static int disk_image_check_for_d64(disk_image_t *image)
          Walk from 35 to 42, calculate expected image file size for each track,
          and compare this with the size of the given image. */
 
-    int checkimage_tracks, checkimage_errorinfo;
-    size_t countbytes, checkimage_blocks, checkimage_realsize;
+    int checkimage_tracks, checkimage_errorinfo, i;
+    size_t checkimage_blocks, checkimage_realsize;
     fsimage_t *fsimage;
+    BYTE block[256];
 
     fsimage = image->media.fsimage;
 
@@ -112,237 +131,114 @@ static int disk_image_check_for_d64(disk_image_t *image)
             return 0;
     }
 
-    /*** test image file: read it (fgetc is pretty fast).
-         further size checks are no longer necessary (done during detection) */
     rewind(fsimage->fd);
-    for (countbytes = 0; countbytes < checkimage_realsize; countbytes++) {
-        if (fgetc(fsimage->fd) == EOF) {
-            log_error(disk_image_probe_log, "Cannot read D64 image.");
-            return 0;
-        }
+
+    for (i = 0; i < checkimage_blocks; i++) {
+	if (fread(block, 1, 256, fsimage->fd) != 256) {
+	    return 0;
+	}
+	if (i == 17 * 21) {
+	    image->diskID[0] = block[0xa2];
+	    image->diskID[1] = block[0xa3];
+	}
     }
 
     /*** set parameters in image structure, read error info */
     image->type = DISK_IMAGE_TYPE_D64;
-    image->tracks = checkimage_tracks;
+    image->type_name = "D64";
+    image->loffset = 0;
+    image->lblocks = checkimage_blocks;
+    image->ltracks = checkimage_tracks;
+    image->ptracks = checkimage_tracks * 2;
+    image->sides = 1;
     fsimage_error_info_destroy(fsimage);
 
-    if (checkimage_errorinfo) {
-        fsimage_error_info_create(fsimage);
-        if (fseek(fsimage->fd, (long)(256 * checkimage_blocks), SEEK_SET) < 0)
-            return 0;
-        if (fread(fsimage->error_info, 1, checkimage_blocks, fsimage->fd)
-            < checkimage_blocks)
-            return 0;
+    if (checkimage_errorinfo
+	&& fread(fsimage->error_info, 1, checkimage_blocks, fsimage->fd)
+            < checkimage_blocks) {
+	return 0;
     }
-
-    /*** log and return successfully */
-    disk_image_check_log(image, "D64");
     return 1;
 }
 
 
 static int disk_image_check_for_d67(disk_image_t *image)
 {
-    unsigned int blk = 0;
-    size_t len;
-    BYTE block[256];
-    fsimage_t *fsimage;
-
-    fsimage = image->media.fsimage;
-
-    if (!(IS_D67_LEN(util_file_length(fsimage->fd))))
-        return 0;
+    if (!disk_image_check_general(image, D67_FILE_SIZE, D67_FILE_SIZE, 17 * 21)) {
+	return 0;
+    }
 
     image->type = DISK_IMAGE_TYPE_D67;
-    image->tracks = NUM_TRACKS_2040;
-
-    rewind(fsimage->fd);
-
-    while ((len = fread(block, 1, 256, fsimage->fd)) == 256) {
-        /* FIXME */
-        if (++blk > (NUM_BLOCKS_2040)) {
-            log_error(disk_image_probe_log, "Disk image too large");
-            break;
-        }
-    }
-
-    if (disk_image_check_min_block(blk, NUM_BLOCKS_2040) < 0)
-        return 0;
-
-    switch (blk) {
-      case NUM_BLOCKS_2040:
-        image->tracks = NUM_TRACKS_2040;
-        break;
-      default:
-        return 0;
-    }
-    fsimage_error_info_destroy(fsimage);
-    disk_image_check_log(image, "D67");
+    image->type_name = "D67";
+    image->loffset = 0;
+    image->lblocks = NUM_BLOCKS_2040;
+    image->ltracks = NUM_TRACKS_2040;
+    image->ptracks = NUM_TRACKS_2040 * 2;
+    image->sides = 1;
     return 1;
 }
 
 static int disk_image_check_for_d71(disk_image_t *image)
 {
-    unsigned int blk = 0;
-    size_t len;
-    BYTE block[256];
-    fsimage_t *fsimage;
-    size_t checkimage_realsize;
-    int checkimage_errorinfo;
-
-    fsimage = image->media.fsimage;
-    checkimage_realsize = util_file_length(fsimage->fd);
-    checkimage_errorinfo = 0;
-
-    if (!(IS_D71_LEN(checkimage_realsize)))
-        return 0;
-
-    checkimage_errorinfo = (checkimage_realsize == D71_FILE_SIZE_E) ? 1 : 0;
+    if (!disk_image_check_general(image, D71_FILE_SIZE, D71_FILE_SIZE_E, 17 * 21)) {
+	return 0;
+    }
 
     image->type = DISK_IMAGE_TYPE_D71;
-    image->tracks = NUM_TRACKS_1571;
-
-    rewind(fsimage->fd);
-
-    while ((len = fread(block, 1, 256, fsimage->fd)) == 256) {
-        if (++blk == NUM_BLOCKS_1571)
-            break;
-    }
-
-    if (disk_image_check_min_block(blk, NUM_BLOCKS_1571) < 0)
-        return 0;
-
-    fsimage_error_info_destroy(fsimage);
-    if (checkimage_errorinfo) {
-        fsimage_error_info_create(fsimage);
-        if (fseek(fsimage->fd, (long)(256 * blk), SEEK_SET) < 0)
-            return 0;
-        if (fread(fsimage->error_info, 1, blk, fsimage->fd)
-            < blk)
-            return 0;
-    }
-
-    disk_image_check_log(image, "D71");
+    image->type_name = "D71";
+    image->loffset = 0;
+    image->lblocks = NUM_BLOCKS_1571;
+    image->ltracks = NUM_TRACKS_1571;
+    image->ptracks = NUM_TRACKS_1571;
+    image->sides = 2;
     return 1;
 }
 
 static int disk_image_check_for_d81(disk_image_t *image)
 {
-    unsigned int blk = 0;
-    size_t len;
-    BYTE block[256];
-    fsimage_t *fsimage;
-
-    fsimage = image->media.fsimage;
-
-    if (!(IS_D81_LEN(util_file_length(fsimage->fd))))
-        return 0;
+    if (!disk_image_check_general(image, D81_FILE_SIZE, D81_FILE_SIZE_E, -1)) {
+	return 0;
+    }
 
     image->type = DISK_IMAGE_TYPE_D81;
-    image->tracks = NUM_TRACKS_1581;
-
-    rewind(fsimage->fd);
-
-    while ((len = fread(block, 1, 256, fsimage->fd)) == 256) {
-        if (++blk > NUM_BLOCKS_1581 + 13) {
-            log_error(disk_image_probe_log, "Disk image too large.");
-            break;
-        }
-    }
-
-    if (disk_image_check_min_block(blk, NUM_BLOCKS_1581) < 0) {
-        return 0;
-    }
-
-    switch (blk) {
-      case NUM_BLOCKS_1581:
-      case NUM_BLOCKS_1581 + 12: /* with errors */
-        image->tracks = NUM_TRACKS_1581;
-        break;
-      default:
-        return 0;
-    }
-    fsimage_error_info_destroy(fsimage);
-    disk_image_check_log(image, "D81");
+    image->type_name = "D81";
+    image->loffset = 0;
+    image->lblocks = NUM_BLOCKS_1581;
+    image->ltracks = NUM_TRACKS_1581;
+    image->ptracks = NUM_TRACKS_1581;
+    image->sides = 2;
     return 1;
 }
 
 static int disk_image_check_for_d80(disk_image_t *image)
 {
-    unsigned int blk = 0;
-    size_t len;
-    BYTE block[256];
-    fsimage_t *fsimage;
-
-    fsimage = image->media.fsimage;
-
-    if (!(IS_D80_LEN(util_file_length(fsimage->fd))))
-        return 0;
+    if (!disk_image_check_general(image, D80_FILE_SIZE, D80_FILE_SIZE, -1)) {
+	return 0;
+    }
 
     image->type = DISK_IMAGE_TYPE_D80;
-    image->tracks = NUM_TRACKS_8050;
-
-    rewind(fsimage->fd);
-
-    while ((len = fread(block, 1, 256, fsimage->fd)) == 256) {
-        if (++blk > NUM_BLOCKS_8050 + 6) {
-            log_error(disk_image_probe_log, "Disk image too large.");
-            break;
-        }
-    }
-
-    if (disk_image_check_min_block(blk, NUM_BLOCKS_8050) < 0)
-        return 0;
-
-    switch (blk) {
-      case NUM_BLOCKS_8050:
-        image->tracks = NUM_TRACKS_8050;
-        break;
-      default:
-        return 0;
-    }
-    fsimage_error_info_destroy(fsimage);
-    disk_image_check_log(image, "D80");
+    image->type_name = "D80";
+    image->loffset = 0;
+    image->lblocks = NUM_BLOCKS_8050;
+    image->ltracks = NUM_TRACKS_8050;
+    image->ptracks = NUM_TRACKS_8050;
+    image->sides = 1;
     return 1;
 }
 
 static int disk_image_check_for_d82(disk_image_t *image)
 {
-    unsigned int blk = 0;
-    size_t len;
-    BYTE block[256];
-    fsimage_t *fsimage;
-
-    fsimage = image->media.fsimage;
-
-    if (!(IS_D82_LEN(util_file_length(fsimage->fd))))
-        return 0;
+    if (!disk_image_check_general(image, D82_FILE_SIZE, D82_FILE_SIZE, -1)) {
+	return 0;
+    }
 
     image->type = DISK_IMAGE_TYPE_D82;
-    image->tracks = NUM_TRACKS_8250;
-
-    rewind(fsimage->fd);
-
-    while ((len = fread(block, 1, 256, fsimage->fd)) == 256) {
-        if (++blk > NUM_BLOCKS_8250 + 6) {
-            log_error(disk_image_probe_log, "Disk image too large.");
-            break;
-        }
-    }
-
-    if (disk_image_check_min_block(blk, NUM_BLOCKS_8250) < 0)
-        return 0;
-
-    switch (blk) {
-      case NUM_BLOCKS_8250:
-        image->tracks = NUM_TRACKS_8250;
-        break;
-      default:
-        return 0;
-    }
-    fsimage_error_info_destroy(fsimage);
-    disk_image_check_log(image, "D82");
+    image->type_name = "D82";
+    image->loffset = 0;
+    image->lblocks = NUM_BLOCKS_8250;
+    image->ltracks = NUM_TRACKS_8250;
+    image->ptracks = NUM_TRACKS_8250 / 2;
+    image->sides = 2;
     return 1;
 }
 
@@ -368,10 +264,14 @@ static int disk_image_check_for_x64(disk_image_t *image)
         return 0;
 
     image->type = DISK_IMAGE_TYPE_X64;
-    image->tracks = header[X64_HEADER_FLAGS_OFFSET + 1];
+    image->type_name = "X64";
+    image->loffset = 0;
+    image->lblocks = NUM_BLOCKS_1541 + (header[X64_HEADER_FLAGS_OFFSET + 1] - 35) * 17;
+    image->ltracks = header[X64_HEADER_FLAGS_OFFSET + 1];
+    image->ptracks = header[X64_HEADER_FLAGS_OFFSET + 1] * 2;
+    image->sides = 1;
 
     fsimage_error_info_destroy(fsimage);
-    disk_image_check_log(image, "X64");
     return 1;
 }
 
@@ -415,165 +315,86 @@ static int disk_image_check_for_gcr(disk_image_t *image)
     }
 
     image->type = DISK_IMAGE_TYPE_G64;
-    image->tracks = header[9] / 2;
+    image->type_name = "G64";
+    image->loffset = 0;
+    image->lblocks = MAX_BLOCKS_1541;
+    image->ltracks = header[9];
+    image->ptracks = header[9];
+    image->sides = 1;
     fsimage_error_info_destroy(fsimage);
-    disk_image_check_log(image, "GCR");
-
-    if (image->gcr != NULL) {
-        if (fsimage_read_gcr_image(image) < 0)
-            return 0;
-    }
     return 1;
 }
 
 static int disk_image_check_for_d1m(disk_image_t *image)
 {
-    unsigned int blk = 0;
-    size_t len;
-    BYTE block[256];
-    fsimage_t *fsimage;
-
-    fsimage = image->media.fsimage;
-
-    if (!(IS_D1M_LEN(util_file_length(fsimage->fd))))
-        return 0;
+    if (!disk_image_check_general(image, D1M_FILE_SIZE, D1M_FILE_SIZE_E, -1)) {
+	return 0;
+    }
 
     image->type = DISK_IMAGE_TYPE_D1M;
-    image->tracks = NUM_TRACKS_1000;
-
-    rewind(fsimage->fd);
-
-    while ((len = fread(block, 1, 256, fsimage->fd)) == 256) {
-        if (++blk > NUM_BLOCKS_1000 + 13) {
-            log_error(disk_image_probe_log, "Disk image too large.");
-            break;
-        }
-    }
-
-    if (disk_image_check_min_block(blk, NUM_BLOCKS_1000) < 0) {
-        return 0;
-    }
-
-    switch (blk) {
-      case NUM_BLOCKS_1000:
-      case NUM_BLOCKS_1000 + 12: /* with errors */
-        image->tracks = NUM_TRACKS_1000;
-        break;
-      default:
-        return 0;
-    }
-    fsimage_error_info_destroy(fsimage);
-    disk_image_check_log(image, "D1M");
+    image->type_name = "D1M";
+    image->loffset = 0;
+    image->lblocks = NUM_BLOCKS_1000;
+    image->ltracks = NUM_TRACKS_1000;
+    image->ptracks = 81;
+    image->sides = 2;
     return 1;
 }
 
 static int disk_image_check_for_d2m(disk_image_t *image)
 {
-    unsigned int blk = 0;
-    size_t len;
-    BYTE block[256];
-    fsimage_t *fsimage;
-
-    fsimage = image->media.fsimage;
-
-    if (!(IS_D2M_LEN(util_file_length(fsimage->fd))))
-        return 0;
+    if (!disk_image_check_general(image, D2M_FILE_SIZE, D2M_FILE_SIZE_E, -1)) {
+	return 0;
+    }
 
     image->type = DISK_IMAGE_TYPE_D2M;
-    image->tracks = NUM_TRACKS_2000;
-
-    rewind(fsimage->fd);
-
-    while ((len = fread(block, 1, 256, fsimage->fd)) == 256) {
-        if (++blk > NUM_BLOCKS_2000 + 26) {
-            log_error(disk_image_probe_log, "Disk image too large.");
-            break;
-        }
-    }
-
-    if (disk_image_check_min_block(blk, NUM_BLOCKS_2000) < 0) {
-        return 0;
-    }
-
-    switch (blk) {
-      case NUM_BLOCKS_2000:
-      case NUM_BLOCKS_2000 + 25: /* with errors */
-        image->tracks = NUM_TRACKS_2000;
-        break;
-      default:
-        return 0;
-    }
-    fsimage_error_info_destroy(fsimage);
-    disk_image_check_log(image, "D2M");
+    image->type_name = "D2M";
+    image->loffset = 0;
+    image->lblocks = NUM_BLOCKS_2000;
+    image->ltracks = NUM_TRACKS_2000;
+    image->ptracks = 81;
+    image->sides = 2;
     return 1;
 }
 
 static int disk_image_check_for_d4m(disk_image_t *image)
 {
-    unsigned int blk = 0;
-    size_t len;
-    BYTE block[256];
-    fsimage_t *fsimage;
-
-    fsimage = image->media.fsimage;
-
-    if (!(IS_D4M_LEN(util_file_length(fsimage->fd))))
-        return 0;
+    if (!disk_image_check_general(image, D4M_FILE_SIZE, D4M_FILE_SIZE_E, -1)) {
+	return 0;
+    }
 
     image->type = DISK_IMAGE_TYPE_D4M;
-    image->tracks = NUM_TRACKS_4000;
-
-    rewind(fsimage->fd);
-
-    while ((len = fread(block, 1, 256, fsimage->fd)) == 256) {
-        if (++blk > NUM_BLOCKS_4000 + 51) {
-            log_error(disk_image_probe_log, "Disk image too large.");
-            break;
-        }
-    }
-
-    if (disk_image_check_min_block(blk, NUM_BLOCKS_4000) < 0) {
-        return 0;
-    }
-
-    switch (blk) {
-      case NUM_BLOCKS_4000:
-      case NUM_BLOCKS_4000 + 50: /* with errors */
-        image->tracks = NUM_TRACKS_4000;
-        break;
-      default:
-        return 0;
-    }
-    fsimage_error_info_destroy(fsimage);
-    disk_image_check_log(image, "D4M");
+    image->type_name = "D4M";
+    image->loffset = 0;
+    image->lblocks = NUM_BLOCKS_4000;
+    image->ltracks = NUM_TRACKS_4000;
+    image->ptracks = 81;
+    image->sides = 2;
     return 1;
 }
 
 
 int fsimage_probe(disk_image_t *image)
 {
-    if (disk_image_check_for_d64(image))
+    fsimage_t *fsimage = image->media.fsimage;
+
+    if (disk_image_check_for_d64(image)
+        || disk_image_check_for_d67(image)
+        || disk_image_check_for_d71(image)
+        || disk_image_check_for_d81(image)
+        || disk_image_check_for_d80(image)
+        || disk_image_check_for_d82(image)
+        || disk_image_check_for_gcr(image)
+        || disk_image_check_for_x64(image)
+        || disk_image_check_for_d1m(image)
+        || disk_image_check_for_d2m(image)
+        || disk_image_check_for_d4m(image)) {
+
+	log_verbose("%s disk image recognised: %s, %d tracks%s",
+                image->type_name, fsimage->name, image->ltracks,
+                image->read_only ? " (read only)." : ".");
         return 0;
-    if (disk_image_check_for_d67(image))
-        return 0;
-    if (disk_image_check_for_d71(image))
-        return 0;
-    if (disk_image_check_for_d81(image))
-        return 0;
-    if (disk_image_check_for_d80(image))
-        return 0;
-    if (disk_image_check_for_d82(image))
-        return 0;
-    if (disk_image_check_for_gcr(image))
-        return 0;
-    if (disk_image_check_for_x64(image))
-        return 0;
-    if (disk_image_check_for_d1m(image))
-        return 0;
-    if (disk_image_check_for_d2m(image))
-        return 0;
-    if (disk_image_check_for_d4m(image))
-        return 0;
+    }
 
     return -1;
 }

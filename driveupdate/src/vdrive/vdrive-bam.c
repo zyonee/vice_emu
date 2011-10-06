@@ -84,7 +84,7 @@ int vdrive_bam_alloc_first_free_sector(vdrive_t *vdrive, BYTE *bam,
 #ifdef DEBUG_DRIVE
         log_error(LOG_ERR, "Allocate first free sector on track %d.", t);
 #endif
-        if (t <= (int)(vdrive->num_tracks)) {
+        if (t <= (int)(vdrive->image->ltracks)) {
             max_sector = vdrive_get_max_sectors(vdrive, t);
             if (d) {
                 s = 0;
@@ -133,7 +133,7 @@ static int vdrive_bam_alloc_up(vdrive_t *vdrive, BYTE *bam,
 {
     unsigned int max_sector, t, s;
 
-    for (t = *track; t <= vdrive->num_tracks; t++) {
+    for (t = *track; t <= vdrive->image->ltracks; t++) {
         max_sector = vdrive_get_max_sectors(vdrive, t);
         for (s = 0; s < max_sector; s++) {
             if (vdrive_bam_allocate_sector(vdrive->image_format, bam, t, s)) {
@@ -541,7 +541,7 @@ void vdrive_bam_create_empty_bam(vdrive_t *vdrive, const char *name, BYTE *id)
         vdrive->bam[0x100 + 4] = id[0];
         vdrive->bam[0x100 + 5] = id[1];
         vdrive->bam[0x100 + 6] = 0xc0;
-        vdrive->bam[0x100 + 8] = vdrive->num_tracks;
+        vdrive->bam[0x100 + 8] = vdrive->image->ltracks;
         break;
       default:
         log_error(LOG_ERR,
@@ -757,7 +757,7 @@ unsigned int vdrive_bam_free_block_count(vdrive_t *vdrive)
 {
     unsigned int blocks, i, j;
 
-    for (blocks = 0, i = 1; i <= vdrive->num_tracks; i++) {
+    for (blocks = 0, i = 1; i <= vdrive->image->ltracks; i++) {
         switch(vdrive->image_format) {
           case VDRIVE_IMAGE_FORMAT_2040:
           case VDRIVE_IMAGE_FORMAT_1541:

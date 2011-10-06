@@ -52,7 +52,6 @@ vdrive_t *vdrive_internal_open_fsimage(const char *name, unsigned int read_only)
 
     image = lib_malloc(sizeof(disk_image_t));
 
-    image->gcr = NULL;
     image->read_only = read_only;
 
     image->device = DISK_IMAGE_DEVICE_FS;

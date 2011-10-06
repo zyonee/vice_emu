@@ -91,8 +91,15 @@
 
 /* ------------------------------------------------------------------------- */
 
-struct gcr_s;
 struct disk_image_s;
+
+typedef struct disk_track_s {
+    BYTE *data;
+    BYTE *speed_zone;
+    int size;
+    int dirty;
+    int pinned;
+} disk_track_t;
 
 typedef struct drive_s {
     unsigned int mynumber;
@@ -130,20 +137,8 @@ typedef struct drive_s {
     unsigned int byte_ready_level;
     unsigned int byte_ready_edge;
 
-    /* Disk ID.  */
-    BYTE diskID1, diskID2;
-
-    /* Flag: does the current track need to be written out to disk?  */
-    int GCR_dirty_track;
-
     /* GCR value being written to the disk.  */
     BYTE GCR_write_value;
-
-    /* Pointer to the start of the GCR data of this track.  */
-    BYTE *GCR_track_start_ptr;
-
-    /* Size of the GCR data for the current track.  */
-    unsigned int GCR_current_track_size;
 
     /* Offset of the R/W head on the current track (bytes).  */
     unsigned int GCR_head_offset;
@@ -183,9 +178,6 @@ typedef struct drive_s {
     int old_led_status;
     int old_half_track;
 
-    /* Is a GCR image loaded?  */
-    int GCR_image_loaded;
-
     /* is this disk read only?  */
     int read_only;
 
@@ -205,8 +197,8 @@ typedef struct drive_s {
     /* Pointer to the attached disk image.  */
     struct disk_image_s *image;
 
-    /* Pointer to the gcr image.  */
-    struct gcr_s *gcr;
+    /* Pointer to the gcr image of current track.  */
+    disk_track_t *raw, *raw_cache[2][84];
 
     /* Pointer to 8KB RAM expansion.  */
     BYTE *drive_ram_expand2, *drive_ram_expand4, *drive_ram_expand6,
@@ -245,18 +237,16 @@ extern int drive_init(void);
 extern int drive_enable(struct drive_context_s *drv);
 extern void drive_disable(struct drive_context_s *drv);
 extern void drive_move_head(int step, struct drive_s *drive);
+extern void drive_side_set(unsigned int side, struct drive_s *drive);
 extern void drive_reset(void);
 extern void drive_shutdown(void);
 extern void drive_vsync_hook(void);
 extern void drive_update_ui_status(void);
-extern void drive_gcr_data_writeback(struct drive_s *drive);
 extern void drive_gcr_data_writeback_all(void);
 extern void drive_set_active_led_color(unsigned int type, unsigned int dnr);
 extern int drive_set_disk_drive_type(unsigned int drive_type,
                                      struct drive_context_s *drv);
 
-extern void drive_set_half_track(int num, drive_t *dptr);
-extern void drive_current_track_size_set(drive_t *dptr);
 extern void drive_set_machine_parameter(long cycles_per_sec);
 extern void drive_set_disk_memory(BYTE *id, unsigned int track,
                                   unsigned int sector,

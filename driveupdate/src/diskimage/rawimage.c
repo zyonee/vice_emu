@@ -32,6 +32,7 @@
 #include "archdep.h"
 #include "blockdev.h"
 #include "diskimage.h"
+#include "diskconstants.h"
 #include "lib.h"
 #include "log.h"
 #include "rawimage.h"
@@ -97,7 +98,12 @@ int rawimage_open(disk_image_t *image)
     char *name;
 
     image->type = DISK_IMAGE_TYPE_D81;
-    image->tracks = 80;
+    image->type_name = "RAW-1581";
+    image->loffset = 0;
+    image->lblocks = NUM_BLOCKS_1581;
+    image->ltracks = NUM_TRACKS_1581;
+    image->ptracks = NUM_TRACKS_1581;
+    image->sides = 2;
 
     name = rawimage_name_get(image);
 

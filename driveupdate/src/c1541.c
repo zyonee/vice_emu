@@ -66,7 +66,6 @@
 #include "cmdline.h"
 #include "diskimage.h"
 #include "fileio.h"
-#include "gcr.h"
 #include "info.h"
 #include "imagecontents.h"
 #include "ioutil.h"
@@ -680,7 +679,6 @@ static int open_disk_image(vdrive_t *vdrive, const char *name,
 
     disk_image_media_create(image);
 
-    image->gcr = gcr_create_image();
     image->read_only = 0;
 
     disk_image_name_set(image, lib_stralloc(name));
@@ -706,7 +704,6 @@ static void close_disk_image(vdrive_t *vdrive, int unit)
 
     if (image != NULL) {
         vdrive_detach_image(image, unit, vdrive);
-        gcr_destroy_image(image->gcr);
         if (image->device == DISK_IMAGE_DEVICE_REAL)
             serial_realdevice_disable();
         disk_image_close(image);
@@ -848,7 +845,7 @@ static int block_cmd(int nargs, char **args)
     } else {
         if (disk_image_check_sector(vdrive->image, track, ++sector) < 0) {
             sector = 0;
-            if ((unsigned int)(++track) > vdrive->image->tracks)
+            if ((unsigned int)(++track) > vdrive->image->ltracks)
                 track = vdrive->Dir_Track;
         }
     }
@@ -1314,7 +1311,7 @@ static int info_cmd(int nargs, char **args)
     printf("Description: %s\n", "None.");
     printf("Disk Format: %s.\n", format_name);
 /*printf("Sides\t   : %d.\n", hdr.sides);*/
-    printf("Tracks\t   : %d.\n", vdrive->image->tracks);
+    printf("Tracks\t   : %d.\n", vdrive->image->ltracks);
     if (vdrive->image->device == DISK_IMAGE_DEVICE_FS) {
         printf(((vdrive->image->media.fsimage)->error_info)
                ? "Error Block present.\n" : "No Error Block.\n");
@@ -2932,7 +2929,7 @@ static int zcreate_cmd(int nargs, char **args)
             }
         }
         for (count = 0;
-            count < disk_image_sector_per_track(DISK_IMAGE_TYPE_D64, track);
+            count < disk_image_sector_per_track(vdrive->image, track);
             count++) {
             err = zipcode_read_sector(fsfd, track, (int *)&sector,
                                       (char *)sector_data);
