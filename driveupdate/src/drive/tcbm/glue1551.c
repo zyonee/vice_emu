@@ -73,7 +73,7 @@ static void glue_pport_update(drive_context_t *drv)
     if ((old_output ^ output) & 0x04) {
         drv->drive->byte_ready_active = (output & 0x04) ? 0x06 : 0;
         if (drv->drive->byte_ready_active == 0x06) {
-            rotation_begins(drv->drive);
+            rotation_begins(drv->drive->rotation);
         }
     }
 
@@ -86,7 +86,7 @@ static void glue_pport_update(drive_context_t *drv)
     drv->drive->led_last_change_clk = *(drv->clk_ptr);
 
     if ((old_output ^ output) & 0x60)
-        rotation_speed_zone_set((output >> 5) & 0x3, drv->mynumber);
+        rotation_speed_zone_set(drv->drive->rotation, (output >> 5) & 3);
 
     rotation_rotate_disk(drv->drive);
 

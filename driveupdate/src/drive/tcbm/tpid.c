@@ -158,10 +158,10 @@ static BYTE read_pb(tpi_context_t *tpi_context)
 
     tpip = (drivetpi_context_t *)(tpi_context->prv);
 
-    rotation_byte_read(tpip->drive);
+    byte = rotation_byte_read(tpip->drive);
 
     byte = (tpi_context->c_tpi[TPI_PB] | ~(tpi_context->c_tpi)[TPI_DDPB])
-           & tpip->drive->GCR_read;
+           & byte;
 
     tpip->drive->byte_ready_level = 0;
 

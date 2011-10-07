@@ -46,7 +46,7 @@ static void drive_clk_overflow_callback(CLOCK sub, void *data)
 
     rotation_rotate_disk(drive);
 
-    rotation_overflow_callback(sub, dnr);
+    rotation_overflow_callback(sub, drive->rotation);
 
     if (drive->attach_clk > (CLOCK)0)
         drive->attach_clk -= sub;

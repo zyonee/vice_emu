@@ -184,7 +184,7 @@ static void cpu_reset(drive_context_t *drv)
     interrupt_cpu_status_reset(drv->cpu->int_status);
 
     *(drv->clk_ptr) = 6;
-    rotation_reset(drv->drive);
+    rotation_reset(drv->drive->rotation);
     machine_drive_reset(drv);
 
     if (preserve_monitor)

@@ -193,6 +193,7 @@ int drive_init(void)
         drive = drive_context[dnr]->drive;
         drive->raw = NULL;
         memset(drive->raw_cache, 0, sizeof(drive->raw_cache));
+        drive->rotation = rotation_new(drive);
         drive->byte_ready_level = 1;
         drive->byte_ready_edge = 1;
         drive->GCR_write_value = 0x55;
@@ -208,7 +209,7 @@ int drive_init(void)
         drive->led_last_uiupdate_clk = *(drive->clk);
         drive->led_active_ticks = 0;
 
-        rotation_reset(drive);
+        rotation_reset(drive->rotation);
 
         /* Position the R/W head on the directory track.  */
         drive_set_half_track(36, drive);
@@ -221,7 +222,7 @@ int drive_init(void)
 
         drivesync_clock_frequency(drive->type, drive);
 
-        rotation_init((drive->clock_frequency == 2) ? 1 : 0, dnr);
+        rotation_init(drive->rotation, (drive->clock_frequency == 2) ? 1 : 0);
 
         drivecpu_init(drive_context[dnr], drive->type);
 
@@ -241,6 +242,7 @@ void drive_shutdown(void)
 
     for (dnr = 0; dnr < DRIVE_NUM; dnr++) {
         drivecpu_shutdown(drive_context[dnr]);
+        rotation_destroy(drive_context[dnr]->drive->rotation);
         drive_destroy_cache(drive_context[dnr]->drive);
         ds1216e_destroy(drive_context[dnr]->drive->ds1216);
     }
@@ -290,11 +292,14 @@ int drive_set_disk_drive_type(unsigned int type, struct drive_context_s *drv)
     if (machine_drive_rom_check_loaded(type) < 0)
         return -1;
 
-    rotation_rotate_disk(drv->drive);
+    if (drv->drive->rotation)
+        rotation_rotate_disk(drv->drive);
 
     drivesync_clock_frequency(type, drv->drive);
 
-    rotation_init(0, dnr);
+    if (drv->drive->rotation)
+        rotation_init(drv->drive->rotation, 0);
+
     drv->drive->type = type;
     drv->drive->side = 0;
     machine_drive_rom_setup_image(dnr);

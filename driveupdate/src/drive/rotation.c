@@ -31,18 +31,15 @@
 #include "rotation.h"
 #include "types.h"
 #include "diskimage.h"
-
-#define ACCUM_MAX 0x10000
-
-#define ROTATION_TABLE_SIZE 0x1000
-
+#include "lib.h"
 
 struct rotation_s {
     DWORD accum;
-    CLOCK rotation_last_clk;
+    CLOCK rotation_last_clk, *clk;
 
     unsigned int last_read_data;
     BYTE last_write_data;
+    BYTE gcr_read;
     int bit_counter;
     int zero_count;
 
@@ -53,41 +50,35 @@ struct rotation_s {
 };
 typedef struct rotation_s rotation_t;
 
-
-static rotation_t rotation[DRIVE_NUM];
-
 /* Speed (in bps) of the disk in the 4 disk areas.  */
 static const int rot_speed_bps[2][4] = { { 250000, 266667, 285714, 307692 },
                                          { 125000, 133333, 142857, 153846 } };
 
 
-void rotation_init(int freq, unsigned int dnr)
+void rotation_init(rotation_t *rotation, int freq)
 {
-    rotation[dnr].frequency = freq;
-    rotation[dnr].accum = 0;
+    rotation->frequency = freq;
+    rotation->accum = 0;
 }
 
-void rotation_reset(drive_t *drive)
+void rotation_reset(rotation_t *rotation)
 {
-    unsigned int dnr;
-
-    dnr = drive->mynumber;
-
-    rotation[dnr].last_read_data = 0;
-    rotation[dnr].last_write_data = 0;
-    rotation[dnr].bit_counter = 0;
-    rotation[dnr].accum = 0;
-    rotation[dnr].seed = 0;
-    rotation[dnr].rotation_last_clk = *(drive->clk);
+    rotation->last_read_data = 0;
+    rotation->last_write_data = 0;
+    rotation->bit_counter = 0;
+    rotation->accum = 0;
+    rotation->seed = 0;
+    rotation->rotation_last_clk = *(rotation->clk);
 }
 
-void rotation_speed_zone_set(unsigned int zone, unsigned int dnr)
+void rotation_speed_zone_set(rotation_t *rotation, int zone)
 {
-    rotation[dnr].speed_zone = zone;
+    rotation->speed_zone = zone;
 }
 
 void rotation_table_get(DWORD *rotation_table_ptr)
 {
+#if 0
     unsigned int dnr;
     drive_t *drive;
 
@@ -104,10 +95,12 @@ void rotation_table_get(DWORD *rotation_table_ptr)
         drive->snap_zero_count = rotation[dnr].zero_count;
         drive->snap_seed = rotation[dnr].seed;
     }
+#endif
 }
 
 void rotation_table_set(DWORD *rotation_table_ptr)
 {
+#if 0
     unsigned int dnr;
     drive_t *drive;
 
@@ -124,18 +117,19 @@ void rotation_table_set(DWORD *rotation_table_ptr)
         rotation[dnr].zero_count = drive->snap_zero_count;
         rotation[dnr].seed = drive->snap_seed;
     }
+#endif
 }
 
-void rotation_overflow_callback(CLOCK sub, unsigned int dnr)
+void rotation_overflow_callback(CLOCK sub, rotation_t *rotation)
 {
-    rotation[dnr].rotation_last_clk -= sub;
+    rotation->rotation_last_clk -= sub;
 }
 
 inline static void write_next_bit(drive_t *dptr, int value)
 {
     int off = dptr->GCR_head_offset;
     int byte_offset = off >> 3;
-    int bit = (~off) & 7;
+    int bit = off & 7;
 
     if (!dptr->raw) {
         return;
@@ -148,9 +142,9 @@ inline static void write_next_bit(drive_t *dptr, int value)
     dptr->GCR_head_offset = off;
 
     if (value) {
-        dptr->raw->data[byte_offset] |= 1 << bit;
+        dptr->raw->data[byte_offset] |= 0x80 >> bit;
     } else {
-        dptr->raw->data[byte_offset] &= ~(1 << bit);
+        dptr->raw->data[byte_offset] &= ~(0x80 >> bit);
     }
     dptr->raw->dirty = 1;
 }
@@ -159,7 +153,7 @@ inline static int read_next_bit(drive_t *dptr)
 {
     int off = dptr->GCR_head_offset;
     int byte_offset = off >> 3;
-    int bit = (~off) & 7;
+    int bit = off & 7;
 
     if (!dptr->raw) {
         return 0;
@@ -171,7 +165,7 @@ inline static int read_next_bit(drive_t *dptr)
     }
     dptr->GCR_head_offset = off;
 
-    return (dptr->raw->data[byte_offset] >> bit) & 1;
+    return dptr->raw->data[byte_offset] & (0x80 >> bit);
 }
 
 inline static SDWORD RANDOM_nextInt(rotation_t *rptr) {
@@ -181,9 +175,8 @@ inline static SDWORD RANDOM_nextInt(rotation_t *rptr) {
     return (SDWORD) rptr->seed;
 }
 
-void rotation_begins(drive_t *dptr) {
-    unsigned int dnr = dptr->mynumber;
-    rotation[dnr].rotation_last_clk = *(dptr->clk);
+void rotation_begins(rotation_t *rotation) {
+    rotation->rotation_last_clk = *(rotation->clk);
 }
 
 /* Rotate the disk according to the current value of `drive_clk[]'.  If
@@ -199,7 +192,7 @@ void rotation_rotate_disk(drive_t *dptr)
         return;
     }
 
-    rptr = &rotation[dptr->mynumber];
+    rptr = dptr->rotation;
 
     /* Calculate the number of bits that have passed under the R/W head since
        the last time.  */
@@ -288,11 +281,11 @@ void rotation_rotate_disk(drive_t *dptr)
             } else {
                 if (++ rptr->bit_counter == 8) {
                     rptr->bit_counter = 0;
-                    dptr->GCR_read = (BYTE) rptr->last_read_data;
+                    rptr->gcr_read = (BYTE) rptr->last_read_data;
                     /* tlr claims that the write register is loaded at every
                      * byte boundary, and since the bus is shared, it's reasonable
                      * to guess that it would be loaded with whatever was last read. */
-                    rptr->last_write_data = dptr->GCR_read;
+                    rptr->last_write_data = rptr->gcr_read;
                     if ((dptr->byte_ready_active & 2) != 0) {
                         dptr->byte_ready_edge = 1;
                         dptr->byte_ready_level = 1;
@@ -332,28 +325,41 @@ void rotation_rotate_disk(drive_t *dptr)
    is found.  */
 BYTE rotation_sync_found(drive_t *dptr)
 {
-    unsigned int dnr = dptr->mynumber;
-
     if (dptr->read_write_mode == 0 || dptr->attach_clk != (CLOCK)0)
         return 0x80;
 
-    return rotation[dnr].last_read_data == 0x3ff ? 0 : 0x80;
+    return dptr->rotation->last_read_data == 0x3ff ? 0 : 0x80;
 }
 
-void rotation_byte_read(drive_t *dptr)
+BYTE rotation_byte_read(drive_t *dptr)
 {
     if (dptr->attach_clk != (CLOCK)0) {
         if (*(dptr->clk) - dptr->attach_clk < DRIVE_ATTACH_DELAY)
-            dptr->GCR_read = 0;
+            dptr->rotation->gcr_read = 0;
         else
             dptr->attach_clk = (CLOCK)0;
     } else if (dptr->attach_detach_clk != (CLOCK)0) {
         if (*(dptr->clk) - dptr->attach_detach_clk < DRIVE_ATTACH_DETACH_DELAY)
-            dptr->GCR_read = 0;
+            dptr->rotation->gcr_read = 0;
         else
             dptr->attach_detach_clk = (CLOCK)0;
     } else {
         rotation_rotate_disk(dptr);
     }
+    return dptr->rotation->gcr_read;
 }
 
+rotation_t *rotation_new(drive_t *dptr)
+{
+    rotation_t *rotation;
+
+    rotation = (rotation_t *)lib_calloc(1, sizeof(rotation_t));
+    rotation->clk = dptr->clk;
+
+    return rotation;
+}
+
+void rotation_destroy(rotation_t *rotation)
+{
+    lib_free(rotation);
+}

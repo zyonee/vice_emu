@@ -63,13 +63,9 @@ void drive_set_machine_parameter(long cycles_per_sec)
 
 void drivesync_set_1571(int new_sync, struct drive_context_s *drv)
 {
-    unsigned int dnr;
-
-    dnr = drv->mynumber;
-
     if (rom_loaded) {
         rotation_rotate_disk(drv->drive);
-        rotation_init(new_sync ? 1 : 0, dnr);
+        rotation_init(drv->drive->rotation, new_sync ? 1 : 0);
         drv->drive->clock_frequency = (new_sync) ? 2 : 1;
         drivesync_factor(drv);
     }
@@ -77,10 +73,6 @@ void drivesync_set_1571(int new_sync, struct drive_context_s *drv)
 
 void drivesync_set_4000(struct drive_context_s *drv, int new_sync)
 {
-    unsigned int dnr;
-
-    dnr = drv->mynumber;
-
     if (rom_loaded && drv->drive->type == DRIVE_TYPE_4000) {
         drv->drive->clock_frequency = (new_sync) ? 4 : 2;
         drivesync_factor(drv);

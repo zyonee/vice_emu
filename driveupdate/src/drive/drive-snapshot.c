@@ -149,7 +149,6 @@ int drive_snapshot_write_module(snapshot_t *s, int save_disks, int save_roms)
             || SMW_B(m, (BYTE)(drive->image->diskID[1])) < 0
             || SMW_B(m, (BYTE)(drive->extend_image_policy)) < 0
             || SMW_DW(m, (DWORD)(drive->GCR_head_offset)) < 0
-            || SMW_B(m, (BYTE)(drive->GCR_read)) < 0
             || SMW_B(m, (BYTE)(drive->GCR_write_value)) < 0
             || SMW_B(m, (BYTE)(drive->idling_method)) < 0
             || SMW_B(m, (BYTE)(drive->parallel_cable)) < 0
@@ -289,7 +288,6 @@ int drive_snapshot_read_module(snapshot_t *s)
                 || SMR_B_INT(m, &(drive->extend_image_policy)) < 0
                 || SMR_B_INT(m, &dummy) < 0
                 || SMR_DW_UINT(m, &(drive->GCR_head_offset)) < 0
-                || SMR_B(m, &(drive->GCR_read)) < 0
                 || SMR_B(m, &(drive->GCR_write_value)) < 0
                 || SMR_B_INT(m, &(drive->idling_method)) < 0
                 || SMR_B_INT(m, &dummy) < 0
@@ -314,7 +312,6 @@ int drive_snapshot_read_module(snapshot_t *s)
                 || SMR_B(m, &(drive->image->diskID[1])) < 0
                 || SMR_B_INT(m, &(drive->extend_image_policy)) < 0
                 || SMR_DW_UINT(m, &(drive->GCR_head_offset)) < 0
-                || SMR_B(m, &(drive->GCR_read)) < 0
                 || SMR_B(m, &(drive->GCR_write_value)) < 0
                 || SMR_B_INT(m, &(drive->idling_method)) < 0
                 || SMR_B_INT(m, &(drive->parallel_cable)) < 0

@@ -93,6 +93,7 @@
 
 struct disk_image_s;
 struct disk_track_s;
+struct rotation_s;
 
 typedef struct drive_s {
     unsigned int mynumber;
@@ -155,9 +156,6 @@ typedef struct drive_s {
        detached.  */
     CLOCK attach_detach_clk;
 
-    /* Byte to read from r/w head.  */
-    BYTE GCR_read;
-
     /* Only used for snapshot */
     unsigned long snap_accum;
     CLOCK snap_rotation_last_clk;
@@ -190,8 +188,11 @@ typedef struct drive_s {
     /* Pointer to the attached disk image.  */
     struct disk_image_s *image;
 
-    /* Pointer to the gcr image of current track.  */
+    /* Pointer to the image of current track.  */
     struct disk_track_s *raw, *raw_cache[2][84];
+
+    /* For disk rotation */
+    struct rotation_s *rotation;
 
     /* Pointer to 8KB RAM expansion.  */
     BYTE *drive_ram_expand2, *drive_ram_expand4, *drive_ram_expand6,

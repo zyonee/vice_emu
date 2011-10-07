@@ -186,12 +186,12 @@ static void store_prb(via_context_t *via_context, BYTE byte, BYTE poldpb,
             drive_move_head(+1, via2p->drive);
     }
     if ((poldpb ^ byte) & 0x60)     /* Zone bits */
-        rotation_speed_zone_set((byte >> 5) & 0x3, via2p->number);
+        rotation_speed_zone_set(via2p->drive->rotation, (byte >> 5) & 0x3);
     if ((poldpb ^ byte) & 0x04) {   /* Motor on/off */
         bra = via2p->drive->byte_ready_active;
         via2p->drive->byte_ready_active = (bra & ~0x04) | (byte & 0x04);
         if ((byte & 0x04) != 0) {
-            rotation_begins(via2p->drive);
+            rotation_begins(via2p->drive->rotation);
         }
     }
 
@@ -205,7 +205,7 @@ static void undump_prb(via_context_t *via_context, BYTE byte)
     via2p = (drivevia2_context_t *)(via_context->prv);
 
     via2p->drive->led_status = (byte & 8) ? 1 : 0;
-    rotation_speed_zone_set((byte >> 5) & 0x3, via2p->number);
+    rotation_speed_zone_set(via2p->drive->rotation, (byte >> 5) & 0x3);
     via2p->drive->byte_ready_active
         = (via2p->drive->byte_ready_active & ~0x04) | (byte & 0x04);
 }
@@ -281,9 +281,9 @@ static BYTE read_pra(via_context_t *via_context, WORD addr)
 
     via2p = (drivevia2_context_t *)(via_context->prv);
 
-    rotation_byte_read(via2p->drive);
+    byte = rotation_byte_read(via2p->drive);
 
-    byte = ((via2p->drive->GCR_read & ~(via_context->via[VIA_DDRA]))
+    byte = ((byte & ~(via_context->via[VIA_DDRA]))
            | (via_context->via[VIA_PRA] & via_context->via[VIA_DDRA]));
 
     via2p->drive->byte_ready_level = 0;
