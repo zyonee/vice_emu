@@ -141,7 +141,6 @@ void drive_destroy_cache(drive_t *drive)
         track = drive->raw_cache[i % 2][i / 2];
         if (track) {
             lib_free(track->data);
-            lib_free(track->speed_zone);
             lib_free(track);
             drive->raw_cache[i % 2][i / 2] = NULL;
         }
@@ -160,7 +159,6 @@ void drive_image_writeback(drive_t *drive, int free)
     if (!(drive->raw->dirty)) {
         if (free && !drive->raw->pinned) {
             lib_free(drive->raw->data);
-            lib_free(drive->raw->speed_zone);
             lib_free(drive->raw);
             drive->raw_cache[drive->side][drive->current_half_track - 2] = NULL;
             drive->raw = NULL;
@@ -202,8 +200,7 @@ void drive_image_writeback(drive_t *drive, int free)
     }
 
     disk_image_write_track(drive->image, drive->current_half_track,
-                           drive->side, drive->raw->size,
-                           drive->raw->speed_zone, drive->raw->data);
+                           drive->side, drive->raw);
     drive->raw->dirty = 0;
     drive->raw->pinned = (drive->image->type != DISK_IMAGE_TYPE_G64);
 }
@@ -223,15 +220,11 @@ void drive_image_read(drive_t *drive)
     drive->raw_cache[drive->side][drive->current_half_track - 2] = drive->raw;
 
     drive->raw->data = lib_calloc(1, NUM_MAX_BYTES_TRACK);
-    drive->raw->speed_zone = lib_calloc(1, NUM_MAX_BYTES_TRACK);
     drive->raw->dirty = 0;
     drive->raw->pinned = 0;
 
     disk_image_read_track(drive->image, drive->current_half_track,
-                          drive->side,
-                          drive->raw->speed_zone,
-                          drive->raw->data,
-                          &drive->raw->size);
+                          drive->side, drive->raw);
     return;
 }
 

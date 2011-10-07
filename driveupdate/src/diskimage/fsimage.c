@@ -156,17 +156,16 @@ int fsimage_close(disk_image_t *image)
 /* Reads a complete physical track in native form */
 
 int fsimage_read_track(disk_image_t *image, unsigned int track,
-                       unsigned int head, BYTE *gcr_speed_zone,
-                       BYTE *gcr_data, int *track_size)
+                       unsigned int head, disk_track_t *raw)
 {
     switch (image->type) {
     case DISK_IMAGE_TYPE_D64:
     case DISK_IMAGE_TYPE_D67:
     case DISK_IMAGE_TYPE_X64:
     case DISK_IMAGE_TYPE_D71:
-        return fsimage_flat_read_track(image, track, head, gcr_speed_zone, gcr_data, track_size);
+        return fsimage_flat_read_track(image, track, head, raw);
     case DISK_IMAGE_TYPE_G64:
-        return fsimage_gcr_read_track(image, track, head, gcr_speed_zone, gcr_data, track_size);
+        return fsimage_gcr_read_track(image, track, head, raw);
     }
 
     log_error(fsimage_log,
@@ -177,8 +176,7 @@ int fsimage_read_track(disk_image_t *image, unsigned int track,
 
 /* Writes a complete physical track from native form to image file */
 int fsimage_write_track(disk_image_t *image, unsigned int track,
-                       unsigned int head, BYTE *gcr_speed_zone,
-                       BYTE *gcr_data, int track_size)
+                       unsigned int head, disk_track_t *raw)
 {
     fsimage_t *fsimage = image->media.fsimage;
 
@@ -197,11 +195,9 @@ int fsimage_write_track(disk_image_t *image, unsigned int track,
     case DISK_IMAGE_TYPE_D67:
     case DISK_IMAGE_TYPE_X64:
     case DISK_IMAGE_TYPE_D71:
-        return fsimage_flat_write_track(image, track, head, track_size, gcr_speed_zone,
-                                       gcr_data);
+        return fsimage_flat_write_track(image, track, head, raw);
     case DISK_IMAGE_TYPE_G64:
-        return fsimage_gcr_write_track(image, track, head, track_size, gcr_speed_zone,
-                                       gcr_data);
+        return fsimage_gcr_write_track(image, track, head, raw);
     }
 
     log_error(fsimage_log,

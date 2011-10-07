@@ -425,14 +425,13 @@ int disk_image_write_sector(disk_image_t *image, BYTE *buf, unsigned int track,
 /*-----------------------------------------------------------------------*/
 
 int disk_image_read_track(disk_image_t *image, int track, int head,
-                          BYTE *gcr_speed_zone, BYTE *gcr_data,
-                          int *gcr_track_size)
+                          disk_track_t *raw)
 {
     int rc = -1;
 
     switch (image->device) {
     case DISK_IMAGE_DEVICE_FS:
-        rc = fsimage_read_track(image, track, head, gcr_speed_zone, gcr_data, gcr_track_size);
+        rc = fsimage_read_track(image, track, head, raw);
         break;
     default:
         log_error(disk_image_log, "Unknown image device %i.", image->device); 
@@ -441,14 +440,13 @@ int disk_image_read_track(disk_image_t *image, int track, int head,
 }
 
 int disk_image_write_track(disk_image_t *image, int track, int head,
-                           int gcr_track_size, BYTE *gcr_speed_zone,
-                           BYTE *gcr_track_start_ptr)
+                           disk_track_t *raw)
 {
     int rc = -1;
 
     switch (image->device) {
     case DISK_IMAGE_DEVICE_FS:
-        rc = fsimage_write_track(image, track, head, gcr_speed_zone, gcr_track_start_ptr, gcr_track_size);
+        rc = fsimage_write_track(image, track, head, raw);
         break;
     default:
         log_error(disk_image_log, "Unknown image device %i.", image->device); 

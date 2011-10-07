@@ -698,8 +698,7 @@ static int drive_snapshot_write_gcrimage_module(snapshot_t *s, unsigned int dnr)
 
     if (0
         || SMW_W(m, drive->raw->size) < 0
-        || SMW_BA(m, drive->raw->data, drive->raw->size) < 0
-        || SMW_BA(m, drive->raw->speed_zone, drive->raw->size) < 0) {
+        || SMW_BA(m, drive->raw->data, drive->raw->size) < 0) {
         if (m != NULL)
             snapshot_module_close(m);
         return -1;
@@ -744,8 +743,7 @@ static int drive_snapshot_read_gcrimage_module(snapshot_t *s, unsigned int dnr)
     }
 
     if (0
-        || SMR_BA(m, drive->raw->data, drive->raw->size) < 0
-        || SMR_BA(m, drive->raw->speed_zone, drive->raw->size) < 0) {
+        || SMR_BA(m, drive->raw->data, drive->raw->size) < 0) {
 
         snapshot_module_close(m);
         return -1;

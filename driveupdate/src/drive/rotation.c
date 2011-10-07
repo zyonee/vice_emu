@@ -30,6 +30,7 @@
 #include "drivetypes.h"
 #include "rotation.h"
 #include "types.h"
+#include "diskimage.h"
 
 #define ACCUM_MAX 0x10000
 

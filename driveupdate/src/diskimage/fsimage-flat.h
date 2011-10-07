@@ -30,6 +30,7 @@
 #include "types.h"
 
 struct disk_image_s;
+struct disk_track_s;
 
 extern void fsimage_flat_init(void);
 
@@ -39,13 +40,10 @@ extern int fsimage_flat_write_sector(struct disk_image_s *image, BYTE *buf,
                                     unsigned int track, unsigned int sector);
 extern int fsimage_flat_read_track(struct disk_image_s *image,
                                   unsigned int track, unsigned int head,
-                                  BYTE *gcr_speed_zone, BYTE *gcr_data,
-                                  int *track_size);
+                                  struct disk_track_s *raw);
 extern int fsimage_flat_write_track(struct disk_image_s *image,
                                    unsigned int track, unsigned int head,
-                                   int track_size,
-                                   BYTE *gcr_speed_zone,
-                                   BYTE *gcr_track_start_ptr);
+                                   struct disk_track_s *raw);
 extern int fsimage_flat_create(struct disk_image_s *image, unsigned int type);
 #endif
 

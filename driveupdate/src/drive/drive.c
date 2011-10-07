@@ -473,8 +473,6 @@ static void drive_set_half_track(int num, drive_t *dptr)
 
 void drive_side_set(unsigned int side, struct drive_s *drive)
 {
-    unsigned int num;
-
     if (drive->side == side) {
         return;
     }

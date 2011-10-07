@@ -32,6 +32,7 @@
 #include "types.h"
 
 struct disk_image_s;
+struct disk_track_s;
 
 typedef struct fsimage_s {
     FILE *fd;
@@ -54,11 +55,9 @@ extern int fsimage_open(struct disk_image_s *image);
 extern int fsimage_close(struct disk_image_s *image);
 extern int fsimage_read_track(struct disk_image_s *image,
                        unsigned int track, unsigned int head,
-                       BYTE *gcr_speed_zone, BYTE *gcr_data,
-                       int *track_size);
+                       struct disk_track_s *raw);
 extern int fsimage_write_track(struct disk_image_s *image, unsigned int track,
-                       unsigned int head, BYTE *gcr_speed_zone,
-                       BYTE *gcr_data, int track_size);
+                       unsigned int head, struct disk_track_s *raw);
 extern int fsimage_read_sector(struct disk_image_s *image, BYTE *buf,
                                unsigned int track, unsigned int sector);
 extern int fsimage_write_sector(struct disk_image_s *image, BYTE *buf,

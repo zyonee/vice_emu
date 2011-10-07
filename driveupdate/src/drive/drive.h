@@ -92,14 +92,7 @@
 /* ------------------------------------------------------------------------- */
 
 struct disk_image_s;
-
-typedef struct disk_track_s {
-    BYTE *data;
-    BYTE *speed_zone;
-    int size;
-    int dirty;
-    int pinned;
-} disk_track_t;
+struct disk_track_s;
 
 typedef struct drive_s {
     unsigned int mynumber;
@@ -198,7 +191,7 @@ typedef struct drive_s {
     struct disk_image_s *image;
 
     /* Pointer to the gcr image of current track.  */
-    disk_track_t *raw, *raw_cache[2][84];
+    struct disk_track_s *raw, *raw_cache[2][84];
 
     /* Pointer to 8KB RAM expansion.  */
     BYTE *drive_ram_expand2, *drive_ram_expand4, *drive_ram_expand6,

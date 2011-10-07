@@ -85,14 +85,12 @@ static int fsimage_calc_physical_offset(disk_image_t *image, unsigned int track,
 /* Read an entire track from the disk image. */
 
 int fsimage_flat_read_track(disk_image_t *image, unsigned int track,
-                           unsigned int head, BYTE *gcr_speed_zone,
-                           BYTE *gcr_data, int *track_size)
+                           unsigned int head, disk_track_t *raw)
 {
     BYTE buffer[256];
     unsigned int sector;
     BYTE *ptr;
     unsigned int max_sector;
-    int speed_zone = 0;
     int rc, offset, sectors;
     fsimage_t *fsimage = image->media.fsimage;
     unsigned int ltrack;
@@ -103,16 +101,12 @@ int fsimage_flat_read_track(disk_image_t *image, unsigned int track,
         ltrack += head * 35;
     }
 
-    /* Since the D64/D71 format does not provide the actual track sizes or
-       speed zones, we set them to standard values.  */
-
-    speed_zone = disk_image_speed_map_1541(track);
     max_sector = disk_image_sector_per_track(image, track);
 
     /* Clear track to avoid read errors.  */
-    *track_size = disk_image_raw_track_size_1541(track);
-    memset(gcr_data, 0x55, *track_size);
-    memset(gcr_speed_zone, speed_zone, *track_size);
+    raw->size = disk_image_raw_track_size_1541(track);
+    raw->rate = disk_image_speed_map_1541(track);
+    memset(raw->data, 0x55, raw->size);
 
     sectors = fsimage_calc_physical_offset(image, track, head);
     offset = sectors * 256;
@@ -122,7 +116,7 @@ int fsimage_flat_read_track(disk_image_t *image, unsigned int track,
 
     fseek(fsimage->fd, offset, SEEK_SET);
 
-    ptr = gcr_data;
+    ptr = raw->data;
     for (sector = 0; sector < max_sector; sector++) {
         if (fread((char *)buffer, 256, 1, fsimage->fd) < 1) {
             log_error(fsimage_flat_log,
@@ -131,7 +125,7 @@ int fsimage_flat_read_track(disk_image_t *image, unsigned int track,
         } else {
             rc = (fsimage->error_info != NULL) ? fsimage->error_info[sectors++] : 0;
             if (rc == 21) {
-                memset(gcr_data, 0x00, *track_size);
+                memset(raw->data, 0x00, raw->size);
                 break;
             }
 
@@ -149,8 +143,7 @@ int fsimage_flat_read_track(disk_image_t *image, unsigned int track,
 /* Write an entire track to the disk image. */
 
 int fsimage_flat_write_track(disk_image_t *image, unsigned int track,
-                            unsigned int head, int track_size,
-                            BYTE *gcr_speed_zone, BYTE *gcr_track_start_ptr)
+                            unsigned int head, disk_track_t *raw)
 {
     unsigned int sector, max_sector;
     BYTE buffer[256];
@@ -179,7 +172,7 @@ int fsimage_flat_write_track(disk_image_t *image, unsigned int track,
 
     for (sector = 0; sector < max_sector; sector++) {
 
-        switch (gcr_read_sector(gcr_track_start_ptr, track_size, buffer, ltrack, sector)) {
+        switch (gcr_read_sector(raw->data, raw->size, buffer, ltrack, sector)) {
         case -1:
             log_error(fsimage_flat_log, "Could not find header of T:%d H:%d S:%d.",
                       track, head, sector);

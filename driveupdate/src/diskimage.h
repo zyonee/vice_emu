@@ -65,6 +65,14 @@
 struct fsimage_s;
 struct rawimage_s;
 
+typedef struct disk_track_s {
+    BYTE *data;
+    int rate; /* for constant rate GCR */
+    int size;
+    int dirty;
+    int pinned;
+} disk_track_t;
+
 typedef struct disk_image_s {
     union media_u {
         struct fsimage_s *fsimage;
@@ -115,12 +123,9 @@ extern int disk_image_check_sector(disk_image_t *image, unsigned int track,
 extern unsigned int disk_image_sector_per_track(struct disk_image_s *image,
                                                 unsigned int track);
 extern int disk_image_read_track(disk_image_t *image, int track, int head,
-                                 BYTE *gcr_speed_zone, BYTE *gcr_data,
-                                 int *gcr_track_size);
+                                 disk_track_t *raw);
 extern int disk_image_write_track(disk_image_t *image, int track, int head,
-                                  int gcr_track_size,
-                                  BYTE *gcr_speed_zone,
-                                  BYTE *gcr_track_start_ptr);
+                                  disk_track_t *raw);
 
 extern unsigned int disk_image_speed_map_1541(unsigned int track);
 extern unsigned int disk_image_raw_track_size_1541(unsigned int track);
