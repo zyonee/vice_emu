@@ -19,52 +19,64 @@ changes in behaviour) from the 6502:
 
 opcode	mnemonic
 ------	--------
+00      BRK
 01	ORA ($nn,X)
 05	ORA $nn
+06	ASL $nn
 08	PHP
 09	ORA #$nn
 0a	ASL A
 0d	ORA $nnnn
+0e	ASL $nnnn
 10	BPL $nnnn
 11	ORA ($nn),Y
 15	ORA $nn,X
+16	ASL $nn,X
 18	CLC
 19	ORA $nnnn,Y
-1c	TRB $nnnn
 1d	ORA $nnnn,X
 20	JSR $nnnn
 21	AND ($nn,X)
 24	BIT $nn
 25	AND $nn
+26	ROL $nn
 28	PLP
 29	AND #$nn
 2a	ROL A
 2c	BIT $nnnn
 2d	AND $nnnn
+2e	ROL $nnnn
 30	BMI $nnnn
 31	AND ($nn),Y
 35	AND $nn,X
+36	ROL $nn,X
 38	SEC
 39	AND $nnnn,Y
 3d	AND $nnnn,X
 40	RTI
 41	EOR ($nn,X)
 45	EOR $nn
+46	LSR $nn
 48	PHA
 49	EOR #$nn
 4a	LSR A
 4c	JMP $nnnn
 4d	EOR $nnnn
+4e	LSR $nnnn
 50	BVC $nnnn
 51	EOR ($nn),Y
 55	EOR $nn,X
+56	LSR $nn,X
 58	CLI
 59	EOR $nnnn,Y
 5d	EOR $nnnn,X
 60	RTS
+66	ROR $nn
 68	PLA
 6a	ROR A
+6e	ROR $nnnn
 70	BVS $nnnn
+76	ROR $nn,X
 78	SEI
 81	STA ($nn,X)
 84	STY $nn
@@ -111,24 +123,32 @@ c0	CPY #$nn
 c1	CMP ($nn,X)
 c4	CPY $nn
 c5	CMP $nn
+c6	DEC $nn
 c8	INY
 c9	CMP #$nn
 ca	DEX
 cc	CPY $nnnn
 cd	CMP $nnnn
+ce	DEC $nnnn
 d0	BNE $nnnn
 d1	CMP ($nn),Y
 d5	CMP $nn,X
+d6	DEC $nn,X
 d8	CLD
 d9	CMP $nnnn,Y
 dd	CMP $nnnn,X
+de	DEC $nnnn,X
 e0	CPX #$nn
 e4	CPX $nn
+e6	INC $nn
 e8	INX
 ea	NOP
 ec	CPX $nnnn
+ee	INC $nnnn
 f0	BEQ $nnnn
+f6	INC $nn,X
 f8	SED
+fe	INC $nnnn,X
 
 
 The normal NOP is 1 byte and uses 2 cycles, with the 65(S)C02 a new kind of
@@ -181,6 +201,7 @@ opcode	mnemonic	bytes	cycles	comments
 54	NOOP $nn,X	2	4
 5c	NOOP ???	3	8
 62	NOOP #$nn	2	2
+82	NOOP #$nn	2	2
 c2	NOOP #$nn	2	2
 d4	NOOP $nn,X	2	4
 dc	NOOP $nnnn,X	3	4
@@ -254,121 +275,546 @@ f5	SBC $nn,X	2	4(/5)	+1 decimal mode
 f9	SBC $nnnn,Y	3	4(/5/6)	+1 decimal mode, +1 page crossing
 fd	SBC $nnnn,X	3	4(/5/6)	+1 decimal mode, +1 page crossing
 
+Note that opcodes 72 and f2 have a new addressing mode which will be explained
+next.
 
-left to explain:
+
+A new addressing mode has been introduced, the zeropage indexed mode, it is
+like the zeropage y ((zp),Y) mode when Y is zero, and has the same cycle
+count. The opcodes using the new addressing mode are listed below:
 
 opcode	mnemonic	bytes	cycles	comments
 ------	--------	-----	------	--------
-00	BRK		2	7	behaviour is different from 6502
-04	TSB $nn		2	5
-06	ASL $nn		2	5
-07	RMB0 $nn	2	5	on WDC65C02 and R65C02
-07	NOOP		1	1	on 65SC02
-0c	TSB $nnnn	3	6
-0e	ASL $nnnn	3	6
-0f	BBR0 $nn,$nnnn	3	5	on WDC65C02 and R65C02
-0f	NOOP		1	1	on 65SC02
 12	ORA ($nn)	2	5
-14	TRB $nn		2	5
-16	ASL $nn,X	2	6
-17	RMB1 $nn	2	5	on WDC65C02 and R65C02
-17	NOOP		1	1	on 65SC02
-1e	ASL $nnnn,X	3	6/7	extra cycle is for page boundry crossing
-1f	BBR1 $nn,$nnnn	3	5	on WDC65C02 and R65C02
-1f	NOOP		1	1	on 65SC02
-26	ROL $nn		2	5
-27	RMB2 $nn	2	5	on WDC65C02 and R65C02
-27	NOOP		1	1	on 65SC02
-2e	ROL $nnnn	3	6
-2f	BBR2 $nn,$nnnn	3	5	on WDC65C02 and R65C02
-2f	NOOP		1	1	on 65SC02
 32	AND ($nn)	2	5
-34	BIT $nn,X	2	4
-36	ROL $nn,X	2	6
-37	RMB3 $nn	2	5	on WDC65C02 and R65C02
-37	NOOP		1	1	on 65SC02
-3c	BIT $nnnn,X	3	4/5	extra cycles is for crossing page boundry
-3e	ROL $nnnn,X	3	6/7	extra cycle is for boundry crossing
-3f	BBR3 $nn,$nnnn	3	5	on WDC65C02 and R65C02
-3f	NOOP		1	1	on 65SC02
-46	LSR $nn		2	5
-47	RMB4 $nn	2	5	on WDC65C02 and R65C02
-47	NOOP		1	1	on 65SC02
-4e	LSR $nnnn	3	6
-4f	BBR4 $nn,$nnnn	3	5	on WDC65C02 and R65C02
-4f	NOOP		1	1	on 65SC02
 52	EOR ($nn)	2	5
-56	LSR $nn,X	2	6
-57	RMB5 $nn	2	5	on WDC65C02 and R65C02
-57	NOOP		1	1	on 65SC02
-5e	LSR $nnnn,X	3	6/7	extra cycle is for boundry crossing
-5f	BBR5 $nn,$nnnn	3	5	on WDC65C02 and R65C02
-5f	NOOP		1	1	on 65SC02
-66	ROR $nn		2	5
-67	RMB6 $nn	2	5	on WDC65C02 and R65C02
-67	NOOP		1	1	on 65SC02
-6c	JMP ($nnnn)	3	6/7	extra cycle is for page boundry crossing
-6e	ROR $nnnn	3	6
-6f	BBR6 $nn,$nnnn	3	5	on WDC65C02 and R65C02
-6f	NOOP		1	1	on 65SC02
-76	ROR $nn,X	2	6
-77	RMB7 $nn	2	5	on WDC65C02 and R65C02
-77	NOOP		1	1	on 65SC02
-7c	JMP ($nnnn,X)	3	6/7	extra cycle is for page boundry crossing
-7e	ROR $nnnn,X	3	6/7	extra cycle is for boundry crossing
-7f	BBR7 $nn,$nnnn	3	5	on WDC65C02 and R65C02
-7f	NOOP		1	1	on 65SC02
-80	BRA $nnnn	2	3/4	extra cycle is for crossing page boundry
-82	NOP #$nn	2	2
-87	SMB0 $nn	2	5	on WDC65C02 and R65C02
-87	NOOP		1	1	on 65SC02
-89	BIT #$nn	2	2
-8f	BBS0 $nn,$nnnn	3	5	on WDC65C02 and R65C02
-8f	NOOP		1	1	on 65SC02
+72	ADC ($nn)	2	5(/6)	+1 decimal mode
 92	STA ($nn)	2	5
-97	SMB1 $nn	2	5	on WDC65C02 and R65C02
-97	NOOP		1	1	on 65SC02
-9f	BBS1 $nn,$nnnn	3	5	on WDC65C02 and R65C02
-9f	NOOP		1	1	on 65SC02
-a7	SMB2 $nn	2	5	on WDC65C02 and R65C02
-a7	NOOP		1	1	on 65SC02
-af	BBS2 $nn,$nnnn	3	5	on WDC65C02 and R65C02
-af	NOOP		1	1	on 65SC02
 b2	LDA ($nn)	2	5
-b7	SMB3 $nn	2	5	on WDC65C02 and R65C02
-b7	NOOP		1	1	on 65SC02
-bf	BBS3 $nn,$nnnn	3	5	on WDC65C02 and R65C02
-bf	NOOP		1	1	on 65SC02
-c6	DEC $nn		2	5
-c7	SMB4 $nn	2	5	on WDC65C02 and R65C02
-c7	NOOP		1	1	on 65SC02
-cb	WAI		1	3	on WDC65C02
-cb	NOOP		1	1	on R65C02 and 65SC02
-ce	DEC $nnnn	3	6
-cf	BBS4 $nn,$nnnn	3	5	on WDC65C02 and R65C02
-cf	NOOP		1	1	on 65SC02
 d2	CMP ($nn)	2	5
-d6	DEC $nn,X	2	6
+f2	SBC ($nn)	2	5(/6)	+1 decimal mode
+
+
+The BIT instruction has three additional addressing modes. The $nnnn,X and $nn,X
+addressing modes affect the same flags that the abs and zp addressing modes
+do. The immediate addressing mode only affects the Z flag. Below is a list:
+
+opcode	mnemonic	bytes	cycles	comments
+------	--------	-----	------	--------
+34	BIT $nn,X	2	4
+3c	BIT $nnnn,X	3	4(/5)	+1 crossing page boundry
+89	BIT #$nn	2	2
+
+
+The JMP instruction has a new ($nnnn,X) addressing mode, the X register is
+added to the absolute address, and the resulting address contains the address
+to jump to, low byte first:
+
+opcode	mnemonic	bytes	cycles
+------	--------	-----	------
+7c	JMP ($nnnn,X)	3	6
+
+
+On the 6502, JMP ($nnnn) had a bug when the low byte of the address was $FF,
+the page was not incremented and the second byte would be taken from the same
+page but at location $00, for example JMP($09FF) would get the first byte from
+$09FF and the second byte from $0900. On the 65(S)C02 this bug is fixed, at the
+cost of an extra cycle:
+
+opcode	mnemonic	bytes	cycles
+------	--------	-----	------
+6c	JMP ($nnnn)	3	6
+
+
+The 65(S)C02 has a new branch instructio, BRA (branch always), the cycle count
+is the same as for the other branch instruction except for the fact that the
+condition is always true, and therefore the case of not taking the branch
+doesn't exist, and so the minimum cycles for this branch is 3:
+
+opcode	mnemonic	bytes	cycles
+------	--------	-----	------
+80	BRA $nnnn	2	3(/4)	+1 for crossing page boundry
+
+
+The 65(S)C02 has two extra instructions for manipulating bits in memory, the
+TRB - (test and reset bits) and TSB (test and set bits) instructions. Each
+ANDs the memory location with the accumulator and sets the Z flag according to
+the result and then bits in the memory location are reset/set according to
+which bits in the accumulator are set:
+
+opcode	mnemonic	bytes	cycles
+------	--------	-----	------
+04	TSB $nn		2	5
+0c	TSB $nnnn	3	6
+14	TRB $nn		2	5
+1c	TRB $nnnn	3	6
+
+
+The R65C02 and WDC65C02 have 4 additional instructions that are not present in
+the 65SC02, BBR* (branch on bit reset), BBS* (branch on bit set), RMB*
+(reset memory bit) and SMB* (set memory bit). The BBR* and BBS* are branch
+instructions and branch on the condition of a certain bit. The RMB* and SMB*
+functions reset/set a certain bit of a memory location. The following opcodes
+are used:
+
+opcode	mnemonic	bytes	cycles	comments
+------	--------	-----	------	--------
+07	RMB0 $nn	2	5	on WDC65C02 and R65C02
+0f	BBR0 $nn,$nnnn	3	5	on WDC65C02 and R65C02
+17	RMB1 $nn	2	5	on WDC65C02 and R65C02
+1f	BBR1 $nn,$nnnn	3	5	on WDC65C02 and R65C02
+27	RMB2 $nn	2	5	on WDC65C02 and R65C02
+2f	BBR2 $nn,$nnnn	3	5	on WDC65C02 and R65C02
+37	RMB3 $nn	2	5	on WDC65C02 and R65C02
+3f	BBR3 $nn,$nnnn	3	5	on WDC65C02 and R65C02
+47	RMB4 $nn	2	5	on WDC65C02 and R65C02
+4f	BBR4 $nn,$nnnn	3	5	on WDC65C02 and R65C02
+57	RMB5 $nn	2	5	on WDC65C02 and R65C02
+5f	BBR5 $nn,$nnnn	3	5	on WDC65C02 and R65C02
+67	RMB6 $nn	2	5	on WDC65C02 and R65C02
+6f	BBR6 $nn,$nnnn	3	5	on WDC65C02 and R65C02
+77	RMB7 $nn	2	5	on WDC65C02 and R65C02
+7f	BBR7 $nn,$nnnn	3	5	on WDC65C02 and R65C02
+87	SMB0 $nn	2	5	on WDC65C02 and R65C02
+8f	BBS0 $nn,$nnnn	3	5	on WDC65C02 and R65C02
+97	SMB1 $nn	2	5	on WDC65C02 and R65C02
+9f	BBS1 $nn,$nnnn	3	5	on WDC65C02 and R65C02
+a7	SMB2 $nn	2	5	on WDC65C02 and R65C02
+af	BBS2 $nn,$nnnn	3	5	on WDC65C02 and R65C02
+b7	SMB3 $nn	2	5	on WDC65C02 and R65C02
+bf	BBS3 $nn,$nnnn	3	5	on WDC65C02 and R65C02
+c7	SMB4 $nn	2	5	on WDC65C02 and R65C02
+cf	BBS4 $nn,$nnnn	3	5	on WDC65C02 and R65C02
 d7	SMB5 $nn	2	5	on WDC65C02 and R65C02
-d7	NOOP		1	1	on 65SC02
-db	STP		1	3	on WDC65C02
-db	NOOP		1	1	on R65C02 and 65SC02
-de	DEC $nnnn,X	3	7
 df	BBS5 $nn,$nnnn	3	5	on WDC65C02 and R65C02
-df	NOOP		1	1	on 65SC02
-e6	INC $nn		2	5
 e7	SMB6 $nn	2	5	on WDC65C02 and R65C02
-e7	NOOP		1	1	on 65SC02
-ee	INC $nnnn	3	6
 ef	BBS6 $nn,$nnnn	3	5	on WDC65C02 and R65C02
-ef	NOOP		1	1	on 65SC02
-f6	INC $nn,X	2	6
 f7	SMB7 $nn	2	5	on WDC65C02 and R65C02
-f7	NOOP		1	1	on 65SC02
-fe	INC $nnnn,X	3	7
 ff	BBS7 $nn,$nnnn	3	5	on WDC65C02 and R65C02
+
+The opcodes above are single NOPs on the 65SC02:
+
+opcode	mnemonic	bytes	cycles	comments
+------	--------	-----	------	--------
+07	NOOP		1	1	on 65SC02
+0f	NOOP		1	1	on 65SC02
+17	NOOP		1	1	on 65SC02
+1f	NOOP		1	1	on 65SC02
+27	NOOP		1	1	on 65SC02
+2f	NOOP		1	1	on 65SC02
+37	NOOP		1	1	on 65SC02
+3f	NOOP		1	1	on 65SC02
+47	NOOP		1	1	on 65SC02
+4f	NOOP		1	1	on 65SC02
+57	NOOP		1	1	on 65SC02
+5f	NOOP		1	1	on 65SC02
+67	NOOP		1	1	on 65SC02
+6f	NOOP		1	1	on 65SC02
+77	NOOP		1	1	on 65SC02
+7f	NOOP		1	1	on 65SC02
+87	NOOP		1	1	on 65SC02
+8f	NOOP		1	1	on 65SC02
+97	NOOP		1	1	on 65SC02
+9f	NOOP		1	1	on 65SC02
+a7	NOOP		1	1	on 65SC02
+af	NOOP		1	1	on 65SC02
+b7	NOOP		1	1	on 65SC02
+bf	NOOP		1	1	on 65SC02
+c7	NOOP		1	1	on 65SC02
+cf	NOOP		1	1	on 65SC02
+d7	NOOP		1	1	on 65SC02
+df	NOOP		1	1	on 65SC02
+e7	NOOP		1	1	on 65SC02
+ef	NOOP		1	1	on 65SC02
+f7	NOOP		1	1	on 65SC02
 ff	NOOP		1	1	on 65SC02
 
 
+The WDC65C02 has 2 addtional instructions not present in the R65C02 and
+65SC02, STP (stops the cpu) and WAI (stops the cpu and waits for an interrupt
+to reactivate the cpu):
+
+opcode	mnemonic	bytes	cycles	comments
+------	--------	-----	------	--------
+cb	WAI		1	3	on WDC65C02
+db	STP		1	3	on WDC65C02
+
+The opcodes above are single NOPs on the R65C02 and 65SC02:
+
+opcode	mnemonic	bytes	cycles	comments
+------	--------	-----	------	--------
+cb	NOOP		1	1	on R65C02 and 65SC02
+db	NOOP		1	1	on R65C02 and 65SC02
+
+
+On the 6502 the $nnnn,X addressing mode for the INC, DEC, ASL, LSR, ROL and ROR instructions always takes 7 cycles, on the 65(S)C02 the cycles for the ASL, LSR, ROL and ROR instructions are 6 when no page boundry is crossed and 7 when it is crossed. Note that DEC and INC still always take 7 cycles on the 65(S)C02.
+
+opcode	mnemonic	bytes	cycles
+------	--------	-----	------
+1e	ASL $nnnn,X	3	6(/7)	+1 for page boundry crossing
+3e	ROL $nnnn,X	3	6(/7)	+1 for boundry crossing
+5e	LSR $nnnn,X	3	6(/7)	+1 for boundry crossing
+7e	ROR $nnnn,X	3	6(/7)	+1 for boundry crossing
+
+
+On the 6502 after an interrupt (BRK, IRQ or NMI) or a reset the decimal flag
+was unchanged, the 65(S)C02 clears the decimal flag after an interrupt or
+reset, the amount of cycles is the same as on the 6502.
+
+
+On the 6502 there is a group of instructions (the RMW group) that does 1 read
+and 2 writes at the effective address, on the 65(S)C02 this has been changed
+to 2 reads and 1 write.
+
+
+On the 6502 when using the absolute indexed addressing mode a read from an
+invalid address could happen, on the 65(S)C02 instead of reading from an
+invalid address the last instruction byte is read again.
+
 References used for this document:
 http://www.6502.org/tutorials/65c02opcodes.html
+
+
+The following section is for keeping track of tests of the 65C02 core, a & after an element means that it is emulated and a * after an element means it has been successfully tested.
+
+65C02 core emulation and tests:
+
+
+opcode	mnemonic	bytes	cycles	mode		changed	65SC02	R65C02	WDC65C02
+------	--------	-----	------	----		-------	------	------	--------
+00	BRK		2	7	brk		yes	yes	yes	yes
+01	ORA ($nn,X)	2	6	ind-x read	no	yes	yes	yes
+02	NOOP #$nn	2	2	imm read	yes	yes	yes	yes
+03	NOOP		1	1	imp single	yes	yes	yes	yes
+04	TSB $nn		2	5	zp rrw		yes	yes	yes	yes
+05	ORA $nn		2	3	zp read		no	yes	yes	yes
+06	ASL $nn		2	5	zp rrw		yes	yes	yes	yes
+07	RMB0 $nn	2	5	zp rrw		yes	no	yes	yes
+07	NOOP		1	1	imp single	yes	yes	no	no
+08	PHP		1	3	imp sp push	no	yes	yes	yes
+09	ORA #$nn	2	2	imm read	no	yes	yes	yes
+0a	ASL A		1	2	imp		no	yes	yes	yes
+0b	NOOP		1	1	imp single	yes	yes	yes	yes
+0c	TSB $nnnn	3	6	abs rrw		yes	yes	yes	yes
+0d	ORA $nnnn	3	4	abs read	no	yes	yes	yes
+0e	ASL $nnnn	3	6	abs rrw		yes	yes	yes	yes
+
+0f		BBR0 $nn,$nnnn	3	5	on WDC65C02 and R65C02
+0f		NOOP		1	1	on 65SC02
+
+opcode		mnemonic	bytes	cycles	comments
+------		--------	-----	------	--------
+10		BPL $nnnn	2	2/3/4	extra cycle is for page boundry crossing, other extra cycle is for branch taken
+11		ORA ($nn),Y	2	5/6	extra cycle is for page boundry crossing
+12		ORA ($nn)	2	5
+13		NOOP		1	1
+14		TRB $nn		2	5
+15		ORA $nn,X	2	4
+16		ASL $nn,X	2	6
+17		RMB1 $nn	2	5	on WDC65C02 and R65C02
+17		NOOP		1	1	on 65SC02
+18		CLC		1	2
+19		ORA $nnnn,Y	3	4/5	extra cycle is for page boundry crossing
+1a		INC A		1	2
+1b		NOOP		1	1
+1c		TRB $nnnn	3	6
+1d		ORA $nnnn,X	3	4/5	extra cycle is for page boundry crossing
+1e		ASL $nnnn,X	3	6/7	extra cycle is for page boundry crossing
+1f		BBR1 $nn,$nnnn	3	5	on WDC65C02 and R65C02
+1f		NOOP		1	1	on 65SC02
+
+opcode		mnemonic	bytes	cycles	comments
+------		--------	-----	------	--------
+20		JSR $nnnn	3	6
+21		AND ($nn,X)	2	6
+22		NOOP #$nn	2	2
+23		NOOP		1	1
+24		BIT $nn		2	3
+25		AND $nn		2	3
+26		ROL $nn		2	5
+27		RMB2 $nn	2	5	on WDC65C02 and R65C02
+27		NOOP		1	1	on 65SC02
+28		PLP		1	4
+29		AND #$nn	2	2
+2a		ROL A		1	2
+2b		NOOP		1	1
+2c		BIT $nnnn	3	4
+2d		AND $nnnn	3	4
+2e		ROL $nnnn	3	6
+2f		BBR2 $nn,$nnnn	3	5	on WDC65C02 and R65C02
+2f		NOOP		1	1	on 65SC02
+
+opcode		mnemonic	bytes	cycles	comments
+------		--------	-----	------	--------
+30		BMI $nnnn	2	2/3/4	extra cycle is for page boundry crossing, other extra cycle is for branch taken
+31		AND ($nn),Y	2	5/6	extra cycle is for page boundry crossing
+32		AND ($nn)	2	5
+33		NOOP		1	1
+34		BIT $nn,X	2	4
+35		AND $nn,X	2	4
+36		ROL $nn,X	2	6
+37		RMB3 $nn	2	5	on WDC65C02 and R65C02
+37		NOOP		1	1	on 65SC02
+38		SEC		1	2
+39		AND $nnnn,Y	3	4/5	extra cycle is for page boundry crossing
+3a		DEC A		1	2
+3b		NOOP		1	1
+3c		BIT $nnnn,X	3	4/5	extra cycles is for crossing page boundry
+3d		AND $nnnn,X	3	4/5	extra cycle is for page boundry crossing
+3e		ROL $nnnn,X	3	6/7	extra cycle is for boundry crossing
+3f		BBR3 $nn,$nnnn	3	5	on WDC65C02 and R65C02
+3f		NOOP		1	1	on 65SC02
+
+opcode		mnemonic	bytes	cycles	comments
+------		--------	-----	------	--------
+40		RTI		1	6
+41		EOR ($nn,X)	2	6
+42		NOOP #$nn	2	2
+43		NOOP		1	1
+44		NOOP $nn	2	2
+45		EOR $nn		2	3
+46		LSR $nn		2	5
+47		RMB4 $nn	2	5	on WDC65C02 and R65C02
+47		NOOP		1	1	on 65SC02
+48		PHA		1	3
+49		EOR #$nn	2	2
+4a		LSR A		1	2
+4b		NOOP		1	1
+4c		JMP $nnnn	3	3
+4d		EOR $nnnn	3	4
+4e		LSR $nnnn	3	6
+4f		BBR4 $nn,$nnnn	3	5	on WDC65C02 and R65C02
+4f		NOOP		1	1	on 65SC02
+
+opcode		mnemonic	bytes	cycles	comments
+------		--------	-----	------	--------
+50		BVC $nnnn	2	2/3/4	extra cycle is for page boundry crossing, other extra cycle is for branch taken
+51		EOR ($nn),Y	2	5/6	extra cycle is for page boundry crossing
+52		EOR ($nn)	2	5
+53		NOOP		1	1
+54		NOOP $nn,X	2	4
+55		EOR $nn,X	2	4
+56		LSR $nn,X	2	6
+57		RMB5 $nn	2	5	on WDC65C02 and R65C02
+57		NOOP		1	1	on 65SC02
+58		CLI		1	2
+59		EOR $nnnn,Y	3	4/5	extra cycle is for page boundry crossing
+5a		PHY		1	3
+5b		NOOP		1	1
+5c		NOOP8 $nnnn,X	3	8
+5d		EOR $nnnn,X	3	4/5	extra cycle is for page boundry crossing
+5e		LSR $nnnn,X	3	6/7	extra cycle is for boundry crossing
+5f		BBR5 $nn,$nnnn	3	5	on WDC65C02 and R65C02
+5f		NOOP		1	1	on 65SC02
+
+opcode		mnemonic	bytes	cycles	comments
+------		--------	-----	------	--------
+60		RTS		1	6
+61		ADC ($nn,X)	2	6/7	extra cycle is for decimal mode
+62		NOOP #$nn	2	2
+63		NOOP		1	1
+64		STZ $nn		2	3
+65		ADC $nn		2	3/4	extra cycle is for decimal mode
+66		ROR $nn		2	5
+67		RMB6 $nn	2	5	on WDC65C02 and R65C02
+67		NOOP		1	1	on 65SC02
+68		PLA		1	4
+69		ADC #$nn	2	2/3	extra cycle is for decimal mode
+6a		ROR A		1	2
+6b		NOOP		1	1
+6c		JMP ($nnnn)	3	6/7	extra cycle is for page boundry crossing
+6d		ADC $nnnn	3	4/5	extra cycle is for decimal mode
+6e		ROR $nnnn	3	6
+6f		BBR6 $nn,$nnnn	3	5	on WDC65C02 and R65C02
+6f		NOOP		1	1	on 65SC02
+
+opcode		mnemonic	bytes	cycles	comments
+------		--------	-----	------	--------
+70		BVS $nnnn	2	2/3/4	extra cycle is for page boundry crossing, other extra cycle is for branch taken
+71		ADC ($nn),Y	2	5/6/7	extra cycle is for decimal mode, other extra cycle is for page boundry crossing
+72		ADC ($nn)	2	5/6	extra cycle is for decimal mode
+73		NOOP		1	1
+74		STZ $nn,X	2	4
+75		ADC $nn,X	2	4/5	extra cycle is for decimal mode
+76		ROR $nn,X	2	6
+77		RMB7 $nn	2	5	on WDC65C02 and R65C02
+77		NOOP		1	1	on 65SC02
+78		SEI		1	2
+79		ADC $nnnn,Y	3	4/5/6	extra cycle is for decimal mode, other extra cycle is for page boundry crossing
+7a		PLY		1	4
+7b		NOOP		1	1
+7c		JMP ($nnnn,X)	3	6/7	extra cycle is for page boundry crossing
+7d		ADC $nnnn,X	3	4/5/6	extra cycle is for decimal mode, other extra cycle is for page boundry crossing
+7e		ROR $nnnn,X	3	6/7	extra cycle is for boundry crossing
+7f		BBR7 $nn,$nnnn	3	5	on WDC65C02 and R65C02
+7f		NOOP		1	1	on 65SC02
+
+opcode		mnemonic	bytes	cycles	comments
+------		--------	-----	------	--------
+80		BRA $nnnn	2	3/4	extra cycle is for crossing page boundry
+81		STA ($nn,X)	2	6
+82		NOP #$nn	2	2
+83		NOOP		1	1
+84		STY $nn		2	3
+85		STA $nn		2	3
+86		STX $nn		2	3
+87		SMB0 $nn	2	5	on WDC65C02 and R65C02
+87		NOOP		1	1	on 65SC02
+88		DEY		1	2
+89		BIT #$nn	2	2
+8a		TXA		1	2
+8b		NOOP		1	1
+8c		STY $nnnn	3	4
+8d		STA $nnnn	3	4
+8e		STX $nnnn	3	4
+8f		BBS0 $nn,$nnnn	3	5	on WDC65C02 and R65C02
+8f		NOOP		1	1	on 65SC02
+
+opcode		mnemonic	bytes	cycles	comments
+------		--------	-----	------	--------
+90		BCC $nnnn	2	2/3/4	extra cycle is for page boundry crossing, other extra cycle is for branch taken
+91		STA ($nn),Y	2	6
+92		STA ($nn)	2	5
+93		NOOP		1	1
+94		STY $nn,X	2	4
+95		STA $nn,X	2	4
+96		STX $nn,Y	2	4
+97		SMB1 $nn	2	5	on WDC65C02 and R65C02
+97		NOOP		1	1	on 65SC02
+98		TYA		1	2
+99		STA $nnnn,Y	3	5
+9a		TXS		1	2
+9b		NOOP		1	1
+9c		STZ $nnnn	3	4
+9d		STA $nnnn,X	3	5
+9e		STZ $nnnn,X	3	5
+9f		BBS1 $nn,$nnnn	3	5	on WDC65C02 and R65C02
+9f		NOOP		1	1	on 65SC02
+
+opcode		mnemonic	bytes	cycles	comments
+------		--------	-----	------	--------
+a0		LDY #$nn	2	2
+a1		LDA ($nn,X)	2	6
+a2		LDX #$nn	2	2
+a3		NOOP		1	1
+a4		LDY $nn		2	3
+a5		LDA $nn		2	3
+a6		LDX $nn		2	3
+a7		SMB2 $nn	2	5	on WDC65C02 and R65C02
+a7		NOOP		1	1	on 65SC02
+a8		TAY		1	2
+a9		LDA #$nn	2	2
+aa		TAX		1	2
+ab		NOOP		1	1
+ac		LDY $nnnn	3	4
+ad		LDA $nnnn	3	4
+ae		LDX $nnnn	3	4
+af		BBS2 $nn,$nnnn	3	5	on WDC65C02 and R65C02
+af		NOOP		1	1	on 65SC02
+
+opcode		mnemonic	bytes	cycles	comments
+------		--------	-----	------	--------
+b0		BCS $nnnn	2	2/3/4	extra cycle is for page boundry crossing, other extra cycle is for branch taken
+b1		LDA ($nn),Y	2	5/6	extra cycle is for page boundry crossing
+b2		LDA ($nn)	2	5
+b3		NOOP		1	1
+b4		LDY $nn,X	2	4
+b5		LDA $nn,X	2	4
+b6		LDX $nn,Y	2	4
+b7		SMB3 $nn	2	5	on WDC65C02 and R65C02
+b7		NOOP		1	1	on 65SC02
+b8		CLV		1	2
+b9		LDA $nnnn,Y	3	4/5	extra cycle is for page boundry crossing
+ba		TSX		1	2
+bb		NOOP		1	1
+bc		LDY $nnnn,X	3	4/5	extra cycle is for page boundry crossing
+bd		LDA $nnnn,X	3	4/5	extra cycle is for page boundry crossing
+be		LDX $nnnn,Y	3	4/5	extra cycle is for page boundry crossing
+bf		BBS3 $nn,$nnnn	3	5	on WDC65C02 and R65C02
+bf		NOOP		1	1	on 65SC02
+
+opcode		mnemonic	bytes	cycles	comments
+------		--------	-----	------	--------
+c0		CPY #$nn	2	2
+c1		CMP ($nn,X)	2	6
+c2		NOOP #$nn	2	2
+c3		NOOP		1	1
+c4		CPY $nn		2	3
+c5		CMP $nn		2	3
+c6		DEC $nn		2	5
+c7		SMB4 $nn	2	5	on WDC65C02 and R65C02
+c7		NOOP		1	1	on 65SC02
+c8		INY		1	2
+c9		CMP #$nn	2	2
+ca		DEX		1	2
+cb		WAI		1	3	on WDC65C02
+cb		NOOP		1	1	on R65C02 and 65SC02
+cc		CPY $nnnn	3	4
+cd		CMP $nnnn	3	4
+ce		DEC $nnnn	3	6
+cf		BBS4 $nn,$nnnn	3	5	on WDC65C02 and R65C02
+cf		NOOP		1	1	on 65SC02
+
+opcode		mnemonic	bytes	cycles	comments
+------		--------	-----	------	--------
+d0		BNE $nnnn	2	2/3/4	extra cycle is for page boundry crossing, other extra cycle is for branch taken
+d1		CMP ($nn),Y	2	5/6	extra cycle is for page boundry crossing
+d2		CMP ($nn)	2	5
+d3		NOOP		1	1
+d4		NOOP $nn,X	2	4
+d5		CMP $nn,X	2	4
+d6		DEC $nn,X	2	6
+d7		SMB5 $nn	2	5	on WDC65C02 and R65C02
+d7		NOOP		1	1	on 65SC02
+d8		CLD		1	2
+d9		CMP $nnnn,Y	3	4/5	extra cycle is for page boundry crossing
+da		PHX		1	3
+db		STP		1	3	on WDC65C02
+db		NOOP		1	1	on R65C02 and 65SC02
+dc		NOP $nnnn,X	3	4
+dd		CMP $nnnn,X	3	4/5	extra cycle is for page boundry crossing
+de		DEC $nnnn,X	3	7
+df		BBS5 $nn,$nnnn	3	5	on WDC65C02 and R65C02
+df		NOOP		1	1	on 65SC02
+
+opcode		mnemonic	bytes	cycles	comments
+------		--------	-----	------	--------
+e0		CPX #$nn	2	2
+e1		SBC ($nn,X)	2	6/7	extra cycle is for decimal mode
+e2		NOOP #$nn	2	2
+e3		NOOP		1	1
+e4		CPX $nn		2	3
+e5		SBC $nn		2	3/4	extra cycle is for decimal mode
+e6		INC $nn		2	5
+e7		SMB6 $nn	2	5	on WDC65C02 and R65C02
+e7		NOOP		1	1	on 65SC02
+e8		INX		1	2
+e9		SBC #$nn	2	2/3	extra cycle is for decimal mode
+ea		NOP		1	2
+eb		NOOP		1	1
+ec		CPX $nnnn	3	4
+ed		SBC $nnnn	3	4/5	extra cycle is for decimal mode
+ee		INC $nnnn	3	6
+ef		BBS6 $nn,$nnnn	3	5	on WDC65C02 and R65C02
+ef		NOOP		1	1	on 65SC02
+
+opcode		mnemonic	bytes	cycles	comments
+------		--------	-----	------	--------
+f0		BEQ $nnnn	2	2/3/4	extra cycle is for page boundry crossing, other extra cycle is for branch taken
+f1		SBC ($nn),Y	2	5/6/7	extra cycle is for decimal mode, other extra cycle is for page boundry crossing
+f2		SBC ($nn)	2	5/6	extra cycle is for decimal mode
+f3		NOOP		1	1
+f4		NOOP $nn,X	2	4
+f5		SBC $nn,X	2	4/5	extra cycle is for decimal mode
+f6		INC $nn,X	2	6
+f7		SMB7 $nn	2	5	on WDC65C02 and R65C02
+f7		NOOP		1	1	on 65SC02
+f8		SED		1	2
+f9		SBC $nnnn,Y	3	4/5/6	extra cycle is for decimal mode, other extra cycle is for page boundry crossing
+fa		PLX		1	4
+fb		NOOP		1	1
+fc		NOOP $nnnn,X	3	4
+fd		SBC $nnnn,X	3	4/5/6	extra cycle is for decimal mode, other extra cycle is for page boundry crossing
+fe		INC $nnnn,X	3	7
+ff		BBS7 $nn,$nnnn	3	5	on WDC65C02 and R65C02
+ff		NOOP		1	1	on 65SC02
