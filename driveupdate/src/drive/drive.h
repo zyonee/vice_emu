@@ -131,12 +131,6 @@ typedef struct drive_s {
     unsigned int byte_ready_level;
     unsigned int byte_ready_edge;
 
-    /* GCR value being written to the disk.  */
-    BYTE GCR_write_value;
-
-    /* Offset of the R/W head on the current track (bytes).  */
-    unsigned int GCR_head_offset;
-
     /* Are we in read or write mode?  */
     int read_write_mode;
 

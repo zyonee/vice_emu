@@ -43,6 +43,8 @@ extern void rotation_begins(struct rotation_s *rotation);
 extern void rotation_rotate_disk(struct drive_s *dptr);
 extern BYTE rotation_sync_found(struct drive_s *dptr);
 extern BYTE rotation_byte_read(struct drive_s *dptr);
+inline void rotation_byte_write(struct drive_s *dptr, BYTE data);
+extern void rotation_reposition(drive_t *drive);
 extern struct rotation_s *rotation_new(struct drive_s *dptr);
 extern void rotation_destroy(struct rotation_s *rotation);
 

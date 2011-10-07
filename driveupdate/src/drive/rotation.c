@@ -39,30 +39,29 @@ struct rotation_s {
 
     unsigned int last_read_data;
     BYTE last_write_data;
-    BYTE gcr_read;
+    BYTE gcr_read, gcr_write;
     int bit_counter;
     int zero_count;
+    int head;
 
-    int frequency; /* 1x/2x speed toggle, index to rot_speed_bps */
-    int speed_zone; /* speed zone within rot_speed_bps */
+    int frequency; /* 1 for 2Mhz, 2 for 1MHz */
+    int speed_zone; /* divisor 13-16 */
 
     DWORD seed;
 };
 typedef struct rotation_s rotation_t;
 
-/* Speed (in bps) of the disk in the 4 disk areas.  */
-static const int rot_speed_bps[2][4] = { { 250000, 266667, 285714, 307692 },
-                                         { 125000, 133333, 142857, 153846 } };
-
-
 void rotation_init(rotation_t *rotation, int freq)
 {
-    rotation->frequency = freq;
+    rotation->frequency = freq ? 1 : 2;
     rotation->accum = 0;
 }
 
 void rotation_reset(rotation_t *rotation)
 {
+    rotation->head = 0;
+    rotation->gcr_read = 0;
+    rotation->gcr_write = 0;
     rotation->last_read_data = 0;
     rotation->last_write_data = 0;
     rotation->bit_counter = 0;
@@ -73,7 +72,7 @@ void rotation_reset(rotation_t *rotation)
 
 void rotation_speed_zone_set(rotation_t *rotation, int zone)
 {
-    rotation->speed_zone = zone;
+    rotation->speed_zone = 16 - zone;
 }
 
 void rotation_table_get(DWORD *rotation_table_ptr)
@@ -127,7 +126,7 @@ void rotation_overflow_callback(CLOCK sub, rotation_t *rotation)
 
 inline static void write_next_bit(drive_t *dptr, int value)
 {
-    int off = dptr->GCR_head_offset;
+    int off = dptr->rotation->head;
     int byte_offset = off >> 3;
     int bit = off & 7;
 
@@ -139,7 +138,7 @@ inline static void write_next_bit(drive_t *dptr, int value)
     if (off >= (dptr->raw->size << 3)) {
         off = 0;
     }
-    dptr->GCR_head_offset = off;
+    dptr->rotation->head = off;
 
     if (value) {
         dptr->raw->data[byte_offset] |= 0x80 >> bit;
@@ -151,7 +150,7 @@ inline static void write_next_bit(drive_t *dptr, int value)
 
 inline static int read_next_bit(drive_t *dptr)
 {
-    int off = dptr->GCR_head_offset;
+    int off = dptr->rotation->head;
     int byte_offset = off >> 3;
     int bit = off & 7;
 
@@ -163,7 +162,7 @@ inline static int read_next_bit(drive_t *dptr)
     if (off >= (dptr->raw->size << 3)) {
         off = 0;
     }
-    dptr->GCR_head_offset = off;
+    dptr->rotation->head = off;
 
     return dptr->raw->data[byte_offset] & (0x80 >> bit);
 }
@@ -184,9 +183,7 @@ void rotation_begins(rotation_t *rotation) {
 void rotation_rotate_disk(drive_t *dptr)
 {
     rotation_t *rptr;
-    CLOCK delta;
-    int tdelta, bit;
-    int bits_moved = 0;
+    int bit;
 
     if ((dptr->byte_ready_active & 4) == 0) {
         return;
@@ -196,20 +193,11 @@ void rotation_rotate_disk(drive_t *dptr)
 
     /* Calculate the number of bits that have passed under the R/W head since
        the last time.  */
-    delta = *(dptr->clk) - rptr->rotation_last_clk;
+    rptr->accum += (DWORD)(*(dptr->clk) - rptr->rotation_last_clk) << rptr->frequency;
     rptr->rotation_last_clk = *(dptr->clk);
 
-    while (delta > 0) {
-        tdelta = delta > 1000 ? 1000 : delta;
-        delta -= tdelta;
-
-        rptr->accum += rot_speed_bps[rptr->frequency][rptr->speed_zone] * tdelta;
-        bits_moved += rptr->accum / 1000000;
-        rptr->accum %= 1000000;
-    }
-
-    if (dptr->read_write_mode) {
-        while (bits_moved -- != 0) {
+    for (;rptr->accum > rptr->speed_zone; rptr->accum -= rptr->speed_zone) {
+        if (dptr->read_write_mode) {
             /* GCR=0 support.
              * 
              * In the absence of 1-bits (magnetic flux changes), the drive
@@ -292,12 +280,10 @@ void rotation_rotate_disk(drive_t *dptr)
                     }
                 }
             }
-        }
-    } else {
+        } else {
         /* When writing, the first byte after transition is going to echo the
          * bits from the last read value.
          */
-        while (bits_moved -- != 0) {
             rptr->last_read_data = (rptr->last_read_data << 1) & 0x3fe;
             if ((rptr->last_read_data & 0xf) == 0) {
                 rptr->last_read_data |= 1;
@@ -308,7 +294,7 @@ void rotation_rotate_disk(drive_t *dptr)
 
             if (++ rptr->bit_counter == 8) {
                 rptr->bit_counter = 0;
-                rptr->last_write_data = dptr->GCR_write_value;
+                rptr->last_write_data = rptr->gcr_write;
                 if ((dptr->byte_ready_active & 2) != 0) {
                    dptr->byte_ready_edge = 1;
                    dptr->byte_ready_level = 1;
@@ -349,12 +335,25 @@ BYTE rotation_byte_read(drive_t *dptr)
     return dptr->rotation->gcr_read;
 }
 
-rotation_t *rotation_new(drive_t *dptr)
+inline void rotation_byte_write(drive_t *drive, BYTE data)
+{
+    if (drive->rotation->gcr_write != data) {
+        rotation_rotate_disk(drive);
+        drive->rotation->gcr_write = data;
+    }
+}
+
+void rotation_reposition(drive_t *drive)
+{
+    drive->rotation->head = drive->rotation->head % (drive->raw->size << 3);
+}
+
+rotation_t *rotation_new(drive_t *drive)
 {
     rotation_t *rotation;
 
     rotation = (rotation_t *)lib_calloc(1, sizeof(rotation_t));
-    rotation->clk = dptr->clk;
+    rotation->clk = drive->clk;
 
     return rotation;
 }

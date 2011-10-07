@@ -196,7 +196,6 @@ int drive_init(void)
         drive->rotation = rotation_new(drive);
         drive->byte_ready_level = 1;
         drive->byte_ready_edge = 1;
-        drive->GCR_write_value = 0x55;
         drive->attach_clk = (CLOCK)0;
         drive->detach_clk = (CLOCK)0;
         drive->attach_detach_clk = (CLOCK)0;
@@ -472,7 +471,7 @@ static void drive_set_half_track(int num, drive_t *dptr)
     dptr->current_half_track = num;
     drive_image_read(dptr);
     if (dptr->raw) {
-        dptr->GCR_head_offset = dptr->GCR_head_offset % dptr->raw->size;
+        rotation_reposition(dptr);
     }
 }
 

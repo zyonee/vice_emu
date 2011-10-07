@@ -102,9 +102,7 @@ static void store_pb(tpi_context_t *tpi_context, BYTE byte)
 
     tpip = (drivetpi_context_t *)(tpi_context->prv);
 
-    rotation_rotate_disk(tpip->drive);
-
-    tpip->drive->GCR_write_value = byte;
+    rotation_byte_write(tpip->drive, byte);
 }
 
 static void undump_pa(tpi_context_t *tpi_context, BYTE byte)

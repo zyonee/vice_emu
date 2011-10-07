@@ -150,9 +150,8 @@ static void store_pra(via_context_t *via_context, BYTE byte, BYTE oldpa_value,
     drivevia2_context_t *via2p;
 
     via2p = (drivevia2_context_t *)(via_context->prv);
-    rotation_rotate_disk(via2p->drive);
 
-    via2p->drive->GCR_write_value = byte;
+    rotation_byte_write(via2p->drive, byte);
 
     via2p->drive->byte_ready_level = 0;
 }
