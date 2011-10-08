@@ -231,7 +231,7 @@ int fsimage_gcr_read_sector(disk_image_t *image, BYTE *buf,
 
     raw.data = data;
 
-    if (fsimage_gcr_read_track(image, (track - 1) * 2, 0,
+    if (fsimage_gcr_read_track(image, track * 2, 0,
         &raw) < 0) {
         log_error(fsimage_gcr_log,
                   "Cannot read track %i from GCR image.", track);
@@ -266,7 +266,7 @@ int fsimage_gcr_write_sector(disk_image_t *image, BYTE *buf,
 
     raw.data = data;
 
-    if (fsimage_gcr_read_track(image, (track - 1) * 2, 0, &raw) < 0) {
+    if (fsimage_gcr_read_track(image, track * 2, 0, &raw) < 0) {
         log_error(fsimage_gcr_log,
                   "Cannot read track %i from GCR image.", track);
         return -1;
@@ -279,7 +279,7 @@ int fsimage_gcr_write_sector(disk_image_t *image, BYTE *buf,
         return -1;
     }
 
-    if (disk_image_write_track(image, (track - 1) * 2, 0, &raw) < 0) {
+    if (disk_image_write_track(image, track * 2, 0, &raw) < 0) {
         log_error(fsimage_gcr_log,
                   "Failed writing track %i to disk image.", track);
         return -1;
