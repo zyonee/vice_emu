@@ -44,7 +44,7 @@ struct rotation_s {
     int zero_count;
     int head;
 
-    int frequency; /* 1 for 2Mhz, 2 for 1MHz */
+    int frequency; /* 50000 for 2Mhz, 25000 for 1MHz */
     int rate;
 
     DWORD seed;
@@ -53,7 +53,7 @@ typedef struct rotation_s rotation_t;
 
 void rotation_init(rotation_t *rotation, int freq)
 {
-    rotation->frequency = freq ? 1 : 2;
+    rotation->frequency = freq ? 50000 : 25000;
     rotation->accum = 0;
 }
 
@@ -198,11 +198,11 @@ void rotation_rotate_disk(drive_t *dptr)
     rptr->rotation_last_clk = *(dptr->clk);
 
     for (;;) {
-        if (rptr->accum < 25000) {
+        if (rptr->accum < rptr->frequency) {
             if (clk < 65536) {
                 rptr->accum += clk * dptr->raw->size;
                 clk = 0;
-                if (rptr->accum < 25000) {
+                if (rptr->accum < rptr->frequency) {
                     break;
                 }
             } else {
@@ -210,7 +210,7 @@ void rotation_rotate_disk(drive_t *dptr)
                 clk -= 65536;
             }
         }
-        rptr->accum -= 25000;
+        rptr->accum -= rptr->frequency;
         if (dptr->read_write_mode) {
             /* GCR=0 support.
              * 
