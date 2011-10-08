@@ -45,7 +45,7 @@ struct rotation_s {
     int head;
 
     int frequency; /* 1 for 2Mhz, 2 for 1MHz */
-    int speed_zone; /* divisor 13-16 */
+    int rate;
 
     DWORD seed;
 };
@@ -70,9 +70,9 @@ void rotation_reset(rotation_t *rotation)
     rotation->rotation_last_clk = *(rotation->clk);
 }
 
-void rotation_speed_zone_set(rotation_t *rotation, int zone)
+void rotation_speed_zone_set(rotation_t *rotation, int rate)
 {
-    rotation->speed_zone = 16 - zone;
+    rotation->rate = rate;
 }
 
 void rotation_table_get(DWORD *rotation_table_ptr)
@@ -184,6 +184,7 @@ void rotation_rotate_disk(drive_t *dptr)
 {
     rotation_t *rptr;
     int bit;
+    CLOCK clk;
 
     if ((dptr->byte_ready_active & 4) == 0) {
         return;
@@ -193,10 +194,23 @@ void rotation_rotate_disk(drive_t *dptr)
 
     /* Calculate the number of bits that have passed under the R/W head since
        the last time.  */
-    rptr->accum += (DWORD)(*(dptr->clk) - rptr->rotation_last_clk) << rptr->frequency;
+    clk = *(dptr->clk) - rptr->rotation_last_clk;
     rptr->rotation_last_clk = *(dptr->clk);
 
-    for (;rptr->accum > rptr->speed_zone; rptr->accum -= rptr->speed_zone) {
+    for (;;) {
+        if (rptr->accum < 25000) {
+            if (clk < 65536) {
+                rptr->accum += clk * dptr->raw->size;
+                clk = 0;
+                if (rptr->accum < 25000) {
+                    break;
+                }
+            } else {
+                rptr->accum += 65536 * dptr->raw->size;
+                clk -= 65536;
+            }
+        }
+        rptr->accum -= 25000;
         if (dptr->read_write_mode) {
             /* GCR=0 support.
              * 
