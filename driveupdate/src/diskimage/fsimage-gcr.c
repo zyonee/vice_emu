@@ -40,14 +40,12 @@
 
 
 static log_t fsimage_gcr_log = LOG_ERR;
-static const BYTE gcr_image_header_expected[] =
-    { 0x47, 0x43, 0x52, 0x2D, 0x31, 0x35, 0x34, 0x31 };
+
 /* Hardcoded/expected values VICE works with:
  * 0x1EF8 - 7928: Maximum container size for a raw GCR track
  * 0x54   -   84: Maximum container size for (half) track pointers
  * 0x00   -    0: GCR image file version number
  */
-static const DWORD gcr_container_sizes_expected = 0x1EF85400;
 
 /*-----------------------------------------------------------------------*/
 /* Read an entire GCR track from the disk image.  */
@@ -314,7 +312,7 @@ int fsimage_gcr_create(disk_image_t *image, unsigned int type)
     memset(gcr_speed_p, 0, sizeof(gcr_speed_p));
 
     for (track = 0; track < NUM_TRACKS_1541; track++) {
-        gcr_track_p[track * 2] = 12 + MAX_TRACKS_1541 * 16 + track * 7930;
+        gcr_track_p[track * 2] = 12 + MAX_TRACKS_1541 * 16 + track * (NUM_MAX_BYTES_TRACK + 2);
         gcr_speed_p[track * 2] = disk_image_speed_map_1541(track);
     }
 
