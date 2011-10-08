@@ -171,7 +171,7 @@ static void gcr_convert_GCR_to_sector(BYTE *buffer, BYTE *ptr,
     shift = 0;
     b = offset[0];
     while (b & 0x80) {
-        i <<= 1;
+        b <<= 1;
         shift++;
     }
 
@@ -251,9 +251,6 @@ static BYTE *gcr_find_sector_header(unsigned int track, unsigned int sector,
             /* FIXME: Add some sanity checks here.  */
             if (header[2] == sector && header[3] == track) {
                 DBG(("GCR: shift: %d hdr: %02x %02x sec:%02d trk:%02d", shift, header[0], header[1], header[2], header[3]));
-                if (shift) {
-                    log_warning(LOG_DEFAULT,"GCR data is not byte aligned (trk %d sec %d)", header[3], header[2]);
-                }
                 return offset;
             }
         }
