@@ -54,6 +54,15 @@
 #include "via.h"
 #include "vsync.h"
 
+/* this define is temporary for testing new cpu cores. */
+#define TEST_CPU
+
+#ifdef TEST_CPU
+#include "maincpu.h"
+
+static unsigned int clock_state = 0;
+static BYTE test_mem[0x300];
+#endif
 
 static BYTE mem_read_patchbuf(WORD addr);
 
@@ -108,11 +117,21 @@ static log_t pet_mem_log = LOG_ERR;
 
 BYTE zero_read(WORD addr)
 {
+#ifdef TEST_CPU
+    if (test_mem[0] == 1) {
+        printf("read %02X from %02X at %X\n", mem_ram[addr & 0xff], addr & 0xff, maincpu_clk - clock_state);
+    }
+#endif
     return mem_ram[addr & 0xff];
 }
 
 void zero_store(WORD addr, BYTE value)
 {
+#ifdef TEST_CPU
+    if (test_mem[0] == 1) {
+        printf("wrote %02X to %02X at %X\n", value, addr & 0xff, maincpu_clk - clock_state);
+    }
+#endif
     mem_ram[addr & 0xff] = value;
 }
 
@@ -188,6 +207,20 @@ static BYTE read_unused(WORD addr)
             return read_petdww_ec00_ram(addr);
         }
     }
+
+#ifdef TEST_CPU
+    if (addr >= 0xe900 && addr < 0xec00) {
+        if (test_mem[0] == 1) {
+            if (clock_state == 0) {
+                clock_state = maincpu_clk;
+            }
+            printf("read %02X from %04X at %X\n", test_mem[addr - 0xe900], addr, maincpu_clk - clock_state);
+        } else {
+            clock_state = 0;
+        }
+        return test_mem[addr - 0xe900];
+    }
+#endif
 
     if (sidcart_enabled() && sidcart_address==1 && addr>=0xe900 && addr<=0xe91f)
       return sid_read(addr);
@@ -427,6 +460,15 @@ static void store_dummy(WORD addr, BYTE value)
 
     if (sidcart_enabled() && sidcart_address==0 && addr>=0x8f00 && addr<0x8f1f)
       sid_store(addr,value);
+
+#ifdef TEST_CPU
+    if (addr >= 0xe900 && addr < 0xec00) {
+        if (test_mem[0] == 1) {
+            printf("wrote %02X to %04X at %X\n", value, addr, maincpu_clk - clock_state);
+        }
+        test_mem[addr - 0xe900] = value;
+    }
+#endif
 
     return;
 }

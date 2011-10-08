@@ -289,6 +289,11 @@ monitor_interface_t *maincpu_monitor_interface_get(void)
     maincpu_monitor_interface->z80_cpu_regs = NULL;
 #endif
 
+    maincpu_monitor_interface->cpu_65SC02_regs = NULL;
+    maincpu_monitor_interface->cpu_R65C02_regs = NULL;
+    maincpu_monitor_interface->cpu_WDC65C02_regs = NULL;
+    maincpu_monitor_interface->cpu_65816_regs = NULL;
+
     maincpu_monitor_interface->int_status = maincpu_int_status;
 
     maincpu_monitor_interface->clk = &maincpu_clk;

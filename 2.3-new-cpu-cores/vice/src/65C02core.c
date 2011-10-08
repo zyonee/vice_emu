@@ -410,8 +410,8 @@
 
 #define STORE_ABS(addr, value, inc) \
   do {                              \
-      CLK_ADD(CLK, (inc));          \
       STORE((addr), (value));       \
+      CLK_ADD(CLK, (inc));          \
   } while (0)
 
 #define STORE_ABS_X(addr, value, inc)                      \
@@ -525,56 +525,54 @@
       INC_PC(SIZE_1);                \
   } while (0)
 
-/* FIXME: cpu_type needs to be declared in the file that includes this file */
-#define BBR(bit, addr, value)                                   \
+#define BBR(bit)                                                \
   do {                                                          \
       unsigned int tmp, tmp_addr;                               \
       unsigned int dest_addr;                                   \
+      BYTE value;                                               \
                                                                 \
       if (cpu_type == CPU_65SC02) {                             \
-          REWIND_FETCH_OPCODE(CLK, 2);                          \
           NOOP_IMM(SIZE_1);                                     \
       } else {                                                  \
-          tmp_addr = (addr);                                    \
+          tmp_addr = LOAD(reg_pc + 1);                          \
+          CLK_ADD(CLK, CYCLES_1);                               \
+          value = LOAD(reg_pc + 2);                             \
+          CLK_ADD(CLK, CYCLES_1);                               \
           tmp = LOAD_ZERO(tmp_addr) & (1 << bit);               \
+          CLK_ADD(CLK, CYCLES_1);                               \
           INC_PC(SIZE_3);                                       \
-          CLK_ADD(CLK, CYCLES_2);                               \
                                                                 \
           if (!tmp) {                                           \
               dest_addr = reg_pc + (signed char)(value);        \
               LOAD(reg_pc);                                     \
-              if ((reg_pc ^ dest_addr) & 0xff00) {              \
-                  LOAD((reg_pc & 0xff00) | (dest_addr & 0xff)); \
-              } else {                                          \
-                  OPCODE_DELAYS_INTERRUPT();                    \
-              }                                                 \
+              OPCODE_DELAYS_INTERRUPT();                        \
+              CLK_ADD(CLK, CYCLES_1);                           \
               JUMP(dest_addr & 0xffff);                         \
           }                                                     \
       }                                                         \
   } while (0)
-      
-#define BBS(bit, addr, value)                                   \
+
+#define BBS(bit)                                                \
   do {                                                          \
       unsigned int tmp, tmp_addr;                               \
       unsigned int dest_addr;                                   \
+      BYTE value;                                               \
                                                                 \
       if (cpu_type == CPU_65SC02) {                             \
-          REWIND_FETCH_OPCODE(CLK, 2);                          \
           NOOP_IMM(SIZE_1);                                     \
       } else {                                                  \
-          tmp_addr = (addr);                                    \
+          tmp_addr = LOAD(reg_pc + 1);                          \
+          CLK_ADD(CLK, CYCLES_1);                               \
+          value = LOAD(reg_pc + 2);                             \
           tmp = LOAD_ZERO(tmp_addr) & (1 << bit);               \
+          CLK_ADD(CLK, CYCLES_1);                               \
           INC_PC(SIZE_3);                                       \
-          CLK_ADD(CLK, CYCLES_2);                               \
                                                                 \
           if (tmp) {                                            \
               dest_addr = reg_pc + (signed char)(value);        \
               LOAD(reg_pc);                                     \
-              if ((reg_pc ^ dest_addr) & 0xff00) {              \
-                  LOAD((reg_pc & 0xff00) | (dest_addr & 0xff)); \
-              } else {                                          \
-                  OPCODE_DELAYS_INTERRUPT();                    \
-              }                                                 \
+              CLK_ADD(CLK, CYCLES_1);                           \
+              OPCODE_DELAYS_INTERRUPT();                        \
               JUMP(dest_addr & 0xffff);                         \
           }                                                     \
       }                                                         \
@@ -888,9 +886,25 @@
 
 #define NOOP_IMM(pc_inc) INC_PC(pc_inc)
 
-#define NOOP_ABS_X()          \
+#define NOOP_ZP()             \
   do {                        \
-      LOAD_ABS_X(p2);         \
+      LOAD_ZERO(p1);          \
+      CLK_ADD(CLK, CYCLES_1); \
+      INC_PC(SIZE_2);         \
+  } while (0)
+
+#define NOOP_ZP_X()           \
+  do {                        \
+      LOAD_ZERO(p1);          \
+      CLK_ADD(CLK, CYCLES_1); \
+      LOAD_ZERO(p1 + reg_x);  \
+      CLK_ADD(CLK, CYCLES_1); \
+      INC_PC(SIZE_2);         \
+  } while (0)
+
+#define NOOP_ABS()            \
+  do {                        \
+      LOAD(p2);               \
       CLK_ADD(CLK, CYCLES_1); \
       INC_PC(SIZE_3);         \
   } while (0)
@@ -963,16 +977,19 @@
       INC_PC(SIZE_1);         \
   } while (0)
 
-#define RMB(addr, bit)                             \
+#define RMB(bit)                                   \
   do {                                             \
       unsigned int tmp, tmp_addr;                  \
                                                    \
       if (cpu_type == CPU_65SC02) {                \
-          REWIND_FETCH_OPCODE(CLK, 1);             \
           NOOP_IMM(SIZE_1);                        \
       } else {                                     \
-          tmp_addr = (addr);                       \
+          tmp_addr = LOAD(reg_pc + 1);             \
+          CLK_ADD(CLK, CYCLES_1);                  \
+          LOAD_ZERO(tmp_addr);                     \
+          CLK_ADD(CLK, CYCLES_1);                  \
           tmp = LOAD_ZERO(tmp_addr) & ~(1 << bit); \
+          CLK_ADD(CLK, CYCLES_1);                  \
           INC_PC(SIZE_2);                          \
           STORE_ABS(tmp_addr, tmp, 3);             \
       }                                            \
@@ -1108,16 +1125,19 @@
       INC_PC(SIZE_1);            \
   } while (0)
 
-#define SMB(addr, bit)                            \
+#define SMB(bit)                                  \
   do {                                            \
       unsigned tmp, tmp_addr;                     \
                                                   \
       if (cpu_type == CPU_65SC02) {               \
-          REWIND_FETCH_OPCODE(CLK, 1);            \
           NOOP_IMM(SIZE_1);                       \
       } else {                                    \
-          tmp_addr = (addr);                      \
+          tmp_addr = LOAD(reg_pc + 1);            \
+          CLK_ADD(CLK, CYCLES_1);                 \
+          LOAD(tmp_addr);                         \
+          CLK_ADD(CLK, CYCLES_1);                 \
           tmp = LOAD_ZERO(tmp_addr) | (1 << bit); \
+          CLK_ADD(CLK, CYCLES_1);                 \
           INC_PC(SIZE_2);                         \
           STORE_ABS(tmp_addr, tmp, 3);            \
       }                                           \
@@ -1294,22 +1314,22 @@
  */
  static const BYTE fetch_tab[] = {
             /* 0  1  2  3  4  5  6  7  8  9  A  B  C  D  E  F */
-    /* $00 */  1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 2, 2, 2, 2, /* $00 */
-    /* $10 */  1, 1, 1, 0, 1, 1, 1, 1, 1, 2, 1, 0, 2, 2, 2, 2, /* $10 */
-    /* $20 */  2, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 2, 2, 2, 2, /* $20 */
-    /* $30 */  1, 1, 1, 0, 1, 1, 1, 1, 1, 2, 1, 0, 2, 2, 2, 2, /* $30 */
-    /* $40 */  1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 2, 2, 2, 2, /* $40 */
-    /* $50 */  1, 1, 1, 0, 1, 1, 1, 1, 1, 2, 1, 0, 2, 2, 2, 2, /* $50 */
-    /* $60 */  1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 2, 2, 2, 2, /* $60 */
-    /* $70 */  1, 1, 1, 0, 1, 1, 1, 1, 1, 2, 1, 0, 2, 2, 2, 2, /* $70 */
-    /* $80 */  1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 2, 2, 2, 2, /* $80 */
-    /* $90 */  1, 1, 1, 0, 1, 1, 1, 1, 1, 2, 1, 0, 2, 2, 2, 2, /* $90 */ 
-    /* $A0 */  1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 2, 2, 2, 2, /* $A0 */
-    /* $B0 */  1, 1, 1, 0, 1, 1, 1, 1, 1, 2, 1, 0, 2, 2, 2, 2, /* $B0 */
-    /* $C0 */  1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, /* $C0 */
-    /* $D0 */  1, 1, 1, 0, 1, 1, 1, 1, 1, 2, 1, 2, 2, 2, 2, 2, /* $D0 */
-    /* $E0 */  1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 2, 2, 2, 2, /* $E0 */
-    /* $F0 */  1, 1, 1, 0, 1, 1, 1, 1, 1, 2, 1, 0, 2, 2, 2, 2  /* $F0 */
+    /* $00 */  1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 2, 2, 2, 0, /* $00 */
+    /* $10 */  1, 1, 1, 0, 1, 1, 1, 0, 1, 2, 1, 0, 2, 2, 2, 0, /* $10 */
+    /* $20 */  2, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 2, 2, 2, 0, /* $20 */
+    /* $30 */  1, 1, 1, 0, 1, 1, 1, 0, 1, 2, 1, 0, 2, 2, 2, 0, /* $30 */
+    /* $40 */  1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 2, 2, 2, 0, /* $40 */
+    /* $50 */  1, 1, 1, 0, 1, 1, 1, 0, 1, 2, 1, 0, 2, 2, 2, 0, /* $50 */
+    /* $60 */  1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 2, 2, 2, 0, /* $60 */
+    /* $70 */  1, 1, 1, 0, 1, 1, 1, 0, 1, 2, 1, 0, 2, 2, 2, 0, /* $70 */
+    /* $80 */  1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 2, 2, 2, 0, /* $80 */
+    /* $90 */  1, 1, 1, 0, 1, 1, 1, 0, 1, 2, 1, 0, 2, 2, 2, 0, /* $90 */ 
+    /* $A0 */  1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 2, 2, 2, 0, /* $A0 */
+    /* $B0 */  1, 1, 1, 0, 1, 1, 1, 0, 1, 2, 1, 0, 2, 2, 2, 0, /* $B0 */
+    /* $C0 */  1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 2, 2, 2, 2, 0, /* $C0 */
+    /* $D0 */  1, 1, 1, 0, 1, 1, 1, 0, 1, 2, 1, 2, 2, 2, 2, 0, /* $D0 */
+    /* $E0 */  1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 2, 2, 2, 0, /* $E0 */
+    /* $F0 */  1, 1, 1, 0, 1, 1, 1, 0, 1, 2, 1, 0, 2, 2, 2, 0  /* $F0 */
 };
 
 #if !defined WORDS_BIGENDIAN && defined ALLOW_UNALIGNED_ACCESS
@@ -1329,8 +1349,11 @@
             CLK_ADD(CLK, CYCLES_1);                            \
             if (fetch_tab[o & 0xff]) {                         \
                 o |= LOAD(reg_pc + 1) << 8;                    \
-                o |= (LOAD(reg_pc + 2) << 16);                 \
-                CLK_ADD(CLK, fetch_tab[o & 0xff]);             \
+                CLK_ADD(CLK, CYCLES_1);                        \
+                if (fetch_tab[o & 0xff] - 1) {                 \
+                    o |= (LOAD(reg_pc + 2) << 16);             \
+                    CLK_ADD(CLK, CYCLES_1);                    \
+                }                                              \
             }                                                  \
         }                                                      \
     } while (0)
@@ -1365,8 +1388,11 @@
             CLK_ADD(CLK, CYCLES_1);                            \
             if (fetch_tab[(o).ins]) {                          \
                 (o).op.op16 = LOAD(reg_pc + 1);                \
-                 (o).op.op16 |= (LOAD(reg_pc + 2) << 8);       \
-                 CLK_ADD(CLK, fetch_tab[(o).ins]);             \
+                CLK_ADD(CLK, CYCLES_1);                        \
+                if (fetch_tab[(o).ins - 1]) {                  \
+                    (o).op.op16 |= (LOAD(reg_pc + 2) << 8);    \
+                    CLK_ADD(CLK, CYCLES_1);                    \
+                }                                              \
             }                                                  \
         }                                                      \
     } while (0)
@@ -1510,18 +1536,18 @@ trap_skipped:
             break;
 
           case 0x44:            /* NOP $nn */
-            NOOP(CYCLES_1, SIZE_2);
+            NOOP_ZP();
             break;
 
           case 0x54:            /* NOP $nn,X */
           case 0xd4:            /* NOP $nn,X */
           case 0xf4:            /* NOP $nn,X */
-            NOOP(CYCLES_2, SIZE_2);
+            NOOP_ZP_X();
             break;
 
-          case 0xdc:            /* NOP $nnnn,X */
-          case 0xfc:            /* NOP $nnnn,X */
-            NOOP_ABS_X();
+          case 0xdc:            /* NOP $nnnn */
+          case 0xfc:            /* NOP $nnnn */
+            NOOP_ABS();
             break;
 
           case 0x5c:            /* NOP ??? (FIXME) */
@@ -1554,7 +1580,7 @@ trap_skipped:
             break;
 
           case 0x07:            /* RMB0 $nn (65C02) / single byte, single cycle NOP (65SC02) */
-            RMB(p1, BIT_0);
+            RMB(BIT_0);
             break;
 
           case 0x08:            /* PHP */
@@ -1582,7 +1608,7 @@ trap_skipped:
             break;
 
           case 0x0f:            /* BBR0 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
-            BBR(BIT_0, p1, p2 >> 8);
+            BBR(BIT_0);
             break;
 
           case 0x10:            /* BPL $nnnn */
@@ -1610,7 +1636,7 @@ trap_skipped:
             break;
 
           case 0x17:            /* RMB1 $nn (65C02) / single byte, single cycle NOP (65SC02) */
-            RMB(p1, BIT_1);
+            RMB(BIT_1);
             break;
 
           case 0x18:            /* CLC */
@@ -1638,7 +1664,7 @@ trap_skipped:
             break;
 
           case 0x1f:            /* BBR1 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
-            BBR(BIT_1, p1, p2 >> 8);
+            BBR(BIT_1);
             break;
 
           case 0x20:            /* JSR $nnnn */
@@ -1662,7 +1688,7 @@ trap_skipped:
             break;
 
           case 0x27:            /* RMB2 $nn (65C02) / single byte, single cycle NOP (65SC02) */
-            RMB(p1, BIT_2);
+            RMB(BIT_2);
             break;
 
           case 0x28:            /* PLP */
@@ -1690,7 +1716,7 @@ trap_skipped:
             break;
 
           case 0x2f:            /* BBR2 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
-            BBR(BIT_2, p1, p2 >> 8);
+            BBR(BIT_2);
             break;
 
           case 0x30:            /* BMI $nnnn */
@@ -1718,7 +1744,7 @@ trap_skipped:
             break;
 
           case 0x37:            /* RMB3 $nn (65C02) / single byte, single cycle NOP (65SC02) */
-            RMB(p1, BIT_3);
+            RMB(BIT_3);
             break;
 
           case 0x38:            /* SEC */
@@ -1746,7 +1772,7 @@ trap_skipped:
             break;
 
           case 0x3f:            /* BBR3 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
-            BBR(BIT_3, p1, p2 >> 8);
+            BBR(BIT_3);
             break;
 
           case 0x40:            /* RTI */
@@ -1766,7 +1792,7 @@ trap_skipped:
             break;
 
           case 0x47:            /* RMB4 $nn (65C02) / single byte, single cycle NOP (65SC02) */
-            RMB(p1, BIT_4);
+            RMB(BIT_4);
             break;
 
           case 0x48:            /* PHA */
@@ -1794,7 +1820,7 @@ trap_skipped:
             break;
 
           case 0x4f:            /* BBR4 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
-            BBR(BIT_4, p1, p2 >> 8);
+            BBR(BIT_4);
             break;
 
           case 0x50:            /* BVC $nnnn */
@@ -1818,7 +1844,7 @@ trap_skipped:
             break;
 
           case 0x57:            /* RMB5 $nn (65C02) / single byte, single cycle NOP (65SC02) */
-            RMB(p1, BIT_5);
+            RMB(BIT_5);
             break;
 
           case 0x58:            /* CLI */
@@ -1842,7 +1868,7 @@ trap_skipped:
             break;
 
           case 0x5f:            /* BBR5 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
-            BBR(BIT_5, p1, p2 >> 8);
+            BBR(BIT_5);
             break;
 
           case 0x60:            /* RTS */
@@ -1866,7 +1892,7 @@ trap_skipped:
             break;
 
           case 0x67:            /* RMB6 $nn (65C02) / single byte, single cycle NOP (65SC02) */
-            RMB(p1, BIT_6);
+            RMB(BIT_6);
             break;
 
           case 0x68:            /* PLA */
@@ -1894,7 +1920,7 @@ trap_skipped:
             break;
 
           case 0x6f:            /* BBR6 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
-            BBR(BIT_6, p1, p2 >> 8);
+            BBR(BIT_6);
             break;
 
           case 0x70:            /* BVS $nnnn */
@@ -1922,7 +1948,7 @@ trap_skipped:
             break;
 
           case 0x77:            /* RMB7 $nn (65C02) / single byte, single cycle NOP (65SC02) */
-            RMB(p1, BIT_7);
+            RMB(BIT_7);
             break;
 
           case 0x78:            /* SEI */
@@ -1950,7 +1976,7 @@ trap_skipped:
             break;
 
           case 0x7f:            /* BBR7 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
-            BBR(BIT_7, p1, p2 >> 8);
+            BBR(BIT_7);
             break;
 
           case 0x80:            /* BRA $nnnn */
@@ -1974,7 +2000,7 @@ trap_skipped:
             break;
 
           case 0x87:            /* SMB0 $nn (65C02) / single byte, single cycle NOP (65SC02) */
-            SMB(p1, BIT_0);
+            SMB(BIT_0);
             break;
 
           case 0x88:            /* DEY */
@@ -2002,7 +2028,7 @@ trap_skipped:
             break;
 
           case 0x8f:            /* BBS0 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
-            BBS(BIT_0, p1, p2 >> 8);
+            BBS(BIT_0);
             break;
 
           case 0x90:            /* BCC $nnnn */
@@ -2030,7 +2056,7 @@ trap_skipped:
             break;
 
           case 0x97:            /* SMB1 $nn (65C02) / single byte, single cycle NOP (65SC02) */
-            SMB(p1, BIT_1);
+            SMB(BIT_1);
             break;
 
           case 0x98:            /* TYA */
@@ -2058,7 +2084,7 @@ trap_skipped:
             break;
 
           case 0x9f:            /* BBS1 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
-            BBS(BIT_1, p1, p2 >> 8);
+            BBS(BIT_1);
             break;
 
           case 0xa0:            /* LDY #$nn */
@@ -2086,7 +2112,7 @@ trap_skipped:
             break;
 
           case 0xa7:            /* SMB2 $nn (65C02) / single byte, single cycle NOP (65SC02) */
-            SMB(p1, BIT_2);
+            SMB(BIT_2);
             break;
 
           case 0xa8:            /* TAY */
@@ -2114,7 +2140,7 @@ trap_skipped:
             break;
 
           case 0xaf:            /* BBS2 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
-            BBS(BIT_2, p1, p2 >> 8);
+            BBS(BIT_2);
             break;
 
           case 0xb0:            /* BCS $nnnn */
@@ -2142,7 +2168,7 @@ trap_skipped:
             break;
 
           case 0xb7:            /* SMB3 $nn (65C02) / single byte, single cycle NOP (65SC02) */
-            SMB(p1, BIT_3);
+            SMB(BIT_3);
             break;
 
           case 0xb8:            /* CLV */
@@ -2170,7 +2196,7 @@ trap_skipped:
             break;
 
           case 0xbf:            /* BBS3 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
-            BBS(BIT_3, p1, p2 >> 8);
+            BBS(BIT_3);
             break;
 
           case 0xc0:            /* CPY #$nn */
@@ -2194,7 +2220,7 @@ trap_skipped:
             break;
 
           case 0xc7:            /* SMB4 $nn (65C02) / single byte, single cycle NOP (65SC02) */
-            SMB(p1, BIT_4);
+            SMB(BIT_4);
             break;
 
           case 0xc8:            /* INY */
@@ -2226,7 +2252,7 @@ trap_skipped:
             break;
 
           case 0xcf:            /* BBS4 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
-            BBS(BIT_4, p1, p2 >> 8);
+            BBS(BIT_4);
             break;
 
           case 0xd0:            /* BNE $nnnn */
@@ -2250,7 +2276,7 @@ trap_skipped:
             break;
 
           case 0xd7:            /* SMB5 $nn (65C02) / single byte, single cycle NOP (65SC02) */
-            SMB(p1, BIT_5);
+            SMB(BIT_5);
             break;
 
           case 0xd8:            /* CLD */
@@ -2278,7 +2304,7 @@ trap_skipped:
             break;
 
           case 0xdf:            /* BBS5 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
-            BBS(BIT_5, p1, p2 >> 8);
+            BBS(BIT_5);
             break;
 
           case 0xe0:            /* CPX #$nn */
@@ -2302,7 +2328,7 @@ trap_skipped:
             break;
 
           case 0xe7:            /* SMB6 $nn (65C02) / single byte, single cycle NOP (65SC02) */
-            SMB(p1, BIT_6);
+            SMB(BIT_6);
             break;
 
           case 0xe8:            /* INX */
@@ -2330,7 +2356,7 @@ trap_skipped:
             break;
 
           case 0xef:            /* BBS6 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
-            BBS(BIT_6, p1, p2 >> 8);
+            BBS(BIT_6);
             break;
 
           case 0xf0:            /* BEQ $nnnn */
@@ -2354,7 +2380,7 @@ trap_skipped:
             break;
 
           case 0xf7:            /* SMB7 $nn (65C02) / single byte, single cycle NOP (65SC02) */
-            SMB(p1, BIT_7);
+            SMB(BIT_7);
             break;
 
           case 0xf8:            /* SED */
@@ -2378,7 +2404,7 @@ trap_skipped:
             break;
 
           case 0xff:            /* BBS7 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
-            BBS(BIT_7, p1, p2 >> 8);
+            BBS(BIT_7);
             break;
         }
     }

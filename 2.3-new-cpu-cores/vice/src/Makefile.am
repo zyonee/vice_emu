@@ -1277,7 +1277,7 @@ xpet_libs =  \
 	$(common_libs) \
 	$(resid_libs)
 
-xpet_SOURCES = $(base_sources) $(main65816cpu_sources) $(mouse_sources)
+xpet_SOURCES = $(base_sources) $(main65SC02cpu_sources) $(mouse_sources)
 xpet_LDADD = $(xpet_libs) $(emu_extlibs) @TFE_LIBS@ @NETPLAY_LIBS@
 xpet_DEPENDENCIES = $(xpet_libs) 
 xpet_LDFLAGS = @xpet_LDFLAGS@
