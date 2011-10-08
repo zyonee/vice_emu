@@ -67,7 +67,6 @@ struct rawimage_s;
 
 typedef struct disk_track_s {
     BYTE *data;
-    int rate; /* for constant rate GCR */
     int size;
     int dirty;
     int pinned;

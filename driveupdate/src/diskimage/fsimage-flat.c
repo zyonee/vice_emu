@@ -105,7 +105,6 @@ int fsimage_flat_read_track(disk_image_t *image, unsigned int track,
 
     /* Clear track to avoid read errors.  */
     raw->size = disk_image_raw_track_size_1541(track);
-    raw->rate = disk_image_speed_map_1541(track);
     memset(raw->data, 0x55, raw->size);
 
     sectors = fsimage_calc_physical_offset(image, track, head);

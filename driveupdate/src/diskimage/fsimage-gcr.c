@@ -90,12 +90,6 @@ int fsimage_gcr_read_track(disk_image_t *image, unsigned int track,
         }
     }
 
-    if (gcr_speed_p > 3) {
-        log_error(fsimage_gcr_log, "Variable rate not supported yet.");
-        return -1;
-    }
-    raw->rate = gcr_speed_p;
-
     if (gcr_track_p != 0) {
         if (fseek(fsimage->fd, gcr_track_p, SEEK_SET) < 0
             || fread(len, 2, 1, fsimage->fd) < 1) {
@@ -109,6 +103,15 @@ int fsimage_gcr_read_track(disk_image_t *image, unsigned int track,
             log_error(fsimage_gcr_log,
                       "Track field length %i is not supported.",
                       track_len);
+            return -1;
+        }
+        if (gcr_speed_p < 4) {
+            if (gcr_speed_p != 16 - (200000 / track_len + 1) / 2) {
+                log_error(fsimage_gcr_log, "Rate has no correlation to track size, unsupported.");
+                return -1;
+            }
+        } else {
+            log_error(fsimage_gcr_log, "Variable rate not supported yet.");
             return -1;
         }
 
@@ -197,7 +200,7 @@ int fsimage_gcr_write_track(disk_image_t *image, unsigned int track,
         return -1;
     }
 
-    gcr_speed_p = raw->rate;
+    gcr_speed_p = 16 - (200000 / raw->size + 1) / 2;
     fseek(fsimage->fd, 12 + (num_tracks + track) * 4, SEEK_SET);
     if (util_dword_write(fsimage->fd, &gcr_speed_p, 1) < 0) {
         log_error(fsimage_gcr_log, "Could not write GCR disk image header.");
