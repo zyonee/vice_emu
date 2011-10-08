@@ -349,6 +349,55 @@ int fsimage_gcr_create(disk_image_t *image, unsigned int type)
 
    return 0;
 }
+
+int fsimage_gcr_probe(disk_image_t *image)
+{
+    int trackfield;
+    BYTE header[32];
+    fsimage_t *fsimage;
+
+    fsimage = image->media.fsimage;
+
+    fseek(fsimage->fd, 0, SEEK_SET);
+    if (fread((BYTE *)header, sizeof (header), 1, fsimage->fd) < 1) {
+        return 0;
+    }
+
+    if (strncmp("GCR-1541", (char*)header, 8))
+        return 0;
+
+    if (header[8] != 0) {
+        log_error(fsimage_gcr_log,
+                  "Import GCR: Unknown GCR image version %i.",
+                  (int)header[8]);
+        return 0;
+    }
+
+    if (header[9] < NUM_TRACKS_1541 * 2 || header[9] > MAX_TRACKS_1541 * 2) {
+        log_error(fsimage_gcr_log,
+                  "Import GCR: Invalid number of tracks (%i).",
+                  (int)header[9]);
+        return 0;
+    }
+
+    trackfield = header[10] + header[11] * 256;
+    if (trackfield != 7928) {
+        log_error(fsimage_gcr_log,
+                  "Import GCR: Invalid track field number %i.",
+                  trackfield);
+        return 0;
+    }
+
+    image->type = DISK_IMAGE_TYPE_G64;
+    image->type_name = "G64";
+    image->loffset = 0;
+    image->lblocks = MAX_BLOCKS_1541;
+    image->ltracks = header[9] / 2;
+    image->ptracks = header[9];
+    image->sides = 1;
+    fsimage_error_info_destroy(fsimage);
+    return 1;
+}
 /*-----------------------------------------------------------------------*/
 
 void fsimage_gcr_init(void)

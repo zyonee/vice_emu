@@ -45,5 +45,6 @@ extern int fsimage_gcr_write_track(struct disk_image_s *image,
                                    unsigned int track, unsigned int head,
                                    struct disk_track_s *raw);
 extern int fsimage_gcr_create(struct disk_image_s *image, unsigned int type);
+extern int fsimage_gcr_probe(disk_image_t *image);
 #endif
 

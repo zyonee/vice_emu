@@ -17,8 +17,6 @@ libdiskimage_a_SOURCES = \
 	fsimage-gcr.h \
 	fsimage-flat.c \
 	fsimage-flat.h \
-	fsimage-probe.c \
-	fsimage-probe.h \
 	fsimage.c \
 	fsimage.h \
 	gcr.c \

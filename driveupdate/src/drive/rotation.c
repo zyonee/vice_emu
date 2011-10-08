@@ -200,13 +200,13 @@ void rotation_rotate_disk(drive_t *dptr)
     for (;;) {
         if (rptr->accum < rptr->frequency) {
             if (clk < 65536) {
-                rptr->accum += clk * dptr->raw->size;
+                rptr->accum += clk * (dptr->raw ? dptr->raw->size : 6250);
                 clk = 0;
                 if (rptr->accum < rptr->frequency) {
                     break;
                 }
             } else {
-                rptr->accum += 65536 * dptr->raw->size;
+                rptr->accum += 65536 * (dptr->raw ? dptr->raw->size : 6250);
                 clk -= 65536;
             }
         }

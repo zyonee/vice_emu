@@ -36,7 +36,6 @@
 #include "diskimage.h"
 #include "fsimage-flat.h"
 #include "fsimage-gcr.h"
-#include "fsimage-probe.h"
 #include "fsimage.h"
 #include "lib.h"
 #include "log.h"
@@ -102,6 +101,7 @@ void fsimage_media_destroy(disk_image_t *image)
 }
 
 /*-----------------------------------------------------------------------*/
+int fsimage_probe(disk_image_t *image);
 
 int fsimage_open(disk_image_t *image)
 {
@@ -322,6 +322,22 @@ int fsimage_create(const char *name, unsigned int type)
     return rc;
 }
 
+int fsimage_probe(disk_image_t *image)
+{
+    fsimage_t *fsimage = image->media.fsimage;
+
+    if (fsimage_flat_probe(image)
+        || fsimage_gcr_probe(image)) {
+
+        log_verbose("%s disk image recognised: %s, %d tracks%s",
+                image->type_name, fsimage->name, image->ltracks,
+                image->read_only ? " (read only)." : ".");
+        return 0;
+    }
+
+    return -1;
+}
+
 /*-----------------------------------------------------------------------*/
 
 void fsimage_init(void)
@@ -329,6 +345,5 @@ void fsimage_init(void)
     fsimage_log = log_open("Filesystem Image");
     fsimage_flat_init();
     fsimage_gcr_init();
-    fsimage_probe_init();
 }
 
