@@ -199,7 +199,7 @@ opcode	mnemonic	bytes	cycles	comments
 42	NOOP #$nn	2	2
 44	NOOP $nn	2	2
 54	NOOP $nn,X	2	4
-5c	NOOP ???	3	8
+5c	NOOP $nnnn + 4	3	8
 62	NOOP #$nn	2	2
 82	NOOP #$nn	2	2
 c2	NOOP #$nn	2	2
@@ -600,7 +600,7 @@ opcode	mnemonic	bytes	cycles	mode		changed	65SC02	R65C02	WDC65C02
 59	EOR $nnnn,Y	3*	4*/5*	abs-y read	yes	yes*	yes*	yes*
 5a	PHY		1*	3*	stack push	yes	yes*	yes*	yes*
 5b	NOOP		1*	1*	imp single	yes	yes*	yes*	yes*
-5c	NOOP $nnnn	3	8	unknown		yes	yes	yes	yes
+5c	NOOP $nnnn	3*	8*	abs read + 4	yes	yes*	yes*	yes*
 5d	EOR $nnnn,X	3*	4*/5*	abs-x read	yes	yes*	yes*	yes*
 5e	LSR $nnnn,X	3*	6*/7*	abs-x rrw	yes	yes*	yes*	yes*
 5f	BBR5 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
@@ -2368,6 +2368,30 @@ E9F7   58             CLI           ---
 E9F8   60             RTS           ---
 
 
+65(S)C02 NOP 5C timing test code
+================================
+
+addr   b1   b2   b3   mnemonic      expected output
+----   --   --   --   --------      ---------------
+E900   78             SEI
+E901   A9   01        LDA #$01
+E903   8D   00   E9   STA $E900
+E906   5C   00   E9   NOOP $EA00 read 5C from E906 at 0		*
+                                 read 00 from E907 at 1		*
+                                 read E9 from E908 at 2		*
+                                 read 01 from E900 at 3		*
+                                 read E9 from E908 at 4		*
+                                 read E9 from E908 at 5		*
+                                 read E9 from E908 at 6		*
+                                 read E9 from E908 at 7		*
+E909   A9   78        LDA #$78   ---
+E90B   8D   00   E9   STA $E900  ---
+E90E   58             CLI        ---
+E90F   60             RTS        ---
+
+
+ADC and SBC seem to do a read if last instruction when in decimal mode.
+
 00	BRK		2	7	brk		yes	yes	yes	yes
 0f	BBR0 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
 0f	NOOP		1	1	imp single	yes	yes	no	no
@@ -2389,7 +2413,6 @@ E9F8   60             RTS           ---
 4f	BBR4 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
 4f	NOOP		1	1	imp single	yes	yes	no	no
 50	BVC $nnnn	2	2/3/4	branch		no	yes	yes	yes
-5c	NOOP $nnnn	3	8	unknown		yes	yes	yes	yes
 5f	BBR5 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
 5f	NOOP		1	1	imp single	yes	yes	no	no
 60	RTS		1	6	rts		no	yes	yes	yes

@@ -935,6 +935,21 @@
       INC_PC(SIZE_3);         \
   } while (0)
 
+#define NOOP_5C()             \
+  do {                        \
+      LOAD(p2);               \
+      CLK_ADD(CLK, CYCLES_1); \
+      LOAD(reg_pc + 2);       \
+      CLK_ADD(CLK, CYCLES_1); \
+      LOAD(reg_pc + 2);       \
+      CLK_ADD(CLK, CYCLES_1); \
+      LOAD(reg_pc + 2);       \
+      CLK_ADD(CLK, CYCLES_1); \
+      LOAD(reg_pc + 2);       \
+      CLK_ADD(CLK, CYCLES_1); \
+      INC_PC(SIZE_3);         \
+  } while (0)
+
 #define NOP()  NOOP_IMM(SIZE_1)
 
 #define PHA()                 \
@@ -1585,8 +1600,8 @@ trap_skipped:
             NOOP_ABS();
             break;
 
-          case 0x5c:            /* NOP ??? (FIXME) */
-            NOOP(CYCLES_5, SIZE_3);
+          case 0x5c:            /* NOP $nnnn + 4 (FIXME: correct ??) */
+            NOOP_5C();
             break;
 
           case 0x00:            /* BRK */
