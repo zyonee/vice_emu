@@ -142,10 +142,6 @@ static BYTE ram_read(WORD addr)
 
 static void ram_store(WORD addr, BYTE value)
 {
-/*
-if (addr == 0x8000) printf("charline=%d, ycount=%d, char=%d\n",
-        crtc.current_charline, crtc.raster.ycounter, clk - crtc.rl_start);
-*/
     mem_ram[addr] = value;
 }
 
