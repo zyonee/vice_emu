@@ -505,6 +505,7 @@
           LOCAL_SET_CARRY(tmp2 & 0xff00);                                  \
           tmp = (tmp & 0xf) + (tmp2 & 0xf0);                               \
           LOCAL_SET_NZ(tmp);                                               \
+          LOAD(reg_pc + pc_inc - 1);                                       \
           CLK_ADD(CLK, CYCLES_1);                                          \
       } else {                                                             \
           tmp = tmp_value + reg_a + LOCAL_CARRY();                         \
@@ -1135,6 +1136,7 @@
           LOCAL_SET_OVERFLOW(!(tmp > reg_a));            \
           LOCAL_SET_CARRY(!(tmp > reg_a));               \
           LOCAL_SET_NZ(tmp & 0xff);                      \
+          LOAD(reg_pc + pc_inc - 1);                     \
           CLK_ADD(CLK, CYCLES_1);                        \
       } else {                                           \
           tmp = reg_a - src - ((LOCAL_CARRY()) ? 0 : 1); \
@@ -1195,8 +1197,9 @@
       CLK_ADD(CLK, (clk_inc1));                           \
       tmp = (addr);                                       \
       INC_PC(pc_inc);                                     \
-      CLK_ADD(CLK, clk_inc2);                             \
+      CLK_ADD(CLK, clk_inc2 - 1);                         \
       store_func(tmp, reg_a);                             \
+      CLK_ADD(CLK, CYCLES_1);                             \
   } while (0)
 
 #define STA_ZERO(addr, clk_inc, pc_inc) \

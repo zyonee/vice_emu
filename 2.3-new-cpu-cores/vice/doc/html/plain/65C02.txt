@@ -480,343 +480,343 @@ The following section is for keeping track of tests of the 65C02 core, a * after
 65C02 core emulation and tests:
 ===============================
 
-opcode	mnemonic	bytes	cycles	mode		changed	65SC02	R65C02	WDC65C02
-------	--------	-----	------	----		-------	------	------	--------
-00	BRK		2	7	brk		yes	yes	yes	yes
-01	ORA ($nn,X)	2*	6*	ind-x read	no	yes*	yes*	yes*
-02	NOOP #$nn	2*	2*	imm read	yes	yes*	yes*	yes*
-03	NOOP		1*	1*	imp single	yes	yes*	yes*	yes*
-04	TSB $nn		2*	5*	zp rrw		yes	yes*	yes*	yes*
-05	ORA $nn		2*	3*	zp read		no	yes*	yes*	yes*
-06	ASL $nn		2*	5*	zp rrw		yes	yes*	yes*	yes*
-07	RMB0 $nn	2*	5*	zp rrw		yes	no	yes*	yes*
-07	NOOP		1*	1*	imp single	yes	yes*	no	no
-08	PHP		1*	3*	stack push	no	yes*	yes*	yes*
-09	ORA #$nn	2*	2*	imm read	no	yes*	yes*	yes*
-0a	ASL A		1*	2*	imp		no	yes*	yes*	yes*
-0b	NOOP		1*	1*	imp single	yes	yes*	yes*	yes*
-0c	TSB $nnnn	3*	6*	abs rrw		yes	yes*	yes*	yes*
-0d	ORA $nnnn	3*	4*	abs read	no	yes*	yes*	yes*
-0e	ASL $nnnn	3*	6*	abs rrw		yes	yes*	yes*	yes*
-0f	BBR0 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
-0f	NOOP		1	1	imp single	yes	yes	no	no
+opcode	mnemonic	bytes	cycles		mode		changed	65SC02	R65C02	WDC65C02
+------	--------	-----	------		----		-------	------	------	--------
+00	BRK		2	7		brk		yes	yes	yes	yes
+01	ORA ($nn,X)	2*	6*		ind-x read	no	yes*	yes*	yes*
+02	NOOP #$nn	2*	2*		imm read	yes	yes*	yes*	yes*
+03	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
+04	TSB $nn		2*	5*		zp rrw		yes	yes*	yes*	yes*
+05	ORA $nn		2*	3*		zp read		no	yes*	yes*	yes*
+06	ASL $nn		2*	5*		zp rrw		yes	yes*	yes*	yes*
+07	RMB0 $nn	2*	5*		zp rrw		yes	no	yes*	yes*
+07	NOOP		1*	1*		imp single	yes	yes*	no	no
+08	PHP		1*	3*		stack push	no	yes*	yes*	yes*
+09	ORA #$nn	2*	2*		imm read	no	yes*	yes*	yes*
+0a	ASL A		1*	2*		imp		no	yes*	yes*	yes*
+0b	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
+0c	TSB $nnnn	3*	6*		abs rrw		yes	yes*	yes*	yes*
+0d	ORA $nnnn	3*	4*		abs read	no	yes*	yes*	yes*
+0e	ASL $nnnn	3*	6*		abs rrw		yes	yes*	yes*	yes*
+0f	BBR0 $nn,$nnnn	3	5		zp-branch	yes	no	yes	yes
+0f	NOOP		1	1		imp single	yes	yes	no	no
 
-opcode	mnemonic	bytes	cycles	mode		changed	65SC02	R65C02	WDC65C02
-------	--------	-----	------	----		-------	------	------	--------
-10	BPL $nnnn	2	2/3/4	branch		no	yes	yes	yes
-11	ORA ($nn),Y	2*	5*/6*	ind-y read	yes	yes*	yes*	yes*
-12	ORA ($nn)	2*	5*	ind read	yes	yes*	yes*	yes*
-13	NOOP		1*	1*	imp single	yes	yes*	yes*	yes*
-14	TRB $nn		2*	5*	zp rrw		yes	yes*	yes*	yes*
-15	ORA $nn,X	2*	4*	zp-x read	no	yes*	yes*	yes*
-16	ASL $nn,X	2*	6*	zp-x rrw	yes	yes*	yes*	yes*
-17	RMB1 $nn	2*	5*	zp rrw		yes	no	yes*	yes*
-17	NOOP		1*	1*	imp single	yes	yes*	no	no
-18	CLC		1*	2*	imp		no	yes*	yes*	yes*
-19	ORA $nnnn,Y	3*	4*/5*	abs-y read	yes	yes*	yes*	yes*
-1a	INC A		1*	2*	imp		yes	yes*	yes*	yes*
-1b	NOOP		1*	1*	imp single	yes	yes*	yes*	yes*
-1c	TRB $nnnn	3*	6*	abs rrw		yes	yes*	yes*	yes*
-1d	ORA $nnnn,X	3*	4*/5*	abs-x read	yes	yes*	yes*	yes*
-1e	ASL $nnnn,X	3*	6*/7*	abs-x rrw	yes	yes*	yes*	yes*
-1f	BBR1 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
-1f	NOOP		1	1	imp single	yes	yes	no	no
+opcode	mnemonic	bytes	cycles		mode		changed	65SC02	R65C02	WDC65C02
+------	--------	-----	------		----		-------	------	------	--------
+10	BPL $nnnn	2	2/3/4		branch		no	yes	yes	yes
+11	ORA ($nn),Y	2*	5*/6*		ind-y read	yes	yes*	yes*	yes*
+12	ORA ($nn)	2*	5*		ind read	yes	yes*	yes*	yes*
+13	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
+14	TRB $nn		2*	5*		zp rrw		yes	yes*	yes*	yes*
+15	ORA $nn,X	2*	4*		zp-x read	no	yes*	yes*	yes*
+16	ASL $nn,X	2*	6*		zp-x rrw	yes	yes*	yes*	yes*
+17	RMB1 $nn	2*	5*		zp rrw		yes	no	yes*	yes*
+17	NOOP		1*	1*		imp single	yes	yes*	no	no
+18	CLC		1*	2*		imp		no	yes*	yes*	yes*
+19	ORA $nnnn,Y	3*	4*/5*		abs-y read	yes	yes*	yes*	yes*
+1a	INC A		1*	2*		imp		yes	yes*	yes*	yes*
+1b	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
+1c	TRB $nnnn	3*	6*		abs rrw		yes	yes*	yes*	yes*
+1d	ORA $nnnn,X	3*	4*/5*		abs-x read	yes	yes*	yes*	yes*
+1e	ASL $nnnn,X	3*	6*/7*		abs-x rrw	yes	yes*	yes*	yes*
+1f	BBR1 $nn,$nnnn	3	5		zp-branch	yes	no	yes	yes
+1f	NOOP		1	1		imp single	yes	yes	no	no
 
-opcode	mnemonic	bytes	cycles	mode		changed	65SC02	R65C02	WDC65C02
-------	--------	-----	------	----		-------	------	------	--------
-20	JSR $nnnn	3	6	abs jsr		no	yes	yes	yes
-21	AND ($nn,X)	2*	6*	ind-x read	no	yes*	yes*	yes*
-22	NOOP #$nn	2*	2*	imm		yes	yes*	yes*	yes*
-23	NOOP		1*	1*	imp single	yes	yes*	yes*	yes*
-24	BIT $nn		2	3	zp read		no	yes	yes	yes
-25	AND $nn		2*	3*	zp read		no	yes*	yes*	yes*
-26	ROL $nn		2*	5*	zp rrw		yes	yes*	yes*	yes*
-27	RMB2 $nn	2*	5*	zp rrw		yes	no	yes*	yes*
-27	NOOP		1*	1*	imp single	yes	yes*	no	no
-28	PLP		1*	4*	stack pull	no	yes*	yes*	yes*
-29	AND #$nn	2*	2*	imm		no	yes*	yes*	yes*
-2a	ROL A		1*	2*	imp		no	yes*	yes*	yes*
-2b	NOOP		1*	1*	imp single	yes	yes*	yes*	yes*
-2c	BIT $nnnn	3	4	abs read	no	yes	yes	yes
-2d	AND $nnnn	3*	4*	abs read	no	yes*	yes*	yes*
-2e	ROL $nnnn	3*	6*	abs rrw		yes	yes*	yes*	yes*
-2f	BBR2 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
-2f	NOOP		1	1	imp single	yes	yes	no	no
+opcode	mnemonic	bytes	cycles		mode		changed	65SC02	R65C02	WDC65C02
+------	--------	-----	------		----		-------	------	------	--------
+20	JSR $nnnn	3	6		abs jsr		no	yes	yes	yes
+21	AND ($nn,X)	2*	6*		ind-x read	no	yes*	yes*	yes*
+22	NOOP #$nn	2*	2*		imm		yes	yes*	yes*	yes*
+23	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
+24	BIT $nn		2	3		zp read		no	yes	yes	yes
+25	AND $nn		2*	3*		zp read		no	yes*	yes*	yes*
+26	ROL $nn		2*	5*		zp rrw		yes	yes*	yes*	yes*
+27	RMB2 $nn	2*	5*		zp rrw		yes	no	yes*	yes*
+27	NOOP		1*	1*		imp single	yes	yes*	no	no
+28	PLP		1*	4*		stack pull	no	yes*	yes*	yes*
+29	AND #$nn	2*	2*		imm		no	yes*	yes*	yes*
+2a	ROL A		1*	2*		imp		no	yes*	yes*	yes*
+2b	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
+2c	BIT $nnnn	3	4		abs read	no	yes	yes	yes
+2d	AND $nnnn	3*	4*		abs read	no	yes*	yes*	yes*
+2e	ROL $nnnn	3*	6*		abs rrw		yes	yes*	yes*	yes*
+2f	BBR2 $nn,$nnnn	3	5		zp-branch	yes	no	yes	yes
+2f	NOOP		1	1		imp single	yes	yes	no	no
 
-opcode	mnemonic	bytes	cycles	mode		changed	65SC02	R65C02	WDC65C02
-------	--------	-----	------	----		-------	------	------	--------
-30	BMI $nnnn	2	2/3/4	branch		no	yes	yes	yes
-31	AND ($nn),Y	2*	5*/6*	ind-y read	yes	yes*	yes*	yes*
-32	AND ($nn)	2*	5*	ind read	yes	yes*	yes*	yes*
-33	NOOP		1*	1*	imp single	yes	yes*	yes*	yes*
-34	BIT $nn,X	2	4	zp-x read	yes	yes	yes	yes
-35	AND $nn,X	2*	4*	zp-x read	no	yes*	yes*	yes*
-36	ROL $nn,X	2*	6*	zp-x rrw	yes	yes*	yes*	yes*
-37	RMB3 $nn	2*	5*	zp rrw		yes	no	yes*	yes*
-37	NOOP		1*	1*	imp single	yes	yes*	no	no
-38	SEC		1*	2*	imp		no	yes*	yes*	yes*
-39	AND $nnnn,Y	3*	4*/5*	abs-y read	yes	yes*	yes*	yes*
-3a	DEC A		1*	2*	imp		yes	yes*	yes*	yes*
-3b	NOOP		1*	1*	imp single	yes	yes*	yes*	yes*
-3c	BIT $nnnn,X	3	4/5	abs-x read	yes	yes	yes	yes
-3d	AND $nnnn,X	3*	4*/5*	abs-x read	yes	yes*	yes*	yes*
-3e	ROL $nnnn,X	3*	6*/7*	abs-x rrw	yes	yes*	yes*	yes*
-3f	BBR3 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
-3f	NOOP		1	1	imp single	yes	yes	no	no
+opcode	mnemonic	bytes	cycles		mode		changed	65SC02	R65C02	WDC65C02
+------	--------	-----	------		----		-------	------	------	--------
+30	BMI $nnnn	2	2/3/4		branch		no	yes	yes	yes
+31	AND ($nn),Y	2*	5*/6*		ind-y read	yes	yes*	yes*	yes*
+32	AND ($nn)	2*	5*		ind read	yes	yes*	yes*	yes*
+33	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
+34	BIT $nn,X	2	4		zp-x read	yes	yes	yes	yes
+35	AND $nn,X	2*	4*		zp-x read	no	yes*	yes*	yes*
+36	ROL $nn,X	2*	6*		zp-x rrw	yes	yes*	yes*	yes*
+37	RMB3 $nn	2*	5*		zp rrw		yes	no	yes*	yes*
+37	NOOP		1*	1*		imp single	yes	yes*	no	no
+38	SEC		1*	2*		imp		no	yes*	yes*	yes*
+39	AND $nnnn,Y	3*	4*/5*		abs-y read	yes	yes*	yes*	yes*
+3a	DEC A		1*	2*		imp		yes	yes*	yes*	yes*
+3b	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
+3c	BIT $nnnn,X	3	4/5		abs-x read	yes	yes	yes	yes
+3d	AND $nnnn,X	3*	4*/5*		abs-x read	yes	yes*	yes*	yes*
+3e	ROL $nnnn,X	3*	6*/7*		abs-x rrw	yes	yes*	yes*	yes*
+3f	BBR3 $nn,$nnnn	3	5		zp-branch	yes	no	yes	yes
+3f	NOOP		1	1		imp single	yes	yes	no	no
 
-opcode	mnemonic	bytes	cycles	mode		changed	65SC02	R65C02	WDC65C02
-------	--------	-----	------	----		-------	------	------	--------
-40	RTI		1	6	RTI		no	yes	yes	yes
-41	EOR ($nn,X)	2*	6*	ind-x read	no	yes*	yes*	yes*
-42	NOOP #$nn	2*	2*	imm		yes	yes*	yes*	yes*
-43	NOOP		1*	1*	imp single	yes	yes*	yes*	yes*
-44	NOOP $nn	2*	3*	zp		yes	yes*	yes*	yes*
-45	EOR $nn		2*	3*	zp read		no	yes*	yes*	yes*
-46	LSR $nn		2*	5*	zp rrw		yes	yes*	yes*	yes*
-47	RMB4 $nn	2*	5*	zp rrw		yes	no	yes*	yes*
-47	NOOP		1*	1*	imp single	yes	yes*	no	no
-48	PHA		1*	3*	stack push	no	yes*	yes*	yes*
-49	EOR #$nn	2*	2*	imm		no	yes*	yes*	yes*
-4a	LSR A		1*	2*	imp		no	yes*	yes*	yes*
-4b	NOOP		1*	1*	imp single	yes	yes*	yes*	yes*
-4c	JMP $nnnn	3	3	abs jmp		no	yes	yes	yes
-4d	EOR $nnnn	3*	4*	abs read	no	yes*	yes*	yes*
-4e	LSR $nnnn	3*	6*	abs rrw		yes	yes*	yes*	yes*
-4f	BBR4 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
-4f	NOOP		1	1	imp single	yes	yes	no	no
+opcode	mnemonic	bytes	cycles		mode		changed	65SC02	R65C02	WDC65C02
+------	--------	-----	------		----		-------	------	------	--------
+40	RTI		1	6		RTI		no	yes	yes	yes
+41	EOR ($nn,X)	2*	6*		ind-x read	no	yes*	yes*	yes*
+42	NOOP #$nn	2*	2*		imm		yes	yes*	yes*	yes*
+43	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
+44	NOOP $nn	2*	3*		zp		yes	yes*	yes*	yes*
+45	EOR $nn		2*	3*		zp read		no	yes*	yes*	yes*
+46	LSR $nn		2*	5*		zp rrw		yes	yes*	yes*	yes*
+47	RMB4 $nn	2*	5*		zp rrw		yes	no	yes*	yes*
+47	NOOP		1*	1*		imp single	yes	yes*	no	no
+48	PHA		1*	3*		stack push	no	yes*	yes*	yes*
+49	EOR #$nn	2*	2*		imm		no	yes*	yes*	yes*
+4a	LSR A		1*	2*		imp		no	yes*	yes*	yes*
+4b	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
+4c	JMP $nnnn	3	3		abs jmp		no	yes	yes	yes
+4d	EOR $nnnn	3*	4*		abs read	no	yes*	yes*	yes*
+4e	LSR $nnnn	3*	6*		abs rrw		yes	yes*	yes*	yes*
+4f	BBR4 $nn,$nnnn	3	5		zp-branch	yes	no	yes	yes
+4f	NOOP		1	1		imp single	yes	yes	no	no
 
-opcode	mnemonic	bytes	cycles	mode		changed	65SC02	R65C02	WDC65C02
-------	--------	-----	------	----		-------	------	------	--------
-50	BVC $nnnn	2	2/3/4	branch		no	yes	yes	yes
-51	EOR ($nn),Y	2*	5*/6*	ind-y read	yes	yes*	yes*	yes*
-52	EOR ($nn)	2*	5*	ind read	yes	yes*	yes*	yes*
-53	NOOP		1*	1*	imp single	yes	yes*	yes*	yes*
-54	NOOP $nn,X	2*	4*	zp-x read	yes	yes*	yes*	yes*
-55	EOR $nn,X	2*	4*	zp-x read	no	yes*	yes*	yes*
-56	LSR $nn,X	2*	6*	zp-x rrw	yes	yes*	yes*	yes*
-57	RMB5 $nn	2*	5*	zp rrw		yes	no	yes*	yes*
-57	NOOP		1*	1*	imp single	yes	yes*	no	no
-58	CLI		1*	2*	imp		no	yes*	yes*	yes*
-59	EOR $nnnn,Y	3*	4*/5*	abs-y read	yes	yes*	yes*	yes*
-5a	PHY		1*	3*	stack push	yes	yes*	yes*	yes*
-5b	NOOP		1*	1*	imp single	yes	yes*	yes*	yes*
-5c	NOOP $nnnn	3*	8*	abs read + 4	yes	yes*	yes*	yes*
-5d	EOR $nnnn,X	3*	4*/5*	abs-x read	yes	yes*	yes*	yes*
-5e	LSR $nnnn,X	3*	6*/7*	abs-x rrw	yes	yes*	yes*	yes*
-5f	BBR5 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
-5f	NOOP		1	1	imp single	yes	yes	no	no
+opcode	mnemonic	bytes	cycles		mode		changed	65SC02	R65C02	WDC65C02
+------	--------	-----	------		----		-------	------	------	--------
+50	BVC $nnnn	2	2/3/4		branch		no	yes	yes	yes
+51	EOR ($nn),Y	2*	5*/6*		ind-y read	yes	yes*	yes*	yes*
+52	EOR ($nn)	2*	5*		ind read	yes	yes*	yes*	yes*
+53	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
+54	NOOP $nn,X	2*	4*		zp-x read	yes	yes*	yes*	yes*
+55	EOR $nn,X	2*	4*		zp-x read	no	yes*	yes*	yes*
+56	LSR $nn,X	2*	6*		zp-x rrw	yes	yes*	yes*	yes*
+57	RMB5 $nn	2*	5*		zp rrw		yes	no	yes*	yes*
+57	NOOP		1*	1*		imp single	yes	yes*	no	no
+58	CLI		1*	2*		imp		no	yes*	yes*	yes*
+59	EOR $nnnn,Y	3*	4*/5*		abs-y read	yes	yes*	yes*	yes*
+5a	PHY		1*	3*		stack push	yes	yes*	yes*	yes*
+5b	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
+5c	NOOP $nnnn	3*	8*		abs read + 4	yes	yes*	yes*	yes*
+5d	EOR $nnnn,X	3*	4*/5*		abs-x read	yes	yes*	yes*	yes*
+5e	LSR $nnnn,X	3*	6*/7*		abs-x rrw	yes	yes*	yes*	yes*
+5f	BBR5 $nn,$nnnn	3	5		zp-branch	yes	no	yes	yes
+5f	NOOP		1	1		imp single	yes	yes	no	no
 
-opcode	mnemonic	bytes	cycles	mode		changed	65SC02	R65C02	WDC65C02
-------	--------	-----	------	----		-------	------	------	--------
-60	RTS		1	6	rts		no	yes	yes	yes
-61	ADC ($nn,X)	2	6/7	ind-x read	yes	yes	yes	yes
-62	NOOP #$nn	2*	2*	imm		yes	yes*	yes*	yes*
-63	NOOP		1*	1*	imp single	yes	yes*	yes*	yes*
-64	STZ $nn		2*	3*	zp write	yes	yes*	yes*	yes*
-65	ADC $nn		2	3/4	zp read		yes	yes	yes	yes
-66	ROR $nn		2*	5*	zp rrw		yes	yes*	yes*	yes*
-67	RMB6 $nn	2*	5*	zp rrw		yes	no	yes*	yes*
-67	NOOP		1*	1*	imp single	yes	yes*	no	no
-68	PLA		1*	4*	stack pull	no	yes*	yes*	yes*
-69	ADC #$nn	2	2/3	imm		yes	yes	yes	yes
-6a	ROR A		1*	2*	imp		no	yes*	yes*	yes*
-6b	NOOP		1*	1*	imp single	yes	yes*	yes*	yes*
-6c	JMP ($nnnn)	3	6	ind jmp		yes	yes	yes	yes
-6d	ADC $nnnn	3	4/5	abs read	yes	yes	yes	yes
-6e	ROR $nnnn	3*	6*	abs rrw		yes	yes*	yes*	yes*
-6f	BBR6 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
-6f	NOOP		1	1	imp single	yes	yes	no	no
+opcode	mnemonic	bytes	cycles		mode		changed	65SC02	R65C02	WDC65C02
+------	--------	-----	------		----		-------	------	------	--------
+60	RTS		1	6		rts		no	yes	yes	yes
+61	ADC ($nn,X)	2*	6*/7*		ind-x read	yes	yes*	yes*	yes*
+62	NOOP #$nn	2*	2*		imm		yes	yes*	yes*	yes*
+63	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
+64	STZ $nn		2*	3*		zp write	yes	yes*	yes*	yes*
+65	ADC $nn		2*	3*/4*		zp read		yes	yes*	yes*	yes*
+66	ROR $nn		2*	5*		zp rrw		yes	yes*	yes*	yes*
+67	RMB6 $nn	2*	5*		zp rrw		yes	no	yes*	yes*
+67	NOOP		1*	1*		imp single	yes	yes*	no	no
+68	PLA		1*	4*		stack pull	no	yes*	yes*	yes*
+69	ADC #$nn	2*	2*/3*		imm		yes	yes*	yes*	yes*
+6a	ROR A		1*	2*		imp		no	yes*	yes*	yes*
+6b	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
+6c	JMP ($nnnn)	3	6		ind jmp		yes	yes	yes	yes
+6d	ADC $nnnn	3*	4*/5*		abs read	yes	yes*	yes*	yes*
+6e	ROR $nnnn	3*	6*		abs rrw		yes	yes*	yes*	yes*
+6f	BBR6 $nn,$nnnn	3	5		zp-branch	yes	no	yes	yes
+6f	NOOP		1	1		imp single	yes	yes	no	no
 
-opcode	mnemonic	bytes	cycles	mode		changed	65SC02	R65C02	WDC65C02
-------	--------	-----	------	----		-------	------	------	--------
-70	BVS $nnnn	2	2/3/4	branch		no	yes	yes	yes
-71	ADC ($nn),Y	2	5/6/7	ind-y read	yes	yes	yes	yes
-72	ADC ($nn)	2	5/6	ind read	yes	yes	yes	yes
-73	NOOP		1*	1*	imp single	yes	yes*	yes*	yes*
-74	STZ $nn,X	2*	4*	zp-x write	yes	yes*	yes*	yes*
-75	ADC $nn,X	2	4/5	zp-x read	yes	yes	yes	yes
-76	ROR $nn,X	2*	6*	zp-x rrw	yes	yes*	yes*	yes*
-77	RMB7 $nn	2*	5*	zp rrw		yes	no	yes*	yes*
-77	NOOP		1*	1*	imp single	yes	yes*	no	no
-78	SEI		1*	2*	imp		no	yes*	yes*	yes*
-79	ADC $nnnn,Y	3	4/5/6	abs-y read	yes	yes	yes	yes
-7a	PLY		1*	4*	stack pull	yes	yes*	yes*	yes*
-7b	NOOP		1*	1*	imp single	yes	yes*	yes*	yes*
-7c	JMP ($nnnn,X)	3	6	ind-x jmp	yes	yes	yes	yes
-7d	ADC $nnnn,X	3	4/5/6	abs-x read	yes	yes	yes	yes
-7e	ROR $nnnn,X	3*	6*/7*	abs-x rrw	yes	yes*	yes*	yes*
-7f	BBR7 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
-7f	NOOP		1	1	imp single	yes	yes	no	no
+opcode	mnemonic	bytes	cycles		mode		changed	65SC02	R65C02	WDC65C02
+------	--------	-----	------		----		-------	------	------	--------
+70	BVS $nnnn	2	2/3/4		branch		no	yes	yes	yes
+71	ADC ($nn),Y	2*	5*/6*/7*	ind-y read	yes	yes*	yes*	yes*
+72	ADC ($nn)	2*	5*/6*		ind read	yes	yes*	yes*	yes*
+73	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
+74	STZ $nn,X	2*	4*		zp-x write	yes	yes*	yes*	yes*
+75	ADC $nn,X	2*	4*/5*		zp-x read	yes	yes*	yes*	yes*
+76	ROR $nn,X	2*	6*		zp-x rrw	yes	yes*	yes*	yes*
+77	RMB7 $nn	2*	5*		zp rrw		yes	no	yes*	yes*
+77	NOOP		1*	1*		imp single	yes	yes*	no	no
+78	SEI		1*	2*		imp		no	yes*	yes*	yes*
+79	ADC $nnnn,Y	3*	4*/5*/6*	abs-y read	yes	yes*	yes*	yes*
+7a	PLY		1*	4*		stack pull	yes	yes*	yes*	yes*
+7b	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
+7c	JMP ($nnnn,X)	3	6		ind-x jmp	yes	yes	yes	yes
+7d	ADC $nnnn,X	3*	4*/5*/6*	abs-x read	yes	yes*	yes*	yes*
+7e	ROR $nnnn,X	3*	6*/7*		abs-x rrw	yes	yes*	yes*	yes*
+7f	BBR7 $nn,$nnnn	3	5		zp-branch	yes	no	yes	yes
+7f	NOOP		1	1		imp single	yes	yes	no	no
 
-opcode	mnemonic	bytes	cycles	mode		changed	65SC02	R65C02	WDC65C02
-------	--------	-----	------	----		-------	------	------	--------
-80	BRA $nnnn	2	3/4	brancg		yes	yes	yes	yes
-81	STA ($nn,X)	2*	6*	ind-x write	no	yes*	yes*	yes*
-82	NOP #$nn	2*	2*	imm		yes	yes*	yes*	yes*
-83	NOOP		1*	1*	imp single	yes	yes*	yes*	yes*
-84	STY $nn		2*	3*	zp write	no	yes*	yes*	yes*
-85	STA $nn		2*	3*	zp write	no	yes*	yes*	yes*
-86	STX $nn		2*	3*	zp write	no	yes*	yes*	yes*
-87	SMB0 $nn	2	5	zp rrw		yes	no	yes	yes
-87	NOOP		1	1	imp single	yes	yes	no	no	
-88	DEY		1*	2*	imp		no	yes*	yes*	yes*
-89	BIT #$nn	2	2	imm		yes	yes	yes	yes
-8a	TXA		1	2	imp		no	yes	yes	yes
-8b	NOOP		1*	1*	imp single	yes	yes*	yes*	yes*
-8c	STY $nnnn	3*	4*	abs write	no	yes*	yes*	yes*
-8d	STA $nnnn	3*	4*	abs write	no	yes*	yes*	yes*
-8e	STX $nnnn	3*	4*	abs write	no	yes*	yes*	yes*
-8f	BBS0 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
-8f	NOOP		1	1	imp single	yes	yes	no	no
+opcode	mnemonic	bytes	cycles		mode		changed	65SC02	R65C02	WDC65C02
+------	--------	-----	------		----		-------	------	------	--------
+80	BRA $nnnn	2	3/4		branch		yes	yes	yes	yes
+81	STA ($nn,X)	2*	6*		ind-x write	no	yes*	yes*	yes*
+82	NOP #$nn	2*	2*		imm		yes	yes*	yes*	yes*
+83	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
+84	STY $nn		2*	3*		zp write	no	yes*	yes*	yes*
+85	STA $nn		2*	3*		zp write	no	yes*	yes*	yes*
+86	STX $nn		2*	3*		zp write	no	yes*	yes*	yes*
+87	SMB0 $nn	2	5		zp rrw		yes	no	yes	yes
+87	NOOP		1	1		imp single	yes	yes	no	no	
+88	DEY		1*	2*		imp		no	yes*	yes*	yes*
+89	BIT #$nn	2	2		imm		yes	yes	yes	yes
+8a	TXA		1	2		imp		no	yes	yes	yes
+8b	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
+8c	STY $nnnn	3*	4*		abs write	no	yes*	yes*	yes*
+8d	STA $nnnn	3*	4*		abs write	no	yes*	yes*	yes*
+8e	STX $nnnn	3*	4*		abs write	no	yes*	yes*	yes*
+8f	BBS0 $nn,$nnnn	3	5		zp-branch	yes	no	yes	yes
+8f	NOOP		1	1		imp single	yes	yes	no	no
 
-opcode	mnemonic	bytes	cycles	mode		changed	65SC02	R65C02	WDC65C02
-------	--------	-----	------	----		-------	------	------	--------
-90	BCC $nnnn	2	2/3/4	branch		no	yes	yes	yes
-91	STA ($nn),Y	2*	6*	ind-y write	no	yes*	yes*	yes*
-92	STA ($nn)	2*	5*	ind write	yes	yes*	yes*	yes*
-93	NOOP		1*	1*	imp single	yes	yes*	yes*	yes*
-94	STY $nn,X	2*	4*	zp-x write	no	yes*	yes*	yes*
-95	STA $nn,X	2*	4*	zp-x write	no	yes*	yes*	yes*
-96	STX $nn,Y	2*	4*	zp-x write	no	yes*	yes*	yes*
-97	SMB1 $nn	2	5	zp rrw		yes	no	yes	yes
-97	NOOP		1	1	imp single	yes	yes	no	no
-98	TYA		1	2	imp		no	yes	yes	yes
-99	STA $nnnn,Y	3*	5*	abs-y write	yes	yes*	yes*	yes*
-9a	TXS		1	2	imp		no	yes	yes	yes
-9b	NOOP		1*	1*	imp single	yes	yes*	yes*	yes*
-9c	STZ $nnnn	3*	4*	abs write	yes	yes*	yes*	yes*
-9d	STA $nnnn,X	3*	5*	abs-x write	yes	yes*	yes*	yes*
-9e	STZ $nnnn,X	3*	5*	abs-x write	yes	yes*	yes*	yes*
-9f	BBS1 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
-9f	NOOP		1	1	imp single	yes	yes	no	no
+opcode	mnemonic	bytes	cycles		mode		changed	65SC02	R65C02	WDC65C02
+------	--------	-----	------		----		-------	------	------	--------
+90	BCC $nnnn	2	2/3/4		branch		no	yes	yes	yes
+91	STA ($nn),Y	2*	6*		ind-y write	no	yes*	yes*	yes*
+92	STA ($nn)	2*	5*		ind write	yes	yes*	yes*	yes*
+93	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
+94	STY $nn,X	2*	4*		zp-x write	no	yes*	yes*	yes*
+95	STA $nn,X	2*	4*		zp-x write	no	yes*	yes*	yes*
+96	STX $nn,Y	2*	4*		zp-x write	no	yes*	yes*	yes*
+97	SMB1 $nn	2	5		zp rrw		yes	no	yes	yes
+97	NOOP		1	1		imp single	yes	yes	no	no
+98	TYA		1	2		imp		no	yes	yes	yes
+99	STA $nnnn,Y	3*	5*		abs-y write	yes	yes*	yes*	yes*
+9a	TXS		1	2		imp		no	yes	yes	yes
+9b	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
+9c	STZ $nnnn	3*	4*		abs write	yes	yes*	yes*	yes*
+9d	STA $nnnn,X	3*	5*		abs-x write	yes	yes*	yes*	yes*
+9e	STZ $nnnn,X	3*	5*		abs-x write	yes	yes*	yes*	yes*
+9f	BBS1 $nn,$nnnn	3	5		zp-branch	yes	no	yes	yes
+9f	NOOP		1	1		imp single	yes	yes	no	no
 
-opcode	mnemonic	bytes	cycles	mode		changed	65SC02	R65C02	WDC65C02
-------	--------	-----	------	----		-------	------	------	--------
-a0	LDY #$nn	2*	2*	imm		no	yes*	yes*	yes*
-a1	LDA ($nn,X)	2*	6*	ind-x read	no	yes*	yes*	yes*
-a2	LDX #$nn	2*	2*	imm		no	yes*	yes*	yes*
-a3	NOOP		1*	1*	imp single	yes	yes*	yes*	yes*
-a4	LDY $nn		2*	3*	zp read		no	yes*	yes*	yes*
-a5	LDA $nn		2*	3*	zp read		no 	yes*	yes*	yes*
-a6	LDX $nn		2*	3*	zp read		no	yes*	yes*	yes*
-a7	SMB2 $nn	2	5	zp rrw		yes	no	yes	yes
-a7	NOOP		1	1	imp single	yes	yes	no	no
-a8	TAY		1	2	imp		no	yes	yes	yes
-a9	LDA #$nn	2*	2*	imm		no	yes*	yes*	yes*
-aa	TAX		1	2	imp		no	yes	yes	yes
-ab	NOOP		1*	1*	imp single	yes	yes*	yes*	yes*
-ac	LDY $nnnn	3*	4*	abs read	no	yes*	yes*	yes*
-ad	LDA $nnnn	3*	4*	abs read	no	yes*	yes*	yes*
-ae	LDX $nnnn	3*	4*	abs read	no	yes*	yes*	yes*
-af	BBS2 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
-af	NOOP		1	1	imp single	yes	yes	no	no
+opcode	mnemonic	bytes	cycles		mode		changed	65SC02	R65C02	WDC65C02
+------	--------	-----	------		----		-------	------	------	--------
+a0	LDY #$nn	2*	2*		imm		no	yes*	yes*	yes*
+a1	LDA ($nn,X)	2*	6*		ind-x read	no	yes*	yes*	yes*
+a2	LDX #$nn	2*	2*		imm		no	yes*	yes*	yes*
+a3	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
+a4	LDY $nn		2*	3*		zp read		no	yes*	yes*	yes*
+a5	LDA $nn		2*	3*		zp read		no 	yes*	yes*	yes*
+a6	LDX $nn		2*	3*		zp read		no	yes*	yes*	yes*
+a7	SMB2 $nn	2	5		zp rrw		yes	no	yes	yes
+a7	NOOP		1	1		imp single	yes	yes	no	no
+a8	TAY		1	2		imp		no	yes	yes	yes
+a9	LDA #$nn	2*	2*		imm		no	yes*	yes*	yes*
+aa	TAX		1	2		imp		no	yes	yes	yes
+ab	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
+ac	LDY $nnnn	3*	4*		abs read	no	yes*	yes*	yes*
+ad	LDA $nnnn	3*	4*		abs read	no	yes*	yes*	yes*
+ae	LDX $nnnn	3*	4*		abs read	no	yes*	yes*	yes*
+af	BBS2 $nn,$nnnn	3	5		zp-branch	yes	no	yes	yes
+af	NOOP		1	1		imp single	yes	yes	no	no
 
-opcode	mnemonic	bytes	cycles	mode		changed	65SC02	R65C02	WDC65C02
-------	--------	-----	------	----		-------	------	------	--------
-b0	BCS $nnnn	2	2/3/4	branch		no	yes	yes	yes
-b1	LDA ($nn),Y	2*	5*/6*	ind-y read	yes	yes*	yes*	yes*
-b2	LDA ($nn)	2*	5*	ind read	yes	yes*	yes*	yes*
-b3	NOOP		1*	1*	imp single	yes	yes*	yes*	yes*
-b4	LDY $nn,X	2*	4*	zp-x read	no	yes*	yes*	yes*
-b5	LDA $nn,X	2*	4*	zp-x read	no	yes*	yes*	yes*
-b6	LDX $nn,Y	2*	4*	zp-y read	no	yes*	yes*	yes*
-b7	SMB3 $nn	2	5	zp rrw		yes	no	yes	yes
-b7	NOOP		1	1	imp single	yes	yes	no	no
-b8	CLV		1*	2*	imp		no	yes*	yes*	yes*
-b9	LDA $nnnn,Y	3*	4*/5*	abs-y read	yes	yes*	yes*	yes*
-ba	TSX		1	2	imp		no	yes	yes	yes
-bb	NOOP		1*	1*	imp single	yes	yes*	yes*	yes*
-bc	LDY $nnnn,X	3*	4*/5*	abs-x read	yes	yes*	yes*	yes*
-bd	LDA $nnnn,X	3*	4*/5*	abs-x read	yes	yes*	yes*	yes*
-be	LDX $nnnn,Y	3*	4*/5*	abs-y read	yes	yes*	yes*	yes*
-bf	BBS3 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
-bf	NOOP		1	1	imp single	yes	yes	no	no
+opcode	mnemonic	bytes	cycles		mode		changed	65SC02	R65C02	WDC65C02
+------	--------	-----	------		----		-------	------	------	--------
+b0	BCS $nnnn	2	2/3/4		branch		no	yes	yes	yes
+b1	LDA ($nn),Y	2*	5*/6*		ind-y read	yes	yes*	yes*	yes*
+b2	LDA ($nn)	2*	5*		ind read	yes	yes*	yes*	yes*
+b3	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
+b4	LDY $nn,X	2*	4*		zp-x read	no	yes*	yes*	yes*
+b5	LDA $nn,X	2*	4*		zp-x read	no	yes*	yes*	yes*
+b6	LDX $nn,Y	2*	4*		zp-y read	no	yes*	yes*	yes*
+b7	SMB3 $nn	2	5		zp rrw		yes	no	yes	yes
+b7	NOOP		1	1		imp single	yes	yes	no	no
+b8	CLV		1*	2*		imp		no	yes*	yes*	yes*
+b9	LDA $nnnn,Y	3*	4*/5*		abs-y read	yes	yes*	yes*	yes*
+ba	TSX		1	2		imp		no	yes	yes	yes
+bb	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
+bc	LDY $nnnn,X	3*	4*/5*		abs-x read	yes	yes*	yes*	yes*
+bd	LDA $nnnn,X	3*	4*/5*		abs-x read	yes	yes*	yes*	yes*
+be	LDX $nnnn,Y	3*	4*/5*		abs-y read	yes	yes*	yes*	yes*
+bf	BBS3 $nn,$nnnn	3	5		zp-branch	yes	no	yes	yes
+bf	NOOP		1	1		imp single	yes	yes	no	no
 
-opcode	mnemonic	bytes	cycles	mode		changed	65SC02	R65C02	WDC65C02
-------	--------	-----	------	----		-------	------	------	--------
-c0	CPY #$nn	2	2	imm		no	yes	yes	yes
-c1	CMP ($nn,X)	2	6	ind-x read	no	yes	yes	yes
-c2	NOOP #$nn	2*	2*	imm		yes	yes*	yes*	yes*
-c3	NOOP		1*	1*	imp single	yes	yes*	yes*	yes*
-c4	CPY $nn		2	3	zp read		no	yes	yes	yes
-c5	CMP $nn		2	3	zp read		no	yes	yes	yes
-c6	DEC $nn		2	5	zp rrw		yes	yes	yes	yes
-c7	SMB4 $nn	2	5	zp rrw		yes	no	yes	yes
-c7	NOOP		1	1	imp single	yes	yes	no	no
-c8	INY		1*	2*	imp		no	yes*	yes*	yes*
-c9	CMP #$nn	2	2	imm		no	yes	yes	yes
-ca	DEX		1*	2*	imp		no	yes*	yes*	yes*
-cb	WAI		1	3	wai		yes	no	no	yes
-cb	NOOP		1	1	imp single	yes	yes	yes	no
-cc	CPY $nnnn	3	4	abs read	no	yes	yes	yes
-cd	CMP $nnnn	3	4	abs read	no	yes	yes	yes
-ce	DEC $nnnn	3	6	abs rrw		yes	yes	yes	yes
-cf	BBS4 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
-cf	NOOP		1	1	imp single	yes	yes	no	no
+opcode	mnemonic	bytes	cycles		mode		changed	65SC02	R65C02	WDC65C02
+------	--------	-----	------		----		-------	------	------	--------
+c0	CPY #$nn	2	2		imm		no	yes	yes	yes
+c1	CMP ($nn,X)	2	6		ind-x read	no	yes	yes	yes
+c2	NOOP #$nn	2*	2*		imm		yes	yes*	yes*	yes*
+c3	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
+c4	CPY $nn		2	3		zp read		no	yes	yes	yes
+c5	CMP $nn		2	3		zp read		no	yes	yes	yes
+c6	DEC $nn		2	5		zp rrw		yes	yes	yes	yes
+c7	SMB4 $nn	2	5		zp rrw		yes	no	yes	yes
+c7	NOOP		1	1		imp single	yes	yes	no	no
+c8	INY		1*	2*		imp		no	yes*	yes*	yes*
+c9	CMP #$nn	2	2		imm		no	yes	yes	yes
+ca	DEX		1*	2*		imp		no	yes*	yes*	yes*
+cb	WAI		1	3		wai		yes	no	no	yes
+cb	NOOP		1	1		imp single	yes	yes	yes	no
+cc	CPY $nnnn	3	4		abs read	no	yes	yes	yes
+cd	CMP $nnnn	3	4		abs read	no	yes	yes	yes
+ce	DEC $nnnn	3	6		abs rrw		yes	yes	yes	yes
+cf	BBS4 $nn,$nnnn	3	5		zp-branch	yes	no	yes	yes
+cf	NOOP		1	1		imp single	yes	yes	no	no
 
-opcode	mnemonic	bytes	cycles	mode		changed	65SC02	R65C02	WDC65C02
-------	--------	-----	------	----		-------	------	------	--------
-d0	BNE $nnnn	2	2/3/4	branch		no	yes	yes	yes
-d1	CMP ($nn),Y	2	5/6	ind-y read	yes	yes	yes	yes
-d2	CMP ($nn)	2	5	ind read	yes	yes	yes	yes
-d3	NOOP		1*	1*	imp single	yes	yes*	yes*	yes*
-d4	NOOP $nn,X	2*	4*	zp-x read	yes	yes*	yes*	yes*
-d5	CMP $nn,X	2	4	zp-x read	no	yes	yes	yes
-d6	DEC $nn,X	2	6	zp-x rrw	yes	yes	yes	yes
-d7	SMB5 $nn	2	5	zp rrw		yes	no	yes	yes
-d7	NOOP		1	1	imp single	yes	yes	no	no
-d8	CLD		1*	2*	imp		no	yes*	yes*	yes*
-d9	CMP $nnnn,Y	3	4/5	abs-y read	yes	yes	yes	yes
-da	PHX		1*	3*	stack push	yes	yes*	yes*	yes*
-db	STP		1	3	stp		yes	no	no	yes
-db	NOOP		1	1	imp single	yes	yes	yes	no
-dc	NOP $nnnn	3*	4*	abs-x read	yes	yes*	yes*	yes*
-dd	CMP $nnnn,X	3	4/5	abs-x read	yes	yes	yes	yes
-de	DEC $nnnn,X	3	7	abs-x rrw	yes	yes	yes	yes
-df	BBS5 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
-df	NOOP		1	1	imp single	yes	yes	no	no
+opcode	mnemonic	bytes	cycles		mode		changed	65SC02	R65C02	WDC65C02
+------	--------	-----	------		----		-------	------	------	--------
+d0	BNE $nnnn	2	2/3/4		branch		no	yes	yes	yes
+d1	CMP ($nn),Y	2	5/6		ind-y read	yes	yes	yes	yes
+d2	CMP ($nn)	2	5		ind read	yes	yes	yes	yes
+d3	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
+d4	NOOP $nn,X	2*	4*		zp-x read	yes	yes*	yes*	yes*
+d5	CMP $nn,X	2	4		zp-x read	no	yes	yes	yes
+d6	DEC $nn,X	2	6		zp-x rrw	yes	yes	yes	yes
+d7	SMB5 $nn	2	5		zp rrw		yes	no	yes	yes
+d7	NOOP		1	1		imp single	yes	yes	no	no
+d8	CLD		1*	2*		imp		no	yes*	yes*	yes*
+d9	CMP $nnnn,Y	3	4/5		abs-y read	yes	yes	yes	yes
+da	PHX		1*	3*		stack push	yes	yes*	yes*	yes*
+db	STP		1	3		stp		yes	no	no	yes
+db	NOOP		1	1		imp single	yes	yes	yes	no
+dc	NOP $nnnn	3*	4*		abs-x read	yes	yes*	yes*	yes*
+dd	CMP $nnnn,X	3	4/5		abs-x read	yes	yes	yes	yes
+de	DEC $nnnn,X	3	7		abs-x rrw	yes	yes	yes	yes
+df	BBS5 $nn,$nnnn	3	5		zp-branch	yes	no	yes	yes
+df	NOOP		1	1		imp single	yes	yes	no	no
 
-opcode	mnemonic	bytes	cycles	mode		changed	65SC02	R65C02	WDC65C02
-------	--------	-----	------	----		-------	------	------	--------
-e0	CPX #$nn	2	2	imm		no	yes	yes	yes
-e1	SBC ($nn,X)	2	6/7	ind-x read	yes	yes	yes	yes
-e2	NOOP #$nn	2*	2*	imm		yes	yes*	yes*	yes*
-e3	NOOP		1*	1*	imp single	yes	yes*	yes*	yes*
-e4	CPX $nn		2	3	zp read		no	yes	yes	yes
-e5	SBC $nn		2	3/4	zp read		yes	yes	yes	yes
-e6	INC $nn		2	5	zp rrw		yes	yes	yes	yes
-e7	SMB6 $nn	2	5	zp rrw		yes	no	yes	yes
-e7	NOOP		1	1	imp single	yes	yes	no	no
-e8	INX		1	2	imp		no	yes	yes	yes
-e9	SBC #$nn	2	2/3	imm		yes	yes	yes	yes
-ea	NOP		1*	2*	imp		no	yes*	yes*	yes*
-eb	NOOP		1*	1*	imp single	yes	yes*	yes*	yes*
-ec	CPX $nnnn	3	4	abs read	no	yes	yes	yes
-ed	SBC $nnnn	3	4/5	abs read	yes	yes	yes	yes
-ee	INC $nnnn	3	6	abs rrw		yes	yes	yes	yes
-ef	BBS6 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
-ef	NOOP		1	1	imp single	yes	yes	no	no
+opcode	mnemonic	bytes	cycles		mode		changed	65SC02	R65C02	WDC65C02
+------	--------	-----	------		----		-------	------	------	--------
+e0	CPX #$nn	2	2		imm		no	yes	yes	yes
+e1	SBC ($nn,X)	2	6/7		ind-x read	yes	yes	yes	yes
+e2	NOOP #$nn	2*	2*		imm		yes	yes*	yes*	yes*
+e3	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
+e4	CPX $nn		2	3		zp read		no	yes	yes	yes
+e5	SBC $nn		2	3/4		zp read		yes	yes	yes	yes
+e6	INC $nn		2	5		zp rrw		yes	yes	yes	yes
+e7	SMB6 $nn	2	5		zp rrw		yes	no	yes	yes
+e7	NOOP		1	1		imp single	yes	yes	no	no
+e8	INX		1*	2*		imp		no	yes*	yes*	yes*
+e9	SBC #$nn	2	2/3		imm		yes	yes	yes	yes
+ea	NOP		1*	2*		imp		no	yes*	yes*	yes*
+eb	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
+ec	CPX $nnnn	3	4		abs read	no	yes	yes	yes
+ed	SBC $nnnn	3	4/5		abs read	yes	yes	yes	yes
+ee	INC $nnnn	3	6		abs rrw		yes	yes	yes	yes
+ef	BBS6 $nn,$nnnn	3	5		zp-branch	yes	no	yes	yes
+ef	NOOP		1	1		imp single	yes	yes	no	no
 
-opcode	mnemonic	bytes	cycles	mode		changed	65SC02	R65C02	WDC65C02
-------	--------	-----	------	----		-------	------	------	--------
-f0	BEQ $nnnn	2	2/3/4	branch		no	yes	yes	yes
-f1	SBC ($nn),Y	2	5/6/7	ind-y read	yes	yes	yes	yes
-f2	SBC ($nn)	2	5/6	ind read	yes	yes	yes	yes
-f3	NOOP		1*	1*	imp single	yes	yes*	yes*	yes*
-f4	NOOP $nn,X	2*	4*	zp-x read	yes	yes*	yes*	yes*
-f5	SBC $nn,X	2	4/5	zp-x read	yes	yes	yes	yes
-f6	INC $nn,X	2	6	zp-x rrw	yes	yes	yes	yes
-f7	SMB7 $nn	2	5	zp rrw		yes	no	yes	yes
-f7	NOOP		1	1	imp single	yes	yes	no	no
-f8	SED		1*	2*	imp		no	yes*	yes*	yes*
-f9	SBC $nnnn,Y	3	4/5/6	abs-y read	yes	yes	yes	yes
-fa	PLX		1*	4*	stack pull	yes	yes*	yes*	yes*
-fb	NOOP		1*	1*	imp single	yes	yes*	yes*	yes*
-fc	NOOP $nnnn	3*	4*	abs-x read	yes	yes*	yes*	yes*
-fd	SBC $nnnn,X	3	4/5/6	abs-x read	yes	yes	yes	yes
-fe	INC $nnnn,X	3	7	abs-x rrw	yes	yes	yes	yes
-ff	BBS7 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
-ff	NOOP		1	1	imp single	yes	yes	no	no
+opcode	mnemonic	bytes	cycles		mode		changed	65SC02	R65C02	WDC65C02
+------	--------	-----	------		----		-------	------	------	--------
+f0	BEQ $nnnn	2	2/3/4		branch		no	yes	yes	yes
+f1	SBC ($nn),Y	2	5/6/7		ind-y read	yes	yes	yes	yes
+f2	SBC ($nn)	2	5/6		ind read	yes	yes	yes	yes
+f3	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
+f4	NOOP $nn,X	2*	4*		zp-x read	yes	yes*	yes*	yes*
+f5	SBC $nn,X	2	4/5		zp-x read	yes	yes	yes	yes
+f6	INC $nn,X	2	6		zp-x rrw	yes	yes	yes	yes
+f7	SMB7 $nn	2	5		zp rrw		yes	no	yes	yes
+f7	NOOP		1	1		imp single	yes	yes	no	no
+f8	SED		1*	2*		imp		no	yes*	yes*	yes*
+f9	SBC $nnnn,Y	3	4/5/6		abs-y read	yes	yes	yes	yes
+fa	PLX		1*	4*		stack pull	yes	yes*	yes*	yes*
+fb	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
+fc	NOOP $nnnn	3*	4*		abs-x read	yes	yes*	yes*	yes*
+fd	SBC $nnnn,X	3	4/5/6		abs-x read	yes	yes	yes	yes
+fe	INC $nnnn,X	3	7		abs-x rrw	yes	yes	yes	yes
+ff	BBS7 $nn,$nnnn	3	5		zp-branch	yes	no	yes	yes
+ff	NOOP		1	1		imp single	yes	yes	no	no
 
 
 65(S)C02 NOP timing test code
@@ -2390,7 +2390,404 @@ E90E   58             CLI        ---
 E90F   60             RTS        ---
 
 
-ADC and SBC seem to do a read if last instruction when in decimal mode.
+65(S)C02 ADC timing test code
+=============================
+
+$40   -> 01
+$80   -> 02
+$C0   -> 00
+$C1   -> EA
+$C2   -> 80
+$C3   -> EA
+$EA00 -> 03
+$EA80 -> 04
+$EAC0 -> 05
+$EB00 -> 06
+
+addr   b1   b2   b3   mnemonic      expected output
+----   --   --   --   --------      ---------------
+E900   78             SEI
+E901   A5   40        LDA $40
+E903   48             PHA
+E904   A5   80        LDA $80
+E906   48             PHA
+E907   A5   C0        LDA $C0
+E909   48             PHA
+E90A   A5   C1        LDA $C1
+E90C   48             PHA
+E90D   A5   C2        LDA $C2
+E90F   48             PHA
+E910   A5   C3        LDA $C3
+E912   48             PHA
+E913   A2   01        LDX #$01
+E915   86   40        STX $40
+E917   E8             INX
+E918   86   80        STX $80
+E91A   E8             INX
+E91B   8E   00   EA   STX $EA00
+E91E   E8             INX
+E91F   8E   80   EA   STX $EA80
+E922   E8             INX
+E923   8E   C0   EA   STX $EAC0
+E926   E8             INX
+E927   8E   00   EB   STX $EB00
+E92A   A9   EA        LDA #$EA
+E92C   85   C1        STA $C1
+E92E   85   C3        STA $C3
+E930   A9   00        LDA #$00
+E932   85   C0        STA $C0
+E934   A9   80        LDA #$80
+E936   85   C2        STA $C2
+E938   A2   40        LDX #$40
+E93A   A0   80        LDY #$80
+E93C   A9   01        LDA #$01
+E93E   8D   00   E9   STA $E900
+E941   38             SEC           read 38 from E941 at 0	*
+                                    read D8 from E942 at 1	*
+E942   D8             CLD           read D8 from E942 at 2	*
+                                    read 61 from E943 at 3	*
+E943   61   80        ADC ($80,X)   read 61 from E943 at 4	*
+                                    read 80 from E944 at 5	*
+                                    (read 02 from 80 at 6)	not shown *
+                                    (read 00 from C0 at 7)	not shown *
+                                    (read EA from C1 at 8)	not shown *
+                                    read 03 from EA00 at 9	*
+E945   8D   01   EB   STA $EB01     read 8D from E945 at A	*
+                                    read 01 from E946 at B	*
+                                    read EB from E947 at C	*
+                                    wrote 05 to EB01 at D	*
+E948   18             CLC           read 18 from E948 at E	*
+                                    read F8 from E949 at F	*
+E949   F8             SED           read F8 from E949 at 10	*
+                                    read 61 from E94A at 11	*
+E94A   61   80        ADC ($80,X)   read 61 from E94A at 12	*
+                                    read 80 from E94B at 13	*
+                                    (read 02 from 80 at 14)	not shown *
+                                    (read 00 from C0 at 15)	not shown *
+                                    (read EA from C1 at 16)	not shown *
+                                    read 03 from EA00 at 17	*
+                                    read 80 from E94B at 18	*
+E94C   8D   02   EB   STA $EB02     read 8D from E94C at 19	*
+                                    read 02 from E94D at 1A	*
+                                    read EB from E94E at 1B	*
+                                    wrote 08 to EB02 at 1C	*
+E94F   38             SEC           read 38 from E94F at 1D	*
+                                    read 65 from E950 at 1E	*
+E950   65   80        ADC $80       read 65 from E950 at 1F	*
+                                    read 80 from E951 at 20	*
+                                    read 02 from 80 at 21	*
+                                    read 80 from E951 at 22	*
+E952   8D   03   EB   STA $EB03     read 8D from E952 at 23	*
+                                    read 03 from E953 at 24	*
+                                    read EB from E954 at 25	*
+                                    wrote 11 to EB03 at 26	*
+E955   18             CLC           read 18 from E955 at 27	*
+                                    read D8 from E956 at 28	*
+E956   D8             CLD           read D8 from E956 at 29	*
+                                    read 65 from E957 at 2A	*
+E957   65   40        ADC $40       read 65 from E957 at 2B	*
+                                    read 40 from E958 at 2C	*
+                                    read 01 from 40 at 2D	*
+E959   8D   04   EB   STA $EB04     read 8D from E959 at 2E	*
+                                    read 04 from E95A at 2F	*
+                                    read EB from E95B at 30	*
+                                    wrote 12 to EB04 at 31	*
+E95C   38             SEC           read 38 from E95C at 32	*
+                                    read 69 from E95D at 33	*
+E95D   69   0E        ADC #$0E      read 69 from E95D at 34	*
+                                    read 0E from E95E at 35	*
+E95F   8D   05   EB   STA $EB05     read 8D from E95F at 36	*
+                                    read 05 from E960 at 37	*
+                                    read EB from E961 at 38	*
+                                    wrote 21 to EB05 at 39	*
+E962   18             CLC           read 18 from E962 at 3A	*
+                                    read F8 from E963 at 3B	*
+E963   F8             SED           read F8 from E963 at 3C	*
+                                    read 69 from E964 at 3D	*
+E964   69   09        ADC #$09      read 69 from E964 at 3E	*
+                                    read 09 from E965 at 3F	*
+                                    read 09 from E965 at 40	*
+E966   8D   06   EB   STA $EB06     read 8D from E966 at 41	*
+                                    read 06 from E967 at 42	*
+                                    read EB from E968 at 43	*
+                                    wrote 30 to EB06 at 44	*
+E969   38             SEC           read 38 from E969 at 45	*
+                                    read 6D from E96A at 46	*
+E96A   6D   00   EA   ADC $EA00     read 6D from E96A at 47	*
+                                    read 00 from E96B at 48	*
+                                    read EA from E96C at 49	*
+                                    read 03 from EA00 at 4A	*
+                                    read EA from E96C at 4B	*
+E96D   8D   07   EB   STA $EB07     read 8D from E96D at 4C	*
+                                    read 07 from E96E at 4D	*
+                                    read EB from E96F at 4E	*
+                                    wrote 34 to EB07 at 4F	*
+E970   18             CLC           read 18 from E970 at 50	*
+                                    read D8 from E971 at 51	*
+E971   D8             CLD           read D8 from E971 at 52	*
+                                    read 6D from E972 at 53	*
+E972   6D   00   EB   ADC $EB00     read 6D from E972 at 54	*
+                                    read 00 from E973 at 55	*
+                                    read EB from E974 at 56	*
+                                    read 06 from EB00 at 57	*
+E975   8D   08   EB   STA $EB08     read 8D from E975 at 58	*
+                                    read 08 from E976 at 59	*
+                                    read EB from E977 at 5A	*
+                                    wrote 3A to EB08 at 5B	*
+E978   38             SEC           read 38 from E978 at 5C	*
+                                    read 71 from E979 at 5D	*
+E979   71   C0        ADC ($C0),Y   read 71 from E979 at 5E	*
+                                    read C0 from E97A at 5F	*
+                                    (read 00 from C0 at 60)	not shown *
+                                    (read EA from C1 at 61)	not shown *
+                                    read 04 from EA80 at 62	*
+E97B   8D   09   EB   STA $EB09     read 8D from E97B at 63	*
+                                    read 09 from E97C at 64	*
+                                    read EB from E97D at 65	*
+                                    wrote 3F to EB09 at 66	*
+E97E   18             CLC           read 18 from E97E at 67	*
+                                    read 71 from E97F at 68	*
+E97F   71   C2        ADC ($C2),Y   read 71 from E97F at 69	*
+                                    read C2 from E980 at 6A	*
+                                    (read 80 from C2 at 6B)	not shown *
+                                    (read EA from C3 at 6C)	not shown *
+                                    read C2 from E980 at 6D	*
+                                    read 06 from EB00 at 6E	*
+E981   8D   0A   EB   STA $EB0A     read 8D from E981 at 6F	*
+                                    read 0A from E982 at 70	*
+                                    read EB from E983 at 71	*
+                                    wrote 45 to EB0A at 72	*
+E984   38             SEC           read 38 from E984 at 73	*
+                                    read F8 from E985 at 74	*
+E985   F8             SED           read F8 from E985 at 75	*
+                                    read 71 from E986 at 76	*
+E986   71   C0        ADC ($C0),Y   read 71 from E986 at 77	*
+                                    read C0 from E987 at 78	*
+                                    (read 00 from C0 at 79)	not shown *
+                                    (read EA from C1 at 7A)	not shown *
+                                    read 04 from EA80 at 7B	*
+                                    read C0 from E987 at 7C	*
+E988   8D   0B   EB   STA $EB0B     read 8D from E988 at 7D	*
+                                    read 0B from E989 at 7E	*
+                                    read EB from E98A at 7F	*
+                                    wrote 50 to EB0B at 80	*
+E98B   18             CLC           read 18 from E98B at 81	*
+                                    read 71 from E98C at 82	*
+E98C   71   C2        ADC ($C2),Y   read 71 from E98C at 83	*
+                                    read C2 from E98D at 84	*
+                                    (read 80 from C2 at 85)	not shown *
+                                    (read EA from C3 at 86)	not shown *
+                                    read C2 from E98D at 87	*
+                                    read 06 from EB00 at 88	*
+                                    read C2 from E98D at 89	*
+E98E   8D   0C   EB   STA $EB0C     read 8D from E98E at 8A	*
+                                    read 0C from E98F at 8B	*
+                                    read EB from E990 at 8C	*
+                                    wrote 56 to EB0C at 8D	*
+E991   38             SEC           read 38 from E991 at 8E	*
+                                    read 72 from E992 at 8F	*
+E992   72   C0        ADC ($C0)     read 72 from E992 at 90	*
+                                    read C0 from E993 at 91	*
+                                    (read 00 from C0 at 92)	not shown *	
+                                    (read EA from C1 at 93)	not shown *
+                                    read 03 from EA00 at 94	*
+                                    read C0 from E993 at 95	*
+E994   8D   0D   EB   STA $EB0D     read 8D from E994 at 96	*
+                                    read 0D from E995 at 97	*
+                                    read EB from E996 at 98	*
+                                    wrote 60 to EB0D at 99	*
+E997   18             CLC           read 18 from E997 at 9A	*
+                                    read D8 from E998 at 9B	*
+E998   D8             CLD           read D8 from E998 at 9C	*
+                                    read 72 from E999 at 9D	*
+E999   72   C2        ADC ($C2)     read 72 from E999 at 9E	*
+                                    read C2 from E99A at 9F	*
+                                    (read 80 from C2 at A0)	not shown *
+                                    (read EA from C3 at A1)	not shown *
+                                    read 04 from EA80 at A2	*
+E99B   8D   0E   EB   STA $EB0E     read 8D from E99B at A3	*
+                                    read 0E from E99C at A4	*
+                                    read EB from E99D at A5	*
+                                    wrote 64 to EB0E at A6	*
+E99E   38             SEC           read 38 from E99E at A7	*
+                                    read 79 from E99F at A8	*
+E99F   79   00   EA   ADC $EA00,Y   read 79 from E99F at A9	*
+                                    read 00 from E9A0 at AA	*
+                                    read EA from E9A1 at AB	*
+                                    read 04 from EA80 at AC	*
+E9A2   8D   0F   EB   STA $EB0F     read 8D from E9A2 at AD	*
+                                    read 0F from E9A3 at AE	*
+                                    read EB from E9A4 at AF	*
+                                    wrote 69 to EB0F at B0	*
+E9A5   18             CLC           read 18 from E9A5 at B1	*
+                                    read 79 from E9A6 at B2	*
+E9A6   79   80   EA   ADC $EA80,Y   read 79 from E9A6 at B3	*
+                                    read 80 from E9A7 at B4	*
+                                    read EA from E9A8 at B5	*
+                                    read EA from E9A8 at B6	*
+                                    read 06 from EB00 at B7	*
+E9A9   8D   10   EB   STA $EB10     read 8D from E9A9 at B8	*
+                                    read 10 from E9AA at B9	*
+                                    read EB from E9AB at BA	*
+                                    wrote 6F to EB10 at BB	*
+E9AC   38             SEC           read 38 from E9AC at BC	*
+                                    read F8 from E9AD at BD	*
+E9AD   F8             SED           read F8 from E9AD at BE	*
+                                    read 79 from E9AE at BF	*
+E9AE   79   00   EA   ADC $EA00,Y   read 79 from E9AE at C0	*
+                                    read 00 from E9AF at C1	*
+                                    read EA from E9B0 at C2	*
+                                    read 04 from EA80 at C3	*
+                                    read EA from E9B0 at C4	*
+E9B1   8D   11   EB   STA $EB11     read 8D from E9B1 at C5	*
+                                    read 11 from E9B2 at C6	*
+                                    read EB from E9B3 at C7	*
+                                    wrote 7A to EB11 at C8	*
+E9B4   18             CLC           read 18 from E9B4 at C9	*
+                                    read 79 from E9B5 at CA	*
+E9B5   79   80   EA   ADC $EA80,Y   read 79 from E9B5 at CB	*
+                                    read 80 from E9B6 at CC	*
+                                    read EA from E9B7 at CD	*
+                                    read EA from E9B7 at CE	*
+                                    read 06 from EB00 at CF	*
+                                    read EA from E9B7 at D0	*
+E9B8   8D   12   EB   STA $EB12     read 8D from E9B8 at D1	*
+                                    read 12 from E9B9 at D2	*
+                                    read EB from E9BA at D3	*
+                                    wrote 86 to EB12 at D4	*
+E9BB   38             SEC           read 38 from E9BB at D5	*
+                                    read 7D from E9BC at D6	*
+E9BC   7D   40   EA   ADC $EA40,X   read 7D from E9BC at D7	*
+                                    read 40 from E9BD at D8	*
+                                    read EA from E9BE at D9	*
+                                    read 04 from EA80 at DA	*
+                                    read EA from E9BE at DB	*
+E9BF   8D   13   EB   STA $EB13     read 8D from E9BF at DC	*
+                                    read 13 from E9C0 at DD	*
+                                    read EB from E9C1 at DE	*
+                                    wrote 91 to EB13 at DF	*
+E9C2   18             CLC           read 18 from E9C2 at E0	*
+                                    read 7D from E9C3 at E1	*
+E9C3   7D   C0   EA   ADC $EAC0,X   read 7D from E9C3 at E2	*
+                                    read C0 from E9C4 at E3	*
+                                    read EA from E9C5 at E4	*
+                                    read EA from E9C5 at E5	*
+                                    read 06 from EB00 at E6	*
+                                    read EA from E9C5 at E7	*
+E9C6   8D   14   EB   STA $EB14     read 8D from E9C6 at E8	*
+                                    read 14 from E9C7 at E9	*
+                                    read EB from E9C8 at EA	*
+                                    wrote 97 to EB14 at EB	*
+E9C9   38             SEC           read 38 from E9C9 at EC	*
+                                    read D8 from E9CA at ED	*
+E9CA   D8             CLD           read D8 from E9CA at EE	*
+                                    read 7D from E9CB at EF	*
+E9CB   7D   40   EA   ADC $EA40,X   read 7D from E9CB at F0	*
+                                    read 40 from E9CC at F1	*
+                                    read EA from E9CD at F2	*
+                                    read 04 from EA80 at F3	*
+E9CE   8D   15   EB   STA $EB15     read 8D from E9CE at F4	*
+                                    read 15 from E9CF at F5	*
+                                    read EB from E9D0 at F6	*
+                                    wrote 9C to EB15 at F7	*
+E9D1   18             CLC           read 18 from E9D1 at F8	*
+                                    read 7D from E9D2 at F9	*
+E9D2   7D   C0   EA   ADC $EAC0,X   read 7D from E9D2 at FA	*
+                                    read C0 from E9D3 at FB	*
+                                    read EA from E9D4 at FC	*
+                                    read EA from E9D4 at FD	*
+                                    read 06 from EB00 at FE	*
+E9D5   8D   16   EB   STA $EB16     read 8D from E9D5 at FF	*
+                                    read 16 from E9D6 at 100	*
+                                    read EB from E9D7 at 101	*
+                                    wrote A2 to EB16 at 102	*
+E9D8   38             SEC           read 38 from E9D8 at 103	*
+                                    read 75 from E9D9 at 104	*
+E9D9   75   40        ADC $40,X     read 75 from E9D9 at 105	*
+                                    read 40 from E9DA at 106	*
+                                    (read 01 from 40 at 107)	not shown *	
+                                    read 02 from 80 at 108	happens at 107, is ok *
+E9DB   8D   17   EB   STA $EB17     read 8D from E9DB at 109	*
+                                    read 17 from E9DC at 10A	*
+                                    read EB from E9DD at 10B	*
+                                    wrote A5 to EB17 at 10C	*
+E9DE   18             CLC           read 18 from E9DE at 10D	*
+                                    read F8 from E9DF at 10E	*
+E9DF   F8             SED           read F8 from E9DF at 10F	*
+                                    read 75 from E9E0 at 110	*
+E9E0   75   40        ADC $40,X     read 75 from E9E0 at 111	*
+                                    read 40 from E9E1 at 112	*
+                                    (read 01 from 40 at 113)	not shown *	
+                                    read 02 from 80 at 114	happens at 113, is ok *
+                                    read 40 from E9E1 at 115	*
+E9E2   8D   18   EB   STA $EB18     read 8D from E9E2 at 116	*
+                                    read 18 from E9E3 at 117	*
+                                    read EB from E9E4 at 118	*
+                                    wrote 07 to EB18 at 119	*
+E9E5   D8             CLD           read D8 from E9E5 at 11A	*
+                                    read A9 from E9E6 at 11B	*
+E9E6   A9   78        LDA #$78      ---
+E9E8   8D   00   E9   STA $E900     ---
+E9EB   68             PLA           ---
+E9EC   85   C3        STA $C3       ---
+E9EE   68             PLA           ---
+E9EF   85   C2        STA $C2       ---
+E9F1   68             PLA           ---
+E9F2   85   C1        STA $C1       ---
+E9F4   68             PLA           ---
+E9F5   85   C0        STA $C0       ---
+E9F7   68             PLA           ---
+E9F8   85   80        STA $80       ---
+E9FA   68             PLA           ---
+E9FB   85   40        STA $40       ---
+E9FD   58             CLI           ---
+E9FE   60             RTS           ---
+
+
+65(S)C02 SBC timing test code
+=============================
+
+$40   -> 01
+$80   -> 02
+$C0   -> 00
+$C1   -> EA
+$C2   -> 80
+$C3   -> EA
+$EA00 -> 03
+$EA80 -> 04
+$EAC0 -> 05
+$EB00 -> 06
+
+addr   b1   b2   b3   mnemonic      expected output
+----   --   --   --   --------      ---------------
+E900   78             SEI
+E901   A5   40        LDA $40
+E903   48             PHA
+E904   A5   80        LDA $80
+E906   48             PHA
+E907   A5   C0        LDA $C0
+E909   48             PHA
+E90A   A5   C1        LDA $C1
+E90C   48             PHA
+E90D   A5   C2        LDA $C2
+E90F   48             PHA
+E910   A5   C3        LDA $C3
+E912   48             PHA
+E913   A9   01        LDA #$01
+E915   85   40        STA $40
+
+
+
+e1	SBC ($nn,X)	2	6/7	ind-x read	yes	yes	yes	yes
+e5	SBC $nn		2	3/4	zp read		yes	yes	yes	yes
+e9	SBC #$nn	2	2/3	imm		yes	yes	yes	yes
+ed	SBC $nnnn	3	4/5	abs read	yes	yes	yes	yes
+f1	SBC ($nn),Y	2	5/6/7	ind-y read	yes	yes	yes	yes
+f2	SBC ($nn)	2	5/6	ind read	yes	yes	yes	yes
+f5	SBC $nn,X	2	4/5	zp-x read	yes	yes	yes	yes
+f9	SBC $nnnn,Y	3	4/5/6	abs-y read	yes	yes	yes	yes
+fd	SBC $nnnn,X	3	4/5/6	abs-x read	yes	yes	yes	yes
+
 
 00	BRK		2	7	brk		yes	yes	yes	yes
 0f	BBR0 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
@@ -2416,20 +2813,11 @@ ADC and SBC seem to do a read if last instruction when in decimal mode.
 5f	BBR5 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
 5f	NOOP		1	1	imp single	yes	yes	no	no
 60	RTS		1	6	rts		no	yes	yes	yes
-61	ADC ($nn,X)	2	6/7	ind-x read	yes	yes	yes	yes
-65	ADC $nn		2	3/4	zp read		yes	yes	yes	yes
-69	ADC #$nn	2	2/3	imm		yes	yes	yes	yes
 6c	JMP ($nnnn)	3	6	ind jmp		yes	yes	yes	yes
-6d	ADC $nnnn	3	4/5	abs read	yes	yes	yes	yes
 6f	BBR6 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
 6f	NOOP		1	1	imp single	yes	yes	no	no
 70	BVS $nnnn	2	2/3/4	branch		no	yes	yes	yes
-71	ADC ($nn),Y	2	5/6/7	ind-y read	yes	yes	yes	yes
-72	ADC ($nn)	2	5/6	ind read	yes	yes	yes	yes
-75	ADC $nn,X	2	4/5	zp-x read	yes	yes	yes	yes
-79	ADC $nnnn,Y	3	4/5/6	abs-y read	yes	yes	yes	yes
 7c	JMP ($nnnn,X)	3	6	ind-x jmp	yes	yes	yes	yes
-7d	ADC $nnnn,X	3	4/5/6	abs-x read	yes	yes	yes	yes
 7f	BBR7 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
 7f	NOOP		1	1	imp single	yes	yes	no	no
 80	BRA $nnnn	2	3/4	brancg		yes	yes	yes	yes
@@ -2488,28 +2876,18 @@ de	DEC $nnnn,X	3	7	abs-x rrw	yes	yes	yes	yes
 df	BBS5 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
 df	NOOP		1	1	imp single	yes	yes	no	no
 e0	CPX #$nn	2	2	imm		no	yes	yes	yes
-e1	SBC ($nn,X)	2	6/7	ind-x read	yes	yes	yes	yes
 e4	CPX $nn		2	3	zp read		no	yes	yes	yes
-e5	SBC $nn		2	3/4	zp read		yes	yes	yes	yes
 e6	INC $nn		2	5	zp rrw		yes	yes	yes	yes
 e7	SMB6 $nn	2	5	zp rrw		yes	no	yes	yes
 e7	NOOP		1	1	imp single	yes	yes	no	no
-e8	INX		1	2	imp		no	yes	yes	yes
-e9	SBC #$nn	2	2/3	imm		yes	yes	yes	yes
 ec	CPX $nnnn	3	4	abs read	no	yes	yes	yes
-ed	SBC $nnnn	3	4/5	abs read	yes	yes	yes	yes
 ee	INC $nnnn	3	6	abs rrw		yes	yes	yes	yes
 ef	BBS6 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
 ef	NOOP		1	1	imp single	yes	yes	no	no
 f0	BEQ $nnnn	2	2/3/4	branch		no	yes	yes	yes
-f1	SBC ($nn),Y	2	5/6/7	ind-y read	yes	yes	yes	yes
-f2	SBC ($nn)	2	5/6	ind read	yes	yes	yes	yes
-f5	SBC $nn,X	2	4/5	zp-x read	yes	yes	yes	yes
 f6	INC $nn,X	2	6	zp-x rrw	yes	yes	yes	yes
 f7	SMB7 $nn	2	5	zp rrw		yes	no	yes	yes
 f7	NOOP		1	1	imp single	yes	yes	no	no
-f9	SBC $nnnn,Y	3	4/5/6	abs-y read	yes	yes	yes	yes
-fd	SBC $nnnn,X	3	4/5/6	abs-x read	yes	yes	yes	yes
 fe	INC $nnnn,X	3	7	abs-x rrw	yes	yes	yes	yes
 ff	BBS7 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
 ff	NOOP		1	1	imp single	yes	yes	no	no
