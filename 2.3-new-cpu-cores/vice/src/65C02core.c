@@ -734,8 +734,8 @@
       tmp = (tmp - 1) & 0xff;                             \
       LOCAL_SET_NZ(tmp);                                  \
       INC_PC(pc_inc);                                     \
-      store_func(tmp_addr, tmp);                          \
       CLK_ADD(CLK, (clk_inc));                            \
+      store_func(tmp_addr, tmp);                          \
   } while (0)
 
 #define DEX()              \
@@ -775,8 +775,8 @@
       tmp = (load_func(tmp_addr) + 1) & 0xff;             \
       LOCAL_SET_NZ(tmp);                                  \
       INC_PC(pc_inc);                                     \
-      store_func(tmp_addr, tmp);                          \
       CLK_ADD(CLK, (clk_inc));                            \
+      store_func(tmp_addr, tmp);                          \
   } while (0)
 
 #define INX()              \
@@ -825,6 +825,8 @@
       WORD dest_addr;                              \
       dest_addr = LOAD(p2);                        \
       CLK_ADD(CLK, CYCLES_1);                      \
+      LOAD(reg_pc + 2);                            \
+      CLK_ADD(CLK, CYCLES_1);                      \
       dest_addr |= (LOAD((p2 + 1) & 0xffff) << 8); \
       CLK_ADD(CLK, CYCLES_1);                      \
       JUMP(dest_addr);                             \
@@ -834,6 +836,8 @@
   do {                                                     \
       WORD dest_addr;                                      \
       dest_addr = LOAD((p2 + reg_x) & 0xffff);             \
+      CLK_ADD(CLK, CYCLES_1);                              \
+      LOAD(reg_pc + 2);                                    \
       CLK_ADD(CLK, CYCLES_1);                              \
       dest_addr |= (LOAD((p2 + reg_x + 1) & 0xffff) << 8); \
       CLK_ADD(CLK, CYCLES_1);                              \
@@ -1369,7 +1373,7 @@
             /* 0  1  2  3  4  5  6  7  8  9  A  B  C  D  E  F */
     /* $00 */  1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 2, 2, 2, 0, /* $00 */
     /* $10 */  1, 1, 1, 0, 1, 1, 1, 0, 1, 2, 1, 0, 2, 2, 2, 0, /* $10 */
-    /* $20 */  2, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 2, 2, 2, 0, /* $20 */
+    /* $20 */  1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 2, 2, 2, 0, /* $20 */
     /* $30 */  1, 1, 1, 0, 1, 1, 1, 0, 1, 2, 1, 0, 2, 2, 2, 0, /* $30 */
     /* $40 */  1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 2, 2, 2, 0, /* $40 */
     /* $50 */  1, 1, 1, 0, 1, 1, 1, 0, 1, 2, 1, 0, 2, 2, 2, 0, /* $50 */
@@ -2269,7 +2273,7 @@ trap_skipped:
             break;
 
           case 0xc6:            /* DEC $nn */
-            DEC(p1, CYCLES_3, SIZE_2, LOAD_ZERO, STORE_ABS);
+            DEC(p1, CYCLES_3, SIZE_2, LOAD_ZERO, STORE_ZERO);
             break;
 
           case 0xc7:            /* SMB4 $nn (65C02) / single byte, single cycle NOP (65SC02) */
@@ -2301,7 +2305,7 @@ trap_skipped:
             break;
 
           case 0xce:            /* DEC $nnnn */
-            DEC(p2, CYCLES_3, SIZE_3, LOAD_ABS, STORE_ABS);
+            DEC(p2, CYCLES_1, SIZE_3, LOAD_ABS, STORE_ABS_RRW);
             break;
 
           case 0xcf:            /* BBS4 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
@@ -2325,7 +2329,7 @@ trap_skipped:
             break;
 
           case 0xd6:            /* DEC $nn,X */
-            DEC((p1 + reg_x) & 0xff, CYCLES_4, SIZE_2, LOAD_ABS, STORE_ABS);
+            DEC((p1 + reg_x) & 0xff, CYCLES_4, SIZE_2, LOAD_ZERO, STORE_ZERO);
             break;
 
           case 0xd7:            /* SMB5 $nn (65C02) / single byte, single cycle NOP (65SC02) */
@@ -2353,7 +2357,7 @@ trap_skipped:
             break;
 
           case 0xde:            /* DEC $nnnn,X */
-            DEC(p2, CYCLES_3, SIZE_3, LOAD_ABS_X_RMW, STORE_ABS_X_RMW);
+            DEC(p2, CYCLES_1, SIZE_3, LOAD_ABS_X_RMW, STORE_ABS_X_RRW);
             break;
 
           case 0xdf:            /* BBS5 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
@@ -2377,7 +2381,7 @@ trap_skipped:
             break;
 
           case 0xe6:            /* INC $nn */
-            INC(p1, CYCLES_3, SIZE_2, LOAD_ZERO, STORE_ABS);
+            INC(p1, CYCLES_3, SIZE_2, LOAD_ZERO, STORE_ZERO);
             break;
 
           case 0xe7:            /* SMB6 $nn (65C02) / single byte, single cycle NOP (65SC02) */
@@ -2405,7 +2409,7 @@ trap_skipped:
             break;
 
           case 0xee:            /* INC $nnnn */
-            INC(p2, CYCLES_3, SIZE_3, LOAD_ABS, STORE_ABS);
+            INC(p2, CYCLES_1, SIZE_3, LOAD_ABS, STORE_ABS_RRW);
             break;
 
           case 0xef:            /* BBS6 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
@@ -2429,7 +2433,7 @@ trap_skipped:
             break;
 
           case 0xf6:            /* INC $nn,X */
-            INC((p1 + reg_x) & 0xff, CYCLES_4, SIZE_2, LOAD_ZERO, STORE_ABS);
+            INC((p1 + reg_x) & 0xff, CYCLES_4, SIZE_2, LOAD_ZERO, STORE_ZERO);
             break;
 
           case 0xf7:            /* SMB7 $nn (65C02) / single byte, single cycle NOP (65SC02) */
@@ -2453,7 +2457,7 @@ trap_skipped:
             break;
 
           case 0xfe:            /* INC $nnnn,X */
-            INC(p2, CYCLES_3, SIZE_3, LOAD_ABS_X_RMW, STORE_ABS_X_RMW);
+            INC(p2, CYCLES_1, SIZE_3, LOAD_ABS_X_RMW, STORE_ABS_X_RRW);
             break;
 
           case 0xff:            /* BBS7 $nn,$nnnn (65C02) / single byte, single cycle NOP (65SC02) */
