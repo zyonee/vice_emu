@@ -623,24 +623,24 @@
       INC_PC(SIZE_2);                 \
   } while (0)
 
-#define BRANCH(cond, value)                                 \
-  do {                                                      \
-      unsigned int dest_addr = 0;                           \
-      INC_PC(SIZE_2);                                       \
-                                                            \
-      if (cond) {                                           \
-          dest_addr = reg_pc + (signed char)(value);        \
-                                                            \
-          LOAD(reg_pc);                                     \
-          CLK_ADD(CLK, CYCLES_1);                           \
-          if ((reg_pc ^ dest_addr) & 0xff00) {              \
-              LOAD((reg_pc & 0xff00) | (dest_addr & 0xff)); \
-              CLK_ADD(CLK, CYCLES_1);                       \
-          } else {                                          \
-              OPCODE_DELAYS_INTERRUPT();                    \
-          }                                                 \
-          JUMP(dest_addr & 0xffff);                         \
-      }                                                     \
+#define BRANCH(cond, value)                          \
+  do {                                               \
+      unsigned int dest_addr = 0;                    \
+      INC_PC(SIZE_2);                                \
+                                                     \
+      if (cond) {                                    \
+          dest_addr = reg_pc + (signed char)(value); \
+                                                     \
+          LOAD(reg_pc);                              \
+          CLK_ADD(CLK, CYCLES_1);                    \
+          if ((reg_pc ^ dest_addr) & 0xff00) {       \
+              LOAD(reg_pc);                          \
+              CLK_ADD(CLK, CYCLES_1);                \
+          } else {                                   \
+              OPCODE_DELAYS_INTERRUPT();             \
+          }                                          \
+          JUMP(dest_addr & 0xffff);                  \
+      }                                              \
   } while (0)
 
 #define BRK()                  \
