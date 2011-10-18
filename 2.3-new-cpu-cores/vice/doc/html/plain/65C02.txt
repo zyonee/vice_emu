@@ -326,7 +326,7 @@ opcode	mnemonic	bytes	cycles
 6c	JMP ($nnnn)	3	6
 
 
-The 65(S)C02 has a new branch instructio, BRA (branch always), the cycle count
+The 65(S)C02 has a new branch instructions, BRA (branch always), the cycle count
 is the same as for the other branch instruction except for the fact that the
 condition is always true, and therefore the case of not taking the branch
 doesn't exist, and so the minimum cycles for this branch is 3:
@@ -503,7 +503,7 @@ opcode	mnemonic	bytes	cycles		mode		changed	65SC02	R65C02	WDC65C02
 
 opcode	mnemonic	bytes	cycles		mode		changed	65SC02	R65C02	WDC65C02
 ------	--------	-----	------		----		-------	------	------	--------
-10	BPL $nnnn	2	2/3/4		branch		no	yes	yes	yes
+10	BPL $nnnn	2*	2*/3*/4*	branch		no	yes*	yes*	yes*
 11	ORA ($nn),Y	2*	5*/6*		ind-y read	yes	yes*	yes*	yes*
 12	ORA ($nn)	2*	5*		ind read	yes	yes*	yes*	yes*
 13	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
@@ -545,7 +545,7 @@ opcode	mnemonic	bytes	cycles		mode		changed	65SC02	R65C02	WDC65C02
 
 opcode	mnemonic	bytes	cycles		mode		changed	65SC02	R65C02	WDC65C02
 ------	--------	-----	------		----		-------	------	------	--------
-30	BMI $nnnn	2	2/3/4		branch		no	yes	yes	yes
+30	BMI $nnnn	2*	2*/3*/4*	branch		no	yes*	yes*	yes*
 31	AND ($nn),Y	2*	5*/6*		ind-y read	yes	yes*	yes*	yes*
 32	AND ($nn)	2*	5*		ind read	yes	yes*	yes*	yes*
 33	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
@@ -587,7 +587,7 @@ opcode	mnemonic	bytes	cycles		mode		changed	65SC02	R65C02	WDC65C02
 
 opcode	mnemonic	bytes	cycles		mode		changed	65SC02	R65C02	WDC65C02
 ------	--------	-----	------		----		-------	------	------	--------
-50	BVC $nnnn	2	2/3/4		branch		no	yes	yes	yes
+50	BVC $nnnn	2*	2*/3*/4*	branch		no	yes*	yes*	yes*
 51	EOR ($nn),Y	2*	5*/6*		ind-y read	yes	yes*	yes*	yes*
 52	EOR ($nn)	2*	5*		ind read	yes	yes*	yes*	yes*
 53	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
@@ -629,7 +629,7 @@ opcode	mnemonic	bytes	cycles		mode		changed	65SC02	R65C02	WDC65C02
 
 opcode	mnemonic	bytes	cycles		mode		changed	65SC02	R65C02	WDC65C02
 ------	--------	-----	------		----		-------	------	------	--------
-70	BVS $nnnn	2	2/3/4		branch		no	yes	yes	yes
+70	BVS $nnnn	2*	2*/3*/4*	branch		no	yes*	yes*	yes*
 71	ADC ($nn),Y	2*	5*/6*/7*	ind-y read	yes	yes*	yes*	yes*
 72	ADC ($nn)	2*	5*/6*		ind read	yes	yes*	yes*	yes*
 73	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
@@ -650,7 +650,7 @@ opcode	mnemonic	bytes	cycles		mode		changed	65SC02	R65C02	WDC65C02
 
 opcode	mnemonic	bytes	cycles		mode		changed	65SC02	R65C02	WDC65C02
 ------	--------	-----	------		----		-------	------	------	--------
-80	BRA $nnnn	2	3/4		branch		yes	yes	yes	yes
+80	BRA $nnnn	2*	3*/4*		branch		yes	yes*	yes*	yes*
 81	STA ($nn,X)	2*	6*		ind-x write	no	yes*	yes*	yes*
 82	NOP #$nn	2*	2*		imm		yes	yes*	yes*	yes*
 83	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
@@ -661,7 +661,7 @@ opcode	mnemonic	bytes	cycles		mode		changed	65SC02	R65C02	WDC65C02
 87	NOOP		1	1		imp single	yes	yes	no	no	
 88	DEY		1*	2*		imp		no	yes*	yes*	yes*
 89	BIT #$nn	2	2		imm		yes	yes	yes	yes
-8a	TXA		1	2		imp		no	yes	yes	yes
+8a	TXA		1*	2*		imp		no	yes*	yes*	yes*
 8b	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
 8c	STY $nnnn	3*	4*		abs write	no	yes*	yes*	yes*
 8d	STA $nnnn	3*	4*		abs write	no	yes*	yes*	yes*
@@ -671,7 +671,7 @@ opcode	mnemonic	bytes	cycles		mode		changed	65SC02	R65C02	WDC65C02
 
 opcode	mnemonic	bytes	cycles		mode		changed	65SC02	R65C02	WDC65C02
 ------	--------	-----	------		----		-------	------	------	--------
-90	BCC $nnnn	2	2/3/4		branch		no	yes	yes	yes
+90	BCC $nnnn	2*	2*/3*/4*	branch		no	yes*	yes*	yes*
 91	STA ($nn),Y	2*	6*		ind-y write	no	yes*	yes*	yes*
 92	STA ($nn)	2*	5*		ind write	yes	yes*	yes*	yes*
 93	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
@@ -680,9 +680,9 @@ opcode	mnemonic	bytes	cycles		mode		changed	65SC02	R65C02	WDC65C02
 96	STX $nn,Y	2*	4*		zp-x write	no	yes*	yes*	yes*
 97	SMB1 $nn	2	5		zp rrw		yes	no	yes	yes
 97	NOOP		1	1		imp single	yes	yes	no	no
-98	TYA		1	2		imp		no	yes	yes	yes
+98	TYA		1*	2*		imp		no	yes*	yes*	yes*
 99	STA $nnnn,Y	3*	5*		abs-y write	yes	yes*	yes*	yes*
-9a	TXS		1	2		imp		no	yes	yes	yes
+9a	TXS		1*	2*		imp		no	yes*	yes*	yes*
 9b	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
 9c	STZ $nnnn	3*	4*		abs write	yes	yes*	yes*	yes*
 9d	STA $nnnn,X	3*	5*		abs-x write	yes	yes*	yes*	yes*
@@ -701,9 +701,9 @@ a5	LDA $nn		2*	3*		zp read		no 	yes*	yes*	yes*
 a6	LDX $nn		2*	3*		zp read		no	yes*	yes*	yes*
 a7	SMB2 $nn	2	5		zp rrw		yes	no	yes	yes
 a7	NOOP		1	1		imp single	yes	yes	no	no
-a8	TAY		1	2		imp		no	yes	yes	yes
+a8	TAY		1*	2*		imp		no	yes*	yes*	yes*
 a9	LDA #$nn	2*	2*		imm		no	yes*	yes*	yes*
-aa	TAX		1	2		imp		no	yes	yes	yes
+aa	TAX		1*	2*		imp		no	yes*	yes*	yes*
 ab	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
 ac	LDY $nnnn	3*	4*		abs read	no	yes*	yes*	yes*
 ad	LDA $nnnn	3*	4*		abs read	no	yes*	yes*	yes*
@@ -713,7 +713,7 @@ af	NOOP		1	1		imp single	yes	yes	no	no
 
 opcode	mnemonic	bytes	cycles		mode		changed	65SC02	R65C02	WDC65C02
 ------	--------	-----	------		----		-------	------	------	--------
-b0	BCS $nnnn	2	2/3/4		branch		no	yes	yes	yes
+b0	BCS $nnnn	2*	2*/3*/4*	branch		no	yes*	yes*	yes*
 b1	LDA ($nn),Y	2*	5*/6*		ind-y read	yes	yes*	yes*	yes*
 b2	LDA ($nn)	2*	5*		ind read	yes	yes*	yes*	yes*
 b3	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
@@ -724,7 +724,7 @@ b7	SMB3 $nn	2	5		zp rrw		yes	no	yes	yes
 b7	NOOP		1	1		imp single	yes	yes	no	no
 b8	CLV		1*	2*		imp		no	yes*	yes*	yes*
 b9	LDA $nnnn,Y	3*	4*/5*		abs-y read	yes	yes*	yes*	yes*
-ba	TSX		1	2		imp		no	yes	yes	yes
+ba	TSX		1*	2*		imp		no	yes*	yes*	yes*
 bb	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
 bc	LDY $nnnn,X	3*	4*/5*		abs-x read	yes	yes*	yes*	yes*
 bd	LDA $nnnn,X	3*	4*/5*		abs-x read	yes	yes*	yes*	yes*
@@ -740,7 +740,7 @@ c2	NOOP #$nn	2*	2*		imm		yes	yes*	yes*	yes*
 c3	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
 c4	CPY $nn		2	3		zp read		no	yes	yes	yes
 c5	CMP $nn		2	3		zp read		no	yes	yes	yes
-c6	DEC $nn		2	5		zp rrw		yes	yes	yes	yes
+c6	DEC $nn		2*	5*		zp rrw		yes	yes*	yes*	yes*
 c7	SMB4 $nn	2	5		zp rrw		yes	no	yes	yes
 c7	NOOP		1	1		imp single	yes	yes	no	no
 c8	INY		1*	2*		imp		no	yes*	yes*	yes*
@@ -750,19 +750,19 @@ cb	WAI		1	3		wai		yes	no	no	yes
 cb	NOOP		1	1		imp single	yes	yes	yes	no
 cc	CPY $nnnn	3	4		abs read	no	yes	yes	yes
 cd	CMP $nnnn	3	4		abs read	no	yes	yes	yes
-ce	DEC $nnnn	3	6		abs rrw		yes	yes	yes	yes
+ce	DEC $nnnn	3*	6*		abs rrw		yes	yes*	yes*	yes*
 cf	BBS4 $nn,$nnnn	3	5		zp-branch	yes	no	yes	yes
 cf	NOOP		1	1		imp single	yes	yes	no	no
 
 opcode	mnemonic	bytes	cycles		mode		changed	65SC02	R65C02	WDC65C02
 ------	--------	-----	------		----		-------	------	------	--------
-d0	BNE $nnnn	2	2/3/4		branch		no	yes	yes	yes
+d0	BNE $nnnn	2*	2*/3*/4*	branch		no	yes*	yes*	yes*
 d1	CMP ($nn),Y	2	5/6		ind-y read	yes	yes	yes	yes
 d2	CMP ($nn)	2	5		ind read	yes	yes	yes	yes
 d3	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
 d4	NOOP $nn,X	2*	4*		zp-x read	yes	yes*	yes*	yes*
 d5	CMP $nn,X	2	4		zp-x read	no	yes	yes	yes
-d6	DEC $nn,X	2	6		zp-x rrw	yes	yes	yes	yes
+d6	DEC $nn,X	2*	6*		zp-x rrw	yes	yes*	yes*	yes*
 d7	SMB5 $nn	2	5		zp rrw		yes	no	yes	yes
 d7	NOOP		1	1		imp single	yes	yes	no	no
 d8	CLD		1*	2*		imp		no	yes*	yes*	yes*
@@ -772,7 +772,7 @@ db	STP		1	3		stp		yes	no	no	yes
 db	NOOP		1	1		imp single	yes	yes	yes	no
 dc	NOP $nnnn	3*	4*		abs-x read	yes	yes*	yes*	yes*
 dd	CMP $nnnn,X	3	4/5		abs-x read	yes	yes	yes	yes
-de	DEC $nnnn,X	3	7		abs-x rrw	yes	yes	yes	yes
+de	DEC $nnnn,X	3*	7*		abs-x rrw	yes	yes*	yes*	yes*
 df	BBS5 $nn,$nnnn	3	5		zp-branch	yes	no	yes	yes
 df	NOOP		1	1		imp single	yes	yes	no	no
 
@@ -784,7 +784,7 @@ e2	NOOP #$nn	2*	2*		imm		yes	yes*	yes*	yes*
 e3	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
 e4	CPX $nn		2	3		zp read		no	yes	yes	yes
 e5	SBC $nn		2*	3*/4*		zp read		yes	yes*	yes*	yes*
-e6	INC $nn		2	5		zp rrw		yes	yes	yes	yes
+e6	INC $nn		2*	5*		zp rrw		yes	yes*	yes*	yes*
 e7	SMB6 $nn	2	5		zp rrw		yes	no	yes	yes
 e7	NOOP		1	1		imp single	yes	yes	no	no
 e8	INX		1*	2*		imp		no	yes*	yes*	yes*
@@ -793,19 +793,19 @@ ea	NOP		1*	2*		imp		no	yes*	yes*	yes*
 eb	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
 ec	CPX $nnnn	3	4		abs read	no	yes	yes	yes
 ed	SBC $nnnn	3*	4*/5*		abs read	yes	yes*	yes*	yes*
-ee	INC $nnnn	3	6		abs rrw		yes	yes	yes	yes
+ee	INC $nnnn	3*	6*		abs rrw		yes	yes*	yes*	yes*
 ef	BBS6 $nn,$nnnn	3	5		zp-branch	yes	no	yes	yes
 ef	NOOP		1	1		imp single	yes	yes	no	no
 
 opcode	mnemonic	bytes	cycles		mode		changed	65SC02	R65C02	WDC65C02
 ------	--------	-----	------		----		-------	------	------	--------
-f0	BEQ $nnnn	2	2/3/4		branch		no	yes	yes	yes
+f0	BEQ $nnnn	2*	2*/3*/4*	branch		no	yes*	yes*	yes*
 f1	SBC ($nn),Y	2*	5*/6*/7*	ind-y read	yes	yes*	yes*	yes*
 f2	SBC ($nn)	2*	5*/6*		ind read	yes	yes*	yes*	yes*
 f3	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
 f4	NOOP $nn,X	2*	4*		zp-x read	yes	yes*	yes*	yes*
 f5	SBC $nn,X	2*	4*/5*		zp-x read	yes	yes*	yes*	yes*
-f6	INC $nn,X	2	6		zp-x rrw	yes	yes	yes	yes
+f6	INC $nn,X	2*	6*		zp-x rrw	yes	yes*	yes*	yes*
 f7	SMB7 $nn	2	5		zp rrw		yes	no	yes	yes
 f7	NOOP		1	1		imp single	yes	yes	no	no
 f8	SED		1*	2*		imp		no	yes*	yes*	yes*
@@ -814,7 +814,7 @@ fa	PLX		1*	4*		stack pull	yes	yes*	yes*	yes*
 fb	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
 fc	NOOP $nnnn	3*	4*		abs-x read	yes	yes*	yes*	yes*
 fd	SBC $nnnn,X	3*	4*/5*/6*	abs-x read	yes	yes*	yes*	yes*
-fe	INC $nnnn,X	3	7		abs-x rrw	yes	yes	yes	yes
+fe	INC $nnnn,X	3*	7*		abs-x rrw	yes	yes*	yes*	yes*
 ff	BBS7 $nn,$nnnn	3	5		zp-branch	yes	no	yes	yes
 ff	NOOP		1	1		imp single	yes	yes	no	no
 
@@ -2393,17 +2393,6 @@ E90F   60             RTS        ---
 65(S)C02 ADC timing test code
 =============================
 
-$40   -> 01
-$80   -> 02
-$C0   -> 00
-$C1   -> EA
-$C2   -> 80
-$C3   -> EA
-$EA00 -> 03
-$EA80 -> 04
-$EAC0 -> 05
-$EB00 -> 06
-
 addr   b1   b2   b3   mnemonic      expected output
 ----   --   --   --   --------      ---------------
 E900   78             SEI
@@ -3086,68 +3075,575 @@ E9FB   58             CLI           ---
 E9FC   60             RTS           ---
 
 
+65(S)C02 TRANSFER timing test code
+==================================
+
+addr   b1   b2   b3   mnemonic      expected output
+----   --   --   --   --------      ---------------
+E900   78             SEI
+E901   A9   01        LDA #$01
+E903   8D   00   E9   STA $E900
+E906   A9   11        LDA #$11      read A9 from E906 at 0	*
+                                    read 11 from E907 at 1	*
+E908   A2   22        LDX #$22      read A2 from E908 at 2	*
+                                    read 22 from E909 at 3	*
+E90A   A0   33        LDY #$33      read A0 from E90A at 4	*
+                                    read 33 from E90B at 5	*
+E90C   AA             TAX           read AA from E90C at 6	*
+                                    read 8E from E90D at 7	*
+E90D   8E   00   EA   STX $EA00     read 8E from E90D at 8	*
+                                    read 00 from E90E at 9	*
+                                    read EA from E90F at A	*
+                                    wrote 11 to EA00 at B	*
+E910   A8             TAY           read A8 from E910 at C	*
+                                    read 8C from E911 at D	*
+E911   8C   01   EA   STY $EA01     read 8C from E911 at E	*
+                                    read 01 from E912 at F	*
+                                    read EA from E913 at 10	*
+                                    wrote 11 to EA01 at 11	*
+E914   A2   22        LDX #$22      read A2 from E914 at 12	*
+                                    read 22 from E915 at 13	*
+E916   A0   33        LDY #$33      read A0 from E916 at 14	*
+                                    read 33 from E917 at 15	*
+E918   8A             TXA           read 8A from E918 at 16	*
+                                    read 8D from E919 at 17	*
+E919   8D   02   EA   STA $EA02     read 8D from E919 at 18	*
+                                    read 02 from E91A at 19	*
+                                    read EA from E91B at 1A	*
+                                    wrote 22 to EA02 at 1B	*
+E91C   98             TYA           read 98 from E91C at 1C	*
+                                    read 8D from E91D at 1D	*
+E91D   8D   03   EA   STA $EA03     read 8D from E91D at 1E	*
+                                    read 03 from E91E at 1F	*
+                                    read EA from E91F at 20	*
+                                    wrote 33 to EA03 at 21	*
+E920   BA             TSX           read BA from E920 at 22	*
+                                    read 8E from E921 at 23	*
+E921   8E   04   EA   STA $EA04     read 8E from E921 at 24	*
+                                    read 04 from E922 at 25	*
+                                    read EA from E923 at 26	*
+                                    wrote F8 to EA04 at 27	*
+E924   CA             DEX           read CA from E924 at 28	*
+                                    read BA from E925 at 29	*
+E925   BA             TXS           read BA from E925 at 2A	*
+                                    read 68 from E926 at 2B	*
+E926   68             PLA           read 68 from E926 at 2C	*
+                                    read 8D from E927 at 2D	*
+E927   8D   05   EA   STA $EA05     read 8D from E927 at 30	*
+                                    read 05 from E928 at 31	*
+                                    read EA from E929 at 32	*
+                                    wrote 81 to EA05 at 33	*
+E92A   A9   78        LDA #$78      ---
+E92C   8D   00   E9   STA $E900     ---
+E92F   58             CLI           ---
+E930   60             RTS           ---
+
+
+65(S)C02 DEC/INC timing test code
+=================================
+
+addr   b1   b2   b3   mnemonic      expected output
+----   --   --   --   --------      ---------------
+E900   78             SEI
+E901   A5   40        LDA $40
+E903   48             PHA
+E904   A5   80        LDA $80
+E906   48             PHA
+E907   A9   54        LDA #$54
+E909   85   40        STA $40
+E90B   A9   E2        LDA #$E2
+E90D   85   80        STA $80
+E90F   A9   EE        LDA #$EE
+E911   8D   00   EA   STA $EA00
+E914   A9   67        LDA #$67
+E916   8D   80   EA   STA $EA80
+E919   A9   12        LDA #$12
+E91B   8D   00   EB   STA $EB00
+E91E   A2   40        LDX #$40
+E920   A9   01        LDA #$01
+E922   8D   00   E9   STA $E900
+E925   C6   40        DEC $40       read C6 from E925 at 0	*
+                                    read 40 from E926 at 1	*
+                                    read 54 from 40 at 2	*
+                                    (read 54 from 40 at 3)	not shown *
+                                    wrote 53 to 40 at 4		happens at 5, is ok *
+E927   CE   00   EA   DEC $EA00     read CE from E927 at 5	*
+                                    read 00 from E928 at 6	*
+                                    read EA from E929 at 7	*
+                                    read EE from EA00 at 8	*
+                                    read EE from EA00 at 9	*
+                                    wrote ED to EA00 at A	*
+E92A   D6   40        DEC $40,X     read D6 from E92A at B	*
+                                    read 40 from E92B at C	*
+                                    (read 53 from 40 at D)	not shown *
+                                    read E2 from 80 at E        happens at D, is ok *
+                                    (read E2 from 80 at F)	not shown *
+                                    wrote E1 to 80 at 10	happens at 11, is ok *
+E92C   DE   40   EA   DEC $EA40,X   read DE from E92C at 11	*
+                                    read 40 from E92D at 12	*
+                                    read EA from E92E at 13	*
+                                    read EA from E92E at 14	*
+                                    read 67 from EA80 at 15	*
+                                    read 67 from EA80 at 16	*
+                                    wrote 66 to EA80 at 17	*
+E92F   DE   C0   EA   DEC $EAC0,X   read DE from E92F at 18	*
+                                    read C0 from E930 at 19	*
+                                    read EA from E931 at 1A	*
+                                    read EA from E931 at 1B	*
+                                    read 12 from EB00 at 1C	*
+                                    read 12 from EB00 at 1D	*
+                                    wrote 11 to EB00 at 1E	*
+E932   E6   40        INC $40       read E6 from E932 at 1F	*
+                                    read 40 from E933 at 20	*
+                                    read 53 from 40 at 21	*
+                                    (read 53 from 40 at 22)	not shown *
+                                    wrote 54 to 40 at 23	happens at 24, is ok *
+E934   EE   00   EA   INC $EA00     read EE from E934 at 24	*
+                                    read 00 from E935 at 25	*
+                                    read EA from E936 at 26	*
+                                    read ED from EA00 at 27	*
+                                    read ED from EA00 at 28	*
+                                    wrote EE to EA00 at 29	*
+E937   F6   40        INC $40,X     read F6 from E937 at 2A	*
+                                    read 40 from E938 at 2B	*
+                                    (read 54 from 40 at 2C)	not shown *
+                                    read E1 from 80 at 2D	happens at 2C, is ok *
+                                    (read E1 from 80 at 2E)	not shown *
+                                    wrote E2 to 80 at 2F	happens at 30, is ok *
+E939   FE   40   EA   INC $EA40,X   read FE from E939 at 30	*
+                                    read 40 from E93A at 31	*
+                                    read EA from E93B at 32	*
+                                    read EA from E93B at 33	*
+                                    read 66 from EA80 at 34	*
+                                    read 66 from EA80 at 35	*
+                                    wrote 67 to EA80 at 36	*
+E93C   FE   C0   EA   INC $EAC0,X   read FE from E93C at 37	*
+                                    read C0 from E93D at 38	*
+                                    read EA from E93E at 39	*
+                                    read EA from E93E at 3A	*
+                                    read 11 from EB00 at 3B	*
+                                    read 11 from EB00 at 3C	*
+                                    wrote 12 to EB00 at 3D	*
+E93F   A9   78        LDA #$78      ---
+E941   8D   00   E9   STA $E900     ---
+E944   68             PLA           ---
+E945   85   80        STA $80       ---
+E947   68             PLA           ---
+E948   85   40        STA $40       ---
+E94A   58             CLI           ---
+E94B   60             RTS           ---
+
+
+
+65(S)C02 BIT timing test code
+=============================
+
+addr   b1   b2   b3   mnemonic      expected output
+----   --   --   --   --------      ---------------
+E900   78             SEI
+E901   A5   40        LDA $40
+E903   48             PHA
+E904   A5   80        LDA $80
+E906   48             PHA
+E907   A9   11        LDA #$11
+E909   85   40        STA $40
+E90B   A9   22        LDA #$22
+E90D   85   80        STA $80
+E90F   A9   33        LDA #$33
+E911   8D   00   EA   STA $EA00
+E914   A9   44        LDA #$44
+E916   8D   80   EA   STA $EA80
+E919   A9   55        LDA #$55
+E91B   8D   00   EB   STA $EB00
+E91E   A2   40        LDX #$40
+E920   A9   01        LDA #$01
+E922   8D   00   E9   STA $E900
+E925   89   00        BIT #$00      read 89 from E925 at 0	*
+                                    read 00 from E926 at 1	*
+E927   24   40        BIT $40       read 24 from E927 at 2	*
+                                    read 40 from E928 at 3	*
+                                    read 11 from 40 at 4	*
+E929   2C   00   EA   BIT $EA00     read 2C from E929 at 5	*
+                                    read 00 from E92A at 6	*
+                                    read EA from E92B at 7	*
+                                    read 33 from EA00 at 8	*
+E92C   34   40        BIT $40,X     read 34 from E92C at 9	*
+                                    read 40 from E92D at A	*
+                                    (read 11 from 40 at B)	not shown *
+                                    read 22 from 80 at C	happens at B, is ok *
+E92E   3C   40   EA   BIT $EA40,X   read 3C from E92E at D	*
+                                    read 40 from E92F at E	*
+                                    read EA from E930 at F	*
+                                    read 44 from EA80 at 10	*
+E931   3C   C0   EA   BIT $EAC0,X   read 3C from E931 at 11	*
+                                    read C0 from E932 at 12	*
+                                    read EA from E933 at 13	*
+                                    read EA from E933 at 14	*
+                                    read 55 from EB00 at 15	*
+E934   A9   78        LDA #$78      ---
+E936   8D   00   E9   STA $E900     ---
+E939   68             PLA           ---
+E93A   85   80        STA $80       ---
+E93C   68             PLA           ---
+E93D   85   40        STA $40       ---
+E93F   58             CLI           ---
+E940   60             RTS           ---
+
+
+65(S)C02 JSR/RTS timing test code
+=================================
+
+
+addr   b1   b2   b3   mnemonic      expected output
+----   --   --   --   --------      ---------------
+E900   78             SEI
+E901   A9   60        LDA #$60
+E903   8D   00   EB   STA $EB00
+E906   8D   01   EB   STA $EB01
+E909   A9   01        LDA #$01
+E90B   8D   00   E9   STA $E900
+E90E   20   00   EB   JSR $EB00     read 20 from E90E at 0	*
+                                    read 00 from E90F at 1	*
+                                    read EB from E910 at 5	*
+*EB00* 60             RTS           read 60 from EB00 at 6	*
+                                    read 60 from EB01 at 7	*
+                                    read EB from E910 at B	*
+E911   A9   78        LDA #$78      ---
+E913   8D   00   E9   STA $E900     ---
+E916   58             CLI           ---
+E917   60             RTS           ---
+
+
+65(S)C02 JMP timing test code
+=============================
+
+addr   b1   b2   b3   mnemonic      expected output
+----   --   --   --   --------      ---------------
+E900   78             SEI
+E901   A9   E9        LDA #$E9
+E903   8D   01   EA   STA $EA01
+E906   8D   81   EA   STA $EA81
+E909   A9   28        LDA #$28
+E90B   8D   00   EA   STA $EA00
+E90E   A9   30        LDA #$30
+E910   8D   80   EA   STA $EA80
+E913   A2   40        LDX #$40
+E915   A9   01        LDA #$01
+E917   8D   00   E9   STA $E900
+E91A   4C   20   E9   JMP $E920     read 4C from E91A at 0	*
+                                    read 20 from E91B at 1	*
+                                    read E9 from E91C at 2	*
+E91D   8D   00   EB   STA $EB00
+E920   6C   00   EA   JMP ($EA00)   read 6C from E920 at 3	*
+                                    read 00 from E921 at 4	*
+                                    read EA from E922 at 5	*
+                                    read 28 from EA00 at 6	*
+                                    read EA from E922 at 7	*
+                                    read E9 from EA01 at 8	*
+E923   8D   01   EB   STA $EB01
+E926   85   40        STA $40
+E928   7C   40   EA   JMP ($EA40,X) read 7C from E928 at 9	*
+                                    read 40 from E929 at A	*
+                                    read EA from E92A at B	*
+                                    read 30 from EA80 at C	*
+                                    read EA from E92A at D	*
+                                    read E9 from EA81 at E	*
+wrote 78 to E900 at 18
+E92B   8D   02   EB   STA $EB02
+E92E   85   80        STA $80
+E930   8D   03   EB   STA $EB03     read 8D from E930 at F	*
+                                    read 03 from E931 at 10	*
+                                    read EB from E932 at 11	*
+                                    wrote 01 to EB03 at 12	*
+E933   A9   78        LDA #$78      ---
+E935   8D   00   E9   STA $E900     ---
+E938   58             CLI           ---
+E939   60             RTS           ---
+
+
+65(S)C02 BRANCH timing test code
+================================
+
+EAEC -> 80	BRA
+EAED -> 12	BRA
+EAEE -> F0      BEQ
+EAEF -> 10      BEQ
+EAF0 -> D0	BNE
+EAF1 -> 0E	BNE
+EAF2 -> B0	BCS
+EAF3 -> 0C	BCS
+EAF4 -> 90	BCC
+EAF5 -> 0A	BCC
+EAF6 -> 50	BVC
+EAF7 -> 08	BVC
+EAF8 -> 70	BVS
+EAF9 -> 06	BVS
+EAFA -> 30	BMI
+EAFB -> 04	BMI
+EAFC -> 10	BPL
+EAFD -> 02	BPL
+EB00 -> 60
+
+addr   b1   b2   b3   mnemonic      expected output
+----   --   --   --   --------      ---------------
+E900   78             SEI
+E901   A9   80        LDA #$80
+E903   8D   EC   EA   STA $EAEC
+E906   A9   12        LDA #$12
+E908   8D   ED   EA   STA $EAED
+E90B   A9   F0        LDA #$F0
+E90D   8D   EE   EA   STA $EAEE
+E910   A9   10        LDA #$10
+E912   8D   EF   EA   STA $EAEF
+E915   A9   D0        LDA #$D0
+E917   8D   F0   EA   STA $EAF0
+E91A   A9   0E        LDA #$0E
+E91C   8D   F1   EA   STA $EAF1
+E91F   A9   B0        LDA #$B0
+E921   8D   F2   EA   STA $EAF2
+E924   A9   0C        LDA #$0C
+E926   8D   F3   EA   STA $EAF3
+E929   A9   90        LDA #$90
+E92B   8D   F4   EA   STA $EAF4
+E92E   A9   0A        LDA #$0A
+E930   8D   F5   EA   STA $EAF5
+E933   A9   50        LDA #$50
+E935   8D   F6   EA   STA $EAF6
+E938   A9   08        LDA #$08
+E93A   8D   F7   EA   STA $EAF7
+E93D   A9   70        LDA #$70
+E93F   8D   F8   EA   STA $EAF8
+E942   A9   06        LDA #$06
+E944   8D   F9   EA   STA $EAF9
+E947   A9   30        LDA #$30
+E949   8D   FA   EA   STA $EAFA
+E94C   A9   04        LDA #$04
+E94E   8D   FB   EA   STA $EAFB
+E951   A9   10        LDA #$10
+E953   8D   FC   EA   STA $EAFC
+E956   A9   02        LDA #$02
+E958   8D   FD   EA   STA $EAFD
+E95B   A9   60        LDA #$60
+E95D   8D   00   EB   STA $EB00
+E960   A9   01        LDA #$01
+E962   8D   00   E9   STA $E900
+E965   A9   FF        LDA #$FF      read A9 from E965 at 0	*
+                                    read FF from E966 at 1	*
+E967   10   FE        BPL $E967     read 10 from E967 at 2	*
+                                    read FE from E968 at 3	*
+E969   A9   01        LDA #$01      read A9 from E969 at 4	*
+                                    read 01 from E96A at 5	*
+E96B   10   02        BPL $E96F     read 10 from E96B at 6	*
+                                    read 02 from E96C at 7	*
+                                    read 85 from E96D at 8	*
+E96D   85   40        STA $40
+E96F   20   FC   EA   JSR $EAFC     read 20 from E96F at 9	*
+                                    read FC from E970 at A	*
+                                    read EA from E971 at E	*
+*EAFC* 10   02        BPL $EB00     read 10 from EAFC at F	*
+                                    read 02 from EAFD at 10	*
+                                    read 00 from EAFE at 11	*
+                                    read 00 from EAFE at 12	*
+*EB00* 60             RTS           read 60 from EB00 at 13	*
+                                    read 00 from EB01 at 14	*
+                                    read EA from E971 at 18	*
+E972   30   FE        BMI $E972     read 30 from E972 at 19	*
+                                    read FE from E973 at 1A	*
+E974   A9   FF        LDA #$FF      read A9 from E974 at 1B	*
+                                    read FF from E975 at 1C	*
+E976   30   02        BMI $E97A     read 30 from E976 at 1D	*
+                                    read 02 from E977 at 1E	*
+                                    read 85 from E978 at 1F	*
+E978   85   40        STA $40
+E97A   20   FA   EA   JSR $EAFA     read 20 from E97A at 20	*
+                                    read FA from E97B at 21	*
+                                    read EA from E97C at 25	*
+*EAFA* 30   04        BMI $EB00     read 30 from EAFA at 26	*
+                                    read 04 from EAFB at 27	*
+                                    read 10 from EAFC at 28	*
+                                    read 10 from EAFC at 29	*
+*EB00* 60             RTS           read 60 from EB00 at 2A	*
+                                    read 00 from EB01 at 2B	*
+                                    read EA from E97C at 2F	*
+E97D   08             PHP           read 08 from E97D at 30	*
+                                    read 68 from E97E at 31	*
+E97E   68             PLA           read 68 from E97E at 33	*
+                                    read 09 from E97F at 34	*
+E97F   09   40        ORA #$40      read 09 from E97F at 37	*
+                                    read 40 from E980 at 38	*
+E981   48             PHA           read 48 from E981 at 39	*
+                                    read 28 from E982 at 3A	*
+E982   28             PLP           read 28 from E982 at 3C	*
+                                    read 70 from E983 at 3D	*
+E983   70   02        BVS $E987     read 70 from E983 at 40	*
+                                    read 02 from E984 at 41	*
+                                    read 85 from E985 at 42	*
+E985   85   40        STA $40
+E987   20   F8   EA   JSR $EAF8     read 20 from E987 at 43	*
+                                    read F8 from E988 at 44	*
+                                    read EA from E989 at 48	*
+*EAF8* 70   06        BVS $EB00     read 70 from EAF8 at 49	*
+                                    read 06 from EAF9 at 4A	*
+                                    read 30 from EAFA at 4B	*
+                                    read 30 from EAFA at 4C	*
+*EB00* 60             RTS           read 60 from EB00 at 4D	*
+                                    read 00 from EB01 at 4E	*
+                                    read EA from E989 at 52	*
+E98A   50   FE        BVC $E98A     read 50 from E98A at 53	*
+                                    read FE from E98B at 54	*
+E98C   B8             CLV           read B8 from E98C at 55	*
+                                    read 70 from E98D at 56	*
+E98D   70   FE        BVS $E98D     read 70 from E98D at 57	*
+                                    read FE from E98E at 58	*
+E98F   50   02        BVC $E993     read 50 from E98F at 59	*
+                                    read 02 from E990 at 5A	*
+                                    read 85 from E991 at 5B	*
+E991   85   40        STA $40
+E993   20   F6   EA   JSR $EAF6     read 20 from E993 at 5C	*
+                                    read F6 from E994 at 5D	*
+                                    read EA from E995 at 61	*
+*EAF6* 50   08        BVC $EB00     read 50 from EAF6 at 62	*
+                                    read 08 from EAF7 at 63	*
+                                    read 70 from EAF8 at 64	*
+                                    read 70 from EAF8 at 65	*
+*EB00* 60             RTS           read 60 from EB00 at 66	*
+                                    read 00 from EB01 at 67	*
+                                    read EA from E995 at 6B	*
+E996   38             SEC           read 38 from E996 at 6C	*
+                                    read 90 from E997 at 6D	*
+E997   90   FE        BCC $E997     read 90 from E997 at 6E	*
+                                    read FE from E998 at 6F	*
+E999   18             CLC           read 18 from E999 at 70	*
+                                    read 90 from E99A at 71	*
+E99A   90   02        BCC $E99E     read 90 from E99A at 72	*
+                                    read 02 from E99B at 73	*
+                                    read 85 from E99C at 74	*
+E99C   85   40        STA $40
+E99E   20   F4   EA   JSR $EAF4     read 20 from E99E at 75	*
+                                    read F4 from E99F at 76	*
+                                    read EA from E9A0 at 7A	*
+*EAF4* 90   0A        BCC $EB00     read 90 from EAF4 at 7B	*
+                                    read 0A from EAF5 at 7C	*
+                                    read 50 from EAF6 at 7D	*
+                                    read 50 from EAF6 at 7E	*
+*EB00* 60             RTS           read 60 from EB00 at 7F	*
+                                    read 00 from EB01 at 80	*
+                                    read EA from E9A0 at 84	*
+E9A1   B0   FE        BCS $E9A1     read B0 from E9A1 at 85	*
+                                    read FE from E9A2 at 86	*
+E9A3   38             SEC           read 38 from E9A3 at 87	*
+                                    read B0 from E9A4 at 88	*
+E9A4   B0   02        BCS $E9A8     read B0 from E9A4 at 89	*
+                                    read 02 from E9A5 at 8A	*
+                                    read 85 from E9A6 at 8B	*
+E9A6   85   40        STA $40
+E9A8   20   F2   EA   JSR $EAF2     read 20 from E9A8 at 8C	*
+                                    read F2 from E9A9 at 8D	*
+                                    read EA from E9AA at 91	*
+*EAF2* B0   0C        BCS $EB00     read B0 from EAF2 at 92	*
+                                    read 0C from EAF3 at 93	*
+                                    read 90 from EAF4 at 94	*
+                                    read 90 from EAF5 at 95	*
+*EB00* 60             RTS           read 60 from EB00 at 96	*
+                                    read 00 from EB01 at 97	*
+                                    read EA from E9AA at 9B	*
+E9AB   A9   00        LDA #$00      read A9 from E9AB at 9C	*
+                                    read 00 from E9AC at 9D	*
+E9AD   D0   FE        BNE $E9AD     read D0 from E9AD at 9E	*
+                                    read FE from E9AE at 9F	*
+E9AF   A9   01        LDA #$01      read A9 from E9AF at A0	*
+                                    read 01 from E9B0 at A1	*
+E9B1   D0   02        BNE $E9B5     read D0 from E9B1 at A2	*
+                                    read 02 from E9B2 at A3	*
+                                    read 85 from E9B3 at A4	*
+E9B3   85   40        STA $40
+E9B5   20   F0   EA   JSR $EAF0     read 20 from E9B5 at A5	*
+                                    read F0 from E9B6 at A6	*
+                                    read EA from E9B7 at AA	*
+*EAF0* D0   0E        BNE $EB00     read D0 from EAF0 at AB	*
+                                    read 0E from EAF1 at AC	*
+                                    read B0 from EAF2 at AD	*
+                                    read B0 from EAF2 at AE	*
+*EB00* 60             RTS           read 60 from EB00 at AF	*
+                                    read 00 from EB01 at B0	*
+                                    read EA from E9B7 at B4	*
+E9B8   F0   FE        BEQ $E9B8     read F0 from E9B8 at B5	*
+                                    read FE from E9B9 at B6	*
+E9BA   A9   00        LDA #$00      read A9 from E9BA at B7	*
+                                    read 00 from E9BB at B8	*
+E9BC   F0   02        BEQ $E9C0     read F0 from E9BC at B9	*
+                                    read 02 from E9BD at BA	*
+                                    read 85 from E9BE at BB	*
+E9BE   85   40        STA $40
+E9C0   20   EE   EA   JSR $EAEE     read 20 from E9C0 at BC	*
+                                    read EE from E9C1 at BD	*
+                                    read EA from E9C2 at C1	*
+*EAEE* F0   10        BEQ $EB00     read F0 from EAEE at C2	*
+                                    read 10 from EAEF at C3	*
+                                    read D0 from EAF0 at C4	*
+                                    read D0 from EAF0 at C5	*
+*EB00* 60             RTS           read 60 from EB00 at C6	*
+                                    read 00 from EB01 at C7	*
+                                    read EA from E9C2 at CB	*
+E9C3   80   02        BRA $E9C7     read 80 from E9C3 at CC	*
+                                    read 02 from E9C4 at CD	*
+                                    read 85 from E9C5 at CE	*
+E9C5   85   40        STA $40
+E9C7   20   EC   EA   JSR $EAEC     read 20 from E9C7 at CF	*
+                                    read EC from E9C8 at D0	*
+                                    read EA from E9C9 at D4	*
+*EAEC* 80   12        BRA $EB00     read 80 from EAEC at D5	*
+                                    read 12 from EAED at D6	*
+                                    read F0 from EAEE at D7	*
+                                    read F0 from EAEE at D8	*
+*EB00* 60             RTS           read 60 from EB00 at D9	*
+                                    read xx from EB01 at DA	*
+                                    read EA from E9C9 at DE	*
+E9CA   A9   78        LDA #$78      ---
+E9CC   8D   00   E9   STA $E900     ---
+E9CF   58             CLI           ---
+E9D0   60             RTS           ---
+
+
+
 00	BRK		2	7	brk		yes	yes	yes	yes
 0f	BBR0 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
 0f	NOOP		1	1	imp single	yes	yes	no	no
-10	BPL $nnnn	2	2/3/4	branch		no	yes	yes	yes
 1f	BBR1 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
 1f	NOOP		1	1	imp single	yes	yes	no	no
-20	JSR $nnnn	3	6	abs jsr		no	yes	yes	yes
-24	BIT $nn		2	3	zp read		no	yes	yes	yes
-2c	BIT $nnnn	3	4	abs read	no	yes	yes	yes
 2f	BBR2 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
 2f	NOOP		1	1	imp single	yes	yes	no	no
-30	BMI $nnnn	2	2/3/4	branch		no	yes	yes	yes
-34	BIT $nn,X	2	4	zp-x read	yes	yes	yes	yes
-3c	BIT $nnnn,X	3	4/5	abs-x read	yes	yes	yes	yes
 3f	BBR3 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
 3f	NOOP		1	1	imp single	yes	yes	no	no
 40	RTI		1	6	RTI		no	yes	yes	yes
-4c	JMP $nnnn	3	3	abs jmp		no	yes	yes	yes
 4f	BBR4 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
 4f	NOOP		1	1	imp single	yes	yes	no	no
-50	BVC $nnnn	2	2/3/4	branch		no	yes	yes	yes
 5f	BBR5 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
 5f	NOOP		1	1	imp single	yes	yes	no	no
-60	RTS		1	6	rts		no	yes	yes	yes
-6c	JMP ($nnnn)	3	6	ind jmp		yes	yes	yes	yes
 6f	BBR6 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
 6f	NOOP		1	1	imp single	yes	yes	no	no
-70	BVS $nnnn	2	2/3/4	branch		no	yes	yes	yes
-7c	JMP ($nnnn,X)	3	6	ind-x jmp	yes	yes	yes	yes
 7f	BBR7 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
 7f	NOOP		1	1	imp single	yes	yes	no	no
-80	BRA $nnnn	2	3/4	brancg		yes	yes	yes	yes
 87	SMB0 $nn	2	5	zp rrw		yes	no	yes	yes
 87	NOOP		1	1	imp single	yes	yes	no	no	
-89	BIT #$nn	2	2	imm		yes	yes	yes	yes
-8a	TXA		1	2	imp		no	yes	yes	yes
 8f	BBS0 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
 8f	NOOP		1	1	imp single	yes	yes	no	no
-90	BCC $nnnn	2	2/3/4	branch		no	yes	yes	yes
 97	SMB1 $nn	2	5	zp rrw		yes	no	yes	yes
 97	NOOP		1	1	imp single	yes	yes	no	no
-98	TYA		1	2	imp		no	yes	yes	yes
-9a	TXS		1	2	imp		no	yes	yes	yes
 9f	BBS1 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
 9f	NOOP		1	1	imp single	yes	yes	no	no
 a7	SMB2 $nn	2	5	zp rrw		yes	no	yes	yes
 a7	NOOP		1	1	imp single	yes	yes	no	no
-a8	TAY		1	2	imp		no	yes	yes	yes
-aa	TAX		1	2	imp		no	yes	yes	yes
 af	BBS2 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
 af	NOOP		1	1	imp single	yes	yes	no	no
-b0	BCS $nnnn	2	2/3/4	branch		no	yes	yes	yes
 b7	SMB3 $nn	2	5	zp rrw		yes	no	yes	yes
 b7	NOOP		1	1	imp single	yes	yes	no	no
-ba	TSX		1	2	imp		no	yes	yes	yes
 bf	BBS3 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
 bf	NOOP		1	1	imp single	yes	yes	no	no
 c0	CPY #$nn	2	2	imm		no	yes	yes	yes
 c1	CMP ($nn,X)	2	6	ind-x read	no	yes	yes	yes
 c4	CPY $nn		2	3	zp read		no	yes	yes	yes
 c5	CMP $nn		2	3	zp read		no	yes	yes	yes
-c6	DEC $nn		2	5	zp rrw		yes	yes	yes	yes
 c7	SMB4 $nn	2	5	zp rrw		yes	no	yes	yes
 c7	NOOP		1	1	imp single	yes	yes	no	no
 c9	CMP #$nn	2	2	imm		no	yes	yes	yes
@@ -3155,36 +3651,27 @@ cb	WAI		1	3	wai		yes	no	no	yes
 cb	NOOP		1	1	imp single	yes	yes	yes	no
 cc	CPY $nnnn	3	4	abs read	no	yes	yes	yes
 cd	CMP $nnnn	3	4	abs read	no	yes	yes	yes
-ce	DEC $nnnn	3	6	abs rrw		yes	yes	yes	yes
 cf	BBS4 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
 cf	NOOP		1	1	imp single	yes	yes	no	no
-d0	BNE $nnnn	2	2/3/4	branch		no	yes	yes	yes
 d1	CMP ($nn),Y	2	5/6	ind-y read	yes	yes	yes	yes
 d2	CMP ($nn)	2	5	ind read	yes	yes	yes	yes
 d5	CMP $nn,X	2	4	zp-x read	no	yes	yes	yes
-d6	DEC $nn,X	2	6	zp-x rrw	yes	yes	yes	yes
 d7	SMB5 $nn	2	5	zp rrw		yes	no	yes	yes
 d7	NOOP		1	1	imp single	yes	yes	no	no
 d9	CMP $nnnn,Y	3	4/5	abs-y read	yes	yes	yes	yes
 db	STP		1	3	stp		yes	no	no	yes
 db	NOOP		1	1	imp single	yes	yes	yes	no
 dd	CMP $nnnn,X	3	4/5	abs-x read	yes	yes	yes	yes
-de	DEC $nnnn,X	3	7	abs-x rrw	yes	yes	yes	yes
 df	BBS5 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
 df	NOOP		1	1	imp single	yes	yes	no	no
 e0	CPX #$nn	2	2	imm		no	yes	yes	yes
 e4	CPX $nn		2	3	zp read		no	yes	yes	yes
-e6	INC $nn		2	5	zp rrw		yes	yes	yes	yes
 e7	SMB6 $nn	2	5	zp rrw		yes	no	yes	yes
 e7	NOOP		1	1	imp single	yes	yes	no	no
 ec	CPX $nnnn	3	4	abs read	no	yes	yes	yes
-ee	INC $nnnn	3	6	abs rrw		yes	yes	yes	yes
 ef	BBS6 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
 ef	NOOP		1	1	imp single	yes	yes	no	no
-f0	BEQ $nnnn	2	2/3/4	branch		no	yes	yes	yes
-f6	INC $nn,X	2	6	zp-x rrw	yes	yes	yes	yes
 f7	SMB7 $nn	2	5	zp rrw		yes	no	yes	yes
 f7	NOOP		1	1	imp single	yes	yes	no	no
-fe	INC $nnnn,X	3	7	abs-x rrw	yes	yes	yes	yes
 ff	BBS7 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
 ff	NOOP		1	1	imp single	yes	yes	no	no
