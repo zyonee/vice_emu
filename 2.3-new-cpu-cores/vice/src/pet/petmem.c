@@ -119,7 +119,7 @@ BYTE zero_read(WORD addr)
 {
 #ifdef TEST_CPU
     if (test_mem[0] == 1) {
-        printf("read %02X from %02X at %X\n", mem_ram[addr & 0xff], addr & 0xff, maincpu_clk - clock_state);
+        log_message(pet_mem_log, "read %02X from %02X at %X", mem_ram[addr & 0xff], addr & 0xff, maincpu_clk - clock_state);
     }
 #endif
     return mem_ram[addr & 0xff];
@@ -129,7 +129,7 @@ void zero_store(WORD addr, BYTE value)
 {
 #ifdef TEST_CPU
     if (test_mem[0] == 1) {
-        printf("wrote %02X to %02X at %X\n", value, addr & 0xff, maincpu_clk - clock_state);
+        log_message(pet_mem_log, "wrote %02X to %02X at %X\n", value, addr & 0xff, maincpu_clk - clock_state);
     }
 #endif
     mem_ram[addr & 0xff] = value;
@@ -210,7 +210,7 @@ static BYTE read_unused(WORD addr)
             if (clock_state == 0) {
                 clock_state = maincpu_clk;
             }
-            printf("read %02X from %04X at %X\n", test_mem[addr - 0xe900], addr, maincpu_clk - clock_state);
+            log_message(pet_mem_log, "read %02X from %04X at %X\n", test_mem[addr - 0xe900], addr, maincpu_clk - clock_state);
         } else {
             clock_state = 0;
         }
@@ -460,7 +460,7 @@ static void store_dummy(WORD addr, BYTE value)
 #ifdef TEST_CPU
     if (addr >= 0xe900 && addr < 0xec00) {
         if (test_mem[0] == 1) {
-            printf("wrote %02X to %04X at %X\n", value, addr, maincpu_clk - clock_state);
+            log_message(pet_mem_log, "wrote %02X to %04X at %X\n", value, addr, maincpu_clk - clock_state);
         }
         test_mem[addr - 0xe900] = value;
     }
