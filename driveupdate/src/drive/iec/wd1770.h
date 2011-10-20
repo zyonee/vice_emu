@@ -31,12 +31,11 @@
 
 struct disk_image_s;
 struct drive_context_s;
+struct fd_drive_s;
 typedef struct wd1770_s wd1770_t;
 
-extern void wd1770d_init(struct drive_context_s *drv);
-
-extern int wd1770_attach_image(struct disk_image_s *image, unsigned int unit);
-extern int wd1770_detach_image(struct disk_image_s *image, unsigned int unit);
+extern void wd1770_init(struct drive_context_s *drv);
+extern void wd1770_setup_context(drive_context_t *drv);
 
 extern inline int wd1770_disk_change(wd1770_t *drv);
 extern inline void wd1770d_store(struct drive_context_s *drv, WORD addr, BYTE byte);
@@ -44,6 +43,7 @@ extern inline BYTE wd1770d_read(struct drive_context_s *drv, WORD addr);
 extern void wd1770_reset(wd1770_t *drv);
 extern inline void wd1770_set_side(wd1770_t *drv, int side);
 extern inline void wd1770_set_motor(wd1770_t *drv, int on);
+extern inline void wd1770_set_fdd(wd1770_t *drv, struct fd_drive_s *fdd);
 
 #endif 
 

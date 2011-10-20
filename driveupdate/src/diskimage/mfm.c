@@ -24,86 +24,66 @@
  *
  */
 
+#include <string.h>
+
 #include "vice.h"
 
 #include "mfm.h"
+#include "crc16.h"
 #include "types.h"
 #include "lib.h"
+#include "diskimage.h"
 
-static WORD *crc1021 = NULL;
-
-static void mfm_init_crc1021(void)
+void mfm_convert_sector_to_MFM(BYTE *buffer, BYTE *data, BYTE *sync,
+                               mfm_header_t *header, int gap2)
 {
-    int i, j;
-    WORD w;
-
-    crc1021 = lib_malloc(256 * sizeof(WORD));
-    for (i = 0; i < 256; i++) {
-        w = i << 8;
-        for (j = 0; j < 8; j++) {
-            if (w & 0x8000) {
-                w <<= 1;
-                w ^= 0x1021;
-            } else {
-                w <<= 1;
-            }
-        }
-        crc1021[i] = w;
-    }
-}
-
-inline WORD mfm_crc(WORD crc, BYTE b)
-{
-    if (!crc1021) {
-        mfm_init_crc1021();
-    }
-    return crc1021[(crc >> 8) ^ b] ^ (crc << 8);
-}
-
-void mfm_convert_sector_to_MFM(BYTE *buffer, WORD *raw, mfm_header_t header,
-                               unsigned int gap2)
-{
-    int i;
+    int i, size;
     WORD crc;
 
-    for (i = 0; i < 12; i++) { /* Sync */
-        *raw++ = 0x00;
-    }
-    for (i = 0; i < 3; i++) {
-        *raw++ = 0x1a1;
-    }
-    *raw++ = 0xfe; /* ID mark */
-    *raw++ = header.track;
-    crc = mfm_crc(0xb230, header.track);
-    *raw++ = header.head;
-    crc = mfm_crc(crc, header.head);
-    *raw++ = header.sector;
-    crc = mfm_crc(crc, header.sector);
-    *raw++ = header.sector_size;
-    crc = mfm_crc(crc, header.sector_size);
-    *raw++ = crc >> 8;
-    *raw++ = crc & 0xff;
+    memset(sync, 0x00, 12 + 3 + 1 + 4 + 2);
+    memset(data, 0x00, 12);    /* Sync */
+    data += 12;
+    sync += 12;
+    memset(data, 0xa1, 3); 
+    memset(sync, 0x01, 3);
+    data += 3;
+    sync += 3 + 1 + 4 + 2;
+    *data++ = 0xfe; /* ID mark */
+    *data++ = header->track;
+    crc = crc16(0xb230, header->track);
+    *data++ = header->head;
+    crc = crc16(crc, header->head);
+    *data++ = header->sector;
+    crc = crc16(crc, header->sector);
+    *data++ = header->sector_size;
+    crc = crc16(crc, header->sector_size);
+    *data++ = crc >> 8;
+    *data++ = crc & 0xff;
 
-    raw += gap2;
+    data += gap2;
+    sync += gap2;
 
-    for (i = 0; i < 12; i++) { /* Sync */
-        *raw++ = 0x00;
-    }
-    for (i = 0; i < 3; i++) {
-        *raw++ = 0x1a1;
-    }
-    *raw++ = 0xfb; /* Data mark */
+    size = (128 << header->sector_size);
+    memset(data, 0x00, 12);
+    memset(sync, 0x00, 12 + 3 + 1 + size + 2);    /* Sync */
+    data += 12;
+    sync += 12;
+    memset(data, 0xa1, 3); 
+    memset(sync, 0x01, 3);
+    data += 3;
+    memset(sync, 0x00, 1 + size + 2);
+    *data++ = 0xfb; /* Data mark */
+    memcpy(data, buffer, size);
+    data += size;
     crc = 0xe295;
-    for (i = 0; i < (1 << header.sector_size); i++) {
-        *raw++ = buffer[i];
-        crc = mfm_crc(crc, buffer[i]);
+    for (i = 0; i < size; i++) {
+        crc = crc16(crc, buffer[i]);
     }
-    *raw++ = crc >> 8;
-    *raw++ = crc & 0xff;
+    *data++ = crc >> 8;
+    *data++ = crc & 0xff;
 }
 
-int mfm_read_sector(WORD *raw, unsigned int size, BYTE *data,
-                    mfm_header_t header)
+int mfm_read_sector(disk_track_t *raw, BYTE *data, mfm_header_t header)
 {
     int i;
     int step = 0;
@@ -111,10 +91,10 @@ int mfm_read_sector(WORD *raw, unsigned int size, BYTE *data,
     int p = 0;
     WORD w;
 
-    for (i = 0; i < size * 2; i++) {
-        w = raw[p];
+    for (i = 0; i < raw->size * 2; i++) {
+        w = raw->data[p] + (raw->data[p + raw->size] << 8);
         p++;
-        if (p >= size) {
+        if (p >= raw->size) {
             p = 0;
         }
         switch (step) {
@@ -182,7 +162,7 @@ int mfm_read_sector(WORD *raw, unsigned int size, BYTE *data,
                 step++;
                 continue;
             }
-            step = 9;
+            step--;
             continue;
         case 11:
             if (w == 0x1a1) {

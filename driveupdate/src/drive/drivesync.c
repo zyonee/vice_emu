@@ -33,7 +33,7 @@
 #include "drive.h"
 #include "drivesync.h"
 #include "drivetypes.h"
-#include "rotation.h"
+#include "fdd.h"
 
 
 static unsigned int sync_factor;
@@ -64,8 +64,7 @@ void drive_set_machine_parameter(long cycles_per_sec)
 void drivesync_set_1571(int new_sync, struct drive_context_s *drv)
 {
     if (rom_loaded) {
-        rotation_rotate_disk(drv->drive);
-        rotation_init(drv->drive->rotation, new_sync ? 1 : 0);
+        fdd_set_native(drv->drive->fdds[0], new_sync);
         drv->drive->clock_frequency = (new_sync) ? 2 : 1;
         drivesync_factor(drv);
     }
@@ -74,6 +73,7 @@ void drivesync_set_1571(int new_sync, struct drive_context_s *drv)
 void drivesync_set_4000(struct drive_context_s *drv, int new_sync)
 {
     if (rom_loaded && drv->drive->type == DRIVE_TYPE_4000) {
+        fdd_set_frequency(drv->drive->fdds[0], new_sync ? 4 : 2);
         drv->drive->clock_frequency = (new_sync) ? 4 : 2;
         drivesync_factor(drv);
     }

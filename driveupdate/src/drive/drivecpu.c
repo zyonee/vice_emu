@@ -50,9 +50,9 @@
 #include "mem.h"
 #include "monitor.h"
 #include "mos6510.h"
-#include "rotation.h"
 #include "snapshot.h"
 #include "types.h"
+#include "fdd.h"
 
 
 #define DRIVE_CPU
@@ -184,7 +184,7 @@ static void cpu_reset(drive_context_t *drv)
     interrupt_cpu_status_reset(drv->cpu->int_status);
 
     *(drv->clk_ptr) = 6;
-    rotation_reset(drv->drive->rotation);
+
     machine_drive_reset(drv);
 
     if (preserve_monitor)
@@ -477,14 +477,8 @@ void drivecpu_execute(drive_context_t *drv, CLOCK clk_value)
 
 #define DMA_ON_RESET
 
-#define drivecpu_byte_ready_egde_clear()          \
-    do {                                          \
-        rotation_rotate_disk(drv->drive);         \
-        drv->drive->byte_ready_edge = 0;          \
-    } while (0)
-
-#define drivecpu_byte_ready() (rotation_rotate_disk(drv->drive), \
-                               drv->drive->byte_ready_edge)
+#define drivecpu_byte_ready_egde_clear() fdd_byte_ready_edge(drv->drive->fdds[0])
+#define drivecpu_byte_ready() fdd_byte_ready_edge(drv->drive->fdds[0])
 
 #define cpu_reset() (cpu_reset)(drv)
 #define bank_limit (cpu->d_bank_limit)

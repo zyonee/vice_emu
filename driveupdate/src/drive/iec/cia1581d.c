@@ -128,8 +128,8 @@ static void store_ciapa(cia_context_t *cia_context, CLOCK rclk, BYTE byte)
     cia1581p = (drivecia1581_context_t *)(cia_context->prv);
     drive = (drive_context_t *)(cia_context->context);
 
-    wd1770_set_side(drive->wd1770, (byte & 0x01) ? 0 : 1);
-    wd1770_set_motor(drive->wd1770, (byte & 0x04) ? 0 : 1);
+    wd1770_set_side(drive->wd1770, (byte & 0x01) ^ 0x01);
+    wd1770_set_motor(drive->wd1770, (byte & 0x04) ^ 0x04);
 
     cia1581p->drive->led_status = (byte & 0x40) ? 1 : 0;
     if (cia1581p->drive->led_status)
@@ -185,8 +185,7 @@ static BYTE read_ciapa(cia_context_t *cia_context)
 
     tmp = 8 * (cia1581p->number);
 
-    if (!wd1770_disk_change(drive_context->wd1770))
-        tmp |= 0x80;
+    tmp |= wd1770_disk_change(drive_context->wd1770) ? 0x80 : 0;
 
     return (tmp & ~(cia_context->c_cia[CIA_DDRA]))
            | (cia_context->c_cia[CIA_PRA] & cia_context->c_cia[CIA_DDRA]);
@@ -204,11 +203,11 @@ static BYTE read_ciapb(cia_context_t *cia_context)
         drive_port = &(cia1581p->iecbus->drv_port);
 
         return (((cia_context->c_cia[CIA_PRB] & 0x1a) | (*drive_port)) ^ 0x85)
-            | (cia1581p->drive->read_only ? 0 : 0x40);
+            | (fdd_write_protect(cia1581p->drive->fdds[0]) ? 0x40 : 0);
     } else {
         return (((cia_context->c_cia[CIA_PRB] & 0x1a)
             | iec_drive_read(cia1581p->number)) ^ 0x85)
-            | (cia1581p->drive->read_only ? 0 : 0x40);
+            | (fdd_write_protect(cia1581p->drive->fdds[0]) ? 0x40 : 0);
     }
 }
 

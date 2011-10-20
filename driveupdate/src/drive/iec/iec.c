@@ -75,8 +75,8 @@ void iec_drive_init(struct drive_context_s *drv)
     cia1571_init(drv);
     cia1581_init(drv);
     via4000_init(drv);
-    wd1770d_init(drv);
-    pc8477d_init(drv);
+    wd1770_init(drv);
+    pc8477_init(drv);
 }
 
 void iec_drive_reset(struct drive_context_s *drv)
@@ -113,6 +113,7 @@ void iec_drive_reset(struct drive_context_s *drv)
     } else {
         viacore_disable(drv->via4000);
     }
+    fdd_reset(drv->drive->fdds[0]);
 }
 
 void iec_drive_mem_init(struct drive_context_s *drv, unsigned int type)
@@ -127,6 +128,7 @@ void iec_drive_setup_context(struct drive_context_s *drv)
     cia1581_setup_context(drv);
     via4000_setup_context(drv);
     pc8477_setup_context(drv);
+    wd1770_setup_context(drv);
 }
 
 void iec_drive_shutdown(struct drive_context_s *drv)
@@ -243,16 +245,6 @@ int iec_drive_snapshot_write(struct drive_context_s *ctxptr,
     }
 
     return 0;
-}
-
-int iec_drive_image_attach(struct disk_image_s *image, unsigned int unit)
-{
-    return wd1770_attach_image(image, unit) & pc8477_attach_image(image, unit);
-}
-
-int iec_drive_image_detach(struct disk_image_s *image, unsigned int unit)
-{
-    return wd1770_detach_image(image, unit) & pc8477_detach_image(image, unit);
 }
 
 void iec_drive_port_default(struct drive_context_s *drv)

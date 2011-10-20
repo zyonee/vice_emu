@@ -73,17 +73,6 @@
 #define DRIVE_ACTIVE_RED     0
 #define DRIVE_ACTIVE_GREEN   1
 
-/* Number of cycles before an attached disk becomes visible to the R/W head.
-   This is mostly to make routines that auto-detect disk changes happy.  */
-#define DRIVE_ATTACH_DELAY           (3*600000)
-
-/* Number of cycles the write protection is activated on detach.  */
-#define DRIVE_DETACH_DELAY           (3*200000)
-
-/* Number of cycles the after a disk can be inserted after a disk has been
-   detached.  */
-#define DRIVE_ATTACH_DETACH_DELAY    (3*400000)
-
 /* Parallel cables available.  */
 #define DRIVE_PC_NONE     0
 #define DRIVE_PC_STANDARD 1
@@ -93,7 +82,7 @@
 
 struct disk_image_s;
 struct disk_track_s;
-struct rotation_s;
+struct fd_drive_s;
 
 typedef struct drive_s {
     unsigned int mynumber;
@@ -117,9 +106,6 @@ typedef struct drive_s {
     /* What drive type we have to emulate?  */
     unsigned int type;
 
-    /* Disk side.  */
-    unsigned int side;
-
     /* What idling method?  (See `DRIVE_IDLE_*')  */
     int idling_method;
 
@@ -127,44 +113,12 @@ typedef struct drive_s {
     BYTE rom_idle_trap[4];
     int trap, trapcont;
 
-    /* Byte ready line.  */
-    unsigned int byte_ready_level;
-    unsigned int byte_ready_edge;
-
-    /* Are we in read or write mode?  */
-    int read_write_mode;
-
-    /* Activates the byte ready line.  */
-    int byte_ready_active;
-
     /* Clock frequency of this drive in 1MHz units.  */
     int clock_frequency;
-
-    /* Tick when the disk image was attached.  */
-    CLOCK attach_clk;
-
-    /* Tick when the disk image was detached.  */
-    CLOCK detach_clk;
-
-    /* Tick when the disk image was attached, but an old image was just
-       detached.  */
-    CLOCK attach_detach_clk;
-
-    /* Only used for snapshot */
-    unsigned long snap_accum;
-    CLOCK snap_rotation_last_clk;
-    int snap_last_read_data;
-    BYTE snap_last_write_data;
-    int snap_bit_counter;
-    int snap_zero_count;
-    int snap_seed;
 
     /* UI stuff.  */
     int old_led_status;
     int old_half_track;
-
-    /* is this disk read only?  */
-    int read_only;
 
     /* What extension policy?  */
     int extend_image_policy;
@@ -179,14 +133,8 @@ typedef struct drive_s {
     /* Drive-specific logging goes here.  */
     signed int log;
 
-    /* Pointer to the attached disk image.  */
-    struct disk_image_s *image;
-
-    /* Pointer to the image of current track.  */
-    struct disk_track_s *raw, *raw_cache[2][84];
-
-    /* For disk rotation */
-    struct rotation_s *rotation;
+    /* Pointer to floppy disk drives */
+    struct fd_drive_s *fdds[4];
 
     /* Pointer to 8KB RAM expansion.  */
     BYTE *drive_ram_expand2, *drive_ram_expand4, *drive_ram_expand6,

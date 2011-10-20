@@ -25,10 +25,10 @@ libdrive_a_SOURCES = \
 	drive-resources.h \
 	drive-snapshot.c \
 	drive-snapshot.h \
-	drive-writeprotect.c \
-	drive-writeprotect.h \
 	drive.c \
 	drive.h \
+	fdd.c \
+	fdd.h \
 	drivecpu.c \
 	drivecpu.h \
 	drivemem.c \
@@ -46,8 +46,6 @@ libdrive_a_SOURCES = \
 	iec128dcr.h \
 	iecieee.h \
 	ieee.h \
-	rotation.c \
-	rotation.h \
 	tcbm.h \
 	viad.h
 

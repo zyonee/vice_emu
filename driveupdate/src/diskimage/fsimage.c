@@ -163,6 +163,10 @@ int fsimage_read_track(disk_image_t *image, unsigned int track,
     case DISK_IMAGE_TYPE_D67:
     case DISK_IMAGE_TYPE_X64:
     case DISK_IMAGE_TYPE_D71:
+    case DISK_IMAGE_TYPE_D81:
+    case DISK_IMAGE_TYPE_D1M:
+    case DISK_IMAGE_TYPE_D2M:
+    case DISK_IMAGE_TYPE_D4M:
         return fsimage_flat_read_track(image, track, head, raw);
     case DISK_IMAGE_TYPE_G64:
         return fsimage_gcr_read_track(image, track, head, raw);
@@ -282,7 +286,7 @@ int fsimage_create(const char *name, unsigned int type)
 
     image = disk_image_create();
     image->device = DISK_IMAGE_DEVICE_FS;
-    image->diskID[0] = image->diskID[1] = 0xa0;
+    image->diskid[0] = image->diskid[1] = 0xa0;
     fsimage_media_create(image);
     fsimage_name_set(image, lib_stralloc(name));
 
@@ -309,8 +313,10 @@ int fsimage_create(const char *name, unsigned int type)
       case DISK_IMAGE_TYPE_D2M:
       case DISK_IMAGE_TYPE_D4M:
           rc = fsimage_flat_create(image, type);
+          break;
       case DISK_IMAGE_TYPE_G64:
           rc = fsimage_gcr_create(image, type);
+          break;
       default:
           log_error(fsimage_log,
                   "Wrong image type.  Cannot create disk image.");

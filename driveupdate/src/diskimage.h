@@ -86,7 +86,16 @@ typedef struct disk_image_s {
     unsigned int lblocks; /* number of logical blocks */
     unsigned int ptracks; /* including "half" tracks */
     unsigned int sides;   /* 1 or 2 */
-    BYTE diskID[2];       /* Disk ID for flat images */
+    BYTE diskid[2];       /* Disk ID for flat images */
+    BYTE doublesided;     /* D71 double sided flag */
+    struct {
+        int head_swap;    /* head swapped */
+        int gap2, gap3;   /* gaps */
+        int iso;          /* iso/ibm */
+        int sectors;      /* number of sectors */
+        int sector_size;  /* 0 - 128, 1 - 256, etc. */
+        int rate;         /* bitrate */
+    } mfm;
 } disk_image_t;
 
 extern void disk_image_init(void);

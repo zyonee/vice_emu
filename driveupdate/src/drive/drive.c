@@ -63,10 +63,10 @@
 #include "machine.h"
 #include "maincpu.h"
 #include "resources.h"
-#include "rotation.h"
 #include "types.h"
 #include "uiapi.h"
 #include "ds1216e.h"
+#include "fdd.h"
 
 
 drive_context_t *drive_context[DRIVE_NUM];
@@ -80,8 +80,6 @@ int rom_loaded = 0;
 /* ------------------------------------------------------------------------- */
 
 static int drive_led_color[DRIVE_NUM];
-
-static void drive_set_half_track(int num, drive_t *dptr);
 
 /* ------------------------------------------------------------------------- */
 
@@ -113,8 +111,6 @@ void drive_set_last_read(unsigned int track, unsigned int sector, BYTE *buffer,
     drive_t *drive;
 
     drive = drv->drive;
-
-    drive_set_half_track(track * 2, drive);
 
     if (drive->type == DRIVE_TYPE_1541
         || drive->type == DRIVE_TYPE_1541II
@@ -191,27 +187,16 @@ int drive_init(void)
 
     for (dnr = 0; dnr < DRIVE_NUM; dnr++) {
         drive = drive_context[dnr]->drive;
-        drive->raw = NULL;
-        memset(drive->raw_cache, 0, sizeof(drive->raw_cache));
-        drive->rotation = rotation_new(drive);
-        drive->byte_ready_level = 1;
-        drive->byte_ready_edge = 1;
-        drive->attach_clk = (CLOCK)0;
-        drive->detach_clk = (CLOCK)0;
-        drive->attach_detach_clk = (CLOCK)0;
+        drive->fdds[0] = fdd_init(1, drive, drive->clk);
+        wd1770_set_fdd(drive_context[dnr]->wd1770, drive->fdds[0]);
         drive->old_led_status = 0;
         drive->old_half_track = 0;
-        drive->side = 0;
-        drive->read_only = 0;
         drive->clock_frequency = 1;
         drive->led_last_change_clk = *(drive->clk);
         drive->led_last_uiupdate_clk = *(drive->clk);
         drive->led_active_ticks = 0;
 
-        rotation_reset(drive->rotation);
-
         /* Position the R/W head on the directory track.  */
-        drive_set_half_track(36, drive);
         drive_led_color[dnr] = DRIVE_ACTIVE_RED;
     }
 
@@ -220,8 +205,6 @@ int drive_init(void)
         driverom_initialize_traps(drive, 1);
 
         drivesync_clock_frequency(drive->type, drive);
-
-        rotation_init(drive->rotation, (drive->clock_frequency == 2) ? 1 : 0);
 
         drivecpu_init(drive_context[dnr], drive->type);
 
@@ -241,8 +224,7 @@ void drive_shutdown(void)
 
     for (dnr = 0; dnr < DRIVE_NUM; dnr++) {
         drivecpu_shutdown(drive_context[dnr]);
-        rotation_destroy(drive_context[dnr]->drive->rotation);
-        drive_destroy_cache(drive_context[dnr]->drive);
+        fdd_shutdown(drive_context[dnr]->drive->fdds[0]);
         ds1216e_destroy(drive_context[dnr]->drive->ds1216);
     }
 
@@ -291,16 +273,9 @@ int drive_set_disk_drive_type(unsigned int type, struct drive_context_s *drv)
     if (machine_drive_rom_check_loaded(type) < 0)
         return -1;
 
-    if (drv->drive->rotation)
-        rotation_rotate_disk(drv->drive);
-
     drivesync_clock_frequency(type, drv->drive);
 
-    if (drv->drive->rotation)
-        rotation_init(drv->drive->rotation, 0);
-
     drv->drive->type = type;
-    drv->drive->side = 0;
     machine_drive_rom_setup_image(dnr);
     drivesync_factor(drv);
     drive_set_active_led_color(type, dnr);
@@ -336,10 +311,6 @@ int drive_enable(drive_context_t *drv)
     if (drive->type == DRIVE_TYPE_NONE)
         return 0;
 
-    /* Recalculate drive geometry.  */
-    if (drive->image != NULL)
-        drive_image_attach(drive->image, dnr + 8);
-
     drivecpu_wake_up(drv);
 
     /* Make sure the UI is updated.  */
@@ -358,17 +329,6 @@ int drive_enable(drive_context_t *drv)
     drive_set_active_led_color(drive->type, dnr);
     ui_enable_drive_status(enabled_drives,
                            drive_led_color);
-
-#if 0
-    /* this is the old code not respecting more than 2 drives */
-    ui_enable_drive_status((drive_context[0]->drive->enable
-                           ? UI_DRIVE_ENABLE_0 : 0)
-                           | ((drive_context[1]->drive->enable
-                           || (drive_context[0]->drive->enable
-                           && drive_check_dual(drive_context[0]->drive->type))
-                           ) ? UI_DRIVE_ENABLE_1 : 0),
-                           drive_led_color);
-#endif
     return 0;
 }
 
@@ -391,7 +351,7 @@ void drive_disable(drive_context_t *drv)
         drivecpu_sleep(drv);
         machine_drive_port_default(drv);
 
-        drive_image_writeback(drive, 0);
+        fdd_flush(drive->fdds[0]);
     }
 
     /* Make sure the UI is updated.  */
@@ -408,22 +368,6 @@ void drive_disable(drive_context_t *drv)
 
     ui_enable_drive_status(enabled_drives,
                            drive_led_color);
-#if 0
-    ui_enable_drive_status((drive_context[0]->drive->enable
-                           ? UI_DRIVE_ENABLE_0 : 0)
-                           | ((drive_context[1]->drive->enable
-                           || (drive_context[0]->drive->enable
-                           && drive_check_dual(drive_context[0]->drive->type))
-                           ) ? UI_DRIVE_ENABLE_1 : 0),
-                           drive_led_color);
-/*
-    ui_enable_drive_status((drive_context[0]->drive->enable
-                           ? UI_DRIVE_ENABLE_0 : 0)
-                           | (drive_context[1]->drive->enable
-                           ? UI_DRIVE_ENABLE_1 : 0),
-                           drive_led_color);
-*/
-#endif
 }
 
 void drive_reset(void)
@@ -442,59 +386,6 @@ void drive_reset(void)
     }
 }
 
-/* Move the head to half track `num'.  */
-static void drive_set_half_track(int num, drive_t *dptr)
-{
-    drive_image_writeback(dptr, dptr->current_half_track != num);
-
-    switch (dptr->type) {
-    case DRIVE_TYPE_1541:
-    case DRIVE_TYPE_1541II:
-    case DRIVE_TYPE_1551:
-    case DRIVE_TYPE_1570:
-    case DRIVE_TYPE_2031:
-        if (num > 84) {
-            num = 84;
-        }
-        break;
-    case DRIVE_TYPE_1571:
-    case DRIVE_TYPE_1571CR:
-        if (num > 70) {
-            num = 70;
-        }
-        break;
-    }
-    if (num < 2) {
-        num = 2;
-    }
-
-    dptr->current_half_track = num;
-    drive_image_read(dptr);
-    if (dptr->raw) {
-        rotation_reposition(dptr);
-    }
-}
-
-void drive_side_set(unsigned int side, struct drive_s *drive)
-{
-    if (drive->side == side) {
-        return;
-    }
-
-    drive_image_writeback(drive, 1);
-    drive->side = side;
-    drive_set_half_track(drive->current_half_track, drive);
-}
-
-/*-------------------------------------------------------------------------- */
-
-/* Increment the head position by `step' half-tracks. Valid values
-   for `step' are `+1' and `-1'.  */
-void drive_move_head(int step, drive_t *drive)
-{
-    drive_set_half_track(drive->current_half_track + step, drive);
-}
-
 void drive_gcr_data_writeback_all(void)
 {
     drive_t *drive;
@@ -502,7 +393,7 @@ void drive_gcr_data_writeback_all(void)
 
     for (i = 0; i < DRIVE_NUM; i++) {
         drive = drive_context[i]->drive;
-        drive_image_writeback(drive, 0);
+        fdd_flush(drive->fdds[0]);
     }
 }
 

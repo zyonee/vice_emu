@@ -1,8 +1,8 @@
 /*
- * drive-writeprotect.h
+ * crc16.h - 16 bit CRC, poly: 1021
  *
  * Written by
- *  Andreas Boose <viceteam@t-online.de>
+ *  Kajtar Zsolt <soci@c64.rulez.org>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -24,14 +24,11 @@
  *
  */
 
-#ifndef VICE_DRIVE_WRITEPROTECT_H
-#define VICE_DRIVE_WRITEPROTECT_H
+#ifndef VICE_CRC16_H
+#define VICE_CRC16_H
 
 #include "types.h"
 
-struct drive_s;
-
-extern BYTE drive_writeprotect_sense(struct drive_s *dptr);
-
+extern inline WORD crc16(WORD crc, BYTE b);
 #endif
 

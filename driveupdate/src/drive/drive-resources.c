@@ -71,9 +71,7 @@ static int set_drive_true_emulation(int val, void *param)
         for (dnr = 0; dnr < DRIVE_NUM; dnr++) {
             drive = drive_context[dnr]->drive;
             drive_disable(drive_context[dnr]);
-            if (drive->image != NULL) {
-                vdrive_bam_reread_bam(dnr + 8);
-            }
+            vdrive_bam_reread_bam(dnr + 8);
         }
     }
     return 0;

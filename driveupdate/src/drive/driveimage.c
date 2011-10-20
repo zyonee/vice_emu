@@ -38,6 +38,7 @@
 #include "types.h"
 #include "uiapi.h"
 #include "lib.h"
+#include "fdd.h"
 
 
 /* Logging goes here.  */
@@ -110,6 +111,7 @@ static int drive_check_image_format(unsigned int format, unsigned int dnr)
     return 0;
 }
 
+#if 0
 static void drive_extend_disk_image(drive_t *drive)
 {
     int rc;
@@ -130,22 +132,6 @@ static void drive_extend_disk_image(drive_t *drive)
                            "Could not update T:%d S:%d.", track, sector);
         }
     }
-}
-
-void drive_destroy_cache(drive_t *drive)
-{
-    int i;
-    disk_track_t *track;
-
-    for (i = 0; i < 84 * 2; i++) {
-        track = drive->raw_cache[i % 2][i / 2];
-        if (track) {
-            lib_free(track->data);
-            lib_free(track);
-            drive->raw_cache[i % 2][i / 2] = NULL;
-        }
-    }
-    drive->raw = NULL;
 }
 
 void drive_image_writeback(drive_t *drive, int free)
@@ -204,30 +190,7 @@ void drive_image_writeback(drive_t *drive, int free)
     drive->raw->dirty = 0;
     drive->raw->pinned = (drive->image->type != DISK_IMAGE_TYPE_G64);
 }
-
-void drive_image_read(drive_t *drive)
-{
-    if (!drive->image) {
-        drive->raw = NULL;
-        return;
-    }
-
-    drive->raw = drive->raw_cache[drive->side][drive->current_half_track - 2];
-    if (drive->raw) {
-        return;
-    }
-    drive->raw = lib_calloc(1, sizeof(*drive->raw));
-    drive->raw_cache[drive->side][drive->current_half_track - 2] = drive->raw;
-
-    drive->raw->data = lib_calloc(1, NUM_MAX_BYTES_TRACK);
-    drive->raw->dirty = 0;
-    drive->raw->pinned = 0;
-
-    disk_image_read_track(drive->image, drive->current_half_track,
-                          drive->side, drive->raw);
-    return;
-}
-
+#endif
 
 /* Attach a disk image to the true drive emulation. */
 int drive_image_attach(disk_image_t *image, unsigned int unit)
@@ -244,28 +207,25 @@ int drive_image_attach(disk_image_t *image, unsigned int unit)
     if (drive_check_image_format(image->type, dnr) < 0)
         return -1;
 
-    drive->read_only = image->read_only;
-    drive->attach_clk = drive_clk[dnr];
-    if (drive->detach_clk > (CLOCK)0)
-        drive->attach_detach_clk = drive_clk[dnr];
     drive->ask_extend_disk_image = 1;
 
-    switch(image->type) {
-      case DISK_IMAGE_TYPE_D64:
-      case DISK_IMAGE_TYPE_D67:
-      case DISK_IMAGE_TYPE_D71:
-      case DISK_IMAGE_TYPE_G64:
-      case DISK_IMAGE_TYPE_X64:
+    switch (image->type) {
+    case DISK_IMAGE_TYPE_D64:
+    case DISK_IMAGE_TYPE_D67:
+    case DISK_IMAGE_TYPE_D71:
+    case DISK_IMAGE_TYPE_G64:
+    case DISK_IMAGE_TYPE_X64:
+    case DISK_IMAGE_TYPE_D81:
+    case DISK_IMAGE_TYPE_D1M:
+    case DISK_IMAGE_TYPE_D2M:
+    case DISK_IMAGE_TYPE_D4M:
         disk_image_attach_log(image, driveimage_log, unit);
         break;
-      default:
+    default:
         return -1;
     }
 
-    drive->image = image;
-
-    drive_image_read(drive);
-
+    fdd_image_attach(drive->fdds[0], image);
     return 0;
 }
 
@@ -281,27 +241,23 @@ int drive_image_detach(disk_image_t *image, unsigned int unit)
     dnr = unit - 8;
     drive = drive_context[dnr]->drive;
 
-    if (drive->image != NULL) {
-        switch(image->type) {
-          case DISK_IMAGE_TYPE_D64:
-          case DISK_IMAGE_TYPE_D67:
-          case DISK_IMAGE_TYPE_D71:
-          case DISK_IMAGE_TYPE_G64:
-          case DISK_IMAGE_TYPE_X64:
-            disk_image_detach_log(image, driveimage_log, unit);
-            break;
-          default:
-            return -1;
-        }
+    switch(image->type) {
+    case DISK_IMAGE_TYPE_D64:
+    case DISK_IMAGE_TYPE_D67:
+    case DISK_IMAGE_TYPE_D71:
+    case DISK_IMAGE_TYPE_G64:
+    case DISK_IMAGE_TYPE_X64:
+    case DISK_IMAGE_TYPE_D81:
+    case DISK_IMAGE_TYPE_D1M:
+    case DISK_IMAGE_TYPE_D2M:
+    case DISK_IMAGE_TYPE_D4M:
+        disk_image_detach_log(image, driveimage_log, unit);
+        break;
+    default:
+        return -1;
     }
 
-    drive_image_writeback(drive, 0);
-
-    drive_destroy_cache(drive);
-    drive->detach_clk = drive_clk[dnr];
-    drive->read_only = 0;
-    drive->image = NULL;
-
+    fdd_image_detach(drive->fdds[0]);
     return 0;
 }
 

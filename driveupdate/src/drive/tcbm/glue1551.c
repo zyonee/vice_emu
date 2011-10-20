@@ -27,14 +27,13 @@
 #include "vice.h"
 
 #include "alarm.h"
-#include "drive-writeprotect.h"
 #include "drive.h"
 #include "drivetypes.h"
 #include "glue1551.h"
 #include "interrupt.h"
 #include "lib.h"
-#include "rotation.h"
 #include "types.h"
+#include "fdd.h"
 
 
 /*-----------------------------------------------------------------------*/
@@ -46,6 +45,7 @@ struct glue1551_s {
     alarm_t *timer_alarm;
     int irq_line;
     unsigned int int_num;
+    BYTE old_output;
 };
 typedef struct glue1551_s glue1551_t;
 
@@ -55,27 +55,19 @@ static glue1551_t glue1551[DRIVE_NUM];
 
 static void glue_pport_update(drive_context_t *drv)
 {
-    static BYTE old_output = 0;
     BYTE output, input;
 
     output = (drv->cpud->drive_ram[1] & drv->cpud->drive_ram[0])
              | ~(drv->cpud->drive_ram[0]);
 
+    /* Motor on/off.  */
+    fdd_set_motor(drv->drive->fdds[0], output & 0x04);
+
     /* Stepper motor.  */
-    if (((old_output ^ output) & 0x3) && (output & 0x4)) {
-        if ((old_output & 0x3) == ((output + 1) & 0x3))
-            drive_move_head(-1, drv->drive);
-        else if ((old_output & 0x3) == ((output - 1) & 0x3))
-            drive_move_head(+1, drv->drive);
+    if (((glue1551[drv->mynumber].old_output ^ output) & 1)) {
+        fdd_step_pulse(drv->drive->fdds[0], (glue1551[drv->mynumber].old_output ^ (output - 1)) & 2);
     }
 
-    /* Motor on/off.  */
-    if ((old_output ^ output) & 0x04) {
-        drv->drive->byte_ready_active = (output & 0x04) ? 0x06 : 0;
-        if (drv->drive->byte_ready_active == 0x06) {
-            rotation_begins(drv->drive->rotation);
-        }
-    }
 
     /* Drive active LED.  */
     drv->drive->led_status = (output & 8) ? 0 : 1;
@@ -85,17 +77,14 @@ static void glue_pport_update(drive_context_t *drv)
                                         - drv->drive->led_last_change_clk;
     drv->drive->led_last_change_clk = *(drv->clk_ptr);
 
-    if ((old_output ^ output) & 0x60)
-        rotation_speed_zone_set(drv->drive->rotation, (output >> 5) & 3);
+    fdd_set_rate(drv->drive->fdds[0], output >> 5);
 
-    rotation_rotate_disk(drv->drive);
-
-    input = drive_writeprotect_sense(drv->drive)
-            | (drv->drive->byte_ready_level ? 0x80 : 0);
+    input = (fdd_write_protect(drv->drive->fdds[0]) ? 0x10 : 0)
+            | (fdd_byte_ready_1551(drv->drive->fdds[0]) ? 0x80 : 0);
 
     drv->cpud->drive_ram[1] = output & (input | ~0x90);
 
-    old_output = output;
+    glue1551[drv->mynumber].old_output = output;
 }
 
 BYTE glue1551_port0_read(drive_context_t *drv)
@@ -155,6 +144,7 @@ void glue1551_init(drive_context_t *drv)
                                                     drv);
     glue1551[drv->mynumber].int_num = interrupt_cpu_status_int_new(
                                           drv->cpu->int_status, buffer);
+    glue1551[drv->mynumber].old_output = 0;
     lib_free(buffer);
 }
 

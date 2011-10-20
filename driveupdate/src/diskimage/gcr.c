@@ -45,7 +45,8 @@
 #include "lib.h"
 #include "log.h"
 #include "types.h"
-
+#include "cbmdos.h"
+#include "diskimage.h"
 
 static const BYTE GCR_conv_data[16] =
     { 0x0a, 0x0b, 0x12, 0x13,
@@ -104,102 +105,62 @@ static void gcr_convert_GCR_to_4bytes(BYTE *source, BYTE *dest)
     }
 }
 
-void gcr_convert_sector_to_GCR(BYTE *buffer, BYTE *ptr, unsigned int track,
-                               unsigned int sector, BYTE diskID1, BYTE diskID2,
+void gcr_convert_sector_to_GCR(BYTE *buffer, BYTE *data, gcr_header_t *header,
                                BYTE error_code)
 {
     int i;
-    BYTE buf[4], chksum;
+    BYTE buf[4], chksum, idm;
 
-    if (error_code == 29)
-        diskID1 ^= 0xff;
+    idm = (error_code == CBMDOS_IPE_DISK_ID_MISMATCH) ? 0xff : 0x00;
 
-    memset(ptr, 0xff, 5);       /* Sync */
-    ptr += 5;
+    memset(data, 0xff, 5);       /* Sync */
+    data += 5;
 
-    chksum = (error_code == 27) ? 0xff : 0x00;
-    chksum ^= sector ^ track ^ diskID2 ^ diskID1;
-    buf[0] = (error_code == 20) ? 0xff : 0x08;
+    chksum = (error_code == CBMDOS_IPE_READ_ERROR_BCHK) ? 0xff : 0x00;
+    chksum ^= header->sector ^ header->track ^ header->id2 ^ header->id1 ^ idm;
+    buf[0] = (error_code == CBMDOS_IPE_READ_ERROR_BNF) ? 0xff : 0x08;
     buf[1] = chksum;
-    buf[2] = sector;
-    buf[3] = track;
-    gcr_convert_4bytes_to_GCR(buf, ptr);
-    ptr += 5;
+    buf[2] = header->sector;
+    buf[3] = header->track;
+    gcr_convert_4bytes_to_GCR(buf, data);
+    data += 5;
 
-    buf[0] = diskID2;
-    buf[1] = diskID1;
+    buf[0] = header->id2;
+    buf[1] = header->id1 ^ idm;
     buf[2] = buf[3] = 0x0f;
-    gcr_convert_4bytes_to_GCR(buf, ptr);
-    ptr += 5;
+    gcr_convert_4bytes_to_GCR(buf, data);
+    data += 5;
 
-    ptr += 9;                   /* Gap */
+    data += 9;                   /* Gap */
 
-    memset(ptr, 0xff, 5);       /* Sync */
-    ptr += 5;
+    memset(data, 0xff, 5);       /* Sync */
+    data += 5;
 
-    chksum = (error_code == 23) ? 0xff : 0x00;
-    buf[0] = (error_code == 22) ? 0xff : 0x07;
+    chksum = (error_code == CBMDOS_IPE_READ_ERROR_CHK) ? 0xff : 0x00;
+    buf[0] = (error_code == CBMDOS_IPE_READ_ERROR_DATA) ? 0xff : 0x07;
     memcpy(buf + 1, buffer, 3);
     chksum ^= buffer[0] ^ buffer[1] ^ buffer[2];
-    gcr_convert_4bytes_to_GCR(buf, ptr);
+    gcr_convert_4bytes_to_GCR(buf, data);
     buffer += 3;
-    ptr += 5;
+    data += 5;
 
     for (i = 0; i < 63; i++) {
         chksum ^= buffer[0] ^ buffer[1] ^ buffer[2] ^ buffer[3];
-        gcr_convert_4bytes_to_GCR(buffer, ptr);
+        gcr_convert_4bytes_to_GCR(buffer, data);
         buffer += 4;
-        ptr += 5;
+        data += 5;
     }
 
     buf[0] = buffer[0];
     buf[1] = chksum ^ buffer[0];
     buf[2] = buf[3] = 0;
-    gcr_convert_4bytes_to_GCR(buf, ptr);
+    gcr_convert_4bytes_to_GCR(buf, data);
 }
 
-static void gcr_convert_GCR_to_sector(BYTE *buffer, BYTE *ptr,
-                               BYTE *start, unsigned int track_size)
+static BYTE *gcr_find_sector_header(disk_track_t *raw, BYTE sector)
 {
-    BYTE *offset = ptr;
-    BYTE *end = start + track_size;
-    BYTE gcr[5], b;
-    int i, j, shift;
-
-    /* additional 1 bits are part of the previous sync and must
-       be shifted out. so check/count these here */
-    shift = 0;
-    b = offset[0];
-    while (b & 0x80) {
-        b <<= 1;
-        shift++;
-    }
-
-    for (i = 0; i < 65; i++) {
-        /* get 5 bytes of gcr data */
-        for (j = 0; j < 5; j++) {
-            offset++;
-            if (offset >= end) {
-                offset = start;
-            }
-            if (shift) {
-                gcr[j] = b | ((offset[0] << shift) >> 8);
-                b = offset[0] << shift;
-            } else {
-                gcr[j] = b;
-                b = offset[0];
-            }
-        }
-        gcr_convert_GCR_to_4bytes(gcr, buffer);
-        buffer += 4;
-    }
-}
-
-static BYTE *gcr_find_sector_header(unsigned int track, unsigned int sector,
-                             BYTE *start, unsigned int track_size)
-{
-    BYTE *offset = start;
-    BYTE *end = start + track_size;
+    BYTE *offset = raw->data;
+    BYTE *end = raw->data + raw->size;
     BYTE gcr[5], header[4], b;
     int i, wrap_over = 0, shift;
     unsigned int sync_count;
@@ -217,11 +178,11 @@ static BYTE *gcr_find_sector_header(unsigned int track, unsigned int sector,
         while (*offset == 0xff) {
             offset++;
             if (offset == end) {
-                offset = start;
+                offset = raw->data;
                 wrap_over = 1;
             }
             /* Check for killer tracks.  */
-            if ((++sync_count) >= track_size)
+            if ((++sync_count) >= raw->size)
                 return NULL;
         }
         /* shift out additional 1 bits, which are part of the sync */
@@ -234,7 +195,7 @@ static BYTE *gcr_find_sector_header(unsigned int track, unsigned int sector,
         for (i = 0; i < 5; i++) {
             offset++;
             if (offset >= end) {
-                offset = start;
+                offset = raw->data;
                 wrap_over = 1;
             }
             if (shift) {
@@ -247,26 +208,24 @@ static BYTE *gcr_find_sector_header(unsigned int track, unsigned int sector,
         }
 
         gcr_convert_GCR_to_4bytes(gcr, header);
-        if (header[0] == 0x08) {
-            /* FIXME: Add some sanity checks here.  */
-            if (header[2] == sector && header[3] == track) {
-                DBG(("GCR: shift: %d hdr: %02x %02x sec:%02d trk:%02d", shift, header[0], header[1], header[2], header[3]));
-                return offset;
-            }
+        if (header[0] == 0x08 && header[2] == sector) {
+            /* Track, checksum or ID's are not checked here */
+	    DBG(("GCR: shift: %d hdr: %02x %02x sec:%02d trk:%02d", shift, header[0], header[1], header[2], header[3]));
+	    return offset;
         }
     }
     return NULL;
 }
 
-static BYTE *gcr_find_sector_data(BYTE *offset, BYTE *start, unsigned int track_size)
+static BYTE *gcr_find_sector_data(disk_track_t *raw, BYTE *offset)
 {
-    BYTE *end = start + track_size;
+    BYTE *end = raw->data + raw->size;
     int header = 0;
 
     while (*offset != 0xff) {
         offset++;
         if (offset >= end)
-            offset = start;
+            offset = raw->data;
         header++;
         if (header >= 500)
             return NULL;
@@ -275,46 +234,75 @@ static BYTE *gcr_find_sector_data(BYTE *offset, BYTE *start, unsigned int track_
     while (*offset == 0xff) {
         offset++;
         if (offset == end)
-            offset = start;
+            offset = raw->data;
     }
     return offset;
 }
 
-int gcr_read_sector(BYTE *raw, unsigned int size, BYTE *data,
-                    unsigned int track, unsigned int sector)
+int gcr_read_sector(disk_track_t *raw, BYTE *data, BYTE sector)
 {
-    BYTE buffer[260], *offset;
+    BYTE buffer[260], *buf, *offset;
+    BYTE *end = raw->data + raw->size;
+    BYTE gcr[5], b;
+    int i, j, shift;
 
-    offset = gcr_find_sector_header(track, sector, raw, size);
+    offset = gcr_find_sector_header(raw, sector);
     if (offset == NULL)
         return -1;
 
-    offset = gcr_find_sector_data(offset, raw, size);
+    offset = gcr_find_sector_data(raw, offset);
     if (offset == NULL)
         return -2;
 
-    gcr_convert_GCR_to_sector(buffer, offset, raw, size);
+    /* additional 1 bits are part of the previous sync and must
+       be shifted out. so check/count these here */
+    shift = 0;
+    b = offset[0];
+    while (b & 0x80) {
+        b <<= 1;
+        shift++;
+    }
+
+    buf = buffer;
+    for (i = 0; i < 65; i++) {
+        /* get 5 bytes of gcr data */
+        for (j = 0; j < 5; j++) {
+            offset++;
+            if (offset >= end) {
+                offset = raw->data;
+            }
+            if (shift) {
+                gcr[j] = b | ((offset[0] << shift) >> 8);
+                b = offset[0] << shift;
+            } else {
+                gcr[j] = b;
+                b = offset[0];
+            }
+        }
+        gcr_convert_GCR_to_4bytes(gcr, buf);
+        buf += 4;
+    }
+
+    memcpy(data, buffer + 1, 256);
 
     if (buffer[0] != 0x07)
         return -3;
 
-    memcpy(data, buffer + 1, 256);
-
     return 0;
 }
 
-int gcr_write_sector(BYTE *raw, unsigned int size, BYTE *data,
-                     unsigned int track, unsigned int sector)
+int gcr_write_sector(disk_track_t  *raw, BYTE *data, BYTE sector)
 {
     BYTE buffer[260], *offset, *buf;
+    BYTE *end = raw->data + raw->size;
     BYTE gcr[5], chksum, b;
     int i, j, shift;
 
-    offset = gcr_find_sector_header(track, sector, raw, size);
+    offset = gcr_find_sector_header(raw, sector);
     if (offset == NULL)
         return -1;
 
-    offset = gcr_find_sector_data(offset, raw, size);
+    offset = gcr_find_sector_data(raw, offset);
     if (offset == NULL)
         return -2;
 
@@ -347,8 +335,8 @@ int gcr_write_sector(BYTE *raw, unsigned int size, BYTE *data,
                 offset[0] = gcr[j];
             }
             offset++;
-            if (offset == raw + size)
-                offset = raw;
+            if (offset >= end)
+                offset = raw->data;
         }
     }
     offset[0] = b | (offset[0] & (0xff >> shift));

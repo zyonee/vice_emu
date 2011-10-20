@@ -40,11 +40,11 @@
 #include "iecdrive.h"
 #include "interrupt.h"
 #include "lib.h"
-#include "rotation.h"
 #include "types.h"
 #include "via.h"
 #include "via1d1541.h"
 #include "viad.h"
+#include "fdd.h"
 
 
 #define iecbus (via1p->v_iecbus)
@@ -113,7 +113,6 @@ static void undump_pra(via_context_t *via_context, BYTE byte)
         || via1p->drive->type == DRIVE_TYPE_1571
         || via1p->drive->type == DRIVE_TYPE_1571CR) {
         drivesync_set_1571(byte & 0x20, drive_context);
-        drive_side_set((byte >> 2) & 1, via1p->drive);
     } else
 
     if (via1p->drive->parallel_cable == DRIVE_PC_STANDARD
@@ -136,8 +135,7 @@ static void store_pra(via_context_t *via_context, BYTE byte, BYTE oldpa_value,
         || via1p->drive->type == DRIVE_TYPE_1571CR) {
         if ((oldpa_value ^ byte) & 0x20)
             drivesync_set_1571(byte & 0x20, drive_context);
-        if ((oldpa_value ^ byte) & 0x04)
-            drive_side_set((byte >> 2) & 1, via1p->drive);
+        fdd_set_side(via1p->drive->fdds[0], byte & 0x04);
         if ((oldpa_value ^ byte) & 0x02)
             iec_fast_drive_direction(byte & 2, via1p->number);
     } else {
@@ -223,15 +221,6 @@ static void store_prb(via_context_t *via_context, BYTE byte, BYTE p_oldpb,
 
 static void undump_pcr(via_context_t *via_context, BYTE byte)
 {
-#if 0
-    drivevia1_context_t *via1p;
-
-    via1p = (drivevia1_context_t *)(via_context->prv);
-
-    /* FIXME: Is this correct? */
-    if (via1p->number != 0)
-        via2d_update_pcr(byte, &drive[0]);
-#endif
 }
 
 static BYTE store_pcr(via_context_t *via_context, BYTE byte, WORD addr)
@@ -270,9 +259,9 @@ static BYTE read_pra(via_context_t *via_context, WORD addr)
         || via1p->drive->type == DRIVE_TYPE_1571
         || via1p->drive->type == DRIVE_TYPE_1571CR) {
         BYTE tmp;
-        rotation_rotate_disk(via1p->drive);
-        tmp = (via1p->drive->byte_ready_level ? 0 : 0x80)
-            | (via1p->drive->current_half_track == 2 ? 0 : 1);
+
+        tmp = (fdd_byte_ready(via1p->drive->fdds[0]) ? 0 : 0x80)
+            | (fdd_track0(via1p->drive->fdds[0]) ? 1 : 0);
         return (tmp & ~(via_context->via[VIA_DDRA]))
             | (via_context->via[VIA_PRA] & via_context->via[VIA_DDRA]);
     }

@@ -214,7 +214,7 @@ void memiec_init(struct drive_context_s *drv, unsigned int type)
     if (type == DRIVE_TYPE_1570 || type == DRIVE_TYPE_1571
         || type == DRIVE_TYPE_1571CR) {
         drivemem_set_func(cpud, 0x18, 0x1c, via1d1541_read, via1d1541_store);
-        drivemem_set_func(cpud, 0x1c, 0x20, via2d_read, via2d_store);
+        drivemem_set_func(cpud, 0x1c, 0x20, via2d1571_read, via2d1571_store);
         drivemem_set_func(cpud, 0x20, 0x30, wd1770d_read, wd1770d_store);
         drivemem_set_func(cpud, 0x40, 0x80, cia1571_read, cia1571_store);
     }

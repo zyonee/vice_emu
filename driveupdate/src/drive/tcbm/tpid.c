@@ -33,10 +33,10 @@
 #include "interrupt.h"
 #include "lib.h"
 #include "log.h"
-#include "rotation.h"
 #include "tpi.h"
 #include "tpid.h"
 #include "types.h"
+#include "fdd.h"
 
 
 typedef struct drivetpi_context_s {
@@ -52,6 +52,7 @@ void tpid_store(drive_context_t *ctxptr, WORD addr, BYTE data)
 
 BYTE tpid_read(drive_context_t *ctxptr, WORD addr)
 {
+    fdd_byte_ready_clear(ctxptr->drive->fdds[0]);
     return tpicore_read(ctxptr->tpid, addr);
 }
 
@@ -102,7 +103,7 @@ static void store_pb(tpi_context_t *tpi_context, BYTE byte)
 
     tpip = (drivetpi_context_t *)(tpi_context->prv);
 
-    rotation_byte_write(tpip->drive, byte);
+    fdd_byte_write(tpip->drive->fdds[0], byte);
 }
 
 static void undump_pa(tpi_context_t *tpi_context, BYTE byte)
@@ -121,11 +122,7 @@ static void store_pc(tpi_context_t *tpi_context, BYTE byte)
 
     plus4tcbm_update_pc(byte, tpip->number);
 
-    tpip->drive->read_write_mode = byte & 0x10;
-
-    if ((byte & 0x10) != (tpi_context->oldpc & 0x10)) {
-        rotation_rotate_disk(tpip->drive);
-    }
+    fdd_set_write_gate(tpip->drive->fdds[0], byte & 0x10);
 }
 
 static void undump_pc(tpi_context_t *tpi_context, BYTE byte)
@@ -143,8 +140,6 @@ static BYTE read_pa(tpi_context_t *tpi_context)
     byte = (tpi_context->c_tpi[TPI_PA] | ~(tpi_context->c_tpi)[TPI_DDPA])
            & plus4tcbm_outputa[tpip->number];
 
-    tpip->drive->byte_ready_level = 0;
-
     return byte;
 }
 
@@ -156,12 +151,10 @@ static BYTE read_pb(tpi_context_t *tpi_context)
 
     tpip = (drivetpi_context_t *)(tpi_context->prv);
 
-    byte = rotation_byte_read(tpip->drive);
+    byte = fdd_byte_read(tpip->drive->fdds[0]);
 
     byte = (tpi_context->c_tpi[TPI_PB] | ~(tpi_context->c_tpi)[TPI_DDPB])
            & byte;
-
-    tpip->drive->byte_ready_level = 0;
 
     return byte;
 }
@@ -174,17 +167,15 @@ static BYTE read_pc(tpi_context_t *tpi_context)
 
     tpip = (drivetpi_context_t *)(tpi_context->prv);
 
-    rotation_rotate_disk(tpip->drive);
-
     byte = (tpi_context->c_tpi[TPI_PC] | ~(tpi_context->c_tpi)[TPI_DDPC])
            /* Bit 0, 1 */
            & (plus4tcbm_outputb[tpip->number] | ~0x03)
            /* Bit 3 */
            & ((plus4tcbm_outputc[tpip->number] >> 4) | ~0x08)
            /* Bit 5 */
-           & (~0x20)
+           & (tpip->number ? 0xff : ~0x20)
            /* Bit 6 */
-           & (rotation_sync_found(tpip->drive) ? 0xff : ~0x40)
+           & (fdd_sync(tpip->drive->fdds[0]) ? 0xff : ~0x40)
            /* Bit 7 */
            & ((plus4tcbm_outputc[tpip->number] << 1) | ~0x80);
 

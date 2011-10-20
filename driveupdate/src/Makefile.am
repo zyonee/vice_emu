@@ -122,6 +122,7 @@ noinst_HEADERS = \
 	color.h \
 	config.h.in \
 	console.h \
+	crc16.h \
 	crc32.h \
 	datasette.h \
 	debug.h \
@@ -243,6 +244,7 @@ base_sources = \
 	cbmdos.c \
 	cbmimage.c \
 	color.c \
+	crc16.c \
 	crc32.c \
 	datasette.c \
 	debug.c \
@@ -1476,6 +1478,7 @@ c1541_SOURCES = \
 	cbmimage.c \
 	info.c \
 	ioutil.c \
+	crc16.c \
 	lib.c \
 	log.c \
 	rawfile.c \

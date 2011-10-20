@@ -1,9 +1,8 @@
 /*
- * grc.h - GCR handling.
+ * crc16.c - 16 bit CRC, poly: 1021
  *
  * Written by
- *  Andreas Boose <viceteam@t-online.de>
- *  Daniel Sladic <sladic@eecg.toronto.edu>
+ *  Kajtar Zsolt <soci@c64.rulez.org>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -25,21 +24,36 @@
  *
  */
 
-#ifndef VICE_GCR_H
-#define VICE_GCR_H
-
+#include "lib.h"
+#include "crc16.h"
 #include "types.h"
 
-struct disk_track_s;
-typedef struct gcr_header_s {
-    BYTE sector, track, id2, id1;
-} gcr_header_t;
+static WORD *crc16_table = NULL;
 
-#define SECTOR_GCR_SIZE_WITH_HEADER 354
+static void crc16_init(void)
+{
+    int i, j;
+    WORD w;
 
-extern void gcr_convert_sector_to_GCR(BYTE *buffer, BYTE *ptr,
-                                      gcr_header_t *header, BYTE error_code);
-extern int gcr_read_sector(struct disk_track_s *raw, BYTE *data, BYTE sector);
-extern int gcr_write_sector(struct disk_track_s *raw, BYTE *data, BYTE sector);
-#endif
+    crc16_table = lib_malloc(256 * sizeof(WORD));
+    for (i = 0; i < 256; i++) {
+        w = i << 8;
+        for (j = 0; j < 8; j++) {
+            if (w & 0x8000) {
+                w <<= 1;
+                w ^= 0x1021;
+            } else {
+                w <<= 1;
+            }
+        }
+        crc16_table[i] = w;
+    }
+}
 
+inline WORD crc16(WORD crc, BYTE b)
+{
+    if (!crc16_table) {
+        crc16_init();
+    }
+    return crc16_table[(crc >> 8) ^ b] ^ (crc << 8);
+}

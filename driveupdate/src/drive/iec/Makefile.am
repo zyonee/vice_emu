@@ -29,8 +29,6 @@ libdriveiec_a_SOURCES = \
 	wd1770.h \
 	via4000.c \
 	via4000.h \
-	fdd.c \
-	fdd.h \
 	pc8477.c \
 	pc8477.h
 

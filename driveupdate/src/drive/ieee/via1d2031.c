@@ -38,7 +38,6 @@
 #include "interrupt.h"
 #include "lib.h"
 #include "parallel.h"
-#include "rotation.h"
 #include "types.h"
 #include "via.h"
 #include "via1d2031.h"

@@ -614,6 +614,10 @@ int vdrive_bam_read_bam(vdrive_t *vdrive)
 {
     int err = -1, i;
 
+    if (vdrive == NULL) {
+        return CBMDOS_IPE_NOT_READY;
+    }
+
     switch(vdrive->image_format) {
       case VDRIVE_IMAGE_FORMAT_2040:
       case VDRIVE_IMAGE_FORMAT_1541:

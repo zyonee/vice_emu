@@ -28,13 +28,15 @@
 #define VICE_MFM_H
 
 #include "types.h"
+
+struct disk_track_s;
 typedef struct mfm_header_s {
     BYTE track, head, sector, sector_size;
 } mfm_header_t;
 
-extern void mfm_convert_sector_to_MFM(BYTE *buffer, WORD *raw, mfm_header_t header,
-                                      unsigned int gap2);
-extern int mfm_read_sector(WORD *raw, unsigned int size, BYTE *data,
+extern void mfm_convert_sector_to_MFM(BYTE *buffer, BYTE *data, BYTE *sync,
+                                      mfm_header_t *header, int gap2);
+extern int mfm_read_sector(struct disk_track_s *raw, BYTE *data,
                            mfm_header_t header);
 #endif
 

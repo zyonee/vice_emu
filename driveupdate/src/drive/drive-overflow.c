@@ -33,7 +33,7 @@
 #include "drivetypes.h"
 #include "interrupt.h"
 #include "log.h"
-#include "rotation.h"
+#include "fdd.h"
 
 
 static void drive_clk_overflow_callback(CLOCK sub, void *data)
@@ -44,16 +44,8 @@ static void drive_clk_overflow_callback(CLOCK sub, void *data)
     dnr = vice_ptr_to_uint(data);
     drive = drive_context[dnr]->drive;
 
-    rotation_rotate_disk(drive);
+    fdd_overflow_callback(sub, drive->fdds[0]);
 
-    rotation_overflow_callback(sub, drive->rotation);
-
-    if (drive->attach_clk > (CLOCK)0)
-        drive->attach_clk -= sub;
-    if (drive->detach_clk > (CLOCK)0)
-        drive->detach_clk -= sub;
-    if (drive->attach_detach_clk > (CLOCK)0)
-        drive->attach_detach_clk -= sub;
     if (drive->led_last_change_clk > (CLOCK)0)
         drive->led_last_change_clk -= sub;
     if (drive->led_last_uiupdate_clk > (CLOCK)0)

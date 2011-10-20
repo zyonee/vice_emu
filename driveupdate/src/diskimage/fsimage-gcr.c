@@ -37,7 +37,7 @@
 #include "log.h"
 #include "types.h"
 #include "util.h"
-
+#include "lib.h"
 
 static log_t fsimage_gcr_log = LOG_ERR;
 
@@ -58,71 +58,67 @@ int fsimage_gcr_read_track(disk_image_t *image, unsigned int track,
     BYTE len[2];
     DWORD gcr_track_p = 0;
     DWORD gcr_speed_p = 0;
-    int gap;
+    int read = 0;
     fsimage_t *fsimage;
 
     fsimage = image->media.fsimage;
 
-    memset(raw->data, 0x00, NUM_MAX_BYTES_TRACK);
     raw->size = 6250;
 
-    if (fsimage->fd == NULL) {
-        log_error(fsimage_gcr_log, "Attempt to read without disk image.");
-        return -1;
-    }
+    do {
+        if (fsimage->fd == NULL) {
+            log_error(fsimage_gcr_log, "Attempt to read without disk image.");
+            break;
+        }
+        num_tracks = image->ptracks;
 
-    num_tracks = image->ptracks;
-    track -= 2;
-
-    if (track < num_tracks && head == 0) {
+        if (track >= num_tracks || head != 0) {
+            break;
+        }
         if (fseek(fsimage->fd, 12 + track * 4, SEEK_SET) < 0
                 || util_dword_read(fsimage->fd, &gcr_track_p, 1) < 0) {
             log_error(fsimage_gcr_log, "Could not read GCR disk image.");
-            return -1;
+            break;
         }
-
         if (fseek(fsimage->fd, 12 + (num_tracks + track) * 4, SEEK_SET) < 0
                 || util_dword_read(fsimage->fd, &gcr_speed_p, 1) < 0) {
             log_error(fsimage_gcr_log, "Could not read GCR disk image.");
-            return -1;
+            break;
         }
-    }
 
-    if (gcr_track_p != 0) {
+        if (gcr_track_p == 0) {
+            break;
+        }
         if (fseek(fsimage->fd, gcr_track_p, SEEK_SET) < 0
             || fread(len, 2, 1, fsimage->fd) < 1) {
             log_error(fsimage_gcr_log, "Could not read GCR disk image.");
-            return -1;
+            break;
         }
 
         track_len = len[0] + len[1] * 256;
+        raw->size = track_len;
 
-        if (track_len < 5000 || track_len > 7928) {
+        if (track_len < 5000 || track_len > NUM_MAX_BYTES_TRACK) {
             log_error(fsimage_gcr_log,
                       "Track field length %i is not supported.",
                       track_len);
-            return -1;
+            break;
         }
-        if (gcr_speed_p < 4) {
-            if (gcr_speed_p != 16 - (200000 / track_len + 1) / 2) {
-                log_error(fsimage_gcr_log, "Rate has no correlation to track size, unsupported.");
-                return -1;
-            }
-        } else {
+        if (gcr_speed_p >= 4) {
             log_error(fsimage_gcr_log, "Variable rate not supported yet.");
-            return -1;
+            break;
         }
+        if (gcr_speed_p != 16 - (200000 / track_len + 1) / 2) {
+            log_error(fsimage_gcr_log, "Rate has no correlation to track size, unsupported.");
+            break;
+        }
+        read = 1;
+    } while (0);
 
-        raw->size = track_len;
-
-        if (fread(raw->data, track_len, 1, fsimage->fd) < 1) {
-            log_error(fsimage_gcr_log, "Could not read GCR disk image.");
-            return -1;
-        }
-        gap = NUM_MAX_BYTES_TRACK - track_len;
-        if (gap > 0) {
-            memset(raw->data + track_len, 0x55, gap);
-        }
+    raw->data = lib_realloc(raw->data, raw->size);
+    if (!read || fread(raw->data, raw->size, 1, fsimage->fd) < 1) {
+        memset(raw->data, 0, raw->size);
+        return -1;
     }
 
     return 0;
@@ -134,9 +130,9 @@ int fsimage_gcr_read_track(disk_image_t *image, unsigned int track,
 int fsimage_gcr_write_track(disk_image_t *image, unsigned int track,
                             unsigned int head, disk_track_t *raw)
 {
-    int gap;
     unsigned int num_tracks;
-    BYTE len[2];
+    int gap;
+    BYTE len[2], padding[NUM_MAX_BYTES_TRACK];
     DWORD gcr_track_p = 0;
     DWORD gcr_speed_p;
     fsimage_t *fsimage = image->media.fsimage;
@@ -148,7 +144,6 @@ int fsimage_gcr_write_track(disk_image_t *image, unsigned int track,
     }
 
     num_tracks = image->ptracks;
-    track -= 2;
 
     if (track >= num_tracks) {
         log_error(fsimage_gcr_log, "Could not extend GCR disk image.");
@@ -179,17 +174,17 @@ int fsimage_gcr_write_track(disk_image_t *image, unsigned int track,
         return -1;
     }
 
-    /* Clear gap between the end of the actual track and the start of
-       the next track.  */
-    gap = NUM_MAX_BYTES_TRACK - raw->size;
-    if (gap > 0) {
-        memset(raw->data + raw->size, 0, gap);
-    }
-
-    if (fwrite(raw->data, NUM_MAX_BYTES_TRACK, 1,
-        fsimage->fd) < 1) {
+    if (fwrite(raw->data, raw->size, 1, fsimage->fd) < 1) {
         log_error(fsimage_gcr_log, "Could not write GCR disk image.");
         return -1;
+    }
+    gap = NUM_MAX_BYTES_TRACK - raw->size;
+    if (gap > 0) {
+        memset(padding, 0, gap);
+        if (fwrite(padding, gap, 1, fsimage->fd) < 1) {
+            log_error(fsimage_gcr_log, "Could not write GCR disk image.");
+            return -1;
+        }
     }
 
     fseek(fsimage->fd, 12 + track * 4, SEEK_SET);
@@ -217,7 +212,6 @@ int fsimage_gcr_write_track(disk_image_t *image, unsigned int track,
 int fsimage_gcr_read_sector(disk_image_t *image, BYTE *buf,
                                unsigned int track, unsigned int sector)
 {
-    BYTE data[NUM_MAX_BYTES_TRACK];
     disk_track_t raw;
 
     if (track > image->ltracks || track < 1) {
@@ -227,21 +221,24 @@ int fsimage_gcr_read_sector(disk_image_t *image, BYTE *buf,
         return -1;
     }
 
-    raw.data = data;
+    raw.data = NULL;
 
-    if (fsimage_gcr_read_track(image, track * 2, 0,
+    if (fsimage_gcr_read_track(image, (track - 1) * 2, 0,
         &raw) < 0) {
         log_error(fsimage_gcr_log,
                   "Cannot read track %i from GCR image.", track);
+        lib_free(raw.data);
         return -1;
     }
 
-    if (gcr_read_sector(raw.data, raw.size, buf, track, sector) < 0) {
+    if (gcr_read_sector(&raw, buf, sector) < 0) {
         log_error(fsimage_gcr_log,
                   "Cannot find track: %i sector: %i within GCR image.",
                   track, sector);
+        lib_free(raw.data);
         return -1;
     }
+    lib_free(raw.data);
     return 0;
 }
 
@@ -253,7 +250,6 @@ int fsimage_gcr_write_sector(disk_image_t *image, BYTE *buf,
                                 unsigned int track, unsigned int sector)
 {
     disk_track_t raw;
-    BYTE data[NUM_MAX_BYTES_TRACK];
 
     if (track > image->ltracks || track < 1) {
         log_error(fsimage_gcr_log,
@@ -262,27 +258,31 @@ int fsimage_gcr_write_sector(disk_image_t *image, BYTE *buf,
         return -1;
     }
 
-    raw.data = data;
+    raw.data = NULL;
 
-    if (fsimage_gcr_read_track(image, track * 2, 0, &raw) < 0) {
+    if (fsimage_gcr_read_track(image, (track - 1) * 2, 0, &raw) < 0) {
         log_error(fsimage_gcr_log,
                   "Cannot read track %i from GCR image.", track);
+        lib_free(raw.data);
         return -1;
     }
 
-    if (gcr_write_sector(raw.data, raw.size, buf, track, sector) < 0) {
+    if (gcr_write_sector(&raw, buf, sector) < 0) {
         log_error(fsimage_gcr_log,
                   "Could not find track %i sector %i in disk image",
                   track, sector);
+        lib_free(raw.data);
         return -1;
     }
 
-    if (disk_image_write_track(image, track * 2, 0, &raw) < 0) {
+    if (fsimage_gcr_write_track(image, (track - 1) * 2, 0, &raw) < 0) {
         log_error(fsimage_gcr_log,
                   "Failed writing track %i to disk image.", track);
+        lib_free(raw.data);
         return -1;
     }
 
+    lib_free(raw.data);
     return 0;
 }
 
@@ -293,6 +293,7 @@ int fsimage_gcr_create(disk_image_t *image, unsigned int type)
     DWORD gcr_track_p[MAX_TRACKS_1541 * 2];
     DWORD gcr_speed_p[MAX_TRACKS_1541 * 2];
     unsigned int track, sector;
+    gcr_header_t header;
     BYTE rawdata[256];
     int i;
 
@@ -313,7 +314,7 @@ int fsimage_gcr_create(disk_image_t *image, unsigned int type)
 
     for (track = 0; track < NUM_TRACKS_1541; track++) {
         gcr_track_p[track * 2] = 12 + MAX_TRACKS_1541 * 16 + track * (NUM_MAX_BYTES_TRACK + 2);
-        gcr_speed_p[track * 2] = disk_image_speed_map_1541(track);
+        gcr_speed_p[track * 2] = disk_image_speed_map_1541(track + 1);
     }
 
     if (util_dword_write(fsimage->fd, gcr_track_p, util_arraysize(gcr_track_p)) < 0) {
@@ -325,6 +326,9 @@ int fsimage_gcr_create(disk_image_t *image, unsigned int type)
         return -1;
     }
     memset(rawdata, 0, sizeof(rawdata));
+
+    header.id1 = image->diskid[0];
+    header.id2 = image->diskid[1];
     for (track = 1; track <= NUM_TRACKS_1541; track++) {
         gcrptr = gcr_track;
         i = disk_image_raw_track_size_1541(track);
@@ -332,12 +336,13 @@ int fsimage_gcr_create(disk_image_t *image, unsigned int type)
         *gcrptr++ = i / 256;
         memset(gcrptr, 0x55, NUM_MAX_BYTES_TRACK);
 
+        header.track = track;
         for (sector = 0;
         sector < disk_image_sector_per_track(image, track);
         sector++) {
 
-            gcr_convert_sector_to_GCR(rawdata, gcrptr, track, sector,
-                                      image->diskID[0], image->diskID[1], 0);
+            header.sector = sector;
+            gcr_convert_sector_to_GCR(rawdata, gcrptr, &header, 0);
 
             gcrptr += SECTOR_GCR_SIZE_WITH_HEADER + disk_image_gap_size_1541(track);
         }
@@ -381,7 +386,7 @@ int fsimage_gcr_probe(disk_image_t *image)
     }
 
     trackfield = header[10] + header[11] * 256;
-    if (trackfield != 7928) {
+    if (trackfield != NUM_MAX_BYTES_TRACK) {
         log_error(fsimage_gcr_log,
                   "Import GCR: Invalid track field number %i.",
                   trackfield);
@@ -392,7 +397,7 @@ int fsimage_gcr_probe(disk_image_t *image)
     image->type_name = "G64";
     image->loffset = 0;
     image->lblocks = MAX_BLOCKS_1541;
-    image->ltracks = header[9] / 2;
+    image->ltracks = NUM_TRACKS_1541;
     image->ptracks = header[9];
     image->sides = 1;
     fsimage_error_info_destroy(fsimage);

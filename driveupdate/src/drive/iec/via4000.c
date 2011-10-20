@@ -43,7 +43,6 @@
 #include "iecdrive.h"
 #include "interrupt.h"
 #include "lib.h"
-#include "rotation.h"
 #include "types.h"
 #include "via.h"
 #include "via4000.h"
