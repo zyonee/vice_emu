@@ -615,11 +615,6 @@ static void fdd_rotate_mfm(fd_drive_t *drv)
         drv->accum -= drv->divider;
 
         if (drv->headp) {
-            drv->headp++;
-            if (drv->headp >= drv->raw->data + drv->raw->size) {
-                drv->headp = drv->raw->data;
-                drv->index_count++;
-            }
             if (drv->write_gate) {
                 drv->read_latch_mfm = drv->headp[0];
                 drv->read_latch_mfm |= drv->headp[drv->raw->size] << 8;
@@ -627,6 +622,12 @@ static void fdd_rotate_mfm(fd_drive_t *drv)
                 drv->headp[0] = drv->write_out_mfm;
                 drv->headp[drv->raw->size] = drv->write_out_mfm >> 8;
                 drv->write_out_mfm = 0;
+                drv->raw->dirty = 1;
+            }
+            drv->headp++;
+            if (drv->headp >= drv->raw->data + drv->raw->size) {
+                drv->headp = drv->raw->data;
+                drv->index_count++;
             }
         } else {
             if (drv->write_gate) {
@@ -789,7 +790,7 @@ static void fdd_image_read(fd_drive_t *drv)
         fprintf(stderr, "%d:%d\n", drv->track, drv->side);
         for (i = 0; i < drv->raw->size; i++) {
             if (i % 20 == 0) fprintf(stderr, "%04x:", i);
-
+            if (!(i & 3)) fprintf(stderr, " ");
             fprintf(stderr, "%c%02x", drv->raw->data[i + drv->raw->size] ? '*' : ' ', drv->raw->data[i]);
             if (i % 20 == 19 || i == drv->raw->size - 1) fprintf(stderr, "\n");
         }
@@ -815,4 +816,16 @@ static void fdd_image_writeback(fd_drive_t *drv, int free)
     disk_image_write_track(drv->image, drv->track, drv->side, drv->raw);
     drv->raw->dirty = 0;
     drv->raw->pinned = (drv->image->type != DISK_IMAGE_TYPE_G64);
+#if 0
+    {
+        int i;
+        fprintf(stderr, "%d:%d\n", drv->track, drv->side);
+        for (i = 0; i < drv->raw->size; i++) {
+            if (i % 20 == 0) fprintf(stderr, "%04x:", i);
+            if (!(i & 3)) fprintf(stderr, " ");
+            fprintf(stderr, "%c%02x", drv->raw->data[i + drv->raw->size] ? '*' : ' ', drv->raw->data[i]);
+            if (i % 20 == 19 || i == drv->raw->size - 1) fprintf(stderr, "\n");
+        }
+    }
+#endif
 }

@@ -112,12 +112,12 @@
 #if defined DRIVE_CPU
 #define LOCAL_SET_OVERFLOW(val)               \
     do {                                      \
-        if (!(val))                           \
-            drivecpu_byte_ready_egde_clear(); \
         if (val)                              \
             reg_p |= P_OVERFLOW;              \
-        else                                  \
+        else {                                \
+            drivecpu_byte_ready_egde_clear(); \
             reg_p &= ~P_OVERFLOW;             \
+        }                                     \
     } while (0)
 #else
 #define LOCAL_SET_OVERFLOW(val)   \
