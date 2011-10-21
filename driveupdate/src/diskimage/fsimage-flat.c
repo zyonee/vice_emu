@@ -273,13 +273,50 @@ int fsimage_flat_write_track_gcr(disk_image_t *image, unsigned int track,
 
     /* Make sure the stream is visible to other readers.  */
     fflush(fsimage->fd);
-    return 0;
+
+    return 1; /* always different due to timing of read/write switch */
 }
 
 int fsimage_flat_write_track_mfm(disk_image_t *image, unsigned int track,
                             unsigned int head, disk_track_t *raw)
 {
-    return -1;
+    unsigned int sector, res;
+    BYTE *buffer;
+    disk_track_t old_track;
+    fsimage_t *fsimage = image->media.fsimage;
+    mfm_header_t header;
+
+    fsimage_flat_seek_track(image, track + 1, head);
+
+    buffer = lib_malloc(128 << image->mfm.sector_size);
+
+    header.track = track;
+    header.head = head ^ image->mfm.head_swap;
+    header.sector_size = image->mfm.sector_size;
+    for (sector = 0; sector < image->mfm.sectors; sector++) {
+        header.sector = sector + 1;
+        switch (mfm_read_sector(raw, buffer, &header)) {
+        case -1:
+            log_error(fsimage_flat_log, "Could not find header of T:%d H:%d S:%d.",
+                      track, head, sector);
+            continue;
+        } 
+        if (fwrite((char *)buffer, 128 << image->mfm.sector_size, 1, fsimage->fd) < 1) {
+            log_error(fsimage_flat_log, "Error writing T:%d H:%d S:%d to disk image.",
+                    track, head, sector);
+        }
+    }
+    lib_free(buffer);
+
+    /* Make sure the stream is visible to other readers.  */
+    fflush(fsimage->fd);
+
+    memset(&old_track, 0, sizeof(old_track));
+    res = fsimage_flat_read_track_mfm(image, track, head, &old_track);
+    res |= raw->size != old_track.size || memcmp(raw->data, old_track.data, 2 * old_track.size); 
+    lib_free(old_track.data);
+
+    return res; /* return if there was any change */
 }
 
 int fsimage_flat_write_track(disk_image_t *image, unsigned int track,

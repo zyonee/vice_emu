@@ -37,6 +37,6 @@ typedef struct mfm_header_s {
 extern void mfm_convert_sector_to_MFM(BYTE *buffer, BYTE *data, BYTE *sync,
                                       mfm_header_t *header, int gap2);
 extern int mfm_read_sector(struct disk_track_s *raw, BYTE *data,
-                           mfm_header_t header);
+                           mfm_header_t *header);
 #endif
 

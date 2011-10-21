@@ -199,6 +199,10 @@ int fsimage_write_track(disk_image_t *image, unsigned int track,
     case DISK_IMAGE_TYPE_D67:
     case DISK_IMAGE_TYPE_X64:
     case DISK_IMAGE_TYPE_D71:
+    case DISK_IMAGE_TYPE_D81:
+    case DISK_IMAGE_TYPE_D1M:
+    case DISK_IMAGE_TYPE_D2M:
+    case DISK_IMAGE_TYPE_D4M:
         return fsimage_flat_write_track(image, track, head, raw);
     case DISK_IMAGE_TYPE_G64:
         return fsimage_gcr_write_track(image, track, head, raw);

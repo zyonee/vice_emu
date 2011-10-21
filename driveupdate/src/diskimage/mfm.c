@@ -82,7 +82,7 @@ void mfm_convert_sector_to_MFM(BYTE *buffer, BYTE *data, BYTE *sync,
     *data++ = crc & 0xff;
 }
 
-int mfm_read_sector(disk_track_t *raw, BYTE *data, mfm_header_t header)
+int mfm_read_sector(disk_track_t *raw, BYTE *data, mfm_header_t *header)
 {
     int i;
     int step = 0;
@@ -120,31 +120,23 @@ int mfm_read_sector(disk_track_t *raw, BYTE *data, mfm_header_t header)
                 continue;
             }
             break;
-        case 3:
-            if (w == header.track / 2) {
-                step++;
-                continue;
-            }
-            break;
-        case 4:
-            if (w == header.head) {
-                step++;
-                continue;
-            }
-            break;
+        case 3: /* track not checked */
+        case 4: /* head not checked */
+            step++; 
+            continue;
         case 5:
-            if (w == header.sector) {
+            if (w == header->sector) {
                 step++;
                 continue;
             }
             break;
         case 6:
-            if (w == header.sector_size) {
+            if (w == header->sector_size) {
                 step++;
                 continue;
             }
             break;
-        case 7: /* crc */
+        case 7: /* crc not checked */
         case 8:
             step++;
             continue;
@@ -174,7 +166,7 @@ int mfm_read_sector(disk_track_t *raw, BYTE *data, mfm_header_t header)
             break;
         case 12:
             data[d++] = w;
-            if (d >= (128 << header.sector_size)) {
+            if (d >= (128 << header->sector_size)) {
                 step++;
             }
             continue;

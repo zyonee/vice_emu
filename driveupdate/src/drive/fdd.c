@@ -787,11 +787,12 @@ static void fdd_image_read(fd_drive_t *drv)
 #if 0
     {
         int i;
-        fprintf(stderr, "%d:%d\n", drv->track, drv->side);
+        fprintf(stderr, "read %d:%d\n", drv->track, drv->side);
         for (i = 0; i < drv->raw->size; i++) {
             if (i % 20 == 0) fprintf(stderr, "%04x:", i);
             if (!(i & 3)) fprintf(stderr, " ");
-            fprintf(stderr, "%c%02x", drv->raw->data[i + drv->raw->size] ? '*' : ' ', drv->raw->data[i]);
+            /*fprintf(stderr, "%c%02x", drv->raw->data[i + drv->raw->size] ? '*' : ' ', drv->raw->data[i]);*/
+            fprintf(stderr, " %02x", drv->raw->data[i]);
             if (i % 20 == 19 || i == drv->raw->size - 1) fprintf(stderr, "\n");
         }
     }
@@ -804,28 +805,27 @@ static void fdd_image_writeback(fd_drive_t *drv, int free)
     if (!drv->image || !drv->raw)
         return;
 
-    if (!drv->raw->dirty) {
-        if (free && !drv->raw->pinned) {
-            lib_free(drv->raw->data);
-            lib_free(drv->raw);
-            drv->raw_cache[drv->side][drv->track] = NULL;
-            drv->raw = NULL;
-        }
-        return;
+    if (drv->raw->dirty) {
+        drv->raw->pinned = disk_image_write_track(drv->image, drv->track, drv->side, drv->raw);
+        drv->raw->dirty = 0;
     }
-    disk_image_write_track(drv->image, drv->track, drv->side, drv->raw);
-    drv->raw->dirty = 0;
-    drv->raw->pinned = (drv->image->type != DISK_IMAGE_TYPE_G64);
 #if 0
     {
         int i;
-        fprintf(stderr, "%d:%d\n", drv->track, drv->side);
+        fprintf(stderr, "write %d:%d\n", drv->track, drv->side);
         for (i = 0; i < drv->raw->size; i++) {
             if (i % 20 == 0) fprintf(stderr, "%04x:", i);
             if (!(i & 3)) fprintf(stderr, " ");
-            fprintf(stderr, "%c%02x", drv->raw->data[i + drv->raw->size] ? '*' : ' ', drv->raw->data[i]);
+            /*fprintf(stderr, "%c%02x", (drv->raw->data[i + drv->raw->size]) ? '*' : ' ', drv->raw->data[i]);*/
+            fprintf(stderr, " %02x", drv->raw->data[i]);
             if (i % 20 == 19 || i == drv->raw->size - 1) fprintf(stderr, "\n");
         }
     }
 #endif
+    if (free && !drv->raw->pinned) {
+        lib_free(drv->raw->data);
+        lib_free(drv->raw);
+        drv->raw_cache[drv->side][drv->track] = NULL;
+        drv->raw = NULL;
+    }
 }
