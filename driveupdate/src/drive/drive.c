@@ -187,7 +187,7 @@ int drive_init(void)
 
     for (dnr = 0; dnr < DRIVE_NUM; dnr++) {
         drive = drive_context[dnr]->drive;
-        drive->fdds[0] = fdd_init(1, drive, drive->clk);
+        drive->fdds[0] = fdd_init(1, drive);
         wd1770_set_fdd(drive_context[dnr]->wd1770, drive->fdds[0]);
         drive->old_led_status = 0;
         drive->old_half_track = 0;

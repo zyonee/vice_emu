@@ -45,9 +45,9 @@ struct drive_s;
 typedef struct fd_drive_s fd_drive_t;
 
 extern const int fdd_data_rates[4];
-extern fd_drive_t *fdd_init(int num, struct drive_s *drive, CLOCK *clk);
+extern fd_drive_t *fdd_init(int num, struct drive_s *drive);
 extern void fdd_shutdown(fd_drive_t *drv);
-extern void fdd_reset(fd_drive_t *drv);
+extern void fdd_reset(fd_drive_t *drv, CLOCK clk);
 
 extern void fdd_image_attach(fd_drive_t *drv, struct disk_image_s *image);
 extern void fdd_image_detach(fd_drive_t *drv);
@@ -63,7 +63,7 @@ extern inline void fdd_set_motor(fd_drive_t *drv, int motor);
 extern inline void fdd_set_rate(fd_drive_t *drv, int rate);
 extern inline void fdd_set_write_gate(fd_drive_t *drv, int wg);
 extern inline void fdd_set_soe(fd_drive_t *drv, int soe);
-extern void fdd_set_clk(fd_drive_t *drv, CLOCK *clk);
+extern void fdd_set_clk(fd_drive_t *drv, CLOCK clk);
 extern inline int fdd_index(fd_drive_t *drv);
 extern inline void fdd_index_count_reset(fd_drive_t *drv);
 extern inline int fdd_index_count(fd_drive_t *drv);

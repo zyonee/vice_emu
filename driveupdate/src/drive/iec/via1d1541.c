@@ -133,6 +133,7 @@ static void store_pra(via_context_t *via_context, BYTE byte, BYTE oldpa_value,
     if (via1p->drive->type == DRIVE_TYPE_1570
         || via1p->drive->type == DRIVE_TYPE_1571
         || via1p->drive->type == DRIVE_TYPE_1571CR) {
+        fdd_set_clk(via1p->drive->fdds[0], *via1p->drive->clk);
         if ((oldpa_value ^ byte) & 0x20)
             drivesync_set_1571(byte & 0x20, drive_context);
         fdd_set_side(via1p->drive->fdds[0], byte & 0x04);
@@ -260,6 +261,7 @@ static BYTE read_pra(via_context_t *via_context, WORD addr)
         || via1p->drive->type == DRIVE_TYPE_1571CR) {
         BYTE tmp;
 
+        fdd_set_clk(via1p->drive->fdds[0], *via1p->drive->clk);
         tmp = (fdd_byte_ready(via1p->drive->fdds[0]) ? 0 : 0x80)
             | (fdd_track0(via1p->drive->fdds[0]) ? 1 : 0);
         return (tmp & ~(via_context->via[VIA_DDRA]))

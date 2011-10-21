@@ -61,15 +61,19 @@ typedef struct drivevia2_context_s {
 static void set_ca2(via_context_t *via_context, int state)
 {
     drivevia2_context_t *via2p = (drivevia2_context_t *)(via_context->prv);
+    drive_t *drive = via2p->drive;
 
-    fdd_set_soe(via2p->drive->fdds[0], state);
+    fdd_set_clk(drive->fdds[0], *via2p->drive->clk);
+    fdd_set_soe(drive->fdds[0], state);
 }
 
 static void set_cb2(via_context_t *via_context, int state)
 {
     drivevia2_context_t *via2p = (drivevia2_context_t *)(via_context->prv);
+    drive_t *drive = via2p->drive;
 
-    fdd_set_write_gate(via2p->drive->fdds[0], state);
+    fdd_set_clk(drive->fdds[0], *drive->clk);
+    fdd_set_write_gate(drive->fdds[0], state);
 }
 
 /* see interrupt.h; ugly, but more efficient... */
@@ -105,13 +109,19 @@ BYTE via2d_read(drive_context_t *ctxptr, WORD addr)
 
 void via2d1571_store(drive_context_t *ctxptr, WORD addr, BYTE data)
 {
-    fdd_byte_ready_clear(ctxptr->drive->fdds[0]);
+    drive_t *drive = ctxptr->drive;
+
+    fdd_set_clk(drive->fdds[0], *drive->clk);
+    fdd_byte_ready_clear(drive->fdds[0]);
     viacore_store(ctxptr->via2, addr, data);
 }
 
 BYTE via2d1571_read(drive_context_t *ctxptr, WORD addr)
 {
-    fdd_byte_ready_clear(ctxptr->drive->fdds[0]);
+    drive_t *drive = ctxptr->drive;
+
+    fdd_set_clk(drive->fdds[0], *drive->clk);
+    fdd_byte_ready_clear(drive->fdds[0]);
     return viacore_read(ctxptr->via2, addr);
 }
 
@@ -125,6 +135,7 @@ static void store_pra(via_context_t *via_context, BYTE byte, BYTE oldpa_value,
 {
     drivevia2_context_t *via2p = (drivevia2_context_t *)(via_context->prv);
 
+    fdd_set_clk(via2p->drive->fdds[0], *via2p->drive->clk);
     fdd_byte_write(via2p->drive->fdds[0], byte);
 }
 
@@ -135,33 +146,31 @@ static void undump_pra(via_context_t *via_context, BYTE byte)
 static void store_prb(via_context_t *via_context, BYTE byte, BYTE poldpb,
                       WORD addr)
 {
-    drivevia2_context_t *via2p;
+    drivevia2_context_t *via2p = (drivevia2_context_t *)(via_context->prv);
+    drive_t *drive = via2p->drive;
 
-    via2p = (drivevia2_context_t *)(via_context->prv);
-
-    if (via2p->drive->led_status)
-        via2p->drive->led_active_ticks += *(via_context->clk_ptr)
-                                          - via2p->drive->led_last_change_clk;
-    via2p->drive->led_last_change_clk = *(via_context->clk_ptr);
-    via2p->drive->led_status = (byte & 8) ? 1 : 0;
+    if (drive->led_status)
+        drive->led_active_ticks += *(via_context->clk_ptr) - drive->led_last_change_clk;
+    drive->led_last_change_clk = *(via_context->clk_ptr);
+    drive->led_status = (byte & 8) ? 1 : 0;
 
     /* Motor on/off */
-    fdd_set_motor(via2p->drive->fdds[0], byte & 0x04);
+    fdd_set_clk(drive->fdds[0], *drive->clk);
+    fdd_set_motor(drive->fdds[0], byte & 0x04);
 
     if ((poldpb ^ byte) & 1) {   /* Stepper motor */
-        fdd_step_pulse(via2p->drive->fdds[0], (poldpb ^ (byte - 1)) & 2);
+        fdd_step_pulse(drive->fdds[0], (poldpb ^ (byte - 1)) & 2);
     }
     /* Zone bits */
-    fdd_set_rate(via2p->drive->fdds[0], byte >> 5);
+    fdd_set_rate(drive->fdds[0], byte >> 5);
 }
 
 static void undump_prb(via_context_t *via_context, BYTE byte)
 {
-    drivevia2_context_t *via2p;
+    drivevia2_context_t *via2p = (drivevia2_context_t *)(via_context->prv);
+    drive_t *drive = via2p->drive;
 
-    via2p = (drivevia2_context_t *)(via_context->prv);
-
-    via2p->drive->led_status = (byte & 8) ? 1 : 0;
+    drive->led_status = (byte & 8) ? 1 : 0;
 }
 
 static BYTE store_pcr(via_context_t *via_context, BYTE byte, WORD addr)
@@ -191,22 +200,21 @@ static void store_t2l(via_context_t *via_context, BYTE byte)
 
 static void reset(via_context_t *via_context)
 {
-    drivevia2_context_t *via2p;
+    drivevia2_context_t *via2p = (drivevia2_context_t *)(via_context->prv);
+    drive_t *drive = via2p->drive;
 
-    via2p = (drivevia2_context_t *)(via_context->prv);
-
-    via2p->drive->led_status = 1;
+    drive->led_status = 1;
     drive_update_ui_status();
 }
 
 static BYTE read_pra(via_context_t *via_context, WORD addr)
 {
     BYTE byte;
-    drivevia2_context_t *via2p;
+    drivevia2_context_t *via2p = (drivevia2_context_t *)(via_context->prv);
+    drive_t *drive = via2p->drive;
 
-    via2p = (drivevia2_context_t *)(via_context->prv);
-
-    byte = fdd_byte_read(via2p->drive->fdds[0]);
+    fdd_set_clk(drive->fdds[0], *drive->clk);
+    byte = fdd_byte_read(drive->fdds[0]);
 
     byte = ((byte & ~(via_context->via[VIA_DDRA]))
            | (via_context->via[VIA_PRA] & via_context->via[VIA_DDRA]));
@@ -217,12 +225,12 @@ static BYTE read_pra(via_context_t *via_context, WORD addr)
 static BYTE read_prb(via_context_t *via_context)
 {
     BYTE byte;
-    drivevia2_context_t *via2p;
+    drivevia2_context_t *via2p = (drivevia2_context_t *)(via_context->prv);
+    drive_t *drive = via2p->drive;
 
-    via2p = (drivevia2_context_t *)(via_context->prv);
-
-    byte = (((fdd_sync(via2p->drive->fdds[0]) ? 0x80 : 0)
-           | (fdd_write_protect(via2p->drive->fdds[0]) ? 0x10 : 0))
+    fdd_set_clk(drive->fdds[0], *drive->clk);
+    byte = (((fdd_sync(drive->fdds[0]) ? 0x80 : 0)
+           | (fdd_write_protect(drive->fdds[0]) ? 0x10 : 0))
            & ~(via_context->via[VIA_DDRB]))
            | (via_context->via[VIA_PRB] & via_context->via[VIA_DDRB]);
 

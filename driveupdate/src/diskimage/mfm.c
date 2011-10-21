@@ -71,7 +71,6 @@ void mfm_convert_sector_to_MFM(BYTE *buffer, BYTE *data, BYTE *sync,
     memset(data, 0xa1, 3); 
     memset(sync, 0x01, 3);
     data += 3;
-    memset(sync, 0x00, 1 + size + 2);
     *data++ = 0xfb; /* Data mark */
     memcpy(data, buffer, size);
     data += size;

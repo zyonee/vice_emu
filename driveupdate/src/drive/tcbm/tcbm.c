@@ -69,7 +69,7 @@ void tcbm_drive_reset(struct drive_context_s *drv)
 {
     tpicore_reset(drv->tpid);
     glue1551_reset(drv);
-    fdd_reset(drv->drive->fdds[0]);
+    fdd_reset(drv->drive->fdds[0], *drv->drive->clk);
 }
 
 void tcbm_drive_mem_init(struct drive_context_s *drv, unsigned int type)

@@ -74,11 +74,17 @@ static int fsimage_flat_seek_track(disk_image_t *image, unsigned int track, unsi
     fsimage_t *fsimage = image->media.fsimage;
     int sectors, i, offset;
 
-    if (image->type == DISK_IMAGE_TYPE_D71 && head == 1) {
-        track += 35;
+    sectors = 0;
+
+    switch (image->type) {
+    case DISK_IMAGE_TYPE_D71:
+        track += head ? 35 : 0;
+        break;
+    case DISK_IMAGE_TYPE_D81:
+        sectors += head ? 0 : 20;
+        break;
     }
 
-    sectors = 0;
     for (i = 1; i < track; i++) {
         sectors += disk_image_sector_per_track(image, i);
     }
@@ -181,7 +187,7 @@ static int fsimage_flat_read_track_mfm(disk_image_t *image, unsigned int track,
         sync += 50;
     }
 
-    fsimage_flat_seek_track(image, track, head);
+    fsimage_flat_seek_track(image, track + 1, head);
     buffer = lib_malloc(128 << image->mfm.sector_size);
 
     header.track = track;

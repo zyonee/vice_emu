@@ -52,6 +52,7 @@ struct fd_drive_s {
     int track;       /* track of head */
     int tracks;      /* total tracks which the head can move */
     int side;        /* side selected */
+    int sides;       /* number of physical heads */
     int motor;       /* motor running */
     int write_gate;  /* read / write */
     int rate;        /* bit rate */
@@ -63,7 +64,7 @@ struct fd_drive_s {
 
     int headb; /* bit position of head */
     BYTE *headp; /* pointer to head position */
-    CLOCK last_clk, *clk;
+    CLOCK last_clk, clk;
     unsigned int read_shift_reg;
     BYTE write_shift_reg;
     BYTE read_latch, write_out;
@@ -97,14 +98,14 @@ inline void fdd_overflow_callback(CLOCK sub, fd_drive_t *drv)
 }
 
 /* Create new instance */
-fd_drive_t *fdd_init(int num, drive_t *drive, CLOCK *clk)
+fd_drive_t *fdd_init(int num, drive_t *drive)
 {
     fd_drive_t *drv = lib_calloc(1, sizeof(fd_drive_t));
     drv->number = num;
     drv->disk_change = 1;
     drv->tracks = 80;
+    drv->sides = 1;
     drv->drive = drive;
-    drv->clk = clk;
     drv->frequency = 1;
     drv->divider = 25000;
     drv->rotate = fdd_rotate_null;
@@ -113,7 +114,7 @@ fd_drive_t *fdd_init(int num, drive_t *drive, CLOCK *clk)
     switch (drive->type) {
     case DRIVE_TYPE_1551:
         drv->frequency = 2;
-        drv->divider = 50000;
+        drv->divider = 50000; /* 2 MHz */
         drv->soe = 1;
         drv->native = 3;
         /* fall through */
@@ -129,19 +130,26 @@ fd_drive_t *fdd_init(int num, drive_t *drive, CLOCK *clk)
     case DRIVE_TYPE_1571CR:
         drv->tracks = 70;
         drv->track = 17 * 2;
+        drv->sides = 2;
         drv->rotate = fdd_rotate_gcr;
         break;
     case DRIVE_TYPE_1581:
         drv->frequency = 2;
+        drv->divider = 50000 * 8; /* 1 byte at a time, 2 MHz */
         drv->tracks = 82;
         drv->hrstep = 1;
+        drv->sides = 2;
+        drv->native = 3;
         drv->rotate = fdd_rotate_mfm;
         break;
     case DRIVE_TYPE_2000:
     case DRIVE_TYPE_4000:
         drv->frequency = 2;
+        drv->divider = 50000 * 8; /* 1 byte at a time, 2 MHz */
         drv->tracks = 82;
         drv->hrstep = 1;
+        drv->sides = 2;
+        drv->native = 3;
         drv->rotate = fdd_rotate_mfm;
         break;
     }
@@ -162,9 +170,10 @@ void fdd_shutdown(fd_drive_t *drv)
 }
 
 /* CPU reset */
-void fdd_reset(fd_drive_t *drv)
+void fdd_reset(fd_drive_t *drv, CLOCK clk)
 {
-    drv->last_clk = *(drv->clk);
+    drv->clk = clk;
+    drv->last_clk = clk;
     drv->byte_ready = 0;
     drv->byte_ready_edge = 0;
 }
@@ -207,9 +216,9 @@ void fdd_image_attach(fd_drive_t *drv, struct disk_image_s *image)
     drv->headp = drv->raw->data;
     drv->headb = 0;
 
-    drv->attach_clk = *(drv->clk);
+    drv->attach_clk = drv->clk;
     if (drv->detach_clk > (CLOCK)0)
-        drv->attach_detach_clk = *(drv->clk);
+        drv->attach_detach_clk = drv->clk;
 }
 
 /* Detach disk image */
@@ -236,7 +245,7 @@ void fdd_image_detach(fd_drive_t *drv)
     drv->headp = NULL;
     drv->headb = 0;
 
-    drv->detach_clk = *(drv->clk);
+    drv->detach_clk = drv->clk;
 }
 
 /* Index sensor, active low */
@@ -314,6 +323,7 @@ inline int fdd_byte_ready_edge(fd_drive_t *drv)
     if (!drv || !(drv->soe | drv->byte_ready_edge) || drv->native == 3) {
         return 0;
     }
+    drv->clk = *drv->drive->clk;
     drv->rotate(drv);
     if (drv->byte_ready_edge) {
         drv->byte_ready_edge ^= 1;
@@ -332,12 +342,14 @@ inline int fdd_sync(fd_drive_t *drv)
     return !!(~drv->read_shift_reg & 0x3ff);
 }
 
+/* Output for writing */
 inline void fdd_byte_write(fd_drive_t *drv, BYTE data)
 {
     drv->rotate(drv);
     drv->write_out = data;
 }
 
+/* Read latch */
 inline BYTE fdd_byte_read(fd_drive_t *drv)
 {
     drv->rotate(drv);
@@ -376,14 +388,14 @@ inline int fdd_write_protect(fd_drive_t *drv)
     /* Clear the write protection bit for the time the disk is pulled out on
        detach.  */
     if (drv->detach_clk != (CLOCK)0) {
-        if (*(drv->clk) - drv->detach_clk < DRIVE_DETACH_DELAY)
+        if (drv->clk - drv->detach_clk < DRIVE_DETACH_DELAY)
             return 0;
         drv->detach_clk = (CLOCK)0;
     }
     /* Set the write protection bit for the minimum time until a new disk
        can be inserted.  */
     if (drv->attach_detach_clk != (CLOCK)0) {
-        if (*(drv->clk) - drv->attach_detach_clk
+        if (drv->clk - drv->attach_detach_clk
             < DRIVE_ATTACH_DETACH_DELAY)
             return 1;
         drv->attach_detach_clk = (CLOCK)0;
@@ -391,7 +403,7 @@ inline int fdd_write_protect(fd_drive_t *drv)
     /* Clear the write protection bit for the time the disk is put in on
        attach.  */
     if (drv->attach_clk != (CLOCK)0) {
-        if (*(drv->clk) - drv->attach_clk < DRIVE_ATTACH_DELAY)
+        if (drv->clk - drv->attach_clk < DRIVE_ATTACH_DELAY)
             return 0;
         drv->attach_clk = (CLOCK)0;
     }
@@ -457,7 +469,7 @@ inline void fdd_set_side(fd_drive_t *drv, int side)
 {
     int size, pos;
 
-    if (!drv || drv->side == !!side) {
+    if (!drv || drv->side == !!side || drv->sides <= !!side) {
         return;
     }
     drv->rotate(drv);
@@ -516,10 +528,9 @@ inline void fdd_set_soe(fd_drive_t *drv, int soe)
     drv->byte_ready_edge |= drv->byte_ready;
 }
 
-void fdd_set_clk(fd_drive_t *drv, CLOCK *clk)
+void fdd_set_clk(fd_drive_t *drv, CLOCK clk)
 {
     drv->clk = clk;
-    drv->last_clk = *clk;
 }
 
 inline static void write_next_bit(fd_drive_t *drv, int value)
@@ -573,7 +584,7 @@ inline static SDWORD RANDOM_nextInt(fd_drive_t *drv) {
 }
 
 static void fdd_rotate_null(fd_drive_t *drv) {
-    drv->last_clk = *(drv->clk);
+    drv->last_clk = drv->clk;
 }
 
 static void fdd_rotate_mfm(fd_drive_t *drv)
@@ -581,12 +592,12 @@ static void fdd_rotate_mfm(fd_drive_t *drv)
     CLOCK clk;
 
     if (!drv->motor) {
-        drv->last_clk = *(drv->clk);
+        drv->last_clk = drv->clk;
         return;
     }
 
-    clk = *(drv->clk) - drv->last_clk;
-    drv->last_clk = *(drv->clk);
+    clk = drv->clk - drv->last_clk;
+    drv->last_clk = drv->clk;
 
     for (;;) {
         if (drv->accum < drv->divider) {
@@ -633,12 +644,12 @@ static void fdd_rotate_gcr(fd_drive_t *drv)
     CLOCK clk;
 
     if (!drv->motor) {
-        drv->last_clk = *(drv->clk);
+        drv->last_clk = drv->clk;
         return;
     }
 
-    clk = *(drv->clk) - drv->last_clk;
-    drv->last_clk = *(drv->clk);
+    clk = drv->clk - drv->last_clk;
+    drv->last_clk = drv->clk;
 
     for (;;) {
         if (drv->accum < drv->divider) {
@@ -778,7 +789,8 @@ static void fdd_image_read(fd_drive_t *drv)
         fprintf(stderr, "%d:%d\n", drv->track, drv->side);
         for (i = 0; i < drv->raw->size; i++) {
             if (i % 20 == 0) fprintf(stderr, "%04x:", i);
-            fprintf(stderr, " %02x", drv->raw->data[i]);
+
+            fprintf(stderr, "%c%02x", drv->raw->data[i + drv->raw->size] ? '*' : ' ', drv->raw->data[i]);
             if (i % 20 == 19 || i == drv->raw->size - 1) fprintf(stderr, "\n");
         }
     }

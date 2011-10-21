@@ -195,14 +195,13 @@ void wd1770_setup_context(drive_context_t *drv)
 }
 
 /* Execute microcode. Clock rate is 62.5 KHz for MFM, and 31.25 KHz for FM */
-static void wd1770_execute(wd1770_t *drv)
+void wd1770_execute(wd1770_t *drv)
 {
     int res;
     CLOCK clk;
 
-    clk = *(drv->cpu_clk_ptr) - 2 * 16; /* at 2 MHZ maincpu clock */
-
-    for (;drv->clk < clk; drv->clk += 2 * 16) {
+    for (clk = (*(drv->cpu_clk_ptr) - drv->clk) / 2 / 16; clk > 0; clk--, drv->clk += 2 * 16) {
+        fdd_set_clk(drv->fdd, drv->clk);
         switch (drv->type) {
         case -1:
             drv->status &= ~(WD_WP | WD_IP | WD_T0);
@@ -887,21 +886,6 @@ inline void wd1770_set_fdd(wd1770_t *drv, fd_drive_t *fdd)
 }
 
 /*-----------------------------------------------------------------------*/
-
-inline void wd1770_set_side(wd1770_t *drv, int side)
-{
-    fdd_set_side(drv->fdd, side);
-}
-
-inline void wd1770_set_motor(wd1770_t *drv, int on)
-{
-    fdd_set_motor(drv->fdd, on);
-}
-
-inline int wd1770_disk_change(wd1770_t *drv)
-{
-    return fdd_disk_change(drv->fdd);
-}
 
 inline void wd1770d_store(drive_context_t *drv, WORD addr, BYTE byte)
 {

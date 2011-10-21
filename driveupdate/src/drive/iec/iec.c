@@ -47,6 +47,7 @@
 #include "wd1770.h"
 #include "via4000.h"
 #include "pc8477.h"
+#include "fdd.h"
 
 
 /* Pointer to the IEC bus structure.  */
@@ -113,7 +114,7 @@ void iec_drive_reset(struct drive_context_s *drv)
     } else {
         viacore_disable(drv->via4000);
     }
-    fdd_reset(drv->drive->fdds[0]);
+    fdd_reset(drv->drive->fdds[0], *drv->drive->clk);
 }
 
 void iec_drive_mem_init(struct drive_context_s *drv, unsigned int type)

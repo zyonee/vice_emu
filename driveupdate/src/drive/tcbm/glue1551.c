@@ -60,6 +60,7 @@ static void glue_pport_update(drive_context_t *drv)
     output = (drv->cpud->drive_ram[1] & drv->cpud->drive_ram[0])
              | ~(drv->cpud->drive_ram[0]);
 
+    fdd_set_clk(drv->drive->fdds[0], *drv->drive->clk);
     /* Motor on/off.  */
     fdd_set_motor(drv->drive->fdds[0], output & 0x04);
 

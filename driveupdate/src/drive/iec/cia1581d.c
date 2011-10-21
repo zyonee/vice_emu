@@ -42,6 +42,7 @@
 #include "log.h"
 #include "types.h"
 #include "wd1770.h"
+#include "fdd.h"
 
 
 typedef struct drivecia1581_context_s {
@@ -123,13 +124,15 @@ static void undump_ciapb(cia_context_t *cia_context, CLOCK rclk, BYTE b)
 static void store_ciapa(cia_context_t *cia_context, CLOCK rclk, BYTE byte)
 {
     drivecia1581_context_t *cia1581p;
-    drive_context_t *drive;
+    drive_context_t *drive_context;
 
     cia1581p = (drivecia1581_context_t *)(cia_context->prv);
-    drive = (drive_context_t *)(cia_context->context);
+    drive_context = (drive_context_t *)(cia_context->context);
 
-    wd1770_set_side(drive->wd1770, (byte & 0x01) ^ 0x01);
-    wd1770_set_motor(drive->wd1770, (byte & 0x04) ^ 0x04);
+    wd1770_execute(drive_context->wd1770);
+
+    fdd_set_side(cia1581p->drive->fdds[0], (byte & 0x01) ^ 0x01);
+    fdd_set_motor(cia1581p->drive->fdds[0], (byte & 0x04) ^ 0x04);
 
     cia1581p->drive->led_status = (byte & 0x40) ? 1 : 0;
     if (cia1581p->drive->led_status)
@@ -183,9 +186,11 @@ static BYTE read_ciapa(cia_context_t *cia_context)
     cia1581p = (drivecia1581_context_t *)(cia_context->prv);
     drive_context = (drive_context_t *)(cia_context->context);
 
-    tmp = 8 * (cia1581p->number);
+    wd1770_execute(drive_context->wd1770);
 
-    tmp |= wd1770_disk_change(drive_context->wd1770) ? 0x80 : 0;
+    tmp = (cia1581p->number & 3) << 3;
+
+    tmp |= fdd_disk_change(cia1581p->drive->fdds[0]) ? 0 : 0x80;
 
     return (tmp & ~(cia_context->c_cia[CIA_DDRA]))
            | (cia_context->c_cia[CIA_PRA] & cia_context->c_cia[CIA_DDRA]);
@@ -194,8 +199,12 @@ static BYTE read_ciapa(cia_context_t *cia_context)
 static BYTE read_ciapb(cia_context_t *cia_context)
 {
     drivecia1581_context_t *cia1581p;
+    drive_context_t *drive_context;
 
     cia1581p = (drivecia1581_context_t *)(cia_context->prv);
+    drive_context = (drive_context_t *)(cia_context->context);
+
+    wd1770_execute(drive_context->wd1770);
 
     if (cia1581p->iecbus != NULL) {
         BYTE *drive_port;

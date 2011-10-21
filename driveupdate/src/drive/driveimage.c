@@ -52,6 +52,7 @@ static int drive_check_image_format(unsigned int format, unsigned int dnr)
 
     switch (format) {
       case DISK_IMAGE_TYPE_D64:
+      case DISK_IMAGE_TYPE_D71:
       case DISK_IMAGE_TYPE_G64:
       case DISK_IMAGE_TYPE_X64:
         if (drive->type != DRIVE_TYPE_1541
@@ -78,11 +79,6 @@ static int drive_check_image_format(unsigned int format, unsigned int dnr)
             && drive->type != DRIVE_TYPE_2040
             && drive->type != DRIVE_TYPE_3040
             && drive->type != DRIVE_TYPE_4040)
-            return -1;
-        break;
-      case DISK_IMAGE_TYPE_D71:
-        if (drive->type != DRIVE_TYPE_1571
-            && drive->type != DRIVE_TYPE_1571CR)
             return -1;
         break;
       case DISK_IMAGE_TYPE_D81:

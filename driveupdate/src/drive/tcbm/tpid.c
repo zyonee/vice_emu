@@ -52,7 +52,10 @@ void tpid_store(drive_context_t *ctxptr, WORD addr, BYTE data)
 
 BYTE tpid_read(drive_context_t *ctxptr, WORD addr)
 {
-    fdd_byte_ready_clear(ctxptr->drive->fdds[0]);
+    drive_t *drive = ctxptr->drive;
+
+    fdd_set_clk(drive->fdds[0], *drive->clk);
+    fdd_byte_ready_clear(drive->fdds[0]);
     return tpicore_read(ctxptr->tpid, addr);
 }
 
@@ -99,11 +102,11 @@ static void store_pa(tpi_context_t *tpi_context, BYTE byte)
 
 static void store_pb(tpi_context_t *tpi_context, BYTE byte)
 {
-    drivetpi_context_t *tpip;
+    drivetpi_context_t *tpip = (drivetpi_context_t *)(tpi_context->prv);
+    drive_t *drive = tpip->drive;
 
-    tpip = (drivetpi_context_t *)(tpi_context->prv);
-
-    fdd_byte_write(tpip->drive->fdds[0], byte);
+    fdd_set_clk(drive->fdds[0], *drive->clk);
+    fdd_byte_write(drive->fdds[0], byte);
 }
 
 static void undump_pa(tpi_context_t *tpi_context, BYTE byte)
@@ -116,13 +119,13 @@ static void undump_pb(tpi_context_t *tpi_context, BYTE byte)
 
 static void store_pc(tpi_context_t *tpi_context, BYTE byte)
 {
-    drivetpi_context_t *tpip;
-
-    tpip = (drivetpi_context_t *)(tpi_context->prv);
+    drivetpi_context_t *tpip = (drivetpi_context_t *)(tpi_context->prv);
+    drive_t *drive = tpip->drive;
 
     plus4tcbm_update_pc(byte, tpip->number);
 
-    fdd_set_write_gate(tpip->drive->fdds[0], byte & 0x10);
+    fdd_set_clk(drive->fdds[0], *drive->clk);
+    fdd_set_write_gate(drive->fdds[0], byte & 0x10);
 }
 
 static void undump_pc(tpi_context_t *tpi_context, BYTE byte)
@@ -147,11 +150,11 @@ static BYTE read_pb(tpi_context_t *tpi_context)
 {
     /* GCR data port */
     BYTE byte;
-    drivetpi_context_t *tpip;
+    drivetpi_context_t *tpip = (drivetpi_context_t *)(tpi_context->prv);
+    drive_t *drive = tpip->drive;
 
-    tpip = (drivetpi_context_t *)(tpi_context->prv);
-
-    byte = fdd_byte_read(tpip->drive->fdds[0]);
+    fdd_set_clk(drive->fdds[0], *drive->clk);
+    byte = fdd_byte_read(drive->fdds[0]);
 
     byte = (tpi_context->c_tpi[TPI_PB] | ~(tpi_context->c_tpi)[TPI_DDPB])
            & byte;
@@ -163,10 +166,10 @@ static BYTE read_pc(tpi_context_t *tpi_context)
 {
     /* TCBM control / GCR data control */
     BYTE byte;
-    drivetpi_context_t *tpip;
+    drivetpi_context_t *tpip = (drivetpi_context_t *)(tpi_context->prv);
+    drive_t *drive = tpip->drive;
 
-    tpip = (drivetpi_context_t *)(tpi_context->prv);
-
+    fdd_set_clk(drive->fdds[0], *drive->clk);
     byte = (tpi_context->c_tpi[TPI_PC] | ~(tpi_context->c_tpi)[TPI_DDPC])
            /* Bit 0, 1 */
            & (plus4tcbm_outputb[tpip->number] | ~0x03)
@@ -175,7 +178,7 @@ static BYTE read_pc(tpi_context_t *tpi_context)
            /* Bit 5 */
            & (tpip->number ? 0xff : ~0x20)
            /* Bit 6 */
-           & (fdd_sync(tpip->drive->fdds[0]) ? 0xff : ~0x40)
+           & (fdd_sync(drive->fdds[0]) ? 0xff : ~0x40)
            /* Bit 7 */
            & ((plus4tcbm_outputc[tpip->number] << 1) | ~0x80);
 
