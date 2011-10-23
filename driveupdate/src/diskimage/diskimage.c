@@ -39,6 +39,7 @@
 #include "rawimage.h"
 #include "realimage.h"
 #include "types.h"
+#include "cbmdos.h"
 
 static log_t disk_image_log = LOG_DEFAULT;
 
@@ -229,6 +230,9 @@ void disk_image_rawimage_driver_name_set(disk_image_t *image)
 
 void disk_image_name_set(disk_image_t *image, char *name)
 {
+    if (image == NULL) {
+        return;
+    }
     switch (image->device) {
     case DISK_IMAGE_DEVICE_FS:
         fsimage_name_set(image, name);
@@ -243,6 +247,10 @@ void disk_image_name_set(disk_image_t *image, char *name)
 
 char *disk_image_name_get(disk_image_t *image)
 {
+    if (image == NULL) {
+        return NULL;
+    }
+
     switch (image->device) {
     case DISK_IMAGE_DEVICE_FS:
         return fsimage_name_get(image);
@@ -268,6 +276,10 @@ void disk_image_destroy(disk_image_t *image)
 
 void disk_image_media_create(disk_image_t *image)
 {
+    if (image == NULL) {
+        return;
+    }
+
     switch (image->device) {
     case DISK_IMAGE_DEVICE_FS:
         fsimage_media_create(image);
@@ -316,6 +328,10 @@ void disk_image_media_destroy(disk_image_t *image)
 int disk_image_open(disk_image_t *image)
 {
     int rc = 0;
+
+    if (image == NULL) {
+        return -1;
+    }
 
     switch (image->device) {
     case DISK_IMAGE_DEVICE_FS:
@@ -375,6 +391,10 @@ int disk_image_read_sector(disk_image_t *image, BYTE *buf, unsigned int track,
 {
     int rc = -1;
 
+    if (image == NULL) {
+        return CBMDOS_IPE_NOT_READY;
+    }
+
     switch (image->device) {
     case DISK_IMAGE_DEVICE_FS:
         rc = fsimage_read_sector(image, buf, track, sector);
@@ -400,6 +420,10 @@ int disk_image_write_sector(disk_image_t *image, BYTE *buf, unsigned int track,
                             unsigned int sector)
 {
     int rc = -1;
+
+    if (image == NULL) {
+        return CBMDOS_IPE_NOT_READY;
+    }
 
     switch (image->device) {
     case DISK_IMAGE_DEVICE_FS:
@@ -429,6 +453,10 @@ int disk_image_read_track(disk_image_t *image, int track, int head,
 {
     int rc = -1;
 
+    if (image == NULL) {
+        return -1;
+    }
+
     switch (image->device) {
     case DISK_IMAGE_DEVICE_FS:
         rc = fsimage_read_track(image, track, head, raw);
@@ -443,6 +471,10 @@ int disk_image_write_track(disk_image_t *image, int track, int head,
                            disk_track_t *raw)
 {
     int rc = -1;
+
+    if (image == NULL) {
+        return -1;
+    }
 
     switch (image->device) {
     case DISK_IMAGE_DEVICE_FS:
