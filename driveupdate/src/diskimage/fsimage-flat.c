@@ -54,7 +54,7 @@ static int fsimage_calc_logical_offset(disk_image_t *image, unsigned int track,
 {
     int sectors, i;
 
-    if (track < 1 || track >= image->ltracks
+    if (track < 1 || track > image->ltracks
         || sector >= disk_image_sector_per_track(image, track)) {
         log_error(fsimage_flat_log, "Track: %i, Sector: %i out of bounds.",
                 track, sector);
