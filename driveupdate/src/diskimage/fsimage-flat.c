@@ -72,27 +72,30 @@ static int fsimage_calc_logical_offset(disk_image_t *image, unsigned int track,
 static int fsimage_flat_seek_track(disk_image_t *image, unsigned int track, unsigned head)
 {
     fsimage_t *fsimage = image->media.fsimage;
-    int sectors, i, offset;
-
-    sectors = 0;
+    int i, offset;
 
     switch (image->type) {
+    case DISK_IMAGE_TYPE_D81:
+    case DISK_IMAGE_TYPE_D1M:
+    case DISK_IMAGE_TYPE_D2M:
+    case DISK_IMAGE_TYPE_D4M:
+        offset = (128 << image->mfm.sector_size) * image->mfm.sectors * (track * 2 + head);
+        break;
     case DISK_IMAGE_TYPE_D71:
         track += head ? 35 : 0;
-        break;
-    case DISK_IMAGE_TYPE_D81:
-        sectors += head ? 0 : 20;
-        break;
-    }
+        /* fall through */
+    default:
+        offset = 0;
 
-    for (i = 1; i < track; i++) {
-        sectors += disk_image_sector_per_track(image, i);
-    }
+        for (i = 1; i < track; i++) {
+            offset += disk_image_sector_per_track(image, i);
+        }
 
-    offset = sectors * 256;
+        offset *= 256;
 
-    if (image->type == DISK_IMAGE_TYPE_X64) {
-        offset += X64_HEADER_LENGTH;
+        if (image->type == DISK_IMAGE_TYPE_X64) {
+            offset += X64_HEADER_LENGTH;
+        }
     }
 
     return fseek(fsimage->fd, offset, SEEK_SET);
@@ -112,29 +115,36 @@ static int fsimage_flat_read_track_gcr(disk_image_t *image, unsigned int track,
     gcr_header_t header;
     fsimage_t *fsimage = image->media.fsimage;
 
+    header.track = track / 2 + 1;
+
+    raw->size = disk_image_raw_track_size_1541(header.track);
+    raw->data = lib_realloc(raw->data, raw->size);
+
+    if (track >= image->ptracks || head >= image->sides) {
+        memset(raw->data, 0x00, raw->size);
+        return -1;
+    }
+
     header.id1 = image->diskid[0];
     header.id2 = image->diskid[1];
-    header.track = track;
+
+    max_sector = disk_image_sector_per_track(image, header.track);
+    gap = disk_image_gap_size_1541(header.track);
+
+    memset(raw->data, 0x55, raw->size);
+
+    fsimage_flat_seek_track(image, header.track, head);
+
     if (head) {
         header.track += image->doublesided;
     }
-
-    max_sector = disk_image_sector_per_track(image, track);
-    gap = disk_image_gap_size_1541(track);
-
-    /* Clear track to avoid read errors.  */
-    raw->size = disk_image_raw_track_size_1541(track);
-    raw->data = lib_realloc(raw->data, raw->size);
-    memset(raw->data, 0x55, raw->size);
-
-    fsimage_flat_seek_track(image, track, head);
 
     data = raw->data;
     for (sector = 0; sector < max_sector; sector++) {
         if (fread((char *)buffer, 256, 1, fsimage->fd) < 1) {
             log_error(fsimage_flat_log,
                     "Error reading T:%d H:%d S:%d from disk image.",
-                    track, head, sector);
+                    track / 2 + 1, head, sector);
         } else {
             rc = (fsimage->error_info != NULL) ? fsimage->error_info[sectors++] : 0;
             if (rc == CBMDOS_IPE_READ_ERROR_SYNC) {
@@ -164,6 +174,11 @@ static int fsimage_flat_read_track_mfm(disk_image_t *image, unsigned int track,
     data = raw->data;
     sync = raw->data + raw->size;
 
+    if (track >= image->ptracks || head >= image->sides) {
+        memset(raw->data, 0x00, raw->size * 2);
+        return -1;
+    }
+
     memset(data, 0x4e, raw->size);
     memset(sync, 0x00, raw->size);
 
@@ -187,7 +202,7 @@ static int fsimage_flat_read_track_mfm(disk_image_t *image, unsigned int track,
         sync += 50;
     }
 
-    fsimage_flat_seek_track(image, track + 1, head);
+    fsimage_flat_seek_track(image, track, head ^ image->mfm.head_swap);
     buffer = lib_malloc(128 << image->mfm.sector_size);
 
     header.track = track;
@@ -221,7 +236,7 @@ int fsimage_flat_read_track(disk_image_t *image, unsigned int track,
     case DISK_IMAGE_TYPE_D71:
     case DISK_IMAGE_TYPE_D80:
     case DISK_IMAGE_TYPE_D82:
-        return fsimage_flat_read_track_gcr(image, track / 2 + 1, head, raw);
+        return fsimage_flat_read_track_gcr(image, track, head, raw);
     case DISK_IMAGE_TYPE_D81:
     case DISK_IMAGE_TYPE_D1M:
     case DISK_IMAGE_TYPE_D2M:
@@ -241,6 +256,7 @@ int fsimage_flat_write_track_gcr(disk_image_t *image, unsigned int track,
     fsimage_t *fsimage = image->media.fsimage;
     unsigned int ltrack;
 
+    track = track / 2 + 1;
     ltrack = track;
     if (image->type == DISK_IMAGE_TYPE_D71 && head !=0) {
         ltrack += 35;
@@ -286,7 +302,7 @@ int fsimage_flat_write_track_mfm(disk_image_t *image, unsigned int track,
     fsimage_t *fsimage = image->media.fsimage;
     mfm_header_t header;
 
-    fsimage_flat_seek_track(image, track + 1, head);
+    fsimage_flat_seek_track(image, track, head ^ image->mfm.head_swap);
 
     buffer = lib_malloc(128 << image->mfm.sector_size);
 
@@ -333,7 +349,7 @@ int fsimage_flat_write_track(disk_image_t *image, unsigned int track,
     case DISK_IMAGE_TYPE_D71:
     case DISK_IMAGE_TYPE_D80:
     case DISK_IMAGE_TYPE_D82:
-        return fsimage_flat_write_track_gcr(image, track / 2 + 1, head, raw);
+        return fsimage_flat_write_track_gcr(image, track, head, raw);
     case DISK_IMAGE_TYPE_D81:
     case DISK_IMAGE_TYPE_D1M:
     case DISK_IMAGE_TYPE_D2M:

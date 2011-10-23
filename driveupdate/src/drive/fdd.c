@@ -135,7 +135,7 @@ fd_drive_t *fdd_init(int num, drive_t *drive)
         break;
     case DRIVE_TYPE_1581:
         drv->frequency = 2;
-        drv->divider = 50000 * 8; /* 1 byte at a time, 2 MHz */
+        drv->divider = 50000; /* 2 MHz */
         drv->tracks = 82;
         drv->hrstep = 1;
         drv->sides = 2;
@@ -145,7 +145,7 @@ fd_drive_t *fdd_init(int num, drive_t *drive)
     case DRIVE_TYPE_2000:
     case DRIVE_TYPE_4000:
         drv->frequency = 2;
-        drv->divider = 50000 * 8; /* 1 byte at a time, 2 MHz */
+        drv->divider = 50000; /* 2 MHz */
         drv->tracks = 82;
         drv->hrstep = 1;
         drv->sides = 2;
@@ -530,7 +530,9 @@ inline void fdd_set_soe(fd_drive_t *drv, int soe)
 
 void fdd_set_clk(fd_drive_t *drv, CLOCK clk)
 {
-    drv->clk = clk;
+    if (drv) {
+        drv->clk = clk;
+    }
 }
 
 inline static void write_next_bit(fd_drive_t *drv, int value)
@@ -591,7 +593,7 @@ static void fdd_rotate_mfm(fd_drive_t *drv)
 {
     CLOCK clk;
 
-    if (!drv->motor) {
+    if (!drv->motor || !drv->headp) {
         drv->last_clk = drv->clk;
         return;
     }
@@ -600,41 +602,35 @@ static void fdd_rotate_mfm(fd_drive_t *drv)
     drv->last_clk = drv->clk;
 
     for (;;) {
-        if (drv->accum < drv->divider) {
+        if (drv->accum < drv->divider * 8) {
             if (clk & ~0xffff) {
                 drv->accum += 65536 * (drv->raw ? drv->raw->size : 6250);
                 clk -= 65536;
             } else {
                 drv->accum += clk * (drv->raw ? drv->raw->size : 6250);
                 clk = 0;
-                if (drv->accum < drv->divider) {
+                if (drv->accum < drv->divider * 8) {
                     break;
                 }
             }
         }
-        drv->accum -= drv->divider;
+        drv->accum -= drv->divider * 8;
 
-        if (drv->headp) {
-            if (drv->write_gate) {
-                drv->read_latch_mfm = drv->headp[0];
+        if (drv->write_gate) {
+            drv->read_latch_mfm = drv->headp[0];
+            if (drv->rate == drv->image->mfm.rate) {
                 drv->read_latch_mfm |= drv->headp[drv->raw->size] << 8;
-            } else {
-                drv->headp[0] = drv->write_out_mfm;
-                drv->headp[drv->raw->size] = drv->write_out_mfm >> 8;
-                drv->write_out_mfm = 0;
-                drv->raw->dirty = 1;
-            }
-            drv->headp++;
-            if (drv->headp >= drv->raw->data + drv->raw->size) {
-                drv->headp = drv->raw->data;
-                drv->index_count++;
             }
         } else {
-            if (drv->write_gate) {
-                drv->read_latch_mfm = 0;
-            } else {
-                drv->write_out_mfm = 0;
-            }
+            drv->headp[0] = drv->write_out_mfm;
+            drv->headp[drv->raw->size] = drv->write_out_mfm >> 8;
+            drv->write_out_mfm = 0;
+            drv->raw->dirty = 1;
+        }
+        drv->headp++;
+        if (drv->headp >= drv->raw->data + drv->raw->size) {
+            drv->headp = drv->raw->data;
+            drv->index_count++;
         }
         drv->byte_ready_edge = 1;
     }
@@ -806,9 +802,6 @@ static void fdd_image_writeback(fd_drive_t *drv, int free)
         return;
 
     if (drv->raw->dirty) {
-        drv->raw->pinned = disk_image_write_track(drv->image, drv->track, drv->side, drv->raw);
-        drv->raw->dirty = 0;
-    }
 #if 0
     {
         int i;
@@ -822,6 +815,9 @@ static void fdd_image_writeback(fd_drive_t *drv, int free)
         }
     }
 #endif
+        drv->raw->pinned = disk_image_write_track(drv->image, drv->track, drv->side, drv->raw);
+        drv->raw->dirty = 0;
+    }
     if (free && !drv->raw->pinned) {
         lib_free(drv->raw->data);
         lib_free(drv->raw);

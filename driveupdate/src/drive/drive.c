@@ -189,6 +189,7 @@ int drive_init(void)
         drive = drive_context[dnr]->drive;
         drive->fdds[0] = fdd_init(1, drive);
         wd1770_set_fdd(drive_context[dnr]->wd1770, drive->fdds[0]);
+        pc8477_set_fdd(drive_context[dnr]->pc8477, drive->fdds[0]);
         drive->old_led_status = 0;
         drive->old_half_track = 0;
         drive->clock_frequency = 1;

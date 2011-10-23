@@ -31,6 +31,7 @@
 
 struct disk_image_s;
 struct drive_context_s;
+struct fd_drive_s;
 typedef void (*pc8477_motor_on_callback_t)(void *data, int signal);
 typedef struct pc8477_s pc8477_t;
 
@@ -40,9 +41,7 @@ extern void pc8477d_store(struct drive_context_s *drv, WORD addr, BYTE byte);
 extern BYTE pc8477d_read(struct drive_context_s *drv, WORD addr);
 extern void pc8477_reset(pc8477_t *drv, int is8477);
 extern inline int pc8477_irq(pc8477_t *drv);
-
-extern int pc8477_attach_image(struct disk_image_s *image, unsigned int unit);
-extern int pc8477_detach_image(struct disk_image_s *image, unsigned int unit);
+extern inline void pc8477_set_fdd(pc8477_t *drv, struct fd_drive_s *fdd);
 
 #endif 
 

@@ -30,7 +30,6 @@
 #include <string.h>
 
 #include "clkguard.h"
-#include "diskimage.h"
 #include "drive.h"
 #include "drivecpu.h"
 #include "drivetypes.h"
@@ -40,8 +39,6 @@
 #include "fdd.h"
 #include "lib.h"
 #include "crc16.h"
-
-#define WD1770_DEBUG
 
 #ifdef WD1770_DEBUG
 #define debug(...) log_message(wd1770_log, __VA_ARGS__)
@@ -55,9 +52,6 @@ const static int wd1770_step_rate[2][4] = {
 };
 
 #define SETTLING 30000
-#define BYTE_RATE (drv->clock_frequency * 8000 / 250)
-#define STEP_RATE (drv->clock_frequency * wd1770_step_rate[drv->is1772][drv->cmd & WD_R])
-#define PREPARE (drv->clock_frequency * 24)
 
 /*-----------------------------------------------------------------------*/
 
@@ -878,6 +872,7 @@ void wd1770_reset(wd1770_t *drv)
     drv->step = -1;
     drv->clk = *drv->cpu_clk_ptr;
     fdd_set_write_gate(drv->fdd, 1);
+    fdd_set_rate(drv->fdd, 2);
 }
 
 inline void wd1770_set_fdd(wd1770_t *drv, fd_drive_t *fdd)
