@@ -3810,43 +3810,812 @@ E925   58             CLI           ---
 E926   60             RTS           ---
 
 
+65(S)C02 BBRx/BBSx timing test code
+===================================
+
+addr   b1   b2   b3   mnemonic           expected output
+----   --   --   --   --------           ---------------
+E900   78             SEI
+E901   A5   7F        LDA $7F
+E903   48             PHA
+E904   A9   01        LDA #$01
+E906   8D   00   E9   STA $E900
+E909   A2   FF        LDX #$FF           read A2 from E909 at 0		*
+                                         read FF from E90A at 1		*
+E90B   A0   00        LDY #$00           read A0 from E90B at 2		*
+                                         read 00 from E90C at 3		*
+E90D   86   7F        STX $7F            read 86 from E90D at 4		*
+                                         read 7F from E90E at 5		*
+                                         wrote FF to 7F at 6 		happens at 7, is ok *
+E90F   0F   7F   07   BBR #0,$7F,$E919   65C02:
+                                         read 0F from E90F at 7		*
+                                         read 7F from E910 at 8		*
+                                         read 07 from E911 at 9		*
+                                         read FF from 7F at A		*
+                                         read 84 from E912 at B		*
+                                         65SC02:
+                                         read 0F from E90F at 7		*
+                                         read 7F from E910 at 8		*
+                                         read 07 from E911 at 9		*
+E912   84   7F        STY $7F            65C02:
+                                         read 84 from E912 at C		*
+                                         read 7F from E913 at D		*
+                                         wrote 00 to 7F at E		happens at F, is ok *
+                                         65SC02:
+                                         read 84 from E912 at A		*
+                                         read 7F from E913 at B		*
+                                         wrote 00 to 7F at C		happens at D, is ok *
+E914   0F   7F   07   BBR #0,$7F,$E91E   65C02:
+                                         read 0F from E914 at F		*
+                                         read 7F from E915 at 10	*
+                                         read 07 from E916 at 11	*
+                                         read 00 from 7F at 12		*
+                                         read 8D from E917 at 13	*
+                                         65SC02:
+                                         read 0F from E914 at D		*
+                                         read 7F from E915 at E		*
+                                         read 07 from E916 at F		*
+E917   8D   00   EB   STA $EB00          65SC02:
+                                         read 8D from E917 at 10	*
+                                         read 00 from E918 at 11	*
+                                         read EB from E919 at 12	*
+                                         wrote 01 to EB00 at 13		*
+E91A   1A             INC A              65SC02:
+                                         read 1A from E91A at 14	*
+                                         read 8D from E91B at 15	*
+E91B   8D   80   EB   STA $EB80          65SC02:
+                                         read 8D from E91B at 16	*
+                                         read 80 from E91C at 17	*
+                                         read EB from E91D at 18	*
+                                         wrote 02 to EB80 at 19		*
+E91E   86   7F        STX $7F            65C02:
+                                         read 86 from E91E at 14	*
+                                         read 7F from E91F at 15	*
+                                         wrote FF to 7F at 16		happens at 17, is ok *
+                                         65SC02:
+                                         read 86 from E91E at 1A	*
+                                         read 7F from E91F at 1B	*
+                                         wrote FF to 7F at 1C		happens at 1D, is ok *
+E920   1F   7F   07   BBR #1,$7F,$E92A   65C02:
+                                         read 1F from E920 at 17	*
+                                         read 7F from E921 at 18	*
+                                         read 07 from E922 at 19	*
+                                         read FF from 7F at 1A		*
+                                         read 84 from E923 at 1B	*
+                                         65SC02:
+                                         read 1F from E920 at 1D	*
+                                         read 7F from E921 at 1E	*
+                                         read 07 from E922 at 1F	*
+E923   84   7F        STY $7F            65C02:
+                                         read 84 from E923 at 1C	*
+                                         read 7F from E924 at 1D	*
+                                         wrote 00 to 7F at 1E		happens at 1F, is ok *
+                                         65SC02:
+                                         read 84 from E923 at 20	*
+                                         read 7F from E924 at 21	*
+                                         wrote 00 to 7F at 22		happens at 23, is ok *
+E925   1F   7F   07   BBR #1,$7F,$E92F   65C02:
+                                         read 1F from E925 at 1F	*
+                                         read 7F from E926 at 20	*
+                                         read 07 from E927 at 21	*
+                                         read 00 from 7F at 22		*
+                                         read 8D from E928 at 23	*
+                                         65SC02:
+                                         read 1F from E925 at 23	*
+                                         read 7F from E926 at 24	*
+                                         read 07 from E927 at 25	*
+E928   8D   00   EB   STA $EB00          65SC02:
+                                         read 8D from E928 at 26	*
+                                         read 00 from E929 at 27	*
+                                         read EB from E92A at 28	*
+                                         wrote 02 to EB00 at 29		*
+E92B   1A             INC A              65SC02:
+                                         read 1A from E92B at 2A	*
+                                         read 8D from E92C at 2B	*
+E92C   8D   80   EB   STA $EB80          65SC02:
+                                         read 8D from E92C at 2C	*
+                                         read 80 from E92D at 2D	*
+                                         read EB from E92E at 2E	*
+                                         wrote 03 to EB80 at 2F		*
+E92F   86   7F        STX $7F            65C02:
+                                         read 86 from E92F at 24	*
+                                         read 7F from E930 at 25	*
+                                         wrote FF to 7F at 26		happens at 27, is ok *
+                                         65SC02:
+                                         read 86 from E92F at 30	*
+                                         read 7F from E930 at 31	*
+                                         wrote FF to 7F at 32		happens at 33, is ok *
+E931   2F   7F   07   BBR #2,$7F,$E93B   65C02:
+                                         read 2F from E931 at 27	*
+                                         read 7F from E932 at 28	*
+                                         read 07 from E933 at 29	*
+                                         read FF from 7F at 2A		*
+                                         read 84 from E934 at 2B	*
+                                         65SC02:
+                                         read 2F from E931 at 33	*
+                                         read 7F from E932 at 34	*
+                                         read 07 from E933 at 35	*
+E934   84   7F        STY $7F            65C02:
+                                         read 84 from E934 at 2C	*
+                                         read 7F from E935 at 2D	*
+                                         wrote 00 to 7F at 2E		happens at 2F, is ok *
+                                         65SC02:
+                                         read 84 from E934 at 36	*
+                                         read 7F from E935 at 37	*
+                                         wrote 00 to 7F at 38		happens at 39, is ok *
+E936   2F   7F   07   BBR #2,$7F,$E940   65C02:
+                                         read 2F from E936 at 2F	*
+                                         read 7F from E937 at 30	*
+                                         read 07 from E938 at 31	*
+                                         read 00 from 7F at 32		*
+                                         read 8D from E939 at 33	*
+                                         65SC02:
+                                         read 2F from E936 at 39	*
+                                         read 7F from E937 at 3A	*
+                                         read 07 from E938 at 3B	*
+E939   8D   00   EB   STA $EB00          65SC02:
+                                         read 8D from E939 at 3C	*
+                                         read 00 from E93A at 3D	*
+                                         read EB from E93B at 3E	*
+                                         wrote 03 to EB00 at 3F		*
+E93C   1A             INC A              65SC02:
+                                         read 1A from E93C at 40	*
+                                         read 8D from E93D at 41	*
+E93D   8D   80   EB   STA $EB80          65SC02:
+                                         read 8D from E93D at 42	*
+                                         read 80 from E93E at 43	*
+                                         read EB from E93F at 44	*
+                                         wrote 04 to EB80 at 45		*
+E940   86   7F        STX $7F            65C02:
+                                         read 86 from E940 at 34	*
+                                         read 7F from E941 at 35	*
+                                         wrote FF to 7F at 36		happens at 37, is ok *
+                                         65SC02:
+                                         read 86 from E940 at 46	*
+                                         read 7F from E941 at 47	*
+                                         wrote FF to 7F at 48		happens at 49, is ok *
+E942   3F   7F   07   BBR #3,$7F,$E94C   65C02:
+                                         read 3F from E942 at 37	*
+                                         read 7F from E943 at 38	*
+                                         read 07 from E944 at 39	*
+                                         read FF from 7F at 3A		*
+                                         read 84 from E945 at 3B	*
+                                         65SC02:
+                                         read 3F from E942 at 49	*
+                                         read 7F from E943 at 4A	*
+                                         read 07 from E944 at 4B	*
+E945   84   7F        STY $7F            65C02:
+                                         read 84 from E945 at 3C	*
+                                         read 7F from E946 at 3D	*
+                                         wrote 00 to 7F at 3E		happens at 3F, is ok *
+                                         65SC02:
+                                         read 84 from E945 at 4C	*
+                                         read 7F from E946 at 4D	*
+                                         wrote 00 to 7F at 4E		happens at 4F, is ok *
+E947   3F   7F   07   BBR #3,$7F,$E951   65C02:
+                                         read 3F from E947 at 3F	*
+                                         read 7F from E948 at 40	*
+                                         read 07 from E949 at 41	*
+                                         read 00 from 7F at 42		*
+                                         read 8D from E94A at 43	*
+                                         65SC02:
+                                         read 3F from E947 at 4F	*
+                                         read 7F from E948 at 50	*
+                                         read 07 from E949 at 51	*
+E94A   8D   00   EB   STA $EB00          65SC02:
+                                         read 8D from E94A at 52	*
+                                         read 00 from E94B at 53	*
+                                         read EB from E94C at 54	*
+                                         wrote 04 to EB00 at 55		*
+E94D   1A             INC A              65SC02:
+                                         read 1A from E94D at 56	*
+                                         read 8D from E94E at 57	*
+E94E   8D   80   EB   STA $EB80          65SC02:
+                                         read 8D from E94E at 58	*
+                                         read 80 from E94F at 59	*
+                                         read EB from E950 at 5A	*
+                                         wrote 05 to EB80 at 5B		*
+E951   86   7F        STX $7F            65C02:
+                                         read 86 from E951 at 44	*
+                                         read 7F from E953 at 45	*
+                                         wrote FF to 7F at 46		happens at 47, is ok *
+                                         65SC02:
+                                         read 86 from E951 at 5C	*
+                                         read 7F from E952 at 5D	*
+                                         wrote FF to 7F at 5E		happens at 5F, is ok *
+E953   4F   7F   07   BBR #4,$7F,$E95D   65C02:
+                                         read 4F from E953 at 47	*
+                                         read 7F from E954 at 48	*
+                                         read 07 from E955 at 49	*
+                                         read FF from 7F at 4A		*
+                                         read 84 from E956 at 4B	*
+                                         65SC02:
+                                         read 4F from E953 at 5F	*
+                                         read 7F from E954 at 60	*
+                                         read 07 from E955 at 61	*
+E956   84   7F        STY $7F            65C02:
+                                         read 84 from E956 at 4C	*
+                                         read 7F from E957 at 4D	*
+                                         wrote 00 to 7F at 4E		happens at 4F, is ok *
+                                         65SC02:
+                                         read 84 from E956 at 62	*
+                                         read 7F from E957 at 63	*
+                                         wrote 00 to 7F at 64		happens at 65, is ok *
+E958   4F   7F   07   BBR #4,$7F,$E962   65C02:
+                                         read 4F from E958 at 4F	*
+                                         read 7F from E959 at 50	*
+                                         read 07 from E95A at 51	*
+                                         read 00 from 7F at 52		*
+                                         read 8D from E95B at 53	*
+                                         65SC02:
+                                         read 4F from E958 at 65	*
+                                         read 7F from E959 at 66	*
+                                         read 07 from E95A at 67	*
+E95B   8D   00   EB   STA $EB00          65SC02:
+                                         read 8D from E95B at 68	*
+                                         read 00 from E95C at 69	*
+                                         read EB from E95D at 6A	*
+                                         wrote 05 to EB00 at 6B		*
+E95E   1A             INC A              65SC02:
+                                         read 1A from E95E at 6C	*
+                                         read 8D from E95F at 6D	*
+E95F   8D   80   EB   STA $EB80          65SC02:
+                                         read 8D from E95F at 6E	*
+                                         read 80 from E960 at 6F	*
+                                         read EB from E961 at 70	*
+                                         wrote 06 to EB80 at 71		*
+E962   86   7F        STX $7F            65C02:
+                                         read 86 from E962 at 54	*
+                                         read 7F from E963 at 55	*
+                                         wrote FF to 7F at 56		happens at 57, is ok *
+                                         65SC02:
+                                         read 86 from E962 at 72	*
+                                         read 7F from E963 at 73	*
+                                         wrote FF to 7F at 74		happens at 75, is ok *
+E964   5F   7F   07   BBR #5,$7F,$E96E   65C02:
+                                         read 5F from E964 at 57	*
+                                         read 7F from E965 at 58	*
+                                         read 07 from E966 at 59	*
+                                         read FF from 7F at 5A		*
+                                         read 84 from E967 at 5B	*
+                                         65SC02:
+                                         read 5F from E964 at 75	*
+                                         read 7F from E965 at 76	*
+                                         read 07 from E966 at 77	*
+E967   84   7F        STY $7F            65C02:
+                                         read 84 from E967 at 5C	*
+                                         read 7F from E968 at 5D	*
+                                         wrote 00 to 7F at 5E		happens at 5F, is ok *
+                                         65SC02:
+                                         read 84 from E967 at 78	*
+                                         read 7F from E968 at 79	*
+                                         wrote 00 to 7F at 7A		happens at 7B, is ok *
+E969   5F   7F   07   BBR #5,$7F,$E973   65C02:
+                                         read 5F from E969 at 5F	*
+                                         read 7F from E96A at 60	*
+                                         read 07 from E96B at 61	*
+                                         read 00 from 7F at 62		*
+                                         read 8D from E96C at 63	*
+                                         65SC02:
+                                         read 5F from E969 at 7B	*
+                                         read 7F from E96A at 7C	*
+                                         read 07 from E96B at 7D	*
+E96C   8D   00   EB   STA $EB00          65SC02:
+                                         read 8D from E96C at 7E	*
+                                         read 00 from E96D at 7F	*
+                                         read EB from E96E at 80	*
+                                         wrote 06 to EB00 at 81		*
+E96F   1A             INC A              65SC02:
+                                         read 1A from E96F at 82	*
+                                         read 8D from E970 at 83	*
+E970   8D   80   EB   STA $EB80          65SC02:
+                                         read 8D from E970 at 84	*
+                                         read 80 from E971 at 85	*
+                                         read EB from E972 at 86	*
+                                         wrote 07 to EB80 at 87		*
+E973   86   7F        STX $7F            65C02:
+                                         read 86 from E973 at 64	*
+                                         read 7F from E974 at 65	*
+                                         wrote FF to 7F at 66		happens at 67, is ok *
+                                         65SC02:
+                                         read 86 from E973 at 88	*
+                                         read 7F from E974 at 89	*
+                                         wrote FF to 7F at 8A		happens at 8B, is ok *
+E975   6F   7F   07   BBR #6,$7F,$E97F   65C02:
+                                         read 6F from E975 at 67	*
+                                         read 7F from E976 at 68	*
+                                         read 07 from E977 at 69	*
+                                         read FF from 7F at 6A		*
+                                         read 84 from E978 at 6B	*
+                                         65SC02:
+                                         read 6F from E975 at 8B	*
+                                         read 7F from E976 at 8C	*
+                                         read 07 from E977 at 8D	*
+E978   84   7F        STY $7F            65C02:
+                                         read 84 from E978 at 6C	*
+                                         read 7F from E979 at 6D	*
+                                         wrote 00 to 7F at 6E		happens at 6F, is ok *
+                                         65SC02:
+                                         read 84 from E978 at 8E	*
+                                         read 7F from E979 at 8F	*
+                                         wrote 00 to 7F at 90		happens at 91, is ok *
+E97A   6F   7F   07   BBR #6,$7F,$E984   65C02:
+                                         read 6F from E97A at 6F	*
+                                         read 7F from E97B at 70	*
+                                         read 07 from E97C at 71	*
+                                         read 00 from 7F at 72		*
+                                         read 8D from E97D at 73	*
+                                         65SC02:
+                                         read 6F from E97A at 91	*
+                                         read 7F from E97B at 92	*
+                                         read 07 from E97C at 93	*
+E97D   8D   00   EB   STA $EB00          65SC02:
+                                         read 8D from E97D at 94	*
+                                         read 00 from E97E at 95	*
+                                         read EB from E97F at 96	*
+                                         wrote 07 to EB00 at 97		*
+E980   1A             INC A              65SC02:
+                                         read 1A from E980 at 98	*
+                                         read 8D from E981 at 99	*
+E981   8D   80   EB   STA $EB80          65SC02:
+                                         read 8D from E981 at 9A	*
+                                         read 80 from E982 at 9B	*
+                                         read EB from E983 at 9C	*
+                                         wrote 08 to EB80 at 9D		*
+E984   86   7F        STX $7F            65C02:
+                                         read 86 from E984 at 74	*
+                                         read 7F from E985 at 75	*
+                                         wrote FF to 7F at 76		happens at 77, is ok *
+                                         65SC02:
+                                         read 86 from E984 at 9E	*
+                                         read 7F from E985 at 9F	*
+                                         wrote FF to 7F at A0		happens at A1, is ok *
+E986   7F   7F   07   BBR #7,$7F,$E990   65C02:
+                                         read 7F from E986 at 77	*
+                                         read 7F from E987 at 78	*
+                                         read 07 from E988 at 79	*
+                                         read FF from 7F at 7A		*
+                                         read 84 from E989 at 7B	*
+                                         65SC02:
+                                         read 7F from E986 at A1	*
+                                         read 7F from E987 at A2	*
+                                         read 07 from E988 at A3	*
+E989   84   7F        STY $7F            65C02:
+                                         read 84 from E989 at 7C	*
+                                         read 7F from E98A at 7D	*
+                                         wrote 00 to 7F at 7E		happens at 7F, is ok *
+                                         65SC02:
+                                         read 84 from E989 at A4	*
+                                         read 7F from E98A at A5	*
+                                         wrote 00 to 7F at A6		happens at A7, is ok *
+E98B   7F   7F   07   BBR #7,$7F,$E995   65C02:
+                                         read 7F from E98B at 7F	*
+                                         read 7F from E98C at 80	*
+                                         read 07 from E98D at 81	*
+                                         read 00 from 7F at 82		*
+                                         read 8D from E98E at 83	*
+                                         65SC02:
+                                         read 7F from E98B at A7	*
+                                         read 7F from E98C at A8	*
+                                         read 07 from E98D at A9	*
+E98E   8D   00   EB   STA $EB00          65SC02:
+                                         read 8D from E98E at AA	*
+                                         read 00 from E98F at AB	*
+                                         read EB from E990 at AC	*
+                                         wrote 08 to EB00 at AD		*
+E991   1A             INC A              65SC02:
+                                         read 1A from E991 at AE	*
+                                         read 8D from E992 at AF	*
+E992   8D   80   EB   STA $EB80          65SC02:
+                                         read 8D from E992 at B0	*
+                                         read 80 from E993 at B1	*
+                                         read EB from E994 at B2	*
+                                         wrote 09 to EB80 at B3		*
+E995   8F   7F   07   BBS #0,$7F,$E99B   65C02:
+                                         read 8F from E995 at 84	*
+                                         read 7F from E996 at 85	*
+                                         read 07 from E997 at 86	*
+                                         read 00 from 7F at 87		*
+                                         read 86 from E998 at 88	*
+                                         65SC02:
+                                         read 8F from E995 at B4	*
+                                         read 7F from E996 at B5	*
+                                         read 07 from E997 at B6	*
+E998   86   7F        STX $7F            65C02:
+                                         read 86 from E998 at 89	*
+                                         read 7F from E999 at 8A	*
+                                         wrote FF to 7F at 8B		happens at 8C, is ok *
+                                         65SC02:
+                                         read 86 from E998 at B7	*
+                                         read 7F from E999 at B8	*
+                                         wrote FF to 7F at B9		happens at BA, is ok *
+E99A   8F   7F   07   BBS #0,$7F,$E9A4   65C02:
+                                         read 8F from E99A at 8C	*
+                                         read 7F from E99B at 8D	*
+                                         read 07 from E99C at 8E	*
+                                         read FF from 7F at 8F		*
+                                         read 8D from E99D at 90	*
+                                         65SC02:
+                                         read 8F from E99A at BA	*
+                                         read 7F from E99B at BB	*
+                                         read 07 from E99C at BC	*
+E99D   8D   00   EB   STA $EB00          65SC02:
+                                         read 8D from E99D at BD	*
+                                         read 00 from E99E at BE	*
+                                         read EB from E99F at BF	*
+                                         wrote 09 to EB00 at C0		*
+E9A0   1A             INC A              65SC02:
+                                         read 1A from E9A0 at C1	*
+                                         read 8D from E9A1 at C2	*
+E9A1   8D   80   EB   STA $EB80          65SC02:
+                                         read 8D from E9A1 at C3	*
+                                         read 80 from E9A2 at C4	*
+                                         read EB from E9A3 at C5	*
+                                         wrote 0A to EB80 at C6		*
+E9A4   84   7F        STY $7F            65C02:
+                                         read 84 from E9A4 at 91	*
+                                         read 7F from E9A5 at 92	*
+                                         wrote 00 to 7F at 93		happens at 94, is ok *
+                                         65SC02:
+                                         read 84 from E9A4 at C7	*
+                                         read 7F from E9A5 at C8	*
+                                         wrote 00 to 7F at C9		happens at CA, is ok *
+E9A6   9F   7F   07   BBS #1,$7F,$E9B0   65C02:
+                                         read 9F from E9A6 at 94	*
+                                         read 7F from E9A7 at 95	*
+                                         read 07 from E9A8 at 96	*
+                                         read 00 from 7F at 97		*
+                                         read 86 from E9A9 at 98	*
+                                         65SC02:
+                                         read 9F from E9A6 at CA	*
+                                         read 7F from E9A7 at CB	*
+                                         read 07 from E9A8 at CC	*
+E9A9   86   7F        STY $7F            65C02:
+                                         read 86 from E9A9 at 99	*
+                                         read 7F from E9AA at 9A	*
+                                         wrote FF to 7F at 9B		happens at 9C, is ok *
+                                         65SC02:
+                                         read 86 from E9A9 at CD	*
+                                         read 7F from E9AA at CE	*
+                                         wrote FF to 7F at CF		happens at D0, is ok *
+E9AB   9F   7F   07   BBS #1,$7F,$E9B5   65C02:
+                                         read 9F from E9AB at 9C	*
+                                         read 7F from E9AC at 9D	*
+                                         read 07 from E9AD at 9E	*
+                                         read FF from 7F at 9F		*
+                                         read 8D from E9AE at A0	*
+                                         65SC02:
+                                         read 9F from E9AB at D0	*
+                                         read 7F from E9AC at D1	*
+                                         read 07 from E9AD at D2	*
+E9AE   8D   00   EB   STA $EB00          65SC02:
+                                         read 8D from E9AE at D3	*
+                                         read 00 from E9AF at D4	*
+                                         read EB from E9B0 at D5	*
+                                         wrote 0A to EB00 at D6		*
+E9B1   1A             INC A              65SC02:
+                                         read 1A from E9B1 at D7	*
+                                         read 8D from E9B2 at D8	*
+E9B2   8D   80   EB   STA $EB80          65SC02:
+                                         read 8D from E9B2 at D9	*
+                                         read 80 from E9B3 at DA	*
+                                         read EB from E9B4 at DB	*
+                                         wrote 0B to EB80 at DC		*
+E9B5   84   7F        STY $7F            65C02:
+                                         read 84 from E9B5 at A1	*
+                                         read 7F from E9B6 at A2	*
+                                         wrote 00 to 7F at A3		happens at A4, is ok *
+                                         65SC02:
+                                         read 84 from E9B5 at DD	*
+                                         read 7F from E9B6 at DE	*
+                                         wrote 00 to 7F at DF		happens at E0, is ok *
+E9B7   AF   7F   07   BBS #2,$7F,$E9C1   65C02:
+                                         read AF from E9B7 at A4	*
+                                         read 7F from E9B8 at A5	*
+                                         read 07 from E9B9 at A6	*
+                                         read 00 from 7F at A7		*
+                                         read 86 from E9BA at A8	*
+                                         65SC02:
+                                         read AF from E9B7 at E0	*
+                                         read 7F from E9B8 at E1	*
+                                         read 07 from E9B9 at E2	*
+E9BA   86   7F        STY $7F            65C02:
+                                         read 86 from E9BA at A9	*
+                                         read 7F from E9BB at AA	*
+                                         wrote FF to 7F at AB		happens at AC, is ok *
+                                         65SC02:
+                                         read 86 from E9BA at E3	*
+                                         read 7F from E9BB at E4	*
+                                         wrote FF to 7F at E5		happens at E6, is ok *
+E9BC   AF   7F   07   BBS #2,$7F,$E9C6   65C02:
+                                         read AF from E9BC at AC	*
+                                         read 7F from E9BD at AD	*
+                                         read 07 from E9BE at AE	*
+                                         read FF from 7F at AF		*
+                                         read 8D from E9BF at B0	*
+                                         65SC02:
+                                         read AF from E9BC at E6	*
+                                         read 7F from E9BD at E7	*
+                                         read 07 from E9BE at E8	*
+E9BF   8D   00   EB   STA $EB00          65SC02:
+                                         read 8D from E9BF at E9	*
+                                         read 00 from E9C0 at EA	*
+                                         read EB from E9C1 at EB	*
+                                         wrote 0B to EB00 at EC		*
+E9C2   1A             INC A              65SC02:
+                                         read 1A from E9C2 at ED	*
+                                         read 8D from E9C3 at EE	*
+E9C3   8D   80   EB   STA $EB80          65SC02:
+                                         read 8D from E9C3 at EF	*
+                                         read 80 from E9C4 at F0	*
+                                         read EB from E9C5 at F1	*
+                                         wrote 0C to EB80 at F2		*
+E9C6   84   7F        STY $7F            65C02:
+                                         read 84 from E9C6 at B1	*
+                                         read 7F from E9C7 at B2	*
+                                         wrote 00 to 7F at B3		happens at B4, is ok *
+                                         65SC02:
+                                         read 84 from E9C6 at F3	*
+                                         read 7F from E9C7 at F4	*
+                                         wrote 00 to 7F at F5		happens at F6, is ok *
+E9C8   BF   7F   07   BBS #3,$7F,$E9D2   65C02:
+                                         read BF from E9C8 at B4	*
+                                         read 7F from E9C9 at B5	*
+                                         read 07 from E9CA at B6	*
+                                         read 00 from 7F at B7		*
+                                         read 86 from E9CB at B8	*
+                                         65SC02:
+                                         read BF from E9C8 at F6	*
+                                         read 7F from E9C9 at F7	*
+                                         read 07 from E9CA at F8	*
+E9CB   86   7F        STY $7F            65C02:
+                                         read 86 from E9CB at B9	*
+                                         read 7F from E9CC at BA	*
+                                         wrote FF to 7F at BB		happens at BC, is ok *
+                                         65SC02:
+                                         read 86 from E9CB at F9	*
+                                         read 7F from E9CC at FA	*
+                                         wrote FF to 7F at FB		happens at FC, is ok *
+E9CD   BF   7F   07   BBS #3,$7F,$E9D7   65C02:
+                                         read BF from E9CD at BC	*
+                                         read 7F from E9CE at BD	*
+                                         read 07 from E9CF at BE	*
+                                         read FF from 7F at BF		*
+                                         read 8D from E9D0 at C0	*
+                                         65SC02:
+                                         read BF from E9CD at FC	*
+                                         read 7F from E9CE at FD	*
+                                         read 07 from E9CF at FE	*
+E9D0   8D   00   EB   STA $EB00          65SC02:
+                                         read 8D from E9D0 at FF	*
+                                         read 00 from E9D1 at 100	*
+                                         read EB from E9D2 at 101	*
+                                         wrote 0C to EB00 at 102	*
+E9D3   1A             INC A              65SC02:
+                                         read 1A from E9D3 at 103	*
+                                         read 8D from E9D4 at 104	*
+E9D4   8D   80   EB   STA $EB80          65SC02:
+                                         read 8D from E9D4 at 105	*
+                                         read 80 from E9D5 at 106	*
+                                         read EB from E9D6 at 107	*
+                                         wrote 0D to EB80 at 108	*
+E9D7   84   7F        STY $7F            65C02:
+                                         read 84 from E9D7 at C1	*
+                                         read 7F from E9D8 at C2	*
+                                         wrote 00 to 7F at C3		happens at C4, is ok *
+                                         65SC02:
+                                         read 84 from E9D7 at 109	*
+                                         read 7F from E9D8 at 10A	*
+                                         wrote 00 to 7F at 10B		happens at 10C, is ok *
+E9D9   CF   7F   07   BBS #4,$7F,$E9E3   65C02:
+                                         read CF from E9D9 at C4	*
+                                         read 7F from E9DA at C5	*
+                                         read 07 from E9DB at C6	*
+                                         read 00 from 7F at C7		*
+                                         read 86 from E9DC at C8	*
+                                         65SC02:
+                                         read CF from E9D9 at 10C	*
+                                         read 7F from E9DA at 10D	*
+                                         read 07 from E9DB at 10E	*
+E9DC   86   7F        STY $7F            65C02:
+                                         read 86 from E9DC at C9	*
+                                         read 7F from E9DD at CA	*
+                                         wrote FF to 7F at CB		happens at CC, is ok *
+                                         65SC02:
+                                         read 86 from E9DC at 10F	*
+                                         read 7F from E9DD at 110	*
+                                         wrote FF to 7F at 111		happens at 112, is ok *
+E9DE   CF   7F   07   BBS #4,$7F,$E9E8   65C02:
+                                         read CF from E9DE at CC	*
+                                         read 7F from E9DF at CD	*
+                                         read 07 from E9E0 at CE	*
+                                         read FF from 7F at CF		*
+                                         read 8D from E9E1 at D0	*
+                                         65SC02:
+                                         read CF from E9DE at 112	*
+                                         read 7F from E9DF at 113	*
+                                         read 07 from E9E0 at 114	*
+E9E1   8D   00   EB   STA $EB00          65SC02:
+                                         read 8D from E9E1 at 115	*
+                                         read 00 from E9E2 at 116	*
+                                         read EB from E9E3 at 117	*
+                                         wrote 0D to EB00 at 118	*
+E9E4   1A             INC A              65SC02:
+                                         read 1A from E9E4 at 119	*
+                                         read 8D from E9E5 at 11A	*
+E9E5   8D   80   EB   STA $EB80          65SC02:
+                                         read 8D from E9E5 at 11B	*
+                                         read 80 from E9E6 at 11C	*
+                                         read EB from E9E7 at 11D	*
+                                         wrote 0E to EB80 at 11E	*
+E9E8   84   7F        STX $7F            65C02:
+                                         read 84 from E9E8 at D1	*
+                                         read 7F from E9E9 at D2	*
+                                         wrote 00 to 7F at D3		happens at D4, is ok *
+                                         65SC02:
+                                         read 84 from E9E8 at 11F	*
+                                         read 7F from E9E9 at 120	*
+                                         wrote 00 to 7F at 121		happens at 122, is ok *
+E9EA   DF   7F   07   BBS #5,$7F,$E9F4   65C02:
+                                         read DF from E9EA at D4	*
+                                         read 7F from E9EB at D5	*
+                                         read 07 from E9EC at D6	*
+                                         read 00 from 7F at D7		*
+                                         read 86 from E9ED at D8	*
+                                         65SC02:
+                                         read DF from E9EA at 122	*
+                                         read 7F from E9EB at 123	*
+                                         read 07 from E9EC at 124	*
+E9ED   86   7F        STY $7F            65C02:
+                                         read 86 from E9ED at D9	*
+                                         read 7F from E9EE at DA	*
+                                         wrote FF to 7F at DB		happens at DC, is ok *
+                                         65SC02:
+                                         read 86 from E9ED at 125	*
+                                         read 7F from E9EE at 126	*
+                                         wrote FF to 7F at 127		happens at 128, is ok *
+E9EF   DF   7F   07   BBS #5,$7F,$E9F9   65C02:
+                                         read DF from E9EF at DC	*
+                                         read 7F from E9F0 at DD	*
+                                         read 07 from E9F1 at DE	*
+                                         read FF from 7F at DF		*
+                                         read 8D from E9F2 at E0	*
+                                         65SC02:
+                                         read DF from E9EF at 128	*
+                                         read 7F from E9F0 at 129	*
+                                         read 07 from E9F1 at 12A	*
+E9F2   8D   00   EB   STA $EB00          65SC02:
+                                         read 8D from E9F2 at 12B	*
+                                         read 00 from E9F3 at 12C	*
+                                         read EB from E9F4 at 12D	*
+                                         wrote 0E to EB00 at 12E	*
+E9F5   1A             INC A              65SC02:
+                                         read 1A from E9F5 at 12F	*
+                                         read 8D from E9F6 at 130	*
+E9F6   8D   80   EB   STA $EB80          65SC02:
+                                         read 8D from E9F6 at 131	*
+                                         read 80 from E9F7 at 132	*
+                                         read EB from E9F8 at 133	*
+                                         wrote 0F to EB80 at 134	*
+E9F9   84   7F        STX $7F            65C02:
+                                         read 84 from E9F9 at E1	*
+                                         read 7F from E9FA at E2	*
+                                         wrote 00 to 7F at E3		happens at E4, is ok *
+                                         65SC02:
+                                         read 84 from E9F9 at 135	*
+                                         read 7F from E9FA at 136	*
+                                         wrote 00 to 7F at 137		happens at 138, is ok *
+E9FB   EF   7F   07   BBS #6,$7F,$EA05   65C02:
+                                         read EF from E9FB at E4	*
+                                         read 7F from E9FC at E5	*
+                                         read 07 from E9FD at E6	*
+                                         read 00 from 7F at E7		*
+                                         read 86 from E9FE at E8	*
+                                         65SC02:
+                                         read EF from E9FB at 138	*
+                                         read 7F from E9FC at 139	*
+                                         read 07 from E9FD at 13A	*
+E9FE   86   7F        STY $7F            65C02:
+                                         read 86 from E9FE at E9	*
+                                         read 7F from E9FF at EA	*
+                                         wrote FF to 7F at EB		happens at EC, is ok *
+                                         65SC02:
+                                         read 86 from E9FE at 13B	*
+                                         read 7F from E9FF at 13C	*
+                                         wrote FF to 7F at 13D		happens at 13E, is ok *
+EA00   EF   7F   07   BBS #6,$7F,$EA0A   65C02:
+                                         read EF from EA00 at EC	*
+                                         read 7F from EA01 at ED	*
+                                         read 07 from EA02 at EE	*
+                                         read FF from 7F at EF		*
+                                         read 8D from EA03 at F0	*
+                                         65SC02:
+                                         read EF from EA00 at 13E	*
+                                         read 7F from EA01 at 13F	*
+                                         read 07 from EA02 at 140	*
+EA03   8D   00   EB   STA $EB00          65SC02:
+                                         read 8D from EA03 at 141	*
+                                         read 00 from EA04 at 142	*
+                                         read EB from EA05 at 143	*
+                                         wrote 0F to EB00 at 144	*
+EA06   1A             INC A              65SC02:
+                                         read 1A from EA06 at 145	*
+                                         read 8D from EA07 at 146	*
+EA07   8D   80   EB   STA $EB80          65SC02:
+                                         read 8D from EA07 at 147	*
+                                         read 80 from EA08 at 148	*
+                                         read EB from EA09 at 149	*
+                                         wrote 10 to EB80 at 14A	*
+EA0A   84   7F        STX $7F            65C02:
+                                         read 84 from EA0A at F1	*
+                                         read 7F from EA0B at F2	*
+                                         wrote 00 to 7F at F3		happens at F4, is ok *
+                                         65SC02:
+                                         read 84 from EA0A at 14B	*
+                                         read 7F from EA0B at 14C	*
+                                         wrote 00 to 7F at 14D		happens at 14E, is ok *
+EA0C   FF   7F   07   BBS #7,$7F,$EA16   65C02:
+                                         read FF from EA0C at F4	*
+                                         read 7F from EA0D at F5	*
+                                         read 07 from EA0E at F6	*
+                                         read 00 from 7F at F7		*
+                                         read 86 from EA0F at F8	*
+                                         65SC02:
+                                         read FF from EA0C at 14E	*
+                                         read 7F from EA0D at 14F	*
+                                         read 07 from EA0E at 150	*
+EA0F   86   7F        STY $7F            65C02:
+                                         read 86 from EA0F at F9	*
+                                         read 7F from EA10 at FA	*
+                                         wrote FF to 7F at FB		happens at FC, is ok *
+                                         65SC02:
+                                         read 86 from EA0F at 151	*
+                                         read 7F from EA10 at 152	*
+                                         wrote FF to 7F at 153		happens at 154, is ok *
+EA11   FF   7F   07   BBS #7,$7F,$EA1B   65C02:
+                                         read FF from EA11 at FC	*
+                                         read 7F from EA12 at FD	*
+                                         read 07 from EA13 at FE	*
+                                         read FF from 7F at FF		*
+                                         read 8D from EA14 at 100	*
+                                         65SC02:
+                                         read FF from EA11 at 154	*
+                                         read 7F from EA12 at 155	*
+                                         read 07 from EA13 at 156	*
+EA14   8D   00   EB   STA $EB00          65SC02:
+                                         read 8D from EA14 at 157	*
+                                         read 00 from EA15 at 158	*
+                                         read EB from EA16 at 159	*
+                                         wrote 10 to EB00 at 15A	*
+EA17   1A             INC A              65SC02:
+                                         read 1A from EA17 at 15B	*
+                                         read 8D from EA18 at 15C	*
+EA18   8D   80   EB   STA $EB80          65SC02:
+                                         read 8D from EA18 at 15D	*
+                                         read 80 from EA19 at 15E	*
+                                         read EB from EA1A at 15F	*
+                                         wrote 11 to EB80 at 160	*
+EA1B   8D   C0   EB   STA $EBC0          65C02:
+                                         read 8D from EA1B at 101	*
+                                         read C0 from EA1C at 102	*
+                                         read EB from EA1D at 103	*
+                                         wrote 01 to EBC0 at 104	*
+                                         65SC02:
+                                         read 8D from EA1B at 161	*
+                                         read C0 from EA1C at 162	*
+                                         read EB from EA1D at 163	*
+                                         wrote 11 to EBC0 at 164	*
+EA1E   A9   78        LDA #$78           ---
+EA20   8D   00   E9   STA $E900          ---
+EA23   68             PLA                ---
+EA24   85   7F        STA $7F            ---
+EA26   58             CLI                ---
+EA27   60             RTS                ---
 
 
 00	BRK		2	7	brk		yes	yes	yes	yes
-0f	BBR0 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
-0f	NOOP		1	1	imp single	yes	yes	no	no
-1f	BBR1 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
-1f	NOOP		1	1	imp single	yes	yes	no	no
-2f	BBR2 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
-2f	NOOP		1	1	imp single	yes	yes	no	no
-3f	BBR3 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
-3f	NOOP		1	1	imp single	yes	yes	no	no
 40	RTI		1	6	RTI		no	yes	yes	yes
-4f	BBR4 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
-4f	NOOP		1	1	imp single	yes	yes	no	no
-5f	BBR5 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
-5f	NOOP		1	1	imp single	yes	yes	no	no
-6f	BBR6 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
-6f	NOOP		1	1	imp single	yes	yes	no	no
-7f	BBR7 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
-7f	NOOP		1	1	imp single	yes	yes	no	no
-8f	BBS0 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
-8f	NOOP		1	1	imp single	yes	yes	no	no
-9f	BBS1 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
-9f	NOOP		1	1	imp single	yes	yes	no	no
-af	BBS2 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
-af	NOOP		1	1	imp single	yes	yes	no	no
-bf	BBS3 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
-bf	NOOP		1	1	imp single	yes	yes	no	no
 cb	WAI		1	3	wai		yes	no	no	yes
 cb	NOOP		1	1	imp single	yes	yes	yes	no
-cf	BBS4 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
-cf	NOOP		1	1	imp single	yes	yes	no	no
 db	STP		1	3	stp		yes	no	no	yes
 db	NOOP		1	1	imp single	yes	yes	yes	no
-df	BBS5 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
-df	NOOP		1	1	imp single	yes	yes	no	no
-ef	BBS6 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
-ef	NOOP		1	1	imp single	yes	yes	no	no
-ff	BBS7 $nn,$nnnn	3	5	zp-branch	yes	no	yes	yes
-ff	NOOP		1	1	imp single	yes	yes	no	no

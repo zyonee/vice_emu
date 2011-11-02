@@ -565,12 +565,11 @@
           tmp = LOAD_ZERO(tmp_addr) & (1 << bit);               \
           CLK_ADD(CLK, CYCLES_1);                               \
           INC_PC(SIZE_3);                                       \
-                                                                \
+          LOAD(reg_pc);                                         \
+          CLK_ADD(CLK, CYCLES_1);                               \   
           if (!tmp) {                                           \
               dest_addr = reg_pc + (signed char)(value);        \
-              LOAD(reg_pc);                                     \
               OPCODE_DELAYS_INTERRUPT();                        \
-              CLK_ADD(CLK, CYCLES_1);                           \
               JUMP(dest_addr & 0xffff);                         \
           }                                                     \
       }                                                         \
@@ -588,14 +587,15 @@
           tmp_addr = LOAD(reg_pc + 1);                          \
           CLK_ADD(CLK, CYCLES_1);                               \
           value = LOAD(reg_pc + 2);                             \
+          CLK_ADD(CLK, CYCLES_1);                               \
           tmp = LOAD_ZERO(tmp_addr) & (1 << bit);               \
           CLK_ADD(CLK, CYCLES_1);                               \
           INC_PC(SIZE_3);                                       \
+          LOAD(reg_pc);                                         \
+          CLK_ADD(CLK, CYCLES_1);                               \
                                                                 \
           if (tmp) {                                            \
               dest_addr = reg_pc + (signed char)(value);        \
-              LOAD(reg_pc);                                     \
-              CLK_ADD(CLK, CYCLES_1);                           \
               OPCODE_DELAYS_INTERRUPT();                        \
               JUMP(dest_addr & 0xffff);                         \
           }                                                     \

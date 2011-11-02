@@ -220,7 +220,7 @@ void machine_handle_pending_alarms(int num_write_cycles)
 {
 }
 
-#define USE_R65C02
+#define USE_65SC02
 
 static void pet_monitor_init(void)
 {
