@@ -7,207 +7,207 @@ This document is inteded for the following purposes:
   65C02core.c file.
 
 
-The 65(S)C02 is in many ways like the 6502, but it has additional
-instructions, has additional addressing modes and fixes most (if not all) of
-the 'quirks' of the 6502. All of the (legal/documented) 6502 opcodes are
-also available in the 65(S)C02, and some of the previously illegal/undocumented
-opcodes are now new opcodes. Any 'unused' opcodes have been replaced with NOP's
-of different lengths and cycles.
+The 65(S)C02 is in many ways like the 6502, but it has additional instructions,
+has additional addressing modes and fixes most (if not all) of the 'quirks' of
+the 6502. All of the (legal/documented) 6502 opcodes are also available in the
+65(S)C02, and some of the previously illegal/undocumented opcodes are now new
+opcodes. Any 'unused' opcodes have been replaced with NOP's of different
+lengths and cycles.
 
 Below is a list of opcodes that remained unchanged (no additional cycles or
 changes in behaviour) from the 6502:
 
-opcode	mnemonic
-------	--------
-00      BRK
-01	ORA ($nn,X)
-05	ORA $nn
-06	ASL $nn
-08	PHP
-09	ORA #$nn
-0a	ASL A
-0d	ORA $nnnn
-0e	ASL $nnnn
-10	BPL $nnnn
-11	ORA ($nn),Y
-15	ORA $nn,X
-16	ASL $nn,X
-18	CLC
-19	ORA $nnnn,Y
-1d	ORA $nnnn,X
-20	JSR $nnnn
-21	AND ($nn,X)
-24	BIT $nn
-25	AND $nn
-26	ROL $nn
-28	PLP
-29	AND #$nn
-2a	ROL A
-2c	BIT $nnnn
-2d	AND $nnnn
-2e	ROL $nnnn
-30	BMI $nnnn
-31	AND ($nn),Y
-35	AND $nn,X
-36	ROL $nn,X
-38	SEC
-39	AND $nnnn,Y
-3d	AND $nnnn,X
-40	RTI
-41	EOR ($nn,X)
-45	EOR $nn
-46	LSR $nn
-48	PHA
-49	EOR #$nn
-4a	LSR A
-4c	JMP $nnnn
-4d	EOR $nnnn
-4e	LSR $nnnn
-50	BVC $nnnn
-51	EOR ($nn),Y
-55	EOR $nn,X
-56	LSR $nn,X
-58	CLI
-59	EOR $nnnn,Y
-5d	EOR $nnnn,X
-60	RTS
-66	ROR $nn
-68	PLA
-6a	ROR A
-6e	ROR $nnnn
-70	BVS $nnnn
-76	ROR $nn,X
-78	SEI
-81	STA ($nn,X)
-84	STY $nn
-85	STA $nn
-86	STX $nn
-88	DEY
-8a	TXA
-8c	STY $nnnn
-8d	STA $nnnn
-8e	STX $nnnn
-90	BCC $nnnn
-91	STA ($nn),Y
-94	STY $nn,X
-95	STA $nn,X
-96	STX $nn,Y
-98	TYA
-99	STA $nnnn,Y
-9a	TXS
-9d	STA $nnnn,X
-a0	LDY #$nn
-a1	LDA ($nn,X)
-a2	LDX #$nn
-a4	LDY $nn
-a5	LDA $nn
-a6	LDX $nn
-a8	TAY
-a9	LDA #$nn
-aa	TAX
-ac	LDY $nnnn
-ad	LDA $nnnn
-ae	LDX $nnnn
-b0	BCS $nnnn
-b1	LDA ($nn),Y
-b4	LDY $nn,X
-b5	LDA $nn,X
-b6	LDX $nn,Y
-b8	CLV
-b9	LDA $nnnn,Y
-ba	TSX
-bc	LDY $nnnn,X
-bd	LDA $nnnn,X
-be	LDX $nnnn,Y
-c0	CPY #$nn
-c1	CMP ($nn,X)
-c4	CPY $nn
-c5	CMP $nn
-c6	DEC $nn
-c8	INY
-c9	CMP #$nn
-ca	DEX
-cc	CPY $nnnn
-cd	CMP $nnnn
-ce	DEC $nnnn
-d0	BNE $nnnn
-d1	CMP ($nn),Y
-d5	CMP $nn,X
-d6	DEC $nn,X
-d8	CLD
-d9	CMP $nnnn,Y
-dd	CMP $nnnn,X
-de	DEC $nnnn,X
-e0	CPX #$nn
-e4	CPX $nn
-e6	INC $nn
-e8	INX
-ea	NOP
-ec	CPX $nnnn
-ee	INC $nnnn
-f0	BEQ $nnnn
-f6	INC $nn,X
-f8	SED
-fe	INC $nnnn,X
+opcode   mnemonic
+------   --------
+00       BRK
+01       ORA ($nn,X)
+05       ORA $nn
+06       ASL $nn
+08       PHP
+09       ORA #$nn
+0A       ASL A
+0D       ORA $nnnn
+0E       ASL $nnnn
+10       BPL $nnnn
+11       ORA ($nn),Y
+15       ORA $nn,X
+16       ASL $nn,X
+18       CLC
+19       ORA $nnnn,Y
+1D       ORA $nnnn,X
+20       JSR $nnnn
+21       AND ($nn,X)
+24       BIT $nn
+25       AND $nn
+26       ROL $nn
+28       PLP
+29       AND #$nn
+2A       ROL A
+2C       BIT $nnnn
+2D       AND $nnnn
+2E       ROL $nnnn
+30       BMI $nnnn
+31       AND ($nn),Y
+35       AND $nn,X
+36       ROL $nn,X
+38       SEC
+39       AND $nnnn,Y
+3D       AND $nnnn,X
+40       RTI
+41       EOR ($nn,X)
+45       EOR $nn
+46       LSR $nn
+48       PHA
+49       EOR #$nn
+4A       LSR A
+4C       JMP $nnnn
+4D       EOR $nnnn
+4E       LSR $nnnn
+50       BVC $nnnn
+51       EOR ($nn),Y
+55       EOR $nn,X
+56       LSR $nn,X
+58       CLI
+59       EOR $nnnn,Y
+5D       EOR $nnnn,X
+60       RTS
+66       ROR $nn
+68       PLA
+6A       ROR A
+6E       ROR $nnnn
+70       BVS $nnnn
+76       ROR $nn,X
+78       SEI
+81       STA ($nn,X)
+84       STY $nn
+85       STA $nn
+86       STX $nn
+88       DEY
+8A       TXA
+8C       STY $nnnn
+8D       STA $nnnn
+8E       STX $nnnn
+90       BCC $nnnn
+91       STA ($nn),Y
+94       STY $nn,X
+95       STA $nn,X
+96       STX $nn,Y
+98       TYA
+99       STA $nnnn,Y
+9A       TXS
+9D       STA $nnnn,X
+A0       LDY #$nn
+A1       LDA ($nn,X)
+A2       LDX #$nn
+A4       LDY $nn
+A5       LDA $nn
+A6       LDX $nn
+A8       TAY
+A9       LDA #$nn
+AA       TAX
+AC       LDY $nnnn
+AD       LDA $nnnn
+AE       LDX $nnnn
+B0       BCS $nnnn
+B1       LDA ($nn),Y
+B4       LDY $nn,X
+B5       LDA $nn,X
+B6       LDX $nn,Y
+B8       CLV
+B9       LDA $nnnn,Y
+BA       TSX
+BC       LDY $nnnn,X
+BD       LDA $nnnn,X
+BE       LDX $nnnn,Y
+C0       CPY #$nn
+C1       CMP ($nn,X)
+C4       CPY $nn
+C5       CMP $nn
+C6       DEC $nn
+C8       INY
+C9       CMP #$nn
+CA       DEX
+CC       CPY $nnnn
+CD       CMP $nnnn
+CE       DEC $nnnn
+D0       BNE $nnnn
+D1       CMP ($nn),Y
+D5       CMP $nn,X
+D6       DEC $nn,X
+D8       CLD
+D9       CMP $nnnn,Y
+DD       CMP $nnnn,X
+DE       DEC $nnnn,X
+E0       CPX #$nn
+E4       CPX $nn
+E6       INC $nn
+E8       INX
+EA       NOP
+EC       CPX $nnnn
+EE       INC $nnnn
+F0       BEQ $nnnn
+F6       INC $nn,X
+F8       SED
+FE       INC $nnnn,X
 
 
-The normal NOP is 1 byte and uses 2 cycles, with the 65(S)C02 a new kind of
-NOP has been introduced, it is 1 byte long and uses 1 cycle, below are the
-opcodes that are defined as this single NOP:
+The normal NOP is 1 byte and uses 2 cycles, with the 65(S)C02 a new kind of NOP
+has been introduced, it is 1 byte long and uses 1 cycle, below are the opcodes
+that are defined as this single NOP:
 
-opcode	mnemonic	bytes	cycles
-------	--------	-----	------
-03	NOOP		1	1
-0b	NOOP		1	1
-13	NOOP		1	1
-1b	NOOP		1	1
-23	NOOP		1	1
-2b	NOOP		1	1
-33	NOOP		1	1
-3b	NOOP		1	1
-43	NOOP		1	1
-4b	NOOP		1	1
-53	NOOP		1	1
-5b	NOOP		1	1
-63	NOOP		1	1
-6b	NOOP		1	1
-73	NOOP		1	1
-7b	NOOP		1	1
-83	NOOP		1	1
-8b	NOOP		1	1
-93	NOOP		1	1
-9b	NOOP		1	1
-a3	NOOP		1	1
-ab	NOOP		1	1
-b3	NOOP		1	1
-bb	NOOP		1	1
-c3	NOOP		1	1
-d3	NOOP		1	1
-e3	NOOP		1	1
-eb	NOOP		1	1
-f3	NOOP		1	1
-fb	NOOP		1	1
+opcode   mnemonic   bytes   cycles
+------   --------   -----   ------
+03       NOOP         1       1
+0B       NOOP         1       1
+13       NOOP         1       1
+1B       NOOP         1       1
+23       NOOP         1       1
+2B       NOOP         1       1
+33       NOOP         1       1
+3B       NOOP         1       1
+43       NOOP         1       1
+4B       NOOP         1       1
+53       NOOP         1       1
+5B       NOOP         1       1
+63       NOOP         1       1
+6B       NOOP         1       1
+73       NOOP         1       1
+7B       NOOP         1       1
+83       NOOP         1       1
+8B       NOOP         1       1
+93       NOOP         1       1
+9B       NOOP         1       1
+A3       NOOP         1       1
+AB       NOOP         1       1
+B3       NOOP         1       1
+BB       NOOP         1       1
+C3       NOOP         1       1
+D3       NOOP         1       1
+E3       NOOP         1       1
+EB       NOOP         1       1
+F3       NOOP         1       1
+FB       NOOP         1       1
 
 
 The other unused opcodes are defined as >1 byte and >1 cycle NOPs, they are
 listed below with their 'suspected' addressing modes:
 
-opcode	mnemonic	bytes	cycles	comments
-------	--------	-----	------	--------
-02	NOOP #$nn	2	2
-22	NOOP #$nn	2	2
-42	NOOP #$nn	2	2
-44	NOOP $nn	2	2
-54	NOOP $nn,X	2	4
-5c	NOOP $nnnn + 4	3	8
-62	NOOP #$nn	2	2
-82	NOOP #$nn	2	2
-c2	NOOP #$nn	2	2
-d4	NOOP $nn,X	2	4
-dc	NOOP $nnnn	3	4
-e2	NOOP #$nn	2	2
-f4	NOOP $nn,X	2	4
-fc	NOOP $nnnn	3	4
+opcode   mnemonic      bytes   cycles
+------   --------      -----   ------
+02       NOOP #$nn       2       2
+22       NOOP #$nn       2       2
+42       NOOP #$nn       2       2
+44       NOOP $nn        2       2
+54       NOOP $nn,X      2       4
+5C       NOOP $nnnn + 4  3       8
+62       NOOP #$nn       2       2
+82       NOOP #$nn       2       2
+C2       NOOP #$nn       2       2
+D4       NOOP $nn,X      2       4
+DC       NOOP $nnnn      3       4
+E2       NOOP #$nn       2       2
+F4       NOOP $nn,X      2       4
+FC       NOOP $nnnn      3       4
 
 Note that the 3 bytes/8 cycles NOP can't really be explained with a normal
 addressing mode.
@@ -216,32 +216,32 @@ addressing mode.
 The 65C02 has some extra instructions for stack manipulating with a register
 other than the accumulator, these instructions are listed below:
 
-opcode	mnemonic	bytes	cycles	comments
-------	--------	-----	------	--------
-5a	PHY		1	3	push the Y register onto the stack
-7a	PLY		1	4	pull the Y register from the stack
-da	PHX		1	3	push the X register onto the stack
-fa	PLX		1	4	pull the X register from the stack
+opcode   mnemonic   bytes   cycles   comments
+------   --------   -----   ------   --------
+5A       PHY          1       3      push the Y register onto the stack
+7A       PLY          1       4      pull the Y register from the stack
+DA       PHX          1       3      push the X register onto the stack
+FA       PLX          1       4      pull the X register from the stack
 
 
 The INC and DEC instructions have been extended to be used on the accumulator,
 in the same way that INX/INY and DEX/DEY work, the opcodes are listed below:
 
-opcode	mnemonic	bytes	cycles	comments
-------	--------	-----	------	--------
-1a	INC A		1	2	increment accumulator
-3a	DEC A		1	2	decrement accumulator
+opcode   mnemonic   bytes   cycles   comments
+------   --------   -----   ------   --------
+1A       INC A        1       2      increment accumulator
+3A       DEC A        1       2      decrement accumulator
 
 
 A new instruction to store the value '0' (much like has been introduced, it
 works in much the same way as STA/STX/STY, the opcodes are listed below:
 
-opcode	mnemonic	bytes	cycles
-------	--------	-----	------
-64	STZ $nn		2	3
-74	STZ $nn,X	2	4
-9c	STZ $nnnn	3	4
-9e	STZ $nnnn,X	3	5
+opcode   mnemonic   bytes   cycles
+------   --------   -----   ------
+64       STZ $nn      2       3
+74       STZ $nn,X    2       4
+9C       STZ $nnnn    3       4
+9E       STZ $nnnn,X  3       5
 
 
 In binary mode (when the D flag is 0) ADC and SBC behave exactly the same as
@@ -254,26 +254,26 @@ BCD number). The N flag indicates whether bit 7 of the result is set or clear.
 
 The opcodes of the 'fixed' instructions are below:
 
-opcode	mnemonic	bytes	cycles	comments
-------	--------	-----	------	--------
-61	ADC ($nn,X)	2	6(/7)	+1 decimal mode
-65	ADC $nn		2	3(/4)	+1 decimal mode
-69	ADC #$nn	2	2(/3)	+1 decimal mode
-6d	ADC $nnnn	3	4(/5)	+1 decimal mode
-71	ADC ($nn),Y	2	5(/6/7)	+1 decimal mode, +1 page crossing
-72	ADC ($nn)	2	5(/6)	+1 decimal mode
-75	ADC $nn,X	2	4(/5)	+1 decimal mode
-79	ADC $nnnn,Y	3	4(/5/6)	+1 decimal mode, +1 page crossing
-7d	ADC $nnnn,X	3	4(/5/6)	+1 decimal mode, +1 page crossing
-e1	SBC ($nn,X)	2	6(/7)	+1 decimal mode
-e5	SBC $nn		2	3(/4)	+1 decimal mode
-e9	SBC #$nn	2	2(/3)	+1 decimal mode
-ed	SBC $nnnn	3	4(/5)	+1 decimal mode
-f1	SBC ($nn),Y	2	5(/6/7)	+1 decimal mode, +1 page crossing
-f2	SBC ($nn)	2	5(/6)	+1 decimal mode
-f5	SBC $nn,X	2	4(/5)	+1 decimal mode
-f9	SBC $nnnn,Y	3	4(/5/6)	+1 decimal mode, +1 page crossing
-fd	SBC $nnnn,X	3	4(/5/6)	+1 decimal mode, +1 page crossing
+opcode   mnemonic      bytes   cycles   comments
+------   --------      -----   ------   --------
+61       ADC ($nn,X)     2     6(/7)    +1 decimal mode
+65       ADC $nn         2     3(/4)    +1 decimal mode
+69       ADC #$nn        2     2(/3)    +1 decimal mode
+6D       ADC $nnnn       3     4(/5)    +1 decimal mode
+71       ADC ($nn),Y     2     5(/6/7)  +1 decimal mode, +1 page crossing
+72       ADC ($nn)       2     5(/6)    +1 decimal mode
+75       ADC $nn,X       2     4(/5)    +1 decimal mode
+79       ADC $nnnn,Y     3     4(/5/6)  +1 decimal mode, +1 page crossing
+7D       ADC $nnnn,X     3     4(/5/6)  +1 decimal mode, +1 page crossing
+E1       SBC ($nn,X)     2     6(/7)    +1 decimal mode
+E5       SBC $nn         2     3(/4)    +1 decimal mode
+E9       SBC #$nn        2     2(/3)    +1 decimal mode
+ED       SBC $nnnn       3     4(/5)    +1 decimal mode
+F1       SBC ($nn),Y     2     5(/6/7)  +1 decimal mode, +1 page crossing
+F2       SBC ($nn)       2     5(/6)    +1 decimal mode
+F5       SBC $nn,X       2     4(/5)    +1 decimal mode
+F9       SBC $nnnn,Y     3     4(/5/6)  +1 decimal mode, +1 page crossing
+FD       SBC $nnnn,X     3     4(/5/6)  +1 decimal mode, +1 page crossing
 
 Note that opcodes 72 and f2 have a new addressing mode which will be explained
 next.
@@ -283,36 +283,36 @@ A new addressing mode has been introduced, the zeropage indexed mode, it is
 like the zeropage y ((zp),Y) mode when Y is zero, and has the same cycle
 count. The opcodes using the new addressing mode are listed below:
 
-opcode	mnemonic	bytes	cycles	comments
-------	--------	-----	------	--------
-12	ORA ($nn)	2	5
-32	AND ($nn)	2	5
-52	EOR ($nn)	2	5
-72	ADC ($nn)	2	5(/6)	+1 decimal mode
-92	STA ($nn)	2	5
-b2	LDA ($nn)	2	5
-d2	CMP ($nn)	2	5
-f2	SBC ($nn)	2	5(/6)	+1 decimal mode
+opcode   mnemonic   bytes   cycles   comments
+------   --------   -----   ------   --------
+12       ORA ($nn)    2       5
+32       AND ($nn)    2       5
+52       EOR ($nn)    2       5
+72       ADC ($nn)    2       5(/6)  +1 decimal mode
+92       STA ($nn)    2       5
+B2       LDA ($nn)    2       5
+D2       CMP ($nn)    2       5
+F2       SBC ($nn)    2       5(/6)  +1 decimal mode
 
 
 The BIT instruction has three additional addressing modes. The $nnnn,X and $nn,X
 addressing modes affect the same flags that the abs and zp addressing modes
 do. The immediate addressing mode only affects the Z flag. Below is a list:
 
-opcode	mnemonic	bytes	cycles	comments
-------	--------	-----	------	--------
-34	BIT $nn,X	2	4
-3c	BIT $nnnn,X	3	4(/5)	+1 crossing page boundry
-89	BIT #$nn	2	2
+opcode   mnemonic   bytes   cycles   comments
+------   --------   -----   ------   --------
+34       BIT $nn,X    2     4
+3C       BIT $nnnn,X  3     4(/5)    +1 crossing page boundry
+89       BIT #$nn     2     2
 
 
 The JMP instruction has a new ($nnnn,X) addressing mode, the X register is
 added to the absolute address, and the resulting address contains the address
 to jump to, low byte first:
 
-opcode	mnemonic	bytes	cycles
-------	--------	-----	------
-7c	JMP ($nnnn,X)	3	6
+opcode   mnemonic      bytes   cycles
+------   --------      -----   ------
+7C       JMP ($nnnn,X)   3       6
 
 
 On the 6502, JMP ($nnnn) had a bug when the low byte of the address was $FF,
@@ -321,19 +321,19 @@ page but at location $00, for example JMP($09FF) would get the first byte from
 $09FF and the second byte from $0900. On the 65(S)C02 this bug is fixed, at the
 cost of an extra cycle:
 
-opcode	mnemonic	bytes	cycles
-------	--------	-----	------
-6c	JMP ($nnnn)	3	6
+opcode   mnemonic     bytes   cycles
+------   --------     -----   ------
+6C       JMP ($nnnn)    3       6
 
 
-The 65(S)C02 has a new branch instructions, BRA (branch always), the cycle count
-is the same as for the other branch instruction except for the fact that the
-condition is always true, and therefore the case of not taking the branch
+The 65(S)C02 has a new branch instructions, BRA (branch always), the cycle
+count is the same as for the other branch instruction except for the fact that
+the condition is always true, and therefore the case of not taking the branch
 doesn't exist, and so the minimum cycles for this branch is 3:
 
-opcode	mnemonic	bytes	cycles
-------	--------	-----	------
-80	BRA $nnnn	2	3(/4)	+1 for crossing page boundry
+opcode   mnemonic   bytes   cycles   comments
+------   --------   -----   ------   --------
+80       BRA $nnnn    2     3(/4)    +1 for crossing page boundry
 
 
 The 65(S)C02 has two extra instructions for manipulating bits in memory, the
@@ -342,12 +342,12 @@ ANDs the memory location with the accumulator and sets the Z flag according to
 the result and then bits in the memory location are reset/set according to
 which bits in the accumulator are set:
 
-opcode	mnemonic	bytes	cycles
-------	--------	-----	------
-04	TSB $nn		2	5
-0c	TSB $nnnn	3	6
-14	TRB $nn		2	5
-1c	TRB $nnnn	3	6
+opcode   mnemonic   bytes   cycles
+------   --------   -----   ------
+04       TSB $nn      2       5
+0C       TSB $nnnn    3       6
+14       TRB $nn      2       5
+1C       TRB $nnnn    3       6
 
 
 The R65C02 and WDC65C02 have 4 additional instructions that are not present in
@@ -357,104 +357,108 @@ instructions and branch on the condition of a certain bit. The RMB* and SMB*
 functions reset/set a certain bit of a memory location. The following opcodes
 are used:
 
-opcode	mnemonic	bytes	cycles	comments
-------	--------	-----	------	--------
-07	RMB0 $nn	2	5	on WDC65C02 and R65C02
-0f	BBR0 $nn,$nnnn	3	5	on WDC65C02 and R65C02
-17	RMB1 $nn	2	5	on WDC65C02 and R65C02
-1f	BBR1 $nn,$nnnn	3	5	on WDC65C02 and R65C02
-27	RMB2 $nn	2	5	on WDC65C02 and R65C02
-2f	BBR2 $nn,$nnnn	3	5	on WDC65C02 and R65C02
-37	RMB3 $nn	2	5	on WDC65C02 and R65C02
-3f	BBR3 $nn,$nnnn	3	5	on WDC65C02 and R65C02
-47	RMB4 $nn	2	5	on WDC65C02 and R65C02
-4f	BBR4 $nn,$nnnn	3	5	on WDC65C02 and R65C02
-57	RMB5 $nn	2	5	on WDC65C02 and R65C02
-5f	BBR5 $nn,$nnnn	3	5	on WDC65C02 and R65C02
-67	RMB6 $nn	2	5	on WDC65C02 and R65C02
-6f	BBR6 $nn,$nnnn	3	5	on WDC65C02 and R65C02
-77	RMB7 $nn	2	5	on WDC65C02 and R65C02
-7f	BBR7 $nn,$nnnn	3	5	on WDC65C02 and R65C02
-87	SMB0 $nn	2	5	on WDC65C02 and R65C02
-8f	BBS0 $nn,$nnnn	3	5	on WDC65C02 and R65C02
-97	SMB1 $nn	2	5	on WDC65C02 and R65C02
-9f	BBS1 $nn,$nnnn	3	5	on WDC65C02 and R65C02
-a7	SMB2 $nn	2	5	on WDC65C02 and R65C02
-af	BBS2 $nn,$nnnn	3	5	on WDC65C02 and R65C02
-b7	SMB3 $nn	2	5	on WDC65C02 and R65C02
-bf	BBS3 $nn,$nnnn	3	5	on WDC65C02 and R65C02
-c7	SMB4 $nn	2	5	on WDC65C02 and R65C02
-cf	BBS4 $nn,$nnnn	3	5	on WDC65C02 and R65C02
-d7	SMB5 $nn	2	5	on WDC65C02 and R65C02
-df	BBS5 $nn,$nnnn	3	5	on WDC65C02 and R65C02
-e7	SMB6 $nn	2	5	on WDC65C02 and R65C02
-ef	BBS6 $nn,$nnnn	3	5	on WDC65C02 and R65C02
-f7	SMB7 $nn	2	5	on WDC65C02 and R65C02
-ff	BBS7 $nn,$nnnn	3	5	on WDC65C02 and R65C02
+opcode   mnemonic       bytes   cycles   comments
+------   --------       -----   ------   --------
+07       RMB0 $nn         2       5      on WDC65C02 and R65C02
+0F       BBR0 $nn,$nnnn   3       5      on WDC65C02 and R65C02
+17       RMB1 $nn         2       5      on WDC65C02 and R65C02
+1F       BBR1 $nn,$nnnn   3       5      on WDC65C02 and R65C02
+27       RMB2 $nn         2       5      on WDC65C02 and R65C02
+2F       BBR2 $nn,$nnnn   3       5      on WDC65C02 and R65C02
+37       RMB3 $nn         2       5      on WDC65C02 and R65C02
+3F       BBR3 $nn,$nnnn   3       5      on WDC65C02 and R65C02
+47       RMB4 $nn         2       5      on WDC65C02 and R65C02
+4F       BBR4 $nn,$nnnn   3       5      on WDC65C02 and R65C02
+57       RMB5 $nn         2       5      on WDC65C02 and R65C02
+5F       BBR5 $nn,$nnnn   3       5      on WDC65C02 and R65C02
+67       RMB6 $nn         2       5      on WDC65C02 and R65C02
+6F       BBR6 $nn,$nnnn   3       5      on WDC65C02 and R65C02
+77       RMB7 $nn         2       5      on WDC65C02 and R65C02
+7F       BBR7 $nn,$nnnn   3       5      on WDC65C02 and R65C02
+87       SMB0 $nn         2       5      on WDC65C02 and R65C02
+8F       BBS0 $nn,$nnnn   3       5      on WDC65C02 and R65C02
+97       SMB1 $nn         2       5      on WDC65C02 and R65C02
+9F       BBS1 $nn,$nnnn   3       5      on WDC65C02 and R65C02
+A7       SMB2 $nn         2       5      on WDC65C02 and R65C02
+AF       BBS2 $nn,$nnnn   3       5      on WDC65C02 and R65C02
+B7       SMB3 $nn         2       5      on WDC65C02 and R65C02
+BF       BBS3 $nn,$nnnn   3       5      on WDC65C02 and R65C02
+C7       SMB4 $nn         2       5      on WDC65C02 and R65C02
+CF       BBS4 $nn,$nnnn   3       5      on WDC65C02 and R65C02
+D7       SMB5 $nn         2       5      on WDC65C02 and R65C02
+DF       BBS5 $nn,$nnnn   3       5      on WDC65C02 and R65C02
+E7       SMB6 $nn         2       5      on WDC65C02 and R65C02
+EF       BBS6 $nn,$nnnn   3       5      on WDC65C02 and R65C02
+F7       SMB7 $nn         2       5      on WDC65C02 and R65C02
+FF       BBS7 $nn,$nnnn   3       5      on WDC65C02 and R65C02
 
 The opcodes above are single NOPs on the 65SC02:
 
-opcode	mnemonic	bytes	cycles	comments
-------	--------	-----	------	--------
-07	NOOP		1	1	on 65SC02
-0f	NOOP		1	1	on 65SC02
-17	NOOP		1	1	on 65SC02
-1f	NOOP		1	1	on 65SC02
-27	NOOP		1	1	on 65SC02
-2f	NOOP		1	1	on 65SC02
-37	NOOP		1	1	on 65SC02
-3f	NOOP		1	1	on 65SC02
-47	NOOP		1	1	on 65SC02
-4f	NOOP		1	1	on 65SC02
-57	NOOP		1	1	on 65SC02
-5f	NOOP		1	1	on 65SC02
-67	NOOP		1	1	on 65SC02
-6f	NOOP		1	1	on 65SC02
-77	NOOP		1	1	on 65SC02
-7f	NOOP		1	1	on 65SC02
-87	NOOP		1	1	on 65SC02
-8f	NOOP		1	1	on 65SC02
-97	NOOP		1	1	on 65SC02
-9f	NOOP		1	1	on 65SC02
-a7	NOOP		1	1	on 65SC02
-af	NOOP		1	1	on 65SC02
-b7	NOOP		1	1	on 65SC02
-bf	NOOP		1	1	on 65SC02
-c7	NOOP		1	1	on 65SC02
-cf	NOOP		1	1	on 65SC02
-d7	NOOP		1	1	on 65SC02
-df	NOOP		1	1	on 65SC02
-e7	NOOP		1	1	on 65SC02
-ef	NOOP		1	1	on 65SC02
-f7	NOOP		1	1	on 65SC02
-ff	NOOP		1	1	on 65SC02
+opcode   mnemonic   bytes   cycles   comments
+------   --------   -----   ------   --------
+07       NOOP         1       1      on 65SC02
+0F       NOOP         1       1      on 65SC02
+17       NOOP         1       1      on 65SC02
+1F       NOOP         1       1      on 65SC02
+27       NOOP         1       1      on 65SC02
+2F       NOOP         1       1      on 65SC02
+37       NOOP         1       1      on 65SC02
+3F       NOOP         1       1      on 65SC02
+47       NOOP         1       1      on 65SC02
+4F       NOOP         1       1      on 65SC02
+57       NOOP         1       1      on 65SC02
+5F       NOOP         1       1      on 65SC02
+67       NOOP         1       1      on 65SC02
+6F       NOOP         1       1      on 65SC02
+77       NOOP         1       1      on 65SC02
+7F       NOOP         1       1      on 65SC02
+87       NOOP         1       1      on 65SC02
+8F       NOOP         1       1      on 65SC02
+97       NOOP         1       1      on 65SC02
+9F       NOOP         1       1      on 65SC02
+A7       NOOP         1       1      on 65SC02
+AF       NOOP         1       1      on 65SC02
+B7       NOOP         1       1      on 65SC02
+BF       NOOP         1       1      on 65SC02
+C7       NOOP         1       1      on 65SC02
+CF       NOOP         1       1      on 65SC02
+D7       NOOP         1       1      on 65SC02
+DF       NOOP         1       1      on 65SC02
+E7       NOOP         1       1      on 65SC02
+EF       NOOP         1       1      on 65SC02
+F7       NOOP         1       1      on 65SC02
+FF       NOOP         1       1      on 65SC02
 
 
-The WDC65C02 has 2 addtional instructions not present in the R65C02 and
-65SC02, STP (stops the cpu) and WAI (stops the cpu and waits for an interrupt
-to reactivate the cpu):
+The WDC65C02 has 2 addtional instructions not present in the R65C02 and 65SC02,
+STP (stops the cpu) and WAI (stops the cpu and waits for an interrupt to
+reactivate the cpu):
 
-opcode	mnemonic	bytes	cycles	comments
-------	--------	-----	------	--------
-cb	WAI		1	3	on WDC65C02
-db	STP		1	3	on WDC65C02
+opcode   mnemonic   bytes   cycles   comments
+------   --------   -----   ------   --------
+CB       WAI          1       3      on WDC65C02
+DB       STP          1       3      on WDC65C02
 
 The opcodes above are single NOPs on the R65C02 and 65SC02:
 
-opcode	mnemonic	bytes	cycles	comments
-------	--------	-----	------	--------
-cb	NOOP		1	1	on R65C02 and 65SC02
-db	NOOP		1	1	on R65C02 and 65SC02
+opcode   mnemonic   bytes   cycles   comments
+------   --------   -----   ------   --------
+CB       NOOP         1       1      on R65C02 and 65SC02
+DB       NOOP         1       1      on R65C02 and 65SC02
 
 
-On the 6502 the $nnnn,X addressing mode for the INC, DEC, ASL, LSR, ROL and ROR instructions always takes 7 cycles, on the 65(S)C02 the cycles for the ASL, LSR, ROL and ROR instructions are 6 when no page boundry is crossed and 7 when it is crossed. Note that DEC and INC still always take 7 cycles on the 65(S)C02.
+On the 6502 the $nnnn,X addressing mode for the INC, DEC, ASL, LSR, ROL and
+ROR instructions always takes 7 cycles, on the 65(S)C02 the cycles for the ASL,
+LSR, ROL and ROR instructions are 6 when no page boundry is crossed and 7 when
+it is crossed. Note that DEC and INC still always take 7 cycles on the
+65(S)C02.
 
-opcode	mnemonic	bytes	cycles
-------	--------	-----	------
-1e	ASL $nnnn,X	3	6(/7)	+1 for page boundry crossing
-3e	ROL $nnnn,X	3	6(/7)	+1 for boundry crossing
-5e	LSR $nnnn,X	3	6(/7)	+1 for boundry crossing
-7e	ROR $nnnn,X	3	6(/7)	+1 for boundry crossing
+opcode   mnemonic    bytes   cycles   comments
+------   --------    -----   ------   --------
+1E       ASL $nnnn,X   3     6(/7)    +1 for page boundry crossing
+3E       ROL $nnnn,X   3     6(/7)    +1 for boundry crossing
+5E       LSR $nnnn,X   3     6(/7)    +1 for boundry crossing
+7E       ROR $nnnn,X   3     6(/7)    +1 for boundry crossing
 
 
 On the 6502 after an interrupt (BRK, IRQ or NMI) or a reset the decimal flag
@@ -475,348 +479,350 @@ References used for this document:
 http://www.6502.org/tutorials/65c02opcodes.html
 
 
-The following section is for keeping track of tests of the 65C02 core, a * after an element means it has been successfully tested. This section will be moved to a seperate file once all tests have been successfully done.
+The following section is for keeping track of tests of the 65C02 core, a *
+after an element means it has been successfully tested. This section will be
+moved to a seperate file once all tests have been successfully done.
 
 65C02 core emulation and tests:
 ===============================
 
-opcode	mnemonic	bytes	cycles		mode		changed	65SC02	R65C02	WDC65C02
-------	--------	-----	------		----		-------	------	------	--------
-00	BRK		2	7		brk		yes	yes	yes	yes
-01	ORA ($nn,X)	2*	6*		ind-x read	no	yes*	yes*	yes*
-02	NOOP #$nn	2*	2*		imm read	yes	yes*	yes*	yes*
-03	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
-04	TSB $nn		2*	5*		zp rrw		yes	yes*	yes*	yes*
-05	ORA $nn		2*	3*		zp read		no	yes*	yes*	yes*
-06	ASL $nn		2*	5*		zp rrw		yes	yes*	yes*	yes*
-07	RMB0 $nn	2*	5*		zp rrw		yes	no	yes*	yes*
-07	NOOP		1*	1*		imp single	yes	yes*	no	no
-08	PHP		1*	3*		stack push	no	yes*	yes*	yes*
-09	ORA #$nn	2*	2*		imm read	no	yes*	yes*	yes*
-0a	ASL A		1*	2*		imp		no	yes*	yes*	yes*
-0b	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
-0c	TSB $nnnn	3*	6*		abs rrw		yes	yes*	yes*	yes*
-0d	ORA $nnnn	3*	4*		abs read	no	yes*	yes*	yes*
-0e	ASL $nnnn	3*	6*		abs rrw		yes	yes*	yes*	yes*
-0f	BBR0 $nn,$nnnn	3	5		zp-branch	yes	no	yes	yes
-0f	NOOP		1	1		imp single	yes	yes	no	no
+opcode   mnemonic         bytes   cycles   65SC02   R65C02   WDC65C02
+------   --------         -----   ------   ------   ------   --------
+00       BRK                2        7      yes      yes       yes
+01       ORA ($nn,X)        2*       6*     yes*     yes*      yes*
+02       NOOP #$nn          2*       2*     yes*     yes*      yes*
+03       NOOP               1*       1*     yes*     yes*      yes*
+04       TSB $nn            2*       5*     yes*     yes*      yes*
+05       ORA $nn            2*       3*     yes*     yes*      yes*
+06       ASL $nn            2*       5*     yes*     yes*      yes*
+07       RMB #0,$nn         2*       5*     no       yes*      yes*
+07       NOOP               1*       1*     yes*     no        no
+08       PHP                1*       3*     yes*     yes*      yes*
+09       ORA #$nn           2*       2*     yes*     yes*      yes*
+0A       ASL A              1*       2*     yes*     yes*      yes*
+0B       NOOP               1*       1*     yes*     yes*      yes*
+0C       TSB $nnnn          3*       6*     yes*     yes*      yes*
+0D       ORA $nnnn          3*       4*     yes*     yes*      yes*
+0E       ASL $nnnn          3*       6*     yes*     yes*      yes*
+0F       BBR #0,$nn,$nnnn   3*       5*     no       yes*      yes*
+0F       NOOP               1*       1*     yes*     no        no
 
-opcode	mnemonic	bytes	cycles		mode		changed	65SC02	R65C02	WDC65C02
-------	--------	-----	------		----		-------	------	------	--------
-10	BPL $nnnn	2*	2*/3*/4*	branch		no	yes*	yes*	yes*
-11	ORA ($nn),Y	2*	5*/6*		ind-y read	yes	yes*	yes*	yes*
-12	ORA ($nn)	2*	5*		ind read	yes	yes*	yes*	yes*
-13	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
-14	TRB $nn		2*	5*		zp rrw		yes	yes*	yes*	yes*
-15	ORA $nn,X	2*	4*		zp-x read	no	yes*	yes*	yes*
-16	ASL $nn,X	2*	6*		zp-x rrw	yes	yes*	yes*	yes*
-17	RMB1 $nn	2*	5*		zp rrw		yes	no	yes*	yes*
-17	NOOP		1*	1*		imp single	yes	yes*	no	no
-18	CLC		1*	2*		imp		no	yes*	yes*	yes*
-19	ORA $nnnn,Y	3*	4*/5*		abs-y read	yes	yes*	yes*	yes*
-1a	INC A		1*	2*		imp		yes	yes*	yes*	yes*
-1b	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
-1c	TRB $nnnn	3*	6*		abs rrw		yes	yes*	yes*	yes*
-1d	ORA $nnnn,X	3*	4*/5*		abs-x read	yes	yes*	yes*	yes*
-1e	ASL $nnnn,X	3*	6*/7*		abs-x rrw	yes	yes*	yes*	yes*
-1f	BBR1 $nn,$nnnn	3	5		zp-branch	yes	no	yes	yes
-1f	NOOP		1	1		imp single	yes	yes	no	no
+opcode   mnemonic         bytes   cycles   65SC02   R65C02   WDC65C02
+------   --------         -----   ------   ------   ------   --------
+10       BPL $nnnn          2*    2*/3*/4*  yes*     yes*      yes*
+11       ORA ($nn),Y        2*    5*/6*     yes*     yes*      yes*
+12       ORA ($nn)          2*    5*        yes*     yes*      yes*
+13       NOOP               1*    1*        yes*     yes*      yes*
+14       TRB $nn            2*    5*        yes*     yes*      yes*
+15       ORA $nn,X          2*    4*        yes*     yes*      yes*
+16       ASL $nn,X          2*    6*        yes*     yes*      yes*
+17       RMB #1,$nn         2*    5*        no       yes*      yes*
+17       NOOP               1*    1*        yes*     no        no
+18       CLC                1*    2*        yes*     yes*      yes*
+19       ORA $nnnn,Y        3*    4*/5*     yes*     yes*      yes*
+1A       INC A              1*    2*        yes*     yes*      yes*
+1B       NOOP               1*    1*        yes*     yes*      yes*
+1C       TRB $nnnn          3*    6*        yes*     yes*      yes*
+1D       ORA $nnnn,X        3*    4*/5*     yes*     yes*      yes*
+1E       ASL $nnnn,X        3*    6*/7*     yes*     yes*      yes*
+1F       BBR #1,$nn,$nnnn   3*    5*        no       yes*      yes*
+1F       NOOP               1*    1*        yes*     no        no
 
-opcode	mnemonic	bytes	cycles		mode		changed	65SC02	R65C02	WDC65C02
-------	--------	-----	------		----		-------	------	------	--------
-20	JSR $nnnn	3	6		abs jsr		no	yes	yes	yes
-21	AND ($nn,X)	2*	6*		ind-x read	no	yes*	yes*	yes*
-22	NOOP #$nn	2*	2*		imm		yes	yes*	yes*	yes*
-23	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
-24	BIT $nn		2*	3*		zp read		no	yes*	yes*	yes*
-25	AND $nn		2*	3*		zp read		no	yes*	yes*	yes*
-26	ROL $nn		2*	5*		zp rrw		yes	yes*	yes*	yes*
-27	RMB2 $nn	2*	5*		zp rrw		yes	no	yes*	yes*
-27	NOOP		1*	1*		imp single	yes	yes*	no	no
-28	PLP		1*	4*		stack pull	no	yes*	yes*	yes*
-29	AND #$nn	2*	2*		imm		no	yes*	yes*	yes*
-2a	ROL A		1*	2*		imp		no	yes*	yes*	yes*
-2b	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
-2c	BIT $nnnn	3*	4*		abs read	no	yes*	yes*	yes*
-2d	AND $nnnn	3*	4*		abs read	no	yes*	yes*	yes*
-2e	ROL $nnnn	3*	6*		abs rrw		yes	yes*	yes*	yes*
-2f	BBR2 $nn,$nnnn	3	5		zp-branch	yes	no	yes	yes
-2f	NOOP		1	1		imp single	yes	yes	no	no
+opcode   mnemonic         bytes   cycles   65SC02   R65C02   WDC65C02
+------   --------         -----   ------   ------   ------   --------
+20       JSR $nnnn          3*      6*      yes*     yes*      yes*
+21       AND ($nn,X)        2*      6*      yes*     yes*      yes*
+22       NOOP #$nn          2*      2*      yes*     yes*      yes*
+23       NOOP               1*      1*      yes*     yes*      yes*
+24       BIT $nn            2*      3*      yes*     yes*      yes*
+25       AND $nn            2*      3*      yes*     yes*      yes*
+26       ROL $nn            2*      5*      yes*     yes*      yes*
+27       RMB #2,$nn         2*      5*      no       yes*      yes*
+27       NOOP               1*      1*      yes*     no        no
+28       PLP                1*      4*      yes*     yes*      yes*
+29       AND #$nn           2*      2*      yes*     yes*      yes*
+2A       ROL A              1*      2*      yes*     yes*      yes*
+2B       NOOP               1*      1*      yes*     yes*      yes*
+2C       BIT $nnnn          3*      4*      yes*     yes*      yes*
+2D       AND $nnnn          3*      4*      yes*     yes*      yes*
+2E       ROL $nnnn          3*      6*      yes*     yes*      yes*
+2F       BBR #2,$nn,$nnnn   3*      5*      no       yes*      yes*
+2F       NOOP               1*      1*      yes*     no        no
 
-opcode	mnemonic	bytes	cycles		mode		changed	65SC02	R65C02	WDC65C02
-------	--------	-----	------		----		-------	------	------	--------
-30	BMI $nnnn	2*	2*/3*/4*	branch		no	yes*	yes*	yes*
-31	AND ($nn),Y	2*	5*/6*		ind-y read	yes	yes*	yes*	yes*
-32	AND ($nn)	2*	5*		ind read	yes	yes*	yes*	yes*
-33	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
-34	BIT $nn,X	2*	4*		zp-x read	yes	yes*	yes*	yes*
-35	AND $nn,X	2*	4*		zp-x read	no	yes*	yes*	yes*
-36	ROL $nn,X	2*	6*		zp-x rrw	yes	yes*	yes*	yes*
-37	RMB3 $nn	2*	5*		zp rrw		yes	no	yes*	yes*
-37	NOOP		1*	1*		imp single	yes	yes*	no	no
-38	SEC		1*	2*		imp		no	yes*	yes*	yes*
-39	AND $nnnn,Y	3*	4*/5*		abs-y read	yes	yes*	yes*	yes*
-3a	DEC A		1*	2*		imp		yes	yes*	yes*	yes*
-3b	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
-3c	BIT $nnnn,X	3*	4*/5*		abs-x read	yes	yes*	yes*	yes*
-3d	AND $nnnn,X	3*	4*/5*		abs-x read	yes	yes*	yes*	yes*
-3e	ROL $nnnn,X	3*	6*/7*		abs-x rrw	yes	yes*	yes*	yes*
-3f	BBR3 $nn,$nnnn	3	5		zp-branch	yes	no	yes	yes
-3f	NOOP		1	1		imp single	yes	yes	no	no
+opcode   mnemonic         bytes   cycles   65SC02   R65C02   WDC65C02
+------   --------         -----   ------   ------   ------   --------
+30       BMI $nnnn          2*    2*/3*/4*  yes*     yes*      yes*
+31       AND ($nn),Y        2*    5*/6*     yes*     yes*      yes*
+32       AND ($nn)          2*    5*        yes*     yes*      yes*
+33       NOOP               1*    1*        yes*     yes*      yes*
+34       BIT $nn,X          2*    4*        yes*     yes*      yes*
+35       AND $nn,X          2*    4*        yes*     yes*      yes*
+36       ROL $nn,X          2*    6*        yes*     yes*      yes*
+37       RMB #3,$nn         2*    5*        no       yes*      yes*
+37       NOOP               1*    1*        yes*     no        no
+38       SEC                1*    2*        yes*     yes*      yes*
+39       AND $nnnn,Y        3*    4*/5*     yes*     yes*      yes*
+3A       DEC A              1*    2*        yes*     yes*      yes*
+3B       NOOP               1*    1*        yes*     yes*      yes*
+3C       BIT $nnnn,X        3*    4*/5*     yes*     yes*      yes*
+3D       AND $nnnn,X        3*    4*/5*     yes*     yes*      yes*
+3E       ROL $nnnn,X        3*    6*/7*     yes*     yes*      yes*
+3F       BBR #3,$nn,$nnnn   3*    5*        no       yes*      yes*
+3F       NOOP               1*    1*        yes*     no        no
 
-opcode	mnemonic	bytes	cycles		mode		changed	65SC02	R65C02	WDC65C02
-------	--------	-----	------		----		-------	------	------	--------
-40	RTI		1	6		RTI		no	yes	yes	yes
-41	EOR ($nn,X)	2*	6*		ind-x read	no	yes*	yes*	yes*
-42	NOOP #$nn	2*	2*		imm		yes	yes*	yes*	yes*
-43	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
-44	NOOP $nn	2*	3*		zp		yes	yes*	yes*	yes*
-45	EOR $nn		2*	3*		zp read		no	yes*	yes*	yes*
-46	LSR $nn		2*	5*		zp rrw		yes	yes*	yes*	yes*
-47	RMB4 $nn	2*	5*		zp rrw		yes	no	yes*	yes*
-47	NOOP		1*	1*		imp single	yes	yes*	no	no
-48	PHA		1*	3*		stack push	no	yes*	yes*	yes*
-49	EOR #$nn	2*	2*		imm		no	yes*	yes*	yes*
-4a	LSR A		1*	2*		imp		no	yes*	yes*	yes*
-4b	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
-4c	JMP $nnnn	3	3		abs jmp		no	yes	yes	yes
-4d	EOR $nnnn	3*	4*		abs read	no	yes*	yes*	yes*
-4e	LSR $nnnn	3*	6*		abs rrw		yes	yes*	yes*	yes*
-4f	BBR4 $nn,$nnnn	3	5		zp-branch	yes	no	yes	yes
-4f	NOOP		1	1		imp single	yes	yes	no	no
+opcode   mnemonic         bytes   cycles   65SC02   R65C02   WDC65C02
+------   --------         -----   ------   ------   ------   --------
+40       RTI                1     6         yes      yes       yes
+41       EOR ($nn,X)        2*    6*        yes*     yes*      yes*
+42       NOOP #$nn          2*    2*        yes*     yes*      yes*
+43       NOOP               1*    1*        yes*     yes*      yes*
+44       NOOP $nn           2*    3*        yes*     yes*      yes*
+45       EOR $nn            2*    3*        yes*     yes*      yes*
+46       LSR $nn            2*    5*        yes*     yes*      yes*
+47       RMB #4,$nn         2*    5*        no       yes*      yes*
+47       NOOP               1*    1*        yes*     no        no
+48       PHA                1*    3*        yes*     yes*      yes*
+49       EOR #$nn           2*    2*        yes*     yes*      yes*
+4A       LSR A              1*    2*        yes*     yes*      yes*
+4B       NOOP               1*    1*        yes*     yes*      yes*
+4C       JMP $nnnn          3*    3*        yes*     yes*      yes*
+4D       EOR $nnnn          3*    4*        yes*     yes*      yes*
+4E       LSR $nnnn          3*    6*        yes*     yes*      yes*
+4F       BBR #4,$nn,$nnnn   3*    5*        no       yes*      yes*
+4F       NOOP               1*    1*        yes*     no        no
 
-opcode	mnemonic	bytes	cycles		mode		changed	65SC02	R65C02	WDC65C02
-------	--------	-----	------		----		-------	------	------	--------
-50	BVC $nnnn	2*	2*/3*/4*	branch		no	yes*	yes*	yes*
-51	EOR ($nn),Y	2*	5*/6*		ind-y read	yes	yes*	yes*	yes*
-52	EOR ($nn)	2*	5*		ind read	yes	yes*	yes*	yes*
-53	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
-54	NOOP $nn,X	2*	4*		zp-x read	yes	yes*	yes*	yes*
-55	EOR $nn,X	2*	4*		zp-x read	no	yes*	yes*	yes*
-56	LSR $nn,X	2*	6*		zp-x rrw	yes	yes*	yes*	yes*
-57	RMB5 $nn	2*	5*		zp rrw		yes	no	yes*	yes*
-57	NOOP		1*	1*		imp single	yes	yes*	no	no
-58	CLI		1*	2*		imp		no	yes*	yes*	yes*
-59	EOR $nnnn,Y	3*	4*/5*		abs-y read	yes	yes*	yes*	yes*
-5a	PHY		1*	3*		stack push	yes	yes*	yes*	yes*
-5b	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
-5c	NOOP $nnnn	3*	8*		abs read + 4	yes	yes*	yes*	yes*
-5d	EOR $nnnn,X	3*	4*/5*		abs-x read	yes	yes*	yes*	yes*
-5e	LSR $nnnn,X	3*	6*/7*		abs-x rrw	yes	yes*	yes*	yes*
-5f	BBR5 $nn,$nnnn	3	5		zp-branch	yes	no	yes	yes
-5f	NOOP		1	1		imp single	yes	yes	no	no
+opcode   mnemonic         bytes   cycles   65SC02   R65C02   WDC65C02
+------   --------         -----   ------   ------   ------   --------
+50       BVC $nnnn          2*    2*/3*/4*  yes*     yes*      yes*
+51       EOR ($nn),Y        2*    5*/6*     yes*     yes*      yes*
+52       EOR ($nn)          2*    5*        yes*     yes*      yes*
+53       NOOP               1*    1*        yes*     yes*      yes*
+54       NOOP $nn,X         2*    4*        yes*     yes*      yes*
+55       EOR $nn,X          2*    4*        yes*     yes*      yes*
+56       LSR $nn,X          2*    6*        yes*     yes*      yes*
+57       RMB #5,$nn         2*    5*        no       yes*      yes*
+57       NOOP               1*    1*        yes*     no        no
+58       CLI                1*    2*        yes*     yes*      yes*
+59       EOR $nnnn,Y        3*    4*/5*     yes*     yes*      yes*
+5A       PHY                1*    3*        yes*     yes*      yes*
+5B       NOOP               1*    1*        yes*     yes*      yes*
+5C       NOOP $nnnn         3*    8*        yes*     yes*      yes*
+5D       EOR $nnnn,X        3*    4*/5*     yes*     yes*      yes*
+5E       LSR $nnnn,X        3*    6*/7*     yes*     yes*      yes*
+5F       BBR #5,$nn,$nnnn   3*    5*        no       yes*      yes*
+5F       NOOP               1*    1*        yes*     no        no
 
-opcode	mnemonic	bytes	cycles		mode		changed	65SC02	R65C02	WDC65C02
-------	--------	-----	------		----		-------	------	------	--------
-60	RTS		1	6		rts		no	yes	yes	yes
-61	ADC ($nn,X)	2*	6*/7*		ind-x read	yes	yes*	yes*	yes*
-62	NOOP #$nn	2*	2*		imm		yes	yes*	yes*	yes*
-63	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
-64	STZ $nn		2*	3*		zp write	yes	yes*	yes*	yes*
-65	ADC $nn		2*	3*/4*		zp read		yes	yes*	yes*	yes*
-66	ROR $nn		2*	5*		zp rrw		yes	yes*	yes*	yes*
-67	RMB6 $nn	2*	5*		zp rrw		yes	no	yes*	yes*
-67	NOOP		1*	1*		imp single	yes	yes*	no	no
-68	PLA		1*	4*		stack pull	no	yes*	yes*	yes*
-69	ADC #$nn	2*	2*/3*		imm		yes	yes*	yes*	yes*
-6a	ROR A		1*	2*		imp		no	yes*	yes*	yes*
-6b	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
-6c	JMP ($nnnn)	3	6		ind jmp		yes	yes	yes	yes
-6d	ADC $nnnn	3*	4*/5*		abs read	yes	yes*	yes*	yes*
-6e	ROR $nnnn	3*	6*		abs rrw		yes	yes*	yes*	yes*
-6f	BBR6 $nn,$nnnn	3	5		zp-branch	yes	no	yes	yes
-6f	NOOP		1	1		imp single	yes	yes	no	no
+opcode   mnemonic         bytes   cycles   65SC02   R65C02   WDC65C02
+------   --------         -----   ------   ------   ------   --------
+60       RTS                1*    6*        yes*     yes*      yes*
+61       ADC ($nn,X)        2*    6*/7*     yes*     yes*      yes*
+62       NOOP #$nn          2*    2*        yes*     yes*      yes*
+63       NOOP               1*    1*        yes*     yes*      yes*
+64       STZ $nn            2*    3*        yes*     yes*      yes*
+65       ADC $nn            2*    3*/4*     yes*     yes*      yes*
+66       ROR $nn            2*    5*        yes*     yes*      yes*
+67       RMB #6,$nn         2*    5*        no       yes*      yes*
+67       NOOP               1*    1*        yes*     no        no
+68       PLA                1*    4*        yes*     yes*      yes*
+69       ADC #$nn           2*    2*/3*     yes*     yes*      yes*
+6A       ROR A              1*    2*        yes*     yes*      yes*
+6B       NOOP               1*    1*        yes*     yes*      yes*
+6C       JMP ($nnnn)        3*    6*        yes*     yes*      yes*
+6D       ADC $nnnn          3*    4*/5*     yes*     yes*      yes*
+6E       ROR $nnnn          3*    6*        yes*     yes*      yes*
+6F       BBR #6,$nn,$nnnn   3*    5*        no       yes*      yes*
+6F       NOOP               1*    1*        yes*     no        no
 
-opcode	mnemonic	bytes	cycles		mode		changed	65SC02	R65C02	WDC65C02
-------	--------	-----	------		----		-------	------	------	--------
-70	BVS $nnnn	2*	2*/3*/4*	branch		no	yes*	yes*	yes*
-71	ADC ($nn),Y	2*	5*/6*/7*	ind-y read	yes	yes*	yes*	yes*
-72	ADC ($nn)	2*	5*/6*		ind read	yes	yes*	yes*	yes*
-73	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
-74	STZ $nn,X	2*	4*		zp-x write	yes	yes*	yes*	yes*
-75	ADC $nn,X	2*	4*/5*		zp-x read	yes	yes*	yes*	yes*
-76	ROR $nn,X	2*	6*		zp-x rrw	yes	yes*	yes*	yes*
-77	RMB7 $nn	2*	5*		zp rrw		yes	no	yes*	yes*
-77	NOOP		1*	1*		imp single	yes	yes*	no	no
-78	SEI		1*	2*		imp		no	yes*	yes*	yes*
-79	ADC $nnnn,Y	3*	4*/5*/6*	abs-y read	yes	yes*	yes*	yes*
-7a	PLY		1*	4*		stack pull	yes	yes*	yes*	yes*
-7b	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
-7c	JMP ($nnnn,X)	3	6		ind-x jmp	yes	yes	yes	yes
-7d	ADC $nnnn,X	3*	4*/5*/6*	abs-x read	yes	yes*	yes*	yes*
-7e	ROR $nnnn,X	3*	6*/7*		abs-x rrw	yes	yes*	yes*	yes*
-7f	BBR7 $nn,$nnnn	3	5		zp-branch	yes	no	yes	yes
-7f	NOOP		1	1		imp single	yes	yes	no	no
+opcode   mnemonic         bytes   cycles   65SC02   R65C02   WDC65C02
+------   --------         -----   ------   ------   ------   --------
+70       BVS $nnnn          2*    2*/3*/4*  yes*     yes*      yes*
+71       ADC ($nn),Y        2*    5*/6*/7*  yes*     yes*      yes*
+72       ADC ($nn)          2*    5*/6*     yes*     yes*      yes*
+73       NOOP               1*    1*        yes*     yes*      yes*
+74       STZ $nn,X          2*    4*        yes*     yes*      yes*
+75       ADC $nn,X          2*    4*/5*     yes*     yes*      yes*
+76       ROR $nn,X          2*    6*        yes*     yes*      yes*
+77       RMB #7,$nn         2*    5*        no       yes*      yes*
+77       NOOP               1*    1*        yes*     no        no
+78       SEI                1*    2*        yes*     yes*      yes*
+79       ADC $nnnn,Y        3*    4*/5*/6*  yes*     yes*      yes*
+7A       PLY                1*    4*        yes*     yes*      yes*
+7B       NOOP               1*    1*        yes*     yes*      yes*
+7C       JMP ($nnnn,X)      3*    6*        yes*     yes*      yes*
+7D       ADC $nnnn,X        3*    4*/5*/6*  yes*     yes*      yes*
+7E       ROR $nnnn,X        3*    6*/7*     yes*     yes*      yes*
+7F       BBR #7,$nn,$nnnn   3*    5*        no       yes*      yes*
+7F       NOOP               1*    1*        yes*     no        no
 
-opcode	mnemonic	bytes	cycles		mode		changed	65SC02	R65C02	WDC65C02
-------	--------	-----	------		----		-------	------	------	--------
-80	BRA $nnnn	2*	3*/4*		branch		yes	yes*	yes*	yes*
-81	STA ($nn,X)	2*	6*		ind-x write	no	yes*	yes*	yes*
-82	NOP #$nn	2*	2*		imm		yes	yes*	yes*	yes*
-83	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
-84	STY $nn		2*	3*		zp write	no	yes*	yes*	yes*
-85	STA $nn		2*	3*		zp write	no	yes*	yes*	yes*
-86	STX $nn		2*	3*		zp write	no	yes*	yes*	yes*
-87	SMB0 $nn	2*	5*		zp rrw		yes	no	yes*	yes*
-87	NOOP		1*	1*		imp single	yes	yes*	no	no	
-88	DEY		1*	2*		imp		no	yes*	yes*	yes*
-89	BIT #$nn	2*	2*		imm		yes	yes*	yes*	yes*
-8a	TXA		1*	2*		imp		no	yes*	yes*	yes*
-8b	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
-8c	STY $nnnn	3*	4*		abs write	no	yes*	yes*	yes*
-8d	STA $nnnn	3*	4*		abs write	no	yes*	yes*	yes*
-8e	STX $nnnn	3*	4*		abs write	no	yes*	yes*	yes*
-8f	BBS0 $nn,$nnnn	3	5		zp-branch	yes	no	yes	yes
-8f	NOOP		1	1		imp single	yes	yes	no	no
+opcode   mnemonic         bytes   cycles   65SC02   R65C02   WDC65C02
+------   --------         -----   ------   ------   ------   --------
+80       BRA $nnnn          2*    3*/4*     yes*     yes*      yes*
+81       STA ($nn,X)        2*    6*        yes*     yes*      yes*
+82       NOOP #$nn          2*    2*        yes*     yes*      yes*
+83       NOOP               1*    1*        yes*     yes*      yes*
+84       STY $nn            2*    3*        yes*     yes*      yes*
+85       STA $nn            2*    3*        yes*     yes*      yes*
+86       STX $nn            2*    3*        yes*     yes*      yes*
+87       SMB #0,$nn         2*    5*        no       yes*      yes*
+87       NOOP               1*    1*        yes*     no        no	
+88       DEY                1*    2*        yes*     yes*      yes*
+89       BIT #$nn           2*    2*        yes*     yes*      yes*
+8A       TXA                1*    2*        yes*     yes*      yes*
+8B       NOOP               1*    1*        yes*     yes*      yes*
+8C       STY $nnnn          3*    4*        yes*     yes*      yes*
+8D       STA $nnnn          3*    4*        yes*     yes*      yes*
+8E       STX $nnnn          3*    4*        yes*     yes*      yes*
+8F       BBS #0,$nn,$nnnn   3*    5*        no       yes*      yes*
+8F       NOOP               1*    1*        yes*     no        no
 
-opcode	mnemonic	bytes	cycles		mode		changed	65SC02	R65C02	WDC65C02
-------	--------	-----	------		----		-------	------	------	--------
-90	BCC $nnnn	2*	2*/3*/4*	branch		no	yes*	yes*	yes*
-91	STA ($nn),Y	2*	6*		ind-y write	no	yes*	yes*	yes*
-92	STA ($nn)	2*	5*		ind write	yes	yes*	yes*	yes*
-93	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
-94	STY $nn,X	2*	4*		zp-x write	no	yes*	yes*	yes*
-95	STA $nn,X	2*	4*		zp-x write	no	yes*	yes*	yes*
-96	STX $nn,Y	2*	4*		zp-x write	no	yes*	yes*	yes*
-97	SMB1 $nn	2*	5*		zp rrw		yes	no	yes*	yes*
-97	NOOP		1*	1*		imp single	yes	yes*	no	no
-98	TYA		1*	2*		imp		no	yes*	yes*	yes*
-99	STA $nnnn,Y	3*	5*		abs-y write	yes	yes*	yes*	yes*
-9a	TXS		1*	2*		imp		no	yes*	yes*	yes*
-9b	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
-9c	STZ $nnnn	3*	4*		abs write	yes	yes*	yes*	yes*
-9d	STA $nnnn,X	3*	5*		abs-x write	yes	yes*	yes*	yes*
-9e	STZ $nnnn,X	3*	5*		abs-x write	yes	yes*	yes*	yes*
-9f	BBS1 $nn,$nnnn	3	5		zp-branch	yes	no	yes	yes
-9f	NOOP		1	1		imp single	yes	yes	no	no
+opcode   mnemonic         bytes   cycles   65SC02   R65C02   WDC65C02
+------   --------         -----   ------   ------   ------   --------
+90       BCC $nnnn          2*    2*/3*/4*  yes*     yes*      yes*
+91       STA ($nn),Y        2*    6*        yes*     yes*      yes*
+92       STA ($nn)          2*    5*        yes*     yes*      yes*
+93       NOOP               1*    1*        yes*     yes*      yes*
+94       STY $nn,X          2*    4*        yes*     yes*      yes*
+95       STA $nn,X          2*    4*        yes*     yes*      yes*
+96       STX $nn,Y          2*    4*        yes*     yes*      yes*
+97       SMB #1,$nn         2*    5*        no       yes*      yes*
+97       NOOP               1*    1*        yes*     no        no
+98       TYA                1*    2*        yes*     yes*      yes*
+99       STA $nnnn,Y        3*    5*        yes*     yes*      yes*
+9A       TXS                1*    2*        yes*     yes*      yes*
+9B       NOOP               1*    1*        yes*     yes*      yes*
+9C       STZ $nnnn          3*    4*        yes*     yes*      yes*
+9D       STA $nnnn,X        3*    5*        yes*     yes*      yes*
+9E       STZ $nnnn,X        3*    5*        yes*     yes*      yes*
+9F       BBS #1,$nn,$nnnn   3*    5*        no       yes*      yes*
+9F       NOOP               1*    1*        yes*     no        no
 
-opcode	mnemonic	bytes	cycles		mode		changed	65SC02	R65C02	WDC65C02
-------	--------	-----	------		----		-------	------	------	--------
-a0	LDY #$nn	2*	2*		imm		no	yes*	yes*	yes*
-a1	LDA ($nn,X)	2*	6*		ind-x read	no	yes*	yes*	yes*
-a2	LDX #$nn	2*	2*		imm		no	yes*	yes*	yes*
-a3	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
-a4	LDY $nn		2*	3*		zp read		no	yes*	yes*	yes*
-a5	LDA $nn		2*	3*		zp read		no 	yes*	yes*	yes*
-a6	LDX $nn		2*	3*		zp read		no	yes*	yes*	yes*
-a7	SMB2 $nn	2*	5*		zp rrw		yes	no	yes*	yes*
-a7	NOOP		1*	1*		imp single	yes	yes*	no	no
-a8	TAY		1*	2*		imp		no	yes*	yes*	yes*
-a9	LDA #$nn	2*	2*		imm		no	yes*	yes*	yes*
-aa	TAX		1*	2*		imp		no	yes*	yes*	yes*
-ab	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
-ac	LDY $nnnn	3*	4*		abs read	no	yes*	yes*	yes*
-ad	LDA $nnnn	3*	4*		abs read	no	yes*	yes*	yes*
-ae	LDX $nnnn	3*	4*		abs read	no	yes*	yes*	yes*
-af	BBS2 $nn,$nnnn	3	5		zp-branch	yes	no	yes	yes
-af	NOOP		1	1		imp single	yes	yes	no	no
+opcode   mnemonic         bytes   cycles   65SC02   R65C02   WDC65C02
+------   --------         -----   ------   ------   ------   --------
+A0       LDY #$nn           2*    2*        yes*     yes*      yes*
+A1       LDA ($nn,X)        2*    6*        yes*     yes*      yes*
+A2       LDX #$nn           2*    2*        yes*     yes*      yes*
+A3       NOOP               1*    1*        yes*     yes*      yes*
+A4       LDY $nn            2*    3*        yes*     yes*      yes*
+A5       LDA $nn            2*    3*        yes*     yes*      yes*
+A6       LDX $nn            2*    3*        yes*     yes*      yes*
+A7       SMB #2,$nn         2*    5*        no       yes*      yes*
+A7       NOOP               1*    1*        yes*     no        no
+A8       TAY                1*    2*        yes*     yes*      yes*
+A9       LDA #$nn           2*    2*        yes*     yes*      yes*
+AA       TAX                1*    2*        yes*     yes*      yes*
+AB       NOOP               1*    1*        yes*     yes*      yes*
+AC       LDY $nnnn          3*    4*        yes*     yes*      yes*
+AD       LDA $nnnn          3*    4*        yes*     yes*      yes*
+AE       LDX $nnnn          3*    4*        yes*     yes*      yes*
+AF       BBS #2,$nn,$nnnn   3*    5*        no       yes*      yes*
+AF       NOOP               1*    1*        yes*     no        no
 
-opcode	mnemonic	bytes	cycles		mode		changed	65SC02	R65C02	WDC65C02
-------	--------	-----	------		----		-------	------	------	--------
-b0	BCS $nnnn	2*	2*/3*/4*	branch		no	yes*	yes*	yes*
-b1	LDA ($nn),Y	2*	5*/6*		ind-y read	yes	yes*	yes*	yes*
-b2	LDA ($nn)	2*	5*		ind read	yes	yes*	yes*	yes*
-b3	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
-b4	LDY $nn,X	2*	4*		zp-x read	no	yes*	yes*	yes*
-b5	LDA $nn,X	2*	4*		zp-x read	no	yes*	yes*	yes*
-b6	LDX $nn,Y	2*	4*		zp-y read	no	yes*	yes*	yes*
-b7	SMB3 $nn	2*	5*		zp rrw		yes	no	yes*	yes*
-b7	NOOP		1*	1*		imp single	yes	yes*	no	no
-b8	CLV		1*	2*		imp		no	yes*	yes*	yes*
-b9	LDA $nnnn,Y	3*	4*/5*		abs-y read	yes	yes*	yes*	yes*
-ba	TSX		1*	2*		imp		no	yes*	yes*	yes*
-bb	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
-bc	LDY $nnnn,X	3*	4*/5*		abs-x read	yes	yes*	yes*	yes*
-bd	LDA $nnnn,X	3*	4*/5*		abs-x read	yes	yes*	yes*	yes*
-be	LDX $nnnn,Y	3*	4*/5*		abs-y read	yes	yes*	yes*	yes*
-bf	BBS3 $nn,$nnnn	3	5		zp-branch	yes	no	yes	yes
-bf	NOOP		1	1		imp single	yes	yes	no	no
+opcode   mnemonic         bytes   cycles   65SC02   R65C02   WDC65C02
+------   --------         -----   ------   ------   ------   --------
+B0       BCS $nnnn          2*    2*/3*/4*  yes*     yes*      yes*
+B1       LDA ($nn),Y        2*    5*/6*     yes*     yes*      yes*
+B2       LDA ($nn)          2*    5*        yes*     yes*      yes*
+B3       NOOP               1*    1*        yes*     yes*      yes*
+B4       LDY $nn,X          2*    4*        yes*     yes*      yes*
+B5       LDA $nn,X          2*    4*        yes*     yes*      yes*
+B6       LDX $nn,Y          2*    4*        yes*     yes*      yes*
+B7       SMB #3,$nn         2*    5*        no       yes*      yes*
+B7       NOOP               1*    1*        yes*     no        no
+B8       CLV                1*    2*        yes*     yes*      yes*
+B9       LDA $nnnn,Y        3*    4*/5*     yes*     yes*      yes*
+BA       TSX                1*    2*        yes*     yes*      yes*
+BB       NOOP               1*    1*        yes*     yes*      yes*
+BC       LDY $nnnn,X        3*    4*/5*     yes*     yes*      yes*
+BD       LDA $nnnn,X        3*    4*/5*     yes*     yes*      yes*
+BE       LDX $nnnn,Y        3*    4*/5*     yes*     yes*      yes*
+BF       BBS #3,$nn,$nnnn   3*    5*        no       yes*      yes*
+BF       NOOP               1*    1*        yes*     no        no
 
-opcode	mnemonic	bytes	cycles		mode		changed	65SC02	R65C02	WDC65C02
-------	--------	-----	------		----		-------	------	------	--------
-c0	CPY #$nn	2*	2*		imm		no	yes*	yes*	yes*
-c1	CMP ($nn,X)	2*	6*		ind-x read	no	yes*	yes*	yes*
-c2	NOOP #$nn	2*	2*		imm		yes	yes*	yes*	yes*
-c3	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
-c4	CPY $nn		2*	3*		zp read		no	yes*	yes*	yes*
-c5	CMP $nn		2*	3*		zp read		no	yes*	yes*	yes*
-c6	DEC $nn		2*	5*		zp rrw		yes	yes*	yes*	yes*
-c7	SMB4 $nn	2*	5*		zp rrw		yes	no	yes*	yes*
-c7	NOOP		1*	1*		imp single	yes	yes*	no	no
-c8	INY		1*	2*		imp		no	yes*	yes*	yes*
-c9	CMP #$nn	2*	2*		imm		no	yes*	yes*	yes*
-ca	DEX		1*	2*		imp		no	yes*	yes*	yes*
-cb	WAI		1	3		wai		yes	no	no	yes
-cb	NOOP		1	1		imp single	yes	yes	yes	no
-cc	CPY $nnnn	3*	4*		abs read	no	yes*	yes*	yes*
-cd	CMP $nnnn	3*	4*		abs read	no	yes*	yes*	yes*
-ce	DEC $nnnn	3*	6*		abs rrw		yes	yes*	yes*	yes*
-cf	BBS4 $nn,$nnnn	3	5		zp-branch	yes	no	yes	yes
-cf	NOOP		1	1		imp single	yes	yes	no	no
+opcode   mnemonic         bytes   cycles   65SC02   R65C02   WDC65C02
+------   --------         -----   ------   ------   ------   --------
+C0       CPY #$nn           2*    2*        yes*     yes*      yes*
+C1       CMP ($nn,X)        2*    6*        yes*     yes*      yes*
+C2       NOOP #$nn          2*    2*        yes*     yes*      yes*
+C3       NOOP               1*    1*        yes*     yes*      yes*
+C4       CPY $nn            2*    3*        yes*     yes*      yes*
+C5       CMP $nn            2*    3*        yes*     yes*      yes*
+C6       DEC $nn            2*    5*        yes*     yes*      yes*
+C7       SMB #4,$nn         2*    5*        no       yes*      yes*
+C7       NOOP               1*    1*        yes*     no        no
+C8       INY                1*    2*        yes*     yes*      yes*
+C9       CMP #$nn           2*    2*        yes*     yes*      yes*
+CA       DEX                1*    2*        yes*     yes*      yes*
+CB       WAI                1     3         no       no        yes
+CB       NOOP               1     1         yes      yes       no
+CC       CPY $nnnn          3*    4*        yes*     yes*      yes*
+CD       CMP $nnnn          3*    4*        yes*     yes*      yes*
+CE       DEC $nnnn          3*    6*        yes*     yes*      yes*
+CF       BBS4 $nn,$nnnn     3*    5*        no       yes*      yes*
+CF       NOOP               1*    1*        yes*     no        no
 
-opcode	mnemonic	bytes	cycles		mode		changed	65SC02	R65C02	WDC65C02
-------	--------	-----	------		----		-------	------	------	--------
-d0	BNE $nnnn	2*	2*/3*/4*	branch		no	yes*	yes*	yes*
-d1	CMP ($nn),Y	2*	5*/6*		ind-y read	yes	yes*	yes*	yes*
-d2	CMP ($nn)	2*	5*		ind read	yes	yes*	yes*	yes*
-d3	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
-d4	NOOP $nn,X	2*	4*		zp-x read	yes	yes*	yes*	yes*
-d5	CMP $nn,X	2*	4*		zp-x read	no	yes*	yes*	yes*
-d6	DEC $nn,X	2*	6*		zp-x rrw	yes	yes*	yes*	yes*
-d7	SMB5 $nn	2*	5*		zp rrw		yes	no	yes*	yes*
-d7	NOOP		1*	1*		imp single	yes	yes*	no	no
-d8	CLD		1*	2*		imp		no	yes*	yes*	yes*
-d9	CMP $nnnn,Y	3*	4*/5*		abs-y read	yes	yes*	yes*	yes*
-da	PHX		1*	3*		stack push	yes	yes*	yes*	yes*
-db	STP		1	3		stp		yes	no	no	yes
-db	NOOP		1	1		imp single	yes	yes	yes	no
-dc	NOP $nnnn	3*	4*		abs-x read	yes	yes*	yes*	yes*
-dd	CMP $nnnn,X	3*	4*/5*		abs-x read	yes	yes*	yes*	yes*
-de	DEC $nnnn,X	3*	7*		abs-x rrw	yes	yes*	yes*	yes*
-df	BBS5 $nn,$nnnn	3	5		zp-branch	yes	no	yes	yes
-df	NOOP		1	1		imp single	yes	yes	no	no
+opcode   mnemonic         bytes   cycles   65SC02   R65C02   WDC65C02
+------   --------         -----   ------   ------   ------   --------
+D0       BNE $nnnn          2*    2*/3*/4*  yes*     yes*      yes*
+D1       CMP ($nn),Y        2*    5*/6*     yes*     yes*      yes*
+D2       CMP ($nn)          2*    5*        yes*     yes*      yes*
+D3       NOOP               1*    1*        yes*     yes*      yes*
+D4       NOOP $nn,X         2*    4*        yes*     yes*      yes*
+D5       CMP $nn,X          2*    4*        yes*     yes*      yes*
+D6       DEC $nn,X          2*    6*        yes*     yes*      yes*
+D7       SMB #5,$nn         2*    5*        no       yes*      yes*
+D7       NOOP               1*    1*        yes*     no        no
+D8       CLD                1*    2*        yes*     yes*      yes*
+D9       CMP $nnnn,Y        3*    4*/5*     yes*     yes*      yes*
+DA       PHX                1*    3*        yes*     yes*      yes*
+DB       STP                1     3         no       no        yes
+DB       NOOP               1     1         yes      yes       no
+DC       NOOP $nnnn         3*    4*        yes*     yes*      yes*
+DD       CMP $nnnn,X        3*    4*/5*     yes*     yes*      yes*
+DE       DEC $nnnn,X        3*    7*        yes*     yes*      yes*
+DF       BBS #5,$nn,$nnnn   3*    5*        no       yes*      yes*
+DF       NOOP               1*    1*        yes*     no        no
 
-opcode	mnemonic	bytes	cycles		mode		changed	65SC02	R65C02	WDC65C02
-------	--------	-----	------		----		-------	------	------	--------
-e0	CPX #$nn	2*	2*		imm		no	yes*	yes*	yes*
-e1	SBC ($nn,X)	2*	6*/7*		ind-x read	yes	yes*	yes*	yes*
-e2	NOOP #$nn	2*	2*		imm		yes	yes*	yes*	yes*
-e3	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
-e4	CPX $nn		2*	3*		zp read		no	yes*	yes*	yes*
-e5	SBC $nn		2*	3*/4*		zp read		yes	yes*	yes*	yes*
-e6	INC $nn		2*	5*		zp rrw		yes	yes*	yes*	yes*
-e7	SMB6 $nn	2*	5*		zp rrw		yes	no	yes*	yes*
-e7	NOOP		1*	1*		imp single	yes	yes*	no	no
-e8	INX		1*	2*		imp		no	yes*	yes*	yes*
-e9	SBC #$nn	2*	2*/3*		imm		yes	yes*	yes*	yes*
-ea	NOP		1*	2*		imp		no	yes*	yes*	yes*
-eb	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
-ec	CPX $nnnn	3*	4*		abs read	no	yes*	yes*	yes*
-ed	SBC $nnnn	3*	4*/5*		abs read	yes	yes*	yes*	yes*
-ee	INC $nnnn	3*	6*		abs rrw		yes	yes*	yes*	yes*
-ef	BBS6 $nn,$nnnn	3	5		zp-branch	yes	no	yes	yes
-ef	NOOP		1	1		imp single	yes	yes	no	no
+opcode   mnemonic         bytes   cycles   65SC02   R65C02   WDC65C02
+------   --------         -----   ------   ------   ------   --------
+E0       CPX #$nn           2*    2*        yes*     yes*      yes*
+E1       SBC ($nn,X)        2*    6*/7*     yes*     yes*      yes*
+E2       NOOP #$nn          2*    2*        yes*     yes*      yes*
+E3       NOOP               1*    1*        yes*     yes*      yes*
+E4       CPX $nn            2*    3*        yes*     yes*      yes*
+E5       SBC $nn            2*    3*/4*     yes*     yes*      yes*
+E6       INC $nn            2*    5*        yes*     yes*      yes*
+E7       SMB #6,$nn         2*    5*        no       yes*      yes*
+E7       NOOP               1*    1*        yes*     no        no
+E8       INX                1*    2*        yes*     yes*      yes*
+E9       SBC #$nn           2*    2*/3*     yes*     yes*      yes*
+EA       NOP                1*    2*        yes*     yes*      yes*
+EB       NOOP               1*    1*        yes*     yes*      yes*
+EC       CPX $nnnn          3*    4*        yes*     yes*      yes*
+ED       SBC $nnnn          3*    4*/5*     yes*     yes*      yes*
+EE       INC $nnnn          3*    6*        yes*     yes*      yes*
+EF       BBS #6,$nn,$nnnn   3*    5*        no       yes*      yes*
+EF       NOOP               1*    1*        yes*     no        no
 
-opcode	mnemonic	bytes	cycles		mode		changed	65SC02	R65C02	WDC65C02
-------	--------	-----	------		----		-------	------	------	--------
-f0	BEQ $nnnn	2*	2*/3*/4*	branch		no	yes*	yes*	yes*
-f1	SBC ($nn),Y	2*	5*/6*/7*	ind-y read	yes	yes*	yes*	yes*
-f2	SBC ($nn)	2*	5*/6*		ind read	yes	yes*	yes*	yes*
-f3	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
-f4	NOOP $nn,X	2*	4*		zp-x read	yes	yes*	yes*	yes*
-f5	SBC $nn,X	2*	4*/5*		zp-x read	yes	yes*	yes*	yes*
-f6	INC $nn,X	2*	6*		zp-x rrw	yes	yes*	yes*	yes*
-f7	SMB7 $nn	2*	5*		zp rrw		yes	no	yes*	yes*
-f7	NOOP		1*	1*		imp single	yes	yes*	no	no
-f8	SED		1*	2*		imp		no	yes*	yes*	yes*
-f9	SBC $nnnn,Y	3*	4*/5*/6*	abs-y read	yes	yes*	yes*	yes*
-fa	PLX		1*	4*		stack pull	yes	yes*	yes*	yes*
-fb	NOOP		1*	1*		imp single	yes	yes*	yes*	yes*
-fc	NOOP $nnnn	3*	4*		abs-x read	yes	yes*	yes*	yes*
-fd	SBC $nnnn,X	3*	4*/5*/6*	abs-x read	yes	yes*	yes*	yes*
-fe	INC $nnnn,X	3*	7*		abs-x rrw	yes	yes*	yes*	yes*
-ff	BBS7 $nn,$nnnn	3	5		zp-branch	yes	no	yes	yes
-ff	NOOP		1	1		imp single	yes	yes	no	no
+opcode   mnemonic         bytes   cycles   65SC02   R65C02   WDC65C02
+------   --------         -----   ------   ------   ------   --------
+F0       BEQ $nnnn          2*    2*/3*/4*  yes*     yes*      yes*
+F1       SBC ($nn),Y        2*    5*/6*/7*  yes*     yes*      yes*
+F2       SBC ($nn)          2*    5*/6*     yes*     yes*      yes*
+F3       NOOP               1*    1*        yes*     yes*      yes*
+F4       NOOP $nn,X         2*    4*        yes*     yes*      yes*
+F5       SBC $nn,X          2*    4*/5*     yes*     yes*      yes*
+F6       INC $nn,X          2*    6*        yes*     yes*      yes*
+F7       SMB #7,$nn         2*    5*        no       yes*      yes*
+F7       NOOP               1*    1*        yes*     no        no
+F8       SED                1*    2*        yes*     yes*      yes*
+F9       SBC $nnnn,Y        3*    4*/5*/6*  yes*     yes*      yes*
+FA       PLX                1*    4*        yes*     yes*      yes*
+FB       NOOP               1*    1*        yes*     yes*      yes*
+FC       NOOP $nnnn         3*    4*        yes*     yes*      yes*
+FD       SBC $nnnn,X        3*    4*/5*/6*  yes*     yes*      yes*
+FE       INC $nnnn,X        3*    7*        yes*     yes*      yes*
+FF       BBS #7,$nn,$nnnn   3*    5*        no       yes*      yes*
+FF       NOOP               1*    1*        yes*     no        no
 
 
 65(S)C02 NOP timing test code

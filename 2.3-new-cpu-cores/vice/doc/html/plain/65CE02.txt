@@ -1,0 +1,650 @@
+This document is inteded for the following purposes:
+
+- to list and explain the differences between the CMOS 65C02 and the CMOS
+  65CE02.
+- to keep track and document which parts have been emulated and tested in the
+  65CE02core.c file.
+
+The 65CE02 is a successor of the R65C02, it has all of the opcodes used in the
+R65C02 and all 'unused' opcodes are now used. The 65CE02 uses less cycles for
+most opcodes than the R65C02 does, and is therefor faster. The 65CE02 doesn't
+read from invalid addresses nor does it do RMW. The 65CE02 has a 3rd index
+register 'Z', the stack pointer can be extended to 16 bits and the zero-page
+has become the base-page which is relocatable through the entire 64KB. The
+branch instructions now have 16bit offset versions as well, and the BIT #$nn
+opcode has been fixed to set the N and V flags as well.
+
+Below is a list of new opcodes compared to the R65C02:
+
+opcode   mnemonic        meaning
+------   --------        -------
+02       CLE             Clear stack extend disable bit
+03       SEE             Set stack extend disable bit
+0B       TSY             Transfer the high byte of the stack pointer into the Y register
+12       ORA ($nn),Z     Used to be ORA ($nn) on R65C02, is now indexed Z mode
+13       BPL off16       Branch on plus with a 16bit offset
+1B       INZ             Increment Z index register
+22       JSR ($nnnn)     Absolute indirect jump to a subroutine
+23       JSR ($nnnn,X)   Absolute indirect X jump to a subroutine
+2B       TYS             Transfer the Y register into the high byte of the stack pointer
+32       AND ($nn),Z     Used to be AND ($nn) on R65C02, is now indexed Z mode
+33       BMI off16       Branch on minus with a 16bit offset
+3B       DEZ             Decrement Z index register
+42       NEG A           Negate accumulator
+43       ASR A           Arithmetic shift right accumulator
+44       ASR $nn         Arithmetic shift right base page
+4B       TAZ             Transfer the accumulator into the Z register
+52       EOR ($nn),Z     Used to be EOR ($nn) on R65C02, is now indexed Z mode
+53       BVC off16       Branch on overflow clear with a 16bit offset
+54       ASR $nn,X       Arithmetic shift tight base page indexed X
+5B       TAB             Transfer the accumulator into the base page register
+5C       AUG             Augment, opcode reserved for future expansion, normally 4 byte NOP
+62       RTN #$nn        Return from subroutine and adjust stack pointer
+63       BSR off16       Branch to a subroutine with a 16bit offset
+64       STZ $nn         Store index Z with base page
+6B       TZA             Transfer the Z register into the accumulator
+72       ADC ($nn),Z     Used to be ADC ($nn) on R65C02, is now indexed Z mode
+73       BVS off16       Branch on overflow set with a 16bit offset
+74       STZ $nn,X       Store index Z with base page indexed X
+7B       TBA             Transfer the base page register into the accumulator
+82       STA ($nn,S),Y   Store accumulator via stack vector indexed by Y
+83       BRA off16       Branch always with a 16bit offset
+8B       STY $nnnn,X     Store index Y with absolute indexed X
+92       STA ($nn),Z     Used to be STA ($nn) on R65C02, is now indexed Z mode
+93       BCC off16       Branch on carry clear with a 16bit offset
+9B       STX $nnnn,Y     Store index X with absolute indexed Y
+9C       STZ $nnnn       Store index Z with absolute
+9E       STZ $nnnn,X     Store index Z with absolute indexed X
+A3       LDZ #$nn        Load index Z with immediate
+AB       LDZ $nnnn       Load index Z with absolute
+B3       BCS off16       Branch on carry set with a 16bit offset
+B2       LDA ($nn),Z     Used to be LDA ($nn) on R65C02, is now indexed Z mode
+BB       LDZ $nnnn,X     Load index Z with absolute indexed X
+C2       CPZ #$nn        Compare index Z with immediate
+C3       DEW $nn         Decrement word (16bit) base page
+CB       ASW $nnnn       Arithmetic shift left word (16bit) absolute
+D2       CMP ($nn),Z     Used to be CMP ($nn) on R65C02, is now indexed Z mode
+D3       BNE off16       Branch on not equal to zero with a 16bit offset
+D4       CPZ $nn         Compare index Z with base page
+DB       PHZ             Push the Z register onto the stack
+DC       CPZ $nnnn       Compare index Z with absolute
+E2       LDA ($nn,S),Y   Load accumulator via stack vector indexed by Y
+E3       INW $nn         Increment word (16bit) base page
+EB       ROW $nnnn       Rotate left word (16bit) absolute
+F2       SBC ($nn),Z     Used to be SBC ($nn) on R65C02, is now indexed Z mode
+F3       BEQ off16       Branch on equal to zero with a 16bit offset
+F4       PHW #$nnnn      Push 16bit immediate onto the stack
+FB       PLZ             Pull the Z register from the stack
+FC       PHW $nnnn       Push 16bit absolute onto the stack
+
+
+The following section is for keeping track of tests of the 65C02 core, a *
+after an element means it has been successfully tested. This section will be
+moved to a seperate file once all tests have been successfully done.
+
+65C02 core emulation and tests:
+===============================
+
+opcode   mnemonic         bytes   cycles   tested
+------   --------         -----   ------   ------
+00       BRK                2       7        no
+01       ORA ($nn,X)        2       5        no
+02       CLE                1       2        no
+03       SEE                1       2        no
+04       TSB $nn            2       4        no
+05       ORA $nn            2       3        no
+06       ASL $nn            2       4        no
+07       RMB #0,$nn         2       4        no
+08       PHP                1       3        no
+09       ORA #$nn           2       2        no
+0A       ASL A              1       1        no
+0B       TSY                1       1        no
+0C       TSB $nnnn          3       5        no
+0D       ORA $nnnn          3       4        no
+0E       ASL $nnnn          3       5        no
+0F       BBR #0,$nn,$nnnn   3       4        no
+
+opcode   mnemonic         bytes   cycles   tested
+------   --------         -----   ------   ------
+10       BPL off8           2       2        no
+11       ORA ($nn),Y        2       5        no
+12       ORA ($nn),Z        2       5        no
+13       BPL off16          3       3        no
+14       TRB $nn            2       4        no
+15       ORA $nn,X          2       3        no
+16       ASL $nn,X          2       4        no
+17       RMB #1,$nn         2       4        no
+18       CLC                1       1        no
+19       ORA $nnnn,Y        3       4        no
+1A       INC A              1       1        no
+1B       INZ                1       1        no
+1C       TRB $nnnn          3       5        no
+1D       ORA $nnnn,X        3       4        no
+1E       ASL $nnnn,X        3       5        no
+1F       BBR #1,$nn,$nnnn   3       4        no
+
+opcode   mnemonic         bytes   cycles   tested
+------   --------         -----   ------   ------
+20       JSR $nnnn          3       5        no
+21       AND ($nn,X)        2       5        no
+22       JSR ($nnnn)        3       7        no
+23       JSR ($nnnn,X)      3       7        no
+24       BIT $nn            2       4        no
+25       AND $nn            2       3        no
+26       ROL $nn            2       4        no
+27       RMB #2,$nn         2       4        no
+28       PLP                1       3        no
+29       AND #$nn           2       2        no
+2A       ROL A              1       1        no
+2B       TYS                1       1        no
+2C       BIT $nnnn          3       5        no
+2D       AND $nnnn          3       4        no
+2E       ROL $nnnn          3       5        no
+2F       BBR #2,$nn,$nnnn   3       4        no
+
+opcode   mnemonic         bytes   cycles   tested
+------   --------         -----   ------   ------
+30       BMI off8           2       2        no
+31       AND ($nn),Y        2       5        no
+32       AND ($nn),Z        2       5        no
+33       BMI off16          3       3        no
+34       BIT $nn,X          2       4        no
+35       AND $nn,X          2       3        no
+36       ROL $nn,X          2       4        no
+37       RMB #3,$nn         2       4        no
+38       SEC                1       1        no
+39       AND $nnnn,Y        3       4        no
+3A       DEC A              1       1        no
+3B       DEZ                1       1        no
+3C       BIT $nnnn,X        3       5        no
+3D       AND $nnnn,X        3       4        no
+3E       ROL $nnnn,X        3       5        no
+3F       BBR #3,$nn,$nnnn   3       4        no
+
+opcode   mnemonic         bytes   cycles   tested
+------   --------         -----   ------   ------
+40       RTI                1       5        no
+41       EOR ($nn,X)        2       5        no
+42       NEG A              1       2        no
+43       ASR A              1       2        no
+44       ASR $nn            2       4        no
+45       EOR $nn            2       3        no
+46       LSR $nn            2       4        no
+47       RMB #4,$nn         2       4        no
+48       PHA                1       3        no
+49       EOR #$nn           2       2        no
+4A       LSR A              1       1        no
+4B       TAZ                1       1        no
+4C       JMP $nnnn          3       3        no
+4D       EOR $nnnn          3       4        no
+4E       LSR $nnnn          3       5        no
+4F       BBR #4,$nn,$nnnn   3       4        no
+
+opcode   mnemonic         bytes   cycles   tested
+------   --------         -----   ------   ------
+50       BVC off8           2       2        no
+51       EOR ($nn),Y        2       5        no
+52       EOR ($nn),Z        2       5        no
+53       BVC off16          3       3        no
+54       ASR $nn,X          2       4        no
+55       EOR $nn,X          2       3        no
+56       LSR $nn,X          2       4        no
+57       RMB #5,$nn         2       4        no
+58       CLI                1       1        no
+59       EOR $nnnn,Y        3       4        no
+5A       PHY                1       3        no
+5B       TAB                1       1        no
+5C       AUG                4       4        no
+5D       EOR $nnnn,X        3       4        no
+5E       LSR $nnnn,X        3       5        no
+5F       BBR #5,$nn,$nnnn   3       4        no
+
+opcode   mnemonic         bytes   cycles   tested
+------   --------         -----   ------   ------
+60       RTS                1       4        no
+61       ADC ($nn,X)        2       5        no
+62       RTN #$nn           2       7        no
+63       BSR off16          3       5        no
+64       STZ $nn            2       3        no
+65       ADC $nn            2       3        no
+66       ROR $nn            2       4        no
+67       RMB #6,$nn         2       4        no
+68       PLA                1       3        no
+69       ADC #$nn           2       2        no
+6A       ROR A              1       1        no
+6B       TZA                1       1        no
+6C       JMP ($nnnn)        3       5        no
+6D       ADC $nnnn          3       4        no
+6E       ROR $nnnn          3       5        no
+6F       BBR #6,$nn,$nnnn   3       4        no
+
+opcode   mnemonic         bytes   cycles   tested
+------   --------         -----   ------   ------
+70       BVS off8           2       2        no
+71       ADC ($nn),Y        2       5        no
+72       ADC ($nn),Z        2       5        no
+73       BVS off16          3       3        no
+74       STZ $nn,X          2       3        no
+75       ADC $nn,X          2       3        no
+76       ROR $nn,X          2       4        no
+77       RMB #7,$nn         2       4        no
+78       SEI                1       2        no
+79       ADC $nnnn,Y        3       4        no
+7A       PLY                1       3        no
+7B       TBA                1       1        no
+7C       JMP ($nnnn,X)      3       5        no
+7D       ADC $nnnn,X        3       4        no
+7E       ROR $nnnn,X        3       5        no
+7F       BBR #7,$nn,$nnnn   3       4        no
+
+opcode   mnemonic         bytes   cycles   tested
+------   --------         -----   ------   ------
+80       BRA off8           2       2        no
+81       STA ($nn,X)        2       5        no
+82       STA ($nn,S),Y      2       5        no
+83       BRA off16          3       3        no
+84       STY $nn            2       3        no
+85       STA $nn            2       3        no
+86       STX $nn            2       3        no
+87       SMB #0,$nn         2       4        no
+88       DEY                1       1        no
+89       BIT #$nn           2       2        no
+8A       TXA                1       1        no
+8B       STY $nnnn,X        3       4        no
+8C       STY $nnnn          3       4        no
+8D       STA $nnnn          3       4        no
+8E       STX $nnnn          3       4        no
+8F       BBS #0,$nn,$nnnn   3       4        no
+
+opcode   mnemonic         bytes   cycles   tested
+------   --------         -----   ------   ------
+90       BCC off8           2       2        no
+91       STA ($nn),Y        2       5        no
+92       STA ($nn),Z        2       5        no
+93       BCC off16          3       3        no
+94       STY $nn,X          2       3        no
+95       STA $nn,X          2       3        no
+96       STX $nn,Y          2       3        no
+97       SMB #1,$nn         2       4        no
+98       TYA                1       1        no
+99       STA $nnnn,Y        3       4        no
+9A       TXS                1       1        no
+9B       STX $nnnn,Y        3       4        no
+9C       STZ $nnnn          3       4        no
+9D       STA $nnnn,X        3       4        no
+9E       STZ $nnnn,X        3       4        no
+9F       BBS #1,$nn,$nnnn   3       4        no
+
+opcode   mnemonic         bytes   cycles   tested
+------   --------         -----   ------   ------
+A0       LDY #$nn           2       2        no
+A1       LDA ($nn,X)        2       5        no
+A2       LDX #$nn           2       2        no
+A3       LDZ #$nn           2       2        no
+A4       LDY $nn            2       3        no
+A5       LDA $nn            2       3        no
+A6       LDX $nn            2       3        no
+A7       SMB #2,$nn         2       4        no
+A8       TAY                1       1        no
+A9       LDA #$nn           2       2        no
+AA       TAX                1       1        no
+AB       LDZ $nnnn          3       4        no
+AC       LDY $nnnn          3       4        no
+AD       LDA $nnnn          3       4        no
+AE       LDX $nnnn          3       4        no
+AF       BBS #2,$nn,$nnnn   3       4        no
+
+opcode   mnemonic         bytes   cycles   tested
+------   --------         -----   ------   ------
+B0       BCS off8           2       2        no
+B1       LDA ($nn),Y        2       5        no
+B2       LDA ($nn),Z        2       5        no
+B3       BCS off16          3       3        no
+B4       LDY $nn,X          2       3        no
+B5       LDA $nn,X          2       3        no
+B6       LDX $nn,Y          2       3        no
+B7       SMB #3,$nn         2       4        no
+B8       CLV                1       1        no
+B9       LDA $nnnn,Y        3       4        no
+BA       TSX                1       1        no
+BB       LDZ $nnnn,X        3       4        no
+BC       LDY $nnnn,X        3       4        no
+BD       LDA $nnnn,X        3       4        no
+BE       LDX $nnnn,Y        3       4        no
+BF       BBS #3,$nn,$nnnn   3       4        no
+
+opcode   mnemonic         bytes   cycles   tested
+------   --------         -----   ------   ------
+C0       CPY #$nn           2       2        no
+C1       CMP ($nn,X)        2       5        no
+C2       CPZ #$nn           2       2        no
+C3       DEW $nn            2       6        no
+C4       CPY $nn            2       3        no
+C5       CMP $nn            2       3        no
+C6       DEC $nn            2       4        no
+C7       SMB #4,$nn         2       4        no
+C8       INY                1       1        no
+C9       CMP #$nn           2       2        no
+CA       DEX                1       1        no
+CB       ASW $nnnn          3       7        no
+CC       CPY $nnnn          3       4        no
+CD       CMP $nnnn          3       4        no
+CE       DEC $nnnn          3       5        no
+CF       BBS4 $nn,$nnnn     3       4        no
+
+opcode   mnemonic         bytes   cycles   tested
+------   --------         -----   ------   ------
+D0       BNE off8           2       2        no
+D1       CMP ($nn),Y        2       5        no
+D2       CMP ($nn),Z        2       5        no
+D3       BNE off16          3       3        no
+D4       CPZ $nn            2       3        no
+D5       CMP $nn,X          2       3        no
+D6       DEC $nn,X          2       4        no
+D7       SMB #5,$nn         2       4        no
+D8       CLD                1       1        no
+D9       CMP $nnnn,Y        3       4        no
+DA       PHX                1       3        no
+DB       PHZ                1       3        no
+DC       CPZ $nnnn          3       4        no
+DD       CMP $nnnn,X        3       4        no
+DE       DEC $nnnn,X        3       5        no
+DF       BBS #5,$nn,$nnnn   3       4        no
+
+opcode   mnemonic         bytes   cycles   tested
+------   --------         -----   ------   ------
+E0       CPX #$nn           2       2        no
+E1       SBC ($nn,X)        2       5        no
+E2       LDA ($nn,S),Y      2       6        no
+E3       INW $nn            2       6        no
+E4       CPX $nn            2       3        no
+E5       SBC $nn            2       3        no
+E6       INC $nn            2       4        no
+E7       SMB #6,$nn         2       4        no
+E8       INX                1       1        no
+E9       SBC #$nn           2       2        no
+EA       NOP                1       1        no
+EB       ROW $nnnn          3       7!       no
+EC       CPX $nnnn          3       4        no
+ED       SBC $nnnn          3       4        no
+EE       INC $nnnn          3       5        no
+EF       BBS #6,$nn,$nnnn   3       4        no
+
+opcode   mnemonic         bytes   cycles   tested
+------   --------         -----   ------   ------
+F0       BEQ off8           2       2        no
+F1       SBC ($nn),Y        2       5        no
+F2       SBC ($nn),Z        2       5        no
+F3       BEQ off16          3       3        no
+F4       PHW #$nnnn         3       5        no
+F5       SBC $nn,X          2       3        no
+F6       INC $nn,X          2       4        no
+F7       SMB #7,$nn         2       4        no
+F8       SED                1       1        no
+F9       SBC $nnnn,Y        3       4        no
+FA       PLX                1       3        no
+FB       PLZ                1       3        no
+FC       PHW $nnnn          3       7        no
+FD       SBC $nnnn,X        3       4        no
+FE       INC $nnnn,X        3       5        no
+FF       BBS #7,$nn,$nnnn   3       4        no
+
+
+opcode   mnemonic         bytes   cycles   tested
+------   --------         -----   ------   ------
+00       BRK                2       7        no
+01       ORA ($nn,X)        2       5        no
+02       CLE                1       2        no
+03       SEE                1       2        no
+04       TSB $nn            2       4        no
+05       ORA $nn            2       3        no
+06       ASL $nn            2       4        no
+07       RMB #0,$nn         2       4        no
+08       PHP                1       3        no
+09       ORA #$nn           2       2        no
+0A       ASL A              1       1        no
+0B       TSY                1       1        no
+0C       TSB $nnnn          3       5        no
+0D       ORA $nnnn          3       4        no
+0E       ASL $nnnn          3       5        no
+0F       BBR #0,$nn,$nnnn   3       4        no
+10       BPL off8           2       2        no
+11       ORA ($nn),Y        2       5        no
+12       ORA ($nn),Z        2       5        no
+13       BPL off16          3       3        no
+14       TRB $nn            2       4        no
+15       ORA $nn,X          2       3        no
+16       ASL $nn,X          2       4        no
+17       RMB #1,$nn         2       4        no
+18       CLC                1       1        no
+19       ORA $nnnn,Y        3       4        no
+1A       INC A              1       1        no
+1B       INZ                1       1        no
+1C       TRB $nnnn          3       5        no
+1D       ORA $nnnn,X        3       4        no
+1E       ASL $nnnn,X        3       5        no
+1F       BBR #1,$nn,$nnnn   3       4        no
+20       JSR $nnnn          3       5        no
+21       AND ($nn,X)        2       5        no
+22       JSR ($nnnn)        3       7        no
+23       JSR ($nnnn,X)      3       7        no
+24       BIT $nn            2       4        no
+25       AND $nn            2       3        no
+26       ROL $nn            2       4        no
+27       RMB #2,$nn         2       4        no
+28       PLP                1       3        no
+29       AND #$nn           2       2        no
+2A       ROL A              1       1        no
+2B       TYS                1       1        no
+2C       BIT $nnnn          3       5        no
+2D       AND $nnnn          3       4        no
+2E       ROL $nnnn          3       5        no
+2F       BBR #2,$nn,$nnnn   3       4        no
+30       BMI off8           2       2        no
+31       AND ($nn),Y        2       5        no
+32       AND ($nn),Z        2       5        no
+33       BMI off16          3       3        no
+34       BIT $nn,X          2       4        no
+35       AND $nn,X          2       3        no
+36       ROL $nn,X          2       4        no
+37       RMB #3,$nn         2       4        no
+38       SEC                1       1        no
+39       AND $nnnn,Y        3       4        no
+3A       DEC A              1       1        no
+3B       DEZ                1       1        no
+3C       BIT $nnnn,X        3       5        no
+3D       AND $nnnn,X        3       4        no
+3E       ROL $nnnn,X        3       5        no
+3F       BBR #3,$nn,$nnnn   3       4        no
+40       RTI                1       5        no
+41       EOR ($nn,X)        2       5        no
+42       NEG A              1       2        no
+43       ASR A              1       2        no
+44       ASR $nn            2       4        no
+45       EOR $nn            2       3        no
+46       LSR $nn            2       4        no
+47       RMB #4,$nn         2       4        no
+48       PHA                1       3        no
+49       EOR #$nn           2       2        no
+4A       LSR A              1       1        no
+4B       TAZ                1       1        no
+4C       JMP $nnnn          3       3        no
+4D       EOR $nnnn          3       4        no
+4E       LSR $nnnn          3       5        no
+4F       BBR #4,$nn,$nnnn   3       4        no
+50       BVC off8           2       2        no
+51       EOR ($nn),Y        2       5        no
+52       EOR ($nn),Z        2       5        no
+53       BVC off16          3       3        no
+54       ASR $nn,X          2       4        no
+55       EOR $nn,X          2       3        no
+56       LSR $nn,X          2       4        no
+57       RMB #5,$nn         2       4        no
+58       CLI                1       1        no
+59       EOR $nnnn,Y        3       4        no
+5A       PHY                1       3        no
+5B       TAB                1       1        no
+5C       AUG                4       4        no
+5D       EOR $nnnn,X        3       4        no
+5E       LSR $nnnn,X        3       5        no
+5F       BBR #5,$nn,$nnnn   3       4        no
+60       RTS                1       4        no
+61       ADC ($nn,X)        2       5        no
+62       RTN #$nn           2       7        no
+63       BSR off16          3       5        no
+64       STZ $nn            2       3        no
+65       ADC $nn            2       3        no
+66       ROR $nn            2       4        no
+67       RMB #6,$nn         2       4        no
+68       PLA                1       3        no
+69       ADC #$nn           2       2        no
+6A       ROR A              1       1        no
+6B       TZA                1       1        no
+6C       JMP ($nnnn)        3       5        no
+6D       ADC $nnnn          3       4        no
+6E       ROR $nnnn          3       5        no
+6F       BBR #6,$nn,$nnnn   3       4        no
+70       BVS off8           2       2        no
+71       ADC ($nn),Y        2       5        no
+72       ADC ($nn),Z        2       5        no
+73       BVS off16          3       3        no
+74       STZ $nn,X          2       3        no
+75       ADC $nn,X          2       3        no
+76       ROR $nn,X          2       4        no
+77       RMB #7,$nn         2       4        no
+78       SEI                1       2        no
+79       ADC $nnnn,Y        3       4        no
+7A       PLY                1       3        no
+7B       TBA                1       1        no
+7C       JMP ($nnnn,X)      3       5        no
+7D       ADC $nnnn,X        3       4        no
+7E       ROR $nnnn,X        3       5        no
+7F       BBR #7,$nn,$nnnn   3       4        no
+80       BRA off8           2       2        no
+81       STA ($nn,X)        2       5        no
+82       STA ($nn,S),Y      2       5        no
+83       BRA off16          3       3        no
+84       STY $nn            2       3        no
+85       STA $nn            2       3        no
+86       STX $nn            2       3        no
+87       SMB #0,$nn         2       4        no
+88       DEY                1       1        no
+89       BIT #$nn           2       2        no
+8A       TXA                1       1        no
+8B       STY $nnnn,X        3       4        no
+8C       STY $nnnn          3       4        no
+8D       STA $nnnn          3       4        no
+8E       STX $nnnn          3       4        no
+8F       BBS #0,$nn,$nnnn   3       4        no
+90       BCC off8           2       2        no
+91       STA ($nn),Y        2       5        no
+92       STA ($nn),Z        2       5        no
+93       BCC off16          3       3        no
+94       STY $nn,X          2       3        no
+95       STA $nn,X          2       3        no
+96       STX $nn,Y          2       3        no
+97       SMB #1,$nn         2       4        no
+98       TYA                1       1        no
+99       STA $nnnn,Y        3       4        no
+9A       TXS                1       1        no
+9B       STX $nnnn,Y        3       4        no
+9C       STZ $nnnn          3       4        no
+9D       STA $nnnn,X        3       4        no
+9E       STZ $nnnn,X        3       4        no
+9F       BBS #1,$nn,$nnnn   3       4        no
+A0       LDY #$nn           2       2        no
+A1       LDA ($nn,X)        2       5        no
+A2       LDX #$nn           2       2        no
+A3       LDZ #$nn           2       2        no
+A4       LDY $nn            2       3        no
+A5       LDA $nn            2       3        no
+A6       LDX $nn            2       3        no
+A7       SMB #2,$nn         2       4        no
+A8       TAY                1       1        no
+A9       LDA #$nn           2       2        no
+AA       TAX                1       1        no
+AB       LDZ $nnnn          3       4        no
+AC       LDY $nnnn          3       4        no
+AD       LDA $nnnn          3       4        no
+AE       LDX $nnnn          3       4        no
+AF       BBS #2,$nn,$nnnn   3       4        no
+B0       BCS off8           2       2        no
+B1       LDA ($nn),Y        2       5        no
+B2       LDA ($nn),Z        2       5        no
+B3       BCS off16          3       3        no
+B4       LDY $nn,X          2       3        no
+B5       LDA $nn,X          2       3        no
+B6       LDX $nn,Y          2       3        no
+B7       SMB #3,$nn         2       4        no
+B8       CLV                1       1        no
+B9       LDA $nnnn,Y        3       4        no
+BA       TSX                1       1        no
+BB       LDZ $nnnn,X        3       4        no
+BC       LDY $nnnn,X        3       4        no
+BD       LDA $nnnn,X        3       4        no
+BE       LDX $nnnn,Y        3       4        no
+BF       BBS #3,$nn,$nnnn   3       4        no
+C0       CPY #$nn           2       2        no
+C1       CMP ($nn,X)        2       5        no
+C2       CPZ #$nn           2       2        no
+C3       DEW $nn            2       6        no
+C4       CPY $nn            2       3        no
+C5       CMP $nn            2       3        no
+C6       DEC $nn            2       4        no
+C7       SMB #4,$nn         2       4        no
+C8       INY                1       1        no
+C9       CMP #$nn           2       2        no
+CA       DEX                1       1        no
+CB       ASW $nnnn          3       7        no
+CC       CPY $nnnn          3       4        no
+CD       CMP $nnnn          3       4        no
+CE       DEC $nnnn          3       5        no
+CF       BBS4 $nn,$nnnn     3       4        no
+D0       BNE off8           2       2        no
+D1       CMP ($nn),Y        2       5        no
+D2       CMP ($nn),Z        2       5        no
+D3       BNE off16          3       3        no
+D4       CPZ $nn            2       3        no
+D5       CMP $nn,X          2       3        no
+D6       DEC $nn,X          2       4        no
+D7       SMB #5,$nn         2       4        no
+D8       CLD                1       1        no
+D9       CMP $nnnn,Y        3       4        no
+DA       PHX                1       3        no
+DB       PHZ                1       3        no
+DC       CPZ $nnnn          3       4        no
+DD       CMP $nnnn,X        3       4        no
+DE       DEC $nnnn,X        3       5        no
+DF       BBS #5,$nn,$nnnn   3       4        no
+E0       CPX #$nn           2       2        no
+E1       SBC ($nn,X)        2       5        no
+E2       LDA ($nn,S),Y      2       6        no
+E3       INW $nn            2       6        no
+E4       CPX $nn            2       3        no
+E5       SBC $nn            2       3        no
+E6       INC $nn            2       4        no
+E7       SMB #6,$nn         2       4        no
+E8       INX                1       1        no
+E9       SBC #$nn           2       2        no
+EA       NOP                1       1        no
+EB       ROW $nnnn          3       7!       no
+EC       CPX $nnnn          3       4        no
+ED       SBC $nnnn          3       4        no
+EE       INC $nnnn          3       5        no
+EF       BBS #6,$nn,$nnnn   3       4        no
+F0       BEQ off8           2       2        no
+F1       SBC ($nn),Y        2       5        no
+F2       SBC ($nn),Z        2       5        no
+F3       BEQ off16          3       3        no
+F4       PHW #$nnnn         3       5        no
+F5       SBC $nn,X          2       3        no
+F6       INC $nn,X          2       4        no
+F7       SMB #7,$nn         2       4        no
+F8       SED                1       1        no
+F9       SBC $nnnn,Y        3       4        no
+FA       PLX                1       3        no
+FB       PLZ                1       3        no
+FC       PHW $nnnn          3       7        no
+FD       SBC $nnnn,X        3       4        no
+FE       INC $nnnn,X        3       5        no
+FF       BBS #7,$nn,$nnnn   3       4        no

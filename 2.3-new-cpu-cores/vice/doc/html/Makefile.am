@@ -13,6 +13,7 @@ doc_DATA = \
 	macosx.html \
 	plain/64doc.txt \
 	plain/65C02.txt \
+	plain/65CE02.txt \
 	plain/BUGS \
 	plain/COPYING \
 	plain/CRT.txt \

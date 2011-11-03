@@ -1257,7 +1257,9 @@
       INC_PC(SIZE_1);                      \
   } while (0)
 
-/* This opcode is confusing, according to the datasheet it takes 6 cycles, however:
+/* This opcode is confusing, according to the datasheet it takes 6 cycles,
+   however:
+
    fetch opcode (1), fetch low addr (2), fetch high addr (3),
    fetch low data (4), fetch high data (5),
    store low data (6), store high data (7), hmmmmm :O
