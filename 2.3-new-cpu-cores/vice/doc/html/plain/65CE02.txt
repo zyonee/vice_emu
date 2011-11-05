@@ -390,38 +390,187 @@ FE       INC $nnnn,X        3       5        no
 FF       BBS #7,$nn,$nnnn   3       4        no
 
 
+65CE02 ORA timing test code
+=============================
+
+addr   b1   b2   b3   mnemonic      expected output
+----   --   --   --   --------      ---------------
+E900   78             SEI
+E901   A9   EB        LDA #$EB
+E903   5B             TAB
+E904   A9   02        LDA #$02
+E906   85   40        STA $40
+E908   A9   04        LDA #$04
+E90A   85   80        STA $80
+E90C   A9   EA        LDA #$EA
+E90E   85   C1        STA $C1
+E910   85   C3        STA $C3
+E912   85   C5        STA $C5
+E914   A9   C0        LDA #$C0
+E916   85   C2        STA $C2
+E918   A9   00        LDA #$00
+E91A   85   C0        STA $C0
+E91C   A9   80        LDA #$80
+E91E   85   C4        STA $C4
+E920   A9   08        LDA #$08
+E922   8D   00   EA   STA $EA00
+E925   A9   10        LDA #$10
+E927   8D   20   EA   STA $EA20
+E92A   A9   20        LDA #$20
+E92C   8D   40   EA   STA $EA40
+E92F   A9   40        LDA #$40
+E931   8D   80   EA   STA $EA80
+E934   A9   80        LDA #$80
+E936   8D   00   EB   STA $EB00
+E939   A2   20        LDX #$20
+E93B   A0   40        LDY #$40
+E93D   A3   80        LDZ #$80
+E93F   A9   01        LDA #$01
+E941   8D   00   E9   STA $E900
+E944   01   A0        ORA ($A0,X)   read 01 from E944 at 0		*
+                                    read A0 from E945 at 1		*
+                                    read 00 from EBC0 at 2		*
+                                    read EA from EBC1 at 3		*
+                                    read 08 from EA00 at 4		*
+E946   8D   81   EB   STA $EB81     read 8D from E946 at 5		*
+                                    read 81 from E947 at 6		*
+                                    read EB from E948 at 7		*
+                                    wrote 09 to EB81 at 8		*
+E949   05   40        ORA $40       read 05 from E949 at 9		*
+                                    read 40 from E94A at A		*
+                                    read 02 from EB40 at B		*
+E94B   8D   82   EB   STA $EB82     read 8D from E94B at C		*
+                                    read 82 from E94C at D		*
+                                    read EB from E94D at E		*
+                                    wrote 0B to EB82 at F		*
+E94E   09   44        ORA #$44      read 09 from E94E at 10	*
+                                    read 44 from E94F at 11	*
+E950   8D   83   EB   STA $EB83     read 8D from E950 at 12	*
+                                    read 83 from E951 at 13	*
+                                    read EB from E952 at 14	*
+                                    wrote 4F to EB83 at 15		*
+E953   A9   01        LDA #$01      read A9 from E953 at 16	*
+                                    read 01 from E954 at 17	*
+E955   0D   00   EA   ORA $EA00     read 0D from E955 at 18	*
+                                    read 00 from E956 at 19	*
+                                    read EA from E957 at 1A	*
+                                    read 08 from EA00 at 1B	*
+E958   8D   84   EB   STA $EB84     read 8D from E958 at 1C	*
+                                    read 84 from E959 at 1D	*
+                                    read EB from E95A at 1E	*
+                                    wrote 09 to EB84 at 1F		*
+E95B   11   C0        ORA ($C0),Y   read 11 from E95B at 20	*
+                                    read C0 from E95C at 21	*
+                                    read 00 from EBC0 at 22	*
+                                    read EA from EBC1 at 23	*
+                                    read 20 from EA40 at 24	*
+E95D   8D   85   EB   STA $EB85     read 8D from E95D at 25	*
+                                    read 85 from E95E at 26	*
+                                    read EB from E95F at 27	*
+                                    wrote 29 to EB85 at 28		*
+E960   11   C2        ORA ($C2),Y   read 11 from E960 at 29	*
+                                    read C2 from E961 at 2A	*
+                                    read C0 from EBC2 at 2B	*
+                                    read EA from EBC3 at 2C	*
+                                    read 80 from EB00 at 2D	*
+E962   8D   86   EB   STA $EB85     read 8D from E962 at 2E	*
+                                    read 86 from E963 at 2F	*
+                                    read EB from E964 at 30	*
+                                    wrote A9 to EB86 at 31		*
+E965   12   C0        ORA ($C0),Z   read 12 from E965 at 32	*
+                                    read C0 from E966 at 33	*
+                                    read 00 from EBC0 at 34	*
+                                    read EA from EBC1 at 35	*
+                                    read 40 from EA80 at 36	*
+E967   8D   87   EB   STA $EB87     read 8D from E967 at 37	*
+                                    read 87 from E968 at 38	*
+                                    read EB from E969 at 39	*
+                                    wrote E9 to EB87 at 3A		*
+E96A   A9   01        LDA #$01      read A9 from E96A at 3B	*
+                                    read 01 from E96B at 3C	*
+E96C   12   C4        ORA ($C4),Z   read 12 from E96C at 3D	*
+                                    read C4 from E96D at 3E	*
+                                    read 80 from EBC4 at 3F	*
+                                    read EA from EBC5 at 40	*
+                                    read 80 from EB00 at 41	*
+E96E   8D   88   EB   STA $EB88     read 8D from E96E at 42	*
+                                    read 88 from E96F at 43	*
+                                    read EB from E970 at 44	*
+                                    wrote 81 to EB88 at 45		*
+E971   15   60        ORA $60,X     read 15 from E971 at 46	*
+                                    read 40 from E972 at 47	*
+                                    read 04 from EB80 at 48	*
+E973   8D   89   EB   STA $EB89     read 8D from E973 at 49	*
+                                    read 89 from E974 at 4A	*
+                                    read EB from E975 at 4B	*
+                                    wrote 85 to EB89 at 4C	*
+E976   19   00   EA   ORA $EA00,Y   read 19 from E976 at 4D	*
+                                    read 00 from E977 at 4E	*
+                                    read EA from E978 at 4F	*
+                                    read 20 from EA40 at 50	*
+E979   8D   8A   EB   STA $EB8A     read 8D from E979 at 51	*
+                                    read 8A from E97A at 52	*
+                                    read EB from E97B at 53	*
+                                    wrote A5 to EB8A at 54	*
+E97C   A9   01        LDA #$01      read A9 from E97C at 55	*
+                                    read 01 from E97D at 56	*
+E97E   19   C0   EA   ORA $EAC0,Y   read 19 from E97E at 57	*
+                                    read C0 from E97F at 58	*
+                                    read EA from E980 at 59	*
+                                    read 80 from EB00 at 5A	*
+E981   8D   8B   EB   STA $EB8B     read 8D from E981 at 5B	*
+                                    read 8B from E982 at 5C	*
+                                    read EB from E983 at 5D	*
+                                    wrote 81 to EB8B at 5E	*
+E984   1D   00   EA   ORA $EA00,X   read 1D from E984 at 5F	*
+                                    read 00 from E985 at 60	*
+                                    read EA from E986 at 61	*
+                                    read 10 from EA20 at 62	*
+E987   8D   8C   EB   STA $EB8C     read 8D from E987 at 63	*
+                                    read 8C from E988 at 64	*
+                                    read EB from E989 at 65	*
+                                    wrote 91 to EB8C at 66	*
+E98A   A9   01        LDA #$01      read A9 from E98A at 67	*
+                                    read 01 from E98B at 68	*
+E98C   1D   E0   EA   ORA $EAC0,X   read 1D from E98C at 69	*
+                                    read E0 from E98D at 6A	*
+                                    read EA from E98E at 6B	*
+                                    read 80 from EB00 at 6C	*
+E98F   8D   8D   EB   STA $EB8D     read 8D from E98F at 6D	*
+                                    read 8D from E990 at 6E	*
+                                    read EB from E991 at 6F	*
+                                    wrote 81 to EB8D at 70	*
+E992   A9   78        LDA #$78      ---
+E994   8D   00   E9   STA $E900     ---
+E997   A9   00        LDA #$00      ---
+E999   5B             TAB           ---
+E99A   58             CLI           ---
+E99B   60             RTS           ---
+
+
 opcode   mnemonic         bytes   cycles   tested
 ------   --------         -----   ------   ------
 00       BRK                2       7        no
-01       ORA ($nn,X)        2       5        no
 02       CLE                1       2        no
 03       SEE                1       2        no
 04       TSB $nn            2       4        no
-05       ORA $nn            2       3        no
 06       ASL $nn            2       4        no
 07       RMB #0,$nn         2       4        no
 08       PHP                1       3        no
-09       ORA #$nn           2       2        no
 0A       ASL A              1       1        no
 0B       TSY                1       1        no
 0C       TSB $nnnn          3       5        no
-0D       ORA $nnnn          3       4        no
 0E       ASL $nnnn          3       5        no
 0F       BBR #0,$nn,$nnnn   3       4        no
 10       BPL off8           2       2        no
-11       ORA ($nn),Y        2       5        no
-12       ORA ($nn),Z        2       5        no
 13       BPL off16          3       3        no
 14       TRB $nn            2       4        no
-15       ORA $nn,X          2       3        no
 16       ASL $nn,X          2       4        no
 17       RMB #1,$nn         2       4        no
 18       CLC                1       1        no
-19       ORA $nnnn,Y        3       4        no
 1A       INC A              1       1        no
 1B       INZ                1       1        no
 1C       TRB $nnnn          3       5        no
-1D       ORA $nnnn,X        3       4        no
 1E       ASL $nnnn,X        3       5        no
 1F       BBR #1,$nn,$nnnn   3       4        no
 20       JSR $nnnn          3       5        no
