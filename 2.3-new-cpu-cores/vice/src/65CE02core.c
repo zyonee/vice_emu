@@ -254,7 +254,6 @@
 #define PUSH(val)                                             \
   do {                                                        \
       STORE(reg_sp, val);                                     \
-      CLK_ADD(CLK, CYCLES_1);                                 \
       if (LOCAL_STACK_EXTEND()) {                             \
           reg_sp = (reg_sp & 0xff00) | ((reg_sp - 1) & 0xff); \
       } else {                                                \
@@ -825,7 +824,6 @@
 #define CLE()                    \
   do {                           \
       INC_PC(SIZE_1);            \
-      CLK_ADD(CLK, CYCLES_1);    \
       LOCAL_SET_STACK_EXTEND(0); \
   } while (0)
 
@@ -1032,7 +1030,7 @@
           CLE();                                                \
       } else {                                                  \
           if (trap_result) {                                    \
-             REWIND_FETCH_OPCODE(CLK, CYCLES_1);                \
+             REWIND_FETCH_OPCODE(CLK, CYCLES_2);                \
              SET_OPCODE(trap_result);                           \
              IMPORT_REGISTERS();                                \
              goto trap_skipped;                                 \
@@ -1197,12 +1195,28 @@
       INC_PC(SIZE_1);                 \
   } while (0)
 
-#define PHW(value, clk_inc)  \
-  do {                       \
-      CLK_ADD(CLK, clk_inc); \
-      PUSH((value) & 0xff);  \
-      PUSH((value) >> 8);    \
-      INC_PC(SIZE_3);        \
+#define PHW_IMM(value)        \
+  do {                        \
+      PUSH((value) & 0xff);   \
+      CLK_ADD(CLK, CYCLES_1); \
+      PUSH((value) >> 8);     \
+      CLK_ADD(CLK, CYCLES_1); \
+      INC_PC(SIZE_3);         \
+  } while (0)
+
+#define PHW_ABS(addr)         \
+  do {                        \
+      BYTE tmp;               \
+                              \
+      tmp = LOAD(addr);       \
+      CLK_ADD(CLK, CYCLES_1); \
+      PUSH(tmp);              \
+      CLK_ADD(CLK, CYCLES_1); \
+      tmp = LOAD(addr + 1);   \
+      CLK_ADD(CLK, CYCLES_1); \
+      PUSH(tmp);              \
+      CLK_ADD(CLK, CYCLES_1); \
+      INC_PC(SIZE_3);         \
   } while (0)
 
 #define PHX()                 \
@@ -1458,7 +1472,6 @@
   do {                           \
       LOCAL_SET_STACK_EXTEND(1); \
       INC_PC(SIZE_1);            \
-      CLK_ADD(CLK, CYCLES_1);    \
   } while (0)
 
 #define SEI()                    \
@@ -1467,7 +1480,6 @@
           OPCODE_DISABLES_IRQ(); \
       }                          \
       LOCAL_SET_INTERRUPT(1);    \
-      CLK_ADD(CLK, CYCLES_1);    \
       INC_PC(SIZE_1);            \
   } while (0)
 
@@ -1515,7 +1527,7 @@
                                       \
       tmp = (addr);                   \
       INC_PC(pc_inc);                 \
-      store_func(tmp, 0);             \
+      store_func(tmp, reg_z);         \
   } while (0)
 
 #define TAB()              \
@@ -1631,22 +1643,22 @@
  */
  static const BYTE fetch_tab[] = {
             /* 0  1  2  3  4  5  6  7  8  9  A  B  C  D  E  F */
-    /* $00 */  1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 2, 2, 2, 2, /* $00 */
+    /* $00 */  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 2, 2, 2, 2, /* $00 */
     /* $10 */  1, 1, 1, 2, 1, 1, 1, 1, 0, 2, 0, 0, 2, 2, 2, 2, /* $10 */
-    /* $20 */  2, 1, 2, 2, 1, 1, 1, 1, 0, 1, 0, 0, 2, 2, 2, 2, /* $20 */
+    /* $20 */  2, 1, 2, 2, 1, 1, 1, 1, 1, 1, 0, 0, 2, 2, 2, 2, /* $20 */
     /* $30 */  1, 1, 1, 2, 1, 1, 1, 1, 0, 2, 0, 0, 2, 2, 2, 2, /* $30 */
-    /* $40 */  0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0, 2, 2, 2, 2, /* $40 */
-    /* $50 */  1, 1, 1, 2, 1, 1, 1, 1, 0, 2, 0, 0, 2, 2, 2, 2, /* $50 */
-    /* $60 */  1, 1, 1, 2, 1, 1, 1, 1, 0, 1, 0, 0, 2, 2, 2, 2, /* $60 */
-    /* $70 */  1, 1, 1, 2, 1, 1, 1, 1, 0, 2, 0, 0, 2, 2, 2, 2, /* $70 */
+    /* $40 */  0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 2, 2, 2, 2, /* $40 */
+    /* $50 */  1, 1, 1, 2, 1, 1, 1, 1, 0, 2, 1, 0, 2, 2, 2, 2, /* $50 */
+    /* $60 */  1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 0, 0, 2, 2, 2, 2, /* $60 */
+    /* $70 */  1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 0, 2, 2, 2, 2, /* $70 */
     /* $80 */  1, 1, 1, 2, 1, 1, 1, 1, 0, 1, 0, 2, 2, 2, 2, 2, /* $80 */
     /* $90 */  1, 1, 1, 2, 1, 1, 1, 1, 0, 2, 0, 2, 2, 2, 2, 2, /* $90 */ 
     /* $A0 */  1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 2, 2, 2, 2, 2, /* $A0 */
     /* $B0 */  1, 1, 1, 2, 1, 1, 1, 1, 0, 2, 0, 2, 2, 2, 2, 2, /* $B0 */
     /* $C0 */  1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 2, 2, 2, 2, 2, /* $C0 */
-    /* $D0 */  1, 1, 1, 2, 1, 1, 1, 1, 0, 2, 0, 0, 2, 2, 2, 2, /* $D0 */
+    /* $D0 */  1, 1, 1, 2, 1, 1, 1, 1, 0, 2, 1, 1, 2, 2, 2, 2, /* $D0 */
     /* $E0 */  1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 2, 2, 2, 2, 2, /* $E0 */
-    /* $F0 */  1, 1, 1, 2, 2, 1, 1, 1, 0, 2, 0, 0, 2, 2, 2, 2  /* $F0 */
+    /* $F0 */  1, 1, 1, 2, 2, 1, 1, 1, 0, 2, 1, 1, 2, 2, 2, 2  /* $F0 */
 };
 
 #if !defined WORDS_BIGENDIAN && defined ALLOW_UNALIGNED_ACCESS
@@ -2817,7 +2829,7 @@ trap_skipped:
             break;
 
           case 0xf4:            /* PHW #$nnnn */
-            PHW(p2, CYCLES_2);
+            PHW_IMM(p2);
             break;
 
           case 0xf5:            /* SBC $nn,X */
@@ -2849,7 +2861,7 @@ trap_skipped:
             break;
 
           case 0xfc:            /* PHW $nnnn */
-            PHW(LOAD(p2) | (LOAD(p2 + 1) << 8), CYCLES_4);
+            PHW_ABS(p2);
             break;
 
           case 0xfd:            /* SBC $nnnn,X */
