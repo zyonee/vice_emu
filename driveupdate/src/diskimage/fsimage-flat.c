@@ -702,8 +702,8 @@ static int fsimage_flat_probe_d64(disk_image_t *image)
             return 0;
         }
         if (i == 17 * 21) {
-            image->diskid[0] = block[0xa2];
-            image->diskid[1] = block[0xa3];
+            image->diskid[0] = block[BAM_ID_1541];
+            image->diskid[1] = block[BAM_ID_1541 + 1];
         }
     }
 
@@ -786,7 +786,7 @@ static int fsimage_flat_probe_d81(disk_image_t *image)
 
 static int fsimage_flat_probe_d80(disk_image_t *image)
 {
-    if (!fsimage_flat_probe_general(image, D80_FILE_SIZE, D80_FILE_SIZE, 38 * 29 * 256 + 0x18)) {
+    if (!fsimage_flat_probe_general(image, D80_FILE_SIZE, D80_FILE_SIZE, 38 * 29 * 256 + BAM_ID_8050)) {
         return 0;
     }
 
@@ -803,7 +803,7 @@ static int fsimage_flat_probe_d80(disk_image_t *image)
 
 static int fsimage_flat_probe_d82(disk_image_t *image)
 {
-    if (!fsimage_flat_probe_general(image, D82_FILE_SIZE, D82_FILE_SIZE, 38 * 29 * 256 + 0x18)) {
+    if (!fsimage_flat_probe_general(image, D82_FILE_SIZE, D82_FILE_SIZE, 38 * 29 * 256 + BAM_ID_8250)) {
         return 0;
     }
 
