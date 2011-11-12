@@ -32,7 +32,7 @@
 #include "types.h"
 
 /** Generic interface.  **/
-#define NUM_MEMSPACES 6
+#define NUM_MEMSPACES 10
 
 enum mon_int {
     MI_NONE = 0,
@@ -48,6 +48,10 @@ enum t_memspace {
    e_disk9_space,
    e_disk10_space,
    e_disk11_space,
+   e_fdisk8_space,
+   e_fdisk9_space,
+   e_fdisk10_space,
+   e_fdisk11_space,
    e_invalid_space
 };
 typedef enum t_memspace MEMSPACE;

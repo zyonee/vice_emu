@@ -35,10 +35,10 @@ typedef struct gcr_header_s {
     BYTE sector, track, id2, id1;
 } gcr_header_t;
 
-#define SECTOR_GCR_SIZE_WITH_HEADER 354
+#define SECTOR_GCR_SIZE_WITH_HEADER 340
 
-extern void gcr_convert_sector_to_GCR(BYTE *buffer, BYTE *ptr,
-                                      gcr_header_t *header, BYTE error_code);
+extern void gcr_convert_sector_to_GCR(BYTE *buffer, BYTE *ptr, gcr_header_t *header,
+                                      int gap, int sync, BYTE error_code);
 extern int gcr_read_sector(struct disk_track_s *raw, BYTE *data, BYTE sector);
 extern int gcr_write_sector(struct disk_track_s *raw, BYTE *data, BYTE sector);
 #endif

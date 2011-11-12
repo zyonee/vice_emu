@@ -1,8 +1,8 @@
 /*
- * ieeerom.h
+ * via1001.h - Drive 1001 VIA definitions.
  *
  * Written by
- *  Andreas Boose <viceteam@t-online.de>
+ *  Kajtar Zsolt <soci@c64.rulez.org>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -24,24 +24,21 @@
  *
  */
 
-#ifndef VICE_IEEEROM_H
-#define VICE_IEEEROM_H
+#ifndef VICE_VIA1001_H
+#define VICE_VIA1001_H
 
 #include "types.h"
 
-struct drive_s;
+struct drive_context_s;
+struct via_context_s;
 
-extern void ieeerom_init(void);
-extern void ieeerom_setup_image(struct drive_s *drive);
-extern int ieeerom_read(unsigned int type, WORD addr, BYTE *data);
-extern int ieeerom_check_loaded(unsigned int type);
+extern void via1001_setup_context(struct drive_context_s *ctxptr);
 
-extern int ieeerom_load_2031(void);
-extern int ieeerom_load_1001(void);
-extern int ieeerom_load_2040(void);
-extern int ieeerom_load_3040(void);
-extern int ieeerom_load_4040(void);
-extern int ieeerom_load_1001fdc(void);
+extern void via1001_init(struct drive_context_s *ctxptr);
+extern void via1001_store(struct drive_context_s *ctxptr, WORD addr,
+                                     BYTE byte);
+extern BYTE via1001_read(struct drive_context_s *ctxptr, WORD addr);
+extern BYTE via1001_peek(struct drive_context_s *ctxptr, WORD addr);
 
 #endif
 

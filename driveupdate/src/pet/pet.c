@@ -45,6 +45,7 @@
 #include "drive-snapshot.h"
 #include "drive.h"
 #include "drivecpu.h"
+#include "fdccpu.h"
 #include "iecdrive.h"
 #include "kbdbuf.h"
 #include "keyboard.h"
@@ -224,7 +225,7 @@ static void pet_monitor_init(void)
 {
     unsigned int dnr;
     monitor_cpu_type_t asm6502;
-    monitor_interface_t *drive_interface_init[DRIVE_NUM];
+    monitor_interface_t *drive_interface_init[DRIVE_NUM * 2];
     monitor_cpu_type_t *asmarray[2];
 
     asmarray[0]=&asm6502;
@@ -232,8 +233,10 @@ static void pet_monitor_init(void)
 
     asm6502_init(&asm6502);
 
-    for (dnr = 0; dnr < DRIVE_NUM; dnr++)
+    for (dnr = 0; dnr < DRIVE_NUM; dnr++) {
         drive_interface_init[dnr] = drivecpu_monitor_interface_get(dnr);
+        drive_interface_init[dnr + DRIVE_NUM] = fdccpu_monitor_interface_get(dnr);
+    }
 
     /* Initialize the monitor.  */
     monitor_init(maincpu_monitor_interface_get(), drive_interface_init,
@@ -403,6 +406,7 @@ static void machine_vsync_hook(void)
     /* The drive has to deal both with our overflowing and its own one, so
        it is called even when there is no overflowing in the main CPU.  */
     drivecpu_prevent_clk_overflow_all(sub);
+    fdccpu_prevent_clk_overflow_all(sub);
 }
 
 /* Dummy - no restore key.  */

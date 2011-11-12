@@ -304,6 +304,10 @@ if		{ BEGIN (COND_MODE); return IF; }
 <BNAME,INITIAL,COND_MODE>9:              { return MEM_DISK9; }
 <BNAME,INITIAL,COND_MODE>10:             { return MEM_DISK10; }
 <BNAME,INITIAL,COND_MODE>11:             { return MEM_DISK11; }
+<BNAME,INITIAL,COND_MODE>f8:             { return MEM_FDISK8; }
+<BNAME,INITIAL,COND_MODE>f9:             { return MEM_FDISK9; }
+<BNAME,INITIAL,COND_MODE>f10:            { return MEM_FDISK10; }
+<BNAME,INITIAL,COND_MODE>f11:            { return MEM_FDISK11; }
 
 <CTYPE>[_a-zA-Z0-9]*      { yylval.str = lib_stralloc(yytext); return CPUTYPE; }
 

@@ -51,6 +51,7 @@
 #include "drive-overflow.h"
 #include "drive.h"
 #include "drivecpu.h"
+#include "fdccpu.h"
 #include "driveimage.h"
 #include "drivesync.h"
 #include "driverom.h"
@@ -125,6 +126,7 @@ void drive_set_last_read(unsigned int track, unsigned int sector, BYTE *buffer,
 
 /* Global clock counters.  */
 CLOCK drive_clk[DRIVE_NUM];
+CLOCK drive_fdcclk[DRIVE_NUM];
 
 /* Initialize the hardware-level drive emulation (should be called at least
    once before anything else).  Return 0 on success, -1 on error.  */
@@ -151,6 +153,8 @@ int drive_init(void)
 
         drive_clk[dnr] = 0L;
         drive->clk = &drive_clk[dnr];
+        drive_fdcclk[dnr] = 0L;
+        drive->fdcclk = &drive_fdcclk[dnr];
         drive->mynumber = dnr;
     }
 
@@ -188,8 +192,6 @@ int drive_init(void)
     for (dnr = 0; dnr < DRIVE_NUM; dnr++) {
         drive = drive_context[dnr]->drive;
         drive->fdds[0] = fdd_init(1, drive);
-        wd1770_set_fdd(drive_context[dnr]->wd1770, drive->fdds[0]);
-        pc8477_set_fdd(drive_context[dnr]->pc8477, drive->fdds[0]);
         drive->old_led_status = 0;
         drive->old_half_track = 0;
         drive->clock_frequency = 1;
@@ -208,6 +210,7 @@ int drive_init(void)
         drivesync_clock_frequency(drive->type, drive);
 
         drivecpu_init(drive_context[dnr], drive->type);
+        fdccpu_init(drive_context[dnr], drive->type);
 
         /* Make sure the sync factor is acknowledged correctly.  */
         drivesync_factor(drive_context[dnr]);
@@ -224,6 +227,7 @@ void drive_shutdown(void)
     unsigned int dnr;
 
     for (dnr = 0; dnr < DRIVE_NUM; dnr++) {
+        fdccpu_shutdown(drive_context[dnr]);
         drivecpu_shutdown(drive_context[dnr]);
         fdd_shutdown(drive_context[dnr]->drive->fdds[0]);
         ds1216e_destroy(drive_context[dnr]->drive->ds1216);
@@ -282,6 +286,7 @@ int drive_set_disk_drive_type(unsigned int type, struct drive_context_s *drv)
     drive_set_active_led_color(type, dnr);
 
     drivecpu_init(drv, type);
+    fdccpu_init(drv, type);
 
     return 0;
 }
@@ -312,6 +317,7 @@ int drive_enable(drive_context_t *drv)
     if (drive->type == DRIVE_TYPE_NONE)
         return 0;
 
+    fdccpu_wake_up(drv);
     drivecpu_wake_up(drv);
 
     /* Make sure the UI is updated.  */
@@ -350,6 +356,7 @@ void drive_disable(drive_context_t *drv)
 
     if (rom_loaded) {
         drivecpu_sleep(drv);
+        fdccpu_sleep(drv);
         machine_drive_port_default(drv);
 
         fdd_flush(drive->fdds[0]);
@@ -380,6 +387,7 @@ void drive_reset(void)
         drive = drive_context[dnr]->drive;
 
         drivecpu_reset(drive_context[dnr]);
+        fdccpu_reset(drive_context[dnr]);
 
         drive->led_last_change_clk = *(drive->clk);
         drive->led_last_uiupdate_clk = *(drive->clk);
@@ -510,8 +518,12 @@ void drive_vsync_hook(void)
 
         drive = drive_context[dnr]->drive;
         if (drive->idling_method != DRIVE_IDLE_SKIP_CYCLES
-            && drive->enable)
+            && drive->enable) {
             drivecpu_execute(drive_context[dnr], maincpu_clk);
+            if (drive->true_fdc && drive_check_old(drive->type)) {
+                fdccpu_execute(drive_context[dnr], *(drive_context[dnr]->clk_ptr));
+            }
+        }
     }
 }
 
@@ -523,8 +535,10 @@ static void drive_setup_context_for_drive(drive_context_t *drv,
     drv->mynumber = dnr;
     drv->drive = lib_calloc(1, sizeof(drive_t));
     drv->clk_ptr = &drive_clk[dnr];
+    drv->fdcclk_ptr = &drive_fdcclk[dnr];
 
     drivecpu_setup_context(drv);
+    fdccpu_setup_context(drv);
     machine_drive_setup_context(drv);
 }
 

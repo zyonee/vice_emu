@@ -41,8 +41,11 @@ extern void drivemem_set_func(struct drivecpud_context_s *cpud,
                               drive_store_func_t *store_func);
 
 extern struct mem_ioreg_list_s *drivemem_ioreg_list_get(void *context);
+extern struct mem_ioreg_list_s *drivefdcmem_ioreg_list_get(void *context);
 
 extern BYTE drive_read_rom(struct drive_context_s *drv,
+                                    WORD address);
+extern BYTE drive_read_romfdc(struct drive_context_s *drv,
                                     WORD address);
 extern BYTE drive_read_rom_ds1216(struct drive_context_s *drv,
                                     WORD address);

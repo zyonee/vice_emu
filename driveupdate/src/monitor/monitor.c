@@ -156,7 +156,7 @@ static bool trigger_break_on_next_instruction;
 MEMSPACE caller_space;
 
 const char *_mon_space_strings[] = {
-    "Default", "Computer", "Disk8", "Disk9", "Disk10", "Disk11", "<<Invalid>>"
+    "Default", "Computer", "Disk8", "Disk9", "Disk10", "Disk11", "FDisk8", "FDisk9", "FDisk10", "FDisk11", "<<Invalid>>"
 };
 
 static WORD watch_load_array[10][NUM_MEMSPACES];
@@ -223,7 +223,7 @@ static const char *cond_op_string[] = { "",
                                         "||"
                                        };
 
-const char *mon_memspace_string[] = {"default", "C", "8", "9", "0", "1" };
+const char *mon_memspace_string[] = {"default", "C", "8", "9", "0", "1", "F8", "F9", "F0", "F1" };
 
 static const char *register_string[] = { "A",
                                          "X",
@@ -1167,6 +1167,8 @@ void monitor_init(monitor_interface_t *maincpu_interface_init,
     for (dnr = 0; dnr < DRIVE_NUM; dnr++) {
         find_supported_monitor_cpu_types(&monitor_cpu_type_supported[monitor_diskspace_mem(dnr)], 
                                          drive_interface_init[dnr]);
+        find_supported_monitor_cpu_types(&monitor_cpu_type_supported[monitor_diskspace_mem(dnr) + DRIVE_NUM], 
+                                         drive_interface_init[dnr + DRIVE_NUM]);
     }
 
     /* Build array of pointers to monitor_cpu_type structs */
@@ -1175,6 +1177,8 @@ void monitor_init(monitor_interface_t *maincpu_interface_init,
     for (dnr = 0; dnr < DRIVE_NUM; dnr++) {
         monitor_cpu_for_memspace[monitor_diskspace_mem(dnr)]=
             monitor_cpu_type_supported[monitor_diskspace_mem(dnr)]->monitor_cpu_type_p;
+        monitor_cpu_for_memspace[monitor_diskspace_mem(dnr) + DRIVE_NUM]=
+            monitor_cpu_type_supported[monitor_diskspace_mem(dnr) + DRIVE_NUM]->monitor_cpu_type_p;
     }
     /* Safety precaution */
     monitor_cpu_for_memspace[e_default_space]=monitor_cpu_for_memspace[e_comp_space];
@@ -1198,8 +1202,10 @@ void monitor_init(monitor_interface_t *maincpu_interface_init,
 
     mon_interfaces[e_comp_space] = maincpu_interface_init;
 
-    for (dnr = 0; dnr < DRIVE_NUM; dnr++)
+    for (dnr = 0; dnr < DRIVE_NUM; dnr++) {
         mon_interfaces[monitor_diskspace_mem(dnr)] = drive_interface_init[dnr];
+        mon_interfaces[monitor_diskspace_mem(dnr) + DRIVE_NUM] = drive_interface_init[dnr + DRIVE_NUM];
+    }
 
     mon_memmap_init();
 #ifdef FEATURE_CPUMEMHISTORY
@@ -2081,6 +2087,10 @@ void monitor_check_watchpoints(unsigned int lastpc, unsigned int pc)
                 caller_space = monitor_diskspace_mem(dnr);
                 monitor_startup();
             }
+            if (watchpoints_check_loads(monitor_diskspace_mem(dnr) + DRIVE_NUM, lastpc, pc)) {
+                caller_space = monitor_diskspace_mem(dnr) + DRIVE_NUM;
+                monitor_startup();
+            }
         }
         watch_load_occurred = FALSE;
     }
@@ -2095,6 +2105,10 @@ void monitor_check_watchpoints(unsigned int lastpc, unsigned int pc)
                 caller_space = monitor_diskspace_mem(dnr);
                 monitor_startup();
             }
+            if (watchpoints_check_stores(monitor_diskspace_mem(dnr) + DRIVE_NUM, lastpc, pc)) {
+                caller_space = monitor_diskspace_mem(dnr) + DRIVE_NUM;
+                monitor_startup();
+            }
         }
         watch_store_occurred = FALSE;
     }
@@ -2104,12 +2118,16 @@ int monitor_diskspace_dnr(int mem)
 {
     switch (mem) {
       case e_disk8_space:
+      case e_fdisk8_space:
        return 0; 
       case e_disk9_space:
+      case e_fdisk9_space:
        return 1;
       case e_disk10_space:
+      case e_fdisk10_space:
        return 2;
       case e_disk11_space:
+      case e_fdisk11_space:
        return 3;
     }
 
@@ -2206,6 +2224,9 @@ static void monitor_open(void)
 
     for (dnr = 0; dnr < DRIVE_NUM; dnr++) {
         int mem = monitor_diskspace_mem(dnr);
+        dot_addr[mem] = new_addr(mem,
+            ((WORD)((monitor_cpu_for_memspace[mem]->mon_register_get_val)(mem, e_PC))));
+        mem += DRIVE_NUM;
         dot_addr[mem] = new_addr(mem,
             ((WORD)((monitor_cpu_for_memspace[mem]->mon_register_get_val)(mem, e_PC))));
     }

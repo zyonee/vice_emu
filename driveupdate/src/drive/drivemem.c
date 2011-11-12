@@ -50,6 +50,11 @@ BYTE drive_read_rom(drive_context_t *drv, WORD address)
     return drv->drive->rom[address & 0x7fff];
 }
 
+BYTE drive_read_romfdc(drive_context_t *drv, WORD address)
+{
+    return drv->drive->fdcrom[address & 0x7ff];
+}
+
 BYTE drive_read_rom_ds1216(drive_context_t *drv, WORD address)
 {
     return ds1216e_read(drv->drive->ds1216, address, drv->drive->rom[address & 0x7fff]);
@@ -80,6 +85,19 @@ static void drive_store_watch(drive_context_t *drv, WORD address,
 {
     monitor_watch_push_store_addr(address, drv->cpu->monspace);
     drv->cpud->store_func_nowatch[address >> 8](drv, address, value);
+}
+
+static BYTE fdc_read_watch(drive_context_t *drv, WORD address)
+{
+    monitor_watch_push_load_addr(address, drv->fdccpu->monspace);
+    return drv->fdccpud->read_func_nowatch[address >> 8](drv, address);
+}
+
+static void fdc_store_watch(drive_context_t *drv, WORD address,
+                                       BYTE value)
+{
+    monitor_watch_push_store_addr(address, drv->fdccpu->monspace);
+    drv->fdccpud->store_func_nowatch[address >> 8](drv, address, value);
 }
 
 /* ------------------------------------------------------------------------- */
@@ -114,16 +132,26 @@ void drivemem_init(drive_context_t *drv, unsigned int type)
         drv->cpud->store_func_watch[i] = drive_store_watch;
         drv->cpud->read_func_nowatch[i] = drive_read_free;
         drv->cpud->store_func_nowatch[i] = drive_store_free;
+        drv->fdccpud->read_func_watch[i] = fdc_read_watch;
+        drv->fdccpud->store_func_watch[i] = fdc_store_watch;
+        drv->fdccpud->read_func_nowatch[i] = drive_read_free;
+        drv->fdccpud->store_func_nowatch[i] = drive_store_free;
     }
 
     machine_drive_mem_init(drv, type);
 
     drv->cpud->read_func_nowatch[0x100] = drv->cpud->read_func_nowatch[0];
     drv->cpud->store_func_nowatch[0x100] = drv->cpud->store_func_nowatch[0];
+    drv->fdccpud->read_func_nowatch[0x100] = drv->fdccpud->read_func_nowatch[0];
+    drv->fdccpud->store_func_nowatch[0x100] = drv->fdccpud->store_func_nowatch[0];
 
     memcpy(drv->cpud->read_func, drv->cpud->read_func_nowatch,
            sizeof(drive_read_func_t *) * 0x101);
     memcpy(drv->cpud->store_func, drv->cpud->store_func_nowatch,
+           sizeof(drive_store_func_t *) * 0x101);
+    memcpy(drv->fdccpud->read_func, drv->fdccpud->read_func_nowatch,
+           sizeof(drive_read_func_t *) * 0x101);
+    memcpy(drv->fdccpud->store_func, drv->fdccpud->store_func_nowatch,
            sizeof(drive_store_func_t *) * 0x101);
 
     switch (type) {
@@ -210,6 +238,27 @@ mem_ioreg_list_t *drivemem_ioreg_list_get(void *context)
         break;
       default:
         log_error(LOG_ERR, "DRIVEMEM: Unknown drive type `%i'.", type);
+    }
+
+    return drivemem_ioreg_list;
+}
+
+mem_ioreg_list_t *drivefdcmem_ioreg_list_get(void *context)
+{
+    unsigned int type;
+    mem_ioreg_list_t *drivemem_ioreg_list = NULL;
+
+    type = ((drive_context_t *)context)->drive->type;
+
+    switch (type) {
+      case DRIVE_TYPE_1001:
+      case DRIVE_TYPE_8050:
+      case DRIVE_TYPE_8250:
+        mon_ioreg_add_list(&drivemem_ioreg_list, "VIA", 0x0040, 0x004f, NULL);
+        mon_ioreg_add_list(&drivemem_ioreg_list, "RRIOT", 0x0080, 0x008f, NULL);
+        break;
+      default:
+        log_error(LOG_ERR, "DRIVEFDCMEM: Unknown drive type `%i'.", type);
     }
 
     return drivemem_ioreg_list;

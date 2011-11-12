@@ -1067,6 +1067,9 @@ IDCLS_SPECIFY_4040_DOS_ROM_NAME
 /* drive/ieee/ieee-cmdline-options.c */
 IDCLS_SPECIFY_1001_DOS_ROM_NAME
 
+/* drive/ieee/ieee-cmdline-options.c */
+IDCLS_SPECIFY_1001_FDC_ROM_NAME
+
 /* drive/tcbm/tcbm-cmdline-options.c */
 IDCLS_SPECIFY_1551_DOS_ROM_NAME
 

@@ -53,6 +53,7 @@ static BYTE drive_rom1001[DRIVE_ROM1001_SIZE];
 static BYTE drive_rom2040[DRIVE_ROM2040_SIZE];
 static BYTE drive_rom3040[DRIVE_ROM3040_SIZE];
 static BYTE drive_rom4040[DRIVE_ROM4040_SIZE];
+static BYTE drive_rom1001fdc[DRIVE_ROM1001_SIZE];
 #endif
 
 /* If nonzero, the ROM image has been loaded.  */
@@ -61,6 +62,7 @@ static unsigned int rom2040_loaded = 0;
 static unsigned int rom3040_loaded = 0;
 static unsigned int rom4040_loaded = 0;
 static unsigned int rom1001_loaded = 0;
+static unsigned int rom1001fdc_loaded = 0;
 
 
 static void ieeerom_new_image_loaded(unsigned int dtype)
@@ -186,6 +188,28 @@ int ieeerom_load_1001(void)
     return -1;
 }
 
+int ieeerom_load_1001fdc(void)
+{
+    const char *rom_name = NULL;
+
+    if (!drive_rom_load_ok)
+        return 0;
+
+    resources_get_string("FDCName1001", &rom_name);
+
+    if (sysfile_load(rom_name, drive_rom1001fdc, DRIVE_ROM1001FDC_SIZE,
+                     DRIVE_ROM1001FDC_SIZE) < 0) {
+        log_error(ieeerom_log,
+                  "1001 FDC ROM image not found.  "
+                  "Hardware-level 1001 emulation is not available.");
+    } else {
+        rom1001fdc_loaded = 1;
+        ieeerom_new_image_loaded(DRIVE_TYPE_1001);
+        return 0;
+    }
+    return -1;
+}
+
 void ieeerom_setup_image(drive_t *drive)
 {
     if (rom_loaded) {
@@ -211,6 +235,8 @@ void ieeerom_setup_image(drive_t *drive)
           case DRIVE_TYPE_8250:
             memcpy(&(drive->rom[0x4000]), drive_rom1001,
                    DRIVE_ROM1001_SIZE);
+            memcpy(&(drive->fdcrom[DRIVE_FDCROM_SIZE - DRIVE_ROM1001FDC_SIZE]), drive_rom1001fdc,
+                   DRIVE_ROM1001FDC_SIZE);
             break;
         }
     }

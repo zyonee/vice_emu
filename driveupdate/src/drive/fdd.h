@@ -72,6 +72,7 @@ extern inline int fdd_write_protect(fd_drive_t *drv);
 extern inline int fdd_disk_change(fd_drive_t *drv);
 extern inline int fdd_byte_ready(fd_drive_t *drv);
 extern inline int fdd_byte_ready_edge(fd_drive_t *drv);
+extern inline int fdd_byte_ready_edge_fdc(fd_drive_t *drv);
 extern inline int fdd_byte_ready_1551(fd_drive_t *drv);
 extern inline void fdd_byte_ready_clear(fd_drive_t *drv);
 extern inline int fdd_sync(fd_drive_t *drv);
@@ -79,6 +80,7 @@ extern inline WORD fdd_crc(WORD crc, BYTE b);
 extern inline void fdd_overflow_callback(CLOCK sub, fd_drive_t *drv);
 extern void fdd_set_frequency(fd_drive_t *drv, int mhz);
 extern void fdd_set_native(fd_drive_t *drv, int mode);
+extern void fdd_set_mode(fd_drive_t *drv, int mode);
 
 #endif 
 

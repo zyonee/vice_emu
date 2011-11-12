@@ -220,6 +220,8 @@ int drive_image_attach(disk_image_t *image, unsigned int unit)
     case DISK_IMAGE_TYPE_G64:
     case DISK_IMAGE_TYPE_X64:
     case DISK_IMAGE_TYPE_D81:
+    case DISK_IMAGE_TYPE_D80:
+    case DISK_IMAGE_TYPE_D82:
     case DISK_IMAGE_TYPE_D1M:
     case DISK_IMAGE_TYPE_D2M:
     case DISK_IMAGE_TYPE_D4M:
@@ -252,6 +254,8 @@ int drive_image_detach(disk_image_t *image, unsigned int unit)
     case DISK_IMAGE_TYPE_G64:
     case DISK_IMAGE_TYPE_X64:
     case DISK_IMAGE_TYPE_D81:
+    case DISK_IMAGE_TYPE_D80:
+    case DISK_IMAGE_TYPE_D82:
     case DISK_IMAGE_TYPE_D1M:
     case DISK_IMAGE_TYPE_D2M:
     case DISK_IMAGE_TYPE_D4M:

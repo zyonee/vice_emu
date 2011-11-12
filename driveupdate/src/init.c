@@ -36,6 +36,7 @@
 #include "diskimage.h"
 #include "drive.h"
 #include "drivecpu.h"
+#include "fdccpu.h"
 #include "fliplist.h"
 #include "fsdevice.h"
 #include "gfxoutput.h"
@@ -263,6 +264,7 @@ int init_main(void)
         gfxoutput_init();
         screenshot_init();
 
+        fdccpu_early_init_all();
         drivecpu_early_init_all();
     }
 

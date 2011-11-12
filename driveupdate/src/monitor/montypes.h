@@ -175,7 +175,7 @@ typedef struct cpuhistory_s cpuhistory_t;
 #define STATE_CTYPE    5
 
 #define FIRST_SPACE e_comp_space
-#define LAST_SPACE e_disk11_space
+#define LAST_SPACE e_fdisk11_space
 
 #define DEFAULT_DISASSEMBLY_SIZE 40
 

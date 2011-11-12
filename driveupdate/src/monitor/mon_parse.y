@@ -139,6 +139,7 @@ extern int cur_len, last_len;
 %token<i> H_NUMBER D_NUMBER O_NUMBER B_NUMBER CONVERT_OP B_DATA
 %token<str> H_RANGE_GUESS D_NUMBER_GUESS O_NUMBER_GUESS B_NUMBER_GUESS
 %token<i> BAD_CMD MEM_OP IF MEM_COMP MEM_DISK8 MEM_DISK9 MEM_DISK10 MEM_DISK11 EQUALS
+%token<str> MEM_FDISK8 MEM_FDISK9 MEM_FDISK10 MEM_FDISK11
 %token TRAIL CMD_SEP LABEL_ASGN_COMMENT
 %token CMD_SIDEFX CMD_RETURN CMD_BLOCK_READ CMD_BLOCK_WRITE CMD_UP CMD_DOWN
 %token CMD_LOAD CMD_SAVE CMD_VERIFY CMD_IGNORE CMD_HUNT CMD_FILL CMD_MOVE
@@ -664,6 +665,10 @@ memspace: MEM_COMP { $$ = e_comp_space; }
         | MEM_DISK9 { $$ = e_disk9_space; }
         | MEM_DISK10 { $$ = e_disk10_space; }
         | MEM_DISK11 { $$ = e_disk11_space; }
+        | MEM_FDISK8 { $$ = e_fdisk8_space; }
+        | MEM_FDISK9 { $$ = e_fdisk9_space; }
+        | MEM_FDISK10 { $$ = e_fdisk10_space; }
+        | MEM_FDISK11 { $$ = e_fdisk11_space; }
         ;
 
 memloc: memaddr { $$ = $1; if (!CHECK_ADDR($1)) return ERR_ADDR_TOO_BIG; };

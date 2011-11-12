@@ -36,6 +36,7 @@
 #define MAX_PWM 1000
 
 #define DRIVE_ROM_SIZE 0x8000
+#define DRIVE_FDCROM_SIZE 0x800
 #define DRIVE_RAM_SIZE 0x2000
 
 /* Extended disk image handling.  */
@@ -88,7 +89,7 @@ typedef struct drive_s {
     unsigned int mynumber;
 
     /* Pointer to the drive clock.  */
-    CLOCK *clk;
+    CLOCK *clk, *fdcclk;
 
     int led_status;
 
@@ -102,6 +103,9 @@ typedef struct drive_s {
 
     /* Is this drive enabled?  */
     unsigned int enable;
+
+    /* True FDC emulation?  */
+    unsigned int true_fdc;
 
     /* What drive type we have to emulate?  */
     unsigned int type;
@@ -156,11 +160,13 @@ typedef struct drive_s {
 
     /* Current ROM image.  */
     BYTE rom[DRIVE_ROM_SIZE];
+    BYTE fdcrom[DRIVE_FDCROM_SIZE];
 
 } drive_t;
 
 
 extern CLOCK drive_clk[];
+extern CLOCK drive_fdcclk[];
 
 /* Drive context structure for low-level drive emulation.
    Full definition in drivetypes.h */

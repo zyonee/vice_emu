@@ -58,134 +58,138 @@
      MEM_DISK10 = 274,
      MEM_DISK11 = 275,
      EQUALS = 276,
-     TRAIL = 277,
-     CMD_SEP = 278,
-     LABEL_ASGN_COMMENT = 279,
-     CMD_SIDEFX = 280,
-     CMD_RETURN = 281,
-     CMD_BLOCK_READ = 282,
-     CMD_BLOCK_WRITE = 283,
-     CMD_UP = 284,
-     CMD_DOWN = 285,
-     CMD_LOAD = 286,
-     CMD_SAVE = 287,
-     CMD_VERIFY = 288,
-     CMD_IGNORE = 289,
-     CMD_HUNT = 290,
-     CMD_FILL = 291,
-     CMD_MOVE = 292,
-     CMD_GOTO = 293,
-     CMD_REGISTERS = 294,
-     CMD_READSPACE = 295,
-     CMD_WRITESPACE = 296,
-     CMD_RADIX = 297,
-     CMD_MEM_DISPLAY = 298,
-     CMD_BREAK = 299,
-     CMD_TRACE = 300,
-     CMD_IO = 301,
-     CMD_BRMON = 302,
-     CMD_COMPARE = 303,
-     CMD_DUMP = 304,
-     CMD_UNDUMP = 305,
-     CMD_EXIT = 306,
-     CMD_DELETE = 307,
-     CMD_CONDITION = 308,
-     CMD_COMMAND = 309,
-     CMD_ASSEMBLE = 310,
-     CMD_DISASSEMBLE = 311,
-     CMD_NEXT = 312,
-     CMD_STEP = 313,
-     CMD_PRINT = 314,
-     CMD_DEVICE = 315,
-     CMD_HELP = 316,
-     CMD_WATCH = 317,
-     CMD_DISK = 318,
-     CMD_SYSTEM = 319,
-     CMD_QUIT = 320,
-     CMD_CHDIR = 321,
-     CMD_BANK = 322,
-     CMD_LOAD_LABELS = 323,
-     CMD_SAVE_LABELS = 324,
-     CMD_ADD_LABEL = 325,
-     CMD_DEL_LABEL = 326,
-     CMD_SHOW_LABELS = 327,
-     CMD_RECORD = 328,
-     CMD_MON_STOP = 329,
-     CMD_PLAYBACK = 330,
-     CMD_CHAR_DISPLAY = 331,
-     CMD_SPRITE_DISPLAY = 332,
-     CMD_TEXT_DISPLAY = 333,
-     CMD_SCREENCODE_DISPLAY = 334,
-     CMD_ENTER_DATA = 335,
-     CMD_ENTER_BIN_DATA = 336,
-     CMD_KEYBUF = 337,
-     CMD_BLOAD = 338,
-     CMD_BSAVE = 339,
-     CMD_SCREEN = 340,
-     CMD_UNTIL = 341,
-     CMD_CPU = 342,
-     CMD_YYDEBUG = 343,
-     CMD_BACKTRACE = 344,
-     CMD_SCREENSHOT = 345,
-     CMD_PWD = 346,
-     CMD_DIR = 347,
-     CMD_RESOURCE_GET = 348,
-     CMD_RESOURCE_SET = 349,
-     CMD_ATTACH = 350,
-     CMD_DETACH = 351,
-     CMD_MON_RESET = 352,
-     CMD_TAPECTRL = 353,
-     CMD_CARTFREEZE = 354,
-     CMD_CPUHISTORY = 355,
-     CMD_MEMMAPZAP = 356,
-     CMD_MEMMAPSHOW = 357,
-     CMD_MEMMAPSAVE = 358,
-     CMD_COMMENT = 359,
-     CMD_LIST = 360,
-     CMD_EXPORT = 361,
-     CMD_AUTOSTART = 362,
-     CMD_AUTOLOAD = 363,
-     CMD_LABEL_ASGN = 364,
-     L_PAREN = 365,
-     R_PAREN = 366,
-     ARG_IMMEDIATE = 367,
-     REG_A = 368,
-     REG_X = 369,
-     REG_Y = 370,
-     COMMA = 371,
-     INST_SEP = 372,
-     REG_B = 373,
-     REG_C = 374,
-     REG_D = 375,
-     REG_E = 376,
-     REG_H = 377,
-     REG_L = 378,
-     REG_AF = 379,
-     REG_BC = 380,
-     REG_DE = 381,
-     REG_HL = 382,
-     REG_IX = 383,
-     REG_IY = 384,
-     REG_SP = 385,
-     REG_IXH = 386,
-     REG_IXL = 387,
-     REG_IYH = 388,
-     REG_IYL = 389,
-     STRING = 390,
-     FILENAME = 391,
-     R_O_L = 392,
-     OPCODE = 393,
-     LABEL = 394,
-     BANKNAME = 395,
-     CPUTYPE = 396,
-     MON_REGISTER = 397,
-     COMPARE_OP = 398,
-     RADIX_TYPE = 399,
-     INPUT_SPEC = 400,
-     CMD_CHECKPT_ON = 401,
-     CMD_CHECKPT_OFF = 402,
-     TOGGLE = 403,
-     MASK = 404
+     MEM_FDISK8 = 277,
+     MEM_FDISK9 = 278,
+     MEM_FDISK10 = 279,
+     MEM_FDISK11 = 280,
+     TRAIL = 281,
+     CMD_SEP = 282,
+     LABEL_ASGN_COMMENT = 283,
+     CMD_SIDEFX = 284,
+     CMD_RETURN = 285,
+     CMD_BLOCK_READ = 286,
+     CMD_BLOCK_WRITE = 287,
+     CMD_UP = 288,
+     CMD_DOWN = 289,
+     CMD_LOAD = 290,
+     CMD_SAVE = 291,
+     CMD_VERIFY = 292,
+     CMD_IGNORE = 293,
+     CMD_HUNT = 294,
+     CMD_FILL = 295,
+     CMD_MOVE = 296,
+     CMD_GOTO = 297,
+     CMD_REGISTERS = 298,
+     CMD_READSPACE = 299,
+     CMD_WRITESPACE = 300,
+     CMD_RADIX = 301,
+     CMD_MEM_DISPLAY = 302,
+     CMD_BREAK = 303,
+     CMD_TRACE = 304,
+     CMD_IO = 305,
+     CMD_BRMON = 306,
+     CMD_COMPARE = 307,
+     CMD_DUMP = 308,
+     CMD_UNDUMP = 309,
+     CMD_EXIT = 310,
+     CMD_DELETE = 311,
+     CMD_CONDITION = 312,
+     CMD_COMMAND = 313,
+     CMD_ASSEMBLE = 314,
+     CMD_DISASSEMBLE = 315,
+     CMD_NEXT = 316,
+     CMD_STEP = 317,
+     CMD_PRINT = 318,
+     CMD_DEVICE = 319,
+     CMD_HELP = 320,
+     CMD_WATCH = 321,
+     CMD_DISK = 322,
+     CMD_SYSTEM = 323,
+     CMD_QUIT = 324,
+     CMD_CHDIR = 325,
+     CMD_BANK = 326,
+     CMD_LOAD_LABELS = 327,
+     CMD_SAVE_LABELS = 328,
+     CMD_ADD_LABEL = 329,
+     CMD_DEL_LABEL = 330,
+     CMD_SHOW_LABELS = 331,
+     CMD_RECORD = 332,
+     CMD_MON_STOP = 333,
+     CMD_PLAYBACK = 334,
+     CMD_CHAR_DISPLAY = 335,
+     CMD_SPRITE_DISPLAY = 336,
+     CMD_TEXT_DISPLAY = 337,
+     CMD_SCREENCODE_DISPLAY = 338,
+     CMD_ENTER_DATA = 339,
+     CMD_ENTER_BIN_DATA = 340,
+     CMD_KEYBUF = 341,
+     CMD_BLOAD = 342,
+     CMD_BSAVE = 343,
+     CMD_SCREEN = 344,
+     CMD_UNTIL = 345,
+     CMD_CPU = 346,
+     CMD_YYDEBUG = 347,
+     CMD_BACKTRACE = 348,
+     CMD_SCREENSHOT = 349,
+     CMD_PWD = 350,
+     CMD_DIR = 351,
+     CMD_RESOURCE_GET = 352,
+     CMD_RESOURCE_SET = 353,
+     CMD_ATTACH = 354,
+     CMD_DETACH = 355,
+     CMD_MON_RESET = 356,
+     CMD_TAPECTRL = 357,
+     CMD_CARTFREEZE = 358,
+     CMD_CPUHISTORY = 359,
+     CMD_MEMMAPZAP = 360,
+     CMD_MEMMAPSHOW = 361,
+     CMD_MEMMAPSAVE = 362,
+     CMD_COMMENT = 363,
+     CMD_LIST = 364,
+     CMD_EXPORT = 365,
+     CMD_AUTOSTART = 366,
+     CMD_AUTOLOAD = 367,
+     CMD_LABEL_ASGN = 368,
+     L_PAREN = 369,
+     R_PAREN = 370,
+     ARG_IMMEDIATE = 371,
+     REG_A = 372,
+     REG_X = 373,
+     REG_Y = 374,
+     COMMA = 375,
+     INST_SEP = 376,
+     REG_B = 377,
+     REG_C = 378,
+     REG_D = 379,
+     REG_E = 380,
+     REG_H = 381,
+     REG_L = 382,
+     REG_AF = 383,
+     REG_BC = 384,
+     REG_DE = 385,
+     REG_HL = 386,
+     REG_IX = 387,
+     REG_IY = 388,
+     REG_SP = 389,
+     REG_IXH = 390,
+     REG_IXL = 391,
+     REG_IYH = 392,
+     REG_IYL = 393,
+     STRING = 394,
+     FILENAME = 395,
+     R_O_L = 396,
+     OPCODE = 397,
+     LABEL = 398,
+     BANKNAME = 399,
+     CPUTYPE = 400,
+     MON_REGISTER = 401,
+     COMPARE_OP = 402,
+     RADIX_TYPE = 403,
+     INPUT_SPEC = 404,
+     CMD_CHECKPT_ON = 405,
+     CMD_CHECKPT_OFF = 406,
+     TOGGLE = 407,
+     MASK = 408
    };
 #endif
 /* Tokens.  */
@@ -208,134 +212,138 @@
 #define MEM_DISK10 274
 #define MEM_DISK11 275
 #define EQUALS 276
-#define TRAIL 277
-#define CMD_SEP 278
-#define LABEL_ASGN_COMMENT 279
-#define CMD_SIDEFX 280
-#define CMD_RETURN 281
-#define CMD_BLOCK_READ 282
-#define CMD_BLOCK_WRITE 283
-#define CMD_UP 284
-#define CMD_DOWN 285
-#define CMD_LOAD 286
-#define CMD_SAVE 287
-#define CMD_VERIFY 288
-#define CMD_IGNORE 289
-#define CMD_HUNT 290
-#define CMD_FILL 291
-#define CMD_MOVE 292
-#define CMD_GOTO 293
-#define CMD_REGISTERS 294
-#define CMD_READSPACE 295
-#define CMD_WRITESPACE 296
-#define CMD_RADIX 297
-#define CMD_MEM_DISPLAY 298
-#define CMD_BREAK 299
-#define CMD_TRACE 300
-#define CMD_IO 301
-#define CMD_BRMON 302
-#define CMD_COMPARE 303
-#define CMD_DUMP 304
-#define CMD_UNDUMP 305
-#define CMD_EXIT 306
-#define CMD_DELETE 307
-#define CMD_CONDITION 308
-#define CMD_COMMAND 309
-#define CMD_ASSEMBLE 310
-#define CMD_DISASSEMBLE 311
-#define CMD_NEXT 312
-#define CMD_STEP 313
-#define CMD_PRINT 314
-#define CMD_DEVICE 315
-#define CMD_HELP 316
-#define CMD_WATCH 317
-#define CMD_DISK 318
-#define CMD_SYSTEM 319
-#define CMD_QUIT 320
-#define CMD_CHDIR 321
-#define CMD_BANK 322
-#define CMD_LOAD_LABELS 323
-#define CMD_SAVE_LABELS 324
-#define CMD_ADD_LABEL 325
-#define CMD_DEL_LABEL 326
-#define CMD_SHOW_LABELS 327
-#define CMD_RECORD 328
-#define CMD_MON_STOP 329
-#define CMD_PLAYBACK 330
-#define CMD_CHAR_DISPLAY 331
-#define CMD_SPRITE_DISPLAY 332
-#define CMD_TEXT_DISPLAY 333
-#define CMD_SCREENCODE_DISPLAY 334
-#define CMD_ENTER_DATA 335
-#define CMD_ENTER_BIN_DATA 336
-#define CMD_KEYBUF 337
-#define CMD_BLOAD 338
-#define CMD_BSAVE 339
-#define CMD_SCREEN 340
-#define CMD_UNTIL 341
-#define CMD_CPU 342
-#define CMD_YYDEBUG 343
-#define CMD_BACKTRACE 344
-#define CMD_SCREENSHOT 345
-#define CMD_PWD 346
-#define CMD_DIR 347
-#define CMD_RESOURCE_GET 348
-#define CMD_RESOURCE_SET 349
-#define CMD_ATTACH 350
-#define CMD_DETACH 351
-#define CMD_MON_RESET 352
-#define CMD_TAPECTRL 353
-#define CMD_CARTFREEZE 354
-#define CMD_CPUHISTORY 355
-#define CMD_MEMMAPZAP 356
-#define CMD_MEMMAPSHOW 357
-#define CMD_MEMMAPSAVE 358
-#define CMD_COMMENT 359
-#define CMD_LIST 360
-#define CMD_EXPORT 361
-#define CMD_AUTOSTART 362
-#define CMD_AUTOLOAD 363
-#define CMD_LABEL_ASGN 364
-#define L_PAREN 365
-#define R_PAREN 366
-#define ARG_IMMEDIATE 367
-#define REG_A 368
-#define REG_X 369
-#define REG_Y 370
-#define COMMA 371
-#define INST_SEP 372
-#define REG_B 373
-#define REG_C 374
-#define REG_D 375
-#define REG_E 376
-#define REG_H 377
-#define REG_L 378
-#define REG_AF 379
-#define REG_BC 380
-#define REG_DE 381
-#define REG_HL 382
-#define REG_IX 383
-#define REG_IY 384
-#define REG_SP 385
-#define REG_IXH 386
-#define REG_IXL 387
-#define REG_IYH 388
-#define REG_IYL 389
-#define STRING 390
-#define FILENAME 391
-#define R_O_L 392
-#define OPCODE 393
-#define LABEL 394
-#define BANKNAME 395
-#define CPUTYPE 396
-#define MON_REGISTER 397
-#define COMPARE_OP 398
-#define RADIX_TYPE 399
-#define INPUT_SPEC 400
-#define CMD_CHECKPT_ON 401
-#define CMD_CHECKPT_OFF 402
-#define TOGGLE 403
-#define MASK 404
+#define MEM_FDISK8 277
+#define MEM_FDISK9 278
+#define MEM_FDISK10 279
+#define MEM_FDISK11 280
+#define TRAIL 281
+#define CMD_SEP 282
+#define LABEL_ASGN_COMMENT 283
+#define CMD_SIDEFX 284
+#define CMD_RETURN 285
+#define CMD_BLOCK_READ 286
+#define CMD_BLOCK_WRITE 287
+#define CMD_UP 288
+#define CMD_DOWN 289
+#define CMD_LOAD 290
+#define CMD_SAVE 291
+#define CMD_VERIFY 292
+#define CMD_IGNORE 293
+#define CMD_HUNT 294
+#define CMD_FILL 295
+#define CMD_MOVE 296
+#define CMD_GOTO 297
+#define CMD_REGISTERS 298
+#define CMD_READSPACE 299
+#define CMD_WRITESPACE 300
+#define CMD_RADIX 301
+#define CMD_MEM_DISPLAY 302
+#define CMD_BREAK 303
+#define CMD_TRACE 304
+#define CMD_IO 305
+#define CMD_BRMON 306
+#define CMD_COMPARE 307
+#define CMD_DUMP 308
+#define CMD_UNDUMP 309
+#define CMD_EXIT 310
+#define CMD_DELETE 311
+#define CMD_CONDITION 312
+#define CMD_COMMAND 313
+#define CMD_ASSEMBLE 314
+#define CMD_DISASSEMBLE 315
+#define CMD_NEXT 316
+#define CMD_STEP 317
+#define CMD_PRINT 318
+#define CMD_DEVICE 319
+#define CMD_HELP 320
+#define CMD_WATCH 321
+#define CMD_DISK 322
+#define CMD_SYSTEM 323
+#define CMD_QUIT 324
+#define CMD_CHDIR 325
+#define CMD_BANK 326
+#define CMD_LOAD_LABELS 327
+#define CMD_SAVE_LABELS 328
+#define CMD_ADD_LABEL 329
+#define CMD_DEL_LABEL 330
+#define CMD_SHOW_LABELS 331
+#define CMD_RECORD 332
+#define CMD_MON_STOP 333
+#define CMD_PLAYBACK 334
+#define CMD_CHAR_DISPLAY 335
+#define CMD_SPRITE_DISPLAY 336
+#define CMD_TEXT_DISPLAY 337
+#define CMD_SCREENCODE_DISPLAY 338
+#define CMD_ENTER_DATA 339
+#define CMD_ENTER_BIN_DATA 340
+#define CMD_KEYBUF 341
+#define CMD_BLOAD 342
+#define CMD_BSAVE 343
+#define CMD_SCREEN 344
+#define CMD_UNTIL 345
+#define CMD_CPU 346
+#define CMD_YYDEBUG 347
+#define CMD_BACKTRACE 348
+#define CMD_SCREENSHOT 349
+#define CMD_PWD 350
+#define CMD_DIR 351
+#define CMD_RESOURCE_GET 352
+#define CMD_RESOURCE_SET 353
+#define CMD_ATTACH 354
+#define CMD_DETACH 355
+#define CMD_MON_RESET 356
+#define CMD_TAPECTRL 357
+#define CMD_CARTFREEZE 358
+#define CMD_CPUHISTORY 359
+#define CMD_MEMMAPZAP 360
+#define CMD_MEMMAPSHOW 361
+#define CMD_MEMMAPSAVE 362
+#define CMD_COMMENT 363
+#define CMD_LIST 364
+#define CMD_EXPORT 365
+#define CMD_AUTOSTART 366
+#define CMD_AUTOLOAD 367
+#define CMD_LABEL_ASGN 368
+#define L_PAREN 369
+#define R_PAREN 370
+#define ARG_IMMEDIATE 371
+#define REG_A 372
+#define REG_X 373
+#define REG_Y 374
+#define COMMA 375
+#define INST_SEP 376
+#define REG_B 377
+#define REG_C 378
+#define REG_D 379
+#define REG_E 380
+#define REG_H 381
+#define REG_L 382
+#define REG_AF 383
+#define REG_BC 384
+#define REG_DE 385
+#define REG_HL 386
+#define REG_IX 387
+#define REG_IY 388
+#define REG_SP 389
+#define REG_IXH 390
+#define REG_IXL 391
+#define REG_IYH 392
+#define REG_IYL 393
+#define STRING 394
+#define FILENAME 395
+#define R_O_L 396
+#define OPCODE 397
+#define LABEL 398
+#define BANKNAME 399
+#define CPUTYPE 400
+#define MON_REGISTER 401
+#define COMPARE_OP 402
+#define RADIX_TYPE 403
+#define INPUT_SPEC 404
+#define CMD_CHECKPT_ON 405
+#define CMD_CHECKPT_OFF 406
+#define TOGGLE 407
+#define MASK 408
 
 
 
@@ -360,7 +368,7 @@ typedef union YYSTYPE
 
 
 /* Line 1676 of yacc.c  */
-#line 364 "mon_parse.h"
+#line 372 "mon_parse.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

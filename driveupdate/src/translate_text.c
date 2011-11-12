@@ -8045,6 +8045,23 @@ translate_t string_table[] = {
 /* tr */ {IDCLS_SPECIFY_1001_DOS_ROM_NAME_TR, "1001/8050/8250 DOS ROM imaj ismini belirt"},
 #endif
 
+/* drive/ieee/ieee-cmdline-options.c */
+/* en */ {IDCLS_SPECIFY_1001_FDC_ROM_NAME,    N_("Specify name of 1001/8050/8250 FDC ROM image")},
+#ifdef HAS_TRANSLATION
+/* da */ {IDCLS_SPECIFY_1001_FDC_ROM_NAME_DA, "Angiv navn på 1001/8050/8250-FDC-ROM-image"},
+/* de */ {IDCLS_SPECIFY_1001_FDC_ROM_NAME_DE, "Name der 1001/8040/8205 FDC ROM Datei definieren"},
+/* es */ {IDCLS_SPECIFY_1001_FDC_ROM_NAME_ES, "Especificar nombre imagen FDC ROM 1001/8050/8250"},
+/* fr */ {IDCLS_SPECIFY_1001_FDC_ROM_NAME_FR, "Spécifier le nom de l'image 1001/8050/8250 FDC ROM"},
+/* hu */ {IDCLS_SPECIFY_1001_FDC_ROM_NAME_HU, "Adja meg az 1001/8050/8250 FDC ROM képmás nevét"},
+/* it */ {IDCLS_SPECIFY_1001_FDC_ROM_NAME_IT, "Specifica il nome immagine della ROM del FDC del 1001/8050/8250"},
+/* ko */ {IDCLS_SPECIFY_1001_FDC_ROM_NAME_KO, ""},  /* fuzzy */
+/* nl */ {IDCLS_SPECIFY_1001_FDC_ROM_NAME_NL, "Geef de naam van het 1001/8050/8250 FDC ROM bestand"},
+/* pl */ {IDCLS_SPECIFY_1001_FDC_ROM_NAME_PL, "Okre¶l nazwê obrazu 1001/8050/8250 FDC ROM"},
+/* ru */ {IDCLS_SPECIFY_1001_FDC_ROM_NAME_RU, ""},  /* fuzzy */
+/* sv */ {IDCLS_SPECIFY_1001_FDC_ROM_NAME_SV, "Ange namn på 1001/8050/8250-FDC-ROM-avbildning"},
+/* tr */ {IDCLS_SPECIFY_1001_FDC_ROM_NAME_TR, "1001/8050/8250 FDC ROM imaj ismini belirt"},
+#endif
+
 /* drive/tcbm/tcbm-cmdline-options.c */
 /* en */ {IDCLS_SPECIFY_1551_DOS_ROM_NAME,    N_("Specify name of 1551 DOS ROM image")},
 #ifdef HAS_TRANSLATION

@@ -99,6 +99,53 @@ typedef struct drivecpu_context_s {
     char *identification_string;
 } drivecpu_context_t;
 
+typedef struct fdccpu_context_s {
+    int traceflg;
+    /* This is non-zero each time a Read-Modify-Write instructions that accesses
+       memory is executed.  We can emulate the RMW bug of the 6502 this way.  */
+    int rmw_flag; /* init to 0 */
+
+    /* Interrupt/alarm status.  */
+    struct interrupt_cpu_status_s *int_status;
+
+    struct alarm_context_s *alarm_context;
+
+    /* Clk guard.  */
+    struct clk_guard_s *clk_guard;
+
+    struct monitor_interface_s *monitor_interface;
+
+    /* Value of clk for the last time mydrive_cpu_execute() was called.  */
+    CLOCK last_clk;
+
+    /* Number of cycles in excess we executed last time mydrive_cpu_execute()
+       was called.  */
+    CLOCK last_exc_cycles;
+
+    CLOCK stop_clk;
+
+    CLOCK cycle_accum;
+    BYTE *d_bank_base;
+    int d_bank_limit;     /* init to -1 */
+
+    /* Information about the last executed opcode.  */
+    unsigned int last_opcode_info;
+
+    /* Address of the last executed opcode. This is used by watchpoints. */
+    unsigned int last_opcode_addr;
+
+    /* Public copy of the registers.  */
+    mos6510_regs_t cpu_regs;
+
+    BYTE *pageone;        /* init to NULL */
+
+    int monspace;         /* init to e_disk[89]_space */
+
+    char *snap_module_name;
+
+    char *identification_string;
+} fdccpu_context_t;
+
 
 /*
  *  Large data used in the CPU emulation. Often more efficient to move
@@ -120,6 +167,21 @@ typedef struct drivecpud_context_s {
 
 	int sync_factor;
 } drivecpud_context_t;
+
+typedef struct fdccpud_context_s {
+    /* Drive RAM */
+    BYTE drive_ram[DRIVE_RAM_SIZE];
+
+    /* functions */
+    drive_read_func_t  *read_func[0x101];
+    drive_store_func_t *store_func[0x101];
+    drive_read_func_t  *read_func_watch[0x101];
+    drive_store_func_t *store_func_watch[0x101];
+    drive_read_func_t  *read_func_nowatch[0x101];
+    drive_store_func_t *store_func_nowatch[0x101];
+
+	int sync_factor;
+} fdccpud_context_t;
 
 
 /*
@@ -149,10 +211,13 @@ struct wd1770_s;
 typedef struct drive_context_s {
     int mynumber;         /* init to [01] */
     CLOCK *clk_ptr;       /* shortcut to drive_clk[mynumber] */
+    CLOCK *fdcclk_ptr;    /* shortcut to drive_fdcclk[mynumber] */
     struct drive_s *drive;    /* shortcut to drive[mynumber] */
 
     struct drivecpu_context_s *cpu;
     struct drivecpud_context_s *cpud;
+    struct fdccpu_context_s *fdccpu;
+    struct drivecpud_context_s *fdccpud;
     struct drivefunc_context_s *func;
     struct via_context_s *via1d1541;
     struct via_context_s *via1d2031;
@@ -160,8 +225,10 @@ typedef struct drive_context_s {
     struct cia_context_s *cia1571;
     struct cia_context_s *cia1581;
     struct via_context_s *via4000;
+    struct via_context_s *via1001;
     struct riot_context_s *riot1;
     struct riot_context_s *riot2;
+    struct riot_context_s *riot3;
     struct tpi_context_s *tpid;
     struct pc8477_s *pc8477;
     struct wd1770_s *wd1770;

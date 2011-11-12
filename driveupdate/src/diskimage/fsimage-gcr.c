@@ -342,7 +342,7 @@ int fsimage_gcr_create(disk_image_t *image, unsigned int type)
         sector++) {
 
             header.sector = sector;
-            gcr_convert_sector_to_GCR(rawdata, gcrptr, &header, 0);
+            gcr_convert_sector_to_GCR(rawdata, gcrptr, &header, 9, 5, 0);
 
             gcrptr += SECTOR_GCR_SIZE_WITH_HEADER + disk_image_gap_size_1541(track);
         }

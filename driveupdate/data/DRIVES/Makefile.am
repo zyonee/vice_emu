@@ -12,6 +12,7 @@ drv_DATA = \
 	dos4000 \
 	dos2031 \
 	dos1001 \
+	fdc1001 \
 	dos2040 \
 	dos3040 \
 	dos4040

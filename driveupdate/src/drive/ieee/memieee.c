@@ -29,11 +29,13 @@
 #include "drive-check.h"
 #include "drivemem.h"
 #include "driverom.h"
+#include "fdccpu.h"
 #include "drivetypes.h"
 #include "memieee.h"
 #include "riotd.h"
 #include "types.h"
 #include "via1d2031.h"
+#include "via1001.h"
 #include "viad.h"
 
 
@@ -94,6 +96,10 @@ static void drive_store_1001zero_ram(drive_context_t *drv,
 static BYTE drive_read_1001buffer_ram(drive_context_t *drv,
                                                WORD address)
 {
+    if (drv->drive->true_fdc) {
+        fdccpu_execute(drv, *drv->clk_ptr);
+    }
+
     return drv->cpud->drive_ram[(((address >> 2) & 0x1c00)
                                 | (address & 0x03ff)) - 0x300];
 }
@@ -101,8 +107,51 @@ static BYTE drive_read_1001buffer_ram(drive_context_t *drv,
 static void drive_store_1001buffer_ram(drive_context_t *drv,
                                                 WORD address, BYTE byte)
 {
+    if (drv->drive->true_fdc) {
+        fdccpu_execute(drv, *drv->clk_ptr);
+    }
+
     drv->cpud->drive_ram[(((address >> 2) & 0x1c00) | (address & 0x03ff))
                          - 0x300] = byte;
+}
+
+static BYTE drive_read_fdcbuffer_ram(drive_context_t *drv,
+                                               WORD address)
+{
+    return drv->cpud->drive_ram[0x100 + ((address - 0x400) & 0xfff)];
+}
+
+static void drive_store_fdcbuffer_ram(drive_context_t *drv,
+                                                WORD address, BYTE byte)
+{
+    drv->cpud->drive_ram[0x100 + ((address - 0x400) & 0xfff)] = byte;
+}
+
+static BYTE drive_read_fdc_io(drive_context_t *drv, WORD address)
+{
+    switch (address & 0xc0) {
+    case 0x40:
+    case 0xc0:
+        return via1001_read(drv, address);
+    case 0x80:
+        return riot3_read(drv, address);
+    }
+    return drv->fdccpud->drive_ram[address & 0x3f];
+}
+
+static void drive_store_fdc_io(drive_context_t *drv,
+                                         WORD address, BYTE byte)
+{
+    switch (address & 0xc0) {
+    case 0x40:
+    case 0xc0:
+        via1001_store(drv, address, byte);
+        return;
+    case 0x80:
+        riot3_store(drv, address, byte);
+        return;
+    }
+    drv->fdccpud->drive_ram[address & 0x3f] = byte;
 }
 
 void memieee_init(struct drive_context_s *drv, unsigned int type)
@@ -179,6 +228,29 @@ void memieee_init(struct drive_context_s *drv, unsigned int type)
             cpud->read_func_nowatch[i] = drive_read_1001buffer_ram;
             cpud->store_func_nowatch[i] = drive_store_1001buffer_ram;
         }
+    }
+
+    cpud = drv->fdccpud;
+
+    drv->fdccpu->pageone = cpud->drive_ram;
+
+    for (i = 0x00; i < 0x04; i ++) {
+        cpud->read_func_nowatch[i] = drive_read_fdc_io;
+        cpud->store_func_nowatch[i] = drive_store_fdc_io;
+    }
+
+    for (i = 0x04; i < 0x14; i ++) {
+        cpud->read_func_nowatch[i] = drive_read_fdcbuffer_ram;
+        cpud->store_func_nowatch[i] = drive_store_fdcbuffer_ram;
+    }
+
+    for (i = 0x1c; i < 0x20; i++) {
+        cpud->read_func_nowatch[i] = drive_read_romfdc;
+    }
+
+    for (i = 0x20; i < 0x100; i++) {
+        cpud->read_func_nowatch[i] = cpud->read_func_nowatch[i & 0x1f];
+        cpud->store_func_nowatch[i] = cpud->store_func_nowatch[i & 0x1f];
     }
 }
 

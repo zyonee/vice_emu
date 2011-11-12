@@ -106,7 +106,7 @@ static void gcr_convert_GCR_to_4bytes(BYTE *source, BYTE *dest)
 }
 
 void gcr_convert_sector_to_GCR(BYTE *buffer, BYTE *data, gcr_header_t *header,
-                               BYTE error_code)
+                               int gap, int sync, BYTE error_code)
 {
     int i;
     BYTE buf[4], chksum, idm;
@@ -131,10 +131,10 @@ void gcr_convert_sector_to_GCR(BYTE *buffer, BYTE *data, gcr_header_t *header,
     gcr_convert_4bytes_to_GCR(buf, data);
     data += 5;
 
-    data += 9;                   /* Gap */
+    data += gap;                   /* Gap */
 
-    memset(data, 0xff, 5);       /* Sync */
-    data += 5;
+    memset(data, 0xff, sync);       /* Sync */
+    data += sync;
 
     chksum = (error_code == CBMDOS_IPE_READ_ERROR_CHK) ? 0xff : 0x00;
     buf[0] = (error_code == CBMDOS_IPE_READ_ERROR_DATA) ? 0xff : 0x07;
@@ -193,11 +193,14 @@ static int gcr_find_sector_header(disk_track_t *raw, BYTE sector)
     int i, p, p2, shift;
 
     p = 0;
+    p2 = -1;
     for (;;) {
-        p2 = p;
         p = gcr_find_sync(raw, p, raw->size * 8);
-        if (p <= p2) {
+        if (p2 == p) {
             break;
+        }
+        if (p2 < 0) {
+            p2 = p;
         }
         shift = p & 7;
         offset = raw->data + (p >> 3);

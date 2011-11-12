@@ -46,6 +46,7 @@ static char *dos_rom_name_1001 = NULL;
 static char *dos_rom_name_2040 = NULL;
 static char *dos_rom_name_3040 = NULL;
 static char *dos_rom_name_4040 = NULL;
+static char *dos_rom_name_1001fdc = NULL;
 
 static int set_drive_idling_method(int val, void *param)
 {
@@ -111,6 +112,14 @@ static int set_dos_rom_name_2031(const char *val, void *param)
     return ieeerom_load_2031();
 }
 
+static int set_dos_rom_name_1001fdc(const char *val, void *param)
+{
+    if (util_string_set(&dos_rom_name_1001fdc, val))
+        return 0;
+
+    return ieeerom_load_1001fdc();
+}
+
 static int set_romset_firmware(int val, void *param)
 {
     unsigned int num = vice_ptr_to_uint(param);
@@ -132,6 +141,8 @@ static const resource_string_t resources_string[] = {
       &dos_rom_name_4040, set_dos_rom_name_4040, NULL },
     { "DosName1001", "dos1001", RES_EVENT_NO, NULL,
       &dos_rom_name_1001, set_dos_rom_name_1001, NULL },
+    { "FDCName1001", "fdc1001", RES_EVENT_NO, NULL,
+      &dos_rom_name_1001fdc, set_dos_rom_name_1001fdc, NULL },
     { NULL }
 };
 
@@ -186,5 +197,6 @@ void ieee_resources_shutdown(void)
     lib_free(dos_rom_name_2040);
     lib_free(dos_rom_name_3040);
     lib_free(dos_rom_name_4040);
+    lib_free(dos_rom_name_1001fdc);
 }
 

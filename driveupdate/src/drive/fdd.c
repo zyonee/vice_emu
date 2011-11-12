@@ -45,6 +45,7 @@ typedef void (*rotate_function_t)(fd_drive_t *drv);
 static void fdd_rotate_null(fd_drive_t *drv);
 static void fdd_rotate_gcr(fd_drive_t *drv);
 static void fdd_rotate_mfm(fd_drive_t *drv);
+static void fdd_rotate_gcr_fdc(fd_drive_t *drv);
 
 struct fd_drive_s {
     int number;      /* number of fdd */
@@ -66,8 +67,8 @@ struct fd_drive_s {
     BYTE *headp; /* pointer to head position */
     CLOCK last_clk, clk;
     unsigned int read_shift_reg;
-    BYTE write_shift_reg;
-    BYTE read_latch, write_out;
+    unsigned int write_shift_reg;
+    unsigned int read_latch, write_out;
     WORD read_latch_mfm, write_out_mfm;
     int bit_counter;
     int zero_count;
@@ -75,6 +76,7 @@ struct fd_drive_s {
     int frequency; /* 1, 2, 4 MHz */
     int divider; /* 50000 for 2 MHz, 25000 for 1 MHz */
     int native; /* native byte ready mode */
+    int mode; /* plain/gcr mode */
     int soe, byte_ready, byte_ready_edge;
     struct disk_track_s *raw, *raw_cache[2][84];
 
@@ -152,6 +154,19 @@ fd_drive_t *fdd_init(int num, drive_t *drive)
         drv->native = 3;
         drv->rotate = fdd_rotate_mfm;
         break;
+    case DRIVE_TYPE_1001:
+    case DRIVE_TYPE_8250:
+        drv->sides = 2;
+    case DRIVE_TYPE_8050:
+        drv->frequency = 1;
+        drv->divider = 25000; /* 1 MHz */
+        drv->soe = 1;
+        drv->native = 4;
+        drv->tracks = 84;
+        drv->hrstep = 1;
+        drv->track = 37;
+        drv->rotate = fdd_rotate_gcr_fdc;
+        break;
     }
     drv->drive->current_half_track = (drv->track << drv->hrstep) + 2;
     return drv;
@@ -199,6 +214,16 @@ void fdd_set_native(fd_drive_t *drv, int mode)
     drv->frequency = mode ? 2 : 1;
     drv->divider = mode ? 50000 : 25000;
     drv->native ^= 1;
+}
+
+/* Switch mode for 1001 */
+void fdd_set_mode(fd_drive_t *drv, int mode)
+{
+    if (!drv || drv->mode == !!mode) {
+        return;
+    }
+    drv->rotate(drv);
+    drv->mode ^= 1;
 }
 
 /* Attach disk image */
@@ -320,10 +345,25 @@ inline void fdd_byte_ready_clear(fd_drive_t *drv)
 /* Byte ready edge for SO, active high impulse */
 inline int fdd_byte_ready_edge(fd_drive_t *drv)
 {
-    if (!drv || !(drv->soe | drv->byte_ready_edge) || drv->native == 3) {
+    if (!drv || !(drv->soe | drv->byte_ready_edge) || drv->native >= 3) {
         return 0;
     }
     drv->clk = *drv->drive->clk;
+    drv->rotate(drv);
+    if (drv->byte_ready_edge) {
+        drv->byte_ready_edge ^= 1;
+        return 1;
+    }
+    return 0;
+}
+
+/* Byte ready edge for SO, active high impulse */
+inline int fdd_byte_ready_edge_fdc(fd_drive_t *drv)
+{
+    if (!drv || !(drv->soe | drv->byte_ready_edge)) {
+        return 0;
+    }
+    drv->clk = *drv->drive->fdcclk;
     drv->rotate(drv);
     if (drv->byte_ready_edge) {
         drv->byte_ready_edge ^= 1;
@@ -346,14 +386,33 @@ inline int fdd_sync(fd_drive_t *drv)
 inline void fdd_byte_write(fd_drive_t *drv, BYTE data)
 {
     drv->rotate(drv);
-    drv->write_out = data;
+    drv->write_out = (unsigned int)data;
 }
 
 /* Read latch */
 inline BYTE fdd_byte_read(fd_drive_t *drv)
 {
     drv->rotate(drv);
-    return drv->read_latch;
+    return (BYTE)drv->read_latch;
+}
+
+/* Output for writing */
+inline void fdd_byte_write_fdc(fd_drive_t *drv, BYTE data)
+{
+    drv->rotate(drv);
+    drv->write_out = data;
+}
+
+/* Read latch */
+inline BYTE fdd_byte_read_fdc(fd_drive_t *drv)
+{
+    static const BYTE gcr[32] = {
+        0,  0,  0,  0,  0,  0,  0,  0, 0,  8,  0,  1,  0, 12,  4,  5,
+        0,  0,  2,  3,  0, 15,  6,  7, 0,  9, 10, 11,  0, 13, 14,  0
+    };
+
+    drv->rotate(drv);
+    return (gcr[(drv->read_latch >> 5) & 31] << 4) | gcr[drv->read_latch & 31];
 }
 
 inline void fdd_mfm_write(fd_drive_t *drv, WORD data)
@@ -736,7 +795,7 @@ static void fdd_rotate_gcr(fd_drive_t *drv)
                 } else {
                     drv->byte_ready_edge |= drv->soe & ~drv->byte_ready;
                     drv->byte_ready |= drv->soe;
-                    drv->write_shift_reg = drv->read_latch = (BYTE) drv->read_shift_reg;
+                    drv->write_shift_reg = drv->read_latch = drv->read_shift_reg;
                 }
             } else {
                 drv->bit_counter = 0;
@@ -761,6 +820,153 @@ static void fdd_rotate_gcr(fd_drive_t *drv)
                 drv->byte_ready_edge |= drv->soe & ~drv->byte_ready;
                 drv->byte_ready |= drv->soe;
                 drv->write_shift_reg = drv->write_out;
+            }
+        }
+    }
+}
+
+static void fdd_rotate_gcr_fdc(fd_drive_t *drv)
+{
+    static const BYTE gcr[16] = {
+        0x0a, 0x0b, 0x12, 0x13, 0x0e, 0x0f, 0x16, 0x17,
+        0x09, 0x19, 0x1a, 0x1b, 0x0d, 0x1d, 0x1e, 0x15
+    };
+    CLOCK clk;
+
+    if (!drv->motor) {
+        drv->last_clk = drv->clk;
+        return;
+    }
+
+    clk = drv->clk - drv->last_clk;
+    drv->last_clk = drv->clk;
+
+    for (;;) {
+        if (drv->accum < drv->divider) {
+            if (clk & ~0xffff) {
+                drv->accum += 65536 * (drv->raw ? drv->raw->size : 9375);
+                clk -= 65536;
+            } else {
+                drv->accum += clk * (drv->raw ? drv->raw->size : 9375);
+                clk = 0;
+                if (drv->accum < drv->divider) {
+                    break;
+                }
+            }
+        }
+        drv->accum -= drv->divider;
+        if (drv->write_gate) {
+            drv->read_shift_reg <<= 1;
+            drv->write_shift_reg <<= 1;
+            if (~drv->read_shift_reg & 0x7fe) {
+                drv->bit_counter++;
+                if (drv->bit_counter > 9) {
+                    drv->bit_counter = 0;
+                }
+            }
+            /* GCR=0 support.
+             * 
+             * In the absence of 1-bits (magnetic flux changes), the drive
+             * will use a timer counter to count how many 0s it has read. Every
+             * 4 read bits, it will detect a 1-bit, because it doesn't
+             * distinguish between reset occuring from magnetic flux or regular
+             * wraparound.
+             * 
+             * Random magnetic flux events can also occur after GCR data has been
+             * quiet for a long time, for at least 4 bits. So the first value
+             * read will always be 1. Afterwards, the 0-bit sequence lengths
+             * vary randomly, but can never exceed 3.
+             * 
+             * Each time a random event happens, it tends to advance the bit counter
+             * by half a clock, because the random event can occur at any time
+             * and thus the expectation value is that it occurs at 50 % point
+             * within the bitcells.
+             * 
+             * Additionally, the underlying disk rotation has no way to keep in sync
+             * with the electronics, so the bitstream after a GCR=0 may or may not
+             * be shifted with respect to the bit counter by the time drive
+             * encounters it. This situation will persist until the next sync
+             * sequence. There is no specific emulation for variable disk rotation,
+             * this case is thought to be covered by the random event handling.
+             * 
+             * Here's some genuine 1541 patterns for reference:
+             * 
+             * 53 12 46 22 24 AA AA AA AA AA AA AA A8 AA AA AA
+             * 53 11 11 11 14 AA AA AA AA AA AA AA A8 AA AA AA
+             * 53 12 46 22 24 AA AA AA AA AA AA AA A8 AA AA AA
+             * 53 12 22 24 45 2A AA AA AA AA AA AA AA 2A AA AA
+             * 53 11 52 22 24 AA AA AA AA AA AA AA A8 AA AA AA
+             */
+
+            if (read_next_bit(drv)) {
+                drv->zero_count = 0;
+                drv->read_shift_reg++;
+            }
+
+            /* Simulate random magnetic flux events in our lame-ass emulation. */
+            if (++ drv->zero_count > 8 && (drv->read_shift_reg & 0x3f) == 0x8 && RANDOM_nextInt(drv) > (1 << 30)) {
+                drv->read_shift_reg |= 1;
+                /*
+                 * Simulate loss of sync against the underlying platter.
+                 * Whenever 1-bits occur, there's a chance that they occured
+                 * due to a random magnetic flux event, and can thus occur
+                 * at any phase of the bit-cell clock.
+                 * 
+                 * It follows, therefore, that such events have a chance to
+                 * advance the bit_counter by about 0,5 clocks each time they
+                 * occur. Hence > 0 here, which filters out 50 % of events.
+                 */
+                if (drv->bit_counter < 7 && RANDOM_nextInt(drv) > 0) {
+                    drv->bit_counter++;
+                    if (drv->bit_counter > 9) {
+                        drv->bit_counter = 0;
+                    }
+                    drv->read_shift_reg <<= 1;
+                }
+            } else if ((drv->read_shift_reg & 0xf) == 0) {
+                /* Simulate clock reset */
+                drv->read_shift_reg++;
+            }
+
+            /* is sync? reset bit counter, don't move data, etc. */
+            if (~drv->read_shift_reg & 0x3ff) {
+                if (drv->bit_counter < 9) {
+                    drv->byte_ready &= drv->native;
+                } else {
+                    drv->byte_ready_edge |= drv->soe & ~drv->byte_ready;
+                    drv->byte_ready |= drv->soe;
+                    drv->write_shift_reg = drv->read_latch = drv->read_shift_reg;
+                }
+            } else {
+                drv->bit_counter = 0;
+            }
+        } else {
+        /* When writing, the first byte after transition is going to echo the
+         * bits from the last read value.
+         */
+            drv->bit_counter++;
+            if (drv->bit_counter > 9) {
+                drv->bit_counter = 0;
+            }
+
+            drv->read_shift_reg <<= 1;
+            if ((drv->read_shift_reg & 0xf) == 0) {
+                drv->read_shift_reg++;
+            }
+
+            write_next_bit(drv, drv->write_shift_reg & 0x200);
+            drv->write_shift_reg <<= 1;
+
+            if (drv->bit_counter < 9) {
+                drv->byte_ready &= drv->native;
+            } else {
+                drv->byte_ready_edge |= drv->soe & ~drv->byte_ready;
+                drv->byte_ready |= drv->soe;
+                if (drv->mode) {
+                    drv->write_shift_reg = 0x37b | ((drv->write_out << 1) & 4) | ((drv->write_out << 2) & 0x80);
+                } else {
+                    drv->write_shift_reg = (gcr[drv->write_out >> 4] << 5) | gcr[drv->write_out & 15];
+                }
             }
         }
     }

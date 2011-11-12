@@ -81,12 +81,10 @@ static int fsimage_flat_seek_track(disk_image_t *image, unsigned int track, unsi
     case DISK_IMAGE_TYPE_D4M:
         offset = (128 << image->mfm.sector_size) * image->mfm.sectors * (track * 2 + head);
         break;
-    case DISK_IMAGE_TYPE_D71:
-        track += head ? 35 : 0;
-        /* fall through */
     default:
         offset = 0;
 
+        track += head ? image->doublesided : 0;
         for (i = 1; i < track; i++) {
             offset += disk_image_sector_per_track(image, i);
         }
@@ -110,14 +108,28 @@ static int fsimage_flat_read_track_gcr(disk_image_t *image, unsigned int track,
 {
     BYTE buffer[256], *data;
     unsigned int sector;
-    int max_sector, gap;
+    int max_sector, gap, gap2, sync;
     int rc, sectors;
     gcr_header_t header;
     fsimage_t *fsimage = image->media.fsimage;
 
-    header.track = track / 2 + 1;
-
-    raw->size = disk_image_raw_track_size_1541(header.track);
+    switch (image->type) {
+    case DISK_IMAGE_TYPE_D80:
+    case DISK_IMAGE_TYPE_D82:
+        header.track = track + 1;
+        raw->size = disk_image_raw_track_size_8050(header.track);
+        gap = disk_image_gap_size_8050(header.track);
+        gap2 = 24;
+        sync = 6;
+        break;
+    default:
+        header.track = track / 2 + 1;
+        raw->size = disk_image_raw_track_size_1541(header.track);
+        gap = disk_image_gap_size_1541(header.track);
+        gap2 = 9;
+        sync = 5;
+        break;
+    }
     raw->data = lib_realloc(raw->data, raw->size);
 
     if (track >= image->ptracks || head >= image->sides) {
@@ -129,15 +141,12 @@ static int fsimage_flat_read_track_gcr(disk_image_t *image, unsigned int track,
     header.id2 = image->diskid[1];
 
     max_sector = disk_image_sector_per_track(image, header.track);
-    gap = disk_image_gap_size_1541(header.track);
 
     memset(raw->data, 0x55, raw->size);
 
     fsimage_flat_seek_track(image, header.track, head);
 
-    if (head) {
-        header.track += image->doublesided;
-    }
+    header.track += head ? image->doublesided : 0;
 
     data = raw->data;
     for (sector = 0; sector < max_sector; sector++) {
@@ -153,10 +162,10 @@ static int fsimage_flat_read_track_gcr(disk_image_t *image, unsigned int track,
             }
 
             header.sector = sector;
-            gcr_convert_sector_to_GCR(buffer, data, &header, (BYTE)(rc));
+            gcr_convert_sector_to_GCR(buffer, data, &header, gap2, sync, (BYTE)(rc));
         }
 
-        data += SECTOR_GCR_SIZE_WITH_HEADER + gap;
+        data += SECTOR_GCR_SIZE_WITH_HEADER + gap2 + gap + sync;
     }
     return 0;
 }
@@ -256,7 +265,15 @@ int fsimage_flat_write_track_gcr(disk_image_t *image, unsigned int track,
     fsimage_t *fsimage = image->media.fsimage;
     unsigned int ltrack;
 
-    track = track / 2 + 1;
+    switch (image->type) {
+    case DISK_IMAGE_TYPE_D80:
+    case DISK_IMAGE_TYPE_D82:
+        track = track + 1;
+        break;
+    default:
+        track = track / 2 + 1;
+        break;
+    }
     ltrack = track;
     if (image->type == DISK_IMAGE_TYPE_D71 && head !=0) {
         ltrack += 35;
@@ -617,10 +634,10 @@ static int fsimage_flat_probe_general(disk_image_t *image, int size1, int size2,
         if (fread(block, 1, 256, fsimage->fd) != 256) {
             return 0;
         }
-        if (i == id) {
+        if (i == (id >> 8)) {
             image->doublesided = block[0x03] & 0x80;
-            image->diskid[0] = block[0xa2];
-            image->diskid[1] = block[0xa3];
+            image->diskid[0] = block[id & 0xff];
+            image->diskid[1] = block[(id + 1) & 0xff];
         }
     }
 
@@ -711,7 +728,7 @@ static int fsimage_flat_probe_d64(disk_image_t *image)
 
 static int fsimage_flat_probe_d67(disk_image_t *image)
 {
-    if (!fsimage_flat_probe_general(image, D67_FILE_SIZE, D67_FILE_SIZE, 17 * 21)) {
+    if (!fsimage_flat_probe_general(image, D67_FILE_SIZE, D67_FILE_SIZE, 17 * 21 * 256 + 0xa2)) {
         return 0;
     }
 
@@ -728,7 +745,7 @@ static int fsimage_flat_probe_d67(disk_image_t *image)
 
 static int fsimage_flat_probe_d71(disk_image_t *image)
 {
-    if (!fsimage_flat_probe_general(image, D71_FILE_SIZE, D71_FILE_SIZE_E, 17 * 21)) {
+    if (!fsimage_flat_probe_general(image, D71_FILE_SIZE, D71_FILE_SIZE_E, 17 * 21 * 256 + 0xa2)) {
         return 0;
     }
 
@@ -769,7 +786,7 @@ static int fsimage_flat_probe_d81(disk_image_t *image)
 
 static int fsimage_flat_probe_d80(disk_image_t *image)
 {
-    if (!fsimage_flat_probe_general(image, D80_FILE_SIZE, D80_FILE_SIZE, -1)) {
+    if (!fsimage_flat_probe_general(image, D80_FILE_SIZE, D80_FILE_SIZE, 38 * 29 * 256 + 0x18)) {
         return 0;
     }
 
@@ -786,7 +803,7 @@ static int fsimage_flat_probe_d80(disk_image_t *image)
 
 static int fsimage_flat_probe_d82(disk_image_t *image)
 {
-    if (!fsimage_flat_probe_general(image, D82_FILE_SIZE, D82_FILE_SIZE, -1)) {
+    if (!fsimage_flat_probe_general(image, D82_FILE_SIZE, D82_FILE_SIZE, 38 * 29 * 256 + 0x18)) {
         return 0;
     }
 
@@ -797,7 +814,7 @@ static int fsimage_flat_probe_d82(disk_image_t *image)
     image->ltracks = NUM_TRACKS_8250;
     image->ptracks = NUM_TRACKS_8250 / 2;
     image->sides = 2;
-    image->doublesided = 0;
+    image->doublesided = 77;
     return 1;
 }
 

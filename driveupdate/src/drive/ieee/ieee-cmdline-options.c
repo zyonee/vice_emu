@@ -60,6 +60,11 @@ static const cmdline_option_t cmdline_options[] = {
       USE_PARAM_ID, USE_DESCRIPTION_ID,
       IDCLS_P_NAME, IDCLS_SPECIFY_1001_DOS_ROM_NAME,
       NULL, NULL },
+    { "-fdc1001", SET_RESOURCE, 1,
+      NULL, NULL, "FDCName1001", "fdc1001",
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_P_NAME, IDCLS_SPECIFY_1001_FDC_ROM_NAME,
+      NULL, NULL },
     { NULL }
 };
 
@@ -85,6 +90,7 @@ int ieee_cmdline_options_init(void)
             return -1;
 
         lib_free((char *)cmd_drive[0].name);
+        lib_free((char *)cmd_drive[0].resource_name);
     }
 
     return cmdline_register_options(cmdline_options);

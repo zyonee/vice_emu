@@ -47,6 +47,7 @@ static log_t disk_image_log = LOG_DEFAULT;
 /* Disk constants.  */
 
 static const unsigned int raw_track_size_1541[4] = { 6250, 6666, 7142, 7692 };
+static const unsigned int raw_track_size_8050[4] = { 9375, 10000, 10714, 11538 };
 static const unsigned int gaps_between_sectors_1541[4] = { 9, 12, 17, 8 };
 static const int sectors_1541[4] = { 17, 18, 19, 21 };
 static const char sectors_2040[4] = { 17, 18, 20, 21 };
@@ -67,9 +68,19 @@ unsigned int disk_image_raw_track_size_1541(unsigned int track)
     return raw_track_size_1541[disk_image_speed_map_1541(track)];
 }
 
+unsigned int disk_image_raw_track_size_8050(unsigned int track)
+{
+    return raw_track_size_8050[disk_image_speed_map_8050(track)];
+}
+
 unsigned int disk_image_gap_size_1541(unsigned int track)
 {
     return gaps_between_sectors_1541[disk_image_speed_map_1541(track)];
+}
+
+unsigned int disk_image_gap_size_8050(unsigned int track)
+{
+    return 25;
 }
 
 /*-----------------------------------------------------------------------*/

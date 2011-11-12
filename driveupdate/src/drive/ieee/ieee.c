@@ -29,7 +29,6 @@
 #include "drive-check.h"
 #include "drive.h"
 #include "drivetypes.h"
-#include "fdc.h"
 #include "ieee-cmdline-options.h"
 #include "ieee-resources.h"
 #include "ieee.h"
@@ -41,6 +40,7 @@
 #include "types.h"
 #include "via.h"
 #include "via1d2031.h"
+#include "via1001.h"
 
 
 int ieee_drive_resources_init(void)
@@ -63,15 +63,19 @@ void ieee_drive_init(struct drive_context_s *drv)
     ieeerom_init();
     via1d2031_init(drv);
     fdc_init(drv);
+    via1001_init(drv);
     riot1_init(drv);
     riot2_init(drv);
+    riot3_init(drv);
 }
 
 void ieee_drive_shutdown(struct drive_context_s *drv)
 {
     viacore_shutdown(drv->via1d2031);
+    viacore_shutdown(drv->via1001);
     riotcore_shutdown(drv->riot1);
     riotcore_shutdown(drv->riot2);
+    riotcore_shutdown(drv->riot3);
 }
 
 void ieee_drive_reset(struct drive_context_s *drv)
@@ -85,11 +89,15 @@ void ieee_drive_reset(struct drive_context_s *drv)
         fdc_reset(drv->mynumber, drv->drive->type);
         riotcore_reset(drv->riot1);
         riotcore_reset(drv->riot2);
+        riotcore_reset(drv->riot3);
+        viacore_reset(drv->via1001);
     } else {
         /* alarm is unset by fdc_reset */
         fdc_reset(drv->mynumber, drv->drive->type);
         riotcore_disable(drv->riot1);
         riotcore_disable(drv->riot2);
+        riotcore_disable(drv->riot3);
+        viacore_disable(drv->via1001);
     }
 }
 
@@ -115,8 +123,10 @@ void ieee_drive_setup_context(struct drive_context_s *drv)
     }
 
     via1d2031_setup_context(drv);
+    via1001_setup_context(drv);
     riot1_setup_context(drv);
     riot2_setup_context(drv);
+    riot3_setup_context(drv);
 }
 
 void ieee_drive_rom_load(void)
@@ -126,6 +136,7 @@ void ieee_drive_rom_load(void)
     ieeerom_load_3040();
     ieeerom_load_4040();
     ieeerom_load_1001();
+    ieeerom_load_1001fdc();
 }
 
 void ieee_drive_rom_setup_image(unsigned int dnr)
@@ -158,7 +169,9 @@ int ieee_drive_snapshot_read(struct drive_context_s *ctxptr,
     if (drive_check_old(ctxptr->drive->type)) {
         if (riotcore_snapshot_read_module(ctxptr->riot1, s) < 0
             || riotcore_snapshot_read_module(ctxptr->riot2, s) < 0
-            || fdc_snapshot_read_module(s, ctxptr->mynumber) < 0)
+            || riotcore_snapshot_read_module(ctxptr->riot3, s) < 0
+            || fdc_snapshot_read_module(s, ctxptr->mynumber) < 0
+            || viacore_snapshot_read_module(ctxptr->via1001, s) < 0)
             return -1;
     }
 
@@ -176,7 +189,9 @@ int ieee_drive_snapshot_write(struct drive_context_s *ctxptr,
     if (drive_check_old(ctxptr->drive->type)) {
         if (riotcore_snapshot_write_module(ctxptr->riot1, s) < 0
             || riotcore_snapshot_write_module(ctxptr->riot2, s) < 0
-            || fdc_snapshot_write_module(s, ctxptr->mynumber) < 0)
+            || riotcore_snapshot_write_module(ctxptr->riot3, s) < 0
+            || fdc_snapshot_write_module(s, ctxptr->mynumber) < 0
+            || viacore_snapshot_write_module(ctxptr->via1001, s) < 0)
             return -1;
     }
 

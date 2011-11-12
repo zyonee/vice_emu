@@ -82,6 +82,9 @@ void iec_drive_init(struct drive_context_s *drv)
 
 void iec_drive_reset(struct drive_context_s *drv)
 {
+    wd1770_set_fdd(drv->wd1770, drv->drive->fdds[0]);
+    pc8477_set_fdd(drv->pc8477, drv->drive->fdds[0]); /* hack */
+
     if (drv->drive->type == DRIVE_TYPE_1541
         || drv->drive->type == DRIVE_TYPE_1541II
         || drv->drive->type == DRIVE_TYPE_1570

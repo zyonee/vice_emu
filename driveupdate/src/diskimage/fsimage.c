@@ -164,6 +164,8 @@ int fsimage_read_track(disk_image_t *image, unsigned int track,
     case DISK_IMAGE_TYPE_X64:
     case DISK_IMAGE_TYPE_D71:
     case DISK_IMAGE_TYPE_D81:
+    case DISK_IMAGE_TYPE_D80:
+    case DISK_IMAGE_TYPE_D82:
     case DISK_IMAGE_TYPE_D1M:
     case DISK_IMAGE_TYPE_D2M:
     case DISK_IMAGE_TYPE_D4M:
@@ -200,6 +202,8 @@ int fsimage_write_track(disk_image_t *image, unsigned int track,
     case DISK_IMAGE_TYPE_X64:
     case DISK_IMAGE_TYPE_D71:
     case DISK_IMAGE_TYPE_D81:
+    case DISK_IMAGE_TYPE_D80:
+    case DISK_IMAGE_TYPE_D82:
     case DISK_IMAGE_TYPE_D1M:
     case DISK_IMAGE_TYPE_D2M:
     case DISK_IMAGE_TYPE_D4M:
