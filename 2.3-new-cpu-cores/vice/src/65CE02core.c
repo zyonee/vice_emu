@@ -915,6 +915,7 @@
                                                   \
       tmp = LOAD_BP(addr);                        \
       CLK_ADD(CLK, CYCLES_1);                     \
+      STORE_BP_FUNC(addr, (tmp - 1) & 0xff);      \
       tmp |= (LOAD_BP((addr + 1) & 0xff) << 8);   \
       CLK_ADD(CLK, CYCLES_1);                     \
       tmp--;                                      \
@@ -924,7 +925,6 @@
           LOCAL_SET_NZ(tmp >> 8);                 \
       }                                           \
       INC_PC(SIZE_2);                             \
-      STORE_BP_FUNC(addr, tmp & 0xff);            \
       STORE_BP_FUNC((addr + 1) & 0xff, tmp >> 8); \
   } while (0)
 
