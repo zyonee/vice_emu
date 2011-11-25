@@ -38,6 +38,7 @@
 #include "types.h"
 #include "util.h"
 #include "lib.h"
+#include "cbmdos.h"
 
 static log_t fsimage_gcr_log = LOG_ERR;
 
@@ -231,7 +232,7 @@ int fsimage_gcr_read_sector(disk_image_t *image, BYTE *buf,
         return -1;
     }
 
-    if (gcr_read_sector(&raw, buf, sector) < 0) {
+    if (gcr_read_sector(&raw, buf, sector) != CBMDOS_FDC_ERR_OK) {
         log_error(fsimage_gcr_log,
                   "Cannot find track: %i sector: %i within GCR image.",
                   track, sector);
@@ -267,7 +268,7 @@ int fsimage_gcr_write_sector(disk_image_t *image, BYTE *buf,
         return -1;
     }
 
-    if (gcr_write_sector(&raw, buf, sector) < 0) {
+    if (gcr_write_sector(&raw, buf, sector) != CBMDOS_FDC_ERR_OK) {
         log_error(fsimage_gcr_log,
                   "Could not find track %i sector %i in disk image",
                   track, sector);
@@ -327,8 +328,8 @@ int fsimage_gcr_create(disk_image_t *image, unsigned int type)
     }
     memset(rawdata, 0, sizeof(rawdata));
 
-    header.id1 = image->diskid[0];
-    header.id2 = image->diskid[1];
+    header.id1 = 0xa0;
+    header.id2 = 0xa0;
     for (track = 1; track <= NUM_TRACKS_1541; track++) {
         gcrptr = gcr_track;
         i = disk_image_raw_track_size_1541(track);
@@ -355,7 +356,7 @@ int fsimage_gcr_create(disk_image_t *image, unsigned int type)
    return 0;
 }
 
-int fsimage_gcr_probe(disk_image_t *image)
+int fsimage_gcr_open(disk_image_t *image)
 {
     int trackfield;
     BYTE header[32];
@@ -400,8 +401,12 @@ int fsimage_gcr_probe(disk_image_t *image)
     image->ltracks = NUM_TRACKS_1541;
     image->ptracks = header[9];
     image->sides = 1;
-    fsimage_error_info_destroy(fsimage);
     return 1;
+}
+
+void fsimage_gcr_close(disk_image_t *image)
+{
+
 }
 /*-----------------------------------------------------------------------*/
 

@@ -45,6 +45,7 @@ extern int fsimage_flat_write_track(struct disk_image_s *image,
                                    unsigned int track, unsigned int head,
                                    struct disk_track_s *raw);
 extern int fsimage_flat_create(struct disk_image_s *image, unsigned int type);
-extern int fsimage_flat_probe(disk_image_t *image);
+extern int fsimage_flat_open(disk_image_t *image);
+extern void fsimage_flat_close(disk_image_t *image);
 #endif
 

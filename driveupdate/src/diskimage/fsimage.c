@@ -66,19 +66,6 @@ char *fsimage_name_get(disk_image_t *image)
 
 /*-----------------------------------------------------------------------*/
 
-void fsimage_error_info_create(fsimage_t *fsimage)
-{
-    fsimage->error_info = lib_calloc(1, MAX_BLOCKS_ANY);
-}
-
-void fsimage_error_info_destroy(fsimage_t *fsimage)
-{
-    lib_free(fsimage->error_info);
-    fsimage->error_info = NULL;
-}
-
-/*-----------------------------------------------------------------------*/
-
 void fsimage_media_create(disk_image_t *image)
 {
     fsimage_t *fsimage;
@@ -95,14 +82,11 @@ void fsimage_media_destroy(disk_image_t *image)
     fsimage = image->media.fsimage;
 
     lib_free(fsimage->name);
-    fsimage_error_info_destroy(fsimage);
 
     lib_free(fsimage);
 }
 
 /*-----------------------------------------------------------------------*/
-int fsimage_probe(disk_image_t *image);
-
 int fsimage_open(disk_image_t *image)
 {
     fsimage_t *fsimage;
@@ -126,8 +110,14 @@ int fsimage_open(disk_image_t *image)
         return -1;
     }
 
-    if (fsimage_probe(image) == 0)
+    if (fsimage_flat_open(image)
+        || fsimage_gcr_open(image)) {
+
+        log_verbose("%s disk image recognised: %s, %d tracks%s",
+                image->type_name, fsimage->name, image->ltracks,
+                image->read_only ? " (read only)." : ".");
         return 0;
+    }
 
     zfile_fclose(fsimage->fd);
     log_message(fsimage_log, "Unknown disk image `%s'.", fsimage->name);
@@ -145,9 +135,25 @@ int fsimage_close(disk_image_t *image)
         return -1;
     }
 
-    zfile_fclose(fsimage->fd);
+    switch (image->type) {
+    case DISK_IMAGE_TYPE_D64:
+    case DISK_IMAGE_TYPE_D67:
+    case DISK_IMAGE_TYPE_X64:
+    case DISK_IMAGE_TYPE_D71:
+    case DISK_IMAGE_TYPE_D81:
+    case DISK_IMAGE_TYPE_D80:
+    case DISK_IMAGE_TYPE_D82:
+    case DISK_IMAGE_TYPE_D1M:
+    case DISK_IMAGE_TYPE_D2M:
+    case DISK_IMAGE_TYPE_D4M:
+        fsimage_flat_close(image);
+        break;
+    case DISK_IMAGE_TYPE_G64:
+        fsimage_gcr_close(image);
+        break;
+    }
 
-    fsimage_error_info_destroy(fsimage);
+    zfile_fclose(fsimage->fd);
 
     return 0;
 }
@@ -294,7 +300,6 @@ int fsimage_create(const char *name, unsigned int type)
 
     image = disk_image_create();
     image->device = DISK_IMAGE_DEVICE_FS;
-    image->diskid[0] = image->diskid[1] = 0xa0;
     fsimage_media_create(image);
     fsimage_name_set(image, lib_stralloc(name));
 
@@ -334,22 +339,6 @@ int fsimage_create(const char *name, unsigned int type)
     fsimage_media_destroy(image);
     disk_image_destroy(image);
     return rc;
-}
-
-int fsimage_probe(disk_image_t *image)
-{
-    fsimage_t *fsimage = image->media.fsimage;
-
-    if (fsimage_flat_probe(image)
-        || fsimage_gcr_probe(image)) {
-
-        log_verbose("%s disk image recognised: %s, %d tracks%s",
-                image->type_name, fsimage->name, image->ltracks,
-                image->read_only ? " (read only)." : ".");
-        return 0;
-    }
-
-    return -1;
 }
 
 /*-----------------------------------------------------------------------*/

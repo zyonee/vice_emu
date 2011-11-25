@@ -87,6 +87,38 @@ static const char *cbmdos_ft[] = {
     "DEL", "SEQ", "PRG", "USR", "REL", "CBM", "DIR"
 };
 
+unsigned int cbmdos_fdc_to_ipe(unsigned int code)
+{
+    switch (code) {
+    case CBMDOS_FDC_ERR_HEADER:
+        return CBMDOS_IPE_READ_ERROR_BNF;   /* 20 */
+    case CBMDOS_FDC_ERR_SYNC:
+        return CBMDOS_IPE_READ_ERROR_SYNC;  /* 21 */
+    case CBMDOS_FDC_ERR_NOBLOCK:
+        return CBMDOS_IPE_READ_ERROR_DATA;  /* 22 */
+    case CBMDOS_FDC_ERR_DCHECK:
+        return CBMDOS_IPE_READ_ERROR_CHK;   /* 23 */ 
+    case CBMDOS_FDC_ERR_VERIFY:
+        return CBMDOS_IPE_WRITE_ERROR_VER;  /* 25 */
+    case CBMDOS_FDC_ERR_WPROT:
+        return CBMDOS_IPE_WRITE_PROTECT_ON; /* 26 */
+    case CBMDOS_FDC_ERR_HCHECK:
+        return CBMDOS_IPE_READ_ERROR_BCHK;  /* 27 */
+    case CBMDOS_FDC_ERR_BLENGTH:
+        return CBMDOS_IPE_WRITE_ERROR_BIG;  /* 28 */
+    case CBMDOS_FDC_ERR_ID:
+        return CBMDOS_IPE_DISK_ID_MISMATCH; /* 29 */
+    case CBMDOS_FDC_ERR_DRIVE:
+        return CBMDOS_IPE_NOT_READY;        /* 74 */
+    case CBMDOS_FDC_ERR_DECODE:
+        return CBMDOS_IPE_READ_ERROR_GCR;   /* 24 */
+    case CBMDOS_FDC_ERR_OK:
+    case CBMDOS_FDC_ERR_FSPEED:
+    default:
+        return CBMDOS_IPE_OK;               /* 0 */
+    }
+}
+
 const char *cbmdos_errortext(unsigned int code)
 {
     unsigned int count = 0;

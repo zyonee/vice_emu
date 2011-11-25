@@ -111,14 +111,14 @@ void gcr_convert_sector_to_GCR(BYTE *buffer, BYTE *data, gcr_header_t *header,
     int i;
     BYTE buf[4], chksum, idm;
 
-    idm = (error_code == CBMDOS_IPE_DISK_ID_MISMATCH) ? 0xff : 0x00;
+    idm = (error_code == CBMDOS_FDC_ERR_ID) ? 0xff : 0x00;
 
-    memset(data, 0xff, 5);       /* Sync */
+    memset(data, (error_code == CBMDOS_FDC_ERR_SYNC) ? 0x55 : 0xff, 5);       /* Sync */
     data += 5;
 
-    chksum = (error_code == CBMDOS_IPE_READ_ERROR_BCHK) ? 0xff : 0x00;
+    chksum = (error_code == CBMDOS_FDC_ERR_HCHECK) ? 0xff : 0x00;
     chksum ^= header->sector ^ header->track ^ header->id2 ^ header->id1 ^ idm;
-    buf[0] = (error_code == CBMDOS_IPE_READ_ERROR_BNF) ? 0xff : 0x08;
+    buf[0] = (error_code == CBMDOS_FDC_ERR_HEADER) ? 0xff : 0x08;
     buf[1] = chksum;
     buf[2] = header->sector;
     buf[3] = header->track;
@@ -133,11 +133,11 @@ void gcr_convert_sector_to_GCR(BYTE *buffer, BYTE *data, gcr_header_t *header,
 
     data += gap;                   /* Gap */
 
-    memset(data, 0xff, sync);       /* Sync */
+    memset(data, (error_code == CBMDOS_FDC_ERR_SYNC) ? 0x55 : 0xff, sync);       /* Sync */
     data += sync;
 
-    chksum = (error_code == CBMDOS_IPE_READ_ERROR_CHK) ? 0xff : 0x00;
-    buf[0] = (error_code == CBMDOS_IPE_READ_ERROR_DATA) ? 0xff : 0x07;
+    chksum = (error_code == CBMDOS_FDC_ERR_DCHECK) ? 0xff : 0x00;
+    buf[0] = (error_code == CBMDOS_FDC_ERR_NOBLOCK) ? 0xff : 0x07;
     memcpy(buf + 1, buffer, 3);
     chksum ^= buffer[0] ^ buffer[1] ^ buffer[2];
     gcr_convert_4bytes_to_GCR(buf, data);
@@ -183,73 +183,20 @@ static int gcr_find_sync(disk_track_t *raw, int p, int s) {
             b = raw->data[p >> 3];
         }
     }
-    return -1;
+    return -CBMDOS_FDC_ERR_SYNC;
 }
 
-static int gcr_find_sector_header(disk_track_t *raw, BYTE sector)
+static void gcr_decode_block(disk_track_t *raw, int p, BYTE *buf, int num)
 {
-    BYTE gcr[5], header[4], b;
-    BYTE *offset, *end = raw->data + raw->size;
-    int i, p, p2, shift;
-
-    p = 0;
-    p2 = -1;
-    for (;;) {
-        p = gcr_find_sync(raw, p, raw->size * 8);
-        if (p2 == p) {
-            break;
-        }
-        if (p2 < 0) {
-            p2 = p;
-        }
-        shift = p & 7;
-        offset = raw->data + (p >> 3);
-
-        b = offset[0] << shift;
-        for (i = 0; i < 5; i++) {
-            offset++;
-            if (offset >= end) {
-                offset = raw->data;
-            }
-            if (shift) {
-                gcr[i] = b | ((offset[0] << shift) >> 8);
-                b = offset[0] << shift;
-            } else {
-                gcr[i] = b;
-                b = offset[0];
-            }
-        }
-        gcr_convert_GCR_to_4bytes(gcr, header);
-        if (header[0] == 0x08 && header[2] == sector) {
-            /* Track, checksum or ID's are not checked here */
-            DBG(("GCR: shift: %d hdr: %02x %02x sec:%02d trk:%02d", shift, header[0], header[1], header[2], header[3]));
-            return p;
-        }
-    }
-    return -1;
-}
-
-int gcr_read_sector(disk_track_t *raw, BYTE *data, BYTE sector)
-{
-    BYTE buffer[260], *buf, *offset;
-    BYTE *end = raw->data + raw->size;
+    int shift, i, j;
     BYTE gcr[5], b;
-    int i, j, shift, p;
-
-    p = gcr_find_sector_header(raw, sector);
-    if (p < 0)
-        return -1;
-
-    p = gcr_find_sync(raw, p, 500 * 8);
-    if (p < 0)
-        return -2;
+    BYTE *offset, *end = raw->data + raw->size;
 
     shift = p & 7;
     offset = raw->data + (p >> 3);
 
     b = offset[0] << shift;
-    buf = buffer;
-    for (i = 0; i < 65; i++) {
+    for (i = 0; i < num; i++, buf += 4) {
         /* get 5 bytes of gcr data */
         for (j = 0; j < 5; j++) {
             offset++;
@@ -265,15 +212,68 @@ int gcr_read_sector(disk_track_t *raw, BYTE *data, BYTE sector)
             }
         }
         gcr_convert_GCR_to_4bytes(gcr, buf);
-        buf += 4;
     }
-
-    memcpy(data, buffer + 1, 256);
-
-    return (buffer[0] == 0x07) ? 0 : -3;
 }
 
-int gcr_write_sector(disk_track_t  *raw, BYTE *data, BYTE sector)
+static int gcr_find_sector_header(disk_track_t *raw, BYTE sector)
+{
+    BYTE header[4];
+    int p, p2;
+
+    p = 0;
+    p2 = -CBMDOS_FDC_ERR_SYNC;
+    for (;;) {
+        p = gcr_find_sync(raw, p, raw->size * 8);
+        if (p2 == p) {
+            break;
+        }
+        if (p2 < 0) {
+            p2 = p;
+        }
+        gcr_decode_block(raw, p, header, 1);
+
+        if (header[0] == 0x08 && header[2] == sector) {
+            /* Track, checksum or ID's are not checked here */
+            DBG(("GCR: shift: %d hdr: %02x %02x sec:%02d trk:%02d", shift, header[0], header[1], header[2], header[3]));
+            return p;
+        }
+    }
+    if (p2 < 0) {
+        return p2;
+    }
+    return -CBMDOS_FDC_ERR_HEADER;
+}
+
+int gcr_read_sector(disk_track_t *raw, BYTE *data, BYTE sector)
+{
+    BYTE buffer[260];
+    BYTE b;
+    int i, p;
+
+    p = gcr_find_sector_header(raw, sector);
+    if (p < 0)
+        return -p;
+
+    p = gcr_find_sync(raw, p, 500 * 8);
+    if (p < 0)
+        return -p;
+
+    gcr_decode_block(raw, p, buffer, 65);
+
+    b = buffer[257];
+    for (i = 0; i < 256; i++) {
+        data[i] = buffer[i + 1];
+        b ^= data[i];
+    }
+
+    if (buffer[0] != 0x07) {
+        return CBMDOS_FDC_ERR_NOBLOCK;
+    }
+
+    return b ? CBMDOS_FDC_ERR_DCHECK : CBMDOS_FDC_ERR_OK;
+}
+
+int gcr_write_sector(disk_track_t *raw, BYTE *data, BYTE sector)
 {
     BYTE buffer[260], *offset, *buf;
     BYTE *end = raw->data + raw->size;
@@ -282,11 +282,11 @@ int gcr_write_sector(disk_track_t  *raw, BYTE *data, BYTE sector)
 
     p = gcr_find_sector_header(raw, sector);
     if (p < 0)
-        return -1;
+        return -p;
 
     p = gcr_find_sync(raw, p, 500 * 8);
     if (p < 0)
-        return -2;
+        return -p;
 
     shift = p & 7;
     offset = raw->data + (p >> 3);
@@ -320,5 +320,5 @@ int gcr_write_sector(disk_track_t  *raw, BYTE *data, BYTE sector)
     }
     offset[0] = b | (offset[0] & (0xff >> shift));
 
-    return 0;
+    return CBMDOS_FDC_ERR_OK;
 }

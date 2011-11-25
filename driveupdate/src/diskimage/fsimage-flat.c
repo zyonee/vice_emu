@@ -72,7 +72,7 @@ static int fsimage_calc_logical_offset(disk_image_t *image, unsigned int track,
 static int fsimage_flat_seek_track(disk_image_t *image, unsigned int track, unsigned head)
 {
     fsimage_t *fsimage = image->media.fsimage;
-    int i, offset;
+    int i, offset, errorinfo;
 
     switch (image->type) {
     case DISK_IMAGE_TYPE_D81:
@@ -80,15 +80,17 @@ static int fsimage_flat_seek_track(disk_image_t *image, unsigned int track, unsi
     case DISK_IMAGE_TYPE_D2M:
     case DISK_IMAGE_TYPE_D4M:
         offset = (128 << image->mfm.sector_size) * image->mfm.sectors * (track * 2 + head);
+        errorinfo = offset / 256;
         break;
     default:
         offset = 0;
 
-        track += head ? image->doublesided : 0;
+        track += head ? image->gcr.doublesided : 0;
         for (i = 1; i < track; i++) {
             offset += disk_image_sector_per_track(image, i);
         }
 
+        errorinfo = offset;
         offset *= 256;
 
         if (image->type == DISK_IMAGE_TYPE_X64) {
@@ -96,7 +98,11 @@ static int fsimage_flat_seek_track(disk_image_t *image, unsigned int track, unsi
         }
     }
 
-    return fseek(fsimage->fd, offset, SEEK_SET);
+    fseek(fsimage->fd, offset, SEEK_SET);
+    if (errorinfo < image->lblocks && fsimage->errors) {
+        return errorinfo;
+    }
+    return -1;
 }
 
 
@@ -108,8 +114,8 @@ static int fsimage_flat_read_track_gcr(disk_image_t *image, unsigned int track,
 {
     BYTE buffer[256], *data;
     unsigned int sector;
-    int max_sector, gap, gap2, sync;
-    int rc, sectors;
+    int max_sector, gap;
+    int rc, errorinfo;
     gcr_header_t header;
     fsimage_t *fsimage = image->media.fsimage;
 
@@ -119,15 +125,11 @@ static int fsimage_flat_read_track_gcr(disk_image_t *image, unsigned int track,
         header.track = track + 1;
         raw->size = disk_image_raw_track_size_8050(header.track);
         gap = disk_image_gap_size_8050(header.track);
-        gap2 = 24;
-        sync = 6;
         break;
     default:
         header.track = track / 2 + 1;
         raw->size = disk_image_raw_track_size_1541(header.track);
         gap = disk_image_gap_size_1541(header.track);
-        gap2 = 9;
-        sync = 5;
         break;
     }
     raw->data = lib_realloc(raw->data, raw->size);
@@ -137,16 +139,16 @@ static int fsimage_flat_read_track_gcr(disk_image_t *image, unsigned int track,
         return -1;
     }
 
-    header.id1 = image->diskid[0];
-    header.id2 = image->diskid[1];
+    header.id1 = image->gcr.diskid[0];
+    header.id2 = image->gcr.diskid[1];
 
     max_sector = disk_image_sector_per_track(image, header.track);
 
     memset(raw->data, 0x55, raw->size);
 
-    fsimage_flat_seek_track(image, header.track, head);
+    errorinfo = fsimage_flat_seek_track(image, header.track, head);
 
-    header.track += head ? image->doublesided : 0;
+    header.track += head ? image->gcr.doublesided : 0;
 
     data = raw->data;
     for (sector = 0; sector < max_sector; sector++) {
@@ -155,17 +157,13 @@ static int fsimage_flat_read_track_gcr(disk_image_t *image, unsigned int track,
                     "Error reading T:%d H:%d S:%d from disk image.",
                     track / 2 + 1, head, sector);
         } else {
-            rc = (fsimage->error_info != NULL) ? fsimage->error_info[sectors++] : 0;
-            if (rc == CBMDOS_IPE_READ_ERROR_SYNC) {
-                memset(raw->data, 0x00, raw->size);
-                break;
-            }
+            rc = (errorinfo >= 0) ? fsimage->errors[errorinfo++] : 0;
 
             header.sector = sector;
-            gcr_convert_sector_to_GCR(buffer, data, &header, gap2, sync, (BYTE)(rc));
+            gcr_convert_sector_to_GCR(buffer, data, &header, image->gcr.gap2, image->gcr.sync, (BYTE)(rc));
         }
 
-        data += SECTOR_GCR_SIZE_WITH_HEADER + gap2 + gap + sync;
+        data += SECTOR_GCR_SIZE_WITH_HEADER + image->gcr.gap2 + gap + image->gcr.sync;
     }
     return 0;
 }
@@ -264,6 +262,7 @@ int fsimage_flat_write_track_gcr(disk_image_t *image, unsigned int track,
     BYTE buffer[256];
     fsimage_t *fsimage = image->media.fsimage;
     unsigned int ltrack;
+    int rc, errorinfo;
 
     switch (image->type) {
     case DISK_IMAGE_TYPE_D80:
@@ -280,28 +279,42 @@ int fsimage_flat_write_track_gcr(disk_image_t *image, unsigned int track,
     }
     max_sector = disk_image_sector_per_track(image, track);
 
-    fsimage_flat_seek_track(image, track, head);
+    errorinfo = fsimage_flat_seek_track(image, track, head);
 
     for (sector = 0; sector < max_sector; sector++) {
-
-        switch (gcr_read_sector(raw, buffer, sector)) {
-        case -1:
-            log_error(fsimage_flat_log, "Could not find header of T:%d H:%d S:%d.",
-                      track, head, sector);
+        rc = gcr_read_sector(raw, buffer, sector);
+        if (errorinfo >= 0) {
+            fsimage->errors[errorinfo + sector] = rc;
+        }
+        switch (rc) {
+        case CBMDOS_FDC_ERR_DCHECK:
+        case CBMDOS_FDC_ERR_OK:
+            if (fwrite((char *)buffer, 256, 1, fsimage->fd) < 1) {
+                log_error(fsimage_flat_log, "Error writing T:%d H:%d S:%d to disk image.",
+                        track, head, sector);
+            }
             continue;
-        case -2:
+        case CBMDOS_FDC_ERR_HEADER:
+            log_error(fsimage_flat_log, "Could not find header of T:%d H:%d S:%d.",
+                    track, head, sector);
+            break;
+        case CBMDOS_FDC_ERR_SYNC:
             log_error(fsimage_flat_log, "Could not find data sync of T:%d H:%d S:%d.",
                     track, head, sector);
-            continue;
-        case -3:
+            break;
+        case CBMDOS_FDC_ERR_NOBLOCK:
             log_error(fsimage_flat_log, "Could not find data block id of T:%d H:%d S:%d.",
-                      track, head, sector);
-            continue;
-        } 
-        if (fwrite((char *)buffer, 256, 1, fsimage->fd) < 1) {
-            log_error(fsimage_flat_log, "Error writing T:%d H:%d S:%d to disk image.",
                     track, head, sector);
-        }
+            break;
+        default:
+            log_error(fsimage_flat_log, "Unknown error at T:%d H:%d S:%d.", track, head, sector);
+        } 
+        fread((char *)buffer, 256, 1, fsimage->fd); /* skip */
+    }
+
+    if (fsimage->errors) {
+        fseek(fsimage->fd, image->lblocks * 256 + errorinfo, SEEK_SET);
+        fwrite(fsimage->errors + errorinfo, 1, max_sector, fsimage->fd);
     }
 
     /* Make sure the stream is visible to other readers.  */
@@ -405,36 +418,8 @@ int fsimage_flat_read_sector(disk_image_t *image, BYTE *buf,
         return -1;
     }
 
-    if (fsimage->error_info != NULL) {
-        switch (fsimage->error_info[sectors]) {
-        case 0x0:
-        case 0x1:
-            return CBMDOS_IPE_OK;               /* 0 */
-        case 0x2:
-            return CBMDOS_IPE_READ_ERROR_BNF;   /* 20 */
-        case 0x3:
-            return CBMDOS_IPE_READ_ERROR_SYNC;  /* 21 */
-        case 0x4:
-            return CBMDOS_IPE_READ_ERROR_DATA;  /* 22 */
-        case 0x5:
-            return CBMDOS_IPE_READ_ERROR_CHK;   /* 23 */ 
-        case 0x7:
-            return CBMDOS_IPE_WRITE_ERROR_VER;  /* 25 */
-        case 0x8:
-            return CBMDOS_IPE_WRITE_PROTECT_ON; /* 26 */
-        case 0x9:
-            return CBMDOS_IPE_READ_ERROR_BCHK;  /* 27 */
-        case 0xA:
-            return CBMDOS_IPE_WRITE_ERROR_BIG;  /* 28 */
-        case 0xB:
-            return CBMDOS_IPE_DISK_ID_MISMATCH; /* 29 */
-        case 0xF:
-            return CBMDOS_IPE_NOT_READY;        /* 74 */
-        case 0x10:
-            return CBMDOS_IPE_READ_ERROR_GCR;   /* 24 */
-        default:
-            return 0;
-        }
+    if (fsimage->errors != NULL) {
+        return cbmdos_fdc_to_ipe(fsimage->errors[sectors]);
     }
     return 0;
 }
@@ -606,50 +591,42 @@ int fsimage_flat_create(disk_image_t *image, unsigned int type)
     return rc;
 }
 
-static int fsimage_flat_probe_general(disk_image_t *image, int size1, int size2, int id)
+static int fsimage_flat_probe_general(disk_image_t *image, int size, int id)
 {
     int i;
     BYTE block[256];
     fsimage_t *fsimage;
-    int checkimage_errorinfo;
     size_t len;
 
     fsimage = image->media.fsimage;
 
     len = util_file_length(fsimage->fd);
-    if (len == size1) {
-        checkimage_errorinfo = 0;
-        fsimage_error_info_destroy(fsimage);
-    } else if (len == size2) {
-        checkimage_errorinfo = 1;
-        fsimage_error_info_create(fsimage);
-    } else {
+    if (len != size * 256 && len != size * 257) {
         return 0;
     }
 
     rewind(fsimage->fd);
-    size1 /= 256;
 
-    for (i = 0; i < size1; i++) {
+    for (i = 0; i < size; i++) {
         if (fread(block, 1, 256, fsimage->fd) != 256) {
+            lib_free(fsimage->errors);
             return 0;
         }
         if (i == (id >> 8)) {
-            image->doublesided = block[0x03] & 0x80;
-            image->diskid[0] = block[id & 0xff];
-            image->diskid[1] = block[(id + 1) & 0xff];
+            image->gcr.doublesided = block[0x03] & 0x80;
+            image->gcr.diskid[0] = block[id & 0xff];
+            image->gcr.diskid[1] = block[(id + 1) & 0xff];
         }
     }
 
-    if (checkimage_errorinfo
-        && fread(fsimage->error_info, 1, size1, fsimage->fd)
-            < size1) {
-        return 0;
-    }
-
-    if (fgetc(fsimage->fd) != EOF) {
-        log_error(fsimage_flat_log, "Disk image too large.");
-        return 0;
+    if (len == size * 257) {
+        fsimage->errors = lib_calloc(1, size);
+        if (fread(fsimage->errors, 1, size, fsimage->fd)
+            < size) {
+            lib_free(fsimage->errors);
+            fsimage->errors = NULL;
+            return 0;
+        }
     }
     return 1;
 }
@@ -659,76 +636,31 @@ static int fsimage_flat_probe_d64(disk_image_t *image)
     /*** detect 35..42 track d64 image, determine image parameters.
          Walk from 35 to 42, calculate expected image file size for each track,
          and compare this with the size of the given image. */
+    int i;
 
-    int checkimage_tracks, checkimage_errorinfo, i;
-    size_t checkimage_blocks, checkimage_realsize;
-    fsimage_t *fsimage;
-    BYTE block[256];
+    for (i = NUM_BLOCKS_1541; i <= MAX_BLOCKS_1541; i += 17) {
+        if (fsimage_flat_probe_general(image, i, 17 * 21 * 256 + BAM_ID_1541)) {
 
-    fsimage = image->media.fsimage;
-
-    checkimage_errorinfo = 0;
-    checkimage_realsize = util_file_length(fsimage->fd);
-    checkimage_tracks = NUM_TRACKS_1541; /* start at track 35 */
-    checkimage_blocks = D64_FILE_SIZE_35 / 256;
-
-    while (1) {
-        /* check if image matches "checkimage_tracks" */
-        if (checkimage_realsize == checkimage_blocks * 256) {
-            /* image file matches size-with-no-error-info */
-            checkimage_errorinfo = 0;
-            break;
-
-        } else if (checkimage_realsize == checkimage_blocks * 256
-            + checkimage_blocks) {
-            /* image file matches size-with-error-info */
-            checkimage_errorinfo = 1;
-            break;
-        }
-
-        /* try next track (all tracks from 35 to 42 have 17 blocks) */
-        checkimage_tracks++;
-        checkimage_blocks += 17;
-
-        /* we tried them all up to 42, none worked, image must be corrupt */
-        if (checkimage_tracks > MAX_TRACKS_1541)
-            return 0;
-    }
-
-    rewind(fsimage->fd);
-
-    for (i = 0; i < checkimage_blocks; i++) {
-        if (fread(block, 1, 256, fsimage->fd) != 256) {
-            return 0;
-        }
-        if (i == 17 * 21) {
-            image->diskid[0] = block[BAM_ID_1541];
-            image->diskid[1] = block[BAM_ID_1541 + 1];
+            image->type = DISK_IMAGE_TYPE_D64;
+            image->type_name = "D64";
+            image->loffset = 0;
+            image->lblocks = i;
+            image->ltracks = (i - (NUM_BLOCKS_1541 - 35 * 17)) / 17;
+            image->ptracks = image->ltracks * 2;
+            image->sides = 1;
+            image->gcr.doublesided = 0;
+            image->gcr.gap2 = 9;
+            image->gcr.sync = 5;
+            return 1;
         }
     }
-
-    /*** set parameters in image structure, read error info */
-    image->type = DISK_IMAGE_TYPE_D64;
-    image->type_name = "D64";
-    image->loffset = 0;
-    image->lblocks = checkimage_blocks;
-    image->ltracks = checkimage_tracks;
-    image->ptracks = checkimage_tracks * 2;
-    image->sides = 1;
-    fsimage_error_info_destroy(fsimage);
-
-    if (checkimage_errorinfo
-        && fread(fsimage->error_info, 1, checkimage_blocks, fsimage->fd)
-            < checkimage_blocks) {
-        return 0;
-    }
-    return 1;
+    return 0;
 }
 
 
 static int fsimage_flat_probe_d67(disk_image_t *image)
 {
-    if (!fsimage_flat_probe_general(image, D67_FILE_SIZE, D67_FILE_SIZE, 17 * 21 * 256 + 0xa2)) {
+    if (!fsimage_flat_probe_general(image, NUM_BLOCKS_2040, 17 * 21 * 256 + BAM_ID_2040)) {
         return 0;
     }
 
@@ -739,13 +671,15 @@ static int fsimage_flat_probe_d67(disk_image_t *image)
     image->ltracks = NUM_TRACKS_2040;
     image->ptracks = NUM_TRACKS_2040 * 2;
     image->sides = 1;
-    image->doublesided = 0;
+    image->gcr.doublesided = 0;
+    image->gcr.gap2 = 10;
+    image->gcr.sync = 5;
     return 1;
 }
 
 static int fsimage_flat_probe_d71(disk_image_t *image)
 {
-    if (!fsimage_flat_probe_general(image, D71_FILE_SIZE, D71_FILE_SIZE_E, 17 * 21 * 256 + 0xa2)) {
+    if (!fsimage_flat_probe_general(image, NUM_BLOCKS_1571, 17 * 21 * 256 + BAM_ID_1571)) {
         return 0;
     }
 
@@ -756,13 +690,15 @@ static int fsimage_flat_probe_d71(disk_image_t *image)
     image->ltracks = NUM_TRACKS_1571;
     image->ptracks = NUM_TRACKS_1571;
     image->sides = 2;
-    image->doublesided = image->doublesided ? 35 : 0;
+    image->gcr.doublesided = image->gcr.doublesided ? 35 : 0;
+    image->gcr.gap2 = 9;
+    image->gcr.sync = 5;
     return 1;
 }
 
 static int fsimage_flat_probe_d81(disk_image_t *image)
 {
-    if (!fsimage_flat_probe_general(image, D81_FILE_SIZE, D81_FILE_SIZE_E, -1)) {
+    if (!fsimage_flat_probe_general(image, NUM_BLOCKS_1581, -1)) {
         return 0;
     }
 
@@ -773,7 +709,6 @@ static int fsimage_flat_probe_d81(disk_image_t *image)
     image->ltracks = NUM_TRACKS_1581;
     image->ptracks = NUM_TRACKS_1581;
     image->sides = 2;
-    image->doublesided = 0;
     image->mfm.sectors = 10;
     image->mfm.sector_size = 2;
     image->mfm.head_swap = 1;
@@ -786,7 +721,7 @@ static int fsimage_flat_probe_d81(disk_image_t *image)
 
 static int fsimage_flat_probe_d80(disk_image_t *image)
 {
-    if (!fsimage_flat_probe_general(image, D80_FILE_SIZE, D80_FILE_SIZE, 38 * 29 * 256 + BAM_ID_8050)) {
+    if (!fsimage_flat_probe_general(image, NUM_BLOCKS_8050, 38 * 29 * 256 + BAM_ID_8050)) {
         return 0;
     }
 
@@ -797,13 +732,15 @@ static int fsimage_flat_probe_d80(disk_image_t *image)
     image->ltracks = NUM_TRACKS_8050;
     image->ptracks = NUM_TRACKS_8050;
     image->sides = 1;
-    image->doublesided = 0;
+    image->gcr.doublesided = 0;
+    image->gcr.gap2 = 24;
+    image->gcr.sync = 6;
     return 1;
 }
 
 static int fsimage_flat_probe_d82(disk_image_t *image)
 {
-    if (!fsimage_flat_probe_general(image, D82_FILE_SIZE, D82_FILE_SIZE, 38 * 29 * 256 + BAM_ID_8250)) {
+    if (!fsimage_flat_probe_general(image, NUM_BLOCKS_8250, 38 * 29 * 256 + BAM_ID_8250)) {
         return 0;
     }
 
@@ -814,7 +751,9 @@ static int fsimage_flat_probe_d82(disk_image_t *image)
     image->ltracks = NUM_TRACKS_8250;
     image->ptracks = NUM_TRACKS_8250 / 2;
     image->sides = 2;
-    image->doublesided = 77;
+    image->gcr.doublesided = 77;
+    image->gcr.gap2 = 24;
+    image->gcr.sync = 6;
     return 1;
 }
 
@@ -844,15 +783,14 @@ static int fsimage_flat_probe_x64(disk_image_t *image)
     image->loffset = 0;
     image->lblocks = NUM_BLOCKS_1541 + (header[X64_HEADER_FLAGS_OFFSET + 1] - 35) * 17;
     image->ltracks = header[X64_HEADER_FLAGS_OFFSET + 1];
-    image->ptracks = header[X64_HEADER_FLAGS_OFFSET + 1] * 2;
+    image->ptracks = image->ltracks * 2;
     image->sides = 1;
 
-    fsimage_error_info_destroy(fsimage);
     return 1;
 }
 static int fsimage_flat_probe_d1m(disk_image_t *image)
 {
-    if (!fsimage_flat_probe_general(image, D1M_FILE_SIZE, D1M_FILE_SIZE_E, -1)) {
+    if (!fsimage_flat_probe_general(image, NUM_BLOCKS_1000, -1)) {
         return 0;
     }
 
@@ -863,7 +801,6 @@ static int fsimage_flat_probe_d1m(disk_image_t *image)
     image->ltracks = NUM_TRACKS_1000;
     image->ptracks = 81;
     image->sides = 2;
-    image->doublesided = 0;
     image->mfm.sectors = 10;
     image->mfm.sector_size = 2;
     image->mfm.head_swap = 1;
@@ -876,7 +813,7 @@ static int fsimage_flat_probe_d1m(disk_image_t *image)
 
 static int fsimage_flat_probe_d2m(disk_image_t *image)
 {
-    if (!fsimage_flat_probe_general(image, D2M_FILE_SIZE, D2M_FILE_SIZE_E, -1)) {
+    if (!fsimage_flat_probe_general(image, NUM_BLOCKS_2000, -1)) {
         return 0;
     }
 
@@ -887,7 +824,6 @@ static int fsimage_flat_probe_d2m(disk_image_t *image)
     image->ltracks = NUM_TRACKS_2000;
     image->ptracks = 81;
     image->sides = 2;
-    image->doublesided = 0;
     image->mfm.sectors = 10;
     image->mfm.sector_size = 3;
     image->mfm.head_swap = 1;
@@ -900,7 +836,7 @@ static int fsimage_flat_probe_d2m(disk_image_t *image)
 
 static int fsimage_flat_probe_d4m(disk_image_t *image)
 {
-    if (!fsimage_flat_probe_general(image, D4M_FILE_SIZE, D4M_FILE_SIZE_E, -1)) {
+    if (!fsimage_flat_probe_general(image, NUM_BLOCKS_4000, -1)) {
         return 0;
     }
 
@@ -911,7 +847,6 @@ static int fsimage_flat_probe_d4m(disk_image_t *image)
     image->ltracks = NUM_TRACKS_4000;
     image->ptracks = 81;
     image->sides = 2;
-    image->doublesided = 0;
     image->mfm.sectors = 20;
     image->mfm.sector_size = 3;
     image->mfm.head_swap = 1;
@@ -922,7 +857,7 @@ static int fsimage_flat_probe_d4m(disk_image_t *image)
     return 1;
 }
 
-int fsimage_flat_probe(disk_image_t *image)
+int fsimage_flat_open(disk_image_t *image)
 {
     return fsimage_flat_probe_d64(image)
         || fsimage_flat_probe_d67(image)
@@ -934,6 +869,16 @@ int fsimage_flat_probe(disk_image_t *image)
         || fsimage_flat_probe_d1m(image)
         || fsimage_flat_probe_d2m(image)
         || fsimage_flat_probe_d4m(image);
+}
+
+void fsimage_flat_close(disk_image_t *image)
+{
+    fsimage_t *fsimage = image->media.fsimage;
+
+    if (fsimage->errors) {
+        lib_free(fsimage->errors);
+        fsimage->errors = NULL;
+    }
 }
 /*-----------------------------------------------------------------------*/
 

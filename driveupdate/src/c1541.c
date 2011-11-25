@@ -1313,7 +1313,7 @@ static int info_cmd(int nargs, char **args)
 /*printf("Sides\t   : %d.\n", hdr.sides);*/
     printf("Tracks\t   : %d.\n", vdrive->image->ltracks);
     if (vdrive->image->device == DISK_IMAGE_DEVICE_FS) {
-        printf(((vdrive->image->media.fsimage)->error_info)
+        printf(((vdrive->image->media.fsimage)->errors)
                ? "Error Block present.\n" : "No Error Block.\n");
     }
     printf("Write protect: %s.\n", vdrive->image->read_only ? "On" : "Off");
