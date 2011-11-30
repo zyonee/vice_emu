@@ -121,8 +121,8 @@ static void store_prb(via_context_t *via_context, BYTE byte, BYTE p_oldpb,
     fdd_set_clk(drive->fdds[0], *drive->fdcclk);
     fdd_set_motor(drive->fdds[0], (byte & 0x20) ^ 0x20);
 
-    if ((p_oldpb ^ byte ^ ((p_oldpb ^ byte) >> 1)) & 4) {   /* Stepper motor */
-        fdd_step_pulse(drive->fdds[0], (p_oldpb ^ (p_oldpb >> 1) ^ ((byte ^ (byte >> 1)) - 4)) & 8);
+    if ((p_oldpb ^ byte) & 12) {   /* Stepper motor */
+        fdd_step_quadrature(drive->fdds[0], (byte >> 2) ^ ((byte >> 3) & 1) ^ 2);
     }
 }
 

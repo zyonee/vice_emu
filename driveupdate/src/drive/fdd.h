@@ -58,6 +58,7 @@ extern inline WORD fdd_mfm_read(fd_drive_t *drv);
 extern inline int fdd_mfm_ready(fd_drive_t *drv);
 extern void fdd_flush(fd_drive_t *drv);
 extern void fdd_step_pulse(fd_drive_t *drv, int dir);
+extern void fdd_step_quadrature(fd_drive_t *drv, int lines);
 extern inline void fdd_set_side(fd_drive_t *drv, int side);
 extern inline void fdd_set_motor(fd_drive_t *drv, int motor);
 extern inline void fdd_set_rate(fd_drive_t *drv, int rate);

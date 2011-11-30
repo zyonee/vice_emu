@@ -158,8 +158,8 @@ static void store_prb(via_context_t *via_context, BYTE byte, BYTE poldpb,
     fdd_set_clk(drive->fdds[0], *drive->clk);
     fdd_set_motor(drive->fdds[0], byte & 0x04);
 
-    if ((poldpb ^ byte) & 1) {   /* Stepper motor */
-        fdd_step_pulse(drive->fdds[0], (poldpb ^ (byte - 1)) & 2);
+    if ((poldpb ^ byte) & 3) {   /* Stepper motor */
+        fdd_step_quadrature(drive->fdds[0], byte);
     }
     /* Zone bits */
     fdd_set_rate(drive->fdds[0], byte >> 5);

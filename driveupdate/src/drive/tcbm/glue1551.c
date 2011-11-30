@@ -65,8 +65,8 @@ static void glue_pport_update(drive_context_t *drv)
     fdd_set_motor(drv->drive->fdds[0], output & 0x04);
 
     /* Stepper motor.  */
-    if (((glue1551[drv->mynumber].old_output ^ output) & 1)) {
-        fdd_step_pulse(drv->drive->fdds[0], (glue1551[drv->mynumber].old_output ^ (output - 1)) & 2);
+    if (((glue1551[drv->mynumber].old_output ^ output) & 3)) {
+        fdd_step_quadrature(drv->drive->fdds[0], output);
     }
 
 

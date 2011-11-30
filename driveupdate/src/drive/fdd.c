@@ -491,9 +491,10 @@ void fdd_flush(fd_drive_t *drv)
     fdd_image_writeback(drv, 0);
 }
 
-void fdd_step_pulse(fd_drive_t *drv, int dir)
+/* stepper controlled by quadrature */
+void fdd_step_quadrature(fd_drive_t *drv, int lines)
 {
-    int size, pos;
+    int size, pos, move;
 
     if (!drv) {
         return;
@@ -502,8 +503,9 @@ void fdd_step_pulse(fd_drive_t *drv, int dir)
     if (drv->image) {
         drv->disk_change = 0;
     }
-    if (!drv->motor || (drv->track == 0 && dir)
-        || (drv->track == drv->tracks - 1 && !dir)) {
+    move = ((lines - drv->track + 1) & 3) - 1;
+    if (!drv->motor || !move || drv->track + move < 0
+        || drv->track + move >= drv->tracks) {
         return;
     }
     if (drv->raw) {
@@ -514,7 +516,7 @@ void fdd_step_pulse(fd_drive_t *drv, int dir)
         pos = 0;
     }
     fdd_image_writeback(drv, 1);
-    drv->track += dir ? -1 : 1;
+    drv->track += move;
     drv->drive->current_half_track = (drv->track << drv->hrstep) + 2;
     fdd_image_read(drv);
     if (drv->raw) {
@@ -523,6 +525,16 @@ void fdd_step_pulse(fd_drive_t *drv, int dir)
         drv->headp = drv->raw->data + (pos >> 3);
     }
 }
+
+/* stepper controlled by pulse */
+void fdd_step_pulse(fd_drive_t *drv, int dir)
+{
+    if (!drv) {
+        return;
+    }
+    fdd_step_quadrature(drv, drv->track + (dir ? -1 : 1));
+}
+
 
 inline void fdd_set_side(fd_drive_t *drv, int side)
 {
