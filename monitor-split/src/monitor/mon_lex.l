@@ -26,6 +26,21 @@
  *  02111-1307  USA.
  *
  */
+/*
+ * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ *
+ * VICE DEVELOPERS, IMPORTANT NOTE: The automake environment doesn't
+ * generate the flex/bison parsers automatically at the moment.
+ *
+ * We changed this because automake/ylwrap don't support some features
+ * we need, e.g. more than one parser with different prefixes in one
+ * executable.
+ *
+ * After you changed a *.l or *.y file, execute: cd src/monitor; ./genparser.sh
+ * If everything went fine, commit these and the generated *.c and *.h files.
+ *
+ * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ */
 
 %{
 

@@ -7,12 +7,7 @@ INCLUDES = \
 	-I$(top_srcdir)/src/imagecontents \
 	-I$(top_srcdir)/src/vdrive
 
-AM_YFLAGS = -dt
-
 noinst_LIBRARIES = libmonitor.a
-
-noinst_HEADERS = \
-	mon_parse.h
 
 libmonitor_a_SOURCES = \
 	asm6502.c \
@@ -34,8 +29,11 @@ libmonitor_a_SOURCES = \
 	mon_drive.h \
 	mon_file.c \
 	mon_file.h \
+	mon_lex.c \
 	mon_memory.c \
 	mon_memory.h \
+	mon_parse.c \
+	mon_parse.h \
 	mon_register6502.c \
 	mon_register6502dtv.c \
 	mon_register6809.c \
@@ -45,11 +43,7 @@ libmonitor_a_SOURCES = \
 	mon_ui.h \
 	mon_util.c \
 	mon_util.h \
-	mon_lex.l \
-	mon_parse.y \
 	monitor.c \
 	monitor_network.c \
 	monitor_network.h \
 	montypes.h
-
-BUILT_SOURCES = mon_parse.c
