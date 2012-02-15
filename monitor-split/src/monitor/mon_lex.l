@@ -67,6 +67,9 @@
 #undef min
 #define min(a,b) ((a) < (b) ? (a) : (b))
 
+/* for our prefix, we don't want to change all of the rules below */
+#define yylval mon_yylval
+
 int new_cmd = 1, quote = 0, opt_asm = 0, cur_len = 0, last_len = 0, dont_match_reg_a = 0;
 int temp, push_back;
 static int yywrap(void);
@@ -121,6 +124,7 @@ send:
 
 %}
 
+%option prefix="mon_yy"
 %option case-insensitive
 
 HDIGIT  [0-9a-f]

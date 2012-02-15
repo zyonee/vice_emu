@@ -139,6 +139,8 @@ extern int cur_len, last_len;
 
 %}
 
+%name-prefix "mon_yy"
+
 %union {
     MON_ADDR a;
     MON_ADDR range[2];
