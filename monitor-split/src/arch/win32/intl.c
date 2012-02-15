@@ -388,7 +388,7 @@ static void intl_set_hotkey(void)
     line_buffer[i++] = 0;
 
     /* skip spaces */
-    while (isspace(line_buffer[i])) {
+    while (isspace((unsigned char)line_buffer[i])) {
         i++;
     }
 
@@ -400,7 +400,7 @@ static void intl_set_hotkey(void)
     hotkeypos = line_buffer + i;
 
     /* get the the first 'space' */
-    while (!isspace(line_buffer[i]) && line_buffer[i] != 0) {
+    while (!isspace((unsigned char)line_buffer[i]) && line_buffer[i] != 0) {
         i++;
     }
 
@@ -490,7 +490,7 @@ static int intl_load_hotkey_table(void)
         }
     }
 
-    name = util_concat(machine_name, "/win_hotkeys.vhk", NULL);
+    name = util_concat(archdep_boot_path(), "\\", machine_name, "/win_hotkeys.vhk", NULL);
     fhotkeys = fopen(name, MODE_READ_TEXT);
     lib_free(name);
     if (fhotkeys == NULL) {
