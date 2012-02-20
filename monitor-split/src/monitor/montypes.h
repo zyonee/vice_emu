@@ -279,6 +279,7 @@ extern void mon_evaluate_default_addr(MON_ADDR *a);
 extern void mon_set_mem_val(MEMSPACE mem, WORD mem_addr, BYTE val);
 extern bool mon_inc_addr_location(MON_ADDR *a, unsigned inc);
 extern void mon_start_assemble_mode(MON_ADDR addr, char *asm_line);
+extern void mon_exit_assemble_mode(void);
 extern long mon_evaluate_address_range(MON_ADDR *start_addr, MON_ADDR *end_addr,
                                        bool must_be_range, WORD default_len);
 

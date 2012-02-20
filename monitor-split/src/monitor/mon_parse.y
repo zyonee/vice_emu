@@ -45,38 +45,12 @@
 
 #include "vice.h"
 
-#ifndef MINIXVMD
-#ifdef __GNUC__
-#undef alloca
-#define        alloca(n)       __builtin_alloca (n)
-#else
-#ifdef HAVE_ALLOCA_H
-#include <alloca.h>
-#else  /* Not HAVE_ALLOCA_H.  */
-#if !defined(_AIX) && !defined(WINCE)
-#ifndef _MSC_VER
-extern char *alloca();
-#else
-#define alloca(n)   _alloca(n)
-#endif  /* MSVC */
-#endif /* Not AIX and not WINCE.  */
-#endif /* HAVE_ALLOCA_H.  */
-#endif /* GCC.  */
-#endif /* MINIXVMD */
-
-/* SunOS 4.x specific stuff */
-#if defined(sun) || defined(__sun)
-#  if !defined(__SVR4) && !defined(__svr4__)
-#    ifdef __sparc__
-#      define YYFREE
-#    endif
-#  endif
-#endif
-
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+
+#include "mon_parsers.h"
 
 #include "asm.h"
 #include "console.h"
@@ -94,10 +68,6 @@ extern char *alloca();
 #include "uimon.h"
 
 
-#define join_ints(x,y) (LO16_TO_HI16(x)|y)
-#define separate_int1(x) (HI16_TO_LO16(x))
-#define separate_int2(x) (LO16(x))
-
 static int yyerror(char *s);
 static int temp;
 static int resolve_datatype(unsigned guess_type, const char *num);
@@ -105,32 +75,10 @@ static int resolve_range(enum t_memspace memspace, MON_ADDR range[2],
                          const char *num);
 static void mon_quit(void);
 
-#ifdef __IBMC__
-static void __yy_memcpy (char *to, char *from, int count);
-#endif
-
 /* Defined in the lexer */
-extern int new_cmd, opt_asm;
-extern void free_buffer(void);
-extern void make_buffer(char *str);
-extern int yylex(void);
-extern int cur_len, last_len;
+int yylex(void);
 
-#define ERR_ILLEGAL_INPUT 1     /* Generic error as returned by yacc.  */
-#define ERR_RANGE_BAD_START 2
-#define ERR_RANGE_BAD_END 3
-#define ERR_BAD_CMD 4
-#define ERR_EXPECT_CHECKNUM 5
-#define ERR_EXPECT_END_CMD 6
-#define ERR_MISSING_CLOSE_PAREN 7
-#define ERR_INCOMPLETE_COMPARE_OP 8
-#define ERR_EXPECT_FILENAME 9
-#define ERR_ADDR_TOO_BIG 10
-#define ERR_IMM_TOO_BIG 11
-#define ERR_EXPECT_STRING 12
-#define ERR_UNDEFINED_LABEL 13
-#define ERR_EXPECT_DEVICE_NUM 14
-#define ERR_EXPECT_ADDRESS 15
+extern int new_cmd, opt_asm;
 
 #define BAD_ADDR (new_addr(e_invalid_space, 0))
 #define CHECK_ADDR(x) ((x) == addr_mask(x))
@@ -177,12 +125,12 @@ extern int cur_len, last_len;
 %token CMD_EXPORT CMD_AUTOSTART CMD_AUTOLOAD
 %token<str> CMD_LABEL_ASGN
 %token<i> L_PAREN R_PAREN ARG_IMMEDIATE REG_A REG_X REG_Y COMMA INST_SEP
-%token<i> L_BRACKET R_BRACKET LESS_THAN REG_U REG_S REG_PC, REG_PCR
+%token<i> L_BRACKET R_BRACKET LESS_THAN REG_U REG_S REG_PC REG_PCR
 %token<i> REG_B REG_C REG_D REG_E REG_H REG_L
 %token<i> REG_AF REG_BC REG_DE REG_HL REG_IX REG_IY REG_SP
 %token<i> REG_IXH REG_IXL REG_IYH REG_IYL
 %token<i> PLUS MINUS
-%token<str> STRING FILENAME R_O_L OPCODE LABEL BANKNAME CPUTYPE
+%token<str> STRING FILENAME R_O_L LABEL BANKNAME CPUTYPE
 %token<reg> MON_REGISTER
 %left<cond_op> COMPARE_OP
 %token<rt> RADIX_TYPE INPUT_SPEC
@@ -191,14 +139,12 @@ extern int cur_len, last_len;
 %type<a>  address opt_address
 %type<cond_node> opt_if_cond_expr cond_expr compare_operand
 %type<i> number expression d_number guess_default device_num
-%type<i> memspace memloc memaddr checkpt_num opt_mem_op
+%type<i> memspace memloc memaddr checkpt_num mem_op opt_mem_op
 %type<i> top_level value
-%type<i> assembly_instruction register
+%type<i> register
 %type<str> rest_of_line opt_rest_of_line data_list data_element filename
 %token<i> MASK
 %type<str> hunt_list hunt_element
-%type<mode> asm_operand_mode
-%type<i> index_reg index_usreg
 
 %left '+' '-'
 %left '*' '/'
@@ -206,8 +152,7 @@ extern int cur_len, last_len;
 %%
 
 top_level: command_list { $$ = 0; }
-         | assembly_instruction TRAIL { $$ = 0; }
-         | TRAIL { new_cmd = 1; asm_mode = 0;  $$ = 0; }
+         | TRAIL { mon_lex_new_cmd();  $$ = 0; }
          ;
 
 command_list: command
@@ -216,7 +161,6 @@ command_list: command
 
 end_cmd: CMD_SEP
        | TRAIL
-       | error { return ERR_EXPECT_END_CMD; }
        ;
 
 command: machine_state_rules
@@ -324,11 +268,10 @@ symbol_table_rules: CMD_LOAD_LABELS memspace opt_sep filename end_cmd
                     }
                   ;
 
-asm_rules: CMD_ASSEMBLE address
-           { mon_start_assemble_mode($2, NULL); } post_assemble end_cmd
-           { }
-         | CMD_ASSEMBLE address end_cmd
+asm_rules: CMD_ASSEMBLE address end_cmd
            { mon_start_assemble_mode($2, NULL); }
+         | CMD_ASSEMBLE address error end_cmd
+           { mon_out("Syntax changed, please check 'help a'\n"); return ERR_EXPECT_END_CMD; }
          | CMD_DISASSEMBLE address_opt_range end_cmd
            { mon_disassemble_lines($2[0], $2[1]); }
          | CMD_DISASSEMBLE end_cmd
@@ -598,8 +541,11 @@ device_num: expression
       | error { return ERR_EXPECT_DEVICE_NUM; }
       ;
 
-opt_mem_op: opt_mem_op MEM_OP { $$ = $1 | $2; }
-          | MEM_OP { $$ = $1; }
+mem_op: mem_op MEM_OP { $$ = $1 | $2; }
+      | MEM_OP { $$ = $1; }
+      ;
+
+opt_mem_op: mem_op { $$ = $1; }
           | { $$ = 0; }
           ;
 
@@ -637,12 +583,10 @@ opt_address: opt_sep address { $$ = $2; }
 address: memloc
          {
              $$ = new_addr(e_default_space,$1);
-             if (opt_asm) new_cmd = asm_mode = 1;
          }
        | memspace opt_sep memloc
          {
              $$ = new_addr($1, $3);
-             if (opt_asm) new_cmd = asm_mode = 1;
          }
        | LABEL
          {
@@ -749,314 +693,26 @@ number: H_NUMBER { $$ = $1; }
       | guess_default { $$ = $1; }
       ;
 
-assembly_instr_list: assembly_instr_list INST_SEP assembly_instruction
-                   | assembly_instruction INST_SEP assembly_instruction
-                   | assembly_instruction INST_SEP
-                   ;
-
-assembly_instruction: OPCODE asm_operand_mode { $$ = 0;
-                                                if ($1) {
-                                                    (monitor_cpu_for_memspace[default_memspace]->mon_assemble_instr)($1, $2);
-                                                } else {
-                                                    new_cmd = 1;
-                                                    asm_mode = 0;
-                                                }
-                                                opt_asm = 0;
-                                              };
-
-post_assemble: assembly_instruction
-             | assembly_instr_list { asm_mode = 0; }
-             ;
-
-asm_operand_mode: ARG_IMMEDIATE number { if ($2 > 0xff) {
-                          $$.addr_mode = ASM_ADDR_MODE_IMMEDIATE_16;
-                          $$.param = $2;
-                        } else {
-                          $$.addr_mode = ASM_ADDR_MODE_IMMEDIATE;
-                          $$.param = $2;
-                        } }
-  | number { if ($1 < 0x100) {
-               $$.addr_mode = ASM_ADDR_MODE_ZERO_PAGE;
-               $$.param = $1;
-             } else {
-               $$.addr_mode = ASM_ADDR_MODE_ABSOLUTE;
-               $$.param = $1;
-             }
-           }
-  | number COMMA REG_X  { if ($1 < 0x100) {
-                            $$.addr_mode = ASM_ADDR_MODE_ZERO_PAGE_X;
-                            $$.param = $1;
-                          } else {
-                            $$.addr_mode = ASM_ADDR_MODE_ABSOLUTE_X;
-                            $$.param = $1;
-                          }
-                        }
-  | number COMMA REG_Y  { if ($1 < 0x100) {
-                            $$.addr_mode = ASM_ADDR_MODE_ZERO_PAGE_Y;
-                            $$.param = $1;
-                          } else {
-                            $$.addr_mode = ASM_ADDR_MODE_ABSOLUTE_Y;
-                            $$.param = $1;
-                          }
-                        }
-  | L_PAREN number R_PAREN
-    { $$.addr_mode = ASM_ADDR_MODE_ABS_INDIRECT; $$.param = $2; }
-  | L_PAREN number COMMA REG_X R_PAREN
-    { $$.addr_mode = ASM_ADDR_MODE_INDIRECT_X; $$.param = $2; }
-  | L_PAREN number R_PAREN COMMA REG_Y
-    { $$.addr_mode = ASM_ADDR_MODE_INDIRECT_Y; $$.param = $2; }
-  | L_PAREN REG_BC R_PAREN { $$.addr_mode = ASM_ADDR_MODE_REG_IND_BC; }
-  | L_PAREN REG_DE R_PAREN { $$.addr_mode = ASM_ADDR_MODE_REG_IND_DE; }
-  | L_PAREN REG_HL R_PAREN { $$.addr_mode = ASM_ADDR_MODE_REG_IND_HL; }
-  | L_PAREN REG_IX R_PAREN { $$.addr_mode = ASM_ADDR_MODE_REG_IND_IX; }
-  | L_PAREN REG_IY R_PAREN { $$.addr_mode = ASM_ADDR_MODE_REG_IND_IY; }
-  | L_PAREN REG_SP R_PAREN { $$.addr_mode = ASM_ADDR_MODE_REG_IND_SP; }
-  | L_PAREN number R_PAREN COMMA REG_A
-    { $$.addr_mode = ASM_ADDR_MODE_ABSOLUTE_A; $$.param = $2; }
-  | L_PAREN number R_PAREN COMMA REG_HL
-    { $$.addr_mode = ASM_ADDR_MODE_ABSOLUTE_HL; $$.param = $2; }
-  | L_PAREN number R_PAREN COMMA REG_IX
-    { $$.addr_mode = ASM_ADDR_MODE_ABSOLUTE_IX; $$.param = $2; }
-  | L_PAREN number R_PAREN COMMA REG_IY
-    { $$.addr_mode = ASM_ADDR_MODE_ABSOLUTE_IY; $$.param = $2; }
-  | { $$.addr_mode = ASM_ADDR_MODE_IMPLIED; }
-  | REG_A { $$.addr_mode = ASM_ADDR_MODE_ACCUMULATOR; }
-  | REG_B { $$.addr_mode = ASM_ADDR_MODE_REG_B; }
-  | REG_C { $$.addr_mode = ASM_ADDR_MODE_REG_C; }
-  | REG_D { $$.addr_mode = ASM_ADDR_MODE_REG_D; }
-  | REG_E { $$.addr_mode = ASM_ADDR_MODE_REG_E; }
-  | REG_H { $$.addr_mode = ASM_ADDR_MODE_REG_H; }
-  | REG_IXH { $$.addr_mode = ASM_ADDR_MODE_REG_IXH; }
-  | REG_IYH { $$.addr_mode = ASM_ADDR_MODE_REG_IYH; }
-  | REG_L { $$.addr_mode = ASM_ADDR_MODE_REG_L; }
-  | REG_IXL { $$.addr_mode = ASM_ADDR_MODE_REG_IXL; }
-  | REG_IYL { $$.addr_mode = ASM_ADDR_MODE_REG_IYL; }
-  | REG_AF { $$.addr_mode = ASM_ADDR_MODE_REG_AF; }
-  | REG_BC { $$.addr_mode = ASM_ADDR_MODE_REG_BC; }
-  | REG_DE { $$.addr_mode = ASM_ADDR_MODE_REG_DE; }
-  | REG_HL { $$.addr_mode = ASM_ADDR_MODE_REG_HL; }
-  | REG_IX { $$.addr_mode = ASM_ADDR_MODE_REG_IX; }
-  | REG_IY { $$.addr_mode = ASM_ADDR_MODE_REG_IY; }
-  | REG_SP { $$.addr_mode = ASM_ADDR_MODE_REG_SP; }
-    /* 6809 modes */
-  | LESS_THAN number { $$.addr_mode = ASM_ADDR_MODE_DIRECT; $$.param = $2; }
-  | number COMMA index_usreg {    /* Clash with addr,x addr,y modes! */
-        $$.addr_mode = ASM_ADDR_MODE_INDEXED;
-        if ($1 >= -16 && $1 < 16) {
-            $$.addr_submode = $3 | ($1 & 0x1F);
-        } else if ($1 >= -128 && $1 < 128) {
-            $$.addr_submode = 0x80 | $3 | ASM_ADDR_MODE_INDEXED_OFF8;
-            $$.param = $1;
-        } else if ($1 >= -32768 && $1 < 32768) {
-            $$.addr_submode = 0x80 | $3 | ASM_ADDR_MODE_INDEXED_OFF16;
-            $$.param = $1;
-        } else {
-            $$.addr_mode = ASM_ADDR_MODE_ILLEGAL;
-            mon_out("offset too large even for 16 bits (signed)\n");
-        }
-    }
-  | COMMA index_reg PLUS {
-        $$.addr_mode = ASM_ADDR_MODE_INDEXED;
-        $$.addr_submode = 0x80 | $2 | ASM_ADDR_MODE_INDEXED_INC1;
-        }
-  | COMMA index_reg PLUS PLUS {
-        $$.addr_mode = ASM_ADDR_MODE_INDEXED;
-        $$.addr_submode = 0x80 | $2 | ASM_ADDR_MODE_INDEXED_INC2;
-        }
-  | COMMA MINUS index_reg {
-        $$.addr_mode = ASM_ADDR_MODE_INDEXED;
-        $$.addr_submode = 0x80 | $3 | ASM_ADDR_MODE_INDEXED_DEC1;
-        }
-  | COMMA MINUS MINUS index_reg {
-        $$.addr_mode = ASM_ADDR_MODE_INDEXED;
-        $$.addr_submode = 0x80 | $4 | ASM_ADDR_MODE_INDEXED_DEC2;
-        }
-  | COMMA index_reg {
-        $$.addr_mode = ASM_ADDR_MODE_INDEXED;
-        $$.addr_submode = 0x80 | $2 | ASM_ADDR_MODE_INDEXED_OFF0;
-        }
-  | REG_B COMMA index_reg {
-        $$.addr_mode = ASM_ADDR_MODE_INDEXED;
-        $$.addr_submode = 0x80 | $2 | ASM_ADDR_MODE_INDEXED_OFFB;
-        }
-  | REG_A COMMA index_reg {
-        $$.addr_mode = ASM_ADDR_MODE_INDEXED;
-        $$.addr_submode = 0x80 | $2 | ASM_ADDR_MODE_INDEXED_OFFA;
-        }
-  | REG_D COMMA index_reg {
-        $$.addr_mode = ASM_ADDR_MODE_INDEXED;
-        $$.addr_submode = 0x80 | $2 | ASM_ADDR_MODE_INDEXED_OFFD;
-        }
-  | number COMMA REG_PC {
-        $$.addr_mode = ASM_ADDR_MODE_INDEXED;
-        $$.param = $1;
-        if ($1 >= -128 && $1 < 128) {
-            $$.addr_submode = ASM_ADDR_MODE_INDEXED_OFFPC8;
-        } else if ($1 >= -32768 && $1 < 32768) {
-            $$.addr_submode = ASM_ADDR_MODE_INDEXED_OFFPC16;
-        } else {
-            $$.addr_mode = ASM_ADDR_MODE_ILLEGAL;
-            mon_out("offset too large even for 16 bits (signed)\n");
-        }
-    }
-  | L_BRACKET number COMMA index_reg R_BRACKET {
-        $$.addr_mode = ASM_ADDR_MODE_INDEXED;
-        if ($2 >= -16 && $2 < 16) {
-            $$.addr_submode = $2 & 0x1F;
-        } else if ($1 >= -128 && $1 < 128) {
-            $$.addr_submode = ASM_ADDR_MODE_INDEXED_OFF8;
-            $$.param = $2;
-        } else if ($2 >= -32768 && $2 < 32768) {
-            $$.addr_submode = ASM_ADDR_MODE_INDEXED_OFF16;
-            $$.param = $2;
-        } else {
-            $$.addr_mode = ASM_ADDR_MODE_ILLEGAL;
-            mon_out("offset too large even for 16 bits (signed)\n");
-        }
-    }
-  | L_BRACKET COMMA index_reg PLUS R_BRACKET {
-        $$.addr_mode = ASM_ADDR_MODE_INDEXED;
-        $$.addr_submode = 0x80 | $3 | ASM_ADDR_MODE_INDEXED_INC1;
-        }
-  | L_BRACKET COMMA index_reg PLUS PLUS R_BRACKET {
-        $$.addr_mode = ASM_ADDR_MODE_INDEXED;
-        $$.addr_submode = 0x80 | $3 | ASM_ADDR_MODE_INDEXED_INC2;
-        }
-  | L_BRACKET COMMA MINUS index_reg R_BRACKET {
-        $$.addr_mode = ASM_ADDR_MODE_INDEXED;
-        $$.addr_submode = 0x80 | $4 | ASM_ADDR_MODE_INDEXED_DEC1;
-        }
-  | L_BRACKET COMMA MINUS MINUS index_reg R_BRACKET {
-        $$.addr_mode = ASM_ADDR_MODE_INDEXED;
-        $$.addr_submode = 0x80 | $5 | ASM_ADDR_MODE_INDEXED_DEC2;
-        }
-  | L_BRACKET COMMA index_reg R_BRACKET {
-        $$.addr_mode = ASM_ADDR_MODE_INDEXED;
-        $$.addr_submode = 0x80 | $3 | ASM_ADDR_MODE_INDEXED_OFF0;
-        }
-  | L_BRACKET REG_B COMMA index_reg R_BRACKET {
-        $$.addr_mode = ASM_ADDR_MODE_INDEXED;
-        $$.addr_submode = 0x80 | $3 | ASM_ADDR_MODE_INDEXED_OFFB;
-        }
-  | L_BRACKET REG_A COMMA index_reg R_BRACKET {
-        $$.addr_mode = ASM_ADDR_MODE_INDEXED;
-        $$.addr_submode = 0x80 | $3 | ASM_ADDR_MODE_INDEXED_OFFA;
-        }
-  | L_BRACKET REG_D COMMA index_reg R_BRACKET {
-        $$.addr_mode = ASM_ADDR_MODE_INDEXED;
-        $$.addr_submode = 0x80 | $3 | ASM_ADDR_MODE_INDEXED_OFFD;
-        }
-  | L_BRACKET number COMMA REG_PC R_BRACKET {
-        $$.addr_mode = ASM_ADDR_MODE_INDEXED;
-        $$.param = $2;
-        if ($2 >= -128 && $2 < 128) {
-            $$.addr_submode = ASM_ADDR_MODE_INDEXED_OFFPC8_IND;
-        } else if ($2 >= -32768 && $2 < 32768) {
-            $$.addr_submode = ASM_ADDR_MODE_INDEXED_OFFPC16_IND;
-        } else {
-            $$.addr_mode = ASM_ADDR_MODE_ILLEGAL;
-            mon_out("offset too large even for 16 bits (signed)\n");
-        }
-    }
-  | L_BRACKET number R_BRACKET {
-        $$.addr_mode = ASM_ADDR_MODE_INDEXED;
-        $$.addr_submode = 0x80 | ASM_ADDR_MODE_EXTENDED_INDIRECT;
-        $$.param = $2;
-        }
-  /* TODO: register lists for PSHx PULx, and register pairs for TFR and EXG */
-  ;
-
-index_reg:
-    REG_X { $$ = (0 << 5); printf("reg_x\n"); }
-  | REG_Y { $$ = (1 << 5); printf("reg_y\n"); }
-  | index_usreg { $$ = $1; }
-  ;
-
-index_usreg:
-    REG_U { $$ = (2 << 5); printf("reg_u\n"); }
-  | REG_S { $$ = (3 << 5); printf("reg_s\n"); }
-  ;
-
-
 %%
 
-void parse_and_execute_line(char *input)
+int mon_parse_exec_line(char* buffer)
 {
-   char *temp_buf;
-   int i, rc;
+    int rc;
 
-   temp_buf = lib_malloc(strlen(input) + 3);
-   strcpy(temp_buf,input);
-   i = (int)strlen(input);
-   temp_buf[i++] = '\n';
-   temp_buf[i++] = '\0';
-   temp_buf[i++] = '\0';
+    /*yydebug = 1;*/
 
-   make_buffer(temp_buf);
-   if ( (rc =yyparse()) != 0) {
-       mon_out("ERROR -- ");
-       switch(rc) {
-         case ERR_BAD_CMD:
-           mon_out("Bad command:\n");
-           break;
-         case ERR_RANGE_BAD_START:
-           mon_out("Bad first address in range:\n");
-           break;
-         case ERR_RANGE_BAD_END:
-           mon_out("Bad second address in range:\n");
-           break;
-         case ERR_EXPECT_CHECKNUM:
-           mon_out("Checkpoint number expected:\n");
-           break;
-         case ERR_EXPECT_END_CMD:
-           mon_out("Unexpected token:\n");
-           break;
-         case ERR_MISSING_CLOSE_PAREN:
-           mon_out("')' expected:\n");
-           break;
-         case ERR_INCOMPLETE_COMPARE_OP:
-           mon_out("Compare operation missing an operand:\n");
-           break;
-         case ERR_EXPECT_FILENAME:
-           mon_out("Expecting a filename:\n");
-           break;
-         case ERR_ADDR_TOO_BIG:
-           mon_out("Address too large:\n");
-           break;
-         case ERR_IMM_TOO_BIG:
-           mon_out("Immediate argument too large:\n");
-           break;
-         case ERR_EXPECT_STRING:
-           mon_out("Expecting a string.\n");
-           break;
-         case ERR_UNDEFINED_LABEL:
-           mon_out("Found an undefined label.\n");
-           break;
-         case ERR_EXPECT_DEVICE_NUM:
-           mon_out("Expecting a device number.\n");
-           break;
-         case ERR_EXPECT_ADDRESS:
-           mon_out("Expecting an address.\n");
-           break;
-         case ERR_ILLEGAL_INPUT:
-         default:
-           mon_out("Wrong syntax:\n");
-       }
-       mon_out("  %s\n", input);
-       for (i = 0; i < last_len; i++)
-           mon_out(" ");
-       mon_out("  ^\n");
-       asm_mode = 0;
-       new_cmd = 1;
-   }
-   lib_free(temp_buf);
-   free_buffer();
+  	mon_lex_new_cmd();
+    mon_lex_set_buffer(buffer);
+    rc = yyparse();
+    mon_lex_cleanup_buffer();
+
+    return rc;
 }
 
 static int yyerror(char *s)
 {
-   fprintf(stderr, "ERR:%s\n", s);
-   return 0;
+    fprintf(stderr, "ERR:%s\n", s);
+    return 0;
 }
 
 static int resolve_datatype(unsigned guess_type, const char *num)

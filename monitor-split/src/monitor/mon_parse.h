@@ -185,18 +185,17 @@
      STRING = 401,
      FILENAME = 402,
      R_O_L = 403,
-     OPCODE = 404,
-     LABEL = 405,
-     BANKNAME = 406,
-     CPUTYPE = 407,
-     MON_REGISTER = 408,
-     COMPARE_OP = 409,
-     RADIX_TYPE = 410,
-     INPUT_SPEC = 411,
-     CMD_CHECKPT_ON = 412,
-     CMD_CHECKPT_OFF = 413,
-     TOGGLE = 414,
-     MASK = 415
+     LABEL = 404,
+     BANKNAME = 405,
+     CPUTYPE = 406,
+     MON_REGISTER = 407,
+     COMPARE_OP = 408,
+     RADIX_TYPE = 409,
+     INPUT_SPEC = 410,
+     CMD_CHECKPT_ON = 411,
+     CMD_CHECKPT_OFF = 412,
+     TOGGLE = 413,
+     MASK = 414
    };
 #endif
 
@@ -207,7 +206,7 @@ typedef union YYSTYPE
 {
 
 /* Line 1676 of yacc.c  */
-#line 144 "mon_parse.y"
+#line 92 "mon_parse.y"
 
     MON_ADDR a;
     MON_ADDR range[2];
@@ -223,7 +222,7 @@ typedef union YYSTYPE
 
 
 /* Line 1676 of yacc.c  */
-#line 227 "mon_parse.h"
+#line 226 "mon_parse.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

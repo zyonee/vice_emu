@@ -54,7 +54,5 @@ extern void mon_breakpoint_unset(MON_ADDR address);
 extern void mon_breakpoint_enable(MON_ADDR address);
 extern void mon_breakpoint_disable(MON_ADDR address);
 
-/* defined in mon_parse.y, and thus, in mon_parse.c */
-extern void parse_and_execute_line(char *input);
 
 #endif

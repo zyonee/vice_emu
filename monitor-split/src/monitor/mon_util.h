@@ -38,6 +38,9 @@ extern char *mon_disassemble_with_label(MEMSPACE memspace, WORD loc,
 extern char *mon_dump_with_label(MEMSPACE memspace, WORD loc, int hex, unsigned *label_p);
 extern void mon_set_command(struct console_s *console_log, char *command,
                             void (*)(void));
+extern void mon_unescape(char *s);
+extern int mon_hexint(char n);
+extern void mon_emit_code(int len, ...);
 
 #endif
 

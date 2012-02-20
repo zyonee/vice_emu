@@ -19,6 +19,9 @@ libmonitor_a_SOURCES = \
 	mon_assemble6809.c \
 	mon_assemblez80.c \
 	mon_assemble.h \
+	mon_asm6502_lex.c \
+	mon_asm6502_parse.c \
+	mon_asm6502_parse.h \
 	mon_breakpoint.c \
 	mon_breakpoint.h \
 	mon_command.c \

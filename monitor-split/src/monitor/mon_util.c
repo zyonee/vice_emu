@@ -67,7 +67,7 @@ static int mon_buffer_flush(void)
     return rv;
 }
 
-/* like strncpy, but: 
+/* like strncpy, but:
  * 1. always add a null character
  * 2. do not fill the rest of the buffer
  */
@@ -82,7 +82,7 @@ static void stringcopy_n(char *dest, const char *src, unsigned int len)
 static void mon_buffer_add(const char *buffer, unsigned int bufferlen)
 {
     if (bigbufferwrite + bufferlen > bigbuffersize) {
-        /* the buffer does not fit into bigbuffer, thus, 
+        /* the buffer does not fit into bigbuffer, thus,
            flush the buffer! */
         mon_buffer_flush();
     }
@@ -246,3 +246,82 @@ char *uimon_in(const char *prompt)
     return p;
 }
 #endif
+
+/* remove escaped codes from string and replace them by their actual character
+   codes. */
+void mon_unescape(char *s)
+{
+    char *d = s;
+    int n;
+    while (*s) {
+        if (*s == '\\') {
+            s++;
+            switch (*s) {
+                case '\\': *d = '\\'; break; /* backslash */
+                case 'n': *d = '\n'; break; /* lf */
+                case 'r': *d = '\r'; break; /* cr */
+                case '"': *d = '"';  break; /* quote */
+                case 'x': /* hex codes */
+                    s++; if (*s == 0) { goto send; }
+                    n = mon_hexint(*s) << 4;
+                    s++; if (*s == 0) { goto send; }
+                    *d = n | mon_hexint(*s);
+                    break;
+                default:
+                    *d = '\\'; d++;
+                    if (*s == 0) { goto send; }
+                    *d = *s;
+                    break;
+            }
+        } else {
+            *d = *s;
+        }
+        s++;d++;
+    }
+send:
+    *d = 0;
+}
+
+int mon_hexint(char n)
+{
+    if ((n >= '0') && (n <= '9')) {
+        return n - '0';
+    } else if ((n >= 'a') && (n <= 'f')) {
+        return n - ('a' - 0x0a);
+    } else if ((n >= 'A') && (n <= 'F')) {
+        return n - ('A' - 0x0a);
+    }
+    return 0;
+}
+
+
+void mon_emit_code(int len, ...)
+{
+    va_list ap;
+    MON_ADDR old_asm_mode_addr;
+    MEMSPACE mem;
+    int i, val;
+    WORD loc;
+
+    old_asm_mode_addr = asm_mode_addr;
+
+    va_start(ap, len);
+    for (i = 0; i < len; i++)
+    {
+        mem = addr_memspace(asm_mode_addr);
+        loc = addr_location(asm_mode_addr);
+        val = va_arg(ap, int);
+        mon_out("Emit: %02x\n", val);
+        if (val < 0 || val > 255)
+        {
+            mon_out("Assembler error: %d out of range\n", val);
+            asm_mode = old_asm_mode_addr;
+            break;
+        }
+        mon_set_mem_val(mem, loc, val);
+        mon_inc_addr_location(&asm_mode_addr, 1);
+    }
+    va_end(ap);
+
+    dot_addr[mem] = asm_mode_addr;
+}

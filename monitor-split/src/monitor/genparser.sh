@@ -57,25 +57,30 @@ do_version_check() {
 }
 
 check_min_version() {
-	p=$1 # program name
- 	a=$2 # version string to check
+    p=$1 # program name
+    a=$2 # version string to check
     b=$3 # minimal version
-	# return 0 if the version is ok, 1 if it is too old
-	if [ x"$a" = x"" ]; then
-		echo "Error: $p missing"
-		exit 1
-	else
-		va=`echo "$a" | head -n 1 | sed "s/.* //g"` # last word of first line
-		do_version_check "$va" "$b"
-		if [ $? -ne 0 ]; then
-			echo "Warning: $p is too old, need >= $b"
-			echo "DO NOT COMMIT files created by an old version of this tool"
-		fi
-	fi
+    # return 0 if the version is ok, 1 if it is too old
+    if [ x"$a" = x"" ]; then
+        echo "Error: $p missing"
+        exit 1
+    else
+        va=`echo "$a" | head -n 1 | sed "s/.* //g"` # last word of first line
+        do_version_check "$va" "$b"
+        if [ $? -ne 0 ]; then
+            echo "Warning: $p is too old, need >= $b"
+            echo "DO NOT COMMIT files created by an old version of this tool"
+        fi
+    fi
 }
 
 check_min_version flex  "`flex -V`"  2.5.35
 check_min_version bison "`bison -V`" 2.4.1
 
-exec_cmd bison -dtv -o mon_parse.c mon_parse.y
-exec_cmd flex -o mon_lex.c mon_lex.l
+bison_opts=-dtv
+
+exec_cmd bison ${bison_opts} -o mon_parse.c             mon_parse.y
+exec_cmd flex                -o mon_lex.c               mon_lex.l
+exec_cmd bison ${bison_opts} -o mon_asm6502_parse.c     mon_asm6502_parse.y
+exec_cmd flex                -o mon_asm6502_lex.c       mon_asm6502_lex.l
+
