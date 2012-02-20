@@ -30,6 +30,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <vte/vte.h>
+#include <dirent.h>
 
 #include "console.h"
 #include "lib.h"
@@ -56,6 +57,8 @@ struct console_private_s {
 } fixed;
 
 static console_t vte_console;
+static linenoiseCompletions command_lc = {0, NULL};
+static linenoiseCompletions need_filename_lc = {0, NULL};
 
 void write_to_terminal(struct console_private_s *t,
                        const char *data,
@@ -80,19 +83,26 @@ static char* append_char_to_input_buffer(char *old_input_buffer, char new_char)
     return new_input_buffer;
 }
 
-static char* append_string_to_input_buffer(char *old_input_buffer, char *new_string)
+static char* append_string_to_input_buffer(char *old_input_buffer, GtkWidget *terminal, GdkAtom clipboard_to_use)
 {
-    char *new_input_buffer = lib_realloc(old_input_buffer, strlen(old_input_buffer) + strlen(new_string) + 1);
-    char *char_in, *char_out = new_input_buffer;
+    GtkClipboard *clipboard = gtk_widget_get_clipboard(terminal, clipboard_to_use);
+    gchar *new_string = gtk_clipboard_wait_for_text(clipboard);
 
-    for (char_in = new_string; *char_in; char_in++) {
-        if (*char_in < 0 || *char_in >= 32) {
-            *char_out++ = *char_in;
+    if (new_string != NULL) {
+        char *new_input_buffer = lib_realloc(old_input_buffer, strlen(old_input_buffer) + strlen(new_string) + 1);
+        char *char_in, *char_out = new_input_buffer + strlen(new_input_buffer);
+
+        for (char_in = new_string; *char_in; char_in++) {
+            if (*char_in < 0 || *char_in >= 32) {
+                *char_out++ = *char_in;
+            }
         }
-    }
-    *char_out = 0;
+        *char_out = 0;
+        g_free(new_string);
 
-    return new_input_buffer;
+        return new_input_buffer;
+    }
+    return old_input_buffer;
 }
 
 static gboolean plain_key_pressed(struct term_read_result *r, guint keyval)
@@ -143,50 +153,61 @@ static gboolean ctrl_plus_key_pressed(struct term_read_result *r, guint keyval, 
     default:
         return FALSE;
     case GDK_KEY(h):
+    case GDK_KEY(H):
         r->input_buffer = append_char_to_input_buffer(r->input_buffer, 127);
         return TRUE;
     case GDK_KEY(b):
+    case GDK_KEY(B):
         r->input_buffer = append_char_to_input_buffer(r->input_buffer, 2);
         return TRUE;
     case GDK_KEY(f):
+    case GDK_KEY(F):
         r->input_buffer = append_char_to_input_buffer(r->input_buffer, 6);
         return TRUE;
     case GDK_KEY(p):
+    case GDK_KEY(P):
         r->input_buffer = append_char_to_input_buffer(r->input_buffer, 16);
         return TRUE;
     case GDK_KEY(n):
+    case GDK_KEY(N):
         r->input_buffer = append_char_to_input_buffer(r->input_buffer, 14);
         return TRUE;
     case GDK_KEY(t):
+    case GDK_KEY(T):
         r->input_buffer = append_char_to_input_buffer(r->input_buffer, 20);
         return TRUE;
     case GDK_KEY(d):
+    case GDK_KEY(D):
+        /* ctrl-d, remove char at right of cursor */
         r->input_buffer = append_char_to_input_buffer(r->input_buffer, 4);
         return TRUE;
     case GDK_KEY(u):
+    case GDK_KEY(U):
+        /* Ctrl+u, delete the whole line. */
         r->input_buffer = append_char_to_input_buffer(r->input_buffer, 21);
         return TRUE;
     case GDK_KEY(k):
+    case GDK_KEY(K):
+        /* Ctrl+k, delete from current to end of line. */
         r->input_buffer = append_char_to_input_buffer(r->input_buffer, 11);
         return TRUE;
     case GDK_KEY(a):
+    case GDK_KEY(A):
+        /* Ctrl+a, go to the start of the line */
         r->input_buffer = append_char_to_input_buffer(r->input_buffer, 1);
         return TRUE;
     case GDK_KEY(e):
+    case GDK_KEY(E):
+        /* ctrl+e, go to the end of the line */
         r->input_buffer = append_char_to_input_buffer(r->input_buffer, 5);
         return TRUE;
     case GDK_KEY(c):
+    case GDK_KEY(C):
         vte_terminal_copy_clipboard(VTE_TERMINAL(terminal));
         return TRUE;
     case GDK_KEY(v):
-        {
-            GtkClipboard *clipboard = gtk_widget_get_clipboard(terminal, GDK_SELECTION_CLIPBOARD);
-            gchar *new_string = gtk_clipboard_wait_for_text(clipboard);
-            if (new_string != NULL) {
-                r->input_buffer = append_string_to_input_buffer(r->input_buffer, new_string);
-                g_free(new_string);
-            }
-        }
+    case GDK_KEY(V):
+        r->input_buffer = append_string_to_input_buffer(r->input_buffer, terminal, GDK_SELECTION_CLIPBOARD);
         return TRUE;
     }
 }
@@ -201,8 +222,9 @@ static gboolean key_press_event (GtkWidget   *widget,
     gdk_event_get_state((GdkEvent*)event, &state);
 
     if (!r->ended && event->type == GDK_KEY_PRESS){
-        switch(state & (GDK_SHIFT_MASK | GDK_LOCK_MASK | GDK_CONTROL_MASK)) {
+        switch(state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK)) {
         case 0:
+        case GDK_SHIFT_MASK:
             return plain_key_pressed(r, event->keyval);
         case GDK_CONTROL_MASK:
             return ctrl_plus_key_pressed(r, event->keyval, widget);
@@ -218,19 +240,13 @@ gboolean button_press_event(GtkWidget *widget,
                             gpointer   user_data)
 {
     struct term_read_result *r = (struct term_read_result *)user_data;
-    GtkClipboard *clipboard;
-    gchar *new_string;
     GdkEventButton *button_event = (GdkEventButton*)event;
 
     if (button_event->button != 2
      || button_event->type   != GDK_BUTTON_PRESS)
         return FALSE;
-    clipboard = gtk_widget_get_clipboard(widget, GDK_SELECTION_PRIMARY);
-    new_string = gtk_clipboard_wait_for_text(clipboard);
-    if (new_string != NULL) {
-        r->input_buffer = append_string_to_input_buffer(r->input_buffer, new_string);
-        g_free(new_string);
-    }
+
+    r->input_buffer = append_string_to_input_buffer(r->input_buffer, widget, GDK_SELECTION_PRIMARY);
     return TRUE;
 }
 
@@ -266,6 +282,8 @@ console_t *uimon_window_open(void)
     gtk_window_set_deletable(GTK_WINDOW(fixed.window), FALSE);
     gtk_window_set_transient_for(GTK_WINDOW(fixed.window), GTK_WINDOW(get_active_toplevel()));
     fixed.term = vte_terminal_new();
+    vte_terminal_set_scrollback_lines (VTE_TERMINAL(fixed.term), 1000);
+    vte_terminal_set_scroll_on_output (VTE_TERMINAL(fixed.term), TRUE);
     gtk_container_add(GTK_CONTAINER(fixed.window), fixed.term);
 
     g_signal_connect(G_OBJECT(fixed.window), "destroy",
@@ -322,12 +340,123 @@ void uimon_set_interface(struct monitor_interface_s **interf, int i)
 {
 }
 
+static char* concat_strings(const char *string1, int nchars, const char *string2)
+{
+    char *ret = malloc(nchars + strlen(string2) + 1);
+    memcpy(ret, string1, nchars);
+    strcpy(ret + nchars, string2);
+    return ret;
+}
+
+static void fill_completions(const char *string_so_far, int initial_chars, int token_len, const linenoiseCompletions *possible_lc, linenoiseCompletions *lc)
+{
+    int word_index;
+
+    lc->len = 0;
+    for(word_index = 0; word_index < possible_lc->len; word_index++) {
+        int i;
+        for(i = 0; i < token_len; i++)
+            if (string_so_far[initial_chars + i] != possible_lc->cvec[word_index][i])
+                break;
+        if (i == token_len && possible_lc->cvec[word_index][token_len] != 0) {
+            char *string_to_append = concat_strings(string_so_far, initial_chars, possible_lc->cvec[word_index]);
+            linenoiseAddCompletion(lc, string_to_append);
+            free(string_to_append);
+        }
+    }
+}
+
+static void find_next_token(const char *string_so_far, int start_of_search, int *start_of_token, int *token_len)
+{
+    for(*start_of_token = start_of_search; string_so_far[*start_of_token] && isspace(string_so_far[*start_of_token]); (*start_of_token)++);
+    for(*token_len = 0; string_so_far[*start_of_token + *token_len] && !isspace(string_so_far[*start_of_token + *token_len]); (*token_len)++);
+}
+
+static gboolean is_token_in(const char *string_so_far, int token_len, const linenoiseCompletions *lc)
+{
+    int i;
+    for(i = 0; i < lc->len; i++) {
+        if(strlen(lc->cvec[i]) == token_len
+       && !strncmp(string_so_far, lc->cvec[i], token_len))
+            return TRUE;
+    }
+    return FALSE;
+}
+
+static void monitor_completions(const char *string_so_far, linenoiseCompletions *lc)
+{
+    int start_of_token, token_len;
+    char *help_commands[] = {"help", "?"};
+    const linenoiseCompletions help_lc = {
+         sizeof(help_commands)/sizeof(*help_commands),
+         help_commands
+    };
+
+    find_next_token(string_so_far, 0, &start_of_token, &token_len);
+    if (!string_so_far[start_of_token + token_len]){
+         fill_completions(string_so_far, start_of_token, token_len, &command_lc, lc);
+         return;
+    }
+    if (is_token_in(string_so_far + start_of_token, token_len, &help_lc)) {
+        find_next_token(string_so_far, start_of_token + token_len, &start_of_token, &token_len);
+        if (!string_so_far[start_of_token + token_len]){
+             fill_completions(string_so_far, start_of_token, token_len, &command_lc, lc);
+             return;
+        }
+    }
+    if (is_token_in(string_so_far + start_of_token, token_len, &need_filename_lc)) {
+        int start_of_path;
+        DIR* dir;
+        struct dirent *direntry;
+        struct linenoiseCompletions files_lc = {0, NULL};
+        int i;
+
+        for(start_of_token += token_len; string_so_far[start_of_token] && isspace(string_so_far[start_of_token]); start_of_token++);
+        if(string_so_far[start_of_token] != '"') {
+            char *string_to_append = concat_strings(string_so_far, start_of_token, "\"");
+            linenoiseAddCompletion(lc, string_to_append);
+            free(string_to_append);
+            return;
+        }
+        for (start_of_path = ++start_of_token, token_len = 0; string_so_far[start_of_token + token_len]; token_len++) {
+            if(string_so_far[start_of_token + token_len] == '"'
+            && string_so_far[start_of_token + token_len - 1] != '\\')
+                return;
+            if(string_so_far[start_of_token + token_len] == '/') {
+                start_of_token += token_len + 1;
+                token_len = -1;
+            }
+        }
+        if (start_of_token == start_of_path)
+            dir = opendir(".");
+        else {
+            char *path = concat_strings(string_so_far + start_of_path, start_of_token - start_of_path, "");
+            dir = opendir(path);
+            free(path);
+        }
+        if (dir) {
+            for (direntry = readdir(dir); direntry; direntry = readdir(dir)) {
+                if (strcmp(direntry->d_name, ".")
+                 && strcmp(direntry->d_name, "..")) {
+                    char *entryname = lib_msprintf("%s%s", direntry->d_name, direntry->d_type == DT_DIR ? "/" : "\"");
+                    linenoiseAddCompletion(&files_lc, entryname);
+                    lib_free(entryname);
+                }
+            }
+            fill_completions(string_so_far, start_of_token, token_len, &files_lc, lc);
+            for(i = 0; i < files_lc.len; i++)
+                free(files_lc.cvec[i]);
+            return;
+        }
+    }
+}
+
 char *uimon_get_in(char **ppchCommandLine, const char *prompt)
 {
     char *p, *ret_string;
 
     fixed.read_result.input_buffer = lib_stralloc("");;
-
+    linenoiseSetCompletionCallback(monitor_completions);
     p = linenoise(prompt, &fixed);
     if (p) {
         if (*p) {
@@ -346,11 +475,33 @@ char *uimon_get_in(char **ppchCommandLine, const char *prompt)
 
 int console_init(void)
 {
+    int i = 0;
+    char *full_name;
+    char *short_name;
+    int takes_filename_as_arg;
+    while(mon_get_nth_command(i++, &full_name, &short_name, &takes_filename_as_arg)) {
+        if (strlen(full_name)) {
+            linenoiseAddCompletion(&command_lc, full_name);
+            if (strlen(short_name))
+                linenoiseAddCompletion(&command_lc, short_name);
+            if (takes_filename_as_arg) {
+                linenoiseAddCompletion(&need_filename_lc, full_name);
+                if (strlen(short_name))
+                    linenoiseAddCompletion(&need_filename_lc, short_name);
+            }
+        }
+    }
     return 0;
 }
 
 int console_close_all(void)
 {
+    int i;
+    for(i = 0; i < command_lc.len; i++)
+        free(command_lc.cvec[i]);
+    for(i = 0; i < need_filename_lc.len; i++)
+        free(need_filename_lc.cvec[i]);
+
     return 0;
 }
 
