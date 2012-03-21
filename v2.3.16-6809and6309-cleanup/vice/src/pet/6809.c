@@ -311,18 +311,37 @@ static WORD RDMEM16(WORD addr)
     return val;
 }
 
-#define write_stack write8
 #define read_stack  read8
+
+static void write_stack(WORD addr, BYTE data)
+{
+    write8(addr, data);
+    CLK++;
+}
 
 static void write_stack16(WORD addr, WORD data)
 {
-    write_stack((WORD)(addr + 1), (BYTE)(data & 0xff));
-    write_stack(addr, (BYTE)(data >> 8));
+    write8((WORD)(addr + 1), (BYTE)(data & 0xff));
+    CLK++;
+    write8(addr, (BYTE)(data >> 8));
+    CLK++;
 }
 
-static unsigned read_stack16(WORD addr)
+static BYTE read_stack(WORD addr)
 {
-    return (read_stack(addr) << 8) | read_stack((WORD)(addr + 1));
+    BYTE val = read8(addr);
+
+    CLK++;
+    return val;
+}
+
+static WORD read_stack16(WORD addr)
+{
+    WORD val = read8(addr) << 8;
+
+    CLK++;
+    val |= read8((WORD)(addr + 1));
+    return val;
 }
 
 static void direct(void)
@@ -1376,42 +1395,34 @@ static void pshs(void)
     CLK += 5;
 
     if (post & 0x80) {
-        CLK += 2;
         S -= 2;
         write_stack16(S, PC);
     }
     if (post & 0x40) {
-        CLK += 2;
         S -= 2;
         write_stack16(S, U);
     }
     if (post & 0x20) {
-        CLK += 2;
         S -= 2;
         write_stack16(S, Y);
     }
     if (post & 0x10) {
-        CLK += 2;
         S -= 2;
         write_stack16(S, X);
     }
     if (post & 0x08) {
-        CLK++;
         S--;
         write_stack(S, (BYTE)(DP >> 8));
     }
     if (post & 0x04) {
-        CLK++;
         S--;
         write_stack(S, B);
     }
     if (post & 0x02) {
-        CLK++;
         S--;
         write_stack(S, A);
     }
     if (post & 0x01) {
-        CLK++;
         S--;
         write_stack(S, get_cc());
     }
@@ -1424,42 +1435,34 @@ static void pshu(void)
     CLK += 5;
 
     if (post & 0x80) {
-        CLK += 2;
         U -= 2;
         write_stack16(U, PC);
     }
     if (post & 0x40) {
-        CLK += 2;
         U -= 2;
         write_stack16(U, S);
     }
     if (post & 0x20) {
-        CLK += 2;
         U -= 2;
         write_stack16(U, Y);
     }
     if (post & 0x10) {
-        CLK += 2;
         U -= 2;
         write_stack16(U, X);
     }
     if (post & 0x08) {
-        CLK++;
         U--;
         write_stack(U, (BYTE)(DP >> 8));
     }
     if (post & 0x04) {
-        CLK++;
         U--;
         write_stack(U, B);
     }
     if (post & 0x02) {
-        CLK++;
         U--;
         write_stack(U, A);
     }
     if (post & 0x01) {
-        CLK++;
         U--;
         write_stack(U, get_cc());
     }
@@ -1472,38 +1475,30 @@ static void puls(void)
     CLK += 5;
 
     if (post & 0x01) {
-        CLK++;
         set_cc(read_stack(S++));
     }
     if (post & 0x02) {
-        CLK++;
         A = read_stack(S++);
     }
     if (post & 0x04) {
-        CLK++;
         B = read_stack(S++);
     }
     if (post & 0x08) {
-        CLK++;
         DP = read_stack(S++) << 8;
     }
     if (post & 0x10) {
-        CLK += 2;
         X = read_stack16(S);
         S += 2;
     }
     if (post & 0x20) {
-        CLK += 2;
         Y = read_stack16(S);
         S += 2;
     }
     if (post & 0x40) {
-        CLK += 2;
         U = read_stack16(S);
         S += 2;
     }
     if (post & 0x80) {
-        CLK += 2;
         PC = read_stack16(S);
         S += 2;
     }
@@ -1516,38 +1511,30 @@ static void pulu(void)
     CLK += 5;
 
     if (post & 0x01) {
-        CLK++;
         set_cc(read_stack(U++));
     }
     if (post & 0x02) {
-        CLK++;
         A = read_stack(U++);
     }
     if (post & 0x04) {
-        CLK++;
         B = read_stack(U++);
     }
     if (post & 0x08) {
-        CLK++;
         DP = read_stack(U++) << 8;
     }
     if (post & 0x10) {
-        CLK += 2;
         X = read_stack16(U);
         U += 2;
     }
     if (post & 0x20) {
-        CLK += 2;
         Y = read_stack16(U);
         U += 2;
     }
     if (post & 0x40) {
-        CLK += 2;
         S = read_stack16(U);
         U += 2;
     }
     if (post & 0x80) {
-        CLK += 2;
         PC = read_stack16(U);
         U += 2;
     }
@@ -1569,12 +1556,11 @@ static void jsr(void)
 
 static void rti(void)
 {
-    CLK += 6;
+    CLK += 3;
     set_cc(read_stack(S));
     S++;
 
     if ((EFI & E_FLAG) != 0) {
-        CLK += 9;
         A = read_stack(S++);
         B = read_stack(S++);
 #ifdef H6309
@@ -1597,7 +1583,7 @@ static void rti(void)
 
 static void rts(void)
 {
-    CLK += 5;
+    CLK += 3;
     PC = read_stack16(S);
     S += 2;
 }
@@ -1687,7 +1673,7 @@ void firq(void)
 
 void swi(void)
 {
-    CLK += 19;
+    CLK += 5;
     //CLK++;        /* /VMA cycle */
     EFI |= E_FLAG;
     S -= 2;
@@ -1716,7 +1702,7 @@ void swi(void)
 
 void swi2(void)
 {
-    CLK += 20;
+    CLK += 6;
     //CLK++;        /* /VMA cycle */
     EFI |= E_FLAG;
     S -= 2;
@@ -1744,7 +1730,7 @@ void swi2(void)
 
 void swi3(void)
 {
-    CLK += 20;
+    CLK += 6;
     //CLK++;        /* /VMA cycle */
     EFI |= E_FLAG;
     S -= 2;
@@ -1773,7 +1759,7 @@ void swi3(void)
 #ifdef H6309
 void opcode_trap(void)
 {
-    CLK += 20;
+    CLK += 6;
     //CLK++;        /* /VMA cycle */
     EFI |= E_FLAG;
     MD &= MD_ILL;
@@ -1800,7 +1786,7 @@ void opcode_trap(void)
 
 void div0_trap(void)
 {
-    CLK += 20;
+    CLK += 6;
     //CLK++;        /* /VMA cycle */
     EFI |= E_FLAG;
     MD &= MD_DBZ;
@@ -1922,10 +1908,10 @@ static void long_bsr(void)
     write_stack16(S, PC);
 #ifdef H6309
     if (H6309_NATIVE_MODE()) {
-        CLK += 7;
+        CLK += 5;
     } else
 #endif
-    CLK += 9;
+    CLK += 7;
     PC = ea;
 }
 
@@ -1946,7 +1932,7 @@ static void bsr(void)
     ea = PC + tmp;
     S -= 2;
     write_stack16(S, PC);
-    CLK += 7;
+    CLK += 5;
     PC = ea;
 }
 
@@ -2020,7 +2006,6 @@ static void pshsw(void)
 {
     /* TODO: cycle count */
 
-    CLK += 2;
     S -= 2;
     write_stack16(S, W);
 }
@@ -2029,7 +2014,6 @@ static void pshuw(void)
 {
     /* TODO: cycle count */
 
-    CLK += 2;
     U -= 2;
     write_stack16(U, W);
 }
@@ -2038,7 +2022,6 @@ static void pulsw(void)
 {
     /* TODO: cycle count */
 
-    CLK += 2;
     W = read_stack16(S);
     S += 2;
 }
@@ -2047,7 +2030,6 @@ static void puluw(void)
 {
     /* TODO: cycle count */
 
-    CLK += 2;
     W = read_stack16(U);
     U += 2;
 }
