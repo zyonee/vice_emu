@@ -1008,6 +1008,18 @@ static BYTE and(BYTE arg, BYTE val)
     return res;
 }
 
+static BYTE and_new(BYTE arg, BYTE val, int CLK6809, int CLK6309)
+{
+    BYTE res = arg & val;
+
+    N = Z = res;
+    OV = 0;
+
+    CLK_ADD(CLK6809, CLK6309);
+
+    return res;
+}
+
 static BYTE asl(BYTE arg)		/* same as lsl */
 {
     WORD res = arg << 1;
@@ -1062,6 +1074,18 @@ static BYTE com(BYTE arg)
     OV = 0;
     C = 1;
     CLK += 2;
+
+    return res;
+}
+
+static BYTE com_new(BYTE arg, int CLK6809, int CLK6309)
+{
+    BYTE res = ~arg;
+
+    N = Z = res;
+    OV = 0;
+    C = 1;
+    CLK_ADD(CLK6809, CLK6309);
 
     return res;
 }
@@ -1131,6 +1155,18 @@ static BYTE eor(BYTE arg, BYTE val)
     return res;
 }
 
+static BYTE eor_new(BYTE arg, BYTE val, int CLK6809, int CLK6309)
+{
+    BYTE res = arg ^ val;
+
+    N = Z = res;
+    OV = 0;
+
+    CLK_ADD(CLK6809, CLK6309);
+
+    return res;
+}
+
 static void exg(void)
 {
     WORD tmp1 = 0xff;
@@ -1194,6 +1230,18 @@ static BYTE lsr(BYTE arg)
     return res;
 }
 
+static BYTE lsr_new(BYTE arg, int CLK6809, int CLK6309)
+{
+    BYTE res = arg >> 1;
+
+    N = 0;
+    Z = res;
+    C = arg & 1;
+    CLK_ADD(CLK6809, CLK6309);
+
+    return res;
+}
+
 static void mul(void)
 {
     WORD res = A * B;
@@ -1214,12 +1262,35 @@ static BYTE neg(BYTE arg)
     return res;
 }
 
+static BYTE neg_new(BYTE arg, int CLK6809, int CLK6309)
+{
+    BYTE res = ~arg + 1;
+
+    C = N = Z = res;
+    OV = res & arg;
+    CLK_ADD(CLK6809, CLK6309);
+
+    return res;
+}
+
 static BYTE or(BYTE arg, BYTE val)
 {
     BYTE res = arg | val;
 
     N = Z = res;
     OV = 0;
+
+    return res;
+}
+
+static BYTE or_new(BYTE arg, BYTE val, int CLK6809, CLK6309)
+{
+    BYTE res = arg | val;
+
+    N = Z = res;
+    OV = 0;
+
+    CLK_ADD(CLK6809, CLK6309);
 
     return res;
 }
@@ -1243,6 +1314,17 @@ static BYTE ror(BYTE arg)
     C = arg & 1;
     N = Z = res;
     CLK += 2;
+
+    return res;
+}
+
+static BYTE ror_new(BYTE arg, int CLK6809, int CLK6309)
+{
+    BYTE res = (arg >> 1) | ((C != 0) << 7);
+
+    C = arg & 1;
+    N = Z = res;
+    CLK_ADD(CLK6809, CLK6309);
 
     return res;
 }
@@ -2746,32 +2828,28 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
         switch (opcode) {
             case 0x00:	/* NEG direct */
                 direct();
-                CLK_ADD(4, 3);
-                WRMEM(ea, neg(RDMEM(ea)));
+                WRMEM(ea, neg_new(RDMEM(ea), 2, 1));
                 break;
 #ifdef FULL6809
             case 0x01:	/* NEG direct (UNDOC) */
                 direct();
-                CLK += 4;
-                WRMEM(ea, neg(RDMEM(ea)));
+                WRMEM(ea, neg_new(RDMEM(ea), 2 , 1));
                 break;
 #endif
 #ifdef H6309
             case 0x01:	/* OIM post,direct */
                 post_byte = imm_byte();
                 direct();
-                CLK += 6;
-                WRMEM(ea, or(RDMEM(ea), post_byte));
+                WRMEM(ea, or_new(RDMEM(ea), post_byte, 1, 1));
                 break;
 #endif
 #ifdef FULL6809
             case 0x02:	/* NEG/COM direct (UNDOC) */
                 direct();
-                CLK += 4;
                 if (C) {
-                    WRMEM(ea, com(RDMEM(ea)));
+                    WRMEM(ea, com_new(RDMEM(ea), 2, 1));
                 } else {
-                    WRMEM(ea, neg(RDMEM(ea)));
+                    WRMEM(ea, neg_new(RDMEM(ea), 2, 1));
                 }
                 break;
 #endif
@@ -2779,39 +2857,33 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
             case 0x02:	/* AIM post,direct */
                 post_byte = imm_byte();
                 direct();
-                CLK += 6;
-                WRMEM(ea, and(RDMEM(ea), post_byte));
+                WRMEM(ea, and_new(RDMEM(ea), post_byte, 1, 1));
                 break;
 #endif
             case 0x03:	/* COM direct */
                 direct();
-                CLK_ADD(4, 3);
-                WRMEM(ea, com(RDMEM(ea)));
+                WRMEM(ea, com_new(RDMEM(ea), 2, 1));
                 break;
             case 0x04:	/* LSR direct */
                 direct();
-                CLK_ADD(4, 3);
-                WRMEM(ea, lsr(RDMEM(ea)));
+                WRMEM(ea, lsr_new(RDMEM(ea), 2, 1));
                 break;
 #ifdef FULL6809
             case 0x05:	/* LSR direct (UNDOC) */
                 direct();
-                CLK += 4;
-                WRMEM(ea, lsr(RDMEM(ea)));
+                WRMEM(ea, lsr_new(RDMEM(ea), 2, 1));
                 break;
 #endif
 #ifdef H6309
             case 0x05:	/* EIM post,direct */
                 post_byte = imm_byte();
                 direct();
-                CLK += 6;
-                WRMEM(ea, eor(RDMEM(ea), post_byte));
+                WRMEM(ea, eor_new(RDMEM(ea), post_byte, 1, 1));
                 break;
 #endif
             case 0x06:	/* ROR direct */
                 direct();
-                CLK_ADD(4, 3);
-                WRMEM(ea, ror(RDMEM(ea)));
+                WRMEM(ea, ror_new(RDMEM(ea), 2, 1));
                 break;
             case 0x07:	/* ASR direct */
                 direct();
