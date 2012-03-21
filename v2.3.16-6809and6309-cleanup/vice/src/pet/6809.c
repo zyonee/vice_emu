@@ -279,28 +279,40 @@ static inline DWORD imm_dword(void)
 }
 #endif
 
-#define WRMEM(addr, data) write8(addr, data)
+static void WRMEM(WORD addr, BYTE data)
+{
+    write8(addr, data);
+    CLK++;
+}
 
 static void WRMEM16(WORD addr, WORD data)
 {
-    WRMEM(addr, (BYTE)(data >> 8));
+    write8(addr, (BYTE)(data >> 8));
     CLK++;
-    WRMEM((WORD)(addr + 1), (BYTE)(data & 0xff));
+    write8((WORD)(addr + 1), (BYTE)(data & 0xff));
+    CLK++;
 }
 
-#define RDMEM(addr) read8(addr)
-
-static WORD RDMEM16(WORD addr)
+static BYTE RDMEM(WORD addr)
 {
-    WORD val = RDMEM(addr) << 8;
+    BYTE val = read8(addr);
 
     CLK++;
-    val |= RDMEM((WORD)(addr + 1));
     return val;
 }
 
-#define write_stack WRMEM
-#define read_stack  RDMEM
+static WORD RDMEM16(WORD addr)
+{
+    WORD val = read8(addr) << 8;
+
+    CLK++;
+    val |= read8((WORD)(addr + 1));
+    CLK++;
+    return val;
+}
+
+#define write_stack write8
+#define read_stack  read8
 
 static void write_stack16(WORD addr, WORD data)
 {
