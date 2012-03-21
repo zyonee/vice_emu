@@ -346,7 +346,7 @@ static WORD read_stack16(WORD addr)
 
 static void direct(void)
 {
-    ea = read8(PC) | DP;
+    ea = RDMEM(PC) | DP;
     PC++;
 }
 
@@ -650,7 +650,7 @@ static void indexed(void)		/* note take 1 extra cycle */
 
 static void extended(void)
 {
-    ea = read16(PC);
+    ea = RDMEM16(PC);
     PC += 2;
 }
 
