@@ -944,7 +944,7 @@ static void set_reg(BYTE nro, WORD val)
 
 /* 8-Bit Accumulator and Memory Instructions */
 
-static BYTE adc(BYTE arg, BYTE val)
+static BYTE adc(BYTE arg, BYTE val, int CLK6809, int CLK6309)
 {
     WORD res = arg + val + (C != 0);
 
@@ -952,10 +952,12 @@ static BYTE adc(BYTE arg, BYTE val)
     N = Z = res &= 0xff;
     OV = H = arg ^ val ^ res ^ C;
 
+    CLK_ADD(CLK6809, CLK6309);
+
     return (BYTE)res;
 }
 
-static BYTE add(BYTE arg, BYTE val)
+static BYTE add(BYTE arg, BYTE val, int CLK6809, int CLK6309)
 {
     WORD res = arg + val;
 
@@ -963,20 +965,12 @@ static BYTE add(BYTE arg, BYTE val)
     N = Z = res &= 0xff;
     OV = H = arg ^ val ^ res ^ C;
 
+    CLK_ADD(CLK6809, CLK6309);
+
     return (BYTE)res;
 }
 
-static BYTE and(BYTE arg, BYTE val)
-{
-    BYTE res = arg & val;
-
-    N = Z = res;
-    OV = 0;
-
-    return res;
-}
-
-static BYTE and_new(BYTE arg, BYTE val, int CLK6809, int CLK6309)
+static BYTE and(BYTE arg, BYTE val, int CLK6809, int CLK6309)
 {
     BYTE res = arg & val;
 
@@ -988,19 +982,7 @@ static BYTE and_new(BYTE arg, BYTE val, int CLK6809, int CLK6309)
     return res;
 }
 
-static BYTE asl(BYTE arg)		/* same as lsl */
-{
-    WORD res = arg << 1;
-
-    C = res & 0x100;
-    N = Z = res &= 0xff;
-    OV = arg ^ res;
-    CLK += 2;
-
-    return (BYTE)res;
-}
-
-static BYTE asl_new(BYTE arg, int CLK6809, CLK6309)		/* same as lsl */
+static BYTE asl(BYTE arg, int CLK6809, CLK6309)		/* same as lsl */
 {
     WORD res = arg << 1;
 
@@ -1012,18 +994,7 @@ static BYTE asl_new(BYTE arg, int CLK6809, CLK6309)		/* same as lsl */
     return (BYTE)res;
 }
 
-static BYTE asr(BYTE arg)
-{
-    WORD res = (INT8)arg;
-
-    C = res & 1;
-    N = Z = res = (res >> 1) & 0xff;
-    CLK += 2;
-
-    return (BYTE)res;
-}
-
-static BYTE asr_new(BYTE arg, int CLK6809, int CLK6309)
+static BYTE asr(BYTE arg, int CLK6809, int CLK6309)
 {
     WORD res = (INT8)arg;
 
@@ -1034,21 +1005,15 @@ static BYTE asr_new(BYTE arg, int CLK6809, int CLK6309)
     return (BYTE)res;
 }
 
-static void bit(BYTE arg, BYTE val)
+static void bit(BYTE arg, BYTE val, int CLK6809, int CLK6309)
 {
     N = Z = arg & val;
     OV = 0;
+
+    CLK_ADD(CLK6809, CLK6309);
 }
 
-static BYTE clr(BYTE arg)
-{
-    C = N = Z = OV = 0;
-    CLK += 2;
-
-    return 0;
-}
-
-static BYTE clr_new(BYTE arg, int CLK6809, int CLK6309)
+static BYTE clr(BYTE arg, int CLK6809, int CLK6309)
 {
     C = N = Z = OV = 0;
     CLK_ADD(CLK6809, CLK6309);
@@ -1056,28 +1021,18 @@ static BYTE clr_new(BYTE arg, int CLK6809, int CLK6309)
     return 0;
 }
 
-static void cmp(BYTE arg, BYTE val)
+static void cmp(BYTE arg, BYTE val, int CLK6809, int CLK6309)
 {
     WORD res = arg - val;
 
     C = res & 0x100;
     N = Z = res &= 0xff;
     OV = (arg ^ val) & (arg ^ res);
+
+    CLK_ADD(CLK6809, CLK6309);
 }
 
-static BYTE com(BYTE arg)
-{
-    BYTE res = ~arg;
-
-    N = Z = res;
-    OV = 0;
-    C = 1;
-    CLK += 2;
-
-    return res;
-}
-
-static BYTE com_new(BYTE arg, int CLK6809, int CLK6309)
+static BYTE com(BYTE arg, int CLK6809, int CLK6309)
 {
     BYTE res = ~arg;
 
@@ -1109,47 +1064,16 @@ static void daa(void)
     N = Z = res &= 0xff;
     A = (BYTE)res;
 
-    CLK += 2;
+    CLK_ADD(1, 0);
 }
 
-static void daa_new(void)
-{
-    WORD res = A;
-    BYTE msn = res & 0xf0;
-    BYTE lsn = res & 0x0f;
-
-    if (lsn > 0x09 || (H & 0x10)) {
-        res += 0x06;
-    }
-    if (msn > 0x80 && lsn > 0x09) {
-        res += 0x60;
-    }
-    if (msn > 0x90 || (C != 0)) {
-        res += 0x60;
-    }
-
-    C |= (res & 0x100);
-    N = Z = res &= 0xff;
-    A = (BYTE)res;
-}
-
-static BYTE dec(BYTE arg)
+static BYTE dec(BYTE arg, int CLK6809, int CLK6309)
 {
     BYTE res = arg - 1;
 
     N = Z = res;
     OV = arg & ~res;
-    CLK += 2;
 
-    return res;
-}
-
-static BYTE dec_new(BYTE arg, int CLK6809, int CLK6309)
-{
-    BYTE res = arg - 1;
-
-    N = Z = res;
-    OV = arg & ~res;
     CLK_ADD(CLK6809, CLK6309);
 
     return res;
@@ -1444,7 +1368,7 @@ static void abx(void)
     CLK_ADD(2, 0);
 }
 
-static WORD add16(WORD arg, WORD val)
+static WORD add16(WORD arg, WORD val, int CLK6809, CLK6309)
 {
     DWORD res = arg + val;
 
@@ -1453,10 +1377,12 @@ static WORD add16(WORD arg, WORD val)
     N = res >> 8;
     OV = ((arg ^ res) & (val ^ res)) >> 8;
 
+    CLK_ADD(CLK6809, CLK6309);
+
     return (WORD)res;
 }
 
-static void cmp16(WORD arg, WORD val)
+static void cmp16(WORD arg, WORD val, int CLK6809, int CLK6309)
 {
     DWORD res = arg - val;
 
@@ -1464,6 +1390,8 @@ static void cmp16(WORD arg, WORD val)
     Z = res &= 0xffff;
     N = res >> 8;
     OV = ((arg ^ val) & (arg ^ res)) >> 8;
+
+    CLK_ADD(CLK6809, CLK6309);
 }
 
 static WORD ld16(WORD arg)
@@ -1994,7 +1922,7 @@ static void branch(unsigned cond)
     if (cond) {
         bra();
     } else {
-        PC++;
+        imm_byte();
         CLK++;
     }
 }
@@ -2050,7 +1978,7 @@ static void bsr(void)
     ea = PC + tmp;
     S -= 2;
     write_stack16(S, PC);
-    CLK += 5;
+    CLK_ADD(3, 2);
     PC = ea;
 }
 
@@ -2166,7 +2094,7 @@ static WORD neg16(WORD arg)
     return res;
 }
 
-static WORD com16(WORD arg)
+static WORD com16(WORD arg, int CLK6809, CLK6309)
 {
     WORD res = ~arg;
 
@@ -2174,7 +2102,7 @@ static WORD com16(WORD arg)
     N = res >> 8;
     OV = 0;
     C = 1;
-    /* TODO: cycle count */
+    CLK_ADD(CLK6809, CLK6309);
 
     return res;
 }
@@ -2203,19 +2131,19 @@ static WORD ror16(WORD arg)
     return res;
 }
 
-static WORD asr16(WORD arg)
+static WORD asr16(WORD arg, int CLK6809, int CLK6309)
 {
     DWORD res = (SWORD)arg;
 
     C = res & 1;
     Z = res = (res >> 1) & 0xffff;
     N = res >> 8;
-    CLK += 2;
+    CLK_ADD(CLK6809, CLK6309);
 
     return (WORD)res;
 }
 
-static WORD asl16(WORD arg)		/* same as lsl16 */
+static WORD asl16(WORD arg, int CLK6809, int CLK6309)		/* same as lsl16 */
 {
     DWORD res = arg << 1;
 
@@ -2223,7 +2151,7 @@ static WORD asl16(WORD arg)		/* same as lsl16 */
     Z = res &= 0xffff;
     N = res >> 8;
     OV = (arg ^ res) >> 8;
-    /* TODO: cycle count */
+    CLK_ADD(CLK6809, CLK6309);
 
     return (WORD)res;
 }
@@ -2241,14 +2169,15 @@ static WORD rol16(WORD arg)
     return (WORD)res;
 }
 
-static WORD dec16(WORD arg)
+static WORD dec16(WORD arg, int CLK6809, int CLK6309)
 {
     WORD res = arg - 1;
 
     Z = res;
     N = res >> 8;
     OV = (arg & ~res) >> 8;
-    /* TODO: cycle count */
+
+    CLK_ADD(CLK6809, CLK6309);
 
     return res;
 }
@@ -2273,10 +2202,10 @@ static void tst16(WORD arg)
     /* TODO: cycle count */
 }
 
-static WORD clr16(WORD arg)
+static WORD clr16(WORD arg, int CLK6809, CLK6309)
 {
     C = N = Z = OV = 0;
-    /* TODO: cycle count */
+    CLK_ADD(CLK6809, CLK6309);
 
     return 0;
 }
@@ -2293,24 +2222,28 @@ static WORD sbc16(WORD arg, WORD val)
     return (WORD)res;
 }
 
-static WORD and16(WORD arg, WORD val)
+static WORD and16(WORD arg, WORD val, int CLK6809, int CLK6309)
 {
     WORD res = arg & val;
 
     Z = res;
     N = res >> 8;
     OV = 0;
+
+    CLK_ADD(CLK6809, CLK6309);
 
     return res;
 }
 
-static void bit16(WORD arg, WORD val)
+static void bit16(WORD arg, WORD val, int CLK6809, int CLK6309)
 {
     WORD res = arg & val;
 
     Z = res;
     N = res >> 8;
     OV = 0;
+
+    CLK_ADD(CLK6809, CLK6309);
 }
 
 static WORD eor16(WORD arg, WORD val)
@@ -2324,7 +2257,7 @@ static WORD eor16(WORD arg, WORD val)
     return res;
 }
 
-static WORD adc16(WORD arg, WORD val)
+static WORD adc16(WORD arg, WORD val, int CLK6809, int CLK6309)
 {
     DWORD res = arg + val + (C != 0);
 
@@ -2332,6 +2265,8 @@ static WORD adc16(WORD arg, WORD val)
     Z = res &= 0xffff;
     N = res >> 8;
     OV = H = (arg ^ val ^ res ^ C) >> 8;
+
+    CLK_ADD(CLK6809, CLK6309);
 
     return (WORD)res;
 }
@@ -2390,7 +2325,7 @@ static BYTE band(BYTE rnr, BYTE arg)
     OV = 0;
     N = Z = tmp;
 
-    /* TODO: cycle count */
+    CLK_ADD(1, 0);
 
     return tmp;
 }
@@ -2410,7 +2345,7 @@ static BYTE beor(BYTE rnr, BYTE arg)
     OV = 0;
     N = Z = tmp;
 
-    /* TODO: cycle count */
+    CLK_ADD(1, 0);
 
     return tmp;
 }
@@ -2430,7 +2365,7 @@ static BYTE biand(BYTE rnr, BYTE arg)
     OV = 0;
     N = Z = tmp;
 
-    /* TODO: cycle count */
+    CLK_ADD(1, 0);
 
     return tmp;
 }
@@ -2450,7 +2385,7 @@ static BYTE bieor(BYTE rnr, BYTE arg)
     OV = 0;
     N = Z = tmp;
 
-    /* TODO: cycle count */
+    CLK_ADD(1, 0);
 
     return tmp;
 }
@@ -2470,7 +2405,7 @@ static BYTE bior(BYTE rnr, BYTE arg)
     OV = 0;
     N = Z = tmp;
 
-    /* TODO: cycle count */
+    CLK_ADD(1, 0);
 
     return tmp;
 }
@@ -2490,7 +2425,7 @@ static BYTE bor(BYTE rnr, BYTE arg)
     OV = 0;
     N = Z = tmp;
 
-    /* TODO: cycle count */
+    CLK_ADD(1, 0);
 
     return tmp;
 }
@@ -2724,7 +2659,7 @@ static void tfmcp(BYTE rnr)
     }
 }
 
-static void divd(BYTE m)
+static void divd(BYTE m, int CLK6809, int CLK6309)
 {
     SWORD val, bak;
 
@@ -2750,10 +2685,11 @@ static void divd(BYTE m)
     } else {
         div0_trap();
     }
-    /* TODO: cycle count */
+
+    CLK_ADD(CLK6809, CLK6309);
 }
 
-static void divq(WORD m)
+static void divq(WORD m, int CLK6809, int CLK6309)
 {
     SDWORD val, bak;
 
@@ -2780,7 +2716,8 @@ static void divq(WORD m)
     } else {
         div0_trap();
     }
-    /* TODO: cycle count */
+
+    CLK_ADD(CLK6809, CLK6309);
 }
 
 static void muld(WORD m)
@@ -2819,7 +2756,8 @@ static DWORD ld32(DWORD arg)
 /* Execute 6809 code for a certain number of cycles. */
 void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_context_t *maincpu_alarm_context)
 {
-    BYTE opcode;
+    WORD opcode;
+    BYTE fetch;
 #ifdef H6309
     BYTE post_byte;
 #endif
@@ -2861,113 +2799,1450 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
         }
 
         SET_LAST_ADDR(PC);
-        opcode = imm_byte();
+        fetch = imm_byte();
+
+        if (fetch == 0x10 || fetch == 0x11) {
+            opcode = fetch << 8;
+            fetch = imm_byte();
+            while (fetch == 0x10 || fetch == 0x11) {
+                fetch = imm_byte();
+            }
+            opcode |= fetch;
+        } else {
+            opcode = fetch;
+        }
 
         switch (opcode) {
-            case 0x00:	/* NEG direct */
+            case 0x003a:	/* ABX */
+#ifdef FULL6809
+            case 0x103a:	/* ABX (UNDOC) */
+            case 0x113a:	/* ABX (UNDOC) */
+#endif
+                abx();
+                break;
+
+            case 0x0089:	/* ADCA immediate */
+#ifdef FULL6809
+            case 0x1089:	/* ADCA immediate (UNDOC) */
+            case 0x1189:	/* ADCA immediate (UNDOC) */
+#endif
+                A = adc(A, imm_byte(), 0, 0);
+                break;
+
+            case 0x0099:	/* ADCA direct */
+#ifdef FULL6809
+            case 0x1099:	/* ADCA direct (UNDOC) */
+            case 0x1199:	/* ADCA direct (UNDOC) */
+#endif
+                direct();
+                A = adc(A, RDMEM(ea), 1, 0);
+                break;
+
+            case 0x00b9:	/* ADCA extended */
+#ifdef FULL6809
+            case 0x10b9:	/* ADCA extended (UNDOC) */
+            case 0x11b9:	/* ADCA extended (UNDOC) */
+#endif
+                extended();
+                A = adc(A, RDMEM(ea), 1, 0);
+                break;
+
+            case 0x00a9:	/* ADCA indexed */
+#ifdef FULL6809
+            case 0x10a9:	/* ADCA indexed (UNDOC) */
+            case 0x11a9:	/* ADCA indexed (UNDOC) */
+#endif
+                indexed();
+                A = adc(A, RDMEM(ea), 1, 1);
+                break;
+
+            case 0x00c9:	/* ADCB immediate */
+#ifdef FULL6809
+            case 0x10c9:	/* ADCB immediate (UNDOC) */
+            case 0x11c9:	/* ADCB immediate (UNDOC) */
+#endif
+                B = adc(B, imm_byte(), 0, 0);
+                break;
+
+            case 0x00d9:	/* ADCB direct */
+#ifdef FULL6809
+            case 0x10d9:	/* ADCB direct (UNDOC) */
+            case 0x11d9:	/* ADCB direct (UNDOC) */
+#endif
+                direct();
+                B = adc(B, RDMEM(ea), 1, 0);
+                break;
+
+            case 0x00f9:	/* ADCB extended */
+#ifdef FULL6809
+            case 0x10f9:	/* ADCB extended (UNDOC) */
+            case 0x11f9:	/* ADCB extended (UNDOC) */
+#endif
+                extended();
+                B = adc(B, RDMEM(ea), 1, 0);
+                break;
+
+            case 0x00e9:	/* ADCB indexed */
+#ifdef FULL6809
+            case 0x10e9:	/* ADCB indexed (UNDOC) */
+            case 0x11e9:	/* ADCB indexed (UNDOC) */
+#endif
+                indexed();
+                B = adc(B, RDMEM(ea), 1, 1);
+                break;
+
+#ifdef H6309
+            case 0x1089:	/* ADCD immediate */
+                D = adc16(D, imm_word(), 1, 0);
+                break;
+
+            case 0x1099:	/* ADCD direct */
+                direct();
+                D = adc16(D, RDMEM16(ea), 2, 0);
+                break;
+
+            case 0x10b9:	/* ADCD extended */
+                extended();
+                D = adc16(D, RDMEM16(ea), 2, 0);
+                break;
+
+            case 0x10a9:	/* ADCD indexed */
+                indexed();
+                D = adc16(D, RDMEM16(ea), 2, 1);
+                break;
+
+            case 0x1031:	/* ADCR post */
+                post_byte = imm_byte();
+                set_reg((BYTE)(post_byte & 0x0f), adc16(get_reg((BYTE)(post_byte >> 4)), get_reg((BYTE)(post_byte & 0x0f)), 1, 1));
+                break;
+#endif
+
+            case 0x008b:	/* ADDA immediate */
+#ifdef FULL6809
+            case 0x108b:	/* ADDA immediate (UNDOC) */
+            case 0x118b:	/* ADDA immediate (UNDOC) */
+#endif
+                A = add(A, imm_byte(), 0, 0);
+                break;
+
+            case 0x009b:	/* ADDA direct */
+#ifdef FULL6809
+            case 0x109b:	/* ADDA direct (UNDOC) */
+            case 0x119b:	/* ADDA direct (UNDOC) */
+#endif
+                direct();
+                A = add(A, RDMEM(ea), 1, 0);
+                break;
+
+            case 0x00bb:	/* ADDA extended */
+#ifdef FULL6809
+            case 0x10bb:	/* ADDA extended (UNDOC) */
+            case 0x11bb:	/* ADDA extended (UNDOC) */
+#endif
+                extended();
+                A = add(A, RDMEM(ea), 1, 0);
+                break;
+
+            case 0x00ab:	/* ADDA indexed */
+#ifdef FULL6809
+            case 0x10ab:	/* ADDA indexed (UNDOC) */
+            case 0x11ab:	/* ADDA indexed (UNDOC) */
+#endif
+                indexed();
+                A = add(A, RDMEM(ea), 1, 1);
+                break;
+
+            case 0x00cb:	/* ADDB immediate */
+#ifdef FULL6809
+            case 0x10cb:	/* ADDB immediate (UNDOC) */
+            case 0x11cb:	/* ADDB immediate (UNDOC) */
+#endif
+                B = add(B, imm_byte(), 0, 0);
+                break;
+
+            case 0x00db:	/* ADDB direct */
+#ifdef FULL6809
+            case 0x10db:	/* ADDB direct (UNDOC) */
+            case 0x11db:	/* ADDB direct (UNDOC) */
+#endif
+                direct();
+                B = add(B, RDMEM(ea), 1, 0);
+                break;
+
+            case 0x00fb:	/* ADDB extended */
+#ifdef FULL6809
+            case 0x10fb:	/* ADDB extended (UNDOC) */
+            case 0x11fb:	/* ADDB extended (UNDOC) */
+#endif
+                extended();
+                B = add(B, RDMEM(ea), 1, 0);
+                break;
+
+            case 0x00eb:	/* ADDB indexed */
+#ifdef FULL6809
+            case 0x10eb:	/* ADDB indexed (UNDOC) */
+            case 0x11eb:	/* ADDB indexed (UNDOC) */
+#endif
+                indexed();
+                B = add(B, RDMEM(ea), 1, 1);
+                break;
+
+            case 0x00c3:	/* ADDD immediate */
+#ifdef FULL6809
+            case 0x10c3:	/* ADDD immediate (UNDOC) */
+            case 0x11c3:	/* ADDD immediate (UNDOC) */
+#endif
+                D = add16(D, imm_word(), 1, 0);
+                break;
+
+            case 0x00d3:	/* ADDD direct */
+#ifdef FULL6809
+            case 0x10d3:	/* ADDD direct (UNDOC) */
+            case 0x11d3:	/* ADDD direct (UNDOC) */
+#endif
+                direct();
+                D = add16(D, RDMEM16(ea), 2, 0);
+                break;
+
+            case 0x00f3:	/* ADDD extended */
+#ifdef FULL6809
+            case 0x10f3:	/* ADDD extended (UNDOC) */
+            case 0x11f3:	/* ADDD extended (UNDOC) */
+#endif
+                extended();
+                D = add16(D, RDMEM16(ea), 2, 0);
+                break;
+
+            case 0x00e3:	/* ADDD indexed */
+#ifdef FULL6809
+            case 0x10e3:	/* ADDD indexed (UNDOC) */
+            case 0x11e3:	/* ADDD indexed (UNDOC) */
+#endif
+                indexed();
+                D = add16(D, RDMEM16(ea), 2, 1);
+                break;
+
+#ifdef H6309
+            case 0x118b:	/* ADDE immediate */
+                E = add(E, imm_byte(), 0, 0);
+                break;
+
+            case 0x119b:	/* ADDE direct */
+                direct();
+                E = add(E, RDMEM(ea), 1, 0);
+                break;
+
+            case 0x11bb:	/* ADDE extended */
+                extended();
+                E = add(E, RDMEM(ea), 1, 0);
+                break;
+
+            case 0x11ab:	/* ADDE indexed */
+                indexed();
+                E = add(E, RDMEM(ea), 2, 2);
+                break;
+
+            case 0x11cb:	/* ADDF immediate */
+                F = add(F, imm_byte(), 0, 0);
+                break;
+
+            case 0x11db:	/* ADDF direct */
+                direct();
+                F = add(F, RDMEM(ea), 1, 0);
+                break;
+
+            case 0x11fb:	/* ADDF extended */
+                extended();
+                F = add(F, RDMEM(ea), 1, 0);
+                break;
+
+            case 0x11eb:	/* ADDF indexed */
+                indexed();
+                F = add(F, RDMEM(ea), 2, 2);
+                break;
+
+            case 0x1030:	/* ADDR post */
+                post_byte = imm_byte();
+                set_reg((BYTE)(post_byte & 0x0f), add16(get_reg((BYTE)(post_byte >> 4)), get_reg((BYTE)(post_byte & 0x0f)), 1, 1));
+                break;
+
+            case 0x108b:	/* ADDW immediate */
+                W = add16(W, imm_word(), 1, 0);
+                break;
+
+            case 0x109b:	/* ADDW direct */
+                direct();
+                W = add16(W, RDMEM16(ea), 2, 0);
+                break;
+
+            case 0x10bb:	/* ADDW extended */
+                extended();
+                W = add16(W, RDMEM16(ea), 2, 0);
+                break;
+
+            case 0x10ab:	/* ADDW indexed */
+                indexed();
+                W = add16(W, RDMEM16(ea), 2, 1);
+                break;
+
+            case 0x0002:	/* AIM post, direct */
+                post_byte = imm_byte();
+                direct();
+                WRMEM(ea, and(RDMEM(ea), post_byte, 1, 1));
+                break;
+
+            case 0x0072:	/* AIM post, extended */
+                post_byte = imm_byte();
+                extended();
+                WRMEM(ea, and(RDMEM(ea), post_byte, 1, 1));
+                break;
+
+            case 0x0062:	/* AIM post, indexed */
+                post_byte = imm_byte();
+                indexed();
+                WRMEM(ea, and(RDMEM(ea), post_byte, 2, 2));
+                break;
+#endif
+
+            case 0x0084:	/* ANDA immediate */
+#ifdef FULL6809
+            case 0x1084:	/* ANDA immediate (UNDOC) */
+            case 0x1184:	/* ANDA immediate (UNDOC) */
+#endif
+                A = and(A, imm_byte(), 0, 0);
+                break;
+
+            case 0x0094:	/* ANDA direct */
+#ifdef FULL6809
+            case 0x1094:	/* ANDA direct (UNDOC) */
+            case 0x1194:	/* ANDA direct (UNDOC) */
+#endif
+                direct();
+                A = and(A, RDMEM(ea), 1, 0);
+                break;
+
+            case 0x00b4:	/* ANDA extended */
+#ifdef FULL6809
+            case 0x10b4:	/* ANDA extended (UNDOC) */
+            case 0x11b4:	/* ANDA extended (UNDOC) */
+#endif
+                extended();
+                A = and(A, RDMEM(ea), 1, 0);
+                break;
+
+            case 0x00a4:	/* ANDA indexed */
+#ifdef FULL6809
+            case 0x10a4:	/* ANDA indexed (UNDOC) */
+            case 0x11a4:	/* ANDA indexed (UNDOC) */
+#endif
+                indexed();
+                A = and(A, RDMEM(ea), 1, 1);
+                break;
+
+            case 0x00c4:	/* ANDB immediate */
+#ifdef FULL6809
+            case 0x10c4:	/* ANDB immediate (UNDOC) */
+            case 0x11c4:	/* ANDB immediate (UNDOC) */
+#endif
+                B = and(B, imm_byte(), 0, 0);
+                break;
+
+            case 0x00d4:	/* ANDB direct */
+#ifdef FULL6809
+            case 0x10d4:	/* ANDB direct (UNDOC) */
+            case 0x11d4:	/* ANDB direct (UNDOC) */
+#endif
+                direct();
+                B = and(B, RDMEM(ea), 1, 0);
+                break;
+
+            case 0x00f4:	/* ANDB extended */
+#ifdef FULL6809
+            case 0x10f4:	/* ANDB extended (UNDOC) */
+            case 0x11f4:	/* ANDB extended (UNDOC) */
+#endif
+                extended();
+                B = and(B, RDMEM(ea), 1, 0);
+                break;
+
+            case 0x00e4:	/* ANDB indexed */
+#ifdef FULL6809
+            case 0x10e4:	/* ANDB indexed (UNDOC) */
+            case 0x11e4:	/* ANDB indexed (UNDOC) */
+#endif
+                indexed();
+                B = and(B, RDMEM(ea), 1, 1);
+                break;
+
+            case 0x001c:	/* ANDCC immediate */
+#ifdef FULL6809
+            case 0x101c:	/* ANDCC immediate (UNDOC) */
+            case 0x111c:	/* ANDCC immediate (UNDOC) */
+#endif
+                andcc();
+                break;
+
+#ifdef FULL6809
+            case 0x0038:	/* ANDCC immediate (+1 extra cycle) (UNDOC) */
+            case 0x1038:	/* ANDCC immediate (+1 extra cycle) (UNDOC) */
+            case 0x1138:	/* ANDCC immediate (+1 extra cycle) (UNDOC) */
+                andcc();
+                CLK++;
+                break;
+#endif
+
+#ifdef H6309
+            case 0x1084:	/* ANDD immediate */
+                D = and16(D, imm_word(), 1, 0);
+                break;
+
+            case 0x1094:	/* ANDD direct */
+                direct();
+                D = and16(D, RDMEM16(ea), 2, 0);
+                break;
+
+            case 0x10b4:	/* ANDD extended */
+                extended();
+                D = and16(D, RDMEM16(ea), 2, 0);
+                break;
+
+            case 0x10a4:	/* ANDD indexed */
+                indexed();
+                D = and16(D, RDMEM16(ea), 2, 1);
+                break;
+
+            case 0x1034:	/* ANDR post */
+                post_byte = imm_byte();
+                set_reg((BYTE)(post_byte & 0x0f), and16(get_reg((BYTE)(post_byte >> 4)), get_reg((BYTE)(post_byte & 0x0f)), 1, 1));
+                break;
+#endif
+
+            case 0x0048:	/* ASLA/LSLA */
+#ifdef FULL6809
+            case 0x1048:	/* ASLA/LSLA (UNDOC) */
+            case 0x1148:	/* ASLA/LSLA (UNDOC) */
+#endif
+                A = asl(A, 1, 0);
+                break;
+
+            case 0x0058:	/* ASLB/LSLB */
+#ifdef FULL6809
+            case 0x1058:	/* ASLB/LSLB (UNDOC) */
+            case 0x1158:	/* ASLB/LSLB (UNDOC) */
+#endif
+                B = asl(B, 1, 0);
+                break;
+
+#ifdef H6309
+            case 0x1048:	/* ASLD/LSLD */
+                D = asl16(D, 1, 0);
+                break;
+#endif
+
+            case 0x0008:	/* ASL/LSL direct */
+#ifdef FULL6809
+            case 0x1008:	/* ASL/LSL direct (UNDOC) */
+            case 0x1108:	/* ASL/LSL direct (UNDOC) */
+#endif
+                direct();
+                WRMEM(ea, asl(RDMEM(ea), 2, 1));
+                break;
+
+            case 0x0078:	/* ASL/LSL extended */
+#ifdef FULL6809
+            case 0x1078:	/* ASL/LSL extended (UNDOC) */
+            case 0x1178:	/* ASL/LSL extended (UNDOC) */
+#endif
+                extended();
+                WRMEM(ea, asl(RDMEM(ea), 2, 1));
+                break;
+
+            case 0x0068:	/* ASL/LSL indexed */
+#ifdef FULL6809
+            case 0x1068:	/* ASL/LSL indexed (UNDOC) */
+            case 0x1168:	/* ASL/LSL indexed (UNDOC) */
+#endif
+                indexed();
+                WRMEM(ea, asl(RDMEM(ea), 2, 2));
+                break;
+
+            case 0x0047:	/* ASRA */
+#ifdef FULL6809
+            case 0x1047:	/* ASRA (UNDOC) */
+            case 0x1147:	/* ASRA (UNDOC) */
+#endif
+                A = asr(A, 1, 0);
+                break;
+
+            case 0x0057:	/* ASRB */
+#ifdef FULL6809
+            case 0x1057:	/* ASRB (UNDOC) */
+            case 0x1157:	/* ASRB (UNDOC) */
+#endif
+                B = asr(B, 1, 0);
+                break;
+
+#ifdef H6309
+            case 0x1047:	/* ASRD */
+                D = asr16(D, 1, 0);
+                break;
+#endif
+
+            case 0x0007:	/* ASR direct */
+#ifdef FULL6809
+            case 0x1007:	/* ASR direct (UNDOC) */
+            case 0x1107:	/* ASR direct (UNDOC) */
+#endif
+                direct();
+                WRMEM(ea, asr(RDMEM(ea), 2, 1));
+                break;
+
+            case 0x0077:	/* ASR extended */
+#ifdef FULL6809
+            case 0x1077:	/* ASR extended (UNDOC) */
+            case 0x1177:	/* ASR extended (UNDOC) */
+#endif
+                extended();
+                WRMEM(ea, asr(RDMEM(ea), 2, 1));
+                break;
+
+            case 0x0067:	/* ASR indexed */
+#ifdef FULL6809
+            case 0x1067:	/* ASR indexed (UNDOC) */
+            case 0x1167:	/* ASR indexed (UNDOC) */
+#endif
+                indexed();
+                WRMEM(ea, asr(RDMEM(ea), 2, 2));
+                break;
+
+#ifdef H6309
+            case 0x1130:	/* BAND post, direct */
+                post_byte = imm_byte();
+                direct();
+                WRMEM(ea, band(post_byte, RDMEM(ea)));
+                break;
+#endif
+
+#ifdef H6309
+            case 0x1134:	/* BEOR post,direct */
+                post_byte = imm_byte();
+                direct();
+                WRMEM(ea, beor(post_byte, RDMEM(ea)));
+                break;
+#endif
+
+            case 0x0027:	/* BEQ */
+#ifdef FULL6809
+            case 0x1127:	/* BEQ (UNDOC) */
+#endif
+                branch(cond_EQ());
+                break;
+
+            case 0x002c:	/* BGE */
+#ifdef FULL6809
+            case 0x112c:	/* BGE (UNDOC) */
+#endif
+                branch(cond_GE());
+                break;
+
+            case 0x002e:	/* BGT */
+#ifdef FULL6809
+            case 0x112e:	/* BGT (UNDOC) */
+#endif
+                branch(cond_GT());
+                break;
+
+            case 0x0022:	/* BHI */
+#ifdef FULL6809
+            case 0x1122:	/* BHI (UNDOC) */
+#endif
+                branch(cond_HI());
+                break;
+
+            case 0x0024:	/* BHS */
+#ifdef FULL6809
+            case 0x1124:	/* BHS (UNDOC) */
+#endif
+                branch(cond_HS());
+                break;
+
+#ifdef H6309
+            case 0x1131:	/* BIAND post, direct */
+                post_byte = imm_byte();
+                direct();
+                WRMEM(ea, biand(post_byte, RDMEM(ea)));
+                break;
+
+            case 0x1135:	/* BIEOR post, direct */
+                post_byte = imm_byte();
+                direct();
+                WRMEM(ea, bieor(post_byte, RDMEM(ea)));
+                break;
+
+            case 0x1133:	/* BIOR post, direct */
+                post_byte = imm_byte();
+                direct();
+                WRMEM(ea, bior(post_byte, RDMEM(ea)));
+                break;
+#endif
+
+            case 0x0085:	/* BITA immediate */
+#ifdef FULL6809
+            case 0x1085:	/* BITA immediate (UNDOC) */
+            case 0x1185:	/* BITA immediate (UNDOC) */
+#endif
+                bit(A, imm_byte(), 0, 0);
+                break;
+
+            case 0x0095:	/* BITA direct */
+#ifdef FULL6809
+            case 0x1095:	/* BITA direct (UNDOC) */
+            case 0x1195:	/* BITA direct (UNDOC) */
+#endif
+                direct();
+                bit(A, RDMEM(ea), 1, 0);
+                break;
+
+            case 0x00b5:	/* BITA extended */
+#ifdef FULL6809
+            case 0x10b5:	/* BITA extended (UNDOC) */
+            case 0x11b5:	/* BITA extended (UNDOC) */
+#endif
+                extended();
+                bit(A, RDMEM(ea), 1, 0);
+                break;
+
+            case 0x00a5:	/* BITA indexed */
+#ifdef FULL6809
+            case 0x10a5:	/* BITA indexed (UNDOC) */
+            case 0x11a5:	/* BITA indexed (UNDOC) */
+#endif
+                indexed();
+                bit(A, RDMEM(ea), 1, 1);
+                break;
+
+            case 0x00c5:	/* BITB immediate */
+#ifdef FULL6809
+            case 0x10c5:	/* BITB immediate (UNDOC) */
+            case 0x11c5:	/* BITB immediate (UNDOC) */
+#endif
+                bit(B, imm_byte(), 0, 0);
+                break;
+
+            case 0x00d5:	/* BITB direct */
+#ifdef FULL6809
+            case 0x10d5:	/* BITB direct (UNDOC) */
+            case 0x11d5:	/* BITB direct (UNDOC) */
+#endif
+                direct();
+                bit(B, RDMEM(ea), 1, 0);
+                break;
+
+            case 0x00f5:	/* BITB extended */
+#ifdef FULL6809
+            case 0x10f5:	/* BITB extended (UNDOC) */
+            case 0x11f5:	/* BITB extended (UNDOC) */
+#endif
+                extended();
+                bit(B, RDMEM(ea), 1, 0);
+                break;
+
+            case 0x00e5:	/* BITB indexed */
+#ifdef FULL6809
+            case 0x10e5:	/* BITB indexed (UNDOC) */
+            case 0x11e5:	/* BITB indexed (UNDOC) */
+#endif
+                indexed();
+                bit(B, RDMEM(ea), 1, 1);
+                break;
+
+#ifdef H6309
+            case 0x1085:	/* BITD immediate */
+                bit16(D, imm_word(), 1, 0);
+                break;
+
+            case 0x1095:	/* BITD direct */
+                direct();
+                bit16(D, RDMEM16(ea), 2, 0);
+                break;
+
+            case 0x10b5:	/* BITD extended */
+                extended();
+                bit16(D, RDMEM16(ea), 2, 0);
+                break;
+
+            case 0x10a5:	/* BITD indexed */
+                indexed();
+                bit16(D, RDMEM16(ea), 2, 1);
+                break;
+#endif
+
+            case 0x002f:	/* BLE */
+#ifdef FULL6809
+            case 0x112f:	/* BLE (UNDOC) */
+#endif
+                branch(cond_LE());
+                break;
+
+            case 0x0025:	/* BLO */
+#ifdef FULL6809
+            case 0x1125:	/* BLO (UNDOC) */
+#endif
+                branch(cond_LO());
+                break;
+
+            case 0x0023:	/* BLS */
+#ifdef FULL6809
+            case 0x1123:	/* BLS (UNDOC) */
+#endif
+                branch(cond_LS());
+                break;
+
+            case 0x002d:	/* BLT */
+#ifdef FULL6809
+            case 0x112d:	/* BLT (UNDOC) */
+#endif
+                branch(cond_LT());
+                break;
+
+            case 0x002b:	/* BMI */
+#ifdef FULL6809
+            case 0x112b:	/* BMI (UNDOC) */
+#endif
+                branch(cond_MI());
+                break;
+
+            case 0x0026:	/* BNE */
+#ifdef FULL6809
+            case 0x1126:	/* BNE (UNDOC) */
+#endif
+                branch(cond_NE());
+                break;
+
+#ifdef H6309
+            case 0x1132:	/* BOR post,direct */
+                post_byte = imm_byte();
+                direct();
+                WRMEM(ea, bor(post_byte, RDMEM(ea)));
+                break;
+#endif
+
+            case 0x002a:	/* BPL */
+#ifdef FULL6809
+            case 0x112a:	/* BPL (UNDOC) */
+#endif
+                branch(cond_PL());
+                break;
+
+            case 0x0020:	/* BRA */
+#ifdef FULL6809
+            case 0x1120:	/* BRA (UNDOC) */
+#endif
+                bra();
+                break;
+
+#ifdef FULL6809
+            case 0x1121:	/* BRN (UNDOC) */
+#endif
+                imm_byte();
+                CLK++;
+                break;
+
+            case 0x008d:	/* BSR */
+#ifdef FULL6809
+            case 0x108d:	/* BSR (UNDOC) */
+            case 0x118d:	/* BSR (UNDOC) */
+#endif
+                bsr();
+                break;
+
+            case 0x0028:	/* BVC */
+#ifdef FULL6809
+            case 0x1128:	/* BVC (UNDOC) */
+#endif
+                branch(cond_VC());
+                break;
+
+            case 0x0029:	/* BVS */
+#ifdef FULL6809
+            case 0x1129:	/* BVS (UNDOC) */
+#endif
+                branch(cond_VS());
+                break;
+
+            case 0x004f:	/* CLRA */
+#ifdef FULL6809
+            case 0x004e:	/* CLRA (UNDOC) */
+            case 0x104e:	/* CLRA (UNDOC) */
+            case 0x104f:	/* CLRA (UNDOC) */
+            case 0x114e:	/* CLRA (UNDOC) */
+            case 0x114f:	/* CLRA (UNDOC) */
+#endif
+                A = clr(A, 1, 0);
+                break;
+
+            case 0x005f:	/* CLRB */
+#ifdef FULL6809
+            case 0x005e:	/* CLRB (UNDOC) */
+            case 0x105e:	/* CLRB (UNDOC) */
+            case 0x105f:	/* CLRB (UNDOC) */
+            case 0x115e:	/* CLRB (UNDOC) */
+            case 0x115f:	/* CLRB (UNDOC) */
+#endif
+                B = clr(B, 1, 0);
+                break;
+
+#ifdef H6309
+            case 0x104f:	/* CLRD */
+                D = clr16(D, 1, 0);
+                break;
+
+            case 0x114f:	/* CLRE */
+                E = clr(E, 1, 0);
+                break;
+
+            case 0x115f:	/* CLRF */
+                F = clr(F, 1, 0);
+                break;
+
+            case 0x105f:	/* CLRW */
+                W = clr16(W, 1, 0);
+                break;
+#endif
+
+            case 0x000f:	/* CLR direct */
+#ifdef FULL6809
+            case 0x100f:	/* CLR direct (UNDOC) */
+            case 0x110f:	/* CLR direct (UNDOC) */
+#endif
+                direct();
+                WRMEM(ea, clr(RDMEM(ea), 2, 1));
+                break;
+
+            case 0x007f:	/* CLR extended */
+#ifdef FULL6809
+            case 0x107f:	/* CLR extended (UNDOC) */
+            case 0x117f:	/* CLR extended (UNDOC) */
+#endif
+                extended();
+                WRMEM(ea, clr(RDMEM(ea), 2, 1));
+                break;
+
+            case 0x006f:	/* CLR indexed */
+#ifdef FULL6809
+            case 0x106f:	/* CLR indexed (UNDOC) */
+            case 0x116f:	/* CLR indexed (UNDOC) */
+#endif
+                indexed();
+                WRMEM(ea, clr(RDMEM(ea), 2, 2));
+                break;
+
+            case 0x0081:	/* CMPA immediate */
+#ifdef FULL6809
+            case 0x1081:	/* CMPA immediate (UNDOC) */
+            case 0x1181:	/* CMPA immediate (UNDOC) */
+#endif
+                cmp(A, imm_byte(), 0, 0);
+                break;
+
+            case 0x0091:	/* CMPA direct */
+#ifdef FULL6809
+            case 0x1091:	/* CMPA direct (UNDOC) */
+            case 0x1191:	/* CMPA direct (UNDOC) */
+#endif
+                direct();
+                cmp(A, RDMEM(ea), 1, 0);
+                break;
+
+            case 0x00b1:	/* CMPA extended */
+#ifdef FULL6809
+            case 0x10b1:	/* CMPA extended (UNDOC) */
+            case 0x11b1:	/* CMPA extended (UNDOC) */
+#endif
+                extended();
+                cmp(A, RDMEM(ea), 1, 0);
+                break;
+
+            case 0x00a1:	/* CMPA indexed */
+#ifdef FULL6809
+            case 0x10a1:	/* CMPA indexed (UNDOC) */
+            case 0x11a1:	/* CMPA indexed (UNDOC) */
+#endif
+                indexed();
+                cmp(A, RDMEM(ea), 1, 1);
+                break;
+
+            case 0x00c1:	/* CMPB immediate */
+#ifdef FULL6809
+            case 0x10c1:	/* CMPB immediate (UNDOC) */
+            case 0x11c1:	/* CMPB immediate (UNDOC) */
+#endif
+                cmp(B, imm_byte(), 0, 0);
+                break;
+
+            case 0x00d1:	/* CMPB direct */
+#ifdef FULL6809
+            case 0x10d1:	/* CMPB direct (UNDOC) */
+            case 0x11d1:	/* CMPB direct (UNDOC) */
+#endif
+                direct();
+                cmp(B, RDMEM(ea), 1, 0);
+                break;
+
+            case 0x00f1:	/* CMPB extended */
+#ifdef FULL6809
+            case 0x10f1:	/* CMPB extended (UNDOC) */
+            case 0x11f1:	/* CMPB extended (UNDOC) */
+#endif
+                extended();
+                cmp(B, RDMEM(ea), 1, 0);
+                break;
+
+            case 0x00e1:	/* CMPB indexed */
+#ifdef FULL6809
+            case 0x10e1:	/* CMPB indexed (UNDOC) */
+            case 0x11e1:	/* CMPB indexed (UNDOC) */
+#endif
+                indexed();
+                cmp(B, RDMEM(ea), 1, 1);
+                break;
+
+            case 0x1083:	/* CMPD immediate */
+                cmp16(D, imm_word(), 1, 0);
+                break;
+
+            case 0x1093:	/* CMPD direct */
+                direct();
+                cmp16(D, RDMEM16(ea), 2, 0);
+                break;
+
+            case 0x10b3:	/* CMPD extended */
+                extended();
+                cmp16(D, RDMEM16(ea), 2, 0);
+                break;
+
+            case 0x10a3:	/* CMPD indexed */
+                indexed();
+                cmp16(D, RDMEM16(ea), 2, 1);
+                break;
+
+#ifdef H6309
+            case 0x1181:	/* CMPE immediate */
+                cmp(E, imm_byte(), 0, 0);
+                break;
+
+            case 0x1191:	/* CMPE direct */
+                direct();
+                cmp(E, RDMEM(ea), 1, 0);
+                break;
+
+            case 0x11b1:	/* CMPE extended */
+                extended();
+                cmp(E, RDMEM(ea), 1, 0);
+                break;
+
+            case 0x11a1:	/* CMPE indexed */
+                indexed();
+                cmp(E, RDMEM(ea), 1, 1);
+                break;
+
+            case 0x11c1:	/* CMPF immediate */
+                cmp(F, imm_byte(), 0, 0);
+                break;
+
+            case 0x11d1:	/* CMPF direct */
+                direct();
+                cmp(F, RDMEM(ea), 1, 0);
+                break;
+
+            case 0x11f1:	/* CMPF extended */
+                extended();
+                cmp(F, RDMEM(ea), 1, 0);
+                break;
+
+            case 0x11e1:	/* CMPF indexed */
+                indexed();
+                cmp(F, RDMEM(ea), 1, 1);
+                break;
+#endif
+
+            case 0x118c:	/* CMPS immediate */
+                cmp16(S, imm_word(), 1, 0);
+                break;
+
+            case 0x119c:	/* CMPS direct */
+                direct();
+                cmp16(S, RDMEM16(ea), 2, 0);
+                break;
+
+            case 0x11bc:	/* CMPS extended */
+                extended();
+                cmp16(S, RDMEM16(ea), 2, 0);
+                break;
+
+            case 0x11ac:	/* CMPS indexed */
+                indexed();
+                cmp16(S, RDMEM16(ea), 2, 1);
+                break;
+
+            case 0x1183:	/* CMPU immediate */
+                cmp16(U, imm_word(), 1, 0);
+                break;
+
+            case 0x1193:	/* CMPU direct */
+                direct();
+                cmp16(U, RDMEM16(ea), 2, 0);
+                break;
+
+            case 0x11b3:	/* CMPU extended */
+                extended();
+                cmp16(U, RDMEM16(ea), 2, 0);
+                break;
+
+            case 0x11a3:	/* CMPU indexed */
+                indexed();
+                cmp16(U, RDMEM16(ea), 2, 1);
+                break;
+
+#ifdef H6309
+            case 0x1081:	/* CMPW immediate */
+                cmp16(W, imm_word(), 1, 0);
+                break;
+
+            case 0x1091:	/* CMPW direct */
+                direct();
+                cmp16(W, RDMEM16(ea), 2, 0);
+                break;
+
+            case 0x10b1:	/* CMPW extended */
+                extended();
+                cmp16(W, RDMEM16(ea), 2, 0);
+                break;
+
+            case 0x10a1:	/* CMPW indexed */
+                indexed();
+                cmp16(W, RDMEM16(ea), 2, 1);
+                break;
+#endif
+
+            case 0x008c:	/* CMPX immediate */
+                cmp16(X, imm_word(), 1, 0);
+                break;
+
+            case 0x009c:	/* CMPX direct */
+                direct();
+                cmp16(X, RDMEM16(ea), 2, 0);
+                break;
+
+            case 0x00bc:	/* CMPX extended */
+                extended();
+                cmp16(X, RDMEM16(ea), 2, 0);
+                break;
+
+            case 0x00ac:	/* CMPX indexed */
+                indexed();
+                cmp16(X, RDMEM16(ea), 2, 1);
+                break;
+
+            case 0x108c:	/* CMPY immediate */
+                cmp16(Y, imm_word(), 1, 0);
+                break;
+
+            case 0x109c:	/* CMPY direct */
+                direct();
+                cmp16(Y, RDMEM16(ea), 2, 0);
+                break;
+
+            case 0x10bc:	/* CMPY extended */
+                extended();
+                cmp16(Y, RDMEM16(ea), 2, 0);
+                break;
+
+            case 0x10ac:	/* CMPY indexed */
+                indexed();
+                cmp16(Y, RDMEM16(ea), 2, 1);
+                break;
+
+            case 0x0043:	/* COMA */
+#ifdef FULL6809
+            case 0x1043:	/* COMA (UNDOC) */
+            case 0x1143:	/* COMA (UNDOC) */
+#endif
+                A = com(A, 1, 0);
+                break;
+
+            case 0x0042:	/* COMA/NEGA (UNDOC) */
+#ifdef FULL6809
+            case 0x1042:	/* COMA/NEGA (UNDOC) */
+            case 0x1142:	/* COMA/NEGA (UNDOC) */
+                if (C) {
+                    A = com(A, 1, 0);
+                } else {
+                    A = neg(A, 1, 0);
+                }
+                break;
+#endif
+
+            case 0x0053:	/* COMB */
+#ifdef FULL6809
+            case 0x1053:	/* COMB (UNDOC) */
+            case 0x1153:	/* COMB (UNDOC) */
+#endif
+                B = com(B, 1, 0);
+                break;
+
+#ifdef FULL6809
+            case 0x0052:	/* COMB/NEGB (UNDOC) */
+            case 0x1052:	/* COMB/NEGB (UNDOC) */
+            case 0x1152:	/* COMB/NEGB (UNDOC) */
+                if (C) {
+                    B = com(B, 1, 0);
+                } else {
+                    B = neg(B, 1, 0);
+                }
+                break;
+#endif
+
+#ifdef H6309
+            case 0x1043:	/* COMD */
+                D = com16(D, 1, 0);
+                break;
+#endif
+
+#ifdef H6309
+            case 0x1143:	/* COME */
+                E = com(E, 1, 0);
+                break;
+
+            case 0x1153:	/* COMF */
+                F = com(F, 1, 0);
+                break;
+
+            case 0x1053:	/* COMW */
+                W = com16(W, 1, 0);
+                break;
+#endif
+
+            case 0x0003:	/* COM direct */
+#ifdef H6309
+            case 0x1003:	/* COM direct (UNDOC) */
+            case 0x1103:	/* COM direct (UNDOC) */
+#endif
+                direct();
+                WRMEM(ea, com(RDMEM(ea), 2, 1));
+                break;
+
+#ifdef FULL6809
+            case 0x0002:	/* COM/NEG direct (UNDOC) */
+            case 0x1002:	/* NEG/COM direct (UNDOC) */
+            case 0x1102:	/* NEG/COM direct (UNDOC) */
+                direct();
+                if (C) {
+                    WRMEM(ea, com(RDMEM(ea), 2, 1));
+                } else {
+                    WRMEM(ea, neg(RDMEM(ea), 2, 1));
+                }
+                break;
+#endif
+
+            case 0x0073:	/* COM extended */
+#ifdef FULL6809
+            case 0x1073:	/* COM extended (UNDOC) */
+            case 0x1173:	/* COM extended (UNDOC) */
+#endif
+                extended();
+                WRMEM(ea, com(RDMEM(ea), 2, 1));
+                break;
+
+#ifdef FULL6809
+            case 0x0072:	/* COM/NEG extended (UNDOC) */
+            case 0x1072:	/* COM/NEG extended (UNDOC) */
+            case 0x1172:	/* COM/NEG extended (UNDOC) */
+                extended();
+                if (C) {
+                    WRMEM(ea, com(RDMEM(ea), 2, 1));
+                } else {
+                    WRMEM(ea, neg(RDMEM(ea), 2, 1));
+                }
+                break;
+#endif
+
+            case 0x0063:	/* COM indexed */
+#ifdef FULL6809
+            case 0x1063:	/* COM indexed (UNDOC) */
+            case 0x1163:	/* COM indexed (UNDOC) */
+#endif
+                indexed();
+                WRMEM(ea, com(RDMEM(ea), 1, 1));
+                break;
+
+#ifdef FULL6809
+            case 0x0062:	/* COM/NEG indexed (UNDOC) */
+            case 0x1062:	/* COM/NEG indexed (UNDOC) */
+            case 0x1162:	/* COM/NEG indexed (UNDOC) */
+                indexed();
+                if (C) {
+                    WRMEM(ea, com(RDMEM(ea), 1, 1));
+                } else {
+                    WRMEM(ea, neg(RDMEM(ea), 1, 1));
+                }
+                break;
+#endif
+
+            case 0x003c:	/* CWAI */
+#ifdef FULL6809
+            case 0x103c:	/* CWAI (UNDOC) */
+            case 0x113c:	/* CWAI (UNDOC) */
+#endif
+                cwai();
+                break;
+
+            case 0x0019:	/* DAA */
+#ifdef FULL6809
+            case 0x1019:	/* DAA (UNDOC) */
+            case 0x1119:	/* DAA (UNDOC) */
+#endif
+                daa();
+                break;
+
+            case 0x004a:	/* DECA */
+#ifdef FULL6809
+            case 0x004b:	/* DECA (UNDOC) */
+            case 0x104a:	/* DECA (UNDOC) */
+            case 0x104b:	/* DECA (UNDOC) */
+            case 0x114a:	/* DECA (UNDOC) */
+            case 0x114b:	/* DECA (UNDOC) */
+#endif
+                A = dec(A, 1, 0);
+                break;
+
+            case 0x005a:	/* DECB */
+#ifdef FULL6809
+            case 0x005b:	/* DECB (UNDOC) */
+            case 0x105a:	/* DECB (UNDOC) */
+            case 0x105b:	/* DECB (UNDOC) */
+            case 0x115a:	/* DECB (UNDOC) */
+            case 0x115b:	/* DECB (UNDOC) */
+#endif
+                B = dec(B, 1, 0);
+                break;
+
+#ifdef H6309
+            case 0x104a:	/* DECD */
+                D = dec16(D, 1, 0);
+                break;
+
+            case 0x114a:	/* DECE */
+                E = dec(E, 1, 0);
+                break;
+
+            case 0x115a:	/* DECF */
+                F = dec(F, 1, 0);
+                break;
+
+            case 0x105a:	/* DECW */
+                W = dec16(W, 1, 0);
+                break;
+#endif
+
+            case 0x000a:	/* DEC direct */
+#ifdef FULL6809
+            case 0x000b:	/* DEC direct (UNDOC) */
+            case 0x100a:	/* DEC direct (UNDOC) */
+            case 0x100b:	/* DEC direct (UNDOC) */
+            case 0x110a:	/* DEC direct (UNDOC) */
+            case 0x110b:	/* DEC direct (UNDOC) */
+#endif
+                direct();
+                WRMEM(ea, dec(RDMEM(ea), 2, 1));
+                break;
+
+            case 0x007a:	/* DEC extended */
+#ifdef FULL6809
+            case 0x007b:	/* DEC extended (UNDOC) */
+            case 0x107a:	/* DEC extended (UNDOC) */
+            case 0x107b:	/* DEC extended (UNDOC) */
+            case 0x117a:	/* DEC extended (UNDOC) */
+            case 0x117b:	/* DEC extended (UNDOC) */
+#endif
+                extended();
+                WRMEM(ea, dec(RDMEM(ea), 2, 1));
+                break;
+
+            case 0x006a:	/* DEC indexed */
+#ifdef FULL6809
+            case 0x006b:	/* DEC indexed (UNDOC) */
+            case 0x106a:	/* DEC indexed (UNDOC) */
+            case 0x106b:	/* DEC indexed (UNDOC) */
+            case 0x116a:	/* DEC indexed (UNDOC) */
+            case 0x116b:	/* DEC indexed (UNDOC) */
+#endif
+                indexed();
+                WRMEM(ea, dec(RDMEM(ea), 2, 2));
+                break;
+
+#ifdef H6309
+            case 0x118d:	/* DIVD immediate */
+                divd(imm_byte(), 22, 22);
+                break;
+
+            case 0x119d:	/* DIVD direct */
+                direct();
+                divd(RDMEM(ea), 23, 22);
+                break;
+
+            case 0x11bd:	/* DIVD extended */
+                extended();
+                divd(RDMEM(ea), 23, 22);
+                break;
+
+            case 0x11ad:	/* DIVD indexed */
+                indexed();
+                divd(RDMEM(ea), 23, 23);
+                break;
+
+            case 0x118e: /* DIVQ immediate */
+                divq(imm_word(), 30, 30);
+                break;
+
+            case 0x119e:	/* DIVQ direct */
+                direct();
+                divq(RDMEM16(ea), 31, 30);
+                break;
+
+            case 0x11be:	/* DIVQ extended */
+                extended();
+                divq(RDMEM16(ea), 31, 30);
+                break;
+
+            case 0x11ae:	/* DIVQ indexed */
+                indexed();
+                divq(RDMEM16(ea), 31, 31);
+                break;
+
+            case 0x0005:	/* EIM post, direct */
+                post_byte = imm_byte();
+                direct();
+                WRMEM(ea, eor(RDMEM(ea), post_byte, 1, 1));
+                break;
+
+            case 0x0075:	/* EIM extended */
+                post_byte = imm_byte();
+                extended();
+                WRMEM(ea, eor(RDMEM(ea), post_byte, 1, 1));
+                break;
+
+            case 0x0065:	/* EIM indexed */
+                post_byte = imm_byte();
+                indexed();
+                WRMEM(ea, eor(RDMEM(ea), post_byte, 2, 2));
+                break;
+#endif
+
+            case 0x0088:	/* EORA immediate */
+#ifdef FULL6809
+            case 0x1088:	/* EORA immediate (UNDOC) */
+            case 0x1188:	/* EORA immediate (UNDOC) */
+#endif
+                A = eor(A, imm_byte(), 0, 0);
+                break;
+
+            case 0x0098:	/* EORA direct */
+#ifdef FULL6809
+            case 0x1098:	/* EORA direct (UNDOC) */
+            case 0x1198:	/* EORA direct (UNDOC) */
+#endif
+                direct();
+                A = eor(A, RDMEM(ea), 1, 0);
+                break;
+
+            case 0x00b8:	/* EORA extended */
+#ifdef FULL6809
+            case 0x10b8:	/* EORA extended (UNDOC) */
+            case 0x11b8:	/* EORA extended (UNDOC) */
+#endif
+                extended();
+                A = eor(A, RDMEM(ea), 1, 0);
+                break;
+
+            case 0x00a8:	/* EORA indexed */
+#ifdef FULL6809
+            case 0x10a8:	/* EORA indexed (UNDOC) */
+            case 0x11a8:	/* EORA indexed (UNDOC) */
+#endif
+                indexed();
+                A = eor(A, RDMEM(ea), 1, 1);
+                break;
+
+            case 0x00c8:	/* EORB immediate */
+#ifdef FULL6809
+            case 0x10c8:	/* EORB immediate (UNDOC) */
+            case 0x11c8:	/* EORB immediate (UNDOC) */
+#endif
+                B = eor(B, imm_byte(), 0, 0);
+                break;
+
+        }
+
+
+--------------------------------------------------------------------------------------
+
+#if 0
+        switch (opcode) {
+            case 0x0000:	/* NEG direct */
                 direct();
                 WRMEM(ea, neg_new(RDMEM(ea), 2, 1));
                 break;
 #ifdef FULL6809
-            case 0x01:	/* NEG direct (UNDOC) */
+            case 0x0001:	/* NEG direct (UNDOC) */
                 direct();
                 WRMEM(ea, neg_new(RDMEM(ea), 2 , 2));
                 break;
 #endif
 #ifdef H6309
-            case 0x01:	/* OIM post,direct */
+            case 0x0001:	/* OIM post,direct */
                 post_byte = imm_byte();
                 direct();
                 WRMEM(ea, or_new(RDMEM(ea), post_byte, 1, 1));
                 break;
 #endif
-#ifdef FULL6809
-            case 0x02:	/* NEG/COM direct (UNDOC) */
-                direct();
-                if (C) {
-                    WRMEM(ea, com_new(RDMEM(ea), 2, 2));
-                } else {
-                    WRMEM(ea, neg_new(RDMEM(ea), 2, 2));
-                }
-                break;
-#endif
-#ifdef H6309
-            case 0x02:	/* AIM post,direct */
-                post_byte = imm_byte();
-                direct();
-                WRMEM(ea, and_new(RDMEM(ea), post_byte, 1, 1));
-                break;
-#endif
-            case 0x03:	/* COM direct */
-                direct();
-                WRMEM(ea, com_new(RDMEM(ea), 2, 1));
-                break;
-            case 0x04:	/* LSR direct */
+            case 0x0004:	/* LSR direct */
                 direct();
                 WRMEM(ea, lsr_new(RDMEM(ea), 2, 1));
                 break;
 #ifdef FULL6809
-            case 0x05:	/* LSR direct (UNDOC) */
+            case 0x0005:	/* LSR direct (UNDOC) */
                 direct();
                 WRMEM(ea, lsr_new(RDMEM(ea), 2, 2));
                 break;
 #endif
-#ifdef H6309
-            case 0x05:	/* EIM post,direct */
-                post_byte = imm_byte();
-                direct();
-                WRMEM(ea, eor_new(RDMEM(ea), post_byte, 1, 1));
-                break;
-#endif
-            case 0x06:	/* ROR direct */
+            case 0x0006:	/* ROR direct */
                 direct();
                 WRMEM(ea, ror_new(RDMEM(ea), 2, 1));
                 break;
-            case 0x07:	/* ASR direct */
-                direct();
-                WRMEM(ea, asr_new(RDMEM(ea), 2, 1));
-                break;
-            case 0x08:	/* ASL/LSL direct */
-                direct();
-                WRMEM(ea, asl_new(RDMEM(ea), 2, 1));
-                break;
-            case 0x09:	/* ROL direct */
+            case 0x0009:	/* ROL direct */
                 direct();
                 WRMEM(ea, rol_new(RDMEM(ea), 2, 1));
                 break;
-            case 0x0a:	/* DEC direct */
-                direct();
-                WRMEM(ea, dec_new(RDMEM(ea), 2, 1));
-                break;
-#ifdef FULL6809
-            case 0x0b:	/* DEC direct (UNDOC) */
-                direct();
-                WRMEM(ea, dec_new(RDMEM(ea), 2, 2));
-                break;
-#endif
 #ifdef H6309
-            case 0x0b:	/* TIM post,direct */
+            case 0x000b:	/* TIM post,direct */
                 post_byte = imm_byte();
                 direct();
                 WRMEM(ea, tim(post_byte, 1));
                 break;
 #endif
-            case 0x0c:	/* INC direct */
+            case 0x000c:	/* INC direct */
                 direct();
                 WRMEM(ea, inc_new(RDMEM(ea), 2, 1));
                 break;
-            case 0x0d:	/* TST direct */
+            case 0x000d:	/* TST direct */
                 direct();
                 tst_new(RDMEM(ea), 3, 1);
                 break;
-            case 0x0e:	/* JMP direct */
+            case 0x000e:	/* JMP direct */
                 direct();
                 CLK_ADD(1, 0);
                 PC = ea;
-                break;
-            case 0x0f:	/* CLR direct */
-                direct();
-                WRMEM(ea, clr_new(RDMEM(ea), 2, 1));
                 break;
             case 0x10:
                 {
@@ -2975,77 +4250,42 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                         opcode = imm_byte();
                         switch (opcode) {
 #ifdef FULL6809
-                            case 0x00:	/* NEG direct (UNDOC) */
-                            case 0x01:	/* NEG direct (UNDOC) */
+                            case 0x1000:	/* NEG direct (UNDOC) */
+                            case 0x1001:	/* NEG direct (UNDOC) */
                                 direct();
                                 CLK += 4;
                                 WRMEM(ea, neg(RDMEM(ea)));
                                 break;
-                            case 0x02:	/* NEG/COM direct (UNDOC) */
-                                direct();
-                                CLK += 4;
-                                if (C) {
-                                    WRMEM(ea, com(RDMEM(ea)));
-                                } else {
-                                    WRMEM(ea, neg(RDMEM(ea)));
-                                }
-                                break;
-                            case 0x03:	/* COM direct (UNDOC) */
-                                direct();
-                                CLK += 4;
-                                WRMEM(ea, com(RDMEM(ea)));
-                                break;
-                            case 0x04:	/* LSR direct (UNDOC) */
-                            case 0x05:	/* LSR direct (UNDOC) */
+                            case 0x1004:	/* LSR direct (UNDOC) */
+                            case 0x1005:	/* LSR direct (UNDOC) */
                                 direct();
                                 CLK += 4;
                                 WRMEM(ea, lsr(RDMEM(ea)));
                                 break;
-                            case 0x06:	/* ROR direct (UNDOC) */
+                            case 0x1006:	/* ROR direct (UNDOC) */
                                 direct();
                                 CLK += 4;
                                 WRMEM(ea, ror(RDMEM(ea)));
                                 break;
-                            case 0x07:	/* ASR direct (UNDOC) */
-                                direct();
-                                CLK += 4;
-                                WRMEM(ea, asr(RDMEM(ea)));
-                                break;
-                            case 0x08:	/* ASL/LSL direct (UNDOC) */
-                                direct();
-                                CLK += 4;
-                                WRMEM(ea, asl(RDMEM(ea)));
-                                break;
-                            case 0x09:	/* ROL direct (UNDOC) */
+                            case 0x1009:	/* ROL direct (UNDOC) */
                                 direct();
                                 CLK += 4;
                                 WRMEM(ea, rol(RDMEM(ea)));
                                 break;
-                            case 0x0a:	/* DEC direct (UNDOC) */
-                            case 0x0b:	/* DEC direct (UNDOC) */
-                                direct();
-                                CLK += 4;
-                                WRMEM(ea, dec(RDMEM(ea)));
-                                break;
-                            case 0x0c:	/* INC direct (UNDOC) */
+                            case 0x100c:	/* INC direct (UNDOC) */
                                 direct();
                                 CLK += 4;
                                 WRMEM(ea, inc(RDMEM(ea)));
                                 break;
-                            case 0x0d:	/* TST direct (UNDOC) */
+                            case 0x100d:	/* TST direct (UNDOC) */
                                 direct();
                                 CLK += 4;
                                 tst(RDMEM(ea));
                                 break;
-                            case 0x0e:	/* JMP direct (UNDOC) */
+                            case 0x100e:	/* JMP direct (UNDOC) */
                                 direct();
                                 CLK += 3;
                                 PC = ea;
-                                break;
-                            case 0x0f:	/* CLR direct (UNDOC) */
-                                direct();
-                                CLK += 4;
-                                WRMEM(ea, clr(RDMEM(ea)));
                                 break;
 #endif
                             case 0x10:	/* ignore further prefix bytes (UNDOC) */
@@ -3072,17 +4312,11 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                             case 0x18:	/* CCRS (UNDOC) */
                                 ccrs();
                                 break;
-                            case 0x19:	/* DAA (UNDOC) */
-                                daa();
-                                break;
                             case 0x1a:	/* ORCC immediate (UNDOC) */
                                 orcc();
                                 break;
                             case 0x1b:	/* NOP (UNDOC) */
                                 nop();
-                                break;
-                            case 0x1c:	/* ANDCC immediate (UNDOC) */
-                                andcc();
                                 break;
                             case 0x1d:	/* SEX (UNDOC) */
                                 sex();
@@ -3150,24 +4384,10 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 Z = X = ea;
                                 break;
 #endif
-#ifdef H6309
-                            case 0x30:	/* ADDR post */
-                                post_byte = imm_byte();
-                                set_reg((BYTE)(post_byte & 0x0f), add16(get_reg((BYTE)(post_byte >> 4)), get_reg((BYTE)(post_byte & 0x0f))));
-                                /* TODO: cycle count */
-                                break;
-#endif
 #ifdef FULL6809
                             case 0x31:	/* LEAY indexed (UNDOC) */
                                 indexed();
                                 Z = Y = ea;
-                                break;
-#endif
-#ifdef H6309
-                            case 0x31:	/* ADCR post */
-                                post_byte = imm_byte();
-                                set_reg((BYTE)(post_byte & 0x0f), adc16(get_reg((BYTE)(post_byte >> 4)), get_reg((BYTE)(post_byte & 0x0f))));
-                                /* TODO: cycle count */
                                 break;
 #endif
 #ifdef FULL6809
@@ -3199,13 +4419,6 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
 #ifdef FULL6809
                             case 0x34:	/* PSHS post (UNDOC) */
                                 pshs();
-                                break;
-#endif
-#ifdef H6309
-                            case 0x34:	/* ANDR post */
-                                post_byte = imm_byte();
-                                set_reg((BYTE)(post_byte & 0x0f), and16(get_reg((BYTE)(post_byte >> 4)), get_reg((BYTE)(post_byte & 0x0f))));
-                                /* TODO: cycle count */
                                 break;
 #endif
 #ifdef FULL6809
@@ -3244,12 +4457,6 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 /* TODO: cycle count */
                                 break;
 #endif
-#ifdef FULL6809
-                            case 0x38:	/* ANDCC immediate (+1 extra cycle) (UNDOC) */
-                                andcc();
-                                CLK++;
-                                break;
-#endif
 #ifdef H6309
                             case 0x38:	/* PSHSW */
                                 pshsw();
@@ -3263,11 +4470,6 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
 #ifdef H6309
                             case 0x39:	/* PULSW */
                                 pulsw();
-                                break;
-#endif
-#ifdef FULL6809
-                            case 0x3a:	/* ABX (UNDOC) */
-                                abx();
                                 break;
 #endif
 #ifdef H6309
@@ -3286,9 +4488,6 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 break;
 #endif
 #ifdef FULL6809
-                            case 0x3c:	/* CWAI (UNDOC) */
-                                cwai();
-                                break;
                             case 0x3d:	/* MUL (UNDOC) */
                                 mul();
                                 break;
@@ -3312,21 +4511,6 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
 #ifdef FULL6809
                             case 0x41:	/* NEGA (UNDOC) */
                                 A = neg(A);
-                                break;
-                            case 0x42:	/* NEGA/COMA (UNDOC) */
-                                if (C) {
-                                    A = com(A);
-                                } else {
-                                    A = neg(A);
-                                }
-                                break;
-                            case 0x43:	/* COMA (UNDOC) */
-                                A = com(A);
-                                break;
-#endif
-#ifdef H6309
-                            case 0x43:	/* COMD */
-                                D = com16(D);
                                 break;
 #endif
 #ifdef FULL6809
@@ -3353,26 +4537,6 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 break;
 #endif
 #ifdef FULL6809
-                            case 0x47:	/* ASRA (UNDOC) */
-                                A = asr(A);
-                                break;
-#endif
-#ifdef H6309
-                            case 0x47:	/* ASRD */
-                                D = asr16(D);
-                                break;
-#endif
-#ifdef FULL6809
-                            case 0x48:	/* ASLA/LSLA (UNDOC) */
-                                A = asl(A);
-                                break;
-#endif
-#ifdef H6309
-                            case 0x48:	/* ASLD/LSLD */
-                                D = asl16(D);
-                                break;
-#endif
-#ifdef FULL6809
                             case 0x49:	/* ROLA (UNDOC) */
                                 A = rol(A);
                                 break;
@@ -3383,19 +4547,6 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 break;
 #endif
 #ifdef FULL6809
-                            case 0x4a:	/* DECA (UNDOC) */
-                                A = dec(A);
-                                break;
-#endif
-#ifdef H6309
-                            case 0x4a:	/* DECD */
-                                D = dec16(D);
-                                break;
-#endif
-#ifdef FULL6809
-                            case 0x4b:	/* DECA (UNDOC) */
-                                A = dec(A);
-                                break;
                             case 0x4c:	/* INCA (UNDOC) */
                                 A = inc(A);
                                 break;
@@ -3416,35 +4567,9 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 break;
 #endif
 #ifdef FULL6809
-                            case 0x4e:	/* CLRA (UNDOC) */
-                            case 0x4f:	/* CLRA (UNDOC) */
-                                A = clr(A);
-                                break;
-#endif
-#ifdef H6309
-                            case 0x4f:	/* CLRD */
-                                D = clr16(D);
-                                break;
-#endif
-#ifdef FULL6809
                             case 0x50:	/* NEGB (UNDOC) */
                             case 0x51:	/* NEGB (UNDOC) */
                                 B = neg(B);
-                                break;
-                            case 0x52:	/* NEGB/COMB (UNDOC) */
-                                if (C) {
-                                    B = com(B);
-                                } else {
-                                    B = neg(B);
-                                }
-                                break;
-                            case 0x53:	/* COMB (UNDOC) */
-                                B = com(B);
-                                break;
-#endif
-#ifdef H6309
-                            case 0x53:	/* COMW */
-                                W = com16(W);
                                 break;
 #endif
 #ifdef FULL6809
@@ -3471,12 +4596,6 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 break;
 #endif
 #ifdef FULL6809
-                            case 0x57:	/* ASRB (UNDOC) */
-                                B = asr(B);
-                                break;
-                            case 0x58:	/* ALSB/LSLB (UNDOC) */
-                                B = asl(B);
-                                break;
                             case 0x59:	/* ROLB (UNDOC) */
                                 B = rol(B);
                                 break;
@@ -3487,19 +4606,6 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 break;
 #endif
 #ifdef FULL6809
-                            case 0x5a:	/* DECB (UNDOC) */
-                                B = dec(B);
-                                break;
-#endif
-#ifdef H6309
-                            case 0x5a:	/* DECW */
-                                W = dec16(W);
-                                break;
-#endif
-#ifdef FULL6809
-                            case 0x5b:	/* DECB (UNDOC) */
-                                B = dec(B);
-                                break;
                             case 0x5c:	/* INCB (UNDOC) */
                                 B = inc(B);
                                 break;
@@ -3520,33 +4626,10 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 break;
 #endif
 #ifdef FULL6809
-                            case 0x5e:	/* CLRB (UNDOC) */
-                            case 0x5f:	/* CLRB (UNDOC) */
-                                B = clr(B);
-                                break;
-#endif
-#ifdef H6309
-                            case 0x5f:	/* CLRW */
-                                W = clr16(W);
-                                break;
-#endif
-#ifdef FULL6809
                             case 0x60:	/* NEG indexed (UNDOC) */
                             case 0x61:	/* NEG indexed (UNDOC) */
                                 indexed();
                                 WRMEM(ea, neg(RDMEM(ea)));
-                                break;
-                            case 0x62:	/* NEG/COM indexed (UNDOC) */
-                                indexed();
-                                if (C) {
-                                    WRMEM(ea, com(RDMEM(ea)));
-                                } else {
-                                    WRMEM(ea, neg(RDMEM(ea)));
-                                }
-                                break;
-                            case 0x63:	/* COM indexed (UNDOC) */
-                                indexed();
-                                WRMEM(ea, com(RDMEM(ea)));
                                 break;
                             case 0x64:	/* LSR indexed (UNDOC) */
                             case 0x65:	/* LSR indexed (UNDOC) */
@@ -3557,22 +4640,9 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 indexed();
                                 WRMEM(ea, ror(RDMEM(ea)));
                                 break;
-                            case 0x67:	/* ASR indexed (UNDOC) */
-                                indexed();
-                                WRMEM(ea, asr(RDMEM(ea)));
-                                break;
-                            case 0x68:	/* ASL/LSL indexed (UNDOC) */
-                                indexed();
-                                WRMEM(ea, asl(RDMEM(ea)));
-                                break;
                             case 0x69:	/* ROL indexed (UNDOC) */
                                 indexed();
                                 WRMEM(ea, rol(RDMEM(ea)));
-                                break;
-                            case 0x6a:	/* DEC indexed (UNDOC) */
-                            case 0x6b:	/* DEC indexed (UNDOC) */
-                                indexed();
-                                WRMEM(ea, dec(RDMEM(ea)));
                                 break;
                             case 0x6c:	/* INC indexed (UNDOC) */
                                 indexed();
@@ -3587,29 +4657,11 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 CLK++;
                                 PC = ea;
                                 break;
-                            case 0x6f:	/* CLR indexed (UNDOC) */
-                                indexed();
-                                WRMEM(ea, clr(RDMEM(ea)));
-                                break;
                             case 0x70:	/* NEG extended (UNDOC) */
                             case 0x71:	/* NEG extended (UNDOC) */
                                 extended();
                                 CLK += 5;
                                 WRMEM(ea, neg(RDMEM(ea)));
-                                break;
-                            case 0x72:	/* NEG/COM extended (UNDOC) */
-                                extended();
-                                CLK += 5;
-                                if (C) {
-                                    WRMEM(ea, com(RDMEM(ea)));
-                                } else {
-                                    WRMEM(ea, neg(RDMEM(ea)));
-                                }
-                                break;
-                            case 0x73:	/* COM extended (UNDOC) */
-                                extended();
-                                CLK += 5;
-                                WRMEM(ea, com(RDMEM(ea)));
                                 break;
                             case 0x74:	/* LSR extended (UNDOC) */
                             case 0x75:	/* LSR extended (UNDOC) */
@@ -3622,26 +4674,10 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 CLK += 5;
                                 WRMEM(ea, ror(RDMEM(ea)));
                                 break;
-                            case 0x77:	/* ASR extended (UNDOC) */
-                                extended();
-                                CLK += 5;
-                                WRMEM(ea, asr(RDMEM(ea)));
-                                break;
-                            case 0x78:	/* ASL/LSL extended (UNDOC) */
-                                extended();
-                                CLK += 5;
-                                WRMEM(ea, asl(RDMEM(ea)));
-                                break;
                             case 0x79:	/* ROL extended (UNDOC) */
                                 extended();
                                 CLK += 5;
                                 WRMEM(ea, rol(RDMEM(ea)));
-                                break;
-                            case 0x7a:	/* DEC extended (UNDOC) */
-                            case 0x7b:	/* DEC extended (UNDOC) */
-                                extended();
-                                CLK += 5;
-                                WRMEM(ea, dec(RDMEM(ea)));
                                 break;
                             case 0x7c:	/* INC extended (UNDOC) */
                                 extended();
@@ -3658,11 +4694,6 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 CLK += 4;
                                 PC = ea;
                                 break;
-                            case 0x7f:	/* CLR extended (UNDOC) */
-                                extended();
-                                CLK += 5;
-                                WRMEM(ea, clr(RDMEM(ea)));
-                                break;
 #endif
 #ifdef FULL6809
                             case 0x80:	/* SUBA immediate (UNDOC) */
@@ -3677,18 +4708,6 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 break;
 #endif
 #ifdef FULL6809
-                            case 0x81:	/* CMPA immediate (UNDOC) */
-                                CLK += 2;
-                                cmp(A, imm_byte());
-                                break;
-#endif
-#ifdef H6309
-                            case 0x81:	/* CMPW immediate */
-                                /* TODO: cycle count */
-                                cmp16(W, imm_word());
-                                break;
-#endif
-#ifdef FULL6809
                             case 0x82:	/* SBCA immediate (UNDOC) */
                                 CLK += 2;
                                 A = sbc(A, imm_byte());
@@ -3698,34 +4717,6 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                             case 0x82:	/* SBCD immediate */
                                 /* TODO: cycle count */
                                 D = sbc16(D, imm_word());
-                                break;
-#endif
-                            case 0x83:	/* CMPD immediate */
-                                CLK += 5;
-                                cmp16(D, imm_word());
-                                break;
-#ifdef FULL6809
-                            case 0x84:	/* ANDA immediate (UNDOC) */
-                                CLK += 2;
-                                A = and(A, imm_byte());
-                                break;
-#endif
-#ifdef H6309
-                            case 0x84:	/* ANDD immediate */
-                                /* TODO: cycle count */
-                                D = and16(D, imm_word());
-                                break;
-#endif
-#ifdef FULL6809
-                            case 0x85:	/* BITA immediate (UNDOC) */
-                                CLK += 2;
-                                bit(A, imm_byte());
-                                break;
-#endif
-#ifdef H6309
-                            case 0x85:	/* BITD immediate */
-                                /* TODO: cycle count */
-                                bit16(D, imm_word());
                                 break;
 #endif
 #ifdef FULL6809
@@ -3745,27 +4736,11 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 /* TODO: cycle count */
                                 scc(imm_byte());
                                 break;
-                            case 0x88:	/* EORA immediate (UNDOC) */
-                                CLK += 2;
-                                A = eor(A, imm_byte());
-                                break;
 #endif
 #ifdef H6309
                             case 0x88:	/* EORD immediate */
                                 /* TODO: cycle count */
                                 D = eor16(D, imm_word());
-                                break;
-#endif
-#ifdef FULL6809
-                            case 0x89:	/* ADCA immediate (UNDOC) */
-                                CLK += 2;
-                                A = adc(A, imm_byte());
-                                break;
-#endif
-#ifdef H6309
-                            case 0x89:	/* ADCD immediate */
-                                /* TODO: cycle count */
-                                D = adc16(D, imm_word());
                                 break;
 #endif
 #ifdef FULL6809
@@ -3778,27 +4753,6 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                             case 0x8a:	/* ORD immediate */
                                 /* TODO: cycle count */
                                 D = or16(D, imm_word());
-                                break;
-#endif
-#ifdef FULL6809
-                            case 0x8b:	/* ADDA immediate (UNDOC) */
-                                CLK += 2;
-                                A = add(A, imm_byte());
-                                break;
-#endif
-#ifdef H6309
-                            case 0x8b:	/* ADDW immediate */
-                                /* TODO: cycle count */
-                                W = add16(W, imm_word());
-                                break;
-#endif
-                            case 0x8c:	/* CMPY immediate */
-                                CLK += 5;
-                                cmp16(Y, imm_word());
-                                break;
-#ifdef FULL6809
-                            case 0x8d:	/* BSR (UNDOC) */
-                                bsr();
                                 break;
 #endif
                             case 0x8e:	/* LDY immediate (UNDOC) */
@@ -3824,20 +4778,6 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 break;
 #endif
 #ifdef FULL6809
-                            case 0x91:	/* CMPA direct (UNDOC) */
-                                direct();
-                                CLK += 4;
-                                cmp(A, RDMEM(ea));
-                                break;
-#endif
-#ifdef H6309
-                            case 0x91:	/* CMPW direct */
-                                direct();
-                                /* TODO: cycle count */
-                                cmp16(W, RDMEM16(ea));
-                                break;
-#endif
-#ifdef FULL6809
                             case 0x92:	/* SBCA direct (UNDOC) */
                                 direct();
                                 CLK += 4;
@@ -3849,40 +4789,6 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 direct();
                                 /* TODO: cycle count */
                                 D = sbc16(D, RDMEM16(ea));
-                                break;
-#endif
-                            case 0x93:	/* CMPD direct */
-                                direct();
-                                CLK += 5;
-                                cmp16(D, RDMEM16(ea));
-                                CLK++;
-                                break;
-#ifdef FULL6809
-                            case 0x94:	/* ANDA direct (UNDOC) */
-                                direct();
-                                CLK += 4;
-                                A = and(A, RDMEM(ea));
-                                break;
-#endif
-#ifdef H6309
-                            case 0x94:	/* ANDD direct */
-                                direct();
-                                /* TODO: cycle count */
-                                D = and16(D, RDMEM16(ea));
-                                break;
-#endif
-#ifdef FULL6809
-                            case 0x95:	/* BITA direct (UNDOC) */
-                                direct();
-                                CLK += 4;
-                                bit(A, RDMEM(ea));
-                                break;
-#endif
-#ifdef H6309
-                            case 0x95:	/* BITD direct */
-                                direct();
-                                /* TODO: cycle count */
-                                bit16(D, RDMEM16(ea));
                                 break;
 #endif
 #ifdef FULL6809
@@ -3913,32 +4819,11 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 st16(W);
                                 break;
 #endif
-#ifdef FULL6809
-                            case 0x98:	/* EORA direct (UNDOC) */
-                                direct();
-                                CLK += 4;
-                                A = eor(A, RDMEM(ea));
-                                break;
-#endif
 #ifdef H6309
                             case 0x98:	/* EORD direct */
                                 direct();
                                 /* TODO: cycle count */
                                 D = eor16(D, RDMEM16(ea));
-                                break;
-#endif
-#ifdef FULL6809
-                            case 0x99:	/* ADCA direct (UNDOC) */
-                                direct();
-                                CLK += 4;
-                                A = adc(A, RDMEM(ea));
-                                break;
-#endif
-#ifdef H6309
-                            case 0x99:	/* ADCD direct */
-                                direct();
-                                /* TODO: cycle count */
-                                D = adc16(D, RDMEM16(ea));
                                 break;
 #endif
 #ifdef FULL6809
@@ -3955,26 +4840,6 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 D = or16(D, RDMEM16(ea));
                                 break;
 #endif
-#ifdef FULL6809
-                            case 0x9b:	/* ADDA direct (UNDOC) */
-                                direct();
-                                CLK += 4;
-                                A = add(A, RDMEM(ea));
-                                break;
-#endif
-#ifdef H6309
-                            case 0x9b:	/* ADDW direct */
-                                direct();
-                                /* TODO: cycle count */
-                                W = add16(W, RDMEM16(ea));
-                                break;
-#endif
-                            case 0x9c:	/* CMPY direct */
-                                direct();
-                                CLK += 5;
-                                cmp16(Y, RDMEM16(ea));
-                                CLK++;
-                                break;
 #ifdef FULL6809
                             case 0x9d:	/* JSR direct (undoc) */
                                 direct();
@@ -4005,18 +4870,6 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 break;
 #endif
 #ifdef FULL6809
-                            case 0xa1:	/* CMPA indexed (UNDOC) */
-                                indexed();
-                                cmp(A, RDMEM(ea));
-                                break;
-#endif
-#ifdef H6309
-                            case 0xa1:	/* CMPW indexed */
-                                indexed();
-                                cmp16(W, RDMEM16(ea));
-                                break;
-#endif
-#ifdef FULL6809
                             case 0xa2:	/* SBCA indexed (UNDOC) */
                                 indexed();
                                 A = sbc(A, RDMEM(ea));
@@ -4026,36 +4879,6 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                             case 0xa2:	/* SBCD indexed */
                                 indexed();
                                 D = sbc16(D, RDMEM16(ea));
-                                break;
-#endif
-                            case 0xa3:	/* CMPD indexed */
-                                CLK++;
-                                indexed();
-                                cmp16(D, RDMEM16(ea));
-                                CLK++;
-                                break;
-#ifdef FULL6809
-                            case 0xa4:	/* ANDA indexed (UNDOC) */
-                                indexed();
-                                A = and(A, RDMEM(ea));
-                                break;
-#endif
-#ifdef H6309
-                            case 0xa4:	/* ANDD indexed */
-                                indexed();
-                                D = and16(D, RDMEM16(ea));
-                                break;
-#endif
-#ifdef FULL6809
-                            case 0xa5:	/* BITA indexed (UNDOC) */
-                                indexed();
-                                bit(A, RDMEM(ea));
-                                break;
-#endif
-#ifdef H6309
-                            case 0xa5:	/* BITD indexed */
-                                indexed();
-                                bit16(D, RDMEM16(ea));
                                 break;
 #endif
 #ifdef FULL6809
@@ -4082,28 +4905,10 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 st16(W);
                                 break;
 #endif
-#ifdef FULL6809
-                            case 0xa8:	/* EORA indexed (UNDOC) */
-                                indexed();
-                                A = eor(A, RDMEM(ea));
-                                break;
-#endif
 #ifdef H6309
                             case 0xa8:	/* EORD indexed */
                                 indexed();
                                 D = eor16(D, RDMEM16(ea));
-                                break;
-#endif
-#ifdef FULL6809
-                            case 0xa9:	/* ADCA indexed (UNDOC) */
-                                indexed();
-                                A = adc(A, RDMEM(ea));
-                                break;
-#endif
-#ifdef H6309
-                            case 0xa9:	/* ADCD indexed */
-                                indexed();
-                                D = adc16(D, RDMEM16(ea));
                                 break;
 #endif
 #ifdef FULL6809
@@ -4118,24 +4923,6 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 D = or16(D, RDMEM16(ea));
                                 break;
 #endif
-#ifdef FULL6809
-                            case 0xab:	/* ADDA indexed (UNDOC) */
-                                indexed();
-                                A = add(A, RDMEM(ea));
-                                break;
-#endif
-#ifdef H6309
-                            case 0xab:	/* ADDW indexed */
-                                indexed();
-                                W = add16(W, RDMEM16(ea));
-                                break;
-#endif
-                            case 0xac:	/* CMPY indexed */
-                                CLK++;
-                                indexed();
-                                cmp16(Y, RDMEM16(ea));
-                                CLK++;
-                                break;
 #ifdef FULL6809
                             case 0xad:	/* JSR indexed (UNDOC) */
                                 indexed();
@@ -4168,20 +4955,6 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 break;
 #endif
 #ifdef FULL6809
-                            case 0xb1:	/* CMPA extended (UNDOC) */
-                                extended();
-                                CLK += 5;
-                                cmp(A, RDMEM(ea));
-                                break;
-#endif
-#ifdef H6309
-                            case 0xb1:	/* CMPW extended */
-                                extended();
-                                /* TODO: cycle count */
-                                cmp16(W, RDMEM16(ea));
-                                break;
-#endif
-#ifdef FULL6809
                             case 0xb2:	/* SBCA extended (UNDOC) */
                                 extended();
                                 CLK += 5;
@@ -4193,40 +4966,6 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 extended();
                                 /* TODO: cycle count */
                                 D = sbc16(D, RDMEM16(ea));
-                                break;
-#endif
-                            case 0xb3:	/* CMPD extended */
-                                extended();
-                                CLK += 6;
-                                cmp16(D, RDMEM16(ea));
-                                CLK++;
-                                break;
-#ifdef FULL6809
-                            case 0xb4:	/* ANDA extended (UNDOC) */
-                                extended();
-                                CLK += 5;
-                                A = and(A, RDMEM(ea));
-                                break;
-#endif
-#ifdef H6309
-                            case 0xb4:	/* ANDD extended */
-                                extended();
-                                /* TODO: cycle count */
-                                D = and16(D, RDMEM16(ea));
-                                break;
-#endif
-#ifdef FULL6809
-                            case 0xb5:	/* BITA extended (UNDOC) */
-                                extended();
-                                CLK += 5;
-                                bit(A, RDMEM(ea));
-                                break;
-#endif
-#ifdef H6309
-                            case 0xb5:	/* BITD extended */
-                                extended();
-                                /* TODO: cycle count */
-                                bit16(D, RDMEM16(ea));
                                 break;
 #endif
 #ifdef FULL6809
@@ -4257,32 +4996,11 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 st16(W);
                                 break;
 #endif
-#ifdef FULL6809
-                            case 0xb8:	/* EORA extended (UNDOC) */
-                                extended();
-                                CLK += 5;
-                                A = eor(A, RDMEM(ea));
-                                break;
-#endif
 #ifdef H6309
                             case 0xb8:	/* EORD extended */
                                 extended();
                                 /* TODO: cycle count */
                                 D = eor16(D, RDMEM16(ea));
-                                break;
-#endif
-#ifdef FULL6809
-                            case 0xb9:	/* ADCA extended (UNDOC) */
-                                extended();
-                                CLK += 5;
-                                A = adc(A, RDMEM(ea));
-                                break;
-#endif
-#ifdef H6309
-                            case 0xb9:	/* ADCD extended */
-                                extended();
-                                /* TODO: cycle count */
-                                D = adc16(D, RDMEM16(ea));
                                 break;
 #endif
 #ifdef FULL6809
@@ -4299,26 +5017,6 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 D = or16(D, RDMEM16(ea));
                                 break;
 #endif
-#ifdef FULL6809
-                            case 0xbb:	/* ADDA extended (UNDOC) */
-                                extended();
-                                CLK += 5;
-                                A = add(A, RDMEM(ea));
-                                break;
-#endif
-#ifdef H6309
-                            case 0xbb:	/* ADDW extended */
-                                extended();
-                                /* TODO: cycle count */
-                                W = add16(W, RDMEM16(ea));
-                                break;
-#endif
-                            case 0xbc:	/* CMPY extended */
-                                extended();
-                                CLK += 6;
-                                cmp16(Y, RDMEM16(ea));
-                                CLK++;
-                                break;
 #ifdef FULL6809
                             case 0xbd:	/* JSR extended (UNDOC) */
                                 extended();
@@ -4341,25 +5039,9 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 CLK += 2;
                                 B = sub(B, imm_byte());
                                 break;
-                            case 0xc1:	/* CMPB immediate (UNDOC) */
-                                CLK += 2;
-                                cmp(B, imm_byte());
-                                break;
                             case 0xc2:	/* SBCB immediate (UNDOC) */
                                 CLK += 2;
                                 B = sbc(B, imm_byte());
-                                break;
-                            case 0xc3:	/* ADDD immediate (UNDOC) */
-                                CLK += 4;
-                                D = add16(D, imm_word());
-                                break;
-                            case 0xc4:	/* ANDB immediate (UNDOC) */
-                                CLK += 2;
-                                B = and(B, imm_byte());
-                                break;
-                            case 0xc5:	/* BITB immediate (UNDOC) */
-                                CLK += 2;
-                                bit(B, imm_byte());
                                 break;
                             case 0xc6:	/* LDB immediate (UNDOC) */
                                 CLK += 2;
@@ -4369,21 +5051,9 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 /* TODO: cycle count */
                                 scc(imm_byte());
                                 break;
-                            case 0xc8:	/* EORB immediate (UNDOC) */
-                                CLK += 2;
-                                B = eor(B, imm_byte());
-                                break;
-                            case 0xc9:	/* ADCB immediate (UNDOC) */
-                                CLK += 2;
-                                B = adc(B, imm_byte());
-                                break;
                             case 0xca:	/* ORB immediate (UNDOC) */
                                 CLK += 2;
                                 B = or(B, imm_byte());
-                                break;
-                            case 0xcb:	/* ADDB immediate (UNDOC) */
-                                CLK += 2;
-                                B = add(B, imm_byte());
                                 break;
                             case 0xcc:	/* LDD immediate (UNDOC) */
                                 CLK += 3;
@@ -4406,31 +5076,10 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 CLK += 4;
                                 B = sub(B, RDMEM(ea));
                                 break;
-                            case 0xd1:	/* CMPB direct (UNDOC) */
-                                direct();
-                                CLK += 4;
-                                cmp(B, RDMEM(ea));
-                                break;
                             case 0xd2:	/* SBCB direct (UNDOC) */
                                 direct();
                                 CLK += 4;
                                 B = sbc(B, RDMEM(ea));
-                                break;
-                            case 0xd3:	/* ADDD direct (UNDOC) */
-                                direct();
-                                CLK += 4;
-                                D = add16(D, RDMEM16(ea));
-                                CLK++;
-                                break;
-                            case 0xd4:	/* ANDB direct (UNDOC) */
-                                direct();
-                                CLK += 4;
-                                B = and(B, RDMEM(ea));
-                                break;
-                            case 0xd5:	/* BITB direct (UNDOC) */
-                                direct();
-                                CLK += 4;
-                                bit(B, RDMEM(ea));
                                 break;
                             case 0xd6:	/* LDB direct (UNDOC) */
                                 direct();
@@ -4447,20 +5096,10 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 CLK += 4;
                                 B = eor(B, RDMEM(ea));
                                 break;
-                            case 0xd9:	/* ADCB direct (UNDOC) */
-                                direct();
-                                CLK += 4;
-                                B = adc(B, RDMEM(ea));
-                                break;
                             case 0xda:	/* ORB direct (UNDOC) */
                                 direct();
                                 CLK += 4;
                                 B = or(B, RDMEM(ea));
-                                break;
-                            case 0xdb:	/* ADDB direct (UNDOC) */
-                                direct();
-                                CLK += 4;
-                                B = add(B, RDMEM(ea));
                                 break;
                             case 0xdc:	/* LDD direct (UNDOC) */
                                 direct();
@@ -4488,26 +5127,9 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 indexed();
                                 B = sub(B, RDMEM(ea));
                                 break;
-                            case 0xe1:	/* CMPB indexed (UNDOC) */
-                                indexed();
-                                cmp(B, RDMEM(ea));
-                                break;
                             case 0xe2:	/* SBCB indexed (UNDOC) */
                                 indexed();
                                 B = sbc(B, RDMEM(ea));
-                                break;
-                            case 0xe3:	/* ADDD indexed (UNDOC) */
-                                indexed();
-                                D = add16(D, RDMEM16(ea));
-                                CLK++;
-                                break;
-                            case 0xe4:	/* ANDB indexed (UNDOC) */
-                                indexed();
-                                B = and(B, RDMEM(ea));
-                                break;
-                            case 0xe5:	/* BITB indexed (UNDOC) */
-                                indexed();
-                                bit(B, RDMEM(ea));
                                 break;
                             case 0xe6:	/* LDB indexed (UNDOC) */
                                 indexed();
@@ -4521,17 +5143,9 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 indexed();
                                 B = eor(B, RDMEM(ea));
                                 break;
-                            case 0xe9:	/* ADCB indexed (UNDOC) */
-                                indexed();
-                                B = adc(B, RDMEM(ea));
-                                break;
                             case 0xea:	/* ORB indexed (UNDOC) */
                                 indexed();
                                 B = or(B, RDMEM(ea));
-                                break;
-                            case 0xeb:	/* ADDB indexed (UNDOC) */
-                                indexed();
-                                B = add(B, RDMEM(ea));
                                 break;
                             case 0xec:	/* LDD indexed (UNDOC) */
                                 indexed();
@@ -4558,31 +5172,10 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 CLK += 5;
                                 B = sub(B, RDMEM(ea));
                                 break;
-                            case 0xf1:	/* CMPB extended (UNDOC) */
-                                extended();
-                                CLK += 5;
-                                cmp(B, RDMEM(ea));
-                                break;
                             case 0xf2:	/* SBCB extended (UNDOC) */
                                 extended();
                                 CLK += 5;
                                 B = sbc(B, RDMEM(ea));
-                                break;
-                            case 0xf3:	/* ADDD extended (UNDOC) */
-                                extended();
-                                CLK += 5;
-                                D = add16(D, RDMEM16(ea));
-                                CLK++;
-                                break;
-                            case 0xf4:	/* ANDB extended (UNDOC) */
-                                extended();
-                                CLK += 5;
-                                B = and(B, RDMEM(ea));
-                                break;
-                            case 0xf5:	/* BITB extended (UNDOC) */
-                                extended();
-                                CLK += 5;
-                                bit(B, RDMEM(ea));
                                 break;
                             case 0xf6:	/* LDB extended (UNDOC) */
                                 extended();
@@ -4599,20 +5192,10 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 CLK += 5;
                                 B = eor(B, RDMEM(ea));
                                 break;
-                            case 0xf9:	/* ADCB extended (UNDOC) */
-                                extended();
-                                CLK += 5;
-                                B = adc(B, RDMEM(ea));
-                                break;
                             case 0xfa:	/* ORB extended (UNDOC) */
                                 extended();
                                 CLK += 5;
                                 B = or(B, RDMEM(ea));
-                                break;
-                            case 0xfb:	/* ADDB extended (UNDOC) */
-                                extended();
-                                CLK += 5;
-                                B = add(B, RDMEM(ea));
                                 break;
                             case 0xfc:	/* LDD extended (UNDOC) */
                                 extended();
@@ -4662,20 +5245,6 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 CLK += 4;
                                 WRMEM(ea, neg(RDMEM(ea)));
                                 break;
-                            case 0x02:	/* NEG/COM direct (UNDOC) */
-                                direct();
-                                CLK += 4;
-                                if (C) {
-                                    WRMEM(ea, com(RDMEM(ea)));
-                                } else {
-                                    WRMEM(ea, neg(RDMEM(ea)));
-                                }
-                                break;
-                            case 0x03:	/* COM direct (UNDOC) */
-                                direct();
-                                CLK += 4;
-                                WRMEM(ea, com(RDMEM(ea)));
-                                break;
                             case 0x04:	/* LSR direct (UNDOC) */
                             case 0x05:	/* LSR direct (UNDOC) */
                                 direct();
@@ -4687,26 +5256,10 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 CLK += 4;
                                 WRMEM(ea, ror(RDMEM(ea)));
                                 break;
-                            case 0x07:	/* ASR direct (UNDOC) */
-                                direct();
-                                CLK += 4;
-                                WRMEM(ea, asr(RDMEM(ea)));
-                                break;
-                            case 0x08:	/* ASL/LSL direct (UNDOC) */
-                                direct();
-                                CLK += 4;
-                                WRMEM(ea, asl(RDMEM(ea)));
-                                break;
                             case 0x09:	/* ROL direct (UNDOC) */
                                 direct();
                                 CLK += 4;
                                 WRMEM(ea, rol(RDMEM(ea)));
-                                break;
-                            case 0x0a:	/* DEC direct (UNDOC) */
-                            case 0x0b:	/* DEC direct (UNDOC) */
-                                direct();
-                                CLK += 4;
-                                WRMEM(ea, dec(RDMEM(ea)));
                                 break;
                             case 0x0c:	/* INC direct (UNDOC) */
                                 direct();
@@ -4722,11 +5275,6 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 direct();
                                 CLK += 3;
                                 PC = ea;
-                                break;
-                            case 0x0f:	/* CLR direct (UNDOC) */
-                                direct();
-                                CLK += 4;
-                                WRMEM(ea, clr(RDMEM(ea)));
                                 break;
 #endif
                             case 0x10:	/* ignore further prefix bytes (UNDOC) */
@@ -4753,17 +5301,11 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                             case 0x18:	/* CCRS (UNDOC) */
                                 ccrs();
                                 break;
-                            case 0x19:	/* DAA (UNDOC) */
-                                daa();
-                                break;
                             case 0x1a:	/* ORCC immediate (UNDOC) */
                                 orcc();
                                 break;
                             case 0x1b:	/* NOP (UNDOC) */
                                 nop();
-                                break;
-                            case 0x1c:	/* ANDCC immediate (UNDOC) */
-                                andcc();
                                 break;
                             case 0x1d:	/* SEX (UNDOC) */
                                 sex();
@@ -4774,67 +5316,9 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                             case 0x1f:	/* TFR post (UNDOC) */
                                 tfr();
                                 break;
-                            case 0x20:	/* BRA (UNDOC) */
-                                bra();
-                                CLK += 3;
-                                break;
-                            case 0x21:	/* BRN (UNDOC) */
-                                PC++;
-                                CLK += 3;
-                                break;
-                            case 0x22:	/* BHI (UNDOC) */
-                                branch(cond_HI());
-                                break;
-                            case 0x23:	/* BLS (UNDOC) */
-                                branch(cond_LS());
-                                break;
-                            case 0x24:	/* BHS/BCC (UNDOC) */
-                                branch(cond_HS());
-                                break;
-                            case 0x25:	/* BLO/BCS (UNDOC) */
-                                branch(cond_LO());
-                                break;
-                            case 0x26:	/* BNE (UNDOC) */
-                                branch(cond_NE());
-                                break;
-                            case 0x27:	/* BEQ (UNDOC) */
-                                branch(cond_EQ());
-                                break;
-                            case 0x28:	/* BVC (UNDOC) */
-                                branch(cond_VC());
-                                break;
-                            case 0x29:	/* BVS (UNDOC) */
-                                branch(cond_VS());
-                                break;
-                            case 0x2a:	/* BPL (UNDOC) */
-                                branch(cond_PL());
-                                break;
-                            case 0x2b:	/* BMI (UNDOC) */
-                                branch(cond_MI());
-                                break;
-                            case 0x2c:	/* BGE (UNDOC) */
-                                branch(cond_GE());
-                                break;
-                            case 0x2d:	/* BLT (UNDOC) */
-                                branch(cond_LT());
-                                break;
-                            case 0x2e:	/* BGT (UNDOC) */
-                                branch(cond_GT());
-                                break;
-                            case 0x2f:	/* BLE (UNDOC) */
-                                branch(cond_LE());
-                                break;
                             case 0x30:	/* LEAX indexed (UNDOC) */
                                 indexed();
                                 Z = X = ea;
-                                break;
-#endif
-#ifdef H6309
-                            case 0x30:	/* BAND post,direct */
-                                post_byte = imm_byte();
-                                direct();
-                                /* TODO: cycle count */
-                                WRMEM(ea, band(post_byte, RDMEM(ea)));
                                 break;
 #endif
 #ifdef FULL6809
@@ -4843,26 +5327,10 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 Z = Y = ea;
                                 break;
 #endif
-#ifdef H6309
-                            case 0x31:	/* BIAND post,direct */
-                                post_byte = imm_byte();
-                                direct();
-                                /* TODO: cycle count */
-                                WRMEM(ea, biand(post_byte, RDMEM(ea)));
-                                break;
-#endif
 #ifdef FULL6809
                             case 0x32:	/* LEAS indexed (UNDOC) */
                                 indexed();
                                 S = ea;
-                                break;
-#endif
-#ifdef H6309
-                            case 0x32:	/* BOR post,direct */
-                                post_byte = imm_byte();
-                                direct();
-                                /* TODO: cycle count */
-                                WRMEM(ea, bor(post_byte, RDMEM(ea)));
                                 break;
 #endif
 #ifdef FULL6809
@@ -4871,38 +5339,14 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 U = ea;
                                 break;
 #endif
-#ifdef H6309
-                            case 0x33:	/* BIOR post,direct */
-                                post_byte = imm_byte();
-                                direct();
-                                /* TODO: cycle count */
-                                WRMEM(ea, bior(post_byte, RDMEM(ea)));
-                                break;
-#endif
 #ifdef FULL6809
                             case 0x34:	/* PSHS post (UNDOC) */
                                 pshs();
                                 break;
 #endif
-#ifdef H6309
-                            case 0x34:	/* BEOR post,direct */
-                                post_byte = imm_byte();
-                                direct();
-                                /* TODO: cycle count */
-                                WRMEM(ea, beor(post_byte, RDMEM(ea)));
-                                break;
-#endif
 #ifdef FULL6809
                             case 0x35:	/* PULS post (UNDOC) */
                                 puls();
-                                break;
-#endif
-#ifdef H6309
-                            case 0x35:	/* BIEOR post,direct */
-                                post_byte = imm_byte();
-                                direct();
-                                /* TODO: cycle count */
-                                WRMEM(ea, bieor(post_byte, RDMEM(ea)));
                                 break;
 #endif
 #ifdef FULL6809
@@ -4931,12 +5375,6 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 WRMEM(ea, stbt(post_byte, RDMEM(ea)));
                                 break;
 #endif
-#ifdef FULL6809
-                            case 0x38:	/* ANDCC immediate (+1 extra cycle) (UNDOC) */
-                                andcc();
-                                CLK++;
-                                break;
-#endif
 #ifdef H6309
                             case 0x38:	/* TFM R+,R+ */
                                 tfmpp(imm_byte());
@@ -4952,11 +5390,6 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 tfmmm(imm_byte());
                                 break;
 #endif
-#ifdef FULL6809
-                            case 0x3a:	/* ABX (UNDOC) */
-                                abx();
-                                break;
-#endif
 #ifdef H6309
                             case 0x3a:	/* TFM R+,R */
                                 tfmpc(imm_byte());
@@ -4970,11 +5403,6 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
 #ifdef H6309
                             case 0x3b:	/* TFM R,R+ */
                                 tfmcp(imm_byte());
-                                break;
-#endif
-#ifdef FULL6809
-                            case 0x3c:	/* CWAI (UNDOC) */
-                                cwai();
                                 break;
 #endif
 #ifdef H6309
@@ -5007,21 +5435,6 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                             case 0x41:	/* NEGA (UNDOC) */
                                 A = neg(A);
                                 break;
-                            case 0x42:	/* NEGA/COMA (UNDOC) */
-                                if (C) {
-                                    A = com(A);
-                                } else {
-                                    A = neg(A);
-                                }
-                                break;
-                            case 0x43:	/* COMA (UNDOC) */
-                                A = com(A);
-                                break;
-#endif
-#ifdef H6309
-                            case 0x43:	/* COME */
-                                E = com(E);
-                                break;
 #endif
 #ifdef FULL6809
                             case 0x44:	/* LSRA (UNDOC) */
@@ -5031,28 +5444,11 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                             case 0x46:	/* RORA (UNDOC) */
                                 A = ror(A);
                                 break;
-                            case 0x47:	/* ASRA (UNDOC) */
-                                A = asr(A);
-                                break;
-                            case 0x48:	/* ASLA/LSLA (UNDOC) */
-                                A = asl(A);
-                                break;
                             case 0x49:	/* ROLA (UNDOC) */
                                 A = rol(A);
                                 break;
-                            case 0x4a:	/* DECA (UNDOC) */
-                                A = dec(A);
-                                break;
-#endif
-#ifdef H6309
-                            case 0x4a:	/* DECE */
-                                E = dec(E);
-                                break;
 #endif
 #ifdef FULL6809
-                            case 0x4b:	/* DECA (UNDOC) */
-                                A = dec(A);
-                                break;
                             case 0x4c:	/* INCA (UNDOC) */
                                 A = inc(A);
                                 break;
@@ -5073,35 +5469,9 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 break;
 #endif
 #ifdef FULL6809
-                            case 0x4e:	/* CLRA (UNDOC) */
-                            case 0x4f:	/* CLRA (UNDOC) */
-                                A = clr(A);
-                                break;
-#endif
-#ifdef H6309
-                            case 0x4f:	/* CLRE */
-                                E = clr(E);
-                                break;
-#endif
-#ifdef FULL6809
                             case 0x50:	/* NEGB (UNDOC) */
                             case 0x51:	/* NEGB (UNDOC) */
                                 B = neg(B);
-                                break;
-                            case 0x52:	/* NEGB/COMB (UNDOC) */
-                                if (C) {
-                                    B = com(B);
-                                } else {
-                                    B = neg(B);
-                                }
-                                break;
-                            case 0x53:	/* COMB (UNDOC) */
-                                B = com(B);
-                                break;
-#endif
-#ifdef H6309
-                            case 0x53:	/* COMF */
-                                F = com(F);
                                 break;
 #endif
 #ifdef FULL6809
@@ -5112,28 +5482,11 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                             case 0x56:	/* RORB (UNDOC) */
                                 B = ror(B);
                                 break;
-                            case 0x57:	/* ASRB (UNDOC) */
-                                B = asr(B);
-                                break;
-                            case 0x58:	/* ASLB/LSLB (UNDOC) */
-                                B = asl(B);
-                                break;
                             case 0x59:	/* ROLB (UNDOC) */
                                 B = rol(B);
                                 break;
-                            case 0x5a:	/* DECB (UNDOC) */
-                                B = dec(B);
-                                break;
-#endif
-#ifdef H6309
-                            case 0x5a:	/* DECF */
-                                F = dec(F);
-                                break;
 #endif
 #ifdef FULL6809
-                            case 0x5b:	/* DECB (UNDOC) */
-                                B = dec(B);
-                                break;
                             case 0x5c:	/* INCB (UNDOC) */
                                 B = inc(B);
                                 break;
@@ -5154,33 +5507,10 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 break;
 #endif
 #ifdef FULL6809
-                            case 0x5e:	/* CLRB (UNDOC) */
-                            case 0x5f:	/* CLRB (UNDOC) */
-                                B = clr(B);
-                                break;
-#endif
-#ifdef H6309
-                            case 0x5f:	/* CLRF */
-                                F = clr(F);
-                                break;
-#endif
-#ifdef FULL6809
                             case 0x60:	/* NEG indexed (UNDOC) */
                             case 0x61:	/* NEG indexed (UNDOC) */
                                 indexed();
                                 WRMEM(ea, neg(RDMEM(ea)));
-                                break;
-                            case 0x62:	/* NEG/COM indexed (UNDOC) */
-                                indexed();
-                                if (C) {
-                                    WRMEM(ea, com(RDMEM(ea)));
-                                } else {
-                                    WRMEM(ea, neg(RDMEM(ea)));
-                                }
-                                break;
-                            case 0x63:	/* COM indexed (UNDOC) */
-                                indexed();
-                                WRMEM(ea, com(RDMEM(ea)));
                                 break;
                             case 0x64:	/* LSR indexed (UNDOC) */
                             case 0x65:	/* LSR indexed (UNDOC) */
@@ -5191,22 +5521,9 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 indexed();
                                 WRMEM(ea, ror(RDMEM(ea)));
                                 break;
-                            case 0x67:	/* ASR indexed (UNDOC) */
-                                indexed();
-                                WRMEM(ea, asr(RDMEM(ea)));
-                                break;
-                            case 0x68:	/* ASL/LSL indexed (UNDOC) */
-                                indexed();
-                                WRMEM(ea, asl(RDMEM(ea)));
-                                break;
                             case 0x69:	/* ROL indexed (UNDOC) */
                                 indexed();
                                 WRMEM(ea, rol(RDMEM(ea)));
-                                break;
-                            case 0x6a:	/* DEC indexed (UNDOC) */
-                            case 0x6b:	/* DEC indexed (UNDOC) */
-                                indexed();
-                                WRMEM(ea, dec(RDMEM(ea)));
                                 break;
                             case 0x6c:	/* INC indexed (UNDOC) */
                                 indexed();
@@ -5221,29 +5538,11 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 CLK++;
                                 PC = ea;
                                 break;
-                            case 0x6f:	/* CLR indexed (UNDOC) */
-                                indexed();
-                                WRMEM(ea, clr(RDMEM(ea)));
-                                break;
                             case 0x70:	/* NEG extended (UNDOC) */
                             case 0x71:	/* NEG extended (UNDOC) */
                                 extended();
                                 CLK += 5;
                                 WRMEM(ea, neg(RDMEM(ea)));
-                                break;
-                            case 0x72:	/* NEG/COM extended (UNDOC) */
-                                extended();
-                                CLK += 5;
-                                if (C) {
-                                    WRMEM(ea, com(RDMEM(ea)));
-                                } else {
-                                    WRMEM(ea, neg(RDMEM(ea)));
-                                }
-                                break;
-                            case 0x73:	/* COM extended (UNDOC) */
-                                extended();
-                                CLK += 5;
-                                WRMEM(ea, com(RDMEM(ea)));
                                 break;
                             case 0x74:	/* LSR extended (UNDOC) */
                             case 0x75:	/* LSR extended (UNDOC) */
@@ -5256,26 +5555,10 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 CLK += 5;
                                 WRMEM(ea, ror(RDMEM(ea)));
                                 break;
-                            case 0x77:	/* ASR extended (UNDOC) */
-                                extended();
-                                CLK += 5;
-                                WRMEM(ea, asr(RDMEM(ea)));
-                                break;
-                            case 0x78:	/* ASL/LSL extended (UNDOC) */
-                                extended();
-                                CLK += 5;
-                                WRMEM(ea, asl(RDMEM(ea)));
-                                break;
                             case 0x79:	/* ROL extended (UNDOC) */
                                 extended();
                                 CLK += 5;
                                 WRMEM(ea, rol(RDMEM(ea)));
-                                break;
-                            case 0x7a:	/* DEC extended (UNDOC) */
-                            case 0x7b:	/* DEC extended (UNDOC) */
-                                extended();
-                                CLK += 5;
-                                WRMEM(ea, dec(RDMEM(ea)));
                                 break;
                             case 0x7c:	/* INC extended (UNDOC) */
                                 extended();
@@ -5292,11 +5575,6 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 CLK += 4;
                                 PC = ea;
                                 break;
-                            case 0x7f:	/* CLR extended (UNDOC) */
-                                extended();
-                                CLK += 5;
-                                WRMEM(ea, clr(RDMEM(ea)));
-                                break;
                             case 0x80:	/* SUBA immediate (UNDOC) */
                                 CLK += 2;
                                 A = sub(A, imm_byte());
@@ -5309,36 +5587,12 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 break;
 #endif
 #ifdef FULL6809
-                            case 0x81:	/* CMPA immediate (UNDOC) */
-                                CLK += 2;
-                                cmp(A, imm_byte());
-                                break;
-#endif
-#ifdef H6309
-                            case 0x81:	/* CMPE immediate */
-                                /* TODO: cycle count */
-                                cmp(E, imm_byte());
-                                break;
-#endif
-#ifdef FULL6809
                             case 0x82:	/* SBCA immediate (UNDOC) */
                                 CLK += 2;
                                 A = sbc(A, imm_byte());
                                 break;
 #endif
-                            case 0x83:	/* CMPU immediate */
-                                CLK += 5;
-                                cmp16(U, imm_word());
-                                break;
 #ifdef FULL6809
-                            case 0x84:	/* ANDA immediate (UNDOC) */
-                                CLK += 2;
-                                A = and(A, imm_byte());
-                                break;
-                            case 0x85:	/* BITA immediate (UNDOC) */
-                                CLK += 2;
-                                bit(A, imm_byte());
-                                break;
                             case 0x86:	/* LDA immediate (UNDOC) */
                                 CLK += 2;
                                 A = ld(imm_byte());
@@ -5355,52 +5609,15 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 /* TODO: cycle count */
                                 scc(imm_byte());
                                 break;
-                            case 0x88:	/* EORA immediate (UNDOC) */
-                                CLK += 2;
-                                A = eor(A, imm_byte());
-                                break;
-                            case 0x89:	/* ADCA immediate (UNDOC) */
-                                CLK += 2;
-                                A = adc(A, imm_byte());
-                                break;
                             case 0x8a:	/* ORA immediate (UNDOC) */
                                 CLK += 2;
                                 A = or(A, imm_byte());
-                                break;
-                            case 0x8b:	/* ADDA immediate (UNDOC) */
-                                CLK += 2;
-                                A = add(A, imm_byte());
-                                break;
-#endif
-#ifdef H6309
-                            case 0x8b:	/* ADDE immediate */
-                                /* TODO: cycle count */
-                                E = add(E, imm_byte());
-                                break;
-#endif
-                            case 0x8c:	/* CMPS immediate */
-                                CLK += 5;
-                                cmp16(S, imm_word());
-                                break;
-#ifdef FULL6809
-                            case 0x8d:	/* BSR (UNDOC) */
-                                bsr();
-                                break;
-#endif
-#ifdef H6309
-                            case 0x8d:	/* DIVD immediate */
-                                divd(imm_byte());
                                 break;
 #endif
 #ifdef FULL6809
                             case 0x8e:	/* LDX immediate (UNDOC) */
                                 CLK += 3;
                                 X = ld16(imm_word());
-                                break;
-#endif
-#ifdef H6309
-                            case 0x8e: /* DIVQ immediate */
-                                divq(imm_word());
                                 break;
 #endif
 #ifdef FULL6809
@@ -5429,43 +5646,13 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 break;
 #endif
 #ifdef FULL6809
-                            case 0x91:	/* CMPA direct (UNDOC) */
-                                direct();
-                                CLK += 4;
-                                cmp(A, RDMEM(ea));
-                                break;
-#endif
-#ifdef H6309
-                            case 0x91:	/* CMPE direct */
-                                direct();
-                                /* TODO: cycle count */
-                                cmp(E, RDMEM(ea));
-                                break;
-#endif
-#ifdef FULL6809
                             case 0x92:	/* SBCA direct (UNDOC) */
                                 direct();
                                 CLK += 4;
                                 A = sbc(A, RDMEM(ea));
                                 break;
 #endif
-                            case 0x93:	/* CMPU direct */
-                                direct();
-                                CLK += 5;
-                                cmp16(U, RDMEM16(ea));
-                                CLK++;
-                                break;
 #ifdef FULL6809
-                            case 0x94:	/* ANDA direct (UNDOC) */
-                                direct();
-                                CLK += 4;
-                                A = and(A, RDMEM(ea));
-                                break;
-                            case 0x95:	/* BITA direct (UNDOC) */
-                                direct();
-                                CLK += 4;
-                                bit(A, RDMEM(ea));
-                                break;
                             case 0x96:	/* LDA direct (UNDOC) */
                                 direct();
                                 CLK += 4;
@@ -5494,40 +5681,12 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 break;
 #endif
 #ifdef FULL6809
-                            case 0x98:	/* EORA direct (UNDOC) */
-                                direct();
-                                CLK += 4;
-                                A = eor(A, RDMEM(ea));
-                                break;
-                            case 0x99:	/* ADCA direct (UNDOC) */
-                                direct();
-                                CLK += 4;
-                                A = adc(A, RDMEM(ea));
-                                break;
                             case 0x9a:	/* ORA direct (UNDOC) */
                                 direct();
                                 CLK += 4;
                                 A = or(A, RDMEM(ea));
                                 break;
-                            case 0x9b:	/* ADDA direct (UNDOC) */
-                                direct();
-                                CLK += 4;
-                                A = add(A, RDMEM(ea));
-                                break;
 #endif
-#ifdef H6309
-                            case 0x9b:	/* ADDE direct */
-                                direct();
-                                /* TODO: cycle count */
-                                E = add(E, RDMEM(ea));
-                                break;
-#endif
-                            case 0x9c:	/* CMPS direct */
-                                direct();
-                                CLK += 5;
-                                cmp16(S, RDMEM16(ea));
-                                CLK++;
-                                break;
 #ifdef FULL6809
                             case 0x9d:	/* JSR direct (UNDOC) */
                                 direct();
@@ -5535,25 +5694,11 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 jsr();
                                 break;
 #endif
-#ifdef H6309
-                            case 0x9d:	/* DIVD direct */
-                                direct();
-                                /* TODO: cycle count */
-                                divd(RDMEM(ea));
-                                break;
-#endif
 #ifdef FULL6809
                             case 0x9e:	/* LDX direct (UNDOC) */
                                 direct();
                                 CLK += 4;
                                 X = ld16(RDMEM16(ea));
-                                break;
-#endif
-#ifdef H6309
-                            case 0x9e:	/* DIVQ direct */
-                                direct();
-                                /* TODO: cycle count */
-                                divq(RDMEM16(ea));
                                 break;
 #endif
 #ifdef FULL6809
@@ -5583,38 +5728,12 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 break;
 #endif
 #ifdef FULL6809
-                            case 0xa1:	/* CMPA indexed (UNDOC) */
-                                indexed();
-                                cmp(A, RDMEM(ea));
-                                break;
-#endif
-#ifdef H6309
-                            case 0xa1:	/* CMPE indexed */
-                                indexed();
-                                cmp(E, RDMEM(ea));
-                                break;
-#endif
-#ifdef FULL6809
                             case 0xa2:	/* SBCA indexed (UNDOC) */
                                 indexed();
                                 A = sbc(A, RDMEM(ea));
                                 break;
 #endif
-                            case 0xa3:	/* CMPU indexed */
-                                CLK++;
-                                indexed();
-                                cmp16(U, RDMEM16(ea));
-                                CLK++;
-                                break;
 #ifdef FULL6809
-                            case 0xa4:	/* ANDA indexed (UNDOC) */
-                                indexed();
-                                A = and(A, RDMEM(ea));
-                                break;
-                            case 0xa5:	/* BITA indexed (UNDOC) */
-                                indexed();
-                                bit(A, RDMEM(ea));
-                                break;
                             case 0xa6:	/* LDA indexed (UNDOC) */
                                 indexed();
                                 A = ld(RDMEM(ea));
@@ -5639,35 +5758,11 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 break;
 #endif
 #ifdef FULL6809
-                            case 0xa8:	/* EORA indexed (UNDOC) */
-                                indexed();
-                                A = eor(A, RDMEM(ea));
-                                break;
-                            case 0xa9:	/* ADCA indexed (UNDOC) */
-                                indexed();
-                                A = adc(A, RDMEM(ea));
-                                break;
                             case 0xaa:	/* ORA indexed (UNDOC) */
                                 indexed();
                                 A = or(A, RDMEM(ea));
                                 break;
-                            case 0xab:	/* ADDA indexed (UNDOC) */
-                                indexed();
-                                A = add(A, RDMEM(ea));
-                                break;
 #endif
-#ifdef H6309
-                            case 0xab:	/* ADDE indexed */
-                                indexed();
-                                E = add(E, RDMEM(ea));
-                                break;
-#endif
-                            case 0xac:	/* CMPS indexed */
-                                CLK++;
-                                indexed();
-                                cmp16(S, RDMEM16(ea));
-                                CLK++;
-                                break;
 #ifdef FULL6809
                             case 0xad:	/* JSR indexed (UNDOC) */
                                 indexed();
@@ -5675,22 +5770,10 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 jsr();
                                 break;
 #endif
-#ifdef H6309
-                            case 0xad:	/* DIVD indexed */
-                                indexed();
-                                divd(RDMEM(ea));
-                                break;
-#endif
 #ifdef FULL6809
                             case 0xae:	/* LDX indexed (UNDOC) */
                                 indexed();
                                 X = ld16(RDMEM16(ea));
-                                break;
-#endif
-#ifdef H6309
-                            case 0xae:	/* DIVQ indexed */
-                                indexed();
-                                divq(RDMEM16(ea));
                                 break;
 #endif
 #ifdef FULL6809
@@ -5720,43 +5803,13 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 break;
 #endif
 #ifdef FULL6809
-                            case 0xb1:	/* CMPA extended (UNDOC) */
-                                extended();
-                                CLK += 5;
-                                cmp(A, RDMEM(ea));
-                                break;
-#endif
-#ifdef H6309
-                            case 0xb1:	/* CMPE extended */
-                                extended();
-                                /* TODO: cycle count */
-                                cmp(E, RDMEM(ea));
-                                break;
-#endif
-#ifdef FULL6809
                             case 0xb2:	/* SBCA extended (UNDOC) */
                                 extended();
                                 CLK += 5;
                                 A = sbc(A, RDMEM(ea));
                                 break;
 #endif
-                            case 0xb3:	/* CMPU extended */
-                                extended();
-                                CLK += 6;
-                                cmp16(U, RDMEM16(ea));
-                                CLK++;
-                                break;
 #ifdef FULL6809
-                            case 0xb4:	/* ANDA extended (UNDOC) */
-                                extended();
-                                CLK += 5;
-                                A = and(A, RDMEM(ea));
-                                break;
-                            case 0xb5:	/* BITA extended (UNDOC) */
-                                extended();
-                                CLK += 5;
-                                bit(A, RDMEM(ea));
-                                break;
                             case 0xb6:	/* LDA extended (UNDOC) */
                                 extended();
                                 CLK += 5;
@@ -5785,40 +5838,12 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 break;
 #endif
 #ifdef FULL6809
-                            case 0xb8:	/* EORA extended (UNDOC) */
-                                extended();
-                                CLK += 5;
-                                A = eor(A, RDMEM(ea));
-                                break;
-                            case 0xb9:	/* ADCA extended (UNDOC) */
-                                extended ();
-                                CLK += 5;
-                                A = adc(A, RDMEM(ea));
-                                break;
                             case 0xba:	/* ORA extended (UNDOC) */
                                 extended();
                                 CLK += 5;
                                 A = or(A, RDMEM(ea));
                                 break;
-                            case 0xbb:	/* ADDA extended (UNDOC) */
-                                extended();
-                                CLK += 5;
-                                A = add(A, RDMEM(ea));
-                                break;
 #endif
-#ifdef H6309
-                            case 0xbb:	/* ADDE extended */
-                                extended();
-                                /* TODO: cycle count */
-                                E = add(E, RDMEM(ea));
-                                break;
-#endif
-                            case 0xbc:	/* CMPS extended */
-                                extended();
-                                CLK += 6;
-                                cmp16(S, RDMEM16(ea));
-                                CLK++;
-                                break;
 #ifdef FULL6809
                             case 0xbd:	/* JSR extended (UNDOC) */
                                 extended();
@@ -5826,25 +5851,11 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 jsr();
                                 break;
 #endif
-#ifdef H6309
-                            case 0xbd:	/* DIVD extended */
-                                extended();
-                                /* TODO: cycle count */
-                                divd(RDMEM(ea));
-                                break;
-#endif
 #ifdef FULL6809
                             case 0xbe:	/* LDX extended (UNDOC) */
                                 extended();
                                 CLK += 5;
                                 X = ld16(RDMEM16(ea));
-                                break;
-#endif
-#ifdef H6309
-                            case 0xbe:	/* DIVQ extended */
-                                extended();
-                                /* TODO: cycle count */
-                                divq(RDMEM16(ea));
                                 break;
 #endif
 #ifdef FULL6809
@@ -5874,33 +5885,9 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 break;
 #endif
 #ifdef FULL6809
-                            case 0xc1:	/* CMPB immediate (UNDOC) */
-                                CLK += 2;
-                                cmp(B, imm_byte());
-                                break;
-#endif
-#ifdef H6309
-                            case 0xc1:	/* CMPF immediate */
-                                /* TODO: cycle count */
-                                cmp(F, imm_byte());
-                                break;
-#endif
-#ifdef FULL6809
                             case 0xc2:	/* SBCB immediate (UNDOC) */
                                 CLK += 2;
                                 B = sbc(B, imm_byte());
-                                break;
-                            case 0xc3:	/* ADDD immediate (UNDOC) */
-                                CLK += 4;
-                                D = add16(D, imm_word());
-                                break;
-                            case 0xc4:	/* ANDB immediate (UNDOC) */
-                                CLK += 2;
-                                B = and(B, imm_byte());
-                                break;
-                            case 0xc5:	/* BITB immediate (UNDOC) */
-                                CLK += 2;
-                                bit(B, imm_byte());
                                 break;
                             case 0xc6:	/* LDB immediate (UNDOC) */
                                 CLK += 2;
@@ -5918,27 +5905,9 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 /* TODO: cycle count */
                                 scc(imm_byte());
                                 break;
-                            case 0xc8:	/* EORB immediate (UNDOC) */
-                                CLK += 2;
-                                B = eor(B, imm_byte());
-                                break;
-                            case 0xc9:	/* ADCB immediate (UNDOC) */
-                                CLK += 2;
-                                B = adc(B, imm_byte());
-                                break;
                             case 0xca:	/* ORB immediate (UNDOC) */
                                 CLK += 2;
                                 B = or(B, imm_byte());
-                                break;
-                            case 0xcb:	/* ADDB immediate (UNDOC) */
-                                CLK += 2;
-                                B = add(B, imm_byte());
-                                break;
-#endif
-#ifdef H6309
-                            case 0xcb:	/* ADDF immediate */
-                                /* TODO: cycle count */
-                                F = add(F, imm_byte());
                                 break;
 #endif
 #ifdef FULL6809
@@ -5971,40 +5940,10 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 break;
 #endif
 #ifdef FULL6809
-                            case 0xd1:	/* CMPB direct (UNDOC) */
-                                direct();
-                                CLK += 4;
-                                cmp(B, RDMEM(ea));
-                                break;
-#endif
-#ifdef H6309
-                            case 0xd1:	/* CMPF direct */
-                                direct();
-                                /* TODO: cycle count */
-                                cmp(F, RDMEM(ea));
-                                break;
-#endif
-#ifdef FULL6809
                             case 0xd2:	/* SBCB direct (UNDOC) */
                                 direct();
                                 CLK += 4;
                                 B = sbc(B, RDMEM(ea));
-                                break;
-                            case 0xd3:	/* ADDD direct (UNDOC) */
-                                direct();
-                                CLK += 4;
-                                D = add16(D, RDMEM16(ea));
-                                CLK++;
-                                break;
-                            case 0xd4:	/* ANDB direct (UNDOC) */
-                                direct();
-                                CLK += 4;
-                                B = and(B, RDMEM(ea));
-                                break;
-                            case 0xd5:	/* BITB direct (UNDOC) */
-                                direct();
-                                CLK += 4;
-                                bit(B, RDMEM(ea));
                                 break;
                             case 0xd6:	/* LDB direct (UNDOC) */
                                 direct();
@@ -6039,27 +5978,10 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 CLK += 4;
                                 B = eor(B, RDMEM(ea));
                                 break;
-                            case 0xd9:	/* ADCB direct (UNDOC) */
-                                direct();
-                                CLK += 4;
-                                B = adc(B, RDMEM(ea));
-                                break;
                             case 0xda:	/* ORB direct (UNDOC) */
                                 direct();
                                 CLK += 4;
                                 B = or(B, RDMEM(ea));
-                                break;
-                            case 0xdb:	/* ADDB direct (UNDOC) */
-                                direct();
-                                CLK += 4;
-                                B = add(B, RDMEM(ea));
-                                break;
-#endif
-#ifdef H6309
-                            case 0xdb:	/* ADDF direct */
-                                direct();
-                                /* TODO: cycle count */
-                                F = add(F, RDMEM(ea));
                                 break;
 #endif
 #ifdef FULL6809
@@ -6095,34 +6017,9 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 break;
 #endif
 #ifdef FULL6809
-                            case 0xe1:	/* CMPB indexed (UNDOC) */
-                                indexed();
-                                cmp(B, RDMEM(ea));
-                                break;
-#endif
-#ifdef H6309
-                            case 0xe1:	/* CMPF indexed */
-                                indexed();
-                                cmp(F, RDMEM(ea));
-                                break;
-#endif
-#ifdef FULL6809
                             case 0xe2:	/* SBCB indexed (UNDOC) */
                                 indexed();
                                 B = sbc(B, RDMEM(ea));
-                                break;
-                            case 0xe3:	/* ADDD indexed (UNDOC) */
-                                indexed();
-                                D = add16(D, RDMEM16(ea));
-                                CLK++;
-                                break;
-                            case 0xe4:	/* ANDB indexed (UNDOC) */
-                                indexed();
-                                B = and(B, RDMEM(ea));
-                                break;
-                            case 0xe5:	/* BITB indexed (UNDOC) */
-                                indexed();
-                                bit(B, RDMEM(ea));
                                 break;
                             case 0xe6:	/* LDB indexed (UNDOC) */
                                 indexed();
@@ -6152,23 +6049,9 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 indexed();
                                 B = eor(B, RDMEM(ea));
                                 break;
-                            case 0xe9:	/* ADCB indexed (UNDOC) */
-                                indexed();
-                                B = adc(B, RDMEM(ea));
-                                break;
                             case 0xea:	/* ORB indexed (UNDOC) */
                                 indexed();
                                 B = or(B, RDMEM(ea));
-                                break;
-                            case 0xeb:	/* ADDB indexed (UNDOC) */
-                                indexed();
-                                B = add(B, RDMEM(ea));
-                                break;
-#endif
-#ifdef H6309
-                            case 0xeb:	/* ADDF indexed */
-                                indexed();
-                                F = add(F, RDMEM(ea));
                                 break;
 #endif
 #ifdef FULL6809
@@ -6202,40 +6085,10 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 break;
 #endif
 #ifdef FULL6809
-                            case 0xf1:	/* CMPB extended (UNDOC) */
-                                extended();
-                                CLK += 5;
-                                cmp(B, RDMEM(ea));
-                                break;
-#endif
-#ifdef H6309
-                            case 0xf1:	/* CMPF extended */
-                                extended();
-                                /* TODO: cycle count */
-                                cmp(F, RDMEM(ea));
-                                break;
-#endif
-#ifdef FULL6809
                             case 0xf2:	/* SBCB extended (UNDOC) */
                                 extended();
                                 CLK += 5;
                                 B = sbc(B, RDMEM(ea));
-                                break;
-                            case 0xf3:	/* ADDD extended (UNDOC) */
-                                extended();
-                                CLK += 5;
-                                D = add16(D, RDMEM16(ea));
-                                CLK++;
-                                break;
-                            case 0xf4:	/* ANDB extended (UNDOC) */
-                                extended();
-                                CLK += 5;
-                                B = and(B, RDMEM(ea));
-                                break;
-                            case 0xf5:	/* BITB extended (UNDOC) */
-                                extended();
-                                CLK += 5;
-                                bit(B, RDMEM(ea));
                                 break;
                             case 0xf6:	/* LDB extended (UNDOC) */
                                 extended();
@@ -6270,27 +6123,10 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                                 CLK += 5;
                                 B = eor(B, RDMEM(ea));
                                 break;
-                            case 0xf9:	/* ADCB extended (UNDOC) */
-                                extended();
-                                CLK += 5;
-                                B = adc(B, RDMEM(ea));
-                                break;
                             case 0xfa:	/* ORB extended (UNDOC) */
                                 extended();
                                 CLK += 5;
                                 B = or(B, RDMEM(ea));
-                                break;
-                            case 0xfb:	/* ADDB extended (UNDOC) */
-                                extended();
-                                CLK += 5;
-                                B = add(B, RDMEM(ea));
-                                break;
-#endif
-#ifdef H6309
-                            case 0xfb:	/* ADDF extended */
-                                extended();
-                                /* TODO: cycle count */
-                                F = add(F, RDMEM(ea));
                                 break;
 #endif
 #ifdef FULL6809
@@ -6364,10 +6200,6 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                 ccrs();
                 break;
 #endif
-            case 0x19:	/* DAA */
-                daa_new();
-                CLK_ADD(1, 0);
-                break;
             case 0x1a:	/* ORCC immediate */
                 orcc_new();
                 CLK_ADD(1, 0);
@@ -6377,9 +6209,6 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                 CLK++;
                 break;
 #endif
-            case 0x1c:	/* ANDCC immediate */
-                andcc();
-                break;
             case 0x1d:	/* SEX */
                 sex_new();
                 break;
@@ -6389,54 +6218,9 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
             case 0x1f:	/* TFR post */
                 tfr_new();
                 break;
-            case 0x20:	/* BRA */
-                bra();
-                break;
             case 0x21:	/* BRN */
                 RDMEM(PC++);
                 CLK++;
-                break;
-            case 0x22:	/* BHI */
-                branch(cond_HI());
-                break;
-            case 0x23:	/* BLS */
-                branch(cond_LS());
-                break;
-            case 0x24:	/* BCC/BHI */
-                branch(cond_HS());
-                break;
-            case 0x25:	/* BCS/BLO */
-                branch(cond_LO());
-                break;
-            case 0x26:	/* BNE */
-                branch(cond_NE());
-                break;
-            case 0x27:	/* BEQ */
-                branch(cond_EQ());
-                break;
-            case 0x28:	/* BVC */
-                branch(cond_VC());
-                break;
-            case 0x29:	/* BVS */
-                branch(cond_VS());
-                break;
-            case 0x2a:	/* BPL */
-                branch(cond_PL());
-                break;
-            case 0x2b:	/* BMI */
-                branch(cond_MI());
-                break;
-            case 0x2c:	/* BGE */
-                branch(cond_GE());
-                break;
-            case 0x2d:	/* BLT */
-                branch(cond_LT());
-                break;
-            case 0x2e:	/* BGT */
-                branch(cond_GT());
-                break;
-            case 0x2f:	/* BLE */
-                branch(cond_LE());
                 break;
             case 0x30:	/* LEAX indexed */
                 indexed();
@@ -6470,23 +6254,11 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
             case 0x37:	/* PULU post */
                 pulu();
                 break;
-#ifdef FULL6809
-            case 0x38:	/* ANDCC immediate (+1 cycle) (UNDOC) */
-                andcc();
-                CLK++;
-                break;
-#endif
             case 0x39:	/* RTS */
                 rts();
                 break;
-            case 0x3a:	/* ABX */
-                abx();
-                break;
             case 0x3b:	/* RTI */
                 rti();
-                break;
-            case 0x3c:	/* CWAI */
-                cwai();
                 break;
             case 0x3d:	/* MUL */
                 mul();
@@ -6504,58 +6276,28 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                 break;
 #ifdef FULL6809
             case 0x41:	/* NEGA (UNDOC) */
-                A = neg(A);
-                break;
-            case 0x42:	/* NEGA/COMA (UNDOC) */
-                if (C) {
-                    A = com(A);
-                } else {
-                    A = neg(A);
-                }
+                A = neg_new(A, 1, 1);
                 break;
 #endif
-            case 0x43:	/* COMA */
-                A = com(A);
-                break;
             case 0x44:	/* LSRA */
-                A = lsr(A);
+                A = lsr_new(A, 1, 0);
                 break;
 #ifdef FULL6809
             case 0x45:	/* LSRA (UNDOC) */
-                A = lsr(A);
+                A = lsr_new(A, 1, -1);
                 break;
 #endif
             case 0x46:	/* RORA */
-                A = ror(A);
-                break;
-            case 0x47:	/* ASRA */
-                A = asr(A);
-                break;
-            case 0x48:	/* ALSA/LSLA */
-                A = asl(A);
+                A = ror_new(A, 1, 0);
                 break;
             case 0x49:	/* ROLA */
-                A = rol(A);
+                A = rol_new(A, 1, 0);
                 break;
-            case 0x4a:	/* DECA */
-                A = dec(A);
-                break;
-#ifdef FULL6809
-            case 0x4b:	/* DECA (UNDOC) */
-                A = dec(A);
-                break;
-#endif
             case 0x4c:	/* INCA */
-                A = inc(A);
+                A = inc_new(A, 1, 0);
                 break;
             case 0x4d:	/* TSTA */
-                tst(A);
-                break;
-#ifdef FULL6809
-            case 0x4e:	/* CLRA (UNDOC) */
-#endif
-            case 0x4f:	/* CLRA */
-                A = clr(A);
+                tst_new(A, 1, 0);
                 break;
             case 0x50:	/* NEGB */
                 B = neg(B);
@@ -6564,17 +6306,7 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
             case 0x51:	/* NEGB (UNDOC) */
                 B = neg(B);
                 break;
-            case 0x52:	/* NEGB/COMB (UNDOC) */
-                if (C) {
-                    B = com(B);
-                } else {
-                    B = neg(B);
-                }
-                break;
 #endif
-            case 0x53:	/* COMB */
-                B = com(B);
-                break;
             case 0x54:	/* LSRB */
                 B = lsr(B);
                 break;
@@ -6586,34 +6318,14 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
             case 0x56:	/* RORB */
                 B = ror(B);
                 break;
-            case 0x57:	/* ASRB */
-                B = asr(B);
-                break;
-            case 0x58:	/* ASLB/LSLB */
-                B = asl(B);
-                break;
             case 0x59:	/* ROLB */
                 B = rol(B);
                 break;
-            case 0x5a:	/* DECB */
-                B = dec(B);
-                break;
-#ifdef FULL6809
-            case 0x5b:	/* DECB (UNDOC) */
-                B = dec(B);
-                break;
-#endif
             case 0x5c:	/* INCB */
                 B = inc(B);
                 break;
             case 0x5d:	/* TSTB */
                 tst(B);
-                break;
-#ifdef FULL6809
-            case 0x5e:	/* CLRB (UNDOC) */
-#endif
-            case 0x5f:	/* CLRB */
-                B = clr(B);
                 break;
             case 0x60:	/* NEG indexed */
                 indexed();
@@ -6632,27 +6344,6 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                 WRMEM(ea, or(RDMEM(ea), post_byte));
                 break;
 #endif
-#ifdef FULL6809
-            case 0x62:	/* NEG/COM indexed (UNDOC) */
-                indexed();
-                if (C) {
-                    WRMEM(ea, com(RDMEM(ea)));
-                } else {
-                    WRMEM(ea, neg(RDMEM(ea)));
-                }
-                break;
-#endif
-#ifdef H6309
-            case 0x62:	/* AIM indexed */
-                post_byte = imm_byte();
-                indexed();
-                WRMEM(ea, and(RDMEM(ea), post_byte));
-                break;
-#endif
-            case 0x63:	/* COM indexed */
-                indexed();
-                WRMEM(ea, com(RDMEM(ea)));
-                break;
             case 0x64:	/* LSR indexed */
                 indexed();
                 WRMEM(ea, lsr(RDMEM(ea)));
@@ -6663,39 +6354,14 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                 WRMEM(ea, lsr(RDMEM(ea)));
                 break;
 #endif
-#ifdef H6309
-            case 0x65:	/* EIM indexed */
-                post_byte = imm_byte();
-                indexed();
-                WRMEM(ea, eor(RDMEM(ea), post_byte));
-                break;
-#endif
             case 0x66:	/* ROR indexed */
                 indexed();
                 WRMEM(ea, ror(RDMEM(ea)));
-                break;
-            case 0x67:	/* ASR indexed */
-                indexed();
-                WRMEM(ea, asr(RDMEM(ea)));
-                break;
-            case 0x68:	/* ASL/LSL indexed */
-                indexed();
-                WRMEM(ea, asl(RDMEM(ea)));
                 break;
             case 0x69:	/* ROL indexed */
                 indexed();
                 WRMEM(ea, rol(RDMEM(ea)));
                 break;
-            case 0x6a:	/* DEC indexed */
-                indexed();
-                WRMEM(ea, dec(RDMEM(ea)));
-                break;
-#ifdef FULL6809
-            case 0x6b:	/* DEC indexed */
-                indexed();
-                WRMEM(ea, dec(RDMEM(ea)));
-                break;
-#endif
 #ifdef H6309
             case 0x6b:	/* TIM indexed */
                 post_byte = imm_byte();
@@ -6715,10 +6381,6 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                 indexed();
                 CLK++;
                 PC = ea;
-                break;
-            case 0x6f:	/* CLR indexed */
-                indexed();
-                WRMEM(ea, clr(RDMEM(ea)));
                 break;
             case 0x70:	/* NEG extended */
                 extended();
@@ -6740,30 +6402,6 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                 WRMEM(ea, or(RDMEM(ea), post_byte));
                 break;
 #endif
-#ifdef FULL6809
-            case 0x72:	/* NEG/COM extended (UNDOC) */
-                extended();
-                CLK += 5;
-                if (C) {
-                    WRMEM(ea, com(RDMEM(ea)));
-                } else {
-                    WRMEM(ea, neg(RDMEM(ea)));
-                }
-                break;
-#endif
-#ifdef H6309
-            case 0x72:	/* AIM extended */
-                post_byte = imm_byte();
-                extended();
-                /* TODO: cycle count */
-                WRMEM(ea, and(RDMEM(ea), post_byte));
-                break;
-#endif
-            case 0x73:	/* COM extended */
-                extended();
-                CLK += 5;
-                WRMEM(ea, com(RDMEM(ea)));
-                break;
             case 0x74:	/* LSR extended */
                 extended();
                 CLK += 5;
@@ -6776,46 +6414,16 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                 WRMEM(ea, lsr(RDMEM(ea)));
                 break;
 #endif
-#ifdef H6309
-            case 0x75:	/* EIM extended */
-                post_byte = imm_byte();
-                extended();
-                /* TODO: cycle count */
-                WRMEM(ea, eor(RDMEM(ea), post_byte));
-                break;
-#endif
             case 0x76:	/* ROR extended */
                 extended();
                 CLK += 5;
                 WRMEM(ea, ror(RDMEM(ea)));
-                break;
-            case 0x77:	/* ASR extended */
-                extended();
-                CLK += 5;
-                WRMEM(ea, asr(RDMEM(ea)));
-                break;
-            case 0x78:	/* ASL/LSL extended */
-                extended();
-                CLK += 5;
-                WRMEM(ea, asl(RDMEM(ea)));
                 break;
             case 0x79:	/* ROL extended */
                 extended();
                 CLK += 5;
                 WRMEM(ea, rol(RDMEM(ea)));
                 break;
-            case 0x7a:	/* DEC extended */
-                extended();
-                CLK += 5;
-                WRMEM(ea, dec(RDMEM(ea)));
-                break;
-#ifdef FULL6809
-            case 0x7b:	/* DEC extended (UNDOC) */
-                extended();
-                CLK += 5;
-                WRMEM(ea, dec(RDMEM(ea)));
-                break;
-#endif
 #ifdef H6309
             case 0x7b:	/* TIM extended */
                 post_byte = imm_byte();
@@ -6839,18 +6447,9 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                 CLK += 4;
                 PC = ea;
                 break;
-            case 0x7f:	/* CLR extended */
-                extended();
-                CLK += 5;
-                WRMEM(ea, clr(RDMEM(ea)));
-                break;
             case 0x80:	/* SUBA immediate */
                 CLK += 2;
                 A = sub(A, imm_byte());
-                break;
-            case 0x81:	/* CMPA immediate */
-                CLK += 2;
-                cmp(A, imm_byte());
                 break;
             case 0x82:	/* SBCA immediate */
                 CLK += 2;
@@ -6859,14 +6458,6 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
             case 0x83:	/* SUBD immediate */
                 CLK += 4;
                 D = sub16(D, imm_word());
-                break;
-            case 0x84:	/* ANDA immediate */
-                CLK += 2;
-                A = and(A, imm_byte());
-                break;
-            case 0x85:	/* BITA immediate */
-                CLK += 2;
-                bit(A, imm_byte());
                 break;
             case 0x86:	/* LDA immediate */
                 CLK += 2;
@@ -6878,28 +6469,9 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                 scc(imm_byte());
                 break;
 #endif
-            case 0x88:	/* EORA immediate */
-                CLK += 2;
-                A = eor(A, imm_byte());
-                break;
-            case 0x89:	/* ADCA immediate */
-                CLK += 2;
-                A = adc(A, imm_byte());
-                break;
             case 0x8a:	/* ORA immediate */
                 CLK += 2;
                 A = or(A, imm_byte());
-                break;
-            case 0x8b:	/* ADDA immediate */
-                CLK += 2;
-                A = add(A, imm_byte());
-                break;
-            case 0x8c:	/* CMPX immediate */
-                CLK += 4;
-                cmp16(X, imm_word());
-                break;
-            case 0x8d:	/* BSR */
-                bsr();
                 break;
             case 0x8e:	/* LDX immediate */
                 CLK += 3;
@@ -6916,11 +6488,6 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                 CLK += 4;
                 A = sub(A, RDMEM(ea));
                 break;
-            case 0x91:	/* CMPA direct */
-                direct();
-                CLK += 4;
-                cmp(A, RDMEM(ea));
-                break;
             case 0x92:	/* SBCA direct */
                 direct();
                 CLK += 4;
@@ -6932,16 +6499,6 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                 D = sub16(D, RDMEM16(ea));
                 CLK++;
                 break;
-            case 0x94:	/* ANDA direct */
-                direct();
-                CLK += 4;
-                A = and(A, RDMEM(ea));
-                break;
-            case 0x95:	/* BITA direct */
-                direct();
-                CLK += 4;
-                bit(A, RDMEM(ea));
-                break;
             case 0x96:	/* LDA direct */
                 direct();
                 CLK += 4;
@@ -6952,31 +6509,10 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                 CLK += 4;
                 st(A);
                 break;
-            case 0x98:	/* EORA direct */
-                direct();
-                CLK += 4;
-                A = eor(A, RDMEM(ea));
-                break;
-            case 0x99:	/* ADCA direct */
-                direct();
-                CLK += 4;
-                A = adc(A, RDMEM(ea));
-                break;
             case 0x9a:	/* ORA direct */
                 direct();
                 CLK += 4;
                 A = or(A, RDMEM(ea));
-                break;
-            case 0x9b:	/* ADDA direct */
-                direct();
-                CLK += 4;
-                A = add(A, RDMEM(ea));
-                break;
-            case 0x9c:	/* CMPX direct */
-                direct();
-                CLK += 4;
-                cmp16(X, RDMEM16(ea));
-                CLK++;
                 break;
             case 0x9d:	/* JSR direct */
                 direct();
@@ -6997,10 +6533,6 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                 indexed();
                 A = sub(A, RDMEM(ea));
                 break;
-            case 0xa1:	/* CMPA indexed */
-                indexed();
-                cmp(A, RDMEM(ea));
-                break;
             case 0xa2:	/* SBCA indexed */
                 indexed();
                 A = sbc(A, RDMEM(ea));
@@ -7010,14 +6542,6 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                 D = sub16(D, RDMEM16(ea));
                 CLK++;
                 break;
-            case 0xa4:	/* ANDA indexed */
-                indexed();
-                A = and(A, RDMEM(ea));
-                break;
-            case 0xa5:	/* BITA indexed */
-                indexed();
-                bit(A, RDMEM(ea));
-                break;
             case 0xa6:	/* LDA indexed */
                 indexed();
                 A = ld(RDMEM(ea));
@@ -7026,26 +6550,9 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                 indexed();
                 st(A);
                 break;
-            case 0xa8:	/* EORA indexed */
-                indexed();
-                A = eor(A, RDMEM(ea));
-                break;
-            case 0xa9:	/* ADCA indexed */
-                indexed();
-                A = adc(A, RDMEM(ea));
-                break;
             case 0xaa:	/* ORA indexed */
                 indexed();
                 A = or(A, RDMEM(ea));
-                break;
-            case 0xab:	/* ADDA indexed */
-                indexed();
-                A = add(A, RDMEM(ea));
-                break;
-            case 0xac:	/* CMPX indexed */
-                indexed();
-                cmp16(X, RDMEM16(ea));
-                CLK++;
                 break;
             case 0xad:	/* JSR indexed */
                 indexed();
@@ -7065,11 +6572,6 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                 CLK += 5;
                 A = sub(A, RDMEM(ea));
                 break;
-            case 0xb1:	/* CMPA extended */
-                extended();
-                CLK += 5;
-                cmp(A, RDMEM(ea));
-                break;
             case 0xb2:	/* SBCA extended */
                 extended();
                 CLK += 5;
@@ -7081,16 +6583,6 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                 D = sub16(D, RDMEM16(ea));
                 CLK++;
                 break;
-            case 0xb4:	/* ANDA extended */
-                extended();
-                CLK += 5;
-                A = and(A, RDMEM(ea));
-                break;
-            case 0xb5:	/* BITA extended */
-                extended();
-                CLK += 5;
-                bit(A, RDMEM(ea));
-                break;
             case 0xb6:	/* LDA extended */
                 extended();
                 CLK += 5;
@@ -7101,31 +6593,10 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                 CLK += 5;
                 st(A);
                 break;
-            case 0xb8:	/* EORA extended */
-                extended();
-                CLK += 5;
-                A = eor(A, RDMEM(ea));
-                break;
-            case 0xb9:	/* ADCA extended */
-                extended();
-                CLK += 5;
-                A = adc(A, RDMEM(ea));
-                break;
             case 0xba:	/* ORA extended */
                 extended();
                 CLK += 5;
                 A = or(A, RDMEM(ea));
-                break;
-            case 0xbb:	/* ADDA extended */
-                extended();
-                CLK += 5;
-                A = add(A, RDMEM(ea));
-                break;
-            case 0xbc:	/* CMPX extended */
-                extended();
-                CLK += 5;
-                cmp16(X, RDMEM16(ea));
-                CLK++;
                 break;
             case 0xbd:	/* JSR extended */
                 extended();
@@ -7146,25 +6617,9 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                 CLK += 2;
                 B = sub(B, imm_byte());
                 break;
-            case 0xc1:	/* CMPB immediate */
-                CLK += 2;
-                cmp(B, imm_byte());
-                break;
             case 0xc2:	/* SBCB immediate */
                 CLK += 2;
                 B = sbc(B, imm_byte());
-                break;
-            case 0xc3:	/* ADDD immediate */
-                CLK += 4;
-                D = add16(D, imm_word());
-                break;
-            case 0xc4:	/* ANDB immediate */
-                CLK += 2;
-                B = and(B, imm_byte());
-                break;
-            case 0xc5:	/* BITB immediate */
-                CLK += 2;
-                bit(B, imm_byte());
                 break;
             case 0xc6:	/* LDB immediate */
                 CLK += 2;
@@ -7176,21 +6631,9 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                 scc(imm_byte());
                 break;
 #endif
-            case 0xc8:	/* EORB immediate */
-                CLK += 2;
-                B = eor(B, imm_byte());
-                break;
-            case 0xc9:	/* ADCB immediate */
-                CLK += 2;
-                B = adc(B, imm_byte());
-                break;
             case 0xca:	/* ORB immediate */
                 CLK += 2;
                 B = or(B, imm_byte());
-                break;
-            case 0xcb:	/* ADDB immediate */
-                CLK += 2;
-                B = add(B, imm_byte());
                 break;
             case 0xcc:	/* LDD immediate */
                 CLK += 3;
@@ -7222,31 +6665,10 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                 CLK += 4;
                 B = sub(B, RDMEM(ea));
                 break;
-            case 0xd1:	/* CMPB direct */
-                direct();
-                CLK += 4;
-                cmp(B, RDMEM(ea));
-                break;
             case 0xd2:	/* SBCB direct */
                 direct();
                 CLK += 4;
                 B = sbc(B, RDMEM(ea));
-                break;
-            case 0xd3:	/* ADDD direct */
-                direct();
-                CLK += 4;
-                D = add16(D, RDMEM16(ea));
-                CLK++;
-                break;
-            case 0xd4:	/* ANDB direct */
-                direct();
-                CLK += 4;
-                B = and(B, RDMEM(ea));
-                break;
-            case 0xd5:	/* BITB direct */
-                direct();
-                CLK += 4;
-                bit(B, RDMEM(ea));
                 break;
             case 0xd6:	/* LDB direct */
                 direct();
@@ -7263,20 +6685,10 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                 CLK += 4;
                 B = eor(B, RDMEM(ea));
                 break;
-            case 0xd9:	/* ADCB direct */
-                direct();
-                CLK += 4;
-                B = adc(B, RDMEM(ea));
-                break;
             case 0xda:	/* ORB direct */
                 direct();
                 CLK += 4;
                 B = or(B, RDMEM(ea));
-                break;
-            case 0xdb:	/* ADDB direct */
-                direct();
-                CLK += 4;
-                B = add(B, RDMEM(ea));
                 break;
             case 0xdc:	/* LDD direct */
                 direct();
@@ -7302,26 +6714,9 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                 indexed();
                 B = sub(B, RDMEM(ea));
                 break;
-            case 0xe1:	/* CMPB indexed */
-                indexed();
-                cmp(B, RDMEM(ea));
-                break;
             case 0xe2:	/* SBCB indexed */
                 indexed();
                 B = sbc(B, RDMEM(ea));
-                break;
-            case 0xe3:	/* ADDD indexed */
-                indexed();
-                D = add16(D, RDMEM16(ea));
-                CLK++;
-                break;
-            case 0xe4:	/* ANDB indexed */
-                indexed();
-                B = and(B, RDMEM(ea));
-                break;
-            case 0xe5:	/* BITB indexed */
-                indexed();
-                bit(B, RDMEM(ea));
                 break;
             case 0xe6:	/* LDB indexed */
                 indexed();
@@ -7335,17 +6730,9 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                 indexed();
                 B = eor(B, RDMEM(ea));
                 break;
-            case 0xe9:	/* ADCB indexed */
-                indexed();
-                B = adc(B, RDMEM(ea));
-                break;
             case 0xea:	/* ORB indexed */
                 indexed();
                 B = or(B, RDMEM(ea));
-                break;
-            case 0xeb:	/* ADDB indexed */
-                indexed();
-                B = add(B, RDMEM(ea));
                 break;
             case 0xec:	/* LDD indexed */
                 indexed();
@@ -7368,31 +6755,10 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                 CLK += 5;
                 B = sub(B, RDMEM(ea));
                 break;
-            case 0xf1:	/* CMPB extended */
-                extended();
-                CLK += 5;
-                cmp(B, RDMEM(ea));
-                break;
             case 0xf2:	/* SBCB extended */
                 extended();
                 CLK += 5;
                 B = sbc(B, RDMEM(ea));
-                break;
-            case 0xf3:	/* ADDD extended */
-                extended();
-                CLK += 5;
-                D = add16(D, RDMEM16(ea));
-                CLK++;
-                break;
-            case 0xf4:	/* ANDB extended */
-                extended();
-                CLK += 5;
-                B = and(B, RDMEM(ea));
-                break;
-            case 0xf5:	/* BITB extended */
-                extended();
-                CLK += 5;
-                bit(B, RDMEM(ea));
                 break;
             case 0xf6:	/* LDB extended */
                 extended();
@@ -7409,20 +6775,10 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                 CLK += 5;
                 B = eor(B, RDMEM(ea));
                 break;
-            case 0xf9:	/* ADCB extended */
-                extended();
-                CLK += 5;
-                B = adc(B, RDMEM(ea));
-                break;
             case 0xfa:	/* ORB extended */
                 extended();
                 CLK += 5;
                 B = or(B, RDMEM(ea));
-                break;
-            case 0xfb:	/* ADDB extended */
-                extended();
-                CLK += 5;
-                B = add(B, RDMEM(ea));
                 break;
             case 0xfc:	/* LDD extended */
                 extended();
@@ -7457,6 +6813,7 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
 #endif
 #endif
         }
+#endif
 
         if (cc_changed) {
             cc_modified();
