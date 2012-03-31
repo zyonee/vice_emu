@@ -299,6 +299,20 @@ static void WRMEM16(WORD addr, WORD data)
     CLK++;
 }
 
+#ifdef H6309
+static void WRMEM32(WORD addr, DWORD data)
+{
+    write8(addr, (BYTE)(data >> 24));
+    CLK++;
+    write8((WORD)(addr + 1), (BYTE)((data >> 16) & 0xff));
+    CLK++;
+    write8((WORD)(addr + 2), (BYTE)((data >> 8) & 0xff));
+    CLK++;
+    write8((WORD)(addr + 3), (BYTE)(data & 0xff));
+    CLK++;
+}
+#endif
+
 static BYTE RDMEM(WORD addr)
 {
     BYTE val = read8(addr);
@@ -316,6 +330,22 @@ static WORD RDMEM16(WORD addr)
     CLK++;
     return val;
 }
+
+#ifdef H6309
+static DWORD RDMEM32(WORD addr)
+{
+    DWORD val = read8(addr) << 24;
+
+    val |= read8((WORD)(addr + 1)) << 16;
+    CLK++;
+    val |= read8((WORD)(addr + 2)) << 8;
+    CLK++;
+    val |= read8((WORD)(addr + 3));
+    CLK++;
+
+    return val;
+}
+#endif
 
 static void write_stack(WORD addr, BYTE data)
 {
@@ -1972,7 +2002,7 @@ static WORD neg16(WORD arg, int CLK6809, int CLK6309)
     return res;
 }
 
-static WORD com16(WORD arg, int CLK6809, CLK6309)
+static WORD com16(WORD arg, int CLK6809, int CLK6309)
 {
     WORD res = ~arg;
 
@@ -2063,14 +2093,15 @@ static WORD dec16(WORD arg, int CLK6809, int CLK6309)
     return res;
 }
 
-static WORD inc16(WORD arg)
+static WORD inc16(WORD arg, int CLK6809, int CLK6309)
 {
     WORD res = arg + 1;
 
     Z = res;
     N = res >> 8;
     OV = (~arg & res) >> 8;
-    /* TODO: cycle count */
+
+    CLK_ADD(CLK6809, CLK6309);
 
     return res;
 }
@@ -2084,7 +2115,7 @@ static void tst16(WORD arg)
     CLK_ADD(1, 0);
 }
 
-static WORD clr16(WORD arg, int CLK6809, CLK6309)
+static WORD clr16(WORD arg, int CLK6809, int CLK6309)
 {
     C = N = Z = OV = 0;
     CLK_ADD(CLK6809, CLK6309);
@@ -2320,7 +2351,6 @@ static BYTE bor(BYTE rnr, BYTE arg)
 
 static void ldbt(BYTE rnr, BYTE arg)
 {
-    BYTE rr = get_breg(rnr);
     BYTE tmp = arg;
     BYTE sbit = (rnr >> 3) & 7;
     BYTE dbit = rnr & 7;
@@ -2642,7 +2672,7 @@ static DWORD ld32(DWORD arg, int CLK6809, int CLK6309)
 static void st32(WORD arg, int CLK6809, int CLK6309)
 {
     Z = arg;
-    N = arg >> 32;
+    N = arg >> 24;
     OV = 0;
     WRMEM32(ea, arg);
 
