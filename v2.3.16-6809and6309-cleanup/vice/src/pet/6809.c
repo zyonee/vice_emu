@@ -60,6 +60,12 @@
 
 h6809_regs_t h6809_regs;
 
+#ifdef H6309
+#define CLK_ADD(a, b) CLK += (!H6309_NATIVE_MODE()) ? a : b
+#else
+#define CLK_ADD(a, b) CLK += a
+#endif
+
 /* Export the local version of the registers.  */
 #define EXPORT_REGISTERS()            \
   do {                                \
@@ -310,8 +316,6 @@ static WORD RDMEM16(WORD addr)
     CLK++;
     return val;
 }
-
-#define read_stack  read8
 
 static void write_stack(WORD addr, BYTE data)
 {
@@ -982,7 +986,7 @@ static BYTE and(BYTE arg, BYTE val, int CLK6809, int CLK6309)
     return res;
 }
 
-static BYTE asl(BYTE arg, int CLK6809, CLK6309)		/* same as lsl */
+static BYTE asl(BYTE arg, int CLK6809, int CLK6309)		/* same as lsl */
 {
     WORD res = arg << 1;
 
@@ -1079,17 +1083,7 @@ static BYTE dec(BYTE arg, int CLK6809, int CLK6309)
     return res;
 }
 
-static BYTE eor(BYTE arg, BYTE val)
-{
-    BYTE res = arg ^ val;
-
-    N = Z = res;
-    OV = 0;
-
-    return res;
-}
-
-static BYTE eor_new(BYTE arg, BYTE val, int CLK6809, int CLK6309)
+static BYTE eor(BYTE arg, BYTE val, int CLK6809, int CLK6309)
 {
     BYTE res = arg ^ val;
 
@@ -1174,7 +1168,7 @@ static BYTE neg(BYTE arg, int CLK6809, int CLK6309)
     return res;
 }
 
-static BYTE or(BYTE arg, BYTE val, int CLK6809, CLK6309)
+static BYTE or(BYTE arg, BYTE val, int CLK6809, int CLK6309)
 {
     BYTE res = arg | val;
 
@@ -1199,7 +1193,7 @@ static BYTE rol(BYTE arg, int CLK6809, int CLK6309)
     return (BYTE)res;
 }
 
-static BYTE ror_new(BYTE arg, int CLK6809, int CLK6309)
+static BYTE ror(BYTE arg, int CLK6809, int CLK6309)
 {
     BYTE res = (arg >> 1) | ((C != 0) << 7);
 
@@ -1224,7 +1218,7 @@ static BYTE sbc(BYTE arg, BYTE val, int CLK6809, int CLK6309)
     return (BYTE)res;
 }
 
-static void st(BYTE arg, int CLK6809, CLK6309)
+static void st(BYTE arg, int CLK6809, int CLK6309)
 {
     N = Z = arg;
     OV = 0;
@@ -1247,17 +1241,11 @@ static BYTE sub(BYTE arg, BYTE val, int CLK6809, int CLK6309)
     return (BYTE)res;
 }
 
-static void tst(BYTE arg)
+static void tst(BYTE arg, int CLK6809, int CLK6309)
 {
     N = Z = arg;
     OV = 0;
-    CLK += 2;
-}
 
-static void tst_new(BYTE arg, int CLK6809, CLK6309)
-{
-    N = Z = arg;
-    OV = 0;
     CLK_ADD(CLK6809, CLK6309);
 }
 
@@ -1283,7 +1271,7 @@ static void abx(void)
     CLK_ADD(2, 0);
 }
 
-static WORD add16(WORD arg, WORD val, int CLK6809, CLK6309)
+static WORD add16(WORD arg, WORD val, int CLK6809, int CLK6309)
 {
     DWORD res = arg + val;
 
@@ -2092,7 +2080,8 @@ static void tst16(WORD arg)
     Z = arg;
     N = arg >> 8;
     OV = 0;
-    /* TODO: cycle count */
+
+    CLK_ADD(1, 0);
 }
 
 static WORD clr16(WORD arg, int CLK6809, CLK6309)
@@ -2660,12 +2649,6 @@ static void st32(WORD arg, int CLK6809, int CLK6309)
     CLK_ADD(CLK6809, CLK6309);
 }
 
-#endif
-
-#ifdef H6309
-#define CLK_ADD(a, b) CLK += (!H6309_NATIVE_MODE()) ? a, b
-#else
-#define CLK_ADD(a, b) CLK += a
 #endif
 
 /* Execute 6809 code for a certain number of cycles. */
@@ -5502,6 +5485,23 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                 st16(U, 1, 1);
                 break;
 
+#ifdef H6309
+            case 0x1097:	/* STW direct */
+                direct();
+                st16(W, 1, 0);
+                break;
+
+            case 0x10b7:	/* STW extended */
+                extended();
+                st16(W, 1, 0);
+                break;
+
+            case 0x10a7:	/* STW indexed */
+                indexed();
+                st16(W, 1, 1);
+                break;
+#endif
+
 #ifdef FULL6809
             case 0x008f:	/* STX immediate (UNDOC) */
             case 0x108f:	/* STX immediate (UNDOC) */
@@ -5677,6 +5677,11 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                 F = sub(F, RDMEM(ea), 1, 1);
                 break;
 
+            case 0x1032:	/* SUBR post */
+                post_byte = imm_byte();
+                set_reg((BYTE)(post_byte & 0x0f), sub16(get_reg((BYTE)(post_byte >> 4)), get_reg((BYTE)(post_byte & 0x0f)), 1, 1));
+                break;
+
             case 0x1080:	/* SUBW immediate */
                 W = sub16(W, imm_word(), 1, 0);
                 break;
@@ -5751,216 +5756,100 @@ void h6809_mainloop (struct interrupt_cpu_status_s *maincpu_int_status, alarm_co
                 tfr();
                 break;
 
-        }
-
-
---------------------------------------------------------------------------------------
-
-#if 0
-        switch (opcode) {
 #ifdef H6309
-            case 0x000b:	/* TIM post,direct */
+            case 0x000b:	/* TIM post, direct */
                 post_byte = imm_byte();
                 direct();
+                WRMEM(ea, tim(post_byte, 2));
+                break;
+
+            case 0x007b:	/* TIM extended */
+                post_byte = imm_byte();
+                extended();
                 WRMEM(ea, tim(post_byte, 1));
                 break;
-#endif
-            case 0x000d:	/* TST direct */
-                direct();
-                tst_new(RDMEM(ea), 3, 1);
-                break;
-            case 0x10:
-                {
-                    page_10:
-                        opcode = imm_byte();
-                        switch (opcode) {
-#ifdef FULL6809
-                            case 0x100d:	/* TST direct (UNDOC) */
-                                direct();
-                                CLK += 4;
-                                tst(RDMEM(ea));
-                                break;
-#endif
-                            case 0x10:	/* ignore further prefix bytes (UNDOC) */
-                            case 0x11:	/* ignore further prefix bytes (UNDOC) */
-                                goto page_10;
-#ifdef H6309
-                            case 0x32:	/* SUBR post */
-                                post_byte = imm_byte();
-                                set_reg((BYTE)(post_byte & 0x0f), sub16(get_reg((BYTE)(post_byte >> 4)), get_reg((BYTE)(post_byte & 0x0f))));
-                                /* TODO: cycle count */
-                                break;
-#endif
-#ifdef FULL6809
-                            case 0x4d:	/* TSTA (UNDOC) */
-                                tst(A);
-                                break;
-#endif
-#ifdef H6309
-                            case 0x4d:	/* TSTD */
-                                tst16(D);
-                                break;
-#endif
-#ifdef FULL6809
-                            case 0x5d:	/* TSTB (UNDOC) */
-                                tst(B);
-                                break;
-#endif
-#ifdef H6309
-                            case 0x5d:	/* TSTW */
-                                tst16(W);
-                                break;
-#endif
-#ifdef FULL6809
-                            case 0x6d:	/* TST indexed (UNDOC) */
-                                indexed();
-                                tst(RDMEM(ea));
-                                break;
-                            case 0x7d:	/* TST extended (UNDOC) */
-                                extended();
-                                CLK += 5;
-                                tst(RDMEM(ea));
-                                break;
-#endif
-#ifdef H6309
-                            case 0x97:	/* STW direct */
-                                direct();
-                                /* TODO: cycle count */
-                                st16(W);
-                                break;
-#endif
-#ifdef H6309
-                            case 0xa7:	/* STW indexed */
-                                indexed();
-                                st16(W);
-                                break;
-#endif
-#ifdef H6309
-                            case 0xb7:	/* STW extended */
-                                extended();
-                                /* TODO: cycle count */
-                                st16(W);
-                                break;
-#endif
-#ifdef H6309
-                            default:	/* 6309 illegal opcode trap */
-                                opcode_trap();
-                                break;
-#else
-#ifndef FULL6809
-                            default:
-                                sim_error("invalid opcode (1) at %X\n", iPC);
-                                break;
-#endif
-#endif
-                        }
-                }
-                break;
-            case 0x11:
-                {
-                    page_11:
-                        opcode = imm_byte();
 
-                        switch (opcode) {
-#ifdef FULL6809
-                            case 0x0d:	/* TST direct (UNDOC) */
-                                direct();
-                                CLK += 4;
-                                tst(RDMEM(ea));
-                                break;
-#endif
-                            case 0x10:	/* ignore further prefix bytes (UNDOC) */
-                            case 0x11:	/* ignore further prefix bytes (UNDOC) */
-                                goto page_11;
-#ifdef FULL6809
-                            case 0x4d:	/* TSTA (UNDOC) */
-                                tst(A);
-                                break;
-#endif
-#ifdef H6309
-                            case 0x4d:	/* TSTE */
-                                tst(E);
-                                break;
-#endif
-#ifdef FULL6809
-                            case 0x5d:	/* TSTB (UNDOC) */
-                                tst(B);
-                                break;
-#endif
-#ifdef H6309
-                            case 0x5d:	/* TSTF */
-                                tst(F);
-                                break;
-#endif
-#ifdef FULL6809
-                            case 0x6d:	/* TST indexed (UNDOC) */
-                                indexed();
-                                tst(RDMEM(ea));
-                                break;
-                            case 0x7d:	/* TST extended (UNDOC) */
-                                extended();
-                                CLK += 5;
-                                tst(RDMEM(ea));
-                                break;
-#endif
-#ifdef H6309
-                             default:		/* 6309 illegal opcode trap */
-                                 opcode_trap();
-                                 break;
-#else
-#ifndef FULL6809
-                             default:
-                                 sim_error("invalid opcode (2) at %X\n", iPC);
-                                 break;
-#endif
-#endif
-                         }
-                }
-                break;
-            case 0x4d:	/* TSTA */
-                tst_new(A, 1, 0);
-                break;
-            case 0x5d:	/* TSTB */
-                tst(B);
-                break;
-#ifdef H6309
-            case 0x6b:	/* TIM indexed */
+            case 0x006b:	/* TIM indexed */
                 post_byte = imm_byte();
                 indexed();
-                WRMEM(ea, tim(post_byte));
+                WRMEM(ea, tim(post_byte, 3));
                 break;
 #endif
-            case 0x6d:	/* TST indexed */
+
+            case 0x004d:	/* TSTA */
+#ifdef FULL6809
+            case 0x104d:	/* TSTA (UNDOC) */
+            case 0x114d:	/* TSTA (UNDOC) */
+#endif
+                tst(A, 1, 0);
+                break;
+
+            case 0x005d:	/* TSTB */
+#ifdef FULL6809
+            case 0x105d:	/* TSTB (UNDOC) */
+            case 0x115d:	/* TSTB (UNDOC) */
+#endif
+                tst(B, 1, 0);
+                break;
+
+#ifdef H6309
+            case 0x104d:	/* TSTD */
+                tst16(D);
+                break;
+
+            case 0x114d:	/* TSTE */
+                tst(E, 1, 0);
+                break;
+
+            case 0x115d:	/* TSTF */
+                tst(F, 1, 0);
+                break;
+
+            case 0x105d:	/* TSTW */
+                tst16(W);
+                break;
+#endif
+
+            case 0x000d:	/* TST direct */
+#ifdef FULL6809
+            case 0x100d:	/* TST direct (UNDOC) */
+            case 0x110d:	/* TST direct (UNDOC) */
+#endif
+                direct();
+                tst(RDMEM(ea), 3, 1);
+                break;
+
+            case 0x007d:	/* TST extended */
+#ifdef FULL6809
+            case 0x107d:	/* TST extended (UNDOC) */
+            case 0x117d:	/* TST extended (UNDOC) */
+#endif
+                extended();
+                tst(RDMEM(ea), 3, 1);
+                break;
+
+            case 0x006d:	/* TST indexed */
+#ifdef FULL6809
+            case 0x106d:	/* TST indexed (UNDOC) */
+            case 0x116d:	/* TST indexed (UNDOC) */
+#endif
                 indexed();
-                tst(RDMEM(ea));
+                tst(RDMEM(ea), 3, 2);
                 break;
+
 #ifdef H6309
-            case 0x7b:	/* TIM extended */
-                post_byte = imm_byte();
-                extended();
-                /* TODO: cycle count */
-                WRMEM(ea, tim(post_byte));
+            default:	/* 6309 illegal opcode trap */
+                opcode_trap();
                 break;
-#endif
-            case 0x7d:	/* TST extended */
-                extended();
-                CLK += 5;
-                tst(RDMEM(ea));
-                break;
-#ifdef H6309
-            default:		/* 6309 illegal opcode trap */
-                 opcode_trap();
-                 break;
 #else
 #ifndef FULL6809
             default:
-                CLK += 2;
-                sim_error ("invalid opcode '%02X'\n", opcode);
+                sim_error("invalid opcode at %X\n", iPC);
                 break;
 #endif
 #endif
+
         }
-#endif
 
         if (cc_changed) {
             cc_modified();
