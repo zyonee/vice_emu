@@ -37,7 +37,7 @@
 #include "archdep_beos.c"
 #endif
 
-#if defined(UNIX_COMPILE) && !defined(CEGCC_COMPILE)
+#if defined(UNIX_COMPILE) && !defined(CEGCC_COMPILE) && !defined(PSP_COMPILE)
 #include "archdep_unix.c"
 #endif
 
@@ -55,6 +55,10 @@
 
 #ifdef DINGOO_NATIVE
 #include "archdep_dingoo.c"
+#endif
+
+#ifdef PSP_COMPILE
+#include "archdep_psp.c"
 #endif
 
 int archdep_init(int *argc, char **argv)

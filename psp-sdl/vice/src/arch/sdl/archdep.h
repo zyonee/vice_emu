@@ -72,7 +72,7 @@ extern int archdep_require_vkbd(void);
 #include "archdep_beos.h"
 #endif
 
-#if defined(UNIX_COMPILE) && !defined(CEGCC_COMPILE)
+#if defined(UNIX_COMPILE) && !defined(CEGCC_COMPILE) && !defined(PSP_COMPILE)
 #include "archdep_unix.h"
 #endif
 
@@ -90,6 +90,10 @@ extern int archdep_require_vkbd(void);
 
 #ifdef DINGOO_NATIVE
 #include "archdep_dingoo.h"
+#endif
+
+#ifdef PSP_COMPILE
+#include "archdep_psp.h"
 #endif
 
 #endif

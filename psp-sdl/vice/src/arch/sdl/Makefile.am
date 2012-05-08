@@ -185,6 +185,8 @@ EXTRA_DIST = \
 	archdep_cegcc.h \
 	archdep_dingoo.c \
 	archdep_dingoo.h \
+	archdep_psp.c \
+	archdep_psp.h \
 	archdep_unix.c \
 	archdep_unix.h \
 	archdep_win32.c \

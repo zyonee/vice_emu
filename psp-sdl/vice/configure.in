@@ -122,6 +122,7 @@ is_unix_wiz=no
 is_unix_dingux=no
 is_unix_x11=no
 is_unix_macosx=no
+is_unix_psp=no
 is_dos=no
 is_win32=no
 is_win32_x11=no
@@ -336,6 +337,16 @@ if test x"$host_vendor" = "xgo32" -o x"$host_vendor" = "xmsdos" -o x"$host_os" =
 
   dnl disable resid
   with_resid=no
+
+elif test x"$host_cpu" = "xmipsallegrexel"; then
+  is_unix_psp=yes
+  is_unix=yes
+  AC_DEFINE(PSP_COMPILE,,[We are compiling for psp.])
+  AM_CONDITIONAL(HAVE_RAWDRIVE, false)
+
+  dnl disable resid and resid-fp
+  with_resid=no
+  with_residfp=no
 
 elif test x"$host_os" = "xamigaos" -o x"$host_os" = "xamigaos4" -o x"$host_os" = "xamithlon" -o x"$host_os" = "xaros" -o x"$host_os" = "xmorphos" -o x"$host_os" = "xwarpos" -o x"$host_os" = "xpowerup"; then
   AM_CONDITIONAL(HAVE_RAWDRIVE, true)

@@ -58,6 +58,9 @@ int main(int argc, char **argv)
 
     return main_program(argc_local, argv_local);
 #else
+#ifdef PSP_COMPILE
+    set_app_dir(argv[0]);
+#endif
     return main_program(argc, argv);
 #endif
 }
