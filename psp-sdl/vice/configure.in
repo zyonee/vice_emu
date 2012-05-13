@@ -343,6 +343,9 @@ elif test x"$host_cpu" = "xmipsallegrexel"; then
   is_unix=yes
   AC_DEFINE(PSP_COMPILE,,[We are compiling for psp.])
   AM_CONDITIONAL(HAVE_RAWDRIVE, false)
+  PSPSDKPATH=`psp-config --pspsdk-path`
+  CFLAGS="-G0 -O2 -I$PSPSDKPATH/include"
+  LDFLAGS="-G0 -I$PSPSDKPATH/lib"
 
   dnl disable resid and resid-fp
   with_resid=no
