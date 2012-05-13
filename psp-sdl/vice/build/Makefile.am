@@ -17,6 +17,7 @@ EXTRA_DIST = \
 	nextstep/build.sh \
 	openstep/build.sh \
 	openwatcom/win32-build.sh \
+	psp-sdl/psp-build-sdl.sh \
 	qnx4/build.sh \
 	rhapsody/build.sh \
 	vms/build.sh \
