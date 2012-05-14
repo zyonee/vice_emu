@@ -384,6 +384,14 @@ bindistzip:
 	$(SHELL) @ARCH_SRC_DIR@/make-bindist_syllable.sh $(STRIP) $(VICE_VERSION) $(prefix) zip $(X64SC_INCLUDED) $(top_srcdir)
 endif
 
+if PSP_SDL_COMPILE
+bindist:
+	$(SHELL) @ARCH_SRC_DIR@/make-bindist_psp.sh $(STRIP) $(VICE_VERSION) nozip $(top_srcdir)
+
+bindistzip:
+	$(SHELL) @ARCH_SRC_DIR@/make-bindist_psp.sh $(STRIP) $(VICE_VERSION) zip $(top_srcdir)
+endif
+
 @MAKE_BINDIST_TRUE@installvice:
 @MAKE_BINDIST_TRUE@	@echo this platform doesn\'t use \"make install\", use \"make bindist\" instead
 

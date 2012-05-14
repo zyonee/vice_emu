@@ -3015,6 +3015,12 @@ if test x"$is_unix" = "xyes"; then
       ;;  
   esac
 
+  if test x"$is_unix_psp" = "xyes"; then
+    AM_CONDITIONAL(PSP_SDL_COMPILE, true)
+  else
+    AM_CONDITIONAL(PSP_SDL_COMPILE, false)
+  fi
+
   if test x"$skyoscompile" = "xno"; then
     AM_CONDITIONAL(UNIX_SKYOS_COMPILE, false)
   fi
@@ -3417,6 +3423,7 @@ if false ; then
     mkdir -p arch/sdl/win64-msvc
     mkdir -p arch/sdl/winmips-msvc
     mkdir -p arch/sdl/dingoo-files
+    mkdir -p arch/sdl/psp-files
     mkdir -p arch/sdl/syllable-files
     mkdir -p arch/sdl/xbox
     mkdir -p arch/unix
@@ -3533,6 +3540,7 @@ AC_OUTPUT([Makefile
            src/arch/sdl/win64-msvc/Makefile
            src/arch/sdl/winmips-msvc/Makefile
            src/arch/sdl/dingoo-files/Makefile
+           src/arch/sdl/psp-files/Makefile
            src/arch/sdl/syllable-files/Makefile
            src/arch/sdl/xbox/Makefile
            src/arch/unix/Makefile
