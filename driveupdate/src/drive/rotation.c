@@ -275,7 +275,7 @@ void rotation_1541_gcr(drive_t *dptr)
             /* calculate how much cycles can we do in one single pass */
             todo = 1;
             delta = count_new_bitcell - rptr->accum;
-            if ((delta > 0) && ((cyc_sum_frv << 1) <= delta)) {
+            if ((!rptr->read_flux) && (delta > 0) && ((cyc_sum_frv << 1) <= delta)) {
                 todo = delta / cyc_sum_frv;
                 if (ref_cycles < todo)
                    todo = ref_cycles;
