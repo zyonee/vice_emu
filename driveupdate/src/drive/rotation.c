@@ -237,6 +237,7 @@ void rotation_1541_gcr(drive_t *dptr)
     int ref_cycles, clk_ref_per_rev, cyc_act_frv, todo;
     SDWORD delta;
     DWORD count_new_bitcell, cyc_sum_frv, sum_new_bitcell;
+    unsigned int dnr = dptr->mynumber;
 
     rptr = &rotation[dptr->mynumber];
 
@@ -280,8 +281,8 @@ void rotation_1541_gcr(drive_t *dptr)
                    todo = 16 - rptr->ue7_counter;
                 if ((rptr->filter_counter < 40) && ((40 - rptr->filter_counter) < todo))
                    todo = 40 - rptr->filter_counter;
-                if ((rptr->fr_randcount > 0) && (fr_randcount < todo))
-                   todo = fr_randcount;
+                if ((rptr->fr_randcount > 0) && (rptr->fr_randcount < todo))
+                   todo = rptr->fr_randcount;
             }
 
             /* do 2.5 microsecond flux filter stuff */
