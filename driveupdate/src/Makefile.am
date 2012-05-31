@@ -41,7 +41,8 @@ SUBDIRS = \
 	pet \
 	plus4 \
 	cbm2 \
-	arch
+	arch \
+	p64
 
 DIST_SUBDIRS = \
 	sounddrv \
@@ -80,7 +81,8 @@ DIST_SUBDIRS = \
 	resid \
 	resid-fp \
 	resid-dtv \
-	lib
+	lib \
+	p64
 
 INCLUDES = \
 	@ARCH_INCLUDES@ \
@@ -95,7 +97,8 @@ INCLUDES = \
 	-I$(top_srcdir)/src/vic20 \
 	-I$(top_srcdir)/src/vdrive \
 	-I$(top_srcdir)/src/imagecontents \
-	-I$(top_srcdir)/src/userport
+	-I$(top_srcdir)/src/userport \
+	-I$(top_srcdir)/src/p64
 
 noinst_HEADERS = \
 	6510core.h \
@@ -742,6 +745,7 @@ video_lib = $(top_builddir)/src/video/libvideo.a
 vsid_lib = $(top_builddir)/src/c64/libvsid.a
 xcbm2_lib = $(top_builddir)/src/cbm2/libcbm2.a
 xcbm5x0_lib = $(top_builddir)/src/cbm2/libcbm5x0.a
+p64_lib = $(top_builddir)/src/p64/libp64.a
 
 common_libs = @ARCH_LIBS@ @LIBOBJS@ @READLINE@
 resid_libs = @RESID_LIBS@ @RESID_FP_LIBS@
@@ -750,7 +754,7 @@ resid_dtv_libs = @RESID_DTV_LIBS@ @RESID_FP_LIBS@
 # external libraries required for all emulators
 emu_extlibs = @X_LIBS@ @UI_LIBS@ @SDL_EXTRA_LIBS@ @INTLLIBS@ @SOUND_LIBS@ @FFMPEG_LIBS@ @QUICKTIME_LIBS@ @JOY_LIBS@ @GFXOUTPUT_LIBS@ @ZLIB_LIBS@ @DYNLIB_LIBS@ @EDITLINE_LIBS@
 
-driver_libs = $(sounddrv_lib) $(gfxoutputdrv_lib) $(printerdrv_lib) $(rs232drv_lib) $(diskimage_lib) $(fsdevice_lib) $(tape_lib) $(fileio_lib) $(serial_lib) $(core_lib)
+driver_libs = $(sounddrv_lib) $(gfxoutputdrv_lib) $(printerdrv_lib) $(rs232drv_lib) $(diskimage_lib) $(fsdevice_lib) $(tape_lib) $(fileio_lib) $(serial_lib) $(core_lib) $(p64_lib)
 
 if HAVE_RAWDRIVE
 blockdev_lib = @ARCH_DIR@/blockdev.o
