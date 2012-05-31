@@ -74,6 +74,7 @@ void drive_image_init_track_size_d64(drive_t *drive)
             raw_track_size[disk_image_speed_map_1541(track)];
         memset(drive->gcr->speed_zone, disk_image_speed_map_1541(track),
                NUM_MAX_BYTES_TRACK);
+		drive->gcr->max_track_size = NUM_MAX_BYTES_TRACK;
     }
 }
 
@@ -333,7 +334,8 @@ int drive_image_detach(disk_image_t *image, unsigned int unit)
     }
 
     drive_gcr_data_writeback(drive);
-    memset(drive->gcr->data, 0, MAX_GCR_TRACKS * NUM_MAX_BYTES_TRACK);
+//  memset(drive->gcr->data, 0, MAX_GCR_TRACKS * NUM_MAX_BYTES_TRACK);
+    memset(drive->gcr->data, 0, sizeof(drive->gcr->data));
     drive->detach_clk = drive_clk[dnr];
     drive->GCR_image_loaded = 0;
     drive->read_only = 0;

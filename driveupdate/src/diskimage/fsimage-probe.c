@@ -456,14 +456,6 @@ static int disk_image_check_for_gcr(disk_image_t *image)
         return 0;
     }
 
-    trackfield = header[10] + header[11] * 256;
-    if (trackfield != 7928) {
-        log_error(disk_image_probe_log,
-                  "Import GCR: Invalid track field number %i.",
-                  trackfield);
-        return 0;
-    }
-
     image->type = DISK_IMAGE_TYPE_G64;
     image->tracks = header[9] / 2;
     fsimage_error_info_destroy(fsimage);

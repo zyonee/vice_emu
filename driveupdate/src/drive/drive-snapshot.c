@@ -370,25 +370,6 @@ int drive_snapshot_read_module(snapshot_t *s)
 
     rotation_table_set(rotation_table_ptr);
 
-    for (i = 0; i < 2; i++) {
-        drive = drive_context[i]->drive;
-        drive->GCR_track_start_ptr = (drive->gcr->data
-                                     + ((drive->current_half_track / 2 - 1)
-                                     * NUM_MAX_BYTES_TRACK));
-        if (drive->type != DRIVE_TYPE_1570
-            && drive->type != DRIVE_TYPE_1571
-            && drive->type != DRIVE_TYPE_1571CR) {
-            if (drive->type == DRIVE_TYPE_1581
-                || drive->type == DRIVE_TYPE_2000
-                || drive->type == DRIVE_TYPE_4000) {
-                resources_set_int("MachineVideoStandard", sync_factor);
-            } else {
-                drive->side = 0;
-                resources_set_int("MachineVideoStandard", sync_factor);
-            }
-        }
-    }
-
     drive = drive_context[0]->drive;
     switch (drive->type) {
       case DRIVE_TYPE_1541:
@@ -493,6 +474,27 @@ int drive_snapshot_read_module(snapshot_t *s)
             drive->attach_detach_clk = attach_detach_clk[i];
         }
     }
+
+    for (i = 0; i < 2; i++) {
+        drive = drive_context[i]->drive;
+		drive->GCR_track_start_ptr = (drive->gcr->data
+				+ ((drive->current_half_track / 2 - 1)
+				* drive->gcr->max_track_size));
+        if (drive->type != DRIVE_TYPE_1570
+            && drive->type != DRIVE_TYPE_1571
+            && drive->type != DRIVE_TYPE_1571CR) {
+            if (drive->type == DRIVE_TYPE_1581
+                || drive->type == DRIVE_TYPE_2000
+                || drive->type == DRIVE_TYPE_4000) {
+                resources_set_int("MachineVideoStandard", sync_factor);
+            } else {
+                drive->side = 0;
+                resources_set_int("MachineVideoStandard", sync_factor);
+            }
+        }
+	}
+
+
 
     iec_update_ports_embedded();
     drive_update_ui_status();
@@ -795,9 +797,13 @@ static int drive_snapshot_read_gcrimage_module(snapshot_t *s, unsigned int dnr)
     m = NULL;
 
     for (i = 0; i < MAX_TRACKS_1571; i++)
+	{
         drive->gcr->track_size[i] = tmpbuf[i * 4] + (tmpbuf[i * 4 + 1] << 8)
                                     + (tmpbuf[i * 4 + 2] << 16)
                                     + (tmpbuf[i * 4 + 3] << 24);
+		if (drive->gcr->track_size[i] > drive->gcr->max_track_size)
+			drive->gcr->max_track_size = drive->gcr->track_size[i];
+	}
 
     lib_free(tmpbuf);
 

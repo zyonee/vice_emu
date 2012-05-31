@@ -453,7 +453,7 @@ void drive_set_half_track(int num, drive_t *dptr)
     dptr->current_half_track = num;
     dptr->GCR_track_start_ptr = (dptr->gcr->data
                                 + ((dptr->current_half_track / 2 - 1)
-                                * NUM_MAX_BYTES_TRACK));
+                                * dptr->gcr->max_track_size));
 
     if (dptr->GCR_current_track_size != 0)
         dptr->GCR_head_offset = (dptr->GCR_head_offset
@@ -524,7 +524,7 @@ void drive_gcr_data_writeback(drive_t *drive)
         gcr_current_track_size = drive->gcr->track_size[track - 1];
 
         gcr_track_start_ptr = drive->gcr->data
-                              + ((track - 1) * NUM_MAX_BYTES_TRACK);
+                              + ((track - 1) * drive->gcr->max_track_size);
 
         disk_image_write_track(drive->image, track,
                                gcr_current_track_size,

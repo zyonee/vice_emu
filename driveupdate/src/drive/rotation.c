@@ -3,7 +3,10 @@
  *
  * Written by
  *  Andreas Boose <viceteam@t-online.de>
- *
+ * New GCR read circuitry simulation code by
+ *  Istvan Fabian <if@caps-project.org>
+ * GCR Hardware tests by
+ *  Peter Rittwage <peter@rittwage.com>
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
  *
@@ -31,6 +34,8 @@
 #include "rotation.h"
 #include "types.h"
 
+#include <stdlib.h>
+
 #define ACCUM_MAX 0x10000
 
 #define ROTATION_TABLE_SIZE 0x1000
@@ -48,6 +53,12 @@ struct rotation_s {
     int frequency; /* 1x/2x speed toggle, index to rot_speed_bps */
     int speed_zone; /* speed zone within rot_speed_bps */
 
+	int ue7_dcba; // UE7 input BA, counter b1/b0, connected to UCD4 PB6/PB5, DC=0
+	int ue7_counter; // UE7 4 bit counter state
+	int uf4_counter; // UF4 4 bit counter state
+	DWORD fr_distance; // distance of the last real flux reversal detected from the disk
+	DWORD fr_randevent; // next random flux reversal event
+
     DWORD seed;
 };
 typedef struct rotation_s rotation_t;
@@ -64,6 +75,10 @@ void rotation_init(int freq, unsigned int dnr)
 {
     rotation[dnr].frequency = freq;
     rotation[dnr].accum = 0;
+	rotation[dnr].ue7_counter = 0;
+	rotation[dnr].uf4_counter = 0;
+	rotation[dnr].fr_distance = 0;
+	rotation[dnr].fr_randevent = 0;
 }
 
 void rotation_reset(drive_t *drive)
@@ -78,11 +93,16 @@ void rotation_reset(drive_t *drive)
     rotation[dnr].accum = 0;
     rotation[dnr].seed = 0;
     rotation[dnr].rotation_last_clk = *(drive->clk);
+	rotation[dnr].ue7_counter = 0;
+	rotation[dnr].uf4_counter = 0;
+	rotation[dnr].fr_distance = 0;
+	rotation[dnr].fr_randevent = 0;
 }
 
 void rotation_speed_zone_set(unsigned int zone, unsigned int dnr)
 {
     rotation[dnr].speed_zone = zone;
+	rotation[dnr].ue7_dcba = zone & 3;
 }
 
 void rotation_table_get(DWORD *rotation_table_ptr)
@@ -186,6 +206,117 @@ void rotation_begins(drive_t *dptr) {
     rotation[dnr].rotation_last_clk = *(dptr->clk);
 }
 
+// 1541 circuit simulation for reading, see 1541 circuit description in this file for details
+void rotation_read_1541(drive_t *dptr)
+{
+    rotation_t *rptr;
+    CLOCK cpu_cycles;
+	int ref_cycles, clk_ref_per_rev, cyc_act_frv, uf4_cnt;
+	DWORD count_new_bitcell, cyc_sum_frv, sum_new_bitcell;
+
+    rptr = &rotation[dptr->mynumber];
+
+	// cpu cycles since last call
+    cpu_cycles = *(dptr->clk) - rptr->rotation_last_clk;
+    rptr->rotation_last_clk = *(dptr->clk);
+
+	// Calculate the reference clock cycles from the cpu clock cycles - hw works the other way around...
+	// The reference clock is actually 16MHz, and the cpu clock is the result of dividing that by 16
+	ref_cycles = cpu_cycles * 16;
+
+	// drive speed is 300RPM, that is 300/60=5 revolutions per second
+	// reference clock is 16MHz, one revolution has 16MHz/5 reference cycles
+	clk_ref_per_rev = 16000000 / (300 / 60);
+
+	// cell cycles for the actual flux reversal period, it is 1 now, but could be different with variable density
+	cyc_act_frv = 1;
+
+	// the count to reach for a new bitcell
+	count_new_bitcell = cyc_act_frv * clk_ref_per_rev;
+
+	// the sum of all cell cycles per current revolution, this would be different for variable density
+	cyc_sum_frv = 8 * dptr->GCR_current_track_size;
+
+	// emulate the number of reference clocks requested
+	while (ref_cycles-- > 0) {
+		// no flux reversal detected
+		int fluxrev = 0;
+
+		// read the new bitcell
+		if (rptr->accum >= count_new_bitcell) {
+			rptr->accum -= count_new_bitcell;
+			fluxrev = read_next_bit(dptr);
+		}
+
+		if (fluxrev) {
+			// reset the counters at a flux reversal
+			rptr->ue7_counter = rptr->ue7_dcba;
+			rptr->uf4_counter = 0;
+			rptr->fr_distance = 0;
+			rptr->fr_randevent = (rand() % 31)+289;
+		} else {
+			// start seeing random flux reversals if 18us passed since the last real flux reversal
+			if (++rptr->fr_distance >= rptr->fr_randevent) {
+				rptr->ue7_counter = rptr->ue7_dcba;
+				rptr->uf4_counter = 0;
+				rptr->fr_distance = 0;
+				rptr->fr_randevent = (rand() % 367)+33;
+			}
+		}
+
+		// divide the reference clock with UE7
+		if (++rptr->ue7_counter == 16) {
+			// carry asserted; reload the counter
+			rptr->ue7_counter = rptr->ue7_dcba;
+
+			uf4_cnt = rptr->uf4_counter;
+
+			uf4_cnt++;
+
+			// the rising edge of UF4 stage B drives the shifter
+			if ((uf4_cnt & 0x3) == 2) {
+				// 8+2 bit shifter
+				rptr->last_read_data = (rptr->last_read_data << 1) & 0x3fe;
+
+				// UE5 NOR gate shifts in a 1 only at C2 when DC is 0
+				if ((uf4_cnt & 0xc) == 0)
+					rptr->last_read_data |= 1;
+				
+				rptr->last_write_data <<= 1;
+
+				// last 10 bits asserted activates SYNC, reloads UE3, negates BYTE READY
+				if (rptr->last_read_data == 0x3ff) {
+					rptr->bit_counter = 0;
+					// FIXME: code should take into account whether BYTE READY has been latched
+					// anywhere in the system or not and negate only the unlatched inputs.
+					// So we just leave it be for now
+				} else {
+					if (++rptr->bit_counter == 8) {
+						rptr->bit_counter = 0;
+						dptr->GCR_read = (BYTE) rptr->last_read_data;
+						rptr->last_write_data = dptr->GCR_read;
+
+						// BYTE READY signal if enabled
+						if ((dptr->byte_ready_active & 2) != 0) {
+							dptr->byte_ready_edge = 1;
+							dptr->byte_ready_level = 1;
+						}
+					}
+				}
+			}
+
+			// clear UF4 on carry
+			if (uf4_cnt == 16)
+				uf4_cnt = 0;
+
+			rptr->uf4_counter = uf4_cnt;
+		}
+
+		// advance the count until the next bitcell
+		rptr->accum+=cyc_sum_frv;
+	}
+}
+
 /* Rotate the disk according to the current value of `drive_clk[]'.  If
    `mode_change' is non-zero, there has been a Read -> Write mode switch.  */
 void rotation_rotate_disk(drive_t *dptr)
@@ -198,6 +329,12 @@ void rotation_rotate_disk(drive_t *dptr)
     if ((dptr->byte_ready_active & 4) == 0) {
         return;
     }
+
+	// capture 1541 drive type reads; should be updated for all other types using the same method
+	if (dptr->read_write_mode && dptr->type == DRIVE_TYPE_1541 || dptr->type == DRIVE_TYPE_1541II) {
+		rotation_read_1541(dptr);
+		return;
+	}
 
     rptr = &rotation[dptr->mynumber];
 
@@ -358,3 +495,119 @@ void rotation_byte_read(drive_t *dptr)
     }
 }
 
+/* IF: 1541 circuit description for reading
+C1541 read simulation information based on C1541 schematics.
+Component naming follows 1540008-01, the original 'Long Board' schematics.
+UE7: 74LS193, 4 bit counter
+UF4: 74LS193, 4 bit counter
+UE5: 74LS02, NOR gate
+UD2: 74LS164, serial in, parallel out shift register
+UC3: 74LS245, octal bus transceiver
+UE4: 74LS74, positive-edge-triggered D flip-flop
+UE3: 74LS191, 4 bit counter
+UCD4: 6522, VIA
+	
+UE7 4 bit counter, clocked at 16MHz
+UE7 counts up from input value 00BA (BA counter bits b1/b0), connected to UCD4 PB6/PB5, DC=0
+UE7 carry output at value 16 generates an LD signal reloading the counter value set by BA 
+    effectively dividing 16MHz by 16, 15, 14, 13 depending on BA input
+UF4 4 bit counter, counts up from 0 to 16->0, clocked by UE7 carry signal
+UE7 and UF4 counters both get reset at a flux reversal detected, by LD and CLR signals respectively.
+The two MSBs (DC) of counter UF4 go through a NOR gate (UE5), meaning whenever b3 and b2 is 0,
+the NOR gate outputs 1, any other time the NOR gate is 0. The NOR gate drives the B input of UD2.
+The data is clocked in by the B stage of UF4 (bit#1 of the counter) on its rising edge - switching from 0 to 1.
+
+Notes:
+- Without a flux reversal, the data window stays at the timing wherever the last 1 bit was seen+N*speed.
+- A bit 0 is clocked into the shifter periodically, correlated to bitcell speed set by the user on UE7
+- After 1x1+3x0 bits UF4 wraps, UE5 goes high, outputing an 1 bit for the shifter regardless of flux reversals.
+However, this would only be clocked in if the B stage of UF4 is set to 1 after two UF4 cycles - e.g a flux 
+transition would discard the timer wrap generated data bit.
+- With a flux reversal an 1 is output, and the B stage of the counter would eventually clock that into the shifter
+after 2 UF4 cycles, ie 2 carry signals from UE7 
+- The data window (UE7) instantly resets at a flux reversal.
+- The complete bitcell cycle is 4 (3+1) cycles of UF4.
+Presumably the shifter already contains the bit after C#2, C#6 etc - see
+below.
+C#0: 1 bit output on UE5
+C#1: same
+C#2: 1 bit from UE5 is clocked into the shifter
+C#3: hold clock
+C#4: 0 bit output on UE5
+C#5: same
+C#6: 0 bit from UE5 is clocked into the shifter
+C#7: hold clock
+C#8: 0 bit output on UE5
+C#9: same
+C#a: 0 bit from UE5 is clocked into the shifter
+C#b: hold clock
+C#c: 0 bit output on UE5
+C#d: same
+C#e: 0 bit from UE5 is clocked into the shifter
+C#f: hold clock
+Note, how a flux reversal before the clock stages C2, C6, CA, CE cancels shifting in the last data bit.
+
+The actual bitcell size is correlated to the first counter and the second counter.
+e.g. at speed 0:
+UE7 is dividing 16MHz by 16, resulting in a 1MHz clock rate for UF4.
+At every 4 cycles of UF4 (but see above) we have a new bit shifted into UD2.
+In practice, the 1MHz clock is divided by 4; the output rate is 250KHz.
+250KHz is 4us per each new bitcell shifted into UD2.
+Similarly, speed 1 is 3.75us, speed 2 is 3.5us, speed 3 is 3.25us.
+
+In the table below, UF4 cycles xn are the ideal flux reversal intervals, x0 is when the flux reversal is detected.
+B is the bit value that gets clocked into the UD2 shifter at UF4 cycles C2, C6, CA, CE.
+cnn is the number of cycles elapsed @16MHz when speed is nn since the last flux reversal (1 bit)
+tnn is the time elapsed @16MHz when speed is nn since the last flux reversal (1 bit)
+
+Example data and timing written at 3.5us:
+11      3.5us 
+101     7.0us
+1001   10.5us
+10001  14.0us
+
+e.g. pattern 11 If read at the same speed as written (c02/t02) would produce:
+- an 1 bit at 1.75us after the first flux reversal detected
+- a 0 bit at 5.25us after the first flux reversal detected
+- if the flux reversal period is shorter than 1.75us, the 1 bit is not output, there is no shifter data
+- if the period is 5.25us or longer, the shifter gets an extra 0, producing an 10 pattern
+In other words: the flux reversal is exactly in the middle of the data window (speed setting) 
+and tolerance is <data window time>/2 before an error occurs.
+
+Pattern 101 taking 7us, if read at 4us speed (c00/t00) has its data window changed by -1us/+3us
+
+Pattern 1001 taking 10.5us, if read at 4us speed (c00/t00) has its data window changed by -0.5us/+3.5us
+0.5us is 500ns which is easily produced by peak shifts and drive speed wobble, producing an 101 instead of 1001.
+
+UF4>UD2
+DCBA B C# c00/t00    c01/t01    c02/t02    c03/t03
+0000 1 x0   0/0        0/0        0/0        0/0
+0001 1
+0010 1 C2  32/2       30/1.875   28/1.75    26/1.625
+0011 1
+0100 0 x4  64/4       60/3.75    56/3.5     52/3.25
+0101 0
+0110 0 C6  96/6       90/5.625   84/5.25    78/4.875
+0111 0
+1000 0 x8 128/8      120/7.5    112/7      104/6.5
+1001 0
+1010 0 CA 160/10     150/9.375  140/8.75   130/8.125
+1011 0
+1100 0 xC 192/12     180/11.25  168/10.5   156/9.75
+1101 0
+1110 0 CE 224/14     210/13.125 196/12.25  182/11.375
+1111 0
+
+The VIA is connected to the UC3 transceiver whose main job is to isolate the output stages of the UD2 shifter from
+the ports in write mode, otherwise it reflects the shifter output with a slight delay.
+The shifter is 8 bits. Two additional UE4 flip-flops are buffering the H stage of the shifter.
+Those together (plus a few other lines) combined give the seemingly 10 bits long SYNC signal.
+ 
+The shifter always clocks in the data and unless the VIA is in write mode, those bits always appear on PA as is. 
+Note that what appears there is the last 8 bits, the SYNC signal is effectively the last 10 bits ANDed; 
+all bits read should be asserted (plus a few lines).
+BYTE READY gets generated each time the 8th bit is clocked into the shifter and it is counted by UE3 and some other 
+logic. Whenever the SYNC is asserted UE3 gets reloaded, meaning BYTE READY should be negated.
+As long as SYNC is asserted BYTE READY should remain negated.
+Note, the data is still clocked into the shifter regardless of the state of BYTE READY or the SYNC signals.
+*/
