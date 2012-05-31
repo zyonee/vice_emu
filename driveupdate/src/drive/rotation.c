@@ -63,7 +63,6 @@ struct rotation_s {
     int filter_state; /* flux filter current state */
     int filter_last_state; /* flux filter last state */
 
-    int read_flux; /* read flux bit state */
     int write_flux; /* write flux bit state */
 
     DWORD seed;
@@ -91,7 +90,6 @@ void rotation_init(int freq, unsigned int dnr)
     rotation[dnr].filter_counter = 0;
     rotation[dnr].filter_state = 0;
     rotation[dnr].filter_last_state = 0;
-    rotation[dnr].read_flux = 0;
     rotation[dnr].write_flux = 0;
 
 }
@@ -115,7 +113,6 @@ void rotation_reset(drive_t *drive)
     rotation[dnr].filter_counter = 0;
     rotation[dnr].filter_state = 0;
     rotation[dnr].filter_last_state = 0;
-    rotation[dnr].read_flux = 0;
     rotation[dnr].write_flux = 0;
 }
 
@@ -275,7 +272,7 @@ void rotation_1541_gcr(drive_t *dptr)
             /* calculate how much cycles can we do in one single pass */
             todo = 1;
             delta = count_new_bitcell - rptr->accum;
-            if ((!rptr->read_flux) && (delta > 0) && ((cyc_sum_frv << 1) <= delta)) {
+            if ((delta > 0) && ((cyc_sum_frv << 1) <= delta)) {
                 todo = delta / cyc_sum_frv;
                 if (ref_cycles < todo)
                    todo = ref_cycles;
@@ -287,18 +284,16 @@ void rotation_1541_gcr(drive_t *dptr)
                    todo = fr_randcount;
             }
 
-            /* <= circa 2.5 microsecond flux filter */
-            if (rptr->read_flux) {
-                 rotation[dnr].filter_counter = 0;
-                 rotation[dnr].filter_state = rotation[dnr].filter_state ^ 1;
-            }
+            /* do 2.5 microsecond flux filter stuff */
             rotation[dnr].filter_counter += todo;
-            if ((rotation[dnr].filter_counter >= 40) && (rotation[dnr].filter_state != rotation[dnr].filter_last_state)) {
+            if ((rotation[dnr].filter_counter >= 40) && (rotation[dnr].filter_last_state != rotation[dnr].filter_state)) {
+                /* update the filter last state */
                 rotation[dnr].filter_last_state = rotation[dnr].filter_state;
+
                 /* reset the counters at a flux reversal */
                 rptr->ue7_counter = rptr->ue7_dcba;
                 rptr->uf4_counter = 0;
-                rptr->fr_randcount = ((RANDOM_nextUInt(rptr) >> 16) % 31)+289;
+                rptr->fr_randcount = ((RANDOM_nextUInt(rptr) >> 16) % 31) + 289;
             } else {
                 /* no flux reversal detected */
                 /* start seeing random flux reversals if 18us passed since the last real flux reversal */
@@ -306,7 +301,7 @@ void rotation_1541_gcr(drive_t *dptr)
                 if (!rptr->fr_randcount) {
                     rptr->ue7_counter = rptr->ue7_dcba;
                     rptr->uf4_counter = 0;
-                    rptr->fr_randcount = ((RANDOM_nextUInt(rptr) >> 16) % 367)+33;
+                    rptr->fr_randcount = ((RANDOM_nextUInt(rptr) >> 16) % 367) + 33;
                 }
             }
 
@@ -357,9 +352,11 @@ void rotation_1541_gcr(drive_t *dptr)
             /* read the new bitcell */
             if (rptr->accum >= count_new_bitcell) {
                 rptr->accum -= count_new_bitcell;
-                rptr->read_flux = read_next_bit(dptr);
-            } else {
-                rptr->read_flux = 0;
+                if (read_next_bit(dptr)) {
+                    /* reset 2.5 microsecond flux filter */
+                    rotation[dnr].filter_counter = 0;
+                    rotation[dnr].filter_state = rotation[dnr].filter_state ^ 1;
+                }
             }
 
             ref_cycles -= todo;
