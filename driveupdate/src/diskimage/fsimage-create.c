@@ -41,6 +41,7 @@
 #include "types.h"
 #include "util.h"
 #include "x64.h"
+#include "p64.h"
 
 
 static log_t createdisk_log = LOG_DEFAULT;
@@ -121,7 +122,7 @@ static int fsimage_create_p64(disk_image_t *image)
 {
     TP64MemoryStream P64MemoryStreamInstance;
     TP64Image P64Image;
-    BYTE gcr_header[12], gcr_track[7928], *gcrptr;
+    BYTE gcr_track[7928], *gcrptr;
     unsigned int track, sector;
     fsimage_t *fsimage;
     int rc = -1;
@@ -155,9 +156,9 @@ static int fsimage_create_p64(disk_image_t *image)
             gcrptr += 360;
         }
 
-        P64Image->PulseStreams[track << 1].Speedzone = disk_image_speed_map_1541(track);
+        P64Image.PulseStreams[track << 1].SpeedZone = disk_image_speed_map_1541(track);
 
-        P64PulseStreamConvertFromGCR(&P64Image->PulseStreams[track << 1], gcrptr, raw_track_size[disk_image_speed_map_1541(track)] << 3);
+        P64PulseStreamConvertFromGCR(&P64Image.PulseStreams[track << 1], gcrptr, raw_track_size[disk_image_speed_map_1541(track)] << 3);
     }
 
     P64MemoryStreamCreate(&P64MemoryStreamInstance);
