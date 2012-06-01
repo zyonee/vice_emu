@@ -155,9 +155,9 @@ int fsimage_close(disk_image_t *image)
         return -1;
     }
 
-    if (image->type == DISK_IMAGE_TYPE_P64) {
+/*   if (image->type == DISK_IMAGE_TYPE_P64) {
 	fsimage_write_p64_image(image);
-    }
+    }*/
     
     zfile_fclose(fsimage->fd);
 
