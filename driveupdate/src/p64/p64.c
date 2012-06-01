@@ -848,7 +848,7 @@ void P64PulseStreamConvertToGCR(PP64PulseStream Instance, uint8_t* Bytes, uint32
 
 uint32_t P64PulseStreamConvertToGCRWithLogic(PP64PulseStream Instance, uint8_t* Bytes, uint32_t Len, uint32_t SpeedZone)
 {
-    uint32_t Position, LastPosition, ByteCounter, DelayCounter, FlipFlop, LastFlipFlop, Clock, Counter, BitStreamPosition;
+    uint32_t Position, LastPosition, Delta, DelayCounter, FlipFlop, LastFlipFlop, Clock, Counter, BitStreamPosition;
     int32_t Current;
     if (Len)
     {
