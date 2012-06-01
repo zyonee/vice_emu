@@ -52,8 +52,8 @@ static char *file_name = NULL;
 static char *format_name = NULL;
 static unsigned int file_type = 0;
 
-static char *image_type_name[] = { ".d64", ".d71", ".d80", ".d81", ".d82", ".g64", ".x64" };
-static char *image_type_name_for_user[] = { "D64", "D71", "D80" ,"D81", "D82", "G64", "X64" };
+static char *image_type_name[] = { ".d64", ".d71", ".d80", ".d81", ".d82", ".g64", ".p64", ".x64" };
+static char *image_type_name_for_user[] = { "D64", "D71", "D80" ,"D81", "D82", "G64", "P64", "X64" };
 static int image_type[] = {
     DISK_IMAGE_TYPE_D64,
     DISK_IMAGE_TYPE_D71,
