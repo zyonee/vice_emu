@@ -119,7 +119,62 @@ static int fsimage_create_gcr(disk_image_t *image)
 
 static int fsimage_create_p64(disk_image_t *image)
 {
-    return -1;
+    TP64MemoryStream P64MemoryStreamInstance;
+    TP64Image P64Image;
+    BYTE gcr_header[12], gcr_track[7928], *gcrptr;
+    unsigned int track, sector;
+    fsimage_t *fsimage;
+    int rc = -1;
+
+    fsimage = image->media.fsimage;
+
+    P64ImageCreate(&P64Image);
+
+    for (track = 0; track < MAX_TRACKS_1541; track++) {
+        const int raw_track_size[4] = { 6250, 6666, 7142, 7692 };
+
+        memset(&gcr_track[0], 0x55, 7928);
+        gcrptr = &gcr_track[0];
+
+        for (sector = 0;
+        sector < disk_image_sector_per_track(DISK_IMAGE_TYPE_D64, track + 1);
+        sector++) {
+            BYTE chksum, id[2], rawdata[260];
+            int i;
+
+            id[0] = id[1] = 0xa0;
+            memset(rawdata, 0, 260);
+            rawdata[0] = 7;
+            chksum = rawdata[1];
+            for (i = 1; i < 256; i++)
+                chksum ^= rawdata[i + 1];
+            rawdata[257] = chksum;
+
+            gcr_convert_sector_to_GCR(rawdata, gcrptr, track + 1, sector,
+                                      id[0], id[1], 0);
+            gcrptr += 360;
+        }
+
+        P64Image->PulseStreams[track << 1].Speedzone = disk_image_speed_map_1541(track);
+
+        P64PulseStreamConvertFromGCR(&P64Image->PulseStreams[track << 1], gcrptr, raw_track_size[disk_image_speed_map_1541(track)] << 3);
+    }
+
+    P64MemoryStreamCreate(&P64MemoryStreamInstance);
+    P64MemoryStreamClear(&P64MemoryStreamInstance);
+    if (P64ImageWriteToStream(&P64Image,&P64MemoryStreamInstance)) {
+        if (fwrite(P64MemoryStreamInstance.Data, 1, P64MemoryStreamInstance.Size, fsimage->fd) < 1) {
+          log_error(createdisk_log, "Cannot write image data.");
+          rc = -1;
+        } else {
+          rc = 0;
+        }
+    }
+    P64MemoryStreamDestroy(&P64MemoryStreamInstance);
+
+    P64ImageDestroy(&P64Image);
+
+    return rc;
 }
 
 /*-----------------------------------------------------------------------*/
