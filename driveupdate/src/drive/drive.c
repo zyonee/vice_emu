@@ -523,6 +523,9 @@ void drive_gcr_data_writeback(drive_t *drive)
     if (!(drive->GCR_dirty_track))
         return;
 
+    if (drive->image->type == DISK_IMAGE_TYPE_P64)
+        return;
+        
     if (drive->image->type == DISK_IMAGE_TYPE_G64) {
         BYTE *gcr_track_start_ptr;
         unsigned int gcr_current_track_size;

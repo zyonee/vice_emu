@@ -301,6 +301,7 @@ static TCHAR *image_type_name[] = {
     TEXT("d2m"),
     TEXT("d4m"),
     TEXT("g64"),
+    TEXT("p64"),
     TEXT("x64"),
     NULL
 };
@@ -315,6 +316,7 @@ static int image_type[] = {
     DISK_IMAGE_TYPE_D2M,
     DISK_IMAGE_TYPE_D4M,
     DISK_IMAGE_TYPE_G64,
+    DISK_IMAGE_TYPE_P64,
     DISK_IMAGE_TYPE_X64
 };
 

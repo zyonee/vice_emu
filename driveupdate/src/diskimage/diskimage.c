@@ -499,6 +499,11 @@ int disk_image_read_gcr_image(disk_image_t *image)
     return fsimage_read_gcr_image(image);
 }
 
+int disk_image_read_p64_image(disk_image_t *image)
+{
+    return fsimage_read_p64_image(image);
+}
+
 /*-----------------------------------------------------------------------*/
 /* Initialization.  */
 

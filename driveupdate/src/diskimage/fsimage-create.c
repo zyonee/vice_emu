@@ -157,6 +157,8 @@ int fsimage_create(const char *name, unsigned int type)
         break;
       case DISK_IMAGE_TYPE_G64:
         break;
+      case DISK_IMAGE_TYPE_P64:
+        break;
       case DISK_IMAGE_TYPE_D1M:
         size = D1M_FILE_SIZE;
         size2 = 40 * 256;

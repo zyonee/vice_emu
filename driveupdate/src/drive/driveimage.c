@@ -279,6 +279,7 @@ int drive_image_attach(disk_image_t *image, unsigned int unit)
       case DISK_IMAGE_TYPE_D71:
       case DISK_IMAGE_TYPE_G64:
       case DISK_IMAGE_TYPE_X64:
+      case DISK_IMAGE_TYPE_P64:
         disk_image_attach_log(image, driveimage_log, unit);
         break;
       default:
@@ -287,12 +288,22 @@ int drive_image_attach(disk_image_t *image, unsigned int unit)
 
     drive->image = image;
     drive->image->gcr = drive->gcr;
+    drive->image->p64 = drive->p64;
 
-    if (drive->image->type == DISK_IMAGE_TYPE_G64) {
+    if (drive->image->type == DISK_IMAGE_TYPE_P64) {
+        if (disk_image_read_p64_image(drive->image) < 0) {
+            drive->image = NULL;
+            return -1;
+        }
+        drive->P64_image_loaded = 1;
+        return 0;
+    } else if (drive->image->type == DISK_IMAGE_TYPE_G64) {
         if (disk_image_read_gcr_image(drive->image) < 0) {
             drive->image = NULL;
             return -1;
         }
+        drive->GCR_image_loaded = 1;
+        return 0;
     } else {
         if (setID(dnr) >= 0) {
             drive_image_read_d64_d71(drive);
@@ -302,9 +313,7 @@ int drive_image_attach(disk_image_t *image, unsigned int unit)
             return -1;
         }
     }
-    drive->GCR_image_loaded = 1;
 
-    return 0;
 }
 
 /* Detach a disk image from the true drive emulation. */
@@ -325,6 +334,7 @@ int drive_image_detach(disk_image_t *image, unsigned int unit)
           case DISK_IMAGE_TYPE_D67:
           case DISK_IMAGE_TYPE_D71:
           case DISK_IMAGE_TYPE_G64:
+          case DISK_IMAGE_TYPE_P64:
           case DISK_IMAGE_TYPE_X64:
             disk_image_detach_log(image, driveimage_log, unit);
             break;
