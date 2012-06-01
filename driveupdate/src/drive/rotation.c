@@ -496,15 +496,15 @@ void rotation_1541_p64(drive_t *dptr)
                         {
                             ToDo = Remain16MHzClockCycles;
                         }
-                        if ((rptr->ue7_counter < 16) && ((16 - rptr->ue7_counter) < ToDo)) {
+                        if ((rptr->ue7_counter < 16) && ((16 - rptr->ue7_counter) < ToDo))
                         {
                             ToDo = 16 - rptr->ue7_counter;
                         }
-                        if ((rptr->filter_counter < 40) && ((40 - rptr->filter_counter) < ToDo)) {
+                        if ((rptr->filter_counter < 40) && ((40 - rptr->filter_counter) < ToDo))
                         {
                             ToDo = 40 - rptr->filter_counter;
                         }
-                        if ((rptr->fr_randcount > 0) && (rptr->fr_randcount < ToDo)) {
+                        if ((rptr->fr_randcount > 0) && (rptr->fr_randcount < ToDo))
                         {
                             ToDo = rptr->fr_randcount;
                         }
@@ -672,7 +672,7 @@ void rotation_1541_p64(drive_t *dptr)
                 /* How-Much-16MHz-Clock-Cycles-ToDo-Count logic */
 
                 ToDo = Remain16MHzClockCycles;
-                if ((rptr->ue7_counter < 16) && ((16 - rptr->ue7_counter) < ToDo)) {
+                if ((rptr->ue7_counter < 16) && ((16 - rptr->ue7_counter) < ToDo))
                 {
                     ToDo = 16 - rptr->ue7_counter;
                 }
