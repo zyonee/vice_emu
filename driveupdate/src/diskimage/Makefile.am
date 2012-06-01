@@ -20,6 +20,8 @@ libdiskimage_a_SOURCES = \
 	fsimage-create.h \
 	fsimage-gcr.c \
 	fsimage-gcr.h \
+	fsimage-p64.c \
+	fsimage-p64.h \
 	fsimage-probe.c \
 	fsimage-probe.h \
 	fsimage.c \

@@ -338,6 +338,7 @@ int drive_image_detach(disk_image_t *image, unsigned int unit)
     memset(drive->gcr->data, 0, sizeof(drive->gcr->data));
     drive->detach_clk = drive_clk[dnr];
     drive->GCR_image_loaded = 0;
+    drive->P64_image_loaded = 0;
     drive->read_only = 0;
     drive->image = NULL;
 

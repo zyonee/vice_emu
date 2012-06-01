@@ -34,6 +34,7 @@
 #include "drivetypes.h"
 #include "rotation.h"
 #include "types.h"
+#include "p64.h"
 
 #include <stdlib.h>
 
@@ -65,6 +66,9 @@ struct rotation_s {
 
     int write_flux; /* write flux bit state */
 
+    PP64Image P64Image;
+    PP64PulseStream P64PulseStream;
+        
     DWORD seed;
 
     DWORD xorShift32;
@@ -428,6 +432,205 @@ void rotation_1541_gcr(drive_t *dptr)
 
 }
 
+/* 1541 circuit simulation for NZRI transition flux pulse-based images, see 1541 circuit description in this file for details */
+void rotation_1541_p64(drive_t *dptr)
+{
+    rotation_t *rptr;
+    CLOCK cpu_cycles;
+    int ref_cycles, clk_ref_per_rev, cyc_act_frv, todo;
+    SDWORD delta;
+    DWORD count_new_bitcell, cyc_sum_frv, sum_new_bitcell;
+    unsigned int dnr = dptr->mynumber;
+
+    rptr = &rotation[dptr->mynumber];
+
+    /* cpu cycles since last call */
+    cpu_cycles = *(dptr->clk) - rptr->rotation_last_clk;
+    rptr->rotation_last_clk = *(dptr->clk);
+
+	  /* Calculate the reference clock cycles from the cpu clock cycles - hw works the other way around...
+     * The reference clock is actually 16MHz, and the cpu clock is the result of dividing that by 16
+     */
+    ref_cycles = cpu_cycles * 16;
+
+    /* drive speed is 300RPM, that is 300/60=5 revolutions per second
+     * reference clock is 16MHz, one revolution has 16MHz/5 reference cycles
+     */
+    clk_ref_per_rev = 16000000 / (300 / 60);
+
+    /* cell cycles for the actual flux reversal period, it is 1 now, but could be different with variable density */
+    cyc_act_frv = 1;
+
+    /* the count to reach for a new bitcell */
+    count_new_bitcell = cyc_act_frv * clk_ref_per_rev;
+
+    /* the sum of all cell cycles per current revolution, this would be different for variable density */
+    cyc_sum_frv = 8 * dptr->GCR_current_track_size;
+    cyc_sum_frv = cyc_sum_frv ? cyc_sum_frv : 1;
+
+    if (dptr->read_write_mode) {
+
+        /* emulate the number of reference clocks requested */
+        while (ref_cycles > 0) {
+
+            /* calculate how much cycles can we do in one single pass */
+            todo = 1;
+            delta = count_new_bitcell - rptr->accum;
+            if ((delta > 0) && ((cyc_sum_frv << 1) <= delta)) {
+                todo = delta / cyc_sum_frv;
+                if (ref_cycles < todo)
+                   todo = ref_cycles;
+                if ((rptr->ue7_counter < 16) && ((16 - rptr->ue7_counter) < todo))
+                   todo = 16 - rptr->ue7_counter;
+                if ((rptr->filter_counter < 40) && ((40 - rptr->filter_counter) < todo))
+                   todo = 40 - rptr->filter_counter;
+                if ((rptr->fr_randcount > 0) && (rptr->fr_randcount < todo))
+                   todo = rptr->fr_randcount;
+            }
+
+            /* do 2.5 microsecond flux filter stuff */
+            rotation[dnr].filter_counter += todo;
+            if ((rotation[dnr].filter_counter >= 40) && (rotation[dnr].filter_last_state != rotation[dnr].filter_state)) {
+                /* update the filter last state */
+                rotation[dnr].filter_last_state = rotation[dnr].filter_state;
+
+                /* reset the counters at a flux reversal */
+                rptr->ue7_counter = rptr->ue7_dcba;
+                rptr->uf4_counter = 0;
+                rptr->fr_randcount = ((RANDOM_nextUInt(rptr) >> 16) % 31) + 289;
+            } else {
+                /* no flux reversal detected */
+                /* start seeing random flux reversals if 18us passed since the last real flux reversal */
+                rptr->fr_randcount -= todo;
+                if (!rptr->fr_randcount) {
+                    rptr->ue7_counter = rptr->ue7_dcba;
+                    rptr->uf4_counter = 0;
+                    rptr->fr_randcount = ((RANDOM_nextUInt(rptr) >> 16) % 367) + 33;
+                }
+            }
+
+            /* divide the reference clock with UE7 */
+            rptr->ue7_counter += todo;
+            if (rptr->ue7_counter == 16) {
+                /* carry asserted; reload the counter */
+                rptr->ue7_counter = rptr->ue7_dcba;
+
+                rptr->uf4_counter = (rptr->uf4_counter + 1) & 0xf;
+
+                /* the rising edge of UF4 stage B drives the shifter */
+                if ((rptr->uf4_counter & 0x3) == 2) {
+                    /* 8+2 bit shifter */
+
+                    /* UE5 NOR gate shifts in a 1 only at C2 when DC is 0 */
+                    rptr->last_read_data = ((rptr->last_read_data << 1) & 0x3fe) | (((rptr->uf4_counter + 0x1c) >> 4) & 0x01);
+
+                    rptr->write_flux = rptr->last_write_data & 0x80;
+                    rptr->last_write_data <<= 1;
+
+                    /* last 10 bits asserted activates SYNC, reloads UE3, negates BYTE READY */
+                    if (rptr->last_read_data == 0x3ff) {
+                        rptr->bit_counter = 0;
+                        /* FIXME: code should take into account whether BYTE READY has been latched
+                         * anywhere in the system or not and negate only the unlatched inputs.
+                         * So we just leave it be for now
+                         */
+                    } else {
+                        if (++rptr->bit_counter == 8) {
+                            rptr->bit_counter = 0;
+                            dptr->GCR_read = (BYTE) rptr->last_read_data;
+                            rptr->last_write_data = dptr->GCR_read;
+
+                            /* BYTE READY signal if enabled */
+                            if ((dptr->byte_ready_active & 2) != 0) {
+                                dptr->byte_ready_edge = 1;
+                                dptr->byte_ready_level = 1;
+                            }
+                        }
+                    }
+                }
+            }
+
+            /* advance the count until the next bitcell */
+            rptr->accum += cyc_sum_frv * todo;
+
+            /* read the new bitcell */
+            if (rptr->accum >= count_new_bitcell) {
+                rptr->accum -= count_new_bitcell;
+                if (read_next_bit(dptr)) {
+                    /* reset 2.5 microsecond flux filter */
+                    rotation[dnr].filter_counter = 0;
+                    rotation[dnr].filter_state = rotation[dnr].filter_state ^ 1;
+                }
+            }
+
+            ref_cycles -= todo;
+        }
+
+    } else {
+
+        /* emulate the number of reference clocks requested */
+        while (ref_cycles > 0) {
+
+            /* calculate how much cycles can we do in one single pass */
+            todo = 1;
+            delta = count_new_bitcell - rptr->accum;
+            if ((delta > 0) && ((cyc_sum_frv << 1) <= delta)) {
+                todo = delta / cyc_sum_frv;
+                if (ref_cycles < todo)
+                   todo = ref_cycles;
+                if ((rptr->ue7_counter < 16) && ((16 - rptr->ue7_counter) < todo))
+                   todo = 16 - rptr->ue7_counter;
+            }
+
+            /* divide the reference clock with UE7 */
+            rptr->ue7_counter += todo;
+            if (rptr->ue7_counter == 16) {
+                /* carry asserted; reload the counter */
+                rptr->ue7_counter = rptr->ue7_dcba;
+
+                rptr->uf4_counter = (rptr->uf4_counter + 1) & 0xf;
+
+                /* the rising edge of UF4 stage B drives the shifter */
+                if ((rptr->uf4_counter & 0x3) == 2) {
+                    /* 8+2 bit shifter */
+
+                    /* UE5 NOR gate shifts in a 1 only at C2 when DC is 0 */
+                    rptr->last_read_data = ((rptr->last_read_data << 1) & 0x3fe) | (((rptr->uf4_counter + 0x1c) >> 4) & 0x01);
+
+                    rptr->write_flux = rptr->last_write_data & 0x80;
+                    rptr->last_write_data <<= 1;
+
+                    if (++rptr->bit_counter == 8) {
+                        rptr->bit_counter = 0;
+
+                        rptr->last_write_data = dptr->GCR_write_value;
+
+                        /* BYTE READY signal if enabled */
+                        if ((dptr->byte_ready_active & 2) != 0) {
+                            dptr->byte_ready_edge = 1;
+                            dptr->byte_ready_level = 1;
+                        }
+                    }
+                }
+            }
+
+            /* advance the count until the next bitcell */
+            rptr->accum += cyc_sum_frv * todo;
+
+            /* write the new bitcell */
+            if (rptr->accum >= count_new_bitcell) {
+                rptr->accum -= count_new_bitcell;
+                dptr->GCR_dirty_track = 1;
+                write_next_bit(dptr, rptr->write_flux);
+            }
+
+            ref_cycles -= todo;
+        }
+
+    }
+
+}
+
 /* Rotate the disk according to the current value of `drive_clk[]'.  If
    `mode_change' is non-zero, there has been a Read -> Write mode switch.  */
 void rotation_rotate_disk(drive_t *dptr)
@@ -443,7 +646,11 @@ void rotation_rotate_disk(drive_t *dptr)
 
     /* capture 1541 drive type; should be updated for all other types using the same method */
     if (dptr->type == DRIVE_TYPE_1541 || dptr->type == DRIVE_TYPE_1541II) {
-        rotation_1541_gcr(dptr);
+        if (dptr->P64_image_loaded) {        
+            rotation_1541_p64(dptr);
+        } else {
+            rotation_1541_gcr(dptr);
+        }
         return;
     }
 

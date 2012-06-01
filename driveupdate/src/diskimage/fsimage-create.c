@@ -117,6 +117,10 @@ static int fsimage_create_gcr(disk_image_t *image)
     return 0;
 }
 
+static int fsimage_create_p64(disk_image_t *image)
+{
+    return -1;
+}
 
 /*-----------------------------------------------------------------------*/
 /* Create a disk image.  */
@@ -277,6 +281,9 @@ int fsimage_create(const char *name, unsigned int type)
         break;
       case DISK_IMAGE_TYPE_G64:
         rc = fsimage_create_gcr(image);
+        break;
+      case DISK_IMAGE_TYPE_P64:
+        rc = fsimage_create_p64(image);
         break;
     }
 

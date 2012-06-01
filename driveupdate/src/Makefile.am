@@ -754,7 +754,7 @@ resid_dtv_libs = @RESID_DTV_LIBS@ @RESID_FP_LIBS@
 # external libraries required for all emulators
 emu_extlibs = @X_LIBS@ @UI_LIBS@ @SDL_EXTRA_LIBS@ @INTLLIBS@ @SOUND_LIBS@ @FFMPEG_LIBS@ @QUICKTIME_LIBS@ @JOY_LIBS@ @GFXOUTPUT_LIBS@ @ZLIB_LIBS@ @DYNLIB_LIBS@ @EDITLINE_LIBS@
 
-driver_libs = $(sounddrv_lib) $(gfxoutputdrv_lib) $(printerdrv_lib) $(rs232drv_lib) $(diskimage_lib) $(fsdevice_lib) $(tape_lib) $(fileio_lib) $(serial_lib) $(core_lib) $(p64_lib)
+driver_libs = $(sounddrv_lib) $(gfxoutputdrv_lib) $(printerdrv_lib) $(rs232drv_lib) $(diskimage_lib) $(fsdevice_lib) $(tape_lib) $(fileio_lib) $(serial_lib) $(core_lib)
 
 if HAVE_RAWDRIVE
 blockdev_lib = @ARCH_DIR@/blockdev.o
@@ -865,6 +865,7 @@ x64_libs =  \
 	$(driveiecc64exp_lib) \
 	$(driveieee_lib) \
 	$(drive_lib) \
+	$(p64_lib) \
 	$(iecbus_lib) \
 	$(parallel_lib) \
 	$(vdrive_lib) \
@@ -935,6 +936,7 @@ x64sc_libs =  \
 	$(driveiecc64exp_lib) \
 	$(driveieee_lib) \
 	$(drive_lib) \
+	$(p64_lib) \
 	$(iecbus_lib) \
 	$(parallel_lib) \
 	$(vdrive_lib) \
@@ -1003,6 +1005,7 @@ x64dtv_libs =  \
 	$(driveiecc64exp_lib) \
 	$(driveieee_lib) \
 	$(drive_lib) \
+	$(p64_lib) \
 	$(iecbus_lib) \
 	$(parallel_lib) \
 	$(userport_lib) \
@@ -1075,6 +1078,7 @@ x128_libs =  \
 	$(driveiecc64exp_lib) \
 	$(driveieee_lib) \
 	$(drive_lib) \
+	$(p64_lib) \
 	$(iecbus_lib) \
 	$(parallel_lib) \
 	$(vdrive_lib) \
@@ -1148,6 +1152,7 @@ xvic_libs =  \
 	$(driveiecieee_lib) \
 	$(driveieee_lib) \
 	$(drive_lib) \
+	$(p64_lib) \
 	$(iecbus_lib) \
 	$(parallel_lib) \
 	$(vdrive_lib) \
@@ -1210,6 +1215,7 @@ xpet_libs =  \
 	$(driveiecieee_lib) \
 	$(driveieee_lib) \
 	$(drive_lib) \
+	$(p64_lib) \
 	$(parallel_lib) \
 	$(vdrive_lib) \
 	$(monitor_lib) \
@@ -1270,6 +1276,7 @@ xplus4_libs =  \
 	$(driveiecplus4exp_lib) \
 	$(drivetcbm_lib) \
 	$(drive_lib) \
+	$(p64_lib) \
 	$(iecbus_lib) \
 	$(vdrive_lib) \
 	$(monitor_lib) \
@@ -1328,6 +1335,7 @@ xcbm2_libs = \
 	$(driveiecieee_lib) \
 	$(driveieee_lib) \
 	$(drive_lib) \
+	$(p64_lib) \
 	$(parallel_lib) \
 	$(vdrive_lib) \
 	$(monitor_lib) \
@@ -1386,6 +1394,7 @@ xcbm5x0_libs = \
 	$(driveiecieee_lib) \
 	$(driveieee_lib) \
 	$(drive_lib) \
+	$(p64_lib) \
 	$(parallel_lib) \
 	$(vdrive_lib) \
 	$(monitor_lib) \
@@ -1453,7 +1462,8 @@ c1541_SOURCES = \
 	resources.c \
 	util.c \
 	zfile.c \
-	zipcode.c
+	zipcode.c \
+	p64/p64.c
 
 if OWCC
 ARCH_EXTRA_OBJECTS = @ARCH_DIR@/libarch.a

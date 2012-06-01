@@ -32,6 +32,7 @@
 #include "diskconstants.h"
 #include "diskimage.h"
 #include "fsimage-gcr.h"
+#include "fsimage-p64.h"
 #include "fsimage-probe.h"
 #include "fsimage.h"
 #include "lib.h"
@@ -427,7 +428,7 @@ static int disk_image_check_for_x64(disk_image_t *image)
 
 static int disk_image_check_for_gcr(disk_image_t *image)
 {
-    int trackfield;
+    /*int trackfield;*/
     BYTE header[32];
     fsimage_t *fsimage;
 
@@ -463,6 +464,34 @@ static int disk_image_check_for_gcr(disk_image_t *image)
 
     if (image->gcr != NULL) {
         if (fsimage_read_gcr_image(image) < 0)
+            return 0;
+    }
+    return 1;
+}
+
+static int disk_image_check_for_p64(disk_image_t *image)
+{
+    BYTE header[32];
+    fsimage_t *fsimage;
+
+    fsimage = image->media.fsimage;
+
+    fseek(fsimage->fd, 0, SEEK_SET);
+    if (fread((BYTE *)header, sizeof (header), 1, fsimage->fd) < 1) {
+        log_error(disk_image_probe_log, "Cannot read image header.");
+        return 0;
+    }
+
+    if (strncmp("P64-1541", (char*)header, 8))
+        return 0;
+
+    image->type = DISK_IMAGE_TYPE_P64;
+    image->tracks = 84 / 2;
+    fsimage_error_info_destroy(fsimage);
+    disk_image_check_log(image, "P64");
+
+    if (image->p64 != NULL) {
+        if (fsimage_read_p64_image(image) < 0)
             return 0;
     }
     return 1;
@@ -615,6 +644,8 @@ int fsimage_probe(disk_image_t *image)
     if (disk_image_check_for_d80(image))
         return 0;
     if (disk_image_check_for_d82(image))
+        return 0;
+    if (disk_image_check_for_p64(image))
         return 0;
     if (disk_image_check_for_gcr(image))
         return 0;

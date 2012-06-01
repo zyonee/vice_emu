@@ -511,6 +511,7 @@ static int attach_disk_image(disk_image_t **imgptr, vdrive_t *floppy,
     }
 
     new_image.gcr = NULL;
+    new_image.p64 = NULL;
     new_image.read_only = (unsigned int)attach_device_readonly_enabled[unit - 8];
 
     switch (devicetype) {

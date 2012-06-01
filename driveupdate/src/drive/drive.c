@@ -69,6 +69,7 @@
 #include "uiapi.h"
 #include "ds1216e.h"
 #include "drive-sound.h"
+#include "p64.h"
 
 drive_context_t *drive_context[DRIVE_NUM];
 
@@ -196,6 +197,8 @@ int drive_init(void)
     for (dnr = 0; dnr < DRIVE_NUM; dnr++) {
         drive = drive_context[dnr]->drive;
         drive->gcr = gcr_create_image();
+        drive->p64 = lib_calloc(1, sizeof(TP64Image));
+        P64ImageCreate(drive->p64);
         drive->byte_ready_level = 1;
         drive->byte_ready_edge = 1;
         drive->GCR_dirty_track = 0;
@@ -209,6 +212,7 @@ int drive_init(void)
         drive->old_half_track = 0;
         drive->side = 0;
         drive->GCR_image_loaded = 0;
+        drive->P64_image_loaded = 0;
         drive->read_only = 0;
         drive->clock_frequency = 1;
         drive->led_last_change_clk = *(drive->clk);
@@ -251,6 +255,8 @@ void drive_shutdown(void)
     for (dnr = 0; dnr < DRIVE_NUM; dnr++) {
         drivecpu_shutdown(drive_context[dnr]);
         gcr_destroy_image(drive_context[dnr]->drive->gcr);
+        P64ImageDestroy(drive_context[dnr]->drive->p64);
+        lib_free(drive_context[dnr]->drive->p64);
         ds1216e_destroy(drive_context[dnr]->drive->ds1216);
     }
 

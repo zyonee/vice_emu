@@ -56,7 +56,7 @@ BYTE drive_writeprotect_sense(drive_t *dptr)
         dptr->attach_clk = (CLOCK)0;
     }
 
-    if (dptr->GCR_image_loaded == 0) {
+    if ((dptr->GCR_image_loaded == 0) && (dptr->P64_image_loaded == 0)) {
         /* No disk in drive, write protection is off. */
         return 0x10;
     } else {

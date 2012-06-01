@@ -74,6 +74,7 @@
 struct fsimage_s;
 struct rawimage_s;
 struct gcr_s;
+struct TP64Image;
 
 struct disk_image_s {
     union media_u {
@@ -85,6 +86,7 @@ struct disk_image_s {
     unsigned int type;
     unsigned int tracks;
     struct gcr_s *gcr;
+    struct TP64Image *p64;
 };
 typedef struct disk_image_s disk_image_t;
 

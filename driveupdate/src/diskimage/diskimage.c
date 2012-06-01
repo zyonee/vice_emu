@@ -43,13 +43,14 @@
 #include "fsimage-check.h"
 #include "fsimage-create.h"
 #include "fsimage-gcr.h"
+#include "fsimage-p64.h"
 #include "fsimage.h"
 #include "lib.h"
 #include "log.h"
 #include "rawimage.h"
 #include "realimage.h"
 #include "types.h"
-
+#include "p64.h"
 
 static log_t disk_image_log = LOG_DEFAULT;
 
@@ -181,6 +182,7 @@ static const char *disk_image_type(disk_image_t *image)
         case DISK_IMAGE_TYPE_D64: return "D64";
         case DISK_IMAGE_TYPE_D67: return "D67";
         case DISK_IMAGE_TYPE_G64: return "G64";
+        case DISK_IMAGE_TYPE_P64: return "P64";
         case DISK_IMAGE_TYPE_X64: return "X64";
         case DISK_IMAGE_TYPE_D71: return "D71";
         case DISK_IMAGE_TYPE_D81: return "D81";

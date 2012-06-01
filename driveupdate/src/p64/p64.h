@@ -141,42 +141,42 @@ typedef struct
 
 typedef TP64MemoryStream* PP64MemoryStream;
 
-void P64MemoryStreamCreate(PP64MemoryStream Instance);
-void P64MemoryStreamDestroy(PP64MemoryStream Instance);
-void P64MemoryStreamClear(PP64MemoryStream Instance);
-uint32_t P64MemoryStreamSeek(PP64MemoryStream Instance, uint32_t Position);
-uint32_t P64MemoryStreamRead(PP64MemoryStream Instance, uint8_t* Data, uint32_t Count);
-uint32_t P64MemoryStreamWrite(PP64MemoryStream Instance, uint8_t* Data, uint32_t Count);
-uint32_t P64MemoryStreamAssign(PP64MemoryStream Instance, PP64MemoryStream FromInstance);
-uint32_t P64MemoryStreamAppend(PP64MemoryStream Instance, PP64MemoryStream FromInstance);
-uint32_t P64MemoryStreamAppendFrom(PP64MemoryStream Instance, PP64MemoryStream FromInstance);
-uint32_t P64MemoryStreamAppendFromCount(PP64MemoryStream Instance, PP64MemoryStream FromInstance, uint32_t Count);
+extern void P64MemoryStreamCreate(PP64MemoryStream Instance);
+extern void P64MemoryStreamDestroy(PP64MemoryStream Instance);
+extern void P64MemoryStreamClear(PP64MemoryStream Instance);
+extern uint32_t P64MemoryStreamSeek(PP64MemoryStream Instance, uint32_t Position);
+extern uint32_t P64MemoryStreamRead(PP64MemoryStream Instance, uint8_t* Data, uint32_t Count);
+extern uint32_t P64MemoryStreamWrite(PP64MemoryStream Instance, uint8_t* Data, uint32_t Count);
+extern uint32_t P64MemoryStreamAssign(PP64MemoryStream Instance, PP64MemoryStream FromInstance);
+extern uint32_t P64MemoryStreamAppend(PP64MemoryStream Instance, PP64MemoryStream FromInstance);
+extern uint32_t P64MemoryStreamAppendFrom(PP64MemoryStream Instance, PP64MemoryStream FromInstance);
+extern uint32_t P64MemoryStreamAppendFromCount(PP64MemoryStream Instance, PP64MemoryStream FromInstance, uint32_t Count);
 
-void P64PulseStreamCreate(PP64PulseStream Instance);
-void P64PulseStreamDestroy(PP64PulseStream Instance);
-void P64PulseStreamClear(PP64PulseStream Instance);
-int32_t P64PulseStreamAllocatePulse(PP64PulseStream Instance);
-void P64PulseStreamFreePulse(PP64PulseStream Instance, int32_t Index);
-void P64PulseStreamAddPulse(PP64PulseStream Instance, uint32_t Position, uint32_t Strength);
-void P64PulseStreamRemovePulses(PP64PulseStream Instance, uint32_t Position, uint32_t Count);
-void P64PulseStreamRemovePulse(PP64PulseStream Instance, uint32_t Position);
-uint32_t P64PulseStreamDeltaPositionToNextPulse(PP64PulseStream Instance, uint32_t Position);
-uint32_t P64PulseStreamGetNextPulse(PP64PulseStream Instance, uint32_t Position);
-uint32_t P64PulseStreamGetPulseCount(PP64PulseStream Instance);
-uint32_t P64PulseStreamGetPulse(PP64PulseStream Instance, uint32_t Position);
-void P64PulseStreamSetPulse(PP64PulseStream Instance, uint32_t Position, uint32_t Strength);
-void P64PulseStreamSeek(PP64PulseStream Instance, uint32_t Position);
-void P64PulseStreamConvertFromGCR(PP64PulseStream Instance, uint8_t* Bytes, uint32_t Len);
-void P64PulseStreamConvertToGCR(PP64PulseStream Instance, uint8_t* Bytes, uint32_t Len);
-uint32_t P64PulseStreamReadMetaInfoFromStream(PP64PulseStream Instance, PP64MemoryStream Stream);
-uint32_t P64PulseStreamWriteMetaInfoToStream(PP64PulseStream Instance, PP64MemoryStream Stream);
-uint32_t P64PulseStreamReadFromStream(PP64PulseStream Instance, PP64MemoryStream Stream);
-uint32_t P64PulseStreamWriteToStream(PP64PulseStream Instance, PP64MemoryStream Stream);
+extern void P64PulseStreamCreate(PP64PulseStream Instance);
+extern void P64PulseStreamDestroy(PP64PulseStream Instance);
+extern void P64PulseStreamClear(PP64PulseStream Instance);
+extern int32_t P64PulseStreamAllocatePulse(PP64PulseStream Instance);
+extern void P64PulseStreamFreePulse(PP64PulseStream Instance, int32_t Index);
+extern void P64PulseStreamAddPulse(PP64PulseStream Instance, uint32_t Position, uint32_t Strength);
+extern void P64PulseStreamRemovePulses(PP64PulseStream Instance, uint32_t Position, uint32_t Count);
+extern void P64PulseStreamRemovePulse(PP64PulseStream Instance, uint32_t Position);
+extern uint32_t P64PulseStreamDeltaPositionToNextPulse(PP64PulseStream Instance, uint32_t Position);
+extern uint32_t P64PulseStreamGetNextPulse(PP64PulseStream Instance, uint32_t Position);
+extern uint32_t P64PulseStreamGetPulseCount(PP64PulseStream Instance);
+extern uint32_t P64PulseStreamGetPulse(PP64PulseStream Instance, uint32_t Position);
+extern void P64PulseStreamSetPulse(PP64PulseStream Instance, uint32_t Position, uint32_t Strength);
+extern void P64PulseStreamSeek(PP64PulseStream Instance, uint32_t Position);
+extern void P64PulseStreamConvertFromGCR(PP64PulseStream Instance, uint8_t* Bytes, uint32_t Len);
+extern void P64PulseStreamConvertToGCR(PP64PulseStream Instance, uint8_t* Bytes, uint32_t Len);
+extern uint32_t P64PulseStreamReadMetaInfoFromStream(PP64PulseStream Instance, PP64MemoryStream Stream);
+extern uint32_t P64PulseStreamWriteMetaInfoToStream(PP64PulseStream Instance, PP64MemoryStream Stream);
+extern uint32_t P64PulseStreamReadFromStream(PP64PulseStream Instance, PP64MemoryStream Stream);
+extern uint32_t P64PulseStreamWriteToStream(PP64PulseStream Instance, PP64MemoryStream Stream);
 
-void P64ImageCreate(PP64Image Instance);
-void P64ImageDestroy(PP64Image Instance);
-void P64ImageClear(PP64Image Instance);
-uint32_t P64ImageReadFromStream(PP64Image Instance, PP64MemoryStream Stream);
-uint32_t P64ImageWriteToStream(PP64Image Instance, PP64MemoryStream Stream);
+extern void P64ImageCreate(PP64Image Instance);
+extern void P64ImageDestroy(PP64Image Instance);
+extern void P64ImageClear(PP64Image Instance);
+extern uint32_t P64ImageReadFromStream(PP64Image Instance, PP64MemoryStream Stream);
+extern uint32_t P64ImageWriteToStream(PP64Image Instance, PP64MemoryStream Stream);
 
 #endif
