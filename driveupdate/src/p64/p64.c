@@ -852,7 +852,7 @@ uint32_t P64PulseStreamConvertToGCRWithLogic(PP64PulseStream Instance, uint8_t* 
     int32_t Current;
     if (Len)
     {
-        memset(Bytes, 0, Len);
+        memset(Bytes, 0, (Len + 7) >> 3);
         LastPosition = 0;
         FlipFlop = 0;
         LastFlipFlop = 0;
@@ -860,7 +860,7 @@ uint32_t P64PulseStreamConvertToGCRWithLogic(PP64PulseStream Instance, uint8_t* 
         Counter = 0;
         BitStreamPosition = 0;
         Current = Instance->UsedFirst;
-        while ((Current >= 0) && (BitStreamPosition < (Len << 3)))
+        while ((Current >= 0) && (BitStreamPosition < Len))
         {
             if (Instance->Pulses[Current].Strength >= 0x80000000UL) {
                 Position = Instance->Pulses[Current].Position;
@@ -891,8 +891,6 @@ uint32_t P64PulseStreamConvertToGCRWithLogic(PP64PulseStream Instance, uint8_t* 
             }
             Current = Instance->Pulses[Current].Next;
         }
-
-        BitStreamPosition = (BitStreamPosition + 7) >> 3;
 
         /* optional: add here GCR byte-realigning-to-syncmark-borders code, if your GCR routines are working bytewise-only */
 

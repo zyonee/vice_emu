@@ -48,7 +48,7 @@ static log_t fsimage_p64_log = LOG_ERR;
 int fsimage_read_p64_image(disk_image_t *image)
 {
     TP64MemoryStream P64MemoryStreamInstance;
-    TP64Image *P64Image = image->p64;
+    PP64Image P64Image = (void*)image->p64;
     int lSize, rc;
     void *buffer;
 
@@ -84,7 +84,7 @@ int fsimage_read_p64_image(disk_image_t *image)
 int fsimage_write_p64_image(disk_image_t *image)
 {
     TP64MemoryStream P64MemoryStreamInstance;
-    TP64Image *P64Image = image->p64;
+    PP64Image P64Image = (void*)image->p64;
     int rc;
 
     fsimage_t *fsimage;
@@ -116,7 +116,29 @@ int fsimage_write_p64_image(disk_image_t *image)
 int fsimage_p64_read_track(disk_image_t *image, unsigned int track,
                            BYTE *gcr_data, int *gcr_track_size)
 {
-    return -1;
+    PP64Image P64Image = (void*)image->p64;
+
+    if (!P64Image){
+       log_error(fsimage_p64_log,
+                  "P64 image not loaded.");
+        return -1;
+    }
+
+    if (track > 42) {
+       log_error(fsimage_p64_log,
+                  "Track %i out of bounds.  Cannot read GCR track.",
+                 track);
+           return -1;
+    }
+
+    memset(gcr_data, 0xff, 6250);
+
+    *gcr_track_size = (P64PulseStreamConvertToGCRWithLogic(&P64Image->PulseStreams[track << 1], (void*)gcr_data, P64Image->PulseStreams[track << 1].BitStreamLength, P64Image->PulseStreams[track << 1].SpeedZone) + 7) >> 3;
+
+    if (*gcr_track_size < 1) 
+        *gcr_track_size = 6520;
+
+    return 0;
 }
 
 /*-----------------------------------------------------------------------*/
@@ -126,7 +148,24 @@ int fsimage_p64_write_track(disk_image_t *image, unsigned int track,
                             int gcr_track_size, BYTE *gcr_speed_zone,
                             BYTE *gcr_track_start_ptr)
 {
-    return -1;
+    PP64Image P64Image = (void*)image->p64;
+
+    if (!P64Image){
+       log_error(fsimage_p64_log,
+                  "P64 image not loaded.");
+        return -1;
+    }
+
+    if (track > 42) {
+       log_error(fsimage_p64_log,
+                  "Track %i out of bounds.  Cannot write GCR track.",
+                 track);
+           return -1;
+    }
+
+    P64PulseStreamConvertFromGCR(&P64Image->PulseStreams[track << 1], (void*)gcr_track_start_ptr, gcr_track_size << 3);
+
+    return fsimage_write_p64_image(image);
 }
 
 /*-----------------------------------------------------------------------*/
@@ -135,7 +174,41 @@ int fsimage_p64_write_track(disk_image_t *image, unsigned int track,
 int fsimage_p64_read_sector(disk_image_t *image, BYTE *buf,
                                unsigned int track, unsigned int sector)
 {
-    return -1;
+    unsigned int max_track_length = NUM_MAX_MEM_BYTES_TRACK;
+    BYTE *gcr_data; 
+    BYTE *gcr_track_start_ptr;
+    int gcr_track_size, gcr_current_track_size;
+
+    if (track > 42) {
+       log_error(fsimage_p64_log,
+                  "Track %i out of bounds.  Cannot read GCR track.",
+                 track);
+           return -1;
+    }
+
+    gcr_data = (BYTE*) lib_malloc(max_track_length);
+
+    if (fsimage_p64_read_track(image, track, gcr_data, &gcr_track_size) < 0) {
+        log_error(fsimage_p64_log,
+                  "Cannot read track %i from P64 image.", track);
+        lib_free(gcr_data);
+        return -1;
+    }
+    gcr_track_start_ptr = gcr_data;
+    gcr_current_track_size = gcr_track_size;
+
+    if (gcr_read_sector(gcr_track_start_ptr, gcr_current_track_size,
+          buf, track, sector) < 0) {
+        log_error(fsimage_p64_log,
+                  "Cannot find track: %i sector: %i within P64 image.",
+                  track, sector);
+        lib_free(gcr_data);
+        return -1;
+    }
+
+    lib_free(gcr_data);
+
+    return 0;
 }
 
 
@@ -145,7 +218,52 @@ int fsimage_p64_read_sector(disk_image_t *image, BYTE *buf,
 int fsimage_p64_write_sector(disk_image_t *image, BYTE *buf,
                                 unsigned int track, unsigned int sector)
 {
-    return -1;
+    unsigned int max_track_length = NUM_MAX_MEM_BYTES_TRACK;
+    BYTE *gcr_data;
+    BYTE *gcr_track_start_ptr, *speed_zone;
+    int gcr_track_size, gcr_current_track_size;
+
+    if (track > 42) {
+        log_error(fsimage_p64_log,
+                  "Track %i out of bounds.  Cannot write GCR sector",
+                  track);
+        return -1;
+    }
+
+    gcr_data = (BYTE*) lib_malloc(max_track_length);
+
+    if (fsimage_p64_read_track(image, track, gcr_data,
+        &gcr_track_size) < 0) {
+        log_error(fsimage_p64_log,
+                  "Cannot read track %i from P64 image.", track);
+        lib_free(gcr_data);  
+        return -1;
+    }
+    gcr_track_start_ptr = gcr_data;
+    gcr_current_track_size = gcr_track_size;
+    speed_zone = NULL;
+
+    if (gcr_write_sector(gcr_track_start_ptr,
+        gcr_current_track_size, buf, track, sector) < 0) {
+        log_error(fsimage_p64_log,
+                  "Could not find track %i sector %i in disk image",
+                  track, sector);
+        lib_free(gcr_data);
+        return -1;
+    }
+
+    if (disk_image_write_track(image, track, gcr_current_track_size,
+        speed_zone, gcr_track_start_ptr) < 0) {
+        log_error(fsimage_p64_log,
+                  "Failed writing track %i to disk image.", track);
+        lib_free(gcr_data);
+        return -1;
+    }
+
+    lib_free(gcr_data);
+
+    return 0;
+
 }
 
 /*-----------------------------------------------------------------------*/

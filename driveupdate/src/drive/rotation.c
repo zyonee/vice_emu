@@ -781,12 +781,11 @@ void rotation_rotate_disk(drive_t *dptr)
     }
 
     /* capture 1541 drive type; should be updated for all other types using the same method */
-    if (dptr->type == DRIVE_TYPE_1541 || dptr->type == DRIVE_TYPE_1541II) {
-        if (dptr->P64_image_loaded) {
-            rotation_1541_p64(dptr);
-        } else {
-            rotation_1541_gcr(dptr);
-        }
+    if (dptr->P64_image_loaded) {
+        rotation_1541_p64(dptr);
+        return;
+    } else if (dptr->type == DRIVE_TYPE_1541 || dptr->type == DRIVE_TYPE_1541II) {
+        rotation_1541_gcr(dptr);
         return;
     }
 
