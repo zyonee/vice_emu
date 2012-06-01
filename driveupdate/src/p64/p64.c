@@ -846,6 +846,63 @@ void P64PulseStreamConvertToGCR(PP64PulseStream Instance, uint8_t* Bytes, uint32
     }
 }
 
+uint32_t P64PulseStreamConvertToGCRWithLogic(PP64PulseStream Instance, uint8_t* Bytes, uint32_t Len, uint32_t SpeedZone)
+{
+    uint32_t Position, LastPosition, ByteCounter, DelayCounter, FlipFlop, LastFlipFlop, Clock, Counter, BitStreamPosition;
+    int32_t Current;
+    if (Len)
+    {
+        memset(Bytes, 0, Len);
+        LastPosition = 0;
+        FlipFlop = 0;
+        LastFlipFlop = 0;
+        Clock = SpeedZone;
+        Counter = 0;
+        BitStreamPosition = 0;
+        Current = Instance->UsedFirst;
+        while ((Current >= 0) && (BitStreamPosition < (Len << 3)))
+        {
+            if (Instance->Pulses[Current].Strength >= 0x80000000UL) {
+                Position = Instance->Pulses[Current].Position;
+                Delta = Position - LastPosition;
+                LastPosition = Position;
+                DelayCounter = 0;
+                FlipFlop ^= 1;
+                do
+                {
+                    if ((DelayCounter == 40) && (LastFlipFlop != FlipFlop))
+                    {
+                        LastFlipFlop = FlipFlop;
+                        Clock = SpeedZone;
+                        Counter = 0;
+                    }
+                    if (Clock == 16)
+                    {
+                        Clock = SpeedZone;
+                        Counter = (Counter + 1) & 0xf;
+                        if ((Counter & 3) == 2)
+                        {
+                            Bytes[BitStreamPosition >> 3] |= (((Counter + 0x1c) >> 4) & 1) << ((~BitStreamPosition) & 7);
+                            BitStreamPosition++;
+                        }
+                    }
+                    Clock++;
+                } while (++DelayCounter < Delta);
+            }
+            Current = Instance->Pulses[Current].Next;
+        }
+
+        BitStreamPosition = (BitStreamPosition + 7) >> 3;
+
+        /* optional: add here GCR byte-realigning-to-syncmark-borders code, if your GCR routines are working bytewise-only */
+
+        return (((BitStreamPosition > Len) ? (BitStreamPosition - Len) : (Len - BitStreamPosition)) < 2) ? Len : BitStreamPosition;
+
+    }
+
+    return 0;
+}
+
 uint32_t P64PulseStreamReadMetaInfoFromStream(PP64PulseStream Instance, PP64MemoryStream Stream)
 {
     TP64HalfTrackMetaInfoHeader Header;

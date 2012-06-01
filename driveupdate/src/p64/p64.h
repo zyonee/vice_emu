@@ -168,6 +168,7 @@ extern void P64PulseStreamSetPulse(PP64PulseStream Instance, uint32_t Position, 
 extern void P64PulseStreamSeek(PP64PulseStream Instance, uint32_t Position);
 extern void P64PulseStreamConvertFromGCR(PP64PulseStream Instance, uint8_t* Bytes, uint32_t Len);
 extern void P64PulseStreamConvertToGCR(PP64PulseStream Instance, uint8_t* Bytes, uint32_t Len);
+extern uint32_t P64PulseStreamConvertToGCRWithLogic(PP64PulseStream Instance, uint8_t* Bytes, uint32_t Len, uint32_t SpeedZone);
 extern uint32_t P64PulseStreamReadMetaInfoFromStream(PP64PulseStream Instance, PP64MemoryStream Stream);
 extern uint32_t P64PulseStreamWriteMetaInfoToStream(PP64PulseStream Instance, PP64MemoryStream Stream);
 extern uint32_t P64PulseStreamReadFromStream(PP64PulseStream Instance, PP64MemoryStream Stream);
