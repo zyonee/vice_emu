@@ -714,7 +714,7 @@ void rotation_1541_p64(drive_t *dptr)
                                 P64PulseStreamRemovePulses(P64PulseStream, LastPulseHeadPosition, rptr->P64PulseHeadPosition - LastPulseHeadPosition);
                             }
                             P64PulseStreamAddPulse(P64PulseStream, rptr->P64PulseHeadPosition, 0xffffffff);
-                            LastPulseHeadPosition = P64PulseHeadPosition + 1;
+                            LastPulseHeadPosition = rptr->P64PulseHeadPosition + 1;
                             rptr->P64Dirty = 1;
 
                         }
