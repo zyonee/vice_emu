@@ -485,6 +485,8 @@ static int disk_image_check_for_p64(disk_image_t *image)
     if (strncmp("P64-1541", (char*)header, 8))
         return 0;
 
+    /*log_error(disk_image_probe_log, "P64 detected"); */
+    
     image->type = DISK_IMAGE_TYPE_P64;
     image->tracks = 84 / 2;
     fsimage_error_info_destroy(fsimage);

@@ -55,7 +55,6 @@ int fsimage_read_p64_image(disk_image_t *image)
     fsimage_t *fsimage;
 
     fsimage = image->media.fsimage;
-    
 
     fseek(fsimage->fd, 0, SEEK_END);
     lSize = ftell(fsimage->fd);
