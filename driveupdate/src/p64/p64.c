@@ -40,8 +40,8 @@ enum
 
 static const union
 {
-    uint8_t bytes[4];
-    uint32_t value;
+    p64_uint8_t bytes[4];
+    p64_uint32_t value;
 } P64_host_order = { { 0, 1, 2, 3 } };
 
 #pragma pack(pop)
@@ -50,21 +50,21 @@ void P64EndianSwap(void* x)
 {
     if (P64_host_order.value == P64_BIG_ENDIAN)
     {
-        *((uint32_t*)x) = ((*((uint32_t*)x)) > 24) | (((*((uint32_t*)x)) << 8) & 0x00ff0000) | (((*((uint32_t*)x)) >> 8) & 0x0000ff00) | ((*((uint32_t*)x)) << 24);
+        *((p64_uint32_t*)x) = ((*((p64_uint32_t*)x)) > 24) | (((*((p64_uint32_t*)x)) << 8) & 0x00ff0000) | (((*((p64_uint32_t*)x)) >> 8) & 0x0000ff00) | ((*((p64_uint32_t*)x)) << 24);
     }
 }
 
 
-uint32_t P64CRC32(uint8_t* Data, uint32_t Len)
+p64_uint32_t P64CRC32(p64_uint8_t* Data, p64_uint32_t Len)
 {
 
-    const uint32_t CRC32Table[16] = {0x00000000UL, 0x1db71064UL, 0x3b6e20c8UL, 0x26d930acUL,
+    const p64_uint32_t CRC32Table[16] = {0x00000000UL, 0x1db71064UL, 0x3b6e20c8UL, 0x26d930acUL,
                                      0x76dc4190UL, 0x6b6b51f4UL, 0x4db26158UL, 0x5005713cUL,
                                      0xedb88320UL, 0xf00f9344UL, 0xd6d6a3e8UL, 0xcb61b38cUL,
                                      0x9b64c2b0UL, 0x86d3d2d4UL, 0xa00ae278UL, 0xbdbdf21cUL
                                     };
 
-    uint32_t value, pos;
+    p64_uint32_t value, pos;
 
     if (!Len)
     {
@@ -81,41 +81,41 @@ uint32_t P64CRC32(uint8_t* Data, uint32_t Len)
     return value ^ 0xffffffffUL;
 }
 
-typedef uint32_t* PP64RangeCoderProbabilities;
+typedef p64_uint32_t* PP64RangeCoderProbabilities;
 
 typedef struct
 {
-    uint8_t* Buffer;
-    uint32_t BufferSize;
-    uint32_t BufferPosition;
-    uint32_t RangeCode;
-    uint32_t RangeLow;
-    uint32_t RangeHigh;
-    uint32_t RangeMiddle;
+    p64_uint8_t* Buffer;
+    p64_uint32_t BufferSize;
+    p64_uint32_t BufferPosition;
+    p64_uint32_t RangeCode;
+    p64_uint32_t RangeLow;
+    p64_uint32_t RangeHigh;
+    p64_uint32_t RangeMiddle;
 } TP64RangeCoder;
 
 typedef TP64RangeCoder* PP64RangeCoder;
 
-PP64RangeCoderProbabilities P64RangeCoderProbabilitiesAllocate(uint32_t Count)
+PP64RangeCoderProbabilities P64RangeCoderProbabilitiesAllocate(p64_uint32_t Count)
 {
-    return malloc(Count * sizeof(uint32_t));
+    return p64_malloc(Count * sizeof(p64_uint32_t));
 }
 
 void P64RangeCoderProbabilitiesFree(PP64RangeCoderProbabilities Probabilities)
 {
-    free(Probabilities);
+    p64_free(Probabilities);
 }
 
-void P64RangeCoderProbabilitiesReset(PP64RangeCoderProbabilities Probabilities, uint32_t Count)
+void P64RangeCoderProbabilitiesReset(PP64RangeCoderProbabilities Probabilities, p64_uint32_t Count)
 {
-    uint32_t Index;
+    p64_uint32_t Index;
     for (Index = 0; Index < Count; Index++)
     {
         Probabilities[Index] = 2048;
     }
 }
 
-uint8_t P64RangeCoderRead(PP64RangeCoder Instance)
+p64_uint8_t P64RangeCoderRead(PP64RangeCoder Instance)
 {
     if (Instance->BufferPosition < Instance->BufferSize)
     {
@@ -124,7 +124,7 @@ uint8_t P64RangeCoderRead(PP64RangeCoder Instance)
     return 0;
 }
 
-void P64RangeCoderWrite(PP64RangeCoder Instance, uint8_t Value)
+void P64RangeCoderWrite(PP64RangeCoder Instance, p64_uint8_t Value)
 {
     if (Instance->BufferPosition >= Instance->BufferSize)
     {
@@ -138,11 +138,11 @@ void P64RangeCoderWrite(PP64RangeCoder Instance, uint8_t Value)
         }
         if (Instance->Buffer)
         {
-            Instance->Buffer = realloc(Instance->Buffer, Instance->BufferSize);
+            Instance->Buffer = p64_realloc(Instance->Buffer, Instance->BufferSize);
         }
         else
         {
-            Instance->Buffer = malloc(Instance->BufferSize);
+            Instance->Buffer = p64_malloc(Instance->BufferSize);
         }
     }
     Instance->Buffer[Instance->BufferPosition++] = Value;
@@ -157,7 +157,7 @@ void P64RangeCoderInit(PP64RangeCoder Instance)
 
 void P64RangeCoderStart(PP64RangeCoder Instance)
 {
-    uint32_t Counter;
+    p64_uint32_t Counter;
     for (Counter = 0; Counter < 4; Counter++)
     {
         Instance->RangeCode = (Instance->RangeCode << 8) | P64RangeCoderRead(Instance);
@@ -166,7 +166,7 @@ void P64RangeCoderStart(PP64RangeCoder Instance)
 
 void P64RangeCoderFlush(PP64RangeCoder Instance)
 {
-    uint32_t Counter;
+    p64_uint32_t Counter;
     for (Counter = 0; Counter < 4; Counter++)
     {
         P64RangeCoderWrite(Instance, Instance->RangeHigh >> 24);
@@ -184,9 +184,9 @@ void P64RangeCoderEncodeNormalize(PP64RangeCoder Instance)
     }
 }
 
-uint32_t P64RangeCoderEncodeBit(PP64RangeCoder Instance, uint32_t* Probability, uint32_t Shift, uint32_t BitValue)
+p64_uint32_t P64RangeCoderEncodeBit(PP64RangeCoder Instance, p64_uint32_t* Probability, p64_uint32_t Shift, p64_uint32_t BitValue)
 {
-    Instance->RangeMiddle = Instance->RangeLow + ((uint32_t)((uint32_t)(Instance->RangeHigh - Instance->RangeLow) >> 12) * (*Probability));
+    Instance->RangeMiddle = Instance->RangeLow + ((p64_uint32_t)((p64_uint32_t)(Instance->RangeHigh - Instance->RangeLow) >> 12) * (*Probability));
     if (BitValue)
     {
         *Probability += (0xfff - *Probability) >> Shift;
@@ -201,7 +201,7 @@ uint32_t P64RangeCoderEncodeBit(PP64RangeCoder Instance, uint32_t* Probability, 
     return BitValue;
 }
 
-uint32_t P64RangeCoderEncodeBitWithoutProbability(PP64RangeCoder Instance, uint32_t BitValue)
+p64_uint32_t P64RangeCoderEncodeBitWithoutProbability(PP64RangeCoder Instance, p64_uint32_t BitValue)
 {
     Instance->RangeMiddle = Instance->RangeLow + ((Instance->RangeHigh - Instance->RangeLow) >> 1);
     if (BitValue)
@@ -226,10 +226,10 @@ void P64RangeCoderDecodeNormalize(PP64RangeCoder Instance)
     }
 }
 
-uint32_t P64RangeCoderDecodeBit(PP64RangeCoder Instance, uint32_t *Probability, uint32_t Shift)
+p64_uint32_t P64RangeCoderDecodeBit(PP64RangeCoder Instance, p64_uint32_t *Probability, p64_uint32_t Shift)
 {
-    uint32_t bit;
-    Instance->RangeMiddle = Instance->RangeLow + ((uint32_t)((uint32_t)(Instance->RangeHigh - Instance->RangeLow) >> 12) * (*Probability));
+    p64_uint32_t bit;
+    Instance->RangeMiddle = Instance->RangeLow + ((p64_uint32_t)((p64_uint32_t)(Instance->RangeHigh - Instance->RangeLow) >> 12) * (*Probability));
     if (Instance->RangeCode <= Instance->RangeMiddle)
     {
         *Probability += (0xfff - *Probability) >> Shift;
@@ -246,9 +246,9 @@ uint32_t P64RangeCoderDecodeBit(PP64RangeCoder Instance, uint32_t *Probability, 
     return bit;
 }
 
-uint32_t P64RangeCoderDecodeBitWithoutProbability(PP64RangeCoder Instance)
+p64_uint32_t P64RangeCoderDecodeBitWithoutProbability(PP64RangeCoder Instance)
 {
-    uint32_t bit;
+    p64_uint32_t bit;
     Instance->RangeMiddle = Instance->RangeLow + ((Instance->RangeHigh - Instance->RangeLow) >> 1);
     if (Instance->RangeCode <= Instance->RangeMiddle)
     {
@@ -264,7 +264,7 @@ uint32_t P64RangeCoderDecodeBitWithoutProbability(PP64RangeCoder Instance)
     return bit;
 }
 
-uint32_t P64RangeCoderEncodeDirectBits(PP64RangeCoder Instance, uint32_t Bits, uint32_t Value)
+p64_uint32_t P64RangeCoderEncodeDirectBits(PP64RangeCoder Instance, p64_uint32_t Bits, p64_uint32_t Value)
 {
     while (Bits--)
     {
@@ -273,9 +273,9 @@ uint32_t P64RangeCoderEncodeDirectBits(PP64RangeCoder Instance, uint32_t Bits, u
     return Value;
 }
 
-uint32_t P64RangeCoderDecodeDirectBits(PP64RangeCoder Instance, uint32_t Bits)
+p64_uint32_t P64RangeCoderDecodeDirectBits(PP64RangeCoder Instance, p64_uint32_t Bits)
 {
-    uint32_t Value = 0;
+    p64_uint32_t Value = 0;
     while (Bits--)
     {
         Value += Value + P64RangeCoderDecodeBitWithoutProbability(Instance);
@@ -292,7 +292,7 @@ void P64MemoryStreamDestroy(PP64MemoryStream Instance)
 {
     if (Instance->Data)
     {
-        free(Instance->Data);
+        p64_free(Instance->Data);
     }
     memset(Instance, 0, sizeof(TP64MemoryStream));
 }
@@ -301,12 +301,12 @@ void P64MemoryStreamClear(PP64MemoryStream Instance)
 {
     if (Instance->Data)
     {
-        free(Instance->Data);
+        p64_free(Instance->Data);
     }
     memset(Instance, 0, sizeof(TP64MemoryStream));
 }
 
-uint32_t P64MemoryStreamSeek(PP64MemoryStream Instance, uint32_t Position)
+p64_uint32_t P64MemoryStreamSeek(PP64MemoryStream Instance, p64_uint32_t Position)
 {
     if (Position < Instance->Size)
     {
@@ -315,9 +315,9 @@ uint32_t P64MemoryStreamSeek(PP64MemoryStream Instance, uint32_t Position)
     return Instance->Position;
 }
 
-uint32_t P64MemoryStreamRead(PP64MemoryStream Instance, uint8_t* Data, uint32_t Count)
+p64_uint32_t P64MemoryStreamRead(PP64MemoryStream Instance, p64_uint8_t* Data, p64_uint32_t Count)
 {
-    uint32_t ToDo = 0;
+    p64_uint32_t ToDo = 0;
     if ((Count > 0) && (Instance->Position < Instance->Size))
     {
         ToDo = Instance->Size - Instance->Position;
@@ -331,7 +331,7 @@ uint32_t P64MemoryStreamRead(PP64MemoryStream Instance, uint8_t* Data, uint32_t 
     return ToDo;
 }
 
-uint32_t P64MemoryStreamWrite(PP64MemoryStream Instance, uint8_t* Data, uint32_t Count)
+p64_uint32_t P64MemoryStreamWrite(PP64MemoryStream Instance, p64_uint8_t* Data, p64_uint32_t Count)
 {
     if (Count)
     {
@@ -347,11 +347,11 @@ uint32_t P64MemoryStreamWrite(PP64MemoryStream Instance, uint8_t* Data, uint32_t
             }
             if (Instance->Data)
             {
-                Instance->Data = realloc(Instance->Data, Instance->Allocated);
+                Instance->Data = p64_realloc(Instance->Data, Instance->Allocated);
             }
             else
             {
-                Instance->Data = malloc(Instance->Allocated);
+                Instance->Data = p64_malloc(Instance->Allocated);
             }
         }
         memmove(Instance->Data + Instance->Position, Data, Count);
@@ -368,14 +368,14 @@ uint32_t P64MemoryStreamWrite(PP64MemoryStream Instance, uint8_t* Data, uint32_t
     }
 }
 
-uint32_t P64MemoryStreamAssign(PP64MemoryStream Instance, PP64MemoryStream FromInstance)
+p64_uint32_t P64MemoryStreamAssign(PP64MemoryStream Instance, PP64MemoryStream FromInstance)
 {
     if (Instance->Data)
     {
-        free(Instance->Data);
+        p64_free(Instance->Data);
     }
     memset(Instance, 0, sizeof(TP64MemoryStream));
-    Instance->Data = malloc(FromInstance->Allocated);
+    Instance->Data = p64_malloc(FromInstance->Allocated);
     Instance->Size = FromInstance->Size;
     Instance->Allocated = FromInstance->Allocated;
     Instance->Position = 0;
@@ -386,7 +386,7 @@ uint32_t P64MemoryStreamAssign(PP64MemoryStream Instance, PP64MemoryStream FromI
     return Instance->Size;
 }
 
-uint32_t P64MemoryStreamAppend(PP64MemoryStream Instance, PP64MemoryStream FromInstance)
+p64_uint32_t P64MemoryStreamAppend(PP64MemoryStream Instance, PP64MemoryStream FromInstance)
 {
     if (FromInstance->Size)
     {
@@ -396,7 +396,7 @@ uint32_t P64MemoryStreamAppend(PP64MemoryStream Instance, PP64MemoryStream FromI
     return 0;
 }
 
-uint32_t P64MemoryStreamAppendFrom(PP64MemoryStream Instance, PP64MemoryStream FromInstance)
+p64_uint32_t P64MemoryStreamAppendFrom(PP64MemoryStream Instance, PP64MemoryStream FromInstance)
 {
     if ((FromInstance->Size > 0) && (FromInstance->Position < FromInstance->Size))
     {
@@ -410,9 +410,9 @@ uint32_t P64MemoryStreamAppendFrom(PP64MemoryStream Instance, PP64MemoryStream F
     return 0;
 }
 
-uint32_t P64MemoryStreamAppendFromCount(PP64MemoryStream Instance, PP64MemoryStream FromInstance, uint32_t Count)
+p64_uint32_t P64MemoryStreamAppendFromCount(PP64MemoryStream Instance, PP64MemoryStream FromInstance, p64_uint32_t Count)
 {
-    uint32_t ToDo = 0;
+    p64_uint32_t ToDo = 0;
     if ((Count > 0) && (FromInstance->Position < FromInstance->Size))
     {
         ToDo = FromInstance->Size - FromInstance->Position;
@@ -453,7 +453,7 @@ void P64PulseStreamClear(PP64PulseStream Instance)
 {
     if (Instance->Pulses)
     {
-        free(Instance->Pulses);
+        p64_free(Instance->Pulses);
     }
     Instance->Pulses = 0;
     Instance->PulsesAllocated = 0;
@@ -466,9 +466,9 @@ void P64PulseStreamClear(PP64PulseStream Instance)
     Instance->SpeedZone = 0;
 }
 
-int32_t P64PulseStreamAllocatePulse(PP64PulseStream Instance)
+p64_int32_t P64PulseStreamAllocatePulse(PP64PulseStream Instance)
 {
-    int32_t Index;
+    p64_int32_t Index;
     if (Instance->FreeList < 0)
     {
         if (Instance->PulsesCount >= Instance->PulsesAllocated)
@@ -483,11 +483,11 @@ int32_t P64PulseStreamAllocatePulse(PP64PulseStream Instance)
             }
             if (Instance->Pulses)
             {
-                Instance->Pulses = realloc(Instance->Pulses, Instance->PulsesAllocated * sizeof(TP64Pulse));
+                Instance->Pulses = p64_realloc(Instance->Pulses, Instance->PulsesAllocated * sizeof(TP64Pulse));
             }
             else
             {
-                Instance->Pulses = malloc(Instance->PulsesAllocated * sizeof(TP64Pulse));
+                Instance->Pulses = p64_malloc(Instance->PulsesAllocated * sizeof(TP64Pulse));
             }
         }
         Index = Instance->PulsesCount++;
@@ -504,7 +504,7 @@ int32_t P64PulseStreamAllocatePulse(PP64PulseStream Instance)
     return Index;
 }
 
-void P64PulseStreamFreePulse(PP64PulseStream Instance, int32_t Index)
+void P64PulseStreamFreePulse(PP64PulseStream Instance, p64_int32_t Index)
 {
     if (Instance->CurrentIndex == Index)
     {
@@ -531,9 +531,9 @@ void P64PulseStreamFreePulse(PP64PulseStream Instance, int32_t Index)
     Instance->FreeList = Index;
 }
 
-void P64PulseStreamAddPulse(PP64PulseStream Instance, uint32_t Position, uint32_t Strength)
+void P64PulseStreamAddPulse(PP64PulseStream Instance, p64_uint32_t Position, p64_uint32_t Strength)
 {
-    int32_t Current, Index;
+    p64_int32_t Current, Index;
     while (Position >= P64PulseSamplesPerRotation)
     {
         Position -= P64PulseSamplesPerRotation;
@@ -595,10 +595,10 @@ void P64PulseStreamAddPulse(PP64PulseStream Instance, uint32_t Position, uint32_
     Instance->CurrentIndex = Index;
 }
 
-void P64PulseStreamRemovePulses(PP64PulseStream Instance, uint32_t Position, uint32_t Count)
+void P64PulseStreamRemovePulses(PP64PulseStream Instance, p64_uint32_t Position, p64_uint32_t Count)
 {
-    uint32_t ToDo;
-    int32_t Current, Next;
+    p64_uint32_t ToDo;
+    p64_int32_t Current, Next;
     while (Position >= P64PulseSamplesPerRotation)
     {
         Position -= P64PulseSamplesPerRotation;
@@ -626,9 +626,9 @@ void P64PulseStreamRemovePulses(PP64PulseStream Instance, uint32_t Position, uin
     }
 }
 
-void P64PulseStreamRemovePulse(PP64PulseStream Instance, uint32_t Position)
+void P64PulseStreamRemovePulse(PP64PulseStream Instance, p64_uint32_t Position)
 {
-    int32_t Current;
+    p64_int32_t Current;
     while (Position >= P64PulseSamplesPerRotation)
     {
         Position -= P64PulseSamplesPerRotation;
@@ -648,9 +648,9 @@ void P64PulseStreamRemovePulse(PP64PulseStream Instance, uint32_t Position)
     }
 }
 
-uint32_t P64PulseStreamDeltaPositionToNextPulse(PP64PulseStream Instance, uint32_t Position)
+p64_uint32_t P64PulseStreamDeltaPositionToNextPulse(PP64PulseStream Instance, p64_uint32_t Position)
 {
-    int32_t Current;
+    p64_int32_t Current;
     while (Position >= P64PulseSamplesPerRotation)
     {
         Position -= P64PulseSamplesPerRotation;
@@ -682,9 +682,9 @@ uint32_t P64PulseStreamDeltaPositionToNextPulse(PP64PulseStream Instance, uint32
     }
 }
 
-uint32_t P64PulseStreamGetNextPulse(PP64PulseStream Instance, uint32_t Position)
+p64_uint32_t P64PulseStreamGetNextPulse(PP64PulseStream Instance, p64_uint32_t Position)
 {
-    int32_t Current;
+    p64_int32_t Current;
     while (Position >= P64PulseSamplesPerRotation)
     {
         Position -= P64PulseSamplesPerRotation;
@@ -716,9 +716,9 @@ uint32_t P64PulseStreamGetNextPulse(PP64PulseStream Instance, uint32_t Position)
     }
 }
 
-uint32_t P64PulseStreamGetPulseCount(PP64PulseStream Instance)
+p64_uint32_t P64PulseStreamGetPulseCount(PP64PulseStream Instance)
 {
-    int32_t Current, Count = 0;
+    p64_int32_t Current, Count = 0;
     Current = Instance->CurrentIndex;
     while (Current >= 0)
     {
@@ -728,9 +728,9 @@ uint32_t P64PulseStreamGetPulseCount(PP64PulseStream Instance)
     return Count;
 }
 
-uint32_t P64PulseStreamGetPulse(PP64PulseStream Instance, uint32_t Position)
+p64_uint32_t P64PulseStreamGetPulse(PP64PulseStream Instance, p64_uint32_t Position)
 {
-    int32_t Current;
+    p64_int32_t Current;
     while (Position >= P64PulseSamplesPerRotation)
     {
         Position -= P64PulseSamplesPerRotation;
@@ -755,7 +755,7 @@ uint32_t P64PulseStreamGetPulse(PP64PulseStream Instance, uint32_t Position)
     }
 }
 
-void P64PulseStreamSetPulse(PP64PulseStream Instance, uint32_t Position, uint32_t Strength)
+void P64PulseStreamSetPulse(PP64PulseStream Instance, p64_uint32_t Position, p64_uint32_t Strength)
 {
     if (Strength)
     {
@@ -767,9 +767,9 @@ void P64PulseStreamSetPulse(PP64PulseStream Instance, uint32_t Position, uint32_
     }
 }
 
-void P64PulseStreamSeek(PP64PulseStream Instance, uint32_t Position)
+void P64PulseStreamSeek(PP64PulseStream Instance, p64_uint32_t Position)
 {
-    int32_t Current;
+    p64_int32_t Current;
     while (Position >= P64PulseSamplesPerRotation)
     {
         Position -= P64PulseSamplesPerRotation;
@@ -786,54 +786,70 @@ void P64PulseStreamSeek(PP64PulseStream Instance, uint32_t Position)
     Instance->CurrentIndex = Current;
 }
 
-void P64PulseStreamConvertFromGCR(PP64PulseStream Instance, uint8_t* Bytes, uint32_t Len)
+void P64PulseStreamConvertFromGCR(PP64PulseStream Instance, p64_uint8_t* Bytes, p64_uint32_t Len)
 {
-    uint64_t Position, Increment;
-    uint32_t BitStreamPosition;
+    p64_uint32_t PositionHi, PositionLo, IncrementHi, IncrementLo, BitStreamPosition;
     P64PulseStreamClear(Instance);
     if (Len)
     {
         Instance->BitStreamLength = Len;
-        Increment = (((uint64_t)P64PulseSamplesPerRotation) << 32) / Instance->BitStreamLength;
-        Position = Increment >> 1;
+        IncrementHi = P64PulseSamplesPerRotation / Len;
+        IncrementLo = P64PulseSamplesPerRotation % Len;
+        PositionHi = (P64PulseSamplesPerRotation >> 1) / Len;
+        PositionLo = (P64PulseSamplesPerRotation >> 1) % Len;
         for (BitStreamPosition = 0; BitStreamPosition < Instance->BitStreamLength; BitStreamPosition++)
         {
-            if (((uint8_t)(Bytes[BitStreamPosition >> 3])) & (1 << ((~BitStreamPosition) & 7)))
+            if (((p64_uint8_t)(Bytes[BitStreamPosition >> 3])) & (1 << ((~BitStreamPosition) & 7)))
             {
-                P64PulseStreamAddPulse(Instance, (Position >> 32) & 0xffffffffUL, 0xffffffffUL);
+                P64PulseStreamAddPulse(Instance, PositionHi, 0xffffffffUL);
             }
-            Position += Increment;
+            PositionHi += IncrementHi;
+            PositionLo += IncrementLo;
+            while (PositionLo >= Len)
+            {
+                PositionLo -= Len;
+                PositionHi++;
+            }
+
         }
     }
 }
 
-void P64PulseStreamConvertToGCR(PP64PulseStream Instance, uint8_t* Bytes, uint32_t Len)
+void P64PulseStreamConvertToGCR(PP64PulseStream Instance, p64_uint8_t* Bytes, p64_uint32_t Len)
 {
-    uint64_t Range = ((uint64_t)P64PulseSamplesPerRotation) << 32;
-    uint64_t Position, Increment;
-    uint32_t BitStreamPosition, BitStreamLen;
-    int32_t Current;
+    p64_uint32_t Range, PositionHi, PositionLo, IncrementHi, IncrementLo, BitStreamPosition, BitStreamLen;
+    p64_int32_t Current;
     if (Len)
     {
         memset(Bytes, 0, (Len + 7) >> 3);
         BitStreamLen = Len;
-        Increment = Range / BitStreamLen;
+        Range = P64PulseSamplesPerRotation
+        IncrementHi = Range / Len;
+        IncrementLo = Range % Len;
         Current = Instance->UsedFirst;
-        Position = (Current >= 0) ? (((((uint64_t)Instance->Pulses[Current].Position)) << 32) - 1) : 0;
+        PositionHi = (Current >= 0) ? Instance->Pulses[Current].Position - 1 : 0;
+        PositionLo = Len - 1;
         for (BitStreamPosition = 0; BitStreamPosition < BitStreamLen; BitStreamPosition++)
         {
-            Position += Increment;
+            PositionHi += IncrementHi;
+            PositionLo += IncrementLo;
+            while (PositionLo >= Len)
+            {
+                PositionLo -= Len;
+                PositionHi++;
+            }
             while (1)
             {
-                if ((Current >= 0) && (Instance->Pulses[Current].Position<(Position >> 32)))
+                if ((Current >= 0) && (Instance->Pulses[Current].Position < PositionHi))
                 {
-                    Position = (((uint64_t)Instance->Pulses[Current].Position) << 32) + (Increment - ((uint64_t)0x400000000LL)); /* 1.25 microseconds headroom */
+                    PositionHi = (Instance->Pulses[Current].Position + IncrementHi) - 20; /* 1.25 microseconds headroom */
+                    PositionLo = IncrementLo;
                     Current = Instance->Pulses[Current].Next;
                     Bytes[BitStreamPosition >> 3] |= 1 << ((~BitStreamPosition) & 7);
                 }
-                else if (Position >= Range)
+                else if (PositionHi >= Range)
                 {
-                    Position -= Range;
+                    PositionHi -= Range;
                     Current = Instance->UsedFirst;
                     continue;
                 }
@@ -846,10 +862,10 @@ void P64PulseStreamConvertToGCR(PP64PulseStream Instance, uint8_t* Bytes, uint32
     }
 }
 
-uint32_t P64PulseStreamConvertToGCRWithLogic(PP64PulseStream Instance, uint8_t* Bytes, uint32_t Len, uint32_t SpeedZone)
+p64_uint32_t P64PulseStreamConvertToGCRWithLogic(PP64PulseStream Instance, p64_uint8_t* Bytes, p64_uint32_t Len, p64_uint32_t SpeedZone)
 {
-    uint32_t Position, LastPosition, Delta, DelayCounter, FlipFlop, LastFlipFlop, Clock, Counter, BitStreamPosition;
-    int32_t Current;
+    p64_uint32_t Position, LastPosition, Delta, DelayCounter, FlipFlop, LastFlipFlop, Clock, Counter, BitStreamPosition;
+    p64_int32_t Current;
     if (Len)
     {
         memset(Bytes, 0, (Len + 7) >> 3);
@@ -901,7 +917,7 @@ uint32_t P64PulseStreamConvertToGCRWithLogic(PP64PulseStream Instance, uint8_t* 
     return 0;
 }
 
-uint32_t P64PulseStreamReadMetaInfoFromStream(PP64PulseStream Instance, PP64MemoryStream Stream)
+p64_uint32_t P64PulseStreamReadMetaInfoFromStream(PP64PulseStream Instance, PP64MemoryStream Stream)
 {
     TP64HalfTrackMetaInfoHeader Header;
     if (P64MemoryStreamRead(Stream, (void*)&Header, sizeof(TP64HalfTrackMetaInfoHeader)) == sizeof(TP64HalfTrackMetaInfoHeader))
@@ -914,7 +930,7 @@ uint32_t P64PulseStreamReadMetaInfoFromStream(PP64PulseStream Instance, PP64Memo
     return 0;
 }
 
-uint32_t P64PulseStreamWriteMetaInfoToStream(PP64PulseStream Instance, PP64MemoryStream Stream)
+p64_uint32_t P64PulseStreamWriteMetaInfoToStream(PP64PulseStream Instance, PP64MemoryStream Stream)
 {
     TP64HalfTrackMetaInfoHeader Header;
     memset(&Header, 0, sizeof(TP64HalfTrackMetaInfoHeader));
@@ -931,16 +947,16 @@ uint32_t P64PulseStreamWriteMetaInfoToStream(PP64PulseStream Instance, PP64Memor
 
 #define ProbabilityModelCount 10
 
-const uint32_t ProbabilityCounts[ProbabilityModelCount] = {65536, 65536, 65536, 65536, 65536, 65536, 65536, 65536, 4, 4};
+const p64_uint32_t ProbabilityCounts[ProbabilityModelCount] = {65536, 65536, 65536, 65536, 65536, 65536, 65536, 65536, 4, 4};
 
-uint32_t P64PulseStreamReadFromStream(PP64PulseStream Instance, PP64MemoryStream Stream)
+p64_uint32_t P64PulseStreamReadFromStream(PP64PulseStream Instance, PP64MemoryStream Stream)
 {
     PP64RangeCoderProbabilities RangeCoderProbabilities;
-    uint32_t RangeCoderProbabilityOffsets[ProbabilityModelCount];
-    uint32_t RangeCoderProbabilityStates[ProbabilityModelCount];
+    p64_uint32_t RangeCoderProbabilityOffsets[ProbabilityModelCount];
+    p64_uint32_t RangeCoderProbabilityStates[ProbabilityModelCount];
     TP64RangeCoder RangeCoderInstance;
-    uint32_t ProbabilityCount, Index, Count, DeltaPosition, Position, Strength, result;
-    uint8_t *Buffer;
+    p64_uint32_t ProbabilityCount, Index, Count, DeltaPosition, Position, Strength, result;
+    p64_uint8_t *Buffer;
     TP64HalfTrackHeader Header;
 
     if (P64MemoryStreamRead(Stream, (void*)&Header, sizeof(TP64HalfTrackHeader)) == sizeof(TP64HalfTrackHeader))
@@ -953,7 +969,7 @@ uint32_t P64PulseStreamReadFromStream(PP64PulseStream Instance, PP64MemoryStream
             return 0;
         }
 
-        Buffer = malloc(Header.Size);
+        Buffer = p64_malloc(Header.Size);
 
         if (P64MemoryStreamRead(Stream, Buffer, Header.Size) == Header.Size)
         {
@@ -987,8 +1003,8 @@ uint32_t P64PulseStreamReadFromStream(PP64PulseStream Instance, PP64MemoryStream
 
 #define ReadDWord(Model) \
           { \
-            uint32_t ByteValue, ByteIndex, Context; \
-            int32_t Bit; \
+            p64_uint32_t ByteValue, ByteIndex, Context; \
+            p64_int32_t Bit; \
 					  result = 0; \
 					  for (ByteIndex = 0; ByteIndex < 4; ByteIndex++) { \
 						  Context = 1; \
@@ -1028,13 +1044,13 @@ uint32_t P64PulseStreamReadFromStream(PP64PulseStream Instance, PP64MemoryStream
 
             P64RangeCoderProbabilitiesFree(RangeCoderProbabilities);
 
-            free(Buffer);
+            p64_free(Buffer);
 
             return Count == Header.CountPulses;
 
         }
 
-        free(Buffer);
+        p64_free(Buffer);
     }
 
 
@@ -1044,14 +1060,14 @@ uint32_t P64PulseStreamReadFromStream(PP64PulseStream Instance, PP64MemoryStream
     return 0;
 }
 
-uint32_t P64PulseStreamWriteToStream(PP64PulseStream Instance, PP64MemoryStream Stream)
+p64_uint32_t P64PulseStreamWriteToStream(PP64PulseStream Instance, PP64MemoryStream Stream)
 {
     PP64RangeCoderProbabilities RangeCoderProbabilities;
-    uint32_t RangeCoderProbabilityOffsets[ProbabilityModelCount];
-    uint32_t RangeCoderProbabilityStates[ProbabilityModelCount];
+    p64_uint32_t RangeCoderProbabilityOffsets[ProbabilityModelCount];
+    p64_uint32_t RangeCoderProbabilityStates[ProbabilityModelCount];
     TP64RangeCoder RangeCoderInstance;
-    int32_t Index, Current;
-    uint32_t ProbabilityCount, LastPosition, PreviousDeltaPosition, DeltaPosition, LastStrength;
+    p64_int32_t Index, Current;
+    p64_uint32_t ProbabilityCount, LastPosition, PreviousDeltaPosition, DeltaPosition, LastStrength;
     TP64HalfTrackHeader Header;
 
     memset((void*)&Header, 0, sizeof(TP64HalfTrackHeader));
@@ -1078,8 +1094,8 @@ uint32_t P64PulseStreamWriteToStream(PP64PulseStream Instance, PP64MemoryStream 
 
 #define WriteDWord(Model, DWordValue) \
       { \
-        uint32_t ByteValue, ByteIndex, Context, Value; \
-        int32_t Bit; \
+        p64_uint32_t ByteValue, ByteIndex, Context, Value; \
+        p64_int32_t Bit; \
         Value = DWordValue; \
 	   		for (ByteIndex = 0; ByteIndex < 4; ByteIndex++) { \
 			  	ByteValue = (Value >> (ByteIndex << 3)) & 0xff; \
@@ -1144,10 +1160,10 @@ uint32_t P64PulseStreamWriteToStream(PP64PulseStream Instance, PP64MemoryStream 
         {
             if (P64MemoryStreamWrite(Stream, RangeCoderInstance.Buffer, RangeCoderInstance.BufferPosition) == RangeCoderInstance.BufferPosition)
             {
-                free(RangeCoderInstance.Buffer);
+                p64_free(RangeCoderInstance.Buffer);
                 return 1;
             }
-            free(RangeCoderInstance.Buffer);
+            p64_free(RangeCoderInstance.Buffer);
             return 0;
         }
         return 1;
@@ -1158,7 +1174,7 @@ uint32_t P64PulseStreamWriteToStream(PP64PulseStream Instance, PP64MemoryStream 
     return 0;
 }
 
-const uint8_t P64SpeedMap[84] = {3,
+const p64_uint8_t P64SpeedMap[84] = {3,
                                  3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
                                  3, 3, 3, 3, 3, 3, 3, 2, 2, 2,
                                  2, 2, 2, 2, 1, 1, 1, 1, 1, 1,
@@ -1167,11 +1183,11 @@ const uint8_t P64SpeedMap[84] = {3,
                                  0, 0
                                 };
 
-const uint16_t P64RawTrackSize[4] = {6250, 6666, 7142, 7692};
+const p64_uint16_t P64RawTrackSize[4] = {6250, 6666, 7142, 7692};
 
 void P64ImageCreate(PP64Image Instance)
 {
-    int32_t HalfTrack;
+    p64_int32_t HalfTrack;
     memset(Instance, 0, sizeof(TP64Image));
     for (HalfTrack = 0; HalfTrack <= P64LastHalfTrack; HalfTrack++)
     {
@@ -1182,7 +1198,7 @@ void P64ImageCreate(PP64Image Instance)
 
 void P64ImageDestroy(PP64Image Instance)
 {
-    int32_t HalfTrack;
+    p64_int32_t HalfTrack;
     for (HalfTrack = 0; HalfTrack <= P64LastHalfTrack; HalfTrack++)
     {
         P64PulseStreamDestroy(&Instance->PulseStreams[HalfTrack]);
@@ -1192,7 +1208,7 @@ void P64ImageDestroy(PP64Image Instance)
 
 void P64ImageClear(PP64Image Instance)
 {
-    int32_t HalfTrack;
+    p64_int32_t HalfTrack;
     Instance->WriteProtected = 0;
     for (HalfTrack = 0; HalfTrack <= P64LastHalfTrack; HalfTrack++)
     {
@@ -1202,11 +1218,11 @@ void P64ImageClear(PP64Image Instance)
     }
 }
 
-uint32_t P64ImageReadFromStream(PP64Image Instance, PP64MemoryStream Stream)
+p64_uint32_t P64ImageReadFromStream(PP64Image Instance, PP64MemoryStream Stream)
 {
     TP64MemoryStream ChunksMemoryStream, ChunkMemoryStream;
     TP64Header Header;
-    uint32_t HalfTrack, OK;
+    p64_uint32_t HalfTrack, OK;
     TP64ChunkHeader ChunkHeader;
     OK = 0;
     P64ImageClear(Instance);
@@ -1296,11 +1312,11 @@ uint32_t P64ImageReadFromStream(PP64Image Instance, PP64MemoryStream Stream)
     return OK;
 }
 
-uint32_t P64ImageWriteToStream(PP64Image Instance, PP64MemoryStream Stream)
+p64_uint32_t P64ImageWriteToStream(PP64Image Instance, PP64MemoryStream Stream)
 {
     TP64MemoryStream MemoryStream, ChunksMemoryStream, ChunkMemoryStream;
     TP64Header Header;
-    uint32_t HalfTrack, result, WriteChunkResult;
+    p64_uint32_t HalfTrack, result, WriteChunkResult;
 
     TP64ChunkSignature ChunkSignature;
     TP64ChunkHeader ChunkHeader;
