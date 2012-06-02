@@ -823,7 +823,7 @@ void P64PulseStreamConvertToGCR(PP64PulseStream Instance, p64_uint8_t* Bytes, p6
     {
         memset(Bytes, 0, (Len + 7) >> 3);
         BitStreamLen = Len;
-        Range = P64PulseSamplesPerRotation
+        Range = P64PulseSamplesPerRotation;
         IncrementHi = Range / Len;
         IncrementLo = Range % Len;
         Current = Instance->UsedFirst;
