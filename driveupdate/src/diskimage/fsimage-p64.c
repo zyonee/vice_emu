@@ -59,8 +59,9 @@ int fsimage_read_p64_image(disk_image_t *image)
     fseek(fsimage->fd, 0, SEEK_END);
     lSize = ftell(fsimage->fd);
     fseek(fsimage->fd, 0, SEEK_SET);
-    buffer = (char*)malloc(sizeof(char) * lSize);
+    buffer = (char*)lib_malloc(sizeof(char) * lSize);
     if (fread(buffer, 1, lSize, fsimage->fd) < 1)  {
+        lib_free(buffer);
         log_error(fsimage_p64_log, "Could not read P64 disk image.");
         return -1;
     }
@@ -77,6 +78,8 @@ int fsimage_read_p64_image(disk_image_t *image)
         log_error(fsimage_p64_log, "Could not read P64 disk image stream.");
     }
     P64MemoryStreamDestroy(&P64MemoryStreamInstance);
+
+    lib_free(buffer);
      
     return rc;
 }
