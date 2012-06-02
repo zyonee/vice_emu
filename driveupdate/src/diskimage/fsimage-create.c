@@ -156,9 +156,10 @@ static int fsimage_create_p64(disk_image_t *image)
             gcrptr += 360;
         }
 
-        P64Image.PulseStreams[track << 1].SpeedZone = disk_image_speed_map_1541(track);
 
-        P64PulseStreamConvertFromGCR(&P64Image.PulseStreams[track << 1], gcrptr, raw_track_size[disk_image_speed_map_1541(track)] << 3);
+        P64PulseStreamConvertFromGCR(&P64Image.PulseStreams[(track + 1) << 1], (void*)&gcr_track[0], raw_track_size[disk_image_speed_map_1541(track)] << 3);
+
+        P64Image.PulseStreams[(track + 1) << 1].SpeedZone = disk_image_speed_map_1541(track);
     }
 
     P64MemoryStreamCreate(&P64MemoryStreamInstance);

@@ -800,7 +800,7 @@ void P64PulseStreamConvertFromGCR(PP64PulseStream Instance, uint8_t* Bytes, uint
         {
             if (((uint8_t)(Bytes[BitStreamPosition >> 3])) & (1 << ((~BitStreamPosition) & 7)))
             {
-                P64PulseStreamAddPulse(Instance, (Position >> 32) & 0xffffffff, 0xffffffff);
+                P64PulseStreamAddPulse(Instance, (Position >> 32) & 0xffffffffUL, 0xffffffffUL);
             }
             Position += Increment;
         }
