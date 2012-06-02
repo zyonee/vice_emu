@@ -289,7 +289,7 @@ int drive_image_attach(disk_image_t *image, unsigned int unit)
 
     drive->image = image;
     drive->image->gcr = drive->gcr;
-    drive->image->p64 = drive->p64;
+    drive->image->p64 = (void*)drive->p64;
 
     if (drive->image->type == DISK_IMAGE_TYPE_P64) {
         if (disk_image_read_p64_image(drive->image) < 0) {
@@ -297,6 +297,7 @@ int drive_image_attach(disk_image_t *image, unsigned int unit)
             return -1;
         }
         drive->P64_image_loaded = 1;
+        drive->P64_dirty = 0;
         return 0;
     } else if (drive->image->type == DISK_IMAGE_TYPE_G64) {
         if (disk_image_read_gcr_image(drive->image) < 0) {
@@ -341,6 +342,14 @@ int drive_image_detach(disk_image_t *image, unsigned int unit)
             break;
           default:
             return -1;
+        }
+    }
+
+   if (drive->P64_image_loaded && drive->P64_dirty) {
+        drive->P64_dirty = 0;
+        if (disk_image_write_p64_image(drive->image) < 0) {
+                log_error(drive->log,
+                          "Cannot write disk image back.");
         }
     }
 

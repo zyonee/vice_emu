@@ -504,6 +504,11 @@ int disk_image_read_p64_image(disk_image_t *image)
     return fsimage_read_p64_image(image);
 }
 
+int disk_image_write_p64_image(disk_image_t *image)
+{
+    return fsimage_write_p64_image(image);
+}
+
 /*-----------------------------------------------------------------------*/
 /* Initialization.  */
 

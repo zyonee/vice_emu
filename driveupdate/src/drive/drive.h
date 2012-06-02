@@ -197,6 +197,9 @@ typedef struct drive_s {
     /* Is a P64 image loaded?  */
     int P64_image_loaded;
 
+    /* Is P64 image dirty?  */
+    int P64_dirty;
+
     /* is this disk read only?  */
     int read_only;
 

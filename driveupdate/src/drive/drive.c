@@ -213,6 +213,7 @@ int drive_init(void)
         drive->side = 0;
         drive->GCR_image_loaded = 0;
         drive->P64_image_loaded = 0;
+        drive->P64_dirty = 0;
         drive->read_only = 0;
         drive->clock_frequency = 1;
         drive->led_last_change_clk = *(drive->clk);
@@ -520,11 +521,13 @@ void drive_gcr_data_writeback(drive_t *drive)
 
     track = drive->current_half_track / 2;
 
+    if (drive->image->type == DISK_IMAGE_TYPE_P64){
+        return;
+    }
+    
     if (!(drive->GCR_dirty_track))
         return;
 
-    if (drive->image->type == DISK_IMAGE_TYPE_P64)
-        return;
         
     if (drive->image->type == DISK_IMAGE_TYPE_G64) {
         BYTE *gcr_track_start_ptr;
@@ -614,6 +617,14 @@ void drive_gcr_data_writeback_all(void)
     for (i = 0; i < DRIVE_NUM; i++) {
         drive = drive_context[i]->drive;
         drive_gcr_data_writeback(drive);
+    }
+
+    if (drive->image->type == DISK_IMAGE_TYPE_P64){
+        if (drive->P64_dirty) {
+            drive->P64_dirty = 0;
+            disk_image_write_p64_image(drive->image);
+        }
+        return;
     }
 }
 

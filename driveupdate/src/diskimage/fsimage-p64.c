@@ -118,7 +118,7 @@ int fsimage_p64_read_track(disk_image_t *image, unsigned int track,
 {
     PP64Image P64Image = (void*)image->p64;
 
-    if (!P64Image){
+    if (P64Image == NULL){
        log_error(fsimage_p64_log,
                   "P64 image not loaded.");
         return -1;
@@ -150,7 +150,7 @@ int fsimage_p64_write_track(disk_image_t *image, unsigned int track,
 {
     PP64Image P64Image = (void*)image->p64;
 
-    if (!P64Image){
+    if (P64Image == NULL){
        log_error(fsimage_p64_log,
                   "P64 image not loaded.");
         return -1;

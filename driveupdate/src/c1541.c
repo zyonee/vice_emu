@@ -85,6 +85,7 @@
 #include "vdrive.h"
 #include "vice-event.h"
 #include "zipcode.h"
+#include "p64.h"
 
 
 #define GEOS    /* DiSc */
@@ -681,6 +682,7 @@ static int open_disk_image(vdrive_t *vdrive, const char *name,
     disk_image_media_create(image);
 
     image->gcr = gcr_create_image();
+    image->p64 = lib_malloc(sizeof(TP64Image));
     image->read_only = 0;
 
     disk_image_name_set(image, lib_stralloc(name));
@@ -707,6 +709,7 @@ static void close_disk_image(vdrive_t *vdrive, int unit)
     if (image != NULL) {
         vdrive_detach_image(image, unit, vdrive);
         gcr_destroy_image(image->gcr);
+        lib_free(image->p64);
         if (image->device == DISK_IMAGE_DEVICE_REAL)
             serial_realdevice_disable();
         disk_image_close(image);

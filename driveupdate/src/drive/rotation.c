@@ -67,7 +67,6 @@ struct rotation_s {
     int write_flux; /* write flux bit state */
 
     DWORD P64PulseHeadPosition;
-    int P64Dirty;
 
     DWORD seed;
 
@@ -715,7 +714,7 @@ void rotation_1541_p64(drive_t *dptr)
                             }
                             P64PulseStreamAddPulse(P64PulseStream, rptr->P64PulseHeadPosition, 0xffffffff);
                             LastPulseHeadPosition = rptr->P64PulseHeadPosition + 1;
-                            rptr->P64Dirty = 1;
+                            dptr->P64_dirty = 1;
 
                         }
                         rptr->last_write_data <<= 1;

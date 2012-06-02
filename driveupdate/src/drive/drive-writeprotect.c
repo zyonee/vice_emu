@@ -60,7 +60,9 @@ BYTE drive_writeprotect_sense(drive_t *dptr)
         /* No disk in drive, write protection is off. */
         return 0x10;
     } else {
+        if (dptr->P64_image_loaded)
+            if (dptr->p64->WriteProtected)
+                return 0x0;
         return dptr->read_only ? 0x0 : 0x10;
     }
 }
-
