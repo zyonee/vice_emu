@@ -165,7 +165,7 @@ static int fsimage_create_p64(disk_image_t *image)
     P64MemoryStreamCreate(&P64MemoryStreamInstance);
     P64MemoryStreamClear(&P64MemoryStreamInstance);
     if (P64ImageWriteToStream(&P64Image,&P64MemoryStreamInstance)) {
-        if (fwrite(P64MemoryStreamInstance.Data, 1, P64MemoryStreamInstance.Size, fsimage->fd) < 1) {
+        if (fwrite(P64MemoryStreamInstance.Data, P64MemoryStreamInstance.Size, 1, fsimage->fd) < 1) {
           log_error(createdisk_log, "Cannot write image data.");
           rc = -1;
         } else {

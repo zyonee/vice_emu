@@ -617,14 +617,14 @@ void drive_gcr_data_writeback_all(void)
     for (i = 0; i < DRIVE_NUM; i++) {
         drive = drive_context[i]->drive;
         drive_gcr_data_writeback(drive);
+        if (drive->P64_image_loaded && drive->image && drive->image->p64)
+	    if (drive->image->type == DISK_IMAGE_TYPE_P64)
+    	       if (drive->P64_dirty) {
+        	    drive->P64_dirty = 0;
+            	    disk_image_write_p64_image(drive->image);
+                }
     }
 
-    if (drive->P64_image_loaded && drive->image)
-        if (drive->image->type == DISK_IMAGE_TYPE_P64)
-           if (drive->P64_dirty) {
-                drive->P64_dirty = 0;
-                disk_image_write_p64_image(drive->image);
-            }
 
 }
 

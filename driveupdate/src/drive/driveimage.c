@@ -351,9 +351,10 @@ int drive_image_detach(disk_image_t *image, unsigned int unit)
                 log_error(drive->log,
                           "Cannot write disk image back.");
         }
+    } else {
+	drive_gcr_data_writeback(drive);
     }
-
-    drive_gcr_data_writeback(drive);
+    
 //  memset(drive->gcr->data, 0, MAX_GCR_TRACKS * NUM_MAX_BYTES_TRACK);
     memset(drive->gcr->data, 0, sizeof(drive->gcr->data));
     drive->detach_clk = drive_clk[dnr];
