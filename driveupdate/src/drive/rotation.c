@@ -66,7 +66,7 @@ struct rotation_s {
 
     int write_flux; /* write flux bit state */
 
-    DWORD P64PulseHeadPosition;
+    DWORD PulseHeadPosition;
 
     DWORD seed;
 
@@ -94,7 +94,7 @@ void rotation_init(int freq, unsigned int dnr)
     rotation[dnr].filter_state = 0;
     rotation[dnr].filter_last_state = 0;
     rotation[dnr].write_flux = 0;
-    rotation[dnr].P64PulseHeadPosition = 0;
+    rotation[dnr].PulseHeadPosition = 0;
 
 }
 
@@ -118,7 +118,7 @@ void rotation_reset(drive_t *drive)
     rotation[dnr].filter_state = 0;
     rotation[dnr].filter_last_state = 0;
     rotation[dnr].write_flux = 0;
-    rotation[dnr].P64PulseHeadPosition = 0;
+    rotation[dnr].PulseHeadPosition = 0;
 }
 
 void rotation_speed_zone_set(unsigned int zone, unsigned int dnr)
@@ -144,8 +144,20 @@ void rotation_table_get(DWORD *rotation_table_ptr)
         drive->snap_bit_counter = rotation[dnr].bit_counter;
         drive->snap_zero_count = rotation[dnr].zero_count;
         drive->snap_seed = rotation[dnr].seed;
+        drive->snap_speed_zone = rotation[dnr].speed_zone;
+        drive->snap_ue7_dcba = rotation[dnr].ue7_dcba;
+        drive->snap_ue7_counter = rotation[dnr].ue7_counter;
+        drive->snap_uf4_counter = rotation[dnr].uf4_counter;
+        drive->snap_fr_randcount = rotation[dnr].fr_randcount;
+        drive->snap_filter_counter = rotation[dnr].filter_counter;
+        drive->snap_filter_state = rotation[dnr].filter_state;
+        drive->snap_filter_last_state = rotation[dnr].filter_last_state;
+        drive->snap_write_flux = rotation[dnr].write_flux;
+        drive->snap_PulseHeadPosition = rotation[dnr].PulseHeadPosition;
+        drive->snap_xorShift32 = rotation[dnr].xorShift32;
+
     }
-}
+ }
 
 void rotation_table_set(DWORD *rotation_table_ptr)
 {
@@ -164,6 +176,17 @@ void rotation_table_set(DWORD *rotation_table_ptr)
         rotation[dnr].bit_counter = drive->snap_bit_counter;
         rotation[dnr].zero_count = drive->snap_zero_count;
         rotation[dnr].seed = drive->snap_seed;
+        rotation[dnr].speed_zone = drive->snap_speed_zone;
+        rotation[dnr].ue7_dcba = drive->snap_ue7_dcba;
+        rotation[dnr].ue7_counter = drive->snap_ue7_counter;
+        rotation[dnr].uf4_counter = drive->snap_uf4_counter;
+        rotation[dnr].fr_randcount = drive->snap_fr_randcount;
+        rotation[dnr].filter_counter = drive->snap_filter_counter;
+        rotation[dnr].filter_state = drive->snap_filter_state;
+        rotation[dnr].filter_last_state = drive->snap_filter_state;
+        rotation[dnr].write_flux = drive->snap_write_flux;
+        rotation[dnr].PulseHeadPosition = drive->snap_PulseHeadPosition;
+        rotation[dnr].xorShift32 = drive->snap_xorShift32;
     }
 }
 
@@ -449,9 +472,9 @@ void rotation_1541_p64(drive_t *dptr)
 
     P64PulseStream = &dptr->p64->PulseStreams[dptr->current_half_track];
 
-    if ((P64PulseStream->CurrentIndex < 0) || ((P64PulseStream->CurrentIndex != P64PulseStream->UsedFirst) && ((P64PulseStream->Pulses[P64PulseStream->CurrentIndex].Previous >= 0) && (P64PulseStream->Pulses[P64PulseStream->Pulses[P64PulseStream->CurrentIndex].Previous].Position >= rptr->P64PulseHeadPosition))))
+    if ((P64PulseStream->CurrentIndex < 0) || ((P64PulseStream->CurrentIndex != P64PulseStream->UsedFirst) && ((P64PulseStream->Pulses[P64PulseStream->CurrentIndex].Previous >= 0) && (P64PulseStream->Pulses[P64PulseStream->Pulses[P64PulseStream->CurrentIndex].Previous].Position >= rptr->PulseHeadPosition))))
     {
-        P64PulseStreamSeek(P64PulseStream, rptr->P64PulseHeadPosition);
+        P64PulseStreamSeek(P64PulseStream, rptr->PulseHeadPosition);
     }
 
     if (dptr->read_write_mode)
@@ -460,17 +483,17 @@ void rotation_1541_p64(drive_t *dptr)
         while(delta-->0)
         {
 
-            while ((P64PulseStream->CurrentIndex >= 0) && (P64PulseStream->Pulses[P64PulseStream->CurrentIndex].Position < rptr->P64PulseHeadPosition))
+            while ((P64PulseStream->CurrentIndex >= 0) && (P64PulseStream->Pulses[P64PulseStream->CurrentIndex].Position < rptr->PulseHeadPosition))
             {
                 P64PulseStream->CurrentIndex = P64PulseStream->Pulses[P64PulseStream->CurrentIndex].Next;
             }
             if( P64PulseStream->CurrentIndex >= 0)
             {
-                DeltaPositionToNextPulse = P64PulseStream->Pulses[P64PulseStream->CurrentIndex].Position - rptr->P64PulseHeadPosition;
+                DeltaPositionToNextPulse = P64PulseStream->Pulses[P64PulseStream->CurrentIndex].Position - rptr->PulseHeadPosition;
             }
             else
             {
-                DeltaPositionToNextPulse = P64PulseSamplesPerRotation - rptr->P64PulseHeadPosition;
+                DeltaPositionToNextPulse = P64PulseSamplesPerRotation - rptr->PulseHeadPosition;
             }
 
             Remain16MHzClockCycles = 16;
@@ -522,13 +545,13 @@ void rotation_1541_p64(drive_t *dptr)
                    if (((rptr->filter_counter >= 40) && (rptr->filter_state != rptr->filter_last_state))) {
                         rptr->filter_last_state = rptr->filter_state;
                         rptr->uf4_counter = 0;
-                        rptr->ue7_counter = rptr->speed_zone & 3;
+                        rptr->ue7_counter = rptr->ue7_dcba;
                         rptr->fr_randcount = ((RANDOM_nextUInt(rptr) >> 16) % 31) + 289;
                     }else{
                         rptr->fr_randcount -= ToDo;
                         if(!rptr->fr_randcount){
                           rptr->uf4_counter = 0;
-                          rptr->ue7_counter = rptr->speed_zone & 3;
+                          rptr->ue7_counter = rptr->ue7_dcba;
                           rptr->fr_randcount = ((RANDOM_nextUInt(rptr) >> 16) % 367) + 33;
                         }
                     }
@@ -540,7 +563,7 @@ void rotation_1541_p64(drive_t *dptr)
                     if (rptr->ue7_counter == 16)
                     {
 
-                        rptr->ue7_counter = rptr->speed_zone & 3;
+                        rptr->ue7_counter = rptr->ue7_dcba;
 
                         rptr->uf4_counter = (rptr->uf4_counter + 1) & 0xf;
                         if ((rptr->uf4_counter & 3) == 2)
@@ -597,7 +620,7 @@ void rotation_1541_p64(drive_t *dptr)
                     if (!DeltaPositionToNextPulse)
                     {
 
-                        DeltaPositionToNextPulse = P64PulseSamplesPerRotation - rptr->P64PulseHeadPosition;
+                        DeltaPositionToNextPulse = P64PulseSamplesPerRotation - rptr->PulseHeadPosition;
 
                         if (P64PulseStream->CurrentIndex>=0)
                         {
@@ -615,7 +638,7 @@ void rotation_1541_p64(drive_t *dptr)
                             P64PulseStream->CurrentIndex = P64PulseStream->Pulses[P64PulseStream->CurrentIndex].Next;
                             if (P64PulseStream->CurrentIndex >= 0)
                             {
-                                DeltaPositionToNextPulse = P64PulseStream->Pulses[P64PulseStream->CurrentIndex].Position - rptr->P64PulseHeadPosition;
+                                DeltaPositionToNextPulse = P64PulseStream->Pulses[P64PulseStream->CurrentIndex].Position - rptr->PulseHeadPosition;
                             }
 
                         }
@@ -624,20 +647,20 @@ void rotation_1541_p64(drive_t *dptr)
 
                     DeltaPositionToNextPulse -= ToDo;
 
-                    rptr->P64PulseHeadPosition += ToDo;
+                    rptr->PulseHeadPosition += ToDo;
 
-                    if(rptr->P64PulseHeadPosition >= P64PulseSamplesPerRotation)
+                    if(rptr->PulseHeadPosition >= P64PulseSamplesPerRotation)
                     {
-                        rptr->P64PulseHeadPosition -= P64PulseSamplesPerRotation;
+                        rptr->PulseHeadPosition -= P64PulseSamplesPerRotation;
 
                         P64PulseStream->CurrentIndex = P64PulseStream->UsedFirst;
-                        while ((P64PulseStream->CurrentIndex >= 0) && (P64PulseStream->Pulses[P64PulseStream->CurrentIndex].Position < rptr->P64PulseHeadPosition))
+                        while ((P64PulseStream->CurrentIndex >= 0) && (P64PulseStream->Pulses[P64PulseStream->CurrentIndex].Position < rptr->PulseHeadPosition))
                         {
                           P64PulseStream->CurrentIndex = P64PulseStream->Pulses[P64PulseStream->CurrentIndex].Next;
                         }
                         if(P64PulseStream->CurrentIndex >= 0)
                         {
-                            DeltaPositionToNextPulse = P64PulseStream->Pulses[P64PulseStream->CurrentIndex].Position - rptr->P64PulseHeadPosition;
+                            DeltaPositionToNextPulse = P64PulseStream->Pulses[P64PulseStream->CurrentIndex].Position - rptr->PulseHeadPosition;
                         }
 
                     }
@@ -657,8 +680,8 @@ void rotation_1541_p64(drive_t *dptr)
 
         DWORD LastPulseHeadPosition, NextPulseHeadPosition;
 
-        LastPulseHeadPosition = rptr->P64PulseHeadPosition;
-        NextPulseHeadPosition = rptr->P64PulseHeadPosition + 16;
+        LastPulseHeadPosition = rptr->PulseHeadPosition;
+        NextPulseHeadPosition = rptr->PulseHeadPosition + 16;
 
         Remain16MHzClockCycles = 16;
         while (Remain16MHzClockCycles > 0)
@@ -691,7 +714,7 @@ void rotation_1541_p64(drive_t *dptr)
                 if(rptr->ue7_counter == 16)
                 {
 
-                    rptr->ue7_counter = rptr->speed_zone & 3;
+                    rptr->ue7_counter = rptr->ue7_dcba;
 
                     rptr->uf4_counter = (rptr->uf4_counter + 1) & 0xf;
                     if ((rptr->uf4_counter & 3) == 2)
@@ -708,12 +731,12 @@ void rotation_1541_p64(drive_t *dptr)
                         {
                             /* Head logic */
 
-                            if (LastPulseHeadPosition < rptr->P64PulseHeadPosition)
+                            if (LastPulseHeadPosition < rptr->PulseHeadPosition)
                             {
-                                P64PulseStreamRemovePulses(P64PulseStream, LastPulseHeadPosition, rptr->P64PulseHeadPosition - LastPulseHeadPosition);
+                                P64PulseStreamRemovePulses(P64PulseStream, LastPulseHeadPosition, rptr->PulseHeadPosition - LastPulseHeadPosition);
                             }
-                            P64PulseStreamAddPulse(P64PulseStream, rptr->P64PulseHeadPosition, 0xffffffff);
-                            LastPulseHeadPosition = rptr->P64PulseHeadPosition + 1;
+                            P64PulseStreamAddPulse(P64PulseStream, rptr->PulseHeadPosition, 0xffffffff);
+                            LastPulseHeadPosition = rptr->PulseHeadPosition + 1;
                             dptr->P64_dirty = 1;
 
                         }
@@ -741,13 +764,13 @@ void rotation_1541_p64(drive_t *dptr)
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-            rptr->P64PulseHeadPosition += ToDo;
-            if(rptr->P64PulseHeadPosition >= P64PulseSamplesPerRotation)
+            rptr->PulseHeadPosition += ToDo;
+            if(rptr->PulseHeadPosition >= P64PulseSamplesPerRotation)
             {
-                rptr->P64PulseHeadPosition -= P64PulseSamplesPerRotation;
+                rptr->PulseHeadPosition -= P64PulseSamplesPerRotation;
 
                 P64PulseStream->CurrentIndex = P64PulseStream->UsedFirst;
-                while ((P64PulseStream->CurrentIndex >= 0) && (P64PulseStream->Pulses[P64PulseStream->CurrentIndex].Position < rptr->P64PulseHeadPosition))
+                while ((P64PulseStream->CurrentIndex >= 0) && (P64PulseStream->Pulses[P64PulseStream->CurrentIndex].Position < rptr->PulseHeadPosition))
                 {
                   P64PulseStream->CurrentIndex = P64PulseStream->Pulses[P64PulseStream->CurrentIndex].Next;
                 }
