@@ -629,7 +629,7 @@ void rotation_1541_p64(drive_t *dptr)
 
                             // Forward pulse high hit to the decoder logic
                             if ((Strength == 0xffffffff) ||                                 /* Strong pulse */
-                                (((uint32_t)(RANDOM_nextInt(rptr)^0x80000000)) < Strength)) /* Weak pulse */
+                                (((DWORD)(RANDOM_nextInt(rptr)^0x80000000)) < Strength)) /* Weak pulse */
                             {
                                rptr->filter_state ^= 1;
                                rptr->filter_counter = 0;
