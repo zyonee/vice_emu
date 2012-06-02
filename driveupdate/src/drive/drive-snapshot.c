@@ -251,7 +251,7 @@ int drive_snapshot_write_module(snapshot_t *s, int save_disks, int save_roms)
             if (drive_snapshot_write_gcrimage_module(s, 1) < 0)
                 return -1;
         } else if (P64_image[1] > 0) {
-            if drive_snapshot_write_p64image_module(s, 1) < 0)
+            if (drive_snapshot_write_p64image_module(s, 1) < 0)
                 return -1;
         } else {
             if (drive_snapshot_write_image_module(s, 1) < 0)
@@ -411,8 +411,8 @@ int drive_snapshot_read_module(snapshot_t *s)
                 || SMR_DW(m, &(drive->snap_filter_state)) < 0
                 || SMR_DW(m, &(drive->snap_filter_last_state)) < 0
                 || SMR_DW(m, &(drive->snap_write_flux)) < 0
-                || SMR_DW(m, &(drive->snap_PulseHeadPosition) < 0
-                || SMR_DW(m, &(drive->snap_xorShift32) < 0
+                || SMR_DW(m, &(drive->snap_PulseHeadPosition)) < 0
+                || SMR_DW(m, &(drive->snap_xorShift32)) < 0
             ) {
                 snapshot_module_close(m);
                 return -1;
@@ -521,7 +521,7 @@ int drive_snapshot_read_module(snapshot_t *s)
 
     if (drive_snapshot_read_image_module(s, 0) < 0
         || drive_snapshot_read_gcrimage_module(s, 0) < 0
-        || drive_snapshot_read_p64image_module(s, 0) < 0))
+        || drive_snapshot_read_p64image_module(s, 0) < 0)
         return -1;
     if (drive_snapshot_read_image_module(s, 1) < 0
         || drive_snapshot_read_gcrimage_module(s, 1) < 0
@@ -988,7 +988,7 @@ static int drive_snapshot_read_p64image_module(snapshot_t *s, unsigned int dnr)
 
     P64MemoryStreamCreate(&P64MemoryStreamInstance);
     P64MemoryStreamClear(&P64MemoryStreamInstance);
-    P64MemoryStreamWrite(&P64MemoryStreamInstance,tmpbuf,lSize);
+    P64MemoryStreamWrite(&P64MemoryStreamInstance,tmpbuf,size);
     P64MemoryStreamSeek(&P64MemoryStreamInstance,0);
     if (!P64ImageReadFromStream(P64Image,&P64MemoryStreamInstance)) {
         if (m != NULL)

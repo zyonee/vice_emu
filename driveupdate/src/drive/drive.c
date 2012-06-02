@@ -362,7 +362,7 @@ void drive_enable_update_ui(drive_context_t *drv)
 /* Activate full drive emulation. */
 int drive_enable(drive_context_t *drv)
 {
-    int i, drive_true_emulation = 0;
+    int drive_true_emulation = 0;
     unsigned int dnr;
     drive_t *drive;
 
@@ -397,12 +397,12 @@ int drive_enable(drive_context_t *drv)
 /* Disable full drive emulation.  */
 void drive_disable(drive_context_t *drv)
 {
-    int i, drive_true_emulation = 0;
-    unsigned int dnr;
+    int drive_true_emulation = 0;
+    /*unsigned int dnr;*/    
     drive_t *drive;
-    unsigned int enabled_drives = 0;
+    /*unsigned int enabled_drives = 0;*/
 
-    dnr = drv->mynumber;
+    /*dnr = drv->mynumber;*/
     drive = drv->drive;
 
     /* This must come first, because this might be called before the true
