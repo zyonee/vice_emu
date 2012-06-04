@@ -817,7 +817,7 @@ p64_uint32_t P64PulseStreamReadFromStream(PP64PulseStream Instance, PP64MemorySt
 					  for (ByteIndex = 0; ByteIndex < 4; ByteIndex++) { \
 						  Context = 1; \
   						for (Bit = 7; Bit >= 0; Bit--) { \
-	  						Context = (Context << 1) | P64RangeCoderDecodeBit(&RangeCoderInstance, RangeCoderProbabilities + (RangeCoderProbabilityOffsets[Model + ByteIndex] + (((RangeCoderProbabilityStates[Model + ByteIndex] << 8) | Context) & 0xfffful)), 4); \
+	  						Context = (Context << 1) | P64RangeCoderDecodeBit(&RangeCoderInstance, RangeCoderProbabilities + (RangeCoderProbabilityOffsets[Model + ByteIndex] + (((RangeCoderProbabilityStates[Model + ByteIndex] << 8) | Context) & 0xffffUL)), 4); \
 		  				} \
 			  			ByteValue = Context & 0xff; \
 				  		RangeCoderProbabilityStates[Model + ByteIndex] = ByteValue; \
@@ -901,7 +901,7 @@ p64_uint32_t P64PulseStreamWriteToStream(PP64PulseStream Instance, PP64MemoryStr
 			  	ByteValue = (Value >> (ByteIndex << 3)) & 0xff; \
 				  Context = 1; \
 				  for (Bit = 7; Bit >= 0; Bit--) { \
-					  Context = (Context << 1) | P64RangeCoderEncodeBit(&RangeCoderInstance, RangeCoderProbabilities + (RangeCoderProbabilityOffsets[Model + ByteIndex] + (((RangeCoderProbabilityStates[Model+ByteIndex] << 8) | Context) & 0xfffful)), 4, (ByteValue >> Bit) & 1); \
+					  Context = (Context << 1) | P64RangeCoderEncodeBit(&RangeCoderInstance, RangeCoderProbabilities + (RangeCoderProbabilityOffsets[Model + ByteIndex] + (((RangeCoderProbabilityStates[Model+ByteIndex] << 8) | Context) & 0xffffUL)), 4, (ByteValue >> Bit) & 1); \
   				} \
 	  			RangeCoderProbabilityStates[Model + ByteIndex] = ByteValue; \
 	  		}	\
