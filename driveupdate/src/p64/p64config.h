@@ -1,4 +1,3 @@
-
 /*
 *************************************************************
 ** P64 reference implementation by Benjamin 'BeRo' Rosseaux *

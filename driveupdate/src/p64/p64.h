@@ -1,4 +1,3 @@
-
 /*
 *************************************************************
 ** P64 reference implementation by Benjamin 'BeRo' Rosseaux *
@@ -59,9 +58,6 @@
 /* including 42.5 */
 #define P64LastHalfTrack 85
 
-#pragma pack(push)
-#pragma pack(1)
-
 #ifdef P64_USE_STDINT
 typedef int8_t p64_int8_t;
 typedef int16_t p64_int16_t;
@@ -82,65 +78,33 @@ typedef unsigned int p64_uint32_t;
 #endif
 #endif
 
-typedef p64_uint8_t TP64Signature[8];
+typedef p64_uint8_t TP64HeaderSignature[8];
 
-typedef TP64Signature* PP64Signature;
+typedef TP64HeaderSignature* PP64HeaderSignature;
 
 typedef p64_uint8_t TP64ChunkSignature[4];
 
 typedef TP64ChunkSignature* PP64ChunkSignature;
 
-typedef struct
-{
-    TP64Signature Signature;
-    p64_uint32_t Version;
-    p64_uint32_t Flags;
-    p64_uint32_t Size;
-    p64_uint32_t Checksum;
-} TP64Header;
-
-typedef TP64Header* PP64Header;
-
-typedef struct
-{
-    TP64ChunkSignature Signature;
-    p64_uint32_t Size;
-    p64_uint32_t Checksum;
-} TP64ChunkHeader;
-
-typedef TP64ChunkHeader* PP64ChunkHeader;
-
-typedef struct
-{
-    p64_uint32_t CountPulses;
-    p64_uint32_t Size;
-} TP64HalfTrackHeader;
-
-typedef TP64HalfTrackHeader* PP64HalfTrackHeader;
-
-#pragma pack(pop)
-
-typedef struct
-{
-    p64_int32_t Previous;
-    p64_int32_t Next;
-    p64_uint32_t Position;
-    p64_uint32_t Strength;
+typedef struct {
+	p64_int32_t Previous;
+	p64_int32_t Next;
+	p64_uint32_t Position;
+	p64_uint32_t Strength;
 } TP64Pulse;
 
 typedef TP64Pulse* PP64Pulse;
 
 typedef TP64Pulse* PP64Pulses;
 
-typedef struct
-{
-    PP64Pulses Pulses;
-    p64_uint32_t PulsesAllocated;
-    p64_uint32_t PulsesCount;
-    p64_int32_t UsedFirst;
-    p64_int32_t UsedLast;
-    p64_int32_t FreeList;
-    p64_int32_t CurrentIndex;
+typedef struct {
+	PP64Pulses Pulses;
+	p64_uint32_t PulsesAllocated;
+	p64_uint32_t PulsesCount;
+	p64_int32_t UsedFirst;
+	p64_int32_t UsedLast;
+	p64_int32_t FreeList;
+	p64_int32_t CurrentIndex;
 } TP64PulseStream;
 
 typedef TP64PulseStream* PP64PulseStream;
@@ -149,20 +113,18 @@ typedef TP64PulseStream TP64PulseStreams[(P64LastHalfTrack-0)+2];
 
 typedef TP64PulseStreams* PP64PulseStreams;
 
-typedef struct
-{
-    TP64PulseStreams PulseStreams;
-    p64_uint32_t WriteProtected;
+typedef struct {
+	TP64PulseStreams PulseStreams;
+	p64_uint32_t WriteProtected;
 } TP64Image;
 
 typedef TP64Image* PP64Image;
 
-typedef struct
-{
-    p64_uint8_t* Data;
-    p64_uint32_t Allocated;
-    p64_uint32_t Size;
-    p64_uint32_t Position;
+typedef struct {
+	p64_uint8_t* Data;
+	p64_uint32_t Allocated;
+	p64_uint32_t Size;
+	p64_uint32_t Position;
 } TP64MemoryStream;
 
 typedef TP64MemoryStream* PP64MemoryStream;
@@ -173,6 +135,12 @@ extern void P64MemoryStreamClear(PP64MemoryStream Instance);
 extern p64_uint32_t P64MemoryStreamSeek(PP64MemoryStream Instance, p64_uint32_t Position);
 extern p64_uint32_t P64MemoryStreamRead(PP64MemoryStream Instance, p64_uint8_t* Data, p64_uint32_t Count);
 extern p64_uint32_t P64MemoryStreamWrite(PP64MemoryStream Instance, p64_uint8_t* Data, p64_uint32_t Count);
+extern p64_int32_t P64MemoryStreamReadByte(PP64MemoryStream Instance, p64_uint8_t* Data);
+extern p64_int32_t P64MemoryStreamReadWord(PP64MemoryStream Instance, p64_uint16_t* Data);
+extern p64_int32_t P64MemoryStreamReadDWord(PP64MemoryStream Instance, p64_uint32_t* Data);
+extern p64_int32_t P64MemoryStreamWriteByte(PP64MemoryStream Instance, p64_uint8_t* Data);
+extern p64_int32_t P64MemoryStreamWriteWord(PP64MemoryStream Instance, p64_uint16_t* Data);
+extern p64_int32_t P64MemoryStreamWriteDWord(PP64MemoryStream Instance, p64_uint32_t* Data);
 extern p64_uint32_t P64MemoryStreamAssign(PP64MemoryStream Instance, PP64MemoryStream FromInstance);
 extern p64_uint32_t P64MemoryStreamAppend(PP64MemoryStream Instance, PP64MemoryStream FromInstance);
 extern p64_uint32_t P64MemoryStreamAppendFrom(PP64MemoryStream Instance, PP64MemoryStream FromInstance);
