@@ -2,7 +2,7 @@
  * fsimage-p64.c
  *
  * Written by
- *  Benjamin 'BeRo' Rosseaux
+ *  Benjamin 'BeRo' Rosseaux <benjamin@rosseaux.com>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.

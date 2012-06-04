@@ -6,7 +6,7 @@
  *  Daniel Sladic <sladic@eecg.toronto.edu>
  * Additional changes by
  *  Robert McIntyre <rjmcinty@hotmail.com>
- *  Benjamin Rosseaux <benjamin@rosseaux.com>
+ *  Benjamin 'BeRo' Rosseaux <benjamin@rosseaux.com>
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.

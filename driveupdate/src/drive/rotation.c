@@ -5,7 +5,7 @@
  *  Andreas Boose <viceteam@t-online.de>
  * 1541 circuitry simulation code by
  *  Istvan Fabian <if@caps-project.org>
- *  Benjamin Rosseaux <benjamin@rosseaux.com>
+ *  Benjamin 'BeRo' Rosseaux <benjamin@rosseaux.com>
  * GCR Hardware tests by
  *  Peter Rittwage <peter@rittwage.com>
  * This file is part of VICE, the Versatile Commodore Emulator.
@@ -257,7 +257,7 @@ void rotation_begins(drive_t *dptr) {
     rotation[dnr].rotation_last_clk = *(dptr->clk);
 }
 
-/* 1541 circuit simulation for GCR-based images, see 1541 circuit description in 
+/* 1541 circuit simulation for GCR-based images, see 1541 circuit description in
    this file for details */
 void rotation_1541_gcr(drive_t *dptr)
 {
@@ -479,9 +479,9 @@ void rotation_1541_p64(drive_t *dptr)
 
     P64PulseStream = &dptr->p64->PulseStreams[dptr->current_half_track];
 
-    if ((P64PulseStream->CurrentIndex < 0) || 
-        ((P64PulseStream->CurrentIndex != P64PulseStream->UsedFirst) && 
-        ((P64PulseStream->Pulses[P64PulseStream->CurrentIndex].Previous >= 0) && 
+    if ((P64PulseStream->CurrentIndex < 0) ||
+        ((P64PulseStream->CurrentIndex != P64PulseStream->UsedFirst) &&
+        ((P64PulseStream->Pulses[P64PulseStream->CurrentIndex].Previous >= 0) &&
         (P64PulseStream->Pulses[P64PulseStream->Pulses[P64PulseStream->CurrentIndex].Previous].Position >= rptr->PulseHeadPosition)))) {
         P64PulseStreamSeek(P64PulseStream, rptr->PulseHeadPosition);
     }
@@ -490,7 +490,7 @@ void rotation_1541_p64(drive_t *dptr)
 
         while(delta-->0) {
 
-            while ((P64PulseStream->CurrentIndex >= 0) && 
+            while ((P64PulseStream->CurrentIndex >= 0) &&
                    (P64PulseStream->Pulses[P64PulseStream->CurrentIndex].Position < rptr->PulseHeadPosition)) {
                 P64PulseStream->CurrentIndex = P64PulseStream->Pulses[P64PulseStream->CurrentIndex].Next;
             }
@@ -619,7 +619,7 @@ void rotation_1541_p64(drive_t *dptr)
                         rptr->PulseHeadPosition -= P64PulseSamplesPerRotation;
 
                         P64PulseStream->CurrentIndex = P64PulseStream->UsedFirst;
-                        while ((P64PulseStream->CurrentIndex >= 0) && 
+                        while ((P64PulseStream->CurrentIndex >= 0) &&
                                (P64PulseStream->Pulses[P64PulseStream->CurrentIndex].Position < rptr->PulseHeadPosition)) {
                           P64PulseStream->CurrentIndex = P64PulseStream->Pulses[P64PulseStream->CurrentIndex].Next;
                         }
@@ -712,7 +712,7 @@ void rotation_1541_p64(drive_t *dptr)
                 rptr->PulseHeadPosition -= P64PulseSamplesPerRotation;
 
                 P64PulseStream->CurrentIndex = P64PulseStream->UsedFirst;
-                while ((P64PulseStream->CurrentIndex >= 0) && 
+                while ((P64PulseStream->CurrentIndex >= 0) &&
                        (P64PulseStream->Pulses[P64PulseStream->CurrentIndex].Position < rptr->PulseHeadPosition)) {
                     P64PulseStream->CurrentIndex = P64PulseStream->Pulses[P64PulseStream->CurrentIndex].Next;
                 }
