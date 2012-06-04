@@ -6,7 +6,7 @@ INCLUDES = \
 	-I$(top_srcdir)/src/drive \
 	-I$(top_srcdir)/src/imagecontents \
 	-I$(top_srcdir)/src/vdrive \
-	-I$(top_srcdir)/src/p64
+	-I$(top_srcdir)/src/lib/p64
 
 AM_YFLAGS = -dt
 

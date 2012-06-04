@@ -98,7 +98,7 @@ INCLUDES = \
 	-I$(top_srcdir)/src/vdrive \
 	-I$(top_srcdir)/src/imagecontents \
 	-I$(top_srcdir)/src/userport \
-	-I$(top_srcdir)/src/p64
+	-I$(top_srcdir)/src/lib/p64
 
 noinst_HEADERS = \
 	6510core.h \
@@ -745,7 +745,7 @@ video_lib = $(top_builddir)/src/video/libvideo.a
 vsid_lib = $(top_builddir)/src/c64/libvsid.a
 xcbm2_lib = $(top_builddir)/src/cbm2/libcbm2.a
 xcbm5x0_lib = $(top_builddir)/src/cbm2/libcbm5x0.a
-p64_lib = $(top_builddir)/src/p64/libp64.a
+p64_lib = $(top_builddir)/src/lib/p64/libp64.a
 
 common_libs = @ARCH_LIBS@ @LIBOBJS@ @READLINE@
 resid_libs = @RESID_LIBS@ @RESID_FP_LIBS@
@@ -1464,7 +1464,7 @@ c1541_SOURCES = \
 	util.c \
 	zfile.c \
 	zipcode.c \
-	p64/p64.c
+	lib/p64/p64.c
 
 if OWCC
 ARCH_EXTRA_OBJECTS = @ARCH_DIR@/libarch.a

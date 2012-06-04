@@ -9,7 +9,7 @@ INCLUDES = \
 	-I$(top_srcdir)/src/userport \
 	-I$(top_srcdir)/src/video \
 	-I$(top_srcdir)/src/tape \
-	-I$(top_srcdir)/src/p64
+	-I$(top_srcdir)/src/lib/p64
 
 noinst_LIBRARIES = libpet.a
 

@@ -8,7 +8,7 @@ INCLUDES = \
 	-I$(top_srcdir)/src/tape \
 	-I$(top_srcdir)/src/monitor \
 	-I$(top_srcdir)/src/video \
-	-I$(top_srcdir)/src/p64 \
+	-I$(top_srcdir)/src/lib/p64 \
 	-I$(top_srcdir)/src/raster
 
 noinst_LIBRARIES = libplus4.a
