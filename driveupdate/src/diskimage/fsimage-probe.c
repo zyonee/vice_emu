@@ -482,19 +482,21 @@ static int disk_image_check_for_p64(disk_image_t *image)
         return 0;
     }
 
-    if (strncmp("P64-1541", (char*)header, 8))
+    if (strncmp("P64-1541", (char*)header, 8)) {
         return 0;
+    }
 
     /*log_error(disk_image_probe_log, "P64 detected"); */
-    
+
     image->type = DISK_IMAGE_TYPE_P64;
     image->tracks = 84 / 2;
     fsimage_error_info_destroy(fsimage);
     disk_image_check_log(image, "P64");
 
     if (image->p64 != NULL) {
-        if (fsimage_read_p64_image(image) < 0)
+        if (fsimage_read_p64_image(image) < 0) {
             return 0;
+        }
     }
     return 1;
 }
@@ -635,30 +637,42 @@ static int disk_image_check_for_d4m(disk_image_t *image)
 
 int fsimage_probe(disk_image_t *image)
 {
-    if (disk_image_check_for_d64(image))
+    if (disk_image_check_for_d64(image)) {
         return 0;
-    if (disk_image_check_for_d67(image))
+    }
+    if (disk_image_check_for_d67(image)) {
         return 0;
-    if (disk_image_check_for_d71(image))
+    }
+    if (disk_image_check_for_d71(image)) {
         return 0;
-    if (disk_image_check_for_d81(image))
+    }
+    if (disk_image_check_for_d81(image)) {
         return 0;
-    if (disk_image_check_for_d80(image))
+    }
+    if (disk_image_check_for_d80(image)) {
         return 0;
-    if (disk_image_check_for_d82(image))
+    }
+    if (disk_image_check_for_d82(image)) {
         return 0;
-    if (disk_image_check_for_p64(image))
+    }
+    if (disk_image_check_for_p64(image)) {
         return 0;
-    if (disk_image_check_for_gcr(image))
+    }
+    if (disk_image_check_for_gcr(image)) {
         return 0;
-    if (disk_image_check_for_x64(image))
+    }
+    if (disk_image_check_for_x64(image)) {
         return 0;
-    if (disk_image_check_for_d1m(image))
+    }
+    if (disk_image_check_for_d1m(image)) {
         return 0;
-    if (disk_image_check_for_d2m(image))
+    }
+    if (disk_image_check_for_d2m(image)) {
         return 0;
-    if (disk_image_check_for_d4m(image))
+    }
+    if (disk_image_check_for_d4m(image)) {
         return 0;
+    }
 
     return -1;
 }

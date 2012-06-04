@@ -248,12 +248,14 @@ int fsimage_read_sector(disk_image_t *image, BYTE *buf, unsigned int track,
         }
         break;
       case DISK_IMAGE_TYPE_G64:
-        if (fsimage_gcr_read_sector(image, buf, track, sector) < 0)
+        if (fsimage_gcr_read_sector(image, buf, track, sector) < 0) {
             return -1;
+        }
         break;
       case DISK_IMAGE_TYPE_P64:
-        if (fsimage_p64_read_sector(image, buf, track, sector) < 0)
+        if (fsimage_p64_read_sector(image, buf, track, sector) < 0) {
             return -1;
+        }
         break;
       default:
         log_error(fsimage_log,
@@ -318,12 +320,14 @@ int fsimage_write_sector(disk_image_t *image, BYTE *buf, unsigned int track,
         fflush(fsimage->fd);
         break;
       case DISK_IMAGE_TYPE_G64:
-        if (fsimage_gcr_write_sector(image, buf, track, sector) < 0)
+        if (fsimage_gcr_write_sector(image, buf, track, sector) < 0) {
             return -1;
+        }
         break;
       case DISK_IMAGE_TYPE_P64:
-        if (fsimage_p64_write_sector(image, buf, track, sector) < 0)
+        if (fsimage_p64_write_sector(image, buf, track, sector) < 0) {
             return -1;
+        }
         break;
       default:
         log_error(fsimage_log, "Unknown disk image.  Cannot write sector.");

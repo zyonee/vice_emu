@@ -147,8 +147,9 @@ static int fsimage_create_p64(disk_image_t *image)
             memset(rawdata, 0, 260);
             rawdata[0] = 7;
             chksum = rawdata[1];
-            for (i = 1; i < 256; i++)
+            for (i = 1; i < 256; i++) {
                 chksum ^= rawdata[i + 1];
+            }
             rawdata[257] = chksum;
 
             gcr_convert_sector_to_GCR(rawdata, gcrptr, track + 1, sector,

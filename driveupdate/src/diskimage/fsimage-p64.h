@@ -1,8 +1,8 @@
 /*
- * fsimage-gcr.h
+ * fsimage-p64.h
  *
  * Written by
- *  Andreas Boose <viceteam@t-online.de>
+ *  Benjamin 'BeRo' Rosseaux
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.

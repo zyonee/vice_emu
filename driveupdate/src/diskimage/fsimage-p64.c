@@ -1,8 +1,8 @@
 /*
- * fsimage-gcr.c
+ * fsimage-p64.c
  *
  * Written by
- *  Andreas Boose <viceteam@t-online.de>
+ *  Benjamin 'BeRo' Rosseaux
  *
  * This file is part of VICE, the Versatile Commodore Emulator.
  * See README for copyright notice.
@@ -60,7 +60,7 @@ int fsimage_read_p64_image(disk_image_t *image)
     lSize = ftell(fsimage->fd);
     fseek(fsimage->fd, 0, SEEK_SET);
     buffer = (char*)lib_malloc(sizeof(char) * lSize);
-    if (fread(buffer, 1, lSize, fsimage->fd) < 1)  {
+    if (fread(buffer, 1, lSize, fsimage->fd) < 1) {
         lib_free(buffer);
         log_error(fsimage_p64_log, "Could not read P64 disk image.");
         return -1;
@@ -72,15 +72,15 @@ int fsimage_read_p64_image(disk_image_t *image)
     P64MemoryStreamWrite(&P64MemoryStreamInstance,buffer,lSize);
     P64MemoryStreamSeek(&P64MemoryStreamInstance,0);
     if (P64ImageReadFromStream(P64Image,&P64MemoryStreamInstance)) {
-	rc = 0;
+        rc = 0;
     } else {
-	rc = -1;
+        rc = -1;
         log_error(fsimage_p64_log, "Could not read P64 disk image stream.");
     }
     P64MemoryStreamDestroy(&P64MemoryStreamInstance);
 
     lib_free(buffer);
-     
+
     return rc;
 }
 
@@ -97,16 +97,16 @@ int fsimage_write_p64_image(disk_image_t *image)
     P64MemoryStreamCreate(&P64MemoryStreamInstance);
     P64MemoryStreamClear(&P64MemoryStreamInstance);
     if (P64ImageWriteToStream(P64Image,&P64MemoryStreamInstance)) {
-	fseek(fsimage->fd, 0, SEEK_SET);
-	if (fwrite(P64MemoryStreamInstance.Data, P64MemoryStreamInstance.Size, 1, fsimage->fd) < 1){
-		rc = -1;
-	        log_error(fsimage_p64_log, "Could not write P64 disk image.");
-	} else {
-		fflush(fsimage->fd);
-		rc = 0;
-	}
+        fseek(fsimage->fd, 0, SEEK_SET);
+        if (fwrite(P64MemoryStreamInstance.Data, P64MemoryStreamInstance.Size, 1, fsimage->fd) < 1) {
+                rc = -1;
+                log_error(fsimage_p64_log, "Could not write P64 disk image.");
+        } else {
+                fflush(fsimage->fd);
+                rc = 0;
+        }
     } else {
-	rc = -1;
+        rc = -1;
         log_error(fsimage_p64_log, "Could not write P64 disk image stream.");
     }
     P64MemoryStreamDestroy(&P64MemoryStreamInstance);
@@ -122,25 +122,23 @@ int fsimage_p64_read_track(disk_image_t *image, unsigned int track,
 {
     PP64Image P64Image = (void*)image->p64;
 
-    if (P64Image == NULL){
-       log_error(fsimage_p64_log,
-                  "P64 image not loaded.");
+    if (P64Image == NULL) {
+        log_error(fsimage_p64_log, "P64 image not loaded.");
         return -1;
     }
 
     if (track > 42) {
-       log_error(fsimage_p64_log,
-                  "Track %i out of bounds.  Cannot read P64 track.",
-                 track);
-           return -1;
+        log_error(fsimage_p64_log, "Track %i out of bounds.  Cannot read P64 track.", track);
+        return -1;
     }
 
     memset(gcr_data, 0xff, 6250);
 
     *gcr_track_size = (P64PulseStreamConvertToGCRWithLogic(&P64Image->PulseStreams[track << 1], (void*)gcr_data, NUM_MAX_MEM_BYTES_TRACK, disk_image_speed_map_1541((track > 0) ? (track - 1) : 0)) + 7) >> 3;
 
-    if (*gcr_track_size < 1)
+    if (*gcr_track_size < 1) {
         *gcr_track_size = 6520;
+    }
 
     return 0;
 }
@@ -154,17 +152,14 @@ int fsimage_p64_write_track(disk_image_t *image, unsigned int track,
 {
     PP64Image P64Image = (void*)image->p64;
 
-    if (P64Image == NULL){
-       log_error(fsimage_p64_log,
-                  "P64 image not loaded.");
+    if (P64Image == NULL) {
+        log_error(fsimage_p64_log, "P64 image not loaded.");
         return -1;
     }
 
     if (track > 42) {
-       log_error(fsimage_p64_log,
-                  "Track %i out of bounds.  Cannot write P64 track.",
-                 track);
-           return -1;
+        log_error(fsimage_p64_log, "Track %i out of bounds.  Cannot write P64 track.", track);
+        return -1;
     }
 
     P64PulseStreamConvertFromGCR(&P64Image->PulseStreams[track << 1], (void*)gcr_track_start_ptr, gcr_track_size << 3);
@@ -184,28 +179,22 @@ int fsimage_p64_read_sector(disk_image_t *image, BYTE *buf,
     int gcr_track_size, gcr_current_track_size;
 
     if (track > 42) {
-       log_error(fsimage_p64_log,
-                  "Track %i out of bounds.  Cannot read P64 track.",
-                 track);
-           return -1;
+        log_error(fsimage_p64_log, "Track %i out of bounds.  Cannot read P64 track.", track);
+        return -1;
     }
 
     gcr_data = (BYTE*) lib_malloc(max_track_length);
 
     if (fsimage_p64_read_track(image, track, gcr_data, &gcr_track_size) < 0) {
-        log_error(fsimage_p64_log,
-                  "Cannot read track %i from P64 image.", track);
+        log_error(fsimage_p64_log, "Cannot read track %i from P64 image.", track);
         lib_free(gcr_data);
         return -1;
     }
     gcr_track_start_ptr = gcr_data;
     gcr_current_track_size = gcr_track_size;
 
-    if (gcr_read_sector(gcr_track_start_ptr, gcr_current_track_size,
-          buf, track, sector) < 0) {
-        log_error(fsimage_p64_log,
-                  "Cannot find track: %i sector: %i within P64 image.",
-                  track, sector);
+    if (gcr_read_sector(gcr_track_start_ptr, gcr_current_track_size, buf, track, sector) < 0) {
+        log_error(fsimage_p64_log, "Cannot find track: %i sector: %i within P64 image.", track, sector);
         lib_free(gcr_data);
         return -1;
     }
@@ -228,18 +217,14 @@ int fsimage_p64_write_sector(disk_image_t *image, BYTE *buf,
     int gcr_track_size, gcr_current_track_size;
 
     if (track > 42) {
-        log_error(fsimage_p64_log,
-                  "Track %i out of bounds.  Cannot write P64 sector",
-                  track);
+        log_error(fsimage_p64_log, "Track %i out of bounds.  Cannot write P64 sector", track);
         return -1;
     }
 
     gcr_data = (BYTE*) lib_malloc(max_track_length);
 
-    if (fsimage_p64_read_track(image, track, gcr_data,
-        &gcr_track_size) < 0) {
-        log_error(fsimage_p64_log,
-                  "Cannot read track %i from P64 image.", track);
+    if (fsimage_p64_read_track(image, track, gcr_data, &gcr_track_size) < 0) {
+        log_error(fsimage_p64_log, "Cannot read track %i from P64 image.", track);
         lib_free(gcr_data);
         return -1;
     }
@@ -249,17 +234,14 @@ int fsimage_p64_write_sector(disk_image_t *image, BYTE *buf,
 
     if (gcr_write_sector(gcr_track_start_ptr,
         gcr_current_track_size, buf, track, sector) < 0) {
-        log_error(fsimage_p64_log,
-                  "Could not find track %i sector %i in disk image",
-                  track, sector);
+        log_error(fsimage_p64_log, "Could not find track %i sector %i in disk image", track, sector);
         lib_free(gcr_data);
         return -1;
     }
 
     if (fsimage_p64_write_track(image, track, gcr_current_track_size,
         speed_zone, gcr_track_start_ptr) < 0) {
-        log_error(fsimage_p64_log,
-                  "Failed writing track %i to disk image.", track);
+        log_error(fsimage_p64_log, "Failed writing track %i to disk image.", track);
         lib_free(gcr_data);
         return -1;
     }
