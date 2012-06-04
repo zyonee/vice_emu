@@ -46,5 +46,7 @@ extern int fsimage_gcr_write_track(struct disk_image_s *image,
                                    unsigned int track, int gcr_track_size,
                                    BYTE *gcr_speed_zone,
                                    BYTE *gcr_track_start_ptr);
+extern int fsimage_gcr_set_max_track_length(disk_image_t *image);
+
 #endif
 
