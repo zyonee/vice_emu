@@ -42,7 +42,7 @@ SUBDIRS = \
 	plus4 \
 	cbm2 \
 	arch \
-	p64
+	lib/p64
 
 DIST_SUBDIRS = \
 	sounddrv \
@@ -81,8 +81,7 @@ DIST_SUBDIRS = \
 	resid \
 	resid-fp \
 	resid-dtv \
-	lib \
-	p64
+	lib
 
 INCLUDES = \
 	@ARCH_INCLUDES@ \
@@ -1463,8 +1462,9 @@ c1541_SOURCES = \
 	resources.c \
 	util.c \
 	zfile.c \
-	zipcode.c \
-	lib/p64/p64.c
+	zipcode.c 
+
+#	lib/p64/p64.c
 
 if OWCC
 ARCH_EXTRA_OBJECTS = @ARCH_DIR@/libarch.a
@@ -1477,6 +1477,7 @@ endif
 # libs too then.
 c1541_LDADD = \
 	$(ARCH_EXTRA_OBJECTS) \
+	$(p64_lib) \
 	$(blockdev_lib) \
 	$(realdevice_lib) \
 	$(vdrive_lib) \
