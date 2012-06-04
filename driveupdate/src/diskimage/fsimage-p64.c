@@ -65,9 +65,9 @@ int fsimage_read_p64_image(disk_image_t *image)
         log_error(fsimage_p64_log, "Could not read P64 disk image.");
         return -1;
     }
-    
+
     /*num_tracks = image->tracks;*/
-    
+
     P64MemoryStreamCreate(&P64MemoryStreamInstance);
     P64MemoryStreamWrite(&P64MemoryStreamInstance,buffer,lSize);
     P64MemoryStreamSeek(&P64MemoryStreamInstance,0);
@@ -110,7 +110,7 @@ int fsimage_write_p64_image(disk_image_t *image)
         log_error(fsimage_p64_log, "Could not write P64 disk image stream.");
     }
     P64MemoryStreamDestroy(&P64MemoryStreamInstance);
-     
+
     return rc;
 }
 
@@ -137,9 +137,9 @@ int fsimage_p64_read_track(disk_image_t *image, unsigned int track,
 
     memset(gcr_data, 0xff, 6250);
 
-    *gcr_track_size = (P64PulseStreamConvertToGCRWithLogic(&P64Image->PulseStreams[track << 1], (void*)gcr_data, P64Image->PulseStreams[track << 1].BitStreamLength, P64Image->PulseStreams[track << 1].SpeedZone) + 7) >> 3;
+    *gcr_track_size = (P64PulseStreamConvertToGCRWithLogic(&P64Image->PulseStreams[track << 1], (void*)gcr_data, NUM_MAX_MEM_BYTES_TRACK, disk_image_speed_map_1541((track > 0) ? (track - 1) : 0)) + 7) >> 3;
 
-    if (*gcr_track_size < 1) 
+    if (*gcr_track_size < 1)
         *gcr_track_size = 6520;
 
     return 0;
@@ -179,7 +179,7 @@ int fsimage_p64_read_sector(disk_image_t *image, BYTE *buf,
                                unsigned int track, unsigned int sector)
 {
     unsigned int max_track_length = NUM_MAX_MEM_BYTES_TRACK;
-    BYTE *gcr_data; 
+    BYTE *gcr_data;
     BYTE *gcr_track_start_ptr;
     int gcr_track_size, gcr_current_track_size;
 
@@ -240,7 +240,7 @@ int fsimage_p64_write_sector(disk_image_t *image, BYTE *buf,
         &gcr_track_size) < 0) {
         log_error(fsimage_p64_log,
                   "Cannot read track %i from P64 image.", track);
-        lib_free(gcr_data);  
+        lib_free(gcr_data);
         return -1;
     }
     gcr_track_start_ptr = gcr_data;

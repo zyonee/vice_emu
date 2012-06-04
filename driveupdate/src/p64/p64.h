@@ -112,14 +112,6 @@ typedef TP64ChunkHeader* PP64ChunkHeader;
 
 typedef struct
 {
-    p64_uint32_t BitStreamLength;
-    p64_uint8_t SpeedZone;
-} TP64HalfTrackMetaInfoHeader;
-
-typedef TP64HalfTrackMetaInfoHeader* PP64HalfTrackMetaInfoHeader;
-
-typedef struct
-{
     p64_uint32_t CountPulses;
     p64_uint32_t Size;
 } TP64HalfTrackHeader;
@@ -142,8 +134,6 @@ typedef TP64Pulse* PP64Pulses;
 
 typedef struct
 {
-    p64_uint32_t BitStreamLength;
-    p64_uint8_t SpeedZone;
     PP64Pulses Pulses;
     p64_uint32_t PulsesAllocated;
     p64_uint32_t PulsesCount;
@@ -205,8 +195,6 @@ extern void P64PulseStreamSeek(PP64PulseStream Instance, p64_uint32_t Position);
 extern void P64PulseStreamConvertFromGCR(PP64PulseStream Instance, p64_uint8_t* Bytes, p64_uint32_t Len);
 extern void P64PulseStreamConvertToGCR(PP64PulseStream Instance, p64_uint8_t* Bytes, p64_uint32_t Len);
 extern p64_uint32_t P64PulseStreamConvertToGCRWithLogic(PP64PulseStream Instance, p64_uint8_t* Bytes, p64_uint32_t Len, p64_uint32_t SpeedZone);
-extern p64_uint32_t P64PulseStreamReadMetaInfoFromStream(PP64PulseStream Instance, PP64MemoryStream Stream);
-extern p64_uint32_t P64PulseStreamWriteMetaInfoToStream(PP64PulseStream Instance, PP64MemoryStream Stream);
 extern p64_uint32_t P64PulseStreamReadFromStream(PP64PulseStream Instance, PP64MemoryStream Stream);
 extern p64_uint32_t P64PulseStreamWriteToStream(PP64PulseStream Instance, PP64MemoryStream Stream);
 

@@ -439,8 +439,6 @@ void P64PulseStreamCreate(PP64PulseStream Instance)
     Instance->UsedLast = -1;
     Instance->FreeList = -1;
     Instance->CurrentIndex = -1;
-    Instance->BitStreamLength = 0;
-    Instance->SpeedZone = 0;
 }
 
 void P64PulseStreamDestroy(PP64PulseStream Instance)
@@ -462,8 +460,6 @@ void P64PulseStreamClear(PP64PulseStream Instance)
     Instance->UsedLast = -1;
     Instance->FreeList = -1;
     Instance->CurrentIndex = -1;
-    Instance->BitStreamLength = 0;
-    Instance->SpeedZone = 0;
 }
 
 p64_int32_t P64PulseStreamAllocatePulse(PP64PulseStream Instance)
@@ -792,12 +788,11 @@ void P64PulseStreamConvertFromGCR(PP64PulseStream Instance, p64_uint8_t* Bytes, 
     P64PulseStreamClear(Instance);
     if (Len)
     {
-        Instance->BitStreamLength = Len;
         IncrementHi = P64PulseSamplesPerRotation / Len;
         IncrementLo = P64PulseSamplesPerRotation % Len;
         PositionHi = (P64PulseSamplesPerRotation >> 1) / Len;
         PositionLo = (P64PulseSamplesPerRotation >> 1) % Len;
-        for (BitStreamPosition = 0; BitStreamPosition < Instance->BitStreamLength; BitStreamPosition++)
+        for (BitStreamPosition = 0; BitStreamPosition < Len; BitStreamPosition++)
         {
             if (((p64_uint8_t)(Bytes[BitStreamPosition >> 3])) & (1 << ((~BitStreamPosition) & 7)))
             {
@@ -817,19 +812,18 @@ void P64PulseStreamConvertFromGCR(PP64PulseStream Instance, p64_uint8_t* Bytes, 
 
 void P64PulseStreamConvertToGCR(PP64PulseStream Instance, p64_uint8_t* Bytes, p64_uint32_t Len)
 {
-    p64_uint32_t Range, PositionHi, PositionLo, IncrementHi, IncrementLo, BitStreamPosition, BitStreamLen;
+    p64_uint32_t Range, PositionHi, PositionLo, IncrementHi, IncrementLo, BitStreamPosition;
     p64_int32_t Current;
     if (Len)
     {
         memset(Bytes, 0, (Len + 7) >> 3);
-        BitStreamLen = Len;
         Range = P64PulseSamplesPerRotation;
         IncrementHi = Range / Len;
         IncrementLo = Range % Len;
         Current = Instance->UsedFirst;
         PositionHi = (Current >= 0) ? Instance->Pulses[Current].Position - 1 : 0;
         PositionLo = Len - 1;
-        for (BitStreamPosition = 0; BitStreamPosition < BitStreamLen; BitStreamPosition++)
+        for (BitStreamPosition = 0; BitStreamPosition < Len; BitStreamPosition++)
         {
             PositionHi += IncrementHi;
             PositionLo += IncrementLo;
@@ -910,34 +904,11 @@ p64_uint32_t P64PulseStreamConvertToGCRWithLogic(PP64PulseStream Instance, p64_u
 
         /* optional: add here GCR byte-realigning-to-syncmark-borders code, if your GCR routines are working bytewise-only */
 
-        return (((BitStreamPosition > Len) ? (BitStreamPosition - Len) : (Len - BitStreamPosition)) < 2) ? Len : BitStreamPosition;
+        return BitStreamPosition;
 
     }
 
     return 0;
-}
-
-p64_uint32_t P64PulseStreamReadMetaInfoFromStream(PP64PulseStream Instance, PP64MemoryStream Stream)
-{
-    TP64HalfTrackMetaInfoHeader Header;
-    if (P64MemoryStreamRead(Stream, (void*)&Header, sizeof(TP64HalfTrackMetaInfoHeader)) == sizeof(TP64HalfTrackMetaInfoHeader))
-    {
-        P64EndianSwap(&Header.BitStreamLength);
-        Instance->BitStreamLength = Header.BitStreamLength;
-        Instance->SpeedZone = Header.SpeedZone;
-        return 1;
-    }
-    return 0;
-}
-
-p64_uint32_t P64PulseStreamWriteMetaInfoToStream(PP64PulseStream Instance, PP64MemoryStream Stream)
-{
-    TP64HalfTrackMetaInfoHeader Header;
-    memset(&Header, 0, sizeof(TP64HalfTrackMetaInfoHeader));
-    Header.BitStreamLength = Instance->BitStreamLength;
-    Header.SpeedZone = Instance->SpeedZone;
-    P64EndianSwap(&Header.BitStreamLength);
-    return P64MemoryStreamWrite(Stream, (void*)&Header, sizeof(TP64HalfTrackMetaInfoHeader)) == sizeof(TP64HalfTrackMetaInfoHeader);
 }
 
 #define ModelPosition 0
@@ -1174,17 +1145,6 @@ p64_uint32_t P64PulseStreamWriteToStream(PP64PulseStream Instance, PP64MemoryStr
     return 0;
 }
 
-const p64_uint8_t P64SpeedMap[84] = {3,
-                                 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-                                 3, 3, 3, 3, 3, 3, 3, 2, 2, 2,
-                                 2, 2, 2, 2, 1, 1, 1, 1, 1, 1,
-                                 0, 0, 0, 0, 0,
-                                 2, 2, 2, 2, 2, 2, 2,
-                                 0, 0
-                                };
-
-const p64_uint16_t P64RawTrackSize[4] = {6250, 6666, 7142, 7692};
-
 void P64ImageCreate(PP64Image Instance)
 {
     p64_int32_t HalfTrack;
@@ -1213,8 +1173,6 @@ void P64ImageClear(PP64Image Instance)
     for (HalfTrack = 0; HalfTrack <= P64LastHalfTrack; HalfTrack++)
     {
         P64PulseStreamClear(&Instance->PulseStreams[HalfTrack]);
-        Instance->PulseStreams[HalfTrack].SpeedZone = P64SpeedMap[HalfTrack >> 1];
-        Instance->PulseStreams[HalfTrack].BitStreamLength = P64RawTrackSize[P64SpeedMap[HalfTrack >> 1]] << 3;
     }
 }
 
@@ -1276,12 +1234,7 @@ p64_uint32_t P64ImageReadFromStream(PP64Image Instance, PP64MemoryStream Stream)
                                             {
                                                 if (P64CRC32(ChunkMemoryStream.Data, ChunkHeader.Size) == ChunkHeader.Checksum)
                                                 {
-                                                    if ((ChunkHeader.Signature[0] == 'H') && (ChunkHeader.Signature[1] == 'T') && (ChunkHeader.Signature[2] == 'M') && ((ChunkHeader.Signature[3] >= P64FirstHalfTrack) && (ChunkHeader.Signature[3] <= P64LastHalfTrack)))
-                                                    {
-                                                        HalfTrack = ChunkHeader.Signature[3];
-                                                        OK = P64PulseStreamReadMetaInfoFromStream(&Instance->PulseStreams[HalfTrack], &ChunkMemoryStream);
-                                                    }
-                                                    else if ((ChunkHeader.Signature[0] == 'H') && (ChunkHeader.Signature[1] == 'T') && (ChunkHeader.Signature[2] == 'P') && ((ChunkHeader.Signature[3] >= P64FirstHalfTrack) && (ChunkHeader.Signature[3] <= P64LastHalfTrack)))
+                                                    if ((ChunkHeader.Signature[0] == 'H') && (ChunkHeader.Signature[1] == 'T') && (ChunkHeader.Signature[2] == 'P') && ((ChunkHeader.Signature[3] >= P64FirstHalfTrack) && (ChunkHeader.Signature[3] <= P64LastHalfTrack)))
                                                     {
                                                         HalfTrack = ChunkHeader.Signature[3];
                                                         OK = P64PulseStreamReadFromStream(&Instance->PulseStreams[HalfTrack], &ChunkMemoryStream);
@@ -1362,23 +1315,6 @@ p64_uint32_t P64ImageWriteToStream(PP64Image Instance, PP64MemoryStream Stream)
     result = 1;
     for (HalfTrack = P64FirstHalfTrack; HalfTrack <= P64LastHalfTrack; HalfTrack++)
     {
-
-        P64MemoryStreamCreate(&ChunkMemoryStream);
-        result = P64PulseStreamWriteMetaInfoToStream(&Instance->PulseStreams[HalfTrack], &ChunkMemoryStream);
-        if (result)
-        {
-            ChunkSignature[0] = 'H';
-            ChunkSignature[1] = 'T';
-            ChunkSignature[2] = 'M';
-            ChunkSignature[3] = HalfTrack;
-            WriteChunk();
-            result = WriteChunkResult;
-        }
-        P64MemoryStreamDestroy(&ChunkMemoryStream);
-        if (!result)
-        {
-            break;
-        }
 
         P64MemoryStreamCreate(&ChunkMemoryStream);
         result = P64PulseStreamWriteToStream(&Instance->PulseStreams[HalfTrack], &ChunkMemoryStream);
