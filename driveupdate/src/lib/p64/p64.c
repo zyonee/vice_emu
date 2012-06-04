@@ -44,8 +44,8 @@ p64_uint32_t P64CRC32(p64_uint8_t* Data, p64_uint32_t Len) {
 
 	for(value = 0xffffffffUL, pos = 0; pos < Len; pos++) {
 		value ^= Data[pos];
-		value = CRC32Table[value & 0xf] ^(value >> 4);
-		value = CRC32Table[value & 0xf] ^(value >> 4);
+		value = CRC32Table[value & 0xfUL] ^(value >> 4);
+		value = CRC32Table[value & 0xfUL] ^(value >> 4);
 	}
 
 	return value ^ 0xffffffffUL;
@@ -129,14 +129,14 @@ void P64RangeCoderEncodeNormalize(PP64RangeCoder Instance) {
 	while(!((Instance->RangeLow ^ Instance->RangeHigh) & 0xff000000UL)) {
 		P64RangeCoderWrite(Instance, Instance->RangeHigh >> 24);
 		Instance->RangeLow <<= 8;
-		Instance->RangeHigh = (Instance->RangeHigh << 8) | 0xff;
+		Instance->RangeHigh = (Instance->RangeHigh << 8) | 0xffUL;
 	}
 }
 
 p64_uint32_t P64RangeCoderEncodeBit(PP64RangeCoder Instance, p64_uint32_t* Probability, p64_uint32_t Shift, p64_uint32_t BitValue) {
 	Instance->RangeMiddle = Instance->RangeLow + ((p64_uint32_t)((p64_uint32_t)(Instance->RangeHigh - Instance->RangeLow) >> 12) * (*Probability));
 	if(BitValue) {
-		*Probability += (0xfff - *Probability) >> Shift;
+		*Probability += (0xfffUL - *Probability) >> Shift;
 		Instance->RangeHigh = Instance->RangeMiddle;
 	} else {
 		*Probability -= *Probability >> Shift;
@@ -160,7 +160,7 @@ p64_uint32_t P64RangeCoderEncodeBitWithoutProbability(PP64RangeCoder Instance, p
 void P64RangeCoderDecodeNormalize(PP64RangeCoder Instance) {
 	while(!((Instance->RangeLow ^ Instance->RangeHigh) & 0xff000000UL)) {
 		Instance->RangeLow <<= 8;
-		Instance->RangeHigh = (Instance->RangeHigh << 8) | 0xff;
+		Instance->RangeHigh = (Instance->RangeHigh << 8) | 0xffUL;
 		Instance->RangeCode = (Instance->RangeCode << 8) | P64RangeCoderRead(Instance);
 	}
 }
@@ -169,7 +169,7 @@ p64_uint32_t P64RangeCoderDecodeBit(PP64RangeCoder Instance, p64_uint32_t *Proba
 	p64_uint32_t bit;
 	Instance->RangeMiddle = Instance->RangeLow + ((p64_uint32_t)((p64_uint32_t)(Instance->RangeHigh - Instance->RangeLow) >> 12) * (*Probability));
 	if(Instance->RangeCode <= Instance->RangeMiddle) {
-		*Probability += (0xfff - *Probability) >> Shift;
+		*Probability += (0xfffUL - *Probability) >> Shift;
 		Instance->RangeHigh = Instance->RangeMiddle;
 		bit = 1;
 	} else {
@@ -733,7 +733,7 @@ p64_uint32_t P64PulseStreamConvertToGCRWithLogic(PP64PulseStream Instance, p64_u
 					}
 					if(Clock == 16) {
 						Clock = SpeedZone;
-						Counter = (Counter + 1) & 0xf;
+						Counter = (Counter + 1) & 0xfUL;
 						if((Counter & 3) == 2) {
 							Bytes[BitStreamPosition >> 3] |= (((Counter + 0x1c) >> 4) & 1) << ((~BitStreamPosition) & 7);
 							BitStreamPosition++;
@@ -819,9 +819,9 @@ p64_uint32_t P64PulseStreamReadFromStream(PP64PulseStream Instance, PP64MemorySt
   						for (Bit = 7; Bit >= 0; Bit--) { \
 	  						Context = (Context << 1) | P64RangeCoderDecodeBit(&RangeCoderInstance, RangeCoderProbabilities + (RangeCoderProbabilityOffsets[Model + ByteIndex] + (((RangeCoderProbabilityStates[Model + ByteIndex] << 8) | Context) & 0xffffUL)), 4); \
 		  				} \
-			  			ByteValue = Context & 0xff; \
+			  			ByteValue = Context & 0xffUL; \
 				  		RangeCoderProbabilityStates[Model + ByteIndex] = ByteValue; \
-					  	result |= ((ByteValue & 0xff) << (ByteIndex << 3)); \
+					  	result |= ((ByteValue & 0xffUL) << (ByteIndex << 3)); \
             } \
 					} \
 
@@ -898,7 +898,7 @@ p64_uint32_t P64PulseStreamWriteToStream(PP64PulseStream Instance, PP64MemoryStr
         p64_int32_t Bit; \
         Value = DWordValue; \
 	   		for (ByteIndex = 0; ByteIndex < 4; ByteIndex++) { \
-			  	ByteValue = (Value >> (ByteIndex << 3)) & 0xff; \
+			  	ByteValue = (Value >> (ByteIndex << 3)) & 0xffUL; \
 				  Context = 1; \
 				  for (Bit = 7; Bit >= 0; Bit--) { \
 					  Context = (Context << 1) | P64RangeCoderEncodeBit(&RangeCoderInstance, RangeCoderProbabilities + (RangeCoderProbabilityOffsets[Model + ByteIndex] + (((RangeCoderProbabilityStates[Model+ByteIndex] << 8) | Context) & 0xffffUL)), 4, (ByteValue >> Bit) & 1); \
