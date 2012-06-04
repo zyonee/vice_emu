@@ -3444,7 +3444,7 @@ if false ; then
     mkdir -p imagecontents
     mkdir -p lib
     mkdir -p monitor
-    mkdir -p p64
+    mkdir -p lib/p64
     mkdir -p parallel
     mkdir -p pet
     mkdir -p plus4
@@ -3566,8 +3566,8 @@ AC_OUTPUT([Makefile
            src/iecbus/Makefile
            src/imagecontents/Makefile
            src/lib/Makefile
+           src/lib/p64/Makefile
            src/monitor/Makefile
-           src/p64/Makefile
            src/parallel/Makefile
            src/pet/Makefile
            src/plus4/Makefile
