@@ -516,19 +516,20 @@ void drive_gcr_data_writeback(drive_t *drive)
     unsigned int track, sector, max_sector = 0;
     BYTE buffer[260], *offset;
 
-    if (drive->image == NULL)
+    if (drive->image == NULL) {
         return;
+    }
 
     track = drive->current_half_track / 2;
 
-    if (drive->image->type == DISK_IMAGE_TYPE_P64){
+    if (drive->image->type == DISK_IMAGE_TYPE_P64) {
         return;
     }
-    
-    if (!(drive->GCR_dirty_track))
-        return;
 
-        
+    if (!(drive->GCR_dirty_track)) {
+        return;
+    }
+
     if (drive->image->type == DISK_IMAGE_TYPE_G64) {
         BYTE *gcr_track_start_ptr;
         unsigned int gcr_current_track_size;
@@ -617,12 +618,14 @@ void drive_gcr_data_writeback_all(void)
     for (i = 0; i < DRIVE_NUM; i++) {
         drive = drive_context[i]->drive;
         drive_gcr_data_writeback(drive);
-        if (drive->P64_image_loaded && drive->image && drive->image->p64)
-	    if (drive->image->type == DISK_IMAGE_TYPE_P64)
-    	       if (drive->P64_dirty) {
-        	    drive->P64_dirty = 0;
-            	    disk_image_write_p64_image(drive->image);
+        if (drive->P64_image_loaded && drive->image && drive->image->p64) {
+            if (drive->image->type == DISK_IMAGE_TYPE_P64) {
+                if (drive->P64_dirty) {
+                drive->P64_dirty = 0;
+                    disk_image_write_p64_image(drive->image);
                 }
+            }
+        }
     }
 
 

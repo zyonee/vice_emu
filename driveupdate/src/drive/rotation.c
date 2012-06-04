@@ -257,7 +257,8 @@ void rotation_begins(drive_t *dptr) {
     rotation[dnr].rotation_last_clk = *(dptr->clk);
 }
 
-/* 1541 circuit simulation for GCR-based images, see 1541 circuit description in this file for details */
+/* 1541 circuit simulation for GCR-based images, see 1541 circuit description in 
+   this file for details */
 void rotation_1541_gcr(drive_t *dptr)
 {
     rotation_t *rptr;
@@ -273,7 +274,7 @@ void rotation_1541_gcr(drive_t *dptr)
     cpu_cycles = *(dptr->clk) - rptr->rotation_last_clk;
     rptr->rotation_last_clk = *(dptr->clk);
 
-	  /* Calculate the reference clock cycles from the cpu clock cycles - hw works the other way around...
+    /* Calculate the reference clock cycles from the cpu clock cycles - hw works the other way around...
      * The reference clock is actually 16MHz, and the cpu clock is the result of dividing that by 16
      */
     ref_cycles = cpu_cycles * 16;
@@ -303,14 +304,18 @@ void rotation_1541_gcr(drive_t *dptr)
             delta = count_new_bitcell - rptr->accum;
             if ((delta > 0) && ((cyc_sum_frv << 1) <= delta)) {
                 todo = delta / cyc_sum_frv;
-                if (ref_cycles < todo)
+                if (ref_cycles < todo) {
                    todo = ref_cycles;
-                if ((rptr->ue7_counter < 16) && ((16 - rptr->ue7_counter) < todo))
+                }
+                if ((rptr->ue7_counter < 16) && ((16 - rptr->ue7_counter) < todo)) {
                    todo = 16 - rptr->ue7_counter;
-                if ((rptr->filter_counter < 40) && ((40 - rptr->filter_counter) < todo))
+                }
+                if ((rptr->filter_counter < 40) && ((40 - rptr->filter_counter) < todo)) {
                    todo = 40 - rptr->filter_counter;
-                if ((rptr->fr_randcount > 0) && (rptr->fr_randcount < todo))
+                }
+                if ((rptr->fr_randcount > 0) && (rptr->fr_randcount < todo)) {
                    todo = rptr->fr_randcount;
+                }
             }
 
             /* do 2.5 microsecond flux filter stuff */
@@ -401,10 +406,12 @@ void rotation_1541_gcr(drive_t *dptr)
             delta = count_new_bitcell - rptr->accum;
             if ((delta > 0) && ((cyc_sum_frv << 1) <= delta)) {
                 todo = delta / cyc_sum_frv;
-                if (ref_cycles < todo)
+                if (ref_cycles < todo) {
                    todo = ref_cycles;
-                if ((rptr->ue7_counter < 16) && ((16 - rptr->ue7_counter) < todo))
+                }
+                if ((rptr->ue7_counter < 16) && ((16 - rptr->ue7_counter) < todo)) {
                    todo = 16 - rptr->ue7_counter;
+                }
             }
 
             /* divide the reference clock with UE7 */
@@ -472,84 +479,65 @@ void rotation_1541_p64(drive_t *dptr)
 
     P64PulseStream = &dptr->p64->PulseStreams[dptr->current_half_track];
 
-    if ((P64PulseStream->CurrentIndex < 0) || ((P64PulseStream->CurrentIndex != P64PulseStream->UsedFirst) && ((P64PulseStream->Pulses[P64PulseStream->CurrentIndex].Previous >= 0) && (P64PulseStream->Pulses[P64PulseStream->Pulses[P64PulseStream->CurrentIndex].Previous].Position >= rptr->PulseHeadPosition))))
-    {
+    if ((P64PulseStream->CurrentIndex < 0) || 
+        ((P64PulseStream->CurrentIndex != P64PulseStream->UsedFirst) && 
+        ((P64PulseStream->Pulses[P64PulseStream->CurrentIndex].Previous >= 0) && 
+        (P64PulseStream->Pulses[P64PulseStream->Pulses[P64PulseStream->CurrentIndex].Previous].Position >= rptr->PulseHeadPosition)))) {
         P64PulseStreamSeek(P64PulseStream, rptr->PulseHeadPosition);
     }
 
-    if (dptr->read_write_mode)
-    {
+    if (dptr->read_write_mode) {
 
-        while(delta-->0)
-        {
+        while(delta-->0) {
 
-            while ((P64PulseStream->CurrentIndex >= 0) && (P64PulseStream->Pulses[P64PulseStream->CurrentIndex].Position < rptr->PulseHeadPosition))
-            {
+            while ((P64PulseStream->CurrentIndex >= 0) && 
+                   (P64PulseStream->Pulses[P64PulseStream->CurrentIndex].Position < rptr->PulseHeadPosition)) {
                 P64PulseStream->CurrentIndex = P64PulseStream->Pulses[P64PulseStream->CurrentIndex].Next;
             }
-            if( P64PulseStream->CurrentIndex >= 0)
-            {
+            if( P64PulseStream->CurrentIndex >= 0) {
                 DeltaPositionToNextPulse = P64PulseStream->Pulses[P64PulseStream->CurrentIndex].Position - rptr->PulseHeadPosition;
-            }
-            else
-            {
+            } else {
                 DeltaPositionToNextPulse = P64PulseSamplesPerRotation - rptr->PulseHeadPosition;
             }
 
             Remain16MHzClockCycles = 16;
-            while (Remain16MHzClockCycles > 0)
-            {
-
+            while (Remain16MHzClockCycles > 0) {
                 /****************************************************************************************************************************************/
-
                 {
-
                     /* How-Much-16MHz-Clock-Cycles-ToDo-Count logic */
 
                     ToDo = DeltaPositionToNextPulse;
-                    if (ToDo <= 1)
-                    {
+                    if (ToDo <= 1) {
                         ToDo = 1;
-
-                    }
-                    else
-                    {
-                        if (Remain16MHzClockCycles < ToDo)
-                        {
+                    } else {
+                        if (Remain16MHzClockCycles < ToDo) {
                             ToDo = Remain16MHzClockCycles;
                         }
-                        if ((rptr->ue7_counter < 16) && ((16 - rptr->ue7_counter) < ToDo))
-                        {
+                        if ((rptr->ue7_counter < 16) && ((16 - rptr->ue7_counter) < ToDo)) {
                             ToDo = 16 - rptr->ue7_counter;
                         }
-                        if ((rptr->filter_counter < 40) && ((40 - rptr->filter_counter) < ToDo))
-                        {
+                        if ((rptr->filter_counter < 40) && ((40 - rptr->filter_counter) < ToDo)) {
                             ToDo = 40 - rptr->filter_counter;
                         }
-                        if ((rptr->fr_randcount > 0) && (rptr->fr_randcount < ToDo))
-                        {
+                        if ((rptr->fr_randcount > 0) && (rptr->fr_randcount < ToDo)) {
                             ToDo = rptr->fr_randcount;
                         }
                     }
-
                 }
-
                 /****************************************************************************************************************************************/
-
                 {
-
                     /* Clock logic */
 
-                   /* 2.5 microseconds filter */
-                   rptr->filter_counter += (rptr->filter_counter < 40) ? ToDo : 0;
-                   if (((rptr->filter_counter >= 40) && (rptr->filter_state != rptr->filter_last_state))) {
+                    /* 2.5 microseconds filter */
+                    rptr->filter_counter += (rptr->filter_counter < 40) ? ToDo : 0;
+                    if (((rptr->filter_counter >= 40) && (rptr->filter_state != rptr->filter_last_state))) {
                         rptr->filter_last_state = rptr->filter_state;
                         rptr->uf4_counter = 0;
                         rptr->ue7_counter = rptr->ue7_dcba;
                         rptr->fr_randcount = ((RANDOM_nextUInt(rptr) >> 16) % 31) + 289;
-                    }else{
+                    } else {
                         rptr->fr_randcount -= ToDo;
-                        if(!rptr->fr_randcount){
+                        if(!rptr->fr_randcount) {
                           rptr->uf4_counter = 0;
                           rptr->ue7_counter = rptr->ue7_dcba;
                           rptr->fr_randcount = ((RANDOM_nextUInt(rptr) >> 16) % 367) + 33;
@@ -560,17 +548,14 @@ void rotation_1541_p64(drive_t *dptr)
                     ** 16-(CurrentSpeedZone and 3), and each overflow, increment the pulse counter clock until the 4th pulse is reached
                     */
                     rptr->ue7_counter += ToDo;
-                    if (rptr->ue7_counter == 16)
-                    {
+                    if (rptr->ue7_counter == 16) {
 
                         rptr->ue7_counter = rptr->ue7_dcba;
 
                         rptr->uf4_counter = (rptr->uf4_counter + 1) & 0xf;
-                        if ((rptr->uf4_counter & 3) == 2)
-                        {
+                        if ((rptr->uf4_counter & 3) == 2) {
 
                             /****************************************************************************************************************************************/
-
                             {
                                 // Decoder logic
 
@@ -579,104 +564,77 @@ void rotation_1541_p64(drive_t *dptr)
                                 rptr->last_write_data <<= 1;
 
                                 /* is sync? reset bit counter, don't move data, etc. */
-                                if (rptr->last_read_data == 0x3ff)
-                                {
+                                if (rptr->last_read_data == 0x3ff) {
                                     rptr->bit_counter = 0;
-                                }
-                                else
-                                {
-                                    if (++ rptr->bit_counter == 8)
-                                    {
+                                } else {
+                                    if (++ rptr->bit_counter == 8) {
                                         rptr->bit_counter = 0;
                                         dptr->GCR_read = (BYTE) rptr->last_read_data;
                                         /* tlr claims that the write register is loaded at every
                                          * byte boundary, and since the bus is shared, it's reasonable
                                          * to guess that it would be loaded with whatever was last read. */
                                         rptr->last_write_data = dptr->GCR_read;
-                                        if ((dptr->byte_ready_active & 2) != 0)
-                                        {
+                                        if ((dptr->byte_ready_active & 2) != 0) {
                                             dptr->byte_ready_edge = 1;
                                             dptr->byte_ready_level = 1;
                                         }
                                     }
                                 }
-
                             }
-
                             /****************************************************************************************************************************************/
-
                         }
-
                     }
-
                 }
-
                 /****************************************************************************************************************************************/
-
                 {
-
                     /* Head logic */
 
-                    if (!DeltaPositionToNextPulse)
-                    {
+                    if (!DeltaPositionToNextPulse) {
 
                         DeltaPositionToNextPulse = P64PulseSamplesPerRotation - rptr->PulseHeadPosition;
 
-                        if (P64PulseStream->CurrentIndex>=0)
-                        {
+                        if (P64PulseStream->CurrentIndex>=0) {
 
                             Strength = P64PulseStream->Pulses[P64PulseStream->CurrentIndex].Strength;
 
                             // Forward pulse high hit to the decoder logic
                             if ((Strength == 0xffffffff) ||                                 /* Strong pulse */
-                                (((DWORD)(RANDOM_nextInt(rptr)^0x80000000)) < Strength)) /* Weak pulse */
-                            {
+                                (((DWORD)(RANDOM_nextInt(rptr)^0x80000000)) < Strength)) {  /* Weak pulse */
                                rptr->filter_state ^= 1;
                                rptr->filter_counter = 0;
                             }
 
                             P64PulseStream->CurrentIndex = P64PulseStream->Pulses[P64PulseStream->CurrentIndex].Next;
-                            if (P64PulseStream->CurrentIndex >= 0)
-                            {
+                            if (P64PulseStream->CurrentIndex >= 0) {
                                 DeltaPositionToNextPulse = P64PulseStream->Pulses[P64PulseStream->CurrentIndex].Position - rptr->PulseHeadPosition;
                             }
-
                         }
-
                     }
 
                     DeltaPositionToNextPulse -= ToDo;
 
                     rptr->PulseHeadPosition += ToDo;
 
-                    if(rptr->PulseHeadPosition >= P64PulseSamplesPerRotation)
-                    {
+                    if(rptr->PulseHeadPosition >= P64PulseSamplesPerRotation) {
                         rptr->PulseHeadPosition -= P64PulseSamplesPerRotation;
 
                         P64PulseStream->CurrentIndex = P64PulseStream->UsedFirst;
-                        while ((P64PulseStream->CurrentIndex >= 0) && (P64PulseStream->Pulses[P64PulseStream->CurrentIndex].Position < rptr->PulseHeadPosition))
-                        {
+                        while ((P64PulseStream->CurrentIndex >= 0) && 
+                               (P64PulseStream->Pulses[P64PulseStream->CurrentIndex].Position < rptr->PulseHeadPosition)) {
                           P64PulseStream->CurrentIndex = P64PulseStream->Pulses[P64PulseStream->CurrentIndex].Next;
                         }
-                        if(P64PulseStream->CurrentIndex >= 0)
-                        {
+                        if(P64PulseStream->CurrentIndex >= 0) {
                             DeltaPositionToNextPulse = P64PulseStream->Pulses[P64PulseStream->CurrentIndex].Position - rptr->PulseHeadPosition;
                         }
-
                     }
-
                 }
-
                 /****************************************************************************************************************************************/
 
                 Remain16MHzClockCycles -= ToDo;
             }
-
         }
 
-    }
-    else
-    {
+    } else {
 
         DWORD LastPulseHeadPosition, NextPulseHeadPosition;
 
@@ -684,25 +642,20 @@ void rotation_1541_p64(drive_t *dptr)
         NextPulseHeadPosition = rptr->PulseHeadPosition + 16;
 
         Remain16MHzClockCycles = 16;
-        while (Remain16MHzClockCycles > 0)
-        {
+        while (Remain16MHzClockCycles > 0) {
 
             /****************************************************************************************************************************************/
-
             {
 
                 /* How-Much-16MHz-Clock-Cycles-ToDo-Count logic */
 
                 ToDo = Remain16MHzClockCycles;
-                if ((rptr->ue7_counter < 16) && ((16 - rptr->ue7_counter) < ToDo))
-                {
+                if ((rptr->ue7_counter < 16) && ((16 - rptr->ue7_counter) < ToDo)) {
                     ToDo = 16 - rptr->ue7_counter;
                 }
 
             }
-
             /****************************************************************************************************************************************/
-
             {
 
                 /* Clock logic */
@@ -711,14 +664,12 @@ void rotation_1541_p64(drive_t *dptr)
                 ** 16-(CurrentSpeedZone and 3), and each overflow, increment the pulse counter clock until the 4th pulse is reached
                 */
                 rptr->ue7_counter += ToDo;
-                if(rptr->ue7_counter == 16)
-                {
+                if(rptr->ue7_counter == 16) {
 
                     rptr->ue7_counter = rptr->ue7_dcba;
 
                     rptr->uf4_counter = (rptr->uf4_counter + 1) & 0xf;
-                    if ((rptr->uf4_counter & 3) == 2)
-                    {
+                    if ((rptr->uf4_counter & 3) == 2) {
 
                         /****************************************************************************************************************************************/
 
@@ -727,12 +678,10 @@ void rotation_1541_p64(drive_t *dptr)
                         rptr->last_read_data = ((rptr->last_read_data << 1) & 0x3fe) | (((rptr->uf4_counter + 0x1c) >> 4) & 1);
 
                         dptr->GCR_dirty_track = 1;
-                        if(rptr->last_write_data & 0x80)
-                        {
+                        if(rptr->last_write_data & 0x80) {
                             /* Head logic */
 
-                            if (LastPulseHeadPosition < rptr->PulseHeadPosition)
-                            {
+                            if (LastPulseHeadPosition < rptr->PulseHeadPosition) {
                                 P64PulseStreamRemovePulses(P64PulseStream, LastPulseHeadPosition, rptr->PulseHeadPosition - LastPulseHeadPosition);
                             }
                             P64PulseStreamAddPulse(P64PulseStream, rptr->PulseHeadPosition, 0xffffffff);
@@ -742,37 +691,30 @@ void rotation_1541_p64(drive_t *dptr)
                         }
                         rptr->last_write_data <<= 1;
 
-                        if (++ rptr->bit_counter == 8)
-                        {
+                        if (++ rptr->bit_counter == 8) {
                             rptr->bit_counter = 0;
                             rptr->last_write_data = dptr->GCR_write_value;
-                            if ((dptr->byte_ready_active & 2) != 0)
-                            {
+                            if ((dptr->byte_ready_active & 2) != 0) {
                                 dptr->byte_ready_edge = 1;
                                 dptr->byte_ready_level = 1;
                             }
                         }
 
-
                         /****************************************************************************************************************************************/
-
                     }
-
                 }
-
             }
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
             rptr->PulseHeadPosition += ToDo;
-            if(rptr->PulseHeadPosition >= P64PulseSamplesPerRotation)
-            {
+            if(rptr->PulseHeadPosition >= P64PulseSamplesPerRotation) {
                 rptr->PulseHeadPosition -= P64PulseSamplesPerRotation;
 
                 P64PulseStream->CurrentIndex = P64PulseStream->UsedFirst;
-                while ((P64PulseStream->CurrentIndex >= 0) && (P64PulseStream->Pulses[P64PulseStream->CurrentIndex].Position < rptr->PulseHeadPosition))
-                {
-                  P64PulseStream->CurrentIndex = P64PulseStream->Pulses[P64PulseStream->CurrentIndex].Next;
+                while ((P64PulseStream->CurrentIndex >= 0) && 
+                       (P64PulseStream->Pulses[P64PulseStream->CurrentIndex].Position < rptr->PulseHeadPosition)) {
+                    P64PulseStream->CurrentIndex = P64PulseStream->Pulses[P64PulseStream->CurrentIndex].Next;
                 }
 
             }
@@ -780,8 +722,7 @@ void rotation_1541_p64(drive_t *dptr)
             Remain16MHzClockCycles -= ToDo;
         }
 
-        if (LastPulseHeadPosition < NextPulseHeadPosition)
-        {
+        if (LastPulseHeadPosition < NextPulseHeadPosition) {
             P64PulseStreamRemovePulses(P64PulseStream, LastPulseHeadPosition, NextPulseHeadPosition - LastPulseHeadPosition);
         }
 
@@ -947,8 +888,9 @@ BYTE rotation_sync_found(drive_t *dptr)
 {
     unsigned int dnr = dptr->mynumber;
 
-    if (dptr->read_write_mode == 0 || dptr->attach_clk != (CLOCK)0)
+    if (dptr->read_write_mode == 0 || dptr->attach_clk != (CLOCK)0) {
         return 0x80;
+    }
 
     return rotation[dnr].last_read_data == 0x3ff ? 0 : 0x80;
 }
@@ -956,15 +898,17 @@ BYTE rotation_sync_found(drive_t *dptr)
 void rotation_byte_read(drive_t *dptr)
 {
     if (dptr->attach_clk != (CLOCK)0) {
-        if (*(dptr->clk) - dptr->attach_clk < DRIVE_ATTACH_DELAY)
+        if (*(dptr->clk) - dptr->attach_clk < DRIVE_ATTACH_DELAY) {
             dptr->GCR_read = 0;
-        else
+        } else {
             dptr->attach_clk = (CLOCK)0;
+        }
     } else if (dptr->attach_detach_clk != (CLOCK)0) {
-        if (*(dptr->clk) - dptr->attach_detach_clk < DRIVE_ATTACH_DETACH_DELAY)
+        if (*(dptr->clk) - dptr->attach_detach_clk < DRIVE_ATTACH_DETACH_DELAY) {
             dptr->GCR_read = 0;
-        else
+        } else {
             dptr->attach_detach_clk = (CLOCK)0;
+        }
     } else {
         rotation_rotate_disk(dptr);
     }

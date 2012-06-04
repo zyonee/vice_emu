@@ -238,32 +238,40 @@ int drive_snapshot_write_module(snapshot_t *s, int save_disks, int save_roms)
 
     if (save_disks) {
         if (GCR_image[0] > 0) {
-            if (drive_snapshot_write_gcrimage_module(s, 0) < 0)
+            if (drive_snapshot_write_gcrimage_module(s, 0) < 0) {
                 return -1;
+            }
         } else if (P64_image[0] > 0) {
-            if (drive_snapshot_write_p64image_module(s, 0) < 0)
+            if (drive_snapshot_write_p64image_module(s, 0) < 0) {
                 return -1;
+            }
         } else {
-            if (drive_snapshot_write_image_module(s, 0) < 0)
+            if (drive_snapshot_write_image_module(s, 0) < 0) {
                 return -1;
+            }
         }
         if (GCR_image[1] > 0) {
-            if (drive_snapshot_write_gcrimage_module(s, 1) < 0)
+            if (drive_snapshot_write_gcrimage_module(s, 1) < 0) {
                 return -1;
+            }
         } else if (P64_image[1] > 0) {
-            if (drive_snapshot_write_p64image_module(s, 1) < 0)
+            if (drive_snapshot_write_p64image_module(s, 1) < 0) {
                 return -1;
+            }
         } else {
-            if (drive_snapshot_write_image_module(s, 1) < 0)
+            if (drive_snapshot_write_image_module(s, 1) < 0) {
                 return -1;
+            }
         }
     }
 
     for (i = 0; i < 2; i++) {
         drive = drive_context[i]->drive;
-        if (save_roms && drive->enable)
-            if (drive_snapshot_write_rom_module(s, i) < 0)
+        if (save_roms && drive->enable) {
+            if (drive_snapshot_write_rom_module(s, i) < 0) {
                 return -1;
+            }
+        }
     }
 
     return 0;
@@ -521,19 +529,24 @@ int drive_snapshot_read_module(snapshot_t *s)
 
     if (drive_snapshot_read_image_module(s, 0) < 0
         || drive_snapshot_read_gcrimage_module(s, 0) < 0
-        || drive_snapshot_read_p64image_module(s, 0) < 0)
+        || drive_snapshot_read_p64image_module(s, 0) < 0) {
         return -1;
+    }
     if (drive_snapshot_read_image_module(s, 1) < 0
         || drive_snapshot_read_gcrimage_module(s, 1) < 0
-        || drive_snapshot_read_p64image_module(s, 1) < 0)
+        || drive_snapshot_read_p64image_module(s, 1) < 0) {
         return -1;
-    if (drive_snapshot_read_rom_module(s, 0) < 0)
+    }
+    if (drive_snapshot_read_rom_module(s, 0) < 0) {
         return -1;
-    if (drive_snapshot_read_rom_module(s, 1) < 0)
+    }
+    if (drive_snapshot_read_rom_module(s, 1) < 0) {
         return -1;
+    }
 
-    for (i = 0; i < 2; i++)
+    for (i = 0; i < 2; i++) {
         drive_current_track_size_set(drive_context[i]->drive);
+    }
 
     for (i = 0; i < 2; i++) {
         drive = drive_context[i]->drive;
@@ -547,9 +560,9 @@ int drive_snapshot_read_module(snapshot_t *s)
 
     for (i = 0; i < 2; i++) {
         drive = drive_context[i]->drive;
-		drive->GCR_track_start_ptr = (drive->gcr->data
-				+ ((drive->current_half_track / 2 - 1)
-				* drive->gcr->max_track_size));
+                drive->GCR_track_start_ptr = (drive->gcr->data
+                                + ((drive->current_half_track / 2 - 1)
+                                * drive->gcr->max_track_size));
         if (drive->type != DRIVE_TYPE_1570
             && drive->type != DRIVE_TYPE_1571
             && drive->type != DRIVE_TYPE_1571CR) {
@@ -562,9 +575,7 @@ int drive_snapshot_read_module(snapshot_t *s)
                 resources_set_int("MachineVideoStandard", sync_factor);
             }
         }
-	}
-
-
+    }
 
     iec_update_ports_embedded();
     drive_update_ui_status();
@@ -866,14 +877,14 @@ static int drive_snapshot_read_gcrimage_module(snapshot_t *s, unsigned int dnr)
     snapshot_module_close(m);
     m = NULL;
 
-    for (i = 0; i < MAX_TRACKS_1571; i++)
-	{
+    for (i = 0; i < MAX_TRACKS_1571; i++) {
         drive->gcr->track_size[i] = tmpbuf[i * 4] + (tmpbuf[i * 4 + 1] << 8)
                                     + (tmpbuf[i * 4 + 2] << 16)
                                     + (tmpbuf[i * 4 + 3] << 24);
-		if (drive->gcr->track_size[i] > drive->gcr->max_track_size)
-			drive->gcr->max_track_size = drive->gcr->track_size[i];
-	}
+        if (drive->gcr->track_size[i] > drive->gcr->max_track_size) {
+                drive->gcr->max_track_size = drive->gcr->track_size[i];
+        }
+    }
 
     lib_free(tmpbuf);
 
@@ -902,14 +913,16 @@ static int drive_snapshot_write_p64image_module(snapshot_t *s, unsigned int dnr)
 
     m = snapshot_module_create(s, snap_module_name, GCRIMAGE_SNAP_MAJOR,
                                GCRIMAGE_SNAP_MINOR);
-    if (m == NULL)
+    if (m == NULL) {
         return -1;
+    }
 
     P64Image = (void*)drive->p64;
 
-    if (P64Image == NULL){
-        if (m != NULL)
+    if (P64Image == NULL) {
+        if (m != NULL) {
             snapshot_module_close(m);
+        }
         return -1;
     }
 
@@ -922,16 +935,18 @@ static int drive_snapshot_write_p64image_module(snapshot_t *s, unsigned int dnr)
 
     if (SMW_DW(m, P64MemoryStreamInstance.Size) < 0 ||
         SMW_BA(m, P64MemoryStreamInstance.Data, P64MemoryStreamInstance.Size) < 0) {
-        if (m != NULL)
+        if (m != NULL) {
             snapshot_module_close(m);
+        }
         P64MemoryStreamDestroy(&P64MemoryStreamInstance);
         return -1;
     }
 
     P64MemoryStreamDestroy(&P64MemoryStreamInstance);
 
-    if (snapshot_module_close(m) < 0)
+    if (snapshot_module_close(m) < 0) {
         return -1;
+    }
 
     return 0;
 }
@@ -952,14 +967,16 @@ static int drive_snapshot_read_p64image_module(snapshot_t *s, unsigned int dnr)
 
     m = snapshot_module_open(s, snap_module_name,
                              &major_version, &minor_version);
-    if (m == NULL)
+    if (m == NULL) {
         return 0;
+    }
 
     P64Image = (void*)drive->p64;
 
-    if (P64Image == NULL){
-        if (m != NULL)
+    if (P64Image == NULL) {
+        if (m != NULL) {
             snapshot_module_close(m);
+        }
         return -1;
     }
 
@@ -972,16 +989,18 @@ static int drive_snapshot_read_p64image_module(snapshot_t *s, unsigned int dnr)
     }
 
     if (SMR_DW(m, &size) < 0) {
-        if (m != NULL)
+        if (m != NULL) {
             snapshot_module_close(m);
+        }
         return -1;
     }
 
     tmpbuf = lib_malloc(size);
 
     if (SMR_BA(m, tmpbuf, size) < 0) {
-        if (m != NULL)
+        if (m != NULL) {
             snapshot_module_close(m);
+        }
         lib_free(tmpbuf);
         return -1;
     }
@@ -991,8 +1010,9 @@ static int drive_snapshot_read_p64image_module(snapshot_t *s, unsigned int dnr)
     P64MemoryStreamWrite(&P64MemoryStreamInstance,tmpbuf,size);
     P64MemoryStreamSeek(&P64MemoryStreamInstance,0);
     if (!P64ImageReadFromStream(P64Image,&P64MemoryStreamInstance)) {
-        if (m != NULL)
+        if (m != NULL) {
             snapshot_module_close(m);
+        }
         lib_free(tmpbuf);
         P64MemoryStreamDestroy(&P64MemoryStreamInstance);
         return -1;

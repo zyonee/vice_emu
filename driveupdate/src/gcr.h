@@ -45,18 +45,18 @@
 
 typedef struct gcr_s {
     /* Raw GCR image of the disk.  */
-	/* RJM: This is a hack.  Need to dynamically allocate it */
-	BYTE data[(MAX_GCR_TRACKS + 1) * NUM_MAX_MEM_BYTES_TRACK];
+    /* RJM: This is a hack.  Need to dynamically allocate it */
+    BYTE data[(MAX_GCR_TRACKS + 1) * NUM_MAX_MEM_BYTES_TRACK];
 
     /* Speed zone image of the disk.  */
     /* RJM: This is a hack.  Need to dynamically allocate it */
-	BYTE speed_zone[(MAX_GCR_TRACKS + 1) * NUM_MAX_MEM_BYTES_TRACK];
+    BYTE speed_zone[(MAX_GCR_TRACKS + 1) * NUM_MAX_MEM_BYTES_TRACK];
 
     /* Size of the GCR data of each track.  */
     unsigned int track_size[MAX_GCR_TRACKS];
 
-	/* Size of the largest track, set from the file header */
-	unsigned int max_track_size;
+    /* Size of the largest track, set from the file header */
+    unsigned int max_track_size;
 
 } gcr_t;
 
