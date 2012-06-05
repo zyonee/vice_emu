@@ -62,8 +62,8 @@
 
              Hint: For a working C implememtation see p64.c and p64.h
 
-The range coder is a FPAQ0-style ranger coder combined with 12-bit 0-order 
-models, one model per byte.
+The range coder is a FPAQ0-style range coder combined with 12-bit 0-order 
+models, one model per byte with one bit per byte processing.
 
  +--------------------------------------------------------------------------+
  ¦   Sub stream     ¦ Count of models ¦  Size per model  ¦ Total value bits ¦
@@ -81,7 +81,11 @@ models, one model per byte.
 
 All initial model state values are initialized with zero.
  
-All initial model probability values are initialized with 2048.
+All initial model probability values are initialized with 2048. 
+
+These model probability values will be updating in a adaptive way on the
+fly and not precalculated before the encoding and even not loaded before 
+the decoding, see pseudo code below.
 
 16000000 Hz / 5 rotations per second at 300 RPM = maximal 3200000 flux pulses 
         
