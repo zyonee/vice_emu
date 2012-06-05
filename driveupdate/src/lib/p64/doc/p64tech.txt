@@ -250,4 +250,10 @@ Pseudo code for a FPAQ0-style carryless range coder:
 =                                                                            = 
 ==============================================================================
 
-        
++----------------------------------------------------------------------------+
+¦                           P64 Chunk 'DONE' Layout                          ¦
++----------------------------------------------------------------------------+
+
+This is the last empty chunk for to signalize that the correct file end is
+reached.
+    
