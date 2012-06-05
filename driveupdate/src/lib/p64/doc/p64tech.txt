@@ -94,9 +94,10 @@ So NRZI transition flux pulse positions are in the 0 .. 3199999 value range
 The NRZI transition flux pulse stength are in the 0x00000000 .. 0xffffffff
 value range, where 0xffffffff indices a strong flux pulse, that always 
 triggers, and 0x00000001 indices a weak flux pulse, that almost never 
-triggers, and 0x00000000 indices a flux pulse, that absolutly triggers.            
+triggers, and 0x00000000 indices a flux pulse, that absolutly never 
+triggers.            
         
-For 32-bit values, the model sub streams are subdivided byte wiwe in a 
+For 32-bit values, the model sub streams are subdivided byte wide in a 
 little-endian manner, and each byte is processed bitwise with model 
 probability shifting of 4 bits, just as:
 
@@ -121,7 +122,7 @@ probability shifting of 4 bits, just as:
 ========================== PASCAL-STYLE PSEUDO CODE ==========================
 
 And for 1-bit flag values it is much simpler, but also with model probability 
-shifting of 4 bits, just aa:
+shifting of 4 bits, just as:
 
 ========================== PASCAL-STYLE PSEUDO CODE ==========================
 = procedure WriteBit(Model, Value : longword);                               =
@@ -238,7 +239,7 @@ Pseudo code for a FPAQ0-style carryless range coder:
 = function RangeCoderDecodeBit(var Probability : longword;                   =
 =                              Shift : longword) : longword;                 =
 = begin                                                                      =
-=   RangeMiddle := RangeLow+(((RangeHigh - RangeLow) shr 12) *               =
+=   RangeMiddle := RangeLow + (((RangeHigh - RangeLow) shr 12) *             =
 =                              Probability);                                 =
 =   if RangeCode <= RangeMiddle then begin                                   =
 =     inc(Probability, ($fff - Probability) shr Shift);                      =
