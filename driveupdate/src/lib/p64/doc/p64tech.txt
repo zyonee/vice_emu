@@ -254,6 +254,14 @@ Pseudo code for a FPAQ0-style carryless range coder:
 =                                                                            = 
 ==============================================================================
 
+The probability may be never zero! But that can't happen here with this 
+adaptive model in this P64 file format, since the adaptive model uses a
+shift factor of 4 bits and initial probabilities value of 2048, so the 
+probability has a value range from 15 up to 4080 here. If you do want to use 
+the above range coder routines for other stuff with other probability models, 
+then you must to ensure that the probability output value is never zero, for 
+example with  "probability |= (probability < 1); " in C.     
+  
 +----------------------------------------------------------------------------+
 ¦                           P64 Chunk 'DONE' Layout                          ¦
 +----------------------------------------------------------------------------+
