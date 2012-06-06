@@ -16,13 +16,15 @@
 0010: ¦     Size      ¦ CRC32Checksum ¦
       +-------------------------------+
 
-         Version:   File format version, current is 0x00000000
+         Version:  File format version, current is 0x00000000
       
-            Size:   Size of the followed whole chunk content stream
+            Size   Size of the following whole chunk content stream
       
-           Flags:   Bit 0 = Write protect
+           Flags:  Bit    0 = Write protect
+                   Bit 1-31 = Reserved, all set to 0 when creating a file, 
+                              preserve existing value when updating
        
-   CRC32CheckSum:   CRC32 checksum of the followed whole chunk content stream                
+   CRC32CheckSum:  CRC32 checksum of the following whole chunk content stream                
 
 +----------------------------------------------------------------------------+
 ¦                           P64 Chunk Header Layout                          ¦
@@ -33,17 +35,19 @@
 0000: ¦Chunk Signature¦      Size     ¦ CRC32Checksum ¦   
       +-----------------------------------------------+
 
- Chunk signature:   Signature of chunk
+ Chunk signature:  Signature of chunk
       
-            Size:   Size of the chunk data
+            Size:  Size of the chunk data
       
-   CRC32CheckSum:   CRC32 checksum of the chunk data                
+   CRC32CheckSum:  CRC32 checksum of the chunk data                
 
 +----------------------------------------------------------------------------+
 ¦                           P64 Chunk 'HTPx' Layout                          ¦
 +----------------------------------------------------------------------------+
                           ¦ x = half track index byte ¦
                           +---------------------------+
+                          
+       Track 18 = Half track 36 = Half track index byte decimal value 36
                           
               Half track NRZI transition flux pulse data chunk block                          
                                                                                          
@@ -52,9 +56,9 @@
 0000: ¦  Count pulses ¦     Size      ¦ ..... Range-encoded data .... ¦    
       +---------------------------------------------------------------+
 
-    Count pulses:   Count of the NRZI transition flux pulses in half track 
+    Count pulses:  Count of the NRZI transition flux pulses in half track 
       
-            Size:   Size of the range-encoded data
+            Size:  Size of the range-encoded data
             
 +----------------------------------------------------------------------------+
 ¦                        'HTPx' Range encoded data format                    ¦
@@ -89,7 +93,9 @@ the decoding, see pseudo code below.
 
 16000000 Hz / 5 rotations per second at 300 RPM = maximal 3200000 flux pulses 
         
-So NRZI transition flux pulse positions are in the 0 .. 3199999 value range
+So NRZI transition flux pulse positions are in the 0 .. 3199999 value range, 
+which is also a exact single rotation, where each time unit is a cycle at 
+16 MHz with 300 RPM as a mapping for the ideal case.    
   
 The NRZI transition flux pulse stength are in the 0x00000000 .. 0xffffffff
 value range, where 0xffffffff indices a strong flux pulse, that always 
