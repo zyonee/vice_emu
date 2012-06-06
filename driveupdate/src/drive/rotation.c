@@ -593,13 +593,13 @@ void rotation_1541_p64(drive_t *dptr)
 
                         DeltaPositionToNextPulse = P64PulseSamplesPerRotation - rptr->PulseHeadPosition;
 
-                        if (P64PulseStream->CurrentIndex>=0) {
+                        if (P64PulseStream->CurrentIndex >= 0) {
 
                             Strength = P64PulseStream->Pulses[P64PulseStream->CurrentIndex].Strength;
 
                             // Forward pulse high hit to the decoder logic
-                            if ((Strength == 0xffffffff) ||                                 /* Strong pulse */
-                                (((DWORD)(RANDOM_nextInt(rptr)^0x80000000)) < Strength)) {  /* Weak pulse */
+                            if ((Strength == 0xffffffffUL) ||                                   /* Strong pulse */
+                                (((DWORD)(RANDOM_nextInt(rptr) ^ 0x80000000UL)) < Strength)) {  /* Weak pulse */
                                rptr->filter_state ^= 1;
                                rptr->filter_counter = 0;
                             }
@@ -684,7 +684,7 @@ void rotation_1541_p64(drive_t *dptr)
                             if (LastPulseHeadPosition < rptr->PulseHeadPosition) {
                                 P64PulseStreamRemovePulses(P64PulseStream, LastPulseHeadPosition, rptr->PulseHeadPosition - LastPulseHeadPosition);
                             }
-                            P64PulseStreamAddPulse(P64PulseStream, rptr->PulseHeadPosition, 0xffffffff);
+                            P64PulseStreamAddPulse(P64PulseStream, rptr->PulseHeadPosition, 0xffffffffUL);
                             LastPulseHeadPosition = rptr->PulseHeadPosition + 1;
                             dptr->P64_dirty = 1;
 
