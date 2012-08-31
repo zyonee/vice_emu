@@ -237,6 +237,16 @@ int find_cpu_type_from_string(const char *cpu_string)
 {
     if ((strcasecmp(cpu_string, "6502")==0)||(strcasecmp(cpu_string, "6510")==0)) {
         return CPU_6502;
+    } else if (strcasecmp(cpu_string, "65sc02")==0) {
+        return CPU_65SC02;
+    } else if (strcasecmp(cpu_string, "r65c02")==0) {
+        return CPU_R65C02;
+    } else if (strcasecmp(cpu_string, "wdc65c02")==0) {
+        return CPU_WDC65C02;
+    } else if (strcasecmp(cpu_string, "65ce02")==0) {
+        return CPU_65CE02;
+    } else if (strcasecmp(cpu_string, "65816")==0) {
+        return CPU_65816;
     } else if (strcasecmp(cpu_string, "z80")==0) {
         return CPU_Z80;
     } else if ((strcasecmp(cpu_string, "6502dtv")==0)||(strcasecmp(cpu_string, "6510dtv")==0)) {
