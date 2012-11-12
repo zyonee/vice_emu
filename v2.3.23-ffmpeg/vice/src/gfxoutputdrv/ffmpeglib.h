@@ -68,30 +68,42 @@
 typedef unsigned (*ffmpeg_version_t) (void);
 
 /* avcodec fucntions */
-typedef int (*avcodec_open_t) (AVCodecContext*, AVCodec*);
+typedef int (*avcodec_open2_t) (AVCodecContext*, AVCodec*, AVDictionary **);
 typedef int (*avcodec_close_t) (AVCodecContext*);
 typedef AVCodec* (*avcodec_find_encoder_t) (enum CodecID);
-typedef int (*avcodec_encode_audio_t) (AVCodecContext*, uint8_t*, int, const short*);
-typedef int (*avcodec_encode_video_t) (AVCodecContext*, uint8_t*, int, const AVFrame*);
+typedef int (*avcodec_encode_audio2_t) (AVCodecContext*, AVPacket*, const AVFrame *, int *);
+typedef int (*avcodec_encode_video2_t) (AVCodecContext*, AVPacket*, const AVFrame *, int *);
 typedef int (*avpicture_fill_t) (AVPicture*, uint8_t*, int, int, int);
 typedef int (*avpicture_get_size_t) (int, int, int);
+typedef AVFrame* (*avcodec_alloc_frame_t) (void);
+typedef int (*avcodec_fill_audio_frame_t) (AVFrame *, int , enum AVSampleFormat, const uint8_t *, int , int);
+typedef void (*avcodec_free_frame_t)(AVFrame **);
+typedef int (*avcodec_get_context_defaults3_t)(AVCodecContext*, const AVCodec*);
+typedef int (*avpicture_alloc_t)(AVPicture*, enum PixelFormat, int, int);
 
 /* avformat functions */
 typedef void (*av_init_packet_t) (AVPacket *pkt);
 typedef void (*av_register_all_t) (void);
-typedef AVStream* (*av_new_stream_t) (AVFormatContext*, int);
-typedef int (*av_set_parameters_t) (AVFormatContext*, AVFormatParameters*);
-typedef int (*av_write_header_t) (AVFormatContext*);
-typedef int (*av_write_frame_t) (AVFormatContext*, AVPacket*);
+typedef AVStream* (*avformat_new_stream_t) (AVFormatContext*, AVCodec *);
+
+//typedef int (*av_set_parameters_t) (AVFormatContext*, AVFormatParameters*);
+typedef int (*avformat_alloc_output_context2_t) (AVFormatContext **, 
+                                                 AVOutputFormat *,
+                                                 const char *,
+                                                 const char *);
+typedef int (*avformat_write_header_t) (AVFormatContext*, AVDictionary **);
+typedef int (*av_interleaved_write_frame_t) (AVFormatContext*, AVPacket*);
 typedef int (*av_write_trailer_t) (AVFormatContext*);
-typedef int (*url_fopen_t) (ByteIOContext**, const char*, int);
-typedef int (*url_fclose_t) (ByteIOContext*);
-typedef void (*dump_format_t) (AVFormatContext *, int, const char*, int);
+typedef int (*avio_open_t) (AVIOContext **, const char*, int);
+typedef int (*avio_close_t) (AVIOContext *);
+typedef void (*av_dump_format_t) (AVFormatContext *, int, const char*, int);
 typedef AVOutputFormat* (*av_guess_format_t) (const char*, const char*, const char*);
 typedef int (*img_convert_t) (AVPicture*, int, AVPicture*, int, int, int);
 
 /* avutil functions */
-typedef void (*av_free_t) (void**);
+typedef void (*av_free_t) (void*);
+typedef int64_t (*av_rescale_q_t)(int64_t, AVRational, AVRational);
+typedef int (*av_opt_set_t)(void *, const char *, const char *, int);
 
 #ifdef HAVE_FFMPEG_SWSCALE
 /* swscale functions */
@@ -106,25 +118,31 @@ typedef int (*sws_scale_t)(struct SwsContext *context, uint8_t* srcSlice[],
 
 struct ffmpeglib_s {
     /* avcodec */
-    avcodec_open_t              p_avcodec_open;
+    avcodec_open2_t              p_avcodec_open2;
     avcodec_close_t             p_avcodec_close;
     avcodec_find_encoder_t      p_avcodec_find_encoder;
-    avcodec_encode_audio_t      p_avcodec_encode_audio;
-    avcodec_encode_video_t      p_avcodec_encode_video;
+    avcodec_encode_audio2_t      p_avcodec_encode_audio2;
+    avcodec_encode_video2_t      p_avcodec_encode_video2;
     avpicture_fill_t            p_avpicture_fill;
     avpicture_get_size_t        p_avpicture_get_size;
+    avcodec_alloc_frame_t       p_avcodec_alloc_frame;
+    avcodec_fill_audio_frame_t  p_avcodec_fill_audio_frame;
+    avcodec_free_frame_t        p_avcodec_free_frame;
+    avcodec_get_context_defaults3_t p_avcodec_get_context_defaults3;
+    avpicture_alloc_t           p_avpicture_alloc;
 
     /* avformat */
     av_init_packet_t            p_av_init_packet;
     av_register_all_t           p_av_register_all;
-    av_new_stream_t             p_av_new_stream;
-    av_set_parameters_t         p_av_set_parameters;
-    av_write_header_t           p_av_write_header;
-    av_write_frame_t            p_av_write_frame;
+    avformat_new_stream_t             p_avformat_new_stream;
+//    av_set_parameters_t         p_av_set_parameters;
+    avformat_alloc_output_context2_t         p_avformat_alloc_output_context2;
+    avformat_write_header_t           p_avformat_write_header;
+    av_interleaved_write_frame_t            p_av_interleaved_write_frame;
     av_write_trailer_t          p_av_write_trailer;
-    url_fopen_t                 p_url_fopen;
-    url_fclose_t                p_url_fclose;
-    dump_format_t               p_dump_format;
+    avio_open_t                 p_avio_open;
+    avio_close_t                p_avio_close;
+    av_dump_format_t               p_av_dump_format;
     av_guess_format_t           p_av_guess_format;
 #ifndef HAVE_FFMPEG_SWSCALE
     img_convert_t               p_img_convert;
@@ -132,6 +150,8 @@ struct ffmpeglib_s {
 
     /* avutil */
     av_free_t                   p_av_free;
+    av_rescale_q_t              p_av_rescale_q;
+    av_opt_set_t                p_av_opt_set;
 
 #ifdef HAVE_FFMPEG_SWSCALE    
     /* swscale */

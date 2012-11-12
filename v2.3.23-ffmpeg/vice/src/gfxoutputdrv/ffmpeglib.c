@@ -165,13 +165,19 @@ static int load_avcodec(ffmpeglib_t *lib)
             return -1;
         }
 
-        GET_SYMBOL_AND_TEST_AVCODEC(avcodec_open);
+        GET_SYMBOL_AND_TEST_AVCODEC(avcodec_open2);
         GET_SYMBOL_AND_TEST_AVCODEC(avcodec_close);
         GET_SYMBOL_AND_TEST_AVCODEC(avcodec_find_encoder);
-        GET_SYMBOL_AND_TEST_AVCODEC(avcodec_encode_audio);
-        GET_SYMBOL_AND_TEST_AVCODEC(avcodec_encode_video);
+        GET_SYMBOL_AND_TEST_AVCODEC(avcodec_encode_audio2);
+        GET_SYMBOL_AND_TEST_AVCODEC(avcodec_encode_video2);
         GET_SYMBOL_AND_TEST_AVCODEC(avpicture_fill);
         GET_SYMBOL_AND_TEST_AVCODEC(avpicture_get_size);
+        GET_SYMBOL_AND_TEST_AVCODEC(av_init_packet);
+        GET_SYMBOL_AND_TEST_AVCODEC(avcodec_alloc_frame);
+        GET_SYMBOL_AND_TEST_AVCODEC(avcodec_fill_audio_frame);
+        GET_SYMBOL_AND_TEST_AVCODEC(avcodec_free_frame);
+        GET_SYMBOL_AND_TEST_AVCODEC(avcodec_get_context_defaults3);
+        GET_SYMBOL_AND_TEST_AVCODEC(avpicture_alloc);
     }
 
     return check_version("avcodec",avcodec_so,"avcodec_version",LIBAVCODEC_VERSION_INT);
@@ -186,13 +192,18 @@ static void free_avcodec(ffmpeglib_t *lib)
     }
     avcodec_so = NULL;
 
-    lib->p_avcodec_open = NULL;
+    lib->p_avcodec_open2 = NULL;
     lib->p_avcodec_close = NULL;
     lib->p_avcodec_find_encoder = NULL;
-    lib->p_avcodec_encode_audio = NULL;
-    lib->p_avcodec_encode_video = NULL;
+    lib->p_avcodec_encode_audio2 = NULL;
+    lib->p_avcodec_encode_video2 = NULL;
     lib->p_avpicture_fill = NULL;
     lib->p_avpicture_get_size = NULL;
+    lib->p_avcodec_alloc_frame = NULL;
+    lib->p_avcodec_fill_audio_frame = NULL;
+    lib->p_avcodec_free_frame = NULL;
+    lib->p_avcodec_get_context_defaults3 = NULL;
+    lib->p_avpicture_alloc = NULL;
 }
 
 static int load_avformat(ffmpeglib_t *lib)
@@ -205,16 +216,16 @@ static int load_avformat(ffmpeglib_t *lib)
             return -1;
         }
 
-        GET_SYMBOL_AND_TEST_AVFORMAT(av_init_packet);
         GET_SYMBOL_AND_TEST_AVFORMAT(av_register_all);
-        GET_SYMBOL_AND_TEST_AVFORMAT(av_new_stream);
-        GET_SYMBOL_AND_TEST_AVFORMAT(av_set_parameters);
-        GET_SYMBOL_AND_TEST_AVFORMAT(av_write_header);
-        GET_SYMBOL_AND_TEST_AVFORMAT(av_write_frame);
+        GET_SYMBOL_AND_TEST_AVFORMAT(avformat_new_stream);
+//        GET_SYMBOL_AND_TEST_AVFORMAT(av_set_parameters);
+        GET_SYMBOL_AND_TEST_AVFORMAT(avformat_alloc_output_context2);
+        GET_SYMBOL_AND_TEST_AVFORMAT(avformat_write_header);
+        GET_SYMBOL_AND_TEST_AVFORMAT(av_interleaved_write_frame);
         GET_SYMBOL_AND_TEST_AVFORMAT(av_write_trailer);
-        GET_SYMBOL_AND_TEST_AVFORMAT(url_fopen);
-        GET_SYMBOL_AND_TEST_AVFORMAT(url_fclose);
-        GET_SYMBOL_AND_TEST_AVFORMAT(dump_format);
+        GET_SYMBOL_AND_TEST_AVFORMAT(avio_open);
+        GET_SYMBOL_AND_TEST_AVFORMAT(avio_close);
+        GET_SYMBOL_AND_TEST_AVFORMAT(av_dump_format);
         GET_SYMBOL_AND_TEST_AVFORMAT(av_guess_format);
 #ifndef HAVE_FFMPEG_SWSCALE
         GET_SYMBOL_AND_TEST_AVFORMAT(img_convert);
@@ -239,14 +250,14 @@ static void free_avformat(ffmpeglib_t *lib)
 
     lib->p_av_init_packet = NULL;
     lib->p_av_register_all = NULL;
-    lib->p_av_new_stream = NULL;
-    lib->p_av_set_parameters = NULL;
-    lib->p_av_write_header = NULL;
-    lib->p_av_write_frame = NULL;
+    lib->p_avformat_new_stream = NULL;
+//    lib->p_av_set_parameters = NULL;
+    lib->p_avformat_write_header = NULL;
+    lib->p_av_interleaved_write_frame = NULL;
     lib->p_av_write_trailer = NULL;
-    lib->p_url_fopen = NULL;
-    lib->p_url_fclose = NULL;
-    lib->p_dump_format = NULL;
+    lib->p_avio_open = NULL;
+    lib->p_avio_close = NULL;
+    lib->p_av_dump_format = NULL;
     lib->p_av_guess_format = NULL;
 #ifndef HAVE_FFMPEG_SWSCALE
     lib->p_img_convert = NULL;
@@ -264,6 +275,8 @@ static int load_avutil(ffmpeglib_t *lib)
         }
 
         GET_SYMBOL_AND_TEST_AVUTIL(av_free);
+        GET_SYMBOL_AND_TEST_AVUTIL(av_rescale_q);
+        GET_SYMBOL_AND_TEST_AVUTIL(av_opt_set);
     }
 
 #ifdef NO_AVUTIL_CHECK
@@ -282,7 +295,9 @@ static void free_avutil(ffmpeglib_t *lib)
     }
     avutil_so = NULL;
 
-    lib->p_av_free = NULL;    
+    lib->p_av_free = NULL;
+    lib->p_av_rescale_q = NULL;
+    lib->p_av_opt_set = NULL;
 }
 
 #ifdef HAVE_FFMPEG_SWSCALE
