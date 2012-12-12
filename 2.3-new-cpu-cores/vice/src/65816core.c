@@ -3425,7 +3425,7 @@ trap_skipped:
             break;
 
           case 0xff:            /* SBC $nnnnnn,X */
-            SBC(LOAD_ABS_LONG_X_FUNC, p1, CYCLES_1, SIZE_4);
+            SBC(LOAD_ABS_LONG_X_FUNC, p3, CYCLES_1, SIZE_4);
             break;
         }
     }
