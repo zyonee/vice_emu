@@ -342,13 +342,26 @@
                     monitor_check_icount_interrupt();                          \
                 }                                                              \
                 interrupt_ack_nmi(CPU_INT_STATUS);                             \
-                LOCAL_SET_BREAK(0);                                            \
+                if (reg_emul) {                                                \
+                    LOCAL_SET_BREAK(0);                                        \
+                } else {                                                       \
+                    CLK_ADD(CLK, CYCLES_1);                                    \
+                    PUSH(reg_pbr);                                             \
+                }                                                              \
                 PUSH(reg_pc >> 8);                                             \
                 PUSH(reg_pc & 0xff);                                           \
-                PUSH(LOCAL_STATUS());                                          \
+                if (reg_emul) {                                                \
+                    PUSH(LOCAL_STATUS());                                      \
+                } else {                                                       \
+                    PUSH(LOCAL_65816_STATUS());                                \
+                }                                                              \
                 LOCAL_SET_DECIMAL(0);                                          \
                 LOCAL_SET_INTERRUPT(1);                                        \
-                JUMP(LOAD_ADDR(0xfffa));                                       \
+                if (reg_emul) {                                                \
+                    JUMP(LOAD_ADDR(0xfffa));                                   \
+                } else {                                                       \
+                    JUMP(LOAD_ADDR(0xffea));                                   \
+                }                                                              \
                 SET_LAST_OPCODE(0);                                            \
                 CLK_ADD(CLK, NMI_CYCLES);                                      \
             } else if ((ik & (IK_IRQ | IK_IRQPEND))                            \
@@ -361,13 +374,26 @@
                     monitor_check_icount_interrupt();                          \
                 }                                                              \
                 interrupt_ack_irq(CPU_INT_STATUS);                             \
-                LOCAL_SET_BREAK(0);                                            \
+                if (reg_emul) {                                                \
+                    LOCAL_SET_BREAK(0);                                        \
+                } else {                                                       \
+                    CLK_ADD(CLK, CYCLES_1);                                    \
+                    PUSH(reg_pbr);                                             \
+                }                                                              \
                 PUSH(reg_pc >> 8);                                             \
                 PUSH(reg_pc & 0xff);                                           \
-                PUSH(LOCAL_STATUS());                                          \
+                if (reg_emul) {                                                \
+                    PUSH(LOCAL_STATUS());                                      \
+                } else {                                                       \
+                    PUSH(LOCAL_65816_STATUS());                                \
+                }                                                              \
                 LOCAL_SET_INTERRUPT(1);                                        \
                 LOCAL_SET_DECIMAL(0);                                          \
-                JUMP(LOAD_ADDR(0xfffe));                                       \
+                if (reg_emul) {                                                \
+                    JUMP(LOAD_ADDR(0xfffe));                                   \
+                } else {                                                       \
+                    JUMP(LOAD_ADDR(0xffee));                                   \
+                }                                                              \
                 SET_LAST_OPCODE(0);                                            \
                 CLK_ADD(CLK, IRQ_CYCLES);                                      \
             }                                                                  \
