@@ -1391,7 +1391,7 @@
       CLK_ADD(CLK, CYCLES_2);                \
       PUSH(((reg_pc) >> 8) & 0xff);          \
       PUSH((reg_pc) & 0xff);                 \
-      tmp_addr = (p1 | (LOAD(reg_pc) << 8)); \
+      tmp_addr = (p1 | (LOAD_PBR(reg_pc) << 8)); \
       CLK_ADD(CLK, CYCLES_1);                \
       JUMP(tmp_addr);                        \
   } while (0)
@@ -2368,7 +2368,7 @@
             memmap_mem_read(reg_pc);
         }
         if (p0 == 0x20) {
-            monitor_cpuhistory_store(reg_pc, p0, p1, LOAD(reg_pc+2), reg_a, reg_x, reg_y, reg_sp, LOCAL_STATUS());
+            monitor_cpuhistory_store(reg_pc, p0, p1, LOAD_PBR(reg_pc+2), reg_a, reg_x, reg_y, reg_sp, LOCAL_STATUS());
         } else {
             monitor_cpuhistory_store(reg_pc, p0, p1, p2 >> 8, reg_a, reg_x, reg_y, reg_sp, LOCAL_STATUS());
         }
@@ -2382,7 +2382,7 @@
             BYTE hi = (BYTE)(p2 >> 8);
 
             if (op == 0x20) {
-               hi = LOAD(reg_pc + 2);
+               hi = LOAD_PBR(reg_pc + 2);
             }
 
             debug_maincpu((DWORD)(reg_pc), debug_clk,
