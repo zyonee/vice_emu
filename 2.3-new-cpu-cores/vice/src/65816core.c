@@ -126,7 +126,7 @@
 #define LOCAL_SET_NZ(val, bits8)           \
     do {                                   \
         if (!bits8) {                      \
-            flag_z = (val & 0xff) ? 1 : 0; \
+            flag_z = (val) | (val >> 8);   \
             flag_n = (val >> 8);           \
         } else {                           \
             flag_z = flag_n = (val);       \
