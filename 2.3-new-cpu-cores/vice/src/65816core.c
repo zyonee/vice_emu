@@ -2683,7 +2683,7 @@ trap_skipped:
             break;
 
           case 0x44:            /* MVP $nn,$nn */
-            MVP(p1, (p2 >> 8));
+            MVP((p2 >> 8), p1);
             break;
 
           case 0x45:            /* EOR $nn */
@@ -2750,7 +2750,7 @@ trap_skipped:
             break;
 
           case 0x54:            /* MVN $nn,$nn */
-            MVN(p1, (p2 >> 8));
+            MVN((p2 >> 8), p1);
             break;
 
           case 0x55:            /* EOR $nn,X */
