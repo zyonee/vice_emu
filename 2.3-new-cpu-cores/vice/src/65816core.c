@@ -1494,7 +1494,7 @@
   do {                                          \
       unsigned int tmp;                         \
                                                 \
-      while (reg_a != 0xffff) {                 \
+      while (reg_c != 0xffff) {                 \
           tmp = LOAD_LONG((src << 16) | reg_x); \
           STORE_LONG((dst << 16) | reg_y, tmp); \
           if (LOCAL_65816_X()) {                \
@@ -1504,7 +1504,7 @@
               reg_x++;                          \
               reg_y++;                          \
           }                                     \
-          reg_a--;                              \
+          reg_c--;                              \
           CLK_ADD(CLK, CYCLES_7);               \
       }                                         \
       INC_PC(SIZE_3);                           \
@@ -1514,7 +1514,7 @@
   do {                                          \
       unsigned int tmp;                         \
                                                 \
-      while (reg_a != 0xffff) {                 \
+      while (reg_c != 0xffff) {                 \
           tmp = LOAD_LONG((src << 16) | reg_x); \
           STORE_LONG((dst << 16) | reg_y, tmp); \
           if (LOCAL_65816_X()) {                \
@@ -1524,7 +1524,7 @@
               reg_x--;                          \
               reg_y--;                          \
           }                                     \
-          reg_a--;                              \
+          reg_c--;                              \
           CLK_ADD(CLK, CYCLES_7);               \
       }                                         \
       INC_PC(SIZE_3);                           \
