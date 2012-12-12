@@ -1029,7 +1029,7 @@
       CLK_INC();                         \
       PUSH((reg_pc) & 0xff);                  \
       CLK_INC();                         \
-      tmp_addr = (p1 | (LOAD(reg_pc) << 8));  \
+      tmp_addr = (p1 | (LOAD_PBR(reg_pc) << 8));  \
       CLK_INC();                         \
       JUMP(tmp_addr);                         \
   } while (0)
