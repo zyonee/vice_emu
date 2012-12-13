@@ -1602,13 +1602,13 @@
 #define PER(value)                                \
   do {                                            \
       WORD dest_addr = 0;                         \
+      INC_PC(SIZE_3);                             \
                                                   \
       dest_addr = reg_pc + (signed short)(value); \
       CLK_ADD(CLK, CYCLES_2);                     \
       PUSH(dest_addr >> 8);                       \
       CLK_ADD(CLK, CYCLES_1);                     \
       PUSH(dest_addr & 0xff);                     \
-      INC_PC(SIZE_3);                             \
   } while (0)
 
 #define PHA()                     \
