@@ -246,12 +246,6 @@ libc64c128_a_SOURCES = \
 	patchrom.h
 
 libc64scpu64_a_SOURCES = \
-	c64-cmdline-options.c \
-	c64-cmdline-options.h \
-	c64-resources.c \
-	c64-resources.h \
-	c64-snapshot.c \
-	c64-snapshot.h \
 	c64bus.c \
 	c64cart.h \
 	c64cia.h \
