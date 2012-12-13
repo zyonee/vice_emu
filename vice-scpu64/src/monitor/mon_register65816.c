@@ -358,6 +358,7 @@ void mon_register65816_init(monitor_cpu_type_t *monitor_cpu_type)
     monitor_cpu_type->mon_register_get_val = mon_register_get_val;
     monitor_cpu_type->mon_register_set_val = mon_register_set_val;
     monitor_cpu_type->mon_register_print = mon_register_print;
+    monitor_cpu_type->mon_register_print_ex = NULL;
     monitor_cpu_type->mon_register_list_get = mon_register_list_get65816;
     monitor_cpu_type->mon_register_list_set = mon_register_list_set65816;
 }
