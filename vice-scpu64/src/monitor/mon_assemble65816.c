@@ -141,7 +141,7 @@ static int mon_assemble_instr(const char *opcode_name, asm_mode_addr_info_t oper
             /* Special case: MOVE mode needs special handling. */
             if (opinfo->addr_mode == ASM_ADDR_MODE_MOVE
                 && operand_mode == ASM_ADDR_MODE_DOUBLE && operand_value < 0x100) {
-                operand_value = (operand_extra_value & 0xff) | ((operand_value & 0xff) << 8);
+                operand_value = ((operand_extra_value & 0xff) << 8) | (operand_value & 0xff);
                 opcode = i;
                 operand_mode = ASM_ADDR_MODE_MOVE;
                 found = TRUE;

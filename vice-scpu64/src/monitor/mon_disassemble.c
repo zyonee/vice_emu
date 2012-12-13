@@ -298,7 +298,7 @@ static const char *mon_disassemble_to_string_internal(MEMSPACE memspace,
             break;
 
         case ASM_ADDR_MODE_MOVE:
-            sprintf(buffp, (hex_mode ? " $%02X,$%02X" : " %3d,%3d"), ival, p2 & 0xff);
+            sprintf(buffp, (hex_mode ? " $%02X,$%02X" : " %3d,%3d"), p2 & 0xff, ival);
             break;
 
         case ASM_ADDR_MODE_RELATIVE:
