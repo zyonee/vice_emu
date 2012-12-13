@@ -357,6 +357,7 @@
                     PUSH(LOCAL_STATUS());                                      \
                     LOCAL_SET_DECIMAL(0);                                      \
                     LOCAL_SET_INTERRUPT(1);                                    \
+                    reg_pbr = 0;                                               \
                     JUMP(LOAD_INT_ADDR(0xfffa));                               \
                 } else {                                                       \
                     CLK_ADD(CLK, CYCLES_1);                                    \
@@ -366,6 +367,7 @@
                     PUSH(LOCAL_65816_STATUS());                                \
                     LOCAL_SET_DECIMAL(0);                                      \
                     LOCAL_SET_INTERRUPT(1);                                    \
+                    reg_pbr = 0;                                               \
                     JUMP(LOAD_INT_ADDR(0xffea));                               \
                 }                                                              \
                 SET_LAST_OPCODE(0);                                            \
@@ -387,6 +389,7 @@
                     PUSH(LOCAL_STATUS());                                      \
                     LOCAL_SET_INTERRUPT(1);                                    \
                     LOCAL_SET_DECIMAL(0);                                      \
+                    reg_pbr = 0;                                               \
                     JUMP(LOAD_INT_ADDR(0xfffe));                               \
                 } else {                                                       \
                     CLK_ADD(CLK, CYCLES_1);                                    \
@@ -396,6 +399,7 @@
                     PUSH(LOCAL_65816_STATUS());                                \
                     LOCAL_SET_INTERRUPT(1);                                    \
                     LOCAL_SET_DECIMAL(0);                                      \
+                    reg_pbr = 0;                                               \
                     JUMP(LOAD_INT_ADDR(0xffee));                               \
                 }                                                              \
                 SET_LAST_OPCODE(0);                                            \
