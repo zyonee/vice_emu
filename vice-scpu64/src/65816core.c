@@ -310,7 +310,7 @@
   do {                                                        \
       STORE(reg_sp, (val));                                   \
       if (reg_emul) {                                         \
-          reg_sp = (reg_sp & 0xff00) | ((reg_sp - 1) & 0xff); \
+          reg_sp = 0x100 | ((reg_sp - 1) & 0xff);             \
       } else {                                                \
           reg_sp--;                                           \
       }                                                       \
@@ -318,7 +318,7 @@
 #endif
 
 #ifndef PULL
-#define PULL() ((reg_sp = (reg_emul) ? (reg_sp & 0xff00) | ((reg_sp + 1) & 0xff) : reg_sp + 1), LOAD(reg_sp))
+#define PULL() ((reg_sp = (reg_emul) ? 0x100 | ((reg_sp + 1) & 0xff) : reg_sp + 1), LOAD(reg_sp))
 #endif
 
 #ifdef DEBUG
@@ -2071,11 +2071,10 @@
 #define TCS()                                          \
   do {                                                 \
       if (reg_emul) {                                  \
-          reg_sp = (reg_sp & 0xff00) | (reg_a & 0xff); \
+          reg_sp = 0x100 | reg_a;                      \
       } else {                                         \
           reg_sp = reg_c;                              \
       }                                                \
-      LOCAL_SET_NZ(reg_sp, 0);                         \
       INC_PC(SIZE_1);                                  \
   } while (0)
 
@@ -2155,7 +2154,7 @@
 #define TXS()                                 \
   do {                                        \
       if (LOCAL_65816_X()) {                  \
-          reg_sp = (reg_sp & 0xff00) | reg_x; \
+          reg_sp = 0x100 | reg_x;             \
       } else {                                \
           reg_sp = reg_x;                     \
       }                                       \
