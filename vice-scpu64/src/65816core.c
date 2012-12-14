@@ -1430,9 +1430,9 @@
       PUSH(((reg_pc) >> 8) & 0xff);                       \
       PUSH((reg_pc) & 0xff);                              \
       CLK_ADD(CLK, CYCLES_1);                             \
-      tmp_addr = LOAD((p2 + reg_x) & 0xffff);             \
+      tmp_addr = LOAD_PBR((p2 + reg_x) & 0xffff);             \
       CLK_ADD(CLK, CYCLES_1);                             \
-      tmp_addr |= (LOAD((p2 + reg_x + 1) & 0xffff) << 8); \
+      tmp_addr |= (LOAD_PBR((p2 + reg_x + 1) & 0xffff) << 8); \
       CLK_ADD(CLK, CYCLES_1);                             \
       JUMP(tmp_addr);                                     \
   } while (0)
