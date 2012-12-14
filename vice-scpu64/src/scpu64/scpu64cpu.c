@@ -140,7 +140,7 @@ void scpu64_clock_write_stretch(void)
 
 #define CLK_ADD(clock, amount) scpu64_clock_add(&clock, amount)
 
-#define LOAD_INT_ADDR(a) (scpu64_hwenable()?LOAD_ADDR((a) + 0xf80000):LOAD_ADDR(a))
+#define LOAD_INT_ADDR(a) ((scpu64_hwenable() || !reg_emul)?LOAD_ADDR((a) + 0xf80000):LOAD_ADDR(a))
 /* ------------------------------------------------------------------------- */
 
 #include "../main65816cpu.c"
