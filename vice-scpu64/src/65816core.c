@@ -1143,7 +1143,7 @@
           LOCAL_SET_DECIMAL(0);       \
           LOCAL_SET_INTERRUPT(1);     \
           reg_pbr = 0;                \
-          JUMP(LOAD_BANK0(0xfffe));   \
+          JUMP(LOAD_ADDR(0xfffe));   \
       } else {                        \
           CLK_ADD(CLK, CYCLES_1);     \
           PUSH(reg_pbr);              \
@@ -1153,7 +1153,7 @@
           LOCAL_SET_DECIMAL(0);       \
           LOCAL_SET_INTERRUPT(1);     \
           reg_pbr = 0;                \
-          JUMP(LOAD_BANK0(0xffe6));   \
+          JUMP(LOAD_ADDR(0xffe6));   \
       }                               \
   } while (0)
 
@@ -1372,9 +1372,9 @@
 #define JMP_IND()                                      \
   do {                                                 \
       WORD dest_addr;                                  \
-      dest_addr = LOAD_PBR(p2);                        \
+      dest_addr = LOAD(p2);                            \
       CLK_ADD(CLK, CYCLES_1);                          \
-      dest_addr |= (LOAD_PBR((p2 + 1) & 0xffff) << 8); \
+      dest_addr |= LOAD_BANK0(p2 + 1) << 8;            \
       CLK_ADD(CLK, CYCLES_1);                          \
       JUMP(dest_addr);                                 \
   } while (0)
@@ -1382,11 +1382,11 @@
 #define JMP_IND_LONG()                                   \
   do {                                                   \
       WORD dest_addr;                                    \
-      dest_addr = LOAD_BANK0(p2);                        \
+      dest_addr = LOAD(p2);                              \
       CLK_ADD(CLK, CYCLES_1);                            \
-      dest_addr |= (LOAD_BANK0((p2 + 1) & 0xffff) << 8); \
+      dest_addr |= LOAD_BANK0(p2 + 1) << 8;              \
       CLK_ADD(CLK, CYCLES_1);                            \
-      reg_pbr = LOAD_BANK0((p2 + 2) & 0xffff);           \
+      reg_pbr = LOAD_BANK0(p2 + 2);                      \
       CLK_ADD(CLK, CYCLES_1);                            \
       JUMP(dest_addr);                                   \
   } while (0)
