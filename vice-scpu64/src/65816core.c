@@ -1725,6 +1725,10 @@
       }                                                     \
       CLK_ADD(CLK, CYCLES_2);                               \
       LOCAL_SET_STATUS(s);                                  \
+      if (LOCAL_65816_X()) {                                \
+          reg_x &= 0xff;                                    \
+          reg_y &= 0xff;                                    \
+      }                                                     \
       INC_PC(SIZE_1);                                       \
   } while (0)
 
@@ -1765,6 +1769,10 @@
       }                                 \
       if ((mask & 0x10) && !reg_emul) { \
           LOCAL_SET_65816_X(v);         \
+          if (v) {                      \
+              reg_x &= 0xff;            \
+              reg_y &= 0xff;            \
+          }                             \
       }                                 \
       if (mask & 0x08) {                \
           LOCAL_SET_DECIMAL(v);         \
@@ -1865,6 +1873,10 @@
       CLK_ADD(CLK, CYCLES_4);      \
       tmp = (WORD)PULL();          \
       LOCAL_SET_STATUS((BYTE)tmp); \
+      if (LOCAL_65816_X()) {       \
+          reg_x &= 0xff;           \
+          reg_y &= 0xff;           \
+      }                            \
       tmp = (WORD)PULL();          \
       tmp |= (WORD)PULL() << 8;    \
       if (!reg_emul) {             \
