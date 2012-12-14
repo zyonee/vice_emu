@@ -859,9 +859,6 @@
       }                                                 \
   } while (0)
 
-#define STORE_ABS_DPR(addr, value, bits8) \
-  STORE_ABS(((addr) + reg_dpr) & 0xffff, value, bits8)
-
 #define STORE_ABS_X_RRW(addr, value, bits8) \
   STORE_ABS(((addr) + reg_x) & 0xffff, value, bits8)
 
@@ -1073,10 +1070,11 @@
       tmp = (value);                      \
       if (LOCAL_65816_M()) {              \
           LOCAL_SET_ZERO(!(tmp & reg_a)); \
+          INC_PC(SIZE_2);                 \
       } else {                            \
           LOCAL_SET_ZERO(!(tmp & reg_c)); \
+          INC_PC(SIZE_3);                 \
       }                                   \
-      INC_PC(SIZE_2);                     \
   } while (0)
 
 #define BIT(load_func, addr, clk_inc, pc_inc) \
@@ -2424,7 +2422,7 @@
                           mon_disassemble_to_string(e_comp_space,
                                                     reg_pc, op,
                                                     lo, hi, bk, 1, "65816"),
-                          reg_c, reg_x, reg_y, reg_sp);
+                          reg_c, reg_x, reg_y, reg_sp, reg_pbr);
         }
         if (debug.perform_break_into_monitor)
         {
@@ -2460,7 +2458,7 @@ trap_skipped:
             break;
 
           case 0x04:            /* TSB $nn */
-            TSB(p1, SIZE_2, LOAD_DIRECT_PAGE_FUNC, STORE_ABS_DPR);
+            TSB(p1, SIZE_2, LOAD_DIRECT_PAGE_FUNC, STORE_DIRECT_PAGE);
             break;
 
           case 0x05:            /* ORA $nn */
@@ -2468,7 +2466,7 @@ trap_skipped:
             break;
 
           case 0x06:            /* ASL $nn */
-            ASL(p1, CYCLES_2, SIZE_2, LOAD_DIRECT_PAGE_FUNC, STORE_ABS_DPR);
+            ASL(p1, CYCLES_2, SIZE_2, LOAD_DIRECT_PAGE_FUNC, STORE_DIRECT_PAGE);
             break;
 
           case 0x07:            /* ORA [$nn] */
@@ -2535,7 +2533,7 @@ trap_skipped:
             break;
 
           case 0x16:            /* ASL $nn,X */
-            ASL(p1 + reg_x, CYCLES_3, SIZE_2, LOAD_DIRECT_PAGE_FUNC, STORE_ABS_DPR);
+            ASL(p1 + reg_x, CYCLES_3, SIZE_2, LOAD_DIRECT_PAGE_FUNC, STORE_DIRECT_PAGE);
             break;
 
           case 0x17:            /* ORA [$nn],Y */
@@ -2599,7 +2597,7 @@ trap_skipped:
             break;
 
           case 0x26:            /* ROL $nn */
-            ROL(p1, CYCLES_2, SIZE_2, LOAD_DIRECT_PAGE_FUNC, STORE_ABS_DPR);
+            ROL(p1, CYCLES_2, SIZE_2, LOAD_DIRECT_PAGE_FUNC, STORE_DIRECT_PAGE);
             break;
 
           case 0x27:            /* AND [$nn] */
@@ -2666,7 +2664,7 @@ trap_skipped:
             break;
 
           case 0x36:            /* ROL $nn,X */
-            ROL(p1 + reg_x, CYCLES_3, SIZE_2, LOAD_DIRECT_PAGE_FUNC, STORE_ABS_DPR);
+            ROL(p1 + reg_x, CYCLES_3, SIZE_2, LOAD_DIRECT_PAGE_FUNC, STORE_DIRECT_PAGE);
             break;
 
           case 0x37:            /* AND [$nn],Y */
@@ -2726,7 +2724,7 @@ trap_skipped:
             break;
 
           case 0x46:            /* LSR $nn */
-            LSR(p1, CYCLES_2, SIZE_2, LOAD_DIRECT_PAGE_FUNC, STORE_ABS_DPR);
+            LSR(p1, CYCLES_2, SIZE_2, LOAD_DIRECT_PAGE_FUNC, STORE_DIRECT_PAGE);
             break;
 
           case 0x47:            /* EOR [$nn] */
@@ -2793,7 +2791,7 @@ trap_skipped:
             break;
 
           case 0x56:            /* LSR $nn,X */
-            LSR(p1 + reg_x, CYCLES_3, SIZE_2, LOAD_DIRECT_PAGE_FUNC, STORE_ABS_DPR);
+            LSR(p1 + reg_x, CYCLES_3, SIZE_2, LOAD_DIRECT_PAGE_FUNC, STORE_DIRECT_PAGE);
             break;
 
           case 0x57:            /* EOR [$nn],Y */
@@ -2857,7 +2855,7 @@ trap_skipped:
             break;
 
           case 0x66:            /* ROR $nn */
-            ROR(p1, CYCLES_2, SIZE_2, LOAD_DIRECT_PAGE_FUNC, STORE_ABS_DPR);
+            ROR(p1, CYCLES_2, SIZE_2, LOAD_DIRECT_PAGE_FUNC, STORE_DIRECT_PAGE);
             break;
 
           case 0x67:            /* ADC [$nn] */
@@ -2924,7 +2922,7 @@ trap_skipped:
             break;
 
           case 0x76:            /* ROR $nn,X */
-            ROR(p1 + reg_x, CYCLES_3, SIZE_2, LOAD_DIRECT_PAGE_FUNC, STORE_ABS_DPR);
+            ROR(p1 + reg_x, CYCLES_3, SIZE_2, LOAD_DIRECT_PAGE_FUNC, STORE_DIRECT_PAGE);
             break;
 
           case 0x77:            /* ADC [$nn],Y */
@@ -3256,7 +3254,7 @@ trap_skipped:
             break;
 
           case 0xc6:            /* DEC $nn */
-            DEC(p1, CYCLES_2, SIZE_2, LOAD_DIRECT_PAGE_FUNC, STORE_ABS_DPR);
+            DEC(p1, CYCLES_2, SIZE_2, LOAD_DIRECT_PAGE_FUNC, STORE_DIRECT_PAGE);
             break;
 
           case 0xc7:            /* CMP [$nn] */
@@ -3323,7 +3321,7 @@ trap_skipped:
             break;
 
           case 0xd6:            /* DEC $nn,X */
-            DEC(p1 + reg_x, CYCLES_3, SIZE_2, LOAD_DIRECT_PAGE_FUNC, STORE_ABS_DPR);
+            DEC(p1 + reg_x, CYCLES_3, SIZE_2, LOAD_DIRECT_PAGE_FUNC, STORE_DIRECT_PAGE);
             break;
 
           case 0xd7:            /* CMP [$nn],Y */
@@ -3390,7 +3388,7 @@ trap_skipped:
             break;
 
           case 0xe6:            /* INC $nn */
-            INC(p1, CYCLES_2, SIZE_2, LOAD_DIRECT_PAGE_FUNC, STORE_ABS_DPR);
+            INC(p1, CYCLES_2, SIZE_2, LOAD_DIRECT_PAGE_FUNC, STORE_DIRECT_PAGE);
             break;
 
           case 0xe7:            /* SBC [$nn] */
@@ -3457,7 +3455,7 @@ trap_skipped:
             break;
 
           case 0xf6:            /* INC $nn,X */
-            INC(p1 + reg_x, CYCLES_3, SIZE_2, LOAD_DIRECT_PAGE_FUNC, STORE_ABS_DPR);
+            INC(p1 + reg_x, CYCLES_3, SIZE_2, LOAD_DIRECT_PAGE_FUNC, STORE_DIRECT_PAGE);
             break;
 
           case 0xf7:            /* SBC [$nn],Y */
