@@ -29,8 +29,21 @@
 
 #include "types.h"
 
-/* You can also enable/disable this option by hand. */
-#if 1
+/* Manually defined */
+/* To enable/disable this option by hand change the 0 below to 1. */
+#if 0
+/* This enables debugging.  Attention: It makes things a bit slower.  */
+#define DEBUG
+#endif
+
+/* configure defined, not valid when using an IDE */
+#if 1 && !defined(IDE_COMPILE)
+/* This enables debugging.  Attention: It makes things a bit slower.  */
+#define DEBUG
+#endif
+
+/* IDE defined. */
+#if defined(IDE_COMPILE) && defined(_DEBUG)
 /* This enables debugging.  Attention: It makes things a bit slower.  */
 #define DEBUG
 #endif

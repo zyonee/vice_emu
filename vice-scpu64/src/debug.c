@@ -390,7 +390,7 @@ static int debug_autoplay_current_frame;
 static void debug_close_file(void)
 {
     if (debug_file != NULL) {
-        if (fwrite(debug_buffer, sizeof(char), debug_buffer_ptr, debug_file) < debug_buffer_ptr) {
+        if (fwrite(debug_buffer, sizeof(char), debug_buffer_ptr, debug_file) < (size_t)debug_buffer_ptr) {
             fprintf(stderr, "error writing debug log.\n");
         }
         fclose(debug_file);
