@@ -98,6 +98,9 @@ extern void vdd_usleep(CBM_FILE f, unsigned int howlong);
 typedef unsigned char __u_char;
 #endif
 
+#ifdef __CYGWIN32__
+typedef unsigned char __u_char;
+#endif
 #endif
 
 /* specifiers for the IEC bus lines */
