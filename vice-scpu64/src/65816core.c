@@ -476,7 +476,13 @@
           CLK_ADD(CLK, CYCLES_1);                      \
       }                                                \
 
-#define LOAD_IMMEDIATE_FUNC(var, addr, bits8) var = addr
+#define LOAD_IMMEDIATE_FUNC(var, addr, bits8)          \
+    if (bits8) {                                       \
+        var = addr & 0xff;                             \
+    } else {                                           \
+        var = addr;                                    \
+        INC_PC(SIZE_1);                                \
+    }
 
 #define LOAD_DIRECT_PAGE_FUNC(var, addr, bits8)        \
   do {                                                 \
@@ -2478,10 +2484,7 @@ trap_skipped:
             break;
 
           case 0x09:            /* ORA #$nn */
-            ORA(LOAD_IMMEDIATE_FUNC, (LOCAL_65816_M()) ? p1 : p2, CYCLES_0, SIZE_2);
-            if (!LOCAL_65816_M()) {
-                INC_PC(SIZE_1);
-            }
+            ORA(LOAD_IMMEDIATE_FUNC, p2, CYCLES_0, SIZE_2);
             break;
 
           case 0x0a:            /* ASL A */
@@ -2609,10 +2612,7 @@ trap_skipped:
             break;
 
           case 0x29:            /* AND #$nn */
-            AND(LOAD_IMMEDIATE_FUNC, (LOCAL_65816_M()) ? p1 : p2, CYCLES_0, SIZE_2);
-            if (!LOCAL_65816_M()) {
-                INC_PC(SIZE_1);
-            }
+            AND(LOAD_IMMEDIATE_FUNC, p2, CYCLES_0, SIZE_2);
             break;
 
           case 0x2a:            /* ROL A */
@@ -2736,10 +2736,7 @@ trap_skipped:
             break;
 
           case 0x49:            /* EOR #$nn */
-            EOR(LOAD_IMMEDIATE_FUNC, LOCAL_65816_M() ? p1 : p2, CYCLES_0, SIZE_2);
-            if (!LOCAL_65816_M()) {
-                INC_PC(SIZE_1);
-            }
+            EOR(LOAD_IMMEDIATE_FUNC, p2, CYCLES_0, SIZE_2);
             break;
 
           case 0x4a:            /* LSR A */
@@ -2867,10 +2864,7 @@ trap_skipped:
             break;
 
           case 0x69:            /* ADC #$nn */
-            ADC(LOAD_IMMEDIATE_FUNC, (LOCAL_65816_M()) ? p1 : p2, CYCLES_0, SIZE_2);
-            if (!LOCAL_65816_M()) {
-                INC_PC(SIZE_1);
-            }
+            ADC(LOAD_IMMEDIATE_FUNC, p2, CYCLES_0, SIZE_2);
             break;
 
           case 0x6a:            /* ROR A */
@@ -3090,10 +3084,7 @@ trap_skipped:
             break;
 
           case 0xa0:            /* LDY #$nn */
-            LDY(LOAD_IMMEDIATE_FUNC, (LOCAL_65816_X()) ? p1 : p2, CYCLES_0, SIZE_2);
-            if (!LOCAL_65816_X()) {
-                INC_PC(SIZE_1);
-            }
+            LDY(LOAD_IMMEDIATE_FUNC, p2, CYCLES_0, SIZE_2);
             break;
 
           case 0xa1:            /* LDA ($nn,X) */
@@ -3101,10 +3092,7 @@ trap_skipped:
             break;
 
           case 0xa2:            /* LDX #$nn */
-            LDX(LOAD_IMMEDIATE_FUNC, (LOCAL_65816_X()) ? p1 : p2, CYCLES_0, SIZE_2);
-            if (!LOCAL_65816_X()) {
-                INC_PC(SIZE_1);
-            }
+            LDX(LOAD_IMMEDIATE_FUNC, p2, CYCLES_0, SIZE_2);
             break;
 
           case 0xa3:            /* LDA $nn,S */
@@ -3132,10 +3120,7 @@ trap_skipped:
             break;
 
           case 0xa9:            /* LDA #$nn */
-            LDA(LOAD_IMMEDIATE_FUNC, (LOCAL_65816_M()) ? p1 : p2, CYCLES_0, SIZE_2);
-            if (!LOCAL_65816_M()) {
-                INC_PC(SIZE_1);
-            }
+            LDA(LOAD_IMMEDIATE_FUNC, p2, CYCLES_0, SIZE_2);
             break;
 
           case 0xaa:            /* TAX */
@@ -3227,10 +3212,7 @@ trap_skipped:
             break;
 
           case 0xc0:            /* CPY #$nn */
-            CPY(LOAD_IMMEDIATE_FUNC, (LOCAL_65816_X()) ? p1 : p2, CYCLES_0, SIZE_2);
-            if (!LOCAL_65816_X()) {
-                INC_PC(SIZE_1);
-            }
+            CPY(LOAD_IMMEDIATE_FUNC, p2, CYCLES_0, SIZE_2);
             break;
 
           case 0xc1:            /* CMP ($nn,X) */
@@ -3266,10 +3248,7 @@ trap_skipped:
             break;
 
           case 0xc9:            /* CMP #$nn */
-            CMP(LOAD_IMMEDIATE_FUNC, (LOCAL_65816_M()) ? p1 : p2, CYCLES_0, SIZE_2);
-            if (!LOCAL_65816_M()) {
-                INC_PC(SIZE_1);
-            }
+            CMP(LOAD_IMMEDIATE_FUNC, p2, CYCLES_0, SIZE_2);
             break;
 
           case 0xca:            /* DEX */
@@ -3361,10 +3340,7 @@ trap_skipped:
             break;
 
           case 0xe0:            /* CPX #$nn */
-            CPX(LOAD_IMMEDIATE_FUNC, (LOCAL_65816_X()) ? p1 : p2, CYCLES_0, SIZE_2);
-            if (!LOCAL_65816_X()) {
-                INC_PC(SIZE_1);
-            }
+            CPX(LOAD_IMMEDIATE_FUNC, p2, CYCLES_0, SIZE_2);
             break;
 
           case 0xe1:            /* SBC ($nn,X) */
@@ -3400,10 +3376,7 @@ trap_skipped:
             break;
 
           case 0xe9:            /* SBC #$nn */
-            SBC(LOAD_IMMEDIATE_FUNC, (LOCAL_65816_M()) ? p1 : p2, CYCLES_0, SIZE_2);
-            if (!LOCAL_65816_M()) {
-                INC_PC(SIZE_1);
-            }
+            SBC(LOAD_IMMEDIATE_FUNC, p2, CYCLES_0, SIZE_2);
             break;
 
           case 0xea:            /* NOP */
