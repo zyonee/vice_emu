@@ -254,7 +254,7 @@ void debug_maincpu(DWORD reg_pc, CLOCK mclk, const char *dis, BYTE reg_a,
 }
 
 void debug_main65816cpu(DWORD reg_pc, CLOCK mclk, const char *dis, WORD reg_c,
-                   WORD reg_x, WORD reg_y, WORD reg_sp)
+                   WORD reg_x, WORD reg_y, WORD reg_sp, BYTE reg_pbr)
 {
     switch (debug.trace_mode) {
         case DEBUG_SMALL:
@@ -278,7 +278,7 @@ void debug_main65816cpu(DWORD reg_pc, CLOCK mclk, const char *dis, WORD reg_c,
                 }  
             }
 
-            log_debug("%04X %ld %04X %04X %04X %s", (unsigned int)reg_pc,
+            log_debug("%02X%04X %ld %04X %04X %04X %s", reg_pbr, (unsigned int)reg_pc,
                     (long)mclk, reg_c, reg_x, reg_y, small_dis);
             break;
       }
@@ -287,16 +287,16 @@ void debug_main65816cpu(DWORD reg_pc, CLOCK mclk, const char *dis, WORD reg_c,
       {
             char st[DEBUG_MAXLINELEN];
 
-            sprintf(st, ".%04X %02X %02X %8lX %-23s "
-                    "%04X %04X %04X %02X", (unsigned int)reg_pc,
+            sprintf(st, ".%02X%04X %02X %02X %8lX %-23s "
+                    "%04X %04X %04X %02X", reg_pbr, (unsigned int)reg_pc,
                     RLINE(mclk), RCYCLE(mclk), (long)mclk, dis,
                     reg_c, reg_x, reg_y, reg_sp);
             debug_history_step(st);
             break;
       }
       case DEBUG_NORMAL:
-            log_debug(".%04X %03i %03i %10ld  %-25s "
-                    "%04x %04x %04x %04x", (unsigned int)reg_pc,
+            log_debug(".%02X%04X %03i %03i %10ld  %-25s "
+                    "%04x %04x %04x %04x", reg_pbr, (unsigned int)reg_pc,
                     RLINE(mclk), RCYCLE(mclk), (long)mclk, dis,
                     reg_c, reg_x, reg_y, reg_sp);
             break;

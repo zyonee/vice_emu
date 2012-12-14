@@ -30,7 +30,7 @@
 #include "types.h"
 
 /* You can also enable/disable this option by hand. */
-#if 0
+#if 1
 /* This enables debugging.  Attention: It makes things a bit slower.  */
 #define DEBUG
 #endif
@@ -49,10 +49,10 @@ typedef struct debug_s {
     int drivecpu_traceflg[4];
     int trace_mode;
 
-    /*
-     * if this is set, the CPU will break into the monitor before executing the
-     * next statement. This is often handy for debugging.
-     */
+     /*
+      * if this is set, the CPU will break into the monitor before executing the 
+      * next statement. This is often handy for debugging.
+      */
     int perform_break_into_monitor;
 
     /*! If this is set, inputs and outputs to the IEC bus are output. */
@@ -73,7 +73,7 @@ extern void debug_set_machine_parameter(unsigned int cycles,
 extern void debug_maincpu(DWORD reg_pc, CLOCK mclk, const char *dis,
                           BYTE reg_a, BYTE reg_x, BYTE reg_y, BYTE reg_sp);
 extern void debug_main65816cpu(DWORD reg_pc, CLOCK mclk, const char *dis, WORD reg_c,
-                               WORD reg_x, WORD reg_y, WORD reg_sp);
+                               WORD reg_x, WORD reg_y, WORD reg_sp, BYTE reg_pbr);
 extern void debug_drive(DWORD reg_pc, CLOCK mclk, const char *dis,
                         BYTE reg_a, BYTE reg_x, BYTE reg_y, BYTE reg_sp,
                         unsigned int driveno);
@@ -121,9 +121,9 @@ extern void debug_iec_bus_read(unsigned int data);
 
 #else
 
-# define STATIC_ASSERT(_x)                                                      \
-    {                                                                           \
-        BYTE dummy[1 - 2 * ((_x) == 0)];                                        \
+# define STATIC_ASSERT(_x) \
+    { \
+        BYTE dummy[1 - 2 * ((_x) == 0)]; \
         dummy[0] = dummy[0] - dummy[0]; /* prevent "unused variable" warning */ \
     }
 
