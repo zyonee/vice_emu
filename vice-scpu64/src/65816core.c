@@ -471,13 +471,16 @@
 #define LOAD_DIRECT_PAGE8(addr) \
     (LOAD_BANK0((addr) + reg_dpr))
 
+#define DPR_DELAY \
+      if (reg_dpr & 0xff) {                            \
+          CLK_ADD(CLK, CYCLES_1);                      \
+      }                                                \
+
 #define LOAD_IMMEDIATE_FUNC(var, addr, bits8) var = addr
 
 #define LOAD_DIRECT_PAGE_FUNC(var, addr, bits8)        \
   do {                                                 \
-      if (reg_dpr) {                                   \
-          CLK_ADD(CLK, CYCLES_1);                      \
-      }                                                \
+      DPR_DELAY                                        \
       var = LOAD_DIRECT_PAGE8(addr);                   \
       if (!bits8) {                                    \
           CLK_ADD(CLK, CYCLES_1);                      \
@@ -487,9 +490,7 @@
 
 #define LOAD_DIRECT_PAGE_X_FUNC(var, addr, bits8)           \
   do {                                                      \
-      if (reg_dpr) {                                        \
-          CLK_ADD(CLK, CYCLES_1);                           \
-      }                                                     \
+      DPR_DELAY                                             \
       var = LOAD_BANK0(addr + reg_dpr + reg_x);             \
       if (!bits8) {                                         \
           CLK_ADD(CLK, CYCLES_1);                           \
@@ -499,9 +500,7 @@
 
 #define LOAD_DIRECT_PAGE_Y_FUNC(var, addr, bits8)           \
   do {                                                      \
-      if (reg_dpr) {                                        \
-          CLK_ADD(CLK, CYCLES_1);                           \
-      }                                                     \
+      DPR_DELAY                                             \
       var = LOAD_BANK0(addr + reg_dpr + reg_y);             \
       if (!bits8) {                                         \
           CLK_ADD(CLK, CYCLES_1);                           \
@@ -513,9 +512,7 @@
   do {                                          \
       unsigned int ea;                          \
                                                 \
-      if (reg_dpr) {                            \
-          CLK_ADD(CLK, CYCLES_1);               \
-      }                                         \
+      DPR_DELAY                                 \
       CLK_ADD(CLK, CYCLES_3);                   \
       ea = LOAD_DIRECT_PAGE8(addr);             \
       ea |= (LOAD_DIRECT_PAGE8(addr + 1) << 8); \
@@ -530,9 +527,7 @@
   do {                                                  \
       unsigned int ea;                                  \
                                                         \
-      if (reg_dpr) {                                    \
-          CLK_ADD(CLK, CYCLES_1);                       \
-      }                                                 \
+      DPR_DELAY                                         \
       CLK_ADD(CLK, CYCLES_3);                           \
       ea = LOAD_DIRECT_PAGE8(addr + reg_x);             \
       ea |= (LOAD_DIRECT_PAGE8(addr + reg_x + 1) << 8); \
@@ -547,9 +542,7 @@
   do {                                                           \
       unsigned int ea;                                           \
                                                                  \
-      if (reg_dpr) {                                             \
-          CLK_ADD(CLK, CYCLES_1);                                \
-      }                                                          \
+      DPR_DELAY                                                  \
       CLK_ADD(CLK, CYCLES_3);                                    \
       ea = LOAD_DIRECT_PAGE8(addr);                              \
       ea |= (LOAD_DIRECT_PAGE8(addr + 1) << 8);                  \
@@ -567,9 +560,7 @@
   do {                                            \
       unsigned int ea;                            \
                                                   \
-      if (reg_dpr) {                              \
-          CLK_ADD(CLK, CYCLES_1);                 \
-      }                                           \
+      DPR_DELAY                                   \
       CLK_ADD(CLK, CYCLES_4);                     \
       ea = LOAD_DIRECT_PAGE8(addr);               \
       ea |= (LOAD_DIRECT_PAGE8(addr + 1) << 8);   \
@@ -585,9 +576,7 @@
   do {                                              \
       unsigned int ea;                              \
                                                     \
-      if (reg_dpr) {                                \
-          CLK_ADD(CLK, CYCLES_1);                   \
-      }                                             \
+      DPR_DELAY                                     \
       ea = LOAD_DIRECT_PAGE8(addr);                 \
       ea |= (LOAD_DIRECT_PAGE8(addr + 1) << 8);     \
       ea |= (LOAD_DIRECT_PAGE8(addr + 2) << 16);    \
