@@ -1160,15 +1160,60 @@ static const char *banknames[] = {
     "rom",
     "io",
     "cart",
-    "rom00", "rom01",
-    "ram00", "ram01",
+    "ram00", "ram01", "ram02", "ram03", "ram04", "ram05", "ram06", "ram07",
+    "ram08", "ram09", "ram0a", "ram0b", "ram0c", "ram0d", "ram0e", "ram0f",
+    "ram10", "ram11", "ram12", "ram13", "ram14", "ram15", "ram16", "ram17",
+    "ram18", "ram19", "ram1a", "ram1b", "ram1c", "ram1d", "ram1e", "ram1f",
+    "ram20", "ram21", "ram22", "ram23", "ram24", "ram25", "ram26", "ram27",
+    "ram28", "ram29", "ram2a", "ram2b", "ram2c", "ram2d", "ram2e", "ram2f",
+    "ram30", "ram31", "ram32", "ram33", "ram34", "ram35", "ram36", "ram37",
+    "ram38", "ram39", "ram3a", "ram3b", "ram3c", "ram3d", "ram3e", "ram3f",
+    "ram40", "ram41", "ram42", "ram43", "ram44", "ram45", "ram46", "ram47",
+    "ram48", "ram49", "ram4a", "ram4b", "ram4c", "ram4d", "ram4e", "ram4f",
+    "ram50", "ram51", "ram52", "ram53", "ram54", "ram55", "ram56", "ram57",
+    "ram58", "ram59", "ram5a", "ram5b", "ram5c", "ram5d", "ram5e", "ram5f",
+    "ram60", "ram61", "ram62", "ram63", "ram64", "ram65", "ram66", "ram67",
+    "ram68", "ram69", "ram6a", "ram6b", "ram6c", "ram6d", "ram6e", "ram6f",
+    "ram70", "ram71", "ram72", "ram73", "ram74", "ram75", "ram76", "ram77",
+    "ram78", "ram79", "ram7a", "ram7b", "ram7c", "ram7d", "ram7e", "ram7f",
+    "ram80", "ram81", "ram82", "ram83", "ram84", "ram85", "ram86", "ram87",
+    "ram88", "ram89", "ram8a", "ram8b", "ram8c", "ram8d", "ram8e", "ram8f",
+    "ram90", "ram91", "ram92", "ram93", "ram94", "ram95", "ram96", "ram97",
+    "ram98", "ram99", "ram9a", "ram9b", "ram9c", "ram9d", "ram9e", "ram9f",
+    "rama0", "rama1", "rama2", "rama3", "rama4", "rama5", "rama6", "rama7",
+    "rama8", "rama9", "ramaa", "ramab", "ramac", "ramad", "ramae", "ramaf",
+    "ramb0", "ramb1", "ramb2", "ramb3", "ramb4", "ramb5", "ramb6", "ramb7",
+    "ramb8", "ramb9", "ramba", "rambb", "rambc", "rambd", "rambe", "rambf",
+    "ramc0", "ramc1", "ramc2", "ramc3", "ramc4", "ramc5", "ramc6", "ramc7",
+    "ramc8", "ramc9", "ramca", "ramcb", "ramcc", "ramcd", "ramce", "ramcf",
+    "ramd0", "ramd1", "ramd2", "ramd3", "ramd4", "ramd5", "ramd6", "ramd7",
+    "ramd8", "ramd9", "ramda", "ramdb", "ramdc", "ramdd", "ramde", "ramdf",
+    "rame0", "rame1", "rame2", "rame3", "rame4", "rame5", "rame6", "rame7",
+    "rame8", "rame9", "ramea", "rameb", "ramec", "ramed", "ramee", "ramef",
+    "ramf0", "ramf1", "ramf2", "ramf3", "ramf4", "ramf5", "ramf6", "ramf7",
+    "romf8", "romf9", "romfa", "romfb", "romfc", "romfd", "romfe", "romff",
     NULL
 };
 
 static const int banknums[] = 
 { 
     1, 0, 1, 2, 3, 4,
-    5, 6, 7, 8
+    5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+    21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36,
+    37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52,
+    53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68,
+    69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84,
+    85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100,
+    101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116,
+    117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132,
+    133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148,
+    149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 164,
+    165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180,
+    181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 192, 193, 194, 195, 196,
+    197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212,
+    213, 214, 215, 216, 217, 218, 219, 220, 221, 222, 223, 224, 225, 226, 227, 228,
+    229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244,
+    245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255, 256, 257, 258, 259, 260
 };
 
 const char **mem_bank_list(void)
@@ -1193,10 +1238,16 @@ int mem_bank_from_name(const char *name)
 BYTE mem_bank_read(int bank, WORD addr, void *context)
 {
     if ((bank >= 5) && (bank <= 6)) {
-        return scpu64memrom_scpu64_rom[((bank - 5) << 16) + addr]; /* ram00..ff */
+        return mem_sram[((bank - 5) << 16) + addr]; /* ram00..01 */
     }
-    if ((bank >= 7) && (bank <= 8)) {
-        return mem_sram[((bank - 7) << 16) + addr]; /* ram00..ff */
+    if ((bank >= 7) && (bank <= 250) && (bank - 5) < (SCPU64_SIMM_SIZE / 65536)) {
+        return mem_simm_ram[((bank - 5) << 16) + addr]; /* ram02..f6 */
+    }
+    if ((bank >= 251) && (bank <= 252) && (bank - 251) < (SCPU64_SIMM_SIZE / 65536)) {
+        return mem_simm_ram[((bank - 251) << 16) + addr]; /* ramf6..f7 */
+    }
+    if ((bank >= 253) && (bank <= 260)) {
+        return scpu64memrom_scpu64_rom[(((bank - 253) << 16) + addr) & (SCPU64_SCPU64_ROM_SIZE-1)]; /* romf8..ff */
     }
 
     switch (bank) {
@@ -1227,7 +1278,7 @@ BYTE mem_bank_read(int bank, WORD addr, void *context)
 /* read memory without side-effects */
 BYTE mem_bank_peek(int bank, WORD addr, void *context)
 {
-    if ((bank >= 5) && (bank <= 8)) {
+    if ((bank >= 5) && (bank <= 260)) {
         return mem_bank_read(bank, addr, context); /* ram00..ff */
     }
     switch (bank) {
@@ -1255,12 +1306,16 @@ BYTE mem_bank_peek(int bank, WORD addr, void *context)
 void mem_bank_write(int bank, WORD addr, BYTE byte, void *context)
 {
     if ((bank >= 5) && (bank <= 6)) {
-        scpu64memrom_scpu64_rom[((bank - 5) << 16) + addr] = byte; /* rom00..01 */
-        return;
+        mem_sram[((bank - 5) << 16) + addr] = byte; /* ram00..01 */
     }
-    if ((bank >= 7) && (bank <= 8)) {
-        mem_sram[((bank - 7) << 16) + addr] = byte; /* ram00..ff */
-        return;
+    if ((bank >= 7) && (bank <= 250) && (bank - 5) < (SCPU64_SIMM_SIZE / 65536)) {
+        mem_simm_ram[((bank - 5) << 16) + addr] = byte; /* ram02..f6 */
+    }
+    if ((bank >= 251) && (bank <= 252) && (bank - 251) < (SCPU64_SIMM_SIZE / 65536)) {
+        mem_simm_ram[((bank - 251) << 16) + addr] = byte; /* ramf6..f7 */
+    }
+    if ((bank >= 253) && (bank <= 260)) {
+        scpu64memrom_scpu64_rom[(((bank - 253) << 16) + addr) & (SCPU64_SCPU64_ROM_SIZE-1)] = byte; /* romf8..ff */
     }
     switch (bank) {
         case 0:                   /* current */
