@@ -1037,18 +1037,18 @@
       INC_PC(pc_inc);                         \
   } while (0)
 
-#define ASL(addr, clk_inc, pc_inc, load_func, store_func) \
-  do {                                                    \
-      unsigned int tmp_value, tmp_addr;                   \
-                                                          \
-      tmp_addr = (addr);                                  \
-      load_func(tmp_value, tmp_addr, LOCAL_65816_M());    \
-      LOCAL_SET_CARRY(tmp_value & 0x80);                  \
-      tmp_value = (tmp_value << 1) & 0xff;                \
-      LOCAL_SET_NZ(tmp_value, LOCAL_65816_M());           \
-      INC_PC(pc_inc);                                     \
-      CLK_ADD(CLK, clk_inc);                              \
-      store_func(tmp_addr, tmp_value, LOCAL_65816_M());   \
+#define ASL(addr, clk_inc, pc_inc, load_func, store_func)             \
+  do {                                                                \
+      unsigned int tmp_value, tmp_addr;                               \
+                                                                      \
+      tmp_addr = (addr);                                              \
+      load_func(tmp_value, tmp_addr, LOCAL_65816_M());                \
+      LOCAL_SET_CARRY(tmp_value & (LOCAL_65816_M() ? 0x80 : 0x8000)); \
+      tmp_value <<= 1;                                                \
+      LOCAL_SET_NZ(tmp_value, LOCAL_65816_M());                       \
+      INC_PC(pc_inc);                                                 \
+      CLK_ADD(CLK, clk_inc);                                          \
+      store_func(tmp_addr, tmp_value, LOCAL_65816_M());               \
   } while (0)
 
 #define ASL_A()                             \
@@ -1256,11 +1256,7 @@
                                                           \
       tmp_addr = (addr);                                  \
       load_func(tmp, tmp_addr, LOCAL_65816_M());          \
-      if (LOCAL_65816_M()) {                              \
-          tmp = (tmp - 1) & 0xff;                         \
-      } else {                                            \
-          tmp = (tmp - 1) & 0xffff;                       \
-      }                                                   \
+      tmp--;                                              \
       LOCAL_SET_NZ(tmp, LOCAL_65816_M());                 \
       INC_PC(pc_inc);                                     \
       CLK_ADD(CLK, clk_inc);                              \
@@ -1319,11 +1315,7 @@
                                                           \
       tmp_addr = (addr);                                  \
       load_func(tmp, tmp_addr, LOCAL_65816_M());          \
-      if (LOCAL_65816_M()) {                              \
-          tmp = (tmp + 1) & 0xff;                         \
-      } else {                                            \
-          tmp = (tmp + 1) & 0xffff;                       \
-      }                                                   \
+      tmp++;                                              \
       LOCAL_SET_NZ(tmp, LOCAL_65816_M());                 \
       INC_PC(pc_inc);                                     \
       CLK_ADD(CLK, clk_inc);                              \
