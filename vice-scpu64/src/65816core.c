@@ -90,16 +90,6 @@
 #define RESET_CYCLES    6
 
 /* ------------------------------------------------------------------------- */
-/* Backup for non-6509 CPUs.  */
-
-#ifndef LOAD_IND
-#define LOAD_IND(a)     LOAD(a)
-#endif
-#ifndef STORE_IND
-#define STORE_IND(a,b)  STORE(a,b)
-#endif
-
-/* ------------------------------------------------------------------------- */
 /* Backup for non-variable cycle CPUs.  */
 
 #ifndef CLK_ADD
@@ -476,6 +466,7 @@
           CLK_ADD(CLK, CYCLES_1);                      \
       }                                                \
 
+/* # */
 #define LOAD_IMMEDIATE_FUNC(var, addr, bits8)          \
     if (bits8) {                                       \
         var = addr & 0xff;                             \
@@ -484,51 +475,56 @@
         INC_PC(SIZE_1);                                \
     }
 
+/* $ff */
 #define LOAD_DIRECT_PAGE_FUNC(var, addr, bits8)        \
   do {                                                 \
       DPR_DELAY                                        \
       var = LOAD_DIRECT_PAGE8(addr);                   \
       if (!bits8) {                                    \
           CLK_ADD(CLK, CYCLES_1);                      \
-          var |= (LOAD_DIRECT_PAGE8((addr) + 1) << 8); \
+          var |= LOAD_DIRECT_PAGE8((addr) + 1) << 8;   \
       }                                                \
   } while (0)
 
-#define LOAD_DIRECT_PAGE_X_FUNC(var, addr, bits8)           \
-  do {                                                      \
-      DPR_DELAY                                             \
-      var = LOAD_BANK0(addr + reg_dpr + reg_x);             \
-      if (!bits8) {                                         \
-          CLK_ADD(CLK, CYCLES_1);                           \
-          var |= (LOAD_BANK0(addr + reg_dpr + reg_x) << 8); \
-      }                                                     \
+/* $ff,x */
+#define LOAD_DIRECT_PAGE_X_FUNC(var, addr, bits8)               \
+  do {                                                          \
+      DPR_DELAY                                                 \
+      var = LOAD_DIRECT_PAGE8(addr + reg_x);                    \
+      if (!bits8) {                                             \
+          CLK_ADD(CLK, CYCLES_1);                               \
+          var |= LOAD_DIRECT_PAGE8((addr) + reg_x + 1) << 8;    \
+      }                                                         \
   } while (0)
 
-#define LOAD_DIRECT_PAGE_Y_FUNC(var, addr, bits8)           \
-  do {                                                      \
-      DPR_DELAY                                             \
-      var = LOAD_BANK0(addr + reg_dpr + reg_y);             \
-      if (!bits8) {                                         \
-          CLK_ADD(CLK, CYCLES_1);                           \
-          var |= (LOAD_BANK0(addr + reg_dpr + reg_y) << 8); \
-      }                                                     \
+/* $ff,y */
+#define LOAD_DIRECT_PAGE_Y_FUNC(var, addr, bits8)             \
+  do {                                                        \
+      DPR_DELAY                                               \
+      var = LOAD_DIRECT_PAGE8((addr) + reg_y);                \
+      if (!bits8) {                                           \
+          CLK_ADD(CLK, CYCLES_1);                             \
+          var |= LOAD_DIRECT_PAGE8((addr) + reg_y + 1) << 8;  \
+      }                                                       \
   } while (0)
 
-#define LOAD_INDIRECT_FUNC(var, addr, bits8)    \
-  do {                                          \
-      unsigned int ea;                          \
-                                                \
-      DPR_DELAY                                 \
-      CLK_ADD(CLK, CYCLES_3);                   \
-      ea = LOAD_DIRECT_PAGE8(addr);             \
-      ea |= (LOAD_DIRECT_PAGE8(addr + 1) << 8); \
-      var = LOAD_DBR(ea);                       \
-      if (!bits8) {                             \
-          CLK_ADD(CLK, 1);                      \
-          var |= (LOAD_DBR(ea + 1) << 8);       \
-      }                                         \
+/* ($ff) */
+#define LOAD_INDIRECT_FUNC(var, addr, bits8)         \
+  do {                                               \
+      unsigned int ea;                               \
+                                                     \
+      DPR_DELAY                                      \
+      CLK_ADD(CLK, CYCLES_3);                        \
+      ea = LOAD_DIRECT_PAGE8(addr);                  \
+      ea |= LOAD_DIRECT_PAGE8(addr + 1) << 8;        \
+      var = LOAD_DBR(ea);                            \
+      if (!bits8) {                                  \
+          CLK_ADD(CLK, 1);                           \
+          var |= LOAD_DBR((ea + 1) & 0xffff) << 8;   \
+      }                                              \
   } while (0)
       
+/* ($ff,x) */
 #define LOAD_INDIRECT_X_FUNC(var, addr, bits8)          \
   do {                                                  \
       unsigned int ea;                                  \
@@ -536,14 +532,15 @@
       DPR_DELAY                                         \
       CLK_ADD(CLK, CYCLES_3);                           \
       ea = LOAD_DIRECT_PAGE8(addr + reg_x);             \
-      ea |= (LOAD_DIRECT_PAGE8(addr + reg_x + 1) << 8); \
+      ea |= LOAD_DIRECT_PAGE8(addr + reg_x + 1) << 8;   \
       var = LOAD_DBR(ea);                               \
       if (!bits8) {                                     \
           CLK_ADD(CLK, CYCLES_1);                       \
-          var |= (LOAD_DBR(ea + 1) << 8);               \
+          var |= LOAD_DBR((ea + 1) & 0xffff) << 8;      \
       }                                                 \
   } while (0)
 
+/* ($ff),y */
 #define LOAD_INDIRECT_Y_FUNC(var, addr, bits8)                   \
   do {                                                           \
       unsigned int ea;                                           \
@@ -552,117 +549,126 @@
       CLK_ADD(CLK, CYCLES_3);                                    \
       ea = LOAD_DIRECT_PAGE8(addr);                              \
       ea |= (LOAD_DIRECT_PAGE8(addr + 1) << 8);                  \
-      if (((reg_y + ea) >> 8) != (ea >> 8)) {                    \
+      if (((reg_y + ea) ^ ea) & ~0xff) {                         \
           CLK_ADD(CLK, CYCLES_1);                                \
       }                                                          \
-      var = LOAD_LONG((reg_dbr << 16) + reg_y + ea);             \
+      var = LOAD_DBR((ea + reg_y) & 0xffff);                     \
       if (!bits8) {                                              \
           CLK_ADD(CLK, CYCLES_1);                                \
-          var |= (LOAD_LONG((reg_dbr << 16) + reg_y + ea) << 8); \
+          var |= LOAD_DBR((ea + reg_y + 1) & 0xffff) << 8;       \
       }                                                          \
   } while (0)
 
-#define LOAD_INDIRECT_LONG_FUNC(var, addr, bits8) \
-  do {                                            \
-      unsigned int ea;                            \
-                                                  \
-      DPR_DELAY                                   \
-      CLK_ADD(CLK, CYCLES_4);                     \
-      ea = LOAD_DIRECT_PAGE8(addr);               \
-      ea |= (LOAD_DIRECT_PAGE8(addr + 1) << 8);   \
-      ea |= (LOAD_DIRECT_PAGE8(addr + 2) << 16);  \
-      var = LOAD_LONG(ea);                        \
-      if (!bits8) {                               \
-         CLK_ADD(CLK, CYCLES_1);                  \
-         var |= (LOAD_LONG(ea + 1) << 8);         \
-      }                                           \
+/* [$ff] */
+#define LOAD_INDIRECT_LONG_FUNC(var, addr, bits8)          \
+  do {                                                     \
+      unsigned int ea, ea2;                                \
+                                                           \
+      DPR_DELAY                                            \
+      CLK_ADD(CLK, CYCLES_4);                              \
+      ea = LOAD_DIRECT_PAGE8(addr);                        \
+      ea |= (LOAD_DIRECT_PAGE8(addr + 1) << 8);            \
+      ea2 = (LOAD_DIRECT_PAGE8(addr + 2) << 16);           \
+      var = LOAD_LONG(ea + ea2);                           \
+      if (!bits8) {                                        \
+         CLK_ADD(CLK, CYCLES_1);                           \
+         var |= LOAD_LONG(((ea + 1) & 0xffff) + ea2) << 8; \
+      }                                                    \
   } while (0)
 
-#define LOAD_INDIRECT_LONG_Y_FUNC(var, addr, bits8) \
-  do {                                              \
-      unsigned int ea;                              \
-                                                    \
-      DPR_DELAY                                     \
-      ea = LOAD_DIRECT_PAGE8(addr);                 \
-      ea |= (LOAD_DIRECT_PAGE8(addr + 1) << 8);     \
-      ea |= (LOAD_DIRECT_PAGE8(addr + 2) << 16);    \
-      var = LOAD_LONG(ea + reg_y);                  \
-      if (!bits8) {                                 \
-          CLK_ADD(CLK, CYCLES_1);                   \
-          var |= (LOAD_LONG(ea + reg_y + 1) << 8);  \
-      }                                             \
+/* [$ff],y */
+#define LOAD_INDIRECT_LONG_Y_FUNC(var, addr, bits8)                 \
+  do {                                                              \
+      unsigned int ea, ea2;                                         \
+                                                                    \
+      DPR_DELAY                                                     \
+      ea = LOAD_DIRECT_PAGE8(addr);                                 \
+      ea |= (LOAD_DIRECT_PAGE8(addr + 1) << 8);                     \
+      ea2 = (LOAD_DIRECT_PAGE8(addr + 2) << 16);                    \
+      var = LOAD_LONG(((ea + reg_y) & 0xffff) + ea2);               \
+      if (!bits8) {                                                 \
+          CLK_ADD(CLK, CYCLES_1);                                   \
+          var |= LOAD_LONG(((ea + reg_y + 1) & 0xffff) + ea2) << 8; \
+      }                                                             \
   } while (0)
 
-#define LOAD_ABS_FUNC(var, addr, bits8)     \
-  do {                                      \
-      var = LOAD_DBR(addr);                 \
-      if (!bits8) {                         \
-          CLK_ADD(CLK, CYCLES_1);           \
-          var |= (LOAD_DBR(addr + 1) << 8); \
-      }                                     \
+/* $ffff */
+#define LOAD_ABS_FUNC(var, addr, bits8)                \
+  do {                                                 \
+      var = LOAD_DBR(addr);                            \
+      if (!bits8) {                                    \
+          CLK_ADD(CLK, CYCLES_1);                      \
+          var |= (LOAD_DBR((addr + 1) & 0xffff) << 8); \
+      }                                                \
   } while (0)
 
-#define LOAD_ABS_X_FUNC(var, addr, bits8)           \
-  do {                                              \
-      if (((addr + reg_x) >> 8) != (addr >> 8)) {   \
-          CLK_ADD(CLK, CYCLES_1);                   \
-      }                                             \
-      var = LOAD_DBR(addr + reg_x);                 \
-      if (!bits8) {                                 \
-          CLK_ADD(CLK, CYCLES_1);                   \
-          var |= (LOAD_DBR(addr + reg_x + 1) << 8); \
-      }                                             \
+/* $ffff,x */
+#define LOAD_ABS_X_FUNC(var, addr, bits8)                     \
+  do {                                                        \
+      if ((((addr) + reg_x) ^ (addr)) & ~0xff) {              \
+          CLK_ADD(CLK, CYCLES_1);                             \
+      }                                                       \
+      var = LOAD_DBR((addr + reg_x) & 0xffff);                \
+      if (!bits8) {                                           \
+          CLK_ADD(CLK, CYCLES_1);                             \
+          var |= LOAD_DBR((addr + reg_x + 1) & 0xffff) << 8;  \
+      }                                                       \
   } while (0)
 
-#define LOAD_ABS_Y_FUNC(var, addr, bits8)           \
-  do {                                              \
-      if (((addr + reg_y) >> 8) != (addr >> 8)) {   \
-          CLK_ADD(CLK, CYCLES_1);                   \
-      }                                             \
-      var = LOAD_DBR(addr + reg_y);                 \
-      if (!bits8) {                                 \
-          CLK_ADD(CLK, CYCLES_1);                   \
-          var |= (LOAD_DBR(addr + reg_y + 1) << 8); \
-      }                                             \
+/* $ffff,x */
+#define LOAD_ABS_Y_FUNC(var, addr, bits8)                      \
+  do {                                                         \
+      if ((((addr) + reg_y) ^ (addr)) & ~0xff) {               \
+          CLK_ADD(CLK, CYCLES_1);                              \
+      }                                                        \
+      var = LOAD_DBR(((addr) + reg_y) & 0xffff);               \
+      if (!bits8) {                                            \
+          CLK_ADD(CLK, CYCLES_1);                              \
+          var |= LOAD_DBR(((addr) + reg_y + 1) & 0xffff) << 8; \
+      }                                                        \
   } while (0)
 
-#define LOAD_ABS_LONG_FUNC(var, addr, bits8) \
-  do {                                       \
-      var = LOAD_LONG(addr);                 \
-      if (!bits8) {                          \
-          CLK_ADD(CLK, CYCLES_1);            \
-          var |= (LOAD_LONG(addr + 1) << 8); \
-      }                                      \
+/* $ffffff */
+#define LOAD_ABS_LONG_FUNC(var, addr, bits8)                                  \
+  do {                                                                        \
+      var = LOAD_LONG(addr);                                                  \
+      if (!bits8) {                                                           \
+          CLK_ADD(CLK, CYCLES_1);                                             \
+          var |= LOAD_LONG(((addr + 1) & 0xffff) | ((addr) & 0xff0000)) << 8; \
+      }                                                                       \
   } while (0)
 
-#define LOAD_ABS_LONG_X_FUNC(var, addr, bits8)       \
-  do {                                               \
-      var = LOAD_LONG(addr + reg_x);                 \
-      if (!bits8) {                                  \
-          CLK_ADD(CLK, CYCLES_1);                    \
-          var |= (LOAD_LONG(addr + 1 + reg_x) << 8); \
-      }                                              \
+/* $ffffff,x */
+#define LOAD_ABS_LONG_X_FUNC(var, addr, bits8)                                            \
+  do {                                                                                    \
+      var = LOAD_LONG((((addr) + reg_x) & 0xffff) | ((addr) & 0xff0000));                 \
+      if (!bits8) {                                                                       \
+          CLK_ADD(CLK, CYCLES_1);                                                         \
+          var |= (LOAD_LONG((((addr) + reg_x + 1) & 0xffff) | ((addr) & 0xff0000)) << 8); \
+      }                                                                                   \
   } while (0)
 
+/* $ff,s */
 #define LOAD_STACK_REL_FUNC(var, addr, bits8)          \
   do {                                                 \
       var = LOAD_BANK0(addr + reg_sp);                 \
       if (!bits8) {                                    \
           CLK_ADD(CLK, CYCLES_1);                      \
-          var |= (LOAD_BANK0(addr + 1 + reg_sp) << 8); \
+          var |= LOAD_BANK0(addr + reg_sp + 1) << 8;   \
       }                                                \
   } while (0)
 
+/* ($ff,s),y */
 #define LOAD_STACK_REL_Y_FUNC(var, addr, bits8)                      \
   do {                                                               \
       unsigned int ea;                                               \
                                                                      \
       ea = LOAD_BANK0(addr + reg_sp);                                \
-      ea |= (LOAD_BANK0(addr + reg_sp + 1) << 8);                    \
-      var = LOAD_LONG((reg_dbr << 16) + reg_y + ea);                 \
+      ea |= LOAD_BANK0(addr + reg_sp + 1) << 8;                      \
+      var = LOAD_DBR((ea + reg_y) & 0xffff);                         \
       if (!bits8) {                                                  \
           CLK_ADD(CLK, CYCLES_1);                                    \
-          var |= (LOAD_LONG((reg_dbr << 16) + reg_y + ea + 1) << 8); \
+          var |= LOAD_DBR((ea + reg_y + 1) & 0xffff) << 8;           \
       }                                                              \
   } while (0)
 
@@ -2406,7 +2412,7 @@
             memmap_mem_read(reg_pc);
         }
         if (p0 == 0x20) {
-            monitor_cpuhistory_store(reg_pc, p0, p1, LOAD_PBR(reg_pc+2), reg_a, reg_x, reg_y, reg_sp, LOCAL_STATUS());
+            monitor_cpuhistory_store(reg_pc, p0, p1, LOAD_PBR((reg_pc + 2) & 0xffff), reg_a, reg_x, reg_y, reg_sp, LOCAL_STATUS());
         } else {
             monitor_cpuhistory_store(reg_pc, p0, p1, p2 >> 8, reg_a, reg_x, reg_y, reg_sp, LOCAL_STATUS());
         }
@@ -2421,7 +2427,7 @@
             BYTE bk = (BYTE)(p3 >> 16);
 
             if (op == 0x20) {
-               hi = LOAD_PBR(reg_pc + 2);
+               hi = LOAD_PBR((reg_pc + 2) & 0xffff);
             }
 
             debug_main65816cpu((DWORD)(reg_pc), debug_clk,
