@@ -798,11 +798,11 @@
       CLK_ADD(CLK, CYCLES_1);                               \
       ea |= (LOAD_BANK0(dst + 1) << 8);                     \
       CLK_ADD(CLK, CYCLES_1);                               \
-      LOAD_LONG((reg_pbr << 16) + ea);                      \
+      LOAD_LONG((reg_dbr << 16) + ea);                      \
       ea += reg_y;                                          \
-      STORE_LONG((reg_pbr << 16) + ea, value & 0xff);       \
+      STORE_LONG((reg_dbr << 16) + ea, value & 0xff);       \
       if (!bits8) {                                         \
-          STORE_LONG((reg_pbr << 16) + ea + 1, value >> 8); \
+          STORE_LONG((reg_dbr << 16) + ea + 1, value >> 8); \
       }                                                     \
   } while (0);
 
