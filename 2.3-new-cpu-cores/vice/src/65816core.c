@@ -1065,10 +1065,11 @@
       tmp = (value);                      \
       if (LOCAL_65816_M()) {              \
           LOCAL_SET_ZERO(!(tmp & reg_a)); \
+          INC_PC(SIZE_2);                 \
       } else {                            \
           LOCAL_SET_ZERO(!(tmp & reg_c)); \
+          INC_PC(SIZE_3);                 \
       }                                   \
-      INC_PC(SIZE_2);                     \
   } while (0)
 
 #define BIT(load_func, addr, clk_inc, pc_inc) \
