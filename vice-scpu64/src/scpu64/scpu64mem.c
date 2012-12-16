@@ -399,7 +399,7 @@ static BYTE scpu64_hardware_read(WORD addr)
         value = (reg_sw_jiffy ? 0x80 : 0x00) | (reg_sw_1mhz ? 0x40 : 0x00);
         break;
     case 0xd0b6:      /* bit 7 - Emulation mode (1)/Native (0) */
-        value = 0x80;
+        value = scpu64_emulation_mode ? 0x80 : 0x00;
         break;
     case 0xd0b7:
         break;
@@ -1144,9 +1144,9 @@ static BYTE peek_bank_io(WORD addr)
 
 /* ------------------------------------------------------------------------- */
 
-int scpu64_hwenable(void)
+int scpu64_interrupt_reroute(void)
 {
-    return reg_hwenable && !reg_bootmap;
+    return (_mem_read_tab_ptr[0xff] == scpu64_kernal_read) && (!scpu64_emulation_mode || reg_hwenable);
 }
 
 /* ------------------------------------------------------------------------- */

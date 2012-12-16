@@ -110,6 +110,10 @@
 #define CPU_REFRESH_CLK
 #endif
 
+#ifndef EMULATION_MODE_CHANGED
+#define EMULATION_MODE_CHANGED
+#endif
+
 /* ------------------------------------------------------------------------- */
 /* Hook for interrupt address manipulation.  */
 
@@ -284,6 +288,7 @@
       flag_n = GLOBAL_REGS.n;      \
       flag_z = GLOBAL_REGS.z;      \
       bank_start = bank_limit = 0; /* prevent caching */ \
+      EMULATION_MODE_CHANGED;      \
       JUMP(GLOBAL_REGS.pc);        \
   } while (0)
 
@@ -396,6 +401,7 @@
                 cpu_reset();                                                   \
                 bank_start = bank_limit = 0; /* prevent caching */             \
                 reg_emul = 1;                                                  \
+                EMULATION_MODE_CHANGED;                                        \
                 LOCAL_SET_BREAK(0);                                            \
                 LOCAL_SET_INTERRUPT(1);                                        \
                 LOCAL_SET_DECIMAL(0);                                          \
@@ -2024,6 +2030,7 @@
               LOCAL_SET_65816_M(1);             \
               LOCAL_SET_65816_X(1);             \
           }                                     \
+          EMULATION_MODE_CHANGED;               \
       }                                         \
   } while (0)
 

@@ -55,6 +55,7 @@
 
 static int fastmode = 1;
 static int half_cycles;
+int scpu64_emulation_mode;
 
 int scpu64_get_half_cycle(void)
 {
@@ -165,10 +166,12 @@ static inline BYTE load_long(DWORD addr)
     return tmp;
 }
 
+#define EMULATION_MODE_CHANGED scpu64_emulation_mode = reg_emul
+
 #define CLK_ADD(clock, amount) scpu64_clock_add(&clock, amount)
 
 #define LOAD_INT_ADDR(addr)                        \
-    if (scpu64_hwenable() || !reg_emul) {          \
+    if (scpu64_interrupt_reroute()) {              \
         reg_pc = LOAD_LONG(addr + 0xf80000);       \
         reg_pc |= LOAD_LONG(addr + 0xf80001) << 8; \
     } else {                                       \

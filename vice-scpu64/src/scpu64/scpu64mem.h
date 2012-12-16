@@ -84,7 +84,7 @@ extern BYTE scpu64io_df00_read(WORD addr);
 extern void scpu64io_df00_store(WORD addr, BYTE value);
 extern BYTE scpu64_roml_read(WORD addr);
 extern BYTE scpu64_romh_read(WORD addr);
-extern int scpu64_hwenable(void);
+extern int scpu64_interrupt_reroute(void);
 
 extern void mem_pla_config_changed(void);
 extern void mem_set_tape_sense(int sense);
