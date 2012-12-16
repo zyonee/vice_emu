@@ -650,11 +650,11 @@
   do {                                                 \
       unsigned int ea;                                 \
                                                        \
-      ea = p2;                                         \
+      ea = p2 + (reg_dbr << 16);                       \
       INC_PC(SIZE_3);                                  \
-      var = LOAD_DBR(ea);                              \
+      var = LOAD_LONG(ea);                             \
       if (!bits8) {                                    \
-          var |= LOAD_DBR((ea + 1) & 0xffff) << 8;     \
+          var |= LOAD_LONG((ea + 1) & 0xffffff) << 8;  \
       }                                                \
   } while (0)
 
@@ -665,13 +665,13 @@
                                                               \
       ea = p2;                                                \
       INC_PC(SIZE_3);                                         \
-      if (((ea + reg_r) ^ ea) & ~0xff) {                      \
+      if (!LOCAL_65816_X() || ((p1 + reg_r) > 0xff)) {        \
           LOAD_DBR(((ea + reg_r) & 0xff) | (ea & 0xff00));    \
       }                                                       \
-      ea = (ea + reg_r) & 0xffff;                             \
-      var = LOAD_DBR(ea);                                     \
+      ea = (ea + reg_r + (reg_dbr << 16)) & 0xffffff;         \
+      var = LOAD_LONG(ea);                                    \
       if (!bits8) {                                           \
-          var |= LOAD_DBR((ea + 1) & 0xffff) << 8;            \
+          var |= LOAD_LONG((ea + 1) & 0xffffff) << 8;         \
       }                                                       \
   } while (0)
 
@@ -684,30 +684,29 @@
     LOAD_ABS_R_FUNC(var, bits8, reg_y)        
 
 /* $ffffff */
-#define LOAD_ABS_LONG_FUNC(var, bits8)                                          \
-  do {                                                                          \
-      unsigned int ea;                                                          \
-                                                                                \
-      ea = p3;                                                                  \
-      INC_PC(SIZE_4);                                                           \
-      var = LOAD_LONG(ea);                                                      \
-      if (!bits8) {                                                             \
-          var |= LOAD_LONG(((ea + 1) & 0xffff) + (ea & 0xff0000)) << 8;         \
-      }                                                                         \
+#define LOAD_ABS_LONG_FUNC(var, bits8)                \
+  do {                                                \
+      unsigned int ea;                                \
+                                                      \
+      ea = p3;                                        \
+      INC_PC(SIZE_4);                                 \
+      var = LOAD_LONG(ea);                            \
+      if (!bits8) {                                   \
+          var |= LOAD_LONG((ea + 1) & 0xffffff) << 8; \
+      }                                               \
   } while (0)
 
 /* $ffffff,x */
-#define LOAD_ABS_LONG_X_FUNC(var, bits8)                   \
-  do {                                                     \
-      unsigned int ea, ea2;                                \
-                                                           \
-      ea = (p2 + reg_x) & 0xffff;                          \
-      ea2 = p3 & 0xff0000;                                 \
-      INC_PC(SIZE_4);                                      \
-      var = LOAD_LONG(ea + ea2);                           \
-      if (!bits8) {                                        \
-          var |= LOAD_LONG(((ea + 1) & 0xffff) + ea2) << 8;\
-      }                                                    \
+#define LOAD_ABS_LONG_X_FUNC(var, bits8)              \
+  do {                                                \
+      unsigned int ea;                                \
+                                                      \
+      ea = (p3 + reg_x) & 0xffffff;                   \
+      INC_PC(SIZE_4);                                 \
+      var = LOAD_LONG(ea);                            \
+      if (!bits8) {                                   \
+          var |= LOAD_LONG((ea + 1) & 0xffffff) << 8; \
+      }                                               \
   } while (0)
 
 /* $ff,s */
@@ -828,20 +827,30 @@
 #define STORE_DIRECT_PAGE_Y(value, bits8) STORE_DIRECT_PAGE_R(value, bits8, reg_y)
 
 /* $ff,x */
-#define STORE_DIRECT_PAGE_X_RRW(value, bits8) \
-  do {                                        \
-      unsigned int ea;                        \
-                                              \
-      if (bits8) {                            \
-          ea = p1 + reg_dpr + reg_x;          \
-          LOAD_BANK0(ea);                     \
-          STORE_BANK0(ea, value);             \
-      } else {                                \
-          ea = p1 + reg_dpr + reg_x + 1;      \
-          LOAD_BANK0(ea);                     \
-          STORE_BANK0(ea, value >> 8);        \
-          STORE_BANK0(ea - 1, value);         \
-      }                                       \
+#define STORE_DIRECT_PAGE_X_RRW(value, bits8)       \
+  do {                                              \
+      unsigned int ea;                              \
+                                                    \
+      if (reg_emul) {                               \
+          if (reg_dpr & 0xff) {                     \
+              ea = p1 + reg_x + reg_dpr;            \
+          } else {                                  \
+              ea = ((p1 + reg_x) & 0xff) + reg_dpr; \
+          }                                         \
+          LOAD_BANK0(ea);                           \
+          STORE_BANK0(ea, value);                   \
+      } else {                                      \
+          if (bits8) {                              \
+              ea = p1 + reg_dpr + reg_x;            \
+              LOAD_BANK0(ea);                       \
+              STORE_BANK0(ea, value);               \
+          } else {                                  \
+              ea = p1 + reg_dpr + reg_x + 1;        \
+              LOAD_BANK0(ea);                       \
+              STORE_BANK0(ea, value >> 8);          \
+              STORE_BANK0(ea - 1, value);           \
+          }                                         \
+      }                                             \
   } while (0)
 
 /* ($ff) */
@@ -949,37 +958,37 @@
   } while (0)
 
 /* $ffff */
-#define STORE_ABS_RRW(value, bits8)             \
-  do {                                          \
-      unsigned int ea;                          \
-                                                \
-      if (bits8) {                              \
-          ea = p2;                              \
-          LOAD_DBR(ea);                         \
-          STORE_DBR(ea, value);                 \
-      } else {                                  \
-          ea = (p2 + 1) & 0xffff;               \
-          LOAD_DBR(ea);                         \
-          STORE_DBR(ea, value >> 8);            \
-          STORE_DBR((ea - 1) & 0xffff, value);  \
-      }                                         \
+#define STORE_ABS_RRW(value, bits8)                   \
+  do {                                                \
+      unsigned int ea;                                \
+                                                      \
+      if (bits8) {                                    \
+          ea = p2 + (reg_dbr << 16);                  \
+          LOAD_LONG(ea);                              \
+          STORE_LONG(ea, value);                      \
+      } else {                                        \
+          ea = (p2 + 1 + (reg_dbr << 16)) & 0xffffff; \
+          LOAD_LONG(ea);                              \
+          STORE_LONG(ea, value >> 8);                 \
+          STORE_LONG((ea - 1) & 0xffffff, value);     \
+      }                                               \
   } while (0)
 
 /* $ffff,x */
-#define STORE_ABS_X_RRW(value, bits8)           \
-  do {                                          \
-      unsigned int ea;                          \
-                                                \
-      if (bits8) {                              \
-          ea = (p2 + reg_x) & 0xffff;           \
-          LOAD_DBR(ea);                         \
-          STORE_DBR(ea, value);                 \
-      } else {                                  \
-          ea = (p2 + reg_x + 1) & 0xffff;       \
-          LOAD_DBR(ea);                         \
-          STORE_DBR(ea, value >> 8);            \
-          STORE_DBR((ea - 1) & 0xffff, value);  \
-      }                                         \
+#define STORE_ABS_X_RRW(value, bits8)                         \
+  do {                                                        \
+      unsigned int ea;                                        \
+                                                              \
+      if (bits8) {                                            \
+          ea = (p2 + reg_x + (reg_dbr << 16)) & 0xffffff;     \
+          LOAD_LONG(ea);                                      \
+          STORE_LONG(ea, value);                              \
+      } else {                                                \
+          ea = (p2 + reg_x + 1 + (reg_dbr << 16)) & 0xffffff; \
+          LOAD_LONG(ea);                                      \
+          STORE_LONG(ea, value >> 8);                         \
+          STORE_LONG((ea - 1) & 0xffffff, value);             \
+      }                                                       \
   } while (0)
 
 /* $ffff,r */
@@ -990,10 +999,10 @@
       ea = p2;                                         \
       INC_PC(SIZE_3);                                  \
       LOAD_DBR(((ea + reg_r) & 0xff) | (ea & 0xff00)); \
-      ea = (ea + reg_r) & 0xffff;                      \
-      STORE_DBR(ea, value);                            \
+      ea = (ea + reg_r + (reg_dbr << 16)) & 0xffffff;  \
+      STORE_LONG(ea, value);                           \
       if (!bits8) {                                    \
-          STORE_DBR((ea + 1) & 0xffff, value >> 8);    \
+          STORE_LONG((ea + 1) & 0xffffff, value >> 8); \
       }                                                \
   } while (0)
 
@@ -1012,21 +1021,20 @@
       INC_PC(SIZE_4);                                                      \
       STORE_LONG(ea, value);                                               \
       if (!bits8) {                                                        \
-          STORE_LONG(((ea + 1) & 0xffff) + (ea & 0xff0000), value >> 8);   \
+          STORE_LONG((ea + 1) & 0xffffff, value >> 8);                     \
       }                                                                    \
   } while (0)
 
 /* $ffffff,x */
 #define STORE_ABS_LONG_X(value, bits8)                                     \
   do {                                                                     \
-      unsigned int ea, ea2;                                                \
+      unsigned int ea;                                                     \
                                                                            \
-      ea = (p2 + reg_x) & 0xffff;                                          \
-      ea2 = (p3 & 0xff0000);                                               \
+      ea = (p3 + reg_x) & 0xffffff;                                        \
       INC_PC(SIZE_4);                                                      \
-      STORE_LONG(ea + ea2, value);                                         \
+      STORE_LONG(ea, value);                                               \
       if (!bits8) {                                                        \
-          STORE_LONG(((ea + 1) & 0xffff) + ea2, value >> 8);               \
+          STORE_LONG((ea + 1) & 0xffffff, value >> 8);                     \
       }                                                                    \
   } while (0)
 
