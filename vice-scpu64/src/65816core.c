@@ -764,7 +764,7 @@
                                                        \
       INC_PC(SIZE_1);                                  \
       FETCH_PARAM(reg_pc);                             \
-      ea = p1 + reg_sp;                                \
+      ea = (p1 + reg_sp) & 0xffff;                     \
       INC_PC(SIZE_1);                                  \
       var = LOAD_LONG(ea);                             \
       if (!bits8) {                                    \
@@ -1122,7 +1122,7 @@
                                                        \
       INC_PC(SIZE_1);                                  \
       FETCH_PARAM(reg_pc);                             \
-      ea = p1 + reg_sp;                                \
+      ea = (p1 + reg_sp) & 0xffff;                     \
       INC_PC(SIZE_1);                                  \
       STORE_LONG_WORD(ea, value, bits8);               \
   } while (0)
@@ -1534,7 +1534,8 @@
       unsigned int ea;                                        \
                                                               \
       INC_PC(SIZE_2);                                         \
-      PUSH(reg_pc >> 8);                                      \
+      STORE_LONG(reg_sp, reg_pc >> 8);                        \
+      reg_sp--;                                               \
       PUSH(reg_pc);                                           \
       ea = (p1 + (FETCH_PARAM(reg_pc) << 8) + reg_x) & 0xffff;\
       FETCH_PARAM(reg_pc);                                    \
@@ -1548,13 +1549,10 @@
       INC_PC(SIZE_3);                            \
       STORE_LONG(reg_sp, reg_pbr);               \
       LOAD_LONG(reg_sp);                         \
-      if (reg_emul) {                            \
-          reg_sp = 0x100 | ((reg_sp - 1) & 0xff);\
-      } else {                                   \
-          reg_sp--;                              \
-      }                                          \
+      reg_sp--;                                  \
       reg_pbr = FETCH_PARAM(reg_pc);             \
-      PUSH(reg_pc >> 8);                         \
+      STORE_LONG(reg_sp, reg_pc >> 8);           \
+      reg_sp--;                                  \
       PUSH(reg_pc);                              \
       reg_pc = p2;                               \
       JUMP(reg_pc);                              \
@@ -1636,13 +1634,14 @@
 
 #define ORA(load_func) LOGICAL(load_func, |=)
 
-#define PEA(load_func)            \
-  do {                            \
-      unsigned int value;         \
-                                  \
-      load_func(value, 0);        \
-      PUSH(value >> 8);           \
-      PUSH(value);                \
+#define PEA(load_func)                \
+  do {                                \
+      unsigned int value;             \
+                                      \
+      load_func(value, 0);            \
+      STORE_LONG(reg_sp, value >> 8); \
+      reg_sp--;                       \
+      PUSH(value);                    \
   } while (0)
 
 #define PEI(load_func) PEA(load_func)
@@ -1655,7 +1654,8 @@
       INC_PC(SIZE_1);                             \
                                                   \
       dest_addr = reg_pc + (signed short)(p2);    \
-      PUSH(dest_addr >> 8);                       \
+      STORE_LONG(reg_sp, dest_addr >> 8);         \
+      reg_sp--;                                   \
       PUSH(dest_addr);                            \
   } while (0)
 
@@ -1670,7 +1670,13 @@
 
 #define PHB(store_func) store_func(reg_dbr, 1);
 
-#define PHD(store_func) store_func(reg_dpr, 0);
+#define PHD()                         \
+  do {                                \
+      INC_PC(SIZE_1);                 \
+      STORE_LONG(reg_sp, reg_dpr >> 8);\
+      reg_sp--;                       \
+      PUSH(reg_dpr);                  \
+  } while (0)
 
 #define PHK(store_func) store_func(reg_pbr, 1);
 
@@ -1704,10 +1710,18 @@
       LOCAL_SET_NZ(reg_dbr, 1); \
   } while (0)
 
-#define PLD(load_func)          \
-  do {                          \
-      load_func(reg_dpr, 0);    \
-      LOCAL_SET_NZ(reg_dpr, 0); \
+#define PLD()                              \
+  do {                                     \
+      INC_PC(SIZE_1);                      \
+      FETCH_PARAM(reg_pc);                 \
+      reg_sp++;                            \
+      reg_dpr = LOAD_LONG(reg_sp);         \
+      reg_sp++;                            \
+      reg_dpr |= LOAD_LONG(reg_sp) << 8;   \
+      if (reg_emul) {                      \
+          reg_sp = (reg_sp & 0xff) | 0x100;\
+      }                                    \
+      LOCAL_SET_NZ(reg_dpr, 0);            \
   } while (0)
 
 #define PLP(load_func)                                      \
@@ -1807,12 +1821,21 @@
       JUMP(reg_pc);                \
   } while (0)
 
-#define RTL(load_func)                 \
-  do {                                 \
-      load_func(reg_pc, 0);            \
-      reg_pbr = PULL();                \
-      INC_PC(SIZE_1);                  \
-      JUMP(reg_pc);                    \
+#define RTL()                              \
+  do {                                     \
+      INC_PC(SIZE_1);                      \
+      FETCH_PARAM(reg_pc);                 \
+      reg_sp++;                            \
+      reg_pc = LOAD_LONG(reg_sp);          \
+      reg_sp++;                            \
+      reg_pc |= LOAD_LONG(reg_sp) << 8;    \
+      reg_sp++;                            \
+      reg_pbr = LOAD_LONG(reg_sp);         \
+      if (reg_emul) {                      \
+          reg_sp = (reg_sp & 0xff) | 0x100;\
+      }                                    \
+      INC_PC(SIZE_1);                      \
+      JUMP(reg_pc);                        \
   } while (0)
 
 #define RTS(load_func)           \
@@ -2332,7 +2355,7 @@ trap_skipped:
             break;
 
           case 0x0b:            /* PHD */
-            PHD(STORE_STACK);
+            PHD();
             break;
 
           case 0x0c:            /* TSB $nnnn */
@@ -2460,7 +2483,7 @@ trap_skipped:
             break;
 
           case 0x2b:            /* PLD */
-            PLD(LOAD_STACK);
+            PLD();
             break;
 
           case 0x2c:            /* BIT $nnnn */
@@ -2712,7 +2735,7 @@ trap_skipped:
             break;
 
           case 0x6b:            /* RTL */
-            RTL(LOAD_STACK);
+            RTL();
             break;
 
           case 0x6c:            /* JMP ($nnnn) */
