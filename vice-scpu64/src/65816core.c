@@ -469,6 +469,19 @@
 
 #define FETCH_PARAM(addr) ((((int)(addr)) < bank_limit) ? (CLK_ADD(CLK, CYCLES_1), bank_base[addr]) : LOAD_PBR(addr))
 
+/* s */
+#define LOAD_STACK(var, bits8)                         \
+    if (bits8) {                                       \
+        INC_PC(SIZE_1);                                \
+        FETCH_PARAM(reg_pc);                           \
+        var = PULL();                                  \
+    } else {                                           \
+        INC_PC(SIZE_1);                                \
+        FETCH_PARAM(reg_pc);                           \
+        var = PULL();                                  \
+        var |= PULL() << 8;                            \
+    }
+
 /* a */
 #define LOAD_ACCU(var, bits8)                          \
     if (bits8) {                                       \
@@ -726,8 +739,21 @@
 #define STORE_BANK0(addr, value) \
     STORE_LONG((addr) & 0xffff, value); 
 
+/* s */
+#define STORE_STACK(value, bits8)             \
+  do {                                        \
+      if (bits8) {                            \
+          INC_PC(SIZE_1);                     \
+          PUSH(value);                        \
+      } else {                                \
+          INC_PC(SIZE_1);                     \
+          PUSH(value >> 8);                   \
+          PUSH(value);                        \
+      }                                       \
+  } while (0)
+
 /* a */
-#define STORE_ACCU(value, bits8)              \
+#define STORE_ACCU_RRW(value, bits8)          \
   do {                                        \
       if (bits8) {                            \
           reg_a = value;                      \
@@ -1542,99 +1568,62 @@
       PUSH(dest_addr);                            \
   } while (0)
 
-#define PHA()                     \
+#define PHA(store_func)           \
   do {                            \
-      INC_PC(SIZE_1);             \
-      if (!LOCAL_65816_M()) {     \
-          PUSH(reg_b);            \
+      if (LOCAL_65816_M()) {      \
+          store_func(reg_a, 1);   \
+      } else {                    \
+          store_func(reg_c, 0);   \
       }                           \
-      PUSH(reg_a);                \
   } while (0)
 
-#define PHB()                 \
-  do {                        \
-      INC_PC(SIZE_1);         \
-      PUSH(reg_dbr);          \
+#define PHB(store_func) store_func(reg_dbr, 1);
+
+#define PHD(store_func) store_func(reg_dpr, 0);
+
+#define PHK(store_func) store_func(reg_pbr, 1);
+
+#define PHP(store_func)                            \
+  do {                                             \
+      if (reg_emul) {                              \
+          store_func(LOCAL_STATUS() | P_BREAK, 1); \
+      } else {                                     \
+          store_func(LOCAL_65816_STATUS(), 1);     \
+      }                                            \
   } while (0)
 
-#define PHD()                 \
-  do {                        \
-      INC_PC(SIZE_1);         \
-      PUSH(reg_dpr >> 8);     \
-      PUSH(reg_dpr);          \
-  } while (0)
+#define PHX(store_func) store_func(reg_x, LOCAL_65816_X())
 
-#define PHK()                 \
-  do {                        \
-      INC_PC(SIZE_1);         \
-      PUSH(reg_pbr);          \
-  } while (0)
+#define PHY(store_func) store_func(reg_y, LOCAL_65816_X())
 
-#define PHP()                             \
-  do {                                    \
-      INC_PC(SIZE_1);                     \
-      if (reg_emul) {                     \
-          PUSH(LOCAL_STATUS() | P_BREAK); \
-      } else {                            \
-          PUSH(LOCAL_65816_STATUS());     \
-      }                                   \
-  } while (0)
-
-#define PHX()                     \
-  do {                            \
-      INC_PC(SIZE_1);             \
-      if (!LOCAL_65816_X()) {     \
-          PUSH(reg_x >> 8);       \
-      }                           \
-      PUSH(reg_x);                \
-  } while (0)
-
-#define PHY()                     \
-  do {                            \
-      INC_PC(SIZE_1);             \
-      if (!LOCAL_65816_X()) {     \
-          PUSH(reg_y >> 8);       \
-      }                           \
-      PUSH(reg_y);                \
-  } while (0)
-
-#define PLA()                               \
+#define PLA(load_func)                      \
   do {                                      \
-      INC_PC(SIZE_1);                       \
-      FETCH_PARAM(reg_pc);                  \
-      reg_a = PULL();                       \
       if (LOCAL_65816_M()) {                \
+          load_func(reg_a, 1);              \
           LOCAL_SET_NZ(reg_a, 1);           \
       } else {                              \
-          reg_b = PULL();                   \
+          load_func(reg_c, 0);              \
           LOCAL_SET_NZ(reg_c, 0);           \
       }                                     \
   } while (0)
 
-#define PLB()                   \
+#define PLB(load_func)          \
   do {                          \
-      INC_PC(SIZE_1);           \
-      FETCH_PARAM(reg_pc);      \
-      reg_dbr = PULL();         \
+      load_func(reg_dbr, 1);    \
       LOCAL_SET_NZ(reg_dbr, 1); \
   } while (0)
 
-#define PLD()                   \
+#define PLD(load_func)          \
   do {                          \
-      INC_PC(SIZE_1);           \
-      FETCH_PARAM(reg_pc);      \
-      reg_dpr = PULL();         \
-      reg_dpr |= PULL() << 8;   \
+      load_func(reg_dpr, 0);    \
       LOCAL_SET_NZ(reg_dpr, 0); \
   } while (0)
 
-#define PLP()                                               \
+#define PLP(load_func)                                      \
   do {                                                      \
       unsigned int s;                                       \
                                                             \
-      INC_PC(SIZE_1);                                       \
-      FETCH_PARAM(reg_pc);                                  \
-      s = PULL();                                           \
+      load_func(s, 1);                                      \
                                                             \
       if (!(s & P_INTERRUPT) && LOCAL_INTERRUPT()) {        \
           OPCODE_ENABLES_IRQ();                             \
@@ -1648,22 +1637,20 @@
       }                                                     \
   } while (0)
 
-#define PLI(reg_r)                          \
+#define PLI(load_func, reg_r)               \
   do {                                      \
-      INC_PC(SIZE_1);                       \
-      FETCH_PARAM(reg_pc);                  \
-      reg_r = PULL();                       \
       if (LOCAL_65816_X()) {                \
+          load_func(reg_r, 1);              \
           LOCAL_SET_NZ(reg_r, 1);           \
       } else {                              \
-          reg_r |= PULL() << 8;             \
+          load_func(reg_r, 0);              \
           LOCAL_SET_NZ(reg_r, 0);           \
       }                                     \
   } while (0)
 
-#define PLX() PLI(reg_x)
+#define PLX(load_func) PLI(load_func, reg_x)
 
-#define PLY() PLI(reg_y)
+#define PLY(load_func) PLI(load_func, reg_y)
 
 #define REPSEP(load_func, v)            \
   do {                                  \
@@ -1711,13 +1698,11 @@
    from 1 to 0 because the value of I is set 3 cycles before the end of the
    opcode, and thus the 6510 has enough time to call the interrupt routine as
    soon as the opcode ends, if necessary.  */
-#define RTI()                      \
+#define RTI(load_func)             \
   do {                             \
       unsigned int tmp;            \
                                    \
-      INC_PC(SIZE_1);              \
-      FETCH_PARAM(reg_pc);         \
-      tmp = PULL();                \
+      load_func(tmp, 1);           \
       LOCAL_SET_STATUS(tmp);       \
       if (LOCAL_65816_X()) {       \
           reg_x &= 0xff;           \
@@ -1731,23 +1716,17 @@
       JUMP(reg_pc);                \
   } while (0)
 
-#define RTL()                          \
+#define RTL(load_func)                 \
   do {                                 \
-      INC_PC(SIZE_1);                  \
-      FETCH_PARAM(reg_pc);             \
-      reg_pc = PULL();                 \
-      reg_pc |= PULL() << 8;           \
+      load_func(reg_pc, 0);            \
       reg_pbr = PULL();                \
       INC_PC(SIZE_1);                  \
       JUMP(reg_pc);                    \
   } while (0)
 
-#define RTS()                    \
+#define RTS(load_func)           \
   do {                           \
-      INC_PC(SIZE_1);            \
-      FETCH_PARAM(reg_pc);             \
-      reg_pc = PULL();           \
-      reg_pc |= PULL() << 8;     \
+      load_func(reg_pc, 0);      \
       LOAD_LONG(reg_sp);         \
       INC_PC(SIZE_1);            \
       JUMP(reg_pc);              \
@@ -2250,7 +2229,7 @@ trap_skipped:
             break;
 
           case 0x08:            /* PHP */
-            PHP();
+            PHP(STORE_STACK);
             break;
 
           case 0x09:            /* ORA #$nn */
@@ -2258,11 +2237,11 @@ trap_skipped:
             break;
 
           case 0x0a:            /* ASL A */
-            ASL(LOAD_ACCU, STORE_ACCU);
+            ASL(LOAD_ACCU, STORE_ACCU_RRW);
             break;
 
           case 0x0b:            /* PHD */
-            PHD();
+            PHD(STORE_STACK);
             break;
 
           case 0x0c:            /* TSB $nnnn */
@@ -2322,7 +2301,7 @@ trap_skipped:
             break;
 
           case 0x1a:            /* INA */
-            INC(LOAD_ACCU, STORE_ACCU);
+            INC(LOAD_ACCU, STORE_ACCU_RRW);
             break;
 
           case 0x1b:            /* TCS */
@@ -2378,7 +2357,7 @@ trap_skipped:
             break;
 
           case 0x28:            /* PLP */
-            PLP();
+            PLP(LOAD_STACK);
             break;
 
           case 0x29:            /* AND #$nn */
@@ -2386,11 +2365,11 @@ trap_skipped:
             break;
 
           case 0x2a:            /* ROL A */
-            ROL(LOAD_ACCU, STORE_ACCU);
+            ROL(LOAD_ACCU, STORE_ACCU_RRW);
             break;
 
           case 0x2b:            /* PLD */
-            PLD();
+            PLD(LOAD_STACK);
             break;
 
           case 0x2c:            /* BIT $nnnn */
@@ -2450,7 +2429,7 @@ trap_skipped:
             break;
 
           case 0x3a:            /* DEA */
-            DEC(LOAD_ACCU, STORE_ACCU);
+            DEC(LOAD_ACCU, STORE_ACCU_RRW);
             break;
 
           case 0x3b:            /* TSC */
@@ -2474,7 +2453,7 @@ trap_skipped:
             break;
 
           case 0x40:            /* RTI */
-            RTI();
+            RTI(LOAD_STACK);
             break;
 
           case 0x41:            /* EOR ($nn,X) */
@@ -2502,7 +2481,7 @@ trap_skipped:
             break;
 
           case 0x48:            /* PHA */
-            PHA();
+            PHA(STORE_STACK);
             break;
 
           case 0x49:            /* EOR #$nn */
@@ -2510,11 +2489,11 @@ trap_skipped:
             break;
 
           case 0x4a:            /* LSR A */
-            LSR(LOAD_ACCU, STORE_ACCU);
+            LSR(LOAD_ACCU, STORE_ACCU_RRW);
             break;
 
           case 0x4b:            /* PHK */
-            PHK();
+            PHK(STORE_STACK);
             break;
 
           case 0x4c:            /* JMP $nnnn */
@@ -2574,7 +2553,7 @@ trap_skipped:
             break;
 
           case 0x5a:            /* PHY */
-            PHY();
+            PHY(STORE_STACK);
             break;
 
           case 0x5b:            /* TCD */
@@ -2598,7 +2577,7 @@ trap_skipped:
             break;
 
           case 0x60:            /* RTS */
-            RTS();
+            RTS(LOAD_STACK);
             break;
 
           case 0x61:            /* ADC ($nn,X) */
@@ -2630,7 +2609,7 @@ trap_skipped:
             break;
 
           case 0x68:            /* PLA */
-            PLA();
+            PLA(LOAD_STACK);
             break;
 
           case 0x69:            /* ADC #$nn */
@@ -2638,11 +2617,11 @@ trap_skipped:
             break;
 
           case 0x6a:            /* ROR A */
-            ROR(LOAD_ACCU, STORE_ACCU);
+            ROR(LOAD_ACCU, STORE_ACCU_RRW);
             break;
 
           case 0x6b:            /* RTL */
-            RTL();
+            RTL(LOAD_STACK);
             break;
 
           case 0x6c:            /* JMP ($nnnn) */
@@ -2702,7 +2681,7 @@ trap_skipped:
             break;
 
           case 0x7a:            /* PLY */
-            PLY();
+            PLY(LOAD_STACK);
             break;
 
           case 0x7b:            /* TDC */
@@ -2770,7 +2749,7 @@ trap_skipped:
             break;
 
           case 0x8b:            /* PHB */
-            PHB();
+            PHB(STORE_STACK);
             break;
 
           case 0x8c:            /* STY $nnnn */
@@ -2898,7 +2877,7 @@ trap_skipped:
             break;
 
           case 0xab:            /* PLB */
-            PLB();
+            PLB(LOAD_STACK);
             break;
 
           case 0xac:            /* LDY $nnnn */
@@ -3086,7 +3065,7 @@ trap_skipped:
             break;
 
           case 0xda:            /* PHX */
-            PHX();
+            PHX(STORE_STACK);
             break;
 
           case 0xdb:            /* STP (WDC65C02) */
@@ -3214,7 +3193,7 @@ trap_skipped:
             break;
 
           case 0xfa:            /* PLX */
-            PLX();
+            PLX(LOAD_STACK);
             break;
 
           case 0xfb:            /* XCE */
