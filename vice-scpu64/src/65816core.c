@@ -464,25 +464,37 @@
 
 #define DPR_DELAY \
       if (reg_dpr & 0xff) {                            \
-          LOAD_PBR(reg_pc);                            \
+          LOAD_PBR(reg_pc + 1);                        \
       }                                                \
 
-/* # */
-#define LOAD_IMMEDIATE_FUNC(var, addr, bits8)          \
+/* a */
+#define LOAD_ACCU(var, bits8)                          \
     if (bits8) {                                       \
-        var = addr & 0xff;                             \
+        var = reg_a;                                   \
+        INC_PC(SIZE_1);                                \
     } else {                                           \
-        var = addr;                                    \
+        var = reg_c;                                   \
         INC_PC(SIZE_1);                                \
     }
 
+/* # */
+#define LOAD_IMMEDIATE_FUNC(var, bits8)                \
+    if (bits8) {                                       \
+        var = p1;                                      \
+        INC_PC(SIZE_2);                                \
+    } else {                                           \
+        var = p2;                                      \
+        INC_PC(SIZE_3);                                \
+    }
+
 /* $ff */
-#define LOAD_DIRECT_PAGE_FUNC(var, addr, bits8)        \
+#define LOAD_DIRECT_PAGE_FUNC(var, bits8)              \
   do {                                                 \
       unsigned int ea;                                 \
                                                        \
       DPR_DELAY                                        \
-      ea = (addr) + reg_dpr;                           \
+      ea = p1 + reg_dpr;                               \
+      INC_PC(SIZE_2);                                  \
       var = LOAD_BANK0(ea);                            \
       if (!bits8) {                                    \
           var |= LOAD_BANK0(ea + 1) << 8;              \
@@ -490,34 +502,36 @@
   } while (0)
 
 /* $ff,r */
-#define LOAD_DIRECT_PAGE_R_FUNC(var, addr, bits8, reg_r)        \
-  do {                                                          \
-      unsigned int ea;                                          \
-                                                                \
-      DPR_DELAY                                                 \
-      LOAD_PBR(reg_pc);                                         \
-      ea = (addr) + reg_dpr + reg_r;                            \
-      var = LOAD_BANK0(ea);                                     \
-      if (!bits8) {                                             \
-          var |= LOAD_BANK0(ea + 1) << 8;                       \
-      }                                                         \
+#define LOAD_DIRECT_PAGE_R_FUNC(var, bits8, reg_r)     \
+  do {                                                 \
+      unsigned int ea;                                 \
+                                                       \
+      DPR_DELAY                                        \
+      LOAD_PBR(reg_pc + 1);                            \
+      INC_PC(SIZE_2);                                  \
+      ea = p1 + reg_dpr + reg_r;                       \
+      var = LOAD_BANK0(ea);                            \
+      if (!bits8) {                                    \
+          var |= LOAD_BANK0(ea + 1) << 8;              \
+      }                                                \
   } while (0)
 
 /* $ff,x */
-#define LOAD_DIRECT_PAGE_X_FUNC(var, addr, bits8) \
-    LOAD_DIRECT_PAGE_R_FUNC(var, addr, bits8, reg_x)
+#define LOAD_DIRECT_PAGE_X_FUNC(var, bits8) \
+    LOAD_DIRECT_PAGE_R_FUNC(var, bits8, reg_x)
 
 /* $ff,y */
-#define LOAD_DIRECT_PAGE_Y_FUNC(var, addr, bits8) \
-    LOAD_DIRECT_PAGE_R_FUNC(var, addr, bits8, reg_y)
+#define LOAD_DIRECT_PAGE_Y_FUNC(var, bits8) \
+    LOAD_DIRECT_PAGE_R_FUNC(var, bits8, reg_y)
 
 /* ($ff) */
-#define LOAD_INDIRECT_FUNC(var, addr, bits8)         \
+#define LOAD_INDIRECT_FUNC(var, bits8)               \
   do {                                               \
       unsigned int ea, ea2;                          \
                                                      \
       DPR_DELAY                                      \
-      ea2 = (addr) + reg_dpr;                        \
+      ea2 = p1 + reg_dpr;                            \
+      INC_PC(SIZE_2);                                \
       ea = LOAD_BANK0(ea2);                          \
       ea |= LOAD_BANK0(ea2 + 1) << 8;                \
       var = LOAD_DBR(ea);                            \
@@ -527,13 +541,14 @@
   } while (0)
       
 /* ($ff,x) */
-#define LOAD_INDIRECT_X_FUNC(var, addr, bits8)       \
+#define LOAD_INDIRECT_X_FUNC(var, bits8)             \
   do {                                               \
       unsigned int ea, ea2;                          \
                                                      \
       DPR_DELAY                                      \
-      LOAD_PBR(reg_pc);                              \
-      ea2 = (addr) + reg_dpr + reg_x;                \
+      LOAD_PBR(reg_pc + 1);                          \
+      INC_PC(SIZE_2);                                \
+      ea2 = p1 + reg_dpr + reg_x;                    \
       ea = LOAD_BANK0(ea2);                          \
       ea |= LOAD_BANK0(ea2 + 1) << 8;                \
       var = LOAD_DBR(ea);                            \
@@ -543,12 +558,13 @@
   } while (0)
 
 /* ($ff),y */
-#define LOAD_INDIRECT_Y_FUNC(var, addr, bits8)                   \
+#define LOAD_INDIRECT_Y_FUNC(var, bits8)                         \
   do {                                                           \
       unsigned int ea, ea2;                                      \
                                                                  \
       DPR_DELAY                                                  \
-      ea2 = (addr) + reg_dpr;                                    \
+      ea2 = p1 + reg_dpr;                                        \
+      INC_PC(SIZE_2);                                            \
       ea = LOAD_BANK0(ea2);                                      \
       ea |= LOAD_BANK0(ea2 + 1) << 8;                            \
       if (((reg_y + ea) ^ ea) & ~0xff) {                         \
@@ -562,12 +578,13 @@
   } while (0)
 
 /* [$ff] */
-#define LOAD_INDIRECT_LONG_FUNC(var, addr, bits8)          \
+#define LOAD_INDIRECT_LONG_FUNC(var, bits8)                \
   do {                                                     \
       unsigned int ea, ea2;                                \
                                                            \
       DPR_DELAY                                            \
-      ea2 = (addr) + reg_dpr;                              \
+      ea2 = p1 + reg_dpr;                                  \
+      INC_PC(SIZE_2);                                      \
       ea = LOAD_BANK0(ea2);                                \
       ea |= LOAD_BANK0(ea2 + 1) << 8;                      \
       ea2 = LOAD_BANK0(ea2 + 2) << 16;                     \
@@ -578,12 +595,13 @@
   } while (0)
 
 /* [$ff],y */
-#define LOAD_INDIRECT_LONG_Y_FUNC(var, addr, bits8)         \
+#define LOAD_INDIRECT_LONG_Y_FUNC(var, bits8)               \
   do {                                                      \
       unsigned int ea, ea2;                                 \
                                                             \
       DPR_DELAY                                             \
-      ea2 = (addr) + reg_dpr;                               \
+      ea2 = p1 + reg_dpr;                                   \
+      INC_PC(SIZE_2);                                       \
       ea = LOAD_BANK0(ea2);                                 \
       ea |= LOAD_BANK0(ea2 + 1) << 8;                       \
       ea2 = LOAD_BANK0(ea2 + 2) << 16;                      \
@@ -595,11 +613,12 @@
   } while (0)
 
 /* $ffff */
-#define LOAD_ABS_FUNC(var, addr, bits8)                \
+#define LOAD_ABS_FUNC(var, bits8)                      \
   do {                                                 \
       unsigned int ea;                                 \
                                                        \
-      ea = (addr);                                     \
+      ea = p2;                                         \
+      INC_PC(SIZE_3);                                  \
       var = LOAD_DBR(ea);                              \
       if (!bits8) {                                    \
           var |= LOAD_DBR((ea + 1) & 0xffff) << 8;     \
@@ -607,11 +626,12 @@
   } while (0)
 
 /* $ffff,r */
-#define LOAD_ABS_R_FUNC(var, addr, bits8, reg_r)              \
+#define LOAD_ABS_R_FUNC(var, bits8, reg_r)                    \
   do {                                                        \
       unsigned int ea;                                        \
                                                               \
-      ea = (addr);                                            \
+      ea = p2;                                                \
+      INC_PC(SIZE_3);                                         \
       if (((ea + reg_r) ^ ea) & ~0xff) {                      \
           LOAD_DBR(((ea + reg_r) & 0xff) | (ea & 0xff00));    \
       }                                                       \
@@ -623,19 +643,20 @@
   } while (0)
 
 /* $ffff,x */
-#define LOAD_ABS_X_FUNC(var, addr, bits8) \
-    LOAD_ABS_R_FUNC(var, addr, bits8, reg_x)        
+#define LOAD_ABS_X_FUNC(var, bits8) \
+    LOAD_ABS_R_FUNC(var, bits8, reg_x)        
 
 /* $ffff,x */
-#define LOAD_ABS_Y_FUNC(var, addr, bits8)                      \
-    LOAD_ABS_R_FUNC(var, addr, bits8, reg_y)        
+#define LOAD_ABS_Y_FUNC(var, bits8) \
+    LOAD_ABS_R_FUNC(var, bits8, reg_y)        
 
 /* $ffffff */
-#define LOAD_ABS_LONG_FUNC(var, addr, bits8)                                    \
+#define LOAD_ABS_LONG_FUNC(var, bits8)                                          \
   do {                                                                          \
       unsigned int ea;                                                          \
                                                                                 \
-      ea = (addr);                                                              \
+      ea = p3;                                                                  \
+      INC_PC(SIZE_4);                                                           \
       var = LOAD_LONG(ea);                                                      \
       if (!bits8) {                                                             \
           var |= LOAD_LONG(((ea + 1) & 0xffff) + (ea & 0xff0000)) << 8;         \
@@ -643,12 +664,13 @@
   } while (0)
 
 /* $ffffff,x */
-#define LOAD_ABS_LONG_X_FUNC(var, addr, bits8)             \
+#define LOAD_ABS_LONG_X_FUNC(var, bits8)                   \
   do {                                                     \
       unsigned int ea, ea2;                                \
                                                            \
-      ea = ((addr) + reg_x) & 0xffff;                      \
-      ea2 = (addr) & 0xff0000;                             \
+      ea = (p2 + reg_x) & 0xffff;                          \
+      ea2 = p3 & 0xff0000;                                 \
+      INC_PC(SIZE_4);                                      \
       var = LOAD_LONG(ea + ea2);                           \
       if (!bits8) {                                        \
           var |= LOAD_LONG(((ea + 1) & 0xffff) + ea2) << 8;\
@@ -656,12 +678,13 @@
   } while (0)
 
 /* $ff,s */
-#define LOAD_STACK_REL_FUNC(var, addr, bits8)          \
+#define LOAD_STACK_REL_FUNC(var, bits8)                \
   do {                                                 \
       unsigned int ea;                                 \
                                                        \
-      LOAD_PBR(reg_pc);                                \
-      ea = (addr) + reg_sp;                            \
+      LOAD_PBR(reg_pc + 1);                            \
+      ea = p1 + reg_sp;                                \
+      INC_PC(SIZE_2);                                  \
       var = LOAD_BANK0(ea);                            \
       if (!bits8) {                                    \
           var |= LOAD_BANK0(ea + 1) << 8;              \
@@ -669,12 +692,13 @@
   } while (0)
 
 /* ($ff,s),y */
-#define LOAD_STACK_REL_Y_FUNC(var, addr, bits8)                      \
+#define LOAD_STACK_REL_Y_FUNC(var, bits8)                            \
   do {                                                               \
       unsigned int ea, ea2;                                          \
                                                                      \
-      LOAD_PBR(reg_pc);                                              \
-      ea2 = (addr) + reg_sp;                                         \
+      LOAD_PBR(reg_pc + 1);                                          \
+      ea2 = p1 + reg_sp;                                             \
+      INC_PC(SIZE_2);                                                \
       ea = LOAD_BANK0(ea2);                                          \
       ea |= LOAD_BANK0(ea2 + 1) << 8;                                \
       LOAD_BANK0(ea2 + 1);                                           \
@@ -691,96 +715,129 @@
 #define STORE_BANK0(addr, value) \
     STORE_LONG((addr) & 0xffff, value); 
 
-#define STORE_DIRECT_PAGE(addr, value, bits8) \
+/* a */
+#define STORE_ACCU(value, bits8)              \
   do {                                        \
-      unsigned int dst;                       \
+      if (bits8) {                            \
+          reg_a = value;                      \
+      } else {                                \
+          reg_c = value;                      \
+      }                                       \
+  } while (0)
+
+/* $ff */
+#define STORE_DIRECT_PAGE(value, bits8)       \
+  do {                                        \
+      unsigned int ea;                        \
                                               \
       DPR_DELAY                               \
-      dst = (addr) + reg_dpr;                 \
-      STORE_BANK0(dst, value);                \
+      ea = p1 + reg_dpr;                      \
+      INC_PC(SIZE_2);                         \
+      STORE_BANK0(ea, value);                 \
       if (!bits8) {                           \
-          STORE_BANK0(dst + 1, value >> 8);   \
+          STORE_BANK0(ea + 1, value >> 8);    \
       }                                       \
   } while (0)
 
-#define STORE_DIRECT_PAGE_RRW(addr, value, bits8) \
-  do {                                        \
-      unsigned int dst;                       \
-                                              \
-      dst = (addr) + reg_dpr;                 \
-      if (bits8) {                            \
-          LOAD_BANK0(dst);                    \
-          STORE_BANK0(dst, value);            \
-      } else {                                \
-          LOAD_BANK0(dst + 1);                \
-          STORE_BANK0(dst + 1, value >> 8);   \
-          STORE_BANK0(dst, value);            \
-      }                                       \
+/* $ff */
+#define STORE_DIRECT_PAGE_RRW(value, bits8)  \
+  do {                                       \
+      unsigned int ea;                       \
+                                             \
+      if (bits8) {                           \
+          ea = p1 + reg_dpr;                 \
+          LOAD_BANK0(ea);                    \
+          STORE_BANK0(ea, value);            \
+      } else {                               \
+          ea = p1 + reg_dpr + 1;             \
+          LOAD_BANK0(ea);                    \
+          STORE_BANK0(ea, value >> 8);       \
+          STORE_BANK0(ea - 1, value);        \
+      }                                      \
   } while (0)
 
-#define STORE_DIRECT_PAGE_R(addr, value, bits8, reg_r) \
+/* $ff,r */
+#define STORE_DIRECT_PAGE_R(value, bits8, reg_r)       \
   do {                                                 \
-      unsigned int dst;                                \
+      unsigned int ea;                                 \
                                                        \
       DPR_DELAY                                        \
-      LOAD_PBR(reg_pc);                                \
-      dst = (addr) + reg_dpr + reg_r;                  \
-      STORE_BANK0(dst, value);                         \
+      LOAD_PBR(reg_pc + 1);                            \
+      INC_PC(SIZE_2);                                  \
+      ea = p1 + reg_dpr + reg_r;                       \
+      STORE_BANK0(ea, value);                          \
       if (!bits8) {                                    \
-          STORE_BANK0(dst + 1, value >> 8);            \
+          STORE_BANK0(ea + 1, value >> 8);             \
       }                                                \
   } while (0)
 
-#define STORE_DIRECT_PAGE_X(addr, value, bits8) \
-    STORE_DIRECT_PAGE_R(addr, value, bits8, reg_x)
+/* $ff,x */
+#define STORE_DIRECT_PAGE_X(value, bits8) STORE_DIRECT_PAGE_R(value, bits8, reg_x)
 
-#define STORE_DIRECT_PAGE_Y(addr, value, bits8) \
-    STORE_DIRECT_PAGE_R(addr, value, bits8, reg_y)
+/* $ff,y */
+#define STORE_DIRECT_PAGE_Y(value, bits8) STORE_DIRECT_PAGE_R(value, bits8, reg_y)
 
-#define STORE_DIRECT_PAGE_X_RRW(addr, value, bits8) \
-    STORE_DIRECT_PAGE_RRW((addr) + reg_x, value, bits8) \
+/* $ff,x */
+#define STORE_DIRECT_PAGE_X_RRW(value, bits8) \
+  do {                                        \
+      unsigned int ea;                        \
+                                              \
+      if (bits8) {                            \
+          ea = p1 + reg_dpr + reg_x;          \
+          LOAD_BANK0(ea);                     \
+          STORE_BANK0(ea, value);             \
+      } else {                                \
+          ea = p1 + reg_dpr + reg_x + 1;      \
+          LOAD_BANK0(ea);                     \
+          STORE_BANK0(ea, value >> 8);        \
+          STORE_BANK0(ea - 1, value);         \
+      }                                       \
+  } while (0)
 
-#define STORE_INDIRECT(addr, value, bits8)            \
+/* ($ff) */
+#define STORE_INDIRECT(value, bits8)                  \
   do {                                                \
-      unsigned int dst;                               \
-      unsigned int ea;                                \
+      unsigned int ea, ea2;                           \
                                                       \
       DPR_DELAY                                       \
-      dst = (addr) + reg_dpr;                         \
-      ea = LOAD_BANK0(dst);                           \
-      ea |= LOAD_BANK0(dst + 1) << 8;                 \
+      ea2 = p1 + reg_dpr;                             \
+      INC_PC(SIZE_2);                                 \
+      ea = LOAD_BANK0(ea2);                           \
+      ea |= LOAD_BANK0(ea2 + 1) << 8;                 \
       STORE_DBR(ea, value);                           \
       if (!bits8) {                                   \
           STORE_DBR((ea + 1) & 0xffff, value >> 8);   \
       }                                               \
   } while (0)
 
-#define STORE_INDIRECT_X(addr, value, bits8)        \
+/* ($ff,x) */
+#define STORE_INDIRECT_X(value, bits8)              \
   do {                                              \
-      unsigned int dst;                             \
-      unsigned int ea;                              \
+      unsigned int ea, ea2;                         \
                                                     \
       DPR_DELAY                                     \
       LOAD_PBR(reg_pc);                             \
-      dst = (addr) + reg_dpr + reg_x;               \
-      ea = LOAD_BANK0(dst);                         \
-      ea |= LOAD_BANK0(dst + 1) << 8;               \
+      ea2 = p1 + reg_dpr + reg_x;                   \
+      INC_PC(SIZE_2);                               \
+      ea = LOAD_BANK0(ea2);                         \
+      ea |= LOAD_BANK0(ea2 + 1) << 8;               \
       STORE_DBR(ea, value);                         \
       if (!bits8) {                                 \
           STORE_DBR((ea + 1) & 0xffff, value >> 8); \
       }                                             \
   } while (0)
 
-#define STORE_INDIRECT_Y(addr, value, bits8)                \
+/* ($ff),y */
+#define STORE_INDIRECT_Y(value, bits8)                      \
   do {                                                      \
-      unsigned int dst;                                     \
-      unsigned int ea;                                      \
+      unsigned int ea, ea2;                                 \
                                                             \
       DPR_DELAY                                             \
-      dst = (addr) + reg_dpr;                               \
-      ea = LOAD_BANK0(dst);                                 \
-      ea |= LOAD_BANK0(dst + 1) << 8;                       \
-      LOAD_DBR(ea);  /* FIXME */                            \
+      ea2 = p1 + reg_dpr;                                   \
+      INC_PC(SIZE_2);                                       \
+      ea = LOAD_BANK0(ea2);                                 \
+      ea |= LOAD_BANK0(ea2 + 1) << 8;                       \
+      LOAD_DBR(((ea + reg_y) & 0xff) | (ea & 0xff00));      \
       ea = (ea + reg_y) & 0xffff;                           \
       STORE_DBR(ea, value);                                 \
       if (!bits8) {                                         \
@@ -788,32 +845,34 @@
       }                                                     \
   } while (0);
 
-#define STORE_INDIRECT_LONG(addr, value, bits8)              \
+/* [$ff] */
+#define STORE_INDIRECT_LONG(value, bits8)                    \
   do {                                                       \
-      unsigned int dst = (addr);                             \
       unsigned int ea, ea2;                                  \
                                                              \
       DPR_DELAY                                              \
-      dst = (addr) + reg_dpr;                                \
-      ea = LOAD_BANK0(dst);                                  \
-      ea |= LOAD_BANK0(dst + 1) << 8;                        \
-      ea2 = LOAD_BANK0(dst + 2) << 16;                       \
+      ea2 = p1 + reg_dpr;                                    \
+      INC_PC(SIZE_2);                                        \
+      ea = LOAD_BANK0(ea2);                                  \
+      ea |= LOAD_BANK0(ea2 + 1) << 8;                        \
+      ea2 = LOAD_BANK0(ea2 + 2) << 16;                       \
       STORE_LONG(ea + ea2, value);                           \
       if (!bits8) {                                          \
           STORE_LONG(((ea + 1) & 0xffff) + ea2, value >> 8); \
       }                                                      \
   } while (0)
 
-#define STORE_INDIRECT_LONG_Y(addr, value, bits8)            \
+/* [$ff],y */
+#define STORE_INDIRECT_LONG_Y(value, bits8)                  \
   do {                                                       \
-      unsigned int dst;                                      \
       unsigned int ea, ea2;                                  \
                                                              \
       DPR_DELAY                                              \
-      dst = (addr) + reg_dpr;                                \
-      ea = LOAD_BANK0(dst);                                  \
-      ea |= LOAD_BANK0(dst + 1) << 8;                        \
-      ea2 = LOAD_BANK0(dst + 2) << 16;                       \
+      ea2 = p1 + reg_dpr;                                    \
+      INC_PC(SIZE_2);                                        \
+      ea = LOAD_BANK0(ea2);                                  \
+      ea |= LOAD_BANK0(ea2 + 1) << 8;                        \
+      ea2 = LOAD_BANK0(ea2 + 2) << 16;                       \
       ea = (ea + reg_y) & 0xffff;                            \
       STORE_LONG(ea + ea2, value);                           \
       if (!bits8) {                                          \
@@ -821,96 +880,126 @@
       }                                                      \
   } while (0)
 
-#define STORE_ABS(addr, value, bits8)                   \
+/* $ffff */
+#define STORE_ABS(value, bits8)                         \
   do {                                                  \
-      unsigned int dst = (addr);                        \
+      unsigned int ea;                                  \
                                                         \
-      STORE_DBR(dst, value);                            \
+      ea = p2;                                          \
+      INC_PC(SIZE_3);                                   \
+      STORE_DBR(ea, value);                             \
       if (!bits8) {                                     \
-          STORE_DBR((dst + 1) & 0xffff, value >> 8);    \
+          STORE_DBR((ea + 1) & 0xffff, value >> 8);     \
       }                                                 \
   } while (0)
 
-#define STORE_ABS_RRW(addr, value, bits8)       \
+/* $ffff */
+#define STORE_ABS_RRW(value, bits8)             \
   do {                                          \
-      unsigned int dst;                         \
+      unsigned int ea;                          \
                                                 \
       if (bits8) {                              \
-          dst = (addr);                         \
-          LOAD_DBR(dst);                        \
-          STORE_DBR(dst, value);                \
+          ea = p2;                              \
+          LOAD_DBR(ea);                         \
+          STORE_DBR(ea, value);                 \
       } else {                                  \
-          dst = ((addr) + 1) & 0xffff;          \
-          LOAD_DBR(dst);                        \
-          STORE_DBR(dst, value >> 8);           \
-          STORE_DBR((dst - 1) & 0xffff, value); \
+          ea = (p2 + 1) & 0xffff;               \
+          LOAD_DBR(ea);                         \
+          STORE_DBR(ea, value >> 8);            \
+          STORE_DBR((ea - 1) & 0xffff, value);  \
       }                                         \
   } while (0)
 
-#define STORE_ABS_X_RRW(addr, value, bits8) \
-  STORE_ABS_RRW(((addr) + reg_x) & 0xffff, value, bits8)
-
-#define STORE_ABS_R(addr, value, bits8, reg_r)       \
-  do {                                               \
-      unsigned int dst = (addr);                     \
-                                                     \
-      LOAD_DBR(dst); /* FIXME */                     \
-      dst = (dst + reg_r) & 0xffff;                  \
-      STORE_DBR(dst, value);                         \
-      if (!bits8) {                                  \
-          STORE_DBR((dst + 1) & 0xffff, value >> 8); \
-      }                                              \
+/* $ffff,x */
+#define STORE_ABS_X_RRW(value, bits8)           \
+  do {                                          \
+      unsigned int ea;                          \
+                                                \
+      if (bits8) {                              \
+          ea = (p2 + reg_x) & 0xffff;           \
+          LOAD_DBR(ea);                         \
+          STORE_DBR(ea, value);                 \
+      } else {                                  \
+          ea = (p2 + reg_x + 1) & 0xffff;       \
+          LOAD_DBR(ea);                         \
+          STORE_DBR(ea, value >> 8);            \
+          STORE_DBR((ea - 1) & 0xffff, value);  \
+      }                                         \
   } while (0)
 
-#define STORE_ABS_X(addr, value, bits8) \
-    STORE_ABS_R(addr, value, bits8, reg_x)
+/* $ffff,r */
+#define STORE_ABS_R(value, bits8, reg_r)               \
+  do {                                                 \
+      unsigned int ea;                                 \
+                                                       \
+      ea = p2;                                         \
+      INC_PC(SIZE_3);                                  \
+      LOAD_DBR(((ea + reg_r) & 0xff) | (ea & 0xff00)); \
+      ea = (ea + reg_r) & 0xffff;                      \
+      STORE_DBR(ea, value);                            \
+      if (!bits8) {                                    \
+          STORE_DBR((ea + 1) & 0xffff, value >> 8);    \
+      }                                                \
+  } while (0)
 
-#define STORE_ABS_Y(addr, value, bits8) \
-    STORE_ABS_R(addr, value, bits8, reg_y)
+/* $ffff,x */
+#define STORE_ABS_X(value, bits8) STORE_ABS_R(value, bits8, reg_x)
 
-#define STORE_ABS_LONG(addr, value, bits8)                                 \
+/* $ffff,y */
+#define STORE_ABS_Y(value, bits8) STORE_ABS_R(value, bits8, reg_y)
+
+/* $ffffff */
+#define STORE_ABS_LONG(value, bits8)                                       \
   do {                                                                     \
-      unsigned int dst = (addr);                                           \
+      unsigned int ea;                                                     \
                                                                            \
-      STORE_LONG(dst, value);                                              \
+      ea = p3;                                                             \
+      INC_PC(SIZE_4);                                                      \
+      STORE_LONG(ea, value);                                               \
       if (!bits8) {                                                        \
-          STORE_LONG(((dst + 1) & 0xffff) + (dst & 0xff0000), value >> 8); \
+          STORE_LONG(((ea + 1) & 0xffff) + (ea & 0xff0000), value >> 8);   \
       }                                                                    \
   } while (0)
 
-#define STORE_ABS_LONG_X(addr, value, bits8)                               \
+/* $ffffff,x */
+#define STORE_ABS_LONG_X(value, bits8)                                     \
   do {                                                                     \
-      unsigned int dst = (addr);                                           \
+      unsigned int ea, ea2;                                                \
                                                                            \
-      dst = ((dst + reg_x) & 0xffff) + (dst & 0xff0000);                   \
-      STORE_LONG(dst, value);                                              \
+      ea = (p2 + reg_x) & 0xffff;                                          \
+      ea2 = (p3 & 0xff0000);                                               \
+      INC_PC(SIZE_4);                                                      \
+      STORE_LONG(ea + ea2, value);                                         \
       if (!bits8) {                                                        \
-          STORE_LONG(((dst + 1) & 0xffff) + (dst & 0xff0000), value >> 8); \
+          STORE_LONG(((ea + 1) & 0xffff) + ea2, value >> 8);               \
       }                                                                    \
   } while (0)
 
-#define STORE_STACK_REL(addr, value, bits8) \
+/* $ff,s */
+#define STORE_STACK_REL(value, bits8)       \
   do {                                      \
-      unsigned int dst;                     \
+      unsigned int ea;                      \
                                             \
-      LOAD_PBR(reg_pc);                     \
-      dst = (addr) + reg_sp;                \
-      STORE_BANK0(dst, value);              \
+      LOAD_PBR(reg_pc + 1);                 \
+      ea = p1 + reg_sp;                     \
+      INC_PC(SIZE_2);                       \
+      STORE_BANK0(ea, value);               \
       if (!bits8) {                         \
-          STORE_BANK0(dst + 1, value >> 8); \
+          STORE_BANK0(ea + 1, value >> 8);  \
       }                                     \
   } while (0)
 
-#define STORE_STACK_REL_Y(addr, value, bits8)               \
+/* ($ff,s),y */
+#define STORE_STACK_REL_Y(value, bits8)                     \
   do {                                                      \
-      unsigned int dst;                                     \
-      unsigned int ea;                                      \
+      unsigned int ea, ea2;                                 \
                                                             \
       LOAD_PBR(reg_pc);                                     \
-      dst = (addr) + reg_sp;                                \
-      ea = LOAD_BANK0(dst);                                 \
-      ea |= LOAD_BANK0(dst + 1) << 8;                       \
-      LOAD_BANK0(dst + 1);                                  \
+      ea2 = p1 + reg_sp;                                    \
+      INC_PC(SIZE_2);                                       \
+      ea = LOAD_BANK0(ea2);                                 \
+      ea |= LOAD_BANK0(ea2 + 1) << 8;                       \
+      LOAD_BANK0(ea2 + 1);                                  \
       ea = (ea + reg_y) & 0xffff;                           \
       STORE_DBR(ea, value);                                 \
       if (!bits8) {                                         \
@@ -935,15 +1024,13 @@
      machines (eg. the C128) might depend on this.
 */
 
-#define ADC(load_func, addr, pc_inc)                                                                 \
+#define ADC(load_func)                                                                               \
   do {                                                                                               \
       unsigned int tmp_value;                                                                        \
       unsigned int tmp, tmp2;                                                                        \
                                                                                                      \
-      load_func(tmp_value, addr, LOCAL_65816_M());                                                   \
-      INC_PC(pc_inc);                                                                                \
-                                                                                                     \
       if (LOCAL_65816_M()) {                                                                         \
+          load_func(tmp_value, 1);                                                                   \
           if (LOCAL_DECIMAL()) {                                                                     \
               tmp = (reg_a & 0xf) + (tmp_value & 0xf) + LOCAL_CARRY();                               \
               tmp2 = (reg_a & 0xf0) + (tmp_value & 0xf0);                                            \
@@ -960,13 +1047,14 @@
               LOCAL_SET_NZ(tmp, 1);                                                                  \
           } else {                                                                                   \
               tmp = tmp_value + reg_a + LOCAL_CARRY();                                               \
-              LOCAL_SET_NZ(tmp & 0xff, 1);                                                           \
+              LOCAL_SET_NZ(tmp, 1);                                                                  \
               LOCAL_SET_OVERFLOW(!((reg_a ^ tmp_value) & 0x80)                                       \
                                   && ((reg_a ^ tmp) & 0x80));                                        \
               LOCAL_SET_CARRY(tmp > 0xff);                                                           \
           }                                                                                          \
-          reg_a = tmp & 0xff;                                                                        \
+          reg_a = tmp;                                                                               \
       } else {                                                                                       \
+          load_func(tmp_value, 0);                                                                   \
           if (!LOCAL_DECIMAL()) {                                                                    \
               tmp = reg_c + tmp_value + LOCAL_CARRY();                                               \
           } else {                                                                                   \
@@ -993,103 +1081,85 @@
           }                                                                                          \
           LOCAL_SET_CARRY(tmp > 0xffff);                                                             \
           LOCAL_SET_NZ(tmp & 0xffff, 0);                                                             \
-          reg_c = tmp & 0xffff;                                                                      \
+          reg_c = tmp;                                                                               \
       }                                                                                              \
   } while (0)
 
-#define LOGICAL(load_func, addr, pc_inc, logic) \
+#define LOGICAL(load_func, logic)       \
+  do {                                  \
+      unsigned int tmp;                 \
+                                        \
+      if (LOCAL_65816_M()) {            \
+          load_func(tmp, 1);            \
+          reg_a logic (BYTE)tmp;        \
+          LOCAL_SET_NZ(reg_a, 1);       \
+      } else {                          \
+          load_func(tmp, 0);            \
+          reg_c logic (WORD)tmp;        \
+          LOCAL_SET_NZ(reg_c, 0);       \
+      }                                 \
+  } while (0)
+
+#define AND(load_func) LOGICAL(load_func, &=)
+
+#define ASLROL(load_func, store_func, carry) \
+  do {                                       \
+      unsigned int tmp;                      \
+                                             \
+      if (LOCAL_65816_M()) {                 \
+          load_func(tmp, 1);                 \
+          tmp = (tmp << 1) | carry;          \
+          LOCAL_SET_CARRY(tmp & 0x100);      \
+          LOCAL_SET_NZ(tmp, 1);              \
+          store_func(tmp, 1);                \
+      } else {                               \
+          load_func(tmp, 0);                 \
+          tmp = (tmp << 1) | carry;          \
+          LOCAL_SET_CARRY(tmp & 0x10000);    \
+          LOCAL_SET_NZ(tmp, 0);              \
+          store_func(tmp, 0);                \
+      }                                      \
+  } while (0)
+
+#define ASL(load_func, store_func) ASLROL(load_func, store_func, 0)
+
+#define BIT_IMM(load_func)                      \
   do {                                          \
-      unsigned int tmp;                         \
+      unsigned int tmp_value;                   \
                                                 \
       if (LOCAL_65816_M()) {                    \
-          load_func(tmp, addr, 1);              \
-          INC_PC(pc_inc);                       \
-          reg_a logic (BYTE)tmp;                \
-          LOCAL_SET_NZ(reg_a, 1);               \
+          load_func(tmp_value, 1);              \
+          LOCAL_SET_ZERO(!(tmp_value & reg_a)); \
       } else {                                  \
-          load_func(tmp, addr, 0);              \
-          INC_PC(pc_inc);                       \
-          reg_c logic (WORD)tmp;                \
-          LOCAL_SET_NZ(reg_c, 0);               \
+          load_func(tmp_value, 0);              \
+          LOCAL_SET_ZERO(!(tmp_value & reg_c)); \
       }                                         \
   } while (0)
 
-#define AND(load_func, addr, pc_inc) \
-    LOGICAL(load_func, addr, pc_inc, &=)
-
-#define ASL(addr, pc_inc, load_func, store_func)             \
-  do {                                                                \
-      unsigned int tmp_value, tmp_addr;                               \
-                                                                      \
-      tmp_addr = (addr);                                              \
-      if (LOCAL_65816_M()) {                                          \
-          load_func(tmp_value, tmp_addr, 1);                          \
-          INC_PC(pc_inc);                                             \
-          LOCAL_SET_CARRY(tmp_value & 0x80);                          \
-          tmp_value <<= 1;                                            \
-          LOCAL_SET_NZ(tmp_value, 1);                                 \
-      } else {                                                        \
-          load_func(tmp_value, tmp_addr, 0);                          \
-          INC_PC(pc_inc);                                             \
-          LOCAL_SET_CARRY(tmp_value & 0x8000);                        \
-          tmp_value <<= 1;                                            \
-          LOCAL_SET_NZ(tmp_value, 0);                                 \
-      }                                                               \
-      store_func(tmp_addr, tmp_value, LOCAL_65816_M());               \
-  } while (0)
-
-#define ASL_A()                             \
-  do {                                      \
-      INC_PC(SIZE_1);                       \
-      if (LOCAL_65816_M()) {                \
-          LOCAL_SET_CARRY(reg_a & 0x80);    \
-          reg_a <<= 1;                      \
-          LOCAL_SET_NZ(reg_a, 1);           \
-      } else {                              \
-          LOCAL_SET_CARRY(reg_c & 0x8000);  \
-          reg_c <<= 1;                      \
-          LOCAL_SET_NZ(reg_c, 0);           \
-      }                                     \
-  } while (0)
-
-#define BIT_IMM(value)                    \
-  do {                                    \
-      unsigned int tmp;                   \
-                                          \
-      tmp = (value);                      \
-      if (LOCAL_65816_M()) {              \
-          INC_PC(SIZE_2);                 \
-          LOCAL_SET_ZERO(!(tmp & reg_a)); \
-      } else {                            \
-          INC_PC(SIZE_3);                 \
-          LOCAL_SET_ZERO(!(tmp & reg_c)); \
-      }                                   \
-  } while (0)
-
-#define BIT(load_func, addr, pc_inc)          \
+#define BIT(load_func)                        \
   do {                                        \
       unsigned int tmp;                       \
                                               \
-      load_func(tmp, addr, LOCAL_65816_M());  \
-      INC_PC(pc_inc);                         \
       if (LOCAL_65816_M()) {                  \
+          load_func(tmp, 1);                  \
           LOCAL_SET_SIGN(tmp & 0x80);         \
           LOCAL_SET_OVERFLOW(tmp & 0x40);     \
           LOCAL_SET_ZERO(!(tmp & reg_a));     \
       } else {                                \
+          load_func(tmp, 0);                  \
           LOCAL_SET_SIGN(tmp & 0x8000);       \
           LOCAL_SET_OVERFLOW(tmp & 0x4000);   \
           LOCAL_SET_ZERO(!(tmp & reg_c));     \
       }                                       \
   } while (0)
 
-#define BRANCH(cond, value)                                  \
+#define BRANCH(cond)                                         \
   do {                                                       \
       unsigned int dest_addr = 0;                            \
       INC_PC(SIZE_2);                                        \
                                                              \
       if (cond) {                                            \
-          dest_addr = reg_pc + (signed char)(value);         \
+          dest_addr = reg_pc + (signed char)(p1);            \
                                                              \
           LOAD_PBR(reg_pc);                                  \
           if (((reg_pc ^ dest_addr) & ~0xff) && reg_emul) {  \
@@ -1101,12 +1171,12 @@
       }                                                      \
   } while (0)
 
-#define BRANCH_LONG(value)                                   \
+#define BRANCH_LONG()                                        \
   do {                                                       \
       INC_PC(SIZE_2);                                        \
       LOAD_PBR(reg_pc);                                      \
       OPCODE_DELAYS_INTERRUPT();                             \
-      reg_pc = (reg_pc + (signed short)(value) + 1) & 0xffff;\
+      reg_pc = (reg_pc + (signed short)(p2) + 1) & 0xffff;   \
       JUMP(reg_pc);                                          \
   } while (0)
 
@@ -1161,80 +1231,64 @@
       LOCAL_SET_OVERFLOW(0); \
   } while (0)
 
-#define CMP(load_func, addr, pc_inc)           \
+#define CMP(load_func)                         \
   do {                                         \
       unsigned int tmp;                        \
       unsigned int value;                      \
                                                \
       if (LOCAL_65816_M()) {                   \
-          load_func(value, addr, 1);           \
-          INC_PC(pc_inc);                      \
+          load_func(value, 1);                 \
           tmp = reg_a - value;                 \
           LOCAL_SET_CARRY(tmp < 0x100);        \
           LOCAL_SET_NZ(tmp, 1);                \
       } else {                                 \
-          load_func(value, addr, 0);           \
-          INC_PC(pc_inc);                      \
+          load_func(value, 0);                 \
           tmp = reg_c - value;                 \
           LOCAL_SET_CARRY(tmp < 0x10000);      \
           LOCAL_SET_NZ(tmp, 0);                \
       }                                        \
   } while (0)
 
-#define CMPI(load_func, addr, pc_inc, reg_r)   \
+#define CMPI(load_func, reg_r)                 \
   do {                                         \
       unsigned int tmp;                        \
       unsigned int value;                      \
                                                \
       if (LOCAL_65816_X()) {                   \
-          load_func(value, addr, 1);           \
-          INC_PC(pc_inc);                      \
+          load_func(value, 1);                 \
           tmp = reg_r - value;                 \
           LOCAL_SET_CARRY(tmp < 0x100);        \
           LOCAL_SET_NZ(tmp, 1);                \
       } else {                                 \
-          load_func(value, addr, 0);           \
-          INC_PC(pc_inc);                      \
+          load_func(value, 0);                 \
           tmp = reg_r - value;                 \
           LOCAL_SET_CARRY(tmp < 0x10000);      \
           LOCAL_SET_NZ(tmp, 0);                \
       }                                        \
   } while (0)
 
-#define CPX(load_func, addr, pc_inc)  \
-    CMPI(load_func, addr, pc_inc, reg_x)
+#define CPX(load_func) CMPI(load_func, reg_x)
 
-#define CPY(load_func, addr, pc_inc)  \
-    CMPI(load_func, addr, pc_inc, reg_y)
+#define CPY(load_func) CMPI(load_func, reg_y)
 
-#define INCDECA(logic)                      \
-  do {                                      \
-      INC_PC(SIZE_1);                       \
-      if (LOCAL_65816_M()) {                \
-          reg_a logic;                      \
-          LOCAL_SET_NZ(reg_a, 1);           \
-      } else {                              \
-          reg_c logic;                      \
-          LOCAL_SET_NZ(reg_c, 0);           \
-      }                                     \
+#define INCDEC(load_func, store_func, logic)   \
+  do {                                         \
+      unsigned int tmp;                        \
+                                               \
+      if (LOCAL_65816_M()) {                   \
+          load_func(tmp, 1);                   \
+          tmp logic;                           \
+          LOCAL_SET_NZ(tmp, 1);                \
+          store_func(tmp, 1);                  \
+      } else {                                 \
+          load_func(tmp, 0);                   \
+          tmp logic;                           \
+          LOCAL_SET_NZ(tmp, 0);                \
+          store_func(tmp, 0);                  \
+      }                                        \
   } while (0)
 
-#define DEA() INCDECA(--)
-
-#define INCDEC(addr, pc_inc, load_func, store_func, logic) \
-  do {                                                    \
-      unsigned int tmp, tmp_addr;                         \
-                                                          \
-      tmp_addr = (addr);                                  \
-      load_func(tmp, tmp_addr, LOCAL_65816_M());          \
-      INC_PC(pc_inc);                                     \
-      tmp logic;                                          \
-      LOCAL_SET_NZ(tmp, LOCAL_65816_M());                 \
-      store_func(tmp_addr, tmp, LOCAL_65816_M());         \
-  } while (0)
-
-#define DEC(addr, pc_inc, load_func, store_func) \
-    INCDEC(addr, pc_inc, load_func, store_func, --)
+#define DEC(load_func, store_func) INCDEC(load_func, store_func, --)
 
 #define INCDECI(reg_r, logic)               \
   do {                                      \
@@ -1252,13 +1306,9 @@
 
 #define DEY() INCDECI(reg_y, --)
 
-#define EOR(load_func, addr, pc_inc)  \
-    LOGICAL(load_func, addr, pc_inc, ^=)
+#define EOR(load_func) LOGICAL(load_func, ^=)
 
-#define INA() INCDECA(++)
-
-#define INC(addr, pc_inc, load_func, store_func) \
-    INCDEC(addr, pc_inc, load_func, store_func, ++)
+#define INC(load_func, store_func) INCDEC(load_func, store_func, ++)
 
 #define INX() INCDECI(reg_x, ++)
 
@@ -1286,50 +1336,59 @@
       }                                                         \
   } while (0)
   
-#define JMP(addr) \
+#define JMP()     \
   do {            \
-      JUMP(addr); \
+      JUMP(p2);   \
   } while (0)
 
 #define JMP_IND()                                      \
   do {                                                 \
-      WORD dest_addr;                                  \
-      dest_addr = LOAD_LONG(p2);                       \
-      dest_addr |= LOAD_BANK0(p2 + 1) << 8;            \
-      JUMP(dest_addr);                                 \
+      unsigned int ea;                                 \
+                                                       \
+      ea = p2;                                         \
+      reg_pc = LOAD_LONG(ea);                          \
+      reg_pc |= LOAD_BANK0(ea + 1) << 8;               \
+      JUMP(reg_pc);                                    \
   } while (0)
 
 #define JMP_IND_LONG()                                   \
   do {                                                   \
-      WORD dest_addr;                                    \
-      dest_addr = LOAD_LONG(p2);                         \
-      dest_addr |= LOAD_BANK0(p2 + 1) << 8;              \
-      reg_pbr = LOAD_BANK0(p2 + 2);                      \
-      JUMP(dest_addr);                                   \
+      unsigned int ea;                                   \
+                                                         \
+      ea = p2;                                           \
+      reg_pc = LOAD_LONG(ea);                            \
+      reg_pc |= LOAD_BANK0(ea + 1) << 8;                 \
+      reg_pbr = LOAD_BANK0(ea + 2);                      \
+      JUMP(reg_pc);                                      \
   } while (0)
 
 #define JMP_IND_X()                                         \
   do {                                                      \
+      unsigned int ea;                                      \
+                                                            \
+      ea = (p2 + reg_x) & 0xffff;                           \
       INC_PC(SIZE_2);                                       \
       LOAD_PBR(reg_pc);                                     \
-      reg_pc = LOAD_PBR((p2 + reg_x) & 0xffff);             \
-      reg_pc |= LOAD_PBR((p2 + reg_x + 1) & 0xffff) << 8;   \
+      reg_pc = LOAD_PBR(ea);                                \
+      reg_pc |= LOAD_PBR((ea + 1) & 0xffff) << 8;           \
       JUMP(reg_pc);                                         \
   } while (0)
 
-#define JMP_LONG(addr)      \
+#define JMP_LONG()          \
   do {                      \
-      reg_pbr = addr >> 16; \
-      JUMP(addr & 0xffff);  \
+      reg_pc = p2;          \
+      reg_pbr = p3 >> 16;   \
+      JUMP(reg_pc);         \
   } while (0)
 
-#define JSR(addr)                            \
+#define JSR()                                \
   do {                                       \
       INC_PC(SIZE_2);                        \
       LOAD_PBR(reg_pc);                      \
       PUSH(reg_pc >> 8);                     \
       PUSH(reg_pc);                          \
-      JUMP(addr);                            \
+      reg_pc = p2;                           \
+      JUMP(reg_pc);                          \
   } while (0)
 
 #define JSR_IND_X()                                        \
@@ -1359,65 +1418,64 @@
       reg_pbr = LOAD_PBR(reg_pc);                \
       PUSH(reg_pc >> 8);                         \
       PUSH(reg_pc);                              \
-      JUMP(p2);                                  \
+      reg_pc = p2;                               \
+      JUMP(reg_pc);                              \
   } while (0)
 
-#define LDA(load_func, addr, pc_inc)  \
-    LOGICAL(load_func, addr, pc_inc, =)
+#define LDA(load_func) LOGICAL(load_func, =)
 
-#define LDI(load_func, addr, pc_inc, reg_r)           \
-  do {                                                \
-      unsigned int value;                             \
-                                                      \
-      load_func(value, addr, LOCAL_65816_X());        \
-      INC_PC(pc_inc);                                 \
-      reg_r = value;                                  \
-      LOCAL_SET_NZ(reg_r, LOCAL_65816_X());           \
+#define LDI(load_func, reg_r)            \
+  do {                                   \
+      unsigned int value;                \
+                                         \
+      if (LOCAL_65816_X()) {             \
+          load_func(value, 1);           \
+          reg_r = value;                 \
+          LOCAL_SET_NZ(reg_r, 1);        \
+      } else {                           \
+          load_func(value, 0);           \
+          reg_r = value;                 \
+          LOCAL_SET_NZ(reg_r, 0);        \
+      }                                  \
   } while (0)
 
-#define LDX(load_func, addr, pc_inc)  \
-    LDI(load_func, addr, pc_inc, reg_x)
+#define LDX(load_func) LDI(load_func, reg_x)
 
-#define LDY(load_func, addr, pc_inc)  \
-    LDI(load_func, addr, pc_inc, reg_y)
+#define LDY(load_func) LDI(load_func, reg_y)
 
-#define LSR(addr, pc_inc, load_func, store_func) \
-  do {                                                    \
-      unsigned int tmp, tmp_addr;                         \
-                                                          \
-      tmp_addr = (addr);                                  \
-      load_func(tmp, tmp_addr, LOCAL_65816_M());          \
-      INC_PC(pc_inc);                                     \
-      LOCAL_SET_CARRY(tmp & 1);                           \
-      tmp >>= 1;                                          \
-      LOCAL_SET_NZ(tmp, LOCAL_65816_M());                 \
-      store_func(tmp_addr, tmp, LOCAL_65816_M());         \
+#define LSRROR(load_func, store_func, carry) \
+  do {                                       \
+      unsigned int tmp;                      \
+                                             \
+      if (LOCAL_65816_M()) {                 \
+          load_func(tmp, 1);                 \
+          tmp |= carry ? 0x100 : 0;          \
+          LOCAL_SET_CARRY(tmp & 1);          \
+          tmp >>= 1;                         \
+          LOCAL_SET_NZ(tmp, 1);              \
+          store_func(tmp, 1);                \
+      } else {                               \
+          load_func(tmp, 0);                 \
+          tmp |= carry ? 0x10000 : 0;        \
+          LOCAL_SET_CARRY(tmp & 1);          \
+          tmp >>= 1;                         \
+          LOCAL_SET_NZ(tmp, 0);              \
+          store_func(tmp, 0);                \
+      }                                      \
   } while (0)
 
-#define LSR_A()                             \
-  do {                                      \
-      INC_PC(SIZE_1);                       \
-      LOCAL_SET_CARRY(reg_a & 1);           \
-      if (LOCAL_65816_M()) {                \
-          reg_a >>= 1;                      \
-          LOCAL_SET_NZ(reg_a, 1);           \
-      } else {                              \
-          reg_c >>= 1;                      \
-          LOCAL_SET_NZ(reg_c, 0);           \
-      }                                     \
-  } while (0)
+#define LSR(load_func, store_func) LSRROR(load_func, store_func, 0)
 
-
-#define MOVE(src, dst, logic)                   \
+#define MOVE(logic)                             \
   do {                                          \
       unsigned int tmp;                         \
                                                 \
       if (reg_c == 0) {                         \
           INC_PC(SIZE_3);                       \
       }                                         \
-      reg_dbr = (src);                          \
+      reg_dbr = p2 >> 8;                        \
       tmp = LOAD_DBR(reg_x);                    \
-      reg_dbr = (dst);                          \
+      reg_dbr = p1;                             \
       STORE_DBR(reg_y, tmp);                    \
       LOAD_DBR(reg_y);                          \
       LOAD_DBR(reg_y);                          \
@@ -1430,42 +1488,35 @@
       reg_c--;                                  \
   } while (0)
 
-#define MVN(src, dst) MOVE(src, dst, ++)
+#define MVN() MOVE(++)
 
-#define MVP(src, dst) MOVE(src, dst, --)
+#define MVP() MOVE(--)
 
-#define NOOP_IMM(x) INC_PC(x)
+#define WDM()  INC_PC(SIZE_2)
 
 #define NOP()  INC_PC(SIZE_1)
 
-#define ORA(load_func, addr, pc_inc)  \
-    LOGICAL(load_func, addr, pc_inc, |=)
+#define ORA(load_func) LOGICAL(load_func, |=)
 
-#define PEA(value)            \
-  do {                        \
-      INC_PC(SIZE_3);         \
-      PUSH(value >> 8);       \
-      PUSH(value);            \
-  } while (0)
-
-#define PEI(load_func, addr)      \
+#define PEA(load_func)            \
   do {                            \
       unsigned int value;         \
                                   \
-      load_func(value, addr, 0);  \
-      INC_PC(SIZE_2);             \
+      load_func(value, 0);        \
       PUSH(value >> 8);           \
       PUSH(value);                \
   } while (0)
 
-#define PER(value)                                \
+#define PEI(load_func) PEA(load_func)
+
+#define PER()                                     \
   do {                                            \
-      WORD dest_addr = 0;                         \
+      unsigned int dest_addr;                     \
       INC_PC(SIZE_2);                             \
       LOAD_PBR(reg_pc);                           \
       INC_PC(SIZE_1);                             \
                                                   \
-      dest_addr = reg_pc + (signed short)(value); \
+      dest_addr = reg_pc + (signed short)(p2);    \
       PUSH(dest_addr >> 8);                       \
       PUSH(dest_addr);                            \
   } while (0)
@@ -1576,131 +1627,64 @@
       }                                                     \
   } while (0)
 
-#define PLX()                               \
+#define PLI(reg_r)                          \
   do {                                      \
       INC_PC(SIZE_1);                       \
       LOAD_PBR(reg_pc);                     \
-      reg_x = PULL();                       \
-      if (!LOCAL_65816_X()) {               \
-          reg_x |= PULL() << 8;             \
+      reg_r = PULL();                       \
+      if (LOCAL_65816_X()) {                \
+          LOCAL_SET_NZ(reg_r, 1);           \
+      } else {                              \
+          reg_r |= PULL() << 8;             \
+          LOCAL_SET_NZ(reg_r, 0);           \
       }                                     \
-      LOCAL_SET_NZ(reg_x, LOCAL_65816_X()); \
   } while (0)
 
-#define PLY()                               \
-  do {                                      \
-      INC_PC(SIZE_1);                       \
-      LOAD_PBR(reg_pc);                     \
-      reg_y = PULL();                       \
-      if (!LOCAL_65816_X()) {               \
-          reg_y |= PULL() << 8;             \
-      }                                     \
-      LOCAL_SET_NZ(reg_y, LOCAL_65816_X()); \
-  } while (0)
+#define PLX() PLI(reg_x)
 
-#define REPSEP(mask, v)                 \
+#define PLY() PLI(reg_y)
+
+#define REPSEP(load_func, v)            \
   do {                                  \
-      INC_PC(SIZE_2);                   \
-      if (mask & 0x80) {                \
+      unsigned int value;               \
+                                        \
+      load_func(value, 1);              \
+      if (value & 0x80) {               \
           LOCAL_SET_SIGN(v);            \
       }                                 \
-      if (mask & 0x40) {                \
+      if (value & 0x40) {               \
           LOCAL_SET_OVERFLOW(v);        \
       }                                 \
-      if ((mask & 0x20) && !reg_emul) { \
+      if ((value & 0x20) && !reg_emul) {\
           LOCAL_SET_65816_M(v);         \
       }                                 \
-      if ((mask & 0x10) && !reg_emul) { \
+      if ((value & 0x10) && !reg_emul) {\
           LOCAL_SET_65816_X(v);         \
           if (v) {                      \
               reg_x &= 0xff;            \
               reg_y &= 0xff;            \
           }                             \
       }                                 \
-      if (mask & 0x08) {                \
+      if (value & 0x08) {               \
           LOCAL_SET_DECIMAL(v);         \
       }                                 \
-      if (mask & 0x04) {                \
+      if (value & 0x04) {               \
           LOCAL_SET_INTERRUPT(v);       \
       }                                 \
-      if (mask & 0x02) {                \
+      if (value & 0x02) {               \
           LOCAL_SET_ZERO(v);            \
       }                                 \
-      if (mask & 0x01) {                \
+      if (value & 0x01) {               \
           LOCAL_SET_CARRY(v);           \
       }                                 \
       LOAD_PBR(reg_pc);                 \
   } while (0)
 
-#define REP(mask) REPSEP(mask, 0)
+#define REP(load_func) REPSEP(load_func, 0)
 
-#define ROL(addr, pc_inc, load_func, store_func)          \
-  do {                                                    \
-      unsigned int tmp, tmp_addr;                         \
-                                                          \
-      tmp_addr = (addr);                                  \
-      load_func(tmp, tmp_addr, LOCAL_65816_M());          \
-      INC_PC(pc_inc);                                     \
-      tmp = (tmp << 1) | LOCAL_CARRY();                   \
-      if (LOCAL_65816_M()) {                              \
-          LOCAL_SET_CARRY(tmp & 0x100);                   \
-          LOCAL_SET_NZ(tmp, 1);                           \
-      } else {                                            \
-          LOCAL_SET_CARRY(tmp & 0x10000);                 \
-          LOCAL_SET_NZ(tmp, 0);                           \
-      }                                                   \
-      store_func(tmp_addr, tmp, LOCAL_65816_M());         \
-  } while (0)
+#define ROL(load_func, store_func) ASLROL(load_func, store_func, LOCAL_CARRY())
 
-#define ROL_A()                                 \
-  do {                                          \
-      unsigned int tmp = reg_c << 1;            \
-                                                \
-      INC_PC(SIZE_1);                           \
-      if (LOCAL_65816_M()) {                    \
-          reg_a = (reg_a << 1) | LOCAL_CARRY(); \
-          LOCAL_SET_CARRY(tmp & 0x100);         \
-          LOCAL_SET_NZ(reg_a, 0);               \
-      } else {                                  \
-          reg_c = (reg_c << 1) | LOCAL_CARRY(); \
-          LOCAL_SET_CARRY(tmp & 0x10000);       \
-          LOCAL_SET_NZ(reg_c, 0);               \
-      }                                         \
-  } while (0)
-
-#define ROR(addr, pc_inc, load_func, store_func)          \
-  do {                                                    \
-      unsigned int src, tmp_addr;                         \
-                                                          \
-      tmp_addr = (addr);                                  \
-      load_func(src, tmp_addr, LOCAL_65816_M());          \
-      INC_PC(pc_inc);                                     \
-      if (LOCAL_CARRY()) {                                \
-          if (LOCAL_65816_M()) {                          \
-              src |= 0x100;                               \
-          } else {                                        \
-              src |= 0x10000;                             \
-          }                                               \
-      }                                                   \
-      LOCAL_SET_CARRY(src & 1);                           \
-      src >>= 1;                                          \
-      LOCAL_SET_NZ(src, LOCAL_65816_M());                 \
-      store_func(tmp_addr, src, LOCAL_65816_M());         \
-  } while (0)
-
-#define ROR_A()                                         \
-  do {                                                  \
-      BYTE tmp = reg_a;                                 \
-                                                        \
-      INC_PC(SIZE_1);                                   \
-      if (LOCAL_65816_M()) {                            \
-          reg_a = (reg_a >> 1) | (LOCAL_CARRY() << 7);  \
-      } else {                                          \
-          reg_c = (reg_c >> 1) | (LOCAL_CARRY() << 15); \
-      }                                                 \
-      LOCAL_SET_CARRY(tmp & 1);                         \
-      LOCAL_SET_NZ(reg_c, LOCAL_65816_M());             \
-  } while (0)
+#define ROR(load_func, store_func) LSRROR(load_func, store_func, LOCAL_CARRY())
 
 /* RTI does must not use `OPCODE_ENABLES_IRQ()' even if the I flag changes
    from 1 to 0 because the value of I is set 3 cycles before the end of the
@@ -1712,8 +1696,8 @@
                                    \
       INC_PC(SIZE_1);              \
       LOAD_PBR(reg_pc);            \
-      tmp = (WORD)PULL();          \
-      LOCAL_SET_STATUS((BYTE)tmp); \
+      tmp = PULL();                \
+      LOCAL_SET_STATUS(tmp);       \
       if (LOCAL_65816_X()) {       \
           reg_x &= 0xff;           \
           reg_y &= 0xff;           \
@@ -1748,13 +1732,12 @@
       JUMP(reg_pc);              \
   } while (0)
 
-#define SBC(load_func, addr, pc_inc)                                                           \
+#define SBC(load_func)                                                                         \
   do {                                                                                         \
       WORD src, tmp;                                                                           \
                                                                                                \
-      load_func(src, addr, LOCAL_65816_M());                                                   \
-      INC_PC(pc_inc);                                                                          \
       if (LOCAL_65816_M()) {                                                                   \
+          load_func(src, 1);                                                                   \
           if (LOCAL_DECIMAL()) {                                                               \
               tmp = reg_a - (src & 0xf) + LOCAL_CARRY() - 1;                                   \
               if ((tmp & 0xf) > (reg_a & 0xf)) {                                               \
@@ -1774,8 +1757,9 @@
               LOCAL_SET_OVERFLOW(((reg_a ^ tmp) & 0x80)                                        \
                                     && ((reg_a ^ src) & 0x80));                                \
           }                                                                                    \
-          reg_a = tmp & 0xff;                                                                  \
+          reg_a = tmp;                                                                         \
       } else {                                                                                 \
+          load_func(src, 0);                                                                   \
           src ^= 0xffff;                                                                       \
           if (!LOCAL_DECIMAL()) {                                                              \
               tmp = reg_c + src + LOCAL_CARRY();                                               \
@@ -1803,7 +1787,7 @@
           }                                                                                    \
           LOCAL_SET_CARRY((tmp > 0xffff) ? 1 : 0);                                             \
           LOCAL_SET_NZ(tmp, LOCAL_65816_M());                                                  \
-          reg_c = tmp & 0xffff;                                                                \
+          reg_c = tmp;                                                                         \
       }                                                                                        \
   } while (0)
 
@@ -1829,16 +1813,10 @@
       LOCAL_SET_INTERRUPT(1);    \
   } while (0)
 
-#define SEP(mask) REPSEP(mask, 1)
+#define SEP(load_func) REPSEP(load_func, 1)
 
-#define STA(addr, pc_inc, store_func)          \
-  do {                                         \
-      unsigned int tmp;                        \
-                                               \
-      tmp = (addr);                            \
-      INC_PC(pc_inc);                          \
-      store_func(tmp, reg_c, LOCAL_65816_M()); \
-  } while (0)
+#define STA(store_func) \
+      store_func(reg_c, LOCAL_65816_M());
 
 #define STP()                 \
   do {                        \
@@ -1846,32 +1824,14 @@
       STP_65816();            \
   } while (0)
 
-#define STX(addr, pc_inc, store_func)          \
-  do {                                         \
-      unsigned int tmp;                        \
-                                               \
-      tmp = (addr);                            \
-      INC_PC(pc_inc);                          \
-      store_func(tmp, reg_x, LOCAL_65816_X()); \
-  } while (0)
+#define STX(store_func) \
+      store_func(reg_x, LOCAL_65816_X())
 
-#define STY(addr, pc_inc, store_func)          \
-  do {                                         \
-      unsigned int tmp;                        \
-                                               \
-      tmp = (addr);                            \
-      INC_PC(pc_inc);                          \
-      store_func(tmp, reg_y, LOCAL_65816_X()); \
-  } while (0)
+#define STY(store_func) \
+      store_func(reg_y, LOCAL_65816_X())
 
-#define STZ(addr, pc_inc, store_func)      \
-  do {                                     \
-      unsigned int tmp;                    \
-                                           \
-      tmp = (addr);                        \
-      INC_PC(pc_inc);                      \
-      store_func(tmp, 0, LOCAL_65816_M()); \
-  } while (0)
+#define STZ(store_func) \
+      store_func(0, LOCAL_65816_M())
 
 #define TRANSI(reg_s, reg_r)                \
   do {                                      \
@@ -1912,38 +1872,38 @@
       LOCAL_SET_NZ(reg_c, 0); \
   } while (0)
 
-#define TRB(addr, pc_inc, load_func, store_func)        \
+#define TRB(load_func, store_func)                      \
   do {                                                  \
-      unsigned int tmp_value, tmp_addr;                 \
+      unsigned int tmp_value;                           \
                                                         \
-      tmp_addr = (addr);                                \
-      load_func(tmp_value, tmp_addr, LOCAL_65816_M());  \
-      INC_PC(pc_inc);                                   \
       if (LOCAL_65816_M()) {                            \
+          load_func(tmp_value, 1);                      \
           LOCAL_SET_ZERO(!(tmp_value & reg_a));         \
           tmp_value &= (~reg_a);                        \
+          store_func(tmp_value, 1);                     \
       } else {                                          \
+          load_func(tmp_value, 0);                      \
           LOCAL_SET_ZERO(!(tmp_value & reg_c));         \
           tmp_value &= (~reg_c);                        \
+          store_func(tmp_value, 0);                     \
       }                                                 \
-      store_func(tmp_addr, tmp_value, LOCAL_65816_M()); \
   } while (0)
 
-#define TSB(addr, pc_inc, load_func, store_func)        \
+#define TSB(load_func, store_func)                      \
   do {                                                  \
-      unsigned int tmp_value, tmp_addr;                 \
+      unsigned int tmp_value;                           \
                                                         \
-      tmp_addr = (addr);                                \
-      load_func(tmp_value, tmp_addr, LOCAL_65816_M());  \
-      INC_PC(pc_inc);                                   \
       if (LOCAL_65816_M()) {                            \
+          load_func(tmp_value, 1);                      \
           LOCAL_SET_ZERO(!(tmp_value & reg_a));         \
           tmp_value |= reg_a;                           \
+          store_func(tmp_value, 1);                     \
       } else {                                          \
+          load_func(tmp_value, 0);                      \
           LOCAL_SET_ZERO(!(tmp_value & reg_c));         \
           tmp_value |= reg_c;                           \
+          store_func(tmp_value, 0);                     \
       }                                                 \
-      store_func(tmp_addr, tmp_value, LOCAL_65816_M()); \
   } while (0)
 
 #define TSC()                 \
@@ -2100,9 +2060,9 @@
     do {                                                                         \
         if (((int)reg_pc) < bank_limit) {                                        \
             (o).ins = *(bank_base + reg_pc);                                     \
-            (o).op.op16 = (*(bank_base + reg_pc + 1)           \
-                          | (*(bank_base + reg_pc + 2) << 8)); \
-            (o).extra_op = *(bank_base + reg_pc + 3);          \
+            (o).op.op16 = (*(bank_base + reg_pc + 1)                             \
+                          | (*(bank_base + reg_pc + 2) << 8));                   \
+            (o).extra_op = *(bank_base + reg_pc + 3);                            \
             CLK_ADD(CLK, CYCLES_2);                                              \
             if (fetch_tab[(o).ins]) {                                            \
                 CLK_ADD(CLK, fetch_tab[(o).ins] & 3);                            \
@@ -2234,8 +2194,8 @@ trap_skipped:
 
         switch (p0) {
 
-          case 0x42:            /* WDM, but emulated as a NOP #$nn */
-            NOOP_IMM(SIZE_2);
+          case 0x42:            /* WDM */
+            WDM();
             break;
 
           case 0x00:            /* BRK */
@@ -2243,7 +2203,7 @@ trap_skipped:
             break;
 
           case 0x01:            /* ORA ($nn,X) */
-            ORA(LOAD_INDIRECT_X_FUNC, p1, SIZE_2);
+            ORA(LOAD_INDIRECT_X_FUNC);
             break;
 
           case 0x02:            /* NOP #$nn - also used for traps */
@@ -2252,23 +2212,23 @@ trap_skipped:
             break;
 
           case 0x03:            /* ORA $nn,S */
-            ORA(LOAD_STACK_REL_FUNC, p1, SIZE_2);
+            ORA(LOAD_STACK_REL_FUNC);
             break;
 
           case 0x04:            /* TSB $nn */
-            TSB(p1, SIZE_2, LOAD_DIRECT_PAGE_FUNC, STORE_DIRECT_PAGE_RRW);
+            TSB(LOAD_DIRECT_PAGE_FUNC, STORE_DIRECT_PAGE_RRW);
             break;
 
           case 0x05:            /* ORA $nn */
-            ORA(LOAD_DIRECT_PAGE_FUNC, p1, SIZE_2);
+            ORA(LOAD_DIRECT_PAGE_FUNC);
             break;
 
           case 0x06:            /* ASL $nn */
-            ASL(p1, SIZE_2, LOAD_DIRECT_PAGE_FUNC, STORE_DIRECT_PAGE_RRW);
+            ASL(LOAD_DIRECT_PAGE_FUNC, STORE_DIRECT_PAGE_RRW);
             break;
 
           case 0x07:            /* ORA [$nn] */
-            ORA(LOAD_INDIRECT_LONG_FUNC, p1, SIZE_2);
+            ORA(LOAD_INDIRECT_LONG_FUNC);
             break;
 
           case 0x08:            /* PHP */
@@ -2276,11 +2236,11 @@ trap_skipped:
             break;
 
           case 0x09:            /* ORA #$nn */
-            ORA(LOAD_IMMEDIATE_FUNC, p2, SIZE_2);
+            ORA(LOAD_IMMEDIATE_FUNC);
             break;
 
           case 0x0a:            /* ASL A */
-            ASL_A();
+            ASL(LOAD_ACCU, STORE_ACCU);
             break;
 
           case 0x0b:            /* PHD */
@@ -2288,51 +2248,51 @@ trap_skipped:
             break;
 
           case 0x0c:            /* TSB $nnnn */
-            TSB(p2, SIZE_3, LOAD_ABS_FUNC, STORE_ABS_RRW);
+            TSB(LOAD_ABS_FUNC, STORE_ABS_RRW);
             break;
 
           case 0x0d:            /* ORA $nnnn */
-            ORA(LOAD_ABS_FUNC, p2, SIZE_3);
+            ORA(LOAD_ABS_FUNC);
             break;
 
           case 0x0e:            /* ASL $nnnn */
-            ASL(p2, SIZE_3, LOAD_ABS_FUNC, STORE_ABS_RRW);
+            ASL(LOAD_ABS_FUNC, STORE_ABS_RRW);
             break;
 
           case 0x0f:            /* ORA $nnnnnn */
-            ORA(LOAD_ABS_LONG_FUNC, p3, SIZE_4);
+            ORA(LOAD_ABS_LONG_FUNC);
             break;
 
           case 0x10:            /* BPL $nnnn */
-            BRANCH(!LOCAL_SIGN(), p1);
+            BRANCH(!LOCAL_SIGN());
             break;
 
           case 0x11:            /* ORA ($nn),Y */
-            ORA(LOAD_INDIRECT_Y_FUNC, p1, SIZE_2);
+            ORA(LOAD_INDIRECT_Y_FUNC);
             break;
 
           case 0x12:            /* ORA ($nn) */
-            ORA(LOAD_INDIRECT_FUNC, p1, SIZE_2);
+            ORA(LOAD_INDIRECT_FUNC);
             break;
 
           case 0x13:            /* ORA ($nn,S),Y */
-            ORA(LOAD_STACK_REL_Y_FUNC, p1, SIZE_2);
+            ORA(LOAD_STACK_REL_Y_FUNC);
             break;
 
           case 0x14:            /* TRB $nn */
-            TRB(p1, SIZE_2, LOAD_DIRECT_PAGE_FUNC, STORE_DIRECT_PAGE_RRW);
+            TRB(LOAD_DIRECT_PAGE_FUNC, STORE_DIRECT_PAGE_RRW);
             break;
 
           case 0x15:            /* ORA $nn,X */
-            ORA(LOAD_DIRECT_PAGE_X_FUNC, p1, SIZE_2);
+            ORA(LOAD_DIRECT_PAGE_X_FUNC);
             break;
 
           case 0x16:            /* ASL $nn,X */
-            ASL(p1, SIZE_2, LOAD_DIRECT_PAGE_X_FUNC, STORE_DIRECT_PAGE_X_RRW);
+            ASL(LOAD_DIRECT_PAGE_X_FUNC, STORE_DIRECT_PAGE_X_RRW);
             break;
 
           case 0x17:            /* ORA [$nn],Y */
-            ORA(LOAD_INDIRECT_LONG_Y_FUNC, p1, SIZE_2);
+            ORA(LOAD_INDIRECT_LONG_Y_FUNC);
             break;
 
           case 0x18:            /* CLC */
@@ -2340,11 +2300,11 @@ trap_skipped:
             break;
 
           case 0x19:            /* ORA $nnnn,Y */
-            ORA(LOAD_ABS_Y_FUNC, p2, SIZE_3);
+            ORA(LOAD_ABS_Y_FUNC);
             break;
 
           case 0x1a:            /* INA */
-            INA();
+            INC(LOAD_ACCU, STORE_ACCU);
             break;
 
           case 0x1b:            /* TCS */
@@ -2352,27 +2312,27 @@ trap_skipped:
             break;
 
           case 0x1c:            /* TRB $nnnn */
-            TRB(p2, SIZE_3, LOAD_ABS_FUNC, STORE_ABS_RRW);
+            TRB(LOAD_ABS_FUNC, STORE_ABS_RRW);
             break;
 
           case 0x1d:            /* ORA $nnnn,X */
-            ORA(LOAD_ABS_X_FUNC, p2, SIZE_3);
+            ORA(LOAD_ABS_X_FUNC);
             break;
 
           case 0x1e:            /* ASL $nnnn,X */
-            ASL(p2, SIZE_3, LOAD_ABS_X_FUNC, STORE_ABS_X_RRW);
+            ASL(LOAD_ABS_X_FUNC, STORE_ABS_X_RRW);
             break;
 
           case 0x1f:            /* ORA $nnnnnn,X */
-            ORA(LOAD_ABS_LONG_X_FUNC, p3, SIZE_4);
+            ORA(LOAD_ABS_LONG_X_FUNC);
             break;
 
           case 0x20:            /* JSR $nnnn */
-            JSR(p2);
+            JSR();
             break;
 
           case 0x21:            /* AND ($nn,X) */
-            AND(LOAD_INDIRECT_X_FUNC, p1, SIZE_2);
+            AND(LOAD_INDIRECT_X_FUNC);
             break;
 
           case 0x22:            /* JSR $nnnnnn */
@@ -2380,23 +2340,23 @@ trap_skipped:
             break;
 
           case 0x23:            /* AND $nn,S */
-            AND(LOAD_STACK_REL_FUNC, p1, SIZE_2);
+            AND(LOAD_STACK_REL_FUNC);
             break;
 
           case 0x24:            /* BIT $nn */
-            BIT(LOAD_DIRECT_PAGE_FUNC, p1, SIZE_2);
+            BIT(LOAD_DIRECT_PAGE_FUNC);
             break;
 
           case 0x25:            /* AND $nn */
-            AND(LOAD_DIRECT_PAGE_FUNC, p1, SIZE_2);
+            AND(LOAD_DIRECT_PAGE_FUNC);
             break;
 
           case 0x26:            /* ROL $nn */
-            ROL(p1, SIZE_2, LOAD_DIRECT_PAGE_FUNC, STORE_DIRECT_PAGE_RRW);
+            ROL(LOAD_DIRECT_PAGE_FUNC, STORE_DIRECT_PAGE_RRW);
             break;
 
           case 0x27:            /* AND [$nn] */
-            AND(LOAD_INDIRECT_LONG_FUNC, p1, SIZE_2);
+            AND(LOAD_INDIRECT_LONG_FUNC);
             break;
 
           case 0x28:            /* PLP */
@@ -2404,11 +2364,11 @@ trap_skipped:
             break;
 
           case 0x29:            /* AND #$nn */
-            AND(LOAD_IMMEDIATE_FUNC, p2, SIZE_2);
+            AND(LOAD_IMMEDIATE_FUNC);
             break;
 
           case 0x2a:            /* ROL A */
-            ROL_A();
+            ROL(LOAD_ACCU, STORE_ACCU);
             break;
 
           case 0x2b:            /* PLD */
@@ -2416,51 +2376,51 @@ trap_skipped:
             break;
 
           case 0x2c:            /* BIT $nnnn */
-            BIT(LOAD_ABS_FUNC, p2, SIZE_3);
+            BIT(LOAD_ABS_FUNC);
             break;
 
           case 0x2d:            /* AND $nnnn */
-            AND(LOAD_ABS_FUNC, p2, SIZE_3);
+            AND(LOAD_ABS_FUNC);
             break;
 
           case 0x2e:            /* ROL $nnnn */
-            ROL(p2, SIZE_3, LOAD_ABS_FUNC, STORE_ABS_RRW);
+            ROL(LOAD_ABS_FUNC, STORE_ABS_RRW);
             break;
 
           case 0x2f:            /* AND $nnnnnn */
-            AND(LOAD_ABS_LONG_FUNC, p3, SIZE_4);
+            AND(LOAD_ABS_LONG_FUNC);
             break;
 
           case 0x30:            /* BMI $nnnn */
-            BRANCH(LOCAL_SIGN(), p1);
+            BRANCH(LOCAL_SIGN());
             break;
 
           case 0x31:            /* AND ($nn),Y */
-            AND(LOAD_INDIRECT_Y_FUNC, p1, SIZE_2);
+            AND(LOAD_INDIRECT_Y_FUNC);
             break;
 
           case 0x32:            /* AND ($nn) */
-            AND(LOAD_INDIRECT_FUNC, p1, SIZE_2);
+            AND(LOAD_INDIRECT_FUNC);
             break;
 
           case 0x33:            /* AND ($nn,S),Y */
-            AND(LOAD_STACK_REL_Y_FUNC, p1, SIZE_2);
+            AND(LOAD_STACK_REL_Y_FUNC);
             break;
 
           case 0x34:            /* BIT $nn,X */
-            BIT(LOAD_DIRECT_PAGE_X_FUNC, p1, SIZE_2);
+            BIT(LOAD_DIRECT_PAGE_X_FUNC);
             break;
 
           case 0x35:            /* AND $nn,X */
-            AND(LOAD_DIRECT_PAGE_X_FUNC, p1, SIZE_2);
+            AND(LOAD_DIRECT_PAGE_X_FUNC);
             break;
 
           case 0x36:            /* ROL $nn,X */
-            ROL(p1, SIZE_2, LOAD_DIRECT_PAGE_X_FUNC, STORE_DIRECT_PAGE_X_RRW);
+            ROL(LOAD_DIRECT_PAGE_X_FUNC, STORE_DIRECT_PAGE_X_RRW);
             break;
 
           case 0x37:            /* AND [$nn],Y */
-            AND(LOAD_INDIRECT_LONG_Y_FUNC, p1, SIZE_2);
+            AND(LOAD_INDIRECT_LONG_Y_FUNC);
             break;
 
           case 0x38:            /* SEC */
@@ -2468,11 +2428,11 @@ trap_skipped:
             break;
 
           case 0x39:            /* AND $nnnn,Y */
-            AND(LOAD_ABS_Y_FUNC, p2, SIZE_3);
+            AND(LOAD_ABS_Y_FUNC);
             break;
 
           case 0x3a:            /* DEA */
-            DEA();
+            DEC(LOAD_ACCU, STORE_ACCU);
             break;
 
           case 0x3b:            /* TSC */
@@ -2480,19 +2440,19 @@ trap_skipped:
             break;
 
           case 0x3c:            /* BIT $nnnn,X */
-            BIT(LOAD_ABS_X_FUNC, p2, SIZE_3);
+            BIT(LOAD_ABS_X_FUNC);
             break;
 
           case 0x3d:            /* AND $nnnn,X */
-            AND(LOAD_ABS_X_FUNC, p2, SIZE_3);
+            AND(LOAD_ABS_X_FUNC);
             break;
 
           case 0x3e:            /* ROL $nnnn,X */
-            ROL(p2, SIZE_3, LOAD_ABS_X_FUNC, STORE_ABS_X_RRW);
+            ROL(LOAD_ABS_X_FUNC, STORE_ABS_X_RRW);
             break;
 
           case 0x3f:            /* AND $nnnnnn,X */
-            AND(LOAD_ABS_LONG_X_FUNC, p3, SIZE_4);
+            AND(LOAD_ABS_LONG_X_FUNC);
             break;
 
           case 0x40:            /* RTI */
@@ -2500,27 +2460,27 @@ trap_skipped:
             break;
 
           case 0x41:            /* EOR ($nn,X) */
-            EOR(LOAD_INDIRECT_X_FUNC, p1, SIZE_2);
+            EOR(LOAD_INDIRECT_X_FUNC);
             break;
 
           case 0x43:            /* EOR $nn,S */
-            EOR(LOAD_STACK_REL_FUNC, p1, SIZE_2);
+            EOR(LOAD_STACK_REL_FUNC);
             break;
 
           case 0x44:            /* MVP $nn,$nn */
-            MVP((p2 >> 8), p1);
+            MVP();
             break;
 
           case 0x45:            /* EOR $nn */
-            EOR(LOAD_DIRECT_PAGE_FUNC, p1, SIZE_2);
+            EOR(LOAD_DIRECT_PAGE_FUNC);
             break;
 
           case 0x46:            /* LSR $nn */
-            LSR(p1, SIZE_2, LOAD_DIRECT_PAGE_FUNC, STORE_DIRECT_PAGE_RRW);
+            LSR(LOAD_DIRECT_PAGE_FUNC, STORE_DIRECT_PAGE_RRW);
             break;
 
           case 0x47:            /* EOR [$nn] */
-            EOR(LOAD_INDIRECT_LONG_FUNC, p1, SIZE_2);
+            EOR(LOAD_INDIRECT_LONG_FUNC);
             break;
 
           case 0x48:            /* PHA */
@@ -2528,11 +2488,11 @@ trap_skipped:
             break;
 
           case 0x49:            /* EOR #$nn */
-            EOR(LOAD_IMMEDIATE_FUNC, p2, SIZE_2);
+            EOR(LOAD_IMMEDIATE_FUNC);
             break;
 
           case 0x4a:            /* LSR A */
-            LSR_A();
+            LSR(LOAD_ACCU, STORE_ACCU);
             break;
 
           case 0x4b:            /* PHK */
@@ -2540,51 +2500,51 @@ trap_skipped:
             break;
 
           case 0x4c:            /* JMP $nnnn */
-            JMP(p2);
+            JMP();
             break;
 
           case 0x4d:            /* EOR $nnnn */
-            EOR(LOAD_ABS_FUNC, p2, SIZE_3);
+            EOR(LOAD_ABS_FUNC);
             break;
 
           case 0x4e:            /* LSR $nnnn */
-            LSR(p2, SIZE_3, LOAD_ABS_FUNC, STORE_ABS_RRW);
+            LSR(LOAD_ABS_FUNC, STORE_ABS_RRW);
             break;
 
           case 0x4f:            /* EOR $nnnnnn */
-            EOR(LOAD_ABS_LONG_FUNC, p3, SIZE_4);
+            EOR(LOAD_ABS_LONG_FUNC);
             break;
 
           case 0x50:            /* BVC $nnnn */
-            BRANCH(!LOCAL_OVERFLOW(), p1);
+            BRANCH(!LOCAL_OVERFLOW());
             break;
 
           case 0x51:            /* EOR ($nn),Y */
-            EOR(LOAD_INDIRECT_Y_FUNC, p1, SIZE_2);
+            EOR(LOAD_INDIRECT_Y_FUNC);
             break;
 
           case 0x52:            /* EOR ($nn) */
-            EOR(LOAD_INDIRECT_FUNC, p1, SIZE_2);
+            EOR(LOAD_INDIRECT_FUNC);
             break;
 
           case 0x53:            /* EOR ($nn,S),Y */
-            EOR(LOAD_STACK_REL_Y_FUNC, p1, SIZE_2);
+            EOR(LOAD_STACK_REL_Y_FUNC);
             break;
 
           case 0x54:            /* MVN $nn,$nn */
-            MVN((p2 >> 8), p1);
+            MVN();
             break;
 
           case 0x55:            /* EOR $nn,X */
-            EOR(LOAD_DIRECT_PAGE_X_FUNC, p1, SIZE_2);
+            EOR(LOAD_DIRECT_PAGE_X_FUNC);
             break;
 
           case 0x56:            /* LSR $nn,X */
-            LSR(p1, SIZE_2, LOAD_DIRECT_PAGE_X_FUNC, STORE_DIRECT_PAGE_X_RRW);
+            LSR(LOAD_DIRECT_PAGE_X_FUNC, STORE_DIRECT_PAGE_X_RRW);
             break;
 
           case 0x57:            /* EOR [$nn],Y */
-            EOR(LOAD_INDIRECT_LONG_Y_FUNC, p1, SIZE_2);
+            EOR(LOAD_INDIRECT_LONG_Y_FUNC);
             break;
 
           case 0x58:            /* CLI */
@@ -2592,7 +2552,7 @@ trap_skipped:
             break;
 
           case 0x59:            /* EOR $nnnn,Y */
-            EOR(LOAD_ABS_Y_FUNC, p2, SIZE_3);
+            EOR(LOAD_ABS_Y_FUNC);
             break;
 
           case 0x5a:            /* PHY */
@@ -2604,19 +2564,19 @@ trap_skipped:
             break;
 
           case 0x5c:            /* JMP $nnnnnn */
-            JMP_LONG(p3);
+            JMP_LONG();
             break;
 
           case 0x5d:            /* EOR $nnnn,X */
-            EOR(LOAD_ABS_X_FUNC, p2, SIZE_3);
+            EOR(LOAD_ABS_X_FUNC);
             break;
 
           case 0x5e:            /* LSR $nnnn,X */
-            LSR(p2, SIZE_3, LOAD_ABS_X_FUNC, STORE_ABS_X_RRW);
+            LSR(LOAD_ABS_X_FUNC, STORE_ABS_X_RRW);
             break;
 
           case 0x5f:            /* EOR $nnnnnn,X */
-            EOR(LOAD_ABS_LONG_X_FUNC, p3, SIZE_4);
+            EOR(LOAD_ABS_LONG_X_FUNC);
             break;
 
           case 0x60:            /* RTS */
@@ -2624,31 +2584,31 @@ trap_skipped:
             break;
 
           case 0x61:            /* ADC ($nn,X) */
-            ADC(LOAD_INDIRECT_X_FUNC, p1, SIZE_2);
+            ADC(LOAD_INDIRECT_X_FUNC);
             break;
 
           case 0x62:            /* PER $nnnn */
-            PER(p2);
+            PER();
             break;
 
           case 0x63:            /* ADC $nn,S */
-            ADC(LOAD_STACK_REL_FUNC, p1, SIZE_2);
+            ADC(LOAD_STACK_REL_FUNC);
             break;
 
           case 0x64:            /* STZ $nn */
-            STZ(p1, SIZE_2, STORE_DIRECT_PAGE);
+            STZ(STORE_DIRECT_PAGE);
             break;
 
           case 0x65:            /* ADC $nn */
-            ADC(LOAD_DIRECT_PAGE_FUNC, p1, SIZE_2);
+            ADC(LOAD_DIRECT_PAGE_FUNC);
             break;
 
           case 0x66:            /* ROR $nn */
-            ROR(p1, SIZE_2, LOAD_DIRECT_PAGE_FUNC, STORE_DIRECT_PAGE_RRW);
+            ROR(LOAD_DIRECT_PAGE_FUNC, STORE_DIRECT_PAGE_RRW);
             break;
 
           case 0x67:            /* ADC [$nn] */
-            ADC(LOAD_INDIRECT_LONG_FUNC, p1, SIZE_2);
+            ADC(LOAD_INDIRECT_LONG_FUNC);
             break;
 
           case 0x68:            /* PLA */
@@ -2656,11 +2616,11 @@ trap_skipped:
             break;
 
           case 0x69:            /* ADC #$nn */
-            ADC(LOAD_IMMEDIATE_FUNC, p2, SIZE_2);
+            ADC(LOAD_IMMEDIATE_FUNC);
             break;
 
           case 0x6a:            /* ROR A */
-            ROR_A();
+            ROR(LOAD_ACCU, STORE_ACCU);
             break;
 
           case 0x6b:            /* RTL */
@@ -2672,47 +2632,47 @@ trap_skipped:
             break;
 
           case 0x6d:            /* ADC $nnnn */
-            ADC(LOAD_ABS_FUNC, p2, SIZE_3);
+            ADC(LOAD_ABS_FUNC);
             break;
 
           case 0x6e:            /* ROR $nnnn */
-            ROR(p2, SIZE_3, LOAD_ABS_FUNC, STORE_ABS_RRW);
+            ROR(LOAD_ABS_FUNC, STORE_ABS_RRW);
             break;
 
           case 0x6f:            /* ADC $nnnnnn */
-            ADC(LOAD_ABS_LONG_FUNC, p3, SIZE_4);
+            ADC(LOAD_ABS_LONG_FUNC);
             break;
 
           case 0x70:            /* BVS $nnnn */
-            BRANCH(LOCAL_OVERFLOW(), p1);
+            BRANCH(LOCAL_OVERFLOW());
             break;
 
           case 0x71:            /* ADC ($nn),Y */
-            ADC(LOAD_INDIRECT_Y_FUNC, p1, SIZE_2);
+            ADC(LOAD_INDIRECT_Y_FUNC);
             break;
 
           case 0x72:            /* ADC ($nn) */
-            ADC(LOAD_INDIRECT_FUNC, p1, SIZE_2);
+            ADC(LOAD_INDIRECT_FUNC);
             break;
 
           case 0x73:            /* ADC ($nn,S),Y */
-            ADC(LOAD_STACK_REL_Y_FUNC, p1, SIZE_2);
+            ADC(LOAD_STACK_REL_Y_FUNC);
             break;
 
           case 0x74:            /* STZ $nn,X */
-            STZ(p1, SIZE_2, STORE_DIRECT_PAGE_X);
+            STZ(STORE_DIRECT_PAGE_X);
             break;
 
           case 0x75:            /* ADC $nn,X */
-            ADC(LOAD_DIRECT_PAGE_X_FUNC, p1, SIZE_2);
+            ADC(LOAD_DIRECT_PAGE_X_FUNC);
             break;
 
           case 0x76:            /* ROR $nn,X */
-            ROR(p1, SIZE_2, LOAD_DIRECT_PAGE_X_FUNC, STORE_DIRECT_PAGE_X_RRW);
+            ROR(LOAD_DIRECT_PAGE_X_FUNC, STORE_DIRECT_PAGE_X_RRW);
             break;
 
           case 0x77:            /* ADC [$nn],Y */
-            ADC(LOAD_INDIRECT_LONG_Y_FUNC, p1, SIZE_2);
+            ADC(LOAD_INDIRECT_LONG_Y_FUNC);
             break;
 
           case 0x78:            /* SEI */
@@ -2720,7 +2680,7 @@ trap_skipped:
             break;
 
           case 0x79:            /* ADC $nnnn,Y */
-            ADC(LOAD_ABS_Y_FUNC, p2, SIZE_3);
+            ADC(LOAD_ABS_Y_FUNC);
             break;
 
           case 0x7a:            /* PLY */
@@ -2736,47 +2696,47 @@ trap_skipped:
             break;
 
           case 0x7d:            /* ADC $nnnn,X */
-            ADC(LOAD_ABS_X_FUNC, p2, SIZE_3);
+            ADC(LOAD_ABS_X_FUNC);
             break;
 
           case 0x7e:            /* ROR $nnnn,X */
-            ROR(p2, SIZE_3, LOAD_ABS_X_FUNC, STORE_ABS_X_RRW);
+            ROR(LOAD_ABS_X_FUNC, STORE_ABS_X_RRW);
             break;
 
           case 0x7f:            /* ADC $nnnnnn,X */
-            ADC(LOAD_ABS_LONG_X_FUNC, p3, SIZE_4);
+            ADC(LOAD_ABS_LONG_X_FUNC);
             break;
 
           case 0x80:            /* BRA $nnnn */
-            BRANCH(1, p1);
+            BRANCH(1);
             break;
 
           case 0x81:            /* STA ($nn,X) */
-            STA(p1, SIZE_2, STORE_INDIRECT_X);
+            STA(STORE_INDIRECT_X);
             break;
 
           case 0x82:            /* BRL $nnnn */
-            BRANCH_LONG(p2);
+            BRANCH_LONG();
             break;
 
           case 0x83:            /* STA $nn,S */
-            STA(p1, SIZE_2, STORE_STACK_REL);
+            STA(STORE_STACK_REL);
             break;
 
           case 0x84:            /* STY $nn */
-            STY(p1, SIZE_2, STORE_DIRECT_PAGE);
+            STY(STORE_DIRECT_PAGE);
             break;
 
           case 0x85:            /* STA $nn */
-            STA(p1, SIZE_2, STORE_DIRECT_PAGE);
+            STA(STORE_DIRECT_PAGE);
             break;
 
           case 0x86:            /* STX $nn */
-            STX(p1, SIZE_2, STORE_DIRECT_PAGE);
+            STX(STORE_DIRECT_PAGE);
             break;
 
           case 0x87:            /* STA [$nn] */
-            STA(p1, SIZE_2, STORE_INDIRECT_LONG);
+            STA(STORE_INDIRECT_LONG);
             break;
 
           case 0x88:            /* DEY */
@@ -2784,7 +2744,7 @@ trap_skipped:
             break;
 
           case 0x89:            /* BIT #$nn */
-            BIT_IMM((LOCAL_65816_M()) ? p1 : p2);
+            BIT_IMM(LOAD_IMMEDIATE_FUNC);
             break;
 
           case 0x8a:            /* TXA */
@@ -2796,51 +2756,51 @@ trap_skipped:
             break;
 
           case 0x8c:            /* STY $nnnn */
-            STY(p2, SIZE_3, STORE_ABS);
+            STY(STORE_ABS);
             break;
 
           case 0x8d:            /* STA $nnnn */
-            STA(p2, SIZE_3, STORE_ABS);
+            STA(STORE_ABS);
             break;
 
           case 0x8e:            /* STX $nnnn */
-            STX(p2, SIZE_3, STORE_ABS);
+            STX(STORE_ABS);
             break;
 
           case 0x8f:            /* STA $nnnnnn */
-            STA(p3, SIZE_4, STORE_ABS_LONG);
+            STA(STORE_ABS_LONG);
             break;
 
           case 0x90:            /* BCC $nnnn */
-            BRANCH(!LOCAL_CARRY(), p1);
+            BRANCH(!LOCAL_CARRY());
             break;
 
           case 0x91:            /* STA ($nn),Y */
-            STA(p1, SIZE_2, STORE_INDIRECT_Y);
+            STA(STORE_INDIRECT_Y);
             break;
 
           case 0x92:            /* STA ($nn) */
-            STA(p1, SIZE_2, STORE_INDIRECT);
+            STA(STORE_INDIRECT);
             break;
 
           case 0x93:            /* STA ($nn,S),Y */
-            STA(p1, SIZE_2, STORE_STACK_REL_Y);
+            STA(STORE_STACK_REL_Y);
             break;
 
           case 0x94:            /* STY $nn,X */
-            STY(p1, SIZE_2, STORE_DIRECT_PAGE_X);
+            STY(STORE_DIRECT_PAGE_X);
             break;
 
           case 0x95:            /* STA $nn,X */
-            STA(p1, SIZE_2, STORE_DIRECT_PAGE_X);
+            STA(STORE_DIRECT_PAGE_X);
             break;
 
           case 0x96:            /* STX $nn,Y */
-            STX(p1, SIZE_2, STORE_DIRECT_PAGE_Y);
+            STX(STORE_DIRECT_PAGE_Y);
             break;
 
           case 0x97:            /* STA [$nn],Y */
-            STA(p1, SIZE_2, STORE_INDIRECT_LONG_Y);
+            STA(STORE_INDIRECT_LONG_Y);
             break;
 
           case 0x98:            /* TYA */
@@ -2848,7 +2808,7 @@ trap_skipped:
             break;
 
           case 0x99:            /* STA $nnnn,Y */
-            STA(p2, SIZE_3, STORE_ABS_Y);
+            STA(STORE_ABS_Y);
             break;
 
           case 0x9a:            /* TXS */
@@ -2860,51 +2820,51 @@ trap_skipped:
             break;
 
           case 0x9c:            /* STZ $nnnn */
-            STZ(p2, SIZE_3, STORE_ABS);
+            STZ(STORE_ABS);
             break;
 
           case 0x9d:            /* STA $nnnn,X */
-            STA(p2, SIZE_3, STORE_ABS_X);
+            STA(STORE_ABS_X);
             break;
 
           case 0x9e:            /* STZ $nnnn,X */
-            STZ(p2, SIZE_3, STORE_ABS_X);
+            STZ(STORE_ABS_X);
             break;
 
           case 0x9f:            /* STA $nnnnnn,X */
-            STA(p3, SIZE_4, STORE_ABS_LONG_X);
+            STA(STORE_ABS_LONG_X);
             break;
 
           case 0xa0:            /* LDY #$nn */
-            LDY(LOAD_IMMEDIATE_FUNC, p2, SIZE_2);
+            LDY(LOAD_IMMEDIATE_FUNC);
             break;
 
           case 0xa1:            /* LDA ($nn,X) */
-            LDA(LOAD_INDIRECT_X_FUNC, p1, SIZE_2);
+            LDA(LOAD_INDIRECT_X_FUNC);
             break;
 
           case 0xa2:            /* LDX #$nn */
-            LDX(LOAD_IMMEDIATE_FUNC, p2, SIZE_2);
+            LDX(LOAD_IMMEDIATE_FUNC);
             break;
 
           case 0xa3:            /* LDA $nn,S */
-            LDA(LOAD_STACK_REL_FUNC, p1, SIZE_2);
+            LDA(LOAD_STACK_REL_FUNC);
             break;
 
           case 0xa4:            /* LDY $nn */
-            LDY(LOAD_DIRECT_PAGE_FUNC, p1, SIZE_2);
+            LDY(LOAD_DIRECT_PAGE_FUNC);
             break;
 
           case 0xa5:            /* LDA $nn */
-            LDA(LOAD_DIRECT_PAGE_FUNC, p1, SIZE_2);
+            LDA(LOAD_DIRECT_PAGE_FUNC);
             break;
 
           case 0xa6:            /* LDX $nn */
-            LDX(LOAD_DIRECT_PAGE_FUNC, p1, SIZE_2);
+            LDX(LOAD_DIRECT_PAGE_FUNC);
             break;
 
           case 0xa7:            /* LDA [$nn] */
-            LDA(LOAD_INDIRECT_LONG_FUNC, p1, SIZE_2);
+            LDA(LOAD_INDIRECT_LONG_FUNC);
             break;
 
           case 0xa8:            /* TAY */
@@ -2912,7 +2872,7 @@ trap_skipped:
             break;
 
           case 0xa9:            /* LDA #$nn */
-            LDA(LOAD_IMMEDIATE_FUNC, p2, SIZE_2);
+            LDA(LOAD_IMMEDIATE_FUNC);
             break;
 
           case 0xaa:            /* TAX */
@@ -2924,51 +2884,51 @@ trap_skipped:
             break;
 
           case 0xac:            /* LDY $nnnn */
-            LDY(LOAD_ABS_FUNC, p2, SIZE_3);
+            LDY(LOAD_ABS_FUNC);
             break;
 
           case 0xad:            /* LDA $nnnn */
-            LDA(LOAD_ABS_FUNC, p2, SIZE_3);
+            LDA(LOAD_ABS_FUNC);
             break;
 
           case 0xae:            /* LDX $nnnn */
-            LDX(LOAD_ABS_FUNC, p2, SIZE_3);
+            LDX(LOAD_ABS_FUNC);
             break;
 
           case 0xaf:            /* LDA $nnnnnn */
-            LDA(LOAD_ABS_LONG_FUNC, p3, SIZE_4);
+            LDA(LOAD_ABS_LONG_FUNC);
             break;
 
           case 0xb0:            /* BCS $nnnn */
-            BRANCH(LOCAL_CARRY(), p1);
+            BRANCH(LOCAL_CARRY());
             break;
 
           case 0xb1:            /* LDA ($nn),Y */
-            LDA(LOAD_INDIRECT_Y_FUNC, p1, SIZE_2);
+            LDA(LOAD_INDIRECT_Y_FUNC);
             break;
 
           case 0xb2:            /* LDA ($nn) */
-            LDA(LOAD_INDIRECT_FUNC, p1, SIZE_2);
+            LDA(LOAD_INDIRECT_FUNC);
             break;
 
           case 0xb3:            /* LDA ($nn,S),Y */
-            LDA(LOAD_STACK_REL_Y_FUNC, p1, SIZE_2);
+            LDA(LOAD_STACK_REL_Y_FUNC);
             break;
 
           case 0xb4:            /* LDY $nn,X */
-            LDY(LOAD_DIRECT_PAGE_X_FUNC, p1, SIZE_2);
+            LDY(LOAD_DIRECT_PAGE_X_FUNC);
             break;
 
           case 0xb5:            /* LDA $nn,X */
-            LDA(LOAD_DIRECT_PAGE_X_FUNC, p1, SIZE_2);
+            LDA(LOAD_DIRECT_PAGE_X_FUNC);
             break;
 
           case 0xb6:            /* LDX $nn,Y */
-            LDX(LOAD_DIRECT_PAGE_Y_FUNC, p1, SIZE_2);
+            LDX(LOAD_DIRECT_PAGE_Y_FUNC);
             break;
 
           case 0xb7:            /* LDA [$nn],Y */
-            LDA(LOAD_INDIRECT_LONG_Y_FUNC, p1, SIZE_2);
+            LDA(LOAD_INDIRECT_LONG_Y_FUNC);
             break;
 
           case 0xb8:            /* CLV */
@@ -2976,7 +2936,7 @@ trap_skipped:
             break;
 
           case 0xb9:            /* LDA $nnnn,Y */
-            LDA(LOAD_ABS_Y_FUNC, p2, SIZE_3);
+            LDA(LOAD_ABS_Y_FUNC);
             break;
 
           case 0xba:            /* TSX */
@@ -2988,51 +2948,51 @@ trap_skipped:
             break;
 
           case 0xbc:            /* LDY $nnnn,X */
-            LDY(LOAD_ABS_X_FUNC, p2, SIZE_3);
+            LDY(LOAD_ABS_X_FUNC);
             break;
 
           case 0xbd:            /* LDA $nnnn,X */
-            LDA(LOAD_ABS_X_FUNC, p2, SIZE_3);
+            LDA(LOAD_ABS_X_FUNC);
             break;
 
           case 0xbe:            /* LDX $nnnn,Y */
-            LDX(LOAD_ABS_Y_FUNC, p2, SIZE_3);
+            LDX(LOAD_ABS_Y_FUNC);
             break;
 
           case 0xbf:            /* LDA $nnnnnn,X */
-            LDA(LOAD_ABS_LONG_X_FUNC, p3, SIZE_4);
+            LDA(LOAD_ABS_LONG_X_FUNC);
             break;
 
           case 0xc0:            /* CPY #$nn */
-            CPY(LOAD_IMMEDIATE_FUNC, p2, SIZE_2);
+            CPY(LOAD_IMMEDIATE_FUNC);
             break;
 
           case 0xc1:            /* CMP ($nn,X) */
-            CMP(LOAD_INDIRECT_X_FUNC, p1, SIZE_2);
+            CMP(LOAD_INDIRECT_X_FUNC);
             break;
 
           case 0xc2:            /* REP #$nn */
-            REP(p1);
+            REP(LOAD_IMMEDIATE_FUNC);
             break;
 
           case 0xc3:            /* CMP $nn,S */
-            CMP(LOAD_STACK_REL_FUNC, p1, SIZE_2);
+            CMP(LOAD_STACK_REL_FUNC);
             break;
 
           case 0xc4:            /* CPY $nn */
-            CPY(LOAD_DIRECT_PAGE_FUNC, p1, SIZE_2);
+            CPY(LOAD_DIRECT_PAGE_FUNC);
             break;
 
           case 0xc5:            /* CMP $nn */
-            CMP(LOAD_DIRECT_PAGE_FUNC, p1, SIZE_2);
+            CMP(LOAD_DIRECT_PAGE_FUNC);
             break;
 
           case 0xc6:            /* DEC $nn */
-            DEC(p1, SIZE_2, LOAD_DIRECT_PAGE_FUNC, STORE_DIRECT_PAGE_RRW);
+            DEC(LOAD_DIRECT_PAGE_FUNC, STORE_DIRECT_PAGE_RRW);
             break;
 
           case 0xc7:            /* CMP [$nn] */
-            CMP(LOAD_INDIRECT_LONG_FUNC, p1, SIZE_2);
+            CMP(LOAD_INDIRECT_LONG_FUNC);
             break;
 
           case 0xc8:            /* INY */
@@ -3040,7 +3000,7 @@ trap_skipped:
             break;
 
           case 0xc9:            /* CMP #$nn */
-            CMP(LOAD_IMMEDIATE_FUNC, p2, SIZE_2);
+            CMP(LOAD_IMMEDIATE_FUNC);
             break;
 
           case 0xca:            /* DEX */
@@ -3052,51 +3012,51 @@ trap_skipped:
             break;
 
           case 0xcc:            /* CPY $nnnn */
-            CPY(LOAD_ABS_FUNC, p2, SIZE_3);
+            CPY(LOAD_ABS_FUNC);
             break;
 
           case 0xcd:            /* CMP $nnnn */
-            CMP(LOAD_ABS_FUNC, p2, SIZE_3);
+            CMP(LOAD_ABS_FUNC);
             break;
 
           case 0xce:            /* DEC $nnnn */
-            DEC(p2, SIZE_3, LOAD_ABS_FUNC, STORE_ABS_RRW);
+            DEC(LOAD_ABS_FUNC, STORE_ABS_RRW);
             break;
 
           case 0xcf:            /* CMP $nnnnnn */
-            CMP(LOAD_ABS_LONG_FUNC, p3, SIZE_4);
+            CMP(LOAD_ABS_LONG_FUNC);
             break;
 
           case 0xd0:            /* BNE $nnnn */
-            BRANCH(!LOCAL_ZERO(), p1);
+            BRANCH(!LOCAL_ZERO());
             break;
 
           case 0xd1:            /* CMP ($nn),Y */
-            CMP(LOAD_INDIRECT_Y_FUNC, p1, SIZE_2);
+            CMP(LOAD_INDIRECT_Y_FUNC);
             break;
 
           case 0xd2:            /* CMP ($nn) */
-            CMP(LOAD_INDIRECT_FUNC, p1, SIZE_2);
+            CMP(LOAD_INDIRECT_FUNC);
             break;
 
           case 0xd3:            /* CMP ($nn,S),Y */
-            CMP(LOAD_STACK_REL_Y_FUNC, p1, SIZE_2);
+            CMP(LOAD_STACK_REL_Y_FUNC);
             break;
 
           case 0xd4:            /* PEI ($nn) */
-            PEI(LOAD_DIRECT_PAGE_FUNC, p1);
+            PEI(LOAD_DIRECT_PAGE_FUNC);
             break;
 
           case 0xd5:            /* CMP $nn,X */
-            CMP(LOAD_DIRECT_PAGE_X_FUNC, p1, SIZE_2);
+            CMP(LOAD_DIRECT_PAGE_X_FUNC);
             break;
 
           case 0xd6:            /* DEC $nn,X */
-            DEC(p1, SIZE_2, LOAD_DIRECT_PAGE_X_FUNC, STORE_DIRECT_PAGE_X_RRW);
+            DEC(LOAD_DIRECT_PAGE_X_FUNC, STORE_DIRECT_PAGE_X_RRW);
             break;
 
           case 0xd7:            /* CMP [$nn],Y */
-            CMP(LOAD_INDIRECT_LONG_Y_FUNC, p1, SIZE_2);
+            CMP(LOAD_INDIRECT_LONG_Y_FUNC);
             break;
 
           case 0xd8:            /* CLD */
@@ -3104,7 +3064,7 @@ trap_skipped:
             break;
 
           case 0xd9:            /* CMP $nnnn,Y */
-            CMP(LOAD_ABS_Y_FUNC, p2, SIZE_3);
+            CMP(LOAD_ABS_Y_FUNC);
             break;
 
           case 0xda:            /* PHX */
@@ -3120,47 +3080,47 @@ trap_skipped:
             break;
 
           case 0xdd:            /* CMP $nnnn,X */
-            CMP(LOAD_ABS_X_FUNC, p2, SIZE_3);
+            CMP(LOAD_ABS_X_FUNC);
             break;
 
           case 0xde:            /* DEC $nnnn,X */
-            DEC(p2, SIZE_3, LOAD_ABS_X_FUNC, STORE_ABS_X_RRW);
+            DEC(LOAD_ABS_X_FUNC, STORE_ABS_X_RRW);
             break;
 
           case 0xdf:            /* CMP $nnnnnn,X */
-            CMP(LOAD_ABS_LONG_X_FUNC, p3, SIZE_4);
+            CMP(LOAD_ABS_LONG_X_FUNC);
             break;
 
           case 0xe0:            /* CPX #$nn */
-            CPX(LOAD_IMMEDIATE_FUNC, p2, SIZE_2);
+            CPX(LOAD_IMMEDIATE_FUNC);
             break;
 
           case 0xe1:            /* SBC ($nn,X) */
-            SBC(LOAD_INDIRECT_X_FUNC, p1, SIZE_2);
+            SBC(LOAD_INDIRECT_X_FUNC);
             break;
 
           case 0xe2:            /* SEP #$nn */
-            SEP(p1);
+            SEP(LOAD_IMMEDIATE_FUNC);
             break;
 
           case 0xe3:            /* SBC $nn,S */
-            SBC(LOAD_STACK_REL_FUNC, p1, SIZE_2);
+            SBC(LOAD_STACK_REL_FUNC);
             break;
 
           case 0xe4:            /* CPX $nn */
-            CPX(LOAD_DIRECT_PAGE_FUNC, p1, SIZE_2);
+            CPX(LOAD_DIRECT_PAGE_FUNC);
             break;
 
           case 0xe5:            /* SBC $nn */
-            SBC(LOAD_DIRECT_PAGE_FUNC, p1, SIZE_2);
+            SBC(LOAD_DIRECT_PAGE_FUNC);
             break;
 
           case 0xe6:            /* INC $nn */
-            INC(p1, SIZE_2, LOAD_DIRECT_PAGE_FUNC, STORE_DIRECT_PAGE_RRW);
+            INC(LOAD_DIRECT_PAGE_FUNC, STORE_DIRECT_PAGE_RRW);
             break;
 
           case 0xe7:            /* SBC [$nn] */
-            SBC(LOAD_INDIRECT_LONG_FUNC, p1, SIZE_2);
+            SBC(LOAD_INDIRECT_LONG_FUNC);
             break;
 
           case 0xe8:            /* INX */
@@ -3168,7 +3128,7 @@ trap_skipped:
             break;
 
           case 0xe9:            /* SBC #$nn */
-            SBC(LOAD_IMMEDIATE_FUNC, p2, SIZE_2);
+            SBC(LOAD_IMMEDIATE_FUNC);
             break;
 
           case 0xea:            /* NOP */
@@ -3180,51 +3140,51 @@ trap_skipped:
             break;
 
           case 0xec:            /* CPX $nnnn */
-            CPX(LOAD_ABS_FUNC, p2, SIZE_3);
+            CPX(LOAD_ABS_FUNC);
             break;
 
           case 0xed:            /* SBC $nnnn */
-            SBC(LOAD_ABS_FUNC, p2, SIZE_3);
+            SBC(LOAD_ABS_FUNC);
             break;
 
           case 0xee:            /* INC $nnnn */
-            INC(p2, SIZE_3, LOAD_ABS_FUNC, STORE_ABS_RRW);
+            INC(LOAD_ABS_FUNC, STORE_ABS_RRW);
             break;
 
           case 0xef:            /* SBC $nnnnnn */
-            SBC(LOAD_ABS_LONG_FUNC, p3, SIZE_4);
+            SBC(LOAD_ABS_LONG_FUNC);
             break;
 
           case 0xf0:            /* BEQ $nnnn */
-            BRANCH(LOCAL_ZERO(), p1);
+            BRANCH(LOCAL_ZERO());
             break;
 
           case 0xf1:            /* SBC ($nn),Y */
-            SBC(LOAD_INDIRECT_Y_FUNC, p1, SIZE_2);
+            SBC(LOAD_INDIRECT_Y_FUNC);
             break;
 
           case 0xf2:            /* SBC ($nn) */
-            SBC(LOAD_INDIRECT_FUNC, p1, SIZE_2);
+            SBC(LOAD_INDIRECT_FUNC);
             break;
 
           case 0xf3:            /* SBC ($nn,S),Y */
-            SBC(LOAD_STACK_REL_Y_FUNC, p1, SIZE_2);
+            SBC(LOAD_STACK_REL_Y_FUNC);
             break;
 
           case 0xf4:            /* PEA $nnnn */
-            PEA(p2);
+            PEA(LOAD_IMMEDIATE_FUNC);
             break;
 
           case 0xf5:            /* SBC $nn,X */
-            SBC(LOAD_DIRECT_PAGE_X_FUNC, p1, SIZE_2);
+            SBC(LOAD_DIRECT_PAGE_X_FUNC);
             break;
 
           case 0xf6:            /* INC $nn,X */
-            INC(p1, SIZE_2, LOAD_DIRECT_PAGE_X_FUNC, STORE_DIRECT_PAGE_X_RRW);
+            INC(LOAD_DIRECT_PAGE_X_FUNC, STORE_DIRECT_PAGE_X_RRW);
             break;
 
           case 0xf7:            /* SBC [$nn],Y */
-            SBC(LOAD_INDIRECT_LONG_Y_FUNC, p1, SIZE_2);
+            SBC(LOAD_INDIRECT_LONG_Y_FUNC);
             break;
 
           case 0xf8:            /* SED */
@@ -3232,7 +3192,7 @@ trap_skipped:
             break;
 
           case 0xf9:            /* SBC $nnnn,Y */
-            SBC(LOAD_ABS_Y_FUNC, p2, SIZE_3);
+            SBC(LOAD_ABS_Y_FUNC);
             break;
 
           case 0xfa:            /* PLX */
@@ -3248,15 +3208,15 @@ trap_skipped:
             break;
 
           case 0xfd:            /* SBC $nnnn,X */
-            SBC(LOAD_ABS_X_FUNC, p2, SIZE_3);
+            SBC(LOAD_ABS_X_FUNC);
             break;
 
           case 0xfe:            /* INC $nnnn,X */
-            INC(p2, SIZE_3, LOAD_ABS_X_FUNC, STORE_ABS_X_RRW);
+            INC(LOAD_ABS_X_FUNC, STORE_ABS_X_RRW);
             break;
 
           case 0xff:            /* SBC $nnnnnn,X */
-            SBC(LOAD_ABS_LONG_X_FUNC, p3, SIZE_4);
+            SBC(LOAD_ABS_LONG_X_FUNC);
             break;
         }
     }
