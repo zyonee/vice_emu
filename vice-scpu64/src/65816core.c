@@ -528,10 +528,19 @@
       DPR_DELAY                                        \
       FETCH_PARAM(reg_pc);                             \
       INC_PC(SIZE_1);                                  \
-      ea = p1 + reg_dpr + reg_r;                       \
-      var = LOAD_BANK0(ea);                            \
-      if (!bits8) {                                    \
-          var |= LOAD_BANK0(ea + 1) << 8;              \
+      if (reg_emul) {                                  \
+          if (reg_dpr & 0xff) {                        \
+              ea = p1 + reg_r + reg_dpr;               \
+          } else {                                     \
+              ea = ((p1 + reg_r) & 0xff) + reg_dpr;    \
+          }                                            \
+          var = LOAD_BANK0(ea);                        \
+      } else {                                         \
+          ea = p1 + reg_dpr + reg_r;                   \
+          var = LOAD_BANK0(ea);                        \
+          if (!bits8) {                                \
+              var |= LOAD_BANK0(ea + 1) << 8;          \
+          }                                            \
       }                                                \
   } while (0)
 
