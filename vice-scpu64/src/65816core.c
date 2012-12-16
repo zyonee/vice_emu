@@ -1390,8 +1390,8 @@
       ea = (p2 + reg_x) & 0xffff;                           \
       INC_PC(SIZE_2);                                       \
       FETCH_PARAM(reg_pc);                                  \
-      reg_pc = LOAD_PBR(ea);                                \
-      reg_pc |= LOAD_PBR((ea + 1) & 0xffff) << 8;           \
+      reg_pc = FETCH_PARAM(ea);                             \
+      reg_pc |= FETCH_PARAM((ea + 1) & 0xffff) << 8;        \
       JUMP(reg_pc);                                         \
   } while (0)
 
@@ -1421,8 +1421,8 @@
       PUSH(reg_pc);                                           \
       ea = (p1 + (FETCH_PARAM(reg_pc) << 8) + reg_x) & 0xffff;\
       FETCH_PARAM(reg_pc);                                    \
-      reg_pc = LOAD_PBR(ea);                                  \
-      reg_pc |= LOAD_PBR((ea + 1) & 0xffff) << 8;             \
+      reg_pc = FETCH_PARAM(ea);                               \
+      reg_pc |= FETCH_PARAM((ea + 1) & 0xffff) << 8;          \
       JUMP(reg_pc);                                           \
   } while (0)
 
