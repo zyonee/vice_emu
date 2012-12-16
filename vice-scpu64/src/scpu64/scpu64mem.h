@@ -88,6 +88,8 @@ extern int scpu64_interrupt_reroute(void);
 
 extern void mem_pla_config_changed(void);
 extern void mem_set_tape_sense(int sense);
+extern BYTE mem_pport_dir;
+extern BYTE mem_pport_data;
 
 extern BYTE mem_chargen_rom[];
 extern BYTE mem_simm_ram[];

@@ -40,7 +40,6 @@
 #include "scpu64mem.h"
 #include "scpu64meminit.h"
 #include "scpu64memlimit.h"
-#include "c64pla.h"
 #include "c64cartmem.h"
 #include "cartio.h"
 #include "cartridge.h"
@@ -112,9 +111,6 @@ static int vbank;
 /* Current memory configuration.  */
 static int mem_config;
 
-/* Tape sense status: 1 = some button pressed, 0 = no buttons pressed.  */
-static int tape_sense = 0;
-
 /* Current watchpoint state. 1 = watchpoints active, 0 = no watchpoints */
 static int watchpoints_active;
 
@@ -128,6 +124,8 @@ static int reg_dosext;      /* dos extension enable */
 static int reg_optim;       /* optimization mode */
 static int reg_bootmap = 1; /* boot map */
 static int reg_simm;        /* simm configuration */
+BYTE mem_pport_dir;         /* processor "direction" */
+BYTE mem_pport_data;        /* processor "port" */
 
 /* ------------------------------------------------------------------------- */
 
@@ -163,9 +161,7 @@ void scpu64_mem_init(void)
 
 void mem_pla_config_changed(void)
 {
-    mem_config = ((pport.data & 0x7) | (export.exrom << 3) | (export.game << 4) | (reg_bootmap << 5));
-
-    c64pla_config_changed(tape_sense, 1, 0x17);
+    mem_config = ((mem_pport_data & 7) | (export.exrom << 3) | (export.game << 4) | (reg_bootmap << 5));
 
     if (watchpoints_active) {
         _mem_read_tab_ptr = mem_read_tab_watch;
@@ -183,21 +179,17 @@ void mem_pla_config_changed(void)
 
 BYTE zero_read(WORD addr)
 {
-    addr &= 0xff;
-
     switch ((BYTE)addr) {
         case 0:
-            return pport.dir_read;
+            return mem_pport_dir;
         case 1:
-            return pport.data_read;
+            return mem_pport_data;
     }
 
     return mem_ram[addr & 0xff];
 }
 void zero_store(WORD addr, BYTE value)
 {
-    addr &= 0xff;
-
     mem_sram[addr] = value;
 
     switch ((BYTE)addr) {
@@ -208,7 +200,7 @@ void zero_store(WORD addr, BYTE value)
                 mem_ram[0] = vicii_read_phi1_lowlevel();
                 machine_handle_pending_alarms(maincpu_rmw_flag + 1);
             }
-            pport.dir = value;
+            mem_pport_dir = value;
             break;
         case 1:
             if (vbank == 0) {
@@ -218,9 +210,11 @@ void zero_store(WORD addr, BYTE value)
                 machine_handle_pending_alarms(maincpu_rmw_flag + 1);
             }
 
-            if (pport.data != value) {
-                pport.data = value;
+            if ((mem_pport_data ^ value) & 7) {
+                mem_pport_data = value;
                 mem_pla_config_changed();
+            } else {
+                mem_pport_data = value;
             }
             break;
         default:
@@ -312,10 +306,14 @@ void mem_store2(DWORD addr, BYTE value)
     case 0xfe0000:
         return;
     case 0x000000:
-        if (addr < SCPU64_RAM_SIZE) {
-            mem_ram[addr] = value;
+        if (addr & 0xfffffe) {
+            if (addr < SCPU64_RAM_SIZE) {
+                mem_ram[addr] = value;
+            }
+            mem_sram[addr] = value;
+        } else {
+            zero_store(addr, value);
         }
-        mem_sram[addr] = value;
         return;
     default:
         if (SCPU64_SIMM_SIZE > 0 && addr < SCPU64_SIMM_SIZE) {
@@ -338,7 +336,10 @@ BYTE mem_read2(DWORD addr)
     case 0xfe0000:
         return scpu64memrom_scpu64_rom[addr & (SCPU64_SCPU64_ROM_SIZE-1) & 0x7ffff];
     case 0x000000:
-        return mem_sram[addr];
+        if (addr & 0xfffffe) {
+            return mem_sram[addr];
+        }
+        return zero_read(addr);
     default:
         if (SCPU64_SIMM_SIZE > 0 && addr < SCPU64_SIMM_SIZE) {
             return mem_simm_ram[addr];
@@ -879,7 +880,8 @@ void mem_initialize_memory(void)
 
     vicii_set_chargen_addr_options(0x7000, 0x1000);
 
-    c64pla_pport_reset();
+    mem_pport_dir = 0;
+    mem_pport_data = 7;
     export.exrom = 0;
     export.game = 0;
     reg_bootmap = 1;
@@ -948,11 +950,9 @@ void mem_set_vbank(int new_vbank)
     vicii_set_vbank(new_vbank);
 }
 
-/* Set the tape sense status.  */
+/* Set the tape nonsense status.  */
 void mem_set_tape_sense(int sense)
 {
-    tape_sense = sense;
-    mem_pla_config_changed();
 }
 
 /* ------------------------------------------------------------------------- */

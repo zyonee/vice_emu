@@ -35,7 +35,6 @@
 #include "c64cart.h"
 #include "scpu64mem.h"
 #include "scpu64memsnapshot.h"
-#include "c64pla.h"
 #include "scpu64rom.h"
 #include "cartridge.h"
 #include "log.h"
@@ -161,16 +160,13 @@ int scpu64_snapshot_write_module(snapshot_t *s, int save_roms)
         return -1;
     }
 
-    if (SMW_B(m, pport.data) < 0
-        || SMW_B(m, pport.dir) < 0
+    if (SMW_B(m, mem_pport_data) < 0
+        || SMW_B(m, mem_pport_dir) < 0
         || SMW_B(m, export.exrom) < 0
         || SMW_B(m, export.game) < 0
         || SMW_BA(m, mem_ram, SCPU64_RAM_SIZE) < 0
         || SMW_BA(m, mem_sram, SCPU64_SRAM_SIZE) < 0
-        || SMW_BA(m, mem_simm_ram, SCPU64_SIMM_SIZE) < 0
-        || SMW_B(m, pport.data_out) < 0
-        || SMW_B(m, pport.data_read) < 0
-        || SMW_B(m, pport.dir_read) < 0) {
+        || SMW_BA(m, mem_simm_ram, SCPU64_SIMM_SIZE) < 0) {
         goto fail;
     }
 
@@ -213,16 +209,13 @@ int scpu64_snapshot_read_module(snapshot_t *s)
         goto fail;
     }
 
-    if (SMR_B(m, &pport.data) < 0
-        || SMR_B(m, &pport.dir) < 0
+    if (SMR_B(m, &mem_pport_data) < 0
+        || SMR_B(m, &mem_pport_dir) < 0
         || SMR_B(m, &export.exrom) < 0
         || SMR_B(m, &export.game) < 0
         || SMR_BA(m, mem_ram, SCPU64_RAM_SIZE) < 0
         || SMR_BA(m, mem_sram, SCPU64_SRAM_SIZE) < 0
-        || SMR_BA(m, mem_simm_ram, SCPU64_SIMM_SIZE) < 0
-        || SMR_B(m, &pport.data_out) < 0
-        || SMR_B(m, &pport.data_read) < 0
-        || SMR_B(m, &pport.dir_read) < 0) {
+        || SMR_BA(m, mem_simm_ram, SCPU64_SIMM_SIZE) < 0) {
 
         goto fail;
     }
