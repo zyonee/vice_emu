@@ -114,6 +114,27 @@
 #define EMULATION_MODE_CHANGED
 #endif
 
+#ifndef WAI_65816 
+#define WAI_65816() INC_PC(SIZE_1)
+#endif
+
+#ifndef STP_65816 
+#define STP_65816() INC_PC(SIZE_1)
+#endif
+
+#ifndef COP_65816 
+#define COP_65816(value) INC_PC(SIZE_1)
+#endif
+
+#ifndef CYCLE_EXACT_ALARM
+#define PROCESS_ALARMS                                             \
+    while (CLK >= alarm_context_next_pending_clk(ALARM_CONTEXT)) { \
+        alarm_context_dispatch(ALARM_CONTEXT, CLK);                \
+        CPU_DELAY_CLK                                              \
+    }
+#else
+#define PROCESS_ALARMS
+#endif
 /* ------------------------------------------------------------------------- */
 /* Hook for interrupt address manipulation.  */
 
@@ -316,10 +337,12 @@
 #define TRACE_IRQ() \
     do { if (TRACEFLG) debug_irq(CPU_INT_STATUS, CLK); } while (0)
 #define TRACE_BRK() do { if (TRACEFLG) debug_text("*** BRK"); } while (0)
+#define TRACE_COP() do { if (TRACEFLG) debug_text("*** COP"); } while (0)
 #else
 #define TRACE_NMI()
 #define TRACE_IRQ()
 #define TRACE_BRK()
+#define TRACE_COP()
 #endif
 
 /* Perform the interrupts in `int_kind'.  If we have both NMI and IRQ,
@@ -1419,6 +1442,31 @@
       }                                        \
   } while (0)
 
+#define COP()                          \
+  do {                                 \
+      EXPORT_REGISTERS();              \
+      TRACE_COP();                     \
+      INC_PC(SIZE_2);                  \
+      if (reg_emul) {                  \
+          LOCAL_SET_BREAK(1);          \
+          PUSH(reg_pc >> 8);           \
+          PUSH(reg_pc);                \
+          PUSH(LOCAL_STATUS());        \
+          LOAD_INT_ADDR(0xfff4);       \
+          reg_dbr = 0;                 \
+      } else {                         \
+          PUSH(reg_pbr);               \
+          PUSH(reg_pc >> 8);           \
+          PUSH(reg_pc);                \
+          PUSH(LOCAL_65816_STATUS());  \
+          LOAD_INT_ADDR(0xffe4);       \
+      }                                \
+      LOCAL_SET_DECIMAL(0);            \
+      LOCAL_SET_INTERRUPT(1);          \
+      reg_pbr = 0;                     \
+      JUMP(reg_pc);                    \
+  } while (0)
+
 #define CPX(load_func) CMPI(load_func, reg_x)
 
 #define CPY(load_func) CMPI(load_func, reg_y)
@@ -1959,12 +2007,6 @@
 #define STA(store_func) \
       store_func(reg_c, LOCAL_65816_M());
 
-#define STP()                 \
-  do {                        \
-      CLK_ADD(CLK, CYCLES_1); \
-      STP_65816();            \
-  } while (0)
-
 #define STX(store_func) \
       store_func(reg_x, LOCAL_65816_X())
 
@@ -2097,11 +2139,55 @@
       INC_PC(SIZE_1);                       \
   } while (0)
 
-#define WAI()                 \
-  do {                        \
-      CLK_ADD(CLK, CYCLES_1); \
-      WAI_65816();            \
+#define WAI()                                                                              \
+  do {                                                                                     \
+      unsigned int waiting = 1;                                                            \
+      INC_PC(SIZE_1);                                                                      \
+      FETCH_PARAM(reg_pc);                                                                 \
+      do {                                                                                 \
+          CPU_DELAY_CLK                                                                    \
+                                                                                           \
+          PROCESS_ALARMS                                                                   \
+                                                                                           \
+          {                                                                                \
+              enum cpu_int pending_interrupt;                                              \
+                                                                                           \
+              if (!(CPU_INT_STATUS->global_pending_int & IK_IRQ)                           \
+                      && (CPU_INT_STATUS->global_pending_int & IK_IRQPEND)                 \
+                      && CPU_INT_STATUS->irq_pending_clk <= CLK) {                         \
+                  interrupt_ack_irq(CPU_INT_STATUS);                                       \
+              }                                                                            \
+                                                                                           \
+              pending_interrupt = CPU_INT_STATUS->global_pending_int;                      \
+              if (pending_interrupt != IK_NONE) {                                          \
+                  if (pending_interrupt & IK_RESET) {                                      \
+                      waiting = 0;                                                         \
+                  }                                                                        \
+                  if ((pending_interrupt & IK_NMI)                                         \
+                          && interrupt_check_nmi_delay(CPU_INT_STATUS, CLK)) {             \
+                      waiting = 0;                                                         \
+                  }                                                                        \
+                  if ((pending_interrupt & (IK_IRQ | IK_IRQPEND))                          \
+                          && interrupt_check_irq_delay(CPU_INT_STATUS, CLK)) {             \
+                      waiting = 0;                                                         \
+                  }                                                                        \
+                  DO_INTERRUPT(pending_interrupt);                                         \
+                  if (!(CPU_INT_STATUS->global_pending_int & IK_IRQ)) {                    \
+                      CPU_INT_STATUS->global_pending_int &= ~IK_IRQPEND;                   \
+                  }                                                                        \
+                  CPU_DELAY_CLK                                                            \
+                                                                                           \
+                  PROCESS_ALARMS                                                           \
+              }                                                                            \
+          }                                                                                \
+          if (waiting) {                                                                   \
+              maincpu_clk = alarm_context_next_pending_clk(ALARM_CONTEXT);                 \
+          }                                                                                \
+          SET_LAST_ADDR((reg_pc - 1) & 0xffff);                                            \
+          SET_LAST_OPCODE(p0);                                                             \
+      } while (waiting);                                                                   \
   } while (0)
+
 
 #define XBA()                 \
   do {                        \
@@ -2258,12 +2344,7 @@
 {
     CPU_DELAY_CLK
 
-#ifndef CYCLE_EXACT_ALARM
-    while (CLK >= alarm_context_next_pending_clk(ALARM_CONTEXT)) {
-        alarm_context_dispatch(ALARM_CONTEXT, CLK);
-        CPU_DELAY_CLK
-    }
-#endif
+    PROCESS_ALARMS
 
     {
         enum cpu_int pending_interrupt;
@@ -2277,16 +2358,12 @@
         pending_interrupt = CPU_INT_STATUS->global_pending_int;
         if (pending_interrupt != IK_NONE) {
             DO_INTERRUPT(pending_interrupt);
-            if (!(CPU_INT_STATUS->global_pending_int & IK_IRQ)
-                && CPU_INT_STATUS->global_pending_int & IK_IRQPEND)
+            if (!(CPU_INT_STATUS->global_pending_int & IK_IRQ)) {
                     CPU_INT_STATUS->global_pending_int &= ~IK_IRQPEND;
-            CPU_DELAY_CLK
-#ifndef CYCLE_EXACT_ALARM
-            while (CLK >= alarm_context_next_pending_clk(ALARM_CONTEXT)) {
-                alarm_context_dispatch(ALARM_CONTEXT, CLK);
-                CPU_DELAY_CLK
             }
-#endif
+            CPU_DELAY_CLK
+
+            PROCESS_ALARMS
         }
     }
 
@@ -3146,7 +3223,7 @@ trap_skipped:
             break;
 
           case 0xcb:            /* WAI */
-            WAI();
+            WAI_65816();
             break;
 
           case 0xcc:            /* CPY $nnnn */
@@ -3210,7 +3287,7 @@ trap_skipped:
             break;
 
           case 0xdb:            /* STP (WDC65C02) */
-            STP();
+            STP_65816();
             break;
 
           case 0xdc:            /* JMP [$nnnn] */

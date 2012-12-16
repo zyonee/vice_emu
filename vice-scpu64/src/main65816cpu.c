@@ -371,10 +371,32 @@ void maincpu_mainloop(void)
 #define ROM_TRAP_HANDLER() \
    traps_handler()
 
-/* FIXME: define the following missing functions. */
-#define STP_65816()
-#define WAI_65816() INC_PC(SIZE_1);
-#define COP_65816(x)
+#define JAM()                                                         \
+    do {                                                              \
+        unsigned int tmp;                                             \
+                                                                      \
+        EXPORT_REGISTERS();                                           \
+        tmp = machine_jam("   " CPU_STR ": JAM at $%02x%04X   ", reg_pbr, reg_pc); \
+        switch (tmp) {                                                \
+            case JAM_RESET:                                           \
+                DO_INTERRUPT(IK_RESET);                               \
+                break;                                                \
+            case JAM_HARD_RESET:                                      \
+                mem_powerup();                                        \
+                DO_INTERRUPT(IK_RESET);                               \
+                break;                                                \
+            case JAM_MONITOR:                                         \
+                monitor_startup(e_comp_space);                        \
+                IMPORT_REGISTERS();                                   \
+                break;                                                \
+            default:                                                  \
+                CLK_ADD(CLK, CYCLES_1);                               \
+        }                                                             \
+    } while (0)
+
+#define STP_65816() JAM()
+#define WAI_65816() WAI()
+#define COP_65816(value) COP()
 
 #define CALLER e_comp_space
 
