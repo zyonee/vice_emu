@@ -1409,10 +1409,12 @@
       if (reg_c == 0) {                         \
           INC_PC(SIZE_3);                       \
       }                                         \
-      tmp = LOAD_LONG((src << 16) | reg_x);     \
-      STORE_LONG((dst << 16) | reg_y, tmp);     \
-      LOAD_LONG((dst << 16) | reg_y);           \
-      LOAD_LONG((dst << 16) | reg_y);           \
+      reg_dbr = (src);                          \
+      tmp = LOAD_DBR(reg_x);                    \
+      reg_dbr = (dst);                          \
+      STORE_DBR(reg_y, tmp);                    \
+      LOAD_DBR(reg_y);                          \
+      LOAD_DBR(reg_y);                          \
       reg_x logic;                              \
       reg_y logic;                              \
       if (LOCAL_65816_X()) {                    \
