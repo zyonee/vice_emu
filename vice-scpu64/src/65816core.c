@@ -504,7 +504,7 @@
         INC_PC(SIZE_3);                                \
     }
 
-/* $ff */
+/* $ff wrapping */
 #define LOAD_DIRECT_PAGE_FUNC(var, bits8)              \
   do {                                                 \
       unsigned int ea;                                 \
@@ -519,7 +519,7 @@
       }                                                \
   } while (0)
 
-/* $ff,r */
+/* $ff,r wrapping */
 #define LOAD_DIRECT_PAGE_R_FUNC(var, bits8, reg_r)     \
   do {                                                 \
       unsigned int ea;                                 \
@@ -552,7 +552,7 @@
 #define LOAD_DIRECT_PAGE_Y_FUNC(var, bits8) \
     LOAD_DIRECT_PAGE_R_FUNC(var, bits8, reg_y)
 
-/* ($ff) */
+/* ($ff) no wrapping */
 #define LOAD_INDIRECT_FUNC(var, bits8)               \
   do {                                               \
       unsigned int ea, ea2;                          \
@@ -563,13 +563,14 @@
       INC_PC(SIZE_1);                                \
       ea = LOAD_BANK0(ea2);                          \
       ea |= LOAD_BANK0(ea2 + 1) << 8;                \
-      var = LOAD_DBR(ea);                            \
+      ea |= reg_dbr << 16;                           \
+      var = LOAD_LONG(ea);                           \
       if (!bits8) {                                  \
-          var |= LOAD_DBR((ea + 1) & 0xffff) << 8;   \
+          var |= LOAD_LONG((ea + 1) & 0xffffff) << 8;\
       }                                              \
   } while (0)
       
-/* ($ff,x) */
+/* ($ff,x) no wrapping */
 #define LOAD_INDIRECT_X_FUNC(var, bits8)             \
   do {                                               \
       unsigned int ea, ea2;                          \
@@ -578,16 +579,25 @@
       DPR_DELAY                                      \
       FETCH_PARAM(reg_pc);                           \
       INC_PC(SIZE_1);                                \
-      ea2 = p1 + reg_dpr + reg_x;                    \
+      if (reg_emul) {                                \
+          if (reg_dpr & 0xff) {                      \
+              ea2 = p1 + reg_x + reg_dpr;            \
+          } else {                                   \
+              ea2 = ((p1 + reg_x) & 0xff) + reg_dpr; \
+          }                                          \
+      } else {                                       \
+          ea2 = p1 + reg_dpr + reg_x;                \
+      }                                              \
       ea = LOAD_BANK0(ea2);                          \
       ea |= LOAD_BANK0(ea2 + 1) << 8;                \
-      var = LOAD_DBR(ea);                            \
+      ea |= reg_dbr << 16;                           \
+      var = LOAD_LONG(ea);                           \
       if (!bits8) {                                  \
-          var |= LOAD_DBR((ea + 1) & 0xffff) << 8;   \
+          var |= LOAD_LONG((ea + 1) & 0xffffff) << 8;\
       }                                              \
   } while (0)
 
-/* ($ff),y */
+/* ($ff),y no wrapping */
 #define LOAD_INDIRECT_Y_FUNC(var, bits8)                         \
   do {                                                           \
       unsigned int ea, ea2;                                      \
@@ -601,14 +611,14 @@
       if (((reg_y + ea) ^ ea) & ~0xff) {                         \
           LOAD_DBR(((ea + reg_y) & 0xff) | (ea & 0xff00));       \
       }                                                          \
-      ea = (ea + reg_y) & 0xffff;                                \
-      var = LOAD_DBR(ea);                                        \
+      ea = (ea + reg_y + (reg_dbr << 16)) & 0xffffff;            \
+      var = LOAD_LONG(ea);                                       \
       if (!bits8) {                                              \
-          var |= LOAD_DBR((ea + 1) & 0xffff) << 8;               \
+          var |= LOAD_LONG((ea + 1) & 0xffffff) << 8;            \
       }                                                          \
   } while (0)
 
-/* [$ff] */
+/* [$ff] no wrapping */
 #define LOAD_INDIRECT_LONG_FUNC(var, bits8)                \
   do {                                                     \
       unsigned int ea, ea2;                                \
@@ -619,14 +629,14 @@
       INC_PC(SIZE_1);                                      \
       ea = LOAD_BANK0(ea2);                                \
       ea |= LOAD_BANK0(ea2 + 1) << 8;                      \
-      ea2 = LOAD_BANK0(ea2 + 2) << 16;                     \
-      var = LOAD_LONG(ea + ea2);                           \
+      ea |= LOAD_BANK0(ea2 + 2) << 16;                     \
+      var = LOAD_LONG(ea);                                 \
       if (!bits8) {                                        \
-         var |= LOAD_LONG(((ea + 1) & 0xffff) + ea2) << 8; \
+         var |= LOAD_LONG((ea + 1) & 0xffffff) << 8;       \
       }                                                    \
   } while (0)
 
-/* [$ff],y */
+/* [$ff],y no wrapping */
 #define LOAD_INDIRECT_LONG_Y_FUNC(var, bits8)               \
   do {                                                      \
       unsigned int ea, ea2;                                 \
@@ -637,15 +647,15 @@
       INC_PC(SIZE_1);                                       \
       ea = LOAD_BANK0(ea2);                                 \
       ea |= LOAD_BANK0(ea2 + 1) << 8;                       \
-      ea2 = LOAD_BANK0(ea2 + 2) << 16;                      \
-      ea = (ea + reg_y) & 0xffff;                           \
-      var = LOAD_LONG(ea + ea2);                            \
+      ea |= LOAD_BANK0(ea2 + 2) << 16;                      \
+      ea = (ea + reg_y) & 0xffffff;                         \
+      var = LOAD_LONG(ea);                                  \
       if (!bits8) {                                         \
-          var |= LOAD_LONG(((ea + 1) & 0xffff) + ea2) << 8; \
+          var |= LOAD_LONG((ea + 1) & 0xffffff) << 8;       \
       }                                                     \
   } while (0)
 
-/* $ffff */
+/* $ffff no wrapping */
 #define LOAD_ABS_FUNC(var, bits8)                      \
   do {                                                 \
       unsigned int ea;                                 \
@@ -658,7 +668,7 @@
       }                                                \
   } while (0)
 
-/* $ffff */
+/* $ffff wrapping */
 #define LOAD_ABS2_FUNC(var, bits8)                     \
   do {                                                 \
       unsigned int ea;                                 \
@@ -671,7 +681,7 @@
       }                                                \
   } while (0)
 
-/* $ffff,r */
+/* $ffff,r no wrapping */
 #define LOAD_ABS_R_FUNC(var, bits8, reg_r)                    \
   do {                                                        \
       unsigned int ea;                                        \
@@ -696,7 +706,7 @@
 #define LOAD_ABS_Y_FUNC(var, bits8) \
     LOAD_ABS_R_FUNC(var, bits8, reg_y)        
 
-/* $ffff,r */
+/* $ffff,r wrapping */
 #define LOAD_ABS2_R_FUNC(var, bits8, reg_r)                   \
   do {                                                        \
       unsigned int ea;                                        \
@@ -713,13 +723,15 @@
       }                                                       \
   } while (0)
 
+/* $ffff,x */
 #define LOAD_ABS2_X_FUNC(var, bits8) \
     LOAD_ABS2_R_FUNC(var, bits8, reg_x)        
 
+/* $ffff,y */
 #define LOAD_ABS2_Y_FUNC(var, bits8) \
     LOAD_ABS2_R_FUNC(var, bits8, reg_y)        
 
-/* $ffffff */
+/* $ffffff no wrapping */
 #define LOAD_ABS_LONG_FUNC(var, bits8)                \
   do {                                                \
       unsigned int ea;                                \
@@ -732,7 +744,7 @@
       }                                               \
   } while (0)
 
-/* $ffffff,x */
+/* $ffffff,x no wrapping */
 #define LOAD_ABS_LONG_X_FUNC(var, bits8)              \
   do {                                                \
       unsigned int ea;                                \
@@ -745,7 +757,7 @@
       }                                               \
   } while (0)
 
-/* $ff,s */
+/* $ff,s no wrapping */
 #define LOAD_STACK_REL_FUNC(var, bits8)                \
   do {                                                 \
       unsigned int ea;                                 \
@@ -754,13 +766,13 @@
       FETCH_PARAM(reg_pc);                             \
       ea = p1 + reg_sp;                                \
       INC_PC(SIZE_1);                                  \
-      var = LOAD_BANK0(ea);                            \
+      var = LOAD_LONG(ea);                             \
       if (!bits8) {                                    \
-          var |= LOAD_BANK0(ea + 1) << 8;              \
+          var |= LOAD_LONG(ea + 1) << 8;               \
       }                                                \
   } while (0)
 
-/* ($ff,s),y */
+/* ($ff,s),y no wrapping */
 #define LOAD_STACK_REL_Y_FUNC(var, bits8)                            \
   do {                                                               \
       unsigned int ea, ea2;                                          \
@@ -772,10 +784,10 @@
       ea = LOAD_BANK0(ea2);                                          \
       ea |= LOAD_BANK0(ea2 + 1) << 8;                                \
       LOAD_BANK0(ea2 + 1);                                           \
-      ea = (ea + reg_y) & 0xffff;                                    \
-      var = LOAD_DBR(ea);                                            \
+      ea = (ea + reg_y + (reg_dbr << 16)) & 0xffffff;                \
+      var = LOAD_LONG(ea);                                           \
       if (!bits8) {                                                  \
-          var |= LOAD_DBR((ea + 1) & 0xffff) << 8;                   \
+          var |= LOAD_LONG((ea + 1) & 0xffffff) << 8;                \
       }                                                              \
   } while (0)
 
@@ -784,6 +796,14 @@
 
 #define STORE_BANK0(addr, value) \
     STORE_LONG((addr) & 0xffff, value); 
+
+#define STORE_LONG_WORD(addr, value, bits8)            \
+  do {                                                 \
+      STORE_LONG(ea, value);                           \
+      if (!bits8) {                                    \
+          STORE_LONG((ea + 1) & 0xffffff, value >> 8); \
+      }                                                \
+  } while (0)
 
 /* s */
 #define STORE_STACK(value, bits8)             \
@@ -808,7 +828,7 @@
       }                                       \
   } while (0)
 
-/* $ff */
+/* $ff wrapping */
 #define STORE_DIRECT_PAGE(value, bits8)       \
   do {                                        \
       unsigned int ea;                        \
@@ -823,7 +843,7 @@
       }                                       \
   } while (0)
 
-/* $ff */
+/* $ff wrapping */
 #define STORE_DIRECT_PAGE_RRW(value, bits8)  \
   do {                                       \
       unsigned int ea;                       \
@@ -840,7 +860,7 @@
       }                                      \
   } while (0)
 
-/* $ff,r */
+/* $ff,r wrapping */
 #define STORE_DIRECT_PAGE_R(value, bits8, reg_r)       \
   do {                                                 \
       unsigned int ea;                                 \
@@ -849,7 +869,15 @@
       DPR_DELAY                                        \
       FETCH_PARAM(reg_pc);                             \
       INC_PC(SIZE_1);                                  \
-      ea = p1 + reg_dpr + reg_r;                       \
+      if (reg_emul) {                                  \
+          if (reg_dpr & 0xff) {                        \
+              ea = p1 + reg_r + reg_dpr;               \
+          } else {                                     \
+              ea = ((p1 + reg_r) & 0xff) + reg_dpr;    \
+          }                                            \
+      } else {                                         \
+          ea = p1 + reg_dpr + reg_r;                   \
+      }                                                \
       STORE_BANK0(ea, value);                          \
       if (!bits8) {                                    \
           STORE_BANK0(ea + 1, value >> 8);             \
@@ -862,7 +890,7 @@
 /* $ff,y */
 #define STORE_DIRECT_PAGE_Y(value, bits8) STORE_DIRECT_PAGE_R(value, bits8, reg_y)
 
-/* $ff,x */
+/* $ff,x wrapping */
 #define STORE_DIRECT_PAGE_X_RRW(value, bits8)       \
   do {                                              \
       unsigned int ea;                              \
@@ -889,7 +917,7 @@
       }                                             \
   } while (0)
 
-/* ($ff) */
+/* ($ff) no wrapping */
 #define STORE_INDIRECT(value, bits8)                  \
   do {                                                \
       unsigned int ea, ea2;                           \
@@ -900,13 +928,11 @@
       INC_PC(SIZE_1);                                 \
       ea = LOAD_BANK0(ea2);                           \
       ea |= LOAD_BANK0(ea2 + 1) << 8;                 \
-      STORE_DBR(ea, value);                           \
-      if (!bits8) {                                   \
-          STORE_DBR((ea + 1) & 0xffff, value >> 8);   \
-      }                                               \
+      ea |= reg_dbr << 16;                            \
+      STORE_LONG_WORD(ea, value, bits8);              \
   } while (0)
 
-/* ($ff,x) */
+/* ($ff,x) no wrapping */
 #define STORE_INDIRECT_X(value, bits8)              \
   do {                                              \
       unsigned int ea, ea2;                         \
@@ -914,17 +940,23 @@
       INC_PC(SIZE_1);                               \
       DPR_DELAY                                     \
       FETCH_PARAM(reg_pc);                          \
-      ea2 = p1 + reg_dpr + reg_x;                   \
+      if (reg_emul) {                               \
+          if (reg_dpr & 0xff) {                     \
+              ea2 = p1 + reg_x + reg_dpr;           \
+          } else {                                  \
+              ea2 = ((p1 + reg_x) & 0xff) + reg_dpr;\
+          }                                         \
+      } else {                                      \
+          ea2 = p1 + reg_dpr + reg_x;               \
+      }                                             \
       INC_PC(SIZE_1);                               \
       ea = LOAD_BANK0(ea2);                         \
       ea |= LOAD_BANK0(ea2 + 1) << 8;               \
-      STORE_DBR(ea, value);                         \
-      if (!bits8) {                                 \
-          STORE_DBR((ea + 1) & 0xffff, value >> 8); \
-      }                                             \
+      ea |= reg_dbr << 16;                          \
+      STORE_LONG_WORD(ea, value, bits8);            \
   } while (0)
 
-/* ($ff),y */
+/* ($ff),y no wrapping */
 #define STORE_INDIRECT_Y(value, bits8)                      \
   do {                                                      \
       unsigned int ea, ea2;                                 \
@@ -936,14 +968,11 @@
       ea = LOAD_BANK0(ea2);                                 \
       ea |= LOAD_BANK0(ea2 + 1) << 8;                       \
       LOAD_DBR(((ea + reg_y) & 0xff) | (ea & 0xff00));      \
-      ea = (ea + reg_y) & 0xffff;                           \
-      STORE_DBR(ea, value);                                 \
-      if (!bits8) {                                         \
-          STORE_DBR((ea + 1) & 0xffff, value >> 8);         \
-      }                                                     \
+      ea = (ea + reg_y + (reg_dbr << 16)) & 0xffffff;       \
+      STORE_LONG_WORD(ea, value, bits8);                    \
   } while (0);
 
-/* [$ff] */
+/* [$ff] no wrapping */
 #define STORE_INDIRECT_LONG(value, bits8)                    \
   do {                                                       \
       unsigned int ea, ea2;                                  \
@@ -954,14 +983,11 @@
       INC_PC(SIZE_1);                                        \
       ea = LOAD_BANK0(ea2);                                  \
       ea |= LOAD_BANK0(ea2 + 1) << 8;                        \
-      ea2 = LOAD_BANK0(ea2 + 2) << 16;                       \
-      STORE_LONG(ea + ea2, value);                           \
-      if (!bits8) {                                          \
-          STORE_LONG(((ea + 1) & 0xffff) + ea2, value >> 8); \
-      }                                                      \
+      ea |= LOAD_BANK0(ea2 + 2) << 16;                       \
+      STORE_LONG_WORD(ea, value, bits8);                     \
   } while (0)
 
-/* [$ff],y */
+/* [$ff],y no wrapping */
 #define STORE_INDIRECT_LONG_Y(value, bits8)                  \
   do {                                                       \
       unsigned int ea, ea2;                                  \
@@ -972,28 +998,22 @@
       INC_PC(SIZE_1);                                        \
       ea = LOAD_BANK0(ea2);                                  \
       ea |= LOAD_BANK0(ea2 + 1) << 8;                        \
-      ea2 = LOAD_BANK0(ea2 + 2) << 16;                       \
-      ea = (ea + reg_y) & 0xffff;                            \
-      STORE_LONG(ea + ea2, value);                           \
-      if (!bits8) {                                          \
-          STORE_LONG(((ea + 1) & 0xffff) + ea2, value >> 8); \
-      }                                                      \
+      ea |= LOAD_BANK0(ea2 + 2) << 16;                       \
+      ea = (ea + reg_y) & 0xffffff;                          \
+      STORE_LONG_WORD(ea, value, bits8);                     \
   } while (0)
 
-/* $ffff */
+/* $ffff no wrapping */
 #define STORE_ABS(value, bits8)                         \
   do {                                                  \
       unsigned int ea;                                  \
                                                         \
       ea = p2 + (reg_dbr << 16);                        \
       INC_PC(SIZE_3);                                   \
-      STORE_LONG(ea, value);                            \
-      if (!bits8) {                                     \
-          STORE_LONG((ea + 1) & 0xffffff, value >> 8);  \
-      }                                                 \
+      STORE_LONG_WORD(ea, value, bits8);               \
   } while (0)
 
-/* $ffff */
+/* $ffff wrapping */
 #define STORE_ABS2(value, bits8)                        \
   do {                                                  \
       unsigned int ea;                                  \
@@ -1006,7 +1026,7 @@
       }                                                 \
   } while (0)
 
-/* $ffff */
+/* $ffff no wrapping */
 #define STORE_ABS_RRW(value, bits8)                   \
   do {                                                \
       unsigned int ea;                                \
@@ -1023,7 +1043,7 @@
       }                                               \
   } while (0)
 
-/* $ffff */
+/* $ffff wrapping */
 #define STORE_ABS2_RRW(value, bits8)                  \
   do {                                                \
       unsigned int ea;                                \
@@ -1040,7 +1060,7 @@
       }                                               \
   } while (0)
 
-/* $ffff,x */
+/* $ffff,x no wrapping */
 #define STORE_ABS_X_RRW(value, bits8)                         \
   do {                                                        \
       unsigned int ea;                                        \
@@ -1057,7 +1077,7 @@
       }                                                       \
   } while (0)
 
-/* $ffff,r */
+/* $ffff,r no wrapping */
 #define STORE_ABS_R(value, bits8, reg_r)               \
   do {                                                 \
       unsigned int ea;                                 \
@@ -1066,10 +1086,7 @@
       INC_PC(SIZE_3);                                  \
       LOAD_DBR(((ea + reg_r) & 0xff) | (ea & 0xff00)); \
       ea = (ea + reg_r + (reg_dbr << 16)) & 0xffffff;  \
-      STORE_LONG(ea, value);                           \
-      if (!bits8) {                                    \
-          STORE_LONG((ea + 1) & 0xffffff, value >> 8); \
-      }                                                \
+      STORE_LONG_WORD(ea, value, bits8);               \
   } while (0)
 
 /* $ffff,x */
@@ -1078,48 +1095,39 @@
 /* $ffff,y */
 #define STORE_ABS_Y(value, bits8) STORE_ABS_R(value, bits8, reg_y)
 
-/* $ffffff */
+/* $ffffff no wrapping */
 #define STORE_ABS_LONG(value, bits8)                                       \
   do {                                                                     \
       unsigned int ea;                                                     \
                                                                            \
       ea = p3;                                                             \
       INC_PC(SIZE_4);                                                      \
-      STORE_LONG(ea, value);                                               \
-      if (!bits8) {                                                        \
-          STORE_LONG((ea + 1) & 0xffffff, value >> 8);                     \
-      }                                                                    \
+      STORE_LONG_WORD(ea, value, bits8);                                   \
   } while (0)
 
-/* $ffffff,x */
+/* $ffffff,x no wrapping */
 #define STORE_ABS_LONG_X(value, bits8)                                     \
   do {                                                                     \
       unsigned int ea;                                                     \
                                                                            \
       ea = (p3 + reg_x) & 0xffffff;                                        \
       INC_PC(SIZE_4);                                                      \
-      STORE_LONG(ea, value);                                               \
-      if (!bits8) {                                                        \
-          STORE_LONG((ea + 1) & 0xffffff, value >> 8);                     \
-      }                                                                    \
+      STORE_LONG_WORD(ea, value, bits8);                                   \
   } while (0)
 
-/* $ff,s */
-#define STORE_STACK_REL(value, bits8)       \
-  do {                                      \
-      unsigned int ea;                      \
-                                            \
-      INC_PC(SIZE_1);                       \
-      FETCH_PARAM(reg_pc);                  \
-      ea = p1 + reg_sp;                     \
-      INC_PC(SIZE_1);                       \
-      STORE_BANK0(ea, value);               \
-      if (!bits8) {                         \
-          STORE_BANK0(ea + 1, value >> 8);  \
-      }                                     \
+/* $ff,s no wrapping */
+#define STORE_STACK_REL(value, bits8)                  \
+  do {                                                 \
+      unsigned int ea;                                 \
+                                                       \
+      INC_PC(SIZE_1);                                  \
+      FETCH_PARAM(reg_pc);                             \
+      ea = p1 + reg_sp;                                \
+      INC_PC(SIZE_1);                                  \
+      STORE_LONG_WORD(ea, value, bits8);               \
   } while (0)
 
-/* ($ff,s),y */
+/* ($ff,s),y no wrapping*/
 #define STORE_STACK_REL_Y(value, bits8)                     \
   do {                                                      \
       unsigned int ea, ea2;                                 \
@@ -1131,11 +1139,8 @@
       ea = LOAD_BANK0(ea2);                                 \
       ea |= LOAD_BANK0(ea2 + 1) << 8;                       \
       LOAD_BANK0(ea2 + 1);                                  \
-      ea = (ea + reg_y) & 0xffff;                           \
-      STORE_DBR(ea, value);                                 \
-      if (!bits8) {                                         \
-          STORE_DBR((ea + 1) & 0xffff, value >> 8);         \
-      }                                                     \
+      ea = (ea + reg_y + (reg_dbr << 16)) & 0xffffff;       \
+      STORE_LONG_WORD(ea, value, bits8);                    \
   } while (0)
 
 #define INC_PC(value)   (reg_pc = (reg_pc + (value)) & 0xffff)
