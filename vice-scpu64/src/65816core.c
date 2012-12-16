@@ -553,21 +553,25 @@
     LOAD_DIRECT_PAGE_R_FUNC(var, bits8, reg_y)
 
 /* ($ff) no wrapping */
-#define LOAD_INDIRECT_FUNC(var, bits8)               \
-  do {                                               \
-      unsigned int ea, ea2;                          \
-                                                     \
-      INC_PC(SIZE_1);                                \
-      DPR_DELAY                                      \
-      ea2 = p1 + reg_dpr;                            \
-      INC_PC(SIZE_1);                                \
-      ea = LOAD_BANK0(ea2);                          \
-      ea |= LOAD_BANK0(ea2 + 1) << 8;                \
-      ea |= reg_dbr << 16;                           \
-      var = LOAD_LONG(ea);                           \
-      if (!bits8) {                                  \
-          var |= LOAD_LONG((ea + 1) & 0xffffff) << 8;\
-      }                                              \
+#define LOAD_INDIRECT_FUNC(var, bits8)                     \
+  do {                                                     \
+      unsigned int ea, ea2;                                \
+                                                           \
+      INC_PC(SIZE_1);                                      \
+      DPR_DELAY                                            \
+      INC_PC(SIZE_1);                                      \
+      ea2 = p1 + reg_dpr;                                  \
+      ea = LOAD_BANK0(ea2);                                \
+      if (!reg_emul || (reg_dpr & 0xff) || (p1 != 0xff)) { \
+          ea |= LOAD_BANK0(ea2 + 1) << 8;                  \
+      } else {                                             \
+          ea |= LOAD_LONG(ea2 ^ 0xff) << 8;                \
+      }                                                    \
+      ea |= reg_dbr << 16;                                 \
+      var = LOAD_LONG(ea);                                 \
+      if (!bits8) {                                        \
+          var |= LOAD_LONG((ea + 1) & 0xffffff) << 8;      \
+      }                                                    \
   } while (0)
       
 /* ($ff,x) no wrapping */
@@ -579,17 +583,16 @@
       DPR_DELAY                                      \
       FETCH_PARAM(reg_pc);                           \
       INC_PC(SIZE_1);                                \
-      if (reg_emul) {                                \
-          if (reg_dpr & 0xff) {                      \
-              ea2 = p1 + reg_x + reg_dpr;            \
-          } else {                                   \
-              ea2 = ((p1 + reg_x) & 0xff) + reg_dpr; \
-          }                                          \
+      if (!reg_emul || (reg_dpr & 0xff)) {           \
+          ea2 = p1 + reg_x + reg_dpr;                \
+          ea = LOAD_BANK0(ea2);                      \
+          ea |= LOAD_BANK0(ea2 + 1) << 8;            \
       } else {                                       \
-          ea2 = p1 + reg_dpr + reg_x;                \
+          ea2 = ((p1 + reg_x) & 0xff) + reg_dpr;     \
+          ea = LOAD_LONG(ea2);                       \
+          ea2 = ((p1 + reg_x + 1) & 0xff) + reg_dpr; \
+          ea |= LOAD_LONG(ea2) << 8;                 \
       }                                              \
-      ea = LOAD_BANK0(ea2);                          \
-      ea |= LOAD_BANK0(ea2 + 1) << 8;                \
       ea |= reg_dbr << 16;                           \
       var = LOAD_LONG(ea);                           \
       if (!bits8) {                                  \
@@ -604,10 +607,14 @@
                                                                  \
       INC_PC(SIZE_1);                                            \
       DPR_DELAY                                                  \
-      ea2 = p1 + reg_dpr;                                        \
       INC_PC(SIZE_1);                                            \
+      ea2 = p1 + reg_dpr;                                        \
       ea = LOAD_BANK0(ea2);                                      \
-      ea |= LOAD_BANK0(ea2 + 1) << 8;                            \
+      if (!reg_emul || (reg_dpr & 0xff) || (p1 != 0xff)) {       \
+          ea |= LOAD_BANK0(ea2 + 1) << 8;                        \
+      } else {                                                   \
+          ea |= LOAD_LONG(ea2 ^ 0xff) << 8;                      \
+      }                                                          \
       if (((reg_y + ea) ^ ea) & ~0xff) {                         \
           LOAD_DBR(((ea + reg_y) & 0xff) | (ea & 0xff00));       \
       }                                                          \
@@ -918,18 +925,22 @@
   } while (0)
 
 /* ($ff) no wrapping */
-#define STORE_INDIRECT(value, bits8)                  \
-  do {                                                \
-      unsigned int ea, ea2;                           \
-                                                      \
-      INC_PC(SIZE_1);                                 \
-      DPR_DELAY                                       \
-      ea2 = p1 + reg_dpr;                             \
-      INC_PC(SIZE_1);                                 \
-      ea = LOAD_BANK0(ea2);                           \
-      ea |= LOAD_BANK0(ea2 + 1) << 8;                 \
-      ea |= reg_dbr << 16;                            \
-      STORE_LONG_WORD(ea, value, bits8);              \
+#define STORE_INDIRECT(value, bits8)                       \
+  do {                                                     \
+      unsigned int ea, ea2;                                \
+                                                           \
+      INC_PC(SIZE_1);                                      \
+      DPR_DELAY                                            \
+      INC_PC(SIZE_1);                                      \
+      ea2 = p1 + reg_dpr;                                  \
+      ea = LOAD_BANK0(ea2);                                \
+      if (!reg_emul || (reg_dpr & 0xff) || (p1 != 0xff)) { \
+          ea |= LOAD_BANK0(ea2 + 1) << 8;                  \
+      } else {                                             \
+          ea |= LOAD_LONG(ea2 ^ 0xff) << 8;                \
+      }                                                    \
+      ea |= reg_dbr << 16;                                 \
+      STORE_LONG_WORD(ea, value, bits8);                   \
   } while (0)
 
 /* ($ff,x) no wrapping */
@@ -940,18 +951,17 @@
       INC_PC(SIZE_1);                               \
       DPR_DELAY                                     \
       FETCH_PARAM(reg_pc);                          \
-      if (reg_emul) {                               \
-          if (reg_dpr & 0xff) {                     \
-              ea2 = p1 + reg_x + reg_dpr;           \
-          } else {                                  \
-              ea2 = ((p1 + reg_x) & 0xff) + reg_dpr;\
-          }                                         \
-      } else {                                      \
-          ea2 = p1 + reg_dpr + reg_x;               \
-      }                                             \
       INC_PC(SIZE_1);                               \
-      ea = LOAD_BANK0(ea2);                         \
-      ea |= LOAD_BANK0(ea2 + 1) << 8;               \
+      if (!reg_emul || (reg_dpr & 0xff)) {          \
+          ea2 = p1 + reg_x + reg_dpr;               \
+          ea = LOAD_BANK0(ea2);                     \
+          ea |= LOAD_BANK0(ea2 + 1) << 8;           \
+      } else {                                      \
+          ea2 = ((p1 + reg_x) & 0xff) + reg_dpr;    \
+          ea = LOAD_LONG(ea2);                      \
+          ea2 = ((p1 + reg_x + 1) & 0xff) + reg_dpr;\
+          ea |= LOAD_LONG(ea2) << 8;                \
+      }                                             \
       ea |= reg_dbr << 16;                          \
       STORE_LONG_WORD(ea, value, bits8);            \
   } while (0)
@@ -963,10 +973,14 @@
                                                             \
       INC_PC(SIZE_1);                                       \
       DPR_DELAY                                             \
-      ea2 = p1 + reg_dpr;                                   \
       INC_PC(SIZE_1);                                       \
+      ea2 = p1 + reg_dpr;                                   \
       ea = LOAD_BANK0(ea2);                                 \
-      ea |= LOAD_BANK0(ea2 + 1) << 8;                       \
+      if (!reg_emul || (reg_dpr & 0xff) || (p1 != 0xff)) {  \
+          ea |= LOAD_BANK0(ea2 + 1) << 8;                   \
+      } else {                                              \
+          ea |= LOAD_LONG(ea2 ^ 0xff) << 8;                 \
+      }                                                     \
       LOAD_DBR(((ea + reg_y) & 0xff) | (ea & 0xff00));      \
       ea = (ea + reg_y + (reg_dbr << 16)) & 0xffffff;       \
       STORE_LONG_WORD(ea, value, bits8);                    \
@@ -1644,7 +1658,20 @@
       PUSH(value);                    \
   } while (0)
 
-#define PEI(load_func) PEA(load_func)
+#define PEI()                            \
+  do {                                   \
+      unsigned int value, ea;            \
+                                         \
+      INC_PC(SIZE_1);                    \
+      DPR_DELAY                          \
+      INC_PC(SIZE_1);                    \
+      ea = p1 + reg_dpr;                 \
+      value = LOAD_BANK0(ea);            \
+      value |= LOAD_BANK0(ea + 1) << 8;  \
+      STORE_LONG(reg_sp, value >> 8);    \
+      reg_sp--;                          \
+      PUSH(value);                       \
+  } while (0)
 
 #define PER()                                     \
   do {                                            \
@@ -3155,7 +3182,7 @@ trap_skipped:
             break;
 
           case 0xd4:            /* PEI ($nn) */
-            PEI(LOAD_DIRECT_PAGE_FUNC);
+            PEI();
             break;
 
           case 0xd5:            /* CMP $nn,X */
