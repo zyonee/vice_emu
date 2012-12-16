@@ -658,6 +658,19 @@
       }                                                \
   } while (0)
 
+/* $ffff */
+#define LOAD_ABS2_FUNC(var, bits8)                     \
+  do {                                                 \
+      unsigned int ea;                                 \
+                                                       \
+      ea = p2;                                         \
+      INC_PC(SIZE_3);                                  \
+      var = LOAD_DBR(ea);                              \
+      if (!bits8) {                                    \
+          var |= LOAD_DBR((ea + 1) & 0xffff) << 8;     \
+      }                                                \
+  } while (0)
+
 /* $ffff,r */
 #define LOAD_ABS_R_FUNC(var, bits8, reg_r)                    \
   do {                                                        \
@@ -682,6 +695,29 @@
 /* $ffff,x */
 #define LOAD_ABS_Y_FUNC(var, bits8) \
     LOAD_ABS_R_FUNC(var, bits8, reg_y)        
+
+/* $ffff,r */
+#define LOAD_ABS2_R_FUNC(var, bits8, reg_r)                   \
+  do {                                                        \
+      unsigned int ea;                                        \
+                                                              \
+      ea = p2;                                                \
+      INC_PC(SIZE_3);                                         \
+      if (!LOCAL_65816_X() || ((p1 + reg_r) > 0xff)) {        \
+          LOAD_DBR(((ea + reg_r) & 0xff) | (ea & 0xff00));    \
+      }                                                       \
+      ea = (ea + reg_r) & 0xffff;                             \
+      var = LOAD_DBR(ea);                                     \
+      if (!bits8) {                                           \
+          var |= LOAD_DBR((ea + 1) & 0xffff) << 8;            \
+      }                                                       \
+  } while (0)
+
+#define LOAD_ABS2_X_FUNC(var, bits8) \
+    LOAD_ABS2_R_FUNC(var, bits8, reg_x)        
+
+#define LOAD_ABS2_Y_FUNC(var, bits8) \
+    LOAD_ABS2_R_FUNC(var, bits8, reg_y)        
 
 /* $ffffff */
 #define LOAD_ABS_LONG_FUNC(var, bits8)                \
@@ -949,6 +985,19 @@
   do {                                                  \
       unsigned int ea;                                  \
                                                         \
+      ea = p2 + (reg_dbr << 16);                        \
+      INC_PC(SIZE_3);                                   \
+      STORE_LONG(ea, value);                            \
+      if (!bits8) {                                     \
+          STORE_LONG((ea + 1) & 0xffffff, value >> 8);  \
+      }                                                 \
+  } while (0)
+
+/* $ffff */
+#define STORE_ABS2(value, bits8)                        \
+  do {                                                  \
+      unsigned int ea;                                  \
+                                                        \
       ea = p2;                                          \
       INC_PC(SIZE_3);                                   \
       STORE_DBR(ea, value);                             \
@@ -971,6 +1020,23 @@
           LOAD_LONG(ea);                              \
           STORE_LONG(ea, value >> 8);                 \
           STORE_LONG((ea - 1) & 0xffffff, value);     \
+      }                                               \
+  } while (0)
+
+/* $ffff */
+#define STORE_ABS2_RRW(value, bits8)                  \
+  do {                                                \
+      unsigned int ea;                                \
+                                                      \
+      if (bits8) {                                    \
+          ea = p2 + (reg_dbr << 16);                  \
+          LOAD_LONG(ea);                              \
+          STORE_LONG(ea, value);                      \
+      } else {                                        \
+          ea = (p2 + 1) & 0xffff;                     \
+          LOAD_DBR(ea);                               \
+          STORE_DBR(ea, value >> 8);                  \
+          STORE_DBR((ea - 1) & 0xffff, value);        \
       }                                               \
   } while (0)
 
@@ -2265,7 +2331,7 @@ trap_skipped:
             break;
 
           case 0x0c:            /* TSB $nnnn */
-            TSB(LOAD_ABS_FUNC, STORE_ABS_RRW);
+            TSB(LOAD_ABS2_FUNC, STORE_ABS2_RRW);
             break;
 
           case 0x0d:            /* ORA $nnnn */
@@ -2329,7 +2395,7 @@ trap_skipped:
             break;
 
           case 0x1c:            /* TRB $nnnn */
-            TRB(LOAD_ABS_FUNC, STORE_ABS_RRW);
+            TRB(LOAD_ABS2_FUNC, STORE_ABS2_RRW);
             break;
 
           case 0x1d:            /* ORA $nnnn,X */
@@ -2773,7 +2839,7 @@ trap_skipped:
             break;
 
           case 0x8c:            /* STY $nnnn */
-            STY(STORE_ABS);
+            STY(STORE_ABS2);
             break;
 
           case 0x8d:            /* STA $nnnn */
@@ -2781,7 +2847,7 @@ trap_skipped:
             break;
 
           case 0x8e:            /* STX $nnnn */
-            STX(STORE_ABS);
+            STX(STORE_ABS2);
             break;
 
           case 0x8f:            /* STA $nnnnnn */
@@ -2901,7 +2967,7 @@ trap_skipped:
             break;
 
           case 0xac:            /* LDY $nnnn */
-            LDY(LOAD_ABS_FUNC);
+            LDY(LOAD_ABS2_FUNC);
             break;
 
           case 0xad:            /* LDA $nnnn */
@@ -2909,7 +2975,7 @@ trap_skipped:
             break;
 
           case 0xae:            /* LDX $nnnn */
-            LDX(LOAD_ABS_FUNC);
+            LDX(LOAD_ABS2_FUNC);
             break;
 
           case 0xaf:            /* LDA $nnnnnn */
@@ -2965,7 +3031,7 @@ trap_skipped:
             break;
 
           case 0xbc:            /* LDY $nnnn,X */
-            LDY(LOAD_ABS_X_FUNC);
+            LDY(LOAD_ABS2_X_FUNC);
             break;
 
           case 0xbd:            /* LDA $nnnn,X */
@@ -2973,7 +3039,7 @@ trap_skipped:
             break;
 
           case 0xbe:            /* LDX $nnnn,Y */
-            LDX(LOAD_ABS_Y_FUNC);
+            LDX(LOAD_ABS2_Y_FUNC);
             break;
 
           case 0xbf:            /* LDA $nnnnnn,X */
