@@ -508,7 +508,7 @@
     }
 
 /* a */
-#define LOAD_ACCU(var, bits8)                          \
+#define LOAD_ACCU_RRW(var, bits8)                      \
     if (bits8) {                                       \
         var = reg_a;                                   \
         INC_PC(SIZE_1);                                \
@@ -541,6 +541,25 @@
           var |= LOAD_BANK0(ea + 1) << 8;              \
       }                                                \
   } while (0)
+
+/* $ff wrapping */
+#define LOAD_DIRECT_PAGE_FUNC_RRW(var, bits8)          \
+      unsigned int ea;                                 \
+                                                       \
+      INC_PC(SIZE_1);                                  \
+      DPR_DELAY                                        \
+      ea = (p1 + reg_dpr) & 0xffff;                    \
+      INC_PC(SIZE_1);                                  \
+      var = LOAD_LONG(ea);                             \
+      if (reg_emul) {                                  \
+          STORE_LONG(ea, var);                         \
+      } else {                                         \
+          if (!bits8) {                                \
+              ea = (ea + 1) & 0xffff;                  \
+              var |= LOAD_LONG(ea) << 8;               \
+          }                                            \
+          LOAD_LONG(ea);                               \
+      }
 
 /* $ff,r wrapping */
 #define LOAD_DIRECT_PAGE_R_FUNC(var, bits8, reg_r)     \
@@ -575,6 +594,32 @@
 #define LOAD_DIRECT_PAGE_Y_FUNC(var, bits8) \
     LOAD_DIRECT_PAGE_R_FUNC(var, bits8, reg_y)
 
+/* $ff,x wrapping */
+#define LOAD_DIRECT_PAGE_X_FUNC_RRW(var, bits8)        \
+      unsigned int ea;                                 \
+                                                       \
+      INC_PC(SIZE_1);                                  \
+      DPR_DELAY                                        \
+      FETCH_PARAM(reg_pc);                             \
+      INC_PC(SIZE_1);                                  \
+      if (reg_emul) {                                  \
+          if (reg_dpr & 0xff) {                        \
+              ea = (p1 + reg_x + reg_dpr) & 0xffff;    \
+          } else {                                     \
+              ea = ((p1 + reg_x) & 0xff) + reg_dpr;    \
+          }                                            \
+          var = LOAD_LONG(ea);                         \
+          STORE_LONG(ea, var);                         \
+      } else {                                         \
+          ea = (p1 + reg_dpr + reg_x) & 0xffff;        \
+          var = LOAD_LONG(ea);                         \
+          if (!bits8) {                                \
+              ea = (ea + 1) & 0xffff;                  \
+              var |= LOAD_LONG(ea) << 8;               \
+          }                                            \
+          LOAD_LONG(ea);                               \
+      }
+
 /* ($ff) no wrapping */
 #define LOAD_INDIRECT_FUNC(var, bits8)                     \
   do {                                                     \
@@ -588,7 +633,7 @@
       if (!reg_emul || (reg_dpr & 0xff) || (p1 != 0xff)) { \
           ea |= LOAD_BANK0(ea2 + 1) << 8;                  \
       } else {                                             \
-          ea |= LOAD_LONG(ea2 ^ 0xff) << 8;                \
+          ea |= LOAD_LONG(reg_dpr) << 8;                   \
       }                                                    \
       ea |= reg_dbr << 16;                                 \
       var = LOAD_LONG(ea);                                 \
@@ -636,7 +681,7 @@
       if (!reg_emul || (reg_dpr & 0xff) || (p1 != 0xff)) {       \
           ea |= LOAD_BANK0(ea2 + 1) << 8;                        \
       } else {                                                   \
-          ea |= LOAD_LONG(ea2 ^ 0xff) << 8;                      \
+          ea |= LOAD_LONG(reg_dpr) << 8;                         \
       }                                                          \
       if (((reg_y + ea) ^ ea) & ~0xff) {                         \
           LOAD_DBR(((ea + reg_y) & 0xff) | (ea & 0xff00));       \
@@ -698,6 +743,23 @@
       }                                                \
   } while (0)
 
+/* $ffff no wrapping */
+#define LOAD_ABS_FUNC_RRW(var, bits8)                  \
+      unsigned int ea;                                 \
+                                                       \
+      ea = p2 + (reg_dbr << 16);                       \
+      INC_PC(SIZE_3);                                  \
+      var = LOAD_LONG(ea);                             \
+      if (reg_emul) {                                  \
+          STORE_LONG(ea, var);                         \
+      } else {                                         \
+          if (!bits8) {                                \
+              ea = (ea + 1) & 0xffffff;                \
+              var |= LOAD_LONG(ea) << 8;               \
+          }                                            \
+          LOAD_LONG(ea);                               \
+      }
+
 /* $ffff wrapping */
 #define LOAD_ABS2_FUNC(var, bits8)                     \
   do {                                                 \
@@ -710,6 +772,23 @@
           var |= LOAD_DBR((ea + 1) & 0xffff) << 8;     \
       }                                                \
   } while (0)
+
+/* $ffff wrapping */
+#define LOAD_ABS2_FUNC_RRW(var, bits8)                   \
+      unsigned int ea;                                   \
+                                                         \
+      ea = p2 + (reg_dbr << 16);                         \
+      INC_PC(SIZE_3);                                    \
+      var = LOAD_LONG(ea);                               \
+      if (reg_emul) {                                    \
+          STORE_LONG(ea, var);                           \
+      } else {                                           \
+          if (!bits8) {                                  \
+              ea = ((ea + 1) & 0xffff) + (reg_dbr << 16);\
+              var |= LOAD_LONG(ea) << 8;                 \
+          }                                              \
+          LOAD_LONG(ea);                                 \
+      }
 
 /* $ffff,r no wrapping */
 #define LOAD_ABS_R_FUNC(var, bits8, reg_r)                    \
@@ -735,6 +814,27 @@
 /* $ffff,x */
 #define LOAD_ABS_Y_FUNC(var, bits8) \
     LOAD_ABS_R_FUNC(var, bits8, reg_y)        
+
+/* $ffff,x no wrapping */
+#define LOAD_ABS_X_FUNC_RRW(var, bits8)                       \
+      unsigned int ea;                                        \
+                                                              \
+      ea = p2;                                                \
+      INC_PC(SIZE_3);                                         \
+      if (!LOCAL_65816_X() || ((p1 + reg_x) > 0xff)) {        \
+          LOAD_DBR(((ea + reg_x) & 0xff) | (ea & 0xff00));    \
+      }                                                       \
+      ea = (ea + reg_x + (reg_dbr << 16)) & 0xffffff;         \
+      var = LOAD_LONG(ea);                                    \
+      if (reg_emul) {                                         \
+          STORE_LONG(ea, var);                                \
+      } else {                                                \
+          if (!bits8) {                                       \
+              ea = (ea + 1) & 0xffffff;                       \
+              var |= LOAD_LONG(ea) << 8;                      \
+          }                                                   \
+          LOAD_LONG(ea);                                      \
+      }
 
 /* $ffff,r wrapping */
 #define LOAD_ABS2_R_FUNC(var, bits8, reg_r)                   \
@@ -794,11 +894,11 @@
                                                        \
       INC_PC(SIZE_1);                                  \
       FETCH_PARAM(reg_pc);                             \
-      ea = (p1 + reg_sp) & 0xffff;                     \
+      ea = p1 + reg_sp;                                \
       INC_PC(SIZE_1);                                  \
-      var = LOAD_LONG(ea);                             \
+      var = LOAD_BANK0(ea);                            \
       if (!bits8) {                                    \
-          var |= LOAD_LONG(ea + 1) << 8;               \
+          var |= LOAD_BANK0(ea + 1) << 8;              \
       }                                                \
   } while (0)
 
@@ -827,12 +927,12 @@
 #define STORE_BANK0(addr, value) \
     STORE_LONG((addr) & 0xffff, value); 
 
-#define STORE_LONG_WORD(addr, value, bits8)            \
-  do {                                                 \
-      STORE_LONG(ea, value);                           \
-      if (!bits8) {                                    \
-          STORE_LONG((ea + 1) & 0xffffff, value >> 8); \
-      }                                                \
+#define STORE_LONG_WORD(addr, value, bits8)                \
+  do {                                                     \
+      STORE_LONG(addr, value);                             \
+      if (!bits8) {                                        \
+          STORE_LONG(((addr) + 1) & 0xffffff, value >> 8); \
+      }                                                    \
   } while (0)
 
 /* s */
@@ -874,20 +974,14 @@
   } while (0)
 
 /* $ff wrapping */
-#define STORE_DIRECT_PAGE_RRW(value, bits8)  \
-  do {                                       \
-      unsigned int ea;                       \
-                                             \
-      if (bits8) {                           \
-          ea = p1 + reg_dpr;                 \
-          LOAD_BANK0(ea);                    \
-          STORE_BANK0(ea, value);            \
-      } else {                               \
-          ea = p1 + reg_dpr + 1;             \
-          LOAD_BANK0(ea);                    \
-          STORE_BANK0(ea, value >> 8);       \
-          STORE_BANK0(ea - 1, value);        \
-      }                                      \
+#define STORE_DIRECT_PAGE_RRW(value, bits8)    \
+  do {                                         \
+      if (bits8) {                             \
+          STORE_LONG(ea, value);               \
+      } else {                                 \
+          STORE_LONG(ea, value >> 8);          \
+          STORE_BANK0(ea - 1, value);          \
+      }                                        \
   } while (0)
 
 /* $ff,r wrapping */
@@ -921,31 +1015,8 @@
 #define STORE_DIRECT_PAGE_Y(value, bits8) STORE_DIRECT_PAGE_R(value, bits8, reg_y)
 
 /* $ff,x wrapping */
-#define STORE_DIRECT_PAGE_X_RRW(value, bits8)       \
-  do {                                              \
-      unsigned int ea;                              \
-                                                    \
-      if (reg_emul) {                               \
-          if (reg_dpr & 0xff) {                     \
-              ea = p1 + reg_x + reg_dpr;            \
-          } else {                                  \
-              ea = ((p1 + reg_x) & 0xff) + reg_dpr; \
-          }                                         \
-          LOAD_BANK0(ea);                           \
-          STORE_BANK0(ea, value);                   \
-      } else {                                      \
-          if (bits8) {                              \
-              ea = p1 + reg_dpr + reg_x;            \
-              LOAD_BANK0(ea);                       \
-              STORE_BANK0(ea, value);               \
-          } else {                                  \
-              ea = p1 + reg_dpr + reg_x + 1;        \
-              LOAD_BANK0(ea);                       \
-              STORE_BANK0(ea, value >> 8);          \
-              STORE_BANK0(ea - 1, value);           \
-          }                                         \
-      }                                             \
-  } while (0)
+#define STORE_DIRECT_PAGE_X_RRW(value, bits8) \
+    STORE_DIRECT_PAGE_RRW(value, bits8) 
 
 /* ($ff) no wrapping */
 #define STORE_INDIRECT(value, bits8)                       \
@@ -1066,15 +1137,9 @@
 /* $ffff no wrapping */
 #define STORE_ABS_RRW(value, bits8)                   \
   do {                                                \
-      unsigned int ea;                                \
-                                                      \
       if (bits8) {                                    \
-          ea = p2 + (reg_dbr << 16);                  \
-          LOAD_LONG(ea);                              \
           STORE_LONG(ea, value);                      \
       } else {                                        \
-          ea = (p2 + 1 + (reg_dbr << 16)) & 0xffffff; \
-          LOAD_LONG(ea);                              \
           STORE_LONG(ea, value >> 8);                 \
           STORE_LONG((ea - 1) & 0xffffff, value);     \
       }                                               \
@@ -1083,36 +1148,17 @@
 /* $ffff wrapping */
 #define STORE_ABS2_RRW(value, bits8)                  \
   do {                                                \
-      unsigned int ea;                                \
-                                                      \
       if (bits8) {                                    \
-          ea = p2 + (reg_dbr << 16);                  \
-          LOAD_LONG(ea);                              \
           STORE_LONG(ea, value);                      \
       } else {                                        \
-          ea = (p2 + 1) & 0xffff;                     \
-          LOAD_DBR(ea);                               \
-          STORE_DBR(ea, value >> 8);                  \
+          STORE_LONG(ea, value >> 8);                 \
           STORE_DBR((ea - 1) & 0xffff, value);        \
       }                                               \
   } while (0)
 
 /* $ffff,x no wrapping */
-#define STORE_ABS_X_RRW(value, bits8)                         \
-  do {                                                        \
-      unsigned int ea;                                        \
-                                                              \
-      if (bits8) {                                            \
-          ea = (p2 + reg_x + (reg_dbr << 16)) & 0xffffff;     \
-          LOAD_LONG(ea);                                      \
-          STORE_LONG(ea, value);                              \
-      } else {                                                \
-          ea = (p2 + reg_x + 1 + (reg_dbr << 16)) & 0xffffff; \
-          LOAD_LONG(ea);                                      \
-          STORE_LONG(ea, value >> 8);                         \
-          STORE_LONG((ea - 1) & 0xffffff, value);             \
-      }                                                       \
-  } while (0)
+#define STORE_ABS_X_RRW(value, bits8) \
+    STORE_ABS_RRW(value, bits8)
 
 /* $ffff,r no wrapping */
 #define STORE_ABS_R(value, bits8, reg_r)               \
@@ -1998,39 +2044,26 @@
       LOCAL_SET_NZ(reg_c, 0); \
   } while (0)
 
-#define TRB(load_func, store_func)                      \
+#define TRBTSB(load_func, store_func, logic)            \
   do {                                                  \
       unsigned int tmp_value;                           \
                                                         \
       if (LOCAL_65816_M()) {                            \
           load_func(tmp_value, 1);                      \
           LOCAL_SET_ZERO(!(tmp_value & reg_a));         \
-          tmp_value &= (~reg_a);                        \
+          tmp_value logic reg_a;                        \
           store_func(tmp_value, 1);                     \
       } else {                                          \
           load_func(tmp_value, 0);                      \
           LOCAL_SET_ZERO(!(tmp_value & reg_c));         \
-          tmp_value &= (~reg_c);                        \
+          tmp_value logic reg_c;                        \
           store_func(tmp_value, 0);                     \
       }                                                 \
   } while (0)
 
-#define TSB(load_func, store_func)                      \
-  do {                                                  \
-      unsigned int tmp_value;                           \
-                                                        \
-      if (LOCAL_65816_M()) {                            \
-          load_func(tmp_value, 1);                      \
-          LOCAL_SET_ZERO(!(tmp_value & reg_a));         \
-          tmp_value |= reg_a;                           \
-          store_func(tmp_value, 1);                     \
-      } else {                                          \
-          load_func(tmp_value, 0);                      \
-          LOCAL_SET_ZERO(!(tmp_value & reg_c));         \
-          tmp_value |= reg_c;                           \
-          store_func(tmp_value, 0);                     \
-      }                                                 \
-  } while (0)
+#define TRB(load_func, store_func) TRBTSB(load_func, store_func, &=~)
+
+#define TSB(load_func, store_func) TRBTSB(load_func, store_func, |=)
 
 #define TSC()                 \
   do {                        \
@@ -2374,7 +2407,7 @@ trap_skipped:
             break;
 
           case 0x04:            /* TSB $nn */
-            TSB(LOAD_DIRECT_PAGE_FUNC, STORE_DIRECT_PAGE_RRW);
+            TSB(LOAD_DIRECT_PAGE_FUNC_RRW, STORE_DIRECT_PAGE_RRW);
             break;
 
           case 0x05:            /* ORA $nn */
@@ -2382,7 +2415,7 @@ trap_skipped:
             break;
 
           case 0x06:            /* ASL $nn */
-            ASL(LOAD_DIRECT_PAGE_FUNC, STORE_DIRECT_PAGE_RRW);
+            ASL(LOAD_DIRECT_PAGE_FUNC_RRW, STORE_DIRECT_PAGE_RRW);
             break;
 
           case 0x07:            /* ORA [$nn] */
@@ -2398,7 +2431,7 @@ trap_skipped:
             break;
 
           case 0x0a:            /* ASL A */
-            ASL(LOAD_ACCU, STORE_ACCU_RRW);
+            ASL(LOAD_ACCU_RRW, STORE_ACCU_RRW);
             break;
 
           case 0x0b:            /* PHD */
@@ -2406,7 +2439,7 @@ trap_skipped:
             break;
 
           case 0x0c:            /* TSB $nnnn */
-            TSB(LOAD_ABS2_FUNC, STORE_ABS2_RRW);
+            TSB(LOAD_ABS2_FUNC_RRW, STORE_ABS2_RRW);
             break;
 
           case 0x0d:            /* ORA $nnnn */
@@ -2414,7 +2447,7 @@ trap_skipped:
             break;
 
           case 0x0e:            /* ASL $nnnn */
-            ASL(LOAD_ABS_FUNC, STORE_ABS_RRW);
+            ASL(LOAD_ABS_FUNC_RRW, STORE_ABS_RRW);
             break;
 
           case 0x0f:            /* ORA $nnnnnn */
@@ -2438,7 +2471,7 @@ trap_skipped:
             break;
 
           case 0x14:            /* TRB $nn */
-            TRB(LOAD_DIRECT_PAGE_FUNC, STORE_DIRECT_PAGE_RRW);
+            TRB(LOAD_DIRECT_PAGE_FUNC_RRW, STORE_DIRECT_PAGE_RRW);
             break;
 
           case 0x15:            /* ORA $nn,X */
@@ -2446,7 +2479,7 @@ trap_skipped:
             break;
 
           case 0x16:            /* ASL $nn,X */
-            ASL(LOAD_DIRECT_PAGE_X_FUNC, STORE_DIRECT_PAGE_X_RRW);
+            ASL(LOAD_DIRECT_PAGE_X_FUNC_RRW, STORE_DIRECT_PAGE_X_RRW);
             break;
 
           case 0x17:            /* ORA [$nn],Y */
@@ -2462,7 +2495,7 @@ trap_skipped:
             break;
 
           case 0x1a:            /* INA */
-            INC(LOAD_ACCU, STORE_ACCU_RRW);
+            INC(LOAD_ACCU_RRW, STORE_ACCU_RRW);
             break;
 
           case 0x1b:            /* TCS */
@@ -2470,7 +2503,7 @@ trap_skipped:
             break;
 
           case 0x1c:            /* TRB $nnnn */
-            TRB(LOAD_ABS2_FUNC, STORE_ABS2_RRW);
+            TRB(LOAD_ABS2_FUNC_RRW, STORE_ABS2_RRW);
             break;
 
           case 0x1d:            /* ORA $nnnn,X */
@@ -2478,7 +2511,7 @@ trap_skipped:
             break;
 
           case 0x1e:            /* ASL $nnnn,X */
-            ASL(LOAD_ABS_X_FUNC, STORE_ABS_X_RRW);
+            ASL(LOAD_ABS_X_FUNC_RRW, STORE_ABS_X_RRW);
             break;
 
           case 0x1f:            /* ORA $nnnnnn,X */
@@ -2510,7 +2543,7 @@ trap_skipped:
             break;
 
           case 0x26:            /* ROL $nn */
-            ROL(LOAD_DIRECT_PAGE_FUNC, STORE_DIRECT_PAGE_RRW);
+            ROL(LOAD_DIRECT_PAGE_FUNC_RRW, STORE_DIRECT_PAGE_RRW);
             break;
 
           case 0x27:            /* AND [$nn] */
@@ -2526,7 +2559,7 @@ trap_skipped:
             break;
 
           case 0x2a:            /* ROL A */
-            ROL(LOAD_ACCU, STORE_ACCU_RRW);
+            ROL(LOAD_ACCU_RRW, STORE_ACCU_RRW);
             break;
 
           case 0x2b:            /* PLD */
@@ -2542,7 +2575,7 @@ trap_skipped:
             break;
 
           case 0x2e:            /* ROL $nnnn */
-            ROL(LOAD_ABS_FUNC, STORE_ABS_RRW);
+            ROL(LOAD_ABS_FUNC_RRW, STORE_ABS_RRW);
             break;
 
           case 0x2f:            /* AND $nnnnnn */
@@ -2574,7 +2607,7 @@ trap_skipped:
             break;
 
           case 0x36:            /* ROL $nn,X */
-            ROL(LOAD_DIRECT_PAGE_X_FUNC, STORE_DIRECT_PAGE_X_RRW);
+            ROL(LOAD_DIRECT_PAGE_X_FUNC_RRW, STORE_DIRECT_PAGE_X_RRW);
             break;
 
           case 0x37:            /* AND [$nn],Y */
@@ -2590,7 +2623,7 @@ trap_skipped:
             break;
 
           case 0x3a:            /* DEA */
-            DEC(LOAD_ACCU, STORE_ACCU_RRW);
+            DEC(LOAD_ACCU_RRW, STORE_ACCU_RRW);
             break;
 
           case 0x3b:            /* TSC */
@@ -2606,7 +2639,7 @@ trap_skipped:
             break;
 
           case 0x3e:            /* ROL $nnnn,X */
-            ROL(LOAD_ABS_X_FUNC, STORE_ABS_X_RRW);
+            ROL(LOAD_ABS_X_FUNC_RRW, STORE_ABS_X_RRW);
             break;
 
           case 0x3f:            /* AND $nnnnnn,X */
@@ -2634,7 +2667,7 @@ trap_skipped:
             break;
 
           case 0x46:            /* LSR $nn */
-            LSR(LOAD_DIRECT_PAGE_FUNC, STORE_DIRECT_PAGE_RRW);
+            LSR(LOAD_DIRECT_PAGE_FUNC_RRW, STORE_DIRECT_PAGE_RRW);
             break;
 
           case 0x47:            /* EOR [$nn] */
@@ -2650,7 +2683,7 @@ trap_skipped:
             break;
 
           case 0x4a:            /* LSR A */
-            LSR(LOAD_ACCU, STORE_ACCU_RRW);
+            LSR(LOAD_ACCU_RRW, STORE_ACCU_RRW);
             break;
 
           case 0x4b:            /* PHK */
@@ -2666,7 +2699,7 @@ trap_skipped:
             break;
 
           case 0x4e:            /* LSR $nnnn */
-            LSR(LOAD_ABS_FUNC, STORE_ABS_RRW);
+            LSR(LOAD_ABS_FUNC_RRW, STORE_ABS_RRW);
             break;
 
           case 0x4f:            /* EOR $nnnnnn */
@@ -2698,7 +2731,7 @@ trap_skipped:
             break;
 
           case 0x56:            /* LSR $nn,X */
-            LSR(LOAD_DIRECT_PAGE_X_FUNC, STORE_DIRECT_PAGE_X_RRW);
+            LSR(LOAD_DIRECT_PAGE_X_FUNC_RRW, STORE_DIRECT_PAGE_X_RRW);
             break;
 
           case 0x57:            /* EOR [$nn],Y */
@@ -2730,7 +2763,7 @@ trap_skipped:
             break;
 
           case 0x5e:            /* LSR $nnnn,X */
-            LSR(LOAD_ABS_X_FUNC, STORE_ABS_X_RRW);
+            LSR(LOAD_ABS_X_FUNC_RRW, STORE_ABS_X_RRW);
             break;
 
           case 0x5f:            /* EOR $nnnnnn,X */
@@ -2762,7 +2795,7 @@ trap_skipped:
             break;
 
           case 0x66:            /* ROR $nn */
-            ROR(LOAD_DIRECT_PAGE_FUNC, STORE_DIRECT_PAGE_RRW);
+            ROR(LOAD_DIRECT_PAGE_FUNC_RRW, STORE_DIRECT_PAGE_RRW);
             break;
 
           case 0x67:            /* ADC [$nn] */
@@ -2778,7 +2811,7 @@ trap_skipped:
             break;
 
           case 0x6a:            /* ROR A */
-            ROR(LOAD_ACCU, STORE_ACCU_RRW);
+            ROR(LOAD_ACCU_RRW, STORE_ACCU_RRW);
             break;
 
           case 0x6b:            /* RTL */
@@ -2794,7 +2827,7 @@ trap_skipped:
             break;
 
           case 0x6e:            /* ROR $nnnn */
-            ROR(LOAD_ABS_FUNC, STORE_ABS_RRW);
+            ROR(LOAD_ABS_FUNC_RRW, STORE_ABS_RRW);
             break;
 
           case 0x6f:            /* ADC $nnnnnn */
@@ -2826,7 +2859,7 @@ trap_skipped:
             break;
 
           case 0x76:            /* ROR $nn,X */
-            ROR(LOAD_DIRECT_PAGE_X_FUNC, STORE_DIRECT_PAGE_X_RRW);
+            ROR(LOAD_DIRECT_PAGE_X_FUNC_RRW, STORE_DIRECT_PAGE_X_RRW);
             break;
 
           case 0x77:            /* ADC [$nn],Y */
@@ -2858,7 +2891,7 @@ trap_skipped:
             break;
 
           case 0x7e:            /* ROR $nnnn,X */
-            ROR(LOAD_ABS_X_FUNC, STORE_ABS_X_RRW);
+            ROR(LOAD_ABS_X_FUNC_RRW, STORE_ABS_X_RRW);
             break;
 
           case 0x7f:            /* ADC $nnnnnn,X */
@@ -3146,7 +3179,7 @@ trap_skipped:
             break;
 
           case 0xc6:            /* DEC $nn */
-            DEC(LOAD_DIRECT_PAGE_FUNC, STORE_DIRECT_PAGE_RRW);
+            DEC(LOAD_DIRECT_PAGE_FUNC_RRW, STORE_DIRECT_PAGE_RRW);
             break;
 
           case 0xc7:            /* CMP [$nn] */
@@ -3178,7 +3211,7 @@ trap_skipped:
             break;
 
           case 0xce:            /* DEC $nnnn */
-            DEC(LOAD_ABS_FUNC, STORE_ABS_RRW);
+            DEC(LOAD_ABS_FUNC_RRW, STORE_ABS_RRW);
             break;
 
           case 0xcf:            /* CMP $nnnnnn */
@@ -3210,7 +3243,7 @@ trap_skipped:
             break;
 
           case 0xd6:            /* DEC $nn,X */
-            DEC(LOAD_DIRECT_PAGE_X_FUNC, STORE_DIRECT_PAGE_X_RRW);
+            DEC(LOAD_DIRECT_PAGE_X_FUNC_RRW, STORE_DIRECT_PAGE_X_RRW);
             break;
 
           case 0xd7:            /* CMP [$nn],Y */
@@ -3242,7 +3275,7 @@ trap_skipped:
             break;
 
           case 0xde:            /* DEC $nnnn,X */
-            DEC(LOAD_ABS_X_FUNC, STORE_ABS_X_RRW);
+            DEC(LOAD_ABS_X_FUNC_RRW, STORE_ABS_X_RRW);
             break;
 
           case 0xdf:            /* CMP $nnnnnn,X */
@@ -3274,7 +3307,7 @@ trap_skipped:
             break;
 
           case 0xe6:            /* INC $nn */
-            INC(LOAD_DIRECT_PAGE_FUNC, STORE_DIRECT_PAGE_RRW);
+            INC(LOAD_DIRECT_PAGE_FUNC_RRW, STORE_DIRECT_PAGE_RRW);
             break;
 
           case 0xe7:            /* SBC [$nn] */
@@ -3306,7 +3339,7 @@ trap_skipped:
             break;
 
           case 0xee:            /* INC $nnnn */
-            INC(LOAD_ABS_FUNC, STORE_ABS_RRW);
+            INC(LOAD_ABS_FUNC_RRW, STORE_ABS_RRW);
             break;
 
           case 0xef:            /* SBC $nnnnnn */
@@ -3338,7 +3371,7 @@ trap_skipped:
             break;
 
           case 0xf6:            /* INC $nn,X */
-            INC(LOAD_DIRECT_PAGE_X_FUNC, STORE_DIRECT_PAGE_X_RRW);
+            INC(LOAD_DIRECT_PAGE_X_FUNC_RRW, STORE_DIRECT_PAGE_X_RRW);
             break;
 
           case 0xf7:            /* SBC [$nn],Y */
@@ -3370,7 +3403,7 @@ trap_skipped:
             break;
 
           case 0xfe:            /* INC $nnnn,X */
-            INC(LOAD_ABS_X_FUNC, STORE_ABS_X_RRW);
+            INC(LOAD_ABS_X_FUNC_RRW, STORE_ABS_X_RRW);
             break;
 
           case 0xff:            /* SBC $nnnnnn,X */
