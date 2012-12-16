@@ -138,9 +138,43 @@ void scpu64_clock_write_stretch(void)
 #define LOAD(addr) \
     (((addr) & ~0xffff)?mem_read2(addr):(*_mem_read_tab_ptr[(addr) >> 8])((WORD)(addr)))
 
+#define STORE_LONG(addr, value) store_long(addr, value)
+
+static inline void store_long(DWORD addr, BYTE value)
+{
+    scpu64_clock_add(&maincpu_clk, 1);
+    if (addr & ~0xffff) {
+        mem_store2(addr, value);
+    } else {
+        (*_mem_write_tab_ptr[addr >> 8])((WORD)addr, value);
+    }
+}
+
+#define LOAD_LONG(addr) load_long(addr)
+
+static inline BYTE load_long(DWORD addr)
+{
+    BYTE tmp;
+
+    if ((addr) & ~0xffff) {
+        tmp = mem_read2(addr);
+    } else {
+        tmp = (*_mem_read_tab_ptr[(addr) >> 8])((WORD)addr);
+    }
+    scpu64_clock_add(&maincpu_clk, 1);
+    return tmp;
+}
+
 #define CLK_ADD(clock, amount) scpu64_clock_add(&clock, amount)
 
-#define LOAD_INT_ADDR(a) ((scpu64_hwenable() || !reg_emul)?LOAD_ADDR((a) + 0xf80000):LOAD_ADDR(a))
+#define LOAD_INT_ADDR(addr)                        \
+    if (scpu64_hwenable() || !reg_emul) {          \
+        reg_pc = LOAD_LONG(addr + 0xf80000);       \
+        reg_pc |= LOAD_LONG(addr + 0xf80001) << 8; \
+    } else {                                       \
+        reg_pc = LOAD_LONG(addr);                  \
+        reg_pc |= LOAD_LONG(addr + 1) << 8;        \
+    }
 /* ------------------------------------------------------------------------- */
 
 #include "../main65816cpu.c"
