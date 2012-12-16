@@ -1260,7 +1260,7 @@
               if (tmp2 > 0x9) {                                                                      \
                   tmp += 0x6;                                                                        \
               }                                                                                      \
-              if (tmp > 0x90) {                                                                      \
+              if (tmp > 0x99) {                                                                      \
                   tmp += 0x60;                                                                       \
               }                                                                                      \
           } else {                                                                                   \
@@ -1282,14 +1282,14 @@
                   tmp += 0x06;                                                                       \
               }                                                                                      \
               tmp2 = (reg_c & 0x0f00) + (tmp_value & 0x0f00) + tmp;                                  \
-              if (tmp > 0x90) {                                                                      \
+              if (tmp > 0x99) {                                                                      \
                   tmp2 += 0x60;                                                                      \
               }                                                                                      \
               tmp = (reg_c & 0xf000) + (tmp_value & 0xf000) + tmp2;                                  \
-              if (tmp2 > 0x900) {                                                                    \
+              if (tmp2 > 0x999) {                                                                    \
                   tmp += 0x600;                                                                      \
               }                                                                                      \
-              if (tmp > 0x9000) {                                                                    \
+              if (tmp > 0x9999) {                                                                    \
                   tmp += 0x6000;                                                                     \
               }                                                                                      \
           } else {                                                                                   \
