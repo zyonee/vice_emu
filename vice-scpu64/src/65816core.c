@@ -1243,7 +1243,7 @@
      machines (eg. the C128) might depend on this.
 */
 
-#define ADCSBC(load_func, invert)                                                                    \
+#define ADC(load_func)                                                                               \
   do {                                                                                               \
       unsigned int tmp_value;                                                                        \
       unsigned int tmp, tmp2;                                                                        \
@@ -1251,9 +1251,6 @@
       tmp = LOCAL_CARRY();                                                                           \
       if (LOCAL_65816_M()) {                                                                         \
           load_func(tmp_value, 1);                                                                   \
-          if (invert) {                                                                              \
-              tmp_value ^= 0xff;                                                                     \
-          }                                                                                          \
           if (LOCAL_DECIMAL()) {                                                                     \
               tmp2  = (reg_a & 0x0f) + (tmp_value & 0x0f) + tmp;                                     \
               tmp = (reg_a & 0xf0) + (tmp_value & 0xf0) + tmp2;                                      \
@@ -1266,20 +1263,17 @@
           } else {                                                                                   \
               tmp += tmp_value + reg_a;                                                              \
           }                                                                                          \
-          LOCAL_SET_OVERFLOW(~(reg_a ^ tmp_value) & (reg_a ^ tmp) & 0x80);                           \
           LOCAL_SET_CARRY(tmp & 0x100);                                                              \
+          LOCAL_SET_OVERFLOW(~(reg_a ^ tmp_value) & (reg_a ^ tmp) & 0x80);                           \
           LOCAL_SET_NZ(tmp, 1);                                                                      \
           reg_a = tmp;                                                                               \
       } else {                                                                                       \
           load_func(tmp_value, 0);                                                                   \
-          if (invert) {                                                                              \
-              tmp_value ^= 0xffff;                                                                   \
-          }                                                                                          \
           if (LOCAL_DECIMAL()) {                                                                     \
               tmp2 = (reg_c & 0x000f) + (tmp_value & 0x000f) + tmp;                                  \
               tmp = (reg_c & 0x00f0) + (tmp_value & 0x00f0) + tmp2;                                  \
               if (tmp2 > 0x9) {                                                                      \
-                  tmp += 0x06;                                                                       \
+                  tmp += 0x6;                                                                        \
               }                                                                                      \
               tmp2 = (reg_c & 0x0f00) + (tmp_value & 0x0f00) + tmp;                                  \
               if (tmp > 0x99) {                                                                      \
@@ -1293,16 +1287,14 @@
                   tmp += 0x6000;                                                                     \
               }                                                                                      \
           } else {                                                                                   \
-              tmp += reg_c + tmp_value;                                                              \
+              tmp += tmp_value + reg_c;                                                              \
           }                                                                                          \
-          LOCAL_SET_OVERFLOW(~(reg_c ^ tmp_value) & (reg_c ^ tmp) & 0x8000);                         \
           LOCAL_SET_CARRY(tmp & 0x10000);                                                            \
+          LOCAL_SET_OVERFLOW(~(reg_c ^ tmp_value) & (reg_c ^ tmp) & 0x8000);                         \
           LOCAL_SET_NZ(tmp, 0);                                                                      \
           reg_c = tmp;                                                                               \
       }                                                                                              \
   } while (0)
-
-#define ADC(load_func) ADCSBC(load_func, 0)
 
 #define LOGICAL(load_func, logic)       \
   do {                                  \
@@ -1967,7 +1959,60 @@
       JUMP(reg_pc);              \
   } while (0)
 
-#define SBC(load_func) ADCSBC(load_func, 1)
+#define SBC(load_func)                                                                               \
+  do {                                                                                               \
+      unsigned int tmp_value;                                                                        \
+      unsigned int tmp, tmp2;                                                                        \
+                                                                                                     \
+      tmp = LOCAL_CARRY();                                                                           \
+      if (LOCAL_65816_M()) {                                                                         \
+          load_func(tmp_value, 1);                                                                   \
+          if (LOCAL_DECIMAL()) {                                                                     \
+              tmp2  = (reg_a & 0x0f) - (tmp_value & 0x0f) + !tmp;                                    \
+              tmp = (reg_a & 0xf0) - (tmp_value & 0xf0) + tmp2;                                      \
+              if (tmp2 > 0xff) {                                                                     \
+                  tmp -= 0x6;                                                                        \
+              }                                                                                      \
+              if (tmp > 0xff) {                                                                      \
+                  tmp -= 0x60;                                                                       \
+              }                                                                                      \
+              LOCAL_SET_CARRY(!(tmp & 0x100));                                                       \
+          } else {                                                                                   \
+              tmp += (tmp_value ^ 0xff) + reg_a;                                                     \
+              LOCAL_SET_CARRY(tmp & 0x100);                                                          \
+          }                                                                                          \
+          LOCAL_SET_OVERFLOW((reg_a ^ tmp_value) & (reg_a ^ tmp) & 0x80);                            \
+          LOCAL_SET_NZ(tmp, 1);                                                                      \
+          reg_a = tmp;                                                                               \
+      } else {                                                                                       \
+          load_func(tmp_value, 0);                                                                   \
+          if (LOCAL_DECIMAL()) {                                                                     \
+              tmp2 = (reg_c & 0x000f) - (tmp_value & 0x000f) + !tmp;                                 \
+              tmp = (reg_c & 0x00f0) - (tmp_value & 0x00f0) + tmp2;                                  \
+              if (tmp2 > 0xffff) {                                                                   \
+                  tmp -= 0x6;                                                                        \
+              }                                                                                      \
+              tmp2 = (reg_c & 0x0f00) - (tmp_value & 0x0f00) + tmp;                                  \
+              if (tmp > 0xffff) {                                                                    \
+                  tmp2 -= 0x60;                                                                      \
+              }                                                                                      \
+              tmp = (reg_c & 0xf000) - (tmp_value & 0xf000) + tmp2;                                  \
+              if (tmp2 > 0xffff) {                                                                   \
+                  tmp -= 0x600;                                                                      \
+              }                                                                                      \
+              if (tmp > 0xffff) {                                                                    \
+                  tmp -= 0x6000;                                                                     \
+              }                                                                                      \
+              LOCAL_SET_CARRY(!(tmp & 0x10000));                                                     \
+          } else {                                                                                   \
+              tmp += (tmp_value ^ 0xffff) + reg_c;                                                   \
+              LOCAL_SET_CARRY(tmp & 0x10000);                                                        \
+          }                                                                                          \
+          LOCAL_SET_OVERFLOW((reg_c ^ tmp_value) & (reg_c ^ tmp) & 0x8000);                          \
+          LOCAL_SET_NZ(tmp, 0);                                                                      \
+          reg_c = tmp;                                                                               \
+      }                                                                                              \
+  } while (0)
 
 #undef SEC    /* defined in time.h on SunOS. */
 #define SEC()             \
