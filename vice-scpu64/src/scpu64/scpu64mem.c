@@ -179,20 +179,20 @@ void mem_pla_config_changed(void)
 
 BYTE zero_read(WORD addr)
 {
-    switch ((BYTE)addr) {
-        case 0:
-            return mem_pport_dir;
-        case 1:
-            return mem_pport_data;
+    switch (addr) {
+    case 0:
+        return mem_pport_dir;
+    case 1:
+        return mem_pport_data;
     }
 
-    return mem_ram[addr & 0xff];
+    return mem_sram[addr];
 }
 void zero_store(WORD addr, BYTE value)
 {
     mem_sram[addr] = value;
 
-    switch ((BYTE)addr) {
+    switch (addr) {
         case 0:
             if (vbank == 0) {
                 vicii_mem_vbank_store((WORD)0, vicii_read_phi1_lowlevel());
@@ -306,7 +306,7 @@ void mem_store2(DWORD addr, BYTE value)
     case 0xfe0000:
         return;
     case 0x000000:
-        if (addr & 0xfffffe) {
+        if (addr & 0xfffe) {
             if (addr < SCPU64_RAM_SIZE) {
                 mem_ram[addr] = value;
             }
@@ -336,7 +336,7 @@ BYTE mem_read2(DWORD addr)
     case 0xfe0000:
         return scpu64memrom_scpu64_rom[addr & (SCPU64_SCPU64_ROM_SIZE-1) & 0x7ffff];
     case 0x000000:
-        if (addr & 0xfffffe) {
+        if (addr & 0xfffe) {
             return mem_sram[addr];
         }
         return zero_read(addr);
@@ -551,7 +551,7 @@ static BYTE scpu64_d200_read(WORD addr)
 
 static void scpu64_d200_store(WORD addr, BYTE value)
 {
-    if (reg_hwenable) {
+    if (reg_hwenable || addr == 0xd27e) {
         mem_sram[0x10000 + addr] = value;
     }
 }
@@ -606,6 +606,8 @@ static BYTE scpu64io_d000_peek(WORD addr)
 void scpu64io_d000_store(WORD addr, BYTE value)
 {
     scpu64_clock_write_stretch();
+
+    mem_sram[0x10000 + addr] = value;
     if ((addr >= 0xd071 && addr < 0xd080) || (addr >= 0xd0b0 && addr < 0xd0c0)) {
         scpu64_hardware_store(addr, value);
     } else {
@@ -623,6 +625,7 @@ BYTE scpu64io_d100_read(WORD addr)
 void scpu64io_d100_store(WORD addr, BYTE value)
 {
     scpu64_clock_write_stretch();
+    mem_sram[0x10000 + addr] = value;
     c64io_d100_store(addr, value);
 }
 
@@ -662,6 +665,7 @@ BYTE scpu64io_d400_read(WORD addr)
 void scpu64io_d400_store(WORD addr, BYTE value)
 {
     scpu64_clock_write_stretch();
+    mem_sram[0x10000 + addr] = value;
     c64io_d400_store(addr, value);
 }
 
@@ -675,6 +679,7 @@ BYTE scpu64io_d500_read(WORD addr)
 void scpu64io_d500_store(WORD addr, BYTE value)
 {
     scpu64_clock_write_stretch();
+    mem_sram[0x10000 + addr] = value;
     c64io_d500_store(addr, value);
 }
 
@@ -714,6 +719,7 @@ BYTE scpu64_cia1_read(WORD addr)
 void scpu64_cia1_store(WORD addr, BYTE value)
 {
     scpu64_clock_write_stretch();
+    mem_sram[0x10000 + addr] = value;
     cia1_store(addr, value);
 }
 
@@ -727,6 +733,7 @@ BYTE scpu64_cia2_read(WORD addr)
 void scpu64_cia2_store(WORD addr, BYTE value)
 {
     scpu64_clock_write_stretch();
+    mem_sram[0x10000 + addr] = value;
     cia2_store(addr, value);
 }
 
