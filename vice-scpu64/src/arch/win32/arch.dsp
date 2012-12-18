@@ -305,6 +305,10 @@ SOURCE=.\rs232net.c
 # End Source File
 # Begin Source File
 
+SOURCE=.\scpu64ui.c
+# End Source File
+# Begin Source File
+
 SOURCE=.\signals.c
 # End Source File
 # Begin Source File

@@ -203,6 +203,7 @@ noinst_HEADERS = \
 	romset.h \
 	rs232drv.h \
 	rsuser.h \
+	scpu64ui.h \
 	screenshot.h \
 	serial.h \
 	sidcart.h \
