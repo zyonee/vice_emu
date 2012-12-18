@@ -335,6 +335,7 @@ void mem_store2(DWORD addr, BYTE value)
         if (SCPU64_SIMM_SIZE > 0 && addr < SCPU64_SIMM_SIZE + 0xf60000) {
             mem_simm_ram[addr & 0x1ffff] = value;
         } 
+        return;
     case 0xf80000:
     case 0xfa0000:
     case 0xfc0000:
