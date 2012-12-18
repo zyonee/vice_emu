@@ -93,6 +93,8 @@ libarch_a_SOURCES = \
 	pointer.h \
 	private.h \
 	rs232.c \
+	scpu64ui.c \
+	scpu64uires.h \
 	screen-shot.c \
 	screen-shot.h \
 	signals.c \
