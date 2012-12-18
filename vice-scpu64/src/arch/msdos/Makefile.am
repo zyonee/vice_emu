@@ -60,6 +60,7 @@ libarch_a_SOURCES = \
 	parsid.c \
 	petui.c \
 	plus4ui.c \
+	scpu64ui.c \
 	signals.c \
 	socketimpl.h \
 	statusbar.c \
