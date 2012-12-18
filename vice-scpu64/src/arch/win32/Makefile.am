@@ -124,6 +124,7 @@ libarch_a_SOURCES = \
 	rs232dev.h \
 	rs232net.c \
 	rs232net.h \
+	scpu64ui.c \
 	signals.c \
 	socketimpl.h \
 	statusbar.c \
