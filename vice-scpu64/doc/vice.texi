@@ -778,6 +778,24 @@ The different settings are described in @pxref{CBM-II model}.
 
 The SCPU64 emulates a C64 equiped with a SuperCPU64 V2.
 
+@itemize @bullet
+@item 20 MHz asynchronous single cycle 65816 CPU core with proper dummy and invalid cycle handling.
+@item 128 KiB static RAM, 16 MiB SIMM RAM, 128 KiB EPROM emulated and their respective timing details.
+@item All RAM optimization configurations supported with write buffer.
+@item I/O area access delays, write through to SRAM implemented.
+@item Memory mappings including cartridge and boot memory map and kernal shadow.
+@item Hardware registers and switches implemented.
+@end itemize
+
+Still to do:
+
+@itemize @bullet
+@item SIMM RAM extra 7.5 cycle refresh delay every 10us missing.
+@item DOS memory map does not exists.
+@item RamLink hardware registers flag does not exists.
+@item CPU ABORT support for ``reset'' button
+@end itemize
+
 @node Keyboard emulation, Joystick emulation, SCPU64 emulator features, Preface
 @section The keyboard emulation
 
