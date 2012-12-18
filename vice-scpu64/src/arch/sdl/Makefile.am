@@ -175,6 +175,7 @@ libarch_a_SOURCES = \
 	xcbm2_ui.c \
 	xpet_ui.c \
 	xplus4_ui.c \
+	xscpu64_ui.c \
 	xvic_ui.c
 
 EXTRA_DIST = \
