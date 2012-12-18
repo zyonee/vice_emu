@@ -214,6 +214,9 @@ static inline BYTE load_long(DWORD addr)
 
 #define CPU_ADDITIONAL_RESET() (buffer_finish = maincpu_clk, buffer_finish_half = 0)
 
+#define FETCH_PARAM_DUMMY(addr) scpu64_clock_add(&maincpu_clk, 1)
+#define LOAD_LONG_DUMMY(addr) scpu64_clock_add(&maincpu_clk, 1)
+
 #define LOAD_INT_ADDR(addr)                        \
     if (scpu64_interrupt_reroute()) {              \
         reg_pc = LOAD_LONG(addr + 0xf80000);       \
