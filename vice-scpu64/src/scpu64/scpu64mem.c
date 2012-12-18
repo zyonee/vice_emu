@@ -281,20 +281,33 @@ static void ram_store_mirrored(WORD addr, BYTE value)
 static void ram_hi_store_vbank(WORD addr, BYTE value)
 {
     mem_sram[addr] = value;
-    scpu64_clock_write_stretch();
-    vicii_mem_vbank_3fxx_store(addr, value);
 
     if (addr == 0xff00) {
+        scpu64_clock_write_stretch_io_long();
         reu_dma(-1);
+    } else {
+        scpu64_clock_write_stretch();
     }
+    vicii_mem_vbank_3fxx_store(addr, value);
 }
 
 static void ram_hi_store_mirrored(WORD addr, BYTE value)
 {
     mem_sram[addr] = value;
-    scpu64_clock_write_stretch();
-    mem_ram[addr] = value;
     if (addr == 0xff00) {
+        scpu64_clock_write_stretch_io_long();
+        reu_dma(-1);
+    } else {
+        scpu64_clock_write_stretch();
+    }
+    mem_ram[addr] = value;
+}
+
+static void ram_hi_store(WORD addr, BYTE value)
+{
+    mem_sram[addr] = value;
+    if (addr == 0xff00) {
+        scpu64_clock_write_stretch_io_long();
         reu_dma(-1);
     }
 }
@@ -616,7 +629,7 @@ BYTE scpu64io_d000_read(WORD addr)
     if ((addr & 0xfff0) == 0xd0b0) {
         return scpu64_hardware_read(addr); /* not an i/o read! */
     }
-    scpu64_clock_read_stretch();
+    scpu64_clock_read_stretch_io();
     return c64io_d000_read(addr); /* i/o read */
 }
 
@@ -643,13 +656,13 @@ void scpu64io_d000_store(WORD addr, BYTE value)
 
 BYTE scpu64io_d100_read(WORD addr)
 {
-    scpu64_clock_read_stretch();
+    scpu64_clock_read_stretch_io();
     return c64io_d100_read(addr); /* i/o read */
 }
 
 void scpu64io_d100_store(WORD addr, BYTE value)
 {
-    scpu64_clock_write_stretch();
+    scpu64_clock_write_stretch_io();
     mem_sram[0x10000 + addr] = value;
     c64io_d100_store(addr, value);
 }
@@ -678,51 +691,51 @@ void scpu64io_d300_store(WORD addr, BYTE value)
 
 BYTE scpu64io_d400_read(WORD addr)
 {
-    scpu64_clock_read_stretch();
+    scpu64_clock_read_stretch_io();
     return c64io_d400_read(addr); /* i/o read */
 }
 
 void scpu64io_d400_store(WORD addr, BYTE value)
 {
-    scpu64_clock_write_stretch();
+    scpu64_clock_write_stretch_io();
     mem_sram[0x10000 + addr] = value;
     c64io_d400_store(addr, value);
 }
 
 BYTE scpu64io_d500_read(WORD addr)
 {
-    scpu64_clock_read_stretch();
+    scpu64_clock_read_stretch_io();
     return c64io_d500_read(addr); /* i/o read */
 }
 
 void scpu64io_d500_store(WORD addr, BYTE value)
 {
-    scpu64_clock_write_stretch();
+    scpu64_clock_write_stretch_io();
     mem_sram[0x10000 + addr] = value;
     c64io_d500_store(addr, value);
 }
 
 BYTE scpu64io_d600_read(WORD addr)
 {
-    scpu64_clock_read_stretch();
+    scpu64_clock_read_stretch_io();
     return c64io_d600_read(addr); /* i/o read */
 }
 
 void scpu64io_d600_store(WORD addr, BYTE value)
 {
-    scpu64_clock_write_stretch();
+    scpu64_clock_write_stretch(); /* not i/o ! */
     c64io_d600_store(addr, value);
 }
 
 BYTE scpu64io_d700_read(WORD addr)
 {
-    scpu64_clock_read_stretch();
+    scpu64_clock_read_stretch_io();
     return c64io_d700_read(addr); /* i/o read */
 }
 
 void scpu64io_d700_store(WORD addr, BYTE value)
 {
-    scpu64_clock_write_stretch();
+    scpu64_clock_write_stretch_io();
     c64io_d700_store(addr, value);
 }
 
@@ -739,63 +752,71 @@ void scpu64io_colorram_store(WORD addr, BYTE value)
 
 BYTE scpu64_cia1_read(WORD addr)
 {
-    scpu64_clock_read_stretch();
+    scpu64_clock_read_stretch_io();
     return cia1_read(addr); /* i/o read */
 }
 
 void scpu64_cia1_store(WORD addr, BYTE value)
 {
     mem_sram[0x10000 + addr] = value;
-    scpu64_clock_write_stretch_io_slow();
+    scpu64_clock_write_stretch_io_cia();
     cia1_store(addr, value);
 }
 
 BYTE scpu64_cia2_read(WORD addr)
 {
-    scpu64_clock_read_stretch();
+    scpu64_clock_read_stretch_io();
     return cia2_read(addr); /* i/o read */
 }
 
 void scpu64_cia2_store(WORD addr, BYTE value)
 {
     mem_sram[0x10000 + addr] = value;
-    scpu64_clock_write_stretch_io_slow();
+    scpu64_clock_write_stretch_io_cia();
     cia2_store(addr, value);
 }
 
 BYTE scpu64io_de00_read(WORD addr)
 {
-    scpu64_clock_read_stretch();
+    scpu64_clock_read_stretch_io();
     return c64io_de00_read(addr); /* i/o read */
 }
 
 void scpu64io_de00_store(WORD addr, BYTE value)
 {
-    scpu64_clock_write_stretch();
+    scpu64_clock_write_stretch_io();
     c64io_de00_store(addr, value);
 }
 
 BYTE scpu64io_df00_read(WORD addr)
 {
-    scpu64_clock_read_stretch();
+    scpu64_clock_read_stretch_io();
     return c64io_df00_read(addr); /* i/o read */
 }
 
 void scpu64io_df00_store(WORD addr, BYTE value)
 {
-    scpu64_clock_write_stretch();
+    switch (addr) {
+    case 0xdf01:
+    case 0xdf21:
+        scpu64_clock_write_stretch_io_long();
+        break;
+    default:
+        scpu64_clock_write_stretch_io();
+        break;
+    }
     c64io_df00_store(addr, value);
 }
 
 BYTE scpu64_roml_read(WORD addr)
 {
-    scpu64_clock_read_stretch();
+    scpu64_clock_read_stretch_io();
     return roml_read(addr); /* i/o read */
 }
 
 BYTE scpu64_romh_read(WORD addr)
 {
-    scpu64_clock_read_stretch();
+    scpu64_clock_read_stretch_io();
     return romh_read(addr); /* i/o read */
 }
 
@@ -898,6 +919,8 @@ void mem_initialize_memory(void)
                     } else { /* nothing to see here */
                         if (j == 0) {
                             mem_write_tab[k + l * NUM_VBANKS][i][j] = zero_store;
+                        } else if (j == 0xff) {
+                            mem_write_tab[k + l * NUM_VBANKS][i][j] = ram_hi_store;
                         } else {
                             mem_write_tab[k + l * NUM_VBANKS][i][j] = ram_store;
                         }

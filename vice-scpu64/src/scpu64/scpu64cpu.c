@@ -108,7 +108,7 @@ void scpu64_clock_readwrite_stretch_eprom(void)
     }
 }
 
-void scpu64_clock_read_stretch(void)
+void scpu64_clock_read_stretch_io(void)
 {
     if (fastmode) {
         wait_buffer();
@@ -120,7 +120,7 @@ void scpu64_clock_read_stretch(void)
     }
 }
 
-void scpu64_clock_write_stretch_io_slow(void)
+void scpu64_clock_write_stretch_io_cia(void)
 {
     if (fastmode) {
         wait_buffer();
@@ -137,6 +137,18 @@ void scpu64_clock_write_stretch_io(void)
     if (fastmode) {
         wait_buffer();
         while (maincpu_accu < 31730000) { /* measured */
+            maincpu_accu += maincpu_diff;
+        }
+        maincpu_clk++;
+        maincpu_accu -= 20600000;
+    }
+}
+
+void scpu64_clock_write_stretch_io_long(void)
+{
+    if (fastmode) {
+        wait_buffer();
+        while (maincpu_accu < 39000000) { /* measured */
             maincpu_accu += maincpu_diff;
         }
         maincpu_clk++;
