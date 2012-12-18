@@ -49,7 +49,6 @@
 #include "c64keyboard.h"
 #include "scpu64mem.h"
 #include "c64rsuser.h"
-#include "c64ui.h"
 #include "cartio.h"
 #include "cartridge.h"
 #include "cia.h"
@@ -81,6 +80,8 @@
 #include "resources.h"
 #include "rs232drv.h"
 #include "rsuser.h"
+#include "scpu64cpu.h"
+#include "scpu64ui.h"
 #include "screenshot.h"
 #include "serial.h"
 #include "sid-cmdline-options.h"
@@ -96,7 +97,6 @@
 #include "video.h"
 #include "video-sound.h"
 #include "vsync.h"
-#include "scpu64cpu.h"
 
 #ifdef HAVE_MOUSE
 #include "mouse.h"
@@ -528,11 +528,7 @@ int machine_specific_init(void)
 
     /* Initialize the C64-specific part of the UI.  */
     if (!console_mode) {
-        if (machine_class == VICE_MACHINE_C64SC) {
-            c64scui_init();
-        } else {
-            c64ui_init();
-        }
+        scpu64ui_init();
     }
 
     /* Initialize glue logic.  */
@@ -614,7 +610,7 @@ void machine_specific_shutdown(void)
     mouse_shutdown();
 #endif
 
-    c64ui_shutdown();
+    scpu64ui_shutdown();
 }
 
 void machine_handle_pending_alarms(int num_write_cycles)
