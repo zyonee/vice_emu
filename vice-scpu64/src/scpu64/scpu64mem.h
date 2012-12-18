@@ -48,7 +48,6 @@ extern void mem_set_vbank(int new_vbank);
 
 extern BYTE ram_read(WORD addr);
 extern void ram_store(WORD addr, BYTE value);
-extern void ram_hi_store(WORD addr, BYTE value);
 
 extern BYTE chargen_read(WORD addr);
 extern void chargen_store(WORD addr, BYTE value);
@@ -110,5 +109,7 @@ extern void mem_store2(DWORD addr, BYTE value);
 extern BYTE mem_read2(DWORD addr);
 
 extern void scpu64_mem_init(void);
+
+extern void scpu64_hardware_reset(void);
 
 #endif

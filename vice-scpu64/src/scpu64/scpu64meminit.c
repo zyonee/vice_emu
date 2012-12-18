@@ -228,26 +228,16 @@ void scpu64meminit(unsigned int base)
             for (i = 0x80; i <= 0x9f; i++) {
                 mem_read_tab_set(base + j, i, scpu64_roml_read);
                 mem_read_base_set(base + j, i, NULL);
-                mem_set_write_hook(base + j, i, roml_no_ultimax_store);
             }
         }
     }
 
-    /* Setup write Hook for when ROML is NOT selected at $8000-$9FFF */
-    for (j = 0; j < 32; j++) {
-        if (!scpu64meminit_roml_config[j]) {
-            for (i = 0x80; i <= 0x9f; i++) {
-                mem_set_write_hook(base + j, i, raml_no_ultimax_store);
-            }
-        }
-    }
     /* Setup ROMH at $A000-$BFFF */
     for (j = 24; j < 32; j++) {
         if (scpu64meminit_romh_config[j]) {
             for (i = 0xa0; i <= 0xbf; i++) {
                 mem_read_tab_set(base + j, i, scpu64_romh_read);
                 mem_read_base_set(base + j, i, NULL);
-                mem_set_write_hook(base + j, i, romh_no_ultimax_store);
             }
         }
     }

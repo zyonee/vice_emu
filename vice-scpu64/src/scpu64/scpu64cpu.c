@@ -55,6 +55,8 @@
 
 static int fastmode = 1;
 static int half_cycles;
+static int buffer_finish_half;
+static CLOCK buffer_finish;
 int scpu64_emulation_mode;
 
 int scpu64_get_half_cycle(void)
@@ -95,32 +97,72 @@ int scpu64_get_fastmode(void)
     return fastmode;
 }
 
-/* if half cycle is not 19, add extra half cycles to stretch */
+static inline void wait_buffer(void)
+{
+    if (buffer_finish > maincpu_clk || (buffer_finish == maincpu_clk && buffer_finish_half > half_cycles)) {
+        maincpu_clk = buffer_finish;
+        half_cycles = buffer_finish_half;
+    }
+}
+
 void scpu64_clock_read_stretch(void)
 {
     if (fastmode) {
-        half_cycles = 19;
-    }
-}
-
-/* add 1 full cycle for 2 cycle stretch if rmw,
-   otherwise add half cycle for 1 cycle stretch */
-void scpu64_clock_write_stretch(void)
-{
-    if (maincpu_rmw_flag == 0) {
-        /* subtract a (half) cycle and use the read stretch to handle it */
-        scpu64_clock_add(&maincpu_clk, -1);
-        scpu64_clock_read_stretch();
-
-        /* add previously subtracted (half) cycle */
-        scpu64_clock_add(&maincpu_clk, 1);
-    } else {
-        if (vicii.fastmode != 19) {
-            /* handle I/O access stretch for rmw */
+        wait_buffer();
+        if (half_cycles > 13) {
             maincpu_clk++;
         }
+        maincpu_clk++;
+        half_cycles = 2; /* measured, don't change */
     }
 }
+
+void scpu64_clock_write_stretch_io_slow(void)
+{
+    if (fastmode) {
+        wait_buffer();
+//        buffer_finish = maincpu_clk + 2;
+//        buffer_finish_half = 10;
+        if (half_cycles > 12) {
+            maincpu_clk++;
+        }
+        maincpu_clk++;
+        maincpu_clk++;
+        half_cycles = 7; /* measured, don't change */
+    }
+}
+
+void scpu64_clock_write_stretch_io(void)
+{
+    if (fastmode) {
+        wait_buffer();
+        if (half_cycles > 13) {
+            maincpu_clk++;
+        }
+        maincpu_clk++;
+        half_cycles = 5; /* measured, don't change */
+    }
+}
+
+void scpu64_clock_write_stretch(void)
+{
+    if (fastmode) {
+        wait_buffer();
+        buffer_finish = maincpu_clk + 1;
+        buffer_finish_half = 3;
+    }
+}
+
+static void clk_overflow_callback(CLOCK sub, void *unused_data)
+{
+    if (buffer_finish > sub) {
+        buffer_finish -= sub;
+    } else {
+        buffer_finish = 0;
+    }
+}
+
+#define CPU_ADDITIONAL_INIT() clk_guard_add_callback(maincpu_clk_guard, clk_overflow_callback, NULL)
 
 /* SCPU64 needs external reg_pc */
 #define NEED_REG_PC
@@ -169,6 +211,8 @@ static inline BYTE load_long(DWORD addr)
 #define EMULATION_MODE_CHANGED scpu64_emulation_mode = reg_emul
 
 #define CLK_ADD(clock, amount) scpu64_clock_add(&clock, amount)
+
+#define CPU_ADDITIONAL_RESET() (buffer_finish = maincpu_clk, buffer_finish_half = 0)
 
 #define LOAD_INT_ADDR(addr)                        \
     if (scpu64_interrupt_reroute()) {              \

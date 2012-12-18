@@ -32,6 +32,8 @@ void scpu64_set_fastmode(int mode);
 int scpu64_get_fastmode(void);
 void scpu64_clock_read_stretch(void);
 void scpu64_clock_write_stretch(void);
+void scpu64_clock_write_stretch_io(void);
+void scpu64_clock_write_stretch_io_slow(void);
 extern int scpu64_emulation_mode;
 
 #endif

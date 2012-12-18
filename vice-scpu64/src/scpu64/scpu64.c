@@ -567,7 +567,7 @@ int machine_specific_init(void)
     return 0;
 }
 
-/* C64-specific reset sequence.  */
+/* SCPU64-specific reset sequence.  */
 void machine_specific_reset(void)
 {
     serial_traps_reset();
@@ -589,7 +589,7 @@ void machine_specific_reset(void)
 
     cartridge_reset();
     drive_reset();
-    datasette_reset();
+    scpu64_hardware_reset();
 }
 
 void machine_specific_powerup(void)
