@@ -54,33 +54,25 @@
 /* ------------------------------------------------------------------------- */
 
 static int fastmode = 1;
-static int half_cycles;
-static int buffer_finish_half;
-static CLOCK buffer_finish;
+static CLOCK buffer_finish, buffer_finish_half;
+static CLOCK maincpu_diff, maincpu_accu;
 int scpu64_emulation_mode;
 
 int scpu64_get_half_cycle(void)
 {
     if (fastmode) {
-        return half_cycles;
+        return maincpu_accu / 1000000;
     }
     return -1;
 }
 
-static void scpu64_clock_add(CLOCK *clock, int amount)
+static inline void scpu64_clock_add(CLOCK *clock, int amount)
 {
     if (fastmode) {
-        half_cycles += amount;
-        if (amount > 0) {
-            while (half_cycles > 19) {
-                clock[0]++;
-                half_cycles -= 20;
-            }
-        } else {
-            while (half_cycles < 0) {
-                clock[0]--;
-                half_cycles += 20;
-            }
+        maincpu_accu += maincpu_diff * amount;
+        while (maincpu_accu > 20000000) {
+            clock[0]++;
+            maincpu_accu -= 20000000;
         }
     } else {
         clock[0] += amount;
@@ -99,9 +91,9 @@ int scpu64_get_fastmode(void)
 
 static inline void wait_buffer(void)
 {
-    if (buffer_finish > maincpu_clk || (buffer_finish == maincpu_clk && buffer_finish_half > half_cycles)) {
+    if (buffer_finish > maincpu_clk || (buffer_finish == maincpu_clk && buffer_finish_half > maincpu_accu)) {
         maincpu_clk = buffer_finish;
-        half_cycles = buffer_finish_half;
+        maincpu_accu = buffer_finish_half;
     }
 }
 
@@ -109,11 +101,11 @@ void scpu64_clock_read_stretch(void)
 {
     if (fastmode) {
         wait_buffer();
-        if (half_cycles > 13) {
-            maincpu_clk++;
+        while (maincpu_accu < 31730000) { /* measured */
+            maincpu_accu += maincpu_diff;
         }
+        maincpu_accu -= 20600000;
         maincpu_clk++;
-        half_cycles = 2; /* measured, don't change */
     }
 }
 
@@ -121,14 +113,11 @@ void scpu64_clock_write_stretch_io_slow(void)
 {
     if (fastmode) {
         wait_buffer();
-//        buffer_finish = maincpu_clk + 2;
-//        buffer_finish_half = 10;
-        if (half_cycles > 12) {
-            maincpu_clk++;
+        while (maincpu_accu < 56550000) { /* measured */
+            maincpu_accu += maincpu_diff;
         }
-        maincpu_clk++;
-        maincpu_clk++;
-        half_cycles = 7; /* measured, don't change */
+        maincpu_accu -= 40600000;
+        maincpu_clk += 2;
     }
 }
 
@@ -136,11 +125,11 @@ void scpu64_clock_write_stretch_io(void)
 {
     if (fastmode) {
         wait_buffer();
-        if (half_cycles > 13) {
-            maincpu_clk++;
+        while (maincpu_accu < 31730000) { /* measured */
+            maincpu_accu += maincpu_diff;
         }
         maincpu_clk++;
-        half_cycles = 5; /* measured, don't change */
+        maincpu_accu -= 20600000;
     }
 }
 
@@ -149,7 +138,7 @@ void scpu64_clock_write_stretch(void)
     if (fastmode) {
         wait_buffer();
         buffer_finish = maincpu_clk + 1;
-        buffer_finish_half = 3;
+        buffer_finish_half = 13000000;
     }
 }
 
@@ -212,7 +201,7 @@ static inline BYTE load_long(DWORD addr)
 
 #define CLK_ADD(clock, amount) scpu64_clock_add(&clock, amount)
 
-#define CPU_ADDITIONAL_RESET() (buffer_finish = maincpu_clk, buffer_finish_half = 0)
+#define CPU_ADDITIONAL_RESET() (buffer_finish = maincpu_clk, buffer_finish_half = 0, maincpu_accu = 0, maincpu_diff = machine_get_cycles_per_second())
 
 #define FETCH_PARAM_DUMMY(addr) scpu64_clock_add(&maincpu_clk, 1)
 #define LOAD_LONG_DUMMY(addr) scpu64_clock_add(&maincpu_clk, 1)

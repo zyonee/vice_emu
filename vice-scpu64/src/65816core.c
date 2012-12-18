@@ -95,10 +95,6 @@
 #define CLK_ADD(clock, amount) clock += amount
 #endif
 
-#ifndef REWIND_FETCH_OPCODE
-#define REWIND_FETCH_OPCODE(clock, amount) clock -= amount
-#endif
-
 /* ------------------------------------------------------------------------- */
 /* Hook for additional delay.  */
 
@@ -1567,7 +1563,6 @@
           COP_65816(p1);                                        \
       } else {                                                  \
           if (trap_result) {                                    \
-             REWIND_FETCH_OPCODE(CLK, CYCLES_2);                \
              SET_OPCODE(trap_result);                           \
              IMPORT_REGISTERS();                                \
              goto trap_skipped;                                 \
