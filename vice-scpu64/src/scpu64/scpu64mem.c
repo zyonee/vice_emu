@@ -333,6 +333,7 @@ void mem_store2(DWORD addr, BYTE value)
     switch (addr & 0xfe0000) {
     case 0xf60000:
         if (SCPU64_SIMM_SIZE > 0 && addr < SCPU64_SIMM_SIZE + 0xf60000) {
+            scpu64_clock_write_stretch_simm(addr);
             mem_simm_ram[addr & 0x1ffff] = value;
         } 
         return;
@@ -351,6 +352,7 @@ void mem_store2(DWORD addr, BYTE value)
         return;
     default:
         if (SCPU64_SIMM_SIZE > 0 && addr < SCPU64_SIMM_SIZE) {
+            scpu64_clock_write_stretch_simm(addr);
             mem_simm_ram[addr] = value;
         }
     }
@@ -361,6 +363,7 @@ BYTE mem_read2(DWORD addr)
     switch (addr & 0xfe0000) {
     case 0xf60000:
         if (SCPU64_SIMM_SIZE > 0) {
+            scpu64_clock_read_stretch_simm(addr);
             return mem_simm_ram[addr & (SCPU64_SIMM_SIZE-1) & 0x1ffff];
         }
         break;
@@ -377,6 +380,7 @@ BYTE mem_read2(DWORD addr)
         return zero_read(addr);
     default:
         if (SCPU64_SIMM_SIZE > 0 && addr < SCPU64_SIMM_SIZE) {
+            scpu64_clock_read_stretch_simm(addr);
             return mem_simm_ram[addr];
         }
         break;

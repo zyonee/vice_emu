@@ -153,6 +153,49 @@ void scpu64_clock_write_stretch(void)
     }
 }
 
+/* TODO: refresh */
+#define SIMM_ROW 2048
+
+static DWORD simm_cell;
+
+void scpu64_clock_read_stretch_simm(DWORD addr)
+{
+    if (fastmode) {
+        if (!((simm_cell ^ addr) & ~3)) {
+            return; /* same cell, no delay */
+        } else if ((simm_cell ^ addr) & ~(SIMM_ROW << 2)) {
+            /* different row, two and half delay */
+            maincpu_accu += maincpu_diff * 2 + (maincpu_diff >> 1);
+        } else if (!(((simm_cell + 4) ^ addr) & ~3)) {
+            simm_cell = addr;
+            return; /* next cell, no delay */
+        } else {
+            maincpu_accu += maincpu_diff;/* same row, one delay */
+        }
+        simm_cell = addr;
+        if (maincpu_accu > 20000000) {
+            maincpu_accu -= 20000000;
+            maincpu_clk++;
+        }
+    }
+}
+
+void scpu64_clock_write_stretch_simm(DWORD addr)
+{
+    if (fastmode) {
+        if ((simm_cell ^ addr) & ~(SIMM_ROW << 2)) {
+            maincpu_accu += maincpu_diff * 2;/* different row, two delay */
+        } else {
+            maincpu_accu += maincpu_diff;/* same row, one delay */
+        }
+        simm_cell = addr;
+        if (maincpu_accu > 20000000) {
+            maincpu_accu -= 20000000;
+            maincpu_clk++;
+        }
+    }
+}
+
 static void clk_overflow_callback(CLOCK sub, void *unused_data)
 {
     if (buffer_finish > sub) {

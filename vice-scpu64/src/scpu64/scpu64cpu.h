@@ -35,6 +35,8 @@ void scpu64_clock_readwrite_stretch_eprom(void);
 void scpu64_clock_write_stretch(void);
 void scpu64_clock_write_stretch_io(void);
 void scpu64_clock_write_stretch_io_slow(void);
+void scpu64_clock_read_stretch_simm(DWORD addr);
+void scpu64_clock_write_stretch_simm(DWORD addr);
 extern int scpu64_emulation_mode;
 
 #endif
