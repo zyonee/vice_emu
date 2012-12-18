@@ -339,6 +339,7 @@ void mem_store2(DWORD addr, BYTE value)
     case 0xfa0000:
     case 0xfc0000:
     case 0xfe0000:
+        scpu64_clock_readwrite_stretch_eprom();
         return;
     case 0x000000:
         if (addr & 0xfffe) {
@@ -366,6 +367,7 @@ BYTE mem_read2(DWORD addr)
     case 0xfa0000:
     case 0xfc0000:
     case 0xfe0000:
+        scpu64_clock_readwrite_stretch_eprom();
         return scpu64memrom_scpu64_rom[addr & (SCPU64_SCPU64_ROM_SIZE-1) & 0x7ffff];
     case 0x000000:
         if (addr & 0xfffe) {
@@ -946,7 +948,7 @@ void mem_mmu_translate(unsigned int addr, BYTE **base, int *start, int *limit)
     DWORD limits;
 
     if (addr & ~0xffff) {
-        if (addr >= 0xf80000) {
+        if (addr >= 0xf80000 && !scpu64_get_fastmode()) {
             *base = scpu64memrom_scpu64_rom + (addr & 0xff0000 & (SCPU64_SCPU64_ROM_SIZE-1));
             *limit = 0xfffd;
             *start = 0x0000;

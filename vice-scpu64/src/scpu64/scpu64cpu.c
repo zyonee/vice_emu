@@ -97,6 +97,17 @@ static inline void wait_buffer(void)
     }
 }
 
+void scpu64_clock_readwrite_stretch_eprom(void)
+{
+    if (fastmode) {
+        maincpu_accu += maincpu_diff * 3;
+        if (maincpu_accu > 20000000) {
+            maincpu_accu -= 20000000;
+            maincpu_clk++;
+        }
+    }
+}
+
 void scpu64_clock_read_stretch(void)
 {
     if (fastmode) {
