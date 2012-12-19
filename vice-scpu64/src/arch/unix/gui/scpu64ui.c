@@ -42,7 +42,6 @@
 #include "uiattach.h"
 #include "uic64cart.h"
 #include "uicommands.h"
-#include "uidatasette.h"
 #include "uidigimax.h"
 #include "uidqbb.h"
 #include "uidrive.h"
@@ -629,13 +628,9 @@ static ui_menu_entry_t scpu64_menu[] = {
     { NULL }
 };
 
-static ui_menu_entry_t x64_left_menu[] = {
+static ui_menu_entry_t xscpu64_left_menu[] = {
     { "", UI_MENU_TYPE_NONE,
       NULL, NULL, uiattach_disk_menu },
-    { "--", UI_MENU_TYPE_SEPARATOR,
-      NULL, NULL, uiattach_tape_menu },
-    { "", UI_MENU_TYPE_NONE,
-      NULL, NULL, ui_datasette_commands_menu },
     { "--", UI_MENU_TYPE_SEPARATOR,
       NULL, NULL, uiattach_smart_attach_menu },
     { "--", UI_MENU_TYPE_SEPARATOR,
@@ -663,7 +658,7 @@ static ui_menu_entry_t x64_left_menu[] = {
     { NULL }
 };
 
-static ui_menu_entry_t x64_right_menu[] = {
+static ui_menu_entry_t xscpu64_right_menu[] = {
     { "", UI_MENU_TYPE_NONE,
       NULL, NULL, ui_performance_settings_menu },
     { "--", UI_MENU_TYPE_SEPARATOR,
@@ -687,15 +682,11 @@ static ui_menu_entry_t x64_right_menu[] = {
     { NULL }
 };
 
-static ui_menu_entry_t x64_file_submenu[] = {
+static ui_menu_entry_t xscpu64_file_submenu[] = {
     { "", UI_MENU_TYPE_NONE,
       NULL, NULL, uiattach_smart_attach_menu },
     { "--", UI_MENU_TYPE_SEPARATOR,
       NULL, NULL, uiattach_disk_menu },
-    { "--", UI_MENU_TYPE_SEPARATOR,
-      NULL, NULL, uiattach_tape_menu },
-    { "", UI_MENU_TYPE_NONE,
-      NULL, NULL, ui_datasette_commands_menu },
     { "--", UI_MENU_TYPE_SEPARATOR,
       NULL, NULL, ui_c64cart_commands_menu },
     { "--", UI_MENU_TYPE_SEPARATOR,
@@ -710,14 +701,14 @@ static ui_menu_entry_t x64_file_submenu[] = {
 };
 
 #ifdef USE_GNOMEUI
-static ui_menu_entry_t x64_edit_submenu[] = {
+static ui_menu_entry_t xscpu64_edit_submenu[] = {
     { "", UI_MENU_TYPE_NONE,
       NULL, NULL, ui_edit_commands_submenu },
     { NULL }
 };
 #endif
 
-static ui_menu_entry_t x64_snapshot_submenu[] = {
+static ui_menu_entry_t xscpu64_snapshot_submenu[] = {
     { "", UI_MENU_TYPE_NONE,
       NULL, NULL, ui_snapshot_commands_submenu },
     { "--", UI_MENU_TYPE_SEPARATOR,
@@ -727,7 +718,7 @@ static ui_menu_entry_t x64_snapshot_submenu[] = {
     { NULL }
 };
 
-static ui_menu_entry_t x64_options_submenu[] = {
+static ui_menu_entry_t xscpu64_options_submenu[] = {
     { "", UI_MENU_TYPE_NONE,
       NULL, NULL, ui_performance_settings_menu },
     { "--", UI_MENU_TYPE_SEPARATOR,
@@ -739,7 +730,7 @@ static ui_menu_entry_t x64_options_submenu[] = {
     { NULL }
 };
 
-static ui_menu_entry_t x64_settings_submenu[] = {
+static ui_menu_entry_t xscpu64_settings_submenu[] = {
     { "", UI_MENU_TYPE_NONE,
       NULL, NULL, uikeyboard_settings_menu },
     { "", UI_MENU_TYPE_NONE,
@@ -757,19 +748,19 @@ static ui_menu_entry_t x64_settings_submenu[] = {
     { NULL }
 };
 
-static ui_menu_entry_t x64_main_menu[] = {
+static ui_menu_entry_t xscpu64_main_menu[] = {
     { N_("File"), UI_MENU_TYPE_NORMAL,
-      NULL, NULL, x64_file_submenu },
+      NULL, NULL, xscpu64_file_submenu },
 #ifdef USE_GNOMEUI
     { N_("Edit"), UI_MENU_TYPE_NORMAL,
-      NULL, NULL, x64_edit_submenu },
+      NULL, NULL, xscpu64_edit_submenu },
 #endif
     { N_("Snapshot"), UI_MENU_TYPE_NORMAL,
-      NULL, NULL, x64_snapshot_submenu },
+      NULL, NULL, xscpu64_snapshot_submenu },
     { N_("Options"), UI_MENU_TYPE_NORMAL,
-      NULL, NULL, x64_options_submenu },
+      NULL, NULL, xscpu64_options_submenu },
     { N_("Settings"), UI_MENU_TYPE_NORMAL,
-      NULL, NULL, x64_settings_submenu },
+      NULL, NULL, xscpu64_settings_submenu },
 #ifdef DEBUG
     { N_("Debug"), UI_MENU_TYPE_NORMAL,
       NULL, NULL, debug_settings_submenu },
@@ -781,17 +772,9 @@ static ui_menu_entry_t x64_main_menu[] = {
     { NULL }
 };
 
-static ui_menu_entry_t x64_speed_menu[] = {
+static ui_menu_entry_t xscpu64_speed_menu[] = {
     { "", UI_MENU_TYPE_NONE,
       NULL, NULL, ui_performance_settings_menu },
-    { NULL }
-};
-
-static ui_menu_entry_t x64_tape_menu[] = {
-    { "", UI_MENU_TYPE_NONE,
-      NULL, NULL, uiattach_tape_menu },
-    { "--", UI_MENU_TYPE_SEPARATOR,
-      NULL, NULL, datasette_control_submenu },
     { NULL }
 };
 
@@ -815,11 +798,10 @@ int scpu64ui_init(void)
     ui_set_application_icon(scpu64_icon_data);
     scpu64ui_dynamic_menu_create();
 
-    ui_set_left_menu(x64_left_menu);
-    ui_set_right_menu(x64_right_menu);
-    ui_set_topmenu(x64_main_menu);
-    ui_set_speedmenu(x64_speed_menu);
-    ui_set_tape_menu(x64_tape_menu);
+    ui_set_left_menu(xscpu64_left_menu);
+    ui_set_right_menu(xscpu64_right_menu);
+    ui_set_topmenu(xscpu64_main_menu);
+    ui_set_speedmenu(xscpu64_speed_menu);
 
     ui_set_drop_callback(uiattach_autostart_file);
 

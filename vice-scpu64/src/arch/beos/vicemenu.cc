@@ -117,7 +117,7 @@ BMenuBar *menu_create(int machine_class)
         uppermenu->AddSeparatorItem();
     }
 
-    if (machine_class != VICE_MACHINE_C64DTV && machine_class != VICE_MACHINE_VSID) {
+    if (machine_class != VICE_MACHINE_C64DTV && machine_class != VICE_MACHINE_VSID && machine_class != VICE_MACHINE_SCPU64) {
         uppermenu->AddItem(new BMenuItem("Attach Tape", new BMessage(MENU_ATTACH_TAPE), 'T'));
         uppermenu->AddItem(new BMenuItem("Detach Tape", new BMessage(MENU_DETACH_TAPE)));
         uppermenu->AddItem(menu = new BMenu("Datasette Control"));

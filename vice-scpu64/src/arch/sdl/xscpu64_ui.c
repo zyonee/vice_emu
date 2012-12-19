@@ -47,7 +47,6 @@
 #include "menu_snapshot.h"
 #include "menu_sound.h"
 #include "menu_speed.h"
-#include "menu_tape.h"
 #include "menu_tfe.h"
 #include "menu_video.h"
 #include "ui.h"
@@ -63,10 +62,6 @@ static const ui_menu_entry_t xscpu64_main_menu[] = {
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)drive_menu },
-    { "Tape",
-      MENU_ENTRY_SUBMENU,
-      submenu_callback,
-      (ui_callback_data_t)tape_menu },
     { "Cartridge",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
