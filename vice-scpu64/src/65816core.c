@@ -372,7 +372,6 @@
                     PUSH(reg_pc);                                              \
                     PUSH(LOCAL_STATUS());                                      \
                     LOAD_INT_ADDR(0xfffa);                                     \
-                    reg_dbr = 0;                                               \
                 } else {                                                       \
                     PUSH(reg_pbr);                                             \
                     PUSH(reg_pc >> 8);                                         \
@@ -403,7 +402,6 @@
                     PUSH(reg_pc);                                              \
                     PUSH(LOCAL_STATUS());                                      \
                     LOAD_INT_ADDR(0xfffe);                                     \
-                    reg_dbr = 0;                                               \
                 } else {                                                       \
                     PUSH(reg_pbr);                                             \
                     PUSH(reg_pc >> 8);                                         \
@@ -1402,7 +1400,6 @@
           PUSH(reg_pc);                \
           PUSH(LOCAL_STATUS());        \
           LOAD_INT_ADDR(0xfffe);       \
-          reg_dbr = 0;                 \
       } else {                         \
           PUSH(reg_pbr);               \
           PUSH(reg_pc >> 8);           \
@@ -1490,7 +1487,6 @@
           PUSH(reg_pc);                \
           PUSH(LOCAL_STATUS());        \
           LOAD_INT_ADDR(0xfff4);       \
-          reg_dbr = 0;                 \
       } else {                         \
           PUSH(reg_pbr);               \
           PUSH(reg_pc >> 8);           \
