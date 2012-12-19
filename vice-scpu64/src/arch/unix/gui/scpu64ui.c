@@ -40,7 +40,6 @@
 #include "sid.h"
 #include "uiapi.h"
 #include "uiattach.h"
-#include "uic64_256k.h"
 #include "uic64cart.h"
 #include "uicommands.h"
 #include "uidatasette.h"
@@ -67,8 +66,6 @@
 #include "uimouse.h"
 #include "uilightpen.h"
 #include "uiperipheraliec.h"
-#include "uiplus256k.h"
-#include "uiplus60k.h"
 #include "uiram.h"
 #include "uiramcart.h"
 #include "uiretroreplay.h"
@@ -472,13 +469,6 @@ UI_MENU_DEFINE_TOGGLE(UserportRTC)
 UI_MENU_DEFINE_TOGGLE(CartridgeReset)
 
 static ui_menu_entry_t io_extensions_submenu[] = {
-    { N_("256K RAM Expansion"), UI_MENU_TYPE_NORMAL,
-      NULL, NULL, c64_256k_submenu },
-    { N_("PLUS60K RAM Expansion"), UI_MENU_TYPE_NORMAL,
-      NULL, NULL, plus60k_submenu },
-    { N_("PLUS256K RAM Expansion"), UI_MENU_TYPE_NORMAL,
-      NULL, NULL, plus256k_submenu },
-    { "--", UI_MENU_TYPE_SEPARATOR },
     { CARTRIDGE_NAME_GEORAM, UI_MENU_TYPE_NORMAL,
       NULL, NULL, georam_c64_submenu },
     { CARTRIDGE_NAME_REU, UI_MENU_TYPE_NORMAL,

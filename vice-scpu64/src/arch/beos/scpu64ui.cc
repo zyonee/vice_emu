@@ -74,9 +74,6 @@ ui_menu_toggle scpu64_ui_menu_toggles[] = {
     { "IsepicCartridgeEnabled", MENU_TOGGLE_ISEPIC },
     { "IsepicSwitch", MENU_TOGGLE_ISEPIC_SWITCH },
     { "IsepicImageWrite", MENU_TOGGLE_ISEPIC_SWC },
-    { "PLUS60K", MENU_TOGGLE_PLUS60K },
-    { "PLUS256K", MENU_TOGGLE_PLUS256K },
-    { "C64_256K", MENU_TOGGLE_C64_256K },
     { "DIGIMAX", MENU_TOGGLE_DIGIMAX },
     { "MMC64", MENU_TOGGLE_MMC64 },
     { "MMC64_flashjumper", MENU_TOGGLE_MMC64_FLASHJUMPER },
@@ -124,20 +121,6 @@ ui_res_possible_values GeoRAMSize[] = {
 ui_res_possible_values RamCartSize[] = {
     { 64, MENU_RAMCART_SIZE_64 },
     { 128, MENU_RAMCART_SIZE_128 },
-    { -1, 0 }
-};
-
-ui_res_possible_values Plus60kBase[] = {
-    { 0xd040, MENU_PLUS60K_BASE_D040 },
-    { 0xd100, MENU_PLUS60K_BASE_D100 },
-    { -1, 0 }
-};
-
-ui_res_possible_values C64_256KBase[] = {
-    { 0xde00, MENU_C64_256K_BASE_DE00 },
-    { 0xde80, MENU_C64_256K_BASE_DE80 },
-    { 0xdf00, MENU_C64_256K_BASE_DF00 },
-    { 0xdf80, MENU_C64_256K_BASE_DF80 },
     { -1, 0 }
 };
 
@@ -263,8 +246,6 @@ ui_res_value_list scpu64_ui_res_values[] = {
     { "REUsize", ReuSize },
     { "GeoRAMsize", GeoRAMSize },
     { "RAMCARTsize", RamCartSize },
-    { "PLUS60Kbase", Plus60kBase },
-    { "C64_256Kbase", C64_256KBase },
     { "DIGIMAXbase", DigimaxBase },
     { "SFXSoundExpanderChip", SFXSoundExpanderChip },
     { "BurstMod", BurstMod },
@@ -400,15 +381,6 @@ void scpu64_ui_specific(void *msg, void *window)
             break;
         case MENU_ISEPIC_FILE:
             ui_select_file(B_SAVE_PANEL, ISEPIC_FILE, (void*)0);
-            break;
-        case MENU_PLUS60K_FILE:
-            ui_select_file(B_SAVE_PANEL, PLUS60K_FILE, (void*)0);
-            break;
-        case MENU_PLUS256K_FILE:
-            ui_select_file(B_SAVE_PANEL, PLUS256K_FILE, (void*)0);
-            break;
-        case MENU_C64_256K_FILE:
-            ui_select_file(B_SAVE_PANEL, C64_256K_FILE, (void*)0);
             break;
         case MENU_MMC64_BIOS_FILE:
             ui_select_file(B_OPEN_PANEL, MMC64_BIOS_FILE, (void*)0);

@@ -230,7 +230,6 @@ BEGIN
         POPUP "Cartridge/IO settings"
         BEGIN
             MENUITEM "", IDM_ACIA_SETTINGS
-            MENUITEM "", IDM_C64_256K_SETTINGS
             MENUITEM "", IDM_C64BURSTMOD_SETTINGS
             MENUITEM "", IDM_DIGIMAX_SETTINGS
             MENUITEM "", IDM_DQBB_SETTINGS
@@ -244,8 +243,6 @@ BEGIN
             MENUITEM "", IDM_MIDI_SETTINGS
             MENUITEM "", IDM_MMC64_SETTINGS
             MENUITEM "", IDM_MMCREPLAY_SETTINGS
-            MENUITEM "", IDM_PLUS60K_SETTINGS
-            MENUITEM "", IDM_PLUS256K_SETTINGS
             MENUITEM "", IDM_RAMCART_SETTINGS
             MENUITEM "", IDM_RR_SETTINGS
             MENUITEM "", IDM_REU_SETTINGS
@@ -663,9 +660,6 @@ BEGIN
   IDS_C64BURSTMOD_ENABLE        "Enable the C64 drive burst modification"
   IDS_C64BURSTMOD_CIA           "C64 drive burst modification CIA"
   IDS_MI_NETWORK_SETTINGS       "Netplay (experimental)..."
-  IDS_MI_PLUS60K_SETTINGS       "PLUS60K settings..."
-  IDS_MI_PLUS256K_SETTINGS      "PLUS256K settings..."
-  IDS_MI_C64_256K_SETTINGS      "256K settings..."
   IDS_MI_C64BURSTMOD_SETTINGS   "C64 drive burst modification settings..."
 END
 
@@ -698,9 +692,6 @@ BEGIN
   IDS_C64BURSTMOD_ENABLE        "Aktivér C64-drev burst-modifikation"
   IDS_C64BURSTMOD_CIA           "C64-drev burst-modifikation CIA"
   IDS_MI_NETWORK_SETTINGS       "Netværksspil (eksperimentelt)..."
-  IDS_MI_PLUS60K_SETTINGS       "PLUS60K-indstillinger..."
-  IDS_MI_PLUS256K_SETTINGS      "PLUS256K-indstillinger..."
-  IDS_MI_C64_256K_SETTINGS      "256k-indstillinger..."
   IDS_MI_C64BURSTMOD_SETTINGS   "C64-drev burst-modifikationsindstillinger..."
 END
 
@@ -733,9 +724,6 @@ BEGIN
   IDS_C64BURSTMOD_ENABLE        "C64 Laufwerk Burstmodifikation aktivieren"
   IDS_C64BURSTMOD_CIA           "C64 Laufwerk Burstmodifikation CIA"
   IDS_MI_NETWORK_SETTINGS       "Netplay (experimentell)..."
-  IDS_MI_PLUS60K_SETTINGS       "PLUS60K Einstellungen..."
-  IDS_MI_PLUS256K_SETTINGS      "PLUS256K Einstellungen..."
-  IDS_MI_C64_256K_SETTINGS      "256K Einstellungen..."
   IDS_MI_C64BURSTMOD_SETTINGS   "C64 Laufwerk Burstmodifkation Einstellungen..."
 END
 
@@ -768,9 +756,6 @@ BEGIN
   IDS_C64BURSTMOD_ENABLE        "Habilitar modificación Burst en Controlador C64"
   IDS_C64BURSTMOD_CIA           "Modificación Burst en CIA de controlador C64"
   IDS_MI_NETWORK_SETTINGS       "Juego en red (experimental)..."
-  IDS_MI_PLUS60K_SETTINGS       "Ajustes PLUS60K..."
-  IDS_MI_PLUS256K_SETTINGS      "Ajustes PLUS256K..."
-  IDS_MI_C64_256K_SETTINGS      "Ajustes 256K..."
   IDS_MI_C64BURSTMOD_SETTINGS   "Ajuste modificación Burst en controlador C64..."
 END
 
@@ -803,9 +788,6 @@ BEGIN
   IDS_C64BURSTMOD_ENABLE        "Enable the C64 drive burst modification"
   IDS_C64BURSTMOD_CIA           "C64 drive burst modification CIA"
   IDS_MI_NETWORK_SETTINGS       "Jeu en réseau (experimental)..."
-  IDS_MI_PLUS60K_SETTINGS       "PLUS60K settings..."
-  IDS_MI_PLUS256K_SETTINGS      "PLUS256K settings..."
-  IDS_MI_C64_256K_SETTINGS      "256K settings..."
   IDS_MI_C64BURSTMOD_SETTINGS   "C64 drive burst modification settings..."
 END
 
@@ -841,9 +823,6 @@ BEGIN
   IDS_C64BURSTMOD_ENABLE        "Enable the C64 drive burst modification"
   IDS_C64BURSTMOD_CIA           "C64 drive burst modification CIA"
   IDS_MI_NETWORK_SETTINGS       "Hálózati játék (kísérleti)..."
-  IDS_MI_PLUS60K_SETTINGS       "PLUS60K settings..."
-  IDS_MI_PLUS256K_SETTINGS      "PLUS256K settings..."
-  IDS_MI_C64_256K_SETTINGS      "256K settings..."
   IDS_MI_C64BURSTMOD_SETTINGS   "C64 drive burst modification settings..."
 END
 #ifndef WINDRES_CP_IGNORE
@@ -879,9 +858,6 @@ BEGIN
   IDS_C64BURSTMOD_ENABLE        "Attiva modifica burst del drive C64"
   IDS_C64BURSTMOD_CIA           "Modifica CIA burst del drive C64 "
   IDS_MI_NETWORK_SETTINGS       "Netplay (sperimentale)..."
-  IDS_MI_PLUS60K_SETTINGS       "Impostazioni PLUS256K..."
-  IDS_MI_PLUS256K_SETTINGS      "Impostazioni PLUS256K..."
-  IDS_MI_C64_256K_SETTINGS      "Impostazioni 256K..."
   IDS_MI_C64BURSTMOD_SETTINGS   "Impostazioni modifica burst del drive C64..."
 END
 
@@ -917,9 +893,6 @@ BEGIN
   IDS_C64BURSTMOD_ENABLE        "Enable the C64 drive burst modification"
   IDS_C64BURSTMOD_CIA           "C64 drive burst modification CIA"
   IDS_MI_NETWORK_SETTINGS       "³ÝÇÃ·¹ÀÌ (½ÇÇèÀû)..."
-  IDS_MI_PLUS60K_SETTINGS       "PLUS60K settings..."
-  IDS_MI_PLUS256K_SETTINGS      "PLUS256K settings..."
-  IDS_MI_C64_256K_SETTINGS      "256K settings..."
   IDS_MI_C64BURSTMOD_SETTINGS   "C64 drive burst modification settings..."
 END
 #ifndef WINDRES_CP_IGNORE
@@ -955,9 +928,6 @@ BEGIN
   IDS_C64BURSTMOD_ENABLE        "Activeer de C64 drive burst modificatie"
   IDS_C64BURSTMOD_CIA           "C64 drive burst modificatie CIA"
   IDS_MI_NETWORK_SETTINGS       "Netplay (experimenteel)..."
-  IDS_MI_PLUS60K_SETTINGS       "PLUS60K instellingen..."
-  IDS_MI_PLUS256K_SETTINGS      "PLUS256K instellingen..."
-  IDS_MI_C64_256K_SETTINGS      "256K instellingen..."
   IDS_MI_C64BURSTMOD_SETTINGS   "C64 drive burst modificatie instellingen..."
 END
 
@@ -993,9 +963,6 @@ BEGIN
   IDS_C64BURSTMOD_ENABLE        "W³±cz modyfikacjê trybu synchronicznego napêdu C64"
   IDS_C64BURSTMOD_CIA           "CIA trybu synchronicznego napêdu C64"
   IDS_MI_NETWORK_SETTINGS       "Netplay (eksperymentalne)..."
-  IDS_MI_PLUS60K_SETTINGS       "Ustawienia PLUS60K..."
-  IDS_MI_PLUS256K_SETTINGS      "Ustawienia PLUS256K..."
-  IDS_MI_C64_256K_SETTINGS      "Ustawienia 256K..."
   IDS_MI_C64BURSTMOD_SETTINGS   "Ustawienia trybu synchronicznego napêdu C64..."
 END
 #ifndef WINDRES_CP_IGNORE
@@ -1034,9 +1001,6 @@ BEGIN
   IDS_C64BURSTMOD_ENABLE        "Enable the C64 drive burst modification"
   IDS_C64BURSTMOD_CIA           "C64 drive burst modification CIA"
   IDS_MI_NETWORK_SETTINGS       "Netplay (experimental)..."
-  IDS_MI_PLUS60K_SETTINGS       "PLUS60K settings..."
-  IDS_MI_PLUS256K_SETTINGS      "PLUS256K settings..."
-  IDS_MI_C64_256K_SETTINGS      "256K settings..."
   IDS_MI_C64BURSTMOD_SETTINGS   "C64 drive burst modification settings..."
 END
 #ifndef WINDRES_CP_IGNORE
@@ -1072,9 +1036,6 @@ BEGIN
   IDS_C64BURSTMOD_ENABLE        "Aktivera C64 diskettburstmodifiering"
   IDS_C64BURSTMOD_CIA           "C64 diskettburstmodifiering CIA"
   IDS_MI_NETWORK_SETTINGS       "Nätverksspel (experimentellt)..."
-  IDS_MI_PLUS60K_SETTINGS       "PLUS60K-inställningar..."
-  IDS_MI_PLUS256K_SETTINGS      "PLUS256K-inställningar..."
-  IDS_MI_C64_256K_SETTINGS      "256K-inställningar..."
   IDS_MI_C64BURSTMOD_SETTINGS   "Inställningar för C64 diskettburstmodifiering..."
 END
 
@@ -1110,9 +1071,6 @@ BEGIN
   IDS_C64BURSTMOD_ENABLE        "C64 sürücüsü atlama modifikasyonunu aktif et"
   IDS_C64BURSTMOD_CIA           "C64 sürücüsü atlama modifikasyon CIA'sý"
   IDS_MI_NETWORK_SETTINGS       "Netplay (deneysel)..."
-  IDS_MI_PLUS60K_SETTINGS       "PLUS60K Ayarlarý..."
-  IDS_MI_PLUS256K_SETTINGS      "PLUS256K Ayarlarý..."
-  IDS_MI_C64_256K_SETTINGS      "256K Ayarlarý..."
   IDS_MI_C64BURSTMOD_SETTINGS   "C64 sürücüsü atlama modifikasyon ayarlarý..."
 END
 #ifndef WINDRES_CP_IGNORE

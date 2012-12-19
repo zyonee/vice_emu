@@ -600,8 +600,7 @@ resc64cat.rc: $(srcdir)/resc64.rc $(srcdir)/res.rc res.h $(srcdir)/resacia.rc \
 resspu64cat.rc: $(srcdir)/resscpu64.rc $(srcdir)/res.rc res.h $(srcdir)/resacia.rc \
 	$(srcdir)/resrs232user.rc $(srcdir)/ressid.rc $(srcdir)/resvicii.rc \
 	$(srcdir)/resreu.rc $(srcdir)/resgeoram.rc $(srcdir)/resramcart.rc \
-	$(srcdir)/resmmc64.rc $(srcdir)/resplus256k.rc $(srcdir)/resplus60k.rc \
-	$(srcdir)/resc64_256k.rc $(srcdir)/reside64.rc \
+	$(srcdir)/resmmc64.rc $(srcdir)/reside64.rc \
 	$(srcdir)/resautostart.rc $(srcdir)/resdrivec64.rc \
 	$(srcdir)/resdigimax.rc $(srcdir)/resmouse.rc \
 	$(srcdir)/restfe.rc $(srcdir)/resmidi.rc $(srcdir)/resdqbb.rc \
@@ -613,8 +612,7 @@ resspu64cat.rc: $(srcdir)/resscpu64.rc $(srcdir)/res.rc res.h $(srcdir)/resacia.
 	cat >resscpu64cat.rc $(srcdir)/resscpu64.rc $(srcdir)/res.rc \
 	$(srcdir)/resacia.rc $(srcdir)/resdrivec64.rc \
 	$(srcdir)/reside64.rc $(srcdir)/resreu.rc $(srcdir)/resgeoram.rc \
-	$(srcdir)/resmmc64.rc $(srcdir)/resramcart.rc $(srcdir)/resplus256k.rc \
-	$(srcdir)/resplus60k.rc $(srcdir)/resc64_256k.rc \
+	$(srcdir)/resmmc64.rc $(srcdir)/resramcart.rc \
 	$(srcdir)/resrs232user.rc $(srcdir)/ressid.rc $(srcdir)/resvicii.rc \
 	$(srcdir)/resdigimax.rc $(srcdir)/resmouse.rc $(srcdir)/restfe.rc \
 	$(srcdir)/resmidi.rc $(srcdir)/resdqbb.rc $(srcdir)/resisepic.rc \

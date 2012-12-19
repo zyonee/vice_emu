@@ -37,7 +37,6 @@
 #include "ui.h"
 #include "uiacia.h"
 #include "uic64.h"
-#include "uic64_256k.h"
 #include "uic64burstmod.h"
 #include "uic64cart.h"
 #include "uidigimax.h"
@@ -58,8 +57,6 @@
 #include "uimmc64.h"
 #include "uimmcreplay.h"
 #include "uimouse.h"
-#include "uiplus256k.h"
-#include "uiplus60k.h"
 #include "uiramcart.h"
 #include "uiretroreplay.h"
 #include "uireu.h"
@@ -376,9 +373,6 @@ ui_menu_translation_table_t scpu64ui_menu_translation_table[] = {
     { IDM_WARRANTY, IDS_MI_WARRANTY },
     { IDM_NETWORK_SETTINGS, IDS_MI_NETWORK_SETTINGS },
     { IDM_TOGGLE_FULLSCREEN, IDS_MI_TOGGLE_FULLSCREEN },
-    { IDM_PLUS60K_SETTINGS, IDS_MI_PLUS60K_SETTINGS },
-    { IDM_PLUS256K_SETTINGS, IDS_MI_PLUS256K_SETTINGS },
-    { IDM_C64_256K_SETTINGS, IDS_MI_C64_256K_SETTINGS },
     { 0, 0 }
 };
 
@@ -581,15 +575,6 @@ static void scpu64_ui_specific(WPARAM wparam, HWND hwnd)
             break;
         case IDM_ISEPIC_SETTINGS:
             ui_isepic_settings_dialog(hwnd);
-            break;
-        case IDM_PLUS60K_SETTINGS:
-            ui_plus60k_settings_dialog(hwnd);
-            break;
-        case IDM_PLUS256K_SETTINGS:
-            ui_plus256k_settings_dialog(hwnd);
-            break;
-        case IDM_C64_256K_SETTINGS:
-            ui_c64_256k_settings_dialog(hwnd);
             break;
         case IDM_MIDI_SETTINGS:
             ui_midi_settings_dialog(hwnd);

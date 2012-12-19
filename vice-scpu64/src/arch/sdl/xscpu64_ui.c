@@ -32,7 +32,6 @@
 #include "debug.h"
 #include "c64mem.h"
 #include "menu_c64cart.h"
-#include "menu_c64hw.h"
 #include "menu_common.h"
 #include "menu_debug.h"
 #include "menu_drive.h"
@@ -42,6 +41,7 @@
 #include "menu_network.h"
 #include "menu_printer.h"
 #include "menu_reset.h"
+#include "menu_scpu64hw.h"
 #include "menu_screenshot.h"
 #include "menu_settings.h"
 #include "menu_snapshot.h"
@@ -78,7 +78,7 @@ static const ui_menu_entry_t xscpu64_main_menu[] = {
     { "Machine settings",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
-      (ui_callback_data_t)c64_hardware_menu },
+      (ui_callback_data_t)scpu64_hardware_menu },
     { "Video settings",
       MENU_ENTRY_SUBMENU,
       submenu_callback,

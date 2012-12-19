@@ -42,7 +42,6 @@
 #include "types.h"
 #include "ui.h"
 #include "uiburstmod.h"
-#include "uic64_256k.h"
 #include "uic64cart.h"
 #include "uic64model.h"
 #include "uidigimax.h"
@@ -57,8 +56,6 @@
 #include "uimagicvoice.h"
 #include "uimmc64.h"
 #include "uimmcreplay.h"
-#include "uiplus256k.h"
-#include "uiplus60k.h"
 #include "uiramcart.h"
 #include "uireu.h"
 #include "uisidc64.h"
@@ -256,12 +253,6 @@ int scpu64ui_init(void)
     uiisepic_init(ui_ioextensions_submenu);
 
     uiexpert_init(ui_ioextensions_submenu);
-
-    uiplus60k_init(ui_ioextensions_submenu);
-
-    uiplus256k_init(ui_ioextensions_submenu);
-
-    uic64_256k_init(ui_ioextensions_submenu);
 
     uimmc64_init(ui_ioextensions_submenu);
 

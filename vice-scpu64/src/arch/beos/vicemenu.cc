@@ -529,6 +529,9 @@ BMenuBar *menu_create(int machine_class)
                 submenu->AddItem(new BMenuItem("None", new BMessage(MENU_BURSTMOD_NONE)));
                 submenu->AddItem(new BMenuItem("CIA-1", new BMessage(MENU_BURSTMOD_CIA1)));
                 submenu->AddItem(new BMenuItem("CIA-2", new BMessage(MENU_BURSTMOD_CIA2)));
+    }
+
+    if (machine_class == VICE_MACHINE_C64 || machine_class == VICE_MACHINE_C64SC) {
             menu->AddItem(submenu = new BMenu("PLUS60K Options"));
                 submenu->AddItem(new BMenuItem("PLUS60K emulation", new BMessage(MENU_TOGGLE_PLUS60K)));
                 submenu->AddItem(extsubmenu = new BMenu("PLUS60K base"));
@@ -548,6 +551,9 @@ BMenuBar *menu_create(int machine_class)
                     extsubmenu->AddItem(new BMenuItem("$DF00-$DF7F", new BMessage(MENU_C64_256K_BASE_DF00)));
                     extsubmenu->AddItem(new BMenuItem("$DF80-$DFFF", new BMessage(MENU_C64_256K_BASE_DF80)));
                 submenu->AddItem(new BMenuItem("C64_256K File", new BMessage(MENU_C64_256K_FILE)));
+    }
+
+    if (machine_class == VICE_MACHINE_C64 || machine_class == VICE_MACHINE_C64SC || machine_class == VICE_MACHINE_SCPU64) {
             menu->AddItem(submenu = new BMenu("MMC64 Options"));
                 submenu->AddItem(new BMenuItem("MMC64 emulation", new BMessage(MENU_TOGGLE_MMC64)));
                 submenu->AddItem(extsubmenu = new BMenu("MMC64 revision"));
