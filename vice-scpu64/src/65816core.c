@@ -495,27 +495,22 @@
 #define FETCH_PARAM(addr) ((((int)(addr)) < bank_limit) ? (CLK_ADD(CLK, CYCLES_1), bank_base[addr]) : LOAD_PBR(addr))
 
 /* s */
-#define LOAD_STACK(var, bits8)                         \
-    if (bits8) {                                       \
-        INC_PC(SIZE_1);                                \
-        FETCH_PARAM_DUMMY(reg_pc);                     \
-        var = PULL();                                  \
-    } else {                                           \
-        INC_PC(SIZE_1);                                \
-        FETCH_PARAM_DUMMY(reg_pc);                     \
-        var = PULL();                                  \
-        var |= PULL() << 8;                            \
+#define LOAD_STACK(var, bits8) \
+    INC_PC(SIZE_1);            \
+    FETCH_PARAM_DUMMY(reg_pc); \
+    var = PULL();              \
+    if (!bits8) {              \
+        var |= PULL() << 8;    \
     }
 
 /* a */
 #define LOAD_ACCU_RRW(var, bits8)                      \
     if (bits8) {                                       \
         var = reg_a;                                   \
-        INC_PC(SIZE_1);                                \
     } else {                                           \
         var = reg_c;                                   \
-        INC_PC(SIZE_1);                                \
-    }
+    }                                                  \
+    INC_PC(SIZE_1);
 
 /* # */
 #define LOAD_IMMEDIATE_FUNC(var, bits8)                \
