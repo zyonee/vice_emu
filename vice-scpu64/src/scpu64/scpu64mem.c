@@ -58,8 +58,8 @@
 #include "vicii.h"
 #include "scpu64cpu.h"
 
-/* Machine class (moved from c64.c to distinguish between x64 and x64sc) */
-int machine_class = VICE_MACHINE_C64;
+/* Machine class */
+int machine_class = VICE_MACHINE_SCPU64;
 
 /* C64 memory-related resources.  */
 

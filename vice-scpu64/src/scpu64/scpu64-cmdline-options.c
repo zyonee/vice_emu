@@ -105,24 +105,19 @@ static int set_video_standard(const char *param, void *extra_param)
 {
     int value = vice_ptr_to_int(extra_param);
 
-    switch (machine_class) {
-        case VICE_MACHINE_C64SC:
-            switch (value) {
-                case MACHINE_SYNC_PAL:
-                default:
-                    return set_c64_model("pal", NULL);
-
-                case MACHINE_SYNC_NTSC:
-                    return set_c64_model("ntsc", NULL);
-
-                case MACHINE_SYNC_NTSCOLD:
-                    return set_c64_model("oldntsc", NULL);
-
-                case MACHINE_SYNC_PALN:
-                    return set_c64_model("paln", NULL);
-            }
+    switch (value) {
+        case MACHINE_SYNC_PAL:
         default:
-            return resources_set_int("MachineVideoStandard", value);
+            return set_c64_model("pal", NULL);
+
+        case MACHINE_SYNC_NTSC:
+            return set_c64_model("ntsc", NULL);
+
+        case MACHINE_SYNC_NTSCOLD:
+            return set_c64_model("oldntsc", NULL);
+
+        case MACHINE_SYNC_PALN:
+            return set_c64_model("paln", NULL);
     }
 }
 

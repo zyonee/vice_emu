@@ -844,9 +844,5 @@ int machine_addr_in_ram(unsigned int addr)
 
 const char *machine_get_name(void)
 {
-    if (machine_class == VICE_MACHINE_C64SC) {
-        return "C64SC";
-    }
-
     return machine_name;
 }

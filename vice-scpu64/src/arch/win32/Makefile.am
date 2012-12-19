@@ -107,6 +107,7 @@ libarch_a_SOURCES = \
 	resretroreplay.rc \
 	resreu.rc \
 	resrs232user.rc \
+	resscpu64.rc \
 	ressid.rc \
 	ressidcart.rc \
 	ressiddtv.rc \
@@ -311,10 +312,10 @@ libarch_a_SOURCES = \
 
 if OWCC
 libarch_a_DEPENDENCIES = \
-	resc128.res resc64.res resc64dtv.res rescbm2.res rescbm5x0.res respet.res resplus4.res resvic20.res resvsid.res
+	resc128.res resc64.res resscpu64.res resc64dtv.res rescbm2.res rescbm5x0.res respet.res resplus4.res resvic20.res resvsid.res
 else
 libarch_a_DEPENDENCIES = \
-	resc128.o resc64.o resc64dtv.o rescbm2.o rescbm5x0.o respet.o resplus4.o resvic20.o resvsid.o
+	resc128.o resc64.o resscpu64.o resc64dtv.o rescbm2.o rescbm5x0.o respet.o resplus4.o resvic20.o resvsid.o
 endif
 
 EXTRA_DIST = \
@@ -596,6 +597,33 @@ resc64cat.rc: $(srcdir)/resc64.rc $(srcdir)/res.rc res.h $(srcdir)/resacia.rc \
 	$(srcdir)/resmmcreplay.rc $(srcdir)/resretroreplay.rc \
 	$(srcdir)/resds12c887rtc.rc
 
+resspu64cat.rc: $(srcdir)/resscpu64.rc $(srcdir)/res.rc res.h $(srcdir)/resacia.rc \
+	$(srcdir)/resrs232user.rc $(srcdir)/ressid.rc $(srcdir)/resvicii.rc \
+	$(srcdir)/resreu.rc $(srcdir)/resgeoram.rc $(srcdir)/resramcart.rc \
+	$(srcdir)/resmmc64.rc $(srcdir)/resplus256k.rc $(srcdir)/resplus60k.rc \
+	$(srcdir)/resc64_256k.rc $(srcdir)/reside64.rc \
+	$(srcdir)/resautostart.rc $(srcdir)/resdrivec64.rc \
+	$(srcdir)/resdigimax.rc $(srcdir)/resmouse.rc \
+	$(srcdir)/restfe.rc $(srcdir)/resmidi.rc $(srcdir)/resdqbb.rc \
+	$(srcdir)/resisepic.rc $(srcdir)/reslightpen.rc \
+	$(srcdir)/ressoundexpander.rc $(srcdir)/reseasyflash.rc \
+	$(srcdir)/resmagicvoice.rc $(srcdir)/resexpert.rc \
+	$(srcdir)/resmmcreplay.rc $(srcdir)/resretroreplay.rc \
+	$(srcdir)/resds12c887rtc.rc $(top_builddir)/src/debug.h
+	cat >resscpu64cat.rc $(srcdir)/resscpu64.rc $(srcdir)/res.rc \
+	$(srcdir)/resacia.rc $(srcdir)/resdrivec64.rc \
+	$(srcdir)/reside64.rc $(srcdir)/resreu.rc $(srcdir)/resgeoram.rc \
+	$(srcdir)/resmmc64.rc $(srcdir)/resramcart.rc $(srcdir)/resplus256k.rc \
+	$(srcdir)/resplus60k.rc $(srcdir)/resc64_256k.rc \
+	$(srcdir)/resrs232user.rc $(srcdir)/ressid.rc $(srcdir)/resvicii.rc \
+	$(srcdir)/resdigimax.rc $(srcdir)/resmouse.rc $(srcdir)/restfe.rc \
+	$(srcdir)/resmidi.rc $(srcdir)/resdqbb.rc $(srcdir)/resisepic.rc \
+	$(srcdir)/reslightpen.rc $(srcdir)/reseasyflash.rc \
+	$(srcdir)/resmagicvoice.rc $(srcdir)/resexpert.rc \
+	$(srcdir)/ressoundexpander.rc $(srcdir)/resautostart.rc \
+	$(srcdir)/resmmcreplay.rc $(srcdir)/resretroreplay.rc \
+	$(srcdir)/resds12c887rtc.rc
+
 resc64dtvcat.rc : $(srcdir)/resc64dtv.rc $(srcdir)/res.rc res.h \
 	$(srcdir)/ressiddtv.rc $(srcdir)/resvicii.rc $(srcdir)/resdrivec64.rc \
 	$(srcdir)/resautostart.rc $(top_builddir)/src/debug.h
@@ -694,6 +722,22 @@ resc64.o: resc64cat.rc
 	--include-dir $(top_srcdir)/src/arch/win32  \
 	--include-dir $(top_srcdir)/src
 	$(WINDRES) -i resc64.res -o $@
+endif
+
+if OWCC
+resscpu64.res: resscpu64cat.rc
+	wrc -fo=resscpu64.res -r -bt=nt \
+	-i=$(top_builddir)/src \
+	-i=$(top_srcdir)/src/arch/win32 \
+	-i=$(top_srcdir)/src \
+	resscpu64cat.rc
+else
+resscpu64.o: resscpu64cat.rc
+	$(WRC) -i resscpu64cat.rc -o resscpu64.res \
+	--include-dir $(top_builddir)/src \
+	--include-dir $(top_srcdir)/src/arch/win32  \
+	--include-dir $(top_srcdir)/src
+	$(WINDRES) -i resscpu64.res -o $@
 endif
 
 if OWCC
