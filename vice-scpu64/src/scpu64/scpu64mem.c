@@ -133,6 +133,7 @@ static int reg_soft_1mhz;   /* 1MHz software enabled */
 static int reg_sys_1mhz;    /* 1MHz system enabled */
 static int reg_hwenable;    /* hardware enabled */
 static int reg_dosext;      /* dos extension enable */
+static int reg_ramlink;     /* ramlink registers enable */
 static int reg_optim;       /* optimization mode */
 static int reg_bootmap = 1; /* boot map */
 static int reg_simm;        /* simm configuration */
@@ -469,7 +470,7 @@ static BYTE scpu64_hardware_read(WORD addr)
     case 0xd0bd:
     case 0xd0be:
     case 0xd0bf:
-        value = reg_dosext ? 0x80 : 0x00;
+        value = (reg_dosext ? 0x80 : 0x00) | (reg_ramlink ? 0x40 : 0x00);
         break;
     default:
         value = 0xff;
@@ -1048,6 +1049,7 @@ void scpu64_hardware_reset(void)
     reg_sys_1mhz = 0;
     reg_hwenable = 0;
     reg_dosext = 0; 
+    reg_ramlink = 0; 
     reg_bootmap = 1;
     reg_simm = 0; 
     mem_pport_dir = 0;
@@ -1252,7 +1254,7 @@ static BYTE peek_bank_io(WORD addr)
 
 int scpu64_interrupt_reroute(void)
 {
-    return (_mem_read_tab_ptr[0xff] == scpu64_kernal_read) && (!scpu64_emulation_mode || reg_hwenable);
+    return (_mem_read_tab_ptr[0xff] == scpu64_kernal_read) && (!scpu64_emulation_mode || reg_hwenable || reg_sys_1mhz || reg_dosext || reg_ramlink);
 }
 
 /* ------------------------------------------------------------------------- */
