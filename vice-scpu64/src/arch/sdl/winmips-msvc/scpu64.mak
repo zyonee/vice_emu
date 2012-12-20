@@ -59,6 +59,7 @@ CLEAN :
 	-@erase "$(INTDIR)\scpu64-resources.obj"
 	-@erase "$(INTDIR)\scpu64rom.obj"
 	-@erase "$(INTDIR)\scpu64-snapshot.obj"
+	-@erase "$(INTDIR)\scpu64stubs.obj"
 	-@erase "$(INTDIR)\vc60.idb"
 	-@erase "$(OUTDIR)\scpu64.lib"
 
@@ -117,6 +118,7 @@ LIB32_OBJS= \
 	"$(INTDIR)\scpu64-resources.obj" \
 	"$(INTDIR)\scpu64rom.obj" \
 	"$(INTDIR)\scpu64-snapshot.obj" \
+	"$(INTDIR)\scpu64stubs.obj" \
 	".\libs\base\Release\base.lib"
 
 "$(OUTDIR)\scpu64.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
@@ -158,6 +160,7 @@ CLEAN :
 	-@erase "$(INTDIR)\scpu64-resources.obj"
 	-@erase "$(INTDIR)\scpu64rom.obj"
 	-@erase "$(INTDIR)\scpu64-snapshot.obj"
+	-@erase "$(INTDIR)\scpu64stubs.obj"
 	-@erase "$(INTDIR)\vc60.idb"
 	-@erase "$(OUTDIR)\scpu64.lib"
 
@@ -216,6 +219,7 @@ LIB32_OBJS= \
 	"$(INTDIR)\scpu64-resources.obj" \
 	"$(INTDIR)\scpu64rom.obj" \
 	"$(INTDIR)\scpu64-snapshot.obj" \
+	"$(INTDIR)\scpu64stubs.obj" \
 	".\libs\base\Debug\base.lib"
 
 "$(OUTDIR)\scpu64.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
@@ -317,6 +321,12 @@ SOURCE="..\..\..\scpu64\scpu64rom.c"
 SOURCE="..\..\..\scpu64\scpu64-snapshot.c"
 
 "$(INTDIR)\scpu64-snapshot.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="..\..\..\scpu64\scpu64stubs.c"
+
+"$(INTDIR)\scpu64stubs.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 

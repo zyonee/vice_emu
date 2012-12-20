@@ -24,21 +24,22 @@ libscpu64_a_SOURCES = \
 	scpu64-resources.h \
 	scpu64-snapshot.c \
 	scpu64-snapshot.h \
-	scpu64gluelogic.c \
-	scpu64gluelogic.h \
 	scpu64.c \
 	scpu64.h \
-	scpu64mem.c \
-	scpu64mem.h \
 	scpu64cpu.c \
 	scpu64cpu.h \
+	scpu64gluelogic.c \
+	scpu64gluelogic.h \
+	scpu64mem.c \
+	scpu64mem.h \
 	scpu64memsnapshot.c \
 	scpu64memsnapshot.h \
-	scpu64rom.c \
-	scpu64rom.h \
 	scpu64meminit.c \
 	scpu64meminit.h \
 	scpu64memlimit.c \
-	scpu64memlimit.h
+	scpu64memlimit.h \
+	scpu64rom.c \
+	scpu64rom.h \
+	scpu64stubs.c
 
 EXTRA_DIST =

@@ -174,5 +174,9 @@ SOURCE="..\..\scpu64\scpu64rom.c"
 
 SOURCE="..\..\scpu64\scpu64-snapshot.c"
 # End Source File
+# Begin Source File
+
+SOURCE="..\..\scpu64\scpu64stubs.c"
+# End Source File
 # End Target
 # End Project
