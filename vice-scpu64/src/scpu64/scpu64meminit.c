@@ -64,7 +64,7 @@ enum {
     F8, /* EPROM */
     KS, /* Kernal shadow */
     CO, /* Color RAM */
-    OP, /* Not connected */
+    OP, /* Internal Color RAM */
 };
 
 #define AREAS 10

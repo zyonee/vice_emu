@@ -1065,7 +1065,7 @@ void mem_initialize_memory(void)
                 k++;
             }
             /* Some areas are I/O or cartridge (NULL) or too slow and need cycle stretching */
-            range = (p == NULL || p == mem_ram || p == scpu64memrom_scpu64_rom || p == mem_chargen_rom - 0xd000) ? 0 : ((j << 24) | ((k << 8)-4));
+            range = (p == NULL || p == mem_ram || p == scpu64memrom_scpu64_rom || p == mem_chargen_rom - 0xd000) ? 0 : ((j << 24) | ((k << 8)-3));
             while (j < k) {
                 mem_read_limit_tab[i][j] = range;
                 j++;
