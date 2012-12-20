@@ -1,5 +1,5 @@
 /*
- * scpu64meminit.c -- Initialize C64 memory.
+ * scpu64meminit.c -- Initialize SCPU64 memory.
  *
  * Written by
  *  Kajtar Zsolt <soci@c64.rulez.org>
@@ -41,235 +41,376 @@
 
  missing: BA,CAS(not needed),RW(through tables),AEC
 
- bit 5 - boot
+ bit 7 - boot
+ bit 6 - dos
+ bit 5 - hw
  bit 4 - !game
  bit 3 - !exrom
  bit 2 - loram
  bit 1 - hiram
  bit 0 - charen
 
-         8000      a000      d000      e000
-
- 0 0x00
- 1 0x01                      chr
- 2 0x02                      chr       ker
- 3 0x03            bas       chr       ker
- 4 0x04
- 5 0x05                      io
- 6 0x06                      io        ker
- 7 0x07            bas       io        ker
-
- 8 0x08
- 9 0x09                      chr
-10 0x0a            romh      chr       ker
-11 0x0b  roml      bas/romh  chr       ker      8k game
-12 0x0c
-13 0x0d                      io
-14 0x0e            romh      io        ker
-15 0x0f  roml      bas/romh  io        ker      8k game
-
-16 0x00
-17 0x01                      chr
-18 0x02                      chr       ker
-19 0x03            bas       chr       ker
-20 0x04
-21 0x05                      io
-22 0x06                      io        ker
-23 0x07            bas       io        ker
-
-24 0x18
-25 0x19                      chr
-26 0x1a            romh      chr       ker
-27 0x1b  roml      romh      chr       ker      16k game
-28 0x1c
-29 0x1d                      io
-30 0x1e            romh      io        ker
-31 0x1f  roml      romh      io        ker      16k game
-
 */
 
-/* IO is enabled at memory configs 5, 6, 7 and Ultimax.  */
-const unsigned int scpu64meminit_io_config[64] = {
-    0, 0, 0, 0, 0, 1, 1, 1,
-    0, 0, 0, 0, 0, 1, 1, 1,
-    0, 0, 0, 0, 0, 1, 1, 1,
-    0, 0, 0, 0, 0, 1, 1, 1,
-    0, 0, 0, 0, 0, 1, 1, 1,
-    0, 0, 0, 0, 0, 1, 1, 1,
-    0, 0, 0, 0, 0, 1, 1, 1,
-    0, 0, 0, 0, 0, 1, 1, 1
+enum {
+    R0, /* SRAM bank 0 */
+    R1, /* SRAM bank 1 */
+    RC, /* RAM */
+    UM, /* Ultimax */
+    RL, /* ROML */
+    RH, /* ROML */
+    IO, /* I/O */
+    CR, /* CHARROM */
+    F8, /* EPROM */
+    KS, /* Kernal shadow */
+    CO, /* Color RAM */
+    OP, /* Not connected */
 };
 
-/* ROML is enabled at memory configs 11, 15, 27, 31  */
-static const unsigned int scpu64meminit_roml_config[64] = {
-    0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 1, 0, 0, 0, 1,
-    0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 1, 0, 0, 0, 1,
-    0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0
+#define AREAS 10
+static const int areas[AREAS][2] = {
+    { 0x00, 0x0f },
+    { 0x10, 0x5f },
+    { 0x60, 0x7f },
+    { 0x80, 0x9f },
+    { 0xa0, 0xbf },
+    { 0xc0, 0xcf },
+    { 0xd0, 0xd7 },
+    { 0xd8, 0xdb },
+    { 0xdc, 0xdf },
+    { 0xe0, 0xff }
 };
 
-/* ROMH is enabled at memory configs 10, 11, 14, 15, 26, 27, 30, 31
-   and Ultimax.  */
-static const unsigned int scpu64meminit_romh_config[64] = {
-    0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 1, 1, 0, 0, 1, 1,
-    0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0
-};
-
-void scpu64meminit(unsigned int base)
+static const BYTE config[AREAS][256] = 
 {
-    unsigned int i, j;
+    { /* 0000-0fff */
+        R0, R0, R0, R0, R0, R0, R0, R0,  R0, R0, R0, R0, R0, R0, R0, R0,
+        R0, R0, R0, R0, R0, R0, R0, R0,  R0, R0, R0, R0, R0, R0, R0, R0,
+        R0, R0, R0, R0, R0, R0, R0, R0,  R0, R0, R0, R0, R0, R0, R0, R0,
+        R0, R0, R0, R0, R0, R0, R0, R0,  R0, R0, R0, R0, R0, R0, R0, R0,
+        R0, R0, R0, R0, R0, R0, R0, R0,  R0, R0, R0, R0, R0, R0, R0, R0,
+        R0, R0, R0, R0, R0, R0, R0, R0,  R0, R0, R0, R0, R0, R0, R0, R0,
+        R0, R0, R0, R0, R0, R0, R0, R0,  R0, R0, R0, R0, R0, R0, R0, R0,
+        R0, R0, R0, R0, R0, R0, R0, R0,  R0, R0, R0, R0, R0, R0, R0, R0,
+        R0, R0, R0, R0, R0, R0, R0, R0,  R0, R0, R0, R0, R0, R0, R0, R0,
+        R0, R0, R0, R0, R0, R0, R0, R0,  R0, R0, R0, R0, R0, R0, R0, R0,
+        R0, R0, R0, R0, R0, R0, R0, R0,  R0, R0, R0, R0, R0, R0, R0, R0,
+        R0, R0, R0, R0, R0, R0, R0, R0,  R0, R0, R0, R0, R0, R0, R0, R0,
+        R0, R0, R0, R0, R0, R0, R0, R0,  R0, R0, R0, R0, R0, R0, R0, R0,
+        R0, R0, R0, R0, R0, R0, R0, R0,  R0, R0, R0, R0, R0, R0, R0, R0,
+        RC, RC, RC, RC, RC, RC, RC, RC,  RC, RC, RC, RC, RC, RC, RC, RC,
+        RC, RC, RC, RC, RC, RC, RC, RC,  RC, RC, RC, RC, RC, RC, RC, RC },
+    {  /* 1000-5fff */
+        R0, R0, R0, R0, R0, R0, R0, R0,  R0, R0, R0, R0, R0, R0, R0, R0,
+        R0, R0, R0, R0, R0, R0, R0, R0,  R0, R0, R0, R0, R0, R0, R0, R0,
+        R0, R0, R0, R0, R0, R0, R0, R0,  R0, R0, R0, R0, R0, R0, R0, R0,
+        R0, R0, R0, R0, R0, R0, R0, R0,  R0, R0, R0, R0, R0, R0, R0, R0,
+        R1, R1, R1, R1, R1, R1, R1, R1,  R1, R1, R1, R1, R1, R1, R1, R1,
+        R1, R1, R1, R1, R1, R1, R1, R1,  R1, R1, R1, R1, R1, R1, R1, R1,
+        R1, R1, R1, R1, R1, R1, R1, R1,  R1, R1, R1, R1, R1, R1, R1, R1,
+        R1, R1, R1, R1, R1, R1, R1, R1,  R1, R1, R1, R1, R1, R1, R1, R1,
+        R0, R0, R0, R0, R0, R0, R0, R0,  R0, R0, R0, R0, R0, R0, R0, R0,
+        R0, R0, R0, R0, R0, R0, R0, R0,  R0, R0, R0, R0, R0, R0, R0, R0,
+        R0, R0, R0, R0, R0, R0, R0, R0,  R0, R0, R0, R0, R0, R0, R0, R0,
+        R0, R0, R0, R0, R0, R0, R0, R0,  R0, R0, R0, R0, R0, R0, R0, R0,
+        R1, R1, R1, R1, R1, R1, R1, R1,  R1, R1, R1, R1, R1, R1, R1, R1,
+        R1, R1, R1, R1, R1, R1, R1, R1,  R1, R1, R1, R1, R1, R1, R1, R1,
+        RC, RC, RC, RC, RC, RC, RC, RC,  RC, RC, RC, RC, RC, RC, RC, RC,
+        UM, UM, UM, UM, UM, UM, UM, UM,  RC, RC, RC, RC, RC, RC, RC, RC },
+    {  /* 6000-7fff */
+        R0, R0, R0, R0, R0, R0, R0, R0,  R0, R0, R0, R0, R0, R0, R0, R0,
+        R0, R0, R0, R0, R0, R0, R0, R0,  R0, R0, R0, R0, R0, R0, R0, R0,
+        R0, R0, R0, R0, R0, R0, R0, R0,  R0, R0, R0, R0, R0, R0, R0, R0,
+        R0, R0, R0, R0, R0, R0, R0, R0,  R0, R0, R0, R0, R0, R0, R0, R0,
+        R0, R0, R0, R0, R0, R0, R0, R0,  R0, R0, R0, R0, R0, R0, R0, R0,
+        R0, R0, R0, R0, R0, R0, R0, R0,  R0, R0, R0, R0, R0, R0, R0, R0,
+        R0, R0, R0, R0, R0, R0, R0, R0,  R0, R0, R0, R0, R0, R0, R0, R0,
+        R0, R0, R0, R0, R0, R0, R0, R0,  R0, R0, R0, R0, R0, R0, R0, R0,
+        R0, R0, R0, R0, R0, R0, R0, R0,  R0, R0, R0, R0, R0, R0, R0, R0,
+        R0, R0, R0, R0, R0, R0, R0, R0,  R0, R0, R0, R0, R0, R0, R0, R0,
+        R0, R0, R0, R0, R0, R0, R0, R0,  R0, R0, R0, R0, R0, R0, R0, R0,
+        R0, R0, R0, R0, R0, R0, R0, R0,  R0, R0, R0, R0, R0, R0, R0, R0,
+        R0, R0, R0, R0, R0, R0, R0, R0,  R0, R0, R0, R0, R0, R0, R0, R0,
+        R0, R0, R0, R0, R0, R0, R0, R0,  R0, R0, R0, R0, R0, R0, R0, R0,
+        RC, RC, RC, RC, RC, RC, RC, RC,  RC, RC, RC, RC, RC, RC, RC, RC,
+        UM, UM, UM, UM, UM, UM, UM, UM,  RC, RC, RC, RC, RC, RC, RC, RC },
+    {  /* 8000-9fff */
+        R0, R0, R0, R0, R0, R0, R0, R0,  R0, R0, R0, RL, R0, R0, R0, RL,
+        R0, R0, R0, R0, R0, R0, R0, R0,  R0, R0, R0, RL, R0, R0, R0, RL,
+        R0, R0, R0, R0, R0, R0, R0, R0,  R0, R0, R0, RL, R0, R0, R0, RL,
+        R0, R0, R0, R0, R0, R0, R0, R0,  R0, R0, R0, RL, R0, R0, R0, RL,
+        R1, R1, R1, R1, R1, R1, R1, R1,  R1, R1, R1, R1, R1, R1, R1, R1,
+        R1, R1, R1, R1, R1, R1, R1, R1,  R1, R1, R1, R1, R1, R1, R1, R1,
+        R1, R1, R1, R1, R1, R1, R1, R1,  R1, R1, R1, R1, R1, R1, R1, R1,
+        R1, R1, R1, R1, R1, R1, R1, R1,  R1, R1, R1, R1, R1, R1, R1, R1,
+        F8, F8, F8, F8, F8, F8, F8, F8,  F8, F8, F8, F8, F8, F8, F8, F8,
+        F8, F8, F8, F8, F8, F8, F8, F8,  F8, F8, F8, F8, F8, F8, F8, F8,
+        F8, F8, F8, F8, F8, F8, F8, F8,  F8, F8, F8, F8, F8, F8, F8, F8,
+        F8, F8, F8, F8, F8, F8, F8, F8,  F8, F8, F8, F8, F8, F8, F8, F8,
+        F8, F8, F8, F8, F8, F8, F8, F8,  F8, F8, F8, F8, F8, F8, F8, F8,
+        F8, F8, F8, F8, F8, F8, F8, F8,  F8, F8, F8, F8, F8, F8, F8, F8,
+        RC, RC, RC, RC, RC, RC, RC, RC,  RL, RL, RL, RL, RL, RL, RL, RL,
+        UM, UM, UM, UM, UM, UM, UM, UM,  RL, RL, RL, RL, RL, RL, RL, RL },
+    {  /* a000-bfff */
+        R0, R0, R0, R1, R0, R0, R0, R1,  R0, R0, R0, R1, R0, R0, R0, R1,
+        R0, R0, R0, R1, R0, R0, R0, R1,  R0, R0, RH, RH, R0, R0, RH, RH,
+        R0, R0, R0, R1, R0, R0, R0, R1,  R0, R0, R0, R1, R0, R0, R0, R1,
+        R0, R0, R0, R1, R0, R0, R0, R1,  R0, R0, RH, RH, R0, R0, RH, RH,
+        R0, R0, R0, R1, R0, R0, R0, R1,  R0, R0, R0, R1, R0, R0, R0, R1,
+        R0, R0, R0, R1, R0, R0, R0, R1,  R0, R0, RH, RH, R0, R0, RH, RH,
+        R0, R0, R0, R1, R0, R0, R0, R1,  R0, R0, R0, R1, R0, R0, R0, R1,
+        R0, R0, R0, R1, R0, R0, R0, R1,  R0, R0, RH, RH, R0, R0, RH, RH,
+        F8, F8, F8, F8, F8, F8, F8, F8,  F8, F8, F8, F8, F8, F8, F8, F8,
+        F8, F8, F8, F8, F8, F8, F8, F8,  F8, F8, F8, F8, F8, F8, F8, F8,
+        F8, F8, F8, F8, F8, F8, F8, F8,  F8, F8, F8, F8, F8, F8, F8, F8,
+        F8, F8, F8, F8, F8, F8, F8, F8,  F8, F8, F8, F8, F8, F8, F8, F8,
+        F8, F8, F8, F8, F8, F8, F8, F8,  F8, F8, F8, F8, F8, F8, F8, F8,
+        F8, F8, F8, F8, F8, F8, F8, F8,  F8, F8, F8, F8, F8, F8, F8, F8,
+        F8, F8, F8, F8, F8, F8, F8, F8,  F8, F8, F8, F8, F8, F8, F8, F8,
+        UM, UM, UM, UM, UM, UM, UM, UM,  RH, RH, RH, RH, RH, RH, RH, RH },
+    {  /* c000-cfff */
+        R0, R0, R0, R0, R0, R0, R0, R0,  R0, R0, R0, R0, R0, R0, R0, R0,
+        R0, R0, R0, R0, R0, R0, R0, R0,  R0, R0, R0, R0, R0, R0, R0, R0,
+        R0, R0, R0, R0, R0, R0, R0, R0,  R0, R0, R0, R0, R0, R0, R0, R0,
+        R0, R0, R0, R0, R0, R0, R0, R0,  R0, R0, R0, R0, R0, R0, R0, R0,
+        R0, R0, R0, R0, R0, R0, R0, R0,  R0, R0, R0, R0, R0, R0, R0, R0,
+        R0, R0, R0, R0, R0, R0, R0, R0,  R0, R0, R0, R0, R0, R0, R0, R0,
+        R0, R0, R0, R0, R0, R0, R0, R0,  R0, R0, R0, R0, R0, R0, R0, R0,
+        R0, R0, R0, R0, R0, R0, R0, R0,  R0, R0, R0, R0, R0, R0, R0, R0,
+        F8, F8, F8, F8, F8, F8, F8, F8,  F8, F8, F8, F8, F8, F8, F8, F8,
+        F8, F8, F8, F8, F8, F8, F8, F8,  F8, F8, F8, F8, F8, F8, F8, F8,
+        F8, F8, F8, F8, F8, F8, F8, F8,  F8, F8, F8, F8, F8, F8, F8, F8,
+        F8, F8, F8, F8, F8, F8, F8, F8,  F8, F8, F8, F8, F8, F8, F8, F8,
+        F8, F8, F8, F8, F8, F8, F8, F8,  F8, F8, F8, F8, F8, F8, F8, F8,
+        F8, F8, F8, F8, F8, F8, F8, F8,  F8, F8, F8, F8, F8, F8, F8, F8,
+        RC, RC, RC, RC, RC, RC, RC, RC,  RC, RC, RC, RC, RC, RC, RC, RC,
+        UM, UM, UM, UM, UM, UM, UM, UM,  RC, RC, RC, RC, RC, RC, RC, RC },
+    {  /* d000-d7ff */
+        R0, CR, CR, CR, R0, IO, IO, IO,  R0, CR, CR, CR, R0, IO, IO, IO,
+        R0, CR, CR, CR, R0, IO, IO, IO,  R0, R0, CR, CR, R0, IO, IO, IO,
+        R0, CR, CR, CR, R0, IO, IO, IO,  R0, CR, CR, CR, R0, IO, IO, IO,
+        R0, CR, CR, CR, R0, IO, IO, IO,  R0, R0, CR, CR, R0, IO, IO, IO,
+        R0, CR, CR, CR, R0, IO, IO, IO,  R0, CR, CR, CR, R0, IO, IO, IO,
+        R0, CR, CR, CR, R0, IO, IO, IO,  R0, R0, CR, CR, R0, IO, IO, IO,
+        R0, CR, CR, CR, R0, IO, IO, IO,  R0, CR, CR, CR, R0, IO, IO, IO,
+        R0, CR, CR, CR, R0, IO, IO, IO,  R0, R0, CR, CR, R0, IO, IO, IO,
+        F8, CR, CR, CR, F8, IO, IO, IO,  F8, CR, CR, CR, F8, IO, IO, IO,
+        F8, CR, CR, CR, F8, IO, IO, IO,  F8, F8, CR, CR, F8, IO, IO, IO,
+        F8, CR, CR, CR, F8, IO, IO, IO,  F8, CR, CR, CR, F8, IO, IO, IO,
+        F8, CR, CR, CR, F8, IO, IO, IO,  F8, F8, CR, CR, F8, IO, IO, IO,
+        F8, CR, CR, CR, F8, IO, IO, IO,  F8, CR, CR, CR, F8, IO, IO, IO,
+        F8, CR, CR, CR, F8, IO, IO, IO,  F8, F8, CR, CR, F8, IO, IO, IO,
+        CR, CR, CR, CR, CR, IO, IO, IO,  CR, CR, CR, CR, CR, IO, IO, IO,
+        CR, CR, CR, CR, CR, IO, IO, IO,  CR, CR, CR, CR, CR, IO, IO, IO },
+    {  /* d800-dbff */
+        R0, CR, CR, CR, R0, CO, CO, CO,  R0, CR, CR, CR, R0, CO, CO, CO,
+        R0, CR, CR, CR, R0, CO, CO, CO,  R0, R0, CR, CR, R0, CO, CO, CO,
+        R0, CR, CR, CR, R0, CO, CO, CO,  R0, CR, CR, CR, R0, CO, CO, CO,
+        R0, CR, CR, CR, R0, CO, CO, CO,  R0, R0, CR, CR, R0, CO, CO, CO,
+        R0, CR, CR, CR, R0, CO, CO, CO,  R0, CR, CR, CR, R0, CO, CO, CO,
+        R0, CR, CR, CR, R0, CO, CO, CO,  R0, R0, CR, CR, R0, CO, CO, CO,
+        R0, CR, CR, CR, R0, CO, CO, CO,  R0, CR, CR, CR, R0, CO, CO, CO,
+        R0, CR, CR, CR, R0, CO, CO, CO,  R0, R0, CR, CR, R0, CO, CO, CO,
+        F8, CR, CR, CR, F8, CO, CO, CO,  F8, CR, CR, CR, F8, CO, CO, CO,
+        F8, CR, CR, CR, F8, CO, CO, CO,  F8, F8, CR, CR, F8, CO, CO, CO,
+        F8, CR, CR, CR, F8, CO, CO, CO,  F8, CR, CR, CR, F8, CO, CO, CO,
+        F8, CR, CR, CR, F8, CO, CO, CO,  F8, F8, CR, CR, F8, CO, CO, CO,
+        F8, CR, CR, CR, F8, CO, CO, CO,  F8, CR, CR, CR, F8, CO, CO, CO,
+        F8, CR, CR, CR, F8, CO, CO, CO,  F8, F8, CR, CR, F8, CO, CO, CO,
+        CR, CR, CR, CR, CR, OP, OP, OP,  CR, CR, CR, CR, CR, OP, OP, OP,
+        CR, CR, CR, CR, CR, OP, OP, OP,  CR, CR, CR, CR, CR, OP, OP, OP },
+    {  /* dc00-dfff */
+        R0, CR, CR, CR, R0, IO, IO, IO,  R0, CR, CR, CR, R0, IO, IO, IO,
+        R0, CR, CR, CR, R0, IO, IO, IO,  R0, R0, CR, CR, R0, IO, IO, IO,
+        R0, CR, CR, CR, R0, IO, IO, IO,  R0, CR, CR, CR, R0, IO, IO, IO,
+        R0, CR, CR, CR, R0, IO, IO, IO,  R0, R0, CR, CR, R0, IO, IO, IO,
+        R0, CR, CR, CR, R0, IO, IO, IO,  R0, CR, CR, CR, R0, IO, IO, IO,
+        R0, CR, CR, CR, R0, IO, IO, IO,  R0, R0, CR, CR, R0, IO, IO, IO,
+        R0, CR, CR, CR, R0, IO, IO, IO,  R0, CR, CR, CR, R0, IO, IO, IO,
+        R0, CR, CR, CR, R0, IO, IO, IO,  R0, R0, CR, CR, R0, IO, IO, IO,
+        F8, CR, CR, CR, F8, IO, IO, IO,  F8, CR, CR, CR, F8, IO, IO, IO,
+        F8, CR, CR, CR, F8, IO, IO, IO,  F8, F8, CR, CR, F8, IO, IO, IO,
+        F8, CR, CR, CR, F8, IO, IO, IO,  F8, CR, CR, CR, F8, IO, IO, IO,
+        F8, CR, CR, CR, F8, IO, IO, IO,  F8, F8, CR, CR, F8, IO, IO, IO,
+        F8, CR, CR, CR, F8, IO, IO, IO,  F8, CR, CR, CR, F8, IO, IO, IO,
+        F8, CR, CR, CR, F8, IO, IO, IO,  F8, F8, CR, CR, F8, IO, IO, IO,
+        CR, CR, CR, CR, CR, IO, IO, IO,  CR, CR, CR, CR, CR, IO, IO, IO,
+        CR, CR, CR, CR, CR, IO, IO, IO,  CR, CR, CR, CR, CR, IO, IO, IO },
+    {  /* e000-ffff */
+        R0, R0, R1, R1, R0, R0, R1, R1,  R0, R0, R1, R1, R0, R0, R1, R1,
+        R0, R0, R1, R1, R0, R0, R1, R1,  R0, R0, R1, R1, R0, R0, R1, R1,
+        R0, R0, KS, KS, R0, R0, KS, KS,  R0, R0, KS, KS, R0, R0, KS, KS,
+        R0, R0, KS, KS, R0, R0, KS, KS,  R0, R0, KS, KS, R0, R0, KS, KS,
+        R0, R0, R1, R1, R0, R0, R1, R1,  R0, R0, R1, R1, R0, R0, R1, R1,
+        R0, R0, R1, R1, R0, R0, R1, R1,  R0, R0, R1, R1, R0, R0, R1, R1,
+        R0, R0, KS, KS, R0, R0, KS, KS,  R0, R0, KS, KS, R0, R0, KS, KS,
+        R0, R0, KS, KS, R0, R0, KS, KS,  R0, R0, KS, KS, R0, R0, KS, KS,
+        F8, F8, F8, F8, F8, F8, F8, F8,  F8, F8, F8, F8, F8, F8, F8, F8,
+        F8, F8, F8, F8, F8, F8, F8, F8,  F8, F8, F8, F8, F8, F8, F8, F8,
+        F8, F8, F8, F8, F8, F8, F8, F8,  F8, F8, F8, F8, F8, F8, F8, F8,
+        F8, F8, F8, F8, F8, F8, F8, F8,  F8, F8, F8, F8, F8, F8, F8, F8,
+        F8, F8, F8, F8, F8, F8, F8, F8,  F8, F8, F8, F8, F8, F8, F8, F8,
+        F8, F8, F8, F8, F8, F8, F8, F8,  F8, F8, F8, F8, F8, F8, F8, F8,
+        F8, F8, F8, F8, F8, F8, F8, F8,  F8, F8, F8, F8, F8, F8, F8, F8,
+        UM, UM, UM, UM, UM, UM, UM, UM,  F8, F8, F8, F8, F8, F8, F8, F8 }
+};
 
-    /* Setup BASIC ROM at $A000-$BFFF (memory configs 3, 7, 11, 15, 19, 23).  */
-    for (i = 0xa0; i <= 0xbf; i++) {
-        mem_read_tab_set(base + 3, i, scpu64_basic_read);
-        mem_read_tab_set(base + 7, i, scpu64_basic_read);
-        mem_read_tab_set(base + 11, i, scpu64_basic_read);
-        mem_read_tab_set(base + 15, i, scpu64_basic_read);
-        mem_read_tab_set(base + 19, i, scpu64_basic_read);
-        mem_read_tab_set(base + 23, i, scpu64_basic_read);
-        mem_read_base_set(base + 3, i, mem_sram + 0x10000);
-        mem_read_base_set(base + 7, i, mem_sram + 0x10000);
-        mem_read_base_set(base + 11, i, mem_sram + 0x10000);
-        mem_read_base_set(base + 15, i, mem_sram + 0x10000);
-        mem_read_base_set(base + 19, i, mem_sram + 0x10000);
-        mem_read_base_set(base + 23, i, mem_sram + 0x10000);
-    }
+void scpu64meminit(void)
+{
+    unsigned int i, j, k;
 
-    /* Setup I/O at $D000-$DFFF (memory configs 5, 6, 7).  */
-    for (j = 0; j < 64; j++) {
-        if (scpu64meminit_io_config[j] == 1) {
-            mem_read_tab_set(base + j, 0xd0, scpu64io_d000_read);
-            mem_set_write_hook(base + j, 0xd0, scpu64io_d000_store);
-            mem_read_tab_set(base + j, 0xd1, scpu64io_d100_read);
-            mem_set_write_hook(base + j, 0xd1, scpu64io_d100_store);
-            mem_read_tab_set(base + j, 0xd2, scpu64io_d200_read);
-            mem_set_write_hook(base + j, 0xd2, scpu64io_d200_store);
-            mem_read_tab_set(base + j, 0xd3, scpu64io_d300_read);
-            mem_set_write_hook(base + j, 0xd3, scpu64io_d300_store);
-            mem_read_tab_set(base + j, 0xd4, scpu64io_d400_read);
-            mem_set_write_hook(base + j, 0xd4, scpu64io_d400_store);
-            mem_read_tab_set(base + j, 0xd5, scpu64io_d500_read);
-            mem_set_write_hook(base + j, 0xd5, scpu64io_d500_store);
-            mem_read_tab_set(base + j, 0xd6, scpu64io_d600_read);
-            mem_set_write_hook(base + j, 0xd6, scpu64io_d600_store);
-            mem_read_tab_set(base + j, 0xd7, scpu64io_d700_read);
-            mem_set_write_hook(base + j, 0xd7, scpu64io_d700_store);
-            for (i = 0xd8; i <= 0xdb; i++) {
-                mem_read_tab_set(base + j, i, scpu64io_colorram_read);
-                mem_set_write_hook(base + j, i, scpu64io_colorram_store);
+    for (i = 0; i < AREAS; i++) {
+        for (j = areas[i][0]; j <= areas[i][1]; j++) {
+            for (k = 0; k < 256; k++) {
+                switch (config[i][k]) {
+                case R0:
+                    mem_read_tab_set(k, j, ram_read);
+                    mem_read_base_set(k, j, mem_sram);
+                    /* write hook preset, ram */
+                    break;
+                case R1:
+                    mem_read_tab_set(k, j, ram1_read);
+                    mem_read_base_set(k, j, mem_sram + 0x10000);
+                    /* write hook preset, ram */
+                    break;
+                case KS:
+                    mem_read_tab_set(k, j, scpu64_kernalshadow_read);
+                    mem_read_base_set(k, j, mem_sram + 0x8000);
+                    /* write hook preset, ram */
+                    break;
+                case RC:
+                    mem_read_tab_set(k, j, ram_read_int);
+                    mem_read_base_set(k, j, mem_ram);
+                    mem_set_write_hook(k, i, ram_store_int);
+                    break;
+                case UM:
+                    switch (j & 0xf0) {
+                    default:
+                        mem_read_tab_set(k, j, ultimax_1000_7fff_read);
+                        mem_read_base_set(k, j, NULL);
+                        mem_set_write_hook(k, i, ultimax_1000_7fff_store);
+                        break;
+                    case 0x80:
+                    case 0x90:
+                        mem_read_tab_set(k, j, roml_read);
+                        mem_read_base_set(k, j, NULL);
+                        mem_set_write_hook(k, j, roml_store);
+                        break;
+                    case 0xa0:
+                    case 0xb0:
+                        mem_read_tab_set(k, j, ultimax_a000_bfff_read);
+                        mem_read_base_set(k, j, NULL);
+                        mem_set_write_hook(k, i, ultimax_a000_bfff_store);
+                        break;
+                    case 0xc0:
+                        mem_read_tab_set(k, j, ultimax_c000_cfff_read);
+                        mem_read_base_set(k, j, NULL);
+                        mem_set_write_hook(k, i, ultimax_c000_cfff_store);
+                        break;
+                    case 0xe0:
+                    case 0xf0:
+                        mem_read_tab_set(k, j, romh_read);
+                        mem_read_base_set(k, j, NULL);
+                        mem_set_write_hook(k, j, romh_store);
+                        break;
+                    }
+                    break;
+                case RL:
+                    mem_read_tab_set(k, j, roml_read);
+                    mem_read_base_set(k, j, NULL);
+                    /* write hook preset, ram */
+                    break;
+                case RH:
+                    mem_read_tab_set(k, j, romh_read);
+                    mem_read_base_set(k, j, NULL);
+                    /* write hook preset, ram */
+                    break;
+                case IO:
+                    switch (j) {
+                    case 0xd0:
+                        mem_read_tab_set(k, j, scpu64io_d000_read);
+                        mem_read_base_set(k, j, NULL);
+                        mem_set_write_hook(k, j, scpu64io_d000_store);
+                        break;
+                    case 0xd1:
+                        mem_read_tab_set(k, j, scpu64io_d100_read);
+                        mem_read_base_set(k, j, NULL);
+                        mem_set_write_hook(k, j, scpu64io_d100_store);
+                        break;
+                    case 0xd2:
+                        mem_read_tab_set(k, j, scpu64io_d200_read);
+                        mem_read_base_set(k, j, mem_sram + 0x10000);
+                        mem_set_write_hook(k, j, scpu64io_d200_store);
+                        break;
+                    case 0xd3:
+                        mem_read_tab_set(k, j, scpu64io_d300_read);
+                        mem_read_base_set(k, j, mem_sram + 0x10000);
+                        mem_set_write_hook(k, j, scpu64io_d300_store);
+                        break;
+                    case 0xd4:
+                        mem_read_tab_set(k, j, scpu64io_d400_read);
+                        mem_read_base_set(k, j, NULL);
+                        mem_set_write_hook(k, j, scpu64io_d400_store);
+                        break;
+                    case 0xd5:
+                        mem_read_tab_set(k, j, scpu64io_d500_read);
+                        mem_read_base_set(k, j, NULL);
+                        mem_set_write_hook(k, j, scpu64io_d500_store);
+                        break;
+                    case 0xd6:
+                        mem_read_tab_set(k, j, scpu64io_d600_read);
+                        mem_read_base_set(k, j, NULL);
+                        mem_set_write_hook(k, j, scpu64io_d600_store);
+                        break;
+                    case 0xd7:
+                        mem_read_tab_set(k, j, scpu64io_d700_read);
+                        mem_read_base_set(k, j, NULL);
+                        mem_set_write_hook(k, j, scpu64io_d700_store);
+                        break;
+                    case 0xdc:
+                        mem_read_tab_set(k, j, scpu64_cia1_read);
+                        mem_read_base_set(k, j, NULL);
+                        mem_set_write_hook(k, j, scpu64_cia1_store);
+                        break;
+                    case 0xdd:
+                        mem_read_tab_set(k, j, scpu64_cia2_read);
+                        mem_read_base_set(k, j, NULL);
+                        mem_set_write_hook(k, j, scpu64_cia2_store);
+                        break;
+                    case 0xde:
+                        mem_read_tab_set(k, j, scpu64io_de00_read);
+                        mem_read_base_set(k, j, NULL);
+                        mem_set_write_hook(k, j, scpu64io_de00_store);
+                        break;
+                    case 0xdf:
+                        mem_read_tab_set(k, j, scpu64io_df00_read);
+                        mem_read_base_set(k, j, NULL);
+                        mem_set_write_hook(k, j, scpu64io_df00_store);
+                        break;
+                    }
+                    break;
+                case CO:
+                    mem_read_tab_set(k, j, scpu64io_colorram_read);
+                    mem_read_base_set(k, j, mem_sram + 0x10000);
+                    mem_set_write_hook(k, j, scpu64io_colorram_store);
+                    break;
+                case OP:
+                    mem_read_tab_set(k, j, scpu64io_colorram_read_int);
+                    mem_read_base_set(k, j, NULL);
+                    mem_set_write_hook(k, j, scpu64io_colorram_store_int);
+                    break;
+                case F8:
+                    mem_read_tab_set(k, j, scpu64memrom_scpu64_read);
+                    mem_read_base_set(k, j, scpu64memrom_scpu64_rom);
+                    /* write hook preset, ram */
+                    break;
+                case CR:
+                    mem_read_tab_set(k, j, chargen_read);
+                    mem_read_base_set(k, j, mem_chargen_rom - 0xd000);
+                    /* write hook preset, ram */
+                    break;
+                }
             }
-
-            mem_read_tab_set(base + j, 0xdc, scpu64_cia1_read);
-            mem_set_write_hook(base + j, 0xdc, scpu64_cia1_store);
-            mem_read_tab_set(base + j, 0xdd, scpu64_cia2_read);
-            mem_set_write_hook(base + j, 0xdd, scpu64_cia2_store);
-
-            mem_read_tab_set(base + j, 0xde, scpu64io_de00_read);
-            mem_set_write_hook(base + j, 0xde, scpu64io_de00_store);
-            mem_read_tab_set(base + j, 0xdf, scpu64io_df00_read);
-            mem_set_write_hook(base + j, 0xdf, scpu64io_df00_store);
-
-            for (i = 0xd0; i <= 0xdf; i++) {
-                mem_read_base_set(base + j, i, NULL);
-            }
         }
-    }
-
-    /* Setup Kernal ROM at $E000-$FFFF (memory configs 2, 3, 6, 7, 10,
-       11, 14, 15, 18, 19, 22, 23, 26, 27, 30, 31).  */
-    for (i = 0xe0; i <= 0xff; i++) {
-        mem_read_tab_set(base + 2, i, scpu64_kernal_read);
-        mem_read_tab_set(base + 3, i, scpu64_kernal_read);
-        mem_read_tab_set(base + 6, i, scpu64_kernal_read);
-        mem_read_tab_set(base + 7, i, scpu64_kernal_read);
-        mem_read_tab_set(base + 10, i, scpu64_kernal_read);
-        mem_read_tab_set(base + 11, i, scpu64_kernal_read);
-        mem_read_tab_set(base + 14, i, scpu64_kernal_read);
-        mem_read_tab_set(base + 15, i, scpu64_kernal_read);
-        mem_read_tab_set(base + 18, i, scpu64_kernal_read);
-        mem_read_tab_set(base + 19, i, scpu64_kernal_read);
-        mem_read_tab_set(base + 22, i, scpu64_kernal_read);
-        mem_read_tab_set(base + 23, i, scpu64_kernal_read);
-        mem_read_tab_set(base + 26, i, scpu64_kernal_read);
-        mem_read_tab_set(base + 27, i, scpu64_kernal_read);
-        mem_read_tab_set(base + 30, i, scpu64_kernal_read);
-        mem_read_tab_set(base + 31, i, scpu64_kernal_read);
-        mem_read_base_set(base + 2, i, mem_sram + 0x10000); /* to prevent cartridges only */
-        mem_read_base_set(base + 3, i, mem_sram + 0x10000);
-        mem_read_base_set(base + 6, i, mem_sram + 0x10000);
-        mem_read_base_set(base + 7, i, mem_sram + 0x10000);
-        mem_read_base_set(base + 10, i, mem_sram + 0x10000);
-        mem_read_base_set(base + 11, i, mem_sram + 0x10000);
-        mem_read_base_set(base + 14, i, mem_sram + 0x10000);
-        mem_read_base_set(base + 15, i, mem_sram + 0x10000);
-        mem_read_base_set(base + 18, i, mem_sram + 0x10000);
-        mem_read_base_set(base + 19, i, mem_sram + 0x10000);
-        mem_read_base_set(base + 22, i, mem_sram + 0x10000);
-        mem_read_base_set(base + 23, i, mem_sram + 0x10000);
-        mem_read_base_set(base + 26, i, mem_sram + 0x10000);
-        mem_read_base_set(base + 27, i, mem_sram + 0x10000);
-        mem_read_base_set(base + 30, i, mem_sram + 0x10000);
-        mem_read_base_set(base + 31, i, mem_sram + 0x10000);
-    }
-
-    /* Setup ROML at $8000-$9FFF.  */
-    for (j = 0; j < 32; j++) {
-        if (scpu64meminit_roml_config[j]) {
-            for (i = 0x80; i <= 0x9f; i++) {
-                mem_read_tab_set(base + j, i, scpu64_roml_read);
-                mem_read_base_set(base + j, i, NULL);
-            }
-        }
-    }
-
-    /* Setup ROMH at $A000-$BFFF */
-    for (j = 24; j < 32; j++) {
-        if (scpu64meminit_romh_config[j]) {
-            for (i = 0xa0; i <= 0xbf; i++) {
-                mem_read_tab_set(base + j, i, scpu64_romh_read);
-                mem_read_base_set(base + j, i, NULL);
-            }
-        }
-    }
-
-    /* Setup bootmap */
-    for (j = 32; j < 64; j++) {
-        for (i = 0x80; i <= 0xcf; i++) {
-            mem_read_tab_set(base + j, i, scpu64memrom_scpu64_read);
-            mem_read_base_set(base + j, i, scpu64memrom_scpu64_rom);
-        }
-        for (i = 0xe0; i <= 0xff; i++) {
-            mem_read_tab_set(base + j, i, scpu64memrom_scpu64_read);
-            mem_read_base_set(base + j, i, scpu64memrom_scpu64_rom);
-        }
-    }
-    /* Setup bootmap ROM at $D000-$DFFF */
-    for (i = 0xd0; i <= 0xdf; i++) {
-        mem_read_tab_set(base + 32, i, scpu64memrom_scpu64_read);
-        mem_read_base_set(base + 32, i, scpu64memrom_scpu64_rom);
-        mem_read_tab_set(base + 36, i, scpu64memrom_scpu64_read);
-        mem_read_base_set(base + 36, i, scpu64memrom_scpu64_rom);
-        mem_read_tab_set(base + 40, i, scpu64memrom_scpu64_read);
-        mem_read_base_set(base + 40, i, scpu64memrom_scpu64_rom);
-        mem_read_tab_set(base + 44, i, scpu64memrom_scpu64_read);
-        mem_read_base_set(base + 44, i, scpu64memrom_scpu64_rom);
-        mem_read_tab_set(base + 48, i, scpu64memrom_scpu64_read);
-        mem_read_base_set(base + 48, i, scpu64memrom_scpu64_rom);
-        mem_read_tab_set(base + 52, i, scpu64memrom_scpu64_read);
-        mem_read_base_set(base + 52, i, scpu64memrom_scpu64_rom);
-        mem_read_tab_set(base + 56, i, scpu64memrom_scpu64_read);
-        mem_read_base_set(base + 56, i, scpu64memrom_scpu64_rom);
-        mem_read_tab_set(base + 60, i, scpu64memrom_scpu64_read);
-        mem_read_base_set(base + 60, i, scpu64memrom_scpu64_rom);
     }
 }

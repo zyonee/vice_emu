@@ -48,15 +48,18 @@ extern void mem_set_vbank(int new_vbank);
 
 extern BYTE ram_read(WORD addr);
 extern void ram_store(WORD addr, BYTE value);
+extern BYTE ram_read_int(WORD addr);
+extern void ram_store_int(WORD addr, BYTE value);
 
 extern BYTE chargen_read(WORD addr);
-extern void chargen_store(WORD addr, BYTE value);
-extern BYTE scpu64_kernal_read(WORD addr);
-extern BYTE scpu64_basic_read(WORD addr);
+extern BYTE scpu64_kernalshadow_read(WORD addr);
+extern BYTE ram1_read(WORD addr);
 extern BYTE scpu64memrom_scpu64_read(WORD addr);
 
 extern void scpu64io_colorram_store(WORD addr, BYTE value);
 extern BYTE scpu64io_colorram_read(WORD addr);
+extern void scpu64io_colorram_store_int(WORD addr, BYTE value);
+extern BYTE scpu64io_colorram_read_int(WORD addr);
 extern BYTE scpu64io_d000_read(WORD addr);
 extern void scpu64io_d000_store(WORD addr, BYTE value);
 extern BYTE scpu64io_d100_read(WORD addr);

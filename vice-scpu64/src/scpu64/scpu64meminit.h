@@ -27,7 +27,6 @@
 #ifndef VICE_SCPU64MEMINIT_H
 #define VICE_SCPU64MEMINIT_H
 
-extern void scpu64meminit(unsigned int base);
-extern const unsigned int scpu64meminit_io_config[64];
+extern void scpu64meminit(void);
 
 #endif
