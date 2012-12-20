@@ -209,18 +209,6 @@ static void pport_store(WORD addr, BYTE value)
     }
 }
 
-BYTE zero_read(WORD addr)
-{
-    switch (addr) {
-    case 0:
-        return mem_pport_dir;
-    case 1:
-        return mem_pport_data;
-    }
-
-    return mem_sram[addr];
-}
-
 void zero_store(WORD addr, BYTE value)
 {
     mem_sram[addr] = value;
@@ -361,7 +349,7 @@ void mem_store2(DWORD addr, BYTE value)
         if (addr & 0xfffe) {
             mem_sram[addr] = value;
         } else {
-            pport_store(addr, value);
+            mem_sram[addr & 1] = value;
         }
         return;
     default:
@@ -391,7 +379,7 @@ BYTE mem_read2(DWORD addr)
         if (addr & 0xfffe) {
             return mem_sram[addr];
         }
-        return zero_read(addr);
+        return mem_sram[addr & 1];
     default:
         if (SCPU64_SIMM_SIZE > 0 && addr < SCPU64_SIMM_SIZE) {
             scpu64_clock_read_stretch_simm(addr);
@@ -880,11 +868,7 @@ void mem_initialize_memory(void)
 
     for (i = 0; i < NUM_CONFIGS; i++) {
         for (j = 0; j <= 0xff; j++) {
-            if (j == 0) {
-                mem_read_tab[i][j] = zero_read;
-            } else {
-                mem_read_tab[i][j] = ram_read;
-            }
+            mem_read_tab[i][j] = ram_read;
             mem_read_base_tab[i][j] = mem_sram;
             for (k = 0; k < NUM_VBANKS; k++) {
                 for (l = 0; l < NUM_MIRRORS; l++) {
