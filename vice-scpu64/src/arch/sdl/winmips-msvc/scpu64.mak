@@ -54,7 +54,6 @@ CLEAN :
 	-@erase "$(INTDIR)\scpu64gluelogic.obj"
 	-@erase "$(INTDIR)\scpu64mem.obj"
 	-@erase "$(INTDIR)\scpu64meminit.obj"
-	-@erase "$(INTDIR)\scpu64memlimit.obj"
 	-@erase "$(INTDIR)\scpu64memsnapshot.obj"
 	-@erase "$(INTDIR)\scpu64-resources.obj"
 	-@erase "$(INTDIR)\scpu64rom.obj"
@@ -113,7 +112,6 @@ LIB32_OBJS= \
 	"$(INTDIR)\scpu64gluelogic.obj" \
 	"$(INTDIR)\scpu64mem.obj" \
 	"$(INTDIR)\scpu64meminit.obj" \
-	"$(INTDIR)\scpu64memlimit.obj" \
 	"$(INTDIR)\scpu64memsnapshot.obj" \
 	"$(INTDIR)\scpu64-resources.obj" \
 	"$(INTDIR)\scpu64rom.obj" \
@@ -155,7 +153,6 @@ CLEAN :
 	-@erase "$(INTDIR)\scpu64gluelogic.obj"
 	-@erase "$(INTDIR)\scpu64mem.obj"
 	-@erase "$(INTDIR)\scpu64meminit.obj"
-	-@erase "$(INTDIR)\scpu64memlimit.obj"
 	-@erase "$(INTDIR)\scpu64memsnapshot.obj"
 	-@erase "$(INTDIR)\scpu64-resources.obj"
 	-@erase "$(INTDIR)\scpu64rom.obj"
@@ -214,7 +211,6 @@ LIB32_OBJS= \
 	"$(INTDIR)\scpu64gluelogic.obj" \
 	"$(INTDIR)\scpu64mem.obj" \
 	"$(INTDIR)\scpu64meminit.obj" \
-	"$(INTDIR)\scpu64memlimit.obj" \
 	"$(INTDIR)\scpu64memsnapshot.obj" \
 	"$(INTDIR)\scpu64-resources.obj" \
 	"$(INTDIR)\scpu64rom.obj" \
@@ -291,12 +287,6 @@ SOURCE="..\..\..\scpu64\scpu64mem.c"
 SOURCE="..\..\..\scpu64\scpu64meminit.c"
 
 "$(INTDIR)\scpu64meminit.obj" : $(SOURCE) "$(INTDIR)"
-	$(CPP) $(CPP_PROJ) $(SOURCE)
-
-
-SOURCE="..\..\..\scpu64\scpu64memlimit.c"
-
-"$(INTDIR)\scpu64memlimit.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 

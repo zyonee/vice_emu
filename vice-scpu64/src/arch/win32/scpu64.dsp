@@ -156,10 +156,6 @@ SOURCE="..\..\scpu64\scpu64meminit.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\scpu64\scpu64memlimit.c"
-# End Source File
-# Begin Source File
-
 SOURCE="..\..\scpu64\scpu64memsnapshot.c"
 # End Source File
 # Begin Source File
