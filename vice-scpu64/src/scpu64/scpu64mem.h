@@ -34,7 +34,6 @@
 
 #define SCPU64_RAM_SIZE 0x10000
 #define SCPU64_SRAM_SIZE 0x20000
-#define SCPU64_SIMM_SIZE 0x1000000
 #define SCPU64_KERNAL_ROM_SIZE  0x2000
 #define SCPU64_CHARGEN_ROM_SIZE 0x1000
 #define SCPU64_SCPU64_ROM_SIZE  0x20000
@@ -95,14 +94,15 @@ extern void scpu64_ultimax_a000_bfff_store(WORD addr, BYTE value);
 extern BYTE scpu64_ultimax_c000_cfff_read(WORD addr);
 extern void scpu64_ultimax_c000_cfff_store(WORD addr, BYTE value);
 extern int scpu64_interrupt_reroute(void);
+extern void mem_set_simm_size(int val);
 
 extern void mem_pla_config_changed(void);
 extern void mem_set_tape_sense(int sense);
-extern BYTE mem_pport_dir;
 extern BYTE mem_pport_data;
 
 extern BYTE mem_chargen_rom[];
-extern BYTE mem_simm_ram[];
+extern BYTE *mem_simm_ram;
+extern unsigned int mem_simm_ram_mask;
 extern BYTE scpu64memrom_scpu64_rom[];
 
 extern void mem_set_write_hook(int config, int page, store_func_t *f);

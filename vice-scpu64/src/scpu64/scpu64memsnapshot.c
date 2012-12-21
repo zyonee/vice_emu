@@ -161,12 +161,11 @@ int scpu64_snapshot_write_module(snapshot_t *s, int save_roms)
     }
 
     if (SMW_B(m, mem_pport_data) < 0
-        || SMW_B(m, mem_pport_dir) < 0
         || SMW_B(m, export.exrom) < 0
         || SMW_B(m, export.game) < 0
         || SMW_BA(m, mem_ram, SCPU64_RAM_SIZE) < 0
         || SMW_BA(m, mem_sram, SCPU64_SRAM_SIZE) < 0
-        || SMW_BA(m, mem_simm_ram, SCPU64_SIMM_SIZE) < 0) {
+        || SMW_BA(m, mem_simm_ram, mem_simm_ram_mask + 1) < 0) {
         goto fail;
     }
 
@@ -210,12 +209,11 @@ int scpu64_snapshot_read_module(snapshot_t *s)
     }
 
     if (SMR_B(m, &mem_pport_data) < 0
-        || SMR_B(m, &mem_pport_dir) < 0
         || SMR_B(m, &export.exrom) < 0
         || SMR_B(m, &export.game) < 0
         || SMR_BA(m, mem_ram, SCPU64_RAM_SIZE) < 0
         || SMR_BA(m, mem_sram, SCPU64_SRAM_SIZE) < 0
-        || SMR_BA(m, mem_simm_ram, SCPU64_SIMM_SIZE) < 0) {
+        || SMR_BA(m, mem_simm_ram, mem_simm_ram_mask + 1) < 0) {
 
         goto fail;
     }

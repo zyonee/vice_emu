@@ -211,6 +211,11 @@ static const cmdline_option_t cmdline_options[] = {
       USE_PARAM_ID, USE_DESCRIPTION_ID,
       IDCLS_P_VALUE, IDCLS_SET_BURST_MOD,
       NULL, NULL },
+    { "-simmsize", SET_RESOURCE, 1,
+      NULL, NULL, "SIMMSize", NULL,
+      USE_PARAM_ID, USE_DESCRIPTION_ID,
+      IDCLS_P_VALUE, IDCLS_SET_SIMM_SIZE,
+      NULL, NULL },
     { NULL }
 };
 

@@ -35,6 +35,7 @@
 #include "c64cart.h"
 #include "c64cia.h"
 #include "scpu64rom.h"
+#include "scpu64mem.h"
 #include "cartio.h"
 #include "cartridge.h"
 #include "cia.h"
@@ -79,6 +80,8 @@ char *kernal_revision = NULL;
 int cia1_model;
 int cia2_model;
 
+static int scpu64_simm_size;
+
 static int set_chargen_rom_name(const char *val, void *param)
 {
     if (util_string_set(&chargen_rom_name, val)) {
@@ -86,24 +89,6 @@ static int set_chargen_rom_name(const char *val, void *param)
     }
 
     return scpu64rom_load_chargen(chargen_rom_name);
-}
-
-static int set_kernal_rom_name(const char *val, void *param)
-{
-    if (util_string_set(&kernal_rom_name, val)) {
-        return 0;
-    }
-
-    return 0;
-}
-
-static int set_basic_rom_name(const char *val, void *param)
-{
-    if (util_string_set(&basic_rom_name, val)) {
-        return 0;
-    }
-
-    return 0;
 }
 
 static int set_scpu64_rom_name(const char *val, void *param)
@@ -155,13 +140,6 @@ static int set_cia2_model(int val, void *param)
     return 0;
 }
 
-/* FIXME: Should patch the ROM on-the-fly.  */
-static int set_kernal_revision(const char *val, void *param)
-{
-    util_string_set(&kernal_revision, val);
-    return 0;
-}
-
 static int set_sync_factor(int val, void *param)
 {
     int change_timing = 0;
@@ -203,6 +181,16 @@ static int set_sync_factor(int val, void *param)
     return 0;
 }
 
+static int set_scpu64_simm_size(int val, void *param)
+{
+    if (val > 16 || (val & (val-1)) || val == 2) {
+        return -1; /* not 0, 1, 4, 8 or 16 */
+    }
+    scpu64_simm_size = val;
+    mem_set_simm_size(val);
+    return 0;
+}
+
 static const resource_string_t resources_string[] = {
     { "ChargenName", "chargen", RES_EVENT_NO, NULL,
       /* FIXME: should be same but names may differ */
@@ -241,6 +229,8 @@ static const resource_int_t resources_int[] = {
       (int *)&sid_triple_address_start, sid_set_sid_triple_address, NULL },
     { "BurstMod", BURST_MOD_NONE, RES_EVENT_NO, NULL,
       &burst_mod, set_burst_mod, NULL },
+    { "SIMMSize", 16, RES_EVENT_NO, NULL,
+      (int *)&scpu64_simm_size, set_scpu64_simm_size, NULL },
     { NULL }
 };
 

@@ -27,7 +27,7 @@
 #ifndef VICE_SCPU64ROM_H
 #define VICE_SCPU64ROM_H
 
-extern int scpu64rom_load_kernal(const char *rom_name, BYTE *new_kernal);
+extern int scpu64rom_load_scpu64(const char *rom_name);
 extern int scpu64rom_load_chargen(const char *rom_name);
 
 extern int scpu64rom_get_kernal_checksum(void);

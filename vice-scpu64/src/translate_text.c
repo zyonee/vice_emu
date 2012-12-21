@@ -13542,4 +13542,21 @@ translate_t string_table[] = {
 /* tr */ {IDCLS_DS12C887RTC_BASE_TR, "DS12C887 RTC kartuþunun taban adresi"},
 #endif
 
+/* scpu64/scpu64-cmdline-options.c */
+/* en */ {IDCLS_SET_SIMM_SIZE,    N_("Size of the SIMM RAM (0/1/4/8/16 MB)")},
+#ifdef HAS_TRANSLATION
+/* da */ {IDCLS_SET_SIMM_SIZE_DA, "Størrelse af SIMM RAM (0/1/4/8/16 MB)"},  /* fuzzy */
+/* de */ {IDCLS_SET_SIMM_SIZE_DE, "Größe der SIMM RAM (0/1/4/8/16 MB)"},
+/* es */ {IDCLS_SET_SIMM_SIZE_ES, "Tamaño de la SIMM RAM (0/1/4/8/16 MB)"},  /* fuzzy */
+/* fr */ {IDCLS_SET_SIMM_SIZE_FR, "Taille de SIMM RAM (0/1/4/8/16 MB)"},  /* fuzzy */
+/* hu */ {IDCLS_SET_SIMM_SIZE_HU, "SIMM RAM mérete (0/1/4/8/16 MB)"},
+/* it */ {IDCLS_SET_SIMM_SIZE_IT, "Dimensione SIMM RAM (0/1/4/8/16 MB)"},  /* fuzzy */
+/* ko */ {IDCLS_SET_SIMM_SIZE_KO, ""},  /* fuzzy */
+/* nl */ {IDCLS_SET_SIMM_SIZE_NL, "Grootte van de SIMM RAM (0/1/4/8/16 MB)"},  /* fuzzy */
+/* pl */ {IDCLS_SET_SIMM_SIZE_PL, "Rozmiar SIMM RAM (0/1/4/8/16 MB)"},  /* fuzzy */
+/* ru */ {IDCLS_SET_SIMM_SIZE_RU, "Size of the SIMM RAM (0/1/4/8/16 MB)"},  /* fuzzy */
+/* sv */ {IDCLS_SET_SIMM_SIZE_SV, "Storlek på SIMM RAM (0/1/4/8/16 MB)"},  /* fuzzy */
+/* tr */ {IDCLS_SET_SIMM_SIZE_TR, "SIMM RAM boyutu (0/1/4/8/16 MB)"},  /* fuzzy */
+#endif
+
 };

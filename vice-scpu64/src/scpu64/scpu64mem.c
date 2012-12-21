@@ -32,7 +32,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "alarm.h"
 #include "scpu64.h"
 #include "scpu64-resources.h"
 #include "c64cart.h"
@@ -51,11 +50,11 @@
 #include "ram.h"
 #include "reu.h"
 #include "sid.h"
-#include "tpi.h"
 #include "vicii-mem.h"
 #include "vicii-phi1.h"
 #include "vicii.h"
 #include "scpu64cpu.h"
+#include "lib.h"
 
 /* Machine class */
 int machine_class = VICE_MACHINE_SCPU64;
@@ -83,7 +82,10 @@ static const WORD mem_mirrors[NUM_MIRRORS] = {
 /* The C64 memory.  */
 BYTE mem_ram[SCPU64_RAM_SIZE];
 BYTE mem_sram[SCPU64_SRAM_SIZE];
-BYTE mem_simm_ram[SCPU64_SIMM_SIZE];
+BYTE *mem_simm_ram = NULL;
+static int mem_simm_page_size;
+static int mem_conf_page_size;
+unsigned int mem_simm_ram_mask = 0;
 BYTE scpu64memrom_scpu64_rom[SCPU64_SCPU64_ROM_SIZE];
 BYTE mem_tooslow[1];
 
@@ -116,6 +118,7 @@ static store_func_ptr_t mem_write_tab_watch[0x101];
 static read_func_ptr_t mem_read_tab_watch[0x101];
 
 static void mem_set_mirroring(int new_mirroring);
+static void mem_set_simm(int config);
 
 /* Current video bank (0, 1, 2 or 3).  */
 static int vbank;
@@ -137,7 +140,6 @@ static int reg_ramlink;     /* ramlink registers enable */
 static int reg_optim;       /* optimization mode */
 static int reg_bootmap = 1; /* boot map */
 static int reg_simm;        /* simm configuration */
-BYTE mem_pport_dir;         /* processor "direction" */
 BYTE mem_pport_data;        /* processor "port" */
 
 /* ------------------------------------------------------------------------- */
@@ -193,20 +195,9 @@ void mem_pla_config_changed(void)
 
 static void pport_store(WORD addr, BYTE value)
 {
-    switch (addr) {
-        case 0:
-            mem_pport_dir = value;
-            break;
-        case 1:
-            if ((mem_pport_data ^ value) & 7) {
-                mem_pport_data = value;
-                mem_pla_config_changed();
-            } else {
-                mem_pport_data = value;
-            }
-            break;
-        default:
-            break;
+    if (mem_pport_data != value) {
+        mem_pport_data = value;
+        mem_pla_config_changed();
     }
 }
 
@@ -214,8 +205,8 @@ void zero_store(WORD addr, BYTE value)
 {
     mem_sram[addr] = value;
 
-    if (addr < 2) {
-        pport_store(addr, value);
+    if (addr == 1) {
+        pport_store(addr, value & 7);
     }
 }
 
@@ -223,8 +214,8 @@ void zero_store_mirrored(WORD addr, BYTE value)
 {
     mem_sram[addr] = value;
     scpu64_clock_write_stretch();
-    if (addr < 2) {
-        pport_store(addr, value);
+    if (addr == 1) {
+        pport_store(addr, value & 7);
     }
     mem_ram[addr] = value;
 }
@@ -232,8 +223,8 @@ void zero_store_mirrored(WORD addr, BYTE value)
 void zero_store_int(WORD addr, BYTE value)
 {
     scpu64_clock_write_stretch();
-    if (addr < 2) {
-        pport_store(addr, value);
+    if (addr == 1) {
+        pport_store(addr, value & 7);
     }
     mem_ram[addr] = value;
 }
@@ -242,8 +233,8 @@ void zero_store_mirrored_vbank(WORD addr, BYTE value)
 {
     mem_sram[addr] = value;
     scpu64_clock_write_stretch();
-    if (addr < 2) {
-        pport_store(addr, value);
+    if (addr == 1) {
+        pport_store(addr, value & 7);
     }
     vicii_mem_vbank_store(addr, value);
 }
@@ -251,8 +242,8 @@ void zero_store_mirrored_vbank(WORD addr, BYTE value)
 void zero_store_vbank_int(WORD addr, BYTE value)
 {
     scpu64_clock_write_stretch();
-    if (addr < 2) {
-        pport_store(addr, value);
+    if (addr == 1) {
+        pport_store(addr, value & 7);
     }
     vicii_mem_vbank_store(addr, value);
 }
@@ -384,8 +375,12 @@ void mem_store2(DWORD addr, BYTE value)
 {
     switch (addr & 0xfe0000) {
     case 0xf60000:
-        if (SCPU64_SIMM_SIZE > 0 && addr < SCPU64_SIMM_SIZE + 0xf60000) {
+        if (mem_simm_ram_mask) {
             scpu64_clock_write_stretch_simm(addr);
+            if (mem_simm_page_size != mem_conf_page_size) {
+                addr = ((addr >> mem_conf_page_size) << mem_simm_page_size) | (addr & ((1 << mem_simm_page_size)-1));
+                addr &= mem_simm_ram_mask;
+            }
             mem_simm_ram[addr & 0x1ffff] = value;
         } 
         return;
@@ -403,9 +398,12 @@ void mem_store2(DWORD addr, BYTE value)
         }
         return;
     default:
-        if (SCPU64_SIMM_SIZE > 0 && addr < SCPU64_SIMM_SIZE) {
+        if (mem_simm_ram_mask) {
             scpu64_clock_write_stretch_simm(addr);
-            mem_simm_ram[addr] = value;
+            if (mem_simm_page_size != mem_conf_page_size) {
+                addr = ((addr >> mem_conf_page_size) << mem_simm_page_size) | (addr & ((1 << mem_simm_page_size)-1));
+            }
+            mem_simm_ram[addr & mem_simm_ram_mask] = value;
         }
     }
 }
@@ -414,9 +412,13 @@ BYTE mem_read2(DWORD addr)
 {
     switch (addr & 0xfe0000) {
     case 0xf60000:
-        if (SCPU64_SIMM_SIZE > 0) {
+        if (mem_simm_ram_mask) {
             scpu64_clock_read_stretch_simm(addr);
-            return mem_simm_ram[addr & (SCPU64_SIMM_SIZE-1) & 0x1ffff];
+            if (mem_simm_page_size != mem_conf_page_size) {
+                addr = ((addr >> mem_conf_page_size) << mem_simm_page_size) | (addr & ((1 << mem_simm_page_size)-1));
+                addr &= mem_simm_ram_mask;
+            }
+            return mem_simm_ram[addr & 0x1ffff];
         }
         break;
     case 0xf80000:
@@ -431,9 +433,12 @@ BYTE mem_read2(DWORD addr)
         }
         return mem_sram[addr & 1];
     default:
-        if (SCPU64_SIMM_SIZE > 0 && addr < SCPU64_SIMM_SIZE) {
+        if (mem_simm_ram_mask) {
             scpu64_clock_read_stretch_simm(addr);
-            return mem_simm_ram[addr];
+            if (mem_simm_page_size != mem_conf_page_size) {
+                addr = ((addr >> mem_conf_page_size) << mem_simm_page_size) | (addr & ((1 << mem_simm_page_size)-1));
+            }
+            return mem_simm_ram[addr & mem_simm_ram_mask];
         }
         break;
     }
@@ -540,8 +545,9 @@ void scpu64_hardware_store(WORD addr, BYTE value)
         }
         break;
     case 0xd078: /* SIMM configuration */
-        if (reg_hwenable) {
+        if (reg_hwenable && reg_simm != value) {
             reg_simm = value;
+            mem_set_simm(reg_simm);
         }
         break;
     case 0xd07a: /* Software 1MHz enable */
@@ -1124,7 +1130,6 @@ void mem_initialize_memory(void)
 
     vicii_set_chargen_addr_options(0x7000, 0x1000);
 
-    mem_pport_dir = 0;
     mem_pport_data = 7;
     export.exrom = 0;
     export.game = 0;
@@ -1150,12 +1155,12 @@ void mem_mmu_translate(unsigned int addr, BYTE **base, int *start, int *limit)
                 *base = scpu64memrom_scpu64_rom + (addr & 0xff0000 & (SCPU64_SCPU64_ROM_SIZE-1));
                 *limit = 0xfffd;
                 *start = 0x0000;
-            } else if (addr >= 0xf60000 && SCPU64_SIMM_SIZE) {
-                *base = mem_simm_ram + (addr & 0x10000 & (SCPU64_SIMM_SIZE-1));
+            } else if (addr >= 0xf60000 && mem_simm_ram_mask && mem_simm_page_size == mem_conf_page_size) {
+                *base = mem_simm_ram + (addr & 0x10000);
                 *limit = 0xfffd;
                 *start = 0x0000;
-            } else if (addr < SCPU64_SIMM_SIZE) {
-                *base = mem_simm_ram + (addr & 0xff0000);
+            } else if (mem_simm_ram_mask && mem_simm_page_size == mem_conf_page_size) {
+                *base = mem_simm_ram + (addr & 0xff0000 & mem_simm_ram_mask);
                 *limit = 0xfffd;
                 *start = 0x0000;
             } else {
@@ -1192,7 +1197,6 @@ void mem_powerup(void)
 {
     ram_init(mem_ram, SCPU64_RAM_SIZE);
     ram_init(mem_sram, SCPU64_SRAM_SIZE);
-    ram_init(mem_simm_ram, SCPU64_SIMM_SIZE);
     cartridge_ram_init();  /* Clean cartridge ram too */
 }
 
@@ -1224,6 +1228,23 @@ static void mem_set_mirroring(int new_mirroring)
     }
 }
 
+static void mem_set_simm(int config)
+{
+    switch (config & 7) {
+    case 0:
+        mem_conf_page_size = 9 + 2;
+        break;
+    case 1:
+    case 2:
+    case 3:
+        mem_conf_page_size = 10 + 2;
+        break;
+    default:
+        mem_conf_page_size = 11 + 2;
+        break;
+    }
+}
+
 void scpu64_hardware_reset(void)
 {
     reg_optim = 0xc7;
@@ -1233,10 +1254,10 @@ void scpu64_hardware_reset(void)
     reg_dosext = 0; 
     reg_ramlink = 0; 
     reg_bootmap = 1;
-    reg_simm = 0; 
-    mem_pport_dir = 0;
+    reg_simm = 4; 
     mem_pport_data = 7;
     mem_set_mirroring(reg_optim);
+    mem_set_simm(reg_simm);
     mem_pla_config_changed();
 }
 
@@ -1530,11 +1551,15 @@ BYTE mem_bank_read(int bank, WORD addr, void *context)
     if ((bank >= 5) && (bank <= 6)) {
         return mem_sram[((bank - 5) << 16) + addr]; /* ram00..01 */
     }
-    if ((bank >= 7) && (bank <= 250) && (bank - 5) < (SCPU64_SIMM_SIZE / 65536)) {
-        return mem_simm_ram[((bank - 5) << 16) + addr]; /* ram02..f6 */
-    }
-    if ((bank >= 251) && (bank <= 252) && (bank - 251) < (SCPU64_SIMM_SIZE / 65536)) {
-        return mem_simm_ram[((bank - 251) << 16) + addr]; /* ramf6..f7 */
+    if ((bank >= 7) && (bank <= 252)) {
+        int addr2 = addr + ((bank - ((bank >= 251) ? 251 : 5)) << 16);
+        if (mem_simm_page_size != mem_conf_page_size) {
+            addr2 = ((addr2 >> mem_conf_page_size) << mem_simm_page_size) | (addr2 & ((1 << mem_simm_page_size)-1));
+        }
+        if (mem_simm_ram_mask) {
+            return mem_simm_ram[addr2 & mem_simm_ram_mask]; /* ram02..f6 */
+        }
+        return bank - 5;
     }
     if ((bank >= 253) && (bank <= 260)) {
         return scpu64memrom_scpu64_rom[(((bank - 253) << 16) + addr) & (SCPU64_SCPU64_ROM_SIZE-1)]; /* romf8..ff */
@@ -1598,15 +1623,21 @@ void mem_bank_write(int bank, WORD addr, BYTE byte, void *context)
 {
     if ((bank >= 5) && (bank <= 6)) {
         mem_sram[((bank - 5) << 16) + addr] = byte; /* ram00..01 */
+        return;
     }
-    if ((bank >= 7) && (bank <= 250) && (bank - 5) < (SCPU64_SIMM_SIZE / 65536)) {
-        mem_simm_ram[((bank - 5) << 16) + addr] = byte; /* ram02..f6 */
-    }
-    if ((bank >= 251) && (bank <= 252) && (bank - 251) < (SCPU64_SIMM_SIZE / 65536)) {
-        mem_simm_ram[((bank - 251) << 16) + addr] = byte; /* ramf6..f7 */
+    if ((bank >= 7) && (bank <= 252)) {
+        int addr2 = addr + ((bank - ((bank >= 251) ? 251 : 5)) << 16);
+        if (mem_simm_page_size != mem_conf_page_size) {
+            addr2 = ((addr2 >> mem_conf_page_size) << mem_simm_page_size) | (addr2 & ((1 << mem_simm_page_size)-1));
+        }
+        if (mem_simm_ram_mask) {
+            mem_simm_ram[addr2 & mem_simm_ram_mask] = byte; /* ram02..f6 */
+        }
+        return;
     }
     if ((bank >= 253) && (bank <= 260)) {
         scpu64memrom_scpu64_rom[(((bank - 253) << 16) + addr) & (SCPU64_SCPU64_ROM_SIZE-1)] = byte; /* romf8..ff */
+        return;
     }
     switch (bank) {
         case 0:                   /* current */
@@ -1661,6 +1692,28 @@ void mem_get_screen_parameter(WORD *base, BYTE *rows, BYTE *columns, int *bank)
     *rows = 25;
     *columns = 40;
     *bank = 0;
+}
+
+void mem_set_simm_size(int val)
+{
+    size_t size = val << 20;
+    if (!size) size = 1;
+    mem_simm_ram_mask = size - 1;
+    mem_simm_ram = lib_realloc(mem_simm_ram, size);
+    ram_init(mem_simm_ram, size);
+    switch (val) {
+    case 1:
+        mem_simm_page_size = 9 + 2; // 0
+        break;
+    case 4:                             //1
+    case 8:                             //2
+        mem_simm_page_size = 10 + 2;  //3
+        break;
+    default:
+        mem_simm_page_size = 11 + 2;  //4,3
+        break;
+    }
+    maincpu_resync_limits();
 }
 
 /* ------------------------------------------------------------------------- */

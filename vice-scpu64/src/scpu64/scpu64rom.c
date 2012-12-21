@@ -41,7 +41,7 @@
 
 static log_t scpu64rom_log = LOG_ERR;
 
-/* Flag: nonzero if the Kernal and BASIC ROMs have been loaded.  */
+/* Flag: nonzero if the ROMs have been loaded.  */
 static int rom_loaded = 0;
 
 int scpu64rom_load_chargen(const char *rom_name)
