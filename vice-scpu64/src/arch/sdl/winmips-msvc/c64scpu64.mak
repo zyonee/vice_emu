@@ -64,7 +64,6 @@ CLEAN :
 	-@erase "$(INTDIR)\c64parallel.obj"
 	-@erase "$(INTDIR)\c64pla.obj"
 	-@erase "$(INTDIR)\c64printer.obj"
-	-@erase "$(INTDIR)\c64rom.obj"
 	-@erase "$(INTDIR)\c64romset.obj"
 	-@erase "$(INTDIR)\c64rsuser.obj"
 	-@erase "$(INTDIR)\c64sound.obj"
@@ -134,7 +133,6 @@ LIB32_OBJS= \
 	"$(INTDIR)\c64parallel.obj" \
 	"$(INTDIR)\c64pla.obj" \
 	"$(INTDIR)\c64printer.obj" \
-	"$(INTDIR)\c64rom.obj" \
 	"$(INTDIR)\c64romset.obj" \
 	"$(INTDIR)\c64rsuser.obj" \
 	"$(INTDIR)\c64sound.obj" \
@@ -187,7 +185,6 @@ CLEAN :
 	-@erase "$(INTDIR)\c64parallel.obj"
 	-@erase "$(INTDIR)\c64pla.obj"
 	-@erase "$(INTDIR)\c64printer.obj"
-	-@erase "$(INTDIR)\c64rom.obj"
 	-@erase "$(INTDIR)\c64romset.obj"
 	-@erase "$(INTDIR)\c64rsuser.obj"
 	-@erase "$(INTDIR)\c64sound.obj"
@@ -257,7 +254,6 @@ LIB32_OBJS= \
 	"$(INTDIR)\c64parallel.obj" \
 	"$(INTDIR)\c64pla.obj" \
 	"$(INTDIR)\c64printer.obj" \
-	"$(INTDIR)\c64rom.obj" \
 	"$(INTDIR)\c64romset.obj" \
 	"$(INTDIR)\c64rsuser.obj" \
 	"$(INTDIR)\c64sound.obj" \
@@ -395,12 +391,6 @@ SOURCE="..\..\..\c64\c64pla.c"
 SOURCE="..\..\..\c64\c64printer.c"
 
 "$(INTDIR)\c64printer.obj" : $(SOURCE) "$(INTDIR)"
-	$(CPP) $(CPP_PROJ) $(SOURCE)
-
-
-SOURCE="..\..\..\c64\c64rom.c"
-
-"$(INTDIR)\c64rom.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 

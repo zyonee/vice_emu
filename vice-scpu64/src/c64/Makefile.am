@@ -272,8 +272,6 @@ libc64scpu64_a_SOURCES = \
 	c64pla.c \
 	c64pla.h \
 	c64printer.c \
-	c64rom.c \
-	c64rom.h \
 	c64romset.c \
 	c64rsuser.c \
 	c64rsuser.h \
