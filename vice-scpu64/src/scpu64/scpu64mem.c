@@ -85,6 +85,7 @@ BYTE mem_sram[SCPU64_SRAM_SIZE];
 BYTE *mem_simm_ram = NULL;
 static int mem_simm_page_size;
 static int mem_conf_page_size;
+static int mem_conf_size;
 unsigned int mem_simm_ram_mask = 0;
 BYTE scpu64memrom_scpu64_rom[SCPU64_SCPU64_ROM_SIZE];
 BYTE mem_tooslow[1];
@@ -398,7 +399,7 @@ void mem_store2(DWORD addr, BYTE value)
         }
         return;
     default:
-        if (mem_simm_ram_mask) {
+        if (mem_simm_ram_mask && addr < mem_conf_size) {
             scpu64_clock_write_stretch_simm(addr);
             if (mem_simm_page_size != mem_conf_page_size) {
                 addr = ((addr >> mem_conf_page_size) << mem_simm_page_size) | (addr & ((1 << mem_simm_page_size)-1));
@@ -433,7 +434,7 @@ BYTE mem_read2(DWORD addr)
         }
         return mem_sram[addr & 1];
     default:
-        if (mem_simm_ram_mask) {
+        if (mem_simm_ram_mask && addr < mem_conf_size) {
             scpu64_clock_read_stretch_simm(addr);
             if (mem_simm_page_size != mem_conf_page_size) {
                 addr = ((addr >> mem_conf_page_size) << mem_simm_page_size) | (addr & ((1 << mem_simm_page_size)-1));
@@ -1159,7 +1160,7 @@ void mem_mmu_translate(unsigned int addr, BYTE **base, int *start, int *limit)
                 *base = mem_simm_ram + (addr & 0x10000);
                 *limit = 0xfffd;
                 *start = 0x0000;
-            } else if (mem_simm_ram_mask && mem_simm_page_size == mem_conf_page_size) {
+            } else if (mem_simm_ram_mask && mem_simm_page_size == mem_conf_page_size && addr < mem_conf_size) {
                 *base = mem_simm_ram + (addr & 0xff0000 & mem_simm_ram_mask);
                 *limit = 0xfffd;
                 *start = 0x0000;
@@ -1233,14 +1234,23 @@ static void mem_set_simm(int config)
     switch (config & 7) {
     case 0:
         mem_conf_page_size = 9 + 2;
+        mem_conf_size = 1 * 1024 *1024 + 2 * 65536;
         break;
     case 1:
+        mem_conf_page_size = 10 + 2;
+        mem_conf_size = 4 * 1024 *1024 + 2 * 65536;
+        break;
     case 2:
+        mem_conf_page_size = 10 + 2;
+        mem_conf_size = 8 * 1024 *1024 + 2 * 65536;
+        break;
     case 3:
         mem_conf_page_size = 10 + 2;
+        mem_conf_size = 16 * 1024 *1024 + 2 * 65536;
         break;
     default:
         mem_conf_page_size = 11 + 2;
+        mem_conf_size = 16 * 1024 *1024 + 2 * 65536;
         break;
     }
     scpu64_set_simm_row_size(mem_conf_page_size);
@@ -1557,7 +1567,7 @@ BYTE mem_bank_read(int bank, WORD addr, void *context)
         if (mem_simm_page_size != mem_conf_page_size) {
             addr2 = ((addr2 >> mem_conf_page_size) << mem_simm_page_size) | (addr2 & ((1 << mem_simm_page_size)-1));
         }
-        if (mem_simm_ram_mask) {
+        if (mem_simm_ram_mask && addr2 < mem_conf_size) {
             return mem_simm_ram[addr2 & mem_simm_ram_mask]; /* ram02..f6 */
         }
         return bank - 5;
@@ -1631,7 +1641,7 @@ void mem_bank_write(int bank, WORD addr, BYTE byte, void *context)
         if (mem_simm_page_size != mem_conf_page_size) {
             addr2 = ((addr2 >> mem_conf_page_size) << mem_simm_page_size) | (addr2 & ((1 << mem_simm_page_size)-1));
         }
-        if (mem_simm_ram_mask) {
+        if (mem_simm_ram_mask && addr2 < mem_conf_size) {
             mem_simm_ram[addr2 & mem_simm_ram_mask] = byte; /* ram02..f6 */
         }
         return;
