@@ -878,10 +878,58 @@ BYTE scpu64_roml_read(WORD addr)
     return roml_read(addr); /* i/o read */
 }
 
+void scpu64_roml_store(WORD addr, BYTE value)
+{
+    scpu64_clock_write_stretch_io();
+    return roml_store(addr, value); /* i/o write */
+}
+
 BYTE scpu64_romh_read(WORD addr)
 {
     scpu64_clock_read_stretch_io();
     return romh_read(addr); /* i/o read */
+}
+
+void scpu64_romh_store(WORD addr, BYTE value)
+{
+    scpu64_clock_write_stretch_io();
+    return romh_store(addr, value); /* i/o write */
+}
+
+BYTE scpu64_ultimax_1000_7fff_read(WORD addr)
+{
+    scpu64_clock_read_stretch_io();
+    return ultimax_1000_7fff_read(addr); /* i/o read */
+}
+
+void scpu64_ultimax_1000_7fff_store(WORD addr, BYTE value)
+{
+    scpu64_clock_write_stretch_io();
+    return ultimax_1000_7fff_store(addr, value); /* i/o write */
+}
+
+BYTE scpu64_ultimax_a000_bfff_read(WORD addr)
+{
+    scpu64_clock_read_stretch_io();
+    return ultimax_a000_bfff_read(addr); /* i/o read */
+}
+
+void scpu64_ultimax_a000_bfff_store(WORD addr, BYTE value)
+{
+    scpu64_clock_write_stretch_io();
+    return ultimax_a000_bfff_store(addr, value); /* i/o write */
+}
+
+BYTE scpu64_ultimax_c000_cfff_read(WORD addr)
+{
+    scpu64_clock_read_stretch_io();
+    return ultimax_c000_cfff_read(addr); /* i/o read */
+}
+
+void scpu64_ultimax_c000_cfff_store(WORD addr, BYTE value)
+{
+    scpu64_clock_write_stretch_io();
+    return ultimax_c000_cfff_store(addr, value); /* i/o write */
 }
 
 static void scpu64_mem_vbank_store(WORD addr, BYTE value) {
@@ -1073,11 +1121,6 @@ void mem_initialize_memory(void)
         }
         mem_read_limit_tab[i][0x100] = 0;
     }
-
-    _mem_read_tab_ptr = mem_read_tab[7];
-    _mem_write_tab_ptr = mem_write_tab[vbank][7];
-    _mem_read_base_tab_ptr = mem_read_base_tab[7];
-    mem_read_limit_tab_ptr = mem_read_limit_tab[7];
 
     vicii_set_chargen_addr_options(0x7000, 0x1000);
 

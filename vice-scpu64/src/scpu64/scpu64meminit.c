@@ -286,42 +286,42 @@ void scpu64meminit(void)
                 case UM:
                     switch (j & 0xf0) {
                     default:
-                        mem_read_tab_set(k, j, ultimax_1000_7fff_read);
+                        mem_read_tab_set(k, j, scpu64_ultimax_1000_7fff_read);
                         mem_read_base_set(k, j, NULL);
-                        mem_set_write_hook(k, i, ultimax_1000_7fff_store);
+                        mem_set_write_hook(k, i, scpu64_ultimax_1000_7fff_store);
                         break;
                     case 0x80:
                     case 0x90:
-                        mem_read_tab_set(k, j, roml_read);
+                        mem_read_tab_set(k, j, scpu64_roml_read);
                         mem_read_base_set(k, j, NULL);
-                        mem_set_write_hook(k, j, roml_store);
+                        mem_set_write_hook(k, j, scpu64_roml_store);
                         break;
                     case 0xa0:
                     case 0xb0:
-                        mem_read_tab_set(k, j, ultimax_a000_bfff_read);
+                        mem_read_tab_set(k, j, scpu64_ultimax_a000_bfff_read);
                         mem_read_base_set(k, j, NULL);
-                        mem_set_write_hook(k, i, ultimax_a000_bfff_store);
+                        mem_set_write_hook(k, i, scpu64_ultimax_a000_bfff_store);
                         break;
                     case 0xc0:
-                        mem_read_tab_set(k, j, ultimax_c000_cfff_read);
+                        mem_read_tab_set(k, j, scpu64_ultimax_c000_cfff_read);
                         mem_read_base_set(k, j, NULL);
-                        mem_set_write_hook(k, i, ultimax_c000_cfff_store);
+                        mem_set_write_hook(k, i, scpu64_ultimax_c000_cfff_store);
                         break;
                     case 0xe0:
                     case 0xf0:
-                        mem_read_tab_set(k, j, romh_read);
+                        mem_read_tab_set(k, j, scpu64_romh_read);
                         mem_read_base_set(k, j, NULL);
-                        mem_set_write_hook(k, j, romh_store);
+                        mem_set_write_hook(k, j, scpu64_romh_store);
                         break;
                     }
                     break;
                 case RL:
-                    mem_read_tab_set(k, j, roml_read);
+                    mem_read_tab_set(k, j, scpu64_roml_read);
                     mem_read_base_set(k, j, NULL);
                     /* write hook preset, ram */
                     break;
                 case RH:
-                    mem_read_tab_set(k, j, romh_read);
+                    mem_read_tab_set(k, j, scpu64_romh_read);
                     mem_read_base_set(k, j, NULL);
                     /* write hook preset, ram */
                     break;

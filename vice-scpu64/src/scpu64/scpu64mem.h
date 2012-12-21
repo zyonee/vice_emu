@@ -85,7 +85,15 @@ extern void scpu64io_de00_store(WORD addr, BYTE value);
 extern BYTE scpu64io_df00_read(WORD addr);
 extern void scpu64io_df00_store(WORD addr, BYTE value);
 extern BYTE scpu64_roml_read(WORD addr);
+extern void scpu64_roml_store(WORD addr, BYTE value);
 extern BYTE scpu64_romh_read(WORD addr);
+extern void scpu64_romh_store(WORD addr, BYTE value);
+extern BYTE scpu64_ultimax_1000_7fff_read(WORD addr);
+extern void scpu64_ultimax_1000_7fff_store(WORD addr, BYTE value);
+extern BYTE scpu64_ultimax_a000_bfff_read(WORD addr);
+extern void scpu64_ultimax_a000_bfff_store(WORD addr, BYTE value);
+extern BYTE scpu64_ultimax_c000_cfff_read(WORD addr);
+extern void scpu64_ultimax_c000_cfff_store(WORD addr, BYTE value);
 extern int scpu64_interrupt_reroute(void);
 
 extern void mem_pla_config_changed(void);
