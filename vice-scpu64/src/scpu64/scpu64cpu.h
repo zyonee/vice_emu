@@ -29,6 +29,7 @@
 
 int scpu64_get_half_cycle(void);
 void scpu64_set_fastmode(int mode);
+void scpu64_set_simm_row_size(int value);
 int scpu64_get_fastmode(void);
 void scpu64_clock_read_stretch_io(void);
 void scpu64_clock_readwrite_stretch_eprom(void);

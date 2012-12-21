@@ -166,16 +166,20 @@ void scpu64_clock_write_stretch(void)
 }
 
 /* TODO: refresh */
-#define SIMM_ROW 2048
-
 static DWORD simm_cell;
+static DWORD simm_row_mask = ~(2048 * 4 - 1);
+
+void scpu64_set_simm_row_size(int value)
+{
+    simm_row_mask = ~((1 << value) - 1);
+}
 
 void scpu64_clock_read_stretch_simm(DWORD addr)
 {
     if (fastmode) {
         if (!((simm_cell ^ addr) & ~3)) {
             return; /* same cell, no delay */
-        } else if ((simm_cell ^ addr) & ~(SIMM_ROW << 2)) {
+        } else if ((simm_cell ^ addr) & simm_row_mask) {
             /* different row, two and half delay */
             maincpu_accu += maincpu_diff * 2 + (maincpu_diff >> 1);
         } else if (!(((simm_cell + 4) ^ addr) & ~3)) {
@@ -195,7 +199,7 @@ void scpu64_clock_read_stretch_simm(DWORD addr)
 void scpu64_clock_write_stretch_simm(DWORD addr)
 {
     if (fastmode) {
-        if ((simm_cell ^ addr) & ~(SIMM_ROW << 2)) {
+        if ((simm_cell ^ addr) & simm_row_mask) {
             maincpu_accu += maincpu_diff * 2;/* different row, two delay */
         } else {
             maincpu_accu += maincpu_diff;/* same row, one delay */

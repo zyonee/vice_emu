@@ -1243,6 +1243,7 @@ static void mem_set_simm(int config)
         mem_conf_page_size = 11 + 2;
         break;
     }
+    scpu64_set_simm_row_size(mem_conf_page_size);
 }
 
 void scpu64_hardware_reset(void)
