@@ -79,16 +79,6 @@ static inline void scpu64_clock_add(CLOCK *clock, int amount)
     }
 }
 
-void scpu64_set_fastmode(int mode)
-{
-    fastmode = mode;
-}
-
-int scpu64_get_fastmode(void)
-{
-    return fastmode;
-}
-
 static inline void wait_buffer(void)
 {
     if (buffer_finish > maincpu_clk || (buffer_finish == maincpu_clk && buffer_finish_half > maincpu_accu)) {
@@ -164,6 +154,23 @@ void scpu64_clock_write_stretch(void)
         buffer_finish_half = 13000000;
     }
 }
+
+void scpu64_set_fastmode(int mode)
+{
+    if (fastmode != mode) {
+        fastmode = mode;
+        if (!fastmode) {
+            scpu64_clock_write_stretch_io(); /* TODO: verify */
+        }
+        maincpu_resync_limits();
+    }
+}
+
+int scpu64_get_fastmode(void)
+{
+    return fastmode;
+}
+
 
 /* TODO: refresh */
 static DWORD simm_cell;

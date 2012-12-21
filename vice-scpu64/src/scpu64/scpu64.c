@@ -69,7 +69,7 @@
 #include "machine-printer.h"
 #include "machine-video.h"
 #include "machine.h"
-#include "maincpu.h"
+#include "main65816cpu.h"
 #include "mem.h"
 #include "monitor.h"
 #include "network.h"

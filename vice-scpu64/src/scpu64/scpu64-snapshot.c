@@ -43,7 +43,7 @@
 #include "keyboard.h"
 #include "log.h"
 #include "machine.h"
-#include "maincpu.h"
+#include "main65816cpu.h"
 #include "sid-snapshot.h"
 #include "snapshot.h"
 #include "sound.h"

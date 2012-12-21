@@ -33,7 +33,7 @@
 #include "scpu64mem.h"
 #include "cmdline.h"
 #include "log.h"
-#include "maincpu.h"
+#include "main65816cpu.h"
 #include "resources.h"
 #include "snapshot.h"
 #include "translate.h"

@@ -44,7 +44,7 @@
 #include "cia.h"
 #include "clkguard.h"
 #include "machine.h"
-#include "maincpu.h"
+#include "main65816cpu.h"
 #include "mem.h"
 #include "monitor.h"
 #include "ram.h"
@@ -529,12 +529,16 @@ void scpu64_hardware_store(WORD addr, BYTE value)
     case 0xd071:
         break;
     case 0xd072: /* System 1MHz enable */
-        reg_sys_1mhz = 1; 
-        scpu64_set_fastmode(!(reg_sys_1mhz | reg_soft_1mhz | reg_sw_1mhz));
+        if (!reg_sys_1mhz) {
+            reg_sys_1mhz = 1; 
+            scpu64_set_fastmode(0);
+        }
         break;
     case 0xd073: /* System 1MHz disable */
-        reg_sys_1mhz = 0; 
-        scpu64_set_fastmode(!(reg_sys_1mhz | reg_soft_1mhz | reg_sw_1mhz));
+        if (reg_sys_1mhz) {
+            reg_sys_1mhz = 0; 
+            scpu64_set_fastmode(!(reg_soft_1mhz | reg_sw_1mhz));
+        }
         break;
     case 0xd074: /* Optimization modes */
     case 0xd075:
@@ -552,13 +556,17 @@ void scpu64_hardware_store(WORD addr, BYTE value)
         }
         break;
     case 0xd07a: /* Software 1MHz enable */
-        reg_soft_1mhz = 1; 
-        scpu64_set_fastmode(!(reg_sys_1mhz | reg_soft_1mhz | reg_sw_1mhz));
+        if (!reg_soft_1mhz) {
+            reg_soft_1mhz = 1; 
+            scpu64_set_fastmode(0);
+        }
         break;
     case 0xd079: /* same as 0xd07b */
     case 0xd07b: /* Software 1MHz disable */
-        reg_soft_1mhz = 0;
-        scpu64_set_fastmode(!(reg_sys_1mhz | reg_soft_1mhz | reg_sw_1mhz));
+        if (reg_soft_1mhz) {
+            reg_soft_1mhz = 0;
+            scpu64_set_fastmode(!(reg_sys_1mhz | reg_sw_1mhz));
+        }
         break;
     case 0xd07c:
         break;
