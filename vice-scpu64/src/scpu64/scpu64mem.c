@@ -1140,11 +1140,29 @@ void mem_mmu_translate(unsigned int addr, BYTE **base, int *start, int *limit)
     BYTE *p;
     DWORD limits;
 
-    if (addr & ~0xffff) {
-        if (addr >= 0xf80000 && !scpu64_get_fastmode()) {
-            *base = scpu64memrom_scpu64_rom + (addr & 0xff0000 & (SCPU64_SCPU64_ROM_SIZE-1));
+    if (addr >= 0x10000) {
+        if (addr < 0x20000) {
+            *base = mem_sram + 0x10000;
             *limit = 0xfffd;
             *start = 0x0000;
+        } else if (!scpu64_get_fastmode()) {
+            if (addr >= 0xf80000) {
+                *base = scpu64memrom_scpu64_rom + (addr & 0xff0000 & (SCPU64_SCPU64_ROM_SIZE-1));
+                *limit = 0xfffd;
+                *start = 0x0000;
+            } else if (addr >= 0xf60000 && SCPU64_SIMM_SIZE) {
+                *base = mem_simm_ram + (addr & 0x10000 & (SCPU64_SIMM_SIZE-1));
+                *limit = 0xfffd;
+                *start = 0x0000;
+            } else if (addr < SCPU64_SIMM_SIZE) {
+                *base = mem_simm_ram + (addr & 0xff0000);
+                *limit = 0xfffd;
+                *start = 0x0000;
+            } else {
+                *base = NULL;
+                *limit = 0;
+                *start = 0;
+            }
         } else {
             *base = NULL;
             *limit = 0;
@@ -1152,7 +1170,7 @@ void mem_mmu_translate(unsigned int addr, BYTE **base, int *start, int *limit)
         }
     } else {
         p = _mem_read_base_tab_ptr[addr >> 8];
-        if (p != NULL && addr > 1) {
+        if (p != NULL) {
             *base = p;
             limits = mem_read_limit_tab_ptr[addr >> 8];
             *limit = limits & 0xffff;
