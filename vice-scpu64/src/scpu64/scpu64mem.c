@@ -505,7 +505,7 @@ static BYTE scpu64_hardware_read(WORD addr)
     case 0xd0b9:      /* same as 0xd0b8 */
     case 0xd0b8:      /* bit 7 - software 1 MHz enabled (1)/disabled (0) */
                       /* bit 6 - 1 MHz (1)/20 MHz (2) switch+software+system */
-        value = (reg_soft_1mhz ? 0x80 : 0x00) | ((reg_soft_1mhz || reg_sw_1mhz || reg_sys_1mhz) ? 0x40 : 0x00);
+        value = (reg_soft_1mhz ? 0x80 : 0x00) | ((reg_soft_1mhz || (reg_sw_1mhz && !reg_hwenable) || reg_sys_1mhz) ? 0x40 : 0x00);
         break;
     case 0xd0ba:
         break;
@@ -538,7 +538,7 @@ void scpu64_hardware_store(WORD addr, BYTE value)
     case 0xd073: /* System 1MHz disable */
         if (reg_sys_1mhz) {
             reg_sys_1mhz = 0; 
-            scpu64_set_fastmode(!(reg_soft_1mhz | reg_sw_1mhz));
+            scpu64_set_fastmode(!(reg_soft_1mhz || (reg_sw_1mhz && !reg_hwenable)));
         }
         break;
     case 0xd074: /* Optimization modes */
@@ -566,7 +566,7 @@ void scpu64_hardware_store(WORD addr, BYTE value)
     case 0xd07b: /* Software 1MHz disable */
         if (reg_soft_1mhz) {
             reg_soft_1mhz = 0;
-            scpu64_set_fastmode(!(reg_sys_1mhz | reg_sw_1mhz));
+            scpu64_set_fastmode(!(reg_sys_1mhz || (reg_sw_1mhz && !reg_hwenable)));
         }
         break;
     case 0xd07c:
@@ -594,7 +594,7 @@ void scpu64_hardware_store(WORD addr, BYTE value)
                 reg_hwenable = 0;
                 mem_pla_config_changed();
             }
-            scpu64_set_fastmode(!(reg_sys_1mhz | reg_soft_1mhz | reg_sw_1mhz));
+            scpu64_set_fastmode(!(reg_sys_1mhz || reg_soft_1mhz || (reg_sw_1mhz && !reg_hwenable)));
         }
         break;
     case 0xd0b3: /* set optim mode */
@@ -626,7 +626,7 @@ void scpu64_hardware_store(WORD addr, BYTE value)
     case 0xd0b8: /* set software 1 MHz */
         if (reg_hwenable) {
             reg_soft_1mhz = value >> 7;
-            scpu64_set_fastmode(!(reg_sys_1mhz | reg_soft_1mhz | reg_sw_1mhz));
+            scpu64_set_fastmode(!(reg_sys_1mhz || reg_soft_1mhz || (reg_sw_1mhz && !reg_hwenable)));
         }
         break;
     case 0xd0b9:
@@ -1747,7 +1747,7 @@ void mem_set_speed_switch(int val)
 {
     if (reg_sw_1mhz == val) {
         reg_sw_1mhz = !val;
-        scpu64_set_fastmode(!(reg_soft_1mhz | reg_sw_1mhz | reg_sys_1mhz));
+        scpu64_set_fastmode(!(reg_soft_1mhz || reg_sys_1mhz || (reg_sw_1mhz && !reg_hwenable)));
     }
 }
 
