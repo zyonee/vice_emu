@@ -81,6 +81,8 @@ int cia1_model;
 int cia2_model;
 
 static int scpu64_simm_size;
+static int scpu64_jiffy_switch = 1;
+static int scpu64_speed_switch = 1;
 
 static int set_chargen_rom_name(const char *val, void *param)
 {
@@ -191,6 +193,20 @@ static int set_scpu64_simm_size(int val, void *param)
     return 0;
 }
 
+static int set_jiffy_switch(int val, void *param)
+{
+    scpu64_jiffy_switch = !!val;
+    mem_set_jiffy_switch(scpu64_jiffy_switch);
+    return 0;
+}
+
+static int set_speed_switch(int val, void *param)
+{
+    scpu64_speed_switch = !!val;
+    mem_set_speed_switch(scpu64_speed_switch);
+    return 0;
+}
+
 static const resource_string_t resources_string[] = {
     { "ChargenName", "chargen", RES_EVENT_NO, NULL,
       /* FIXME: should be same but names may differ */
@@ -230,7 +246,11 @@ static const resource_int_t resources_int[] = {
     { "BurstMod", BURST_MOD_NONE, RES_EVENT_NO, NULL,
       &burst_mod, set_burst_mod, NULL },
     { "SIMMSize", 16, RES_EVENT_NO, NULL,
-      (int *)&scpu64_simm_size, set_scpu64_simm_size, NULL },
+      &scpu64_simm_size, set_scpu64_simm_size, NULL },
+    { "JiffySwitch", 1, RES_EVENT_STRICT, NULL,
+      &scpu64_jiffy_switch, set_jiffy_switch, NULL },
+    { "SpeedSwitch", 1, RES_EVENT_STRICT, NULL,
+      &scpu64_speed_switch, set_speed_switch, NULL },
     { NULL }
 };
 

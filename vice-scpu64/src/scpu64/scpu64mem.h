@@ -95,6 +95,8 @@ extern BYTE scpu64_ultimax_c000_cfff_read(WORD addr);
 extern void scpu64_ultimax_c000_cfff_store(WORD addr, BYTE value);
 extern int scpu64_interrupt_reroute(void);
 extern void mem_set_simm_size(int val);
+extern void mem_set_jiffy_switch(int val);
+extern void mem_set_speed_switch(int val);
 
 extern void mem_pla_config_changed(void);
 extern void mem_set_tape_sense(int sense);

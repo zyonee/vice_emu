@@ -1714,6 +1714,8 @@ void mem_get_screen_parameter(WORD *base, BYTE *rows, BYTE *columns, int *bank)
     *bank = 0;
 }
 
+/* ------------------------------------------------------------------------- */
+
 void mem_set_simm_size(int val)
 {
     size_t size = val << 20;
@@ -1734,6 +1736,19 @@ void mem_set_simm_size(int val)
         break;
     }
     maincpu_resync_limits();
+}
+
+void mem_set_jiffy_switch(int val)
+{
+    reg_sw_jiffy = !!val;
+}
+
+void mem_set_speed_switch(int val)
+{
+    if (reg_sw_1mhz == val) {
+        reg_sw_1mhz = !val;
+        scpu64_set_fastmode(!(reg_soft_1mhz | reg_sw_1mhz | reg_sys_1mhz));
+    }
 }
 
 /* ------------------------------------------------------------------------- */
