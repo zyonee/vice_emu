@@ -355,6 +355,7 @@ BYTE ram1_read(WORD addr)
 
 BYTE scpu64memrom_scpu64_read(WORD addr)
 {
+    scpu64_clock_readwrite_stretch_eprom();
     return scpu64memrom_scpu64_rom[addr];
 }
 
