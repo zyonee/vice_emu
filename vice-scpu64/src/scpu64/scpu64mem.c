@@ -881,6 +881,14 @@ void scpu64io_df00_store(WORD addr, BYTE value)
     case 0xdf21:
         scpu64_clock_write_stretch_io_long();
         break;
+    case 0xdf7e:
+        scpu64_clock_write_stretch_io(); /* TODO: verify */
+        reg_ramlink = 1;
+        break;
+    case 0xdf7f:
+        scpu64_clock_write_stretch_io(); /* TODO: verify */
+        reg_ramlink = 0;
+        break;
     default:
         scpu64_clock_write_stretch_io();
         break;
