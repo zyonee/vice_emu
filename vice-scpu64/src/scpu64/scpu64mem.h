@@ -36,7 +36,8 @@
 #define SCPU64_SRAM_SIZE 0x20000
 #define SCPU64_KERNAL_ROM_SIZE  0x2000
 #define SCPU64_CHARGEN_ROM_SIZE 0x1000
-#define SCPU64_SCPU64_ROM_SIZE  0x20000
+#define SCPU64_SCPU64_ROM_MINSIZE  0x10000
+#define SCPU64_SCPU64_ROM_MAXSIZE  0x80000
 
 extern BYTE mem_sram[];
 
@@ -53,7 +54,7 @@ extern void ram_store_int(WORD addr, BYTE value);
 extern BYTE chargen_read(WORD addr);
 extern BYTE scpu64_kernalshadow_read(WORD addr);
 extern BYTE ram1_read(WORD addr);
-extern BYTE scpu64memrom_scpu64_read(WORD addr);
+extern BYTE scpu64rom_scpu64_read(WORD addr);
 
 extern void scpu64io_colorram_store(WORD addr, BYTE value);
 extern BYTE scpu64io_colorram_read(WORD addr);
@@ -105,7 +106,6 @@ extern BYTE mem_pport_data;
 extern BYTE mem_chargen_rom[];
 extern BYTE *mem_simm_ram;
 extern unsigned int mem_simm_ram_mask;
-extern BYTE scpu64memrom_scpu64_rom[];
 
 extern void mem_set_write_hook(int config, int page, store_func_t *f);
 extern void mem_read_tab_set(unsigned int base, unsigned int index, read_func_ptr_t read_func);

@@ -32,6 +32,7 @@
 #include "c64cartmem.h"
 #include "c64cia.h"
 #include "scpu64mem.h"
+#include "scpu64rom.h"
 #include "scpu64meminit.h"
 #include "cartio.h"
 #include "sid.h"
@@ -400,8 +401,8 @@ void scpu64meminit(void)
                     mem_set_write_hook(k, j, scpu64io_colorram_store_int);
                     break;
                 case F8:
-                    mem_read_tab_set(k, j, scpu64memrom_scpu64_read);
-                    mem_read_base_set(k, j, scpu64memrom_scpu64_rom);
+                    mem_read_tab_set(k, j, scpu64rom_scpu64_read);
+                    mem_read_base_set(k, j, scpu64rom_scpu64_rom);
                     /* write hook preset, ram */
                     break;
                 case CR:

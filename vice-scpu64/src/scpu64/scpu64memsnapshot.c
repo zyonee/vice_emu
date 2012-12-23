@@ -74,7 +74,7 @@ static int scpu64_snapshot_write_rom_module(snapshot_t *s)
     resources_set_int("VirtualDevices", 0);
 
     if (SMW_BA(m, mem_chargen_rom, SCPU64_CHARGEN_ROM_SIZE) < 0
-        || SMW_BA(m, scpu64memrom_scpu64_rom, SCPU64_SCPU64_ROM_SIZE) < 0) {
+        || SMW_BA(m, scpu64rom_scpu64_rom, SCPU64_SCPU64_ROM_MAXSIZE) < 0) {
         goto fail;
     }
 
@@ -124,7 +124,7 @@ static int scpu64_snapshot_read_rom_module(snapshot_t *s)
     resources_set_int("VirtualDevices", 0);
 
     if (SMR_BA(m, mem_chargen_rom, SCPU64_CHARGEN_ROM_SIZE) < 0
-        || SMR_BA(m, scpu64memrom_scpu64_rom, SCPU64_SCPU64_ROM_SIZE) < 0) {
+        || SMR_BA(m, scpu64rom_scpu64_rom, SCPU64_SCPU64_ROM_MAXSIZE) < 0) {
         goto fail;
     }
 

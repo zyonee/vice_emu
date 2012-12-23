@@ -30,8 +30,6 @@
 extern int scpu64rom_load_scpu64(const char *rom_name);
 extern int scpu64rom_load_chargen(const char *rom_name);
 
-extern int scpu64rom_get_kernal_checksum(void);
-
-extern int scpu64rom_cartkernal_active;
+extern BYTE scpu64rom_scpu64_rom[];
 
 #endif

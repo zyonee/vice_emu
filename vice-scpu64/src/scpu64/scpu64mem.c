@@ -37,6 +37,7 @@
 #include "c64cart.h"
 #include "c64cia.h"
 #include "scpu64mem.h"
+#include "scpu64rom.h"
 #include "scpu64meminit.h"
 #include "c64cartmem.h"
 #include "cartio.h"
@@ -87,7 +88,6 @@ static int mem_simm_page_size;
 static int mem_conf_page_size;
 static int mem_conf_size;
 unsigned int mem_simm_ram_mask = 0;
-BYTE scpu64memrom_scpu64_rom[SCPU64_SCPU64_ROM_SIZE];
 BYTE mem_tooslow[1];
 
 #ifdef USE_EMBEDDED
@@ -353,10 +353,10 @@ BYTE ram1_read(WORD addr)
     return mem_sram[0x10000 + addr];
 }
 
-BYTE scpu64memrom_scpu64_read(WORD addr)
+BYTE scpu64rom_scpu64_read(WORD addr)
 {
     scpu64_clock_readwrite_stretch_eprom();
-    return scpu64memrom_scpu64_rom[addr];
+    return scpu64rom_scpu64_rom[addr];
 }
 
 /* ------------------------------------------------------------------------- */
@@ -428,7 +428,7 @@ BYTE mem_read2(DWORD addr)
     case 0xfc0000:
     case 0xfe0000:
         scpu64_clock_readwrite_stretch_eprom();
-        return scpu64memrom_scpu64_rom[addr & (SCPU64_SCPU64_ROM_SIZE-1) & 0x7ffff];
+        return scpu64rom_scpu64_rom[addr & (SCPU64_SCPU64_ROM_MAXSIZE-1) & 0x7ffff];
     case 0x000000:
         if (addr & 0xfffe) {
             return mem_sram[addr];
@@ -1139,7 +1139,7 @@ void mem_initialize_memory(void)
                 k++;
             }
             /* Some areas are I/O or cartridge (NULL) or too slow and need cycle stretching */
-            range = (p == NULL || p == mem_ram || p == scpu64memrom_scpu64_rom || p == mem_chargen_rom - 0xd000) ? 0 : ((j << 24) | ((k << 8)-3));
+            range = (p == NULL || p == mem_ram || p == scpu64rom_scpu64_rom || p == mem_chargen_rom - 0xd000) ? 0 : ((j << 24) | ((k << 8)-3));
             while (j < k) {
                 mem_read_limit_tab[i][j] = range;
                 j++;
@@ -1172,7 +1172,7 @@ void mem_mmu_translate(unsigned int addr, BYTE **base, int *start, int *limit)
             *start = 0x0000;
         } else if (!scpu64_get_fastmode()) {
             if (addr >= 0xf80000) {
-                *base = scpu64memrom_scpu64_rom + (addr & 0xff0000 & (SCPU64_SCPU64_ROM_SIZE-1));
+                *base = scpu64rom_scpu64_rom + (addr & 0x70000 & (SCPU64_SCPU64_ROM_MAXSIZE-1));
                 *limit = 0xfffd;
                 *start = 0x0000;
             } else if (addr >= 0xf60000 && mem_simm_ram_mask && mem_simm_page_size == mem_conf_page_size) {
@@ -1592,7 +1592,7 @@ BYTE mem_bank_read(int bank, WORD addr, void *context)
         return bank - 5;
     }
     if ((bank >= 253) && (bank <= 260)) {
-        return scpu64memrom_scpu64_rom[(((bank - 253) << 16) + addr) & (SCPU64_SCPU64_ROM_SIZE-1)]; /* romf8..ff */
+        return scpu64rom_scpu64_rom[(((bank - 253) << 16) + addr) & (SCPU64_SCPU64_ROM_MAXSIZE-1)]; /* romf8..ff */
     }
 
     switch (bank) {
@@ -1666,7 +1666,7 @@ void mem_bank_write(int bank, WORD addr, BYTE byte, void *context)
         return;
     }
     if ((bank >= 253) && (bank <= 260)) {
-        scpu64memrom_scpu64_rom[(((bank - 253) << 16) + addr) & (SCPU64_SCPU64_ROM_SIZE-1)] = byte; /* romf8..ff */
+        scpu64rom_scpu64_rom[(((bank - 253) << 16) + addr) & (SCPU64_SCPU64_ROM_MAXSIZE-1)] = byte; /* romf8..ff */
         return;
     }
     switch (bank) {
