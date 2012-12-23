@@ -574,6 +574,7 @@ void scpu64_hardware_store(WORD addr, BYTE value)
     case 0xd07e: /* hwreg enable */
         if (!reg_hwenable) {
             reg_hwenable = 1;
+            scpu64_set_fastmode(!(reg_sys_1mhz || reg_soft_1mhz));
             mem_pla_config_changed();
         }
         break;
@@ -581,6 +582,7 @@ void scpu64_hardware_store(WORD addr, BYTE value)
     case 0xd07f: /* hwreg disable */
         if (reg_hwenable) {
             reg_hwenable = 0;
+            scpu64_set_fastmode(!(reg_sys_1mhz || reg_soft_1mhz || reg_sw_1mhz));
             mem_pla_config_changed();
         }
         break;
