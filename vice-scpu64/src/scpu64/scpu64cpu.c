@@ -24,8 +24,13 @@
  *
  */
 
+/* NULL */
+#include <stdio.h>
+
 #include "vice.h"
 
+#include "interrupt.h"
+#include "6510core.h"
 #include "clkguard.h"
 #include "alarm.h"
 #include "main65816cpu.h"
@@ -309,6 +314,66 @@ static inline BYTE load_long(DWORD addr)
     }
     scpu64_clock_add(1, 0);
     return tmp;
+}
+
+#define CUSTOM_INTERRUPT_DELAY
+/* Return nonzero if a pending NMI should be dispatched now.  This takes
+   account for the internal delays of the 65SC02, but does not actually check
+   the status of the NMI line.  */
+inline static int interrupt_check_nmi_delay(interrupt_cpu_status_t *cs,
+                                            CLOCK cpu_clk)
+{
+    CLOCK nmi_clk;
+
+    if (!fastmode) {
+        nmi_clk = cs->nmi_clk + INTERRUPT_DELAY;
+
+        /* Branch instructions delay IRQs and NMI by one cycle if branch
+           is taken with no page boundary crossing.  */
+        if (OPINFO_DELAYS_INTERRUPT(*cs->last_opcode_info_ptr)) {
+            nmi_clk++;
+        }
+    } else {
+        nmi_clk = cs->nmi_clk;
+    }
+
+    if (cpu_clk >= nmi_clk) {
+        return 1;
+    }
+
+    return 0;
+}
+
+/* Return nonzero if a pending IRQ should be dispatched now.  This takes
+   account for the internal delays of the 65802, but does not actually check
+   the status of the IRQ line.  */
+inline static int interrupt_check_irq_delay(interrupt_cpu_status_t *cs,
+                                            CLOCK cpu_clk)
+{
+    CLOCK irq_clk;
+
+    if (!fastmode) {
+        irq_clk = cs->irq_clk + INTERRUPT_DELAY;
+
+        /* Branch instructions delay IRQs and NMI by one cycle if branch
+           is taken with no page boundary crossing.  */
+        if (OPINFO_DELAYS_INTERRUPT(*cs->last_opcode_info_ptr)) {
+            irq_clk++;
+        }
+
+        /* If an opcode changes the I flag from 1 to 0, the 65802 needs
+           one more opcode before it triggers the IRQ routine.  */
+    } else {
+        irq_clk = cs->irq_clk;
+    }
+    if (cpu_clk >= irq_clk) {
+        if (!OPINFO_ENABLES_IRQ(*cs->last_opcode_info_ptr)) {
+            return 1;
+        } else {
+            cs->global_pending_int |= IK_IRQPEND;
+        }
+    }
+    return 0;
 }
 
 #define EMULATION_MODE_CHANGED scpu64_emulation_mode = reg_emul

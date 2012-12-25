@@ -238,6 +238,7 @@ void maincpu_reset(void)
 
 /* ------------------------------------------------------------------------- */
 
+#ifndef CUSTOM_INTERRUPT_DELAY
 /* Return nonzero if a pending NMI should be dispatched now.  This takes
    account for the internal delays of the 65SC02, but does not actually check
    the status of the NMI line.  */
@@ -284,6 +285,7 @@ inline static int interrupt_check_irq_delay(interrupt_cpu_status_t *cs,
     }
     return 0;
 }
+#endif
 
 /* ------------------------------------------------------------------------- */
 
