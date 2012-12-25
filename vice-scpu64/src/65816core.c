@@ -2152,49 +2152,51 @@
 #define WAI()                                                                              \
   do {                                                                                     \
       unsigned int waiting = 1;                                                            \
+      enum cpu_int pending_interrupt;                                                      \
       INC_PC(SIZE_1);                                                                      \
       FETCH_PARAM_DUMMY(reg_pc);                                                           \
       do {                                                                                 \
-          CPU_DELAY_CLK                                                                    \
+          CPU_INT_STATUS->num_dma_per_opcode = 0;                                          \
+          SET_LAST_ADDR((reg_pc - 1) & 0xffff);                                            \
+          SET_LAST_OPCODE(p0);                                                             \
+                                                                                           \
+          if (!(CPU_INT_STATUS->global_pending_int & IK_IRQ)                               \
+                  && (CPU_INT_STATUS->global_pending_int & IK_IRQPEND)                     \
+                  && CPU_INT_STATUS->irq_pending_clk <= CLK) {                             \
+              interrupt_ack_irq(CPU_INT_STATUS);                                           \
+          }                                                                                \
+          pending_interrupt = CPU_INT_STATUS->global_pending_int;                          \
+          CLK = alarm_context_next_pending_clk(ALARM_CONTEXT);                             \
+                                                                                           \
+          if (pending_interrupt & IK_NMI) {                                                \
+              if (CLK > CPU_INT_STATUS->nmi_clk + INTERRUPT_DELAY + 1) {                   \
+                  CLK = CPU_INT_STATUS->nmi_clk + INTERRUPT_DELAY + 1;                     \
+              }                                                                            \
+          }                                                                                \
+          if (pending_interrupt & (IK_IRQ | IK_IRQPEND)) {                                 \
+              if (CLK > CPU_INT_STATUS->irq_clk + INTERRUPT_DELAY + 1) {                   \
+                  CLK = CPU_INT_STATUS->irq_clk + INTERRUPT_DELAY + 1;                     \
+              }                                                                            \
+          }                                                                                \
                                                                                            \
           while (CLK >= alarm_context_next_pending_clk(ALARM_CONTEXT)) {                   \
               alarm_context_dispatch(ALARM_CONTEXT, CLK);                                  \
               CPU_DELAY_CLK                                                                \
           }                                                                                \
                                                                                            \
-          {                                                                                \
-              enum cpu_int pending_interrupt;                                              \
+          pending_interrupt = CPU_INT_STATUS->global_pending_int;                          \
                                                                                            \
-              if (!(CPU_INT_STATUS->global_pending_int & IK_IRQ)                           \
-                      && (CPU_INT_STATUS->global_pending_int & IK_IRQPEND)                 \
-                      && CPU_INT_STATUS->irq_pending_clk <= CLK) {                         \
-                  interrupt_ack_irq(CPU_INT_STATUS);                                       \
-              }                                                                            \
-                                                                                           \
-              pending_interrupt = CPU_INT_STATUS->global_pending_int;                      \
-              if (pending_interrupt != IK_NONE) {                                          \
-                  if (pending_interrupt & IK_RESET) {                                      \
-                      waiting = 0;                                                         \
-                  }                                                                        \
-                  if ((pending_interrupt & IK_NMI)                                         \
-                          && interrupt_check_nmi_delay(CPU_INT_STATUS, CLK)) {             \
-                      waiting = 0;                                                         \
-                  }                                                                        \
-                  if ((pending_interrupt & (IK_IRQ | IK_IRQPEND))                          \
-                          && interrupt_check_irq_delay(CPU_INT_STATUS, CLK)) {             \
-                      waiting = 0;                                                         \
-                  }                                                                        \
-                  DO_INTERRUPT(pending_interrupt);                                         \
-                  if (!(CPU_INT_STATUS->global_pending_int & IK_IRQ)) {                    \
-                      CPU_INT_STATUS->global_pending_int &= ~IK_IRQPEND;                   \
-                  }                                                                        \
-              }                                                                            \
+          if (pending_interrupt & IK_RESET) {                                              \
+              waiting = 0;                                                                 \
           }                                                                                \
-          if (waiting) {                                                                   \
-              maincpu_clk = alarm_context_next_pending_clk(ALARM_CONTEXT);                 \
+          if ((pending_interrupt & (IK_IRQ | IK_IRQPEND))                                  \
+                  && interrupt_check_irq_delay(CPU_INT_STATUS, CLK)) {                     \
+              waiting = 0;                                                                 \
           }                                                                                \
-          SET_LAST_ADDR((reg_pc - 1) & 0xffff);                                            \
-          SET_LAST_OPCODE(p0);                                                             \
+          DO_INTERRUPT(pending_interrupt);                                                 \
+          if (!(CPU_INT_STATUS->global_pending_int & IK_IRQ)) {                            \
+              CPU_INT_STATUS->global_pending_int &= ~IK_IRQPEND;                           \
+          }                                                                                \
       } while (waiting);                                                                   \
   } while (0)
 
