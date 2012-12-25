@@ -24,8 +24,8 @@ MCommand
 0
 6
 MItem
-18
-c64commonscdtv.lib
+26
+c64commonvsidscdtvscpu.lib
 7
 WString
 3
@@ -67,8 +67,8 @@ n????Include directories:
 1
 17
 WString
-153
-"./;../../..;$(%watcom)/h;$(%watcom)/h/nt;..;../../../sid;../../../vicii;../../../lib/p64;../../../drive;../../../raster;../../../tape;../../../c64/cart"
+136
+"./;../../..;$(%watcom)/h;$(%watcom)/h/nt;..;../../../sid;../../../vicii;../../../drive;../../../raster;../../../tape;../../../c64/cart"
 0
 18
 MVState
@@ -143,8 +143,8 @@ WVList
 0
 35
 MItem
-23
-..\..\..\c64\c64drive.c
+24
+..\..\..\c64\c64romset.c
 36
 WString
 4
@@ -161,8 +161,8 @@ WVList
 0
 39
 MItem
-25
-..\..\..\c64\c64fastiec.c
+23
+..\..\..\c64\c64video.c
 40
 WString
 4

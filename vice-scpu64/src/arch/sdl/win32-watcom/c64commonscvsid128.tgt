@@ -24,8 +24,8 @@ MCommand
 0
 6
 MItem
-18
-c64commonsc128.lib
+22
+c64commonscvsid128.lib
 7
 WString
 3
@@ -67,8 +67,8 @@ n????Include directories:
 1
 17
 WString
-171
-"./;../../..;$(%watcom)/h;$(%watcom)/h/nt;..;../../../sid;../../../vicii;../../../drive;../../../userport;../../../lib/p64;../../../raster;../../../tape;../../../c64/cart"
+136
+"./;../../..;$(%watcom)/h;$(%watcom)/h/nt;..;../../../sid;../../../vicii;../../../drive;../../../raster;../../../tape;../../../c64/cart"
 0
 18
 MVState
@@ -143,8 +143,8 @@ WVList
 0
 35
 MItem
-22
-..\..\..\c64\c64cia2.c
+27
+..\..\..\c64\c64gluelogic.c
 36
 WString
 4
@@ -161,8 +161,8 @@ WVList
 0
 39
 MItem
-27
-..\..\..\c64\c64datasette.c
+25
+..\..\..\c64\c64meminit.c
 40
 WString
 4
@@ -179,8 +179,8 @@ WVList
 0
 43
 MItem
-21
-..\..\..\c64\c64iec.c
+24
+..\..\..\c64\c64memrom.c
 44
 WString
 4
