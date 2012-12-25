@@ -27,6 +27,7 @@
 #include "vice.h"
 
 #include "clkguard.h"
+#include "alarm.h"
 #include "main65816cpu.h"
 #include "mem.h"
 #include "scpu64mem.h"
@@ -52,11 +53,15 @@
 */
 
 /* ------------------------------------------------------------------------- */
+#define CYCLE_EXACT_ALARM
 
 static int fastmode = 1;
 static CLOCK buffer_finish, buffer_finish_half;
 static CLOCK maincpu_diff, maincpu_accu;
 int scpu64_emulation_mode;
+#ifdef CYCLE_EXACT_ALARM
+alarm_context_t *maincpu_alarm_context = NULL;
+#endif
 
 int scpu64_get_half_cycle(void)
 {
@@ -66,24 +71,47 @@ int scpu64_get_half_cycle(void)
     return -1;
 }
 
-static inline void scpu64_clock_add(CLOCK *clock, int amount)
+static inline void alarms(void)
+{
+#ifdef CYCLE_EXACT_ALARM
+    while (maincpu_clk >= alarm_context_next_pending_clk(maincpu_alarm_context)) {
+        alarm_context_dispatch(maincpu_alarm_context, maincpu_clk);
+    }
+#endif
+}
+
+static inline void scpu64_clock_add(int amount, int write)
 {
     if (fastmode) {
         maincpu_accu += maincpu_diff * amount;
         while (maincpu_accu > 20000000) {
-            clock[0]++;
             maincpu_accu -= 20000000;
+            /* no alarm processing if in emulation mode and doing a write, this is for VICII */
+            if (!scpu64_emulation_mode || !write) {
+                alarms();
+            }
+            maincpu_clk++;
         }
     } else {
-        clock[0] += amount;
+        /* no alarm processing if in emulation mode and doing a write, this is for VICII */
+        if (!scpu64_emulation_mode || !write) {
+            while (amount) {
+                amount--;
+                alarms();
+                maincpu_clk++;
+            }
+        } else {
+            maincpu_clk += amount;
+        }
     }
 }
 
 static inline void wait_buffer(void)
 {
     if (buffer_finish > maincpu_clk || (buffer_finish == maincpu_clk && buffer_finish_half > maincpu_accu)) {
-        maincpu_clk = buffer_finish;
         maincpu_accu = buffer_finish_half;
+        alarms();
+        maincpu_clk = buffer_finish;
     }
 }
 
@@ -93,6 +121,7 @@ void scpu64_clock_readwrite_stretch_eprom(void)
         maincpu_accu += maincpu_diff * 3;
         if (maincpu_accu > 20000000) {
             maincpu_accu -= 20000000;
+            alarms();
             maincpu_clk++;
         }
     }
@@ -106,6 +135,7 @@ void scpu64_clock_read_stretch_io(void)
             maincpu_accu += maincpu_diff;
         }
         maincpu_accu -= 20600000;
+        alarms();
         maincpu_clk++;
     }
 }
@@ -118,7 +148,10 @@ void scpu64_clock_write_stretch_io_cia(void)
             maincpu_accu += maincpu_diff;
         }
         maincpu_accu -= 40600000;
-        maincpu_clk += 2;
+        alarms();
+        maincpu_clk++;
+        alarms();
+        maincpu_clk++;
     }
 }
 
@@ -129,8 +162,9 @@ void scpu64_clock_write_stretch_io(void)
         while (maincpu_accu < 31730000) { /* measured */
             maincpu_accu += maincpu_diff;
         }
-        maincpu_clk++;
         maincpu_accu -= 20600000;
+        alarms();
+        maincpu_clk++;
     }
 }
 
@@ -141,8 +175,9 @@ void scpu64_clock_write_stretch_io_long(void)
         while (maincpu_accu < 39000000) { /* measured */
             maincpu_accu += maincpu_diff;
         }
-        maincpu_clk++;
         maincpu_accu -= 20600000;
+        alarms();
+        maincpu_clk++;
     }
 }
 
@@ -198,6 +233,7 @@ void scpu64_clock_read_stretch_simm(DWORD addr)
         simm_cell = addr;
         if (maincpu_accu > 20000000) {
             maincpu_accu -= 20000000;
+            alarms();
             maincpu_clk++;
         }
     }
@@ -214,6 +250,7 @@ void scpu64_clock_write_stretch_simm(DWORD addr)
         simm_cell = addr;
         if (maincpu_accu > 20000000) {
             maincpu_accu -= 20000000;
+            alarms();
             maincpu_clk++;
         }
     }
@@ -251,7 +288,7 @@ static void clk_overflow_callback(CLOCK sub, void *unused_data)
 
 static inline void store_long(DWORD addr, BYTE value)
 {
-    scpu64_clock_add(&maincpu_clk, 1);
+    scpu64_clock_add(1, 1);
     if (addr & ~0xffff) {
         mem_store2(addr, value);
     } else {
@@ -270,18 +307,18 @@ static inline BYTE load_long(DWORD addr)
     } else {
         tmp = (*_mem_read_tab_ptr[(addr) >> 8])((WORD)addr);
     }
-    scpu64_clock_add(&maincpu_clk, 1);
+    scpu64_clock_add(1, 0);
     return tmp;
 }
 
 #define EMULATION_MODE_CHANGED scpu64_emulation_mode = reg_emul
 
-#define CLK_ADD(clock, amount) scpu64_clock_add(&clock, amount)
+#define CLK_ADD(clock, amount) scpu64_clock_add(amount, 0)
 
 #define CPU_ADDITIONAL_RESET() (buffer_finish = maincpu_clk, buffer_finish_half = 0, maincpu_accu = 0, maincpu_diff = machine_get_cycles_per_second())
 
-#define FETCH_PARAM_DUMMY(addr) scpu64_clock_add(&maincpu_clk, 1)
-#define LOAD_LONG_DUMMY(addr) scpu64_clock_add(&maincpu_clk, 1)
+#define FETCH_PARAM_DUMMY(addr) scpu64_clock_add(1, 0)
+#define LOAD_LONG_DUMMY(addr) scpu64_clock_add(1, 0)
 
 #define LOAD_INT_ADDR(addr)                        \
     if (scpu64_interrupt_reroute()) {              \

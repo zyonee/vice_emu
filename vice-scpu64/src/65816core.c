@@ -2157,7 +2157,10 @@
       do {                                                                                 \
           CPU_DELAY_CLK                                                                    \
                                                                                            \
-          PROCESS_ALARMS                                                                   \
+          while (CLK >= alarm_context_next_pending_clk(ALARM_CONTEXT)) {                   \
+              alarm_context_dispatch(ALARM_CONTEXT, CLK);                                  \
+              CPU_DELAY_CLK                                                                \
+          }                                                                                \
                                                                                            \
           {                                                                                \
               enum cpu_int pending_interrupt;                                              \
@@ -2185,9 +2188,6 @@
                   if (!(CPU_INT_STATUS->global_pending_int & IK_IRQ)) {                    \
                       CPU_INT_STATUS->global_pending_int &= ~IK_IRQPEND;                   \
                   }                                                                        \
-                  CPU_DELAY_CLK                                                            \
-                                                                                           \
-                  PROCESS_ALARMS                                                           \
               }                                                                            \
           }                                                                                \
           if (waiting) {                                                                   \
