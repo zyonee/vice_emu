@@ -2189,6 +2189,10 @@
           if (pending_interrupt & IK_RESET) {                                              \
               waiting = 0;                                                                 \
           }                                                                                \
+          if ((pending_interrupt & IK_NMI)                                                 \
+                  && interrupt_check_nmi_delay(CPU_INT_STATUS, CLK)) {                     \
+              waiting = 0;                                                                 \
+          }                                                                                \
           if ((pending_interrupt & (IK_IRQ | IK_IRQPEND))                                  \
                   && interrupt_check_irq_delay(CPU_INT_STATUS, CLK)) {                     \
               waiting = 0;                                                                 \
