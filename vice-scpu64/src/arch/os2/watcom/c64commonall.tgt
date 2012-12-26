@@ -24,8 +24,8 @@ MCommand
 0
 6
 MItem
-19
-c64commonc128sc.lib
+16
+c64commonall.lib
 7
 WString
 3
@@ -67,8 +67,8 @@ o?2??Include directories:
 1
 17
 WString
-155
-.;..;..\..\..;$(%watcom)\h;$(%watcom)\h\os2;..\..\..\sid;..\..\..\viciisc;..\..\..\drive;..\..\..\lib\p64;..\..\..\tape;..\..\..\c64\cart;..\..\..\userport
+164
+.;..;..\..\..;$(%watcom)\h;$(%watcom)\h\os2;..\..\..\sid;..\..\..\viciisc;..\..\..\drive;..\..\..\tape;..\..\..\c64\cart;..\..\..\userport;..\..\..\drive\iec\c64exp
 0
 18
 MVState
@@ -143,8 +143,8 @@ WVList
 0
 35
 MItem
-22
-..\..\..\c64\c64cia2.c
+26
+..\..\..\c64\c64keyboard.c
 36
 WString
 4
@@ -161,8 +161,8 @@ WVList
 0
 39
 MItem
-27
-..\..\..\c64\c64datasette.c
+24
+..\..\..\c64\c64rsuser.c
 40
 WString
 4
@@ -179,8 +179,8 @@ WVList
 0
 43
 MItem
-21
-..\..\..\c64\c64iec.c
+23
+..\..\..\c64\patchrom.c
 44
 WString
 4

@@ -67,7 +67,7 @@
 #include "cartridge.h"
 #endif
 
-#if defined(__X128__) || defined(__X64__) || defined(__X64DTV__) || defined(__XCBM5X0__)
+#if defined(__X128__) || defined(__X64__) || defined(__X64DTV__) || defined(__XCBM5X0__) || defined(__XSCPU64__)
 #include "vicii.h"
 #endif
 
