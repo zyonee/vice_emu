@@ -79,13 +79,53 @@ const ui_menu_entry_t scpu64_burstmod_menu[] = {
     SDL_MENU_LIST_END
 };
 
+UI_MENU_DEFINE_RADIO(SIMMSize)
+
+const ui_menu_entry_t scpu64_simmsize_menu[] = {
+    { "0 MB",
+      MENU_ENTRY_RESOURCE_RADIO,
+      radio_SIMMSize_callback,
+      (ui_callback_data_t)0 },
+    { "1 MB",
+      MENU_ENTRY_RESOURCE_RADIO,
+      radio_SIMMSize_callback,
+      (ui_callback_data_t)1 },
+    { "4 MB",
+      MENU_ENTRY_RESOURCE_RADIO,
+      radio_SIMMSize_callback,
+      (ui_callback_data_t)4 },
+    { "8 MB",
+      MENU_ENTRY_RESOURCE_RADIO,
+      radio_SIMMSize_callback,
+      (ui_callback_data_t)8 },
+    { "16 MB",
+      MENU_ENTRY_RESOURCE_RADIO,
+      radio_SIMMSize_callback,
+      (ui_callback_data_t)16 },
+    SDL_MENU_LIST_END
+};
+
 UI_MENU_DEFINE_TOGGLE(UserportRTC)
+UI_MENU_DEFINE_TOGGLE(JiffySwitch)
+UI_MENU_DEFINE_TOGGLE(SpeedSwitch)
 
 const ui_menu_entry_t scpu64_hardware_menu[] = {
     { "Model settings",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
       (ui_callback_data_t)c64_model_menu },
+    { "SIMM size",
+      MENU_ENTRY_SUBMENU,
+      submenu_callback,
+      (ui_callback_data_t)scpu64_simmsize_menu },
+    { "Jiffy switch enable",
+      MENU_ENTRY_RESOURCE_TOGGLE,
+      toggle_JiffySwitch_callback,
+      NULL },
+    { "Speed switch enable",
+      MENU_ENTRY_RESOURCE_TOGGLE,
+      toggle_SpeedSwitch_callback,
+      NULL },
     { "Joystick settings",
       MENU_ENTRY_SUBMENU,
       submenu_callback,
