@@ -402,6 +402,19 @@ BMenuBar *menu_create(int machine_class)
             menu->AddItem(new BMenuItem("Enable Hummer ADC", new BMessage(MENU_HUMMER_USERPORT_ADC)));
     }
 
+    if (machine_class == VICE_MACHINE_SCPU64) {
+        uppermenu->AddItem(menu = new BMenu("SuperCPU64 Options"));
+            menu->AddItem(submenu = new BMenu("SIMM size"));
+                submenu->SetRadioMode(true);
+                submenu->AddItem(new BMenuItem("0 MB", new BMessage(MENU_SCPU64_SIMM_SIZE_0)));
+                submenu->AddItem(new BMenuItem("1 MB", new BMessage(MENU_SCPU64_SIMM_SIZE_1)));
+                submenu->AddItem(new BMenuItem("4 MB", new BMessage(MENU_SCPU64_SIMM_SIZE_4)));
+                submenu->AddItem(new BMenuItem("8 MB", new BMessage(MENU_SCPU64_SIMM_SIZE_8)));
+                submenu->AddItem(new BMenuItem("16 MB", new BMessage(MENU_SCPU64_SIMM_SIZE_16)));
+            menu->AddItem(new BMenuItem("Enable jiffy switch", new BMessage(MENU_TOGGLE_SCPU64_JIFFY_ENABLE)));
+            menu->AddItem(new BMenuItem("Enable speed switch", new BMessage(MENU_TOGGLE_SCPU64_SPEED_ENABLE)));
+    }
+
     if (machine_class == VICE_MACHINE_C64 || machine_class == VICE_MACHINE_C64SC ||
         machine_class == VICE_MACHINE_C128 || machine_class == VICE_MACHINE_SCPU64) {
         uppermenu->AddItem(menu = new BMenu("Mouse Options"));

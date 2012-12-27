@@ -92,7 +92,18 @@ ui_menu_toggle scpu64_ui_menu_toggles[] = {
     { "IDE64version4", MENU_TOGGLE_IDE64_V4 },
     { "ExpertCartridgeEnabled", MENU_TOGGLE_EXPERT },
     { "ExpertImageWrite", MENU_TOGGLE_EXPERT_SWC },
+    { "JiffySwitch", MENU_TOGGLE_SCPU64_JIFFY_ENABLE },
+    { "SpeedSwitch", MENU_TOGGLE_SCPU64_SPEED_ENABLE },
     { NULL, 0 }
+};
+
+ui_res_possible_values SimmSize[] = {
+    { 0, MENU_SCPU64_SIMM_SIZE_0 },
+    { 1, MENU_SCPU64_SIMM_SIZE_1 },
+    { 4, MENU_SCPU64_SIMM_SIZE_4 },
+    { 8, MENU_SCPU64_SIMM_SIZE_8 },
+    { 16, MENU_SCPU64_SIMM_SIZE_16 },
+    { -1, 0 }
 };
 
 ui_res_possible_values ReuSize[] = {
@@ -243,6 +254,7 @@ ui_res_possible_values ExpertModes[] = {
 
 ui_res_value_list scpu64_ui_res_values[] = {
     { "VICIIModel", viciimodels },
+    { "SIMMSize", SimmSize },
     { "REUsize", ReuSize },
     { "GeoRAMsize", GeoRAMSize },
     { "RAMCARTsize", RamCartSize },
