@@ -71,6 +71,7 @@
 #include "uireu.h"
 #include "uiromset.h"
 #include "uirs232c64c128.h"
+#include "uiscpu64.h"
 #include "uiscreenshot.h"
 #include "uisettings.h"
 #include "uisid.h"
@@ -613,6 +614,8 @@ static ui_menu_entry_t keymap_pos_submenu[] = {
 static ui_menu_entry_t scpu64_menu[] = {
     { N_("Model settings"), UI_MENU_TYPE_NORMAL,
       NULL, NULL, c64_model_submenu },
+    { N_("SuperCPU64 settings"), UI_MENU_TYPE_NORMAL,
+      NULL, NULL, scpu64_submenu },
     { N_("RAM reset pattern"), UI_MENU_TYPE_NORMAL,
       NULL, NULL, ui_ram_pattern_submenu },
     { N_("ROM settings"), UI_MENU_TYPE_NORMAL,

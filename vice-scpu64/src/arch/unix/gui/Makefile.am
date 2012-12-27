@@ -164,6 +164,8 @@ libarchgui_a_SOURCES = \
 	uirs232petplus4cbm2.h \
 	uirs232user.c \
 	uirs232user.h \
+	uiscpu64.c \
+	uiscpu64.h \
 	uiscreenshot.h \
 	uisettings.c \
 	uisettings.h \
