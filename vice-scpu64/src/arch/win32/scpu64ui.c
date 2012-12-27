@@ -62,6 +62,7 @@
 #include "uireu.h"
 #include "uirom.h"
 #include "uirs232user.h"
+#include "uiscpu64.h"
 #include "uisid.h"
 #include "uisoundexpander.h"
 #include "uitfe.h"
@@ -309,6 +310,7 @@ ui_menu_translation_table_t scpu64ui_menu_translation_table[] = {
     { IDM_ROM_SETTINGS, IDS_MI_ROM_SETTINGS },
     { IDM_RAM_SETTINGS, IDS_MI_RAM_SETTINGS },
     { IDM_VICII_SETTINGS, IDS_MI_VICII_SETTINGS },
+    { IDM_SCPU64_SETTINGS, IDS_MI_SCPU64_SETTINGS },
     { IDM_MOUSE_SETTINGS, IDS_MI_MOUSE_SETTINGS },
     { IDM_LIGHTPEN_SETTINGS, IDS_MI_LIGHTPEN_SETTINGS },
     { IDM_SID_SETTINGS, IDS_MI_SID_SETTINGS },
@@ -543,6 +545,9 @@ static void scpu64_ui_specific(WPARAM wparam, HWND hwnd)
             break;
         case IDM_VICII_SETTINGS:
             ui_vicii_settings_dialog(hwnd);
+            break;
+        case IDM_SCPU64_SETTINGS:
+            ui_scpu64_settings_dialog(hwnd);
             break;
         case IDM_SID_SETTINGS:
             ui_sid_settings_dialog(hwnd, scpu64_sid_baseaddress);

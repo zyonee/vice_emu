@@ -593,6 +593,10 @@ SOURCE=.\uirs232user.c
 # End Source File
 # Begin Source File
 
+SOURCE=.\uiscpu64.c
+# End Source File
+# Begin Source File
+
 SOURCE=.\uisid.c
 # End Source File
 # Begin Source File
