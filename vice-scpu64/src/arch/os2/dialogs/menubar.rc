@@ -771,6 +771,22 @@ BEGIN
         END
 #endif
 
+#ifdef (__XSCPU64__)
+        SUBMENU "SuperCPU64 settings",                    IDM_SCPU64_SETTINGS,          MIS_TEXT
+            SUBMENU "SIMM size",                          IDM_SCPU64_SIMM_SIZE,         MIS_TEXT
+            BEGIN
+                MENUITEM "0 MB",                          IDM_SCPU64_SIMM_0,            MIS_TEXT
+                MENUITEM "1 MB",                          IDM_SCPU64_SIMM_1,            MIS_TEXT
+                MENUITEM "4 MB",                          IDM_SCPU64_SIMM_4,            MIS_TEXT
+                MENUITEM "8 MB",                          IDM_SCPU64_SIMM_8,            MIS_TEXT
+                MENUITEM "16 MB",                         IDM_SCPU64_SIMM_16,           MIS_TEXT
+            END
+            MENUITEM "Jiffy switch",                      IDM_SCPU64_JIFFY_SWITCH,      MIS_TEXT
+            MENUITEM "Speed switch",                      IDM_SCPU64_SPEED_SWITCH,      MIS_TEXT
+        BEGIN
+        END
+#endif
+
 #if defined(__X64__) || defined(__X128__) || defined(__XSCPU64__)
 
 #ifdef HAVE_TFE

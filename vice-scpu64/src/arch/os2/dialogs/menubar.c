@@ -1015,6 +1015,30 @@ void menu_action(HWND hwnd, USHORT idm) //, MPARAM mp2)
             return;
 #endif
 
+#ifdef __XSCPU64__
+        case IDM_SCPU64_SIMM_0:
+            resources_set_int("SIMMSize", 0);
+            return;
+        case IDM_SCPU64_SIMM_1:
+            resources_set_int("SIMMSize", 1);
+            return;
+        case IDM_SCPU64_SIMM_4:
+            resources_set_int("SIMMSize", 4);
+            return;
+        case IDM_SCPU64_SIMM_8:
+            resources_set_int("SIMMSize", 8);
+            return;
+        case IDM_SCPU64_SIMM_16:
+            resources_set_int("SIMMSize", 8);
+            return;
+        case IDM_SCPU64_JIFFY_SWITCH:
+            toggle("JiffySwitch");
+            return;
+        case IDM_SCPU64_SPEED_SWITCH:
+            toggle("SpeedSwitch");
+            return;
+#endif
+
         case IDM_REU128:
         case IDM_REU256:
         case IDM_REU512:
@@ -2099,6 +2123,17 @@ void menu_select(HWND hwnd, USHORT item)
             WinCheckMenuItem(hwnd, IDM_BURST_NONE, val == 0);
             WinCheckMenuItem(hwnd, IDM_BURST_CIA1, val == 1);
             WinCheckMenuItem(hwnd, IDM_BURST_CIA2, val == 2);
+#endif
+
+#ifdef __XSCPU64__
+            resources_get_int("SIMMSize", &val);
+            WinCheckMenuItem(hwnd, IDM_SCPU64_SIMM_0, val == 0);
+            WinCheckMenuItem(hwnd, IDM_SCPU64_SIMM_1, val == 1);
+            WinCheckMenuItem(hwnd, IDM_SCPU64_SIMM_4, val == 4);
+            WinCheckMenuItem(hwnd, IDM_SCPU64_SIMM_8, val == 8);
+            WinCheckMenuItem(hwnd, IDM_SCPU64_SIMM_16, val == 16);
+            WinCheckRes(hwnd, IDM_SCPU64_JIFFY_SWITCH, "JiffySwitch");
+            WinCheckRes(hwnd, IDM_SCPU64_SPEED_SWITCH, "SpeedSwitch");
 #endif
 
 #if defined(__X64__) || defined(__X128__) || defined(__XSCPU64__)
