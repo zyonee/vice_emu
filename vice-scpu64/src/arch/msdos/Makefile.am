@@ -161,6 +161,8 @@ libarch_a_SOURCES = \
 	uiretroreplay.h \
 	uireu.c \
 	uireu.h \
+	uiscpu64.c \
+	uiscpu64.h \
 	uiscreenshot.c \
 	uiscreenshot.h \
 	uisidc64.c \

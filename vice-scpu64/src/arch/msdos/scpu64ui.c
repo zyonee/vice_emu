@@ -219,6 +219,8 @@ int scpu64ui_init(void)
 
     tui_menu_add_separator(ui_special_submenu);
 
+    uiscpu64_init(ui_special_submenu);
+
     ui_ioextensions_submenu = tui_menu_create("I/O extensions", 1);
     tui_menu_add(ui_ioextensions_submenu, ioextenstions_menu_items);
 
