@@ -59,6 +59,7 @@
 #include "mui/uireu.h"
 #include "mui/uiromc64vic20settings.h"
 #include "mui/uirs232user.h"
+#include "mui/uiscpu64.h"
 #include "mui/uisid.h"
 #include "mui/uisoundexpander.h"
 #include "mui/uivicii.h"
@@ -119,6 +120,9 @@ static int scpu64_ui_specific(video_canvas_t *canvas, int idm)
             break;
         case IDM_VICII_SETTINGS:
             ui_vicii_settings_dialog();
+            break;
+        case IDM_SCPU64_SETTINGS:
+            ui_scpu64_settings_dialog();
             break;
         case IDM_SID_SETTINGS:
             ui_sid_settings64_dialog();

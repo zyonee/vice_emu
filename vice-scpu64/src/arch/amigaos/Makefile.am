@@ -228,6 +228,8 @@ libarch_a_SOURCES = \
 	mui/uiromplus4settings.h \
 	mui/uirs232user.c \
 	mui/uirs232user.h \
+	mui/uiscpu64.c \
+	mui/uiscpu64.h \
 	mui/uisid.c \
 	mui/uisid.h \
 	mui/uisidcart.c \
