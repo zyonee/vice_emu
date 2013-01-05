@@ -2521,7 +2521,7 @@ if test x"$is_unix_x11" = "xyes" -a x"$enable_sdlui" != "xyes"; then
         AC_MSG_RESULT(no)
       )
     X_LIBS="$GTK_LIBS $GTKGL_LIBS $X_LIBS $VTE_LIBS"
-    LINK_X_LIBS="$GTK_LIBS $GTKGL_LIBS $LINK_X_LIBS $VTE_LIBS"
+    LINK_X_LIBS="$GTK_LIBS $GTKGL_LIBS $LINK_X_LIBS $VTE_LIBS -lpthread"
   else
     if test "$ac_cv_lib_readline_readline" = "no"; then
       AC_MSG_ERROR(The Xaw port needs Readline)
