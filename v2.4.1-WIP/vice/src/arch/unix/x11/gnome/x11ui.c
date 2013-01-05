@@ -566,6 +566,8 @@ int ui_init2(int *argc, char **argv)
 	glClear(GL_COLOR_BUFFER_BIT);
 	glDisable (GL_DEPTH_TEST);
 	glEnable(GL_TEXTURE_RECTANGLE_EXT);
+	glTexEnvi(GL_TEXTURE_RECTANGLE_EXT, GL_TEXTURE_ENV_MODE, GL_DECAL);
+	glEnable(GL_BLEND);
     }
 #endif
 
@@ -1871,7 +1873,9 @@ void gl_draw_quad(float alpha, int tw, int th)
 void gl_render_canvas(GtkWidget *w, video_canvas_t *canvas, 
 		      struct s_mbufs *buffers, int from, int to)
 {
-    int tw, th;
+    int tw, th, d, i;
+    float alpha;
+    
     GdkGLContext *gl_context = gtk_widget_get_gl_context(w);
     GdkGLDrawable *gl_drawable = gtk_widget_get_gl_drawable(w);
     gdk_gl_drawable_gl_begin(gl_drawable, gl_context);
@@ -1879,19 +1883,24 @@ void gl_render_canvas(GtkWidget *w, video_canvas_t *canvas,
     tw = buffers[0].w;
     th = buffers[0].h;
 
+    glClear(GL_COLOR_BUFFER_BIT);
     glEnable(GL_TEXTURE_RECTANGLE_EXT);
     glEnable(GL_BLEND);
-    glClear(GL_COLOR_BUFFER_BIT);
 
     /* this is just a test to see if buffers[from].buffer is blended with 
        buffers[to].buffer */
+    d = ((to - from) + MAX_BUFFERS) % MAX_BUFFERS;
+    alpha = 1.0/d;
+    
     glBlendFunc( GL_ONE, GL_ZERO );
     gl_update_texture(buffers, from);
-    gl_draw_quad(0.5, tw, th);
+    gl_draw_quad(alpha, tw, th);
 
-    glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
-    gl_update_texture(buffers, to);
-    gl_draw_quad(0.5, tw, th);
+    for (i = from; i < to; i++) {
+	glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+	gl_update_texture(buffers, i);
+	gl_draw_quad(alpha, tw, th);
+    }
 
     gdk_gl_drawable_swap_buffers (gl_drawable);
     gdk_gl_drawable_gl_end (gl_drawable);
