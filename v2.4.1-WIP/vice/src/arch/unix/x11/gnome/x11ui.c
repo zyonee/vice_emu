@@ -1883,6 +1883,8 @@ void gl_render_canvas(GtkWidget *w, video_canvas_t *canvas,
     glEnable(GL_BLEND);
     glClear(GL_COLOR_BUFFER_BIT);
 
+    /* this is just a test to see if buffers[from].buffer is blended with 
+       buffers[to].buffer */
     glBlendFunc( GL_ONE, GL_ZERO );
     gl_update_texture(buffers, from);
     gl_draw_quad(0.5, tw, th);
