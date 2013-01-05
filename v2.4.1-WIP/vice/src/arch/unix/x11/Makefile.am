@@ -17,6 +17,8 @@ noinst_LIBRARIES = libx11ui.a
 
 EXTRA_libx11ui_a_SOURCES = \
 	openGL_sync.c \
+	video_mbuffer.c \
+	video_mbuffer.h \
 	xrandr.c \
 	xrandr.h \
 	vidmode.c \
@@ -28,6 +30,7 @@ libx11ui_a_SOURCES = \
 	c64dtvicon.c \
 	cbm2icon.c \
 	fullscreen.c \
+	video_mbuffer.c \
 	peticon.c \
 	plus4icon.c \
 	qnxipc.h \

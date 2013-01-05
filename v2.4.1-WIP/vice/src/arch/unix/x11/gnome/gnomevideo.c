@@ -28,7 +28,7 @@
 
 #include "vice.h"
 
-/* #define DEBUG_GNOMEUI */
+#define DEBUG_GNOMEUI
 
 #include <string.h>
 #include <stdlib.h>
@@ -45,10 +45,13 @@
 #include "video.h"
 #include "machine.h"
 #include "lib.h"
+#include "video_mbuffer.h"
 
 #ifdef HAVE_OPENGL_SYNC
 #include "openGL_sync.h"
 #endif
+
+#define TS_TOUSEC(x) (x.tv_sec * 1000000L + (x.tv_nsec / 1000))
 
 #ifdef DEBUG_GNOMEUI
 #define DBG(_x_) log_debug _x_
@@ -103,7 +106,8 @@ int video_init(void)
     if (gnomevideo_log == LOG_ERR) {
         gnomevideo_log = log_open("GnomeVideo");
     }
-
+    // video_dthread_init();
+    
     return 0;
 }
 
@@ -223,9 +227,12 @@ void video_canvas_resize(video_canvas_t *canvas, char resize_canvas)
 #endif
 
 #ifdef HAVE_HWSCALE
+#if 0
     lib_free(canvas->hwscale_image);
     /* canvas->hwscale_image = lib_malloc(gdk_image_get_width(canvas->gdk_image) * gdk_image_get_height(canvas->gdk_image) * 4); */
     canvas->hwscale_image = lib_malloc(imgw * imgh * 4);
+#endif
+    mbuffer_init(canvas, imgw, imgh, 4);
 #endif
 
     if (video_canvas_set_palette(canvas, canvas->palette) < 0) {
@@ -295,8 +302,18 @@ void video_canvas_refresh(video_canvas_t *canvas, unsigned int xs, unsigned int 
 
 #ifdef HAVE_HWSCALE
     if (canvas->videoconfig->hwscale) {
+	static struct timespec t1, t2, t0;
+	clock_gettime(CLOCK_REALTIME, &t1);
+
+	canvas->hwscale_image = mbuffer_get_buffer();
+	//dthread_lock();
         video_canvas_render(canvas, canvas->hwscale_image, w, h, xs, ys, xi, yi, canvas->draw_buffer->canvas_physical_width * 4, 32);
+	//dthread_unlock();
         gtk_widget_queue_draw(canvas->emuwindow);
+	
+	clock_gettime(CLOCK_REALTIME, &t2);
+	//DBG(("emulation rate: %ldms, rendertime: %ldms", (TS_TOUSEC(t1) - TS_TOUSEC(t0))/1000, (TS_TOUSEC(t2) - TS_TOUSEC(t1))/1000)); 
+	memcpy(&t0, &t1, sizeof(struct timespec));
     } else
 #endif
     {
