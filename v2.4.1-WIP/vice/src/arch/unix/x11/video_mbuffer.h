@@ -27,7 +27,7 @@
 #ifndef __video_mbuffer_h
 #define __video_mbuffer_h
 
-#define MAX_BUFFERS 8
+#define MAX_BUFFERS 32
 void mbuffer_init(void *widget, int w, int h, int depth);
 unsigned char *mbuffer_get_buffer(void);
 struct s_mbufs

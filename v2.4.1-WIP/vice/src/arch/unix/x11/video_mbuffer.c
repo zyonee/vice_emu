@@ -65,7 +65,7 @@ static int is_coroutine = 0;
 static int do_refresh;
 static float machineRefreshPeriod;
 
-static struct s_mbufs buffers[MAX_BUFFERS];
+static struct s_mbufs buffers[MAX_BUFFERS+1];
 static int cpos = 0, lpos = 0, csize, update = 0;
 #define NEXT(x) ((++x == MAX_BUFFERS) ? 0 : x)
 static int width, height, no_autorepeat;
@@ -88,10 +88,10 @@ void mbuffer_init(void *widget, int w, int h, int depth)
     }
     DBG(("machine refresh period=%d ms", (int)machineRefreshPeriod));
     csize = w * h * depth;
-    for (i = 0; i < MAX_BUFFERS; i++) {
+    for (i = 0; i < MAX_BUFFERS + 1; i++) {
 	lib_free(buffers[i].buffer);
 	buffers[i].buffer = lib_malloc(csize);
-	memset(buffers[i].buffer, 0, csize);
+	memset(buffers[i].buffer, -1, csize);
 	buffers[i].w = w;
 	buffers[i].h = h;
 	if (i > 0) {
@@ -264,7 +264,7 @@ int dthread_calc_frames(struct timespec *ts, int *from, int *to)
 	*to = cpos;
 	*from = lpos;
     } else {
-	DBG (("dthread nothing to draw"));
+	DBG2 (("dthread nothing to draw"));
 	pthread_yield();	/* make sure dthread doesn't hog on CPU */
 	ret = 0;
     }
