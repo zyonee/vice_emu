@@ -259,7 +259,7 @@ int dthread_calc_frames(struct timespec *ts, int *from, int *to)
 	    DBG(("dthread dropping frames"));
 	} else {
 	    lpos = NEXT(lpos);
-	    DBG2(("drawing from lpos %d to cpos %d", lpos, cpos));
+	    DBG(("drawing from lpos %d to cpos %d", lpos, cpos));
 	}
 	*to = cpos;
 	*from = lpos;
@@ -308,6 +308,7 @@ static void *dthread_func(void *arg)
 	    if (dthread_calc_frames(&t1, &from, &to)) {
 		//dthread_lock();
 		gl_render_canvas(widget, canvas, buffers, from, to);
+		lpos = cpos;
 		//dthread_unlock();
 	    }
 	    // clock_gettime(CLOCK_REALTIME, &t2);
