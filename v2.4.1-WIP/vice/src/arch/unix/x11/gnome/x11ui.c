@@ -1836,20 +1836,20 @@ void gl_setup_textures(video_canvas_t *c, struct s_mbufs *buffers)
     gdk_gl_drawable_gl_end (gl_drawable);
 }
 
-void gl_update_texture(struct s_mbufs *buffers, int pos)
+void gl_update_texture(struct s_mbufs *buffer)
 {
     int tw, th;
-    tw = buffers[pos].w;
-    th = buffers[pos].h;
+    tw = buffer->w;
+    th = buffer->h;
     glEnable(GL_TEXTURE_RECTANGLE_EXT);
-    glBindTexture(GL_TEXTURE_RECTANGLE_EXT, buffers[pos].bindId);
+    glBindTexture(GL_TEXTURE_RECTANGLE_EXT, buffer->bindId);
 #ifdef __BIG_ENDIAN__
 #ifndef GL_ABGR_EXT
 #error "Your headers do not supply GL_ABGR_EXT. Disable HWSCALE and try again."
 #endif
-    glTexImage2D(GL_TEXTURE_RECTANGLE_EXT, 0, GL_RGBA, tw, th, 0, GL_ABGR_EXT, GL_UNSIGNED_BYTE, buffers[pos].buffer);
+    glTexImage2D(GL_TEXTURE_RECTANGLE_EXT, 0, GL_RGBA, tw, th, 0, GL_ABGR_EXT, GL_UNSIGNED_BYTE, buffer->buffer);
 #else
-    glTexImage2D(GL_TEXTURE_RECTANGLE_EXT, 0, GL_RGBA, tw, th, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffers[pos].buffer);
+    glTexImage2D(GL_TEXTURE_RECTANGLE_EXT, 0, GL_RGBA, tw, th, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer->buffer);
 #endif
 }
 
@@ -1871,10 +1871,12 @@ void gl_draw_quad(float alpha, int tw, int th)
 }
 
 void gl_render_canvas(GtkWidget *w, video_canvas_t *canvas, 
-		      struct s_mbufs *buffers, int from, int to)
+		      struct s_mbufs *buffers, int from, int to, int a)
 {
     int tw, th, d, i;
     float alpha;
+    int start;
+    struct s_mbufs *t;
     
     GdkGLContext *gl_context = gtk_widget_get_gl_context(w);
     GdkGLDrawable *gl_drawable = gtk_widget_get_gl_drawable(w);
@@ -1889,19 +1891,21 @@ void gl_render_canvas(GtkWidget *w, video_canvas_t *canvas,
 
     /* this is just a test to see if buffers[from].buffer is blended with 
        buffers[to].buffer */
-    d = ((to - from) + MAX_BUFFERS) % MAX_BUFFERS;
-    alpha = 1.0/d;
-    
+    d = ((to - from) + MAX_BUFFERS) % MAX_BUFFERS + 1;
+    alpha = ((float) a) / 1000;
+    // DBG(("#frames: %d, from: %d, to %d, alpha: %f", d, from, to, alpha));
+
     glBlendFunc( GL_ONE, GL_ZERO );
-    gl_update_texture(buffers, from);
+    gl_update_texture(&buffers[from]);
     gl_draw_quad(alpha, tw, th);
 
-    for (i = from; i < to; i++) {
-	glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
-	gl_update_texture(buffers, i);
-	gl_draw_quad(alpha, tw, th);
+    for (i = 0, t = &buffers[from] ; i < d; i++, t=t->next) {
+//	DBG(("drawing %i'th frame", i));
+//	usleep(50000);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);    
+	gl_update_texture(t);
+	gl_draw_quad(1.0f - alpha, tw, th);      
     }
-
     gdk_gl_drawable_swap_buffers (gl_drawable);
     gdk_gl_drawable_gl_end (gl_drawable);
 }

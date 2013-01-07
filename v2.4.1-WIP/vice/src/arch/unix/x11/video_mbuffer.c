@@ -53,7 +53,8 @@
 #endif
 
 #define TS_TOUSEC(x) (x.tv_sec * 1000000L + (x.tv_nsec / 1000))
-#define REFRESH_FREQ (10 * 1000 * 1000)
+#define TS_TOMSEC(x) (x.tv_sec * 1000000L + (x.tv_nsec / 1000))
+#define REFRESH_FREQ (8 * 1000 * 1000)
 static struct timespec reltime = { 0, REFRESH_FREQ };
 static pthread_cond_t      cond  = PTHREAD_COND_INITIALIZER;
 static pthread_cond_t      coroutine  = PTHREAD_COND_INITIALIZER;
@@ -64,6 +65,7 @@ static int do_action = 0;
 static int is_coroutine = 0;
 static int do_refresh;
 static float machineRefreshPeriod;
+static long laststamp, mrp_usec;
 
 static struct s_mbufs buffers[MAX_BUFFERS+1];
 static int cpos = 0, lpos = 0, csize, update = 0;
@@ -85,20 +87,21 @@ void mbuffer_init(void *widget, int w, int h, int depth)
     float mrp = 1000.0f / (float)vsync_get_refresh_frequency();
     if(mrp != machineRefreshPeriod) {
         machineRefreshPeriod = mrp;
+	mrp_usec = mrp * 1000;
     }
-    DBG(("machine refresh period=%d ms", (int)machineRefreshPeriod));
+    DBG(("machine refresh period = %f ms %ld", (float) machineRefreshPeriod, mrp_usec));
     csize = w * h * depth;
-    for (i = 0; i < MAX_BUFFERS + 1; i++) {
+    for (i = 0; i < MAX_BUFFERS + 1; i++) { /* XXX Fixme remove +1 */
 	lib_free(buffers[i].buffer);
 	buffers[i].buffer = lib_malloc(csize);
 	memset(buffers[i].buffer, -1, csize);
 	buffers[i].w = w;
 	buffers[i].h = h;
 	if (i > 0) {
-	    buffers[i].next = &buffers[i-1];
+	    buffers[i-1].next = &buffers[i];
 	}
     }
-    buffers[i].next = &buffers[0];
+    buffers[i-2].next = &buffers[0]; /* XXX and here -2 */
     cpos = 0;
     gl_setup_textures(widget, &buffers[0]);
 }
@@ -107,21 +110,33 @@ unsigned char *mbuffer_get_buffer(void)
 {
     unsigned char *curr;
     int tmppos = cpos;
+    unsigned long tmpstamp, j;
     struct timespec ts;
     if (clock_gettime(CLOCK_REALTIME, &ts) < 0) {
 	log_debug("clock_gettime() failed, %s", __FUNCTION__);
 	exit (-1);
     }
+    tmpstamp = TS_TOUSEC(ts);
+    j = abs(tmpstamp - laststamp - mrp_usec);
+    if (j > 7000L) {
+	DBG(("emu jitter of: %lu us", j));
+	laststamp = tmpstamp;
+    } else {
+	laststamp +=  mrp_usec;
+    }
     
     /* stamp in usecs */
-    buffers[cpos].stamp = TS_TOUSEC(ts);
     curr = buffers[cpos].buffer;
     tmppos = NEXT(cpos);
     memcpy(buffers[tmppos].buffer, curr, csize); /* copy fullframe */
-    dthread_lock();
+//    dthread_lock();
     cpos = tmppos;
     update = 1;
-    dthread_unlock();
+    if (cpos == lpos) {
+	DBG(("out of buffers: %s", __FUNCTION__));
+    }
+    buffers[cpos].stamp = laststamp;
+//    dthread_unlock();
     return buffers[cpos].buffer;
 }
 
@@ -210,6 +225,8 @@ void video_dthread_init(void)
 {
     pthread_t dthread;
     pthread_mutexattr_t mta;
+    struct sched_param param;
+    pthread_attr_t attr;
     
     
     if (pthread_mutexattr_settype(&mta, PTHREAD_MUTEX_RECURSIVE) < 0) {
@@ -222,9 +239,22 @@ void video_dthread_init(void)
 	exit (-1);
     }
 	
-    if (pthread_create(&dthread, NULL, dthread_func, NULL) < 0) {
+    if (pthread_attr_init(&attr)) {
+	log_debug("pthread_attr_init() failed, %s", __FUNCTION__);
+	exit (-1);      
+    }
+    if (pthread_attr_setinheritsched(&attr, PTHREAD_EXPLICIT_SCHED)) {
+	log_debug("pthread_setinheritsched() failed, %s", __FUNCTION__);
+	exit (-1);
+    }
+    if (pthread_create(&dthread, &attr, dthread_func, NULL) < 0) {
 	log_debug("pthread_create() failed, %s", __FUNCTION__);
 	exit (-1);
+    }
+
+    param.sched_priority = 20;
+    if (pthread_setschedparam(dthread, SCHED_RR, &param)) {
+      log_debug("pthread_setschedparam() failed, %s", __FUNCTION__);
     }
     pthread_detach(dthread);
 }
@@ -247,28 +277,71 @@ void dthread_unlock(void)
 
 /* internal routines */
 
-int dthread_calc_frames(struct timespec *ts, int *from, int *to)
+int dthread_calc_frames(unsigned long dt, int *from, int *to, int *alpha)
 {
     int ret = 1;
+    int d;
+    unsigned long dt1, dt2;
     
-    dthread_lock();
+    //dthread_lock();
     if (update) {
 	update = 0;
 	if (cpos == lpos) {
 	    /* emulation is ahead MAX_BUFFERS */
 	    DBG(("dthread dropping frames"));
+	    ret = 0;
 	} else {
-	    lpos = NEXT(lpos);
-	    DBG(("drawing from lpos %d to cpos %d", lpos, cpos));
+	    // subtract the refresh rate
+	    dt -= mrp_usec;
+	    
+	    // find display frame interval where we fit in
+	    int np = lpos;
+	    int count = cpos - lpos;
+	    if (count < 0) count += MAX_BUFFERS;
+	    int i;
+	    for (i = 0; i < count; i++) {
+		if (buffers[np].stamp > dt) {
+		    break;
+		}
+		np ++;
+		if (np == MAX_BUFFERS) {
+		    np = 0;
+		}
+	    }
+	    int np2 = np - 1;
+	    if (np2 < 0) {
+		np2 += MAX_BUFFERS;
+	    }
+#if 0
+	    DBG(("cpos %d  lpos %d", cpos, lpos));
+	    DBG(("drawing from np %d to np2 %d", np, np2));
+	    DBG(("found t1 %u  t2 %u dt %u", buffers[np].stamp, buffers[np2].stamp, dt));
+#endif 
+	    dt1 = dt - buffers[np2].stamp;
+	    dt2 = buffers[np].stamp - buffers[np2].stamp;
+	    if (dt1 > dt2) {
+		*alpha = 1000;
+	    } else {
+		*alpha = 1000 * ((float) dt1 / dt2);
+	    }
+#if 0
+	    for (i = 0; i < MAX_BUFFERS; i++) {
+		unsigned long ddd;
+		ddd = buffers[i].next->stamp - buffers[i].stamp;
+		DBG(("from %d, i %d  stamp %lu  diff %lu", 
+		     np2, i, buffers[i].stamp, ddd));
+	    }
+#endif
+
+	    *to = np;
+	    *from = np2;
 	}
-	*to = cpos;
-	*from = lpos;
     } else {
 	DBG2 (("dthread nothing to draw"));
 	pthread_yield();	/* make sure dthread doesn't hog on CPU */
 	ret = 0;
     }
-    dthread_unlock();
+    //dthread_unlock();
     return ret;
 }
 
@@ -299,21 +372,23 @@ static void *dthread_func(void *arg)
 	// clock_gettime(CLOCK_REALTIME, &now);
 	DBG2(("action is: %d, %ld", do_action, TS_TOUSEC(now)/1000));
 	
-	if (do_refresh && do_action == 1) {
-	    int from, to;
+	if (do_action == 1) {
+    	    int from, to, alpha;
 	    
 	    do_action = 0;
 	    pthread_mutex_unlock(&mutex);
 	    clock_gettime(CLOCK_REALTIME, &t1);
-	    if (dthread_calc_frames(&t1, &from, &to)) {
-		//dthread_lock();
-		gl_render_canvas(widget, canvas, buffers, from, to);
-		lpos = cpos;
-		//dthread_unlock();
+	    if (dthread_calc_frames(TS_TOUSEC(t1), &from, &to, &alpha)) {
+	        // dthread_lock();
+	      gl_render_canvas(widget, canvas, buffers, from, to, alpha);
+	      lpos = to;
+		// dthread_unlock();
 	    }
 	    // clock_gettime(CLOCK_REALTIME, &t2);
-	    // DBG(("glrender rate: %ldms", (TS_TOUSEC(t1) - TS_TOUSEC(t2))/1000));
-	    // memcpy(&t2, &t1, sizeof(struct timespec));
+	    long diff = TS_TOUSEC(t1) - TS_TOUSEC(t2);
+	    int fps = 1000 * 1000 / diff;
+	    //DBG(("glrender rate: %ldms  fps %d", diff/1000, fps));
+	    memcpy(&t2, &t1, sizeof(struct timespec));
 	    continue;
 	} else if (do_action == 2) {
 	    is_coroutine = 1;
