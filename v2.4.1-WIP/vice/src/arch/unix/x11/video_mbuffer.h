@@ -29,7 +29,7 @@
 
 #define MAX_BUFFERS 8
 void mbuffer_init(void *widget, int w, int h, int depth);
-unsigned char *mbuffer_get_buffer(void);
+unsigned char *mbuffer_get_buffer(struct timespec *ts);
 struct s_mbufs
 {
     long stamp; /* timestamp in usecs */

@@ -305,14 +305,14 @@ void video_canvas_refresh(video_canvas_t *canvas, unsigned int xs, unsigned int 
 	static struct timespec t1, t2, t0;
 	clock_gettime(CLOCK_REALTIME, &t1);
 
-	canvas->hwscale_image = mbuffer_get_buffer();
+	canvas->hwscale_image = mbuffer_get_buffer(&t1);
 	//dthread_lock();
         video_canvas_render(canvas, canvas->hwscale_image, w, h, xs, ys, xi, yi, canvas->draw_buffer->canvas_physical_width * 4, 32);
 	//dthread_unlock();
-        gtk_widget_queue_draw(canvas->emuwindow);
+        //gtk_widget_queue_draw(canvas->emuwindow);
 	
 	clock_gettime(CLOCK_REALTIME, &t2);
-        //DBG(("emulation rate: %ldms, rendertime: %ldms", (TS_TOUSEC(t1) - TS_TOUSEC(t0))/1000, (TS_TOUSEC(t2) - TS_TOUSEC(t1))/1000)); 
+        DBG(("emulation rate: %ldms, rendertime: %ldms", (TS_TOUSEC(t1) - TS_TOUSEC(t0))/1000, (TS_TOUSEC(t2) - TS_TOUSEC(t1))/1000)); 
 	memcpy(&t0, &t1, sizeof(struct timespec));
     } else
 #endif

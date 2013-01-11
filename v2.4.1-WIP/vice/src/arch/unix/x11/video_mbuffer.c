@@ -53,8 +53,8 @@
 #endif
 
 #define TS_TOUSEC(x) (x.tv_sec * 1000000L + (x.tv_nsec / 1000))
-#define TS_TOMSEC(x) (x.tv_sec * 1000000L + (x.tv_nsec / 1000))
-#define REFRESH_FREQ (8 * 1000 * 1000)
+#define TS_TOMSEC(x) (x.tv_sec * 1000L + (x.tv_nsec / 1000000L))
+#define REFRESH_FREQ (14 * 1000 * 1000)
 static struct timespec reltime = { 0, REFRESH_FREQ };
 static pthread_cond_t      cond  = PTHREAD_COND_INITIALIZER;
 static pthread_cond_t      coroutine  = PTHREAD_COND_INITIALIZER;
@@ -106,25 +106,12 @@ void mbuffer_init(void *widget, int w, int h, int depth)
     gl_setup_textures(widget, &buffers[0]);
 }
 
-unsigned char *mbuffer_get_buffer(void) 
+unsigned char *mbuffer_get_buffer(struct timespec *t) 
 {
     unsigned char *curr;
     int tmppos = cpos;
     unsigned long tmpstamp, j;
-    struct timespec ts;
-    if (clock_gettime(CLOCK_REALTIME, &ts) < 0) {
-	log_debug("clock_gettime() failed, %s", __FUNCTION__);
-	exit (-1);
-    }
-    tmpstamp = TS_TOUSEC(ts);
-    j = abs(tmpstamp - laststamp - mrp_usec);
-    if (j > 7000L) {
-	DBG(("emu jitter of: %lu us", j));
-	laststamp = tmpstamp;
-    } else {
-	laststamp +=  mrp_usec;
-    }
-    
+    struct timespec ts = *t;
     /* stamp in usecs */
     curr = buffers[cpos].buffer;
     tmppos = NEXT(cpos);
@@ -135,6 +122,21 @@ unsigned char *mbuffer_get_buffer(void)
     if (cpos == lpos) {
 	DBG(("out of buffers: %s", __FUNCTION__));
     }
+#if 0
+    if (clock_gettime(CLOCK_REALTIME, &ts) < 0) {
+	log_debug("clock_gettime() failed, %s", __FUNCTION__);
+	exit (-1);
+    }
+#endif
+    tmpstamp = TS_TOUSEC(ts);
+    j = abs(tmpstamp - laststamp - mrp_usec);
+    DBG(("emu jitter of: %lu us", j));
+    if (j > 7000L) {
+	laststamp = tmpstamp;
+    } else {
+	laststamp +=  mrp_usec;
+    }
+    
     buffers[cpos].stamp = laststamp;
 //    dthread_unlock();
     return buffers[cpos].buffer;
@@ -284,11 +286,11 @@ int dthread_calc_frames(unsigned long dt, int *from, int *to, int *alpha)
     unsigned long dt1, dt2;
     
     //dthread_lock();
-    if (update) {
+    if (1 || update) {
 	update = 0;
 	if (cpos == lpos) {
 	    /* emulation is ahead MAX_BUFFERS */
-	    DBG(("dthread dropping frames"));
+	    // DBG(("dthread dropping frames"));
 	    ret = 0;
 	} else {
 	    // subtract the refresh rate
@@ -432,11 +434,11 @@ static void dthread_coroutine(int action)
     struct timespec ts;
     int ret;
 
-  retry:    
     if (pthread_mutex_lock(&mutex) < 0) {
 	log_debug("pthread_mutex_lock() failed, %s", __FUNCTION__);
 	exit (-1);
     }
+  retry:    
     do_action = action;
     DBG2(("syncronised call for action: %d - start", action));
     if (pthread_cond_signal(&cond) < 0) {
@@ -449,7 +451,6 @@ static void dthread_coroutine(int action)
 	DBG2(("syncronised call for action: %d - before condwait", action));
 	ret = pthread_cond_timedwait(&coroutine, &mutex, &ts);
 	if (ret == ETIMEDOUT) {
-	    pthread_mutex_unlock(&mutex);
 	    DBG2(("synchronized call for action %d - retrying", action));
 	    goto retry;
 	}
