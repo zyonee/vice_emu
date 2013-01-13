@@ -110,7 +110,7 @@ unsigned char *mbuffer_get_buffer(struct timespec *t)
 {
     unsigned char *curr;
     int tmppos = cpos;
-    unsigned long tmpstamp, j;
+    long tmpstamp, j;
     struct timespec ts = *t;
     /* stamp in usecs */
     curr = buffers[cpos].buffer;
@@ -128,13 +128,13 @@ unsigned char *mbuffer_get_buffer(struct timespec *t)
 	exit (-1);
     }
 #endif
+    laststamp +=  mrp_usec;	/* advance by machine cycle */
     tmpstamp = TS_TOUSEC(ts);
-    j = abs(tmpstamp - laststamp - mrp_usec);
-    DBG(("emu jitter of: %lu us", j));
-    if (j > 7000L) {
+    j = tmpstamp - laststamp;
+    //DBG(("emu jitter of: %ld us", j));
+    if ((j > 50000) || (j < -50000)) {
+	DBG(("resetting jitter: %ld us", j));
 	laststamp = tmpstamp;
-    } else {
-	laststamp +=  mrp_usec;
     }
     
     buffers[cpos].stamp = laststamp;
