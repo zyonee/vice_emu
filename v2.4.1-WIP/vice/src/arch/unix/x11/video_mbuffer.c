@@ -58,6 +58,7 @@
 static struct timespec reltime = { 0, REFRESH_FREQ };
 static pthread_cond_t      cond  = PTHREAD_COND_INITIALIZER;
 static pthread_cond_t      coroutine  = PTHREAD_COND_INITIALIZER;
+static pthread_cond_t      coroutine2  = PTHREAD_COND_INITIALIZER;
 static pthread_mutex_t     mutex = PTHREAD_MUTEX_INITIALIZER;
 static pthread_mutex_t     dlock = PTHREAD_MUTEX_INITIALIZER;
 static void *widget, *event, *client_data;
@@ -118,7 +119,7 @@ unsigned char *mbuffer_get_buffer(struct timespec *t)
     memcpy(buffers[tmppos].buffer, curr, csize); /* copy fullframe */
 //    dthread_lock();
     cpos = tmppos;
-    update = 1;
+//    update = 1;
     if (cpos == lpos) {
 	DBG(("out of buffers: %s", __FUNCTION__));
     }
@@ -189,13 +190,39 @@ int dthread_ui_init(int *ac, char **av)
 
 void dthread_ui_dispatch_events(void) 
 {
-    update = 1;
-    return;
+    int ret;
+    struct timespec ts;
     
-    if (is_coroutine) {
+    if (update || is_coroutine) {
 	ui_dispatch_events2();
 	return;
+    } else {
+	if (pthread_mutex_lock(&mutex) < 0) {
+	    log_debug("pthread_mutex_lock() failed, %s", __FUNCTION__);
+	    exit (-1);
+	}
+	update = 1;
+	while (update) {
+	    clock_gettime(CLOCK_REALTIME, &ts);
+	    ts.tv_sec += 3;
+	    ret = pthread_cond_timedwait(&coroutine2, &mutex, &ts);
+	    if (ret == ETIMEDOUT) {
+		DBG2(("machine thread waiting dthread retrying"));
+		continue;
+	    }
+	    if (ret < 0) {
+		log_debug("pthread_cond_timedwait() failed, %s", __FUNCTION__);
+		exit (-1);
+	    }
+	}
+	if (pthread_mutex_unlock(&mutex) < 0) {
+	    log_debug("pthread_mutex_unlock() failed, %s", __FUNCTION__);
+	    exit (-1);
+	}
+	update = 0;
+ 	return;
     }
+    
     dthread_coroutine(4);
 }
 
@@ -207,7 +234,7 @@ int dthread_ui_init_finish()
 
 int dthread_configure_callback_canvas(void *w, void *e, void *cd)
 {
-    if (is_coroutine) {
+    if (update || is_coroutine) {
 	return configure_callback_canvas2(w, e, cd);
     }
     
@@ -393,13 +420,16 @@ static void *dthread_func(void *arg)
 	    // clock_gettime(CLOCK_REALTIME, &t2);
 	    long diff = TS_TOUSEC(t1) - TS_TOUSEC(t2);
 	    int fps = 1000 * 1000 / diff;
-	    DBG(("glrender rate: %ldms  fps %d", diff/1000, fps));
+	    // DBG(("glrender rate: %ldms  fps %d", diff/1000, fps));
 	    memcpy(&t2, &t1, sizeof(struct timespec));
 	    if (update == 1) {
 		ui_dispatch_events2();
 		update = 0;
+		if (pthread_cond_signal(&coroutine2) < 0) {
+		    log_debug("pthread_cond_signal() failed, %s", __FUNCTION__);
+		    exit (-1);
+		}
 	    }
-	    
 	    continue;
 	} else if (do_action == 2) {
 	    is_coroutine = 1;
@@ -464,7 +494,7 @@ static void dthread_coroutine(int action)
 	    goto retry;
 	}
 	if (ret < 0) {
-	    log_debug("pthread_cond_signal() failed, %s", __FUNCTION__);
+	    log_debug("pthread_cond_timedwait() failed, %s", __FUNCTION__);
 	    exit (-1);
 	}
     }
