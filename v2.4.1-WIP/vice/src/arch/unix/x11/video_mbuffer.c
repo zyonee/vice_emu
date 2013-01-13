@@ -54,7 +54,7 @@
 
 #define TS_TOUSEC(x) (x.tv_sec * 1000000L + (x.tv_nsec / 1000))
 #define TS_TOMSEC(x) (x.tv_sec * 1000L + (x.tv_nsec / 1000000L))
-#define REFRESH_FREQ (14 * 1000 * 1000)
+#define REFRESH_FREQ (7 * 1000 * 1000)
 static struct timespec reltime = { 0, REFRESH_FREQ };
 static pthread_cond_t      cond  = PTHREAD_COND_INITIALIZER;
 static pthread_cond_t      coroutine  = PTHREAD_COND_INITIALIZER;
@@ -189,6 +189,9 @@ int dthread_ui_init(int *ac, char **av)
 
 void dthread_ui_dispatch_events(void) 
 {
+    update = 1;
+    return;
+    
     if (is_coroutine) {
 	ui_dispatch_events2();
 	return;
@@ -283,11 +286,11 @@ int dthread_calc_frames(unsigned long dt, int *from, int *to, int *alpha)
 {
     int ret = 1;
     int d;
-    unsigned long dt1, dt2;
+    unsigned long dt1, dt2, dt3;
     
     //dthread_lock();
     if (1 || update) {
-	update = 0;
+	// update = 0;
 	if (cpos == lpos) {
 	    /* emulation is ahead MAX_BUFFERS */
 	    // DBG(("dthread dropping frames"));
@@ -314,18 +317,19 @@ int dthread_calc_frames(unsigned long dt, int *from, int *to, int *alpha)
 	    if (np2 < 0) {
 		np2 += MAX_BUFFERS;
 	    }
-#if 0
-	    DBG(("cpos %d  lpos %d", cpos, lpos));
-	    DBG(("drawing from np %d to np2 %d", np, np2));
-	    DBG(("found t1 %u  t2 %u dt %u", buffers[np].stamp, buffers[np2].stamp, dt));
-#endif 
 	    dt1 = dt - buffers[np2].stamp;
 	    dt2 = buffers[np].stamp - buffers[np2].stamp;
+	    dt3 = buffers[np].stamp - dt;
+#if 0
+//	    DBG(("cpos %d  lpos %d", cpos, lpos));
+//	    DBG(("drawing from np %d to np2 %d", np, np2));
+#endif 
 	    if (dt1 > dt2) {
 		*alpha = 1000;
 	    } else {
 		*alpha = 1000 * ((float) dt1 / dt2);
 	    }
+//	    DBG(("delta frames: %u us, dt1: %u us, dt3: %u us, alpha: %d", dt2, dt1, dt3, *alpha));
 #if 0
 	    for (i = 0; i < MAX_BUFFERS; i++) {
 		unsigned long ddd;
@@ -389,8 +393,13 @@ static void *dthread_func(void *arg)
 	    // clock_gettime(CLOCK_REALTIME, &t2);
 	    long diff = TS_TOUSEC(t1) - TS_TOUSEC(t2);
 	    int fps = 1000 * 1000 / diff;
-	    //DBG(("glrender rate: %ldms  fps %d", diff/1000, fps));
+	    DBG(("glrender rate: %ldms  fps %d", diff/1000, fps));
 	    memcpy(&t2, &t1, sizeof(struct timespec));
+	    if (update == 1) {
+		ui_dispatch_events2();
+		update = 0;
+	    }
+	    
 	    continue;
 	} else if (do_action == 2) {
 	    is_coroutine = 1;

@@ -1857,7 +1857,8 @@ void gl_draw_quad(float alpha, int tw, int th)
 {
     glBegin (GL_QUADS);
     {
-	glColor4f(1.0f,1.0f,1.0f,alpha);
+	/* glColor4f(1.0f,1.0f,1.0f,alpha);*/
+	glColor4f(alpha, alpha, alpha, alpha);
 	/* Lower Right Of Texture */
 	glTexCoord2f(0.0f, 0.0f); glVertex2f(-(tw/2), (th/2));
 	/* Upper Right Of Texture */
@@ -1873,8 +1874,8 @@ void gl_draw_quad(float alpha, int tw, int th)
 void gl_render_canvas(GtkWidget *w, video_canvas_t *canvas, 
 		      struct s_mbufs *buffers, int from, int to, int a)
 {
-    int tw, th, d, i;
-    float alpha;
+    int tw, th, d, i = 0;
+    float alpha, alpha_fullframe;
     int start;
     struct s_mbufs *t;
     
@@ -1892,20 +1893,35 @@ void gl_render_canvas(GtkWidget *w, video_canvas_t *canvas,
     /* this is just a test to see if buffers[from].buffer is blended with 
        buffers[to].buffer */
     d = ((to - from) + MAX_BUFFERS) % MAX_BUFFERS + 1;
-    alpha = ((float) a) / 1000;
-    // DBG(("#frames: %d, from: %d, to %d, alpha: %f", d, from, to, alpha));
-
-    glBlendFunc( GL_ONE, GL_ZERO );
-    gl_update_texture(&buffers[from]);
-    gl_draw_quad(alpha, tw, th);
-
-    for (i = 0, t = &buffers[from] ; i < d; i++, t=t->next) {
-//	DBG(("drawing %i'th frame", i));
-//	usleep(50000);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);    
-	gl_update_texture(t);
-	gl_draw_quad(1.0f - alpha, tw, th);      
+    if (d <= 2) {
+	alpha = ((float) a / 1000);
+	alpha_fullframe = 1.0f - alpha;
     }
+    else {
+	alpha_fullframe = 1.0f / d;
+	alpha = ((float) a / 1000) - alpha_fullframe * (d - 1);
+    }
+    
+    // DBG(("#frames: %d, from: %d, to %d, alpha_ff: %f, alpha: %f", d, from, to, alpha_fullframe, alpha));
+
+    // DBG(("drawing first frame %p", &buffers[from]));
+    glBlendFunc( GL_ONE, GL_ONE );
+    gl_update_texture(&buffers[from]);
+    gl_draw_quad(alpha_fullframe, tw, th);
+
+    d-=2;                 /* first has been drawn, last is outside of loop */
+    t = buffers[from].next;
+    for (i = 0; i < d; i++, t=t->next) {
+	// DBG(("blending %i'th frame %p with alpha %f", i, t, alpha_fullframe));
+	glBlendFunc(GL_ONE, GL_ONE);    
+	gl_update_texture(t);
+	gl_draw_quad(alpha_fullframe, tw, th);      
+    }
+    // DBG(("blending %i'th frame %p with alpha %f", i, t, alpha));
+    glBlendFunc(GL_ONE, GL_ONE);    
+    gl_update_texture(t);
+    gl_draw_quad(alpha, tw, th);    
+  
     gdk_gl_drawable_swap_buffers (gl_drawable);
     gdk_gl_drawable_gl_end (gl_drawable);
 }
