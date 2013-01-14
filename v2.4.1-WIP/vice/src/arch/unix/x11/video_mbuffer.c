@@ -54,7 +54,7 @@
 
 #define TS_TOUSEC(x) (x.tv_sec * 1000000L + (x.tv_nsec / 1000))
 #define TS_TOMSEC(x) (x.tv_sec * 1000L + (x.tv_nsec / 1000000L))
-#define REFRESH_FREQ (7 * 1000 * 1000)
+#define REFRESH_FREQ (1 * 1000 * 1000)
 static struct timespec reltime = { 0, REFRESH_FREQ };
 static pthread_cond_t      cond  = PTHREAD_COND_INITIALIZER;
 static pthread_cond_t      coroutine  = PTHREAD_COND_INITIALIZER;
@@ -321,7 +321,7 @@ int dthread_calc_frames(unsigned long dt, int *from, int *to, int *alpha)
 	// update = 0;
 	if (cpos == lpos) {
 	    /* emulation is ahead MAX_BUFFERS */
-	    // DBG(("dthread dropping frames"));
+	    //DBG(("dthread dropping frames"));
 	    ret = 0;
 	} else {
 	    // subtract the refresh rate
@@ -382,7 +382,7 @@ int dthread_calc_frames(unsigned long dt, int *from, int *to, int *alpha)
 
 static void *dthread_func(void *arg)
 {
-    static struct timespec now, to, t1, t2;
+    static struct timespec now, to, t1, t2, t3;
     int ret;
     
     DBG(("Display thread started..."));
@@ -414,26 +414,16 @@ static void *dthread_func(void *arg)
 	    pthread_mutex_unlock(&mutex);
 	    clock_gettime(CLOCK_REALTIME, &t1);
 	    if (dthread_calc_frames(TS_TOUSEC(now), &from, &to, &alpha)) {
-	        // dthread_lock();
 	      gl_render_canvas(widget, canvas, buffers, from, to, alpha);
 	      lpos = from;
-		// dthread_unlock();
-	    }
-	    // clock_gettime(CLOCK_REALTIME, &t2);
-	    long diff = TS_TOUSEC(t1) - TS_TOUSEC(t2);
-	    int fps = 1000 * 1000 / diff;
-	    //DBG(("glrender rate: %ldms  fps %d", diff/1000, fps));
-	    memcpy(&t2, &t1, sizeof(struct timespec));
 #if 0
-	    if (update == 1) {
-		ui_dispatch_events2();
-		update = 0;
-		if (pthread_cond_signal(&coroutine2) < 0) {
-		    log_debug("pthread_cond_signal() failed, %s", __FUNCTION__);
-		    exit (-1);
-		}
-	    }
+	      clock_gettime(CLOCK_REALTIME, &t2);
+	      long diff = TS_TOUSEC(t2) - TS_TOUSEC(t1);
+	      float fps = 1000 * 1000.0 / (TS_TOUSEC(t1) - TS_TOUSEC(t3));
+	      DBG(("glrender time: %5ldus  fps %3.2f", diff, fps));
+	      memcpy(&t3, &t1, sizeof(struct timespec));
 #endif
+	    }
 	    continue;
 	} else if (do_action == 2) {
 	    is_coroutine = 1;

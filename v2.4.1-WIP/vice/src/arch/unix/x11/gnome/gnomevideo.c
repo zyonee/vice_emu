@@ -106,8 +106,6 @@ int video_init(void)
     if (gnomevideo_log == LOG_ERR) {
         gnomevideo_log = log_open("GnomeVideo");
     }
-    // video_dthread_init();
-    
     return 0;
 }
 
