@@ -1898,8 +1898,8 @@ void gl_render_canvas(GtkWidget *w, video_canvas_t *canvas,
 	alpha_fullframe = 1.0f - alpha;
     }
     else {
-	alpha_fullframe = 1.0f / d;
-	alpha = ((float) a / 1000) - alpha_fullframe * (d - 1);
+	alpha = alpha_fullframe = 1.0f / d;
+	// alpha = ((float) a / 1000) - alpha_fullframe * (d - 1);
     }
     
     // DBG(("#frames: %d, from: %d, to %d, alpha_ff: %f, alpha: %f", d, from, to, alpha_fullframe, alpha));

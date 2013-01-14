@@ -58,8 +58,10 @@
 static struct timespec reltime = { 0, REFRESH_FREQ };
 static pthread_cond_t      cond  = PTHREAD_COND_INITIALIZER;
 static pthread_cond_t      coroutine  = PTHREAD_COND_INITIALIZER;
-static pthread_cond_t      coroutine2  = PTHREAD_COND_INITIALIZER;
+static pthread_cond_t      uievent1  = PTHREAD_COND_INITIALIZER;
+static pthread_cond_t      uievent2  = PTHREAD_COND_INITIALIZER;
 static pthread_mutex_t     mutex = PTHREAD_MUTEX_INITIALIZER;
+static pthread_mutex_t     uimutex = PTHREAD_MUTEX_INITIALIZER;
 static pthread_mutex_t     dlock = PTHREAD_MUTEX_INITIALIZER;
 static void *widget, *event, *client_data;
 static int do_action = 0;
@@ -81,6 +83,7 @@ static video_canvas_t *canvas;
 /* prototypse for internals */
 static void dthread_coroutine(int a);
 static void *dthread_func(void *attr);
+static void *ethread_func(void *attr);
 
 void mbuffer_init(void *widget, int w, int h, int depth)
 {
@@ -117,29 +120,20 @@ unsigned char *mbuffer_get_buffer(struct timespec *t)
     curr = buffers[cpos].buffer;
     tmppos = NEXT(cpos);
     memcpy(buffers[tmppos].buffer, curr, csize); /* copy fullframe */
-//    dthread_lock();
     cpos = tmppos;
-//    update = 1;
     if (cpos == lpos) {
 	DBG(("out of buffers: %s", __FUNCTION__));
     }
-#if 0
-    if (clock_gettime(CLOCK_REALTIME, &ts) < 0) {
-	log_debug("clock_gettime() failed, %s", __FUNCTION__);
-	exit (-1);
-    }
-#endif
     laststamp +=  mrp_usec;	/* advance by machine cycle */
     tmpstamp = TS_TOUSEC(ts);
     j = tmpstamp - laststamp;
-    //DBG(("emu jitter of: %ld us", j));
-    if ((j > 50000) || (j < -50000)) {
-	DBG(("resetting jitter: %ld us", j));
+    // DBG(("emu jitter of: %5ld us", j));
+    if ((j > 15000) || (j < -15000)) {
+	DBG(("resetting jitter: %5ld us", j));
 	laststamp = tmpstamp;
     }
     
     buffers[cpos].stamp = laststamp;
-//    dthread_unlock();
     return buffers[cpos].buffer;
 }
 
@@ -194,18 +188,23 @@ void dthread_ui_dispatch_events(void)
     struct timespec ts;
     
     if (update || is_coroutine) {
+	DBG(("recursive call to %s", __FUNCTION__));
 	ui_dispatch_events2();
 	return;
     } else {
-	if (pthread_mutex_lock(&mutex) < 0) {
+	if (pthread_mutex_lock(&uimutex) < 0) {
 	    log_debug("pthread_mutex_lock() failed, %s", __FUNCTION__);
 	    exit (-1);
 	}
 	update = 1;
+	if (pthread_cond_signal(&uievent1) < 0) {
+	    log_debug("pthread_mutex_lock() failed, %s", __FUNCTION__);
+	    exit (-1);
+	}
 	while (update) {
 	    clock_gettime(CLOCK_REALTIME, &ts);
 	    ts.tv_sec += 3;
-	    ret = pthread_cond_timedwait(&coroutine2, &mutex, &ts);
+	    ret = pthread_cond_timedwait(&uievent2, &uimutex, &ts);
 	    if (ret == ETIMEDOUT) {
 		DBG2(("machine thread waiting dthread retrying"));
 		continue;
@@ -215,15 +214,11 @@ void dthread_ui_dispatch_events(void)
 		exit (-1);
 	    }
 	}
-	if (pthread_mutex_unlock(&mutex) < 0) {
+	if (pthread_mutex_unlock(&uimutex) < 0) {
 	    log_debug("pthread_mutex_unlock() failed, %s", __FUNCTION__);
 	    exit (-1);
 	}
-	update = 0;
- 	return;
     }
-    
-    dthread_coroutine(4);
 }
 
 int dthread_ui_init_finish()
@@ -256,6 +251,7 @@ void dthread_gl_update_texture(void)
 void video_dthread_init(void)
 {
     pthread_t dthread;
+    pthread_t ethread;
     pthread_mutexattr_t mta;
     struct sched_param param;
     pthread_attr_t attr;
@@ -283,12 +279,17 @@ void video_dthread_init(void)
 	log_debug("pthread_create() failed, %s", __FUNCTION__);
 	exit (-1);
     }
+    if (pthread_create(&ethread, &attr, ethread_func, NULL) < 0) {
+	log_debug("pthread_create() failed, %s", __FUNCTION__);
+	exit (-1);
+    }
 
     param.sched_priority = 20;
     if (pthread_setschedparam(dthread, SCHED_RR, &param)) {
       log_debug("pthread_setschedparam() failed, %s", __FUNCTION__);
     }
     pthread_detach(dthread);
+    pthread_detach(ethread);
 }
 
 void dthread_lock(void) 
@@ -352,16 +353,17 @@ int dthread_calc_frames(unsigned long dt, int *from, int *to, int *alpha)
 //	    DBG(("drawing from np %d to np2 %d", np, np2));
 #endif 
 	    if (dt1 > dt2) {
-		*alpha = 1000;
+		//DBG(("dthread dropping frames"));
+		return 0;
 	    } else {
 		*alpha = 1000 * ((float) dt1 / dt2);
 	    }
 //	    DBG(("delta frames: %u us, dt1: %u us, dt3: %u us, alpha: %d", dt2, dt1, dt3, *alpha));
 #if 0
 	    for (i = 0; i < MAX_BUFFERS; i++) {
-		unsigned long ddd;
+		long ddd;
 		ddd = buffers[i].next->stamp - buffers[i].stamp;
-		DBG(("from %d, i %d  stamp %lu  diff %lu", 
+		DBG(("from %d, i %d  stamp %ld  diff %ld", 
 		     np2, i, buffers[i].stamp, ddd));
 	    }
 #endif
@@ -383,7 +385,7 @@ static void *dthread_func(void *arg)
     static struct timespec now, to, t1, t2;
     int ret;
     
-    DBG(("GUI thread started..."));
+    DBG(("Display thread started..."));
     
     while (1) {
 	if (pthread_mutex_lock(&mutex) < 0) {
@@ -411,17 +413,18 @@ static void *dthread_func(void *arg)
 	    do_action = 0;
 	    pthread_mutex_unlock(&mutex);
 	    clock_gettime(CLOCK_REALTIME, &t1);
-	    if (dthread_calc_frames(TS_TOUSEC(t1), &from, &to, &alpha)) {
+	    if (dthread_calc_frames(TS_TOUSEC(now), &from, &to, &alpha)) {
 	        // dthread_lock();
 	      gl_render_canvas(widget, canvas, buffers, from, to, alpha);
-	      lpos = to;
+	      lpos = from;
 		// dthread_unlock();
 	    }
 	    // clock_gettime(CLOCK_REALTIME, &t2);
 	    long diff = TS_TOUSEC(t1) - TS_TOUSEC(t2);
 	    int fps = 1000 * 1000 / diff;
-	    // DBG(("glrender rate: %ldms  fps %d", diff/1000, fps));
+	    //DBG(("glrender rate: %ldms  fps %d", diff/1000, fps));
 	    memcpy(&t2, &t1, sizeof(struct timespec));
+#if 0
 	    if (update == 1) {
 		ui_dispatch_events2();
 		update = 0;
@@ -430,6 +433,7 @@ static void *dthread_func(void *arg)
 		    exit (-1);
 		}
 	    }
+#endif
 	    continue;
 	} else if (do_action == 2) {
 	    is_coroutine = 1;
@@ -507,3 +511,40 @@ static void dthread_coroutine(int action)
     DBG2(("syncronised call for action: %d - done", action));
 }
 
+static void *ethread_func(void *arg)
+{
+    struct timespec ts;
+    int ret;
+    
+    /* this thread takes only care on gtk+ events */
+    DBG(("GUI Event handler thread started..."));
+    while (1) {
+	if (pthread_mutex_lock(&uimutex) < 0) {
+	    log_debug("pthread_mutex_lock() failed, %s", __FUNCTION__);
+	    exit (-1);
+	}
+	while (!update) {
+	    clock_gettime(CLOCK_REALTIME, &ts);
+	    ts.tv_sec += 3;
+	    ret = pthread_cond_timedwait(&uievent1, &uimutex, &ts);
+	    if (ret == ETIMEDOUT) {
+		DBG2(("GUI event handler thread ... retrying"));
+		continue;
+	    }
+	    if (ret < 0) {
+		log_debug("pthread_cond_timedwait() failed, %s", __FUNCTION__);
+		exit (-1);
+	    }
+	}
+	ui_dispatch_events2();
+	update = 0;
+	if (pthread_cond_signal(&uievent2) < 0) {
+	    log_debug("pthread_cond_signal() failed, %s", __FUNCTION__);
+	    exit (-1);
+	}
+	if (pthread_mutex_unlock(&uimutex) < 0) {
+	    log_debug("pthread_mutex_unlock() failed, %s", __FUNCTION__);
+	    exit (-1);
+	}
+    }
+}
