@@ -12,30 +12,21 @@ CG_SUBDIRS := \
 
 MY_PATH := $(LOCAL_PATH)
 
-#Fix me
-LOCAL_PATH := "C:/Projects/Eclipse/C64/AnVICE/jni/vice/"
-
 CG_SRCDIR := $(LOCAL_PATH)
-LOCAL_CFLAGS :=	-I$(LOCAL_PATH)/include \
-				$(foreach D, $(CG_SUBDIRS), -I$(CG_SRCDIR)/$(D)) \
-				-I$(LOCAL_PATH)/../sdl/include \
-				-I$(LOCAL_PATH)/../locnet/include \
-				-I$(LOCAL_PATH) \
-				-I$(LOCAL_PATH)/src \
-				-iquote$(LOCAL_PATH)/src/vdrive \
-				-iquote$(LOCAL_PATH)/src/drive \
-				-iquote$(LOCAL_PATH)/src/raster \
-				-iquote$(LOCAL_PATH)/src/rs232drv \
-				-iquote$(LOCAL_PATH)/src/c64 \
-				-iquote$(LOCAL_PATH)/src/sid \
-				-iquote$(LOCAL_PATH)/src/arch/sdl \
-				-iquote$(LOCAL_PATH)/src/arch \
-				-iquote$(LOCAL_PATH)/src
-				#-I$(LOCAL_PATH)/../sdl_mixer \
-				#-I$(LOCAL_PATH)/../sdl/src/video/android \
-				#-I$(LOCAL_PATH)/../sdl/src/events \
-				#-I$(LOCAL_PATH)/../stlport/stlport \
-				#-I$(SYSROOT)/usr/include
+
+LOCAL_C_INCLUDES :=	$(LOCAL_PATH)/include \
+				$(LOCAL_PATH)/../sdl/include \
+				$(LOCAL_PATH)/../locnet/include \
+				$(LOCAL_PATH) \
+				$(LOCAL_PATH)/../vice/src/vdrive \
+				$(LOCAL_PATH)/../vice/src/drive \
+				$(LOCAL_PATH)/../vice/src/raster \
+				$(LOCAL_PATH)/../vice/src/rs232drv \
+				$(LOCAL_PATH)/../vice/src/c64 \
+				$(LOCAL_PATH)/../vice/src/sid \
+				$(LOCAL_PATH)/../vice/src/arch/sdl \
+				$(LOCAL_PATH)/../vice/src/arch \
+				$(LOCAL_PATH)/../vice/src
 				
 LOCAL_PATH := $(MY_PATH)
 
