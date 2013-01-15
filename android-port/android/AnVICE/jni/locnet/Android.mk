@@ -10,17 +10,15 @@ CG_SUBDIRS := .
 
 MY_PATH := $(LOCAL_PATH)
 
-LOCAL_PATH := "C:/Projects/Eclipse/C64/AnVICE/jni/locnet"
-
 CG_SRCDIR := $(LOCAL_PATH)
-LOCAL_CFLAGS :=	-I$(LOCAL_PATH)/include \
-				$(foreach D, $(CG_SUBDIRS), -I$(CG_SRCDIR)/$(D)) \
-				-I$(LOCAL_PATH)/../sdl/include \
-				-I$(LOCAL_PATH)/../vice/src/ \
-				-iquote$(LOCAL_PATH)/../vice/src/ \
-				-iquote$(LOCAL_PATH)/../vice/src/arch/sdl \
-				-I$(LOCAL_PATH)
-				
+
+LOCAL_C_INCLUDES :=	$(LOCAL_PATH)/include \
+				$(LOCAL_PATH)/../sdl/include \
+				$(LOCAL_PATH)/../vice/src/ \
+				$(LOCAL_PATH)/../vice/src/ \
+				$(LOCAL_PATH)/../vice/src/arch/sdl \
+				$(LOCAL_PATH)
+
 LOCAL_PATH := $(MY_PATH)
 
 LOCAL_CPPFLAGS := $(LOCAL_CFLAGS)
