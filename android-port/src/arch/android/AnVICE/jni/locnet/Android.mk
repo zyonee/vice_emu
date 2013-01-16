@@ -12,11 +12,13 @@ MY_PATH := $(LOCAL_PATH)
 
 CG_SRCDIR := $(LOCAL_PATH)
 
+LOCAL_CFLAGS := -DANDROID_COMPILE
+
 LOCAL_C_INCLUDES :=	$(LOCAL_PATH)/include \
 				$(LOCAL_PATH)/../sdl/include \
-				$(LOCAL_PATH)/../vice/src/ \
-				$(LOCAL_PATH)/../vice/src/ \
-				$(LOCAL_PATH)/../vice/src/arch/sdl \
+				$(LOCAL_PATH)/../../../../../../src/ \
+				$(LOCAL_PATH)/../../../../../../src/arch/sdl \
+				$(LOCAL_PATH)/../.. \
 				$(LOCAL_PATH)
 
 LOCAL_PATH := $(MY_PATH)
@@ -37,4 +39,3 @@ LOCAL_LDLIBS := -lz -llog
 LOCAL_ARM_MODE := arm
 
 include $(BUILD_SHARED_LIBRARY)
-
