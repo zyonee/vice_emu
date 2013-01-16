@@ -229,7 +229,7 @@ int dthread_ui_init_finish()
 
 int dthread_configure_callback_canvas(void *w, void *e, void *cd)
 {
-    if (update || is_coroutine) {
+    if (is_coroutine) {
 	return configure_callback_canvas2(w, e, cd);
     }
     
