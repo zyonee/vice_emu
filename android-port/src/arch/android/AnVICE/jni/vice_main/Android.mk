@@ -4,7 +4,7 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE := vice_main
 
-MY_PATH2 := ../vice/
+MY_PATH2 := ../../../../../..
 
 CG_SUBDIRS := \
 $(MY_PATH2)/src/raster \
@@ -27,24 +27,32 @@ $(MY_PATH2)/src/monitor \
 MY_PATH := $(LOCAL_PATH)
 
 CG_SRCDIR := $(LOCAL_PATH)
+
+LOCAL_CFLAGS := -DANDROID_COMPILE
+
 LOCAL_C_INCLUDES :=	$(LOCAL_PATH)/include \
 				$(LOCAL_PATH)/../sdl/include \
 				$(LOCAL_PATH)/../locnet/include \
 				$(LOCAL_PATH) \
-				$(LOCAL_PATH)/../vice/src/vicii \
-				$(LOCAL_PATH)/../vice/src/c64 \
-				$(LOCAL_PATH)/../vice/src/c64dtv \
-				$(LOCAL_PATH)/../vice/src/imagecontents \
-				$(LOCAL_PATH)/../vice/src/core \
-				$(LOCAL_PATH)/../vice/src/tape \
-				$(LOCAL_PATH)/../vice/src/rtc \
-				$(LOCAL_PATH)/../vice/src/sid \
-				$(LOCAL_PATH)/../vice/src/drive \
-				$(LOCAL_PATH)/../vice/src/vdrive \
-				$(LOCAL_PATH)/../vice/src/monitor \
-				$(LOCAL_PATH)/../vice/src/arch/sdl \
-				$(LOCAL_PATH)/../vice/src/arch \
-				$(LOCAL_PATH)/../vice/src
+				$(LOCAL_PATH)/../../../../../../src/vicii \
+				$(LOCAL_PATH)/../../../../../../src/c64 \
+				$(LOCAL_PATH)/../../../../../../src/c64dtv \
+				$(LOCAL_PATH)/../../../../../../src/imagecontents \
+				$(LOCAL_PATH)/../../../../../../src/core \
+				$(LOCAL_PATH)/../../../../../../src/tape \
+				$(LOCAL_PATH)/../../../../../../src/rtc \
+				$(LOCAL_PATH)/../../../../../../src/sid \
+				$(LOCAL_PATH)/../../../../../../src/drive \
+				$(LOCAL_PATH)/../../../../../../src/vdrive \
+				$(LOCAL_PATH)/../../../../../../src/monitor \
+				$(LOCAL_PATH)/../../../../../../src/lib/p64 \
+				$(LOCAL_PATH)/../../../../../../src/userport \
+				$(LOCAL_PATH)/../../../../../../src/platform \
+				$(LOCAL_PATH)/../../../../../../src/arch/sdl \
+				$(LOCAL_PATH)/../../../../../../src/arch \
+				$(LOCAL_PATH)/../../../../../../src \
+				$(LOCAL_PATH)/../.. \
+				$(LOCAL_PATH)
 				
 LOCAL_PATH := $(MY_PATH)
 
@@ -128,4 +136,3 @@ LOCAL_PATH := $(MY_PATH)
 LOCAL_ARM_MODE := arm
 
 include $(BUILD_STATIC_LIBRARY)
-
