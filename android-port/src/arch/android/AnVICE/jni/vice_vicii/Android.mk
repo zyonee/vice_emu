@@ -4,7 +4,7 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE := vice_vicii
 
-MY_PATH2 := ../vice/
+MY_PATH2 := ../../../../../..
 
 CG_SUBDIRS := \
 $(MY_PATH2)/src/vicii \
@@ -15,18 +15,22 @@ MY_PATH := $(LOCAL_PATH)
 
 CG_SRCDIR := $(LOCAL_PATH)
 
+LOCAL_CFLAGS := -DANDROID_COMPILE
+
 LOCAL_C_INCLUDES :=	$(LOCAL_PATH)/include \
 				$(LOCAL_PATH)/../sdl/include \
 				$(LOCAL_PATH)/../locnet/include \
 				$(LOCAL_PATH) \
-				$(LOCAL_PATH)/../vice/src/raster \
-				$(LOCAL_PATH)/../vice/src/c64/cart \
-				$(LOCAL_PATH)/../vice/src/c64 \
-				$(LOCAL_PATH)/../vice/src/c64dtv \
-				$(LOCAL_PATH)/../vice/src/arch/sdl \
-				$(LOCAL_PATH)/../vice/src/arch \
-				$(LOCAL_PATH)/../vice/src
-				
+				$(LOCAL_PATH)/../../../../../../src/raster \
+				$(LOCAL_PATH)/../../../../../../src/c64/cart \
+				$(LOCAL_PATH)/../../../../../../src/c64 \
+				$(LOCAL_PATH)/../../../../../../src/c64dtv \
+				$(LOCAL_PATH)/../../../../../../src/arch/sdl \
+				$(LOCAL_PATH)/../../../../../../src/arch \
+				$(LOCAL_PATH)/../../../../../../src \
+				$(LOCAL_PATH)/../.. \
+				$(LOCAL_PATH)
+
 LOCAL_PATH := $(MY_PATH)
 
 LOCAL_CPPFLAGS := $(LOCAL_CFLAGS)

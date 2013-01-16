@@ -17,10 +17,13 @@ $(MY_PATH2)/src/drive/iec/c64exp \
 $(MY_PATH2)/src/drive/ieee \
 $(MY_PATH2)/src/drive \
 $(MY_PATH2)/src/iecbus \
+$(MY_PATH2)/src/lib/p64 \
+$(MY_PATH2)/src/monitor \
 $(MY_PATH2)/src/parallel \
+$(MY_PATH2)/src/platform \
 $(MY_PATH2)/src/vdrive \
 $(MY_PATH2)/src/sid \
-$(MY_PATH2)/src/monitor \
+$(MY_PATH2)/src/userport
 
 # Add more subdirs here, like src/subdir1 src/subdir2
 
@@ -36,6 +39,7 @@ LOCAL_C_INCLUDES :=	$(LOCAL_PATH)/include \
 				$(LOCAL_PATH) \
 				$(LOCAL_PATH)/../../../../../../src/vicii \
 				$(LOCAL_PATH)/../../../../../../src/c64 \
+				$(LOCAL_PATH)/../../../../../../src/c64/cart \
 				$(LOCAL_PATH)/../../../../../../src/c64dtv \
 				$(LOCAL_PATH)/../../../../../../src/imagecontents \
 				$(LOCAL_PATH)/../../../../../../src/core \
