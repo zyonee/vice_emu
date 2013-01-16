@@ -123,8 +123,8 @@ log_t ui_log = LOG_ERR;
 #define VSID_WINDOW_MINW     (400)
 #define VSID_WINDOW_MINH     (300)
 /* minimum size of regular emulator window */
-#define WINDOW_MINW     (320 / 2)
-#define WINDOW_MINH     (200 / 2)
+#define WINDOW_MINW     (320 / 2 + 1)
+#define WINDOW_MINH     (200 / 2 + 1)
 
 /* FIXME: perhaps also move these into app_shell_type */
 char *fixedfontname="CBM 10";
@@ -804,8 +804,8 @@ static void get_initial_window_geo(video_canvas_t *canvas, int *x, int *y, int *
     } else {
         if ((window_width < WINDOW_MINW) || (window_height < WINDOW_MINH)) {
             /* FIXME: use proper defaults here */
-            window_width = WINDOW_MINW;
-            window_height = WINDOW_MINH;
+            window_width = WINDOW_MINW-1;
+            window_height = WINDOW_MINH-1;
             /* not initialized yet?
             window_width = canvas->draw_buffer->canvas_physical_width;
             window_height = canvas->draw_buffer->canvas_physical_height;
@@ -900,7 +900,7 @@ int ui_open_canvas_window2(video_canvas_t *c, const char *title, int w, int h, i
         gtk_widget_show(new_canvas);
         c->emuwindow = NULL;
     } else {
-        build_screen_canvas_widget2(c);  /* XXX fixme */
+        build_screen_canvas_widget(c);
     }
 
     /* FIXME: ideally we want to do this last */
@@ -1002,7 +1002,7 @@ GDK_SUBSTRUCTURE_MASK          Receive  GDK_STRUCTURE_MASK events for child wind
                             GDK_STRUCTURE_MASK |
                             GDK_EXPOSURE_MASK);
 
-    ui_dispatch_events2();
+    ui_dispatch_events();
     return 0;
 }
 
@@ -1350,7 +1350,7 @@ void ui_resize_canvas_window(video_canvas_t *canvas)
         window_height = canvas->draw_buffer->canvas_physical_height;
     }
 
-    build_screen_canvas_widget2(canvas); /* XXX Fixme */
+    build_screen_canvas_widget(canvas);
     if (! canvas->videoconfig->hwscale) {
         gtk_widget_set_size_request(canvas->emuwindow, window_width, window_height);
     }
@@ -1378,13 +1378,18 @@ void ui_resize_canvas_window(video_canvas_t *canvas)
     DBG(("ui_resize_canvas_window exit (w:%d h:%d)", window_width, window_height));
 
     gtk_window_resize(GTK_WINDOW(appshell->shell), window_width, window_height);
-    ui_dispatch_events2();
+    ui_dispatch_events();
 }
 
 /*
     trigger recalculation of screen/window dimensions
  */
 void ui_trigger_resize(void)
+{
+    dthread_ui_trigger_resize();
+}
+
+void ui_trigger_resize2(void)
 {
     GtkWidget *toplevel = get_active_toplevel();
     if ((toplevel) && (gtk_widget_get_window(toplevel))) {
@@ -1396,12 +1401,17 @@ void ui_trigger_resize(void)
 
 void ui_trigger_window_resize(video_canvas_t *canvas)
 {
+    dthread_ui_trigger_window_resize(canvas);
+}
+
+void ui_trigger_window_resize2(video_canvas_t *canvas)
+{
     app_shell_type *appshell;
     int window_xpos, window_ypos, window_width, window_height;
     GdkEvent event;
     if (canvas) {
         appshell = &app_shells[canvas->app_shell];
-        ui_dispatch_events2();
+        ui_dispatch_events();
         get_window_resources(canvas, &window_xpos, &window_ypos, &window_width, &window_height);
         DBG(("ui_trigger_window_resize (w:%d h:%d)", window_width, window_height));
         event.configure.width = window_width;
@@ -1816,6 +1826,9 @@ static gboolean configure_callback_app(GtkWidget *w, GdkEvent *event, gpointer c
     return 0;
 }
 
+/*
+This is not used, as textures are generated right before blending
+
 void gl_setup_textures(video_canvas_t *c, struct s_mbufs *buffers)
 {
     int i, tw, th;
@@ -1835,6 +1848,7 @@ void gl_setup_textures(video_canvas_t *c, struct s_mbufs *buffers)
 
     gdk_gl_drawable_gl_end (gl_drawable);
 }
+*/
 
 void gl_update_texture(struct s_mbufs *buffer)
 {
@@ -1908,7 +1922,7 @@ void gl_render_canvas(GtkWidget *w, video_canvas_t *canvas,
     glBlendFunc( GL_ONE, GL_ONE );
     gl_update_texture(&buffers[from]);
     gl_draw_quad(alpha_fullframe, tw, th);
-
+    
     d-=2;                 /* first has been drawn, last is outside of loop */
     t = buffers[from].next;
     for (i = 0; i < d; i++, t=t->next) {
@@ -1921,7 +1935,7 @@ void gl_render_canvas(GtkWidget *w, video_canvas_t *canvas,
     glBlendFunc(GL_ONE, GL_ONE);    
     gl_update_texture(t);
     gl_draw_quad(alpha, tw, th);    
-  
+
     gdk_gl_drawable_swap_buffers (gl_drawable);
     gdk_gl_drawable_gl_end (gl_drawable);
 }

@@ -54,7 +54,7 @@
 
 #define TS_TOUSEC(x) (x.tv_sec * 1000000L + (x.tv_nsec / 1000))
 #define TS_TOMSEC(x) (x.tv_sec * 1000L + (x.tv_nsec / 1000000L))
-#define REFRESH_FREQ (1 * 1000 * 1000)
+#define REFRESH_FREQ (8 * 1000 * 1000)
 static struct timespec reltime = { 0, REFRESH_FREQ };
 static pthread_cond_t      cond  = PTHREAD_COND_INITIALIZER;
 static pthread_cond_t      coroutine  = PTHREAD_COND_INITIALIZER;
@@ -67,7 +67,7 @@ static void *widget, *event, *client_data;
 static int do_action = 0;
 static int is_coroutine = 0;
 static int do_refresh;
-static float machineRefreshPeriod;
+static double machine_freq;
 static long laststamp, mrp_usec;
 
 static struct s_mbufs buffers[MAX_BUFFERS+1];
@@ -88,12 +88,6 @@ static void *ethread_func(void *attr);
 void mbuffer_init(void *widget, int w, int h, int depth)
 {
     int i;
-    float mrp = 1000.0f / (float)vsync_get_refresh_frequency();
-    if(mrp != machineRefreshPeriod) {
-        machineRefreshPeriod = mrp;
-	mrp_usec = mrp * 1000;
-    }
-    DBG(("machine refresh period = %f ms %ld", (float) machineRefreshPeriod, mrp_usec));
     csize = w * h * depth;
     for (i = 0; i < MAX_BUFFERS + 1; i++) { /* XXX Fixme remove +1 */
 	lib_free(buffers[i].buffer);
@@ -107,7 +101,7 @@ void mbuffer_init(void *widget, int w, int h, int depth)
     }
     buffers[i-2].next = &buffers[0]; /* XXX and here -2 */
     cpos = 0;
-    gl_setup_textures(widget, &buffers[0]);
+    /* gl_setup_textures(widget, &buffers[0]); */
 }
 
 unsigned char *mbuffer_get_buffer(struct timespec *t) 
@@ -116,6 +110,13 @@ unsigned char *mbuffer_get_buffer(struct timespec *t)
     int tmppos = cpos;
     long tmpstamp, j;
     struct timespec ts = *t;
+    
+    if (machine_freq != vsync_get_refresh_frequency()) {
+        machine_freq=vsync_get_refresh_frequency();
+	mrp_usec = 1000.0 / machine_freq * 1000;
+	DBG(("machine freq = %f ms period %ld us", (float) machine_freq, mrp_usec));
+    }
+    
     /* stamp in usecs */
     curr = buffers[cpos].buffer;
     tmppos = NEXT(cpos);
@@ -124,7 +125,8 @@ unsigned char *mbuffer_get_buffer(struct timespec *t)
     if (cpos == lpos) {
 	DBG(("out of buffers: %s", __FUNCTION__));
     }
-    laststamp +=  mrp_usec;	/* advance by machine cycle */
+
+    laststamp += mrp_usec; /* advance by machine cycle */
     tmpstamp = TS_TOUSEC(ts);
     j = tmpstamp - laststamp;
     // DBG(("emu jitter of: %5ld us", j));
@@ -160,6 +162,10 @@ void dthread_trigger(void *w, video_canvas_t *c)
 
 void dthread_build_screen_canvas(video_canvas_t *c)
 {
+    if (is_coroutine) {
+	build_screen_canvas_widget2(c);
+	return;
+    }
     canvas = c;
     dthread_coroutine(2);
 }
@@ -244,8 +250,22 @@ void dthread_gl_update_texture(void)
 {
     /* don't ever take dlock here! */
     gl_update_texture(&buffers[0], cpos);
-
     // dthread_coroutine(8);
+}
+
+void dthread_ui_trigger_resize(void)
+{
+    dthread_coroutine(9);
+}
+
+void dthread_ui_trigger_window_resize(video_canvas_t *c)
+{
+    if (is_coroutine) {
+	ui_trigger_window_resize2(c);
+	return;
+    }
+    canvas = c;
+    dthread_coroutine(10);
 }
 
 void video_dthread_init(void)
@@ -386,7 +406,6 @@ static void *dthread_func(void *arg)
     int ret;
     
     DBG(("Display thread started..."));
-    
     while (1) {
 	if (pthread_mutex_lock(&mutex) < 0) {
 	    log_debug("pthread_mutex_lock() failed, %s", __FUNCTION__);
@@ -405,7 +424,7 @@ static void *dthread_func(void *arg)
 	    }
 	}
 	// clock_gettime(CLOCK_REALTIME, &now);
-	DBG2(("action is: %d, %ld", do_action, TS_TOUSEC(now)/1000));
+	//DBG2(("action is: %d, %ld", do_action, TS_TOUSEC(now)/1000));
 	
 	if (do_action == 1) {
     	    int from, to, alpha;
@@ -446,6 +465,12 @@ static void *dthread_func(void *arg)
 	} else if (do_action == 8) {
 	    is_coroutine = 1;
 	    gl_update_texture(&buffers[0], cpos);
+	} else if (do_action == 9) {
+	    is_coroutine = 1;
+	    ui_trigger_resize2();
+	} else if (do_action == 10) {
+	    is_coroutine = 1;
+	    ui_trigger_window_resize2(canvas);
 	}
 	if (is_coroutine) {
 	    DBG2(("syncronised call for action: %d- intermediate", do_action));

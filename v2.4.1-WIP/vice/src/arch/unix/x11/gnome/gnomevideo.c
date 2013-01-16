@@ -308,9 +308,11 @@ void video_canvas_refresh(video_canvas_t *canvas, unsigned int xs, unsigned int 
 			    w, h, xs, ys, xi, yi, 
 			    canvas->draw_buffer->canvas_physical_width * 4, 32);
         gtk_widget_queue_draw(canvas->emuwindow);
+#if 0
 	clock_gettime(CLOCK_REALTIME, &t2);
-        //DBG(("emulation rate: %ldus, rendertime: %ldus", (TS_TOUSEC(t1) - TS_TOUSEC(t0)), (TS_TOUSEC(t2) - TS_TOUSEC(t1)))); 
+        DBG(("emulation rate: %ldus, rendertime: %ldus", (TS_TOUSEC(t1) - TS_TOUSEC(t0)), (TS_TOUSEC(t2) - TS_TOUSEC(t1)))); 
 	memcpy(&t0, &t1, sizeof(struct timespec));
+#endif
     } else
 #endif
     {
