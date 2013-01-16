@@ -4,7 +4,7 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE := vice_common
 
-MY_PATH2 := ../vice/
+MY_PATH2 := ../../../../../..
 
 CG_SUBDIRS := \
 
@@ -14,20 +14,30 @@ MY_PATH := $(LOCAL_PATH)
 
 CG_SRCDIR := $(LOCAL_PATH)
 
+LOCAL_CFLAGS := -DANDROID_COMPILE
+
 LOCAL_C_INCLUDES :=	$(LOCAL_PATH)/include \
 				$(LOCAL_PATH)/../sdl/include \
 				$(LOCAL_PATH)/../locnet/include \
 				$(LOCAL_PATH) \
-				$(LOCAL_PATH)/../vice/src/vdrive \
-				$(LOCAL_PATH)/../vice/src/drive \
-				$(LOCAL_PATH)/../vice/src/raster \
-				$(LOCAL_PATH)/../vice/src/rs232drv \
-				$(LOCAL_PATH)/../vice/src/c64 \
-				$(LOCAL_PATH)/../vice/src/sid \
-				$(LOCAL_PATH)/../vice/src/arch/sdl \
-				$(LOCAL_PATH)/../vice/src/arch \
-				$(LOCAL_PATH)/../vice/src
-				
+				$(LOCAL_PATH)/../../../../../../src/vdrive \
+				$(LOCAL_PATH)/../../../../../../src/drive \
+				$(LOCAL_PATH)/../../../../../../src/raster \
+				$(LOCAL_PATH)/../../../../../../src/rs232drv \
+				$(LOCAL_PATH)/../../../../../../src/c64 \
+				$(LOCAL_PATH)/../../../../../../src/sid \
+				$(LOCAL_PATH)/../../../../../../src/platform \
+				$(LOCAL_PATH)/../../../../../../src/drive \
+				$(LOCAL_PATH)/../../../../../../src/lib/p64 \
+				$(LOCAL_PATH)/../../../../../../src/userport \
+				$(LOCAL_PATH)/../../../../../../src/plus4 \
+				$(LOCAL_PATH)/../../../../../../src/vic20 \
+				$(LOCAL_PATH)/../../../../../../src/arch/sdl \
+				$(LOCAL_PATH)/../../../../../../src/arch \
+				$(LOCAL_PATH)/../../../../../../src \
+				$(LOCAL_PATH)/../.. \
+				$(LOCAL_PATH)
+
 LOCAL_PATH := $(MY_PATH)
 
 LOCAL_CPPFLAGS := $(LOCAL_CFLAGS)
@@ -51,7 +61,6 @@ LOCAL_SRC_FILES += \
 	$(MY_PATH2)/src/arch/sdl/joy.c \
 	$(MY_PATH2)/src/arch/sdl/kbd.c \
 	$(MY_PATH2)/src/arch/sdl/lightpendrv.c \
-	$(MY_PATH2)/src/arch/sdl/menu_c128hw.c \
 	$(MY_PATH2)/src/arch/sdl/menu_c64cart.c \
 	$(MY_PATH2)/src/arch/sdl/menu_c64_common_expansions.c \
 	$(MY_PATH2)/src/arch/sdl/menu_c64_expansions.c \
@@ -81,8 +90,6 @@ LOCAL_SRC_FILES += \
 	$(MY_PATH2)/src/arch/sdl/menu_speed.c \
 	$(MY_PATH2)/src/arch/sdl/menu_tape.c \
 	$(MY_PATH2)/src/arch/sdl/menu_tfe.c \
-	$(MY_PATH2)/src/arch/sdl/menu_vic20cart.c \
-	$(MY_PATH2)/src/arch/sdl/menu_vic20hw.c \
 	$(MY_PATH2)/src/arch/sdl/menu_video.c \
 	$(MY_PATH2)/src/arch/sdl/mididrv.c \
 	$(MY_PATH2)/src/arch/sdl/mousedrv.c \
@@ -107,13 +114,7 @@ LOCAL_SRC_FILES += \
 	$(MY_PATH2)/src/arch/sdl/vkbd.c \
 	$(MY_PATH2)/src/arch/sdl/vsidui.c \
 	$(MY_PATH2)/src/arch/sdl/vsyncarch.c \
-	$(MY_PATH2)/src/arch/sdl/x64_ui.c \
-	$(MY_PATH2)/src/arch/sdl/x64sc_ui.c
-	
-	#../vice/src/arch/sdl/menu_c64dtvhw.c \
-	#../vice/src/arch/sdl/menu_cbm2cart.c ../vice/src/arch/sdl/menu_cbm2hw.c \
-	#../vice/src/arch/sdl/menu_petcart.c ../vice/src/arch/sdl/menu_pethw.c	
-	#../vice/src/arch/sdl/menu_plus4cart.c ../vice/src/arch/sdl/menu_plus4hw.c 
+	$(MY_PATH2)/src/arch/sdl/x64_ui.c
 	
 # LOCAL_STATIC_LIBRARIES := sdl_mixer sdl tremor stlport
 #LOCAL_STATIC_LIBRARIES := locnet_al
