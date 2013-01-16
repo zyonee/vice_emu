@@ -114,7 +114,8 @@ LOCAL_SRC_FILES += \
 	$(MY_PATH2)/src/arch/sdl/vkbd.c \
 	$(MY_PATH2)/src/arch/sdl/vsidui.c \
 	$(MY_PATH2)/src/arch/sdl/vsyncarch.c \
-	$(MY_PATH2)/src/arch/sdl/x64_ui.c
+	$(MY_PATH2)/src/arch/sdl/x64_ui.c \
+	$(MY_PATH2)/src/arch/sdl/x64sc_ui.c
 	
 # LOCAL_STATIC_LIBRARIES := sdl_mixer sdl tremor stlport
 #LOCAL_STATIC_LIBRARIES := locnet_al
