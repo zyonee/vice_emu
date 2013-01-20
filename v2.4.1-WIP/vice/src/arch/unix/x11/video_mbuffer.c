@@ -32,6 +32,7 @@
 
 #include <time.h>
 #include <pthread.h>
+#include <semaphore.h>
 #include <errno.h>
 #include <string.h>
 
@@ -65,6 +66,7 @@ static pthread_cond_t uievent2  = PTHREAD_COND_INITIALIZER;
 static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 static pthread_mutex_t uimutex = PTHREAD_MUTEX_INITIALIZER;
 static pthread_mutex_t dlock = PTHREAD_MUTEX_INITIALIZER;
+static sem_t mthread_sem, ethread_sem;
 static void *widget, *event, *client_data;
 static int is_coroutine = 0;
 static int do_refresh;
@@ -81,16 +83,16 @@ static char **argv;
 static int int_ret;
 static video_canvas_t *canvas;
 
-/* prototypes for internals */
-static void dthread_coroutine(int a);
-static void *dthread_func(void *attr);
-static void *ethread_func(void *attr);
-
 /* coroutine func IDs */
 typedef enum { CR_NOTHING, CR_REDRAW, CR_CANVAS_WIDGET, CR_OPEN_CANVAS, 
 	       CR_DISPATCH_EVENTS, CR_INIT, CR_INIT_FINISH, CR_CONFIGURE_CALLBACK, 
 	       CR_RESIZE, CR_WINDOW_RESIZE } coroutine_t;
 static coroutine_t do_action = CR_NOTHING;
+/* prototypes for internals */
+static void dthread_coroutine(coroutine_t a);
+static void *dthread_func(void *attr);
+static void *ethread_func(void *attr);
+
     
 void mbuffer_init(void *widget, int w, int h, int depth)
 {
@@ -202,10 +204,22 @@ void dthread_ui_dispatch_events(void)
     struct timespec ts;
     
     if (update || is_coroutine) {
-	DBG(("recursive call to %s", __FUNCTION__));
+	DBG(("recursive call to %s - update: %d, is_coroutine %d", __FUNCTION__, 
+	     update, is_coroutine));
 	ui_dispatch_events2();
 	return;
     } else {
+	update = 1;
+ 	if (sem_post(&ethread_sem) != 0) {
+	    log_debug("sem_post() failed, %s", __FUNCTION__);
+	    exit (-1);
+	}
+ 	if (sem_wait(&mthread_sem) != 0) {
+	    log_debug("sem_post() failed, %s", __FUNCTION__);
+	    exit (-1);
+	}
+	update = 0;
+#if 0
 	if (pthread_mutex_lock(&uimutex) < 0) {
 	    log_debug("pthread_mutex_lock() failed, %s", __FUNCTION__);
 	    exit (-1);
@@ -232,6 +246,7 @@ void dthread_ui_dispatch_events(void)
 	    log_debug("pthread_mutex_unlock() failed, %s", __FUNCTION__);
 	    exit (-1);
 	}
+#endif
     }
 }
 
@@ -244,6 +259,8 @@ int dthread_ui_init_finish()
 int dthread_configure_callback_canvas(void *w, void *e, void *cd)
 {
     if (is_coroutine) {
+	DBG(("recursive call to %s, update: %d, is_coroutine: %d", __FUNCTION__,
+	     update, is_coroutine));
 	return configure_callback_canvas2(w, e, cd);
     }
     
@@ -256,7 +273,7 @@ int dthread_configure_callback_canvas(void *w, void *e, void *cd)
 
 void dthread_ui_trigger_resize(void)
 {
-    dthread_coroutine(9);
+    dthread_coroutine(CR_RESIZE);
 }
 
 void dthread_ui_trigger_window_resize(video_canvas_t *c)
@@ -296,6 +313,17 @@ void video_dthread_init(void)
 	log_debug("pthread_setinheritsched() failed, %s", __FUNCTION__);
 	exit (-1);
     }
+    
+    if (sem_init(&mthread_sem, 0, 0) < 0) {
+	log_debug("sem_init() failed, %s", __FUNCTION__);
+	exit (-1);
+    }
+    
+    if (sem_init(&ethread_sem, 0, 0) < 0) {
+	log_debug("sem_init() failed, %s", __FUNCTION__);
+	exit (-1);
+    }
+	
     if (pthread_create(&dthread, &attr, dthread_func, NULL) < 0) {
 	log_debug("pthread_create() failed, %s", __FUNCTION__);
 	exit (-1);
@@ -304,7 +332,7 @@ void video_dthread_init(void)
 	log_debug("pthread_create() failed, %s", __FUNCTION__);
 	exit (-1);
     }
-
+    
     param.sched_priority = 20;
     if (pthread_setschedparam(dthread, SCHED_RR, &param)) {
       log_debug("pthread_setschedparam() failed, %s", __FUNCTION__);
@@ -441,10 +469,6 @@ static void *dthread_func(void *arg)
 	    is_coroutine = 1;
 	    int_ret = ui_open_canvas_window2(canvas, title, width, 
 					     height, no_autorepeat);
- 	} else if (do_action == CR_DISPATCH_EVENTS) {
-	    is_coroutine = 1;
-	    DBG(("dthread dispatch events"));
-	    ui_dispatch_events2();
 	} else if (do_action == CR_INIT) {
 	    is_coroutine = 1;
 	    (void) ui_init2(argc, argv);
@@ -476,7 +500,7 @@ static void *dthread_func(void *arg)
     }
 }
 
-static void dthread_coroutine(int action) 
+static void dthread_coroutine(coroutine_t action) 
 {
     struct timespec ts;
     int ret;
@@ -523,6 +547,21 @@ static void *ethread_func(void *arg)
     /* this thread takes only care on gtk+ events */
     DBG(("GUI Event handler thread started..."));
     while (1) {
+	if (sem_wait(&ethread_sem) != 0) {
+	    log_debug("sem_wait() failed, %s", __FUNCTION__);
+	    perror(__FUNCTION__);
+	    continue;
+	    exit (-1);
+	}
+
+	ui_dispatch_events2();
+
+	if (sem_post(&mthread_sem) != 0) {
+	    log_debug("sem_wait() failed, %s", __FUNCTION__);
+	    exit (-1);
+	}
+	
+#if 0
 	if (pthread_mutex_lock(&uimutex) < 0) {
 	    log_debug("pthread_mutex_lock() failed, %s", __FUNCTION__);
 	    exit (-1);
@@ -550,5 +589,6 @@ static void *ethread_func(void *arg)
 	    log_debug("pthread_mutex_unlock() failed, %s", __FUNCTION__);
 	    exit (-1);
 	}
+#endif
     }
 }
