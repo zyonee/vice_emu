@@ -95,7 +95,7 @@ void mbuffer_init(void *widget, int w, int h, int depth)
 {
     int i;
     csize = w * h * depth;
-    for (i = 0; i < MAX_BUFFERS + 1; i++) { /* XXX Fixme remove +1 */
+    for (i = 0; i < MAX_BUFFERS; i++) { 
 	lib_free(buffers[i].buffer);
 	buffers[i].buffer = lib_malloc(csize);
 	memset(buffers[i].buffer, -1, csize);
@@ -105,9 +105,8 @@ void mbuffer_init(void *widget, int w, int h, int depth)
 	    buffers[i-1].next = &buffers[i];
 	}
     }
-    buffers[i-2].next = &buffers[0]; /* XXX and here -2 */
+    buffers[i-1].next = &buffers[0];
     cpos = 0;
-    /* gl_setup_textures(widget, &buffers[0]); */
 }
 
 unsigned char *mbuffer_get_buffer(struct timespec *t) 
