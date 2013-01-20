@@ -33,12 +33,13 @@
 #include <time.h>
 #include <pthread.h>
 #include <errno.h>
+#include <string.h>
 
 #include "lib.h"
 #include "log.h"
-#include "video_mbuffer.h"
 #include "videoarch.h"
 #include "vsync.h"
+#include "video_mbuffer.h"
 
 #ifdef HAVE_OPENGL_SYNC
 #include "openGL_sync.h"
@@ -54,17 +55,17 @@
 
 #define TS_TOUSEC(x) (x.tv_sec * 1000000L + (x.tv_nsec / 1000))
 #define TS_TOMSEC(x) (x.tv_sec * 1000L + (x.tv_nsec / 1000000L))
+/* the freq. should be configurable */
 #define REFRESH_FREQ (8 * 1000 * 1000)
 static struct timespec reltime = { 0, REFRESH_FREQ };
-static pthread_cond_t      cond  = PTHREAD_COND_INITIALIZER;
-static pthread_cond_t      coroutine  = PTHREAD_COND_INITIALIZER;
-static pthread_cond_t      uievent1  = PTHREAD_COND_INITIALIZER;
-static pthread_cond_t      uievent2  = PTHREAD_COND_INITIALIZER;
-static pthread_mutex_t     mutex = PTHREAD_MUTEX_INITIALIZER;
-static pthread_mutex_t     uimutex = PTHREAD_MUTEX_INITIALIZER;
-static pthread_mutex_t     dlock = PTHREAD_MUTEX_INITIALIZER;
+static pthread_cond_t cond  = PTHREAD_COND_INITIALIZER;
+static pthread_cond_t coroutine  = PTHREAD_COND_INITIALIZER;
+static pthread_cond_t uievent1  = PTHREAD_COND_INITIALIZER;
+static pthread_cond_t uievent2  = PTHREAD_COND_INITIALIZER;
+static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+static pthread_mutex_t uimutex = PTHREAD_MUTEX_INITIALIZER;
+static pthread_mutex_t dlock = PTHREAD_MUTEX_INITIALIZER;
 static void *widget, *event, *client_data;
-static int do_action = 0;
 static int is_coroutine = 0;
 static int do_refresh;
 static double machine_freq;
@@ -80,11 +81,17 @@ static char **argv;
 static int int_ret;
 static video_canvas_t *canvas;
 
-/* prototypse for internals */
+/* prototypes for internals */
 static void dthread_coroutine(int a);
 static void *dthread_func(void *attr);
 static void *ethread_func(void *attr);
 
+/* coroutine func IDs */
+typedef enum { CR_NOTHING, CR_REDRAW, CR_CANVAS_WIDGET, CR_OPEN_CANVAS, 
+	       CR_DISPATCH_EVENTS, CR_INIT, CR_INIT_FINISH, CR_CONFIGURE_CALLBACK, 
+	       CR_RESIZE, CR_WINDOW_RESIZE } coroutine_t;
+static coroutine_t do_action = CR_NOTHING;
+    
 void mbuffer_init(void *widget, int w, int h, int depth)
 {
     int i;
@@ -129,7 +136,7 @@ unsigned char *mbuffer_get_buffer(struct timespec *t)
     laststamp += mrp_usec; /* advance by machine cycle */
     tmpstamp = TS_TOUSEC(ts);
     j = tmpstamp - laststamp;
-    // DBG(("emu jitter of: %5ld us", j));
+    /* DBG(("emu jitter of: %5ld us", j)); */
     if ((j > 15000) || (j < -15000)) {
 	DBG(("resetting jitter: %5ld us", j));
 	laststamp = tmpstamp;
@@ -153,7 +160,7 @@ void tsAdd (const struct timespec *time1,
 }
 
 /* display thread routines - should go elsewehere later on */
-void dthread_trigger(void *w, video_canvas_t *c)
+void dthread_trigger_refresh(void *w, video_canvas_t *c)
 {
     widget = w;
     canvas = c;
@@ -167,7 +174,7 @@ void dthread_build_screen_canvas(video_canvas_t *c)
 	return;
     }
     canvas = c;
-    dthread_coroutine(2);
+    dthread_coroutine(CR_CANVAS_WIDGET);
 }
 
 int dthread_ui_open_canvas_window(video_canvas_t *c, const char *t, int wi, int he, int na) 
@@ -177,14 +184,15 @@ int dthread_ui_open_canvas_window(video_canvas_t *c, const char *t, int wi, int 
     width = wi;
     height = he;
     no_autorepeat = na;
-    dthread_coroutine(3);
+    dthread_coroutine(CR_OPEN_CANVAS);
+    return int_ret;
 }
 
 int dthread_ui_init(int *ac, char **av)
 {
     argc=ac;
     argv=av;
-    dthread_coroutine(5);
+    dthread_coroutine(CR_INIT);
     return 0;
 }
 
@@ -229,7 +237,7 @@ void dthread_ui_dispatch_events(void)
 
 int dthread_ui_init_finish()
 {
-    dthread_coroutine(6);
+    dthread_coroutine(CR_INIT_FINISH);
     return int_ret;
 }
 
@@ -242,15 +250,8 @@ int dthread_configure_callback_canvas(void *w, void *e, void *cd)
     widget = w;
     event = e;
     client_data = cd;
-    dthread_coroutine(7);
+    dthread_coroutine(CR_CONFIGURE_CALLBACK);
     return int_ret;
-}
-
-void dthread_gl_update_texture(void)
-{
-    /* don't ever take dlock here! */
-    gl_update_texture(&buffers[0], cpos);
-    // dthread_coroutine(8);
 }
 
 void dthread_ui_trigger_resize(void)
@@ -265,7 +266,7 @@ void dthread_ui_trigger_window_resize(video_canvas_t *c)
 	return;
     }
     canvas = c;
-    dthread_coroutine(10);
+    dthread_coroutine(CR_WINDOW_RESIZE);
 }
 
 void video_dthread_init(void)
@@ -333,76 +334,59 @@ void dthread_unlock(void)
 int dthread_calc_frames(unsigned long dt, int *from, int *to, int *alpha)
 {
     int ret = 1;
-    int d;
-    unsigned long dt1, dt2, dt3;
+    unsigned long dt1, dt2;
+    int np = lpos;
+    int count = cpos - lpos;
+    int i;
     
-    //dthread_lock();
-    if (1 || update) {
-	// update = 0;
-	if (cpos == lpos) {
-	    /* emulation is ahead MAX_BUFFERS */
-	    //DBG(("dthread dropping frames"));
-	    ret = 0;
-	} else {
-	    // subtract the refresh rate
-	    dt -= mrp_usec;
-	    
-	    // find display frame interval where we fit in
-	    int np = lpos;
-	    int count = cpos - lpos;
-	    if (count < 0) count += MAX_BUFFERS;
-	    int i;
-	    for (i = 0; i < count; i++) {
-		if (buffers[np].stamp > dt) {
-		    break;
-		}
-		np ++;
-		if (np == MAX_BUFFERS) {
-		    np = 0;
-		}
-	    }
-	    int np2 = np - 1;
-	    if (np2 < 0) {
-		np2 += MAX_BUFFERS;
-	    }
-	    dt1 = dt - buffers[np2].stamp;
-	    dt2 = buffers[np].stamp - buffers[np2].stamp;
-	    dt3 = buffers[np].stamp - dt;
-#if 0
-//	    DBG(("cpos %d  lpos %d", cpos, lpos));
-//	    DBG(("drawing from np %d to np2 %d", np, np2));
-#endif 
-	    if (dt1 > dt2) {
-		//DBG(("dthread dropping frames"));
-		return 0;
-	    } else {
-		*alpha = 1000 * ((float) dt1 / dt2);
-	    }
-//	    DBG(("delta frames: %u us, dt1: %u us, dt3: %u us, alpha: %d", dt2, dt1, dt3, *alpha));
-#if 0
-	    for (i = 0; i < MAX_BUFFERS; i++) {
-		long ddd;
-		ddd = buffers[i].next->stamp - buffers[i].stamp;
-		DBG(("from %d, i %d  stamp %ld  diff %ld", 
-		     np2, i, buffers[i].stamp, ddd));
-	    }
-#endif
-
-	    *to = np;
-	    *from = np2;
+    /* subtract machine cycle once */
+    dt -= mrp_usec;
+	
+    /* find display frame interval where we fit in */
+    if (count < 0) count += MAX_BUFFERS;
+    for (i = 0; i < count; i++) {
+	if (buffers[np].stamp > dt) {
+	    break;
 	}
-    } else {
-	DBG2 (("dthread nothing to draw"));
-	pthread_yield();	/* make sure dthread doesn't hog on CPU */
-	ret = 0;
+	np ++;
+	if (np == MAX_BUFFERS) {
+	    np = 0;
+	}
     }
-    //dthread_unlock();
+    int np2 = np - 1;
+    if (np2 < 0) {
+	np2 += MAX_BUFFERS;
+    }
+    dt1 = dt - buffers[np2].stamp;
+    dt2 = buffers[np].stamp - buffers[np2].stamp;
+    if (dt1 > dt2) {
+	/* DBG(("dthread dropping frames")); */
+	return 0;
+    } else {
+	*alpha = 1000 * ((float) dt1 / dt2);
+    }
+    /* DBG(("delta frames: %u us, dt1: %u us, alpha: %d", 
+	 dt2, dt1, *alpha));
+    */
+#if 0
+    for (i = 0; i < MAX_BUFFERS; i++) {
+	long ddd;
+	ddd = buffers[i].next->stamp - buffers[i].stamp;
+	DBG(("from %d, i %d  stamp %ld  diff %ld", 
+	     np2, i, buffers[i].stamp, ddd));
+    }
+#endif
+	
+    *to = np;
+    *from = np2;
     return ret;
 }
 
 static void *dthread_func(void *arg)
 {
-    static struct timespec now, to, t1, t2, t3;
+    static struct timespec now, to;
+    /* static struct timespec t1; */
+    
     int ret;
     
     DBG(("Display thread started..."));
@@ -411,64 +395,69 @@ static void *dthread_func(void *arg)
 	    log_debug("pthread_mutex_lock() failed, %s", __FUNCTION__);
 	    exit (-1);
 	}
-	while (do_action == 0) {
+	while (do_action == CR_NOTHING) {
 	    clock_gettime(CLOCK_REALTIME, &now);
 	    tsAdd(&now, &reltime, &to);
 	    ret = pthread_cond_timedwait(&cond, &mutex, &to);
 	    if (ret == ETIMEDOUT) {
-		do_action = 1;
+		do_action = CR_REDRAW;
 	    }
 	    if (ret < 0) {
 		log_debug("pthread_cond_wait() failed, %s", __FUNCTION__);
 		exit (-1);
 	    }
 	}
-	// clock_gettime(CLOCK_REALTIME, &now);
-	//DBG2(("action is: %d, %ld", do_action, TS_TOUSEC(now)/1000));
+	DBG2(("action is: %d, %ld", do_action, TS_TOUSEC(now)/1000));
 	
-	if (do_action == 1) {
+	if (do_action == CR_REDRAW) {
     	    int from, to, alpha;
 	    
-	    do_action = 0;
+	    do_action = CR_NOTHING;
 	    pthread_mutex_unlock(&mutex);
-	    clock_gettime(CLOCK_REALTIME, &t1);
+	    /* clock_gettime(CLOCK_REALTIME, &t1); */
+	    /* find frame to time 'now' as this is best in sync with the display
+	       refresh cycle, in case blank sync is active */
 	    if (dthread_calc_frames(TS_TOUSEC(now), &from, &to, &alpha)) {
-	      gl_render_canvas(widget, canvas, buffers, from, to, alpha);
-	      lpos = from;
+		gl_render_canvas(widget, canvas, buffers, from, to, alpha);
+		lpos = from;	/* set to `from' as a frame may be drawn twice */
 #if 0
-	      clock_gettime(CLOCK_REALTIME, &t2);
-	      long diff = TS_TOUSEC(t2) - TS_TOUSEC(t1);
-	      float fps = 1000 * 1000.0 / (TS_TOUSEC(t1) - TS_TOUSEC(t3));
-	      DBG(("glrender time: %5ldus  fps %3.2f", diff, fps));
-	      memcpy(&t3, &t1, sizeof(struct timespec));
+		/* timing probe */
+		{
+		    static struct timespec t2, t3;
+		    
+		    clock_gettime(CLOCK_REALTIME, &t2);
+		    long diff = TS_TOUSEC(t2) - TS_TOUSEC(t1);
+		    float fps = 1000 * 1000.0 / (TS_TOUSEC(t1) - TS_TOUSEC(t3));
+		    DBG(("glrender time: %5ldus  fps %3.2f", diff, fps));
+		    memcpy(&t3, &t1, sizeof(struct timespec));
+		}
 #endif
 	    }
 	    continue;
-	} else if (do_action == 2) {
+	} else if (do_action == CR_CANVAS_WIDGET) {
 	    is_coroutine = 1;
 	    build_screen_canvas_widget2(canvas);
-	} else if (do_action == 3) {
+	} else if (do_action == CR_OPEN_CANVAS) {
 	    is_coroutine = 1;
-	    ui_open_canvas_window2(canvas, title, width, height, no_autorepeat);
- 	} else if (do_action == 4) {
+	    int_ret = ui_open_canvas_window2(canvas, title, width, 
+					     height, no_autorepeat);
+ 	} else if (do_action == CR_DISPATCH_EVENTS) {
 	    is_coroutine = 1;
+	    DBG(("dthread dispatch events"));
 	    ui_dispatch_events2();
-	} else if (do_action == 5) {
+	} else if (do_action == CR_INIT) {
 	    is_coroutine = 1;
 	    (void) ui_init2(argc, argv);
-	} else if (do_action == 6) {
+	} else if (do_action == CR_INIT_FINISH) {
 	    is_coroutine = 1;
 	    int_ret = ui_init_finish2();
-	} else if (do_action == 7) {
+	} else if (do_action == CR_CONFIGURE_CALLBACK) {
 	    is_coroutine = 1;
 	    int_ret = configure_callback_canvas2(widget, event, client_data);
-	} else if (do_action == 8) {
-	    is_coroutine = 1;
-	    gl_update_texture(&buffers[0], cpos);
-	} else if (do_action == 9) {
+	} else if (do_action == CR_RESIZE) {
 	    is_coroutine = 1;
 	    ui_trigger_resize2();
-	} else if (do_action == 10) {
+	} else if (do_action == CR_WINDOW_RESIZE) {
 	    is_coroutine = 1;
 	    ui_trigger_window_resize2(canvas);
 	}
@@ -479,7 +468,7 @@ static void *dthread_func(void *arg)
 		exit (-1);
 	    }
 	}
-	do_action = 0;
+	do_action = CR_NOTHING;
 	if (pthread_mutex_unlock(&mutex) < 0) {
 	    log_debug("pthread_mutex_unlock() failed, %s", __FUNCTION__);
 	    exit (-1);

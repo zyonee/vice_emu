@@ -43,5 +43,14 @@ struct s_mbufs
 void video_dthread_init(void);
 void dthread_lock();
 void dthread_unlock();
+int dthread_ui_init(int *argc, char **argv);
+int dthread_ui_init_finish(void);
+void dthread_build_screen_canvas(video_canvas_t *c);
+int dthread_ui_open_canvas_window(video_canvas_t *c, const char *t, int wi, int he, int na);
+void dthread_ui_dispatch_events(void);
+void dthread_ui_trigger_resize(void);
+void dthread_ui_trigger_window_resize(video_canvas_t *c);
+int dthread_configure_callback_canvas(void *w, void *e, void *cd);
+void dthread_trigger_refresh(void *w, video_canvas_t *c);
 
 #endif /* __video_mbuffer_h */

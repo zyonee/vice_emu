@@ -533,7 +533,7 @@ static void atexit_handler(void)
 
 int ui_init(int *argc, char **argv)
 {
-    dthread_ui_init(argc, argv);
+    return dthread_ui_init(argc, argv);
 }
 
 /* Initialize the GUI and parse the command line. */
@@ -829,7 +829,7 @@ static void get_initial_window_geo(video_canvas_t *canvas, int *x, int *y, int *
 
 int ui_open_canvas_window(video_canvas_t *c, const char *title, int w, int h, int no_autorepeat) 
 {
-    dthread_ui_open_canvas_window(c, title, w, h, no_autorepeat);
+    return dthread_ui_open_canvas_window(c, title, w, h, no_autorepeat);
 }
 
 int ui_open_canvas_window2(video_canvas_t *c, const char *title, int w, int h, int no_autorepeat)
@@ -1415,7 +1415,10 @@ void ui_trigger_window_resize2(video_canvas_t *canvas)
         get_window_resources(canvas, &window_xpos, &window_ypos, &window_width, &window_height);
         DBG(("ui_trigger_window_resize (w:%d h:%d)", window_width, window_height));
         event.configure.width = window_width;
-        event.configure.height = window_height - (topmenu_get_height(canvas) + statusbar_get_height(canvas) + palctrl_get_height(canvas));
+        event.configure.height = window_height - 
+	    (topmenu_get_height(canvas) + 
+	     statusbar_get_height(canvas) +
+	     palctrl_get_height(canvas));
         configure_callback_canvas(canvas->emuwindow, &event, canvas);
     }
 }
@@ -1861,9 +1864,11 @@ void gl_update_texture(struct s_mbufs *buffer)
 #ifndef GL_ABGR_EXT
 #error "Your headers do not supply GL_ABGR_EXT. Disable HWSCALE and try again."
 #endif
-    glTexImage2D(GL_TEXTURE_RECTANGLE_EXT, 0, GL_RGBA, tw, th, 0, GL_ABGR_EXT, GL_UNSIGNED_BYTE, buffer->buffer);
+    glTexImage2D(GL_TEXTURE_RECTANGLE_EXT, 0, GL_RGBA, tw, th, 0, 
+		 GL_ABGR_EXT, GL_UNSIGNED_BYTE, buffer->buffer);
 #else
-    glTexImage2D(GL_TEXTURE_RECTANGLE_EXT, 0, GL_RGBA, tw, th, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer->buffer);
+    glTexImage2D(GL_TEXTURE_RECTANGLE_EXT, 0, GL_RGBA, tw, th, 0, 
+		 GL_RGBA, GL_UNSIGNED_BYTE, buffer->buffer);
 #endif
 }
 
@@ -1890,7 +1895,6 @@ void gl_render_canvas(GtkWidget *w, video_canvas_t *canvas,
 {
     int tw, th, d, i = 0;
     float alpha, alpha_fullframe;
-    int start;
     struct s_mbufs *t;
     
     GdkGLContext *gl_context = gtk_widget_get_gl_context(w);
@@ -1913,12 +1917,9 @@ void gl_render_canvas(GtkWidget *w, video_canvas_t *canvas,
     }
     else {
 	alpha = alpha_fullframe = 1.0f / d;
-	// alpha = ((float) a / 1000) - alpha_fullframe * (d - 1);
+	/* alpha = ((float) a / 1000) - alpha_fullframe * (d - 1); */
     }
     
-    // DBG(("#frames: %d, from: %d, to %d, alpha_ff: %f, alpha: %f", d, from, to, alpha_fullframe, alpha));
-
-    // DBG(("drawing first frame %p", &buffers[from]));
     glBlendFunc( GL_ONE, GL_ONE );
     gl_update_texture(&buffers[from]);
     gl_draw_quad(alpha_fullframe, tw, th);
@@ -1926,16 +1927,33 @@ void gl_render_canvas(GtkWidget *w, video_canvas_t *canvas,
     d-=2;                 /* first has been drawn, last is outside of loop */
     t = buffers[from].next;
     for (i = 0; i < d; i++, t=t->next) {
-	// DBG(("blending %i'th frame %p with alpha %f", i, t, alpha_fullframe));
 	glBlendFunc(GL_ONE, GL_ONE);    
 	gl_update_texture(t);
 	gl_draw_quad(alpha_fullframe, tw, th);      
     }
-    // DBG(("blending %i'th frame %p with alpha %f", i, t, alpha));
     glBlendFunc(GL_ONE, GL_ONE);    
     gl_update_texture(t);
-    gl_draw_quad(alpha, tw, th);    
+    gl_draw_quad(alpha, tw, th);
 
+#if 1
+    /* draw vertical line as reference for smooth animations */
+    {
+	static int x = 0;
+	
+	glDisable(GL_TEXTURE_RECTANGLE_EXT);
+	glDisable(GL_BLEND);
+	glColor4f(1.0f, 1.0f, 0, 1.0f);
+	glBegin(GL_LINES);
+	    glVertex2f(x, 0);
+	    glVertex2f(x, 200);
+	glEnd();
+	x-=3;
+	if (x < -200) {
+	    x = 200;
+	}
+    }
+#endif
+    
     gdk_gl_drawable_swap_buffers (gl_drawable);
     gdk_gl_drawable_gl_end (gl_drawable);
 }
@@ -1945,7 +1963,7 @@ gboolean exposure_callback_canvas(GtkWidget *w, GdkEventExpose *e, gpointer clie
 {
     video_canvas_t *canvas = (video_canvas_t *)client_data;
 
-//    DBG(("exposure callback"));
+    /* DBG(("exposure callback")); */
     
     if ((canvas == NULL) || (canvas->app_shell >= num_app_shells) || 
         (canvas != app_shells[canvas->app_shell].canvas)) {
@@ -1957,8 +1975,7 @@ gboolean exposure_callback_canvas(GtkWidget *w, GdkEventExpose *e, gpointer clie
 
 #ifdef HAVE_HWSCALE
     if (canvas->videoconfig->hwscale) {
-//	gl_render_canvas(w, canvas);
-	dthread_trigger(w, canvas);
+	dthread_trigger_refresh(w, canvas);
     } else
 #endif
     {

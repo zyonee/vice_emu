@@ -300,7 +300,7 @@ void video_canvas_refresh(video_canvas_t *canvas, unsigned int xs, unsigned int 
 
 #ifdef HAVE_HWSCALE
     if (canvas->videoconfig->hwscale) {
-	static struct timespec t1, t2, t0;
+	struct timespec t1;
 
 	clock_gettime(CLOCK_REALTIME, &t1);
 	canvas->hwscale_image = mbuffer_get_buffer(&t1);
@@ -309,9 +309,16 @@ void video_canvas_refresh(video_canvas_t *canvas, unsigned int xs, unsigned int 
 			    canvas->draw_buffer->canvas_physical_width * 4, 32);
         gtk_widget_queue_draw(canvas->emuwindow);
 #if 0
-	clock_gettime(CLOCK_REALTIME, &t2);
-        DBG(("emulation rate: %ldus, rendertime: %ldus", (TS_TOUSEC(t1) - TS_TOUSEC(t0)), (TS_TOUSEC(t2) - TS_TOUSEC(t1)))); 
-	memcpy(&t0, &t1, sizeof(struct timespec));
+	/* timing probe */
+	{
+	    static struct timespec t0, t2;
+	    
+	    clock_gettime(CLOCK_REALTIME, &t2);
+	    DBG(("emulation rate: %ldus, rendertime: %ldus", 
+		 (TS_TOUSEC(t1) - TS_TOUSEC(t0)), 
+		 (TS_TOUSEC(t2) - TS_TOUSEC(t1)))); 
+	    memcpy(&t0, &t1, sizeof(struct timespec));
+	}
 #endif
     } else
 #endif
