@@ -61,10 +61,7 @@
 static struct timespec reltime = { 0, REFRESH_FREQ };
 static pthread_cond_t cond  = PTHREAD_COND_INITIALIZER;
 static pthread_cond_t coroutine  = PTHREAD_COND_INITIALIZER;
-static pthread_cond_t uievent1  = PTHREAD_COND_INITIALIZER;
-static pthread_cond_t uievent2  = PTHREAD_COND_INITIALIZER;
 static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
-static pthread_mutex_t uimutex = PTHREAD_MUTEX_INITIALIZER;
 static pthread_mutex_t dlock = PTHREAD_MUTEX_INITIALIZER;
 static sem_t mthread_sem, ethread_sem;
 static void *widget, *event, *client_data;
@@ -200,9 +197,6 @@ int dthread_ui_init(int *ac, char **av)
 
 void dthread_ui_dispatch_events(void) 
 {
-    int ret;
-    struct timespec ts;
-    
     if (update || is_coroutine) {
 	DBG(("recursive call to %s - update: %d, is_coroutine %d", __FUNCTION__, 
 	     update, is_coroutine));
@@ -219,34 +213,6 @@ void dthread_ui_dispatch_events(void)
 	    exit (-1);
 	}
 	update = 0;
-#if 0
-	if (pthread_mutex_lock(&uimutex) < 0) {
-	    log_debug("pthread_mutex_lock() failed, %s", __FUNCTION__);
-	    exit (-1);
-	}
-	update = 1;
-	if (pthread_cond_signal(&uievent1) < 0) {
-	    log_debug("pthread_mutex_lock() failed, %s", __FUNCTION__);
-	    exit (-1);
-	}
-	while (update) {
-	    clock_gettime(CLOCK_REALTIME, &ts);
-	    ts.tv_sec += 3;
-	    ret = pthread_cond_timedwait(&uievent2, &uimutex, &ts);
-	    if (ret == ETIMEDOUT) {
-		DBG2(("machine thread waiting dthread retrying"));
-		continue;
-	    }
-	    if (ret < 0) {
-		log_debug("pthread_cond_timedwait() failed, %s", __FUNCTION__);
-		exit (-1);
-	    }
-	}
-	if (pthread_mutex_unlock(&uimutex) < 0) {
-	    log_debug("pthread_mutex_unlock() failed, %s", __FUNCTION__);
-	    exit (-1);
-	}
-#endif
     }
 }
 
@@ -541,54 +507,24 @@ static void dthread_coroutine(coroutine_t action)
 
 static void *ethread_func(void *arg)
 {
-    struct timespec ts;
     int ret;
     
     /* this thread takes only care on gtk+ events */
     DBG(("GUI Event handler thread started..."));
     while (1) {
-	if (sem_wait(&ethread_sem) != 0) {
+	ret = sem_wait(&ethread_sem);
+	if (ret < 0) {
+	    if (errno == EINTR) {
+		continue; /* dont' ask */
+	    }
 	    log_debug("sem_wait() failed, %s", __FUNCTION__);
-	    perror(__FUNCTION__);
-	    continue;
 	    exit (-1);
+	    
 	}
-
 	ui_dispatch_events2();
-
 	if (sem_post(&mthread_sem) != 0) {
 	    log_debug("sem_wait() failed, %s", __FUNCTION__);
 	    exit (-1);
 	}
-	
-#if 0
-	if (pthread_mutex_lock(&uimutex) < 0) {
-	    log_debug("pthread_mutex_lock() failed, %s", __FUNCTION__);
-	    exit (-1);
-	}
-	while (!update) {
-	    clock_gettime(CLOCK_REALTIME, &ts);
-	    ts.tv_sec += 3;
-	    ret = pthread_cond_timedwait(&uievent1, &uimutex, &ts);
-	    if (ret == ETIMEDOUT) {
-		DBG2(("GUI event handler thread ... retrying"));
-		continue;
-	    }
-	    if (ret < 0) {
-		log_debug("pthread_cond_timedwait() failed, %s", __FUNCTION__);
-		exit (-1);
-	    }
-	}
-	ui_dispatch_events2();
-	update = 0;
-	if (pthread_cond_signal(&uievent2) < 0) {
-	    log_debug("pthread_cond_signal() failed, %s", __FUNCTION__);
-	    exit (-1);
-	}
-	if (pthread_mutex_unlock(&uimutex) < 0) {
-	    log_debug("pthread_mutex_unlock() failed, %s", __FUNCTION__);
-	    exit (-1);
-	}
-#endif
     }
 }
