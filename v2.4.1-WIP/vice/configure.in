@@ -28,7 +28,7 @@ VICE_ARG_WITH_LIST(png,           [  --without-png           do not use the PNG 
 VICE_ARG_WITH_LIST(zlib,          [  --without-zlib          do not use the zlib support])
 VICE_ARG_WITH_LIST(picasso96,     [  --with-picasso96        use Amiga P96 grafix system instead of cgx])
 VICE_ARG_WITH_LIST(cocoa,         [  --with-cocoa            enables native Cocoa UI on Macs])
-VICE_ARG_WITH_LIST(ui-threads,    [  --with-ui-threads       enables multi threading for Unix UIs])
+VICE_ARG_WITH_LIST(uithreads,     [  --with-uithreads       enables multi threading for Unix UIs])
 VICE_ARG_ENABLE_LIST(textfield,   [  --disable-textfield     disable enhanced text field widget])
 VICE_ARG_ENABLE_LIST(fullscreen,  [  --disable-fullscreen    disable XFree86 fullscreen detection])
 VICE_ARG_ENABLE_LIST(gnomeui,     [  --enable-gnomeui        enables GNOME UI support])
@@ -158,11 +158,11 @@ fi
 
 AM_CONDITIONAL(GNOMEUI, test x"$enable_gnomeui" = "xyes")
 
-if test x"$with_ui-threads" = "xyes" ; then
+if test x"$with_uithreads" = "xyes" ; then
   AC_DEFINE(USE_UI_THREADS,,[Use multi-threaded UI.])
 fi
 
-AM_CONDITIONAL(USE_UI_THREADS, test x"$with_ui-threads" = "xyes")
+AM_CONDITIONAL(USE_UI_THREADS, test x"$with_uithreads" = "xyes")
 
 if test x"$with_cocoa" = "xyes" ; then
   AC_DEFINE(MACOSX_COCOA,,[Use Cocoa on Macs.])
@@ -2662,7 +2662,7 @@ if test x"$is_unix_x11" = "xyes" -a x"$enable_sdlui" != "xyes"; then
   fi
   AC_SUBST(VICE_SYNC)
 
-  if test x"$with_ui-threads" = "xyes" ; then
+  if test x"$with_uithreads" = "xyes" ; then
     AC_CHECK_HEADER(pthread.h,,,[#include <pthread.h>])
     if test x"$ac_cv_header_pthread_h" = "xyes" ; then
       AC_CHECK_HEADER(semaphore.h,,,[#include <semaphore.h>])
