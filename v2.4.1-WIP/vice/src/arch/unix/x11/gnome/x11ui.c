@@ -95,7 +95,9 @@
 #include "lightpendrv.h"
 #include "x11mouse.h"
 #include "gnomekbd.h"
-#include "video_mbuffer.h"
+#ifdef USE_UI_THREADS
+#include "ui-threads.h"
+#endif
 
 #ifdef USE_XF86_EXTENSIONS
 #include <gdk/gdkx.h>
@@ -511,7 +513,9 @@ void ui_restore_focus(void)
 /******************************************************************************/
 void archdep_ui_init(int argc, char *argv[])
 {
+#ifdef USE_UI_THREADS
     video_dthread_init();
+#endif
 }
 
 static void atexit_handler(void)
@@ -519,6 +523,7 @@ static void atexit_handler(void)
     /* ui_autorepeat_on(); */
 }
 
+#ifdef HAVE_HWSCALE
 /* GL_TEXTURE_RECTANGLE is standardised as _EXT in OpenGL 1.4. Here's some
  * aliases in the meantime. */
 #ifndef GL_TEXTURE_RECTANGLE_EXT
@@ -530,7 +535,9 @@ static void atexit_handler(void)
 #error "Your headers do not supply GL_TEXTURE_RECTANGLE. Disable HWSCALE and try again."
 #endif
 #endif
+#endif /* HAVE_HWSCALE */
 
+#ifdef USE_UI_THREADS
 int ui_init(int *argc, char **argv)
 {
     return dthread_ui_init(argc, argv);
@@ -538,6 +545,9 @@ int ui_init(int *argc, char **argv)
 
 /* Initialize the GUI and parse the command line. */
 int ui_init2(int *argc, char **argv)
+#else
+int ui_init(int *argc, char **argv)
+#endif	/* USE_UI_THREADS */
 {
     /* Fake Gnome to see empty arguments; 
        Generaly we should use a `popt_table', either by converting the
@@ -589,6 +599,7 @@ int ui_init2(int *argc, char **argv)
     return 0;
 }
 
+#ifdef USE_UI_THREADS
 int ui_init_finish() 
 {
     return dthread_ui_init_finish();
@@ -596,6 +607,9 @@ int ui_init_finish()
     
 /* Continue GUI initialization after resources are set. */
 int ui_init_finish2(void)
+#else
+int ui_init_finish() 
+#endif /* USE_UI_THREADS */
 {
     ui_log = log_open("X11");
 
@@ -677,6 +691,7 @@ int x11ui_get_screen(void)
 
 /******************************************************************************/
 
+#ifdef USE_UI_THREADS
 static void build_screen_canvas_widget(video_canvas_t *c)
 {
 
@@ -684,9 +699,10 @@ static void build_screen_canvas_widget(video_canvas_t *c)
     return;
 }
 
-/* XXX make this clean */
-
 void build_screen_canvas_widget2(video_canvas_t *c)
+#else
+static void build_screen_canvas_widget(video_canvas_t *c)
+#endif /* USE_UI_THREADS */
 {
     GtkWidget *new_canvas = gtk_drawing_area_new();
     
@@ -827,12 +843,16 @@ static void get_initial_window_geo(video_canvas_t *canvas, int *x, int *y, int *
                arch/unix/x11/gnome/gnomevideo.c:video_canvas_create (other)
  */
 
+#ifdef USE_UI_THREADS
 int ui_open_canvas_window(video_canvas_t *c, const char *title, int w, int h, int no_autorepeat) 
 {
     return dthread_ui_open_canvas_window(c, title, w, h, no_autorepeat);
 }
 
 int ui_open_canvas_window2(video_canvas_t *c, const char *title, int w, int h, int no_autorepeat)
+#else
+int ui_open_canvas_window(video_canvas_t *c, const char *title, int w, int h, int no_autorepeat) 
+#endif
 {
     GtkWidget *new_window, *topmenu, *panelcontainer, *pal_ctrl_widget = NULL;
     GtkAccelGroup* accel;
@@ -1087,6 +1107,7 @@ void ui_dispatch_next_event(void)
     gtk_main_iteration();
 }
 
+#ifdef USE_UI_THREADS
 void ui_dispatch_events(void) 
 {
     dthread_ui_dispatch_events();
@@ -1094,6 +1115,9 @@ void ui_dispatch_events(void)
 
 /* Dispatch all the pending UI events. */
 void ui_dispatch_events2(void)
+#else
+void ui_dispatch_events(void) 
+#endif	/* USE_UI_THREADS */
 {
     while (gtk_events_pending()) {
         ui_dispatch_next_event();
@@ -1384,12 +1408,16 @@ void ui_resize_canvas_window(video_canvas_t *canvas)
 /*
     trigger recalculation of screen/window dimensions
  */
+#ifdef USE_UI_THREADS
 void ui_trigger_resize(void)
 {
     dthread_ui_trigger_resize();
 }
 
 void ui_trigger_resize2(void)
+#else
+void ui_trigger_resize(void)
+#endif	/* USE_UI_THREADS */
 {
     GtkWidget *toplevel = get_active_toplevel();
     if ((toplevel) && (gtk_widget_get_window(toplevel))) {
@@ -1399,12 +1427,16 @@ void ui_trigger_resize2(void)
     }
 }
 
+#ifdef USE_UI_THREADS
 void ui_trigger_window_resize(video_canvas_t *canvas)
 {
     dthread_ui_trigger_window_resize(canvas);
 }
 
 void ui_trigger_window_resize2(video_canvas_t *canvas)
+#else
+void ui_trigger_window_resize(video_canvas_t *canvas)
+#endif
 {
     app_shell_type *appshell;
     int window_xpos, window_ypos, window_width, window_height;
@@ -1674,12 +1706,16 @@ static gboolean map_callback(GtkWidget *w, GdkEvent *event, gpointer user_data)
     return FALSE;
 }
 
+#ifdef USE_UI_THREADS
 gboolean configure_callback_canvas(GtkWidget *w, GdkEvent *event, gpointer client_data) 
 {
     return dthread_configure_callback_canvas(w, event, client_data);
 }
 
 gboolean configure_callback_canvas2(GtkWidget *w, GdkEvent *event, gpointer client_data)
+#else
+gboolean configure_callback_canvas(GtkWidget *w, GdkEvent *event, gpointer client_data) 
+#endif	/* USE_UI_THREADS */
 {
     GdkEventConfigure *e = &event->configure;
     video_canvas_t *canvas = (video_canvas_t *) client_data;
@@ -1853,6 +1889,7 @@ void gl_setup_textures(video_canvas_t *c, struct s_mbufs *buffers)
 }
 */
 
+#ifdef USE_UI_THREADS
 void gl_update_texture(struct s_mbufs *buffer)
 {
     int tw, th;
@@ -1918,6 +1955,7 @@ void gl_render_canvas(GtkWidget *w, video_canvas_t *canvas,
     else {
 	alpha = alpha_fullframe = 1.0f / d;
 	/* alpha = ((float) a / 1000) - alpha_fullframe * (d - 1); */
+	/* alpha = powf( (float) a / 1000, 0.1545f); */
     }
     
     glBlendFunc( GL_ONE, GL_ONE );
@@ -1958,6 +1996,8 @@ void gl_render_canvas(GtkWidget *w, video_canvas_t *canvas,
     gdk_gl_drawable_gl_end (gl_drawable);
 }
 
+#endif	/* USE_UI_THREADS */
+
 /* this callback actually renders the canvas to screen using opengl or gtk */
 gboolean exposure_callback_canvas(GtkWidget *w, GdkEventExpose *e, gpointer client_data)
 {
@@ -1975,7 +2015,58 @@ gboolean exposure_callback_canvas(GtkWidget *w, GdkEventExpose *e, gpointer clie
 
 #ifdef HAVE_HWSCALE
     if (canvas->videoconfig->hwscale) {
+#ifdef USE_UI_THREADS
 	dthread_trigger_refresh(w, canvas);
+#else
+        int tw, th;
+        GdkGLContext *gl_context = gtk_widget_get_gl_context(w);
+        GdkGLDrawable *gl_drawable = gtk_widget_get_gl_drawable(w);
+        gdk_gl_drawable_gl_begin(gl_drawable, gl_context);
+
+/* XXX make use of glXBindTexImageEXT aka texture from pixmap extension */
+
+        glClear(GL_COLOR_BUFFER_BIT);
+        glDisable (GL_DEPTH_TEST);
+
+        glEnable(GL_TEXTURE_RECTANGLE_EXT);
+        glBindTexture(GL_TEXTURE_RECTANGLE_EXT, canvas->screen_texture);
+        glTexParameteri(GL_TEXTURE_RECTANGLE_EXT, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_RECTANGLE_EXT, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+#if !defined(HAVE_CAIRO)
+        tw = canvas->gdk_image->width;
+        th = canvas->gdk_image->height;
+#else
+        /* FIXME! */
+        tw = canvas->draw_buffer->canvas_physical_width;
+        th = canvas->draw_buffer->canvas_physical_height;
+#endif
+
+#ifdef __BIG_ENDIAN__
+#ifndef GL_ABGR_EXT
+    #error "Your headers do not supply GL_ABGR_EXT. Disable HWSCALE and try again."
+#endif
+        glTexImage2D(GL_TEXTURE_RECTANGLE_EXT, 0, GL_RGBA, tw, th, 0, GL_ABGR_EXT, GL_UNSIGNED_BYTE, canvas->hwscale_image);
+#else
+        glTexImage2D(GL_TEXTURE_RECTANGLE_EXT, 0, GL_RGBA, tw, th, 0, GL_RGBA, GL_UNSIGNED_BYTE, canvas->hwscale_image);
+#endif
+
+        glBegin (GL_QUADS);
+
+        /* Lower Right Of Texture */
+        glTexCoord2f(0.0f, 0.0f); glVertex2f(-(tw/2), (th/2));
+        /* Upper Right Of Texture */
+        glTexCoord2f(0.0f, th); glVertex2f(-(tw/2), -(th/2));
+        /* Upper Left Of Texture */
+        glTexCoord2f(tw, th); glVertex2f((tw/2), -(th/2));
+        /* Lower Left Of Texture */
+        glTexCoord2f(tw, 0.0f); glVertex2f((tw/2), (th/2));
+
+        glEnd ();
+
+        gdk_gl_drawable_swap_buffers (gl_drawable);
+        gdk_gl_drawable_gl_end (gl_drawable);
+#endif	/* USE_UI_THREADS */
     } else
 #endif
     {

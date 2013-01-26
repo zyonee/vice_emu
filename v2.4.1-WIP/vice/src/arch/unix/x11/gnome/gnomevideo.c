@@ -45,7 +45,9 @@
 #include "video.h"
 #include "machine.h"
 #include "lib.h"
-#include "video_mbuffer.h"
+#ifdef USE_UI_THREADS
+#include "ui-threads.h"
+#endif
 
 #ifdef HAVE_OPENGL_SYNC
 #include "openGL_sync.h"
@@ -225,12 +227,13 @@ void video_canvas_resize(video_canvas_t *canvas, char resize_canvas)
 #endif
 
 #ifdef HAVE_HWSCALE
-#if 0
+#ifdef USE_UI_THREADS
+    mbuffer_init(canvas, imgw, imgh, 4);
+#else
     lib_free(canvas->hwscale_image);
     /* canvas->hwscale_image = lib_malloc(gdk_image_get_width(canvas->gdk_image) * gdk_image_get_height(canvas->gdk_image) * 4); */
     canvas->hwscale_image = lib_malloc(imgw * imgh * 4);
-#endif
-    mbuffer_init(canvas, imgw, imgh, 4);
+#endif	/* USE_UI_THREADS */
 #endif
 
     if (video_canvas_set_palette(canvas, canvas->palette) < 0) {
@@ -300,10 +303,12 @@ void video_canvas_refresh(video_canvas_t *canvas, unsigned int xs, unsigned int 
 
 #ifdef HAVE_HWSCALE
     if (canvas->videoconfig->hwscale) {
+#ifdef USE_UI_THREADS
 	struct timespec t1;
 
 	clock_gettime(CLOCK_REALTIME, &t1);
 	canvas->hwscale_image = mbuffer_get_buffer(&t1);
+#endif
         video_canvas_render(canvas, canvas->hwscale_image, 
 			    w, h, xs, ys, xi, yi, 
 			    canvas->draw_buffer->canvas_physical_width * 4, 32);
