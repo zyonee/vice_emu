@@ -32,7 +32,7 @@
 #error "pthreads not evailable in config.h - check config.log"
 #endif
 
-#define DEBUG_MBUFFER 
+/* #define DEBUG_MBUFFER  */
 
 #include <time.h>
 #include <pthread.h>
@@ -45,10 +45,6 @@
 #include "videoarch.h"
 #include "vsync.h"
 #include "ui-threads.h"
-
-#ifdef HAVE_OPENGL_SYNC
-#include "openGL_sync.h"
-#endif
 
 #ifdef DEBUG_MBUFFER
 #define DBG(_x_) log_debug _x_ 

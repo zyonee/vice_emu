@@ -28,7 +28,7 @@
 
 #include "vice.h"
 
-#define DEBUG_GNOMEUI
+/* #define DEBUG_GNOMEUI */
 
 #include <string.h>
 #include <stdlib.h>

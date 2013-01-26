@@ -29,7 +29,7 @@
  *
  */
 
-#define DEBUG_X11UI
+/* #define DEBUG_X11UI */
 
 #define _UI_C /* WTH is this? */
 
@@ -1973,7 +1973,7 @@ void gl_render_canvas(GtkWidget *w, video_canvas_t *canvas,
     gl_update_texture(t);
     gl_draw_quad(alpha, tw, th);
 
-#if 1
+#if 0
     /* draw vertical line as reference for smooth animations */
     {
 	static int x = 0;
