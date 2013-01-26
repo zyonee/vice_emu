@@ -42,6 +42,8 @@ Limitations: limited to gtk+ ui, option --enable-gnomeui,
 	     libgtkgl-ext is mandatory (HWSCALE support).
 	     x128 is know to be broken
 
+CAVEAT: this function is in alpha stage - use at your own risk.
+
 Enabling this feature makes vice run multithreaded decoupling the
 emulation (machinethread) from display (displaythread) and GUI event
 handling (eventthread).
@@ -59,4 +61,14 @@ badly on the gfx output side (OpenGL) imposing visible jitters.
 You may find the article:
   http://paradoxuncreated.com/Blog/wordpress/?p=2268
 helpful to tune your system for best results.
+To get best results the video thread shall synchronize to the vertical
+retrace. For nvidia gfx boards this can often be controlled either by
+the control program nvidia-settings or the environment variable:
+  __GL_SYNC_TO_VBLANK=1
+Refer to you gfx driver documentation for details.
+
+VICEs video chip emulation offer `Video Cache'. This has to be
+disabled: 
+e.g. via commandline: xplus4 +TEDvcache) or via menu
+  Settings -> VICII Settings -> Video Cache)
 
