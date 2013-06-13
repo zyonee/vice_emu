@@ -325,15 +325,6 @@ libarch_a_DEPENDENCIES = \
 endif
 
 EXTRA_DIST = \
-	c64dtv.dsp \
-	c64dtvstubs.dsp \
-	c64commoncart.dsp \
-	c64exp.dsp \
-	c64sc.dsp \
-	c64scpu64.dsp \
-	cartconv.dsp \
-	cbm2.dsp \
-	cbm2common.dsp \
 	cbm5x0.dsp \
 	core.dsp \
 	crtc.dsp \

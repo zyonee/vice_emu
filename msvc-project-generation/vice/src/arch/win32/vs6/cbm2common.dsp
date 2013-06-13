@@ -43,7 +43,7 @@ RSC=rc.exe
 # PROP Intermediate_Dir "libs\cbm2common\Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\drive" /I "..\..\lib\p64" /I "..\..\userport" /I "..\..\tape" /I "..\..\sid" /I "..\..\crtc" /I "..\..\vicii" /I "..\..\raster" /I "..\..\monitor" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\userport" /I "..\..\..\tape" /I "..\..\..\sid" /I "..\..\..\crtc" /I "..\..\..\vicii" /I "..\..\..\raster" /I "..\..\..\monitor" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -66,7 +66,7 @@ LIB32=link.exe -lib
 # PROP Intermediate_Dir "libs\cbm2common\Debug"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /Z7 /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\drive" /I "..\..\lib\p64" /I "..\..\userport" /I "..\..\tape" /I "..\..\sid" /I "..\..\crtc" /I "..\..\vicii" /I "..\..\raster" /I "..\..\monitor" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\userport" /I "..\..\..\tape" /I "..\..\..\sid" /I "..\..\..\crtc" /I "..\..\..\vicii" /I "..\..\..\raster" /I "..\..\..\monitor" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -88,8 +88,8 @@ LIB32=link.exe -lib
 # PROP Output_Dir "libs\cbm2common\DXRelease"
 # PROP Intermediate_Dir "libs\cbm2common\DXRelease"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\drive" /I "..\..\lib\p64" /I "..\..\userport" /I "..\..\tape" /I "..\..\sid" /I "..\..\crtc" /I "..\..\vicii" /I "..\..\raster" /I "..\..\monitor" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\drive" /I "..\..\lib\p64" /I "..\..\userport" /I "..\..\tape" /I "..\..\sid" /I "..\..\crtc" /I "..\..\vicii" /I "..\..\raster" /I "..\..\monitor" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\userport" /I "..\..\..\tape" /I "..\..\..\sid" /I "..\..\..\crtc" /I "..\..\..\vicii" /I "..\..\..\raster" /I "..\..\..\monitor" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -111,8 +111,8 @@ LIB32=link.exe -lib
 # PROP Output_Dir "libs\cbm2common\DXDebug"
 # PROP Intermediate_Dir "libs\cbm2common\DXDebug"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\drive" /I "..\..\lib\p64" /I "..\..\userport" /I "..\..\tape" /I "..\..\sid" /I "..\..\crtc" /I "..\..\vicii" /I "..\..\raster" /I "..\..\monitor" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\drive" /I "..\..\lib\p64" /I "..\..\userport" /I "..\..\tape" /I "..\..\sid" /I "..\..\crtc" /I "..\..\vicii" /I "..\..\raster" /I "..\..\monitor" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD BASE CPP /nologo /MTd /W3 /GX /Z7 /Od /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\userport" /I "..\..\..\tape" /I "..\..\..\sid" /I "..\..\..\crtc" /I "..\..\..\vicii" /I "..\..\..\raster" /I "..\..\..\monitor" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -132,67 +132,67 @@ LIB32=link.exe -lib
 # Name "cbm2common - Win32 DX Debug"
 # Begin Source File
 
-SOURCE="..\..\cbm2\cbm2-cmdline-options.c"
+SOURCE="..\..\..\cbm2\cbm2-cmdline-options.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\cbm2\cbm2acia1.c
+SOURCE="..\..\..\cbm2\cbm2acia1.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\cbm2\cbm2bus.c
+SOURCE="..\..\..\cbm2\cbm2bus.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\cbm2\cbm2cart.c
+SOURCE="..\..\..\cbm2\cbm2cart.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\cbm2\cbm2cia1.c
+SOURCE="..\..\..\cbm2\cbm2cia1.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\cbm2\cbm2cpu.c
+SOURCE="..\..\..\cbm2\cbm2cpu.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\cbm2\cbm2datasette.c
+SOURCE="..\..\..\cbm2\cbm2datasette.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\cbm2\cbm2drive.c
+SOURCE="..\..\..\cbm2\cbm2drive.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\cbm2\cbm2iec.c
+SOURCE="..\..\..\cbm2\cbm2iec.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\cbm2\cbm2memsnapshot.c
+SOURCE="..\..\..\cbm2\cbm2memsnapshot.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\cbm2\cbm2model.c
+SOURCE="..\..\..\cbm2\cbm2model.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\cbm2\cbm2printer.c
+SOURCE="..\..\..\cbm2\cbm2printer.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\cbm2\cbm2romset.c
+SOURCE="..\..\..\cbm2\cbm2romset.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\cbm2\cbm2sound.c
+SOURCE="..\..\..\cbm2\cbm2sound.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\cbm2\cbm2tpi1.c
+SOURCE="..\..\..\cbm2\cbm2tpi1.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\cbm2\cbm2tpi2.c
+SOURCE="..\..\..\cbm2\cbm2tpi2.c"
 # End Source File
 # End Target
 # End Project
