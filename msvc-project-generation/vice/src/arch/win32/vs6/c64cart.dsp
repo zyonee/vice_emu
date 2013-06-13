@@ -43,7 +43,7 @@ RSC=rc.exe
 # PROP Intermediate_Dir "libs\c64cart\Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\c64" /I "..\..\rtc" /I "..\..\vicii" /I "..\..\sid" /I "..\..\drive" /I "..\..\lib\p64" /I "..\..\core" /I "..\..\monitor" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64" /I "..\..\..\rtc" /I "..\..\..\vicii" /I "..\..\..\sid" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\core" /I "..\..\..\monitor" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -66,7 +66,7 @@ LIB32=link.exe -lib
 # PROP Intermediate_Dir "libs\c64cart\Debug"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /Z7 /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\c64" /I "..\..\rtc" /I "..\..\vicii" /I "..\..\sid" /I "..\..\drive" /I "..\..\lib\p64" /I "..\..\core" /I "..\..\monitor" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64" /I "..\..\..\rtc" /I "..\..\..\vicii" /I "..\..\..\sid" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\core" /I "..\..\..\monitor" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -88,8 +88,8 @@ LIB32=link.exe -lib
 # PROP Output_Dir "libs\c64cart\DXRelease"
 # PROP Intermediate_Dir "libs\c64cart\DXRelease"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\c64" /I "..\..\rtc" /I "..\..\vicii" /I "..\..\sid" /I "..\..\drive" /I "..\..\lib\p64" /I "..\..\core" /I "..\..\monitor" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\c64" /I "..\..\rtc" /I "..\..\vicii" /I "..\..\sid" /I "..\..\drive" /I "..\..\lib\p64" /I "..\..\core" /I "..\..\monitor" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64" /I "..\..\..\rtc" /I "..\..\..\vicii" /I "..\..\..\sid" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\core" /I "..\..\..\monitor" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -111,8 +111,8 @@ LIB32=link.exe -lib
 # PROP Output_Dir "libs\c64cart\DXDebug"
 # PROP Intermediate_Dir "libs\c64cart\DXDebug"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\c64" /I "..\..\rtc" /I "..\..\vicii" /I "..\..\sid" /I "..\..\drive" /I "..\..\lib\p64" /I "..\..\core" /I "..\..\monitor" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\c64" /I "..\..\rtc" /I "..\..\vicii" /I "..\..\sid" /I "..\..\drive" /I "..\..\lib\p64" /I "..\..\core" /I "..\..\monitor" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD BASE CPP /nologo /MTd /W3 /GX /Z7 /Od /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64" /I "..\..\..\rtc" /I "..\..\..\vicii" /I "..\..\..\sid" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\core" /I "..\..\..\monitor" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -132,247 +132,247 @@ LIB32=link.exe -lib
 # Name "c64cart - Win32 DX Debug"
 # Begin Source File
 
-SOURCE="..\..\c64\cart\actionreplay.c"
+SOURCE="..\..\..\c64\cart\actionreplay.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\actionreplay2.c"
+SOURCE="..\..\..\c64\cart\actionreplay2.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\actionreplay3.c"
+SOURCE="..\..\..\c64\cart\actionreplay3.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\actionreplay4.c"
+SOURCE="..\..\..\c64\cart\actionreplay4.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\atomicpower.c"
+SOURCE="..\..\..\c64\cart\atomicpower.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\c64-generic.c"
+SOURCE="..\..\..\c64\cart\c64-generic.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\c64-midi.c"
+SOURCE="..\..\..\c64\cart\c64-midi.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\c64tpi.c"
+SOURCE="..\..\..\c64\cart\c64tpi.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\capture.c"
+SOURCE="..\..\..\c64\cart\capture.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\comal80.c"
+SOURCE="..\..\..\c64\cart\comal80.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\delaep256.c"
+SOURCE="..\..\..\c64\cart\delaep256.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\delaep64.c"
+SOURCE="..\..\..\c64\cart\delaep64.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\delaep7x8.c"
+SOURCE="..\..\..\c64\cart\delaep7x8.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\diashowmaker.c"
+SOURCE="..\..\..\c64\cart\diashowmaker.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\dinamic.c"
+SOURCE="..\..\..\c64\cart\dinamic.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\dqbb.c"
+SOURCE="..\..\..\c64\cart\dqbb.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\easyflash.c"
+SOURCE="..\..\..\c64\cart\easyflash.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\epyxfastload.c"
+SOURCE="..\..\..\c64\cart\epyxfastload.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\exos.c"
+SOURCE="..\..\..\c64\cart\exos.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\expert.c"
+SOURCE="..\..\..\c64\cart\expert.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\final.c"
+SOURCE="..\..\..\c64\cart\final.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\final3.c"
+SOURCE="..\..\..\c64\cart\final3.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\finalplus.c"
+SOURCE="..\..\..\c64\cart\finalplus.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\formel64.c"
+SOURCE="..\..\..\c64\cart\formel64.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\freezeframe.c"
+SOURCE="..\..\..\c64\cart\freezeframe.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\freezemachine.c"
+SOURCE="..\..\..\c64\cart\freezemachine.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\funplay.c"
+SOURCE="..\..\..\c64\cart\funplay.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\gamekiller.c"
+SOURCE="..\..\..\c64\cart\gamekiller.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\gs.c"
+SOURCE="..\..\..\c64\cart\gs.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\ide64.c"
+SOURCE="..\..\..\c64\cart\ide64.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\isepic.c"
+SOURCE="..\..\..\c64\cart\isepic.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\kcs.c"
+SOURCE="..\..\..\c64\cart\kcs.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\kingsoft.c"
+SOURCE="..\..\..\c64\cart\kingsoft.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\mach5.c"
+SOURCE="..\..\..\c64\cart\mach5.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\magicdesk.c"
+SOURCE="..\..\..\c64\cart\magicdesk.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\magicformel.c"
+SOURCE="..\..\..\c64\cart\magicformel.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\magicvoice.c"
+SOURCE="..\..\..\c64\cart\magicvoice.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\mikroass.c"
+SOURCE="..\..\..\c64\cart\mikroass.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\mmc64.c"
+SOURCE="..\..\..\c64\cart\mmc64.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\mmcreplay.c"
+SOURCE="..\..\..\c64\cart\mmcreplay.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\ocean.c"
+SOURCE="..\..\..\c64\cart\ocean.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\pagefox.c"
+SOURCE="..\..\..\c64\cart\pagefox.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\prophet64.c"
+SOURCE="..\..\..\c64\cart\prophet64.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\ramcart.c"
+SOURCE="..\..\..\c64\cart\ramcart.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\retroreplay.c"
+SOURCE="..\..\..\c64\cart\retroreplay.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\reu.c"
+SOURCE="..\..\..\c64\cart\reu.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\rexep256.c"
+SOURCE="..\..\..\c64\cart\rexep256.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\rexutility.c"
+SOURCE="..\..\..\c64\cart\rexutility.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\ross.c"
+SOURCE="..\..\..\c64\cart\ross.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\silverrock128.c"
+SOURCE="..\..\..\c64\cart\silverrock128.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\simonsbasic.c"
+SOURCE="..\..\..\c64\cart\simonsbasic.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\snapshot64.c"
+SOURCE="..\..\..\c64\cart\snapshot64.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\stardos.c"
+SOURCE="..\..\..\c64\cart\stardos.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\stb.c"
+SOURCE="..\..\..\c64\cart\stb.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\superexplode5.c"
+SOURCE="..\..\..\c64\cart\superexplode5.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\supergames.c"
+SOURCE="..\..\..\c64\cart\supergames.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\supersnapshot.c"
+SOURCE="..\..\..\c64\cart\supersnapshot.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\supersnapshot4.c"
+SOURCE="..\..\..\c64\cart\supersnapshot4.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\warpspeed.c"
+SOURCE="..\..\..\c64\cart\warpspeed.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\westermann.c"
+SOURCE="..\..\..\c64\cart\westermann.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\c64\cart\zaxxon.c"
+SOURCE="..\..\..\c64\cart\zaxxon.c"
 # End Source File
 # End Target
 # End Project

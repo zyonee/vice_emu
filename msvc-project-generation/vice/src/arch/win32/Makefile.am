@@ -1,7 +1,7 @@
 ## Makefile.am for the Win32 version of `libarch.a'.
 
 if !CROSS
-SUBDIRS = evc mingw32 msvc utils watcom
+SUBDIRS = evc mingw32 msvc utils vs6 watcom
 endif
 
 SUFFIXES = .rc
@@ -325,18 +325,8 @@ libarch_a_DEPENDENCIES = \
 endif
 
 EXTRA_DIST = \
-	_vice.dsp \
-	arch.dsp \
-	base.dsp \
-	c128.dsp \
-	c1541.dsp \
-	c64.dsp \
-	c64c64dtv.dsp \
 	c64dtv.dsp \
 	c64dtvstubs.dsp \
-	c64c128.dsp \
-	c64cart.dsp \
-	c64cartsystem.dsp \
 	c64commoncart.dsp \
 	c64exp.dsp \
 	c64sc.dsp \

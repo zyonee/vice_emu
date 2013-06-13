@@ -43,7 +43,7 @@ RSC=rc.exe
 # PROP Intermediate_Dir "libs\base\Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\drive" /I "..\..\vdrive" /I "..\..\userport" /I "..\..\rs232drv" /I "..\..\imagecontents" /I "..\..\monitor" /I "..\..\lib\p64" /I "..\..\rtc" /I "..\..\platform" /D "DONT_USE_UNISTD_H" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\vdrive" /I "..\..\..\userport" /I "..\..\..\rs232drv" /I "..\..\..\imagecontents" /I "..\..\..\monitor" /I "..\..\..\lib\p64" /I "..\..\..\rtc" /I "..\..\..\platform" /D "DONT_USE_UNISTD_H" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -66,7 +66,7 @@ LIB32=link.exe -lib
 # PROP Intermediate_Dir "libs\base\Debug"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /Z7 /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\drive" /I "..\..\vdrive" /I "..\..\userport" /I "..\..\rs232drv" /I "..\..\imagecontents" /I "..\..\monitor" /I "..\..\lib\p64" /I "..\..\rtc" /I "..\..\platform" /D "DONT_USE_UNISTD_H" /D "WIN32" /D "IDE_COMPILE" /D "NODIRECTX" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\vdrive" /I "..\..\..\userport" /I "..\..\..\rs232drv" /I "..\..\..\imagecontents" /I "..\..\..\monitor" /I "..\..\..\lib\p64" /I "..\..\..\rtc" /I "..\..\..\platform" /D "DONT_USE_UNISTD_H" /D "WIN32" /D "IDE_COMPILE" /D "NODIRECTX" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -88,8 +88,8 @@ LIB32=link.exe -lib
 # PROP Output_Dir "libs\base\DXRelease"
 # PROP Intermediate_Dir "libs\base\DXRelease"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\drive" /I "..\..\vdrive" /I "..\..\userport" /I "..\..\rs232drv" /I "..\..\imagecontents" /I "..\..\monitor" /I "..\..\lib\p64" /I "..\..\rtc" /I "..\..\platform" /D "DONT_USE_UNISTD_H" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\drive" /I "..\..\vdrive" /I "..\..\userport" /I "..\..\rs232drv" /I "..\..\imagecontents" /I "..\..\monitor" /I "..\..\lib\p64" /I "..\..\rtc" /I "..\..\platform" /D "DONT_USE_UNISTD_H" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "DONT_USE_UNISTD_H" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\vdrive" /I "..\..\..\userport" /I "..\..\..\rs232drv" /I "..\..\..\imagecontents" /I "..\..\..\monitor" /I "..\..\..\lib\p64" /I "..\..\..\rtc" /I "..\..\..\platform" /D "DONT_USE_UNISTD_H" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -111,8 +111,8 @@ LIB32=link.exe -lib
 # PROP Output_Dir "libs\base\DXDebug"
 # PROP Intermediate_Dir "libs\base\DXDebug"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\drive" /I "..\..\vdrive" /I "..\..\userport" /I "..\..\rs232drv" /I "..\..\imagecontents" /I "..\..\monitor" /I "..\..\lib\p64" /I "..\..\rtc" /I "..\..\platform" /D "DONT_USE_UNISTD_H" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\drive" /I "..\..\vdrive" /I "..\..\userport" /I "..\..\rs232drv" /I "..\..\imagecontents" /I "..\..\monitor" /I "..\..\lib\p64" /I "..\..\rtc" /I "..\..\platform" /D "DONT_USE_UNISTD_H" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD BASE CPP /nologo /MTd /W3 /GX /Z7 /Od /D "DONT_USE_UNISTD_H" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\vdrive" /I "..\..\..\userport" /I "..\..\..\rs232drv" /I "..\..\..\imagecontents" /I "..\..\..\monitor" /I "..\..\..\lib\p64" /I "..\..\..\rtc" /I "..\..\..\platform" /D "DONT_USE_UNISTD_H" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -132,223 +132,223 @@ LIB32=link.exe -lib
 # Name "base - Win32 DX Debug"
 # Begin Source File
 
-SOURCE="..\..\alarm.c"
+SOURCE="..\..\..\alarm.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\attach.c"
+SOURCE="..\..\..\attach.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\autostart-prg.c"
+SOURCE="..\..\..\autostart-prg.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\autostart.c"
+SOURCE="..\..\..\autostart.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\cbmdos.c"
+SOURCE="..\..\..\cbmdos.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\cbmimage.c"
+SOURCE="..\..\..\cbmimage.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\charset.c"
+SOURCE="..\..\..\charset.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\clipboard.c"
+SOURCE="..\..\..\clipboard.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\clkguard.c"
+SOURCE="..\..\..\clkguard.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\cmdline.c"
+SOURCE="..\..\..\cmdline.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\color.c"
+SOURCE="..\..\..\color.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\crc32.c"
+SOURCE="..\..\..\crc32.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\datasette.c"
+SOURCE="..\..\..\datasette.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\debug.c"
+SOURCE="..\..\..\debug.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\dma.c"
+SOURCE="..\..\..\dma.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\event.c"
+SOURCE="..\..\..\event.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\findpath.c"
+SOURCE="..\..\..\findpath.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\fliplist.c"
+SOURCE="..\..\..\fliplist.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\gcr.c"
+SOURCE="..\..\..\gcr.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\info.c"
+SOURCE="..\..\..\info.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\init.c"
+SOURCE="..\..\..\init.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\initcmdline.c"
+SOURCE="..\..\..\initcmdline.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\interrupt.c"
+SOURCE="..\..\..\interrupt.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\ioutil.c"
+SOURCE="..\..\..\ioutil.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\joystick.c"
+SOURCE="..\..\..\joystick.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\kbdbuf.c"
+SOURCE="..\..\..\kbdbuf.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\keyboard.c"
+SOURCE="..\..\..\keyboard.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\lib.c"
+SOURCE="..\..\..\lib.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\lightpen.c"
+SOURCE="..\..\..\lightpen.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\log.c"
+SOURCE="..\..\..\log.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\machine-bus.c"
+SOURCE="..\..\..\machine-bus.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\machine.c"
+SOURCE="..\..\..\machine.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\midi.c"
+SOURCE="..\..\..\midi.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\mouse.c"
+SOURCE="..\..\..\mouse.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\network.c"
+SOURCE="..\..\..\network.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\opencbmlib.c"
+SOURCE="..\..\..\opencbmlib.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\palette.c"
+SOURCE="..\..\..\palette.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\ram.c"
+SOURCE="..\..\..\ram.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\rawfile.c"
+SOURCE="..\..\..\rawfile.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\rawnet.c"
+SOURCE="..\..\..\rawnet.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\resources.c"
+SOURCE="..\..\..\resources.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\romset.c"
+SOURCE="..\..\..\romset.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\screenshot.c"
+SOURCE="..\..\..\screenshot.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\snapshot.c"
+SOURCE="..\..\..\snapshot.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\socket.c
+SOURCE="..\..\..\socket.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\sound.c"
+SOURCE="..\..\..\sound.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\sysfile.c"
+SOURCE="..\..\..\sysfile.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\translate.c"
+SOURCE="..\..\..\translate.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\translate.txt
+SOURCE="..\..\..\translate.txt"
 
 !IF  "$(CFG)" == "base - Win32 Release"
 
 # PROP Ignore_Default_Tool 1
-USERDEP__TRANS="..\..\translate.txt"	
+USERDEP__TRANS="..\..\..\translate.txt"	
 # Begin Custom Build - Generating translate.h and translate_table.h
-InputDir=\cygwin\home\blacky\vice-trunk\vice\src
-InputPath=..\..\translate.txt
+InputDir=.
+InputPath=..\..\..\translate.txt
 
-"$(InputDir)\translate_table.h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	..\..\..\data\gentranslate ..\..\translate.txt ..\..\translate.h ..\..\translate_table.h
+"$(InputDir)\..\translate_table.h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\..\..\..\data\gentranslate ..\..\..\translate.txt ..\..\..\translate.h ..\..\..\translate_table.h
 
 # End Custom Build
 
 !ELSEIF  "$(CFG)" == "base - Win32 Debug"
 
 # PROP Ignore_Default_Tool 1
-USERDEP__TRANS="..\..\translate.txt"	
+USERDEP__TRANS="..\..\..\translate.txt"	
 # Begin Custom Build - Generating translate.h and translate_table.h
-InputDir=\cygwin\home\blacky\vice-trunk\vice\src
-InputPath=..\..\translate.txt
+InputDir=.
+InputPath=..\..\..\translate.txt
 
-"$(InputDir)\translate_table.h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	..\..\..\data\gentranslate ..\..\translate.txt ..\..\translate.h ..\..\translate_table.h
+"$(InputDir)\..\translate_table.h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\..\..\..\data\gentranslate ..\..\..\translate.txt ..\..\..\translate.h ..\..\..\translate_table.h
 
 # End Custom Build
 
@@ -356,13 +356,13 @@ InputPath=..\..\translate.txt
 
 # PROP BASE Ignore_Default_Tool 1
 # PROP Ignore_Default_Tool 1
-USERDEP__TRANS="..\..\translate.txt"	
+USERDEP__TRANS="..\..\..\translate.txt"	
 # Begin Custom Build - Generating translate.h and translate_table.h
-InputDir=\cygwin\home\blacky\vice-trunk\vice\src
-InputPath=..\..\translate.txt
+InputDir=.
+InputPath=..\..\..\translate.txt
 
-"$(InputDir)\translate_table.h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	..\..\..\data\gentranslate ..\..\translate.txt ..\..\translate.h ..\..\translate_table.h
+"$(InputDir)\..\translate_table.h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\..\..\..\data\gentranslate ..\..\..\translate.txt ..\..\..\translate.h ..\..\..\translate_table.h
 
 # End Custom Build
 
@@ -370,13 +370,13 @@ InputPath=..\..\translate.txt
 
 # PROP BASE Ignore_Default_Tool 1
 # PROP Ignore_Default_Tool 1
-USERDEP__TRANS="..\..\translate.txt"	
+USERDEP__TRANS="..\..\..\translate.txt"	
 # Begin Custom Build - Generating translate.h and translate_table.h
-InputDir=\cygwin\home\blacky\vice-trunk\vice\src
-InputPath=..\..\translate.txt
+InputDir=.
+InputPath=..\..\..\translate.txt
 
-"$(InputDir)\translate_table.h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	..\..\..\data\gentranslate ..\..\translate.txt ..\..\translate.h ..\..\translate_table.h
+"$(InputDir)\..\translate_table.h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\..\..\..\data\gentranslate ..\..\..\translate.txt ..\..\..\translate.h ..\..\..\translate_table.h
 
 # End Custom Build
 
@@ -385,23 +385,23 @@ InputPath=..\..\translate.txt
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\traps.c"
+SOURCE="..\..\..\traps.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\util.c"
+SOURCE="..\..\..\util.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\vsync.c"
+SOURCE="..\..\..\vsync.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\zfile.c"
+SOURCE="..\..\..\zfile.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\zipcode.c"
+SOURCE="..\..\..\zipcode.c"
 # End Source File
 # End Target
 # End Project

@@ -43,7 +43,7 @@ RSC=rc.exe
 # PROP Intermediate_Dir "libs\arch\Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\platform" /I "..\..\\" /I "..\..\drive" /I "..\..\vdrive" /I "..\..\userport" /I "..\..\c64" /I "..\..\c64\cart" /I "..\..\c64dtv" /I "..\..\c128" /I "..\..\vic20" /I "..\..\pet" /I "..\..\cbm2" /I "..\..\raster" /I "..\..\monitor" /I "..\..\lib\p64" /I "..\..\lib\libffmpeg" /I "..\..\plus4" /I "..\..\rs232drv" /I "..\..\sid" /I "..\..\imagecontents" /I ".\msvc\wpcap" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I "..\\" /I "..\..\..\platform" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\vdrive" /I "..\..\..\userport" /I "..\..\..\c64" /I "..\..\..\c64\cart" /I "..\..\..\c64dtv" /I "..\..\..\c128" /I "..\..\..\vic20" /I "..\..\..\pet" /I "..\..\..\cbm2" /I "..\..\..\raster" /I "..\..\..\monitor" /I "..\..\..\lib\p64" /I "..\..\..\lib\libffmpeg" /I "..\..\..\plus4" /I "..\..\..\rs232drv" /I "..\..\..\sid" /I "..\..\..\imagecontents" /I "..\msvc\wpcap" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -66,7 +66,7 @@ LIB32=link.exe -lib
 # PROP Intermediate_Dir "libs\arch\Debug"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /Z7 /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\platform" /I "..\..\\" /I "..\..\drive" /I "..\..\vdrive" /I "..\..\userport" /I "..\..\c64" /I "..\..\c64\cart" /I "..\..\c64dtv" /I "..\..\c128" /I "..\..\vic20" /I "..\..\pet" /I "..\..\cbm2" /I "..\..\raster" /I "..\..\monitor" /I "..\..\lib\p64" /I "..\..\lib\libffmpeg" /I "..\..\plus4" /I "..\..\rs232drv" /I "..\..\sid" /I "..\..\imagecontents" /I ".\msvc\wpcap" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I "..\msvc" /I "..\\" /I "..\..\..\platform" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\vdrive" /I "..\..\..\userport" /I "..\..\..\c64" /I "..\..\..\c64\cart" /I "..\..\..\c64dtv" /I "..\..\..\c128" /I "..\..\..\vic20" /I "..\..\..\pet" /I "..\..\..\cbm2" /I "..\..\..\raster" /I "..\..\..\monitor" /I "..\..\..\lib\p64" /I "..\..\..\lib\libffmpeg" /I "..\..\..\plus4" /I "..\..\..\rs232drv" /I "..\..\..\sid" /I "..\..\..\imagecontents" /I "..\msvc\wpcap" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -88,8 +88,8 @@ LIB32=link.exe -lib
 # PROP Output_Dir "libs\arch\DXRelease"
 # PROP Intermediate_Dir "libs\arch\DXRelease"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\platform" /I "..\..\\" /I "..\..\drive" /I "..\..\vdrive" /I "..\..\userport" /I "..\..\c64" /I "..\..\c64\cart" /I "..\..\c64dtv" /I "..\..\c128" /I "..\..\vic20" /I "..\..\pet" /I "..\..\cbm2" /I "..\..\raster" /I "..\..\monitor" /I "..\..\lib\p64" /I "..\..\lib\libffmpeg" /I "..\..\plus4" /I "..\..\rs232drv" /I "..\..\sid" /I "..\..\imagecontents" /I ".\msvc\wpcap" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\platform" /I "..\..\\" /I "..\..\drive" /I "..\..\vdrive" /I "..\..\userport" /I "..\..\c64" /I "..\..\c64\cart" /I "..\..\c64dtv" /I "..\..\c128" /I "..\..\vic20" /I "..\..\pet" /I "..\..\cbm2" /I "..\..\raster" /I "..\..\monitor" /I "..\..\lib\p64" /I "..\..\lib\libffmpeg" /I "..\..\plus4" /I "..\..\rs232drv" /I "..\..\sid" /I "..\..\imagecontents" /I ".\msvc\wpcap" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /I "..\msvc" /I "..\\" /I "..\..\..\platform" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\vdrive" /I "..\..\..\userport" /I "..\..\..\c64" /I "..\..\..\c64\cart" /I "..\..\..\c64dtv" /I "..\..\..\c128" /I "..\..\..\vic20" /I "..\..\..\pet" /I "..\..\..\cbm2" /I "..\..\..\raster" /I "..\..\..\monitor" /I "..\..\..\lib\p64" /I "..\..\..\lib\libffmpeg" /I "..\..\..\plus4" /I "..\..\..\rs232drv" /I "..\..\..\sid" /I "..\..\..\imagecontents" /I "..\msvc\wpcap" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -111,8 +111,8 @@ LIB32=link.exe -lib
 # PROP Output_Dir "libs\arch\DXDebug"
 # PROP Intermediate_Dir "libs\arch\DXDebug"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\platform" /I "..\..\\" /I "..\..\drive" /I "..\..\vdrive" /I "..\..\userport" /I "..\..\c64" /I "..\..\c64\cart" /I "..\..\c64dtv" /I "..\..\c128" /I "..\..\vic20" /I "..\..\pet" /I "..\..\cbm2" /I "..\..\raster" /I "..\..\monitor" /I "..\..\lib\p64" /I "..\..\lib\libffmpeg" /I "..\..\plus4" /I "..\..\rs232drv" /I "..\..\sid" /I "..\..\imagecontents" /I ".\msvc\wpcap" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\platform" /I "..\..\\" /I "..\..\drive" /I "..\..\vdrive" /I "..\..\userport" /I "..\..\c64" /I "..\..\c64\cart" /I "..\..\c64dtv" /I "..\..\c128" /I "..\..\vic20" /I "..\..\pet" /I "..\..\cbm2" /I "..\..\raster" /I "..\..\monitor" /I "..\..\lib\p64" /I "..\..\lib\libffmpeg" /I "..\..\plus4" /I "..\..\rs232drv" /I "..\..\sid" /I "..\..\imagecontents" /I ".\msvc\wpcap" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD BASE CPP /nologo /MTd /W3 /GX /Z7 /Od /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I "..\msvc" /I "..\\" /I "..\..\..\platform" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\vdrive" /I "..\..\..\userport" /I "..\..\..\c64" /I "..\..\..\c64\cart" /I "..\..\..\c64dtv" /I "..\..\..\c128" /I "..\..\..\vic20" /I "..\..\..\pet" /I "..\..\..\cbm2" /I "..\..\..\raster" /I "..\..\..\monitor" /I "..\..\..\lib\p64" /I "..\..\..\lib\libffmpeg" /I "..\..\..\plus4" /I "..\..\..\rs232drv" /I "..\..\..\sid" /I "..\..\..\imagecontents" /I "..\msvc\wpcap" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -132,131 +132,131 @@ LIB32=link.exe -lib
 # Name "arch - Win32 DX Debug"
 # Begin Source File
 
-SOURCE=.\archdep.c
+SOURCE="..\archdep.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\blockdev.c
+SOURCE="..\blockdev.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\c128ui.c
+SOURCE="..\c128ui.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\c64dtvui.c
+SOURCE="..\c64dtvui.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\c64ui.c
+SOURCE="..\c64ui.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\catweaselmkiii.c
+SOURCE="..\catweaselmkiii.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\cbm2ui.c
+SOURCE="..\cbm2ui.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\cbm5x0ui.c
+SOURCE="..\cbm5x0ui.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\console.c
+SOURCE="..\console.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\dinput_handle.c
+SOURCE="..\dinput_handle.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\dirent.c
+SOURCE="..\dirent.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\dynlib.c
+SOURCE="..\dynlib.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\fullscrn.c
+SOURCE="..\fullscrn.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\gifdrv.c
+SOURCE="..\gifdrv.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\hardsid.c
+SOURCE="..\hardsid.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\intl.c
+SOURCE="..\intl.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\joy.c
+SOURCE="..\joy.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\kbd.c
+SOURCE="..\kbd.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\lightpendrv.c
+SOURCE="..\lightpendrv.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\mididrv.c
+SOURCE="..\mididrv.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\mousedrv.c
+SOURCE="..\mousedrv.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\parsid.c
+SOURCE="..\parsid.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\petui.c
+SOURCE="..\petui.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\plus4ui.c
+SOURCE="..\plus4ui.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\rawnetarch.c
+SOURCE="..\rawnetarch.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\res.txt
+SOURCE="..\res.txt"
 
 !IF  "$(CFG)" == "arch - Win32 Release"
 
 # PROP Ignore_Default_Tool 1
-USERDEP__RES_T="res.txt"	"resdialogs.txt"	"resmenu.txt"	"resstrings.txt"	
+USERDEP__RES_T="..\res.txt"	"..\resdialogs.txt"	"..\resmenu.txt"	"..\resstrings.txt"	
 # Begin Custom Build - Generating res.h
 InputDir=.
-InputPath=.\res.txt
+InputPath=..\res.txt
 
-"$(InputDir)\res.h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	..\..\..\data\genwinres res.h menuid.h stringid.h res.txt resdialogs.txt resmenu.txt resstrings.txt
+"$(InputDir)\..\res.h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt
 
 # End Custom Build
 
 !ELSEIF  "$(CFG)" == "arch - Win32 Debug"
 
 # PROP Ignore_Default_Tool 1
-USERDEP__RES_T="res.txt"	"resdialogs.txt"	"resmenu.txt"	"resstrings.txt"	
+USERDEP__RES_T="..\res.txt"	"..\resdialogs.txt"	"..\resmenu.txt"	"..\resstrings.txt"	
 # Begin Custom Build - Generating res.h
 InputDir=.
-InputPath=.\res.txt
+InputPath=..\res.txt
 
-"$(InputDir)\res.h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	..\..\..\data\genwinres res.h menuid.h stringid.h res.txt resdialogs.txt resmenu.txt resstrings.txt
+"$(InputDir)\..\res.h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt
 
 # End Custom Build
 
@@ -264,13 +264,13 @@ InputPath=.\res.txt
 
 # PROP BASE Ignore_Default_Tool 1
 # PROP Ignore_Default_Tool 1
-USERDEP__RES_T="res.txt"	"resdialogs.txt"	"resmenu.txt"	"resstrings.txt"	
+USERDEP__RES_T="..\res.txt"	"..\resdialogs.txt"	"..\resmenu.txt"	"..\resstrings.txt"	
 # Begin Custom Build - Generating res.h
 InputDir=.
-InputPath=.\res.txt
+InputPath=..\res.txt
 
-"$(InputDir)\res.h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	..\..\..\data\genwinres res.h menuid.h stringid.h res.txt resdialogs.txt resmenu.txt resstrings.txt
+"$(InputDir)\..\res.h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt
 
 # End Custom Build
 
@@ -278,13 +278,13 @@ InputPath=.\res.txt
 
 # PROP BASE Ignore_Default_Tool 1
 # PROP Ignore_Default_Tool 1
-USERDEP__RES_T="res.txt"	"resdialogs.txt"	"resmenu.txt"	"resstrings.txt"	
+USERDEP__RES_T="..\res.txt"	"..\resdialogs.txt"	"..\resmenu.txt"	"..\resstrings.txt"	
 # Begin Custom Build - Generating res.h
 InputDir=.
-InputPath=.\res.txt
+InputPath=..\res.txt
 
-"$(InputDir)\res.h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	..\..\..\data\genwinres res.h menuid.h stringid.h res.txt resdialogs.txt resmenu.txt resstrings.txt
+"$(InputDir)\..\res.h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt
 
 # End Custom Build
 
@@ -293,403 +293,403 @@ InputPath=.\res.txt
 # End Source File
 # Begin Source File
 
-SOURCE=.\rs232.c
+SOURCE="..\rs232.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\rs232dev.c
+SOURCE="..\rs232dev.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\rs232net.c
+SOURCE="..\rs232net.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\scpu64ui.c
+SOURCE="..\scpu64ui.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\signals.c
+SOURCE="..\signals.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\statusbar.c
+SOURCE="..\statusbar.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\system.c
+SOURCE="..\system.c"
 # End Source File
 # Begin Source File
 
-SOURCE=".\ui-resources.c"
+SOURCE="..\ui-resources.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\ui.c
+SOURCE="..\ui.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uiacia.c
+SOURCE="..\uiacia.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uiattach.c
+SOURCE="..\uiattach.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uiautostart.c
+SOURCE="..\uiautostart.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uic128.c
+SOURCE="..\uic128.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uic128model.c
+SOURCE="..\uic128model.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uic64_256k.c
+SOURCE="..\uic64_256k.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uic64burstmod.c
+SOURCE="..\uic64burstmod.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uic64cart.c
+SOURCE="..\uic64cart.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uic64dtv.c
+SOURCE="..\uic64dtv.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uic64dtvmodel.c
+SOURCE="..\uic64dtvmodel.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uic64model.c
+SOURCE="..\uic64model.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uicart.c
+SOURCE="..\uicart.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uicbm2model.c
+SOURCE="..\uicbm2model.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uicbm5x0model.c
+SOURCE="..\uicbm5x0model.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uicbm2set.c
+SOURCE="..\uicbm2set.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uicbm5x0set.c
+SOURCE="..\uicbm5x0set.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uicia.c
+SOURCE="..\uicia.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uicmdline.c
+SOURCE="..\uicmdline.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uiconsole.c
+SOURCE="..\uiconsole.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uidatasette.c
+SOURCE="..\uidatasette.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uidigimax.c
+SOURCE="..\uidigimax.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uidqbb.c
+SOURCE="..\uidqbb.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uidrivec128.c
+SOURCE="..\uidrivec128.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uidrivec64.c
+SOURCE="..\uidrivec64.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uidrivepetcbm2.c
+SOURCE="..\uidrivepetcbm2.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uidriveplus4.c
+SOURCE="..\uidriveplus4.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uidrivevic20.c
+SOURCE="..\uidrivevic20.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uids12c887rtc.c
+SOURCE="..\uids12c887rtc.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uieasyflash.c
+SOURCE="..\uieasyflash.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uievent.c
+SOURCE="..\uievent.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uiexpert.c
+SOURCE="..\uiexpert.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uifliplist.c
+SOURCE="..\uifliplist.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uigeoram.c
+SOURCE="..\uigeoram.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uihelp.c
+SOURCE="..\uihelp.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uiide64.c
+SOURCE="..\uiide64.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uiisepic.c
+SOURCE="..\uiisepic.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uijoystick.c
+SOURCE="..\uijoystick.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uikeyboard.c
+SOURCE="..\uikeyboard.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uilib.c
+SOURCE="..\uilib.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uilightpen.c
+SOURCE="..\uilightpen.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uimagicvoice.c
+SOURCE="..\uimagicvoice.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uimediafile.c
+SOURCE="..\uimediafile.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uimidi.c
+SOURCE="..\uimidi.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uimmc64.c
+SOURCE="..\uimmc64.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uimmcreplay.c
+SOURCE="..\uimmcreplay.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uimon.c
+SOURCE="..\uimon.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uimouse.c
+SOURCE="..\uimouse.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uinetwork.c
+SOURCE="..\uinetwork.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uiperipheral.c
+SOURCE="..\uiperipheral.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uipetcolour.c
+SOURCE="..\uipetcolour.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uipetdww.c
+SOURCE="..\uipetdww.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uipetmodel.c
+SOURCE="..\uipetmodel.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uipetreu.c
+SOURCE="..\uipetreu.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uipetset.c
+SOURCE="..\uipetset.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uiplus256k.c
+SOURCE="..\uiplus256k.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uiplus4cart.c
+SOURCE="..\uiplus4cart.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uiplus4mem.c
+SOURCE="..\uiplus4mem.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uiplus4model.c
+SOURCE="..\uiplus4model.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uiplus60k.c
+SOURCE="..\uiplus60k.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uiquicksnapshot.c
+SOURCE="..\uiquicksnapshot.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uiram.c
+SOURCE="..\uiram.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uiramcart.c
+SOURCE="..\uiramcart.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uiretroreplay.c
+SOURCE="..\uiretroreplay.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uireu.c
+SOURCE="..\uireu.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uirom.c
+SOURCE="..\uirom.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uirs232.c
+SOURCE="..\uirs232.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uirs232user.c
+SOURCE="..\uirs232user.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uiscpu64.c
+SOURCE="..\uiscpu64.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uisid.c
+SOURCE="..\uisid.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uisidcart.c
+SOURCE="..\uisidcart.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uisiddtv.c
+SOURCE="..\uisiddtv.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uisnapshot.c
+SOURCE="..\uisnapshot.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uisound.c
+SOURCE="..\uisound.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uisoundexpander.c
+SOURCE="..\uisoundexpander.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uisoundsampler.c
+SOURCE="..\uisoundsampler.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uispeed.c
+SOURCE="..\uispeed.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uited.c
+SOURCE="..\uited.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uitfe.c
+SOURCE="..\uitfe.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uiv364speech.c
+SOURCE="..\uiv364speech.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uivic.c
+SOURCE="..\uivic.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uivic20model.c
+SOURCE="..\uivic20model.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uivicii.c
+SOURCE="..\uivicii.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uivicset.c
+SOURCE="..\uivicset.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\uivideo.c
+SOURCE="..\uivideo.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\vic20ui.c
+SOURCE="..\vic20ui.c"
 # End Source File
 # Begin Source File
 
-SOURCE=".\video-ddraw.c"
+SOURCE="..\video-ddraw.c"
 # End Source File
 # Begin Source File
 
-SOURCE=".\video-dx9.c"
+SOURCE="..\video-dx9.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\video.c
+SOURCE="..\video.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\vsidui.c
+SOURCE="..\vsidui.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\vsyncarch.c
+SOURCE="..\vsyncarch.c"
 # End Source File
 # Begin Source File
 
-SOURCE=.\winmain.c
+SOURCE="..\winmain.c"
 # End Source File
 # End Target
 # End Project
