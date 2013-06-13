@@ -43,7 +43,7 @@ RSC=rc.exe
 # PROP Intermediate_Dir "libs\iec\Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\drive" /I "..\..\lib\p64" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -66,7 +66,7 @@ LIB32=link.exe -lib
 # PROP Intermediate_Dir "libs\iec\Debug"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /Z7 /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\drive" /I "..\..\lib\p64" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -88,8 +88,8 @@ LIB32=link.exe -lib
 # PROP Output_Dir "libs\iec\DXRelease"
 # PROP Intermediate_Dir "libs\iec\DXRelease"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\drive" /I "..\..\lib\p64" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\drive" /I "..\..\lib\p64" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -111,8 +111,8 @@ LIB32=link.exe -lib
 # PROP Output_Dir "libs\iec\DXDebug"
 # PROP Intermediate_Dir "libs\iec\DXDebug"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\drive" /I "..\..\lib\p64" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\drive" /I "..\..\lib\p64" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD BASE CPP /nologo /MTd /W3 /GX /Z7 /Od /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -132,55 +132,55 @@ LIB32=link.exe -lib
 # Name "iec - Win32 DX Debug"
 # Begin Source File
 
-SOURCE=..\..\drive\iec\cia1571d.c
+SOURCE="..\..\..\drive\iec\cia1571d.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\drive\iec\cia1581d.c
+SOURCE="..\..\..\drive\iec\cia1581d.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\drive\iec\fdd.c
+SOURCE="..\..\..\drive\iec\fdd.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\drive\iec\glue1571.c
+SOURCE="..\..\..\drive\iec\glue1571.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\drive\iec\iec-cmdline-options.c"
+SOURCE="..\..\..\drive\iec\iec-cmdline-options.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\drive\iec\iec-resources.c"
+SOURCE="..\..\..\drive\iec\iec-resources.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\drive\iec\iec.c
+SOURCE="..\..\..\drive\iec\iec.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\drive\iec\iecrom.c
+SOURCE="..\..\..\drive\iec\iecrom.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\drive\iec\memiec.c
+SOURCE="..\..\..\drive\iec\memiec.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\drive\iec\pc8477.c
+SOURCE="..\..\..\drive\iec\pc8477.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\drive\iec\via1d1541.c
+SOURCE="..\..\..\drive\iec\via1d1541.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\drive\iec\via4000.c
+SOURCE="..\..\..\drive\iec\via4000.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\drive\iec\wd1770.c
+SOURCE="..\..\..\drive\iec\wd1770.c"
 # End Source File
 # End Target
 # End Project

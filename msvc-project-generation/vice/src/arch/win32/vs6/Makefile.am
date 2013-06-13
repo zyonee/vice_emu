@@ -28,4 +28,14 @@ EXTRA_DIST = \
 	geninfocontrib.dsp \
 	genmsvcver.dsp \
 	gentranslate.dsp \
-	genwinres.dsp
+	genwinres.dsp \
+	gfxoutputdrv.dsp \
+	iec.dsp \
+	iec128dcr.dsp \
+	iecbus.dsp \
+	iecieee.dsp \
+	ieee.dsp \
+	imagecontents.dsp \
+	monitor.dsp \
+	p64.dsp \
+	parallel.dsp

@@ -43,7 +43,7 @@ RSC=rc.exe
 # PROP Intermediate_Dir "libs\monitor\Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\vdrive" /I "..\..\monitor" /I "..\..\lib\p64" /I "..\..\drive" /I "..\..\imagecontents" /D "NDEBUG" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\vdrive" /I "..\..\..\monitor" /I "..\..\..\lib\p64" /I "..\..\..\drive" /I "..\..\..\imagecontents" /D "NDEBUG" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409 /d "NDEBUG"
 # ADD RSC /l 0x409 /d "NDEBUG"
 BSC32=bscmake.exe
@@ -66,7 +66,7 @@ LIB32=link.exe -lib
 # PROP Intermediate_Dir "libs\monitor\Debug"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c
-# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\vdrive" /I "..\..\monitor" /I "..\..\lib\p64" /I "..\..\drive" /I "..\..\imagecontents" /D "_DEBUG" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\vdrive" /I "..\..\..\monitor" /I "..\..\..\lib\p64" /I "..\..\..\drive" /I "..\..\..\imagecontents" /D "_DEBUG" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409 /d "_DEBUG"
 # ADD RSC /l 0x409 /d "_DEBUG"
 BSC32=bscmake.exe
@@ -88,8 +88,8 @@ LIB32=link.exe -lib
 # PROP Output_Dir "libs\monitor\DXRelease"
 # PROP Intermediate_Dir "libs\monitor\DXRelease"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\vdrive" /I "..\..\monitor" /I "..\..\lib\p64" /I "..\..\drive" /I "..\..\imagecontents" /D "NDEBUG" /D "WIN32" /D "IDE_COMPILE" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\vdrive" /I "..\..\monitor" /I "..\..\lib\p64" /I "..\..\drive" /I "..\..\imagecontents" /D "NDEBUG" /D "WIN32" /D "IDE_COMPILE" /D "_WINDOWS" /YX /FD /c
+# ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "NDEBUG" /D "WIN32" /D "IDE_COMPILE" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\vdrive" /I "..\..\..\monitor" /I "..\..\..\lib\p64" /I "..\..\..\drive" /I "..\..\..\imagecontents" /D "NDEBUG" /D "WIN32" /D "IDE_COMPILE" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409 /d "NDEBUG"
 # ADD RSC /l 0x409 /d "NDEBUG"
 BSC32=bscmake.exe
@@ -111,8 +111,8 @@ LIB32=link.exe -lib
 # PROP Output_Dir "libs\monitor\DXDebug"
 # PROP Intermediate_Dir "libs\monitor\DXDebug"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\vdrive" /I "..\..\monitor" /I "..\..\lib\p64" /I "..\..\drive" /I "..\..\imagecontents" /D "_DEBUG" /D "WIN32" /D "IDE_COMPILE" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\vdrive" /I "..\..\monitor" /I "..\..\lib\p64" /I "..\..\drive" /I "..\..\imagecontents" /D "_DEBUG" /D "WIN32" /D "IDE_COMPILE" /D "_WINDOWS" /YX /FD /c
+# ADD BASE CPP /nologo /MTd /W3 /GX /Z7 /Od /D "_DEBUG" /D "WIN32" /D "IDE_COMPILE" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\vdrive" /I "..\..\..\monitor" /I "..\..\..\lib\p64" /I "..\..\..\drive" /I "..\..\..\imagecontents" /D "_DEBUG" /D "WIN32" /D "IDE_COMPILE" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409 /d "_DEBUG"
 # ADD RSC /l 0x409 /d "_DEBUG"
 BSC32=bscmake.exe
@@ -132,127 +132,127 @@ LIB32=link.exe -lib
 # Name "monitor - Win32 DX Debug"
 # Begin Source File
 
-SOURCE=..\..\monitor\asm6502.c
+SOURCE="..\..\..\monitor\asm6502.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\monitor\asm6502dtv.c
+SOURCE="..\..\..\monitor\asm6502dtv.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\monitor\asm65816.c
+SOURCE="..\..\..\monitor\asm65816.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\monitor\asm6809.c
+SOURCE="..\..\..\monitor\asm6809.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\monitor\asmR65C02.c
+SOURCE="..\..\..\monitor\asmR65C02.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\monitor\asmz80.c
+SOURCE="..\..\..\monitor\asmz80.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\monitor\mon_assemble6502.c
+SOURCE="..\..\..\monitor\mon_assemble6502.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\monitor\mon_assemble65816.c
+SOURCE="..\..\..\monitor\mon_assemble65816.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\monitor\mon_assemble6809.c
+SOURCE="..\..\..\monitor\mon_assemble6809.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\monitor\mon_assembleR65C02.c
+SOURCE="..\..\..\monitor\mon_assembleR65C02.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\monitor\mon_assemblez80.c
+SOURCE="..\..\..\monitor\mon_assemblez80.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\monitor\mon_breakpoint.c
+SOURCE="..\..\..\monitor\mon_breakpoint.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\monitor\mon_command.c
+SOURCE="..\..\..\monitor\mon_command.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\monitor\mon_disassemble.c
+SOURCE="..\..\..\monitor\mon_disassemble.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\monitor\mon_drive.c
+SOURCE="..\..\..\monitor\mon_drive.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\monitor\mon_file.c
+SOURCE="..\..\..\monitor\mon_file.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\monitor\mon_lex.c
+SOURCE="..\..\..\monitor\mon_lex.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\monitor\mon_lex.l
+SOURCE="..\..\..\monitor\mon_lex.l"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\monitor\mon_memory.c
+SOURCE="..\..\..\monitor\mon_memory.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\monitor\mon_parse.c
+SOURCE="..\..\..\monitor\mon_parse.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\monitor\mon_parse.y
+SOURCE="..\..\..\monitor\mon_parse.y"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\monitor\mon_register6502.c
+SOURCE="..\..\..\monitor\mon_register6502.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\monitor\mon_register6502dtv.c
+SOURCE="..\..\..\monitor\mon_register6502dtv.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\monitor\mon_register65816.c
+SOURCE="..\..\..\monitor\mon_register65816.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\monitor\mon_registerR65C02.c
+SOURCE="..\..\..\monitor\mon_registerR65C02.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\monitor\mon_register6809.c
+SOURCE="..\..\..\monitor\mon_register6809.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\monitor\mon_registerz80.c
+SOURCE="..\..\..\monitor\mon_registerz80.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\monitor\mon_ui.c
+SOURCE="..\..\..\monitor\mon_ui.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\monitor\mon_util.c
+SOURCE="..\..\..\monitor\mon_util.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\monitor\monitor.c
+SOURCE="..\..\..\monitor\monitor.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\monitor\monitor_network.c
+SOURCE="..\..\..\monitor\monitor_network.c"
 # End Source File
 # End Target
 # End Project
