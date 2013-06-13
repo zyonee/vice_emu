@@ -325,20 +325,9 @@ libarch_a_DEPENDENCIES = \
 endif
 
 EXTRA_DIST = \
-	cbm5x0.dsp \
-	core.dsp \
-	crtc.dsp \
 	dirent.c \
-	diskimage.dsp \
-	drive.dsp \
-	fileio.dsp \
-	fsdevice.dsp \
-	geninfocontrib.dsp \
 	genmenuid.sh \
-	genmsvcver.dsp \
 	genstringid.sh \
-	gentranslate.dsp \
-	genwinres.dsp \
 	genwinres.sh \
 	gfxoutputdrv.dsp \
 	iec.dsp \

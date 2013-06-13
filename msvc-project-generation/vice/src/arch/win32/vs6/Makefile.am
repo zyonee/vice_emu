@@ -17,4 +17,15 @@ EXTRA_DIST = \
 	c64scpu64.dsp \
 	cartconv.dsp \
 	cbm2.dsp \
-	cbm2common.dsp
+	cbm2common.dsp \
+	cbm5x0.dsp \
+	core.dsp \
+	crtc.dsp \
+	diskimage.dsp \
+	drive.dsp \
+	fileio.dsp \
+	fsdevice.dsp \
+	geninfocontrib.dsp \
+	genmsvcver.dsp \
+	gentranslate.dsp \
+	genwinres.dsp
