@@ -43,7 +43,7 @@ RSC=rc.exe
 # PROP Intermediate_Dir "libs\video\Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\c64" /I "..\..\raster" /I "..\..\video" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64" /I "..\..\..\raster" /I "..\..\..\video" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -66,7 +66,7 @@ LIB32=link.exe -lib
 # PROP Intermediate_Dir "libs\video\Debug"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /Z7 /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\c64" /I "..\..\raster" /I "..\..\video" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64" /I "..\..\..\raster" /I "..\..\..\video" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -88,8 +88,8 @@ LIB32=link.exe -lib
 # PROP Output_Dir "libs\video\DXRelease"
 # PROP Intermediate_Dir "libs\video\DXRelease"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\c64" /I "..\..\raster" /I "..\..\video" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\c64" /I "..\..\raster" /I "..\..\video" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64" /I "..\..\..\raster" /I "..\..\..\video" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -111,8 +111,8 @@ LIB32=link.exe -lib
 # PROP Output_Dir "libs\video\DXDebug"
 # PROP Intermediate_Dir "libs\video\DXDebug"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\c64" /I "..\..\raster" /I "..\..\video" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\c64" /I "..\..\raster" /I "..\..\video" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD BASE CPP /nologo /MTd /W3 /GX /Z7 /Od /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64" /I "..\..\..\raster" /I "..\..\..\video" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -132,99 +132,99 @@ LIB32=link.exe -lib
 # Name "video - Win32 DX Debug"
 # Begin Source File
 
-SOURCE="..\..\video\render1x1.c"
+SOURCE="..\..\..\video\render1x1.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\video\render1x1ntsc.c"
+SOURCE="..\..\..\video\render1x1ntsc.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\video\render1x1pal.c"
+SOURCE="..\..\..\video\render1x1pal.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\video\render1x2.c"
+SOURCE="..\..\..\video\render1x2.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\video\render1x2crt.c"
+SOURCE="..\..\..\video\render1x2crt.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\video\render2x2.c"
+SOURCE="..\..\..\video\render2x2.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\video\render2x2crt.c"
+SOURCE="..\..\..\video\render2x2crt.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\video\render2x2ntsc.c"
+SOURCE="..\..\..\video\render2x2ntsc.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\video\render2x2pal.c"
+SOURCE="..\..\..\video\render2x2pal.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\video\render2x4.c"
+SOURCE="..\..\..\video\render2x4.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\video\render2x4crt.c"
+SOURCE="..\..\..\video\render2x4crt.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\video\renderscale2x.c"
+SOURCE="..\..\..\video\renderscale2x.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\video\renderyuv.c"
+SOURCE="..\..\..\video\renderyuv.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\video\video-canvas.c"
+SOURCE="..\..\..\video\video-canvas.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\video\video-cmdline-options.c"
+SOURCE="..\..\..\video\video-cmdline-options.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\video\video-color.c"
+SOURCE="..\..\..\video\video-color.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\video\video-render-1x2.c"
+SOURCE="..\..\..\video\video-render-1x2.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\video\video-render-2x2.c"
+SOURCE="..\..\..\video\video-render-2x2.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\video\video-render-crt.c"
+SOURCE="..\..\..\video\video-render-crt.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\video\video-render-pal.c"
+SOURCE="..\..\..\video\video-render-pal.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\video\video-render.c"
+SOURCE="..\..\..\video\video-render.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\video\video-resources.c"
+SOURCE="..\..\..\video\video-resources.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\video\video-sound.c"
+SOURCE="..\..\..\video\video-sound.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\video\video-viewport.c"
+SOURCE="..\..\..\video\video-viewport.c"
 # End Source File
 # End Target
 # End Project

@@ -333,16 +333,6 @@ EXTRA_DIST = \
 	resdialogs.txt \
 	resmenu.txt \
 	resstrings.txt \
-	userport.dsp \
-	vdc.dsp \
-	vdrive.dsp \
-	vic20.dsp \
-	vic20cart.dsp \
-	vicii.dsp \
-	viciidtv.dsp \
-	viciisc.dsp \
-	video.dsp \
-	vsid.dsp \
 	vsidlib.dsp \
 	x128.dsp \
 	x64.dsp \

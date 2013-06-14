@@ -43,7 +43,7 @@ RSC=rc.exe
 # PROP Intermediate_Dir "libs\viciidtv\Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\c64" /I "..\..\c64dtv" /I "..\..\raster" /I "..\..\video" /I "..\..\monitor" /I "..\..\c64\cart" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64" /I "..\..\..\c64dtv" /I "..\..\..\raster" /I "..\..\..\video" /I "..\..\..\monitor" /I "..\..\..\c64\cart" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -66,7 +66,7 @@ LIB32=link.exe -lib
 # PROP Intermediate_Dir "libs\viciidtv\Debug"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /Z7 /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\c64" /I "..\..\c64dtv" /I "..\..\raster" /I "..\..\video" /I "..\..\monitor" /I "..\..\c64\cart" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64" /I "..\..\..\c64dtv" /I "..\..\..\raster" /I "..\..\..\video" /I "..\..\..\monitor" /I "..\..\..\c64\cart" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -88,8 +88,8 @@ LIB32=link.exe -lib
 # PROP Output_Dir "libs\viciidtv\DXRelease"
 # PROP Intermediate_Dir "libs\viciidtv\DXRelease"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\c64" /I "..\..\c64dtv" /I "..\..\raster" /I "..\..\video" /I "..\..\monitor" /I "..\..\c64\cart" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\c64" /I "..\..\c64dtv" /I "..\..\raster" /I "..\..\video" /I "..\..\monitor" /I "..\..\c64\cart" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64" /I "..\..\..\c64dtv" /I "..\..\..\raster" /I "..\..\..\video" /I "..\..\..\monitor" /I "..\..\..\c64\cart" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -111,8 +111,8 @@ LIB32=link.exe -lib
 # PROP Output_Dir "libs\viciidtv\DXDebug"
 # PROP Intermediate_Dir "libs\viciidtv\DXDebug"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\c64" /I "..\..\c64dtv" /I "..\..\raster" /I "..\..\video" /I "..\..\monitor" /I "..\..\c64\cart" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\c64" /I "..\..\c64dtv" /I "..\..\raster" /I "..\..\video" /I "..\..\monitor" /I "..\..\c64\cart" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD BASE CPP /nologo /MTd /W3 /GX /Z7 /Od /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64" /I "..\..\..\c64dtv" /I "..\..\..\raster" /I "..\..\..\video" /I "..\..\..\monitor" /I "..\..\..\c64\cart" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -132,55 +132,55 @@ LIB32=link.exe -lib
 # Name "viciidtv - Win32 DX Debug"
 # Begin Source File
 
-SOURCE="..\..\vicii\vicii-badline.c"
+SOURCE="..\..\..\vicii\vicii-badline.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\vicii\vicii-cmdline-options.c"
+SOURCE="..\..\..\vicii\vicii-cmdline-options.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\vicii\vicii-fetch.c"
+SOURCE="..\..\..\vicii\vicii-fetch.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\vicii\vicii-irq.c"
+SOURCE="..\..\..\vicii\vicii-irq.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\vicii\vicii-mem.c"
+SOURCE="..\..\..\vicii\vicii-mem.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\vicii\vicii-phi1.c"
+SOURCE="..\..\..\vicii\vicii-phi1.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\vicii\vicii-resources.c"
+SOURCE="..\..\..\vicii\vicii-resources.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\vicii\vicii-sprites.c"
+SOURCE="..\..\..\vicii\vicii-sprites.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\vicii\vicii-timing.c"
+SOURCE="..\..\..\vicii\vicii-timing.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\vicii\vicii.c
+SOURCE="..\..\..\vicii\vicii.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\vicii\viciidtv-color.c"
+SOURCE="..\..\..\vicii\viciidtv-color.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\vicii\viciidtv-draw.c"
+SOURCE="..\..\..\vicii\viciidtv-draw.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\vicii\viciidtv-snapshot.c"
+SOURCE="..\..\..\vicii\viciidtv-snapshot.c"
 # End Source File
 # End Target
 # End Project

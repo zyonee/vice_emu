@@ -43,7 +43,7 @@ RSC=rc.exe
 # PROP Intermediate_Dir "libs\vic20cart\Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\vic20" /I "..\..\c64\cart" /I "..\..\drive" /I "..\..\tape" /I "..\..\raster" /I "..\..\monitor" /I "..\..\sid" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\vic20" /I "..\..\..\c64\cart" /I "..\..\..\drive" /I "..\..\..\tape" /I "..\..\..\raster" /I "..\..\..\monitor" /I "..\..\..\sid" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -66,7 +66,7 @@ LIB32=link.exe -lib
 # PROP Intermediate_Dir "libs\vic20cart\Debug"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /Z7 /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\vic20" /I "..\..\c64\cart" /I "..\..\drive" /I "..\..\tape" /I "..\..\raster" /I "..\..\monitor" /I "..\..\sid" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\vic20" /I "..\..\..\c64\cart" /I "..\..\..\drive" /I "..\..\..\tape" /I "..\..\..\raster" /I "..\..\..\monitor" /I "..\..\..\sid" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -88,8 +88,8 @@ LIB32=link.exe -lib
 # PROP Output_Dir "libs\vic20cart\DXRelease"
 # PROP Intermediate_Dir "libs\vic20cart\DXRelease"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\vic20" /I "..\..\c64\cart" /I "..\..\drive" /I "..\..\tape" /I "..\..\raster" /I "..\..\monitor" /I "..\..\sid" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\vic20" /I "..\..\c64\cart" /I "..\..\drive" /I "..\..\tape" /I "..\..\raster" /I "..\..\monitor" /I "..\..\sid" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\vic20" /I "..\..\..\c64\cart" /I "..\..\..\drive" /I "..\..\..\tape" /I "..\..\..\raster" /I "..\..\..\monitor" /I "..\..\..\sid" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -111,8 +111,8 @@ LIB32=link.exe -lib
 # PROP Output_Dir "libs\vic20cart\DXDebug"
 # PROP Intermediate_Dir "libs\vic20cart\DXDebug"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\vic20" /I "..\..\c64\cart" /I "..\..\drive" /I "..\..\tape" /I "..\..\raster" /I "..\..\monitor" /I "..\..\sid" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\vic20" /I "..\..\c64\cart" /I "..\..\drive" /I "..\..\tape" /I "..\..\raster" /I "..\..\monitor" /I "..\..\sid" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD BASE CPP /nologo /MTd /W3 /GX /Z7 /Od /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\vic20" /I "..\..\..\c64\cart" /I "..\..\..\drive" /I "..\..\..\tape" /I "..\..\..\raster" /I "..\..\..\monitor" /I "..\..\..\sid" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -132,43 +132,43 @@ LIB32=link.exe -lib
 # Name "vic20cart - Win32 DX Debug"
 # Begin Source File
 
-SOURCE="..\..\vic20\cart\finalexpansion.c"
+SOURCE="..\..\..\vic20\cart\finalexpansion.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\vic20\cart\mascuerade-stubs.c"
+SOURCE="..\..\..\vic20\cart\mascuerade-stubs.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\vic20\cart\megacart.c"
+SOURCE="..\..\..\vic20\cart\megacart.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\vic20\cart\vic-fp.c"
+SOURCE="..\..\..\vic20\cart\vic-fp.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\vic20\cart\vic20-generic.c"
+SOURCE="..\..\..\vic20\cart\vic20-generic.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\vic20\cart\vic20-ieee488.c"
+SOURCE="..\..\..\vic20\cart\vic20-ieee488.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\vic20\cart\vic20-midi.c"
+SOURCE="..\..\..\vic20\cart\vic20-midi.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\vic20\cart\vic20-sidcart.c"
+SOURCE="..\..\..\vic20\cart\vic20-sidcart.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\vic20\cart\vic20cart.c"
+SOURCE="..\..\..\vic20\cart\vic20cart.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\vic20\cart\vic20cartmem.c"
+SOURCE="..\..\..\vic20\cart\vic20cartmem.c"
 # End Source File
 # End Target
 # End Project
