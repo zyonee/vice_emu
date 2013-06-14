@@ -38,4 +38,22 @@ EXTRA_DIST = \
 	imagecontents.dsp \
 	monitor.dsp \
 	p64.dsp \
-	parallel.dsp
+	parallel.dsp \
+	pet.dsp \
+	petcat.dsp \
+	platform.dsp \
+	plus4.dsp \
+	plus4exp.dsp \
+	printerdrv.dsp \
+	raster.dsp \
+	resid.dsp \
+	residdtv.dsp \
+	residfp.dsp \
+	rs232drv.dsp \
+	rtc.dsp \
+	scpu64.dsp \
+	serial.dsp \
+	sid.dsp \
+	sounddrv.dsp \
+	tape.dsp \
+	tcbm.dsp

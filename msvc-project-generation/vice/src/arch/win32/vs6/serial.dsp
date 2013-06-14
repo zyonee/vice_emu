@@ -1,26 +1,26 @@
-# Microsoft Developer Studio Project File - Name="raster" - Package Owner=<4>
+# Microsoft Developer Studio Project File - Name="serial" - Package Owner=<4>
 # Microsoft Developer Studio Generated Build File, Format Version 6.00
 # ** DO NOT EDIT **
 
 # TARGTYPE "Win32 (x86) Static Library" 0x0104
 
-CFG=raster - Win32 Debug
+CFG=serial - Win32 Debug
 !MESSAGE This is not a valid makefile. To build this project using NMAKE,
 !MESSAGE use the Export Makefile command and run
 !MESSAGE 
-!MESSAGE NMAKE /f "raster.mak".
+!MESSAGE NMAKE /f "serial.mak".
 !MESSAGE 
 !MESSAGE You can specify a configuration when running NMAKE
 !MESSAGE by defining the macro CFG on the command line. For example:
 !MESSAGE 
-!MESSAGE NMAKE /f "raster.mak" CFG="raster - Win32 Debug"
+!MESSAGE NMAKE /f "serial.mak" CFG="serial - Win32 Debug"
 !MESSAGE 
 !MESSAGE Possible choices for configuration are:
 !MESSAGE 
-!MESSAGE "raster - Win32 Release" (based on "Win32 (x86) Static Library")
-!MESSAGE "raster - Win32 Debug" (based on "Win32 (x86) Static Library")
-!MESSAGE "raster - Win32 DX Release" (based on "Win32 (x86) Static Library")
-!MESSAGE "raster - Win32 DX Debug" (based on "Win32 (x86) Static Library")
+!MESSAGE "serial - Win32 Release" (based on "Win32 (x86) Static Library")
+!MESSAGE "serial - Win32 Debug" (based on "Win32 (x86) Static Library")
+!MESSAGE "serial - Win32 DX Release" (based on "Win32 (x86) Static Library")
+!MESSAGE "serial - Win32 DX Debug" (based on "Win32 (x86) Static Library")
 !MESSAGE 
 
 # Begin Project
@@ -30,7 +30,7 @@ CFG=raster - Win32 Debug
 CPP=cl.exe
 RSC=rc.exe
 
-!IF  "$(CFG)" == "raster - Win32 Release"
+!IF  "$(CFG)" == "serial - Win32 Release"
 
 # PROP BASE Use_MFC 0
 # PROP BASE Use_Debug_Libraries 0
@@ -39,11 +39,11 @@ RSC=rc.exe
 # PROP BASE Target_Dir ""
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 0
-# PROP Output_Dir "libs\raster\Release"
-# PROP Intermediate_Dir "libs\raster\Release"
+# PROP Output_Dir "libs\serial\Release"
+# PROP Intermediate_Dir "libs\serial\Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\\" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\vdrive" /I "..\..\..\drive" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -53,7 +53,7 @@ LIB32=link.exe -lib
 # ADD BASE LIB32 /nologo
 # ADD LIB32 /nologo
 
-!ELSEIF  "$(CFG)" == "raster - Win32 Debug"
+!ELSEIF  "$(CFG)" == "serial - Win32 Debug"
 
 # PROP BASE Use_MFC 0
 # PROP BASE Use_Debug_Libraries 1
@@ -62,11 +62,11 @@ LIB32=link.exe -lib
 # PROP BASE Target_Dir ""
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 1
-# PROP Output_Dir "libs\raster\Debug"
-# PROP Intermediate_Dir "libs\raster\Debug"
+# PROP Output_Dir "libs\serial\Debug"
+# PROP Intermediate_Dir "libs\serial\Debug"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /Z7 /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\\" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\vdrive" /I "..\..\..\drive" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -76,7 +76,7 @@ LIB32=link.exe -lib
 # ADD BASE LIB32 /nologo
 # ADD LIB32 /nologo
 
-!ELSEIF  "$(CFG)" == "raster - Win32 DX Release"
+!ELSEIF  "$(CFG)" == "serial - Win32 DX Release"
 
 # PROP BASE Use_MFC 0
 # PROP BASE Use_Debug_Libraries 0
@@ -85,11 +85,11 @@ LIB32=link.exe -lib
 # PROP BASE Target_Dir ""
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 0
-# PROP Output_Dir "libs\raster\DXRelease"
-# PROP Intermediate_Dir "libs\raster\DXRelease"
+# PROP Output_Dir "libs\serial\DXRelease"
+# PROP Intermediate_Dir "libs\serial\DXRelease"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\\" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\\" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\vdrive" /I "..\..\..\drive" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -99,7 +99,7 @@ LIB32=link.exe -lib
 # ADD BASE LIB32 /nologo
 # ADD LIB32 /nologo
 
-!ELSEIF  "$(CFG)" == "raster - Win32 DX Debug"
+!ELSEIF  "$(CFG)" == "serial - Win32 DX Debug"
 
 # PROP BASE Use_MFC 0
 # PROP BASE Use_Debug_Libraries 1
@@ -108,11 +108,11 @@ LIB32=link.exe -lib
 # PROP BASE Target_Dir ""
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 1
-# PROP Output_Dir "libs\raster\DXDebug"
-# PROP Intermediate_Dir "libs\raster\DXDebug"
+# PROP Output_Dir "libs\serial\DXDebug"
+# PROP Intermediate_Dir "libs\serial\DXDebug"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\\" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\\" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD BASE CPP /nologo /MTd /W3 /GX /Z7 /Od /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\vdrive" /I "..\..\..\drive" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -126,61 +126,49 @@ LIB32=link.exe -lib
 
 # Begin Target
 
-# Name "raster - Win32 Release"
-# Name "raster - Win32 Debug"
-# Name "raster - Win32 DX Release"
-# Name "raster - Win32 DX Debug"
+# Name "serial - Win32 Release"
+# Name "serial - Win32 Debug"
+# Name "serial - Win32 DX Release"
+# Name "serial - Win32 DX Debug"
 # Begin Source File
 
-SOURCE="..\..\raster\raster-cache.c"
+SOURCE="..\..\..\serial\fsdrive.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\raster\raster-canvas.c"
+SOURCE="..\..\..\serial\realdevice.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\raster\raster-changes.c"
+SOURCE="..\..\..\serial\serial-device.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\raster\raster-cmdline-options.c"
+SOURCE="..\..\..\serial\serial-iec-bus.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\raster\raster-line-changes-sprite.c"
+SOURCE="..\..\..\serial\serial-iec-device.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\raster\raster-line-changes.c"
+SOURCE="..\..\..\serial\serial-iec-lib.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\raster\raster-line.c"
+SOURCE="..\..\..\serial\serial-iec.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\raster\raster-modes.c"
+SOURCE="..\..\..\serial\serial-realdevice.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\raster\raster-resources.c"
+SOURCE="..\..\..\serial\serial-trap.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\raster\raster-sprite-cache.c"
-# End Source File
-# Begin Source File
-
-SOURCE="..\..\raster\raster-sprite-status.c"
-# End Source File
-# Begin Source File
-
-SOURCE="..\..\raster\raster-sprite.c"
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\raster\raster.c
+SOURCE="..\..\..\serial\serial.c"
 # End Source File
 # End Target
 # End Project

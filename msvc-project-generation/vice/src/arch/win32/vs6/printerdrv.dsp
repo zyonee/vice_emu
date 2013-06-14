@@ -43,7 +43,7 @@ RSC=rc.exe
 # PROP Intermediate_Dir "libs\printerdrv\Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\\" /D "NDEBUG" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /I "..\msvc" /I "..\\" /I "..\..\..\\" /D "NDEBUG" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409 /d "NDEBUG"
 # ADD RSC /l 0x409 /d "NDEBUG"
 BSC32=bscmake.exe
@@ -66,7 +66,7 @@ LIB32=link.exe -lib
 # PROP Intermediate_Dir "libs\printerdrv\Debug"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c
-# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\\" /D "_DEBUG" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I "..\msvc" /I "..\\" /I "..\..\..\\" /D "_DEBUG" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409 /d "_DEBUG"
 # ADD RSC /l 0x409 /d "_DEBUG"
 BSC32=bscmake.exe
@@ -88,8 +88,8 @@ LIB32=link.exe -lib
 # PROP Output_Dir "libs\printerdrv\DXRelease"
 # PROP Intermediate_Dir "libs\printerdrv\DXRelease"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\\" /D "NDEBUG" /D "WIN32" /D "IDE_COMPILE" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\\" /D "NDEBUG" /D "WIN32" /D "IDE_COMPILE" /D "_WINDOWS" /YX /FD /c
+# ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "NDEBUG" /D "WIN32" /D "IDE_COMPILE" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /I "..\msvc" /I "..\\" /I "..\..\..\\" /D "NDEBUG" /D "WIN32" /D "IDE_COMPILE" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409 /d "NDEBUG"
 # ADD RSC /l 0x409 /d "NDEBUG"
 BSC32=bscmake.exe
@@ -111,8 +111,8 @@ LIB32=link.exe -lib
 # PROP Output_Dir "libs\printerdrv\DXDebug"
 # PROP Intermediate_Dir "libs\printerdrv\DXDebug"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\\" /D "_DEBUG" /D "WIN32" /D "IDE_COMPILE" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\\" /D "_DEBUG" /D "WIN32" /D "IDE_COMPILE" /D "_WINDOWS" /YX /FD /c
+# ADD BASE CPP /nologo /MTd /W3 /GX /Z7 /Od /D "_DEBUG" /D "WIN32" /D "IDE_COMPILE" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I "..\msvc" /I "..\\" /I "..\..\..\\" /D "_DEBUG" /D "WIN32" /D "IDE_COMPILE" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409 /d "_DEBUG"
 # ADD RSC /l 0x409 /d "_DEBUG"
 BSC32=bscmake.exe
@@ -132,55 +132,55 @@ LIB32=link.exe -lib
 # Name "printerdrv - Win32 DX Debug"
 # Begin Source File
 
-SOURCE="..\..\printerdrv\driver-select.c"
+SOURCE="..\..\..\printerdrv\driver-select.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\printerdrv\drv-ascii.c"
+SOURCE="..\..\..\printerdrv\drv-ascii.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\printerdrv\drv-mps803.c"
+SOURCE="..\..\..\printerdrv\drv-mps803.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\printerdrv\drv-nl10.c"
+SOURCE="..\..\..\printerdrv\drv-nl10.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\printerdrv\drv-raw.c"
+SOURCE="..\..\..\printerdrv\drv-raw.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\printerdrv\interface-serial.c"
+SOURCE="..\..\..\printerdrv\interface-serial.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\printerdrv\interface-userport.c"
+SOURCE="..\..\..\printerdrv\interface-userport.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\printerdrv\output-graphics.c"
+SOURCE="..\..\..\printerdrv\output-graphics.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\printerdrv\output-select.c"
+SOURCE="..\..\..\printerdrv\output-select.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\printerdrv\output-text.c"
+SOURCE="..\..\..\printerdrv\output-text.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\printerdrv\printer-serial.c"
+SOURCE="..\..\..\printerdrv\printer-serial.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\printerdrv\printer-userport.c"
+SOURCE="..\..\..\printerdrv\printer-userport.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\printerdrv\printer.c
+SOURCE="..\..\..\printerdrv\printer.c"
 # End Source File
 # End Target
 # End Project

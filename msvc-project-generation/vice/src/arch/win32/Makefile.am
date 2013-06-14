@@ -329,28 +329,10 @@ EXTRA_DIST = \
 	genmenuid.sh \
 	genstringid.sh \
 	genwinres.sh \
-	pet.dsp \
-	petcat.dsp \
-	platform.dsp \
-	plus4.dsp \
-	plus4exp.dsp \
-	printerdrv.dsp \
-	raster.dsp \
-	resid.dsp \
-	residdtv.dsp \
-	residfp.dsp \
 	res.txt \
 	resdialogs.txt \
 	resmenu.txt \
 	resstrings.txt \
-	rs232drv.dsp \
-	rtc.dsp \
-	scpu64.dsp \
-	serial.dsp \
-	sid.dsp \
-	sounddrv.dsp \
-	tape.dsp \
-	tcbm.dsp \
 	userport.dsp \
 	vdc.dsp \
 	vdrive.dsp \

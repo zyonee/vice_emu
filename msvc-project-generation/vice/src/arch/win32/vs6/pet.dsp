@@ -43,7 +43,7 @@ RSC=rc.exe
 # PROP Intermediate_Dir "libs\pet\Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\drive" /I "..\..\lib\p64" /I "..\..\userport" /I "..\..\video" /I "..\..\tape" /I "..\..\crtc" /I "..\..\raster" /I "..\..\monitor" /I "..\..\sid" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\userport" /I "..\..\..\video" /I "..\..\..\tape" /I "..\..\..\crtc" /I "..\..\..\raster" /I "..\..\..\monitor" /I "..\..\..\sid" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -66,7 +66,7 @@ LIB32=link.exe -lib
 # PROP Intermediate_Dir "libs\pet\Debug"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /Z7 /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\drive" /I "..\..\lib\p64" /I "..\..\userport" /I "..\..\video" /I "..\..\tape" /I "..\..\crtc" /I "..\..\raster" /I "..\..\monitor" /I "..\..\sid" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\userport" /I "..\..\..\video" /I "..\..\..\tape" /I "..\..\..\crtc" /I "..\..\..\raster" /I "..\..\..\monitor" /I "..\..\..\sid" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -88,8 +88,8 @@ LIB32=link.exe -lib
 # PROP Output_Dir "libs\pet\DXRelease"
 # PROP Intermediate_Dir "libs\pet\DXRelease"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\drive" /I "..\..\lib\p64" /I "..\..\userport" /I "..\..\video" /I "..\..\tape" /I "..\..\crtc" /I "..\..\raster" /I "..\..\monitor" /I "..\..\sid" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\drive" /I "..\..\lib\p64" /I "..\..\userport" /I "..\..\video" /I "..\..\tape" /I "..\..\crtc" /I "..\..\raster" /I "..\..\monitor" /I "..\..\sid" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\userport" /I "..\..\..\video" /I "..\..\..\tape" /I "..\..\..\crtc" /I "..\..\..\raster" /I "..\..\..\monitor" /I "..\..\..\sid" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -111,8 +111,8 @@ LIB32=link.exe -lib
 # PROP Output_Dir "libs\pet\DXDebug"
 # PROP Intermediate_Dir "libs\pet\DXDebug"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\drive" /I "..\..\lib\p64" /I "..\..\userport" /I "..\..\video" /I "..\..\tape" /I "..\..\crtc" /I "..\..\raster" /I "..\..\monitor" /I "..\..\sid" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\drive" /I "..\..\lib\p64" /I "..\..\userport" /I "..\..\video" /I "..\..\tape" /I "..\..\crtc" /I "..\..\raster" /I "..\..\monitor" /I "..\..\sid" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD BASE CPP /nologo /MTd /W3 /GX /Z7 /Od /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\userport" /I "..\..\..\video" /I "..\..\..\tape" /I "..\..\..\crtc" /I "..\..\..\raster" /I "..\..\..\monitor" /I "..\..\..\sid" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -132,111 +132,111 @@ LIB32=link.exe -lib
 # Name "pet - Win32 DX Debug"
 # Begin Source File
 
-SOURCE="..\..\pet\6809.c"
+SOURCE="..\..\..\pet\6809.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\pet\pet-cmdline-options.c"
+SOURCE="..\..\..\pet\pet-cmdline-options.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\pet\pet-resources.c"
+SOURCE="..\..\..\pet\pet-resources.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\pet\pet-sidcart.c"
+SOURCE="..\..\..\pet\pet-sidcart.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\pet\pet-snapshot.c"
+SOURCE="..\..\..\pet\pet-snapshot.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\pet\pet.c
+SOURCE="..\..\..\pet\pet.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\pet\petacia1.c
+SOURCE="..\..\..\pet\petacia1.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\pet\petbus.c
+SOURCE="..\..\..\pet\petbus.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\pet\petcolour.c
+SOURCE="..\..\..\pet\petcolour.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\pet\petcpu.c
+SOURCE="..\..\..\pet\petcpu.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\pet\petdatasette.c
+SOURCE="..\..\..\pet\petdatasette.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\pet\petdrive.c
+SOURCE="..\..\..\pet\petdrive.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\pet\petdww.c
+SOURCE="..\..\..\pet\petdww.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\pet\pethre.c
+SOURCE="..\..\..\pet\pethre.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\pet\petiec.c
+SOURCE="..\..\..\pet\petiec.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\pet\petmem.c
+SOURCE="..\..\..\pet\petmem.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\pet\petmemsnapshot.c
+SOURCE="..\..\..\pet\petmemsnapshot.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\pet\petmodel.c
+SOURCE="..\..\..\pet\petmodel.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\pet\petpia1.c
+SOURCE="..\..\..\pet\petpia1.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\pet\petpia2.c
+SOURCE="..\..\..\pet\petpia2.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\pet\petprinter.c
+SOURCE="..\..\..\pet\petprinter.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\pet\petreu.c
+SOURCE="..\..\..\pet\petreu.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\pet\petrom.c
+SOURCE="..\..\..\pet\petrom.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\pet\petromset.c
+SOURCE="..\..\..\pet\petromset.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\pet\petsound.c
+SOURCE="..\..\..\pet\petsound.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\pet\petvia.c
+SOURCE="..\..\..\pet\petvia.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\pet\petvideo.c
+SOURCE="..\..\..\pet\petvideo.c"
 # End Source File
 # End Target
 # End Project

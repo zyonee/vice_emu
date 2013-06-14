@@ -43,7 +43,7 @@ RSC=rc.exe
 # PROP Intermediate_Dir "libs\scpu64\Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\drive" /I "..\..\lib\p64" /I "..\..\drive\iec\c64exp" /I "..\..\userport" /I "..\..\video" /I "..\..\tape" /I "..\..\sid" /I "..\..\viciisc" /I "..\..\c64" /I "..\..\c64\cart" /I "..\..\raster" /I "..\..\monitor" /I "..\..\rs232drv" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\drive\iec\c64exp" /I "..\..\..\userport" /I "..\..\..\video" /I "..\..\..\tape" /I "..\..\..\sid" /I "..\..\..\viciisc" /I "..\..\..\c64" /I "..\..\..\c64\cart" /I "..\..\..\raster" /I "..\..\..\monitor" /I "..\..\..\rs232drv" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -66,7 +66,7 @@ LIB32=link.exe -lib
 # PROP Intermediate_Dir "libs\scpu64\Debug"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /Z7 /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\drive" /I "..\..\lib\p64" /I "..\..\drive\iec\c64exp" /I "..\..\userport" /I "..\..\video" /I "..\..\tape" /I "..\..\sid" /I "..\..\c64" /I "..\..\c64\cart" /I "..\..\viciisc" /I "..\..\raster" /I "..\..\monitor" /I "..\..\rs232drv" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\drive\iec\c64exp" /I "..\..\..\userport" /I "..\..\..\video" /I "..\..\..\tape" /I "..\..\..\sid" /I "..\..\..\c64" /I "..\..\..\c64\cart" /I "..\..\..\viciisc" /I "..\..\..\raster" /I "..\..\..\monitor" /I "..\..\..\rs232drv" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -88,8 +88,8 @@ LIB32=link.exe -lib
 # PROP Output_Dir "libs\scpu64\DXRelease"
 # PROP Intermediate_Dir "libs\scpu64\DXRelease"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\drive" /I "..\..\lib\p64" /I "..\..\drive\iec\c64exp" /I "..\..\userport" /I "..\..\video" /I "..\..\tape" /I "..\..\sid" /I "..\..\viciisc" /I "..\..\c64" /I "..\..\c64\cart" /I "..\..\raster" /I "..\..\monitor" /I "..\..\rs232drv" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\drive" /I "..\..\lib\p64" /I "..\..\drive\iec\c64exp" /I "..\..\userport" /I "..\..\video" /I "..\..\tape" /I "..\..\sid" /I "..\..\viciisc" /I "..\..\c64" /I "..\..\c64\cart" /I "..\..\raster" /I "..\..\monitor" /I "..\..\rs232drv" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\drive\iec\c64exp" /I "..\..\..\userport" /I "..\..\..\video" /I "..\..\..\tape" /I "..\..\..\sid" /I "..\..\..\viciisc" /I "..\..\..\c64" /I "..\..\..\c64\cart" /I "..\..\..\raster" /I "..\..\..\monitor" /I "..\..\..\rs232drv" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -111,8 +111,8 @@ LIB32=link.exe -lib
 # PROP Output_Dir "libs\scpu64\DXDebug"
 # PROP Intermediate_Dir "libs\scpu64\DXDebug"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\drive" /I "..\..\lib\p64" /I "..\..\drive\iec\c64exp" /I "..\..\userport" /I "..\..\video" /I "..\..\tape" /I "..\..\sid" /I "..\..\c64" /I "..\..\c64\cart" /I "..\..\viciisc" /I "..\..\raster" /I "..\..\monitor" /I "..\..\rs232drv" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\drive" /I "..\..\lib\p64" /I "..\..\drive\iec\c64exp" /I "..\..\userport" /I "..\..\video" /I "..\..\tape" /I "..\..\sid" /I "..\..\c64" /I "..\..\c64\cart" /I "..\..\viciisc" /I "..\..\raster" /I "..\..\monitor" /I "..\..\rs232drv" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD BASE CPP /nologo /MTd /W3 /GX /Z7 /Od /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\drive\iec\c64exp" /I "..\..\..\userport" /I "..\..\..\video" /I "..\..\..\tape" /I "..\..\..\sid" /I "..\..\..\c64" /I "..\..\..\c64\cart" /I "..\..\..\viciisc" /I "..\..\..\raster" /I "..\..\..\monitor" /I "..\..\..\rs232drv" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -132,47 +132,47 @@ LIB32=link.exe -lib
 # Name "scpu64 - Win32 DX Debug"
 # Begin Source File
 
-SOURCE="..\..\scpu64\scpu64.c"
+SOURCE="..\..\..\scpu64\scpu64.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\scpu64\scpu64-cmdline-options.c"
+SOURCE="..\..\..\scpu64\scpu64-cmdline-options.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\scpu64\scpu64cpu.c"
+SOURCE="..\..\..\scpu64\scpu64cpu.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\scpu64\scpu64gluelogic.c"
+SOURCE="..\..\..\scpu64\scpu64gluelogic.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\scpu64\scpu64mem.c"
+SOURCE="..\..\..\scpu64\scpu64mem.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\scpu64\scpu64meminit.c"
+SOURCE="..\..\..\scpu64\scpu64meminit.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\scpu64\scpu64memsnapshot.c"
+SOURCE="..\..\..\scpu64\scpu64memsnapshot.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\scpu64\scpu64-resources.c"
+SOURCE="..\..\..\scpu64\scpu64-resources.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\scpu64\scpu64rom.c"
+SOURCE="..\..\..\scpu64\scpu64rom.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\scpu64\scpu64-snapshot.c"
+SOURCE="..\..\..\scpu64\scpu64-snapshot.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\scpu64\scpu64stubs.c"
+SOURCE="..\..\..\scpu64\scpu64stubs.c"
 # End Source File
 # End Target
 # End Project

@@ -1,26 +1,26 @@
-# Microsoft Developer Studio Project File - Name="tape" - Package Owner=<4>
+# Microsoft Developer Studio Project File - Name="plus4exp" - Package Owner=<4>
 # Microsoft Developer Studio Generated Build File, Format Version 6.00
 # ** DO NOT EDIT **
 
 # TARGTYPE "Win32 (x86) Static Library" 0x0104
 
-CFG=tape - Win32 Debug
+CFG=plus4exp - Win32 Debug
 !MESSAGE This is not a valid makefile. To build this project using NMAKE,
 !MESSAGE use the Export Makefile command and run
 !MESSAGE 
-!MESSAGE NMAKE /f "tape.mak".
+!MESSAGE NMAKE /f "plus4exp.mak".
 !MESSAGE 
 !MESSAGE You can specify a configuration when running NMAKE
 !MESSAGE by defining the macro CFG on the command line. For example:
 !MESSAGE 
-!MESSAGE NMAKE /f "tape.mak" CFG="tape - Win32 Debug"
+!MESSAGE NMAKE /f "plus4exp.mak" CFG="plus4exp - Win32 Debug"
 !MESSAGE 
 !MESSAGE Possible choices for configuration are:
 !MESSAGE 
-!MESSAGE "tape - Win32 Release" (based on "Win32 (x86) Static Library")
-!MESSAGE "tape - Win32 Debug" (based on "Win32 (x86) Static Library")
-!MESSAGE "tape - Win32 DX Release" (based on "Win32 (x86) Static Library")
-!MESSAGE "tape - Win32 DX Debug" (based on "Win32 (x86) Static Library")
+!MESSAGE "plus4exp - Win32 Release" (based on "Win32 (x86) Static Library")
+!MESSAGE "plus4exp - Win32 Debug" (based on "Win32 (x86) Static Library")
+!MESSAGE "plus4exp - Win32 DX Release" (based on "Win32 (x86) Static Library")
+!MESSAGE "plus4exp - Win32 DX Debug" (based on "Win32 (x86) Static Library")
 !MESSAGE 
 
 # Begin Project
@@ -30,7 +30,7 @@ CFG=tape - Win32 Debug
 CPP=cl.exe
 RSC=rc.exe
 
-!IF  "$(CFG)" == "tape - Win32 Release"
+!IF  "$(CFG)" == "plus4exp - Win32 Release"
 
 # PROP BASE Use_MFC 0
 # PROP BASE Use_Debug_Libraries 0
@@ -39,11 +39,11 @@ RSC=rc.exe
 # PROP BASE Target_Dir ""
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 0
-# PROP Output_Dir "libs\tape\Release"
-# PROP Intermediate_Dir "libs\tape\Release"
+# PROP Output_Dir "libs\plus4exp\Release"
+# PROP Intermediate_Dir "libs\plus4exp\Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\tape" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -53,7 +53,7 @@ LIB32=link.exe -lib
 # ADD BASE LIB32 /nologo
 # ADD LIB32 /nologo
 
-!ELSEIF  "$(CFG)" == "tape - Win32 Debug"
+!ELSEIF  "$(CFG)" == "plus4exp - Win32 Debug"
 
 # PROP BASE Use_MFC 0
 # PROP BASE Use_Debug_Libraries 1
@@ -62,11 +62,11 @@ LIB32=link.exe -lib
 # PROP BASE Target_Dir ""
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 1
-# PROP Output_Dir "libs\tape\Debug"
-# PROP Intermediate_Dir "libs\tape\Debug"
+# PROP Output_Dir "libs\plus4exp\Debug"
+# PROP Intermediate_Dir "libs\plus4exp\Debug"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /Z7 /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\tape" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -76,7 +76,7 @@ LIB32=link.exe -lib
 # ADD BASE LIB32 /nologo
 # ADD LIB32 /nologo
 
-!ELSEIF  "$(CFG)" == "tape - Win32 DX Release"
+!ELSEIF  "$(CFG)" == "plus4exp - Win32 DX Release"
 
 # PROP BASE Use_MFC 0
 # PROP BASE Use_Debug_Libraries 0
@@ -85,11 +85,11 @@ LIB32=link.exe -lib
 # PROP BASE Target_Dir ""
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 0
-# PROP Output_Dir "libs\tape\DXRelease"
-# PROP Intermediate_Dir "libs\tape\DXRelease"
+# PROP Output_Dir "libs\plus4exp\DXRelease"
+# PROP Intermediate_Dir "libs\plus4exp\DXRelease"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\tape" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\tape" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -99,7 +99,7 @@ LIB32=link.exe -lib
 # ADD BASE LIB32 /nologo
 # ADD LIB32 /nologo
 
-!ELSEIF  "$(CFG)" == "tape - Win32 DX Debug"
+!ELSEIF  "$(CFG)" == "plus4exp - Win32 DX Debug"
 
 # PROP BASE Use_MFC 0
 # PROP BASE Use_Debug_Libraries 1
@@ -108,11 +108,11 @@ LIB32=link.exe -lib
 # PROP BASE Target_Dir ""
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 1
-# PROP Output_Dir "libs\tape\DXDebug"
-# PROP Intermediate_Dir "libs\tape\DXDebug"
+# PROP Output_Dir "libs\plus4exp\DXDebug"
+# PROP Intermediate_Dir "libs\plus4exp\DXDebug"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\tape" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\tape" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD BASE CPP /nologo /MTd /W3 /GX /Z7 /Od /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -126,33 +126,21 @@ LIB32=link.exe -lib
 
 # Begin Target
 
-# Name "tape - Win32 Release"
-# Name "tape - Win32 Debug"
-# Name "tape - Win32 DX Release"
-# Name "tape - Win32 DX Debug"
+# Name "plus4exp - Win32 Release"
+# Name "plus4exp - Win32 Debug"
+# Name "plus4exp - Win32 DX Release"
+# Name "plus4exp - Win32 DX Debug"
 # Begin Source File
 
-SOURCE="..\..\tape\t64.c"
+SOURCE="..\..\..\drive\iec\plus4exp\iec-plus4exp.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\tape\tap.c"
+SOURCE="..\..\..\drive\iec\plus4exp\plus4exp-cmdline-options.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\tape\tape-internal.c"
-# End Source File
-# Begin Source File
-
-SOURCE="..\..\tape\tape-snapshot.c"
-# End Source File
-# Begin Source File
-
-SOURCE="..\..\tape\tape.c"
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\tape\tapeimage.c
+SOURCE="..\..\..\drive\iec\plus4exp\plus4exp-resources.c"
 # End Source File
 # End Target
 # End Project

@@ -43,7 +43,7 @@ RSC=rc.exe
 # PROP Intermediate_Dir "libs\plus4\Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\drive" /I "..\..\lib\p64" /I "..\..\video" /I "..\..\tape" /I "..\..\raster" /I "..\..\monitor" /I "..\..\sid" /I "..\..\core" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\video" /I "..\..\..\tape" /I "..\..\..\raster" /I "..\..\..\monitor" /I "..\..\..\sid" /I "..\..\..\core" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -66,7 +66,7 @@ LIB32=link.exe -lib
 # PROP Intermediate_Dir "libs\plus4\Debug"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /Z7 /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\drive" /I "..\..\lib\p64" /I "..\..\video" /I "..\..\tape" /I "..\..\raster" /I "..\..\monitor" /I "..\..\sid" /I "..\..\core" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\video" /I "..\..\..\tape" /I "..\..\..\raster" /I "..\..\..\monitor" /I "..\..\..\sid" /I "..\..\..\core" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -88,8 +88,8 @@ LIB32=link.exe -lib
 # PROP Output_Dir "libs\plus4\DXRelease"
 # PROP Intermediate_Dir "libs\plus4\DXRelease"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\drive" /I "..\..\lib\p64" /I "..\..\video" /I "..\..\tape" /I "..\..\raster" /I "..\..\monitor" /I "..\..\sid" /I "..\..\core" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\drive" /I "..\..\lib\p64" /I "..\..\video" /I "..\..\tape" /I "..\..\raster" /I "..\..\monitor" /I "..\..\sid" /I "..\..\core" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\video" /I "..\..\..\tape" /I "..\..\..\raster" /I "..\..\..\monitor" /I "..\..\..\sid" /I "..\..\..\core" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -111,8 +111,8 @@ LIB32=link.exe -lib
 # PROP Output_Dir "libs\plus4\DXDebug"
 # PROP Intermediate_Dir "libs\plus4\DXDebug"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\drive" /I "..\..\lib\p64" /I "..\..\video" /I "..\..\tape" /I "..\..\raster" /I "..\..\monitor" /I "..\..\sid" /I "..\..\core" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\\" /I "..\..\drive" /I "..\..\lib\p64" /I "..\..\video" /I "..\..\tape" /I "..\..\raster" /I "..\..\monitor" /I "..\..\sid" /I "..\..\core" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD BASE CPP /nologo /MTd /W3 /GX /Z7 /Od /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\lib\p64" /I "..\..\..\video" /I "..\..\..\tape" /I "..\..\..\raster" /I "..\..\..\monitor" /I "..\..\..\sid" /I "..\..\..\core" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
@@ -132,43 +132,43 @@ LIB32=link.exe -lib
 # Name "plus4 - Win32 DX Debug"
 # Begin Source File
 
-SOURCE="..\..\plus4\digiblaster.c"
+SOURCE="..\..\..\plus4\digiblaster.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\plus4\plus4-cmdline-options.c"
+SOURCE="..\..\..\plus4\plus4-cmdline-options.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\plus4\plus4-resources.c"
+SOURCE="..\..\..\plus4\plus4-resources.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\plus4\plus4-sidcart.c"
+SOURCE="..\..\..\plus4\plus4-sidcart.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\plus4\plus4-snapshot.c"
+SOURCE="..\..\..\plus4\plus4-snapshot.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\plus4\plus4.c
+SOURCE="..\..\..\plus4\plus4.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\plus4\plus4acia.c"
+SOURCE="..\..\..\plus4\plus4acia.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\plus4\plus4bus.c
+SOURCE="..\..\..\plus4\plus4bus.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\plus4\plus4cart.c
+SOURCE="..\..\..\plus4\plus4cart.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\plus4\plus4cpu.c
+SOURCE="..\..\..\plus4\plus4cpu.c"
 
 !IF  "$(CFG)" == "plus4 - Win32 Release"
 
@@ -191,135 +191,135 @@ SOURCE=..\..\plus4\plus4cpu.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\plus4\plus4datasette.c
+SOURCE="..\..\..\plus4\plus4datasette.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\plus4\plus4drive.c
+SOURCE="..\..\..\plus4\plus4drive.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\plus4\plus4iec.c
+SOURCE="..\..\..\plus4\plus4iec.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\plus4\plus4mem.c
+SOURCE="..\..\..\plus4\plus4mem.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\plus4\plus4memcsory256k.c
+SOURCE="..\..\..\plus4\plus4memcsory256k.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\plus4\plus4memhannes256k.c
+SOURCE="..\..\..\plus4\plus4memhannes256k.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\plus4\plus4memlimit.c
+SOURCE="..\..\..\plus4\plus4memlimit.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\plus4\plus4memrom.c
+SOURCE="..\..\..\plus4\plus4memrom.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\plus4\plus4memsnapshot.c
+SOURCE="..\..\..\plus4\plus4memsnapshot.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\plus4\plus4model.c
+SOURCE="..\..\..\plus4\plus4model.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\plus4\plus4parallel.c
+SOURCE="..\..\..\plus4\plus4parallel.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\plus4\plus4pio1.c
+SOURCE="..\..\..\plus4\plus4pio1.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\plus4\plus4pio2.c
+SOURCE="..\..\..\plus4\plus4pio2.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\plus4\plus4printer.c
+SOURCE="..\..\..\plus4\plus4printer.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\plus4\plus4rom.c
+SOURCE="..\..\..\plus4\plus4rom.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\plus4\plus4romset.c
+SOURCE="..\..\..\plus4\plus4romset.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\plus4\plus4speech.c
+SOURCE="..\..\..\plus4\plus4speech.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\plus4\plus4tcbm.c
+SOURCE="..\..\..\plus4\plus4tcbm.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\plus4\plus4video.c
+SOURCE="..\..\..\plus4\plus4video.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\plus4\ted-badline.c"
+SOURCE="..\..\..\plus4\ted-badline.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\plus4\ted-badline.h"
+SOURCE="..\..\..\plus4\ted-badline.h"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\plus4\ted-cmdline-options.c"
+SOURCE="..\..\..\plus4\ted-cmdline-options.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\plus4\ted-color.c"
+SOURCE="..\..\..\plus4\ted-color.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\plus4\ted-draw.c"
+SOURCE="..\..\..\plus4\ted-draw.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\plus4\ted-fetch.c"
+SOURCE="..\..\..\plus4\ted-fetch.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\plus4\ted-irq.c"
+SOURCE="..\..\..\plus4\ted-irq.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\plus4\ted-mem.c"
+SOURCE="..\..\..\plus4\ted-mem.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\plus4\ted-resources.c"
+SOURCE="..\..\..\plus4\ted-resources.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\plus4\ted-snapshot.c"
+SOURCE="..\..\..\plus4\ted-snapshot.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\plus4\ted-sound.c"
+SOURCE="..\..\..\plus4\ted-sound.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\plus4\ted-timer.c"
+SOURCE="..\..\..\plus4\ted-timer.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\plus4\ted-timing.c"
+SOURCE="..\..\..\plus4\ted-timing.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\plus4\ted.c
+SOURCE="..\..\..\plus4\ted.c"
 # End Source File
 # End Target
 # End Project
