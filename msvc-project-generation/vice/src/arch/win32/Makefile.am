@@ -333,18 +333,6 @@ EXTRA_DIST = \
 	resdialogs.txt \
 	resmenu.txt \
 	resstrings.txt \
-	vsidlib.dsp \
-	x128.dsp \
-	x64.dsp \
-	x64dtv.dsp \
-	x64sc.dsp \
-	xcbm2.dsp \
-	xcbm5x0.dsp \
-	xpet.dsp \
-	xplus4.dsp \
-	xscpu64.dsp \
-	xvic.dsp \
-	vice.dsw \
 	vice.manifest \
 	montb.bmp \
 	make-bindist.sh \

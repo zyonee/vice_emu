@@ -62,8 +62,20 @@ EXTRA_DIST = \
 	vdrive.dsp \
 	vic20.dsp \
 	vic20cart.dsp \
+	vice.dsw \
 	vicii.dsp \
 	viciidtv.dsp \
 	viciisc.dsp \
 	video.dsp \
-	vsid.dsp
+	vsid.dsp \
+	vsidlib.dsp \
+	x128.dsp \
+	x64.dsp \
+	x64dtv.dsp \
+	x64sc.dsp \
+	xcbm2.dsp \
+	xcbm5x0.dsp \
+	xpet.dsp \
+	xplus4.dsp \
+	xscpu64.dsp \
+	xvic.dsp

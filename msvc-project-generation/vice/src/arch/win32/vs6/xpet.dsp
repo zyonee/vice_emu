@@ -40,16 +40,16 @@ RSC=rc.exe
 # PROP BASE Target_Dir ""
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 0
-# PROP Output_Dir "..\..\..\data"
+# PROP Output_Dir "..\..\..\..\data"
 # PROP Intermediate_Dir "libs\xpet\Release"
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\platform" /I "..\..\\" /I "..\..\drive" /I "..\..\vdrive" /I "..\..\monitor" /I "..\..\lib\p64" /I "..\..\sid" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /I "..\msvc" /I "..\\" /I "..\..\..\platform" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\vdrive" /I "..\..\..\monitor" /I "..\..\..\lib\p64" /I "..\..\sid" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
 # ADD BASE RSC /l 0x409 /d "NDEBUG"
-# ADD RSC /l 0x409 /i ".\MSVC" /i ".\\" /i "..\..\\" /d "NDEBUG" /d "WIN32" /d "IDE_COMPILE" /d "NODIRECTX"
+# ADD RSC /l 0x409 /i "..\msvc" /i "..\\" /i "..\..\..\\" /d "NDEBUG" /d "WIN32" /d "IDE_COMPILE" /d "NODIRECTX"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
@@ -66,16 +66,16 @@ LINK32=link.exe
 # PROP BASE Target_Dir ""
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 1
-# PROP Output_Dir "..\..\..\data"
+# PROP Output_Dir "..\..\..\..\data"
 # PROP Intermediate_Dir "libs\xpet\Debug"
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /Zi /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\platform" /I "..\..\\" /I "..\..\drive" /I "..\..\vdrive" /I "..\..\monitor" /I "..\..\lib\p64" /I "..\..\sid" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I "..\msvc" /I "..\\" /I "..\..\..\platform" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\vdrive" /I "..\..\..\monitor" /I "..\..\..\lib\p64" /I "..\..\..\sid" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
 # ADD BASE RSC /l 0x409 /d "_DEBUG"
-# ADD RSC /l 0x409 /i ".\MSVC" /i ".\\" /i "..\..\\" /d "_DEBUG" /d "WIN32" /d "IDE_COMPILE" /d "NODIRECTX"
+# ADD RSC /l 0x409 /i "..\msvc" /i "..\\" /i "..\..\..\\" /d "_DEBUG" /d "WIN32" /d "IDE_COMPILE" /d "NODIRECTX"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
@@ -93,16 +93,16 @@ LINK32=link.exe
 # PROP BASE Target_Dir ""
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 0
-# PROP Output_Dir "..\..\..\data"
+# PROP Output_Dir "..\..\..\..\data"
 # PROP Intermediate_Dir "libs\xpet\DXRelease"
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\platform" /I "..\..\\" /I "..\..\drive" /I "..\..\vdrive" /I "..\..\monitor" /I "..\..\lib\p64" /I "..\..\sid" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I ".\\" /I "..\..\platform" /I "..\..\\" /I "..\..\drive" /I "..\..\vdrive" /I "..\..\monitor" /I "..\..\lib\p64" /I "..\..\sid" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /I "..\msvc" /I "..\\" /I "..\..\..\platform" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\vdrive" /I "..\..\..\monitor" /I "..\..\..\lib\p64" /I "..\..\..\sid" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
-# ADD BASE RSC /l 0x409 /i ".\MSVC" /i ".\\" /i "..\..\\" /d "NDEBUG" /d "WIN32" /d "IDE_COMPILE"
-# ADD RSC /l 0x409 /i ".\MSVC" /i ".\\" /i "..\..\\" /d "NDEBUG" /d "WIN32" /d "IDE_COMPILE"
+# ADD BASE RSC /l 0x409 /d "NDEBUG" /d "WIN32" /d "IDE_COMPILE"
+# ADD RSC /l 0x409 /i "..\msvc" /i "..\\" /i "..\..\..\\" /d "NDEBUG" /d "WIN32" /d "IDE_COMPILE"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
@@ -120,16 +120,16 @@ LINK32=link.exe
 # PROP BASE Target_Dir ""
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 1
-# PROP Output_Dir "..\..\..\data"
+# PROP Output_Dir "..\..\..\..\data"
 # PROP Intermediate_Dir "libs\xpet\DXDebug"
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\platform" /I "..\..\\" /I "..\..\drive" /I "..\..\vdrive" /I "..\..\monitor" /I "..\..\lib\p64" /I "..\..\sid" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I ".\msvc" /I ".\\" /I "..\..\platform" /I "..\..\\" /I "..\..\drive" /I "..\..\vdrive" /I "..\..\monitor" /I "..\..\lib\p64" /I "..\..\sid" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD BASE CPP /nologo /MTd /W3 /GX /Z7 /Od /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I "..\msvc" /I "..\\" /I "..\..\..\platform" /I "..\..\..\\" /I "..\..\..\drive" /I "..\..\..\vdrive" /I "..\..\..\monitor" /I "..\..\..\lib\p64" /I "..\..\..\sid" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
-# ADD BASE RSC /l 0x409 /i ".\MSVC" /i ".\\" /i "..\..\\" /d "_DEBUG" /d "WIN32" /d "IDE_COMPILE"
-# ADD RSC /l 0x409 /i ".\MSVC" /i ".\\" /i "..\..\\" /d "_DEBUG" /d "WIN32" /d "IDE_COMPILE"
+# ADD BASE RSC /l 0x409 /d "_DEBUG" /d "WIN32" /d "IDE_COMPILE"
+# ADD RSC /l 0x409 /i "..\msvc" /i "..\\" /i "..\..\..\\" /d "_DEBUG" /d "WIN32" /d "IDE_COMPILE"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
@@ -147,11 +147,11 @@ LINK32=link.exe
 # Name "xpet - Win32 DX Debug"
 # Begin Source File
 
-SOURCE=..\..\main.c
+SOURCE="..\..\..\main.c"
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\maincpu.c
+SOURCE="..\..\..\maincpu.c"
 
 !IF  "$(CFG)" == "xpet - Win32 Release"
 
@@ -171,53 +171,53 @@ SOURCE=..\..\maincpu.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\respet.rc
+SOURCE="..\respet.rc"
 
 !IF  "$(CFG)" == "xpet - Win32 Release"
 
 # PROP Ignore_Default_Tool 1
-USERDEP__RESPE="..\..\debug.h"	"respet.rc"	"res.rc"	"resacia.rc"	"resdrivepetcbm2.rc"	"respetreu.rc"	"respetdww.rc"	"respetcolour.rc"	"resautostart.rc"	"ressidcart.rc"	
+USERDEP__RESPE="..\..\..\debug.h"	"..\respet.rc"	"..\res.rc"	"..\resacia.rc"	"..\resdrivepetcbm2.rc"	"..\respetreu.rc"	"..\respetdww.rc"	"..\respetcolour.rc"	"..\resautostart.rc"	"..\ressidcart.rc"
 # Begin Custom Build
-InputPath=.\respet.rc
+InputPath="..\respet.rc"
 
-"respetcat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy /b respet.rc + res.rc + resacia.rc + resdrivepetcbm2.rc + respetreu.rc + respetdww.rc + respetcolour.rc + resautostart.rc + ressidcart.rc respetcat.rc  /b
+"..\respetcat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	copy /b ..\respet.rc + ..\res.rc + ..\resacia.rc + ..\resdrivepetcbm2.rc + ..\respetreu.rc + ..\respetdww.rc + ..\respetcolour.rc + ..\resautostart.rc + ..\ressidcart.rc ..\respetcat.rc  /b
 
 # End Custom Build
 
 !ELSEIF  "$(CFG)" == "xpet - Win32 Debug"
 
 # PROP Ignore_Default_Tool 1
-USERDEP__RESPE="..\..\debug.h"	"respet.rc"	"res.rc"	"resacia.rc"	"resdrivepetcbm2.rc"	"respetreu.rc"	"respetdww.rc"	"respetcolour.rc"	"resautostart.rc"	"ressidcart.rc"	
+USERDEP__RESPE="..\..\..\debug.h"	"..\respet.rc"	"..\res.rc"	"..\resacia.rc"	"..\resdrivepetcbm2.rc"	"..\respetreu.rc"	"..\respetdww.rc"	"..\respetcolour.rc"	"..\resautostart.rc"	"..\ressidcart.rc"
 # Begin Custom Build
-InputPath=.\respet.rc
+InputPath="..\respet.rc"
 
-"respetcat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy /b respet.rc + res.rc + resacia.rc + resdrivepetcbm2.rc + respetreu.rc + respetdww.rc + respetcolour.rc + resautostart.rc + ressidcart.rc respetcat.rc  /b
+"..\respetcat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	copy /b ..\respet.rc + ..\res.rc + ..\resacia.rc + ..\resdrivepetcbm2.rc + ..\respetreu.rc + ..\respetdww.rc + ..\respetcolour.rc + ..\resautostart.rc + ..\ressidcart.rc ..\respetcat.rc  /b
 
 # End Custom Build
 
 !ELSEIF  "$(CFG)" == "xpet - Win32 DX Release"
 
 # PROP Ignore_Default_Tool 1
-USERDEP__RESPE="..\..\debug.h"	"respet.rc"	"res.rc"	"resacia.rc"	"resdrivepetcbm2.rc"	"respetreu.rc"	"respetdww.rc"	"respetcolour.rc"	"resautostart.rc"	"ressidcart.rc"	
+USERDEP__RESPE="..\..\..\debug.h"	"..\respet.rc"	"..\res.rc"	"..\resacia.rc"	"..\resdrivepetcbm2.rc"	"..\respetreu.rc"	"..\respetdww.rc"	"..\respetcolour.rc"	"..\resautostart.rc"	"..\ressidcart.rc"
 # Begin Custom Build
-InputPath=.\respet.rc
+InputPath="..\respet.rc"
 
-"respetcat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy /b respet.rc + res.rc + resacia.rc + resdrivepetcbm2.rc + respetreu.rc + respetdww.rc + respetcolour.rc + resautostart.rc + ressidcart.rc respetcat.rc  /b
+"..\respetcat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	copy /b ..\respet.rc + ..\res.rc + ..\resacia.rc + ..\resdrivepetcbm2.rc + ..\respetreu.rc + ..\respetdww.rc + ..\respetcolour.rc + ..\resautostart.rc + ..\ressidcart.rc ..\respetcat.rc  /b
 
 # End Custom Build
 
 !ELSEIF  "$(CFG)" == "xpet - Win32 DX Debug"
 
 # PROP Ignore_Default_Tool 1
-USERDEP__RESPE="..\..\debug.h"	"respet.rc"	"res.rc"	"resacia.rc"	"resdrivepetcbm2.rc"	"respetreu.rc"	"respetdww.rc"	"respetcolour.rc"	"resautostart.rc"	"ressidcart.rc"	
+USERDEP__RESPE="..\..\..\debug.h"	"..\respet.rc"	"..\res.rc"	"..\resacia.rc"	"..\resdrivepetcbm2.rc"	"..\respetreu.rc"	"..\respetdww.rc"	"..\respetcolour.rc"	"..\resautostart.rc"	"..\ressidcart.rc"
 # Begin Custom Build
-InputPath=.\respet.rc
+InputPath="..\respet.rc"
 
-"respetcat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy /b respet.rc + res.rc + resacia.rc + resdrivepetcbm2.rc + respetreu.rc + respetdww.rc + respetcolour.rc + resautostart.rc + ressidcart.rc respetcat.rc  /b
+"..\respetcat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	copy /b ..\respet.rc + ..\res.rc + ..\resacia.rc + ..\resdrivepetcbm2.rc + ..\respetreu.rc + ..\respetdww.rc + ..\respetcolour.rc + ..\resautostart.rc + ..\ressidcart.rc ..\respetcat.rc  /b
 
 # End Custom Build
 
@@ -226,11 +226,11 @@ InputPath=.\respet.rc
 # End Source File
 # Begin Source File
 
-SOURCE=.\respetcat.rc
+SOURCE="..\respetcat.rc"
 # End Source File
 # Begin Source File
 
-SOURCE=.\vice.manifest
+SOURCE="..\vice.manifest"
 # End Source File
 # End Target
 # End Project
