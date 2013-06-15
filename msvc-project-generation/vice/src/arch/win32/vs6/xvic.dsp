@@ -160,8 +160,8 @@ USERDEP__RESVI="..\..\..\debug.h"	"..\resvic20.rc"	"..\res.rc"	"..\resvic.rc"	".
 # Begin Custom Build
 InputPath="..\resvic20.rc"
 
-"..\resvic20cat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy /b ..\resvic20.rc + ..\res.rc + ..\resvic.rc + ..\resdrivevic20.rc + ..\resrs232user.rc + ..\resmidi.rc + ..\reslightpen.rc + ..\resautostart.rc + ..\ressidcart.rc + ..\resacia.rc + ..\resgeoram.rc + ..\resdigimax.rc + ..\restfe.rc + ..\ressoundexpander.rc + ..\ressoundsampler.rc + ..\resds12c887rtc.rc ..\resvic20cat.rc /b
+"resvic20cat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	copy /b ..\resvic20.rc + ..\res.rc + ..\resvic.rc + ..\resdrivevic20.rc + ..\resrs232user.rc + ..\resmidi.rc + ..\reslightpen.rc + ..\resautostart.rc + ..\ressidcart.rc + ..\resacia.rc + ..\resgeoram.rc + ..\resdigimax.rc + ..\restfe.rc + ..\ressoundexpander.rc + ..\ressoundsampler.rc + ..\resds12c887rtc.rc resvic20cat.rc /b
 
 # End Custom Build
 
@@ -172,8 +172,8 @@ USERDEP__RESVI="..\..\..\debug.h"	"..\resvic20.rc"	"..\res.rc"	"..\resvic.rc"	".
 # Begin Custom Build
 InputPath="..\resvic20.rc"
 
-"..\resvic20cat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy /b ..\resvic20.rc + ..\res.rc + ..\resvic.rc + ..\resdrivevic20.rc + ..\resrs232user.rc + ..\resmidi.rc + ..\reslightpen.rc + ..\resautostart.rc + ..\ressidcart.rc + ..\resacia.rc + ..\resgeoram.rc + ..\resdigimax.rc + ..\restfe.rc + ..\ressoundexpander.rc + ..\ressoundsampler.rc + ..\resds12c887rtc.rc ..\resvic20cat.rc /b
+"resvic20cat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	copy /b ..\resvic20.rc + ..\res.rc + ..\resvic.rc + ..\resdrivevic20.rc + ..\resrs232user.rc + ..\resmidi.rc + ..\reslightpen.rc + ..\resautostart.rc + ..\ressidcart.rc + ..\resacia.rc + ..\resgeoram.rc + ..\resdigimax.rc + ..\restfe.rc + ..\ressoundexpander.rc + ..\ressoundsampler.rc + ..\resds12c887rtc.rc resvic20cat.rc /b
 
 # End Custom Build
 
@@ -184,8 +184,8 @@ USERDEP__RESVI="..\..\..\debug.h"	"..\resvic20.rc"	"..\res.rc"	"..\resvic.rc"	".
 # Begin Custom Build
 InputPath="..\resvic20.rc"
 
-"..\resvic20cat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy /b ..\resvic20.rc + ..\res.rc + ..\resvic.rc + ..\resdrivevic20.rc + ..\resrs232user.rc + ..\resmidi.rc + ..\reslightpen.rc + ..\resautostart.rc + ..\ressidcart.rc + ..\resacia.rc + ..\resgeoram.rc + ..\resdigimax.rc + ..\restfe.rc + ..\ressoundexpander.rc + ..\ressoundsampler.rc + ..\resds12c887rtc.rc ..\resvic20cat.rc /b
+"resvic20cat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	copy /b ..\resvic20.rc + ..\res.rc + ..\resvic.rc + ..\resdrivevic20.rc + ..\resrs232user.rc + ..\resmidi.rc + ..\reslightpen.rc + ..\resautostart.rc + ..\ressidcart.rc + ..\resacia.rc + ..\resgeoram.rc + ..\resdigimax.rc + ..\restfe.rc + ..\ressoundexpander.rc + ..\ressoundsampler.rc + ..\resds12c887rtc.rc resvic20cat.rc /b
 
 # End Custom Build
 
@@ -196,8 +196,8 @@ USERDEP__RESVI="..\..\..\debug.h"	"..\resvic20.rc"	"..\res.rc"	"..\resvic.rc"	".
 # Begin Custom Build
 InputPath="..\resvic20.rc"
 
-"..\resvic20cat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy /b ..\resvic20.rc + ..\res.rc + ..\resvic.rc + ..\resdrivevic20.rc + ..\resrs232user.rc + ..\resmidi.rc + ..\reslightpen.rc + ..\resautostart.rc + ..\ressidcart.rc + ..\resacia.rc + ..\resgeoram.rc + ..\resdigimax.rc + ..\restfe.rc + ..\ressoundexpander.rc + ..\ressoundsampler.rc + ..\resds12c887rtc.rc ..\resvic20cat.rc /b
+"resvic20cat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	copy /b ..\resvic20.rc + ..\res.rc + ..\resvic.rc + ..\resdrivevic20.rc + ..\resrs232user.rc + ..\resmidi.rc + ..\reslightpen.rc + ..\resautostart.rc + ..\ressidcart.rc + ..\resacia.rc + ..\resgeoram.rc + ..\resdigimax.rc + ..\restfe.rc + ..\ressoundexpander.rc + ..\ressoundsampler.rc + ..\resds12c887rtc.rc resvic20cat.rc /b
 
 # End Custom Build
 
@@ -206,7 +206,7 @@ InputPath="..\resvic20.rc"
 # End Source File
 # Begin Source File
 
-SOURCE="..\resvic20cat.rc"
+SOURCE=".\resvic20cat.rc"
 # End Source File
 # Begin Source File
 

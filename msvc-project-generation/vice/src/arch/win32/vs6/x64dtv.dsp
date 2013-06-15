@@ -164,8 +164,8 @@ USERDEP__RESC6="..\..\..\debug.h"	"..\resc64dtv.rc"	"..\res.rc"	"..\resdrivec64.
 # Begin Custom Build
 InputPath="..\resc64dtv.rc"
 
-"..\resc64dtvcat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy /b ..\resc64dtv.rc + ..\res.rc + ..\resdrivec64.rc  + ..\ressiddtv.rc + ..\resautostart.rc + ..\resvicii.rc  ..\resc64dtvcat.rc /b
+"resc64dtvcat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	copy /b ..\resc64dtv.rc + ..\res.rc + ..\resdrivec64.rc  + ..\ressiddtv.rc + ..\resautostart.rc + ..\resvicii.rc resc64dtvcat.rc /b
 
 # End Custom Build
 
@@ -176,8 +176,8 @@ USERDEP__RESC6="..\..\..\debug.h"	"..\resc64dtv.rc"	"..\res.rc"	"..\resdrivec64.
 # Begin Custom Build
 InputPath="..\resc64dtv.rc"
 
-"..\resc64dtvcat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy /b ..\resc64dtv.rc + ..\res.rc + ..\resdrivec64.rc + ..\ressiddtv.rc + ..\resautostart.rc + ..\resvicii.rc  ..\resc64dtvcat.rc /b
+"resc64dtvcat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	copy /b ..\resc64dtv.rc + ..\res.rc + ..\resdrivec64.rc + ..\ressiddtv.rc + ..\resautostart.rc + ..\resvicii.rc resc64dtvcat.rc /b
 
 # End Custom Build
 
@@ -188,8 +188,8 @@ USERDEP__RESC6="..\..\..\debug.h"	"..\resc64dtv.rc"	"..\res.rc"	"..\resdrivec64.
 # Begin Custom Build
 InputPath="..\resc64dtv.rc"
 
-"..\resc64dtvcat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy /b ..\resc64dtv.rc + ..\res.rc + ..\resdrivec64.rc  + ..\ressiddtv.rc + ..\resautostart.rc + ..\resvicii.rc  ..\resc64dtvcat.rc /b
+"resc64dtvcat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	copy /b ..\resc64dtv.rc + ..\res.rc + ..\resdrivec64.rc  + ..\ressiddtv.rc + ..\resautostart.rc + ..\resvicii.rc resc64dtvcat.rc /b
 
 # End Custom Build
 
@@ -200,8 +200,8 @@ USERDEP__RESC6="..\..\..\debug.h"	"..\resc64dtv.rc"	"..\res.rc"	"..\resdrivec64.
 # Begin Custom Build
 InputPath="..\resc64dtv.rc"
 
-"..\resc64dtvcat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy /b ..\resc64dtv.rc + ..\res.rc + ..\resdrivec64.rc  + ..\ressiddtv.rc + ..\resautostart.rc + ..\resvicii.rc  ..\resc64dtvcat.rc /b
+"resc64dtvcat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	copy /b ..\resc64dtv.rc + ..\res.rc + ..\resdrivec64.rc  + ..\ressiddtv.rc + ..\resautostart.rc + ..\resvicii.rc resc64dtvcat.rc /b
 
 # End Custom Build
 
@@ -210,7 +210,7 @@ InputPath="..\resc64dtv.rc"
 # End Source File
 # Begin Source File
 
-SOURCE="..\resc64dtvcat.rc"
+SOURCE=".\resc64dtvcat.rc"
 # End Source File
 # Begin Source File
 

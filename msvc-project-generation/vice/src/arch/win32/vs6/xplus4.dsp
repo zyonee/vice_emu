@@ -160,8 +160,8 @@ USERDEP__RESPL="..\..\..\debug.h"	"..\resplus4.rc"	"..\res.rc"	"..\rested.rc"	".
 # Begin Custom Build
 InputPath="..\resplus4.rc"
 
-"..\resplus4cat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy /b ..\resplus4.rc + ..\res.rc + ..\rested.rc + ..\resacia.rc + ..\resdriveplus4.rc + ..\resautostart.rc + ..\resv364speech.rc + ..\ressidcart.rc ..\resplus4cat.rc /b
+"resplus4cat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	copy /b ..\resplus4.rc + ..\res.rc + ..\rested.rc + ..\resacia.rc + ..\resdriveplus4.rc + ..\resautostart.rc + ..\resv364speech.rc + ..\ressidcart.rc resplus4cat.rc /b
 
 # End Custom Build
 
@@ -172,8 +172,8 @@ USERDEP__RESPL="..\..\..\debug.h"	"..\resplus4.rc"	"..\res.rc"	"..\rested.rc"	".
 # Begin Custom Build
 InputPath="..\resplus4.rc"
 
-"..\resplus4cat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy /b ..\resplus4.rc + ..\res.rc + ..\rested.rc + ..\resacia.rc + ..\resdriveplus4.rc + ..\resautostart.rc + ..\resv364speech.rc + ..\ressidcart.rc ..\resplus4cat.rc /b
+"resplus4cat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	copy /b ..\resplus4.rc + ..\res.rc + ..\rested.rc + ..\resacia.rc + ..\resdriveplus4.rc + ..\resautostart.rc + ..\resv364speech.rc + ..\ressidcart.rc resplus4cat.rc /b
 
 # End Custom Build
 
@@ -184,8 +184,8 @@ USERDEP__RESPL="..\..\..\debug.h"	"..\resplus4.rc"	"..\res.rc"	"..\rested.rc"	".
 # Begin Custom Build
 InputPath="..\resplus4.rc"
 
-"..\resplus4cat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy /b ..\resplus4.rc + ..\res.rc + ..\rested.rc + ..\resacia.rc + ..\resdriveplus4.rc + ..\resautostart.rc + ..\resv364speech.rc + ..\ressidcart.rc ..\resplus4cat.rc /b
+"resplus4cat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	copy /b ..\resplus4.rc + ..\res.rc + ..\rested.rc + ..\resacia.rc + ..\resdriveplus4.rc + ..\resautostart.rc + ..\resv364speech.rc + ..\ressidcart.rc resplus4cat.rc /b
 
 # End Custom Build
 
@@ -196,8 +196,8 @@ USERDEP__RESPL="..\..\..\debug.h"	"..\resplus4.rc"	"..\res.rc"	"..\rested.rc"	".
 # Begin Custom Build
 InputPath="..\resplus4.rc"
 
-"..\resplus4cat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy /b ..\resplus4.rc + ..\res.rc + ..\rested.rc + ..\resacia.rc + ..\resdriveplus4.rc + ..\resautostart.rc + ..\resv364speech.rc + ..\ressidcart.rc ..\resplus4cat.rc /b
+"resplus4cat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	copy /b ..\resplus4.rc + ..\res.rc + ..\rested.rc + ..\resacia.rc + ..\resdriveplus4.rc + ..\resautostart.rc + ..\resv364speech.rc + ..\ressidcart.rc resplus4cat.rc /b
 
 # End Custom Build
 
@@ -206,7 +206,7 @@ InputPath="..\resplus4.rc"
 # End Source File
 # Begin Source File
 
-SOURCE="..\resplus4cat.rc"
+SOURCE=".\resplus4cat.rc"
 # End Source File
 # Begin Source File
 

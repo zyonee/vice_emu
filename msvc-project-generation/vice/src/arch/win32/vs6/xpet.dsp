@@ -180,8 +180,8 @@ USERDEP__RESPE="..\..\..\debug.h"	"..\respet.rc"	"..\res.rc"	"..\resacia.rc"	"..
 # Begin Custom Build
 InputPath="..\respet.rc"
 
-"..\respetcat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy /b ..\respet.rc + ..\res.rc + ..\resacia.rc + ..\resdrivepetcbm2.rc + ..\respetreu.rc + ..\respetdww.rc + ..\respetcolour.rc + ..\resautostart.rc + ..\ressidcart.rc ..\respetcat.rc  /b
+"respetcat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	copy /b ..\respet.rc + ..\res.rc + ..\resacia.rc + ..\resdrivepetcbm2.rc + ..\respetreu.rc + ..\respetdww.rc + ..\respetcolour.rc + ..\resautostart.rc + ..\ressidcart.rc respetcat.rc  /b
 
 # End Custom Build
 
@@ -192,8 +192,8 @@ USERDEP__RESPE="..\..\..\debug.h"	"..\respet.rc"	"..\res.rc"	"..\resacia.rc"	"..
 # Begin Custom Build
 InputPath="..\respet.rc"
 
-"..\respetcat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy /b ..\respet.rc + ..\res.rc + ..\resacia.rc + ..\resdrivepetcbm2.rc + ..\respetreu.rc + ..\respetdww.rc + ..\respetcolour.rc + ..\resautostart.rc + ..\ressidcart.rc ..\respetcat.rc  /b
+"respetcat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	copy /b ..\respet.rc + ..\res.rc + ..\resacia.rc + ..\resdrivepetcbm2.rc + ..\respetreu.rc + ..\respetdww.rc + ..\respetcolour.rc + ..\resautostart.rc + ..\ressidcart.rc respetcat.rc  /b
 
 # End Custom Build
 
@@ -204,8 +204,8 @@ USERDEP__RESPE="..\..\..\debug.h"	"..\respet.rc"	"..\res.rc"	"..\resacia.rc"	"..
 # Begin Custom Build
 InputPath="..\respet.rc"
 
-"..\respetcat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy /b ..\respet.rc + ..\res.rc + ..\resacia.rc + ..\resdrivepetcbm2.rc + ..\respetreu.rc + ..\respetdww.rc + ..\respetcolour.rc + ..\resautostart.rc + ..\ressidcart.rc ..\respetcat.rc  /b
+"respetcat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	copy /b ..\respet.rc + ..\res.rc + ..\resacia.rc + ..\resdrivepetcbm2.rc + ..\respetreu.rc + ..\respetdww.rc + ..\respetcolour.rc + ..\resautostart.rc + ..\ressidcart.rc respetcat.rc  /b
 
 # End Custom Build
 
@@ -216,8 +216,8 @@ USERDEP__RESPE="..\..\..\debug.h"	"..\respet.rc"	"..\res.rc"	"..\resacia.rc"	"..
 # Begin Custom Build
 InputPath="..\respet.rc"
 
-"..\respetcat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy /b ..\respet.rc + ..\res.rc + ..\resacia.rc + ..\resdrivepetcbm2.rc + ..\respetreu.rc + ..\respetdww.rc + ..\respetcolour.rc + ..\resautostart.rc + ..\ressidcart.rc ..\respetcat.rc  /b
+"respetcat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	copy /b ..\respet.rc + ..\res.rc + ..\resacia.rc + ..\resdrivepetcbm2.rc + ..\respetreu.rc + ..\respetdww.rc + ..\respetcolour.rc + ..\resautostart.rc + ..\ressidcart.rc respetcat.rc  /b
 
 # End Custom Build
 
@@ -226,7 +226,7 @@ InputPath="..\respet.rc"
 # End Source File
 # Begin Source File
 
-SOURCE="..\respetcat.rc"
+SOURCE=".\respetcat.rc"
 # End Source File
 # Begin Source File
 

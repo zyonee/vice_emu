@@ -160,8 +160,8 @@ USERDEP__RESCB="..\..\..\debug.h"	"..\rescbm2.rc"	"..\rescbm2common.rc"	"..\res.
 # Begin Custom Build
 InputPath="..\rescbm2.rc"
 
-"..\rescbm2cat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy /b ..\rescbm2.rc + ..\rescbm2common.rc + ..\res.rc + ..\resacia.rc + ..\rescia.rc + ..\resdrivepetcbm2.rc + ..\ressiddtv.rc + ..\resautostart.rc ..\rescbm2cat.rc /b
+"rescbm2cat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	copy /b ..\rescbm2.rc + ..\rescbm2common.rc + ..\res.rc + ..\resacia.rc + ..\rescia.rc + ..\resdrivepetcbm2.rc + ..\ressiddtv.rc + ..\resautostart.rc rescbm2cat.rc /b
 
 # End Custom Build
 
@@ -172,8 +172,8 @@ USERDEP__RESCB="..\..\..\debug.h"	"..\rescbm2.rc"	"..\rescbm2common.rc"	"..\res.
 # Begin Custom Build
 InputPath="..\rescbm2.rc"
 
-"..\rescbm2cat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy /b ..\rescbm2.rc + ..\rescbm2common.rc + ..\res.rc + ..\resacia.rc + ..\rescia.rc + ..\resdrivepetcbm2.rc + ..\ressiddtv.rc + ..\resautostart.rc ..\rescbm2cat.rc /b
+"rescbm2cat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	copy /b ..\rescbm2.rc + ..\rescbm2common.rc + ..\res.rc + ..\resacia.rc + ..\rescia.rc + ..\resdrivepetcbm2.rc + ..\ressiddtv.rc + ..\resautostart.rc rescbm2cat.rc /b
 
 # End Custom Build
 
@@ -184,8 +184,8 @@ USERDEP__RESCB="..\..\..\debug.h"	"..\rescbm2.rc"	"..\rescbm2common.rc"	"..\res.
 # Begin Custom Build
 InputPath="..\rescbm2.rc"
 
-"..\rescbm2cat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy /b ..\rescbm2.rc + ..\rescbm2common.rc + ..\res.rc + ..\resacia.rc + ..\rescia.rc + ..\resdrivepetcbm2.rc + ..\ressiddtv.rc + ..\resautostart.rc ..\rescbm2cat.rc /b
+"rescbm2cat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	copy /b ..\rescbm2.rc + ..\rescbm2common.rc + ..\res.rc + ..\resacia.rc + ..\rescia.rc + ..\resdrivepetcbm2.rc + ..\ressiddtv.rc + ..\resautostart.rc rescbm2cat.rc /b
 
 # End Custom Build
 
@@ -196,8 +196,8 @@ USERDEP__RESCB="..\..\..\debug.h"	"..\rescbm2.rc"	"..\rescbm2common.rc"	"..\res.
 # Begin Custom Build
 InputPath="..\rescbm2.rc"
 
-"..\rescbm2cat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy /b ..\rescbm2.rc + ..\rescbm2common.rc + ..\res.rc + ..\resacia.rc + ..\rescia.rc + ..\resdrivepetcbm2.rc + ..\ressiddtv.rc + ..\resautostart.rc ..\rescbm2cat.rc /b
+"rescbm2cat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	copy /b ..\rescbm2.rc + ..\rescbm2common.rc + ..\res.rc + ..\resacia.rc + ..\rescia.rc + ..\resdrivepetcbm2.rc + ..\ressiddtv.rc + ..\resautostart.rc rescbm2cat.rc /b
 
 # End Custom Build
 
@@ -206,7 +206,7 @@ InputPath="..\rescbm2.rc"
 # End Source File
 # Begin Source File
 
-SOURCE="..\rescbm2cat.rc"
+SOURCE=".\rescbm2cat.rc"
 # End Source File
 # Begin Source File
 

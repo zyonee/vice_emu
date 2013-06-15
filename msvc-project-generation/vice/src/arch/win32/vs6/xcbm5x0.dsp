@@ -160,8 +160,8 @@ USERDEP__RESCB="..\..\..\debug.h"	"..\rescbm5x0.rc"	"..\rescbm2common.rc" "..\re
 # Begin Custom Build
 InputPath="..\rescbm5x0.rc"
 
-"..\rescbm5x0cat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy /b ..\rescbm5x0.rc + ..\rescbm2common.rc + ..\res.rc + ..\resacia.rc + ..\rescia.rc + ..\resdrivepetcbm2.rc + ..\ressiddtv.rc + ..\resautostart.rc + ..\resvicii.rc ..\rescbm5x0cat.rc /b
+"rescbm5x0cat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	copy /b ..\rescbm5x0.rc + ..\rescbm2common.rc + ..\res.rc + ..\resacia.rc + ..\rescia.rc + ..\resdrivepetcbm2.rc + ..\ressiddtv.rc + ..\resautostart.rc + ..\resvicii.rc rescbm5x0cat.rc /b
 
 # End Custom Build
 
@@ -172,8 +172,8 @@ USERDEP__RESCB="..\..\..\debug.h"	"..\rescbm5x0.rc"	"..\rescbm2common.rc"	"..\re
 # Begin Custom Build
 InputPath="..\rescbm5x0.rc"
 
-"..\rescbm5x0cat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy /b ..\rescbm5x0.rc + ..\rescbm2common.rc + ..\res.rc + ..\resacia.rc + ..\rescia.rc + ..\resdrivepetcbm2.rc + ..\ressiddtv.rc + ..\resautostart.rc + ..\resvicii.rc ..\rescbm5x0cat.rc /b
+"rescbm5x0cat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	copy /b ..\rescbm5x0.rc + ..\rescbm2common.rc + ..\res.rc + ..\resacia.rc + ..\rescia.rc + ..\resdrivepetcbm2.rc + ..\ressiddtv.rc + ..\resautostart.rc + ..\resvicii.rc rescbm5x0cat.rc /b
 
 # End Custom Build
 
@@ -184,8 +184,8 @@ USERDEP__RESCB="..\..\..\debug.h"	"..\rescbm5x0.rc"	"..\rescbm2common.rc"	"..\re
 # Begin Custom Build
 InputPath="..\rescbm5x0.rc"
 
-"..\rescbm5x0cat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy /b ..\rescbm5x0.rc + ..\rescbm2common.rc + ..\res.rc + ..\resacia.rc + ..\rescia.rc + ..\resdrivepetcbm2.rc + ..\ressiddtv.rc + ..\resautostart.rc + ..\resvicii.rc ..\rescbm5x0cat.rc /b
+"rescbm5x0cat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	copy /b ..\rescbm5x0.rc + ..\rescbm2common.rc + ..\res.rc + ..\resacia.rc + ..\rescia.rc + ..\resdrivepetcbm2.rc + ..\ressiddtv.rc + ..\resautostart.rc + ..\resvicii.rc rescbm5x0cat.rc /b
 
 # End Custom Build
 
@@ -196,8 +196,8 @@ USERDEP__RESCB="..\..\..\debug.h"	"..\rescbm5x0.rc"	"..\rescbm2common.rc"	"..\re
 # Begin Custom Build
 InputPath="..\rescbm5x0.rc"
 
-"..\rescbm5x0cat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy /b ..\rescbm5x0.rc + ..\rescbm2common.rc + ..\res.rc + ..\resacia.rc + ..\rescia.rc + ..\resdrivepetcbm2.rc + ..\ressiddtv.rc + ..\resautostart.rc + ..\resvicii.rc ..\rescbm5x0cat.rc /b
+"rescbm5x0cat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	copy /b ..\rescbm5x0.rc + ..\rescbm2common.rc + ..\res.rc + ..\resacia.rc + ..\rescia.rc + ..\resdrivepetcbm2.rc + ..\ressiddtv.rc + ..\resautostart.rc + ..\resvicii.rc rescbm5x0cat.rc /b
 
 # End Custom Build
 
@@ -206,7 +206,7 @@ InputPath="..\rescbm5x0.rc"
 # End Source File
 # Begin Source File
 
-SOURCE="..\rescbm5x0cat.rc"
+SOURCE=".\rescbm5x0cat.rc"
 # End Source File
 # Begin Source File
 

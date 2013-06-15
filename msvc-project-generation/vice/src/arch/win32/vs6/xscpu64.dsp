@@ -160,8 +160,8 @@ USERDEP__RESC6="..\..\..\debug.h"	"..\resscpu64.rc"	"..\res.rc"	"..\resacia.rc"	
 # Begin Custom Build
 InputPath="..\resscpu64.rc"
 
-"..\resscpu64cat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy /b ..\resscpu64.rc + ..\res.rc + ..\resacia.rc + ..\rescia.rc + ..\resdrivec64.rc + ..\reside64.rc + ..\resreu.rc + ..\resgeoram.rc + ..\resramcart.rc + ..\resmmc64.rc + ..\resmmcreplay.rc + ..\resretroreplay.rc + ..\resrs232user.rc + ..\ressid.rc + ..\resvicii.rc + ..\resdigimax.rc + ..\resmouse.rc + ..\resmidi.rc + ..\resdqbb.rc + ..\resisepic.rc + ..\reslightpen.rc + ..\ressoundexpander.rc + ..\reseasyflash.rc + ..\resautostart.rc + ..\resmagicvoice.rc + ..\resexpert.rc + ..\resds12c887rtc.rc + ..\restfe.rc ..\resscpu64cat.rc /b
+"resscpu64cat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	copy /b ..\resscpu64.rc + ..\res.rc + ..\resacia.rc + ..\rescia.rc + ..\resdrivec64.rc + ..\reside64.rc + ..\resreu.rc + ..\resgeoram.rc + ..\resramcart.rc + ..\resmmc64.rc + ..\resmmcreplay.rc + ..\resretroreplay.rc + ..\resrs232user.rc + ..\ressid.rc + ..\resvicii.rc + ..\resdigimax.rc + ..\resmouse.rc + ..\resmidi.rc + ..\resdqbb.rc + ..\resisepic.rc + ..\reslightpen.rc + ..\ressoundexpander.rc + ..\reseasyflash.rc + ..\resautostart.rc + ..\resmagicvoice.rc + ..\resexpert.rc + ..\resds12c887rtc.rc + ..\restfe.rc resscpu64cat.rc /b
 
 # End Custom Build
 
@@ -172,8 +172,8 @@ USERDEP__RESC6="..\..\..\debug.h"	"..\resscpu64.rc"	"..\res.rc"	"..\resacia.rc"	
 # Begin Custom Build
 InputPath="..\resscpu64.rc"
 
-"..\resscpu64cat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy /b ..\resscpu64.rc + ..\res.rc + ..\resacia.rc + ..\rescia.rc + ..\resdrivec64.rc + ..\reside64.rc + ..\resreu.rc + ..\resgeoram.rc + ..\resramcart.rc + ..\resmmc64.rc + ..\resmmcreplay.rc + ..\resretroreplay.rc + ..\resrs232user.rc + ..\ressid.rc + ..\resvicii.rc + ..\resdigimax.rc + ..\resmouse.rc + ..\resmidi.rc + ..\resdqbb.rc + ..\resisepic.rc + ..\reslightpen.rc + ..\ressoundexpander.rc + ..\reseasyflash.rc + ..\resautostart.rc + ..\resmagicvoice.rc + ..\resexpert.rc + ..\resds12c887rtc.rc + ..\restfe.rc ..\resscpu64cat.rc /b
+"resscpu64cat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	copy /b ..\resscpu64.rc + ..\res.rc + ..\resacia.rc + ..\rescia.rc + ..\resdrivec64.rc + ..\reside64.rc + ..\resreu.rc + ..\resgeoram.rc + ..\resramcart.rc + ..\resmmc64.rc + ..\resmmcreplay.rc + ..\resretroreplay.rc + ..\resrs232user.rc + ..\ressid.rc + ..\resvicii.rc + ..\resdigimax.rc + ..\resmouse.rc + ..\resmidi.rc + ..\resdqbb.rc + ..\resisepic.rc + ..\reslightpen.rc + ..\ressoundexpander.rc + ..\reseasyflash.rc + ..\resautostart.rc + ..\resmagicvoice.rc + ..\resexpert.rc + ..\resds12c887rtc.rc + ..\restfe.rc resscpu64cat.rc /b
 
 # End Custom Build
 
@@ -184,8 +184,8 @@ USERDEP__RESC6="..\..\..\debug.h"	"..\resscpu64.rc"	"..\res.rc"	"..\resacia.rc"	
 # Begin Custom Build
 InputPath="..\resscpu64.rc"
 
-"..\resscpu64cat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy /b ..\resscpu64.rc + ..\res.rc + ..\resacia.rc + ..\rescia.rc + ..\resdrivec64.rc + ..\reside64.rc + ..\resreu.rc + ..\resgeoram.rc + ..\resramcart.rc + ..\resmmc64.rc + ..\resmmcreplay.rc + ..\resretroreplay.rc + ..\resrs232user.rc + ..\ressid.rc + ..\resvicii.rc + ..\resdigimax.rc + ..\resmouse.rc + ..\resmidi.rc + ..\resdqbb.rc + ..\resisepic.rc + ..\reslightpen.rc + ..\ressoundexpander.rc + ..\reseasyflash.rc + ..\resautostart.rc + ..\resmagicvoice.rc + ..\resexpert.rc + ..\resds12c887rtc.rc + ..\restfe.rc ..\resscpu64cat.rc /b
+"resscpu64cat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	copy /b ..\resscpu64.rc + ..\res.rc + ..\resacia.rc + ..\rescia.rc + ..\resdrivec64.rc + ..\reside64.rc + ..\resreu.rc + ..\resgeoram.rc + ..\resramcart.rc + ..\resmmc64.rc + ..\resmmcreplay.rc + ..\resretroreplay.rc + ..\resrs232user.rc + ..\ressid.rc + ..\resvicii.rc + ..\resdigimax.rc + ..\resmouse.rc + ..\resmidi.rc + ..\resdqbb.rc + ..\resisepic.rc + ..\reslightpen.rc + ..\ressoundexpander.rc + ..\reseasyflash.rc + ..\resautostart.rc + ..\resmagicvoice.rc + ..\resexpert.rc + ..\resds12c887rtc.rc + ..\restfe.rc resscpu64cat.rc /b
 
 # End Custom Build
 
@@ -196,8 +196,8 @@ USERDEP__RESC6="..\..\..\debug.h"	"..\resscpu64.rc"	"..\res.rc"	"..\resacia.rc"	
 # Begin Custom Build
 InputPath="..\resscpu64.rc"
 
-"..\resscpu64cat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy /b ..\resscpu64.rc + ..\res.rc + ..\resacia.rc + ..\rescia.rc + ..\resdrivec64.rc + ..\reside64.rc + ..\resreu.rc + ..\resgeoram.rc + ..\resramcart.rc + ..\resmmc64.rc + ..\resmmcreplay.rc + ..\resretroreplay.rc + ..\resrs232user.rc + ..\ressid.rc + ..\resvicii.rc + ..\resdigimax.rc + ..\resmouse.rc + ..\resmidi.rc + ..\resdqbb.rc + ..\resisepic.rc + ..\reslightpen.rc + ..\ressoundexpander.rc + ..\reseasyflash.rc + ..\resautostart.rc + ..\resmagicvoice.rc + ..\resexpert.rc + ..\resds12c887.rc + ..\restfe.rc ..\resscpu64cat.rc /b
+"resscpu64cat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	copy /b ..\resscpu64.rc + ..\res.rc + ..\resacia.rc + ..\rescia.rc + ..\resdrivec64.rc + ..\reside64.rc + ..\resreu.rc + ..\resgeoram.rc + ..\resramcart.rc + ..\resmmc64.rc + ..\resmmcreplay.rc + ..\resretroreplay.rc + ..\resrs232user.rc + ..\ressid.rc + ..\resvicii.rc + ..\resdigimax.rc + ..\resmouse.rc + ..\resmidi.rc + ..\resdqbb.rc + ..\resisepic.rc + ..\reslightpen.rc + ..\ressoundexpander.rc + ..\reseasyflash.rc + ..\resautostart.rc + ..\resmagicvoice.rc + ..\resexpert.rc + ..\resds12c887.rc + ..\restfe.rc resscpu64cat.rc /b
 
 # End Custom Build
 
@@ -206,7 +206,7 @@ InputPath="..\resscpu64.rc"
 # End Source File
 # Begin Source File
 
-SOURCE="..\resscpu64cat.rc"
+SOURCE=".\resscpu64cat.rc"
 # End Source File
 # Begin Source File
 

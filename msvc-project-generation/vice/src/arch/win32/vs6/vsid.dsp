@@ -49,7 +49,7 @@ RSC=rc.exe
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
 # ADD BASE RSC /l 0x409 /d "NDEBUG"
-# ADD RSC /l 0x409 /i ".\msvc" /i "..\\" /i "..\..\..\\" /d "NDEBUG" /d "WIN32" /d "IDE_COMPILE" /d "NODIRECTX"
+# ADD RSC /l 0x409 /i "..\msvc" /i "..\\" /i "..\..\..\\" /d "NDEBUG" /d "WIN32" /d "IDE_COMPILE" /d "NODIRECTX"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
@@ -160,8 +160,8 @@ USERDEP__RESC6="..\..\..\debug.h"	"..\resvsid.rc"	"..\res.rc"	"..\ressid.rc"	"..
 # Begin Custom Build
 InputPath="..\resvsid.rc"
 
-"..\resvsidcat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy /b ..\resvsid.rc + ..\res.rc + ..\ressid.rc + ..\resvicii.rc ..\resvsidcat.rc /b
+"resvsidcat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	copy /b ..\resvsid.rc + ..\res.rc + ..\ressid.rc + ..\resvicii.rc resvsidcat.rc /b
 
 # End Custom Build
 
@@ -172,8 +172,8 @@ USERDEP__RESC6="..\..\..\debug.h"	"..\resvsid.rc"	"..\res.rc"	"..\ressid.rc"	"..
 # Begin Custom Build
 InputPath="..\resvsid.rc"
 
-"..\resvsidcat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy /b ..\resvsid.rc + ..\res.rc + ..\ressid.rc + ..\resvicii.rc ..\resvsidcat.rc /b
+"resvsidcat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	copy /b ..\resvsid.rc + ..\res.rc + ..\ressid.rc + ..\resvicii.rc resvsidcat.rc /b
 
 # End Custom Build
 
@@ -182,10 +182,10 @@ InputPath="..\resvsid.rc"
 # PROP Ignore_Default_Tool 1
 USERDEP__RESC6="..\..\..\debug.h"	"..\resvsid.rc"	"..\res.rc"	"..\ressid.rc"	"..\resvicii.rc"
 # Begin Custom Build
-InputPath=.\resvsid.rc
+InputPath="..\resvsid.rc"
 
-"..\resvsidcat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy /b ..\resvsid.rc + ..\res.rc + ..\ressid.rc + ..\resvicii.rc ..\resvsidcat.rc /b
+"resvsidcat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	copy /b ..\resvsid.rc + ..\res.rc + ..\ressid.rc + ..\resvicii.rc resvsidcat.rc /b
 
 # End Custom Build
 
@@ -196,8 +196,8 @@ USERDEP__RESC6="..\..\..\debug.h"	"..\resvsid.rc"	"..\res.rc"	"..\ressid.rc"	"..
 # Begin Custom Build
 InputPath="..\resvsid.rc"
 
-"..\resvsidcat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy /b ..\resvsid.rc + ..\res.rc + ..\ressid.rc + ..\resvicii.rc ..\resvsidcat.rc /b
+"resvsidcat.rc" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	copy /b ..\resvsid.rc + ..\res.rc + ..\ressid.rc + ..\resvicii.rc resvsidcat.rc /b
 
 # End Custom Build
 
@@ -206,7 +206,7 @@ InputPath="..\resvsid.rc"
 # End Source File
 # Begin Source File
 
-SOURCE="..\resvsidcat.rc"
+SOURCE=".\resvsidcat.rc"
 # End Source File
 # Begin Source File
 

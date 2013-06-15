@@ -43,7 +43,7 @@ RSC=rc.exe
 # PROP Intermediate_Dir "libs\video\Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /I ".\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64" /I "..\..\..\raster" /I "..\..\..\video" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\c64" /I "..\..\..\raster" /I "..\..\..\video" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
 BSC32=bscmake.exe
