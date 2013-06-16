@@ -36,6 +36,7 @@ EXTRA_DIST = \
 	iecieee.dsp \
 	ieee.dsp \
 	imagecontents.dsp \
+	make-msvc-bindist.bat \
 	monitor.dsp \
 	p64.dsp \
 	parallel.dsp \

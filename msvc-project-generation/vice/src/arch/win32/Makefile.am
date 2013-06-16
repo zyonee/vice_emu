@@ -336,7 +336,6 @@ EXTRA_DIST = \
 	vice.manifest \
 	montb.bmp \
 	make-bindist.sh \
-	make-msvc-bindist.bat \
 	vice-version.bat \
 	vice-version.bat.in \
 	c64.ico 
