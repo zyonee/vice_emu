@@ -1,0 +1,174 @@
+# name of the project
+PROJECTNAME = arch
+
+# project type: library, console, gui
+PROJECTTYPE = library
+
+# project dependencies, seperated by spaces
+PROJECTDEPS = geninfocontrib genwinres gentranslate base genmsvcver
+
+# include directories, relative to the top src dir, one per line, preceeded by a tab
+INCLUDEDIRS =
+	arch\win32\msvc\wpcap
+	c128
+	c64
+	c64\cart
+	c64dtv
+	cbm2
+	drive
+	imagecontents
+	lib\libffmpeg
+	lib\p64
+	monitor
+	pet
+	platform
+	plus4
+	raster
+	rs232drv
+	sid
+	userport
+	vdrive
+	vic20
+
+# source files for normal compile, one per line, preceeded by a tab
+SOURCES =
+	..\archdep.c
+	..\blockdev.c
+	..\c128ui.c
+	..\c64dtvui.c
+	..\c64ui.c
+	..\catweaselmkiii.c
+	..\cbm2ui.c
+	..\cbm5x0ui.c
+	..\console.c
+	..\dinput_handle.c
+	..\dirent.c
+	..\dynlib.c
+	..\fullscrn.c
+	..\gifdrv.c
+	..\hardsid.c
+	..\intl.c
+	..\joy.c
+	..\kbd.c
+	..\lightpendrv.c
+	..\mididrv.c
+	..\mousedrv.c
+	..\parsid.c
+	..\petui.c
+	..\plus4ui.c
+	..\rawnetarch.c
+	..\rs232.c
+	..\rs232dev.c
+	..\rs232net.c
+	..\scpu64ui.c
+	..\signals.c
+	..\statusbar.c
+	..\system.c
+	..\ui-resources.c
+	..\ui.c
+	..\uiacia.c
+	..\uiattach.c
+	..\uiautostart.c
+	..\uic128.c
+	..\uic128model.c
+	..\uic64_256k.c
+	..\uic64burstmod.c
+	..\uic64cart.c
+	..\uic64dtv.c
+	..\uic64dtvmodel.c
+	..\uic64model.c
+	..\uicart.c
+	..\uicbm2model.c
+	..\uicbm5x0model.c
+	..\uicbm2set.c
+	..\uicbm5x0set.c
+	..\uicia.c
+	..\uicmdline.c
+	..\uiconsole.c
+	..\uidatasette.c
+	..\uidigimax.c
+	..\uidqbb.c
+	..\uidrivec128.c
+	..\uidrivec64.c
+	..\uidrivepetcbm2.c
+	..\uidriveplus4.c
+	..\uidrivevic20.c
+	..\uids12c887rtc.c
+	..\uieasyflash.c
+	..\uievent.c
+	..\uiexpert.c
+	..\uifliplist.c
+	..\uigeoram.c
+	..\uihelp.c
+	..\uiide64.c
+	..\uiisepic.c
+	..\uijoystick.c
+	..\uikeyboard.c
+	..\uilib.c
+	..\uilightpen.c
+	..\uimagicvoice.c
+	..\uimediafile.c
+	..\uimidi.c
+	..\uimmc64.c
+	..\uimmcreplay.c
+	..\uimon.c
+	..\uimouse.c
+	..\uinetwork.c
+	..\uiperipheral.c
+	..\uipetcolour.c
+	..\uipetdww.c
+	..\uipetmodel.c
+	..\uipetreu.c
+	..\uipetset.c
+	..\uiplus256k.c
+	..\uiplus4cart.c
+	..\uiplus4mem.c
+	..\uiplus4model.c
+	..\uiplus60k.c
+	..\uiquicksnapshot.c
+	..\uiram.c
+	..\uiramcart.c
+	..\uiretroreplay.c
+	..\uireu.c
+	..\uirom.c
+	..\uirs232.c
+	..\uirs232user.c
+	..\uiscpu64.c
+	..\uisid.c
+	..\uisidcart.c
+	..\uisiddtv.c
+	..\uisnapshot.c
+	..\uisound.c
+	..\uisoundexpander.c
+	..\uisoundsampler.c
+	..\uispeed.c
+	..\uited.c
+	..\uitfe.c
+	..\uiv364speech.c
+	..\uivic.c
+	..\uivic20model.c
+	..\uivicii.c
+	..\uivicset.c
+	..\uivideo.c
+	..\vic20ui.c
+	..\video-ddraw.c
+	..\video-dx9.c
+	..\video.c
+	..\vsidui.c
+	..\vsyncarch.c
+	..\winmain.c
+
+# custom source message
+CUSTOMMSG = Generating res.h
+
+# custom source file
+CUSTOMSOURCE = ..\res.txt
+
+# custom source deps, seperated by spaces
+CUSTOMDEPS = ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt
+
+# custom source output
+CUSTOMOUTPUT = ..\res.h
+
+# custom source command
+CUSTOMCOMMAND = ..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt
