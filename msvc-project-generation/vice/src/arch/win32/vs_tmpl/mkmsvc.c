@@ -51,6 +51,12 @@
 #define CP_POST_CUSTOM_COMMAND_STRING "POST_CUSTOMCOMMAND = "
 #define CP_POST_CUSTOM_COMMAND_SIZE   sizeof(CP_POST_CUSTOM_COMMAND_STRING) - 1
 
+#define CP_CC_SOURCE_PATH_STRING      "CCSOURCEPATH = "
+#define CP_CC_SOURCE_PATH_SIZE        sizeof(CP_CC_SOURCE_PATH_STRING) - 1
+
+#define CP_CC_SOURCES_STRING          "CCSOURCES ="
+#define CP_CC_SOURCES_SIZE            sizeof(CP_CC_SOURCES_STRING) - 1
+
 #define CP_TYPE_LIBRARY   1
 #define CP_TYPE_CONSOLE   2
 #define CP_TYPE_GUI       3
@@ -77,6 +83,8 @@ static char *cp_post_custom_message = NULL;
 static char *cp_post_custom_source = NULL;
 static char *cp_post_custom_output = NULL;
 static char *cp_post_custom_command = NULL;
+static char *cp_cc_source_path = NULL;
+static char *cp_cc_source_names[MAX_NAMES];
 
 /* read buffer related */
 static char *read_buffer = NULL;
@@ -178,6 +186,15 @@ static char *msvc6_base_cpp_lib_gui_part2[4] = {
     " /D \"WIN32\" /D \"_WINDOWS\" /D \"IDE_COMPILE\" /D \"DONT_USE_UNISTD_H\" /D \"_DEBUG\" /YX /FD /c"
 };
 
+static char *msvc6_base_cpp_cc[4] = {
+    " /D \"WIN32\" /D \"_WINDOWS\" /D \"IDE_COMPILE\" /D \"DONT_USE_UNISTD_H\" /D \"NODIRECTX\" /D \"NDEBUG\" /D PACKAGE=\\\"%s\\\" /D VERSION=\\\"0.7\\\" /D SIZEOF_INT=4",
+    " /D \"WIN32\" /D \"_WINDOWS\" /D \"IDE_COMPILE\" /D \"DONT_USE_UNISTD_H\" /D \"NODIRECTX\" /D \"_DEBUG\" /D PACKAGE=\\\"%s\\\" /D VERSION=\\\"0.7\\\" /D SIZEOF_INT=4",
+    " /D \"WIN32\" /D \"_WINDOWS\" /D \"IDE_COMPILE\" /D \"DONT_USE_UNISTD_H\"  /D \"NDEBUG\" /D PACKAGE=\\\"%s\\\" /D VERSION=\\\"0.7\\\" /D SIZEOF_INT=4",
+    " /D \"WIN32\" /D \"_WINDOWS\" /D \"IDE_COMPILE\" /D \"DONT_USE_UNISTD_H\" /D \"_DEBUG\" /D PACKAGE=\\\"%s\\\" /D VERSION=\\\"0.7\\\" /D SIZEOF_INT=4"
+};
+
+static char *msvc6_base_cpp_cc_end = " /YX /FD /c\r\n";
+
 static char *msvc6_base_cpp_console_part1[4] = {
     "/MT /W3 /GX /O2",
     "/MTd /W3 /Gm /GX /Zi /Od",
@@ -238,7 +255,7 @@ static char *msvc6_begin_target = "# Begin Target\r\n"
 
 static char *msvc6_source = "# Begin Source File\r\n"
                             "\r\n"
-                            "SOURCE=\"%s\"\r\n"
+                            "SOURCE=\"..\\..\\..\\%s\"\r\n"
                             "# End Source File\r\n";
 
 static char *msvc6_end_target = "# End Target\r\n"
@@ -246,7 +263,7 @@ static char *msvc6_end_target = "# End Target\r\n"
 
 static char *msvc6_custom_source = "# Begin Source File\r\n"
                                    "\r\n"
-                                   "SOURCE=\"%s\"\r\n"
+                                   "SOURCE=\"..\\..\\..\\%s\"\r\n"
                                    "\r\n";
 
 static char *msvc6_custom_section_part1 = "# PROP Ignore_Default_Tool 1\r\n"
@@ -276,7 +293,7 @@ static char *msvc6_end_custom_source = "# End Source File\r\n";
 
 static char *msvc6_custom_cpu_source = "# Begin Source File\r\n"
                                        "\r\n"
-                                       "SOURCE=\"%s\"\r\n"
+                                       "SOURCE=\"..\\..\\..\\%s\"\r\n"
                                        "\r\n"
                                        "!IF  \"$(CFG)\" == \"%s - Win32 Release\"\r\n"
                                        "\r\n"
@@ -297,6 +314,22 @@ static char *msvc6_custom_cpu_source = "# Begin Source File\r\n"
                                        "!ENDIF\r\n"
                                        "\r\n"
                                        "# End Source File\r\n";
+
+static char *msvc6_begin_cc_source = "# Begin Source File\r\n"
+                                     "\r\n"
+                                     "SOURCE=\"..\\..\\..\\%s\\%s.cc\"\r\n"
+                                     "\r\n";
+
+static char *msvc6_cc_custom_build_part1 = "# Begin Custom Build\r\n"
+                                           "InputPath=\"..\\..\\..\\%s\\%s.cc\"\r\n"
+                                           "InputName=%s\r\n"
+                                           "\r\n"
+                                           "\"libs\\%s\\%s\\$(InputName).obj\" : $(SOURCE) \"$(INTDIR)\" \"$(OUTDIR)\"\r\n";
+
+static char *msvc6_cc_custom_build_part2 = "\tcl /nologo %s /EHsc /I \"..\\msvc\" %s /Fp\"libs\\%s\\%s\\%s.pch\" /Fo\"libs\\%s\\%s\\\\\" /Fd\"libs\\%s\\%s\\\\\" /FD /TP /c \"$(InputPath)\"\r\n"
+                                           "\r\n"
+                                           "# End Custom Build\r\n"
+                                           "\r\n";
 
 static int output_msvc6_file(char *fname)
 {
@@ -348,20 +381,35 @@ static int output_msvc6_file(char *fname)
             }
             fprintf(outfile, msvc6_section3);
             if (cp_type != CP_TYPE_CONSOLE) {
-                fprintf(outfile, "# ADD BASE CPP /nologo %s %s\r\n", msvc6_base_cpp_lib_gui_part1[i], msvc6_base_cpp_lib_gui_part2[i]);
+                if (!cp_source_names[0] && cp_cc_source_names[0]) {
+                    fprintf(outfile, "# ADD BASE CPP /nologo %s ", msvc6_base_cpp_lib_gui_part1[i]);
+                    fprintf(outfile, msvc6_base_cpp_cc[i], cp_name);
+                    fprintf(outfile, msvc6_base_cpp_cc_end);
+                } else {
+                    fprintf(outfile, "# ADD BASE CPP /nologo %s %s\r\n", msvc6_base_cpp_lib_gui_part1[i], msvc6_base_cpp_lib_gui_part2[i]);
+                }
                 fprintf(outfile, "# ADD CPP /nologo %s", msvc6_base_cpp_lib_gui_part1[i]);
             } else {
                 fprintf(outfile, "# ADD BASE CPP /nologo %s %s\r\n", msvc6_base_cpp_console_part1[i], msvc6_base_cpp_console_part2[i]);
                 fprintf(outfile, "# ADD CPP /nologo %s", msvc6_base_cpp_console_part1[i]);
             }
-            fprintf(outfile, " /I \"..\\msvc\" /I \"..\\\\\" /I \"..\\..\\..\\\\\"");
-            if (cp_include_dirs[0]) {
-                for (j = 0; cp_include_dirs[j]; j++) {
-                    fprintf(outfile, " /I \"..\\..\\..\\%s\"", cp_include_dirs[j]);
+            if (!cp_source_names[0] && cp_cc_source_names[0]) {
+                fprintf(outfile, " /I \"..\\msvc\"");
+            } else {
+                fprintf(outfile, " /I \"..\\msvc\" /I \"..\\\\\" /I \"..\\..\\..\\\\\"");
+                if (cp_include_dirs[0]) {
+                    for (j = 0; cp_include_dirs[j]; j++) {
+                        fprintf(outfile, " /I \"..\\..\\..\\%s\"", cp_include_dirs[j]);
+                    }
                 }
             }
             if (cp_type != CP_TYPE_CONSOLE) {
-                fprintf(outfile, " %s\r\n", msvc6_base_cpp_lib_gui_part2[i]);
+                if (!cp_source_names[0] && cp_cc_source_names[0]) {
+                    fprintf(outfile, msvc6_base_cpp_cc[i], cp_name);
+                    fprintf(outfile, msvc6_base_cpp_cc_end);
+                } else {
+                    fprintf(outfile, " %s\r\n", msvc6_base_cpp_lib_gui_part2[i]);
+                }
             } else {
                 fprintf(outfile, " %s\r\n", msvc6_base_cpp_console_part2[i]);
             }
@@ -388,6 +436,17 @@ static int output_msvc6_file(char *fname)
         }
         fprintf(outfile, msvc6_endif);
         fprintf(outfile, msvc6_begin_target, cp_name, cp_name, cp_name, cp_name);
+        if (!cp_source_names[0] && cp_cc_source_names[0]) {
+            for (j = 0; cp_cc_source_names[j]; j++) {
+                fprintf(outfile, msvc6_begin_cc_source, cp_cc_source_path, cp_cc_source_names[j]);
+                for (i = 0; i < 4; i++) {
+                    fprintf(outfile, msvc6_begin_ifs[i], cp_name);
+                    fprintf(outfile, msvc6_cc_custom_build_part1, cp_cc_source_path, cp_cc_source_names[j], cp_cc_source_names[j], cp_name, msvc6_releases[i]);
+                    fprintf(outfile, msvc6_cc_custom_build_part2, msvc6_base_cpp_lib_gui_part1[i], msvc6_base_cpp_cc[i], cp_name, msvc6_releases[i], cp_name, cp_name, msvc6_releases[i], cp_name, msvc6_releases[i]);
+                }
+                fprintf(outfile, "%s# End Source File\r\n", msvc6_endif);
+            }
+        }
         if (cp_source_names[0]) {
             for (j = 0; cp_source_names[j]; j++) {
                 fprintf(outfile, msvc6_source, cp_source_names[j]);
@@ -539,6 +598,8 @@ static int parse_template(char *filename)
     cp_post_custom_source = NULL;
     cp_post_custom_output = NULL;
     cp_post_custom_command = NULL;
+    cp_cc_source_path = NULL;
+    cp_cc_source_names[0] = NULL;
 
     line = get_next_line_from_buffer();
     while (line) {
@@ -693,6 +754,23 @@ static int parse_template(char *filename)
             cp_post_custom_command = line + CP_POST_CUSTOM_COMMAND_SIZE;
 #if 1
             printf("Line %d is a project post custom command line: %s\n", read_buffer_line, cp_post_custom_command);
+#endif
+            parsed = 1;
+        }
+        if (!parsed && !strncmp(line, CP_CC_SOURCES_STRING, CP_CC_SOURCES_SIZE)) {
+#if 1
+            printf("Line %d is a project cc sources line\n", read_buffer_line);
+#endif
+            if (fill_line_names(cp_cc_source_names, MAX_NAMES)) {
+                printf("Error parsing cc source name in line %d of %s\n", read_buffer_line, filename);
+                return 1;
+            }
+            parsed = 1;
+        }
+        if (!parsed && !strncmp(line, CP_CC_SOURCE_PATH_STRING, CP_CC_SOURCE_PATH_SIZE)) {
+            cp_cc_source_path = line + CP_CC_SOURCE_PATH_SIZE;
+#if 1
+            printf("Line %d is a project cc source path line: %s\n", read_buffer_line, cp_cc_source_path);
 #endif
             parsed = 1;
         }

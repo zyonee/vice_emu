@@ -44,9 +44,9 @@ EXTRA_DIST = \
 	platform.tmpl \
 	plus4.tmpl \
 	plus4exp.tmpl \
-	printerdrv.dsp \
-	raster.dsp \
-	resid.dsp \
+	printerdrv.tmpl \
+	raster.tmpl \
+	resid.tmpl \
 	residdtv.dsp \
 	residfp.dsp \
 	rs232drv.dsp \
