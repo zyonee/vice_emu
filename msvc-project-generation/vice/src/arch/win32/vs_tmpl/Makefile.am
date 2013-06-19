@@ -34,16 +34,16 @@ EXTRA_DIST = \
 	iec128dcr.tmpl \
 	iecbus.tmpl \
 	iecieee.tmpl \
-	ieee.dsp \
-	imagecontents.dsp \
-	monitor.dsp \
-	p64.dsp \
-	parallel.dsp \
-	pet.dsp \
-	petcat.dsp \
-	platform.dsp \
-	plus4.dsp \
-	plus4exp.dsp \
+	ieee.tmpl \
+	imagecontents.tmpl \
+	monitor.tmpl \
+	p64.tmpl \
+	parallel.tmpl \
+	pet.tmpl \
+	petcat.tmpl \
+	platform.tmpl \
+	plus4.tmpl \
+	plus4exp.tmpl \
 	printerdrv.dsp \
 	raster.dsp \
 	resid.dsp \
