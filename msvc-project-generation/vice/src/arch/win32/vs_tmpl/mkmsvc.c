@@ -240,8 +240,13 @@ static char *msvc6_link32_console = "LINK32=link.exe\r\n"
                                     "# ADD LINK32 %s /nologo /subsystem:console /machine:I386\r\n\r\n";
 
 static char *msvc6_link32_gui = "LINK32=link.exe\r\n"
-                                "# ADD BASE LINK32 %s /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept\r\n"
-                                "# ADD LINK32 %s /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept\r\n\r\n";
+                                "# ADD BASE LINK32 %s%s /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept\r\n"
+                                "# ADD LINK32 %s%s /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept\r\n\r\n";
+
+static char *msvc6_dx_libs[2] = {
+    "",
+    " dsound.lib dxguid.lib"
+};
 
 static char *msvc6_endif = "!ENDIF\r\n"
                            "\r\n";
@@ -431,7 +436,7 @@ static int output_msvc6_file(char *fname)
                     fprintf(outfile, msvc6_link32_console, cp_libs, cp_libs);
                     break;
                 case CP_TYPE_GUI:
-                    fprintf(outfile, msvc6_link32_gui, cp_libs, cp_libs);
+                    fprintf(outfile, msvc6_link32_gui, cp_libs, msvc6_dx_libs[i >> 1], cp_libs, msvc6_dx_libs[i >> 1]);
                     break;
             }
             if (cp_post_custom_message) {

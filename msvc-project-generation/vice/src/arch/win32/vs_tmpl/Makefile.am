@@ -56,19 +56,20 @@ EXTRA_DIST = \
 	sid.tmpl \
 	sounddrv.tmpl \
 	tape.tmpl \
-	tcbm.dsp \
-	userport.dsp \
-	vdc.dsp \
-	vdrive.dsp \
-	vic20.dsp \
-	vic20cart.dsp \
+	tcbm.tmpl \
+	userport.tmpl \
+	vdc.tmpl \
+	vdrive.tmpl \
+	vic20.tmpl \
+	vic20cart.tmpl \
 	vice.dsw \
-	vicii.dsp \
-	viciidtv.dsp \
-	viciisc.dsp \
-	video.dsp \
+	vicii.tmpl \
+	viciidtv.tmpl \
+	viciisc.tmpl \
+	video.tmpl \
 	vsid.dsp \
 	vsidlib.dsp \
+	vsidlib.tmpl \
 	x128.dsp \
 	x64.dsp \
 	x64dtv.dsp \
