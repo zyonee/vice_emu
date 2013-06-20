@@ -42,10 +42,10 @@ RSC=rc.exe
 # PROP Output_Dir "libs\sid\Release"
 # PROP Intermediate_Dir "libs\sid\Release"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\resid" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD BASE RSC /l 0x409
-# ADD RSC /l 0x409
+# ADD BASE CPP /nologo /MT /W3 /GX /O2  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NODIRECTX" /D "NDEBUG" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\resid"  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NODIRECTX" /D "NDEBUG" /YX /FD /c
+# ADD BASE RSC /l 0x409 /d "NDEBUG" /d "WIN32" /d "IDE_COMPILE" /d "NODIRECTX"
+# ADD RSC /l 0x409 /i "..\msvc" /i "..\\" /i "..\..\..\\" /d "NDEBUG" /d "WIN32" /d "IDE_COMPILE" /d "NODIRECTX"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
@@ -65,10 +65,10 @@ LIB32=link.exe -lib
 # PROP Output_Dir "libs\sid\Debug"
 # PROP Intermediate_Dir "libs\sid\Debug"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /W3 /GX /Z7 /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\resid" /D "WIN32" /D "NODIRECTX" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD BASE RSC /l 0x409
-# ADD RSC /l 0x409
+# ADD BASE CPP /nologo /MTd /W3 /GX /Z7 /Od  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NODIRECTX" /D "_DEBUG" /YX /FD /c
+# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\resid"  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NODIRECTX" /D "_DEBUG" /YX /FD /c
+# ADD BASE RSC /l 0x409 /d "_DEBUG" /d "WIN32" /d "IDE_COMPILE" /d "NODIRECTX"
+# ADD RSC /l 0x409 /i "..\msvc" /i "..\\" /i "..\..\..\\" /d "_DEBUG" /d "WIN32" /d "IDE_COMPILE" /d "NODIRECTX"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
@@ -88,10 +88,10 @@ LIB32=link.exe -lib
 # PROP Output_Dir "libs\sid\DXRelease"
 # PROP Intermediate_Dir "libs\sid\DXRelease"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\resid" /D "WIN32" /D "IDE_COMPILE" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD BASE RSC /l 0x409
-# ADD RSC /l 0x409
+# ADD BASE CPP /nologo /MT /W3 /GX /O2  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H"  /D "NDEBUG" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\resid"  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H"  /D "NDEBUG" /YX /FD /c
+# ADD BASE RSC /l 0x409 /d "NDEBUG" /d "WIN32" /d "IDE_COMPILE"
+# ADD RSC /l 0x409 /i "..\msvc" /i "..\\" /i "..\..\..\\" /d "NDEBUG" /d "WIN32" /d "IDE_COMPILE"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
@@ -111,10 +111,10 @@ LIB32=link.exe -lib
 # PROP Output_Dir "libs\sid\DXDebug"
 # PROP Intermediate_Dir "libs\sid\DXDebug"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MTd /W3 /GX /Z7 /Od /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\resid" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD BASE RSC /l 0x409
-# ADD RSC /l 0x409
+# ADD BASE CPP /nologo /MTd /W3 /GX /Z7 /Od  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /YX /FD /c
+# ADD CPP /nologo /MTd /W3 /GX /Z7 /Od /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\resid"  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /YX /FD /c
+# ADD BASE RSC /l 0x409 /d "_DEBUG" /d "WIN32" /d "IDE_COMPILE"
+# ADD RSC /l 0x409 /i "..\msvc" /i "..\\" /i "..\..\..\\" /d "_DEBUG" /d "WIN32" /d "IDE_COMPILE"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
@@ -122,7 +122,7 @@ LIB32=link.exe -lib
 # ADD BASE LIB32 /nologo
 # ADD LIB32 /nologo
 
-!ENDIF 
+!ENDIF
 
 # Begin Target
 
@@ -130,10 +130,6 @@ LIB32=link.exe -lib
 # Name "sid - Win32 Debug"
 # Name "sid - Win32 DX Release"
 # Name "sid - Win32 DX Debug"
-# Begin Source File
-
-SOURCE="..\..\..\sid\fastsid.c"
-# End Source File
 # Begin Source File
 
 SOURCE="..\..\..\sid\resid-fp.cc"
@@ -144,8 +140,8 @@ SOURCE="..\..\..\sid\resid-fp.cc"
 InputPath="..\..\..\sid\resid-fp.cc"
 InputName=resid-fp
 
-"libs\sid\Release/$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	cl /nologo /MT /W3 /EHsc /I "..\msvc" /D "NDEBUG" /I "..\\" /I "..\..\..\\" /I "..\..\..\resid-fp" /D "WIN32" /D "IDE_COMPILE" /D "_WINDOWS" /Fp"libs\sid\Release/sid.pch" /Fo"libs\sid\Release/" /Fd"libs\sid\Release/" /FD /TP /c "$(InputPath)"
+"libs\sid\Release\$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	cl /nologo /MT /W3 /GX /O2 /EHsc /I "..\msvc" /I "..\\" /I "..\..\..\\"  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NODIRECTX" /D "NDEBUG" /D PACKAGE=\"%s\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\Release\sid.pch" /Fo"libs\sid\Release\\" /Fd"libs\sid\Release\\" /FD /TP /c "$(InputPath)"
 
 # End Custom Build
 
@@ -155,8 +151,8 @@ InputName=resid-fp
 InputPath="..\..\..\sid\resid-fp.cc"
 InputName=resid-fp
 
-"libs\sid\Debug/$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	cl /nologo /MTd /W3 /EHsc /Z7 /Od /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\resid-fp" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /Fp"libs\sid\Debug/sid.pch" /Fo"libs\sid\Debug/" /Fd"libs\sid\Debug/" /FD /TP /c "$(InputPath)"
+"libs\sid\Debug\$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	cl /nologo /MTd /W3 /GX /Z7 /Od /EHsc /I "..\msvc" /I "..\\" /I "..\..\..\\"  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NODIRECTX" /D "_DEBUG" /D PACKAGE=\"%s\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\Debug\sid.pch" /Fo"libs\sid\Debug\\" /Fd"libs\sid\Debug\\" /FD /TP /c "$(InputPath)"
 
 # End Custom Build
 
@@ -166,8 +162,8 @@ InputName=resid-fp
 InputPath="..\..\..\sid\resid-fp.cc"
 InputName=resid-fp
 
-"libs\sid\DXRelease/$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	cl /nologo /MT /W3 /EHsc /I "..\msvc" /D "NDEBUG" /I "..\\" /I "..\..\..\\" /I "..\..\..\resid-fp" /D "WIN32" /D "IDE_COMPILE" /D "_WINDOWS" /Fp"libs\sid\DXRelease/sid.pch" /Fo"libs\sid\DXRelease/" /Fd"libs\sid\DXRelease/" /FD /TP /c "$(InputPath)"
+"libs\sid\DXRelease\$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	cl /nologo /MT /W3 /GX /O2 /EHsc /I "..\msvc" /I "..\\" /I "..\..\..\\"  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H"  /D "NDEBUG" /D PACKAGE=\"%s\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\DXRelease\sid.pch" /Fo"libs\sid\DXRelease\\" /Fd"libs\sid\DXRelease\\" /FD /TP /c "$(InputPath)"
 
 # End Custom Build
 
@@ -177,12 +173,12 @@ InputName=resid-fp
 InputPath="..\..\..\sid\resid-fp.cc"
 InputName=resid-fp
 
-"libs\sid\DXDebug/$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	cl /nologo /MTd /W3 /EHsc /Z7 /Od /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\resid-fp" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /Fp"libs\sid\DXDebug/sid.pch" /Fo"libs\sid\DXDebug/" /Fd"libs\sid\DXDebug/" /FD /TP /c "$(InputPath)"
+"libs\sid\DXDebug\$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	cl /nologo /MTd /W3 /GX /Z7 /Od /EHsc /I "..\msvc" /I "..\\" /I "..\..\..\\"  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"%s\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\DXDebug\sid.pch" /Fo"libs\sid\DXDebug\\" /Fd"libs\sid\DXDebug\\" /FD /TP /c "$(InputPath)"
 
 # End Custom Build
 
-!ENDIF 
+!ENDIF
 
 # End Source File
 # Begin Source File
@@ -195,8 +191,8 @@ SOURCE="..\..\..\sid\resid.cc"
 InputPath="..\..\..\sid\resid.cc"
 InputName=resid
 
-"libs\sid\Release/$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	cl /nologo /MT /W3 /EHsc /I "..\msvc" /D "NDEBUG" /I "..\\" /I "..\..\..\\" /I "..\..\..\resid" /D "WIN32" /D "IDE_COMPILE" /D "_WINDOWS" /Fp"libs\sid\Release/sid.pch" /Fo"libs\sid\Release/" /Fd"libs\sid\Release/" /FD /TP /c "$(InputPath)"
+"libs\sid\Release\$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	cl /nologo /MT /W3 /GX /O2 /EHsc /I "..\msvc" /I "..\\" /I "..\..\..\\"  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NODIRECTX" /D "NDEBUG" /D PACKAGE=\"%s\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\Release\sid.pch" /Fo"libs\sid\Release\\" /Fd"libs\sid\Release\\" /FD /TP /c "$(InputPath)"
 
 # End Custom Build
 
@@ -206,8 +202,8 @@ InputName=resid
 InputPath="..\..\..\sid\resid.cc"
 InputName=resid
 
-"libs\sid\Debug/$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	cl /nologo /MTd /W3 /EHsc /Z7 /Od /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\resid" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /Fp"libs\sid\Debug/sid.pch" /Fo"libs\sid\Debug/" /Fd"libs\sid\Debug/" /FD /TP /c "$(InputPath)"
+"libs\sid\Debug\$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	cl /nologo /MTd /W3 /GX /Z7 /Od /EHsc /I "..\msvc" /I "..\\" /I "..\..\..\\"  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "NODIRECTX" /D "_DEBUG" /D PACKAGE=\"%s\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\Debug\sid.pch" /Fo"libs\sid\Debug\\" /Fd"libs\sid\Debug\\" /FD /TP /c "$(InputPath)"
 
 # End Custom Build
 
@@ -217,8 +213,8 @@ InputName=resid
 InputPath="..\..\..\sid\resid.cc"
 InputName=resid
 
-"libs\sid\DXRelease/$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	cl /nologo /MT /W3 /EHsc /I "..\msvc" /D "NDEBUG" /I "..\\" /I "..\..\..\\" /I "..\..\..\resid" /D "WIN32" /D "IDE_COMPILE" /D "_WINDOWS" /Fp"libs\sid\DXRelease/sid.pch" /Fo"libs\sid\DXRelease/" /Fd"libs\sid\DXRelease/" /FD /TP /c "$(InputPath)"
+"libs\sid\DXRelease\$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	cl /nologo /MT /W3 /GX /O2 /EHsc /I "..\msvc" /I "..\\" /I "..\..\..\\"  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H"  /D "NDEBUG" /D PACKAGE=\"%s\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\DXRelease\sid.pch" /Fo"libs\sid\DXRelease\\" /Fd"libs\sid\DXRelease\\" /FD /TP /c "$(InputPath)"
 
 # End Custom Build
 
@@ -228,13 +224,17 @@ InputName=resid
 InputPath="..\..\..\sid\resid.cc"
 InputName=resid
 
-"libs\sid\DXDebug/$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	cl /nologo /MTd /W3 /EHsc /Z7 /Od /I "..\msvc" /I "..\\" /I "..\..\..\\" /I "..\..\..\resid" /D "WIN32" /D "IDE_COMPILE" /D "_DEBUG" /D "_WINDOWS" /Fp"libs\sid\DXDebug/sid.pch" /Fo"libs\sid\DXDebug/" /Fd"libs\sid\DXDebug/" /FD /TP /c "$(InputPath)"
+"libs\sid\DXDebug\$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	cl /nologo /MTd /W3 /GX /Z7 /Od /EHsc /I "..\msvc" /I "..\\" /I "..\..\..\\"  /D "WIN32" /D "_WINDOWS" /D "IDE_COMPILE" /D "DONT_USE_UNISTD_H" /D "_DEBUG" /D PACKAGE=\"%s\" /D VERSION=\"0.7\" /D SIZEOF_INT=4 /Fp"libs\sid\DXDebug\sid.pch" /Fo"libs\sid\DXDebug\\" /Fd"libs\sid\DXDebug\\" /FD /TP /c "$(InputPath)"
 
 # End Custom Build
 
-!ENDIF 
+!ENDIF
 
+# End Source File
+# Begin Source File
+
+SOURCE="..\..\..\sid\fastsid.c"
 # End Source File
 # Begin Source File
 

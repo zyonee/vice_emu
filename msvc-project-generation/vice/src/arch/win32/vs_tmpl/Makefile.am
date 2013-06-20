@@ -47,15 +47,15 @@ EXTRA_DIST = \
 	printerdrv.tmpl \
 	raster.tmpl \
 	resid.tmpl \
-	residdtv.dsp \
-	residfp.dsp \
-	rs232drv.dsp \
-	rtc.dsp \
-	scpu64.dsp \
-	serial.dsp \
-	sid.dsp \
-	sounddrv.dsp \
-	tape.dsp \
+	residdtv.tmpl \
+	residfp.tmpl \
+	rs232drv.tmpl \
+	rtc.tmpl \
+	scpu64.tmpl \
+	serial.tmpl \
+	sid.tmpl \
+	sounddrv.tmpl \
+	tape.tmpl \
 	tcbm.dsp \
 	userport.dsp \
 	vdc.dsp \

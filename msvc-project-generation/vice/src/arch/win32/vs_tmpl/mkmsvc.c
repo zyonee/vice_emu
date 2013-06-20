@@ -326,7 +326,11 @@ static char *msvc6_cc_custom_build_part1 = "# Begin Custom Build\r\n"
                                            "\r\n"
                                            "\"libs\\%s\\%s\\$(InputName).obj\" : $(SOURCE) \"$(INTDIR)\" \"$(OUTDIR)\"\r\n";
 
-static char *msvc6_cc_custom_build_part2 = "\tcl /nologo %s /EHsc /I \"..\\msvc\" %s /Fp\"libs\\%s\\%s\\%s.pch\" /Fo\"libs\\%s\\%s\\\\\" /Fd\"libs\\%s\\%s\\\\\" /FD /TP /c \"$(InputPath)\"\r\n"
+static char *msvc6_cc_custom_build_part2a = "\tcl /nologo %s /EHsc /I \"..\\msvc\" ";
+
+static char *msvc6_cc_custom_build_part2b = "\tcl /nologo %s /EHsc /I \"..\\msvc\" /I \"..\\\\\" /I \"..\\..\\..\\\\\" ";
+
+static char *msvc6_cc_custom_build_part3 = "%s /Fp\"libs\\%s\\%s\\%s.pch\" /Fo\"libs\\%s\\%s\\\\\" /Fd\"libs\\%s\\%s\\\\\" /FD /TP /c \"$(InputPath)\"\r\n"
                                            "\r\n"
                                            "# End Custom Build\r\n"
                                            "\r\n";
@@ -436,13 +440,18 @@ static int output_msvc6_file(char *fname)
         }
         fprintf(outfile, msvc6_endif);
         fprintf(outfile, msvc6_begin_target, cp_name, cp_name, cp_name, cp_name);
-        if (!cp_source_names[0] && cp_cc_source_names[0]) {
+        if (cp_cc_source_names[0]) {
             for (j = 0; cp_cc_source_names[j]; j++) {
                 fprintf(outfile, msvc6_begin_cc_source, cp_cc_source_path, cp_cc_source_names[j]);
                 for (i = 0; i < 4; i++) {
                     fprintf(outfile, msvc6_begin_ifs[i], cp_name);
                     fprintf(outfile, msvc6_cc_custom_build_part1, cp_cc_source_path, cp_cc_source_names[j], cp_cc_source_names[j], cp_name, msvc6_releases[i]);
-                    fprintf(outfile, msvc6_cc_custom_build_part2, msvc6_base_cpp_lib_gui_part1[i], msvc6_base_cpp_cc[i], cp_name, msvc6_releases[i], cp_name, cp_name, msvc6_releases[i], cp_name, msvc6_releases[i]);
+                    if (cp_source_names[0]) {
+                        fprintf(outfile, msvc6_cc_custom_build_part2b, msvc6_base_cpp_lib_gui_part1[i]);
+                    } else {
+                        fprintf(outfile, msvc6_cc_custom_build_part2a, msvc6_base_cpp_lib_gui_part1[i]);
+                    }
+                    fprintf(outfile, msvc6_cc_custom_build_part3, msvc6_base_cpp_cc[i], cp_name, msvc6_releases[i], cp_name, cp_name, msvc6_releases[i], cp_name, msvc6_releases[i]);
                 }
                 fprintf(outfile, "%s# End Source File\r\n", msvc6_endif);
             }
