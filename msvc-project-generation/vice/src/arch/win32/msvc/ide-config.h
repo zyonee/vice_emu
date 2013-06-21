@@ -12,6 +12,8 @@
 
 #pragma warning(disable:4996)
 
+#define WIN32_COMPILE           1
+
 #define HAVE_ALLOCA             1
 #define RETSIGTYPE              void
 #define HAVE_RESID              1

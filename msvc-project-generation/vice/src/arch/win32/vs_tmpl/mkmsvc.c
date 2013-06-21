@@ -57,6 +57,15 @@
 #define CP_CC_SOURCES_STRING          "CCSOURCES ="
 #define CP_CC_SOURCES_SIZE            sizeof(CP_CC_SOURCES_STRING) - 1
 
+#define CP_RES_SOURCE_STRING		"RESSOURCE = "
+#define CP_RES_SOURCE_SIZE			sizeof(CP_RES_SOURCE_STRING) - 1
+
+#define CP_RES_DEPS_STRING			"RESDEPS = "
+#define CP_RES_DEPS_SIZE			sizeof(CP_RES_DEPS_STRING) - 1
+
+#define CP_RES_OUTPUT_STRING		"RESOUTPUT = "
+#define CP_RES_OUTPUT_SIZE			sizeof(CP_RES_OUTPUT_STRING) - 1
+
 #define CP_TYPE_LIBRARY   1
 #define CP_TYPE_CONSOLE   2
 #define CP_TYPE_GUI       3
@@ -85,6 +94,9 @@ static char *cp_post_custom_output = NULL;
 static char *cp_post_custom_command = NULL;
 static char *cp_cc_source_path = NULL;
 static char *cp_cc_source_names[MAX_NAMES];
+static char *cp_res_source_name = NULL;
+static char *cp_res_deps[MAX_DEP_NAMES];
+static char *cp_res_output_name = NULL;
 
 /* read buffer related */
 static char *read_buffer = NULL;
@@ -340,6 +352,33 @@ static char *msvc6_cc_custom_build_part3 = "%s /Fp\"libs\\%s\\%s\\%s.pch\" /Fo\"
                                            "# End Custom Build\r\n"
                                            "\r\n";
 
+static char *msvc6_res_source_start = "# Begin Source File\r\n"
+                                      "\r\n"
+                                      "SOURCE=\"..\\%s\"\r\n"
+                                      "\r\n";
+
+static char *msvc6_res_source_part1 = "# PROP Ignore_Default_Tool 1\r\n"
+                                      "USERDEP__RESC6=\"..\\..\\..\\debug.h\"";
+
+static char *msvc6_res_source_part2 = "\r\n"
+                                      "# Begin Custom Build\r\n"
+                                      "InputPath=\"..\\%s\"\r\n"
+                                      "\r\n"
+                                      "\"%s\" : $(SOURCE) \"$(INTDIR)\" \"$(OUTDIR)\"\r\n"
+                                      "\tcopy /b";
+
+static char *msvc6_res_source_part3 = "!ENDIF\r\n"
+                                      "\r\n"
+                                      "# End Source File\r\n"
+                                      "# Begin Source File\r\n"
+                                      "\r\n"
+                                      "SOURCE=\".\\%s\"\r\n"
+                                      "# End Source File\r\n"
+                                      "# Begin Source File\r\n"
+                                      "\r\n"
+                                      "SOURCE=\"..\\vice.manifest\"\r\n"
+                                      "# End Source File\r\n";
+
 static int output_msvc6_file(char *fname)
 {
     char *filename = malloc(strlen(fname) + sizeof(".txt"));
@@ -484,6 +523,25 @@ static int output_msvc6_file(char *fname)
             fprintf(outfile, msvc6_endif);
             fprintf(outfile, msvc6_end_custom_source);
         }
+        if (cp_type == CP_TYPE_GUI) {
+            fprintf(outfile, msvc6_res_source_start, cp_res_source_name);
+            for (i = 0; i < 4; i++) {
+                fprintf(outfile, msvc6_begin_ifs[i], cp_name);
+                fprintf(outfile, msvc6_res_source_part1);
+                for (j = 0; cp_res_deps[j]; j++) {
+                    fprintf(outfile, "\t\"..\\%s\"", cp_res_deps[j]);
+                }
+                fprintf(outfile, msvc6_res_source_part2, cp_res_source_name, cp_res_output_name);
+                for (j = 0; cp_res_deps[j]; j++) {
+                    fprintf(outfile, " ..\\%s", cp_res_deps[j]);
+                    if (cp_res_deps[j + 1]) {
+                        fprintf(outfile, " +");
+                    }
+                }
+                fprintf(outfile, " %s /b\r\n\r\n# End Custom Build\r\n\r\n", cp_res_output_name);
+            }
+            fprintf(outfile, msvc6_res_source_part3, cp_res_output_name);
+        }
         fprintf(outfile, msvc6_end_target);
     }
 
@@ -614,6 +672,9 @@ static int parse_template(char *filename)
     cp_post_custom_command = NULL;
     cp_cc_source_path = NULL;
     cp_cc_source_names[0] = NULL;
+    cp_res_source_name = NULL;
+    cp_res_deps[0] = NULL;
+    cp_res_output_name = NULL;
 
     line = get_next_line_from_buffer();
     while (line) {
@@ -788,6 +849,30 @@ static int parse_template(char *filename)
 #endif
             parsed = 1;
         }
+        if (!parsed && !strncmp(line, CP_RES_SOURCE_STRING, CP_RES_SOURCE_SIZE)) {
+            cp_res_source_name = line + CP_RES_SOURCE_SIZE;
+#if 1
+            printf("Line %d is a project res source name line: %s\n", read_buffer_line, cp_res_source_name);
+#endif
+            parsed = 1;
+        }
+        if (!parsed && !strncmp(line, CP_RES_DEPS_STRING, CP_RES_DEPS_SIZE)) {
+#if 1
+            printf("Line %d is a res deps line: %s\n", read_buffer_line, line + CP_RES_DEPS_SIZE);
+#endif
+            if (split_line_names(line + CP_RES_DEPS_SIZE, cp_res_deps, MAX_DEP_NAMES)) {
+                printf("Error parsing resource deps in line %d of %s\n", read_buffer_line, filename);
+                return 1;
+            }
+            parsed = 1;
+        }
+        if (!parsed && !strncmp(line, CP_RES_OUTPUT_STRING, CP_RES_OUTPUT_SIZE)) {
+            cp_res_output_name = line + CP_RES_OUTPUT_SIZE;
+#if 1
+            printf("Line %d is a project res output name line: %s\n", read_buffer_line, cp_res_output_name);
+#endif
+            parsed = 1;
+        }
         if (!parsed) {
 #if 1
             printf("Line %d is something else: %s\n", read_buffer_line, line);
@@ -818,10 +903,18 @@ static int parse_template(char *filename)
         return 1;
     }
 
-    /* for console and gui types libs have to be given */
+    /* for console and gui types, libs have to be given */
     if (cp_type != CP_TYPE_LIBRARY) {
         if (!cp_libs) {
             printf("Missing link libs in %s\n", filename);
+            return 1;
+        }
+    }
+
+    /* for gui types, res elements have to be given */
+    if (cp_type == CP_TYPE_GUI) {
+        if (!cp_res_source_name || !cp_res_deps[0] || !cp_res_output_name) {
+            printf("Missing resource lines in %s\n", filename);
             return 1;
         }
     }

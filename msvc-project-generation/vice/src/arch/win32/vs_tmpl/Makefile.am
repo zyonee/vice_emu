@@ -67,14 +67,13 @@ EXTRA_DIST = \
 	viciidtv.tmpl \
 	viciisc.tmpl \
 	video.tmpl \
-	vsid.dsp \
-	vsidlib.dsp \
+	vsid.tmpl \
 	vsidlib.tmpl \
-	x128.dsp \
-	x64.dsp \
-	x64dtv.dsp \
-	x64sc.dsp \
-	xcbm2.dsp \
+	x128.tmpl \
+	x64.tmpl \
+	x64dtv.tmpl \
+	x64sc.tmpl \
+	xcbm2.tmpl \
 	xcbm5x0.dsp \
 	xpet.dsp \
 	xplus4.dsp \
