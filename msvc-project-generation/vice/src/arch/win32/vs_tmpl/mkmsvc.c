@@ -295,7 +295,7 @@ static char *msvc6_end_target = "# End Target\r\n"
 
 static char *msvc6_custom_source = "# Begin Source File\r\n"
                                    "\r\n"
-                                   "SOURCE=\"..\\..\\..\\%s\"\r\n"
+                                   "SOURCE=\"%s\"\r\n"
                                    "\r\n";
 
 static char *msvc6_custom_section_part1 = "# PROP Ignore_Default_Tool 1\r\n"
@@ -396,13 +396,30 @@ static char *msvc6_res_source_part3 = "!ENDIF\r\n"
 
 static int open_msvc6_main_project(void)
 {
-    /* TODO */
+    mainfile = fopen("../vs6/vice.dsw", "wb");
+
+    if (!mainfile) {
+        printf("Cannot open 'vice.dsw' for output\n");
+        return 1;
+    }
+    fprintf(mainfile, "Microsoft Developer Studio Workspace File, Format Version 6.00\r\n");
+    fprintf(mainfile, "# WARNING: DO NOT EDIT OR DELETE THIS WORKSPACE FILE!\r\n\r\n");
+    fprintf(mainfile, "###############################################################################\r\n\r\n");
     return 0;
+}
+
+static void close_msvc6_main_project(void)
+{
+    fprintf(mainfile, "Global:\r\n\r\n");
+    fprintf(mainfile, "Package=<5>\r\n{{{\r\n}}}\r\n\r\n");
+    fprintf(mainfile, "Package=<3>\r\n{{{\r\n}}}\r\n\r\n");
+    fprintf(mainfile, "###############################################################################\r\n\r\n");
+    fclose(mainfile);
 }
 
 static int output_msvc6_file(char *fname, int filelist)
 {
-    char *filename = malloc(strlen(fname) + sizeof(".dsp"));
+    char *filename;
     int retval = 0;
     FILE *outfile = NULL;
     char *real_type = NULL;
@@ -410,12 +427,32 @@ static int output_msvc6_file(char *fname, int filelist)
     char *mtl = (cp_type == CP_TYPE_GUI) ? "MTL=midl.exe\r\n" : "";
     int i, j;
 
-    sprintf(filename, "%s.dsp", fname);
+    if (filelist) {
+        filename = malloc(strlen(fname) + sizeof("../vs6/.dsp"));
+        sprintf(filename, "../vs6/%s.dsp", fname);
+    } else {
+        filename = malloc(strlen(fname) + sizeof(".dsp"));
+        sprintf(filename, "%s.dsp", fname);
+    }
+
 
     outfile = fopen(filename, "wb");
     if (!outfile) {
         printf("Cannot open %s for output\n", filename);
         retval = 1;
+    }
+
+    if (!retval && filelist) {
+        fprintf(mainfile, "Project: \"%s\"=\".\\%s.dsp\" - Package Owner=<4>\r\n\r\n", cp_name, cp_name);
+        fprintf(mainfile, "Package=<5>\r\n{{{\r\n}}}\r\n\r\nPackage=<4>\r\n{{{\r\n");
+        if (cp_dep_names[0]) {
+            for (i = 0; cp_dep_names[i]; i++) {
+                fprintf(mainfile, "    Begin Project Dependency\r\n");
+                fprintf(mainfile, "    Project_Dep_Name %s\r\n", cp_dep_names[i]);
+                fprintf(mainfile, "    End Project Dependency\r\n");
+            }
+        }
+        fprintf(mainfile, "}}}\r\n\r\n###############################################################################\r\n\r\n");
     }
 
     if (!retval) {
@@ -575,6 +612,20 @@ static int output_msvc6_file(char *fname, int filelist)
     if (filename) {
         free(filename);
     }
+
+    if (cp_libs) {
+        free(cp_libs);
+        cp_libs = NULL;
+    }
+
+    if (read_buffer) {
+        free(read_buffer);
+        read_buffer = NULL;
+        read_buffer_line = 0;
+        read_buffer_pos = 0;
+        read_buffer_len = 0;
+    }
+
     return retval;
 }
 
@@ -707,9 +758,6 @@ static int parse_template(char *filename)
     char *line = NULL;
     int parsed;
 
-    /* set project names to empty */
-    project_names[0] = NULL;
-
     /* set current project parameters to 'empty' */
     cp_name = NULL;
     cp_type = -1;
@@ -730,6 +778,9 @@ static int parse_template(char *filename)
     cp_res_source_name = NULL;
     cp_res_deps[0] = NULL;
     cp_res_output_name = NULL;
+    cp_cpusource_names[0] = NULL;
+
+    int is_main_project_template = 0;
 
     line = get_next_line_from_buffer();
     while (line) {
@@ -773,6 +824,17 @@ static int parse_template(char *filename)
                 printf("Unknown project type '%s' in line %d of %s\n", line + CP_TYPE_SIZE, read_buffer_line, filename);
                 return 1;
             }
+        }
+        if (!parsed && !strncmp(line, CP_PROJECT_NAMES_STRING, CP_PROJECT_NAMES_SIZE)) {
+#if MKMSVC_DEBUG
+            printf("Line %d is a project name: %s\n", read_buffer_line, line + CP_PROJECT_NAMES_SIZE);
+#endif
+            if (fill_line_names(project_names, MAX_NAMES)) {
+                printf("Error parsing project names in line %d of %s\n", read_buffer_line, filename);
+                return 1;
+            }
+            is_main_project_template = 1;
+            parsed = 1;
         }
         if (!parsed && !strncmp(line, CP_DEPS_STRING, CP_DEPS_SIZE)) {
 #if MKMSVC_DEBUG
@@ -942,31 +1004,34 @@ static int parse_template(char *filename)
         line = get_next_line_from_buffer();
     }
 
-    /* Some sanity checks on the custom section */
-    if (cp_custom_message || cp_custom_source || cp_custom_deps[0] || cp_custom_output || cp_custom_command) {
-        if (!(cp_custom_message && cp_custom_source && cp_custom_deps[0] && cp_custom_output && cp_custom_command)) {
-            printf("Missing custom section elements in %s\n", filename);
+    if (!is_main_project_template) {
+
+        /* Some sanity checks on the custom section */
+        if (cp_custom_message || cp_custom_source || cp_custom_deps[0] || cp_custom_output || cp_custom_command) {
+            if (!(cp_custom_message && cp_custom_source && cp_custom_deps[0] && cp_custom_output && cp_custom_command)) {
+                printf("Missing custom section elements in %s\n", filename);
+                return 1;
+            }
+        }
+
+        /* Name always has to be given */
+        if (!cp_name) {
+            printf("Missing project name in %s\n", filename);
             return 1;
         }
-    }
 
-    /* Name always has to be given */
-    if (!cp_name) {
-        printf("Missing project name in %s\n", filename);
-        return 1;
-    }
-
-    /* type always has to be given */
-    if (cp_type == -1) {
-        printf("Missing project type in %s\n", filename);
-        return 1;
-    }
-
-    /* for console and gui types, libs have to be given */
-    if (cp_type != CP_TYPE_LIBRARY) {
-        if (!cp_libs) {
-            printf("Missing link libs in %s\n", filename);
+        /* type always has to be given */
+        if (cp_type == -1) {
+            printf("Missing project type in %s\n", filename);
             return 1;
+        }
+
+        /* for console and gui types, libs have to be given */
+        if (cp_type != CP_TYPE_LIBRARY) {
+            if (!cp_libs) {
+                printf("Missing link libs in %s\n", filename);
+                return 1;
+            }
         }
     }
 
@@ -1113,9 +1178,16 @@ int main(int argc, char *argv[])
             filename = "vice";
         }
 
+        project_names[0] = NULL;
+
         if (read_template_file(filename)) {
             printf("Generation error.\n");
         } else {
+            names_buffer = read_buffer;
+            read_buffer = NULL;
+            read_buffer_line = 0;
+            read_buffer_pos = 0;
+            read_buffer_len = 0;
             if (msvc4) {
                 printf("Not yet implemented.\n");
             }
@@ -1123,8 +1195,18 @@ int main(int argc, char *argv[])
                 if (project_names[0]) {
                     error = open_msvc6_main_project();
                     for (i = 0; project_names[i] && !error; i++) {
-                        error = output_msvc6_file(argv[i], 1);
+                        error = read_template_file(project_names[i]);
+#if MKMSVC_DEBUG
+                        printf("Parse done\n");
+#endif
+                        if (!error) {
+                            error = output_msvc6_file(project_names[i], 1);
+#if MKMSVC_DEBUG
+                            printf("Output done\n");
+#endif
+                        }
                     }
+                    close_msvc6_main_project();
                 } else {
                     error = output_msvc6_file(filename, 0);
                 }

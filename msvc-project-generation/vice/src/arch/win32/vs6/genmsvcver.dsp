@@ -172,7 +172,7 @@ SOURCE="$(InputPath)"
 # Name "genmsvcver - Win32 DX Debug"
 # Begin Source File
 
-SOURCE="..\utils\genmsvcver.c"
+SOURCE="..\..\..\arch\win32\utils\genmsvcver.c"
 # End Source File
 # End Target
 # End Project

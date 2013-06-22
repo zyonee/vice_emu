@@ -149,29 +149,6 @@ SOURCE="..\..\..\main.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\..\maincpu.c"
-
-!IF  "$(CFG)" == "xplus4 - Win32 Release"
-
-# ADD CPP /Ot /Oa /Ow /Oi /Op /Oy
-# SUBTRACT CPP /Os
-
-!ELSEIF  "$(CFG)" == "xplus4 - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "xplus4 - Win32 DX Release"
-
-# ADD BASE CPP /Ot /Oa /Ow /Oi /Op /Oy
-# SUBTRACT BASE CPP /Os
-# ADD CPP /Ot /Oa /Ow /Oi /Op /Oy
-# SUBTRACT CPP /Os
-
-!ELSEIF  "$(CFG)" == "xplus4 - Win32 DX Debug"
-
-!ENDIF
-
-# End Source File
-# Begin Source File
-
 SOURCE="..\resplus4.rc"
 
 !IF  "$(CFG)" == "xplus4 - Win32 Release"

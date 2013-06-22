@@ -172,7 +172,7 @@ SOURCE="$(InputPath)"
 # Name "geninfocontrib - Win32 DX Debug"
 # Begin Source File
 
-SOURCE="..\utils\geninfocontrib.c"
+SOURCE="..\..\..\arch\win32\utils\geninfocontrib.c"
 # End Source File
 # End Target
 # End Project

@@ -136,7 +136,7 @@ LINK32=link.exe
 # Name "genwinres - Win32 DX Debug"
 # Begin Source File
 
-SOURCE="..\utils\genwinres.c"
+SOURCE="..\..\..\arch\win32\utils\genwinres.c"
 # End Source File
 # End Target
 # End Project

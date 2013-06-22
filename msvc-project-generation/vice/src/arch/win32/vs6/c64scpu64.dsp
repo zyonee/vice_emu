@@ -176,7 +176,7 @@ SOURCE="..\..\..\c64\c64memsnapshot.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\..\..\c64\c64model.c""
+SOURCE="..\..\..\c64\c64model.c"
 # End Source File
 # Begin Source File
 

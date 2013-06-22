@@ -132,503 +132,503 @@ LIB32=link.exe -lib
 # Name "arch - Win32 DX Debug"
 # Begin Source File
 
-SOURCE="..\archdep.c"
+SOURCE="..\..\..\arch\win32\archdep.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\blockdev.c"
+SOURCE="..\..\..\arch\win32\blockdev.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\c128ui.c"
+SOURCE="..\..\..\arch\win32\c128ui.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\c64dtvui.c"
+SOURCE="..\..\..\arch\win32\c64dtvui.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\c64ui.c"
+SOURCE="..\..\..\arch\win32\c64ui.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\catweaselmkiii.c"
+SOURCE="..\..\..\arch\win32\catweaselmkiii.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\cbm2ui.c"
+SOURCE="..\..\..\arch\win32\cbm2ui.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\cbm5x0ui.c"
+SOURCE="..\..\..\arch\win32\cbm5x0ui.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\console.c"
+SOURCE="..\..\..\arch\win32\console.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\dinput_handle.c"
+SOURCE="..\..\..\arch\win32\dinput_handle.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\dirent.c"
+SOURCE="..\..\..\arch\win32\dirent.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\dynlib.c"
+SOURCE="..\..\..\arch\win32\dynlib.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\fullscrn.c"
+SOURCE="..\..\..\arch\win32\fullscrn.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\gifdrv.c"
+SOURCE="..\..\..\arch\win32\gifdrv.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\hardsid.c"
+SOURCE="..\..\..\arch\win32\hardsid.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\intl.c"
+SOURCE="..\..\..\arch\win32\intl.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\joy.c"
+SOURCE="..\..\..\arch\win32\joy.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\kbd.c"
+SOURCE="..\..\..\arch\win32\kbd.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\lightpendrv.c"
+SOURCE="..\..\..\arch\win32\lightpendrv.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\mididrv.c"
+SOURCE="..\..\..\arch\win32\mididrv.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\mousedrv.c"
+SOURCE="..\..\..\arch\win32\mousedrv.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\parsid.c"
+SOURCE="..\..\..\arch\win32\parsid.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\petui.c"
+SOURCE="..\..\..\arch\win32\petui.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\plus4ui.c"
+SOURCE="..\..\..\arch\win32\plus4ui.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\rawnetarch.c"
+SOURCE="..\..\..\arch\win32\rawnetarch.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\rs232.c"
+SOURCE="..\..\..\arch\win32\rs232.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\rs232dev.c"
+SOURCE="..\..\..\arch\win32\rs232dev.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\rs232net.c"
+SOURCE="..\..\..\arch\win32\rs232net.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\scpu64ui.c"
+SOURCE="..\..\..\arch\win32\scpu64ui.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\signals.c"
+SOURCE="..\..\..\arch\win32\signals.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\statusbar.c"
+SOURCE="..\..\..\arch\win32\statusbar.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\system.c"
+SOURCE="..\..\..\arch\win32\system.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\ui-resources.c"
+SOURCE="..\..\..\arch\win32\ui-resources.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\ui.c"
+SOURCE="..\..\..\arch\win32\ui.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uiacia.c"
+SOURCE="..\..\..\arch\win32\uiacia.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uiattach.c"
+SOURCE="..\..\..\arch\win32\uiattach.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uiautostart.c"
+SOURCE="..\..\..\arch\win32\uiautostart.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uic128.c"
+SOURCE="..\..\..\arch\win32\uic128.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uic128model.c"
+SOURCE="..\..\..\arch\win32\uic128model.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uic64_256k.c"
+SOURCE="..\..\..\arch\win32\uic64_256k.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uic64burstmod.c"
+SOURCE="..\..\..\arch\win32\uic64burstmod.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uic64cart.c"
+SOURCE="..\..\..\arch\win32\uic64cart.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uic64dtv.c"
+SOURCE="..\..\..\arch\win32\uic64dtv.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uic64dtvmodel.c"
+SOURCE="..\..\..\arch\win32\uic64dtvmodel.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uic64model.c"
+SOURCE="..\..\..\arch\win32\uic64model.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uicart.c"
+SOURCE="..\..\..\arch\win32\uicart.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uicbm2model.c"
+SOURCE="..\..\..\arch\win32\uicbm2model.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uicbm5x0model.c"
+SOURCE="..\..\..\arch\win32\uicbm5x0model.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uicbm2set.c"
+SOURCE="..\..\..\arch\win32\uicbm2set.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uicbm5x0set.c"
+SOURCE="..\..\..\arch\win32\uicbm5x0set.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uicia.c"
+SOURCE="..\..\..\arch\win32\uicia.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uicmdline.c"
+SOURCE="..\..\..\arch\win32\uicmdline.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uiconsole.c"
+SOURCE="..\..\..\arch\win32\uiconsole.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uidatasette.c"
+SOURCE="..\..\..\arch\win32\uidatasette.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uidigimax.c"
+SOURCE="..\..\..\arch\win32\uidigimax.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uidqbb.c"
+SOURCE="..\..\..\arch\win32\uidqbb.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uidrivec128.c"
+SOURCE="..\..\..\arch\win32\uidrivec128.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uidrivec64.c"
+SOURCE="..\..\..\arch\win32\uidrivec64.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uidrivepetcbm2.c"
+SOURCE="..\..\..\arch\win32\uidrivepetcbm2.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uidriveplus4.c"
+SOURCE="..\..\..\arch\win32\uidriveplus4.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uidrivevic20.c"
+SOURCE="..\..\..\arch\win32\uidrivevic20.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uids12c887rtc.c"
+SOURCE="..\..\..\arch\win32\uids12c887rtc.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uieasyflash.c"
+SOURCE="..\..\..\arch\win32\uieasyflash.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uievent.c"
+SOURCE="..\..\..\arch\win32\uievent.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uiexpert.c"
+SOURCE="..\..\..\arch\win32\uiexpert.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uifliplist.c"
+SOURCE="..\..\..\arch\win32\uifliplist.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uigeoram.c"
+SOURCE="..\..\..\arch\win32\uigeoram.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uihelp.c"
+SOURCE="..\..\..\arch\win32\uihelp.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uiide64.c"
+SOURCE="..\..\..\arch\win32\uiide64.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uiisepic.c"
+SOURCE="..\..\..\arch\win32\uiisepic.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uijoystick.c"
+SOURCE="..\..\..\arch\win32\uijoystick.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uikeyboard.c"
+SOURCE="..\..\..\arch\win32\uikeyboard.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uilib.c"
+SOURCE="..\..\..\arch\win32\uilib.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uilightpen.c"
+SOURCE="..\..\..\arch\win32\uilightpen.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uimagicvoice.c"
+SOURCE="..\..\..\arch\win32\uimagicvoice.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uimediafile.c"
+SOURCE="..\..\..\arch\win32\uimediafile.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uimidi.c"
+SOURCE="..\..\..\arch\win32\uimidi.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uimmc64.c"
+SOURCE="..\..\..\arch\win32\uimmc64.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uimmcreplay.c"
+SOURCE="..\..\..\arch\win32\uimmcreplay.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uimon.c"
+SOURCE="..\..\..\arch\win32\uimon.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uimouse.c"
+SOURCE="..\..\..\arch\win32\uimouse.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uinetwork.c"
+SOURCE="..\..\..\arch\win32\uinetwork.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uiperipheral.c"
+SOURCE="..\..\..\arch\win32\uiperipheral.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uipetcolour.c"
+SOURCE="..\..\..\arch\win32\uipetcolour.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uipetdww.c"
+SOURCE="..\..\..\arch\win32\uipetdww.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uipetmodel.c"
+SOURCE="..\..\..\arch\win32\uipetmodel.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uipetreu.c"
+SOURCE="..\..\..\arch\win32\uipetreu.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uipetset.c"
+SOURCE="..\..\..\arch\win32\uipetset.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uiplus256k.c"
+SOURCE="..\..\..\arch\win32\uiplus256k.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uiplus4cart.c"
+SOURCE="..\..\..\arch\win32\uiplus4cart.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uiplus4mem.c"
+SOURCE="..\..\..\arch\win32\uiplus4mem.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uiplus4model.c"
+SOURCE="..\..\..\arch\win32\uiplus4model.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uiplus60k.c"
+SOURCE="..\..\..\arch\win32\uiplus60k.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uiquicksnapshot.c"
+SOURCE="..\..\..\arch\win32\uiquicksnapshot.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uiram.c"
+SOURCE="..\..\..\arch\win32\uiram.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uiramcart.c"
+SOURCE="..\..\..\arch\win32\uiramcart.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uiretroreplay.c"
+SOURCE="..\..\..\arch\win32\uiretroreplay.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uireu.c"
+SOURCE="..\..\..\arch\win32\uireu.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uirom.c"
+SOURCE="..\..\..\arch\win32\uirom.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uirs232.c"
+SOURCE="..\..\..\arch\win32\uirs232.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uirs232user.c"
+SOURCE="..\..\..\arch\win32\uirs232user.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uiscpu64.c"
+SOURCE="..\..\..\arch\win32\uiscpu64.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uisid.c"
+SOURCE="..\..\..\arch\win32\uisid.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uisidcart.c"
+SOURCE="..\..\..\arch\win32\uisidcart.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uisiddtv.c"
+SOURCE="..\..\..\arch\win32\uisiddtv.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uisnapshot.c"
+SOURCE="..\..\..\arch\win32\uisnapshot.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uisound.c"
+SOURCE="..\..\..\arch\win32\uisound.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uisoundexpander.c"
+SOURCE="..\..\..\arch\win32\uisoundexpander.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uisoundsampler.c"
+SOURCE="..\..\..\arch\win32\uisoundsampler.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uispeed.c"
+SOURCE="..\..\..\arch\win32\uispeed.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uited.c"
+SOURCE="..\..\..\arch\win32\uited.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uitfe.c"
+SOURCE="..\..\..\arch\win32\uitfe.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uiv364speech.c"
+SOURCE="..\..\..\arch\win32\uiv364speech.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uivic.c"
+SOURCE="..\..\..\arch\win32\uivic.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uivic20model.c"
+SOURCE="..\..\..\arch\win32\uivic20model.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uivicii.c"
+SOURCE="..\..\..\arch\win32\uivicii.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uivicset.c"
+SOURCE="..\..\..\arch\win32\uivicset.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\uivideo.c"
+SOURCE="..\..\..\arch\win32\uivideo.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\vic20ui.c"
+SOURCE="..\..\..\arch\win32\vic20ui.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\video-ddraw.c"
+SOURCE="..\..\..\arch\win32\video-ddraw.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\video-dx9.c"
+SOURCE="..\..\..\arch\win32\video-dx9.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\video.c"
+SOURCE="..\..\..\arch\win32\video.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\vsidui.c"
+SOURCE="..\..\..\arch\win32\vsidui.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\vsyncarch.c"
+SOURCE="..\..\..\arch\win32\vsyncarch.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\winmain.c"
+SOURCE="..\..\..\arch\win32\winmain.c"
 # End Source File
 # Begin Source File
 

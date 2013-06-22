@@ -136,7 +136,7 @@ LINK32=link.exe
 # Name "gentranslate - Win32 DX Debug"
 # Begin Source File
 
-SOURCE="..\utils\gentranslate.c"
+SOURCE="..\..\..\arch\win32\utils\gentranslate.c"
 # End Source File
 # End Target
 # End Project
