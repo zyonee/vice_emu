@@ -1,5 +1,4 @@
 EXTRA_DIST = \
-	_vice.dsp \
 	arch.tmpl \
 	base.tmpl \
 	c128.tmpl \
@@ -74,8 +73,8 @@ EXTRA_DIST = \
 	x64dtv.tmpl \
 	x64sc.tmpl \
 	xcbm2.tmpl \
-	xcbm5x0.dsp \
-	xpet.dsp \
-	xplus4.dsp \
-	xscpu64.dsp \
-	xvic.dsp
+	xcbm5x0.tmpl \
+	xpet.tmpl \
+	xplus4.tmpl \
+	xscpu64.tmpl \
+	xvic.tmpl

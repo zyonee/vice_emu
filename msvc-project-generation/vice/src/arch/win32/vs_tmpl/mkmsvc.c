@@ -3,6 +3,12 @@
 #include <stdlib.h>
 #include <string.h>
 
+/* Enable debug options */
+#define MKMSVC_DEBUG 1
+
+#define CP_PROJECT_NAMES_STRING       "PROJECTS ="
+#define CP_PROJECT_NAMES_SIZE         sizeof(CP_PROJECT_NAMES_STRING) - 1
+
 #define CP_NAME_STRING                "PROJECTNAME = "
 #define CP_NAME_SIZE                  sizeof(CP_NAME_STRING) - 1
 
@@ -75,6 +81,12 @@
 #define MAX_NAMES       200
 #define MAX_CPU_NAMES   10
 
+/* Main project file handle */
+static FILE *mainfile = NULL;
+
+/* project names */
+static char *project_names[MAX_NAMES];
+
 /* current project file parameters */
 static char *cp_name = NULL;
 static int cp_type = -1;
@@ -99,6 +111,7 @@ static char *cp_res_deps[MAX_DEP_NAMES];
 static char *cp_res_output_name = NULL;
 
 /* read buffer related */
+static char *names_buffer = NULL;
 static char *read_buffer = NULL;
 static int read_buffer_line = 0;
 static int read_buffer_pos = 0;
@@ -379,9 +392,15 @@ static char *msvc6_res_source_part3 = "!ENDIF\r\n"
                                       "SOURCE=\"..\\vice.manifest\"\r\n"
                                       "# End Source File\r\n";
 
-static int output_msvc6_file(char *fname)
+static int open_msvc6_main_project(void)
 {
-    char *filename = malloc(strlen(fname) + sizeof(".txt"));
+    /* TODO */
+    return 0;
+}
+
+static int output_msvc6_file(char *fname, int filelist)
+{
+    char *filename = malloc(strlen(fname) + sizeof(".dsp"));
     int retval = 0;
     FILE *outfile = NULL;
     char *real_type = NULL;
@@ -524,23 +543,25 @@ static int output_msvc6_file(char *fname)
             fprintf(outfile, msvc6_end_custom_source);
         }
         if (cp_type == CP_TYPE_GUI) {
-            fprintf(outfile, msvc6_res_source_start, cp_res_source_name);
-            for (i = 0; i < 4; i++) {
-                fprintf(outfile, msvc6_begin_ifs[i], cp_name);
-                fprintf(outfile, msvc6_res_source_part1);
-                for (j = 0; cp_res_deps[j]; j++) {
-                    fprintf(outfile, "\t\"..\\%s\"", cp_res_deps[j]);
-                }
-                fprintf(outfile, msvc6_res_source_part2, cp_res_source_name, cp_res_output_name);
-                for (j = 0; cp_res_deps[j]; j++) {
-                    fprintf(outfile, " ..\\%s", cp_res_deps[j]);
-                    if (cp_res_deps[j + 1]) {
-                        fprintf(outfile, " +");
+            if (cp_res_source_name) {
+                fprintf(outfile, msvc6_res_source_start, cp_res_source_name);
+                for (i = 0; i < 4; i++) {
+                    fprintf(outfile, msvc6_begin_ifs[i], cp_name);
+                    fprintf(outfile, msvc6_res_source_part1);
+                    for (j = 0; cp_res_deps[j]; j++) {
+                        fprintf(outfile, "\t\"..\\%s\"", cp_res_deps[j]);
                     }
+                    fprintf(outfile, msvc6_res_source_part2, cp_res_source_name, cp_res_output_name);
+                    for (j = 0; cp_res_deps[j]; j++) {
+                        fprintf(outfile, " ..\\%s", cp_res_deps[j]);
+                        if (cp_res_deps[j + 1]) {
+                            fprintf(outfile, " +");
+                        }
+                    }
+                    fprintf(outfile, " %s /b\r\n\r\n# End Custom Build\r\n\r\n", cp_res_output_name);
                 }
-                fprintf(outfile, " %s /b\r\n\r\n# End Custom Build\r\n\r\n", cp_res_output_name);
+                fprintf(outfile, msvc6_res_source_part3, cp_res_output_name);
             }
-            fprintf(outfile, msvc6_res_source_part3, cp_res_output_name);
         }
         fprintf(outfile, msvc6_end_target);
     }
@@ -576,7 +597,7 @@ static int split_line_names(char *line, char **names, int max_names)
     }
     names[count] = NULL;
 
-#if 1
+#if MKMSVC_DEBUG
     for (i = 0; names[i]; i++) {
         printf("NAME %d: %s\n", i, names[i]);
     }
@@ -627,7 +648,7 @@ static int fill_line_names(char **names, int max_names)
 {
     int count = 0;
     char *line = get_next_line_from_buffer();
-#if 1
+#if MKMSVC_DEBUG
     int i;
 #endif
 
@@ -641,7 +662,7 @@ static int fill_line_names(char **names, int max_names)
     }
     names[count] = NULL;
 
-#if 1
+#if MKMSVC_DEBUG
     for (i = 0; names[i]; i++) {
         printf("NAME %d: %s\n", i, names[i]);
     }
@@ -654,6 +675,9 @@ static int parse_template(char *filename)
 {
     char *line = NULL;
     int parsed;
+
+    /* set project names to empty */
+    project_names[0] = NULL;
 
     /* set current project parameters to 'empty' */
     cp_name = NULL;
@@ -680,26 +704,26 @@ static int parse_template(char *filename)
     while (line) {
         parsed = 0;
         if (!strlen(line)) {
-#if 1
+#if MKMSVC_DEBUG
             printf("Line %d is empty\n", read_buffer_line);
 #endif
             parsed = 1;
         }
         if (!parsed && line[0] == '#') {
-#if 1
+#if MKMSVC_DEBUG
             printf("Line %d is a comment line\n", read_buffer_line);
 #endif
             parsed = 1;
         }
         if (!parsed && !strncmp(line, CP_NAME_STRING, CP_NAME_SIZE)) {
             cp_name = line + CP_NAME_SIZE;
-#if 1
+#if MKMSVC_DEBUG
             printf("Line %d is a project name line: %s\n", read_buffer_line, cp_name);
 #endif
             parsed = 1;
         }
         if (!parsed && !strncmp(line, CP_TYPE_STRING, CP_TYPE_SIZE)) {
-#if 1
+#if MKMSVC_DEBUG
             printf("Line %d is a project type line: %s\n", read_buffer_line, line + CP_TYPE_SIZE);
 #endif
             if (!strcmp(line + CP_TYPE_SIZE, "library")) {
@@ -720,7 +744,7 @@ static int parse_template(char *filename)
             }
         }
         if (!parsed && !strncmp(line, CP_DEPS_STRING, CP_DEPS_SIZE)) {
-#if 1
+#if MKMSVC_DEBUG
             printf("Line %d is a project deps line: %s\n", read_buffer_line, line + CP_DEPS_SIZE);
 #endif
             if (split_line_names(line + CP_DEPS_SIZE, cp_dep_names, MAX_DEP_NAMES)) {
@@ -730,7 +754,7 @@ static int parse_template(char *filename)
             parsed = 1;
         }
         if (!parsed && !strncmp(line, CP_INCLUDES_STRING, CP_INCLUDES_SIZE)) {
-#if 1
+#if MKMSVC_DEBUG
             printf("Line %d is a project include dirs line\n", read_buffer_line);
 #endif
             if (fill_line_names(cp_include_dirs, MAX_DIRS)) {
@@ -740,7 +764,7 @@ static int parse_template(char *filename)
             parsed = 1;
         }
         if (!parsed && !strncmp(line, CP_SOURCES_STRING, CP_SOURCES_SIZE)) {
-#if 1
+#if MKMSVC_DEBUG
             printf("Line %d is a project sources line\n", read_buffer_line);
 #endif
             if (fill_line_names(cp_source_names, MAX_NAMES)) {
@@ -750,7 +774,7 @@ static int parse_template(char *filename)
             parsed = 1;
         }
         if (!parsed && !strncmp(line, CP_CPUSOURCES_STRING, CP_CPUSOURCES_SIZE)) {
-#if 1
+#if MKMSVC_DEBUG
             printf("Line %d is a project cpu sources line\n", read_buffer_line);
 #endif
             if (fill_line_names(cp_cpusource_names, MAX_CPU_NAMES)) {
@@ -761,27 +785,27 @@ static int parse_template(char *filename)
         }
         if (!parsed && !strncmp(line, CP_LIBS_STRING, CP_LIBS_SIZE)) {
             cp_libs = line + CP_LIBS_SIZE;
-#if 1
+#if MKMSVC_DEBUG
             printf("Line %d is a project link libs line: %s\n", read_buffer_line, cp_libs);
 #endif
             parsed = 1;
         }
         if (!parsed && !strncmp(line, CP_CUSTOM_MSG_STRING, CP_CUSTOM_MSG_SIZE)) {
             cp_custom_message = line + CP_CUSTOM_MSG_SIZE;
-#if 1
+#if MKMSVC_DEBUG
             printf("Line %d is a project custom message line: %s\n", read_buffer_line, cp_custom_message);
 #endif
             parsed = 1;
         }
         if (!parsed && !strncmp(line, CP_CUSTOM_SRC_STRING, CP_CUSTOM_SRC_SIZE)) {
             cp_custom_source = line + CP_CUSTOM_SRC_SIZE;
-#if 1
+#if MKMSVC_DEBUG
             printf("Line %d is a project custom source line: %s\n", read_buffer_line, cp_custom_source);
 #endif
             parsed = 1;
         }
         if (!parsed && !strncmp(line, CP_CUSTOM_DEPS_STRING, CP_CUSTOM_DEPS_SIZE)) {
-#if 1
+#if MKMSVC_DEBUG
             printf("Line %d is a custom deps line: %s\n", read_buffer_line, line + CP_CUSTOM_DEPS_SIZE);
 #endif
             if (split_line_names(line + CP_CUSTOM_DEPS_SIZE, cp_custom_deps, MAX_DEP_NAMES)) {
@@ -792,48 +816,48 @@ static int parse_template(char *filename)
         }
         if (!parsed && !strncmp(line, CP_CUSTOM_OUTPUT_STRING, CP_CUSTOM_OUTPUT_SIZE)) {
             cp_custom_output = line + CP_CUSTOM_OUTPUT_SIZE;
-#if 1
+#if MKMSVC_DEBUG
             printf("Line %d is a project custom output line: %s\n", read_buffer_line, cp_custom_output);
 #endif
             parsed = 1;
         }
         if (!parsed && !strncmp(line, CP_CUSTOM_COMMAND_STRING, CP_CUSTOM_COMMAND_SIZE)) {
             cp_custom_command = line + CP_CUSTOM_COMMAND_SIZE;
-#if 1
+#if MKMSVC_DEBUG
             printf("Line %d is a project custom command line: %s\n", read_buffer_line, cp_custom_command);
 #endif
             parsed = 1;
         }
         if (!parsed && !strncmp(line, CP_POST_CUSTOM_MSG_STRING, CP_POST_CUSTOM_MSG_SIZE)) {
             cp_post_custom_message = line + CP_POST_CUSTOM_MSG_SIZE;
-#if 1
+#if MKMSVC_DEBUG
             printf("Line %d is a project post custom message line: %s\n", read_buffer_line, cp_post_custom_message);
 #endif
             parsed = 1;
         }
         if (!parsed && !strncmp(line, CP_POST_CUSTOM_SRC_STRING, CP_POST_CUSTOM_SRC_SIZE)) {
             cp_post_custom_source = line + CP_POST_CUSTOM_SRC_SIZE;
-#if 1
+#if MKMSVC_DEBUG
             printf("Line %d is a project post custom source line: %s\n", read_buffer_line, cp_post_custom_source);
 #endif
             parsed = 1;
         }
         if (!parsed && !strncmp(line, CP_POST_CUSTOM_OUTPUT_STRING, CP_POST_CUSTOM_OUTPUT_SIZE)) {
             cp_post_custom_output = line + CP_POST_CUSTOM_OUTPUT_SIZE;
-#if 1
+#if MKMSVC_DEBUG
             printf("Line %d is a project post custom output line: %s\n", read_buffer_line, cp_post_custom_output);
 #endif
             parsed = 1;
         }
         if (!parsed && !strncmp(line, CP_POST_CUSTOM_COMMAND_STRING, CP_POST_CUSTOM_COMMAND_SIZE)) {
             cp_post_custom_command = line + CP_POST_CUSTOM_COMMAND_SIZE;
-#if 1
+#if MKMSVC_DEBUG
             printf("Line %d is a project post custom command line: %s\n", read_buffer_line, cp_post_custom_command);
 #endif
             parsed = 1;
         }
         if (!parsed && !strncmp(line, CP_CC_SOURCES_STRING, CP_CC_SOURCES_SIZE)) {
-#if 1
+#if MKMSVC_DEBUG
             printf("Line %d is a project cc sources line\n", read_buffer_line);
 #endif
             if (fill_line_names(cp_cc_source_names, MAX_NAMES)) {
@@ -844,20 +868,20 @@ static int parse_template(char *filename)
         }
         if (!parsed && !strncmp(line, CP_CC_SOURCE_PATH_STRING, CP_CC_SOURCE_PATH_SIZE)) {
             cp_cc_source_path = line + CP_CC_SOURCE_PATH_SIZE;
-#if 1
+#if MKMSVC_DEBUG
             printf("Line %d is a project cc source path line: %s\n", read_buffer_line, cp_cc_source_path);
 #endif
             parsed = 1;
         }
         if (!parsed && !strncmp(line, CP_RES_SOURCE_STRING, CP_RES_SOURCE_SIZE)) {
             cp_res_source_name = line + CP_RES_SOURCE_SIZE;
-#if 1
+#if MKMSVC_DEBUG
             printf("Line %d is a project res source name line: %s\n", read_buffer_line, cp_res_source_name);
 #endif
             parsed = 1;
         }
         if (!parsed && !strncmp(line, CP_RES_DEPS_STRING, CP_RES_DEPS_SIZE)) {
-#if 1
+#if MKMSVC_DEBUG
             printf("Line %d is a res deps line: %s\n", read_buffer_line, line + CP_RES_DEPS_SIZE);
 #endif
             if (split_line_names(line + CP_RES_DEPS_SIZE, cp_res_deps, MAX_DEP_NAMES)) {
@@ -868,13 +892,13 @@ static int parse_template(char *filename)
         }
         if (!parsed && !strncmp(line, CP_RES_OUTPUT_STRING, CP_RES_OUTPUT_SIZE)) {
             cp_res_output_name = line + CP_RES_OUTPUT_SIZE;
-#if 1
+#if MKMSVC_DEBUG
             printf("Line %d is a project res output name line: %s\n", read_buffer_line, cp_res_output_name);
 #endif
             parsed = 1;
         }
         if (!parsed) {
-#if 1
+#if MKMSVC_DEBUG
             printf("Line %d is something else: %s\n", read_buffer_line, line);
 #endif
             printf("Unknown command in line %d in %s\n", read_buffer_line, filename);
@@ -907,14 +931,6 @@ static int parse_template(char *filename)
     if (cp_type != CP_TYPE_LIBRARY) {
         if (!cp_libs) {
             printf("Missing link libs in %s\n", filename);
-            return 1;
-        }
-    }
-
-    /* for gui types, res elements have to be given */
-    if (cp_type == CP_TYPE_GUI) {
-        if (!cp_res_source_name || !cp_res_deps[0] || !cp_res_output_name) {
-            printf("Missing resource lines in %s\n", filename);
             return 1;
         }
     }
@@ -982,23 +998,113 @@ static int read_template_file(char *fname)
 
 static void usage(void)
 {
-    printf("This program takes one name as a parameter\n");
+    printf("Usage: mkmsvc <basename> <generation options>\n\n");
+    printf("basename is the name of a template file, without the '.tmpl' extension.\n");
+    printf("generation options are:\n");
+    printf("-4 = msvc4 mips makefile generation\n");
+    printf("-6 = msvc6 (98) project file generation\n");
+    printf("-7 = msvc7 (2002/2003) project file generation\n");
+    printf("-8 = msvc8 (2005) project file generation\n");
+    printf("-9 = msvc9 (2008) project file generation\n");
+    printf("-10 = msvc10 (2010) project file generation\n");
+    printf("-11 = msvc11 (2012) project file generation\n\n");
 }
 
 int main(int argc, char *argv[])
 {
-    if (argc != 2) {
+    int i;
+    int msvc4 = 0;
+    int msvc6 = 0;
+    int msvc7 = 0;
+    int msvc8 = 0;
+    int msvc9 = 0;
+    int msvc10 = 0;
+    int msvc11 = 0;
+    int error = 0;
+    char *filename = NULL;
+
+    if (argc == 1) {
         usage();
     } else {
-        if (read_template_file(argv[1])) {
+        for (i = 1; i < argc; i++) {
+            if (argv[i][0] != '-') {
+                if (!filename) {
+                    filename = argv[i];
+                } else {
+                    printf("Error: Only one basename can be given.\n\n");
+                    usage();
+                    exit(1);
+                }
+            } else {
+                if (!strcmp(argv[i], "-4")) {
+                    msvc4 = 1;
+                }
+                if (!strcmp(argv[i], "-6")) {
+                    msvc6 = 1;
+                }
+                if (!strcmp(argv[i], "-7")) {
+                    msvc7 = 1;
+                }
+                if (!strcmp(argv[i], "-8")) {
+                    msvc8 = 1;
+                }
+                if (!strcmp(argv[i], "-9")) {
+                    msvc9 = 1;
+                }
+                if (!strcmp(argv[i], "-10")) {
+                    msvc10 = 1;
+                }
+                if (!strcmp(argv[i], "-11")) {
+                    msvc11 = 1;
+                }
+            }
+        }
+
+        /* No filename, so use the default */
+        if (!filename) {
+            filename = "vice";
+        }
+
+        if (read_template_file(filename)) {
             printf("Generation error.\n");
         } else {
-            if (output_msvc6_file(argv[1])) {
+            if (msvc4) {
+                printf("Not yet implemented.\n");
+            }
+            if (!error && msvc6) {
+                if (project_names[0]) {
+                    error = open_msvc6_main_project();
+                    for (i = 0; project_names[i] && !error; i++) {
+                        error = output_msvc6_file(argv[i], 1);
+                    }
+                } else {
+                    error = output_msvc6_file(filename, 0);
+                }
+            }
+            if (!error && msvc7) {
+                printf("Not yet implemented.\n");
+            }
+            if (!error && msvc8) {
+                printf("Not yet implemented.\n");
+            }
+            if (!error && msvc9) {
+                printf("Not yet implemented.\n");
+            }
+            if (!error && msvc10) {
+                printf("Not yet implemented.\n");
+            }
+            if (!error && msvc11) {
+                printf("Not yet implemented.\n");
+            }
+            if (error) {
                 printf("Generation error.\n");
             } else {
                 printf("Generation complete.\n");
             }
         }
+    }
+    if (names_buffer) {
+        free(names_buffer);
     }
     if (read_buffer) {
         free(read_buffer);
