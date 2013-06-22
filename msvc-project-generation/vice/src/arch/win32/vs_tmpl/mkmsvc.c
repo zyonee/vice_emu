@@ -1103,7 +1103,8 @@ static void usage(void)
     printf("generation options are:\n");
     printf("-4 = msvc4 mips makefile generation\n");
     printf("-6 = msvc6 (98) project file generation\n");
-    printf("-7 = msvc7 (2002/2003) project file generation\n");
+    printf("-7[0] = msvc7.0 (2002) project file generation\n");
+    printf("-71 = msvc7.1 (2003) project file generation\n");
     printf("-8 = msvc8 (2005) project file generation\n");
     printf("-9 = msvc9 (2008) project file generation\n");
     printf("-10 = msvc10 (2010) project file generation\n");
@@ -1128,7 +1129,8 @@ int main(int argc, char *argv[])
     int i;
     int msvc4 = 0;
     int msvc6 = 0;
-    int msvc7 = 0;
+    int msvc70 = 0;
+    int msvc71 = 0;
     int msvc8 = 0;
     int msvc9 = 0;
     int msvc10 = 0;
@@ -1155,8 +1157,11 @@ int main(int argc, char *argv[])
                 if (!strcmp(argv[i], "-6")) {
                     msvc6 = 1;
                 }
-                if (!strcmp(argv[i], "-7")) {
-                    msvc7 = 1;
+                if (!strcmp(argv[i], "-7") || !strcmp(argv[i], "-70")) {
+                    msvc70 = 1;
+                }
+                if (!strcmp(argv[i], "-71")) {
+                    msvc71 = 1;
                 }
                 if (!strcmp(argv[i], "-8")) {
                     msvc8 = 1;
@@ -1214,7 +1219,10 @@ int main(int argc, char *argv[])
                     free_buffers();
                 }
             }
-            if (!error && msvc7) {
+            if (!error && msvc70) {
+                printf("Not yet implemented.\n");
+            }
+            if (!error && msvc71) {
                 printf("Not yet implemented.\n");
             }
             if (!error && msvc8) {
