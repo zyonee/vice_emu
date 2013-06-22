@@ -18,7 +18,7 @@
 #define CP_DEPS_STRING                "PROJECTDEPS = "
 #define CP_DEPS_SIZE                  sizeof(CP_DEPS_STRING) - 1
 
-#define CP_LIBS_STRING                "PROJECTLIBS = "
+#define CP_LIBS_STRING                "PROJECTLIBS ="
 #define CP_LIBS_SIZE                  sizeof(CP_LIBS_STRING) - 1
 
 #define CP_INCLUDES_STRING            "INCLUDEDIRS ="
@@ -80,6 +80,7 @@
 #define MAX_DEP_NAMES   100
 #define MAX_NAMES       200
 #define MAX_CPU_NAMES   10
+#define MAX_LIBS        30
 
 /* Main project file handle */
 static FILE *mainfile = NULL;
@@ -95,6 +96,7 @@ static char *cp_include_dirs[MAX_DIRS];
 static char *cp_source_names[MAX_NAMES];
 static char *cp_cpusource_names[MAX_CPU_NAMES];
 static char *cp_libs = NULL;
+static char *cp_libs_elements[MAX_LIBS];
 static char *cp_custom_message = NULL;
 static char *cp_custom_source = NULL;
 static char *cp_custom_deps[MAX_DEP_NAMES];
@@ -408,7 +410,7 @@ static int output_msvc6_file(char *fname, int filelist)
     char *mtl = (cp_type == CP_TYPE_GUI) ? "MTL=midl.exe\r\n" : "";
     int i, j;
 
-    sprintf(filename, "%s.txt", fname);
+    sprintf(filename, "%s.dsp", fname);
 
     outfile = fopen(filename, "wb");
     if (!outfile) {
@@ -573,6 +575,35 @@ static int output_msvc6_file(char *fname, int filelist)
     if (filename) {
         free(filename);
     }
+    return retval;
+}
+
+static char *make_cp_libs(void)
+{
+    int i, j;
+    char *retval = NULL;
+    int length = 0;
+    int k = 0;
+
+    for (i = 0; cp_libs_elements[i]; i++) {
+        length += (strlen(cp_libs_elements[i]) + 1);
+    }
+
+    retval = malloc(length);
+
+    if (retval) {
+        for (i = 0; cp_libs_elements[i]; i++) {
+            for (j = 0; j < strlen(cp_libs_elements[i]); j++) {
+                retval[k++] = cp_libs_elements[i][j];
+            }
+            if (cp_libs_elements[i + 1]) {
+                retval[k++] = ' ';
+            } else {
+                retval[k] = 0;
+            }
+        }
+    }
+
     return retval;
 }
 
@@ -784,11 +815,15 @@ static int parse_template(char *filename)
             parsed = 1;
         }
         if (!parsed && !strncmp(line, CP_LIBS_STRING, CP_LIBS_SIZE)) {
-            cp_libs = line + CP_LIBS_SIZE;
 #if MKMSVC_DEBUG
-            printf("Line %d is a project link libs line: %s\n", read_buffer_line, cp_libs);
+            printf("Line %d is a project link libs line\n", read_buffer_line);
 #endif
+            if (fill_line_names(cp_libs_elements, MAX_LIBS)) {
+                printf("Error parsing link library name in line %d of %s\n", read_buffer_line, filename);
+                return 1;
+            }
             parsed = 1;
+            cp_libs = make_cp_libs();
         }
         if (!parsed && !strncmp(line, CP_CUSTOM_MSG_STRING, CP_CUSTOM_MSG_SIZE)) {
             cp_custom_message = line + CP_CUSTOM_MSG_SIZE;
@@ -1010,6 +1045,19 @@ static void usage(void)
     printf("-11 = msvc11 (2012) project file generation\n\n");
 }
 
+static void free_buffers(void)
+{
+    if (names_buffer) {
+        free(names_buffer);
+    }
+    if (read_buffer) {
+        free(read_buffer);
+    }
+    if (cp_libs) {
+        free(cp_libs);
+    }
+}
+
 int main(int argc, char *argv[])
 {
     int i;
@@ -1080,6 +1128,9 @@ int main(int argc, char *argv[])
                 } else {
                     error = output_msvc6_file(filename, 0);
                 }
+                if (!error) {
+                    free_buffers();
+                }
             }
             if (!error && msvc7) {
                 printf("Not yet implemented.\n");
@@ -1102,11 +1153,5 @@ int main(int argc, char *argv[])
                 printf("Generation complete.\n");
             }
         }
-    }
-    if (names_buffer) {
-        free(names_buffer);
-    }
-    if (read_buffer) {
-        free(read_buffer);
     }
 }
