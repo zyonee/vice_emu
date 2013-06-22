@@ -15,7 +15,7 @@
 #define CP_TYPE_STRING                "PROJECTTYPE = "
 #define CP_TYPE_SIZE                  sizeof(CP_TYPE_STRING) - 1
 
-#define CP_DEPS_STRING                "PROJECTDEPS = "
+#define CP_DEPS_STRING                "PROJECTDEPS ="
 #define CP_DEPS_SIZE                  sizeof(CP_DEPS_STRING) - 1
 
 #define CP_LIBS_STRING                "PROJECTLIBS ="
@@ -778,7 +778,7 @@ static int parse_template(char *filename)
 #if MKMSVC_DEBUG
             printf("Line %d is a project deps line: %s\n", read_buffer_line, line + CP_DEPS_SIZE);
 #endif
-            if (split_line_names(line + CP_DEPS_SIZE, cp_dep_names, MAX_DEP_NAMES)) {
+            if (fill_line_names(cp_dep_names, MAX_DEP_NAMES)) {
                 printf("Error parsing names in line %d of %s\n", read_buffer_line, filename);
                 return 1;
             }
