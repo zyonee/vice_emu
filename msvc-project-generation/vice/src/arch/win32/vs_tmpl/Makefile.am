@@ -61,7 +61,7 @@ EXTRA_DIST = \
 	vdrive.tmpl \
 	vic20.tmpl \
 	vic20cart.tmpl \
-	vice.dsw \
+	vice.tmpl \
 	vicii.tmpl \
 	viciidtv.tmpl \
 	viciisc.tmpl \

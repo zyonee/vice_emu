@@ -11,48 +11,6 @@
 	</Platforms>
 	<Configurations>
 		<Configuration
-			Name="Debug|Win32"
-			OutputDirectory=".\libs\fileio\Debug"
-			IntermediateDirectory=".\libs\fileio\Debug"
-			ConfigurationType="4"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE">
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="0"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\,..\..\vdrive,..\..\drive"
-				PreprocessorDefinitions="WIN32,NODIRECTX,IDE_COMPILE,_DEBUG,_WINDOWS"
-				RuntimeLibrary="1"
-				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\fileio\Debug/fileio.pch"
-				AssemblerListingLocation=".\libs\fileio\Debug/"
-				ObjectFile=".\libs\fileio\Debug/"
-				ProgramDataBaseFileName=".\libs\fileio\Debug/"
-				WarningLevel="3"
-				SuppressStartupBanner="TRUE"
-				DebugInformationFormat="1"
-				CompileAs="0"/>
-			<Tool
-				Name="VCCustomBuildTool"/>
-			<Tool
-				Name="VCLibrarianTool"
-				OutputFile=".\libs\fileio\Debug\fileio.lib"
-				SuppressStartupBanner="TRUE"/>
-			<Tool
-				Name="VCMIDLTool"/>
-			<Tool
-				Name="VCPostBuildEventTool"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				Culture="1033"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-		</Configuration>
-		<Configuration
 			Name="DX Debug|Win32"
 			OutputDirectory=".\libs\fileio\DXDebug"
 			IntermediateDirectory=".\libs\fileio\DXDebug"
@@ -62,14 +20,14 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\,..\..\vdrive,..\..\drive"
-				PreprocessorDefinitions="WIN32,IDE_COMPILE,_DEBUG,_WINDOWS"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\drive,..\..\..\vdrive"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\fileio\DXDebug/fileio.pch"
-				AssemblerListingLocation=".\libs\fileio\DXDebug/"
-				ObjectFile=".\libs\fileio\DXDebug/"
-				ProgramDataBaseFileName=".\libs\fileio\DXDebug/"
+				PrecompiledHeaderFile=".\libs\fileio\DXDebug\fileio.pch"
+				AssemblerListingLocation=".\libs\fileio\DXDebug\"
+				ObjectFile=".\libs\fileio\DXDebug\"
+				ProgramDataBaseFileName=".\libs\fileio\DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				DebugInformationFormat="1"
@@ -104,16 +62,16 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\,..\..\vdrive,..\..\drive"
-				PreprocessorDefinitions="WIN32,IDE_COMPILE,NDEBUG,_WINDOWS"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\drive,..\..\..\vdrive"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NDEBUG"
 				StringPooling="TRUE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="TRUE"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\fileio\DXRelease/fileio.pch"
-				AssemblerListingLocation=".\libs\fileio\DXRelease/"
-				ObjectFile=".\libs\fileio\DXRelease/"
-				ProgramDataBaseFileName=".\libs\fileio\DXRelease/"
+				PrecompiledHeaderFile=".\libs\fileio\DXRelease\fileio.pch"
+				AssemblerListingLocation=".\libs\fileio\DXRelease\"
+				ObjectFile=".\libs\fileio\DXRelease\"
+				ProgramDataBaseFileName=".\libs\fileio\DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				CompileAs="0"/>
@@ -122,6 +80,48 @@
 			<Tool
 				Name="VCLibrarianTool"
 				OutputFile=".\libs\fileio\DXRelease\fileio.lib"
+				SuppressStartupBanner="TRUE"/>
+			<Tool
+				Name="VCMIDLTool"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				Culture="1033"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+		</Configuration>
+		<Configuration
+			Name="Debug|Win32"
+			OutputDirectory=".\libs\fileio\Debug"
+			IntermediateDirectory=".\libs\fileio\Debug"
+			ConfigurationType="4"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\drive,..\..\..\vdrive"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
+				RuntimeLibrary="1"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderFile=".\libs\fileio\Debug\fileio.pch"
+				AssemblerListingLocation=".\libs\fileio\Debug\"
+				ObjectFile=".\libs\fileio\Debug\"
+				ProgramDataBaseFileName=".\libs\fileio\Debug\"
+				WarningLevel="3"
+				SuppressStartupBanner="TRUE"
+				DebugInformationFormat="1"
+				CompileAs="0"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile=".\libs\fileio\Debug\fileio.lib"
 				SuppressStartupBanner="TRUE"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -147,16 +147,16 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\,..\..\vdrive,..\..\drive"
-				PreprocessorDefinitions="WIN32,NODIRECTX,IDE_COMPILE,NDEBUG,_WINDOWS"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\drive,..\..\..\vdrive"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,NDEBUG"
 				StringPooling="TRUE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="TRUE"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\fileio\Release/fileio.pch"
-				AssemblerListingLocation=".\libs\fileio\Release/"
-				ObjectFile=".\libs\fileio\Release/"
-				ProgramDataBaseFileName=".\libs\fileio\Release/"
+				PrecompiledHeaderFile=".\libs\fileio\Release\fileio.pch"
+				AssemblerListingLocation=".\libs\fileio\Release\"
+				ObjectFile=".\libs\fileio\Release\"
+				ProgramDataBaseFileName=".\libs\fileio\Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				CompileAs="0"/>
@@ -183,13 +183,13 @@
 	</Configurations>
 	<Files>
 		<File
-			RelativePath="..\..\fileio\cbmfile.c">
+			RelativePath="..\..\..\fileio\cbmfile.c">
 		</File>
 		<File
-			RelativePath="..\..\fileio\fileio.c">
+			RelativePath="..\..\..\fileio\fileio.c">
 		</File>
 		<File
-			RelativePath="..\..\fileio\p00.c">
+			RelativePath="..\..\..\fileio\p00.c">
 		</File>
 	</Files>
 	<Globals>

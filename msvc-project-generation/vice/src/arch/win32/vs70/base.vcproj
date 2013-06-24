@@ -11,23 +11,23 @@
 	</Platforms>
 	<Configurations>
 		<Configuration
-			Name="Debug|Win32"
-			OutputDirectory=".\libs\base\Debug"
-			IntermediateDirectory=".\libs\base\Debug"
+			Name="DX Debug|Win32"
+			OutputDirectory=".\libs\base\DXDebug"
+			IntermediateDirectory=".\libs\base\DXDebug"
 			ConfigurationType="4"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\,..\..\drive,..\..\vdrive,..\..\userport,..\..\rs232drv,..\..\imagecontents,..\..\monitor,..\..\lib\p64,..\..\rtc,..\..\platform"
-				PreprocessorDefinitions="DONT_USE_UNISTD_H,WIN32,IDE_COMPILE,NODIRECTX,_DEBUG,_WINDOWS"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\drive,..\..\..\imagecontents,..\..\..\lib\p64,..\..\..\monitor,..\..\..\platform,..\..\..\rs232drv,..\..\..\rtc,..\..\..\userport,..\..\..\vdrive"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\base\Debug/base.pch"
-				AssemblerListingLocation=".\libs\base\Debug/"
-				ObjectFile=".\libs\base\Debug/"
-				ProgramDataBaseFileName=".\libs\base\Debug/"
+				PrecompiledHeaderFile=".\libs\base\DXDebug\base.pch"
+				AssemblerListingLocation=".\libs\base\DXDebug\"
+				ObjectFile=".\libs\base\DXDebug\"
+				ProgramDataBaseFileName=".\libs\base\DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				DebugInformationFormat="1"
@@ -36,7 +36,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\base\Debug\base.lib"
+				OutputFile=".\libs\base\DXDebug\base.lib"
 				SuppressStartupBanner="TRUE"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -62,16 +62,16 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\,..\..\drive,..\..\vdrive,..\..\userport,..\..\rs232drv,..\..\imagecontents,..\..\monitor,..\..\lib\p64,..\..\rtc,..\..\platform"
-				PreprocessorDefinitions="DONT_USE_UNISTD_H,WIN32,IDE_COMPILE,NDEBUG,_WINDOWS"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\drive,..\..\..\imagecontents,..\..\..\lib\p64,..\..\..\monitor,..\..\..\platform,..\..\..\rs232drv,..\..\..\rtc,..\..\..\userport,..\..\..\vdrive"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NDEBUG"
 				StringPooling="TRUE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="TRUE"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\base\DXRelease/base.pch"
-				AssemblerListingLocation=".\libs\base\DXRelease/"
-				ObjectFile=".\libs\base\DXRelease/"
-				ProgramDataBaseFileName=".\libs\base\DXRelease/"
+				PrecompiledHeaderFile=".\libs\base\DXRelease\base.pch"
+				AssemblerListingLocation=".\libs\base\DXRelease\"
+				ObjectFile=".\libs\base\DXRelease\"
+				ProgramDataBaseFileName=".\libs\base\DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				CompileAs="0"/>
@@ -80,6 +80,48 @@
 			<Tool
 				Name="VCLibrarianTool"
 				OutputFile=".\libs\base\DXRelease\base.lib"
+				SuppressStartupBanner="TRUE"/>
+			<Tool
+				Name="VCMIDLTool"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				Culture="1033"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+		</Configuration>
+		<Configuration
+			Name="Debug|Win32"
+			OutputDirectory=".\libs\base\Debug"
+			IntermediateDirectory=".\libs\base\Debug"
+			ConfigurationType="4"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\drive,..\..\..\imagecontents,..\..\..\lib\p64,..\..\..\monitor,..\..\..\platform,..\..\..\rs232drv,..\..\..\rtc,..\..\..\userport,..\..\..\vdrive"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
+				RuntimeLibrary="1"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderFile=".\libs\base\Debug\base.pch"
+				AssemblerListingLocation=".\libs\base\Debug\"
+				ObjectFile=".\libs\base\Debug\"
+				ProgramDataBaseFileName=".\libs\base\Debug\"
+				WarningLevel="3"
+				SuppressStartupBanner="TRUE"
+				DebugInformationFormat="1"
+				CompileAs="0"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile=".\libs\base\Debug\base.lib"
 				SuppressStartupBanner="TRUE"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -105,16 +147,16 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\,..\..\drive,..\..\vdrive,..\..\userport,..\..\rs232drv,..\..\imagecontents,..\..\monitor,..\..\lib\p64,..\..\rtc,..\..\platform"
-				PreprocessorDefinitions="DONT_USE_UNISTD_H,WIN32,NODIRECTX,IDE_COMPILE,NDEBUG,_WINDOWS"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\drive,..\..\..\imagecontents,..\..\..\lib\p64,..\..\..\monitor,..\..\..\platform,..\..\..\rs232drv,..\..\..\rtc,..\..\..\userport,..\..\..\vdrive"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,NDEBUG"
 				StringPooling="TRUE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="TRUE"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\base\Release/base.pch"
-				AssemblerListingLocation=".\libs\base\Release/"
-				ObjectFile=".\libs\base\Release/"
-				ProgramDataBaseFileName=".\libs\base\Release/"
+				PrecompiledHeaderFile=".\libs\base\Release\base.pch"
+				AssemblerListingLocation=".\libs\base\Release\"
+				ObjectFile=".\libs\base\Release\"
+				ProgramDataBaseFileName=".\libs\base\Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				CompileAs="0"/>
@@ -138,251 +180,209 @@
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 		</Configuration>
-		<Configuration
-			Name="DX Debug|Win32"
-			OutputDirectory=".\libs\base\DXDebug"
-			IntermediateDirectory=".\libs\base\DXDebug"
-			ConfigurationType="4"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE">
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="0"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\,..\..\drive,..\..\vdrive,..\..\userport,..\..\rs232drv,..\..\imagecontents,..\..\monitor,..\..\lib\p64,..\..\rtc,..\..\platform"
-				PreprocessorDefinitions="DONT_USE_UNISTD_H,WIN32,IDE_COMPILE,_DEBUG,_WINDOWS"
-				RuntimeLibrary="1"
-				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\base\DXDebug/base.pch"
-				AssemblerListingLocation=".\libs\base\DXDebug/"
-				ObjectFile=".\libs\base\DXDebug/"
-				ProgramDataBaseFileName=".\libs\base\DXDebug/"
-				WarningLevel="3"
-				SuppressStartupBanner="TRUE"
-				DebugInformationFormat="1"
-				CompileAs="0"/>
-			<Tool
-				Name="VCCustomBuildTool"/>
-			<Tool
-				Name="VCLibrarianTool"
-				OutputFile=".\libs\base\DXDebug\base.lib"
-				SuppressStartupBanner="TRUE"/>
-			<Tool
-				Name="VCMIDLTool"/>
-			<Tool
-				Name="VCPostBuildEventTool"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				Culture="1033"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-		</Configuration>
 	</Configurations>
 	<Files>
 		<File
-			RelativePath="..\..\alarm.c">
+			RelativePath="..\..\..\alarm.c">
 		</File>
 		<File
-			RelativePath="..\..\attach.c">
+			RelativePath="..\..\..\attach.c">
 		</File>
 		<File
-			RelativePath="..\..\autostart-prg.c">
+			RelativePath="..\..\..\autostart-prg.c">
 		</File>
 		<File
-			RelativePath="..\..\autostart.c">
+			RelativePath="..\..\..\autostart.c">
 		</File>
 		<File
-			RelativePath="..\..\cbmdos.c">
+			RelativePath="..\..\..\cbmdos.c">
 		</File>
 		<File
-			RelativePath="..\..\cbmimage.c">
+			RelativePath="..\..\..\cbmimage.c">
 		</File>
 		<File
-			RelativePath="..\..\charset.c">
+			RelativePath="..\..\..\charset.c">
 		</File>
 		<File
-			RelativePath="..\..\clipboard.c">
+			RelativePath="..\..\..\clipboard.c">
 		</File>
 		<File
-			RelativePath="..\..\clkguard.c">
+			RelativePath="..\..\..\clkguard.c">
 		</File>
 		<File
-			RelativePath="..\..\cmdline.c">
+			RelativePath="..\..\..\cmdline.c">
 		</File>
 		<File
-			RelativePath="..\..\color.c">
+			RelativePath="..\..\..\color.c">
 		</File>
 		<File
-			RelativePath="..\..\crc32.c">
+			RelativePath="..\..\..\crc32.c">
 		</File>
 		<File
-			RelativePath="..\..\datasette.c">
+			RelativePath="..\..\..\datasette.c">
 		</File>
 		<File
-			RelativePath="..\..\debug.c">
+			RelativePath="..\..\..\debug.c">
 		</File>
 		<File
-			RelativePath="..\..\dma.c">
+			RelativePath="..\..\..\dma.c">
 		</File>
 		<File
-			RelativePath="..\..\event.c">
+			RelativePath="..\..\..\event.c">
 		</File>
 		<File
-			RelativePath="..\..\findpath.c">
+			RelativePath="..\..\..\findpath.c">
 		</File>
 		<File
-			RelativePath="..\..\fliplist.c">
+			RelativePath="..\..\..\fliplist.c">
 		</File>
 		<File
-			RelativePath="..\..\gcr.c">
+			RelativePath="..\..\..\gcr.c">
 		</File>
 		<File
-			RelativePath="..\..\info.c">
+			RelativePath="..\..\..\info.c">
 		</File>
 		<File
-			RelativePath="..\..\init.c">
+			RelativePath="..\..\..\init.c">
 		</File>
 		<File
-			RelativePath="..\..\initcmdline.c">
+			RelativePath="..\..\..\initcmdline.c">
 		</File>
 		<File
-			RelativePath="..\..\interrupt.c">
+			RelativePath="..\..\..\interrupt.c">
 		</File>
 		<File
-			RelativePath="..\..\ioutil.c">
+			RelativePath="..\..\..\ioutil.c">
 		</File>
 		<File
-			RelativePath="..\..\joystick.c">
+			RelativePath="..\..\..\joystick.c">
 		</File>
 		<File
-			RelativePath="..\..\kbdbuf.c">
+			RelativePath="..\..\..\kbdbuf.c">
 		</File>
 		<File
-			RelativePath="..\..\keyboard.c">
+			RelativePath="..\..\..\keyboard.c">
 		</File>
 		<File
-			RelativePath="..\..\lib.c">
+			RelativePath="..\..\..\lib.c">
 		</File>
 		<File
-			RelativePath="..\..\lightpen.c">
+			RelativePath="..\..\..\lightpen.c">
 		</File>
 		<File
-			RelativePath="..\..\log.c">
+			RelativePath="..\..\..\log.c">
 		</File>
 		<File
-			RelativePath="..\..\machine-bus.c">
+			RelativePath="..\..\..\machine-bus.c">
 		</File>
 		<File
-			RelativePath="..\..\machine.c">
+			RelativePath="..\..\..\machine.c">
 		</File>
 		<File
-			RelativePath="..\..\midi.c">
+			RelativePath="..\..\..\midi.c">
 		</File>
 		<File
-			RelativePath="..\..\mouse.c">
+			RelativePath="..\..\..\mouse.c">
 		</File>
 		<File
-			RelativePath="..\..\network.c">
+			RelativePath="..\..\..\network.c">
 		</File>
 		<File
-			RelativePath="..\..\opencbmlib.c">
+			RelativePath="..\..\..\opencbmlib.c">
 		</File>
 		<File
-			RelativePath="..\..\palette.c">
+			RelativePath="..\..\..\palette.c">
 		</File>
 		<File
-			RelativePath="..\..\ram.c">
+			RelativePath="..\..\..\ram.c">
 		</File>
 		<File
-			RelativePath="..\..\rawfile.c">
+			RelativePath="..\..\..\rawfile.c">
 		</File>
 		<File
-			RelativePath="..\..\rawnet.c">
+			RelativePath="..\..\..\rawnet.c">
 		</File>
 		<File
-			RelativePath="..\..\resources.c">
+			RelativePath="..\..\..\resources.c">
 		</File>
 		<File
-			RelativePath="..\..\romset.c">
+			RelativePath="..\..\..\romset.c">
 		</File>
 		<File
-			RelativePath="..\..\screenshot.c">
+			RelativePath="..\..\..\screenshot.c">
 		</File>
 		<File
-			RelativePath="..\..\snapshot.c">
+			RelativePath="..\..\..\snapshot.c">
 		</File>
 		<File
-			RelativePath="..\..\socket.c">
+			RelativePath="..\..\..\socket.c">
 		</File>
 		<File
-			RelativePath="..\..\sound.c">
+			RelativePath="..\..\..\sound.c">
 		</File>
 		<File
-			RelativePath="..\..\sysfile.c">
+			RelativePath="..\..\..\sysfile.c">
 		</File>
 		<File
-			RelativePath="..\..\translate.c">
+			RelativePath="..\..\..\translate.c">
 		</File>
 		<File
-			RelativePath="..\..\translate.txt">
+			RelativePath="..\..\..\traps.c">
+		</File>
+		<File
+			RelativePath="..\..\..\util.c">
+		</File>
+		<File
+			RelativePath="..\..\..\vsync.c">
+		</File>
+		<File
+			RelativePath="..\..\..\zfile.c">
+		</File>
+		<File
+			RelativePath="..\..\..\zipcode.c">
+		</File>
+		<File
+			RelativePath="..\..\..\translate.txt">
 			<FileConfiguration
-				Name="Debug|Win32">
+				Name="DX Debug|Win32">
 				<Tool
 					Name="VCCustomBuildTool"
 					Description="Generating translate.h and translate_table.h"
-					CommandLine="..\..\..\data\gentranslate ..\..\translate.txt ..\..\translate.h ..\..\translate_table.h
+					CommandLine="..\..\..\..\data\gentranslate ..\..\..\translate.txt ..\..\..\translate.h ..\..\..\translate_table.h
 "
-					AdditionalDependencies="..\..\translate.txt;"
-					Outputs="$(InputDir)translate_table.h"/>
+					AdditionalDependencies="..\..\..\translate.txt;"
+					Outputs="..\..\..\translate_table.h"/>
 			</FileConfiguration>
 			<FileConfiguration
 				Name="DX Release|Win32">
 				<Tool
 					Name="VCCustomBuildTool"
 					Description="Generating translate.h and translate_table.h"
-					CommandLine="..\..\..\data\gentranslate ..\..\translate.txt ..\..\translate.h ..\..\translate_table.h
+					CommandLine="..\..\..\..\data\gentranslate ..\..\..\translate.txt ..\..\..\translate.h ..\..\..\translate_table.h
 "
-					AdditionalDependencies="..\..\translate.txt;"
-					Outputs="$(InputDir)translate_table.h"/>
+					AdditionalDependencies="..\..\..\translate.txt;"
+					Outputs="..\..\..\translate_table.h"/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug|Win32">
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Generating translate.h and translate_table.h"
+					CommandLine="..\..\..\..\data\gentranslate ..\..\..\translate.txt ..\..\..\translate.h ..\..\..\translate_table.h
+"
+					AdditionalDependencies="..\..\..\translate.txt;"
+					Outputs="..\..\..\translate_table.h"/>
 			</FileConfiguration>
 			<FileConfiguration
 				Name="Release|Win32">
 				<Tool
 					Name="VCCustomBuildTool"
 					Description="Generating translate.h and translate_table.h"
-					CommandLine="..\..\..\data\gentranslate ..\..\translate.txt ..\..\translate.h ..\..\translate_table.h
+					CommandLine="..\..\..\..\data\gentranslate ..\..\..\translate.txt ..\..\..\translate.h ..\..\..\translate_table.h
 "
-					AdditionalDependencies="..\..\translate.txt;"
-					Outputs="$(InputDir)translate_table.h"/>
+					AdditionalDependencies="..\..\..\translate.txt;"
+					Outputs="..\..\..\translate_table.h"/>
 			</FileConfiguration>
-			<FileConfiguration
-				Name="DX Debug|Win32">
-				<Tool
-					Name="VCCustomBuildTool"
-					Description="Generating translate.h and translate_table.h"
-					CommandLine="..\..\..\data\gentranslate ..\..\translate.txt ..\..\translate.h ..\..\translate_table.h
-"
-					AdditionalDependencies="..\..\translate.txt;"
-					Outputs="$(InputDir)translate_table.h"/>
-			</FileConfiguration>
-		</File>
-		<File
-			RelativePath="..\..\traps.c">
-		</File>
-		<File
-			RelativePath="..\..\util.c">
-		</File>
-		<File
-			RelativePath="..\..\vsync.c">
-		</File>
-		<File
-			RelativePath="..\..\zfile.c">
-		</File>
-		<File
-			RelativePath="..\..\zipcode.c">
 		</File>
 	</Files>
 	<Globals>

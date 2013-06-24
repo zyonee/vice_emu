@@ -11,91 +11,6 @@
 	</Platforms>
 	<Configurations>
 		<Configuration
-			Name="Debug|Win32"
-			OutputDirectory=".\libs\arch\Debug"
-			IntermediateDirectory=".\libs\arch\Debug"
-			ConfigurationType="4"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE">
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="0"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\platform,..\..\,..\..\drive,..\..\vdrive,..\..\userport,..\..\c64,..\..\c64\cart,..\..\c64dtv,..\..\c128,..\..\vic20,..\..\pet,..\..\cbm2,..\..\raster,..\..\monitor,..\..\lib\p64,..\..\lib\libffmpeg,..\..\plus4,..\..\rs232drv,..\..\sid,..\..\imagecontents,.\msvc\wpcap"
-				PreprocessorDefinitions="WIN32,NODIRECTX,IDE_COMPILE,_DEBUG,_WINDOWS"
-				RuntimeLibrary="1"
-				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\arch\Debug/arch.pch"
-				AssemblerListingLocation=".\libs\arch\Debug/"
-				ObjectFile=".\libs\arch\Debug/"
-				ProgramDataBaseFileName=".\libs\arch\Debug/"
-				WarningLevel="3"
-				SuppressStartupBanner="TRUE"
-				DebugInformationFormat="1"
-				CompileAs="0"/>
-			<Tool
-				Name="VCCustomBuildTool"/>
-			<Tool
-				Name="VCLibrarianTool"
-				OutputFile=".\libs\arch\Debug\arch.lib"
-				SuppressStartupBanner="TRUE"/>
-			<Tool
-				Name="VCMIDLTool"/>
-			<Tool
-				Name="VCPostBuildEventTool"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				Culture="1033"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-		</Configuration>
-		<Configuration
-			Name="Release|Win32"
-			OutputDirectory=".\libs\arch\Release"
-			IntermediateDirectory=".\libs\arch\Release"
-			ConfigurationType="4"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE">
-			<Tool
-				Name="VCCLCompilerTool"
-				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\platform,..\..\,..\..\drive,..\..\vdrive,..\..\userport,..\..\c64,..\..\c64\cart,..\..\c64dtv,..\..\c128,..\..\vic20,..\..\pet,..\..\cbm2,..\..\raster,..\..\monitor,..\..\lib\p64,..\..\lib\libffmpeg,..\..\plus4,..\..\rs232drv,..\..\sid,..\..\imagecontents,.\msvc\wpcap"
-				PreprocessorDefinitions="WIN32,NODIRECTX,IDE_COMPILE,NDEBUG,_WINDOWS"
-				StringPooling="TRUE"
-				RuntimeLibrary="0"
-				EnableFunctionLevelLinking="TRUE"
-				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\arch\Release/arch.pch"
-				AssemblerListingLocation=".\libs\arch\Release/"
-				ObjectFile=".\libs\arch\Release/"
-				ProgramDataBaseFileName=".\libs\arch\Release/"
-				WarningLevel="3"
-				SuppressStartupBanner="TRUE"
-				CompileAs="0"/>
-			<Tool
-				Name="VCCustomBuildTool"/>
-			<Tool
-				Name="VCLibrarianTool"
-				OutputFile=".\libs\arch\Release\arch.lib"
-				SuppressStartupBanner="TRUE"/>
-			<Tool
-				Name="VCMIDLTool"/>
-			<Tool
-				Name="VCPostBuildEventTool"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				Culture="1033"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-		</Configuration>
-		<Configuration
 			Name="DX Debug|Win32"
 			OutputDirectory=".\libs\arch\DXDebug"
 			IntermediateDirectory=".\libs\arch\DXDebug"
@@ -105,14 +20,14 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\platform,..\..\,..\..\drive,..\..\vdrive,..\..\userport,..\..\c64,..\..\c64\cart,..\..\c64dtv,..\..\c128,..\..\vic20,..\..\pet,..\..\cbm2,..\..\raster,..\..\monitor,..\..\lib\p64,..\..\lib\libffmpeg,..\..\plus4,..\..\rs232drv,..\..\sid,..\..\imagecontents,.\msvc\wpcap"
-				PreprocessorDefinitions="WIN32,IDE_COMPILE,_DEBUG,_WINDOWS"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\arch\win32\msvc\wpcap,..\..\..\c128,..\..\..\c64,..\..\..\c64\cart,..\..\..\c64dtv,..\..\..\cbm2,..\..\..\drive,..\..\..\imagecontents,..\..\..\lib\libffmpeg,..\..\..\lib\p64,..\..\..\monitor,..\..\..\pet,..\..\..\platform,..\..\..\plus4,..\..\..\raster,..\..\..\rs232drv,..\..\..\sid,..\..\..\userport,..\..\..\vdrive,..\..\..\vic20"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\arch\DXDebug/arch.pch"
-				AssemblerListingLocation=".\libs\arch\DXDebug/"
-				ObjectFile=".\libs\arch\DXDebug/"
-				ProgramDataBaseFileName=".\libs\arch\DXDebug/"
+				PrecompiledHeaderFile=".\libs\arch\DXDebug\arch.pch"
+				AssemblerListingLocation=".\libs\arch\DXDebug\"
+				ObjectFile=".\libs\arch\DXDebug\"
+				ProgramDataBaseFileName=".\libs\arch\DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				DebugInformationFormat="1"
@@ -147,16 +62,16 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\platform,..\..\,..\..\drive,..\..\vdrive,..\..\userport,..\..\c64,..\..\c64\cart,..\..\c64dtv,..\..\c128,..\..\vic20,..\..\pet,..\..\cbm2,..\..\raster,..\..\monitor,..\..\lib\p64,..\..\lib\libffmpeg,..\..\plus4,..\..\rs232drv,..\..\sid,..\..\imagecontents,.\msvc\wpcap"
-				PreprocessorDefinitions="WIN32,IDE_COMPILE,NDEBUG,_WINDOWS"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\arch\win32\msvc\wpcap,..\..\..\c128,..\..\..\c64,..\..\..\c64\cart,..\..\..\c64dtv,..\..\..\cbm2,..\..\..\drive,..\..\..\imagecontents,..\..\..\lib\libffmpeg,..\..\..\lib\p64,..\..\..\monitor,..\..\..\pet,..\..\..\platform,..\..\..\plus4,..\..\..\raster,..\..\..\rs232drv,..\..\..\sid,..\..\..\userport,..\..\..\vdrive,..\..\..\vic20"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NDEBUG"
 				StringPooling="TRUE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="TRUE"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\arch\DXRelease/arch.pch"
-				AssemblerListingLocation=".\libs\arch\DXRelease/"
-				ObjectFile=".\libs\arch\DXRelease/"
-				ProgramDataBaseFileName=".\libs\arch\DXRelease/"
+				PrecompiledHeaderFile=".\libs\arch\DXRelease\arch.pch"
+				AssemblerListingLocation=".\libs\arch\DXRelease\"
+				ObjectFile=".\libs\arch\DXRelease\"
+				ProgramDataBaseFileName=".\libs\arch\DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				CompileAs="0"/>
@@ -180,425 +95,510 @@
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 		</Configuration>
+		<Configuration
+			Name="Debug|Win32"
+			OutputDirectory=".\libs\arch\Debug"
+			IntermediateDirectory=".\libs\arch\Debug"
+			ConfigurationType="4"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\arch\win32\msvc\wpcap,..\..\..\c128,..\..\..\c64,..\..\..\c64\cart,..\..\..\c64dtv,..\..\..\cbm2,..\..\..\drive,..\..\..\imagecontents,..\..\..\lib\libffmpeg,..\..\..\lib\p64,..\..\..\monitor,..\..\..\pet,..\..\..\platform,..\..\..\plus4,..\..\..\raster,..\..\..\rs232drv,..\..\..\sid,..\..\..\userport,..\..\..\vdrive,..\..\..\vic20"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
+				RuntimeLibrary="1"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderFile=".\libs\arch\Debug\arch.pch"
+				AssemblerListingLocation=".\libs\arch\Debug\"
+				ObjectFile=".\libs\arch\Debug\"
+				ProgramDataBaseFileName=".\libs\arch\Debug\"
+				WarningLevel="3"
+				SuppressStartupBanner="TRUE"
+				DebugInformationFormat="1"
+				CompileAs="0"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile=".\libs\arch\Debug\arch.lib"
+				SuppressStartupBanner="TRUE"/>
+			<Tool
+				Name="VCMIDLTool"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				Culture="1033"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+		</Configuration>
+		<Configuration
+			Name="Release|Win32"
+			OutputDirectory=".\libs\arch\Release"
+			IntermediateDirectory=".\libs\arch\Release"
+			ConfigurationType="4"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			<Tool
+				Name="VCCLCompilerTool"
+				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\arch\win32\msvc\wpcap,..\..\..\c128,..\..\..\c64,..\..\..\c64\cart,..\..\..\c64dtv,..\..\..\cbm2,..\..\..\drive,..\..\..\imagecontents,..\..\..\lib\libffmpeg,..\..\..\lib\p64,..\..\..\monitor,..\..\..\pet,..\..\..\platform,..\..\..\plus4,..\..\..\raster,..\..\..\rs232drv,..\..\..\sid,..\..\..\userport,..\..\..\vdrive,..\..\..\vic20"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,NDEBUG"
+				StringPooling="TRUE"
+				RuntimeLibrary="0"
+				EnableFunctionLevelLinking="TRUE"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderFile=".\libs\arch\Release\arch.pch"
+				AssemblerListingLocation=".\libs\arch\Release\"
+				ObjectFile=".\libs\arch\Release\"
+				ProgramDataBaseFileName=".\libs\arch\Release\"
+				WarningLevel="3"
+				SuppressStartupBanner="TRUE"
+				CompileAs="0"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile=".\libs\arch\Release\arch.lib"
+				SuppressStartupBanner="TRUE"/>
+			<Tool
+				Name="VCMIDLTool"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				Culture="1033"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+		</Configuration>
 	</Configurations>
 	<Files>
 		<File
-			RelativePath=".\archdep.c">
+			RelativePath="..\..\..\arch\win32\archdep.c">
 		</File>
 		<File
-			RelativePath=".\blockdev.c">
+			RelativePath="..\..\..\arch\win32\blockdev.c">
 		</File>
 		<File
-			RelativePath=".\c128ui.c">
+			RelativePath="..\..\..\arch\win32\c128ui.c">
 		</File>
 		<File
-			RelativePath=".\c64dtvui.c">
+			RelativePath="..\..\..\arch\win32\c64dtvui.c">
 		</File>
 		<File
-			RelativePath=".\c64ui.c">
+			RelativePath="..\..\..\arch\win32\c64ui.c">
 		</File>
 		<File
-			RelativePath=".\catweaselmkiii.c">
+			RelativePath="..\..\..\arch\win32\catweaselmkiii.c">
 		</File>
 		<File
-			RelativePath=".\cbm2ui.c">
+			RelativePath="..\..\..\arch\win32\cbm2ui.c">
 		</File>
 		<File
-			RelativePath=".\cbm5x0ui.c">
+			RelativePath="..\..\..\arch\win32\cbm5x0ui.c">
 		</File>
 		<File
-			RelativePath=".\console.c">
+			RelativePath="..\..\..\arch\win32\console.c">
 		</File>
 		<File
-			RelativePath=".\dinput_handle.c">
+			RelativePath="..\..\..\arch\win32\dinput_handle.c">
 		</File>
 		<File
-			RelativePath=".\dirent.c">
+			RelativePath="..\..\..\arch\win32\dirent.c">
 		</File>
 		<File
-			RelativePath=".\dynlib.c">
+			RelativePath="..\..\..\arch\win32\dynlib.c">
 		</File>
 		<File
-			RelativePath=".\fullscrn.c">
+			RelativePath="..\..\..\arch\win32\fullscrn.c">
 		</File>
 		<File
-			RelativePath=".\gifdrv.c">
+			RelativePath="..\..\..\arch\win32\gifdrv.c">
 		</File>
 		<File
-			RelativePath=".\hardsid.c">
+			RelativePath="..\..\..\arch\win32\hardsid.c">
 		</File>
 		<File
-			RelativePath=".\intl.c">
+			RelativePath="..\..\..\arch\win32\intl.c">
 		</File>
 		<File
-			RelativePath=".\joy.c">
+			RelativePath="..\..\..\arch\win32\joy.c">
 		</File>
 		<File
-			RelativePath=".\kbd.c">
+			RelativePath="..\..\..\arch\win32\kbd.c">
 		</File>
 		<File
-			RelativePath=".\lightpendrv.c">
+			RelativePath="..\..\..\arch\win32\lightpendrv.c">
 		</File>
 		<File
-			RelativePath=".\mididrv.c">
+			RelativePath="..\..\..\arch\win32\mididrv.c">
 		</File>
 		<File
-			RelativePath=".\mousedrv.c">
+			RelativePath="..\..\..\arch\win32\mousedrv.c">
 		</File>
 		<File
-			RelativePath=".\parsid.c">
+			RelativePath="..\..\..\arch\win32\parsid.c">
 		</File>
 		<File
-			RelativePath=".\petui.c">
+			RelativePath="..\..\..\arch\win32\petui.c">
 		</File>
 		<File
-			RelativePath=".\plus4ui.c">
+			RelativePath="..\..\..\arch\win32\plus4ui.c">
 		</File>
 		<File
-			RelativePath=".\rawnetarch.c">
+			RelativePath="..\..\..\arch\win32\rawnetarch.c">
 		</File>
 		<File
-			RelativePath=".\res.txt">
-			<FileConfiguration
-				Name="Debug|Win32">
-				<Tool
-					Name="VCCustomBuildTool"
-					Description="Generating res.h"
-					CommandLine="..\..\..\data\genwinres res.h menuid.h stringid.h res.txt resdialogs.txt resmenu.txt resstrings.txt
-"
-					AdditionalDependencies="res.txt;resdialogs.txt;resmenu.txt;resstrings.txt;"
-					Outputs="$(InputDir)res.h"/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Win32">
-				<Tool
-					Name="VCCustomBuildTool"
-					Description="Generating res.h"
-					CommandLine="..\..\..\data\genwinres res.h menuid.h stringid.h res.txt resdialogs.txt resmenu.txt resstrings.txt
-"
-					AdditionalDependencies="res.txt;resdialogs.txt;resmenu.txt;resstrings.txt;"
-					Outputs="$(InputDir)res.h"/>
-			</FileConfiguration>
+			RelativePath="..\..\..\arch\win32\rs232.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\rs232dev.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\rs232net.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\scpu64ui.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\signals.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\statusbar.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\system.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\ui-resources.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\ui.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uiacia.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uiattach.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uiautostart.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uic128.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uic128model.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uic64_256k.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uic64burstmod.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uic64cart.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uic64dtv.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uic64dtvmodel.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uic64model.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uicart.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uicbm2model.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uicbm5x0model.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uicbm2set.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uicbm5x0set.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uicia.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uicmdline.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uiconsole.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uidatasette.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uidigimax.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uidqbb.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uidrivec128.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uidrivec64.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uidrivepetcbm2.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uidriveplus4.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uidrivevic20.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uids12c887rtc.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uieasyflash.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uievent.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uiexpert.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uifliplist.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uigeoram.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uihelp.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uiide64.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uiisepic.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uijoystick.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uikeyboard.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uilib.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uilightpen.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uimagicvoice.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uimediafile.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uimidi.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uimmc64.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uimmcreplay.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uimon.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uimouse.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uinetwork.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uiperipheral.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uipetcolour.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uipetdww.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uipetmodel.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uipetreu.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uipetset.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uiplus256k.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uiplus4cart.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uiplus4mem.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uiplus4model.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uiplus60k.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uiquicksnapshot.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uiram.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uiramcart.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uiretroreplay.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uireu.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uirom.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uirs232.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uirs232user.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uiscpu64.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uisid.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uisidcart.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uisiddtv.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uisnapshot.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uisound.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uisoundexpander.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uisoundsampler.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uispeed.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uited.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uitfe.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uiv364speech.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uivic.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uivic20model.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uivicii.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uivicset.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\uivideo.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\vic20ui.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\video-ddraw.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\video-dx9.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\video.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\vsidui.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\vsyncarch.c">
+		</File>
+		<File
+			RelativePath="..\..\..\arch\win32\winmain.c">
+		</File>
+		<File
+			RelativePath="..\res.txt">
 			<FileConfiguration
 				Name="DX Debug|Win32">
 				<Tool
 					Name="VCCustomBuildTool"
 					Description="Generating res.h"
-					CommandLine="..\..\..\data\genwinres res.h menuid.h stringid.h res.txt resdialogs.txt resmenu.txt resstrings.txt
+					CommandLine="..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt
 "
-					AdditionalDependencies="res.txt;resdialogs.txt;resmenu.txt;resstrings.txt;"
-					Outputs="$(InputDir)res.h"/>
+					AdditionalDependencies="..\res.txt;..\resdialogs.txt;..\resmenu.txt;..\resstrings.txt;"
+					Outputs="..\res.h"/>
 			</FileConfiguration>
 			<FileConfiguration
 				Name="DX Release|Win32">
 				<Tool
 					Name="VCCustomBuildTool"
 					Description="Generating res.h"
-					CommandLine="..\..\..\data\genwinres res.h menuid.h stringid.h res.txt resdialogs.txt resmenu.txt resstrings.txt
+					CommandLine="..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt
 "
-					AdditionalDependencies="res.txt;resdialogs.txt;resmenu.txt;resstrings.txt;"
-					Outputs="$(InputDir)res.h"/>
+					AdditionalDependencies="..\res.txt;..\resdialogs.txt;..\resmenu.txt;..\resstrings.txt;"
+					Outputs="..\res.h"/>
 			</FileConfiguration>
-		</File>
-		<File
-			RelativePath=".\rs232.c">
-		</File>
-		<File
-			RelativePath=".\rs232dev.c">
-		</File>
-		<File
-			RelativePath=".\rs232net.c">
-		</File>
-		<File
-			RelativePath=".\scpu64ui.c">
-		</File>
-		<File
-			RelativePath=".\signals.c">
-		</File>
-		<File
-			RelativePath=".\statusbar.c">
-		</File>
-		<File
-			RelativePath=".\system.c">
-		</File>
-		<File
-			RelativePath=".\ui-resources.c">
-		</File>
-		<File
-			RelativePath=".\ui.c">
-		</File>
-		<File
-			RelativePath=".\uiacia.c">
-		</File>
-		<File
-			RelativePath=".\uiattach.c">
-		</File>
-		<File
-			RelativePath=".\uiautostart.c">
-		</File>
-		<File
-			RelativePath=".\uic128.c">
-		</File>
-		<File
-			RelativePath=".\uic128model.c">
-		</File>
-		<File
-			RelativePath=".\uic64_256k.c">
-		</File>
-		<File
-			RelativePath=".\uic64burstmod.c">
-		</File>
-		<File
-			RelativePath=".\uic64cart.c">
-		</File>
-		<File
-			RelativePath=".\uic64dtv.c">
-		</File>
-		<File
-			RelativePath=".\uic64dtvmodel.c">
-		</File>
-		<File
-			RelativePath=".\uic64model.c">
-		</File>
-		<File
-			RelativePath=".\uicart.c">
-		</File>
-		<File
-			RelativePath=".\uicbm2model.c">
-		</File>
-		<File
-			RelativePath=".\uicbm2set.c">
-		</File>
-		<File
-			RelativePath=".\uicbm5x0model.c">
-		</File>
-		<File
-			RelativePath=".\uicbm5x0set.c">
-		</File>
-		<File
-			RelativePath=".\uicia.c">
-		</File>
-		<File
-			RelativePath=".\uicmdline.c">
-		</File>
-		<File
-			RelativePath=".\uiconsole.c">
-		</File>
-		<File
-			RelativePath=".\uidatasette.c">
-		</File>
-		<File
-			RelativePath=".\uidigimax.c">
-		</File>
-		<File
-			RelativePath=".\uidqbb.c">
-		</File>
-		<File
-			RelativePath=".\uidrivec128.c">
-		</File>
-		<File
-			RelativePath=".\uidrivec64.c">
-		</File>
-		<File
-			RelativePath=".\uidrivepetcbm2.c">
-		</File>
-		<File
-			RelativePath=".\uidriveplus4.c">
-		</File>
-		<File
-			RelativePath=".\uidrivevic20.c">
-		</File>
-		<File
-			RelativePath=".\uids12c887rtc.c">
-		</File>
-		<File
-			RelativePath=".\uieasyflash.c">
-		</File>
-		<File
-			RelativePath=".\uievent.c">
-		</File>
-		<File
-			RelativePath=".\uiexpert.c">
-		</File>
-		<File
-			RelativePath=".\uifliplist.c">
-		</File>
-		<File
-			RelativePath=".\uigeoram.c">
-		</File>
-		<File
-			RelativePath=".\uihelp.c">
-		</File>
-		<File
-			RelativePath=".\uiide64.c">
-		</File>
-		<File
-			RelativePath=".\uiisepic.c">
-		</File>
-		<File
-			RelativePath=".\uijoystick.c">
-		</File>
-		<File
-			RelativePath=".\uikeyboard.c">
-		</File>
-		<File
-			RelativePath=".\uilib.c">
-		</File>
-		<File
-			RelativePath=".\uilightpen.c">
-		</File>
-		<File
-			RelativePath=".\uimagicvoice.c">
-		</File>
-		<File
-			RelativePath=".\uimediafile.c">
-		</File>
-		<File
-			RelativePath=".\uimidi.c">
-		</File>
-		<File
-			RelativePath=".\uimmc64.c">
-		</File>
-		<File
-			RelativePath=".\uimmcreplay.c">
-		</File>
-		<File
-			RelativePath=".\uimon.c">
-		</File>
-		<File
-			RelativePath=".\uimouse.c">
-		</File>
-		<File
-			RelativePath=".\uinetwork.c">
-		</File>
-		<File
-			RelativePath=".\uiperipheral.c">
-		</File>
-		<File
-			RelativePath=".\uipetcolour.c">
-		</File>
-		<File
-			RelativePath=".\uipetdww.c">
-		</File>
-		<File
-			RelativePath=".\uipetmodel.c">
-		</File>
-		<File
-			RelativePath=".\uipetreu.c">
-		</File>
-		<File
-			RelativePath=".\uipetset.c">
-		</File>
-		<File
-			RelativePath=".\uiplus256k.c">
-		</File>
-		<File
-			RelativePath=".\uiplus4cart.c">
-		</File>
-		<File
-			RelativePath=".\uiplus4mem.c">
-		</File>
-		<File
-			RelativePath=".\uiplus4model.c">
-		</File>
-		<File
-			RelativePath=".\uiplus60k.c">
-		</File>
-		<File
-			RelativePath=".\uiquicksnapshot.c">
-		</File>
-		<File
-			RelativePath=".\uiram.c">
-		</File>
-		<File
-			RelativePath=".\uiramcart.c">
-		</File>
-		<File
-			RelativePath=".\uiretroreplay.c">
-		</File>
-		<File
-			RelativePath=".\uireu.c">
-		</File>
-		<File
-			RelativePath=".\uirom.c">
-		</File>
-		<File
-			RelativePath=".\uirs232.c">
-		</File>
-		<File
-			RelativePath=".\uirs232user.c">
-		</File>
-		<File
-			RelativePath=".\uiscpu64.c">
-		</File>
-		<File
-			RelativePath=".\uisid.c">
-		</File>
-		<File
-			RelativePath=".\uisidcart.c">
-		</File>
-		<File
-			RelativePath=".\uisiddtv.c">
-		</File>
-		<File
-			RelativePath=".\uisnapshot.c">
-		</File>
-		<File
-			RelativePath=".\uisound.c">
-		</File>
-		<File
-			RelativePath=".\uisoundexpander.c">
-		</File>
-		<File
-			RelativePath=".\uisoundsampler.c">
-		</File>
-		<File
-			RelativePath=".\uispeed.c">
-		</File>
-		<File
-			RelativePath=".\uited.c">
-		</File>
-		<File
-			RelativePath=".\uitfe.c">
-		</File>
-		<File
-			RelativePath=".\uiv364speech.c">
-		</File>
-		<File
-			RelativePath=".\uivic.c">
-		</File>
-		<File
-			RelativePath=".\uivic20model.c">
-		</File>
-		<File
-			RelativePath=".\uivicii.c">
-		</File>
-		<File
-			RelativePath=".\uivicset.c">
-		</File>
-		<File
-			RelativePath=".\uivideo.c">
-		</File>
-		<File
-			RelativePath=".\vic20ui.c">
-		</File>
-		<File
-			RelativePath=".\video-ddraw.c">
-		</File>
-		<File
-			RelativePath=".\video-dx9.c">
-		</File>
-		<File
-			RelativePath=".\video.c">
-		</File>
-		<File
-			RelativePath=".\vsidui.c">
-		</File>
-		<File
-			RelativePath=".\vsyncarch.c">
-		</File>
-		<File
-			RelativePath=".\winmain.c">
+			<FileConfiguration
+				Name="Debug|Win32">
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Generating res.h"
+					CommandLine="..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt
+"
+					AdditionalDependencies="..\res.txt;..\resdialogs.txt;..\resmenu.txt;..\resstrings.txt;"
+					Outputs="..\res.h"/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|Win32">
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Generating res.h"
+					CommandLine="..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt
+"
+					AdditionalDependencies="..\res.txt;..\resdialogs.txt;..\resmenu.txt;..\resstrings.txt;"
+					Outputs="..\res.h"/>
+			</FileConfiguration>
 		</File>
 	</Files>
 	<Globals>

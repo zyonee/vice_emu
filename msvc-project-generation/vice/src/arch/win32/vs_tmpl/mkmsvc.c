@@ -119,6 +119,620 @@ static int read_buffer_line = 0;
 static int read_buffer_pos = 0;
 static int read_buffer_len = 0;
 
+
+/* Solution file information structure */
+typedef struct project_info_s {
+    char *name;
+    char *dep[MAX_DEP_NAMES];
+} project_info_t;
+
+static project_info_t project_info[MAX_DEP_NAMES];
+
+/* ---------------------------------------------------------------------- */
+
+static char *msvc70_type_name[4] = {
+    "DX Debug",
+    "DX Release",
+    "Debug",
+    "Release"
+};
+
+static char *msvc70_type[4] = {
+    "DXDebug",
+    "DXRelease",
+    "Debug",
+    "Release"
+};
+
+static char *msvc70_compiler_tool_type[2] = {
+    "Optimization=\"0\"",
+    "InlineFunctionExpansion=\"1\""
+};
+
+static char *msvc70_predefs[4] = {
+    "_DEBUG",
+    "NDEBUG",
+    "NODIRECTX,_DEBUG",
+    "NODIRECTX,NDEBUG"
+};
+
+static char *msvc70_cc_extra[4] = {
+    "/D &quot;_DEBUG&quot;",
+    "/D &quot;NDEBUG&quot;",
+    "/D &quot;NODIRECTX&quot; /D &quot;_DEBUG&quot;",
+    "/D &quot;NODIRECTX&quot; /D &quot;NDEBUG&quot;"
+};
+
+static char *msvc70_flags[2] = {
+    "/MTd /W3 /EHsc /Z7 /Od",
+    "/MT /W3 /EHsc"
+};
+
+static char *msvc70_cc_predefs = ",PACKAGE=\\&quot;%s\\&quot;,VERSION=\\&quot;0.7\\&quot;,SIZEOF_INT=4";
+
+static char *msvc70_console_libs = "version.lib wsock32.lib";
+
+static char *msvc70_gui_libs[2] = {
+    "comctl32.lib dsound.lib dxguid.lib winmm.lib version.lib wsock32.lib",
+    "comctl32.lib version.lib winmm.lib wsock32.lib"
+};
+
+static char *msvc70_xml_header = "<?xml version=\"1.0\" encoding = \"Windows-1252\"?>\r\n";
+
+static char *msvc70_project_start = "<VisualStudioProject\r\n"
+                                    "\tProjectType=\"Visual C++\"\r\n"
+                                    "\tVersion=\"7.00\"\r\n"
+                                    "\tName=\"%s\"\r\n"
+                                    "\tSccProjectName=\"\"\r\n"
+                                    "\tSccLocalPath=\"\">\r\n"
+                                    "\t<Platforms>\r\n"
+                                    "\t\t<Platform\r\n"
+                                    "\t\t\tName=\"Win32\"/>\r\n"
+                                    "\t</Platforms>\r\n";
+
+static char *msvc70_configurations = "\t<Configurations>\r\n";
+
+static char *msvc70_config_part1 = "\t\t<Configuration\r\n"
+                                   "\t\t\tName=\"%s|Win32\"\r\n";
+
+static char *msvc70_config_part2_lib = "\t\t\tOutputDirectory=\".\\libs\\%s\\%s\"\r\n";
+
+static char *msvc70_config_part2_app = "\t\t\tOutputDirectory=\".\\..\\..\\..\\..\\data\"\r\n";
+
+static char *msvc70_config_part3 = "\t\t\tIntermediateDirectory=\".\\libs\\%s\\%s\"\r\n"
+                                   "\t\t\tConfigurationType=\"%d\"\r\n"
+                                   "\t\t\tUseOfMFC=\"0\"\r\n"
+                                   "\t\t\tATLMinimizesCRunTimeLibraryUsage=\"FALSE\"";
+
+static char *msvc70_charset = "\t\t\tCharacterSet=\"2\"";
+
+static char *msvc70_compiler_tool_part1 = ">\r\n"
+                                          "\t\t\t<Tool\r\n"
+                                          "\t\t\t\tName=\"VCCLCompilerTool\"\r\n"
+                                          "\t\t\t\t%s\r\n";
+
+static char *msvc70_aid = "\t\t\t\tAdditionalIncludeDirectories=\"..\\msvc,..\\,..\\..\\..\\";
+
+static char *msvc70_aid_cc = "\t\t\t\tAdditionalIncludeDirectories=\"..\\msvc";
+
+static char *msvc70_compiler_tool_part2 = "\t\t\t\tPreprocessorDefinitions=\"WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,";
+
+static char *msvc70_predefs_end = "\"\r\n";
+
+static char *msvc70_string_pooling = "\t\t\t\tStringPooling=\"TRUE\"\r\n";
+
+static char *msvc70_compiler_tool_part3 = "\t\t\t\tRuntimeLibrary=\"%d\"\r\n";
+
+static char *msvc70_fll = "\t\t\t\tEnableFunctionLevelLinking=\"TRUE\"\r\n";
+
+static char *msvc70_compiler_tool_part4 = "\t\t\t\tUsePrecompiledHeader=\"2\"\r\n"
+                                          "\t\t\t\tPrecompiledHeaderFile=\".\\libs\\%s\\%s\\%s.pch\"\r\n"
+                                          "\t\t\t\tAssemblerListingLocation=\".\\libs\\%s\\%s\\\"\r\n"
+                                          "\t\t\t\tObjectFile=\".\\libs\\%s\\%s\\\"\r\n"
+                                          "\t\t\t\tProgramDataBaseFileName=\".\\libs\\%s\\%s\\\"\r\n"
+                                          "\t\t\t\tWarningLevel=\"3\"\r\n"
+                                          "\t\t\t\tSuppressStartupBanner=\"TRUE\"\r\n";
+
+static char *msvc70_dif = "\t\t\t\tDebugInformationFormat=\"1\"\r\n";
+
+static char *msvc70_compiler_tool_part5 = "\t\t\t\tCompileAs=\"0\"/>\r\n";
+
+static char *msvc70_cbt_normal = "\t\t\t<Tool\r\n"
+                                 "\t\t\t\tName=\"VCCustomBuildTool\"/>\r\n";
+
+static char *msvc70_cbt_custom = "\t\t\t<Tool\r\n"
+                                 "\t\t\t\tName=\"VCCustomBuildTool\"\r\n"
+                                 "\t\t\t\tCommandLine=\"%s\r\n\"\r\n"
+                                 "\t\t\t\tOutputs=\"%s\"/>\r\n";
+
+static char *msvc70_lib_tool = "\t\t\t<Tool\r\n"
+                               "\t\t\t\tName=\"VCLibrarianTool\"\r\n"
+                               "\t\t\t\tOutputFile=\".\\libs\\%s\\%s\\%s.lib\"\r\n"
+                               "\t\t\t\tSuppressStartupBanner=\"TRUE\"/>\r\n";
+
+static char *msvc70_linker_tool_part1 = "\t\t\t<Tool\r\n"
+                                        "\t\t\t\tName=\"VCLinkerTool\"\r\n"
+                                        "\t\t\t\tAdditionalOptions=\"/MACHINE:I386\"\r\n"
+                                        "\t\t\t\tAdditionalDependencies=\"%s\"\r\n"
+                                        "\t\t\t\tOutputFile=\".\\..\\..\\..\\..\\data\\%s.exe\"\r\n"
+                                        "\t\t\t\tLinkIncremental=\"%d\"\r\n"
+                                        "\t\t\t\tSuppressStartupBanner=\"TRUE\"\r\n";
+
+static char *msvc70_gdi = "\t\t\t\tGenerateDebugInformation=\"TRUE\"\r\n";
+
+static char *msvc70_linker_tool_part2 = "\t\t\t\tProgramDatabaseFile=\".\\..\\..\\..\\..\\data\\%s.pdb\"\r\n"
+                                        "\t\t\t\tSubSystem=\"%d\"/>\r\n";
+
+static char *msvc70_vcmidl_tool_console = "\t\t\t<Tool\r\n"
+                                          "\t\t\t\tName=\"VCMIDLTool\"\r\n"
+                                          "\t\t\t\tTypeLibraryName=\".\\..\\..\\..\\..\\data\\%s.tlb\"/>\r\n";
+
+static char *msvc70_vcmidl_tool_gui = "\t\t\t<Tool\r\n"
+                                      "\t\t\t\tName=\"VCMIDLTool\"\r\n"
+                                      "\t\t\t\tPreprocessorDefinitions=\"%s\"\r\n"
+                                      "\t\t\t\tMkTypLibCompatible=\"TRUE\"\r\n"
+                                      "\t\t\t\tSuppressStartupBanner=\"TRUE\"\r\n"
+                                      "\t\t\t\tTargetEnvironment=\"1\"\r\n"
+                                      "\t\t\t\tTypeLibraryName=\".\\..\\..\\..\\..\\data\\%s.tlb\"/>\r\n";
+
+
+static char *msvc70_vcmidl_tool_lib = "\t\t\t<Tool\r\n"
+                                      "\t\t\t\tName=\"VCMIDLTool\"/>\r\n";
+
+static char *msvc70_link_event_tool = "\t\t\t<Tool\r\n"
+                                      "\t\t\t\tName=\"VCPostBuildEventTool\"/>\r\n"
+                                      "\t\t\t<Tool\r\n"
+                                      "\t\t\t\tName=\"VCPreBuildEventTool\"/>\r\n"
+                                      "\t\t\t<Tool\r\n"
+                                      "\t\t\t\tName=\"VCPreLinkEventTool\"/>\r\n";
+
+static char *msvc70_resource_tool_lib = "\t\t\t<Tool\r\n"
+                                        "\t\t\t\tName=\"VCResourceCompilerTool\"\r\n"
+                                        "\t\t\t\tCulture=\"1033\"/>\r\n";
+
+static char *msvc70_resource_tool_console = "\t\t\t<Tool\r\n"
+                                            "\t\t\t\tName=\"VCResourceCompilerTool\"\r\n"
+                                            "\t\t\t\tPreprocessorDefinitions=\"%s\"\r\n"
+                                            "\t\t\t\tCulture=\"1033\"/>\r\n";
+
+static char *msvc70_resource_tool_gui = "\t\t\t<Tool\r\n"
+                                        "\t\t\t\tName=\"VCResourceCompilerTool\"\r\n"
+                                        "\t\t\t\tPreprocessorDefinitions=\"WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,%s\"\r\n"
+                                        "\t\t\t\tCulture=\"1033\"\r\n"
+                                        "\t\t\t\tAdditionalIncludeDirectories=\"..\\msvc;..\\;..\\..\\..\\\"/>\r\n";
+
+static char *msvc70_wspgt = "\t\t\t<Tool\r\n"
+                            "\t\t\t\tName=\"VCWebServiceProxyGeneratorTool\"/>\r\n";
+
+static char *msvc70_wdt = "\t\t\t<Tool\r\n"
+                          "\t\t\t\tName=\"VCWebDeploymentTool\"/>\r\n";
+
+static char *msvc70_config_end = "\t\t</Configuration>\r\n";
+
+static char *msvc70_configs_files = "\t</Configurations>\r\n"
+                                    "\t<Files>\r\n";
+
+static char *msvc70_file = "\t\t<File\r\n"
+                           "\t\t\tRelativePath=\"..\\..\\..\\%s\">\r\n"
+                           "\t\t</File>\r\n";
+
+static char *msvc70_file_start = "\t\t<File\r\n"
+                                 "\t\t\tRelativePath=\"%s\">\r\n";
+
+static char *msvc70_custom_fc = "\t\t\t<FileConfiguration\r\n"
+                                "\t\t\t\tName=\"%s|Win32\">\r\n"
+                                "\t\t\t\t<Tool\r\n"
+                                "\t\t\t\t\tName=\"VCCustomBuildTool\"\r\n"
+                                "\t\t\t\t\tDescription=\"%s\"\r\n"
+                                "\t\t\t\t\tCommandLine=\"%s\r\n\"\r\n"
+                                "\t\t\t\t\tAdditionalDependencies=\"";
+
+static char *msvc70_custom_output = "\"\r\n"
+                                    "\t\t\t\t\tOutputs=\"%s\"/>\r\n"
+                                    "\t\t\t</FileConfiguration>\r\n";
+
+static char *msvc70_end_file = "\t\t</File>\r\n";
+
+static char *msvc70_cpu_file = "\t\t<File\r\n"
+                               "\t\t\tRelativePath=\"..\\..\\..\\%s\">\r\n"
+                               "\t\t\t<FileConfiguration\r\n"
+                               "\t\t\t\tName=\"DX Release|Win32\">\r\n"
+                               "\t\t\t\t<Tool\r\n"
+                               "\t\t\t\t\tName=\"VCCLCompilerTool\"\r\n"
+                               "\t\t\t\t\tOptimization=\"4\"\r\n"
+                               "\t\t\t\t\tEnableIntrinsicFunctions=\"TRUE\"\r\n"
+                               "\t\t\t\t\tImproveFloatingPointConsistency=\"TRUE\"\r\n"
+                               "\t\t\t\t\tFavorSizeOrSpeed=\"0\"\r\n"
+                               "\t\t\t\t\tOmitFramePointers=\"TRUE\"/>\r\n"
+                               "\t\t\t</FileConfiguration>\r\n"
+                               "\t\t\t<FileConfiguration\r\n"
+                               "\t\t\t\tName=\"Release|Win32\">\r\n"
+                               "\t\t\t\t<Tool\r\n"
+                               "\t\t\t\t\tName=\"VCCLCompilerTool\"\r\n"
+                               "\t\t\t\t\tOptimization=\"4\"\r\n"
+                               "\t\t\t\t\tEnableIntrinsicFunctions=\"TRUE\"\r\n"
+                               "\t\t\t\t\tImproveFloatingPointConsistency=\"TRUE\"\r\n"
+                               "\t\t\t\t\tFavorSizeOrSpeed=\"0\"\r\n"
+                               "\t\t\t\t\tOmitFramePointers=\"TRUE\"/>\r\n"
+                               "\t\t\t</FileConfiguration>\r\n"
+                               "\t\t</File>\r\n";
+
+static char *msvc70_cc_file_start = "\t\t<File\r\n"
+                                    "\t\t\tRelativePath=\"..\\..\\..\\%s\\%s.cc\">\r\n";
+
+static char *msvc70_cc_fc = "\t\t\t<FileConfiguration\r\n"
+                            "\t\t\t\tName=\"%s|Win32\">\r\n"
+                            "\t\t\t\t<Tool\r\n"
+                            "\t\t\t\t\tName=\"VCCustomBuildTool\"\r\n";
+
+static char *msvc70_cc_command = "\t\t\t\t\tCommandLine=\"cl /nologo %s /I &quot;..\\msvc&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; %s /D PACKAGE=\\&quot;%s\\&quot; /D VERSION=\\&quot;0.7\\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\\%s\\%s\\%s.pch&quot; /Fo&quot;libs\\%s\\%s/&quot; /Fd&quot;libs\\%s\\%s/&quot; /FD /TP /c &quot;$(InputPath)&quot;\r\n\"\r\n"
+                                 "\t\t\t\t\tOutputs=\"libs\\%s\\%s\\$(InputName).obj\"/>\r\n"
+                                 "\t\t\t</FileConfiguration>\r\n";
+
+static char *msvc70_cc_command_sid = "\t\t\t\t\tCommandLine=\"cl /nologo %s /I &quot;..\\msvc&quot; /I &quot;..\\..\\../&quot; /I &quot;../&quot; /I &quot;..\\..\\..\\sid&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;IDE_COMPILE&quot; /D &quot;DONT_USE_UNISTD_H&quot; %s /D PACKAGE=\\&quot;%s\\&quot; /D VERSION=\\&quot;0.7\\&quot; /D SIZEOF_INT=4 /Fp&quot;libs\\%s\\%s\\%s.pch&quot; /Fo&quot;libs\\%s\\%s/&quot; /Fd&quot;libs\\%s\\%s/&quot; /FD /TP /c &quot;$(InputPath)&quot;\r\n\"\r\n"
+                                     "\t\t\t\t\tOutputs=\"libs\\%s\\%s\\$(InputName).obj\"/>\r\n"
+                                     "\t\t\t</FileConfiguration>\r\n";
+
+static char *msvc70_res_file = "\t\t<File\r\n"
+                               "\t\t\tRelativePath=\"..\\%s\">\r\n";
+
+static char *msvc70_res_fc = "\t\t\t<FileConfiguration\r\n"
+                             "\t\t\t\tName=\"%s|Win32\">\r\n"
+                             "\t\t\t\t<Tool\r\n"
+                             "\t\t\t\t\tName=\"VCCustomBuildTool\"\r\n"
+                             "\t\t\t\t\tCommandLine=\"copy /b ";
+
+static char *msvc70_res_deps = "\t\t\t\t\tAdditionalDependencies=\"..\\..\\..\\debug.h;";
+
+static char *msvc70_res_output = "\"\r\n"
+                                 "\t\t\t\t\tOutputs=\"%s\"/>\r\n"
+                                 "\t\t\t</FileConfiguration>\r\n";
+
+static char *msvc70_res_end = "\t\t</File>\r\n"
+                              "\t\t<File\r\n"
+                              "\t\t\tRelativePath=\".\\%s\">\r\n"
+                              "\t\t</File>\r\n"
+                              "\t\t<File\r\n"
+                              "\t\t\tRelativePath=\"..\\vice.manifest\">\r\n"
+                              "\t\t</File>\r\n";
+
+static char *msvc70_end_project = "\t</Files>\r\n"
+                                  "\t<Globals>\r\n"
+                                  "\t</Globals>\r\n"
+                                  "</VisualStudioProject>\r\n";
+
+static char *msvc70_main_projects = "Project(\"{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}\") = \"%s\", \"%s.vcproj\", \"{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC9%02X}\"\r\n"
+                                    "EndProject\r\n";
+
+static char *msvc70_main_project_global = "Global\r\n"
+                                          "\tGlobalSection(SolutionConfiguration) = preSolution\r\n"
+                                          "\t\tConfigName.0 = Debug\r\n"
+                                          "\t\tConfigName.1 = DX Debug\r\n"
+                                          "\t\tConfigName.2 = DX Release\r\n"
+                                          "\t\tConfigName.3 = Release\r\n"
+                                          "\tEndGlobalSection\r\n"
+                                          "\tGlobalSection(ProjectDependencies) = postSolution\r\n";
+
+static char *msvc70_main_project_deps = "\t\t{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC9%02X}.%d = {8BC9CEB8-8B4A-11D0-8D12-00A0C91BC9%02X}\r\n";
+
+static char *msvc70_main_project_conf = "\tEndGlobalSection\r\n"
+                                        "\tGlobalSection(ProjectConfiguration) = postSolution\r\n";
+
+static char *msvc70_main_project_confs = "\t\t{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC9%02X}.Debug.ActiveCfg = Debug|Win32\r\n"
+                                         "\t\t{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC9%02X}.Debug.Build.0 = Debug|Win32\r\n"
+                                         "\t\t{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC9%02X}.DX Debug.ActiveCfg = DX Debug|Win32\r\n"
+                                         "\t\t{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC9%02X}.DX Debug.Build.0 = DX Debug|Win32\r\n"
+                                         "\t\t{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC9%02X}.DX Release.ActiveCfg = DX Release|Win32\r\n"
+                                         "\t\t{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC9%02X}.DX Release.Build.0 = DX Release|Win32\r\n"
+                                         "\t\t{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC9%02X}.Release.ActiveCfg = Release|Win32\r\n"
+                                         "\t\t{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC9%02X}.Release.Build.0 = Release|Win32\r\n";
+
+static char *msvc70_main_project_end = "\tEndGlobalSection\r\n"
+                                       "\tGlobalSection(ExtensibilityGlobals) = postSolution\r\n"
+                                       "\tEndGlobalSection\r\n"
+                                       "\tGlobalSection(ExtensibilityAddIns) = postSolution\r\n"
+                                       "\tEndGlobalSection\r\n"
+                                       "EndGlobal\r\n";
+
+static int pi_get_index_of_name(char *name)
+{
+    int i;
+    int retval = -1;
+
+    for (i = 0; project_info[i].name && retval == -1; i++) {
+        if (!strcmp(name, project_info[i].name)) {
+            retval = i;
+        }
+    }
+    return retval;
+}
+
+static void generate_msvc70_sln(void)
+{
+    int i, j;
+
+    for (i = 0; project_info[i].name; i++) {
+        fprintf(mainfile, msvc70_main_projects, project_info[i].name, project_info[i].name, i);
+    }
+    fprintf(mainfile, msvc70_main_project_global);
+    for (i = 0; project_info[i].name; i++) {
+        if (project_info[i].dep[0]) {
+            for (j = 0; project_info[i].dep[j]; j++) {
+                fprintf(mainfile, msvc70_main_project_deps, i, j, pi_get_index_of_name(project_info[i].dep[j]));
+            }
+        }
+    }
+    fprintf(mainfile, msvc70_main_project_conf);
+    for (i = 0; project_info[i].name; i++) {
+        fprintf(mainfile, msvc70_main_project_confs, i, i, i, i, i, i, i, i);
+    }
+    fprintf(mainfile, msvc70_main_project_end);
+}
+
+static int pi_insert_name(char *name)
+{
+    int i = 0;
+
+    while (project_info[i].name) {
+        i++;
+    }
+    project_info[i].name = strdup(name);
+
+    return i;
+}
+
+static void pi_insert_deps(char **names, int index)
+{
+    int i;
+
+    for (i = 0; names[i]; i++) {
+        project_info[index].dep[i] = strdup(names[i]);
+    }
+}
+
+static int open_msvc70_main_project(void)
+{
+    int i, j;
+
+    /* init project_info */
+    for (i = 0; i < MAX_DEP_NAMES; i++) {
+        project_info[i].name = NULL;
+        for (j = 0; j < MAX_DEP_NAMES; j++) {
+            project_info[i].dep[j] = NULL;
+        }
+    }
+
+    mainfile = fopen("../vs70/vice.sln", "wb");
+
+    if (!mainfile) {
+        printf("Cannot open 'vice.sln' for output\n");
+        return 1;
+    }
+    fprintf(mainfile, "Microsoft Visual Studio Solution File, Format Version 7.00\r\n");
+    return 0;
+}
+
+static void close_msvc70_main_project(void)
+{
+    int i, j;
+
+    generate_msvc70_sln();
+
+    /* free all names */
+    for (i = 0; project_info[i].name; i++) {
+        if (project_info[i].dep[0]) {
+            for (j = 0; project_info[i].dep[j]; j++) {
+                free(project_info[i].dep[j]);
+            }
+        }
+        free(project_info[i].name);
+    }
+
+    fclose(mainfile);
+}
+
+static int output_msvc70_file(char *fname, int filelist)
+{
+    char *filename;
+    int retval = 0;
+    FILE *outfile = NULL;
+    int i, j;
+
+    if (filelist) {
+        i = pi_insert_name(cp_name);
+        if (cp_dep_names[0]) {
+            pi_insert_deps(cp_dep_names, i);
+        }
+        filename = malloc(strlen(fname) + sizeof("../vs70/.vcproj"));
+        sprintf(filename, "../vs70/%s.vcproj", fname);
+    } else {
+        filename = malloc(strlen(fname) + sizeof(".vcproj"));
+        sprintf(filename, "%s.vcproj", fname);
+    }
+
+    outfile = fopen(filename, "wb");
+    if (!outfile) {
+        printf("Cannot open %s for output\n", filename);
+        retval = 1;
+    }
+
+    if (!retval) {
+        fprintf(outfile, msvc70_xml_header);
+        fprintf(outfile, msvc70_project_start, cp_name);
+        fprintf(outfile, msvc70_configurations);
+        for (i = 0; i < 4; i++) {
+            fprintf(outfile, msvc70_config_part1, msvc70_type_name[i]);
+            if (cp_type == CP_TYPE_LIBRARY) {
+                fprintf(outfile, msvc70_config_part2_lib, cp_name, msvc70_type[i]);
+            } else {
+                fprintf(outfile, msvc70_config_part2_app);
+            }
+            fprintf(outfile, msvc70_config_part3, cp_name, msvc70_type[i], (cp_type == CP_TYPE_LIBRARY) ? 4 : 1);
+            if (cp_type == CP_TYPE_CONSOLE) {
+                fprintf(outfile, msvc70_charset);
+            }
+            fprintf(outfile, msvc70_compiler_tool_part1, msvc70_compiler_tool_type[i & 1]);
+            if (cp_cc_source_path && !cp_source_names[0]) {
+                fprintf(outfile, msvc70_aid_cc);
+            } else {
+                fprintf(outfile, msvc70_aid);
+            }
+            if (cp_include_dirs[0]) {
+                for (j = 0; cp_include_dirs[j]; j++) {
+                    fprintf(outfile, ",..\\..\\..\\%s", cp_include_dirs[j]);
+                }
+            }
+            fprintf(outfile, "\"\r\n");
+            fprintf(outfile, msvc70_compiler_tool_part2);
+            fprintf(outfile, msvc70_predefs[i]);
+            if (cp_cc_source_path) {
+                fprintf(outfile, msvc70_cc_predefs, cp_name);
+            }
+            fprintf(outfile, msvc70_predefs_end);
+            if (i & 1) {
+                fprintf(outfile, msvc70_string_pooling);
+            }
+            fprintf(outfile, msvc70_compiler_tool_part3, !(i & 1));
+            if (i & 1) {
+                fprintf(outfile, msvc70_fll);
+            }
+            fprintf(outfile, msvc70_compiler_tool_part4, cp_name, msvc70_type[i], cp_name, cp_name, msvc70_type[i], cp_name, msvc70_type[i], cp_name, msvc70_type[i]);
+            if (!(i & 1)) {
+                fprintf(outfile, msvc70_dif);
+            }
+            fprintf(outfile, msvc70_compiler_tool_part5);
+            if (cp_post_custom_command) {
+                fprintf(outfile, msvc70_cbt_custom, cp_post_custom_command, cp_post_custom_output);
+            } else {
+                fprintf(outfile, msvc70_cbt_normal);
+            }
+            if (cp_type == CP_TYPE_LIBRARY) {
+                fprintf(outfile, msvc70_lib_tool, cp_name, msvc70_type[i], cp_name);
+            } else {
+                fprintf(outfile, msvc70_linker_tool_part1, (cp_type == CP_TYPE_CONSOLE) ? msvc70_console_libs : msvc70_gui_libs[i >> 1], cp_name, (!(i & 1)) + 1);
+                if (!(i & 1)) {
+                    fprintf(outfile, msvc70_gdi);
+                }
+                fprintf(outfile, msvc70_linker_tool_part2, cp_name, (cp_type == CP_TYPE_GUI) ? 2 : 1);
+            }
+            switch (cp_type) {
+                default:
+                case CP_TYPE_CONSOLE:
+                    fprintf(outfile, msvc70_vcmidl_tool_console, cp_name);
+                    break;
+                case CP_TYPE_GUI:
+                    fprintf(outfile, msvc70_vcmidl_tool_gui, msvc70_predefs[i & 1], cp_name);
+                    break;
+                case CP_TYPE_LIBRARY:
+                    fprintf(outfile, msvc70_vcmidl_tool_lib);
+                    break;
+            }
+            fprintf(outfile, msvc70_link_event_tool);
+            switch (cp_type) {
+                default:
+                case CP_TYPE_LIBRARY:
+                    fprintf(outfile, msvc70_resource_tool_lib);
+                    break;
+                case CP_TYPE_CONSOLE:
+                    fprintf(outfile, msvc70_resource_tool_console, msvc70_predefs[i & 1]);
+                    break;
+                case CP_TYPE_GUI:
+                    fprintf(outfile, msvc70_resource_tool_gui, msvc70_predefs[i]);
+                    break;
+            }
+            fprintf(outfile, msvc70_wspgt);
+            if (cp_type != CP_TYPE_LIBRARY) {
+                fprintf(outfile, msvc70_wdt);
+            }
+            fprintf(outfile, msvc70_config_end);
+        }
+        fprintf(outfile, msvc70_configs_files);
+        if (cp_source_names[0]) {
+            for (i = 0; cp_source_names[i]; i++) {
+                fprintf(outfile, msvc70_file, cp_source_names[i]);
+            }
+        }
+        if (cp_custom_message) {
+            fprintf(outfile, msvc70_file_start, cp_custom_source);
+            for (i = 0; i < 4; i++) {
+                fprintf(outfile, msvc70_custom_fc, msvc70_type_name[i], cp_custom_message, cp_custom_command);
+                for (j = 0; cp_custom_deps[j]; j++) {
+                    fprintf(outfile, "%s;", cp_custom_deps[j]);
+                }
+                fprintf(outfile, msvc70_custom_output, cp_custom_output);
+            }
+            fprintf(outfile, msvc70_end_file);
+        }
+
+        if (cp_cpusource_names[0]) {
+            for (j = 0; cp_cpusource_names[j]; j++) {
+                fprintf(outfile, msvc70_cpu_file, cp_cpusource_names[j]);
+            }
+        }
+
+        if (cp_cc_source_path) {
+            for (j = 0; cp_cc_source_names[j]; j++) {
+                fprintf(outfile, msvc70_cc_file_start, cp_cc_source_path, cp_cc_source_names[j]);
+                for (i = 0; i < 4; i++) {
+                    fprintf(outfile, msvc70_cc_fc, msvc70_type_name[i]);
+                    if (cp_source_names[0]) {
+                        fprintf(outfile, msvc70_cc_command_sid, msvc70_flags[i & 1], msvc70_cc_extra[i], cp_name, cp_name, msvc70_type[i], cp_name, cp_name, msvc70_type[i], cp_name, msvc70_type[i], cp_name, msvc70_type[i]);
+                    } else {
+                        fprintf(outfile, msvc70_cc_command, msvc70_flags[i & 1], msvc70_cc_extra[i], cp_name, cp_name, msvc70_type[i], cp_name, cp_name, msvc70_type[i], cp_name, msvc70_type[i], cp_name, msvc70_type[i]);
+                    }
+                }
+                fprintf(outfile, msvc70_end_file);
+            }
+        }
+
+        if (cp_res_source_name) {
+            fprintf(outfile, msvc70_res_file, cp_res_source_name);
+            for (i = 0; i < 4; i++) {
+                fprintf(outfile, msvc70_res_fc, msvc70_type_name[i]);
+                for (j = 0; cp_res_deps[j]; j++) {
+                    fprintf(outfile, "..\\%s ", cp_res_deps[j]);
+                    if (cp_res_deps[j + 1]) {
+                        fprintf(outfile, "+ ");
+                    }
+                }
+                fprintf(outfile, "%s /b\r\n\"\r\n", cp_res_output_name);
+                fprintf(outfile, msvc70_res_deps);
+                for (j = 0; cp_res_deps[j]; j++) {
+                    fprintf(outfile, "..\\%s;", cp_res_deps[j]);
+                }
+                fprintf(outfile, msvc70_res_output, cp_res_output_name);
+            }
+            fprintf(outfile, msvc70_res_end, cp_res_output_name);
+        }
+        fprintf(outfile, msvc70_end_project);
+    }
+
+    if (outfile) {
+        fclose(outfile);
+    }
+
+    if (filename) {
+        free(filename);
+    }
+
+    if (cp_libs) {
+        free(cp_libs);
+        cp_libs = NULL;
+    }
+
+    if (read_buffer) {
+        free(read_buffer);
+        read_buffer = NULL;
+        read_buffer_line = 0;
+        read_buffer_pos = 0;
+        read_buffer_len = 0;
+    }
+
+    return retval;
+}
+
+/* ---------------------------------------------------------------------- */
+
 /* MSVC 6 types */
 static char *msvc6_console_type = "Console Application";
 static char *msvc6_library_type = "Static Library";
@@ -435,7 +1049,6 @@ static int output_msvc6_file(char *fname, int filelist)
         sprintf(filename, "%s.dsp", fname);
     }
 
-
     outfile = fopen(filename, "wb");
     if (!outfile) {
         printf("Cannot open %s for output\n", filename);
@@ -628,6 +1241,8 @@ static int output_msvc6_file(char *fname, int filelist)
 
     return retval;
 }
+
+/* ---------------------------------------------------------------------- */
 
 static char *make_cp_libs(void)
 {
@@ -1220,7 +1835,27 @@ int main(int argc, char *argv[])
                 }
             }
             if (!error && msvc70) {
-                printf("Not yet implemented.\n");
+                if (project_names[0]) {
+                    error = open_msvc70_main_project();
+                    for (i = 0; project_names[i] && !error; i++) {
+                        error = read_template_file(project_names[i]);
+#if MKMSVC_DEBUG
+                        printf("Parse done\n");
+#endif
+                        if (!error) {
+                            error = output_msvc70_file(project_names[i], 1);
+#if MKMSVC_DEBUG
+                            printf("Output done\n");
+#endif
+                        }
+                    }
+                    close_msvc70_main_project();
+                } else {
+                    error = output_msvc70_file(filename, 0);
+                }
+                if (!error) {
+                    free_buffers();
+                }
             }
             if (!error && msvc71) {
                 printf("Not yet implemented.\n");

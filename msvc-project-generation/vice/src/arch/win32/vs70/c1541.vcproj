@@ -11,24 +11,23 @@
 	</Platforms>
 	<Configurations>
 		<Configuration
-			Name="Debug|Win32"
-			OutputDirectory=".\..\..\..\data"
-			IntermediateDirectory=".\libs\c1541\Debug"
+			Name="DX Debug|Win32"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\c1541\DXDebug"
 			ConfigurationType="1"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			CharacterSet="2">
+			ATLMinimizesCRunTimeLibraryUsage="FALSE"			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="msvc,.\,..\,..\..\,..\..\drive,..\..\lib\p64,..\..\vdrive,..\..\imagecontents"
-				PreprocessorDefinitions="DONT_USE_UNISTD_H,WIN32,NODIRECTX,IDE_COMPILE,_DEBUG,_CONSOLE"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\drive,..\..\..\imagecontents,..\..\..\lib\p64,..\..\..\vdrive"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\c1541\Debug/c1541.pch"
-				AssemblerListingLocation=".\libs\c1541\Debug/"
-				ObjectFile=".\libs\c1541\Debug/"
-				ProgramDataBaseFileName=".\libs\c1541\Debug/"
+				PrecompiledHeaderFile=".\libs\c1541\DXDebug\c1541.pch"
+				AssemblerListingLocation=".\libs\c1541\DXDebug\"
+				ObjectFile=".\libs\c1541\DXDebug\"
+				ProgramDataBaseFileName=".\libs\c1541\DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				DebugInformationFormat="1"
@@ -38,16 +37,16 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
-				AdditionalDependencies="wsock32.lib version.lib"
-				OutputFile=".\..\..\..\data/c1541.exe"
+				AdditionalDependencies="version.lib wsock32.lib"
+				OutputFile=".\..\..\..\..\data\c1541.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile=".\..\..\..\data/c1541.pdb"
+				ProgramDatabaseFile=".\..\..\..\..\data\c1541.pdb"
 				SubSystem="1"/>
 			<Tool
 				Name="VCMIDLTool"
-				TypeLibraryName=".\..\..\..\data/c1541.tlb"/>
+				TypeLibraryName=".\..\..\..\..\data\c1541.tlb"/>
 			<Tool
 				Name="VCPostBuildEventTool"/>
 			<Tool
@@ -65,25 +64,24 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Win32"
-			OutputDirectory=".\..\..\..\data"
+			OutputDirectory=".\..\..\..\..\data"
 			IntermediateDirectory=".\libs\c1541\DXRelease"
 			ConfigurationType="1"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			CharacterSet="2">
+			ATLMinimizesCRunTimeLibraryUsage="FALSE"			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="msvc,.\,..\,..\..\,..\..\drive,..\..\lib\p64,..\..\vdrive,..\..\imagecontents"
-				PreprocessorDefinitions="DONT_USE_UNISTD_H,WIN32,IDE_COMPILE,NDEBUG,_CONSOLE"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\drive,..\..\..\imagecontents,..\..\..\lib\p64,..\..\..\vdrive"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NDEBUG"
 				StringPooling="TRUE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="TRUE"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\c1541\DXRelease/c1541.pch"
-				AssemblerListingLocation=".\libs\c1541\DXRelease/"
-				ObjectFile=".\libs\c1541\DXRelease/"
-				ProgramDataBaseFileName=".\libs\c1541\DXRelease/"
+				PrecompiledHeaderFile=".\libs\c1541\DXRelease\c1541.pch"
+				AssemblerListingLocation=".\libs\c1541\DXRelease\"
+				ObjectFile=".\libs\c1541\DXRelease\"
+				ProgramDataBaseFileName=".\libs\c1541\DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				CompileAs="0"/>
@@ -92,15 +90,15 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
-				AdditionalDependencies="wsock32.lib version.lib"
-				OutputFile=".\..\..\..\data/c1541.exe"
+				AdditionalDependencies="version.lib wsock32.lib"
+				OutputFile=".\..\..\..\..\data\c1541.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				ProgramDatabaseFile=".\..\..\..\data/c1541.pdb"
+				ProgramDatabaseFile=".\..\..\..\..\data\c1541.pdb"
 				SubSystem="1"/>
 			<Tool
 				Name="VCMIDLTool"
-				TypeLibraryName=".\..\..\..\data/c1541.tlb"/>
+				TypeLibraryName=".\..\..\..\..\data\c1541.tlb"/>
 			<Tool
 				Name="VCPostBuildEventTool"/>
 			<Tool
@@ -117,24 +115,23 @@
 				Name="VCWebDeploymentTool"/>
 		</Configuration>
 		<Configuration
-			Name="DX Debug|Win32"
-			OutputDirectory=".\..\..\..\data"
-			IntermediateDirectory=".\libs\c1541\DXDebug"
+			Name="Debug|Win32"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\c1541\Debug"
 			ConfigurationType="1"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			CharacterSet="2">
+			ATLMinimizesCRunTimeLibraryUsage="FALSE"			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="msvc,.\,..\,..\..\,..\..\drive,..\..\lib\p64,..\..\vdrive,..\..\imagecontents"
-				PreprocessorDefinitions="DONT_USE_UNISTD_H,WIN32,IDE_COMPILE,_DEBUG,_CONSOLE"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\drive,..\..\..\imagecontents,..\..\..\lib\p64,..\..\..\vdrive"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\c1541\DXDebug/c1541.pch"
-				AssemblerListingLocation=".\libs\c1541\DXDebug/"
-				ObjectFile=".\libs\c1541\DXDebug/"
-				ProgramDataBaseFileName=".\libs\c1541\DXDebug/"
+				PrecompiledHeaderFile=".\libs\c1541\Debug\c1541.pch"
+				AssemblerListingLocation=".\libs\c1541\Debug\"
+				ObjectFile=".\libs\c1541\Debug\"
+				ProgramDataBaseFileName=".\libs\c1541\Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				DebugInformationFormat="1"
@@ -144,16 +141,16 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
-				AdditionalDependencies="wsock32.lib version.lib"
-				OutputFile=".\..\..\..\data/c1541.exe"
+				AdditionalDependencies="version.lib wsock32.lib"
+				OutputFile=".\..\..\..\..\data\c1541.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile=".\..\..\..\data/c1541.pdb"
+				ProgramDatabaseFile=".\..\..\..\..\data\c1541.pdb"
 				SubSystem="1"/>
 			<Tool
 				Name="VCMIDLTool"
-				TypeLibraryName=".\..\..\..\data/c1541.tlb"/>
+				TypeLibraryName=".\..\..\..\..\data\c1541.tlb"/>
 			<Tool
 				Name="VCPostBuildEventTool"/>
 			<Tool
@@ -171,25 +168,24 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\..\..\..\data"
+			OutputDirectory=".\..\..\..\..\data"
 			IntermediateDirectory=".\libs\c1541\Release"
 			ConfigurationType="1"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			CharacterSet="2">
+			ATLMinimizesCRunTimeLibraryUsage="FALSE"			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="msvc,.\,..\,..\..\,..\..\drive,..\..\lib\p64,..\..\vdrive,..\..\imagecontents"
-				PreprocessorDefinitions="DONT_USE_UNISTD_H,WIN32,NODIRECTX,IDE_COMPILE,NDEBUG,_CONSOLE"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\drive,..\..\..\imagecontents,..\..\..\lib\p64,..\..\..\vdrive"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,NDEBUG"
 				StringPooling="TRUE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="TRUE"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\c1541\Release/c1541.pch"
-				AssemblerListingLocation=".\libs\c1541\Release/"
-				ObjectFile=".\libs\c1541\Release/"
-				ProgramDataBaseFileName=".\libs\c1541\Release/"
+				PrecompiledHeaderFile=".\libs\c1541\Release\c1541.pch"
+				AssemblerListingLocation=".\libs\c1541\Release\"
+				ObjectFile=".\libs\c1541\Release\"
+				ProgramDataBaseFileName=".\libs\c1541\Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				CompileAs="0"/>
@@ -198,15 +194,15 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
-				AdditionalDependencies="wsock32.lib version.lib"
-				OutputFile=".\..\..\..\data/c1541.exe"
+				AdditionalDependencies="version.lib wsock32.lib"
+				OutputFile=".\..\..\..\..\data\c1541.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				ProgramDatabaseFile=".\..\..\..\data/c1541.pdb"
+				ProgramDatabaseFile=".\..\..\..\..\data\c1541.pdb"
 				SubSystem="1"/>
 			<Tool
 				Name="VCMIDLTool"
-				TypeLibraryName=".\..\..\..\data/c1541.tlb"/>
+				TypeLibraryName=".\..\..\..\..\data\c1541.tlb"/>
 			<Tool
 				Name="VCPostBuildEventTool"/>
 			<Tool
@@ -225,49 +221,49 @@
 	</Configurations>
 	<Files>
 		<File
-			RelativePath="..\..\c1541.c">
+			RelativePath="..\..\..\c1541.c">
 		</File>
 		<File
-			RelativePath="..\..\cbmdos.c">
+			RelativePath="..\..\..\cbmdos.c">
 		</File>
 		<File
-			RelativePath="..\..\cbmimage.c">
+			RelativePath="..\..\..\cbmimage.c">
 		</File>
 		<File
-			RelativePath="..\..\charset.c">
+			RelativePath="..\..\..\charset.c">
 		</File>
 		<File
-			RelativePath="..\..\findpath.c">
+			RelativePath="..\..\..\findpath.c">
 		</File>
 		<File
-			RelativePath="..\..\gcr.c">
+			RelativePath="..\..\..\gcr.c">
 		</File>
 		<File
-			RelativePath="..\..\info.c">
+			RelativePath="..\..\..\info.c">
 		</File>
 		<File
-			RelativePath="..\..\ioutil.c">
+			RelativePath="..\..\..\ioutil.c">
 		</File>
 		<File
-			RelativePath="..\..\lib.c">
+			RelativePath="..\..\..\lib.c">
 		</File>
 		<File
-			RelativePath="..\..\log.c">
+			RelativePath="..\..\..\log.c">
 		</File>
 		<File
-			RelativePath="..\..\rawfile.c">
+			RelativePath="..\..\..\rawfile.c">
 		</File>
 		<File
-			RelativePath="..\..\resources.c">
+			RelativePath="..\..\..\resources.c">
 		</File>
 		<File
-			RelativePath="..\..\util.c">
+			RelativePath="..\..\..\util.c">
 		</File>
 		<File
-			RelativePath="..\..\zfile.c">
+			RelativePath="..\..\..\zfile.c">
 		</File>
 		<File
-			RelativePath="..\..\zipcode.c">
+			RelativePath="..\..\..\zipcode.c">
 		</File>
 	</Files>
 	<Globals>

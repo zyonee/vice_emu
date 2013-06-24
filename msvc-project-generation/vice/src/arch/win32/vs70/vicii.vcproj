@@ -20,14 +20,14 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\,..\..\c64,..\..\c64dtv,..\..\raster,..\..\video,..\..\monitor,..\..\c64\cart"
-				PreprocessorDefinitions="WIN32,IDE_COMPILE,_DEBUG,_WINDOWS"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\c64,..\..\..\c64\cart,..\..\..\c64dtv,..\..\..\monitor,..\..\..\raster,..\..\..\video"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\vicii\DXDebug/vicii.pch"
-				AssemblerListingLocation=".\libs\vicii\DXDebug/"
-				ObjectFile=".\libs\vicii\DXDebug/"
-				ProgramDataBaseFileName=".\libs\vicii\DXDebug/"
+				PrecompiledHeaderFile=".\libs\vicii\DXDebug\vicii.pch"
+				AssemblerListingLocation=".\libs\vicii\DXDebug\"
+				ObjectFile=".\libs\vicii\DXDebug\"
+				ProgramDataBaseFileName=".\libs\vicii\DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				DebugInformationFormat="1"
@@ -53,49 +53,6 @@
 				Name="VCWebServiceProxyGeneratorTool"/>
 		</Configuration>
 		<Configuration
-			Name="Release|Win32"
-			OutputDirectory=".\libs\vicii\Release"
-			IntermediateDirectory=".\libs\vicii\Release"
-			ConfigurationType="4"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE">
-			<Tool
-				Name="VCCLCompilerTool"
-				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\,..\..\c64,..\..\c64dtv,..\..\raster,..\..\video,..\..\monitor,..\..\c64\cart"
-				PreprocessorDefinitions="WIN32,NODIRECTX,IDE_COMPILE,NDEBUG,_WINDOWS"
-				StringPooling="TRUE"
-				RuntimeLibrary="0"
-				EnableFunctionLevelLinking="TRUE"
-				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\vicii\Release/vicii.pch"
-				AssemblerListingLocation=".\libs\vicii\Release/"
-				ObjectFile=".\libs\vicii\Release/"
-				ProgramDataBaseFileName=".\libs\vicii\Release/"
-				WarningLevel="3"
-				SuppressStartupBanner="TRUE"
-				CompileAs="0"/>
-			<Tool
-				Name="VCCustomBuildTool"/>
-			<Tool
-				Name="VCLibrarianTool"
-				OutputFile=".\libs\vicii\Release\vicii.lib"
-				SuppressStartupBanner="TRUE"/>
-			<Tool
-				Name="VCMIDLTool"/>
-			<Tool
-				Name="VCPostBuildEventTool"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				Culture="1033"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-		</Configuration>
-		<Configuration
 			Name="DX Release|Win32"
 			OutputDirectory=".\libs\vicii\DXRelease"
 			IntermediateDirectory=".\libs\vicii\DXRelease"
@@ -105,16 +62,16 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\,..\..\c64,..\..\c64dtv,..\..\raster,..\..\video,..\..\monitor,..\..\c64\cart"
-				PreprocessorDefinitions="WIN32,IDE_COMPILE,NDEBUG,_WINDOWS"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\c64,..\..\..\c64\cart,..\..\..\c64dtv,..\..\..\monitor,..\..\..\raster,..\..\..\video"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NDEBUG"
 				StringPooling="TRUE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="TRUE"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\vicii\DXRelease/vicii.pch"
-				AssemblerListingLocation=".\libs\vicii\DXRelease/"
-				ObjectFile=".\libs\vicii\DXRelease/"
-				ProgramDataBaseFileName=".\libs\vicii\DXRelease/"
+				PrecompiledHeaderFile=".\libs\vicii\DXRelease\vicii.pch"
+				AssemblerListingLocation=".\libs\vicii\DXRelease\"
+				ObjectFile=".\libs\vicii\DXRelease\"
+				ProgramDataBaseFileName=".\libs\vicii\DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				CompileAs="0"/>
@@ -148,14 +105,14 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\,..\..\c64,..\..\c64dtv,..\..\raster,..\..\video,..\..\monitor,..\..\c64\cart"
-				PreprocessorDefinitions="WIN32,NODIRECTX,IDE_COMPILE,_DEBUG,_WINDOWS"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\c64,..\..\..\c64\cart,..\..\..\c64dtv,..\..\..\monitor,..\..\..\raster,..\..\..\video"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\vicii\Debug/vicii.pch"
-				AssemblerListingLocation=".\libs\vicii\Debug/"
-				ObjectFile=".\libs\vicii\Debug/"
-				ProgramDataBaseFileName=".\libs\vicii\Debug/"
+				PrecompiledHeaderFile=".\libs\vicii\Debug\vicii.pch"
+				AssemblerListingLocation=".\libs\vicii\Debug\"
+				ObjectFile=".\libs\vicii\Debug\"
+				ProgramDataBaseFileName=".\libs\vicii\Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				DebugInformationFormat="1"
@@ -180,52 +137,95 @@
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 		</Configuration>
+		<Configuration
+			Name="Release|Win32"
+			OutputDirectory=".\libs\vicii\Release"
+			IntermediateDirectory=".\libs\vicii\Release"
+			ConfigurationType="4"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			<Tool
+				Name="VCCLCompilerTool"
+				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\c64,..\..\..\c64\cart,..\..\..\c64dtv,..\..\..\monitor,..\..\..\raster,..\..\..\video"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,NDEBUG"
+				StringPooling="TRUE"
+				RuntimeLibrary="0"
+				EnableFunctionLevelLinking="TRUE"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderFile=".\libs\vicii\Release\vicii.pch"
+				AssemblerListingLocation=".\libs\vicii\Release\"
+				ObjectFile=".\libs\vicii\Release\"
+				ProgramDataBaseFileName=".\libs\vicii\Release\"
+				WarningLevel="3"
+				SuppressStartupBanner="TRUE"
+				CompileAs="0"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile=".\libs\vicii\Release\vicii.lib"
+				SuppressStartupBanner="TRUE"/>
+			<Tool
+				Name="VCMIDLTool"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				Culture="1033"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+		</Configuration>
 	</Configurations>
 	<Files>
 		<File
-			RelativePath="..\..\vicii\vicii-badline.c">
+			RelativePath="..\..\..\vicii\vicii-badline.c">
 		</File>
 		<File
-			RelativePath="..\..\vicii\vicii-clock-stretch.c">
+			RelativePath="..\..\..\vicii\vicii-clock-stretch.c">
 		</File>
 		<File
-			RelativePath="..\..\vicii\vicii-cmdline-options.c">
+			RelativePath="..\..\..\vicii\vicii-cmdline-options.c">
 		</File>
 		<File
-			RelativePath="..\..\vicii\vicii-color.c">
+			RelativePath="..\..\..\vicii\vicii-color.c">
 		</File>
 		<File
-			RelativePath="..\..\vicii\vicii-draw.c">
+			RelativePath="..\..\..\vicii\vicii-draw.c">
 		</File>
 		<File
-			RelativePath="..\..\vicii\vicii-fetch.c">
+			RelativePath="..\..\..\vicii\vicii-fetch.c">
 		</File>
 		<File
-			RelativePath="..\..\vicii\vicii-irq.c">
+			RelativePath="..\..\..\vicii\vicii-irq.c">
 		</File>
 		<File
-			RelativePath="..\..\vicii\vicii-mem.c">
+			RelativePath="..\..\..\vicii\vicii-mem.c">
 		</File>
 		<File
-			RelativePath="..\..\vicii\vicii-phi1.c">
+			RelativePath="..\..\..\vicii\vicii-phi1.c">
 		</File>
 		<File
-			RelativePath="..\..\vicii\vicii-resources.c">
+			RelativePath="..\..\..\vicii\vicii-resources.c">
 		</File>
 		<File
-			RelativePath="..\..\vicii\vicii-snapshot.c">
+			RelativePath="..\..\..\vicii\vicii-snapshot.c">
 		</File>
 		<File
-			RelativePath="..\..\vicii\vicii-sprites.c">
+			RelativePath="..\..\..\vicii\vicii-sprites.c">
 		</File>
 		<File
-			RelativePath="..\..\vicii\vicii-stubs.c">
+			RelativePath="..\..\..\vicii\vicii-stubs.c">
 		</File>
 		<File
-			RelativePath="..\..\vicii\vicii-timing.c">
+			RelativePath="..\..\..\vicii\vicii-timing.c">
 		</File>
 		<File
-			RelativePath="..\..\vicii\vicii.c">
+			RelativePath="..\..\..\vicii\vicii.c">
 		</File>
 	</Files>
 	<Globals>

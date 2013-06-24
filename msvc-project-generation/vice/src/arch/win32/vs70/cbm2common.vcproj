@@ -20,14 +20,14 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\,..\..\drive,..\..\lib\p64,..\..\userport,..\..\tape,..\..\sid,..\..\crtc,..\..\vicii,..\..\raster,..\..\monitor"
-				PreprocessorDefinitions="WIN32,IDE_COMPILE,_DEBUG,_WINDOWS"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\crtc,..\..\..\drive,..\..\..\lib\p64,..\..\..\monitor,..\..\..\raster,..\..\..\sid,..\..\..\tape,..\..\..\userport,..\..\..\vicii"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\cbm2common\DXDebug/cbm2common.pch"
-				AssemblerListingLocation=".\libs\cbm2common\DXDebug/"
-				ObjectFile=".\libs\cbm2common\DXDebug/"
-				ProgramDataBaseFileName=".\libs\cbm2common\DXDebug/"
+				PrecompiledHeaderFile=".\libs\cbm2common\DXDebug\cbm2common.pch"
+				AssemblerListingLocation=".\libs\cbm2common\DXDebug\"
+				ObjectFile=".\libs\cbm2common\DXDebug\"
+				ProgramDataBaseFileName=".\libs\cbm2common\DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				DebugInformationFormat="1"
@@ -53,49 +53,6 @@
 				Name="VCWebServiceProxyGeneratorTool"/>
 		</Configuration>
 		<Configuration
-			Name="Release|Win32"
-			OutputDirectory=".\libs\cbm2common\Release"
-			IntermediateDirectory=".\libs\cbm2common\Release"
-			ConfigurationType="4"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE">
-			<Tool
-				Name="VCCLCompilerTool"
-				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\,..\..\drive,..\..\lib\p64,..\..\userport,..\..\tape,..\..\sid,..\..\crtc,..\..\vicii,..\..\raster,..\..\monitor"
-				PreprocessorDefinitions="WIN32,NODIRECTX,IDE_COMPILE,NDEBUG,_WINDOWS"
-				StringPooling="TRUE"
-				RuntimeLibrary="0"
-				EnableFunctionLevelLinking="TRUE"
-				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\cbm2common\Release/cbm2common.pch"
-				AssemblerListingLocation=".\libs\cbm2common\Release/"
-				ObjectFile=".\libs\cbm2common\Release/"
-				ProgramDataBaseFileName=".\libs\cbm2common\Release/"
-				WarningLevel="3"
-				SuppressStartupBanner="TRUE"
-				CompileAs="0"/>
-			<Tool
-				Name="VCCustomBuildTool"/>
-			<Tool
-				Name="VCLibrarianTool"
-				OutputFile=".\libs\cbm2common\Release\cbm2common.lib"
-				SuppressStartupBanner="TRUE"/>
-			<Tool
-				Name="VCMIDLTool"/>
-			<Tool
-				Name="VCPostBuildEventTool"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				Culture="1033"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-		</Configuration>
-		<Configuration
 			Name="DX Release|Win32"
 			OutputDirectory=".\libs\cbm2common\DXRelease"
 			IntermediateDirectory=".\libs\cbm2common\DXRelease"
@@ -105,16 +62,16 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\,..\..\drive,..\..\lib\p64,..\..\userport,..\..\tape,..\..\sid,..\..\crtc,..\..\vicii,..\..\raster,..\..\monitor"
-				PreprocessorDefinitions="WIN32,IDE_COMPILE,NDEBUG,_WINDOWS"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\crtc,..\..\..\drive,..\..\..\lib\p64,..\..\..\monitor,..\..\..\raster,..\..\..\sid,..\..\..\tape,..\..\..\userport,..\..\..\vicii"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NDEBUG"
 				StringPooling="TRUE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="TRUE"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\cbm2common\DXRelease/cbm2common.pch"
-				AssemblerListingLocation=".\libs\cbm2common\DXRelease/"
-				ObjectFile=".\libs\cbm2common\DXRelease/"
-				ProgramDataBaseFileName=".\libs\cbm2common\DXRelease/"
+				PrecompiledHeaderFile=".\libs\cbm2common\DXRelease\cbm2common.pch"
+				AssemblerListingLocation=".\libs\cbm2common\DXRelease\"
+				ObjectFile=".\libs\cbm2common\DXRelease\"
+				ProgramDataBaseFileName=".\libs\cbm2common\DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				CompileAs="0"/>
@@ -148,14 +105,14 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\,..\..\drive,..\..\lib\p64,..\..\userport,..\..\tape,..\..\sid,..\..\crtc,..\..\vicii,..\..\raster,..\..\monitor"
-				PreprocessorDefinitions="WIN32,NODIRECTX,IDE_COMPILE,_DEBUG,_WINDOWS"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\crtc,..\..\..\drive,..\..\..\lib\p64,..\..\..\monitor,..\..\..\raster,..\..\..\sid,..\..\..\tape,..\..\..\userport,..\..\..\vicii"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\cbm2common\Debug/cbm2common.pch"
-				AssemblerListingLocation=".\libs\cbm2common\Debug/"
-				ObjectFile=".\libs\cbm2common\Debug/"
-				ProgramDataBaseFileName=".\libs\cbm2common\Debug/"
+				PrecompiledHeaderFile=".\libs\cbm2common\Debug\cbm2common.pch"
+				AssemblerListingLocation=".\libs\cbm2common\Debug\"
+				ObjectFile=".\libs\cbm2common\Debug\"
+				ProgramDataBaseFileName=".\libs\cbm2common\Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				DebugInformationFormat="1"
@@ -180,55 +137,118 @@
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 		</Configuration>
+		<Configuration
+			Name="Release|Win32"
+			OutputDirectory=".\libs\cbm2common\Release"
+			IntermediateDirectory=".\libs\cbm2common\Release"
+			ConfigurationType="4"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			<Tool
+				Name="VCCLCompilerTool"
+				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\crtc,..\..\..\drive,..\..\..\lib\p64,..\..\..\monitor,..\..\..\raster,..\..\..\sid,..\..\..\tape,..\..\..\userport,..\..\..\vicii"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,NDEBUG"
+				StringPooling="TRUE"
+				RuntimeLibrary="0"
+				EnableFunctionLevelLinking="TRUE"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderFile=".\libs\cbm2common\Release\cbm2common.pch"
+				AssemblerListingLocation=".\libs\cbm2common\Release\"
+				ObjectFile=".\libs\cbm2common\Release\"
+				ProgramDataBaseFileName=".\libs\cbm2common\Release\"
+				WarningLevel="3"
+				SuppressStartupBanner="TRUE"
+				CompileAs="0"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile=".\libs\cbm2common\Release\cbm2common.lib"
+				SuppressStartupBanner="TRUE"/>
+			<Tool
+				Name="VCMIDLTool"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				Culture="1033"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+		</Configuration>
 	</Configurations>
 	<Files>
 		<File
-			RelativePath="..\..\cbm2\cbm2-cmdline-options.c">
+			RelativePath="..\..\..\cbm2\cbm2-cmdline-options.c">
 		</File>
 		<File
-			RelativePath="..\..\cbm2\cbm2acia1.c">
+			RelativePath="..\..\..\cbm2\cbm2acia1.c">
 		</File>
 		<File
-			RelativePath="..\..\cbm2\cbm2bus.c">
+			RelativePath="..\..\..\cbm2\cbm2bus.c">
 		</File>
 		<File
-			RelativePath="..\..\cbm2\cbm2cart.c">
+			RelativePath="..\..\..\cbm2\cbm2cart.c">
 		</File>
 		<File
-			RelativePath="..\..\cbm2\cbm2cia1.c">
+			RelativePath="..\..\..\cbm2\cbm2cia1.c">
 		</File>
 		<File
-			RelativePath="..\..\cbm2\cbm2cpu.c">
+			RelativePath="..\..\..\cbm2\cbm2datasette.c">
 		</File>
 		<File
-			RelativePath="..\..\cbm2\cbm2datasette.c">
+			RelativePath="..\..\..\cbm2\cbm2drive.c">
 		</File>
 		<File
-			RelativePath="..\..\cbm2\cbm2drive.c">
+			RelativePath="..\..\..\cbm2\cbm2iec.c">
 		</File>
 		<File
-			RelativePath="..\..\cbm2\cbm2iec.c">
+			RelativePath="..\..\..\cbm2\cbm2memsnapshot.c">
 		</File>
 		<File
-			RelativePath="..\..\cbm2\cbm2memsnapshot.c">
+			RelativePath="..\..\..\cbm2\cbm2model.c">
 		</File>
 		<File
-			RelativePath="..\..\cbm2\cbm2model.c">
+			RelativePath="..\..\..\cbm2\cbm2printer.c">
 		</File>
 		<File
-			RelativePath="..\..\cbm2\cbm2printer.c">
+			RelativePath="..\..\..\cbm2\cbm2romset.c">
 		</File>
 		<File
-			RelativePath="..\..\cbm2\cbm2romset.c">
+			RelativePath="..\..\..\cbm2\cbm2sound.c">
 		</File>
 		<File
-			RelativePath="..\..\cbm2\cbm2sound.c">
+			RelativePath="..\..\..\cbm2\cbm2tpi1.c">
 		</File>
 		<File
-			RelativePath="..\..\cbm2\cbm2tpi1.c">
+			RelativePath="..\..\..\cbm2\cbm2tpi2.c">
 		</File>
 		<File
-			RelativePath="..\..\cbm2\cbm2tpi2.c">
+			RelativePath="..\..\..\cbm2\cbm2cpu.c">
+			<FileConfiguration
+				Name="DX Release|Win32">
+				<Tool
+					Name="VCCLCompilerTool"
+					Optimization="4"
+					EnableIntrinsicFunctions="TRUE"
+					ImproveFloatingPointConsistency="TRUE"
+					FavorSizeOrSpeed="0"
+					OmitFramePointers="TRUE"/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|Win32">
+				<Tool
+					Name="VCCLCompilerTool"
+					Optimization="4"
+					EnableIntrinsicFunctions="TRUE"
+					ImproveFloatingPointConsistency="TRUE"
+					FavorSizeOrSpeed="0"
+					OmitFramePointers="TRUE"/>
+			</FileConfiguration>
 		</File>
 	</Files>
 	<Globals>

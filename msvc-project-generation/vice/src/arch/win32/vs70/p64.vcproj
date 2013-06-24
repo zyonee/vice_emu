@@ -11,91 +11,6 @@
 	</Platforms>
 	<Configurations>
 		<Configuration
-			Name="Debug|Win32"
-			OutputDirectory=".\libs\p64\Debug"
-			IntermediateDirectory=".\libs\p64\Debug"
-			ConfigurationType="4"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE">
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="0"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\,..\..\drive,..\..\vdrive,..\..\rs232drv,..\..\imagecontents,..\..\monitor"
-				PreprocessorDefinitions="DONT_USE_UNISTD_H,WIN32,NODIRECTX,IDE_COMPILE,_DEBUG,_WINDOWS"
-				RuntimeLibrary="1"
-				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\p64\Debug/p64.pch"
-				AssemblerListingLocation=".\libs\p64\Debug/"
-				ObjectFile=".\libs\p64\Debug/"
-				ProgramDataBaseFileName=".\libs\p64\Debug/"
-				WarningLevel="3"
-				SuppressStartupBanner="TRUE"
-				DebugInformationFormat="1"
-				CompileAs="0"/>
-			<Tool
-				Name="VCCustomBuildTool"/>
-			<Tool
-				Name="VCLibrarianTool"
-				OutputFile=".\libs\p64\Debug\p64.lib"
-				SuppressStartupBanner="TRUE"/>
-			<Tool
-				Name="VCMIDLTool"/>
-			<Tool
-				Name="VCPostBuildEventTool"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				Culture="1033"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-		</Configuration>
-		<Configuration
-			Name="DX Release|Win32"
-			OutputDirectory=".\libs\p64\DXRelease"
-			IntermediateDirectory=".\libs\p64\DXRelease"
-			ConfigurationType="4"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE">
-			<Tool
-				Name="VCCLCompilerTool"
-				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\,..\..\drive,..\..\vdrive,..\..\rs232drv,..\..\imagecontents,..\..\monitor"
-				PreprocessorDefinitions="DONT_USE_UNISTD_H,WIN32,IDE_COMPILE,NDEBUG,_WINDOWS"
-				StringPooling="TRUE"
-				RuntimeLibrary="0"
-				EnableFunctionLevelLinking="TRUE"
-				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\p64\DXRelease/p64.pch"
-				AssemblerListingLocation=".\libs\p64\DXRelease/"
-				ObjectFile=".\libs\p64\DXRelease/"
-				ProgramDataBaseFileName=".\libs\p64\DXRelease/"
-				WarningLevel="3"
-				SuppressStartupBanner="TRUE"
-				CompileAs="0"/>
-			<Tool
-				Name="VCCustomBuildTool"/>
-			<Tool
-				Name="VCLibrarianTool"
-				OutputFile=".\libs\p64\DXRelease\p64.lib"
-				SuppressStartupBanner="TRUE"/>
-			<Tool
-				Name="VCMIDLTool"/>
-			<Tool
-				Name="VCPostBuildEventTool"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				Culture="1033"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-		</Configuration>
-		<Configuration
 			Name="DX Debug|Win32"
 			OutputDirectory=".\libs\p64\DXDebug"
 			IntermediateDirectory=".\libs\p64\DXDebug"
@@ -105,14 +20,14 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\,..\..\drive,..\..\vdrive,..\..\rs232drv,..\..\imagecontents,..\..\monitor"
-				PreprocessorDefinitions="DONT_USE_UNISTD_H,WIN32,IDE_COMPILE,_DEBUG,_WINDOWS"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\drive,..\..\..\imagecontents,..\..\..\monitor,..\..\..\rs232drv,..\..\..\vdrive"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\p64\DXDebug/p64.pch"
-				AssemblerListingLocation=".\libs\p64\DXDebug/"
-				ObjectFile=".\libs\p64\DXDebug/"
-				ProgramDataBaseFileName=".\libs\p64\DXDebug/"
+				PrecompiledHeaderFile=".\libs\p64\DXDebug\p64.pch"
+				AssemblerListingLocation=".\libs\p64\DXDebug\"
+				ObjectFile=".\libs\p64\DXDebug\"
+				ProgramDataBaseFileName=".\libs\p64\DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				DebugInformationFormat="1"
@@ -138,6 +53,91 @@
 				Name="VCWebServiceProxyGeneratorTool"/>
 		</Configuration>
 		<Configuration
+			Name="DX Release|Win32"
+			OutputDirectory=".\libs\p64\DXRelease"
+			IntermediateDirectory=".\libs\p64\DXRelease"
+			ConfigurationType="4"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			<Tool
+				Name="VCCLCompilerTool"
+				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\drive,..\..\..\imagecontents,..\..\..\monitor,..\..\..\rs232drv,..\..\..\vdrive"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NDEBUG"
+				StringPooling="TRUE"
+				RuntimeLibrary="0"
+				EnableFunctionLevelLinking="TRUE"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderFile=".\libs\p64\DXRelease\p64.pch"
+				AssemblerListingLocation=".\libs\p64\DXRelease\"
+				ObjectFile=".\libs\p64\DXRelease\"
+				ProgramDataBaseFileName=".\libs\p64\DXRelease\"
+				WarningLevel="3"
+				SuppressStartupBanner="TRUE"
+				CompileAs="0"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile=".\libs\p64\DXRelease\p64.lib"
+				SuppressStartupBanner="TRUE"/>
+			<Tool
+				Name="VCMIDLTool"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				Culture="1033"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+		</Configuration>
+		<Configuration
+			Name="Debug|Win32"
+			OutputDirectory=".\libs\p64\Debug"
+			IntermediateDirectory=".\libs\p64\Debug"
+			ConfigurationType="4"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\drive,..\..\..\imagecontents,..\..\..\monitor,..\..\..\rs232drv,..\..\..\vdrive"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
+				RuntimeLibrary="1"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderFile=".\libs\p64\Debug\p64.pch"
+				AssemblerListingLocation=".\libs\p64\Debug\"
+				ObjectFile=".\libs\p64\Debug\"
+				ProgramDataBaseFileName=".\libs\p64\Debug\"
+				WarningLevel="3"
+				SuppressStartupBanner="TRUE"
+				DebugInformationFormat="1"
+				CompileAs="0"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile=".\libs\p64\Debug\p64.lib"
+				SuppressStartupBanner="TRUE"/>
+			<Tool
+				Name="VCMIDLTool"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				Culture="1033"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+		</Configuration>
+		<Configuration
 			Name="Release|Win32"
 			OutputDirectory=".\libs\p64\Release"
 			IntermediateDirectory=".\libs\p64\Release"
@@ -147,16 +147,16 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\,..\..\drive,..\..\vdrive,..\..\rs232drv,..\..\imagecontents,..\..\monitor"
-				PreprocessorDefinitions="DONT_USE_UNISTD_H,WIN32,NODIRECTX,IDE_COMPILE,NDEBUG,_WINDOWS"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\drive,..\..\..\imagecontents,..\..\..\monitor,..\..\..\rs232drv,..\..\..\vdrive"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,NDEBUG"
 				StringPooling="TRUE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="TRUE"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\p64\Release/p64.pch"
-				AssemblerListingLocation=".\libs\p64\Release/"
-				ObjectFile=".\libs\p64\Release/"
-				ProgramDataBaseFileName=".\libs\p64\Release/"
+				PrecompiledHeaderFile=".\libs\p64\Release\p64.pch"
+				AssemblerListingLocation=".\libs\p64\Release\"
+				ObjectFile=".\libs\p64\Release\"
+				ProgramDataBaseFileName=".\libs\p64\Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				CompileAs="0"/>
@@ -183,7 +183,7 @@
 	</Configurations>
 	<Files>
 		<File
-			RelativePath="..\..\lib\p64\p64.c">
+			RelativePath="..\..\..\lib\p64\p64.c">
 		</File>
 	</Files>
 	<Globals>

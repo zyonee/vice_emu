@@ -11,49 +11,6 @@
 	</Platforms>
 	<Configurations>
 		<Configuration
-			Name="Release|Win32"
-			OutputDirectory=".\libs\rtc\Release"
-			IntermediateDirectory=".\libs\rtc\Release"
-			ConfigurationType="4"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE">
-			<Tool
-				Name="VCCLCompilerTool"
-				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\,..\..\drive,..\..\vdrive,..\..\rs232drv,..\..\imagecontents,..\..\monitor"
-				PreprocessorDefinitions="DONT_USE_UNISTD_H,WIN32,NODIRECTX,IDE_COMPILE,NDEBUG,_WINDOWS"
-				StringPooling="TRUE"
-				RuntimeLibrary="0"
-				EnableFunctionLevelLinking="TRUE"
-				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\rtc\Release/rtc.pch"
-				AssemblerListingLocation=".\libs\rtc\Release/"
-				ObjectFile=".\libs\rtc\Release/"
-				ProgramDataBaseFileName=".\libs\rtc\Release/"
-				WarningLevel="3"
-				SuppressStartupBanner="TRUE"
-				CompileAs="0"/>
-			<Tool
-				Name="VCCustomBuildTool"/>
-			<Tool
-				Name="VCLibrarianTool"
-				OutputFile=".\libs\rtc\Release\rtc.lib"
-				SuppressStartupBanner="TRUE"/>
-			<Tool
-				Name="VCMIDLTool"/>
-			<Tool
-				Name="VCPostBuildEventTool"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				Culture="1033"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-		</Configuration>
-		<Configuration
 			Name="DX Debug|Win32"
 			OutputDirectory=".\libs\rtc\DXDebug"
 			IntermediateDirectory=".\libs\rtc\DXDebug"
@@ -63,14 +20,14 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\,..\..\drive,..\..\vdrive,..\..\rs232drv,..\..\imagecontents,..\..\monitor"
-				PreprocessorDefinitions="DONT_USE_UNISTD_H,WIN32,IDE_COMPILE,_DEBUG,_WINDOWS"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\drive,..\..\..\imagecontents,..\..\..\monitor,..\..\..\rs232drv,..\..\..\vdrive"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\rtc\DXDebug/rtc.pch"
-				AssemblerListingLocation=".\libs\rtc\DXDebug/"
-				ObjectFile=".\libs\rtc\DXDebug/"
-				ProgramDataBaseFileName=".\libs\rtc\DXDebug/"
+				PrecompiledHeaderFile=".\libs\rtc\DXDebug\rtc.pch"
+				AssemblerListingLocation=".\libs\rtc\DXDebug\"
+				ObjectFile=".\libs\rtc\DXDebug\"
+				ProgramDataBaseFileName=".\libs\rtc\DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				DebugInformationFormat="1"
@@ -105,16 +62,16 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\,..\..\drive,..\..\vdrive,..\..\rs232drv,..\..\imagecontents,..\..\monitor"
-				PreprocessorDefinitions="DONT_USE_UNISTD_H,WIN32,IDE_COMPILE,NDEBUG,_WINDOWS"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\drive,..\..\..\imagecontents,..\..\..\monitor,..\..\..\rs232drv,..\..\..\vdrive"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NDEBUG"
 				StringPooling="TRUE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="TRUE"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\rtc\DXRelease/rtc.pch"
-				AssemblerListingLocation=".\libs\rtc\DXRelease/"
-				ObjectFile=".\libs\rtc\DXRelease/"
-				ProgramDataBaseFileName=".\libs\rtc\DXRelease/"
+				PrecompiledHeaderFile=".\libs\rtc\DXRelease\rtc.pch"
+				AssemblerListingLocation=".\libs\rtc\DXRelease\"
+				ObjectFile=".\libs\rtc\DXRelease\"
+				ProgramDataBaseFileName=".\libs\rtc\DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				CompileAs="0"/>
@@ -148,14 +105,14 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\,..\..\drive,..\..\vdrive,..\..\rs232drv,..\..\imagecontents,..\..\monitor"
-				PreprocessorDefinitions="DONT_USE_UNISTD_H,WIN32,NODIRECTX,IDE_COMPILE,_DEBUG,_WINDOWS"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\drive,..\..\..\imagecontents,..\..\..\monitor,..\..\..\rs232drv,..\..\..\vdrive"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\rtc\Debug/rtc.pch"
-				AssemblerListingLocation=".\libs\rtc\Debug/"
-				ObjectFile=".\libs\rtc\Debug/"
-				ProgramDataBaseFileName=".\libs\rtc\Debug/"
+				PrecompiledHeaderFile=".\libs\rtc\Debug\rtc.pch"
+				AssemblerListingLocation=".\libs\rtc\Debug\"
+				ObjectFile=".\libs\rtc\Debug\"
+				ProgramDataBaseFileName=".\libs\rtc\Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				DebugInformationFormat="1"
@@ -180,25 +137,68 @@
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 		</Configuration>
+		<Configuration
+			Name="Release|Win32"
+			OutputDirectory=".\libs\rtc\Release"
+			IntermediateDirectory=".\libs\rtc\Release"
+			ConfigurationType="4"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			<Tool
+				Name="VCCLCompilerTool"
+				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\drive,..\..\..\imagecontents,..\..\..\monitor,..\..\..\rs232drv,..\..\..\vdrive"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,NDEBUG"
+				StringPooling="TRUE"
+				RuntimeLibrary="0"
+				EnableFunctionLevelLinking="TRUE"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderFile=".\libs\rtc\Release\rtc.pch"
+				AssemblerListingLocation=".\libs\rtc\Release\"
+				ObjectFile=".\libs\rtc\Release\"
+				ProgramDataBaseFileName=".\libs\rtc\Release\"
+				WarningLevel="3"
+				SuppressStartupBanner="TRUE"
+				CompileAs="0"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile=".\libs\rtc\Release\rtc.lib"
+				SuppressStartupBanner="TRUE"/>
+			<Tool
+				Name="VCMIDLTool"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				Culture="1033"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+		</Configuration>
 	</Configurations>
 	<Files>
 		<File
-			RelativePath="..\..\rtc\bq4830y.c">
+			RelativePath="..\..\..\rtc\bq4830y.c">
 		</File>
 		<File
-			RelativePath="..\..\rtc\ds1202_1302.c">
+			RelativePath="..\..\..\rtc\ds1202_1302.c">
 		</File>
 		<File
-			RelativePath="..\..\rtc\ds1216e.c">
+			RelativePath="..\..\..\rtc\ds1216e.c">
 		</File>
 		<File
-			RelativePath="..\..\rtc\ds12c887.c">
+			RelativePath="..\..\..\rtc\ds12c887.c">
 		</File>
 		<File
-			RelativePath="..\..\rtc\rtc-58321a.c">
+			RelativePath="..\..\..\rtc\rtc.c">
 		</File>
 		<File
-			RelativePath="..\..\rtc\rtc.c">
+			RelativePath="..\..\..\rtc\rtc-58321a.c">
 		</File>
 	</Files>
 	<Globals>

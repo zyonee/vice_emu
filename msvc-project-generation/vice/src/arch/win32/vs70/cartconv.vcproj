@@ -11,43 +11,42 @@
 	</Platforms>
 	<Configurations>
 		<Configuration
-			Name="Release|Win32"
-			OutputDirectory=".\..\..\..\data"
-			IntermediateDirectory=".\libs\cartconv\Release"
+			Name="DX Debug|Win32"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\cartconv\DXDebug"
 			ConfigurationType="1"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			CharacterSet="2">
+			ATLMinimizesCRunTimeLibraryUsage="FALSE"			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
-				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\,..\..\drive,..\..\vdrive"
-				PreprocessorDefinitions="DONT_USE_UNISTD_H,WIN32,NODIRECTX,IDE_COMPILE,NDEBUG,_CONSOLE"
-				StringPooling="TRUE"
-				RuntimeLibrary="0"
-				EnableFunctionLevelLinking="TRUE"
+				Optimization="0"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\drive,..\..\..\vdrive"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
+				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\cartconv\Release/cartconv.pch"
-				AssemblerListingLocation=".\libs\cartconv\Release/"
-				ObjectFile=".\libs\cartconv\Release/"
-				ProgramDataBaseFileName=".\libs\cartconv\Release/"
+				PrecompiledHeaderFile=".\libs\cartconv\DXDebug\cartconv.pch"
+				AssemblerListingLocation=".\libs\cartconv\DXDebug\"
+				ObjectFile=".\libs\cartconv\DXDebug\"
+				ProgramDataBaseFileName=".\libs\cartconv\DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
+				DebugInformationFormat="1"
 				CompileAs="0"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
-				AdditionalDependencies="wsock32.lib version.lib"
-				OutputFile=".\..\..\..\data/cartconv.exe"
-				LinkIncremental="1"
+				AdditionalDependencies="version.lib wsock32.lib"
+				OutputFile=".\..\..\..\..\data\cartconv.exe"
+				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
-				ProgramDatabaseFile=".\..\..\..\data/cartconv.pdb"
+				GenerateDebugInformation="TRUE"
+				ProgramDatabaseFile=".\..\..\..\..\data\cartconv.pdb"
 				SubSystem="1"/>
 			<Tool
 				Name="VCMIDLTool"
-				TypeLibraryName=".\..\..\..\data/cartconv.tlb"/>
+				TypeLibraryName=".\..\..\..\..\data\cartconv.tlb"/>
 			<Tool
 				Name="VCPostBuildEventTool"/>
 			<Tool
@@ -56,7 +55,7 @@
 				Name="VCPreLinkEventTool"/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="NDEBUG"
+				PreprocessorDefinitions="_DEBUG"
 				Culture="1033"/>
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
@@ -65,25 +64,24 @@
 		</Configuration>
 		<Configuration
 			Name="DX Release|Win32"
-			OutputDirectory=".\..\..\..\data"
+			OutputDirectory=".\..\..\..\..\data"
 			IntermediateDirectory=".\libs\cartconv\DXRelease"
 			ConfigurationType="1"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			CharacterSet="2">
+			ATLMinimizesCRunTimeLibraryUsage="FALSE"			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\,..\..\drive,..\..\vdrive"
-				PreprocessorDefinitions="DONT_USE_UNISTD_H,WIN32,IDE_COMPILE,NDEBUG,_CONSOLE"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\drive,..\..\..\vdrive"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NDEBUG"
 				StringPooling="TRUE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="TRUE"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\cartconv\DXRelease/cartconv.pch"
-				AssemblerListingLocation=".\libs\cartconv\DXRelease/"
-				ObjectFile=".\libs\cartconv\DXRelease/"
-				ProgramDataBaseFileName=".\libs\cartconv\DXRelease/"
+				PrecompiledHeaderFile=".\libs\cartconv\DXRelease\cartconv.pch"
+				AssemblerListingLocation=".\libs\cartconv\DXRelease\"
+				ObjectFile=".\libs\cartconv\DXRelease\"
+				ProgramDataBaseFileName=".\libs\cartconv\DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				CompileAs="0"/>
@@ -92,15 +90,15 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
-				AdditionalDependencies="wsock32.lib version.lib"
-				OutputFile=".\..\..\..\data/cartconv.exe"
+				AdditionalDependencies="version.lib wsock32.lib"
+				OutputFile=".\..\..\..\..\data\cartconv.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				ProgramDatabaseFile=".\..\..\..\data/cartconv.pdb"
+				ProgramDatabaseFile=".\..\..\..\..\data\cartconv.pdb"
 				SubSystem="1"/>
 			<Tool
 				Name="VCMIDLTool"
-				TypeLibraryName=".\..\..\..\data/cartconv.tlb"/>
+				TypeLibraryName=".\..\..\..\..\data\cartconv.tlb"/>
 			<Tool
 				Name="VCPostBuildEventTool"/>
 			<Tool
@@ -118,23 +116,22 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\..\..\..\data"
+			OutputDirectory=".\..\..\..\..\data"
 			IntermediateDirectory=".\libs\cartconv\Debug"
 			ConfigurationType="1"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			CharacterSet="2">
+			ATLMinimizesCRunTimeLibraryUsage="FALSE"			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\,..\..\drive,..\..\vdrive"
-				PreprocessorDefinitions="DONT_USE_UNISTD_H,WIN32,NODIRECTX,IDE_COMPILE,_DEBUG,_CONSOLE"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\drive,..\..\..\vdrive"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\cartconv\Debug/cartconv.pch"
-				AssemblerListingLocation=".\libs\cartconv\Debug/"
-				ObjectFile=".\libs\cartconv\Debug/"
-				ProgramDataBaseFileName=".\libs\cartconv\Debug/"
+				PrecompiledHeaderFile=".\libs\cartconv\Debug\cartconv.pch"
+				AssemblerListingLocation=".\libs\cartconv\Debug\"
+				ObjectFile=".\libs\cartconv\Debug\"
+				ProgramDataBaseFileName=".\libs\cartconv\Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				DebugInformationFormat="1"
@@ -144,16 +141,16 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
-				AdditionalDependencies="wsock32.lib version.lib"
-				OutputFile=".\..\..\..\data/cartconv.exe"
+				AdditionalDependencies="version.lib wsock32.lib"
+				OutputFile=".\..\..\..\..\data\cartconv.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile=".\..\..\..\data/cartconv.pdb"
+				ProgramDatabaseFile=".\..\..\..\..\data\cartconv.pdb"
 				SubSystem="1"/>
 			<Tool
 				Name="VCMIDLTool"
-				TypeLibraryName=".\..\..\..\data/cartconv.tlb"/>
+				TypeLibraryName=".\..\..\..\..\data\cartconv.tlb"/>
 			<Tool
 				Name="VCPostBuildEventTool"/>
 			<Tool
@@ -170,43 +167,42 @@
 				Name="VCWebDeploymentTool"/>
 		</Configuration>
 		<Configuration
-			Name="DX Debug|Win32"
-			OutputDirectory=".\..\..\..\data"
-			IntermediateDirectory=".\libs\cartconv\DXDebug"
+			Name="Release|Win32"
+			OutputDirectory=".\..\..\..\..\data"
+			IntermediateDirectory=".\libs\cartconv\Release"
 			ConfigurationType="1"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			CharacterSet="2">
+			ATLMinimizesCRunTimeLibraryUsage="FALSE"			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="0"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\,..\..\drive,..\..\vdrive"
-				PreprocessorDefinitions="DONT_USE_UNISTD_H,WIN32,IDE_COMPILE,_DEBUG,_CONSOLE"
-				RuntimeLibrary="1"
+				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\drive,..\..\..\vdrive"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,NDEBUG"
+				StringPooling="TRUE"
+				RuntimeLibrary="0"
+				EnableFunctionLevelLinking="TRUE"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\cartconv\DXDebug/cartconv.pch"
-				AssemblerListingLocation=".\libs\cartconv\DXDebug/"
-				ObjectFile=".\libs\cartconv\DXDebug/"
-				ProgramDataBaseFileName=".\libs\cartconv\DXDebug/"
+				PrecompiledHeaderFile=".\libs\cartconv\Release\cartconv.pch"
+				AssemblerListingLocation=".\libs\cartconv\Release\"
+				ObjectFile=".\libs\cartconv\Release\"
+				ProgramDataBaseFileName=".\libs\cartconv\Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
-				DebugInformationFormat="1"
 				CompileAs="0"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
-				AdditionalDependencies="wsock32.lib version.lib"
-				OutputFile=".\..\..\..\data/cartconv.exe"
-				LinkIncremental="2"
+				AdditionalDependencies="version.lib wsock32.lib"
+				OutputFile=".\..\..\..\..\data\cartconv.exe"
+				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile=".\..\..\..\data/cartconv.pdb"
+				ProgramDatabaseFile=".\..\..\..\..\data\cartconv.pdb"
 				SubSystem="1"/>
 			<Tool
 				Name="VCMIDLTool"
-				TypeLibraryName=".\..\..\..\data/cartconv.tlb"/>
+				TypeLibraryName=".\..\..\..\..\data\cartconv.tlb"/>
 			<Tool
 				Name="VCPostBuildEventTool"/>
 			<Tool
@@ -215,7 +211,7 @@
 				Name="VCPreLinkEventTool"/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG"
+				PreprocessorDefinitions="NDEBUG"
 				Culture="1033"/>
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
@@ -225,7 +221,7 @@
 	</Configurations>
 	<Files>
 		<File
-			RelativePath="..\..\cartconv.c">
+			RelativePath="..\..\..\cartconv.c">
 		</File>
 	</Files>
 	<Globals>

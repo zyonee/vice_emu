@@ -20,14 +20,14 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\,..\..\drive,..\..\vdrive,..\..\rs232drv,..\..\imagecontents,..\..\monitor"
-				PreprocessorDefinitions="DONT_USE_UNISTD_H,WIN32,IDE_COMPILE,WIN32_COMPILE,_DEBUG,_WINDOWS"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\drive,..\..\..\imagecontents,..\..\..\monitor,..\..\..\rs232drv,..\..\..\vdrive"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\platform\DXDebug/platform.pch"
-				AssemblerListingLocation=".\libs\platform\DXDebug/"
-				ObjectFile=".\libs\platform\DXDebug/"
-				ProgramDataBaseFileName=".\libs\platform\DXDebug/"
+				PrecompiledHeaderFile=".\libs\platform\DXDebug\platform.pch"
+				AssemblerListingLocation=".\libs\platform\DXDebug\"
+				ObjectFile=".\libs\platform\DXDebug\"
+				ProgramDataBaseFileName=".\libs\platform\DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				DebugInformationFormat="1"
@@ -62,16 +62,16 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\,..\..\drive,..\..\vdrive,..\..\rs232drv,..\..\imagecontents,..\..\monitor"
-				PreprocessorDefinitions="DONT_USE_UNISTD_H,WIN32,IDE_COMPILE,WIN32_COMPILE,NDEBUG,_WINDOWS"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\drive,..\..\..\imagecontents,..\..\..\monitor,..\..\..\rs232drv,..\..\..\vdrive"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NDEBUG"
 				StringPooling="TRUE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="TRUE"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\platform\DXRelease/platform.pch"
-				AssemblerListingLocation=".\libs\platform\DXRelease/"
-				ObjectFile=".\libs\platform\DXRelease/"
-				ProgramDataBaseFileName=".\libs\platform\DXRelease/"
+				PrecompiledHeaderFile=".\libs\platform\DXRelease\platform.pch"
+				AssemblerListingLocation=".\libs\platform\DXRelease\"
+				ObjectFile=".\libs\platform\DXRelease\"
+				ProgramDataBaseFileName=".\libs\platform\DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				CompileAs="0"/>
@@ -105,14 +105,14 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\,..\..\drive,..\..\vdrive,..\..\rs232drv,..\..\imagecontents,..\..\monitor"
-				PreprocessorDefinitions="DONT_USE_UNISTD_H,WIN32,NODIRECTX,IDE_COMPILE,WIN32_COMPILE,_DEBUG,_WINDOWS"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\drive,..\..\..\imagecontents,..\..\..\monitor,..\..\..\rs232drv,..\..\..\vdrive"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\platform\Debug/platform.pch"
-				AssemblerListingLocation=".\libs\platform\Debug/"
-				ObjectFile=".\libs\platform\Debug/"
-				ProgramDataBaseFileName=".\libs\platform\Debug/"
+				PrecompiledHeaderFile=".\libs\platform\Debug\platform.pch"
+				AssemblerListingLocation=".\libs\platform\Debug\"
+				ObjectFile=".\libs\platform\Debug\"
+				ProgramDataBaseFileName=".\libs\platform\Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				DebugInformationFormat="1"
@@ -147,16 +147,16 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\,..\..\drive,..\..\vdrive,..\..\rs232drv,..\..\imagecontents,..\..\monitor"
-				PreprocessorDefinitions="DONT_USE_UNISTD_H,WIN32,NODIRECTX,IDE_COMPILE,WIN32_COMPILE,NDEBUG,_WINDOWS"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\drive,..\..\..\imagecontents,..\..\..\monitor,..\..\..\rs232drv,..\..\..\vdrive"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,NDEBUG"
 				StringPooling="TRUE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="TRUE"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\platform\Release/platform.pch"
-				AssemblerListingLocation=".\libs\platform\Release/"
-				ObjectFile=".\libs\platform\Release/"
-				ProgramDataBaseFileName=".\libs\platform\Release/"
+				PrecompiledHeaderFile=".\libs\platform\Release\platform.pch"
+				AssemblerListingLocation=".\libs\platform\Release\"
+				ObjectFile=".\libs\platform\Release\"
+				ProgramDataBaseFileName=".\libs\platform\Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				CompileAs="0"/>
@@ -183,13 +183,13 @@
 	</Configurations>
 	<Files>
 		<File
-			RelativePath="..\..\platform\platform.c">
+			RelativePath="..\..\..\platform\platform.c">
 		</File>
 		<File
-			RelativePath="..\..\platform\platform_windows_runtime_os.c">
+			RelativePath="..\..\..\platform\platform_windows_runtime_os.c">
 		</File>
 		<File
-			RelativePath="..\..\platform\platform_x86_runtime_cpu.c">
+			RelativePath="..\..\..\platform\platform_x86_runtime_cpu.c">
 		</File>
 	</Files>
 	<Globals>

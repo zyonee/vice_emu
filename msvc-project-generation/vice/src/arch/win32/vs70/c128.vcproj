@@ -11,49 +11,6 @@
 	</Platforms>
 	<Configurations>
 		<Configuration
-			Name="DX Release|Win32"
-			OutputDirectory=".\libs\c128\DXRelease"
-			IntermediateDirectory=".\libs\c128\DXRelease"
-			ConfigurationType="4"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE">
-			<Tool
-				Name="VCCLCompilerTool"
-				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="msvc,.\,..\..\,..\..\drive,..\..\lib\p64,..\..\userport,..\..\video,..\..\tape,..\..\c64,..\..\c64\cart,..\..\sid,..\..\vicii,..\..\raster,..\..\vdc,..\..\monitor,..\..\rtc"
-				PreprocessorDefinitions="WIN32,IDE_COMPILE,NDEBUG,_WINDOWS"
-				StringPooling="TRUE"
-				RuntimeLibrary="0"
-				EnableFunctionLevelLinking="TRUE"
-				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\c128\DXRelease/c128.pch"
-				AssemblerListingLocation=".\libs\c128\DXRelease/"
-				ObjectFile=".\libs\c128\DXRelease/"
-				ProgramDataBaseFileName=".\libs\c128\DXRelease/"
-				WarningLevel="3"
-				SuppressStartupBanner="TRUE"
-				CompileAs="0"/>
-			<Tool
-				Name="VCCustomBuildTool"/>
-			<Tool
-				Name="VCLibrarianTool"
-				OutputFile=".\libs\c128\DXRelease\c128.lib"
-				SuppressStartupBanner="TRUE"/>
-			<Tool
-				Name="VCMIDLTool"/>
-			<Tool
-				Name="VCPostBuildEventTool"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				Culture="1033"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-		</Configuration>
-		<Configuration
 			Name="DX Debug|Win32"
 			OutputDirectory=".\libs\c128\DXDebug"
 			IntermediateDirectory=".\libs\c128\DXDebug"
@@ -63,14 +20,14 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="msvc,.\,..\..\,..\..\drive,..\..\lib\p64,..\..\userport,..\..\video,..\..\tape,..\..\c64,..\..\c64\cart,..\..\sid,..\..\vicii,..\..\raster,..\..\vdc,..\..\monitor,..\..\rtc"
-				PreprocessorDefinitions="WIN32,IDE_COMPILE,_DEBUG,_WINDOWS"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\c64,..\..\..\c64\cart,..\..\..\drive,..\..\..\lib\p64,..\..\..\monitor,..\..\..\raster,..\..\..\rtc,..\..\..\sid,..\..\..\tape,..\..\..\userport,..\..\..\vdc,..\..\..\vicii,..\..\..\video"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\c128\DXDebug/c128.pch"
-				AssemblerListingLocation=".\libs\c128\DXDebug/"
-				ObjectFile=".\libs\c128\DXDebug/"
-				ProgramDataBaseFileName=".\libs\c128\DXDebug/"
+				PrecompiledHeaderFile=".\libs\c128\DXDebug\c128.pch"
+				AssemblerListingLocation=".\libs\c128\DXDebug\"
+				ObjectFile=".\libs\c128\DXDebug\"
+				ProgramDataBaseFileName=".\libs\c128\DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				DebugInformationFormat="1"
@@ -96,25 +53,25 @@
 				Name="VCWebServiceProxyGeneratorTool"/>
 		</Configuration>
 		<Configuration
-			Name="Release|Win32"
-			OutputDirectory=".\libs\c128\Release"
-			IntermediateDirectory=".\libs\c128\Release"
+			Name="DX Release|Win32"
+			OutputDirectory=".\libs\c128\DXRelease"
+			IntermediateDirectory=".\libs\c128\DXRelease"
 			ConfigurationType="4"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE">
 			<Tool
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="msvc,.\,..\..\,..\..\drive,..\..\lib\p64,..\..\userport,..\..\video,..\..\tape,..\..\c64,..\..\c64\cart,..\..\sid,..\..\vicii,..\..\raster,..\..\vdc,..\..\monitor,..\..\rtc"
-				PreprocessorDefinitions="WIN32,NODIRECTX,IDE_COMPILE,NDEBUG,_WINDOWS"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\c64,..\..\..\c64\cart,..\..\..\drive,..\..\..\lib\p64,..\..\..\monitor,..\..\..\raster,..\..\..\rtc,..\..\..\sid,..\..\..\tape,..\..\..\userport,..\..\..\vdc,..\..\..\vicii,..\..\..\video"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NDEBUG"
 				StringPooling="TRUE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="TRUE"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\c128\Release/c128.pch"
-				AssemblerListingLocation=".\libs\c128\Release/"
-				ObjectFile=".\libs\c128\Release/"
-				ProgramDataBaseFileName=".\libs\c128\Release/"
+				PrecompiledHeaderFile=".\libs\c128\DXRelease\c128.pch"
+				AssemblerListingLocation=".\libs\c128\DXRelease\"
+				ObjectFile=".\libs\c128\DXRelease\"
+				ProgramDataBaseFileName=".\libs\c128\DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				CompileAs="0"/>
@@ -122,7 +79,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\libs\c128\Release\c128.lib"
+				OutputFile=".\libs\c128\DXRelease\c128.lib"
 				SuppressStartupBanner="TRUE"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -148,14 +105,14 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="msvc,.\,..\..\,..\..\drive,..\..\lib\p64,..\..\userport,..\..\video,..\..\tape,..\..\c64,..\..\c64\cart,..\..\sid,..\..\vicii,..\..\raster,..\..\vdc,..\..\monitor,..\..\rtc"
-				PreprocessorDefinitions="WIN32,NODIRECTX,IDE_COMPILE,_DEBUG,_WINDOWS"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\c64,..\..\..\c64\cart,..\..\..\drive,..\..\..\lib\p64,..\..\..\monitor,..\..\..\raster,..\..\..\rtc,..\..\..\sid,..\..\..\tape,..\..\..\userport,..\..\..\vdc,..\..\..\vicii,..\..\..\video"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\c128\Debug/c128.pch"
-				AssemblerListingLocation=".\libs\c128\Debug/"
-				ObjectFile=".\libs\c128\Debug/"
-				ProgramDataBaseFileName=".\libs\c128\Debug/"
+				PrecompiledHeaderFile=".\libs\c128\Debug\c128.pch"
+				AssemblerListingLocation=".\libs\c128\Debug\"
+				ObjectFile=".\libs\c128\Debug\"
+				ProgramDataBaseFileName=".\libs\c128\Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				DebugInformationFormat="1"
@@ -180,25 +137,116 @@
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 		</Configuration>
+		<Configuration
+			Name="Release|Win32"
+			OutputDirectory=".\libs\c128\Release"
+			IntermediateDirectory=".\libs\c128\Release"
+			ConfigurationType="4"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			<Tool
+				Name="VCCLCompilerTool"
+				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\c64,..\..\..\c64\cart,..\..\..\drive,..\..\..\lib\p64,..\..\..\monitor,..\..\..\raster,..\..\..\rtc,..\..\..\sid,..\..\..\tape,..\..\..\userport,..\..\..\vdc,..\..\..\vicii,..\..\..\video"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,NDEBUG"
+				StringPooling="TRUE"
+				RuntimeLibrary="0"
+				EnableFunctionLevelLinking="TRUE"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderFile=".\libs\c128\Release\c128.pch"
+				AssemblerListingLocation=".\libs\c128\Release\"
+				ObjectFile=".\libs\c128\Release\"
+				ProgramDataBaseFileName=".\libs\c128\Release\"
+				WarningLevel="3"
+				SuppressStartupBanner="TRUE"
+				CompileAs="0"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile=".\libs\c128\Release\c128.lib"
+				SuppressStartupBanner="TRUE"/>
+			<Tool
+				Name="VCMIDLTool"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				Culture="1033"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+		</Configuration>
 	</Configurations>
 	<Files>
 		<File
-			RelativePath="..\..\c128\c128-cmdline-options.c">
+			RelativePath="..\..\..\c128\c128-cmdline-options.c">
 		</File>
 		<File
-			RelativePath="..\..\c128\c128-resources.c">
+			RelativePath="..\..\..\c128\c128-resources.c">
 		</File>
 		<File
-			RelativePath="..\..\c128\c128-snapshot.c">
+			RelativePath="..\..\..\c128\c128-snapshot.c">
 		</File>
 		<File
-			RelativePath="..\..\c128\c128.c">
+			RelativePath="..\..\..\c128\c128.c">
 		</File>
 		<File
-			RelativePath="..\..\c128\c128cia1.c">
+			RelativePath="..\..\..\c128\c128cia1.c">
 		</File>
 		<File
-			RelativePath="..\..\c128\c128cpu.c">
+			RelativePath="..\..\..\c128\c128drive.c">
+		</File>
+		<File
+			RelativePath="..\..\..\c128\c128fastiec.c">
+		</File>
+		<File
+			RelativePath="..\..\..\c128\c128mem.c">
+		</File>
+		<File
+			RelativePath="..\..\..\c128\c128meminit.c">
+		</File>
+		<File
+			RelativePath="..\..\..\c128\c128memlimit.c">
+		</File>
+		<File
+			RelativePath="..\..\..\c128\c128memrom.c">
+		</File>
+		<File
+			RelativePath="..\..\..\c128\c128memsnapshot.c">
+		</File>
+		<File
+			RelativePath="..\..\..\c128\c128mmu.c">
+		</File>
+		<File
+			RelativePath="..\..\..\c128\c128model.c">
+		</File>
+		<File
+			RelativePath="..\..\..\c128\c128rom.c">
+		</File>
+		<File
+			RelativePath="..\..\..\c128\c128romset.c">
+		</File>
+		<File
+			RelativePath="..\..\..\c128\c128video.c">
+		</File>
+		<File
+			RelativePath="..\..\..\c128\daa.c">
+		</File>
+		<File
+			RelativePath="..\..\..\c128\functionrom.c">
+		</File>
+		<File
+			RelativePath="..\..\..\c128\z80.c">
+		</File>
+		<File
+			RelativePath="..\..\..\c128\z80mem.c">
+		</File>
+		<File
+			RelativePath="..\..\..\c128\c128cpu.c">
 			<FileConfiguration
 				Name="DX Release|Win32">
 				<Tool
@@ -219,54 +267,6 @@
 					FavorSizeOrSpeed="0"
 					OmitFramePointers="TRUE"/>
 			</FileConfiguration>
-		</File>
-		<File
-			RelativePath="..\..\c128\c128drive.c">
-		</File>
-		<File
-			RelativePath="..\..\c128\c128fastiec.c">
-		</File>
-		<File
-			RelativePath="..\..\c128\c128mem.c">
-		</File>
-		<File
-			RelativePath="..\..\c128\c128meminit.c">
-		</File>
-		<File
-			RelativePath="..\..\c128\c128memlimit.c">
-		</File>
-		<File
-			RelativePath="..\..\c128\c128memrom.c">
-		</File>
-		<File
-			RelativePath="..\..\c128\c128memsnapshot.c">
-		</File>
-		<File
-			RelativePath="..\..\c128\c128mmu.c">
-		</File>
-		<File
-			RelativePath="..\..\c128\c128model.c">
-		</File>
-		<File
-			RelativePath="..\..\c128\c128rom.c">
-		</File>
-		<File
-			RelativePath="..\..\c128\c128romset.c">
-		</File>
-		<File
-			RelativePath="..\..\c128\c128video.c">
-		</File>
-		<File
-			RelativePath="..\..\c128\daa.c">
-		</File>
-		<File
-			RelativePath="..\..\c128\functionrom.c">
-		</File>
-		<File
-			RelativePath="..\..\c128\z80.c">
-		</File>
-		<File
-			RelativePath="..\..\c128\z80mem.c">
 		</File>
 	</Files>
 	<Globals>

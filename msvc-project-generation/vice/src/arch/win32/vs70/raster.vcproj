@@ -20,14 +20,14 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\"
-				PreprocessorDefinitions="WIN32,IDE_COMPILE,_DEBUG,_WINDOWS"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\raster\DXDebug/raster.pch"
-				AssemblerListingLocation=".\libs\raster\DXDebug/"
-				ObjectFile=".\libs\raster\DXDebug/"
-				ProgramDataBaseFileName=".\libs\raster\DXDebug/"
+				PrecompiledHeaderFile=".\libs\raster\DXDebug\raster.pch"
+				AssemblerListingLocation=".\libs\raster\DXDebug\"
+				ObjectFile=".\libs\raster\DXDebug\"
+				ProgramDataBaseFileName=".\libs\raster\DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				DebugInformationFormat="1"
@@ -62,16 +62,16 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\"
-				PreprocessorDefinitions="WIN32,IDE_COMPILE,NDEBUG,_WINDOWS"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NDEBUG"
 				StringPooling="TRUE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="TRUE"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\raster\DXRelease/raster.pch"
-				AssemblerListingLocation=".\libs\raster\DXRelease/"
-				ObjectFile=".\libs\raster\DXRelease/"
-				ProgramDataBaseFileName=".\libs\raster\DXRelease/"
+				PrecompiledHeaderFile=".\libs\raster\DXRelease\raster.pch"
+				AssemblerListingLocation=".\libs\raster\DXRelease\"
+				ObjectFile=".\libs\raster\DXRelease\"
+				ProgramDataBaseFileName=".\libs\raster\DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				CompileAs="0"/>
@@ -105,14 +105,14 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\"
-				PreprocessorDefinitions="WIN32,NODIRECTX,IDE_COMPILE,_DEBUG,_WINDOWS"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\raster\Debug/raster.pch"
-				AssemblerListingLocation=".\libs\raster\Debug/"
-				ObjectFile=".\libs\raster\Debug/"
-				ProgramDataBaseFileName=".\libs\raster\Debug/"
+				PrecompiledHeaderFile=".\libs\raster\Debug\raster.pch"
+				AssemblerListingLocation=".\libs\raster\Debug\"
+				ObjectFile=".\libs\raster\Debug\"
+				ProgramDataBaseFileName=".\libs\raster\Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				DebugInformationFormat="1"
@@ -147,16 +147,16 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\"
-				PreprocessorDefinitions="WIN32,NODIRECTX,IDE_COMPILE,NDEBUG,_WINDOWS"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,NDEBUG"
 				StringPooling="TRUE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="TRUE"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\raster\Release/raster.pch"
-				AssemblerListingLocation=".\libs\raster\Release/"
-				ObjectFile=".\libs\raster\Release/"
-				ProgramDataBaseFileName=".\libs\raster\Release/"
+				PrecompiledHeaderFile=".\libs\raster\Release\raster.pch"
+				AssemblerListingLocation=".\libs\raster\Release\"
+				ObjectFile=".\libs\raster\Release\"
+				ProgramDataBaseFileName=".\libs\raster\Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				CompileAs="0"/>
@@ -183,43 +183,43 @@
 	</Configurations>
 	<Files>
 		<File
-			RelativePath="..\..\raster\raster-cache.c">
+			RelativePath="..\..\..\raster\raster-cache.c">
 		</File>
 		<File
-			RelativePath="..\..\raster\raster-canvas.c">
+			RelativePath="..\..\..\raster\raster-canvas.c">
 		</File>
 		<File
-			RelativePath="..\..\raster\raster-changes.c">
+			RelativePath="..\..\..\raster\raster-changes.c">
 		</File>
 		<File
-			RelativePath="..\..\raster\raster-cmdline-options.c">
+			RelativePath="..\..\..\raster\raster-cmdline-options.c">
 		</File>
 		<File
-			RelativePath="..\..\raster\raster-line-changes-sprite.c">
+			RelativePath="..\..\..\raster\raster-line-changes-sprite.c">
 		</File>
 		<File
-			RelativePath="..\..\raster\raster-line-changes.c">
+			RelativePath="..\..\..\raster\raster-line-changes.c">
 		</File>
 		<File
-			RelativePath="..\..\raster\raster-line.c">
+			RelativePath="..\..\..\raster\raster-line.c">
 		</File>
 		<File
-			RelativePath="..\..\raster\raster-modes.c">
+			RelativePath="..\..\..\raster\raster-modes.c">
 		</File>
 		<File
-			RelativePath="..\..\raster\raster-resources.c">
+			RelativePath="..\..\..\raster\raster-resources.c">
 		</File>
 		<File
-			RelativePath="..\..\raster\raster-sprite-cache.c">
+			RelativePath="..\..\..\raster\raster-sprite-cache.c">
 		</File>
 		<File
-			RelativePath="..\..\raster\raster-sprite-status.c">
+			RelativePath="..\..\..\raster\raster-sprite-status.c">
 		</File>
 		<File
-			RelativePath="..\..\raster\raster-sprite.c">
+			RelativePath="..\..\..\raster\raster-sprite.c">
 		</File>
 		<File
-			RelativePath="..\..\raster\raster.c">
+			RelativePath="..\..\..\raster\raster.c">
 		</File>
 	</Files>
 	<Globals>

@@ -20,14 +20,14 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\,..\..\drive,..\..\drive\iec\c64exp,..\..\userport,..\..\video,..\..\tape,..\..\sid,..\..\vicii,..\..\c64\cart,..\..\raster,..\..\monitor,..\..\lib\p64,..\..\rs232drv"
-				PreprocessorDefinitions="WIN32,IDE_COMPILE,_DEBUG,_WINDOWS"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\c64\cart,..\..\..\drive,..\..\..\drive\iec\c64exp,..\..\..\lib\p64,..\..\..\monitor,..\..\..\raster,..\..\..\rs232drv,..\..\..\sid,..\..\..\tape,..\..\..\userport,..\..\..\vicii,..\..\..\video"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\c64\DXDebug/c64.pch"
-				AssemblerListingLocation=".\libs\c64\DXDebug/"
-				ObjectFile=".\libs\c64\DXDebug/"
-				ProgramDataBaseFileName=".\libs\c64\DXDebug/"
+				PrecompiledHeaderFile=".\libs\c64\DXDebug\c64.pch"
+				AssemblerListingLocation=".\libs\c64\DXDebug\"
+				ObjectFile=".\libs\c64\DXDebug\"
+				ProgramDataBaseFileName=".\libs\c64\DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				DebugInformationFormat="1"
@@ -62,16 +62,16 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\,..\..\drive,..\..\drive\iec\c64exp,..\..\userport,..\..\video,..\..\tape,..\..\sid,..\..\vicii,..\..\c64\cart,..\..\raster,..\..\monitor,..\..\lib\p64,..\..\rs232drv"
-				PreprocessorDefinitions="WIN32,IDE_COMPILE,NDEBUG,_WINDOWS"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\c64\cart,..\..\..\drive,..\..\..\drive\iec\c64exp,..\..\..\lib\p64,..\..\..\monitor,..\..\..\raster,..\..\..\rs232drv,..\..\..\sid,..\..\..\tape,..\..\..\userport,..\..\..\vicii,..\..\..\video"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NDEBUG"
 				StringPooling="TRUE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="TRUE"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\c64\DXRelease/c64.pch"
-				AssemblerListingLocation=".\libs\c64\DXRelease/"
-				ObjectFile=".\libs\c64\DXRelease/"
-				ProgramDataBaseFileName=".\libs\c64\DXRelease/"
+				PrecompiledHeaderFile=".\libs\c64\DXRelease\c64.pch"
+				AssemblerListingLocation=".\libs\c64\DXRelease\"
+				ObjectFile=".\libs\c64\DXRelease\"
+				ProgramDataBaseFileName=".\libs\c64\DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				CompileAs="0"/>
@@ -105,14 +105,14 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\,..\..\drive,..\..\drive\iec\c64exp,..\..\userport,..\..\video,..\..\tape,..\..\sid,..\..\vicii,..\..\c64\cart,..\..\raster,..\..\monitor,..\..\lib\p64,..\..\rs232drv"
-				PreprocessorDefinitions="WIN32,NODIRECTX,IDE_COMPILE,_DEBUG,_WINDOWS"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\c64\cart,..\..\..\drive,..\..\..\drive\iec\c64exp,..\..\..\lib\p64,..\..\..\monitor,..\..\..\raster,..\..\..\rs232drv,..\..\..\sid,..\..\..\tape,..\..\..\userport,..\..\..\vicii,..\..\..\video"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\c64\Debug/c64.pch"
-				AssemblerListingLocation=".\libs\c64\Debug/"
-				ObjectFile=".\libs\c64\Debug/"
-				ProgramDataBaseFileName=".\libs\c64\Debug/"
+				PrecompiledHeaderFile=".\libs\c64\Debug\c64.pch"
+				AssemblerListingLocation=".\libs\c64\Debug\"
+				ObjectFile=".\libs\c64\Debug\"
+				ProgramDataBaseFileName=".\libs\c64\Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				DebugInformationFormat="1"
@@ -147,16 +147,16 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\,..\..\drive,..\..\drive\iec\c64exp,..\..\userport,..\..\video,..\..\tape,..\..\sid,..\..\vicii,..\..\c64\cart,..\..\raster,..\..\monitor,..\..\lib\p64,..\..\rs232drv"
-				PreprocessorDefinitions="WIN32,NODIRECTX,IDE_COMPILE,NDEBUG,_WINDOWS"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\c64\cart,..\..\..\drive,..\..\..\drive\iec\c64exp,..\..\..\lib\p64,..\..\..\monitor,..\..\..\raster,..\..\..\rs232drv,..\..\..\sid,..\..\..\tape,..\..\..\userport,..\..\..\vicii,..\..\..\video"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,NDEBUG"
 				StringPooling="TRUE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="TRUE"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\c64\Release/c64.pch"
-				AssemblerListingLocation=".\libs\c64\Release/"
-				ObjectFile=".\libs\c64\Release/"
-				ProgramDataBaseFileName=".\libs\c64\Release/"
+				PrecompiledHeaderFile=".\libs\c64\Release\c64.pch"
+				AssemblerListingLocation=".\libs\c64\Release\"
+				ObjectFile=".\libs\c64\Release\"
+				ProgramDataBaseFileName=".\libs\c64\Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				CompileAs="0"/>
@@ -183,109 +183,109 @@
 	</Configurations>
 	<Files>
 		<File
-			RelativePath="..\..\c64\c64-cmdline-options.c">
+			RelativePath="..\..\..\c64\c64-cmdline-options.c">
 		</File>
 		<File
-			RelativePath="..\..\c64\c64-resources.c">
+			RelativePath="..\..\..\c64\c64-resources.c">
 		</File>
 		<File
-			RelativePath="..\..\c64\c64-snapshot.c">
+			RelativePath="..\..\..\c64\c64-snapshot.c">
 		</File>
 		<File
-			RelativePath="..\..\c64\c64.c">
+			RelativePath="..\..\..\c64\c64.c">
 		</File>
 		<File
-			RelativePath="..\..\c64\c64_256k.c">
+			RelativePath="..\..\..\c64\c64_256k.c">
 		</File>
 		<File
-			RelativePath="..\..\c64\c64bus.c">
+			RelativePath="..\..\..\c64\c64bus.c">
 		</File>
 		<File
-			RelativePath="..\..\c64\c64cia1.c">
+			RelativePath="..\..\..\c64\c64cia1.c">
 		</File>
 		<File
-			RelativePath="..\..\c64\c64cia2.c">
+			RelativePath="..\..\..\c64\c64cia2.c">
 		</File>
 		<File
-			RelativePath="..\..\c64\c64datasette.c">
+			RelativePath="..\..\..\c64\c64datasette.c">
 		</File>
 		<File
-			RelativePath="..\..\c64\c64drive.c">
+			RelativePath="..\..\..\c64\c64drive.c">
 		</File>
 		<File
-			RelativePath="..\..\c64\c64export.c">
+			RelativePath="..\..\..\c64\c64export.c">
 		</File>
 		<File
-			RelativePath="..\..\c64\c64fastiec.c">
+			RelativePath="..\..\..\c64\c64fastiec.c">
 		</File>
 		<File
-			RelativePath="..\..\c64\c64gluelogic.c">
+			RelativePath="..\..\..\c64\c64gluelogic.c">
 		</File>
 		<File
-			RelativePath="..\..\c64\c64iec.c">
+			RelativePath="..\..\..\c64\c64iec.c">
 		</File>
 		<File
-			RelativePath="..\..\c64\c64io.c">
+			RelativePath="..\..\..\c64\c64io.c">
 		</File>
 		<File
-			RelativePath="..\..\c64\c64keyboard.c">
+			RelativePath="..\..\..\c64\c64keyboard.c">
 		</File>
 		<File
-			RelativePath="..\..\c64\c64mem.c">
+			RelativePath="..\..\..\c64\c64mem.c">
 		</File>
 		<File
-			RelativePath="..\..\c64\c64meminit.c">
+			RelativePath="..\..\..\c64\c64meminit.c">
 		</File>
 		<File
-			RelativePath="..\..\c64\c64memlimit.c">
+			RelativePath="..\..\..\c64\c64memlimit.c">
 		</File>
 		<File
-			RelativePath="..\..\c64\c64memrom.c">
+			RelativePath="..\..\..\c64\c64memrom.c">
 		</File>
 		<File
-			RelativePath="..\..\c64\c64memsnapshot.c">
+			RelativePath="..\..\..\c64\c64memsnapshot.c">
 		</File>
 		<File
-			RelativePath="..\..\c64\c64model.c">
+			RelativePath="..\..\..\c64\c64model.c">
 		</File>
 		<File
-			RelativePath="..\..\c64\c64parallel.c">
+			RelativePath="..\..\..\c64\c64parallel.c">
 		</File>
 		<File
-			RelativePath="..\..\c64\c64pla.c">
+			RelativePath="..\..\..\c64\c64pla.c">
 		</File>
 		<File
-			RelativePath="..\..\c64\c64printer.c">
+			RelativePath="..\..\..\c64\c64printer.c">
 		</File>
 		<File
-			RelativePath="..\..\c64\c64rom.c">
+			RelativePath="..\..\..\c64\c64rom.c">
 		</File>
 		<File
-			RelativePath="..\..\c64\c64romset.c">
+			RelativePath="..\..\..\c64\c64romset.c">
 		</File>
 		<File
-			RelativePath="..\..\c64\c64rsuser.c">
+			RelativePath="..\..\..\c64\c64rsuser.c">
 		</File>
 		<File
-			RelativePath="..\..\c64\c64sound.c">
+			RelativePath="..\..\..\c64\c64sound.c">
 		</File>
 		<File
-			RelativePath="..\..\c64\c64video.c">
+			RelativePath="..\..\..\c64\c64video.c">
 		</File>
 		<File
-			RelativePath="..\..\c64\patchrom.c">
+			RelativePath="..\..\..\c64\patchrom.c">
 		</File>
 		<File
-			RelativePath="..\..\c64\plus256k.c">
+			RelativePath="..\..\..\c64\plus256k.c">
 		</File>
 		<File
-			RelativePath="..\..\c64\plus60k.c">
+			RelativePath="..\..\..\c64\plus60k.c">
 		</File>
 		<File
-			RelativePath="..\..\c64\psid.c">
+			RelativePath="..\..\..\c64\psid.c">
 		</File>
 		<File
-			RelativePath="..\..\c64\reloc65.c">
+			RelativePath="..\..\..\c64\reloc65.c">
 		</File>
 	</Files>
 	<Globals>

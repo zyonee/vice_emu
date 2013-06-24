@@ -11,6 +11,48 @@
 	</Platforms>
 	<Configurations>
 		<Configuration
+			Name="DX Debug|Win32"
+			OutputDirectory=".\libs\imagecontents\DXDebug"
+			IntermediateDirectory=".\libs\imagecontents\DXDebug"
+			ConfigurationType="4"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\vdrive"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
+				RuntimeLibrary="1"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderFile=".\libs\imagecontents\DXDebug\imagecontents.pch"
+				AssemblerListingLocation=".\libs\imagecontents\DXDebug\"
+				ObjectFile=".\libs\imagecontents\DXDebug\"
+				ProgramDataBaseFileName=".\libs\imagecontents\DXDebug\"
+				WarningLevel="3"
+				SuppressStartupBanner="TRUE"
+				DebugInformationFormat="1"
+				CompileAs="0"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile=".\libs\imagecontents\DXDebug\imagecontents.lib"
+				SuppressStartupBanner="TRUE"/>
+			<Tool
+				Name="VCMIDLTool"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				Culture="1033"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+		</Configuration>
+		<Configuration
 			Name="DX Release|Win32"
 			OutputDirectory=".\libs\imagecontents\DXRelease"
 			IntermediateDirectory=".\libs\imagecontents\DXRelease"
@@ -20,16 +62,16 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\,..\..\vdrive"
-				PreprocessorDefinitions="WIN32,IDE_COMPILE,NDEBUG,_WINDOWS"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\vdrive"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NDEBUG"
 				StringPooling="TRUE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="TRUE"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\imagecontents\DXRelease/imagecontents.pch"
-				AssemblerListingLocation=".\libs\imagecontents\DXRelease/"
-				ObjectFile=".\libs\imagecontents\DXRelease/"
-				ProgramDataBaseFileName=".\libs\imagecontents\DXRelease/"
+				PrecompiledHeaderFile=".\libs\imagecontents\DXRelease\imagecontents.pch"
+				AssemblerListingLocation=".\libs\imagecontents\DXRelease\"
+				ObjectFile=".\libs\imagecontents\DXRelease\"
+				ProgramDataBaseFileName=".\libs\imagecontents\DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				CompileAs="0"/>
@@ -63,15 +105,14 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\,..\..\vdrive"
-				PreprocessorDefinitions="WIN32,NODIRECTX,IDE_COMPILE,_DEBUG,_WINDOWS"
-				BasicRuntimeChecks="3"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\vdrive"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\imagecontents\Debug/imagecontents.pch"
-				AssemblerListingLocation=".\libs\imagecontents\Debug/"
-				ObjectFile=".\libs\imagecontents\Debug/"
-				ProgramDataBaseFileName=".\libs\imagecontents\Debug/"
+				PrecompiledHeaderFile=".\libs\imagecontents\Debug\imagecontents.pch"
+				AssemblerListingLocation=".\libs\imagecontents\Debug\"
+				ObjectFile=".\libs\imagecontents\Debug\"
+				ProgramDataBaseFileName=".\libs\imagecontents\Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				DebugInformationFormat="1"
@@ -106,16 +147,16 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\,..\..\vdrive"
-				PreprocessorDefinitions="WIN32,NODIRECTX,IDE_COMPILE,NDEBUG,_WINDOWS"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\vdrive"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,NDEBUG"
 				StringPooling="TRUE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="TRUE"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\imagecontents\Release/imagecontents.pch"
-				AssemblerListingLocation=".\libs\imagecontents\Release/"
-				ObjectFile=".\libs\imagecontents\Release/"
-				ProgramDataBaseFileName=".\libs\imagecontents\Release/"
+				PrecompiledHeaderFile=".\libs\imagecontents\Release\imagecontents.pch"
+				AssemblerListingLocation=".\libs\imagecontents\Release\"
+				ObjectFile=".\libs\imagecontents\Release\"
+				ProgramDataBaseFileName=".\libs\imagecontents\Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				CompileAs="0"/>
@@ -139,65 +180,22 @@
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 		</Configuration>
-		<Configuration
-			Name="DX Debug|Win32"
-			OutputDirectory=".\libs\imagecontents\DXDebug"
-			IntermediateDirectory=".\libs\imagecontents\DXDebug"
-			ConfigurationType="4"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE">
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="0"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\,..\..\vdrive"
-				PreprocessorDefinitions="WIN32,IDE_COMPILE,_DEBUG,_WINDOWS"
-				BasicRuntimeChecks="3"
-				RuntimeLibrary="1"
-				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\imagecontents\DXDebug/imagecontents.pch"
-				AssemblerListingLocation=".\libs\imagecontents\DXDebug/"
-				ObjectFile=".\libs\imagecontents\DXDebug/"
-				ProgramDataBaseFileName=".\libs\imagecontents\DXDebug/"
-				WarningLevel="3"
-				SuppressStartupBanner="TRUE"
-				DebugInformationFormat="1"
-				CompileAs="0"/>
-			<Tool
-				Name="VCCustomBuildTool"/>
-			<Tool
-				Name="VCLibrarianTool"
-				OutputFile=".\libs\imagecontents\DXDebug\imagecontents.lib"
-				SuppressStartupBanner="TRUE"/>
-			<Tool
-				Name="VCMIDLTool"/>
-			<Tool
-				Name="VCPostBuildEventTool"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				Culture="1033"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-		</Configuration>
 	</Configurations>
 	<Files>
 		<File
-			RelativePath="..\..\imagecontents\diskcontents-block.c">
+			RelativePath="..\..\..\imagecontents\diskcontents-block.c">
 		</File>
 		<File
-			RelativePath="..\..\imagecontents\diskcontents-iec.c">
+			RelativePath="..\..\..\imagecontents\diskcontents-iec.c">
 		</File>
 		<File
-			RelativePath="..\..\imagecontents\diskcontents.c">
+			RelativePath="..\..\..\imagecontents\diskcontents.c">
 		</File>
 		<File
-			RelativePath="..\..\imagecontents\imagecontents.c">
+			RelativePath="..\..\..\imagecontents\imagecontents.c">
 		</File>
 		<File
-			RelativePath="..\..\imagecontents\tapecontents.c">
+			RelativePath="..\..\..\imagecontents\tapecontents.c">
 		</File>
 	</Files>
 	<Globals>

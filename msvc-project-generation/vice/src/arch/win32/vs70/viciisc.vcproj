@@ -11,6 +11,48 @@
 	</Platforms>
 	<Configurations>
 		<Configuration
+			Name="DX Debug|Win32"
+			OutputDirectory=".\libs\viciisc\DXDebug"
+			IntermediateDirectory=".\libs\viciisc\DXDebug"
+			ConfigurationType="4"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\c64,..\..\..\c64\cart,..\..\..\c64dtv,..\..\..\monitor,..\..\..\raster,..\..\..\video"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
+				RuntimeLibrary="1"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderFile=".\libs\viciisc\DXDebug\viciisc.pch"
+				AssemblerListingLocation=".\libs\viciisc\DXDebug\"
+				ObjectFile=".\libs\viciisc\DXDebug\"
+				ProgramDataBaseFileName=".\libs\viciisc\DXDebug\"
+				WarningLevel="3"
+				SuppressStartupBanner="TRUE"
+				DebugInformationFormat="1"
+				CompileAs="0"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile=".\libs\viciisc\DXDebug\viciisc.lib"
+				SuppressStartupBanner="TRUE"/>
+			<Tool
+				Name="VCMIDLTool"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				Culture="1033"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+		</Configuration>
+		<Configuration
 			Name="DX Release|Win32"
 			OutputDirectory=".\libs\viciisc\DXRelease"
 			IntermediateDirectory=".\libs\viciisc\DXRelease"
@@ -20,16 +62,16 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\,..\..\c64,..\..\c64dtv,..\..\raster,..\..\video,..\..\monitor,..\..\c64\cart"
-				PreprocessorDefinitions="WIN32,IDE_COMPILE,NDEBUG,_WINDOWS"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\c64,..\..\..\c64\cart,..\..\..\c64dtv,..\..\..\monitor,..\..\..\raster,..\..\..\video"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NDEBUG"
 				StringPooling="TRUE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="TRUE"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\viciisc\DXRelease/viciisc.pch"
-				AssemblerListingLocation=".\libs\viciisc\DXRelease/"
-				ObjectFile=".\libs\viciisc\DXRelease/"
-				ProgramDataBaseFileName=".\libs\viciisc\DXRelease/"
+				PrecompiledHeaderFile=".\libs\viciisc\DXRelease\viciisc.pch"
+				AssemblerListingLocation=".\libs\viciisc\DXRelease\"
+				ObjectFile=".\libs\viciisc\DXRelease\"
+				ProgramDataBaseFileName=".\libs\viciisc\DXRelease\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				CompileAs="0"/>
@@ -63,14 +105,14 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\,..\..\c64,..\..\c64dtv,..\..\raster,..\..\video,..\..\monitor,..\..\c64\cart"
-				PreprocessorDefinitions="WIN32,NODIRECTX,IDE_COMPILE,_DEBUG,_WINDOWS"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\c64,..\..\..\c64\cart,..\..\..\c64dtv,..\..\..\monitor,..\..\..\raster,..\..\..\video"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\viciisc\Debug/viciisc.pch"
-				AssemblerListingLocation=".\libs\viciisc\Debug/"
-				ObjectFile=".\libs\viciisc\Debug/"
-				ProgramDataBaseFileName=".\libs\viciisc\Debug/"
+				PrecompiledHeaderFile=".\libs\viciisc\Debug\viciisc.pch"
+				AssemblerListingLocation=".\libs\viciisc\Debug\"
+				ObjectFile=".\libs\viciisc\Debug\"
+				ProgramDataBaseFileName=".\libs\viciisc\Debug\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				DebugInformationFormat="1"
@@ -105,16 +147,16 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\,..\..\c64,..\..\c64dtv,..\..\raster,..\..\video,..\..\monitor,..\..\c64\cart"
-				PreprocessorDefinitions="WIN32,NODIRECTX,IDE_COMPILE,NDEBUG,_WINDOWS"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\c64,..\..\..\c64\cart,..\..\..\c64dtv,..\..\..\monitor,..\..\..\raster,..\..\..\video"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,NDEBUG"
 				StringPooling="TRUE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="TRUE"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\viciisc\Release/viciisc.pch"
-				AssemblerListingLocation=".\libs\viciisc\Release/"
-				ObjectFile=".\libs\viciisc\Release/"
-				ProgramDataBaseFileName=".\libs\viciisc\Release/"
+				PrecompiledHeaderFile=".\libs\viciisc\Release\viciisc.pch"
+				AssemblerListingLocation=".\libs\viciisc\Release\"
+				ObjectFile=".\libs\viciisc\Release\"
+				ProgramDataBaseFileName=".\libs\viciisc\Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				CompileAs="0"/>
@@ -138,94 +180,52 @@
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 		</Configuration>
-		<Configuration
-			Name="DX Debug|Win32"
-			OutputDirectory=".\libs\viciisc\DXDebug"
-			IntermediateDirectory=".\libs\viciisc\DXDebug"
-			ConfigurationType="4"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE">
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="0"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\,..\..\c64,..\..\c64dtv,..\..\raster,..\..\video,..\..\monitor,..\..\c64\cart"
-				PreprocessorDefinitions="WIN32,IDE_COMPILE,_DEBUG,_WINDOWS"
-				RuntimeLibrary="1"
-				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\viciisc\DXDebug/viciisc.pch"
-				AssemblerListingLocation=".\libs\viciisc\DXDebug/"
-				ObjectFile=".\libs\viciisc\DXDebug/"
-				ProgramDataBaseFileName=".\libs\viciisc\DXDebug/"
-				WarningLevel="3"
-				SuppressStartupBanner="TRUE"
-				DebugInformationFormat="1"
-				CompileAs="0"/>
-			<Tool
-				Name="VCCustomBuildTool"/>
-			<Tool
-				Name="VCLibrarianTool"
-				OutputFile=".\libs\viciisc\DXDebug\viciisc.lib"
-				SuppressStartupBanner="TRUE"/>
-			<Tool
-				Name="VCMIDLTool"/>
-			<Tool
-				Name="VCPostBuildEventTool"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				Culture="1033"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-		</Configuration>
 	</Configurations>
 	<Files>
 		<File
-			RelativePath="..\..\viciisc\vicii-chip-model.c">
+			RelativePath="..\..\..\viciisc\vicii-chip-model.c">
 		</File>
 		<File
-			RelativePath="..\..\viciisc\vicii-cmdline-options.c">
+			RelativePath="..\..\..\viciisc\vicii-cmdline-options.c">
 		</File>
 		<File
-			RelativePath="..\..\viciisc\vicii-color.c">
+			RelativePath="..\..\..\viciisc\vicii-color.c">
 		</File>
 		<File
-			RelativePath="..\..\viciisc\vicii-cycle.c">
+			RelativePath="..\..\..\viciisc\vicii-cycle.c">
 		</File>
 		<File
-			RelativePath="..\..\viciisc\vicii-draw-cycle.c">
+			RelativePath="..\..\..\viciisc\vicii-draw-cycle.c">
 		</File>
 		<File
-			RelativePath="..\..\viciisc\vicii-draw.c">
+			RelativePath="..\..\..\viciisc\vicii-draw.c">
 		</File>
 		<File
-			RelativePath="..\..\viciisc\vicii-fetch.c">
+			RelativePath="..\..\..\viciisc\vicii-fetch.c">
 		</File>
 		<File
-			RelativePath="..\..\viciisc\vicii-irq.c">
+			RelativePath="..\..\..\viciisc\vicii-irq.c">
 		</File>
 		<File
-			RelativePath="..\..\viciisc\vicii-lightpen.c">
+			RelativePath="..\..\..\viciisc\vicii-lightpen.c">
 		</File>
 		<File
-			RelativePath="..\..\viciisc\vicii-mem.c">
+			RelativePath="..\..\..\viciisc\vicii-mem.c">
 		</File>
 		<File
-			RelativePath="..\..\viciisc\vicii-phi1.c">
+			RelativePath="..\..\..\viciisc\vicii-phi1.c">
 		</File>
 		<File
-			RelativePath="..\..\viciisc\vicii-resources.c">
+			RelativePath="..\..\..\viciisc\vicii-resources.c">
 		</File>
 		<File
-			RelativePath="..\..\viciisc\vicii-snapshot.c">
+			RelativePath="..\..\..\viciisc\vicii-snapshot.c">
 		</File>
 		<File
-			RelativePath="..\..\viciisc\vicii-timing.c">
+			RelativePath="..\..\..\viciisc\vicii-timing.c">
 		</File>
 		<File
-			RelativePath="..\..\viciisc\vicii.c">
+			RelativePath="..\..\..\viciisc\vicii.c">
 		</File>
 	</Files>
 	<Globals>

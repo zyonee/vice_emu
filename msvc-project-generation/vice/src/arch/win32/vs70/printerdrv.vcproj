@@ -11,93 +11,6 @@
 	</Platforms>
 	<Configurations>
 		<Configuration
-			Name="Debug|Win32"
-			OutputDirectory=".\libs\printerdrv\Debug"
-			IntermediateDirectory=".\libs\printerdrv\Debug"
-			ConfigurationType="4"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE">
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="0"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\"
-				PreprocessorDefinitions="_DEBUG,WIN32,NODIRECTX,IDE_COMPILE,_WINDOWS"
-				RuntimeLibrary="1"
-				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\printerdrv\Debug/printerdrv.pch"
-				AssemblerListingLocation=".\libs\printerdrv\Debug/"
-				ObjectFile=".\libs\printerdrv\Debug/"
-				ProgramDataBaseFileName=".\libs\printerdrv\Debug/"
-				WarningLevel="3"
-				SuppressStartupBanner="TRUE"
-				DebugInformationFormat="1"
-				CompileAs="0"/>
-			<Tool
-				Name="VCCustomBuildTool"/>
-			<Tool
-				Name="VCLibrarianTool"
-				OutputFile=".\libs\printerdrv\Debug\printerdrv.lib"
-				SuppressStartupBanner="TRUE"/>
-			<Tool
-				Name="VCMIDLTool"/>
-			<Tool
-				Name="VCPostBuildEventTool"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG"
-				Culture="1033"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-		</Configuration>
-		<Configuration
-			Name="DX Release|Win32"
-			OutputDirectory=".\libs\printerdrv\DXRelease"
-			IntermediateDirectory=".\libs\printerdrv\DXRelease"
-			ConfigurationType="4"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE">
-			<Tool
-				Name="VCCLCompilerTool"
-				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\"
-				PreprocessorDefinitions="NDEBUG,WIN32,IDE_COMPILE,_WINDOWS"
-				StringPooling="TRUE"
-				RuntimeLibrary="0"
-				EnableFunctionLevelLinking="TRUE"
-				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\printerdrv\DXRelease/printerdrv.pch"
-				AssemblerListingLocation=".\libs\printerdrv\DXRelease/"
-				ObjectFile=".\libs\printerdrv\DXRelease/"
-				ProgramDataBaseFileName=".\libs\printerdrv\DXRelease/"
-				WarningLevel="3"
-				SuppressStartupBanner="TRUE"
-				CompileAs="0"/>
-			<Tool
-				Name="VCCustomBuildTool"/>
-			<Tool
-				Name="VCLibrarianTool"
-				OutputFile=".\libs\printerdrv\DXRelease\printerdrv.lib"
-				SuppressStartupBanner="TRUE"/>
-			<Tool
-				Name="VCMIDLTool"/>
-			<Tool
-				Name="VCPostBuildEventTool"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="NDEBUG"
-				Culture="1033"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-		</Configuration>
-		<Configuration
 			Name="DX Debug|Win32"
 			OutputDirectory=".\libs\printerdrv\DXDebug"
 			IntermediateDirectory=".\libs\printerdrv\DXDebug"
@@ -107,14 +20,14 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\"
-				PreprocessorDefinitions="_DEBUG,WIN32,IDE_COMPILE,_WINDOWS"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\printerdrv\DXDebug/printerdrv.pch"
-				AssemblerListingLocation=".\libs\printerdrv\DXDebug/"
-				ObjectFile=".\libs\printerdrv\DXDebug/"
-				ProgramDataBaseFileName=".\libs\printerdrv\DXDebug/"
+				PrecompiledHeaderFile=".\libs\printerdrv\DXDebug\printerdrv.pch"
+				AssemblerListingLocation=".\libs\printerdrv\DXDebug\"
+				ObjectFile=".\libs\printerdrv\DXDebug\"
+				ProgramDataBaseFileName=".\libs\printerdrv\DXDebug\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				DebugInformationFormat="1"
@@ -135,7 +48,91 @@
 				Name="VCPreLinkEventTool"/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG"
+				Culture="1033"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+		</Configuration>
+		<Configuration
+			Name="DX Release|Win32"
+			OutputDirectory=".\libs\printerdrv\DXRelease"
+			IntermediateDirectory=".\libs\printerdrv\DXRelease"
+			ConfigurationType="4"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			<Tool
+				Name="VCCLCompilerTool"
+				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NDEBUG"
+				StringPooling="TRUE"
+				RuntimeLibrary="0"
+				EnableFunctionLevelLinking="TRUE"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderFile=".\libs\printerdrv\DXRelease\printerdrv.pch"
+				AssemblerListingLocation=".\libs\printerdrv\DXRelease\"
+				ObjectFile=".\libs\printerdrv\DXRelease\"
+				ProgramDataBaseFileName=".\libs\printerdrv\DXRelease\"
+				WarningLevel="3"
+				SuppressStartupBanner="TRUE"
+				CompileAs="0"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile=".\libs\printerdrv\DXRelease\printerdrv.lib"
+				SuppressStartupBanner="TRUE"/>
+			<Tool
+				Name="VCMIDLTool"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				Culture="1033"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+		</Configuration>
+		<Configuration
+			Name="Debug|Win32"
+			OutputDirectory=".\libs\printerdrv\Debug"
+			IntermediateDirectory=".\libs\printerdrv\Debug"
+			ConfigurationType="4"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
+				RuntimeLibrary="1"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderFile=".\libs\printerdrv\Debug\printerdrv.pch"
+				AssemblerListingLocation=".\libs\printerdrv\Debug\"
+				ObjectFile=".\libs\printerdrv\Debug\"
+				ProgramDataBaseFileName=".\libs\printerdrv\Debug\"
+				WarningLevel="3"
+				SuppressStartupBanner="TRUE"
+				DebugInformationFormat="1"
+				CompileAs="0"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile=".\libs\printerdrv\Debug\printerdrv.lib"
+				SuppressStartupBanner="TRUE"/>
+			<Tool
+				Name="VCMIDLTool"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
 				Culture="1033"/>
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
@@ -150,16 +147,16 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories=".\msvc,.\,..\..\"
-				PreprocessorDefinitions="NDEBUG,WIN32,NODIRECTX,IDE_COMPILE,_WINDOWS"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,NDEBUG"
 				StringPooling="TRUE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="TRUE"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\libs\printerdrv\Release/printerdrv.pch"
-				AssemblerListingLocation=".\libs\printerdrv\Release/"
-				ObjectFile=".\libs\printerdrv\Release/"
-				ProgramDataBaseFileName=".\libs\printerdrv\Release/"
+				PrecompiledHeaderFile=".\libs\printerdrv\Release\printerdrv.pch"
+				AssemblerListingLocation=".\libs\printerdrv\Release\"
+				ObjectFile=".\libs\printerdrv\Release\"
+				ProgramDataBaseFileName=".\libs\printerdrv\Release\"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				CompileAs="0"/>
@@ -179,7 +176,6 @@
 				Name="VCPreLinkEventTool"/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="NDEBUG"
 				Culture="1033"/>
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
@@ -187,43 +183,43 @@
 	</Configurations>
 	<Files>
 		<File
-			RelativePath="..\..\printerdrv\driver-select.c">
+			RelativePath="..\..\..\printerdrv\driver-select.c">
 		</File>
 		<File
-			RelativePath="..\..\printerdrv\drv-ascii.c">
+			RelativePath="..\..\..\printerdrv\drv-ascii.c">
 		</File>
 		<File
-			RelativePath="..\..\printerdrv\drv-mps803.c">
+			RelativePath="..\..\..\printerdrv\drv-mps803.c">
 		</File>
 		<File
-			RelativePath="..\..\printerdrv\drv-nl10.c">
+			RelativePath="..\..\..\printerdrv\drv-nl10.c">
 		</File>
 		<File
-			RelativePath="..\..\printerdrv\drv-raw.c">
+			RelativePath="..\..\..\printerdrv\drv-raw.c">
 		</File>
 		<File
-			RelativePath="..\..\printerdrv\interface-serial.c">
+			RelativePath="..\..\..\printerdrv\interface-serial.c">
 		</File>
 		<File
-			RelativePath="..\..\printerdrv\interface-userport.c">
+			RelativePath="..\..\..\printerdrv\interface-userport.c">
 		</File>
 		<File
-			RelativePath="..\..\printerdrv\output-graphics.c">
+			RelativePath="..\..\..\printerdrv\output-graphics.c">
 		</File>
 		<File
-			RelativePath="..\..\printerdrv\output-select.c">
+			RelativePath="..\..\..\printerdrv\output-select.c">
 		</File>
 		<File
-			RelativePath="..\..\printerdrv\output-text.c">
+			RelativePath="..\..\..\printerdrv\output-text.c">
 		</File>
 		<File
-			RelativePath="..\..\printerdrv\printer-serial.c">
+			RelativePath="..\..\..\printerdrv\printer-serial.c">
 		</File>
 		<File
-			RelativePath="..\..\printerdrv\printer-userport.c">
+			RelativePath="..\..\..\printerdrv\printer-userport.c">
 		</File>
 		<File
-			RelativePath="..\..\printerdrv\printer.c">
+			RelativePath="..\..\..\printerdrv\printer.c">
 		</File>
 	</Files>
 	<Globals>
