@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding = "Windows-1252"?>
+<?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="7.00"
+	Version="7.10"
 	Name="vsidlib"
 	SccProjectName=""
 	SccLocalPath="">
@@ -51,6 +51,12 @@
 				Culture="1033"/>
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 		<Configuration
 			Name="DX Release|Win32"
@@ -94,6 +100,12 @@
 				Culture="1033"/>
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
@@ -136,6 +148,12 @@
 				Culture="1033"/>
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
@@ -179,8 +197,16 @@
 				Culture="1033"/>
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 	</Configurations>
+	<References>
+	</References>
 	<Files>
 		<File
 			RelativePath="..\..\..\c64\c64-cmdline-options.c">
@@ -255,12 +281,6 @@
 			RelativePath="..\..\..\c64\vsidcia2.c">
 		</File>
 		<File
-			RelativePath="..\..\..\c64\vsidmem.c">
-		</File>
-		<File
-			RelativePath="..\..\..\c64\vsidstubs.c">
-		</File>
-		<File
 			RelativePath="..\..\..\c64\vsidcpu.c">
 			<FileConfiguration
 				Name="DX Release|Win32">
@@ -282,6 +302,12 @@
 					FavorSizeOrSpeed="0"
 					OmitFramePointers="TRUE"/>
 			</FileConfiguration>
+		</File>
+		<File
+			RelativePath="..\..\..\c64\vsidmem.c">
+		</File>
+		<File
+			RelativePath="..\..\..\c64\vsidstubs.c">
 		</File>
 	</Files>
 	<Globals>
