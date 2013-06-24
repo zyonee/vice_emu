@@ -3728,6 +3728,7 @@ AC_OUTPUT([Makefile
            src/arch/win32/vs_tmpl/Makefile
            src/arch/win32/vs6/Makefile
            src/arch/win32/vs70/Makefile
+           src/arch/win32/vs71/Makefile
            src/arch/win32/watcom/Makefile
            src/arch/win64/Makefile
            src/c128/Makefile
