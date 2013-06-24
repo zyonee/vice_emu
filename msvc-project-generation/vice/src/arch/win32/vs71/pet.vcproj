@@ -236,29 +236,6 @@
 			RelativePath="..\..\..\pet\petcolour.c">
 		</File>
 		<File
-			RelativePath="..\..\..\pet\petcpu.c">
-			<FileConfiguration
-				Name="DX Release|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="4"
-					EnableIntrinsicFunctions="TRUE"
-					ImproveFloatingPointConsistency="TRUE"
-					FavorSizeOrSpeed="0"
-					OmitFramePointers="TRUE"/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="4"
-					EnableIntrinsicFunctions="TRUE"
-					ImproveFloatingPointConsistency="TRUE"
-					FavorSizeOrSpeed="0"
-					OmitFramePointers="TRUE"/>
-			</FileConfiguration>
-		</File>
-		<File
 			RelativePath="..\..\..\pet\petdatasette.c">
 		</File>
 		<File
@@ -308,6 +285,29 @@
 		</File>
 		<File
 			RelativePath="..\..\..\pet\petvideo.c">
+		</File>
+		<File
+			RelativePath="..\..\..\pet\petcpu.c">
+			<FileConfiguration
+				Name="DX Release|Win32">
+				<Tool
+					Name="VCCLCompilerTool"
+					Optimization="4"
+					EnableIntrinsicFunctions="TRUE"
+					ImproveFloatingPointConsistency="TRUE"
+					FavorSizeOrSpeed="0"
+					OmitFramePointers="TRUE"/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|Win32">
+				<Tool
+					Name="VCCLCompilerTool"
+					Optimization="4"
+					EnableIntrinsicFunctions="TRUE"
+					ImproveFloatingPointConsistency="TRUE"
+					FavorSizeOrSpeed="0"
+					OmitFramePointers="TRUE"/>
+			</FileConfiguration>
 		</File>
 	</Files>
 	<Globals>

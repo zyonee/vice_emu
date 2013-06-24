@@ -221,10 +221,10 @@
 			RelativePath="..\..\..\rtc\ds12c887.c">
 		</File>
 		<File
-			RelativePath="..\..\..\rtc\rtc-58321a.c">
+			RelativePath="..\..\..\rtc\rtc.c">
 		</File>
 		<File
-			RelativePath="..\..\..\rtc\rtc.c">
+			RelativePath="..\..\..\rtc\rtc-58321a.c">
 		</File>
 	</Files>
 	<Globals>

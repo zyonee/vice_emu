@@ -284,49 +284,6 @@
 			RelativePath="..\..\..\arch\win32\rawnetarch.c">
 		</File>
 		<File
-			RelativePath="..\res.txt">
-			<FileConfiguration
-				Name="DX Debug|Win32">
-				<Tool
-					Name="VCCustomBuildTool"
-					Description="Generating res.h"
-					CommandLine="..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt
-"
-					AdditionalDependencies="..\res.txt;..\resdialogs.txt;..\resmenu.txt;..\resstrings.txt;"
-					Outputs="..\res.h"/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="DX Release|Win32">
-				<Tool
-					Name="VCCustomBuildTool"
-					Description="Generating res.h"
-					CommandLine="..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt
-"
-					AdditionalDependencies="..\res.txt;..\resdialogs.txt;..\resmenu.txt;..\resstrings.txt;"
-					Outputs="..\res.h"/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Debug|Win32">
-				<Tool
-					Name="VCCustomBuildTool"
-					Description="Generating res.h"
-					CommandLine="..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt
-"
-					AdditionalDependencies="..\res.txt;..\resdialogs.txt;..\resmenu.txt;..\resstrings.txt;"
-					Outputs="..\res.h"/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Win32">
-				<Tool
-					Name="VCCustomBuildTool"
-					Description="Generating res.h"
-					CommandLine="..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt
-"
-					AdditionalDependencies="..\res.txt;..\resdialogs.txt;..\resmenu.txt;..\resstrings.txt;"
-					Outputs="..\res.h"/>
-			</FileConfiguration>
-		</File>
-		<File
 			RelativePath="..\..\..\arch\win32\rs232.c">
 		</File>
 		<File
@@ -393,10 +350,10 @@
 			RelativePath="..\..\..\arch\win32\uicbm2model.c">
 		</File>
 		<File
-			RelativePath="..\..\..\arch\win32\uicbm2set.c">
+			RelativePath="..\..\..\arch\win32\uicbm5x0model.c">
 		</File>
 		<File
-			RelativePath="..\..\..\arch\win32\uicbm5x0model.c">
+			RelativePath="..\..\..\arch\win32\uicbm2set.c">
 		</File>
 		<File
 			RelativePath="..\..\..\arch\win32\uicbm5x0set.c">
@@ -625,6 +582,49 @@
 		</File>
 		<File
 			RelativePath="..\..\..\arch\win32\winmain.c">
+		</File>
+		<File
+			RelativePath="..\res.txt">
+			<FileConfiguration
+				Name="DX Debug|Win32">
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Generating res.h"
+					CommandLine="..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt
+"
+					AdditionalDependencies="..\res.txt;..\resdialogs.txt;..\resmenu.txt;..\resstrings.txt;"
+					Outputs="..\res.h"/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="DX Release|Win32">
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Generating res.h"
+					CommandLine="..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt
+"
+					AdditionalDependencies="..\res.txt;..\resdialogs.txt;..\resmenu.txt;..\resstrings.txt;"
+					Outputs="..\res.h"/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug|Win32">
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Generating res.h"
+					CommandLine="..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt
+"
+					AdditionalDependencies="..\res.txt;..\resdialogs.txt;..\resmenu.txt;..\resstrings.txt;"
+					Outputs="..\res.h"/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|Win32">
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Generating res.h"
+					CommandLine="..\..\..\..\data\genwinres ..\res.h ..\menuid.h ..\stringid.h ..\res.txt ..\resdialogs.txt ..\resmenu.txt ..\resstrings.txt
+"
+					AdditionalDependencies="..\res.txt;..\resdialogs.txt;..\resmenu.txt;..\resstrings.txt;"
+					Outputs="..\res.h"/>
+			</FileConfiguration>
 		</File>
 	</Files>
 	<Globals>

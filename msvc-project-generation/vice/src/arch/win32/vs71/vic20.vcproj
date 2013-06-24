@@ -251,29 +251,6 @@
 			RelativePath="..\..\..\vic20\vic20bus.c">
 		</File>
 		<File
-			RelativePath="..\..\..\vic20\vic20cpu.c">
-			<FileConfiguration
-				Name="DX Release|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="4"
-					EnableIntrinsicFunctions="TRUE"
-					ImproveFloatingPointConsistency="TRUE"
-					FavorSizeOrSpeed="0"
-					OmitFramePointers="TRUE"/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="4"
-					EnableIntrinsicFunctions="TRUE"
-					ImproveFloatingPointConsistency="TRUE"
-					FavorSizeOrSpeed="0"
-					OmitFramePointers="TRUE"/>
-			</FileConfiguration>
-		</File>
-		<File
 			RelativePath="..\..\..\vic20\vic20datasette.c">
 		</File>
 		<File
@@ -326,6 +303,29 @@
 		</File>
 		<File
 			RelativePath="..\..\..\vic20\vic20video.c">
+		</File>
+		<File
+			RelativePath="..\..\..\vic20\vic20cpu.c">
+			<FileConfiguration
+				Name="DX Release|Win32">
+				<Tool
+					Name="VCCLCompilerTool"
+					Optimization="4"
+					EnableIntrinsicFunctions="TRUE"
+					ImproveFloatingPointConsistency="TRUE"
+					FavorSizeOrSpeed="0"
+					OmitFramePointers="TRUE"/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|Win32">
+				<Tool
+					Name="VCCLCompilerTool"
+					Optimization="4"
+					EnableIntrinsicFunctions="TRUE"
+					ImproveFloatingPointConsistency="TRUE"
+					FavorSizeOrSpeed="0"
+					OmitFramePointers="TRUE"/>
+			</FileConfiguration>
 		</File>
 	</Files>
 	<Globals>

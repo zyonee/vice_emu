@@ -212,6 +212,18 @@
 			RelativePath="..\..\..\sid\fastsid.c">
 		</File>
 		<File
+			RelativePath="..\..\..\sid\sid-cmdline-options.c">
+		</File>
+		<File
+			RelativePath="..\..\..\sid\sid-resources.c">
+		</File>
+		<File
+			RelativePath="..\..\..\sid\sid-snapshot.c">
+		</File>
+		<File
+			RelativePath="..\..\..\sid\sid.c">
+		</File>
+		<File
 			RelativePath="..\..\..\sid\resid-fp.cc">
 			<FileConfiguration
 				Name="DX Debug|Win32">
@@ -280,18 +292,6 @@
 "
 					Outputs="libs\sid\Release\$(InputName).obj"/>
 			</FileConfiguration>
-		</File>
-		<File
-			RelativePath="..\..\..\sid\sid-cmdline-options.c">
-		</File>
-		<File
-			RelativePath="..\..\..\sid\sid-resources.c">
-		</File>
-		<File
-			RelativePath="..\..\..\sid\sid-snapshot.c">
-		</File>
-		<File
-			RelativePath="..\..\..\sid\sid.c">
 		</File>
 	</Files>
 	<Globals>

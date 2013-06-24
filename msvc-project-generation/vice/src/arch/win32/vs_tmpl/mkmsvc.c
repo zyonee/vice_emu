@@ -130,6 +130,172 @@ static project_info_t project_info[MAX_DEP_NAMES];
 
 /* ---------------------------------------------------------------------- */
 
+void pi_init(void)
+{
+    int i, j;
+
+    /* init project_info */
+    for (i = 0; i < MAX_DEP_NAMES; i++) {
+        project_info[i].name = NULL;
+        for (j = 0; j < MAX_DEP_NAMES; j++) {
+            project_info[i].dep[j] = NULL;
+        }
+    }
+}
+
+static void pi_exit(void)
+{
+    int i, j;
+
+    /* free all names */
+    for (i = 0; project_info[i].name; i++) {
+        if (project_info[i].dep[0]) {
+            for (j = 0; project_info[i].dep[j]; j++) {
+                free(project_info[i].dep[j]);
+            }
+        }
+        free(project_info[i].name);
+    }
+}
+
+static int pi_get_index_of_name(char *name)
+{
+    int i;
+    int retval = -1;
+
+    for (i = 0; project_info[i].name && retval == -1; i++) {
+        if (!strcmp(name, project_info[i].name)) {
+            retval = i;
+        }
+    }
+    return retval;
+}
+
+static int pi_insert_name(char *name)
+{
+    int i = 0;
+
+    while (project_info[i].name) {
+        i++;
+    }
+    project_info[i].name = strdup(name);
+
+    return i;
+}
+
+static void pi_insert_deps(char **names, int index)
+{
+    int i;
+
+    for (i = 0; names[i]; i++) {
+        project_info[index].dep[i] = strdup(names[i]);
+    }
+}
+
+/* ---------------------------------------------------------------------- */
+
+static char *msvc7x_main_project_end = "\tEndGlobalSection\r\n"
+                                       "\tGlobalSection(ExtensibilityGlobals) = postSolution\r\n"
+                                       "\tEndGlobalSection\r\n"
+                                       "\tGlobalSection(ExtensibilityAddIns) = postSolution\r\n"
+                                       "\tEndGlobalSection\r\n"
+                                       "EndGlobal\r\n";
+
+static char *msvc7x_main_project_confs = "\t\t{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC9%02X}.Debug.ActiveCfg = Debug|Win32\r\n"
+                                         "\t\t{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC9%02X}.Debug.Build.0 = Debug|Win32\r\n"
+                                         "\t\t{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC9%02X}.DX Debug.ActiveCfg = DX Debug|Win32\r\n"
+                                         "\t\t{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC9%02X}.DX Debug.Build.0 = DX Debug|Win32\r\n"
+                                         "\t\t{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC9%02X}.DX Release.ActiveCfg = DX Release|Win32\r\n"
+                                         "\t\t{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC9%02X}.DX Release.Build.0 = DX Release|Win32\r\n"
+                                         "\t\t{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC9%02X}.Release.ActiveCfg = Release|Win32\r\n"
+                                         "\t\t{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC9%02X}.Release.Build.0 = Release|Win32\r\n";
+
+static char *msvc71_xml_header = "<?xml version=\"1.0\" encoding=\"Windows-1252\"?>\r\n";
+
+static char *msvc71_xmldgt = "\t\t\t<Tool\r\n"
+                             "\t\t\t\tName=\"VCXMLDataGeneratorTool\"/>\r\n";
+
+static char *msvc71_wrapper_tools = "\t\t\t<Tool\r\n"
+                                    "\t\t\t\tName=\"VCManagedWrapperGeneratorTool\"/>\r\n"
+                                    "\t\t\t<Tool\r\n"
+                                    "\t\t\t\tName=\"VCAuxiliaryManagedWrapperGeneratorTool\"/>\r\n";
+
+static char *msvc71_configs_files = "\t</Configurations>\r\n"
+                                    "\t<References>\r\n"
+                                    "\t</References>\r\n"
+                                    "\t<Files>\r\n";
+
+static char *msvc71_project_deps_start = "Project(\"{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}\") = \"%s\", \"%s.vcproj\", \"{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC9%02X}\"\r\n"
+                                         "\tProjectSection(ProjectDependencies) = postProject\r\n";
+
+static char *msvc71_project_deps = "\t\t{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC9%02X} = {8BC9CEB8-8B4A-11D0-8D12-00A0C91BC9%02X}\r\n";
+
+static char *msvc71_project_deps_end = "\tEndProjectSection\r\n"
+                                       "EndProject\r\n";
+
+static char *msvc71_project_global_start = "Global\r\n"
+                                           "\tGlobalSection(SolutionConfiguration) = preSolution\r\n"
+                                           "\t\tDebug = Debug\r\n"
+                                           "\t\tDX Debug = DX Debug\r\n"
+                                           "\t\tDX Release = DX Release\r\n"
+                                           "\t\tRelease = Release\r\n"
+                                           "\tEndGlobalSection\r\n"
+                                           "\tGlobalSection(ProjectConfiguration) = postSolution\r\n";
+
+/*
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal
+*/
+
+static void generate_msvc71_sln(void)
+{
+    int i, j;
+    int index;
+
+    for (i = 0; project_info[i].name; i++) {
+        fprintf(mainfile, msvc71_project_deps_start, project_info[i].name, project_info[i].name, i);
+        if (project_info[i].dep[0]) {
+            for (j = 0; project_info[i].dep[j]; j++) {
+                index = pi_get_index_of_name(project_info[i].dep[j]);
+                fprintf(mainfile, msvc71_project_deps, index, index);
+            }
+        }
+        fprintf(mainfile, msvc71_project_deps_end);
+    }
+    fprintf(mainfile, msvc71_project_global_start);
+    for (i = 0; project_info[i].name; i++) {
+        fprintf(mainfile, msvc7x_main_project_confs, i, i, i, i, i, i, i, i);
+    }
+    fprintf(mainfile, msvc7x_main_project_end);
+}
+
+static int open_msvc71_main_project(void)
+{
+    pi_init();
+
+    mainfile = fopen("../vs71/vice.sln", "wb");
+
+    if (!mainfile) {
+        printf("Cannot open 'vice.sln' for output\n");
+        return 1;
+    }
+    fprintf(mainfile, "Microsoft Visual Studio Solution File, Format Version 7.10\r\n");
+    return 0;
+}
+
+static void close_msvc71_main_project(void)
+{
+    generate_msvc71_sln();
+    pi_exit();
+    fclose(mainfile);
+}
+
+/* ---------------------------------------------------------------------- */
+
 static char *msvc70_type_name[4] = {
     "DX Debug",
     "DX Release",
@@ -181,7 +347,7 @@ static char *msvc70_xml_header = "<?xml version=\"1.0\" encoding = \"Windows-125
 
 static char *msvc70_project_start = "<VisualStudioProject\r\n"
                                     "\tProjectType=\"Visual C++\"\r\n"
-                                    "\tVersion=\"7.00\"\r\n"
+                                    "\tVersion=\"%s\"\r\n"
                                     "\tName=\"%s\"\r\n"
                                     "\tSccProjectName=\"\"\r\n"
                                     "\tSccLocalPath=\"\">\r\n"
@@ -204,7 +370,7 @@ static char *msvc70_config_part3 = "\t\t\tIntermediateDirectory=\".\\libs\\%s\\%
                                    "\t\t\tUseOfMFC=\"0\"\r\n"
                                    "\t\t\tATLMinimizesCRunTimeLibraryUsage=\"FALSE\"";
 
-static char *msvc70_charset = "\t\t\tCharacterSet=\"2\"";
+static char *msvc70_charset = "\r\n\t\t\tCharacterSet=\"2\"";
 
 static char *msvc70_compiler_tool_part1 = ">\r\n"
                                           "\t\t\t<Tool\r\n"
@@ -418,35 +584,6 @@ static char *msvc70_main_project_deps = "\t\t{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC9
 static char *msvc70_main_project_conf = "\tEndGlobalSection\r\n"
                                         "\tGlobalSection(ProjectConfiguration) = postSolution\r\n";
 
-static char *msvc70_main_project_confs = "\t\t{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC9%02X}.Debug.ActiveCfg = Debug|Win32\r\n"
-                                         "\t\t{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC9%02X}.Debug.Build.0 = Debug|Win32\r\n"
-                                         "\t\t{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC9%02X}.DX Debug.ActiveCfg = DX Debug|Win32\r\n"
-                                         "\t\t{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC9%02X}.DX Debug.Build.0 = DX Debug|Win32\r\n"
-                                         "\t\t{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC9%02X}.DX Release.ActiveCfg = DX Release|Win32\r\n"
-                                         "\t\t{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC9%02X}.DX Release.Build.0 = DX Release|Win32\r\n"
-                                         "\t\t{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC9%02X}.Release.ActiveCfg = Release|Win32\r\n"
-                                         "\t\t{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC9%02X}.Release.Build.0 = Release|Win32\r\n";
-
-static char *msvc70_main_project_end = "\tEndGlobalSection\r\n"
-                                       "\tGlobalSection(ExtensibilityGlobals) = postSolution\r\n"
-                                       "\tEndGlobalSection\r\n"
-                                       "\tGlobalSection(ExtensibilityAddIns) = postSolution\r\n"
-                                       "\tEndGlobalSection\r\n"
-                                       "EndGlobal\r\n";
-
-static int pi_get_index_of_name(char *name)
-{
-    int i;
-    int retval = -1;
-
-    for (i = 0; project_info[i].name && retval == -1; i++) {
-        if (!strcmp(name, project_info[i].name)) {
-            retval = i;
-        }
-    }
-    return retval;
-}
-
 static void generate_msvc70_sln(void)
 {
     int i, j;
@@ -464,43 +601,14 @@ static void generate_msvc70_sln(void)
     }
     fprintf(mainfile, msvc70_main_project_conf);
     for (i = 0; project_info[i].name; i++) {
-        fprintf(mainfile, msvc70_main_project_confs, i, i, i, i, i, i, i, i);
+        fprintf(mainfile, msvc7x_main_project_confs, i, i, i, i, i, i, i, i);
     }
-    fprintf(mainfile, msvc70_main_project_end);
-}
-
-static int pi_insert_name(char *name)
-{
-    int i = 0;
-
-    while (project_info[i].name) {
-        i++;
-    }
-    project_info[i].name = strdup(name);
-
-    return i;
-}
-
-static void pi_insert_deps(char **names, int index)
-{
-    int i;
-
-    for (i = 0; names[i]; i++) {
-        project_info[index].dep[i] = strdup(names[i]);
-    }
+    fprintf(mainfile, msvc7x_main_project_end);
 }
 
 static int open_msvc70_main_project(void)
 {
-    int i, j;
-
-    /* init project_info */
-    for (i = 0; i < MAX_DEP_NAMES; i++) {
-        project_info[i].name = NULL;
-        for (j = 0; j < MAX_DEP_NAMES; j++) {
-            project_info[i].dep[j] = NULL;
-        }
-    }
+    pi_init();
 
     mainfile = fopen("../vs70/vice.sln", "wb");
 
@@ -514,24 +622,12 @@ static int open_msvc70_main_project(void)
 
 static void close_msvc70_main_project(void)
 {
-    int i, j;
-
     generate_msvc70_sln();
-
-    /* free all names */
-    for (i = 0; project_info[i].name; i++) {
-        if (project_info[i].dep[0]) {
-            for (j = 0; project_info[i].dep[j]; j++) {
-                free(project_info[i].dep[j]);
-            }
-        }
-        free(project_info[i].name);
-    }
-
+    pi_exit();
     fclose(mainfile);
 }
 
-static int output_msvc70_file(char *fname, int filelist)
+static int output_msvc7_file(char *fname, int filelist, int version)
 {
     char *filename;
     int retval = 0;
@@ -544,7 +640,11 @@ static int output_msvc70_file(char *fname, int filelist)
             pi_insert_deps(cp_dep_names, i);
         }
         filename = malloc(strlen(fname) + sizeof("../vs70/.vcproj"));
-        sprintf(filename, "../vs70/%s.vcproj", fname);
+        if (version == 70) {
+            sprintf(filename, "../vs70/%s.vcproj", fname);
+        } else {
+            sprintf(filename, "../vs71/%s.vcproj", fname);
+        }
     } else {
         filename = malloc(strlen(fname) + sizeof(".vcproj"));
         sprintf(filename, "%s.vcproj", fname);
@@ -557,8 +657,12 @@ static int output_msvc70_file(char *fname, int filelist)
     }
 
     if (!retval) {
-        fprintf(outfile, msvc70_xml_header);
-        fprintf(outfile, msvc70_project_start, cp_name);
+        if (version == 70) {
+            fprintf(outfile, msvc70_xml_header);
+        } else {
+            fprintf(outfile, msvc71_xml_header);
+        }
+        fprintf(outfile, msvc70_project_start, (version == 70) ? "7.00" : "7.10", cp_name);
         fprintf(outfile, msvc70_configurations);
         for (i = 0; i < 4; i++) {
             fprintf(outfile, msvc70_config_part1, msvc70_type_name[i]);
@@ -641,12 +745,22 @@ static int output_msvc70_file(char *fname, int filelist)
                     break;
             }
             fprintf(outfile, msvc70_wspgt);
+            if (version == 71) {
+                fprintf(outfile, msvc71_xmldgt);
+            }
             if (cp_type != CP_TYPE_LIBRARY) {
                 fprintf(outfile, msvc70_wdt);
             }
+            if (version == 71) {
+                fprintf(outfile, msvc71_wrapper_tools);
+            }
             fprintf(outfile, msvc70_config_end);
         }
-        fprintf(outfile, msvc70_configs_files);
+        if (version == 70) {
+            fprintf(outfile, msvc70_configs_files);
+        } else {
+            fprintf(outfile, msvc71_configs_files);
+        }
         if (cp_source_names[0]) {
             for (i = 0; cp_source_names[i]; i++) {
                 fprintf(outfile, msvc70_file, cp_source_names[i]);
@@ -1843,7 +1957,7 @@ int main(int argc, char *argv[])
                         printf("Parse done\n");
 #endif
                         if (!error) {
-                            error = output_msvc70_file(project_names[i], 1);
+                            error = output_msvc7_file(project_names[i], 1, 70);
 #if MKMSVC_DEBUG
                             printf("Output done\n");
 #endif
@@ -1851,14 +1965,34 @@ int main(int argc, char *argv[])
                     }
                     close_msvc70_main_project();
                 } else {
-                    error = output_msvc70_file(filename, 0);
+                    error = output_msvc7_file(filename, 0, 70);
                 }
                 if (!error) {
                     free_buffers();
                 }
             }
             if (!error && msvc71) {
-                printf("Not yet implemented.\n");
+                if (project_names[0]) {
+                    error = open_msvc71_main_project();
+                    for (i = 0; project_names[i] && !error; i++) {
+                        error = read_template_file(project_names[i]);
+#if MKMSVC_DEBUG
+                        printf("Parse done\n");
+#endif
+                        if (!error) {
+                            error = output_msvc7_file(project_names[i], 1, 71);
+#if MKMSVC_DEBUG
+                            printf("Output done\n");
+#endif
+                        }
+                    }
+                    close_msvc71_main_project();
+                } else {
+                    error = output_msvc7_file(filename, 0, 71);
+                }
+                if (!error) {
+                    free_buffers();
+                }
             }
             if (!error && msvc8) {
                 printf("Not yet implemented.\n");
