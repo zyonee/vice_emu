@@ -26,7 +26,7 @@
 #define HAVE_RS232              1
 #define HAVE_DYNLIB_SUPPORT     1
 
-#ifndef WINIA64
+#ifndef _M_IA64
 #define HAVE_PARSID             1
 #endif
 
@@ -75,12 +75,12 @@
 #define HAVE_DINPUT             1
 #define USE_DXSOUND             1
 #define HAVE_DSOUND_LIB         1
-#ifndef WINIA64
+#ifndef _M_IA64
 #define HAVE_GUIDLIB            1
 #endif
 #endif
 
-#if !defined(_M_AMD64) && !defined(WINIA64)
+#if !defined(_M_AMD64) && !defined(_M_IA64)
 #define __i386__                1
 #endif
 
@@ -108,7 +108,7 @@
 #define uint64_t_C(c)    (c ## ui64)
 /* end: for FFMPEG: common.h */
 
-#ifdef WINIA64
+#ifdef _M_IA64
 #define PLATFORM "win64 ia64 msvc"
 #define PLATFORM_OS "win64"
 #define PLATFORM_CPU "ia64"

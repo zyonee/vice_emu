@@ -43,7 +43,7 @@
 /* win32/64 discovery */
 #ifdef WIN32_COMPILE
 #  ifdef _WIN64
-#    ifdef WINIA64
+#    ifdef _M_IA64
 #      ifndef PLATFORM_CPU
 #        define PLATFORM_CPU "IA64"
 #      endif
