@@ -209,6 +209,9 @@
 	</References>
 	<Files>
 		<File
+			RelativePath="..\..\..\cbm2\cbm2cpu.c">
+		</File>
+		<File
 			RelativePath="..\..\..\cbm2\cbm2-cmdline-options.c">
 		</File>
 		<File
@@ -252,29 +255,6 @@
 		</File>
 		<File
 			RelativePath="..\..\..\cbm2\cbm2tpi2.c">
-		</File>
-		<File
-			RelativePath="..\..\..\cbm2\cbm2cpu.c">
-			<FileConfiguration
-				Name="DX Release|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="4"
-					EnableIntrinsicFunctions="TRUE"
-					ImproveFloatingPointConsistency="TRUE"
-					FavorSizeOrSpeed="0"
-					OmitFramePointers="TRUE"/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="4"
-					EnableIntrinsicFunctions="TRUE"
-					ImproveFloatingPointConsistency="TRUE"
-					FavorSizeOrSpeed="0"
-					OmitFramePointers="TRUE"/>
-			</FileConfiguration>
 		</File>
 	</Files>
 	<Globals>

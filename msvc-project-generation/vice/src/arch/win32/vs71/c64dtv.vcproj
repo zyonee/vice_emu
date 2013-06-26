@@ -267,26 +267,6 @@
 		</File>
 		<File
 			RelativePath="..\..\..\c64dtv\c64dtvcpu.c">
-			<FileConfiguration
-				Name="DX Release|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="4"
-					EnableIntrinsicFunctions="TRUE"
-					ImproveFloatingPointConsistency="TRUE"
-					FavorSizeOrSpeed="0"
-					OmitFramePointers="TRUE"/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="4"
-					EnableIntrinsicFunctions="TRUE"
-					ImproveFloatingPointConsistency="TRUE"
-					FavorSizeOrSpeed="0"
-					OmitFramePointers="TRUE"/>
-			</FileConfiguration>
 		</File>
 	</Files>
 	<Globals>

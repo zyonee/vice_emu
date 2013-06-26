@@ -209,6 +209,9 @@
 	</References>
 	<Files>
 		<File
+			RelativePath="..\..\..\c64\vsidcpu.c">
+		</File>
+		<File
 			RelativePath="..\..\..\c64\c64-cmdline-options.c">
 		</File>
 		<File
@@ -285,29 +288,6 @@
 		</File>
 		<File
 			RelativePath="..\..\..\c64\vsidstubs.c">
-		</File>
-		<File
-			RelativePath="..\..\..\c64\vsidcpu.c">
-			<FileConfiguration
-				Name="DX Release|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="4"
-					EnableIntrinsicFunctions="TRUE"
-					ImproveFloatingPointConsistency="TRUE"
-					FavorSizeOrSpeed="0"
-					OmitFramePointers="TRUE"/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="4"
-					EnableIntrinsicFunctions="TRUE"
-					ImproveFloatingPointConsistency="TRUE"
-					FavorSizeOrSpeed="0"
-					OmitFramePointers="TRUE"/>
-			</FileConfiguration>
 		</File>
 	</Files>
 	<Globals>
