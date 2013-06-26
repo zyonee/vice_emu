@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="9.00"
 	Name="base"
 	ProjectGUID="{8BC9CEB8-8B4A-11D0-8D12-00A0C91BC902}"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform
@@ -91,221 +92,6 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="DX Release|Win32"
-			OutputDirectory=".\libs\base\Win32DXRelease"
-			IntermediateDirectory=".\libs\base\Win32DXRelease"
-			ConfigurationType="4"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\drive,..\..\..\imagecontents,..\..\..\lib\p64,..\..\..\monitor,..\..\..\platform,..\..\..\rs232drv,..\..\..\rtc,..\..\..\userport,..\..\..\vdrive"
-				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NDEBUG"
-				StringPooling="true"
-				RuntimeLibrary="0"
-				EnableFunctionLevelLinking="true"
-				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\base\Win32DXRelease\base.pch"
-				AssemblerListingLocation=".\libs\baseWin32DXRelease\"
-				ObjectFile=".\libs\base\Win32DXRelease\"
-				ProgramDataBaseFileName=".\libs\base\Win32DXRelease\"
-				WarningLevel="3"
-				SuppressStartupBanner="true"
-				CompileAs="0"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				Culture="1033"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLibrarianTool"
-				OutputFile=".\libs\base\Win32DXRelease\base.lib"
-				SuppressStartupBanner="true"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
-		</Configuration>
-		<Configuration
-			Name="Debug|Win32"
-			OutputDirectory=".\libs\base\Win32Debug"
-			IntermediateDirectory=".\libs\base\Win32Debug"
-			ConfigurationType="4"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="0"
-				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\drive,..\..\..\imagecontents,..\..\..\lib\p64,..\..\..\monitor,..\..\..\platform,..\..\..\rs232drv,..\..\..\rtc,..\..\..\userport,..\..\..\vdrive"
-				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
-				RuntimeLibrary="1"
-				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\base\Win32Debug\base.pch"
-				AssemblerListingLocation=".\libs\baseWin32Debug\"
-				ObjectFile=".\libs\base\Win32Debug\"
-				ProgramDataBaseFileName=".\libs\base\Win32Debug\"
-				WarningLevel="3"
-				SuppressStartupBanner="true"
-				DebugInformationFormat="1"
-				CompileAs="0"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				Culture="1033"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLibrarianTool"
-				OutputFile=".\libs\base\Win32Debug\base.lib"
-				SuppressStartupBanner="true"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
-		</Configuration>
-		<Configuration
-			Name="Release|Win32"
-			OutputDirectory=".\libs\base\Win32Release"
-			IntermediateDirectory=".\libs\base\Win32Release"
-			ConfigurationType="4"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\drive,..\..\..\imagecontents,..\..\..\lib\p64,..\..\..\monitor,..\..\..\platform,..\..\..\rs232drv,..\..\..\rtc,..\..\..\userport,..\..\..\vdrive"
-				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,NDEBUG"
-				StringPooling="true"
-				RuntimeLibrary="0"
-				EnableFunctionLevelLinking="true"
-				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\base\Win32Release\base.pch"
-				AssemblerListingLocation=".\libs\baseWin32Release\"
-				ObjectFile=".\libs\base\Win32Release\"
-				ProgramDataBaseFileName=".\libs\base\Win32Release\"
-				WarningLevel="3"
-				SuppressStartupBanner="true"
-				CompileAs="0"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				Culture="1033"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLibrarianTool"
-				OutputFile=".\libs\base\Win32Release\base.lib"
-				SuppressStartupBanner="true"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
-		</Configuration>
-		<Configuration
 			Name="DX Debug|Itanium"
 			OutputDirectory=".\libs\base\ItaniumDXDebug"
 			IntermediateDirectory=".\libs\base\ItaniumDXDebug"
@@ -359,6 +145,150 @@
 			<Tool
 				Name="VCLibrarianTool"
 				OutputFile=".\libs\base\ItaniumDXDebug\base.lib"
+				SuppressStartupBanner="true"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="DX Debug|x64"
+			OutputDirectory=".\libs\base\x64DXDebug"
+			IntermediateDirectory=".\libs\base\x64DXDebug"
+			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				TargetEnvironment="3"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\drive,..\..\..\imagecontents,..\..\..\lib\p64,..\..\..\monitor,..\..\..\platform,..\..\..\rs232drv,..\..\..\rtc,..\..\..\userport,..\..\..\vdrive"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
+				RuntimeLibrary="1"
+				UsePrecompiledHeader="0"
+				PrecompiledHeaderFile=".\libs\base\x64DXDebug\base.pch"
+				AssemblerListingLocation=".\libs\basex64DXDebug\"
+				ObjectFile=".\libs\base\x64DXDebug\"
+				ProgramDataBaseFileName=".\libs\base\x64DXDebug\"
+				WarningLevel="3"
+				SuppressStartupBanner="true"
+				DebugInformationFormat="1"
+				CompileAs="0"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile=".\libs\base\x64DXDebug\base.lib"
+				SuppressStartupBanner="true"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="DX Release|Win32"
+			OutputDirectory=".\libs\base\Win32DXRelease"
+			IntermediateDirectory=".\libs\base\Win32DXRelease"
+			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\drive,..\..\..\imagecontents,..\..\..\lib\p64,..\..\..\monitor,..\..\..\platform,..\..\..\rs232drv,..\..\..\rtc,..\..\..\userport,..\..\..\vdrive"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NDEBUG"
+				StringPooling="true"
+				RuntimeLibrary="0"
+				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="0"
+				PrecompiledHeaderFile=".\libs\base\Win32DXRelease\base.pch"
+				AssemblerListingLocation=".\libs\baseWin32DXRelease\"
+				ObjectFile=".\libs\base\Win32DXRelease\"
+				ProgramDataBaseFileName=".\libs\base\Win32DXRelease\"
+				WarningLevel="3"
+				SuppressStartupBanner="true"
+				CompileAs="0"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile=".\libs\base\Win32DXRelease\base.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -451,223 +381,6 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="Debug|Itanium"
-			OutputDirectory=".\libs\base\ItaniumDebug"
-			IntermediateDirectory=".\libs\base\ItaniumDebug"
-			ConfigurationType="4"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-				TargetEnvironment="2"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="0"
-				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\drive,..\..\..\imagecontents,..\..\..\lib\p64,..\..\..\monitor,..\..\..\platform,..\..\..\rs232drv,..\..\..\rtc,..\..\..\userport,..\..\..\vdrive"
-				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
-				RuntimeLibrary="1"
-				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\base\ItaniumDebug\base.pch"
-				AssemblerListingLocation=".\libs\baseItaniumDebug\"
-				ObjectFile=".\libs\base\ItaniumDebug\"
-				ProgramDataBaseFileName=".\libs\base\ItaniumDebug\"
-				WarningLevel="3"
-				SuppressStartupBanner="true"
-				DebugInformationFormat="1"
-				CompileAs="0"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				Culture="1033"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLibrarianTool"
-				OutputFile=".\libs\base\ItaniumDebug\base.lib"
-				SuppressStartupBanner="true"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
-		</Configuration>
-		<Configuration
-			Name="Release|Itanium"
-			OutputDirectory=".\libs\base\ItaniumRelease"
-			IntermediateDirectory=".\libs\base\ItaniumRelease"
-			ConfigurationType="4"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-				TargetEnvironment="2"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\drive,..\..\..\imagecontents,..\..\..\lib\p64,..\..\..\monitor,..\..\..\platform,..\..\..\rs232drv,..\..\..\rtc,..\..\..\userport,..\..\..\vdrive"
-				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,NDEBUG"
-				StringPooling="true"
-				RuntimeLibrary="0"
-				EnableFunctionLevelLinking="true"
-				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\base\ItaniumRelease\base.pch"
-				AssemblerListingLocation=".\libs\baseItaniumRelease\"
-				ObjectFile=".\libs\base\ItaniumRelease\"
-				ProgramDataBaseFileName=".\libs\base\ItaniumRelease\"
-				WarningLevel="3"
-				SuppressStartupBanner="true"
-				CompileAs="0"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				Culture="1033"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLibrarianTool"
-				OutputFile=".\libs\base\ItaniumRelease\base.lib"
-				SuppressStartupBanner="true"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
-		</Configuration>
-		<Configuration
-			Name="DX Debug|x64"
-			OutputDirectory=".\libs\base\x64DXDebug"
-			IntermediateDirectory=".\libs\base\x64DXDebug"
-			ConfigurationType="4"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-				TargetEnvironment="3"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="0"
-				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\drive,..\..\..\imagecontents,..\..\..\lib\p64,..\..\..\monitor,..\..\..\platform,..\..\..\rs232drv,..\..\..\rtc,..\..\..\userport,..\..\..\vdrive"
-				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,_DEBUG"
-				RuntimeLibrary="1"
-				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\libs\base\x64DXDebug\base.pch"
-				AssemblerListingLocation=".\libs\basex64DXDebug\"
-				ObjectFile=".\libs\base\x64DXDebug\"
-				ProgramDataBaseFileName=".\libs\base\x64DXDebug\"
-				WarningLevel="3"
-				SuppressStartupBanner="true"
-				DebugInformationFormat="1"
-				CompileAs="0"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				Culture="1033"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLibrarianTool"
-				OutputFile=".\libs\base\x64DXDebug\base.lib"
-				SuppressStartupBanner="true"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
-		</Configuration>
-		<Configuration
 			Name="DX Release|x64"
 			OutputDirectory=".\libs\base\x64DXRelease"
 			IntermediateDirectory=".\libs\base\x64DXRelease"
@@ -741,6 +454,149 @@
 			/>
 		</Configuration>
 		<Configuration
+			Name="Debug|Win32"
+			OutputDirectory=".\libs\base\Win32Debug"
+			IntermediateDirectory=".\libs\base\Win32Debug"
+			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\drive,..\..\..\imagecontents,..\..\..\lib\p64,..\..\..\monitor,..\..\..\platform,..\..\..\rs232drv,..\..\..\rtc,..\..\..\userport,..\..\..\vdrive"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
+				RuntimeLibrary="1"
+				UsePrecompiledHeader="0"
+				PrecompiledHeaderFile=".\libs\base\Win32Debug\base.pch"
+				AssemblerListingLocation=".\libs\baseWin32Debug\"
+				ObjectFile=".\libs\base\Win32Debug\"
+				ProgramDataBaseFileName=".\libs\base\Win32Debug\"
+				WarningLevel="3"
+				SuppressStartupBanner="true"
+				DebugInformationFormat="1"
+				CompileAs="0"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile=".\libs\base\Win32Debug\base.lib"
+				SuppressStartupBanner="true"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Debug|Itanium"
+			OutputDirectory=".\libs\base\ItaniumDebug"
+			IntermediateDirectory=".\libs\base\ItaniumDebug"
+			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				TargetEnvironment="2"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\drive,..\..\..\imagecontents,..\..\..\lib\p64,..\..\..\monitor,..\..\..\platform,..\..\..\rs232drv,..\..\..\rtc,..\..\..\userport,..\..\..\vdrive"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,_DEBUG"
+				RuntimeLibrary="1"
+				UsePrecompiledHeader="0"
+				PrecompiledHeaderFile=".\libs\base\ItaniumDebug\base.pch"
+				AssemblerListingLocation=".\libs\baseItaniumDebug\"
+				ObjectFile=".\libs\base\ItaniumDebug\"
+				ProgramDataBaseFileName=".\libs\base\ItaniumDebug\"
+				WarningLevel="3"
+				SuppressStartupBanner="true"
+				DebugInformationFormat="1"
+				CompileAs="0"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile=".\libs\base\ItaniumDebug\base.lib"
+				SuppressStartupBanner="true"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
 			Name="Debug|x64"
 			OutputDirectory=".\libs\base\x64Debug"
 			IntermediateDirectory=".\libs\base\x64Debug"
@@ -794,6 +650,151 @@
 			<Tool
 				Name="VCLibrarianTool"
 				OutputFile=".\libs\base\x64Debug\base.lib"
+				SuppressStartupBanner="true"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Release|Win32"
+			OutputDirectory=".\libs\base\Win32Release"
+			IntermediateDirectory=".\libs\base\Win32Release"
+			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\drive,..\..\..\imagecontents,..\..\..\lib\p64,..\..\..\monitor,..\..\..\platform,..\..\..\rs232drv,..\..\..\rtc,..\..\..\userport,..\..\..\vdrive"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,NDEBUG"
+				StringPooling="true"
+				RuntimeLibrary="0"
+				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="0"
+				PrecompiledHeaderFile=".\libs\base\Win32Release\base.pch"
+				AssemblerListingLocation=".\libs\baseWin32Release\"
+				ObjectFile=".\libs\base\Win32Release\"
+				ProgramDataBaseFileName=".\libs\base\Win32Release\"
+				WarningLevel="3"
+				SuppressStartupBanner="true"
+				CompileAs="0"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile=".\libs\base\Win32Release\base.lib"
+				SuppressStartupBanner="true"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Release|Itanium"
+			OutputDirectory=".\libs\base\ItaniumRelease"
+			IntermediateDirectory=".\libs\base\ItaniumRelease"
+			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				TargetEnvironment="2"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories="..\msvc,..\,..\..\..\,..\..\..\drive,..\..\..\imagecontents,..\..\..\lib\p64,..\..\..\monitor,..\..\..\platform,..\..\..\rs232drv,..\..\..\rtc,..\..\..\userport,..\..\..\vdrive"
+				PreprocessorDefinitions="WIN32,_WINDOWS,IDE_COMPILE,DONT_USE_UNISTD_H,NODIRECTX,NDEBUG"
+				StringPooling="true"
+				RuntimeLibrary="0"
+				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="0"
+				PrecompiledHeaderFile=".\libs\base\ItaniumRelease\base.pch"
+				AssemblerListingLocation=".\libs\baseItaniumRelease\"
+				ObjectFile=".\libs\base\ItaniumRelease\"
+				ProgramDataBaseFileName=".\libs\base\ItaniumRelease\"
+				WarningLevel="3"
+				SuppressStartupBanner="true"
+				CompileAs="0"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile=".\libs\base\ItaniumRelease\base.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -1082,63 +1083,10 @@
 			>
 		</File>
 		<File
-			RelativePath="..\..\..\traps.c"
-			>
-		</File>
-		<File
-			RelativePath="..\..\..\util.c"
-			>
-		</File>
-		<File
-			RelativePath="..\..\..\vsync.c"
-			>
-		</File>
-		<File
-			RelativePath="..\..\..\zfile.c"
-			>
-		</File>
-		<File
-			RelativePath="..\..\..\zipcode.c"
-			>
-		</File>
-		<File
 			RelativePath="..\..\..\translate.txt"
 			>
 			<FileConfiguration
 				Name="DX Debug|Win32"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					Description="Generating translate.h and translate_table.h"
-					CommandLine="..\..\..\..\data\gentranslate ..\..\..\translate.txt ..\..\..\translate.h ..\..\..\translate_table.h&#x0D;&#x0A;"
-					AdditionalDependencies="..\..\..\translate.txt;"
-					Outputs="..\..\..\translate_table.h"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="DX Release|Win32"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					Description="Generating translate.h and translate_table.h"
-					CommandLine="..\..\..\..\data\gentranslate ..\..\..\translate.txt ..\..\..\translate.h ..\..\..\translate_table.h&#x0D;&#x0A;"
-					AdditionalDependencies="..\..\..\translate.txt;"
-					Outputs="..\..\..\translate_table.h"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Debug|Win32"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					Description="Generating translate.h and translate_table.h"
-					CommandLine="..\..\..\..\data\gentranslate ..\..\..\translate.txt ..\..\..\translate.h ..\..\..\translate_table.h&#x0D;&#x0A;"
-					AdditionalDependencies="..\..\..\translate.txt;"
-					Outputs="..\..\..\translate_table.h"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Win32"
 				>
 				<Tool
 					Name="VCCustomBuildTool"
@@ -1160,40 +1108,29 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="DX Release|Itanium"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					Description="Generating translate.h and translate_table.h"
-					CommandLine="..\..\..\..\data\gentranslate ..\..\..\translate.txt ..\..\..\translate.h ..\..\..\translate_table.h&#x0D;&#x0A;"
-					AdditionalDependencies="..\..\..\translate.txt;"
-					Outputs="..\..\..\translate_table.h"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Debug|Itanium"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					Description="Generating translate.h and translate_table.h"
-					CommandLine="..\..\..\..\data\gentranslate ..\..\..\translate.txt ..\..\..\translate.h ..\..\..\translate_table.h&#x0D;&#x0A;"
-					AdditionalDependencies="..\..\..\translate.txt;"
-					Outputs="..\..\..\translate_table.h"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Itanium"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					Description="Generating translate.h and translate_table.h"
-					CommandLine="..\..\..\..\data\gentranslate ..\..\..\translate.txt ..\..\..\translate.h ..\..\..\translate_table.h&#x0D;&#x0A;"
-					AdditionalDependencies="..\..\..\translate.txt;"
-					Outputs="..\..\..\translate_table.h"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
 				Name="DX Debug|x64"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Generating translate.h and translate_table.h"
+					CommandLine="..\..\..\..\data\gentranslate ..\..\..\translate.txt ..\..\..\translate.h ..\..\..\translate_table.h&#x0D;&#x0A;"
+					AdditionalDependencies="..\..\..\translate.txt;"
+					Outputs="..\..\..\translate_table.h"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="DX Release|Win32"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Generating translate.h and translate_table.h"
+					CommandLine="..\..\..\..\data\gentranslate ..\..\..\translate.txt ..\..\..\translate.h ..\..\..\translate_table.h&#x0D;&#x0A;"
+					AdditionalDependencies="..\..\..\translate.txt;"
+					Outputs="..\..\..\translate_table.h"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="DX Release|Itanium"
 				>
 				<Tool
 					Name="VCCustomBuildTool"
@@ -1215,7 +1152,51 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
+				Name="Debug|Win32"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Generating translate.h and translate_table.h"
+					CommandLine="..\..\..\..\data\gentranslate ..\..\..\translate.txt ..\..\..\translate.h ..\..\..\translate_table.h&#x0D;&#x0A;"
+					AdditionalDependencies="..\..\..\translate.txt;"
+					Outputs="..\..\..\translate_table.h"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug|Itanium"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Generating translate.h and translate_table.h"
+					CommandLine="..\..\..\..\data\gentranslate ..\..\..\translate.txt ..\..\..\translate.h ..\..\..\translate_table.h&#x0D;&#x0A;"
+					AdditionalDependencies="..\..\..\translate.txt;"
+					Outputs="..\..\..\translate_table.h"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
 				Name="Debug|x64"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Generating translate.h and translate_table.h"
+					CommandLine="..\..\..\..\data\gentranslate ..\..\..\translate.txt ..\..\..\translate.h ..\..\..\translate_table.h&#x0D;&#x0A;"
+					AdditionalDependencies="..\..\..\translate.txt;"
+					Outputs="..\..\..\translate_table.h"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|Win32"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Generating translate.h and translate_table.h"
+					CommandLine="..\..\..\..\data\gentranslate ..\..\..\translate.txt ..\..\..\translate.h ..\..\..\translate_table.h&#x0D;&#x0A;"
+					AdditionalDependencies="..\..\..\translate.txt;"
+					Outputs="..\..\..\translate_table.h"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|Itanium"
 				>
 				<Tool
 					Name="VCCustomBuildTool"
@@ -1236,6 +1217,18 @@
 					Outputs="..\..\..\translate_table.h"
 				/>
 			</FileConfiguration>
+		</File>
+		<File
+			RelativePath="..\..\..\traps.c"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\util.c"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\vsync.c"
+			>
 		</File>
 		<File
 			RelativePath=".\winid.bat"
@@ -1252,73 +1245,7 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="DX Release|Win32"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					Description="Generating winid.bat"
-					CommandLine="copy winid_x86.bat winid.bat&#x0D;&#x0A;"
-					AdditionalDependencies=".\winid_x86.bat;"
-					Outputs=".\winid.bat"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Debug|Win32"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					Description="Generating winid.bat"
-					CommandLine="copy winid_x86.bat winid.bat&#x0D;&#x0A;"
-					AdditionalDependencies=".\winid_x86.bat;"
-					Outputs=".\winid.bat"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Win32"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					Description="Generating winid.bat"
-					CommandLine="copy winid_x86.bat winid.bat&#x0D;&#x0A;"
-					AdditionalDependencies=".\winid_x86.bat;"
-					Outputs=".\winid.bat"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
 				Name="DX Debug|Itanium"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					Description="Generating winid.bat"
-					CommandLine="copy winid_ia64.bat winid.bat&#x0D;&#x0A;"
-					AdditionalDependencies=".\winid_ia64.bat;"
-					Outputs=".\winid.bat"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="DX Release|Itanium"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					Description="Generating winid.bat"
-					CommandLine="copy winid_ia64.bat winid.bat&#x0D;&#x0A;"
-					AdditionalDependencies=".\winid_ia64.bat;"
-					Outputs=".\winid.bat"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Debug|Itanium"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					Description="Generating winid.bat"
-					CommandLine="copy winid_ia64.bat winid.bat&#x0D;&#x0A;"
-					AdditionalDependencies=".\winid_ia64.bat;"
-					Outputs=".\winid.bat"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Itanium"
 				>
 				<Tool
 					Name="VCCustomBuildTool"
@@ -1340,6 +1267,28 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
+				Name="DX Release|Win32"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Generating winid.bat"
+					CommandLine="copy winid_x86.bat winid.bat&#x0D;&#x0A;"
+					AdditionalDependencies=".\winid_x86.bat;"
+					Outputs=".\winid.bat"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="DX Release|Itanium"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Generating winid.bat"
+					CommandLine="copy winid_ia64.bat winid.bat&#x0D;&#x0A;"
+					AdditionalDependencies=".\winid_ia64.bat;"
+					Outputs=".\winid.bat"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
 				Name="DX Release|x64"
 				>
 				<Tool
@@ -1347,6 +1296,28 @@
 					Description="Generating winid.bat"
 					CommandLine="copy winid_x64.bat winid.bat&#x0D;&#x0A;"
 					AdditionalDependencies=".\winid_x64.bat;"
+					Outputs=".\winid.bat"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug|Win32"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Generating winid.bat"
+					CommandLine="copy winid_x86.bat winid.bat&#x0D;&#x0A;"
+					AdditionalDependencies=".\winid_x86.bat;"
+					Outputs=".\winid.bat"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug|Itanium"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Generating winid.bat"
+					CommandLine="copy winid_ia64.bat winid.bat&#x0D;&#x0A;"
+					AdditionalDependencies=".\winid_ia64.bat;"
 					Outputs=".\winid.bat"
 				/>
 			</FileConfiguration>
@@ -1362,6 +1333,28 @@
 				/>
 			</FileConfiguration>
 			<FileConfiguration
+				Name="Release|Win32"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Generating winid.bat"
+					CommandLine="copy winid_x86.bat winid.bat&#x0D;&#x0A;"
+					AdditionalDependencies=".\winid_x86.bat;"
+					Outputs=".\winid.bat"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|Itanium"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Generating winid.bat"
+					CommandLine="copy winid_ia64.bat winid.bat&#x0D;&#x0A;"
+					AdditionalDependencies=".\winid_ia64.bat;"
+					Outputs=".\winid.bat"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
 				Name="Release|x64"
 				>
 				<Tool
@@ -1372,6 +1365,14 @@
 					Outputs=".\winid.bat"
 				/>
 			</FileConfiguration>
+		</File>
+		<File
+			RelativePath="..\..\..\zfile.c"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\zipcode.c"
+			>
 		</File>
 	</Files>
 	<Globals>
