@@ -183,6 +183,9 @@
 	</Configurations>
 	<Files>
 		<File
+			RelativePath="..\..\..\c64\c64cpu.c">
+		</File>
+		<File
 			RelativePath="..\..\..\c64\c64-cmdline-options.c">
 		</File>
 		<File
@@ -286,29 +289,6 @@
 		</File>
 		<File
 			RelativePath="..\..\..\c64\reloc65.c">
-		</File>
-		<File
-			RelativePath="..\..\..\c64\c64cpu.c">
-			<FileConfiguration
-				Name="DX Release|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="4"
-					EnableIntrinsicFunctions="TRUE"
-					ImproveFloatingPointConsistency="TRUE"
-					FavorSizeOrSpeed="0"
-					OmitFramePointers="TRUE"/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="4"
-					EnableIntrinsicFunctions="TRUE"
-					ImproveFloatingPointConsistency="TRUE"
-					FavorSizeOrSpeed="0"
-					OmitFramePointers="TRUE"/>
-			</FileConfiguration>
 		</File>
 	</Files>
 	<Globals>

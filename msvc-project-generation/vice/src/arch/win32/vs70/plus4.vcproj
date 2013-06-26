@@ -183,6 +183,9 @@
 	</Configurations>
 	<Files>
 		<File
+			RelativePath="..\..\..\plus4\plus4cpu.c">
+		</File>
+		<File
 			RelativePath="..\..\..\plus4\digiblaster.c">
 		</File>
 		<File
@@ -307,29 +310,6 @@
 		</File>
 		<File
 			RelativePath="..\..\..\plus4\ted.c">
-		</File>
-		<File
-			RelativePath="..\..\..\plus4\plus4cpu.c">
-			<FileConfiguration
-				Name="DX Release|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="4"
-					EnableIntrinsicFunctions="TRUE"
-					ImproveFloatingPointConsistency="TRUE"
-					FavorSizeOrSpeed="0"
-					OmitFramePointers="TRUE"/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="4"
-					EnableIntrinsicFunctions="TRUE"
-					ImproveFloatingPointConsistency="TRUE"
-					FavorSizeOrSpeed="0"
-					OmitFramePointers="TRUE"/>
-			</FileConfiguration>
 		</File>
 	</Files>
 	<Globals>
